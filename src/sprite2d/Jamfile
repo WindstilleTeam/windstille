@@ -1,0 +1,14 @@
+SubDir TOP src sprite2d ;
+
+sources =
+    data.cpp
+    data.hpp
+    manager.cpp
+    manager.hpp
+    sprite.cpp
+    sprite.hpp
+;
+
+TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
+sprite2d_objects = [ CompileObjects $(sources) ] ;
+

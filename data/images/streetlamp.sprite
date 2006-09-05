@@ -1,0 +1,7 @@
+(sprite
+  (action
+    (name "default")
+    (images "streetlamp.png")
+    (offset -18 -220)
+  )
+)

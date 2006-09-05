@@ -1,0 +1,6 @@
+(sprite
+  (action
+    (name "default")
+    (images "spider_mine.png")
+  )
+)

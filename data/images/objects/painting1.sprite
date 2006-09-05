@@ -1,0 +1,7 @@
+(sprite
+  (action
+    (name "default")
+    (images "painting1.png")
+    (scale 0.5)
+  )
+)

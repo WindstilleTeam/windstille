@@ -1,0 +1,12 @@
+SubDir TOP src squirrel ;
+
+Library squirrel
+    : [ Wildcard squirrel : *.cpp *.h ]
+      [ Wildcard sqstdlib : *.cpp *.c *.h ]
+    : noinstall
+;
+CXXFLAGS on $(squirrel_OBJECTS) 
+	= [ Filter [ on $(squirrel_OBJECTS) GetVar CXXFLAGS ] : -Wall -W -Werror ] ;
+CFLAGS on $(squirrel_OBJECTS) 
+	= [ Filter [ on $(squirrel_OBJECTS) GetVar CFLAGS ] : -Wall -W -Werror ] ;	
+IncludeDir squirrel : include ;

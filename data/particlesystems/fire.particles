@@ -1,0 +1,82 @@
+;; -*- scheme -*-
+
+(particle-systems
+ ;; Fire sparks
+ (particle-system
+  (drawer (spark-drawer (color 1.0 0.5 0.5)))
+  (z-pos 900)
+  (pos 0 32)
+  (layer "highlight")
+  (velocity 400 650)
+  (cone -115 -65)
+  (gravity 0  1)
+  (distribution (line-distribution (x1 -50)  (y1 0) (x2 50) (y2 0))))
+ 
+ ;; Fire smoke
+ (particle-system
+  (pos 0 32)
+  (lifetime 8)
+  (count 30)
+  (z-pos -200)
+  (drawer (surface-drawer (image "images/particles/smoke2.png")
+                          (blendfunc-src "src_alpha")
+                          (blendfunc-dst "one_minus_src_alpha")))
+  (velocity 10 20)
+  (cone -115 -65)
+  (gravity 0 -0.05)
+  (size 1.0 3.0)
+  (distribution (line-distribution (x1 -50) (y1 0) (x2 50) (y2 0))))
+
+
+ ;; Fire Light
+;  (particle-system
+;   (pos 0 0)
+;   (lifetime 1.0)
+;   (count 20)
+;   (layer "light")
+;   (z-pos 1000)
+;   (velocity 200 300)
+;   (cone -95 -85)
+;   (gravity 0 0)
+;   (distribution (line-distribution (x1 -50) (y1 0) (x2 50) (y2 0)))
+;   (drawer (surface-drawer (image "images/particles/fire_light.png")
+;                           (blendfunc-src "src_alpha")
+;                           (blendfunc-dst "one"))))
+ 
+ ;; Fire itself
+ (particle-system
+  (pos 0 0)
+  (count 75)
+  (z-pos 1000)
+  (layer "highlight")
+  (velocity 200 300)
+  (cone -95 -85)
+  (gravity 0 -0.05)
+  (size 1.5 1.0)
+  (distribution (line-distribution (x1 -50) (y1 0) (x2 50) (y2 0)))
+  (drawer (surface-drawer (image "images/particles/smoke.png")
+                          (blendfunc-src "src_alpha")
+                          (blendfunc-dst "one"))))
+
+
+ ;; Deform
+ (particle-system
+  (pos 0 0)
+        (lifetime 2.0)
+  (count 25)
+  (z-pos 1100)
+  (layer "highlight")
+  (velocity 200 300)
+  (cone -95 -85)
+  (gravity 0 -0.3)
+  (size 1.5 1.0)
+  (distribution (line-distribution (x1 -50) (y1 0) (x2 50) (y2 0)))
+  (drawer (deform-drawer (image "images/particles/smoke.png")
+                                 (blendfunc-src "src_alpha")
+                                  (blendfunc-dst "one"))))
+
+
+
+ )
+
+;; EOF ;;

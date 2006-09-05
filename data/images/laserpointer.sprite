@@ -1,0 +1,7 @@
+(sprite
+  (action
+    (name "default")
+    (images "laserpointer.png")
+    (offset -4 -4)
+  )
+)

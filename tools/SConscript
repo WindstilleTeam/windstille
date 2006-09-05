@@ -1,0 +1,22 @@
+##  -*- python -*-
+
+import glob
+
+env = Environment(CPPPATH=['../..'],
+                  CXXFILESUFFIX = ".cpp",
+                  YACCFLAGS=['-d', '--no-lines'])
+miniswig = env.Program('miniswig/miniswig',
+                       ['miniswig/parser.yy',
+                        'miniswig/lexer.ll',
+                        'miniswig/create_docu.cpp',
+                        'miniswig/xmlwriter.cpp',
+                        'miniswig/create_wrapper.cpp',
+                        'miniswig/main.cpp',
+                        'miniswig/tree.cpp'], 
+                       CPPPATH=["..", "miniswig"])
+
+# bison -d --no-lines -o tools/miniswig/parser.cpp tools/miniswig/parser.yy
+
+Export('miniswig')
+
+# EOF #

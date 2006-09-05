@@ -1,0 +1,31 @@
+SubDir TOP src gui ;
+
+sources = 
+  automap.hpp
+  automap.cpp
+  button.hpp
+  button.cpp
+  component.hpp
+  component.cpp
+  component_factory.hpp
+  component_factory.cpp
+  grid_component.hpp
+  grid_component.cpp
+  gui_manager.hpp
+  gui_manager.cpp
+  label.cpp
+  label.hpp
+  list_view.hpp
+  list_view.cpp
+  root_component.cpp
+  root_component.hpp
+  slider.cpp
+  slider.hpp
+  tab_component.hpp
+  tab_component.cpp
+  text_view.hpp
+  text_view.cpp
+;
+
+TRANSLATABLE_SOURCES = [ SearchSource $(sources) ] ;
+gui_objects = [ CompileObjects $(sources) ] ;

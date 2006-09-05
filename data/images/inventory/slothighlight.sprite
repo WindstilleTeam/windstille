@@ -1,0 +1,7 @@
+(sprite
+  (action
+    (name "default")
+    (images "slothighlight.png")
+    (offset -48 -48)
+  )
+)

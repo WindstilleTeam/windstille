@@ -1,0 +1,7 @@
+(sprite
+  (action
+    (name "default")
+    (images "apartmentlamp_highlight.png")
+    (offset -101 -40)
+  )
+)

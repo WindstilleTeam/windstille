@@ -1,0 +1,60 @@
+Notes about blender models:
+
+- You can install the exporter by placing it in your $HOME/.blender/scripts
+  directory. Best would be to create a symlink:
+  
+     ln -s contrib/windstille_exporter.py $HOME/.blender/scripts
+     
+- 1 blender unit corresponds to 32pixels in game
+  (if you use the default 800x600 game resolution)
+- When looking at a character turned left from the side, coordinate axes are:
+    z -> up
+    y -> right
+    x -> front
+  (the exporter will convert these to windstille coordinates which are
+   x->right, y -> down, z -> back)
+- Each blender object should use the same texture on all it's faces.
+   (you can have multiple objects per model of course)
+- You should animate your models with armatures. The exporter will grab all
+  defined actions for the armature and export these. You are only allowed to
+  have 1 armature object in the scene at the moment
+- Empty Objects whose names start with A: are exported as attachement points
+- Take a look at the console output to see warnings and errors from the script
+- You should specify additional attributes for the actions by creating a blender
+  textobject with name "actionconfig". You can then specify lines like this
+  (this example states that for action MyActionName frames 5 - 40 should be
+   exported every 8th frame should be exported and the animation should be
+   played back with speed 5.7 later. The speed and samplerate part are optional)
+
+  # Sampe actionconfig file
+
+  MyActionName 5 - 40
+  AnotherAction 1 - 30 speed 5.0
+
+  You can append additional options at the line. They are each optional but you
+  have to specify them in this order.
+    speed FLOAT_NUMBER      the default fps speed the animation should be played
+    samplerate INT_NUMBER   only sample every nth frame in blender
+    marker NAME INT_NUMBER  remembers a named marker at a specific frame. These
+                            markers will be used by the program for purposes
+                            like finding out when you can safely change
+                            animations. You can specify multiple markers.
+
+- Windstille has some keys that make debugging animations alot easier:
+    Numpad 2,4,6,8 can be used to move the camera around
+    Numpad +,- zoom in and out.
+    Numpad 1,3 slow down and accelerate the game
+
+    So you can easily zoom in and watch your animation in slow motion with
+    these keys.
+
+(- Only for information you don't have to care about this: UVs in blender are
+    u -> right
+    v -> up
+  UVs in windstille are
+    u -> right
+    v -> down
+  Rotations from windstille rotation compared with blender rotations:
+    ws.x = blend.y
+    ws.y = blend.z
+    ws.z = blend.x )

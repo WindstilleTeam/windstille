@@ -1,0 +1,52 @@
+# German translations for windstille package
+# German messages for windstille.
+# Copyright (C) 2005 THE windstille'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the windstille package.
+#  <matze@braunis.de>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: windstille 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-06-29 10:20+0200\n"
+"PO-Revision-Date: 2005-06-29 10:21+0200\n"
+"Last-Translator:  <matze@braunis.de>\n"
+"Language-Team: German <de@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/windstille_menu.cxx:168 src/windstille_menu.cxx:169
+msgid "[Start Game]"
+msgstr "[Spiel Beginnen]"
+
+#: src/windstille_menu.cxx:172
+msgid "Start Game"
+msgstr "Spiel Beginnnen"
+
+#: src/windstille_menu.cxx:178 src/windstille_menu.cxx:179
+msgid "[Extras]"
+msgstr "[Extras]"
+
+#: src/windstille_menu.cxx:182
+msgid "Extras"
+msgstr "Extras"
+
+#: src/windstille_menu.cxx:186 src/windstille_menu.cxx:187
+#: src/windstille_menu.cxx:196 src/windstille_menu.cxx:197
+msgid "[Quit]"
+msgstr "[Beenden]"
+
+#: src/windstille_menu.cxx:190
+msgid "Quit"
+msgstr "Beenden"
+
+#: src/windstille_menu.cxx:204
+msgid ""
+"Copyright (c) 2003 Ingo Ruhnke <grumbel@gmx.de>\n"
+"This game comes with ABSOLUTELY NO WARRANTY.This is free software, and you "
+"are welcome\n"
+"to redistribute it under certain conditions;see the file COPYING for "
+"details.\n"
+msgstr ""

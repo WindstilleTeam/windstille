@@ -1,0 +1,26 @@
+SubDir TOP src signals ;
+
+sources = signal.hpp
+	  signal_v0.hpp
+	  signal_v1.hpp
+	  signal_v2.hpp
+	  signal_v3.hpp
+	  signal_v4.hpp
+	  signal_v5.hpp
+	  signals.hpp
+	  slot.cpp
+	  slot.hpp
+	  slot_generic.cpp
+	  slot_generic.hpp
+	  slot_v0.hpp
+	  slot_v1.hpp
+	  slot_v2.hpp
+	  slot_v3.hpp
+	  slot_v4.hpp
+	  slot_v5.hpp
+	  slotbuffer_v0.hpp
+	  slotbuffer_v1.hpp
+;
+
+TRANSLATABLE_SOURCES = [ SearchSource $(sources) ] ;
+signals_objects = [ CompileObjects $(sources) ] ;

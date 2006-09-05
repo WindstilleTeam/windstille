@@ -1,0 +1,6 @@
+(sprite
+  (action
+    (name "default")
+    (images "vrdoor-highlight.png")
+  )
+)

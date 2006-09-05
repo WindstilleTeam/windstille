@@ -1,0 +1,84 @@
+if ! $(top_builddir)
+{
+    top_builddir = $(TOP) ;
+}
+top_srcdir = $(TOP) ;
+
+# unset some stuff defined in Jambase
+LEX = ;
+
+JAMCONFIG ?= $(top_builddir)/Jamconfig ;
+include $(JAMCONFIG) ;
+if ! $(JAMCONFIG_READ)
+{
+  EXIT "Couldn't find config. Please run 'configure' first." ;
+}
+
+if $(USE_STLPORT_DEBUG)
+{
+  CXXFLAGS += -I/usr/include/stlport ;
+  CXXFLAGS += -D_STLP_DEBUG=1 -D_STLP_DEBUG_UNINITIALIZED=1 ;
+  CXXFLAGS += -D_STLP_SHRED_BYTE=0xA3 ;
+  LIBS += -lstlport_gcc_debug ;
+}
+
+CPPFLAGS += -include config.h ;
+
+switch $(VARIANT) {
+    case optimize :
+        CFLAGS += -Wall -O3 -g ;
+        CXXFLAGS += -Wall -O3 -g ;
+        LIBS += -g ;
+    case debug :
+        CFLAGS += -Wall -W -O0 -g3 -DDEBUG ;
+        CXXFLAGS += -Wall -W -O0 -g3 -DDEBUG ;
+        LIBS += -g3 ;
+    case profile :
+        CFLAGS += -Wall -W -O3 -g3 -pg ;
+        CXXFLAGS += -Wall -W -O3 -g3 -pg ;
+        LIBS += -g3 -pg ;
+    case * :
+        EXIT "Invalid variant $(VARIANT) selected" ;
+}
+
+LINK = $(CXX) ;
+
+# Include build rules
+include $(TOP)/mk/jam/build.jam ;
+
+# Include Dirs
+IncludeDir $(top_builddir) ; # for config.h
+IncludeDir $(top_srcdir)/src ;
+IncludeDir $(top_srcdir)/src/squirrel/include ;
+
+# use CLANLIB, OPENAL and PHYSFS
+USE_LIBS = FT2 OPENAL PHYSFS VORBISFILE VORBIS OGG ICONV GL GLU SDL SDLIMAGE ;
+CXXFLAGS += $($(USE_LIBS)_CFLAGS) ;
+CFLAGS += $($(USE_LIBS)_CFLAGS) ;
+# don't set LIBS globally for now, as miniswig doesn't link with SDL on win32
+# we set libs for the windstille target manually
+#LIBS += $($(USE_LIBS)_LIBS) ;
+
+# for the emacsers out there (compiles all objects in current subdir if jam is
+# invoked in a subdir)
+SUBDIR_OBJECTS_COMPILE = 1 ;
+
+if $(XGETTEXT) != ""
+{
+    actions XGetText
+    {
+        $(XGETTEXT) $(XGETTEXT_FLAGS) --keyword='_:1' --keyword='N_:1' -o $(<) $(>)
+    }
+    rule MakePot
+    {
+      if $(>) {
+        XGetText $(<) : $(>) ;
+        Depends $(<) : $(>) ;
+        Depends all : $(<) ;
+      }
+    }
+} else {
+    rule MakePot
+    { }
+}
+

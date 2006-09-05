@@ -1,0 +1,21 @@
+SubDir TOP src lisp ;
+
+sources =
+  getters.hpp
+  getters.cpp
+  lexer.cpp
+  lexer.hpp
+  lisp.cpp
+  lisp.hpp
+  parser.cpp
+  parser.hpp
+  properties.cpp
+  properties.hpp
+  property_iterator.hpp
+  writer.cpp
+  writer.hpp
+;
+
+TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
+lisp_objects = [ CompileObjects $(sources) ] ;
+

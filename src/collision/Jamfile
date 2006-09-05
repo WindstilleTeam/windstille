@@ -1,0 +1,21 @@
+SubDir TOP src collision ;
+
+sources =
+  collision_data.cpp
+  collision_data.hpp
+  collision_engine.cpp
+  collision_engine.hpp
+  collision_object.cpp
+  collision_object.hpp
+  collision_test.cpp
+  collision_test.hpp
+  contact.hpp
+  stair_contact.hpp
+  stair_contact.cpp
+  ladder_contact.hpp
+  ladder_contact.cpp
+;
+
+TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
+collision_objects = [ CompileObjects $(sources) ] ;
+

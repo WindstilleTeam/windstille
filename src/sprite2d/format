@@ -1,0 +1,16 @@
+(sprite
+    (action
+        (name "walk-right")
+        (speed 15.0)
+        (x-offset 4)
+        (y-offset 20)
+        (images "..."
+                "..."
+        )
+        (image-grid
+            (file "...")
+            (x-size 20)
+            (y-size 20)
+        )
+    )
+)

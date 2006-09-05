@@ -1,0 +1,7 @@
+(sprite
+  (action
+    (name "default")
+    (images "hedgehog_light.png")
+    (offset -64 -64)
+  )
+)

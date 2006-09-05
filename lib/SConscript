@@ -1,0 +1,11 @@
+## -*- python -*-
+
+import glob
+
+env = Environment(CPPPATH = ['glew'])
+
+glew = env.Library('glew',
+            glob.glob('glew/*.c') +
+            glob.glob('glew/*.h'))
+
+# EOF #
