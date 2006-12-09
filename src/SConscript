@@ -63,6 +63,7 @@ env.Program('../windstille', [
 'pda.cpp',
 'physics.cpp',
 'pistol.cpp',
+'response_curve.cpp',
 'player.cpp',
 'random.cpp',
 'display/render_buffer.cpp',
