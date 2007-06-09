@@ -29,6 +29,7 @@
 
 TTFFont* Fonts::ttffont   = 0;
 TTFFont* Fonts::vera12    = 0;
+TTFFont* Fonts::vera16    = 0;
 TTFFont* Fonts::ttfdialog = 0;
 
 void
@@ -37,7 +38,8 @@ Fonts::init()
   BorderFontEffect* border_effect = new BorderFontEffect(1);
 
   ttffont   = new TTFFont("fonts/VeraMono.ttf", 12);
-  vera12      = new TTFFont("fonts/Vera.ttf", 12);
+  vera12    = new TTFFont("fonts/Vera.ttf", 12);
+  vera16    = new TTFFont("fonts/Vera.ttf", 16);
   ttfdialog = new TTFFont("fonts/Vera.ttf", 20);
 
   delete border_effect;
@@ -48,6 +50,7 @@ Fonts::deinit()
 {
   delete ttffont;
   delete vera12;
+  delete vera16;
   delete ttfdialog;
 }
 

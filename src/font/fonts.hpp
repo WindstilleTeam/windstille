@@ -32,6 +32,7 @@ namespace Fonts {
 
 extern TTFFont* ttffont;
 extern TTFFont* vera12;
+extern TTFFont* vera16;
 extern TTFFont* ttfdialog;
 
 void init();

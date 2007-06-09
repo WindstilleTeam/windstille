@@ -59,11 +59,11 @@ TabComponent::draw()
                      Sizef(tab_width - 20, Fonts::ttfdialog->get_height() + 6));
 
       if (i == current_tab)
-        Display::fill_rect(tab_rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+        Display::fill_rounded_rect(tab_rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
       else
-        Display::fill_rect(tab_rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
+        Display::fill_rounded_rect(tab_rect, 5.0f, Color(0.0f, 0.0f, 0.0f, 0.5f));
 
-      Display::draw_rect(tab_rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+      Display::draw_rounded_rect(tab_rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
       Fonts::ttfdialog->draw_center(rect.left + tab_width * i + tab_width/2,
                                     rect.top + Fonts::ttfdialog->get_height(),
@@ -129,6 +129,7 @@ TabComponent::update(float delta, const Controller& controller)
                     }
                   else if (i->axis.pos > 0)
                     {
+                      tabs[current_tab].component->set_active(true); 
                     }
                 }
             }

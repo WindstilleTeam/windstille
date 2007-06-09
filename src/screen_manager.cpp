@@ -44,6 +44,7 @@
 #include "gui/slider.hpp"
 #include "gui/root_component.hpp"
 #include "gui/grid_component.hpp"
+#include "gui/menu_component.hpp"
 #include "gui/tab_component.hpp"
 #include "gui/list_view.hpp"
 #include "gui/text_view.hpp"
@@ -216,6 +217,12 @@ ScreenManager::poll_events()
                     grid->pack(new Button("0",  grid), 1, 3);
                     grid->pack(new Button("Ok", grid), 2, 3);
 
+                    MenuComponent* menu = new MenuComponent(Rectf(100, 130, 700, 500), tab);
+                    menu->add_item("Volume");
+                    menu->add_item("Sound");
+                    menu->add_item("Aspect Ratio");
+
+                    tab->pack("Menu", menu);
                     tab->pack("Auto Map",  new Automap(Rectf(100, 130, 700, 500), tab));
                     tab->pack("Grid Test", grid);
 

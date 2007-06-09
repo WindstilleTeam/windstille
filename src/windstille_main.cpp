@@ -163,7 +163,13 @@ WindstilleMain::main(int argc, char** argv)
           }
       }
         
-    console << "Press F1 to open the console" << std::endl;
+    console << "F1 - open the console" << std::endl;
+    console << "F6 - mouse release" << std::endl;
+    console << "F7 - mouse grap" << std::endl;;
+    console << "F8 - run gui test" << std::endl;;
+    console << "F9 - configure input" << std::endl;
+    console << "F11 - toggle fullscreen" << std::endl;
+    console << "F12 - do a screenshot" << std::endl;
     screen_manager.run();
     
     TileFactory::deinit();
@@ -211,6 +217,7 @@ WindstilleMain::init_modules()
   sprite3d_manager = new sprite3d::Manager();
 
   script_manager->run_script_file("scripts/windstille.nut");
+  script_manager->run_script_file("scripts/init.nut");
 }
 
 void
