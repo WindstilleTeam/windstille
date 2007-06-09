@@ -416,7 +416,7 @@ ConsoleImpl::tab_complete()
     }
   else 
     {
-      console << ">" << command_line << std::endl;
+      console << "> " << command_line << std::endl;
       for(std::vector<std::string>::iterator i = completions.begin(); i != completions.end(); ++i)
         {
           console << *i << " ";
