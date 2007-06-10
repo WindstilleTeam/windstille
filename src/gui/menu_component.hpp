@@ -28,6 +28,7 @@
 
 #include <string>
 #include <vector>
+#include "signals/signal_v1.hpp"
 #include "font/fonts.hpp"
 #include "component.hpp"
 
@@ -57,7 +58,7 @@ private: // FIXME: Convert this into a generic enum/value slider
   
   int index;
   std::vector<EnumValue> labels;
-
+  Signal_v1<int> on_change;
 public:  
   EnumMenuItem(MenuComponent* parent_, 
                const std::string& label_, int index_ = 0);
@@ -68,6 +69,7 @@ public:
   void decr();
   void draw(const Rectf& rect, bool is_active);
   void update(float);
+  Signal_v1<int>& sig_change() { return on_change; }
 };
 
 /** A slider widget for use in volume controls, gamma controls and
@@ -78,7 +80,7 @@ public:
   int min_value;
   int max_value;
   int step;
-
+  Signal_v1<int> on_change;
 public:  
   SliderMenuItem(MenuComponent* parent_, 
                  const std::string& label_, int value_, int mix_value_ = 0, int max_value_ = 100, int step = 10);
@@ -86,6 +88,7 @@ public:
   void decr();
   void draw(const Rectf& rect, bool is_active);
   void update(float);
+  Signal_v1<int>& sig_change() { return on_change; }
 };
 
 /** */

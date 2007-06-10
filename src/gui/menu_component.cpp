@@ -84,6 +84,7 @@ EnumMenuItem::incr()
   index -= 1;
   if (index < 0)
     index = labels.size()-1;
+  on_change(labels[index].value);
 }
 
 void
@@ -92,6 +93,7 @@ EnumMenuItem::decr()
   index += 1;
   if (index >= static_cast<int>(labels.size()))
     index = 0;
+  on_change(labels[index].value);
 }
 
 void 
@@ -138,6 +140,7 @@ SliderMenuItem::incr()
   value += step;
   if (value > max_value)
     value = max_value;
+  on_change(value);
 }
 
 void
@@ -146,6 +149,7 @@ SliderMenuItem::decr()
   value -= step;
   if (value < min_value)
     value = min_value;
+  on_change(value);
 }
 
 void

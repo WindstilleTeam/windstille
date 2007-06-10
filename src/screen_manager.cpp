@@ -234,8 +234,8 @@ ScreenManager::poll_events()
                     EnumMenuItem* fps_item = new EnumMenuItem(menu, "Display Frames per Second", 0);
                     fps_item->add_pair(1, "on");
                     fps_item->add_pair(0, "off");
+                    slots.push_back(fps_item->sig_change().connect(this, &ScreenManager::show_fps));
                     menu->add_item(fps_item);
-
 
                     EnumMenuItem* aspect_item = new EnumMenuItem(menu, "Aspect Ratio");
                     aspect_item->add_pair(0, "4:3");
@@ -381,6 +381,13 @@ void
 ScreenManager::quit()
 {
   do_quit = true;
+}
+
+// Callbacks
+void
+ScreenManager::show_fps(int i)
+{
+  config.set_bool("show-fps", i);
 }
 
 /* EOF */

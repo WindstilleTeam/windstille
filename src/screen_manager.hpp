@@ -26,12 +26,17 @@
 #ifndef HEADER_SCREEN_MANAGER_HPP
 #define HEADER_SCREEN_MANAGER_HPP
 
+#include <vector>
+#include "signals/slot.hpp"
+
 class Screen;
 
 /** */
 class ScreenManager
 {
 private:
+  std::vector<Slot> slots;
+
   Screen* screen;
   Screen* overlay_screen;
 
@@ -63,7 +68,9 @@ public:
       screen, usefull for menus or console, use set_overlay(0) to kill
       the current overlay */
   void set_overlay(Screen* s);
-
+  
+  // Callbacks
+  void show_fps(int i);
 private:
   void poll_events();
   void draw_fps();
