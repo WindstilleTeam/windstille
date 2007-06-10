@@ -48,16 +48,22 @@ public:
   virtual void update(float delta);
 };
 
-class BoolMenuItem : public MenuItem {
+class EnumMenuItem : public MenuItem {
 private: // FIXME: Convert this into a generic enum/value slider
-  bool value;
-  std::string true_label;
-  std::string false_label;
+  struct EnumValue {
+    std::string label;
+    int         value;
+  };
+  
+  int index;
+  std::vector<EnumValue> labels;
 
 public:  
-  BoolMenuItem(MenuComponent* parent_, 
-               const std::string& label_, bool value_, 
-               const std::string& true_label_ = "on", const std::string& false_label_ = "off");
+  EnumMenuItem(MenuComponent* parent_, 
+               const std::string& label_, int index_ = 0);
+  
+  void add_pair(int value, const std::string& label);
+
   void incr();
   void decr();
   void draw(const Rectf& rect, bool is_active);
@@ -94,7 +100,6 @@ public:
   MenuComponent(const Rectf& rect, Component* parent);
   virtual ~MenuComponent();
 
-  void add_item(const std::string& label);
   void add_item(MenuItem* item);
   void draw();
   void update(float delta, const Controller& controller);

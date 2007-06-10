@@ -62,30 +62,40 @@ MenuItem::update(float delta)
 {
 }
 
-BoolMenuItem::BoolMenuItem(MenuComponent* parent_, 
-                           const std::string& label_, bool value_, 
-                           const std::string& true_label_, const std::string& false_label_)
+EnumMenuItem::EnumMenuItem(MenuComponent* parent_, 
+                           const std::string& label_, int index_)
   : MenuItem(parent_, label_),
-    value(value_),
-    true_label(true_label_),
-    false_label(false_label_)
+    index(index_)
 {
 }
 
 void
-BoolMenuItem::incr()
+EnumMenuItem::add_pair(int value, const std::string& label)
 {
-  value = !value;
+  EnumValue enum_value;
+  enum_value.value = value;
+  enum_value.label = label;
+  labels.push_back(enum_value);
 }
 
 void
-BoolMenuItem::decr()
+EnumMenuItem::incr()
 {
-  value = !value;
+  index -= 1;
+  if (index < 0)
+    index = labels.size()-1;
+}
+
+void
+EnumMenuItem::decr()
+{
+  index += 1;
+  if (index >= static_cast<int>(labels.size()))
+    index = 0;
 }
 
 void 
-BoolMenuItem::draw(const Rectf& rect, bool is_active)
+EnumMenuItem::draw(const Rectf& rect, bool is_active)
 {
   MenuItem::draw(rect, is_active);
   TTFFont* font = Fonts::vera16;
@@ -99,14 +109,14 @@ BoolMenuItem::draw(const Rectf& rect, bool is_active)
       font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
     }
 
-  font->draw(rect.right - font->get_height() - font->get_width(value ? true_label : false_label), 
+  font->draw(rect.right - font->get_height() - font->get_width("< " + labels[index].label + " >"),
              rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f,
-             (value ? true_label : false_label), 
+             "< " + labels[index].label + " >",
              font_color);
 }
 
 void 
-BoolMenuItem::update(float delta)
+EnumMenuItem::update(float delta)
 {
   MenuItem::update(delta);
 }
@@ -158,7 +168,7 @@ SliderMenuItem::draw(const Rectf& rect, bool is_active)
   Display::fill_rounded_rect(Rectf(Vector(rect.right - 4 - width, rect.top + 4),
                                    Sizef(width, rect.get_height() - 8)), 
                              5.0f,
-                             color);
+                             Color(0.75f*color.r, 0.75f*color.g, 0.75f*color.b, color.a));
 
 
   Display::draw_rounded_rect(Rectf(Vector(rect.right - 4 - total_width, rect.top + 4),
@@ -190,13 +200,6 @@ MenuComponent::~MenuComponent()
 void
 MenuComponent::add_item(MenuItem* item)
 {
-  items.push_back(item);
-}
-
-void
-MenuComponent::add_item(const std::string& label)
-{
-  MenuItem* item = new BoolMenuItem(this, label, true, "on", "off");
   items.push_back(item);
 }
 

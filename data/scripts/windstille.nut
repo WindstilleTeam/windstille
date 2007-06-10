@@ -25,9 +25,10 @@
 
 /**
  * This script is read on Windstille startup, add all helper functions
- * that should be available in the console all the time here 
+ * that should be available in the console all the time go here. Use
+ * the init.nut file for non-function stuff that should be evaluated
+ * (startup messages and such).
  */
-
 
 /**
  * Constants from display/scene_context.hpp, manually copied here so

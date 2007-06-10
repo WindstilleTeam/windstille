@@ -217,13 +217,36 @@ ScreenManager::poll_events()
                     grid->pack(new Button("0",  grid), 1, 3);
                     grid->pack(new Button("Ok", grid), 2, 3);
 
+                    // Begin Option Menu
                     MenuComponent* menu = new MenuComponent(Rectf(100, 130, 700, 500), tab);
-                    menu->add_item("Volume");
-                    menu->add_item("Sound");
-                    menu->add_item("Aspect Ratio");
-                    menu->add_item(new SliderMenuItem(menu, "Volume", 50, 0, 100, 5));
 
-                    tab->pack("Menu", menu);
+                    SliderMenuItem* music_volume_item = new SliderMenuItem(menu, "Music Volume", 100, 0, 100, 10);
+                    menu->add_item(music_volume_item);
+
+                    SliderMenuItem* sfx_volume_item = new SliderMenuItem(menu, "Sound FX Volume", 100, 0, 100, 10);
+                    menu->add_item(sfx_volume_item);
+
+                    EnumMenuItem* fullscreen_item = new EnumMenuItem(menu, "Fullscreen", 0);
+                    fullscreen_item->add_pair(1, "on");
+                    fullscreen_item->add_pair(0, "off");
+                    menu->add_item(fullscreen_item);
+
+                    EnumMenuItem* fps_item = new EnumMenuItem(menu, "Display Frames per Second", 0);
+                    fps_item->add_pair(1, "on");
+                    fps_item->add_pair(0, "off");
+                    menu->add_item(fps_item);
+
+
+                    EnumMenuItem* aspect_item = new EnumMenuItem(menu, "Aspect Ratio");
+                    aspect_item->add_pair(0, "4:3");
+                    aspect_item->add_pair(1, "16:9");
+                    aspect_item->add_pair(3, "16:10");
+                    aspect_item->add_pair(2, "letterbox");
+                    menu->add_item(aspect_item);
+
+                    tab->pack("Options", menu);
+                    // End: Option Menu
+
                     tab->pack("Auto Map",  new Automap(Rectf(100, 130, 700, 500), tab));
                     tab->pack("Grid Test", grid);
 
