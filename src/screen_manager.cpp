@@ -221,6 +221,7 @@ ScreenManager::poll_events()
                     menu->add_item("Volume");
                     menu->add_item("Sound");
                     menu->add_item("Aspect Ratio");
+                    menu->add_item(new SliderMenuItem(menu, "Volume", 50, 0, 100, 5));
 
                     tab->pack("Menu", menu);
                     tab->pack("Auto Map",  new Automap(Rectf(100, 130, 700, 500), tab));
@@ -252,7 +253,7 @@ ScreenManager::poll_events()
                   break;
 
                 case SDLK_F10:
-                  config.set_bool("show-fps", !config.get_bool("show_fps"));
+                  config.set_bool("show-fps", !config.get_bool("show-fps"));
                   break;
               
                 case SDLK_F11:
