@@ -83,6 +83,7 @@ env.Program('../windstille', [
 'tile_description.cpp',
 'timer.cpp',
 'trigger.cpp',
+'title_screen.cpp',
 'util.cpp',
 'view.cpp',
 'lisp_getters.cpp',

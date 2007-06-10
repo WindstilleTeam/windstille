@@ -43,7 +43,7 @@ ListView::~ListView()
 void
 ListView::draw()
 {
-  TTFFont* font = Fonts::ttfdialog;
+  TTFFont* font = Fonts::vera20;
 
   float x = rect.left;
   float y = rect.top + font->get_height();

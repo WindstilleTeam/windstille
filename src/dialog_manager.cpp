@@ -190,9 +190,9 @@ DialogManager::create_text()
 
 
   delete text_area;
-  text_area = new TextArea(Rect(Point(text_rect.left, text_rect.top + Fonts::ttfdialog->get_height()),
+  text_area = new TextArea(Rect(Point(text_rect.left, text_rect.top + Fonts::vera20->get_height()),
                                 Size(text_width, 200)), true);
-  text_area->set_font(Fonts::ttfdialog);
+  text_area->set_font(Fonts::vera20);
   text_area->set_text(text);
 }
 

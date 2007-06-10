@@ -56,7 +56,7 @@ TabComponent::draw()
     {
       Rectf tab_rect(Vector(rect.left + tab_width * i + 10,
                             rect.top),
-                     Sizef(tab_width - 20, Fonts::ttfdialog->get_height() + 6));
+                     Sizef(tab_width - 20, Fonts::vera20->get_height() + 6));
 
       if (i == current_tab)
         Display::fill_rounded_rect(tab_rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
@@ -65,8 +65,8 @@ TabComponent::draw()
 
       Display::draw_rounded_rect(tab_rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-      Fonts::ttfdialog->draw_center(rect.left + tab_width * i + tab_width/2,
-                                    rect.top + Fonts::ttfdialog->get_height(),
+      Fonts::vera20->draw_center(rect.left + tab_width * i + tab_width/2,
+                                    rect.top + Fonts::vera20->get_height(),
                                     tabs[i].label,
                                     tabs[current_tab].component->is_active()
                                     ? Color(1.0f, 1.0f, 1.0f, 0.5f) 
@@ -144,7 +144,7 @@ TabComponent::pack(const std::string& name, Component* component)
 
   int padding = 6;
   component->set_screen_rect(Rectf(rect.left + padding,
-                                   rect.top  + padding + Fonts::ttfdialog->get_height() + 10,
+                                   rect.top  + padding + Fonts::vera20->get_height() + 10,
                                    rect.right  - padding,
                                    rect.bottom - padding
                                    ));

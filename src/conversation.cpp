@@ -72,11 +72,11 @@ Conversation::draw()
   for(int i = 0; i < int(choices.size()); ++i)
     {
       if (i == selection)
-        Fonts::ttfdialog->draw(x, y, choices[i]);
+        Fonts::vera20->draw(x, y, choices[i]);
       else
-        Fonts::ttfdialog->draw(x, y, choices[i], Color(0.5f, 0.5f, 0.5f));
+        Fonts::vera20->draw(x, y, choices[i], Color(0.5f, 0.5f, 0.5f));
   
-      y += Fonts::ttfdialog->get_height() + 10;
+      y += Fonts::vera20->get_height() + 10;
     }
 }
 

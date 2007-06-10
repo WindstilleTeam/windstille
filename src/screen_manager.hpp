@@ -31,7 +31,10 @@
 
 class Screen;
 
-/** */
+/**
+ *  The ScreenManager handles overlays like Option Menus, Main Menus
+ *  and such
+ */
 class ScreenManager
 {
 private:
@@ -69,8 +72,19 @@ public:
       the current overlay */
   void set_overlay(Screen* s);
   
-  // Callbacks
+  /** Replace the current overlay with a new one */
+  void push_overlay(Screen* s);
+
+  void pop_overlay();
+
+  // Callbacks, FIXME: Could be moved to a seperate class
   void show_fps(int i);
+
+  void menu_start_game();
+  void menu_options();
+  void menu_credits();
+  void menu_quit();
+
 private:
   void poll_events();
   void draw_fps();

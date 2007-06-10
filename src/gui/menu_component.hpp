@@ -29,8 +29,11 @@
 #include <string>
 #include <vector>
 #include "signals/signal_v1.hpp"
+#include "signals/signal_v0.hpp"
 #include "font/fonts.hpp"
 #include "component.hpp"
+
+class TTFFont;
 
 namespace GUI {
 
@@ -45,6 +48,7 @@ public:
   virtual ~MenuItem() {}
   virtual void incr() =0;
   virtual void decr() =0;
+  virtual void click() =0;
   virtual void draw(const Rectf& rect, bool is_active);
   virtual void update(float delta);
 };
@@ -67,6 +71,7 @@ public:
 
   void incr();
   void decr();
+  void click() {}
   void draw(const Rectf& rect, bool is_active);
   void update(float);
   Signal_v1<int>& sig_change() { return on_change; }
@@ -86,9 +91,23 @@ public:
                  const std::string& label_, int value_, int mix_value_ = 0, int max_value_ = 100, int step = 10);
   void incr();
   void decr();
+  void click() {}
   void draw(const Rectf& rect, bool is_active);
   void update(float);
   Signal_v1<int>& sig_change() { return on_change; }
+};
+
+class ButtonMenuItem : public MenuItem {
+public:
+  Signal_v0 on_click;
+public:  
+  ButtonMenuItem(MenuComponent* parent_, const std::string& label_);
+  void incr() {}
+  void decr() {}
+  void click();
+  void draw(const Rectf& rect, bool is_active);
+  void update(float);
+  Signal_v0& sig_click() { return on_click; }
 };
 
 /** */
@@ -98,7 +117,7 @@ private:
   typedef std::vector<MenuItem* > Items;
   Items items;
   int   current_item;
-  
+  TTFFont* font;
 public:
   MenuComponent(const Rectf& rect, Component* parent);
   virtual ~MenuComponent();
@@ -107,6 +126,8 @@ public:
   void draw();
   void update(float delta, const Controller& controller);
 
+  void     set_font(TTFFont* font_);
+  TTFFont* get_font();
 private:
   MenuComponent (const MenuComponent&);
   MenuComponent& operator= (const MenuComponent&);

@@ -178,7 +178,7 @@ ScreenManager::poll_events()
           if (event.key.state)
             {    
               switch (event.key.keysym.sym)
-                {       
+                {
                 case SDLK_F6:
                   SDL_ShowCursor(SDL_ENABLE);   // SDL_ENABLE to show the mouse cursor (default)
                   SDL_WM_GrabInput(SDL_GRAB_OFF); // SDL_GRAB_OFF to not grab input (default)
@@ -189,88 +189,6 @@ ScreenManager::poll_events()
                   SDL_WM_GrabInput(SDL_GRAB_ON); // SDL_GRAB_OFF to not grab input (default)
                   break;
       
-                case SDLK_F8:
-                  {
-                    using namespace GUI;
-                    GUIManager* manager = new GUIManager();
-
-                    TabComponent* tab = new TabComponent(Rectf(100, 100, 700, 500), manager->get_root());
-
-                    GridComponent* grid = new GridComponent(Rectf(100, 130, 700, 500), 3, 4, tab);
-
-                    grid->pack(new Button("1", grid), 0, 0);
-                    grid->pack(new Button("2", grid), 1, 0);
-                    grid->pack(new Button("3", grid), 2, 0);
-
-                    grid->pack(new Slider(grid), 0, 1);
-                    //grid->pack(new Button("5", grid), 1, 1, 2, 2);
-                    TextView* text_view = new TextView(Rectf(), grid);
-                    grid->pack(text_view, 1, 1, 2, 2);
-
-                    //grid->pack(new Button("6", grid), 2, 1);
-
-                    grid->pack(new Button("7", grid), 0, 2, 1, 2);
-                    //grid->pack(new Button("8", grid), 1, 2);
-                    //grid->pack(new Button("9", grid), 2, 2);
-
-                    //grid->pack(new Button("Cl", grid), 0, 3);
-                    grid->pack(new Button("0",  grid), 1, 3);
-                    grid->pack(new Button("Ok", grid), 2, 3);
-
-                    // Begin Option Menu
-                    MenuComponent* menu = new MenuComponent(Rectf(100, 130, 700, 500), tab);
-
-                    SliderMenuItem* music_volume_item = new SliderMenuItem(menu, "Music Volume", 100, 0, 100, 10);
-                    menu->add_item(music_volume_item);
-
-                    SliderMenuItem* sfx_volume_item = new SliderMenuItem(menu, "Sound FX Volume", 100, 0, 100, 10);
-                    menu->add_item(sfx_volume_item);
-
-                    EnumMenuItem* fullscreen_item = new EnumMenuItem(menu, "Fullscreen", 0);
-                    fullscreen_item->add_pair(1, "on");
-                    fullscreen_item->add_pair(0, "off");
-                    menu->add_item(fullscreen_item);
-
-                    EnumMenuItem* fps_item = new EnumMenuItem(menu, "Display Frames per Second", 0);
-                    fps_item->add_pair(1, "on");
-                    fps_item->add_pair(0, "off");
-                    slots.push_back(fps_item->sig_change().connect(this, &ScreenManager::show_fps));
-                    menu->add_item(fps_item);
-
-                    EnumMenuItem* aspect_item = new EnumMenuItem(menu, "Aspect Ratio");
-                    aspect_item->add_pair(0, "4:3");
-                    aspect_item->add_pair(1, "16:9");
-                    aspect_item->add_pair(3, "16:10");
-                    aspect_item->add_pair(2, "letterbox");
-                    menu->add_item(aspect_item);
-
-                    tab->pack("Options", menu);
-                    // End: Option Menu
-
-                    tab->pack("Auto Map",  new Automap(Rectf(100, 130, 700, 500), tab));
-                    tab->pack("Grid Test", grid);
-
-                    ListView* list_view = new ListView(Rectf(), tab);
-                    list_view->add_column("Date");
-                    list_view->add_column("Name");
-                    list_view->add_column("Subject");
-
-                    list_view->add_item(ListView::Item("2005-10-08", "John Doh", "Re: Buying a goldmine"));
-                    list_view->add_item(ListView::Item("2005-13-08", "Jane Doh", "Re: What the f***"));
-                    list_view->add_item(ListView::Item("2005-13-09", "Testo Test", "Testing Email"));
-
-                    tab->pack("ListView", list_view);
-
-                    manager->get_root()->set_child(tab);
-                    text_view->set_text("Hello World\n<large>Blabla</large> more textt and more and"
-                                        "more for testing all for testing even more and more blabla blabla"
-                                        "more for testing all for testing even more and more blabla blabla"
-                                        "blabla blabla blabltest ende.");
-
-                    set_overlay(manager);
-                  }
-                  break;
-
                 case SDLK_F9:
                   set_overlay(new InputConfigurator());
                   break;
@@ -373,8 +291,21 @@ ScreenManager::set_screen(Screen* s)
 void
 ScreenManager::set_overlay(Screen* s)
 {
+  // FIXME: need to delete overlay
   next_overlay_screen = s;
   has_next_overlay_screen = true;
+}
+
+void
+ScreenManager::push_overlay(Screen* s)
+{
+  assert(!"Implement me");
+}
+
+void
+ScreenManager::pop_overlay()
+{
+  assert(!"Implement me");
 }
 
 void
@@ -388,6 +319,31 @@ void
 ScreenManager::show_fps(int i)
 {
   config.set_bool("show-fps", i);
+}
+
+void
+ScreenManager::menu_start_game()
+{
+  set_overlay(0);
+}
+
+void
+ScreenManager::menu_options()
+{
+  console << "Options cliked" << std::endl;
+}
+
+void
+ScreenManager::menu_credits()
+{
+  console << "Credits clicked" << std::endl;
+}
+
+void
+ScreenManager::menu_quit()
+{
+  GameSession::current()->quit();
+  set_overlay(0);
 }
 
 /* EOF */

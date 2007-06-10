@@ -26,6 +26,7 @@
 #include <iostream>
 #include "input/controller.hpp"
 #include "menu_component.hpp"
+#include "gui/root_component.hpp"
 #include "display/display.hpp"
 #include "math.hpp"
 
@@ -40,7 +41,7 @@ void
 MenuItem::draw(const Rectf& rect, bool is_active)
 {
   Color font_color;
-  TTFFont* font = Fonts::vera16;
+  TTFFont* font = parent->get_font();
   
   if (is_active) {
     Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
@@ -100,7 +101,7 @@ void
 EnumMenuItem::draw(const Rectf& rect, bool is_active)
 {
   MenuItem::draw(rect, is_active);
-  TTFFont* font = Fonts::vera16;
+  TTFFont* font = parent->get_font();
   Color font_color;
   if (is_active)
     {
@@ -111,9 +112,9 @@ EnumMenuItem::draw(const Rectf& rect, bool is_active)
       font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
     }
 
-  font->draw(rect.right - font->get_height() - font->get_width("< " + labels[index].label + " >"),
+  font->draw(rect.right - font->get_height() - font->get_width(labels[index].label),
              rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f,
-             "< " + labels[index].label + " >",
+             labels[index].label,
              font_color);
 }
 
@@ -187,9 +188,32 @@ SliderMenuItem::update(float delta)
   MenuItem::update(delta);
 }
 
+ButtonMenuItem::ButtonMenuItem(MenuComponent* parent_, const std::string& label_)
+  : MenuItem(parent_, label_)
+{
+}
+
+void
+ButtonMenuItem::click()
+{
+  on_click();
+}
+
+void
+ButtonMenuItem::draw(const Rectf& rect, bool is_active)
+{
+  MenuItem::draw(rect, is_active);
+}
+
+void
+ButtonMenuItem::update(float)
+{
+}
+
 MenuComponent::MenuComponent(const Rectf& rect, Component* parent)
   : Component(rect, parent),
-    current_item(0)
+    current_item(0),
+    font(Fonts::vera16)
 {
 }
 
@@ -211,7 +235,7 @@ void
 MenuComponent::draw()
 {
   float spacing = 10.0f;
-  float step = Fonts::vera16->get_height() + spacing*2.0f;
+  float step = font->get_height() + spacing*2.0f;
 
   for(Items::size_type i = 0; i < items.size(); ++i)
     {
@@ -232,7 +256,7 @@ MenuComponent::update(float delta, const Controller& controller)
         {
           if (i->button.name == OK_BUTTON)
             {
-              
+              items[current_item]->click();
             }
           else if (i->button.name == CANCEL_BUTTON)
             {
@@ -246,12 +270,10 @@ MenuComponent::update(float delta, const Controller& controller)
               if (i->axis.pos < 0)
                 {
                   items[current_item]->incr();
-                  // insert callback here
                 }
               else if (i->axis.pos > 0)
                 {
                   items[current_item]->decr();
-                  // insert callback here
                 }
             }
           else if (i->axis.name == Y_AXIS)
@@ -261,17 +283,47 @@ MenuComponent::update(float delta, const Controller& controller)
                   current_item = current_item - 1;
                   if (current_item < 0)
                     {
-                      current_item = 0;
-                      set_active(false);
+                      if (dynamic_cast<RootComponent*>(parent))
+                        {
+                          current_item = static_cast<int>(items.size())-1; 
+                        }
+                      else
+                        { // FIXME: This only works good with TabComponent
+                          current_item = 0;
+                          set_active(false);
+                        }
                     }
                 }
               else if (i->axis.pos > 0)
                 {
-                  current_item = Math::mid(0, current_item + 1, static_cast<int>(items.size()-1)); 
+                  if (dynamic_cast<RootComponent*>(parent))
+                    {
+                      current_item += 1;
+                      if (current_item >= static_cast<int>(items.size()))
+                        {
+                          current_item = 0;
+                        }
+                    }
+                  else
+                    {
+                      current_item = Math::mid(0, current_item + 1, static_cast<int>(items.size()-1)); 
+                    }
                 }
             }
         }
     }
+}
+
+void
+MenuComponent::set_font(TTFFont* font_)
+{
+  font = font_;
+}
+
+TTFFont*
+MenuComponent::get_font()
+{
+  return font;
 }
 
 } // namespace GUI

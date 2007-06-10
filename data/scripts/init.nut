@@ -1,11 +1,11 @@
-/*  $Id$
+/* -*- c++ -*-
 **   __      __ __             ___        __   __ __   __
 **  /  \    /  \__| ____    __| _/_______/  |_|__|  | |  |   ____
 **  \   \/\/   /  |/    \  / __ |/  ___/\   __\  |  | |  | _/ __ \
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2007 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -23,38 +23,12 @@
 **  02111-1307, USA.
 */
 
-#include "globals.hpp"
-#include "border_font_effect.hpp"
-#include "fonts.hpp"
+/*
+ * This script is automatically executed on Windstille startup, use
+ * windstille.nut for function definitions, use this for things that
+ * should get executed (console messages displayed on start up and such).
+ */
 
-TTFFont* Fonts::ttffont = 0;
-TTFFont* Fonts::vera12  = 0;
-TTFFont* Fonts::vera16  = 0;
-TTFFont* Fonts::vera20  = 0;
-TTFFont* Fonts::vera28  = 0;
-
-void
-Fonts::init()
-{
-  BorderFontEffect* border_effect = new BorderFontEffect(1);
-
-  ttffont = new TTFFont("fonts/VeraMono.ttf", 12);
-  vera12  = new TTFFont("fonts/Vera.ttf", 12);
-  vera16  = new TTFFont("fonts/Vera.ttf", 16);
-  vera20  = new TTFFont("fonts/Vera.ttf", 20);
-  vera28  = new TTFFont("fonts/Vera.ttf", 28);
-
-  delete border_effect;
-}
-
-void
-Fonts::deinit()
-{
-  delete ttffont;
-  delete vera12;
-  delete vera16;
-  delete vera20;
-  delete vera28;
-}
+// FIXME: println does a 'inspect', print a to_s, unintuitive
 
 /* EOF */

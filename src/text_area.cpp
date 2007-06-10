@@ -60,7 +60,7 @@ public:
 TextArea::TextArea(const Rectf& rect, bool letter_by_letter)
   : impl(new TextAreaImpl)
 {
-  impl->font = Fonts::ttfdialog;
+  impl->font = Fonts::vera20;
   impl->rect    = rect;
   // FIXME: freetype might provide info for vspacing, not sure
   impl->v_space = 2;

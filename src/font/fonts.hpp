@@ -33,7 +33,8 @@ namespace Fonts {
 extern TTFFont* ttffont;
 extern TTFFont* vera12;
 extern TTFFont* vera16;
-extern TTFFont* ttfdialog;
+extern TTFFont* vera20;
+extern TTFFont* vera28;
 
 void init();
 void deinit();

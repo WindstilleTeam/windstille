@@ -180,7 +180,7 @@ GameSessionImpl::draw()
   if (pause)
     {
       if ((SDL_GetTicks() / 1000) % 2)
-        Fonts::ttfdialog->draw(Display::get_width()/2, Display::get_height()/2, "Pause");
+        Fonts::vera20->draw(Display::get_width()/2, Display::get_height()/2, "Pause");
     }
 }
 

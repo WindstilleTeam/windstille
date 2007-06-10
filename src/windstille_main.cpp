@@ -32,6 +32,7 @@
 #include "windstille_main.hpp"
 #include "font/fonts.hpp"
 #include "game_session.hpp"
+#include "title_screen.hpp"
 #include "sector.hpp"
 #include "input/input_manager.hpp"
 #include "sound/sound_manager.hpp"
@@ -155,7 +156,8 @@ WindstilleMain::main(int argc, char** argv)
       {
         if (levelfile.empty())
           {
-            screen_manager.set_screen(new GameSession("levels/newformat2.wst"));
+            //screen_manager.set_screen(new GameSession("levels/newformat2.wst"));
+            screen_manager.set_screen(new TitleScreen());
           }
         else
           {
