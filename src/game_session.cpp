@@ -286,7 +286,10 @@ GameSessionImpl::update(float delta, const Controller& controller)
     }
 
   if(keystate[SDLK_ESCAPE])
-    GameSession::current()->quit();
+    {
+      // FIXME: Display pause/option menu here
+      GameSession::current()->quit();
+    }
 }
 
 void

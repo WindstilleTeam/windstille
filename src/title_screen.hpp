@@ -58,6 +58,7 @@ public:
   void menu_credits();
   void menu_quit();
   void menu_show_fps(int i);
+  void menu_fullscreen(int i);
 
   void menu_start_scenario(std::string scenario);
 private:

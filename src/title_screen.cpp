@@ -26,6 +26,7 @@
 #include <iostream>
 #include "config.hpp"
 #include "console.hpp"
+#include "display/display.hpp"
 #include "font/fonts.hpp"
 #include "gui/gui_manager.hpp"
 #include "gui/root_component.hpp"
@@ -167,11 +168,17 @@ TitleScreen::menu_options()
   aspect_item->add_pair(4, "letterbox");
   menu->add_item(aspect_item);
   
-  EnumMenuItem* show_fps_item = new EnumMenuItem(menu,  "Show FPS", 0);
+  EnumMenuItem* show_fps_item = new EnumMenuItem(menu,  "Show FPS", config.get_bool("show-fps"));
   show_fps_item->add_pair(1, "on");
   show_fps_item->add_pair(0, "off");
   menu->add_item(show_fps_item);
   slots.push_back(show_fps_item->sig_change().connect(this, &TitleScreen::menu_show_fps));
+
+  EnumMenuItem* fullscreen_item = new EnumMenuItem(menu,  "Fullscreen", config.get_bool("fullscreen"));
+  fullscreen_item->add_pair(1, "on");
+  fullscreen_item->add_pair(0, "off");
+  menu->add_item(fullscreen_item);
+  slots.push_back(fullscreen_item->sig_change().connect(this, &TitleScreen::menu_fullscreen));
 
   manager->get_root()->set_child(menu);
 
@@ -203,8 +210,14 @@ TitleScreen::menu_start_scenario(std::string scenario)
 void
 TitleScreen::menu_show_fps(int i)
 {
-  std::cout << i << std::endl;
   config.set_bool("show-fps", i);
+}
+
+void
+TitleScreen::menu_fullscreen(int i)
+{
+  config.set_bool("fullscreen", i);
+  Display::set_fullscreen(config.get_bool("fullscreen"));
 }
 
 /* EOF */
