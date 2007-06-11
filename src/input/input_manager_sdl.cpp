@@ -193,6 +193,17 @@ InputManagerSDL::~InputManagerSDL()
 void
 InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
 {
+  // Hardcoded defaults
+  if (event.keysym.sym == SDLK_RETURN)
+    {
+      add_button_event(OK_BUTTON, event.state);
+    }
+  else if (event.keysym.sym == SDLK_ESCAPE)
+    {
+      add_button_event(CANCEL_BUTTON, event.state);
+    }
+
+  // Dynamic bindings
   for (std::vector<KeyboardButtonBinding>::const_iterator i = impl->keyboard_button_bindings.begin();
        i != impl->keyboard_button_bindings.end();
        ++i)

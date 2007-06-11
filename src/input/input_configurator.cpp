@@ -231,6 +231,10 @@ InputConfigurator::handle_event(const SDL_Event& event)
           screen_manager.pop_overlay();
           //next_item();
         }
+      else if (event.key.keysym.sym == SDLK_RETURN)
+        {
+          std::cout << "Binding the enter key is not allowed" << std::endl;
+        }
       else
         {
           if (items.back().mode == ConfigureItem::CONFIGURE_BUTTON)
