@@ -54,6 +54,7 @@ public:
   void menu_continue();
   void menu_ambient_light(int i, int component);
   void menu_start_scenario(std::string scenario);
+  void menu_mode_viewer();
 
 private:
   MenuManager (const MenuManager&);

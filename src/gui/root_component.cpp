@@ -24,6 +24,7 @@
 */
 
 #include <iostream>
+#include "console.hpp"
 #include "input/controller.hpp"
 #include "root_component.hpp"
 
@@ -31,7 +32,7 @@ namespace GUI {
 
 RootComponent::RootComponent(const Rectf& rect)
   : Component(rect, 0),
-    child(0)
+    focus(0)
 {
   set_active(true);
 }
@@ -41,41 +42,31 @@ RootComponent::~RootComponent()
 }
 
 void
-RootComponent::set_child(Component* child_)
-{
-  child = child_;
-  child->set_active(true);
-}
-
-void
 RootComponent::draw()
 {
-  for(Children::iterator i = chidren.begin(); i != chidren.end(); ++i)
+  for(Children::iterator i = children.begin(); i != children.end(); ++i)
     {
       (*i)->draw();
     }
-
-  if (child)
-    child->draw();
 }
 
 void
 RootComponent::update(float delta, const Controller& controller)
 {
-  if (child)
-    child->update(delta, controller);
-  
-  for(Children::iterator i = chidren.begin(); i != chidren.end(); ++i)
+  for(Children::iterator i = children.begin(); i != children.end(); ++i)
     {
-      (*i)->update(delta, Controller());
+      if (*i == focus)
+        (*i)->update(delta, controller);
+      else
+        (*i)->update(delta, Controller());
     }
 }
 
 bool
 RootComponent::is_active() const
 {
-  if (child)
-    return child->is_active();
+  if (focus)
+    return focus->is_active();
   else
     return false;
 }
@@ -83,7 +74,23 @@ RootComponent::is_active() const
 void
 RootComponent::add_child(Component* child)
 {
-  chidren.push_back(child);
+  focus = child;
+  children.push_back(child);
+}
+
+void
+RootComponent::set_focus(Component* child_)
+{
+  Children::iterator i = std::find(children.begin(), children.end(), child_);
+  if (i != children.end())
+    {
+      focus = child_;
+      focus->set_active(true);
+    }
+  else
+    {
+      console << "Error: Need to add_child() first befor calling set_focus()" << std::endl;
+    }
 }
 
 } // namespace GUI

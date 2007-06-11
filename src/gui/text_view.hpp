@@ -44,9 +44,10 @@ public:
   void draw();
   void update(float delta, const Controller& controller);
 
-  void  set_screen_rect(const Rectf& rect);
+  void set_screen_rect(const Rectf& rect);
   void set_text(const std::string& text);
-  
+  void set_font(TTFFont* font);
+
 private:
   TextView (const TextView&);
   TextView& operator= (const TextView&);

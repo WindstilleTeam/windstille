@@ -35,6 +35,8 @@
 #include "gui/menu_component.hpp"
 #include "game_session.hpp"
 #include "sector.hpp"
+#include "sprite3d/manager.hpp"
+#include "sprite3dview.hpp"
 #include "menu_manager.hpp"
 
 MenuManager menu_manager;
@@ -78,14 +80,14 @@ MenuManager::display_option_menu()
   menu->add_item(aspect_item);
   
   EnumMenuItem* show_fps_item = new EnumMenuItem(menu,  "Show FPS", config.get_bool("show-fps"));
-  show_fps_item->add_pair(1, "on");
   show_fps_item->add_pair(0, "off");
+  show_fps_item->add_pair(1, "on");
   menu->add_item(show_fps_item);
   slots.push_back(show_fps_item->sig_change().connect(this, &MenuManager::menu_show_fps));
 
   EnumMenuItem* fullscreen_item = new EnumMenuItem(menu,  "Fullscreen", config.get_bool("fullscreen"));
-  fullscreen_item->add_pair(1, "on");
   fullscreen_item->add_pair(0, "off");
+  fullscreen_item->add_pair(1, "on");
   menu->add_item(fullscreen_item);
   slots.push_back(fullscreen_item->sig_change().connect(this, &MenuManager::menu_fullscreen));
 
@@ -95,7 +97,7 @@ MenuManager::display_option_menu()
   difficulty_item->add_pair(2, "hard");
   menu->add_item(difficulty_item);
 
-  manager->get_root()->set_child(group);
+  manager->get_root()->add_child(group);
   group->layout();
   screen_manager.push_overlay(manager);
 }
@@ -106,12 +108,27 @@ MenuManager::display_main_menu()
   using namespace GUI;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400, 250), Sizef(200, 176)),
+  GroupComponent* text_group = new GroupComponent(Rectf(10, 500+20, 800-10, 600-10),
+                                                  "",
+                                                  manager->get_root());
+
+  TextView* text = new TextView(Rectf(), text_group);
+  text_group->pack(text);
+  text->set_font(Fonts::vera12);
+  text->set_text("Copyright (C) 2007 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
+                 "\n"
+                 "This program is free software; you can redistribute it and/or "
+                 "modify it under the terms of the GNU General Public License "
+                 "as published by the Free Software Foundation; either version 2 "
+                 "of the License, or (at your option) any later version.");
+  manager->get_root()->add_child(text_group);
+
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400, 250), Sizef(200, 210)),
                                              "",
                                              manager->get_root());
 
   // Begin Main Menu
-  MenuComponent* menu = new MenuComponent(Rectf(Vector(400, 250), Sizef(200, 500)), false,
+  MenuComponent* menu = new MenuComponent(Rectf(), false,
                                           group);
   group->pack(menu);
 
@@ -120,6 +137,10 @@ MenuManager::display_main_menu()
   ButtonMenuItem* select_scenario_button = new ButtonMenuItem(menu,  "Select Scenario");
   slots.push_back(select_scenario_button->sig_click().connect(this, &MenuManager::display_scenario_menu));
   menu->add_item(select_scenario_button);
+
+  ButtonMenuItem* model_viewer_button = new ButtonMenuItem(menu,  "Model Viewer");
+  slots.push_back(model_viewer_button->sig_click().connect(this, &MenuManager::menu_mode_viewer));
+  menu->add_item(model_viewer_button);
 
   ButtonMenuItem* options_button = new ButtonMenuItem(menu,  "Options");
   slots.push_back(options_button->sig_click().connect(this, &MenuManager::display_option_menu));
@@ -134,7 +155,7 @@ MenuManager::display_main_menu()
   menu->add_item(quit_button);
   // End: Option Menu
 
-  manager->get_root()->set_child(group);
+  manager->get_root()->add_child(group);
   group->layout();
   screen_manager.push_overlay(manager);
 }
@@ -181,7 +202,7 @@ MenuManager::display_pause_menu()
   menu->add_item(quit_button);
   // End: Option Menu
 
-  manager->get_root()->set_child(group);
+  manager->get_root()->add_child(group);
 
   screen_manager.push_overlay(manager); 
 }
@@ -221,7 +242,7 @@ MenuManager::display_scenario_menu()
       menu->add_item(scenario_button);
     }
 
-  manager->get_root()->set_child(group);
+  manager->get_root()->add_child(group);
 
   screen_manager.push_overlay(manager); 
 }
@@ -256,11 +277,11 @@ MenuManager::display_debug_menu()
   slots.push_back(b_ambient_light_item->sig_change().connect(this, &MenuManager::menu_ambient_light, 2));
   menu->add_item(b_ambient_light_item);
 
-  manager->get_root()->set_child(group);
+  manager->get_root()->add_child(group);
 
   screen_manager.push_overlay(manager); 
 }
-
+
 void
 MenuManager::display_credits()
 {
@@ -272,8 +293,9 @@ MenuManager::display_credits()
                                              manager->get_root());
 
   TextView* text = new TextView(Rectf(), group);
-  text->set_text("<b>Programming</b>\n"
-                 "===========\n"
+  text->set_font(Fonts::vera16);
+  text->set_text("<sin>Programming</sin>\n"
+                 "<sin>===========</sin>\n"
                  "\n"
                  "  Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
                  "  Matthias Braun matze@braunis.de\n"
@@ -286,10 +308,20 @@ MenuManager::display_credits()
 
   group->pack(text);
 
-  manager->get_root()->set_child(group);
+  manager->get_root()->add_child(group);
   screen_manager.push_overlay(manager);
 }
-  
+
+void
+MenuManager::menu_mode_viewer()
+{
+  Sprite3DView* sprite3dview = new Sprite3DView();
+
+  // Launching Sprite3DView instead of game
+  screen_manager.pop_overlay();
+  screen_manager.set_screen(sprite3dview);
+}
+  
 // Callbacks
 
 void

@@ -68,19 +68,25 @@ Swarm::draw(SceneContext& sc)
   VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector(0, 0), 
                                                                    1000.0f, sc.highlight().get_modelview());
 
-  array->set_mode(GL_LINES);
+  array->set_mode(GL_QUADS);
   array->set_blend_func(GL_ONE, GL_ZERO);
 
-  Color begin_color(1.0f, 1.0f, 1.0f);
-  Color end_color(0.0f, 0.0f, 0.0f);
+  Color color(1.0f, 1.0f, 1.0f);
+  Color bottom_color(0.0f, 0.0f, 0.0f);
 
   for(Agents::const_iterator i = agents.begin(); i != agents.end(); ++i)
     {
-      array->color(begin_color);
-      array->vertex(i->last_pos.x, i->last_pos.y);
+      array->color(color);
+      array->vertex(i->pos.x - 1, i->pos.y - 1);
 
-      array->color(end_color);
-      array->vertex(i->pos.x, i->pos.y);
+      array->color(color);
+      array->vertex(i->pos.x + 2, i->pos.y - 1);
+
+      array->color(bottom_color);
+      array->vertex(i->pos.x + 2, i->pos.y + 2);
+
+      array->color(bottom_color);
+      array->vertex(i->pos.x - 1, i->pos.y + 2);
     }
 
   sc.highlight().draw(array);

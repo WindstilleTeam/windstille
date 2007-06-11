@@ -78,6 +78,12 @@ TextView::set_text(const std::string& text)
   text_area.set_text(text);
 }
 
+void
+TextView::set_font(TTFFont* font)
+{
+  text_area.set_font(font);
+}
+
 } // namespace GUI
 
 /* EOF */

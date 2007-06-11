@@ -290,6 +290,10 @@ GameSessionImpl::update(float delta, const Controller& controller)
     {
       menu_manager.display_pause_menu();
     }
+  else if(keystate[SDLK_F2])
+    {
+      menu_manager.display_debug_menu();
+    }
 }
 
 void

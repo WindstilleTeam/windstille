@@ -35,9 +35,11 @@ namespace GUI {
 class RootComponent : public Component
 {
 private:
-  Component* child;
+  Component* focus;
+
   typedef std::vector<Component*> Children;
-  Children chidren;
+  Children children;
+
 public:
   RootComponent(const Rectf& rect);
   ~RootComponent();
@@ -45,11 +47,12 @@ public:
   void draw();
   void update(float delta, const Controller& controller);
 
-  /** Set the main chidren */
-  void set_child(Component* child);
+  /** Set the chidren that shall recieve input */
+  void set_focus(Component* child);
+
   void add_child(Component* child);
 
-  Component* get_child() const { return child; }
+  Component* get_focus() const { return focus; }
   
   bool is_active() const;
 private:
