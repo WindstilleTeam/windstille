@@ -38,6 +38,8 @@ public:
   Screen();
   virtual ~Screen();
 
+  virtual void on_startup() {}
+
   /** Draw the current screen */
   virtual void draw() =0;
 

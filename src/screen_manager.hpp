@@ -26,9 +26,6 @@
 #ifndef HEADER_SCREEN_MANAGER_HPP
 #define HEADER_SCREEN_MANAGER_HPP
 
-#include <vector>
-#include "signals/slot.hpp"
-
 class Screen;
 
 /**
@@ -38,13 +35,13 @@ class Screen;
 class ScreenManager
 {
 private:
-  std::vector<Slot> slots;
+  enum ScreenAction { NONE, POP_SCREEN, PUSH_SCREEN, CLEAR_SCREENS };
 
-  Screen* screen;
+  std::vector<Screen*> screens;
+  ScreenAction screen_action;
+  Screen*      screen_screen;
 
   std::vector<Screen*> overlay_screens;
-
-  enum ScreenAction { NONE, POP_SCREEN, PUSH_SCREEN, CLEAR_SCREENS };
   ScreenAction overlay_screen_action;
   Screen*      overlay_screen_screen;
 
@@ -66,8 +63,8 @@ public:
   /** Breaks out of the run() function */
   void quit();
 
-  /** Sets the currently active screen */
-  void set_screen(Screen* s);
+  void push_screen(Screen* s);
+  void pop_screen();
 
   void push_overlay(Screen* s);
   void pop_overlay();

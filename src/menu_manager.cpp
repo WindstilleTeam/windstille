@@ -254,7 +254,7 @@ MenuManager::display_debug_menu()
   GUIManager* manager = new GUIManager();
 
   GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-170), Sizef(500, 340)), 
-                                             "Select Scenario",
+                                             "Debug",
                                              manager->get_root());
 
   // Begin Main Menu
@@ -319,7 +319,7 @@ MenuManager::menu_mode_viewer()
 
   // Launching Sprite3DView instead of game
   screen_manager.pop_overlay();
-  screen_manager.set_screen(sprite3dview);
+  screen_manager.push_screen(sprite3dview);
 }
   
 // Callbacks
@@ -327,7 +327,7 @@ MenuManager::menu_mode_viewer()
 void
 MenuManager::menu_start_game()
 {
-  screen_manager.set_screen(new GameSession("levels/newformat2.wst"));
+  screen_manager.push_screen(new GameSession("levels/newformat2.wst"));
   screen_manager.pop_overlay();
 }
 
@@ -343,7 +343,7 @@ void
 MenuManager::menu_start_scenario(std::string scenario)
 {
   std::cout << "Starting: " << scenario << std::endl;
-  screen_manager.set_screen(new GameSession(scenario));
+  screen_manager.push_screen(new GameSession(scenario));
   screen_manager.clear_overlay();
  }
 
@@ -371,7 +371,7 @@ MenuManager::menu_exit()
 {
   // FIXME: Make this return to the title screen
   screen_manager.pop_overlay();
-  screen_manager.quit(); 
+  screen_manager.pop_screen(); 
 }
 
 void

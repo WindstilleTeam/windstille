@@ -29,6 +29,7 @@
 #include "console.hpp"
 #include "font/ttf_font.hpp"
 #include "font/fonts.hpp"
+#include "screen_manager.hpp"
 #include "sprite3dview.hpp"
 
 Sprite3DView::Sprite3DView()
@@ -135,6 +136,11 @@ Sprite3DView::update(float delta, const Controller& controller)
   roty += controller.get_axis_state(Y2_AXIS) * 50.0f * delta;
 
   //std::cout << controller.get_axis_state(Y2_AXIS) << std::endl;
+
+  Uint8 *keystate = SDL_GetKeyState(NULL);
+
+  if(keystate[SDLK_ESCAPE])
+    screen_manager.pop_screen();
 }
 
 /* EOF */

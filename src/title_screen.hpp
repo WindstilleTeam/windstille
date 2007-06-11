@@ -39,7 +39,7 @@ public:
   TitleScreen();
   ~TitleScreen();
 
-  void on_start();
+  void on_startup();
 
   void draw();
   void update(float delta, const Controller& controller);

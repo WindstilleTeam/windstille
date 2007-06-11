@@ -133,7 +133,7 @@ WindstilleMain::main(int argc, char** argv)
           sprite3dview->set_model(levelfile);
 
         // Launching Sprite3DView instead of game
-        screen_manager.set_screen(sprite3dview);
+        screen_manager.push_screen(sprite3dview);
       }
     else if (sprite2dview)
       {
@@ -143,25 +143,25 @@ WindstilleMain::main(int argc, char** argv)
           sprite2dview->set_sprite(levelfile);
 
         // Launching Sprite2DView instead of game
-        screen_manager.set_screen(sprite2dview);
+        screen_manager.push_screen(sprite2dview);
       }
     else if (particleview)
       {
         ParticleViewer* particle_viewer = new ParticleViewer();
         if (!levelfile.empty())
           particle_viewer->load(levelfile);
-        screen_manager.set_screen(particle_viewer);
+        screen_manager.push_screen(particle_viewer);
       }
     else
       {
         if (levelfile.empty())
           {
-            //screen_manager.set_screen(new GameSession("levels/newformat2.wst"));
-            screen_manager.set_screen(new TitleScreen());
+            //screen_manager.push_screen(new GameSession("levels/newformat2.wst"));
+            screen_manager.push_screen(new TitleScreen());
           }
         else
           {
-            screen_manager.set_screen(new GameSession(levelfile));
+            screen_manager.push_screen(new GameSession(levelfile));
           }
       }
         

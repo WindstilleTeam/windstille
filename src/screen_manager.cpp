@@ -62,7 +62,8 @@ ScreenManager::ScreenManager()
     overlap_delta(0),
     do_quit(false)
 {
-  screen = 0;
+  screen_action = NONE;
+  screen_screen = 0;
 
   overlay_screen_action = NONE;
   overlay_screen_screen = 0;
@@ -102,8 +103,8 @@ ScreenManager::run()
             {
               if (!overlay_screens.empty())
                 overlay_screens.back()->update(step, InputManager::get_controller());
-              else
-                screen->update(step, InputManager::get_controller());
+              else if (!screens.empty())
+                screens.back()->update(step, InputManager::get_controller());
             }
           InputManager::clear();
   
@@ -114,7 +115,8 @@ ScreenManager::run()
 
       sound_manager->update();
 
-      screen->draw();
+      if (!screens.empty())
+        screens.back()->draw();
 
       if (!overlay_screens.empty())
         overlay_screens.back()->draw();
@@ -139,7 +141,6 @@ ScreenManager::run()
           break;
 
         case CLEAR_SCREENS:
-          // FIXME: Might be insecure to do this here instead of in the update() loop
           for(std::vector<Screen*>::iterator i = overlay_screens.begin(); i != overlay_screens.end(); ++i)
             delete *i;
           overlay_screens.clear();
@@ -150,6 +151,31 @@ ScreenManager::run()
           break;
         }
       overlay_screen_action = NONE;
+
+      switch(screen_action)
+        {
+        case PUSH_SCREEN:
+          screens.push_back(screen_screen);
+          screens.back()->on_startup();
+          break;
+
+        case POP_SCREEN:
+          screens.pop_back();
+          if (!screens.empty())
+            screens.back()->on_startup();
+          break;
+
+        case CLEAR_SCREENS:
+          for(std::vector<Screen*>::iterator i = screens.begin(); i != screens.end(); ++i)
+            delete *i;
+          screens.clear();
+          break;
+
+        case NONE:
+          // nothing
+          break;
+        }
+      screen_action = NONE;
 
       poll_events();
     }
@@ -239,8 +265,8 @@ ScreenManager::poll_events()
                     {
                       if (!overlay_screens.empty())
                         overlay_screens.back()->handle_event(event);
-                      else
-                        screen->handle_event(event);
+                      else if (!screens.empty())
+                        screens.back()->handle_event(event);
                     }
                   break;
                 }
@@ -275,8 +301,8 @@ ScreenManager::poll_events()
         default:
           if (!overlay_screens.empty())
             overlay_screens.back()->handle_event(event);
-          else              
-            screen->handle_event(event);
+          else if (!screens.empty())
+            screens.back()->handle_event(event);
           break;
         }
     }
@@ -299,10 +325,16 @@ ScreenManager::draw_fps()
 }
 
 void
-ScreenManager::set_screen(Screen* s)
+ScreenManager::push_screen(Screen* s)
 {
-  delete screen;
-  screen = s;
+  screen_action = PUSH_SCREEN;
+  screen_screen = s;
+}
+
+void
+ScreenManager::pop_screen()
+{
+  screen_action = POP_SCREEN;
 }
 
 void

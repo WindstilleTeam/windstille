@@ -30,7 +30,6 @@
 TitleScreen::TitleScreen()
 {
   background = Sprite("images/titlescreen.sprite");
-  on_start();
 }
 
 TitleScreen::~TitleScreen()
@@ -38,7 +37,7 @@ TitleScreen::~TitleScreen()
 }
 
 void
-TitleScreen::on_start()
+TitleScreen::on_startup()
 {
   menu_manager.display_main_menu();
 }
