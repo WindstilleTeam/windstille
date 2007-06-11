@@ -45,6 +45,7 @@ public:
   void display_scenario_menu();
   void display_models_menu();
   void display_credits();
+  void display_help();
 
   // Callbacks
   void menu_start_game();

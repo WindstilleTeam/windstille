@@ -123,7 +123,7 @@ MenuManager::display_main_menu()
                  "of the License, or (at your option) any later version.");
   manager->get_root()->add_child(text_group);
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400, 250), Sizef(200, 210)),
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400, 230), Sizef(200, 250)),
                                              "",
                                              manager->get_root());
 
@@ -149,6 +149,10 @@ MenuManager::display_main_menu()
   ButtonMenuItem* credits_button = new ButtonMenuItem(menu,  "Credits");
   slots.push_back(credits_button->sig_click().connect(this, &MenuManager::display_credits));
   menu->add_item(credits_button);
+
+  ButtonMenuItem* help_button = new ButtonMenuItem(menu,  "Help");
+  slots.push_back(help_button->sig_click().connect(this, &MenuManager::display_help));
+  menu->add_item(help_button);
 
   ButtonMenuItem* quit_button = new ButtonMenuItem(menu,  "Quit");
   slots.push_back(quit_button->sig_click().connect(this, &MenuManager::menu_quit));
@@ -196,6 +200,10 @@ MenuManager::display_pause_menu()
   ButtonMenuItem* credits_button = new ButtonMenuItem(menu,  "Credits");
   slots.push_back(credits_button->sig_click().connect(this, &MenuManager::display_credits));
   menu->add_item(credits_button);
+
+  ButtonMenuItem* help_button = new ButtonMenuItem(menu,  "Help");
+  slots.push_back(help_button->sig_click().connect(this, &MenuManager::display_help));
+  menu->add_item(help_button);
 
   ButtonMenuItem* quit_button = new ButtonMenuItem(menu,  "Return to Title Screen");
   slots.push_back(quit_button->sig_click().connect(this, &MenuManager::menu_exit));
@@ -318,6 +326,46 @@ MenuManager::display_debug_menu()
   manager->get_root()->add_child(group);
 
   screen_manager.push_overlay(manager); 
+}
+
+void
+MenuManager::display_help()
+{
+  using namespace GUI;
+  GUIManager* manager = new GUIManager();
+
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-200), Sizef(500, 400)), 
+                                             "Help",
+                                             manager->get_root());
+
+  TextView* text = new TextView(Rectf(), group);
+  text->set_font(Fonts::vera12);
+  text->set_text("This is a tech-demo of Windstille. Its not meant "
+                 "to be playable in any way except a bit of walking around. "
+                 "It provides nothing to accomplish, just a few scenarios to "
+                 "load and look at. Enjoy what works, don't complain if something "
+                 "doesn't, since most stuff simply won't work anyway.\n"
+                 "\n"
+                 "Key Bindings\n"
+                 "============\n"
+                 "F1 - open the console\n"
+                 "F6 - mouse release\n"
+                 "F7 - mouse grap\n"
+                 "F8 - run gui test (broken)\n"
+                 "F9 - configure input\n"
+                 "F11 - toggle fullscreen\n"
+                 "F12 - do a screenshot\n"
+                 "\n"
+                 "cursor keys - walk\n"
+                 "d - run/cancel\n"
+                 "s - jump/ok\n"
+                 );
+  text->set_active(true);
+
+  group->pack(text);
+
+  manager->get_root()->add_child(group);
+  screen_manager.push_overlay(manager);
 }
 
 void
