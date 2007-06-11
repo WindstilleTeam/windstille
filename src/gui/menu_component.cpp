@@ -48,8 +48,8 @@ MenuItem::draw(const Rectf& rect, bool is_active)
     Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
     font_color = Color(1.0f, 1.0f, 1.0f);
   } else {
-    Display::fill_rounded_rect(rect, 5.0f, Color(0.3f, 0.3f, 0.3f, 0.75f));
-    Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.75f));
+    //Display::fill_rounded_rect(rect, 5.0f, Color(0.3f, 0.3f, 0.3f, 0.75f));
+    //Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.75f));
     font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
   }
 

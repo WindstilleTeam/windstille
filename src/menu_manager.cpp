@@ -29,6 +29,7 @@
 #include "font/fonts.hpp"
 #include "gui/gui_manager.hpp"
 #include "gui/root_component.hpp"
+#include "gui/group_component.hpp"
 #include "screen_manager.hpp"
 #include "gui/menu_component.hpp"
 #include "game_session.hpp"
@@ -47,9 +48,14 @@ MenuManager::display_option_menu()
   using namespace GUI;
   GUIManager* manager = new GUIManager();
 
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-170), Sizef(500, 340)), 
+                                             "Options",
+                                             manager->get_root());
+
   // Begin Main Menu
-  MenuComponent* menu = new MenuComponent(Rectf(Vector(400-200, 200), Sizef(400, 500)), true,
-                                          manager->get_root());
+  MenuComponent* menu = new MenuComponent(Rectf(), true,
+                                          group);
+  group->pack(menu);
 
   menu->set_font(Fonts::vera20);
 
@@ -82,7 +88,13 @@ MenuManager::display_option_menu()
   menu->add_item(fullscreen_item);
   slots.push_back(fullscreen_item->sig_change().connect(this, &MenuManager::menu_fullscreen));
 
-  manager->get_root()->set_child(menu);
+  EnumMenuItem* difficulty_item = new EnumMenuItem(menu,  "Difficulty", 1);
+  difficulty_item->add_pair(0, "easy");
+  difficulty_item->add_pair(1, "medium");
+  difficulty_item->add_pair(2, "hard");
+  menu->add_item(difficulty_item);
+
+  manager->get_root()->set_child(group);
 
   screen_manager.push_overlay(manager);
 }
@@ -127,9 +139,14 @@ MenuManager::display_pause_menu()
   using namespace GUI;
   GUIManager* manager = new GUIManager();
 
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-200, 300-170), Sizef(400, 340)), 
+                                             "Pause Menu",
+                                             manager->get_root());
+
   // Begin Main Menu
   MenuComponent* menu = new MenuComponent(Rectf(Vector(400-150, 200), Sizef(300, 500)), true,
-                                          manager->get_root());
+                                          group);
+  group->pack(menu);
 
   menu->set_font(Fonts::vera20);
 
@@ -158,7 +175,7 @@ MenuManager::display_pause_menu()
   menu->add_item(quit_button);
   // End: Option Menu
 
-  manager->get_root()->set_child(menu);
+  manager->get_root()->set_child(group);
 
   screen_manager.push_overlay(manager); 
 }
@@ -169,8 +186,12 @@ MenuManager::display_scenario_menu()
   using namespace GUI;
   GUIManager* manager = new GUIManager();
 
-  MenuComponent* menu = new MenuComponent(Rectf(Vector(400-200, 200), Sizef(400, 500)), true,
-                                          manager->get_root());
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-200, 300-170), Sizef(400, 340)), 
+                                             "Select Scenario",
+                                             manager->get_root());
+
+  MenuComponent* menu = new MenuComponent(Rectf(), true, group);
+  group->pack(menu);
 
   menu->set_font(Fonts::vera20);
 
@@ -194,7 +215,7 @@ MenuManager::display_scenario_menu()
       menu->add_item(scenario_button);
     }
 
-  manager->get_root()->set_child(menu);
+  manager->get_root()->set_child(group);
 
   screen_manager.push_overlay(manager); 
 }
@@ -205,9 +226,13 @@ MenuManager::display_debug_menu()
   using namespace GUI;
   GUIManager* manager = new GUIManager();
 
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-170), Sizef(500, 340)), 
+                                             "Select Scenario",
+                                             manager->get_root());
+
   // Begin Main Menu
-  MenuComponent* menu = new MenuComponent(Rectf(Vector(400-300, 200), Sizef(600, 500)), true,
-                                          manager->get_root());
+  MenuComponent* menu = new MenuComponent(Rectf(), true, group);
+  group->pack(menu);
 
   menu->set_font(Fonts::vera20);
 
@@ -225,7 +250,7 @@ MenuManager::display_debug_menu()
   slots.push_back(b_ambient_light_item->sig_change().connect(this, &MenuManager::menu_ambient_light, 2));
   menu->add_item(b_ambient_light_item);
 
-  manager->get_root()->set_child(menu);
+  manager->get_root()->set_child(group);
 
   screen_manager.push_overlay(manager); 
 }
