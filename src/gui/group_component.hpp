@@ -48,7 +48,7 @@ public:
   void pack(Component* component);
   
   bool is_active() const;
-
+  void layout();
 private:
   GroupComponent (const GroupComponent&);
   GroupComponent& operator= (const GroupComponent&);

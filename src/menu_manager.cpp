@@ -29,6 +29,7 @@
 #include "font/fonts.hpp"
 #include "gui/gui_manager.hpp"
 #include "gui/root_component.hpp"
+#include "gui/text_view.hpp"
 #include "gui/group_component.hpp"
 #include "screen_manager.hpp"
 #include "gui/menu_component.hpp"
@@ -95,7 +96,7 @@ MenuManager::display_option_menu()
   menu->add_item(difficulty_item);
 
   manager->get_root()->set_child(group);
-
+  group->layout();
   screen_manager.push_overlay(manager);
 }
 
@@ -105,9 +106,14 @@ MenuManager::display_main_menu()
   using namespace GUI;
   GUIManager* manager = new GUIManager();
 
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400, 250), Sizef(200, 176)),
+                                             "",
+                                             manager->get_root());
+
   // Begin Main Menu
   MenuComponent* menu = new MenuComponent(Rectf(Vector(400, 250), Sizef(200, 500)), false,
-                                          manager->get_root());
+                                          group);
+  group->pack(menu);
 
   menu->set_font(Fonts::vera20);
 
@@ -120,7 +126,7 @@ MenuManager::display_main_menu()
   menu->add_item(options_button);
 
   ButtonMenuItem* credits_button = new ButtonMenuItem(menu,  "Credits");
-  slots.push_back(credits_button->sig_click().connect(this, &MenuManager::menu_credits));
+  slots.push_back(credits_button->sig_click().connect(this, &MenuManager::display_credits));
   menu->add_item(credits_button);
 
   ButtonMenuItem* quit_button = new ButtonMenuItem(menu,  "Quit");
@@ -128,8 +134,8 @@ MenuManager::display_main_menu()
   menu->add_item(quit_button);
   // End: Option Menu
 
-  manager->get_root()->set_child(menu);
-
+  manager->get_root()->set_child(group);
+  group->layout();
   screen_manager.push_overlay(manager);
 }
 
@@ -167,7 +173,7 @@ MenuManager::display_pause_menu()
   menu->add_item(debug_button);
 
   ButtonMenuItem* credits_button = new ButtonMenuItem(menu,  "Credits");
-  slots.push_back(credits_button->sig_click().connect(this, &MenuManager::menu_credits));
+  slots.push_back(credits_button->sig_click().connect(this, &MenuManager::display_credits));
   menu->add_item(credits_button);
 
   ButtonMenuItem* quit_button = new ButtonMenuItem(menu,  "Return to Title Screen");
@@ -254,7 +260,36 @@ MenuManager::display_debug_menu()
 
   screen_manager.push_overlay(manager); 
 }
-
+
+void
+MenuManager::display_credits()
+{
+  using namespace GUI;
+  GUIManager* manager = new GUIManager();
+
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-170), Sizef(500, 340)), 
+                                             "Credits",
+                                             manager->get_root());
+
+  TextView* text = new TextView(Rectf(), group);
+  text->set_text("<b>Programming</b>\n"
+                 "===========\n"
+                 "\n"
+                 "  Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
+                 "  Matthias Braun matze@braunis.de\n"
+                 "  James Gregory\n"
+                 "  David Kamphausen &lt;david.kamphausen@web.de&gt;\n"
+                 "  Mark Dillavou &lt;line72@line72.net&gt;\n"
+                 "\n"
+                 "incomplete placeholder, see AUTHORS for full list\n");
+  text->set_active(true);
+
+  group->pack(text);
+
+  manager->get_root()->set_child(group);
+  screen_manager.push_overlay(manager);
+}
+  
 // Callbacks
 
 void
@@ -262,12 +297,6 @@ MenuManager::menu_start_game()
 {
   screen_manager.set_screen(new GameSession("levels/newformat2.wst"));
   screen_manager.pop_overlay();
-}
-
-void
-MenuManager::menu_credits()
-{
-  console << "Credits clicked" << std::endl;
 }
 
 void

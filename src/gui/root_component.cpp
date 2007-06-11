@@ -24,6 +24,7 @@
 */
 
 #include <iostream>
+#include "input/controller.hpp"
 #include "root_component.hpp"
 
 namespace GUI {
@@ -49,6 +50,11 @@ RootComponent::set_child(Component* child_)
 void
 RootComponent::draw()
 {
+  for(Children::iterator i = chidren.begin(); i != chidren.end(); ++i)
+    {
+      (*i)->draw();
+    }
+
   if (child)
     child->draw();
 }
@@ -58,6 +64,11 @@ RootComponent::update(float delta, const Controller& controller)
 {
   if (child)
     child->update(delta, controller);
+  
+  for(Children::iterator i = chidren.begin(); i != chidren.end(); ++i)
+    {
+      (*i)->update(delta, Controller());
+    }
 }
 
 bool
@@ -67,6 +78,12 @@ RootComponent::is_active() const
     return child->is_active();
   else
     return false;
+}
+
+void
+RootComponent::add_child(Component* child)
+{
+  chidren.push_back(child);
 }
 
 } // namespace GUI

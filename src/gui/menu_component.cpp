@@ -26,7 +26,7 @@
 #include <iostream>
 #include "input/controller.hpp"
 #include "menu_component.hpp"
-#include "gui/root_component.hpp"
+#include "gui/tab_component.hpp"
 #include "display/display.hpp"
 #include "math.hpp"
 
@@ -285,30 +285,31 @@ MenuComponent::update(float delta, const Controller& controller)
                   current_item = current_item - 1;
                   if (current_item < 0)
                     {
-                      if (dynamic_cast<RootComponent*>(parent))
+                      if (dynamic_cast<TabComponent*>(parent))
                         {
-                          current_item = static_cast<int>(items.size())-1; 
-                        }
-                      else
-                        { // FIXME: This only works good with TabComponent
                           current_item = 0;
                           set_active(false);
+                        }
+                      else
+                        { 
+                          current_item = static_cast<int>(items.size())-1; 
                         }
                     }
                 }
               else if (i->axis.pos > 0)
                 {
-                  if (dynamic_cast<RootComponent*>(parent))
+                  if (dynamic_cast<TabComponent*>(parent))
+                    {
+                      current_item = Math::mid(0, current_item + 1, static_cast<int>(items.size()-1)); 
+                    }
+                  else
                     {
                       current_item += 1;
                       if (current_item >= static_cast<int>(items.size()))
                         {
                           current_item = 0;
                         }
-                    }
-                  else
-                    {
-                      current_item = Math::mid(0, current_item + 1, static_cast<int>(items.size()-1)); 
+
                     }
                 }
             }
@@ -326,6 +327,25 @@ TTFFont*
 MenuComponent::get_font()
 {
   return font;
+}
+
+float
+MenuComponent::get_prefered_width() const
+{
+  /*
+  float width = 0;
+  for(Items::iterator i = items.begin(); i != items.end(); ++i)
+    {
+      width = std::max(get_width())
+    }  */
+  return 200; // FIXME:
+}
+
+float
+MenuComponent::get_prefered_height() const
+{
+  float step = font->get_height() + 20.0f;
+  return step * items.size();
 }
 
 } // namespace GUI

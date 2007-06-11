@@ -23,6 +23,7 @@
 **  02111-1307, USA.
 */
 
+#include "input/controller.hpp"
 #include "text_view.hpp"
 
 namespace GUI {
@@ -47,7 +48,21 @@ void
 TextView::update(float delta, const Controller& controller)
 {
   text_area.update(delta);
-  set_active(false);
+
+  for(InputEventLst::const_iterator i = controller.get_events().begin(); i != controller.get_events().end(); ++i) 
+    {
+      if (i->type == BUTTON_EVENT && i->button.down)
+        {
+          if (i->button.name == OK_BUTTON)
+            {
+              set_active(false);
+            }
+          else if (i->button.name == CANCEL_BUTTON)
+            {            
+              set_active(false);
+            }
+        }
+    }  
 }
 
 void

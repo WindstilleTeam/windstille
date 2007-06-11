@@ -50,13 +50,16 @@ GroupComponent::draw()
   Display::fill_rounded_rect(rect, 5.0f, Color(0.0f, 0.0f, 0.0f, 0.5f));
   Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-  TTFFont* font = Fonts::vera20;
-  font->draw_center(rect.left + rect.get_width()/2, rect.top + font->get_height() + 5, 
-                    title, Color(1.0f, 1.0f, 1.0f));
+  if (!title.empty())
+    {
+      TTFFont* font = Fonts::vera20;
+      font->draw_center(rect.left + rect.get_width()/2, rect.top + font->get_height() + 5, 
+                        title, Color(1.0f, 1.0f, 1.0f));
 
-  Display::fill_rect(Rectf(rect.left  + 8, rect.top + font->get_height() + 16,
-                           rect.right - 8, rect.top + font->get_height() + 18),
-                     Color(1.0f, 1.0f, 1.0f, 0.5f));
+      Display::fill_rect(Rectf(rect.left  + 8, rect.top + font->get_height() + 16,
+                               rect.right - 8, rect.top + font->get_height() + 18),
+                         Color(1.0f, 1.0f, 1.0f, 0.5f));
+    }
 
   if (child)
     child->draw();
@@ -77,7 +80,7 @@ GroupComponent::pack(Component* component)
 
   int padding = 6;
   child->set_screen_rect(Rectf(rect.left + padding,
-                               rect.top  + padding + Fonts::vera20->get_height() + 24,
+                               rect.top  + padding + (title.empty() ? 0 : Fonts::vera20->get_height() + 24),
                                rect.right  - padding,
                                rect.bottom - padding
                                ));
@@ -91,6 +94,14 @@ GroupComponent::is_active() const
     return child->is_active();
   else
     return false;
+}
+
+void
+GroupComponent::layout()
+{
+  // FIXME: implement me
+  // child->get_prefered_width();
+  // child->get_prefered_height();
 }
 
 } // namespace GUI

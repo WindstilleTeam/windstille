@@ -26,6 +26,7 @@
 #ifndef HEADER_WINDSTILLE_GUI_ROOT_COMPONENT_HPP
 #define HEADER_WINDSTILLE_GUI_ROOT_COMPONENT_HPP
 
+#include <vector>
 #include "component.hpp"
 
 namespace GUI {
@@ -35,7 +36,8 @@ class RootComponent : public Component
 {
 private:
   Component* child;
-
+  typedef std::vector<Component*> Children;
+  Children chidren;
 public:
   RootComponent(const Rectf& rect);
   ~RootComponent();
@@ -43,7 +45,10 @@ public:
   void draw();
   void update(float delta, const Controller& controller);
 
+  /** Set the main chidren */
   void set_child(Component* child);
+  void add_child(Component* child);
+
   Component* get_child() const { return child; }
   
   bool is_active() const;

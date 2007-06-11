@@ -23,6 +23,7 @@
 **  02111-1307, USA.
 */
 
+#include <assert.h>
 #include "component.hpp"
 
 namespace GUI {
@@ -68,6 +69,18 @@ void
 Component::set_screen_rect(const Rectf& r)
 {
   rect = r;
+}
+
+float
+Component::get_prefered_width() const
+{
+  assert(!"Implement me");
+}
+
+float
+Component::get_prefered_height() const
+{
+  assert(!"Implement me");
 }
 
 } // namespace GUI

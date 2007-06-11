@@ -43,10 +43,10 @@ public:
   void display_main_menu();
   void display_pause_menu();
   void display_scenario_menu();
+  void display_credits();
 
   // Callbacks
   void menu_start_game();
-  void menu_credits();
   void menu_quit();
   void menu_exit();
   void menu_show_fps(int i);

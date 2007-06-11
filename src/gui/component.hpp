@@ -55,6 +55,9 @@ public:
   virtual Rectf get_screen_rect() const;
   virtual void  set_screen_rect(const Rectf& rect);
 
+  virtual float get_prefered_width() const;
+  virtual float get_prefered_height() const;
+
 private:
   Component (const Component&);
   Component& operator= (const Component&);

@@ -127,6 +127,9 @@ public:
   void draw();
   void update(float delta, const Controller& controller);
 
+  float get_prefered_width() const;
+  float get_prefered_height() const;
+
   void     set_font(TTFFont* font_);
   TTFFont* get_font();
 private:
