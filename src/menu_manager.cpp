@@ -139,7 +139,7 @@ MenuManager::display_main_menu()
   menu->add_item(select_scenario_button);
 
   ButtonMenuItem* model_viewer_button = new ButtonMenuItem(menu,  "Model Viewer");
-  slots.push_back(model_viewer_button->sig_click().connect(this, &MenuManager::menu_mode_viewer));
+  slots.push_back(model_viewer_button->sig_click().connect(this, &MenuManager::display_models_menu));
   menu->add_item(model_viewer_button);
 
   ButtonMenuItem* options_button = new ButtonMenuItem(menu,  "Options");
@@ -207,6 +207,44 @@ MenuManager::display_pause_menu()
   screen_manager.push_overlay(manager); 
 }
 
+void
+MenuManager::display_models_menu()
+{
+  using namespace GUI;
+  GUIManager* manager = new GUIManager();
+
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-170), Sizef(500, 340)), 
+                                             "Select Model",
+                                             manager->get_root());
+
+  MenuComponent* menu = new MenuComponent(Rectf(), true, group);
+  group->pack(menu);
+
+  menu->set_font(Fonts::vera20);
+
+  std::vector<std::string> models;
+  models.push_back("models/characters/bob/bob.wsprite");
+  models.push_back("models/characters/jane/jane.wsprite");
+  models.push_back("models/characters/yagor/yagor.wsprite");
+  models.push_back("models/objects/pistol/pistol.wsprite");
+  models.push_back("models/vehicles/train/train.wsprite");
+  
+  for(std::vector<std::string>::iterator i = models.begin(); i != models.end(); ++i)
+    {
+      ButtonMenuItem* scenario_button = new ButtonMenuItem(menu,  *i);
+
+      slots.push_back(scenario_button->sig_click().connect<MenuManager, std::string>
+                      (this, &MenuManager::menu_show_model, 
+                       std::string(*i)));
+
+      menu->add_item(scenario_button);
+    }
+
+  manager->get_root()->add_child(group);
+
+  screen_manager.push_overlay(manager);  
+}
+
 void
 MenuManager::display_scenario_menu()
 {
@@ -288,22 +326,34 @@ MenuManager::display_credits()
   using namespace GUI;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-170), Sizef(500, 340)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-200), Sizef(500, 400)), 
                                              "Credits",
                                              manager->get_root());
 
   TextView* text = new TextView(Rectf(), group);
-  text->set_font(Fonts::vera16);
-  text->set_text("<sin>Programming</sin>\n"
-                 "<sin>===========</sin>\n"
+  text->set_font(Fonts::vera12);
+  text->set_text("Programming\n"
+                 "===========\n"
                  "\n"
-                 "  Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
-                 "  Matthias Braun matze@braunis.de\n"
-                 "  James Gregory\n"
-                 "  David Kamphausen &lt;david.kamphausen@web.de&gt;\n"
-                 "  Mark Dillavou &lt;line72@line72.net&gt;\n"
+                 "  Ingo Ruhnke - Grumbel - &lt;grumbel@gmx.de&gt;\n"
+                 "  Matthias Braun - MatzeB - matze@braunis.de\n"
+                 "  James Gregory -\n"
+                 "  David Kamphausen - Godrin - &lt;david.kamphausen@web.de&gt;\n"
+                 "  Mark Dillavou - Line72- &lt;line72@line72.net&gt;\n"
                  "\n"
-                 "incomplete placeholder, see AUTHORS for full list\n");
+                 "Graphics\n"
+                 "========\n"
+                 "  Ingo Ruhnke - Grumbel - &lt;grumbel@gmx.de&gt;\n"
+                 "  Ken Hirsch - quickflash - &lt;khirsch11414@yahoo.com&gt;\n"
+                 "\n"
+                 "0.2.0 Win32 Build\n"
+                 "==================\n"
+                 "  Robert Konrad &lt;rkon@gmx.de&gt;\n"
+                 "\n"
+                 "Music\n"
+                 "=====\n"
+                 "  Ralph Weinert &lt;r.weinert@bluewin.ch&gt;\n"
+                 "  Marek Moeckel - Wansti - &lt;wansti@gmx.de&gt;\n");
   text->set_active(true);
 
   group->pack(text);
@@ -311,18 +361,20 @@ MenuManager::display_credits()
   manager->get_root()->add_child(group);
   screen_manager.push_overlay(manager);
 }
-
+  
+// Callbacks
+
 void
-MenuManager::menu_mode_viewer()
+MenuManager::menu_show_model(std::string model)
 {
   Sprite3DView* sprite3dview = new Sprite3DView();
 
+  sprite3dview->set_model(model);
+
   // Launching Sprite3DView instead of game
-  screen_manager.pop_overlay();
   screen_manager.push_screen(sprite3dview);
+  screen_manager.clear_overlay();
 }
-  
-// Callbacks
 
 void
 MenuManager::menu_start_game()

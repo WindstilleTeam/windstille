@@ -43,6 +43,7 @@ public:
   void display_main_menu();
   void display_pause_menu();
   void display_scenario_menu();
+  void display_models_menu();
   void display_credits();
 
   // Callbacks
@@ -54,7 +55,7 @@ public:
   void menu_continue();
   void menu_ambient_light(int i, int component);
   void menu_start_scenario(std::string scenario);
-  void menu_mode_viewer();
+  void menu_show_model(std::string scenario);
 
 private:
   MenuManager (const MenuManager&);
