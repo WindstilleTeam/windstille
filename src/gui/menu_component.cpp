@@ -136,7 +136,7 @@ SliderMenuItem::SliderMenuItem(MenuComponent* parent_,
 }
 
 void
-SliderMenuItem::incr()
+SliderMenuItem::decr()
 {
   value += step;
   if (value > max_value)
@@ -145,7 +145,7 @@ SliderMenuItem::incr()
 }
 
 void
-SliderMenuItem::decr()
+SliderMenuItem::incr()
 {
   value -= step;
   if (value < min_value)
@@ -170,7 +170,7 @@ SliderMenuItem::draw(const Rectf& rect, bool is_active)
       color = Color(0.75f, 0.75f, 0.75f, 1.0f);
     }
 
-  Display::fill_rounded_rect(Rectf(Vector(rect.right - 4 - width, rect.top + 4),
+  Display::fill_rounded_rect(Rectf(Vector(rect.right - 4 - total_width, rect.top + 4),
                                    Sizef(width, rect.get_height() - 8)), 
                              5.0f,
                              Color(0.75f*color.r, 0.75f*color.g, 0.75f*color.b, color.a));
@@ -210,10 +210,11 @@ ButtonMenuItem::update(float)
 {
 }
 
-MenuComponent::MenuComponent(const Rectf& rect, Component* parent)
+MenuComponent::MenuComponent(const Rectf& rect, bool allow_cancel_, Component* parent)
   : Component(rect, parent),
     current_item(0),
-    font(Fonts::vera16)
+    font(Fonts::vera16),
+    allow_cancel(allow_cancel_)
 {
 }
 
@@ -260,7 +261,8 @@ MenuComponent::update(float delta, const Controller& controller)
             }
           else if (i->button.name == CANCEL_BUTTON)
             {
-              set_active(false);
+              if (allow_cancel) // FIXME: Could use a signal instead
+                set_active(false);
             }
         }
       else if (i->type == AXIS_EVENT)

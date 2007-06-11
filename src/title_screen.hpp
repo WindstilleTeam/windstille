@@ -23,53 +23,48 @@
 **  02111-1307, USA.
 */
 
-#include "input/controller.hpp"
-#include "button.hpp"
-#include "slider.hpp"
-#include "root_component.hpp"
-#include "screen_manager.hpp"
-#include "grid_component.hpp"
-#include "tab_component.hpp"
-#include "list_view.hpp"
-#include "text_view.hpp"
-#include "automap.hpp"
-#include "gui_manager.hpp"
+#ifndef HEADER_TITLE_SCREEN_HPP
+#define HEADER_TITLE_SCREEN_HPP
 
-namespace GUI {
+#include "sprite2d/sprite.hpp"
+#include "screen.hpp"
 
-GUIManager::GUIManager()
+#include <vector>
+#include "signals/slot.hpp"
+
+/** */
+class TitleScreen : public Screen
 {
-  root = new RootComponent(Rectf(0,0,800,600));
-}
+private:
+  std::vector<Slot> slots;
 
-GUIManager::~GUIManager()
-{
-  delete root;
-}
+  Sprite background;
 
-void
-GUIManager::draw()
-{
-  root->draw();
-}
+public:
+  TitleScreen();
+  ~TitleScreen();
 
-void
-GUIManager::update(float delta, const Controller& controller)
-{
-  root->update(delta, controller);
+  void on_start();
 
-  if (!root->is_active())
-    { //FIXME: This doesn't work when GUI isn't an overlay
-      screen_manager.pop_overlay();
-    }
-}
+  void draw();
+  void update(float delta, const Controller& controller);
 
-RootComponent*
-GUIManager::get_root() const
-{
-  return root;
-}
+  void handle_event(const SDL_Event& );
 
-} // namespace GUI
+  // Callbacks
+  void menu_start_game();
+  void menu_select_scenario();
+  void menu_options();
+  void menu_credits();
+  void menu_quit();
+  void menu_show_fps(int i);
+
+  void menu_start_scenario(std::string scenario);
+private:
+  TitleScreen (const TitleScreen&);
+  TitleScreen& operator= (const TitleScreen&);
+};
+
+#endif
 
 /* EOF */

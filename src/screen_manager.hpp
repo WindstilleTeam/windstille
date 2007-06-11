@@ -41,10 +41,12 @@ private:
   std::vector<Slot> slots;
 
   Screen* screen;
-  Screen* overlay_screen;
 
-  Screen* next_overlay_screen;
-  bool    has_next_overlay_screen;
+  std::vector<Screen*> overlay_screens;
+
+  enum ScreenAction { NONE, POP_SCREEN, PUSH_SCREEN, CLEAR_SCREENS };
+  ScreenAction overlay_screen_action;
+  Screen*      overlay_screen_screen;
 
   unsigned int ticks;
 
@@ -67,23 +69,12 @@ public:
   /** Sets the currently active screen */
   void set_screen(Screen* s);
 
-  /** Sets the overlay, which is a screen drawn on-top of the current
-      screen, usefull for menus or console, use set_overlay(0) to kill
-      the current overlay */
-  void set_overlay(Screen* s);
-  
-  /** Replace the current overlay with a new one */
   void push_overlay(Screen* s);
-
   void pop_overlay();
+  void clear_overlay();
 
   // Callbacks, FIXME: Could be moved to a seperate class
   void show_fps(int i);
-
-  void menu_start_game();
-  void menu_options();
-  void menu_credits();
-  void menu_quit();
 
 private:
   void poll_events();

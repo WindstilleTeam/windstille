@@ -63,9 +63,10 @@ ScreenManager::ScreenManager()
     do_quit(false)
 {
   screen = 0;
-  overlay_screen = 0;
-  next_overlay_screen = 0;
-  has_next_overlay_screen = false;
+
+  overlay_screen_action = NONE;
+  overlay_screen_screen = 0;
+
   ticks = 0;
 }
 
@@ -99,8 +100,8 @@ ScreenManager::run()
           console.update(step);
           if (!console.is_active())
             {
-              if (overlay_screen)
-                overlay_screen->update(step, InputManager::get_controller());
+              if (!overlay_screens.empty())
+                overlay_screens.back()->update(step, InputManager::get_controller());
               else
                 screen->update(step, InputManager::get_controller());
             }
@@ -115,8 +116,8 @@ ScreenManager::run()
 
       screen->draw();
 
-      if (overlay_screen)
-        overlay_screen->draw();
+      if (!overlay_screens.empty())
+        overlay_screens.back()->draw();
 
       console.draw();
 
@@ -126,13 +127,29 @@ ScreenManager::run()
       SDL_GL_SwapBuffers();
       frame_counter += 1;
 
-      if (has_next_overlay_screen)
+      // Commit any pending screen actions
+      switch(overlay_screen_action)
         {
-          delete overlay_screen;
-          overlay_screen = next_overlay_screen;
-          next_overlay_screen = 0;
-          has_next_overlay_screen = false;
+        case PUSH_SCREEN:
+          overlay_screens.push_back(overlay_screen_screen);
+          break;
+
+        case POP_SCREEN:
+          overlay_screens.pop_back();
+          break;
+
+        case CLEAR_SCREENS:
+          // FIXME: Might be insecure to do this here instead of in the update() loop
+          for(std::vector<Screen*>::iterator i = overlay_screens.begin(); i != overlay_screens.end(); ++i)
+            delete *i;
+          overlay_screens.clear();
+          break;
+
+        case NONE:
+          // nothing
+          break;
         }
+      overlay_screen_action = NONE;
 
       poll_events();
     }
@@ -190,7 +207,7 @@ ScreenManager::poll_events()
                   break;
       
                 case SDLK_F9:
-                  set_overlay(new InputConfigurator());
+                  push_overlay(new InputConfigurator());
                   break;
 
                 case SDLK_F10:
@@ -220,8 +237,8 @@ ScreenManager::poll_events()
                 default:
                   if (!console.is_active())
                     {
-                      if (overlay_screen)
-                        overlay_screen->handle_event(event);
+                      if (!overlay_screens.empty())
+                        overlay_screens.back()->handle_event(event);
                       else
                         screen->handle_event(event);
                     }
@@ -251,13 +268,13 @@ ScreenManager::poll_events()
           if (InputManagerSDL::current())
             InputManagerSDL::current()->on_event(event);
 
-          if (overlay_screen)
-            overlay_screen->handle_event(event);
+          if (!overlay_screens.empty())
+            overlay_screens.back()->handle_event(event);
           break;
         
         default:
-          if (overlay_screen)
-            overlay_screen->handle_event(event);
+          if (!overlay_screens.empty())
+            overlay_screens.back()->handle_event(event);
           else              
             screen->handle_event(event);
           break;
@@ -289,61 +306,28 @@ ScreenManager::set_screen(Screen* s)
 }
 
 void
-ScreenManager::set_overlay(Screen* s)
-{
-  // FIXME: need to delete overlay
-  next_overlay_screen = s;
-  has_next_overlay_screen = true;
-}
-
-void
 ScreenManager::push_overlay(Screen* s)
 {
-  assert(!"Implement me");
+  overlay_screen_action = PUSH_SCREEN;
+  overlay_screen_screen = s;
 }
 
 void
 ScreenManager::pop_overlay()
 {
-  assert(!"Implement me");
+  overlay_screen_action = POP_SCREEN;
+}
+
+void
+ScreenManager::clear_overlay()
+{
+  overlay_screen_action = CLEAR_SCREENS;
 }
 
 void
 ScreenManager::quit()
 {
   do_quit = true;
-}
-
-// Callbacks
-void
-ScreenManager::show_fps(int i)
-{
-  config.set_bool("show-fps", i);
-}
-
-void
-ScreenManager::menu_start_game()
-{
-  set_overlay(0);
-}
-
-void
-ScreenManager::menu_options()
-{
-  console << "Options cliked" << std::endl;
-}
-
-void
-ScreenManager::menu_credits()
-{
-  console << "Credits clicked" << std::endl;
-}
-
-void
-ScreenManager::menu_quit()
-{
-  GameSession::current()->quit();
-  set_overlay(0);
 }
 
 /* EOF */

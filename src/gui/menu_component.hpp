@@ -118,8 +118,9 @@ private:
   Items items;
   int   current_item;
   TTFFont* font;
+  bool allow_cancel;
 public:
-  MenuComponent(const Rectf& rect, Component* parent);
+  MenuComponent(const Rectf& rect, bool allow_cancel_, Component* parent);
   virtual ~MenuComponent();
 
   void add_item(MenuItem* item);
