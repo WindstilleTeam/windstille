@@ -31,6 +31,7 @@
 #include <sqstdio.h> 
 #include <sqstdaux.h> 
 
+#include "menu_manager.hpp"
 #include "font/fonts.hpp"
 #include "sector.hpp"
 #include "console.hpp"
@@ -287,8 +288,7 @@ GameSessionImpl::update(float delta, const Controller& controller)
 
   if(keystate[SDLK_ESCAPE])
     {
-      // FIXME: Display pause/option menu here
-      GameSession::current()->quit();
+      menu_manager.display_pause_menu();
     }
 }
 

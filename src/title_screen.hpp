@@ -29,15 +29,10 @@
 #include "sprite2d/sprite.hpp"
 #include "screen.hpp"
 
-#include <vector>
-#include "signals/slot.hpp"
-
 /** */
 class TitleScreen : public Screen
 {
 private:
-  std::vector<Slot> slots;
-
   Sprite background;
 
 public:
@@ -51,16 +46,6 @@ public:
 
   void handle_event(const SDL_Event& );
 
-  // Callbacks
-  void menu_start_game();
-  void menu_select_scenario();
-  void menu_options();
-  void menu_credits();
-  void menu_quit();
-  void menu_show_fps(int i);
-  void menu_fullscreen(int i);
-
-  void menu_start_scenario(std::string scenario);
 private:
   TitleScreen (const TitleScreen&);
   TitleScreen& operator= (const TitleScreen&);

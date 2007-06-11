@@ -23,42 +23,45 @@
 **  02111-1307, USA.
 */
 
-#include <iostream>
-#include "menu_manager.hpp"
-#include "title_screen.hpp"
+#ifndef HEADER_WINDSTILLE_MENU_MANAGER_HPP
+#define HEADER_WINDSTILLE_MENU_MANAGER_HPP
 
-TitleScreen::TitleScreen()
-{
-  background = Sprite("images/titlescreen.sprite");
-  on_start();
-}
+#include <vector>
+#include "signals/slot.hpp"
 
-TitleScreen::~TitleScreen()
+/** */
+class MenuManager
 {
-}
+private:
+  std::vector<Slot> slots;
 
-void
-TitleScreen::on_start()
-{
-  menu_manager.display_main_menu();
-}
+public:
+  MenuManager();
 
-void
-TitleScreen::draw()
-{
-  background.draw(Vector(0, 0));
-}
+  void display_option_menu();
+  void display_debug_menu();
+  void display_main_menu();
+  void display_pause_menu();
+  void display_scenario_menu();
 
-void
-TitleScreen::update(float delta, const Controller& controller)
-{
-  background.update(delta);
-}
+  // Callbacks
+  void menu_start_game();
+  void menu_credits();
+  void menu_quit();
+  void menu_exit();
+  void menu_show_fps(int i);
+  void menu_fullscreen(int i);
+  void menu_continue();
+  void menu_ambient_light(int i, int component);
+  void menu_start_scenario(std::string scenario);
 
-void
-TitleScreen::handle_event(const SDL_Event& )
-{
-  
-}
+private:
+  MenuManager (const MenuManager&);
+  MenuManager& operator= (const MenuManager&);
+};
+
+extern MenuManager menu_manager;
+
+#endif
 
 /* EOF */

@@ -148,6 +148,7 @@ env.Program('../windstille', [
 'math/quaternion.cpp',
 'math/rect.cpp',
 'math/vector.cpp',
+'menu_manager.cpp',
 'particle_viewer.cpp',
 'particles/particle_system.cpp',
 'particles/spark_drawer.cpp',
