@@ -16,16 +16,16 @@ def Check32bit(context):
 #include <stdio.h>
 int main()
 {
-   printf("%dbits", sizeof(int)*8);
+   printf("%dbits", sizeof(void*)*8);
    return 0;
 }
     """
     context.Message('Checking for bits... ')
     (suc, output) = context.TryRun(check32bit_test_source_file, '.cpp')
     if suc:
-       context.Result(output)
+      context.Result(output)
     else:
-       context.Result(output)
+      context.Result("test error")
     return output
 
 conf = Configure(squirrel_env, custom_tests = { 'Check32bit' : Check32bit })
