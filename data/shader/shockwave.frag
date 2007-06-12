@@ -1,5 +1,7 @@
 // -*- c++ -*-
 
+#extension GL_ARB_texture_rectangle : enable
+
 uniform float radius;
 uniform sampler2D background_tex;
 uniform sampler2D noise_tex;

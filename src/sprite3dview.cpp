@@ -139,7 +139,7 @@ Sprite3DView::update(float delta, const Controller& controller)
 
   Uint8 *keystate = SDL_GetKeyState(NULL);
 
-  if(keystate[SDLK_ESCAPE])
+  if(keystate[SDLK_ESCAPE]) // FIXME: Use cancel button instead
     screen_manager.pop_screen();
 }
 

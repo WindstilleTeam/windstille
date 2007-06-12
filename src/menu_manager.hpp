@@ -43,6 +43,7 @@ public:
   void display_main_menu();
   void display_pause_menu();
   void display_scenario_menu();
+  void display_particle_menu();
   void display_models_menu();
   void display_credits();
   void display_help();
@@ -57,7 +58,7 @@ public:
   void menu_ambient_light(int i, int component);
   void menu_start_scenario(std::string scenario);
   void menu_show_model(std::string scenario);
-
+  void menu_show_particle_system(std::string file);
 private:
   MenuManager (const MenuManager&);
   MenuManager& operator= (const MenuManager&);

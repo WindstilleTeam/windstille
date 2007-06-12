@@ -38,6 +38,7 @@ private:
   Texture       noise;
   ShaderProgram shader_program;
   float radius;
+
 public:
   Shockwave(FileReader& props);
   ~Shockwave();

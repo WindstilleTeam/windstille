@@ -1,5 +1,7 @@
 // -*- c++ -*-
 
+#extension GL_ARB_texture_rectangle : enable
+
 uniform sampler2DRect screen;
 uniform sampler2DRect particles;
 

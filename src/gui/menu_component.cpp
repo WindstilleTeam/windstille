@@ -273,7 +273,10 @@ MenuComponent::update(float delta, const Controller& controller)
           else if (i->button.name == CANCEL_BUTTON)
             {
               if (allow_cancel) // FIXME: Could use a signal instead
-                set_active(false);
+                {
+                  sound_manager->play("sounds/menu_click.wav");
+                  set_active(false);
+                }
             }
         }
       else if (i->type == AXIS_EVENT)

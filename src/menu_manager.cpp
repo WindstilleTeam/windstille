@@ -27,13 +27,14 @@
 #include "console.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
+#include "game_session.hpp"
+#include "gui/group_component.hpp"
 #include "gui/gui_manager.hpp"
+#include "gui/menu_component.hpp"
 #include "gui/root_component.hpp"
 #include "gui/text_view.hpp"
-#include "gui/group_component.hpp"
+#include "particle_viewer.hpp"
 #include "screen_manager.hpp"
-#include "gui/menu_component.hpp"
-#include "game_session.hpp"
 #include "sector.hpp"
 #include "sprite3d/manager.hpp"
 #include "sprite3dview.hpp"
@@ -123,7 +124,7 @@ MenuManager::display_main_menu()
                  "of the License, or (at your option) any later version.");
   manager->get_root()->add_child(text_group);
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400, 230), Sizef(200, 250)),
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400, 200), Sizef(200, 294)),
                                              "",
                                              manager->get_root());
 
@@ -141,6 +142,10 @@ MenuManager::display_main_menu()
   ButtonMenuItem* model_viewer_button = new ButtonMenuItem(menu,  "Model Viewer");
   slots.push_back(model_viewer_button->sig_click().connect(this, &MenuManager::display_models_menu));
   menu->add_item(model_viewer_button);
+
+  ButtonMenuItem* particles_button = new ButtonMenuItem(menu,  "Particle Systems");
+  slots.push_back(particles_button->sig_click().connect(this, &MenuManager::display_particle_menu));
+  menu->add_item(particles_button);
 
   ButtonMenuItem* options_button = new ButtonMenuItem(menu,  "Options");
   slots.push_back(options_button->sig_click().connect(this, &MenuManager::display_option_menu));
@@ -252,7 +257,41 @@ MenuManager::display_models_menu()
 
   screen_manager.push_overlay(manager);  
 }
+
+void
+MenuManager::display_particle_menu()
+{
+  using namespace GUI;
+  GUIManager* manager = new GUIManager();
 
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-200, 300-170), Sizef(400, 340)), 
+                                             "Particle Systems",
+                                             manager->get_root());
+
+  MenuComponent* menu = new MenuComponent(Rectf(), true, group);
+  group->pack(menu);
+
+  menu->set_font(Fonts::vera20);
+
+  std::vector<std::string> scenarios;
+  scenarios.push_back("particlesystems/fire.particles");
+  
+  for(std::vector<std::string>::iterator i = scenarios.begin(); i != scenarios.end(); ++i)
+    {
+      ButtonMenuItem* scenario_button = new ButtonMenuItem(menu,  *i);
+
+      slots.push_back(scenario_button->sig_click().connect<MenuManager, std::string>
+                      (this, &MenuManager::menu_show_particle_system, 
+                       std::string(*i)));
+
+      menu->add_item(scenario_button);
+    }
+
+  manager->get_root()->add_child(group);
+
+  screen_manager.push_overlay(manager); 
+}
+
 void
 MenuManager::display_scenario_menu()
 {
@@ -421,6 +460,16 @@ MenuManager::menu_show_model(std::string model)
 
   // Launching Sprite3DView instead of game
   screen_manager.push_screen(sprite3dview);
+  screen_manager.clear_overlay();
+}
+
+void
+MenuManager::menu_show_particle_system(std::string file)
+{
+  ParticleViewer* particle_viewer = new ParticleViewer();
+  particle_viewer->load(file);
+
+  screen_manager.push_screen(particle_viewer);
   screen_manager.clear_overlay();
 }
 

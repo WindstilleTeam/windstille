@@ -2,6 +2,8 @@
 
 // Shockwave shader, good look version
 
+#extension GL_ARB_texture_rectangle : enable
+
 uniform sampler2DRect background_tex;
 uniform sampler2D noise_tex;
 uniform float     radius;

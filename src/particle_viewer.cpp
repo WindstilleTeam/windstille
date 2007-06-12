@@ -188,6 +188,10 @@ ParticleViewer::update(float delta, const Controller& controller)
           show_gui = true;
           manager->get_root()->get_focus()->set_active(true);
         }
+      else if (controller.button_was_pressed(CANCEL_BUTTON))
+        {
+          screen_manager.pop_screen();
+        }
     }
   else
     {
