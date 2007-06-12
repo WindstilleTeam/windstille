@@ -53,7 +53,7 @@ Player::Player () :
   state(STAND)
 {
   //laser_pointer = new LaserPointer();
-  sprite = Sprite3D("3dsprites/heroken.wsprite");
+  sprite = Sprite3D("models/characters/jane/jane.wsprite");
   pos.x = 320;
   pos.y = 200;
   name = "player";

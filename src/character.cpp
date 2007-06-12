@@ -39,7 +39,7 @@ Character::Character(FileReader& props)
   use_verb = "Talk";
   z_pos = 100.0f;
 
-  std::string sprite3d_filename = "3dsprites/heroken.wsprite";
+  std::string sprite3d_filename = "models/characters/jane/jane.wsprite";
   std::string action_name;
 
   props.get("name", name);
