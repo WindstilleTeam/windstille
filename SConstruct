@@ -86,8 +86,8 @@ opts.Add('CXX', 'The C++ compiler')
 
 env = Environment(options=opts)
 
-env["CACHEDIR"] = "cache/"
-if not os.path.isdir(env['CACHEDIR']): os.mkdir(env['CACHEDIR'])
+# env["CACHEDIR"] = "cache/"
+# if not os.path.isdir(env['CACHEDIR']): os.mkdir(env['CACHEDIR'])
 
 # env.BuildDir('build2', '.')
 

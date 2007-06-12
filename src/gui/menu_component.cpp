@@ -24,6 +24,7 @@
 */
 
 #include <iostream>
+#include "sound/sound_manager.hpp"
 #include "input/controller.hpp"
 #include "menu_component.hpp"
 #include "gui/tab_component.hpp"
@@ -82,6 +83,8 @@ EnumMenuItem::add_pair(int value, const std::string& label)
 void
 EnumMenuItem::incr()
 {
+  sound_manager->play("sounds/menu_click.wav");           
+
   index -= 1;
   if (index < 0)
     index = labels.size()-1;
@@ -91,6 +94,8 @@ EnumMenuItem::incr()
 void
 EnumMenuItem::decr()
 {
+  sound_manager->play("sounds/menu_click.wav");
+
   index += 1;
   if (index >= static_cast<int>(labels.size()))
     index = 0;
@@ -138,6 +143,8 @@ SliderMenuItem::SliderMenuItem(MenuComponent* parent_,
 void
 SliderMenuItem::decr()
 {
+  sound_manager->play("sounds/menu_click.wav");
+
   value += step;
   if (value > max_value)
     value = max_value;
@@ -147,6 +154,8 @@ SliderMenuItem::decr()
 void
 SliderMenuItem::incr()
 {
+  sound_manager->play("sounds/menu_click.wav");
+
   value -= step;
   if (value < min_value)
     value = min_value;
@@ -196,6 +205,8 @@ ButtonMenuItem::ButtonMenuItem(MenuComponent* parent_, const std::string& label_
 void
 ButtonMenuItem::click()
 {
+  sound_manager->play("sounds/menu_click.wav");
+
   on_click();
 }
 
@@ -282,6 +293,8 @@ MenuComponent::update(float delta, const Controller& controller)
             {
               if (i->axis.pos < 0)
                 {
+                  sound_manager->play("sounds/menu_change.wav");
+                                        
                   current_item = current_item - 1;
                   if (current_item < 0)
                     {
@@ -298,6 +311,8 @@ MenuComponent::update(float delta, const Controller& controller)
                 }
               else if (i->axis.pos > 0)
                 {
+                  sound_manager->play("sounds/menu_change.wav");
+
                   if (dynamic_cast<TabComponent*>(parent))
                     {
                       current_item = Math::mid(0, current_item + 1, static_cast<int>(items.size()-1)); 

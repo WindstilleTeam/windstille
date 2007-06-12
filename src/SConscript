@@ -27,6 +27,7 @@
 SConscript("squirrel/SConstruct")
 
 env = Environment(CC = 'gcc',
+                  CXX = 'g++',
                   CCFLAGS = ['-O0', '-Wall', '-Werror', '-g', '-DDEBUG'])
 
 # env.Copy(LIBS = ['a', 'b'])
@@ -34,6 +35,8 @@ env = Environment(CC = 'gcc',
 env.foo = 5
 env.ParseConfig('sdl-config --cflags --libs')
 env.ParseConfig('freetype-config --libs --cflags')
+
+# env['ENV']['LSBCC_SHAREDLIBS'] = 'png2:SDL:SDL_image:vorbis:ogg:openal:physfs'
 
 env.Program('../windstille', [
 'baby_xml.cpp',

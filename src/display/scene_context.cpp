@@ -463,6 +463,7 @@ SceneContext::get_layer(unsigned int type)
 
     default:
       assert(!"SceneContext::get_layer(): Unknown type");
+      return impl->color; // never reached, but makes compiler happy
     }
 }
 

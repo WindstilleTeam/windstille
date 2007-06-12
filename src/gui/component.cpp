@@ -75,12 +75,14 @@ float
 Component::get_prefered_width() const
 {
   assert(!"Implement me");
+  return 100.0f;
 }
 
 float
 Component::get_prefered_height() const
 {
   assert(!"Implement me");
+  return 100.0f;
 }
 
 } // namespace GUI
