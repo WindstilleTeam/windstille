@@ -18,15 +18,20 @@ static const int FORMAT_VERSION = 2;
 
 static inline float read_float(PHYSFS_file* file)
 {
-  uint32_t int_result;
-  if(PHYSFS_readULE32(file, &int_result) == 0) {
+  union {
+    uint32_t i;
+    float    f;
+  } result;
+
+  if(PHYSFS_readULE32(file, &result.i) == 0) {
     std::ostringstream msg;
     msg << "Problem reading float value: " << PHYSFS_getLastError();
     throw std::runtime_error(msg.str());
   }
 
-  // is this platform independent?
-  return * ( reinterpret_cast<float*> (&int_result) );
+  // FIXME: is this platform independent? -> should be, since
+  // endianess is handled in readULE32
+  return result.f;
 }
 
 static inline uint16_t read_uint16_t(PHYSFS_file* file)

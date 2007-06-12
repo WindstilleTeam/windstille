@@ -11,12 +11,16 @@ sources =
   component_factory.cpp
   grid_component.hpp
   grid_component.cpp
+  group_component.hpp
+  group_component.cpp
   gui_manager.hpp
   gui_manager.cpp
   label.cpp
   label.hpp
   list_view.hpp
   list_view.cpp
+  menu_component.hpp
+  menu_component.cpp
   root_component.cpp
   root_component.hpp
   slider.cpp

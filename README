@@ -7,7 +7,7 @@ safety. Windstille is currently available for GNU/Linux and Windows.
 Its webpage at which one might find new versions, source code,
 artworks and more informations is located at:
 
- * http://www.nongnu.org/windstille/
+ * http://windstille.berlios.de/
 
 For informations on how to compile and run Windstille see the file
 INSTALL. Windstille makes use of OpenGL so you will need working
