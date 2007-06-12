@@ -226,7 +226,7 @@ MenuManager::display_models_menu()
   using namespace GUI;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-170), Sizef(500, 340)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 0), Sizef(500, 600)), 
                                              "Select Model",
                                              manager->get_root());
 
@@ -240,8 +240,15 @@ MenuManager::display_models_menu()
   models.push_back("models/characters/jane/jane.wsprite");
   models.push_back("models/characters/yagor/yagor.wsprite");
   models.push_back("models/objects/pistol/pistol.wsprite");
-  models.push_back("models/vehicles/train/train.wsprite");
-  
+  models.push_back("models/vehicles/train/train.wsprite"); 
+  models.push_back("models/characters/powersuit/powersuit.wsprite");
+  models.push_back("models/characters/spider/spider.wsprite");
+  models.push_back("models/objects/grenade/grenade.wsprite");
+  models.push_back("models/vehicles/shuttle/shuttle.wsprite");
+  models.push_back("models/characters/vrdummy/vrdummy.wsprite");
+  models.push_back("models/characters/monster/monster.wsprite");
+  models.push_back("models/characters/sophie/sophie.wsprite");
+
   for(std::vector<std::string>::iterator i = models.begin(); i != models.end(); ++i)
     {
       ButtonMenuItem* scenario_button = new ButtonMenuItem(menu,  *i);

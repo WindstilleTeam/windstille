@@ -9,6 +9,10 @@ artworks and more informations is located at:
 
  * http://windstille.berlios.de/
 
+The latest development version can be optained by:
+
+ $ svn co svn://svn.berlios.de/windstille/trunk/windstille
+
 For informations on how to compile and run Windstille see the file
 INSTALL. Windstille makes use of OpenGL so you will need working
 hardware 3d support.
