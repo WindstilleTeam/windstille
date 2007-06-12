@@ -79,7 +79,7 @@ void save_squirrel_table(HSQUIRRELVM v, int table_idx, lisp::Writer& writer)
 
     switch(sq_gettype(v, -1)) {
       case OT_INTEGER: {
-        int val;
+        SQInteger val;
         sq_getinteger(v, -1, &val);
         writer.write_int(key, val);
         break;

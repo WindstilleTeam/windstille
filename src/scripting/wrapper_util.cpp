@@ -22,7 +22,7 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
       break;
     }
     case OT_INTEGER: {
-      int val;
+      SQInteger val;
       sq_getinteger(v, i, &val);
       os << val;
       break;
@@ -124,9 +124,9 @@ void print_squirrel_stack(HSQUIRRELVM v)
                 printf("null");        
                 break;
             case OT_INTEGER: {
-                int val;
+                SQInteger val;
                 sq_getinteger(v, i, &val);
-                printf("integer (%d)", val);
+                printf("integer (%d)", static_cast<int>(val));
                 break;
             }
             case OT_FLOAT: {

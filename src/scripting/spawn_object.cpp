@@ -27,9 +27,9 @@ void sq_to_lisp(HSQUIRRELVM v, std::vector<Lisp*>& entries)
 {
   switch(sq_gettype(v, -1)) {
     case OT_INTEGER: {
-      int val;
+      SQInteger val;
       sq_getinteger(v, -1, &val);
-      entries.push_back(new Lisp(val));
+      entries.push_back(new Lisp(static_cast<int>(val)));
       break;
     }
     case OT_FLOAT: {
