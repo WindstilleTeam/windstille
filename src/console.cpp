@@ -506,7 +506,7 @@ ConsoleImpl::execute(const std::string& str_)
     if(i>0){
       if(SQ_SUCCEEDED(sq_compilebuffer(vm,buffer,i,_SC("interactive console"),SQTrue))){
         sq_pushroottable(vm);
-        if(SQ_SUCCEEDED(sq_call(vm,1, retval))) 
+        if(SQ_SUCCEEDED(sq_call(vm,1, retval, true))) 
           {
             if (sq_gettype(vm, -1) != OT_NULL)
               console << squirrel2string(vm, -1) << std::endl;

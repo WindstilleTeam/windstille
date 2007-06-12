@@ -99,11 +99,16 @@ Texture::Texture(SDL_Surface* image, GLint glformat)
   impl->height = image->h;
 
   const SDL_PixelFormat* format = image->format;
+
   if(!is_power_of_2(image->w) || !is_power_of_2(image->h))
     throw std::runtime_error("image has no power of 2 size");
+
   if(format->BitsPerPixel != 24 && format->BitsPerPixel != 32)
     throw std::runtime_error("image has not 24 or 32 bit color depth");
 
+  // FIXME: User SDL_ConvertSurface to bring images in the right format
+  // SDL_ConvertSurface(bmp, screen->format, SDL_SWSURFACE);
+  
   try 
     {
       GLint maxt;

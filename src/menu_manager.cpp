@@ -226,7 +226,7 @@ MenuManager::display_models_menu()
   using namespace GUI;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 30), Sizef(500, 540)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-275, 30), Sizef(550, 540)), 
                                              "Select Model",
                                              manager->get_root());
 

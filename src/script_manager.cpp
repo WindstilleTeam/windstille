@@ -115,7 +115,7 @@ ScriptManager::run_script(std::istream& in, const std::string& sourcename)
   already_run_scripts[sourcename] = true;
 
   sq_pushroottable(vm);
-  if(sq_call(vm, 1, false) < 0)
+  if(sq_call(vm, 1, false, true) < 0)
     throw SquirrelError(vm, "Couldn't start script");
 }
 
@@ -130,7 +130,7 @@ ScriptManager::update()
       {
         squirrel_vm.waiting_for_events = WakeupData(NO_EVENT);
         try {
-          if(sq_wakeupvm(squirrel_vm.vm, false, false) < 0) {
+          if(sq_wakeupvm(squirrel_vm.vm, false, false, true) < 0) {
             throw SquirrelError(squirrel_vm.vm, "Couldn't resume script");
           }
         } catch(std::exception& e) {
