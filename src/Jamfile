@@ -15,7 +15,6 @@ SubInclude TOP src signals ;
 SubInclude TOP src sound ;
 SubInclude TOP src sprite2d ;
 SubInclude TOP src sprite3d ;
-SubInclude TOP src squirrel ;
 SubInclude TOP src tinygettext ;
 
 sources = [ Wildcard *.cpp *.hpp ] ;

@@ -180,7 +180,7 @@ env.Program('../windstille', [
 'tinygettext/gettext.cpp',
 'tinygettext/tinygettext.cpp'
 ],
-LIBS    = ['GL', 'GLU', 'squirrel', 'physfs', 'SDL_image', 'openal', 'glew', 'ogg', 'vorbis', 'vorbisfile'] + env['LIBS'],
+LIBS    = ['GL', 'GLU', 'squirrel', 'physfs', 'SDL_image', 'openal', 'glew', 'ogg', 'vorbis', 'vorbisfile', 'png'] + env['LIBS'],
 LIBPATH = ['../lib/'],
 CPPPATH = env['CPPPATH'] + ['.', '..', '../lib/SQUIRREL2/include/', '../lib/glew'])
 
