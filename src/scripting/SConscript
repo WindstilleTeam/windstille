@@ -2,7 +2,7 @@
 
 import SCons
 
-Import(['env', 'miniswig'])
+Import(['miniswig'])
 
 env = Environment(MINISWIG='tools/miniswig/miniswig')
 

@@ -26,10 +26,10 @@
 
 import sys, os
 sys.path.append('scons')
-
+
 def CheckSDL(context, version):
     context.Message( 'Checking for SDL >= %s ...' % version )
-    (ret, outstring) = context.TryAction('sdl-config --version > $TARGET')
+    (ret, outstring) = context.TryAction('sdl-config --version')
     if ret:
         outstring = outstring[0:-1]
         if outstring != version:
@@ -41,7 +41,7 @@ def CheckSDL(context, version):
     else:
         context.Result( ret )
         return ret
-
+
 def CheckPhysFS(context, version):
     optionFile = env['CACHEDIR'] + 'libphysfs.cache.py'
     opts = Options(optionFile)
@@ -80,32 +80,33 @@ def CheckPhysFS(context, version):
     else:
         context.Result('ok (cached)')
         return 1
+
+def Check32bit(context):
+    check32bit_test_source_file = """
+#include <stdio.h>
+int main()
+{
+   printf("%dbit", sizeof(void*)*8);
+   return 0;
+}
+    """
+    context.Message('Checking for bits... ')
+    (suc, output) = context.TryRun(check32bit_test_source_file, '.cpp')
+    if suc:
+      context.Result(output)
+    else:
+      context.Result("test error")
+    return output
 
-opts = Options(['options.cache', 'custom.py'])
-opts.Add('CXX', 'The C++ compiler')
+
+conf_env = Environment()
+conf = Configure(conf_env, custom_tests = { 'Check32bit' : Check32bit })
+if conf.Check32bit() == "64bit":
+  conf.env.Append(CXXFLAGS="-D_SQ64")
+conf_env = conf.Finish()
 
-env = Environment(options=opts)
+Export('conf_env')
 
-# env["CACHEDIR"] = "cache/"
-# if not os.path.isdir(env['CACHEDIR']): os.mkdir(env['CACHEDIR'])
-
-# env.BuildDir('build2', '.')
-
-#if 'configure' in COMMAND_LINE_TARGETS:
-#    conf = Configure( env, custom_tests = { 'CheckSDL' : CheckSDL, 'CheckPhysFS' : CheckPhysFS } )
-#
-#    if not conf.CheckSDL('1.2.8'):
-#        print 'We really need SDL!'
-#        Exit(1)
-#        
-#    if not conf.CheckPhysFS('1.0'):
-#        print "libphysfs missing"
-#        Exit(1)
-#
-#    env = conf.Finish()
-# else:
-
-Export('env')
 SConscript('tools/SConscript')
 SConscript('lib//SConscript')
 SConscript('src/SConscript')
