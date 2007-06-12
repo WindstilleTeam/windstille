@@ -8,7 +8,30 @@ glew = glew_env.Library('glew',
             glob.glob('glew/*.c') +
             glob.glob('glew/*.h'))
 
-squirrel_env = Environment(CPPPATH = ['SQUIRREL2/include'])
+squirrel_env = Environment(CPPPATH = ['SQUIRREL2/include'],
+             CXXFLAGS = ["-fno-rtti"])
+
+def Check32bit(context):
+    check32bit_test_source_file = """
+#include <stdio.h>
+int main()
+{
+   printf("%dbits", sizeof(int)*8);
+   return 0;
+}
+    """
+    context.Message('Checking for bits... ')
+    (suc, output) = context.TryRun(check32bit_test_source_file, '.cpp')
+    if suc:
+       context.Result(output)
+    else:
+       context.Result(output)
+    return output
+
+conf = Configure(squirrel_env, custom_tests = { 'Check32bit' : Check32bit })
+if conf.Check32bit() == "64bits":
+  conf.env.Append(CXXFLAGS="-D_SQ64")
+squirrel_env = conf.Finish()
 
 squirrel_env.Library('squirrel',
             glob.glob('SQUIRREL2/squirrel/*.cpp') +

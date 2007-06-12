@@ -91,23 +91,24 @@ env = Environment(options=opts)
 
 # env.BuildDir('build2', '.')
 
-if 'configure' in COMMAND_LINE_TARGETS:
-    conf = Configure( env, custom_tests = { 'CheckSDL' : CheckSDL, 'CheckPhysFS' : CheckPhysFS } )
+#if 'configure' in COMMAND_LINE_TARGETS:
+#    conf = Configure( env, custom_tests = { 'CheckSDL' : CheckSDL, 'CheckPhysFS' : CheckPhysFS } )
+#
+#    if not conf.CheckSDL('1.2.8'):
+#        print 'We really need SDL!'
+#        Exit(1)
+#        
+#    if not conf.CheckPhysFS('1.0'):
+#        print "libphysfs missing"
+#        Exit(1)
+#
+#    env = conf.Finish()
+# else:
 
-    if not conf.CheckSDL('1.2.8'):
-        print 'We really need SDL!'
-        Exit(1)
-        
-    if not conf.CheckPhysFS('1.0'):
-        print "libphysfs missing"
-        Exit(1)
-
-    env = conf.Finish() 
-else:
-    Export('env')
-    SConscript('tools/SConscript')
-    SConscript('lib//SConscript')
-    SConscript('src/SConscript')
-    SConscript('src/scripting/SConscript')
+Export('env')
+SConscript('tools/SConscript')
+SConscript('lib//SConscript')
+SConscript('src/SConscript')
+SConscript('src/scripting/SConscript')
 
 # EOF #
