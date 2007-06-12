@@ -51,6 +51,11 @@ enum InputEventName
     PAUSE_BUTTON,     // used to pause the game
     AIM_BUTTON,       // used to draw the gun and aim
 
+    // These are not to be used alone, but only as alternatives for
+    // other keys
+    ESCAPE_BUTTON,    // hardcoded to escape key
+    ENTER_BUTTON,     // hardcoded to enter key
+
     LAST_EVENT
   };
 

@@ -92,7 +92,7 @@ ListView::update(float , const Controller& controller)
             {
               // do something with item (scripting callback)
             }
-          else if (i->button.name == CANCEL_BUTTON)
+          else if (i->button.name == CANCEL_BUTTON || i->button.name == ESCAPE_BUTTON)
             {
               set_active(false);
             }

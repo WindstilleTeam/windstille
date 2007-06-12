@@ -53,11 +53,11 @@ TextView::update(float delta, const Controller& controller)
     {
       if (i->type == BUTTON_EVENT && i->button.down)
         {
-          if (i->button.name == OK_BUTTON)
+          if (i->button.name == OK_BUTTON || i->button.name == ENTER_BUTTON)
             {
               set_active(false);
             }
-          else if (i->button.name == CANCEL_BUTTON)
+          else if (i->button.name == CANCEL_BUTTON || i->button.name == ESCAPE_BUTTON)
             {            
               set_active(false);
             }

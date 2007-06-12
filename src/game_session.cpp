@@ -285,14 +285,9 @@ GameSessionImpl::update(float delta, const Controller& controller)
       else
         current_gui = &inventory;
     }
-
-  if(keystate[SDLK_ESCAPE])
+  else if (controller.button_was_pressed(ESCAPE_BUTTON))
     {
       menu_manager.display_pause_menu();
-    }
-  else if(keystate[SDLK_F2])
-    {
-      menu_manager.display_debug_menu();
     }
 }
 
@@ -374,6 +369,10 @@ GameSessionImpl::handle_event(const SDL_Event& event)
                 collision_debug = !collision_debug;
                 console << "Collision Debugging " << (collision_debug ? "enabled" : "disabled") << std::endl;
               }
+              break;
+
+            case SDLK_F2:
+              menu_manager.display_debug_menu();
               break;
         
             default:

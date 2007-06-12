@@ -185,10 +185,12 @@ ParticleViewer::update(float delta, const Controller& controller)
 
       if (controller.button_was_pressed(OK_BUTTON))
         {
-          show_gui = true;
-          manager->get_root()->get_focus()->set_active(true);
+          // FIXME: Disable GUI, since its crashy
+          // show_gui = true;
+          // manager->get_root()->get_focus()->set_active(true);
         }
-      else if (controller.button_was_pressed(CANCEL_BUTTON))
+      else if (controller.button_was_pressed(CANCEL_BUTTON) ||
+               controller.button_was_pressed(ESCAPE_BUTTON))
         {
           screen_manager.pop_screen();
         }

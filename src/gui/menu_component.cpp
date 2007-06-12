@@ -266,11 +266,11 @@ MenuComponent::update(float delta, const Controller& controller)
     {
       if (i->type == BUTTON_EVENT && i->button.down)
         {
-          if (i->button.name == OK_BUTTON)
+          if (i->button.name == OK_BUTTON || i->button.name == ENTER_BUTTON)
             {
               items[current_item]->click();
             }
-          else if (i->button.name == CANCEL_BUTTON)
+          else if (i->button.name == CANCEL_BUTTON || i->button.name == ESCAPE_BUTTON)
             {
               if (allow_cancel) // FIXME: Could use a signal instead
                 {

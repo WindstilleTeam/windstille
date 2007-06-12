@@ -70,7 +70,7 @@ Button::update(float , const Controller& controller)
           if (i->button.name == OK_BUTTON)
             {
             }
-          else if (i->button.name == CANCEL_BUTTON)
+          else if (i->button.name == CANCEL_BUTTON || i->button.name == ESCAPE_BUTTON)
             {            
               set_active(false);
             }

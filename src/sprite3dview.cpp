@@ -135,11 +135,8 @@ Sprite3DView::update(float delta, const Controller& controller)
   rotx += controller.get_axis_state(X2_AXIS) * 50.0f * delta;
   roty += controller.get_axis_state(Y2_AXIS) * 50.0f * delta;
 
-  //std::cout << controller.get_axis_state(Y2_AXIS) << std::endl;
-
-  Uint8 *keystate = SDL_GetKeyState(NULL);
-
-  if(keystate[SDLK_ESCAPE]) // FIXME: Use cancel button instead
+  if (controller.button_was_pressed(ESCAPE_BUTTON) ||
+      controller.button_was_pressed(CANCEL_BUTTON))
     screen_manager.pop_screen();
 }
 

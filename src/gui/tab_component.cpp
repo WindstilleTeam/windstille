@@ -93,11 +93,11 @@ TabComponent::update(float delta, const Controller& controller)
         {
           if (i->type == BUTTON_EVENT && i->button.down)
             {
-              if (i->button.name == OK_BUTTON)
+              if (i->button.name == OK_BUTTON || i->button.name == ENTER_BUTTON)
                 {
                   tabs[current_tab].component->set_active(true);
                 }
-              else if (i->button.name == CANCEL_BUTTON)
+              else if (i->button.name == CANCEL_BUTTON || i->button.name == ESCAPE_BUTTON)
                 {
                   tabs[current_tab].component->set_active(false);
                   set_active(false);
