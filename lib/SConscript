@@ -2,14 +2,14 @@
 
 import glob
 
-glew_env = Environment(CPPPATH = ['glew'])
+glew_env = Environment(CPPPATH = ['glew'], CXXFLAGS = ['-g', '-DDEBUG'])
 
 glew = glew_env.Library('glew',
             glob.glob('glew/*.c') +
             glob.glob('glew/*.h'))
 
 squirrel_env = Environment(CPPPATH = ['SQUIRREL2/include'],
-             CXXFLAGS = ["-fno-rtti"])
+             CXXFLAGS = ["-fno-rtti", "-g", "-DDEBUG"])
 
 def Check32bit(context):
     check32bit_test_source_file = """
