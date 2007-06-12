@@ -2,10 +2,16 @@
 
 import glob
 
-env = Environment(CPPPATH = ['glew'])
+glew_env = Environment(CPPPATH = ['glew'])
 
-glew = env.Library('glew',
+glew = glew_env.Library('glew',
             glob.glob('glew/*.c') +
             glob.glob('glew/*.h'))
+
+squirrel_env = Environment(CPPPATH = ['SQUIRREL2/include'])
+
+squirrel_env.Library('squirrel',
+            glob.glob('SQUIRREL2/squirrel/*.cpp') +
+            glob.glob('SQUIRREL2/sqstdlib/*.cpp'))
 
 # EOF #

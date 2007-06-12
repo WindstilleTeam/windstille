@@ -24,8 +24,6 @@
 ##  02111-1307, USA.
 ##
 
-SConscript("squirrel/SConstruct")
-
 env = Environment(CC = 'gcc',
                   CXX = 'g++',
                   CCFLAGS = ['-O0', '-Wall', '-Werror', '-g', '-DDEBUG'])
@@ -183,7 +181,7 @@ env.Program('../windstille', [
 'tinygettext/tinygettext.cpp'
 ],
 LIBS    = ['GL', 'GLU', 'squirrel', 'physfs', 'SDL_image', 'openal', 'glew', 'ogg', 'vorbis', 'vorbisfile'] + env['LIBS'],
-LIBPATH = ['squirrel/', '../lib/'],
-CPPPATH = env['CPPPATH'] + ['.', '..', 'squirrel/include/', '../lib/glew'])
+LIBPATH = ['../lib/'],
+CPPPATH = env['CPPPATH'] + ['.', '..', '../lib/SQUIRREL2/include/', '../lib/glew'])
 
 # EOF #

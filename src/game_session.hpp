@@ -27,9 +27,9 @@
 #define GAME_SESSION_HXX
 
 #include <string>
+#include <squirrel.h>
 #include "display/scene_context.hpp"
 #include "console.hpp"
-#include "squirrel/include/squirrel.h"
 #include "screen.hpp"
 #include "controller_help_window.hpp"
 #include "sprite2d/sprite.hpp"
