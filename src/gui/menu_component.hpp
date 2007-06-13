@@ -28,8 +28,6 @@
 
 #include <string>
 #include <vector>
-#include "signals/signal_v1.hpp"
-#include "signals/signal_v0.hpp"
 #include "font/fonts.hpp"
 #include "component.hpp"
 
@@ -37,88 +35,30 @@ class TTFFont;
 
 namespace GUI {
 
-class MenuComponent;
-
-class MenuItem {
-public:
-  MenuComponent* parent;
-  std::string label;
+class MenuItem;
 
-  MenuItem(MenuComponent* parent_, const std::string& label_);
-  virtual ~MenuItem() {}
-  virtual void incr() =0;
-  virtual void decr() =0;
-  virtual void click() =0;
-  virtual void draw(const Rectf& rect, bool is_active);
-  virtual void update(float delta);
-};
-
-class EnumMenuItem : public MenuItem {
-private: // FIXME: Convert this into a generic enum/value slider
-  struct EnumValue {
-    std::string label;
-    int         value;
-  };
-  
-  int index;
-  std::vector<EnumValue> labels;
-  Signal_v1<int> on_change;
-public:  
-  EnumMenuItem(MenuComponent* parent_, 
-               const std::string& label_, int index_ = 0);
-  
-  void add_pair(int value, const std::string& label);
-
-  void incr();
-  void decr();
-  void click() {}
-  void draw(const Rectf& rect, bool is_active);
-  void update(float);
-  Signal_v1<int>& sig_change() { return on_change; }
-};
-
-/** A slider widget for use in volume controls, gamma controls and
-    things like that */
-class SliderMenuItem : public MenuItem {
-public:
-  int value;
-  int min_value;
-  int max_value;
-  int step;
-  Signal_v1<int> on_change;
-public:  
-  SliderMenuItem(MenuComponent* parent_, 
-                 const std::string& label_, int value_, int mix_value_ = 0, int max_value_ = 100, int step = 10);
-  void incr();
-  void decr();
-  void click() {}
-  void draw(const Rectf& rect, bool is_active);
-  void update(float);
-  Signal_v1<int>& sig_change() { return on_change; }
-};
-
-class ButtonMenuItem : public MenuItem {
-public:
-  Signal_v0 on_click;
-public:  
-  ButtonMenuItem(MenuComponent* parent_, const std::string& label_);
-  void incr() {}
-  void decr() {}
-  void click();
-  void draw(const Rectf& rect, bool is_active);
-  void update(float);
-  Signal_v0& sig_click() { return on_click; }
-};
-
 /** */
 class MenuComponent : public Component
 {
 private:
   typedef std::vector<MenuItem* > Items;
   Items items;
+
   int   current_item;
   TTFFont* font;
   bool allow_cancel;
+
+  bool scroll_mode;
+  int  scroll_offset;
+  int  num_displayable_items;
+
+  /** Calculate how much height will be needed for the menu */
+  float calc_height();
+
+  /** Return the height of a single item */
+  float item_height() const;
+
+  void adjust_scroll_offset();
 public:
   MenuComponent(const Rectf& rect, bool allow_cancel_, Component* parent);
   virtual ~MenuComponent();

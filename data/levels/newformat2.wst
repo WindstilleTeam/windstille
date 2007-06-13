@@ -223,7 +223,7 @@
     (character
       (name "frank")
       (pos 200 831)
-      (sprite3d "3dsprites/sophie.wsprite")
+      (sprite3d "models/characters/sophie/sophie.wsprite")
     )
     (spider-mine
       (name "spider2")

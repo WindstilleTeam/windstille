@@ -29,203 +29,19 @@
 #include "menu_component.hpp"
 #include "gui/tab_component.hpp"
 #include "display/display.hpp"
+#include "menu_item.hpp"
 #include "math.hpp"
 
 namespace GUI {
-
-MenuItem::MenuItem(MenuComponent* parent_, const std::string& label_)
-  : parent(parent_),
-    label(label_)
-{}
 
-void
-MenuItem::draw(const Rectf& rect, bool is_active)
-{
-  Color font_color;
-  TTFFont* font = parent->get_font();
-  
-  if (is_active) {
-    Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
-    Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
-    font_color = Color(1.0f, 1.0f, 1.0f);
-  } else {
-    //Display::fill_rounded_rect(rect, 5.0f, Color(0.3f, 0.3f, 0.3f, 0.75f));
-    //Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.75f));
-    font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
-  }
-
-  font->draw(rect.left + font->get_height(), rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f,
-             label, font_color);
-      
-}
-
-void
-MenuItem::update(float delta)
-{
-}
-
-EnumMenuItem::EnumMenuItem(MenuComponent* parent_, 
-                           const std::string& label_, int index_)
-  : MenuItem(parent_, label_),
-    index(index_)
-{
-}
-
-void
-EnumMenuItem::add_pair(int value, const std::string& label)
-{
-  EnumValue enum_value;
-  enum_value.value = value;
-  enum_value.label = label;
-  labels.push_back(enum_value);
-}
-
-void
-EnumMenuItem::incr()
-{
-  sound_manager->play("sounds/menu_click.wav");           
-
-  index -= 1;
-  if (index < 0)
-    index = labels.size()-1;
-  on_change(labels[index].value);
-}
-
-void
-EnumMenuItem::decr()
-{
-  sound_manager->play("sounds/menu_click.wav");
-
-  index += 1;
-  if (index >= static_cast<int>(labels.size()))
-    index = 0;
-  on_change(labels[index].value);
-}
-
-void 
-EnumMenuItem::draw(const Rectf& rect, bool is_active)
-{
-  MenuItem::draw(rect, is_active);
-  TTFFont* font = parent->get_font();
-  Color font_color;
-  if (is_active)
-    {
-      font_color = Color(1.0f, 1.0f, 1.0f);
-    }
-  else
-    {
-      font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
-    }
-
-  font->draw(rect.right - font->get_height() - font->get_width(labels[index].label),
-             rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f,
-             labels[index].label,
-             font_color);
-}
-
-void 
-EnumMenuItem::update(float delta)
-{
-  MenuItem::update(delta);
-}
-
-SliderMenuItem::SliderMenuItem(MenuComponent* parent_, 
-                               const std::string& label_,
-                               int value_, int min_value_, int max_value_, int step_) 
-  : MenuItem(parent_, label_),
-    value(value_),
-    min_value(min_value_),
-    max_value(max_value_),
-    step(step_)
-{  
-}
-
-void
-SliderMenuItem::decr()
-{
-  sound_manager->play("sounds/menu_click.wav");
-
-  value += step;
-  if (value > max_value)
-    value = max_value;
-  on_change(value);
-}
-
-void
-SliderMenuItem::incr()
-{
-  sound_manager->play("sounds/menu_click.wav");
-
-  value -= step;
-  if (value < min_value)
-    value = min_value;
-  on_change(value);
-}
-
-void
-SliderMenuItem::draw(const Rectf& rect, bool is_active)
-{
-  MenuItem::draw(rect, is_active);
-  int total_width = 200;
-  int width = total_width * value / (max_value - min_value);
-
-  Color color;
-  if (is_active)
-    {
-      color = Color(1.0f, 1.0f, 1.0f);
-    }
-  else
-    {
-      color = Color(0.75f, 0.75f, 0.75f, 1.0f);
-    }
-
-  Display::fill_rounded_rect(Rectf(Vector(rect.right - 4 - total_width, rect.top + 4),
-                                   Sizef(width, rect.get_height() - 8)), 
-                             5.0f,
-                             Color(0.75f*color.r, 0.75f*color.g, 0.75f*color.b, color.a));
-
-
-  Display::draw_rounded_rect(Rectf(Vector(rect.right - 4 - total_width, rect.top + 4),
-                                   Sizef(total_width, rect.get_height() - 8)), 
-                             5.0f,
-                             color);
-}
-
-void
-SliderMenuItem::update(float delta)
-{
-  MenuItem::update(delta);
-}
-
-ButtonMenuItem::ButtonMenuItem(MenuComponent* parent_, const std::string& label_)
-  : MenuItem(parent_, label_)
-{
-}
-
-void
-ButtonMenuItem::click()
-{
-  sound_manager->play("sounds/menu_click.wav");
-
-  on_click();
-}
-
-void
-ButtonMenuItem::draw(const Rectf& rect, bool is_active)
-{
-  MenuItem::draw(rect, is_active);
-}
-
-void
-ButtonMenuItem::update(float)
-{
-}
-
 MenuComponent::MenuComponent(const Rectf& rect, bool allow_cancel_, Component* parent)
   : Component(rect, parent),
     current_item(0),
     font(Fonts::vera16),
-    allow_cancel(allow_cancel_)
+    allow_cancel(allow_cancel_),
+    scroll_mode(false),
+    scroll_offset(0),
+    num_displayable_items(-1)
 {
 }
 
@@ -241,19 +57,51 @@ void
 MenuComponent::add_item(MenuItem* item)
 {
   items.push_back(item);
+  
+  if (calc_height() >= rect.get_height())
+    {
+      scroll_mode   = true;
+      scroll_offset = 0;
+      num_displayable_items = static_cast<int>(rect.get_height() / item_height());
+    }
 }
 
 void
 MenuComponent::draw()
 {
-  float spacing = 10.0f;
-  float step = font->get_height() + spacing*2.0f;
+  float step = item_height();
 
-  for(Items::size_type i = 0; i < items.size(); ++i)
-    {
-      items[i]->draw(Rectf(rect.left, rect.top + i * step + 2.0f, 
-                           rect.right, rect.top + (i+1) * step - 2.0f), 
-                     is_active() && (int(i) == current_item));
+  if (scroll_mode)
+    { // we can only display a subset of items and have to scroll
+      for(int i = 0; i < num_displayable_items; ++i)
+        {
+          items[i+scroll_offset]->draw(Rectf(rect.left, rect.top + i * step + 2.0f, 
+                                             rect.right - 32, rect.top + (i+1) * step - 2.0f), 
+                                       is_active() && (int(i+scroll_offset) == current_item));
+        }
+      
+      // draw scrollbar
+      float scrollbar_height = (rect.get_height()-4.0f) * num_displayable_items / items.size();
+      float scrollbar_incr   = (rect.get_height()-4.0f) * scroll_offset / items.size();
+
+      Display::fill_rounded_rect(Rectf(rect.right - 24, rect.top + 2.0f + scrollbar_incr,
+                                       rect.right - 2,  rect.top + 2.0f + scrollbar_incr + scrollbar_height),
+                                 5.0f,
+                                 Color(0.5f, 0.5f, 0.5f, 0.75f));
+      
+      Display::draw_rounded_rect(Rectf(rect.right - 24, rect.top + 2.0f,
+                                       rect.right - 2,  rect.bottom - 2.0f),
+                                 5.0f,
+                                 Color(1.0f, 1.0f, 1.0f, 1.0f));
+    }
+  else
+    { // all items fit on the screen
+      for(Items::size_type i = 0; i < items.size(); ++i)
+        {
+          items[i]->draw(Rectf(rect.left, rect.top + i * step + 2.0f, 
+                               rect.right, rect.top + (i+1) * step - 2.0f), 
+                         is_active() && (int(i) == current_item));
+        }
     }
 }
 
@@ -295,7 +143,7 @@ MenuComponent::update(float delta, const Controller& controller)
           else if (i->axis.name == Y_AXIS)
             {
               if (i->axis.pos < 0)
-                {
+                { // up
                   sound_manager->play("sounds/menu_change.wav");
                                         
                   current_item = current_item - 1;
@@ -311,9 +159,11 @@ MenuComponent::update(float delta, const Controller& controller)
                           current_item = static_cast<int>(items.size())-1; 
                         }
                     }
+                  
+                  adjust_scroll_offset();
                 }
               else if (i->axis.pos > 0)
-                {
+                { // down
                   sound_manager->play("sounds/menu_change.wav");
 
                   if (dynamic_cast<TabComponent*>(parent))
@@ -329,6 +179,8 @@ MenuComponent::update(float delta, const Controller& controller)
                         }
 
                     }
+
+                  adjust_scroll_offset();
                 }
             }
         }
@@ -351,10 +203,10 @@ float
 MenuComponent::get_prefered_width() const
 {
   /*
-  float width = 0;
-  for(Items::iterator i = items.begin(); i != items.end(); ++i)
+    float width = 0;
+    for(Items::iterator i = items.begin(); i != items.end(); ++i)
     {
-      width = std::max(get_width())
+    width = std::max(get_width())
     }  */
   return 200; // FIXME:
 }
@@ -364,6 +216,35 @@ MenuComponent::get_prefered_height() const
 {
   float step = font->get_height() + 20.0f;
   return step * items.size();
+}
+
+float
+MenuComponent::calc_height()
+{
+  return items.size() * item_height();
+}
+
+float
+MenuComponent::item_height() const
+{
+  float spacing = 10.0f;
+  return font->get_height() + spacing*2.0f;
+}
+
+void 
+MenuComponent::adjust_scroll_offset()
+{
+  if (scroll_mode)
+    {
+      if (current_item - scroll_offset >= num_displayable_items)
+        { // scrolling down
+          scroll_offset = current_item - (num_displayable_items-1);
+        }
+      else if (current_item < scroll_offset)
+        { // scrolling up
+          scroll_offset = current_item;
+        }
+    }  
 }
 
 } // namespace GUI

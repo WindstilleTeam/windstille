@@ -38,6 +38,7 @@
 #include "sector.hpp"
 #include "sprite3d/manager.hpp"
 #include "sprite3dview.hpp"
+#include "gui/menu_item.hpp"
 #include "menu_manager.hpp"
 
 MenuManager menu_manager;
@@ -97,6 +98,10 @@ MenuManager::display_option_menu()
   difficulty_item->add_pair(1, "medium");
   difficulty_item->add_pair(2, "hard");
   menu->add_item(difficulty_item);
+
+  SliderMenuItem* gamma_item   = new SliderMenuItem(menu,  "Gamma",  100, 10, 200, 10);
+  slots.push_back(gamma_item->sig_change().connect(this, &MenuManager::menu_gamma));
+  menu->add_item(gamma_item);
 
   manager->get_root()->add_child(group);
   group->layout();
@@ -175,7 +180,7 @@ MenuManager::display_pause_menu()
   using namespace GUI;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-200, 300-170), Sizef(400, 340)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-200, 300-170), Sizef(400, 300)), 
                                              "Pause Menu",
                                              manager->get_root());
 
@@ -190,9 +195,9 @@ MenuManager::display_pause_menu()
   slots.push_back(continue_button->sig_click().connect(this, &MenuManager::menu_continue));
   menu->add_item(continue_button);
 
-  ButtonMenuItem* select_scenario_button = new ButtonMenuItem(menu,  "Select Scenario");
-  slots.push_back(select_scenario_button->sig_click().connect(this, &MenuManager::display_scenario_menu));
-  menu->add_item(select_scenario_button);
+  //  ButtonMenuItem* select_scenario_button = new ButtonMenuItem(menu,  "Select Scenario");
+  //  slots.push_back(select_scenario_button->sig_click().connect(this, &MenuManager::display_scenario_menu));
+  // menu->add_item(select_scenario_button);
 
   ButtonMenuItem* options_button = new ButtonMenuItem(menu,  "Options");
   slots.push_back(options_button->sig_click().connect(this, &MenuManager::display_option_menu));
@@ -226,7 +231,7 @@ MenuManager::display_models_menu()
   using namespace GUI;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-275, 30), Sizef(550, 540)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-275, 100), Sizef(550, 376)),  // 378
                                              "Select Model",
                                              manager->get_root());
 
@@ -385,6 +390,8 @@ MenuManager::display_help()
                                              manager->get_root());
 
   TextView* text = new TextView(Rectf(), group);
+  group->pack(text);
+
   text->set_font(Fonts::vera12);
   text->set_text("This is a tech-demo of Windstille. Its not meant "
                  "to be playable in any way except a bit of walking around. "
@@ -408,8 +415,6 @@ MenuManager::display_help()
                  );
   text->set_active(true);
 
-  group->pack(text);
-
   manager->get_root()->add_child(group);
   screen_manager.push_overlay(manager);
 }
@@ -425,6 +430,8 @@ MenuManager::display_credits()
                                              manager->get_root());
 
   TextView* text = new TextView(Rectf(), group);
+  group->pack(text);
+
   text->set_font(Fonts::vera12);
   text->set_text("Programming\n"
                  "===========\n"
@@ -449,8 +456,6 @@ MenuManager::display_credits()
                  "  Ralph Weinert &lt;r.weinert@bluewin.ch&gt;\n"
                  "  Marek Moeckel - Wansti - &lt;wansti@gmx.de&gt;\n");
   text->set_active(true);
-
-  group->pack(text);
 
   manager->get_root()->add_child(group);
   screen_manager.push_overlay(manager);
@@ -546,6 +551,13 @@ MenuManager::menu_ambient_light(int i, int component)
 
       Sector::current()->set_ambient_light(amb);
     }
+}
+
+void
+MenuManager::menu_gamma(int i)
+{
+  float gamma = i / 100.0f;
+  SDL_SetGamma(gamma, gamma, gamma);
 }
 
 /* EOF */

@@ -59,6 +59,7 @@ public:
   void menu_start_scenario(std::string scenario);
   void menu_show_model(std::string scenario);
   void menu_show_particle_system(std::string file);
+  void menu_gamma(int i);
 private:
   MenuManager (const MenuManager&);
   MenuManager& operator= (const MenuManager&);
