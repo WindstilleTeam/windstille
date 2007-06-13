@@ -1,6 +1,13 @@
 Windstille 0.3.0
 ================
- - 
+ - near complete rewrite of the engine
+ - 3D sprites
+ - light effects
+ - particle system
+ - model viewer
+ - menu system
+ - scripting
+
 
 Windstille 0.2.0
 ================

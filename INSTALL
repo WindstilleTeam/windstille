@@ -1,5 +1,26 @@
+Windstille Compilation
+======================
+
+To compile Windstille you need:
+
+ * OpenAL
+ * OpenGL
+ * SDL
+ * SDL_image
+ * freetype
+ * libpng
+ * physfs
+ * boost
+ * scons
+
+In most cases these will come with your distribution.
+
 The game does not support installation right now, just compile with:
 
- % scons
+ $ scons
 
-and run it from inside its source directory.
+and run it from inside its source directory with:
+
+ $ ./windstille
+
+# EOF #

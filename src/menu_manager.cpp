@@ -121,7 +121,7 @@ MenuManager::display_main_menu()
   TextView* text = new TextView(Rectf(), text_group);
   text_group->pack(text);
   text->set_font(Fonts::vera12);
-  text->set_text("Copyright (C) 2007 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
+  text->set_text("Windstille 0.3.0 - Copyright (C) 2007 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
                  "\n"
                  "This program is free software; you can redistribute it and/or "
                  "modify it under the terms of the GNU General Public License "
