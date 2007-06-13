@@ -383,9 +383,9 @@ Player::set_walk(Direction direction)
     velocity.x = -WALK_SPEED;
 
   // start walking sound
-  sound_source.reset(sound_manager->create_sound_source("sounds/steps_dirt.ogg"));
-  sound_source->set_looping(true);
-  sound_source->play();
+  // sound_source.reset(sound_manager->create_sound_source("sounds/steps_dirt.ogg"));
+  // sound_source->set_looping(true);
+  // sound_source->play();
 }
 
 void
@@ -415,7 +415,7 @@ void
 Player::leave_walk()
 {
   // stop walking sound
-  sound_source->stop();
+  // sound_source->stop();
 }
 
 void
@@ -542,9 +542,9 @@ Player::set_run()
   state = RUN;
 
   // start running sound
-  sound_source.reset(sound_manager->create_sound_source("sounds/steps_dirt.ogg"));
-  sound_source->set_looping(true);
-  sound_source->play();
+  // sound_source.reset(sound_manager->create_sound_source("sounds/steps_dirt.ogg"));
+  // sound_source->set_looping(true);
+  // sound_source->play();
 }
 
 void
@@ -565,7 +565,7 @@ Player::update_run()
 void
 Player::leave_run()
 {
-  sound_source->stop();
+  // sound_source->stop();
 }
 
 void
