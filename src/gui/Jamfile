@@ -21,6 +21,8 @@ sources =
   list_view.cpp
   menu_component.hpp
   menu_component.cpp
+  menu_item.hpp
+  menu_item.cpp
   root_component.cpp
   root_component.hpp
   slider.cpp
