@@ -43,7 +43,7 @@ Sprite3DView::Sprite3DView()
 
   rotx  = 0.0f;
   roty  = 0.0f;
-  scale = 1.0f;
+  scale = 2.0f;
 }
 
 Sprite3DView::~Sprite3DView()
@@ -68,9 +68,9 @@ Sprite3DView::draw()
 
   sc.push_modelview();
   sc.translate(Display::get_width()/2, Display::get_height()/2 + 200);
-  sc.scale(3.0f, 3.0f);
-  sc.rotate(rotx, 0.0f, 1.0f, 0.0f);
-  sc.rotate(roty, 1.0f, 0.0f, 0.0f);
+  sc.scale(scale, scale);
+  sc.rotate(roty, 0.0f, 1.0f, 0.0f);
+  sc.rotate(rotx, 1.0f, 0.0f, 0.0f);
   sprite.draw(sc.color(), Vector(0,0), 0); 
   sc.pop_modelview();
 
@@ -112,14 +112,14 @@ Sprite3DView::update(float delta, const Controller& controller)
   //std::cout << "Delta: " << delta << std::endl;
 
   int last_action = current_action;
-  if (controller.axis_was_pressed_up(Y_AXIS))
+  if (controller.button_was_pressed(MENU_DOWN_BUTTON))
     {
       if (current_action == int(actions.size())-1)
         current_action = 0;
       else
         current_action += 1;
     }
-  else if (controller.axis_was_pressed_down(Y_AXIS))
+  else if (controller.button_was_pressed(MENU_UP_BUTTON))
     {
       if (current_action == 0)
         current_action = actions.size()-1;
@@ -127,6 +127,15 @@ Sprite3DView::update(float delta, const Controller& controller)
         current_action -= 1;
     }
 
+  if (controller.get_button_state(PRIMARY_BUTTON))
+    {
+      scale *= 1.0f + 0.3f * delta;
+    }
+  else if (controller.get_button_state(PDA_BUTTON))
+    {
+      scale /= 1.0f + 0.3f * delta;
+    }
+  
   if (last_action != current_action && !actions.empty())
     {
       sprite.set_action(actions[current_action]);
@@ -138,6 +147,12 @@ Sprite3DView::update(float delta, const Controller& controller)
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(CANCEL_BUTTON))
     screen_manager.pop_screen();
+}
+
+void
+Sprite3DView::handle_event(const SDL_Event& )
+{
+  
 }
 
 /* EOF */

@@ -54,6 +54,8 @@ public:
   void update(float delta, const Controller& controller);
 
   void set_model(const std::string& filename);
+  
+  void handle_event(const SDL_Event& );
 
 private:
   Sprite3DView (const Sprite3DView&);

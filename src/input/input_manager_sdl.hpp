@@ -113,6 +113,7 @@ public:
 
   void on_event(const SDL_Event& event);
 
+  void add_axis_event  (int name, float pos);
 private:
   void on_key_event(const SDL_KeyboardEvent& key);
   void on_mouse_button_event(const SDL_MouseButtonEvent& button);

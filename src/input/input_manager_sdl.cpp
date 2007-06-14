@@ -202,6 +202,22 @@ InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
     {
       add_button_event(ESCAPE_BUTTON, event.state);
     }
+  else if (event.keysym.sym == SDLK_LEFT)
+    {
+      add_button_event(MENU_LEFT_BUTTON, event.state);
+    }
+  else if (event.keysym.sym == SDLK_RIGHT)
+    {
+      add_button_event(MENU_RIGHT_BUTTON, event.state);
+    }
+  else if (event.keysym.sym == SDLK_UP)
+    {
+      add_button_event(MENU_UP_BUTTON, event.state);
+    }
+  else if (event.keysym.sym == SDLK_DOWN)
+    {
+      add_button_event(MENU_DOWN_BUTTON, event.state);
+    }
 
   // Dynamic bindings
   for (std::vector<KeyboardButtonBinding>::const_iterator i = impl->keyboard_button_bindings.begin();
@@ -473,6 +489,68 @@ InputManagerSDL::clear_bindings()
   
   impl->keyboard_button_bindings.clear();
   impl->keyboard_axis_bindings.clear();
+}
+
+void
+InputManagerSDL::add_axis_event  (int name, float pos)
+{
+  // Convert analog axis events into digital menu movements
+  // FIXME: add key repeat
+  float click_threshold = 0.5f;
+  float release_threshold = 0.3f;
+
+  // FIXME: need state info
+  float old_pos = controller.get_axis_state(name);
+  if (name == X_AXIS)
+    {
+      if (controller.get_button_state(MENU_LEFT_BUTTON) == 0 &&
+          pos < -click_threshold && old_pos > -click_threshold) 
+        {
+          add_button_event(MENU_LEFT_BUTTON, 1);
+        } 
+      else if (controller.get_button_state(MENU_LEFT_BUTTON) == 1 &&
+               old_pos < -release_threshold && pos > -release_threshold) 
+        {
+          add_button_event(MENU_LEFT_BUTTON, 0);
+        } 
+      
+      else if (controller.get_button_state(MENU_RIGHT_BUTTON) == 0 &&
+               pos > click_threshold && old_pos < click_threshold) 
+        {
+          add_button_event(MENU_RIGHT_BUTTON, 1);
+        } 
+      else  if (controller.get_button_state(MENU_RIGHT_BUTTON) == 1 &&
+                old_pos > release_threshold && pos < release_threshold) 
+        {
+          add_button_event(MENU_RIGHT_BUTTON, 0);
+        }
+    }
+  else if (name == Y_AXIS)
+    {
+      if (controller.get_button_state(MENU_UP_BUTTON) == 0 &&
+          pos < -click_threshold && old_pos > -click_threshold) 
+        {
+          add_button_event(MENU_UP_BUTTON, 1);
+        } 
+      else if (controller.get_button_state(MENU_UP_BUTTON) == 1 &&
+               old_pos < -release_threshold && pos > -release_threshold) 
+        {
+          add_button_event(MENU_UP_BUTTON, 0);
+        }
+
+      else  if (controller.get_button_state(MENU_DOWN_BUTTON) == 0 &&
+                pos > click_threshold && old_pos < click_threshold) 
+        {
+          add_button_event(MENU_DOWN_BUTTON, 1);
+        } 
+      else  if (controller.get_button_state(MENU_DOWN_BUTTON) == 1 &&
+                old_pos > release_threshold && pos < release_threshold) 
+        {
+          add_button_event(MENU_DOWN_BUTTON, 0);
+        }
+    }
+
+  InputManagerImpl::add_axis_event(name, pos);
 }
 
 /* EOF */

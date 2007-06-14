@@ -57,9 +57,6 @@ InputConfigurator::InputConfigurator()
   add_configure_item(ConfigureItem::CONFIGURE_AXIS, Y_AXIS);
   add_configure_item(ConfigureItem::CONFIGURE_AXIS, X_AXIS);
 
-  // add_configure_item(ConfigureItem::CONFIGURE_AXIS, X2_AXIS);
-  // add_configure_item(ConfigureItem::CONFIGURE_AXIS, Y2_AXIS);
-
   print_item();
 
   InputManagerSDL::current()->clear_bindings();

@@ -83,6 +83,12 @@ WindstilleMain::main(int argc, char** argv)
       controller_description.add_button("primary-button",   PRIMARY_BUTTON);
       controller_description.add_button("secondary-button", SECONDARY_BUTTON);
       controller_description.add_button("tertiary-button",  TERTIARY_BUTTON);
+
+      controller_description.add_button("menu-up-button",  MENU_UP_BUTTON);
+      controller_description.add_button("menu-down-button",  MENU_DOWN_BUTTON);
+
+      controller_description.add_button("menu-left-button",  MENU_LEFT_BUTTON);
+      controller_description.add_button("menu-right-button",  MENU_RIGHT_BUTTON);
   
       controller_description.add_button("pda-button", PDA_BUTTON);
       controller_description.add_button("inventory-button", INVENTORY_BUTTON);

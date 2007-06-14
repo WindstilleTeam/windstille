@@ -44,10 +44,10 @@ public:
   const Controller& get_controller() const;
   void clear();
 
-  void add_axis_event  (int name, float pos);
-  void add_ball_event  (int name, float pos);
-  void add_button_event(int name, bool down);
-  void add_keyboard_event(int name, KeyboardEvent::KeyType key_type, int code);
+  virtual void add_axis_event  (int name, float pos);
+  virtual void add_ball_event  (int name, float pos);
+  virtual void add_button_event(int name, bool down);
+  virtual void add_keyboard_event(int name, KeyboardEvent::KeyType key_type, int code);
 private:
   InputManagerImpl(const InputManagerImpl&);
   InputManagerImpl& operator=(const InputManagerImpl&);

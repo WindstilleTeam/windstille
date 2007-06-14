@@ -51,17 +51,22 @@ enum InputEventName
     PAUSE_BUTTON,     // used to pause the game
     AIM_BUTTON,       // used to draw the gun and aim
 
-    // These are not to be used alone, but only as alternatives for
-    // other keys
-    ESCAPE_BUTTON,    // hardcoded to escape key
-    ENTER_BUTTON,     // hardcoded to enter key
+    // Keys for menu navigation, they come with hardcoded defaults for
+    // the keyboard, a joystick might emmit them as well
+    ESCAPE_BUTTON,
+    ENTER_BUTTON,
+
+    MENU_UP_BUTTON,  
+    MENU_DOWN_BUTTON,
+    MENU_LEFT_BUTTON,
+    MENU_RIGHT_BUTTON,
 
     LAST_EVENT
   };
 
 #define JUMP_BUTTON   PRIMARY_BUTTON
-#define RUN_BUTTON    SECONDARY_BUTTON
-#define USE_BUTTON    TERTIARY_BUTTON
+#define RUN_BUTTON    TERTIARY_BUTTON
+#define USE_BUTTON    SECONDARY_BUTTON
 #define OK_BUTTON     PRIMARY_BUTTON
 #define CANCEL_BUTTON SECONDARY_BUTTON
 

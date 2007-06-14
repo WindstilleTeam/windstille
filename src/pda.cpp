@@ -67,37 +67,40 @@ PDA::update(float delta, const Controller& controller)
 {
   const InputEventLst& events = controller.get_events();
   for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i) {
-    if (i->type == AXIS_EVENT && i->axis.name == X_AXIS) {
-      if (i->axis.pos > 0) {
-        state = static_cast<pda_state>(state + 1);
-        if (state > PDA_DIALOGS)
-          state = PDA_OBJECTIVES;
+    if (i->type == BUTTON_EVENT)
+      {
+        if (i->axis.name == MENU_LEFT_BUTTON && i->button.down) 
+          {
+            state = static_cast<pda_state>(state + 1);
+            if (state > PDA_DIALOGS)
+              state = PDA_OBJECTIVES;
+          }
+        else if (i->axis.name == MENU_RIGHT_BUTTON && i->button.down) 
+          {
+            state = static_cast<pda_state>(state - 1);
+            if (state < PDA_OBJECTIVES)
+              state = PDA_DIALOGS;
+          }
       }
-      else if (i->axis.pos < 0) {
-        state = static_cast<pda_state>(state - 1);
-        if (state < PDA_OBJECTIVES)
-          state = PDA_DIALOGS;
-      }
-    }
   }
   
   int width  = 600;
   int height = 400;
   
   switch (state) {
-    case PDA_OBJECTIVES:
-      show_objectives();
-      break;
-    case PDA_DIALOGS:
-      show_dialogs();
-      break;
+  case PDA_OBJECTIVES:
+    show_objectives();
+    break;
+  case PDA_DIALOGS:
+    show_dialogs();
+    break;
   }
  
   if (new_text != old_text) {
     delete text_area;
     text_area = new TextArea(Rect(Point(100,
-                100),
-                Size(width, height)), false);
+                                        100),
+                                  Size(width, height)), false);
     text_area->set_font(Fonts::ttffont);
     text_area->set_text(new_text);
     

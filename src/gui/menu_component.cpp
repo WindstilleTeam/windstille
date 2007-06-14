@@ -118,7 +118,9 @@ MenuComponent::update(float delta, const Controller& controller)
             {
               items[current_item]->click();
             }
-          else if (i->button.name == CANCEL_BUTTON || i->button.name == ESCAPE_BUTTON)
+          else if (i->button.name == CANCEL_BUTTON || 
+                   i->button.name == ESCAPE_BUTTON ||
+                   i->button.name == PAUSE_BUTTON)
             {
               if (allow_cancel) // FIXME: Could use a signal instead
                 {
@@ -126,62 +128,53 @@ MenuComponent::update(float delta, const Controller& controller)
                   set_active(false);
                 }
             }
-        }
-      else if (i->type == AXIS_EVENT)
-        {
-          if (i->axis.name == X_AXIS)
+          else if (i->button.name == MENU_LEFT_BUTTON)
             {
-              if (i->axis.pos < 0)
-                {
-                  items[current_item]->incr();
-                }
-              else if (i->axis.pos > 0)
-                {
-                  items[current_item]->decr();
-                }
+              items[current_item]->incr();              
             }
-          else if (i->axis.name == Y_AXIS)
+          else if (i->button.name == MENU_RIGHT_BUTTON)
             {
-              if (i->axis.pos < 0)
-                { // up
-                  sound_manager->play("sounds/menu_change.wav");
-                                        
-                  current_item = current_item - 1;
-                  if (current_item < 0)
-                    {
-                      if (dynamic_cast<TabComponent*>(parent))
-                        {
-                          current_item = 0;
-                          set_active(false);
-                        }
-                      else
-                        { 
-                          current_item = static_cast<int>(items.size())-1; 
-                        }
-                    }
-                  
-                  adjust_scroll_offset();
-                }
-              else if (i->axis.pos > 0)
-                { // down
-                  sound_manager->play("sounds/menu_change.wav");
-
+              items[current_item]->decr();              
+            }          
+          else if (i->button.name == MENU_UP_BUTTON)
+            {
+              sound_manager->play("sounds/menu_change.wav");
+              
+              current_item = current_item - 1;
+              if (current_item < 0)
+                {
                   if (dynamic_cast<TabComponent*>(parent))
                     {
-                      current_item = Math::mid(0, current_item + 1, static_cast<int>(items.size()-1)); 
+                      current_item = 0;
+                      set_active(false);
                     }
                   else
-                    {
-                      current_item += 1;
-                      if (current_item >= static_cast<int>(items.size()))
-                        {
-                          current_item = 0;
-                        }
+                    { 
+                      current_item = static_cast<int>(items.size())-1; 
+                    }
+                }
+                  
+              adjust_scroll_offset();
+            }
+          else if (i->button.name == MENU_DOWN_BUTTON)
+            {
+              sound_manager->play("sounds/menu_change.wav");
 
+              if (dynamic_cast<TabComponent*>(parent))
+                {
+                  current_item = Math::mid(0, current_item + 1, static_cast<int>(items.size()-1)); 
+                }
+              else
+                {
+                  current_item += 1;
+                  if (current_item >= static_cast<int>(items.size()))
+                    {
+                      current_item = 0;
                     }
 
-                  adjust_scroll_offset();
                 }
+
+              adjust_scroll_offset();
             }
         }
     }

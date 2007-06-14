@@ -198,8 +198,8 @@ GameSessionImpl::update(float delta, const Controller& controller)
   else if (cutscene_value < 0.0f)
     cutscene_value = 0.0f;
 
-  if (controller.button_was_pressed(PAUSE_BUTTON))
-    pause = !pause;
+  // if (controller.button_was_pressed(PAUSE_BUTTON))
+  // pause = !pause;
 
   Uint8 *keystate = SDL_GetKeyState(NULL);
 
@@ -285,7 +285,8 @@ GameSessionImpl::update(float delta, const Controller& controller)
       else
         current_gui = &inventory;
     }
-  else if (controller.button_was_pressed(ESCAPE_BUTTON))
+  else if (controller.button_was_pressed(ESCAPE_BUTTON) ||
+           controller.button_was_pressed(PAUSE_BUTTON))
     {
       menu_manager.display_pause_menu();
     }

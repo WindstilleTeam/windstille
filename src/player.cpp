@@ -231,7 +231,7 @@ Player::set_stand()
 void
 Player::update_walk_stand()
 {
-  if (controller.get_axis_state(Y_AXIS) > 0) {
+  if (controller.get_axis_state(Y_AXIS) > 0.5f) {
     TileMap* tilemap = Sector::current()->get_tilemap2();
     if (tilemap)
       {
@@ -257,7 +257,7 @@ Player::update_walk_stand()
             return;
           }
       }
-  } else if (controller.get_axis_state(Y_AXIS) < 0) {
+  } else if (controller.get_axis_state(Y_AXIS) < -0.5f) {
     TileMap* tilemap = Sector::current()->get_tilemap2();
     if (tilemap)
       {
@@ -290,11 +290,11 @@ Player::update_stairs(float delta)
 {
   assert(contact);
 
-  if (controller.get_axis_state(X_AXIS) < 0 ||
-      controller.get_axis_state(Y_AXIS) > 0)
+  if (controller.get_axis_state(X_AXIS) < -0.5f ||
+      controller.get_axis_state(Y_AXIS) > 0.5f)
     contact->advance(-WALK_SPEED * delta * 0.7f);
-  else if (controller.get_axis_state(X_AXIS) > 0 ||
-           controller.get_axis_state(Y_AXIS) < 0)
+  else if (controller.get_axis_state(X_AXIS) > 0.5f ||
+           controller.get_axis_state(Y_AXIS) < -0.5f)
     contact->advance(WALK_SPEED * delta * 0.7f);
 
   velocity = Vector(0, 0);
@@ -340,7 +340,7 @@ Player::update_stand()
     }
     
   if(controller.button_was_pressed(JUMP_BUTTON)
-     && controller.get_axis_state(Y_AXIS) > 1.0f) 
+     && controller.get_axis_state(Y_AXIS) > 0.5f) 
     {
       set_jump_up_begin();
     } 
@@ -355,14 +355,14 @@ Player::update_stand()
       sprite.set_action("PullGun");
       state = PULL_GUN;
     }
-  else if (controller.get_axis_state(X_AXIS) < 0) 
+  else if (controller.get_axis_state(X_AXIS) < -0.5f) 
     {
       if(get_direction() == WEST)
         set_walk(WEST);
       else
         set_turnaround();
     }
-  else if (controller.get_axis_state(X_AXIS) > 0) 
+  else if (controller.get_axis_state(X_AXIS) > 0.5f) 
     {
       if(get_direction() == EAST)
         set_walk(EAST);
@@ -397,8 +397,8 @@ Player::update_walk()
     return;
   }
 
-  if(get_direction() == WEST && controller.get_axis_state(X_AXIS) > 0
-     || get_direction() == EAST && controller.get_axis_state(X_AXIS) < 0) {
+  if(get_direction() == WEST && controller.get_axis_state(X_AXIS) > 0.5f
+     || get_direction() == EAST && controller.get_axis_state(X_AXIS) < -0.5f) {
     leave_walk();
     set_turnaround();
     return;
@@ -439,11 +439,11 @@ Player::update_ducking()
     return;
   }
   
-  if(!(controller.get_axis_state(Y_AXIS) > 0) && sprite.get_speed() > 0) {
+  if(!(controller.get_axis_state(Y_AXIS) > 0.5f) && sprite.get_speed() > 0) {
     sprite.set_speed(-1.0);
     sprite.set_next_action("Stand");
     state = STAND;
-  } else if(controller.get_axis_state(Y_AXIS) > 0 && sprite.get_speed() < 0) {
+  } else if(controller.get_axis_state(Y_AXIS) > 0.5f && sprite.get_speed() < 0) {
     sprite.set_speed(1.0);
     sprite.set_next_action("Ducking");
   }
@@ -459,7 +459,7 @@ Player::set_ducked()
 void
 Player::update_ducked()
 {
-  if(!controller.get_axis_state(Y_AXIS) > 0) {
+  if(!controller.get_axis_state(Y_AXIS) > 0.5f) {
     state = DUCKING;
     sprite.set_action("StandToDuck", -1.0);
     sprite.set_next_action("Stand");
@@ -486,8 +486,8 @@ Player::update_turnaround()
       set_walk(WEST);
     }
   } 
-  if(sprite.get_rot() && controller.get_axis_state(X_AXIS) > 0
-     || !sprite.get_rot() && controller.get_axis_state(X_AXIS) < 0) {
+  if(sprite.get_rot() && controller.get_axis_state(X_AXIS) > 0.5f
+     || !sprite.get_rot() && controller.get_axis_state(X_AXIS) < -0.5f) {
     sprite.set_speed(-1.0);
     sprite.set_next_action("Walk");
     state = WALK;
