@@ -23,11 +23,16 @@
 **  02111-1307, USA.
 */
 
+#include <math.h>
 #include "input_manager_impl.hpp"
 
 void
 InputManagerImpl::add_axis_event(int name, float pos)
 {
+  // FIXME: Hardcoding a deadzone might not be a good idea
+  if (fabsf(pos) < 0.125f)
+    pos = 0;
+
   InputEvent event;
   event.type = AXIS_EVENT;
   event.axis.name = name;

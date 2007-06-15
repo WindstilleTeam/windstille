@@ -180,8 +180,12 @@ InputManagerSDL::InputManagerSDL(const lisp::Lisp* lisp)
 {
   current_ = this;
 
-  for (int i = 0; i < SDLK_LAST; ++i)
-    impl->keyidmapping[SDL_GetKeyName(static_cast<SDLKey>(i))] = static_cast<SDLKey>(i);
+  for (int i = 0; i < SDLK_LAST; ++i) {
+    char* key_name = SDL_GetKeyName(static_cast<SDLKey>(i));
+    impl->keyidmapping[key_name] = static_cast<SDLKey>(i);
+    // FIXME: Make the keynames somewhere user visible so that users can use them
+    // std::cout << key_name << std::endl;
+  }
 
   parse_config(lisp);
 }
