@@ -23,14 +23,34 @@
 **  02111-1307, USA.
 */
 
+#include "display/display.hpp"
+#include "node.hpp"
+#include "segment.hpp"
 #include "navigation_graph.hpp"
 
 NavigationGraph::NavigationGraph()
 {
+  
 }
 
 NavigationGraph::~NavigationGraph()
 {
+}
+
+Node*
+NavigationGraph::add_node(const Vector& pos)
+{
+  Node* node = new Node(pos);
+  nodes.push_back(node);
+  return node;
+}
+
+Segment*
+NavigationGraph::add_segment(Node* node1, Node* node2)
+{
+  Segment* segment = new Segment(node1, node2);
+  segments.push_back(segment);
+  return segment;
 }
 
 std::vector<Segment*>
@@ -49,6 +69,43 @@ std::vector<Segment*>
 NavigationGraph::find_segments(const Vector& pos, float radius)
 {
   return std::vector<Segment*>();
+}
+
+Node*
+NavigationGraph::find_closest_node(const Vector& pos, float radius)
+{
+  // FIXME: Optimize this with spatial tree thingy
+  Node* node = 0;
+  float min_distance = radius;
+
+  for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
+    {
+      float current_distance = (pos - (*i)->get_pos()).length();
+      if (current_distance < min_distance)
+        {
+          min_distance = current_distance;
+          node = *i;
+        }
+    }
+  
+  return node;
+}
+
+void
+NavigationGraph::draw()
+{
+  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+    {
+      Display::draw_line((*i)->get_node1()->get_pos(),
+                         (*i)->get_node2()->get_pos(),
+                         Color(1.0f, 0.0f, 0.0f));
+    }
+
+  for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
+    {
+      Display::fill_rect(Rectf((*i)->get_pos() - Vector(4,4), Sizef(9, 9)),
+                         Color(1.0f, 1.0f, 0.0f));
+    }
 }
 
 /* EOF */

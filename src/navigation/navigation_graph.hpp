@@ -36,14 +36,20 @@ class Segment;
 class NavigationGraph
 {
 private:
-  std::vector<Node*>    nodes;
-  std::vector<Segment*> segments;
-
+  typedef std::vector<Node*>    Nodes;
+  typedef std::vector<Segment*> Segments;
+  
+  Nodes    nodes;
+  Segments segments;
+  
   // insert some spartial thingy here
 
 public:
   NavigationGraph();
   ~NavigationGraph();
+
+  Node*    add_node(const Vector& pos);
+  Segment* add_segment(Node* node1, Node* node2);
 
   /** Find segments that collide with the given line */
   std::vector<Segment*> find_segments(const Line& line);
@@ -51,9 +57,14 @@ public:
   /** Find nodes that are near the given point */
   std::vector<Node*> find_nodes(const Vector& pos, float radius);
 
+  /** Find the closest node */
+  Node* find_closest_node(const Vector& pos, float radius);
+
   /** Find segments that are near the given point */
   std::vector<Segment*> find_segments(const Vector& pos, float radius);
 
+  /** Draw the navigation graph, for debugging only */
+  void draw();
 private:
   NavigationGraph (const NavigationGraph&);
   NavigationGraph& operator= (const NavigationGraph&);

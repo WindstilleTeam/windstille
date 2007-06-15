@@ -26,9 +26,9 @@
 #ifndef HEADER_SEGMENT_HPP
 #define HEADER_SEGMENT_HPP
 
-class Node;
-
 #include "properties.hpp"
+
+class Node;
 
 /** */
 class Segment
@@ -40,10 +40,14 @@ private:
   Properties props;
 
 public:
+  Segment(Node* node1_, Node* node2_, Properties props_ = 0);
 
   /** Calculate the angle between two segments */
   float angle(Segment* seg);
   
+  Node* get_node1() const { return node1; } 
+  Node* get_node2() const { return node2; } 
+
 private:
   Segment (const Segment&);
   Segment& operator= (const Segment&);

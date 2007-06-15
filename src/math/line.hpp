@@ -51,10 +51,6 @@ public:
 
   /** Calculate if and where two lines intersect */
   bool intersect(const Line& line, Vector& colpos);
-
-private:
-  Line (const Line&);
-  Line& operator= (const Line&);
 };
 
 #endif

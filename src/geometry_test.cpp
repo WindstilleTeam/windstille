@@ -31,82 +31,92 @@
 #include "math/size.hpp"
 #include "controller_def.hpp"
 #include "input/controller.hpp"
+#include "screen_manager.hpp"
 #include "display/display.hpp"
 
 GeometryTest::GeometryTest()
 {
-  cursor = Vector(400, 300);
   point_count = 0;
   had_prev_collision = true;
+
+  line1 = Line(Vector(300, 300),
+               Vector(500, 300));
+
+  line2 = Line(Vector(400, 200),
+               Vector(400, 400));
+
+  cursor  = line1.p1;
+  cursor2 = line1.p2;
 }
 
 void
 GeometryTest::draw()
 {
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   Display::draw_line(line1, Color(0.0f, 1.0f, 0.0f));
   Display::draw_line(line2, Color(0.0f, 1.0f, 0.0f));
 
-  Display::fill_rect(Rectf(cursor - Vector(2,2), Sizef(5,5)), Color(1.0f, 1.0f, 1.0f));
-  Display::fill_rect(Rectf(cursor2 - Vector(2,2), Sizef(5,5)), Color(1.0f, 1.0f, 1.0f));
-  Display::fill_rect(Rectf(collision_point - Vector(2,2), Sizef(5,5)), Color(1.0f, 0.0f, 0.0f));
+  Display::fill_rect(Rectf(cursor - Vector(2,2), Sizef(5,5)),  Color(1.0f, 0.0f, 1.0f));
+  Display::fill_rect(Rectf(cursor2 - Vector(2,2), Sizef(5,5)), Color(1.0f, 1.0f, 0.0f));
 
-  Vector current_point;
-  if (point_count == 0)
-    current_point = line1.p1;
-  else if (point_count == 1)
-    current_point = line1.p2;
-  else if (point_count == 2)
-    current_point = line2.p1;
-  else // (point_count == 3)
-    current_point = line2.p2;
-
-  Display::fill_rect(Rectf(current_point - Vector(2,2), Sizef(5,5)), Color(1.0f, 0.0f, 1.0f));
+  Display::fill_rect(Rectf(collision_point - Vector(3,3), Sizef(7,7)), Color(1.0f, 1.0f, 1.0f));
 }
 
 void
 GeometryTest::update(float delta, const Controller& controller)
 {
+  if (controller.button_was_pressed(ESCAPE_BUTTON) ||
+      controller.button_was_pressed(PAUSE_BUTTON))
+    {
+      screen_manager.pop_screen();
+    }
+
   cursor.x += controller.get_axis_state(X_AXIS) * 500.0f * delta;
   cursor.y += controller.get_axis_state(Y_AXIS) * 500.0f * delta;
 
   cursor2.x += controller.get_axis_state(X2_AXIS) * 500.0f * delta;
   cursor2.y -= controller.get_axis_state(Y2_AXIS) * 500.0f * delta;
 
-  if (controller.button_was_pressed(TERTIARY_BUTTON))
+  if (controller.button_was_pressed(PRIMARY_BUTTON))
     {
+      if (point_count == 0) {
+        cursor  = line2.p1;
+        cursor2 = line2.p2;
+      } else {
+        cursor  = line1.p1;
+        cursor2 = line1.p2;
+      }
+
       point_count += 1;
       if (point_count > 1)
-        point_count = 0;   
+        point_count = 0;
     }
 
-  if (controller.get_button_state(AIM_BUTTON))
-    {
-      if (point_count == 0)
-        {
-          line1.p1 = cursor;
-          line1.p2 = cursor2;
-        }
-      else if (point_count == 1)
-        {
-          line2.p1 = cursor;
-          line2.p2 = cursor2;
-        }
 
-      if (line1.intersect(line2, collision_point))
-        {
-          if (!had_prev_collision)
-            console << "Collision" << std::endl;
-          had_prev_collision = true;
-        }
-      else
-        {
-          if (had_prev_collision)
-            console << "No Collision" << std::endl;
-          had_prev_collision = false;
-          collision_point = Vector(32, 32);
-        }
+  if (point_count == 0)
+    {
+      line1.p1 = cursor;
+      line1.p2 = cursor2;
+    }
+  else if (point_count == 1)
+    {
+      line2.p1 = cursor;
+      line2.p2 = cursor2;
+    }
+
+  if (line1.intersect(line2, collision_point))
+    {
+      if (!had_prev_collision)
+        console << "Collision" << std::endl;
+      had_prev_collision = true;
+    }
+  else
+    {
+      if (had_prev_collision)
+        console << "No Collision" << std::endl;
+      had_prev_collision = false;
+      collision_point = Vector(32, 32);
     }
 }
 

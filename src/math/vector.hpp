@@ -129,6 +129,7 @@ public:
 };
 
 std::ostream& operator<<(std::ostream& s, const Vector& v);
+Vector        operator*(float s, const Vector& v);
 
 #endif
 

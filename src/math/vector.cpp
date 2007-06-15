@@ -41,17 +41,22 @@ Vector::magnitude() const
   return sqrt(x*x + y*y);
 }
 
+Vector
+Vector::rotate(float angle) const
+{
+  float len = magnitude();
+  return Vector(len * cos(angle), len * sin(angle));
+}
+
 std::ostream& operator<<(std::ostream& s, const Vector& v)
 {
   s << "(" << v.x << ", " << v.y << ")";
   return s;
 }
 
-Vector
-Vector::rotate(float angle) const
+Vector operator*(float s, const Vector& v)
 {
-  float len = magnitude();
-  return Vector(len * cos(angle), len * sin(angle));
+  return Vector(v.x * s, v.y * s);
 }
 
 /* EOF */

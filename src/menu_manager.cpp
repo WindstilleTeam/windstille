@@ -39,6 +39,7 @@
 #include "sprite3d/manager.hpp"
 #include "sprite3dview.hpp"
 #include "geometry_test.hpp"
+#include "navigation_test.hpp"
 #include "gui/menu_item.hpp"
 #include "menu_manager.hpp"
 
@@ -144,6 +145,10 @@ MenuManager::display_main_menu()
   ButtonMenuItem* select_scenario_button = new ButtonMenuItem(menu,  "Select Scenario");
   slots.push_back(select_scenario_button->sig_click().connect(this, &MenuManager::display_scenario_menu));
   menu->add_item(select_scenario_button);
+
+  ButtonMenuItem* navigation_test_button = new ButtonMenuItem(menu,  "Navigation Test");
+  slots.push_back(navigation_test_button->sig_click().connect(this, &MenuManager::menu_show_navigation_test));
+  menu->add_item(navigation_test_button);
 
   ButtonMenuItem* geometry_test_button = new ButtonMenuItem(menu,  "Geometry Test");
   slots.push_back(geometry_test_button->sig_click().connect(this, &MenuManager::menu_show_geometry_test));
@@ -562,6 +567,13 @@ void
 MenuManager::menu_show_geometry_test()
 {
   screen_manager.push_screen(new GeometryTest());
+  screen_manager.clear_overlay();  
+}
+
+void
+MenuManager::menu_show_navigation_test()
+{
+  screen_manager.push_screen(new NavigationTest());
   screen_manager.clear_overlay();  
 }
 

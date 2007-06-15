@@ -66,6 +66,7 @@ env.Program('../windstille', [
 'inventory.cpp',
 'laser_pointer.cpp',
 'liquid.cpp',
+'navigation_test.cpp',
 'pda.cpp',
 'physics.cpp',
 'pistol.cpp',

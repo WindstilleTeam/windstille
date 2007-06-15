@@ -42,7 +42,9 @@ private:
   std::vector<Segment*> segments;
 
 public:
-  Node();
+  Node(const Vector& pos_);
+
+  Vector get_pos() const { return pos; }
 
 private:
   Node(const Node&);

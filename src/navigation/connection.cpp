@@ -23,8 +23,50 @@
 **  02111-1307, USA.
 */
 
+#include "segment.hpp"
+#include "node.hpp"
 #include "connection.hpp"
 
+void
+Connection::advance(float& adv, Node*& next_node)
+{
+  Vector p1 = segment->get_node1()->get_pos();
+  Vector p2 = segment->get_node2()->get_pos();
+  
+  float length = (p2 - p1).length();
+  
+  // convert from world co to [0,1] range
+  float adv_01 = adv / length;
 
+  if (adv_01 > 0)
+    {
+      pos += adv_01;
+      if (pos > 1.0f) {
+        adv = (pos - 1.0f) * length;
+        next_node = segment->get_node2();
+      } else {
+        adv = 0;
+      }
+    }
+  else
+    {
+      pos += adv_01;
+      if (pos < 0.0f) {
+        adv = pos * length;
+        next_node = segment->get_node1();
+      } else {
+        adv = 0;
+      }
+    }
+}
+
+Vector
+Connection::get_pos() const
+{
+  Vector p1 = segment->get_node1()->get_pos();
+  Vector p2 = segment->get_node2()->get_pos();
+
+  return p1 + pos*(p2 - p1);
+}
 
 /* EOF */

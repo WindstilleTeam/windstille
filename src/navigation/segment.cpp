@@ -23,8 +23,21 @@
 **  02111-1307, USA.
 */
 
+#include <assert.h>
 #include "segment.hpp"
 
+Segment::Segment(Node* node1_, Node* node2_, Properties props_)
+  : node1(node1_), 
+    node2(node2_),
+    props(props_)
+{
+}
 
+float
+Segment::angle(Segment* seg)
+{
+  assert(!"Implement me");
+  return 0.0f;
+}
 
 /* EOF */

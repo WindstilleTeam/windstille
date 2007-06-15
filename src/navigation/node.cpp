@@ -25,6 +25,11 @@
 
 #include "node.hpp"
 
-
+Node::Node(const Vector& pos_)
+  : pos(pos_)
+    // FIXME: Do something with id
+{
+  
+}
 
 /* EOF */

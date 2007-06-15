@@ -26,6 +26,8 @@
 #ifndef HEADER_CONNECTION_HPP
 #define HEADER_CONNECTION_HPP
 
+#include "math/vector.hpp"
+
 class Segment;
 class Node;
 
@@ -55,7 +57,9 @@ public:
    *
    *  @return The amount of units left when hitting the end of the segment or 0.0f 
    */
-  float advance(float& adv, Node** next_node);
+  void advance(float& adv, Node*& next_node);
+
+  Vector get_pos() const;
   
 private:
   Connection (const Connection&);
