@@ -5,7 +5,7 @@
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -23,45 +23,33 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_VIEW_HXX
-#define HEADER_VIEW_HXX
+#ifndef HEADER_LINE_HPP
+#define HEADER_LINE_HPP
 
-#include "camera.hpp"
-#include "graphic_context_state.hpp"
 #include "math/vector.hpp"
 
-class Controller;
-class SceneContext;
-
-/** This class is the gui component which renders the world to the
-    screen */
-class View
+/** */
+class Line
 {
 private:
-  GraphicContextState state;
-  Camera camera;
-
-  // debugging helpers
-  float zoom;
-  Vector transform;
-
 public:
-  View();
+  Vector p1;
+  Vector p2;
 
-  GraphicContextState get_gc_state() { return state; }
+  Line(const Vector& p1,
+       const Vector& p2);  
+  
+  float length() const;
 
-  /** @return the rectangle which represents the currently visible
-      area, everything outside of it doesn't have to be drawn */
-  Rectf get_clip_rect();
-  Vector screen_to_world(const Vector& point);
+  /** Calculate if and where two lines collide */
+  bool collide(const Line& line, float& a, float& b);
 
-  void draw(SceneContext& gc);
-  void update(float delta, const Controller& controller);
+  /** Calculate if and where two lines collide */
+  bool collide(const Line& line, Vector& colpos);
 
-  static View* current() { return current_; }
-
-protected:
-  static View* current_;
+private:
+  Line (const Line&);
+  Line& operator= (const Line&);
 };
 
 #endif

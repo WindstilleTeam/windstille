@@ -5,7 +5,7 @@
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2007 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -23,45 +23,40 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_VIEW_HXX
-#define HEADER_VIEW_HXX
+#ifndef HEADER_NAVIGATION_GRAPH_HPP
+#define HEADER_NAVIGATION_GRAPH_HPP
 
-#include "camera.hpp"
-#include "graphic_context_state.hpp"
-#include "math/vector.hpp"
+#include <vector>
+#include "math/line.hpp"
 
-class Controller;
-class SceneContext;
+class Node;
+class Segment;
 
-/** This class is the gui component which renders the world to the
-    screen */
-class View
+/** */
+class NavigationGraph
 {
 private:
-  GraphicContextState state;
-  Camera camera;
+  std::vector<Node*>    nodes;
+  std::vector<Segment*> segments;
 
-  // debugging helpers
-  float zoom;
-  Vector transform;
+  // insert some spartial thingy here
 
 public:
-  View();
+  NavigationGraph();
+  ~NavigationGraph();
 
-  GraphicContextState get_gc_state() { return state; }
+  /** Find segments that collide with the given line */
+  std::vector<Segment*> find_segments(const Line& line);
 
-  /** @return the rectangle which represents the currently visible
-      area, everything outside of it doesn't have to be drawn */
-  Rectf get_clip_rect();
-  Vector screen_to_world(const Vector& point);
+  /** Find nodes that are near the given point */
+  std::vector<Node*> find_nodes(const Vector& pos, float radius);
 
-  void draw(SceneContext& gc);
-  void update(float delta, const Controller& controller);
+  /** Find segments that are near the given point */
+  std::vector<Segment*> find_segments(const Vector& pos, float radius);
 
-  static View* current() { return current_; }
-
-protected:
-  static View* current_;
+private:
+  NavigationGraph (const NavigationGraph&);
+  NavigationGraph& operator= (const NavigationGraph&);
 };
 
 #endif

@@ -87,39 +87,26 @@ Conversation::update(float delta, const Controller& controller)
   if (!active)
     return;
 
-  const InputEventLst& events = controller.get_events();
-
-  for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i)
+  if (controller.button_was_pressed(MENU_UP_BUTTON))
     {
-      if (i->type == AXIS_EVENT && i->axis.name == Y_AXIS)
-        {
-          if (i->axis.pos > 0)
-            {
-              selection -= 1;
-              if (selection < 0)
-                selection = choices.size() - 1;
-            }
-          else if (i->axis.pos < 0)
-            {        
-              selection += 1;
-              if (selection >= int(choices.size()))
-                selection = 0;
-            }
-        }
-      else if (i->type == BUTTON_EVENT && i->button.down)
-        {
-          switch (i->button.name)
-            {
-            case OK_BUTTON:
-              active = false;
-              GameSession::current()->get_pda().add_dialog("Jane", choices[selection]);
-              choices.clear();
-              GameSession::current()->set_control_state(GameSession::GAME);
-              script_manager->fire_wakeup_event(ScriptManager::CONVERSATION_CLOSED);
-              return;
-              break;
-            }
-        }
+      selection -= 1;
+      if (selection < 0)
+        selection = choices.size() - 1;
+    }
+  else if (controller.button_was_pressed(MENU_DOWN_BUTTON))
+    {
+      selection += 1;
+      if (selection >= int(choices.size()))
+        selection = 0;
+    }
+  
+  if (controller.button_was_pressed(OK_BUTTON))
+    {
+      active = false;
+      GameSession::current()->get_pda().add_dialog("Jane", choices[selection]);
+      choices.clear();
+      GameSession::current()->set_control_state(GameSession::GAME);
+      script_manager->fire_wakeup_event(ScriptManager::CONVERSATION_CLOSED);
     }
 }
 

@@ -90,6 +90,8 @@ WindstilleMain::main(int argc, char** argv)
       controller_description.add_button("menu-left-button",  MENU_LEFT_BUTTON);
       controller_description.add_button("menu-right-button",  MENU_RIGHT_BUTTON);
   
+      controller_description.add_button("view-center-button", VIEW_CENTER_BUTTON);
+
       controller_description.add_button("pda-button", PDA_BUTTON);
       controller_description.add_button("inventory-button", INVENTORY_BUTTON);
 

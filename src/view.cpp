@@ -62,7 +62,7 @@ View::draw (SceneContext& sc)
 }
 
 void
-View::update (float delta)
+View::update (float delta, const Controller& controller)
 {
   camera.update(delta);
 
@@ -73,18 +73,13 @@ View::update (float delta)
   if (keystate[SDLK_KP_MINUS])
     zoom *= 1.0 - delta;
 
-  if(keystate[SDLK_KP2])
-    transform.y += delta * 200 / zoom;
-  if(keystate[SDLK_KP8])
-    transform.y -= delta * 200 / zoom;
-  if(keystate[SDLK_KP4])
-    transform.x -= delta * 200 / zoom;
-  if(keystate[SDLK_KP6])
-    transform.x += delta * 200 / zoom;
-  if(keystate[SDLK_KP5]){
-    transform = Vector(0, 0);
-    zoom = 1.0;
+  if(controller.get_button_state(VIEW_CENTER_BUTTON)) {
+      transform = Vector(0, 0);
+      zoom = 1.0;
   }
+
+  transform.x += 0.5f * controller.get_axis_state(X2_AXIS) / zoom;
+  transform.y -= 0.5f * controller.get_axis_state(Y2_AXIS) / zoom;
 }
 
 Rectf

@@ -217,7 +217,7 @@ GameSessionImpl::update(float delta, const Controller& controller)
       game_time += delta;
       script_manager->update();
       
-      view.update(delta);
+      view.update(delta, controller);
       sector->update(delta);
   
       switch (fade_state)

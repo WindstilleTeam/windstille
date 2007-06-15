@@ -5,7 +5,7 @@
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -23,46 +23,19 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_VIEW_HXX
-#define HEADER_VIEW_HXX
+#ifndef HEADER_COLLISION_PROPERTIES_HPP
+#define HEADER_COLLISION_PROPERTIES_HPP
 
-#include "camera.hpp"
-#include "graphic_context_state.hpp"
-#include "math/vector.hpp"
+#include <inttypes.h>
 
-class Controller;
-class SceneContext;
-
-/** This class is the gui component which renders the world to the
-    screen */
-class View
-{
-private:
-  GraphicContextState state;
-  Camera camera;
-
-  // debugging helpers
-  float zoom;
-  Vector transform;
-
-public:
-  View();
-
-  GraphicContextState get_gc_state() { return state; }
-
-  /** @return the rectangle which represents the currently visible
-      area, everything outside of it doesn't have to be drawn */
-  Rectf get_clip_rect();
-  Vector screen_to_world(const Vector& point);
-
-  void draw(SceneContext& gc);
-  void update(float delta, const Controller& controller);
-
-  static View* current() { return current_; }
-
-protected:
-  static View* current_;
+enum {
+  WALKABLE = (1<<0),
+  WALL     = (1<<1),
+  LADDER   = (1<<2),
+  STAIRS   = (1<<2),
 };
+
+typedef uint32_t Properties;
 
 #endif
 

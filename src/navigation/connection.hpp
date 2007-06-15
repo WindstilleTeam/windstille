@@ -5,7 +5,7 @@
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2007 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -23,45 +23,43 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_VIEW_HXX
-#define HEADER_VIEW_HXX
+#ifndef HEADER_CONNECTION_HPP
+#define HEADER_CONNECTION_HPP
 
-#include "camera.hpp"
-#include "graphic_context_state.hpp"
-#include "math/vector.hpp"
+class Segment;
+class Node;
 
-class Controller;
-class SceneContext;
-
-/** This class is the gui component which renders the world to the
-    screen */
-class View
+/** 
+ */
+class Connection
 {
-private:
-  GraphicContextState state;
-  Camera camera;
+public:
+  Segment* segment;
 
-  // debugging helpers
-  float zoom;
-  Vector transform;
+  /** Position on the segment, stored with range [0,1], not
+      world-co */
+  float pos;
+
+  /** Move forward \a adv of units in world-co 
+   *  @return The amount of units left when hitting the end of the segment or 0.0f 
+   */
+  float advance_this_segment(float adv);
 
 public:
-  View();
-
-  GraphicContextState get_gc_state() { return state; }
-
-  /** @return the rectangle which represents the currently visible
-      area, everything outside of it doesn't have to be drawn */
-  Rectf get_clip_rect();
-  Vector screen_to_world(const Vector& point);
-
-  void draw(SceneContext& gc);
-  void update(float delta, const Controller& controller);
-
-  static View* current() { return current_; }
-
-protected:
-  static View* current_;
+  /** Move forward \a adv of units in world-co, automatically jump
+   * across segments, unless a end node is hit
+   *
+   * @param adv in: the amount of advancment to be done, out: the
+   * amount of units that wheren't use on the given segment
+   * @param next_segment out: the next segment get written into this
+   *
+   *  @return The amount of units left when hitting the end of the segment or 0.0f 
+   */
+  float advance(float& adv, Node** next_node);
+  
+private:
+  Connection (const Connection&);
+  Connection& operator= (const Connection&);
 };
 
 #endif

@@ -41,6 +41,8 @@ enum InputEventName
 
     X2_AXIS,
     Y2_AXIS, 
+    
+    VIEW_CENTER_BUTTON,
 
     PRIMARY_BUTTON,   // used to ok a dialog or for running
     SECONDARY_BUTTON, // used to cancel a dialog or for jumping

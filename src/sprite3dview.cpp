@@ -141,8 +141,8 @@ Sprite3DView::update(float delta, const Controller& controller)
       sprite.set_action(actions[current_action]);
     }
 
-  rotx += controller.get_axis_state(X2_AXIS) * 50.0f * delta;
-  roty += controller.get_axis_state(Y2_AXIS) * 50.0f * delta;
+  rotx += controller.get_axis_state(Y2_AXIS) * 50.0f * delta;
+  roty += controller.get_axis_state(X2_AXIS) * 50.0f * delta;
 
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(CANCEL_BUTTON))

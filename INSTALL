@@ -23,4 +23,8 @@ and run it from inside its source directory with:
 
  $ ./windstille
 
+Compile on FreeBSD:
+
+<AnMaster> CPPFLAGS="-I/usr/local/include -D_SQ64" CXXFLAGS="-DICONV_CONST=const" LDFLAGS="-lpng -L/usr/local/lib" ./configure --prefix=$HOME/test --with-ogg=/usr/local --with-libOpenAL=/usr/local --with-libphysfs=/usr/local
+
 # EOF #

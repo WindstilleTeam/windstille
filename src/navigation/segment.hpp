@@ -5,7 +5,7 @@
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -23,45 +23,30 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_VIEW_HXX
-#define HEADER_VIEW_HXX
+#ifndef HEADER_SEGMENT_HPP
+#define HEADER_SEGMENT_HPP
 
-#include "camera.hpp"
-#include "graphic_context_state.hpp"
-#include "math/vector.hpp"
+class Node;
 
-class Controller;
-class SceneContext;
+#include "properties.hpp"
 
-/** This class is the gui component which renders the world to the
-    screen */
-class View
+/** */
+class Segment
 {
 private:
-  GraphicContextState state;
-  Camera camera;
-
-  // debugging helpers
-  float zoom;
-  Vector transform;
+  Node* node1;
+  Node* node2;
+  
+  Properties props;
 
 public:
-  View();
 
-  GraphicContextState get_gc_state() { return state; }
-
-  /** @return the rectangle which represents the currently visible
-      area, everything outside of it doesn't have to be drawn */
-  Rectf get_clip_rect();
-  Vector screen_to_world(const Vector& point);
-
-  void draw(SceneContext& gc);
-  void update(float delta, const Controller& controller);
-
-  static View* current() { return current_; }
-
-protected:
-  static View* current_;
+  /** Calculate the angle between two segments */
+  float angle(Segment* seg);
+  
+private:
+  Segment (const Segment&);
+  Segment& operator= (const Segment&);
 };
 
 #endif

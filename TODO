@@ -1,3 +1,4 @@
+- implement proper dead-zone in input handling
 - shrink textures: a lot!
 - collision detection
 - virtual tiles in the editor

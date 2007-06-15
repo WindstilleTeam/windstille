@@ -5,7 +5,7 @@
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -23,45 +23,30 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_VIEW_HXX
-#define HEADER_VIEW_HXX
+#ifndef HEADER_NAVIGATION_NODE_HPP
+#define HEADER_NAVIGATION_NODE_HPP
 
-#include "camera.hpp"
-#include "graphic_context_state.hpp"
+#include <vector>
 #include "math/vector.hpp"
 
-class Controller;
-class SceneContext;
+class Segment;
 
-/** This class is the gui component which renders the world to the
-    screen */
-class View
+/** */
+class Node
 {
 private:
-  GraphicContextState state;
-  Camera camera;
-
-  // debugging helpers
-  float zoom;
-  Vector transform;
+  int    id;
+  Vector pos;
+  
+  /** Segments connected to this node */
+  std::vector<Segment*> segments;
 
 public:
-  View();
+  Node();
 
-  GraphicContextState get_gc_state() { return state; }
-
-  /** @return the rectangle which represents the currently visible
-      area, everything outside of it doesn't have to be drawn */
-  Rectf get_clip_rect();
-  Vector screen_to_world(const Vector& point);
-
-  void draw(SceneContext& gc);
-  void update(float delta, const Controller& controller);
-
-  static View* current() { return current_; }
-
-protected:
-  static View* current_;
+private:
+  Node(const Node&);
+  Node& operator=(const Node&);
 };
 
 #endif

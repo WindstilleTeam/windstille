@@ -1,3 +1,8 @@
+Windstille 0.3.1
+================
+ - fixed crash when sound is disabled
+ - more solid gamepad support
+
 Windstille 0.3.0
 ================
  - near complete rewrite of the engine
