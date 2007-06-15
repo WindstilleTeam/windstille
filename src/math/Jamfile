@@ -1,19 +1,6 @@
 SubDir TOP src math ;
 
-sources = matrix.hpp
-          matrix.cpp
-          origin.hpp
-          origin.cpp
-          point.hpp
-          quaternion.hpp
-          quaternion.cpp
-          rect.hpp
-          rect.cpp
-          size.hpp
-          vector.hpp
-          vector.cpp
-	  vector3.hpp
-;
+sources = [ Wildcard *.cpp *.hpp ] ;
 
 TRANSLATABLE_SOURCES = [ SearchSource $(sources) ] ;
 math_objects = [ CompileObjects $(sources) ] ;

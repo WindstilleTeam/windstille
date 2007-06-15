@@ -1,13 +1,6 @@
 SubDir TOP src sprite3d ;
 
-sources =
-  data.cpp
-  data.hpp
-  manager.cpp
-  manager.hpp
-  sprite3d.cpp
-  sprite3d.hpp
-;
+sources = [ Wildcard *.cpp *.hpp ] ;
 
 TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
 sprite3d_objects = [ CompileObjects $(sources) ] ;

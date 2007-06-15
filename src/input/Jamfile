@@ -1,21 +1,6 @@
 SubDir TOP src input ;
 
-sources =
-    controller.cpp
-    controller.hpp
-    controller_description.cpp
-    controller_description.hpp
-    input_configurator.hpp
-    input_configurator.cpp
-    input_event.hpp
-    input_manager.cpp
-    input_manager.hpp
-    input_manager_impl.cpp
-    input_manager_impl.hpp
-    input_manager_sdl.cpp
-    input_manager_sdl.hpp
-
-;
+sources = [ Wildcard *.cpp *.hpp ] ;
 
 TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
 input_objects = [ CompileObjects $(sources) ] ;

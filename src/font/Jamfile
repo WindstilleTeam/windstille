@@ -1,14 +1,6 @@
 SubDir TOP src font ;
 
-sources = 
-  border_font_effect.hpp
-  border_font_effect.cpp
-  font_effect.hpp
-  fonts.hpp
-  fonts.cpp
-  ttf_font.cpp
-  ttf_font.hpp
-;
+sources = [ Wildcard *.cpp *.hpp ] ;
 
 TRANSLATABLE_SOURCES = [ SearchSource $(sources) ] ;
 font_objects = [ CompileObjects $(sources) ] ;

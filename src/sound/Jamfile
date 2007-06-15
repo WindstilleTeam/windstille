@@ -1,15 +1,6 @@
 SubDir TOP src sound ;
 
-sources =
-    sound_file.cpp
-    sound_file.hpp
-    sound_manager.cpp
-    sound_manager.hpp
-    sound_source.cpp
-    sound_source.hpp
-    stream_sound_source.cpp
-    stream_sound_source.hpp
-;
+sources = [ Wildcard *.cpp *.hpp ] ;
 
 TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
 sound_objects = [ CompileObjects $(sources) ] ;

@@ -1,25 +1,6 @@
 SubDir TOP src objects ;
 
-sources =
-  background_gradient.cpp
-  background_gradient.hpp
-  bomb.cpp
-  bomb.hpp
-  hedgehog.cpp
-  hedgehog.hpp
-  nightvision.cpp
-  nightvision.hpp
-  shockwave.cpp
-  shockwave.hpp
-  spider_mine.cpp
-  spider_mine.hpp
-  swarm.cpp
-  swarm.hpp
-  test_object.cpp
-  test_object.hpp
-  vrdummy.cpp
-  vrdummy.hpp
-;
+sources = [ Wildcard *.cpp *.hpp ] ;
 
 TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
 objects_objects = [ CompileObjects $(sources) ] ;
