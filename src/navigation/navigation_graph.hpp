@@ -60,6 +60,8 @@ public:
   /** Find the closest node */
   Node* find_closest_node(const Vector& pos, float radius);
 
+  Segment* find_closest_segment(const Vector& pos, float radius);
+
   /** Find segments that are near the given point */
   std::vector<Segment*> find_segments(const Vector& pos, float radius);
 

@@ -91,6 +91,26 @@ NavigationGraph::find_closest_node(const Vector& pos, float radius)
   return node;
 }
 
+Segment*
+NavigationGraph::find_closest_segment(const Vector& pos, float radius)
+{
+  Segment* segment   = 0;
+  float min_distance = radius;
+
+  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+    {
+      float current_distance = Line((*i)->get_node1()->get_pos(),
+                                    (*i)->get_node2()->get_pos()).distance(pos);
+      if (current_distance < min_distance)
+        {
+          min_distance = current_distance;
+          segment = *i;
+        }
+    }
+
+  return segment;
+}
+
 void
 NavigationGraph::draw()
 {

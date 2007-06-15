@@ -38,7 +38,7 @@ Line::length() const
 }
 
 bool
-Line::intersect(const Line& line, float& ua, float& ub)
+Line::intersect(const Line& line, float& ua, float& ub) const
 {
   const float& x1 = p1.x;
   const float& y1 = p1.y;
@@ -62,7 +62,7 @@ Line::intersect(const Line& line, float& ua, float& ub)
 }
 
 bool
-Line::intersect(const Line& line, Vector& colpos)
+Line::intersect(const Line& line, Vector& colpos) const
 {
   float ua, ub;
   bool do_collide = intersect(line, ua, ub);
@@ -70,6 +70,39 @@ Line::intersect(const Line& line, Vector& colpos)
   colpos = p1 + ((p2 - p1) * ua);
 
   return do_collide;
+}
+
+float
+Line::distance(const Vector& p3) const
+{
+  const float& x1 = p1.x;
+  const float& y1 = p1.y;
+
+  const float& x2 = p2.x;
+  const float& y2 = p2.y;
+  
+  const float& x3 = p3.x;
+  const float& y3 = p3.y;
+
+  float u =
+    ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1)) /
+    length() * length();
+  
+  if (u < 0.0f)
+    {
+      return (p1 - p3).length();
+    }
+  else if (u > 1.0f)
+    {
+      return (p2 - p3).length();
+    }
+  else // (u >= 0.0f && u <= 1.0f)
+    {
+      Vector p4(x1 + u * (x2 - x1),
+                y1 + u * (y2 - y2));
+
+      return (p3 - p4).length();
+    }
 }
 
 /* EOF */

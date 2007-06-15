@@ -5,7 +5,7 @@
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2007 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -23,37 +23,31 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_SEGMENT_HPP
-#define HEADER_SEGMENT_HPP
+#ifndef HEADER_NAVIGATION_TEST_HPP
+#define HEADER_NAVIGATION_TEST_HPP
 
-#include "math/line.hpp"
-#include "properties.hpp"
+#include "screen.hpp"
 
-class Node;
+class NavigationGraph;
+class Connection;
 
 /** */
-class Segment
+class NavigationTest : public Screen
 {
 private:
-  Node* node1;
-  Node* node2;
-  
-  Properties props;
+  Vector cursor;
+  NavigationGraph* graph;
+  Connection* connection;
 
 public:
-  Segment(Node* node1_, Node* node2_, Properties props_ = 0);
+  NavigationTest();
 
-  /** Calculate the angle between two segments */
-  float angle(Segment* seg);
-  
-  Node* get_node1() const { return node1; } 
-  Node* get_node2() const { return node2; } 
-
-  Line get_line() const;
+  void draw();
+  void update(float delta, const Controller& controller);
 
 private:
-  Segment (const Segment&);
-  Segment& operator= (const Segment&);
+  NavigationTest (const NavigationTest&);
+  NavigationTest& operator= (const NavigationTest&);
 };
 
 #endif

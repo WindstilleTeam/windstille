@@ -24,6 +24,7 @@
 */
 
 #include <assert.h>
+#include "node.hpp"
 #include "segment.hpp"
 
 Segment::Segment(Node* node1_, Node* node2_, Properties props_)
@@ -38,6 +39,13 @@ Segment::angle(Segment* seg)
 {
   assert(!"Implement me");
   return 0.0f;
+}
+
+Line
+Segment::get_line() const
+{
+  return Line(node1->get_pos(),
+              node2->get_pos());
 }
 
 /* EOF */

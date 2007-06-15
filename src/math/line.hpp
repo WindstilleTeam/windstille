@@ -47,10 +47,13 @@ public:
    *  @param a  
    *  @param b 
    */
-  bool intersect(const Line& line_b, float& ua, float& ub);
+  bool intersect(const Line& line_b, float& ua, float& ub) const;
 
   /** Calculate if and where two lines intersect */
-  bool intersect(const Line& line, Vector& colpos);
+  bool intersect(const Line& line, Vector& colpos) const;
+
+  /** Calculate the minimal distance between this line and the point p */
+  float distance(const Vector& p) const;
 };
 
 #endif
