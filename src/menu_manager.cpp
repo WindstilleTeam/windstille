@@ -58,7 +58,7 @@ MenuManager::display_option_menu()
                                              "Options",
                                              manager->get_root());
 
-  // Begin Main Menu
+  // Begin Menu
   MenuComponent* menu = new MenuComponent(Rectf(), true,
                                           group);
   group->pack(menu);
@@ -130,11 +130,11 @@ MenuManager::display_main_menu()
                  "of the License, or (at your option) any later version.");
   manager->get_root()->add_child(text_group);
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-50, 200), Sizef(300, 294)),
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-25, 200), Sizef(250, 294)),
                                              "",
                                              manager->get_root());
 
-  // Begin Main Menu
+  // Begin Menu
   MenuComponent* menu = new MenuComponent(Rectf(), false,
                                           group);
   group->pack(menu);
@@ -189,7 +189,7 @@ MenuManager::display_pause_menu()
                                              "Pause Menu",
                                              manager->get_root());
 
-  // Begin Main Menu
+  // Begin Menu
   MenuComponent* menu = new MenuComponent(Rectf(Vector(400-150, 200), Sizef(300, 500)), true,
                                           group);
   group->pack(menu);
@@ -359,7 +359,7 @@ MenuManager::display_debug_menu()
                                              "Debug",
                                              manager->get_root());
 
-  // Begin Main Menu
+  // Begin Menu
   MenuComponent* menu = new MenuComponent(Rectf(), true, group);
   group->pack(menu);
 

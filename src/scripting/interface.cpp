@@ -25,6 +25,7 @@
 
 #include <vector>
 #include "wrapper.interface.hpp"
+#include "util.hpp"
 #include "interface.hpp"
 #include "sound/sound_manager.hpp"
 #include "game_session.hpp"
@@ -33,7 +34,6 @@
 #include "script_manager.hpp"
 #include "sector.hpp"
 #include "font/fonts.hpp"
-#include "serialize.hpp"
 #include "camera.hpp"
 #include "config.hpp"
 #include "pda.hpp"
@@ -317,6 +317,26 @@ void render_mask_set(int mask)
   GameSession::current()->get_scene_context()->set_render_mask(mask);
 }
 
+SQInteger spawn_object(HSQUIRRELVM v)
+{
+  using namespace lisp;
+  
+  const char* objname;
+  sq_getstring(v, 2, &objname);
+
+  std::vector<lisp::Lisp*> entries;
+  entries.push_back(new Lisp(Lisp::TYPE_SYMBOL, objname));
+  table_to_lisp(v, 3, entries);
+  std::auto_ptr<Lisp> lisp (new Lisp(entries));
+  try {
+    Sector::current()->add_object(objname, lisp.get());
+  } catch(std::exception& e) {
+    std::cerr << "Error parsing object in spawn_object: " << e.what()
+      << "\n";
+  }
+
+  return 0;
+}
 
 } // namespace Scripting
 

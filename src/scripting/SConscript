@@ -8,7 +8,7 @@ env = Environment(MINISWIG='tools/miniswig/miniswig')
 
 env.Depends(env.Command('miniswig.tmp', 'wrapper.interface.hpp',
                         ["cpp -x c  -CC $SOURCE -o $TARGET -DSCRIPTING_API"]),
-            ['interface.hpp', 'spawn_object.hpp', 'game_objects.hpp'])
+            ['interface.hpp', 'game_objects.hpp'])
 
 env.Depends(env.Command(['wrapper.cpp', 'wrapper.hpp'], 'miniswig.tmp',
                         ["$MINISWIG  --input $SOURCE --output-cpp ${TARGETS[0]} --output-hpp ${TARGETS[1]} --module windstille --select-namespace Scripting"]),

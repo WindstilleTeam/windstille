@@ -14,7 +14,7 @@
 #include "console.hpp"
 #include "timer.hpp"
 #include "scripting/wrapper.hpp"
-#include "scripting/wrapper_util.hpp"
+#include "scripting/util.hpp"
 #include "scripting/squirrel_error.hpp"
 #include "physfs/physfs_stream.hpp"
 

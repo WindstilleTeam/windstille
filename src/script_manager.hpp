@@ -8,7 +8,7 @@
 #include <iostream>
 #include "timer.hpp"
 #include "scripting/wrapper.hpp"
-#include "scripting/wrapper_util.hpp"
+#include "scripting/util.hpp"
 
 /**
  * This class is responsible for managing all running squirrel threads

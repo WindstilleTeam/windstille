@@ -4,5 +4,4 @@
 #endif
 
 #include "interface.hpp"
-#include "spawn_object.hpp"
 #include "game_objects.hpp"

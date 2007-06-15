@@ -45,7 +45,7 @@
 #include "dialog_manager.hpp"
 #include "windstille_main.hpp"
 #include "display/scene_context.hpp"
-#include "scripting/wrapper_util.hpp"
+#include "scripting/util.hpp"
 #include "scripting/wrapper.hpp"
 #include "input/input_manager.hpp"
 #include "particles/particle_system.hpp"
