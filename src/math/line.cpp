@@ -37,4 +37,39 @@ Line::length() const
   return (p2 - p1).length();
 }
 
+bool
+Line::intersect(const Line& line, float& ua, float& ub)
+{
+  const float& x1 = p1.x;
+  const float& y1 = p1.y;
+
+  const float& x2 = p2.x;
+  const float& y2 = p2.y;
+  
+  const float& x3 = line.p1.x;
+  const float& y3 = line.p1.y;
+
+  const float& x4 = line.p2.x;
+  const float& y4 = line.p2.y;
+
+  float quotient = ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+
+  ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / quotient;
+  ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / quotient;
+
+  return (ua >= 0.0f && ua <= 1.0f &&
+          ub >= 0.0f && ub <= 1.0f);
+}
+
+bool
+Line::intersect(const Line& line, Vector& colpos)
+{
+  float ua, ub;
+  bool do_collide = intersect(line, ua, ub);
+
+  colpos = p1 + ((p2 - p1) * ua);
+
+  return do_collide;
+}
+
 /* EOF */

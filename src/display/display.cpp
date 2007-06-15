@@ -42,6 +42,12 @@ std::vector<Rect> Display::cliprects;
 std::vector<Framebuffer> framebuffers;
 
 void
+Display::draw_line(const Line& line, const Color& color)
+{
+  draw_line(line.p1, line.p2, color);
+}
+
+void
 Display::draw_line(const Vector& pos1, const Vector& pos2, const Color& color)
 {
   OpenGLState state;

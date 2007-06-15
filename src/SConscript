@@ -60,6 +60,7 @@ env.Program('../windstille', [
 'game_object.cpp',
 'game_session.cpp',
 'globals.cpp',
+'geometry_test.cpp',
 'graphic_context_state.cpp',
 'grenade.cpp',
 'inventory.cpp',

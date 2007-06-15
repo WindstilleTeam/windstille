@@ -29,6 +29,7 @@
 #include <vector>
 #include <SDL.h>
 #include "math/rect.hpp"
+#include "math/line.hpp"
 #include "color.hpp"
 #include "display/framebuffer.hpp"
 
@@ -45,6 +46,7 @@ public:
   static void fill_rounded_rect(const Rectf& rect, float radius, const Color& color);
   static void draw_rounded_rect(const Rectf& rect, float radius, const Color& color);
 
+  static void draw_line(const Line& line, const Color& color);
   static void draw_line(const Vector& pos1, const Vector& pos2, const Color& color);
 
   static void draw_circle(const Vector& pos, float radius, const Color& color);

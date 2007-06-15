@@ -58,6 +58,7 @@ public:
   void menu_ambient_light(int i, int component);
   void menu_start_scenario(std::string scenario);
   void menu_show_model(std::string scenario);
+  void menu_show_geometry_test();
   void menu_show_particle_system(std::string file);
   void menu_gamma(int i);
 private:

@@ -38,6 +38,7 @@
 #include "sector.hpp"
 #include "sprite3d/manager.hpp"
 #include "sprite3dview.hpp"
+#include "geometry_test.hpp"
 #include "gui/menu_item.hpp"
 #include "menu_manager.hpp"
 
@@ -143,6 +144,10 @@ MenuManager::display_main_menu()
   ButtonMenuItem* select_scenario_button = new ButtonMenuItem(menu,  "Select Scenario");
   slots.push_back(select_scenario_button->sig_click().connect(this, &MenuManager::display_scenario_menu));
   menu->add_item(select_scenario_button);
+
+  ButtonMenuItem* geometry_test_button = new ButtonMenuItem(menu,  "Geometry Test");
+  slots.push_back(geometry_test_button->sig_click().connect(this, &MenuManager::menu_show_geometry_test));
+  menu->add_item(geometry_test_button);
 
   ButtonMenuItem* model_viewer_button = new ButtonMenuItem(menu,  "Model Viewer");
   slots.push_back(model_viewer_button->sig_click().connect(this, &MenuManager::display_models_menu));
@@ -551,6 +556,13 @@ MenuManager::menu_ambient_light(int i, int component)
 
       Sector::current()->set_ambient_light(amb);
     }
+}
+
+void
+MenuManager::menu_show_geometry_test()
+{
+  screen_manager.push_screen(new GeometryTest());
+  screen_manager.clear_overlay();  
 }
 
 void

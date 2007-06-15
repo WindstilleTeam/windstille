@@ -5,7 +5,7 @@
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2007 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -23,38 +23,36 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_LINE_HPP
-#define HEADER_LINE_HPP
+#ifndef HEADER_GEOMETRY_TEST_HPP
+#define HEADER_GEOMETRY_TEST_HPP
 
+#include "screen.hpp"
 #include "math/vector.hpp"
+#include "math/line.hpp"
 
 /** */
-class Line
+class GeometryTest : public Screen
 {
 private:
+  Vector cursor;
+  Vector cursor2;
+  Vector collision_point;
+
+  int point_count;
+
+  Line line1;
+  Line line2;
+  bool had_prev_collision;
+
 public:
-  Vector p1;
-  Vector p2;
+  GeometryTest();
 
-  Line() {}
-  
-  Line(const Vector& p1,
-       const Vector& p2);  
-  
-  float length() const;
-
-  /** Calculate if and where two lines intersect
-   *  @param a  
-   *  @param b 
-   */
-  bool intersect(const Line& line_b, float& ua, float& ub);
-
-  /** Calculate if and where two lines intersect */
-  bool intersect(const Line& line, Vector& colpos);
+  void draw();
+  void update(float delta, const Controller& controller);
 
 private:
-  Line (const Line&);
-  Line& operator= (const Line&);
+  GeometryTest (const GeometryTest&);
+  GeometryTest& operator= (const GeometryTest&);
 };
 
 #endif
