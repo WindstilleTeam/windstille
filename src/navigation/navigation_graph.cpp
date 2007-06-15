@@ -25,6 +25,30 @@
 
 #include "navigation_graph.hpp"
 
-
-
+NavigationGraph::NavigationGraph()
+{
+}
+
+NavigationGraph::~NavigationGraph()
+{
+}
+
+std::vector<Segment*>
+NavigationGraph::find_segments(const Line& line)
+{
+  return std::vector<Segment*>();
+}
+
+std::vector<Node*>
+NavigationGraph::find_nodes(const Vector& pos, float radius)
+{
+  return std::vector<Node*>();
+}
+
+std::vector<Segment*>
+NavigationGraph::find_segments(const Vector& pos, float radius)
+{
+  return std::vector<Segment*>();
+}
+
 /* EOF */

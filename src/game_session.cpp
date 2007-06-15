@@ -322,7 +322,6 @@ GameSession::set_sector(const std::string& )
   //FIXME: does the TestObject class still need to exist?
   //sector->add(new TestObject());
   
-  impl->sector->spawn_player("default");
   impl->sector->activate();
   
   if (debug) std::cout << "Finished changing sector" << std::endl;

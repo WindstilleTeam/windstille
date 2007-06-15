@@ -78,7 +78,6 @@ env.Program('../windstille', [
 'scriptable_object.cpp',
 'script_manager.cpp',
 'sector.cpp',
-'spawnpoint.cpp',
 'sprite3dview.cpp',
 'sprite2dview.cpp',
 'text_area.cpp',

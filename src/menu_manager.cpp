@@ -130,7 +130,7 @@ MenuManager::display_main_menu()
                  "of the License, or (at your option) any later version.");
   manager->get_root()->add_child(text_group);
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400, 200), Sizef(200, 294)),
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-50, 200), Sizef(300, 294)),
                                              "",
                                              manager->get_root());
 

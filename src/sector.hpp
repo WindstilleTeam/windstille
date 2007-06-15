@@ -31,11 +31,17 @@ class Player;
 class SceneContext;
 class SpawnPoint;
 class CollisionEngine;
+class NavigationGraph;
 class Entity;
 
 /** */
 class Sector
 {
+private: 
+  static Sector* current_;  
+public:
+  static Sector* current() { return current_; }
+  
 private:
   std::string filename;
   std::string name;
@@ -45,12 +51,8 @@ private:
   typedef std::vector<GameObject*> Objects;
   Objects objects;
   /** container for newly created GameObjects (they'll be added once per frame
-   * in the update function
-   */
+   * in the update function */
   Objects new_objects;
-
-  typedef std::vector<SpawnPoint*> SpawnPoints;
-  SpawnPoints spawn_points;
 
   Color ambient_light;
 
@@ -59,23 +61,21 @@ private:
   TileMap* interactivebackground_tilemap;
 
   CollisionEngine* collision_engine;
+  NavigationGraph* navigation_graph;
 
   Player* player;
 
   void parse_file(const std::string& filename);
 
-  static Sector* current_;
-
   void commit_adds();
   void commit_removes();
+
   void expose_object_to_squirrel(GameObject* object);
   void remove_object_from_squirrel(GameObject* object);
 
 public:
   Sector(const std::string& filename);
   ~Sector();
-
-  static Sector* current() { return current_; }
 
   const std::string& get_filename () const;
 
@@ -87,11 +87,6 @@ public:
    */
   void activate();
   
-  /**
-   * Spawns the player at the specified spawnpoint
-   */
-  void spawn_player(const std::string& spawnpoint);
-
   int get_width  () const;
   int get_height () const;
 

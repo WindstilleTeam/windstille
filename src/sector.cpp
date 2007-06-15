@@ -34,7 +34,6 @@
 #include "objects/test_object.hpp"
 #include "sector.hpp"
 #include "objects/vrdummy.hpp"
-#include "spawnpoint.hpp"
 #include "sound/sound_manager.hpp"
 #include "script_manager.hpp"
 #include "collision/collision_engine.hpp"
@@ -51,19 +50,14 @@
 #include "objects/spider_mine.hpp"
 #include "box.hpp"
 #include "scriptable_object.hpp"
+#include "navigation/navigation_graph.hpp"
 #include "scripting/squirrel_error.hpp"
 
 // The table (works like a namespace here) where the game objects will appear
 #define OBJECTS_TABLE "objects"
 
 Sector* Sector::current_ = 0;
-
-const std::string&
-Sector::get_filename () const
-{
-  return filename;
-}
-
+
 Sector::Sector(const std::string& arg_filename)
   : filename(arg_filename),
     player(0)    
@@ -76,6 +70,7 @@ Sector::Sector(const std::string& arg_filename)
   
   if (debug) std::cout << "Creating new Sector" << std::endl;
   collision_engine = new CollisionEngine();
+  navigation_graph = new NavigationGraph();
 
   current_ = this;
   interactive_tilemap = 0;
@@ -87,21 +82,26 @@ Sector::Sector(const std::string& arg_filename)
 
   // add interactive to collision engine
   collision_engine->add(new CollisionObject(interactive_tilemap));
-}
 
+  // Spawn the Player
+  if(!player) {
+    player = new Player();
+    add(player);
+  }
+  player->set_pos(Vector(300,200));
+}
+
 Sector::~Sector()
 {
-  for(SpawnPoints::iterator i = spawn_points.begin();
-      i != spawn_points.end(); ++i)
-    delete *i;                                         
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     (*i)->unref();
   for(Objects::iterator i = new_objects.begin(); i != new_objects.end(); ++i)
     (*i)->unref();
 
+  delete navigation_graph;
   delete collision_engine;
 }
-
+
 void
 Sector::parse_file(const std::string& filename)
 {
@@ -126,17 +126,13 @@ Sector::parse_file(const std::string& filename)
     std::cerr << "Warning no version specified in levelformat.\n";
   if(version > 1)
     std::cerr << "Warning: format version is newer than game.\n";
+
   props.get("name", name);
   props.get("music", music);
   props.get("init-script", init_script);
   props.get("ambient-color", ambient_light);
   
   PropertyIterator<const Lisp*> iter;
-  props.get_iter("spawnpoint", iter);
-  while(iter.next()) {
-    spawn_points.push_back(new SpawnPoint(*iter));
-  }
-
   const Lisp* objects = 0;
   if(props.get("objects", objects) == false)
     throw std::runtime_error("No objects specified");
@@ -149,7 +145,7 @@ Sector::parse_file(const std::string& filename)
   props.print_unused_warnings("sector");
   if (debug) std::cout << "Finished parsing" << std::endl;
 }
-
+
 void
 Sector::add_object(const std::string& name, const lisp::Lisp* lisp)
 {
@@ -200,7 +196,7 @@ Sector::add_object(const std::string& name, const lisp::Lisp* lisp)
     std::cout << "Skipping unknown Object: " << name << "\n";
   }
 }
-
+
 void
 Sector::activate()
 {
@@ -211,38 +207,7 @@ Sector::activate()
   if (init_script != "")
     script_manager->run_script_file(init_script);
 }
-
-void
-Sector::spawn_player(const std::string& spawnpoint)
-{
-  const SpawnPoint* result = 0;
-  for(SpawnPoints::iterator i = spawn_points.begin();
-      i != spawn_points.end(); ++i) {
-    const SpawnPoint* sp = *i;
-    if(sp->name == spawnpoint) {
-      result = sp;
-      break;
-    }
-  }
-
-  Vector spawnpos(320, 200);
-  if(result == 0) {
-    if(spawnpoint != "default") {
-      std::cerr << "SpawnPoint '" << spawnpoint << "' not found.\n";
-      spawn_player("default");
-      return;
-    }
-  } else {
-    spawnpos = result->pos;
-  }
-
-  if(!player) {
-    player = new Player();
-    add(player);
-  }
-  player->set_pos(spawnpos);
-}
-
+
 void
 Sector::draw(SceneContext& sc)
 {
@@ -254,7 +219,7 @@ Sector::draw(SceneContext& sc)
         (*i)->draw(sc);
     }
 }
-
+
 void Sector::commit_adds()
 {
   // Add new game objects
@@ -263,7 +228,7 @@ void Sector::commit_adds()
   }
   new_objects.clear();
 }
-
+
 void Sector::update(float delta)
 {
   commit_adds();
@@ -276,7 +241,7 @@ void Sector::update(float delta)
   }
   commit_removes();
 }
-
+
 void
 Sector::commit_removes()
 {
@@ -296,7 +261,7 @@ Sector::commit_removes()
     ++i;
   }
 }
-
+
 void
 Sector::add(GameObject* obj)
 {
@@ -306,7 +271,7 @@ Sector::add(GameObject* obj)
     expose_object_to_squirrel(obj);
   }
 }
-
+
 void
 Sector::remove_object_from_squirrel(GameObject* object)
 {
@@ -335,7 +300,7 @@ Sector::remove_object_from_squirrel(GameObject* object)
   // pop objects and root table
   sq_pop(v, 2);
 }
-
+
 // tries to find out the "real" class of an gameobject by some dynamic casting
 // and creates a matching squirrel instance for that object
 static inline void create_squirrel_instance(HSQUIRRELVM v, GameObject* object)
@@ -361,7 +326,7 @@ static inline void create_squirrel_instance(HSQUIRRELVM v, GameObject* object)
 
   create_squirrel_instance(v, new Scripting::GameObject(object), true);
 }
-
+
 void
 Sector::expose_object_to_squirrel(GameObject* object)
 {
@@ -391,7 +356,7 @@ Sector::expose_object_to_squirrel(GameObject* object)
   // pop roottable and objects table
   sq_pop(v, 2);
 }
-
+
 GameObject*
 Sector::get_object(const std::string& name) const
 {
@@ -404,35 +369,41 @@ Sector::get_object(const std::string& name) const
     }
   return 0;
 }
-
+
 int
 Sector::get_width () const
 {
   return interactive_tilemap->get_width() * TILE_SIZE;
 }
-
+
 int
 Sector::get_height () const
 {
   return interactive_tilemap->get_height() * TILE_SIZE;
 }
-
+
 void
 Sector::set_tilemap(TileMap* t)
 {
   interactive_tilemap = t;
 }
-
+
 void
 Sector::set_ambient_light(const Color& color)
 {
   ambient_light = color;
 }
-
+
 Color
 Sector::get_ambient_light() const
 {
   return ambient_light;
 }
-
+
+const std::string&
+Sector::get_filename () const
+{
+  return filename;
+}
+
 /* EOF */
