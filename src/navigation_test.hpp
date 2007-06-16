@@ -38,6 +38,8 @@ class NavigationTest : public Screen
 {
 private:
   Vector cursor;
+  Vector stick;
+  
   NavigationGraph* graph;
   Connection* connection;
 

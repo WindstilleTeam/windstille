@@ -80,7 +80,12 @@ NavigationTest::draw()
     Display::draw_line(selected_segment->get_line(), Color(1.0f, 1.0f, 1.0f, 1.0f));
 
   if (connection)
-    connection->draw();
+    {
+      connection->draw();
+      
+      Display::draw_line(connection->get_pos(), connection->get_pos() + 100.0f*stick,
+                         Color(1.0f, 1.0f, 1.0f, 1.0f));
+    }
 }
 
 void
@@ -142,13 +147,15 @@ NavigationTest::update(float delta, const Controller& controller)
       //float advance = 512.0f * controller.get_axis_state(X2_AXIS) * delta;
 
       // FIXME: xpad driver is buggy and reverses the Y2 axis
-      Vector advance(512.0f * controller.get_axis_state(X2_AXIS) * delta,
-                     -512.0f * controller.get_axis_state(Y2_AXIS) * delta);
+      stick = Vector(controller.get_axis_state(X2_AXIS),
+                     -controller.get_axis_state(Y2_AXIS));
       
+      Vector advance = delta * 512.0f * stick;
       connection->advance(advance, next_node);
       
       if (!advance.is_null())
-        {
+        { // FIXME: This should be a while loop, currently we are just
+          // discarding the rest movement
           Segment* next_segment = 0;
           for(Node::Segments::iterator i = next_node->segments.begin(); i != next_node->segments.end(); ++i)
             {
