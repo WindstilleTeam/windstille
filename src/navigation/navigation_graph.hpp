@@ -31,6 +31,7 @@
 
 class Node;
 class Segment;
+class SegmentPosition;
 
 /** */
 class NavigationGraph
@@ -56,13 +57,13 @@ public:
 
   void split_segment(Segment* segment);
 
-  /** Find segments that collide with the given line */
-  std::vector<Segment*> find_segments(const Line& line);
+  /** Find segments that intersect with the given line */
+  std::vector<SegmentPosition> find_intersections(const Line& line);
 
   /** Find nodes that are near the given point */
   std::vector<Node*> find_nodes(const Vector& pos, float radius);
 
-  /** Find the closest node */
+  /** Find the closest node, limit search to nodes in radius */
   Node* find_closest_node(const Vector& pos, float radius);
 
   Segment* find_closest_segment(const Vector& pos, float radius);

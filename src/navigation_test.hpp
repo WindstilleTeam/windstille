@@ -29,7 +29,7 @@
 #include "screen.hpp"
 
 class NavigationGraph;
-class Connection;
+class SegmentPosition;
 class Segment;
 class Node;
 
@@ -39,9 +39,11 @@ class NavigationTest : public Screen
 private:
   Vector cursor;
   Vector stick;
+  Vector player;
+  Vector old_player;
   
   NavigationGraph* graph;
-  Connection* connection;
+  SegmentPosition* connection;
 
   Segment* selected_segment;
   Node*    selected_node;

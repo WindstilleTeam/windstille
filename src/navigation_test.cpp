@@ -32,12 +32,13 @@
 #include "screen_manager.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
-#include "navigation/connection.hpp"
+#include "navigation/segment_position.hpp"
 #include "navigation/segment.hpp"
 #include "navigation_test.hpp"
 
 NavigationTest::NavigationTest()
   : cursor(400, 300),
+    player(200,200),
     graph(0),
     connection(0),
     selected_segment(0),
@@ -79,6 +80,8 @@ NavigationTest::draw()
   if (selected_segment)
     Display::draw_line(selected_segment->get_line(), Color(1.0f, 1.0f, 1.0f, 1.0f));
 
+  Display::fill_circle(player, 12.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
+
   if (connection)
     {
       connection->draw();
@@ -97,8 +100,12 @@ NavigationTest::update(float delta, const Controller& controller)
       screen_manager.pop_screen();
     }
 
-  cursor.x += controller.get_axis_state(X_AXIS) * 500.0f * delta;
-  cursor.y += controller.get_axis_state(Y_AXIS) * 500.0f * delta;
+  cursor += Vector(controller.get_axis_state(X_AXIS) * 500.0f * delta,
+                   controller.get_axis_state(Y_AXIS) * 500.0f * delta);
+
+  // FIXME: xpad driver is buggy and reverses the Y2 axis
+  stick = Vector(controller.get_axis_state(X2_AXIS),
+                 -controller.get_axis_state(Y2_AXIS));
 
   if (controller.button_was_pressed(PRIMARY_BUTTON))
     {
@@ -137,18 +144,15 @@ NavigationTest::update(float delta, const Controller& controller)
       if (selected_segment)
         {
           delete connection;
-          connection = new Connection(selected_segment, 0.5f);
+          connection = new SegmentPosition(selected_segment, 0.5f);
         }
     }
 
   if (connection)
-    {
+    { 
+      // Handle the movement of the connection
       Node* next_node;
       //float advance = 512.0f * controller.get_axis_state(X2_AXIS) * delta;
-
-      // FIXME: xpad driver is buggy and reverses the Y2 axis
-      stick = Vector(controller.get_axis_state(X2_AXIS),
-                     -controller.get_axis_state(Y2_AXIS));
       
       Vector advance = delta * 512.0f * stick;
       connection->advance(advance, next_node);
@@ -189,8 +193,31 @@ NavigationTest::update(float delta, const Controller& controller)
                 }
             }
         }
-    }
+      player = connection->get_pos();
 
+      if (controller.get_button_state(AIM_BUTTON))
+        {
+          delete connection;
+          connection = 0;
+        }
+    }
+  else
+    { // handle non connection based movement
+      player += Vector(0.0f, 100.0f) * delta;
+      
+      player.x += 512.0f * stick.x * delta;
+
+      if (controller.get_button_state(AIM_BUTTON))
+        {
+          player.y -= 0.5f * 512.0f * delta;
+        }
+
+      std::vector<SegmentPosition> positions = graph->find_intersections(Line(old_player, player));
+      if (!positions.empty()) {
+        connection = new SegmentPosition(positions.front());
+      }
+    }
+  
   if (controller.button_was_pressed(PDA_BUTTON))
     {
       if (selected_node) {
@@ -209,6 +236,8 @@ NavigationTest::update(float delta, const Controller& controller)
     selected_segment = graph->find_closest_segment(cursor, 32.0f);
   else
     selected_segment = 0;
+
+  old_player = player;
 }
 
 /* EOF */

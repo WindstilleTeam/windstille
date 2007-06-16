@@ -26,23 +26,23 @@
 #include "segment.hpp"
 #include "node.hpp"
 #include "display/display.hpp"
-#include "connection.hpp"
+#include "segment_position.hpp"
 
-Connection::Connection(Segment* segment_, float pos_)
+SegmentPosition::SegmentPosition(Segment* segment_, float pos_)
   : segment(segment_),
     pos(pos_)
 {  
 }
 
 void
-Connection::set_pos(Segment* segment_, float pos_)
+SegmentPosition::set_pos(Segment* segment_, float pos_)
 {
   segment = segment_;
   pos     = pos_;
 }
 
 void
-Connection::advance(float& adv, Node*& next_node)
+SegmentPosition::advance(float& adv, Node*& next_node)
 {
   Vector p1 = segment->get_node1()->get_pos();
   Vector p2 = segment->get_node2()->get_pos();
@@ -77,7 +77,7 @@ Connection::advance(float& adv, Node*& next_node)
 }
 
 void
-Connection::advance(Vector& adv, Node*& next_node)
+SegmentPosition::advance(Vector& adv, Node*& next_node)
 {
   // FIXME: This might be optimizable
   Vector p1 = segment->get_node1()->get_pos();
@@ -107,7 +107,7 @@ Connection::advance(Vector& adv, Node*& next_node)
 }
 
 Vector
-Connection::get_pos() const
+SegmentPosition::get_pos() const
 {
   Vector p1 = segment->get_node1()->get_pos();
   Vector p2 = segment->get_node2()->get_pos();
@@ -116,9 +116,9 @@ Connection::get_pos() const
 }
 
 void
-Connection::draw()
+SegmentPosition::draw()
 {
-  Display::fill_circle(get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f));
+  Display::fill_circle(get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f, 0.5f));
   Display::fill_circle(get_pos(), 8.0f, Color(0.0f, 1.0f, 1.0f));
 }
 

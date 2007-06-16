@@ -39,6 +39,13 @@ Line::length() const
 }
 
 bool
+Line::intersect(const Line& line_b) const
+{
+  float ua, ub;
+  return intersect(line_b, ua, ub);
+}
+
+bool
 Line::intersect(const Line& line, float& ua, float& ub) const
 {
   const float& x1 = p1.x;

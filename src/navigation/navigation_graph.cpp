@@ -28,6 +28,7 @@
 #include "display/display.hpp"
 #include "node.hpp"
 #include "segment.hpp"
+#include "segment_position.hpp"
 #include "navigation_graph.hpp"
 
 NavigationGraph::NavigationGraph()
@@ -115,24 +116,64 @@ NavigationGraph::split_segment(Segment* segment)
   add_segment(node2, node3);  
 }
 
-std::vector<Segment*>
-NavigationGraph::find_segments(const Line& line)
+std::vector<SegmentPosition>
+NavigationGraph::find_intersections(const Line& line)
 {
-  return std::vector<Segment*>();
+
+  // FIXME: Return a navgraph pos here
+  std::vector<SegmentPosition> ret;
+ 
+  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+    {
+      Line seg_line((*i)->get_node1()->get_pos(),
+                    (*i)->get_node2()->get_pos());
+      
+      float ua, ub;
+      if (line.intersect(seg_line, ua, ub))
+        {
+          ret.push_back(SegmentPosition(*i, ub));
+        }
+    }
+
+  return ret;
 }
 
 std::vector<Node*>
 NavigationGraph::find_nodes(const Vector& pos, float radius)
 {
-  return std::vector<Node*>();
+  // FIXME: Optimize this with spatial tree thingy
+  std::vector<Node*> ret;
+
+  for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
+    {
+      float distance = (pos - (*i)->get_pos()).length();
+      if (distance < radius)
+        {
+          ret.push_back(*i);
+        }
+    }
+  
+  return ret;
 }
 
 std::vector<Segment*>
 NavigationGraph::find_segments(const Vector& pos, float radius)
 {
-  return std::vector<Segment*>();
-}
+  std::vector<Segment*> ret;
+ 
+  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+    {
+      float distance = Line((*i)->get_node1()->get_pos(),
+                            (*i)->get_node2()->get_pos()).distance(pos);
+      if (distance < radius)
+        {
+          ret.push_back(*i);
+        }
+    }
 
+  return ret;
+}
+
 Node*
 NavigationGraph::find_closest_node(const Vector& pos, float radius)
 {

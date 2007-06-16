@@ -151,7 +151,7 @@ env.Program('../windstille', [
 'lisp/parser.cpp',
 'lisp/properties.cpp',
 'lisp/writer.cpp',
-'navigation/connection.cpp',
+'navigation/segment_position.cpp',
 'navigation/navigation_graph.cpp',
 'navigation/node.cpp',
 'navigation/segment.cpp',

@@ -33,7 +33,7 @@ class Node;
 
 /** 
  */
-class Connection // FIXME: Rename to SegmentContact
+class SegmentPosition
 {
 public:
   Segment* segment;
@@ -43,7 +43,7 @@ public:
   float pos;
 
 public:
-  Connection(Segment* segment_, float pos_);
+  SegmentPosition(Segment* segment_, float pos_);
 
   void set_pos(Segment* segment_, float pos_);
 
@@ -79,9 +79,6 @@ public:
   Vector get_pos() const;
 
   void draw();
-private:
-  Connection (const Connection&);
-  Connection& operator= (const Connection&);
 };
 
 #endif

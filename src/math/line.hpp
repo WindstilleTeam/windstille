@@ -43,6 +43,9 @@ public:
   
   float length() const;
 
+  /** Calculate if two lines intersec */
+  bool intersect(const Line& line_b) const;
+
   /** Calculate if and where two lines intersect
    *  @param a  
    *  @param b 
