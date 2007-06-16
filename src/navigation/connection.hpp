@@ -42,11 +42,6 @@ public:
       world-co */
   float pos;
 
-  /** Move forward \a adv of units in world-co 
-   *  @return The amount of units left when hitting the end of the segment or 0.0f 
-   */
-  float advance_this_segment(float adv);
-
 public:
   Connection(Segment* segment_, float pos_);
 
@@ -55,14 +50,15 @@ public:
   /** Move forward \a adv of units in world-co, automatically jump
    * across segments, unless a end node is hit
    *
-   * @param adv in: the amount of advancment to be done, out: the
-   * amount of units that wheren't use on the given segment
-   * @param next_segment out: the next segment get written into this
+   * @param[in,out] adv the amount of advancment to be done, the
+   *                    amount of units that wheren't use on the given
+   *                    segment
    *
-   *  @return The amount of units left when hitting the end of the segment or 0.0f 
+   * @param[out] next_node if the advance ends at a node, it gets
+   *                       returned in next_node
    */
   void advance(float& adv, Node*& next_node);
-
+  
   Segment* get_segment() const { return segment; }
   float get_float_pos() const { return pos; }
 

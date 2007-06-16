@@ -1,3 +1,5 @@
+- incooperate the freebsd patches
+- add bison checks
 - implement proper dead-zone in input handling
 - shrink textures: a lot!
 - collision detection

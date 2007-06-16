@@ -23,6 +23,34 @@
 **  02111-1307, USA.
 */
 
+/*! \mainpage Windstille Documentation
+ *
+ * \section intro_sec Introduction
+ *
+ * Windstille is a classic 2d jump'n shoot game in which the player
+ * will be placed in a foreign alien world and has to find its way
+ * back into safety. Windstille is currently available for GNU/Linux
+ * and Windows.  Its webpage at which one might find new versions,
+ * source code, artworks and more informations is located at:
+ *
+ * http://windstille.berlios.de/
+ *
+ * The latest development version can be obtained by:
+ * 
+ * $ svn co svn://svn.berlios.de/windstille/trunk/windstille
+ * 
+ * Windstille is covered under the GNU GPL, which means that you can copy
+ * and even modify it pretty much as you like, as long as you keep the
+ * copyright headers in place and distribute the source too if you
+ * distribute binaries, see the file COPYING for details.
+ *
+ * \section install_sec Installation
+ *
+ * To compile Windstille you need:
+ *
+ * OpenAL, OpenGL, SDL, SDL_image, freetype, libpng, physfs, boost, scons, bison, flex
+ */
+
 #ifndef HEADER_WINDSTILLE_WINDSTILLE_MAIN_HPP
 #define HEADER_WINDSTILLE_WINDSTILLE_MAIN_HPP
 
