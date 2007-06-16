@@ -28,7 +28,7 @@
 #include "font/fonts.hpp"
 #include "list_view.hpp"
 
-namespace GUI {
+namespace gui {
 
 ListView::ListView(const Rectf& rect, Component* parent)
   : Component(rect, parent)
@@ -140,6 +140,6 @@ ListView::add_item(const Item& item)
   items.push_back(item);
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

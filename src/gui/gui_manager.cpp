@@ -35,7 +35,7 @@
 #include "automap.hpp"
 #include "gui_manager.hpp"
 
-namespace GUI {
+namespace gui {
 
 GUIManager::GUIManager()
 {
@@ -70,6 +70,6 @@ GUIManager::get_root() const
   return root;
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

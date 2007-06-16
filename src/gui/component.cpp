@@ -26,7 +26,7 @@
 #include <assert.h>
 #include "component.hpp"
 
-namespace GUI {
+namespace gui {
 
 Component::Component(Component* parent)
   : parent(parent),
@@ -85,6 +85,6 @@ Component::get_prefered_height() const
   return 100.0f;
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

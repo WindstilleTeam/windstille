@@ -26,7 +26,7 @@
 #ifndef HEADER_MATH_HXX
 #define HEADER_MATH_HXX
 
-namespace Math {
+namespace math {
 
 template<class T> 
 T min (const T& a, const T& b) 
@@ -52,7 +52,7 @@ T mid (const T& a, const T& b, const T& c)
   return max<T>((a), min<T>((b), (c)));
 }
 
-} // namespace Math
+} // namespace math
 
 #endif
 

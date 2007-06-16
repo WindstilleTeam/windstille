@@ -32,7 +32,7 @@
 #include "signals/signal_v1.hpp"
 #include "signals/signal_v0.hpp"
 
-namespace GUI {
+namespace gui {
 
 class MenuComponent;
 
@@ -107,7 +107,7 @@ public:
   Signal_v0& sig_click() { return on_click; }
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

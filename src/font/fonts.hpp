@@ -28,18 +28,17 @@
 
 #include "ttf_font.hpp"
 
-namespace Fonts {
+class Fonts {
+public:
+  static TTFFont* ttffont;
+  static TTFFont* vera12;
+  static TTFFont* vera16;
+  static TTFFont* vera20;
+  static TTFFont* vera28;
 
-extern TTFFont* ttffont;
-extern TTFFont* vera12;
-extern TTFFont* vera16;
-extern TTFFont* vera20;
-extern TTFFont* vera28;
-
-void init();
-void deinit();
-
-} // namespace Fonts
+  static void init();
+  static void deinit();
+};
 
 #endif
 

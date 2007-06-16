@@ -30,7 +30,7 @@
 #include "display/display.hpp"
 #include "automap.hpp"
 
-namespace GUI {
+namespace gui {
 
 Automap::Automap(const lisp::Lisp* lisp, Component* parent)
   : Component(parent)
@@ -133,6 +133,6 @@ Automap::update(float delta, const Controller& controller)
     }
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

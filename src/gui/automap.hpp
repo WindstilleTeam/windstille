@@ -29,7 +29,7 @@
 #include "display/surface.hpp"
 #include "component.hpp"
 
-namespace GUI {
+namespace gui {
 
 /** */
 class Automap : public Component
@@ -52,7 +52,7 @@ private:
   Automap& operator= (const Automap&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

@@ -28,7 +28,7 @@
 #include "display/display.hpp"
 #include "tab_component.hpp"
 
-namespace GUI {
+namespace gui {
 
 TabComponent::TabComponent(const lisp::Lisp* lisp, Component* parent)
   : Component(parent)
@@ -150,6 +150,6 @@ TabComponent::pack(const std::string& name, Component* component)
                                    ));
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

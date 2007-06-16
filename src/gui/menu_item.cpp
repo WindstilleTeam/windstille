@@ -30,7 +30,7 @@
 
 #include "menu_item.hpp"
 
-namespace GUI {
+namespace gui {
 
 MenuItem::MenuItem(MenuComponent* parent_, const std::string& label_)
   : parent(parent_),
@@ -220,6 +220,6 @@ ButtonMenuItem::update(float)
 {
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

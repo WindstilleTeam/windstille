@@ -32,7 +32,7 @@
 #include "menu_item.hpp"
 #include "math.hpp"
 
-namespace GUI {
+namespace gui {
 
 MenuComponent::MenuComponent(const Rectf& rect, bool allow_cancel_, Component* parent)
   : Component(rect, parent),
@@ -162,7 +162,7 @@ MenuComponent::update(float delta, const Controller& controller)
 
               if (dynamic_cast<TabComponent*>(parent))
                 {
-                  current_item = Math::mid(0, current_item + 1, static_cast<int>(items.size()-1)); 
+                  current_item = math::mid(0, current_item + 1, static_cast<int>(items.size()-1)); 
                 }
               else
                 {
@@ -240,6 +240,6 @@ MenuComponent::adjust_scroll_offset()
     }  
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

@@ -18,7 +18,7 @@
 #include "scripting/squirrel_error.hpp"
 #include "physfs/physfs_stream.hpp"
 
-using namespace Scripting;
+using namespace scripting;
 
 ScriptManager* script_manager = 0;
 

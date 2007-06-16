@@ -22,7 +22,7 @@
 #include <string>
 #include "lexer.hpp"
 
-namespace TinyGetText {
+namespace tinygettext {
 class Dictionary;
 class DictionaryManager;
 }
@@ -48,8 +48,8 @@ private:
   
   std::string filename;
   Lexer* lexer;
-  TinyGetText::DictionaryManager* dictionary_manager;
-  TinyGetText::Dictionary* dictionary;
+  tinygettext::DictionaryManager* dictionary_manager;
+  tinygettext::Dictionary* dictionary;
   Lexer::TokenType token;
 };
 

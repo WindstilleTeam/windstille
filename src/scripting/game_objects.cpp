@@ -3,7 +3,7 @@
 #include "sector.hpp"
 #include "game_objects.hpp"
 
-namespace Scripting
+namespace scripting
 {
 
 const std::string&

@@ -24,7 +24,7 @@
 #include <set>
 #include <string>
 
-namespace TinyGetText {
+namespace tinygettext {
 
 typedef int (*PluralFunc)(int n);
 
@@ -151,7 +151,7 @@ private:
 void read_po_file(Dictionary& dict, std::istream& in);
 LanguageDef& get_language_def(const std::string& name);
 
-} // namespace TinyGetText
+} // namespace tinygettext
 
 #endif
 

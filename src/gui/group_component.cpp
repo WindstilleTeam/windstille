@@ -29,7 +29,7 @@
 #include "font/fonts.hpp"
 #include "group_component.hpp"
 
-namespace GUI {
+namespace gui {
 
 GroupComponent::GroupComponent(const Rectf& rect, const std::string& title_, Component* parent)
   : Component(rect, parent),
@@ -104,6 +104,6 @@ GroupComponent::layout()
   // child->get_prefered_height();
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

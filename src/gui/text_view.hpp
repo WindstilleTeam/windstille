@@ -29,7 +29,7 @@
 #include "text_area.hpp"
 #include "component.hpp"
 
-namespace GUI {
+namespace gui {
 
 /** */
 class TextView : public Component
@@ -53,7 +53,7 @@ private:
   TextView& operator= (const TextView&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

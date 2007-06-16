@@ -29,7 +29,7 @@
 #include <string>
 #include "lisp/lisp.hpp"
 
-namespace GUI {
+namespace gui {
 
 class Component;
 
@@ -48,7 +48,7 @@ private:
   ComponentFactory& operator= (const ComponentFactory&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

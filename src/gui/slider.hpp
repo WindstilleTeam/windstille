@@ -28,7 +28,7 @@
 
 #include "component.hpp"
 
-namespace GUI {
+namespace gui {
 
 /** */
 class Slider : public Component
@@ -60,7 +60,7 @@ private:
   Slider& operator= (const Slider&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

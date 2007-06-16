@@ -28,7 +28,7 @@
 #include "input/controller.hpp"
 #include "grid_component.hpp"
 
-namespace GUI {
+namespace gui {
 
 GridComponent::GridComponent(const lisp::Lisp* lisp, Component* parent)
   : Component(parent)
@@ -241,6 +241,6 @@ GridComponent::on_activation()
   //grid(pos.x, pos.y).component->set_active(true);
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

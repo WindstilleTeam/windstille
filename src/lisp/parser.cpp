@@ -58,7 +58,7 @@ private:
 Parser::Parser()
   : lexer(0), dictionary_manager(0), dictionary(0)
 {
-  dictionary_manager = new TinyGetText::DictionaryManager();
+  dictionary_manager = new tinygettext::DictionaryManager();
   dictionary_manager->set_charset("UTF-8");
 }
 

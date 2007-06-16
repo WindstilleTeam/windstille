@@ -30,7 +30,7 @@
 #include "lisp/lisp.hpp"
 #include "component.hpp"
 
-namespace GUI {
+namespace gui {
 
 /** */
 class Button : public Component
@@ -51,7 +51,7 @@ private:
   Button& operator= (const Button&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

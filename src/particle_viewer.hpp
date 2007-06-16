@@ -31,7 +31,7 @@
 #include "gui/gui_manager.hpp"
 #include "particles/particle_system.hpp"
 
-namespace GUI {
+namespace gui {
 class Slider;
 class TabComponent;
 }
@@ -49,8 +49,8 @@ private:
 
   Vector pos;
   bool   show_gui;
-  GUI::GUIManager* manager;
-  GUI::TabComponent* tab;
+  gui::GUIManager* manager;
+  gui::TabComponent* tab;
 
   typedef std::vector<ParticleSystemGUI*> ParticleSystemGUIs;
   ParticleSystemGUIs guis;

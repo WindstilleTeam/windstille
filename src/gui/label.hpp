@@ -29,7 +29,7 @@
 #include <string>
 #include "component.hpp"
 
-namespace GUI {
+namespace gui {
 
 /** */
 class Label : public Component
@@ -49,7 +49,7 @@ private:
   Label& operator= (const Label&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

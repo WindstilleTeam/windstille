@@ -30,7 +30,7 @@
 #include "field.hpp"
 #include "component.hpp"
 
-namespace GUI {
+namespace gui {
 
 /** */
 class GridComponent : public Component
@@ -85,7 +85,7 @@ private:
   GridComponent& operator= (const GridComponent&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

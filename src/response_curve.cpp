@@ -50,7 +50,7 @@ ResponseCurve::get(float v)
     }
   else
     {
-      v = Math::mid(i_min, v, i_max);
+      v = math::mid(i_min, v, i_max);
 
       int   bucket_count = samples.size() - 1;
       float bucket_size  = (i_max - i_min) / bucket_count;

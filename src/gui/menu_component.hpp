@@ -33,7 +33,7 @@
 
 class TTFFont;
 
-namespace GUI {
+namespace gui {
 
 class MenuItem;
 
@@ -77,7 +77,7 @@ private:
   MenuComponent& operator= (const MenuComponent&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

@@ -26,7 +26,7 @@
 #include "input/controller.hpp"
 #include "text_view.hpp"
 
-namespace GUI {
+namespace gui {
 
 TextView::TextView(const Rectf& rect, Component* component)
   : Component(rect, component),
@@ -84,6 +84,6 @@ TextView::set_font(TTFFont* font)
   text_area.set_font(font);
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

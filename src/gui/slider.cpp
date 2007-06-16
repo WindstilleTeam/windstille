@@ -28,7 +28,7 @@
 #include "color.hpp"
 #include "slider.hpp"
 
-namespace GUI {
+namespace gui {
 
 Slider::Slider(Component* parent)
   : Component(parent),
@@ -139,6 +139,6 @@ Slider::set_pos(int pos_)
   pos = pos_;
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

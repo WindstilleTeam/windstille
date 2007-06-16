@@ -51,7 +51,7 @@
 #include "gui/automap.hpp"
 
 
-using GUI::GUIManager;
+using gui::GUIManager;
 
 ScreenManager screen_manager; 
 

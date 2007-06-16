@@ -30,7 +30,7 @@
 #include "button.hpp"
 #include "component_factory.hpp"
 
-namespace GUI {
+namespace gui {
 
 ComponentFactory::ComponentFactory()
 {
@@ -65,6 +65,6 @@ ComponentFactory::create(const std::string& name, const lisp::Lisp* lisp, Compon
     }
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

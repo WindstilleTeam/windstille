@@ -3,7 +3,7 @@
 
 #include "tinygettext/tinygettext.hpp"
 
-extern TinyGetText::DictionaryManager* dictionaryManager;
+extern tinygettext::DictionaryManager* dictionaryManager;
 
 static inline const char* _(const char* message)
 {

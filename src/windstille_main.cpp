@@ -69,7 +69,7 @@ WindstilleMain::main(int argc, char** argv)
     init_physfs(argv[0]);
     init_sdl();
 
-    dictionaryManager = new TinyGetText::DictionaryManager();
+    dictionaryManager = new tinygettext::DictionaryManager();
     dictionaryManager->set_charset("iso8859-1");
     dictionaryManager->add_directory("locale");
 

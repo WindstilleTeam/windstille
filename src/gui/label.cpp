@@ -26,7 +26,7 @@
 #include "font/fonts.hpp"
 #include "label.hpp"
 
-namespace GUI {
+namespace gui {
 
 Label::Label(const std::string& label_)
   : Component(Rectf(), parent),
@@ -54,6 +54,6 @@ Label::update(float delta, const Controller& controller)
   set_active(false);
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

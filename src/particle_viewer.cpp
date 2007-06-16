@@ -47,15 +47,15 @@ class ParticleSystemGUI
 {
 public:
   ParticleSystem* psystem;
-  GUI::GridComponent* grid;
-  GUI::Slider* gravity_slider;
-  GUI::Slider* velocity_slider;
-  GUI::Slider* count_slider;
+  gui::GridComponent* grid;
+  gui::Slider* gravity_slider;
+  gui::Slider* velocity_slider;
+  gui::Slider* count_slider;
   
-  ParticleSystemGUI(GUI::Component* parent, ParticleSystem* psystem_)
+  ParticleSystemGUI(gui::Component* parent, ParticleSystem* psystem_)
     : psystem(psystem_)
   {
-    using namespace GUI;
+    using namespace gui;
     grid = new GridComponent(Rectf(200, 120, 600, 220), 2, 3, parent);
     grid->set_padding(4);
 
@@ -89,7 +89,7 @@ public:
     psystem->set_count(count_slider->get_pos());
   }
 
-  GUI::Component* get_component() { return grid; }
+  gui::Component* get_component() { return grid; }
 };
 
 ParticleViewer::ParticleViewer()
@@ -97,7 +97,7 @@ ParticleViewer::ParticleViewer()
   background = Sprite("images/greychess.sprite");
   show_gui = false;
 
-  using namespace GUI;
+  using namespace gui;
 
   manager = new GUIManager();
   tab = new TabComponent(Rectf(200, 50, 600, 250), manager->get_root());

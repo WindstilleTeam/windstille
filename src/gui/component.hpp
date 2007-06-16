@@ -30,7 +30,7 @@
 
 class Controller;
 
-namespace GUI {
+namespace gui {
 
 /** */
 class Component
@@ -63,7 +63,7 @@ private:
   Component& operator= (const Component&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

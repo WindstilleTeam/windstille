@@ -30,7 +30,7 @@
 #include <string>
 #include "component.hpp"
 
-namespace GUI { 
+namespace gui { 
 
 /** */
 class ListView : public Component
@@ -78,7 +78,7 @@ private:
   ListView& operator= (const ListView&);
 };
 
-} // namespace GUI 
+} // namespace gui 
 
 #endif
 

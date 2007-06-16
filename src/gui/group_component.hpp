@@ -29,7 +29,7 @@
 #include <string>
 #include "component.hpp"
 
-namespace GUI {
+namespace gui {
 
 /** */
 class GroupComponent : public Component
@@ -54,7 +54,7 @@ private:
   GroupComponent& operator= (const GroupComponent&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

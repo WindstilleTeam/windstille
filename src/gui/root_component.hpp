@@ -29,7 +29,7 @@
 #include <vector>
 #include "component.hpp"
 
-namespace GUI {
+namespace gui {
 
 /** */
 class RootComponent : public Component
@@ -60,7 +60,7 @@ private:
   RootComponent& operator= (const RootComponent&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

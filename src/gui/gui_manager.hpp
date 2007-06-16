@@ -28,7 +28,7 @@
 
 #include "screen.hpp"
 
-namespace GUI {
+namespace gui {
 
 class RootComponent;
 
@@ -51,7 +51,7 @@ private:
   GUIManager& operator= (const GUIManager&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

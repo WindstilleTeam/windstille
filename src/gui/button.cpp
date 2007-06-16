@@ -28,7 +28,7 @@
 #include "input/controller.hpp"
 #include "button.hpp"
 
-namespace GUI {
+namespace gui {
 
 Button::Button(const lisp::Lisp* lisp, Component* parent)
   : Component(parent)
@@ -78,6 +78,6 @@ Button::update(float , const Controller& controller)
     }  
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

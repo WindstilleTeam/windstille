@@ -28,7 +28,7 @@
 #include "input/controller.hpp"
 #include "root_component.hpp"
 
-namespace GUI {
+namespace gui {
 
 RootComponent::RootComponent(const Rectf& rect)
   : Component(rect, 0),
@@ -93,6 +93,6 @@ RootComponent::set_focus(Component* child_)
     }
 }
 
-} // namespace GUI
+} // namespace gui
 
 /* EOF */

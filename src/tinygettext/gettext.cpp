@@ -1,4 +1,4 @@
 #include "gettext.hpp"
 
-TinyGetText::DictionaryManager* dictionaryManager = 0;
+tinygettext::DictionaryManager* dictionaryManager = 0;
 

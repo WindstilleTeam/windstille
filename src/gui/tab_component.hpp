@@ -31,7 +31,7 @@
 #include "lisp/lisp.hpp"
 #include "component.hpp"
 
-namespace GUI {
+namespace gui {
 
 /** */
 class TabComponent : public Component
@@ -67,7 +67,7 @@ private:
   TabComponent& operator= (const TabComponent&);
 };
 
-} // namespace GUI
+} // namespace gui
 
 #endif
 

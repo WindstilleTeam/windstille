@@ -52,7 +52,7 @@ MenuManager::MenuManager()
 void
 MenuManager::display_option_menu()
 {
-  using namespace GUI;
+  using namespace gui;
   GUIManager* manager = new GUIManager();
 
   GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-170), Sizef(500, 340)), 
@@ -113,7 +113,7 @@ MenuManager::display_option_menu()
 void
 MenuManager::display_main_menu()
 {
-  using namespace GUI;
+  using namespace gui;
   GUIManager* manager = new GUIManager();
 
   GroupComponent* text_group = new GroupComponent(Rectf(10, 500+20, 800-10, 600-10),
@@ -187,7 +187,7 @@ MenuManager::display_main_menu()
 void
 MenuManager::display_pause_menu()
 {
-  using namespace GUI;
+  using namespace gui;
   GUIManager* manager = new GUIManager();
 
   GroupComponent* group = new GroupComponent(Rectf(Vector(400-200, 300-170), Sizef(400, 300)), 
@@ -238,7 +238,7 @@ MenuManager::display_pause_menu()
 void
 MenuManager::display_models_menu()
 {
-  using namespace GUI;
+  using namespace gui;
   GUIManager* manager = new GUIManager();
 
   GroupComponent* group = new GroupComponent(Rectf(Vector(400-275, 100), Sizef(550, 376)),  // 378
@@ -283,7 +283,7 @@ MenuManager::display_models_menu()
 void
 MenuManager::display_particle_menu()
 {
-  using namespace GUI;
+  using namespace gui;
   GUIManager* manager = new GUIManager();
 
   GroupComponent* group = new GroupComponent(Rectf(Vector(400-200, 300-170), Sizef(400, 340)), 
@@ -317,7 +317,7 @@ MenuManager::display_particle_menu()
 void
 MenuManager::display_scenario_menu()
 {
-  using namespace GUI;
+  using namespace gui;
   GUIManager* manager = new GUIManager();
 
   GroupComponent* group = new GroupComponent(Rectf(Vector(400-200, 300-170), Sizef(400, 340)), 
@@ -357,7 +357,7 @@ MenuManager::display_scenario_menu()
 void
 MenuManager::display_debug_menu()
 {
-  using namespace GUI;
+  using namespace gui;
   GUIManager* manager = new GUIManager();
 
   GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-170), Sizef(500, 340)), 
@@ -392,7 +392,7 @@ MenuManager::display_debug_menu()
 void
 MenuManager::display_help()
 {
-  using namespace GUI;
+  using namespace gui;
   GUIManager* manager = new GUIManager();
 
   GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-200), Sizef(500, 400)), 
@@ -432,7 +432,7 @@ MenuManager::display_help()
 void
 MenuManager::display_credits()
 {
-  using namespace GUI;
+  using namespace gui;
   GUIManager* manager = new GUIManager();
 
   GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-200), Sizef(500, 400)), 
