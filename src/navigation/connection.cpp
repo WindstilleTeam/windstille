@@ -76,6 +76,36 @@ Connection::advance(float& adv, Node*& next_node)
     }
 }
 
+void
+Connection::advance(Vector& adv, Node*& next_node)
+{
+  // FIXME: This might be optimizable
+  Vector p1 = segment->get_node1()->get_pos();
+  Vector p2 = segment->get_node2()->get_pos();
+  
+  Vector segment_v = p2 - p1;
+
+  Vector proj = adv.project(segment_v);
+
+  float angle = atan2(segment_v.y, segment_v.x) - atan2(proj.y, proj.x);
+
+  // Check if we are going forward or backward
+  float advf;
+  if (angle > M_PI/2 || angle < -M_PI/2)
+    advf = -proj.length();
+  else
+    advf = proj.length();
+
+  // Move forward
+  advance(advf, next_node);
+  
+  // Calculate the rest Vector
+  if (advf == 0.0f)
+    adv = Vector(0,0);
+  else
+    adv -= (proj * ((proj.length() - advf)/proj.length()));
+}
+
 Vector
 Connection::get_pos() const
 {

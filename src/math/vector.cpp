@@ -48,6 +48,26 @@ Vector::rotate(float angle) const
   return Vector(len * cos(angle), len * sin(angle));
 }
 
+Vector
+Vector::project(const Vector& b)
+{
+  float dp = this->dot(b);
+  return Vector((dp / (b.x*b.x + b.y*b.y) ) * b.x,
+                (dp / (b.x*b.x + b.y*b.y) ) * b.y);
+}
+
+float
+Vector::dot(const Vector& b)
+{
+  return (x * b.x + y * b.y);
+}
+
+bool
+Vector::is_null() const
+{
+  return (x == 0.0f && y == 0.0f);
+}
+
 std::ostream& operator<<(std::ostream& s, const Vector& v)
 {
   s << "(" << v.x << ", " << v.y << ")";

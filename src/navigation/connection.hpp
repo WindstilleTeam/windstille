@@ -47,8 +47,22 @@ public:
 
   void set_pos(Segment* segment_, float pos_);
 
-  /** Move forward \a adv of units in world-co, automatically jump
-   * across segments, unless a end node is hit
+  /** Move forward \a adv of units in world-co, when a node is hit,
+   *  the function returns and let the user decide how to continue
+   *
+   *  @param[in,out] adv the amount of advancment to be done, the
+   *                     amount of units that wheren't use on the
+   *                     given segment
+   *
+   *  @param[out] next_node if the advance ends at a node, it gets
+   *                        returned in next_node
+   */
+  void advance(float& adv, Node*& next_node);
+  
+  /** Move forward \a adv of units in world-co, when a node is hit,
+   *  the function returns and let the user decide how to
+   *  continue. \adv is projected onto the current segment to figure
+   *  out how far we should go
    *
    * @param[in,out] adv the amount of advancment to be done, the
    *                    amount of units that wheren't use on the given
@@ -56,11 +70,11 @@ public:
    *
    * @param[out] next_node if the advance ends at a node, it gets
    *                       returned in next_node
-   */
-  void advance(float& adv, Node*& next_node);
-  
+   */  
+  void advance(Vector& adv, Node*& next_node);
+
   Segment* get_segment() const { return segment; }
-  float get_float_pos() const { return pos; }
+  float    get_float_pos() const { return pos; }
 
   Vector get_pos() const;
 

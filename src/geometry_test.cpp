@@ -61,6 +61,13 @@ GeometryTest::draw()
   Display::fill_rect(Rectf(cursor2 - Vector(2,2), Sizef(5,5)), Color(1.0f, 1.0f, 0.0f));
 
   Display::fill_rect(Rectf(collision_point - Vector(3,3), Sizef(7,7)), Color(1.0f, 1.0f, 1.0f));
+
+  // Try vector projection
+  Vector a(line1.p2 - line1.p1);
+  Vector b(line2.p2 - line2.p1);
+  Vector c(a.project(b));
+  
+  Display::draw_line(line1.p1, line1.p1 + c, Color(1.0f, 1.0f, 1.0f, 0.5f));
 }
 
 void

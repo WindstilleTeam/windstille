@@ -116,11 +116,18 @@ public:
       return x*other.x + y*other.y;
     }
 
+  /** Project vecter a onto vector b and return the resulting vector */
+  Vector project(const Vector& b);
+
   float magnitude() const;
   float length() const { return magnitude(); }
 
   Vector unit() const;
-  void normalize();
+  void   normalize();
+
+  float dot(const Vector& b);
+
+  bool is_null() const;
 
   // ... add the other operators as needed, I'm too lazy now ...
 

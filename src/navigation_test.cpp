@@ -139,9 +139,15 @@ NavigationTest::update(float delta, const Controller& controller)
   if (connection)
     {
       Node* next_node;
-      float advance = 512.0f * controller.get_axis_state(X2_AXIS) * delta;
+      //float advance = 512.0f * controller.get_axis_state(X2_AXIS) * delta;
+
+      // FIXME: xpad driver is buggy and reverses the Y2 axis
+      Vector advance(512.0f * controller.get_axis_state(X2_AXIS) * delta,
+                     -512.0f * controller.get_axis_state(Y2_AXIS) * delta);
+      
       connection->advance(advance, next_node);
-      if (advance != 0)
+      
+      if (!advance.is_null())
         {
           Segment* next_segment = 0;
           for(Node::Segments::iterator i = next_node->segments.begin(); i != next_node->segments.end(); ++i)
