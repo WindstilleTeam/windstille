@@ -23,6 +23,7 @@
 **  02111-1307, USA.
 */
 
+#include <iostream>
 #include "line.hpp"
 
 Line::Line(const Vector& p1_,
@@ -86,7 +87,7 @@ Line::distance(const Vector& p3) const
 
   float u =
     ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1)) /
-    length() * length();
+    (length() * length());
   
   if (u < 0.0f)
     {
@@ -99,9 +100,9 @@ Line::distance(const Vector& p3) const
   else // (u >= 0.0f && u <= 1.0f)
     {
       Vector p4(x1 + u * (x2 - x1),
-                y1 + u * (y2 - y2));
+                y1 + u * (y2 - y1));
 
-      return (p3 - p4).length();
+      return (p4 - p3).length();
     }
 }
 

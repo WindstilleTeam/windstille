@@ -30,6 +30,8 @@
 
 class NavigationGraph;
 class Connection;
+class Segment;
+class Node;
 
 /** */
 class NavigationTest : public Screen
@@ -38,6 +40,11 @@ private:
   Vector cursor;
   NavigationGraph* graph;
   Connection* connection;
+
+  Segment* selected_segment;
+  Node*    selected_node;
+
+  Node* node_to_connect;
 
 public:
   NavigationTest();

@@ -12,6 +12,8 @@ To compile Windstille you need:
  * physfs
  * boost
  * scons
+ * bison
+ * flex
 
 In most cases these will come with your distribution.
 

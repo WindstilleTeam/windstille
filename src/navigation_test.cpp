@@ -34,18 +34,21 @@
 #include "navigation_test.hpp"
 
 NavigationTest::NavigationTest()
-  : cursor(400, 300)
+  : cursor(400, 300),
+    selected_segment(0),
+    selected_node(0),
+    node_to_connect(0)
 {
   graph = new NavigationGraph();
 
   Node* node1 = graph->add_node(Vector(100, 200));
   Node* node2 = graph->add_node(Vector(300, 400));
-  Node* node3 = graph->add_node(Vector(500, 300));
-  Node* node4 = graph->add_node(Vector(700, 400));
+  //Node* node3 = graph->add_node(Vector(500, 300));
+  //Node* node4 = graph->add_node(Vector(700, 400));
 
   graph->add_segment(node1, node2);
-  graph->add_segment(node2, node3);
-  graph->add_segment(node3, node4);
+  //graph->add_segment(node2, node3);
+  //graph->add_segment(node3, node4);
   
 }
 
@@ -58,13 +61,18 @@ NavigationTest::draw()
   Display::fill_rect(Rectf(cursor - Vector(2,2), Sizef(5,5)),  Color(1.0f, 1.0f, 1.0f));
   Display::draw_circle(cursor, 32.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-  Node* node = graph->find_closest_node(cursor, 32.0f);
-  if (node)
-    Display::draw_circle(node->get_pos(), 12.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
+  if (node_to_connect)
+    {
+      Display::fill_rect(Rectf(node_to_connect->get_pos() - Vector(2,2), Sizef(5,5)),  
+                         Color(1.0f, 1.0f, 1.0f));
+      Display::draw_line(node_to_connect->get_pos(), cursor, Color(1.0f, 1.0f, 1.0f, 0.5f));
+    }
 
-  Segment* segment = graph->find_closest_segment(cursor, 32.0f);
-  if (segment)
-    Display::draw_line(segment->get_line(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+  if (selected_node)
+    Display::draw_circle(selected_node->get_pos(), 12.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
+
+  if (selected_segment)
+    Display::draw_line(selected_segment->get_line(), Color(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 void
@@ -80,7 +88,55 @@ NavigationTest::update(float delta, const Controller& controller)
   cursor.y += controller.get_axis_state(Y_AXIS) * 500.0f * delta;
 
   if (controller.button_was_pressed(PRIMARY_BUTTON))
-    graph->add_node(cursor);
+    {
+      if (node_to_connect)
+        {
+          if (selected_node)
+            graph->add_segment(node_to_connect, selected_node);
+          
+          node_to_connect = 0;
+        }
+      else if (selected_node)
+        {
+          node_to_connect = selected_node;
+        }
+      else if (selected_segment)
+        {
+          graph->split_segment(selected_segment);
+          selected_segment = 0;
+        }
+      else
+        {
+          graph->add_node(cursor);
+        }
+    }
+
+  if (controller.get_button_state(TERTIARY_BUTTON))
+    {
+      if (selected_node)
+        {
+          selected_node->set_pos(cursor);
+        }
+    }
+
+  if (controller.button_was_pressed(PDA_BUTTON))
+    {
+      if (selected_node) {
+        graph->remove_node(selected_node);
+        selected_node = 0;
+      } 
+      
+      if (selected_segment) {
+        graph->remove_segment(selected_segment);
+        selected_segment = 0;
+      }      
+    }
+
+  selected_node = graph->find_closest_node(cursor, 32.0f);
+  if (!selected_node)
+    selected_segment = graph->find_closest_segment(cursor, 32.0f);
+  else
+    selected_segment = 0;
 }
 
 /* EOF */

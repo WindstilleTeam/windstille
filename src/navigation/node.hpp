@@ -45,7 +45,7 @@ public:
   Node(const Vector& pos_);
 
   Vector get_pos() const { return pos; }
-
+  void   set_pos(const Vector& p) { pos = p; }
 private:
   Node(const Node&);
   Node& operator=(const Node&);

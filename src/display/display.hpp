@@ -46,6 +46,9 @@ public:
   static void fill_rounded_rect(const Rectf& rect, float radius, const Color& color);
   static void draw_rounded_rect(const Rectf& rect, float radius, const Color& color);
 
+  /** Same as draw_line, but in addition draw a normal on top of the line */
+  static void draw_segment(const Line& line, const Color& color);
+
   static void draw_line(const Line& line, const Color& color);
   static void draw_line(const Vector& pos1, const Vector& pos2, const Color& color);
 

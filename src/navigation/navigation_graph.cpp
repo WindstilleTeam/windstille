@@ -23,6 +23,8 @@
 **  02111-1307, USA.
 */
 
+#include <iostream>
+#include <algorithm>
 #include "display/display.hpp"
 #include "node.hpp"
 #include "segment.hpp"
@@ -45,12 +47,72 @@ NavigationGraph::add_node(const Vector& pos)
   return node;
 }
 
+void
+NavigationGraph::remove_segment(Segment* segment)
+{
+  // FIXME: Slow
+  Segments::iterator i = std::find(segments.begin(), segments.end(), segment);
+  if (i != segments.end())
+    {
+      segments.erase(i);
+    }
+
+  delete segment;
+}
+
+struct ContainsNode
+{
+  Node* node;
+
+  ContainsNode(Node* node_) : node(node_) {}
+
+  bool operator()(Segment* segment) {
+    return 
+      (segment->get_node1() == node ||
+       segment->get_node2() == node);
+  }
+};
+
+void
+NavigationGraph::remove_node(Node* node)
+{
+  // FIXME: Slow
+
+  // Remove all segments that would get invalid by removing the node
+  Segments::iterator i = std::remove_if(segments.begin(), segments.end(), ContainsNode(node));
+  if (i != segments.end())
+    {
+      segments.erase(i, segments.end());
+    }
+  
+  // Remove the node itself 
+  Nodes::iterator j = std::find(nodes.begin(), nodes.end(), node);
+  if (j != nodes.end())
+    {
+      nodes.erase(j);
+    }  
+
+  delete node;
+}
+
 Segment*
 NavigationGraph::add_segment(Node* node1, Node* node2)
 {
   Segment* segment = new Segment(node1, node2);
   segments.push_back(segment);
   return segment;
+}
+
+void
+NavigationGraph::split_segment(Segment* segment)
+{
+  Node* node1 = segment->get_node1();
+  Node* node3 = segment->get_node2();
+  Node* node2 = add_node(0.5f * (node1->get_pos() + node3->get_pos()));
+
+  remove_segment(segment);
+  add_segment(node1, node2);  
+  add_segment(node2, node3);  
 }
 
 std::vector<Segment*>
@@ -116,9 +178,9 @@ NavigationGraph::draw()
 {
   for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
     {
-      Display::draw_line((*i)->get_node1()->get_pos(),
-                         (*i)->get_node2()->get_pos(),
-                         Color(1.0f, 0.0f, 0.0f));
+      Display::draw_segment(Line((*i)->get_node1()->get_pos(),
+                                 (*i)->get_node2()->get_pos()),
+                            Color(1.0f, 0.0f, 0.0f));
     }
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)

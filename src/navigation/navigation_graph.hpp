@@ -51,6 +51,11 @@ public:
   Node*    add_node(const Vector& pos);
   Segment* add_segment(Node* node1, Node* node2);
 
+  void remove_node(Node* node);
+  void remove_segment(Segment* segment);
+
+  void split_segment(Segment* segment);
+
   /** Find segments that collide with the given line */
   std::vector<Segment*> find_segments(const Line& line);
 

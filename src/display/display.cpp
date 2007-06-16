@@ -48,6 +48,21 @@ Display::draw_line(const Line& line, const Color& color)
 }
 
 void
+Display::draw_segment(const Line& line, const Color& color)
+{
+  Vector normal = (line.p2 - line.p1);
+
+  normal = Vector(-normal.y, normal.x);
+  normal.normalize();
+  normal *= -32.0f;
+  
+  Vector p3 = line.p1 + 0.5f * (line.p2 - line.p1);
+
+  draw_line(line,   color);
+  draw_line(p3, p3 + normal, Color(0.0f, 1.0f, 1.0f));
+}
+
+void
 Display::draw_line(const Vector& pos1, const Vector& pos2, const Color& color)
 {
   OpenGLState state;
