@@ -33,7 +33,7 @@ class Node;
 
 /** 
  */
-class Connection
+class Connection // FIXME: Rename to SegmentContact
 {
 public:
   Segment* segment;
@@ -48,6 +48,10 @@ public:
   float advance_this_segment(float adv);
 
 public:
+  Connection(Segment* segment_, float pos_);
+
+  void set_pos(Segment* segment_, float pos_);
+
   /** Move forward \a adv of units in world-co, automatically jump
    * across segments, unless a end node is hit
    *
@@ -59,8 +63,12 @@ public:
    */
   void advance(float& adv, Node*& next_node);
 
+  Segment* get_segment() const { return segment; }
+  float get_float_pos() const { return pos; }
+
   Vector get_pos() const;
-  
+
+  void draw();
 private:
   Connection (const Connection&);
   Connection& operator= (const Connection&);

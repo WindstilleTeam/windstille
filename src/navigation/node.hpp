@@ -38,14 +38,19 @@ private:
   int    id;
   Vector pos;
   
+public:
   /** Segments connected to this node */
-  std::vector<Segment*> segments;
+  typedef std::vector<Segment*> Segments;
+  Segments segments;
 
 public:
   Node(const Vector& pos_);
 
   Vector get_pos() const { return pos; }
   void   set_pos(const Vector& p) { pos = p; }
+  
+  void add_segment(Segment* segment);
+  void remove_segment(Segment* segment);
 private:
   Node(const Node&);
   Node& operator=(const Node&);

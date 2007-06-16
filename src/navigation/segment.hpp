@@ -42,6 +42,7 @@ private:
 
 public:
   Segment(Node* node1_, Node* node2_, Properties props_ = 0);
+  ~Segment();
 
   /** Calculate the angle between two segments */
   float angle(Segment* seg);

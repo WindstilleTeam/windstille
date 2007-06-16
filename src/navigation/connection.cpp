@@ -25,7 +25,21 @@
 
 #include "segment.hpp"
 #include "node.hpp"
+#include "display/display.hpp"
 #include "connection.hpp"
+
+Connection::Connection(Segment* segment_, float pos_)
+  : segment(segment_),
+    pos(pos_)
+{  
+}
+
+void
+Connection::set_pos(Segment* segment_, float pos_)
+{
+  segment = segment_;
+  pos     = pos_;
+}
 
 void
 Connection::advance(float& adv, Node*& next_node)
@@ -43,6 +57,7 @@ Connection::advance(float& adv, Node*& next_node)
       pos += adv_01;
       if (pos > 1.0f) {
         adv = (pos - 1.0f) * length;
+        pos = 1.0f;
         next_node = segment->get_node2();
       } else {
         adv = 0;
@@ -53,6 +68,7 @@ Connection::advance(float& adv, Node*& next_node)
       pos += adv_01;
       if (pos < 0.0f) {
         adv = pos * length;
+        pos = 0;
         next_node = segment->get_node1();
       } else {
         adv = 0;
@@ -67,6 +83,13 @@ Connection::get_pos() const
   Vector p2 = segment->get_node2()->get_pos();
 
   return p1 + pos*(p2 - p1);
+}
+
+void
+Connection::draw()
+{
+  Display::fill_circle(get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f));
+  Display::fill_circle(get_pos(), 8.0f, Color(0.0f, 1.0f, 1.0f));
 }
 
 /* EOF */

@@ -23,6 +23,7 @@
 **  02111-1307, USA.
 */
 
+#include <algorithm>
 #include "node.hpp"
 
 Node::Node(const Vector& pos_)
@@ -31,5 +32,21 @@ Node::Node(const Vector& pos_)
 {
   
 }
-
+
+void
+Node::add_segment(Segment* segment)
+{
+  segments.push_back(segment);
+}
+
+void
+Node::remove_segment(Segment* segment)
+{
+  Segments::iterator i = std::find(segments.begin(), segments.end(), segment);
+  if (i != segments.end())
+    {
+      segments.erase(i);
+    }
+}
+
 /* EOF */

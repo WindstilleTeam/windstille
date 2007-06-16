@@ -32,6 +32,14 @@ Segment::Segment(Node* node1_, Node* node2_, Properties props_)
     node2(node2_),
     props(props_)
 {
+  node1->add_segment(this);
+  node2->add_segment(this);
+}
+
+Segment::~Segment()
+{
+  node1->remove_segment(this);
+  node2->remove_segment(this);
 }
 
 float

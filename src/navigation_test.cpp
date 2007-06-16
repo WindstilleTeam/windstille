@@ -23,6 +23,8 @@
 **  02111-1307, USA.
 */
 
+#include <assert.h>
+#include <iostream>
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include "input/controller.hpp"
@@ -30,11 +32,14 @@
 #include "screen_manager.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
+#include "navigation/connection.hpp"
 #include "navigation/segment.hpp"
 #include "navigation_test.hpp"
 
 NavigationTest::NavigationTest()
   : cursor(400, 300),
+    graph(0),
+    connection(0),
     selected_segment(0),
     selected_node(0),
     node_to_connect(0)
@@ -73,6 +78,9 @@ NavigationTest::draw()
 
   if (selected_segment)
     Display::draw_line(selected_segment->get_line(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+
+  if (connection)
+    connection->draw();
 }
 
 void
@@ -116,6 +124,57 @@ NavigationTest::update(float delta, const Controller& controller)
       if (selected_node)
         {
           selected_node->set_pos(cursor);
+        }
+    }
+
+  if (controller.button_was_pressed(SECONDARY_BUTTON))
+    {
+      if (selected_segment)
+        {
+          delete connection;
+          connection = new Connection(selected_segment, 0.5f);
+        }
+    }
+
+  if (connection)
+    {
+      Node* next_node;
+      float advance = 512.0f * controller.get_axis_state(X2_AXIS) * delta;
+      connection->advance(advance, next_node);
+      if (advance != 0)
+        {
+          Segment* next_segment = 0;
+          for(Node::Segments::iterator i = next_node->segments.begin(); i != next_node->segments.end(); ++i)
+            {
+              if (connection->get_segment() != *i)
+                {
+                  next_segment = *i;
+                  break;
+                }
+            }
+              
+          if (!next_segment)
+            {
+              std::cout << "Dead End" << std::endl;
+            }
+          else
+            {
+              std::cout << "transition" << std::endl;
+                           
+              // FIXME: broken API this 0.0 or 1.0 depends on the segment
+              if (connection->get_float_pos() == 0.0f)
+                {
+                  connection->set_pos(next_segment, 1.0f);
+                }
+              else if (connection->get_float_pos() == 1.0f)
+                {
+                  connection->set_pos(next_segment, 0.0f);
+                }
+              else
+                {
+                  assert(!"This should never been reached! - 3124");
+                }
+            }
         }
     }
 
