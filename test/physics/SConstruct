@@ -9,7 +9,7 @@ env = Environment(SHLIBPREFIX='',
                   options=opts)
 Help(opts.GenerateHelpText(env))
 
-env.ParseConfig("pkg-config --cflags --libs clanCore-0.7 clanDisplay-0.7 clanGL-0.7 clanSignals-0.7")
+env.ParseConfig("pkg-config --cflags --libs clanCore-0.8 clanDisplay-0.8 clanGL-0.8 clanSignals-0.8")
 
 ptest = env.Program('main',
                     ['main.cxx', 'physics.cxx'])
