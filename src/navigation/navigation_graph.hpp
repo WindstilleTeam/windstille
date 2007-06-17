@@ -27,11 +27,43 @@
 #define HEADER_NAVIGATION_GRAPH_HPP
 
 #include <vector>
+#include "handle.hpp"
 #include "math/line.hpp"
 
 class Node;
 class Segment;
 class SegmentPosition;
+
+template<typename Data>
+class PointerHandle
+{
+private:
+  Data* data;
+
+public: 
+  PointerHandle(Data* data_)
+    : data(data_)
+  {}
+
+  inline Data* get() {
+    return data;
+  }
+
+  inline Data* operator->()  {
+    return data;
+  }
+
+  inline Data& operator*()  {
+    return *data;
+  }
+
+  operator bool() {
+    return data != 0;
+  }
+};
+
+typedef PointerHandle<Node>    NodeHandle; 
+typedef PointerHandle<Segment> SegmentHandle; 
 
 /** */
 class NavigationGraph
@@ -39,7 +71,7 @@ class NavigationGraph
 private:
   typedef std::vector<Node*>    Nodes;
   typedef std::vector<Segment*> Segments;
-  
+
   Nodes    nodes;
   Segments segments;
   
@@ -49,30 +81,33 @@ public:
   NavigationGraph();
   ~NavigationGraph();
 
-  Node*    add_node(const Vector& pos);
-  Segment* add_segment(Node* node1, Node* node2);
+  // FIXME: It might be worth it to return handles that can be
+  // validated instead of pure pointers
+  NodeHandle    add_node(const Vector& pos);
+  SegmentHandle add_segment(NodeHandle node1, NodeHandle node2);
 
-  void remove_node(Node* node);
-  void remove_segment(Segment* segment);
+  void remove_node(NodeHandle node);
+  void remove_segment(SegmentHandle segment);
 
-  void split_segment(Segment* segment);
+  void split_segment(SegmentHandle segment);
 
   /** Find segments that intersect with the given line */
   std::vector<SegmentPosition> find_intersections(const Line& line);
 
   /** Find nodes that are near the given point */
-  std::vector<Node*> find_nodes(const Vector& pos, float radius);
+  std::vector<NodeHandle> find_nodes(const Vector& pos, float radius);
 
   /** Find the closest node, limit search to nodes in radius */
-  Node* find_closest_node(const Vector& pos, float radius);
+  NodeHandle find_closest_node(const Vector& pos, float radius);
 
-  Segment* find_closest_segment(const Vector& pos, float radius);
+  SegmentHandle find_closest_segment(const Vector& pos, float radius);
 
   /** Find segments that are near the given point */
-  std::vector<Segment*> find_segments(const Vector& pos, float radius);
+  std::vector<SegmentHandle> find_segments(const Vector& pos, float radius);
 
   /** Draw the navigation graph, for debugging only */
   void draw();
+
 private:
   NavigationGraph (const NavigationGraph&);
   NavigationGraph& operator= (const NavigationGraph&);

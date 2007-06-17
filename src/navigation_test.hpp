@@ -26,6 +26,7 @@
 #ifndef HEADER_NAVIGATION_TEST_HPP
 #define HEADER_NAVIGATION_TEST_HPP
 
+#include "navigation/navigation_graph.hpp"
 #include "screen.hpp"
 
 class NavigationGraph;
@@ -45,10 +46,10 @@ private:
   NavigationGraph* graph;
   SegmentPosition* connection;
 
-  Segment* selected_segment;
-  Node*    selected_node;
+  SegmentHandle selected_segment;
+  NodeHandle    selected_node;
 
-  Node* node_to_connect;
+  NodeHandle node_to_connect;
 
 public:
   NavigationTest();

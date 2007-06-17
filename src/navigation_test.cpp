@@ -47,8 +47,8 @@ NavigationTest::NavigationTest()
 {
   graph = new NavigationGraph();
 
-  Node* node1 = graph->add_node(Vector(100, 200));
-  Node* node2 = graph->add_node(Vector(300, 400));
+  NodeHandle node1 = graph->add_node(Vector(100, 200));
+  NodeHandle node2 = graph->add_node(Vector(300, 400));
   //Node* node3 = graph->add_node(Vector(500, 300));
   //Node* node4 = graph->add_node(Vector(700, 400));
 

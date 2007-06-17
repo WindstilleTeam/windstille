@@ -51,7 +51,7 @@ public:
   Node* get_node1() const { return node1; } 
   Node* get_node2() const { return node2; } 
 
-  Line get_line() const;
+  Line   get_line() const;
   Vector get_vector() const;
   
 private:

@@ -23,7 +23,6 @@
 **  02111-1307, USA.
 */
 
-#include <iostream>
 #include <algorithm>
 #include "node.hpp"
 
@@ -31,12 +30,10 @@ Node::Node(const Vector& pos_)
   : pos(pos_)
     // FIXME: Do something with id
 {
-  std::cout << "Creating node: " << this << std::endl;
 }
 
 Node::~Node()
 {
-  std::cout << "Destroying node: " << this << std::endl;
 }
 
 void

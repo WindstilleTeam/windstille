@@ -38,39 +38,45 @@ NavigationGraph::NavigationGraph()
 
 NavigationGraph::~NavigationGraph()
 {
+  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+    delete *i;
+
+  for (Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
+    delete *i;
 }
 
-Node*
+NodeHandle
 NavigationGraph::add_node(const Vector& pos)
 {
   Node* node = new Node(pos);
   nodes.push_back(node);
-  return node;
+  return NodeHandle(node);
 }
 
 void
-NavigationGraph::remove_segment(Segment* segment)
+NavigationGraph::remove_segment(SegmentHandle segment)
 {
   // FIXME: Slow
-  Segments::iterator i = std::find(segments.begin(), segments.end(), segment);
+  Segments::iterator i = std::find(segments.begin(), segments.end(), segment.get());
   if (i != segments.end())
     {
       segments.erase(i);
-      delete segment;
+      delete segment.get();
     }
 
   // FIXME: Throw exception here
 }
 
 void
-NavigationGraph::remove_node(Node* node)
+NavigationGraph::remove_node(NodeHandle node)
 {
   // FIXME: Slow
+
   // Remove all segments that would get invalid by removing the node
   for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
     {
-      if ((*i)->get_node1() == node ||
-          (*i)->get_node2() == node)
+      if ((*i)->get_node1() == node.get() ||
+          (*i)->get_node2() == node.get())
         {
           delete *i;
           *i = 0;
@@ -84,28 +90,28 @@ NavigationGraph::remove_node(Node* node)
     }
   
   // Remove the node itself 
-  Nodes::iterator j = std::find(nodes.begin(), nodes.end(), node);
+  Nodes::iterator j = std::find(nodes.begin(), nodes.end(), node.get());
   if (j != nodes.end())
     {
       nodes.erase(j);
-      delete node;
+      delete node.get();
     }  
 }
 
-Segment*
-NavigationGraph::add_segment(Node* node1, Node* node2)
+SegmentHandle
+NavigationGraph::add_segment(NodeHandle node1, NodeHandle node2)
 {
-  Segment* segment = new Segment(node1, node2);
+  Segment* segment = new Segment(node1.get(), node2.get());
   segments.push_back(segment);
-  return segment;
+  return SegmentHandle(segment);
 }
 
 void
-NavigationGraph::split_segment(Segment* segment)
+NavigationGraph::split_segment(SegmentHandle segment)
 {
-  Node* node1 = segment->get_node1();
-  Node* node3 = segment->get_node2();
-  Node* node2 = add_node(0.5f * (node1->get_pos() + node3->get_pos()));
+  NodeHandle node1 = NodeHandle(segment->get_node1());
+  NodeHandle node3 = NodeHandle(segment->get_node2());
+  NodeHandle node2 = add_node(0.5f * (node1->get_pos() + node3->get_pos()));
 
   remove_segment(segment);
   add_segment(node1, node2);  
@@ -115,8 +121,8 @@ NavigationGraph::split_segment(Segment* segment)
 std::vector<SegmentPosition>
 NavigationGraph::find_intersections(const Line& line)
 {
-
-  // FIXME: Return a navgraph pos here
+  // FIXME: we might want to only return the first intersection, not
+  // all of them or alternativly return ua
   std::vector<SegmentPosition> ret;
  
   for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
@@ -134,28 +140,28 @@ NavigationGraph::find_intersections(const Line& line)
   return ret;
 }
 
-std::vector<Node*>
+std::vector<NodeHandle>
 NavigationGraph::find_nodes(const Vector& pos, float radius)
 {
   // FIXME: Optimize this with spatial tree thingy
-  std::vector<Node*> ret;
+  std::vector<NodeHandle> ret;
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
     {
       float distance = (pos - (*i)->get_pos()).length();
       if (distance < radius)
         {
-          ret.push_back(*i);
+          ret.push_back(NodeHandle(*i));
         }
     }
   
   return ret;
 }
 
-std::vector<Segment*>
+std::vector<SegmentHandle>
 NavigationGraph::find_segments(const Vector& pos, float radius)
 {
-  std::vector<Segment*> ret;
+  std::vector<SegmentHandle> ret;
  
   for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
     {
@@ -163,14 +169,14 @@ NavigationGraph::find_segments(const Vector& pos, float radius)
                             (*i)->get_node2()->get_pos()).distance(pos);
       if (distance < radius)
         {
-          ret.push_back(*i);
+          ret.push_back(SegmentHandle(*i));
         }
     }
 
   return ret;
 }
 
-Node*
+NodeHandle
 NavigationGraph::find_closest_node(const Vector& pos, float radius)
 {
   // FIXME: Optimize this with spatial tree thingy
@@ -187,10 +193,10 @@ NavigationGraph::find_closest_node(const Vector& pos, float radius)
         }
     }
   
-  return node;
+  return NodeHandle(node);
 }
 
-Segment*
+SegmentHandle
 NavigationGraph::find_closest_segment(const Vector& pos, float radius)
 {
   Segment* segment   = 0;
@@ -207,7 +213,7 @@ NavigationGraph::find_closest_segment(const Vector& pos, float radius)
         }
     }
 
-  return segment;
+  return SegmentHandle(segment);
 }
 
 void
