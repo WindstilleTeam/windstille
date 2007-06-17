@@ -39,7 +39,7 @@ private:
   Node* node1;
   Node* node2;
   
-  Properties props;
+  Properties properties;
 
 public:
   Segment(Node* node1_, Node* node2_, Properties props_ = 0);
@@ -50,6 +50,8 @@ public:
   
   Node* get_node1() const { return node1; } 
   Node* get_node2() const { return node2; } 
+
+  Properties get_properties()  const { return properties; }
 
   Line   get_line() const;
   Vector get_vector() const;

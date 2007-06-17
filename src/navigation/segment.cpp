@@ -30,7 +30,7 @@
 Segment::Segment(Node* node1_, Node* node2_, Properties props_)
   : node1(node1_), 
     node2(node2_),
-    props(props_)
+    properties(props_)
 {
   node1->add_segment(SegmentPosition(this, 0.0f));
   node2->add_segment(SegmentPosition(this, 1.0f));

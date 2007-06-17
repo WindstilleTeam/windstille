@@ -26,6 +26,7 @@
 #ifndef HEADER_NAVIGATION_GRAPH_HPP
 #define HEADER_NAVIGATION_GRAPH_HPP
 
+#include <iosfwd>
 #include <vector>
 #include "handle.hpp"
 #include "math/line.hpp"
@@ -107,6 +108,8 @@ public:
 
   /** Draw the navigation graph, for debugging only */
   void draw();
+
+  void save(std::ostream& out);
 
 private:
   NavigationGraph (const NavigationGraph&);

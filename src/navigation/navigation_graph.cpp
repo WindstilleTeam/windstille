@@ -24,6 +24,7 @@
 */
 
 #include <iostream>
+#include <map>
 #include <algorithm>
 #include "display/display.hpp"
 #include "node.hpp"
@@ -231,6 +232,33 @@ NavigationGraph::draw()
       Display::fill_rect(Rectf((*i)->get_pos() - Vector(4,4), Sizef(9, 9)),
                          Color(1.0f, 1.0f, 0.0f));
     }
+}
+
+void
+NavigationGraph::save(std::ostream& out)
+{
+  int id = 1;
+  std::map<Node*, int> ptr2id;
+
+  for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
+    ptr2id[*i] = id++;
+
+  out << "(navigation\n";
+
+  out << "  (segments\n";
+  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)  
+    out << "    (segment "
+        << "(node " << ptr2id[(*i)->get_node1()] << ") "
+        << "(node " << ptr2id[(*i)->get_node2()] << ") "
+        << "(properties " << (*i)->get_properties() << "))\n";
+  out << " )\n";
+      
+    out << "  (nodes\n"; 
+  for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
+    out << "    (node (id " << ptr2id[*i] << ") (pos " << (*i)->get_pos().x << " " << (*i)->get_pos().y << "))\n";
+  out << " )\n";
+
+  out << ")\n";
 }
 
 /* EOF */
