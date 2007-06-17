@@ -67,6 +67,12 @@ NavigationTest::draw()
   Display::fill_rect(Rectf(cursor - Vector(2,2), Sizef(5,5)),  Color(1.0f, 1.0f, 1.0f));
   Display::draw_circle(cursor, 32.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
+  std::vector<NodeHandle> nodes = graph->find_nodes(cursor, 128.0f);
+  for(std::vector<NodeHandle>::iterator i = nodes.begin(); i != nodes.end(); ++i)
+    {
+      Display::draw_circle((*i)->get_pos(), 12.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+    }
+
   if (node_to_connect)
     {
       Display::fill_rect(Rectf(node_to_connect->get_pos() - Vector(2,2), Sizef(5,5)),  

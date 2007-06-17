@@ -42,6 +42,10 @@ private:
   Data* data;
 
 public: 
+  PointerHandle() 
+    : data(0)
+  {}
+
   PointerHandle(Data* data_)
     : data(data_)
   {}
@@ -95,7 +99,7 @@ public:
   /** Find segments that intersect with the given line */
   std::vector<SegmentPosition> find_intersections(const Line& line);
 
-  /** Find nodes that are near the given point */
+  /** Find nodes that are near within the \a radius */
   std::vector<NodeHandle> find_nodes(const Vector& pos, float radius);
 
   /** Find the closest node, limit search to nodes in radius */

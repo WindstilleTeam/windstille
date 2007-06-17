@@ -102,9 +102,16 @@ NavigationGraph::remove_node(NodeHandle node)
 SegmentHandle
 NavigationGraph::add_segment(NodeHandle node1, NodeHandle node2)
 {
-  Segment* segment = new Segment(node1.get(), node2.get());
-  segments.push_back(segment);
-  return SegmentHandle(segment);
+  if (node1.get() != node2.get()) // node links to themself are forbidden
+    { // FIXME: Find a way to figure out if the given segment already exists
+      Segment* segment = new Segment(node1.get(), node2.get());
+      segments.push_back(segment);
+      return SegmentHandle(segment);
+    }
+  else
+    {
+      return SegmentHandle();
+    }
 }
 
 void
