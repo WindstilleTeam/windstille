@@ -27,6 +27,7 @@
 #define HEADER_SEGMENT_HPP
 
 #include "math/line.hpp"
+#include "math/vector.hpp"
 #include "properties.hpp"
 
 class Node;
@@ -51,7 +52,8 @@ public:
   Node* get_node2() const { return node2; } 
 
   Line get_line() const;
-
+  Vector get_vector() const;
+  
 private:
   Segment (const Segment&);
   Segment& operator= (const Segment&);

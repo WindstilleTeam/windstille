@@ -156,15 +156,25 @@ NavigationTest::update(float delta, const Controller& controller)
       player = connection->get_pos();
       
       if (!advance.is_null())
-        { // FIXME: This should be a while loop, currently we are just
+        { // Not all advancement got used up, which means we have hit
+          // the end of a segment
+
+          // FIXME: This should be a while loop, currently we are just
           // discarding the rest movement
+
           SegmentPosition next_segment;
+          float length = 0;
           for(Node::Segments::iterator i = next_node->segments.begin(); i != next_node->segments.end(); ++i)
             {
               if (connection->get_segment() != i->segment)
-                {
-                  next_segment = *i;
-                  break;
+                { // Find out into the direction of which segment the stick is pointing
+                  Vector proj = stick.project(i->segment->get_vector());
+                  
+                  if (proj.length() > length)
+                    {
+                      next_segment = *i;
+                      length       = proj.length();
+                    }
                 }
             }
               
@@ -174,7 +184,7 @@ NavigationTest::update(float delta, const Controller& controller)
               delete connection;
               connection = 0;
 
-              // FIXME: Voodoo to fix connection/dedaend cicles
+              // FIXME: Voodoo to fix connection/deadend cicles
               player += stick;
               old_player = player;
             }
