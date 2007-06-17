@@ -56,34 +56,31 @@ NavigationGraph::remove_segment(Segment* segment)
   if (i != segments.end())
     {
       segments.erase(i);
+      delete segment;
     }
 
-  delete segment;
+  // FIXME: Throw exception here
 }
 
-struct ContainsNode
-{
-  Node* node;
-
-  ContainsNode(Node* node_) : node(node_) {}
-
-  bool operator()(Segment* segment) {
-    return 
-      (segment->get_node1() == node ||
-       segment->get_node2() == node);
-  }
-};
-
 void
 NavigationGraph::remove_node(Node* node)
 {
   // FIXME: Slow
-
   // Remove all segments that would get invalid by removing the node
-  Segments::iterator i = std::remove_if(segments.begin(), segments.end(), ContainsNode(node));
-  if (i != segments.end())
+  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
     {
-      segments.erase(i, segments.end());
+      if ((*i)->get_node1() == node ||
+          (*i)->get_node2() == node)
+        {
+          delete *i;
+          *i = 0;
+        }
+    }
+
+  Segments::iterator new_end = std::remove(segments.begin(), segments.end(), (Segment*)0);
+  if (new_end != segments.end())
+    { 
+      segments.erase(new_end, segments.end());
     }
   
   // Remove the node itself 
@@ -91,9 +88,8 @@ NavigationGraph::remove_node(Node* node)
   if (j != nodes.end())
     {
       nodes.erase(j);
+      delete node;
     }  
-
-  delete node;
 }
 
 Segment*

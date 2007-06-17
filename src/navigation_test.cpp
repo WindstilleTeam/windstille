@@ -132,7 +132,7 @@ NavigationTest::update(float delta, const Controller& controller)
     }
 
   if (controller.get_button_state(TERTIARY_BUTTON))
-    {
+    { // Move node
       if (selected_node)
         {
           selected_node->set_pos(cursor);
@@ -140,12 +140,8 @@ NavigationTest::update(float delta, const Controller& controller)
     }
 
   if (controller.button_was_pressed(SECONDARY_BUTTON))
-    {
-      if (selected_segment)
-        {
-          delete connection;
-          connection = new SegmentPosition(selected_segment, 0.5f);
-        }
+    { // Set player
+      player = old_player = cursor;
     }
 
   if (connection)
@@ -156,49 +152,47 @@ NavigationTest::update(float delta, const Controller& controller)
       
       Vector advance = delta * 512.0f * stick;
       connection->advance(advance, next_node);
+
+      player = connection->get_pos();
       
       if (!advance.is_null())
         { // FIXME: This should be a while loop, currently we are just
           // discarding the rest movement
-          Segment* next_segment = 0;
+          SegmentPosition next_segment;
           for(Node::Segments::iterator i = next_node->segments.begin(); i != next_node->segments.end(); ++i)
             {
-              if (connection->get_segment() != *i)
+              if (connection->get_segment() != i->segment)
                 {
                   next_segment = *i;
                   break;
                 }
             }
               
-          if (!next_segment)
+          if (!next_segment.segment)
             {
               std::cout << "Dead End" << std::endl;
+              delete connection;
+              connection = 0;
+
+              // FIXME: Voodoo to fix connection/dedaend cicles
+              player += stick;
+              old_player = player;
             }
           else
             {
               std::cout << "transition" << std::endl;
-                           
-              // FIXME: broken API this 0.0 or 1.0 depends on the segment
-              if (connection->get_float_pos() == 0.0f)
-                {
-                  connection->set_pos(next_segment, 1.0f);
-                }
-              else if (connection->get_float_pos() == 1.0f)
-                {
-                  connection->set_pos(next_segment, 0.0f);
-                }
-              else
-                {
-                  assert(!"This should never been reached! - 3124");
-                }
+              *connection = next_segment;
             }
         }
-      player = connection->get_pos();
 
       if (controller.get_button_state(AIM_BUTTON))
-        {
+        {         
           delete connection;
           connection = 0;
+
+          // FIXME: Voodoo to fix connection/dedaend cicles
+          player += stick;
+          old_player = player;
         }
     }
   else
@@ -214,6 +208,7 @@ NavigationTest::update(float delta, const Controller& controller)
 
       std::vector<SegmentPosition> positions = graph->find_intersections(Line(old_player, player));
       if (!positions.empty()) {
+        std::cout << "Doing connection" << std::endl;
         connection = new SegmentPosition(positions.front());
       }
     }

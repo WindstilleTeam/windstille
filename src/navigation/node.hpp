@@ -29,7 +29,7 @@
 #include <vector>
 #include "math/vector.hpp"
 
-class Segment;
+#include "segment_position.hpp"
 
 /** */
 class Node
@@ -40,16 +40,20 @@ private:
   
 public:
   /** Segments connected to this node */
-  typedef std::vector<Segment*> Segments;
+  typedef std::vector<SegmentPosition> Segments;
   Segments segments;
 
 public:
   Node(const Vector& pos_);
+  ~Node();
 
   Vector get_pos() const { return pos; }
   void   set_pos(const Vector& p) { pos = p; }
-  
-  void add_segment(Segment* segment);
+
+  /** Connect the given segment to the node, the position is used to
+      mark the end of the segment that is actually connected */
+  void add_segment(const SegmentPosition& segment);
+
   void remove_segment(Segment* segment);
 private:
   Node(const Node&);

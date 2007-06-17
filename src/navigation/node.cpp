@@ -23,29 +23,38 @@
 **  02111-1307, USA.
 */
 
+#include <iostream>
 #include <algorithm>
 #include "node.hpp"
-
+
 Node::Node(const Vector& pos_)
   : pos(pos_)
     // FIXME: Do something with id
 {
-  
+  std::cout << "Creating node: " << this << std::endl;
+}
+
+Node::~Node()
+{
+  std::cout << "Destroying node: " << this << std::endl;
 }
 
 void
-Node::add_segment(Segment* segment)
+Node::add_segment(const SegmentPosition& position)
 {
-  segments.push_back(segment);
+  segments.push_back(position);
 }
 
 void
 Node::remove_segment(Segment* segment)
 {
-  Segments::iterator i = std::find(segments.begin(), segments.end(), segment);
-  if (i != segments.end())
+  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
     {
-      segments.erase(i);
+      if (i->segment == segment)
+        {
+          segments.erase(i);
+          return;
+        }
     }
 }
 

@@ -23,6 +23,7 @@
 **  02111-1307, USA.
 */
 
+#include <iostream>
 #include <assert.h>
 #include "node.hpp"
 #include "segment.hpp"
@@ -32,12 +33,16 @@ Segment::Segment(Node* node1_, Node* node2_, Properties props_)
     node2(node2_),
     props(props_)
 {
-  node1->add_segment(this);
-  node2->add_segment(this);
+  node1->add_segment(SegmentPosition(this, 0.0f));
+  node2->add_segment(SegmentPosition(this, 1.0f));
+
+  std::cout << "Creating segment: " << this << " with " << node1 << ", " << node2 << std::endl;
 }
 
 Segment::~Segment()
 {
+  std::cout << "Destroying segment: " << this << " with " << node1 << ", " << node2 << std::endl;
+
   node1->remove_segment(this);
   node2->remove_segment(this);
 }

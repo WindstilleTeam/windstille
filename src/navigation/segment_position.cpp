@@ -28,6 +28,12 @@
 #include "display/display.hpp"
 #include "segment_position.hpp"
 
+SegmentPosition::SegmentPosition()
+  : segment(0),
+    pos(0.0f)
+{
+}
+
 SegmentPosition::SegmentPosition(Segment* segment_, float pos_)
   : segment(segment_),
     pos(pos_)

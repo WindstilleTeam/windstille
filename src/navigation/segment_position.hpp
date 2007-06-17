@@ -43,6 +43,7 @@ public:
   float pos;
 
 public:
+  SegmentPosition();
   SegmentPosition(Segment* segment_, float pos_);
 
   void set_pos(Segment* segment_, float pos_);
