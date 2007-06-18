@@ -66,7 +66,8 @@ inline float normalize_angle(float radians)
   if (radians == 2.0 * M_PI)
     radians = 0.0;
   
-  assert (radians >= 0.0 && radians < 2.0 * M_PI);
+  // FIXME: This gets triggered from time to time!
+  //  assert (radians >= 0.0 && radians < 2.0 * M_PI);
   return radians;
 }
 

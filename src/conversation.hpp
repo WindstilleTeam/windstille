@@ -35,8 +35,10 @@
 class Conversation : public Screen
 {
 private:
-  bool active;
-  int selection;
+  Vector pos;
+  Vector direction;
+  bool   active;
+  int    selection;
 
   typedef std::vector<std::string> Choices;
   Choices choices;
