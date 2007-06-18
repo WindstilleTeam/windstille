@@ -210,6 +210,7 @@ WindstilleMain::init_modules()
   if (debug) std::cout << "Initialising Fonts" << std::endl;
   Fonts::init(); 
   sound_manager = new SoundManager();
+  sound_manager->set_listener_gain(config.get_int("master-volume")/100.0f);
   sound_manager->enable_sound(config.get_bool("sound"));
   sound_manager->enable_music(config.get_bool("music"));
 

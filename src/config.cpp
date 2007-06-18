@@ -61,6 +61,8 @@ Config::Config()
 
   add(new ConfigValue<std::string>("recorder-file",   _("File to which demos are recorded"), false));
   add(new ConfigValue<std::string>("playback-file",   _("File from which a demo is played"), false));
+
+  add(new ConfigValue<int>("master-volume",  _("Master Volume"), true, 100));
 }
 
 Config::~Config()

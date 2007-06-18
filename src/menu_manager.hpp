@@ -55,6 +55,7 @@ public:
   void menu_show_fps(int i);
   void menu_fullscreen(int i);
   void menu_continue();
+  void menu_music_volume(int i);
   void menu_ambient_light(int i, int component);
   void menu_start_scenario(std::string scenario);
   void menu_show_model(std::string scenario);

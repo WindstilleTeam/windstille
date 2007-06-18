@@ -24,6 +24,7 @@
 */
 
 #include "config.hpp"
+#include "sound/sound_manager.hpp"
 #include "console.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
@@ -66,7 +67,9 @@ MenuManager::display_option_menu()
 
   menu->set_font(Fonts::vera20);
 
-  SliderMenuItem* music_volume_item = new SliderMenuItem(menu,  "Music Volume", 100, 0, 100, 10);
+  SliderMenuItem* music_volume_item = new SliderMenuItem(menu,  "Master Volume",   
+                                                         config.get_int("master-volume"), 0, 100, 10);
+  slots.push_back(music_volume_item->sig_change().connect(this, &MenuManager::menu_music_volume));
   menu->add_item(music_volume_item);
 
   SliderMenuItem* sfx_volume_item   = new SliderMenuItem(menu,  "SFX Volume",   100, 0, 100, 10);
@@ -582,6 +585,13 @@ MenuManager::menu_gamma(int i)
 {
   float gamma = i / 100.0f;
   SDL_SetGamma(gamma, gamma, gamma);
+}
+
+void
+MenuManager::menu_music_volume(int i)
+{
+  config.set_int("master-volume", i);
+  sound_manager->set_listener_gain((i/100.0f));
 }
 
 /* EOF */

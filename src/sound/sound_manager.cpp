@@ -214,6 +214,12 @@ SoundManager::set_listener_velocity(const Vector& vel)
 }
 
 void
+SoundManager::set_listener_gain(float volume)
+{
+  alListenerf(AL_GAIN, volume);
+}
+
+void
 SoundManager::update()
 {
   if (!sound_enabled)
