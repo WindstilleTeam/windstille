@@ -40,7 +40,7 @@
 #include "display/display.hpp"
 #include "controller_help_window.hpp"
 
-namespace scripting
+namespace Scripting
 {
 
 void set_sector(const std::string& filename)
@@ -338,6 +338,6 @@ SQInteger spawn_object(HSQUIRRELVM v)
   return 0;
 }
 
-} // namespace scripting
+} // namespace Scripting
 
 /* EOF */

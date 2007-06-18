@@ -16,7 +16,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#include <config.h>
 
 #include <iostream>
 #include <sstream>
@@ -275,7 +274,7 @@ Sector::add(GameObject* obj)
 void
 Sector::remove_object_from_squirrel(GameObject* object)
 {
-  using namespace scripting;
+  using namespace Scripting;
 
   // get objects table
   HSQUIRRELVM v = script_manager->get_vm();
@@ -307,30 +306,30 @@ static inline void create_squirrel_instance(HSQUIRRELVM v, GameObject* object)
 {
   ScriptableObject* script_obj = dynamic_cast<ScriptableObject*> (object);
   if(script_obj) {
-    create_squirrel_instance(v, new scripting::ScriptableObject(script_obj),
+    create_squirrel_instance(v, new Scripting::ScriptableObject(script_obj),
                              true);
     return;
   }
   
   TestObject* tobj = dynamic_cast<TestObject*> (object);
   if(tobj) {
-    create_squirrel_instance(v, new scripting::TestObject(tobj), true);
+    create_squirrel_instance(v, new Scripting::TestObject(tobj), true);
     return;
   }                                                                             
 
   Player* player = dynamic_cast<Player*> (object);
   if(player) {
-    create_squirrel_instance(v, new scripting::Player(player), true);
+    create_squirrel_instance(v, new Scripting::Player(player), true);
     return;
   }
 
-  create_squirrel_instance(v, new scripting::GameObject(object), true);
+  create_squirrel_instance(v, new Scripting::GameObject(object), true);
 }
 
 void
 Sector::expose_object_to_squirrel(GameObject* object)
 {
-  using namespace scripting;
+  using namespace Scripting;
 
   // get objects table
   HSQUIRRELVM v = script_manager->get_vm();

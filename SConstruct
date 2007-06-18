@@ -101,6 +101,10 @@ int main()
 
 # FIXME: Add check for ICONV_CONST
 
+# BuildDir('build/src',   'src', duplicate=0)
+# BuildDir('build/lib',   'lib', duplicate=0)
+# BuildDir('build/tools', 'tools', duplicate=0)
+
 conf_env = Environment()
 
 opts = Options(['options.cache', 'custom.py'], ARGUMENTS)
@@ -115,7 +119,6 @@ opts.Add('CC', 'C Compiler')
 opts.Add('CXX', 'C++ Compiler')  
 opts.Update(conf_env)
 opts.Save('options.cache', conf_env)
-
 Help(opts.GenerateHelpText(conf_env))
 
 conf = Configure(conf_env, custom_tests = { 'Check32bit' : Check32bit })
@@ -125,9 +128,13 @@ conf_env = conf.Finish()
 
 Export('conf_env')
 
+# SConscript('build/tools/SConscript')
+# SConscript('build/lib/SConscript')
+# SConscript('build/src/SConscript')
+# SConscript('build/src/scripting/SConscript')
+
 SConscript('tools/SConscript')
-SConscript('lib//SConscript')
+SConscript('lib/SConscript')
 SConscript('src/SConscript')
-SConscript('src/scripting/SConscript')
 
 # EOF #

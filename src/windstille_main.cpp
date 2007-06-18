@@ -22,7 +22,8 @@
 **  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 **  02111-1307, USA.
 */
-#include <config.h>
+
+#include "windstille.hpp"
 
 #include <stdio.h>
 #include <physfs.h>
@@ -276,9 +277,9 @@ WindstilleMain::init_physfs(const char* argv0)
 
   // Initialize physfs (this is a slightly modified version of
   // PHYSFS_setSaneConfig
-  const char* application = PACKAGE_NAME;
+  const char* application = "windstille";
   const char* userdir = PHYSFS_getUserDir();
-  const char* dirsep = PHYSFS_getDirSeparator();
+  const char* dirsep  = PHYSFS_getDirSeparator();
   char* writedir = new char[strlen(userdir) + strlen(application) + 2];
 
   // Set configuration directory

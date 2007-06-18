@@ -35,7 +35,7 @@
 
 #include "util.hpp"
 
-namespace scripting {
+namespace Scripting {
 
 std::string sq_to_lisp_string(std::string sq_str)
 {
@@ -419,6 +419,6 @@ void save_squirrel_table(HSQUIRRELVM v, int table_idx, const std::string& file)
   writer.end_list("squirrel-state");
 }
 
-} // namespace scripting
+} // namespace Scripting
 
 /* EOF */

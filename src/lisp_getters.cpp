@@ -23,7 +23,6 @@
 **  02111-1307, USA.
 */
 
-#include <config.h>
 
 #include "lisp/lisp.hpp"
 #include "lisp/getters.hpp"

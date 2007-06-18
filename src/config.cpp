@@ -23,11 +23,12 @@
 **  02111-1307, USA.
 */
 
-#include "config.hpp"
+#include "windstille.hpp"
+
 #include <boost/format.hpp>
-#include <config.h>
 #include <memory>
 #include <iostream>
+#include "config.hpp"
 #include "tinygettext/gettext.hpp"
 #include "lisp/lisp.hpp"
 #include "lisp/parser.hpp"
@@ -261,7 +262,7 @@ Config::parse_args(int argc, char** argv)
           break;
 
         case 'v':
-          std::cout << "Windstille " << PACKAGE_VERSION << std::endl;
+          std::cout << "Windstille " << WINDSTILLE_VERSION << std::endl;
           exit(EXIT_SUCCESS);
           break;
 

@@ -1,4 +1,3 @@
-#include <config.h>
 
 #include "sprite3d/data.hpp"
 

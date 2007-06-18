@@ -33,7 +33,7 @@ namespace lisp {
 class Writer;
 };
 
-namespace scripting {
+namespace Scripting {
 
 // Squirrel to Lisp
 void        table_to_lisp(HSQUIRRELVM v, int table_idx, std::vector<lisp::Lisp*>& entries);
@@ -51,7 +51,7 @@ void load_squirrel_table(HSQUIRRELVM v, int table_idx, const lisp::Lisp* lisp);
 void save_squirrel_table(HSQUIRRELVM v, int table_idx, const std::string& file);
 void load_squirrel_table(HSQUIRRELVM v, int table_idx, const std::string& file);
 
-} // namespace scripting
+} // namespace Scripting
 
 #endif
 
