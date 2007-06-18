@@ -2,6 +2,10 @@ Windstille 0.3.1
 ================
  - fixed crash when sound is disabled
  - more solid gamepad support
+ - added volume control
+ - added arc drawing
+ - added navigation graph
+ - added geometry test
 
 Windstille 0.3.0
 ================

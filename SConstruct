@@ -81,6 +81,63 @@ def CheckPhysFS(context, version):
         context.Result('ok (cached)')
         return 1
 
+# YACC
+
+yacc_test_text = """
+%{
+#include <stdio.h>
+
+/* MSVC++ needs this before it can swallow Bison output */
+#ifdef _MSC_VER
+# define __STDC__
+#endif
+%}
+%token MSG
+%start ROOT
+%%
+ROOT:
+	MSG { printf("HELLO"); } 
+	;
+%%
+"""
+
+def CheckYacc(context):
+	context.Message("Checking for Yacc ('%s')... " % context.env.get('YACC'))
+	is_ok = context.TryCompile(yacc_test_text,".y")
+	context.Result(is_ok)
+	return is_ok
+
+# LEX
+
+lex_test_text = """
+%{
+#include <stdio.h>
+%}
+DIGIT	[0-9]
+ID		[a-z][a-z0-9]*
+%%
+{DIGIT}+	{
+		printf("A digit: %s\\n",yytext);
+	}
+
+[ \\t\\n]+    /* ignore */
+
+.			{
+		printf("Unrecognized guff");
+	}
+%%
+main(){
+	yylex();
+}
+"""
+
+def CheckLex(context):
+	context.Message("Checking for Lex ('%s')... " % context.env.get('LEX'))
+	is_ok = context.TryCompile(lex_test_text,".l")
+	context.Result(is_ok)
+	return is_ok
+
+
 def Check32bit(context):
     check32bit_test_source_file = """
 #include <stdio.h>
@@ -121,9 +178,20 @@ opts.Update(conf_env)
 opts.Save('options.cache', conf_env)
 Help(opts.GenerateHelpText(conf_env))
 
-conf = Configure(conf_env, custom_tests = { 'Check32bit' : Check32bit })
+conf = Configure(conf_env, custom_tests = { 'Check32bit' : Check32bit,
+                                            'CheckYacc'  : CheckYacc,
+                                            'CheckLex'   : CheckLex})
 if conf.Check32bit() == "64bit":
   conf.env.Append(CXXFLAGS="-D_SQ64")
+
+if not conf.CheckLex():
+    print "lex or flex not found, aborting."
+    Exit(1)
+    
+if not conf.CheckYacc():
+    print "yacc or bison not found, aborting."
+    Exit(1)
+    
 conf_env = conf.Finish()
 
 Export('conf_env')

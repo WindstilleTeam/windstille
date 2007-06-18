@@ -1,4 +1,3 @@
-- incooperate the freebsd patches
 - add bison checks
 
 - collision detection
@@ -9,5 +8,25 @@ Input Handling:
 ---------------
 - add option to invert axis
 - implement proper dead-zone in input handling
+- allow to load multiple controller config files
+
+Sound Handling:
+---------------
+- split music, voice and sound fx into seperate context or allow to
+  change their volume by other means
+
+Misc:
+-----
+- polish/test scripting interface
+- create doll class
+- figure out how to do background animation (coroutines, multiple VM, etc.)
+- provide decent default keyboard config
+- polish dialog system
+- a mission that is playable
+- polish PDA
+- bone animation
+- add "save options" button
+- reduce tilesize of the large sets, figure out a easy way to resize
+  them without messing up alpha
 
 # EOF #
