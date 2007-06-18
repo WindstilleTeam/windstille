@@ -123,6 +123,12 @@ Player::draw (SceneContext& sc)
   sc.mult_modelview(sprite.get_attachment_point_matrix(id));
   weapon->draw(sc);
   sc.pop_modelview();
+
+
+  sc.push_modelview();
+  sc.translate(pos.x, pos.y - 80);
+  laser_pointer->draw(sc);
+  sc.pop_modelview();
 }
 
 void

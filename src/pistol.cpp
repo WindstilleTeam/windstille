@@ -37,8 +37,9 @@ void
 Pistol::draw(SceneContext& sc)
 {
   sprite.draw(sc.color(), Vector(0, 0), 1000);
-  if(laser_pointer)
-    laser_pointer->draw(sc);
+  // Disabled for now and done in the player class
+  //if(laser_pointer)
+  //  laser_pointer->draw(sc);
 }
 
 void
