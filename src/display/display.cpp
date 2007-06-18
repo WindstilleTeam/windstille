@@ -274,7 +274,9 @@ Display::init()
   static const float cl_pixelcenter_constant = 0.375;
 
   //glOrtho(0.0, window->w, window->h, 0.0, -1000.0, 1000.0);
-  glOrtho(0.0, 800, 600, 0.0, 1000.0, -1000.0);
+  
+  // glOrtho(0.0, 800, 0.0, 600.0, 1000.0, -1000.0); // proper right-hand CO
+  glOrtho(0.0, 800, 600.0, 0.0, 1000.0, -1000.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glTranslated(cl_pixelcenter_constant, cl_pixelcenter_constant, 0.0);
@@ -386,11 +388,11 @@ Display::draw_arc(const Vector& pos, float radius, float start, float end, const
       glVertex2f(pos.x, pos.y);
 
       for(float angle = start; angle < end; angle += step)
-        glVertex2f(cosf(angle) * radius + pos.x,
-                   sinf(angle) * radius + pos.y);
+        glVertex2f((cosf(angle) * radius) + pos.x,
+                   (sinf(angle) * radius) + pos.y);
 
-      glVertex2f(cosf(end) * radius + pos.x,
-                 sinf(end) * radius + pos.y);
+      glVertex2f((cosf(end) * radius) + pos.x,
+                 (sinf(end) * radius) + pos.y);
       glVertex2f(pos.x, pos.y);
       glEnd();
     }
@@ -426,8 +428,8 @@ Display::fill_arc(const Vector& pos, float radius, float start, float end, const
       glVertex2f(pos.x, pos.y);
 
       for(float angle = start; angle < end; angle += step)
-        glVertex2f(cosf(angle) * radius + pos.x,
-                   sinf(angle) * radius + pos.y);
+        glVertex2f((cosf(angle) * radius) + pos.x,
+                   (sinf(angle) * radius) + pos.y);
 
       glVertex2f(cosf(end) * radius + pos.x,
                  sinf(end) * radius + pos.y);

@@ -62,7 +62,6 @@ Conversation::draw()
     return;
   
   Display::fill_circle(pos, 42.0f, Color(1.0f, 1.0f, 1.0f, 0.25f), 24);
-  Display::draw_circle(pos, 42.0f, Color(1.0f, 1.0f, 1.0f, 0.25f), 24);
 
   float segment = 360.0f / choices.size();
 
@@ -84,28 +83,27 @@ Conversation::draw()
 
       if (i == selection)
         {
-          Display::fill_arc(pos + (5.0f * offset), 32.0f, 
-                            start, end,
-                            Color(1.0f, 1.0f, 1.0f, 1.0f), 24);
-          
-          Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 1.0f));
+          Display::fill_arc(pos, 42.0f, start, end, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
+          Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
           Fonts::vera20->draw_center(textpos.x + distance * offset.x, textpos.y + distance * offset.y, choices[i], Color(1.0f, 1.0f, 1.0f));
         }
       else
         {
-          Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.25f));
+          Display::fill_rounded_rect(rect, 5.0f, Color(0.25f, 0.25f, 0.25f, 0.75f));
           Fonts::vera20->draw_center(textpos.x + distance * offset.x, textpos.y + distance * offset.y, choices[i], Color(0.5f, 0.5f, 0.5f));
         }
 
       Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f));
 
-      Display::draw_arc(pos + 5.0f * offset, 32.0f,
-                        start, end,
-                        Color(1.0f, 1.0f, 1.0f, 1.0f), 24);
+      //Display::draw_arc(pos + 5.0f * offset, 32.0f,
+      //                  start, end,
+      //                  Color(1.0f, 1.0f, 1.0f, 1.0f), 24);
 
     }
+  Display::draw_circle(pos, 42.0f, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
 
-  Display::draw_line(pos, pos + direction*32.0f, Color(0.0f, 0.0f, 0.0f));
+  Display::fill_circle(pos + direction * 34.0f, 8.0f, Color(1.0f, 1.0f, 1.0f));
+  //Display::draw_line(pos, pos + direction*32.0f, Color(0.0f, 0.0f, 0.0f));
 }
 
 void
