@@ -222,7 +222,6 @@ WindstilleMain::init_modules()
   sprite3d_manager = new sprite3d::Manager();
 
   script_manager->run_script_file("scripts/windstille.nut");
-  script_manager->run_script_file("scripts/init.nut");
 }
 
 void

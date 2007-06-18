@@ -162,7 +162,7 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
       while(SQ_SUCCEEDED(sq_next(v,i-1)))
         {
           if (!first) {
-            os << ", ";
+            os << ", \n";
           }
           first = false;
 

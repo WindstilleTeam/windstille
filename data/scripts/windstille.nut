@@ -96,9 +96,9 @@ class Dialog {
   align = null;
   character = null;
   portrait = null;
-}
+};
 
-  function add_dialog(align, character, portrait, text)
+function add_dialog(align, character, portrait, text)
 {
   dialog_show(align, character, portrait, text);
   wait_for_dialog();  

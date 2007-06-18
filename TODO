@@ -28,5 +28,6 @@ Misc:
 - add "save options" button
 - reduce tilesize of the large sets, figure out a easy way to resize
   them without messing up alpha
+- print and println behave different on console
 
 # EOF #
