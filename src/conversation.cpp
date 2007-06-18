@@ -75,23 +75,29 @@ Conversation::draw()
       float end   = -segment/2 - 90.0f + segment*(i+1);
       
       // FIXME: Doesn't handle multi line text
-      Sizef size(Fonts::vera20->get_width(choices[i]) + 10,
-                 Fonts::vera20->get_height() + 10);
-      Rectf rect(pos + 128.0f * offset - Vector(size.width/2, size.height - 5), size);
+      Sizef size(Fonts::vera20->get_width(choices[i]) + 60,
+                 Fonts::vera20->get_height() + 40);
+      float distance = 160.0f;
+
+      Vector textpos = pos + Vector(0, 16.0f);
+      Rectf  rect(textpos + distance * offset - Vector(size.width/2, size.height - 20), size);
 
       if (i == selection)
         {
           Display::fill_arc(pos + (5.0f * offset), 32.0f, 
                             start, end,
                             Color(1.0f, 1.0f, 1.0f, 1.0f), 24);
+          
           Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 1.0f));
-          Fonts::vera20->draw_center(pos.x + 128.0f * offset.x, pos.y + 128.0f * offset.y, choices[i], Color(1.0f, 1.0f, 1.0f));
+          Fonts::vera20->draw_center(textpos.x + distance * offset.x, textpos.y + distance * offset.y, choices[i], Color(1.0f, 1.0f, 1.0f));
         }
       else
         {
           Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.25f));
-          Fonts::vera20->draw_center(pos.x + 128.0f * offset.x, pos.y + 128.0f * offset.y, choices[i], Color(0.5f, 0.5f, 0.5f));
+          Fonts::vera20->draw_center(textpos.x + distance * offset.x, textpos.y + distance * offset.y, choices[i], Color(0.5f, 0.5f, 0.5f));
         }
+
+      Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f));
 
       Display::draw_arc(pos + 5.0f * offset, 32.0f,
                         start, end,
@@ -99,29 +105,7 @@ Conversation::draw()
 
     }
 
-  Display::draw_line(pos, pos + direction*32.0f, Color(1.0f, 1.0f, 1.0f));
-
-  /*
-    cosf(angle) * radius + pos.x;
-    sinf(angle) * radius + pos.y;
-
-    Rect rect(Point(x - 20, y - 20 + Fonts::ttffont->get_height()/2 - 5),
-    Size(300 + 20, // FIXME:
-    (Fonts::ttffont->get_height() + 10) * choices.size() + 20));
-  
-    Display::fill_rect(rect, Color(0,0,0,0.5f));
-    Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.3f));
-
-    for(int i = 0; i < int(choices.size()); ++i)
-    {
-    if (i == selection)
-    Fonts::vera20->draw(x, y, choices[i]);
-    else
-    Fonts::vera20->draw(x, y, choices[i], Color(0.5f, 0.5f, 0.5f));
-  
-    y += Fonts::vera20->get_height() + 10;
-    }
-  */
+  Display::draw_line(pos, pos + direction*32.0f, Color(0.0f, 0.0f, 0.0f));
 }
 
 void
@@ -130,12 +114,12 @@ Conversation::update(float delta, const Controller& controller)
   if (!active)
     return;
 
+  direction = Vector(controller.get_axis_state(X_AXIS),
+                     controller.get_axis_state(Y_AXIS));
+
   if (fabs(controller.get_axis_state(X_AXIS)) > 0.3f ||
       fabs(controller.get_axis_state(Y_AXIS)) > 0.3f)
     {
-      direction = Vector(controller.get_axis_state(X_AXIS),
-                         controller.get_axis_state(Y_AXIS));
-
       float segment = 360.0f / choices.size();
       float angle = math::rad2deg(math::normalize_angle(atan2f(direction.y, direction.x) + M_PI/2 + math::deg2rad(segment/2.0f)));
 
@@ -144,6 +128,7 @@ Conversation::update(float delta, const Controller& controller)
     }
   else
     {
+      selection = -1;
     }
 
   /*
@@ -160,7 +145,8 @@ Conversation::update(float delta, const Controller& controller)
     selection = 0;
     }
   */
-  if (controller.button_was_pressed(OK_BUTTON))
+  
+  if (controller.button_was_pressed(OK_BUTTON) && selection != -1)
     {
       active = false;
       GameSession::current()->get_pda().add_dialog("Jane", choices[selection]);
