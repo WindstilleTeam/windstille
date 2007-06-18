@@ -29,5 +29,7 @@ Misc:
 - reduce tilesize of the large sets, figure out a easy way to resize
   them without messing up alpha
 - print and println behave different on console
+- calling functions as character scripts instead of files doesn't work
+- change the game to a righthand coordinate system
 
 # EOF #

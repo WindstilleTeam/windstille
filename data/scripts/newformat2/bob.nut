@@ -4,6 +4,9 @@ function intro()
   dialog.show("Hey, my name's bob.  Are you new around here?"); 
   conversation_add("Yes, I am.");
   conversation_add("Go away"); 
+  conversation_add("Choice 1"); 
+  conversation_add("Choice 2"); 
+  conversation_add("Choice 3"); 
   if (!conversation_get())
   {
     ask_questions();

@@ -26,6 +26,7 @@
 #ifndef HEADER_PDA_HPP
 #define HEADER_PDA_HPP
 
+#include "sprite2d/sprite.hpp"
 #include "screen.hpp"
 
 class TextArea;
@@ -52,6 +53,19 @@ public:
 /** */
 class PDA : public Screen
 {
+private:
+  Sprite    background;
+  TextArea* text_area;
+  std::vector<DialogEntry> dialogs;
+  std::vector<ObjectiveEntry> objectives;   
+  
+  std::string new_text;  
+  std::string old_text;
+  enum pda_state { PDA_OBJECTIVES, PDA_DIALOGS } state;
+
+  void show_objectives();
+  void show_dialogs();
+
 public:
   PDA();
 
@@ -63,18 +77,6 @@ public:
   void objective_complete(const std::string& name);
   bool is_objective_given(const std::string& name);
   bool is_objective_complete(const std::string& name);
-
-private:
-  void show_objectives();
-  void show_dialogs();
-  
-  TextArea* text_area;
-  std::vector<DialogEntry> dialogs;
-  std::vector<ObjectiveEntry> objectives;   
-  
-  std::string new_text;  
-  std::string old_text;
-  enum pda_state { PDA_OBJECTIVES, PDA_DIALOGS } state;
 };
 
 #endif

@@ -45,7 +45,8 @@ ObjectiveEntry::ObjectiveEntry(const std::string& arg_name, const std::string& a
 PDA::PDA()
   : state(PDA_OBJECTIVES)
 { 
-  text_area = 0;
+  text_area  = 0;
+  background = Sprite("images/pda/pda.sprite");
 }
 
 void
@@ -53,8 +54,14 @@ PDA::draw()
 {
   if (text_area)
     {
-      const Rectf& rect = text_area->get_rect().grow(8.0f);
+      // Darken the background a bit
+      Display::fill_rect(Rect(0, 0, Display::get_width(), Display::get_height()), Color(0.0f, 0.0f, 0.0f, 0.25f));
 
+      Rectf rect = text_area->get_rect().grow(8.0f);
+
+      background.draw(Vector(30, 30));
+      
+      rect.top += 56;
       Display::fill_rounded_rect(rect, 16.0f, Color(0.3f, 0.3f, 0.5f, 0.5f));
       Display::draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
@@ -83,10 +90,7 @@ PDA::update(float delta, const Controller& controller)
           }
       }
   }
-  
-  int width  = 600;
-  int height = 400;
-  
+    
   switch (state) {
   case PDA_OBJECTIVES:
     show_objectives();
@@ -97,10 +101,8 @@ PDA::update(float delta, const Controller& controller)
   }
  
   if (new_text != old_text) {
-    delete text_area;
-    text_area = new TextArea(Rect(Point(100,
-                                        100),
-                                  Size(width, height)), false);
+    delete text_area; // FIXME: Unneeded could just use set_text
+    text_area = new TextArea(Rectf(70, 83, 385, 520).grow(-12.0f), false);
     text_area->set_font(Fonts::ttffont);
     text_area->set_text(new_text);
     

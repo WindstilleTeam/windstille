@@ -202,8 +202,15 @@
       (sprite3d "models/characters/yagor/yagor.wsprite")
     )
 
+    (character
+      (name "barrobot")
+      (pos 370 256)
+      (z-pos -450)
+      (sprite3d "models/characters/yagor/yagor.wsprite")
+    )
+
     (scriptable-object
-      (name "Barrobot")
+      (name "Barrobot2")
       (pos 470 177)
       (z-pos -100)
       (sprite  "models/objects/barrobot/barrobotsprite.sprite")
