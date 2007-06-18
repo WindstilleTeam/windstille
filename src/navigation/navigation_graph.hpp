@@ -115,6 +115,8 @@ public:
 
   void save(std::ostream& out);
 
+  bool valid(Segment* segment);
+  bool valid(Node*    node);
 private:
   NavigationGraph (const NavigationGraph&);
   NavigationGraph& operator= (const NavigationGraph&);

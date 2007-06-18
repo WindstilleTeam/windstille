@@ -121,11 +121,4 @@ SegmentPosition::get_pos() const
   return p1 + pos*(p2 - p1);
 }
 
-void
-SegmentPosition::draw()
-{
-  Display::fill_circle(get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f, 0.5f));
-  Display::fill_circle(get_pos(), 8.0f, Color(0.0f, 1.0f, 1.0f));
-}
-
 /* EOF */

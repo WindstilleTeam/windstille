@@ -1,10 +1,13 @@
 - incooperate the freebsd patches
 - add bison checks
-- implement proper dead-zone in input handling
-- shrink textures: a lot!
+
 - collision detection
 - virtual tiles in the editor
 - animated tiles
+
+Input Handling:
+---------------
 - add option to invert axis
+- implement proper dead-zone in input handling
 
 # EOF #

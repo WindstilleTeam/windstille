@@ -268,4 +268,18 @@ NavigationGraph::save(std::ostream& out)
   out << ")\n";
 }
 
+bool
+NavigationGraph::valid(Segment* segment)
+{
+  // FIXME: Slow
+  return std::find(segments.begin(), segments.end(), segment) != segments.end();
+}
+
+bool
+NavigationGraph::valid(Node* node)
+{
+  // FIXME: Slow
+  return std::find(nodes.begin(), nodes.end(), node) != nodes.end();
+}
+
 /* EOF */

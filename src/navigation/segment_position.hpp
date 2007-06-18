@@ -78,8 +78,6 @@ public:
   float    get_float_pos() const { return pos; }
 
   Vector get_pos() const;
-
-  void draw();
 };
 
 #endif

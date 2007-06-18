@@ -90,8 +90,9 @@ NavigationTest::draw()
 
   if (connection)
     {
-      connection->draw();
-      
+      Display::fill_circle(connection->get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f, 0.5f));
+      Display::fill_circle(connection->get_pos(), 8.0f, Color(0.0f, 1.0f, 1.0f));
+     
       Display::draw_line(connection->get_pos(), connection->get_pos() + 100.0f*stick,
                          Color(1.0f, 1.0f, 1.0f, 1.0f));
     }
@@ -252,6 +253,12 @@ NavigationTest::update(float delta, const Controller& controller)
     selected_segment = graph->find_closest_segment(cursor, 32.0f);
   else
     selected_segment = 0;
+
+  if (connection && !graph->valid(connection->get_segment()))
+    {
+      delete connection;
+      connection = 0;
+    }
 
   old_player = player;
 }
