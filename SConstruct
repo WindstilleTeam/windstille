@@ -99,7 +99,25 @@ int main()
     return output
 
 
+# FIXME: Add check for ICONV_CONST
+
 conf_env = Environment()
+
+opts = Options(['options.cache', 'custom.py'], ARGUMENTS)
+opts.Add('CPPPATH', 'Additional preprocessor paths')
+opts.Add('CPPFLAGS', 'Additional preprocessor flags')
+opts.Add('CPPDEFINES', 'defined constants')
+opts.Add('LIBPATH', 'Additional library paths')
+opts.Add('LIBS', 'Additional libraries')
+opts.Add('CCFLAGS', 'C Compiler flags')
+opts.Add('LINKFLAGS', 'Linker Compiler flags')
+opts.Add('CC', 'C Compiler')
+opts.Add('CXX', 'C++ Compiler')  
+opts.Update(conf_env)
+opts.Save('options.cache', conf_env)
+
+Help(opts.GenerateHelpText(conf_env))
+
 conf = Configure(conf_env, custom_tests = { 'Check32bit' : Check32bit })
 if conf.Check32bit() == "64bit":
   conf.env.Append(CXXFLAGS="-D_SQ64")
