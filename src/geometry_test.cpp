@@ -68,6 +68,12 @@ GeometryTest::draw()
   Vector c(a.project(b));
   
   Display::draw_line(line1.p1, line1.p1 + c, Color(1.0f, 1.0f, 1.0f, 0.5f));
+
+  int segments = std::max(0, int(cursor.y / 10));
+
+  Display::fill_arc(Vector(200, 200), 100.0f, cursor.x, cursor2.x, Color(1.0f, 1.0f, 1.0f, 0.5f), segments);
+  Display::draw_arc(Vector(200, 200), 100.0f, cursor.x, cursor2.x, Color(1.0f, 1.0f, 1.0f), segments);
+  Display::draw_circle(Vector(200, 200), 128.0f, Color(1.0f, 1.0f, 1.0f), segments);
 }
 
 void

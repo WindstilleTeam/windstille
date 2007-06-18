@@ -32,6 +32,7 @@
 #include <SDL.h>
 #include "console.hpp"
 #include "config.hpp"
+#include "math.hpp"
 #include "display/opengl_state.hpp"
 #include "display.hpp"
 #include "util.hpp"
@@ -46,7 +47,7 @@ Display::draw_line(const Line& line, const Color& color)
 {
   draw_line(line.p1, line.p2, color);
 }
-
+
 void
 Display::draw_segment(const Line& line, const Color& color)
 {
@@ -61,7 +62,7 @@ Display::draw_segment(const Line& line, const Color& color)
   draw_line(line,   color);
   draw_line(p3, p3 + normal, Color(0.0f, 1.0f, 1.0f));
 }
-
+
 void
 Display::draw_line(const Vector& pos1, const Vector& pos2, const Color& color)
 {
@@ -78,7 +79,7 @@ Display::draw_line(const Vector& pos1, const Vector& pos2, const Color& color)
   glVertex2f(pos2.x, pos2.y);
   glEnd(); 
 }
-
+
 void
 Display::fill_rect(const Rectf& rect, const Color& color)
 {
@@ -96,7 +97,7 @@ Display::fill_rect(const Rectf& rect, const Color& color)
   glVertex2f(rect.left,  rect.bottom);
   glEnd();
 }
-
+
 void
 Display::draw_rect(const Rectf& rect, const Color& color)
 {
@@ -115,7 +116,7 @@ Display::draw_rect(const Rectf& rect, const Color& color)
   glVertex2f(rect.left,  rect.top);
   glEnd();
 }
-
+
 void
 Display::fill_rounded_rect(const Rectf& rect, float radius, const Color& color)
 {
@@ -157,7 +158,7 @@ Display::fill_rounded_rect(const Rectf& rect, float radius, const Color& color)
     }
   glEnd();
 }
-
+
 void
 Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
 {
@@ -216,7 +217,7 @@ Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
 
   glEnd();
 }
-
+
 int
 Display::get_width()
 {
@@ -228,7 +229,7 @@ Display::get_height()
 {
   return window->h;
 }
-
+
 void
 Display::init()
 {
@@ -254,16 +255,16 @@ Display::init()
 
   GLenum err = glewInit();
   if(err != GLEW_OK) {
-      std::ostringstream msg;
-      msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
-      throw std::runtime_error(msg.str());
+    std::ostringstream msg;
+    msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
+    throw std::runtime_error(msg.str());
   }
   /*
-  if(!GLEW_EXT_framebuffer_object) {
-      std::ostringstream msg;
-      msg << "Display:: Framebuffer opengl extension not supported";
-      throw std::runtime_error(msg.str());
-  }
+    if(!GLEW_EXT_framebuffer_object) {
+    std::ostringstream msg;
+    msg << "Display:: Framebuffer opengl extension not supported";
+    throw std::runtime_error(msg.str());
+    }
   */
 
   glViewport(0, 0, window->w, window->h);
@@ -285,7 +286,7 @@ Display::init()
 
   OpenGLState::init();
 }
-
+
 void
 Display::set_fullscreen(bool fullscreen)
 { 
@@ -300,10 +301,12 @@ Display::set_fullscreen(bool fullscreen)
       throw std::runtime_error("Display:: Couldn't create window");
     }
 }
-
+
 void
-Display::draw_circle(const Vector& pos, float radius, const Color& color)
+Display::draw_circle(const Vector& pos, float radius, const Color& color, int segments)
 {
+  assert(segments >= 0);
+
   OpenGLState state;
 
   state.enable(GL_BLEND);
@@ -312,10 +315,10 @@ Display::draw_circle(const Vector& pos, float radius, const Color& color)
   state.color(color);
   state.activate();
 
-  int n = 4;
+  float n = segments/4.0f;
   glBegin(GL_LINE_STRIP);
   glVertex2f(radius + pos.x, pos.y);
-  for(int i = 1; i < n * 4; ++i)
+  for(int i = 1; i < segments; ++i)
     {
       float x = cosf(i * (M_PI/2) / n) * radius;
       float y = sinf(i * (M_PI/2) / n) * radius;
@@ -325,10 +328,12 @@ Display::draw_circle(const Vector& pos, float radius, const Color& color)
   glVertex2f(radius + pos.x, pos.y);
   glEnd();
 }
-
+
 void
-Display::fill_circle(const Vector& pos, float radius, const Color& color)
+Display::fill_circle(const Vector& pos, float radius, const Color& color, int segments)
 {
+  assert(segments >= 0);
+
   OpenGLState state;
 
   state.enable(GL_BLEND);
@@ -336,11 +341,11 @@ Display::fill_circle(const Vector& pos, float radius, const Color& color)
   state.color(color);
   state.activate();
 
-  int n = 4;
+  float n = segments/4.0f;
   glBegin(GL_TRIANGLE_FAN);
   glVertex2f(pos.x, pos.y);
   glVertex2f(radius + pos.x, pos.y);
-  for(int i = 1; i < n * 4; ++i)
+  for(int i = 1; i < segments; ++i)
     {
       float x = cosf(i * (M_PI/2) / n) * radius;
       float y = sinf(i * (M_PI/2) / n) * radius;
@@ -350,7 +355,87 @@ Display::fill_circle(const Vector& pos, float radius, const Color& color)
   glVertex2f(radius + pos.x, pos.y);
   glEnd();
 }
+
+void
+Display::draw_arc(const Vector& pos, float radius, float start, float end, const Color& color, int segments)
+{
+  assert(segments >= 0);
 
+  if (fabs(end - start) >= 360.0f)
+    {
+      draw_circle(pos, radius, color, segments);
+    }
+  else
+    {
+      float step  = (2.0f * M_PI) / segments;
+
+      if (start > end) 
+        std::swap(start, end);
+
+      OpenGLState state;
+
+      state.enable(GL_BLEND);
+      state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      state.color(color);
+      state.activate();
+
+      start = math::deg2rad(start);
+      end   = math::deg2rad(end);
+
+      glBegin(GL_LINE_STRIP);
+      glVertex2f(pos.x, pos.y);
+
+      for(float angle = start; angle < end; angle += step)
+        glVertex2f(cosf(angle) * radius + pos.x,
+                   sinf(angle) * radius + pos.y);
+
+      glVertex2f(cosf(end) * radius + pos.x,
+                 sinf(end) * radius + pos.y);
+      glVertex2f(pos.x, pos.y);
+      glEnd();
+    }
+}
+
+void
+Display::fill_arc(const Vector& pos, float radius, float start, float end, const Color& color, int segments)
+{
+  assert(segments >= 0);
+
+  if (fabs(end - start) >= 360.0f)
+    {
+      fill_circle(pos, radius, color, segments);
+    }
+  else
+    {
+      float step  = (2.0f * M_PI) / segments;
+
+      if (start > end) 
+        std::swap(start, end);
+
+      OpenGLState state;
+
+      state.enable(GL_BLEND);
+      state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      state.color(color);
+      state.activate();
+
+      start = math::deg2rad(start);
+      end   = math::deg2rad(end);
+
+      glBegin(GL_TRIANGLE_FAN);
+      glVertex2f(pos.x, pos.y);
+
+      for(float angle = start; angle < end; angle += step)
+        glVertex2f(cosf(angle) * radius + pos.x,
+                   sinf(angle) * radius + pos.y);
+
+      glVertex2f(cosf(end) * radius + pos.x,
+                 sinf(end) * radius + pos.y);
+
+      glEnd();
+    }
+}
+
 void
 Display::push_cliprect(const Rect& rect_)
 {
@@ -391,7 +476,7 @@ Display::pop_cliprect()
       glDisable(GL_SCISSOR_TEST);
     }
 }
-
+
 void
 Display::set_gamma(float r, float g, float b)
 {
@@ -400,7 +485,7 @@ Display::set_gamma(float r, float g, float b)
       // Couldn't set gamma
     }
 }
-
+
 void
 Display::save_screenshot(const std::string& filename)
 {
@@ -482,7 +567,7 @@ Display::save_screenshot(const std::string& filename)
         }
     }
 }
-
+
 void
 Display::push_framebuffer(Framebuffer& framebuffer)
 {
@@ -491,7 +576,7 @@ Display::push_framebuffer(Framebuffer& framebuffer)
   // to optimze some switches away
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffers.back().get_handle());
 }
-
+
 void
 Display::pop_framebuffer()
 {
@@ -505,10 +590,10 @@ Display::pop_framebuffer()
     }
   else
     {
-          glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+      glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
     }
 }
-
+
 Framebuffer
 Display::get_framebuffer()
 {
@@ -517,5 +602,5 @@ Display::get_framebuffer()
   else
     return framebuffers.back();
 }
-
+
 /* EOF */
