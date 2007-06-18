@@ -114,7 +114,10 @@ ScriptManager::run_script(std::istream& in, const std::string& sourcename)
   squirrel_vms.push_back(SquirrelVM(sourcename, vm, vm_obj));
   already_run_scripts[sourcename] = true;
 
+  // FIXME: a script that gets run shouldn't have direct access to the root table
+  // http://wiki.squirrel-lang.org/default.aspx/SquirrelWiki/MultiVMs.html
   sq_pushroottable(vm);
+  //sq_clone(vm, -1); //FIXME
   if(sq_call(vm, 1, false, true) < 0)
     throw SquirrelError(vm, "Couldn't start script");
 }

@@ -181,7 +181,7 @@ ConsoleImpl::draw()
   if (active)
     {
       std::string str = command_line;
-      if (int(game_time*1000) % 400 > 200)
+      if (SDL_GetTicks() % 300 > 150)
         {
           if (cursor_pos < int(str.size()))
             str[cursor_pos] = '_';
@@ -437,7 +437,7 @@ ConsoleImpl::eval_command_line()
       history_position = history.size();
     }
                       
-  console << ">" << command_line << std::endl;
+  console << "> " << command_line << std::endl;
 
   if (command_line == "quit" || command_line == "exit")
     {
@@ -499,25 +499,31 @@ ConsoleImpl::execute(const std::string& str_)
   const char* buffer = str.c_str();
 
   HSQUIRRELVM vm = script_manager->get_vm();
-  int oldtop=sq_gettop(vm); 
+  int oldtop = sq_gettop(vm); 
   try {
     int retval = 1;
 
-    if(i>0){
-      if(SQ_SUCCEEDED(sq_compilebuffer(vm,buffer,i,_SC("interactive console"),SQTrue))){
-        sq_pushroottable(vm);
-        if(SQ_SUCCEEDED(sq_call(vm,1, retval, true))) 
+    if(i > 0) 
+      {
+        if(SQ_SUCCEEDED(sq_compilebuffer(vm, buffer, i, _SC("interactive console"), SQTrue)))
           {
-            if (sq_gettype(vm, -1) != OT_NULL)
-              console << Scripting::squirrel2string(vm, -1) << std::endl;
+            sq_pushroottable(vm);
+            if(SQ_SUCCEEDED(sq_call(vm, 1, retval, true))) 
+              {
+                // FIXME: This does only work when somebody is doing a 'return', i.e. almost never
+                if (sq_gettype(vm, -1) != OT_NULL)
+                  console << Scripting::squirrel2string(vm, -1) << std::endl;
+                // else
+                //   console << "(null)" << std::endl;
+              }
           }
       }
-    }
   } catch(std::exception& e) {
     std::cerr << "Couldn't execute command '" << str_ << "': "
               << e.what() << "\n";
   }
-  sq_settop(vm,oldtop);
+
+  sq_settop(vm, oldtop);
 }
 
 //-------------------------------------------------------------------------------
