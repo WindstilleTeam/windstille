@@ -6,7 +6,7 @@
 
 Input Handling:
 ---------------
-- add option to invert axis
+- add option to configure dead zone
 - implement proper dead-zone in input handling
 - allow to load multiple controller config files
 

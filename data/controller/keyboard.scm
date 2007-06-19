@@ -14,7 +14,7 @@
 
  (y2-axis
   (keyboard-axis (minus "[2]") (plus "[8]"))
-  (joystick-axis (device 0)  (axis 3)))
+  (joystick-axis (device 0)  (axis 3) (invert #t)))
 
  (view-center-button
   (keyboard-button (key "[5]"))
