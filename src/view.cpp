@@ -79,7 +79,7 @@ View::update (float delta, const Controller& controller)
   }
 
   transform.x += 0.5f * controller.get_axis_state(X2_AXIS) / zoom;
-  transform.y -= 0.5f * controller.get_axis_state(Y2_AXIS) / zoom;
+  transform.y += 0.5f * controller.get_axis_state(Y2_AXIS) / zoom;
 }
 
 Rectf

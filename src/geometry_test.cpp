@@ -89,7 +89,7 @@ GeometryTest::update(float delta, const Controller& controller)
   cursor.y += controller.get_axis_state(Y_AXIS) * 500.0f * delta;
 
   cursor2.x += controller.get_axis_state(X2_AXIS) * 500.0f * delta;
-  cursor2.y -= controller.get_axis_state(Y2_AXIS) * 500.0f * delta;
+  cursor2.y += controller.get_axis_state(Y2_AXIS) * 500.0f * delta;
 
   if (controller.button_was_pressed(PRIMARY_BUTTON))
     {

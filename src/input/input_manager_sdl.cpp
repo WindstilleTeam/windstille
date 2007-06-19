@@ -32,7 +32,7 @@
 
 InputManagerSDL* InputManagerSDL::current_ = 0;
 
-#define DEAD_ZONE 4096
+const int dead_zone =  4096;
 
 class InputManagerSDLImpl
 {
@@ -144,13 +144,15 @@ InputManagerSDL::parse_config(const lisp::Lisp* lisp)
                 {
                   int device = 0;
                   int axis   = 0;
+                  bool invert = false;
 
                   lisp::Properties props(*dev_iter);
                   props.get("device", device);
                   props.get("axis",   axis);
+                  props.get("invert", invert);
 
                   bind_joystick_axis(controller_description.get_definition(iter.item()).id,
-                                     device, axis);
+                                     device, axis, invert);
                 }
               else if (dev_iter.item() == "keyboard-axis")
                 {
@@ -317,13 +319,13 @@ InputManagerSDL::on_joy_axis_event(const SDL_JoyAxisEvent& event)
       if (event.which  == i->device &&
           event.axis   == i->axis)
         {
-          if (event.value < -DEAD_ZONE)
+          if (event.value < -dead_zone)
             {
-              add_axis_event(i->event, event.value/32768.0f);
+              add_axis_event(i->event, event.value/(i->invert?-32768.0f:32768.0f));
             }
-          else if (event.value > DEAD_ZONE)
+          else if (event.value > dead_zone)
             {
-              add_axis_event(i->event, event.value/32767.0f);
+              add_axis_event(i->event, event.value/(i->invert?-32768.0f:32768.0f));
             }
           else
             {
@@ -416,6 +418,7 @@ InputManagerSDL::bind_mouse_button(int event, int device, int button)
 void
 InputManagerSDL::bind_joystick_hat_axis(int event, int device, int axis)
 {
+  
 }
 
 void
@@ -434,7 +437,7 @@ InputManagerSDL::bind_joystick_button_axis(int event, int device, int minus, int
 }
 
 void
-InputManagerSDL::bind_joystick_axis(int event, int device, int axis)
+InputManagerSDL::bind_joystick_axis(int event, int device, int axis, bool invert)
 {
   ensure_open_joystick(device);
 
@@ -443,6 +446,7 @@ InputManagerSDL::bind_joystick_axis(int event, int device, int axis)
   binding.event  = event;
   binding.device = device;
   binding.axis   = axis;
+  binding.invert = invert;
 
   impl->joystick_axis_bindings.push_back(binding);
 }

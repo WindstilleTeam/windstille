@@ -110,9 +110,8 @@ NavigationTest::update(float delta, const Controller& controller)
   cursor += Vector(controller.get_axis_state(X_AXIS) * 500.0f * delta,
                    controller.get_axis_state(Y_AXIS) * 500.0f * delta);
 
-  // FIXME: xpad driver is buggy and reverses the Y2 axis
   stick = Vector(controller.get_axis_state(X2_AXIS),
-                 -controller.get_axis_state(Y2_AXIS));
+                 controller.get_axis_state(Y2_AXIS));
 
   if (controller.button_was_pressed(PRIMARY_BUTTON))
     {

@@ -41,9 +41,10 @@ struct JoystickButtonBinding
 
 struct JoystickAxisBinding
 {
-  int event;
-  int device;
-  int axis;
+  int  event;
+  int  device;
+  int  axis;
+  bool invert;
 };
 
 struct JoystickButtonAxisBinding
@@ -98,7 +99,7 @@ public:
 
   void bind_joystick_hat_axis(int event, int device, int axis);
 
-  void bind_joystick_axis(int event, int device, int axis);
+  void bind_joystick_axis(int event, int device, int axis, bool invert);
   void bind_joystick_button_axis(int event, int device, int minus, int plus);
   void bind_joystick_button(int event, int device, int button);
 
