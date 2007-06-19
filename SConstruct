@@ -202,6 +202,7 @@ Export('conf_env')
 # SConscript('build/src/scripting/SConscript')
 
 SConscript('tools/SConscript')
+SConscript('tools/sdl-jstest/SConscript')
 SConscript('lib/SConscript')
 SConscript('src/SConscript')
 

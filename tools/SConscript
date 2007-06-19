@@ -2,6 +2,8 @@
 
 import glob
 
+Import('conf_env')
+
 env = Environment(CPPPATH=['../..'],
                   CXXFILESUFFIX = ".cpp",
                   YACCFLAGS=['-d', '--no-lines'])
