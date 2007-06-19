@@ -55,7 +55,7 @@ int str2int(const char* str, int* val)
   if (endptr == str) {
     return 0;
   }
-  
+
   return 1;
 }
 
@@ -80,7 +80,7 @@ void print_help(const char* prg)
   printf("Options:\n");
   printf("  --list             Search for available joysticks and list their properties\n");
   printf("  --test  JOYNUM     Display a graphical representation of the current joystick state\n");
-  printf("  --event JOYNUM     Display the events that are recieved by the joystick\n");
+  printf("  --event JOYNUM     Display the events that are recieved from the joystick\n");
   printf("  --help             Print this help\n");
   printf("\n");
   printf("Examples:\n");
@@ -97,7 +97,7 @@ int main(int argc, char** argv)
     }
 
   // FIXME: We don't need video, but without it SDL will fail to work in SDL_WaitEvent()
-  if(SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)  
+  if(SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
     {
       fprintf(stderr, "Unable to init SDL: %s\n", SDL_GetError());
       exit(1);
@@ -119,7 +119,7 @@ int main(int argc, char** argv)
             {
               printf("No joysticks were found\n");
             }
-          else 
+          else
             {
               printf("Found %d joystick(s)\n\n", num_joysticks);
               for(int joy_idx = 0; joy_idx < num_joysticks; ++joy_idx)
@@ -156,21 +156,21 @@ int main(int argc, char** argv)
             {
               initscr();
 
-              //cbreak(); 
+              //cbreak();
               //noecho();
-              //nonl();  
+              //nonl();
               curs_set(0);
 
               int num_axes    = SDL_JoystickNumAxes(joy);
               int num_buttons = SDL_JoystickNumButtons(joy);
               int num_hats    = SDL_JoystickNumHats(joy);
               int num_balls   = SDL_JoystickNumBalls(joy);
-              
+
               Sint16* axes    = calloc(num_axes,    sizeof(Sint16));
               Uint8*  buttons = calloc(num_buttons, sizeof(Uint8));
               Uint8*  hats    = calloc(num_hats,    sizeof(Uint8));
               Uint8*  balls   = calloc(num_balls,   2*sizeof(Sint16));
-              
+
               int quit = 0;
               SDL_Event event;
               while(!quit)
@@ -204,18 +204,18 @@ int main(int argc, char** argv)
                         quit = 1;
                         printf("Recieved interrupt, exiting\n");
                         break;
-                      
+
                       default:
                         fprintf(stderr, "Error: Unhandled event type: %d\n", event.type);
-                      }                
+                      }
                   } else {
                     fprintf(stderr, "Error in SDL_WaitEvent\n");
                     quit = 1;
                   }
-                  
+
                   //clear();
                   move(0,0);
-                  
+
                   printw("Joystick Name:   '%s'\n", SDL_JoystickName(joy_idx));
                   printw("Joystick Number: %d\n", joy_idx);
                   printw("\n");
@@ -240,23 +240,33 @@ int main(int argc, char** argv)
                   printw("Hats %2d:\n", num_hats);
                   for(int i = 0; i < num_hats; ++i)
                     {
-                      printw("  %2d: %d\n", i, hats[i]);
-                      printw("  +---+\n"
-                             "  |%c%c%c|\n"
-                             "  |%c%c%c|\n"
-                             "  |%c%c%c|\n"
-                             "  +---+\n",
-                             ((hats[i] & SDL_HAT_UP) && (hats[i] & SDL_HAT_LEFT)) ? '#' : ' ',
-                             ((hats[i] & SDL_HAT_UP) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? '#' : ' ',
-                             ((hats[i] & SDL_HAT_UP) && (hats[i] & SDL_HAT_RIGHT)) ? '#' : ' ',
+                      printw("  %2d: value: %d\n", i, hats[i]);
+                      printw("  +-----+  up:    %c\n"
+                             "  |%c %c %c|  down:  %c\n"
+                             "  |%c %c %c|  left:  %c\n"
+                             "  |%c %c %c|  right: %c\n"
+                             "  +-----+\n",
 
-                             (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && (hats[i] & SDL_HAT_LEFT)) ? '#' : ' ',
-                             (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? '#' : ' ',
-                             (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && (hats[i] & SDL_HAT_RIGHT)) ? '#' : ' ',
+                             (hats[i] & SDL_HAT_UP)?'1':'0',
 
-                             ((hats[i] & SDL_HAT_DOWN) && (hats[i] & SDL_HAT_LEFT)) ? '#' : ' ',
-                             ((hats[i] & SDL_HAT_DOWN) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? '#' : ' ',
-                             ((hats[i] & SDL_HAT_DOWN) && (hats[i] & SDL_HAT_RIGHT)) ? '#' : ' ');                    }
+                             ((hats[i] & SDL_HAT_UP) && (hats[i] & SDL_HAT_LEFT)) ? 'O' : ' ',
+                             ((hats[i] & SDL_HAT_UP) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? 'O' : ' ',
+                             ((hats[i] & SDL_HAT_UP) && (hats[i] & SDL_HAT_RIGHT)) ? 'O' : ' ',
+
+                             (hats[i] & SDL_HAT_DOWN)?'1':'0',
+
+                             (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && (hats[i] & SDL_HAT_LEFT)) ? 'O' : ' ',
+                             (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? 'O' : ' ',
+                             (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && (hats[i] & SDL_HAT_RIGHT)) ? 'O' : ' ',
+
+                             (hats[i] & SDL_HAT_LEFT)?'1':'0',
+
+                             ((hats[i] & SDL_HAT_DOWN) && (hats[i] & SDL_HAT_LEFT)) ? 'O' : ' ',
+                             ((hats[i] & SDL_HAT_DOWN) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? 'O' : ' ',
+                             ((hats[i] & SDL_HAT_DOWN) && (hats[i] & SDL_HAT_RIGHT)) ? 'O' : ' ',
+
+                             (hats[i] & SDL_HAT_RIGHT)?'1':'0');
+                    }
                   printw("\n");
 
                   printw("Balls %2d: ", num_balls);
@@ -267,7 +277,7 @@ int main(int argc, char** argv)
                   printw("\n");
                   printw("\n");
                   printw("Press Ctrl-c to exit\n");
-                  
+
                   refresh();
                 } // while
 
@@ -275,7 +285,7 @@ int main(int argc, char** argv)
               free(hats);
               free(buttons);
               free(axes);
-              
+
               endwin();
             }
         }
@@ -307,26 +317,26 @@ int main(int argc, char** argv)
                   switch(event.type)
                     {
                     case SDL_JOYAXISMOTION:
-                      printf("SDL_JOYAXISMOTION: joystick: %d axis: %d value: %d\n", 
+                      printf("SDL_JOYAXISMOTION: joystick: %d axis: %d value: %d\n",
                              event.jaxis.which, event.jaxis.axis, event.jaxis.value);
                       break;
 
                     case SDL_JOYBUTTONDOWN:
-                      printf("SDL_JOYBUTTONUP: joystick: %d button: %d state: %d\n", 
+                      printf("SDL_JOYBUTTONUP: joystick: %d button: %d state: %d\n",
                              event.jbutton.which, event.jbutton.button, event.jbutton.state);
                       break;
                     case SDL_JOYBUTTONUP:
-                      printf("SDL_JOYBUTTONDOWN: joystick: %d button: %d state: %d\n", 
+                      printf("SDL_JOYBUTTONDOWN: joystick: %d button: %d state: %d\n",
                              event.jbutton.which, event.jbutton.button, event.jbutton.state);
                       break;
 
                     case SDL_JOYHATMOTION:
-                      printf("SDL_JOYHATMOTION: joystick: %d hat: %d value: %d\n", 
+                      printf("SDL_JOYHATMOTION: joystick: %d hat: %d value: %d\n",
                              event.jhat.which, event.jhat.hat, event.jhat.value);
                       break;
 
                     case SDL_JOYBALLMOTION:
-                      printf("SDL_JOYBALLMOTION: joystick: %d ball: %d x: %d y: %d\n", 
+                      printf("SDL_JOYBALLMOTION: joystick: %d ball: %d x: %d y: %d\n",
                              event.jball.which, event.jball.ball, event.jball.xrel, event.jball.yrel);
                       break;
 
@@ -334,14 +344,14 @@ int main(int argc, char** argv)
                       quit = 1;
                       printf("Recieved interrupt, exiting\n");
                       break;
-                      
+
                     default:
                       fprintf(stderr, "Error: Unhandled event type: %d\n", event.type);
                     }
                 }
               SDL_JoystickClose(joy);
-              
-            }      
+
+            }
           fprintf(stderr, "Unable to init SDL: %s\n", SDL_GetError());
         }
       else
