@@ -55,7 +55,10 @@ Config::Config()
 
 
   add(new ConfigValue<std::string>("levelfile",       _("Levelfile to be used at startup"), false));
-  add(new ConfigValue<std::string>("controller-file", _("Controller Config file to load"), true));
+
+  // FIXME: There is no need to limit this to just two
+  add(new ConfigValue<std::string>("primary-controller-file", _("Controller Config file to load"), true));
+  add(new ConfigValue<std::string>("secondary-controller-file", _("Controller Config file to load"), true));
 
   add(new ConfigValue<std::string>("screenshot-dir",  _("Directory where Screenshots are saved"), false));
 
@@ -139,6 +142,7 @@ Config::parse_args(int argc, char** argv)
   const int sprite3dview_flag = 258;
   const int particleview_flag = 259;
   const int sprite2dview_flag = 260;
+  const int secondary_controller_file = 261;
     
   argp.set_help_indent(24);
   argp.add_usage ("[LEVELFILE]");
@@ -160,6 +164,8 @@ Config::parse_args(int argc, char** argv)
 
   argp.add_group("Controlls Options:");
   argp.add_option('c', "controller", "FILE", "Use controller as defined in FILE");
+  argp.add_option(secondary_controller_file, "secondary-controller", "FILE",
+                  "Use controller as defined in FILE");
 
   argp.add_group("Misc Options:");
   argp.add_option('d', "datadir",    "DIR", "Fetch game data from DIR");
@@ -260,7 +266,11 @@ Config::parse_args(int argc, char** argv)
           break;  
 
         case 'c':
-          get<std::string>("controller-file") = argp.get_argument();
+          get<std::string>("primary-controller-file") = argp.get_argument();
+          break;
+
+        case secondary_controller_file:
+          get<std::string>("secondary-controller-file") = argp.get_argument();
           break;
 
         case 'v':
@@ -364,16 +374,23 @@ Config::save()
   try {
     lisp::Writer writer("config");
 
+    writer.write_comment(";; -*- scheme -*-");
+    writer.write_comment(";; Windstille Config - automatically read and written on startup/quit");
     writer.start_list("windstille-config");
 
     for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
       {
         if (i->second->should_be_saved() && i->second->is_set())
-          i->second->write(writer);
+          {
+            writer.write_comment("  ;; " + i->second->get_docstring()); 
+            i->second->write(writer);
+            writer.write_comment("");
+          }
       }
     // TODO write controller config
     
     writer.end_list("windstille-config");
+    writer.write_comment(";; EOF ;;");
   } catch(std::exception& e) {
     std::cerr << "Couldn't write config file: " << e.what() << "\n";
   }

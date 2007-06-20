@@ -39,6 +39,7 @@ public:
   InputManagerImpl() {}
   virtual ~InputManagerImpl() {}
 
+  virtual void load(const std::string& filename) =0;
   virtual void update(float delta) =0;
   
   const Controller& get_controller() const;

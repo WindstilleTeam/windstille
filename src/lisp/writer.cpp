@@ -53,7 +53,7 @@ Writer::~Writer()
 void
 Writer::write_comment(const std::string& comment)
 {
-  *out << "; " << comment << "\n";
+  *out << comment << "\n";
 }
 
 void

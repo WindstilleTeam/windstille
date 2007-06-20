@@ -25,6 +25,8 @@
 
 #include <iostream>
 #include <vector>
+#include "lisp/parser.hpp"
+#include "lisp/lisp.hpp"
 #include "lisp/properties.hpp"
 #include "lisp/property_iterator.hpp"
 #include "controller_def.hpp"
@@ -89,6 +91,24 @@ static bool has_suffix(const std::string& str, const std::string& suffix)
     return str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0;
   else
     return false;
+}
+
+void
+InputManagerSDL::load(const std::string& filename)
+{
+  std::auto_ptr<lisp::Lisp> root (lisp::Parser::parse(filename));
+  lisp::Properties rootp(root.get());
+
+  std::cout << "InputManager: " << filename << std::endl;
+
+  const lisp::Lisp* controller = 0;
+  if(rootp.get("windstille-controller", controller) == false) {
+    std::ostringstream msg;
+    msg << "'" << filename << "' is not a windstille-controller file";
+    throw std::runtime_error(msg.str());
+  }
+  
+  parse_config(controller);
 }
 
 void
@@ -177,7 +197,7 @@ InputManagerSDL::parse_config(const lisp::Lisp* lisp)
 
 }
 
-InputManagerSDL::InputManagerSDL(const lisp::Lisp* lisp)
+InputManagerSDL::InputManagerSDL()
   : impl(new InputManagerSDLImpl)
 {
   current_ = this;
@@ -188,8 +208,6 @@ InputManagerSDL::InputManagerSDL(const lisp::Lisp* lisp)
     // FIXME: Make the keynames somewhere user visible so that users can use them
     // std::cout << key_name << std::endl;
   }
-
-  parse_config(lisp);
 }
 
 InputManagerSDL::~InputManagerSDL()

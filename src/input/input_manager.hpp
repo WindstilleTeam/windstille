@@ -40,10 +40,12 @@ private:
   static InputManagerImpl* impl;
 
 public:
-  /** Init the InputManager with the data found in \a filename */
-  static void init(const std::string& filename = std::string());
-
+  /** Init the InputManager */
+  static void init();
   static void deinit();
+
+  /** Load configuration file \a filename */
+  static void load(const std::string& filename);
 
   static void update(float delta);
   static const Controller& get_controller();

@@ -108,15 +108,18 @@ WindstilleMain::main(int argc, char** argv)
       controller_description.add_ball("mouse-motion-x", MOUSE_MOTION_X);
       controller_description.add_ball("mouse-motion-y", MOUSE_MOTION_Y);
     }
+    
+    {
+      InputManager::init();
+      
+      if (config.get<std::string>("primary-controller-file").is_set())
+        InputManager::load(config.get<std::string>("primary-controller-file").get());
+      else
+        InputManager::load("controller/keyboard.scm");
 
-      {
-        if (config.get<std::string>("controller-file").is_set())
-          InputManager::init(config.get<std::string>("controller-file").get());
-        else if (PHYSFS_exists("controller.cfg"))
-          InputManager::init("controller.cfg");
-        else
-          InputManager::init("controller/keyboard.scm");
-      }
+      if (config.get<std::string>("secondary-controller-file").is_set())
+        InputManager::load(config.get<std::string>("secondary-controller-file").get());
+    }
 
     if (debug) std::cout << "Initialising TileFactory" << std::endl;
     TileFactory::init();

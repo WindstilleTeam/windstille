@@ -92,8 +92,10 @@ private:
 public:
   static InputManagerSDL* current() { return current_; }
 
-  InputManagerSDL(const lisp::Lisp* lisp);
+  InputManagerSDL();
   virtual ~InputManagerSDL();
+
+  void load(const std::string& filename);
 
   void update(float delta);
 

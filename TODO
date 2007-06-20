@@ -15,6 +15,12 @@ Sound Handling:
 - split music, voice and sound fx into seperate context or allow to
   change their volume by other means
 
+Screen Handling:
+----------------
+- using a screen size != 800x600 breaks the lighting
+- using a screen size != 800x600 loads to ugly fonts, should render
+  the fonts so that we get 1:1 pixel mapping
+
 Misc:
 -----
 - polish/test scripting interface
