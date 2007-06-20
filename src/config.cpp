@@ -171,12 +171,12 @@ Config::parse_args(int argc, char** argv)
   argp.add_option('d', "datadir",    "DIR", "Fetch game data from DIR");
   argp.add_option(debug_flag, "debug",      "", "Turn on debug output");
   argp.add_option(nodebug_flag, "nodebug",      "", "Turn off debug output");
-  argp.add_option('x', "version",       "", "Print Windstille Version");
+  argp.add_option('v', "version",       "", "Print Windstille Version");
   argp.add_option('h', "help",       "", "Print this help");
 
   argp.add_group("Demo Recording/Playback Options:");
   argp.add_option('r', "record",      "FILE", "Record input events to FILE");
-  argp.add_option('v', "record-video","DIR",  "Record a gameplay video to DIR");
+  //argp.add_option('x', "record-video","DIR",  "Record a gameplay video to DIR");
   argp.add_option('p', "play",        "FILE", "Playback input events from FILE");
 
   argp.parse_args(argc, argv);
@@ -247,8 +247,9 @@ Config::parse_args(int argc, char** argv)
                 get<int>("screen-width")  = screen_width;
                 get<int>("screen-height") = screen_height;
               
-                std::cout << "Geometry: " << screen_width
-                          << "x" << screen_height << std::endl;
+                // FIXME: Why does this get printed twice?!
+                // Is the argument parser buggy?
+                std::cout << "Geometry: " << screen_width << "x" << screen_height << std::endl;
               }
             else
               {
