@@ -31,21 +31,18 @@
 #include "sprite2d/sprite.hpp"
 #include <iostream>
 
-sprite2d::Manager* sprite2d_manager = 0;
+SpriteManager* sprite2d_manager = 0;
 
-namespace sprite2d
-{
-
-Manager::Manager()
+SpriteManager::SpriteManager()
 {
 }
 
-Manager::~Manager()
+SpriteManager::~SpriteManager()
 {
 }
 
-DataPtr
-Manager::create_data(const std::string& filename)
+SpriteDataPtr
+SpriteManager::create_data(const std::string& filename)
 {
   Datas::iterator i = datas.find(filename);
   if(i != datas.end())
@@ -54,14 +51,14 @@ Manager::create_data(const std::string& filename)
     }
   else
     {  
-      DataPtr data(new Data(filename));
+      SpriteDataPtr data(new SpriteData(filename));
       datas.insert(std::make_pair(filename, data));
       return data;
     }
 }
 
 void
-Manager::cleanup()
+SpriteManager::cleanup()
 {
   for(Datas::iterator i = datas.begin(); i != datas.end(); ++i)
     {
@@ -71,7 +68,5 @@ Manager::cleanup()
         }
     }
 }
-
-} // namespace sprite2d
 
 /* EOF */

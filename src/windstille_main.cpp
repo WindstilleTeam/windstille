@@ -220,7 +220,7 @@ WindstilleMain::init_modules()
   texture_manager  = new TextureManager();
   surface_manager  = new SurfaceManager();
   script_manager   = new ScriptManager();
-  sprite2d_manager = new sprite2d::Manager();
+  sprite2d_manager = new SpriteManager();
   sprite3d_manager = new sprite3d::Manager();
 
   script_manager->run_script_file("scripts/windstille.nut");

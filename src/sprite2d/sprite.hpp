@@ -39,17 +39,15 @@
 class DrawingContext;
 class Color;
 
-namespace sprite2d {
-struct Action;
-} 
+struct SpriteAction;
 
 class Sprite
 {
 private:
   /** Pointer to the Sprites data which is shared among all sprites
       with are loaded from the same file */
-  sprite2d::DataPtr data;
-  const sprite2d::Action* current_action;
+  SpriteDataPtr data;
+  const SpriteAction* current_action;
 
   float frame;
   float speed;
@@ -70,7 +68,7 @@ public:
       search for a .png with the same name and use that as a simple
       one-file sprite */
   Sprite(const std::string& filename);
-  Sprite(const sprite2d::DataPtr data);
+  Sprite(const SpriteDataPtr data);
   ~Sprite();
 
   void update(float delta);

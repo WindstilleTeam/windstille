@@ -57,7 +57,7 @@ Sprite::Sprite(const std::string& filename)
   blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
 }
 
-Sprite::Sprite(const sprite2d::DataPtr data)
+Sprite::Sprite(const SpriteDataPtr data)
   : data(data)
 {
   current_action = data->actions[0];
@@ -85,31 +85,33 @@ Sprite::update(float delta)
     step = -step;
 
   frame = fmodf(frame + current_action->surfaces.size() + step,
-      current_action->surfaces.size());
+                current_action->surfaces.size());
 }
 
 void
 Sprite::set_action(const std::string& name)
 {
-  for(sprite2d::Data::Actions::const_iterator i = data->actions.begin();
-      i != data->actions.end(); ++i) {
-    const sprite2d::Action* action = *i;
-    if(action->name == name) {
-      // FIXME: This should be per-action and not get reset, shouldn't they?
-      current_action = action;
-      pingpong = false;
-      reverse = false;
-      speed = 1.0;
-      frame = 0;
-      vflip = false;
-      alpha = 0.0;
-      scale = current_action->scale;
-      color = Color(1.0f, 1.0f, 1.0f);
-      blend_sfactor = GL_SRC_ALPHA;
-      blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
-      return;
+  for(SpriteData::Actions::const_iterator i = data->actions.begin();
+      i != data->actions.end(); ++i) 
+    {
+      const SpriteAction* action = *i;
+      if(action->name == name) 
+        {
+          // FIXME: This should be per-action and not get reset, shouldn't they?
+          current_action = action;
+          pingpong = false;
+          reverse  = false;
+          speed    = 1.0;
+          frame    = 0;
+          vflip    = false;
+          alpha    = 0.0;
+          scale    = current_action->scale;
+          color    = Color(1.0f, 1.0f, 1.0f);
+          blend_sfactor = GL_SRC_ALPHA;
+          blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
+          return;
+        }
     }
-  }
 
   std::ostringstream msg;
   msg << "No action '" << name << "' defined";

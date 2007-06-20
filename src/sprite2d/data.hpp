@@ -31,35 +31,13 @@
 #include <vector>
 #include <GL/glew.h>
 #include <GL/gl.h>
+#include "util.hpp"
 #include "file_reader.hpp"
 #include "math/vector.hpp"
 #include "display/surface.hpp"
 #include "ref.hpp"
 
-namespace sprite2d
-{
-struct Action;
-
-class Data
-{
-private:
-  void parse(const std::string& dir, FileReader& lisp);
-  
-  Action* parse_action(const std::string& dir, FileReader& reader);
-  void parse_images(Action* action, const std::string& dir, 
-                    FileReader& reader);
-  void parse_image_grid(Action* action, const std::string& dir,
-                        FileReader& reader); 
-
-public:
-  Data(const std::string& filename);
-  virtual ~Data();
-
-  typedef std::vector<Action*> Actions;
-  Actions actions;
-};
-
-struct Action
+struct SpriteAction
 {
   typedef std::vector<Surface> Surfaces;
 
@@ -70,7 +48,19 @@ struct Action
   Surfaces    surfaces;
 };
 
-}
+class SpriteData
+{
+private:
+  void    parse(const std::string& dir, FileReader& lisp);
+  SpriteAction* parse_action(const std::string& dir, FileReader& reader);
+
+public:
+  SpriteData(const std::string& filename);
+  virtual ~SpriteData();
+
+  typedef std::vector<SpriteAction*> Actions;
+  Actions actions;
+};
 
 #endif
 

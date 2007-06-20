@@ -31,31 +31,25 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 
-namespace sprite2d
-{
-typedef 
+class SpriteData;
+typedef boost::shared_ptr<SpriteData> SpriteDataPtr;
 
-class Data;
-typedef boost::shared_ptr<Data> DataPtr;
-
-class Manager
+class SpriteManager
 {
 public:
-  Manager();
-  ~Manager();
+  SpriteManager();
+  ~SpriteManager();
 
-  DataPtr create_data(const std::string& filename);
+  SpriteDataPtr create_data(const std::string& filename);
   
   /** Removes all cached Sprites that are no longer in use */
   void cleanup();
 private:
-  typedef std::map<std::string, DataPtr> Datas;
+  typedef std::map<std::string, SpriteDataPtr> Datas;
   Datas datas;
 };
 
-}
-
-extern sprite2d::Manager* sprite2d_manager;
+extern SpriteManager* sprite2d_manager;
 
 #endif
 

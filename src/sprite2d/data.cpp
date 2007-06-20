@@ -37,25 +37,7 @@
 #include "display/surface.hpp"
 #include "display/surface_manager.hpp"
 
-namespace sprite2d {
-
-static bool has_suffix(const std::string& str, const std::string& suffix)
-{
-  if (str.length() >= suffix.length())
-    return str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0;
-  else
-    return false;
-}
-
-static std::string tolowercase(const std::string& str)
-{
-  std::string out;
-  for(std::string::const_iterator i = str.begin();  i != str.end(); ++i)
-    out += tolower(*i);
-  return out;
-}
-
-Data::Data(const std::string& filename)
+SpriteData::SpriteData(const std::string& filename)
 {
   if (PHYSFS_exists(filename.c_str()))
     {
@@ -76,7 +58,7 @@ Data::Data(const std::string& filename)
         {
           if (PHYSFS_exists(filename.c_str()))
             {
-              std::auto_ptr<Action> action(new Action);
+              std::auto_ptr<SpriteAction> action(new SpriteAction());
               action->name   = "default";
               action->speed  = 1.0;
               action->scale  = 1.0f;
@@ -101,7 +83,7 @@ Data::Data(const std::string& filename)
 
       if (PHYSFS_exists(pngfile.c_str()))
         {
-          std::auto_ptr<Action> action(new Action);
+          std::auto_ptr<SpriteAction> action(new SpriteAction);
           action->name   = "default";
           action->speed  = 1.0;
           action->scale  = 1.0f;
@@ -120,14 +102,14 @@ Data::Data(const std::string& filename)
     }
 }
 
-Data::~Data()
+SpriteData::~SpriteData()
 {
   for(Actions::iterator i = actions.begin(); i != actions.end(); ++i)
     delete *i;
 }
 
 void
-Data::parse(const std::string& dir, FileReader& reader)
+SpriteData::parse(const std::string& dir, FileReader& reader)
 {
   std::vector<FileReader> sections = reader.get_sections();
   for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
@@ -137,10 +119,10 @@ Data::parse(const std::string& dir, FileReader& reader)
     throw std::runtime_error("Sprite contains no actions");
 }
 
-Action*
-Data::parse_action(const std::string& dir, FileReader& reader)
+SpriteAction*
+SpriteData::parse_action(const std::string& dir, FileReader& reader)
 {
-  std::auto_ptr<Action> action (new Action);
+  std::auto_ptr<SpriteAction> action (new SpriteAction);
   action->speed = 1.0;
   action->scale = 1.0f;
   action->offset = Vector(0, 0);
@@ -190,21 +172,5 @@ Data::parse_action(const std::string& dir, FileReader& reader)
   }
   return action.release();
 }
-
-void
-Data::parse_images(Action* action, const std::string& dir,
-                   FileReader& reader)
-{
-
-}
-
-void
-Data::parse_image_grid(Action* action, const std::string& dir,
-                       FileReader& reader)
-{
-
-}
  
-} // namespace sprite2d
-
 /* EOF */

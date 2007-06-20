@@ -10,7 +10,13 @@
 
 std::string dirname(const std::string& filename);
 std::string basename(const std::string& filename);
+
+/** Loads a file from \a filename and places its content in \a str
+    FIXME: doesn't use PhysFS */
 void file_to_string(const std::string& filename, std::string& str);
+
+bool has_suffix(const std::string& str, const std::string& suffix);
+std::string tolowercase(const std::string& str);
 
 template<class T>
 std::string to_string(const T& data)
