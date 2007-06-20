@@ -39,18 +39,17 @@ public:
   virtual ~FileReaderImpl() {}
 
   virtual std::string get_name()                           const =0;
+
+  virtual bool read_bool  (const char* name, bool&)        const =0;
   virtual bool read_int   (const char* name, int&)         const =0;
   virtual bool read_float (const char* name, float&)       const =0;
-  virtual bool read_bool  (const char* name, bool&)        const =0;
   virtual bool read_string(const char* name, std::string&) const =0;
-  virtual bool read_vector3(const char* name, Vector3&)    const =0;
-  virtual bool read_size  (const char* name, Size&)        const =0;
-  virtual bool read_vector(const char* name, Vector&)      const =0;
-  virtual bool read_color (const char* name, Color&)       const =0;
 
+  virtual bool get(const char* name, std::vector<bool>&   v) const =0;
   virtual bool get(const char* name, std::vector<int>&   v) const =0;
   virtual bool get(const char* name, std::vector<float>& v) const =0;
   virtual bool get(const char* name, std::vector<std::string>& v) const =0;
+
   virtual bool read_section(const char* name, FileReader&)   const =0;
   virtual std::vector<FileReader> get_sections() const =0;
   virtual std::vector<std::string> get_section_names() const =0;

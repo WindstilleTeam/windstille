@@ -250,7 +250,7 @@ NavigationGraph::load(FileReader& reader)
   std::map<int, Node*> id2ptr;
 
   FileReader nodes_group_reader;
-  if (reader.read_section("nodes", nodes_group_reader))
+  if (reader.get("nodes", nodes_group_reader))
     {
       std::vector<FileReader> nodes_reader = nodes_group_reader.get_sections();
       for(std::vector<FileReader>::iterator i = nodes_reader.begin(); i != nodes_reader.end(); ++i)
@@ -277,7 +277,7 @@ NavigationGraph::load(FileReader& reader)
     }
   
   FileReader segments_group_reader;
-  if (reader.read_section("segments", segments_group_reader))
+  if (reader.get("segments", segments_group_reader))
     {
       std::vector<FileReader> segments_reader = segments_group_reader.get_sections();
       for(std::vector<FileReader>::iterator i = segments_reader.begin(); i != segments_reader.end(); ++i)

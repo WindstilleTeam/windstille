@@ -145,73 +145,16 @@ public:
     return false;
   }
 
-  bool read_vector3(const char* name, Vector3& v) const
-  {
-    lisp::Lisp* sub = get_subsection(name);
-    if (sub && sub->get_list_size() == 4)
-      {
-        lisp::get(sub->get_list_elem(1), v.x);
-        lisp::get(sub->get_list_elem(2), v.y);
-        lisp::get(sub->get_list_elem(3), v.z);
-        return true;
-      }    
-    return false;
-  }
-
-  bool read_size(const char* name, Size& v) const
-  {
-    lisp::Lisp* sub = get_subsection(name);
-    if (sub && sub->get_list_size() == 3)
-      {
-        v.width  = sub->get_list_elem(1)->get_int();
-        v.height = sub->get_list_elem(2)->get_int();
-        return true;
-      }    
-    return false;
-  }
-
-  bool read_vector(const char* name, Vector& v) const
-  {
-    lisp::Lisp* sub = get_subsection(name);
-    if (sub && sub->get_list_size() == 3)
-      {
-        lisp::get(sub->get_list_elem(1), v.x);
-        lisp::get(sub->get_list_elem(2), v.y);
-        return true;
-      }    
-    return false;
-  }
-
-  bool read_color (const char* name, Color& v) const
+  bool get(const char* name, std::vector<int>&   v) const
   {
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
-      {
-        if (sub->get_list_size() == 5)
-          {
-            lisp::get(sub->get_list_elem(1), v.r);
-            lisp::get(sub->get_list_elem(2), v.g);
-            lisp::get(sub->get_list_elem(3), v.b);
-            lisp::get(sub->get_list_elem(4), v.a);
-            return true;
-          }
-        else if (sub->get_list_size() == 4)
-          {
-            lisp::get(sub->get_list_elem(1), v.r);
-            lisp::get(sub->get_list_elem(2), v.g);
-            lisp::get(sub->get_list_elem(3), v.b);
-            v.a = 1.0f;
-            return true;
-          }
-        else
-          {
-            return false;
-          }
-      }
-    return false;
+      return property_get(sub, v);
+    else 
+      return false;
   }
 
-  bool get(const char* name, std::vector<int>&   v) const
+  bool get(const char* name, std::vector<bool>&   v) const
   {
     lisp::Lisp* sub = get_subsection(name);
     if (sub)

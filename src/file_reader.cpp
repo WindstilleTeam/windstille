@@ -64,7 +64,7 @@ FileReader::get_name() const
 }
 
 bool
-FileReader::read_int(const char* name, int& value) const
+FileReader::read(const char* name, int& value)
 {
   if (impl.get())
     return impl->read_int(name, value);
@@ -73,7 +73,7 @@ FileReader::read_int(const char* name, int& value) const
 }
 
 bool
-FileReader::read_float (const char* name, float& value) const
+FileReader::read(const char* name, float& value)
 {
   if (impl.get())
     return impl->read_float(name, value);
@@ -82,7 +82,7 @@ FileReader::read_float (const char* name, float& value) const
 }
 
 bool
-FileReader::read_bool  (const char* name, bool& value) const
+FileReader::read(const char* name, bool& value)
 {
   if (impl.get())
     return impl->read_bool(name, value);
@@ -91,7 +91,7 @@ FileReader::read_bool  (const char* name, bool& value) const
 }
 
 bool
-FileReader::read_string(const char* name, std::string& value) const
+FileReader::read(const char* name, std::string& value)
 {
   if (impl.get())
     return impl->read_string(name, value);
@@ -100,34 +100,7 @@ FileReader::read_string(const char* name, std::string& value) const
 }
 
 bool
-FileReader::read_vector3(const char* name, Vector3& value) const
-{
-  if (impl.get())
-    return impl->read_vector3(name, value);
-  else
-    return false;
-}
-
-bool
-FileReader::read_color(const char* name, Color& value) const
-{
-  if (impl.get())
-    return impl->read_color(name, value);
-  else
-    return false;
-}
-
-bool
-FileReader::read_size  (const char* name, Size& value) const
-{
-  if (impl.get())
-    return impl->read_size(name, value);
-  else
-    return false;
-}
-
-bool
-FileReader::get(const char* name, std::vector<int>& value) const
+FileReader::read(const char* name, std::vector<int>& value)
 {
   if (impl.get())
     return impl->get(name, value);
@@ -136,7 +109,16 @@ FileReader::get(const char* name, std::vector<int>& value) const
 }
 
 bool
-FileReader::get(const char* name, std::vector<std::string>& value) const
+FileReader::read(const char* name, std::vector<bool>&   value)
+{
+  if (impl.get())
+    return impl->get(name, value);
+  else
+    return false;  
+}
+
+bool
+FileReader::read(const char* name, std::vector<std::string>& value)
 {
   if (impl.get())
     return impl->get(name, value);
@@ -145,7 +127,7 @@ FileReader::get(const char* name, std::vector<std::string>& value) const
 }
 
 bool
-FileReader::get(const char* name, std::vector<float>& value) const
+FileReader::read(const char* name, std::vector<float>& value)
 {
   if (impl.get())
     return impl->get(name, value);
@@ -154,16 +136,7 @@ FileReader::get(const char* name, std::vector<float>& value) const
 }
 
 bool
-FileReader::read_vector(const char* name, Vector& value) const
-{
-  if (impl.get())
-    return impl->read_vector(name, value);
-  else
-    return false;
-}
-
-bool
-FileReader::read_section(const char* name, FileReader& reader) const
+FileReader::read(const char* name, FileReader& reader)
 {
   if (impl.get())
     return impl->read_section(name, reader);
@@ -189,16 +162,8 @@ FileReader::get_sections() const
     return std::vector<FileReader>();
 }
 
-FileReader
-FileReader::read_section(const char* name)   const
-{
-  FileReader reader;
-  read_section(name, reader);
-  return reader;
-}
-
 void
-FileReader::print_unused_warnings(const std::string& title)
+FileReader::print_unused_warnings(const std::string& title) const
 {
   // unimplemented
 }

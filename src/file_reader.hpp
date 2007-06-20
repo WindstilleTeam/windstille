@@ -22,14 +22,9 @@
 
 #include <string>
 #include <vector>
+#include "getter.hpp"
 #include "sharedptr.hpp"
 
-class Size;
-class Color;
-class Vector;
-class Vector3;
-
-class ResDescriptor;
 class FileReaderImpl;
 
 /** Interface to read name/value pairs out of some kind of file or
@@ -46,22 +41,20 @@ public:
       <groundpiece><pos>...</groundpiece> it would be 'groundpiece' */
   std::string get_name() const;
 
-  bool read_int    (const char* name, int&)           const;
-  bool read_float  (const char* name, float&)         const;
-  bool read_bool   (const char* name, bool&)          const;
-  bool read_string (const char* name, std::string&)   const;
-  bool read_vector3(const char* name, Vector3&)      const;
-  bool read_vector (const char* name, Vector&)    const;
-  bool read_size   (const char* name, Size&)          const;
-  bool read_color  (const char* name, Color&)         const;
-  bool read_section(const char* name, FileReader&)   const;
-  FileReader read_section(const char* name)   const;
+  std::vector<std::string> get_section_names() const;
+  std::vector<FileReader>  get_sections() const;
 
+  /** Generic getter function for non-standard types, see getter.hpp */
+  template<typename T>
+  bool get(const char* name, T& v) {
+    return ::get(*this, name, v);
+  }
+ 
   template<class E, class T>
-  bool read_enum  (const char* name, E& value, T enum2string) const
+  bool get(const char* name, E& value, T enum2string)
   {
     std::string str;
-    if (read_string(name, str))
+    if (get(name, str))
       {
         value = enum2string(str);
         return true;
@@ -70,24 +63,21 @@ public:
     return false;
   }
 
-  bool get(const char* name, std::vector<int>&   v) const;
-  bool get(const char* name, std::vector<float>& v) const;
-  bool get(const char* name, std::vector<std::string>& v) const;
+  // Primitive types
+  // FIXME: Is there any nice way to not use two different names?
+  bool read(const char* name, FileReader& v);
 
-  bool get(const char* name, FileReader& v) { return read_section(name, v); }
-  bool get(const char* name, int&   v) { return read_int(name, v); }
-  bool get(const char* name, float& v) { return read_float(name, v); }
-  bool get(const char* name, bool& v) { return read_bool(name, v); }
-  bool get(const char* name, std::string& v) { return read_string(name, v); }
-  bool get(const char* name, Vector3& v) { return read_vector3(name, v); }
-  bool get(const char* name, Vector& v) { return read_vector(name, v); }
-  bool get(const char* name, Size& v) { return read_size(name, v); }
-  bool get(const char* name, Color& v) { return read_color(name, v); } 
+  bool read(const char* name, int&   v);
+  bool read(const char* name, float& v);
+  bool read(const char* name, bool& v);
+  bool read(const char* name, std::string& v);
 
-  std::vector<std::string> get_section_names() const;
-  std::vector<FileReader>  get_sections() const;
+  bool read(const char* name, std::vector<bool>&   v);
+  bool read(const char* name, std::vector<int>&   v);
+  bool read(const char* name, std::vector<float>& v);
+  bool read(const char* name, std::vector<std::string>& v);
 
-  void print_unused_warnings(const std::string& title);
+  void print_unused_warnings(const std::string& title) const;
 
 private:
   SharedPtr<FileReaderImpl> impl;
