@@ -42,6 +42,8 @@ env.ParseConfig('freetype-config --libs --cflags')
 # env['ENV']['LSBCC_SHAREDLIBS'] = 'png2:SDL:SDL_image:vorbis:ogg:openal:physfs'
 
 env.Program('../windstille', [
+'armature/armature.cpp',
+'armature/bone.cpp',
 'baby_xml.cpp',
 'blitter.cpp',
 'box.cpp',
