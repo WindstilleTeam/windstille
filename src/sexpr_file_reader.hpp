@@ -34,8 +34,8 @@ class SExprFileReader : public FileReader
 {
 private:
 public:
+  SExprFileReader(const lisp::Lisp* root, const lisp::Lisp* lisp);
   SExprFileReader(const lisp::Lisp* lisp, bool delete_sexpr = false);
-  SExprFileReader(const std::string& filename);
 };
 
 #endif

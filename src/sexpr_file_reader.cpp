@@ -36,11 +36,26 @@
 class SExprFileReaderImpl: public FileReaderImpl
 {
 public:
-  bool delete_sexpr;
+  /** Pointer to the top-most lisp element, only here for purpose of
+      being able to delete it */
+  const lisp::Lisp* root;
+
+  bool  delete_sexpr;
   const lisp::Lisp* sexpr;
 
+  SExprFileReaderImpl(const lisp::Lisp* root_, const lisp::Lisp* sexpr_)
+    : root(root_),
+      sexpr(sexpr_), 
+      delete_sexpr(false)
+  {
+    assert(sexpr && 
+           sexpr->get_type() == lisp::Lisp::TYPE_LIST &&
+           sexpr->get_list_size() >= 1);
+  }
+
   SExprFileReaderImpl(const lisp::Lisp* sexpr_, bool delete_sexpr_) 
-    : sexpr(sexpr_), 
+    : root(0),
+      sexpr(sexpr_), 
       delete_sexpr(delete_sexpr_)
   {
     assert(sexpr && 
@@ -50,10 +65,11 @@ public:
 
   ~SExprFileReaderImpl()
   {
+    if (root)
+      delete root;
+
     if (delete_sexpr)
-      {
-        delete sexpr;
-      }
+      delete sexpr;
   }
 
   std::string get_name() const 
@@ -285,31 +301,8 @@ SExprFileReader::SExprFileReader(const lisp::Lisp* sexpr, bool delete_sexpr)
 {
 }
 
-static lisp::Lisp* read_lisp_file(const std::string& filename)
-{
-  lisp::Lisp* sexpr = lisp::Parser::parse(filename);
-  if (!sexpr)
-    {
-      std::ostringstream msg;
-      msg << "'" << filename << "': file not found";
-      throw std::runtime_error(msg.str());
-    }
-  else if (sexpr && sexpr->get_type() == lisp::Lisp::TYPE_LIST && sexpr->get_list_size() >= 1)
-    {
-      // FIXME: Memory leak! We are only cleaning up a subset of the whole lisp objects
-      return sexpr->get_list_elem(0);
-    }
-  else
-    {
-      std::ostringstream msg;
-      msg << "'" << filename << "': not a valid sexpr file";
-      throw std::runtime_error(msg.str());
-    }
-}
-
-SExprFileReader::SExprFileReader(const std::string& filename)
-  : FileReader(SharedPtr<FileReaderImpl>(new SExprFileReaderImpl(read_lisp_file(filename),
-                                                                 true)))
+SExprFileReader::SExprFileReader(const lisp::Lisp* root, const lisp::Lisp* sexpr)
+  : FileReader(SharedPtr<FileReaderImpl>(new SExprFileReaderImpl(root, sexpr)))
 {
 }
 

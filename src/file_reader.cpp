@@ -17,6 +17,7 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+#include "lisp/parser.hpp"
 #include "sexpr_file_reader.hpp"
 #include "file_reader.hpp"
 #include "file_reader_impl.hpp"
@@ -24,7 +25,23 @@
 FileReader
 FileReader::parse(const std::string& filename)
 {
-  return SExprFileReader(filename);
+  lisp::Lisp* root = lisp::Parser::parse(filename);
+  if (!root)
+    {
+      std::ostringstream msg;
+      msg << "'" << filename << "': file not found";
+      throw std::runtime_error(msg.str());
+    }
+  else if (root && root->get_type() == lisp::Lisp::TYPE_LIST && root->get_list_size() >= 1)
+    {
+      return SExprFileReader(root, root->get_list_elem(0));
+    }
+  else
+    {
+      std::ostringstream msg;
+      msg << "'" << filename << "': not a valid sexpr file";
+      throw std::runtime_error(msg.str());
+    }
 }
 
 FileReader::FileReader(SharedPtr<FileReaderImpl> impl_)
