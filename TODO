@@ -48,5 +48,6 @@ Misc:
   shouldn't be persistent unless told so
 - add line numbers to error messages from lisp
 - fix memory leak in SExprFileReader
+- use non-euler angles in the model viewer
 
 # EOF #
