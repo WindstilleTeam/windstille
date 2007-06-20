@@ -31,7 +31,7 @@
 #include "surface_drawer.hpp"
 
 SurfaceDrawer::SurfaceDrawer(Surface surface_)
-  :surface(surface_)
+  : surface(surface_)
 {
   
 }

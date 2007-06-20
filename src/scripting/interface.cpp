@@ -37,6 +37,7 @@
 #include "camera.hpp"
 #include "config.hpp"
 #include "pda.hpp"
+#include "sexpr_file_reader.hpp"
 #include "display/display.hpp"
 #include "controller_help_window.hpp"
 
@@ -327,9 +328,10 @@ SQInteger spawn_object(HSQUIRRELVM v)
   std::vector<lisp::Lisp*> entries;
   entries.push_back(new Lisp(Lisp::TYPE_SYMBOL, objname));
   table_to_lisp(v, 3, entries);
-  std::auto_ptr<Lisp> lisp (new Lisp(entries));
+
   try {
-    Sector::current()->add_object(objname, lisp.get());
+    SExprFileReader reader(new Lisp(entries), true);
+    Sector::current()->add_object(reader);
   } catch(std::exception& e) {
     std::cerr << "Error parsing object in spawn_object: " << e.what()
       << "\n";

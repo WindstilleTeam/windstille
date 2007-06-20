@@ -171,12 +171,16 @@ opts.Add('CPPDEFINES', 'defined constants')
 opts.Add('LIBPATH', 'Additional library paths')
 opts.Add('LIBS', 'Additional libraries')
 opts.Add('CCFLAGS', 'C Compiler flags')
+opts.Add('CXXFLAGS', 'C++ Compiler flags')
 opts.Add('LINKFLAGS', 'Linker Compiler flags')
 opts.Add('CC', 'C Compiler')
 opts.Add('CXX', 'C++ Compiler')  
 opts.Update(conf_env)
 opts.Save('options.cache', conf_env)
 Help(opts.GenerateHelpText(conf_env))
+
+# FIXME: Giving multiple CCFLAGS doesn't work since they have to be
+# broken down to a list
 
 conf = Configure(conf_env, custom_tests = { 'Check32bit' : Check32bit,
                                             'CheckYacc'  : CheckYacc,

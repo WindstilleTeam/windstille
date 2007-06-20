@@ -25,8 +25,7 @@
 
 #include "lisp/lisp.hpp"
 #include "lisp/parser.hpp"
-#include "lisp/properties.hpp"
-#include "file_reader.hpp"
+#include "sexpr_file_reader.hpp"
 #include "input/controller.hpp"
 #include "screen_manager.hpp"
 #include "gui/gui_manager.hpp"
@@ -113,30 +112,24 @@ void
 ParticleViewer::load(const std::string& filename)
 {
   std::cout << "ParticleViewer: loading " << filename << std::endl;
-  using namespace lisp;
   
   for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
     delete *i;
   systems.clear();
   
-  std::auto_ptr<Lisp> root(Parser::parse(filename));
-  Properties rootp(root.get());
-
-  const Lisp* sector = 0;
-  if(!rootp.get("particle-systems", sector)) {
+  SExprFileReader root_reader(filename);
+  if(root_reader.get_name() != "particle-systems") {
     std::ostringstream msg;
     msg << "'" << filename << "' is not a particle-system file";
     throw std::runtime_error(msg.str());
   }
-  rootp.print_unused_warnings("sector");
-  
-  Properties props(sector);
-  PropertyIterator<const Lisp*> iter = props.get_iter();
-  while(iter.next()) {
-    if (iter.item() == "particle-system")
+
+  std::vector<FileReader> sections = root_reader.get_sections();
+  for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+    { 
+      if (i->get_name() == "particle-system")
       {
-        FileReader reader(*iter);
-        systems.push_back(new ParticleSystem(reader));
+        systems.push_back(new ParticleSystem(*i));
 
         guis.push_back(new ParticleSystemGUI(tab, systems.back()));
         tab->pack("Testomap", guis.back()->get_component());

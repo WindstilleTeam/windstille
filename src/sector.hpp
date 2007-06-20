@@ -22,9 +22,9 @@
 
 #include <string>
 #include <vector>
-#include "lisp/lisp.hpp"
 #include "color.hpp"
 
+class FileReader;
 class GameObject;
 class TileMap;
 class Player;
@@ -98,7 +98,7 @@ public:
   Color get_ambient_light() const;
 
   void add(GameObject*);
-  void add_object(const std::string& name, const lisp::Lisp* lisp);
+  void add_object(FileReader& reader);
 
   CollisionEngine* get_collision_engine() const { return collision_engine; }
 

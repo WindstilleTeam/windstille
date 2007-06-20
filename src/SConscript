@@ -57,6 +57,8 @@ env.Program('../windstille', [
 'elevator.cpp',
 'energy_bar.cpp',
 'entity.cpp',
+'file_reader.cpp',
+'sexpr_file_reader.cpp',
 'config.cpp',
 'game_object.cpp',
 'game_session.cpp',

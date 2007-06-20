@@ -32,6 +32,7 @@
 #include "math/line.hpp"
 
 class Node;
+class FileReader;
 class Segment;
 class SegmentPosition;
 
@@ -113,6 +114,7 @@ public:
   /** Draw the navigation graph, for debugging only */
   void draw();
 
+  void load(FileReader& reader);
   void save(std::ostream& out);
 
   bool valid(Segment* segment);

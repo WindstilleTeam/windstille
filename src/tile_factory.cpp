@@ -30,9 +30,7 @@
 #include "tile_packer.hpp"
 #include "tile_factory.hpp"
 #include "tile_description.hpp"
-#include "lisp/lisp.hpp"
-#include "lisp/parser.hpp"
-#include "lisp/properties.hpp"
+#include "sexpr_file_reader.hpp"
 #include "display/surface_manager.hpp"
 #include "display/texture.hpp"
 #include "physfs/physfs_sdl.hpp"
@@ -64,29 +62,28 @@ bool surface_empty(SDL_Surface* image, int sx, int sy, int w, int h)
 
 TileFactory::TileFactory (const std::string& filename)
 {
-  using namespace lisp;
-
   packers.push_back(new TilePacker(1024, 1024));
   packers.push_back(new TilePacker(1024, 1024));
   color_packer     = 0;
 
-  std::auto_ptr<Lisp> root (Parser::parse(filename));
-  Properties rootp(root.get());
+  SExprFileReader reader(filename);
+  if(reader.get_name() != "windstille-tiles")
+    {
+      std::ostringstream msg;
+      msg << "'" << filename << "' is not a windstille tiles file";
+      throw std::runtime_error(msg.str());
+    }
   
-  const lisp::Lisp* tiles_lisp = 0;
-  if(rootp.get("windstille-tiles", tiles_lisp) == false) {
-    std::ostringstream msg;
-    msg << "'" << filename << "' is not a windstille tiles file";
-    throw std::runtime_error(msg.str());
-  }
-  
-  Properties props(tiles_lisp);
-  PropertyIterator<const lisp::Lisp*> iter;
-  props.get_iter("tiles", iter);
-  while(iter.next()) {
-    parse_tiles(*iter);
-  }
-  props.print_unused_warnings("windstille-tiles");
+  std::vector<FileReader> sections = reader.get_sections();
+  for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+    {
+      if (i->get_name() == "tiles") {
+        parse_tiles(*i);
+      } else if (i->get_name() == "tilegroup") {
+        // ignore
+      }
+    }
+  reader.print_unused_warnings("TileFactory");
 }
 
 TileFactory::~TileFactory()
@@ -104,14 +101,10 @@ TileFactory::~TileFactory()
 }
 
 void
-TileFactory::parse_tiles(const lisp::Lisp* data)
+TileFactory::parse_tiles(FileReader& reader)
 {
-  using namespace lisp;
-  assert(data);
+  descriptions.push_back(new TileDescription(reader));
 
-  lisp::Properties props(data);
-
-  descriptions.push_back(new TileDescription(props));
   TileDescription& desc = *descriptions.back();
   
   if (0)

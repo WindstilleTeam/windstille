@@ -77,7 +77,7 @@ public:
   static TileFactory* current() { return current_; }
 
 private:
-  void parse_tiles(const lisp::Lisp* data);
+  void parse_tiles(FileReader& reader);
 };
 
 #endif

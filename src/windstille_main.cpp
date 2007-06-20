@@ -134,7 +134,6 @@ WindstilleMain::main(int argc, char** argv)
         std::string leveldir = dirname(config.get_string("levelfile"));
         PHYSFS_addToSearchPath(leveldir.c_str(), true);
         levelfile = basename(config.get_string("levelfile"));
-        std::cout << "XXX: " << leveldir << std::endl;
       }
 
     if (sprite3dview)

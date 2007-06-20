@@ -23,6 +23,7 @@
 #include "lisp/properties.hpp"
 #include "lisp/parser.hpp"
 #include "lisp_getters.hpp"
+#include "sexpr_file_reader.hpp"
 #include "globals.hpp"
 #include "display/scene_context.hpp"
 #include "objects/background_gradient.hpp"
@@ -107,92 +108,84 @@ Sector::parse_file(const std::string& filename)
   if (debug) std::cout << "Sector:parse_file '" << filename << "'" << std::endl;
   using namespace lisp;
   
-  std::auto_ptr<Lisp> root(Parser::parse(filename));
-  Properties rootp(root.get());
-
-  const Lisp* sector = 0;
-  if(!rootp.get("windstille-sector", sector)) {
+  SExprFileReader reader(filename);
+  if(reader.get_name() != "windstille-sector") {
     std::ostringstream msg;
     msg << "'" << filename << "' is not a windstille-sector file";
     throw std::runtime_error(msg.str());
   }
-  rootp.print_unused_warnings("sector");
   
-  Properties props(sector);
-
   int version = 1;
-  if(!props.get("version", version))
+  if(!reader.get("version", version))
     std::cerr << "Warning no version specified in levelformat.\n";
   if(version > 1)
     std::cerr << "Warning: format version is newer than game.\n";
 
-  props.get("name", name);
-  props.get("music", music);
-  props.get("init-script", init_script);
-  props.get("ambient-color", ambient_light);
+  reader.get("name",          name);
+  reader.get("music",         music);
+  reader.get("init-script",   init_script);
+  reader.get("ambient-color", ambient_light);
   
-  PropertyIterator<const Lisp*> iter;
-  const Lisp* objects = 0;
-  if(props.get("objects", objects) == false)
+  FileReader objects_reader;
+  if(reader.get("objects", objects_reader) == false)
     throw std::runtime_error("No objects specified");
-  Properties pobjects(objects);
-  iter = pobjects.get_iter();
-  while(iter.next()) {
-    add_object(iter.item(), *iter);
-  }
 
-  props.print_unused_warnings("sector");
+  std::vector<FileReader> objects_readers = objects_reader.get_sections();
+  for(std::vector<FileReader>::iterator i = objects_readers.begin(); i != objects_readers.end(); ++i)
+    {
+      add_object(*i);
+    }
+
+  reader.print_unused_warnings("sector");
   if (debug) std::cout << "Finished parsing" << std::endl;
 }
 
 void
-Sector::add_object(const std::string& name, const lisp::Lisp* lisp)
+Sector::add_object(FileReader& reader)
 {
-  lisp::Properties props(lisp);
-
-  if(name == "tilemap") {
-    TileMap* tilemap = new TileMap(props);
+  if(reader.get_name() == "tilemap") {
+    TileMap* tilemap = new TileMap(reader);
     add(tilemap);
     if (tilemap->get_name() == "interactive")
       interactive_tilemap = tilemap;
     else if (tilemap->get_name() == "interactivebackground")
       interactivebackground_tilemap = tilemap;
-  } else if(name == "background") {
+  } else if(reader.get_name() == "background") {
     // TODO
-  } else if (name == "background-gradient") {
-    add(new BackgroundGradient(props));
-  } else if(name == "trigger") {
-    add(new Trigger(props));
-  } else if(name == "box") {
-    add(new Box(props));
-  } else if(name == "shockwave") {
-    add(new Shockwave(props));
-  } else if(name == "elevator") {
-    add(new Elevator(props));
-  } else if(name == "character") {    
-    add(new Character(props));
-  } else if(name == "spider-mine") {
-    add(new SpiderMine(props));
-  } else if(name == "hedgehog") {
-    add(new Hedgehog(props));
-  } else if(name == "test-object") {
-    add(new TestObject(props));
-  } else if (name == "nightvision") {
-    add(new Nightvision(props));
-  } else if (name == "particle-system") {
-    add(new ParticleSystem(props));
-  } else if(name == "scriptable-object") {    
-    add(new ScriptableObject(props));
-  } else if (name == "vrdummy") {
-    add(new VRDummy(props));
-  } else if (name == "swarm") {
-    add(new Swarm(props));
-  } else if (name == "laserpointer") {
+  } else if (reader.get_name() == "background-gradient") {
+    add(new BackgroundGradient(reader));
+  } else if(reader.get_name() == "trigger") {
+    add(new Trigger(reader));
+  } else if(reader.get_name() == "box") {
+    add(new Box(reader));
+  } else if(reader.get_name() == "shockwave") {
+    add(new Shockwave(reader));
+  } else if(reader.get_name() == "elevator") {
+    add(new Elevator(reader));
+  } else if(reader.get_name() == "character") {    
+    add(new Character(reader));
+  } else if(reader.get_name() == "spider-mine") {
+    add(new SpiderMine(reader));
+  } else if(reader.get_name() == "hedgehog") {
+    add(new Hedgehog(reader));
+  } else if(reader.get_name() == "test-object") {
+    add(new TestObject(reader));
+  } else if (reader.get_name() == "nightvision") {
+    add(new Nightvision(reader));
+  } else if (reader.get_name() == "particle-system") {
+    add(new ParticleSystem(reader));
+  } else if(reader.get_name() == "scriptable-object") {    
+    add(new ScriptableObject(reader));
+  } else if (reader.get_name() == "vrdummy") {
+    add(new VRDummy(reader));
+  } else if (reader.get_name() == "swarm") {
+    add(new Swarm(reader));
+  } else if (reader.get_name() == "laserpointer") {
     add(new LaserPointer());
-  } else if (name == "liquid") {
-    add(new Liquid(props));
+  } else if (reader.get_name() == "liquid") {
+    add(new Liquid(reader));
   } else {
-    std::cout << "Skipping unknown Object: " << name << "\n";
+    std::cout << "Skipping unknown Object: " << reader.get_name() << "\n";
   }
 }
 

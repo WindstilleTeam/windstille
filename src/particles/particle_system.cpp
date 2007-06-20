@@ -134,70 +134,82 @@ ParticleSystem::ParticleSystem(FileReader& props)
   }
 
   {
-    const lisp::Lisp* drawer_lisp = 0;
-    if (props.get("drawer", drawer_lisp))
+    FileReader drawer_reader;
+    if (props.get("drawer", drawer_reader))
       {
-        lisp::Properties drawer_props(drawer_lisp);
-        lisp::PropertyIterator<const lisp::Lisp*> iter = drawer_props.get_iter();
-        while(iter.next()) {
-          if (iter.item() == "surface-drawer") 
-            {
-              lisp::Properties props(*iter);
-              set_drawer(new SurfaceDrawer(props));
-            } 
-          else if (iter.item() == "spark-drawer") 
-            {
-              lisp::Properties props(*iter);
-              set_drawer(new SparkDrawer(props));
-            } 
-          else if (iter.item() == "deform-drawer")
-            {
-              lisp::Properties props(*iter);
-              set_drawer(new DeformDrawer(props));
-            }
-          else 
-            {
-              std::cout << "Unknown drawer: " << iter.item() << std::endl;
-            }
-        }
+        std::vector<FileReader> sections = drawer_reader.get_sections();
+
+        if (sections.size() > 1)
+          std::cout << "ParticleSystem: Only one drawer allowed" << std::endl;
+        
+        if (sections.size() == 0)
+          std::cout << "ParticleSystem: You must specify a drawer" << std::endl;
+
+        if (sections.size() >= 1)
+          {
+            FileReader& reader  = sections.front();
+            if (reader.get_name() == "surface-drawer") 
+              {
+                set_drawer(new SurfaceDrawer(reader));
+              } 
+            else if (reader.get_name() == "spark-drawer") 
+              {
+                set_drawer(new SparkDrawer(reader));
+              } 
+            else if (reader.get_name() == "deform-drawer")
+              {
+                set_drawer(new DeformDrawer(reader));
+              }
+            else 
+              {
+                std::cout << "Unknown drawer: " << reader.get_name() << std::endl;
+              }
+          }
       }
   }
 
   {
-    const lisp::Lisp* distribution_lisp = 0;
-    if (props.get("distribution", distribution_lisp))
+    FileReader distribution_reader;
+    if (props.get("distribution", distribution_reader))
       {
-        lisp::Properties distribution_props(distribution_lisp);
-        lisp::PropertyIterator<const lisp::Lisp*> iter = distribution_props.get_iter();
-        if (iter.next()) {
-          lisp::Properties prop(*iter);
+        std::vector<FileReader> sections = distribution_reader.get_sections();
 
-          if (iter.item() == "point-distribution") {
-            set_point_distribution();
-          } else if (iter.item() == "line-distribution") {
-            float x1, y1, x2, y2;
-            prop.get("x1", x1);
-            prop.get("y1", y1);
-            prop.get("x2", x2);
-            prop.get("y2", y2);
-          
-            set_line_distribution(x1, y1, x2, y2);
-          } else if (iter.item() == "rect-distribution") {
-            Rectf rect;
-            prop.get("x1", rect.left);
-            prop.get("y1", rect.top);
-            prop.get("x2", rect.right);
-            prop.get("y2", rect.bottom);
-          
-            set_rect_distribution(rect);
+        if (sections.size() > 1)
+          std::cout << "ParticleSystem: Only one distribution allowed" << std::endl;
+        
+        if (sections.size() == 0)
+          std::cout << "ParticleSystem: You must specify a distribution" << std::endl;
 
-          } else {
-            std::cout << "Unknown distribution: " << iter.item() << std::endl;
+        if (sections.size() >= 1)
+          {
+            FileReader& reader  = sections.front();
+
+            if (reader.get_name() == "point-distribution") {
+              set_point_distribution();
+            } else if (reader.get_name() == "line-distribution") {
+              float x1, y1, x2, y2;
+              reader.get("x1", x1);
+              reader.get("y1", y1);
+              reader.get("x2", x2);
+              reader.get("y2", y2);
+          
+              set_line_distribution(x1, y1, x2, y2);
+            } else if (reader.get_name() == "rect-distribution") {
+              Rectf rect;
+              reader.get("x1", rect.left);
+              reader.get("y1", rect.top);
+              reader.get("x2", rect.right);
+              reader.get("y2", rect.bottom);
+          
+              set_rect_distribution(rect);
+
+            } else {
+              std::cout << "Unknown distribution: " << reader.get_name() << std::endl;
+            }
           }
-        }
       }
   }
-
+  
   int p_count = 70;
   props.get("count", p_count);
   set_count(p_count);

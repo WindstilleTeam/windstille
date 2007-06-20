@@ -30,10 +30,7 @@
 #include <iostream>
 #include "config.hpp"
 #include "tinygettext/gettext.hpp"
-#include "lisp/lisp.hpp"
-#include "lisp/parser.hpp"
-#include "lisp/writer.hpp"
-#include "lisp/properties.hpp"
+#include "sexpr_file_reader.hpp"
 #include "command_line.hpp"
 #include "globals.hpp"
 
@@ -57,7 +54,7 @@ Config::Config()
   add(new ConfigValue<std::string>("levelfile",       _("Levelfile to be used at startup"), false));
 
   // FIXME: There is no need to limit this to just two
-  add(new ConfigValue<std::string>("primary-controller-file", _("Controller Config file to load"), true));
+  add(new ConfigValue<std::string>("primary-controller-file",   _("Controller Config file to load"), true));
   add(new ConfigValue<std::string>("secondary-controller-file", _("Controller Config file to load"), true));
 
   add(new ConfigValue<std::string>("screenshot-dir",  _("Directory where Screenshots are saved"), false));
@@ -316,50 +313,46 @@ Config::is_set(const std::string& name)
 void
 Config::load()
 {
-  using namespace lisp;
-  
   try {
-    std::auto_ptr<Lisp> root(lisp::Parser::parse("config"));
-    Properties rootp(root.get());
-    
-    const Lisp* config_lisp = 0;
-    if(rootp.get("windstille-config", config_lisp) == false) {
+    SExprFileReader reader("config");
+
+    if(reader.get_name() != "windstille-config") {
       std::cerr << "Warning: Config file is not a windstille-config file.\n";
       return;
     }
     
-    Properties props(config_lisp);
-    PropertyIterator<const lisp::Lisp*> iter = props.get_iter();
-
-    while(iter.next()) {
-      // FIXME: this is a little hacky PropertyIterator should be a bit rewritten
-      lisp::Lisp* lisp = (*iter)->get_list_elem(1);
-      switch (lisp->get_type())
-        {
-        case Lisp::TYPE_BOOL:
-          set_bool(iter.item(), lisp->get_bool());
-          break;
-
-        case Lisp::TYPE_INT:
-          set_int(iter.item(), lisp->get_int());
-          break;
-
-        case Lisp::TYPE_FLOAT:
-          set_float(iter.item(), lisp->get_float());
-          break;
-
-        case Lisp::TYPE_STRING:
-          set_string(iter.item(), lisp->get_string());
-          break;
-
-        default:
-          std::cout << "Config: Unhandled type: ";
-          lisp->print();
-          std::cout << std::endl;
-        }
-    }
-
-    props.print_unused_warnings("configfile");
+    for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
+      { // FIXME: all this dynamic_casting is overcomplicated crap
+        if (dynamic_cast<ConfigValue<int>*>(i->second))
+          {
+            int v;
+            if (reader.get(i->first.c_str(), v))
+              set_int(i->first, v);
+          }
+        else if (dynamic_cast<ConfigValue<bool>*>(i->second))
+          {
+            bool v;
+            if (reader.get(i->first.c_str(), v))
+              set_bool(i->first, v);
+          }
+        else if (dynamic_cast<ConfigValue<float>*>(i->second))
+          {
+            float v;
+            if (reader.get(i->first.c_str(), v))
+              set_float(i->first, v);
+          }
+        else if (dynamic_cast<ConfigValue<std::string>*>(i->second))
+          {
+            std::string v;
+            if (reader.get(i->first.c_str(), v))
+              set_string(i->first, v);
+          }
+        else 
+          {
+            std::cout << "Config: Unknown type for: " << i->first << std::endl;
+          }
+      }
+    reader.print_unused_warnings("configfile");
 
     // TODO read controller config
   } catch(std::exception& e) {

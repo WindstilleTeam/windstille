@@ -24,6 +24,7 @@
 */
 
 #include <iostream>
+#include <iomanip>
 #include <map>
 #include <algorithm>
 #include "display/display.hpp"
@@ -242,6 +243,12 @@ NavigationGraph::draw()
 }
 
 void
+NavigationGraph::load(FileReader& reader)
+{
+  
+}
+
+void
 NavigationGraph::save(std::ostream& out)
 {
   int id = 1;
@@ -250,22 +257,24 @@ NavigationGraph::save(std::ostream& out)
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
     ptr2id[*i] = id++;
 
+  std::ios_base::fmtflags old_flags = out.flags();
   out << "(navigation\n";
-
   out << "  (segments\n";
   for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)  
     out << "    (segment "
-        << "(node " << ptr2id[(*i)->get_node1()] << ") "
-        << "(node " << ptr2id[(*i)->get_node2()] << ") "
+        << "(node " << std::setw(3) << ptr2id[(*i)->get_node1()] << ") "
+        << "(node " << std::setw(3) << ptr2id[(*i)->get_node2()] << ") "
         << "(properties " << (*i)->get_properties() << "))\n";
   out << " )\n";
       
     out << "  (nodes\n"; 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
-    out << "    (node (id " << ptr2id[*i] << ") (pos " << (*i)->get_pos().x << " " << (*i)->get_pos().y << "))\n";
+    out << "    (node (id " << std::setw(3) << ptr2id[*i] << ") (pos " 
+        << std::setw(3) << (*i)->get_pos().x << " " << (*i)->get_pos().y << "))\n";
   out << " )\n";
 
   out << ")\n";
+  out.flags(old_flags);
 }
 
 bool

@@ -6,6 +6,7 @@ Windstille 0.3.1
  - added arc drawing
  - added navigation graph
  - added geometry test
+ - added sdl-jstest application
 
 Windstille 0.3.0
 ================
