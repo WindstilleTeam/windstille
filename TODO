@@ -43,5 +43,9 @@ Misc:
 - print and println behave different on console
 - calling functions as character scripts instead of files doesn't work
 - change the game to a righthand coordinate system
+- rewrite Config class and properly seperate config from command line
+  and config done via option menu, i.e. command line settings
+  shouldn't be persistent unless told so
+- add line numbers to error messages from lisp
 
 # EOF #

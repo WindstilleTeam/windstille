@@ -35,7 +35,6 @@
 class Node
 {
 private:
-  int    id;
   Vector pos;
   
 public:

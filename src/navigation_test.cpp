@@ -27,6 +27,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/gl.h>
+#include "sexpr_file_reader.hpp"
 #include "input/controller.hpp"
 #include "display/display.hpp"
 #include "screen_manager.hpp"
@@ -46,6 +47,13 @@ NavigationTest::NavigationTest()
     node_to_connect(0)
 {
   graph = new NavigationGraph();
+
+  try {
+    SExprFileReader reader("navigation.nav");
+    graph->load(reader);
+  } catch(std::exception& err) {
+    std::cout << "NavigationTest: " << err.what() << std::endl;
+  }
 
   NodeHandle node1 = graph->add_node(Vector(100, 200));
   NodeHandle node2 = graph->add_node(Vector(300, 400));

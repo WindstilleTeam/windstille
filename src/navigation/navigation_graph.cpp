@@ -30,6 +30,7 @@
 #include "display/display.hpp"
 #include "node.hpp"
 #include "segment.hpp"
+#include "file_reader.hpp"
 #include "segment_position.hpp"
 #include "navigation_graph.hpp"
 
@@ -245,7 +246,77 @@ NavigationGraph::draw()
 void
 NavigationGraph::load(FileReader& reader)
 {
+  int id_count = 1;
+  std::map<int, Node*> id2ptr;
+
+  FileReader nodes_group_reader;
+  if (reader.read_section("nodes", nodes_group_reader))
+    {
+      std::vector<FileReader> nodes_reader = nodes_group_reader.get_sections();
+      for(std::vector<FileReader>::iterator i = nodes_reader.begin(); i != nodes_reader.end(); ++i)
+        {
+          if (i->get_name() == "node")
+            {
+              Vector pos;
+              if (i->get("pos", pos))
+                {
+                  Node* node = new Node(pos);
+                  id2ptr[id_count++] = node;
+                  nodes.push_back(node);
+                }
+              else
+                {
+                  std::cout << "NavigationGraph:load: nodes: node: Couldn't read pos attribute" << std::endl;
+                }
+            }
+          else
+            {
+              std::cout << "NavigationGraph:load: nodes: Unknown tag: " << i->get_name() << std::endl;
+            }
+        }
+    }
   
+  FileReader segments_group_reader;
+  if (reader.read_section("segments", segments_group_reader))
+    {
+      std::vector<FileReader> segments_reader = segments_group_reader.get_sections();
+      for(std::vector<FileReader>::iterator i = segments_reader.begin(); i != segments_reader.end(); ++i)
+        {
+          if (i->get_name() == "segment")
+            {
+              int node_left;
+              int node_right;
+              int properties;
+
+              if (i->get("node1", node_left) &&
+                  i->get("node2", node_right) &&
+                  i->get("properties", properties)) // FIXME: we might want to read a unsigned int instead
+                {
+                  std::map<int, Node*>::iterator node_left_ptr  = id2ptr.find(node_left);
+                  std::map<int, Node*>::iterator node_right_ptr = id2ptr.find(node_right);
+
+                  if (node_left_ptr != id2ptr.end() && node_right_ptr != id2ptr.end())
+                    {
+                      Segment* segment = new Segment(node_left_ptr->second, node_right_ptr->second, properties);
+                      segments.push_back(segment);
+                    }
+                  else
+                    {
+                      std::cout << "NavigationGraph: segment: Couldn't lookup ids: "
+                                << node_left << " " << node_right << std::endl;
+                    }
+                }
+              else
+                {
+                  std::cout << "NavigationGraph:load: segments: segment: parse error" << std::endl;
+                }
+            }
+          else
+            {
+              std::cout << "NavigationGraph:load: segments: Unknown tag: " << i->get_name() << std::endl;
+            }
+        }      
+    }
 }
 
 void
@@ -257,24 +328,26 @@ NavigationGraph::save(std::ostream& out)
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
     ptr2id[*i] = id++;
 
-  std::ios_base::fmtflags old_flags = out.flags();
+  std::ios_base::fmtflags old_flags = out.flags(); // save flags
+
   out << "(navigation\n";
-  out << "  (segments\n";
-  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)  
-    out << "    (segment "
-        << "(node " << std::setw(3) << ptr2id[(*i)->get_node1()] << ") "
-        << "(node " << std::setw(3) << ptr2id[(*i)->get_node2()] << ") "
-        << "(properties " << (*i)->get_properties() << "))\n";
-  out << " )\n";
-      
-    out << "  (nodes\n"; 
+  out << "  (nodes\n"; 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
     out << "    (node (id " << std::setw(3) << ptr2id[*i] << ") (pos " 
         << std::setw(3) << (*i)->get_pos().x << " " << (*i)->get_pos().y << "))\n";
   out << " )\n";
 
+  out << "  (segments\n";
+  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)  
+    out << "    (segment "
+        << "(node1 " << std::setw(3) << ptr2id[(*i)->get_node1()] << ") "
+        << "(node2 " << std::setw(3) << ptr2id[(*i)->get_node2()] << ") "
+        << "(properties " << (*i)->get_properties() << "))\n";
+  out << " )\n";
+      
   out << ")\n";
-  out.flags(old_flags);
+
+  out.flags(old_flags); // restore flags
 }
 
 bool
