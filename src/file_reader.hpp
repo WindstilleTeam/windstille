@@ -37,6 +37,8 @@ class FileReaderImpl;
 class FileReader
 {
 public:
+  static FileReader parse(const std::string& filename);
+
   FileReader(SharedPtr<FileReaderImpl> impl_);
   FileReader();
 
@@ -70,6 +72,7 @@ public:
 
   bool get(const char* name, std::vector<int>&   v) const;
   bool get(const char* name, std::vector<float>& v) const;
+  bool get(const char* name, std::vector<std::string>& v) const;
 
   bool get(const char* name, FileReader& v) { return read_section(name, v); }
   bool get(const char* name, int&   v) { return read_int(name, v); }
@@ -83,8 +86,6 @@ public:
 
   std::vector<std::string> get_section_names() const;
   std::vector<FileReader>  get_sections() const;
-
-  static FileReader parse(const std::string& filename);
 
   void print_unused_warnings(const std::string& title);
 

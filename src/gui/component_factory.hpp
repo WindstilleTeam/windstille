@@ -27,7 +27,6 @@
 #define HEADER_COMPONENT_FACTORY_HPP
 
 #include <string>
-#include "lisp/lisp.hpp"
 
 namespace gui {
 
@@ -41,7 +40,7 @@ public:
   ComponentFactory();
   ~ComponentFactory();
 
-  Component* create(const std::string& name, const lisp::Lisp* lisp, Component* parent);
+  Component* create(const std::string& name, FileReader& reader, Component* parent);
   
 private:
   ComponentFactory (const ComponentFactory&);

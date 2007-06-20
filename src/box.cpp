@@ -17,11 +17,9 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+#include <stdexcept>
 #include "box.hpp"
 #include "globals.hpp"
-#include "lisp/lisp.hpp"
-#include "lisp/properties.hpp"
-#include "lisp_getters.hpp"
 #include "collision/collision_engine.hpp"
 #include "math/vector.hpp"
 #include "tile_map.hpp"

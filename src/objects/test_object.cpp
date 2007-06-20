@@ -1,13 +1,12 @@
+#include <iostream>
+#include <stdexcept>
 #include <config.h>
 
 #include "test_object.hpp"
 #include "sprite3d/manager.hpp"
-#include "lisp/properties.hpp"
-#include "lisp_getters.hpp"
 
 TestObject::TestObject(FileReader& props)
 {
-  using namespace lisp;
   pos = Vector(0, 0);
   std::string spritename;
 

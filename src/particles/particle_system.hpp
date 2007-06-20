@@ -30,7 +30,6 @@
 
 #include "color.hpp"
 #include "drawer.hpp"
-#include "lisp/lisp.hpp"
 #include "entity.hpp"
 
 class SceneContext;

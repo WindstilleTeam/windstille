@@ -31,6 +31,7 @@
 
 namespace lisp {
 class Writer;
+class Lisp;
 };
 
 namespace Scripting {

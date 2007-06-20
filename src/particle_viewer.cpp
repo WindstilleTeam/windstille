@@ -23,8 +23,6 @@
 **  02111-1307, USA.
 */
 
-#include "lisp/lisp.hpp"
-#include "lisp/parser.hpp"
 #include "sexpr_file_reader.hpp"
 #include "input/controller.hpp"
 #include "screen_manager.hpp"
@@ -117,7 +115,7 @@ ParticleViewer::load(const std::string& filename)
     delete *i;
   systems.clear();
   
-  SExprFileReader root_reader(filename);
+  FileReader root_reader = FileReader::parse(filename);
   if(root_reader.get_name() != "particle-systems") {
     std::ostringstream msg;
     msg << "'" << filename << "' is not a particle-system file";

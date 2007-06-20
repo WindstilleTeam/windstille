@@ -26,8 +26,6 @@
 #include "display/drawing_request.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "particle_system.hpp"
-#include "lisp/properties.hpp"
-#include "lisp_getters.hpp"
 #include "color.hpp"
 #include "spark_drawer.hpp"
 

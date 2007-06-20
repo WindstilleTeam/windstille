@@ -27,7 +27,6 @@
 #define HEADER_WINDSTILLE_GUI_BUTTON_HPP
 
 #include <string>
-#include "lisp/lisp.hpp"
 #include "component.hpp"
 
 namespace gui {
@@ -39,7 +38,7 @@ private:
   std::string label;
 
 public:
-  Button(const lisp::Lisp* lisp, Component* parent);
+  Button(FileReader& reader, Component* parent);
   Button(const std::string& label, Component* parent);
   ~Button();
 

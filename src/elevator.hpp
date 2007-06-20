@@ -25,7 +25,6 @@
 #ifndef HEADER_ELEVATOR_HXX
 #define HEADER_ELEVATOR_HXX
 
-#include "lisp/lisp.hpp"
 #include "entity.hpp"
 #include "sprite2d/sprite.hpp"
 

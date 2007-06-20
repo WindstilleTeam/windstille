@@ -46,12 +46,6 @@ public:
     assert(sexpr && 
            sexpr->get_type() == lisp::Lisp::TYPE_LIST &&
            sexpr->get_list_size() >= 1);
-    
-    // FIXME: I don't think this is good for anything
-    // for(size_t i = 1; i < sexpr->get_list_size(); ++i)
-    // { // iterate over subsections
-    //  sexpr->get_list_elem(i);
-    // }
   }
 
   ~SExprFileReaderImpl()
@@ -210,6 +204,15 @@ public:
       return false;
   }
 
+  bool get(const char* name, std::vector<std::string>&   v) const
+  {
+    lisp::Lisp* sub = get_subsection(name);
+    if (sub)
+      return property_get(sub, v);
+    else 
+      return false;
+  }
+
   bool get(const char* name, std::vector<float>& v) const
   {
     lisp::Lisp* sub = get_subsection(name);
@@ -293,6 +296,7 @@ static lisp::Lisp* read_lisp_file(const std::string& filename)
     }
   else if (sexpr && sexpr->get_type() == lisp::Lisp::TYPE_LIST && sexpr->get_list_size() >= 1)
     {
+      // FIXME: Memory leak! We are only cleaning up a subset of the whole lisp objects
       return sexpr->get_list_elem(0);
     }
   else

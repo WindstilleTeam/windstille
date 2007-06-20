@@ -89,7 +89,7 @@ ControllerDescription::get_definition(const std::string& name) const
 {
   std::map<std::string, InputEventDefinition>::const_iterator i = str_to_event.find(name);
   if (i == str_to_event.end())
-    throw std::runtime_error("Unknown event str");
+    throw std::runtime_error("Unknown event str: " + name);
 
   return i->second;
 }

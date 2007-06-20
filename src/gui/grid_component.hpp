@@ -26,7 +26,6 @@
 #ifndef HEADER_WINDSTILLE_GUI_GRID_COMPONENT_HPP
 #define HEADER_WINDSTILLE_GUI_GRID_COMPONENT_HPP
 
-#include "lisp/lisp.hpp"
 #include "field.hpp"
 #include "component.hpp"
 
@@ -61,7 +60,7 @@ private:
   float padding;
 
 public:
-  GridComponent(const lisp::Lisp* lisp, Component* parent);
+  GridComponent(FileReader& reader, Component* parent);
   GridComponent(const Rectf& rect, int weight, int height, Component* parent);
   ~GridComponent();
   

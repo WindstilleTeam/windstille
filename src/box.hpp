@@ -21,7 +21,6 @@
 #define HEADER_WINDSTILLE_BOX_HXX
 
 #include "entity.hpp"
-#include "lisp/lisp.hpp"
 #include "collision/collision_object.hpp"
 #include "sector.hpp"
 #include "particles/particle_system.hpp"

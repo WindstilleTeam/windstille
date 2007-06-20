@@ -1,3 +1,29 @@
+/*  $Id: windstille.hpp 1460 2007-06-18 04:03:31Z grumbel $
+**   __      __ __             ___        __   __ __   __
+**  /  \    /  \__| ____    __| _/_______/  |_|__|  | |  |   ____
+**  \   \/\/   /  |/    \  / __ |/  ___/\   __\  |  | |  | _/ __ \
+**   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
+**    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
+**         \/          \/      \/    \/                         \/
+**  Copyright (C) 2005,2007 Matthias Braun <matze@braunis.de>,
+**                          Ingo Ruhnke <grumbel@gmx.de>
+**
+**  This program is free software; you can redistribute it and/or
+**  modify it under the terms of the GNU General Public License
+**  as published by the Free Software Foundation; either version 2
+**  of the License, or (at your option) any later version.
+**
+**  This program is distributed in the hope that it will be useful,
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**  GNU General Public License for more details.
+** 
+**  You should have received a copy of the GNU General Public License
+**  along with this program; if not, write to the Free Software
+**  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+**  02111-1307, USA.
+*/
+
 #ifndef __SPRITE2D_SPRITE_HPP__
 #define __SPRITE2D_SPRITE_HPP__
 
@@ -19,6 +45,24 @@ struct Action;
 
 class Sprite
 {
+private:
+  /** Pointer to the Sprites data which is shared among all sprites
+      with are loaded from the same file */
+  sprite2d::DataPtr data;
+  const sprite2d::Action* current_action;
+
+  float frame;
+  float speed;
+  float alpha;
+
+  bool   pingpong;
+  bool   reverse;
+  bool   vflip;
+  GLenum blend_sfactor;
+  GLenum blend_dfactor;
+  float  scale;
+  Color  color;
+
 public:
   Sprite();
 
@@ -49,7 +93,7 @@ public:
   
   bool is_finished() const;
 
-  void set_blend_func(GLenum sfactor, GLenum dfactor);
+  void   set_blend_func(GLenum sfactor, GLenum dfactor);
   GLenum get_blend_sfactor() const;
   GLenum get_blend_dfactor() const;
 
@@ -68,24 +112,6 @@ public:
 
   /** true if the Sprite is valid and usable, false if not */
   operator bool() const;
-
-private:
-  /** Pointer to the Sprites data which is shared among all sprites
-      with are loaded from the same file */
-  sprite2d::DataPtr data;
-  const sprite2d::Action* current_action;
-
-  float frame;
-  float speed;
-  float alpha;
-
-  bool pingpong;
-  bool reverse;
-  bool vflip;
-  GLenum blend_sfactor;
-  GLenum blend_dfactor;
-  float scale;
-  Color color;
 };
 
 #endif

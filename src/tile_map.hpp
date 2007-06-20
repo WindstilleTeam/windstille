@@ -24,7 +24,6 @@
 
 #include "globals.hpp"
 #include "field.hpp"
-#include "lisp/lisp.hpp"
 #include "game_object.hpp"
 #include "display/scene_context.hpp"
 

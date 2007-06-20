@@ -17,13 +17,12 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+#include <stdexcept>
 #include <list>
 #include "sector.hpp"
 #include "trigger.hpp"
 #include "player.hpp"
 #include "script_manager.hpp"
-#include "lisp/lisp.hpp"
-#include "lisp/properties.hpp"
 
 Trigger::Trigger(FileReader& props)
   : triggered(false), one_time_trigger(false)

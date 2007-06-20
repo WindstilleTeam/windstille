@@ -47,5 +47,6 @@ Misc:
   and config done via option menu, i.e. command line settings
   shouldn't be persistent unless told so
 - add line numbers to error messages from lisp
+- fix memory leak in SExprFileReader
 
 # EOF #

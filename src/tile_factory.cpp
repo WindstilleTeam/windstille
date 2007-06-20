@@ -66,7 +66,7 @@ TileFactory::TileFactory (const std::string& filename)
   packers.push_back(new TilePacker(1024, 1024));
   color_packer     = 0;
 
-  SExprFileReader reader(filename);
+  FileReader reader = FileReader::parse(filename);
   if(reader.get_name() != "windstille-tiles")
     {
       std::ostringstream msg;

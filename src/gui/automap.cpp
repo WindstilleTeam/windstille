@@ -32,7 +32,7 @@
 
 namespace gui {
 
-Automap::Automap(const lisp::Lisp* lisp, Component* parent)
+Automap::Automap(FileReader& reader, Component* parent)
   : Component(parent)
 {
   assert(0);

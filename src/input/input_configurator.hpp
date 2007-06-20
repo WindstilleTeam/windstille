@@ -26,6 +26,7 @@
 #ifndef HEADER_INPUT_CONFIGURATOR_HPP
 #define HEADER_INPUT_CONFIGURATOR_HPP
 
+#include <sstream>
 #include "screen.hpp"
 #include "text_area.hpp"
 

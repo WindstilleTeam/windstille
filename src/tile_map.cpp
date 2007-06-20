@@ -18,6 +18,7 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <sstream>
+#include <stdexcept>
 #include <physfs.h>
 #include "tile_map.hpp"
 #include "tile.hpp"
@@ -26,12 +27,10 @@
 #include "view.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "collision/collision_engine.hpp"
-#include "lisp/properties.hpp"
 #include <inttypes.h>
 
 TileMap::TileMap(FileReader& props)
 {
-  using namespace lisp;
   int width = -1;
   int height = -1;
   z_pos = 0;

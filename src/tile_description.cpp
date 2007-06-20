@@ -23,6 +23,9 @@
 **  02111-1307, USA.
 */
 
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
 #include <SDL.h>
 #include <SDL_image.h>
 #include "physfs/physfs_sdl.hpp"

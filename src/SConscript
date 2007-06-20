@@ -95,7 +95,6 @@ env.Program('../windstille', [
 'title_screen.cpp',
 'util.cpp',
 'view.cpp',
-'lisp_getters.cpp',
 'windstille_main.cpp',
 'objects/shockwave.cpp',
 'objects/test_object.cpp',

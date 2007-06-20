@@ -23,6 +23,7 @@
 **  02111-1307, USA.
 */
 
+#include <assert.h>
 #include "display/display.hpp"
 #include "font/fonts.hpp"
 #include "input/controller.hpp"
@@ -30,7 +31,7 @@
 
 namespace gui {
 
-Button::Button(const lisp::Lisp* lisp, Component* parent)
+Button::Button(FileReader& reader, Component* parent)
   : Component(parent)
 {
   assert(0);

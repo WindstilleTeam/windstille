@@ -49,7 +49,7 @@ NavigationTest::NavigationTest()
   graph = new NavigationGraph();
 
   try {
-    SExprFileReader reader("navigation.nav");
+    FileReader reader = FileReader::parse("navigation.nav");
     graph->load(reader);
   } catch(std::exception& err) {
     std::cout << "NavigationTest: " << err.what() << std::endl;

@@ -23,6 +23,7 @@
 **  02111-1307, USA.
 */
 
+#include <iostream>
 #include "display/vertex_array_drawing_request.hpp"
 #include "background_gradient.hpp"
 

@@ -27,7 +27,6 @@
 #define HEADER_WINDSTILLE_LIQUID_HPP
 
 #include <vector>
-#include "lisp/lisp.hpp"
 #include "entity.hpp"
 
 /** */

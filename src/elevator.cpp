@@ -22,12 +22,11 @@
 **  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+#include <stdexcept>
 #include "elevator.hpp"
 #include "sector.hpp"
 #include "collision/collision_engine.hpp"
 #include "sprite2d/manager.hpp"
-#include "lisp/properties.hpp"
-#include "lisp_getters.hpp"
 
 Elevator::Elevator(FileReader& props)
 {

@@ -18,10 +18,14 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "sexpr_file_reader.hpp"
-#include "lisp/parser.hpp"
-#include "lisp/lisp.hpp"
 #include "file_reader.hpp"
 #include "file_reader_impl.hpp"
+
+FileReader
+FileReader::parse(const std::string& filename)
+{
+  return SExprFileReader(filename);
+}
 
 FileReader::FileReader(SharedPtr<FileReaderImpl> impl_)
   : impl(impl_)
@@ -115,6 +119,15 @@ FileReader::get(const char* name, std::vector<int>& value) const
 }
 
 bool
+FileReader::get(const char* name, std::vector<std::string>& value) const
+{
+  if (impl.get())
+    return impl->get(name, value);
+  else
+    return false;
+}
+
+bool
 FileReader::get(const char* name, std::vector<float>& value) const
 {
   if (impl.get())
@@ -165,21 +178,6 @@ FileReader::read_section(const char* name)   const
   FileReader reader;
   read_section(name, reader);
   return reader;
-}
-
-FileReader
-FileReader::parse(const std::string& filename)
-{
-  // FIXME: memory leak, somebody must delete the lisp::Lisp
-  lisp::Lisp* sexpr = lisp::Parser::parse(filename);
-  if (sexpr)
-    {
-      return SExprFileReader(sexpr->get_list_elem(0));
-    }
-  else
-    {
-      return FileReader();
-    }
 }
 
 void

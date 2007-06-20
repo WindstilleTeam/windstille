@@ -23,6 +23,8 @@
 **  02111-1307, USA.
 */
 
+#include <iostream>
+#include <stdexcept>
 #include "display/display.hpp"
 #include "math/rect.hpp"
 #include "controller_def.hpp"

@@ -41,23 +41,23 @@ ComponentFactory::~ComponentFactory()
 }
 
 Component*
-ComponentFactory::create(const std::string& name, const lisp::Lisp* lisp, Component* parent)
+ComponentFactory::create(const std::string& name, FileReader& reader, Component* parent)
 {
   if (name == "tab")
     {
-      return new TabComponent(lisp, parent);
+      return new TabComponent(reader, parent);
     }
   else if (name == "automap")
     {
-      return new Automap(lisp, parent);
+      return new Automap(reader, parent);
     }
   else if (name == "grid")
     {
-      return new GridComponent(lisp, parent);
+      return new GridComponent(reader, parent);
     }
   else if (name == "button")
     {
-      return new Button(lisp, parent);
+      return new Button(reader, parent);
     }
   else
     {

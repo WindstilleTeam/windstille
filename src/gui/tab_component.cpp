@@ -23,6 +23,7 @@
 **  02111-1307, USA.
 */
 
+#include <assert.h>
 #include "input/controller.hpp"
 #include "font/fonts.hpp"
 #include "display/display.hpp"
@@ -30,7 +31,7 @@
 
 namespace gui {
 
-TabComponent::TabComponent(const lisp::Lisp* lisp, Component* parent)
+TabComponent::TabComponent(FileReader& reader, Component* parent)
   : Component(parent)
 {
   assert(0);

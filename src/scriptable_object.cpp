@@ -26,8 +26,6 @@
 
 #include "globals.hpp"
 #include "scriptable_object.hpp"
-#include "lisp/properties.hpp"
-#include "lisp_getters.hpp"
 #include "sprite2d/manager.hpp"
 #include "script_manager.hpp"
 

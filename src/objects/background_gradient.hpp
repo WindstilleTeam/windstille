@@ -26,7 +26,6 @@
 #ifndef HEADER_BACKGROUND_GRADIENT_HPP
 #define HEADER_BACKGROUND_GRADIENT_HPP
 
-#include "lisp/lisp.hpp"
 #include "game_object.hpp"
 
 /** */

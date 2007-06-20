@@ -26,7 +26,6 @@
 #include "display/vertex_array_drawing_request.hpp"
 #include "particle_system.hpp"
 #include "../console.hpp" 
-#include "lisp/properties.hpp"
 #include "display/surface_manager.hpp"
 #include "surface_drawer.hpp"
 

@@ -314,8 +314,7 @@ void
 Config::load()
 {
   try {
-    SExprFileReader reader("config");
-
+    FileReader reader = FileReader::parse("config");
     if(reader.get_name() != "windstille-config") {
       std::cerr << "Warning: Config file is not a windstille-config file.\n";
       return;

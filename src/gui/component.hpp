@@ -28,6 +28,7 @@
 
 #include "math/rect.hpp"
 
+class FileReader;
 class Controller;
 
 namespace gui {

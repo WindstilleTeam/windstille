@@ -5,7 +5,7 @@
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2005,2007 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -28,8 +28,8 @@
 
 #include <SDL.h>
 #include "input_manager_impl.hpp"
-#include "lisp/lisp.hpp"
 
+class FileReader;
 class InputManagerSDLImpl;
 
 struct JoystickButtonBinding
@@ -126,7 +126,7 @@ private:
   /** Ensure that the joystick device \a device is open */
   void ensure_open_joystick(int device);
 
-  void parse_config(const lisp::Lisp* lisp);
+  void parse_config(FileReader& reader);
 
   std::auto_ptr<InputManagerSDLImpl> impl;
 

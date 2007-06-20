@@ -23,8 +23,6 @@
 **  02111-1307, USA.
 */
 
-#include "lisp/properties.hpp"
-#include "lisp_getters.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "random.hpp"
 #include "liquid.hpp"

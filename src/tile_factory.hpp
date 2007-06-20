@@ -22,7 +22,6 @@
 
 #include <map>
 #include <string>
-#include "lisp/lisp.hpp"
 #include "tile_description.hpp"
 
 class Tile;

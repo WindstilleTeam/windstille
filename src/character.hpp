@@ -22,7 +22,6 @@
 
 #include "entity.hpp"
 #include "sprite3d/sprite3d.hpp"
-#include "lisp/lisp.hpp"
 
 class Character : public Entity
 {

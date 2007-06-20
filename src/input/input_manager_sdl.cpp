@@ -5,7 +5,7 @@
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2005,2007 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -24,11 +24,10 @@
 */
 
 #include <iostream>
+#include <sstream>
+#include <stdexcept>
 #include <vector>
-#include "lisp/parser.hpp"
-#include "lisp/lisp.hpp"
-#include "lisp/properties.hpp"
-#include "lisp/property_iterator.hpp"
+#include "file_reader.hpp"
 #include "controller_def.hpp"
 #include "input_manager_sdl.hpp"
 
@@ -96,105 +95,94 @@ static bool has_suffix(const std::string& str, const std::string& suffix)
 void
 InputManagerSDL::load(const std::string& filename)
 {
-  std::auto_ptr<lisp::Lisp> root (lisp::Parser::parse(filename));
-  lisp::Properties rootp(root.get());
+  FileReader reader = FileReader::parse(filename);
 
   std::cout << "InputManager: " << filename << std::endl;
 
-  const lisp::Lisp* controller = 0;
-  if(rootp.get("windstille-controller", controller) == false) {
+  if (reader.get_name() != "windstille-controller") {
     std::ostringstream msg;
     msg << "'" << filename << "' is not a windstille-controller file";
     throw std::runtime_error(msg.str());
   }
   
-  parse_config(controller);
+  parse_config(reader);
 }
 
 void
-InputManagerSDL::parse_config(const lisp::Lisp* lisp)
+InputManagerSDL::parse_config(FileReader& reader)
 {
-  lisp::Properties cur(lisp);
-  lisp::PropertyIterator<const lisp::Lisp*> iter = cur.get_iter();
-
-  while(iter.next()) 
+  std::vector<FileReader> sections = reader.get_sections();
+  
+  for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
     {
-      if (has_suffix(iter.item(), "-button"))
+      if (has_suffix(i->get_name(), "-button"))
         {
-          lisp::Properties dev_prop(*iter);
-          lisp::PropertyIterator<const lisp::Lisp*> dev_iter = dev_prop.get_iter();
-          while(dev_iter.next())
+          std::vector<FileReader> dev_sections = i->get_sections();
+          for(std::vector<FileReader>::iterator j = dev_sections.begin(); j != dev_sections.end(); ++j)
             {
-              if (dev_iter.item() == "joystick-button")
+              if (j->get_name() == "joystick-button")
                 {
                   int device = 0;
                   int button = 0;
 
-                  lisp::Properties props(*dev_iter);
-                  props.get("device", device);
-                  props.get("button", button);
+                  j->get("device", device);
+                  j->get("button", button);
 
-                  bind_joystick_button(controller_description.get_definition(iter.item()).id,
+                  bind_joystick_button(controller_description.get_definition(i->get_name()).id,
                                        device, button);
                 }
-              else if (dev_iter.item() == "keyboard-button")
+              else if (j->get_name() == "keyboard-button")
                 {
                   std::string key;
 
-                  lisp::Properties props(*dev_iter);
-                  props.get("key", key);
+                  j->get("key", key);
 
-                  bind_keyboard_button(controller_description.get_definition(iter.item()).id,
+                  bind_keyboard_button(controller_description.get_definition(i->get_name()).id,
                                        string_to_keyid(key));
                 }
               else
                 {
-                  std::cout << "InputManagerSDL: Unknown tag: " << dev_iter.item() << std::endl;
+                  std::cout << "InputManagerSDL: Unknown tag: " << j->get_name() << std::endl;
                 }
             }
         }
-      else if (has_suffix(iter.item(), "-axis"))
+      else if (has_suffix(i->get_name(), "-axis"))
         {
-          lisp::Properties dev_prop(*iter);
-          lisp::PropertyIterator<const lisp::Lisp*> dev_iter = dev_prop.get_iter();
-
-          while(dev_iter.next())
+          std::vector<FileReader> dev_sections = i->get_sections();
+          for(std::vector<FileReader>::iterator j = dev_sections.begin(); j != dev_sections.end(); ++j)
             {
-              if (dev_iter.item() == "joystick-axis")
+              if (j->get_name() == "joystick-axis")
                 {
-                  int device = 0;
-                  int axis   = 0;
+                  int  device = 0;
+                  int  axis   = 0;
                   bool invert = false;
 
-                  lisp::Properties props(*dev_iter);
-                  props.get("device", device);
-                  props.get("axis",   axis);
-                  props.get("invert", invert);
+                  j->get("device", device);
+                  j->get("axis",   axis);
+                  j->get("invert", invert);
 
-                  bind_joystick_axis(controller_description.get_definition(iter.item()).id,
+                  bind_joystick_axis(controller_description.get_definition(i->get_name()).id,
                                      device, axis, invert);
                 }
-              else if (dev_iter.item() == "keyboard-axis")
+              else if (j->get_name() == "keyboard-axis")
                 {
                   std::string minus;
                   std::string plus;
 
-                  lisp::Properties props(*dev_iter);
-                  props.get("minus", minus);
-                  props.get("plus",  plus);
+                  j->get("minus", minus);
+                  j->get("plus",  plus);
 
-                  bind_keyboard_axis(controller_description.get_definition(iter.item()).id, 
+                  bind_keyboard_axis(controller_description.get_definition(i->get_name()).id, 
                                      string_to_keyid(minus), string_to_keyid(plus));
                 }
               else
                 {
-                  std::cout << "InputManagerSDL: Unknown tag: " << dev_iter.item() << std::endl;
+                  std::cout << "InputManagerSDL: Unknown tag: " << j->get_name() << std::endl;
                 }
             }
 
         }
     }
-
 }
 
 InputManagerSDL::InputManagerSDL()

@@ -20,9 +20,6 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
-#include "lisp/properties.hpp"
-#include "lisp/parser.hpp"
-#include "lisp_getters.hpp"
 #include "sexpr_file_reader.hpp"
 #include "globals.hpp"
 #include "display/scene_context.hpp"
@@ -106,9 +103,8 @@ void
 Sector::parse_file(const std::string& filename)
 {
   if (debug) std::cout << "Sector:parse_file '" << filename << "'" << std::endl;
-  using namespace lisp;
   
-  SExprFileReader reader(filename);
+  FileReader reader = FileReader::parse(filename);
   if(reader.get_name() != "windstille-sector") {
     std::ostringstream msg;
     msg << "'" << filename << "' is not a windstille-sector file";

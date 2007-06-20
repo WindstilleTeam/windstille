@@ -30,7 +30,7 @@
 
 namespace gui {
 
-GridComponent::GridComponent(const lisp::Lisp* lisp, Component* parent)
+GridComponent::GridComponent(FileReader& reader, Component* parent)
   : Component(parent)
 {
   assert(0);  

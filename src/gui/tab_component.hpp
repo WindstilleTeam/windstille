@@ -28,7 +28,6 @@
 
 #include <string>
 #include <vector>
-#include "lisp/lisp.hpp"
 #include "component.hpp"
 
 namespace gui {
@@ -54,7 +53,7 @@ private:
   int current_tab;
 
 public:
-  TabComponent(const lisp::Lisp* lisp, Component* parent);
+  TabComponent(FileReader& reader, Component* parent);
   TabComponent(const Rectf& rect, Component* parent);
   ~TabComponent();
 

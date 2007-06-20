@@ -50,7 +50,7 @@ public:
 
   virtual bool get(const char* name, std::vector<int>&   v) const =0;
   virtual bool get(const char* name, std::vector<float>& v) const =0;
-
+  virtual bool get(const char* name, std::vector<std::string>& v) const =0;
   virtual bool read_section(const char* name, FileReader&)   const =0;
   virtual std::vector<FileReader> get_sections() const =0;
   virtual std::vector<std::string> get_section_names() const =0;

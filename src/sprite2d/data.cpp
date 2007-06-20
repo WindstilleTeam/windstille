@@ -1,3 +1,29 @@
+/*  $Id: windstille.hpp 1460 2007-06-18 04:03:31Z grumbel $
+**   __      __ __             ___        __   __ __   __
+**  /  \    /  \__| ____    __| _/_______/  |_|__|  | |  |   ____
+**  \   \/\/   /  |/    \  / __ |/  ___/\   __\  |  | |  | _/ __ \
+**   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
+**    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
+**         \/          \/      \/    \/                         \/
+**  Copyright (C) 2005,2007 Matthias Braun <matze@braunis.de>,
+**                          Ingo Ruhnke <grumbel@gmx.de>
+**
+**  This program is free software; you can redistribute it and/or
+**  modify it under the terms of the GNU General Public License
+**  as published by the Free Software Foundation; either version 2
+**  of the License, or (at your option) any later version.
+**
+**  This program is distributed in the hope that it will be useful,
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**  GNU General Public License for more details.
+** 
+**  You should have received a copy of the GNU General Public License
+**  along with this program; if not, write to the Free Software
+**  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+**  02111-1307, USA.
+*/
+
 #include <config.h>
 
 #include "sprite2d/data.hpp"
@@ -8,10 +34,6 @@
 #include <sstream>
 #include <stdexcept>
 #include "util.hpp"
-#include "lisp/lisp.hpp"
-#include "lisp/parser.hpp"
-#include "lisp/properties.hpp"
-#include "lisp_getters.hpp"
 #include "display/surface.hpp"
 #include "display/surface_manager.hpp"
 
@@ -39,17 +61,16 @@ Data::Data(const std::string& filename)
     {
       if (has_suffix(filename, ".sprite"))
         {
-          std::auto_ptr<lisp::Lisp> root (lisp::Parser::parse(filename));
-          lisp::Properties rootp(root.get());
-          const lisp::Lisp* sprite = 0;
-          if(rootp.get("sprite", sprite) == false) {
+          FileReader reader = FileReader::parse(filename);
+
+          if(reader.get_name() != "sprite") {
             std::ostringstream msg;
             msg << "File '" << filename << "' is not a windstille sprite";
             throw std::runtime_error(msg.str());
           }
     
           std::string dir = dirname(filename);
-          parse(dir, sprite);
+          parse(dir, reader);
         }
       else if (has_suffix(tolowercase(filename), ".png") || has_suffix(tolowercase(filename), ".jpg"))
         {
@@ -106,41 +127,59 @@ Data::~Data()
 }
 
 void
-Data::parse(const std::string& dir, const lisp::Lisp* lisp)
+Data::parse(const std::string& dir, FileReader& reader)
 {
-  lisp::Properties props(lisp);
-  lisp::PropertyIterator<const lisp::Lisp*> iter;
-  props.get_iter("action", iter);
-  while(iter.next()) {
-    actions.push_back(parse_action(dir, *iter));
-  }
-  props.print_unused_warnings("sprite");
-
+  std::vector<FileReader> sections = reader.get_sections();
+  for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+    actions.push_back(parse_action(dir, *i));
+  
   if(actions.size() == 0)
     throw std::runtime_error("Sprite contains no actions");
 }
 
 Action*
-Data::parse_action(const std::string& dir, const lisp::Lisp* lisp)
+Data::parse_action(const std::string& dir, FileReader& reader)
 {
   std::auto_ptr<Action> action (new Action);
   action->speed = 1.0;
   action->scale = 1.0f;
   action->offset = Vector(0, 0);
  
-  lisp::Properties props(lisp);
-  props.get("name", action->name);
-  props.get("speed", action->speed);
-  props.get("scale", action->scale);
-  props.get("offset", action->offset);
+  reader.get("name", action->name);
+  reader.get("speed", action->speed);
+  reader.get("scale", action->scale);
+  reader.get("offset", action->offset);
   
-  const lisp::Lisp* ilisp = 0;
-  if(props.get("images", ilisp)) {
-    parse_images(action.get(), dir, ilisp);
-  } else if(props.get("image-grid", ilisp)) {
-    parse_image_grid(action.get(), dir, ilisp);
-  }
-  props.print_unused_warnings("sprite action");
+  FileReader grid_reader;
+  std::vector<std::string> image_files;
+  if(reader.get("images", image_files))
+    {
+      //parse_images(action.get(), dir, images);
+
+      for(std::vector<std::string>::iterator file = image_files.begin(); file != image_files.end(); ++file)
+        {
+          action->surfaces.push_back(surface_manager->get(dir + "/" + *file));
+        }
+    }
+  else if(reader.get("image-grid", grid_reader)) 
+    {
+      std::string filename;
+      int x_size = -1;
+      int y_size = -1;
+      
+      grid_reader.get("file", filename);
+      grid_reader.get("x-size", x_size);
+      grid_reader.get("y-size", y_size);
+
+      grid_reader.print_unused_warnings("action image-grid");
+
+      if(filename == "" || x_size <= 0 || y_size <= 0)
+        throw std::runtime_error("Invalid or too few data in image-grid");
+      
+      surface_manager->load_grid(dir + "/" + filename,
+                                 action->surfaces, x_size, y_size);
+    }
+  reader.print_unused_warnings("sprite action");
   
   if(action->name == "")
     throw std::runtime_error("No Name defined for action");
@@ -154,36 +193,16 @@ Data::parse_action(const std::string& dir, const lisp::Lisp* lisp)
 
 void
 Data::parse_images(Action* action, const std::string& dir,
-                   const lisp::Lisp* lisp)
+                   FileReader& reader)
 {
-  for(size_t n = 1; n < lisp->get_list_size(); ++n) {
-    std::string file = lisp->get_list_elem(n)->get_string();
-    Surface surface = surface_manager->get(dir + "/" + file);
-    action->surfaces.push_back(surface);
-  }
+
 }
 
 void
 Data::parse_image_grid(Action* action, const std::string& dir,
-                       const lisp::Lisp* lisp)
+                       FileReader& reader)
 {
-  std::string filename;
-  int x_size = -1;
-  int y_size = -1;
- 
-  lisp::Properties props(lisp);
 
-  props.get("file", filename);
-  props.get("x-size", x_size);
-  props.get("y-size", y_size);
-
-  props.print_unused_warnings("action image-grid");
-
-  if(filename == "" || x_size <= 0 || y_size <= 0)
-    throw std::runtime_error("Invalid or too few data in image-grid");
-
-  surface_manager->load_grid(dir + "/" + filename,
-                             action->surfaces, x_size, y_size);
 }
  
 } // namespace sprite2d
