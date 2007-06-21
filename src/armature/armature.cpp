@@ -122,36 +122,37 @@ Armature::get_bone(const std::string& name)
 void
 Armature::draw()
 {
+  // For some reason OpenGL sometimes doesn't draw the lines properly,
+  // going to NavigationTester and then back fixes the issue
   OpenGLState state;
   state.color(Color(1.0f, 0.0f, 0.0f));
   state.activate();
 
+  //std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-" << std::endl;
   glBegin(GL_LINES);
   draw_bone(root_bone, Vector3(0,0, 0), Matrix::identity());
   glEnd();
-
 }
 
 void
 Armature::draw_bone(Bone* bone, Vector3 p, Matrix cur)
 {
-  Vector3 vec = Vector3(bone->length, 0.0f, 0.0f);
+  Vector3 vec = Vector3(0.0f, bone->length, 0.0f); // Where shall we apply bone length to?
   Matrix  mat = bone->matrix.multiply(cur);
   
-  //std::cout << "draw_bone" << std::endl;
-  //std::cout << "matrix: \n" << mat << std::endl;
-  //std::cout << "before: " << vec << std::endl;
-  vec = mat.multiply(vec);
-  //std::cout << "after: " << vec << std::endl;
-
-  
+  // std::cout << "--------------------------------------------------------------" << std::endl;
+  // std::cout << "draw_bone: " << bone->name << std::endl;
+  // std::cout << "bone matrix: \n" << bone->matrix << std::endl;
+  // std::cout << "matrix: \n" << mat << std::endl;
+  // std::cout << "before: " << vec << std::endl;
+  vec = bone->matrix.multiply(vec) + p;
+  // std::cout << "after: " << vec << std::endl;
+ 
   glVertex3f(  p.x,   p.y,   p.z);
   glVertex3f(vec.x, vec.y, vec.z);
 
   for(std::vector<Bone*>::iterator i = bone->children.begin(); i != bone->children.end(); ++i)  
-    {
-      draw_bone(*i, vec, mat);
-    }
+    draw_bone(*i, vec, mat);
 }
 
 /* EOF */

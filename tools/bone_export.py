@@ -48,12 +48,12 @@ def export_armature(out, armature):
             # else in local bonespace
             if bone.parent:
                 out.write("      (parent    \"%s\")\n" % bone.parent.name)
-                out.write("      (head      %s)\n" % (vec2str(64*bone.head['BONESPACE']),))
+                out.write("      (head      %s)\n" % (vec2str(bone.head['BONESPACE']),))
             else:
                 out.write("      (parent )\n")
-                out.write("      (head      %s)\n" % (vec2str(64*bone.head['ARMATURESPACE'])))
+                out.write("      (head      %s)\n" % (vec2str(bone.head['ARMATURESPACE'])))
 
-            out.write("      (length    %s)\n" % (bone.length*64))
+            out.write("      (length    %s)\n" % (bone.length))
             out.write("      (matrix   %s)\n" % matrix2str(" "*16, bone.matrix['BONESPACE']))
             out.write("      (quat      %s)\n" % quat2str(bone.matrix['BONESPACE'].toQuat()))
             out.write("      (euler     %s)\n" % euler2str(bone.matrix['BONESPACE'].toEuler()))

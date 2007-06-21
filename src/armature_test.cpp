@@ -43,13 +43,13 @@ ArmatureTest::ArmatureTest()
 void
 ArmatureTest::draw()
 {
-  SDL_Delay(30);
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
+
   glPushMatrix();
 
   glTranslatef(400.0f, 300.0f, 0.0f);
+  glScalef(128.0f, 128.0f, 128.0f);
  
   glRotatef(xrot, 1.0f, 0.0f, 0.0f);
   glRotatef(yrot, 0.0f, 1.0f, 0.0f);
