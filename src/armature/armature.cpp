@@ -63,7 +63,7 @@ Armature::parse(FileReader& reader)
                     i->get("length",   bone->length) &&
                     i->get("quat",     bone->quat) &&
                     i->get("matrix",   bone->matrix) &&
-                    i->get("head",     bone->head)))
+                    i->get("head",     bone->offset)))
                 {
                   std::cout << "Error: some Bone attribute missing" << std::endl;
                   delete bone;
@@ -141,15 +141,31 @@ Armature::draw_bone(Bone* bone, Vector3 p, Matrix cur)
   Vector3 vec = Vector3(0.0f, bone->length,  0.0f); 
   Matrix  mat = bone->matrix.multiply(cur);
   
+  // Issues: 
+  // - don't mess with the root bone
+  // - offsets are ignored
+
   // std::cout << "--------------------------------------------------------------" << std::endl;
   // std::cout << "draw_bone: " << bone->name << std::endl;
   // std::cout << "bone matrix: \n" << bone->matrix << std::endl;
   // std::cout << "matrix: \n" << mat << std::endl;
   // std::cout << "before: " << vec << std::endl;
-  vec = mat.multiply(vec) + p;
+  vec = mat.multiply(vec) + p + bone->offset;
   // std::cout << "after: " << vec << std::endl;
- 
-  glVertex3f(  p.x,   p.y,   p.z);
+
+ // do we need to rotate the offset?
+  Vector3 p_ = p + bone->offset;
+
+  // p to p+offset
+  glColor3f(0.0f, 0.5f, 0.0f);
+  glVertex3f(  p.x, p.y, p.z);
+  glColor3f(0.0f, 1.0f, 0.0f);
+  glVertex3f( p_.x, p_.y, p_.z);  
+
+  // p to vec
+  glColor3f(0.7f, 0.0f, 0.0f);
+  glVertex3f(  p_.x,   p_.y,   p_.z);
+  glColor3f(1.0f, 0.0f, 0.0f);
   glVertex3f(vec.x, vec.y, vec.z);
 
   for(std::vector<Bone*>::iterator i = bone->children.begin(); i != bone->children.end(); ++i)  

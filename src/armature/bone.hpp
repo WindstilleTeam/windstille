@@ -49,7 +49,7 @@ public:
 
   Quaternion quat;
   Matrix     matrix;
-  Vector3    head;
+  Vector3    offset;
   
   Bone();
   ~Bone();
