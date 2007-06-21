@@ -19,6 +19,7 @@
 #ifndef __VECTOR3_HPP__
 #define __VECTOR3_HPP__
 
+#include <iostream>
 #include "math/matrix.hpp"
 
 /**
@@ -102,6 +103,10 @@ public:
     return result;
   }
 };
+
+inline std::ostream& operator<<(std::ostream& s, const Vector3& v) {
+  return (s << "[" << v.x << ", " << v.y << ", " << v.z << "]");
+}
 
 #endif
 

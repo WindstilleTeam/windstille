@@ -32,66 +32,73 @@
 
 #include <iosfwd>
 
+class Vector3;
+
 //: 4x4 Matrix.
 class Matrix
 {
-//! Construction:
+  //! Construction:
 public:
-	//: Constructs a 4x4 matrix.
-	Matrix();
+  //: Constructs a 4x4 matrix.
+  Matrix();
 
-	Matrix(const Matrix &copy);
+  Matrix(const Matrix &copy);
 
-	Matrix(const float *matrix);
+  Matrix(const float *matrix);
 
-	/** Returns identity matrix */
-	static Matrix identity();
+  /** Returns identity matrix */
+  static Matrix identity();
 
-//! Attributes:
+  //! Attributes:
 public:
-	float matrix[16];
+  float matrix[16];
 
-	//: Operator that returns the matrix cell at the given index.
-	float &operator[](int i) { return matrix[i]; }
+  //: Operator that returns the matrix cell at the given index.
+  float &operator[](int i) { return matrix[i]; }
 
-	//: Operator that returns the matrix cell at the given index.
-	const float &operator[](int i) const { return matrix[i]; }
+  //: Operator that returns the matrix cell at the given index.
+  const float &operator[](int i) const { return matrix[i]; }
 
-	//: Operator that returns the matrix cell at the given index.
-	float &operator[](unsigned int i) { return matrix[i]; }
+  inline float&       operator()(int row, int col) { return matrix[4*row + col]; }
+  inline const float& operator()(int row, int col) const { return matrix[4*row + col]; }
 
-	//: Operator that returns the matrix cell at the given index.
-	const float &operator[](unsigned int i) const { return matrix[i]; }
+  //: Operator that returns the matrix cell at the given index.
+  float &operator[](unsigned int i) { return matrix[i]; }
 
-	//: Returns the x coordinate for the point (0,0,0) multiplied with this matrix.
-	float get_origin_x() const;
+  //: Operator that returns the matrix cell at the given index.
+  const float &operator[](unsigned int i) const { return matrix[i]; }
 
-	//: Returns the y coordinate for the point (0,0,0) multiplied with this matrix.
-	float get_origin_y() const;
+  //: Returns the x coordinate for the point (0,0,0) multiplied with this matrix.
+  float get_origin_x() const;
 
-	//: Returns the z coordinate for the point (0,0,0) multiplied with this matrix.
-	float get_origin_z() const;
+  //: Returns the y coordinate for the point (0,0,0) multiplied with this matrix.
+  float get_origin_y() const;
 
-//! Operations:
+  //: Returns the z coordinate for the point (0,0,0) multiplied with this matrix.
+  float get_origin_z() const;
+
+  //! Operations:
 public:
-	//: Copy assignment operator.
-	Matrix &operator =(const Matrix &copy);
+  //: Copy assignment operator.
+  Matrix &operator =(const Matrix &copy);
 
-	//: Equality operator.
-	bool operator==(const Matrix &other) const;
+  //: Equality operator.
+  bool operator==(const Matrix &other) const;
 
-	//: Not-equal operator.
-	bool operator!=(const Matrix &other) const;
+  //: Not-equal operator.
+  bool operator!=(const Matrix &other) const;
 
-	//: Multiply two matrices.
-	Matrix multiply(const Matrix &matrix) const;
+  //: Multiply two matrices.
+  Matrix multiply(const Matrix &matrix) const;
 
-	//: Multiply the matrix with the given scale/translate/rotate matrix
-	Matrix scale(float x, float y, float z);
-	Matrix translate(float x, float y, float z);
-	Matrix rotate(float angle, float x, float y, float z);
+  Vector3 multiply(const Vector3& vector) const;
 
-//! Implementation:
+  //: Multiply the matrix with the given scale/translate/rotate matrix
+  Matrix scale(float x, float y, float z);
+  Matrix translate(float x, float y, float z);
+  Matrix rotate(float angle, float x, float y, float z);
+
+  //! Implementation:
 private:
 };
 

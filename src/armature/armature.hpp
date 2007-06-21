@@ -35,13 +35,18 @@ class Armature
 {
 private:
   std::string name;
-  typedef std::vector<Bone> Bones;
+  typedef std::vector<Bone*> Bones;
   Bones bones;
+  
+  Bone* root_bone;
 public:
   Armature(FileReader& reader);
   ~Armature();
   
-  void parse(FileReader& reader);
+  void  parse(FileReader& reader);
+  Bone* get_bone(const std::string& name);
+  void  draw();
+  void  draw_bone(Bone* bone, Vector3 p, Matrix matrix);
 private:
   Armature (const Armature&);
   Armature& operator= (const Armature&);

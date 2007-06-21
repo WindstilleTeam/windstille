@@ -5,7 +5,7 @@
 **   \        /|  |   |  \/ /_/ |\___ \  |  | |  |  |_|  |_\  ___/
 **    \__/\  / |__|___|  /\____ /____  > |__| |__|____/____/\___  >
 **         \/          \/      \/    \/                         \/
-**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2007 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software; you can redistribute it and/or
 **  modify it under the terms of the GNU General Public License
@@ -23,53 +23,28 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_WINDSTILLE_MENU_MANAGER_HPP
-#define HEADER_WINDSTILLE_MENU_MANAGER_HPP
+#ifndef HEADER_ARMATURE_TEST_HPP
+#define HEADER_ARMATURE_TEST_HPP
 
-#include <vector>
-#include "signals/slot.hpp"
+#include "armature/armature.hpp"
+#include "screen.hpp"
 
 /** */
-class MenuManager
+class ArmatureTest : public Screen
 {
 private:
-  std::vector<Slot> slots;
+  Armature* armature;
 
 public:
-  MenuManager();
+  ArmatureTest();
 
-  void display_option_menu();
-  void display_debug_menu();
-  void display_main_menu();
-  void display_pause_menu();
-  void display_scenario_menu();
-  void display_particle_menu();
-  void display_models_menu();
-  void display_credits();
-  void display_help();
+  void draw();
+  void update(float delta, const Controller& controller);
 
-  // Callbacks
-  void menu_start_game();
-  void menu_quit();
-  void menu_exit();
-  void menu_show_fps(int i);
-  void menu_fullscreen(int i);
-  void menu_continue();
-  void menu_music_volume(int i);
-  void menu_ambient_light(int i, int component);
-  void menu_start_scenario(std::string scenario);
-  void menu_show_model(std::string scenario);
-  void menu_show_geometry_test();
-  void menu_show_armature_test();
-  void menu_show_navigation_test();
-  void menu_show_particle_system(std::string file);
-  void menu_gamma(int i);
 private:
-  MenuManager (const MenuManager&);
-  MenuManager& operator= (const MenuManager&);
+  ArmatureTest (const ArmatureTest&);
+  ArmatureTest& operator= (const ArmatureTest&);
 };
-
-extern MenuManager menu_manager;
 
 #endif
 

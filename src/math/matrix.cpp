@@ -30,6 +30,7 @@
 #include <string.h>
 #include <iostream>
 #include <math.h>
+#include "vector3.hpp"
 #include "matrix.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -37,32 +38,32 @@
 
 Matrix::Matrix()
 {
-	memset(matrix, 0, sizeof(float[16]));
+  memset(matrix, 0, sizeof(float[16]));
 }
 
 Matrix
 Matrix::identity()
 {
-	Matrix matrix;
+  Matrix matrix;
 
-	matrix.matrix[0] = 1.0;
-	matrix.matrix[5] = 1.0;
-	matrix.matrix[10] = 1.0;
-	matrix.matrix[15] = 1.0;
+  matrix.matrix[0] = 1.0;
+  matrix.matrix[5] = 1.0;
+  matrix.matrix[10] = 1.0;
+  matrix.matrix[15] = 1.0;
 	
-	return matrix;
+  return matrix;
 }
 
 Matrix::Matrix(const Matrix &copy)
 {
-	for (int i=0; i<16; i++)
-		matrix[i] = copy.matrix[i];
+  for (int i=0; i<16; i++)
+    matrix[i] = copy.matrix[i];
 }
 
 Matrix::Matrix(const float *init_matrix)
 {
-	for (int i=0; i<16; i++)
-		matrix[i] = init_matrix[i];
+  for (int i=0; i<16; i++)
+    matrix[i] = init_matrix[i];
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -70,17 +71,17 @@ Matrix::Matrix(const float *init_matrix)
 
 float Matrix::get_origin_x() const
 {
-	return matrix[12];
+  return matrix[12];
 }
 
 float Matrix::get_origin_y() const
 {
-	return matrix[13];
+  return matrix[13];
 }
 
 float Matrix::get_origin_z() const
 {
-	return matrix[14];
+  return matrix[14];
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -88,40 +89,54 @@ float Matrix::get_origin_z() const
 
 bool Matrix::operator==(const Matrix &other) const 
 {
-	for (int i=0; i<16; i++)
-		if (matrix[i] != other.matrix[i]) return false;
-	return true;
+  for (int i=0; i<16; i++)
+    if (matrix[i] != other.matrix[i]) return false;
+  return true;
 }
 
 bool Matrix::operator!=(const Matrix &other) const
 {
-	for (int i=0; i<16; i++)
-		if (matrix[i] != other.matrix[i]) return true;
-	return false;
+  for (int i=0; i<16; i++)
+    if (matrix[i] != other.matrix[i]) return true;
+  return false;
 }
 
 Matrix &Matrix::operator =(const Matrix &copy)
 {
-	for (int i=0; i<16; i++)
-		matrix[i] = copy.matrix[i];
-	return *this;
+  for (int i=0; i<16; i++)
+    matrix[i] = copy.matrix[i];
+  return *this;
 }
 
 Matrix Matrix::multiply(const Matrix &mult) const
 {
-	Matrix result;
-	for (int x=0; x<4; x++)
-	{
-		for (int y=0; y<4; y++)
-		{
-			result.matrix[x+y*4] =
-				matrix[x]*mult.matrix[y*4] +
-				matrix[x+4]*mult.matrix[y*4+1] +
-				matrix[x+8]*mult.matrix[y*4+2] +
-				matrix[x+12]*mult.matrix[y*4+3];
-		}
-	}
-	return result;
+  Matrix result;
+  for (int x=0; x<4; x++)
+    {
+      for (int y=0; y<4; y++)
+        {
+          result.matrix[x+y*4] =
+            matrix[x   ] * mult.matrix[y*4  ] +
+            matrix[x+ 4] * mult.matrix[y*4+1] +
+            matrix[x+ 8] * mult.matrix[y*4+2] +
+            matrix[x+12] * mult.matrix[y*4+3];
+        }
+    }
+  return result;
+}
+
+Vector3
+Matrix::multiply(const Vector3& v) const
+{ // assuming Vector3 is a homogenous vector (x,y,z,1)
+  // FIXME: Test me
+  const Matrix& m = *this;
+
+  float x = m(0,0)*v.x + m(0,1)*v.x + m(0,2)*v.x + m(0,3)*v.x;
+  float y = m(1,0)*v.y + m(1,1)*v.y + m(1,2)*v.y + m(1,3)*v.y;
+  float z = m(2,0)*v.z + m(2,1)*v.z + m(2,2)*v.z + m(2,3)*v.z;
+  float w = m(3,0)*1   + m(3,1)*1   + m(3,2)*1   + m(3,3)*1  ;
+
+  return Vector3(x/w, y/w, z/w);
 }
 
 Matrix

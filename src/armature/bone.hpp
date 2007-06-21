@@ -37,7 +37,13 @@ class Bone
 private:
 public:
   std::string name;
-  std::vector<std::string> children;
+
+  std::vector<std::string> children_names;
+  std::string parent_name;
+
+  std::vector<Bone*> children;
+  Bone*      parent;
+
   float      length;
   Quaternion quat;
   Vector3    head;

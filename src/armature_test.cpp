@@ -23,15 +23,38 @@
 **  02111-1307, USA.
 */
 
-#include "bone.hpp"
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include "input/controller.hpp"
+#include "display/display.hpp"
+#include "screen_manager.hpp"
+#include "display/display.hpp"
+#include "armature_test.hpp"
 
-Bone::Bone()
-  : parent(0)
+ArmatureTest::ArmatureTest()
 {
+  FileReader reader = FileReader::parse("armature.arm");
+  armature = new Armature(reader);
 }
 
-Bone::~Bone()
+void
+ArmatureTest::draw()
 {
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  
+  armature->draw();
+}
+
+void
+ArmatureTest::update(float delta, const Controller& controller)
+{
+  if (controller.button_was_pressed(ESCAPE_BUTTON) ||
+      controller.button_was_pressed(PAUSE_BUTTON))
+    {
+      screen_manager.pop_screen();
+    }
+ 
 }
 
 /* EOF */
