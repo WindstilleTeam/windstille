@@ -137,7 +137,8 @@ Armature::draw()
 void
 Armature::draw_bone(Bone* bone, Vector3 p, Matrix cur)
 {
-  Vector3 vec = Vector3(0.0f, bone->length, 0.0f); // Where shall we apply bone length to?
+  // In theory we should be using Z, but Y seems to work?!
+  Vector3 vec = Vector3(0.0f, bone->length,  0.0f); 
   Matrix  mat = bone->matrix.multiply(cur);
   
   // std::cout << "--------------------------------------------------------------" << std::endl;
@@ -145,7 +146,7 @@ Armature::draw_bone(Bone* bone, Vector3 p, Matrix cur)
   // std::cout << "bone matrix: \n" << bone->matrix << std::endl;
   // std::cout << "matrix: \n" << mat << std::endl;
   // std::cout << "before: " << vec << std::endl;
-  vec = bone->matrix.multiply(vec) + p;
+  vec = mat.multiply(vec) + p;
   // std::cout << "after: " << vec << std::endl;
  
   glVertex3f(  p.x,   p.y,   p.z);
