@@ -35,15 +35,31 @@ ArmatureTest::ArmatureTest()
 {
   FileReader reader = FileReader::parse("armature.arm");
   armature = new Armature(reader);
+  
+  xrot = 0;
+  yrot = 0;
 }
 
 void
 ArmatureTest::draw()
 {
+  SDL_Delay(30);
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
+  glPushMatrix();
+
+  glTranslatef(400.0f, 300.0f, 0.0f);
+ 
+  glRotatef(xrot, 1.0f, 0.0f, 0.0f);
+  glRotatef(yrot, 0.0f, 1.0f, 0.0f);
+  glRotatef(zrot, 0.0f, 0.0f, 1.0f);
+
   armature->draw();
+
+  glPopMatrix();
+
+  // std::cout << xrot << " " << yrot << std::endl;
 }
 
 void
@@ -55,6 +71,9 @@ ArmatureTest::update(float delta, const Controller& controller)
       screen_manager.pop_screen();
     }
  
+  xrot += controller.get_axis_state(X_AXIS) * 90 * delta;
+  yrot += controller.get_axis_state(Y_AXIS) * 90 * delta;
+  zrot += controller.get_axis_state(X2_AXIS) * 90 * delta;
 }
 
 /* EOF */

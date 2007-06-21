@@ -33,7 +33,9 @@ class Quaternion;
 class Color;
 class Vector;
 class Vector3;
+class Matrix;
 
+bool get(FileReader& reader, const char* name, Matrix& value);
 bool get(FileReader& reader, const char* name, Quaternion& value);
 bool get(FileReader& reader, const char* name, Color& value);
 bool get(FileReader& reader, const char* name, Vector&  value);

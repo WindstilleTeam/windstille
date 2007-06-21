@@ -23,8 +23,11 @@
 **  02111-1307, USA.
 */
 
+#include <GL/glew.h>
+#include <GL/gl.h>
 #include <iostream>
 #include <stdexcept>
+#include "display/opengl_state.hpp"
 #include "display/display.hpp"
 #include "math/vector3.hpp"
 #include "armature.hpp"
@@ -54,13 +57,21 @@ Armature::parse(FileReader& reader)
           if (i->get_name() == "bone")
             {
               Bone* bone = new Bone();
-              i->get("name",     bone->name);
-              i->get("children", bone->children_names);
-              i->get("parent",   bone->parent_name);
-              i->get("length",   bone->length);
-              i->get("quat",     bone->quat);
-              i->get("head",     bone->head);
-              bones.push_back(bone);
+              if (!(i->get("name",     bone->name) &&
+                    i->get("children", bone->children_names) &&
+                    i->get("parent",   bone->parent_name) &&
+                    i->get("length",   bone->length) &&
+                    i->get("quat",     bone->quat) &&
+                    i->get("matrix",   bone->matrix) &&
+                    i->get("head",     bone->head)))
+                {
+                  std::cout << "Error: some Bone attribute missing" << std::endl;
+                  delete bone;
+                }
+              else
+                {
+                  bones.push_back(bone);
+                }
             }
           else
             {
@@ -111,28 +122,35 @@ Armature::get_bone(const std::string& name)
 void
 Armature::draw()
 {
-  std::cout << "Draw" << std::endl;
-  draw_bone(root_bone, Vector3(400,300, 0), Matrix::identity());
+  OpenGLState state;
+  state.color(Color(1.0f, 0.0f, 0.0f));
+  state.activate();
+
+  glBegin(GL_LINES);
+  draw_bone(root_bone, Vector3(0,0, 0), Matrix::identity());
+  glEnd();
+
 }
 
 void
 Armature::draw_bone(Bone* bone, Vector3 p, Matrix cur)
 {
-  // FIXME: not taking head into account
-  Vector3 vec = Vector3(bone->length, 0.0f, 0.0f) + bone->head;
-  Matrix  mat = cur.multiply(bone->quat.to_matrix());
+  Vector3 vec = Vector3(bone->length, 0.0f, 0.0f);
+  Matrix  mat = bone->matrix.multiply(cur);
   
-  vec = p + mat.multiply(vec);  
+  //std::cout << "draw_bone" << std::endl;
+  //std::cout << "matrix: \n" << mat << std::endl;
+  //std::cout << "before: " << vec << std::endl;
+  vec = mat.multiply(vec);
+  //std::cout << "after: " << vec << std::endl;
 
-  // std::cout << "vec: " << vec << std::endl;
-
-  Display::draw_line(Vector(p.x,   p.y),
-                     Vector(vec.x, vec.y),
-                     Color(1.0f, 1.0f, 1.0f));
+  
+  glVertex3f(  p.x,   p.y,   p.z);
+  glVertex3f(vec.x, vec.y, vec.z);
 
   for(std::vector<Bone*>::iterator i = bone->children.begin(); i != bone->children.end(); ++i)  
     {
-      draw_bone(*i, vec, cur);
+      draw_bone(*i, vec, mat);
     }
 }
 

@@ -59,8 +59,8 @@ public:
   //: Operator that returns the matrix cell at the given index.
   const float &operator[](int i) const { return matrix[i]; }
 
-  inline float&       operator()(int row, int col) { return matrix[4*row + col]; }
-  inline const float& operator()(int row, int col) const { return matrix[4*row + col]; }
+  inline float&       operator()(int row, int col) { return matrix[4*col + row]; }
+  inline const float& operator()(int row, int col) const { return matrix[4*col + row]; }
 
   //: Operator that returns the matrix cell at the given index.
   float &operator[](unsigned int i) { return matrix[i]; }

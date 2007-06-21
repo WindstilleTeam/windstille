@@ -13,9 +13,10 @@ def quat2str(quat):
     return "%f %f %f %f" % (quat.x, quat.y, quat.z, quat.w)
 
 def matrix2str(indent, m):
-        return          ("%9f %9f %9f\n" % (m[0][0], m[0][1], m[0][2])) + \
-           indent + ("%9f %9f %9f\n" % (m[1][0], m[1][1], m[1][2])) + \
-           indent + ("%9f %9f %9f" % (m[2][0], m[2][1], m[2][2]))
+        return          ("%9f %9f %9f %9f\n" % (m[0][0], m[0][1], m[0][2], 0)) + \
+               indent + ("%9f %9f %9f %9f\n" % (m[1][0], m[1][1], m[1][2], 0)) + \
+               indent + ("%9f %9f %9f %9f\n" % (m[2][0], m[2][1], m[2][2], 0)) + \
+               indent + ("%9f %9f %9f %9f"   % (      0,       0,       0, 1))
 
 def list2str(lst):
     str = ""
@@ -47,10 +48,10 @@ def export_armature(out, armature):
             # else in local bonespace
             if bone.parent:
                 out.write("      (parent    \"%s\")\n" % bone.parent.name)
-                out.write("      (head      %s)\n" % (vec2str(bone.head['BONESPACE']),))
+                out.write("      (head      %s)\n" % (vec2str(64*bone.head['BONESPACE']),))
             else:
                 out.write("      (parent )\n")
-                out.write("      (head      %s)\n" % (vec2str(bone.head['ARMATURESPACE']),))
+                out.write("      (head      %s)\n" % (vec2str(64*bone.head['ARMATURESPACE'])))
 
             out.write("      (length    %s)\n" % (bone.length*64))
             out.write("      (matrix   %s)\n" % matrix2str(" "*16, bone.matrix['BONESPACE']))

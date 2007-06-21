@@ -30,6 +30,7 @@
 #include <vector>
 #include "math/quaternion.hpp"
 #include "math/vector3.hpp"
+#include "math/matrix.hpp"
 
 /** */
 class Bone
@@ -45,7 +46,9 @@ public:
   Bone*      parent;
 
   float      length;
+
   Quaternion quat;
+  Matrix     matrix;
   Vector3    head;
   
   Bone();

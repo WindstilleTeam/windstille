@@ -34,7 +34,9 @@ class ArmatureTest : public Screen
 {
 private:
   Armature* armature;
-
+  float xrot;
+  float yrot;
+  float zrot;
 public:
   ArmatureTest();
 
