@@ -1,33 +1,23 @@
 import Blender
-import Blender.Armature
-from Blender import Ipo
+from Blender import *
 
-def vec2str(vec):
-    return "%f %f %f" % (vec.x,vec.y,vec.z)
+print "-------------------------------------------"
+for obj in Blender.Object.Get():
+	if obj.type == "Armature":
+		print "-------------", obj.getName()
+		pose = obj.getPose()
+		for bone in pose.bones.values():
+			print bone.quat
 
-def export_action(out, action):
-    out.write(";; -*- scheme -*-\n")
-    out.write("(action\n")
-    out.write("  (name \"%s\")\n" % action.getName())
-    out.write("  (bones\n")
-    for ipo in action.getAllChannelIpos().values():
-        out.write("    (bone\n")
-        out.write("      (name \"%s\")\n" % ipo.getName())
-        for (v, k) in [('quatw', Ipo.PO_QUATW), ('quatx', Ipo.PO_QUATX),
-                       ('quaty', Ipo.PO_QUATY), ('quatz', Ipo.PO_QUATZ)]:
-            if ipo[k]:
-                out.write("      (%s " % v)
-                for point in ipo[k].bezierPoints:
-                    for v in point.vec:
-                        out.write("%f %f %f" % (v[0], v[1], v[2]))
-                out.write(")\n")                    
-        out.write("     ) ;; bone \n")
-    out.write("   ) ;; bones \n")
-    out.write(" ) ;; action\n")    
+def export_pose(out, obj):
+	pose = obj
+	for bone in pose.bones.values():
+		
 
-for action in Blender.Armature.NLA.GetActions().values():
-    out = file("/tmp/action-%s.scm" % action.getName(), "w")
-    export_action(out, action)
-    out.close
+for obj in Blender.Object.Get():
+	if obj.type == "Armature":
+		out = file("/tmp/pose-%s.scm" % obj.getName(), "w")
+		export_pose(out, obj)
+		out.close()
 
 # EOF #

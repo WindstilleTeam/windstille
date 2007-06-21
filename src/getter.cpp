@@ -60,10 +60,10 @@ bool get(FileReader& reader, const char* name, Quaternion& value)
 {
   std::vector<float> floats;
   if (reader.get(name, floats) && floats.size() == 4) {
-    value.x = floats[0];
-    value.y = floats[1];
-    value.z = floats[2];
-    value.w = floats[3];
+    value.w = floats[0];
+    value.x = floats[1];
+    value.y = floats[2];
+    value.z = floats[3];
     return true;
   } else {
     return false;

@@ -10,7 +10,7 @@ def euler2str(euler):
     return "%f %f %f" % (euler.x, euler.y, euler.z)
 
 def quat2str(quat):
-    return "%f %f %f %f" % (quat.x, quat.y, quat.z, quat.w)
+    return "%f %f %f %f" % (quat.w, quat.x, quat.y, quat.z)
 
 def matrix2str(indent, m):
         return          ("%9f %9f %9f %9f\n" % (m[0][0], m[0][1], m[0][2], 0)) + \
