@@ -128,6 +128,7 @@ Armature::draw()
   state.color(Color(1.0f, 0.0f, 0.0f));
   state.activate();
 
+  glLineWidth(6.0f);
   //std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-" << std::endl;
   glBegin(GL_LINES);
   draw_bone(root_bone, Vector3(0,0, 0), Matrix::identity());
@@ -135,26 +136,25 @@ Armature::draw()
 }
 
 void
-Armature::draw_bone(Bone* bone, Vector3 p, Matrix cur)
+Armature::draw_bone(Bone* bone, Vector3 p, Matrix m)
 {
-  // In theory we should be using Z, but Y seems to work?!
-  Vector3 vec = Vector3(0.0f, bone->length,  0.0f); 
-  Matrix  mat = bone->matrix.multiply(cur);
-  
+  Matrix  m_  = m.multiply(bone->matrix);
+  Vector3 p_  = p + m.multiply(bone->offset);
+  Vector3 p__ = p_ + m_.multiply(Vector3(0.0f, bone->length, 0.0f));
+
+  // In theory we should be using length in the Z component, but only
+  // Y seems to work?! -> Blenders matrix are weird
+
   // Issues: 
   // - don't mess with the root bone
-  // - offsets are ignored
 
   // std::cout << "--------------------------------------------------------------" << std::endl;
   // std::cout << "draw_bone: " << bone->name << std::endl;
   // std::cout << "bone matrix: \n" << bone->matrix << std::endl;
   // std::cout << "matrix: \n" << mat << std::endl;
   // std::cout << "before: " << vec << std::endl;
-  vec = mat.multiply(vec) + p + bone->offset;
+  ////  vec = mat.multiply(vec) + p + offset;
   // std::cout << "after: " << vec << std::endl;
-
- // do we need to rotate the offset?
-  Vector3 p_ = p + bone->offset;
 
   // p to p+offset
   glColor3f(0.0f, 0.5f, 0.0f);
@@ -162,14 +162,14 @@ Armature::draw_bone(Bone* bone, Vector3 p, Matrix cur)
   glColor3f(0.0f, 1.0f, 0.0f);
   glVertex3f( p_.x, p_.y, p_.z);  
 
-  // p to vec
-  glColor3f(0.7f, 0.0f, 0.0f);
+  // p+offset to new endpoint
+  glColor3f(0.0f, 0.0f, 1.0f);
   glVertex3f(  p_.x,   p_.y,   p_.z);
   glColor3f(1.0f, 0.0f, 0.0f);
-  glVertex3f(vec.x, vec.y, vec.z);
+  glVertex3f(  p__.x,  p__.y, p__.z);
 
   for(std::vector<Bone*>::iterator i = bone->children.begin(); i != bone->children.end(); ++i)  
-    draw_bone(*i, vec, mat);
+    draw_bone(*i, p__, m_);
 }
 
 /* EOF */

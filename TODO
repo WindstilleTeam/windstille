@@ -49,5 +49,7 @@ Misc:
 - add line numbers to error messages from lisp
 - fix memory leak in SExprFileReader
 - use non-euler angles in the model viewer
+- setting glLineWidth() leads to some interesting artefacts on the
+  menus which might be a cool effect
 
 # EOF #

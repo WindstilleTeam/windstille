@@ -49,7 +49,7 @@ ArmatureTest::draw()
   glPushMatrix();
 
   glTranslatef(400.0f, 300.0f, 0.0f);
-  glScalef(128.0f, 128.0f, 128.0f);
+  glScalef(64.0f, 64.0f, 64.0f);
  
   glRotatef(xrot, 1.0f, 0.0f, 0.0f);
   glRotatef(yrot, 0.0f, 1.0f, 0.0f);
@@ -70,10 +70,31 @@ ArmatureTest::update(float delta, const Controller& controller)
     {
       screen_manager.pop_screen();
     }
- 
-  xrot += controller.get_axis_state(X_AXIS) * 90 * delta;
-  yrot += controller.get_axis_state(Y_AXIS) * 90 * delta;
-  zrot += controller.get_axis_state(X2_AXIS) * 90 * delta;
+
+  if (controller.button_was_pressed(PRIMARY_BUTTON))
+    {
+      xrot = 90;
+      yrot = 0;
+      zrot = 0;
+    }
+  else if (controller.button_was_pressed(SECONDARY_BUTTON))
+      {
+      xrot = 0;
+      yrot = 90;
+      zrot = 0;
+      }
+  if (controller.button_was_pressed(TERTIARY_BUTTON))
+    {
+      xrot = 0;
+      yrot = 0;
+      zrot = 90;
+    }
+  else
+    { 
+      xrot += controller.get_axis_state(X_AXIS) * 90 * delta;
+      yrot += controller.get_axis_state(Y_AXIS) * 90 * delta;
+      zrot += controller.get_axis_state(X2_AXIS) * 90 * delta;
+    }
 }
 
 /* EOF */
