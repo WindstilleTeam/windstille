@@ -44,6 +44,8 @@ env.ParseConfig('freetype-config --libs --cflags')
 env.Program('../windstille', [
 'armature_test.cpp',
 'armature/armature.cpp',
+'armature/mesh.cpp',
+'armature/model.cpp',
 'armature/pose.cpp',
 'armature/bone.cpp',
 'baby_xml.cpp',

@@ -168,7 +168,7 @@ class WindstilleModel:
                     out.write("        (index %d)\n" % vert.index)
                     out.write("        (influeces")
                     for (bone, weight) in vert.influences:
-                        out.write("\n          (influence (weigth %f) (bone \"%s\"))" % (weight, bone))
+                        out.write("\n          (influence (weight %f) (bone \"%s\"))" % (weight, bone))
                     out.write("))\n")
             out.write("     ) ;; influencs\n\n")
             
