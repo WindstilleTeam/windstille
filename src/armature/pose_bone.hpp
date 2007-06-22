@@ -23,31 +23,19 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_ARMATURE_TEST_HPP
-#define HEADER_ARMATURE_TEST_HPP
+#ifndef HEADER_POSE_BONE_HPP
+#define HEADER_POSE_BONE_HPP
 
-#include "armature/armature.hpp"
-#include "screen.hpp"
+#include <string>
+#include "math/quaternion.hpp"
 
 /** */
-class ArmatureTest : public Screen
+class PoseBone
 {
-private:
-  Armature* armature;
-  Pose*     pose;
-  float xrot;
-  float yrot;
-  float zrot;
-
 public:
-  ArmatureTest();
-
-  void draw();
-  void update(float delta, const Controller& controller);
-
-private:
-  ArmatureTest (const ArmatureTest&);
-  ArmatureTest& operator= (const ArmatureTest&);
+  std::string name;
+  int         bone_id;
+  Quaternion  quat;
 };
 
 #endif

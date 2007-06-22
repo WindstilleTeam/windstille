@@ -29,15 +29,22 @@
 #include "display/display.hpp"
 #include "screen_manager.hpp"
 #include "display/display.hpp"
+#include "armature/pose.hpp"
 #include "armature_test.hpp"
 
 ArmatureTest::ArmatureTest()
 {
-  FileReader reader = FileReader::parse("armature.arm");
-  armature = new Armature(reader);
-  
-  xrot = 0;
+  FileReader armature_reader = FileReader::parse("armature.arm");
+  armature = new Armature(armature_reader);
+
+  FileReader pose_reader = FileReader::parse("pose.pose");
+  pose = new Pose(pose_reader);
+
+  armature->apply(*pose);
+
+  xrot = 180;
   yrot = 0;
+  zrot = 0;
 }
 
 void
@@ -91,8 +98,8 @@ ArmatureTest::update(float delta, const Controller& controller)
     }
   else
     { 
-      xrot += controller.get_axis_state(X_AXIS) * 90 * delta;
-      yrot += controller.get_axis_state(Y_AXIS) * 90 * delta;
+      yrot += controller.get_axis_state(X_AXIS) * 90 * delta;
+      xrot += controller.get_axis_state(Y_AXIS) * 90 * delta;
       zrot += controller.get_axis_state(X2_AXIS) * 90 * delta;
     }
 }

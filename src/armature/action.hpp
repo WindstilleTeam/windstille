@@ -23,31 +23,18 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_ARMATURE_TEST_HPP
-#define HEADER_ARMATURE_TEST_HPP
-
-#include "armature/armature.hpp"
-#include "screen.hpp"
+#ifndef HEADER_ACTION_HPP
+#define HEADER_ACTION_HPP
 
 /** */
-class ArmatureTest : public Screen
+class Action
 {
 private:
-  Armature* armature;
-  Pose*     pose;
-  float xrot;
-  float yrot;
-  float zrot;
-
 public:
-  ArmatureTest();
-
-  void draw();
-  void update(float delta, const Controller& controller);
 
 private:
-  ArmatureTest (const ArmatureTest&);
-  ArmatureTest& operator= (const ArmatureTest&);
+  Action (const Action&);
+  Action& operator= (const Action&);
 };
 
 #endif

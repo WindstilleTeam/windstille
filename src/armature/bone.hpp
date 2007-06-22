@@ -50,6 +50,8 @@ public:
   Quaternion quat;
   Matrix     matrix;
   Vector3    offset;
+
+  Matrix     render_matrix;
   
   Bone();
   ~Bone();

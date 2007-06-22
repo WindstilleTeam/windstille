@@ -23,31 +23,33 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_ARMATURE_TEST_HPP
-#define HEADER_ARMATURE_TEST_HPP
+#ifndef HEADER_IPO_CURVE_HPP
+#define HEADER_IPO_CURVE_HPP
 
-#include "armature/armature.hpp"
-#include "screen.hpp"
+struct BezierPoint
+{
+  Vector handle_left;
+  Vector handle_right;
+
+  Vector pos;
+};
 
 /** */
-class ArmatureTest : public Screen
+class IpoCurve
 {
 private:
-  Armature* armature;
-  Pose*     pose;
-  float xrot;
-  float yrot;
-  float zrot;
-
+  std::vector<BezierPoint> points;
 public:
-  ArmatureTest();
+  IpoCurve();
+  ~IpoCurve();
+  
+  float evalutate(float t);
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void add_point(const BezierPoint& p);
 
 private:
-  ArmatureTest (const ArmatureTest&);
-  ArmatureTest& operator= (const ArmatureTest&);
+  IpoCurve (const IpoCurve&);
+  IpoCurve& operator= (const IpoCurve&);
 };
 
 #endif

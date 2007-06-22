@@ -23,33 +23,40 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_ARMATURE_TEST_HPP
-#define HEADER_ARMATURE_TEST_HPP
+#include "ipo_curve.hpp"
 
-#include "armature/armature.hpp"
-#include "screen.hpp"
-
-/** */
-class ArmatureTest : public Screen
+IpoCurve::IpoCurve()
 {
-private:
-  Armature* armature;
-  Pose*     pose;
-  float xrot;
-  float yrot;
-  float zrot;
+}
 
-public:
-  ArmatureTest();
+IpoCurve::~IpoCurve()
+{
+}
 
-  void draw();
-  void update(float delta, const Controller& controller);
+float
+IpoCurve::evalutate(float x)
+{
+  // find bezier points left and right from t
+  Vector left;
+  Vector right;
 
-private:
-  ArmatureTest (const ArmatureTest&);
-  ArmatureTest& operator= (const ArmatureTest&);
-};
+  // calculate the value t from x
+  float t;
 
-#endif
+  // calculate the result
+
+  //def bezier(p0, p1, p2, p3, t):
+  //    return p0*(1-t)**3 + 3*p1*t*((1-t)**2) + 3*p2*(t**2)*(1-t) + p3*t**3
+}
+
+void
+IpoCurve::add_point(const BezierPoint& p)
+{
+  assert(points.empty() ||
+         points.back().point.x < p.x &&
+         p.handle_left.x < p.x &&
+         p.x < p.handle_right.x);
+  points.push_back(p);
+}
 
 /* EOF */

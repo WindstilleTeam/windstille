@@ -23,31 +23,34 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_ARMATURE_TEST_HPP
-#define HEADER_ARMATURE_TEST_HPP
+#ifndef HEADER_POSE_HPP
+#define HEADER_POSE_HPP
 
-#include "armature/armature.hpp"
-#include "screen.hpp"
+#include <string>
+#include <vector>
+
+#include "pose_bone.hpp"
+
+class FileReader;
 
 /** */
-class ArmatureTest : public Screen
+class Pose
 {
 private:
-  Armature* armature;
-  Pose*     pose;
-  float xrot;
-  float yrot;
-  float zrot;
+  std::string name;
 
 public:
-  ArmatureTest();
+  std::vector<PoseBone> bones;
+  
+public:
+  Pose(FileReader& reader);
+  ~Pose();  
 
-  void draw();
-  void update(float delta, const Controller& controller);
-
+  std::string get_name() const { return name; }
+  
 private:
-  ArmatureTest (const ArmatureTest&);
-  ArmatureTest& operator= (const ArmatureTest&);
+  Pose (const Pose&);
+  Pose& operator= (const Pose&);
 };
 
 #endif

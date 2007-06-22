@@ -29,6 +29,7 @@
 #include <stdexcept>
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
+#include "pose.hpp"
 #include "math/vector3.hpp"
 #include "armature.hpp"
 
@@ -70,6 +71,10 @@ Armature::parse(FileReader& reader)
                 }
               else
                 {
+                  // FIXME: experimental
+                  bone->matrix = bone->quat.to_matrix();
+                  bone->render_matrix = bone->quat.to_matrix();
+
                   bones.push_back(bone);
                 }
             }
@@ -138,23 +143,11 @@ Armature::draw()
 void
 Armature::draw_bone(Bone* bone, Vector3 p, Matrix m)
 {
-  Matrix  m_  = m.multiply(bone->matrix);
+  Matrix  m_  = m.multiply(bone->render_matrix);
   Vector3 p_  = p + m.multiply(bone->offset);
-  Vector3 p__ = p_ + m_.multiply(Vector3(0.0f, bone->length, 0.0f));
-
-  // In theory we should be using length in the Z component, but only
+  // FIXME: In theory we should be using length in the Z component, but only
   // Y seems to work?! -> Blenders matrix are weird
-
-  // Issues: 
-  // - don't mess with the root bone
-
-  // std::cout << "--------------------------------------------------------------" << std::endl;
-  // std::cout << "draw_bone: " << bone->name << std::endl;
-  // std::cout << "bone matrix: \n" << bone->matrix << std::endl;
-  // std::cout << "matrix: \n" << mat << std::endl;
-  // std::cout << "before: " << vec << std::endl;
-  ////  vec = mat.multiply(vec) + p + offset;
-  // std::cout << "after: " << vec << std::endl;
+  Vector3 p__ = p_ + m_.multiply(Vector3(0.0f, bone->length, 0.0f));
 
   // p to p+offset
   glColor3f(0.0f, 0.5f, 0.0f);
@@ -170,6 +163,30 @@ Armature::draw_bone(Bone* bone, Vector3 p, Matrix m)
 
   for(std::vector<Bone*>::iterator i = bone->children.begin(); i != bone->children.end(); ++i)  
     draw_bone(*i, p__, m_);
+}
+
+void
+Armature::apply(const Pose& pose)
+{
+  if (pose.get_name() != name)
+    {
+      std::cout << "Can't apply pose '" << pose.get_name() << "' to armature '" << name << "'" << std::endl;
+    }
+  else
+    {                                           
+      for(std::vector<PoseBone>::const_iterator pbone = pose.bones.begin(); pbone != pose.bones.end(); ++pbone)
+        {
+          Bone* bone = get_bone(pbone->name);
+          if (!bone)
+            {
+              std::cout << "Error: Couldn't find bone: " << pbone->name << std::endl;
+            }
+          else
+            {
+              bone->render_matrix = bone->matrix.multiply(pbone->quat.to_matrix());
+            }
+        }
+    }
 }
 
 /* EOF */

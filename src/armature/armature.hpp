@@ -30,6 +30,8 @@
 #include "bone.hpp"
 #include "file_reader.hpp"
 
+class Pose;
+
 /** */
 class Armature
 {
@@ -43,6 +45,8 @@ public:
   Armature(FileReader& reader);
   ~Armature();
   
+  void apply(const Pose& pose);
+
   void  parse(FileReader& reader);
   Bone* get_bone(const std::string& name);
   void  draw();

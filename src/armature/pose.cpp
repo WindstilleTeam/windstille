@@ -23,33 +23,48 @@
 **  02111-1307, USA.
 */
 
-#ifndef HEADER_ARMATURE_TEST_HPP
-#define HEADER_ARMATURE_TEST_HPP
+#include <iostream>
+#include <stdexcept>
+#include "file_reader.hpp"
+#include "pose.hpp"
 
-#include "armature/armature.hpp"
-#include "screen.hpp"
-
-/** */
-class ArmatureTest : public Screen
+Pose::Pose(FileReader& reader)
 {
-private:
-  Armature* armature;
-  Pose*     pose;
-  float xrot;
-  float yrot;
-  float zrot;
+  if (reader.get_name() != "pose")
+    {
+      throw std::runtime_error("not a pose file");
+    }
+  else
+    {
+      reader.get("name",  name);
 
-public:
-  ArmatureTest();
+      FileReader bones_reader;
+      if (!reader.get("bones", bones_reader))
+        {
+          std::cout << "Bones section missing" << std::endl;
+        }
+      else
+        {
+          std::vector<FileReader> sections = bones_reader.get_sections();
+          std::cout << sections.size() << std::endl;
+          for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+            {
+              if (i->get_name() == "bone")
+                {
+                  PoseBone bone;
+                  i->get("name", bone.name);
+                  i->get("quat", bone.quat);
+                  bones.push_back(bone);
+                }
+              else
+                {
+                  std::cout << "Unhandled tag: " << i->get_name() << std::endl;
+                }
+            }
+        }
+    }
 
-  void draw();
-  void update(float delta, const Controller& controller);
-
-private:
-  ArmatureTest (const ArmatureTest&);
-  ArmatureTest& operator= (const ArmatureTest&);
-};
-
-#endif
+  std::cout << "Pose: " << name << " " << bones.size() << std::endl;
+}
 
 /* EOF */
