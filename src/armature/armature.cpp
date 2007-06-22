@@ -150,9 +150,9 @@ Armature::draw_bone(Bone* bone, Vector3 p, Matrix m)
   Vector3 p__ = p_ + m_.multiply(Vector3(0.0f, bone->length, 0.0f));
 
   // p to p+offset
-  glColor3f(0.0f, 0.5f, 0.0f);
+  glColor4f(0.0f, 0.5f, 0.0f, 0.5f);
   glVertex3f(  p.x, p.y, p.z);
-  glColor3f(0.0f, 1.0f, 0.0f);
+  glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
   glVertex3f( p_.x, p_.y, p_.z);  
 
   // p+offset to new endpoint
@@ -186,6 +186,16 @@ Armature::apply(const Pose& pose)
               bone->render_matrix = bone->matrix.multiply(pbone->quat.to_matrix());
             }
         }
+    }
+}
+
+void
+Armature::reset()
+{
+  for(Bones::iterator i = bones.begin(); i != bones.end(); ++i)
+    {
+      Bone* bone = *i;
+      bone->render_matrix = bone->quat.to_matrix();
     }
 }
 

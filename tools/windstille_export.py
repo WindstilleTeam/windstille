@@ -35,6 +35,7 @@ Tip: 'Export meshes/actions to windstille format'
 
 ### TODO ###
 # - add handling of meshes with armatures, but without actions
+# - change the code to use some more MathUtil instead of its own quaternion/matrix code 
 ############
 
 import string

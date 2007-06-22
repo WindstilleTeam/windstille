@@ -34,7 +34,11 @@ class ArmatureTest : public Screen
 {
 private:
   Armature* armature;
-  Pose*     pose;
+  std::vector<Pose*> poses;
+  
+  int pose_idx;
+  float time;
+
   float xrot;
   float yrot;
   float zrot;

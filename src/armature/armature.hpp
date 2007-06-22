@@ -45,7 +45,11 @@ public:
   Armature(FileReader& reader);
   ~Armature();
   
+  /** Applies the given Pose */
   void apply(const Pose& pose);
+  
+  /** Sets the armature back into neutral position */
+  void reset();
 
   void  parse(FileReader& reader);
   Bone* get_bone(const std::string& name);

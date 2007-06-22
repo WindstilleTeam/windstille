@@ -25,6 +25,8 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
+#include <physfs.h>
+
 #include "input/controller.hpp"
 #include "display/display.hpp"
 #include "screen_manager.hpp"
@@ -34,17 +36,30 @@
 
 ArmatureTest::ArmatureTest()
 {
-  FileReader armature_reader = FileReader::parse("armature.arm");
+  FileReader armature_reader = FileReader::parse("armature/armature.arm");
   armature = new Armature(armature_reader);
 
-  FileReader pose_reader = FileReader::parse("pose.pose");
-  pose = new Pose(pose_reader);
+  std::vector<std::string> file_lst;
+  {
+    char** dirlist = PHYSFS_enumerateFiles("armature/pose/");
+    for (char **i = dirlist; *i != NULL; ++i)
+      if (!PHYSFS_isDirectory((std::string("armature/pose/") + *i).c_str())) {
+        std::cout << "PoseFile: " << *i << std::endl;
+        FileReader pose_reader = FileReader::parse(std::string("armature/pose/") + *i);
+        poses.push_back(new Pose(pose_reader));       
+      }
+    PHYSFS_freeList(dirlist);
+  }
 
-  armature->apply(*pose);
+  pose_idx = 0;
+
+  armature->apply(*poses[pose_idx]);
 
   xrot = 180;
   yrot = 0;
   zrot = 0;
+  
+  time = 0.0f;
 }
 
 void
@@ -72,6 +87,11 @@ ArmatureTest::draw()
 void
 ArmatureTest::update(float delta, const Controller& controller)
 {
+  time += delta;
+
+  pose_idx = int(time * 20.0f) % poses.size();
+  armature->apply(*poses[pose_idx]);
+
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))
     {
@@ -90,7 +110,7 @@ ArmatureTest::update(float delta, const Controller& controller)
       yrot = 90;
       zrot = 0;
       }
-  if (controller.button_was_pressed(TERTIARY_BUTTON))
+  else if (controller.button_was_pressed(TERTIARY_BUTTON))
     {
       xrot = 0;
       yrot = 0;
@@ -101,6 +121,10 @@ ArmatureTest::update(float delta, const Controller& controller)
       yrot += controller.get_axis_state(X_AXIS) * 90 * delta;
       xrot += controller.get_axis_state(Y_AXIS) * 90 * delta;
       zrot += controller.get_axis_state(X2_AXIS) * 90 * delta;
+    }
+
+  if (controller.button_was_pressed(AIM_BUTTON))
+    {
     }
 }
 

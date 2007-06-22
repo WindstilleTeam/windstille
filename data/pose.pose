@@ -1,70 +1,122 @@
 ;; -*- scheme -*-
 (pose
-  (name "Armature.002")
+  (name "Armature")
   (bones
     (bone
-      (name "Bone.010")
+      (name "LegNull.L")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.009")
+      (name "Hip.R")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.004")
-      (quat 0.548134 0.668250 -0.502982 0.000000))
+      (name "Foot.L")
+      (quat 0.981134 -0.178468 0.019928 0.071610))
     (bone
-      (name "Bone.007")
+      (name "Upper Arm.L")
+      (quat 0.998861 -0.024739 0.032929 0.024101))
+    (bone
+      (name "Belly")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.006")
+      (name "Upper Arm.R")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.016")
+      (name "Foot.R")
+      (quat 0.982884 -0.170392 -0.017590 -0.067794))
+    (bone
+      (name "Hip.L")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.008")
+      (name "LegNull.R")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.020")
+      (name "Toes.R")
+      (quat 0.996146 0.087286 -0.001040 0.008563))
+    (bone
+      (name "Hip")
+      (quat 0.994097 0.108492 -0.000000 -0.000000))
+    (bone
+      (name "Shoulders")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.019")
+      (name "Shoulder.L")
+      (quat 0.995713 0.082223 -0.042187 -0.003781))
+    (bone
+      (name "FingerTips.L")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.018")
+      (name "Base")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.015")
+      (name "FingerTips.R")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.005")
+      (name "Shoulder.R")
+      (quat 0.978040 -0.058752 0.080541 -0.183029))
+    (bone
+      (name "Body")
+      (quat 0.992664 0.031935 0.114502 -0.022083))
+    (bone
+      (name "Neck")
+      (quat 0.995636 -0.093322 0.000000 0.000000))
+    ;; ignoring 'IK_Foot.R'
+    (bone
+      (name "Hand.L")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.012")
+      (name "Fingers.R")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.013")
+      (name "Head")
+      (quat 0.999629 0.027239 -0.000000 -0.000000))
+    (bone
+      (name "Fingers.L")
+      (quat 1.000000 0.000000 0.000000 0.000000))
+    ;; ignoring 'IK_Foot.L'
+    (bone
+      (name "Hand.R")
+      (quat 0.916991 -0.251808 -0.260843 -0.166376))
+    (bone
+      (name "Toes.L")
+      (quat 0.999787 -0.019559 0.000860 -0.006569))
+    (bone
+      (name "Thumb.R")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.001")
+      (name "Lower Leg.L")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.002")
+      (name "Upper Leg.R")
+      (quat 0.863445 -0.504211 -0.010364 -0.011251))
+    (bone
+      (name "ArmNull.R")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.003")
+      (name "LowerThumb.R")
+      (quat 1.000000 0.000000 0.000000 0.000000))
+    ;; ignoring 'IK_Arm.L'
+    (bone
+      (name "Thumb.L")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.017")
+      (name "Forearm.L")
+      (quat 0.881179 0.401351 0.238638 0.074114))
+    (bone
+      (name "Forearm.R")
+      (quat 0.899349 0.406663 -0.154142 0.045121))
+    ;; ignoring 'IK_Arm.R'
+    (bone
+      (name "LowerThumb.L")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.011")
+      (name "ArmNull.L")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone")
+      (name "Lower Leg.R")
       (quat 1.000000 0.000000 0.000000 0.000000))
     (bone
-      (name "Bone.014")
-      (quat 1.000000 0.000000 0.000000 0.000000))
+      (name "Upper Leg.L")
+      (quat 0.936424 -0.350708 0.007208 0.007827))
    ) ;; bones
  ) ;; pose
 

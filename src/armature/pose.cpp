@@ -46,7 +46,6 @@ Pose::Pose(FileReader& reader)
       else
         {
           std::vector<FileReader> sections = bones_reader.get_sections();
-          std::cout << sections.size() << std::endl;
           for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
             {
               if (i->get_name() == "bone")
@@ -64,7 +63,7 @@ Pose::Pose(FileReader& reader)
         }
     }
 
-  std::cout << "Pose: " << name << " " << bones.size() << std::endl;
+  //std::cout << "Pose: " << name << " " << bones.size() << std::endl;
 }
 
 /* EOF */

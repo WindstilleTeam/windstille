@@ -1,5 +1,5 @@
 import Blender
-import Blender.Armature
+from Blender import *
 
 arms = Blender.Armature.Get()
 
@@ -75,5 +75,7 @@ for armature in arms.values():
     out.close()
     print "done"
 print
+
+Draw.PupMenu("Export ok")
 
 # EOF #

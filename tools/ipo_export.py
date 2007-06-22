@@ -30,4 +30,6 @@ for action in Blender.Armature.NLA.GetActions().values():
     export_action(out, action)
     out.close
 
+Draw.PupMenu("Export ok")
+
 # EOF #
