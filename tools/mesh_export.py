@@ -133,10 +133,10 @@ class WindstilleModel:
         out.write("(windstille-model\n")
         out.write("  (name \"\")\n")
     
-        for (texture, mesh) in self.mesh_data.iteritems():
+        for mesh in self.mesh_data.values():
             out.write("  (mesh\n")
             out.write("    (name \"\")\n")
-            out.write("    (texture \"%s\")\n\n" % texture)
+            out.write("    (texture \"%s\")\n\n" % mesh.texture_filename)
             out.write("    (vertices\n")
             for v in mesh.vertices:
                 out.write("      %10f %10f %10f ;; %d\n" % (v.co[0], v.co[1], v.co[2], v.index))
@@ -166,10 +166,10 @@ class WindstilleModel:
                 if vert.influences != []:
                     out.write("      (vertex\n")
                     out.write("        (index %d)\n" % vert.index)
-                    out.write("        (influeces\n")
+                    out.write("        (influeces")
                     for (bone, weight) in vert.influences:
-                        out.write("          (influence (weigth %f) (bone \"%s\"))\n" % (weight, bone))
-                    out.write("         )) ;; vertex\n")
+                        out.write("\n          (influence (weigth %f) (bone \"%s\"))" % (weight, bone))
+                    out.write("))\n")
             out.write("     ) ;; influencs\n\n")
             
             out.write("   ) ;; mesh\n\n")
