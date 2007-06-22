@@ -9,10 +9,26 @@ class MeshData:
         self.texture_filename = texture_filename
 
         # [FaceData, ...]
-        self.faces            = []
+        self.faces    = []
+
+        # [VerticeData, ...]
+        self.vertices = []
+
+        # { orig_index : VerticeData, ... }
+        self.vertmap = {}
 
     def add(self, face):
         self.faces.append(face)
+        
+        for vert in face.verts:
+            self.vertmap[vert.orig_idx] = vert
+
+    def add_influences(self, orig_idx, influences):
+        if not self.vertmap.has_key(orig_idx):
+            pass # this is normal due to MeshData not being a complete
+                 # Blender mesh when multiple textures are in play       
+        else:
+            self.vertmap[orig_idx].influences = influences
 
     def finalize(self):
         """Reorders vertex indexes and merge vertexes which have the
@@ -43,11 +59,13 @@ class FaceData:
         self.verts   = verts
 
 class VertexData:
-    def __init__(self, co, uv, normal):
-        self.co        = co
-        self.uv        = uv
-        self.normal    = normal
-        self.index     = -1
+    def __init__(self, orig_idx, co, uv, normal):
+        self.orig_idx   = orig_idx
+        self.co         = co
+        self.uv         = uv
+        self.normal     = normal
+        self.index      = -1
+        self.influences = []
 
     def key(self):
         return (self.co[1], self.co[2],
@@ -67,7 +85,8 @@ class WindstilleModel:
     def add(self, blender_mesh):
         """Convert Blender data structures into something that is used by
         this export script"""
-
+        
+        # Convert blender meshes to MeshData
         for face in blender_mesh.faces:
             if face.image:
                 texture_filename = face.image.filename
@@ -84,7 +103,8 @@ class WindstilleModel:
 
             verts = []
             for i in [0, 1, 2]:
-                verts.append(VertexData([face.v[i].co[0], face.v[i].co[1], face.v[i].co[2]],
+                verts.append(VertexData(face.v[i].index,
+                                        [face.v[i].co[0], face.v[i].co[1], face.v[i].co[2]],
                                         [face.uv[i][0], 1.0 - face.uv[i][1]],
                                         [face.v[i].no[1], -face.v[i].no[2], -face.v[i].no[0]]))
             mesh.add(FaceData(verts))
@@ -93,10 +113,16 @@ class WindstilleModel:
             if len(face.v) == 4:
                 verts = []
                 for i in [0, 2, 3]:
-                    verts.append(VertexData([face.v[i].co[0], face.v[i].co[1], face.v[i].co[2]],
+                    verts.append(VertexData(face.v[i].index,
+                                            [face.v[i].co[0], face.v[i].co[1], face.v[i].co[2]],
                                             [face.uv[i][0], 1.0 - face.uv[i][1]],
                                             [face.v[i].no[1], -face.v[i].no[2], -face.v[i].no[0]]))
                 mesh.add(FaceData(verts))
+
+        for mesh in self.mesh_data.values():
+            for vert in blender_mesh.verts:
+                mesh.add_influences(vert.index, blender_mesh.getVertexInfluences(vert.index))
+
 
     def finalize(self):
         for (texture, mesh) in self.mesh_data.iteritems():
@@ -134,6 +160,18 @@ class WindstilleModel:
                                                 face.verts[1].index,
                                                 face.verts[2].index))
             out.write("     ) ;; triangles\n\n")
+
+            out.write("    (influences\n")
+            for vert in mesh.vertices:
+                if vert.influences != []:
+                    out.write("      (vertex\n")
+                    out.write("        (index %d)\n" % vert.index)
+                    out.write("        (influeces\n")
+                    for (bone, weight) in vert.influences:
+                        out.write("          (influence (weigth %f) (bone \"%s\"))\n" % (weight, bone))
+                    out.write("         )) ;; vertex\n")
+            out.write("     ) ;; influencs\n\n")
+            
             out.write("   ) ;; mesh\n\n")
         out.write(" ) ;; windstille-model\n")
         out.write("\n;; EOF ;;\n")
