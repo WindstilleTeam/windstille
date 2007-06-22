@@ -94,7 +94,7 @@ VertexArrayDrawingRequest::draw(int start, int end)
   state.disable_client_state(GL_NORMAL_ARRAY);
   state.enable_client_state(GL_VERTEX_ARRAY);
 
-  glVertexPointer  (3, GL_FLOAT, 0, &*vertices.begin());
+  glVertexPointer(3, GL_FLOAT, 0, &*vertices.begin());
 
   state.activate();
 

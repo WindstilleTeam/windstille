@@ -52,7 +52,7 @@ DEFAULT_SPEED = 1.0
 SPEED_MULTIPLIER = 9.8
 # DO NOT change this
 FORMAT_VERSION = 2
-
+
 def progress(percent, str):
 #    print "%3.2f%% - %s" % (percent*100, str)
     Window.DrawProgressBar(percent, str)
@@ -101,8 +101,7 @@ def quaternion_to_axisangle(q):
   sin_a = math.sqrt(1.0 - cos_a * cos_a)
   if(sin_a < .0005 or sin_a > .0005): sin_a = 1
   return angle, q[1]/sin_a, q[2]/sin_a, q[3]/sin_a
-
-##########################################################
+
 def get_text(textname):
   """Little shortcut function to return the content of
   Blender.Text.get(textname) as a single string and do a little error
@@ -114,7 +113,7 @@ def get_text(textname):
     return ""
   else:
     return string.join(textobj.asLines(), "\n")
-
+
 ### Data Structures to hold the Mesh ###
 class MeshData:
   def __init__(self, texture_filename):
@@ -180,7 +179,7 @@ class VertexData:
         self.uv        = uv
         self.normal    = normal
         self.new_index = -1
-
+
 class AttachmentPointData:
     """Data for an attachment point, its location and its rotation"""
     def __init__(self, loc, quat):
@@ -195,8 +194,7 @@ class FrameData:
 
         # [AttachmentPointData, ...]
         self.attachment_points = attachment_points
-
-
+
 class ActionConfig:
     """ActionConfig handles the properties of a single
     action, ie. when it starts, when it stops, its speed, how many
@@ -283,7 +281,7 @@ class ActionConfig:
 
         return actionconfig
     parse = staticmethod(parse)
-
+
 class ActionData:
   def __init__(self, name, config, frame_data):
     # name as string
@@ -296,7 +294,7 @@ class ActionData:
     self.frame_data = frame_data
 
 ### end: Data Structures to hold the Mesh ###
-
+
 class WindstilleSprite:
   ########################################################
   def __init__(self):
@@ -406,7 +404,7 @@ class WindstilleSprite:
     self.mesh_data = {}
     for obj in self.mesh_objects:
       ### Convert mesh_objects to MeshData and merge all meshes with
-      ### the same texture     
+      ### the same texture
       for (texture, mesh) in self.collect_mesh_data(obj).iteritems():
         if self.mesh_data.has_key(texture):
           self.mesh_data[texture].merge(mesh)
@@ -597,8 +595,7 @@ def export(filename):
     file.close()
 
     data.print_stats()
-
-########################################################
+
 def fs_callback(filename):
     print "=== Exporting: %s ===" % (filename)
     export(filename)
