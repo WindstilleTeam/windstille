@@ -36,6 +36,7 @@
 
 class FileReader;
 class Bone;
+class Armature;
 
 struct VertexGroup
 {
@@ -49,6 +50,8 @@ struct Vertex
   Vector3 pos;
   Vector3 normal;
   Vector  texcoord;
+
+  Vector3 render_pos;
 
   // Influences from bone;
   std::vector<float> weights;
@@ -83,6 +86,8 @@ public:
   ~Mesh();
 
   void draw();
+  void apply(Armature* armature);
+  void reset();
 private:
   Mesh (const Mesh&);
   Mesh& operator= (const Mesh&);

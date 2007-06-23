@@ -31,6 +31,7 @@
 
 class FileReader;
 class Mesh;
+class Armature;
 
 /** */
 class Model
@@ -45,6 +46,8 @@ public:
   ~Model();
 
   void draw();
+  void apply(Armature* armature);
+  void reset();
 private:
   Model (const Model&);
   Model& operator= (const Model&);

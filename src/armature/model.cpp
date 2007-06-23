@@ -49,6 +49,8 @@ Model::Model(FileReader& reader, const std::string& path)
           std::cout << "Ignoring unhandled tag: " << i->get_name() << std::endl;
         }
     }
+
+  reset();
 }
 
 Model::~Model()
@@ -64,6 +66,24 @@ Model::draw()
     {
       (*i)->draw();
     }
+}
+
+void
+Model::reset()
+{
+  for(Meshes::iterator i = meshes.begin(); i != meshes.end(); ++i)
+    {
+      (*i)->reset();
+    }  
+}
+
+void
+Model::apply(Armature* armature)
+{
+  for(Meshes::iterator i = meshes.begin(); i != meshes.end(); ++i)
+    {
+      (*i)->apply(armature);
+    }    
 }
 
 /* EOF */

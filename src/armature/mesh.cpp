@@ -30,6 +30,7 @@
 #include "display/opengl_state.hpp"
 #include "display/texture_manager.hpp"
 #include "file_reader.hpp"
+#include "armature.hpp"
 #include "mesh.hpp"
 
 Mesh::Mesh(FileReader& reader, const std::string& path)
@@ -60,11 +61,14 @@ Mesh::Mesh(FileReader& reader, const std::string& path)
               if ((*i).get("bone",     group.bone_name) &&
                   (*i).get("weight",   group.weight) && 
                   (*i).get("vertices", group.vertices))
-
-                if (group.weight != 0.0f) // ignore useless bones
-                  groups.push_back(group);
+                {
+                  if (group.weight != 0.0f) // ignore useless bones
+                    groups.push_back(group);
+                }
               else
+                {
                 std::cout << "Mesh::VertexGroup: Element missing" << std::endl;
+                }
             }
           else
             {
@@ -112,6 +116,9 @@ Mesh::Mesh(FileReader& reader, const std::string& path)
   // Normalize Weight to 1.0f
   for(Vertices::iterator i = vertices_.begin(); i != vertices_.end(); ++i)
     {
+      if (i->weights.empty())
+        std::cout << "Vertex doesn't have weight: " << i - vertices_.begin() << std::endl;
+
       float total_weight = 0.0f;
       for(std::vector<float>::iterator w = i->weights.begin(); w != i->weights.end(); ++w)
         total_weight += *w;
@@ -203,10 +210,66 @@ Mesh::draw()
 
   assert_gl("gl init before sprite");
 
+  for(Vertices::size_type i = 0; i < vertices_.size(); ++i)
+    { // evil messing around with vertices, need more order
+      vertices[3*i + 0] = vertices_[i].render_pos.x;
+      vertices[3*i + 1] = vertices_[i].render_pos.y;
+      vertices[3*i + 2] = vertices_[i].render_pos.z;
+    }
+
   glVertexPointer(3, GL_FLOAT, 0, &*vertices.begin());
+
   glNormalPointer(GL_FLOAT, 0, &*normals.begin());
   glTexCoordPointer(2, GL_FLOAT, 0, &*texcoords.begin());
   glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_INT, &*triangles.begin());
+}
+
+void
+Mesh::apply(Armature* armature)
+{
+  for(Vertices::iterator i = vertices_.begin(); i != vertices_.end(); ++i)
+    {
+      if (i->bone_names.empty())
+        {
+          // This shouldn't be reached for full mehes
+          i->render_pos = i->pos;
+        }
+      else
+        {
+          if (i->bones.empty())
+            {
+              for(unsigned int j = 0; j < i->bone_names.size(); ++j)
+                i->bones.push_back(armature->get_bone(i->bone_names[j]));
+            }
+
+          i->render_pos = Vector3(0.0f, 0.0f, 0.0f);
+          for(unsigned int j = 0; j < i->bone_names.size(); ++j)
+            {
+              Bone* bone   = i->bones[j];
+              float weight = i->weights[j];
+
+              //std::cout << "apply: " << i->bone_names[j] << " " << bone << " " << weight << std::endl;
+
+              if (bone)
+                { // FIXME: Need to calculate the offset from the bone and rotate that, not the pos
+                  i->render_pos += (bone->render_matrix.multiply(i->pos)) * weight;
+                }
+              else
+                {
+                  std::cout << "Couldn't find bone: " << i->bone_names[j] << std::endl;
+                }
+            }
+        }
+    }
+}
+
+void
+Mesh::reset()
+{
+  for(Vertices::iterator i = vertices_.begin(); i != vertices_.end(); ++i)
+    {
+      i->render_pos = i->pos;
+    }
 }
 
 /* EOF */

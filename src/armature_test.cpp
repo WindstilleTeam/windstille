@@ -57,7 +57,7 @@ ArmatureTest::ArmatureTest()
 
   pose_idx = 0;
 
-  //armature->apply(*poses[pose_idx]);
+  armature->apply(*poses[pose_idx]);
 
   xrot = 0;
   yrot = 0;
@@ -94,8 +94,9 @@ ArmatureTest::update(float delta, const Controller& controller)
 {
   time += delta;
 
-  pose_idx = int(time * 20.0f) % poses.size();
-  //armature->apply(*poses[pose_idx]);
+  pose_idx = int(time * 5.0f) % poses.size();
+  armature->apply(*poses[pose_idx]);
+  model->apply(armature);
 
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))

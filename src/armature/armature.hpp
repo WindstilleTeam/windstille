@@ -53,6 +53,9 @@ public:
 
   void  parse(FileReader& reader);
   Bone* get_bone(const std::string& name);
+
+  Matrix* get_render_matrix(const std::string& name);
+
   void  draw();
   void  draw_bone(Bone* bone, Vector3 p, Matrix matrix);
 private:
