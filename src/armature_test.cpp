@@ -57,9 +57,9 @@ ArmatureTest::ArmatureTest()
 
   pose_idx = 0;
 
-  armature->apply(*poses[pose_idx]);
+  //armature->apply(*poses[pose_idx]);
 
-  xrot = 180;
+  xrot = 0;
   yrot = 0;
   zrot = 0;
   
@@ -81,9 +81,8 @@ ArmatureTest::draw()
   glRotatef(yrot, 0.0f, 1.0f, 0.0f);
   glRotatef(zrot, 0.0f, 0.0f, 1.0f);
 
-  armature->draw();
-
   model->draw();
+  armature->draw();
 
   glPopMatrix();
 
@@ -96,7 +95,7 @@ ArmatureTest::update(float delta, const Controller& controller)
   time += delta;
 
   pose_idx = int(time * 20.0f) % poses.size();
-  armature->apply(*poses[pose_idx]);
+  //armature->apply(*poses[pose_idx]);
 
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))

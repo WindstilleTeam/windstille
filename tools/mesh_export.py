@@ -77,7 +77,7 @@ class VertexData:
         self.influences = []
 
     def key(self):
-        return (self.co[1], self.co[2],
+        return (self.co[0], self.co[1], self.co[2],
                 self.normal[0], self.normal[1], self.normal[2],
                 self.uv[0], self.uv[1])
     
@@ -124,7 +124,7 @@ class WindstilleModel:
                 verts.append(VertexData(face.v[i].index,
                                         [face.v[i].co[0], face.v[i].co[1], face.v[i].co[2]],
                                         [face.uv[i][0], 1.0 - face.uv[i][1]],
-                                        [face.v[i].no[1], -face.v[i].no[2], -face.v[i].no[0]]))
+                                        [face.v[i].no[1], face.v[i].no[1], face.v[i].no[2]]))
             mesh.add(FaceData(verts))
 
             # Write out another triangle in case we have a quad
@@ -134,7 +134,7 @@ class WindstilleModel:
                     verts.append(VertexData(face.v[i].index,
                                             [face.v[i].co[0], face.v[i].co[1], face.v[i].co[2]],
                                             [face.uv[i][0], 1.0 - face.uv[i][1]],
-                                            [face.v[i].no[1], -face.v[i].no[2], -face.v[i].no[0]]))
+                                            [face.v[i].no[0], face.v[i].no[1], face.v[i].no[2]]))
                 mesh.add(FaceData(verts))
 
         for mesh in self.mesh_data.values():
