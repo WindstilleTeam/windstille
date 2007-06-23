@@ -41,7 +41,7 @@ private:
   Meshes meshes;
 
 public:
-  Model(FileReader& reader);
+  Model(FileReader& reader, const std::string& path);
   ~Model();
 
   void draw();

@@ -32,7 +32,7 @@
 #include "file_reader.hpp"
 #include "mesh.hpp"
 
-Mesh::Mesh(FileReader& reader)
+Mesh::Mesh(FileReader& reader, const std::string& path)
   : blend_sfactor(GL_ONE),
     blend_dfactor(GL_ZERO)
 {
@@ -143,6 +143,7 @@ Mesh::Mesh(FileReader& reader)
     }
 #endif
 
+  texture_filename = path + basename(texture_filename);
   texture = texture_manager->get(texture_filename);
 
   // Check that all vectors contain enough values for the given number

@@ -79,7 +79,7 @@ private:
   GLenum blend_dfactor;
 
 public:
-  Mesh(FileReader& reader);
+  Mesh(FileReader& reader, const std::string& path);
   ~Mesh();
 
   void draw();

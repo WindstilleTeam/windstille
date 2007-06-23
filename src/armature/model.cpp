@@ -29,7 +29,7 @@
 #include "mesh.hpp"
 #include "model.hpp"
 
-Model::Model(FileReader& reader)
+Model::Model(FileReader& reader, const std::string& path)
 {
   if (reader.get_name() != "windstille-model")
     throw std::runtime_error("Not a 'windstille-model' file, its '" + reader.get_name() + "'");
@@ -41,7 +41,7 @@ Model::Model(FileReader& reader)
     {
       if (i->get_name() == "mesh")
         {
-          Mesh* mesh = new Mesh(*i);
+          Mesh* mesh = new Mesh(*i, path);
           meshes.push_back(mesh);
         }
       else

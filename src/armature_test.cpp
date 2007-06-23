@@ -38,7 +38,7 @@
 ArmatureTest::ArmatureTest()
 {
   FileReader model_reader = FileReader::parse("armature/mesh.mesh");
-  model = new Model(model_reader);
+  model = new Model(model_reader, "armature/");
 
   FileReader armature_reader = FileReader::parse("armature/armature.arm");
   armature = new Armature(armature_reader);
@@ -69,7 +69,7 @@ ArmatureTest::ArmatureTest()
 void
 ArmatureTest::draw()
 {
-  glClearColor(0.3f, 0.0f, 0.3f, 1.0f);
+  glClearColor(0.5f, 0.0f, 0.5f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glPushMatrix();
