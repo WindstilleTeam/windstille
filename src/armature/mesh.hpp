@@ -30,9 +30,31 @@
 #include <GL/gl.h>
 #include <string>
 #include <vector>
+#include "math/vector.hpp"
+#include "math/vector3.hpp"
 #include "display/texture.hpp"
 
 class FileReader;
+class Bone;
+
+struct VertexGroup
+{
+  std::string bone_name;
+  float       weight;
+  std::vector<int> vertices;
+};
+
+struct Vertex
+{
+  Vector3 pos;
+  Vector3 normal;
+  Vector  texcoord;
+
+  // Influences from bone;
+  std::vector<float> weight;
+  std::vector<std::string> bone_names;
+  std::vector<Bone*> bones;
+};
 
 /** */
 class Mesh
@@ -44,6 +66,12 @@ private:
   std::vector<float> normals;
   std::vector<float> texcoords;
   std::vector<int>   triangles;
+
+  typedef std::vector<VertexGroup> Groups;
+  Groups groups;
+  
+  typedef std::vector<Vertex> Vertices;
+  Vertices vertices_;
 
   Texture texture;
 

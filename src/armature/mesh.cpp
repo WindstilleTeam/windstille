@@ -47,7 +47,65 @@ Mesh::Mesh(FileReader& reader)
   reader.get("normals",   normals);
   reader.get("texcoords", texcoords);
   reader.get("triangles", triangles);
-  
+
+  FileReader groups_reader;
+  if (reader.get("groups", groups_reader))
+    {
+      std::vector<FileReader> sections = groups_reader.get_sections();
+      for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+        {
+          if ((*i).get_name() == "group")
+            {
+              VertexGroup group;
+              if ((*i).get("bone",     group.bone_name) &&
+                  (*i).get("weight",   group.weight) && 
+                  (*i).get("vertices", group.vertices))
+                groups.push_back(group);
+              else
+                std::cout << "Mesh::VertexGroup: Element missing" << std::endl;
+            }
+          else
+            {
+              std::cout << "Unknown tag: " << (*i).get_name() << std::endl;
+            }
+        }
+    }
+
+  // Check that all vectors have the same right modulo
+  assert(vertices.size()  % 3 == 0);
+  assert(normals.size()   % 3 == 0);
+  assert(texcoords.size() % 2 == 0);
+
+  // Convert the data to something we can use together with Armatures
+  // and Bones
+  for(std::vector<float>::size_type i = 0; i < vertices.size()/3; ++i)
+    {
+      Vertex vertex;
+
+      vertex.pos.x = vertices[3*i+0];
+      vertex.pos.y = vertices[3*i+1];
+      vertex.pos.z = vertices[3*i+2];
+
+      vertex.normal.x = normals[3*i+0];
+      vertex.normal.y = normals[3*i+1];
+      vertex.normal.z = normals[3*i+2];
+
+      vertex.texcoord.x = texcoords[2*i+0];
+      vertex.texcoord.y = texcoords[2*i+1];
+
+      vertices_.push_back(vertex);
+    }
+
+  for(Groups::iterator i = groups.begin(); i != groups.end(); ++i)
+    {
+      VertexGroup& group = *i;
+      for(std::vector<int>::iterator j = group.vertices.begin(); j != group.vertices.end(); ++j)
+        {
+          vertices_[*j].bone_names.push_back(group.bone_name);
+          vertices_[*j].weight.push_back(group.weight);
+        }
+    }
+
 #if 0 
   // FIXME: Broken by design
   FileReader influences_reader;
@@ -86,11 +144,6 @@ Mesh::Mesh(FileReader& reader)
 #endif
 
   texture = texture_manager->get(texture_filename);
-
-  // Check that all vectors have the same right modulo
-  assert(vertices.size()  % 3 == 0);
-  assert(normals.size()   % 3 == 0);
-  assert(texcoords.size() % 2 == 0);
 
   // Check that all vectors contain enough values for the given number
   // of vertices
