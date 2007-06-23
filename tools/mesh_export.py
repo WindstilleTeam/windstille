@@ -16,6 +16,9 @@ class MeshData:
 
         # { orig_index : VerticeData, ... }
         self.vertmap = {}
+
+        # { (bonename, weight) : VertexGroup, ...}
+        self.groups = {}
 
     def add(self, face):
         self.faces.append(face)
@@ -24,11 +27,17 @@ class MeshData:
             self.vertmap[vert.orig_idx] = vert
 
     def add_influences(self, orig_idx, influences):
+        """influences -> [(bonename, weight), ...]"""
         if not self.vertmap.has_key(orig_idx):
             pass # this is normal due to MeshData not being a complete
                  # Blender mesh when multiple textures are in play       
         else:
             self.vertmap[orig_idx].influences = influences
+            for (bone,weight) in influences:
+                key = (bone, weight)
+                if not self.groups.has_key(key):
+                    self.groups[key] = VertexGroup(bone, weight)
+                self.groups[key].add(orig_idx)
 
     def finalize(self):
         """Reorders vertex indexes and merge vertexes which have the
@@ -72,6 +81,15 @@ class VertexData:
                 self.normal[0], self.normal[1], self.normal[2],
                 self.uv[0], self.uv[1])
     
+
+class VertexGroup:
+    def __init__(self, bone, weight):
+        self.bone     = bone
+        self.weight   = weight
+        self.vertices = [] # [23,2,1,2,...]
+
+    def add(self, v):
+        self.vertices.append(v)
 
 class WindstilleModel:
     """WindstilleMesh is used to collect data vertex and face data
@@ -161,16 +179,28 @@ class WindstilleModel:
                                                 face.verts[2].index))
             out.write("     ) ;; triangles\n\n")
 
-            out.write("    (influences\n")
-            for vert in mesh.vertices:
-                if vert.influences != []:
-                    out.write("      (vertex\n")
-                    out.write("        (index %d)\n" % vert.index)
-                    out.write("        (influeces")
-                    for (bone, weight) in vert.influences:
-                        out.write("\n          (influence (weight %f) (bone \"%s\"))" % (weight, bone))
-                    out.write("))\n")
-            out.write("     ) ;; influencs\n\n")
+            out.write("    (groups\n")
+            for group in mesh.groups.values():
+                out.write("      (group\n")
+                out.write("        (bone    \"%s\")\n" % group.bone)
+                out.write("        (weight   %f)\n" % group.weight)
+                out.write("        (vertices")
+                for v in group.vertices:
+                    out.write(" %d" % v)
+                out.write(")\n")
+                out.write("       )\n")
+            out.write("     ) ;; groups\n\n")
+             
+#             out.write("    (influences\n")
+#             for vert in mesh.vertices:
+#                 if vert.influences != []:
+#                     out.write("      (vertex\n")
+#                     out.write("        (index %d)\n" % vert.index)
+#                     out.write("        (influeces")
+#                     for (bone, weight) in vert.influences:
+#                         out.write("\n          (influence (weight %f) (bone \"%s\"))" % (weight, bone))
+#                     out.write("))\n")
+#             out.write("     ) ;; influencs\n\n")
             
             out.write("   ) ;; mesh\n\n")
         out.write(" ) ;; windstille-model\n")

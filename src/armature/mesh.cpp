@@ -48,7 +48,42 @@ Mesh::Mesh(FileReader& reader)
   reader.get("texcoords", texcoords);
   reader.get("triangles", triangles);
   
-  // FIXME: add 'influences' tag parsing
+#if 0 
+  // FIXME: Broken by design
+  FileReader influences_reader;
+  if (reader.get("influences", influences_reader))
+    {
+      std::vector<FileReader> sections = influences_reader.get_sections();
+      for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+        {
+          if ((*i).get_name() == "vertex")
+            {
+              FileReader influences_sub_reader;
+
+              (*i).get("index", index);
+              if ((*i).get("influences", influences_sub_reader))
+                {
+                  std::vector<FileReader> sub_sections = influences_sub_reader.get_sections();
+                  for(std::vector<FileReader>::iterator j = sub_sections.begin(); j != sub_sections.end(); ++j)
+                    {
+                      if ((*j).get_name() == "influences")
+                        {
+                          float weight;
+                          std::string bone_name;
+                      
+                          (*j).get("weight", weight);
+                          (*j).get("bone",   bone_name);                         
+                        }
+                    }
+                }
+            }
+          else
+            {
+              std::cout << "Unknown tag: " << (*i).get_name() << std::endl;
+            }
+        }
+    }
+#endif
 
   texture = texture_manager->get(texture_filename);
 
