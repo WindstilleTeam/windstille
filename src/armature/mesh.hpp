@@ -51,7 +51,7 @@ struct Vertex
   Vector  texcoord;
 
   // Influences from bone;
-  std::vector<float> weight;
+  std::vector<float> weights;
   std::vector<std::string> bone_names;
   std::vector<Bone*> bones;
 };

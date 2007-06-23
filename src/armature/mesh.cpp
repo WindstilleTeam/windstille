@@ -60,7 +60,9 @@ Mesh::Mesh(FileReader& reader, const std::string& path)
               if ((*i).get("bone",     group.bone_name) &&
                   (*i).get("weight",   group.weight) && 
                   (*i).get("vertices", group.vertices))
-                groups.push_back(group);
+
+                if (group.weight != 0.0f) // ignore useless bones
+                  groups.push_back(group);
               else
                 std::cout << "Mesh::VertexGroup: Element missing" << std::endl;
             }
@@ -95,15 +97,27 @@ Mesh::Mesh(FileReader& reader, const std::string& path)
 
       vertices_.push_back(vertex);
     }
-
+  
+  // Add bone and weight to the individual vertices
   for(Groups::iterator i = groups.begin(); i != groups.end(); ++i)
     {
       VertexGroup& group = *i;
       for(std::vector<int>::iterator j = group.vertices.begin(); j != group.vertices.end(); ++j)
         {
           vertices_[*j].bone_names.push_back(group.bone_name);
-          vertices_[*j].weight.push_back(group.weight);
+          vertices_[*j].weights.push_back(group.weight);
         }
+    }
+  
+  // Normalize Weight to 1.0f
+  for(Vertices::iterator i = vertices_.begin(); i != vertices_.end(); ++i)
+    {
+      float total_weight = 0.0f;
+      for(std::vector<float>::iterator w = i->weights.begin(); w != i->weights.end(); ++w)
+        total_weight += *w;
+     
+      for(std::vector<float>::iterator w = i->weights.begin(); w != i->weights.end(); ++w)
+        *w /= total_weight;
     }
 
 #if 0 
