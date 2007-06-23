@@ -32,10 +32,14 @@
 #include "screen_manager.hpp"
 #include "display/display.hpp"
 #include "armature/pose.hpp"
+#include "armature/model.hpp"
 #include "armature_test.hpp"
 
 ArmatureTest::ArmatureTest()
 {
+  FileReader model_reader = FileReader::parse("armature/mesh.mesh");
+  model = new Model(model_reader);
+
   FileReader armature_reader = FileReader::parse("armature/armature.arm");
   armature = new Armature(armature_reader);
 
@@ -78,6 +82,8 @@ ArmatureTest::draw()
   glRotatef(zrot, 0.0f, 0.0f, 1.0f);
 
   armature->draw();
+
+  model->draw();
 
   glPopMatrix();
 

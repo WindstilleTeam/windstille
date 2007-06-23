@@ -23,19 +23,31 @@
 **  02111-1307, USA.
 */
 
+#include <iostream>
+#include <stdexcept>
 #include "file_reader.hpp"
 #include "mesh.hpp"
 #include "model.hpp"
 
 Model::Model(FileReader& reader)
 {
+  if (reader.get_name() != "windstille-model")
+    throw std::runtime_error("Not a 'windstille-model' file, its '" + reader.get_name() + "'");
+
   reader.get("name", name);
 
   std::vector<FileReader> sections = reader.get_sections();
   for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
     {
-      Mesh* mesh = new Mesh(*i);
-      meshes.push_back(mesh);
+      if (i->get_name() == "mesh")
+        {
+          Mesh* mesh = new Mesh(*i);
+          meshes.push_back(mesh);
+        }
+      else
+        {
+          std::cout << "Ignoring unhandled tag: " << i->get_name() << std::endl;
+        }
     }
 }
 

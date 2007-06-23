@@ -27,12 +27,14 @@
 #define HEADER_ARMATURE_TEST_HPP
 
 #include "armature/armature.hpp"
+#include "armature/model.hpp"
 #include "screen.hpp"
 
 /** */
 class ArmatureTest : public Screen
 {
 private:
+  Model* model;
   Armature* armature;
   std::vector<Pose*> poses;
   
