@@ -30,6 +30,7 @@
 #include <GL/gl.h>
 #include <string>
 #include <vector>
+#include "display/texture.hpp"
 
 class FileReader;
 
@@ -43,6 +44,8 @@ private:
   std::vector<float> normals;
   std::vector<float> texcoords;
   std::vector<int>   triangles;
+
+  Texture texture;
 
   GLenum blend_sfactor;
   GLenum blend_dfactor;

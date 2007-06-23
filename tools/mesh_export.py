@@ -216,6 +216,6 @@ def export(filename):
 
 export("/tmp/mesh.scm")
 
-# Draw.PupMenu("Export ok")
+Draw.PupMenu("Export ok")
 
 # EOF #
