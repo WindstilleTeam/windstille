@@ -20,6 +20,8 @@
 #ifndef __QUATERNION_HPP__
 #define __QUATERNION_HPP__
 
+#include <math.h>
+#include "vector3.hpp"
 #include "matrix.hpp"
 
 class Quaternion
@@ -37,6 +39,24 @@ public:
   Quaternion(float w, float x, float y, float z)
     : w(w), x(x), y(y), z(z)
   {}
+
+  /** Construct a Quaternion representing a rotation 
+   *  @param axis   the axis of rotation, must be a unit vector (length = 1.0f)
+   *  @param theta  the angle of rotation in radians
+   */
+  Quaternion(const Vector3& axis, float theta)
+  {
+    w = cos(theta/2);
+
+    float s = sin(theta/2);
+    x = axis.x * s;
+    y = axis.y * s;
+    z = axis.z * s;
+  }
+
+  static Quaternion identity() {
+    return Quaternion(1.0f, 0.0f, 0.0f, 0.0f);
+  }
 
   float magnitude() const;
   void normalize();

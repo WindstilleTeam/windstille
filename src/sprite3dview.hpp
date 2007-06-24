@@ -42,8 +42,7 @@ private:
   std::vector<std::string> actions;
   int current_action;
 
-  float rotx;
-  float roty;
+  Quaternion rotation;
   float scale;
 
 public:

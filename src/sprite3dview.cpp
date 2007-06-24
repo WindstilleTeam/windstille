@@ -40,9 +40,9 @@ Sprite3DView::Sprite3DView()
   actions = sprite.get_actions();
 
   sprite.set_action(actions[current_action]);
+  
+  rotation = Quaternion::identity();
 
-  rotx  = 0.0f;
-  roty  = 0.0f;
   scale = 2.0f;
 }
 
@@ -61,16 +61,18 @@ void
 Sprite3DView::draw()
 {
   sc.reset_modelview();
-  //sc.translate(-config->screen_width/2, -config->screen_height/2 + 150);
+  //sc.translate(-config->screen_width/2, -config->screen_height/2);
   //sc.scale(2.0f, 2.0f);
   
   sc.color().fill_screen(Color(0.5, 0.0, 0.5));
 
   sc.push_modelview();
-  sc.translate(Display::get_width()/2, Display::get_height()/2 + 200);
+  sc.translate(Display::get_width()/2, Display::get_height()/2);
   sc.scale(scale, scale);
-  sc.rotate(roty, 0.0f, 1.0f, 0.0f);
-  sc.rotate(rotx, 1.0f, 0.0f, 0.0f);
+
+  // Rotate
+  sc.mult_modelview(rotation.to_matrix());  
+  sc.translate(0, 64.0f); // FIXME: use object height/2 instead of 64
   sprite.draw(sc.color(), Vector(0,0), 0); 
   sc.pop_modelview();
 
@@ -141,8 +143,14 @@ Sprite3DView::update(float delta, const Controller& controller)
       sprite.set_action(actions[current_action]);
     }
 
-  rotx += controller.get_axis_state(Y2_AXIS) * 50.0f * delta;
-  roty += controller.get_axis_state(X2_AXIS) * 50.0f * delta;
+  rotation = Quaternion(Vector3(0.0f, 1.0f, 0.0f), controller.get_axis_state(X2_AXIS) * delta * 2.0f) * rotation;
+  rotation = Quaternion(Vector3(1.0f, 0.0f, 0.0f), controller.get_axis_state(Y2_AXIS) * delta * 2.0f) * rotation;
+  rotation = Quaternion(Vector3(0.0f, 0.0f, 1.0f), controller.get_axis_state(X_AXIS) * delta * 2.0f) * rotation;
+
+  if (controller.get_button_state(VIEW_CENTER_BUTTON))
+    {
+      rotation = Quaternion::identity();
+    }
 
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(CANCEL_BUTTON))
