@@ -343,7 +343,7 @@ class WindstilleSprite:
       """Convert Blender data structures into something that is used by
       this export script"""
 
-      scene  = Blender.Scene.getCurrent()
+      scene  = Blender.Scene.GetCurrent()
       layers = scene.Layers
 
       # compose list of meshs to export
@@ -361,6 +361,8 @@ class WindstilleSprite:
       armatures = [obj for obj in Blender.Object.Get() if obj.getType() == "Armature"]
       if len(armatures) > 1:
           raise Exception, "Need to have at most 1 armature in the scene"
+      elif len(armatures) == 0:
+          self.armature_object = None
       else:
           self.armature_object = armatures[0]
 
