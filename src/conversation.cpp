@@ -49,7 +49,18 @@ Conversation::add(const std::string& text)
 {
   if (!active)
     {
-      choices.push_back(text);
+      choices.push_back(Choice(text, ""));
+      if (selection >= int(choices.size()))
+        selection = 0;
+    }
+}
+
+void
+Conversation::add(const std::string& topic, const std::string& text)
+{
+  if (!active)
+    {
+      choices.push_back(Choice(topic, text));
       if (selection >= int(choices.size()))
         selection = 0;
     }
@@ -61,7 +72,7 @@ Conversation::draw()
   if (!active)
     return;
   
-  Display::fill_circle(pos, 42.0f, Color(1.0f, 1.0f, 1.0f, 0.25f), 24);
+  Display::fill_circle(pos, 42.0f, Color(0.5f, 0.5f, 0.5f, 0.75f), 24);
 
   float segment = 360.0f / choices.size();
 
@@ -74,7 +85,7 @@ Conversation::draw()
       float end   = -segment/2 - 90.0f + segment*(i+1);
       
       // FIXME: Doesn't handle multi line text
-      Sizef size(Fonts::vera20->get_width(choices[i]) + 60,
+      Sizef size(Fonts::vera20->get_width(choices[i].topic) + 60,
                  Fonts::vera20->get_height() + 40);
       float distance = 160.0f;
 
@@ -85,12 +96,19 @@ Conversation::draw()
         {
           Display::fill_arc(pos, 42.0f, start, end, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
           Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
-          Fonts::vera20->draw_center(textpos.x + distance * offset.x, textpos.y + distance * offset.y, choices[i], Color(1.0f, 1.0f, 1.0f));
+          Fonts::vera20->draw_center(textpos.x + distance * offset.x,
+                                     textpos.y + distance * offset.y, 
+                                     choices[i].topic, Color(1.0f, 1.0f, 1.0f));
+
+          Fonts::vera20->draw_center(400, 600 - 64,
+                                     choices[i].text, Color(1.0f, 1.0f, 1.0f));
         }
       else
         {
           Display::fill_rounded_rect(rect, 5.0f, Color(0.25f, 0.25f, 0.25f, 0.75f));
-          Fonts::vera20->draw_center(textpos.x + distance * offset.x, textpos.y + distance * offset.y, choices[i], Color(0.5f, 0.5f, 0.5f));
+          Fonts::vera20->draw_center(textpos.x + distance * offset.x,
+                                     textpos.y + distance * offset.y,
+                                     choices[i].topic, Color(0.5f, 0.5f, 0.5f));
         }
 
       Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f));
@@ -147,7 +165,9 @@ Conversation::update(float delta, const Controller& controller)
   if (controller.button_was_pressed(OK_BUTTON) && selection != -1)
     {
       active = false;
-      GameSession::current()->get_pda().add_dialog("Jane", choices[selection]);
+      GameSession::current()->get_pda().add_dialog("Jane",
+                                                   choices[selection].topic + " - " +
+                                                   choices[selection].text);
       choices.clear();
       GameSession::current()->set_control_state(GameSession::GAME);
       script_manager->fire_wakeup_event(ScriptManager::CONVERSATION_CLOSED);

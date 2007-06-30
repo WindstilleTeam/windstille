@@ -63,7 +63,6 @@ Armature::parse(FileReader& reader)
                     i->get("parent",   bone->parent_name) &&
                     i->get("length",   bone->length) &&
                     i->get("quat",     bone->quat) &&
-                    i->get("matrix",   bone->matrix) &&
                     i->get("head",     bone->offset)))
                 {
                   std::cout << "Error: some Bone attribute missing" << std::endl;
@@ -71,10 +70,7 @@ Armature::parse(FileReader& reader)
                 }
               else
                 {
-                  // FIXME: experimental
-                  bone->matrix = bone->quat.to_matrix();
                   bone->render_matrix = bone->quat.to_matrix();
-
                   bones.push_back(bone);
                 }
             }
@@ -145,6 +141,7 @@ Armature::draw_bone(Bone* bone, Vector3 p, Matrix m)
 {
   Matrix  m_  = m.multiply(bone->render_matrix);
   Vector3 p_  = p + m.multiply(bone->offset);
+
   // FIXME: In theory we should be using length in the Z component, but only
   // Y seems to work?! -> Blenders matrix are weird
   Vector3 p__ = p_ + m_.multiply(Vector3(0.0f, bone->length, 0.0f));
@@ -160,6 +157,9 @@ Armature::draw_bone(Bone* bone, Vector3 p, Matrix m)
   glVertex3f(  p_.x,   p_.y,   p_.z);
   glColor3f(1.0f, 0.0f, 0.0f);
   glVertex3f(  p__.x,  p__.y, p__.z);
+
+  bone->render_head = p_;
+  bone->render_tail = p__;
 
   for(std::vector<Bone*>::iterator i = bone->children.begin(); i != bone->children.end(); ++i)  
     draw_bone(*i, p__, m_);
@@ -183,7 +183,7 @@ Armature::apply(const Pose& pose)
             }
           else
             {
-              bone->render_matrix = bone->matrix.multiply(pbone->quat.to_matrix());
+              bone->render_matrix = bone->quat.to_matrix().multiply(pbone->quat.to_matrix());
             }
         }
     }

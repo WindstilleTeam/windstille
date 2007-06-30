@@ -48,10 +48,11 @@ public:
   float      length;
 
   Quaternion quat;
-  Matrix     matrix;
   Vector3    offset;
 
   Matrix     render_matrix;
+  Vector3    render_head;
+  Vector3    render_tail;
   
   Bone();
   ~Bone();

@@ -40,7 +40,17 @@ private:
   bool   active;
   int    selection;
 
-  typedef std::vector<std::string> Choices;
+  struct Choice {
+    Choice(const std::string topic_,
+           const std::string text_)
+      : topic(topic_), 
+        text(text_) 
+    {}
+    std::string topic;
+    std::string text;
+  };
+
+  typedef std::vector<Choice> Choices;
   Choices choices;
   
   static Conversation* current_;
@@ -53,6 +63,7 @@ public:
   void update(float delta, const Controller& controller);
 
   void add(const std::string& text);
+  void add(const std::string& topic, const std::string& text);
   int  get_selection() const;
   void show();
 };

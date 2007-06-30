@@ -27,8 +27,10 @@
 **    (if your name is missing here, please add it)
 */
 
+#include <assert.h>
 #include <string.h>
 #include <iostream>
+#include <iomanip>
 #include <math.h>
 #include "vector3.hpp"
 #include "matrix.hpp"
@@ -46,8 +48,8 @@ Matrix::identity()
 {
   Matrix matrix;
 
-  matrix.matrix[0] = 1.0;
-  matrix.matrix[5] = 1.0;
+  matrix.matrix[0]  = 1.0;
+  matrix.matrix[5]  = 1.0;
   matrix.matrix[10] = 1.0;
   matrix.matrix[15] = 1.0;
 	
@@ -56,13 +58,41 @@ Matrix::identity()
 
 Matrix::Matrix(const Matrix &copy)
 {
-  for (int i=0; i<16; i++)
+  for (int i = 0; i < 16; ++i)
     matrix[i] = copy.matrix[i];
 }
 
-Matrix::Matrix(const float *init_matrix)
+Matrix::Matrix(float m00, float m01, float m02, float m03,
+               float m10, float m11, float m12, float m13, 
+               float m20, float m21, float m22, float m23, 
+               float m30, float m31, float m32, float m33)
 {
-  for (int i=0; i<16; i++)
+  Matrix& m = *this;
+
+  m(0,0) = m00;
+  m(1,0) = m10;
+  m(2,0) = m20;
+  m(3,0) = m30;
+
+  m(0,1) = m01;
+  m(1,1) = m11;
+  m(2,1) = m21;
+  m(3,1) = m31;
+
+  m(0,2) = m02;
+  m(1,2) = m12;
+  m(2,2) = m22;
+  m(3,2) = m32;
+
+  m(0,3) = m03;
+  m(1,3) = m13;
+  m(2,3) = m23;
+  m(3,3) = m33;
+}
+
+Matrix::Matrix(const float* init_matrix)
+{
+  for (int i = 0; i < 16; ++i)
     matrix[i] = init_matrix[i];
 }
 
@@ -192,14 +222,110 @@ Matrix::rotate(float angle, float x, float y, float z)
 
   return multiply(matrix);
 }
+// http://www.cvl.iis.u-tokyo.ac.jp/~miyazaki/tech/teche23.html
+// http://gpwiki.org/index.php/MathGem:Fast_Matrix_Inversion
+
+Matrix
+Matrix::inverse() const
+{
+  float det = determinat();
+  if (det != 0)
+    {
+      const Matrix& m = *this;
+      Matrix b;
+      // FIXME: wrong start index, should be 0, is 1
+      b(0,0) = m(2,2)*m(3,3)*m(4,4) + m(2,3)*m(3,4)*m(4,2) + m(2,4)*m(3,2)*m(4,3) - m(2,2)*m(3,4)*m(4,3) - m(2,3)*m(3,2)*m(4,4) - m(2,4)*m(3,3)*m(4,2);
+      b(0,1) = m(1,2)*m(3,4)*m(4,3) + m(1,3)*m(3,2)*m(4,4) + m(1,4)*m(3,3)*m(4,2) - m(1,2)*m(3,3)*m(4,4) - m(1,3)*m(3,4)*m(4,2) - m(1,4)*m(3,2)*m(4,3);
+      b(0,2) = m(1,2)*m(2,3)*m(4,4) + m(1,3)*m(2,4)*m(4,2) + m(1,4)*m(2,2)*m(4,3) - m(1,2)*m(2,4)*m(4,3) - m(1,3)*m(2,2)*m(4,4) - m(1,4)*m(2,3)*m(4,2);
+      b(0,3) = m(1,2)*m(2,4)*m(3,3) + m(1,3)*m(2,2)*m(3,4) + m(1,4)*m(2,3)*m(3,2) - m(1,2)*m(2,3)*m(3,4) - m(1,3)*m(2,4)*m(3,2) - m(1,4)*m(2,2)*m(3,3);
+                                                                                                                                                              
+      b(1,0) = m(2,1)*m(3,4)*m(4,3) + m(2,3)*m(3,1)*m(4,4) + m(2,4)*m(3,3)*m(4,1) - m(2,1)*m(3,3)*m(4,4) - m(2,3)*m(3,4)*m(4,1) - m(2,4)*m(3,1)*m(4,3);
+      b(1,1) = m(1,1)*m(3,3)*m(4,4) + m(1,3)*m(3,4)*m(4,1) + m(1,4)*m(3,1)*m(4,3) - m(1,1)*m(3,4)*m(4,3) - m(1,3)*m(3,1)*m(4,4) - m(1,4)*m(3,3)*m(4,1);
+      b(1,2) = m(1,1)*m(2,4)*m(4,3) + m(1,3)*m(2,1)*m(4,4) + m(1,4)*m(2,3)*m(4,1) - m(1,1)*m(2,3)*m(4,4) - m(1,3)*m(2,4)*m(4,1) - m(1,4)*m(2,1)*m(4,3);
+      b(1,3) = m(1,1)*m(2,3)*m(3,4) + m(1,3)*m(2,4)*m(3,1) + m(1,4)*m(2,1)*m(3,3) - m(1,1)*m(2,4)*m(3,3) - m(1,3)*m(2,1)*m(3,4) - m(1,4)*m(2,3)*m(3,1);
+                                                                                                                                                              
+      b(2,0) = m(2,1)*m(3,2)*m(4,4) + m(2,2)*m(3,4)*m(4,1) + m(2,4)*m(3,1)*m(4,2) - m(2,1)*m(3,4)*m(4,2) - m(2,2)*m(3,1)*m(4,1) - m(2,4)*m(3,2)*m(4,1);
+      b(2,1) = m(1,1)*m(3,4)*m(4,2) + m(1,2)*m(3,1)*m(4,4) + m(1,4)*m(3,2)*m(4,1) - m(1,1)*m(3,2)*m(4,4) - m(1,2)*m(3,4)*m(4,1) - m(1,4)*m(3,1)*m(4,2);
+      b(2,2) = m(1,1)*m(2,2)*m(4,4) + m(1,2)*m(2,4)*m(4,1) + m(1,4)*m(2,1)*m(4,2) - m(1,1)*m(2,4)*m(4,2) - m(1,2)*m(2,1)*m(4,4) - m(1,4)*m(2,2)*m(4,1);
+      b(2,3) = m(1,1)*m(2,4)*m(3,2) + m(1,2)*m(2,1)*m(3,4) + m(1,4)*m(2,2)*m(3,1) - m(1,1)*m(2,2)*m(3,4) - m(1,2)*m(2,4)*m(3,1) - m(1,4)*m(2,1)*m(3,2);
+                                                                                                                                                              
+      b(3,0) = m(2,1)*m(3,3)*m(4,2) + m(2,2)*m(3,1)*m(4,3) + m(2,3)*m(3,2)*m(4,1) - m(2,1)*m(3,2)*m(4,3) - m(2,2)*m(3,3)*m(4,1) - m(2,3)*m(3,1)*m(4,2);
+      b(3,1) = m(1,1)*m(3,2)*m(4,3) + m(1,2)*m(3,3)*m(4,1) + m(1,3)*m(3,1)*m(4,2) - m(1,1)*m(3,3)*m(4,2) - m(1,2)*m(3,1)*m(4,3) - m(1,3)*m(3,2)*m(4,1);
+      b(3,2) = m(1,1)*m(2,3)*m(4,2) + m(1,2)*m(2,1)*m(4,3) + m(1,3)*m(2,2)*m(4,1) - m(1,1)*m(2,2)*m(4,3) - m(1,2)*m(2,3)*m(4,1) - m(1,3)*m(2,1)*m(4,2);
+      b(3,3) = m(1,1)*m(2,2)*m(3,3) + m(1,2)*m(2,3)*m(3,1) + m(1,3)*m(2,1)*m(3,2) - m(1,1)*m(2,3)*m(3,2) - m(1,2)*m(2,1)*m(3,3) - m(1,3)*m(2,2)*m(3,1);
+
+      return b;
+    }
+  else
+    {
+      assert(!"Matrix can't be inverted");
+    }
+}
+
+float
+Matrix::determinat() const
+{
+  const Matrix& m = *this;
+  return  // fixme: all wrong, need to -1 everything!
+    m(1,1)*m(2,2)*m(3,3)*m(4,4) + m(1,1)*m(2,3)*m(3,4)*m(4,2) + m(1,1)*m(2,4)*m(3,2)*m(4,3) +
+    m(1,2)*m(2,1)*m(3,4)*m(4,3) + m(1,2)*m(2,3)*m(3,1)*m(4,4) + m(1,2)*m(2,4)*m(3,3)*m(4,1) +
+    m(1,3)*m(2,1)*m(3,2)*m(4,4) + m(1,3)*m(2,2)*m(3,4)*m(4,1) + m(1,3)*m(2,4)*m(3,1)*m(4,2) +
+    m(1,4)*m(2,1)*m(3,3)*m(4,2) + m(1,4)*m(2,2)*m(3,1)*m(4,3) + m(1,4)*m(2,3)*m(3,2)*m(4,1) -
+    m(1,1)*m(2,2)*m(3,4)*m(4,3) - m(1,1)*m(2,3)*m(3,2)*m(4,4) - m(1,1)*m(2,4)*m(3,3)*m(4,2) -
+    m(1,2)*m(2,1)*m(3,3)*m(4,4) - m(1,2)*m(2,3)*m(3,4)*m(4,1) - m(1,2)*m(2,4)*m(3,1)*m(4,3) -
+    m(1,3)*m(2,1)*m(3,4)*m(4,2) - m(1,3)*m(2,2)*m(3,1)*m(4,4) - m(1,3)*m(2,4)*m(3,2)*m(4,1) -
+    m(1,4)*m(2,1)*m(3,2)*m(4,3) - m(1,4)*m(2,2)*m(3,3)*m(4,1) - m(1,4)*m(2,3)*m(3,1)*m(4,2);
+}
+
+Matrix
+Matrix::fast_inverse() const
+{
+  //const Matrix& m = *this;
+  Matrix ret;
+
+  assert(!"implement me");
+
+  return ret;
+}
+
+Matrix
+Matrix::transpose() const
+{
+  const Matrix& m = *this;
+  Matrix ret;
+
+  ret(0,0) = m(0,0);
+  ret(1,0) = m(0,1);
+  ret(2,0) = m(0,2);
+  ret(3,0) = m(0,3);
+
+  ret(0,1) = m(1,0);
+  ret(1,1) = m(1,1);
+  ret(2,1) = m(1,2);
+  ret(3,1) = m(1,3);
+
+  ret(0,2) = m(2,0);
+  ret(1,2) = m(2,1);
+  ret(2,2) = m(2,2);
+  ret(3,2) = m(2,3);
+
+  ret(0,3) = m(3,0);
+  ret(1,3) = m(3,1);
+  ret(2,3) = m(3,2);
+  ret(3,3) = m(3,3);
+
+  return ret;
+}
 
 std::ostream& operator<<(std::ostream& s, const Matrix& m)
 {
-  s << "[" << m[ 0] << ", " << m[ 4] << ", " << m[ 8] << ", " << m[12] << "\n";
-  s << " " << m[ 1] << ", " << m[ 5] << ", " << m[ 9] << ", " << m[13] << "\n";
-  s << " " << m[ 2] << ", " << m[ 6] << ", " << m[10] << ", " << m[14] << "\n";
-  s << " " << m[ 3] << ", " << m[ 7] << ", " << m[11] << ", " << m[15] << "]\n";
-
+  std::ios_base::fmtflags oldflags = s.flags();
+  s << std::fixed << std::setprecision(3)
+    << "[" << m[ 0] << ", " << m[ 4] << ", " << m[ 8] << ", " << m[12] << "\n"
+    << " " << m[ 1] << ", " << m[ 5] << ", " << m[ 9] << ", " << m[13] << "\n"
+    << " " << m[ 2] << ", " << m[ 6] << ", " << m[10] << ", " << m[14] << "\n"
+    << " " << m[ 3] << ", " << m[ 7] << ", " << m[11] << ", " << m[15] << "]\n";
+  s.flags(oldflags);
   return s;
 }
 

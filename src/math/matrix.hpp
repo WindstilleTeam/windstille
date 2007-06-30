@@ -46,6 +46,11 @@ public:
 
   Matrix(const float *matrix);
 
+  Matrix(float m00, float m01, float m02, float m03,
+         float m10, float m11, float m12, float m13, 
+         float m20, float m21, float m22, float m23, 
+         float m30, float m31, float m32, float m33);
+
   /** Returns identity matrix */
   static Matrix identity();
 
@@ -91,7 +96,21 @@ public:
   //: Multiply two matrices.
   Matrix multiply(const Matrix &matrix) const;
 
+  //: Calculate the inverse of this matrix
+  Matrix inverse() const;
+
+  /** Calculate the inverse of this matrix in a fast way, only works
+   *  for matrices that represent rotation and translation */
+  Matrix fast_inverse() const;
+
+  //: Callculate the determinat of this matrix
+  float determinat() const;
+
+  //: Multiply a vector with this matrix
   Vector3 multiply(const Vector3& vector) const;
+  
+  //: Transpose this matrix and return the result
+  Matrix transpose() const;
 
   //: Multiply the matrix with the given scale/translate/rotate matrix
   Matrix scale(float x, float y, float z);

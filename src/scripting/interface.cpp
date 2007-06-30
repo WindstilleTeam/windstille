@@ -223,6 +223,11 @@ void conversation_add(const std::string& text)
   Conversation::current()->add(text);
 }
 
+void conversation_add2(const std::string& topic, const std::string& text)
+{
+  Conversation::current()->add(topic, text);
+}
+
 void conversation_show()
 {
   Conversation::current()->show();

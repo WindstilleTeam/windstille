@@ -69,6 +69,7 @@ void wait_for_fade(HSQUIRRELVM vm) __suspend;
 void wait_for_camera(HSQUIRRELVM vm) __suspend;
 
 void conversation_add(const std::string& text);
+void conversation_add2(const std::string& topic, const std::string& text);
 void conversation_show();
 int  conversation_get_selection();
 void wait_for_conversation(HSQUIRRELVM v) __suspend;

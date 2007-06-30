@@ -33,7 +33,7 @@
 
 InputManagerSDL* InputManagerSDL::current_ = 0;
 
-const int dead_zone =  4096;
+const int dead_zone =  8192;
 
 class InputManagerSDLImpl
 {
