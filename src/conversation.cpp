@@ -37,7 +37,8 @@
 Conversation* Conversation::current_ = 0;
 
 Conversation::Conversation()
-  : pos(400, 300)
+  : pos(400, 300),
+    time(0)
 {
   current_ = this;
   active = false;
@@ -84,16 +85,18 @@ Conversation::draw()
       float start = -segment/2 - 90.0f + segment*i;
       float end   = -segment/2 - 90.0f + segment*(i+1);
       
-      // FIXME: Doesn't handle multi line text
-      Sizef size(Fonts::vera20->get_width(choices[i].topic) + 60,
-                 Fonts::vera20->get_height() + 40);
       float distance = 160.0f;
 
       Vector textpos = pos + Vector(0, 16.0f);
-      Rectf  rect(textpos + distance * offset - Vector(size.width/2, size.height - 20), size);
+      // FIXME: Doesn't handle multi line text
+      Sizef size(Fonts::vera20->get_width(choices[i].topic) + 50,
+                 Fonts::vera20->get_height() + 30);
+      Rectf  rect(textpos + distance * offset - Vector(size.width/2, size.height - 15), size);
 
       if (i == selection)
         {
+          rect = rect.grow(grow);
+          
           Display::fill_arc(pos, 42.0f, start, end, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
           Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
           Fonts::vera20->draw_center(textpos.x + distance * offset.x,
@@ -127,8 +130,12 @@ Conversation::draw()
 void
 Conversation::update(float delta, const Controller& controller)
 {
+  time += delta;
+
   if (!active)
     return;
+
+  grow = sin(time * 3.0f) * 4.0f;
 
   direction = Vector(controller.get_axis_state(X_AXIS),
                      controller.get_axis_state(Y_AXIS));
@@ -139,28 +146,20 @@ Conversation::update(float delta, const Controller& controller)
       float segment = 360.0f / choices.size();
       float angle = math::rad2deg(math::normalize_angle(atan2f(direction.y, direction.x) + M_PI/2 + math::deg2rad(segment/2.0f)));
 
-      selection = int(angle / segment);
-      selection = math::mid(0, selection, int(choices.size()));
+      int new_selection = int(angle / segment);
+      new_selection = math::mid(0, new_selection, int(choices.size()));
+
+      if (new_selection != selection) {
+        selection = new_selection;
+        // FIXME: Might be a good idea to do the woople-size per button, not globaly
+        grow = 0.0f;
+        time = 0;
+      }
     }
   else
     {
       selection = -1;
     }
-
-  /*
-    if (controller.button_was_pressed(MENU_UP_BUTTON))
-    {
-    selection -= 1;
-    if (selection < 0)
-    selection = choices.size() - 1;
-    }
-    else if (controller.button_was_pressed(MENU_DOWN_BUTTON))
-    {
-    selection += 1;
-    if (selection >= int(choices.size()))
-    selection = 0;
-    }
-  */
   
   if (controller.button_was_pressed(OK_BUTTON) && selection != -1)
     {

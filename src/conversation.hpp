@@ -39,6 +39,8 @@ private:
   Vector direction;
   bool   active;
   int    selection;
+  float  grow;
+  float  time;
 
   struct Choice {
     Choice(const std::string topic_,
