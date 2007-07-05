@@ -75,13 +75,18 @@ struct KeyboardAxisBinding
   SDLKey plus;
 };
 
-struct ButtonBinding
+struct WiimoteButtonBinding
 {
-  enum Type { JOYSTICK_BUTTON, JOYSTICK_AXIS, JOYSTICK_HAT, MOUSE_BUTTON };
+  int event;
+  int device;
+  int button;
+};
 
-  Type type;
-  int  device;
-  int  button;
+struct WiimoteAxisBinding
+{
+  int event;
+  int device;
+  int axis;
 };
 
 /** */
@@ -107,7 +112,11 @@ public:
 
   void bind_keyboard_button(int event, SDLKey key);
   void bind_keyboard_axis(int event, SDLKey minus, SDLKey plus);
+
   void bind_mouse_button(int event, int device, int button);
+
+  void bind_wiimote_button(int event, int device, int button);
+  void bind_wiimote_axis(int event, int device, int axis);
   
   void clear_bindings();
 

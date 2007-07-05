@@ -135,7 +135,7 @@ Conversation::update(float delta, const Controller& controller)
   if (!active)
     return;
 
-  grow = sin(time * 3.0f) * 4.0f;
+  grow = fabs(sinf(time * 3.0f)) * 4.0f;
 
   direction = Vector(controller.get_axis_state(X_AXIS),
                      controller.get_axis_state(Y_AXIS));

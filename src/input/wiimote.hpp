@@ -26,23 +26,74 @@
 #ifndef HEADER_WIIMOTE_HPP
 #define HEADER_WIIMOTE_HPP
 
+#include <vector>
 #include "cwiid.h"
+
+struct WiimoteButtonEvent
+{
+  int  device;
+  int  button;
+  bool down; 
+};
+
+struct WiimoteAxisEvent
+{
+  int   device;
+  int   axis;
+  float pos;
+};
+
+struct WiimoteEvent
+{
+  enum { WIIMOTE_AXIS_EVENT, WIIMOTE_BUTTON_EVENT } type;
+  union {
+    WiimoteAxisEvent   axis;
+    WiimoteButtonEvent button;
+    // FIXME: add accel support here
+  };
+};
 
 /** */
 class Wiimote
 {
 public:
-  static void error_callback(cwiid_wiimote_t*, const char *s, va_list ap);
-  static void status_callback(cwiid_wiimote_t*, int mesg_count, union cwiid_mesg mesg[]);
+  static void err_callback(cwiid_wiimote_t*, const char *s, va_list ap);
+  static void mesg_callback(cwiid_wiimote_t*, int mesg_count, union cwiid_mesg mesg[]);
+
+  static void init();
+  static void deinit();
 
 private:
+  pthread_mutex_t  mutex;
   cwiid_wiimote_t* m_wiimote;
-  
+  bool             m_rumble;
+  unsigned char    m_led_state;
+  uint8_t          m_nunchuk_btns;
+  float            m_nunchuk_stick_x;
+  float            m_nunchuk_stick_y;
+  uint16_t         m_buttons;
+
+  std::vector<WiimoteEvent> events;
+
+  void add_button_event(int device, int button, bool down);
+  void add_axis_event(int device, int axis, float pos);
 public:
   Wiimote();
+  ~Wiimote();
   
   void connect();
   void disconnect();
+
+  void set_led(int num, bool state);
+  void set_led(unsigned char led_state);
+  unsigned char get_led() const { return m_led_state; }
+
+  void set_rumble(bool t);
+  bool get_rumble() const { return m_rumble; }
+
+  std::vector<WiimoteEvent> pop_events();
+
+  bool is_connected() const { return m_wiimote != 0; }
 
   // Callback functions
   void on_status  (const cwiid_status_mesg& msg);
@@ -52,6 +103,8 @@ public:
   void on_ir      (const cwiid_ir_mesg& msg);
   void on_nunchuck(const cwiid_nunchuk_mesg& msg);
   void on_classic (const cwiid_classic_mesg& msg);
+  
+  void mesg(cwiid_wiimote_t*, int mesg_count, union cwiid_mesg mesg[]);
   void err(cwiid_wiimote_t*, const char *s, va_list ap);
 
 private:
