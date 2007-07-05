@@ -29,7 +29,7 @@ Import('conf_env')
 SConscript('scripting/SConscript')
 
 env = conf_env.Copy()
-env.Append(LIBS    = ['GL', 'GLU', 'squirrel', 'physfs', 'SDL_image', 'openal', 'glew', 'ogg', 'vorbis', 'vorbisfile', 'png'])
+env.Append(LIBS    = ['cwiid', 'GL', 'GLU', 'squirrel', 'physfs', 'SDL_image', 'openal', 'glew', 'ogg', 'vorbis', 'vorbisfile', 'png'])
 env.Append(LIBPATH = ['../lib/'] )
 env.Append(CPPPATH = ['.', '..', '../lib/SQUIRREL2/include/', '../lib/glew'])
 
@@ -149,6 +149,7 @@ env.Program('../windstille', [
 'gui/tab_component.cpp',
 'gui/text_view.cpp',
 'input/controller.cpp',
+'input/wiimote.cpp',
 'input/controller_description.cpp',
 'input/input_configurator.cpp',
 'input/input_manager.cpp',
