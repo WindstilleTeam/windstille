@@ -231,6 +231,7 @@ InputManagerSDL::InputManagerSDL()
 
 InputManagerSDL::~InputManagerSDL()
 {
+  Wiimote::deinit();
 }
 
 void
@@ -247,22 +248,18 @@ InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
     }
   else if (event.keysym.sym == SDLK_LEFT)
     {
-      wiimote->set_led(1, 0);
       add_button_event(MENU_LEFT_BUTTON, event.state);
     }
   else if (event.keysym.sym == SDLK_RIGHT)
     {
-      wiimote->set_led(2, 0);
       add_button_event(MENU_RIGHT_BUTTON, event.state);
     }
   else if (event.keysym.sym == SDLK_UP)
     {
-      wiimote->set_led(1, 1);
       add_button_event(MENU_UP_BUTTON, event.state);
     }
   else if (event.keysym.sym == SDLK_DOWN)
     {
-      wiimote->set_led(2, 1);
       add_button_event(MENU_DOWN_BUTTON, event.state);
     }
 
@@ -442,7 +439,7 @@ InputManagerSDL::on_event(const SDL_Event& event)
 void
 InputManagerSDL::update(float delta)
 {
-  if (wiimote->is_connected())
+  if (wiimote && wiimote->is_connected())
     {
       // Check for new events from the Wiimote
       std::vector<WiimoteEvent> events = wiimote->pop_events();

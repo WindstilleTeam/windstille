@@ -53,6 +53,13 @@ struct WiimoteEvent
   };
 };
 
+struct AccCalibration
+{
+  uint8_t x;
+  uint8_t y;
+  uint8_t z;
+};
+
 /** */
 class Wiimote
 {
@@ -72,6 +79,12 @@ private:
   float            m_nunchuk_stick_x;
   float            m_nunchuk_stick_y;
   uint16_t         m_buttons;
+
+  AccCalibration wiimote_zero;
+  AccCalibration wiimote_one;
+
+  AccCalibration nunchuk_zero;
+  AccCalibration nunchuk_one;
 
   std::vector<WiimoteEvent> events;
 
