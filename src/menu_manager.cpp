@@ -43,6 +43,7 @@
 #include "armature_test.hpp"
 #include "navigation_test.hpp"
 #include "gui/menu_item.hpp"
+#include "input/wiimote.hpp"
 #include "menu_manager.hpp"
 
 MenuManager menu_manager;
@@ -108,6 +109,13 @@ MenuManager::display_option_menu()
   SliderMenuItem* gamma_item   = new SliderMenuItem(menu,  "Gamma",  100, 10, 200, 10);
   slots.push_back(gamma_item->sig_change().connect(this, &MenuManager::menu_gamma));
   menu->add_item(gamma_item);
+
+  if (wiimote)
+    {
+      ButtonMenuItem* wiimote_button = new ButtonMenuItem(menu,  "Try to Connect Wiimote");
+      slots.push_back(wiimote_button->sig_click().connect(this, &MenuManager::menu_wiimote));
+      menu->add_item(wiimote_button);
+    }
 
   manager->get_root()->add_child(group);
   group->layout();
@@ -597,6 +605,27 @@ MenuManager::menu_gamma(int i)
 {
   float gamma = i / 100.0f;
   SDL_SetGamma(gamma, gamma, gamma);
+}
+
+void
+MenuManager::menu_wiimote()
+{
+  if (wiimote && !wiimote->is_connected())
+    {
+      // FIXME: This never appears on screen due to timeout
+      console << "Trying to connect Wiimote: Press buttons 1 and 2 to connect" << std::endl;
+
+      wiimote->connect();
+
+      if (wiimote->is_connected())
+        console << "Wiimote connected" << std::endl;
+      else
+        console << "Wiimote connection failed" << std::endl;
+    }
+  else
+    {
+      console << "Wiimote already is connected" << std::endl;
+    }
 }
 
 void

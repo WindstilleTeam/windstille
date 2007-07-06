@@ -28,6 +28,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <vector>
+#include "config.hpp"
 #include "wiimote.hpp"
 #include "file_reader.hpp"
 #include "controller_def.hpp"
@@ -226,7 +227,9 @@ InputManagerSDL::InputManagerSDL()
   
   // FIXME: doesn't really belong here
   Wiimote::init();
-  wiimote->connect();
+  
+  if (config.get<bool>("wiimote").get())
+    wiimote->connect();
 }
 
 InputManagerSDL::~InputManagerSDL()

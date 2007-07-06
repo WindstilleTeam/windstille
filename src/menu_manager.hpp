@@ -64,6 +64,7 @@ public:
   void menu_show_navigation_test();
   void menu_show_particle_system(std::string file);
   void menu_gamma(int i);
+  void menu_wiimote();
 private:
   MenuManager (const MenuManager&);
   MenuManager& operator= (const MenuManager&);

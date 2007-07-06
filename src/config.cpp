@@ -50,7 +50,6 @@ Config::Config()
   add(new ConfigValue<int>("screen-width",   _("Screen Width"),   true, 800));
   add(new ConfigValue<int>("screen-height",   _("Screen Height"), true, 600));
 
-
   add(new ConfigValue<std::string>("levelfile",       _("Levelfile to be used at startup"), false));
 
   // FIXME: There is no need to limit this to just two
@@ -63,6 +62,8 @@ Config::Config()
   add(new ConfigValue<std::string>("playback-file",   _("File from which a demo is played"), false));
 
   add(new ConfigValue<int>("master-volume",  _("Master Volume"), true, 100));
+
+  add(new ConfigValue<bool>("wiimote", _("Try to connect to Wiimote on startup"), true, false));
 }
 
 Config::~Config()
@@ -163,6 +164,7 @@ Config::parse_args(int argc, char** argv)
   argp.add_option('c', "controller", "FILE", "Use controller as defined in FILE");
   argp.add_option(secondary_controller_file, "secondary-controller", "FILE",
                   "Use controller as defined in FILE");
+  argp.add_option('w', "wiimote", "", "Connect to Wiimote on startup");
 
   argp.add_group("Misc Options:");
   argp.add_option('d', "datadir",    "DIR", "Fetch game data from DIR");
@@ -204,6 +206,10 @@ Config::parse_args(int argc, char** argv)
 
         case 'p':
           get<std::string>("playback-file") = argp.get_argument();
+          break;
+
+        case 'w':
+          get<bool>("wiimote") = true;
           break;
 
         case 'd':
