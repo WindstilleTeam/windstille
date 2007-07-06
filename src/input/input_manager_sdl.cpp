@@ -24,10 +24,14 @@
 */
 
 #include <assert.h>
+#include <boost/format.hpp>
+#include <math.h>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <stdio.h>
 #include <vector>
+#include "math.hpp"
 #include "config.hpp"
 #include "wiimote.hpp"
 #include "file_reader.hpp"
@@ -477,6 +481,26 @@ InputManagerSDL::update(float delta)
                     {
                       add_axis_event(j->event, event.axis.pos);
                     }
+                }
+            }
+          else if (event.type == WiimoteEvent::WIIMOTE_ACC_EVENT)
+            {
+              if (event.acc.accelerometer == 0)
+                {
+                  if (0)
+                    printf("%d - %6.3f %6.3f %6.3f\n",  
+                           event.acc.accelerometer,
+                           event.acc.x,
+                           event.acc.y,
+                           event.acc.z);
+
+                  float pitch = atan2(event.acc.x, event.acc.z);
+                  float roll  = atan2(event.acc.y, event.acc.z);
+
+                  std::cout << boost::format("%|6.3f| %|6.3f|") % pitch % roll << std::endl;
+
+                  add_axis_event(X2_AXIS, math::mid(-1.0f, float(pitch / M_PI) * 4.0f, 1.0f));
+                  add_axis_event(Y2_AXIS, math::mid(-1.0f, float(roll  / M_PI) * 4.0f, 1.0f));
                 }
             }
           else

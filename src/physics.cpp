@@ -64,8 +64,7 @@ void
 Physics::bounce_collision(const CollisionData& data)
 {
   printf("bounce collision.\n");
-  Vector collision_vel
-    = data.direction * (velocity() * data.direction);
+  Vector collision_vel = data.direction * (velocity() * data.direction);
 
   velocity() -= collision_vel * (1.0 + bounciness);
   //force -= collision_vel * (1.0f + bounciness) * mass / data.delta;

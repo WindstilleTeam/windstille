@@ -43,13 +43,22 @@ struct WiimoteAxisEvent
   float pos;
 };
 
+struct WiimoteAccEvent
+{
+  int   device;
+  int   accelerometer;
+  float x;
+  float y;
+  float z;
+};
+
 struct WiimoteEvent
 {
-  enum { WIIMOTE_AXIS_EVENT, WIIMOTE_BUTTON_EVENT } type;
+  enum { WIIMOTE_AXIS_EVENT, WIIMOTE_ACC_EVENT, WIIMOTE_BUTTON_EVENT } type;
   union {
     WiimoteAxisEvent   axis;
     WiimoteButtonEvent button;
-    // FIXME: add accel support here
+    WiimoteAccEvent    acc;
   };
 };
 
@@ -90,6 +99,7 @@ private:
 
   void add_button_event(int device, int button, bool down);
   void add_axis_event(int device, int axis, float pos);
+  void add_acc_event(int device, int accelerometer, float x, float y, float z);
 public:
   Wiimote();
   ~Wiimote();
