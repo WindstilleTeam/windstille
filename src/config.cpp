@@ -164,7 +164,9 @@ Config::parse_args(int argc, char** argv)
   argp.add_option('c', "controller", "FILE", "Use controller as defined in FILE");
   argp.add_option(secondary_controller_file, "secondary-controller", "FILE",
                   "Use controller as defined in FILE");
+#ifdef HAVE_CWIID
   argp.add_option('w', "wiimote", "", "Connect to Wiimote on startup");
+#endif
 
   argp.add_group("Misc Options:");
   argp.add_option('d', "datadir",    "DIR", "Fetch game data from DIR");

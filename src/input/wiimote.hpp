@@ -26,6 +26,8 @@
 #ifndef HEADER_WIIMOTE_HPP
 #define HEADER_WIIMOTE_HPP
 
+#ifdef HAVE_CWIID
+
 #include <vector>
 #include "cwiid.h"
 
@@ -100,6 +102,7 @@ private:
   void add_button_event(int device, int button, bool down);
   void add_axis_event(int device, int axis, float pos);
   void add_acc_event(int device, int accelerometer, float x, float y, float z);
+
 public:
   Wiimote();
   ~Wiimote();
@@ -135,6 +138,9 @@ private:
   Wiimote& operator=(const Wiimote&);
 };
 
+#endif // HAVE_CWIID
+
+class Wiimote;
 extern Wiimote* wiimote;
 
 #endif

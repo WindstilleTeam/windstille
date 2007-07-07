@@ -33,10 +33,10 @@
 #include <vector>
 #include "math.hpp"
 #include "config.hpp"
-#include "wiimote.hpp"
 #include "file_reader.hpp"
 #include "controller_def.hpp"
 #include "input_manager_sdl.hpp"
+#include "wiimote.hpp"
 
 InputManagerSDL* InputManagerSDL::current_ = 0;
 
@@ -229,16 +229,21 @@ InputManagerSDL::InputManagerSDL()
     // std::cout << key_name << std::endl;
   }
   
+#ifdef HAVE_CWIID
   // FIXME: doesn't really belong here
   Wiimote::init();
-  
-  if (config.get<bool>("wiimote").get())
+
+  if (wiimote && config.get<bool>("wiimote").get())
     wiimote->connect();
+
+#endif // HAVE_CWIID  
 }
 
 InputManagerSDL::~InputManagerSDL()
 {
+#ifdef HAVE_CWIID
   Wiimote::deinit();
+#endif
 }
 
 void
@@ -446,6 +451,7 @@ InputManagerSDL::on_event(const SDL_Event& event)
 void
 InputManagerSDL::update(float delta)
 {
+#ifdef HAVE_CWIID
   if (wiimote && wiimote->is_connected())
     {
       // Check for new events from the Wiimote
@@ -493,14 +499,19 @@ InputManagerSDL::update(float delta)
                            event.acc.x,
                            event.acc.y,
                            event.acc.z);
+                 
+                  float roll = atan(event.acc.x/event.acc.z);
+                  if (event.acc.z <= 0.0) {
+                    roll += M_PI * ((event.acc.x > 0.0) ? 1 : -1);
+                  }
+                  roll *= -1;
 
-                  float pitch = atan2(event.acc.x, event.acc.z);
-                  float roll  = atan2(event.acc.y, event.acc.z);
+                  float pitch = atan(event.acc.y/event.acc.z*cos(roll));
+
+                  add_axis_event(X2_AXIS, math::mid(-1.0f, -float(pitch / M_PI), 1.0f));
+                  add_axis_event(Y2_AXIS, math::mid(-1.0f, -float(roll  / M_PI), 1.0f));
 
                   std::cout << boost::format("%|6.3f| %|6.3f|") % pitch % roll << std::endl;
-
-                  add_axis_event(X2_AXIS, math::mid(-1.0f, float(pitch / M_PI) * 4.0f, 1.0f));
-                  add_axis_event(Y2_AXIS, math::mid(-1.0f, float(roll  / M_PI) * 4.0f, 1.0f));
                 }
             }
           else
@@ -509,6 +520,7 @@ InputManagerSDL::update(float delta)
             }
         }
     }
+#endif
 }
 
 void

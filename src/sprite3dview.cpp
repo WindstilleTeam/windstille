@@ -143,9 +143,12 @@ Sprite3DView::update(float delta, const Controller& controller)
       sprite.set_action(actions[current_action]);
     }
 
-  rotation = Quaternion(Vector3(0.0f, 1.0f, 0.0f), controller.get_axis_state(X2_AXIS) * delta * 2.0f) * rotation;
-  rotation = Quaternion(Vector3(1.0f, 0.0f, 0.0f), controller.get_axis_state(Y2_AXIS) * delta * 2.0f) * rotation;
-  rotation = Quaternion(Vector3(0.0f, 0.0f, 1.0f), controller.get_axis_state(X_AXIS) * delta * 2.0f) * rotation;
+  rotation = Quaternion(Vector3(0.0f, 1.0f, 0.0f),
+                        -controller.get_axis_state(X_AXIS) * delta * 4.0f) * rotation;
+  rotation = Quaternion(Vector3(1.0f, 0.0f, 0.0f),
+                        controller.get_axis_state(X2_AXIS) * delta * 4.0f) * rotation;
+  rotation = Quaternion(Vector3(0.0f, 0.0f, 1.0f),
+                        controller.get_axis_state(Y2_AXIS) * delta * 4.0f) * rotation;
 
   if (controller.get_button_state(VIEW_CENTER_BUTTON))
     {

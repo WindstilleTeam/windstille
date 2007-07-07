@@ -610,6 +610,7 @@ MenuManager::menu_gamma(int i)
 void
 MenuManager::menu_wiimote()
 {
+#ifdef HAVE_CWIID
   if (wiimote && !wiimote->is_connected())
     {
       // FIXME: This never appears on screen due to timeout
@@ -626,6 +627,7 @@ MenuManager::menu_wiimote()
     {
       console << "Wiimote already is connected" << std::endl;
     }
+#endif
 }
 
 void

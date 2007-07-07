@@ -31,6 +31,8 @@
 
 Wiimote* wiimote = 0;
 
+#ifdef HAVE_CWIID
+
 void
 Wiimote::init()
 {
@@ -203,50 +205,11 @@ Wiimote::set_rumble(bool r)
       }
     }
 }
-
-void
-Wiimote::on_status(const cwiid_status_mesg& msg)
-{
-  printf("Status Report: battery=%d extension=", msg.battery);
-  switch (msg.ext_type)
-    {
-    case CWIID_EXT_NONE:
-      printf("none");
-      break;
-
-    case CWIID_EXT_NUNCHUK:
-      printf("Nunchuk");
-      break;
-
-    case CWIID_EXT_CLASSIC:
-      printf("Classic Controller");
-      break;
-
-    default:
-      printf("Unknown Extension");
-      break;
-    }
-  printf("\n");
-}
-
-void
-Wiimote::on_error(const cwiid_error_mesg& msg)
-{
-  if (m_wiimote)
-    {
-      if (cwiid_disconnect(m_wiimote)) 
-        {
-          fprintf(stderr, "Error on wiimote disconnect\n");
-          m_wiimote = 0;
-        }
-    }
-}
-
+
 void
 Wiimote::add_button_event(int device, int button, bool down)
 {
   // std::cout << "Wiimote::add_button_event: " << device << " " << button << " " << down << std::endl;
-
   WiimoteEvent event;
 
   event.type = WiimoteEvent::WIIMOTE_BUTTON_EVENT;
@@ -285,6 +248,47 @@ Wiimote::add_acc_event(int device, int accelerometer, float x, float y, float z)
   event.acc.z = z;
 
   events.push_back(event);  
+}
+
+
+void
+Wiimote::on_status(const cwiid_status_mesg& msg)
+{
+  printf("Status Report: battery=%d extension=", msg.battery);
+  switch (msg.ext_type)
+    {
+    case CWIID_EXT_NONE:
+      printf("none");
+      break;
+
+    case CWIID_EXT_NUNCHUK:
+      printf("Nunchuk");
+      break;
+
+    case CWIID_EXT_CLASSIC:
+      printf("Classic Controller");
+      break;
+
+    default:
+      printf("Unknown Extension");
+      break;
+    }
+  printf("\n");
+}
+
+void
+Wiimote::on_error(const cwiid_error_mesg& msg)
+{
+  std::cout << "On Error" << std::endl;
+
+  if (m_wiimote)
+    {
+      if (cwiid_disconnect(m_wiimote)) 
+        {
+          fprintf(stderr, "Error on wiimote disconnect\n");
+          m_wiimote = 0;
+        }
+    }
 }
 
 void
@@ -415,6 +419,7 @@ Wiimote::pop_events()
   return ret;
 }
 
+// Callback function that get called by the Wiimote thread
 void
 Wiimote::err(cwiid_wiimote_t* w, const char *s, va_list ap)
 {
@@ -477,6 +482,8 @@ Wiimote::mesg(cwiid_wiimote_t* w, int mesg_count, union cwiid_mesg mesg[])
 
   pthread_mutex_unlock(&mutex);
 }
+
+// static callback functions
   
 void
 Wiimote::err_callback(cwiid_wiimote_t* w, const char *s, va_list ap)
@@ -489,5 +496,7 @@ Wiimote::mesg_callback(cwiid_wiimote_t* w, int mesg_count, union cwiid_mesg mesg
 {
   wiimote->mesg(w, mesg_count, mesg);
 }
+
+#endif // HAVE_CWIID
 
 /* EOF */
