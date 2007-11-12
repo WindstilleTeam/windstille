@@ -14,7 +14,7 @@ class MeshData:
         # [VerticeData, ...]
         self.vertices = []
 
-        # { orig_index : VerticeData, ... }
+        # { orig_index : [VerticeData, ...], ... }
         self.vertmap = {}
 
         # { (bonename, weight) : VertexGroup, ...}
@@ -24,20 +24,27 @@ class MeshData:
         self.faces.append(face)
         
         for vert in face.verts:
-            self.vertmap[vert.orig_idx] = vert
+            if not self.vertmap.has_key(vert.orig_idx):
+                self.vertmap[vert.orig_idx] = []
+            self.vertmap[vert.orig_idx].append(vert)
 
     def add_influences(self, orig_idx, influences):
         """influences -> [(bonename, weight), ...]"""
         if not self.vertmap.has_key(orig_idx):
             pass # this is normal due to MeshData not being a complete
-                 # Blender mesh when multiple textures are in play       
+                 # Blender mesh when multiple textures are in play
+                 
         else:
-            self.vertmap[orig_idx].influences = influences
+            # orig_idx is part of this mesh
+            for v in self.vertmap[orig_idx]:
+                # print v.orig_idx
+                v.influences = influences
+            
             for (bone,weight) in influences:
                 key = (bone, weight)
                 if not self.groups.has_key(key):
                     self.groups[key] = VertexGroup(bone, weight)
-                self.groups[key].add(orig_idx)
+                self.groups[key].add(self.vertmap[orig_idx])
 
     def finalize(self):
         """Reorders vertex indexes and merge vertexes which have the
@@ -54,6 +61,10 @@ class MeshData:
         for face in self.faces:
             for i in xrange(0, len(face.verts)):
                 face.verts[i] = uniq_vertices[face.verts[i].key()]
+
+        for group in self.groups.values():
+            for i in xrange(0, len(group.vertices)):
+                group.vertices[i] = uniq_vertices[group.vertices[i].key()]
 
         # Generate new index numbering
         self.vertices = uniq_vertices.values()
@@ -77,6 +88,7 @@ class VertexData:
         self.influences = []
 
     def key(self):
+        """Return something that can be used as a key to compare if two vertices are equal"""
         return (self.co[0], self.co[1], self.co[2],
                 self.normal[0], self.normal[1], self.normal[2],
                 self.uv[0], self.uv[1])
@@ -86,10 +98,10 @@ class VertexGroup:
     def __init__(self, bone, weight):
         self.bone     = bone
         self.weight   = weight
-        self.vertices = [] # [23,2,1,2,...]
+        self.vertices = [] # [VertexData,...]
 
     def add(self, v):
-        self.vertices.append(v)
+        self.vertices.extend(v)
 
 class WindstilleModel:
     """WindstilleMesh is used to collect data vertex and face data
@@ -139,6 +151,10 @@ class WindstilleModel:
 
         for mesh in self.mesh_data.values():
             for vert in blender_mesh.verts:
+                #if blender_mesh.getVertexInfluences(vert.index) == []:
+                #    print "No influences on", vert.index, "this sounds like a bug"
+                #else:
+                #    print vert.index, "Ok"
                 mesh.add_influences(vert.index, blender_mesh.getVertexInfluences(vert.index))
 
 
@@ -157,7 +173,8 @@ class WindstilleModel:
             out.write("    (texture \"%s\")\n\n" % mesh.texture_filename)
             out.write("    (vertices\n")
             for v in mesh.vertices:
-                out.write("      %10f %10f %10f ;; %d\n" % (v.co[0], v.co[1], v.co[2], v.index))
+                out.write("      %10f %10f %10f ;; %d was %d\n" % (v.co[0], v.co[1], v.co[2],
+                                                                   v.index, v.orig_idx))
             out.write("     ) ;; vertices\n\n")
 
             out.write("    (normals\n") 
@@ -185,8 +202,8 @@ class WindstilleModel:
                 out.write("        (bone    \"%s\")\n" % group.bone)
                 out.write("        (weight   %f)\n" % group.weight)
                 out.write("        (vertices")
-                for v in group.vertices:
-                    out.write(" %d" % v)
+                for v in set(map(lambda v: v.index, group.vertices)):
+                    out.write(" %d" % v) 
                 out.write(")\n")
                 out.write("       )\n")
             out.write("     ) ;; groups\n\n")

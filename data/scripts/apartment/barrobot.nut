@@ -1,5 +1,34 @@
-conversation_add("Choice 1");
-conversation_get()
+barrobot <- Dialog(TOP, "Yagor", "images/portraits/yagor.sprite");
+jane     <- Dialog(TOP, "Jane", "images/portraits/jane.sprite");
+
+jane.say("So, what do you have to offer?")
+barrobot.say("Beer, plenty of bear, the finest brew in all of Nugani")
+jane.say("Anything else?")
+barrobot.say("Wiskey, Milk all that stuff, what do you want?")
+
+conversation_add2("Milk",   "Haven't drank any milk in a while.");
+conversation_add2("Wiskey", "I don't think my stomach can take it.");
+conversation_add2("Beer",   "The old classic, always good, never great.");
+
+switch (conversation_get())
+  {
+  case 0:
+    jane.say("Give me a Milk.");
+    barrobot.say("Milk drinker? Here you go.");
+    break;
+
+  case 1:
+    jane.say("Give me a Wiskey, the best you have"); 
+    barrobot.say("Here is the wiskey.");
+    break;
+
+  case 2:
+    jane.say("Give me a beer, that finest of Nugani");
+    barrobot.say("Here is the beer.");
+    break;
+  }
+
+quit()
 
 conversation_add("Choice 1");
 conversation_add("Choice 2");

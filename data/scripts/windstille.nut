@@ -87,6 +87,12 @@ class Dialog {
     portrait = arg_portrait;
   }
 
+  function say(text)
+  {
+    dialog_show(align, character, portrait, text);
+    wait_for_dialog();
+  }
+
   function show(text)
   {
     dialog_show(align, character, portrait, text);

@@ -7,6 +7,7 @@ Import('conf_env')
 env = Environment(CPPPATH=['../..'],
                   CXXFILESUFFIX = ".cpp",
                   YACCFLAGS=['-d', '--no-lines'])
+
 miniswig = env.Program('miniswig/miniswig',
                        ['miniswig/parser.yy',
                         'miniswig/lexer.ll',

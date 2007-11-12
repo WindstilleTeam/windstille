@@ -24,7 +24,7 @@
 ##  02111-1307, USA.
 ##
 
-Import('conf_env')
+Import('conf_env', 'features')
 
 SConscript('scripting/SConscript')
 
@@ -32,6 +32,13 @@ env = conf_env.Copy()
 env.Append(LIBS    = ['GL', 'GLU', 'squirrel', 'physfs', 'SDL_image', 'openal', 'glew', 'ogg', 'vorbis', 'vorbisfile', 'png'])
 env.Append(LIBPATH = ['../lib/'] )
 env.Append(CPPPATH = ['.', '..', '../lib/SQUIRREL2/include/', '../lib/glew'])
+
+if features['64bit']:
+    env.Append(CPPDEFINES = '_SQ64')
+
+if features['cwiid']:
+    env.Append(CPPDEFINES = 'HAVE_CWIID')
+    env.Append(LIBS = 'cwiid')
 
 # env.Copy(LIBS = ['a', 'b'])
 

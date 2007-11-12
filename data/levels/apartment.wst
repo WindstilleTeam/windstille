@@ -215,7 +215,7 @@
       (z-pos -100)
       (sprite  "models/objects/barrobot/barrobotsprite.sprite")
       (active true)
-      (script "barrobot()")
+      (script "barrobot")
       (use-verb "Look")
     )
     

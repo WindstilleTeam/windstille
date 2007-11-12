@@ -1,8 +1,8 @@
 Windstille 0.3.1
 ================
  - fixed crash when sound is disabled
- - more solid input configuration support (xbox360, dvorak settings
-   provided)
+ - more solid input configuration support (xbox360, wiimote, dvorak
+   settings provided)
  - added volume control
  - added arc drawing
  - added navigation graph
@@ -10,7 +10,7 @@ Windstille 0.3.1
  - added sdl-jstest application
  - added armature test
  - added skeletal animations along with blender export scripts
-
+ - Wiimote support
 
 Windstille 0.3.0
 ================

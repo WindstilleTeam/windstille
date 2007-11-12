@@ -2,7 +2,7 @@
 
 import glob
 
-Import('conf_env')
+Import('conf_env', 'features')
 
 glew_env = Environment(CPPPATH = ['glew'], CXXFLAGS = ['-g', '-DDEBUG'])
 
@@ -10,8 +10,12 @@ glew = glew_env.Library('glew',
             glob.glob('glew/*.c') +
             glob.glob('glew/*.h'))
 
-squirrel_env = Environment(CPPPATH = ['SQUIRREL2/include'],
-             CXXFLAGS = ["-fno-rtti", "-g", "-DDEBUG"])
+squirrel_env = Environment(CPPPATH  = ['SQUIRREL2/include'],
+                           CXXFLAGS = ["-fno-rtti", "-g", "-DDEBUG"])
+
+if features['64bit']:
+    squirrel_env.Append(CPPDEFINES = '_SQ64')
+
 squirrel_env.Append(CXXFLAGS = conf_env['CXXFLAGS'])
 
 squirrel_env.Library('squirrel',

@@ -182,12 +182,21 @@ Help(opts.GenerateHelpText(conf_env))
 # FIXME: Giving multiple CCFLAGS doesn't work since they have to be
 # broken down to a list
 
+features = {
+    "64bit" : 0,
+    "cwiid" : 0
+    }
+
 conf = Configure(conf_env, custom_tests = { 'Check32bit' : Check32bit,
                                             'CheckYacc'  : CheckYacc,
                                             'CheckLex'   : CheckLex})
 if conf.Check32bit() == "64bit":
-  conf.env.Append(CXXFLAGS="-D_SQ64")
+    # conf.env.Append(CXXFLAGS="-D_SQ64")
+    features["64bit"] = 1
 
+if conf.CheckLib('cwiid'):
+    features["cwiid"] = 1
+    
 if not conf.CheckLex():
     print "lex or flex not found, aborting."
     Exit(1)
@@ -198,7 +207,7 @@ if not conf.CheckYacc():
     
 conf_env = conf.Finish()
 
-Export('conf_env')
+Export('conf_env', 'features')
 
 # SConscript('build/tools/SConscript')
 # SConscript('build/lib/SConscript')
