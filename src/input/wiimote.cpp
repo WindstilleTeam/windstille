@@ -492,7 +492,7 @@ Wiimote::err_callback(cwiid_wiimote_t* w, const char *s, va_list ap)
 }
 
 void
-Wiimote::mesg_callback(cwiid_wiimote_t* w, int mesg_count, union cwiid_mesg mesg[])
+Wiimote::mesg_callback(cwiid_wiimote_t* w, int mesg_count, union cwiid_mesg mesg[], timespec*)
 {
   wiimote->mesg(w, mesg_count, mesg);
 }
