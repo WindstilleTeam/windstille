@@ -175,110 +175,114 @@ int main(int argc, char** argv)
               SDL_Event event;
               while(!quit)
                 {
-                  if (SDL_WaitEvent(&event)) {
+                  SDL_Delay(10);
+
+                  bool something_new = false;
+                  while (SDL_PollEvent(&event)) {
+                    something_new = true;
                     switch(event.type)
                       {
-                      case SDL_JOYAXISMOTION:
-                        assert(event.jaxis.axis < num_axes);
-                        axes[event.jaxis.axis] = event.jaxis.value;
-                        break;
+                        case SDL_JOYAXISMOTION:
+                          assert(event.jaxis.axis < num_axes);
+                          axes[event.jaxis.axis] = event.jaxis.value;
+                          break;
 
-                      case SDL_JOYBUTTONDOWN:
-                      case SDL_JOYBUTTONUP:
-                        assert(event.jbutton.button < num_buttons);
-                        buttons[event.jbutton.button] = event.jbutton.state;
-                        break;
+                        case SDL_JOYBUTTONDOWN:
+                        case SDL_JOYBUTTONUP:
+                          assert(event.jbutton.button < num_buttons);
+                          buttons[event.jbutton.button] = event.jbutton.state;
+                          break;
 
-                      case SDL_JOYHATMOTION:
-                        assert(event.jhat.hat < num_hats);
-                        hats[event.jhat.hat] = event.jhat.value;
-                        break;
+                        case SDL_JOYHATMOTION:
+                          assert(event.jhat.hat < num_hats);
+                          hats[event.jhat.hat] = event.jhat.value;
+                          break;
 
-                      case SDL_JOYBALLMOTION:
-                        assert(event.jball.ball < num_balls);
-                        balls[2*event.jball.ball + 0] = event.jball.xrel;
-                        balls[2*event.jball.ball + 1] = event.jball.yrel;
-                        break;
+                        case SDL_JOYBALLMOTION:
+                          assert(event.jball.ball < num_balls);
+                          balls[2*event.jball.ball + 0] = event.jball.xrel;
+                          balls[2*event.jball.ball + 1] = event.jball.yrel;
+                          break;
 
-                      case SDL_QUIT:
-                        quit = 1;
-                        printf("Recieved interrupt, exiting\n");
-                        break;
+                        case SDL_QUIT:
+                          quit = 1;
+                          printf("Recieved interrupt, exiting\n");
+                          break;
 
-                      default:
-                        fprintf(stderr, "Error: Unhandled event type: %d\n", event.type);
+                        default:
+                          fprintf(stderr, "Error: Unhandled event type: %d\n", event.type);
                       }
-                  } else {
-                    fprintf(stderr, "Error in SDL_WaitEvent\n");
-                    quit = 1;
                   }
 
-                  //clear();
-                  move(0,0);
-
-                  printw("Joystick Name:   '%s'\n", SDL_JoystickName(joy_idx));
-                  printw("Joystick Number: %d\n", joy_idx);
-                  printw("\n");
-
-                  printw("Axes %2d:\n", num_axes);
-                  for(int i = 0; i < num_axes; ++i)
+                  if (something_new)
                     {
-                      int len = COLS - 20;
-                      printw("  %2d: %6d  ", i, axes[i]);
-                      print_bar((axes[i] + 32767) * (len-1) / 65534, len);
-                      addch('\n');
+                      //clear();
+                      move(0,0);
+
+                      printw("Joystick Name:   '%s'\n", SDL_JoystickName(joy_idx));
+                      printw("Joystick Number: %d\n", joy_idx);
+                      printw("\n");
+
+                      printw("Axes %2d:\n", num_axes);
+                      for(int i = 0; i < num_axes; ++i)
+                        {
+                          int len = COLS - 20;
+                          printw("  %2d: %6d  ", i, axes[i]);
+                          print_bar((axes[i] + 32767) * (len-1) / 65534, len);
+                          addch('\n');
+                        }
+                      printw("\n");
+
+                      printw("Buttons %2d:\n", num_buttons);
+                      for(int i = 0; i < num_buttons; ++i)
+                        {
+                          printw("  %2d: %d  %s\n", i, buttons[i], buttons[i] ? "[#]":"[ ]");
+                        }
+                      printw("\n");
+
+                      printw("Hats %2d:\n", num_hats);
+                      for(int i = 0; i < num_hats; ++i)
+                        {
+                          printw("  %2d: value: %d\n", i, hats[i]);
+                          printw("  +-----+  up:    %c\n"
+                                 "  |%c %c %c|  down:  %c\n"
+                                 "  |%c %c %c|  left:  %c\n"
+                                 "  |%c %c %c|  right: %c\n"
+                                 "  +-----+\n",
+
+                                 (hats[i] & SDL_HAT_UP)?'1':'0',
+
+                                 ((hats[i] & SDL_HAT_UP) && (hats[i] & SDL_HAT_LEFT)) ? 'O' : ' ',
+                                 ((hats[i] & SDL_HAT_UP) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? 'O' : ' ',
+                                 ((hats[i] & SDL_HAT_UP) && (hats[i] & SDL_HAT_RIGHT)) ? 'O' : ' ',
+
+                                 (hats[i] & SDL_HAT_DOWN)?'1':'0',
+
+                                 (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && (hats[i] & SDL_HAT_LEFT)) ? 'O' : ' ',
+                                 (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? 'O' : ' ',
+                                 (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && (hats[i] & SDL_HAT_RIGHT)) ? 'O' : ' ',
+
+                                 (hats[i] & SDL_HAT_LEFT)?'1':'0',
+
+                                 ((hats[i] & SDL_HAT_DOWN) && (hats[i] & SDL_HAT_LEFT)) ? 'O' : ' ',
+                                 ((hats[i] & SDL_HAT_DOWN) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? 'O' : ' ',
+                                 ((hats[i] & SDL_HAT_DOWN) && (hats[i] & SDL_HAT_RIGHT)) ? 'O' : ' ',
+
+                                 (hats[i] & SDL_HAT_RIGHT)?'1':'0');
+                        }
+                      printw("\n");
+
+                      printw("Balls %2d: ", num_balls);
+                      for(int i = 0; i < num_balls; ++i)
+                        {
+                          printw("  %2d: %6d %6d\n", i, balls[2*i+0], balls[2*i+0]);
+                        }
+                      printw("\n");
+                      printw("\n");
+                      printw("Press Ctrl-c to exit\n");
+
+                      refresh();
                     }
-                  printw("\n");
-
-                  printw("Buttons %2d:\n", num_buttons);
-                  for(int i = 0; i < num_buttons; ++i)
-                    {
-                      printw("  %2d: %d  %s\n", i, buttons[i], buttons[i] ? "[#]":"[ ]");
-                    }
-                  printw("\n");
-
-                  printw("Hats %2d:\n", num_hats);
-                  for(int i = 0; i < num_hats; ++i)
-                    {
-                      printw("  %2d: value: %d\n", i, hats[i]);
-                      printw("  +-----+  up:    %c\n"
-                             "  |%c %c %c|  down:  %c\n"
-                             "  |%c %c %c|  left:  %c\n"
-                             "  |%c %c %c|  right: %c\n"
-                             "  +-----+\n",
-
-                             (hats[i] & SDL_HAT_UP)?'1':'0',
-
-                             ((hats[i] & SDL_HAT_UP) && (hats[i] & SDL_HAT_LEFT)) ? 'O' : ' ',
-                             ((hats[i] & SDL_HAT_UP) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? 'O' : ' ',
-                             ((hats[i] & SDL_HAT_UP) && (hats[i] & SDL_HAT_RIGHT)) ? 'O' : ' ',
-
-                             (hats[i] & SDL_HAT_DOWN)?'1':'0',
-
-                             (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && (hats[i] & SDL_HAT_LEFT)) ? 'O' : ' ',
-                             (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? 'O' : ' ',
-                             (!(hats[i] & (SDL_HAT_UP | SDL_HAT_DOWN)) && (hats[i] & SDL_HAT_RIGHT)) ? 'O' : ' ',
-
-                             (hats[i] & SDL_HAT_LEFT)?'1':'0',
-
-                             ((hats[i] & SDL_HAT_DOWN) && (hats[i] & SDL_HAT_LEFT)) ? 'O' : ' ',
-                             ((hats[i] & SDL_HAT_DOWN) && !(hats[i] & (SDL_HAT_LEFT | SDL_HAT_RIGHT))) ? 'O' : ' ',
-                             ((hats[i] & SDL_HAT_DOWN) && (hats[i] & SDL_HAT_RIGHT)) ? 'O' : ' ',
-
-                             (hats[i] & SDL_HAT_RIGHT)?'1':'0');
-                    }
-                  printw("\n");
-
-                  printw("Balls %2d: ", num_balls);
-                  for(int i = 0; i < num_balls; ++i)
-                    {
-                      printw("  %2d: %6d %6d\n", i, balls[2*i+0], balls[2*i+0]);
-                    }
-                  printw("\n");
-                  printw("\n");
-                  printw("Press Ctrl-c to exit\n");
-
-                  refresh();
                 } // while
 
               free(balls);
@@ -316,37 +320,37 @@ int main(int argc, char** argv)
                 {
                   switch(event.type)
                     {
-                    case SDL_JOYAXISMOTION:
-                      printf("SDL_JOYAXISMOTION: joystick: %d axis: %d value: %d\n",
-                             event.jaxis.which, event.jaxis.axis, event.jaxis.value);
-                      break;
+                      case SDL_JOYAXISMOTION:
+                        printf("SDL_JOYAXISMOTION: joystick: %d axis: %d value: %d\n",
+                               event.jaxis.which, event.jaxis.axis, event.jaxis.value);
+                        break;
 
-                    case SDL_JOYBUTTONDOWN:
-                      printf("SDL_JOYBUTTONUP: joystick: %d button: %d state: %d\n",
-                             event.jbutton.which, event.jbutton.button, event.jbutton.state);
-                      break;
-                    case SDL_JOYBUTTONUP:
-                      printf("SDL_JOYBUTTONDOWN: joystick: %d button: %d state: %d\n",
-                             event.jbutton.which, event.jbutton.button, event.jbutton.state);
-                      break;
+                      case SDL_JOYBUTTONDOWN:
+                        printf("SDL_JOYBUTTONUP: joystick: %d button: %d state: %d\n",
+                               event.jbutton.which, event.jbutton.button, event.jbutton.state);
+                        break;
+                      case SDL_JOYBUTTONUP:
+                        printf("SDL_JOYBUTTONDOWN: joystick: %d button: %d state: %d\n",
+                               event.jbutton.which, event.jbutton.button, event.jbutton.state);
+                        break;
 
-                    case SDL_JOYHATMOTION:
-                      printf("SDL_JOYHATMOTION: joystick: %d hat: %d value: %d\n",
-                             event.jhat.which, event.jhat.hat, event.jhat.value);
-                      break;
+                      case SDL_JOYHATMOTION:
+                        printf("SDL_JOYHATMOTION: joystick: %d hat: %d value: %d\n",
+                               event.jhat.which, event.jhat.hat, event.jhat.value);
+                        break;
 
-                    case SDL_JOYBALLMOTION:
-                      printf("SDL_JOYBALLMOTION: joystick: %d ball: %d x: %d y: %d\n",
-                             event.jball.which, event.jball.ball, event.jball.xrel, event.jball.yrel);
-                      break;
+                      case SDL_JOYBALLMOTION:
+                        printf("SDL_JOYBALLMOTION: joystick: %d ball: %d x: %d y: %d\n",
+                               event.jball.which, event.jball.ball, event.jball.xrel, event.jball.yrel);
+                        break;
 
-                    case SDL_QUIT:
-                      quit = 1;
-                      printf("Recieved interrupt, exiting\n");
-                      break;
+                      case SDL_QUIT:
+                        quit = 1;
+                        printf("Recieved interrupt, exiting\n");
+                        break;
 
-                    default:
-                      fprintf(stderr, "Error: Unhandled event type: %d\n", event.type);
+                      default:
+                        fprintf(stderr, "Error: Unhandled event type: %d\n", event.type);
                     }
                 }
               SDL_JoystickClose(joy);
