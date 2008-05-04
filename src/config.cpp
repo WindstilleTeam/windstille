@@ -47,7 +47,10 @@ Config::Config()
   add(new ConfigValue<bool>("music",          _("Enable Music"), true, true));
   add(new ConfigValue<bool>("sound",          _("Enable Sound"), true, true));
   
-  add(new ConfigValue<int>("screen-width",   _("Screen Width"),   true, 800));
+  add(new ConfigValue<int>("aspect-width",    _("Aspect Width"),   true, 800));
+  add(new ConfigValue<int>("aspect-height",   _("Aspect Height"),  true, 600));
+
+  add(new ConfigValue<int>("screen-width",    _("Screen Width"),   true, 800));
   add(new ConfigValue<int>("screen-height",   _("Screen Height"), true, 600));
 
   add(new ConfigValue<std::string>("levelfile",       _("Levelfile to be used at startup"), false));
@@ -153,8 +156,9 @@ Config::parse_args(int argc, char** argv)
 
   argp.add_group("Display Options:");
   argp.add_option('g', "geometry",   "WxH", "Change window size to WIDTH and HEIGHT");
+  argp.add_option('a', "aspect",   "WxH", "Change aspect size to WIDTH and HEIGHT");
   argp.add_option('f', "fullscreen", "", "Launch the game in fullscreen");
-  argp.add_option('a', "anti-aliasing", "NUM", "Enable NUMx Anti-Aliasing");
+  argp.add_option('A', "anti-aliasing", "NUM", "Enable NUMx Anti-Aliasing");
 
   argp.add_group("Sound Options:");
   argp.add_option('s', "disable-sound", "", "Disable sound");
@@ -186,7 +190,7 @@ Config::parse_args(int argc, char** argv)
     {
       switch (argp.get_key())
         {
-        case 'a':
+        case 'A':
           int anti_aliasing;
           if (sscanf(argp.get_argument().c_str(), "%d", &anti_aliasing) != 1)
             {
@@ -259,6 +263,27 @@ Config::parse_args(int argc, char** argv)
             else
               {
                 throw std::runtime_error("Geometry option '-g' requires argument of type {WIDTH}x{HEIGHT}");
+              }
+          }
+          break;
+
+        case 'a':
+          {
+            int aspect_width  = 800;
+            int aspect_height = 600;
+            if (sscanf(argp.get_argument().c_str(), "%dx%d",
+                       &aspect_width, &aspect_height) == 2)
+              {
+                get<int>("aspect-width")  = aspect_width;
+                get<int>("aspect-height") = aspect_height;
+              
+                // FIXME: Why does this get printed twice?!
+                // Is the argument parser buggy?
+                std::cout << "Geometry: " << aspect_width << "x" << aspect_height << std::endl;
+              }
+            else
+              {
+                throw std::runtime_error("Geometry option '-a' requires argument of type {WIDTH}x{HEIGHT}");
               }
           }
           break;

@@ -276,7 +276,10 @@ Display::init()
   //glOrtho(0.0, window->w, window->h, 0.0, -1000.0, 1000.0);
   
   // glOrtho(0.0, 800, 0.0, 600.0, 1000.0, -1000.0); // proper right-hand CO
-  glOrtho(0.0, 800, 600.0, 0.0, 1000.0, -1000.0);
+  glOrtho(0.0, 
+          config.get_int("aspect-width"), 
+          config.get_int("aspect-height"),
+          0.0, 1000.0, -1000.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glTranslated(cl_pixelcenter_constant, cl_pixelcenter_constant, 0.0);
