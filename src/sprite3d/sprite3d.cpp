@@ -363,7 +363,7 @@ Sprite3D::draw(const Vector& pos, const Matrix& modelview) const
       state.bind_texture(mesh.texture);
 
       // blend between frame1 + frame2
-      float verts[mesh.vertex_count * 3];
+	  float* verts = new float[mesh.vertex_count * 3];
       if(frame1.rot == frame2.rot) {
         for(uint16_t v = 0; v < mesh.vertex_count*3; ++v) {
           float v1 = vertices1.vertices[v];
@@ -397,6 +397,8 @@ Sprite3D::draw(const Vector& pos, const Matrix& modelview) const
       glTexCoordPointer(2, GL_FLOAT, 0, &*mesh.tex_coords.begin());
       glDrawElements(GL_TRIANGLES, mesh.triangle_count * 3, GL_UNSIGNED_SHORT,
                      &*mesh.vertex_indices.begin());
+
+	  delete[] verts;
     }
 
   assert_gl("rendering 3d sprite");      

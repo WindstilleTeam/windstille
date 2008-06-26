@@ -34,7 +34,7 @@
 
 class SceneContext;
 class Randomizer;
-class Particle;
+struct Particle;
 class ParticleSystem;
 
 struct Particle {

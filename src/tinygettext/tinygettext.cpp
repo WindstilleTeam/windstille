@@ -28,6 +28,10 @@
 #include "tinygettext.hpp"
 #include "physfs/physfs_stream.hpp"
 
+#ifdef WIN32
+#define ICONV_CONST const
+#endif
+
 //#define TRANSLATION_DEBUG
 
 namespace tinygettext {

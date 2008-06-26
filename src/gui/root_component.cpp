@@ -24,6 +24,7 @@
 */
 
 #include <iostream>
+#include <algorithm>
 #include "console.hpp"
 #include "input/controller.hpp"
 #include "root_component.hpp"

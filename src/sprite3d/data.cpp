@@ -46,15 +46,17 @@ static inline uint16_t read_uint16_t(PHYSFS_file* file)
 
 static inline std::string read_string(PHYSFS_file* file, size_t size)
 {
-  char buffer[size+1];
+  char* buffer = new char[size+1];
   if(PHYSFS_read(file, buffer, size, 1) != 1) {
     std::ostringstream msg;
     msg << "Problem reading string value: " << PHYSFS_getLastError();
     throw std::runtime_error(msg.str());
   }
   buffer[size] = 0;
+  std::string ret = buffer;
+  delete[] buffer;
 
-  return buffer;
+  return ret;
 }
 
 Data::Data(const std::string& filename)

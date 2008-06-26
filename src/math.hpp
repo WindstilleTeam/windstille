@@ -57,7 +57,7 @@ T mid (const T& a, const T& b, const T& c)
 
 inline float normalize_angle(float radians)
 {
-  radians = fmod (radians, 2.0 * M_PI);
+  radians = fmod (radians, static_cast<float>(2.0 * M_PI));
   if (radians < 0.0)
     radians += 2.0 * M_PI;
   // Floating point math is so loathsome.  In sp98test, the assertion

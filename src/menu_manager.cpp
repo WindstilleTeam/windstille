@@ -43,7 +43,9 @@
 #include "armature_test.hpp"
 #include "navigation_test.hpp"
 #include "gui/menu_item.hpp"
+#ifdef HAVE_CWIID
 #include "input/wiimote.hpp"
+#endif
 #include "menu_manager.hpp"
 
 MenuManager menu_manager;
@@ -110,12 +112,14 @@ MenuManager::display_option_menu()
   slots.push_back(gamma_item->sig_change().connect(this, &MenuManager::menu_gamma));
   menu->add_item(gamma_item);
 
+  #ifdef HAVE_CWIID
   if (wiimote)
     {
       ButtonMenuItem* wiimote_button = new ButtonMenuItem(menu,  "Try to Connect Wiimote");
       slots.push_back(wiimote_button->sig_click().connect(this, &MenuManager::menu_wiimote));
       menu->add_item(wiimote_button);
     }
+  #endif
 
   manager->get_root()->add_child(group);
   group->layout();

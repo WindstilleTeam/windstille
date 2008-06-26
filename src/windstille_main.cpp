@@ -53,6 +53,11 @@
 #include "particle_viewer.hpp"
 #include "sprite2d/manager.hpp"
 
+#ifdef WIN32
+#include "shlwapi.h"
+#define strcasecmp lstrcmpiA 
+#endif
+
 WindstilleMain::WindstilleMain()
 {
 }
@@ -320,6 +325,7 @@ WindstilleMain::init_physfs(const char* argv0)
     size_t l = strlen(*i);
     if((l > extlen) && ((*i)[l - extlen - 1] == '.')) {
       const char* ext = (*i) + (l - extlen);
+
       if(strcasecmp(ext, archiveExt) == 0) {
         const char* d = PHYSFS_getRealDir(*i);
         char* str = new char[strlen(d) + strlen(dirsep) + l + 1];

@@ -495,7 +495,7 @@ void
 Display::save_screenshot(const std::string& filename)
 {
   int len = get_width() * get_height() * 3;
-  GLbyte pixels[len];
+  GLbyte* pixels = new GLbyte[len];
   glReadPixels(0, 0, get_width(), get_height(), GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
   if (0)
@@ -558,7 +558,8 @@ Display::save_screenshot(const std::string& filename)
           png_write_info(png_ptr, info_ptr);
 
           png_uint_32 height = get_height();
-          png_bytep row_pointers[height];
+
+		  png_bytep* row_pointers = new png_bytep[height];
    
           // generate row pointers
           for (unsigned int k = 0; k < height; k++)
@@ -569,6 +570,9 @@ Display::save_screenshot(const std::string& filename)
           png_write_end(png_ptr, info_ptr);
 
           fclose(fp);
+
+		  delete[] pixels;
+		  delete[] row_pointers;
         }
     }
 }

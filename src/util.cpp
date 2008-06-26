@@ -47,4 +47,9 @@ std::string tolowercase(const std::string& str)
   return out;
 }
 
+const std::wstring string_to_wstring(const std::string& str) {
+	std::wstring tmp(str.begin(), str.end());
+	return tmp;
+}
+
 /* EOF */

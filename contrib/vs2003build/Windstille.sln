@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Windstille", "Windstille.vcproj", "{DC61143E-A9ED-4309-88AA-314F6E76F99D}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{DC61143E-A9ED-4309-88AA-314F6E76F99D}.Debug.ActiveCfg = Debug|Win32
+		{DC61143E-A9ED-4309-88AA-314F6E76F99D}.Debug.Build.0 = Debug|Win32
+		{DC61143E-A9ED-4309-88AA-314F6E76F99D}.Release.ActiveCfg = Release|Win32
+		{DC61143E-A9ED-4309-88AA-314F6E76F99D}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC61143E-A9ED-4309-88AA-314F6E76F99D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DC61143E-A9ED-4309-88AA-314F6E76F99D}.Debug|Win32.Build.0 = Debug|Win32
+		{DC61143E-A9ED-4309-88AA-314F6E76F99D}.Release|Win32.ActiveCfg = Release|Win32
+		{DC61143E-A9ED-4309-88AA-314F6E76F99D}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

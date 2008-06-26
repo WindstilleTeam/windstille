@@ -25,7 +25,9 @@
 
 #include <boost/format.hpp>
 #include <iostream>
+#ifndef WIN32
 #include <unistd.h>
+#endif
 #include "game_session.hpp"
 #include "input/input_manager_sdl.hpp"
 #include "display/display.hpp"
@@ -50,6 +52,9 @@
 #include "gui/text_view.hpp"
 #include "gui/automap.hpp"
 
+#ifdef WIN32
+#define snprintf _snprintf
+#endif
 
 using gui::GUIManager;
 
@@ -245,6 +250,7 @@ ScreenManager::poll_events()
                   Display::set_fullscreen(config.get_bool("fullscreen"));
                   break;
               
+	            #ifndef WIN32
                 case SDLK_F12:
                   {
                     // FIXME: Replace this with Physfs stuff
@@ -259,6 +265,7 @@ ScreenManager::poll_events()
                     console << "Writing screenshot to: '" << filename << "'" << std::endl;
                   }
                   break;
+				  #endif
               
                 default:
                   if (!console.is_active())

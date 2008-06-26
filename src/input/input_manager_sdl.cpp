@@ -36,7 +36,9 @@
 #include "file_reader.hpp"
 #include "controller_def.hpp"
 #include "input_manager_sdl.hpp"
+#ifdef HAVE_CWIID
 #include "wiimote.hpp"
+#endif
 
 InputManagerSDL* InputManagerSDL::current_ = 0;
 

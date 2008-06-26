@@ -12,7 +12,7 @@
 #include "texture.hpp"
 #include "physfs/physfs_sdl.hpp"
 
-TextureManager::TextureManager* texture_manager = 0;
+TextureManager* texture_manager = 0;
 
 TextureManager::TextureManager()
 {

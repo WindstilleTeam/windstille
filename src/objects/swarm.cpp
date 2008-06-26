@@ -95,7 +95,7 @@ Swarm::draw(SceneContext& sc)
 static float normalize(float angle)
 {
   // brings angle into [0,2*M_PI[ range
-  float ret = fmod(fmod(angle, 2*M_PI) + 2*M_PI, 2*M_PI);
+  float ret = fmod(static_cast<float>(fmod(angle, static_cast<float>(2*M_PI)) + 2*M_PI), static_cast<float>(2*M_PI));
   assert(ret >= 0 && ret < 2*M_PI);
   return ret;
 }

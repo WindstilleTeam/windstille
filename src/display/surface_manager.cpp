@@ -14,7 +14,7 @@
 #include "texture_manager.hpp"
 #include "physfs/physfs_sdl.hpp"
 
-SurfaceManager::SurfaceManager* surface_manager = 0;
+SurfaceManager* surface_manager = 0;
 
 SurfaceManager::SurfaceManager()
 {
