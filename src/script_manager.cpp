@@ -17,20 +17,28 @@
 #include "scripting/util.hpp"
 #include "scripting/squirrel_error.hpp"
 #include "physfs/physfs_stream.hpp"
+#include "util.hpp"
 
 using namespace Scripting;
 
 ScriptManager* script_manager = 0;
 
-static void printfunc(HSQUIRRELVM, const char* str, ...)
+
+
+static void printfunc(HSQUIRRELVM, const SQChar *str, ...)
 {
-  char buf[4096];
-  va_list arglist; 
-  va_start(arglist, str); 
-  vsprintf(buf, str, arglist);
-  console << (char*)buf;
-  puts(buf);
-  va_end(arglist); 
+  std::wostringstream ss;
+	wchar_t buf[4096];
+
+	va_list arglist;
+	va_start(arglist, str);
+	vswprintf(buf, str, arglist);
+	ss << (const wchar_t*) buf << std::flush;
+	va_end(arglist);
+
+  std::string to_print = wstring_to_string(ss.str());
+  console << ss.str().c_str();
+  std::cout << to_print.c_str();
 }
 
 ScriptManager::ScriptManager()
@@ -108,7 +116,7 @@ ScriptManager::run_script(std::istream& in, const std::string& sourcename)
   sq_addref(v, &vm_obj);
   sq_pop(v, 1);
   
-  if(sq_compile(vm, squirrel_read_char, &in, sourcename.c_str(), true) < 0)
+  if(sq_compile(vm, squirrel_read_char, &in, string_to_wstring(sourcename).c_str(), true) < 0)
     throw SquirrelError(vm, "Couldn't parse script");
 	
   squirrel_vms.push_back(SquirrelVM(sourcename, vm, vm_obj));

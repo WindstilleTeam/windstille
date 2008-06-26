@@ -40,6 +40,7 @@ static inline void assert_gl(const char* message)
 }
 
 const std::wstring string_to_wstring(const std::string& str);
+const std::string wstring_to_string(const std::wstring& str);
 
 #endif
 

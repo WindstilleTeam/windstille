@@ -32,8 +32,8 @@
 #include "lisp/parser.hpp"
 #include "lisp/properties.hpp"
 #include "lisp/writer.hpp"
-
 #include "util.hpp"
+#include "../util.hpp"
 
 namespace Scripting {
 
@@ -63,9 +63,9 @@ void sq_to_lisp(HSQUIRRELVM v, std::vector<lisp::Lisp*>& entries)
       break;
     }
     case OT_STRING: {
-      const char* str;
+      const wchar_t* str;
       sq_getstring(v, -1, &str);      
-      entries.push_back(new lisp::Lisp(lisp::Lisp::TYPE_STRING, str));
+      entries.push_back(new lisp::Lisp(lisp::Lisp::TYPE_STRING, wstring_to_string(str)));
       break;
     }                                                    
     case OT_BOOL: {
@@ -101,9 +101,9 @@ void table_to_lisp(HSQUIRRELVM v, int table_idx, std::vector<lisp::Lisp*>& entri
         continue;
       }
 
-      const char* key;
+      const wchar_t* key;
       sq_getstring(v, -2, &key);
-      std::string lisp_key = sq_to_lisp_string(key);
+      std::string lisp_key = sq_to_lisp_string(wstring_to_string(key));
 
       std::vector<lisp::Lisp*> childs;
       childs.push_back(new lisp::Lisp(lisp::Lisp::TYPE_SYMBOL, lisp_key));
@@ -150,7 +150,7 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
       break;
     }
     case OT_STRING: {
-      const char* val;
+      const wchar_t* val;
       sq_getstring(v, i, &val);
       os << "\"" << val << "\"";
       break;    
@@ -252,7 +252,7 @@ void print_squirrel_stack(HSQUIRRELVM v)
                 break;
             }
             case OT_STRING: {
-                const char* val;
+                const wchar_t* val;
                 sq_getstring(v, i, &val);
                 printf("string (%s)", val);
                 break;    
@@ -303,7 +303,7 @@ void load_squirrel_table(HSQUIRRELVM v, int table_idx, const lisp::Lisp* lisp)
   Properties props(lisp);
   PropertyIterator<const lisp::Lisp*> iter = props.get_iter();
   while(iter.next()) {
-    sq_pushstring(v, iter.item().c_str(), iter.item().size());
+    sq_pushstring(v, string_to_wstring(iter.item()).c_str(), iter.item().size());
     switch((*iter)->get_type()) {
       case lisp::Lisp::TYPE_LIST:
         sq_newtable(v);
@@ -316,7 +316,7 @@ void load_squirrel_table(HSQUIRRELVM v, int table_idx, const lisp::Lisp* lisp)
         sq_pushfloat(v, (*iter)->get_float());
         break;
       case lisp::Lisp::TYPE_STRING:
-        sq_pushstring(v, (*iter)->get_string(), -1);
+        sq_pushstring(v, string_to_wstring((*iter)->get_string()).c_str(), -1);
         break;
       case lisp::Lisp::TYPE_BOOL:
         sq_pushbool(v, (*iter)->get_bool());
@@ -363,8 +363,9 @@ void save_squirrel_table(HSQUIRRELVM v, int table_idx, lisp::Writer& writer)
       std::cerr << "Table contains non-string key\n";
       continue;
     }
-    const char* key;
-    sq_getstring(v, -2, &key);
+    const wchar_t* wkey;
+    sq_getstring(v, -2, &wkey);
+    std::string key = wstring_to_string(wkey);
 
     switch(sq_gettype(v, -1)) {
       case OT_INTEGER: {
@@ -386,9 +387,9 @@ void save_squirrel_table(HSQUIRRELVM v, int table_idx, lisp::Writer& writer)
         break;
       }
       case OT_STRING: {
-        const char* str;
+        const wchar_t* str;
         sq_getstring(v, -1, &str);
-        writer.write_string(key, str);
+        writer.write_string(key, wstring_to_string(str));
         break;
       }
       case OT_TABLE: {

@@ -52,4 +52,9 @@ const std::wstring string_to_wstring(const std::string& str) {
 	return tmp;
 }
 
+const std::string wstring_to_string(const std::wstring& str) {
+	std::string tmp(str.begin(), str.end());
+	return tmp;
+}
+
 /* EOF */
