@@ -62,7 +62,9 @@ Sector::Sector(const std::string& arg_filename)
 {
   // make sure squirrel has an "objects" table
   script_manager->run_script(
-      "" OBJECTS_TABLE " <- {};", "");
+      "if(! (\"" OBJECTS_TABLE "\" in this)) {"
+      "  " OBJECTS_TABLE " <- {};"
+      "}", "");
   
   if (debug) std::cout << "Creating new Sector" << std::endl;
   collision_engine = new CollisionEngine();
