@@ -49,7 +49,6 @@
 #include "scriptable_object.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "scripting/squirrel_error.hpp"
-#include "util.hpp"
 
 // The table (works like a namespace here) where the game objects will appear
 #define OBJECTS_TABLE "objects"
@@ -269,7 +268,7 @@ Sector::remove_object_from_squirrel(GameObject* object)
   // get objects table
   HSQUIRRELVM v = script_manager->get_vm();
   sq_pushroottable(v);
-  sq_pushstring(v, string_to_wstring(OBJECTS_TABLE).c_str(), -1);
+  sq_pushstring(v, OBJECTS_TABLE, -1);
   if(SQ_FAILED(sq_get(v, -2)))
   {
     std::ostringstream msg;
@@ -278,7 +277,7 @@ Sector::remove_object_from_squirrel(GameObject* object)
   }
 
   // remove object from table
-  sq_pushstring(v, string_to_wstring(object->get_name()).c_str(), object->get_name().size());
+  sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
   if(SQ_FAILED(sq_deleteslot(v, -2, SQFalse) < 0)) {
     std::ostringstream msg;
     msg << "Couldn't remove squirrel object for '" << object->get_name()
@@ -324,7 +323,7 @@ Sector::expose_object_to_squirrel(GameObject* object)
   // get objects table
   HSQUIRRELVM v = script_manager->get_vm();
   sq_pushroottable(v);
-  sq_pushstring(v, string_to_wstring(OBJECTS_TABLE).c_str(), -1);
+  sq_pushstring(v, OBJECTS_TABLE, -1);
   if(SQ_FAILED(sq_get(v, -2)))
   {
     std::ostringstream msg;
@@ -333,7 +332,7 @@ Sector::expose_object_to_squirrel(GameObject* object)
   }
   
   // create squirrel instance and register in table
-  sq_pushstring(v, string_to_wstring(object->get_name()).c_str(), object->get_name().size());
+  sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
   create_squirrel_instance(v, object);
   if(SQ_FAILED(sq_createslot(v, -3)))
   {
