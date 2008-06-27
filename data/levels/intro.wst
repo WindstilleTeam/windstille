@@ -2,7 +2,7 @@
 (windstille-sector
   (version 2)
   (name   "")
-  (music  "music/silence_wip.ogg")
+  (music  "levels/silence_wip.ogg")
   (ambient-color .666 .666 .666)
   (init-script "levels/intro.nut")
   (spawnpoint
