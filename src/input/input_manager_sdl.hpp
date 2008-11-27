@@ -27,6 +27,7 @@
 #define HEADER_INPUT_MANAGER_SDL_HPP
 
 #include <SDL.h>
+#include <memory>
 #include "input_manager_impl.hpp"
 
 class FileReader;
