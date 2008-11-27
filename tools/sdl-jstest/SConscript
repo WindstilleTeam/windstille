@@ -26,7 +26,7 @@
 
 Import('conf_env')
 
-sdl_jstest_env = conf_env.Copy()
+sdl_jstest_env = conf_env.Clone()
 sdl_jstest_env.Append(CCFLAGS=["-std=c99", "-Wall"])
 sdl_jstest_env.Append(LIBS=["curses"])
 sdl_jstest_env.ParseConfig('sdl-config --cflags --libs')
