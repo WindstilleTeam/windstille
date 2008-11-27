@@ -24,6 +24,8 @@
 #include <iostream>
 #include <ctype.h>
 #include <errno.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "tinygettext.hpp"
 #include "physfs/physfs_stream.hpp"
