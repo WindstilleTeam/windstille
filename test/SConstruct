@@ -1,0 +1,5 @@
+env = Environment(CXXFLAGS=['-Wall'], CPPPATH=['../src/'])
+env.Program('matrix_test',
+            ['matrix_test.cpp', '../src/math/matrix.cpp'])
+
+# EOF #
