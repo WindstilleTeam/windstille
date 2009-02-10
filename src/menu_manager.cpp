@@ -133,12 +133,13 @@ MenuManager::display_main_menu()
   TextView* text = new TextView(Rectf(), text_group);
   text_group->pack(text);
   text->set_font(Fonts::vera12);
-  text->set_text("Windstille 0.3.0 - Copyright (C) 2007 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
+  text->set_text("Windstille 0.4.0 - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
                  "\n"
-                 "This program is free software; you can redistribute it and/or "
-                 "modify it under the terms of the GNU General Public License "
-                 "as published by the Free Software Foundation; either version 2 "
-                 "of the License, or (at your option) any later version.");
+                 "This program is free software: you can redistribute it and/or modify "
+                 "it under the terms of the GNU General Public License as published by "
+                 "the Free Software Foundation, either version 3 of the License, or "
+                 "(at your option) any later version.");
+
   manager->get_root()->add_child(text_group);
 
   GroupComponent* group = new GroupComponent(Rectf(Vector(400-25, 200), Sizef(250, 294)),
