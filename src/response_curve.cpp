@@ -68,15 +68,21 @@ ResponseCurve::get(float v)
 
 int main(int argc, char** argv)
 {
-  float samples[] = { 0.0f, 0.25f, 0.75f, 1.0f };
-  std::vector<float> samples_vec(samples, samples+4);
+  if (argc != 2)
+    {
+      std::cout << "Usage: " << argv[0] << " FLOAT" << std::endl;
+    }
+  else
+    {
+      float samples[] = { 0.0f, 0.25f, 0.75f, 1.0f };
+      std::vector<float> samples_vec(samples, samples+4);
 
-  std::cout << "Samples: " << samples_vec.size() << std::endl;
+      std::cout << "Samples: " << samples_vec.size() << std::endl;
 
-  ResponseCurve curve(0.0f, 1.0f, samples_vec);
+      ResponseCurve curve(0.0f, 1.0f, samples_vec);
 
-  std::cout << curve.get(atof(argv[1])) << std::endl;
-
+      std::cout << curve.get(atof(argv[1])) << std::endl;
+    }
   return 0;
 }
 #endif
