@@ -1,6 +1,0 @@
-SubDir TOP src particles ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES = [ SearchSource $(sources) ] ;
-particles_objects = [ CompileObjects $(sources) ] ;

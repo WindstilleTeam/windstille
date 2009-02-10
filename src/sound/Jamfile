@@ -1,7 +1,0 @@
-SubDir TOP src sound ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
-sound_objects = [ CompileObjects $(sources) ] ;
-

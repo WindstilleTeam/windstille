@@ -1,7 +1,0 @@
-SubDir TOP src physfs ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
-physfs_objects = [ CompileObjects $(sources) ] ;
-

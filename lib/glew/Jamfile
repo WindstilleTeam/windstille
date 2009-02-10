@@ -1,8 +1,0 @@
-SubDir TOP lib glew ;
-
-Library glew : [ Wildcard *.c *.h ] ;
-# CFlags glew : -Wno-all ;
-IncludeDir glew : . ;
-LinkWith glew : $(GL) ;
-Help glew : "Build the glew support library" ;
-

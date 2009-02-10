@@ -1,7 +1,0 @@
-SubDir TOP src tinygettext ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
-tinygettext_objects = [ CompileObjects $(sources) ] ;
-

@@ -1,7 +1,0 @@
-SubDir TOP src sprite3d ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
-sprite3d_objects = [ CompileObjects $(sources) ] ;
-

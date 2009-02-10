@@ -1,7 +1,0 @@
-SubDir TOP src lisp ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
-lisp_objects = [ CompileObjects $(sources) ] ;
-

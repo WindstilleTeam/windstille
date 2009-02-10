@@ -1,7 +1,0 @@
-SubDir TOP src sprite2d ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
-sprite2d_objects = [ CompileObjects $(sources) ] ;
-

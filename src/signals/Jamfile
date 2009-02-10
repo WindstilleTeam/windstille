@@ -1,6 +1,0 @@
-SubDir TOP src signals ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES = [ SearchSource $(sources) ] ;
-signals_objects = [ CompileObjects $(sources) ] ;

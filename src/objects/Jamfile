@@ -1,7 +1,0 @@
-SubDir TOP src objects ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES += [ SearchSource $(sources) ] ;
-objects_objects = [ CompileObjects $(sources) ] ;
-

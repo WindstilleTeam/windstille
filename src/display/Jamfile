@@ -1,6 +1,0 @@
-SubDir TOP src display ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES = [ SearchSource $(sources) ] ;
-display_objects = [ CompileObjects $(sources) ] ;

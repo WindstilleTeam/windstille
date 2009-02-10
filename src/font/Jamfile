@@ -1,6 +1,0 @@
-SubDir TOP src font ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES = [ SearchSource $(sources) ] ;
-font_objects = [ CompileObjects $(sources) ] ;

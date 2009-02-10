@@ -1,6 +1,0 @@
-SubDir TOP src gui ;
-
-sources = [ Wildcard *.cpp *.hpp ] ;
-
-TRANSLATABLE_SOURCES = [ SearchSource $(sources) ] ;
-gui_objects = [ CompileObjects $(sources) ] ;
