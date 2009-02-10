@@ -1,3 +1,41 @@
+Windstille ToDo
+===============
+
+* seperate and document components better:
+
+  - collision engine
+  - BabyXML
+  - tinygettext
+  - Sprite2D
+  - Sprite3D
+  - particle systems
+
+* unify copyright header and #ifdef guards
+
+* Update Random number generator: http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html
+
+* document scripting tricks somewhere:
+  spawn_object("shockwave", {pos=[0,0]})
+
+* miniswig causes bison++ to crash
+
+Windstille Bugs
+===============
+
+- Jane's hat is white, caused by one mesh using two textures, could be
+  fixed in either the exporter or in the model itself
+  
+- quickly tapping forward-back-hold down forward makes your character play
+  the walking animation without actually moving anywhere
+   
+- Pressing left (or right), jump and and run at the same time throws an
+  exception that causes the game to exit:
+
+  std::exception: No marker with name 'RightFoot' defined in action 'Stand'
+
+  in general the game shouldn't crash when stuff isn't found, but
+  instead fallback to placeholders and give a error message on the console
+
 http://orange.blender.org/blog/the-amazing-incredible-monkey-brush#more-49
 
 - add bison checks
@@ -28,9 +66,6 @@ Screen Handling:
 Misc:
 -----
 
-- rewrite the file reading/writing to look more like that in Pingus
-  (i.e. no toying around with evil pointers, weirdo iter objects,
-  etc. just FileReader)
 - polish/test scripting interface
 - create doll class
 - figure out how to do background animation (coroutines, multiple VM, etc.)
