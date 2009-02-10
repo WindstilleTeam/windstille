@@ -31,7 +31,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <SDL.h>
-#include "../sharedptr.hpp"
+#include <boost/shared_ptr.hpp>
 
 class TextureImpl;
 
@@ -84,8 +84,9 @@ public:
 
   /** true if the Texture is valid and usable, false if not */
   operator bool() const;
+
 private:
-  SharedPtr<TextureImpl> impl;
+  boost::shared_ptr<TextureImpl> impl;
 };
 
 #endif

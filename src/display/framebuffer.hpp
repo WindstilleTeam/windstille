@@ -53,7 +53,7 @@ public:
   bool operator!=(const Framebuffer&) const;
 
 private:
-  SharedPtr<FramebufferImpl> impl;
+  boost::shared_ptr<FramebufferImpl> impl;
 };
 
 #endif

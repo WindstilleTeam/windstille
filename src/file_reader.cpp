@@ -44,13 +44,12 @@ FileReader::parse(const std::string& filename)
     }
 }
 
-FileReader::FileReader(SharedPtr<FileReaderImpl> impl_)
+FileReader::FileReader(boost::shared_ptr<FileReaderImpl> impl_)
   : impl(impl_)
 {
 }
 
 FileReader::FileReader()
-  : impl(0)
 {
 }
 

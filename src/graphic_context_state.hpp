@@ -22,7 +22,7 @@
 
 #include "math/rect.hpp"
 #include "math/vector.hpp"
-#include "sharedptr.hpp"
+#include <boost/shared_ptr.hpp>
 
 class SceneContext;
 
@@ -71,7 +71,7 @@ public:
   Vector screen_to_world(const Vector& pos);
 
 private:
-  SharedPtr<GraphicContextStateImpl> impl;
+  boost::shared_ptr<GraphicContextStateImpl> impl;
 };
 
 #endif

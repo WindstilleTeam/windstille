@@ -27,7 +27,7 @@
 #define HEADER_RENDER_BUFFER_HPP
 
 #include <GL/gl.h>
-#include "sharedptr.hpp"
+#include <boost/shared_ptr.hpp>
 
 class RenderBufferImpl;
 
@@ -43,8 +43,9 @@ public:
   RenderBuffer(GLenum format, int width, int height);
   
   GLuint get_handle() const;
+
 private:
-  SharedPtr<RenderBufferImpl> impl;
+  boost::shared_ptr<RenderBufferImpl> impl;
 };
 
 #endif

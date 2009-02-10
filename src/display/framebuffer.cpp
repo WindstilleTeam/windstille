@@ -106,7 +106,7 @@ Framebuffer::get_handle() const
 
 Framebuffer::operator bool() const
 {
-  return !impl.is_null();
+  return impl.get();
 }
 
 bool

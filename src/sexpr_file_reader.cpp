@@ -24,6 +24,7 @@
 */
 
 #include <assert.h>
+#include <string.h>
 #include "lisp/parser.hpp"
 #include "lisp/getters.hpp"
 #include "color.hpp"
@@ -240,12 +241,12 @@ private:
 };
 
 SExprFileReader::SExprFileReader(const lisp::Lisp* sexpr, bool delete_sexpr)
-  : FileReader(SharedPtr<FileReaderImpl>(new SExprFileReaderImpl(sexpr, delete_sexpr)))
+  : FileReader(boost::shared_ptr<FileReaderImpl>(new SExprFileReaderImpl(sexpr, delete_sexpr)))
 {
 }
 
 SExprFileReader::SExprFileReader(const lisp::Lisp* root, const lisp::Lisp* sexpr)
-  : FileReader(SharedPtr<FileReaderImpl>(new SExprFileReaderImpl(root, sexpr)))
+  : FileReader(boost::shared_ptr<FileReaderImpl>(new SExprFileReaderImpl(root, sexpr)))
 {
 }
 

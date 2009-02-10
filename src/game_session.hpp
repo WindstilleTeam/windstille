@@ -90,8 +90,9 @@ public:
   void quit();
 
   SceneContext* get_scene_context();
+
 private:
-  SharedPtr<GameSessionImpl> impl;
+  boost::shared_ptr<GameSessionImpl> impl;
 };
 
 #endif

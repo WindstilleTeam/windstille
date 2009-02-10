@@ -235,7 +235,7 @@ Texture::set_filter(GLenum mode)
 
 Texture::operator bool() const
 {
-  return !impl.is_null();
+  return impl.get();
 }
 
 bool

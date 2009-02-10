@@ -29,7 +29,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <string>
-#include "sharedptr.hpp"
+#include <boost/shared_ptr.hpp>
 
 class ShaderObjectImpl;
 
@@ -44,8 +44,9 @@ public:
   void load(const std::string& filename);
   void compile();
   void print_log();
+
 private:
-  SharedPtr<ShaderObjectImpl> impl;
+  boost::shared_ptr<ShaderObjectImpl> impl;
 };
 
 #endif

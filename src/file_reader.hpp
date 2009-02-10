@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 #include "getter.hpp"
-#include "sharedptr.hpp"
+#include <boost/shared_ptr.hpp>
 
 class FileReaderImpl;
 
@@ -34,7 +34,7 @@ class FileReader
 public:
   static FileReader parse(const std::string& filename);
 
-  FileReader(SharedPtr<FileReaderImpl> impl_);
+  FileReader(boost::shared_ptr<FileReaderImpl> impl_);
   FileReader();
 
   /** Name of the current section, ie. in the case of
@@ -80,7 +80,7 @@ public:
   void print_unused_warnings(const std::string& title) const;
 
 private:
-  SharedPtr<FileReaderImpl> impl;
+  boost::shared_ptr<FileReaderImpl> impl;
 };
 
 #endif

@@ -28,7 +28,7 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include "sharedptr.hpp"
+#include <boost/shared_ptr.hpp>
 
 class ShaderProgramImpl;
 class ShaderObject;
@@ -60,7 +60,7 @@ public:
   void set_uniform4i(const char* name, GLint v0, GLint v1, GLint v2, GLint v3);
 
 private:
-  SharedPtr<ShaderProgramImpl> impl;
+  boost::shared_ptr<ShaderProgramImpl> impl;
 };
 
 #endif

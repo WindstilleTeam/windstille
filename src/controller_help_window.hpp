@@ -27,7 +27,7 @@
 #define HEADER_CONTROLLER_HELP_WINDOW_HPP
 
 #include "screen.hpp"
-#include "sharedptr.hpp"
+#include <boost/shared_ptr.hpp>
 
 class ControllerHelpWindowImpl;
 
@@ -43,7 +43,7 @@ public:
   static ControllerHelpWindow* current() { return current_; }
 
 private:
-  SharedPtr<ControllerHelpWindowImpl> impl;
+  boost::shared_ptr<ControllerHelpWindowImpl> impl;
   static ControllerHelpWindow* current_;
 };
 
