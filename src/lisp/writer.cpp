@@ -1,5 +1,3 @@
-//
-//
 //  SuperTux -  A Jump'n Run
 //  Copyright (C) 2004 Matthias Braun <matze@braunis.de
 //

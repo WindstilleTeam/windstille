@@ -1,5 +1,3 @@
-//
-//
 //  Copyright (C) 2004 Matthias Braun <matze@braunis.de>
 //  code in this file based on lispreader from Mark Probst
 //
