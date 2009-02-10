@@ -29,7 +29,7 @@ Import('conf_env', 'features')
 SConscript('scripting/SConscript')
 
 env = conf_env.Clone()
-env.Append(LIBS    = ['GL', 'GLU', 'squirrel', 'physfs', 'SDL_image', 'openal', 'glew', 'ogg', 'vorbis', 'vorbisfile', 'png'])
+env.Append(LIBS    = ['GL', 'GLU', 'squirrel', 'physfs', 'SDL_image', 'openal', 'glew', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals'])
 env.Append(LIBPATH = ['../lib/'] )
 env.Append(CPPPATH = ['.', '..', '../lib/SQUIRREL2/include/', '../lib/glew'])
 
@@ -192,8 +192,6 @@ env.Program('../windstille', [
 'scripting/squirrel_error.cpp',
 'scripting/wrapper.cpp',
 'scripting/util.cpp',
-'signals/slot.cpp',
-'signals/slot_generic.cpp',
 'sound/sound_file.cpp',
 'sound/sound_manager.cpp',
 'sound/sound_source.cpp',

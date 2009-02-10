@@ -17,6 +17,7 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+#include <boost/bind.hpp>
 #include "tile_map.hpp"
 #include "sector.hpp"
 #include "input/controller.hpp"
@@ -70,7 +71,7 @@ Player::Player () :
   c_object->set_pos(pos);
   c_object->set_velocity(velocity);
   
-  slot = c_object->sig_collision().connect(this, &Player::collision);
+  c_object->sig_collision().connect(boost::bind(&Player::collision, this, _1));
 
   Sector::current()->get_collision_engine()->add(c_object);
 

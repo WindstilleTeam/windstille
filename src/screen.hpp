@@ -27,7 +27,6 @@
 #define HEADER_SCREEN_HXX
 
 #include <SDL.h>
-#include "signals/slot.hpp"
 
 class Controller;
 

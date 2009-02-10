@@ -22,7 +22,7 @@
 #ifndef HEADER_COLLISION_OBJECT_HPP
 #define HEADER_COLLISION_OBJECT_HPP
 
-#include "signals/signals.hpp"
+#include <boost/signals.hpp>
 #include "math/vector.hpp"
 #include "math/rect.hpp"
 #include "collision_data.hpp"
@@ -54,7 +54,7 @@ private:
 
   GameObject* game_object;
 
-  Signal_v1<const CollisionData &> collision;
+  boost::signal<void (const CollisionData &)> collision;
 
   Rectf primitive;
   TileMap* tilemap;
@@ -128,7 +128,7 @@ public:
   unsigned int get_check_domains() const;
   void         set_check_domains(unsigned int d);
 
-  Signal_v1<const CollisionData &>& sig_collision() { return collision; }
+  boost::signal<void (const CollisionData &)>& sig_collision() { return collision; }
 
   friend class CollisionEngine;
 };

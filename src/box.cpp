@@ -18,6 +18,7 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <stdexcept>
+#include <boost/bind.hpp>
 #include "box.hpp"
 #include "globals.hpp"
 #include "collision/collision_engine.hpp"
@@ -54,7 +55,7 @@ Box::Box(FileReader& props)
 
   Sector::current()->get_collision_engine()->add(colobj);
 
-  slot = colobj->sig_collision().connect(this, &Box::collision);
+  colobj->sig_collision().connect(boost::bind(&Box::collision, this, _1));
 }
 
 Box::~Box()

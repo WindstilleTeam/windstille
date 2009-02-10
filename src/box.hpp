@@ -31,7 +31,6 @@ class Box : public Entity
 private:
   Sprite sprite;
   CollisionObject* colobj;
-  Slot slot;
   float gravity;
 
 public:

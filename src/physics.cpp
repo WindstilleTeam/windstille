@@ -1,4 +1,5 @@
 
+#include <boost/bind.hpp>
 #include "physics.hpp"
 
 Physics::Physics(Entity* entity)
@@ -17,7 +18,7 @@ Physics::~Physics()
 void
 Physics::register_collobj(CollisionObject& object)
 {
-  slots.push_back(object.sig_collision().connect(this, &Physics::collision));
+  object.sig_collision().connect(boost::bind(&Physics::collision, this, _1));
 }
 
 void

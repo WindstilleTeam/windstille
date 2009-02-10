@@ -26,7 +26,7 @@
 #ifndef HEADER_ENTITY_HXX
 #define HEADER_ENTITY_HXX
 
-#include "signals/signal_v0.hpp"
+#include <boost/signal.hpp>
 #include "math/vector.hpp"
 #include "game_object.hpp"
 #include "collision/collision_object.hpp"
@@ -36,7 +36,7 @@
 class Entity : public GameObject
 {
 private:
-  Signal_v0 done; 
+  boost::signal<void ()> done; 
 
 protected:
   friend class Physics;
@@ -77,7 +77,7 @@ public:
 
   void set_parent(Entity* parent_);
 
-  Signal_v0& sig_done() { return done; }
+  boost::signal<void ()>& sig_done() { return done; }
 
 private:
   Entity (const Entity&);

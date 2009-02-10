@@ -27,13 +27,11 @@
 #define HEADER_WINDSTILLE_MENU_MANAGER_HPP
 
 #include <vector>
-#include "signals/slot.hpp"
 
 /** */
 class MenuManager
 {
 private:
-  std::vector<Slot> slots;
 
 public:
   MenuManager();

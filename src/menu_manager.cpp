@@ -23,6 +23,7 @@
 **  02111-1307, USA.
 */
 
+#include <boost/bind.hpp>
 #include "config.hpp"
 #include "sound/sound_manager.hpp"
 #include "console.hpp"
@@ -73,7 +74,7 @@ MenuManager::display_option_menu()
 
   SliderMenuItem* music_volume_item = new SliderMenuItem(menu,  "Master Volume",   
                                                          config.get_int("master-volume"), 0, 100, 10);
-  slots.push_back(music_volume_item->sig_change().connect(this, &MenuManager::menu_music_volume));
+  music_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_music_volume, this, _1));
   menu->add_item(music_volume_item);
 
   SliderMenuItem* sfx_volume_item   = new SliderMenuItem(menu,  "SFX Volume",   100, 0, 100, 10);
@@ -94,13 +95,13 @@ MenuManager::display_option_menu()
   show_fps_item->add_pair(0, "off");
   show_fps_item->add_pair(1, "on");
   menu->add_item(show_fps_item);
-  slots.push_back(show_fps_item->sig_change().connect(this, &MenuManager::menu_show_fps));
+  show_fps_item->sig_change().connect(boost::bind(&MenuManager::menu_show_fps, this, _1));
 
   EnumMenuItem* fullscreen_item = new EnumMenuItem(menu,  "Fullscreen", config.get_bool("fullscreen"));
   fullscreen_item->add_pair(0, "off");
   fullscreen_item->add_pair(1, "on");
   menu->add_item(fullscreen_item);
-  slots.push_back(fullscreen_item->sig_change().connect(this, &MenuManager::menu_fullscreen));
+  fullscreen_item->sig_change().connect(boost::bind(&MenuManager::menu_fullscreen, this, _1));
 
   EnumMenuItem* difficulty_item = new EnumMenuItem(menu,  "Difficulty", 1);
   difficulty_item->add_pair(0, "easy");
@@ -109,14 +110,14 @@ MenuManager::display_option_menu()
   menu->add_item(difficulty_item);
 
   SliderMenuItem* gamma_item   = new SliderMenuItem(menu,  "Gamma",  100, 10, 200, 10);
-  slots.push_back(gamma_item->sig_change().connect(this, &MenuManager::menu_gamma));
+  gamma_item->sig_change().connect(boost::bind(&MenuManager::menu_gamma, this, _1));
   menu->add_item(gamma_item);
 
   #ifdef HAVE_CWIID
   if (wiimote)
     {
       ButtonMenuItem* wiimote_button = new ButtonMenuItem(menu,  "Try to Connect Wiimote");
-      slots.push_back(wiimote_button->sig_click().connect(this, &MenuManager::menu_wiimote));
+      wiimote_button->sig_click().connect(boost::bind(&MenuManager::menu_wiimote, this));
       menu->add_item(wiimote_button);
     }
   #endif
@@ -159,43 +160,43 @@ MenuManager::display_main_menu()
   menu->set_font(Fonts::vera20);
 
   ButtonMenuItem* select_scenario_button = new ButtonMenuItem(menu,  "Select Scenario");
-  slots.push_back(select_scenario_button->sig_click().connect(this, &MenuManager::display_scenario_menu));
+  select_scenario_button->sig_click().connect(boost::bind(&MenuManager::display_scenario_menu, this));
   menu->add_item(select_scenario_button);
 
   ButtonMenuItem* navigation_test_button = new ButtonMenuItem(menu,  "Navigation Test");
-  slots.push_back(navigation_test_button->sig_click().connect(this, &MenuManager::menu_show_navigation_test));
+  navigation_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_navigation_test, this));
   menu->add_item(navigation_test_button);
 
   ButtonMenuItem* armature_test_button = new ButtonMenuItem(menu,  "Armature Test");
-  slots.push_back(armature_test_button->sig_click().connect(this, &MenuManager::menu_show_armature_test));
+  armature_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_armature_test, this));
   menu->add_item(armature_test_button);
 
   ButtonMenuItem* geometry_test_button = new ButtonMenuItem(menu,  "Geometry Test");
-  slots.push_back(geometry_test_button->sig_click().connect(this, &MenuManager::menu_show_geometry_test));
+  geometry_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_geometry_test, this));
   menu->add_item(geometry_test_button);
 
   ButtonMenuItem* model_viewer_button = new ButtonMenuItem(menu,  "Model Viewer");
-  slots.push_back(model_viewer_button->sig_click().connect(this, &MenuManager::display_models_menu));
+  model_viewer_button->sig_click().connect(boost::bind(&MenuManager::display_models_menu, this));
   menu->add_item(model_viewer_button);
 
   ButtonMenuItem* particles_button = new ButtonMenuItem(menu,  "Particle Systems");
-  slots.push_back(particles_button->sig_click().connect(this, &MenuManager::display_particle_menu));
+  particles_button->sig_click().connect(boost::bind(&MenuManager::display_particle_menu, this));
   menu->add_item(particles_button);
 
   ButtonMenuItem* options_button = new ButtonMenuItem(menu,  "Options");
-  slots.push_back(options_button->sig_click().connect(this, &MenuManager::display_option_menu));
+  options_button->sig_click().connect(boost::bind(&MenuManager::display_option_menu, this));
   menu->add_item(options_button);
 
   ButtonMenuItem* credits_button = new ButtonMenuItem(menu,  "Credits");
-  slots.push_back(credits_button->sig_click().connect(this, &MenuManager::display_credits));
+  credits_button->sig_click().connect(boost::bind(&MenuManager::display_credits, this));
   menu->add_item(credits_button);
 
   ButtonMenuItem* help_button = new ButtonMenuItem(menu,  "Help");
-  slots.push_back(help_button->sig_click().connect(this, &MenuManager::display_help));
+  help_button->sig_click().connect(boost::bind(&MenuManager::display_help, this));
   menu->add_item(help_button);
 
   ButtonMenuItem* quit_button = new ButtonMenuItem(menu,  "Quit");
-  slots.push_back(quit_button->sig_click().connect(this, &MenuManager::menu_quit));
+  quit_button->sig_click().connect(boost::bind(&MenuManager::menu_quit, this));
   menu->add_item(quit_button);
   // End: Option Menu
 
@@ -222,31 +223,31 @@ MenuManager::display_pause_menu()
   menu->set_font(Fonts::vera20);
 
   ButtonMenuItem* continue_button = new ButtonMenuItem(menu,  "Resume Game");
-  slots.push_back(continue_button->sig_click().connect(this, &MenuManager::menu_continue));
+  continue_button->sig_click().connect(boost::bind(&MenuManager::menu_continue, this));
   menu->add_item(continue_button);
 
   //  ButtonMenuItem* select_scenario_button = new ButtonMenuItem(menu,  "Select Scenario");
-  //  slots.push_back(select_scenario_button->sig_click().connect(this, &MenuManager::display_scenario_menu));
+  //  select_scenario_button->sig_click().connect(boost::bind(&MenuManager::display_scenario_menu, this));
   // menu->add_item(select_scenario_button);
 
   ButtonMenuItem* options_button = new ButtonMenuItem(menu,  "Options");
-  slots.push_back(options_button->sig_click().connect(this, &MenuManager::display_option_menu));
+  options_button->sig_click().connect(boost::bind(&MenuManager::display_option_menu, this));
   menu->add_item(options_button);
 
   ButtonMenuItem* debug_button = new ButtonMenuItem(menu,  "Debug");
-  slots.push_back(debug_button->sig_click().connect(this, &MenuManager::display_debug_menu));
+  debug_button->sig_click().connect(boost::bind(&MenuManager::display_debug_menu, this));
   menu->add_item(debug_button);
 
   ButtonMenuItem* credits_button = new ButtonMenuItem(menu,  "Credits");
-  slots.push_back(credits_button->sig_click().connect(this, &MenuManager::display_credits));
+  credits_button->sig_click().connect(boost::bind(&MenuManager::display_credits, this));
   menu->add_item(credits_button);
 
   ButtonMenuItem* help_button = new ButtonMenuItem(menu,  "Help");
-  slots.push_back(help_button->sig_click().connect(this, &MenuManager::display_help));
+  help_button->sig_click().connect(boost::bind(&MenuManager::display_help, this));
   menu->add_item(help_button);
 
   ButtonMenuItem* quit_button = new ButtonMenuItem(menu,  "Return to Title Screen");
-  slots.push_back(quit_button->sig_click().connect(this, &MenuManager::menu_exit));
+  quit_button->sig_click().connect(boost::bind(&MenuManager::menu_exit, this));
   menu->add_item(quit_button);
   // End: Option Menu
 
@@ -288,9 +289,7 @@ MenuManager::display_models_menu()
     {
       ButtonMenuItem* scenario_button = new ButtonMenuItem(menu,  *i);
 
-      slots.push_back(scenario_button->sig_click().connect<MenuManager, std::string>
-                      (this, &MenuManager::menu_show_model, 
-                       std::string(*i)));
+      scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_show_model, this, std::string(*i)));
 
       menu->add_item(scenario_button);
     }
@@ -322,9 +321,7 @@ MenuManager::display_particle_menu()
     {
       ButtonMenuItem* scenario_button = new ButtonMenuItem(menu,  *i);
 
-      slots.push_back(scenario_button->sig_click().connect<MenuManager, std::string>
-                      (this, &MenuManager::menu_show_particle_system, 
-                       std::string(*i)));
+      scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_show_particle_system, this, *i));
 
       menu->add_item(scenario_button);
     }
@@ -362,9 +359,7 @@ MenuManager::display_scenario_menu()
     {
       ButtonMenuItem* scenario_button = new ButtonMenuItem(menu,  *i);
 
-      slots.push_back(scenario_button->sig_click().connect<MenuManager, std::string>
-                      (this, &MenuManager::menu_start_scenario, 
-                       std::string(*i)));
+      scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_start_scenario, this, *i));
 
       menu->add_item(scenario_button);
     }
@@ -393,15 +388,15 @@ MenuManager::display_debug_menu()
   Color amb = Sector::current()->get_ambient_light();
 
   SliderMenuItem* r_ambient_light_item = new SliderMenuItem(menu,  "Ambient Light (Red)", int(amb.r*100), 0, 100, 10);
-  slots.push_back(r_ambient_light_item->sig_change().connect(this, &MenuManager::menu_ambient_light, 0));
+  r_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, this, _1, 0));
   menu->add_item(r_ambient_light_item);
 
   SliderMenuItem* g_ambient_light_item = new SliderMenuItem(menu,  "Ambient Light (Green)", int(amb.g*100), 0, 100, 10);
-  slots.push_back(g_ambient_light_item->sig_change().connect(this, &MenuManager::menu_ambient_light, 1));
+  g_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, this, _1, 1));
   menu->add_item(g_ambient_light_item);
 
   SliderMenuItem* b_ambient_light_item = new SliderMenuItem(menu,  "Ambient Light (Blue)", int(amb.b*100), 0, 100, 10);
-  slots.push_back(b_ambient_light_item->sig_change().connect(this, &MenuManager::menu_ambient_light, 2));
+  b_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, this, _1, 2));
   menu->add_item(b_ambient_light_item);
 
   manager->get_root()->add_child(group);

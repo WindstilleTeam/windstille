@@ -30,8 +30,6 @@ private:
   Vector force;
   float air_friction;
   float contact_friction;
-
-  std::vector<Slot> slots;
 };
 
 #endif

@@ -26,11 +26,10 @@
 #ifndef HEADER_WINDSTILLE_GUI_MENU_ITEM_HPP
 #define HEADER_WINDSTILLE_GUI_MENU_ITEM_HPP
 
+#include <boost/signal.hpp>
 #include <string>
 #include <vector>
 #include "math/rect.hpp"
-#include "signals/signal_v1.hpp"
-#include "signals/signal_v0.hpp"
 
 namespace gui {
 
@@ -59,7 +58,7 @@ private: // FIXME: Convert this into a generic enum/value slider
   
   int index;
   std::vector<EnumValue> labels;
-  Signal_v1<int> on_change;
+  boost::signal<void (int)> on_change;
 public:  
   EnumMenuItem(MenuComponent* parent_, 
                const std::string& label_, int index_ = 0);
@@ -71,7 +70,7 @@ public:
   void click() {}
   void draw(const Rectf& rect, bool is_active);
   void update(float);
-  Signal_v1<int>& sig_change() { return on_change; }
+  boost::signal<void (int)>& sig_change() { return on_change; }
 };
 
 /** A slider widget for use in volume controls, gamma controls and
@@ -82,7 +81,7 @@ public:
   int min_value;
   int max_value;
   int step;
-  Signal_v1<int> on_change;
+  boost::signal<void (int)> on_change;
 public:  
   SliderMenuItem(MenuComponent* parent_, 
                  const std::string& label_, int value_, int mix_value_ = 0, int max_value_ = 100, int step = 10);
@@ -91,12 +90,13 @@ public:
   void click() {}
   void draw(const Rectf& rect, bool is_active);
   void update(float);
-  Signal_v1<int>& sig_change() { return on_change; }
+  boost::signal<void (int)>& sig_change() { return on_change; }
 };
 
 class ButtonMenuItem : public MenuItem {
 public:
-  Signal_v0 on_click;
+  boost::signal<void ()> on_click;
+
 public:  
   ButtonMenuItem(MenuComponent* parent_, const std::string& label_);
   void incr() {}
@@ -104,7 +104,7 @@ public:
   void click();
   void draw(const Rectf& rect, bool is_active);
   void update(float);
-  Signal_v0& sig_click() { return on_click; }
+  boost::signal<void ()>& sig_click() { return on_click; }
 };
 
 } // namespace gui

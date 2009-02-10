@@ -52,7 +52,6 @@ private:
   int energy;
 
   CollisionObject* c_object;
-  Slot slot;
 
   LaserPointer* laser_pointer;
   Contact* contact;
