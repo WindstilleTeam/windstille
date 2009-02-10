@@ -277,31 +277,39 @@ BabyXML::add_node(const Node& node)
   nodes.push_back(node);
 }
 
-#ifdef TEST_BABY_XML
+#ifdef __TEST__
+// g++ -Wall -Werror -O2 -g -o baby_xml baby_xml.cpp -D__TEST__ 
 #include <iostream>
 
-int main()
+int main(int argc, char** argv)
 {
-  // BabyXML xml("<strong size='10'>Hello &lt; World&gt; <b>&quot;blabla&quot;</b> Blablub</strong>");
-  BabyXML xml("Hello ");
-
-  for(BabyXML::iterator i = xml.begin(); i != xml.end(); ++i)
+  if (argc != 2)
     {
-      if (i->type == BabyXML::Node::START_TAG)
-        std::cout << "STARTTAG: ";
-      else if (i->type == BabyXML::Node::END_TAG)
-        std::cout << "ENDTAG: ";
-      else if (i->type == BabyXML::Node::TEXT)
-        std::cout << "TEXT: ";
+      std::cout << "Usage: " << argv[0] << " STRING" << std::endl;
+    }
+  else
+    {
+      // BabyXML xml("<strong size='10'>Hello &lt; World&gt; <b>&quot;blabla&quot;</b> Blablub</strong>");
+      BabyXML xml(argv[1]);
 
-      std::cout << "'" << i->content << "'";
-
-      for(std::vector<BabyXML::Attribute>::iterator j = i->attributes.begin(); j != i->attributes.end(); ++j)
+      for(BabyXML::iterator i = xml.begin(); i != xml.end(); ++i)
         {
-          std::cout << " " << j->name << "=" << j->value;
-        }
+          if (i->type == BabyXML::Node::START_TAG)
+            std::cout << "STARTTAG: ";
+          else if (i->type == BabyXML::Node::END_TAG)
+            std::cout << "ENDTAG: ";
+          else if (i->type == BabyXML::Node::TEXT)
+            std::cout << "TEXT: ";
 
-      std::cout << std::endl;
+          std::cout << "'" << i->content << "'";
+
+          for(std::vector<BabyXML::Attribute>::iterator j = i->attributes.begin(); j != i->attributes.end(); ++j)
+            {
+              std::cout << " " << j->name << "=" << j->value;
+            }
+
+          std::cout << std::endl;
+        }
     }
 }
 #endif
