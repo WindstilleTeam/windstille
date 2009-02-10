@@ -22,10 +22,11 @@
 #include <memory>
 #include <iostream>
 #include "config.hpp"
-#include "tinygettext/gettext.hpp"
 #include "sexpr_file_reader.hpp"
 #include "command_line.hpp"
 #include "globals.hpp"
+
+#define _(A) A
 
 std::vector<std::string> arg_files;
 

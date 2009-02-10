@@ -201,9 +201,7 @@ env.Program('../windstille', [
 'sprite2d/sprite.cpp',
 'sprite3d/data.cpp',
 'sprite3d/manager.cpp',
-'sprite3d/sprite3d.cpp',
-'tinygettext/gettext.cpp',
-'tinygettext/tinygettext.cpp'
+'sprite3d/sprite3d.cpp'
 ])
 
 # EOF #

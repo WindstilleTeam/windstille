@@ -22,4 +22,3 @@ void create_squirrel_instance(HSQUIRRELVM v, Scripting::ScriptableObject* object
 }
 
 #endif
-

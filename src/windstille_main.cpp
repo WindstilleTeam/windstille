@@ -32,7 +32,6 @@
 #include "sound/sound_manager.hpp"
 #include "tile_factory.hpp"
 #include "script_manager.hpp"
-#include "tinygettext/gettext.hpp"
 #include "config.hpp"
 #include "util.hpp"
 #include "font/ttf_font.hpp"
@@ -67,10 +66,6 @@ WindstilleMain::main(int argc, char** argv)
 
     init_physfs(argv[0]);
     init_sdl();
-
-    dictionaryManager = new tinygettext::DictionaryManager();
-    dictionaryManager->set_charset("iso8859-1");
-    dictionaryManager->add_directory("locale");
 
     config.load();
     
@@ -189,9 +184,6 @@ WindstilleMain::main(int argc, char** argv)
 
   config.save();
 
-  delete dictionaryManager;
-  dictionaryManager = 0;
-  
   SDL_Quit();
   PHYSFS_deinit();
 

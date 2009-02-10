@@ -19,13 +19,14 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <config.h>
 
+#include <memory>
+#include <string.h>
 #include <sstream>
 #include <cassert>
 #include <iostream>
 #include <string>
 #include <exception>
 
-#include "tinygettext/tinygettext.hpp"
 #include "physfs/physfs_stream.hpp"
 #include "parser.hpp"
 #include "lisp.hpp"
@@ -56,16 +57,13 @@ private:
 };
 
 Parser::Parser()
-  : lexer(0), dictionary_manager(0), dictionary(0)
+  : lexer(0)
 {
-  dictionary_manager = new tinygettext::DictionaryManager();
-  dictionary_manager->set_charset("UTF-8");
 }
 
 Parser::~Parser()
 {
   delete lexer;
-  delete dictionary_manager;
 }
 
 static std::string dirname(std::string filename)
@@ -96,8 +94,6 @@ Parser::parse(std::istream& stream, const std::string& filename)
   std::auto_ptr<Parser> parser (new Parser());
 
   parser->filename = filename;
-  parser->dictionary_manager->add_directory(dirname(filename));
-  parser->dictionary = & (parser->dictionary_manager->get_dictionary());
   parser->lexer = new Lexer(stream);
 
   parser->token = parser->lexer->getNextToken();
@@ -131,12 +127,8 @@ Parser::parse()
             token = lexer->getNextToken();
             if(token != Lexer::TOKEN_STRING)
               throw ParseError(this, "Expected string after '(_' sequence");
-            if(dictionary) {
-              std::string translation = dictionary->translate(lexer->getString());
-              entries.push_back(new Lisp(Lisp::TYPE_STRING, translation));
-            } else {
-              entries.push_back(new Lisp(Lisp::TYPE_STRING, lexer->getString()));
-            }
+            
+            entries.push_back(new Lisp(Lisp::TYPE_STRING, lexer->getString()));
             
             token = lexer->getNextToken();
             if(token != Lexer::TOKEN_CLOSE_PAREN)

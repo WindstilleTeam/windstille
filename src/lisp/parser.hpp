@@ -22,11 +22,6 @@
 #include <string>
 #include "lexer.hpp"
 
-namespace tinygettext {
-class Dictionary;
-class DictionaryManager;
-}
-
 namespace lisp
 {
 
@@ -48,8 +43,6 @@ private:
   
   std::string filename;
   Lexer* lexer;
-  tinygettext::DictionaryManager* dictionary_manager;
-  tinygettext::Dictionary* dictionary;
   Lexer::TokenType token;
 };
 
