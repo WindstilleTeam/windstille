@@ -3,6 +3,7 @@
 
 #include "sound_file.hpp"
 
+#include <string.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <algorithm>
