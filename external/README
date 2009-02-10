@@ -1,6 +1,8 @@
 SQUIRREL2/ - http://squirrel-lang.org
--------------------------------------
-SQUIRREL2/ is a verbatim copy of the squirrel tarball, to update it,
-just remove SQUIRREL2 and extract a new tarball.
+    SQUIRREL2/ is a verbatim copy of the squirrel tarball, to update
+    it, just remove SQUIRREL2 and extract a new tarball.
+
+miniswig/ - Squirrel Wrapper Generator
+    uses svn:externals should update automatically
 
 # EOF #

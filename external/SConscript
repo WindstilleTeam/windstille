@@ -13,7 +13,29 @@ if features['64bit']:
 squirrel_env.Append(CXXFLAGS = conf_env['CXXFLAGS'])
 
 squirrel_env.Library('squirrel',
-            glob.glob('SQUIRREL2/squirrel/*.cpp') +
-            glob.glob('SQUIRREL2/sqstdlib/*.cpp'))
+                     glob.glob('SQUIRREL2/squirrel/*.cpp') +
+                     glob.glob('SQUIRREL2/sqstdlib/*.cpp'))
+
+# ______________________________________________________________________
+#
+
+miniswig_env = Environment(CPPPATH=['../..'],
+                           CXXFILESUFFIX = ".cpp",
+                           YACCFLAGS=['-d', '--no-lines'])
+
+miniswig = miniswig_env.Program('miniswig/miniswig',
+                                ['miniswig/parser.yy',
+                                 'miniswig/lexer.ll',
+                                 'miniswig/create_docu.cpp',
+                                 'miniswig/xmlwriter.cpp',
+                                 'miniswig/create_wrapper.cpp',
+                                 'miniswig/main.cpp',
+                                 'miniswig/tree.cpp'], 
+                                CPPPATH=["..", "miniswig"])
+
+# bison -d --no-lines -o tools/miniswig/parser.cpp tools/miniswig/parser.yy
+
+Export('miniswig')
+
 
 # EOF #
