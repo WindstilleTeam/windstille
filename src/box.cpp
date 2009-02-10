@@ -1,4 +1,4 @@
-//  $Id$
+//
 // 
 //  Windstille - A Jump'n Shoot Game
 //  Copyright (C) 2005 David Kamphausen <david.kamphausen@web.de>

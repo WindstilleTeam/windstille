@@ -1,4 +1,4 @@
-//  $Id: writer.cpp 2575 2005-06-07 15:59:27Z matzebraun $
+//
 //
 //  SuperTux -  A Jump'n Run
 //  Copyright (C) 2004 Matthias Braun <matze@braunis.de

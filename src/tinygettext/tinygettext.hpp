@@ -1,4 +1,4 @@
-//  $Id: tinygettext.h 2575 2005-06-07 15:59:27Z matzebraun $
+//
 // 
 //  TinyGetText - A small flexible gettext() replacement
 //  Copyright (C) 2004 Ingo Ruhnke <grumbel@gmx.de>

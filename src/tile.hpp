@@ -1,4 +1,4 @@
-//  $Id$
+//
 // 
 //  Windstille - A Jump'n Shoot Game
 //  Copyright (C) 2002 Ingo Ruhnke <grumbel@gmx.de>

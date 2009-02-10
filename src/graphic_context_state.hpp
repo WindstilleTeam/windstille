@@ -1,4 +1,4 @@
-//  $Id$
+//
 // 
 //  Flexlay - A Generic 2D Game Editor
 //  Copyright (C) 2002 Ingo Ruhnke <grumbel@gmx.de>
