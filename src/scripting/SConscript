@@ -4,7 +4,7 @@ import SCons
 
 Import(['miniswig'])
 
-env = Environment(MINISWIG='tools/miniswig/miniswig')
+env = Environment(MINISWIG='external/miniswig/miniswig')
 
 env.Depends(env.Command('miniswig.tmp', 'wrapper.interface.hpp',
                         ["cpp -x c  -CC $SOURCE -o $TARGET -DSCRIPTING_API"]),
