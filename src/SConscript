@@ -29,9 +29,9 @@ Import('conf_env', 'features')
 SConscript('scripting/SConscript')
 
 env = conf_env.Clone()
-env.Append(LIBS    = ['GL', 'GLU', 'squirrel', 'physfs', 'SDL_image', 'openal', 'glew', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals'])
+env.Append(LIBS    = ['GL', 'GLU', 'GLEW', 'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals'])
 env.Append(LIBPATH = ['../lib/'] )
-env.Append(CPPPATH = ['.', '..', '../lib/SQUIRREL2/include/', '../lib/glew'])
+env.Append(CPPPATH = ['.', '..', '../lib/SQUIRREL2/include/'])
 
 if features['64bit']:
     env.Append(CPPDEFINES = '_SQ64')
