@@ -17,8 +17,8 @@
 */
 
 #include "wrapper.interface.hpp"
-#include "entity.hpp"
-#include "sector.hpp"
+#include "engine/entity.hpp"
+#include "engine/sector.hpp"
 #include "game_objects.hpp"
 
 namespace scripting {

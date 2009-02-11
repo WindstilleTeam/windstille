@@ -20,7 +20,7 @@
 #include "display/display.hpp"
 #include "collision/collision_engine.hpp"
 #include "objects/player.hpp"
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "view.hpp"
 
 View* View::current_ = 0;

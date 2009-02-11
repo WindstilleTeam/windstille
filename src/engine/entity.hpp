@@ -21,7 +21,7 @@
 
 #include <boost/signal.hpp>
 #include "math/vector.hpp"
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 #include "collision/collision_object.hpp"
 
 /** A GameObject which has a position and some other properties which

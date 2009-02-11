@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_SCRIPTING_GAME_OBJECTS_HPP
 
 #ifndef SCRIPTING_API
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 #include "objects/test_object.hpp"
 #include "objects/player.hpp"
 #include "objects/scriptable_object.hpp"

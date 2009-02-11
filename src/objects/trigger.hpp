@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_TRIGGER_HPP
 
 #include <vector>
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 
 /** */
 class Trigger : public GameObject

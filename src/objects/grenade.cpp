@@ -16,9 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "grenade.hpp"
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "collision/collision_engine.hpp"
+#include "grenade.hpp"
 
 Grenade::Grenade()
   : sprite("models/objects/grenade/grenade.wsprite"), physics(this)

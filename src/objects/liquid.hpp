@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_LIQUID_HPP
 
 #include <vector>
-#include "entity.hpp"
+#include "engine/entity.hpp"
 
 /** */
 class Liquid : public Entity

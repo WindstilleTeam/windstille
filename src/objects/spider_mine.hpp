@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_SPIDER_MINE_HPP
 #define HEADER_WINDSTILLE_OBJECTS_SPIDER_MINE_HPP
 
-#include "entity.hpp"
+#include "engine/entity.hpp"
 #include "sprite2d/sprite.hpp"
 
 class SpiderMine : public Entity

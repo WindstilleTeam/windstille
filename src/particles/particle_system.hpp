@@ -23,7 +23,7 @@
 
 #include "color.hpp"
 #include "drawer.hpp"
-#include "entity.hpp"
+#include "engine/entity.hpp"
 
 class SceneContext;
 class Randomizer;

@@ -24,11 +24,10 @@
 #include "display/scene_context.hpp"
 #include "objects/background_gradient.hpp"
 #include "tile/tile_map.hpp"
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 #include "objects/player.hpp"
-#include "trigger.hpp"
+#include "objects/trigger.hpp"
 #include "objects/test_object.hpp"
-#include "sector.hpp"
 #include "objects/vrdummy.hpp"
 #include "sound/sound_manager.hpp"
 #include "script_manager.hpp"
@@ -38,7 +37,7 @@
 #include "objects/elevator.hpp"
 #include "objects/nightvision.hpp"
 #include "objects/character.hpp"
-#include "laser_pointer.hpp"
+#include "objects/laser_pointer.hpp"
 #include "objects/swarm.hpp"
 #include "objects/liquid.hpp"
 #include "objects/shockwave.hpp"
@@ -48,6 +47,8 @@
 #include "objects/scriptable_object.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "scripting/squirrel_error.hpp"
+
+#include "sector.hpp"
 
 // The table (works like a namespace here) where the game objects will appear
 #define OBJECTS_TABLE "objects"

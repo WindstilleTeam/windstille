@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_OBJECTS_TEST_OBJECT_HPP
 
 #include <vector>
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 #include "sprite3d/sprite3d.hpp"
 #include "math/vector.hpp"
 

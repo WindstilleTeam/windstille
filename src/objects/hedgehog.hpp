@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_HEDGEHOG_HPP
 #define HEADER_WINDSTILLE_OBJECTS_HEDGEHOG_HPP
 
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 
 class Hedgehog : public Entity
 {

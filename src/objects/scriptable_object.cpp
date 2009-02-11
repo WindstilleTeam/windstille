@@ -20,7 +20,7 @@
 #include "globals.hpp"
 #include "scriptable_object.hpp"
 #include "sprite2d/manager.hpp"
-#include "script_manager.hpp"
+#include "engine/script_manager.hpp"
 
 ScriptableObject::ScriptableObject(FileReader& props)
   : z_pos(50),

@@ -17,7 +17,7 @@
 */
 
 #include "globals.hpp"
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "bomb.hpp"
 
 Bomb::Bomb(int x, int y)

@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_CHARACTER_HPP
 #define HEADER_WINDSTILLE_CHARACTER_HPP
 
-#include "entity.hpp"
+#include "engine/entity.hpp"
 #include "sprite3d/sprite3d.hpp"
 
 class Character : public Entity

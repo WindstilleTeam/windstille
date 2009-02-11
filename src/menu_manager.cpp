@@ -30,7 +30,7 @@
 #include "gui/text_view.hpp"
 #include "particle_viewer.hpp"
 #include "screen_manager.hpp"
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "sprite3d/manager.hpp"
 #include "sprite3dview.hpp"
 #include "geometry_test.hpp"

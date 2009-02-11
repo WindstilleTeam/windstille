@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_SWARM_HPP
 #define HEADER_WINDSTILLE_OBJECTS_SWARM_HPP
 
-#include "entity.hpp"
+#include "engine/entity.hpp"
 
 class SwarmAgent
 {

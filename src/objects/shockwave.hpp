@@ -21,7 +21,7 @@
 
 #include "display/shader_program.hpp"
 #include "display/texture.hpp"
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 
 /** */
 class Shockwave : public GameObject

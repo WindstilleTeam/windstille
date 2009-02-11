@@ -18,10 +18,10 @@
 
 #include <stdexcept>
 #include <list>
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "trigger.hpp"
 #include "objects/player.hpp"
-#include "script_manager.hpp"
+#include "engine/script_manager.hpp"
 
 Trigger::Trigger(FileReader& props)
   : triggered(false), one_time_trigger(false)

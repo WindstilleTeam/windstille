@@ -21,7 +21,7 @@
 
 #include <string>
 #include <stdint.h>
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 #include "display/scene_context.hpp"
 #include "math/vector.hpp"
 #include "math/matrix.hpp"

@@ -26,7 +26,7 @@
 #include "sound/sound_source.hpp"
 #include "math/vector.hpp"
 #include "globals.hpp"
-#include "entity.hpp"
+#include "engine/entity.hpp"
 #include "ref.hpp"
 #include "display/surface.hpp"
 

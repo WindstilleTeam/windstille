@@ -17,11 +17,11 @@
 */
 
 #include "character.hpp"
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "game_session.hpp"
 #include "scripting/wrapper.interface.hpp"
 #include "dialog_manager.hpp"
-#include "script_manager.hpp"
+#include "engine/script_manager.hpp"
 #include "physfs/physfs_stream.hpp"
 #include "console.hpp"
 #include "sprite3d/manager.hpp"

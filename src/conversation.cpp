@@ -21,7 +21,7 @@
 #include "input/input_manager.hpp"
 #include "font/fonts.hpp"
 #include "math/rect.hpp"
-#include "script_manager.hpp"
+#include "engine/script_manager.hpp"
 #include "display/display.hpp"
 #include "conversation.hpp"
 #include "pda.hpp"

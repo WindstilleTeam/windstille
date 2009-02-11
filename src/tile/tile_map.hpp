@@ -23,7 +23,7 @@
 
 #include "globals.hpp"
 #include "field.hpp"
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 #include "display/scene_context.hpp"
 
 class Tile;

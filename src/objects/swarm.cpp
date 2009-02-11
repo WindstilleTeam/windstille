@@ -18,7 +18,7 @@
 
 #include "globals.hpp"
 #include "player.hpp"
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "hedgehog.hpp"
 #include "game_session.hpp"
 #include "view.hpp"

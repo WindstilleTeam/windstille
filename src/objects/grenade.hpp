@@ -18,8 +18,8 @@
 #ifndef HEADER_WINDSTILLE_GRENADE_HPP
 #define HEADER_WINDSTILLE_GRENADE_HPP
 
-#include "entity.hpp"
-#include "physics.hpp"
+#include "engine/entity.hpp"
+#include "engine/physics.hpp"
 #include "sprite3d/sprite3d.hpp"
 #include <memory>
 

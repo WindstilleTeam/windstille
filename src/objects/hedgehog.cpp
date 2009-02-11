@@ -18,7 +18,7 @@
 
 #include "globals.hpp"
 #include "player.hpp"
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "hedgehog.hpp"
 
 Hedgehog::Hedgehog(FileReader& props)

@@ -18,7 +18,7 @@
 
 #include <boost/bind.hpp>
 #include "tile/tile_map.hpp"
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "input/controller.hpp"
 #include "input/input_manager.hpp"
 #include "controller_def.hpp"

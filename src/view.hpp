@@ -19,8 +19,8 @@
 #ifndef HEADER_WINDSTILLE_VIEW_HPP
 #define HEADER_WINDSTILLE_VIEW_HPP
 
-#include "camera.hpp"
 #include "graphic_context_state.hpp"
+#include "engine/camera.hpp"
 #include "math/vector.hpp"
 
 class Controller;

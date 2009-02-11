@@ -18,7 +18,7 @@
 
 #include <stdexcept>
 #include "elevator.hpp"
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "collision/collision_engine.hpp"
 #include "sprite2d/manager.hpp"
 

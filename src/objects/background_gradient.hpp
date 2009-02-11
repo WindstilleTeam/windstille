@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_BACKGROUND_GRADIENT_HPP
 #define HEADER_WINDSTILLE_OBJECTS_BACKGROUND_GRADIENT_HPP
 
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 
 /** */
 class BackgroundGradient : public GameObject

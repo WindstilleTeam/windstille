@@ -21,7 +21,7 @@
 
 #include "sprite3d/sprite3d.hpp"
 #include "sprite2d/sprite.hpp"
-#include "entity.hpp"
+#include "engine/entity.hpp"
 
 /** */
 class VRDummy : public Entity

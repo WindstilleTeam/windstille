@@ -21,7 +21,7 @@
 
 #include "display/texture.hpp"
 #include "sprite2d/sprite.hpp"
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 
 // FIXME: shouldn't really be a game object, but makes testing easier
 class Nightvision : public GameObject

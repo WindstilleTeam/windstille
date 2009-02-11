@@ -21,7 +21,7 @@
 
 #include "sprite2d/sprite.hpp"
 #include "display/texture.hpp"
-#include "game_object.hpp"
+#include "engine/game_object.hpp"
 
 /** Simple class that generates a laser for pointing at objects */
 class LaserPointer : public GameObject

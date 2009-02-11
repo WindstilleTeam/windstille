@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_ELEVATOR_HPP
 #define HEADER_WINDSTILLE_ELEVATOR_HPP
 
-#include "entity.hpp"
+#include "engine/entity.hpp"
 #include "sprite2d/sprite.hpp"
 
 /** */

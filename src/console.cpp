@@ -21,7 +21,7 @@
 #include "font/fonts.hpp"
 #include "game_session.hpp"
 #include "input/input_manager.hpp"
-#include "script_manager.hpp"
+#include "engine/script_manager.hpp"
 #include "display/display.hpp"
 #include "scripting/util.hpp"
 #include "console.hpp"

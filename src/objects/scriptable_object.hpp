@@ -21,7 +21,7 @@
 #define HEADER_WINDSTILLE_SCRIPTABLE_OBJECT_HPP
 
 #include <string>
-#include "entity.hpp"
+#include "engine/entity.hpp"
 #include "sprite2d/sprite.hpp"
 
 /** Can represent any generic object that the player may see or interact with that

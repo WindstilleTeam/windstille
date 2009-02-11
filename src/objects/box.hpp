@@ -19,9 +19,9 @@
 #ifndef HEADER_WINDSTILLE_BOX_HPP
 #define HEADER_WINDSTILLE_BOX_HPP
 
-#include "entity.hpp"
+#include "engine/entity.hpp"
 #include "collision/collision_object.hpp"
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "particles/particle_system.hpp"
 #include "sprite2d/sprite.hpp"
 
