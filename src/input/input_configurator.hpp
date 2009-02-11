@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_INPUT_CONFIGURATOR_HPP
-#define HEADER_INPUT_CONFIGURATOR_HPP
+#ifndef HEADER_WINDSTILLE_INPUT_INPUT_CONFIGURATOR_HPP
+#define HEADER_WINDSTILLE_INPUT_INPUT_CONFIGURATOR_HPP
 
 #include <sstream>
 #include "screen.hpp"

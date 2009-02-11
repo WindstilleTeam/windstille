@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_BOMB_HXX
-#define HEADER_BOMB_HXX
+#ifndef HEADER_WINDSTILLE_OBJECTS_BOMB_HPP
+#define HEADER_WINDSTILLE_OBJECTS_BOMB_HPP
 
 #include "sprite2d/sprite.hpp"
 #include "game_object.hpp"

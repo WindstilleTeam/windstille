@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_NAVIGATION_NODE_HPP
-#define HEADER_NAVIGATION_NODE_HPP
+#ifndef HEADER_WINDSTILLE_NAVIGATION_NAVIGATION_NODE_HPP
+#define HEADER_WINDSTILLE_NAVIGATION_NAVIGATION_NODE_HPP
 
 #include <vector>
 #include "math/vector.hpp"

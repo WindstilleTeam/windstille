@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_DRAWING_REQUEST_HXX
-#define HEADER_DRAWING_REQUEST_HXX
+#ifndef HEADER_WINDSTILLE_DISPLAY_DRAWING_REQUEST_HPP
+#define HEADER_WINDSTILLE_DISPLAY_DRAWING_REQUEST_HPP
 
 #include "math/vector.hpp"
 #include "math/rect.hpp"

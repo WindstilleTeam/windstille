@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_LINE_HPP
-#define HEADER_LINE_HPP
+#ifndef HEADER_WINDSTILLE_MATH_LINE_HPP
+#define HEADER_WINDSTILLE_MATH_LINE_HPP
 
 #include "math/vector.hpp"
 

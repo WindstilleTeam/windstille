@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_MATH_HXX
-#define HEADER_MATH_HXX
+#ifndef HEADER_WINDSTILLE_MATH_HPP
+#define HEADER_WINDSTILLE_MATH_HPP
 
 #include <assert.h>
 #include <math.h>

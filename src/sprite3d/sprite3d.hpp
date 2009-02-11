@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SPRITE3D_HPP
-#define HEADER_SPRITE3D_HPP
+#ifndef HEADER_WINDSTILLE_SPRITE3D_SPRITE3D_HPP
+#define HEADER_WINDSTILLE_SPRITE3D_SPRITE3D_HPP
 
 #include <string>
 #include <stdint.h>
@@ -156,3 +156,5 @@ private:
 };
 
 #endif
+
+/* EOF */

@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_GROUP_COMPONENT_HPP
-#define HEADER_GROUP_COMPONENT_HPP
+#ifndef HEADER_WINDSTILLE_GUI_GROUP_COMPONENT_HPP
+#define HEADER_WINDSTILLE_GUI_GROUP_COMPONENT_HPP
 
 #include <string>
 #include "component.hpp"

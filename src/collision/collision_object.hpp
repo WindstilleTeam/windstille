@@ -17,8 +17,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_COLLISION_OBJECT_HPP
-#define HEADER_COLLISION_OBJECT_HPP
+#ifndef HEADER_WINDSTILLE_COLLISION_COLLISION_OBJECT_HPP
+#define HEADER_WINDSTILLE_COLLISION_COLLISION_OBJECT_HPP
 
 #include <boost/signals.hpp>
 #include "math/vector.hpp"

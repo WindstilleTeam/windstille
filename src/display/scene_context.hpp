@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SCENE_CONTEXT_HXX
-#define HEADER_SCENE_CONTEXT_HXX
+#ifndef HEADER_WINDSTILLE_DISPLAY_SCENE_CONTEXT_HPP
+#define HEADER_WINDSTILLE_DISPLAY_SCENE_CONTEXT_HPP
 
 #include "drawing_context.hpp"
 

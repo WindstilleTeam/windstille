@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_CONTROLLER_DEF_HXX
-#define HEADER_CONTROLLER_DEF_HXX
+#ifndef HEADER_WINDSTILLE_CONTROLLER_DEF_HPP
+#define HEADER_WINDSTILLE_CONTROLLER_DEF_HPP
 
 #include <map>
 #include <string>

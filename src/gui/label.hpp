@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_LABEL_HPP
-#define HEADER_LABEL_HPP
+#ifndef HEADER_WINDSTILLE_GUI_LABEL_HPP
+#define HEADER_WINDSTILLE_GUI_LABEL_HPP
 
 #include <string>
 #include "component.hpp"

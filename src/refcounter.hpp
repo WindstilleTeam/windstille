@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __REFCOUNTER_HPP__
-#define __REFCOUNTER_HPP__
+#ifndef HEADER_WINDSTILLE_REFCOUNTER_HPP
+#define HEADER_WINDSTILLE_REFCOUNTER_HPP
 
 #include <assert.h>
 

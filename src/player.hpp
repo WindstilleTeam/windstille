@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef PLAYER_HXX
-#define PLAYER_HXX
+#ifndef HEADER_WINDSTILLE_PLAYER_HPP
+#define HEADER_WINDSTILLE_PLAYER_HPP
 
 #include <memory>
 #include "sprite2d/sprite.hpp"

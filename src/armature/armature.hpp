@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_ARMATURE_HPP
-#define HEADER_ARMATURE_HPP
+#ifndef HEADER_WINDSTILLE_ARMATURE_ARMATURE_HPP
+#define HEADER_WINDSTILLE_ARMATURE_ARMATURE_HPP
 
 #include <vector>
 #include "bone.hpp"

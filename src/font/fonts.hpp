@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_FONTS_HXX
-#define HEADER_FONTS_HXX
+#ifndef HEADER_WINDSTILLE_FONT_FONTS_HPP
+#define HEADER_WINDSTILLE_FONT_FONTS_HPP
 
 #include "ttf_font.hpp"
 

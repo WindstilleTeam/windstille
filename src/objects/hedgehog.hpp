@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_HEDGEHOG_HXX
-#define HEADER_HEDGEHOG_HXX
+#ifndef HEADER_WINDSTILLE_OBJECTS_HEDGEHOG_HPP
+#define HEADER_WINDSTILLE_OBJECTS_HEDGEHOG_HPP
 
 #include "game_object.hpp"
 

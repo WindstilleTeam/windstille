@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_RANDOMIZER_HXX
-#define HEADER_RANDOMIZER_HXX
+#ifndef HEADER_WINDSTILLE_PARTICLES_RANDOMIZER_HPP
+#define HEADER_WINDSTILLE_PARTICLES_RANDOMIZER_HPP
 
 #include "random.hpp"
 

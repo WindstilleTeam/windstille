@@ -17,8 +17,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SPRITE2D_SPRITE_HPP__
-#define __SPRITE2D_SPRITE_HPP__
+#ifndef HEADER_WINDSTILLE_SPRITE2D_SPRITE_HPP
+#define HEADER_WINDSTILLE_SPRITE2D_SPRITE_HPP
 
 #include <string>
 #include <GL/glew.h>

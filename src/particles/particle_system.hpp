@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_PARTICLE_SYSTEM_HXX
-#define HEADER_PARTICLE_SYSTEM_HXX
+#ifndef HEADER_WINDSTILLE_PARTICLES_PARTICLE_SYSTEM_HPP
+#define HEADER_WINDSTILLE_PARTICLES_PARTICLE_SYSTEM_HPP
 
 #include <vector>
 

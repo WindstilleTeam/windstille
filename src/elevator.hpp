@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_ELEVATOR_HXX
-#define HEADER_ELEVATOR_HXX
+#ifndef HEADER_WINDSTILLE_ELEVATOR_HPP
+#define HEADER_WINDSTILLE_ELEVATOR_HPP
 
 #include "entity.hpp"
 #include "sprite2d/sprite.hpp"

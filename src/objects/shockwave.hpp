@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SHOCKWAVE_HPP
-#define HEADER_SHOCKWAVE_HPP
+#ifndef HEADER_WINDSTILLE_OBJECTS_SHOCKWAVE_HPP
+#define HEADER_WINDSTILLE_OBJECTS_SHOCKWAVE_HPP
 
 #include "display/shader_program.hpp"
 #include "display/texture.hpp"

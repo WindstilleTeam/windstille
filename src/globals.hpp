@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GLOBALS_HXX
-#define GLOBALS_HXX
+#ifndef HEADER_WINDSTILLE_GLOBALS_HPP
+#define HEADER_WINDSTILLE_GLOBALS_HPP
 
 #include <string>
 

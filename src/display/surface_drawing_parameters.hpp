@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_GLUTIL_SURFACE_DRAWING_PARAMETERS_HPP
-#define HEADER_GLUTIL_SURFACE_DRAWING_PARAMETERS_HPP
+#ifndef HEADER_WINDSTILLE_DISPLAY_SURFACE_DRAWING_PARAMETERS_HPP
+#define HEADER_WINDSTILLE_DISPLAY_SURFACE_DRAWING_PARAMETERS_HPP
 
 #include <GL/glew.h>
 #include <GL/gl.h>

@@ -1,5 +1,3 @@
-//
-// 
 //  Flexlay - A Generic 2D Game Editor
 //  Copyright (C) 2002 Ingo Ruhnke <grumbel@gmx.de>
 //
@@ -17,8 +15,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-#ifndef HEADER_BLITTER_HXX
-#define HEADER_BLITTER_HXX
+#ifndef HEADER_BLITTER_HPP
+#define HEADER_BLITTER_HPP
 
 #include <SDL.h>
 

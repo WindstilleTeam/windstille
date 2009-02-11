@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_DEFORM_DRAWER_HPP
-#define HEADER_DEFORM_DRAWER_HPP
+#ifndef HEADER_WINDSTILLE_PARTICLES_DEFORM_DRAWER_HPP
+#define HEADER_WINDSTILLE_PARTICLES_DEFORM_DRAWER_HPP
 
 #include "display/surface.hpp"
 #include "display/shader_program.hpp"

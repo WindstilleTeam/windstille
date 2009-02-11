@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_INPUT_MANAGER_HXX
-#define HEADER_INPUT_MANAGER_HXX
+#ifndef HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_HPP
+#define HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_HPP
 
 #include <string>
 #include <vector>

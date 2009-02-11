@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_TTF_FONT_HXX
-#define HEADER_TTF_FONT_HXX
+#ifndef HEADER_WINDSTILLE_FONT_TTF_FONT_HPP
+#define HEADER_WINDSTILLE_FONT_TTF_FONT_HPP
 
 #include <string>
 #include <GL/glew.h>

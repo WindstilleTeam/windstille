@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __INTERFACE_HPP__
-#define __INTERFACE_HPP__
+#ifndef HEADER_WINDSTILLE_SCRIPTING_INTERFACE_HPP
+#define HEADER_WINDSTILLE_SCRIPTING_INTERFACE_HPP
 
 #ifndef SCRIPTING_API
 #include <string>

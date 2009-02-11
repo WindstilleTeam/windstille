@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_TILE_HXX
-#define HEADER_TILE_HXX
+#ifndef HEADER_WINDSTILLE_TILE_HPP
+#define HEADER_WINDSTILLE_TILE_HPP
 
 #include <assert.h>
 #include <GL/glew.h>

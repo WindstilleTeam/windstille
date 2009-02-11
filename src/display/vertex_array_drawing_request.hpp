@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_VERTEX_ARRAY_DRAWING_REQUEST_HXX
-#define HEADER_VERTEX_ARRAY_DRAWING_REQUEST_HXX
+#ifndef HEADER_WINDSTILLE_DISPLAY_VERTEX_ARRAY_DRAWING_REQUEST_HPP
+#define HEADER_WINDSTILLE_DISPLAY_VERTEX_ARRAY_DRAWING_REQUEST_HPP
 
 #include <vector>
 #include "color.hpp"

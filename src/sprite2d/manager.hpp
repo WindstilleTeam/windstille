@@ -17,8 +17,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SPRITE2D_MANAGER_HPP__
-#define __SPRITE2D_MANAGER_HPP__
+#ifndef HEADER_WINDSTILLE_SPRITE2D_MANAGER_HPP
+#define HEADER_WINDSTILLE_SPRITE2D_MANAGER_HPP
 
 #include <string>
 #include <map>

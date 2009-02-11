@@ -17,8 +17,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_COLLISION_DATA_HXX
-#define HEADER_COLLISION_DATA_HXX
+#ifndef HEADER_WINDSTILLE_COLLISION_COLLISION_DATA_HPP
+#define HEADER_WINDSTILLE_COLLISION_COLLISION_DATA_HPP
 
 #include <iostream>
 #include "math/vector.hpp"

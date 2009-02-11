@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SPRITE3D_DATA_HPP
-#define HEADER_SPRITE3D_DATA_HPP
+#ifndef HEADER_WINDSTILLE_SPRITE3D_DATA_HPP
+#define HEADER_WINDSTILLE_SPRITE3D_DATA_HPP
 
 #include <stdint.h>
 #include <string>

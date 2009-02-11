@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SPIDER_HPP
-#define HEADER_SPIDER_HPP
+#ifndef HEADER_WINDSTILLE_OBJECTS_SPIDER_HPP
+#define HEADER_WINDSTILLE_OBJECTS_SPIDER_HPP
 
 #include "entity.hpp"
 #include "sprite2d/sprite.hpp"

@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_BADYGUY_VRDUMMY_HPP
-#define HEADER_BADYGUY_VRDUMMY_HPP
+#ifndef HEADER_WINDSTILLE_OBJECTS_VRDUMMY_HPP
+#define HEADER_WINDSTILLE_OBJECTS_VRDUMMY_HPP
 
 #include "sprite3d/sprite3d.hpp"
 #include "sprite2d/sprite.hpp"

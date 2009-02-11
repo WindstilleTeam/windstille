@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_POSE_BONE_HPP
-#define HEADER_POSE_BONE_HPP
+#ifndef HEADER_WINDSTILLE_ARMATURE_POSE_BONE_HPP
+#define HEADER_WINDSTILLE_ARMATURE_POSE_BONE_HPP
 
 #include <string>
 #include "math/quaternion.hpp"

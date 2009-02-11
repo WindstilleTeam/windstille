@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SCREEN_HXX
-#define HEADER_SCREEN_HXX
+#ifndef HEADER_WINDSTILLE_SCREEN_HPP
+#define HEADER_WINDSTILLE_SCREEN_HPP
 
 #include <SDL.h>
 

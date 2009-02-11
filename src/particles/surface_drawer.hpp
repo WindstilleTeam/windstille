@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SURFACE_DRAWER_HXX
-#define HEADER_SURFACE_DRAWER_HXX
+#ifndef HEADER_WINDSTILLE_PARTICLES_SURFACE_DRAWER_HPP
+#define HEADER_WINDSTILLE_PARTICLES_SURFACE_DRAWER_HPP
 
 #include "display/surface.hpp"
 #include "ref.hpp"

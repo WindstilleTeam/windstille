@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONSOLE_HXX
-#define CONSOLE_HXX
+#ifndef HEADER_WINDSTILLE_CONSOLE_HPP
+#define HEADER_WINDSTILLE_CONSOLE_HPP
 
 #include <vector>
 #include <sstream>

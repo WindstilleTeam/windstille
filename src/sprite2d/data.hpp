@@ -17,8 +17,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SPRITE_DATA_HPP__
-#define __SPRITE_DATA_HPP__
+#ifndef HEADER_WINDSTILLE_SPRITE2D_DATA_HPP
+#define HEADER_WINDSTILLE_SPRITE2D_DATA_HPP
 
 #include <string>
 #include <vector>

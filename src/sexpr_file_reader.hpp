@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SEXPR_FILE_READER_HPP
-#define HEADER_SEXPR_FILE_READER_HPP
+#ifndef HEADER_WINDSTILLE_SEXPR_FILE_READER_HPP
+#define HEADER_WINDSTILLE_SEXPR_FILE_READER_HPP
 
 #include "file_reader.hpp"
 #include "lisp/lisp.hpp"

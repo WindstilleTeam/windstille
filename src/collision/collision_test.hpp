@@ -17,8 +17,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_COLLTEST_HXX
-#define HEADER_COLLTEST_HXX
+#ifndef HEADER_WINDSTILLE_COLLISION_COLLTEST_HPP
+#define HEADER_WINDSTILLE_COLLISION_COLLTEST_HPP
 
 #define MAXF 100000.0f
 

@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_STAIR_CONTACT_HPP
-#define HEADER_STAIR_CONTACT_HPP
+#ifndef HEADER_WINDSTILLE_COLLISION_STAIR_CONTACT_HPP
+#define HEADER_WINDSTILLE_COLLISION_STAIR_CONTACT_HPP
 
 #include "contact.hpp"
 

@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_DISPLAY_DISPLAY_HPP
-#define HEADER_DISPLAY_DISPLAY_HPP
+#ifndef HEADER_WINDSTILLE_COLLISION_DISPLAY_DISPLAY_HPP
+#define HEADER_WINDSTILLE_COLLISION_DISPLAY_DISPLAY_HPP
 
 #include <vector>
 #include <SDL.h>

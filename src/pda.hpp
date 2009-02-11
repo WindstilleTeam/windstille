@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_PDA_HPP
-#define HEADER_PDA_HPP
+#ifndef HEADER_WINDSTILLE_PDA_HPP
+#define HEADER_WINDSTILLE_PDA_HPP
 
 #include "sprite2d/sprite.hpp"
 #include "screen.hpp"

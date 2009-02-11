@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_TRIGGER_HXX
-#define HEADER_TRIGGER_HXX
+#ifndef HEADER_WINDSTILLE_TRIGGER_HPP
+#define HEADER_WINDSTILLE_TRIGGER_HPP
 
 #include <vector>
 #include "game_object.hpp"

@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_PARTICLES_SPARK_DRAWER_HXX
-#define HEADER_PARTICLES_SPARK_DRAWER_HXX
+#ifndef HEADER_WINDSTILLE_PARTICLES_SPARK_DRAWER_HPP
+#define HEADER_WINDSTILLE_PARTICLES_SPARK_DRAWER_HPP
 
 #include "drawer.hpp"
 

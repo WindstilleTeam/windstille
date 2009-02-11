@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_INPUT_EVENT_HXX
-#define HEADER_INPUT_EVENT_HXX
+#ifndef HEADER_WINDSTILLE_INPUT_INPUT_EVENT_HPP
+#define HEADER_WINDSTILLE_INPUT_INPUT_EVENT_HPP
 
 #include <vector>
 

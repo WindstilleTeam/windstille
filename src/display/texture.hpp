@@ -17,8 +17,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __TEXTURE_HPP__
-#define __TEXTURE_HPP__
+#ifndef HEADER_WINDSTILLE_DISPLAY_TEXTURE_HPP
+#define HEADER_WINDSTILLE_DISPLAY_TEXTURE_HPP
 
 #include <string>
 #include <GL/glew.h>

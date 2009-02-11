@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SLIDER_HPP
-#define HEADER_SLIDER_HPP
+#ifndef HEADER_WINDSTILLE_GUI_SLIDER_HPP
+#define HEADER_WINDSTILLE_GUI_SLIDER_HPP
 
 #include "component.hpp"
 

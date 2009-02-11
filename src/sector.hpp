@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SECTOR_HXX
-#define HEADER_SECTOR_HXX
+#ifndef HEADER_WINDSTILLE_SECTOR_HPP
+#define HEADER_WINDSTILLE_SECTOR_HPP
 
 #include <string>
 #include <vector>

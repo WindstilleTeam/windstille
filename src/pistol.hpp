@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef PISTOL_HPP
-#define PISTOL_HPP
+#ifndef HEADER_WINDSTILLE_PISTOL_HPP
+#define HEADER_WINDSTILLE_PISTOL_HPP
 
 #include "sprite3d/sprite3d.hpp"
 #include "weapon.hpp"

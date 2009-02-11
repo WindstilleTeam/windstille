@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_NAVIGATION_GRAPH_HPP
-#define HEADER_NAVIGATION_GRAPH_HPP
+#ifndef HEADER_WINDSTILLE_NAVIGATION_NAVIGATION_GRAPH_HPP
+#define HEADER_WINDSTILLE_NAVIGATION_NAVIGATION_GRAPH_HPP
 
 #include <iosfwd>
 #include <vector>

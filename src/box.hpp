@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_BOX_HXX
-#define HEADER_WINDSTILLE_BOX_HXX
+#ifndef HEADER_WINDSTILLE_BOX_HPP
+#define HEADER_WINDSTILLE_BOX_HPP
 
 #include "entity.hpp"
 #include "collision/collision_object.hpp"

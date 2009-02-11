@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_ENTITY_HXX
-#define HEADER_ENTITY_HXX
+#ifndef HEADER_WINDSTILLE_ENTITY_HPP
+#define HEADER_WINDSTILLE_ENTITY_HPP
 
 #include <boost/signal.hpp>
 #include "math/vector.hpp"

@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SHADER_OBJECT_HPP
-#define HEADER_SHADER_OBJECT_HPP
+#ifndef HEADER_WINDSTILLE_DISPLAY_SHADER_OBJECT_HPP
+#define HEADER_WINDSTILLE_DISPLAY_SHADER_OBJECT_HPP
 
 #include <GL/glew.h>
 #include <GL/gl.h>

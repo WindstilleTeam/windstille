@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_NIGHTVISION_HPP
-#define HEADER_NIGHTVISION_HPP
+#ifndef HEADER_WINDSTILLE_OBJECTS_NIGHTVISION_HPP
+#define HEADER_WINDSTILLE_OBJECTS_NIGHTVISION_HPP
 
 #include "display/texture.hpp"
 #include "sprite2d/sprite.hpp"

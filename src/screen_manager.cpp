@@ -243,7 +243,7 @@ ScreenManager::poll_events()
                   Display::set_fullscreen(config.get_bool("fullscreen"));
                   break;
               
-	            #ifndef WIN32
+#ifndef WIN32
                 case SDLK_F12:
                   {
                     // FIXME: Replace this with Physfs stuff
@@ -258,7 +258,7 @@ ScreenManager::poll_events()
                     console << "Writing screenshot to: '" << filename << "'" << std::endl;
                   }
                   break;
-				  #endif
+#endif
               
                 default:
                   if (!console.is_active())

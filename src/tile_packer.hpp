@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_TILE_PACKER_HXX
-#define HEADER_TILE_PACKER_HXX
+#ifndef HEADER_WINDSTILLE_TILE_PACKER_HPP
+#define HEADER_WINDSTILLE_TILE_PACKER_HPP
 
 #include <SDL.h>
 #include <GL/glew.h>
