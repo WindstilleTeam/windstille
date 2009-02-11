@@ -22,7 +22,7 @@
 #include <squirrel.h>
 #include <stdexcept>
 
-namespace Scripting
+namespace scripting
 {
 
 /** Exception class for squirrel errors, it takes a squirrelvm and uses

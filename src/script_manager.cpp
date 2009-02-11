@@ -18,7 +18,7 @@
 #include "scripting/squirrel_error.hpp"
 #include "physfs/physfs_stream.hpp"
 
-using namespace Scripting;
+using namespace scripting;
 
 ScriptManager* script_manager = 0;
 
@@ -58,7 +58,7 @@ ScriptManager::ScriptManager()
   sq_setprintfunc(v, printfunc);
   
   // register windstille API
-  Scripting::register_windstille_wrapper(v);
+  scripting::register_windstille_wrapper(v);
 }
 
 ScriptManager::~ScriptManager()

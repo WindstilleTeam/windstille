@@ -11,7 +11,7 @@ env.Depends(env.Command('miniswig.tmp', 'wrapper.interface.hpp',
             ['interface.hpp', 'game_objects.hpp'])
 
 env.Depends(env.Command(['wrapper.cpp', 'wrapper.hpp'], 'miniswig.tmp',
-                        ["$MINISWIG  --input $SOURCE --output-cpp ${TARGETS[0]} --output-hpp ${TARGETS[1]} --module windstille --select-namespace Scripting"]),
+                        ["$MINISWIG  --input $SOURCE --output-cpp ${TARGETS[0]} --output-hpp ${TARGETS[1]} --module windstille --select-namespace scripting"]),
             miniswig)
 
 # EOF #

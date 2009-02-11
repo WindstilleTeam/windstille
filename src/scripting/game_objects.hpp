@@ -33,7 +33,7 @@ typedef ScriptableObject _ScriptableObject;
 typedef Entity _Entity;
 #endif
 
-namespace Scripting
+namespace scripting
 {
 
 class GameObject

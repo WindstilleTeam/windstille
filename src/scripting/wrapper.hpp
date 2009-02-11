@@ -9,15 +9,15 @@
 #include <squirrel.h>
 #include "wrapper.interface.hpp"
 
-namespace Scripting
+namespace scripting
 {
 
 void register_windstille_wrapper(HSQUIRRELVM v);
 
-void create_squirrel_instance(HSQUIRRELVM v, Scripting::GameObject* object, bool setup_releasehook = false);
-void create_squirrel_instance(HSQUIRRELVM v, Scripting::TestObject* object, bool setup_releasehook = false);
-void create_squirrel_instance(HSQUIRRELVM v, Scripting::Player* object, bool setup_releasehook = false);
-void create_squirrel_instance(HSQUIRRELVM v, Scripting::ScriptableObject* object, bool setup_releasehook = false);
+void create_squirrel_instance(HSQUIRRELVM v, scripting::GameObject* object, bool setup_releasehook = false);
+void create_squirrel_instance(HSQUIRRELVM v, scripting::TestObject* object, bool setup_releasehook = false);
+void create_squirrel_instance(HSQUIRRELVM v, scripting::Player* object, bool setup_releasehook = false);
+void create_squirrel_instance(HSQUIRRELVM v, scripting::ScriptableObject* object, bool setup_releasehook = false);
 
 }
 

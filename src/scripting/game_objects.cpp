@@ -21,7 +21,7 @@
 #include "sector.hpp"
 #include "game_objects.hpp"
 
-namespace Scripting {
+namespace scripting {
 
 const std::string&
 GameObject::get_name() const
@@ -108,7 +108,7 @@ ScriptableObject::start_flash(float speed)
   obj()->start_flash(speed);
 }
 
-} // namespace Scripting
+} // namespace scripting
 
 /* EOF */
 

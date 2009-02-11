@@ -13,14 +13,14 @@
 #include "squirrel_error.hpp"
 #include "wrapper.interface.hpp"
 
-namespace Scripting
+namespace scripting
 {
 namespace Wrapper
 {
 
 static SQInteger GameObject_release_hook(SQUserPointer ptr, SQInteger )
 {
-  Scripting::GameObject* _this = reinterpret_cast<Scripting::GameObject*> (ptr);
+  scripting::GameObject* _this = reinterpret_cast<scripting::GameObject*> (ptr);
   delete _this;
   return 0;
 }
@@ -32,7 +32,7 @@ static SQInteger GameObject_get_name_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'get_name' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::GameObject* _this = reinterpret_cast<Scripting::GameObject*> (data);
+  scripting::GameObject* _this = reinterpret_cast<scripting::GameObject*> (data);
 
   try {
     const std::string& return_value = _this->get_name();
@@ -57,7 +57,7 @@ static SQInteger GameObject_remove_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'remove' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::GameObject* _this = reinterpret_cast<Scripting::GameObject*> (data);
+  scripting::GameObject* _this = reinterpret_cast<scripting::GameObject*> (data);
 
   try {
     _this->remove();
@@ -81,7 +81,7 @@ static SQInteger GameObject_set_active_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'set_active' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::GameObject* _this = reinterpret_cast<Scripting::GameObject*> (data);
+  scripting::GameObject* _this = reinterpret_cast<scripting::GameObject*> (data);
   SQBool arg0;
   if(SQ_FAILED(sq_getbool(vm, 2, &arg0))) {
     sq_throwerror(vm, _SC("Argument 1 not a bool"));
@@ -110,7 +110,7 @@ static SQInteger GameObject_set_parent_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'set_parent' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::GameObject* _this = reinterpret_cast<Scripting::GameObject*> (data);
+  scripting::GameObject* _this = reinterpret_cast<scripting::GameObject*> (data);
   const SQChar* arg0;
   if(SQ_FAILED(sq_getstring(vm, 2, &arg0))) {
     sq_throwerror(vm, _SC("Argument 1 not a string"));
@@ -134,7 +134,7 @@ static SQInteger GameObject_set_parent_wrapper(HSQUIRRELVM vm)
 
 static SQInteger TestObject_release_hook(SQUserPointer ptr, SQInteger )
 {
-  Scripting::TestObject* _this = reinterpret_cast<Scripting::TestObject*> (ptr);
+  scripting::TestObject* _this = reinterpret_cast<scripting::TestObject*> (ptr);
   delete _this;
   return 0;
 }
@@ -146,7 +146,7 @@ static SQInteger TestObject_set_sprite_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'set_sprite' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::TestObject* _this = reinterpret_cast<Scripting::TestObject*> (data);
+  scripting::TestObject* _this = reinterpret_cast<scripting::TestObject*> (data);
   const SQChar* arg0;
   if(SQ_FAILED(sq_getstring(vm, 2, &arg0))) {
     sq_throwerror(vm, _SC("Argument 1 not a string"));
@@ -175,7 +175,7 @@ static SQInteger TestObject_set_action_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'set_action' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::TestObject* _this = reinterpret_cast<Scripting::TestObject*> (data);
+  scripting::TestObject* _this = reinterpret_cast<scripting::TestObject*> (data);
   const SQChar* arg0;
   if(SQ_FAILED(sq_getstring(vm, 2, &arg0))) {
     sq_throwerror(vm, _SC("Argument 1 not a string"));
@@ -204,7 +204,7 @@ static SQInteger TestObject_set_pos_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'set_pos' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::TestObject* _this = reinterpret_cast<Scripting::TestObject*> (data);
+  scripting::TestObject* _this = reinterpret_cast<scripting::TestObject*> (data);
   SQFloat arg0;
   if(SQ_FAILED(sq_getfloat(vm, 2, &arg0))) {
     sq_throwerror(vm, _SC("Argument 1 not a float"));
@@ -238,7 +238,7 @@ static SQInteger TestObject_set_vflip_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'set_vflip' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::TestObject* _this = reinterpret_cast<Scripting::TestObject*> (data);
+  scripting::TestObject* _this = reinterpret_cast<scripting::TestObject*> (data);
   SQBool arg0;
   if(SQ_FAILED(sq_getbool(vm, 2, &arg0))) {
     sq_throwerror(vm, _SC("Argument 1 not a bool"));
@@ -267,7 +267,7 @@ static SQInteger TestObject_attach_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'attach' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::TestObject* _this = reinterpret_cast<Scripting::TestObject*> (data);
+  scripting::TestObject* _this = reinterpret_cast<scripting::TestObject*> (data);
   const SQChar* arg0;
   if(SQ_FAILED(sq_getstring(vm, 2, &arg0))) {
     sq_throwerror(vm, _SC("Argument 1 not a string"));
@@ -296,7 +296,7 @@ static SQInteger TestObject_attach_wrapper(HSQUIRRELVM vm)
 
 static SQInteger Player_release_hook(SQUserPointer ptr, SQInteger )
 {
-  Scripting::Player* _this = reinterpret_cast<Scripting::Player*> (ptr);
+  scripting::Player* _this = reinterpret_cast<scripting::Player*> (ptr);
   delete _this;
   return 0;
 }
@@ -308,7 +308,7 @@ static SQInteger Player_start_listening_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'start_listening' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::Player* _this = reinterpret_cast<Scripting::Player*> (data);
+  scripting::Player* _this = reinterpret_cast<scripting::Player*> (data);
 
   try {
     _this->start_listening();
@@ -332,7 +332,7 @@ static SQInteger Player_stop_listening_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'stop_listening' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::Player* _this = reinterpret_cast<Scripting::Player*> (data);
+  scripting::Player* _this = reinterpret_cast<scripting::Player*> (data);
 
   try {
     _this->stop_listening();
@@ -351,7 +351,7 @@ static SQInteger Player_stop_listening_wrapper(HSQUIRRELVM vm)
 
 static SQInteger ScriptableObject_release_hook(SQUserPointer ptr, SQInteger )
 {
-  Scripting::ScriptableObject* _this = reinterpret_cast<Scripting::ScriptableObject*> (ptr);
+  scripting::ScriptableObject* _this = reinterpret_cast<scripting::ScriptableObject*> (ptr);
   delete _this;
   return 0;
 }
@@ -363,7 +363,7 @@ static SQInteger ScriptableObject_move_to_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'move_to' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::ScriptableObject* _this = reinterpret_cast<Scripting::ScriptableObject*> (data);
+  scripting::ScriptableObject* _this = reinterpret_cast<scripting::ScriptableObject*> (data);
   SQFloat arg0;
   if(SQ_FAILED(sq_getfloat(vm, 2, &arg0))) {
     sq_throwerror(vm, _SC("Argument 1 not a float"));
@@ -407,7 +407,7 @@ static SQInteger ScriptableObject_start_flash_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("'start_flash' called without instance"));
     return SQ_ERROR;
   }
-  Scripting::ScriptableObject* _this = reinterpret_cast<Scripting::ScriptableObject*> (data);
+  scripting::ScriptableObject* _this = reinterpret_cast<scripting::ScriptableObject*> (data);
   SQFloat arg0;
   if(SQ_FAILED(sq_getfloat(vm, 2, &arg0))) {
     sq_throwerror(vm, _SC("Argument 1 not a float"));
@@ -438,7 +438,7 @@ static SQInteger set_sector_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::set_sector(arg0);
+    scripting::set_sector(arg0);
 
     return 0;
 
@@ -461,7 +461,7 @@ static SQInteger play_music_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::play_music(arg0);
+    scripting::play_music(arg0);
 
     return 0;
 
@@ -484,7 +484,7 @@ static SQInteger stop_music_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::stop_music(static_cast<float> (arg0));
+    scripting::stop_music(static_cast<float> (arg0));
 
     return 0;
 
@@ -507,7 +507,7 @@ static SQInteger play_sound_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::play_sound(arg0);
+    scripting::play_sound(arg0);
 
     return 0;
 
@@ -535,7 +535,7 @@ static SQInteger caption_add_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::caption_add(static_cast<int> (arg0), arg1);
+    scripting::caption_add(static_cast<int> (arg0), arg1);
 
     return 0;
 
@@ -554,7 +554,7 @@ static SQInteger caption_clear_wrapper(HSQUIRRELVM vm)
   (void) vm;
 
   try {
-    Scripting::caption_clear();
+    scripting::caption_clear();
 
     return 0;
 
@@ -573,7 +573,7 @@ static SQInteger caption_end_wrapper(HSQUIRRELVM vm)
   (void) vm;
 
   try {
-    Scripting::caption_end();
+    scripting::caption_end();
 
     return 0;
 
@@ -596,7 +596,7 @@ static SQInteger camera_set_active_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::camera_set_active(arg0 == SQTrue);
+    scripting::camera_set_active(arg0 == SQTrue);
 
     return 0;
 
@@ -615,7 +615,7 @@ static SQInteger camera_continue_path_wrapper(HSQUIRRELVM vm)
   (void) vm;
 
   try {
-    Scripting::camera_continue_path();
+    scripting::camera_continue_path();
 
     return 0;
 
@@ -634,7 +634,7 @@ static SQInteger camera_begin_path_wrapper(HSQUIRRELVM vm)
   (void) vm;
 
   try {
-    Scripting::camera_begin_path();
+    scripting::camera_begin_path();
 
     return 0;
 
@@ -667,7 +667,7 @@ static SQInteger camera_add_point_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::camera_add_point(static_cast<float> (arg0), static_cast<float> (arg1), static_cast<float> (arg2));
+    scripting::camera_add_point(static_cast<float> (arg0), static_cast<float> (arg1), static_cast<float> (arg2));
 
     return 0;
 
@@ -686,7 +686,7 @@ static SQInteger camera_end_path_wrapper(HSQUIRRELVM vm)
   (void) vm;
 
   try {
-    Scripting::camera_end_path();
+    scripting::camera_end_path();
 
     return 0;
 
@@ -714,7 +714,7 @@ static SQInteger camera_set_pos_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::camera_set_pos(static_cast<float> (arg0), static_cast<float> (arg1));
+    scripting::camera_set_pos(static_cast<float> (arg0), static_cast<float> (arg1));
 
     return 0;
 
@@ -737,7 +737,7 @@ static SQInteger camera_set_zoom_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::camera_set_zoom(static_cast<float> (arg0));
+    scripting::camera_set_zoom(static_cast<float> (arg0));
 
     return 0;
 
@@ -760,7 +760,7 @@ static SQInteger set_controller_help_active_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::set_controller_help_active(arg0 == SQTrue);
+    scripting::set_controller_help_active(arg0 == SQTrue);
 
     return 0;
 
@@ -798,7 +798,7 @@ static SQInteger dialog_show_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::dialog_show(static_cast<int> (arg0), arg1, arg2, arg3);
+    scripting::dialog_show(static_cast<int> (arg0), arg1, arg2, arg3);
 
     return 0;
 
@@ -817,7 +817,7 @@ static SQInteger wait_for_dialog_wrapper(HSQUIRRELVM vm)
   HSQUIRRELVM arg0 = vm;
 
   try {
-    Scripting::wait_for_dialog(arg0);
+    scripting::wait_for_dialog(arg0);
 
     return sq_suspendvm(vm);
 
@@ -836,7 +836,7 @@ static SQInteger wait_for_fade_wrapper(HSQUIRRELVM vm)
   HSQUIRRELVM arg0 = vm;
 
   try {
-    Scripting::wait_for_fade(arg0);
+    scripting::wait_for_fade(arg0);
 
     return sq_suspendvm(vm);
 
@@ -855,7 +855,7 @@ static SQInteger wait_for_camera_wrapper(HSQUIRRELVM vm)
   HSQUIRRELVM arg0 = vm;
 
   try {
-    Scripting::wait_for_camera(arg0);
+    scripting::wait_for_camera(arg0);
 
     return sq_suspendvm(vm);
 
@@ -878,7 +878,7 @@ static SQInteger conversation_add_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::conversation_add(arg0);
+    scripting::conversation_add(arg0);
 
     return 0;
 
@@ -906,7 +906,7 @@ static SQInteger conversation_add2_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::conversation_add2(arg0, arg1);
+    scripting::conversation_add2(arg0, arg1);
 
     return 0;
 
@@ -925,7 +925,7 @@ static SQInteger conversation_show_wrapper(HSQUIRRELVM vm)
   (void) vm;
 
   try {
-    Scripting::conversation_show();
+    scripting::conversation_show();
 
     return 0;
 
@@ -943,7 +943,7 @@ static SQInteger conversation_get_selection_wrapper(HSQUIRRELVM vm)
 {
 
   try {
-    int return_value = Scripting::conversation_get_selection();
+    int return_value = scripting::conversation_get_selection();
 
     sq_pushinteger(vm, return_value);
     return 1;
@@ -963,7 +963,7 @@ static SQInteger wait_for_conversation_wrapper(HSQUIRRELVM vm)
   HSQUIRRELVM arg0 = vm;
 
   try {
-    Scripting::wait_for_conversation(arg0);
+    scripting::wait_for_conversation(arg0);
 
     return sq_suspendvm(vm);
 
@@ -991,7 +991,7 @@ static SQInteger add_objective_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::add_objective(arg0, arg1);
+    scripting::add_objective(arg0, arg1);
 
     return 0;
 
@@ -1014,7 +1014,7 @@ static SQInteger objective_complete_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::objective_complete(arg0);
+    scripting::objective_complete(arg0);
 
     return 0;
 
@@ -1037,7 +1037,7 @@ static SQInteger is_objective_given_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    bool return_value = Scripting::is_objective_given(arg0);
+    bool return_value = scripting::is_objective_given(arg0);
 
     sq_pushbool(vm, return_value);
     return 1;
@@ -1061,7 +1061,7 @@ static SQInteger is_objective_complete_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    bool return_value = Scripting::is_objective_complete(arg0);
+    bool return_value = scripting::is_objective_complete(arg0);
 
     sq_pushbool(vm, return_value);
     return 1;
@@ -1081,7 +1081,7 @@ static SQInteger run_before_wrapper(HSQUIRRELVM vm)
   HSQUIRRELVM arg0 = vm;
 
   try {
-    bool return_value = Scripting::run_before(arg0);
+    bool return_value = scripting::run_before(arg0);
 
     sq_pushbool(vm, return_value);
     return 1;
@@ -1106,7 +1106,7 @@ static SQInteger save_state_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::save_state(arg0, arg1);
+    scripting::save_state(arg0, arg1);
 
     return 0;
 
@@ -1130,7 +1130,7 @@ static SQInteger load_state_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::load_state(arg0, arg1);
+    scripting::load_state(arg0, arg1);
 
     return 0;
 
@@ -1149,7 +1149,7 @@ static SQInteger list_objects_wrapper(HSQUIRRELVM vm)
   (void) vm;
 
   try {
-    Scripting::list_objects();
+    scripting::list_objects();
 
     return 0;
 
@@ -1172,7 +1172,7 @@ static SQInteger set_debug_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::set_debug(arg0 == SQTrue);
+    scripting::set_debug(arg0 == SQTrue);
 
     return 0;
 
@@ -1190,7 +1190,7 @@ static SQInteger get_debug_wrapper(HSQUIRRELVM vm)
 {
 
   try {
-    bool return_value = Scripting::get_debug();
+    bool return_value = scripting::get_debug();
 
     sq_pushbool(vm, return_value);
     return 1;
@@ -1209,7 +1209,7 @@ static SQInteger get_game_speed_wrapper(HSQUIRRELVM vm)
 {
 
   try {
-    float return_value = Scripting::get_game_speed();
+    float return_value = scripting::get_game_speed();
 
     sq_pushfloat(vm, return_value);
     return 1;
@@ -1233,7 +1233,7 @@ static SQInteger set_game_speed_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::set_game_speed(static_cast<float> (arg0));
+    scripting::set_game_speed(static_cast<float> (arg0));
 
     return 0;
 
@@ -1257,7 +1257,7 @@ static SQInteger wait_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::wait(arg0, static_cast<float> (arg1));
+    scripting::wait(arg0, static_cast<float> (arg1));
 
     return sq_suspendvm(vm);
 
@@ -1273,12 +1273,12 @@ static SQInteger wait_wrapper(HSQUIRRELVM vm)
 
 static SQInteger display_wrapper(HSQUIRRELVM vm)
 {
-  return Scripting::display(vm);
+  return scripting::display(vm);
 }
 
 static SQInteger println_wrapper(HSQUIRRELVM vm)
 {
-  return Scripting::println(vm);
+  return scripting::println(vm);
 }
 
 static SQInteger set_console_font_wrapper(HSQUIRRELVM vm)
@@ -1295,7 +1295,7 @@ static SQInteger set_console_font_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::set_console_font(arg0, static_cast<int> (arg1));
+    scripting::set_console_font(arg0, static_cast<int> (arg1));
 
     return 0;
 
@@ -1318,7 +1318,7 @@ static SQInteger set_gamma_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::set_gamma(static_cast<float> (arg0));
+    scripting::set_gamma(static_cast<float> (arg0));
 
     return 0;
 
@@ -1351,7 +1351,7 @@ static SQInteger set_gamma_rgb_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::set_gamma_rgb(static_cast<float> (arg0), static_cast<float> (arg1), static_cast<float> (arg2));
+    scripting::set_gamma_rgb(static_cast<float> (arg0), static_cast<float> (arg1), static_cast<float> (arg2));
 
     return 0;
 
@@ -1370,7 +1370,7 @@ static SQInteger show_config_wrapper(HSQUIRRELVM vm)
   (void) vm;
 
   try {
-    Scripting::show_config();
+    scripting::show_config();
 
     return 0;
 
@@ -1389,7 +1389,7 @@ static SQInteger cutscene_begin_wrapper(HSQUIRRELVM vm)
   (void) vm;
 
   try {
-    Scripting::cutscene_begin();
+    scripting::cutscene_begin();
 
     return 0;
 
@@ -1408,7 +1408,7 @@ static SQInteger cutscene_end_wrapper(HSQUIRRELVM vm)
   (void) vm;
 
   try {
-    Scripting::cutscene_end();
+    scripting::cutscene_end();
 
     return 0;
 
@@ -1446,7 +1446,7 @@ static SQInteger internal_fadeout_rgb_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::internal_fadeout_rgb(static_cast<float> (arg0), static_cast<float> (arg1), static_cast<float> (arg2), static_cast<float> (arg3));
+    scripting::internal_fadeout_rgb(static_cast<float> (arg0), static_cast<float> (arg1), static_cast<float> (arg2), static_cast<float> (arg3));
 
     return 0;
 
@@ -1469,7 +1469,7 @@ static SQInteger internal_fadein_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::internal_fadein(static_cast<float> (arg0));
+    scripting::internal_fadein(static_cast<float> (arg0));
 
     return 0;
 
@@ -1487,7 +1487,7 @@ static SQInteger render_mask_get_wrapper(HSQUIRRELVM vm)
 {
 
   try {
-    int return_value = Scripting::render_mask_get();
+    int return_value = scripting::render_mask_get();
 
     sq_pushinteger(vm, return_value);
     return 1;
@@ -1511,7 +1511,7 @@ static SQInteger render_mask_set_wrapper(HSQUIRRELVM vm)
   }
 
   try {
-    Scripting::render_mask_set(static_cast<int> (arg0));
+    scripting::render_mask_set(static_cast<int> (arg0));
 
     return 0;
 
@@ -1527,11 +1527,11 @@ static SQInteger render_mask_set_wrapper(HSQUIRRELVM vm)
 
 static SQInteger spawn_object_wrapper(HSQUIRRELVM vm)
 {
-  return Scripting::spawn_object(vm);
+  return scripting::spawn_object(vm);
 }
 
 } // end of namespace Wrapper
-void create_squirrel_instance(HSQUIRRELVM v, Scripting::GameObject* object, bool setup_releasehook)
+void create_squirrel_instance(HSQUIRRELVM v, scripting::GameObject* object, bool setup_releasehook)
 {
   using namespace Wrapper;
 
@@ -1557,7 +1557,7 @@ void create_squirrel_instance(HSQUIRRELVM v, Scripting::GameObject* object, bool
   sq_remove(v, -2); // remove root table
 }
 
-void create_squirrel_instance(HSQUIRRELVM v, Scripting::TestObject* object, bool setup_releasehook)
+void create_squirrel_instance(HSQUIRRELVM v, scripting::TestObject* object, bool setup_releasehook)
 {
   using namespace Wrapper;
 
@@ -1583,7 +1583,7 @@ void create_squirrel_instance(HSQUIRRELVM v, Scripting::TestObject* object, bool
   sq_remove(v, -2); // remove root table
 }
 
-void create_squirrel_instance(HSQUIRRELVM v, Scripting::Player* object, bool setup_releasehook)
+void create_squirrel_instance(HSQUIRRELVM v, scripting::Player* object, bool setup_releasehook)
 {
   using namespace Wrapper;
 
@@ -1609,7 +1609,7 @@ void create_squirrel_instance(HSQUIRRELVM v, Scripting::Player* object, bool set
   sq_remove(v, -2); // remove root table
 }
 
-void create_squirrel_instance(HSQUIRRELVM v, Scripting::ScriptableObject* object, bool setup_releasehook)
+void create_squirrel_instance(HSQUIRRELVM v, scripting::ScriptableObject* object, bool setup_releasehook)
 {
   using namespace Wrapper;
 
@@ -2105,4 +2105,4 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
 }
 
-} // end of namespace Scripting
+} // end of namespace scripting
