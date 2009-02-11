@@ -20,7 +20,7 @@
 #include "globals.hpp"
 #include "entity.hpp"
 #include "sector.hpp"
-#include "tile_map.hpp"
+#include "tile/tile_map.hpp"
 
 Entity::Entity()
   : velocity(0, 0),

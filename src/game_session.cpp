@@ -30,7 +30,7 @@
 #include "console.hpp"
 #include "game_object.hpp"
 #include "objects/player.hpp"
-#include "tile_map.hpp"
+#include "tile/tile_map.hpp"
 #include "screen_manager.hpp"
 #include "view.hpp"
 #include "timer.hpp"

@@ -30,7 +30,7 @@
 #include "sector.hpp"
 #include "input/input_manager.hpp"
 #include "sound/sound_manager.hpp"
-#include "tile_factory.hpp"
+#include "tile/tile_factory.hpp"
 #include "script_manager.hpp"
 #include "config.hpp"
 #include "util.hpp"

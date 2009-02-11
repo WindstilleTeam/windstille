@@ -20,7 +20,7 @@
 #include "collision_test.hpp"
 #include "collision_engine.hpp"
 #include "globals.hpp"
-#include "tile_map.hpp"
+#include "tile/tile_map.hpp"
 
 std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r, bool is_ground);
 

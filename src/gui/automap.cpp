@@ -19,7 +19,7 @@
 #include "display/surface_drawing_parameters.hpp"
 #include "input/controller.hpp"
 #include "sector.hpp"
-#include "tile_map.hpp"
+#include "tile/tile_map.hpp"
 #include "display/display.hpp"
 #include "automap.hpp"
 

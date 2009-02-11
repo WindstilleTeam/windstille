@@ -17,7 +17,7 @@
 */
 
 #include <boost/bind.hpp>
-#include "tile_map.hpp"
+#include "tile/tile_map.hpp"
 #include "sector.hpp"
 #include "input/controller.hpp"
 #include "input/input_manager.hpp"
@@ -26,7 +26,7 @@
 #include "objects/bomb.hpp"
 #include "globals.hpp"
 #include "pda.hpp"
-#include "tile.hpp"
+#include "tile/tile.hpp"
 #include "sprite3d/manager.hpp"
 #include "display/surface_manager.hpp"
 #include "particles/particle_system.hpp"

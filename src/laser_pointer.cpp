@@ -21,7 +21,7 @@
 #include "objects/player.hpp"
 #include "collision/collision_engine.hpp"
 #include "sector.hpp"
-#include "tile_map.hpp"
+#include "tile/tile_map.hpp"
 #include "laser_pointer.hpp"
 
 LaserPointer::LaserPointer()

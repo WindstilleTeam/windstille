@@ -23,7 +23,7 @@
 #include "globals.hpp"
 #include "display/scene_context.hpp"
 #include "objects/background_gradient.hpp"
-#include "tile_map.hpp"
+#include "tile/tile_map.hpp"
 #include "game_object.hpp"
 #include "objects/player.hpp"
 #include "trigger.hpp"

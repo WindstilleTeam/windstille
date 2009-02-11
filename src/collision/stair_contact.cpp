@@ -17,8 +17,8 @@
 */
 
 #include <iostream>
-#include "tile.hpp"
-#include "tile_map.hpp"
+#include "tile/tile.hpp"
+#include "tile/tile_map.hpp"
 #include "stair_contact.hpp"
 
 StairContact::StairContact(TileMap* tilemap_, const Point& pos_)

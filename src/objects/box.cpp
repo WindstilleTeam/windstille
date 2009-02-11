@@ -22,7 +22,7 @@
 #include "globals.hpp"
 #include "collision/collision_engine.hpp"
 #include "math/vector.hpp"
-#include "tile_map.hpp"
+#include "tile/tile_map.hpp"
 #include "random.hpp"
 #include "sprite2d/manager.hpp"
 
