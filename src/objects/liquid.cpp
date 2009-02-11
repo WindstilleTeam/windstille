@@ -17,7 +17,7 @@
 */
 
 #include "display/vertex_array_drawing_request.hpp"
-#include "random.hpp"
+#include "math/random.hpp"
 #include "liquid.hpp"
 
 #define SAMPLES 5

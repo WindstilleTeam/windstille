@@ -18,7 +18,7 @@
 
 #include <assert.h>
 #include "display/display.hpp"
-#include "color.hpp"
+#include "display/color.hpp"
 #include "font/fonts.hpp"
 #include "group_component.hpp"
 

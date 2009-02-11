@@ -29,7 +29,7 @@
 #include "tile_packer.hpp"
 #include "tile_factory.hpp"
 #include "tile_description.hpp"
-#include "sexpr_file_reader.hpp"
+#include "util/sexpr_file_reader.hpp"
 #include "display/surface_manager.hpp"
 #include "display/texture.hpp"
 #include "physfs/physfs_sdl.hpp"

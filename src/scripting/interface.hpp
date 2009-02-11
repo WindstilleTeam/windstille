@@ -24,7 +24,7 @@
 #include <squirrel.h>
 #endif
 
-namespace scripting {
+namespace Scripting {
 
 void set_sector(const std::string& filename);
 
@@ -116,7 +116,7 @@ void render_mask_set(int mask);
  */
 SQInteger spawn_object(HSQUIRRELVM v) __custom;
 
-} // namespace scripting
+} // namespace Scripting
 
 #endif
 

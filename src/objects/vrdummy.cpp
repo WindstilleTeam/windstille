@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "random.hpp"
+#include "math/random.hpp"
 #include "vrdummy.hpp"
 
 VRDummy::VRDummy(FileReader& props)

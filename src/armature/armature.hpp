@@ -21,7 +21,7 @@
 
 #include <vector>
 #include "bone.hpp"
-#include "file_reader.hpp"
+#include "util/file_reader.hpp"
 
 class Pose;
 

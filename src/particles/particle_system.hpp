@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include "color.hpp"
+#include "display/color.hpp"
 #include "drawer.hpp"
 #include "engine/entity.hpp"
 

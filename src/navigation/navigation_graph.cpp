@@ -23,7 +23,7 @@
 #include "display/display.hpp"
 #include "node.hpp"
 #include "segment.hpp"
-#include "file_reader.hpp"
+#include "util/file_reader.hpp"
 #include "segment_position.hpp"
 #include "navigation_graph.hpp"
 

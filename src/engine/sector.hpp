@@ -21,7 +21,7 @@
 
 #include <string>
 #include <vector>
-#include "color.hpp"
+#include "display/color.hpp"
 
 class FileReader;
 class GameObject;

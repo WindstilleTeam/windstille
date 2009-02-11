@@ -22,7 +22,7 @@
 #include "util.hpp"
 #include "display/opengl_state.hpp"
 #include "display/texture_manager.hpp"
-#include "file_reader.hpp"
+#include "util/file_reader.hpp"
 #include "armature.hpp"
 #include "mesh.hpp"
 

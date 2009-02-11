@@ -3,7 +3,7 @@
 #include "squirrel_error.hpp"
 #include <sstream>
 
-namespace scripting
+namespace Scripting
 {
 
 SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& message) throw()

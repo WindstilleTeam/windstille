@@ -23,7 +23,7 @@
 #include "collision/collision_engine.hpp"
 #include "math/vector.hpp"
 #include "tile/tile_map.hpp"
-#include "random.hpp"
+#include "math/random.hpp"
 #include "sprite2d/manager.hpp"
 
 Box::Box(FileReader& props)

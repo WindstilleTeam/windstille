@@ -26,7 +26,7 @@
 #include <vector>
 #include "math.hpp"
 #include "config.hpp"
-#include "file_reader.hpp"
+#include "util/file_reader.hpp"
 #include "controller_def.hpp"
 #include "input_manager_sdl.hpp"
 #ifdef HAVE_CWIID

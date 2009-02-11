@@ -20,7 +20,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include "sexpr_file_reader.hpp"
+#include "util/sexpr_file_reader.hpp"
 #include "input/controller.hpp"
 #include "display/display.hpp"
 #include "screen_manager.hpp"

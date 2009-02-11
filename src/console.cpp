@@ -463,7 +463,7 @@ ConsoleImpl::eval_command_line()
           const SQChar *s;
           if (SQ_SUCCEEDED(sq_getstring(v,-2, &s)))
             {
-              console << s << " -> " << scripting::squirrel2string(v, -1) << std::endl;
+              console << s << " -> " << Scripting::squirrel2string(v, -1) << std::endl;
             }
           else
             {
@@ -506,7 +506,7 @@ ConsoleImpl::execute(const std::string& str_)
               {
                 // FIXME: This does only work when somebody is doing a 'return', i.e. almost never
                 if (sq_gettype(vm, -1) != OT_NULL)
-                  console << scripting::squirrel2string(vm, -1) << std::endl;
+                  console << Scripting::squirrel2string(vm, -1) << std::endl;
                 // else
                 //   console << "(null)" << std::endl;
               }

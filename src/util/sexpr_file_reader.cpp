@@ -20,7 +20,7 @@
 #include <string.h>
 #include "lisp/parser.hpp"
 #include "lisp/getters.hpp"
-#include "color.hpp"
+#include "display/color.hpp"
 #include "math/size.hpp"
 #include "math/vector.hpp"
 #include "math/vector3.hpp"

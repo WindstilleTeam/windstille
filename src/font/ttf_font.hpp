@@ -22,7 +22,7 @@
 #include <string>
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include "color.hpp"
+#include "display/color.hpp"
 #include "math/rect.hpp"
 #include "display/texture.hpp"
 

@@ -17,7 +17,7 @@
 */
 
 #include "globals.hpp"
-#include "random.hpp"
+#include "math/random.hpp"
 #include "math/matrix.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "display/texture_manager.hpp"

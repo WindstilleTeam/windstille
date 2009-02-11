@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "sexpr_file_reader.hpp"
+#include "util/sexpr_file_reader.hpp"
 #include "input/controller.hpp"
 #include "screen_manager.hpp"
 #include "gui/gui_manager.hpp"

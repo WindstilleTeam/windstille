@@ -21,7 +21,7 @@
 #include "display/opengl_state.hpp"
 #include "font/ttf_font.hpp"
 #include "text_area.hpp"
-#include "baby_xml.hpp"
+#include "util/baby_xml.hpp"
 #include "font/fonts.hpp"
 #include "text_area.hpp"
 

@@ -25,7 +25,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include "util.hpp"
-#include "file_reader.hpp"
+#include "util/file_reader.hpp"
 #include "math/vector.hpp"
 #include "display/surface.hpp"
 #include "ref.hpp"

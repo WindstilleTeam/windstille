@@ -23,7 +23,7 @@
 #include "game_session.hpp"
 #include "view.hpp"
 #include "display/vertex_array_drawing_request.hpp"
-#include "random.hpp"
+#include "math/random.hpp"
 #include "swarm.hpp"
 
 Swarm::Swarm(FileReader& props)

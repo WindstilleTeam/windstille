@@ -18,7 +18,7 @@
 
 #include <iostream>
 #include <stdexcept>
-#include "file_reader.hpp"
+#include "util/file_reader.hpp"
 #include "mesh.hpp"
 #include "model.hpp"
 

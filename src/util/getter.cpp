@@ -20,7 +20,7 @@
 #include "math/vector3.hpp"
 #include "math/quaternion.hpp"
 #include "math/matrix.hpp"
-#include "color.hpp"
+#include "display/color.hpp"
 #include "file_reader.hpp"
 #include "getter.hpp"
 

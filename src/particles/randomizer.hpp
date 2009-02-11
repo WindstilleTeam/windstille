@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_RANDOMIZER_HPP
 #define HEADER_WINDSTILLE_PARTICLES_RANDOMIZER_HPP
 
-#include "random.hpp"
+#include "math/random.hpp"
 
 class Randomizer 
 {

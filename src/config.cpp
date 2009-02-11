@@ -22,8 +22,8 @@
 #include <memory>
 #include <iostream>
 #include "config.hpp"
-#include "sexpr_file_reader.hpp"
-#include "command_line.hpp"
+#include "util/sexpr_file_reader.hpp"
+#include "util/command_line.hpp"
 #include "globals.hpp"
 
 #define _(A) A
