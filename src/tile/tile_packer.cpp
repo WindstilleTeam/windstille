@@ -22,7 +22,7 @@
 #include "display/texture.hpp"
 #include "globals.hpp"
 #include "tile_packer.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 #include "blitter.hpp"
 
 class TilePackerImpl

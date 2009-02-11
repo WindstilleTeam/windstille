@@ -24,11 +24,11 @@
 #include <vector>
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include "util.hpp"
+#include "util/util.hpp"
 #include "util/file_reader.hpp"
 #include "math/vector.hpp"
 #include "display/surface.hpp"
-#include "ref.hpp"
+#include "util/ref.hpp"
 
 struct SpriteAction
 {

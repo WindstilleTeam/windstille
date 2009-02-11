@@ -24,7 +24,7 @@
 #include <stdexcept>
 #include <stdio.h>
 #include <vector>
-#include "math.hpp"
+#include "math/math.hpp"
 #include "config.hpp"
 #include "util/file_reader.hpp"
 #include "controller_def.hpp"

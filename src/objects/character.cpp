@@ -25,7 +25,7 @@
 #include "physfs/physfs_stream.hpp"
 #include "console.hpp"
 #include "sprite3d/manager.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 
 #include <exception>
 

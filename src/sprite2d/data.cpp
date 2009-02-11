@@ -26,7 +26,7 @@
 #include <memory>
 #include <sstream>
 #include <stdexcept>
-#include "util.hpp"
+#include "util/util.hpp"
 #include "display/surface.hpp"
 #include "display/surface_manager.hpp"
 

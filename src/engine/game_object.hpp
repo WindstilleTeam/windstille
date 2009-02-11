@@ -22,7 +22,7 @@
 #include <string>
 #include "util/file_reader.hpp"
 #include "display/scene_context.hpp"
-#include "refcounter.hpp"
+#include "util/refcounter.hpp"
 
 class Sector;
 

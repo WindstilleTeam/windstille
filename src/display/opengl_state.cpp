@@ -25,7 +25,7 @@
 #include "color.hpp"
 #include "globals.hpp"
 #include "display/display.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 
 #define MAX_TEXTURE_UNITS 4
 

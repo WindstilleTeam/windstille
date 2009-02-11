@@ -33,7 +33,7 @@
 #include "tile/tile_factory.hpp"
 #include "engine/script_manager.hpp"
 #include "config.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 #include "font/ttf_font.hpp"
 #include "display/display.hpp"
 #include "display/surface_manager.hpp"

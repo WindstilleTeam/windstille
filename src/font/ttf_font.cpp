@@ -31,7 +31,7 @@
 #include "blitter.hpp"
 #include "ttf_font.hpp"
 #include "font_effect.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 
 TTFCharacter::TTFCharacter(const Rect& pos_,
                            const Rectf& uv_, 

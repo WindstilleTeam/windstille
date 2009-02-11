@@ -24,7 +24,7 @@
 #include <SDL_image.h>
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include "util.hpp"
+#include "util/util.hpp"
 #include "globals.hpp"
 #include "texture.hpp"
 #include "physfs/physfs_sdl.hpp"

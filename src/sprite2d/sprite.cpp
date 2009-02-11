@@ -27,7 +27,7 @@
 #include "sprite2d/manager.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/color.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 
 Sprite::Sprite()
 {  

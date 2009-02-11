@@ -18,7 +18,7 @@
 
 #include <assert.h>
 #include <iostream>
-#include "math.hpp"
+#include "math/math.hpp"
 #include "response_curve.hpp"
 
 ResponseCurve::ResponseCurve(float i_min_, float i_max_, const std::vector<float>& samples_)

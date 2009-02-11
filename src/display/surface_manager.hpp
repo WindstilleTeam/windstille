@@ -25,7 +25,7 @@
 #include <SDL.h>
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include "ref.hpp"
+#include "util/ref.hpp"
 #include "texture.hpp"
 
 class Surface;

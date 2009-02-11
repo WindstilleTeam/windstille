@@ -25,10 +25,10 @@
 #include <SDL.h>
 #include "console.hpp"
 #include "config.hpp"
-#include "math.hpp"
+#include "math/math.hpp"
 #include "display/opengl_state.hpp"
 #include "display.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 #include <assert.h>
 
 SDL_Surface* Display::window       = 0;

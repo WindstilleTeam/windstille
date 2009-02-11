@@ -19,7 +19,7 @@
 #include "shader_program.hpp"
 #include <iostream>
 #include "shader_object.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 
 class ShaderProgramImpl
 {

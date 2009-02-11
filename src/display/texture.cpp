@@ -24,7 +24,7 @@
 #include "texture.hpp"
 #include "display/opengl_state.hpp"
 #include "texture_manager.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 
 class TextureImpl
 {

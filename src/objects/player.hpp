@@ -27,7 +27,7 @@
 #include "math/vector.hpp"
 #include "globals.hpp"
 #include "engine/entity.hpp"
-#include "ref.hpp"
+#include "util/ref.hpp"
 #include "display/surface.hpp"
 
 class Controller;

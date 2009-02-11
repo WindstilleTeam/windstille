@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_GUI_GRID_COMPONENT_HPP
 #define HEADER_WINDSTILLE_GUI_GRID_COMPONENT_HPP
 
-#include "field.hpp"
+#include "util/field.hpp"
 #include "component.hpp"
 
 namespace gui {

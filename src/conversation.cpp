@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "math.hpp"
+#include "math/math.hpp"
 #include "input/controller.hpp"
 #include "input/input_manager.hpp"
 #include "font/fonts.hpp"

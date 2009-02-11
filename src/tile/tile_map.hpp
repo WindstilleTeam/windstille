@@ -22,7 +22,7 @@
 #include <string>
 
 #include "globals.hpp"
-#include "field.hpp"
+#include "util/field.hpp"
 #include "engine/game_object.hpp"
 #include "display/scene_context.hpp"
 

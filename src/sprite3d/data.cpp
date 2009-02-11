@@ -23,7 +23,7 @@
 #include <string.h>
 #include <sstream>
 #include <stdexcept>
-#include "util.hpp"
+#include "util/util.hpp"
 #include "globals.hpp"
 #include "display/texture_manager.hpp"
 #include "display/texture.hpp"

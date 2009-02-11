@@ -21,7 +21,7 @@
 
 #include <iostream>
 
-#include "util.hpp"
+#include "util/util.hpp"
 #include "display/display.hpp"
 #include "display/surface.hpp"
 #include "display/opengl_state.hpp"

@@ -19,7 +19,7 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include "util.hpp"
+#include "util/util.hpp"
 #include "texture.hpp"
 #include "render_buffer.hpp"
 #include "framebuffer.hpp"

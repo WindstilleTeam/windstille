@@ -23,7 +23,7 @@
 #include "gui/tab_component.hpp"
 #include "display/display.hpp"
 #include "menu_item.hpp"
-#include "math.hpp"
+#include "math/math.hpp"
 
 namespace gui {
 

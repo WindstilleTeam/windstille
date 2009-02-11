@@ -19,7 +19,7 @@
 #include <iostream>
 #include <assert.h>
 #include <pthread.h>
-#include "math.hpp"
+#include "math/math.hpp"
 #include "wiimote.hpp"
 
 Wiimote* wiimote = 0;

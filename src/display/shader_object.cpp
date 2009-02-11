@@ -19,7 +19,7 @@
 #include "shader_object.hpp"
 #include <iostream>
 #include <stdio.h>
-#include "util.hpp"
+#include "util/util.hpp"
 
 /** Read a file, user must free() the returned pointer */
 static GLchar* load_file(const char* filename)

@@ -21,7 +21,6 @@
 
 #include <iosfwd>
 #include <vector>
-#include "handle.hpp"
 #include "math/line.hpp"
 
 class Node;

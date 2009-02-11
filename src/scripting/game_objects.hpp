@@ -24,7 +24,7 @@
 #include "objects/test_object.hpp"
 #include "objects/player.hpp"
 #include "objects/scriptable_object.hpp"
-#include "ref.hpp"
+#include "util/ref.hpp"
 
 typedef GameObject _GameObject;
 typedef TestObject _TestObject;
