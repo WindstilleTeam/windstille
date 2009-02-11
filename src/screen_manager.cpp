@@ -49,8 +49,6 @@
 #define snprintf _snprintf
 #endif
 
-using gui::GUIManager;
-
 ScreenManager screen_manager; 
 
 ScreenManager::ScreenManager()
