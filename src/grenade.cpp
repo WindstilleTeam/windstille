@@ -53,3 +53,5 @@ Grenade::set_velocity(const Vector& velocity)
 {
   this->velocity = velocity;
 }
+
+/* EOF */

@@ -35,3 +35,5 @@ SquirrelError::what() const throw()
 }
 
 }
+
+/* EOF */

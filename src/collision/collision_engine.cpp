@@ -745,4 +745,3 @@ CollisionEngine::raycast(const Vector& pos, float angle)
 }
 
 /* EOF */
-

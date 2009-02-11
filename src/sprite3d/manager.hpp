@@ -39,9 +39,10 @@ private:
   Datas datas;
 };
 
-}
+} // namespace sprite3d
 
 extern sprite3d::Manager* sprite3d_manager;
 
 #endif
 
+/* EOF */

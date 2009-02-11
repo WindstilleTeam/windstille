@@ -135,6 +135,8 @@ struct Action
   std::vector<ActionFrame> frames;
 };
 
-}
+} // namespace sprite3d
 
 #endif
+
+/* EOF */

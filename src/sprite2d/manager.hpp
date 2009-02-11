@@ -46,3 +46,4 @@ extern SpriteManager* sprite2d_manager;
 
 #endif
 
+/* EOF */

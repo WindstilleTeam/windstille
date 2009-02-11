@@ -104,3 +104,4 @@ extern ScriptManager* script_manager;
 
 #endif
 
+/* EOF */

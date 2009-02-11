@@ -307,3 +307,4 @@ SoundManager::check_al_error(const char* message)
   }  
 }
 
+/* EOF */

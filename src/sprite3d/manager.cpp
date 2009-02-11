@@ -52,4 +52,3 @@ Manager::create_data(const std::string& filename)
 } // namespace sprite3d
 
 /* EOF */
-
