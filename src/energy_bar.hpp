@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_ENERGYBAR_HPP
-#define HEADER_WINDSTILLE_ENERGYBAR_HPP
+#ifndef HEADER_WINDSTILLE_ENERGY_BAR_HPP
+#define HEADER_WINDSTILLE_ENERGY_BAR_HPP
 
 #include "screen.hpp"
 #include "sprite2d/sprite.hpp"

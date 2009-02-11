@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef WINDSTILLE_SCRIPTING_GAME_OBJECTS_HPP
-#define WINDSTILLE_SCRIPTING_GAME_OBJECTS_HPP
+#ifndef HEADER_WINDSTILLE_SCRIPTING_GAME_OBJECTS_HPP
+#define HEADER_WINDSTILLE_SCRIPTING_GAME_OBJECTS_HPP
 
 #ifndef SCRIPTING_API
 #include "game_object.hpp"
