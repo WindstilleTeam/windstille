@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "player.hpp"
+#include "objects/player.hpp"
 #include "sector.hpp"
 #include "script_manager.hpp"
 #include "display/display.hpp"

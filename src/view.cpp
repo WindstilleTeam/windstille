@@ -19,7 +19,7 @@
 #include <SDL.h>
 #include "display/display.hpp"
 #include "collision/collision_engine.hpp"
-#include "player.hpp"
+#include "objects/player.hpp"
 #include "sector.hpp"
 #include "view.hpp"
 

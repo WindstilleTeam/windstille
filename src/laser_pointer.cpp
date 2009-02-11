@@ -18,7 +18,7 @@
 #include <config.h>
 
 #include "display/vertex_array_drawing_request.hpp"
-#include "player.hpp"
+#include "objects/player.hpp"
 #include "collision/collision_engine.hpp"
 #include "sector.hpp"
 #include "tile_map.hpp"

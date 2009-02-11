@@ -20,7 +20,7 @@
 #include <list>
 #include "sector.hpp"
 #include "trigger.hpp"
-#include "player.hpp"
+#include "objects/player.hpp"
 #include "script_manager.hpp"
 
 Trigger::Trigger(FileReader& props)

@@ -17,7 +17,7 @@
 */
 
 #include "globals.hpp"
-#include "player.hpp"
+#include "objects/player.hpp"
 #include "energy_bar.hpp"
 
 EnergyBar::EnergyBar()

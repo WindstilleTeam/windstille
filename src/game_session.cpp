@@ -29,7 +29,7 @@
 #include "sector.hpp"
 #include "console.hpp"
 #include "game_object.hpp"
-#include "player.hpp"
+#include "objects/player.hpp"
 #include "tile_map.hpp"
 #include "screen_manager.hpp"
 #include "view.hpp"
