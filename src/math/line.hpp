@@ -39,10 +39,7 @@ public:
   /** Calculate if two lines intersec */
   bool intersect(const Line& line_b) const;
 
-  /** Calculate if and where two lines intersect
-   *  @param a  
-   *  @param b 
-   */
+  /** Calculate if and where two lines intersect */
   bool intersect(const Line& line_b, float& ua, float& ub) const;
 
   /** Calculate if and where two lines intersect */

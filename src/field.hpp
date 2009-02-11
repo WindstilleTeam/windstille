@@ -44,8 +44,11 @@ public:
   }
 
   /** Creates a new field out of a subsection from an already excisting one 
-   *  @param pos_x The position of the old field in the new resized one
-   *  @param pos_y The position of the old field in the new resized one */
+   *  @param arg_field The field thet gets copied
+   *  @param w         width of the new field
+   *  @param h         height of the new field
+   *  @param pos_x     The position of the old field in the new resized one
+   *  @param pos_y     The position of the old field in the new resized one */
   Field(const Field<T>& arg_field, int w, int h, int pos_x, int pos_y)
     : width (w), height (h), vec (width * height)
   {
@@ -89,6 +92,8 @@ public:
   }
 
   /** Resize a field to a new size
+   *  @param w     New width of the field
+   *  @param h     New height of the field
    *  @param pos_x The position of the old field in the new resized one
    *  @param pos_y The position of the old field in the new resized one
    **/

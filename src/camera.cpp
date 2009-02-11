@@ -157,7 +157,7 @@ Camera::get_zoom() const
 }
 
 void
-Camera::set_path(const std::vector<Camera::PathPoint>& path_, bool cont)
+Camera::set_path(const std::vector<PathPoint>& path_, bool cont)
 {
   path.clear();
   if (cont)

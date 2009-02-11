@@ -36,8 +36,7 @@ public:
   FileReader(boost::shared_ptr<FileReaderImpl> impl_);
   FileReader();
 
-  /** Name of the current section, ie. in the case of
-      <groundpiece><pos>...</groundpiece> it would be 'groundpiece' */
+  /** Name of the current section */
   std::string get_name() const;
 
   std::vector<std::string> get_section_names() const;

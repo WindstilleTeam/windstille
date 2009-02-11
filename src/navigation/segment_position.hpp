@@ -55,7 +55,7 @@ public:
   
   /** Move forward \a adv of units in world-co, when a node is hit,
    *  the function returns and let the user decide how to
-   *  continue. \adv is projected onto the current segment to figure
+   *  continue. \a adv is projected onto the current segment to figure
    *  out how far we should go
    *
    * @param[in,out] adv the amount of advancment to be done, the
