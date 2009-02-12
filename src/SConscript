@@ -182,7 +182,6 @@ env.Program('../windstille', [
 'tile/tile_factory.cpp',
 'tile/tile_map.cpp',
 'tile/tile_packer.cpp',
-'timer.cpp',
 'util/baby_xml.cpp',
 'util/command_line.cpp',
 'util/command_line_generic.cpp',

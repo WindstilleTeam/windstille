@@ -24,7 +24,6 @@
 #include <map>
 #include <squirrel.h>
 #include <iostream>
-#include "timer.hpp"
 #include "scripting/wrapper.hpp"
 #include "scripting/util.hpp"
 

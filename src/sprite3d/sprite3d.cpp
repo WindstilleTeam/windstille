@@ -30,7 +30,6 @@
 #include "display/scene_context.hpp"
 #include "globals.hpp"
 #include "util/util.hpp"
-#include "timer.hpp"
 #include "display/opengl_state.hpp"
 #include "sprite3d/manager.hpp"
 #include "sprite3d/data.hpp"

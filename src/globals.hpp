@@ -31,6 +31,12 @@ const float GRAVITY = 1500;
 /** datadir => /usr/local/share/games/windstille/ */
 extern std::string datadir;
 
+/**
+ * This is the global game time in seconds. Should be the same as normal time,
+ * except that it stops when the game pauses
+ */
+extern float game_time;
+
 extern float game_speed;
 
 extern bool debug;

@@ -33,7 +33,6 @@
 #include "tile/tile_map.hpp"
 #include "screen_manager.hpp"
 #include "view.hpp"
-#include "timer.hpp"
 #include "hud/energy_bar.hpp"
 #include "hud/dialog_manager.hpp"
 #include "windstille_main.hpp"

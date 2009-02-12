@@ -12,7 +12,6 @@
 #include <sqstdstring.h>
 
 #include "console.hpp"
-#include "timer.hpp"
 #include "scripting/wrapper.hpp"
 #include "scripting/util.hpp"
 #include "scripting/squirrel_error.hpp"
