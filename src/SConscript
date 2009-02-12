@@ -55,7 +55,6 @@ env.Program('../windstille', [
 'collision/collision_engine.cpp',
 'collision/collision_object.cpp',
 'collision/collision_test.cpp',
-'collision/ladder_contact.cpp',
 'collision/stair_contact.cpp',
 'display/blitter.cpp',
 'display/display.cpp',
