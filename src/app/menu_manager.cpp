@@ -66,16 +66,16 @@ MenuManager::display_option_menu()
 
   menu->set_font(Fonts::vera20);
 
-  SliderMenuItem* music_volume_item = new SliderMenuItem(menu,  "Master Volume",   
-                                                         config.get_int("master-volume"), 0, 100, 10);
+  std::auto_ptr<SliderMenuItem> music_volume_item(new SliderMenuItem(menu,  "Master Volume",   
+                                                                     config.get_int("master-volume"), 0, 100, 10));
   music_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_music_volume, this, _1));
-  menu->add_item(music_volume_item);
+  menu->add_item(music_volume_item.release());
 
-  SliderMenuItem* sfx_volume_item   = new SliderMenuItem(menu,  "SFX Volume",   100, 0, 100, 10);
-  menu->add_item(sfx_volume_item);
+  std::auto_ptr<SliderMenuItem> sfx_volume_item(new SliderMenuItem(menu,  "SFX Volume",   100, 0, 100, 10));
+  menu->add_item(sfx_volume_item.release());
 
-  SliderMenuItem* voice_volume_item = new SliderMenuItem(menu,  "Voice Volume", 100, 0, 100, 10);
-  menu->add_item(voice_volume_item);
+  std::auto_ptr<SliderMenuItem> voice_volume_item(new SliderMenuItem(menu,  "Voice Volume", 100, 0, 100, 10));
+  menu->add_item(voice_volume_item.release());
 
   std::auto_ptr<EnumMenuItem> aspect_item(new EnumMenuItem(menu,  "Aspect Ratio", 0));
   aspect_item->add_pair(0, "4:3");
