@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,28 +16,26 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_CONTROLLER_HELP_WINDOW_HPP
-#define HEADER_WINDSTILLE_CONTROLLER_HELP_WINDOW_HPP
+#ifndef HEADER_WINDSTILLE_ENERGY_BAR_HPP
+#define HEADER_WINDSTILLE_ENERGY_BAR_HPP
 
-#include "screen.hpp"
-#include <boost/shared_ptr.hpp>
-
-class ControllerHelpWindowImpl;
+#include "screen/screen.hpp"
+#include "sprite2d/sprite.hpp"
 
 /** */
-class ControllerHelpWindow : public Screen
+class EnergyBar : public Screen
 {
+private:
+  Sprite bar;
 public:
-  ControllerHelpWindow();
-
+  EnergyBar();
+  ~EnergyBar();
+  
   void draw();
   void update(float delta, const Controller& controller);
-  void set_active(bool active);
-  static ControllerHelpWindow* current() { return current_; }
-
 private:
-  boost::shared_ptr<ControllerHelpWindowImpl> impl;
-  static ControllerHelpWindow* current_;
+  EnergyBar (const EnergyBar&);
+  EnergyBar& operator= (const EnergyBar&);
 };
 
 #endif

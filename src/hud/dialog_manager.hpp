@@ -23,7 +23,7 @@
 #include <string>
 #include "sprite2d/sprite.hpp"
 #include "globals.hpp"
-#include "screen.hpp"
+#include "screen/screen.hpp"
 
 class TextArea;
 

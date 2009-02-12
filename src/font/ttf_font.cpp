@@ -28,7 +28,7 @@
 #include "display/opengl_state.hpp"
 #include "physfs/physfs_stream.hpp"
 #include "display/texture_manager.hpp"
-#include "blitter.hpp"
+#include "display/blitter.hpp"
 #include "ttf_font.hpp"
 #include "font_effect.hpp"
 #include "util/util.hpp"

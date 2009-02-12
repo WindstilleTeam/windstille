@@ -18,7 +18,7 @@
 
 #include "input/input_manager.hpp"
 #include "display/display.hpp"
-#include "text_area.hpp"
+#include "display/text_area.hpp"
 #include "font/fonts.hpp"
 #include "pda.hpp"
 

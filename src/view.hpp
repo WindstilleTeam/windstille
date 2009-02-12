@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_VIEW_HPP
 #define HEADER_WINDSTILLE_VIEW_HPP
 
-#include "graphic_context_state.hpp"
+#include "display/graphic_context_state.hpp"
 #include "engine/camera.hpp"
 #include "math/vector.hpp"
 

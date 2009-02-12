@@ -20,7 +20,7 @@
 #include "input/controller.hpp"
 #include "screen_manager.hpp"
 #include "gui/gui_manager.hpp"
-#include "particle_viewer.hpp"
+#include "screen/particle_viewer.hpp"
 
 // Components
 #include "gui/button.hpp"

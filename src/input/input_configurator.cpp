@@ -22,7 +22,7 @@
 #include "math/rect.hpp"
 #include "controller_def.hpp"
 #include "font/fonts.hpp"
-#include "screen_manager.hpp"
+#include "screen/screen_manager.hpp"
 #include "input/input_manager_sdl.hpp"
 #include "input_configurator.hpp"
 

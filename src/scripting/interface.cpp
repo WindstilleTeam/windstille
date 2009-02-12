@@ -21,18 +21,18 @@
 #include "util.hpp"
 #include "interface.hpp"
 #include "sound/sound_manager.hpp"
-#include "game_session.hpp"
-#include "dialog_manager.hpp"
-#include "conversation.hpp"
+#include "screen/game_session.hpp"
+#include "hud/dialog_manager.hpp"
+#include "hud/conversation.hpp"
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
 #include "font/fonts.hpp"
 #include "engine/camera.hpp"
 #include "config.hpp"
-#include "pda.hpp"
+#include "hud/pda.hpp"
 #include "util/sexpr_file_reader.hpp"
 #include "display/display.hpp"
-#include "controller_help_window.hpp"
+#include "hud/controller_help_window.hpp"
 
 namespace Scripting
 {

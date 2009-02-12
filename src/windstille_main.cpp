@@ -22,11 +22,11 @@
 #include <physfs.h>
 
 #include "globals.hpp"
-#include "screen.hpp"
+#include "screen/screen.hpp"
 #include "windstille_main.hpp"
 #include "font/fonts.hpp"
-#include "game_session.hpp"
-#include "title_screen.hpp"
+#include "screen/game_session.hpp"
+#include "screen/title_screen.hpp"
 #include "engine/sector.hpp"
 #include "input/input_manager.hpp"
 #include "sound/sound_manager.hpp"
@@ -39,10 +39,10 @@
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
 #include "sprite3d/manager.hpp"
-#include "screen_manager.hpp"
-#include "sprite3dview.hpp"
-#include "sprite2dview.hpp"
-#include "particle_viewer.hpp"
+#include "screen/screen_manager.hpp"
+#include "screen/sprite3dview.hpp"
+#include "screen/sprite2dview.hpp"
+#include "screen/particle_viewer.hpp"
 #include "sprite2d/manager.hpp"
 
 #ifdef WIN32

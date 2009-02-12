@@ -24,7 +24,7 @@
 #include "display/scene_context.hpp"
 #include "console.hpp"
 #include "screen.hpp"
-#include "controller_help_window.hpp"
+#include "hud/controller_help_window.hpp"
 #include "sprite2d/sprite.hpp"
 #include "globals.hpp"
 

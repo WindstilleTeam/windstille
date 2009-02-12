@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_PDA_HPP
 
 #include "sprite2d/sprite.hpp"
-#include "screen.hpp"
+#include "screen/screen.hpp"
 
 class TextArea;
 

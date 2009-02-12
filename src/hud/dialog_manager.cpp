@@ -18,12 +18,12 @@
 
 #include <iostream>
 #include "font/fonts.hpp"
-#include "game_session.hpp"
+#include "screen/game_session.hpp"
 #include "input/controller.hpp"
 #include "input/input_manager.hpp"
 #include "dialog_manager.hpp"
 #include "engine/script_manager.hpp"
-#include "text_area.hpp"
+#include "display/text_area.hpp"
 #include "display/display.hpp"
 #include "config.hpp"
 

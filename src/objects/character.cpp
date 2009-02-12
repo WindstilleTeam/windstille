@@ -18,9 +18,9 @@
 
 #include "character.hpp"
 #include "engine/sector.hpp"
-#include "game_session.hpp"
+#include "screen/game_session.hpp"
 #include "scripting/wrapper.interface.hpp"
-#include "dialog_manager.hpp"
+#include "hud/dialog_manager.hpp"
 #include "engine/script_manager.hpp"
 #include "physfs/physfs_stream.hpp"
 #include "console.hpp"

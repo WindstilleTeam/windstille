@@ -20,7 +20,7 @@
 #include "player.hpp"
 #include "engine/sector.hpp"
 #include "hedgehog.hpp"
-#include "game_session.hpp"
+#include "screen/game_session.hpp"
 #include "view.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "math/random.hpp"

@@ -21,7 +21,7 @@
 
 #include <vector>
 #include <string>
-#include "screen.hpp"
+#include "screen/screen.hpp"
 
 /** Displays a list of text strings from which the user can select
     one, used to form multiple-choice dialogs */

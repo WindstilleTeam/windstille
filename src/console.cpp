@@ -19,7 +19,7 @@
 #include <assert.h>
 #include "math/rect.hpp"
 #include "font/fonts.hpp"
-#include "game_session.hpp"
+#include "screen/game_session.hpp"
 #include "input/input_manager.hpp"
 #include "engine/script_manager.hpp"
 #include "display/display.hpp"

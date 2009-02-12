@@ -18,7 +18,7 @@
 
 #include <iostream>
 #include <vector>
-#include "game_session.hpp"
+#include "screen/game_session.hpp"
 #include "sprite2d/sprite.hpp"
 #include "font/fonts.hpp"
 #include "input/input_manager.hpp"

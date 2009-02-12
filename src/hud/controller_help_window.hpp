@@ -16,27 +16,28 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_INVENTORY_HPP
-#define HEADER_WINDSTILLE_INVENTORY_HPP
+#ifndef HEADER_WINDSTILLE_CONTROLLER_HELP_WINDOW_HPP
+#define HEADER_WINDSTILLE_CONTROLLER_HELP_WINDOW_HPP
 
-#include "screen.hpp"
+#include "screen/screen.hpp"
 #include <boost/shared_ptr.hpp>
 
-class InventoryImpl;
+class ControllerHelpWindowImpl;
 
 /** */
-class Inventory : public Screen
+class ControllerHelpWindow : public Screen
 {
-private:
 public:
-  Inventory();
-  ~Inventory();
+  ControllerHelpWindow();
 
   void draw();
   void update(float delta, const Controller& controller);
+  void set_active(bool active);
+  static ControllerHelpWindow* current() { return current_; }
 
 private:
-  boost::shared_ptr<InventoryImpl> impl;
+  boost::shared_ptr<ControllerHelpWindowImpl> impl;
+  static ControllerHelpWindow* current_;
 };
 
 #endif

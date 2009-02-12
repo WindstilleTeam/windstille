@@ -20,7 +20,7 @@
 #include "button.hpp"
 #include "slider.hpp"
 #include "root_component.hpp"
-#include "screen_manager.hpp"
+#include "screen/screen_manager.hpp"
 #include "grid_component.hpp"
 #include "tab_component.hpp"
 #include "list_view.hpp"

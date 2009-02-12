@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,26 +16,27 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_ENERGY_BAR_HPP
-#define HEADER_WINDSTILLE_ENERGY_BAR_HPP
+#ifndef HEADER_WINDSTILLE_INVENTORY_HPP
+#define HEADER_WINDSTILLE_INVENTORY_HPP
 
-#include "screen.hpp"
-#include "sprite2d/sprite.hpp"
+#include "screen/screen.hpp"
+#include <boost/shared_ptr.hpp>
+
+class InventoryImpl;
 
 /** */
-class EnergyBar : public Screen
+class Inventory : public Screen
 {
 private:
-  Sprite bar;
 public:
-  EnergyBar();
-  ~EnergyBar();
-  
+  Inventory();
+  ~Inventory();
+
   void draw();
   void update(float delta, const Controller& controller);
+
 private:
-  EnergyBar (const EnergyBar&);
-  EnergyBar& operator= (const EnergyBar&);
+  boost::shared_ptr<InventoryImpl> impl;
 };
 
 #endif

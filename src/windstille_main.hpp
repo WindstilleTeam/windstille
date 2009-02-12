@@ -47,7 +47,7 @@
 #ifndef HEADER_WINDSTILLE_WINDSTILLE_MAIN_HPP
 #define HEADER_WINDSTILLE_WINDSTILLE_MAIN_HPP
 
-#include "screen.hpp"
+#include "screen/screen.hpp"
 
 struct SDL_Surface;
 

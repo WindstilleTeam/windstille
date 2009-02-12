@@ -20,8 +20,8 @@
 #define HEADER_WINDSTILLE_INPUT_INPUT_CONFIGURATOR_HPP
 
 #include <sstream>
-#include "screen.hpp"
-#include "text_area.hpp"
+#include "screen/screen.hpp"
+#include "display/text_area.hpp"
 
 struct ConfigureItem
 {

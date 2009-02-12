@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_GUI_TEXT_VIEW_HPP
 #define HEADER_WINDSTILLE_GUI_TEXT_VIEW_HPP
 
-#include "text_area.hpp"
+#include "display/text_area.hpp"
 #include "component.hpp"
 
 namespace gui {
