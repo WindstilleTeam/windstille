@@ -43,6 +43,8 @@ public:
   
   bool is_active() const;
 
+  Rectf get_child_rect() const;
+
 private:
   GroupComponent (const GroupComponent&);
   GroupComponent& operator= (const GroupComponent&);

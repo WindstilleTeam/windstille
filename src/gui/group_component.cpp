@@ -69,13 +69,19 @@ GroupComponent::pack(Component* component)
   assert(child.get() == 0);
   child = std::auto_ptr<Component>(component);
 
-  int padding = 6;
-  child->set_screen_rect(Rectf(rect.left + padding,
-                               rect.top  + padding + (title.empty() ? 0 : Fonts::vera20->get_height() + 24),
-                               rect.right  - padding,
-                               rect.bottom - padding
-                               ));
+  child->set_screen_rect(get_child_rect());
   child->set_active(true);
+}
+
+Rectf
+GroupComponent::get_child_rect() const
+{
+  int padding = 6;
+
+  return Rectf(rect.left + padding,
+               rect.top  + padding + (title.empty() ? 0 : Fonts::vera20->get_height() + 24),
+               rect.right  - padding,
+               rect.bottom - padding);
 }
 
 bool
