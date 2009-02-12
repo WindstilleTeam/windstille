@@ -40,7 +40,7 @@
 #include <cmath>
 #include "vector.hpp"
 
-class Vector;
+class Vector2f;
 
 //: 2D (x,y) point structure.
 //- !group=Core/Math!
@@ -62,7 +62,7 @@ public:
 	Point(const Point &p)
 	{ x = p.x; y = p.y; }
 
-	explicit Point(const Vector& p);
+	explicit Point(const Vector2f& p);
 
 // Operations:
 public:
@@ -138,7 +138,7 @@ public:
 	int y;
 };
 
-inline Point::Point(const Vector& p)
+inline Point::Point(const Vector2f& p)
   : x(static_cast<int>(p.x)),
     y(static_cast<int>(p.y))
 {}

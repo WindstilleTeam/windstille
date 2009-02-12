@@ -52,7 +52,7 @@ PDA::draw()
 
       Rectf rect = text_area->get_rect().grow(8.0f);
 
-      background.draw(Vector(30, 30));
+      background.draw(Vector2f(30, 30));
       
       rect.top += 56;
       Display::fill_rounded_rect(rect, 16.0f, Color(0.3f, 0.3f, 0.5f, 0.5f));

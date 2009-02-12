@@ -39,13 +39,13 @@ View::draw (SceneContext& sc)
   // pixel-jitter when scrolling with subpixel values and pixel
   // precise images.
   if (camera.get_zoom() == 1.0)
-    state.set_pos(Vector(static_cast<int>(camera.get_pos().x),
+    state.set_pos(Vector2f(static_cast<int>(camera.get_pos().x),
                          static_cast<int>(camera.get_pos().y)));
   else
     state.set_pos(camera.get_pos());
 
   state.set_zoom(camera.get_zoom() + (zoom - 1.0f));
-  state.set_pos(state.get_pos() + Vector(transform.x, transform.y));
+  state.set_pos(state.get_pos() + Vector2f(transform.x, transform.y));
 
   state.push(sc);
   Sector::current()->draw(sc);
@@ -67,7 +67,7 @@ View::update (float delta, const Controller& controller)
     zoom *= 1.0 - delta;
 
   if(controller.get_button_state(VIEW_CENTER_BUTTON)) {
-      transform = Vector(0, 0);
+      transform = Vector2f(0, 0);
       zoom = 1.0;
   }
 
@@ -81,8 +81,8 @@ View::get_clip_rect()
   return state.get_clip_rect();
 }
 
-Vector
-View::screen_to_world(const Vector& point)
+Vector2f
+View::screen_to_world(const Vector2f& point)
 {
   return state.screen_to_world(point);
 }

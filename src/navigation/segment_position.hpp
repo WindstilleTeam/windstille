@@ -65,12 +65,12 @@ public:
    * @param[out] next_node if the advance ends at a node, it gets
    *                       returned in next_node
    */  
-  void advance(Vector& adv, Node*& next_node);
+  void advance(Vector2f& adv, Node*& next_node);
 
   Segment* get_segment() const { return segment; }
   float    get_float_pos() const { return pos; }
 
-  Vector get_pos() const;
+  Vector2f get_pos() const;
 };
 
 #endif

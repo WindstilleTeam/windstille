@@ -45,7 +45,7 @@ Button::draw()
 {
   Display::fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
   Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
-  Fonts::vera20->draw_center(Vector(rect.left + rect.get_width()/2, rect.top + rect.get_height()/2),
+  Fonts::vera20->draw_center(Vector2f(rect.left + rect.get_width()/2, rect.top + rect.get_height()/2),
                              label,
                              is_active()
                              ? Color(1.0f, 1.0f, 1.0f, 1.0f) 

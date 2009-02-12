@@ -89,7 +89,7 @@ Inventory::~Inventory()
 void
 InventoryImpl::draw()
 {
-  Vector pos = Vector(400, 300); // View::current()->screen_Player::currently->get_pos();
+  Vector2f pos = Vector2f(400, 300); // View::current()->screen_Player::currently->get_pos();
 
   int num_items = items.size();
   float step_angle = (2*M_PI) / num_items;
@@ -97,19 +97,19 @@ InventoryImpl::draw()
   for(int i = 0; i < int(items.size()); ++i)
     {
       const InventoryItem& item = items[(i+current_item)%items.size()];
-      Vector draw_pos = pos + Vector(128, 0).rotate(step_angle * i - M_PI/2 + add_angle);
+      Vector2f draw_pos = pos + Vector2f(128, 0).rotate(step_angle * i - M_PI/2 + add_angle);
 
       if (i == 0 && moving == 0)
         {
           slothighlight.draw(draw_pos);
-          Fonts::vera20->draw_center(Vector(draw_pos.x, draw_pos.y - 64), item.name);
+          Fonts::vera20->draw_center(Vector2f(draw_pos.x, draw_pos.y - 64), item.name);
         }
       else
         {
           slot.draw(draw_pos);
         }
 
-      item.sprite.draw(draw_pos - Vector(32,32));
+      item.sprite.draw(draw_pos - Vector2f(32,32));
     }
 }
 

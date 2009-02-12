@@ -73,8 +73,8 @@ public:
   Texture get_texture() const;
 
   const TTFCharacter& get_character(int c) const;
-  void draw(const Vector& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
-  void draw_center(const Vector& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
+  void draw(const Vector2f& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
+  void draw_center(const Vector2f& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
 
 private:
   TTFFontImpl* impl;

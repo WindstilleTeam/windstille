@@ -43,13 +43,13 @@ public:
   static void draw_segment(const Line& line, const Color& color);
 
   static void draw_line(const Line& line, const Color& color);
-  static void draw_line(const Vector& pos1, const Vector& pos2, const Color& color);
+  static void draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color);
 
-  static void draw_circle(const Vector& pos, float radius, const Color& color, int segments = 16);
-  static void fill_circle(const Vector& pos, float radius, const Color& color, int segments = 16);
+  static void draw_circle(const Vector2f& pos, float radius, const Color& color, int segments = 16);
+  static void fill_circle(const Vector2f& pos, float radius, const Color& color, int segments = 16);
 
-  static void draw_arc(const Vector& pos, float radius, float start, float end, const Color& color, int segments = 16);
-  static void fill_arc(const Vector& pos, float radius, float start, float end, const Color& color, int segments = 16);
+  static void draw_arc(const Vector2f& pos, float radius, float start, float end, const Color& color, int segments = 16);
+  static void fill_arc(const Vector2f& pos, float radius, float start, float end, const Color& color, int segments = 16);
 
   static int  get_width();
   static int  get_height();

@@ -28,8 +28,8 @@
 class Conversation : public Screen
 {
 private:
-  Vector pos;
-  Vector direction;
+  Vector2f pos;
+  Vector2f direction;
   bool   active;
   int    selection;
   float  grow;

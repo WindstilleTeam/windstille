@@ -65,7 +65,7 @@ public:
   ~Sprite();
 
   void update(float delta);
-  void draw(const Vector& pos) const;
+  void draw(const Vector2f& pos) const;
 
   void  set_action(const std::string& name);
   const std::string& get_action() const;
@@ -96,7 +96,7 @@ public:
 
   Surface get_current_surface() const;
 
-  Vector get_offset() const;
+  Vector2f get_offset() const;
 
   int get_width() const;
   int get_height() const;

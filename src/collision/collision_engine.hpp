@@ -46,12 +46,12 @@ public:
   /** Shoots a ray from \a pos into direction \a angle, returns the
       position were the ray collides with the tilemap FIXME: Should be
       extended to handle objects as well */
-  Vector raycast(const Vector& pos, float angle);
+  Vector2f raycast(const Vector2f& pos, float angle);
 private:
   void unstuck(CollisionObject& a, CollisionObject& b, float delta);
   CollisionData collide(CollisionObject& a, CollisionObject& b, float delta);
   CollisionData collide(const Rectf& b1, const Rectf& b2,
-                        const Vector& b1_v, const Vector& b2_v,
+                        const Vector2f& b1_v, const Vector2f& b2_v,
                         float delta);
   CollisionData collide_tilemap(CollisionObject& a, CollisionObject& b, float delta);
 

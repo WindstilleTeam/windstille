@@ -105,8 +105,8 @@ Player::draw (SceneContext& sc)
                                Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
     }
 
-  //sc.highlight().draw(flashlighthighlight, pos - Vector(40, 80), 100.0f);
-  //sc.light().draw(flashlight, pos - Vector(40, 80), 100.0f);
+  //sc.highlight().draw(flashlighthighlight, pos - Vector2f(40, 80), 100.0f);
+  //sc.light().draw(flashlight, pos - Vector2f(40, 80), 100.0f);
   sprite.draw(sc.color(), pos, z_pos);
 
   Entity* obj = find_useable_entity();
@@ -232,7 +232,7 @@ void
 Player::set_stand()
 {
   try_set_action("Stand");
-  velocity = Vector(0, 0);
+  velocity = Vector2f(0, 0);
   state = STAND;
 }
 
@@ -305,7 +305,7 @@ Player::update_stairs(float delta)
            controller.get_axis_state(Y_AXIS) < -0.5f)
     contact->advance(WALK_SPEED * delta * 0.7f);
 
-  velocity = Vector(0, 0);
+  velocity = Vector2f(0, 0);
   c_object->set_pos(contact->get_pos());
 
   if (!contact->is_active())
@@ -356,8 +356,8 @@ Player::update_stand()
     {
       // TODO remove me later, just here for testing
       Grenade* grenade = new Grenade();
-      grenade->set_pos(get_pos() + Vector(50, -300));
-      grenade->set_velocity(Vector(20, -10));
+      grenade->set_pos(get_pos() + Vector2f(50, -300));
+      grenade->set_velocity(Vector2f(20, -10));
       Sector::current()->add(grenade);
       
       sprite.set_action("PullGun");
@@ -508,7 +508,7 @@ Player::set_stand_to_listen(bool backwards)
   try_set_action("StandtoListen", backwards ? -1.0 : 1.0);
   if(!backwards) {
     sprite.set_next_action("Listen");
-    velocity = Vector(0, 0);
+    velocity = Vector2f(0, 0);
   } else {
     sprite.set_next_action("Stand");
   }
@@ -750,7 +750,7 @@ Player::collision(const CollisionData& data)
 {
   // copy velocity, as "velocity" is the wanted velocity, whereas
   // cur_vel is the velocity in the current delta-frame
-  Vector cur_vel = c_object->get_velocity(); 
+  Vector2f cur_vel = c_object->get_velocity(); 
   if (data.direction.y != 0)
     {
       cur_vel.y = 0;
@@ -766,7 +766,7 @@ Player::collision(const CollisionData& data)
 }
 
 void 
-Player::set_pos(Vector pos)
+Player::set_pos(Vector2f pos)
 {
   Entity::set_pos(pos);
   c_object->set_pos(pos);

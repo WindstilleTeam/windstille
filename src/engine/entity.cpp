@@ -34,7 +34,7 @@ Entity::~Entity()
 }
 
 void
-Entity::set_pos(Vector pos)
+Entity::set_pos(Vector2f pos)
 {
   this->pos = pos;
 }

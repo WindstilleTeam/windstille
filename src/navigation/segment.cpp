@@ -49,7 +49,7 @@ Segment::get_line() const
               node2->get_pos());
 }
 
-Vector
+Vector2f
 Segment::get_vector() const
 {
   return node2->get_pos() - node1->get_pos();

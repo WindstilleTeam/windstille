@@ -58,7 +58,7 @@ public:
   /** Returns texture coordinates for the Surface rectangle */
   Rectf get_uv() const;
 
-  void draw(const Vector& pos) const;
+  void draw(const Vector2f& pos) const;
   void draw(const SurfaceDrawingParameters& params) const;
 
   /** true if the Texture is valid and usable, false if not */

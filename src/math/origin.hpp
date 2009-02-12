@@ -64,6 +64,6 @@ typedef origin::Origin Origin;
 //- !group=Display/Display 2D!
 //- !header=display.h!
 Point  calc_origin(Origin origin, const Size &size);
-Vector calc_origin(Origin origin, const Sizef &size);
+Vector2f calc_origin(Origin origin, const Sizef &size);
 
 #endif

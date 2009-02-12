@@ -112,7 +112,7 @@ Surface::operator bool() const
 }
 
 void
-Surface::draw(const Vector& pos) const
+Surface::draw(const Vector2f& pos) const
 {
   OpenGLState state;
   state.enable(GL_BLEND);

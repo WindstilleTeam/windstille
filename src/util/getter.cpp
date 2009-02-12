@@ -24,7 +24,7 @@
 #include "file_reader.hpp"
 #include "getter.hpp"
 
-bool get(FileReader& reader, const char* name, Vector&  value)
+bool get(FileReader& reader, const char* name, Vector2f&  value)
 {
   std::vector<float> floats;
   if (reader.get(name, floats) && floats.size() == 2) {

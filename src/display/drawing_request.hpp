@@ -29,12 +29,12 @@
 class DrawingRequest
 {
 protected:
-  Vector  pos;
+  Vector2f  pos;
   float   z_pos;
   Matrix  modelview;
 
 public:
-  DrawingRequest(const Vector& pos_, float z_pos = 0,  const Matrix& modelview_ = Matrix::identity())
+  DrawingRequest(const Vector2f& pos_, float z_pos = 0,  const Matrix& modelview_ = Matrix::identity())
     : pos(pos_), z_pos(z_pos), modelview(modelview_)
   {}
   virtual ~DrawingRequest() {}

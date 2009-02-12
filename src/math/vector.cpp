@@ -20,60 +20,60 @@
 #include "math/vector.hpp"
 
 void
-Vector::normalize()
+Vector2f::normalize()
 {
   float mag = magnitude();
   x /= mag;
   y /= mag;
 }
 
-Vector Vector::unit() const
+Vector2f Vector2f::unit() const
 {
   return *this / magnitude();
 }
 
 float
-Vector::magnitude() const
+Vector2f::magnitude() const
 {
   return sqrt(x*x + y*y);
 }
 
-Vector
-Vector::rotate(float angle) const
+Vector2f
+Vector2f::rotate(float angle) const
 {
   float len = magnitude();
-  return Vector(len * cos(angle), len * sin(angle));
+  return Vector2f(len * cos(angle), len * sin(angle));
 }
 
-Vector
-Vector::project(const Vector& b)
+Vector2f
+Vector2f::project(const Vector2f& b)
 {
   float dp = this->dot(b);
-  return Vector((dp / (b.x*b.x + b.y*b.y) ) * b.x,
+  return Vector2f((dp / (b.x*b.x + b.y*b.y) ) * b.x,
                 (dp / (b.x*b.x + b.y*b.y) ) * b.y);
 }
 
 float
-Vector::dot(const Vector& b)
+Vector2f::dot(const Vector2f& b)
 {
   return (x * b.x + y * b.y);
 }
 
 bool
-Vector::is_null() const
+Vector2f::is_null() const
 {
   return (x == 0.0f && y == 0.0f);
 }
 
-std::ostream& operator<<(std::ostream& s, const Vector& v)
+std::ostream& operator<<(std::ostream& s, const Vector2f& v)
 {
   s << "(" << v.x << ", " << v.y << ")";
   return s;
 }
 
-Vector operator*(float s, const Vector& v)
+Vector2f operator*(float s, const Vector2f& v)
 {
-  return Vector(v.x * s, v.y * s);
+  return Vector2f(v.x * s, v.y * s);
 }
 
 /* EOF */

@@ -223,7 +223,7 @@ public:
 	Rectf(float new_left, float new_top, float new_right, float new_bottom)
 	{ left = new_left; top = new_top; right = new_right; bottom = new_bottom; }
 
-	Rectf(const Vector &p, const Sizef &size)
+	Rectf(const Vector2f &p, const Sizef &size)
 	{ left = p.x; top = p.y; right = left + size.width; bottom = top + size.height; }
 
 	Rectf(const Rectf &rect)
@@ -238,11 +238,11 @@ public:
 	{ left -= r.left; top -= r.top; right -= r.right; bottom -= r.bottom; return *this; }
 	
 	//: Rect += Point operator.
-	Rectf &operator+=(const Vector &p)
+	Rectf &operator+=(const Vector2f &p)
 	{ left += p.x; top += p.y; right += p.x; bottom += p.y; return *this; }
 
 	//: Rect -= Point operator.
-	Rectf &operator-=(const Vector &p)
+	Rectf &operator-=(const Vector2f &p)
 	{ left -= p.x; top -= p.y; right -= p.x; bottom -= p.y; return *this; }
 
 	//: Rect + Rect operator.
@@ -254,11 +254,11 @@ public:
 	{ return Rectf(left - r.left, top - r.top, right - r.right, bottom - r.bottom); }
 
 	//: Rect + Point operator.
-	Rectf operator+(const Vector &p) const
+	Rectf operator+(const Vector2f &p) const
 	{ return Rectf(left + p.x, top + p.y, right + p.x, bottom + p.y); }
 
 	//: Rect - Point operator.
-	Rectf operator-(const Vector &p) const
+	Rectf operator-(const Vector2f &p) const
 	{ return Rectf(left - p.x, top - p.y, right - p.x, bottom - p.y); }
 
 	//: Rect == Rect operator.
@@ -293,7 +293,7 @@ public:
 	Sizef get_size() const { return Sizef(right - left, bottom - top); }
 	
 	//: Returns true if point is inside the rectangle.
-	bool is_inside(const Vector &p) const { return (p.x >= left && p.y >= top && p.x <= right && p.y <= bottom); }
+	bool is_inside(const Vector2f &p) const { return (p.x >= left && p.y >= top && p.x <= right && p.y <= bottom); }
 	
 	//: Returns true if rectangle passed is overlapping or inside this rectangle.
 	bool is_overlapped(const Rectf &r) const 
@@ -344,7 +344,7 @@ public:
 	//param x, y: Offsets applied negatively to each corner of the rectangle
 	void apply_alignment(Origin origin, float x, float y)
 	{
-		Vector offset = calc_origin(origin, get_size());
+		Vector2f offset = calc_origin(origin, get_size());
 		offset.x -= x;
 		offset.y -= y;
 		

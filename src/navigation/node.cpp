@@ -19,7 +19,7 @@
 #include <algorithm>
 #include "node.hpp"
 
-Node::Node(const Vector& pos_)
+Node::Node(const Vector2f& pos_)
   : pos(pos_)
     // FIXME: Do something with id
 {

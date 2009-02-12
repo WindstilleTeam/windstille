@@ -173,7 +173,7 @@ GameSessionImpl::draw()
   if (pause)
     {
       if ((SDL_GetTicks() / 1000) % 2)
-        Fonts::vera20->draw(Vector(Display::get_width()/2, Display::get_height()/2), "Pause");
+        Fonts::vera20->draw(Vector2f(Display::get_width()/2, Display::get_height()/2), "Pause");
     }
 }
 
@@ -375,7 +375,7 @@ GameSessionImpl::handle_event(const SDL_Event& event)
         
     case SDL_MOUSEBUTTONDOWN:
       {
-        Vector real_pos = GameSession::current()->get_view()->screen_to_world(Vector(event.button.x,
+        Vector2f real_pos = GameSession::current()->get_view()->screen_to_world(Vector2f(event.button.x,
                                                                                   event.button.y));      
         console << "Click at: " << int(real_pos.x) << ", " << int(real_pos.y) << std::endl;
       }

@@ -88,7 +88,7 @@ void
 SurfaceDrawer::draw(DrawingContext& dc, ParticleSystem& psys) 
 {          
   VertexArrayDrawingRequest* buffer 
-    = new VertexArrayDrawingRequest(Vector(psys.get_x_pos(), psys.get_y_pos()), psys.get_z_pos(),
+    = new VertexArrayDrawingRequest(Vector2f(psys.get_x_pos(), psys.get_y_pos()), psys.get_z_pos(),
                                     dc.get_modelview());
 
   buffer->set_mode(GL_QUADS);

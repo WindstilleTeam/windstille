@@ -52,10 +52,10 @@ public:
   /**
    * Convenience function to simply play a sound at a given position.
    */
-  void play(const std::string& name, const Vector& pos = Vector(-1, -1));
+  void play(const std::string& name, const Vector2f& pos = Vector2f(-1, -1));
 
-  void set_listener_position(const Vector& position);
-  void set_listener_velocity(const Vector& velocity);
+  void set_listener_position(const Vector2f& position);
+  void set_listener_velocity(const Vector2f& velocity);
   void set_listener_gain(float volume);
 
   void enable_music(bool music_enabled);

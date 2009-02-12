@@ -34,7 +34,7 @@ struct CollisionData
    * It's the normal vector of the side/face that we collided with. The vector
    * points away from the object we collided with.
    */
-  Vector direction;
+  Vector2f direction;
   
   // size of time frame
   float delta; 

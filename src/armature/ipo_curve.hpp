@@ -21,10 +21,10 @@
 
 struct BezierPoint
 {
-  Vector handle_left;
-  Vector handle_right;
+  Vector2f handle_left;
+  Vector2f handle_right;
 
-  Vector pos;
+  Vector2f pos;
 };
 
 /** */

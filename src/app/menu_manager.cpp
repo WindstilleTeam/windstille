@@ -55,7 +55,7 @@ MenuManager::display_option_menu()
   using namespace gui;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-170), Sizef(500, 340)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-250, 300-170), Sizef(500, 340)), 
                                              "Options",
                                              manager->get_root());
 
@@ -143,7 +143,7 @@ MenuManager::display_main_menu()
 
   manager->get_root()->add_child(text_group);
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-20, 200), Sizef(250, 254)),
+  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-20, 200), Sizef(250, 254)),
                                              "",
                                              manager->get_root());
 
@@ -206,12 +206,12 @@ MenuManager::display_pause_menu()
   using namespace gui;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-200, 300-170), Sizef(400, 300)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-200, 300-170), Sizef(400, 300)), 
                                              "Pause Menu",
                                              manager->get_root());
 
   // Begin Menu
-  MenuComponent* menu = new MenuComponent(Rectf(Vector(400-150, 200), Sizef(300, 500)), true,
+  MenuComponent* menu = new MenuComponent(Rectf(Vector2f(400-150, 200), Sizef(300, 500)), true,
                                           group);
   group->pack(menu);
 
@@ -257,7 +257,7 @@ MenuManager::display_models_menu()
   using namespace gui;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-275, 100), Sizef(550, 376)),  // 378
+  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-275, 100), Sizef(550, 376)),  // 378
                                              "Select Model",
                                              manager->get_root());
 
@@ -300,7 +300,7 @@ MenuManager::display_particle_menu()
   using namespace gui;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-200, 300-170), Sizef(400, 340)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-200, 300-170), Sizef(400, 340)), 
                                              "Particle Systems",
                                              manager->get_root());
 
@@ -332,7 +332,7 @@ MenuManager::display_scenario_menu()
   using namespace gui;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-200, 300-170), Sizef(400, 340)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-200, 300-170), Sizef(400, 340)), 
                                              "Select Scenario",
                                              manager->get_root());
 
@@ -370,7 +370,7 @@ MenuManager::display_debug_menu()
   using namespace gui;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-170), Sizef(500, 340)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-250, 300-170), Sizef(500, 340)), 
                                              "Debug",
                                              manager->get_root());
 
@@ -405,7 +405,7 @@ MenuManager::display_help()
   using namespace gui;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-200), Sizef(500, 400)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-250, 300-200), Sizef(500, 400)), 
                                              "Help",
                                              manager->get_root());
 
@@ -445,7 +445,7 @@ MenuManager::display_credits()
   using namespace gui;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-250, 300-200), Sizef(500, 400)), 
+  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-250, 300-200), Sizef(500, 400)), 
                                              "Credits",
                                              manager->get_root());
 

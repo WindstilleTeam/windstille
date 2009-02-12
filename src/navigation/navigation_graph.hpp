@@ -81,7 +81,7 @@ public:
 
   // FIXME: It might be worth it to return handles that can be
   // validated instead of pure pointers
-  NodeHandle    add_node(const Vector& pos);
+  NodeHandle    add_node(const Vector2f& pos);
   SegmentHandle add_segment(NodeHandle node1, NodeHandle node2);
 
   void remove_node(NodeHandle node);
@@ -93,15 +93,15 @@ public:
   std::vector<SegmentPosition> find_intersections(const Line& line);
 
   /** Find nodes that are near within the \a radius */
-  std::vector<NodeHandle> find_nodes(const Vector& pos, float radius);
+  std::vector<NodeHandle> find_nodes(const Vector2f& pos, float radius);
 
   /** Find the closest node, limit search to nodes in radius */
-  NodeHandle find_closest_node(const Vector& pos, float radius);
+  NodeHandle find_closest_node(const Vector2f& pos, float radius);
 
-  SegmentHandle find_closest_segment(const Vector& pos, float radius);
+  SegmentHandle find_closest_segment(const Vector2f& pos, float radius);
 
   /** Find segments that are near the given point */
-  std::vector<SegmentHandle> find_segments(const Vector& pos, float radius);
+  std::vector<SegmentHandle> find_segments(const Vector2f& pos, float radius);
 
   /** Draw the navigation graph, for debugging only */
   void draw();

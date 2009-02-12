@@ -38,7 +38,7 @@ TitleScreen::on_startup()
 void
 TitleScreen::draw()
 {
-  background.draw(Vector(0, 0));
+  background.draw(Vector2f(0, 0));
 }
 
 void

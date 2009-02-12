@@ -99,14 +99,14 @@ StairContact::advance_or_not()
     }
 }
 
-Vector
+Vector2f
 StairContact::get_pos() const
 {
   if (tile_type & TILE_RIGHT)
-    return Vector(pos.x * 32 + 16 + 32 * advancement,
+    return Vector2f(pos.x * 32 + 16 + 32 * advancement,
                   pos.y * 32 + 16 + 32 * advancement);
   else // (tile_type & TILE_LEFT)
-    return Vector(pos.x * 32 + 16 + 32 * advancement,
+    return Vector2f(pos.x * 32 + 16 + 32 * advancement,
                   pos.y * 32 + 16 - 32 * advancement);
 }
 

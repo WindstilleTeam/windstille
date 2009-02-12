@@ -99,7 +99,7 @@ DialogManager::draw()
     Display::draw_rounded_rect(rect, 16.0f,
                                Color(0.6f, 1.0f, 1.0f, 0.8f));
   
-    portrait.draw(Vector(pos.x + portrait_border_x,
+    portrait.draw(Vector2f(pos.x + portrait_border_x,
                          pos.y + portrait_border_y));
   }
   
@@ -107,7 +107,7 @@ DialogManager::draw()
 
   if (text_area->is_progress_complete())
     {
-      const Vector& pos = text_area->get_cursor_pos();
+      const Vector2f& pos = text_area->get_cursor_pos();
       Rectf cursor(pos.x + 8, pos.y + 8, pos.x + 24, pos.y + 24);
       Display::fill_rect(cursor, Color(1.0, 1.0, 1.0, fabs(sin(SDL_GetTicks() / 1000.0f * M_PI * 3.0f))));
     }

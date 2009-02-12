@@ -47,7 +47,7 @@ public:
   Properties get_properties()  const { return properties; }
 
   Line   get_line() const;
-  Vector get_vector() const;
+  Vector2f get_vector() const;
   
 private:
   Segment (const Segment&);

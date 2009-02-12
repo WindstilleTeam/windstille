@@ -58,7 +58,7 @@ public:
 
   /** Return the position of the last character in the TextArea,
       usefull to display a blinking cursor or things like that */
-  Vector get_cursor_pos() const;
+  Vector2f get_cursor_pos() const;
 private:
   TextAreaImpl* impl;
 };

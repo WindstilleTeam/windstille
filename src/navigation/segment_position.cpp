@@ -43,8 +43,8 @@ SegmentPosition::set_pos(Segment* segment_, float pos_)
 void
 SegmentPosition::advance(float& adv, Node*& next_node)
 {
-  Vector p1 = segment->get_node1()->get_pos();
-  Vector p2 = segment->get_node2()->get_pos();
+  Vector2f p1 = segment->get_node1()->get_pos();
+  Vector2f p2 = segment->get_node2()->get_pos();
   
   float length = (p2 - p1).length();
   
@@ -76,15 +76,15 @@ SegmentPosition::advance(float& adv, Node*& next_node)
 }
 
 void
-SegmentPosition::advance(Vector& adv, Node*& next_node)
+SegmentPosition::advance(Vector2f& adv, Node*& next_node)
 {
   // FIXME: This might be optimizable
-  Vector p1 = segment->get_node1()->get_pos();
-  Vector p2 = segment->get_node2()->get_pos();
+  Vector2f p1 = segment->get_node1()->get_pos();
+  Vector2f p2 = segment->get_node2()->get_pos();
   
-  Vector segment_v = p2 - p1;
+  Vector2f segment_v = p2 - p1;
 
-  Vector proj = adv.project(segment_v);
+  Vector2f proj = adv.project(segment_v);
 
   float angle = atan2(segment_v.y, segment_v.x) - atan2(proj.y, proj.x);
 
@@ -98,18 +98,19 @@ SegmentPosition::advance(Vector& adv, Node*& next_node)
   // Move forward
   advance(advf, next_node);
   
-  // Calculate the rest Vector
+  // Calculate the rest Vector2f
+  // Calculate the rest Vector2f
   if (advf == 0.0f)
-    adv = Vector(0,0);
+    adv = Vector2f(0,0);
   else
     adv -= (proj * ((proj.length() - advf)/proj.length()));
 }
 
-Vector
+Vector2f
 SegmentPosition::get_pos() const
 {
-  Vector p1 = segment->get_node1()->get_pos();
-  Vector p2 = segment->get_node2()->get_pos();
+  Vector2f p1 = segment->get_node1()->get_pos();
+  Vector2f p2 = segment->get_node2()->get_pos();
 
   return p1 + pos*(p2 - p1);
 }

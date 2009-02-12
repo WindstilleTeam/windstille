@@ -21,83 +21,83 @@
 #include <iosfwd>
 
 /** Simple two dimensional vector. */
-class Vector
+class Vector2f
 {
 public:
-  Vector(float nx, float ny)
+  Vector2f(float nx, float ny)
       : x(nx), y(ny)
   { }
-  Vector(const Vector& other)
+  Vector2f(const Vector2f& other)
       : x(other.x), y(other.y)
   { }
-  Vector()
+  Vector2f()
       : x(0), y(0)
   { }
 
-  bool operator ==(const Vector& other) const
+  bool operator ==(const Vector2f& other) const
     {
       return x == other.x && y == other.y;
     }
 
-  bool operator !=(const Vector& other) const
+  bool operator !=(const Vector2f& other) const
     {
       return !(x == other.x && y == other.y);
     }
 
-  const Vector& operator=(const Vector& other)
+  const Vector2f& operator=(const Vector2f& other)
   {
     x = other.x;
     y = other.y;
     return *this;
   }
 
-  Vector operator+(const Vector& other) const
+  Vector2f operator+(const Vector2f& other) const
     {
-      return Vector(x + other.x, y + other.y);
+      return Vector2f(x + other.x, y + other.y);
     }
 
-  Vector operator-(const Vector& other) const
+  Vector2f operator-(const Vector2f& other) const
     {
-      return Vector(x - other.x, y - other.y);
+      return Vector2f(x - other.x, y - other.y);
     }
 
-  Vector operator*(float s) const
+  Vector2f operator*(float s) const
     {
-      return Vector(x * s, y * s);
+      return Vector2f(x * s, y * s);
     }
 
-  Vector operator/(float s) const
+  Vector2f operator/(float s) const
     {
-      return Vector(x / s, y / s);
+      return Vector2f(x / s, y / s);
     }
 
-  Vector operator-() const
+  Vector2f operator-() const
     {
-      return Vector(-x, -y);
+      return Vector2f(-x, -y);
     }
 
-  const Vector& operator +=(const Vector& other)
+  const Vector2f& operator +=(const Vector2f& other)
   {
     x += other.x;
     y += other.y;
     return *this;
   }
 
-  const Vector& operator -=(const Vector& other)
+  const Vector2f& operator -=(const Vector2f& other)
   {
     x -= other.x;
     y -= other.y;
     return *this;
   }
 
-  const Vector& operator *=(float val)
+  const Vector2f& operator *=(float val)
   {
     x *= val;
     y *= val;
     return *this;
   }
 
-  const Vector& operator /=(float val)
+  const Vector2f& operator /=(float val)
   {
     x /= val;
     y /= val;
@@ -106,24 +106,24 @@ public:
 
   /** Takes angle in radian and returns a copy of the vector rotated
       by \a angle */
-  Vector rotate(float angle) const;
+  Vector2f rotate(float angle) const;
 
   /// Scalar product of 2 vectors
-  float operator*(const Vector& other) const
+  float operator*(const Vector2f& other) const
     {
       return x*other.x + y*other.y;
     }
 
   /** Project vecter a onto vector b and return the resulting vector */
-  Vector project(const Vector& b);
+  Vector2f project(const Vector2f& b);
 
   float magnitude() const;
   float length() const { return magnitude(); }
 
-  Vector unit() const;
+  Vector2f unit() const;
   void   normalize();
 
-  float dot(const Vector& b);
+  float dot(const Vector2f& b);
 
   bool is_null() const;
 
@@ -133,8 +133,8 @@ public:
   // for such simple stuff :)
 };
 
-std::ostream& operator<<(std::ostream& s, const Vector& v);
-Vector        operator*(float s, const Vector& v);
+std::ostream& operator<<(std::ostream& s, const Vector2f& v);
+Vector2f        operator*(float s, const Vector2f& v);
 
 #endif
 

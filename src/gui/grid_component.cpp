@@ -215,7 +215,7 @@ GridComponent::pack(Component* component, int x, int y, int colspan, int rowspan
           grid(x, y) = ComponentBox(component, Size(colspan, rowspan));
         }
 
-      component->set_screen_rect(Rectf(Vector(rect.left + x * (rect.get_width() /grid.get_width())  + padding,
+      component->set_screen_rect(Rectf(Vector2f(rect.left + x * (rect.get_width() /grid.get_width())  + padding,
                                               rect.top  + y * (rect.get_height()/grid.get_height()) + padding),
                                        Sizef((rect.get_width()/grid.get_width())   * colspan - 2*padding,
                                              (rect.get_height()/grid.get_height()) * rowspan - 2*padding)));

@@ -30,7 +30,7 @@ public:
   ShaderProgram shader_program;
   float radius;
 
-  ShockwaveDrawingRequest(const Vector& pos, 
+  ShockwaveDrawingRequest(const Vector2f& pos, 
                           const Texture&       noise_,
                           const ShaderProgram& shader_program_,
                           float r,

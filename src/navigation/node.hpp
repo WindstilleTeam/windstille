@@ -28,7 +28,7 @@
 class Node
 {
 private:
-  Vector pos;
+  Vector2f pos;
   
 public:
   /** Segments connected to this node */
@@ -36,11 +36,11 @@ public:
   Segments segments;
 
 public:
-  Node(const Vector& pos_);
+  Node(const Vector2f& pos_);
   ~Node();
 
-  Vector get_pos() const { return pos; }
-  void   set_pos(const Vector& p) { pos = p; }
+  Vector2f get_pos() const { return pos; }
+  void   set_pos(const Vector2f& p) { pos = p; }
 
   /** Connect the given segment to the node, the position is used to
       mark the end of the segment that is actually connected */

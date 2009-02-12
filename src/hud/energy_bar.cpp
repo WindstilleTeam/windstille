@@ -41,13 +41,13 @@ EnergyBar::draw()
       float green = (i/float(max_energy));
       Sprite sprite = bar;
       sprite.set_color(Color(red, green, 0, 1.0f));
-      sprite.draw(Vector(15 + (i * 10), 15));
+      sprite.draw(Vector2f(15 + (i * 10), 15));
     }
 
   for(int i = energy; i < max_energy; ++i)
     {
       bar.set_color(Color(.5f, .5f, .5f, .5f));
-      bar.draw(Vector(15 + (i * 10), 15));
+      bar.draw(Vector2f(15 + (i * 10), 15));
     }
 }
 

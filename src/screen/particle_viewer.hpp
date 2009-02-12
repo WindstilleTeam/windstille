@@ -40,7 +40,7 @@ private:
   Systems systems;
   Sprite background;
 
-  Vector pos;
+  Vector2f pos;
   bool   show_gui;
   gui::GUIManager* manager;
   gui::TabComponent* tab;

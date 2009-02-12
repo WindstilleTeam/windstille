@@ -50,7 +50,7 @@ public:
   void advance(float s);
 
   /** Get the current position in world coordinates */
-  Vector get_pos() const;
+  Vector2f get_pos() const;
 
   /** Return false when the given contact has left the stairs */
   bool is_active() const;

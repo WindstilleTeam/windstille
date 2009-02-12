@@ -30,8 +30,8 @@ float
 IpoCurve::evalutate(float x)
 {
   // find bezier points left and right from t
-  Vector left;
-  Vector right;
+  Vector2f left;
+  Vector2f right;
 
   // calculate the value t from x
   float t;

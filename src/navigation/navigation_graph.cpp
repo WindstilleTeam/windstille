@@ -42,7 +42,7 @@ NavigationGraph::~NavigationGraph()
 }
 
 NodeHandle
-NavigationGraph::add_node(const Vector& pos)
+NavigationGraph::add_node(const Vector2f& pos)
 {
   Node* node = new Node(pos);
   nodes.push_back(node);
@@ -144,7 +144,7 @@ NavigationGraph::find_intersections(const Line& line)
 }
 
 std::vector<NodeHandle>
-NavigationGraph::find_nodes(const Vector& pos, float radius)
+NavigationGraph::find_nodes(const Vector2f& pos, float radius)
 {
   // FIXME: Optimize this with spatial tree thingy
   std::vector<NodeHandle> ret;
@@ -162,7 +162,7 @@ NavigationGraph::find_nodes(const Vector& pos, float radius)
 }
 
 std::vector<SegmentHandle>
-NavigationGraph::find_segments(const Vector& pos, float radius)
+NavigationGraph::find_segments(const Vector2f& pos, float radius)
 {
   std::vector<SegmentHandle> ret;
  
@@ -180,7 +180,7 @@ NavigationGraph::find_segments(const Vector& pos, float radius)
 }
 
 NodeHandle
-NavigationGraph::find_closest_node(const Vector& pos, float radius)
+NavigationGraph::find_closest_node(const Vector2f& pos, float radius)
 {
   // FIXME: Optimize this with spatial tree thingy
   Node* node = 0;
@@ -200,7 +200,7 @@ NavigationGraph::find_closest_node(const Vector& pos, float radius)
 }
 
 SegmentHandle
-NavigationGraph::find_closest_segment(const Vector& pos, float radius)
+NavigationGraph::find_closest_segment(const Vector2f& pos, float radius)
 {
   Segment* segment   = 0;
   float min_distance = radius;
@@ -231,7 +231,7 @@ NavigationGraph::draw()
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
     {
-      Display::fill_rect(Rectf((*i)->get_pos() - Vector(4,4), Sizef(9, 9)),
+      Display::fill_rect(Rectf((*i)->get_pos() - Vector2f(4,4), Sizef(9, 9)),
                          Color(1.0f, 1.0f, 0.0f));
     }
 }
@@ -250,7 +250,7 @@ NavigationGraph::load(FileReader& reader)
         {
           if (i->get_name() == "node")
             {
-              Vector pos;
+              Vector2f pos;
               if (i->get("pos", pos))
                 {
                   Node* node = new Node(pos);

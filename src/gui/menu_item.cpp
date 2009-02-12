@@ -46,7 +46,7 @@ MenuItem::draw(const Rectf& rect, bool is_active)
     font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
   }
 
-  font->draw(Vector(rect.left + font->get_height(), rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
+  font->draw(Vector2f(rect.left + font->get_height(), rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
              label, font_color);
 }
 
@@ -109,7 +109,7 @@ EnumMenuItem::draw(const Rectf& rect, bool is_active)
       font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
     }
 
-  font->draw(Vector(rect.right - font->get_height() - font->get_width(labels[index].label),
+  font->draw(Vector2f(rect.right - font->get_height() - font->get_width(labels[index].label),
                     rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
              labels[index].label,
              font_color);
@@ -171,13 +171,13 @@ SliderMenuItem::draw(const Rectf& rect, bool is_active)
       color = Color(0.75f, 0.75f, 0.75f, 1.0f);
     }
 
-  Display::fill_rounded_rect(Rectf(Vector(rect.right - 4 - total_width, rect.top + 4),
+  Display::fill_rounded_rect(Rectf(Vector2f(rect.right - 4 - total_width, rect.top + 4),
                                    Sizef(width, rect.get_height() - 8)), 
                              5.0f,
                              Color(0.75f*color.r, 0.75f*color.g, 0.75f*color.b, color.a));
 
 
-  Display::draw_rounded_rect(Rectf(Vector(rect.right - 4 - total_width, rect.top + 4),
+  Display::draw_rounded_rect(Rectf(Vector2f(rect.right - 4 - total_width, rect.top + 4),
                                    Sizef(total_width, rect.get_height() - 8)), 
                              5.0f,
                              color);

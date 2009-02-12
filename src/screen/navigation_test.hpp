@@ -31,10 +31,10 @@ class Node;
 class NavigationTest : public Screen
 {
 private:
-  Vector cursor;
-  Vector stick;
-  Vector player;
-  Vector old_player;
+  Vector2f cursor;
+  Vector2f stick;
+  Vector2f player;
+  Vector2f old_player;
   
   NavigationGraph* graph;
   SegmentPosition* connection;

@@ -67,7 +67,7 @@ BackgroundGradient::draw(SceneContext& sc)
   Color bottomcolor(0.5f, 0.5f, 1.0f);
 
   Rect rect(0, 0, 800, 600);
-  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector(0, 0), z_pos, 
+  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos, 
                                                                    sc.color().get_modelview());
 
   array->set_mode(GL_QUAD_STRIP);

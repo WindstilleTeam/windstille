@@ -35,8 +35,8 @@ public:
   void set_looping(bool looping);
   /// Set volume (0.0 is silent, 1.0 is normal)
   void set_gain(float gain);
-  void set_position(const Vector& position);
-  void set_velocity(const Vector& position);
+  void set_position(const Vector2f& position);
+  void set_velocity(const Vector2f& position);
   void set_reference_distance(float distance);
 
 protected:

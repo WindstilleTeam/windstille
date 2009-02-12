@@ -58,7 +58,7 @@ Swarm::Swarm(FileReader& props)
 void
 Swarm::draw(SceneContext& sc)
 {
-  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector(0, 0), 
+  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), 
                                                                    1000.0f, sc.highlight().get_modelview());
 
   array->set_mode(GL_QUADS);
@@ -99,7 +99,7 @@ Swarm::update(float delta)
   int x, y;
   SDL_GetMouseState(&x, &y);
   
-  target = GameSession::current()->get_view()->screen_to_world(Vector(x, y));
+  target = GameSession::current()->get_view()->screen_to_world(Vector2f(x, y));
 
   for(Agents::iterator i = agents.begin(); i != agents.end(); ++i)
     {

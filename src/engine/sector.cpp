@@ -85,7 +85,7 @@ Sector::Sector(const std::string& arg_filename)
     player = new Player();
     add(player);
   }
-  player->set_pos(Vector(300,200));
+  player->set_pos(Vector2f(300,200));
 }
 
 Sector::~Sector()

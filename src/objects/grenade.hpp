@@ -31,7 +31,7 @@ public:
 
   void draw(SceneContext& sc);
   void update(float delta);
-  void set_velocity(const Vector& vel);
+  void set_velocity(const Vector2f& vel);
 
 private:
   Sprite3D sprite;

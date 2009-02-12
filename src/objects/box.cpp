@@ -32,7 +32,7 @@ Box::Box(FileReader& props)
   float width  = 64.0f;
   float height = 64.0f;
   std::string spritename;
-  Vector vel;
+  Vector2f vel;
 
   props.get("sprite", spritename);
   props.get("pos", pos);
@@ -50,7 +50,7 @@ Box::Box(FileReader& props)
   
   colobj = new CollisionObject(this, Rectf(0, 0, width, height));
   colobj->set_velocity(vel);
-  colobj->set_pos(Vector(pos.x, pos.y));
+  colobj->set_pos(Vector2f(pos.x, pos.y));
 
   Sector::current()->get_collision_engine()->add(colobj);
 
@@ -69,20 +69,20 @@ Box::collision(const CollisionData& data)
   if ((data.direction.x > 0 && colobj->get_velocity().x < 0) ||
       (data.direction.x < 0 && colobj->get_velocity().x > 0))
     {
-      colobj->set_velocity(Vector(-colobj->get_velocity().x, colobj->get_velocity().y));
+      colobj->set_velocity(Vector2f(-colobj->get_velocity().x, colobj->get_velocity().y));
     }
   
   if ((data.direction.y > 0 && colobj->get_velocity().y < 0) ||
       (data.direction.y < 0 && colobj->get_velocity().y > 0))
     {
-      colobj->set_velocity(Vector(colobj->get_velocity().x, -colobj->get_velocity().y));
+      colobj->set_velocity(Vector2f(colobj->get_velocity().x, -colobj->get_velocity().y));
     }
 }
 
 void 
 Box::update(float delta)
 {
-  colobj->set_velocity(Vector(colobj->get_velocity().x, 
+  colobj->set_velocity(Vector2f(colobj->get_velocity().x, 
                               colobj->get_velocity().y + gravity * delta));
 
   sprite.update(delta);

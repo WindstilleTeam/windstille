@@ -177,10 +177,10 @@ TTFFont::get_height() const
 }
 
 void
-TTFFont::draw(const Vector& pos_, const std::string& str, const Color& color)
+TTFFont::draw(const Vector2f& pos_, const std::string& str, const Color& color)
 {
   // FIXME: Little bit hacky to throw it just in
-  Vector pos(static_cast<int>(pos_.x),
+  Vector2f pos(static_cast<int>(pos_.x),
              static_cast<int>(pos_.y));
 
   OpenGLState state;
@@ -221,9 +221,9 @@ TTFFont::draw(const Vector& pos_, const std::string& str, const Color& color)
 }
 
 void
-TTFFont::draw_center(const Vector& pos, const std::string& str, const Color& color)
+TTFFont::draw_center(const Vector2f& pos, const std::string& str, const Color& color)
 {
-  draw(Vector(pos.x - get_width(str)/2, pos.y), str, color);
+  draw(Vector2f(pos.x - get_width(str)/2, pos.y), str, color);
 }
 
 int

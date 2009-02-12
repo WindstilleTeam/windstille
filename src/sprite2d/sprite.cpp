@@ -172,14 +172,14 @@ Sprite::get_current_surface() const
   return current_action->surfaces[ static_cast<int> (frame) ];
 }
 
-Vector
+Vector2f
 Sprite::get_offset() const
 {
   return current_action->offset;
 }
 
 void
-Sprite::draw(const Vector& pos) const
+Sprite::draw(const Vector2f& pos) const
 {
   // FIXME: Sprite needs to get a whole list with possible parameters
   // (color, blendfunc, ...), not just alpha

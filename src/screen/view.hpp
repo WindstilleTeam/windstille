@@ -36,7 +36,7 @@ private:
 
   // debugging helpers
   float zoom;
-  Vector transform;
+  Vector2f transform;
 
 public:
   View();
@@ -46,7 +46,7 @@ public:
   /** @return the rectangle which represents the currently visible
       area, everything outside of it doesn't have to be drawn */
   Rectf get_clip_rect();
-  Vector screen_to_world(const Vector& point);
+  Vector2f screen_to_world(const Vector2f& point);
 
   void draw(SceneContext& gc);
   void update(float delta, const Controller& controller);

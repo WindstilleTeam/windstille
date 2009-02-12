@@ -54,7 +54,7 @@ public:
    * You should call this every frame
    */
   void update(float delta);
-  void draw(DrawingContext& sc, const Vector& pos, float z_pos) const;
+  void draw(DrawingContext& sc, const Vector2f& pos, float z_pos) const;
   void draw(DrawingContext& sc, const Matrix& matrix, float z_pos) const;
   
   /**
@@ -123,7 +123,7 @@ public:
   
 private:  
   friend class Sprite3DDrawingRequest;
-  void draw(const Vector& pos, const Matrix& modelview) const;
+  void draw(const Vector2f& pos, const Matrix& modelview) const;
   
   struct Frame {
     const sprite3d::Action* action;

@@ -33,7 +33,7 @@ SparkDrawer::SparkDrawer(FileReader& props)
 void
 SparkDrawer::draw(DrawingContext& dc, ParticleSystem& psys) 
 {
-  VertexArrayDrawingRequest* buffer = new VertexArrayDrawingRequest(Vector(0, 0), psys.get_z_pos(),
+  VertexArrayDrawingRequest* buffer = new VertexArrayDrawingRequest(Vector2f(0, 0), psys.get_z_pos(),
                                                                     dc.get_modelview());
   if (width == 1.0f)
     {

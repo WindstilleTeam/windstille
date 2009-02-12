@@ -241,7 +241,7 @@ private:
   const Sprite3D* sprite;
 
 public:
-  Sprite3DDrawingRequest(const Sprite3D* sprite, const Vector& pos, float z_pos,
+  Sprite3DDrawingRequest(const Sprite3D* sprite, const Vector2f& pos, float z_pos,
                        const Matrix& modelview)
     : DrawingRequest(pos, z_pos, modelview), sprite(sprite)
   {}
@@ -303,7 +303,7 @@ Sprite3D::update(float delta)
 }
 
 void
-Sprite3D::draw(DrawingContext& dc, const Vector& pos, float z_pos) const
+Sprite3D::draw(DrawingContext& dc, const Vector2f& pos, float z_pos) const
 {
   dc.draw(new Sprite3DDrawingRequest(this, pos, z_pos, dc.get_modelview()));
 }
@@ -311,7 +311,7 @@ Sprite3D::draw(DrawingContext& dc, const Vector& pos, float z_pos) const
 void
 Sprite3D::draw(DrawingContext& dc, const Matrix& , float ) const
 {
-  dc.draw(new Sprite3DDrawingRequest(this, Vector(0, 0), 0.0f, dc.get_modelview()));
+  dc.draw(new Sprite3DDrawingRequest(this, Vector2f(0, 0), 0.0f, dc.get_modelview()));
 }
 
 static inline float interpolate(float v1, float v2, float t)
@@ -320,7 +320,7 @@ static inline float interpolate(float v1, float v2, float t)
 }
 
 void
-Sprite3D::draw(const Vector& pos, const Matrix& modelview) const
+Sprite3D::draw(const Vector2f& pos, const Matrix& modelview) const
 {
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix(); 

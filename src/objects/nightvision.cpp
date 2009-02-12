@@ -48,12 +48,12 @@ Nightvision::draw(SceneContext& sc)
     {
       nightvision.set_alpha(1.0f);
       nightvision.set_blend_func(GL_ONE, GL_ZERO);
-      sc.light().draw(nightvision, Vector(0, 0), 10000);
+      sc.light().draw(nightvision, Vector2f(0, 0), 10000);
     }
 
   if (1)
     {
-      VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector(0, 0), 10000,
+      VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), 10000,
                                                                        sc.light().get_modelview());
       array->set_mode(GL_QUADS);
       array->set_texture(noise);
@@ -110,7 +110,7 @@ Nightvision::draw(SceneContext& sc)
       sc.highlight().set_modelview(Matrix::identity());
       nightvision.set_alpha(0.5f);
       nightvision.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-      sc.highlight().draw(nightvision, Vector(0, 0), 10000);
+      sc.highlight().draw(nightvision, Vector2f(0, 0), 10000);
       sc.highlight().pop_modelview();
     }
 }

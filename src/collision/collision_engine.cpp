@@ -88,7 +88,7 @@ CollisionEngine::unstuck(CollisionObject& a, CollisionObject& b, float delta)
     }
 }
 
-Vector unstuck_direction(const Rectf &a, const Rectf &b, float delta, float unstuck_velocity)
+Vector2f unstuck_direction(const Rectf &a, const Rectf &b, float delta, float unstuck_velocity)
 {
   // The distance A needs to unstuck from B in the given direction
   float left   = fabsf(a.right - b.left);
@@ -104,23 +104,23 @@ Vector unstuck_direction(const Rectf &a, const Rectf &b, float delta, float unst
   add = 50;
   //  grace=0;
 
-  Vector dir;
+  Vector2f dir;
 
   if (left < right && left < top && left < bottom)
     {
-      dir = Vector(std::min(left/2 + grace, add), 0);
+      dir = Vector2f(std::min(left/2 + grace, add), 0);
     }
   else if (right < left && right < top && right < bottom)
     {
-      dir = Vector(-std::min(right/2 + grace, add), 0);
+      dir = Vector2f(-std::min(right/2 + grace, add), 0);
     }
   else if (top < left && top < right && top < bottom)
     {
-      dir = Vector( 0, std::min(top/2 + grace, add));
+      dir = Vector2f( 0, std::min(top/2 + grace, add));
     }
   else // (bottom < left && bottom < right && bottom < top)
     {
-      dir = Vector( 0, -std::min(bottom/2 + grace, add));
+      dir = Vector2f( 0, -std::min(bottom/2 + grace, add));
     }
   return dir;
 }
@@ -247,7 +247,7 @@ CollisionEngine::unstuck_tilemap(CollisionObject& a, CollisionObject& b, float d
       target.right += add;
     }
 
-  b.pos = Vector(target.left-b.primitive.left, target.top-b.primitive.top);
+  b.pos = Vector2f(target.left-b.primitive.left, target.top-b.primitive.top);
 }
 
 void
@@ -267,7 +267,7 @@ CollisionEngine::unstuck_rect_rect(CollisionObject& a, CollisionObject& b, float
   rb.top    += b.get_pos().y;
   rb.bottom += b.get_pos().y;
 
-  Vector dir = unstuck_direction (ra, rb, delta, unstuck_velocity);
+  Vector2f dir = unstuck_direction (ra, rb, delta, unstuck_velocity);
 
   if (a.unstuck_movable())
     a.pos -= dir;
@@ -403,7 +403,7 @@ CollisionEngine::remove(CollisionObject *obj)
 // LEFT means b1 is left of b2
 CollisionData
 CollisionEngine::collide(const Rectf& b1, const Rectf& b2,
-                         const Vector& b1_v, const Vector& b2_v,
+                         const Vector2f& b1_v, const Vector2f& b2_v,
                          float delta)
 {
   SweepResult result0 = simple_sweep_1d(b1.left, b1.get_width(),  b1_v.x,
@@ -426,12 +426,12 @@ CollisionEngine::collide(const Rectf& b1, const Rectf& b2,
 	      if(b1.left < b2.left)
 		{
 		  result.state=CollisionData::COLLISION;
-		  result.direction=Vector(-1, 0);
+		  result.direction=Vector2f(-1, 0);
 		}
 	      else
 		{
 		  result.state=CollisionData::COLLISION;
-		  result.direction=Vector(1, 0);
+		  result.direction=Vector2f(1, 0);
 		}
 	      result.col_time=result0.t0;
 	    }
@@ -441,12 +441,12 @@ CollisionEngine::collide(const Rectf& b1, const Rectf& b2,
 	      if(b1.top < b2.top)
 		{
 		  result.state=CollisionData::COLLISION;
-		  result.direction=Vector(0, -1);
+		  result.direction=Vector2f(0, -1);
 		}
 	      else
 		{
 		  result.state=CollisionData::COLLISION;
-		  result.direction=Vector(0, 1);
+		  result.direction=Vector2f(0, 1);
 		}
 	      result.col_time=result1.t0;
 	    }
@@ -577,7 +577,7 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
   assert(a.get_type() == CollisionObject::TILEMAP);
   assert(b.get_type() == CollisionObject::RECTANGLE);
 
-  Vector vel = b.get_velocity() - a.get_velocity();
+  Vector2f vel = b.get_velocity() - a.get_velocity();
 
   if (vel.x == 0.0f && vel.y == 0.0f)
     return result;
@@ -716,9 +716,9 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
 	      result.col_time = time;
 	      
 	      if (tx < ty)
-		result.direction=Vector(c_sign (vel.x), 0);
+		result.direction=Vector2f(c_sign (vel.x), 0);
 	      else
-		result.direction=Vector(0, c_sign (vel.y));
+		result.direction=Vector2f(0, c_sign (vel.y));
 	      return result;
 	    }
 	}
@@ -730,8 +730,8 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
   return result;
 }
 
-Vector
-CollisionEngine::raycast(const Vector& pos, float angle)
+Vector2f
+CollisionEngine::raycast(const Vector2f& pos, float angle)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
@@ -741,7 +741,7 @@ CollisionEngine::raycast(const Vector& pos, float angle)
         }
     }
 
-  return Vector(0, 0);
+  return Vector2f(0, 0);
 }
 
 /* EOF */

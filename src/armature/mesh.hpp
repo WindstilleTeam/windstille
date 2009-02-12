@@ -42,7 +42,7 @@ struct Vertex
 {
   Vector3 pos;
   Vector3 normal;
-  Vector  texcoord;
+  Vector2f  texcoord;
 
   Vector3 render_pos;
 

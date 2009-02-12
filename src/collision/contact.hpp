@@ -31,7 +31,7 @@ public:
   virtual void update(float delta) =0;
   virtual void advance(float s) =0;
   virtual bool is_active() const =0;
-  virtual Vector get_pos() const =0;
+  virtual Vector2f get_pos() const =0;
 private:
   Contact (const Contact&);
   Contact& operator= (const Contact&);

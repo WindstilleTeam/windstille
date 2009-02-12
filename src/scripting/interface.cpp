@@ -100,7 +100,7 @@ void camera_begin_path()
 
 void camera_add_point(float x, float y, float zoom)
 {
-  camera_path.push_back(Camera::PathPoint(Vector(x, y), zoom));
+  camera_path.push_back(Camera::PathPoint(Vector2f(x, y), zoom));
 }
 
 void camera_end_path()

@@ -36,7 +36,7 @@ public:
   void set_sprite(const std::string& filename);
   void set_action(const std::string& action);
   void set_vflip(bool vflip);
-  void set_pos(const Vector& pos);
+  void set_pos(const Vector2f& pos);
   void attach(const std::string& spritename,
 		      const std::string& attachement_point);
 
@@ -47,7 +47,7 @@ private:
     Sprite3D::PointID attachpoint;
   };
   std::vector<AttachedSprite> attached_sprites;
-  Vector pos;
+  Vector2f pos;
 };
 
 #endif

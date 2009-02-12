@@ -26,13 +26,13 @@ class Line
 {
 private:
 public:
-  Vector p1;
-  Vector p2;
+  Vector2f p1;
+  Vector2f p2;
 
   Line() {}
   
-  Line(const Vector& p1,
-       const Vector& p2);  
+  Line(const Vector2f& p1,
+       const Vector2f& p2);  
   
   float length() const;
 
@@ -43,10 +43,10 @@ public:
   bool intersect(const Line& line_b, float& ua, float& ub) const;
 
   /** Calculate if and where two lines intersect */
-  bool intersect(const Line& line, Vector& colpos) const;
+  bool intersect(const Line& line, Vector2f& colpos) const;
 
   /** Calculate the minimal distance between this line and the point p */
-  float distance(const Vector& p) const;
+  float distance(const Vector2f& p) const;
 };
 
 #endif

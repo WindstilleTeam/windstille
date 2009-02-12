@@ -63,12 +63,12 @@ Physics::elastic_collision(const CollisionData& data, const Physics& other)
   // we could calculate this cheaper if we'd do it once for both objects and not
   // each object on it's own...
 
-  Vector other_collision_vel 
+  Vector2f other_collision_vel 
     = data.direction * (other.velocity() * data.direction);
-  Vector collision_vel
+  Vector2f collision_vel
     = data.direction * (velocity() * data.direction);
   
-  Vector new_v = collision_vel * (mass - other.mass);
+  Vector2f new_v = collision_vel * (mass - other.mass);
   new_v += other_collision_vel * (2 * other.mass);
   new_v /= mass + other.mass;
 
@@ -82,7 +82,7 @@ void
 Physics::bounce_collision(const CollisionData& data)
 {
   printf("bounce collision.\n");
-  Vector collision_vel = data.direction * (velocity() * data.direction);
+  Vector2f collision_vel = data.direction * (velocity() * data.direction);
 
   velocity() -= collision_vel * (1.0 + bounciness);
   //force -= collision_vel * (1.0f + bounciness) * mass / data.delta;
@@ -94,15 +94,15 @@ void
 Physics::update(float delta)
 {
   // add gravity force (TODO make it configurable per Sector)
-  force += Vector(0, 9.81 * mass);
+  force += Vector2f(0, 9.81 * mass);
 
   //force -= velocity() * air_friction;
   
-  Vector acceleration = force / mass;
+  Vector2f acceleration = force / mass;
   velocity() += acceleration * delta;
   pos() += velocity() * delta;
 
-  force = Vector(0, 0);
+  force = Vector2f(0, 0);
 }
 
 /* EOF */

@@ -43,20 +43,20 @@ Display::draw_line(const Line& line, const Color& color)
 void
 Display::draw_segment(const Line& line, const Color& color)
 {
-  Vector normal = (line.p2 - line.p1);
+  Vector2f normal = (line.p2 - line.p1);
 
-  normal = Vector(-normal.y, normal.x);
+  normal = Vector2f(-normal.y, normal.x);
   normal.normalize();
   normal *= -32.0f;
   
-  Vector p3 = line.p1 + 0.5f * (line.p2 - line.p1);
+  Vector2f p3 = line.p1 + 0.5f * (line.p2 - line.p1);
 
   draw_line(line,   color);
   draw_line(p3, p3 + normal, Color(0.0f, 1.0f, 1.0f));
 }
 
 void
-Display::draw_line(const Vector& pos1, const Vector& pos2, const Color& color)
+Display::draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color)
 {
   OpenGLState state;
 
@@ -300,7 +300,7 @@ Display::set_fullscreen(bool fullscreen)
 }
 
 void
-Display::draw_circle(const Vector& pos, float radius, const Color& color, int segments)
+Display::draw_circle(const Vector2f& pos, float radius, const Color& color, int segments)
 {
   assert(segments >= 0);
 
@@ -327,7 +327,7 @@ Display::draw_circle(const Vector& pos, float radius, const Color& color, int se
 }
 
 void
-Display::fill_circle(const Vector& pos, float radius, const Color& color, int segments)
+Display::fill_circle(const Vector2f& pos, float radius, const Color& color, int segments)
 {
   assert(segments >= 0);
 
@@ -354,7 +354,7 @@ Display::fill_circle(const Vector& pos, float radius, const Color& color, int se
 }
 
 void
-Display::draw_arc(const Vector& pos, float radius, float start, float end, const Color& color, int segments)
+Display::draw_arc(const Vector2f& pos, float radius, float start, float end, const Color& color, int segments)
 {
   assert(segments >= 0);
 
@@ -394,7 +394,7 @@ Display::draw_arc(const Vector& pos, float radius, float start, float end, const
 }
 
 void
-Display::fill_arc(const Vector& pos, float radius, float start, float end, const Color& color, int segments)
+Display::fill_arc(const Vector2f& pos, float radius, float start, float end, const Color& color, int segments)
 {
   assert(segments >= 0);
 

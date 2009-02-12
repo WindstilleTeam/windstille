@@ -43,7 +43,7 @@ private:
   Color color;
 public:
   FillScreenDrawingRequest(const Color& color_) 
-    : DrawingRequest(Vector(0, 0), -1000.0f), color(color_)
+    : DrawingRequest(Vector2f(0, 0), -1000.0f), color(color_)
   {
   }
   virtual ~FillScreenDrawingRequest() {}
@@ -62,7 +62,7 @@ class TextDrawingRequest : public DrawingRequest
 private:
   std::string text;
 public:
-  TextDrawingRequest(const std::string& text_, const Vector& pos_, float z_pos_, const Matrix& modelview_)
+  TextDrawingRequest(const std::string& text_, const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
     : DrawingRequest(pos_, z_pos_, modelview_),
       text(text_)
   {}
@@ -139,7 +139,7 @@ DrawingContext::draw(DrawingRequest* request)
 }
 
 void
-DrawingContext::draw(const Sprite& sprite,  const Vector& pos, float z_pos)
+DrawingContext::draw(const Sprite& sprite,  const Vector2f& pos, float z_pos)
 {
   draw(sprite.get_current_surface(),
        SurfaceDrawingParameters()
@@ -161,14 +161,14 @@ void
 DrawingContext::draw(Surface surface, float x, float y, float z, float )
 {
   draw(new SurfaceDrawingRequest(surface,
-                                 SurfaceDrawingParameters().set_pos(Vector(x, y)),
+                                 SurfaceDrawingParameters().set_pos(Vector2f(x, y)),
                                  z, modelview_stack.back()));
 }
 
 void
 DrawingContext::draw(const std::string& text, float x, float y, float z)
 { 
-  draw(new TextDrawingRequest(text, Vector(x, y), z, modelview_stack.back()));
+  draw(new TextDrawingRequest(text, Vector2f(x, y), z, modelview_stack.back()));
 }
 
 void
@@ -266,15 +266,15 @@ Rectf
 DrawingContext::get_clip_rect()
 {
   // FIXME: Need to check the modelview matrix
-  return Rectf(Vector(modelview_stack.back()[12],
+  return Rectf(Vector2f(modelview_stack.back()[12],
                       modelview_stack.back()[13]),
                Sizef(800, 600));
 }
 
 void
-DrawingContext::draw_line(const Vector& pos1, const Vector& pos2, const Color& color, float z_pos)
+DrawingContext::draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color, float z_pos)
 {
-  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector(0, 0), z_pos, modelview_stack.back());
+  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_LINES);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -291,7 +291,7 @@ DrawingContext::draw_line(const Vector& pos1, const Vector& pos2, const Color& c
 void
 DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
 {
-  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector(0, 0), z_pos, modelview_stack.back());
+  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_LINE_STRIP);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -317,7 +317,7 @@ DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
 void
 DrawingContext::fill_rect(const Rectf& rect, const Color& color, float z_pos)
 {
-  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector(0, 0), z_pos, modelview_stack.back());
+  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_QUADS);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -27,7 +27,7 @@ public:
   int width;
   int height;
   
-  Vector offset;
+  Vector2f offset;
   float zoom;
   float rotation;
 };
@@ -37,7 +37,7 @@ GraphicContextState::GraphicContextState()
 {
   impl->width  = 1;
   impl->height = 1; 
-  impl->offset = Vector(0,0);
+  impl->offset = Vector2f(0,0);
   impl->zoom   = 1.0f;
   impl->rotation = 0;
 }
@@ -47,7 +47,7 @@ GraphicContextState::GraphicContextState(int w, int h)
 {  
   impl->width  = w;
   impl->height = h;
-  impl->offset = Vector(0,0); 
+  impl->offset = Vector2f(0,0); 
   impl->zoom   = 1.0f;
   impl->rotation = 0;
 }
@@ -81,28 +81,28 @@ GraphicContextState::pop(SceneContext& sc)
 Rectf
 GraphicContextState::get_clip_rect()
 {
-  return Rectf(Vector(-impl->offset.x,
+  return Rectf(Vector2f(-impl->offset.x,
                          -impl->offset.y),
                Sizef(get_width()  / impl->zoom,
                      get_height() / impl->zoom));
 }
 
 void
-GraphicContextState::set_pos(const Vector& pos)
+GraphicContextState::set_pos(const Vector2f& pos)
 {
   impl->offset.x = -pos.x + (get_width()/2  / impl->zoom);
   impl->offset.y = -pos.y + (get_height()/2 / impl->zoom);
 }
 
-Vector
+Vector2f
 GraphicContextState::get_pos() const
 {
-  return Vector(-impl->offset.x + (get_width()/2  / impl->zoom),
+  return Vector2f(-impl->offset.x + (get_width()/2  / impl->zoom),
                    -impl->offset.y + (get_height()/2  / impl->zoom));
 }
 
 void
-GraphicContextState::set_zoom(const Vector& pos, float z)
+GraphicContextState::set_zoom(const Vector2f& pos, float z)
 {
   float old_zoom = impl->zoom;
   set_zoom(z);
@@ -147,10 +147,10 @@ GraphicContextState::zoom_to (const Rectf& rect)
   impl->offset.y = (get_height() / (2*impl->zoom)) - center_y;
 }
 
-Vector
-GraphicContextState::screen_to_world(const Vector& pos_)
+Vector2f
+GraphicContextState::screen_to_world(const Vector2f& pos_)
 {
-  Vector pos(pos_.x, pos_.y);
+  Vector2f pos(pos_.x, pos_.y);
   float sa = sin(-impl->rotation/180.0f*M_PI);
   float ca = cos(-impl->rotation/180.0f*M_PI);
 
@@ -160,7 +160,7 @@ GraphicContextState::screen_to_world(const Vector& pos_)
   pos.x = impl->width/2  + (ca * dx - sa * dy);
   pos.y = impl->height/2 + (sa * dx + ca * dy);
 
-  Vector p((float(pos.x) / impl->zoom) - impl->offset.x, 
+  Vector2f p((float(pos.x) / impl->zoom) - impl->offset.x, 
               (float(pos.y) / impl->zoom) - impl->offset.y);
 
   return p;

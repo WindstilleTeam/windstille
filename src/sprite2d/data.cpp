@@ -53,7 +53,7 @@ SpriteData::SpriteData(const std::string& filename)
               action->name   = "default";
               action->speed  = 1.0;
               action->scale  = 1.0f;
-              action->offset = Vector(0, 0);
+              action->offset = Vector2f(0, 0);
               action->surfaces.push_back(Surface(filename));
               actions.push_back(action.release());
             }
@@ -78,7 +78,7 @@ SpriteData::SpriteData(const std::string& filename)
           action->name   = "default";
           action->speed  = 1.0;
           action->scale  = 1.0f;
-          action->offset = Vector(0, 0);
+          action->offset = Vector2f(0, 0);
           action->surfaces.push_back(Surface(pngfile));
           actions.push_back(action.release());
         }
@@ -116,7 +116,7 @@ SpriteData::parse_action(const std::string& dir, FileReader& reader)
   std::auto_ptr<SpriteAction> action (new SpriteAction);
   action->speed = 1.0;
   action->scale = 1.0f;
-  action->offset = Vector(0, 0);
+  action->offset = Vector2f(0, 0);
  
   reader.get("name", action->name);
   reader.get("speed", action->speed);

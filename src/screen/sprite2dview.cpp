@@ -64,7 +64,7 @@ Sprite2DView::Sprite2DView()
     mode = SLIDESHOW; 
 
   zoom = 1.0f;
-  pos  = Vector(0,0);
+  pos  = Vector2f(0,0);
   display_time = 0.0f;
   show_thumbnail = false;
   ignore_delta = false;
@@ -110,16 +110,16 @@ Sprite2DView::draw()
     case SLIDESHOW:
       if (aspect > 4.0/3.0)
         {
-          sprite.draw(Vector(-offset, 0));
+          sprite.draw(Vector2f(-offset, 0));
         }
       else
         {
-          sprite.draw(Vector(0, -offset));
+          sprite.draw(Vector2f(0, -offset));
         }
 
       if (new_sprite)
         {
-          new_sprite.draw(Vector(0,0));
+          new_sprite.draw(Vector2f(0,0));
         }
 
       if (show_thumbnail)
@@ -137,7 +137,7 @@ Sprite2DView::draw()
               height *= scale;
               small.set_scale(scale);
 
-              small.draw(Vector(DISPLAY_W - width,
+              small.draw(Vector2f(DISPLAY_W - width,
                                 DISPLAY_H - height));
             }
           else
@@ -148,7 +148,7 @@ Sprite2DView::draw()
               height *= scale;
               small.set_scale(scale);
 
-              small.draw(Vector(DISPLAY_W - width,
+              small.draw(Vector2f(DISPLAY_W - width,
                                 DISPLAY_H - height));
             }
         }        

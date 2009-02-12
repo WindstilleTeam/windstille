@@ -112,13 +112,13 @@ SoundManager::create_sound_source(const std::string& filename)
 }
 
 void
-SoundManager::play(const std::string& filename, const Vector& pos)
+SoundManager::play(const std::string& filename, const Vector2f& pos)
 {
   try {
     SoundSource* source = create_sound_source(filename);
     if(source == 0)
       return;
-    if(pos == Vector(-1, -1)) {
+    if(pos == Vector2f(-1, -1)) {
       alSourcef(source->source, AL_ROLLOFF_FACTOR, 0);
     } else {
       source->set_position(pos);
@@ -202,13 +202,13 @@ SoundManager::play_music(const std::string& filename, bool fade)
 }
 
 void
-SoundManager::set_listener_position(const Vector& pos)
+SoundManager::set_listener_position(const Vector2f& pos)
 {
   alListener3f(AL_POSITION, pos.x, pos.y, 0);
 }
 
 void
-SoundManager::set_listener_velocity(const Vector& vel)
+SoundManager::set_listener_velocity(const Vector2f& vel)
 {
   alListener3f(AL_VELOCITY, vel.x, vel.y, 0);
 }

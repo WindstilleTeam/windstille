@@ -31,11 +31,11 @@ public:
 
   struct PathPoint
   {
-    Vector pos;
+    Vector2f pos;
     float  zoom;
     float  rotation;
 
-    PathPoint(const Vector& pos_, float zoom_, float rotation_ = 0.0f)
+    PathPoint(const Vector2f& pos_, float zoom_, float rotation_ = 0.0f)
       : pos(pos_), zoom(zoom_), rotation(rotation_) {}
 
     bool operator==(const PathPoint& p) {
@@ -50,7 +50,7 @@ private:
    * Position of the camera, ie. where the center of the screen should
    * be located
    */
-  Vector pos;
+  Vector2f pos;
   
   /**
    * Zoom of the Camera, 1.0 means no zoom, 2.0 means everything will
@@ -69,7 +69,7 @@ public:
 
   void   update(float delta);
 
-  Vector get_pos() const { return pos; }
+  Vector2f get_pos() const { return pos; }
   void   set_pos(float x, float y);
 
   void   set_zoom(float zoom_);

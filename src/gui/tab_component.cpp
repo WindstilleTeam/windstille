@@ -48,7 +48,7 @@ TabComponent::draw()
   float tab_width = rect.get_width()/tabs.size();
   for(int i = 0; i != int(tabs.size()); ++i)
     {
-      Rectf tab_rect(Vector(rect.left + tab_width * i + 10,
+      Rectf tab_rect(Vector2f(rect.left + tab_width * i + 10,
                             rect.top),
                      Sizef(tab_width - 20, Fonts::vera20->get_height() + 6));
 
@@ -59,7 +59,7 @@ TabComponent::draw()
 
       Display::draw_rounded_rect(tab_rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-      Fonts::vera20->draw_center(Vector(rect.left + tab_width * i + tab_width/2,
+      Fonts::vera20->draw_center(Vector2f(rect.left + tab_width * i + tab_width/2,
                                         rect.top + Fonts::vera20->get_height()),
                                  tabs[i].label,
                                  tabs[current_tab].component->is_active()

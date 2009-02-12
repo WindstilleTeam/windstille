@@ -66,7 +66,7 @@ Sprite3DView::draw()
   // Rotate
   sc.mult_modelview(rotation.to_matrix());  
   sc.translate(0, 64.0f); // FIXME: use object height/2 instead of 64
-  sprite.draw(sc.color(), Vector(0,0), 0); 
+  sprite.draw(sc.color(), Vector2f(0,0), 0); 
   sc.pop_modelview();
 
   //Matrix matrix = sc.color().get_modelview();
@@ -84,10 +84,10 @@ Sprite3DView::draw()
   for(int i = 0; i < int(actions.size()); ++i)
     {
       if (i == current_action)
-        Fonts::vera12->draw(Vector(x, y),
+        Fonts::vera12->draw(Vector2f(x, y),
                             actions[i], Color(1.0f, 1.0f, 1.0f));
       else
-        Fonts::vera12->draw(Vector(x, y),
+        Fonts::vera12->draw(Vector2f(x, y),
                             actions[i], Color(0.7f, 0.7f, 0.7f));
 
 

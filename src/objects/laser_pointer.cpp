@@ -56,15 +56,15 @@ void
 LaserPointer::draw(SceneContext& sc)
 {
   TileMap* tilemap = Sector::current()->get_tilemap();
-  Vector pos = Player::current()->get_pos();
+  Vector2f pos = Player::current()->get_pos();
   pos.y -= 80;
-  Vector target; // = Sector::current()->get_collision_engine()->raycast(pos, angle);
+  Vector2f target; // = Sector::current()->get_collision_engine()->raycast(pos, angle);
 
   // Ray position in Tile units
   int x = static_cast<int>(pos.x / TILE_SIZE);
   int y = static_cast<int>(pos.y / TILE_SIZE);
 
-  Vector direction(cos(angle) * 100.0f, sin(angle) * 100.0f);
+  Vector2f direction(cos(angle) * 100.0f, sin(angle) * 100.0f);
 
   int step_x = (direction.x > 0) ? 1 : -1;
   int step_y = (direction.y > 0) ? 1 : -1;
@@ -80,12 +80,12 @@ LaserPointer::draw(SceneContext& sc)
   while(x >= 0 && x < tilemap->get_width() &&
         y >= 0 && y < tilemap->get_height())
     {
-      //sc.color().fill_rect(Rectf(Vector(x * TILE_SIZE, y * TILE_SIZE), Size(TILE_SIZE, TILE_SIZE)), 
+      //sc.color().fill_rect(Rectf(Vector2f(x * TILE_SIZE, y * TILE_SIZE), Size(TILE_SIZE, TILE_SIZE)), 
       //                     Color(1.0, 1.0, 1.0, 0.5), 500);
 
       if (tilemap->get_pixel(x, y))
         {
-          //return Vector(x * TILE_SIZE, y * TILE_SIZE);
+          //return Vector2f(x * TILE_SIZE, y * TILE_SIZE);
           goto done;
         }
 
@@ -105,10 +105,10 @@ LaserPointer::draw(SceneContext& sc)
     }
   
  done:
-  target = pos + Vector(t * direction.x, t * direction.y);
+  target = pos + Vector2f(t * direction.x, t * direction.y);
   
-  Vector ray = target - pos;
-  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector(0,0), 10000,
+  Vector2f ray = target - pos;
+  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0,0), 10000,
                                                                    sc.highlight().get_modelview());
   array->set_mode(GL_LINES);
   array->set_texture(noise);

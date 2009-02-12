@@ -54,19 +54,19 @@ public:
   float get_rotation();
 
   /** Move the center of the visible area to pos */
-  void      set_pos(const Vector& pos);
-  Vector get_pos() const;
+  void      set_pos(const Vector2f& pos);
+  Vector2f get_pos() const;
 
   /** Set zoom to z, while ensuring that the screen position \a pos
       (normaly the position of the mouse pointer) stays in the same
       position even after zoomed in/out */
-  void  set_zoom(const Vector& pos, float z);
+  void  set_zoom(const Vector2f& pos, float z);
   void  set_zoom(float z);
   float get_zoom(); 
 
   void zoom_to (const Rectf& rect);
 
-  Vector screen_to_world(const Vector& pos);
+  Vector2f screen_to_world(const Vector2f& pos);
 
 private:
   boost::shared_ptr<GraphicContextStateImpl> impl;

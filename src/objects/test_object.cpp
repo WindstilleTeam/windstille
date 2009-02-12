@@ -24,7 +24,7 @@
 
 TestObject::TestObject(FileReader& props)
 {
-  pos = Vector(0, 0);
+  pos = Vector2f(0, 0);
   std::string spritename;
 
   props.get("sprite", spritename);
@@ -51,7 +51,7 @@ TestObject::draw(SceneContext& sc)
     sc.translate(pos.x, pos.y);
     sc.mult_modelview(sprite.get_attachment_point_matrix(i->attachpoint));
     
-    i->sprite.draw(sc.color(), Vector(0, 0), 100);
+    i->sprite.draw(sc.color(), Vector2f(0, 0), 100);
     sc.pop_modelview();
   }                                                                        
 }
@@ -89,7 +89,7 @@ TestObject::set_action(const std::string& action)
 }
 
 void
-TestObject::set_pos(const Vector& pos)
+TestObject::set_pos(const Vector2f& pos)
 {
   this->pos = pos;
 }

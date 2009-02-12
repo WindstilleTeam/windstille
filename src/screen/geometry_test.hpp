@@ -27,9 +27,9 @@
 class GeometryTest : public Screen
 {
 private:
-  Vector cursor;
-  Vector cursor2;
-  Vector collision_point;
+  Vector2f cursor;
+  Vector2f cursor2;
+  Vector2f collision_point;
 
   int point_count;
 

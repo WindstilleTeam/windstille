@@ -34,8 +34,8 @@ CollisionObject::CollisionObject(GameObject* game_object, const Rectf& rect_)
   object_type        = RECTANGLE;
   is_unstuckable     = true;
   is_unstuck_movable = true;
-  velocity           = Vector(0,0);
-  pos                = Vector(0,0);
+  velocity           = Vector2f(0,0);
+  pos                = Vector2f(0,0);
   game_object        = game_object;
 
   is_domains    = DOMAIN_PLAYER  | DOMAIN_ENEMY;
@@ -48,8 +48,8 @@ CollisionObject::CollisionObject(TileMap* tilemap_)
   object_type        = TILEMAP;
   is_unstuckable     = true;
   is_unstuck_movable = false;
-  velocity           = Vector(0,0);
-  pos                = Vector(0,0);
+  velocity           = Vector2f(0,0);
+  pos                = Vector2f(0,0);
   game_object        = 0;
 
   is_domains    = DOMAIN_TILEMAP;
@@ -63,7 +63,7 @@ CollisionObject::~CollisionObject()
 void
 CollisionObject::draw(DrawingContext& dc)
 {
-  Vector v = get_pos ();
+  Vector2f v = get_pos ();
   Rectf  r = primitive;
 
   r += v;
@@ -72,9 +72,9 @@ CollisionObject::draw(DrawingContext& dc)
   
   dc.draw_rect(r, Color(0.6f, 0.6f, 0.6f), 100.0f);
   
-  dc.draw_line(Vector(r.left + r.get_width ()/2,
+  dc.draw_line(Vector2f(r.left + r.get_width ()/2,
                       r.top  + r.get_height ()/2),
-               Vector(r.left + r.get_width ()/2  + get_velocity ().x,
+               Vector2f(r.left + r.get_width ()/2  + get_velocity ().x,
                       r.top  + r.get_height ()/2 + get_velocity ().y),
                Color(1.0f, 0, 1.0f), 100.0f);
 }
@@ -85,25 +85,25 @@ void CollisionObject::update(float delta)
 }
 
 void 
-CollisionObject::set_velocity(const Vector &m)
+CollisionObject::set_velocity(const Vector2f &m)
 {
   velocity=m;
 }
 
-Vector
+Vector2f
 CollisionObject::get_pos() const
 {
   return pos;
 }
 
-Vector
+Vector2f
 CollisionObject::get_velocity() const
 {
   return velocity;
 }
 
 void
-CollisionObject::set_pos(const Vector& p)
+CollisionObject::set_pos(const Vector2f& p)
 {
   // FIXME: Do this somewhat more clever to avoid stuck issues
   pos = p;

@@ -32,11 +32,11 @@ GeometryTest::GeometryTest()
   point_count = 0;
   had_prev_collision = true;
 
-  line1 = Line(Vector(300, 300),
-               Vector(500, 300));
+  line1 = Line(Vector2f(300, 300),
+               Vector2f(500, 300));
 
-  line2 = Line(Vector(400, 200),
-               Vector(400, 400));
+  line2 = Line(Vector2f(400, 200),
+               Vector2f(400, 400));
 
   cursor  = line1.p1;
   cursor2 = line1.p2;
@@ -51,23 +51,23 @@ GeometryTest::draw()
   Display::draw_line(line1, Color(0.0f, 1.0f, 0.0f));
   Display::draw_line(line2, Color(0.0f, 1.0f, 0.0f));
 
-  Display::fill_rect(Rectf(cursor - Vector(2,2), Sizef(5,5)),  Color(1.0f, 0.0f, 1.0f));
-  Display::fill_rect(Rectf(cursor2 - Vector(2,2), Sizef(5,5)), Color(1.0f, 1.0f, 0.0f));
+  Display::fill_rect(Rectf(cursor - Vector2f(2,2), Sizef(5,5)),  Color(1.0f, 0.0f, 1.0f));
+  Display::fill_rect(Rectf(cursor2 - Vector2f(2,2), Sizef(5,5)), Color(1.0f, 1.0f, 0.0f));
 
-  Display::fill_rect(Rectf(collision_point - Vector(3,3), Sizef(7,7)), Color(1.0f, 1.0f, 1.0f));
+  Display::fill_rect(Rectf(collision_point - Vector2f(3,3), Sizef(7,7)), Color(1.0f, 1.0f, 1.0f));
 
   // Try vector projection
-  Vector a(line1.p2 - line1.p1);
-  Vector b(line2.p2 - line2.p1);
-  Vector c(a.project(b));
+  Vector2f a(line1.p2 - line1.p1);
+  Vector2f b(line2.p2 - line2.p1);
+  Vector2f c(a.project(b));
   
   Display::draw_line(line1.p1, line1.p1 + c, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   int segments = std::max(0, int(cursor.y / 10));
 
-  Display::fill_arc(Vector(200, 200), 100.0f, cursor.x, cursor2.x, Color(1.0f, 1.0f, 1.0f, 0.5f), segments);
-  Display::draw_arc(Vector(200, 200), 100.0f, cursor.x, cursor2.x, Color(1.0f, 1.0f, 1.0f), segments);
-  Display::draw_circle(Vector(200, 200), 128.0f, Color(1.0f, 1.0f, 1.0f), segments);
+  Display::fill_arc(Vector2f(200, 200), 100.0f, cursor.x, cursor2.x, Color(1.0f, 1.0f, 1.0f, 0.5f), segments);
+  Display::draw_arc(Vector2f(200, 200), 100.0f, cursor.x, cursor2.x, Color(1.0f, 1.0f, 1.0f), segments);
+  Display::draw_circle(Vector2f(200, 200), 128.0f, Color(1.0f, 1.0f, 1.0f), segments);
 }
 
 void
@@ -123,7 +123,7 @@ GeometryTest::update(float delta, const Controller& controller)
       if (had_prev_collision)
         console << "No Collision" << std::endl;
       had_prev_collision = false;
-      collision_point = Vector(32, 32);
+      collision_point = Vector2f(32, 32);
     }
 }
 

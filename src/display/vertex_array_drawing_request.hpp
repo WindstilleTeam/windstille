@@ -40,13 +40,13 @@ private:
   std::vector<float> vertices;
 
 public:
-  VertexArrayDrawingRequest(const Vector& pos_, float z_pos_, const Matrix& modelview_);
+  VertexArrayDrawingRequest(const Vector2f& pos_, float z_pos_, const Matrix& modelview_);
 
   void draw(const Texture& tmp_texture);
   void draw(int start, int end);
 
   void vertex(float x, float y, float z = 0.0f);
-  void vertex(const Vector& vec, float z = 0.0f);
+  void vertex(const Vector2f& vec, float z = 0.0f);
 
   void texcoord(float u, float v);
   void color(const Color& color);

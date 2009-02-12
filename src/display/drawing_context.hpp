@@ -60,14 +60,14 @@ public:
       queue */
   void fill_screen(const Color& color);
 
-  void draw_line(const Vector& pos1, const Vector& pos2, const Color& color, float z_pos);
+  void draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color, float z_pos);
 
   void draw_rect(const Rectf& rect, const Color& color, float z_pos);
   void fill_rect(const Rectf& rect, const Color& color, float z_pos);
 
   /*{ */
   void draw(DrawingRequest* request);
-  void draw(const Sprite&   sprite,  const Vector& pos, float z = 0);
+  void draw(const Sprite&   sprite,  const Vector2f& pos, float z = 0);
   void draw(const std::string& text,    float x, float y, float z = 0);
   void draw(const Surface surface, float x, float y, float z = 0, float alpha = 0);
   void draw(const Surface surface, const SurfaceDrawingParameters& params, float z_pos);

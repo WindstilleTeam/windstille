@@ -38,7 +38,7 @@ private:
   
   // Manual Mode Variables
   float  zoom;
-  Vector pos;
+  Vector2f pos;
 
   // Slideshow variables
   float width;

@@ -21,7 +21,7 @@
 #include "display/opengl_state.hpp"
 #include "vertex_array_drawing_request.hpp"
 
-VertexArrayDrawingRequest::VertexArrayDrawingRequest(const Vector& pos_, float z_pos_, 
+VertexArrayDrawingRequest::VertexArrayDrawingRequest(const Vector2f& pos_, float z_pos_, 
                                                      const Matrix& modelview_)
   : DrawingRequest(pos_, z_pos_, modelview_)
 {
@@ -99,7 +99,7 @@ VertexArrayDrawingRequest::draw(int start, int end)
 }
 
 void
-VertexArrayDrawingRequest::vertex(const Vector& vec, float z)
+VertexArrayDrawingRequest::vertex(const Vector2f& vec, float z)
 {
   vertex(vec.x, vec.y, z);
 }

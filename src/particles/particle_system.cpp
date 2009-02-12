@@ -73,7 +73,7 @@ ParticleSystem::ParticleSystem(FileReader& props)
 
   props.get("z-pos", z_pos);
 
-  Vector p_gravity;
+  Vector2f p_gravity;
   if (props.get("gravity", p_gravity))
     set_gravity(p_gravity.x, p_gravity.y);
 
@@ -81,30 +81,30 @@ ParticleSystem::ParticleSystem(FileReader& props)
   if (props.get("cycles",  p_cycles))
     set_cycles(p_cycles);
 
-  Vector spawn_pos;
+  Vector2f spawn_pos;
   if (props.get("spawn-point", spawn_pos))
     set_spawn_point(spawn_pos.x, spawn_pos.y);
 
-  Vector p_pos;
+  Vector2f p_pos;
   if (props.get("pos", p_pos))
     set_pos(p_pos.x, p_pos.y);
   
-  Vector p_cone;
+  Vector2f p_cone;
   if (props.get("cone", p_cone))
     set_cone(p_cone.x, p_cone.y);
 
-  Vector p_size;
+  Vector2f p_size;
   if (props.get("size", p_size))
     set_size(p_size.x, p_size.y);
 
-  Vector p_aspect;
+  Vector2f p_aspect;
   if (props.get("aspect", p_aspect))
     set_aspect(p_aspect.x, p_aspect.y);
 
   props.get("color-begin", color_start);
   props.get("color-end",   color_stop);
   
-  Vector p_speed;
+  Vector2f p_speed;
   if (props.get("velocity", p_speed))
     set_velocity(p_speed.x, p_speed.y);
 

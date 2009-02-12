@@ -60,7 +60,7 @@ Liquid::draw(SceneContext& sc)
 {
   float texscale = 1.0f/128.0f;
   {
-    VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector(pos.x, pos.y), 10000,
+    VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(pos.x, pos.y), 10000,
                                                                      sc.light().get_modelview());
     array->set_texture(texture);
     array->set_mode(GL_QUAD_STRIP);
@@ -89,7 +89,7 @@ Liquid::draw(SceneContext& sc)
     sc.color().draw(array);
   }
   {
-    VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector(pos.x, pos.y), 10000,
+    VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(pos.x, pos.y), 10000,
                                                                      sc.light().get_modelview());
     array->set_texture(texture);
     array->set_mode(GL_QUAD_STRIP);
