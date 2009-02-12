@@ -169,6 +169,8 @@ env.Program('../windstille', [
 'scripting/util.cpp',
 'scripting/wrapper.cpp',
 'sound/sound_file.cpp',
+'sound/wav_sound_file.cpp',
+'sound/ogg_sound_file.cpp',
 'sound/sound_manager.cpp',
 'sound/sound_source.cpp',
 'sound/stream_sound_source.cpp',

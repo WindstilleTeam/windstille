@@ -16,31 +16,27 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_SOUND_SOUND_FILE_HPP
-#define HEADER_WINDSTILLE_SOUND_SOUND_FILE_HPP
+#ifndef HEADER_WINDSTILLE_SOUND_WAV_SOUND_FILE_HPP
+#define HEADER_WINDSTILLE_SOUND_WAV_SOUND_FILE_HPP
 
-#include <stdio.h>
-#include <iostream>
+#include <physfs.h>
+#include "sound_file.hpp"
 
-class SoundFile
+class WavSoundFile : public SoundFile
 {
 public:
-  virtual ~SoundFile()
-  { }
+  WavSoundFile(PHYSFS_file* file);
+  ~WavSoundFile();
 
-  virtual size_t read(void* buffer, size_t buffer_size) = 0;
-  virtual void reset() = 0;
+  size_t read(void* buffer, size_t buffer_size);
+  void reset();
 
-  int channels;
-  int rate;
-  int bits_per_sample;
-  /// size in bytes
-  size_t size;
-
-  static SoundFile* load(const std::string& filename);
+private:
+  PHYSFS_file* file;
+  
+  PHYSFS_sint64 datastart;
 };
 
 #endif
 
 /* EOF */
-

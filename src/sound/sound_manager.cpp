@@ -67,7 +67,7 @@ ALuint
 SoundManager::load_file_into_buffer(const std::string& filename)
 {
   // open sound file
-  std::auto_ptr<SoundFile> file (load_sound_file(filename));
+  std::auto_ptr<SoundFile> file(SoundFile::load(filename));
   
   ALenum format = get_sample_format(file.get());
   ALuint buffer;
@@ -178,7 +178,7 @@ SoundManager::play_music(const std::string& filename, bool fade)
 
   try {
     StreamSoundSource* newmusic 
-      = new StreamSoundSource(load_sound_file(filename));
+      = new StreamSoundSource(SoundFile::load(filename));
 
     alSourcef(newmusic->source, AL_ROLLOFF_FACTOR, 0);
  

@@ -16,31 +16,34 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_SOUND_SOUND_FILE_HPP
-#define HEADER_WINDSTILLE_SOUND_SOUND_FILE_HPP
+#ifndef HEADER_WINDSTILLE_SOUND_OGG_SOUND_FILE_HPP
+#define HEADER_WINDSTILLE_SOUND_OGG_SOUND_FILE_HPP
 
-#include <stdio.h>
-#include <iostream>
+#include <vorbis/codec.h>
+#include <vorbis/vorbisfile.h>
+#include <physfs.h>
 
-class SoundFile
+#include "sound_file.hpp"
+
+class OggSoundFile : public SoundFile
 {
 public:
-  virtual ~SoundFile()
-  { }
+  OggSoundFile(PHYSFS_file* file);
+  ~OggSoundFile();
 
-  virtual size_t read(void* buffer, size_t buffer_size) = 0;
-  virtual void reset() = 0;
+  size_t read(void* buffer, size_t buffer_size);
+  void reset();
 
-  int channels;
-  int rate;
-  int bits_per_sample;
-  /// size in bytes
-  size_t size;
-
-  static SoundFile* load(const std::string& filename);
+private:
+  static size_t cb_read(void* ptr, size_t size, size_t nmemb, void* source);
+  static int cb_seek(void* source, ogg_int64_t offset, int whence);
+  static int cb_close(void* source);
+  static long cb_tell(void* source);
+  
+  PHYSFS_file* file;
+  OggVorbis_File vorbis_file;
 };
 
 #endif
 
 /* EOF */
-
