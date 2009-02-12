@@ -77,42 +77,42 @@ MenuManager::display_option_menu()
   SliderMenuItem* voice_volume_item = new SliderMenuItem(menu,  "Voice Volume", 100, 0, 100, 10);
   menu->add_item(voice_volume_item);
 
-  EnumMenuItem* aspect_item = new EnumMenuItem(menu,  "Aspect Ratio", 0);
+  std::auto_ptr<EnumMenuItem> aspect_item(new EnumMenuItem(menu,  "Aspect Ratio", 0));
   aspect_item->add_pair(0, "4:3");
   aspect_item->add_pair(1, "5:4");
   aspect_item->add_pair(2, "16:9");
   aspect_item->add_pair(3, "16:10");
   aspect_item->add_pair(4, "letterbox");
-  menu->add_item(aspect_item);
+  menu->add_item(aspect_item.release());
   
-  EnumMenuItem* show_fps_item = new EnumMenuItem(menu,  "Show FPS", config.get_bool("show-fps"));
+  std::auto_ptr<EnumMenuItem> show_fps_item(new EnumMenuItem(menu,  "Show FPS", config.get_bool("show-fps")));
   show_fps_item->add_pair(0, "off");
   show_fps_item->add_pair(1, "on");
-  menu->add_item(show_fps_item);
   show_fps_item->sig_change().connect(boost::bind(&MenuManager::menu_show_fps, this, _1));
+  menu->add_item(show_fps_item.release());
 
-  EnumMenuItem* fullscreen_item = new EnumMenuItem(menu,  "Fullscreen", config.get_bool("fullscreen"));
+  std::auto_ptr<EnumMenuItem> fullscreen_item(new EnumMenuItem(menu,  "Fullscreen", config.get_bool("fullscreen")));
   fullscreen_item->add_pair(0, "off");
   fullscreen_item->add_pair(1, "on");
-  menu->add_item(fullscreen_item);
   fullscreen_item->sig_change().connect(boost::bind(&MenuManager::menu_fullscreen, this, _1));
+  menu->add_item(fullscreen_item.release());
 
-  EnumMenuItem* difficulty_item = new EnumMenuItem(menu,  "Difficulty", 1);
+  std::auto_ptr<EnumMenuItem> difficulty_item(new EnumMenuItem(menu,  "Difficulty", 1));
   difficulty_item->add_pair(0, "easy");
   difficulty_item->add_pair(1, "medium");
   difficulty_item->add_pair(2, "hard");
-  menu->add_item(difficulty_item);
+  menu->add_item(difficulty_item.release());
 
-  SliderMenuItem* gamma_item   = new SliderMenuItem(menu,  "Gamma",  100, 10, 200, 10);
+  std::auto_ptr<SliderMenuItem> gamma_item(new SliderMenuItem(menu,  "Gamma",  100, 10, 200, 10));
   gamma_item->sig_change().connect(boost::bind(&MenuManager::menu_gamma, this, _1));
-  menu->add_item(gamma_item);
+  menu->add_item(gamma_item.release());
 
 #ifdef HAVE_CWIID
   if (wiimote)
     {
-      ButtonMenuItem* wiimote_button = new ButtonMenuItem(menu,  "Try to Connect Wiimote");
+      std::auto_ptr<ButtonMenuItem> wiimote_button(new ButtonMenuItem(menu,  "Try to Connect Wiimote"));
       wiimote_button->sig_click().connect(boost::bind(&MenuManager::menu_wiimote, this));
-      menu->add_item(wiimote_button);
+      menu->add_item(wiimote_button.release());
     }
 #endif
 
@@ -153,45 +153,45 @@ MenuManager::display_main_menu()
 
   menu->set_font(Fonts::vera20);
 
-  ButtonMenuItem* select_scenario_button = new ButtonMenuItem(menu,  "Select Scenario");
+  std::auto_ptr<ButtonMenuItem> select_scenario_button(new ButtonMenuItem(menu,  "Select Scenario"));
   select_scenario_button->sig_click().connect(boost::bind(&MenuManager::display_scenario_menu, this));
-  menu->add_item(select_scenario_button);
+  menu->add_item(select_scenario_button.release());
 
-  ButtonMenuItem* navigation_test_button = new ButtonMenuItem(menu,  "Navigation Test");
+  std::auto_ptr<ButtonMenuItem> navigation_test_button(new ButtonMenuItem(menu,  "Navigation Test"));
   navigation_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_navigation_test, this));
-  menu->add_item(navigation_test_button);
+  menu->add_item(navigation_test_button.release());
 
-  ButtonMenuItem* armature_test_button = new ButtonMenuItem(menu,  "Armature Test");
+  std::auto_ptr<ButtonMenuItem> armature_test_button(new ButtonMenuItem(menu,  "Armature Test"));
   armature_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_armature_test, this));
-  menu->add_item(armature_test_button);
+  menu->add_item(armature_test_button.release());
 
-  ButtonMenuItem* geometry_test_button = new ButtonMenuItem(menu,  "Geometry Test");
+  std::auto_ptr<ButtonMenuItem> geometry_test_button(new ButtonMenuItem(menu,  "Geometry Test"));
   geometry_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_geometry_test, this));
-  menu->add_item(geometry_test_button);
+  menu->add_item(geometry_test_button.release());
 
-  ButtonMenuItem* model_viewer_button = new ButtonMenuItem(menu,  "Model Viewer");
+  std::auto_ptr<ButtonMenuItem> model_viewer_button(new ButtonMenuItem(menu,  "Model Viewer"));
   model_viewer_button->sig_click().connect(boost::bind(&MenuManager::display_models_menu, this));
-  menu->add_item(model_viewer_button);
+  menu->add_item(model_viewer_button.release());
 
-  ButtonMenuItem* particles_button = new ButtonMenuItem(menu,  "Particle Systems");
+  std::auto_ptr<ButtonMenuItem> particles_button(new ButtonMenuItem(menu,  "Particle Systems"));
   particles_button->sig_click().connect(boost::bind(&MenuManager::display_particle_menu, this));
-  menu->add_item(particles_button);
+  menu->add_item(particles_button.release());
 
-  ButtonMenuItem* options_button = new ButtonMenuItem(menu,  "Options");
+  std::auto_ptr<ButtonMenuItem> options_button(new ButtonMenuItem(menu,  "Options"));
   options_button->sig_click().connect(boost::bind(&MenuManager::display_option_menu, this));
-  menu->add_item(options_button);
+  menu->add_item(options_button.release());
 
-  ButtonMenuItem* credits_button = new ButtonMenuItem(menu,  "Credits");
+  std::auto_ptr<ButtonMenuItem> credits_button(new ButtonMenuItem(menu,  "Credits"));
   credits_button->sig_click().connect(boost::bind(&MenuManager::display_credits, this));
-  menu->add_item(credits_button);
+  menu->add_item(credits_button.release());
 
-  ButtonMenuItem* help_button = new ButtonMenuItem(menu,  "Help");
+  std::auto_ptr<ButtonMenuItem> help_button(new ButtonMenuItem(menu,  "Help"));
   help_button->sig_click().connect(boost::bind(&MenuManager::display_help, this));
-  menu->add_item(help_button);
+  menu->add_item(help_button.release());
 
-  ButtonMenuItem* quit_button = new ButtonMenuItem(menu,  "Quit");
+  std::auto_ptr<ButtonMenuItem> quit_button(new ButtonMenuItem(menu,  "Quit"));
   quit_button->sig_click().connect(boost::bind(&MenuManager::menu_quit, this));
-  menu->add_item(quit_button);
+  menu->add_item(quit_button.release());
   // End: Option Menu
 
   manager->get_root()->add_child(group.release());
@@ -216,33 +216,33 @@ MenuManager::display_pause_menu()
 
   menu->set_font(Fonts::vera20);
 
-  ButtonMenuItem* continue_button = new ButtonMenuItem(menu,  "Resume Game");
+  std::auto_ptr<ButtonMenuItem> continue_button(new ButtonMenuItem(menu,  "Resume Game"));
   continue_button->sig_click().connect(boost::bind(&MenuManager::menu_continue, this));
-  menu->add_item(continue_button);
+  menu->add_item(continue_button.release());
 
-  //  ButtonMenuItem* select_scenario_button = new ButtonMenuItem(menu,  "Select Scenario");
+  //  std::auto_ptr<ButtonMenuItem> select_scenario_button(new ButtonMenuItem(menu,  "Select Scenario"));
   //  select_scenario_button->sig_click().connect(boost::bind(&MenuManager::display_scenario_menu, this));
   // menu->add_item(select_scenario_button);
 
-  ButtonMenuItem* options_button = new ButtonMenuItem(menu,  "Options");
+  std::auto_ptr<ButtonMenuItem> options_button(new ButtonMenuItem(menu,  "Options"));
   options_button->sig_click().connect(boost::bind(&MenuManager::display_option_menu, this));
-  menu->add_item(options_button);
+  menu->add_item(options_button.release());
 
-  ButtonMenuItem* debug_button = new ButtonMenuItem(menu,  "Debug");
+  std::auto_ptr<ButtonMenuItem> debug_button(new ButtonMenuItem(menu,  "Debug"));
   debug_button->sig_click().connect(boost::bind(&MenuManager::display_debug_menu, this));
-  menu->add_item(debug_button);
+  menu->add_item(debug_button.release());
 
-  ButtonMenuItem* credits_button = new ButtonMenuItem(menu,  "Credits");
+  std::auto_ptr<ButtonMenuItem> credits_button(new ButtonMenuItem(menu,  "Credits"));
   credits_button->sig_click().connect(boost::bind(&MenuManager::display_credits, this));
-  menu->add_item(credits_button);
+  menu->add_item(credits_button.release());
 
-  ButtonMenuItem* help_button = new ButtonMenuItem(menu,  "Help");
+  std::auto_ptr<ButtonMenuItem> help_button(new ButtonMenuItem(menu,  "Help"));
   help_button->sig_click().connect(boost::bind(&MenuManager::display_help, this));
-  menu->add_item(help_button);
+  menu->add_item(help_button.release());
 
-  ButtonMenuItem* quit_button = new ButtonMenuItem(menu,  "Return to Title Screen");
+  std::auto_ptr<ButtonMenuItem> quit_button(new ButtonMenuItem(menu,  "Return to Title Screen"));
   quit_button->sig_click().connect(boost::bind(&MenuManager::menu_exit, this));
-  menu->add_item(quit_button);
+  menu->add_item(quit_button.release());
   // End: Option Menu
 
   manager->get_root()->add_child(group.release());
@@ -280,11 +280,9 @@ MenuManager::display_models_menu()
 
   for(std::vector<std::string>::iterator i = models.begin(); i != models.end(); ++i)
     {
-      ButtonMenuItem* scenario_button = new ButtonMenuItem(menu,  *i);
-
+      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu,  *i));
       scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_show_model, this, std::string(*i)));
-
-      menu->add_item(scenario_button);
+      menu->add_item(scenario_button.release());
     }
 
   manager->get_root()->add_child(group.release());
@@ -346,11 +344,9 @@ MenuManager::display_scenario_menu()
   
   for(std::vector<std::string>::iterator i = scenarios.begin(); i != scenarios.end(); ++i)
     {
-      ButtonMenuItem* scenario_button = new ButtonMenuItem(menu,  *i);
-
+      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu,  *i));
       scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_start_scenario, this, *i));
-
-      menu->add_item(scenario_button);
+      menu->add_item(scenario_button.release());
     }
 
   manager->get_root()->add_child(group.release());
@@ -375,20 +371,19 @@ MenuManager::display_debug_menu()
 
   Color amb = Sector::current()->get_ambient_light();
 
-  SliderMenuItem* r_ambient_light_item = new SliderMenuItem(menu,  "Ambient Light (Red)", int(amb.r*100), 0, 100, 10);
+  std::auto_ptr<SliderMenuItem> r_ambient_light_item(new SliderMenuItem(menu,  "Ambient Light (Red)", int(amb.r*100), 0, 100, 10));
   r_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, this, _1, 0));
-  menu->add_item(r_ambient_light_item);
+  menu->add_item(r_ambient_light_item.release());
 
-  SliderMenuItem* g_ambient_light_item = new SliderMenuItem(menu,  "Ambient Light (Green)", int(amb.g*100), 0, 100, 10);
+  std::auto_ptr<SliderMenuItem> g_ambient_light_item(new SliderMenuItem(menu,  "Ambient Light (Green)", int(amb.g*100), 0, 100, 10));
   g_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, this, _1, 1));
-  menu->add_item(g_ambient_light_item);
+  menu->add_item(g_ambient_light_item.release());
 
-  SliderMenuItem* b_ambient_light_item = new SliderMenuItem(menu,  "Ambient Light (Blue)", int(amb.b*100), 0, 100, 10);
+  std::auto_ptr<SliderMenuItem> b_ambient_light_item(new SliderMenuItem(menu,  "Ambient Light (Blue)", int(amb.b*100), 0, 100, 10));
   b_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, this, _1, 2));
-  menu->add_item(b_ambient_light_item);
+  menu->add_item(b_ambient_light_item.release());
 
   manager->get_root()->add_child(group.release());
-
   screen_manager.push_overlay(manager.release()); 
 }
 
@@ -479,22 +474,22 @@ MenuManager::display_credits()
 void
 MenuManager::menu_show_model(std::string model)
 {
-  Sprite3DView* sprite3dview = new Sprite3DView();
+  std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
 
   sprite3dview->set_model(model);
 
   // Launching Sprite3DView instead of game
-  screen_manager.push_screen(sprite3dview);
+  screen_manager.push_screen(sprite3dview.release());
   screen_manager.clear_overlay();
 }
 
 void
 MenuManager::menu_show_particle_system(std::string file)
 {
-  ParticleViewer* particle_viewer = new ParticleViewer();
+  std::auto_ptr<ParticleViewer> particle_viewer(new ParticleViewer());
   particle_viewer->load(file);
 
-  screen_manager.push_screen(particle_viewer);
+  screen_manager.push_screen(particle_viewer.release());
   screen_manager.clear_overlay();
 }
 
