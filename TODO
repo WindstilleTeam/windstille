@@ -9,6 +9,7 @@ Windstille ToDo
   - Sprite2D
   - Sprite3D
   - particle systems
+  - Dialog/Conversation
 
 * unify copyright header and #ifdef guards
 
@@ -18,6 +19,22 @@ Windstille ToDo
   spawn_object("shockwave", {pos=[0,0]})
 
 * miniswig causes bison++ to crash
+
+* find a astyle/bcpp/whatever configuration that matches the current
+  coding style, maybe a little script that uses Emacs would do
+
+* write a LucasArts-like dialog system (i.e. non-blocking text, instead of JRPG like boxes with portraits)
+
+* PDA needs scrolling text thing (right analog stick?)
+
+* mouse support for menu
+
+* Add more markup to TextArea: 
+    <font color="#ffbbcc"></font>: Use arbitary color
+    <b></b>: make text properly bold
+    <i></i>: make text properly italic 
+
+* Specify the capabilites that the different subsystems need to have
 
 Windstille Bugs
 ===============

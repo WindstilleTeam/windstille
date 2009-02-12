@@ -31,13 +31,8 @@ if features['cwiid']:
     env.Append(CPPDEFINES = 'HAVE_CWIID')
     env.Append(LIBS = 'cwiid')
 
-# env.Clone(LIBS = ['a', 'b'])
-
-env.foo = 5
 env.ParseConfig('sdl-config --cflags --libs')
 env.ParseConfig('freetype-config --libs --cflags')
-
-# env['ENV']['LSBCC_SHAREDLIBS'] = 'png2:SDL:SDL_image:vorbis:ogg:openal:physfs'
 
 env.Program('../windstille', [
 'app/config.cpp',
