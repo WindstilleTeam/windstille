@@ -87,14 +87,6 @@ GroupComponent::is_active() const
     return false;
 }
 
-void
-GroupComponent::layout()
-{
-  // FIXME: implement me
-  // child->get_prefered_width();
-  // child->get_prefered_height();
-}
-
 } // namespace gui
 
 /* EOF */

@@ -117,7 +117,6 @@ MenuManager::display_option_menu()
 #endif
 
   manager->get_root()->add_child(group.release());
-  group->layout();
   screen_manager.push_overlay(manager.release());
 }
 
@@ -195,7 +194,6 @@ MenuManager::display_main_menu()
   // End: Option Menu
 
   manager->get_root()->add_child(group.release());
-  group->layout();
   screen_manager.push_overlay(manager.release());
 }
 
