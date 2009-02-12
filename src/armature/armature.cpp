@@ -31,6 +31,13 @@ Armature::Armature(FileReader& reader)
   parse(reader);
 }
 
+Armature::~Armature()
+{
+  for(Bones::iterator i = bones.begin(); i != bones.end(); ++i)
+    delete *i;
+  bones.clear();
+}
+
 void
 Armature::parse(FileReader& reader)
 {

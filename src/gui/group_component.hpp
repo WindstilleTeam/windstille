@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_GUI_GROUP_COMPONENT_HPP
 #define HEADER_WINDSTILLE_GUI_GROUP_COMPONENT_HPP
 
+#include <memory>
 #include <string>
 #include "component.hpp"
 
@@ -29,11 +30,11 @@ class GroupComponent : public Component
 {
 private:
   std::string title;
-  Component* child;
+  std::auto_ptr<Component> child;
 
 public:
   GroupComponent(const Rectf& rect, const std::string& title_, Component* parent);
-  ~GroupComponent();
+  virtual ~GroupComponent();
 
   void draw();
   void update(float delta, const Controller& controller);
@@ -42,6 +43,7 @@ public:
   
   bool is_active() const;
   void layout();
+
 private:
   GroupComponent (const GroupComponent&);
   GroupComponent& operator= (const GroupComponent&);

@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_PARTICLE_VIEWER_HPP
 #define HEADER_WINDSTILLE_PARTICLE_VIEWER_HPP
 
+#include <memory>
 #include "screen.hpp"
 #include "sprite2d/sprite.hpp"
 #include "gui/gui_manager.hpp"
@@ -42,7 +43,7 @@ private:
 
   Vector2f pos;
   bool   show_gui;
-  gui::GUIManager* manager;
+  std::auto_ptr<gui::GUIManager> manager;
   gui::TabComponent* tab;
 
   typedef std::vector<ParticleSystemGUI*> ParticleSystemGUIs;

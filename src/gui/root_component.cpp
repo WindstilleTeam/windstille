@@ -33,6 +33,9 @@ RootComponent::RootComponent(const Rectf& rect)
 
 RootComponent::~RootComponent()
 {
+  for(Children::iterator i = children.begin(); i != children.end(); ++i)
+    delete *i;
+  children.clear();
 }
 
 void

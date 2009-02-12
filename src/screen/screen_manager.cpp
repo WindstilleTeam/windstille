@@ -69,6 +69,13 @@ ScreenManager::ScreenManager()
 
 ScreenManager::~ScreenManager()
 {
+  for(std::vector<Screen*>::iterator i = screens.begin(); i != screens.end(); ++i)
+    delete *i;
+  screens.clear();
+    
+  for(std::vector<Screen*>::iterator i = overlay_screens.begin(); i != overlay_screens.end(); ++i)
+    delete *i;
+  overlay_screens.clear();
 }
 
 void
@@ -130,9 +137,11 @@ ScreenManager::run()
         {
         case PUSH_SCREEN:
           overlay_screens.push_back(overlay_screen_screen);
+          overlay_screen_screen = 0;
           break;
 
         case POP_SCREEN:
+          delete overlay_screens.back();
           overlay_screens.pop_back();
           break;
 
@@ -152,10 +161,12 @@ ScreenManager::run()
         {
         case PUSH_SCREEN:
           screens.push_back(screen_screen);
+          screen_screen = 0;
           screens.back()->on_startup();
           break;
 
         case POP_SCREEN:
+          delete screens.back();
           screens.pop_back();
           if (!screens.empty())
             screens.back()->on_startup();
@@ -325,6 +336,8 @@ ScreenManager::draw_fps()
 void
 ScreenManager::push_screen(Screen* s)
 {
+  assert(screen_screen == 0);
+
   screen_action = PUSH_SCREEN;
   screen_screen = s;
 }
@@ -338,6 +351,8 @@ ScreenManager::pop_screen()
 void
 ScreenManager::push_overlay(Screen* s)
 {
+  assert(overlay_screen_screen == 0);
+
   overlay_screen_action = PUSH_SCREEN;
   overlay_screen_screen = s;
 }

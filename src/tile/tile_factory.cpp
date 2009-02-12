@@ -88,15 +88,16 @@ TileFactory::TileFactory (const std::string& filename)
 TileFactory::~TileFactory()
 {
   for(Tiles::iterator i = tiles.begin(); i != tiles.end(); ++i)
-    {
-      delete *i;
-    }
+    delete *i;
   tiles.clear();
 
   for(std::vector<TileDescription*>::iterator i = descriptions.begin(); i != descriptions.end(); ++i)
-    {
-      delete *i;
-    }
+    delete *i;
+  descriptions.clear();
+
+  for(TilePackers::iterator i = packers.begin(); i != packers.end(); ++i)
+    delete *i;
+  packers.clear();
 }
 
 void

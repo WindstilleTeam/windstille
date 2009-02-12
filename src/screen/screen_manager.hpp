@@ -56,9 +56,11 @@ public:
   /** Breaks out of the run() function */
   void quit();
 
+  /** Push a screen, the screen will be delete'ed once it is no longer needed */
   void push_screen(Screen* s);
   void pop_screen();
 
+  /** Push an overlay screen, the screen will be delete'ed once it is no longer needed */
   void push_overlay(Screen* s);
   void pop_overlay();
   void clear_overlay();

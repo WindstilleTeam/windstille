@@ -41,9 +41,8 @@ MenuComponent::MenuComponent(const Rectf& rect, bool allow_cancel_, Component* p
 MenuComponent::~MenuComponent()
 {
   for(Items::iterator i = items.begin(); i != items.end(); ++i)
-    {
       delete *i;
-    }
+  items.clear();
 }
 
 void

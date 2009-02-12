@@ -36,9 +36,11 @@ NavigationGraph::~NavigationGraph()
 {
   for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
     delete *i;
+  segments.clear();
 
   for (Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
     delete *i;
+  nodes.clear();
 }
 
 NodeHandle

@@ -26,15 +26,13 @@ namespace gui {
 
 GroupComponent::GroupComponent(const Rectf& rect, const std::string& title_, Component* parent)
   : Component(rect, parent),
-    title(title_),
-    child(0)
+    title(title_)
 {
   
 }
 
 GroupComponent::~GroupComponent()
 {
-  
 }
 
 void
@@ -54,22 +52,22 @@ GroupComponent::draw()
                          Color(1.0f, 1.0f, 1.0f, 0.5f));
     }
 
-  if (child)
+  if (child.get())
     child->draw();
 }
 
 void
 GroupComponent::update(float delta, const Controller& controller)
 {
-  if (child)
+  if (child.get())
     child->update(delta, controller);
 }
 
 void
 GroupComponent::pack(Component* component)
 {
-  assert(child == 0);
-  child = component;
+  assert(child.get() == 0);
+  child = std::auto_ptr<Component>(component);
 
   int padding = 6;
   child->set_screen_rect(Rectf(rect.left + padding,
@@ -83,7 +81,7 @@ GroupComponent::pack(Component* component)
 bool
 GroupComponent::is_active() const
 {
-  if (child)
+  if (child.get())
     return child->is_active();
   else
     return false;

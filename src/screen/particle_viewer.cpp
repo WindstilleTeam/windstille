@@ -89,7 +89,7 @@ ParticleViewer::ParticleViewer()
 
   using namespace gui;
 
-  manager = new GUIManager();
+  manager = std::auto_ptr<gui::GUIManager>(new GUIManager());
   tab = new TabComponent(Rectf(200, 50, 600, 250), manager->get_root());
   
   manager->get_root()->add_child(tab);

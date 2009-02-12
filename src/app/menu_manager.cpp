@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <memory>
 #include <boost/bind.hpp>
 #include "config.hpp"
 #include "sound/sound_manager.hpp"
@@ -298,32 +299,29 @@ void
 MenuManager::display_particle_menu()
 {
   using namespace gui;
-  GUIManager* manager = new GUIManager();
+  std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-200, 300-170), Sizef(400, 340)), 
-                                             "Particle Systems",
-                                             manager->get_root());
+  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-200, 300-170), Sizef(400, 340)), 
+                                                         "Particle Systems",
+                                                         manager->get_root()));
 
-  MenuComponent* menu = new MenuComponent(Rectf(), true, group);
-  group->pack(menu);
+  MenuComponent* menu(new MenuComponent(Rectf(), true, group.get()));
 
   menu->set_font(Fonts::vera20);
+  group->pack(menu);
 
   std::vector<std::string> scenarios;
   scenarios.push_back("particlesystems/fire.particles");
   
   for(std::vector<std::string>::iterator i = scenarios.begin(); i != scenarios.end(); ++i)
     {
-      ButtonMenuItem* scenario_button = new ButtonMenuItem(menu,  *i);
-
+      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu, *i));
       scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_show_particle_system, this, *i));
-
-      menu->add_item(scenario_button);
+      menu->add_item(scenario_button.release());
     }
 
-  manager->get_root()->add_child(group);
-
-  screen_manager.push_overlay(manager); 
+  manager->get_root()->add_child(group.release());
+  screen_manager.push_overlay(manager.release());
 }
 
 void
