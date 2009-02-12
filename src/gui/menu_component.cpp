@@ -101,6 +101,11 @@ MenuComponent::draw()
 void
 MenuComponent::update(float delta, const Controller& controller)
 {
+  for(Items::size_type i = 0; i < items.size(); ++i)
+    {
+      items[i]->update(delta);
+    }
+
   for(InputEventLst::const_iterator i = controller.get_events().begin(); 
       i != controller.get_events().end(); 
       ++i)

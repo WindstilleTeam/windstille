@@ -30,10 +30,12 @@ class MenuComponent;
 
 class MenuItem 
 {
-public:
+protected:
   MenuComponent* parent;
   std::string label;
+  float fade_timer;
 
+public:
   MenuItem(MenuComponent* parent_, const std::string& label_);
   virtual ~MenuItem() {}
 
@@ -67,7 +69,6 @@ public:
   void decr();
   void click() {}
   void draw(const Rectf& rect, bool is_active);
-  void update(float);
   boost::signal<void (int)>& sig_change() { return on_change; }
 };
 
@@ -88,7 +89,6 @@ public:
   void decr();
   void click() {}
   void draw(const Rectf& rect, bool is_active);
-  void update(float);
   boost::signal<void (int)>& sig_change() { return on_change; }
 };
 
@@ -103,7 +103,6 @@ public:
   void decr() {}
   void click();
   void draw(const Rectf& rect, bool is_active);
-  void update(float);
   boost::signal<void ()>& sig_click() { return on_click; }
 };
 

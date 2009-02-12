@@ -27,7 +27,8 @@ namespace gui {
 
 MenuItem::MenuItem(MenuComponent* parent_, const std::string& label_)
   : parent(parent_),
-    label(label_)
+    label(label_),
+    fade_timer(0.0f)
 {}
 
 void
@@ -36,15 +37,29 @@ MenuItem::draw(const Rectf& rect, bool is_active)
   Color font_color;
   TTFFont* font = parent->get_font();
   
-  if (is_active) {
-    Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
-    Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
-    font_color = Color(1.0f, 1.0f, 1.0f);
-  } else {
-    //Display::fill_rounded_rect(rect, 5.0f, Color(0.3f, 0.3f, 0.3f, 0.75f));
-    //Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.75f));
-    font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
-  }
+  if (is_active) 
+    {
+      Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
+      Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
+      font_color = Color(1.0f, 1.0f, 1.0f);
+      fade_timer = 1.0f;
+    } 
+  else 
+    {
+      if (fade_timer != 0.0f)
+        {
+          Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f * fade_timer));
+          Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f * fade_timer));
+          font_color = Color(0.75f + 0.25f * fade_timer, 
+                             0.75f + 0.25f * fade_timer, 
+                             0.75f + 0.25f * fade_timer, 
+                             1.0f);
+        }
+      else
+        {
+          font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
+        }
+    }
 
   font->draw(Vector2f(rect.left + font->get_height(), rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
              label, font_color);
@@ -53,7 +68,10 @@ MenuItem::draw(const Rectf& rect, bool is_active)
 void
 MenuItem::update(float delta)
 {
-  
+  if (fade_timer > 0.0f)
+    fade_timer -= delta / 0.25f;
+  else
+    fade_timer = 0.0f;
 }
 
 EnumMenuItem::EnumMenuItem(MenuComponent* parent_, 
@@ -113,12 +131,6 @@ EnumMenuItem::draw(const Rectf& rect, bool is_active)
                     rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
              labels[index].label,
              font_color);
-}
-
-void 
-EnumMenuItem::update(float delta)
-{
-  MenuItem::update(delta);
 }
 
 SliderMenuItem::SliderMenuItem(MenuComponent* parent_, 
@@ -182,12 +194,6 @@ SliderMenuItem::draw(const Rectf& rect, bool is_active)
                              5.0f,
                              color);
 }
-
-void
-SliderMenuItem::update(float delta)
-{
-  MenuItem::update(delta);
-}
 
 ButtonMenuItem::ButtonMenuItem(MenuComponent* parent_, const std::string& label_)
   : MenuItem(parent_, label_)
@@ -206,11 +212,6 @@ void
 ButtonMenuItem::draw(const Rectf& rect, bool is_active)
 {
   MenuItem::draw(rect, is_active);
-}
-
-void
-ButtonMenuItem::update(float)
-{
 }
 
 } // namespace gui
