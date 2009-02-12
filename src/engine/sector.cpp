@@ -66,8 +66,8 @@ Sector::Sector(const std::string& arg_filename)
       "}", "");
   
   if (debug) std::cout << "Creating new Sector" << std::endl;
-  collision_engine = new CollisionEngine();
-  navigation_graph = new NavigationGraph();
+  collision_engine = std::auto_ptr<CollisionEngine>(new CollisionEngine());
+  navigation_graph = std::auto_ptr<NavigationGraph>(new NavigationGraph());
 
   current_ = this;
   interactive_tilemap = 0;
@@ -94,9 +94,6 @@ Sector::~Sector()
     (*i)->unref();
   for(Objects::iterator i = new_objects.begin(); i != new_objects.end(); ++i)
     (*i)->unref();
-
-  delete navigation_graph;
-  delete collision_engine;
 }
 
 void
@@ -140,12 +137,14 @@ void
 Sector::add_object(FileReader& reader)
 {
   if(reader.get_name() == "tilemap") {
-    TileMap* tilemap = new TileMap(reader);
-    add(tilemap);
+    std::auto_ptr<TileMap> tilemap(new TileMap(reader));
+
     if (tilemap->get_name() == "interactive")
-      interactive_tilemap = tilemap;
+      interactive_tilemap = tilemap.get();
     else if (tilemap->get_name() == "interactivebackground")
-      interactivebackground_tilemap = tilemap;
+      interactivebackground_tilemap = tilemap.get();
+
+    add(tilemap.release());
   } else if(reader.get_name() == "background") {
     // TODO
   } else if (reader.get_name() == "background-gradient") {
@@ -278,7 +277,7 @@ Sector::remove_object_from_squirrel(GameObject* object)
 
   // remove object from table
   sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
-  if(SQ_FAILED(sq_deleteslot(v, -2, SQFalse) < 0)) {
+  if(SQ_FAILED(sq_deleteslot(v, -2, SQFalse))) {
     std::ostringstream msg;
     msg << "Couldn't remove squirrel object for '" << object->get_name()
         << "'";

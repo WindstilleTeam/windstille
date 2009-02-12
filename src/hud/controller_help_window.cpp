@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <memory>
 #include "input/input_manager.hpp"
 #include "display/display.hpp"
 #include "display/text_area.hpp"
@@ -27,7 +28,7 @@ ControllerHelpWindow* ControllerHelpWindow::current_ = 0;
 class ControllerHelpWindowImpl
 {
 public:
-  TextArea* text_area;
+  std::auto_ptr<TextArea> text_area;
   bool active;
 };
 
@@ -39,9 +40,9 @@ ControllerHelpWindow::ControllerHelpWindow()
   int height = 120;
   
   impl->active = false;
-  impl->text_area = new TextArea(Rect(Point(Display::get_width() - width - 16,
-                                            Display::get_height() - height - 16),
-                                      Size(width, height)), false);
+  impl->text_area = std::auto_ptr<TextArea>(new TextArea(Rect(Point(Display::get_width() - width - 16,
+                                                                    Display::get_height() - height - 16),
+                                                              Size(width, height)), false));
   impl->text_area->set_font(Fonts::ttffont);
   impl->text_area->set_text("Control Help\n"
                             "------------\n"

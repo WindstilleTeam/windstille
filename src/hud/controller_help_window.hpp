@@ -28,7 +28,7 @@ class ControllerHelpWindowImpl;
 class ControllerHelpWindow : public Screen
 {
 public:
-  ControllerHelpWindow();
+  ControllerHelpWindow(); 
 
   void draw();
   void update(float delta, const Controller& controller);

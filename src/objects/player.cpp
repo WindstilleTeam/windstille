@@ -51,7 +51,6 @@ Player::Player () :
   flashlighthighlight("images/flashlighthighlight.sprite"),
   state(STAND)
 {
-  //laser_pointer = new LaserPointer();
   sprite = Sprite3D("models/characters/jane/jane.wsprite");
   pos.x = 320;
   pos.y = 200;
@@ -77,13 +76,12 @@ Player::Player () :
   z_pos = 100.0f;
 
   contact = 0;
-  weapon = new Pistol();
-  laser_pointer = ((Pistol*) weapon)->laser_pointer;
+  weapon = std::auto_ptr<Weapon>(new Pistol());
+  laser_pointer = ((Pistol*)weapon.get())->laser_pointer;
 }
 
 Player::~Player()
 {
-  //delete laser_pointer;
 }
 
 void
@@ -246,8 +244,8 @@ Player::update_walk_stand()
         Point p(int(pos.x)/32, (int(pos.y)/32 + 1));
         unsigned int col = tilemap->get_pixel(p.x, p.y);
 
-        if ((col & TILE_STAIRS) && (get_direction() == WEST && (col & TILE_LEFT) ||
-                                    get_direction() == EAST && (col & TILE_RIGHT)))
+        if ((col & TILE_STAIRS) && ((get_direction() == WEST && (col & TILE_LEFT)) ||
+                                    (get_direction() == EAST && (col & TILE_RIGHT))))
           {
             delete contact;
             contact = new StairContact(tilemap, p);
@@ -272,8 +270,8 @@ Player::update_walk_stand()
         Point p(int(pos.x)/32 + ((get_direction() == WEST) ? -1 : +1), (int(pos.y)/32));
         unsigned int col = tilemap->get_pixel(p.x, p.y);
 
-        if ((col & TILE_STAIRS) && (get_direction() == EAST && (col & TILE_LEFT) ||
-                                    get_direction() == WEST && (col & TILE_RIGHT)))
+        if ((col & TILE_STAIRS) && ((get_direction() == EAST && (col & TILE_LEFT)) ||
+                                    (get_direction() == WEST && (col & TILE_RIGHT))))
           {
             delete contact;
             contact = new StairContact(tilemap, p);
@@ -405,8 +403,8 @@ Player::update_walk()
     return;
   }
 
-  if(get_direction() == WEST && controller.get_axis_state(X_AXIS) > 0.5f
-     || get_direction() == EAST && controller.get_axis_state(X_AXIS) < -0.5f) {
+  if ((get_direction() == WEST && controller.get_axis_state(X_AXIS) > 0.5f) ||
+      (get_direction() == EAST && controller.get_axis_state(X_AXIS) < -0.5f)) {
     leave_walk();
     set_turnaround();
     return;
@@ -494,8 +492,8 @@ Player::update_turnaround()
       set_walk(WEST);
     }
   } 
-  if(sprite.get_rot() && controller.get_axis_state(X_AXIS) > 0.5f
-     || !sprite.get_rot() && controller.get_axis_state(X_AXIS) < -0.5f) {
+  if((sprite.get_rot() && controller.get_axis_state(X_AXIS) > 0.5f) ||
+     (!sprite.get_rot() && controller.get_axis_state(X_AXIS) < -0.5f)) {
     sprite.set_speed(-1.0);
     sprite.set_next_action("Walk");
     state = WALK;

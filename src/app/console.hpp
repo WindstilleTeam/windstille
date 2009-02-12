@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_CONSOLE_HPP
 #define HEADER_WINDSTILLE_CONSOLE_HPP
 
+#include <memory>
 #include <vector>
 #include <sstream>
 
@@ -28,6 +29,7 @@ class Console : public std::ostream
 {
 public:
   Console();
+  ~Console();
 
   void draw();
   void update(float delta);
@@ -42,11 +44,12 @@ public:
   
   /** execute the given string */
   void execute(const std::string& str);
+
 private:
   Console (const Console&);
   Console& operator= (const Console&);
 
-  ConsoleImpl* impl;
+  std::auto_ptr<ConsoleImpl> impl;
 };
 
 extern Console console;

@@ -42,6 +42,7 @@ protected:
   std::string use_verb;
   
   Entity* parent;
+
 public:
   Entity();
   virtual ~Entity();

@@ -70,7 +70,7 @@ Conversation::draw()
 
   float segment = 360.0f / choices.size();
 
-  for(int i = 0; i < choices.size(); ++i)
+  for(int i = 0; i < (int)choices.size(); ++i)
     { // FIXME:
       Vector2f offset(0.0f, 1.0f);
       offset = offset.rotate(math::deg2rad(segment*i) - M_PI/2);

@@ -48,6 +48,7 @@ private:
 
   typedef std::vector<ParticleSystemGUI*> ParticleSystemGUIs;
   ParticleSystemGUIs guis;
+
 public:
   ParticleViewer();
   ~ParticleViewer();

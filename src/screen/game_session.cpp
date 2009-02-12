@@ -65,7 +65,7 @@ public:
 
   float fadeout_value;
   float fade_time;
-  Sector* sector;
+  std::auto_ptr<Sector> sector;
   View    view;
 
   std::string filename;
@@ -98,7 +98,6 @@ public:
   Screen* current_gui;
 
   GameSessionImpl() {
-    sector         = 0;
     current_gui    = 0;
     cutscene_mode  = false;
     cutscene_value = 0.0f;
@@ -108,7 +107,6 @@ public:
     fade_time      = 1.0f;
   }
   ~GameSessionImpl() {
-    delete sector;
   }
 
   void draw();
@@ -306,10 +304,9 @@ GameSession::change_sector(const std::string& arg_filename)
 void
 GameSession::set_sector(const std::string& )
 {
-  delete impl->sector;
-  impl->sector = new Sector(impl->filename);
+  impl->sector = std::auto_ptr<Sector>(new Sector(impl->filename));
  
-  GameObject::set_world(impl->sector);
+  GameObject::set_world(impl->sector.get());
 
   //FIXME: does the TestObject class still need to exist?
   //sector->add(new TestObject());

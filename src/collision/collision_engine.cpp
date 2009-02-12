@@ -35,6 +35,9 @@ CollisionEngine::CollisionEngine()
 
 CollisionEngine::~CollisionEngine()
 {
+  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
+      delete *i;
+  objects.clear();
 }
 
 void

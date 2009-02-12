@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SECTOR_HPP
 #define HEADER_WINDSTILLE_SECTOR_HPP
 
+#include <memory>
 #include <string>
 #include <vector>
 #include "display/color.hpp"
@@ -59,8 +60,8 @@ private:
   TileMap* interactive_tilemap;
   TileMap* interactivebackground_tilemap;
 
-  CollisionEngine* collision_engine;
-  NavigationGraph* navigation_graph;
+  std::auto_ptr<CollisionEngine> collision_engine;
+  std::auto_ptr<NavigationGraph> navigation_graph;
 
   Player* player;
 
@@ -99,7 +100,7 @@ public:
   void add(GameObject*);
   void add_object(FileReader& reader);
 
-  CollisionEngine* get_collision_engine() const { return collision_engine; }
+  CollisionEngine* get_collision_engine() const { return collision_engine.get(); }
 
   GameObject* get_object(const std::string& name) const;
 

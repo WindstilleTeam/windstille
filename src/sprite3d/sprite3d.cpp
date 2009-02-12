@@ -167,8 +167,8 @@ Sprite3D::switched_actions()
 void
 Sprite3D::set_speed(float speed)
 {
-  if(speed < 0 && frame1.speed >= 0
-      || speed >= 0 && frame1.speed < 0) {
+  if((speed < 0 && frame1.speed >= 0) ||
+     (speed >= 0 && frame1.speed < 0)) {
     blend_time = 1.0 - blend_time;
     std::swap(frame1, frame2);
   }

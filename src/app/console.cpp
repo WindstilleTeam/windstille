@@ -528,6 +528,10 @@ Console::Console()
 {
 }
 
+Console::~Console()
+{
+}
+
 void
 Console::activate()
 {

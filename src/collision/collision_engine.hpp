@@ -47,6 +47,7 @@ public:
       position were the ray collides with the tilemap FIXME: Should be
       extended to handle objects as well */
   Vector2f raycast(const Vector2f& pos, float angle);
+
 private:
   void unstuck(CollisionObject& a, CollisionObject& b, float delta);
   CollisionData collide(CollisionObject& a, CollisionObject& b, float delta);

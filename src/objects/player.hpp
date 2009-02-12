@@ -55,7 +55,7 @@ private:
 
   LaserPointer* laser_pointer;
   Contact* contact;
-  Weapon* weapon;
+  std::auto_ptr<Weapon> weapon;
 
 public:
   enum State

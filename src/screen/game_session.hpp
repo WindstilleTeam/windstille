@@ -48,8 +48,8 @@ private:
 public:
   static GameSession* current() { return current_; } 
 
-  GameSession (const std::string& arg_filename);
-  ~GameSession ();
+  GameSession(const std::string& arg_filename);
+  virtual ~GameSession();
 
   View* get_view();
 

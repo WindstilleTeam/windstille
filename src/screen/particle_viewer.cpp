@@ -97,16 +97,28 @@ ParticleViewer::ParticleViewer()
 
 ParticleViewer::~ParticleViewer()
 {
+  for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
+    delete *i;
+  systems.clear();
+
+  for(ParticleSystemGUIs::iterator i = guis.begin(); i != guis.end(); ++i)
+    delete *i;
+  guis.clear();
 }
 
 void
 ParticleViewer::load(const std::string& filename)
 {
   std::cout << "ParticleViewer: loading " << filename << std::endl;
-  
+
+  // Cleanup
   for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
     delete *i;
   systems.clear();
+
+  for(ParticleSystemGUIs::iterator i = guis.begin(); i != guis.end(); ++i)
+    delete *i;
+  guis.clear();
   
   FileReader root_reader = FileReader::parse(filename);
   if(root_reader.get_name() != "particle-systems") {

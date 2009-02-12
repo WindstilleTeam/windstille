@@ -50,7 +50,8 @@ public:
 	//param width: Initial width of size structure.
 	//param height: Initial height of size structure.
 	//param size: Size structure to construct this one from.
-	Size() { return; }
+	Size() 
+        : width(0), height(0) { }
 
 	Size(int width, int height)
 	: width(width), height(height) { }

@@ -33,9 +33,8 @@ public:
   /** Pointer to the top-most lisp element, only here for purpose of
       being able to delete it */
   const lisp::Lisp* root;
-
-  bool  delete_sexpr;
   const lisp::Lisp* sexpr;
+  bool  delete_sexpr;
 
   SExprFileReaderImpl(const lisp::Lisp* root_, const lisp::Lisp* sexpr_)
     : root(root_),
