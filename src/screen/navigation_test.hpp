@@ -36,8 +36,8 @@ private:
   Vector2f player;
   Vector2f old_player;
   
-  NavigationGraph* graph;
-  SegmentPosition* connection;
+  std::auto_ptr<NavigationGraph> graph;
+  std::auto_ptr<SegmentPosition> connection;
 
   SegmentHandle selected_segment;
   NodeHandle    selected_node;

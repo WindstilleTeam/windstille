@@ -35,13 +35,14 @@
 
 class ParticleSystemGUI
 {
-public:
+private:
   ParticleSystem* psystem;
   gui::GridComponent* grid;
   gui::Slider* gravity_slider;
   gui::Slider* velocity_slider;
   gui::Slider* count_slider;
   
+public:
   ParticleSystemGUI(gui::Component* parent, ParticleSystem* psystem_)
     : psystem(psystem_)
   {

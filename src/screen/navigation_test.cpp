@@ -33,14 +33,12 @@
 NavigationTest::NavigationTest()
   : cursor(400, 300),
     player(200,200),
-    graph(0),
+    graph(new NavigationGraph()),
     connection(0),
     selected_segment(0),
     selected_node(0),
     node_to_connect(0)
 {
-  graph = new NavigationGraph();
-
   try {
     FileReader reader = FileReader::parse("navigation.nav");
     graph->load(reader);
@@ -90,7 +88,7 @@ NavigationTest::draw()
 
   Display::fill_circle(player, 12.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
 
-  if (connection)
+  if (connection.get())
     {
       Display::fill_circle(connection->get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f, 0.5f));
       Display::fill_circle(connection->get_pos(), 8.0f, Color(0.0f, 1.0f, 1.0f));
@@ -152,7 +150,7 @@ NavigationTest::update(float delta, const Controller& controller)
       player = old_player = cursor;
     }
 
-  if (connection)
+  if (connection.get())
     { 
       // Handle the movement of the connection
       Node* next_node;
@@ -189,8 +187,7 @@ NavigationTest::update(float delta, const Controller& controller)
           if (!next_segment.segment)
             {
               std::cout << "Dead End" << std::endl;
-              delete connection;
-              connection = 0;
+              connection.reset();
 
               // FIXME: Voodoo to fix connection/deadend cicles
               player += stick;
@@ -205,8 +202,7 @@ NavigationTest::update(float delta, const Controller& controller)
 
       if (controller.get_button_state(AIM_BUTTON))
         {         
-          delete connection;
-          connection = 0;
+          connection.reset();
 
           // FIXME: Voodoo to fix connection/dedaend cicles
           player += stick;
@@ -227,7 +223,7 @@ NavigationTest::update(float delta, const Controller& controller)
       std::vector<SegmentPosition> positions = graph->find_intersections(Line(old_player, player));
       if (!positions.empty()) {
         std::cout << "Doing connection" << std::endl;
-        connection = new SegmentPosition(positions.front());
+        connection.reset(new SegmentPosition(positions.front()));
       }
     }
   
@@ -255,10 +251,9 @@ NavigationTest::update(float delta, const Controller& controller)
   else
     selected_segment = 0;
 
-  if (connection && !graph->valid(connection->get_segment()))
+  if (connection.get() && !graph->valid(connection->get_segment()))
     {
-      delete connection;
-      connection = 0;
+      connection.reset();
     }
 
   old_player = player;
