@@ -16,8 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <config.h>
-
 #include "spider_mine.hpp"
 #include "player.hpp"
 #include "sprite2d/manager.hpp"

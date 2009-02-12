@@ -18,7 +18,6 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <config.h>
 
 #include "test_object.hpp"
 #include "sprite3d/manager.hpp"

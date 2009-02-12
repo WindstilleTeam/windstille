@@ -17,7 +17,6 @@
 */
 
 /** Used SDL_mixer and glest source as reference */
-#include <config.h>
 
 #include "sound_file.hpp"
 

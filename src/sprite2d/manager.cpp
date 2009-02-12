@@ -17,8 +17,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <config.h>
-
 #include "sprite2d/manager.hpp"
 #include "sprite2d/data.hpp"
 #include "sprite2d/sprite.hpp"
