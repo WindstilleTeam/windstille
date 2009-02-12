@@ -40,6 +40,7 @@
 #ifdef HAVE_CWIID
 #include "input/wiimote.hpp"
 #endif
+#include "app/windstille.hpp"
 #include "menu_manager.hpp"
 
 MenuManager menu_manager;
@@ -133,7 +134,7 @@ MenuManager::display_main_menu()
   TextView* text = new TextView(Rectf(), text_group);
   text_group->pack(text);
   text->set_font(Fonts::vera12);
-  text->set_text("Windstille 0.4.0 - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
+  text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
                  "\n"
                  "This program is free software: you can redistribute it and/or modify "
                  "it under the terms of the GNU General Public License as published by "
