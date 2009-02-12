@@ -19,7 +19,7 @@
 #include <stdexcept>
 #include <boost/bind.hpp>
 #include "box.hpp"
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "collision/collision_engine.hpp"
 #include "math/vector.hpp"
 #include "tile/tile_map.hpp"

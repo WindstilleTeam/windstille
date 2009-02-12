@@ -17,7 +17,7 @@
 */
 
 #include <assert.h>
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "sector.hpp"
 #include "tile/tile_map.hpp"
 #include "entity.hpp"

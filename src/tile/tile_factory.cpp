@@ -24,7 +24,7 @@
 #include <sstream>
 #include <iostream>
 #include <memory>
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "tile.hpp"
 #include "tile_packer.hpp"
 #include "tile_factory.hpp"

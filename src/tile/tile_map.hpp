@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "util/field.hpp"
 #include "engine/game_object.hpp"
 #include "display/scene_context.hpp"

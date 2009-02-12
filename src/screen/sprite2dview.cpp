@@ -23,7 +23,7 @@
 #include "display/display.hpp"
 #include "sprite2d/manager.hpp"
 #include "math/math.hpp"
-#include "console.hpp"
+#include "app/console.hpp"
 #include "input/controller.hpp"
 #include "display/surface_manager.hpp"
 #include "sprite2dview.hpp"

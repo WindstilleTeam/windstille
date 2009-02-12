@@ -22,7 +22,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "physfs/physfs_sdl.hpp"
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "tile.hpp"
 #include "tile_packer.hpp"
 #include "tile_factory.hpp"

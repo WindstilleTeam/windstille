@@ -23,8 +23,8 @@
 #include <fstream>
 #include <stdexcept>
 #include <SDL.h>
-#include "console.hpp"
-#include "config.hpp"
+#include "app/console.hpp"
+#include "app/config.hpp"
 #include "math/math.hpp"
 #include "display/opengl_state.hpp"
 #include "display.hpp"

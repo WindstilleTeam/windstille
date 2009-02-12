@@ -28,7 +28,7 @@
 #include "engine/sector.hpp"
 #include "font/fonts.hpp"
 #include "engine/camera.hpp"
-#include "config.hpp"
+#include "app/config.hpp"
 #include "hud/pda.hpp"
 #include "util/sexpr_file_reader.hpp"
 #include "display/display.hpp"

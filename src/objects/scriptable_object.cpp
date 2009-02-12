@@ -17,7 +17,7 @@
 */
 
 
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "scriptable_object.hpp"
 #include "sprite2d/manager.hpp"
 #include "engine/script_manager.hpp"

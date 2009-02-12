@@ -28,7 +28,7 @@
 #include <physfs.h>
 #include "display/drawing_request.hpp"
 #include "display/scene_context.hpp"
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "util/util.hpp"
 #include "display/opengl_state.hpp"
 #include "sprite3d/manager.hpp"

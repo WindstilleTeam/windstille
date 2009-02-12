@@ -23,7 +23,7 @@
 #include <iostream>
 #include "texture.hpp"
 #include "color.hpp"
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "display/display.hpp"
 #include "util/util.hpp"
 

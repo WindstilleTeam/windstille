@@ -11,7 +11,7 @@
 #include <sqstdmath.h>
 #include <sqstdstring.h>
 
-#include "console.hpp"
+#include "app/console.hpp"
 #include "scripting/wrapper.hpp"
 #include "scripting/util.hpp"
 #include "scripting/squirrel_error.hpp"

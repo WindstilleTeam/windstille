@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "objects/player.hpp"
 #include "energy_bar.hpp"
 

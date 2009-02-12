@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_INPUT_CONTROLLER_HPP
 
 #include <vector>
-#include "controller_def.hpp"
+#include "app/controller_def.hpp"
 #include "input_event.hpp"
 
 /** The Controller class presents the current state of the controller

@@ -25,7 +25,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include "util/util.hpp"
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "texture.hpp"
 #include "physfs/physfs_sdl.hpp"
 

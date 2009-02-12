@@ -22,11 +22,11 @@
 #include <string>
 #include <squirrel.h>
 #include "display/scene_context.hpp"
-#include "console.hpp"
+#include "app/console.hpp"
 #include "screen.hpp"
 #include "hud/controller_help_window.hpp"
 #include "sprite2d/sprite.hpp"
-#include "globals.hpp"
+#include "app/globals.hpp"
 
 class PDA;
 class EnergyBar;

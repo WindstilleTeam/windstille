@@ -23,7 +23,7 @@
 #include "hud/dialog_manager.hpp"
 #include "engine/script_manager.hpp"
 #include "physfs/physfs_stream.hpp"
-#include "console.hpp"
+#include "app/console.hpp"
 #include "sprite3d/manager.hpp"
 #include "util/util.hpp"
 

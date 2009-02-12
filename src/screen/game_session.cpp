@@ -24,10 +24,10 @@
 #include <sqstdio.h> 
 #include <sqstdaux.h> 
 
-#include "menu_manager.hpp"
+#include "app/menu_manager.hpp"
 #include "font/fonts.hpp"
 #include "engine/sector.hpp"
-#include "console.hpp"
+#include "app/console.hpp"
 #include "engine/game_object.hpp"
 #include "objects/player.hpp"
 #include "tile/tile_map.hpp"
@@ -35,7 +35,7 @@
 #include "view.hpp"
 #include "hud/energy_bar.hpp"
 #include "hud/dialog_manager.hpp"
-#include "windstille_main.hpp"
+#include "app/windstille_main.hpp"
 #include "display/scene_context.hpp"
 #include "scripting/util.hpp"
 #include "scripting/wrapper.hpp"

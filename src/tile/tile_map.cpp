@@ -22,7 +22,7 @@
 #include "tile_map.hpp"
 #include "tile.hpp"
 #include "tile_factory.hpp"
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "view.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "collision/collision_engine.hpp"

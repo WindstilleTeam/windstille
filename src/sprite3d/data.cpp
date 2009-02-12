@@ -24,7 +24,7 @@
 #include <sstream>
 #include <stdexcept>
 #include "util/util.hpp"
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "display/texture_manager.hpp"
 #include "display/texture.hpp"
 

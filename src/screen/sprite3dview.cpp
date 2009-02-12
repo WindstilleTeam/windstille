@@ -19,7 +19,7 @@
 #include <iostream>
 #include "input/controller.hpp"
 #include "display/display.hpp"
-#include "console.hpp"
+#include "app/console.hpp"
 #include "font/ttf_font.hpp"
 #include "font/fonts.hpp"
 #include "screen_manager.hpp"

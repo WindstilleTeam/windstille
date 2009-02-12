@@ -18,7 +18,7 @@
 */
 
 #include <assert.h>
-#include "controller_def.hpp"
+#include "app/controller_def.hpp"
 #include "controller.hpp"
 
 Controller::Controller()

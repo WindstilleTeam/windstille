@@ -17,7 +17,7 @@
 */
 
 #include <iostream>
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "tile.hpp"
 
 Tile::Tile(unsigned int arg_colmap)

@@ -16,41 +16,25 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include "app/menu_manager.hpp"
-#include "title_screen.hpp"
+#ifndef HEADER_WINDSTILLE_WEAPON_HPP
+#define HEADER_WINDSTILLE_WEAPON_HPP
 
-TitleScreen::TitleScreen()
+/**
+ * Base class for all weapons. This is not a GameObject because it will be
+ * attached and handled by the Player object, not by the sector
+ */
+class Weapon
 {
-  background = Sprite("images/titlescreen.sprite");
-}
-
-TitleScreen::~TitleScreen()
-{
-}
-
-void
-TitleScreen::on_startup()
-{
-  menu_manager.display_main_menu();
-}
-
-void
-TitleScreen::draw()
-{
-  background.draw(Vector(0, 0));
-}
-
-void
-TitleScreen::update(float delta, const Controller& controller)
-{
-  background.update(delta);
-}
-
-void
-TitleScreen::handle_event(const SDL_Event& )
-{
+public:
+  virtual ~Weapon()
+  {}
   
-}
+  virtual void draw(SceneContext& context) = 0;
+  virtual void update(float delta) = 0;
+
+  virtual void fire(bool enable) = 0;
+};
+
+#endif
 
 /* EOF */

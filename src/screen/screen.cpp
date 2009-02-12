@@ -19,12 +19,12 @@
 #include <math.h>
 #include <iostream>
 #include "display/display.hpp"
-#include "windstille_main.hpp"
+#include "app/windstille_main.hpp"
 #include "screen.hpp"
 #include "font/fonts.hpp"
-#include "globals.hpp"
-#include "console.hpp"
-#include "config.hpp"
+#include "app/globals.hpp"
+#include "app/console.hpp"
+#include "app/config.hpp"
 #include "input/input_manager.hpp"
 #include "input/input_manager_sdl.hpp"
 #include "sound/sound_manager.hpp"

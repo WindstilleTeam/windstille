@@ -25,7 +25,7 @@
 #include "engine/script_manager.hpp"
 #include "display/text_area.hpp"
 #include "display/display.hpp"
-#include "config.hpp"
+#include "app/config.hpp"
 
 DialogManager* DialogManager::current_ = 0;
 

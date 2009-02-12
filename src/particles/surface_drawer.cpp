@@ -18,7 +18,7 @@
 
 #include "display/vertex_array_drawing_request.hpp"
 #include "particle_system.hpp"
-#include "../console.hpp" 
+#include "app/console.hpp" 
 #include "display/surface_manager.hpp"
 #include "surface_drawer.hpp"
 

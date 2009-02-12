@@ -20,7 +20,7 @@
 #include <sstream>
 #include <stdexcept>
 #include "util/sexpr_file_reader.hpp"
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "display/scene_context.hpp"
 #include "objects/background_gradient.hpp"
 #include "tile/tile_map.hpp"

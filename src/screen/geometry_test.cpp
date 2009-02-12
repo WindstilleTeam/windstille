@@ -20,9 +20,9 @@
 #include <GL/gl.h>
 #include "geometry_test.hpp"
 #include "math/rect.hpp"
-#include "console.hpp"
+#include "app/console.hpp"
 #include "math/size.hpp"
-#include "controller_def.hpp"
+#include "app/controller_def.hpp"
 #include "input/controller.hpp"
 #include "screen_manager.hpp"
 #include "display/display.hpp"

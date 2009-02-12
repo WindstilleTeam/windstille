@@ -20,7 +20,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include "display/texture.hpp"
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "tile_packer.hpp"
 #include "util/util.hpp"
 #include "display/blitter.hpp"

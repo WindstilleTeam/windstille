@@ -22,7 +22,7 @@
 #include <vector>
 #include <string>
 #include "sprite2d/sprite.hpp"
-#include "globals.hpp"
+#include "app/globals.hpp"
 #include "screen/screen.hpp"
 
 class TextArea;
