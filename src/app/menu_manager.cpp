@@ -61,23 +61,22 @@ MenuManager::display_option_menu()
                                                          manager->get_root()));
 
   // Begin Menu
-  MenuComponent* menu = new MenuComponent(Rectf(), true, group.get());
-  group->pack(menu);
+  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
 
   menu->set_font(Fonts::vera20);
 
-  std::auto_ptr<SliderMenuItem> music_volume_item(new SliderMenuItem(menu,  "Master Volume",   
+  std::auto_ptr<SliderMenuItem> music_volume_item(new SliderMenuItem(menu.get(), "Master Volume",   
                                                                      config.get_int("master-volume"), 0, 100, 10));
   music_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_music_volume, this, _1));
   menu->add_item(music_volume_item.release());
 
-  std::auto_ptr<SliderMenuItem> sfx_volume_item(new SliderMenuItem(menu,  "SFX Volume",   100, 0, 100, 10));
+  std::auto_ptr<SliderMenuItem> sfx_volume_item(new SliderMenuItem(menu.get(), "SFX Volume",   100, 0, 100, 10));
   menu->add_item(sfx_volume_item.release());
 
-  std::auto_ptr<SliderMenuItem> voice_volume_item(new SliderMenuItem(menu,  "Voice Volume", 100, 0, 100, 10));
+  std::auto_ptr<SliderMenuItem> voice_volume_item(new SliderMenuItem(menu.get(), "Voice Volume", 100, 0, 100, 10));
   menu->add_item(voice_volume_item.release());
 
-  std::auto_ptr<EnumMenuItem> aspect_item(new EnumMenuItem(menu,  "Aspect Ratio", 0));
+  std::auto_ptr<EnumMenuItem> aspect_item(new EnumMenuItem(menu.get(), "Aspect Ratio", 0));
   aspect_item->add_pair(0, "4:3");
   aspect_item->add_pair(1, "5:4");
   aspect_item->add_pair(2, "16:9");
@@ -85,37 +84,38 @@ MenuManager::display_option_menu()
   aspect_item->add_pair(4, "letterbox");
   menu->add_item(aspect_item.release());
   
-  std::auto_ptr<EnumMenuItem> show_fps_item(new EnumMenuItem(menu,  "Show FPS", config.get_bool("show-fps")));
+  std::auto_ptr<EnumMenuItem> show_fps_item(new EnumMenuItem(menu.get(), "Show FPS", config.get_bool("show-fps")));
   show_fps_item->add_pair(0, "off");
   show_fps_item->add_pair(1, "on");
   show_fps_item->sig_change().connect(boost::bind(&MenuManager::menu_show_fps, this, _1));
   menu->add_item(show_fps_item.release());
 
-  std::auto_ptr<EnumMenuItem> fullscreen_item(new EnumMenuItem(menu,  "Fullscreen", config.get_bool("fullscreen")));
+  std::auto_ptr<EnumMenuItem> fullscreen_item(new EnumMenuItem(menu.get(), "Fullscreen", config.get_bool("fullscreen")));
   fullscreen_item->add_pair(0, "off");
   fullscreen_item->add_pair(1, "on");
   fullscreen_item->sig_change().connect(boost::bind(&MenuManager::menu_fullscreen, this, _1));
   menu->add_item(fullscreen_item.release());
 
-  std::auto_ptr<EnumMenuItem> difficulty_item(new EnumMenuItem(menu,  "Difficulty", 1));
+  std::auto_ptr<EnumMenuItem> difficulty_item(new EnumMenuItem(menu.get(), "Difficulty", 1));
   difficulty_item->add_pair(0, "easy");
   difficulty_item->add_pair(1, "medium");
   difficulty_item->add_pair(2, "hard");
   menu->add_item(difficulty_item.release());
 
-  std::auto_ptr<SliderMenuItem> gamma_item(new SliderMenuItem(menu,  "Gamma",  100, 10, 200, 10));
+  std::auto_ptr<SliderMenuItem> gamma_item(new SliderMenuItem(menu.get(), "Gamma",  100, 10, 200, 10));
   gamma_item->sig_change().connect(boost::bind(&MenuManager::menu_gamma, this, _1));
   menu->add_item(gamma_item.release());
 
 #ifdef HAVE_CWIID
   if (wiimote)
     {
-      std::auto_ptr<ButtonMenuItem> wiimote_button(new ButtonMenuItem(menu,  "Try to Connect Wiimote"));
+      std::auto_ptr<ButtonMenuItem> wiimote_button(new ButtonMenuItem(menu.get(), "Try to Connect Wiimote"));
       wiimote_button->sig_click().connect(boost::bind(&MenuManager::menu_wiimote, this));
       menu->add_item(wiimote_button.release());
     }
 #endif
 
+  group->pack(menu.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release());
 }
@@ -130,8 +130,7 @@ MenuManager::display_main_menu()
                                                               "",
                                                               manager->get_root()));
 
-  TextView* text = new TextView(Rectf(), text_group.get());
-  text_group->pack(text);
+  std::auto_ptr<TextView> text(new TextView(text_group->get_child_rect(), text_group.get()));
   text->set_font(Fonts::vera12);
   text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
                  "\n"
@@ -139,7 +138,7 @@ MenuManager::display_main_menu()
                  "it under the terms of the GNU General Public License as published by "
                  "the Free Software Foundation, either version 3 of the License, or "
                  "(at your option) any later version.");
-
+  text_group->pack(text.release());
   manager->get_root()->add_child(text_group.release());
 
   std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-20, 200), Sizef(250, 254)),
@@ -147,52 +146,52 @@ MenuManager::display_main_menu()
                                                          manager->get_root()));
 
   // Begin Menu
-  MenuComponent* menu = new MenuComponent(Rectf(), false, group.get());
-  group->pack(menu);
+  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), false, group.get()));
 
   menu->set_font(Fonts::vera20);
 
-  std::auto_ptr<ButtonMenuItem> select_scenario_button(new ButtonMenuItem(menu,  "Select Scenario"));
+  std::auto_ptr<ButtonMenuItem> select_scenario_button(new ButtonMenuItem(menu.get(), "Select Scenario"));
   select_scenario_button->sig_click().connect(boost::bind(&MenuManager::display_scenario_menu, this));
   menu->add_item(select_scenario_button.release());
 
-  std::auto_ptr<ButtonMenuItem> navigation_test_button(new ButtonMenuItem(menu,  "Navigation Test"));
+  std::auto_ptr<ButtonMenuItem> navigation_test_button(new ButtonMenuItem(menu.get(), "Navigation Test"));
   navigation_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_navigation_test, this));
   menu->add_item(navigation_test_button.release());
 
-  std::auto_ptr<ButtonMenuItem> armature_test_button(new ButtonMenuItem(menu,  "Armature Test"));
+  std::auto_ptr<ButtonMenuItem> armature_test_button(new ButtonMenuItem(menu.get(), "Armature Test"));
   armature_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_armature_test, this));
   menu->add_item(armature_test_button.release());
 
-  std::auto_ptr<ButtonMenuItem> geometry_test_button(new ButtonMenuItem(menu,  "Geometry Test"));
+  std::auto_ptr<ButtonMenuItem> geometry_test_button(new ButtonMenuItem(menu.get(), "Geometry Test"));
   geometry_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_geometry_test, this));
   menu->add_item(geometry_test_button.release());
 
-  std::auto_ptr<ButtonMenuItem> model_viewer_button(new ButtonMenuItem(menu,  "Model Viewer"));
+  std::auto_ptr<ButtonMenuItem> model_viewer_button(new ButtonMenuItem(menu.get(), "Model Viewer"));
   model_viewer_button->sig_click().connect(boost::bind(&MenuManager::display_models_menu, this));
   menu->add_item(model_viewer_button.release());
 
-  std::auto_ptr<ButtonMenuItem> particles_button(new ButtonMenuItem(menu,  "Particle Systems"));
+  std::auto_ptr<ButtonMenuItem> particles_button(new ButtonMenuItem(menu.get(), "Particle Systems"));
   particles_button->sig_click().connect(boost::bind(&MenuManager::display_particle_menu, this));
   menu->add_item(particles_button.release());
 
-  std::auto_ptr<ButtonMenuItem> options_button(new ButtonMenuItem(menu,  "Options"));
+  std::auto_ptr<ButtonMenuItem> options_button(new ButtonMenuItem(menu.get(), "Options"));
   options_button->sig_click().connect(boost::bind(&MenuManager::display_option_menu, this));
   menu->add_item(options_button.release());
 
-  std::auto_ptr<ButtonMenuItem> credits_button(new ButtonMenuItem(menu,  "Credits"));
+  std::auto_ptr<ButtonMenuItem> credits_button(new ButtonMenuItem(menu.get(), "Credits"));
   credits_button->sig_click().connect(boost::bind(&MenuManager::display_credits, this));
   menu->add_item(credits_button.release());
 
-  std::auto_ptr<ButtonMenuItem> help_button(new ButtonMenuItem(menu,  "Help"));
+  std::auto_ptr<ButtonMenuItem> help_button(new ButtonMenuItem(menu.get(), "Help"));
   help_button->sig_click().connect(boost::bind(&MenuManager::display_help, this));
   menu->add_item(help_button.release());
 
-  std::auto_ptr<ButtonMenuItem> quit_button(new ButtonMenuItem(menu,  "Quit"));
+  std::auto_ptr<ButtonMenuItem> quit_button(new ButtonMenuItem(menu.get(), "Quit"));
   quit_button->sig_click().connect(boost::bind(&MenuManager::menu_quit, this));
   menu->add_item(quit_button.release());
   // End: Option Menu
 
+  group->pack(menu.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release());
 }
@@ -208,41 +207,40 @@ MenuManager::display_pause_menu()
                                                          manager->get_root()));
 
   // Begin Menu
-  MenuComponent* menu = new MenuComponent(Rectf(Vector2f(400-150, 200), Sizef(300, 500)), true,
-                                          group.get());
-  group->pack(menu);
-
+  std::auto_ptr<MenuComponent> menu(new MenuComponent(Rectf(Vector2f(400-150, 200), Sizef(300, 500)), true,
+                                                      group.get()));
   menu->set_font(Fonts::vera20);
 
-  std::auto_ptr<ButtonMenuItem> continue_button(new ButtonMenuItem(menu,  "Resume Game"));
+  std::auto_ptr<ButtonMenuItem> continue_button(new ButtonMenuItem(menu.get(), "Resume Game"));
   continue_button->sig_click().connect(boost::bind(&MenuManager::menu_continue, this));
   menu->add_item(continue_button.release());
 
-  //  std::auto_ptr<ButtonMenuItem> select_scenario_button(new ButtonMenuItem(menu,  "Select Scenario"));
+  //  std::auto_ptr<ButtonMenuItem> select_scenario_button(new ButtonMenuItem(menu.get(), "Select Scenario"));
   //  select_scenario_button->sig_click().connect(boost::bind(&MenuManager::display_scenario_menu, this));
   // menu->add_item(select_scenario_button);
 
-  std::auto_ptr<ButtonMenuItem> options_button(new ButtonMenuItem(menu,  "Options"));
+  std::auto_ptr<ButtonMenuItem> options_button(new ButtonMenuItem(menu.get(), "Options"));
   options_button->sig_click().connect(boost::bind(&MenuManager::display_option_menu, this));
   menu->add_item(options_button.release());
 
-  std::auto_ptr<ButtonMenuItem> debug_button(new ButtonMenuItem(menu,  "Debug"));
+  std::auto_ptr<ButtonMenuItem> debug_button(new ButtonMenuItem(menu.get(), "Debug"));
   debug_button->sig_click().connect(boost::bind(&MenuManager::display_debug_menu, this));
   menu->add_item(debug_button.release());
 
-  std::auto_ptr<ButtonMenuItem> credits_button(new ButtonMenuItem(menu,  "Credits"));
+  std::auto_ptr<ButtonMenuItem> credits_button(new ButtonMenuItem(menu.get(), "Credits"));
   credits_button->sig_click().connect(boost::bind(&MenuManager::display_credits, this));
   menu->add_item(credits_button.release());
 
-  std::auto_ptr<ButtonMenuItem> help_button(new ButtonMenuItem(menu,  "Help"));
+  std::auto_ptr<ButtonMenuItem> help_button(new ButtonMenuItem(menu.get(), "Help"));
   help_button->sig_click().connect(boost::bind(&MenuManager::display_help, this));
   menu->add_item(help_button.release());
 
-  std::auto_ptr<ButtonMenuItem> quit_button(new ButtonMenuItem(menu,  "Return to Title Screen"));
+  std::auto_ptr<ButtonMenuItem> quit_button(new ButtonMenuItem(menu.get(), "Return to Title Screen"));
   quit_button->sig_click().connect(boost::bind(&MenuManager::menu_exit, this));
   menu->add_item(quit_button.release());
   // End: Option Menu
 
+  group->pack(menu.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release()); 
 }
@@ -257,9 +255,7 @@ MenuManager::display_models_menu()
                                                          "Select Model",
                                                          manager->get_root()));
 
-  MenuComponent* menu = new MenuComponent(Rectf(), true, group.get());
-  group->pack(menu);
-
+  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
   menu->set_font(Fonts::vera20);
 
   std::vector<std::string> models;
@@ -278,11 +274,12 @@ MenuManager::display_models_menu()
 
   for(std::vector<std::string>::iterator i = models.begin(); i != models.end(); ++i)
     {
-      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu,  *i));
+      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu.get(), *i));
       scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_show_model, this, std::string(*i)));
       menu->add_item(scenario_button.release());
     }
 
+  group->pack(menu.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release());  
 }
@@ -297,21 +294,20 @@ MenuManager::display_particle_menu()
                                                          "Particle Systems",
                                                          manager->get_root()));
 
-  MenuComponent* menu(new MenuComponent(Rectf(), true, group.get()));
-
+  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
   menu->set_font(Fonts::vera20);
-  group->pack(menu);
 
   std::vector<std::string> scenarios;
   scenarios.push_back("particlesystems/fire.particles");
   
   for(std::vector<std::string>::iterator i = scenarios.begin(); i != scenarios.end(); ++i)
     {
-      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu, *i));
+      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu.get(), *i));
       scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_show_particle_system, this, *i));
       menu->add_item(scenario_button.release());
     }
 
+  group->pack(menu.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release());
 }
@@ -326,9 +322,7 @@ MenuManager::display_scenario_menu()
                                                          "Select Scenario",
                                                          manager->get_root()));
 
-  MenuComponent* menu = new MenuComponent(Rectf(), true, group.get());
-  group->pack(menu);
-
+  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
   menu->set_font(Fonts::vera20);
 
   std::vector<std::string> scenarios;
@@ -342,11 +336,12 @@ MenuManager::display_scenario_menu()
   
   for(std::vector<std::string>::iterator i = scenarios.begin(); i != scenarios.end(); ++i)
     {
-      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu,  *i));
+      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu.get(), *i));
       scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_start_scenario, this, *i));
       menu->add_item(scenario_button.release());
     }
 
+  group->pack(menu.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release());
 }
@@ -362,25 +357,24 @@ MenuManager::display_debug_menu()
                                                          manager->get_root()));
 
   // Begin Menu
-  MenuComponent* menu = new MenuComponent(Rectf(), true, group.get());
-  group->pack(menu);
-
+  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
   menu->set_font(Fonts::vera20);
 
   Color amb = Sector::current()->get_ambient_light();
 
-  std::auto_ptr<SliderMenuItem> r_ambient_light_item(new SliderMenuItem(menu,  "Ambient Light (Red)", int(amb.r*100), 0, 100, 10));
+  std::auto_ptr<SliderMenuItem> r_ambient_light_item(new SliderMenuItem(menu.get(), "Ambient Light (Red)", int(amb.r*100), 0, 100, 10));
   r_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, this, _1, 0));
   menu->add_item(r_ambient_light_item.release());
 
-  std::auto_ptr<SliderMenuItem> g_ambient_light_item(new SliderMenuItem(menu,  "Ambient Light (Green)", int(amb.g*100), 0, 100, 10));
+  std::auto_ptr<SliderMenuItem> g_ambient_light_item(new SliderMenuItem(menu.get(), "Ambient Light (Green)", int(amb.g*100), 0, 100, 10));
   g_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, this, _1, 1));
   menu->add_item(g_ambient_light_item.release());
 
-  std::auto_ptr<SliderMenuItem> b_ambient_light_item(new SliderMenuItem(menu,  "Ambient Light (Blue)", int(amb.b*100), 0, 100, 10));
+  std::auto_ptr<SliderMenuItem> b_ambient_light_item(new SliderMenuItem(menu.get(), "Ambient Light (Blue)", int(amb.b*100), 0, 100, 10));
   b_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, this, _1, 2));
   menu->add_item(b_ambient_light_item.release());
 
+  group->pack(menu.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release()); 
 }
@@ -395,8 +389,7 @@ MenuManager::display_help()
                                                          "Help",
                                                          manager->get_root()));
 
-  TextView* text = new TextView(Rectf(), group.get());
-  group->pack(text);
+  std::auto_ptr<TextView> text(new TextView(group->get_child_rect(), group.get()));
 
   text->set_font(Fonts::vera12);
   text->set_text("This is a tech-demo of Windstille. Its not meant "
@@ -421,6 +414,7 @@ MenuManager::display_help()
                  );
   text->set_active(true);
 
+  group->pack(text.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release());
 }
@@ -435,8 +429,7 @@ MenuManager::display_credits()
                                                          "Credits",
                                                          manager->get_root()));
 
-  TextView* text = new TextView(Rectf(), group.get());
-  group->pack(text);
+  std::auto_ptr<TextView> text(new TextView(group->get_child_rect(), group.get()));
 
   text->set_font(Fonts::vera12);
   text->set_text("Programming\n"
@@ -463,6 +456,7 @@ MenuManager::display_credits()
                  "  Marek Moeckel - Wansti - &lt;wansti@gmx.de&gt;\n");
   text->set_active(true);
 
+  group->pack(text.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release());
 }
