@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_PISTOL_HPP
 
 #include "sprite3d/sprite3d.hpp"
-#include "weapon.hpp"
+#include "engine/weapon.hpp"
 
 class LaserPointer;
 

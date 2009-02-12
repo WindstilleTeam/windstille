@@ -23,7 +23,7 @@
 #include "tile.hpp"
 #include "tile_factory.hpp"
 #include "app/globals.hpp"
-#include "view.hpp"
+#include "screen/view.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "collision/collision_engine.hpp"
 #include <inttypes.h>

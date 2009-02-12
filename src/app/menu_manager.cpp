@@ -126,7 +126,7 @@ MenuManager::display_main_menu()
   using namespace gui;
   GUIManager* manager = new GUIManager();
 
-  GroupComponent* text_group = new GroupComponent(Rectf(10, 500+20, 800-10, 600-10),
+  GroupComponent* text_group = new GroupComponent(Rectf(10, 500, 800-10, 600-10),
                                                   "",
                                                   manager->get_root());
 
@@ -142,7 +142,7 @@ MenuManager::display_main_menu()
 
   manager->get_root()->add_child(text_group);
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector(400-25, 200), Sizef(250, 294)),
+  GroupComponent* group = new GroupComponent(Rectf(Vector(400-20, 200), Sizef(250, 254)),
                                              "",
                                              manager->get_root());
 

@@ -191,7 +191,7 @@ env.Program('../windstille', [
 'util/response_curve.cpp',
 'util/sexpr_file_reader.cpp',
 'util/util.cpp',
-'view.cpp',
+'screen/view.cpp',
 ])
 
 # EOF #

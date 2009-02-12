@@ -62,7 +62,7 @@ void
 TextView::set_screen_rect(const Rectf& rect)
 {
   Component::set_screen_rect(rect);
-  text_area.set_rect(rect);
+  text_area.set_rect(rect.grow(-16.0f, -4.0f));
 }
 
 void

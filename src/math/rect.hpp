@@ -357,9 +357,16 @@ public:
 	// Moves each edge f away from the center, thus width = old_width + 2*f
 	Rectf grow(float f) const {
 		return Rectf(left   - f, 
-						 top    - f,
-						 right  + f,
-						 bottom + f);
+                             top    - f,
+                             right  + f,
+                             bottom + f);
+	}
+
+        Rectf grow(float x, float y) const {
+		return Rectf(left   - x, 
+                             top    - y,
+                             right  + x,
+                             bottom + y);
 	}
 };
 

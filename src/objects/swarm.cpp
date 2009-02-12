@@ -21,7 +21,7 @@
 #include "engine/sector.hpp"
 #include "hedgehog.hpp"
 #include "screen/game_session.hpp"
-#include "view.hpp"
+#include "screen/view.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "math/random.hpp"
 #include "swarm.hpp"
