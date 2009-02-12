@@ -22,7 +22,7 @@
 #include <vector>
 #include "engine/game_object.hpp"
 #include "sprite3d/sprite3d.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 
 class TestObject : public GameObject
 {

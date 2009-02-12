@@ -116,7 +116,7 @@ env.Program('../windstille', [
 'math/quaternion.cpp',
 'math/random.cpp',
 'math/rect.cpp',
-'math/vector.cpp',
+'math/vector2f.cpp',
 'navigation/navigation_graph.cpp',
 'navigation/node.cpp',
 'navigation/properties.cpp',

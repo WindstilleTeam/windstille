@@ -17,7 +17,7 @@
 */
 
 #include "surface.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "display/opengl_state.hpp"
 #include "surface_drawing_parameters.hpp"
 #include "surface_manager.hpp"

@@ -21,7 +21,7 @@
 
 #include "display/graphic_context_state.hpp"
 #include "engine/camera.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 
 class Controller;
 class SceneContext;

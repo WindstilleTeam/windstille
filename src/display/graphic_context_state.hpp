@@ -19,7 +19,7 @@
 #define HEADER_WINDSTILLE_GRAPHIC_CONTEXT_STATE_HPP
 
 #include "math/rect.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include <boost/shared_ptr.hpp>
 
 class SceneContext;

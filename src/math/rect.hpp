@@ -31,7 +31,7 @@
 #define __MATH_RECT_HPP__
 
 #include "math/origin.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "math/size.hpp"
 
 class Rectf;

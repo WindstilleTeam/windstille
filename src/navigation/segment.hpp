@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_NAVIGATION_SEGMENT_HPP
 
 #include "math/line.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "properties.hpp"
 
 class Node;

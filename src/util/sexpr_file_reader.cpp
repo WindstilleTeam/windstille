@@ -22,7 +22,7 @@
 #include "lisp/getters.hpp"
 #include "display/color.hpp"
 #include "math/size.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "math/vector3.hpp"
 #include "file_reader_impl.hpp"
 #include "sexpr_file_reader.hpp"

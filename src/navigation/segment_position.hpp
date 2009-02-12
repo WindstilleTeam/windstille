@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_NAVIGATION_SEGMENT_POSITION_HPP
 #define HEADER_WINDSTILLE_NAVIGATION_SEGMENT_POSITION_HPP
 
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 
 class Segment;
 class Node;

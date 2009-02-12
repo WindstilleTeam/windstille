@@ -26,7 +26,7 @@
 #include <GL/gl.h>
 #include "util/util.hpp"
 #include "util/file_reader.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "display/surface.hpp"
 #include "util/ref.hpp"
 

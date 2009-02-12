@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_ENTITY_HPP
 
 #include <boost/signal.hpp>
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "engine/game_object.hpp"
 #include "collision/collision_object.hpp"
 

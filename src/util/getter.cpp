@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "math/vector3.hpp"
 #include "math/quaternion.hpp"
 #include "math/matrix.hpp"

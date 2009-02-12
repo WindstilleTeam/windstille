@@ -25,7 +25,7 @@
 #include <GL/gl.h>
 #include "display/color.hpp"
 #include "display/surface.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "math/matrix.hpp"
 #include "manager.hpp"
 

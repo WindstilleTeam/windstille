@@ -17,7 +17,7 @@
 
 #include <cmath>
 #include <iostream>
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 
 void
 Vector2f::normalize()

@@ -21,7 +21,7 @@
 #define HEADER_WINDSTILLE_COLLISION_COLLISION_DATA_HPP
 
 #include <iostream>
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 
 class CollisionObject;
 

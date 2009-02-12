@@ -23,7 +23,7 @@
 #include <stdint.h>
 #include "engine/game_object.hpp"
 #include "display/scene_context.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "math/matrix.hpp"
 #include "sprite3d/data.hpp"
 

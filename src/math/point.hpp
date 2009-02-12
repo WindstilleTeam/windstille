@@ -38,7 +38,7 @@
 #endif
 
 #include <cmath>
-#include "vector.hpp"
+#include "vector2f.hpp"
 
 class Vector2f;
 

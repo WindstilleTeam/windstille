@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_DRAWING_REQUEST_HPP
 #define HEADER_WINDSTILLE_DISPLAY_DRAWING_REQUEST_HPP
 
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "math/rect.hpp"
 #include "math/matrix.hpp"
 #include "texture.hpp"

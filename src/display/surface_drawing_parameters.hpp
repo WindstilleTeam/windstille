@@ -21,7 +21,7 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "color.hpp"
 
 /** Helper class which holds all the parameters that you can tweak

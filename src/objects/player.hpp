@@ -24,7 +24,7 @@
 #include "input/controller.hpp"
 #include "sprite3d/sprite3d.hpp"
 #include "sound/sound_source.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "app/globals.hpp"
 #include "engine/entity.hpp"
 #include "util/ref.hpp"

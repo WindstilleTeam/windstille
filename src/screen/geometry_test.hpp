@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_GEOMETRY_TEST_HPP
 
 #include "screen.hpp"
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 #include "math/line.hpp"
 
 /** */

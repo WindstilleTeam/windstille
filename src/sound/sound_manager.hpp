@@ -26,7 +26,7 @@
 #include <AL/alc.h>
 #include <AL/al.h>
 
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 
 typedef void* SoundHandle;
 

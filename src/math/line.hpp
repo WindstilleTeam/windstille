@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_MATH_LINE_HPP
 #define HEADER_WINDSTILLE_MATH_LINE_HPP
 
-#include "math/vector.hpp"
+#include "math/vector2f.hpp"
 
 /** */
 class Line
