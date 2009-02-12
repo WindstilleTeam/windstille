@@ -71,7 +71,7 @@ public:
   void draw(const Texture& tmp_texture) {
     glPushMatrix();
     glMultMatrixf(modelview.matrix);
-    Fonts::ttffont->draw(int(pos.x), int(pos.y), text);
+    Fonts::ttffont->draw(pos, text);
     glPopMatrix();
   }
 };

@@ -46,14 +46,14 @@ MenuItem::draw(const Rectf& rect, bool is_active)
     font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
   }
 
-  font->draw(rect.left + font->get_height(), rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f,
+  font->draw(Vector(rect.left + font->get_height(), rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
              label, font_color);
-      
 }
 
 void
 MenuItem::update(float delta)
 {
+  
 }
 
 EnumMenuItem::EnumMenuItem(MenuComponent* parent_, 
@@ -109,8 +109,8 @@ EnumMenuItem::draw(const Rectf& rect, bool is_active)
       font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
     }
 
-  font->draw(rect.right - font->get_height() - font->get_width(labels[index].label),
-             rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f,
+  font->draw(Vector(rect.right - font->get_height() - font->get_width(labels[index].label),
+                    rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
              labels[index].label,
              font_color);
 }

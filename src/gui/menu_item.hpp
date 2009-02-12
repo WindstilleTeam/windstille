@@ -28,21 +28,26 @@ namespace gui {
 
 class MenuComponent;
 
-class MenuItem {
+class MenuItem 
+{
 public:
   MenuComponent* parent;
   std::string label;
 
   MenuItem(MenuComponent* parent_, const std::string& label_);
   virtual ~MenuItem() {}
+
   virtual void incr() =0;
   virtual void decr() =0;
+
   virtual void click() =0;
+
   virtual void draw(const Rectf& rect, bool is_active);
   virtual void update(float delta);
 };
 
-class EnumMenuItem : public MenuItem {
+class EnumMenuItem : public MenuItem 
+{
 private: // FIXME: Convert this into a generic enum/value slider
   struct EnumValue {
     std::string label;
@@ -68,7 +73,8 @@ public:
 
 /** A slider widget for use in volume controls, gamma controls and
     things like that */
-class SliderMenuItem : public MenuItem {
+class SliderMenuItem : public MenuItem 
+{
 public:
   int value;
   int min_value;
@@ -86,7 +92,8 @@ public:
   boost::signal<void (int)>& sig_change() { return on_change; }
 };
 
-class ButtonMenuItem : public MenuItem {
+class ButtonMenuItem : public MenuItem 
+{
 public:
   boost::signal<void ()> on_click;
 

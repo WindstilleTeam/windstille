@@ -46,7 +46,7 @@ GroupComponent::draw()
   if (!title.empty())
     {
       TTFFont* font = Fonts::vera20;
-      font->draw_center(rect.left + rect.get_width()/2, rect.top + font->get_height() + 5, 
+      font->draw_center(Vector(rect.left + rect.get_width()/2, rect.top + font->get_height() + 5), 
                         title, Color(1.0f, 1.0f, 1.0f));
 
       Display::fill_rect(Rectf(rect.left  + 8, rect.top + font->get_height() + 16,

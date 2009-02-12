@@ -319,7 +319,7 @@ ScreenManager::draw_fps()
   
   char output[20];
   snprintf(output, sizeof(output), "FPS: %d", last_fps);
-  Fonts::ttffont->draw(Display::get_width() - 100, 30, output);
+  Fonts::ttffont->draw(Vector(Display::get_width() - 100, 30), output);
 }
 
 void

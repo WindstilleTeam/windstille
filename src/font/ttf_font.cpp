@@ -177,11 +177,11 @@ TTFFont::get_height() const
 }
 
 void
-TTFFont::draw(float x_pos, float y_pos, const std::string& str, const Color& color)
+TTFFont::draw(const Vector& pos_, const std::string& str, const Color& color)
 {
   // FIXME: Little bit hacky to throw it just in
-  x_pos = static_cast<int>(x_pos);
-  y_pos = static_cast<int>(y_pos);
+  Vector pos(static_cast<int>(pos_.x),
+             static_cast<int>(pos_.y));
 
   OpenGLState state;
 
@@ -200,30 +200,30 @@ TTFFont::draw(float x_pos, float y_pos, const std::string& str, const Color& col
       const TTFCharacter& character = impl->characters[*i];
       
       glTexCoord2f(character.uv.left, character.uv.top);
-      glVertex2f(x_pos + character.pos.left + mx,
-                 y_pos + character.pos.top  + my);
+      glVertex2f(pos.x + character.pos.left + mx,
+                 pos.y + character.pos.top  + my);
 
       glTexCoord2f(character.uv.right, character.uv.top);
-      glVertex2f(x_pos + character.pos.right + mx, 
-                 y_pos + character.pos.top   + my);
+      glVertex2f(pos.x + character.pos.right + mx, 
+                 pos.y + character.pos.top   + my);
 
       glTexCoord2f(character.uv.right, character.uv.bottom);
-      glVertex2f(x_pos + character.pos.right  + mx, 
-                 y_pos + character.pos.bottom + my);
+      glVertex2f(pos.x + character.pos.right  + mx, 
+                 pos.y + character.pos.bottom + my);
 
       glTexCoord2f(character.uv.left, character.uv.bottom);
-      glVertex2f(x_pos + character.pos.left   + mx, 
-                 y_pos + character.pos.bottom + my);
+      glVertex2f(pos.x + character.pos.left   + mx, 
+                 pos.y + character.pos.bottom + my);
 
-      x_pos += character.advance;       
+      pos.x += character.advance;       
     }
   glEnd();
 }
 
 void
-TTFFont::draw_center(float x_pos, float y_pos, const std::string& str, const Color& color)
+TTFFont::draw_center(const Vector& pos, const std::string& str, const Color& color)
 {
-  draw(x_pos - get_width(str)/2, y_pos, str, color);
+  draw(Vector(pos.x - get_width(str)/2, pos.y), str, color);
 }
 
 int

@@ -84,11 +84,11 @@ Sprite3DView::draw()
   for(int i = 0; i < int(actions.size()); ++i)
     {
       if (i == current_action)
-        Fonts::vera12->draw(x, y,
-                               actions[i], Color(1.0f, 1.0f, 1.0f));
+        Fonts::vera12->draw(Vector(x, y),
+                            actions[i], Color(1.0f, 1.0f, 1.0f));
       else
-        Fonts::vera12->draw(x, y,
-                               actions[i], Color(0.7f, 0.7f, 0.7f));
+        Fonts::vera12->draw(Vector(x, y),
+                            actions[i], Color(0.7f, 0.7f, 0.7f));
 
 
       y += line_height;

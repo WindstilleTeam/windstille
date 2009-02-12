@@ -59,12 +59,12 @@ TabComponent::draw()
 
       Display::draw_rounded_rect(tab_rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-      Fonts::vera20->draw_center(rect.left + tab_width * i + tab_width/2,
-                                    rect.top + Fonts::vera20->get_height(),
-                                    tabs[i].label,
-                                    tabs[current_tab].component->is_active()
-                                    ? Color(1.0f, 1.0f, 1.0f, 0.5f) 
-                                    : Color(1.0f, 1.0f, 1.0f, 1.0f));
+      Fonts::vera20->draw_center(Vector(rect.left + tab_width * i + tab_width/2,
+                                        rect.top + Fonts::vera20->get_height()),
+                                 tabs[i].label,
+                                 tabs[current_tab].component->is_active()
+                                 ? Color(1.0f, 1.0f, 1.0f, 0.5f) 
+                                 : Color(1.0f, 1.0f, 1.0f, 1.0f));
     }
 
   tabs[current_tab].component->draw();

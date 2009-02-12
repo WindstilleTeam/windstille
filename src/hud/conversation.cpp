@@ -92,18 +92,18 @@ Conversation::draw()
           
           Display::fill_arc(pos, 42.0f, start, end, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
           Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
-          Fonts::vera20->draw_center(textpos.x + distance * offset.x,
-                                     textpos.y + distance * offset.y, 
+          Fonts::vera20->draw_center(Vector(textpos.x + distance * offset.x,
+                                            textpos.y + distance * offset.y), 
                                      choices[i].topic, Color(1.0f, 1.0f, 1.0f));
 
-          Fonts::vera20->draw_center(400, 600 - 64,
+          Fonts::vera20->draw_center(Vector(400, 600 - 64),
                                      choices[i].text, Color(1.0f, 1.0f, 1.0f));
         }
       else
         {
           Display::fill_rounded_rect(rect, 5.0f, Color(0.25f, 0.25f, 0.25f, 0.75f));
-          Fonts::vera20->draw_center(textpos.x + distance * offset.x,
-                                     textpos.y + distance * offset.y,
+          Fonts::vera20->draw_center(Vector(textpos.x + distance * offset.x,
+                                            textpos.y + distance * offset.y),
                                      choices[i].topic, Color(0.5f, 0.5f, 0.5f));
         }
 
