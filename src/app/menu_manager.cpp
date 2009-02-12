@@ -54,15 +54,14 @@ void
 MenuManager::display_option_menu()
 {
   using namespace gui;
-  GUIManager* manager = new GUIManager();
+  std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-250, 300-170), Sizef(500, 340)), 
-                                             "Options",
-                                             manager->get_root());
+  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-250, 300-170), Sizef(500, 340)), 
+                                                         "Options",
+                                                         manager->get_root()));
 
   // Begin Menu
-  MenuComponent* menu = new MenuComponent(Rectf(), true,
-                                          group);
+  MenuComponent* menu = new MenuComponent(Rectf(), true, group.get());
   group->pack(menu);
 
   menu->set_font(Fonts::vera20);
@@ -108,31 +107,31 @@ MenuManager::display_option_menu()
   gamma_item->sig_change().connect(boost::bind(&MenuManager::menu_gamma, this, _1));
   menu->add_item(gamma_item);
 
-  #ifdef HAVE_CWIID
+#ifdef HAVE_CWIID
   if (wiimote)
     {
       ButtonMenuItem* wiimote_button = new ButtonMenuItem(menu,  "Try to Connect Wiimote");
       wiimote_button->sig_click().connect(boost::bind(&MenuManager::menu_wiimote, this));
       menu->add_item(wiimote_button);
     }
-  #endif
+#endif
 
-  manager->get_root()->add_child(group);
+  manager->get_root()->add_child(group.release());
   group->layout();
-  screen_manager.push_overlay(manager);
+  screen_manager.push_overlay(manager.release());
 }
 
 void
 MenuManager::display_main_menu()
 {
   using namespace gui;
-  GUIManager* manager = new GUIManager();
+  std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  GroupComponent* text_group = new GroupComponent(Rectf(10, 500, 800-10, 600-10),
-                                                  "",
-                                                  manager->get_root());
+  std::auto_ptr<GroupComponent> text_group(new GroupComponent(Rectf(10, 500, 800-10, 600-10),
+                                                              "",
+                                                              manager->get_root()));
 
-  TextView* text = new TextView(Rectf(), text_group);
+  TextView* text = new TextView(Rectf(), text_group.get());
   text_group->pack(text);
   text->set_font(Fonts::vera12);
   text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
@@ -142,15 +141,14 @@ MenuManager::display_main_menu()
                  "the Free Software Foundation, either version 3 of the License, or "
                  "(at your option) any later version.");
 
-  manager->get_root()->add_child(text_group);
+  manager->get_root()->add_child(text_group.release());
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-20, 200), Sizef(250, 254)),
-                                             "",
-                                             manager->get_root());
+  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-20, 200), Sizef(250, 254)),
+                                                         "",
+                                                         manager->get_root()));
 
   // Begin Menu
-  MenuComponent* menu = new MenuComponent(Rectf(), false,
-                                          group);
+  MenuComponent* menu = new MenuComponent(Rectf(), false, group.get());
   group->pack(menu);
 
   menu->set_font(Fonts::vera20);
@@ -196,24 +194,24 @@ MenuManager::display_main_menu()
   menu->add_item(quit_button);
   // End: Option Menu
 
-  manager->get_root()->add_child(group);
+  manager->get_root()->add_child(group.release());
   group->layout();
-  screen_manager.push_overlay(manager);
+  screen_manager.push_overlay(manager.release());
 }
 
 void
 MenuManager::display_pause_menu()
 {
   using namespace gui;
-  GUIManager* manager = new GUIManager();
+  std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-200, 300-170), Sizef(400, 300)), 
-                                             "Pause Menu",
-                                             manager->get_root());
+  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-200, 300-170), Sizef(400, 300)), 
+                                                         "Pause Menu",
+                                                         manager->get_root()));
 
   // Begin Menu
   MenuComponent* menu = new MenuComponent(Rectf(Vector2f(400-150, 200), Sizef(300, 500)), true,
-                                          group);
+                                          group.get());
   group->pack(menu);
 
   menu->set_font(Fonts::vera20);
@@ -247,22 +245,21 @@ MenuManager::display_pause_menu()
   menu->add_item(quit_button);
   // End: Option Menu
 
-  manager->get_root()->add_child(group);
-
-  screen_manager.push_overlay(manager); 
+  manager->get_root()->add_child(group.release());
+  screen_manager.push_overlay(manager.release()); 
 }
 
 void
 MenuManager::display_models_menu()
 {
   using namespace gui;
-  GUIManager* manager = new GUIManager();
+  std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-275, 100), Sizef(550, 376)),  // 378
-                                             "Select Model",
-                                             manager->get_root());
+  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-275, 100), Sizef(550, 376)),  // 378
+                                                         "Select Model",
+                                                         manager->get_root()));
 
-  MenuComponent* menu = new MenuComponent(Rectf(), true, group);
+  MenuComponent* menu = new MenuComponent(Rectf(), true, group.get());
   group->pack(menu);
 
   menu->set_font(Fonts::vera20);
@@ -290,9 +287,8 @@ MenuManager::display_models_menu()
       menu->add_item(scenario_button);
     }
 
-  manager->get_root()->add_child(group);
-
-  screen_manager.push_overlay(manager);  
+  manager->get_root()->add_child(group.release());
+  screen_manager.push_overlay(manager.release());  
 }
 
 void
@@ -328,13 +324,13 @@ void
 MenuManager::display_scenario_menu()
 {
   using namespace gui;
-  GUIManager* manager = new GUIManager();
+  std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-200, 300-170), Sizef(400, 340)), 
-                                             "Select Scenario",
-                                             manager->get_root());
+  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-200, 300-170), Sizef(400, 340)), 
+                                                         "Select Scenario",
+                                                         manager->get_root()));
 
-  MenuComponent* menu = new MenuComponent(Rectf(), true, group);
+  MenuComponent* menu = new MenuComponent(Rectf(), true, group.get());
   group->pack(menu);
 
   menu->set_font(Fonts::vera20);
@@ -357,23 +353,22 @@ MenuManager::display_scenario_menu()
       menu->add_item(scenario_button);
     }
 
-  manager->get_root()->add_child(group);
-
-  screen_manager.push_overlay(manager); 
+  manager->get_root()->add_child(group.release());
+  screen_manager.push_overlay(manager.release());
 }
 
 void
 MenuManager::display_debug_menu()
 {
   using namespace gui;
-  GUIManager* manager = new GUIManager();
+  std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-250, 300-170), Sizef(500, 340)), 
-                                             "Debug",
-                                             manager->get_root());
+  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-250, 300-170), Sizef(500, 340)), 
+                                                         "Debug",
+                                                         manager->get_root()));
 
   // Begin Menu
-  MenuComponent* menu = new MenuComponent(Rectf(), true, group);
+  MenuComponent* menu = new MenuComponent(Rectf(), true, group.get());
   group->pack(menu);
 
   menu->set_font(Fonts::vera20);
@@ -392,22 +387,22 @@ MenuManager::display_debug_menu()
   b_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, this, _1, 2));
   menu->add_item(b_ambient_light_item);
 
-  manager->get_root()->add_child(group);
+  manager->get_root()->add_child(group.release());
 
-  screen_manager.push_overlay(manager); 
+  screen_manager.push_overlay(manager.release()); 
 }
 
 void
 MenuManager::display_help()
 {
   using namespace gui;
-  GUIManager* manager = new GUIManager();
+  std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-250, 300-200), Sizef(500, 400)), 
-                                             "Help",
-                                             manager->get_root());
+  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-250, 300-200), Sizef(500, 400)), 
+                                                         "Help",
+                                                         manager->get_root()));
 
-  TextView* text = new TextView(Rectf(), group);
+  TextView* text = new TextView(Rectf(), group.get());
   group->pack(text);
 
   text->set_font(Fonts::vera12);
@@ -433,21 +428,21 @@ MenuManager::display_help()
                  );
   text->set_active(true);
 
-  manager->get_root()->add_child(group);
-  screen_manager.push_overlay(manager);
+  manager->get_root()->add_child(group.release());
+  screen_manager.push_overlay(manager.release());
 }
 
 void
 MenuManager::display_credits()
 {
   using namespace gui;
-  GUIManager* manager = new GUIManager();
+  std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  GroupComponent* group = new GroupComponent(Rectf(Vector2f(400-250, 300-200), Sizef(500, 400)), 
-                                             "Credits",
-                                             manager->get_root());
+  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-250, 300-200), Sizef(500, 400)), 
+                                                         "Credits",
+                                                         manager->get_root()));
 
-  TextView* text = new TextView(Rectf(), group);
+  TextView* text = new TextView(Rectf(), group.get());
   group->pack(text);
 
   text->set_font(Fonts::vera12);
@@ -475,8 +470,8 @@ MenuManager::display_credits()
                  "  Marek Moeckel - Wansti - &lt;wansti@gmx.de&gt;\n");
   text->set_active(true);
 
-  manager->get_root()->add_child(group);
-  screen_manager.push_overlay(manager);
+  manager->get_root()->add_child(group.release());
+  screen_manager.push_overlay(manager.release());
 }
   
 // Callbacks
@@ -524,7 +519,7 @@ MenuManager::menu_start_scenario(std::string scenario)
   std::cout << "Starting: " << scenario << std::endl;
   screen_manager.push_screen(new GameSession(scenario));
   screen_manager.clear_overlay();
- }
+}
 
 void
 MenuManager::menu_show_fps(int i)
