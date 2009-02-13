@@ -59,4 +59,8 @@ Pose::Pose(FileReader& reader)
   //std::cout << "Pose: " << name << " " << bones.size() << std::endl;
 }
 
+Pose::~Pose()
+{
+}
+
 /* EOF */

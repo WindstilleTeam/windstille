@@ -47,6 +47,7 @@ public:
     : psystem(psystem_)
   {
     using namespace gui;
+
     grid = new GridComponent(Rectf(200, 120, 600, 220), 2, 3, parent);
     grid->set_padding(4);
 
@@ -88,12 +89,8 @@ ParticleViewer::ParticleViewer()
   background = Sprite("images/greychess.sprite");
   show_gui = false;
 
-  using namespace gui;
-
-  manager = std::auto_ptr<gui::GUIManager>(new GUIManager());
-  tab = new TabComponent(Rectf(200, 50, 600, 250), manager->get_root());
-  
-  manager->get_root()->add_child(tab);
+  manager = std::auto_ptr<gui::GUIManager>(new gui::GUIManager());
+  manager->get_root()->add_child(tab = new gui::TabComponent(Rectf(200, 50, 600, 250), manager->get_root()));
 }
 
 ParticleViewer::~ParticleViewer()
@@ -182,9 +179,8 @@ ParticleViewer::update(float delta, const Controller& controller)
 
       if (controller.button_was_pressed(OK_BUTTON))
         {
-          // FIXME: Disable GUI, since its crashy
-          // show_gui = true;
-          // manager->get_root()->get_focus()->set_active(true);
+          show_gui = true;
+          manager->get_root()->get_focus()->set_active(true);
         }
       else if (controller.button_was_pressed(CANCEL_BUTTON) ||
                controller.button_was_pressed(ESCAPE_BUTTON))

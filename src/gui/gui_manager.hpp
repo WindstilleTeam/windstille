@@ -29,7 +29,7 @@ class RootComponent;
 class GUIManager : public Screen
 {
 private:
-  RootComponent* root;
+  std::auto_ptr<RootComponent> root;
 
 public:
   GUIManager();

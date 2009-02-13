@@ -31,8 +31,8 @@
 ParticleSystem::ParticleSystem(FileReader& props)
 {
   // Init some defaults
-  randomizer = new PointRandomizer;
-  drawer     = 0;
+  randomizer = std::auto_ptr<Randomizer>(new PointRandomizer());
+
   x_pos      = 320.0f;
   y_pos      = 240.0f;
   z_pos      = 0;
@@ -213,8 +213,8 @@ ParticleSystem::ParticleSystem(FileReader& props)
 
 ParticleSystem::ParticleSystem()
 {
-  randomizer = new PointRandomizer;
-  drawer     = 0;
+  randomizer = std::auto_ptr<Randomizer>(new PointRandomizer);
+
   x_pos      = 320.0f;
   y_pos      = 240.0f;
   z_pos      = 0;
@@ -242,21 +242,18 @@ ParticleSystem::ParticleSystem()
 
 ParticleSystem::~ParticleSystem()
 {
-  delete randomizer;
-  delete drawer;
 }
 
 void
 ParticleSystem::set_drawer(Drawer* drawer_)
 {
-  delete drawer;
-  drawer = drawer_;
+  drawer = std::auto_ptr<Drawer>(drawer_);
 }
   
 void
 ParticleSystem::draw(SceneContext& sc)
 {
-  if (drawer)
+  if (drawer.get())
     {
       drawer->draw(sc.get_layer(layer), *this);
     }
@@ -337,7 +334,6 @@ ParticleSystem::set_bunching(float factor)
 void
 ParticleSystem::set_cycles(float num)
 {
-  (void) num;
 }
 
 void
@@ -357,30 +353,26 @@ ParticleSystem::set_spawn_point(float x, float y)
 void
 ParticleSystem::set_point_distribution()
 {
-  delete randomizer;
-  randomizer = new PointRandomizer();
+  randomizer = std::auto_ptr<Randomizer>(new PointRandomizer());
 }
 
 void
 ParticleSystem::set_line_distribution(float x1, float y1,
                                       float x2, float y2)
 {
-  delete randomizer;
-  randomizer = new LineRandomizer(x1, y1, x2, y2);
+  randomizer = std::auto_ptr<Randomizer>(new LineRandomizer(x1, y1, x2, y2));
 }
 
 void
 ParticleSystem::set_circle_distribution(float radius)
 {
-  delete randomizer;
-  randomizer = new CircleRandomizer(radius);
+  randomizer = std::auto_ptr<Randomizer>(new CircleRandomizer(radius));
 }
 
 void
 ParticleSystem::set_rect_distribution(const Rectf& rect)
 {
-  delete randomizer;
-  randomizer = new RectRandomizer(rect);
+  randomizer = std::auto_ptr<Randomizer>(new RectRandomizer(rect));
 }
 
 void

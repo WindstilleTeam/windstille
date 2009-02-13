@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_ARMATURE_TEST_HPP
 #define HEADER_WINDSTILLE_ARMATURE_TEST_HPP
 
+#include <memory>
 #include "armature/armature.hpp"
 #include "armature/model.hpp"
 #include "screen.hpp"
@@ -27,8 +28,8 @@
 class ArmatureTest : public Screen
 {
 private:
-  Model* model;
-  Armature* armature;
+  std::auto_ptr<Model>    model;
+  std::auto_ptr<Armature> armature;
   std::vector<Pose*> poses;
   
   int pose_idx;
@@ -40,6 +41,7 @@ private:
 
 public:
   ArmatureTest();
+  ~ArmatureTest();
 
   void draw();
   void update(float delta, const Controller& controller);

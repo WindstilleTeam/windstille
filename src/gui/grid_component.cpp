@@ -40,6 +40,9 @@ GridComponent::GridComponent(const Rectf& rect, int weight, int height, Componen
 
 GridComponent::~GridComponent()
 {
+  for(Grid::iterator i = grid.begin(); i != grid.end(); ++i)
+    delete i->component;
+  grid.clear();
 }
 
 void
@@ -196,15 +199,19 @@ GridComponent::pack(Component* component, int x, int y, int colspan, int rowspan
   assert(x < grid.get_width());
   assert(y < grid.get_height());
 
-  if (grid(x, y).component != 0)
+  if (grid(x, y).component)
     {
       std::cout << "Warning component already at: " << x << ", " << y << ", ignoring" << std::endl;
+      delete component;
     }
   else
     {
       Rectf rect = get_screen_rect();
+
       if (colspan == 1 && rowspan == 1)
-        grid(x, y) = ComponentBox(component, Size(colspan, rowspan));
+        {
+          grid(x, y) = ComponentBox(component, Size(colspan, rowspan));
+        }
       else
         {
           for(int iy = 0; iy < rowspan; ++iy)
@@ -216,7 +223,7 @@ GridComponent::pack(Component* component, int x, int y, int colspan, int rowspan
         }
 
       component->set_screen_rect(Rectf(Vector2f(rect.left + x * (rect.get_width() /grid.get_width())  + padding,
-                                              rect.top  + y * (rect.get_height()/grid.get_height()) + padding),
+                                                rect.top  + y * (rect.get_height()/grid.get_height()) + padding),
                                        Sizef((rect.get_width()/grid.get_width())   * colspan - 2*padding,
                                              (rect.get_height()/grid.get_height()) * rowspan - 2*padding)));
     }

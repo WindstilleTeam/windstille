@@ -29,15 +29,13 @@ TTFFont* Fonts::vera28  = 0;
 void
 Fonts::init()
 {
-  BorderFontEffect* border_effect = new BorderFontEffect(1);
+  std::auto_ptr<BorderFontEffect> border_effect(new BorderFontEffect(1));
 
   ttffont = new TTFFont("fonts/VeraMono.ttf", 12);
   vera12  = new TTFFont("fonts/Vera.ttf", 12);
   vera16  = new TTFFont("fonts/Vera.ttf", 16);
   vera20  = new TTFFont("fonts/Vera.ttf", 20);
   vera28  = new TTFFont("fonts/Vera.ttf", 28);
-
-  delete border_effect;
 }
 
 void

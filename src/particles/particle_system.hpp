@@ -61,8 +61,8 @@ private:
   float life_time;
 
   /** Places the particle in its initial position */
-  Randomizer* randomizer;
-  Drawer* drawer;
+  std::auto_ptr<Randomizer> randomizer;
+  std::auto_ptr<Drawer>     drawer;
 
   float spawn_x;
   float spawn_y;
@@ -94,6 +94,7 @@ public:
   Color color_stop;
 private:
   void spawn(Particle& particle);
+
 public:
   ParticleSystem();
   ParticleSystem(FileReader& props);

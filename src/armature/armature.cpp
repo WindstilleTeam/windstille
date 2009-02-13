@@ -57,7 +57,7 @@ Armature::parse(FileReader& reader)
         {
           if (i->get_name() == "bone")
             {
-              Bone* bone = new Bone();
+              std::auto_ptr<Bone> bone(new Bone());
               if (!(i->get("name",     bone->name) &&
                     i->get("children", bone->children_names) &&
                     i->get("parent",   bone->parent_name) &&
@@ -66,12 +66,11 @@ Armature::parse(FileReader& reader)
                     i->get("head",     bone->offset)))
                 {
                   std::cout << "Error: some Bone attribute missing" << std::endl;
-                  delete bone;
                 }
               else
                 {
                   bone->render_matrix = bone->quat.to_matrix();
-                  bones.push_back(bone);
+                  bones.push_back(bone.release());
                 }
             }
           else

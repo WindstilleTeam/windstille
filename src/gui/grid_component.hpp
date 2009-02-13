@@ -55,7 +55,7 @@ private:
 public:
   GridComponent(FileReader& reader, Component* parent);
   GridComponent(const Rectf& rect, int weight, int height, Component* parent);
-  ~GridComponent();
+  virtual ~GridComponent();
   
   void draw();
   void update(float delta, const Controller& controller);

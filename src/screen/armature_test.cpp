@@ -31,10 +31,10 @@
 ArmatureTest::ArmatureTest()
 {
   FileReader model_reader = FileReader::parse("armature/mesh.mesh");
-  model = new Model(model_reader, "armature/");
+  model = std::auto_ptr<Model>(new Model(model_reader, "armature/"));
 
   FileReader armature_reader = FileReader::parse("armature/armature.arm");
-  armature = new Armature(armature_reader);
+  armature = std::auto_ptr<Armature>(new Armature(armature_reader));
 
   std::vector<std::string> file_lst;
   {
@@ -57,6 +57,13 @@ ArmatureTest::ArmatureTest()
   zrot = 0;
   
   time = 0.0f;
+}
+
+ArmatureTest::~ArmatureTest()
+{
+  for(std::vector<Pose*>::iterator i = poses.begin(); i != poses.end(); ++i)
+    delete *i;
+  poses.clear();
 }
 
 void
@@ -89,7 +96,7 @@ ArmatureTest::update(float delta, const Controller& controller)
 
   pose_idx = int(time * 5.0f) % poses.size();
   armature->apply(*poses[pose_idx]);
-  model->apply(armature);
+  model->apply(armature.get());
 
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))

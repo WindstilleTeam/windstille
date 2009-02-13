@@ -70,7 +70,7 @@ Slider::draw()
   
   int width = 30;
   Rectf slider_rect(Vector2f(rect.left + (rect.get_width()-width) * ((pos-min)/float(max - min)),
-                           rect.top + 2),
+                             rect.top + 2),
                     Sizef(width, rect.get_height()-4));
   if (is_active())
     {

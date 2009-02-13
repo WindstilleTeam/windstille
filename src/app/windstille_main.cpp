@@ -131,23 +131,23 @@ WindstilleMain::main(int argc, char** argv)
 
     if (sprite3dview)
       {
-        Sprite3DView* sprite3dview = new Sprite3DView();
+        std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
 
         if (!levelfile.empty())
           sprite3dview->set_model(levelfile);
 
         // Launching Sprite3DView instead of game
-        screen_manager.push_screen(sprite3dview);
+        screen_manager.push_screen(sprite3dview.release());
       }
     else if (sprite2dview)
       {
-        Sprite2DView* sprite2dview = new Sprite2DView();
+        std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
 
         if (!levelfile.empty())
           sprite2dview->set_sprite(levelfile);
 
         // Launching Sprite2DView instead of game
-        screen_manager.push_screen(sprite2dview);
+        screen_manager.push_screen(sprite2dview.release());
       }
     else if (particleview)
       {

@@ -32,12 +32,11 @@ namespace gui {
 
 GUIManager::GUIManager()
 {
-  root = new RootComponent(Rectf(0,0,800,600));
+  root = std::auto_ptr<RootComponent>(new RootComponent(Rectf(0,0,800,600)));
 }
 
 GUIManager::~GUIManager()
 {
-  delete root;
 }
 
 void
@@ -52,7 +51,8 @@ GUIManager::update(float delta, const Controller& controller)
   root->update(delta, controller);
 
   if (!root->is_active())
-    { //FIXME: This doesn't work when GUI isn't an overlay
+    {
+      //FIXME: This doesn't work when GUI isn't an overlay
       screen_manager.pop_overlay();
     }
 }
@@ -60,7 +60,7 @@ GUIManager::update(float delta, const Controller& controller)
 RootComponent*
 GUIManager::get_root() const
 {
-  return root;
+  return root.get();
 }
 
 } // namespace gui
