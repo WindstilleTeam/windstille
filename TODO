@@ -53,6 +53,17 @@ Windstille ToDo
 * make Console not derive from ostream
 
 * GridComponent and ParticleViewer leak
+
+* Screens might fit better into app/
+
+* gprof results:
+
+ 16.90      0.60     0.60    47535     0.00     0.00  TileMap::draw(SceneContext&)
+ 15.21      1.14     0.54 37910690     0.00     0.00  VertexArrayDrawingRequest::texcoord(float, float)
+ 14.37      1.65     0.51 37974070     0.00     0.00  VertexArrayDrawingRequest::vertex(float, float, float)
+ 11.55      2.06     0.41    79225     0.00     0.00  Sprite3D::draw(Vector2f const&, Matrix const&) const
+
+
 
 Windstille Bugs
 ===============
