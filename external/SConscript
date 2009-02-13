@@ -10,7 +10,7 @@ squirrel_env = Environment(CPPPATH  = ['SQUIRREL2/include'],
 if features['64bit']:
     squirrel_env.Append(CPPDEFINES = '_SQ64')
 
-squirrel_env.Append(CXXFLAGS = conf_env['CXXFLAGS'])
+# squirrel_env.Append(CXXFLAGS = conf_env['CXXFLAGS'])
 
 squirrel_env.Library('squirrel',
                      glob.glob('SQUIRREL2/squirrel/*.cpp') +
