@@ -141,8 +141,15 @@ ScreenManager::run()
           break;
 
         case POP_SCREEN:
-          delete overlay_screens.back();
-          overlay_screens.pop_back();
+          if (overlay_screens.empty())
+            {
+              std::cout << "Error: ScreenManager: trying to pop_overlay with empty stack" << std::endl;
+            }
+          else
+            {
+              delete overlay_screens.back();
+              overlay_screens.pop_back();
+            }
           break;
 
         case CLEAR_SCREENS:
