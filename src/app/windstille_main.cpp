@@ -72,50 +72,6 @@ WindstilleMain::main(int argc, char** argv)
     config.parse_args(argc, argv);
 
     init_modules();
-
-    { // Fill controller_description with data
-      controller_description.add_button("primary-button",   PRIMARY_BUTTON);
-      controller_description.add_button("secondary-button", SECONDARY_BUTTON);
-      controller_description.add_button("tertiary-button",  TERTIARY_BUTTON);
-
-      controller_description.add_button("menu-up-button",   MENU_UP_BUTTON);
-      controller_description.add_button("menu-down-button", MENU_DOWN_BUTTON);
-
-      controller_description.add_button("menu-left-button",  MENU_LEFT_BUTTON);
-      controller_description.add_button("menu-right-button", MENU_RIGHT_BUTTON);
-  
-      controller_description.add_button("view-center-button", VIEW_CENTER_BUTTON);
-
-      controller_description.add_button("pda-button",       PDA_BUTTON);
-      controller_description.add_button("inventory-button", INVENTORY_BUTTON);
-
-      controller_description.add_button("aim-button",       AIM_BUTTON);
-      controller_description.add_button("pause-button",     PAUSE_BUTTON);
-
-      controller_description.add_axis("x-axis", X_AXIS);
-      controller_description.add_axis("y-axis", Y_AXIS);
-
-      controller_description.add_axis("x2-axis", X2_AXIS);
-      controller_description.add_axis("y2-axis", Y2_AXIS);
-
-      controller_description.add_ball("mouse-motion-x", MOUSE_MOTION_X);
-      controller_description.add_ball("mouse-motion-y", MOUSE_MOTION_Y);
-    }
-    
-    {
-      InputManager::init();
-      
-      if (config.get<std::string>("primary-controller-file").is_set())
-        InputManager::load(config.get<std::string>("primary-controller-file").get());
-      else
-        InputManager::load("controller/keyboard.scm");
-
-      if (config.get<std::string>("secondary-controller-file").is_set())
-        InputManager::load(config.get<std::string>("secondary-controller-file").get());
-    }
-
-    if (debug) std::cout << "Initialising TileFactory" << std::endl;
-    TileFactory::init();
     
     if (debug) std::cout << "Starting file: '" << config.get_string("levelfile") << "'" 
                          << std::endl;
@@ -171,9 +127,6 @@ WindstilleMain::main(int argc, char** argv)
         
     screen_manager.run();
     
-    TileFactory::deinit();
-    InputManager::deinit();
-
     deinit_modules();
 
   } catch (std::exception& err) {
@@ -214,11 +167,58 @@ WindstilleMain::init_modules()
   sprite3d_manager = new sprite3d::Manager();
 
   script_manager->run_script_file("scripts/windstille.nut");
+
+  { // Fill controller_description with data
+    controller_description.add_button("primary-button",   PRIMARY_BUTTON);
+    controller_description.add_button("secondary-button", SECONDARY_BUTTON);
+    controller_description.add_button("tertiary-button",  TERTIARY_BUTTON);
+
+    controller_description.add_button("menu-up-button",   MENU_UP_BUTTON);
+    controller_description.add_button("menu-down-button", MENU_DOWN_BUTTON);
+
+    controller_description.add_button("menu-left-button",  MENU_LEFT_BUTTON);
+    controller_description.add_button("menu-right-button", MENU_RIGHT_BUTTON);
+  
+    controller_description.add_button("view-center-button", VIEW_CENTER_BUTTON);
+
+    controller_description.add_button("pda-button",       PDA_BUTTON);
+    controller_description.add_button("inventory-button", INVENTORY_BUTTON);
+
+    controller_description.add_button("aim-button",       AIM_BUTTON);
+    controller_description.add_button("pause-button",     PAUSE_BUTTON);
+
+    controller_description.add_axis("x-axis", X_AXIS);
+    controller_description.add_axis("y-axis", Y_AXIS);
+
+    controller_description.add_axis("x2-axis", X2_AXIS);
+    controller_description.add_axis("y2-axis", Y2_AXIS);
+
+    controller_description.add_ball("mouse-motion-x", MOUSE_MOTION_X);
+    controller_description.add_ball("mouse-motion-y", MOUSE_MOTION_Y);
+  }
+    
+  {
+    InputManager::init();
+      
+    if (config.get<std::string>("primary-controller-file").is_set())
+      InputManager::load(config.get<std::string>("primary-controller-file").get());
+    else
+      InputManager::load("controller/keyboard.scm");
+
+    if (config.get<std::string>("secondary-controller-file").is_set())
+      InputManager::load(config.get<std::string>("secondary-controller-file").get());
+  }
+
+  if (debug) std::cout << "Initialising TileFactory" << std::endl;
+  TileFactory::init();
 }
 
 void
 WindstilleMain::deinit_modules()
 {
+  TileFactory::deinit();
+  InputManager::deinit();
+
   delete sprite3d_manager;
   sprite3d_manager = 0;
 
@@ -372,11 +372,7 @@ WindstilleMain::init_physfs(const char* argv0)
 
 int main(int argc, char** argv)
 {
-  WindstilleMain main_app;
-
-  main_app.main(argc, argv);
-
-  return 0;
+  return WindstilleMain().main(argc, argv);
 }
 
 /* EOF */
