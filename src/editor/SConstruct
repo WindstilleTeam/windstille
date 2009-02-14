@@ -1,0 +1,14 @@
+# -*- python -*-
+
+env = Environment(CXXFLAGS=['-Wall', '-Werror', '-O2', '-g'],
+                  LIBS = ['GL', 'GLEW'])
+
+env.ParseConfig('pkg-config libpng --libs --cflags')
+env.ParseConfig('sdl-config --cflags --libs')
+env.ParseConfig('Magick++-config --libs --cppflags')
+env.ParseConfig('pkg-config --cflags --libs libcurl')
+env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4 libglademm-2.4 gtkglextmm-1.2')
+
+env.Program('editor', ['editor.cpp'])
+
+# EOF #
