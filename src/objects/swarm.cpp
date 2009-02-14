@@ -17,13 +17,14 @@
 */
 
 #include "app/globals.hpp"
-#include "player.hpp"
+#include "display/vertex_array_drawing_request.hpp"
 #include "engine/sector.hpp"
-#include "hedgehog.hpp"
+#include "math/math.hpp"
+#include "math/random.hpp"
+#include "player.hpp"
 #include "screen/game_session.hpp"
 #include "screen/view.hpp"
-#include "display/vertex_array_drawing_request.hpp"
-#include "math/random.hpp"
+
 #include "swarm.hpp"
 
 Swarm::Swarm(FileReader& props)
@@ -85,14 +86,6 @@ Swarm::draw(SceneContext& sc)
   sc.highlight().draw(array);
 }
 
-static float normalize(float angle)
-{
-  // brings angle into [0,2*M_PI[ range
-  float ret = fmod(static_cast<float>(fmod(angle, static_cast<float>(2*M_PI)) + 2*M_PI), static_cast<float>(2*M_PI));
-  assert(ret >= 0 && ret < 2*M_PI);
-  return ret;
-}
-
 void
 Swarm::update(float delta)
 {
@@ -109,7 +102,7 @@ Swarm::update(float delta)
       float dy = target.y - i->pos.y;
 
       float target_angle   = atan2f(dy, dx);
-      float relative_angle = normalize(target_angle - i->angle);
+      float relative_angle = math::normalize_angle(target_angle - i->angle);
       
       if (sqrt(dx*dx + (dy*dy)*2.0f) > 50.0f) // swarm range
         {
