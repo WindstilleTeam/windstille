@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Feb 14 17:05:50 2009 -->
+<!--Generated with glade3 3.4.5 on Sat Feb 14 18:05:56 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="window1">
     <property name="default_width">1024</property>
@@ -188,15 +188,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <child>
-                  <widget class="GtkTextView" id="textview1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">Place Windstille here</property>
-                  </widget>
-                  <packing>
-                    <property name="resize">False</property>
-                    <property name="shrink">True</property>
-                  </packing>
+                  <placeholder/>
                 </child>
                 <child>
                   <widget class="GtkTextView" id="textview2">
@@ -220,9 +212,9 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkLabel" id="label1">
+          <widget class="GtkStatusbar" id="statusbar1">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">Status Bar</property>
+            <property name="spacing">2</property>
           </widget>
           <packing>
             <property name="expand">False</property>
