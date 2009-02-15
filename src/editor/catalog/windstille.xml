@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<glade-catalog name="windstille" library="windstille" depends="gtk+">
+
+  <!-- <init-function>my_catalog_init</init-function> -->
+
+  <glade-widget-classes>
+    <glade-widget-class name="WindstilleSector" generic-name="windstille-sector" title="WindstilleSector"/>
+  </glade-widget-classes>
+
+  <glade-widget-group name="foo" title="Foo">
+    <glade-widget-class-ref name="WindstilleSector" />
+  </glade-widget-group>
+
+</glade-catalog>
