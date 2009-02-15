@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_FIELD_HPP
-#define HEADER_WINDSTILLE_FIELD_HPP
+#ifndef HEADER_WINDSTILLE_UTIL_FIELD_HPP
+#define HEADER_WINDSTILLE_UTIL_FIELD_HPP
 
 #include <vector>
 #include <assert.h>

@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_UTIL_HPP
-#define HEADER_WINDSTILLE_UTIL_HPP
+#ifndef HEADER_WINDSTILLE_UTIL_UTIL_HPP
+#define HEADER_WINDSTILLE_UTIL_UTIL_HPP
 
 #include <string>
 #include <stdexcept>

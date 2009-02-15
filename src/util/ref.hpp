@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_REF_HPP
-#define HEADER_WINDSTILLE_REF_HPP
+#ifndef HEADER_WINDSTILLE_UTIL_REF_HPP
+#define HEADER_WINDSTILLE_UTIL_REF_HPP
 
 /** This class behaves like a pointer to a refcounted object, but increments the
  * reference count when new objects are assigned and decrements the refcounter

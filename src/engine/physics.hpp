@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_PHYSICS_HPP
-#define HEADER_WINDSTILLE_PHYSICS_HPP
+#ifndef HEADER_WINDSTILLE_ENGINE_PHYSICS_HPP
+#define HEADER_WINDSTILLE_ENGINE_PHYSICS_HPP
 
 #include "collision/collision_data.hpp"
 #include "entity.hpp"

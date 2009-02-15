@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_DIALOG_MANAGER_HPP
-#define HEADER_WINDSTILLE_DIALOG_MANAGER_HPP
+#ifndef HEADER_WINDSTILLE_HUD_DIALOG_MANAGER_HPP
+#define HEADER_WINDSTILLE_HUD_DIALOG_MANAGER_HPP
 
 #include <vector>
 #include <string>

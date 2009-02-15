@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_VIEW_HPP
-#define HEADER_WINDSTILLE_VIEW_HPP
+#ifndef HEADER_WINDSTILLE_SCREEN_VIEW_HPP
+#define HEADER_WINDSTILLE_SCREEN_VIEW_HPP
 
 #include "display/graphic_context_state.hpp"
 #include "engine/camera.hpp"

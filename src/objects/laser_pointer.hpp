@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_LASER_POINTER_HPP
-#define HEADER_WINDSTILLE_LASER_POINTER_HPP
+#ifndef HEADER_WINDSTILLE_OBJECTS_LASER_POINTER_HPP
+#define HEADER_WINDSTILLE_OBJECTS_LASER_POINTER_HPP
 
 #include "sprite2d/sprite.hpp"
 #include "display/texture.hpp"

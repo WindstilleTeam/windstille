@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_PARTICLE_VIEWER_HPP
-#define HEADER_WINDSTILLE_PARTICLE_VIEWER_HPP
+#ifndef HEADER_WINDSTILLE_SCREEN_PARTICLE_VIEWER_HPP
+#define HEADER_WINDSTILLE_SCREEN_PARTICLE_VIEWER_HPP
 
 #include <memory>
 #include "screen.hpp"

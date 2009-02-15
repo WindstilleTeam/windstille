@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_LIQUID_HPP
-#define HEADER_WINDSTILLE_LIQUID_HPP
+#ifndef HEADER_WINDSTILLE_OBJECTS_LIQUID_HPP
+#define HEADER_WINDSTILLE_OBJECTS_LIQUID_HPP
 
 #include <vector>
 #include "engine/entity.hpp"

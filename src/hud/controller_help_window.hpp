@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_CONTROLLER_HELP_WINDOW_HPP
-#define HEADER_WINDSTILLE_CONTROLLER_HELP_WINDOW_HPP
+#ifndef HEADER_WINDSTILLE_HUD_CONTROLLER_HELP_WINDOW_HPP
+#define HEADER_WINDSTILLE_HUD_CONTROLLER_HELP_WINDOW_HPP
 
 #include "screen/screen.hpp"
 #include <boost/shared_ptr.hpp>

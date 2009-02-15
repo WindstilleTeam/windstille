@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_WINDSTILLE_HPP
-#define HEADER_WINDSTILLE_WINDSTILLE_HPP
+#ifndef HEADER_WINDSTILLE_APP_WINDSTILLE_HPP
+#define HEADER_WINDSTILLE_APP_WINDSTILLE_HPP
 
 #define WINDSTILLE_VERSION "0.4.0"
 

@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_CONSOLE_HPP
-#define HEADER_WINDSTILLE_CONSOLE_HPP
+#ifndef HEADER_WINDSTILLE_APP_CONSOLE_HPP
+#define HEADER_WINDSTILLE_APP_CONSOLE_HPP
 
 #include <memory>
 #include <vector>

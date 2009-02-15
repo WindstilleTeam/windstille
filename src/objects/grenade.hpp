@@ -15,8 +15,8 @@
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef HEADER_WINDSTILLE_GRENADE_HPP
-#define HEADER_WINDSTILLE_GRENADE_HPP
+#ifndef HEADER_WINDSTILLE_OBJECTS_GRENADE_HPP
+#define HEADER_WINDSTILLE_OBJECTS_GRENADE_HPP
 
 #include "engine/entity.hpp"
 #include "engine/physics.hpp"

@@ -44,8 +44,8 @@
  * OpenAL, OpenGL, SDL, SDL_image, freetype, libpng, physfs, boost, scons, bison, flex
  */
 
-#ifndef HEADER_WINDSTILLE_WINDSTILLE_MAIN_HPP
-#define HEADER_WINDSTILLE_WINDSTILLE_MAIN_HPP
+#ifndef HEADER_WINDSTILLE_APP_WINDSTILLE_MAIN_HPP
+#define HEADER_WINDSTILLE_APP_WINDSTILLE_MAIN_HPP
 
 #include "screen/screen.hpp"
 

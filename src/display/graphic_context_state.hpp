@@ -15,8 +15,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-#ifndef HEADER_WINDSTILLE_GRAPHIC_CONTEXT_STATE_HPP
-#define HEADER_WINDSTILLE_GRAPHIC_CONTEXT_STATE_HPP
+#ifndef HEADER_WINDSTILLE_DISPLAY_GRAPHIC_CONTEXT_STATE_HPP
+#define HEADER_WINDSTILLE_DISPLAY_GRAPHIC_CONTEXT_STATE_HPP
 
 #include "math/rect.hpp"
 #include "math/vector2f.hpp"

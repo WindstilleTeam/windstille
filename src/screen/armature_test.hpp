@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_ARMATURE_TEST_HPP
-#define HEADER_WINDSTILLE_ARMATURE_TEST_HPP
+#ifndef HEADER_WINDSTILLE_SCREEN_ARMATURE_TEST_HPP
+#define HEADER_WINDSTILLE_SCREEN_ARMATURE_TEST_HPP
 
 #include <memory>
 #include "armature/armature.hpp"

@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_CONVERSATION_HPP
-#define HEADER_WINDSTILLE_CONVERSATION_HPP
+#ifndef HEADER_WINDSTILLE_HUD_CONVERSATION_HPP
+#define HEADER_WINDSTILLE_HUD_CONVERSATION_HPP
 
 #include <vector>
 #include <string>

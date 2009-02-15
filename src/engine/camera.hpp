@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_CAMERA_HPP
-#define HEADER_WINDSTILLE_CAMERA_HPP
+#ifndef HEADER_WINDSTILLE_ENGINE_CAMERA_HPP
+#define HEADER_WINDSTILLE_ENGINE_CAMERA_HPP
 
 /** 
  * This class manages the virtual camera movement, it follows the

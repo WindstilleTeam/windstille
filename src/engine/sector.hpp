@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_SECTOR_HPP
-#define HEADER_WINDSTILLE_SECTOR_HPP
+#ifndef HEADER_WINDSTILLE_ENGINE_SECTOR_HPP
+#define HEADER_WINDSTILLE_ENGINE_SECTOR_HPP
 
 #include <memory>
 #include <string>

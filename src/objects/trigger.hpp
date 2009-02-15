@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_TRIGGER_HPP
-#define HEADER_WINDSTILLE_TRIGGER_HPP
+#ifndef HEADER_WINDSTILLE_OBJECTS_TRIGGER_HPP
+#define HEADER_WINDSTILLE_OBJECTS_TRIGGER_HPP
 
 #include <vector>
 #include "engine/game_object.hpp"

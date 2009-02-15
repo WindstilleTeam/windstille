@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_WEAPON_HPP
-#define HEADER_WINDSTILLE_WEAPON_HPP
+#ifndef HEADER_WINDSTILLE_APP_WEAPON_HPP
+#define HEADER_WINDSTILLE_APP_WEAPON_HPP
 
 /**
  * Base class for all weapons. This is not a GameObject because it will be

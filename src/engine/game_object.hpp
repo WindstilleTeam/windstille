@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_GAME_OBJECT_HPP
-#define HEADER_WINDSTILLE_GAME_OBJECT_HPP
+#ifndef HEADER_WINDSTILLE_ENGINE_GAME_OBJECT_HPP
+#define HEADER_WINDSTILLE_ENGINE_GAME_OBJECT_HPP
 
 #include <string>
 #include "util/file_reader.hpp"
