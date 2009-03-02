@@ -24,6 +24,7 @@
 #include <GL/gl.h>
 #include "display/color.hpp"
 #include "math/rect.hpp"
+#include "no_font_effect.hpp"
 #include "display/texture.hpp"
 
 class FontEffect;
@@ -55,7 +56,7 @@ public:
   static void init();
   static void deinit();
 
-  TTFFont(const std::string& file, int size, FontEffect* effect = 0);
+  TTFFont(const std::string& file, int size, const FontEffect& effect = NoFontEffect());
   ~TTFFont();
 
   /** */

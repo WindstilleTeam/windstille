@@ -65,7 +65,7 @@ public:
 
 FT_Library TTFFontImpl::library;
 
-TTFFont::TTFFont(const std::string& filename, int size_, FontEffect* effect)
+TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effect)
   : impl(new TTFFontImpl())
 {
   assert(size_ > 0);
@@ -89,72 +89,66 @@ TTFFont::TTFFont(const std::string& filename, int size_, FontEffect* effect)
   FT_Select_Charmap(face,  FT_ENCODING_UNICODE);
 
   // FIXME: should calculate texture size, based on font size
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  SDL_Surface* pixelbuffer = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                              1024, 1024, 32,
-                                              0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-#else
-  SDL_Surface* pixelbuffer = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                              1024, 1024, 32,
-                                              0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-#endif
+  SDL_Surface* pixelbuffer = create_surface_rgba(1024, 1024);
   SDL_SetAlpha(pixelbuffer, 0, 0);
 
   int x_pos = 1;
   int y_pos = 1;
 
-  impl->height = effect ? effect->get_height(impl->size) : impl->size;
+  impl->height = effect.get_height(impl->size);
 
   // We limit ourself to 256 characters for the momemnt
   for(int glyph_index = 0; glyph_index < 256; glyph_index += 1)
     {
       if (FT_Load_Char( face,  glyph_index, FT_LOAD_RENDER))
         {
-          // FIXME: happens when character is not in font, should be handled more gentle
+          // FIXME: What happens when character is not in font, should be handled more gentle
           throw std::runtime_error("couldn't load char");
         }
-      
-      if (!effect)
-        blit_ftbitmap(pixelbuffer, face->glyph->bitmap, x_pos, y_pos);
       else
-        effect->blit(pixelbuffer, face->glyph->bitmap, x_pos, y_pos);
+        {      
+          effect.blit(pixelbuffer, face->glyph->bitmap, x_pos, y_pos);
 
-      int glyph_width  = effect ? effect->get_glyph_width(face->glyph->bitmap.width) : face->glyph->bitmap.width;
-      int glyph_height = effect ? effect->get_glyph_height(face->glyph->bitmap.rows) : face->glyph->bitmap.rows;
+          int glyph_width  = effect.get_glyph_width(face->glyph->bitmap.width);
+          int glyph_height = effect.get_glyph_height(face->glyph->bitmap.rows);
 
-      generate_border(pixelbuffer, x_pos, y_pos, glyph_width, glyph_height);
+          generate_border(pixelbuffer, x_pos, y_pos, glyph_width, glyph_height);
 
-      Rect pos(Point(face->glyph->bitmap_left,  -face->glyph->bitmap_top), 
-               Size(glyph_width, glyph_height));
+          Rect pos(Point(face->glyph->bitmap_left,  -face->glyph->bitmap_top), 
+                   Size(glyph_width, glyph_height));
 
-      Rectf uv(x_pos/float(pixelbuffer->w),
-               y_pos/float(pixelbuffer->h),
-               (x_pos + glyph_width)/float(pixelbuffer->w),
-               (y_pos + glyph_height)/float(pixelbuffer->h));
+          Rectf uv(x_pos/float(pixelbuffer->w),
+                   y_pos/float(pixelbuffer->h),
+                   (x_pos + glyph_width)/float(pixelbuffer->w),
+                   (y_pos + glyph_height)/float(pixelbuffer->h));
       
-      impl->characters.push_back(TTFCharacter(pos, uv,
-                                              face->glyph->advance.x >> 6));
+          impl->characters.push_back(TTFCharacter(pos, uv,
+                                                  face->glyph->advance.x >> 6));
 
-      // we leave a one pixel border around the letters which we fill with generate_border
-      x_pos += glyph_width + 2;
-      if (x_pos + impl->height + 2 > pixelbuffer->w)
-        {
-          y_pos += impl->height + 2;
-          x_pos = 1;
+          // we leave a one pixel border around the letters which we fill with generate_border
+          x_pos += glyph_width + 2;
+          if (x_pos + impl->height + 2 > pixelbuffer->w)
+            {
+              y_pos += impl->height + 2;
+              x_pos = 1;
+            }
+
+          if (y_pos + impl->height + 2 > pixelbuffer->h)
+            throw std::runtime_error("Font Texture to small");
         }
-
-      if (y_pos + impl->height + 2 > pixelbuffer->h)
-        throw std::runtime_error("Font Texture to small");
     }
   FT_Done_Face(face);
 
-  try {
-    impl->texture = Texture(pixelbuffer);
-    impl->texture.set_filter(GL_NEAREST);
-  } catch(...) {
-    SDL_FreeSurface(pixelbuffer);
-    throw;
-  }
+  try 
+    {
+      impl->texture = Texture(pixelbuffer);
+      impl->texture.set_filter(GL_NEAREST);
+    }
+  catch(...) 
+    {
+      SDL_FreeSurface(pixelbuffer);
+      throw;
+    }
   SDL_FreeSurface(pixelbuffer);
 }
 

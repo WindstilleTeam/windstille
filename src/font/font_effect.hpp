@@ -24,7 +24,11 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
-/** */
+/** 
+ *  The FontEffect class manages the blitting from a glyph bitmap to
+ *  the SDL_Surface, it allows to apply different kinds of effects to
+ *  a font, such as adding a border around it.
+ */
 class FontEffect
 {
 private:

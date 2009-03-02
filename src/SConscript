@@ -74,6 +74,7 @@ env.Program('../windstille', [
 'engine/script_manager.cpp',
 'engine/sector.cpp',
 'font/border_font_effect.cpp',
+'font/no_font_effect.cpp',
 'font/fonts.cpp',
 'font/ttf_font.cpp',
 'gui/automap.cpp',

@@ -31,19 +31,19 @@ BorderFontEffect::~BorderFontEffect()
 int
 BorderFontEffect::get_height(int orig_font_size) const
 {
-  return orig_font_size + 2*size ;
+  return orig_font_size + 2*size;
 }
   
 int
 BorderFontEffect::get_glyph_width(int orig_glyph_width) const
 {
-  return orig_glyph_width + 2*size ;
+  return orig_glyph_width + 2*size;
 }
 
 int
 BorderFontEffect::get_glyph_height(int orig_glyph_height) const
 {
-  return orig_glyph_height + 2*size ;
+  return orig_glyph_height + 2*size;
 }
   
 void
@@ -51,26 +51,49 @@ BorderFontEffect::blit(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, i
 {
   SDL_LockSurface(target);
   
+  x_pos += size;
+  y_pos += size;
+
   int start_x = std::max(0, -x_pos);
   int start_y = std::max(0, -y_pos);
   
-  int end_x = std::min(brush.width, target->w  - x_pos);
+  int end_x = std::min(brush.width, target->w - x_pos);
   int end_y = std::min(brush.rows,  target->h - y_pos);
 
   unsigned char* target_buf = static_cast<unsigned char*>(target->pixels);
 
   int target_pitch = target->pitch;
 
+  // Draw the border
+  for (int y = start_y; y < end_y; ++y)
+    for (int x = start_x; x < end_x; ++x)
+      {
+        for(int by = -size; by <= size; ++by)
+          for(int bx = -size+abs(by); bx <= size-abs(by); ++bx)
+            {
+              int target_pos = (y + y_pos + by) * target_pitch + 4*(x + x_pos + bx);
+              int brush_pos  = y * brush.pitch + x;
+            
+              target_buf[target_pos + 0] = 0;
+              target_buf[target_pos + 1] = 0;
+              target_buf[target_pos + 2] = 0;
+              target_buf[target_pos + 3] = std::min(target_buf[target_pos + 3] + brush.buffer[brush_pos], 255);
+            }
+      }
+
+  // Draw the font itself
   for (int y = start_y; y < end_y; ++y)
     for (int x = start_x; x < end_x; ++x)
       {
         int target_pos = (y + y_pos) * target_pitch + 4*(x + x_pos);
         int brush_pos  = y * brush.pitch + x;
-            
-        target_buf[target_pos + 0] = int(float(y)/brush.width * 255);
-        target_buf[target_pos + 1] = int(float(y)/brush.width * 255);
-        target_buf[target_pos + 2] = 255;
-        target_buf[target_pos + 3] = brush.buffer[brush_pos];
+        
+        int alpha = brush.buffer[brush_pos];
+
+        target_buf[target_pos + 0] = std::min((target_buf[target_pos + 0] * (255 - alpha) + alpha * 255)/255, 255);
+        target_buf[target_pos + 1] = std::min((target_buf[target_pos + 1] * (255 - alpha) + alpha * 255)/255, 255);
+        target_buf[target_pos + 2] = std::min((target_buf[target_pos + 2] * (255 - alpha) + alpha * 255)/255, 255);
+        target_buf[target_pos + 3] = std::min(target_buf[target_pos + 3] + brush.buffer[brush_pos], 255);
       }
     
   SDL_UnlockSurface(target);
