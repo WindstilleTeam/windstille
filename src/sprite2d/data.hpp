@@ -36,7 +36,7 @@ struct SpriteAction
 
   std::string name;
   float       speed;
-  Vector2f      offset;
+  Vector2f    offset;
   float       scale;
   Surfaces    surfaces;
 };
