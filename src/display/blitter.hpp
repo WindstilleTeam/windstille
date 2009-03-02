@@ -36,6 +36,7 @@
 */
 void generate_border(SDL_Surface* surface, int x_pos, int y_pos, int width, int height);
 void blit_ftbitmap(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, int y_pos);
+SDL_Surface* create_surface_rgba(int width, int height);
 
 #endif
 
