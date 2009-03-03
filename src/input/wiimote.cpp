@@ -67,7 +67,7 @@ Wiimote::connect()
   assert(m_wiimote == 0);
 
   /* Connect to any wiimote */
-  bdaddr_t bdaddr = *BDADDR_ANY;
+  bdaddr_t bdaddr = {{0, 0, 0, 0, 0, 0}}; // BDADDR_ANY
 
   /* Connect to address in string WIIMOTE_BDADDR */
   /* str2ba(WIIMOTE_BDADDR, &bdaddr); */

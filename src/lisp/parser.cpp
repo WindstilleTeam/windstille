@@ -64,15 +64,6 @@ Parser::~Parser()
   delete lexer;
 }
 
-static std::string dirname(std::string filename)
-{
-  std::string::size_type p = filename.find_last_of('/');
-  if(p == std::string::npos)
-    return "";
-
-  return filename.substr(0, p+1);
-}
-
 Lisp*
 Parser::parse(const std::string& filename)
 {

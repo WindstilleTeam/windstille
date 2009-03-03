@@ -25,7 +25,7 @@ enum {
   WALKABLE = (1<<0),
   WALL     = (1<<1),
   LADDER   = (1<<2),
-  STAIRS   = (1<<2),
+  STAIRS   = (1<<2)
 };
 
 typedef uint32_t Properties;

@@ -25,7 +25,7 @@
 namespace lisp {
 class Writer;
 class Lisp;
-};
+} // namespace lisp
 
 namespace Scripting {
 
