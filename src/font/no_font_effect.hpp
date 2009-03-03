@@ -32,6 +32,9 @@ public:
   
   int get_glyph_width(int orig_glyph_width) const   { return orig_glyph_width; }
   int get_glyph_height(int orig_glyph_height) const { return orig_glyph_height; }
+
+  int get_x_offset(int orig_glyph_offset) const { return orig_glyph_offset; }
+  int get_y_offset(int orig_glyph_offset) const { return orig_glyph_offset; }
   
   void blit(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, int y_pos) const;
   

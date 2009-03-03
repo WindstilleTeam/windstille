@@ -42,6 +42,9 @@ public:
   virtual int get_glyph_width(int orig_glyph_width) const =0;
   virtual int get_glyph_height(int orig_glyph_height) const =0;
 
+  virtual int get_x_offset(int orig_glyph_offset) const =0;
+  virtual int get_y_offset(int orig_glyph_offset) const =0;
+  
   virtual void blit(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, int y_pos) const =0;
 
 private:

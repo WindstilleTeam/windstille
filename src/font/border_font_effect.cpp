@@ -46,6 +46,18 @@ BorderFontEffect::get_glyph_height(int orig_glyph_height) const
   return orig_glyph_height + 2*size;
 }
   
+int
+BorderFontEffect::get_x_offset(int orig_glyph_offset) const
+{
+  return orig_glyph_offset - size;
+}
+
+int
+BorderFontEffect::get_y_offset(int orig_glyph_offset) const
+{
+  return orig_glyph_offset - size;
+}
+
 void
 BorderFontEffect::blit(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, int y_pos) const
 {

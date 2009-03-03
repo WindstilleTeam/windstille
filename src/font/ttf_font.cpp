@@ -55,10 +55,6 @@ public:
   /** The original size of the font in pixels */
   int size;
 
-  /** The amount of pixels to advance in y direction after a finished
-      line, this can be transformed by FontEffect */
-  int height;
-
   /** OpenGL Texture which holds all the characters */
   Texture texture;
 };
@@ -95,7 +91,7 @@ TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effec
   int x_pos = 1;
   int y_pos = 1;
 
-  impl->height = effect.get_height(impl->size);
+  int max_glyph_height = effect.get_height(impl->size);
 
   // We limit ourself to 256 characters for the momemnt
   for(int glyph_index = 0; glyph_index < 256; glyph_index += 1)
@@ -114,7 +110,8 @@ TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effec
 
           generate_border(pixelbuffer, x_pos, y_pos, glyph_width, glyph_height);
 
-          Rect pos(Point(face->glyph->bitmap_left,  -face->glyph->bitmap_top), 
+          Rect pos(Point(effect.get_x_offset(face->glyph->bitmap_left),
+                         effect.get_y_offset(-face->glyph->bitmap_top)),
                    Size(glyph_width, glyph_height));
 
           Rectf uv(x_pos/float(pixelbuffer->w),
@@ -127,13 +124,13 @@ TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effec
 
           // we leave a one pixel border around the letters which we fill with generate_border
           x_pos += glyph_width + 2;
-          if (x_pos + impl->height + 2 > pixelbuffer->w)
+          if (x_pos + max_glyph_height + 2 > pixelbuffer->w)
             {
-              y_pos += impl->height + 2;
+              y_pos += max_glyph_height + 2;
               x_pos = 1;
             }
 
-          if (y_pos + impl->height + 2 > pixelbuffer->h)
+          if (y_pos + max_glyph_height + 2 > pixelbuffer->h)
             throw std::runtime_error("Font Texture to small");
         }
     }
