@@ -33,7 +33,6 @@
 #include "tile/tile_map.hpp"
 #include "screen_manager.hpp"
 #include "view.hpp"
-#include "hud/energy_bar.hpp"
 #include "hud/dialog_manager.hpp"
 #include "app/windstille_main.hpp"
 #include "display/scene_context.hpp"
@@ -87,7 +86,6 @@ public:
 
   // GUI Elements
   ControllerHelpWindow controller_help_window;
-  EnergyBar     energy_bar;
 
   // Active GUI Elements
   DialogManager dialog_manager;
@@ -145,7 +143,6 @@ GameSessionImpl::draw()
   if (!cutscene_mode)
     {
       // Draw HUD
-      energy_bar.draw();
       controller_help_window.draw();
     }
 
@@ -252,7 +249,6 @@ GameSessionImpl::update(float delta, const Controller& controller)
           break;
 
         case RUNNING:
-          energy_bar.update(delta, controller);
           if (current_gui)
             current_gui->update(delta, controller);
           break;
