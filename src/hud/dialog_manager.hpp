@@ -31,6 +31,12 @@ class TextArea;
 class DialogManager : public Screen
 {
 private:
+  static DialogManager* current_;
+
+public:
+  static DialogManager* current() { return current_; }
+
+private:
   void create_text();
   
   Sprite portrait;
@@ -59,10 +65,7 @@ private:
   static const int outer_border_x = 20;
   int outer_border_y;
 
-  static DialogManager* current_;
 public:
-  static DialogManager* current() { return current_; }
-
   DialogManager();
   ~DialogManager();
 
