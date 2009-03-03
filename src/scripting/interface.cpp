@@ -23,6 +23,7 @@
 #include "sound/sound_manager.hpp"
 #include "screen/game_session.hpp"
 #include "hud/dialog_manager.hpp"
+#include "hud/speech_manager.hpp"
 #include "hud/conversation.hpp"
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
@@ -140,6 +141,11 @@ void wait_for_camera(HSQUIRRELVM vm)
 void wait_for_fade(HSQUIRRELVM vm)
 {
   script_manager->set_wakeup_event(vm, ScriptManager::FADE_DONE);
+}
+
+void speech_show(const std::string& text, float x, float y)
+{
+  SpeechManager::current()->add(text, Vector2f(x, y));
 }
 
 void dialog_show(int alignment, const std::string& character, const std::string& portrait, const std::string& text)

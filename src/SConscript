@@ -97,6 +97,7 @@ env.Program('../windstille', [
 'hud/dialog_manager.cpp',
 'hud/inventory.cpp',
 'hud/pda.cpp',
+'hud/speech_manager.cpp',
 'input/controller.cpp',
 'input/controller_description.cpp',
 'input/input_configurator.cpp',

@@ -34,6 +34,7 @@
 #include "screen_manager.hpp"
 #include "view.hpp"
 #include "hud/dialog_manager.hpp"
+#include "hud/speech_manager.hpp"
 #include "app/windstille_main.hpp"
 #include "display/scene_context.hpp"
 #include "scripting/util.hpp"
@@ -86,6 +87,7 @@ public:
 
   // GUI Elements
   ControllerHelpWindow controller_help_window;
+  SpeechManager speech_manager;
 
   // Active GUI Elements
   DialogManager dialog_manager;
@@ -104,6 +106,7 @@ public:
     fadeout_value  = 0.0f;
     fade_time      = 1.0f;
   }
+
   ~GameSessionImpl() {
   }
 
@@ -165,6 +168,8 @@ GameSessionImpl::draw()
                          Color(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
     }
 
+  speech_manager.draw();
+
   if (pause)
     {
       if ((SDL_GetTicks() / 1000) % 2)
@@ -175,6 +180,7 @@ GameSessionImpl::draw()
 void
 GameSessionImpl::update(float delta, const Controller& controller)
 {  
+  // Cutscene stuff (black bars that fade-in/out
   if (cutscene_mode)
     cutscene_value += delta * 0.75f;
   else
@@ -189,7 +195,8 @@ GameSessionImpl::update(float delta, const Controller& controller)
   // pause = !pause;
 
   Uint8 *keystate = SDL_GetKeyState(NULL);
-
+  
+  // Hacks to play around with the game speed
   if(keystate[SDLK_KP1])
     game_speed *= 1.0 - delta;
   if(keystate[SDLK_KP3])
@@ -199,6 +206,7 @@ GameSessionImpl::update(float delta, const Controller& controller)
  
   delta *= game_speed;
 
+  // Update the game
   if (!pause)
     {
       game_time += delta;
@@ -255,8 +263,10 @@ GameSessionImpl::update(float delta, const Controller& controller)
         }
       
       controller_help_window.update(delta, controller);
+      speech_manager.update(delta, controller);
     }
 
+  // Handle key presses
   if (controller.button_was_pressed(PDA_BUTTON))
     {
       if (current_gui == &pda)

@@ -774,6 +774,39 @@ static SQInteger set_controller_help_active_wrapper(HSQUIRRELVM vm)
 
 }
 
+static SQInteger speech_show_wrapper(HSQUIRRELVM vm)
+{
+  const SQChar* arg0;
+  if(SQ_FAILED(sq_getstring(vm, 2, &arg0))) {
+    sq_throwerror(vm, _SC("Argument 1 not a string"));
+    return SQ_ERROR;
+  }
+  SQFloat arg1;
+  if(SQ_FAILED(sq_getfloat(vm, 3, &arg1))) {
+    sq_throwerror(vm, _SC("Argument 2 not a float"));
+    return SQ_ERROR;
+  }
+  SQFloat arg2;
+  if(SQ_FAILED(sq_getfloat(vm, 4, &arg2))) {
+    sq_throwerror(vm, _SC("Argument 3 not a float"));
+    return SQ_ERROR;
+  }
+
+  try {
+    Scripting::speech_show(arg0, static_cast<float> (arg1), static_cast<float> (arg2));
+
+    return 0;
+
+  } catch(std::exception& e) {
+    sq_throwerror(vm, e.what());
+    return SQ_ERROR;
+  } catch(...) {
+    sq_throwerror(vm, _SC("Unexpected exception while executing function 'speech_show'"));
+    return SQ_ERROR;
+  }
+
+}
+
 static SQInteger dialog_show_wrapper(HSQUIRRELVM vm)
 {
   SQInteger arg0;
@@ -1763,6 +1796,12 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   sq_newclosure(v, &set_controller_help_active_wrapper, 0);
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_controller_help_active'");
+  }
+
+  sq_pushstring(v, "speech_show", -1);
+  sq_newclosure(v, &speech_show_wrapper, 0);
+  if(SQ_FAILED(sq_createslot(v, -3))) {
+    throw SquirrelError(v, "Couldn't register function 'speech_show'");
   }
 
   sq_pushstring(v, "dialog_show", -1);
