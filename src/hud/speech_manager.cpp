@@ -21,6 +21,14 @@
 
 SpeechManager* SpeechManager::current_ = 0;
 
+SpeechManager::Speech::Speech(const std::string& text, const Vector2f& pos, const Color& color)
+  : text(text),
+    pos(pos),
+    color(color),
+    seconds_passed(0.0f)
+{
+}
+
 void 
 SpeechManager::Speech::draw()
 {
@@ -30,6 +38,17 @@ SpeechManager::Speech::draw()
 void
 SpeechManager::Speech::update(float delta)
 {
+  seconds_passed += delta;
+}
+
+bool
+SpeechManager::Speech::is_done() const
+{
+  float words = 1 + text.size() / 5.0f;
+  float words_per_minute = 150.0f;
+  float words_per_second = words_per_minute / 60.0f;
+  
+  return (seconds_passed * words_per_second) > words;
 }
 
 SpeechManager::SpeechManager()
@@ -37,7 +56,7 @@ SpeechManager::SpeechManager()
   assert(current_ == 0);
   current_ = this;
 
-  add("Hello World", Vector2f(320, 200));
+  add("Hello World", Vector2f(320, 200), Color(255, 255, 0));
 }
 
 SpeechManager::~SpeechManager()
@@ -58,7 +77,8 @@ SpeechManager::draw()
 {
   for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
     {
-      (*i)->draw();
+      if (*i)
+        (*i)->draw();
     }  
 }
 
@@ -67,8 +87,21 @@ SpeechManager::update(float delta, const Controller& controller)
 {
   for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
     {
-      (*i)->update(delta);
+      if (*i)
+        (*i)->update(delta);
     }
+
+  for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
+    {  
+      if ((*i)->is_done())
+        {
+          delete *i;
+          *i = 0;
+        }
+    }
+
+  speeches.erase(std::remove(speeches.begin(), speeches.end(), (Speech*)0),
+                 speeches.end());
 }
 
 /* EOF */

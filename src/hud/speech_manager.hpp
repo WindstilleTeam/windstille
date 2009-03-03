@@ -43,15 +43,14 @@ private:
     std::string text;
     Vector2f    pos;
     Color       color;
+    float       seconds_passed;
+    float       wpm;
 
-    Speech(const std::string& text, const Vector2f& pos, const Color& color)
-      : text(text),
-        pos(pos),
-        color(color)
-    {}
+    Speech(const std::string& text, const Vector2f& pos, const Color& color);
     
     void draw();
     void update(float delta);
+    bool is_done() const;
   };
 
   typedef std::vector<Speech*> Speeches;
