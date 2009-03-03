@@ -90,13 +90,23 @@ TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effec
 
   int x_pos = 1;
   int y_pos = 1;
+  
+  // FIXME: Not really needed, instead we should sort the characters
+  // after glyph_height before rendering and then use the max_glyph_height for each row
+  int max_glyph_height = effect.get_height(impl->size); 
 
-  int max_glyph_height = effect.get_height(impl->size);
+  // List of characters we want in the final font
+  std::vector<uint32_t> characters;
+  for(int i = 0; i < 256; i += 1)
+    characters.push_back(i);
+
+  // FIXME: Insert code to sort characters after glyph height
+  // FIXME: Insert code that calculates the needed texture size
 
   // We limit ourself to 256 characters for the momemnt
-  for(int glyph_index = 0; glyph_index < 256; glyph_index += 1)
+  for(std::vector<uint32_t>::iterator i = characters.begin(); i != characters.end(); ++i)
     {
-      if (FT_Load_Char( face,  glyph_index, FT_LOAD_RENDER))
+      if (FT_Load_Char( face,  *i, FT_LOAD_RENDER))
         {
           // FIXME: What happens when character is not in font, should be handled more gentle
           throw std::runtime_error("couldn't load char");
@@ -124,7 +134,7 @@ TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effec
 
           // we leave a one pixel border around the letters which we fill with generate_border
           x_pos += glyph_width + 2;
-          if (x_pos + max_glyph_height + 2 > pixelbuffer->w)
+          if (x_pos + max_glyph_height + 2 > pixelbuffer->w) // FIXME: should use glyph_width of the next glyph instead of max_glyph_height
             {
               y_pos += max_glyph_height + 2;
               x_pos = 1;
