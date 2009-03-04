@@ -80,14 +80,17 @@ ScriptManager::~ScriptManager()
 
   current_ = 0;
 }
-
+
 static SQInteger squirrel_read_char(SQUserPointer file)
 {
   std::istream* in = reinterpret_cast<std::istream*> (file);
+
   char c = in->get();
-  if(in->eof())
-    return 0;    
-  return c;
+
+  if (in->eof())
+    return 0;
+  else
+    return c;
 }
 
 void
@@ -133,7 +136,7 @@ ScriptManager::run_script(std::istream& in, const std::string& sourcename)
   if(sq_call(vm, 1, false, true) < 0)
     throw SquirrelError(vm, "Couldn't start script");
 }
-
+
 void
 ScriptManager::update()
 {
