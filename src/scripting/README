@@ -23,7 +23,8 @@ Interface
 - game_objects.?pp contains wrapper classes around objects to make
   them exportable to squirrel
 
-- wrapper.interface.hpp include files for wrappper.cpp
+- wrapper.interface.hpp include files that are then exported to
+  scripting via the generated wrappper.cpp
  
 
 # EOF #

@@ -20,30 +20,23 @@
 #define HEADER_WINDSTILLE_SCRIPTING_GAME_OBJECTS_HPP
 
 #ifndef SCRIPTING_API
-#include "engine/game_object.hpp"
-#include "objects/test_object.hpp"
-#include "objects/player.hpp"
-#include "objects/scriptable_object.hpp"
-#include "util/ref.hpp"
-
-typedef GameObject _GameObject;
-typedef TestObject _TestObject;
-typedef Player _Player;
-typedef ScriptableObject _ScriptableObject;
-typedef Entity _Entity;
+#  include "engine/game_object.hpp"
+#  include "objects/test_object.hpp"
+#  include "objects/player.hpp"
+#  include "objects/scriptable_object.hpp"
+#  include "util/ref.hpp"
 #endif
 
-namespace Scripting
-{
+namespace Scripting {
 
 class GameObject
 {
 #ifndef SCRIPTING_API
 protected:
-  Ref<_GameObject> object;
+  Ref< ::GameObject> object;
   
 public:
-  GameObject(_GameObject* _object)
+GameObject(::GameObject* _object)
     : object(_object)
   {}
   virtual ~GameObject()
@@ -61,15 +54,15 @@ class TestObject : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  TestObject(_TestObject* _object)
+  TestObject(::TestObject* _object)
     : GameObject(_object)
   {}
   virtual ~TestObject()
   {}
 
-  _TestObject* obj() const
+  ::TestObject* obj() const
   {
-    return reinterpret_cast<_TestObject*> (object.get());
+    return reinterpret_cast< ::TestObject*> (object.get());
   }
 #endif
 
@@ -86,15 +79,15 @@ class Player : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  Player(_Player* _player)
+  Player(::Player* _player)
     : GameObject(_player)
   {}
   virtual ~Player()
   {}
-
-  _Player* obj() const
+  
+  ::Player* obj() const
   {
-    return reinterpret_cast<_Player*> (object.get());
+    return reinterpret_cast< ::Player*> (object.get());
   }
 #endif
 
@@ -107,15 +100,15 @@ class ScriptableObject : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  ScriptableObject(_ScriptableObject* _object)
+  ScriptableObject(::ScriptableObject* _object)
     : GameObject(_object)
   {}
   virtual ~ScriptableObject()
   {}
 
-  _ScriptableObject* obj() const
+  ::ScriptableObject* obj() const
   {
-    return reinterpret_cast<_ScriptableObject*> (object.get());
+    return reinterpret_cast< ::ScriptableObject*> (object.get());
   }
 #endif
 
@@ -124,7 +117,7 @@ public:
   void start_flash(float speed);
 };
  
-}
+} // namespace Scripting
 
 #endif
 
