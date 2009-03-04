@@ -161,7 +161,7 @@ WindstilleMain::init_modules()
 
   if (debug) std::cout << "Initialising ScriptManager" << std::endl;
   texture_manager  = new TextureManager();
-  surface_manager  = new SurfaceManager();
+  new SurfaceManager();
   new ScriptManager();
   sprite2d_manager = new SpriteManager();
   sprite3d_manager = new sprite3d::Manager();
@@ -227,8 +227,7 @@ WindstilleMain::deinit_modules()
 
   delete ScriptManager::current();
   
-  delete surface_manager;
-  surface_manager = 0;
+  delete SurfaceManager::current();
 
   delete texture_manager;
   texture_manager = 0;

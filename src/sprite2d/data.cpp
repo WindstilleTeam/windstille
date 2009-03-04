@@ -131,7 +131,7 @@ SpriteData::parse_action(const std::string& dir, FileReader& reader)
 
       for(std::vector<std::string>::iterator file = image_files.begin(); file != image_files.end(); ++file)
         {
-          action->surfaces.push_back(surface_manager->get(dir + "/" + *file));
+          action->surfaces.push_back(SurfaceManager::current()->get(dir + "/" + *file));
         }
     }
   else if(reader.get("image-grid", grid_reader)) 
@@ -149,7 +149,7 @@ SpriteData::parse_action(const std::string& dir, FileReader& reader)
       if(filename == "" || x_size <= 0 || y_size <= 0)
         throw std::runtime_error("Invalid or too few data in image-grid");
       
-      surface_manager->load_grid(dir + "/" + filename,
+      SurfaceManager::current()->load_grid(dir + "/" + filename,
                                  action->surfaces, x_size, y_size);
     }
   reader.print_unused_warnings("sprite action");

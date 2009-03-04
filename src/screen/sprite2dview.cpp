@@ -270,7 +270,7 @@ Sprite2DView::next_image(int i)
     }
 
   sprite2d_manager->cleanup();
-  surface_manager->cleanup();
+  SurfaceManager::current()->cleanup();
 }
 
 void

@@ -35,6 +35,11 @@ class Surface;
  */
 class SurfaceManager
 {
+private:
+  static SurfaceManager* current_; 
+public:
+  static SurfaceManager* current() { return current_; } 
+
 public:
   SurfaceManager();
   ~SurfaceManager();
@@ -58,8 +63,6 @@ public:
   typedef std::map<std::string, Surface> Surfaces;
   Surfaces surfaces;
 };
-
-extern SurfaceManager* surface_manager;
 
 #endif
 

@@ -48,7 +48,7 @@ Surface::Surface()
 Surface::Surface(const std::string& filename)
 {
   // FIXME: a bit ugly, should move some of the surface_manager code over here
-  *this = surface_manager->get(filename);
+  *this = SurfaceManager::current()->get(filename);
 }
 
 static int power_of_two(int val) {

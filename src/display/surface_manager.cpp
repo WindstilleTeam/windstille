@@ -31,10 +31,12 @@
 #include "texture_manager.hpp"
 #include "physfs/physfs_sdl.hpp"
 
-SurfaceManager* surface_manager = 0;
+SurfaceManager* SurfaceManager::current_ = 0;
 
 SurfaceManager::SurfaceManager()
 {
+  assert(current_);
+  current_ = this;
 }
 
 SurfaceManager::~SurfaceManager()
@@ -47,6 +49,8 @@ SurfaceManager::~SurfaceManager()
         std::cerr << "Warning: Surface '" << i->first << "' not released.\n";
     }
   }
+
+  current_ = 0;
 }
 
 Surface
