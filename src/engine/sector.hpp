@@ -77,7 +77,8 @@ public:
   Sector(const std::string& filename);
   ~Sector();
 
-  const std::string& get_filename () const;
+  std::string get_filename() const;
+  std::string get_directory() const;
 
   void draw(SceneContext& gc);
   void update(float delta);
@@ -87,8 +88,8 @@ public:
    */
   void activate();
   
-  int get_width  () const;
-  int get_height () const;
+  int get_width() const;
+  int get_height() const;
 
   /**
    * Set ambient light, ie. the light that illuminates the whole sector

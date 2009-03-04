@@ -247,7 +247,7 @@
       (sprite "images/objects/vrdoor-color.sprite")
       (highlight "images/objects/vrdoor-highlight.sprite")
       (pos 384 704)
-      (script "set_sector(\"levels/industrial.wst\")")
+      (script "set_sector(\"sectors/industrial/industrial.wst\")")
       (use-verb "Enter")
     )
 

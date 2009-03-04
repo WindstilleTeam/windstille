@@ -113,7 +113,8 @@ ScriptableObject::update(float delta)
 void
 ScriptableObject::use()
 {
-  script_manager->run_script(use_script, "ScriptableObject");
+  if (!use_script.empty())
+    script_manager->run_script(use_script, name);
 }
 
 void

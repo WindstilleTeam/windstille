@@ -192,7 +192,7 @@ Sector::activate()
 
   sound_manager->play_music(music);
   if (init_script != "")
-    script_manager->run_script_file(init_script);
+    script_manager->run_script_file(get_directory() + init_script);
 }
 
 void
@@ -387,10 +387,19 @@ Sector::get_ambient_light() const
   return ambient_light;
 }
 
-const std::string&
+std::string
 Sector::get_filename () const
 {
   return filename;
+}
+
+std::string
+Sector::get_directory() const
+{
+  // FIXME: Not pretty
+  std::string directory = filename;
+  directory.erase(directory.rfind('/')+1);
+  return directory;
 }
 
 /* EOF */

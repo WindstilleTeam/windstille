@@ -70,13 +70,9 @@ Character::draw (SceneContext& sc)
 void
 Character::use()
 {
-  std::string filename = basename(Sector::current()->get_filename());
-  filename.erase(filename.find('.'));
-  filename = "scripts/" + filename + "/" + name + ".nut";
-
   try 
     {
-      script_manager->run_script_file(filename);
+      script_manager->run_script_file(Sector::current()->get_directory() + name + ".nut");
     } catch (std::exception& e) {
       console << e.what() << std::endl;
     }

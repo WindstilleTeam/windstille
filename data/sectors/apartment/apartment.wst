@@ -4,7 +4,7 @@
   (version 2)
   (ambient-color .3 .3 .3)  (name   "")
   (music  "")
-  (init-script "scripts/apartment/init.nut")
+  (init-script "init.nut")
   (objects
   (tilemap (name "background") (width 100) (height 30) (z-pos -2000)
     (data
@@ -215,7 +215,7 @@
       (z-pos -100)
       (sprite  "models/objects/barrobot/barrobotsprite.sprite")
       (active true)
-      (script "barrobot")
+      ;;(script "barrobot.nut")
       (use-verb "Look")
     )
     

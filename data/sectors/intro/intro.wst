@@ -4,7 +4,7 @@
   (name   "")
   (music  "levels/silence_wip.ogg")
   (ambient-color .666 .666 .666)
-  (init-script "levels/intro.nut")
+  (init-script "intro.nut")
   (spawnpoint
     (name "default")
     (pos 300 650)

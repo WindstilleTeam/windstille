@@ -318,7 +318,7 @@ MenuManager::display_scenario_menu()
   using namespace gui;
   std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-200, 300-170), Sizef(400, 340)), 
+  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-250, 300-170), Sizef(500, 340)), 
                                                          "Select Scenario",
                                                          manager->get_root()));
 
@@ -326,13 +326,13 @@ MenuManager::display_scenario_menu()
   menu->set_font(Fonts::vera20);
 
   std::vector<std::string> scenarios;
-  scenarios.push_back("levels/apartment.wst");
-  scenarios.push_back("levels/bluestone.wst");
-  scenarios.push_back("levels/forest.wst");
-  scenarios.push_back("levels/industrial.wst");
-  scenarios.push_back("levels/intro.wst");
-  scenarios.push_back("levels/newformat2.wst");
-  scenarios.push_back("levels/virtualreality.wst");
+  scenarios.push_back("sectors/apartment/apartment.wst");
+  scenarios.push_back("sectors/bluestone/bluestone.wst");
+  scenarios.push_back("sectors/forest/forest.wst");
+  scenarios.push_back("sectors/industrial/industrial.wst");
+  scenarios.push_back("sectors/intro/intro.wst");
+  scenarios.push_back("sectors/newformat2/newformat2.wst");
+  scenarios.push_back("sectors/virtualreality/virtualreality.wst");
   
   for(std::vector<std::string>::iterator i = scenarios.begin(); i != scenarios.end(); ++i)
     {

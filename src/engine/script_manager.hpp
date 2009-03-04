@@ -41,8 +41,15 @@ public:
 
   void update();
 
+  /** Load script from \a filename and runs it */
   void run_script_file(const std::string& filename);
-  void run_script(const std::string& string, const std::string& sourcename);
+
+  /** Takes the Squirrel expression in \a script and evaluates it, \a
+      sourcename is the filename and used in error messages */
+  void run_script(const std::string& script, const std::string& sourcename);
+
+  /** Load script from \a in and runs it, \a sourcename is the
+      filename and used in error messages */
   void run_script(std::istream& in, const std::string& sourcename);
 
   HSQUIRRELVM get_vm() const
