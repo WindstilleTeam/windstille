@@ -59,8 +59,18 @@ private:
 public:
   SpeechManager();
   ~SpeechManager();
-
-  void add(const std::string& text, const Vector2f& pos, const Color& color = Color(1.0f, 1.0f, 1.0f));
+  
+  /** Add a speech bubble or a series of speech bubbles to the scene,
+   *  lines seperated by newline are displayed in a series of speech
+   *  bubbles.
+   * 
+   *  @param text  The content of the speech bubble
+   *  @param pos   The position of the speech bubble in screen coordinates
+   *  @param color The color of the speech bubble
+   */
+  void add(const std::string& text, 
+           const Vector2f& pos, 
+           const Color& color = Color(1.0f, 1.0f, 1.0f));
 
   void draw();
   void update(float delta, const Controller& controller);

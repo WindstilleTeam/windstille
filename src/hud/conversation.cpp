@@ -162,7 +162,7 @@ Conversation::update(float delta, const Controller& controller)
                                                    choices[selection].text);
       choices.clear();
       GameSession::current()->set_control_state(GameSession::GAME);
-      script_manager->fire_wakeup_event(ScriptManager::CONVERSATION_CLOSED);
+      ScriptManager::current()->fire_wakeup_event(ScriptManager::CONVERSATION_CLOSED);
     }
 }
 

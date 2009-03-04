@@ -19,7 +19,7 @@
 
 using namespace Scripting;
 
-ScriptManager* script_manager = 0;
+ScriptManager* ScriptManager::current_ = 0;
 
 static void printfunc(HSQUIRRELVM, const char* str, ...)
 {
@@ -34,6 +34,9 @@ static void printfunc(HSQUIRRELVM, const char* str, ...)
 
 ScriptManager::ScriptManager()
 {
+  assert(current_ == 0);
+  current_ = this;
+
   v = sq_open(1024);
   if(v == 0)
     throw std::runtime_error("Couldn't initialize squirrel vm");
@@ -66,6 +69,8 @@ ScriptManager::~ScriptManager()
     sq_release(v, &(i->vm_obj));
 
   sq_close(v);
+
+  current_ = 0;
 }
 
 static SQInteger squirrel_read_char(SQUserPointer file)

@@ -131,7 +131,7 @@ DialogManager::update(float delta, const Controller& controller)
               if (text_area->is_progress_complete())
                 {
                   GameSession::current()->set_control_state(GameSession::GAME);
-                  script_manager->fire_wakeup_event(ScriptManager::DIALOG_CLOSED);
+                  ScriptManager::current()->fire_wakeup_event(ScriptManager::DIALOG_CLOSED);
                 }
               else if (delay > 0.2)
                 text_area->set_progress_complete();

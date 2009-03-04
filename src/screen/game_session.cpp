@@ -126,7 +126,7 @@ GameSession::GameSession(const std::string& arg_filename)
   impl->pause = false;
   
   if (1)
-    script_manager->run_script_file("scripts/init_script_vars.nut");
+    ScriptManager::current()->run_script_file("scripts/init_script_vars.nut");
     
   set_sector(impl->filename);
 }
@@ -210,7 +210,7 @@ GameSessionImpl::update(float delta, const Controller& controller)
   if (!pause)
     {
       game_time += delta;
-      script_manager->update();
+      ScriptManager::current()->update();
       
       view.update(delta, controller);
       sector->update(delta);
@@ -222,7 +222,7 @@ GameSessionImpl::update(float delta, const Controller& controller)
             {
               fade_state = RUNNING;
               fadeout_value = 0.0f;
-              script_manager->fire_wakeup_event(ScriptManager::FADE_DONE);
+              ScriptManager::current()->fire_wakeup_event(ScriptManager::FADE_DONE);
             }
           else
             {
@@ -234,7 +234,7 @@ GameSessionImpl::update(float delta, const Controller& controller)
           if (fadeout_value >= 1.0f)
             { 
               fadeout_value = 1.0f;
-              script_manager->fire_wakeup_event(ScriptManager::FADE_DONE);
+              ScriptManager::current()->fire_wakeup_event(ScriptManager::FADE_DONE);
 
               switch(next_action)
                 {

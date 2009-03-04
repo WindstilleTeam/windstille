@@ -125,22 +125,22 @@ void set_controller_help_active(bool active)
 
 void wait(HSQUIRRELVM vm, float time)
 {
-  script_manager->set_wakeup_event(vm, ScriptManager::TIME, time);
+  ScriptManager::current()->set_wakeup_event(vm, ScriptManager::TIME, time);
 }
 
 void wait_for_dialog(HSQUIRRELVM vm)
 {
-  script_manager->set_wakeup_event(vm, ScriptManager::DIALOG_CLOSED);
+  ScriptManager::current()->set_wakeup_event(vm, ScriptManager::DIALOG_CLOSED);
 }
 
 void wait_for_camera(HSQUIRRELVM vm)
 {
-  script_manager->set_wakeup_event(vm, ScriptManager::CAMERA_DONE);
+  ScriptManager::current()->set_wakeup_event(vm, ScriptManager::CAMERA_DONE);
 }
 
 void wait_for_fade(HSQUIRRELVM vm)
 {
-  script_manager->set_wakeup_event(vm, ScriptManager::FADE_DONE);
+  ScriptManager::current()->set_wakeup_event(vm, ScriptManager::FADE_DONE);
 }
 
 void speech_show(const std::string& text, float x, float y)
@@ -177,7 +177,7 @@ bool is_objective_complete(const std::string& name)
 
 bool run_before(HSQUIRRELVM vm)
 {
-  return script_manager->run_before(vm);
+  return ScriptManager::current()->run_before(vm);
 }
 
 void load_state(HSQUIRRELVM v, const std::string& filename)
@@ -240,7 +240,7 @@ int  conversation_get_selection()
 
 void wait_for_conversation(HSQUIRRELVM v)
 {
-  script_manager->set_wakeup_event(v, ScriptManager::CONVERSATION_CLOSED);
+  ScriptManager::current()->set_wakeup_event(v, ScriptManager::CONVERSATION_CLOSED);
 }
 
 SQInteger display(HSQUIRRELVM v) __custom

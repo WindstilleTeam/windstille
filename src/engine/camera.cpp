@@ -129,7 +129,7 @@ Camera::update(float delta)
 
         if (p == path.back())
           {
-            script_manager->fire_wakeup_event(ScriptManager::CAMERA_DONE);
+            ScriptManager::current()->fire_wakeup_event(ScriptManager::CAMERA_DONE);
             set_mode(CAMERA_INACTIVE);
           }
       }

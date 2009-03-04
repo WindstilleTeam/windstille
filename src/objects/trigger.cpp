@@ -73,7 +73,7 @@ Trigger::update (float )
   if(last_trigger == false) {
     triggered = true;
     try {
-      script_manager->run_script(script, "TriggerObject");
+      ScriptManager::current()->run_script(script, "TriggerObject");
     } catch(std::exception& e) {
       std::cerr << "Couldn't run trigger-script: " << e.what() << "\n";
     }

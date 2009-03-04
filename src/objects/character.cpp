@@ -72,7 +72,7 @@ Character::use()
 {
   try 
     {
-      script_manager->run_script_file(Sector::current()->get_directory() + name + ".nut");
+      ScriptManager::current()->run_script_file(Sector::current()->get_directory() + name + ".nut");
     } catch (std::exception& e) {
       console << e.what() << std::endl;
     }

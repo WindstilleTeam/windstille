@@ -60,7 +60,7 @@ Sector::Sector(const std::string& arg_filename)
     player(0)    
 {
   // make sure squirrel has an "objects" table
-  script_manager->run_script(
+  ScriptManager::current()->run_script(
       "if(! (\"" OBJECTS_TABLE "\" in this)) {"
       "  " OBJECTS_TABLE " <- {};"
       "}", "");
@@ -192,7 +192,7 @@ Sector::activate()
 
   sound_manager->play_music(music);
   if (init_script != "")
-    script_manager->run_script_file(get_directory() + init_script);
+    ScriptManager::current()->run_script_file(get_directory() + init_script);
 }
 
 void
@@ -265,7 +265,7 @@ Sector::remove_object_from_squirrel(GameObject* object)
   using namespace Scripting;
 
   // get objects table
-  HSQUIRRELVM v = script_manager->get_vm();
+  HSQUIRRELVM v = ScriptManager::current()->get_vm();
   sq_pushroottable(v);
   sq_pushstring(v, OBJECTS_TABLE, -1);
   if(SQ_FAILED(sq_get(v, -2)))
@@ -320,7 +320,7 @@ Sector::expose_object_to_squirrel(GameObject* object)
   using namespace Scripting;
 
   // get objects table
-  HSQUIRRELVM v = script_manager->get_vm();
+  HSQUIRRELVM v = ScriptManager::current()->get_vm();
   sq_pushroottable(v);
   sq_pushstring(v, OBJECTS_TABLE, -1);
   if(SQ_FAILED(sq_get(v, -2)))

@@ -162,11 +162,11 @@ WindstilleMain::init_modules()
   if (debug) std::cout << "Initialising ScriptManager" << std::endl;
   texture_manager  = new TextureManager();
   surface_manager  = new SurfaceManager();
-  script_manager   = new ScriptManager();
+  new ScriptManager();
   sprite2d_manager = new SpriteManager();
   sprite3d_manager = new sprite3d::Manager();
 
-  script_manager->run_script_file("scripts/windstille.nut");
+  ScriptManager::current()->run_script_file("scripts/windstille.nut");
 
   { // Fill controller_description with data
     controller_description.add_button("primary-button",   PRIMARY_BUTTON);
@@ -225,9 +225,8 @@ WindstilleMain::deinit_modules()
   delete sprite2d_manager;
   sprite2d_manager = 0;
 
-  delete script_manager;
-  script_manager = 0;
-
+  delete ScriptManager::current();
+  
   delete surface_manager;
   surface_manager = 0;
 

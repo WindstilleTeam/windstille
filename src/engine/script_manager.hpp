@@ -35,6 +35,11 @@
  */
 class ScriptManager
 {
+private:
+  static ScriptManager* current_;
+public:
+  static ScriptManager* current() { return current_; }
+
 public:
   ScriptManager();
   ~ScriptManager();
@@ -105,8 +110,6 @@ private:
 
   HSQUIRRELVM v;
 };
-
-extern ScriptManager* script_manager;
 
 #endif
 

@@ -321,7 +321,7 @@ std::vector<std::string>
 ConsoleImpl::get_roottable()
 {
   std::vector<std::string> roottable;
-  HSQUIRRELVM v = script_manager->get_vm();
+  HSQUIRRELVM v = ScriptManager::current()->get_vm();
 
   sq_pushroottable(v);
 
@@ -448,7 +448,7 @@ ConsoleImpl::eval_command_line()
     }
   else if (command_line == "show")
     {
-      HSQUIRRELVM v = script_manager->get_vm();
+      HSQUIRRELVM v = ScriptManager::current()->get_vm();
 
       int size = sq_getsize(v, -1);
       console << size << " elements on the root table" << std::endl;
@@ -492,7 +492,7 @@ ConsoleImpl::execute(const std::string& str_)
   int i = str.length();
   const char* buffer = str.c_str();
 
-  HSQUIRRELVM vm = script_manager->get_vm();
+  HSQUIRRELVM vm = ScriptManager::current()->get_vm();
   int oldtop = sq_gettop(vm); 
   try {
     int retval = 1;
