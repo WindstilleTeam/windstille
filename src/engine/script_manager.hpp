@@ -41,27 +41,6 @@ public:
   static ScriptManager* current() { return current_; }
 
 public:
-  ScriptManager();
-  ~ScriptManager();
-
-  void update();
-
-  /** Load script from \a filename and runs it */
-  void run_script_file(const std::string& filename);
-
-  /** Takes the Squirrel expression in \a script and evaluates it, \a
-      sourcename is the filename and used in error messages */
-  void run_script(const std::string& script, const std::string& sourcename);
-
-  /** Load script from \a in and runs it, \a sourcename is the
-      filename and used in error messages */
-  void run_script(std::istream& in, const std::string& sourcename);
-
-  HSQUIRRELVM get_vm() const
-  {
-    return v;
-  }
-
   enum WakeupEvent {
     NO_EVENT,
     TIME,
@@ -85,23 +64,18 @@ public:
     };
   };
 
-  void set_wakeup_event(HSQUIRRELVM vm, WakeupEvent event, float timeout = -1);
-  void set_wakeup_event(HSQUIRRELVM vm, WakeupData  event, float timeout = -1);
-  void fire_wakeup_event(WakeupEvent event);
-  void fire_wakeup_event(WakeupData  event);
-  
-  bool run_before(HSQUIRRELVM vm);
-
 private:
   class SquirrelVM
   {
   public:
-    SquirrelVM(const std::string& arg_name, HSQUIRRELVM arg_vm, HSQOBJECT arg_obj);
     std::string name;
     HSQUIRRELVM vm;
     HSQOBJECT   vm_obj;
     float       wakeup_time;
     WakeupData  waiting_for_events;
+
+  public:
+    SquirrelVM(const std::string& arg_name, HSQUIRRELVM arg_vm, HSQOBJECT arg_obj);
   };
   
   typedef std::list<SquirrelVM> SquirrelVMs;
@@ -109,6 +83,35 @@ private:
   std::map<std::string, bool> already_run_scripts;
 
   HSQUIRRELVM v;
+
+public:
+  ScriptManager();
+  ~ScriptManager();
+
+  void update();
+
+  /** Load script from \a filename and runs it */
+  void run_script_file(const std::string& filename);
+
+  /** Takes the Squirrel expression in \a script and evaluates it, \a
+      sourcename is the filename and used in error messages */
+  void run_script(const std::string& script, const std::string& sourcename);
+
+  /** Load script from \a in and runs it, \a sourcename is the
+      filename and used in error messages */
+  void run_script(std::istream& in, const std::string& sourcename);
+
+  HSQUIRRELVM get_vm() const
+  {
+    return v;
+  }
+
+  void set_wakeup_event(HSQUIRRELVM vm, WakeupEvent event, float timeout = -1);
+  void set_wakeup_event(HSQUIRRELVM vm, WakeupData  event, float timeout = -1);
+  void fire_wakeup_event(WakeupEvent event);
+  void fire_wakeup_event(WakeupData  event);
+  
+  bool run_before(HSQUIRRELVM vm);
 };
 
 #endif

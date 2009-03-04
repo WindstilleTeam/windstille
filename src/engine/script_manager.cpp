@@ -45,14 +45,22 @@ ScriptManager::ScriptManager()
   sqstd_seterrorhandlers(v);
   // register squirrel libs
   sq_pushroottable(v);
+
+  /* FIXME: None of these should be needed for scripts
+
   if(sqstd_register_bloblib(v) < 0)
     throw SquirrelError(v, "Couldn't register blob lib");
+
   if(sqstd_register_iolib(v) < 0)
     throw SquirrelError(v, "Couldn't register io lib");
+
   if(sqstd_register_systemlib(v) < 0)
     throw SquirrelError(v, "Couldn't register system lib");
+  */
+
   if(sqstd_register_mathlib(v) < 0)
     throw SquirrelError(v, "Couldn't register math lib");
+
   if(sqstd_register_stringlib(v) < 0)
     throw SquirrelError(v, "Couldn't register string lib");
 
@@ -129,35 +137,43 @@ ScriptManager::run_script(std::istream& in, const std::string& sourcename)
 void
 ScriptManager::update()
 {
-  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ) {
-    SquirrelVM& squirrel_vm = *i;
-    int vm_state = sq_getvmstate(squirrel_vm.vm);
+  // 
+  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ) 
+    {
+      SquirrelVM& squirrel_vm = *i;
+      int vm_state = sq_getvmstate(squirrel_vm.vm);
     
-    if(vm_state == SQ_VMSTATE_SUSPENDED && squirrel_vm.wakeup_time > 0 && game_time >= squirrel_vm.wakeup_time) 
-      {
-        squirrel_vm.waiting_for_events = WakeupData(NO_EVENT);
-        try {
-          if(sq_wakeupvm(squirrel_vm.vm, false, false, true) < 0) {
-            throw SquirrelError(squirrel_vm.vm, "Couldn't resume script");
-          }
-        } catch(std::exception& e) {
-          std::cerr << "Problem executing script: " << e.what() << "\n";
-          sq_release(v, &squirrel_vm.vm_obj);
-          i = squirrel_vms.erase(i);
-          continue;
+      if (vm_state == SQ_VMSTATE_SUSPENDED && 
+          squirrel_vm.wakeup_time > 0 && 
+          game_time >= squirrel_vm.wakeup_time) 
+        {
+          squirrel_vm.waiting_for_events = WakeupData(NO_EVENT);
+          try 
+            {
+              if(sq_wakeupvm(squirrel_vm.vm, false, false, true) < 0) 
+                {
+                  throw SquirrelError(squirrel_vm.vm, "Couldn't resume script");
+                }
+            } 
+          catch(std::exception& e) 
+            {
+              std::cerr << "Problem executing script: " << e.what() << "\n";
+              sq_release(v, &squirrel_vm.vm_obj);
+              i = squirrel_vms.erase(i);
+              continue;
+            }
         }
-      }
 	
-    if (vm_state != SQ_VMSTATE_SUSPENDED)
-      {
-        sq_release(v, &(squirrel_vm.vm_obj));
-        i = squirrel_vms.erase(i);
-      }
-    else
-      {
-        ++i;
-      }
-  }
+      if (vm_state != SQ_VMSTATE_SUSPENDED)
+        {
+          sq_release(v, &(squirrel_vm.vm_obj));
+          i = squirrel_vms.erase(i);
+        }
+      else
+        {
+          ++i;
+        }
+    }
 }
 
 void
@@ -165,30 +181,38 @@ ScriptManager::set_wakeup_event(HSQUIRRELVM vm, WakeupData event, float timeout)
 {
   assert(event.type >= 0 && event.type < MAX_WAKEUP_EVENT_COUNT);
   // find the VM in the list and update it
-  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) {
-    SquirrelVM& squirrel_vm = *i;
-    if(squirrel_vm.vm == vm) 
-      {
-        squirrel_vm.waiting_for_events = event;
+  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
+    {
+      SquirrelVM& squirrel_vm = *i;
 
-        if(timeout < 0) {
-          squirrel_vm.wakeup_time = -1;
-        } else {
-          squirrel_vm.wakeup_time = game_time + timeout;
+      if(squirrel_vm.vm == vm) 
+        {
+          squirrel_vm.waiting_for_events = event;
+
+          if(timeout < 0) 
+            {
+              squirrel_vm.wakeup_time = -1;
+            } 
+          else 
+            {
+              squirrel_vm.wakeup_time = game_time + timeout;
+            }
+          return;
         }
-        return;
-      }
-  }
+    }
 }
 
 void
 ScriptManager::fire_wakeup_event(WakeupData  event)
 {
   assert(event.type >= 0 && event.type < MAX_WAKEUP_EVENT_COUNT);
+
   for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
     {
       SquirrelVM& vm = *i;
-      if(vm.waiting_for_events.type == event.type && vm.waiting_for_events.type != NO_EVENT)
+
+      if(vm.waiting_for_events.type == event.type && 
+         vm.waiting_for_events.type != NO_EVENT)
         {
           switch (event.type)
             {
