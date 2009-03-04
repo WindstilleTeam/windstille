@@ -60,6 +60,7 @@ private:
   bool shuffle;
 
   bool auto_scroll;
+
 public:
   Sprite2DView();
   ~Sprite2DView();
@@ -78,6 +79,7 @@ public:
 
   void set_sprite(const std::string& filename);
   void prepare_sprite(Sprite& sprite);
+
 private:
   Sprite2DView (const Sprite2DView&);
   Sprite2DView& operator= (const Sprite2DView&);

@@ -150,7 +150,7 @@ SpriteData::parse_action(const std::string& dir, FileReader& reader)
         throw std::runtime_error("Invalid or too few data in image-grid");
       
       SurfaceManager::current()->load_grid(dir + "/" + filename,
-                                 action->surfaces, x_size, y_size);
+                                           action->surfaces, x_size, y_size);
     }
   reader.print_unused_warnings("sprite action");
   

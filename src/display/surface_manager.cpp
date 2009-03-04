@@ -35,7 +35,7 @@ SurfaceManager* SurfaceManager::current_ = 0;
 
 SurfaceManager::SurfaceManager()
 {
-  assert(current_);
+  assert(current_ == 0);
   current_ = this;
 }
 
