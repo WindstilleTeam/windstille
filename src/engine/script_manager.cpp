@@ -143,35 +143,36 @@ ScriptManager::update()
       SquirrelVM& squirrel_vm = *i;
       int vm_state = sq_getvmstate(squirrel_vm.vm);
     
-      if (vm_state == SQ_VMSTATE_SUSPENDED && 
-          squirrel_vm.wakeup_time > 0 && 
-          game_time >= squirrel_vm.wakeup_time) 
+      if (vm_state == SQ_VMSTATE_SUSPENDED)
         {
-          squirrel_vm.waiting_for_events = WakeupData(NO_EVENT);
-          try 
+          if (squirrel_vm.wakeup_time > 0 && 
+              game_time >= squirrel_vm.wakeup_time) 
             {
-              if(sq_wakeupvm(squirrel_vm.vm, false, false, true) < 0) 
+              squirrel_vm.waiting_for_events = WakeupData(NO_EVENT);
+              try 
                 {
-                  throw SquirrelError(squirrel_vm.vm, "Couldn't resume script");
+                  if(sq_wakeupvm(squirrel_vm.vm, false, false, true) < 0) 
+                    {
+                      throw SquirrelError(squirrel_vm.vm, "Couldn't resume script");
+                    }
+                } 
+              catch(std::exception& e) 
+                {
+                  std::cerr << "Problem executing script: " << e.what() << "\n";
+                  sq_release(v, &squirrel_vm.vm_obj);
+                  i = squirrel_vms.erase(i);
+                  continue;
                 }
-            } 
-          catch(std::exception& e) 
+            }
+          else
             {
-              std::cerr << "Problem executing script: " << e.what() << "\n";
-              sq_release(v, &squirrel_vm.vm_obj);
-              i = squirrel_vms.erase(i);
-              continue;
+              ++i;
             }
         }
-	
-      if (vm_state != SQ_VMSTATE_SUSPENDED)
+      else // if (vm_state != SQ_VMSTATE_SUSPENDED) 
         {
           sq_release(v, &(squirrel_vm.vm_obj));
           i = squirrel_vms.erase(i);
-        }
-      else
-        {
-          ++i;
         }
     }
 }
@@ -203,7 +204,7 @@ ScriptManager::set_wakeup_event(HSQUIRRELVM vm, WakeupData event, float timeout)
 }
 
 void
-ScriptManager::fire_wakeup_event(WakeupData  event)
+ScriptManager::fire_wakeup_event(WakeupData event)
 {
   assert(event.type >= 0 && event.type < MAX_WAKEUP_EVENT_COUNT);
 
