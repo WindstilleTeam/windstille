@@ -64,6 +64,8 @@ SpeechManager::~SpeechManager()
   for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
     delete *i;
   speeches.clear();
+
+  current_ = 0;
 }
 
 void
