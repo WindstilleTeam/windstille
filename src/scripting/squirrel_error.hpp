@@ -36,11 +36,12 @@ public:
   virtual ~SquirrelError() throw();
 
   const char* what() const throw();
+
 private:
   std::string message;
 };
 
-}
+} // namespace Scripting
 
 #endif
 

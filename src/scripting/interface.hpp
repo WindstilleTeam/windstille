@@ -74,6 +74,7 @@ void objective_complete(const std::string& name);
 bool is_objective_given(const std::string& name);
 bool is_objective_complete(const std::string& name);
 
+/** Return true if the script was already run earlier */
 bool run_before(HSQUIRRELVM vm);
 
 // for testing

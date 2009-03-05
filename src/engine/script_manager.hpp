@@ -82,7 +82,7 @@ private:
   SquirrelVMs squirrel_vms;
   std::map<std::string, bool> already_run_scripts;
 
-  HSQUIRRELVM v;
+  HSQUIRRELVM vm;
 
 public:
   ScriptManager();
@@ -101,16 +101,15 @@ public:
       filename and used in error messages */
   void run_script(std::istream& in, const std::string& sourcename);
 
-  HSQUIRRELVM get_vm() const
-  {
-    return v;
-  }
+  HSQUIRRELVM get_vm() const { return vm; }
 
   void set_wakeup_event(HSQUIRRELVM vm, WakeupEvent event, float timeout = -1);
   void set_wakeup_event(HSQUIRRELVM vm, WakeupData  event, float timeout = -1);
   void fire_wakeup_event(WakeupEvent event);
   void fire_wakeup_event(WakeupData  event);
   
+  /** Returns true if the given vm as been used in a run_script() call
+      before, if the vm is run for the first time return true */
   bool run_before(HSQUIRRELVM vm);
 };
 

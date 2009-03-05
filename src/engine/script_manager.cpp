@@ -37,46 +37,50 @@ ScriptManager::ScriptManager()
   assert(current_ == 0);
   current_ = this;
 
-  v = sq_open(1024);
-  if(v == 0)
-    throw std::runtime_error("Couldn't initialize squirrel vm");
+  vm = sq_open(1024);
+  if(vm == 0)
+    {
+      throw std::runtime_error("Couldn't initialize squirrel vm");
+    }
+  else
+    {
+      // register default error handlers
+      sqstd_seterrorhandlers(vm);
+      // register squirrel libs
+      sq_pushroottable(vm);
 
-  // register default error handlers
-  sqstd_seterrorhandlers(v);
-  // register squirrel libs
-  sq_pushroottable(v);
+      /* FIXME: None of these should be needed for scripts
 
-  /* FIXME: None of these should be needed for scripts
+         if(sqstd_register_bloblib(v) < 0)
+         throw SquirrelError(v, "Couldn't register blob lib");
 
-  if(sqstd_register_bloblib(v) < 0)
-    throw SquirrelError(v, "Couldn't register blob lib");
+         if(sqstd_register_iolib(v) < 0)
+         throw SquirrelError(v, "Couldn't register io lib");
 
-  if(sqstd_register_iolib(v) < 0)
-    throw SquirrelError(v, "Couldn't register io lib");
+         if(sqstd_register_systemlib(v) < 0)
+         throw SquirrelError(v, "Couldn't register system lib");
+      */
 
-  if(sqstd_register_systemlib(v) < 0)
-    throw SquirrelError(v, "Couldn't register system lib");
-  */
+      if(sqstd_register_mathlib(vm) < 0)
+        throw SquirrelError(vm, "Couldn't register math lib");
 
-  if(sqstd_register_mathlib(v) < 0)
-    throw SquirrelError(v, "Couldn't register math lib");
+      if(sqstd_register_stringlib(vm) < 0)
+        throw SquirrelError(vm, "Couldn't register string lib");
 
-  if(sqstd_register_stringlib(v) < 0)
-    throw SquirrelError(v, "Couldn't register string lib");
-
-  // register print function
-  sq_setprintfunc(v, printfunc);
+      // register print function
+      sq_setprintfunc(vm, printfunc);
   
-  // register windstille API
-  Scripting::register_windstille_wrapper(v);
+      // register windstille API
+      Scripting::register_windstille_wrapper(vm);
+    }
 }
 
 ScriptManager::~ScriptManager()
 {
   for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
-    sq_release(v, &(i->vm_obj));
+    sq_release(vm, &(i->vm_obj));
 
-  sq_close(v);
+  sq_close(vm);
 
   current_ = 0;
 }
@@ -102,7 +106,7 @@ ScriptManager::run_script_file(const std::string& filename)
 
 void
 ScriptManager::run_script(const std::string& the_string,
-    const std::string& sourcename)
+                          const std::string& sourcename)
 {
   std::istringstream stream(the_string);
   run_script(stream, sourcename);
@@ -111,30 +115,44 @@ ScriptManager::run_script(const std::string& the_string,
 void
 ScriptManager::run_script(std::istream& in, const std::string& sourcename)
 {
-  HSQUIRRELVM vm = sq_newthread(v, 1024);
-  if(vm == 0)
-    throw SquirrelError(v, "Couldn't create new VM");
+  HSQUIRRELVM thread = sq_newthread(vm, 1024);
+  if(thread == 0)
+    {
+      throw SquirrelError(vm, "Couldn't create new VM");
+    }
+  else
+    {
+      // retrieve reference to thread from stack and increase refcounter
+      HSQOBJECT vm_obj;
 
-  // retrieve reference to thread from stack and increase refcounter
-  HSQOBJECT vm_obj;
-  sq_resetobject(&vm_obj);
-  if(sq_getstackobj(v, -1, &vm_obj) < 0)
-    throw SquirrelError(v, "Couldn't get coroutine vm from stack");
-  sq_addref(v, &vm_obj);
-  sq_pop(v, 1);
+      // Init the object
+      sq_resetobject(&vm_obj);
+
+      // store thread created by sq_newthread into vm_obj
+      if(sq_getstackobj(vm, -1, &vm_obj) < 0)
+        throw SquirrelError(vm, "Couldn't get coroutine vm from stack");
+
+      // Add reference and remove object from stack
+      sq_addref(vm, &vm_obj);
+      sq_pop(vm, 1);
   
-  if(sq_compile(vm, squirrel_read_char, &in, sourcename.c_str(), true) < 0)
-    throw SquirrelError(vm, "Couldn't parse script");
-	
-  squirrel_vms.push_back(SquirrelVM(sourcename, vm, vm_obj));
-  already_run_scripts[sourcename] = true;
+      // Compile the script and push it on the stack
+      if(sq_compile(thread, squirrel_read_char, &in, sourcename.c_str(), true) < 0)
+        throw SquirrelError(thread, "Couldn't parse script");
+     
+      // Add VM to the list of VMs
+      squirrel_vms.push_back(SquirrelVM(sourcename, thread, vm_obj));
+      already_run_scripts[sourcename] = true;
 
-  // FIXME: a script that gets run shouldn't have direct access to the root table
-  // http://wiki.squirrel-lang.org/default.aspx/SquirrelWiki/MultiVMs.html
-  sq_pushroottable(vm);
-  //sq_clone(vm, -1); //FIXME
-  if(sq_call(vm, 1, false, true) < 0)
-    throw SquirrelError(vm, "Couldn't start script");
+      // FIXME: a script that gets run shouldn't have direct access to the root table
+      // http://wiki.squirrel-lang.org/default.aspx/SquirrelWiki/MultiVMs.html
+      sq_pushroottable(thread);
+      //sq_clone(thread, -1); //FIXME
+
+      // Start the script that was previously compiled
+      if (SQ_FAILED(sq_call(thread, 1, false, true)))
+        throw SquirrelError(thread, "Couldn't start script");
+    }
 }
 
 void
@@ -162,7 +180,7 @@ ScriptManager::update()
               catch(std::exception& e) 
                 {
                   std::cerr << "Problem executing script: " << e.what() << "\n";
-                  sq_release(v, &squirrel_vm.vm_obj);
+                  sq_release(vm, &squirrel_vm.vm_obj);
                   i = squirrel_vms.erase(i);
                   continue;
                 }
@@ -174,7 +192,7 @@ ScriptManager::update()
         }
       else // if (vm_state != SQ_VMSTATE_SUSPENDED) 
         {
-          sq_release(v, &(squirrel_vm.vm_obj));
+          sq_release(vm, &squirrel_vm.vm_obj);
           i = squirrel_vms.erase(i);
         }
     }
@@ -220,16 +238,16 @@ ScriptManager::fire_wakeup_event(WakeupData event)
         {
           switch (event.type)
             {
-            case GAMEOBJECT_DONE:
-              if (vm.waiting_for_events.game_object == event.game_object)
-                {
-                  vm.wakeup_time = game_time;
-                }
-              break;
+              case GAMEOBJECT_DONE:
+                if (vm.waiting_for_events.game_object == event.game_object)
+                  {
+                    vm.wakeup_time = game_time;
+                  }
+                break;
 
-            default:
-              vm.wakeup_time = game_time;
-              break;
+              default:
+                vm.wakeup_time = game_time;
+                break;
             }
         }
     }
@@ -247,17 +265,21 @@ ScriptManager::fire_wakeup_event(WakeupEvent event)
   fire_wakeup_event(WakeupData(event));
 }
 
-bool ScriptManager::run_before(HSQUIRRELVM vm)
+bool
+ScriptManager::run_before(HSQUIRRELVM vm)
 {
   std::string name;
-  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) {
-    if (i->vm == vm)
-      name = i->name;
-  }
+
+  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
+    {
+      if (i->vm == vm)
+        name = i->name;
+    }
   
   if (already_run_scripts.find(name) == already_run_scripts.end())
     return false;
-  return true;
+  else
+    return true;
 }
 
 ScriptManager::SquirrelVM::SquirrelVM(const std::string& arg_name, HSQUIRRELVM arg_vm, HSQOBJECT arg_obj)

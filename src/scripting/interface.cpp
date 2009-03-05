@@ -329,17 +329,21 @@ SQInteger spawn_object(HSQUIRRELVM v)
   const char* objname;
   sq_getstring(v, 2, &objname);
 
+  // FIXME: Do we memleak here?
   std::vector<lisp::Lisp*> entries;
   entries.push_back(new Lisp(Lisp::TYPE_SYMBOL, objname));
   table_to_lisp(v, 3, entries);
 
-  try {
-    SExprFileReader reader(new Lisp(entries), true);
-    Sector::current()->add_object(reader);
-  } catch(std::exception& e) {
-    std::cerr << "Error parsing object in spawn_object: " << e.what()
-      << "\n";
-  }
+  try 
+    {
+      SExprFileReader reader(new Lisp(entries), true);
+      Sector::current()->add_object(reader);
+    } 
+  catch (std::exception& e) 
+    {
+      std::cerr << "Error parsing object in spawn_object: " << e.what()
+                << "\n";
+    }
 
   return 0;
 }
