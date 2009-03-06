@@ -196,11 +196,9 @@ void save_state(HSQUIRRELVM v, const std::string& filename)
 
 void list_objects()
 {
-  // std::vector<::GameObject*> didn't work me, the typedef is the workaround
-  typedef ::GameObject GameObject;
-  std::vector<boost::shared_ptr<GameObject> >* objects = Sector::current()->get_objects();
+  std::vector<boost::shared_ptr< ::GameObject > >* objects = Sector::current()->get_objects();
   
-  for(std::vector<boost::shared_ptr<GameObject> >::iterator i = objects->begin(); i != objects->end(); ++i)
+  for(std::vector<boost::shared_ptr< ::GameObject > >::iterator i = objects->begin(); i != objects->end(); ++i)
     {
       if (!(*i)->get_name().empty())
         console << (*i)->get_name() << std::endl;
