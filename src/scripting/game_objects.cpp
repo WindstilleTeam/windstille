@@ -26,25 +26,25 @@ namespace Scripting {
 const std::string&
 GameObject::get_name() const
 {
-  return object->get_name();
+  return object.lock()->get_name();
 }
 
 void
 GameObject::remove()
 {
-  object->remove();
+  object.lock()->remove();
 }
 
 void
 GameObject::set_active(bool active)
 {
-  object->set_active(active);
+  object.lock()->set_active(active);
 }
 
 void
 GameObject::set_parent(const std::string& name)
 {
-  if (::Entity* entity = dynamic_cast<Entity*>(object.get()))
+  if (::Entity* entity = dynamic_cast<Entity*>(object.lock().get()))
     {
       if (::GameObject* obj = Sector::current()->get_object(name))
         {

@@ -22,7 +22,6 @@
 #include <string>
 #include "util/file_reader.hpp"
 #include "display/scene_context.hpp"
-#include "util/refcounter.hpp"
 
 class Sector;
 
@@ -30,7 +29,7 @@ class Sector;
  * This is the base class for all in-game objects. The sector class keeps a list
  * of all GameObject and periodically calls draw() and update() for them.
  */
-class GameObject : public RefCounter
+class GameObject
 {
 private:
   static Sector* world;
@@ -46,6 +45,7 @@ protected:
 
   /** If a object is 'active = false' it will neither be drawn or updated */
   bool active;
+
 public:
   GameObject() : remove_flag(false), active(true) {}
   virtual ~GameObject() {}
@@ -81,6 +81,7 @@ public:
    * or drawn until it is activated again
    */
   void set_active(bool a) { active = a; }
+
   /**
    * Returns true if the object is active, false if it is inactive
    */
@@ -90,6 +91,7 @@ public:
    * The object should draw itself when this function is called
    */
   virtual void draw (SceneContext& context) = 0;
+
   /**
    * This function is called from time to time to give the object a chance to
    * update it's state. delta is the time that elapsed since the last
@@ -99,8 +101,7 @@ public:
   virtual void update (float delta) = 0;
     
   static void set_world (Sector* w) { world = w; }
-  Sector* get_world () const
-  { return world; }
+  Sector* get_world () const { return world; }
 };
 
 #endif

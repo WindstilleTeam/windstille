@@ -20,11 +20,11 @@
 #define HEADER_WINDSTILLE_SCRIPTING_GAME_OBJECTS_HPP
 
 #ifndef SCRIPTING_API
+#  include <boost/weak_ptr.hpp>
 #  include "engine/game_object.hpp"
 #  include "objects/test_object.hpp"
 #  include "objects/player.hpp"
 #  include "objects/scriptable_object.hpp"
-#  include "util/ref.hpp"
 #endif
 
 namespace Scripting {
@@ -33,10 +33,10 @@ class GameObject
 {
 #ifndef SCRIPTING_API
 protected:
-  Ref< ::GameObject> object;
+  boost::weak_ptr< ::GameObject> object;
   
 public:
-GameObject(::GameObject* _object)
+  GameObject(boost::shared_ptr< ::GameObject > _object)
     : object(_object)
   {}
   virtual ~GameObject()
@@ -54,7 +54,7 @@ class TestObject : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  TestObject(::TestObject* _object)
+  TestObject(boost::shared_ptr< ::GameObject > _object)
     : GameObject(_object)
   {}
   virtual ~TestObject()
@@ -62,7 +62,7 @@ public:
 
   ::TestObject* obj() const
   {
-    return reinterpret_cast< ::TestObject*> (object.get());
+    return reinterpret_cast< ::TestObject* >(object.lock().get());
   }
 #endif
 
@@ -79,7 +79,7 @@ class Player : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  Player(::Player* _player)
+  Player(boost::shared_ptr< ::GameObject > _player)
     : GameObject(_player)
   {}
   virtual ~Player()
@@ -87,7 +87,7 @@ public:
   
   ::Player* obj() const
   {
-    return reinterpret_cast< ::Player*> (object.get());
+    return reinterpret_cast< ::Player*> (object.lock().get());
   }
 #endif
 
@@ -100,7 +100,7 @@ class ScriptableObject : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  ScriptableObject(::ScriptableObject* _object)
+  ScriptableObject(boost::shared_ptr< ::GameObject > _object)
     : GameObject(_object)
   {}
   virtual ~ScriptableObject()
@@ -108,7 +108,7 @@ public:
 
   ::ScriptableObject* obj() const
   {
-    return reinterpret_cast< ::ScriptableObject*> (object.get());
+    return reinterpret_cast< ::ScriptableObject*> (object.lock().get());
   }
 #endif
 

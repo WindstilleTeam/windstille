@@ -90,10 +90,6 @@ Sector::Sector(const std::string& arg_filename)
 
 Sector::~Sector()
 {
-  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-    (*i)->unref();
-  for(Objects::iterator i = new_objects.begin(); i != new_objects.end(); ++i)
-    (*i)->unref();
 }
 
 void
@@ -233,34 +229,38 @@ void
 Sector::commit_removes()
 {
   // remove objects
-  for(Objects::iterator i = objects.begin(); i != objects.end(); ) {
-    GameObject* object = *i;
-    if(object->is_removable()) {
-      if(object->get_name() != "") {
-        remove_object_from_squirrel(object);
-      }
-      object->unref();
+  for(Objects::iterator i = objects.begin(); i != objects.end(); ) 
+    {
+      boost::shared_ptr<GameObject>& object = *i;
 
-      i = objects.erase(i);
-      continue;
+      if(object->is_removable()) 
+        {
+          if(object->get_name() != "") 
+            {
+              remove_object_from_squirrel(object);
+            }
+
+          i = objects.erase(i);
+          continue;
+        }
+
+      ++i;
     }
-
-    ++i;
-  }
 }
 
 void
 Sector::add(GameObject* obj)
 {
-  new_objects.push_back(obj);
-  obj->ref();
-  if(obj->get_name() != "") {
-    expose_object_to_squirrel(obj);
-  }
+  new_objects.push_back(boost::shared_ptr<GameObject>(obj));
+
+  if(obj->get_name() != "") 
+    {
+      expose_object_to_squirrel(new_objects.back());
+    }
 }
 
 void
-Sector::remove_object_from_squirrel(GameObject* object)
+Sector::remove_object_from_squirrel(boost::shared_ptr<GameObject> object)
 {
   using namespace Scripting;
 
@@ -290,32 +290,32 @@ Sector::remove_object_from_squirrel(GameObject* object)
 
 // tries to find out the "real" class of an gameobject by some dynamic casting
 // and creates a matching squirrel instance for that object
-static inline void create_squirrel_instance(HSQUIRRELVM v, GameObject* object)
+static inline void create_squirrel_instance(HSQUIRRELVM v, boost::shared_ptr<GameObject> object)
 {
-  ScriptableObject* script_obj = dynamic_cast<ScriptableObject*> (object);
-  if(script_obj) {
-    create_squirrel_instance(v, new Scripting::ScriptableObject(script_obj),
-                             true);
-    return;
-  }
+  if (dynamic_cast<ScriptableObject*>(object.get()))
+    {
+      create_squirrel_instance(v, new Scripting::ScriptableObject(object),
+                               true);
+      return;
+    }
   
-  TestObject* tobj = dynamic_cast<TestObject*> (object);
-  if(tobj) {
-    create_squirrel_instance(v, new Scripting::TestObject(tobj), true);
-    return;
-  }                                                                             
+  if (dynamic_cast<TestObject*>(object.get()))
+    {
+      create_squirrel_instance(v, new Scripting::TestObject(object), true);
+      return;
+    }                                                                             
 
-  Player* player = dynamic_cast<Player*> (object);
-  if(player) {
-    create_squirrel_instance(v, new Scripting::Player(player), true);
-    return;
-  }
+  if (dynamic_cast<Player*>(object.get()))
+    {
+      create_squirrel_instance(v, new Scripting::Player(object), true);
+      return;
+    }
 
   create_squirrel_instance(v, new Scripting::GameObject(object), true);
 }
 
 void
-Sector::expose_object_to_squirrel(GameObject* object)
+Sector::expose_object_to_squirrel(boost::shared_ptr<GameObject> object)
 {
   using namespace Scripting;
 
@@ -351,9 +351,10 @@ Sector::get_object(const std::string& name) const
     {
       if ((*i)->get_name() == name)
         {
-          return *i;
+          return i->get();
         }
     }
+
   return 0;
 }
 

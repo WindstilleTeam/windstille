@@ -316,15 +316,16 @@ Player::update_stairs(float delta)
 Entity*
 Player::find_useable_entity()
 {
-  std::vector<GameObject*>* objects = Sector::current()->get_objects();
-  for (std::vector<GameObject*>::iterator i = objects->begin(); i != objects->end(); ++i)
+  std::vector<boost::shared_ptr<GameObject> >* objects = Sector::current()->get_objects();
+  for (std::vector<boost::shared_ptr<GameObject> >::iterator i = objects->begin(); i != objects->end(); ++i)
     {
-      Entity* object = dynamic_cast<Entity*>(*i);
+      Entity* object = dynamic_cast<Entity*>(i->get());
+
       if (object && object != this && object->is_useable())
         {
           //FIXME use proper collision detection
-          if (object->get_pos().x > pos.x - 32 && object->get_pos().x < pos.x + 32
-              && object->get_pos().y > pos.y - 256 && object->get_pos().y < pos.y + 256)
+          if (object->get_pos().x > pos.x - 32 && object->get_pos().x < pos.x + 32 &&
+              object->get_pos().y > pos.y - 256 && object->get_pos().y < pos.y + 256)
             {
               return object;
             }

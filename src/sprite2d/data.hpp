@@ -28,7 +28,6 @@
 #include "util/file_reader.hpp"
 #include "math/vector2f.hpp"
 #include "display/surface.hpp"
-#include "util/ref.hpp"
 
 struct SpriteAction
 {
