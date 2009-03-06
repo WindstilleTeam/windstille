@@ -28,7 +28,7 @@ static SQInteger GameObject_release_hook(SQUserPointer ptr, SQInteger )
 static SQInteger GameObject_get_name_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'get_name' called without instance"));
     return SQ_ERROR;
   }
@@ -53,7 +53,7 @@ static SQInteger GameObject_get_name_wrapper(HSQUIRRELVM vm)
 static SQInteger GameObject_remove_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'remove' called without instance"));
     return SQ_ERROR;
   }
@@ -77,7 +77,7 @@ static SQInteger GameObject_remove_wrapper(HSQUIRRELVM vm)
 static SQInteger GameObject_set_active_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'set_active' called without instance"));
     return SQ_ERROR;
   }
@@ -106,7 +106,7 @@ static SQInteger GameObject_set_active_wrapper(HSQUIRRELVM vm)
 static SQInteger GameObject_set_parent_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'set_parent' called without instance"));
     return SQ_ERROR;
   }
@@ -142,7 +142,7 @@ static SQInteger TestObject_release_hook(SQUserPointer ptr, SQInteger )
 static SQInteger TestObject_set_sprite_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'set_sprite' called without instance"));
     return SQ_ERROR;
   }
@@ -171,7 +171,7 @@ static SQInteger TestObject_set_sprite_wrapper(HSQUIRRELVM vm)
 static SQInteger TestObject_set_action_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'set_action' called without instance"));
     return SQ_ERROR;
   }
@@ -200,7 +200,7 @@ static SQInteger TestObject_set_action_wrapper(HSQUIRRELVM vm)
 static SQInteger TestObject_set_pos_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'set_pos' called without instance"));
     return SQ_ERROR;
   }
@@ -234,7 +234,7 @@ static SQInteger TestObject_set_pos_wrapper(HSQUIRRELVM vm)
 static SQInteger TestObject_set_vflip_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'set_vflip' called without instance"));
     return SQ_ERROR;
   }
@@ -263,7 +263,7 @@ static SQInteger TestObject_set_vflip_wrapper(HSQUIRRELVM vm)
 static SQInteger TestObject_attach_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'attach' called without instance"));
     return SQ_ERROR;
   }
@@ -304,7 +304,7 @@ static SQInteger Player_release_hook(SQUserPointer ptr, SQInteger )
 static SQInteger Player_start_listening_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'start_listening' called without instance"));
     return SQ_ERROR;
   }
@@ -328,7 +328,7 @@ static SQInteger Player_start_listening_wrapper(HSQUIRRELVM vm)
 static SQInteger Player_stop_listening_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'stop_listening' called without instance"));
     return SQ_ERROR;
   }
@@ -359,7 +359,7 @@ static SQInteger ScriptableObject_release_hook(SQUserPointer ptr, SQInteger )
 static SQInteger ScriptableObject_move_to_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'move_to' called without instance"));
     return SQ_ERROR;
   }
@@ -403,7 +403,7 @@ static SQInteger ScriptableObject_move_to_wrapper(HSQUIRRELVM vm)
 static SQInteger ScriptableObject_start_flash_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
-  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0))) {
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
     sq_throwerror(vm, _SC("'start_flash' called without instance"));
     return SQ_ERROR;
   }
@@ -1710,228 +1710,266 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "set_sector", -1);
   sq_newclosure(v, &set_sector_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_sector'");
   }
 
   sq_pushstring(v, "play_music", -1);
   sq_newclosure(v, &play_music_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'play_music'");
   }
 
   sq_pushstring(v, "stop_music", -1);
   sq_newclosure(v, &stop_music_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'stop_music'");
   }
 
   sq_pushstring(v, "play_sound", -1);
   sq_newclosure(v, &play_sound_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'play_sound'");
   }
 
   sq_pushstring(v, "caption_add", -1);
   sq_newclosure(v, &caption_add_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t i s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'caption_add'");
   }
 
   sq_pushstring(v, "caption_clear", -1);
   sq_newclosure(v, &caption_clear_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'caption_clear'");
   }
 
   sq_pushstring(v, "caption_end", -1);
   sq_newclosure(v, &caption_end_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'caption_end'");
   }
 
   sq_pushstring(v, "camera_set_active", -1);
   sq_newclosure(v, &camera_set_active_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t b ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'camera_set_active'");
   }
 
   sq_pushstring(v, "camera_continue_path", -1);
   sq_newclosure(v, &camera_continue_path_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'camera_continue_path'");
   }
 
   sq_pushstring(v, "camera_begin_path", -1);
   sq_newclosure(v, &camera_begin_path_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'camera_begin_path'");
   }
 
   sq_pushstring(v, "camera_add_point", -1);
   sq_newclosure(v, &camera_add_point_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'camera_add_point'");
   }
 
   sq_pushstring(v, "camera_end_path", -1);
   sq_newclosure(v, &camera_end_path_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'camera_end_path'");
   }
 
   sq_pushstring(v, "camera_set_pos", -1);
   sq_newclosure(v, &camera_set_pos_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'camera_set_pos'");
   }
 
   sq_pushstring(v, "camera_set_zoom", -1);
   sq_newclosure(v, &camera_set_zoom_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'camera_set_zoom'");
   }
 
   sq_pushstring(v, "set_controller_help_active", -1);
   sq_newclosure(v, &set_controller_help_active_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t b ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_controller_help_active'");
   }
 
   sq_pushstring(v, "speech_show", -1);
   sq_newclosure(v, &speech_show_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s f|i f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'speech_show'");
   }
 
   sq_pushstring(v, "dialog_show", -1);
   sq_newclosure(v, &dialog_show_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t i s s s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'dialog_show'");
   }
 
   sq_pushstring(v, "wait_for_dialog", -1);
   sq_newclosure(v, &wait_for_dialog_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'wait_for_dialog'");
   }
 
   sq_pushstring(v, "wait_for_fade", -1);
   sq_newclosure(v, &wait_for_fade_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'wait_for_fade'");
   }
 
   sq_pushstring(v, "wait_for_camera", -1);
   sq_newclosure(v, &wait_for_camera_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'wait_for_camera'");
   }
 
   sq_pushstring(v, "conversation_add", -1);
   sq_newclosure(v, &conversation_add_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'conversation_add'");
   }
 
   sq_pushstring(v, "conversation_add2", -1);
   sq_newclosure(v, &conversation_add2_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'conversation_add2'");
   }
 
   sq_pushstring(v, "conversation_show", -1);
   sq_newclosure(v, &conversation_show_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'conversation_show'");
   }
 
   sq_pushstring(v, "conversation_get_selection", -1);
   sq_newclosure(v, &conversation_get_selection_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'conversation_get_selection'");
   }
 
   sq_pushstring(v, "wait_for_conversation", -1);
   sq_newclosure(v, &wait_for_conversation_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'wait_for_conversation'");
   }
 
   sq_pushstring(v, "add_objective", -1);
   sq_newclosure(v, &add_objective_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'add_objective'");
   }
 
   sq_pushstring(v, "objective_complete", -1);
   sq_newclosure(v, &objective_complete_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'objective_complete'");
   }
 
   sq_pushstring(v, "is_objective_given", -1);
   sq_newclosure(v, &is_objective_given_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'is_objective_given'");
   }
 
   sq_pushstring(v, "is_objective_complete", -1);
   sq_newclosure(v, &is_objective_complete_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'is_objective_complete'");
   }
 
   sq_pushstring(v, "run_before", -1);
   sq_newclosure(v, &run_before_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t . ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'run_before'");
   }
 
   sq_pushstring(v, "save_state", -1);
   sq_newclosure(v, &save_state_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t . s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'save_state'");
   }
 
   sq_pushstring(v, "load_state", -1);
   sq_newclosure(v, &load_state_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t . s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'load_state'");
   }
 
   sq_pushstring(v, "list_objects", -1);
   sq_newclosure(v, &list_objects_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'list_objects'");
   }
 
   sq_pushstring(v, "set_debug", -1);
   sq_newclosure(v, &set_debug_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t b ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_debug'");
   }
 
   sq_pushstring(v, "get_debug", -1);
   sq_newclosure(v, &get_debug_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'get_debug'");
   }
 
   sq_pushstring(v, "get_game_speed", -1);
   sq_newclosure(v, &get_game_speed_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'get_game_speed'");
   }
 
   sq_pushstring(v, "set_game_speed", -1);
   sq_newclosure(v, &set_game_speed_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_game_speed'");
   }
 
   sq_pushstring(v, "wait", -1);
   sq_newclosure(v, &wait_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'wait'");
   }
@@ -1950,60 +1988,70 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "set_console_font", -1);
   sq_newclosure(v, &set_console_font_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_console_font'");
   }
 
   sq_pushstring(v, "set_gamma", -1);
   sq_newclosure(v, &set_gamma_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_gamma'");
   }
 
   sq_pushstring(v, "set_gamma_rgb", -1);
   sq_newclosure(v, &set_gamma_rgb_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_gamma_rgb'");
   }
 
   sq_pushstring(v, "show_config", -1);
   sq_newclosure(v, &show_config_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'show_config'");
   }
 
   sq_pushstring(v, "cutscene_begin", -1);
   sq_newclosure(v, &cutscene_begin_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'cutscene_begin'");
   }
 
   sq_pushstring(v, "cutscene_end", -1);
   sq_newclosure(v, &cutscene_end_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'cutscene_end'");
   }
 
   sq_pushstring(v, "internal_fadeout_rgb", -1);
   sq_newclosure(v, &internal_fadeout_rgb_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i f|i f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'internal_fadeout_rgb'");
   }
 
   sq_pushstring(v, "internal_fadein", -1);
   sq_newclosure(v, &internal_fadein_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'internal_fadein'");
   }
 
   sq_pushstring(v, "render_mask_get", -1);
   sq_newclosure(v, &render_mask_get_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'render_mask_get'");
   }
 
   sq_pushstring(v, "render_mask_set", -1);
   sq_newclosure(v, &render_mask_set_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'render_mask_set'");
   }
@@ -2023,24 +2071,28 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   }
   sq_pushstring(v, "get_name", -1);
   sq_newclosure(v, &GameObject_get_name_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'get_name'");
   }
 
   sq_pushstring(v, "remove", -1);
   sq_newclosure(v, &GameObject_remove_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'remove'");
   }
 
   sq_pushstring(v, "set_active", -1);
   sq_newclosure(v, &GameObject_set_active_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t b ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_active'");
   }
 
   sq_pushstring(v, "set_parent", -1);
   sq_newclosure(v, &GameObject_set_parent_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_parent'");
   }
@@ -2060,30 +2112,35 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   }
   sq_pushstring(v, "set_sprite", -1);
   sq_newclosure(v, &TestObject_set_sprite_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_sprite'");
   }
 
   sq_pushstring(v, "set_action", -1);
   sq_newclosure(v, &TestObject_set_action_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_action'");
   }
 
   sq_pushstring(v, "set_pos", -1);
   sq_newclosure(v, &TestObject_set_pos_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_pos'");
   }
 
   sq_pushstring(v, "set_vflip", -1);
   sq_newclosure(v, &TestObject_set_vflip_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t b ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_vflip'");
   }
 
   sq_pushstring(v, "attach", -1);
   sq_newclosure(v, &TestObject_attach_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'attach'");
   }
@@ -2103,12 +2160,14 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   }
   sq_pushstring(v, "start_listening", -1);
   sq_newclosure(v, &Player_start_listening_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'start_listening'");
   }
 
   sq_pushstring(v, "stop_listening", -1);
   sq_newclosure(v, &Player_stop_listening_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'stop_listening'");
   }
@@ -2128,12 +2187,14 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   }
   sq_pushstring(v, "move_to", -1);
   sq_newclosure(v, &ScriptableObject_move_to_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i f|i f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'move_to'");
   }
 
   sq_pushstring(v, "start_flash", -1);
   sq_newclosure(v, &ScriptableObject_start_flash_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'start_flash'");
   }
