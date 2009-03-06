@@ -106,7 +106,7 @@ public:
 
   GameObject* get_object(const std::string& name) const;
 
-  std::vector<boost::shared_ptr<GameObject> >* get_objects() { return &objects; }
+  const std::vector<boost::shared_ptr<GameObject> >& get_objects() { return objects; }
   TileMap* get_tilemap() const { return interactive_tilemap; }
   TileMap* get_tilemap2() const { return interactivebackground_tilemap; }
   void     set_tilemap(TileMap* t);

@@ -316,8 +316,9 @@ Player::update_stairs(float delta)
 Entity*
 Player::find_useable_entity()
 {
-  std::vector<boost::shared_ptr<GameObject> >* objects = Sector::current()->get_objects();
-  for (std::vector<boost::shared_ptr<GameObject> >::iterator i = objects->begin(); i != objects->end(); ++i)
+  const std::vector<boost::shared_ptr<GameObject> >& objects = Sector::current()->get_objects();
+
+  for (std::vector<boost::shared_ptr<GameObject> >::const_iterator i = objects.begin(); i != objects.end(); ++i)
     {
       Entity* object = dynamic_cast<Entity*>(i->get());
 
