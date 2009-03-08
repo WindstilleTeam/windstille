@@ -50,21 +50,12 @@
 
 #include "sector.hpp"
 
-// The table (works like a namespace here) where the game objects will appear
-#define OBJECTS_TABLE "objects"
-
 Sector* Sector::current_ = 0;
 
 Sector::Sector(const std::string& arg_filename)
   : filename(arg_filename),
     player(0)    
-{
-  // make sure squirrel has an "objects" table
-  ScriptManager::current()->run_script(
-      "if(! (\"" OBJECTS_TABLE "\" in this)) {"
-      "  " OBJECTS_TABLE " <- {};"
-      "}", "");
-  
+{ 
   if (debug) std::cout << "Creating new Sector" << std::endl;
   collision_engine = std::auto_ptr<CollisionEngine>(new CollisionEngine());
   navigation_graph = std::auto_ptr<NavigationGraph>(new NavigationGraph());
@@ -187,7 +178,7 @@ Sector::activate()
   commit_removes();
 
   sound_manager->play_music(music);
-  if (init_script != "")
+  if (!init_script.empty())
     ScriptManager::current()->run_script_file(get_directory() + init_script);
 }
 
@@ -237,7 +228,7 @@ Sector::commit_removes()
         {
           if(object->get_name() != "") 
             {
-              remove_object_from_squirrel(object);
+              ScriptManager::current()->remove_object_from_squirrel(object);
             }
 
           i = objects.erase(i);
@@ -255,93 +246,8 @@ Sector::add(GameObject* obj)
 
   if(obj->get_name() != "") 
     {
-      expose_object_to_squirrel(new_objects.back());
+      ScriptManager::current()->expose_object_to_squirrel(new_objects.back());
     }
-}
-
-void
-Sector::remove_object_from_squirrel(boost::shared_ptr<GameObject> object)
-{
-  using namespace Scripting;
-
-  // get objects table
-  HSQUIRRELVM v = ScriptManager::current()->get_vm();
-  sq_pushroottable(v);
-  sq_pushstring(v, OBJECTS_TABLE, -1);
-  if(SQ_FAILED(sq_get(v, -2)))
-  {
-    std::ostringstream msg;
-    msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
-    throw SquirrelError(v, msg.str());
-  }
-
-  // remove object from table
-  sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
-  if(SQ_FAILED(sq_deleteslot(v, -2, SQFalse))) {
-    std::ostringstream msg;
-    msg << "Couldn't remove squirrel object for '" << object->get_name()
-        << "'";
-    throw SquirrelError(v, msg.str());
-  }
-  
-  // pop objects and root table
-  sq_pop(v, 2);
-}
-
-// tries to find out the "real" class of an gameobject by some dynamic casting
-// and creates a matching squirrel instance for that object
-static inline void create_squirrel_instance(HSQUIRRELVM v, boost::shared_ptr<GameObject> object)
-{
-  if (dynamic_cast<ScriptableObject*>(object.get()))
-    {
-      create_squirrel_instance(v, new Scripting::ScriptableObject(object),
-                               true);
-      return;
-    }
-  
-  if (dynamic_cast<TestObject*>(object.get()))
-    {
-      create_squirrel_instance(v, new Scripting::TestObject(object), true);
-      return;
-    }                                                                             
-
-  if (dynamic_cast<Player*>(object.get()))
-    {
-      create_squirrel_instance(v, new Scripting::Player(object), true);
-      return;
-    }
-
-  create_squirrel_instance(v, new Scripting::GameObject(object), true);
-}
-
-void
-Sector::expose_object_to_squirrel(boost::shared_ptr<GameObject> object)
-{
-  using namespace Scripting;
-
-  // get objects table
-  HSQUIRRELVM v = ScriptManager::current()->get_vm();
-  sq_pushroottable(v);
-  sq_pushstring(v, OBJECTS_TABLE, -1);
-  if(SQ_FAILED(sq_get(v, -2)))
-  {
-    std::ostringstream msg;
-    msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
-    throw SquirrelError(v, msg.str());
-  }
-  
-  // create squirrel instance and register in table
-  sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
-  create_squirrel_instance(v, object);
-  if(SQ_FAILED(sq_createslot(v, -3)))
-  {
-    std::ostringstream msg;
-    msg << "Couldn't register object in objects taböe";
-    throw SquirrelError(v, msg.str());
-  }
-
-  // pop roottable and objects table
-  sq_pop(v, 2);
 }
 
 GameObject*

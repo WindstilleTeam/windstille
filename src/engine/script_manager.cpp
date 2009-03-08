@@ -36,7 +36,10 @@
 #include "scripting/squirrel_error.hpp"
 #include "physfs/physfs_stream.hpp"
 
-using namespace Scripting;
+using Scripting::SquirrelError;
+
+// The table (works like a namespace here) where the game objects will appear
+static const char* OBJECTS_TABLE = "objects";
 
 ScriptManager* ScriptManager::current_ = 0;
 
@@ -91,6 +94,13 @@ ScriptManager::ScriptManager()
   
       // register windstille API
       Scripting::register_windstille_wrapper(vm);
+
+      // Create the "objects" table
+      sq_pushroottable(vm);
+      sq_pushstring(vm, OBJECTS_TABLE, -1);
+      sq_newtable(vm);
+      sq_newslot(vm, -3, SQFalse);
+      sq_pop(vm, 1);
     }
 }
 
@@ -198,6 +208,87 @@ ScriptManager::run_before(HSQUIRRELVM vm)
     return false;
   else
     return true;
+}
+
+void
+ScriptManager::remove_object_from_squirrel(boost::shared_ptr<GameObject> object)
+{
+  // get objects table
+  HSQUIRRELVM v = ScriptManager::current()->get_vm();
+  sq_pushroottable(v);
+  sq_pushstring(v, OBJECTS_TABLE, -1);
+  if(SQ_FAILED(sq_get(v, -2)))
+  {
+    std::ostringstream msg;
+    msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
+    throw SquirrelError(v, msg.str());
+  }
+
+  // remove object from table
+  sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
+  if(SQ_FAILED(sq_deleteslot(v, -2, SQFalse))) {
+    std::ostringstream msg;
+    msg << "Couldn't remove squirrel object for '" << object->get_name()
+        << "'";
+    throw SquirrelError(v, msg.str());
+  }
+  
+  // pop objects and root table
+  sq_pop(v, 2);
+}
+
+// tries to find out the "real" class of an gameobject by some dynamic casting
+// and creates a matching squirrel instance for that object
+static inline void create_squirrel_instance(HSQUIRRELVM v, boost::shared_ptr<GameObject> object)
+{
+  if (dynamic_cast<ScriptableObject*>(object.get()))
+    {
+      create_squirrel_instance(v, new Scripting::ScriptableObject(object),
+                               true);
+      return;
+    }
+  
+  if (dynamic_cast<TestObject*>(object.get()))
+    {
+      create_squirrel_instance(v, new Scripting::TestObject(object), true);
+      return;
+    }                                                                             
+
+  if (dynamic_cast<Player*>(object.get()))
+    {
+      create_squirrel_instance(v, new Scripting::Player(object), true);
+      return;
+    }
+
+  create_squirrel_instance(v, new Scripting::GameObject(object), true);
+}
+
+void
+ScriptManager::expose_object_to_squirrel(boost::shared_ptr<GameObject> object)
+{
+  // get objects table
+  HSQUIRRELVM v = ScriptManager::current()->get_vm();
+  sq_pushroottable(v);
+  sq_pushstring(v, OBJECTS_TABLE, -1);
+  if(SQ_FAILED(sq_get(v, -2)))
+  {
+    std::ostringstream msg;
+    msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
+    throw SquirrelError(v, msg.str());
+  }
+  
+  // create squirrel instance and register in table
+  sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
+  create_squirrel_instance(v, object);
+  if(SQ_FAILED(sq_createslot(v, -3)))
+  {
+    std::ostringstream msg;
+    msg << "Couldn't register object in objects taböe";
+    throw SquirrelError(v, msg.str());
+  }
+
+  // pop roottable and objects table
+  sq_pop(v, 2);
 }
 
 /* EOF */

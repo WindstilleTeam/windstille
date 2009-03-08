@@ -102,6 +102,9 @@ public:
   void fire_wakeup_event(WakeupEvent event);
   void fire_wakeup_event(WakeupData  event);
   
+  void expose_object_to_squirrel(boost::shared_ptr<GameObject> object);
+  void remove_object_from_squirrel(boost::shared_ptr<GameObject> object);
+
   /** Returns true if the given vm as been used in a run_script() call
       before, if the vm is run for the first time return true */
   bool run_before(HSQUIRRELVM vm);
