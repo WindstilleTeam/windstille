@@ -152,7 +152,7 @@ SquirrelVM::fire_wakeup_event(const ScriptManager::WakeupData& event)
     }
 }
 
-bool
+void
 SquirrelVM::update()
 {
   int vm_state = sq_getvmstate(vm);
@@ -171,27 +171,37 @@ SquirrelVM::update()
                   {
                     throw SquirrelError(vm, name, "Couldn't resume script");
                   }
-                return true;
               }
             catch(std::exception& e) 
               {
                 std::cerr << "Problem executing script: " << e.what() << "\n";
-                return false;
               }
-          }
-        else
-          {
-            return true;
           }
         break;
 
       case SQ_VMSTATE_IDLE:
-      case SQ_VMSTATE_RUNNING: // FIXME: How can this happen?
-        return false;
+        break;
+
+      case SQ_VMSTATE_RUNNING: // FIXME: Can this happen without multithreading?
+        break;
 
       default: 
         assert(!"never reached");
     }
+}
+
+bool
+SquirrelVM::is_suspended() const
+{
+  int vm_state = sq_getvmstate(vm);
+  return vm_state == SQ_VMSTATE_SUSPENDED;
+}
+
+bool
+SquirrelVM::is_idle() const
+{
+  int vm_state = sq_getvmstate(vm);
+  return vm_state == SQ_VMSTATE_IDLE;
 }
 
 void

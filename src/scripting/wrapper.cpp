@@ -1109,26 +1109,6 @@ static SQInteger is_objective_complete_wrapper(HSQUIRRELVM vm)
 
 }
 
-static SQInteger run_before_wrapper(HSQUIRRELVM vm)
-{
-  HSQUIRRELVM arg0 = vm;
-
-  try {
-    bool return_value = Scripting::run_before(arg0);
-
-    sq_pushbool(vm, return_value);
-    return 1;
-
-  } catch(std::exception& e) {
-    sq_throwerror(vm, e.what());
-    return SQ_ERROR;
-  } catch(...) {
-    sq_throwerror(vm, _SC("Unexpected exception while executing function 'run_before'"));
-    return SQ_ERROR;
-  }
-
-}
-
 static SQInteger save_state_wrapper(HSQUIRRELVM vm)
 {
   HSQUIRRELVM arg0 = vm;
@@ -1909,13 +1889,6 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'is_objective_complete'");
-  }
-
-  sq_pushstring(v, "run_before", -1);
-  sq_newclosure(v, &run_before_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t . ");
-  if(SQ_FAILED(sq_createslot(v, -3))) {
-    throw SquirrelError(v, "Couldn't register function 'run_before'");
   }
 
   sq_pushstring(v, "save_state", -1);

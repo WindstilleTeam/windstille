@@ -108,7 +108,7 @@ ScriptManager::ScriptManager()
       // register windstille API
       Scripting::register_windstille_wrapper(vm);
 
-      // Create the "objects" table
+      // Create the empty "objects" table
       sq_pushroottable(vm);
       sq_pushstring(vm, OBJECTS_TABLE, -1);
       sq_newtable(vm);
@@ -168,26 +168,44 @@ ScriptManager::run_script(std::istream& in, const std::string& sourcename, bool 
     }
   else
     {
-      // Add VM to the list of VMs
-      squirrel_vms.push_back(boost::shared_ptr<SquirrelVM>(new SquirrelVM(in, sourcename, vm)));
-      squirrel_vms.back()->run();
-      already_run_scripts[sourcename] = true;
+      SquirrelVMs::iterator it = squirrel_vms.end();
+
+      // Look if the VM is associated with the source file
+      for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
+        {
+          if ((*i)->get_name() == sourcename)
+            {
+              it = i;
+              break;
+            }
+        }
+      
+      if (it != squirrel_vms.end())
+        {
+          // Call the run method
+          if ((*it)->is_idle())
+            {
+              (*it)->call("run");
+            }
+          else
+            {
+              throw std::runtime_error(sourcename + ": ScriptManager::run_script(): Script must be idle to be 'run()'");
+            }
+        }
+      else
+        { // Add VM to the list of VMs
+          squirrel_vms.push_back(boost::shared_ptr<SquirrelVM>(new SquirrelVM(in, sourcename, vm)));     
+          squirrel_vms.back()->run();
+        }
     }
 }
 
 void
 ScriptManager::update()
 {
-  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ) 
+  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
     {
-      if ((*i)->update())
-        {
-          ++i;
-        }
-      else
-        {
-          i = squirrel_vms.erase(i);
-        }
+      (*i)->update();
     }
 }
 
@@ -199,7 +217,7 @@ ScriptManager::set_wakeup_event(HSQUIRRELVM vm, WakeupData event, float timeout)
   // find the VM in the list and update it
   for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
     {
-      if((*i)->vm == vm) 
+      if((*i)->get_vm() == vm) 
         {
           (*i)->set_wakeup_event(event, timeout);
           return;
@@ -228,23 +246,6 @@ void
 ScriptManager::fire_wakeup_event(WakeupEvent event)
 {
   fire_wakeup_event(WakeupData(event));
-}
-
-bool
-ScriptManager::run_before(HSQUIRRELVM vm)
-{
-  std::string name;
-
-  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
-    {
-      if ((*i)->vm == vm)
-        name = (*i)->name;
-    }
-  
-  if (already_run_scripts.find(name) == already_run_scripts.end())
-    return false;
-  else
-    return true;
 }
 
 void

@@ -175,11 +175,6 @@ bool is_objective_complete(const std::string& name)
   return GameSession::current()->get_pda().is_objective_given(name);
 }
 
-bool run_before(HSQUIRRELVM vm)
-{
-  return ScriptManager::current()->run_before(vm);
-}
-
 void load_state(HSQUIRRELVM v, const std::string& filename)
 {
   sq_pushroottable(v);

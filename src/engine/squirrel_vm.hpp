@@ -26,13 +26,10 @@
 
 class SquirrelVM
 {
-public:
+private:
   std::string name;
-private:
   HSQUIRRELVM parent_vm;
-public:
   HSQUIRRELVM vm;
-private:
   HSQOBJECT   vm_obj;
     
   ScriptManager::WakeupData  waiting_for_events;
@@ -50,8 +47,13 @@ public:
 
   /** Resumes the evaluation of the VM if a wakeup has happened.
       \return false when the VM is done and can be removed */
-  bool update();
+  void update();
 
+  bool is_suspended() const;
+  bool is_idle() const;
+
+  std::string get_name() const { return name; }
+  HSQUIRRELVM get_vm() const { return vm; }
   void call(const std::string& function);
 };
 
