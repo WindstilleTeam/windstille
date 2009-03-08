@@ -42,6 +42,19 @@ using Scripting::SquirrelError;
 static const char* OBJECTS_TABLE = "objects";
 
 ScriptManager* ScriptManager::current_ = 0;
+
+// FIXME: Replace this with sq_compilebufer()
+static SQInteger squirrel_read_char(SQUserPointer file)
+{
+  std::istream* in = reinterpret_cast<std::istream*> (file);
+
+  char c = in->get();
+
+  if (in->eof())
+    return 0;
+  else
+    return c;
+}
 
 static void printfunc(HSQUIRRELVM, const char* str, ...)
 {
@@ -115,27 +128,51 @@ ScriptManager::~ScriptManager()
 }
 
 void
-ScriptManager::run_script_file(const std::string& filename)
+ScriptManager::run_script_file(const std::string& filename, bool global)
 {
   IFileStream in(filename);
-  run_script(in, filename);
+  run_script(in, filename, global);
 }
 
 void
 ScriptManager::run_script(const std::string& the_string,
-                          const std::string& sourcename)
+                          const std::string& sourcename, 
+                          bool global)
 {
   std::istringstream stream(the_string);
-  run_script(stream, sourcename);
+  run_script(stream, sourcename, global);
 }
 
 void
-ScriptManager::run_script(std::istream& in, const std::string& sourcename)
+ScriptManager::run_script(std::istream& in, const std::string& sourcename, bool global)
 {
-  // Add VM to the list of VMs
-  squirrel_vms.push_back(boost::shared_ptr<SquirrelVM>(new SquirrelVM(in, sourcename, vm)));
-  squirrel_vms.back()->run();
-  already_run_scripts[sourcename] = true;   
+  if (global)
+    {
+      // Scripts run in the global namespace must not suspend
+
+      // Compile the script and push it on the stack
+      if(sq_compile(vm, squirrel_read_char, &in, sourcename.c_str(), true) < 0)
+        throw SquirrelError(vm, "Couldn't parse script");
+
+      // Set 'this' environment
+      sq_pushroottable(vm);
+
+      // Execute the script
+      if (SQ_FAILED(sq_call(vm, 1, false, true)))
+        throw SquirrelError(vm, "SquirrelVM::run(): " + sourcename + ": Couldn't start script");
+
+      if (sq_getvmstate(vm) != SQ_VMSTATE_IDLE)
+        {
+          throw std::runtime_error("ScriptManager::run_script(): " + sourcename + ": global scripts must not suspend");
+        }
+    }
+  else
+    {
+      // Add VM to the list of VMs
+      squirrel_vms.push_back(boost::shared_ptr<SquirrelVM>(new SquirrelVM(in, sourcename, vm)));
+      squirrel_vms.back()->run();
+      already_run_scripts[sourcename] = true;
+    }
 }
 
 void

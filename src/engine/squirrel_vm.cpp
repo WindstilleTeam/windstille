@@ -44,7 +44,7 @@ SquirrelVM::SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELV
 
   if (vm == 0)
     {
-      throw SquirrelError(vm, "Couldn't create new VM");
+      throw SquirrelError(vm, name, "Couldn't create new VM");
     }
   else
     {
@@ -56,7 +56,7 @@ SquirrelVM::SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELV
       // store thread created by sq_newthread into vm_obj
       if(sq_getstackobj(parent_vm, -1, &vm_obj) < 0)
         {
-          throw SquirrelError(parent_vm, "Couldn't get coroutine vm from stack");
+          throw SquirrelError(parent_vm, name, "Couldn't get coroutine vm from stack");
         }
       else
         {
@@ -69,7 +69,7 @@ SquirrelVM::SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELV
       sq_resetobject(&env);
 
       sq_newtable(vm);
-      if(sq_getstackobj(vm, -1, &env) < 0) throw SquirrelError(parent_vm, "Couldn't get table from stack");
+      if(sq_getstackobj(vm, -1, &env) < 0) throw SquirrelError(parent_vm, name, "Couldn't get table from stack");
       sq_addref(vm, &env); // FIXME: needs to be freed
 
       // Create a completly empty environment and set delegate it to the roottable
@@ -81,9 +81,10 @@ SquirrelVM::SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELV
       sq_pushobject(vm, env);
       sq_setroottable(vm);
 
+      // FIXME: Belongs in run(), but there we don't have the 'in' anymore
       // Compile the script and push it on the stack
       if(sq_compile(vm, squirrel_read_char, &in, name.c_str(), true) < 0)
-        throw SquirrelError(vm, "Couldn't parse script");
+        throw SquirrelError(vm, name, "Couldn't parse script");
     }
 }
 
@@ -95,15 +96,13 @@ SquirrelVM::~SquirrelVM()
 void 
 SquirrelVM::run()
 {
-  // FIXME: a script that gets run shouldn't have direct access to the root table
-  // http://wiki.squirrel-lang.org/default.aspx/SquirrelWiki/MultiVMs.html
   sq_pushroottable(vm);
   
   std::cout << "################\nRootTable:\n{{{" << Scripting::squirrel2string(vm, -1) << "\n}}}" << std::endl;
 
   // Start the script that was previously compiled
   if (SQ_FAILED(sq_call(vm, 1, false, true)))
-    throw SquirrelError(vm, "SquirrelVM::run(): " + name + ": Couldn't start script");
+    throw SquirrelError(vm, name, "SquirrelVM::run(): Couldn't start script");
 
   if (sq_getvmstate(vm) == SQ_VMSTATE_IDLE)
     {
@@ -170,7 +169,7 @@ SquirrelVM::update()
               {
                 if (sq_wakeupvm(vm, false, false, true) < 0)
                   {
-                    throw SquirrelError(vm, "Couldn't resume script");
+                    throw SquirrelError(vm, name, "Couldn't resume script");
                   }
                 return true;
               }
@@ -214,7 +213,7 @@ SquirrelVM::call(const std::string& function)
       if (SQ_FAILED(sq_call(vm, 1, false, true)))
         {
           // FIXME: doesn't this mess up the stack?
-          throw SquirrelError(vm, "SquirrelVM: " + name + ": couldn't call '" + function + "'");
+          throw SquirrelError(vm, name, "SquirrelVM: couldn't call '" + function + "'");
         }
 
       // Cleanup

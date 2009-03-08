@@ -166,7 +166,7 @@ WindstilleMain::init_modules()
   sprite2d_manager = new SpriteManager();
   sprite3d_manager = new sprite3d::Manager();
 
-  ScriptManager::current()->run_script_file("scripts/windstille.nut");
+  ScriptManager::current()->run_script_file("scripts/windstille.nut", true);
 
   { // Fill controller_description with data
     controller_description.add_button("primary-button",   PRIMARY_BUTTON);
