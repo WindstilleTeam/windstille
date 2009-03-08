@@ -1,6 +1,41 @@
 Windstille ToDo
 ===============
 
+* scripts should be able to be persisstant, so that you could call a
+  function on an event in a script
+
+* scripts need to be split into sections/functions, so that we can
+  have a section that is run only once for creating variables (doable via run_before(), but ugly)
+
+* join Player and Character somewhat or derive one from the other
+
+* implement aspect-ration switching at runtime (menu entry is there, just no code)
+
+* objects are currently all exported to squirrel, while we should
+  probally use id-tags and accessor functions instead:
+
+  bob = get_object("barkeeper")
+  bob.say()
+
+* add support for empty sectors (sectors without a player character,
+  for use in intro.wst and similar cutscenes)
+
+* figure out proper 'namespaces' for the scripting, i.e. gfx_ or
+  video_ for all display related stuff and so on, so that
+  tab-completion works better and things become more readable
+
+* implement quit() scripting command that aborts a script in the middle (used for debugging)
+
+* HUD elements are whole screens, should be something simpler, also a
+  seperation between HUD (energybar, speech, etc.) and Overlays
+  (inventory, PDA, etc.) might be good
+
+* do not save options given on the command line by default
+
+* make lightmap resolution independent
+
+* remodel titlescreen as 3D model
+
 * seperate and document components better:
 
   - collision engine
@@ -13,6 +48,8 @@ Windstille ToDo
 
 * unify copyright header and #ifdef guards
 
+ for i in */*.hpp; do echo $i; NAME=$(echo $i | sed "s/[\/\.]/_/g;s/^/HEADER_WINDSTILLE_/" | tr [a-z] [A-Z]);  sed  -i "s/^\(#[a-z]*\) *HEADER_WINDSTILLE_.*/\1 $NAME/" $i; done
+
 * Update Random number generator: http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html
 
 * document scripting tricks somewhere:
@@ -23,7 +60,7 @@ Windstille ToDo
 * find a astyle/bcpp/whatever configuration that matches the current
   coding style, maybe a little script that uses Emacs would do
 
-* write a LucasArts-like dialog system (i.e. non-blocking text, instead of JRPG like boxes with portraits)
+* write a LucasArts-like dialog system (i.e. non-blocking text, instead of JRPG like boxes with portraits), see SpeechManager
 
 * PDA needs scrolling text thing (right analog stick?)
 
@@ -62,8 +99,7 @@ Windstille ToDo
  15.21      1.14     0.54 37910690     0.00     0.00  VertexArrayDrawingRequest::texcoord(float, float)
  14.37      1.65     0.51 37974070     0.00     0.00  VertexArrayDrawingRequest::vertex(float, float, float)
  11.55      2.06     0.41    79225     0.00     0.00  Sprite3D::draw(Vector2f const&, Matrix const&) const
-
-
+  3.94      2.20     0.14  1133610     0.00     0.00  OpenGLState::activate()
 
 Windstille Bugs
 ===============
