@@ -125,8 +125,6 @@ GameSession::GameSession(const std::string& arg_filename)
 
   impl->pause = false;
   
-  ScriptManager::current()->run_script_file("scripts/init_script_vars.nut", true);
-    
   set_sector(impl->filename);
 }
 

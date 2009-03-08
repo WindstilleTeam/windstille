@@ -1,3 +1,9 @@
+function init()
+{
+  bob_seen_before <- false;
+  bob_knows_you_mercenary <- false;
+}
+
 function intro()
 {
   bob_seen_before = true;
