@@ -24,9 +24,10 @@
 #include <map>
 #include <squirrel.h>
 #include <iostream>
+#include <boost/shared_ptr.hpp>
 #include "scripting/wrapper.hpp"
 #include "scripting/util.hpp"
-
+
 /**
  * This class is responsible for managing all running squirrel threads
  * (called coroutines by others)
@@ -41,18 +42,20 @@ public:
   static ScriptManager* current() { return current_; }
 
 public:
-  enum WakeupEvent {
-    NO_EVENT,
-    TIME,
-    DIALOG_CLOSED,
-    CONVERSATION_CLOSED,
-    FADE_DONE,
-    CAMERA_DONE,
-    GAMEOBJECT_DONE,
-    MAX_WAKEUP_EVENT_COUNT
-  };
+  enum WakeupEvent 
+    {
+      NO_EVENT,
+      TIME,
+      DIALOG_CLOSED,
+      CONVERSATION_CLOSED,
+      FADE_DONE,
+      CAMERA_DONE,
+      GAMEOBJECT_DONE,
+      MAX_WAKEUP_EVENT_COUNT
+    };
 
-  struct WakeupData {
+  struct WakeupData 
+  {
     explicit WakeupData() : type(NO_EVENT) {}
     explicit WakeupData(WakeupEvent type_) : type(type_) {}
 
@@ -64,21 +67,35 @@ public:
     };
   };
 
-private:
   class SquirrelVM
   {
   public:
     std::string name;
+  private:
+    HSQUIRRELVM parent_vm;
+  public:
     HSQUIRRELVM vm;
+  private:
     HSQOBJECT   vm_obj;
-    float       wakeup_time;
+    
     WakeupData  waiting_for_events;
+    float       wakeup_time;
 
   public:
-    SquirrelVM(const std::string& arg_name, HSQUIRRELVM arg_vm, HSQOBJECT arg_obj);
+    SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELVM parent_vm);
+    ~SquirrelVM();
+
+    void run();
+
+    void set_wakeup_event(const WakeupData& event, float timeout);
+    void fire_wakeup_event(const WakeupData& event);
+
+    /** Returns false when the VM is done and can be removed */
+    bool update();
   };
-  
-  typedef std::list<SquirrelVM> SquirrelVMs;
+
+private:  
+  typedef std::list<boost::shared_ptr<SquirrelVM> > SquirrelVMs;
   SquirrelVMs squirrel_vms;
   std::map<std::string, bool> already_run_scripts;
 
@@ -113,7 +130,7 @@ public:
       before, if the vm is run for the first time return true */
   bool run_before(HSQUIRRELVM vm);
 };
-
+
 #endif
 
 /* EOF */

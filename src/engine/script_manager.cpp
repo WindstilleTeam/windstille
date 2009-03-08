@@ -20,7 +20,7 @@
 using namespace Scripting;
 
 ScriptManager* ScriptManager::current_ = 0;
-
+
 static void printfunc(HSQUIRRELVM, const char* str, ...)
 {
   char buf[4096];
@@ -31,7 +31,7 @@ static void printfunc(HSQUIRRELVM, const char* str, ...)
   puts(buf);
   va_end(arglist); 
 }
-
+
 ScriptManager::ScriptManager()
 {
   assert(current_ == 0);
@@ -77,11 +77,11 @@ ScriptManager::ScriptManager()
 
 ScriptManager::~ScriptManager()
 {
-  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
-    sq_release(vm, &(i->vm_obj));
+  // Manually clear it so that the boost::shared_ptr get deleted
+  // before we close the vm
+  squirrel_vms.clear();
 
   sq_close(vm);
-
   current_ = 0;
 }
 
@@ -115,84 +115,23 @@ ScriptManager::run_script(const std::string& the_string,
 void
 ScriptManager::run_script(std::istream& in, const std::string& sourcename)
 {
-  HSQUIRRELVM thread = sq_newthread(vm, 1024);
-  if(thread == 0)
-    {
-      throw SquirrelError(vm, "Couldn't create new VM");
-    }
-  else
-    {
-      // retrieve reference to thread from stack and increase refcounter
-      HSQOBJECT vm_obj;
-
-      // Init the object
-      sq_resetobject(&vm_obj);
-
-      // store thread created by sq_newthread into vm_obj
-      if(sq_getstackobj(vm, -1, &vm_obj) < 0)
-        throw SquirrelError(vm, "Couldn't get coroutine vm from stack");
-
-      // Add reference and remove object from stack
-      sq_addref(vm, &vm_obj);
-      sq_pop(vm, 1);
-  
-      // Compile the script and push it on the stack
-      if(sq_compile(thread, squirrel_read_char, &in, sourcename.c_str(), true) < 0)
-        throw SquirrelError(thread, "Couldn't parse script");
-     
-      // Add VM to the list of VMs
-      squirrel_vms.push_back(SquirrelVM(sourcename, thread, vm_obj));
-      already_run_scripts[sourcename] = true;
-
-      // FIXME: a script that gets run shouldn't have direct access to the root table
-      // http://wiki.squirrel-lang.org/default.aspx/SquirrelWiki/MultiVMs.html
-      sq_pushroottable(thread);
-      //sq_clone(thread, -1); //FIXME
-
-      // Start the script that was previously compiled
-      if (SQ_FAILED(sq_call(thread, 1, false, true)))
-        throw SquirrelError(thread, "Couldn't start script");
-    }
+  // Add VM to the list of VMs
+  squirrel_vms.push_back(boost::shared_ptr<SquirrelVM>(new SquirrelVM(in, sourcename, vm)));
+  squirrel_vms.back()->run();
+  already_run_scripts[sourcename] = true;   
 }
 
 void
 ScriptManager::update()
 {
-  // 
   for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ) 
     {
-      SquirrelVM& squirrel_vm = *i;
-      int vm_state = sq_getvmstate(squirrel_vm.vm);
-    
-      if (vm_state == SQ_VMSTATE_SUSPENDED)
+      if ((*i)->update())
         {
-          if (squirrel_vm.wakeup_time > 0 && 
-              game_time >= squirrel_vm.wakeup_time) 
-            {
-              squirrel_vm.waiting_for_events = WakeupData(NO_EVENT);
-              try 
-                {
-                  if(sq_wakeupvm(squirrel_vm.vm, false, false, true) < 0) 
-                    {
-                      throw SquirrelError(squirrel_vm.vm, "Couldn't resume script");
-                    }
-                } 
-              catch(std::exception& e) 
-                {
-                  std::cerr << "Problem executing script: " << e.what() << "\n";
-                  sq_release(vm, &squirrel_vm.vm_obj);
-                  i = squirrel_vms.erase(i);
-                  continue;
-                }
-            }
-          else
-            {
-              ++i;
-            }
+          ++i;
         }
-      else // if (vm_state != SQ_VMSTATE_SUSPENDED) 
+      else
         {
-          sq_release(vm, &squirrel_vm.vm_obj);
           i = squirrel_vms.erase(i);
         }
     }
@@ -202,23 +141,13 @@ void
 ScriptManager::set_wakeup_event(HSQUIRRELVM vm, WakeupData event, float timeout)
 {
   assert(event.type >= 0 && event.type < MAX_WAKEUP_EVENT_COUNT);
+
   // find the VM in the list and update it
   for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
     {
-      SquirrelVM& squirrel_vm = *i;
-
-      if(squirrel_vm.vm == vm) 
+      if((*i)->vm == vm) 
         {
-          squirrel_vm.waiting_for_events = event;
-
-          if(timeout < 0) 
-            {
-              squirrel_vm.wakeup_time = -1;
-            } 
-          else 
-            {
-              squirrel_vm.wakeup_time = game_time + timeout;
-            }
+          (*i)->set_wakeup_event(event, timeout);
           return;
         }
     }
@@ -237,25 +166,7 @@ ScriptManager::fire_wakeup_event(WakeupData event)
 
   for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
     {
-      SquirrelVM& vm = *i;
-
-      if(vm.waiting_for_events.type == event.type && 
-         vm.waiting_for_events.type != NO_EVENT)
-        {
-          switch (event.type)
-            {
-              case GAMEOBJECT_DONE:
-                if (vm.waiting_for_events.game_object == event.game_object)
-                  {
-                    vm.wakeup_time = game_time;
-                  }
-                break;
-
-              default:
-                vm.wakeup_time = game_time;
-                break;
-            }
-        }
+      (*i)->fire_wakeup_event(event);
     }
 }
 
@@ -272,8 +183,8 @@ ScriptManager::run_before(HSQUIRRELVM vm)
 
   for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
     {
-      if (i->vm == vm)
-        name = i->name;
+      if ((*i)->vm == vm)
+        name = (*i)->name;
     }
   
   if (already_run_scripts.find(name) == already_run_scripts.end())
@@ -281,14 +192,139 @@ ScriptManager::run_before(HSQUIRRELVM vm)
   else
     return true;
 }
-
-ScriptManager::SquirrelVM::SquirrelVM(const std::string& arg_name, HSQUIRRELVM arg_vm, HSQOBJECT arg_obj)
+
+ScriptManager::SquirrelVM::SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELVM parent_vm)
   : name(arg_name),
-    vm(arg_vm), 
-    vm_obj(arg_obj)
+    parent_vm(parent_vm),
+    waiting_for_events(NO_EVENT),
+    wakeup_time(0)
 {
-  waiting_for_events = WakeupData(NO_EVENT);
-  wakeup_time        = 0;
+  vm = sq_newthread(parent_vm, 1024);
+
+  if (vm == 0)
+    {
+      throw SquirrelError(vm, "Couldn't create new VM");
+    }
+  else
+    {
+      // retrieve reference to thread from stack and increase refcounter
+
+      // Init the object
+      sq_resetobject(&vm_obj);
+
+      // store thread created by sq_newthread into vm_obj
+      if(sq_getstackobj(parent_vm, -1, &vm_obj) < 0)
+        {
+          throw SquirrelError(parent_vm, "Couldn't get coroutine vm from stack");
+        }
+      else
+        {
+          // Add reference and remove object from stack
+          sq_addref(parent_vm, &vm_obj);
+          sq_pop(parent_vm, 1);
+  
+          // Compile the script and push it on the stack
+          if(sq_compile(vm, squirrel_read_char, &in, name.c_str(), true) < 0)
+            throw SquirrelError(vm, "Couldn't parse script");
+        }
+
+      // FIXME: a script that gets run shouldn't have direct access to the root table
+      // http://wiki.squirrel-lang.org/default.aspx/SquirrelWiki/MultiVMs.html
+      sq_pushroottable(vm);
+      //sq_clone(vm, -1); //FIXME
+    }
 }
 
+ScriptManager::SquirrelVM::~SquirrelVM()
+{
+  sq_release(vm, &vm_obj);  
+}
+
+void 
+ScriptManager::SquirrelVM::run()
+{
+  // Start the script that was previously compiled
+  if (SQ_FAILED(sq_call(vm, 1, false, true)))
+    throw SquirrelError(vm, "Couldn't start script");
+}
+
+void
+ScriptManager::SquirrelVM::set_wakeup_event(const WakeupData& event, float timeout)
+{
+  waiting_for_events = event;
+
+  if (timeout < 0) 
+    {
+      wakeup_time = -1;
+    } 
+  else 
+    {
+      wakeup_time = game_time + timeout;
+    }
+}
+
+void
+ScriptManager::SquirrelVM::fire_wakeup_event(const WakeupData& event)
+{ 
+  if (waiting_for_events.type == event.type && 
+      waiting_for_events.type != NO_EVENT)
+    {
+      switch (event.type)
+        {
+          case GAMEOBJECT_DONE:
+            if (waiting_for_events.game_object == event.game_object)
+              {
+                wakeup_time = game_time;
+              }
+            break;
+
+          default:
+            wakeup_time = game_time;
+            break;
+        }
+    }
+}
+
+bool
+ScriptManager::SquirrelVM::update()
+{
+  int vm_state = sq_getvmstate(vm);
+    
+  switch(vm_state)
+    {
+      case SQ_VMSTATE_SUSPENDED:
+        if (wakeup_time > 0 && 
+            game_time >= wakeup_time) 
+          {
+            waiting_for_events = WakeupData(NO_EVENT);
+
+            try 
+              {
+                if(sq_wakeupvm(vm, false, false, true) < 0) 
+                  {
+                    throw SquirrelError(vm, "Couldn't resume script");
+                  }
+                return true;
+              }
+            catch(std::exception& e) 
+              {
+                std::cerr << "Problem executing script: " << e.what() << "\n";
+                return false;
+              }
+          }
+        else
+          {
+            return true;
+          }
+        break;
+
+      case SQ_VMSTATE_IDLE:
+      case SQ_VMSTATE_RUNNING: // FIXME: How can this happen?
+        return false;
+
+      default: 
+        assert(!"never reached");
+    }
+}
+
 /* EOF */
