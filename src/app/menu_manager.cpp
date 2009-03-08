@@ -158,9 +158,12 @@ MenuManager::display_main_menu()
   navigation_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_navigation_test, this));
   menu->add_item(navigation_test_button.release());
 
-  std::auto_ptr<ButtonMenuItem> armature_test_button(new ButtonMenuItem(menu.get(), "Armature Test"));
-  armature_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_armature_test, this));
-  menu->add_item(armature_test_button.release());
+  if (0)
+    {
+      std::auto_ptr<ButtonMenuItem> armature_test_button(new ButtonMenuItem(menu.get(), "Armature Test"));
+      armature_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_armature_test, this));
+      menu->add_item(armature_test_button.release());
+    }
 
   std::auto_ptr<ButtonMenuItem> geometry_test_button(new ButtonMenuItem(menu.get(), "Geometry Test"));
   geometry_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_geometry_test, this));
