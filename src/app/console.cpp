@@ -329,11 +329,11 @@ ConsoleImpl::get_roottable()
   sq_pushnull(v);  //null iterator
   while(SQ_SUCCEEDED(sq_next(v,-2)))
     {
-      //here -1 is the value and -2 is the key
+      // here -1 is the value and -2 is the key
       const SQChar *s;
       if (SQ_SUCCEEDED(sq_getstring(v,-2, &s)))
         {
-          roottable.push_back((char*)s);
+          roottable.push_back((char*)s); // FIXME: likely not going to work on 64bit
         }
       else
         {
@@ -493,30 +493,32 @@ ConsoleImpl::execute(const std::string& str_)
   const char* buffer = str.c_str();
 
   HSQUIRRELVM vm = ScriptManager::current()->get_vm();
+
+  // Remember old stack position
   int oldtop = sq_gettop(vm); 
-  try {
-    int retval = 1;
 
-    if(i > 0) 
-      {
-        if(SQ_SUCCEEDED(sq_compilebuffer(vm, buffer, i, _SC("interactive console"), SQTrue)))
-          {
-            sq_pushroottable(vm);
-            if(SQ_SUCCEEDED(sq_call(vm, 1, retval, true))) 
-              {
-                // FIXME: This does only work when somebody is doing a 'return', i.e. almost never
-                if (sq_gettype(vm, -1) != OT_NULL)
-                  console << Scripting::squirrel2string(vm, -1) << std::endl;
-                // else
-                //   console << "(null)" << std::endl;
-              }
-          }
-      }
-  } catch(std::exception& e) {
-    std::cerr << "Couldn't execute command '" << str_ << "': "
-              << e.what() << "\n";
-  }
+  try 
+    {
+      if(SQ_SUCCEEDED(sq_compilebuffer(vm, buffer, i, _SC("interactive console"), SQTrue)))
+        {
+          sq_pushroottable(vm);
+          if(SQ_SUCCEEDED(sq_call(vm, 1, 1/*retval*/, true))) 
+            {
+              // FIXME: This does only work when somebody is doing a 'return', i.e. almost never
+              if (sq_gettype(vm, -1) != OT_NULL)
+                console << Scripting::squirrel2string(vm, -1) << std::endl;
+              // else
+              //   console << "(null)" << std::endl;
+            }
+        }
+    } 
+  catch(std::exception& e) 
+    {
+      std::cerr << "Couldn't execute command '" << str_ << "': "
+                << e.what() << "\n";
+    }
 
+  // Reset to old stack position
   sq_settop(vm, oldtop);
 }
 
