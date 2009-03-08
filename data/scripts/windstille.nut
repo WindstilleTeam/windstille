@@ -32,9 +32,13 @@ RENDER_MASK_LIGHTMAP       <- 1<<1
 RENDER_MASK_HIGHLIGHTMAP   <- 1<<2
 RENDER_MASK_LIGHTMAPSCREEN <- 1<<3
 RENDER_MASK_BLURMAP        <- 1<<4
-RENDER_MASK_ALL            <- (RENDER_MASK_HIGHLIGHTMAP | RENDER_MASK_LIGHTMAP | RENDER_MASK_COLORMAP | RENDER_MASK_BLURMAP)
+RENDER_MASK_ALL            <- (RENDER_MASK_HIGHLIGHTMAP | 
+                               RENDER_MASK_LIGHTMAP | 
+                               RENDER_MASK_COLORMAP | 
+                               RENDER_MASK_BLURMAP)
 
 has_nightvision <- false;
+
 function nightvision_enabled(...)
 {
   if (vargc == 1) 
@@ -82,14 +86,14 @@ class Dialog {
 
   function say(text)
   {
-    dialog_show(align, character, portrait, text);
-    wait_for_dialog();
+    ::dialog_show(align, character, portrait, text);
+    ::wait_for_dialog();
   }
 
   function show(text)
   {
-    dialog_show(align, character, portrait, text);
-    wait_for_dialog();
+    ::dialog_show(align, character, portrait, text);
+    ::wait_for_dialog();
   }
 
   align = null;
@@ -99,8 +103,8 @@ class Dialog {
 
 function add_dialog(align, character, portrait, text)
 {
-  dialog_show(align, character, portrait, text);
-  wait_for_dialog();  
+  ::dialog_show(align, character, portrait, text);
+  ::wait_for_dialog();  
 }
 
 /* Some debugging/testing stuff */
