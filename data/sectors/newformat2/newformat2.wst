@@ -5,7 +5,7 @@
   (name   "")
   (music  "music/techdemo.ogg")
   (ambient-color .4 .4 .4)
-  (init-script "levels/newformat2.nut")
+  (init-script "newformat2.nut")
   (spawnpoint
     (name "default")
     (pos 300 650)
