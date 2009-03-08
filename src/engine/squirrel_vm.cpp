@@ -85,34 +85,18 @@ SquirrelVM::SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELV
       // Compile the script and push it on the stack
       if(sq_compile(vm, squirrel_read_char, &in, name.c_str(), true) < 0)
         throw SquirrelError(vm, name, "Couldn't parse script");
+
+      sq_pushroottable(vm);
+
+      // Start the script that was previously compiled
+      if (SQ_FAILED(sq_call(vm, 1, false, true)))
+        throw SquirrelError(vm, name, "SquirrelVM::run(): Couldn't start script");
     }
 }
 
 SquirrelVM::~SquirrelVM()
 {
   sq_release(vm, &vm_obj);  
-}
-
-void 
-SquirrelVM::run()
-{
-  sq_pushroottable(vm);
-  
-  std::cout << "################\nRootTable:\n{{{" << Scripting::squirrel2string(vm, -1) << "\n}}}" << std::endl;
-
-  // Start the script that was previously compiled
-  if (SQ_FAILED(sq_call(vm, 1, false, true)))
-    throw SquirrelError(vm, name, "SquirrelVM::run(): Couldn't start script");
-
-  if (sq_getvmstate(vm) == SQ_VMSTATE_IDLE)
-    {
-      call("init");
-    }
-
-  if (sq_getvmstate(vm) == SQ_VMSTATE_IDLE)
-    {
-      call("run");
-    }
 }
 
 void
@@ -209,9 +193,9 @@ SquirrelVM::call(const std::string& function)
 {
   sq_pushroottable(vm);
 
-  std::cout << "################\nRootTable:\n{{{" << Scripting::squirrel2string(vm, -1) << "\n}}}" << std::endl;
+  //std::cout << "################\nRootTable:\n{{{" << Scripting::squirrel2string(vm, -1) << "\n}}}" << std::endl;
   sq_getdelegate(vm, -1);
-  std::cout << "################\nDelegate:\n{{{" << Scripting::squirrel2string(vm, -1) << "\n}}}" << std::endl;
+  //std::cout << "################\nDelegate:\n{{{" << Scripting::squirrel2string(vm, -1) << "\n}}}" << std::endl;
   sq_pop(vm, 1);
 
   // Lookup the function in the roottable and put it on the stack

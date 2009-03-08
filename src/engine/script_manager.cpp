@@ -195,7 +195,8 @@ ScriptManager::run_script(std::istream& in, const std::string& sourcename, bool 
       else
         { // Add VM to the list of VMs
           squirrel_vms.push_back(boost::shared_ptr<SquirrelVM>(new SquirrelVM(in, sourcename, vm)));     
-          squirrel_vms.back()->run();
+          squirrel_vms.back()->call("init");
+          squirrel_vms.back()->call("run");
         }
     }
 }

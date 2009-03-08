@@ -42,9 +42,6 @@ public:
   void set_wakeup_event(const ScriptManager::WakeupData& event, float timeout);
   void fire_wakeup_event(const ScriptManager::WakeupData& event);
 
-  /** Evaluates the scripts */
-  void run();
-
   /** Resumes the evaluation of the VM if a wakeup has happened.
       \return false when the VM is done and can be removed */
   void update();
