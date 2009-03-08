@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "scripting/util.hpp"
 #include "scripting/squirrel_error.hpp"
 #include "squirrel_vm.hpp"
 
@@ -62,11 +63,27 @@ SquirrelVM::SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELV
           // Add reference and remove object from stack
           sq_addref(parent_vm, &vm_obj);
           sq_pop(parent_vm, 1);
-  
-          // Compile the script and push it on the stack
-          if(sq_compile(vm, squirrel_read_char, &in, name.c_str(), true) < 0)
-            throw SquirrelError(vm, "Couldn't parse script");
         }
+      
+      HSQOBJECT env;
+      sq_resetobject(&env);
+
+      sq_newtable(vm);
+      if(sq_getstackobj(vm, -1, &env) < 0) throw SquirrelError(parent_vm, "Couldn't get table from stack");
+      sq_addref(vm, &env); // FIXME: needs to be freed
+
+      // Create a completly empty environment and set delegate it to the roottable
+      sq_pushobject(vm, env); // table
+      sq_pushroottable(vm);   // table, root
+      sq_setdelegate(vm, -2); // table.set_delegate(root)
+      sq_pop(vm, 1);          //
+
+      sq_pushobject(vm, env);
+      sq_setroottable(vm);
+
+      // Compile the script and push it on the stack
+      if(sq_compile(vm, squirrel_read_char, &in, name.c_str(), true) < 0)
+        throw SquirrelError(vm, "Couldn't parse script");
     }
 }
 
@@ -81,11 +98,12 @@ SquirrelVM::run()
   // FIXME: a script that gets run shouldn't have direct access to the root table
   // http://wiki.squirrel-lang.org/default.aspx/SquirrelWiki/MultiVMs.html
   sq_pushroottable(vm);
-  //sq_clone(vm, -1); //FIXME
+  
+  std::cout << "################\nRootTable:\n{{{" << Scripting::squirrel2string(vm, -1) << "\n}}}" << std::endl;
 
   // Start the script that was previously compiled
   if (SQ_FAILED(sq_call(vm, 1, false, true)))
-    throw SquirrelError(vm, "Couldn't start script");
+    throw SquirrelError(vm, "SquirrelVM::run(): " + name + ": Couldn't start script");
 
   if (sq_getvmstate(vm) == SQ_VMSTATE_IDLE)
     {
@@ -181,6 +199,11 @@ void
 SquirrelVM::call(const std::string& function)
 {
   sq_pushroottable(vm);
+
+  std::cout << "################\nRootTable:\n{{{" << Scripting::squirrel2string(vm, -1) << "\n}}}" << std::endl;
+  sq_getdelegate(vm, -1);
+  std::cout << "################\nDelegate:\n{{{" << Scripting::squirrel2string(vm, -1) << "\n}}}" << std::endl;
+  sq_pop(vm, 1);
 
   // Lookup the function in the roottable and put it on the stack
   sq_pushstring(vm, function.c_str(), -1);

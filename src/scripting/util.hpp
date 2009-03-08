@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCRIPTING_UTIL_HPP
 #define HEADER_WINDSTILLE_SCRIPTING_UTIL_HPP
 
+#include <vector>
 #include <squirrel.h>
 #include <string>
 
