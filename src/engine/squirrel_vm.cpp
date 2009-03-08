@@ -67,11 +67,6 @@ SquirrelVM::SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELV
           if(sq_compile(vm, squirrel_read_char, &in, name.c_str(), true) < 0)
             throw SquirrelError(vm, "Couldn't parse script");
         }
-
-      // FIXME: a script that gets run shouldn't have direct access to the root table
-      // http://wiki.squirrel-lang.org/default.aspx/SquirrelWiki/MultiVMs.html
-      sq_pushroottable(vm);
-      //sq_clone(vm, -1); //FIXME
     }
 }
 
@@ -83,9 +78,24 @@ SquirrelVM::~SquirrelVM()
 void 
 SquirrelVM::run()
 {
+  // FIXME: a script that gets run shouldn't have direct access to the root table
+  // http://wiki.squirrel-lang.org/default.aspx/SquirrelWiki/MultiVMs.html
+  sq_pushroottable(vm);
+  //sq_clone(vm, -1); //FIXME
+
   // Start the script that was previously compiled
   if (SQ_FAILED(sq_call(vm, 1, false, true)))
     throw SquirrelError(vm, "Couldn't start script");
+
+  if (sq_getvmstate(vm) == SQ_VMSTATE_IDLE)
+    {
+      call("init");
+    }
+
+  if (sq_getvmstate(vm) == SQ_VMSTATE_IDLE)
+    {
+      call("run");
+    }
 }
 
 void
@@ -140,7 +150,7 @@ SquirrelVM::update()
 
             try 
               {
-                if(sq_wakeupvm(vm, false, false, true) < 0) 
+                if (sq_wakeupvm(vm, false, false, true) < 0)
                   {
                     throw SquirrelError(vm, "Couldn't resume script");
                   }
@@ -164,6 +174,32 @@ SquirrelVM::update()
 
       default: 
         assert(!"never reached");
+    }
+}
+
+void
+SquirrelVM::call(const std::string& function)
+{
+  sq_pushroottable(vm);
+
+  // Lookup the function in the roottable and put it on the stack
+  sq_pushstring(vm, function.c_str(), -1);
+  if (SQ_SUCCEEDED(sq_get(vm, -2)))
+    {
+      // Call the function
+      sq_pushroottable(vm); // 'this' (function environment object)
+      if (SQ_FAILED(sq_call(vm, 1, false, true)))
+        {
+          // FIXME: doesn't this mess up the stack?
+          throw SquirrelError(vm, "SquirrelVM: " + name + ": couldn't call '" + function + "'");
+        }
+
+      // Cleanup
+      sq_pop(vm, 2); //pops the roottable and the function
+    }
+  else
+    {
+      sq_pop(vm, 1); //pops the roottable
     }
 }
 
