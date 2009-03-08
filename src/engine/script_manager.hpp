@@ -105,6 +105,7 @@ public:
 
   void set_wakeup_event(HSQUIRRELVM vm, WakeupEvent event, float timeout = -1);
   void set_wakeup_event(HSQUIRRELVM vm, WakeupData  event, float timeout = -1);
+
   void fire_wakeup_event(WakeupEvent event);
   void fire_wakeup_event(WakeupData  event);
   

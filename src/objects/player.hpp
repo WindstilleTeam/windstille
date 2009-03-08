@@ -91,12 +91,10 @@ private:
   
   double reload_time;
   float  z_pos;
-  static Player* current_;
+
 public:
   Player ();
   virtual ~Player ();
-
-  static Player* current() { return current_; }
 
   int get_movement_state() { return state; }
 
@@ -171,6 +169,11 @@ private:
   void try_set_action(const std::string& name, float speed = 1.0);
 
   Direction get_direction() const;
+
+public:
+  static Player* current() { return current_; }
+private:
+  static Player* current_;
 };
 
 #endif

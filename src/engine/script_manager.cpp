@@ -225,6 +225,12 @@ ScriptManager::set_wakeup_event(HSQUIRRELVM vm, WakeupData event, float timeout)
 }
 
 void
+ScriptManager::set_wakeup_event(HSQUIRRELVM vm, WakeupEvent event, float timeout)
+{
+  set_wakeup_event(vm, WakeupData(event), timeout);
+}
+
+void
 ScriptManager::fire_wakeup_event(WakeupData event)
 {
   assert(event.type >= 0 && event.type < MAX_WAKEUP_EVENT_COUNT);
@@ -251,12 +257,6 @@ ScriptManager::fire_wakeup_event(WakeupData event)
             }
         }
     }
-}
-
-void
-ScriptManager::set_wakeup_event(HSQUIRRELVM vm, WakeupEvent event, float timeout)
-{
-  set_wakeup_event(vm, WakeupData(event), timeout);
 }
 
 void
