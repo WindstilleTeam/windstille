@@ -8,13 +8,13 @@ function intro()
   conversation_add("Choice 2"); 
   conversation_add("Choice 3"); 
   if (!conversation_get())
-  {
-    ask_questions();
-  }
+    {
+      ask_questions();
+    }
   else
-  {
-    bye();
-  }
+    {
+      bye();
+    }
 }
 
 function hello_again()
@@ -34,10 +34,10 @@ function ask_questions()
   conversation_add("I work as a mercenary.");
   conversation_add("Not much");
   if (!conversation_get())
-  {
+    {
       bob_knows_you_mercenary = true;
       offer_job();
-  }
+    }
   else
     bye();
 }
@@ -49,7 +49,7 @@ function offer_job()
   conversation_add("No thanks.");
   if (!conversation_get()) {
     add_objective("Kill spider", "You must kill the spider at the end of the level");
-      explain_job();
+    explain_job();
   }
   else
     bye();
@@ -68,14 +68,17 @@ function bye()
     dialog.show("See you again some time");
 }
 
-dialog <- Dialog(0, "Bob", "images/portraits/bob.sprite");
-if (is_objective_given("Kill spider"))
-  explain_job();
-else if (bob_knows_you_mercenary)
-  offer_job();
-else if (bob_seen_before)
-  hello_again();
-else
-  intro();
+function run()
+{
+  dialog <- Dialog(0, "Bob", "images/portraits/bob.sprite");
+  if (is_objective_given("Kill spider"))
+    explain_job();
+  else if (bob_knows_you_mercenary)
+    offer_job();
+  else if (bob_seen_before)
+    hello_again();
+  else
+    intro();
+}
 
 /* EOF */

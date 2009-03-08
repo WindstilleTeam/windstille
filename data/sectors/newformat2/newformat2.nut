@@ -1,7 +1,3 @@
-set_controller_help_active(true);
-objects.player_flames2.set_active(false);
-objects.player_flames.set_active(false);      
-
 /* Some fun with fire */
 function startfire()
 {
@@ -21,7 +17,14 @@ function stopfire()
   objects.player_flames.set_active(false);
 }
 
-objects.Block0Sign.start_flash(0.7);
-objects.Block0Sign.move_to(100, 370, 100, 2);
+function run()
+{
+  set_controller_help_active(true);
+  objects.player_flames2.set_active(false);
+  objects.player_flames.set_active(false);      
+
+  objects.Block0Sign.start_flash(0.7);
+  objects.Block0Sign.move_to(100, 370, 100, 2);
+}
 
 /* EOF */
