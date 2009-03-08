@@ -72,6 +72,7 @@ env.Program('../windstille', [
 'engine/game_object.cpp',
 'engine/physics.cpp',
 'engine/script_manager.cpp',
+'engine/squirrel_vm.cpp',
 'engine/sector.cpp',
 'font/border_font_effect.cpp',
 'font/no_font_effect.cpp',

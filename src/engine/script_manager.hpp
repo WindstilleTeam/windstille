@@ -25,8 +25,11 @@
 #include <squirrel.h>
 #include <iostream>
 #include <boost/shared_ptr.hpp>
+
 #include "scripting/wrapper.hpp"
 #include "scripting/util.hpp"
+
+class SquirrelVM;
 
 /**
  * This class is responsible for managing all running squirrel threads
@@ -65,33 +68,6 @@ public:
       // GAMEOBJECT_DONE
       GameObject* game_object;
     };
-  };
-
-  class SquirrelVM
-  {
-  public:
-    std::string name;
-  private:
-    HSQUIRRELVM parent_vm;
-  public:
-    HSQUIRRELVM vm;
-  private:
-    HSQOBJECT   vm_obj;
-    
-    WakeupData  waiting_for_events;
-    float       wakeup_time;
-
-  public:
-    SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELVM parent_vm);
-    ~SquirrelVM();
-
-    void run();
-
-    void set_wakeup_event(const WakeupData& event, float timeout);
-    void fire_wakeup_event(const WakeupData& event);
-
-    /** Returns false when the VM is done and can be removed */
-    bool update();
   };
 
 private:  

@@ -1,3 +1,21 @@
+/*
+**  Windstille - A Sci-Fi Action-Adventure Game
+**  Copyright (C) 2005 Matthias Braun <matze@braunis.de>
+**
+**  This program is free software: you can redistribute it and/or modify
+**  it under the terms of the GNU General Public License as published by
+**  the Free Software Foundation, either version 3 of the License, or
+**  (at your option) any later version.
+**  
+**  This program is distributed in the hope that it will be useful,
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**  GNU General Public License for more details.
+**  
+**  You should have received a copy of the GNU General Public License
+**  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "script_manager.hpp"
 
 #include <stdarg.h>
@@ -11,6 +29,7 @@
 #include <sqstdmath.h>
 #include <sqstdstring.h>
 
+#include "squirrel_vm.hpp"
 #include "app/console.hpp"
 #include "scripting/wrapper.hpp"
 #include "scripting/util.hpp"
@@ -85,18 +104,6 @@ ScriptManager::~ScriptManager()
   current_ = 0;
 }
 
-static SQInteger squirrel_read_char(SQUserPointer file)
-{
-  std::istream* in = reinterpret_cast<std::istream*> (file);
-
-  char c = in->get();
-
-  if (in->eof())
-    return 0;
-  else
-    return c;
-}
-
 void
 ScriptManager::run_script_file(const std::string& filename)
 {
@@ -191,140 +198,6 @@ ScriptManager::run_before(HSQUIRRELVM vm)
     return false;
   else
     return true;
-}
-
-ScriptManager::SquirrelVM::SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELVM parent_vm)
-  : name(arg_name),
-    parent_vm(parent_vm),
-    waiting_for_events(NO_EVENT),
-    wakeup_time(0)
-{
-  vm = sq_newthread(parent_vm, 1024);
-
-  if (vm == 0)
-    {
-      throw SquirrelError(vm, "Couldn't create new VM");
-    }
-  else
-    {
-      // retrieve reference to thread from stack and increase refcounter
-
-      // Init the object
-      sq_resetobject(&vm_obj);
-
-      // store thread created by sq_newthread into vm_obj
-      if(sq_getstackobj(parent_vm, -1, &vm_obj) < 0)
-        {
-          throw SquirrelError(parent_vm, "Couldn't get coroutine vm from stack");
-        }
-      else
-        {
-          // Add reference and remove object from stack
-          sq_addref(parent_vm, &vm_obj);
-          sq_pop(parent_vm, 1);
-  
-          // Compile the script and push it on the stack
-          if(sq_compile(vm, squirrel_read_char, &in, name.c_str(), true) < 0)
-            throw SquirrelError(vm, "Couldn't parse script");
-        }
-
-      // FIXME: a script that gets run shouldn't have direct access to the root table
-      // http://wiki.squirrel-lang.org/default.aspx/SquirrelWiki/MultiVMs.html
-      sq_pushroottable(vm);
-      //sq_clone(vm, -1); //FIXME
-    }
-}
-
-ScriptManager::SquirrelVM::~SquirrelVM()
-{
-  sq_release(vm, &vm_obj);  
-}
-
-void 
-ScriptManager::SquirrelVM::run()
-{
-  // Start the script that was previously compiled
-  if (SQ_FAILED(sq_call(vm, 1, false, true)))
-    throw SquirrelError(vm, "Couldn't start script");
-}
-
-void
-ScriptManager::SquirrelVM::set_wakeup_event(const WakeupData& event, float timeout)
-{
-  waiting_for_events = event;
-
-  if (timeout < 0) 
-    {
-      wakeup_time = -1;
-    } 
-  else 
-    {
-      wakeup_time = game_time + timeout;
-    }
-}
-
-void
-ScriptManager::SquirrelVM::fire_wakeup_event(const WakeupData& event)
-{ 
-  if (waiting_for_events.type == event.type && 
-      waiting_for_events.type != NO_EVENT)
-    {
-      switch (event.type)
-        {
-          case GAMEOBJECT_DONE:
-            if (waiting_for_events.game_object == event.game_object)
-              {
-                wakeup_time = game_time;
-              }
-            break;
-
-          default:
-            wakeup_time = game_time;
-            break;
-        }
-    }
-}
-
-bool
-ScriptManager::SquirrelVM::update()
-{
-  int vm_state = sq_getvmstate(vm);
-    
-  switch(vm_state)
-    {
-      case SQ_VMSTATE_SUSPENDED:
-        if (wakeup_time > 0 && 
-            game_time >= wakeup_time) 
-          {
-            waiting_for_events = WakeupData(NO_EVENT);
-
-            try 
-              {
-                if(sq_wakeupvm(vm, false, false, true) < 0) 
-                  {
-                    throw SquirrelError(vm, "Couldn't resume script");
-                  }
-                return true;
-              }
-            catch(std::exception& e) 
-              {
-                std::cerr << "Problem executing script: " << e.what() << "\n";
-                return false;
-              }
-          }
-        else
-          {
-            return true;
-          }
-        break;
-
-      case SQ_VMSTATE_IDLE:
-      case SQ_VMSTATE_RUNNING: // FIXME: How can this happen?
-        return false;
-
-      default: 
-        assert(!"never reached");
-    }
 }
 
 /* EOF */
