@@ -133,6 +133,7 @@ private:
 
   std::auto_ptr<InputManagerSDLImpl> impl;
 
+private:
   InputManagerSDL (const InputManagerSDL&);
   InputManagerSDL& operator= (const InputManagerSDL&);
 };
