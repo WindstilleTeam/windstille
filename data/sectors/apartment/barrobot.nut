@@ -1,11 +1,15 @@
 function init()
 {
+  println("barrobot.nut: init()");
+
   barrobot <- Dialog(TOP, "Yagor", "images/portraits/yagor.sprite");
   jane     <- Dialog(TOP, "Jane", "images/portraits/jane.sprite"); 
 }
 
 function run()
 {
+  println("barrobot.nut: run()");
+
   jane.say("So, what do you have to offer?");
   barrobot.say("Beer, plenty of bear, the finest brew in all of Nugani");
   jane.say("Anything else?");
