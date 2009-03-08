@@ -25,9 +25,16 @@
 class BorderFontEffect : public FontEffect
 {
 private:
-  int size;
+  int  size;
+  bool outline;
+
 public:
-  BorderFontEffect(int size);
+  /** Create a pixel border around the font
+      
+      @param size     Size of the border in pixel
+      @param outline  If true add the border as an outline to the font, else add it to the font itself
+   */
+  BorderFontEffect(int size, bool outline);
   ~BorderFontEffect();
   
   int get_height(int orig_font_size) const;

@@ -29,11 +29,11 @@ TTFFont* Fonts::vera28  = 0;
 void
 Fonts::init()
 {
-  ttffont = new TTFFont("fonts/VeraMono.ttf", 12, BorderFontEffect(1));
-  vera12  = new TTFFont("fonts/Vera.ttf",     12, BorderFontEffect(2));
-  vera16  = new TTFFont("fonts/Vera.ttf",     16, BorderFontEffect(2));
-  vera20  = new TTFFont("fonts/Vera.ttf",     20, BorderFontEffect(2));
-  vera28  = new TTFFont("fonts/Vera.ttf",     28, BorderFontEffect(2));
+  ttffont = new TTFFont("fonts/VeraMono.ttf", 12, BorderFontEffect(1, true));
+  vera12  = new TTFFont("fonts/Vera.ttf",     12, BorderFontEffect(2, true));
+  vera16  = new TTFFont("fonts/Vera.ttf",     16, BorderFontEffect(2, true));
+  vera20  = new TTFFont("fonts/Vera.ttf",     20, BorderFontEffect(2, true));
+  vera28  = new TTFFont("fonts/Vera.ttf",     28, BorderFontEffect(2, true));
 }
 
 void

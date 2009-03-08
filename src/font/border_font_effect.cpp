@@ -19,8 +19,9 @@
 #include <algorithm>
 #include "border_font_effect.hpp"
 
-BorderFontEffect::BorderFontEffect(int size_)
-  : size(size_)
+BorderFontEffect::BorderFontEffect(int size_, bool outline_)
+  : size(size_),
+    outline(outline_)
 {
 }
 
@@ -76,6 +77,15 @@ BorderFontEffect::blit(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, i
 
   int target_pitch = target->pitch;
 
+  uint8_t red   = 0;
+  uint8_t blue  = 0;
+  uint8_t green = 0;
+
+  if (outline)
+    {
+      red = blue = green = 255;
+    }
+
   // Draw the border
   for (int y = start_y; y < end_y; ++y)
     for (int x = start_x; x < end_x; ++x)
@@ -86,30 +96,32 @@ BorderFontEffect::blit(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, i
               int target_pos = (y + y_pos + by) * target_pitch + 4*(x + x_pos + bx);
               int brush_pos  = y * brush.pitch + x;
             
-              target_buf[target_pos + 0] = 0;
-              target_buf[target_pos + 1] = 0;
-              target_buf[target_pos + 2] = 0;
+              target_buf[target_pos + 0] = red;
+              target_buf[target_pos + 1] = blue;
+              target_buf[target_pos + 2] = green;
               target_buf[target_pos + 3] = std::min(target_buf[target_pos + 3] + brush.buffer[brush_pos], 255);
             }
       }
 
-  // Draw the font itself
-  for (int y = start_y; y < end_y; ++y)
-    for (int x = start_x; x < end_x; ++x)
-      {
-        int target_pos = (y + y_pos) * target_pitch + 4*(x + x_pos);
-        int brush_pos  = y * brush.pitch + x;
+  if (outline)
+    {
+      // Draw the font itself
+      for (int y = start_y; y < end_y; ++y)
+        for (int x = start_x; x < end_x; ++x)
+          {
+            int target_pos = (y + y_pos) * target_pitch + 4*(x + x_pos);
+            int brush_pos  = y * brush.pitch + x;
         
-        int alpha = brush.buffer[brush_pos];
+            int alpha = brush.buffer[brush_pos];
 
-        target_buf[target_pos + 0] = std::min((target_buf[target_pos + 0] * (255 - alpha) + alpha * 255)/255, 255);
-        target_buf[target_pos + 1] = std::min((target_buf[target_pos + 1] * (255 - alpha) + alpha * 255)/255, 255);
-        target_buf[target_pos + 2] = std::min((target_buf[target_pos + 2] * (255 - alpha) + alpha * 255)/255, 255);
-        target_buf[target_pos + 3] = std::min(target_buf[target_pos + 3] + brush.buffer[brush_pos], 255);
-      }
-    
+            target_buf[target_pos + 0] = std::min((target_buf[target_pos + 0] * (255 - alpha) + alpha * 255)/255, 255);
+            target_buf[target_pos + 1] = std::min((target_buf[target_pos + 1] * (255 - alpha) + alpha * 255)/255, 255);
+            target_buf[target_pos + 2] = std::min((target_buf[target_pos + 2] * (255 - alpha) + alpha * 255)/255, 255);
+            target_buf[target_pos + 3] = std::min(target_buf[target_pos + 3] + brush.buffer[brush_pos], 255);
+          }
+    }
+
   SDL_UnlockSurface(target);
-
 }
 
 /* EOF */
