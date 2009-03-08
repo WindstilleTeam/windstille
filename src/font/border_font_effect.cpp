@@ -81,7 +81,7 @@ BorderFontEffect::blit(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, i
   uint8_t blue  = 0;
   uint8_t green = 0;
 
-  if (outline)
+  if (!outline)
     {
       red = blue = green = 255;
     }
