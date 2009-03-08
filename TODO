@@ -1,6 +1,8 @@
 Windstille ToDo
 ===============
 
+* "bounce collision" error is caused by grenade that spawns into a wall
+
 * scripts should be able to be persisstant, so that you could call a
   function on an event in a script
 
