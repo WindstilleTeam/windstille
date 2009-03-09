@@ -137,7 +137,10 @@ MenuManager::display_main_menu()
   using namespace gui;
   std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  std::auto_ptr<GroupComponent> text_group(new GroupComponent(Rectf(10, 500, 800-10, 600-10),
+  std::auto_ptr<GroupComponent> text_group(new GroupComponent(Rectf(Vector2f(Display::get_width()/2 - 390,
+                                                                             Display::get_height() - 100),
+                                                                    Size(800 - 20, 
+                                                                         100 - 10)),
                                                               "",
                                                               manager->get_root()));
 
@@ -152,7 +155,8 @@ MenuManager::display_main_menu()
   text_group->pack(text.release());
   manager->get_root()->add_child(text_group.release());
 
-  std::auto_ptr<GroupComponent> group(new GroupComponent(Rectf(Vector2f(400-20, 200), Sizef(250, 254)),
+  std::auto_ptr<GroupComponent> group(new GroupComponent(//create_centered_rect(250, 254),
+                                                         Rectf(Vector2f(400-20, 200), Sizef(250, 254)),
                                                          "",
                                                          manager->get_root()));
 
