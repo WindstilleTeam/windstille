@@ -41,6 +41,12 @@ GameObject::set_active(bool active)
   object.lock()->set_active(active);
 }
 
+bool
+GameObject::is_active() const
+{
+  return object.lock()->is_active();
+}
+
 void
 GameObject::set_parent(const std::string& name)
 {

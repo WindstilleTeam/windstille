@@ -103,6 +103,31 @@ static SQInteger GameObject_set_active_wrapper(HSQUIRRELVM vm)
 
 }
 
+static SQInteger GameObject_is_active_wrapper(HSQUIRRELVM vm)
+{
+  SQUserPointer data;
+  if(SQ_FAILED(sq_getinstanceup(vm, 1, &data, 0)) || !data) {
+    sq_throwerror(vm, _SC("'is_active' called without instance"));
+    return SQ_ERROR;
+  }
+  Scripting::GameObject* _this = reinterpret_cast<Scripting::GameObject*> (data);
+
+  try {
+    bool return_value = _this->is_active();
+
+    sq_pushbool(vm, return_value);
+    return 1;
+
+  } catch(std::exception& e) {
+    sq_throwerror(vm, e.what());
+    return SQ_ERROR;
+  } catch(...) {
+    sq_throwerror(vm, _SC("Unexpected exception while executing function 'is_active'"));
+    return SQ_ERROR;
+  }
+
+}
+
 static SQInteger GameObject_set_parent_wrapper(HSQUIRRELVM vm)
 {
   SQUserPointer data;
@@ -2061,6 +2086,13 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t b ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_active'");
+  }
+
+  sq_pushstring(v, "is_active", -1);
+  sq_newclosure(v, &GameObject_is_active_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t ");
+  if(SQ_FAILED(sq_createslot(v, -3))) {
+    throw SquirrelError(v, "Couldn't register function 'is_active'");
   }
 
   sq_pushstring(v, "set_parent", -1);
