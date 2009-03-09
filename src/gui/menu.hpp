@@ -45,14 +45,14 @@ public:
 
   EnumMenuItem& add_enum(const std::string& name,  
                          int index,
-                         boost::function<void (int)>& callback);
+                         const boost::function<void (int)>& callback);
 
   void  add_slider(const std::string& name, 
                    int value, int mix_value, int max_value, int step,
-                   boost::function<void (int)>& callback);
+                   const boost::function<void (int)>& callback);
 
   void  add_button(const std::string& name,
-                   boost::function<void ()>& callback);
+                   const boost::function<void ()>& callback);
 
   void push_screen();
 

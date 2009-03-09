@@ -24,6 +24,7 @@
 #include "group_component.hpp"
 #include "screen/screen_manager.hpp"
 #include "menu.hpp"
+#include "font/fonts.hpp"
 
 namespace gui {
 
@@ -32,6 +33,8 @@ Menu::Menu(const std::string& name, const Rectf& rect)
   manager.reset(new GUIManager());
   group.reset(new GroupComponent(rect, name, manager->get_root()));
   menu.reset(new MenuComponent(group->get_child_rect(), true, group.get()));
+
+  menu->set_font(Fonts::vera20);
 }
 
 Menu::~Menu()
@@ -40,7 +43,7 @@ Menu::~Menu()
 
 EnumMenuItem&
 Menu::add_enum(const std::string& name, int index,
-               boost::function<void (int)>& callback)
+               const boost::function<void (int)>& callback)
 {
   std::auto_ptr<EnumMenuItem> enum_item(new EnumMenuItem(menu.get(), name));
   EnumMenuItem& obj = *enum_item;
@@ -51,7 +54,7 @@ Menu::add_enum(const std::string& name, int index,
 void
 Menu::add_slider(const std::string& name, 
                  int value, int min_value, int max_value, int step,
-                 boost::function<void (int)>& callback)
+                 const boost::function<void (int)>& callback)
 {
   std::auto_ptr<SliderMenuItem> slider(new SliderMenuItem(menu.get(), name, value, min_value, max_value, step));
   slider->sig_change().connect(callback);
@@ -60,7 +63,7 @@ Menu::add_slider(const std::string& name,
 
 void
 Menu::add_button(const std::string& name,
-                 boost::function<void ()>& callback)
+                 const boost::function<void ()>& callback)
 {
   std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu.get(), name));
   scenario_button->sig_click().connect(callback);
