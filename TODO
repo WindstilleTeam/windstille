@@ -1,18 +1,7 @@
 Windstille ToDo
 ===============
 
-* create a simplified syntax for creating menus (could allow resize menu to the font):
-
-  Menu menu("Debug");
-
-  menu.add_slider("Ambient Light (Red)", int(amb.r*100), 0, 100, 10,
-                  boost::bind(&MenuManager::menu_ambient_light, _1, 0))
-
-  menu.add_enum("Aspect Ratio", 0, boost::bind(&MenuManager::change_aspect_ratio, _1))
-    .add_pair(0, "16:9");
-    .add_pair(1, "4:3");
-
-  screen_manager.push_overlay(menu.create())
+* create a UTF32 string class, maybe based on basic_string<>, for use in console
 
 * using a screen size != 800x600 breaks menu (missplaced), background object
 
