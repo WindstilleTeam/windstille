@@ -41,7 +41,7 @@ private:
   float z_pos;
   
   //useable stuff
-  std::string use_script;
+  std::string script_file;
   
   //movement stuff
   float target_x;

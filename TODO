@@ -1,6 +1,32 @@
 Windstille ToDo
 ===============
 
+* create a simplified syntax for creating menus (could allow resize menu to the font):
+
+  Menu menu("Debug");
+
+  menu.add_slider("Ambient Light (Red)", int(amb.r*100), 0, 100, 10,
+                  boost::bind(&MenuManager::menu_ambient_light, _1, 0))
+
+  menu.add_enum("Aspect Ratio", 0, boost::bind(&MenuManager::change_aspect_ratio, _1))
+    .add_pair(0, "16:9");
+    .add_pair(1, "4:3");
+
+  screen_manager.push_overlay(menu.create())
+
+* using a screen size != 800x600 breaks menu (missplaced), background object
+
+  loads to ugly fonts, should render
+  the fonts so that we get 1:1 pixel mapping, can be just calculate
+  their needed size and blit with floats, or do we need magic to blit
+  with ints to avoid rounding errors?
+
+* player can launch PDA or inventory when in a dialog, this will break the script
+
+* add zoom via xbox360 analog trigger buttons
+
+* add pause menu to all screens that don't already have it
+
 * some functions in scripts require '::' before them so that they can
   be found, not quite clear why or exactly when this happens
 
@@ -11,7 +37,9 @@ Windstille ToDo
 
 * join Player and Character somewhat or derive one from the other
 
-* implement aspect-ration switching at runtime (menu entry is there, just no code)
+* implement aspect-ration switching at runtime (menu entry is there,
+  just no code) and change default screen ration to that seen in the
+  artwork pictures
 
 * objects are currently all exported to squirrel, while we should
   probally use id-tags and accessor functions instead:
@@ -32,7 +60,8 @@ Windstille ToDo
   seperation between HUD (energybar, speech, etc.) and Overlays
   (inventory, PDA, etc.) might be good
 
-* do not save options given on the command line by default
+* do not save command line options given on the command line by
+  default or add a --vanilla option or so
 
 * make lightmap resolution independent
 
@@ -52,7 +81,7 @@ Windstille ToDo
 
  for i in */*.hpp; do echo $i; NAME=$(echo $i | sed "s/[\/\.]/_/g;s/^/HEADER_WINDSTILLE_/" | tr [a-z] [A-Z]);  sed  -i "s/^\(#[a-z]*\) *HEADER_WINDSTILLE_.*/\1 $NAME/" $i; done
 
-* Update Random number generator: http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html
+* update random number generator: http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html
 
 * document scripting tricks somewhere:
   spawn_object("shockwave", {pos=[0,0]})
@@ -68,7 +97,7 @@ Windstille ToDo
 
 * mouse support for menu
 
-* Add more markup to TextArea: 
+* Add more markup to TextArea: (not really needed with LucasArts-like dialog)
     <font color="#ffbbcc"></font>: Use arbitary color
     <b></b>: make text properly bold
     <i></i>: make text properly italic 
@@ -106,13 +135,14 @@ Windstille ToDo
 Windstille Bugs
 ===============
 
-- Jane's hat is white, caused by one mesh using two textures, could be
-  fixed in either the exporter or in the model itself
+* Jane's hat is white, caused by one mesh using two textures, could be
+  fixed in either the exporter or in the model itself (FIXME: still an
+  issue? Seems to be fixed)
   
-- quickly tapping forward-back-hold down forward makes your character play
+* quickly tapping forward-back-hold down forward makes your character play
   the walking animation without actually moving anywhere
    
-- Pressing left (or right), jump and and run at the same time throws an
+* Pressing left (or right), jump and and run at the same time throws an
   exception that causes the game to exit:
 
   std::exception: No marker with name 'RightFoot' defined in action 'Stand'
@@ -121,12 +151,6 @@ Windstille Bugs
   instead fallback to placeholders and give a error message on the console
 
 http://orange.blender.org/blog/the-amazing-incredible-monkey-brush#more-49
-
-- add bison checks
-
-- collision detection
-- virtual tiles in the editor
-- animated tiles
 
 Input Handling:
 ---------------
@@ -139,30 +163,14 @@ Sound Handling:
 - split music, voice and sound fx into seperate context or allow to
   change their volume by other means
 
-Screen Handling:
-----------------
-- using a screen size != 800x600 breaks the lighting
-- using a screen size != 800x600 loads to ugly fonts, should render
-  the fonts so that we get 1:1 pixel mapping, can be just calculate
-  their needed size and blit with floats, or do we need magic to blit
-  with ints to avoid rounding errors?
-
 Misc:
 -----
 
-- polish/test scripting interface
 - create doll class
-- figure out how to do background animation (coroutines, multiple VM, etc.)
-- provide decent default keyboard config
-- polish dialog system
 - a mission that is playable
 - polish PDA
 - bone animation
-- add "save options" button
-- reduce tilesize of the large sets, figure out a easy way to resize
-  them without messing up alpha
 - print and println behave different on console
-- calling functions as character scripts instead of files doesn't work
 - change the game to a righthand coordinate system
 - rewrite Config class and properly seperate config from command line
   and config done via option menu, i.e. command line settings

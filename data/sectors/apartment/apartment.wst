@@ -159,7 +159,6 @@
       (z-pos -100)
       (sprite "images/objects/painting1.sprite")
       (active true)
-      (script "")
       (use-verb "Look")
     )
     (scriptable-object
@@ -168,7 +167,6 @@
       (z-pos -100)
       (sprite "images/objects/painting1.sprite")
       (active true)
-      (script "")
       (use-verb "Look")
     )
     (scriptable-object
@@ -177,7 +175,6 @@
       (z-pos -100)
       (sprite "images/objects/painting2.sprite")
       (active true)
-      (script "")
       (use-verb "Look")
     )
     (scriptable-object
@@ -186,7 +183,6 @@
       (z-pos -100)
       (sprite "images/objects/painting3.sprite")
       (active true)
-      (script "")
       (use-verb "Look")
     )
     (character
@@ -203,20 +199,20 @@
     )
 
     (character
-      (name "barrobot")
+      (name "yagor2")
       (pos 370 256)
       (z-pos -450)
       (sprite3d "models/characters/yagor/yagor.wsprite")
     )
 
     (scriptable-object
-      (name "Barrobot2")
+      (name "barrobot")
       (pos 470 177)
       (z-pos -100)
       (sprite  "models/objects/barrobot/barrobotsprite.sprite")
       (active true)
-      ;;(script "barrobot.nut")
       (use-verb "Look")
+      (script "barrobot.nut")
     )
     
     (scriptable-object      

@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/console.hpp"
+#include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
 #include "app/globals.hpp"
 #include "scriptable_object.hpp"
@@ -36,7 +38,7 @@ ScriptableObject::ScriptableObject(FileReader& props)
   props.get("highlight", highlightname);
   props.get("light",   lightname);
   props.get("pos", pos);
-  props.get("script", use_script);
+  props.get("script", script_file);
   props.get("use-verb", use_verb);
   props.get("active", active);
   props.get("flash-speed", flash_speed); // FIXME: bad name, should be something more generic
@@ -112,9 +114,18 @@ ScriptableObject::update(float delta)
 void
 ScriptableObject::use()
 {
-  if (!use_script.empty())
+  std::cout << "Use: " << script_file << std::endl;
+
+  if (!script_file.empty())
     {
-      Sector::current()->call_script_function(use_script);
+      try 
+        {
+          ScriptManager::current()->run_script_file(Sector::current()->get_directory() + name + ".nut");
+        }
+      catch (std::exception& e) 
+        {
+          console << e.what() << std::endl;
+        }
     }
 }
 
