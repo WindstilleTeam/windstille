@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SCENE_CONTEXT_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SCENE_CONTEXT_HPP
 
+#include <memory>
 #include "drawing_context.hpp"
 
 class SceneContextImpl;
@@ -92,8 +93,9 @@ public:
   void render_highlightmap();
 
   void eval(DrawingRequest* request);
+
 private:
-  SceneContextImpl* impl;
+  std::auto_ptr<SceneContextImpl> impl;
 
   SceneContext (const SceneContext&);
   SceneContext& operator= (const SceneContext&);

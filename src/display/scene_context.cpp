@@ -34,7 +34,7 @@
 
 // The lightmap has a resolution of screen.w/LIGHTMAP, screen.h/LIGHTMAP
 #define LIGHTMAP_DIV 4
-#define BLURMAP_DIV 1
+#define BLURMAP_DIV  1
 
 class SceneContextImpl
 {
@@ -51,9 +51,9 @@ public:
     Framebuffer lightmap;   
 
     Framebuffers() 
-      : screen  (GL_TEXTURE_RECTANGLE_ARB, 800, 600),
-        tmp     (GL_TEXTURE_RECTANGLE_ARB, 800, 600),
-        lightmap(GL_TEXTURE_RECTANGLE_ARB, 800/LIGHTMAP_DIV, 600/LIGHTMAP_DIV)
+      : screen  (GL_TEXTURE_RECTANGLE_ARB, Display::get_width(), Display::get_height()),
+        tmp     (GL_TEXTURE_RECTANGLE_ARB, Display::get_width(), Display::get_height()),
+        lightmap(GL_TEXTURE_RECTANGLE_ARB, Display::get_width()/LIGHTMAP_DIV, Display::get_height()/LIGHTMAP_DIV)
     {
     }
   };
@@ -68,7 +68,7 @@ public:
                   SceneContext::LIGHTMAPSCREEN |
                   SceneContext::BLURMAP),
       framebuffers(0), //new Framebuffers())
-      lightmap(800/LIGHTMAP_DIV, 600/LIGHTMAP_DIV)
+      lightmap(Display::get_width()/LIGHTMAP_DIV, Display::get_height()/LIGHTMAP_DIV)
   {
   }
 
@@ -79,13 +79,12 @@ public:
 };
 
 SceneContext::SceneContext()
+  : impl(new SceneContextImpl())
 {
-  impl = new SceneContextImpl();
 }
 
 SceneContext::~SceneContext()
 {
-  delete impl;
 }
 
 DrawingContext&
@@ -267,7 +266,7 @@ SceneContext::render_with_framebuffers()
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
       glPushMatrix();
-      glTranslatef(0, 600-(600/LIGHTMAP_DIV), 0);
+      glTranslatef(0, Display::get_height()-(Display::get_height()/LIGHTMAP_DIV), 0);
       glScalef(1.0f/LIGHTMAP_DIV, 1.0f/LIGHTMAP_DIV, 1.0f);
       impl->light.render(*this);
       glPopMatrix();
@@ -321,13 +320,13 @@ SceneContext::render_with_framebuffers()
       glVertex2f(0, 0);
 
       glTexCoord2f(uv.right, uv.bottom);
-      glVertex2f(800, 0);
+      glVertex2f(Display::get_width(), 0);
 
       glTexCoord2f(uv.right, uv.top);
-      glVertex2f(800, 600);
+      glVertex2f(Display::get_width(), Display::get_height());
 
       glTexCoord2f(uv.left, uv.top);
-      glVertex2f(0, 600);
+      glVertex2f(0, Display::get_height());
 
       glEnd();
     }
@@ -347,7 +346,7 @@ SceneContext::render_without_framebuffers()
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
       glPushMatrix();
-      glTranslatef(0, 600-(600/LIGHTMAP_DIV), 0);
+      glTranslatef(0, Display::get_height() - (Display::get_height()/LIGHTMAP_DIV), 0);
       glScalef(1.0f/LIGHTMAP_DIV, 1.0f/LIGHTMAP_DIV, 1.0f);
       impl->light.render(*this);
       glPopMatrix();
