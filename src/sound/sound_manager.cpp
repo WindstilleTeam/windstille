@@ -265,9 +265,7 @@ SoundManager::play_music(const std::string& filename, bool fade)
               else 
                 {
                   music_source = newmusic;
-
                   music_source->play();
-
                   next_music_source.reset();
                 }
             }

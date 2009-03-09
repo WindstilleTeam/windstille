@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SOUND_SOUND_FILE_HPP
 #define HEADER_WINDSTILLE_SOUND_SOUND_FILE_HPP
 
+#include <memory>
 #include <stdio.h>
 #include <iostream>
 
@@ -38,7 +39,7 @@ public:
   size_t size;
 
 public:
-  static SoundFile* load(const std::string& filename);
+  static std::auto_ptr<SoundFile> load(const std::string& filename);
 };
 
 #endif

@@ -22,13 +22,14 @@
 #include "sound_manager.hpp"
 #include "sound_file.hpp"
 
-StreamSoundSource::StreamSoundSource(SoundFile* file_)
+StreamSoundSource::StreamSoundSource(std::auto_ptr<SoundFile> file_)
 {
   file = file_;
 
   alGenBuffers(STREAMFRAGMENTS, buffers);
   SoundManager::check_al_error("Couldn't allocate audio buffers: ");
-  format = SoundManager::get_sample_format(file);
+
+  format = SoundManager::get_sample_format(file.get());
 
   try 
     {
