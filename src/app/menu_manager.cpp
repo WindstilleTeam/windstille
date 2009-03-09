@@ -41,6 +41,7 @@
 #ifdef HAVE_CWIID
 #include "input/wiimote.hpp"
 #endif
+#include "gui/menu.hpp"
 #include "app/windstille.hpp"
 #include "menu_manager.hpp"
 
@@ -217,52 +218,20 @@ MenuManager::display_main_menu()
 void
 MenuManager::display_pause_menu()
 {
-  using namespace gui;
-  std::auto_ptr<GUIManager> manager(new GUIManager());
+  gui::Menu menu("Pause Menu", create_centered_rect(400, 300));
 
-  std::auto_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(400, 300), 
-                                                         "Pause Menu",
-                                                         manager->get_root()));
-
-  // Begin Menu
-  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
-  menu->set_font(Fonts::vera20);
-
-  std::auto_ptr<ButtonMenuItem> continue_button(new ButtonMenuItem(menu.get(), "Resume"));
-  continue_button->sig_click().connect(boost::bind(&MenuManager::menu_continue));
-  menu->add_item(continue_button.release());
-
-  //  std::auto_ptr<ButtonMenuItem> select_scenario_button(new ButtonMenuItem(menu.get(), "Select Scenario"));
-  //  select_scenario_button->sig_click().connect(boost::bind(&MenuManager::display_scenario_menu));
-  // menu->add_item(select_scenario_button);
-
-  std::auto_ptr<ButtonMenuItem> options_button(new ButtonMenuItem(menu.get(), "Options"));
-  options_button->sig_click().connect(boost::bind(&MenuManager::display_option_menu));
-  menu->add_item(options_button.release());
-
+  menu.add_button("Resume",  boost::bind(&MenuManager::menu_continue));
   if (Sector::current())
     {
-      std::auto_ptr<ButtonMenuItem> debug_button(new ButtonMenuItem(menu.get(), "Debug"));
-      debug_button->sig_click().connect(boost::bind(&MenuManager::display_debug_menu));
-      menu->add_item(debug_button.release());
+      menu.add_button("Debug", boost::bind(&MenuManager::display_debug_menu));
+      //menu.add_button("Select Scenario", boost::bind(&MenuManager::display_scenario_menu));
     }
-
-  std::auto_ptr<ButtonMenuItem> credits_button(new ButtonMenuItem(menu.get(), "Credits"));
-  credits_button->sig_click().connect(boost::bind(&MenuManager::display_credits));
-  menu->add_item(credits_button.release());
-
-  std::auto_ptr<ButtonMenuItem> help_button(new ButtonMenuItem(menu.get(), "Help"));
-  help_button->sig_click().connect(boost::bind(&MenuManager::display_help));
-  menu->add_item(help_button.release());
-
-  std::auto_ptr<ButtonMenuItem> quit_button(new ButtonMenuItem(menu.get(), "Return to Title Screen"));
-  quit_button->sig_click().connect(boost::bind(&MenuManager::menu_exit));
-  menu->add_item(quit_button.release());
-  // End: Option Menu
-
-  group->pack(menu.release());
-  manager->get_root()->add_child(group.release());
-  screen_manager.push_overlay(manager.release()); 
+  menu.add_button("Options", boost::bind(&MenuManager::display_option_menu));
+  menu.add_button("Credits", boost::bind(&MenuManager::display_credits));
+  menu.add_button("Help", boost::bind(&MenuManager::display_help));
+  menu.add_button("Return to Title Screen", boost::bind(&MenuManager::menu_exit));
+  
+  menu.push_screen();
 }
 
 void
