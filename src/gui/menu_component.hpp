@@ -52,6 +52,7 @@ private:
   float item_height() const;
 
   void adjust_scroll_offset();
+
 public:
   MenuComponent(const Rectf& rect, bool allow_cancel_, Component* parent);
   virtual ~MenuComponent();

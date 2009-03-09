@@ -228,7 +228,7 @@ MenuManager::display_pause_menu()
   std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
   menu->set_font(Fonts::vera20);
 
-  std::auto_ptr<ButtonMenuItem> continue_button(new ButtonMenuItem(menu.get(), "Resume Game"));
+  std::auto_ptr<ButtonMenuItem> continue_button(new ButtonMenuItem(menu.get(), "Resume"));
   continue_button->sig_click().connect(boost::bind(&MenuManager::menu_continue));
   menu->add_item(continue_button.release());
 
@@ -240,9 +240,12 @@ MenuManager::display_pause_menu()
   options_button->sig_click().connect(boost::bind(&MenuManager::display_option_menu));
   menu->add_item(options_button.release());
 
-  std::auto_ptr<ButtonMenuItem> debug_button(new ButtonMenuItem(menu.get(), "Debug"));
-  debug_button->sig_click().connect(boost::bind(&MenuManager::display_debug_menu));
-  menu->add_item(debug_button.release());
+  if (Sector::current())
+    {
+      std::auto_ptr<ButtonMenuItem> debug_button(new ButtonMenuItem(menu.get(), "Debug"));
+      debug_button->sig_click().connect(boost::bind(&MenuManager::display_debug_menu));
+      menu->add_item(debug_button.release());
+    }
 
   std::auto_ptr<ButtonMenuItem> credits_button(new ButtonMenuItem(menu.get(), "Credits"));
   credits_button->sig_click().connect(boost::bind(&MenuManager::display_credits));
