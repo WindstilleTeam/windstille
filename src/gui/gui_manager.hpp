@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_GUI_GUI_MANAGER_HPP
 #define HEADER_WINDSTILLE_GUI_GUI_MANAGER_HPP
 
+#include <memory>
 #include "screen/screen.hpp"
 
 namespace gui {
