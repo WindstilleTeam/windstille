@@ -116,7 +116,7 @@ ScreenManager::run()
 
       overlap_delta = delta;
 
-      sound_manager->update();
+      SoundManager::current()->update();
 
       if (!screens.empty())
         screens.back()->draw();

@@ -33,7 +33,7 @@ typedef void* SoundHandle;
 class SoundFile;
 class SoundSource;
 class StreamSoundSource;
-
+
 class SoundManager
 {
 public:
@@ -41,24 +41,21 @@ public:
   virtual ~SoundManager();
 
   void enable_sound(bool sound_enabled);
-  /**
-   * Creates a new sound source object which plays the specified soundfile.
-   * You are responsible for deleting the sound source later (this will stop the
-   * sound).
-   * This function might throw exceptions. It returns 0 if no audio device is
-   * available.
-   */
-  SoundSource* create_sound_source(const std::string& filename);
+  void enable_music(bool music_enabled);
+
+  void set_listener_position(const Vector2f& position);
+  void set_listener_velocity(const Vector2f& velocity);
+
+  void set_master_volume(float volume);
+  void set_voice_volume(float volume);
+  void set_sfx_volume(float volume);
+  void set_music_volume(float volume);
+
   /**
    * Convenience function to simply play a sound at a given position.
    */
   void play(const std::string& name, const Vector2f& pos = Vector2f(-1, -1));
 
-  void set_listener_position(const Vector2f& position);
-  void set_listener_velocity(const Vector2f& velocity);
-  void set_listener_gain(float volume);
-
-  void enable_music(bool music_enabled);
   void play_music(const std::string& filename, bool fade = true);
   void stop_music(bool fade = true);
 
@@ -67,6 +64,15 @@ public:
 private:
   friend class SoundSource;
   friend class StreamSoundSource;
+
+  /**
+   * Creates a new sound source object which plays the specified soundfile.
+   * You are responsible for deleting the sound source later (this will stop the
+   * sound).
+   * This function might throw exceptions. It returns 0 if no audio device is
+   * available.
+   */
+  SoundSource* create_sound_source(const std::string& filename);
 
   static ALuint load_file_into_buffer(const std::string& filename);
   static ALenum get_sample_format(SoundFile* file);
@@ -89,10 +95,13 @@ private:
 
   bool music_enabled;
   std::string current_music;
+
+private:
+  static SoundManager* current_; 
+public:
+  static SoundManager* current() { return current_; } 
 };
-
-extern SoundManager* sound_manager;
-
+
 #endif
 
 /* EOF */

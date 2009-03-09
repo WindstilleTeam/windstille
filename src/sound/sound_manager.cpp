@@ -1,5 +1,22 @@
-#include "sound_manager.hpp"
+/*
+**  Windstille - A Sci-Fi Action-Adventure Game
+**  Copyright (C) 2005 Matthias Braun <matze@braunis.de>
+**
+**  This program is free software: you can redistribute it and/or modify
+**  it under the terms of the GNU General Public License as published by
+**  the Free Software Foundation, either version 3 of the License, or
+**  (at your option) any later version.
+**  
+**  This program is distributed in the hope that it will be useful,
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**  GNU General Public License for more details.
+**  
+**  You should have received a copy of the GNU General Public License
+**  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
+#include <assert.h>
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
@@ -9,36 +26,46 @@
 #include "sound_source.hpp"
 #include "stream_sound_source.hpp"
 
-SoundManager* sound_manager = 0;
+#include "sound_manager.hpp"
 
+SoundManager* SoundManager::current_ = 0;
+
 SoundManager::SoundManager()
   : device(0), context(0), sound_enabled(false), music_source(0),
     next_music_source(0), music_enabled(true)
 {
-  try {
-    device = alcOpenDevice(0);
-    if(device == 0) {
+  assert(current_ == 0);
+  current_ = this; 
+
+  try 
+    {
+      device = alcOpenDevice(0);
+      if(device == 0) 
+        {
+          print_openal_version();
+          throw std::runtime_error("Couldn't open audio device.");
+        }
+
+      int attributes[] = { 0 };
+
+      context = alcCreateContext(device, attributes);
+      check_alc_error("Couldn't create audio context: ");
+      alcMakeContextCurrent(context);
+      check_alc_error("Couldn't select audio context: ");
+
+      check_al_error("Audio error after init: ");
+      sound_enabled = true;
+    } 
+  catch(std::exception& e) 
+    {
+      device = 0;
+      context = 0;
+      std::cerr << "Couldn't initialize audio device:" << e.what() << "\n";
       print_openal_version();
-      throw std::runtime_error("Couldn't open audio device.");
+      // disable sound
+      enable_sound(false);
+      std::cout << "Disabling sound\n";
     }
-
-    int attributes[] = { 0 };
-    context = alcCreateContext(device, attributes);
-    check_alc_error("Couldn't create audio context: ");
-    alcMakeContextCurrent(context);
-    check_alc_error("Couldn't select audio context: ");
-
-    check_al_error("Audio error after init: ");
-    sound_enabled = true;
-  } catch(std::exception& e) {
-    device = 0;
-    context = 0;
-    std::cerr << "Couldn't initialize audio device:" << e.what() << "\n";
-    print_openal_version();
-    // disable sound
-    enable_sound(false);
-    std::cout << "Disabling sound\n";
-  }
 }
 
 SoundManager::~SoundManager()
@@ -61,6 +88,8 @@ SoundManager::~SoundManager()
   if(device != 0) {
     alcCloseDevice(device);
   }
+
+  current_ = 0; 
 }
 
 ALuint
@@ -214,9 +243,27 @@ SoundManager::set_listener_velocity(const Vector2f& vel)
 }
 
 void
-SoundManager::set_listener_gain(float volume)
+SoundManager::set_master_volume(float volume)
 {
   alListenerf(AL_GAIN, volume);
+}
+
+void
+SoundManager::set_voice_volume(float volume)
+{
+  std::cout << "SoundManager::set_voice_volume(" << volume << "): unimplemented" << std::endl;
+}
+
+void
+SoundManager::set_sfx_volume(float volume)
+{
+  std::cout << "SoundManager::set_sfx_volume(" << volume << "): unimplemented" << std::endl;
+}
+
+void
+SoundManager::set_music_volume(float volume)
+{
+  std::cout << "SoundManager::set_music_volume(" << volume << "): unimplemented" << std::endl;
 }
 
 void
@@ -306,5 +353,5 @@ SoundManager::check_al_error(const char* message)
     throw std::runtime_error(msg.str());
   }  
 }
-
+
 /* EOF */

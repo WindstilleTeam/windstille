@@ -45,17 +45,17 @@ void set_sector(const std::string& filename)
 
 void play_music(const std::string& musicfile)
 {
-  sound_manager->play_music(musicfile);
+  SoundManager::current()->play_music(musicfile);
 }
 
 void stop_music(float fadetime)
 {
-  sound_manager->stop_music(fadetime);
+  SoundManager::current()->stop_music(fadetime);
 }
 
 void play_sound(const std::string& soundfile)
 {
-  sound_manager->play(soundfile);
+  SoundManager::current()->play(soundfile);
 }
 
 void caption_clear()

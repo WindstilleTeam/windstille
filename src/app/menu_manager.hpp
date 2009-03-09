@@ -46,7 +46,12 @@ public:
   void menu_show_fps(int i);
   void menu_fullscreen(int i);
   void menu_continue();
+
+  void menu_master_volume(int i);
+  void menu_voice_volume(int i);
+  void menu_sfx_volume(int i);
   void menu_music_volume(int i);
+
   void menu_ambient_light(int i, int component);
   void menu_start_scenario(std::string scenario);
   void menu_show_model(std::string scenario);
@@ -56,6 +61,7 @@ public:
   void menu_show_particle_system(std::string file);
   void menu_gamma(int i);
   void menu_wiimote();
+
 private:
   MenuManager (const MenuManager&);
   MenuManager& operator= (const MenuManager&);

@@ -93,7 +93,7 @@ EnumMenuItem::add_pair(int value, const std::string& label)
 void
 EnumMenuItem::incr()
 {
-  sound_manager->play("sounds/menu_click.wav");           
+  SoundManager::current()->play("sounds/menu_click.wav");           
 
   index -= 1;
   if (index < 0)
@@ -104,7 +104,7 @@ EnumMenuItem::incr()
 void
 EnumMenuItem::decr()
 {
-  sound_manager->play("sounds/menu_click.wav");
+  SoundManager::current()->play("sounds/menu_click.wav");
 
   index += 1;
   if (index >= static_cast<int>(labels.size()))
@@ -147,7 +147,7 @@ SliderMenuItem::SliderMenuItem(MenuComponent* parent_,
 void
 SliderMenuItem::decr()
 {
-  sound_manager->play("sounds/menu_click.wav");
+  SoundManager::current()->play("sounds/menu_click.wav");
 
   value += step;
   if (value > max_value)
@@ -158,7 +158,7 @@ SliderMenuItem::decr()
 void
 SliderMenuItem::incr()
 {
-  sound_manager->play("sounds/menu_click.wav");
+  SoundManager::current()->play("sounds/menu_click.wav");
 
   value -= step;
   if (value < min_value)
@@ -203,7 +203,7 @@ ButtonMenuItem::ButtonMenuItem(MenuComponent* parent_, const std::string& label_
 void
 ButtonMenuItem::click()
 {
-  sound_manager->play("sounds/menu_click.wav");
+  SoundManager::current()->play("sounds/menu_click.wav");
 
   on_click();
 }

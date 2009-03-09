@@ -154,10 +154,10 @@ WindstilleMain::init_modules()
 
   if (debug) std::cout << "Initialising Fonts" << std::endl;
   Fonts::init(); 
-  sound_manager = new SoundManager();
-  sound_manager->set_listener_gain(config.get_int("master-volume")/100.0f);
-  sound_manager->enable_sound(config.get_bool("sound"));
-  sound_manager->enable_music(config.get_bool("music"));
+  new SoundManager();
+  SoundManager::current()->set_master_volume(config.get_int("master-volume")/100.0f);
+  SoundManager::current()->enable_sound(config.get_bool("sound"));
+  SoundManager::current()->enable_music(config.get_bool("music"));
 
   if (debug) std::cout << "Initialising ScriptManager" << std::endl;
   texture_manager  = new TextureManager();
@@ -232,8 +232,7 @@ WindstilleMain::deinit_modules()
   delete texture_manager;
   texture_manager = 0;
   
-  delete sound_manager;
-  sound_manager = 0;
+  delete SoundManager::current();
   Fonts::deinit();
 
   TTFFont::deinit();

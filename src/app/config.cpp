@@ -59,6 +59,9 @@ Config::Config()
   add(new ConfigValue<std::string>("playback-file",   _("File from which a demo is played"), false));
 
   add(new ConfigValue<int>("master-volume",  _("Master Volume"), true, 100));
+  add(new ConfigValue<int>("music-volume",   _("Music Volume"),  true, 100));
+  add(new ConfigValue<int>("voice-volume",   _("Voice Volume"),  true, 100));
+  add(new ConfigValue<int>("sfx-volume",     _("SFX Volume"),    true, 100));
 
   add(new ConfigValue<bool>("wiimote", _("Try to connect to Wiimote on startup"), true, false));
 }

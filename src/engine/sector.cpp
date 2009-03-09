@@ -178,7 +178,7 @@ Sector::activate()
   commit_adds();
   commit_removes();
 
-  sound_manager->play_music(music);
+  SoundManager::current()->play_music(music);
 
   if (!init_script.empty())
     {

@@ -121,7 +121,7 @@ MenuComponent::update(float delta, const Controller& controller)
             {
               if (allow_cancel) // FIXME: Could use a signal instead
                 {
-                  sound_manager->play("sounds/menu_click.wav");
+                  SoundManager::current()->play("sounds/menu_click.wav");
                   set_active(false);
                 }
             }
@@ -135,7 +135,7 @@ MenuComponent::update(float delta, const Controller& controller)
             }          
           else if (i->button.name == MENU_UP_BUTTON)
             {
-              sound_manager->play("sounds/menu_change.wav");
+              SoundManager::current()->play("sounds/menu_change.wav");
               
               current_item = current_item - 1;
               if (current_item < 0)
@@ -155,7 +155,7 @@ MenuComponent::update(float delta, const Controller& controller)
             }
           else if (i->button.name == MENU_DOWN_BUTTON)
             {
-              sound_manager->play("sounds/menu_change.wav");
+              SoundManager::current()->play("sounds/menu_change.wav");
 
               if (dynamic_cast<TabComponent*>(parent))
                 {

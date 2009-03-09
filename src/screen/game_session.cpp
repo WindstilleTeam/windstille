@@ -290,7 +290,7 @@ GameSession::change_sector(const std::string& arg_filename)
 {
   impl->filename = arg_filename;
  
-  sound_manager->stop_music();
+  SoundManager::current()->stop_music();
 
   if (impl->fade_state == GameSessionImpl::FADEOUT)
     {
@@ -388,7 +388,7 @@ GameSession::quit()
 {
   if (impl->fade_state != GameSessionImpl::FADEOUT)
     {
-      sound_manager->stop_music();
+      SoundManager::current()->stop_music();
       impl->fade_state  = GameSessionImpl::FADEOUT;
       impl->fade_time   = 1.0f;
       impl->next_action = GameSessionImpl::QUIT_ACTION;

@@ -65,16 +65,33 @@ MenuManager::display_option_menu()
 
   menu->set_font(Fonts::vera20);
 
-  std::auto_ptr<SliderMenuItem> music_volume_item(new SliderMenuItem(menu.get(), "Master Volume",   
-                                                                     config.get_int("master-volume"), 0, 100, 10));
-  music_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_music_volume, this, _1));
-  menu->add_item(music_volume_item.release());
+  {
+    std::auto_ptr<SliderMenuItem> master_volume_item(new SliderMenuItem(menu.get(), "Master Volume",   
+                                                                        config.get_int("master-volume"), 0, 100, 10));
+    master_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_master_volume, this, _1));
+    menu->add_item(master_volume_item.release());
+  }
 
-  std::auto_ptr<SliderMenuItem> sfx_volume_item(new SliderMenuItem(menu.get(), "SFX Volume",   100, 0, 100, 10));
-  menu->add_item(sfx_volume_item.release());
+  {
+    std::auto_ptr<SliderMenuItem> music_volume_item(new SliderMenuItem(menu.get(), "Music Volume",   
+                                                                       config.get_int("music-volume"), 0, 100, 10));
+    music_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_music_volume, this, _1));
+    menu->add_item(music_volume_item.release());
+  }
 
-  std::auto_ptr<SliderMenuItem> voice_volume_item(new SliderMenuItem(menu.get(), "Voice Volume", 100, 0, 100, 10));
-  menu->add_item(voice_volume_item.release());
+  {
+    std::auto_ptr<SliderMenuItem> sfx_volume_item(new SliderMenuItem(menu.get(), "SFX Volume",  
+                                                                     config.get_int("sfx-volume"), 0, 100, 10));
+    sfx_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_sfx_volume, this, _1));
+    menu->add_item(sfx_volume_item.release());
+  }
+
+  {
+    std::auto_ptr<SliderMenuItem> voice_volume_item(new SliderMenuItem(menu.get(), "Voice Volume", 
+                                                                       config.get_int("voice-volume"), 0, 100, 10));
+    voice_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_voice_volume, this, _1));
+    menu->add_item(voice_volume_item.release());
+  }
 
   std::auto_ptr<EnumMenuItem> aspect_item(new EnumMenuItem(menu.get(), "Aspect Ratio", 0));
   aspect_item->add_pair(0, "4:3");
@@ -608,10 +625,31 @@ MenuManager::menu_wiimote()
 }
 
 void
-MenuManager::menu_music_volume(int i)
+MenuManager::menu_master_volume(int i)
 {
   config.set_int("master-volume", i);
-  sound_manager->set_listener_gain((i/100.0f));
+  SoundManager::current()->set_master_volume((i/100.0f));
+}
+
+void
+MenuManager::menu_music_volume(int i)
+{
+  config.set_int("music-volume", i);
+  SoundManager::current()->set_music_volume((i/100.0f));
+}
+
+void
+MenuManager::menu_voice_volume(int i)
+{
+  config.set_int("voice-volume", i);
+  SoundManager::current()->set_voice_volume((i/100.0f));
+}
+
+void
+MenuManager::menu_sfx_volume(int i)
+{
+  config.set_int("sfx-volume", i);
+  SoundManager::current()->set_sfx_volume((i/100.0f));
 }
 
 /* EOF */
