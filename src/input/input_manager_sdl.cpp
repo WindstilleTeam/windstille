@@ -43,6 +43,7 @@ public:
   std::vector<JoystickButtonBinding>     joystick_button_bindings;
   std::vector<JoystickButtonAxisBinding> joystick_button_axis_bindings;
   std::vector<JoystickAxisBinding>       joystick_axis_bindings;
+  std::vector<JoystickAxisButtonBinding> joystick_axis_button_bindings;
 
   std::vector<KeyboardButtonBinding> keyboard_button_bindings;
   std::vector<KeyboardAxisBinding>   keyboard_axis_bindings;
@@ -135,6 +136,19 @@ InputManagerSDL::parse_config(FileReader& reader)
 
                   bind_joystick_button(controller_description.get_definition(i->get_name()).id,
                                        device, button);
+                }
+              else if (j->get_name() == "joystick-axis-button")
+                {
+                  int  device;
+                  int  axis;
+                  bool up;
+
+                  j->get("device", device);
+                  j->get("axis", axis);
+                  j->get("up", up);
+
+                  bind_joystick_axis_button(controller_description.get_definition(i->get_name()).id,
+                                            device, axis, up);
                 }
               else if (j->get_name() == "wiimote-button")
                 {
@@ -378,6 +392,30 @@ InputManagerSDL::on_joy_axis_event(const SDL_JoyAxisEvent& event)
             }
         }
     }
+
+  for(std::vector<JoystickAxisButtonBinding>::const_iterator i = impl->joystick_axis_button_bindings.begin();
+      i != impl->joystick_axis_button_bindings.end();
+      ++i)
+    {
+      if (event.which == i->device &&
+          event.axis  == i->axis)
+        {
+          if (i->up)
+            {
+              if (event.value < -dead_zone)
+                add_button_event(i->event, true);
+              else 
+                add_button_event(i->event, false);
+            }
+          else
+            {
+              if (event.value > dead_zone)
+                add_button_event(i->event, true);
+              else 
+                add_button_event(i->event, false);              
+            }
+        }
+    }
 }
 
 void
@@ -581,6 +619,21 @@ InputManagerSDL::bind_joystick_button(int event, int device, int button)
 }
 
 void
+InputManagerSDL::bind_joystick_axis_button(int event, int device, int axis, bool up)
+{
+  ensure_open_joystick(device);
+
+  JoystickAxisButtonBinding binding;
+
+  binding.event  = event;
+  binding.device = device;
+  binding.axis   = axis;
+  binding.up   = up;
+
+  impl->joystick_axis_button_bindings.push_back(binding);
+}
+
+void
 InputManagerSDL::bind_keyboard_button(int event, SDLKey key)
 {
   KeyboardButtonBinding binding;
@@ -633,6 +686,7 @@ InputManagerSDL::clear_bindings()
   impl->joystick_button_bindings.clear();
   impl->joystick_axis_bindings.clear();
   impl->joystick_button_axis_bindings.clear();
+  impl->joystick_axis_button_bindings.clear();
   
   impl->keyboard_button_bindings.clear();
   impl->keyboard_axis_bindings.clear();

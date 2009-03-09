@@ -49,6 +49,14 @@ struct JoystickButtonAxisBinding
   int plus;
 };
 
+struct JoystickAxisButtonBinding
+{
+  int  event;
+  int  device;
+  int  axis;
+  bool up;
+};
+
 struct MouseButtonBinding
 {
   int event;
@@ -91,6 +99,7 @@ private:
 public:
   static InputManagerSDL* current() { return current_; }
 
+public:
   InputManagerSDL();
   virtual ~InputManagerSDL();
 
@@ -103,6 +112,7 @@ public:
   void bind_joystick_axis(int event, int device, int axis, bool invert);
   void bind_joystick_button_axis(int event, int device, int minus, int plus);
   void bind_joystick_button(int event, int device, int button);
+  void bind_joystick_axis_button(int event, int device, int axis, bool up);
 
   void bind_keyboard_button(int event, SDLKey key);
   void bind_keyboard_axis(int event, SDLKey minus, SDLKey plus);
@@ -120,6 +130,7 @@ public:
   void on_event(const SDL_Event& event);
 
   void add_axis_event  (int name, float pos);
+
 private:
   void on_key_event(const SDL_KeyboardEvent& key);
   void on_mouse_button_event(const SDL_MouseButtonEvent& button);
