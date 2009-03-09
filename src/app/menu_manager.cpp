@@ -155,8 +155,8 @@ MenuManager::display_main_menu()
   text_group->pack(text.release());
   manager->get_root()->add_child(text_group.release());
 
-  std::auto_ptr<GroupComponent> group(new GroupComponent(//create_centered_rect(250, 254),
-                                                         Rectf(Vector2f(400-20, 200), Sizef(250, 254)),
+  std::auto_ptr<GroupComponent> group(new GroupComponent(create_positioned_rect(Vector2f(400-20, 200), 
+                                                                                Sizef(250, 254)),
                                                          "",
                                                          manager->get_root()));
 
@@ -478,6 +478,26 @@ MenuManager::display_credits()
   screen_manager.push_overlay(manager.release());
 }
 
+Rectf
+MenuManager::create_positioned_rect(const Vector2f& pos_, const Sizef& size)
+{
+  Vector2f pos = pos_;
+
+  // move pos to center of rect
+  pos.x += size.width  / 2.0f;
+  pos.y += size.height / 2.0f;
+
+  // scale the coordinates
+  pos.x = pos.x * Display::get_width() / 800;
+  pos.y = pos.y * Display::get_height() / 600;
+
+  // move pos back to top/left
+  pos.x -= size.width  / 2.0f;
+  pos.y -= size.height / 2.0f;
+
+  return Rectf(pos, size);
+}
+
 Rectf
 MenuManager::create_centered_rect(float w, float h)
 {

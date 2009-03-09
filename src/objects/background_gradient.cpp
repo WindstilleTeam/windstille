@@ -18,6 +18,7 @@
 
 #include <iostream>
 #include "display/vertex_array_drawing_request.hpp"
+#include "display/display.hpp"
 #include "background_gradient.hpp"
 
 BackgroundGradient::BackgroundGradient(FileReader& props)
@@ -66,7 +67,7 @@ BackgroundGradient::draw(SceneContext& sc)
   Color topcolor(0.0f, 0.0f, 0.5f);
   Color bottomcolor(0.5f, 0.5f, 1.0f);
 
-  Rect rect(0, 0, 800, 600);
+  Rect rect(0, 0, Display::get_width(), Display::get_height());
   VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos, 
                                                                    sc.color().get_modelview());
 

@@ -20,6 +20,7 @@
 #include "math/random.hpp"
 #include "math/matrix.hpp"
 #include "display/vertex_array_drawing_request.hpp"
+#include "display/display.hpp"
 #include "display/texture_manager.hpp"
 #include "nightvision.hpp"
 
@@ -68,13 +69,13 @@ Nightvision::draw(SceneContext& sc)
       array->vertex(0, 0);
 
       array->texcoord(u + w, v);
-      array->vertex(800, 0);
+      array->vertex(Display::get_width(), 0);
 
       array->texcoord(u + w, v + h);
-      array->vertex(800, 600);
+      array->vertex(Display::get_width(), Display::get_height());
 
       array->texcoord(u, v + h);
-      array->vertex(0, 600);
+      array->vertex(0, Display::get_height());
       
       if (0) // second noise level
         {
@@ -86,13 +87,13 @@ Nightvision::draw(SceneContext& sc)
           array->vertex(0, 0, 1.0f);
 
           array->texcoord(u + size, v);
-          array->vertex(800, 0, 1.0f);
+          array->vertex(Display::get_width(), 0, 1.0f);
 
           array->texcoord(u + size, v + size);
-          array->vertex(800, 600, 1.0f);
+          array->vertex(Display::get_width(), Display::get_height(), 1.0f);
 
           array->texcoord(u, v + size);
-          array->vertex(0, 600, 1.0f);
+          array->vertex(0, Display::get_height(), 1.0f);
         }
 
       sc.light().draw(array);
@@ -108,9 +109,16 @@ Nightvision::draw(SceneContext& sc)
 
       sc.highlight().push_modelview();
       sc.highlight().set_modelview(Matrix::identity());
+
       nightvision.set_alpha(0.5f);
       nightvision.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-      sc.highlight().draw(nightvision, Vector2f(0, 0), 10000);
+      nightvision.set_scale(std::max(float(Display::get_width())  / nightvision.get_width(),
+                                     float(Display::get_height()) / nightvision.get_height()));
+
+      sc.highlight().draw(nightvision, 
+                          Vector2f(Display::get_width() /2  - (nightvision.get_width()  * nightvision.get_scale()/2),
+                                   Display::get_height()/2  - (nightvision.get_height() * nightvision.get_scale()/2)),
+                          10000);
       sc.highlight().pop_modelview();
     }
 }

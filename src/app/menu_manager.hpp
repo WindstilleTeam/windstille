@@ -22,7 +22,12 @@
 #include <vector>
 #include "math/rect.hpp"
 
-/** */
+/** 
+ *  The MenuManager creates and displays the metagame menus (main,
+ *  pause, options, ...) in Windstille. All the input redirection and
+ *  displaying is handled in ScreenManager, so MenuManager itself is
+ *  completly stateless.
+ */
 class MenuManager 
 {
 public:
@@ -37,7 +42,13 @@ public:
   static void display_help();
   
 private:
+  /** Position a menu with the given size \a w, \a h at the center of
+      the screen */
   static Rectf create_centered_rect(float w, float h);
+
+  /** Position a menu at the given positions, while thread the
+      positions relative to the 800x600 ration */
+  static Rectf create_positioned_rect(const Vector2f& pos, const Sizef& size);
 
   // Callbacks
   static void menu_start_game();
