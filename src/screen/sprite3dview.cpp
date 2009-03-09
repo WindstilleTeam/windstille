@@ -22,6 +22,7 @@
 #include "app/console.hpp"
 #include "font/ttf_font.hpp"
 #include "font/fonts.hpp"
+#include "app/menu_manager.hpp"
 #include "screen_manager.hpp"
 #include "sprite3dview.hpp"
 
@@ -149,8 +150,10 @@ Sprite3DView::update(float delta, const Controller& controller)
     }
 
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
-      controller.button_was_pressed(CANCEL_BUTTON))
-    screen_manager.pop_screen();
+      controller.button_was_pressed(PAUSE_BUTTON))
+    {
+      MenuManager::display_pause_menu();
+    }
 }
 
 void

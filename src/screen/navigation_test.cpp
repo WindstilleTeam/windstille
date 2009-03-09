@@ -24,6 +24,7 @@
 #include "input/controller.hpp"
 #include "display/display.hpp"
 #include "screen_manager.hpp"
+#include "app/menu_manager.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
 #include "navigation/segment_position.hpp"
@@ -104,7 +105,7 @@ NavigationTest::update(float delta, const Controller& controller)
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))
     {
-      screen_manager.pop_screen();
+      MenuManager::display_pause_menu();
     }
 
   cursor += Vector2f(controller.get_axis_state(X_AXIS) * 500.0f * delta,

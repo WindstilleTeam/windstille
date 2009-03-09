@@ -25,6 +25,7 @@
 #include "app/controller_def.hpp"
 #include "input/controller.hpp"
 #include "screen_manager.hpp"
+#include "app/menu_manager.hpp"
 #include "display/display.hpp"
 
 GeometryTest::GeometryTest()
@@ -76,7 +77,7 @@ GeometryTest::update(float delta, const Controller& controller)
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))
     {
-      screen_manager.pop_screen();
+      MenuManager::display_pause_menu();
     }
 
   cursor.x += controller.get_axis_state(X_AXIS) * 500.0f * delta;

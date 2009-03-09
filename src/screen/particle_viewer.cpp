@@ -16,11 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "util/sexpr_file_reader.hpp"
-#include "input/controller.hpp"
-#include "screen_manager.hpp"
+#include "app/menu_manager.hpp"
 #include "gui/gui_manager.hpp"
+#include "input/controller.hpp"
 #include "screen/particle_viewer.hpp"
+#include "screen_manager.hpp"
+#include "util/sexpr_file_reader.hpp"
 
 // Components
 #include "gui/button.hpp"
@@ -182,10 +183,10 @@ ParticleViewer::update(float delta, const Controller& controller)
           show_gui = true;
           manager->get_root()->get_focus()->set_active(true);
         }
-      else if (controller.button_was_pressed(CANCEL_BUTTON) ||
+      else if (controller.button_was_pressed(PAUSE_BUTTON) ||
                controller.button_was_pressed(ESCAPE_BUTTON))
         {
-          screen_manager.pop_screen();
+          MenuManager::display_pause_menu();
         }
     }
   else
