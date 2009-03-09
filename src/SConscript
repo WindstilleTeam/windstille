@@ -87,6 +87,7 @@ env.Program('../windstille', [
 'gui/gui_manager.cpp',
 'gui/label.cpp',
 'gui/list_view.cpp',
+'gui/menu.cpp',
 'gui/menu_component.cpp',
 'gui/menu_item.cpp',
 'gui/root_component.cpp',
