@@ -281,7 +281,7 @@ GameSessionImpl::update(float delta, const Controller& controller)
   else if (controller.button_was_pressed(ESCAPE_BUTTON) ||
            controller.button_was_pressed(PAUSE_BUTTON))
     {
-      menu_manager.display_pause_menu();
+      MenuManager::display_pause_menu();
     }
 }
 
@@ -364,7 +364,7 @@ GameSessionImpl::handle_event(const SDL_Event& event)
               break;
 
             case SDLK_F2:
-              menu_manager.display_debug_menu();
+              MenuManager::display_debug_menu();
               break;
         
             default:

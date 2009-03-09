@@ -20,55 +20,49 @@
 #define HEADER_WINDSTILLE_APP_MENU_MANAGER_HPP
 
 #include <vector>
-
+#include "math/rect.hpp"
+
 /** */
-class MenuManager
+class MenuManager 
 {
-private:
-
 public:
-  MenuManager();
-
-  void display_option_menu();
-  void display_debug_menu();
-  void display_main_menu();
-  void display_pause_menu();
-  void display_scenario_menu();
-  void display_particle_menu();
-  void display_models_menu();
-  void display_credits();
-  void display_help();
-
-  // Callbacks
-  void menu_start_game();
-  void menu_quit();
-  void menu_exit();
-  void menu_show_fps(int i);
-  void menu_fullscreen(int i);
-  void menu_continue();
-
-  void menu_master_volume(int i);
-  void menu_voice_volume(int i);
-  void menu_sfx_volume(int i);
-  void menu_music_volume(int i);
-
-  void menu_ambient_light(int i, int component);
-  void menu_start_scenario(std::string scenario);
-  void menu_show_model(std::string scenario);
-  void menu_show_geometry_test();
-  void menu_show_armature_test();
-  void menu_show_navigation_test();
-  void menu_show_particle_system(std::string file);
-  void menu_gamma(int i);
-  void menu_wiimote();
-
+  static void display_option_menu();
+  static void display_debug_menu();
+  static void display_main_menu();
+  static void display_pause_menu();
+  static void display_scenario_menu();
+  static void display_particle_menu();
+  static void display_models_menu();
+  static void display_credits();
+  static void display_help();
+  
 private:
-  MenuManager (const MenuManager&);
-  MenuManager& operator= (const MenuManager&);
+  static Rectf create_centered_rect(float w, float h);
+
+  // Callbacks
+  static void menu_start_game();
+  static void menu_quit();
+  static void menu_exit();
+  static void menu_show_fps(int i);
+  static void menu_fullscreen(int i);
+  static void menu_continue();
+
+  static void menu_master_volume(int i);
+  static void menu_voice_volume(int i);
+  static void menu_sfx_volume(int i);
+  static void menu_music_volume(int i);
+
+  static void menu_ambient_light(int i, int component);
+  static void menu_start_scenario(std::string scenario);
+  static void menu_show_model(std::string scenario);
+  static void menu_show_geometry_test();
+  static void menu_show_armature_test();
+  static void menu_show_navigation_test();
+  static void menu_show_particle_system(std::string file);
+  static void menu_gamma(int i);
+  static void menu_wiimote();
 };
-
-extern MenuManager menu_manager;
-
+
 #endif
 
 /* EOF */

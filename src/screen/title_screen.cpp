@@ -32,7 +32,7 @@ TitleScreen::~TitleScreen()
 void
 TitleScreen::on_startup()
 {
-  menu_manager.display_main_menu();
+  MenuManager::display_main_menu();
 }
 
 void
