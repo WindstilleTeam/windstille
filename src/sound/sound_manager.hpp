@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SOUND_SOUND_MANAGER_HPP
 #define HEADER_WINDSTILLE_SOUND_SOUND_MANAGER_HPP
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <map>
@@ -72,7 +73,7 @@ private:
    * This function might throw exceptions. It returns 0 if no audio device is
    * available.
    */
-  SoundSource* create_sound_source(const std::string& filename);
+  std::auto_ptr<SoundSource> create_sound_source(const std::string& filename);
 
   static ALuint load_file_into_buffer(const std::string& filename);
   static ALenum get_sample_format(SoundFile* file);
@@ -90,8 +91,8 @@ private:
   typedef std::vector<SoundSource*> SoundSources;
   SoundSources sources;
 
-  StreamSoundSource* music_source;
-  StreamSoundSource* next_music_source;
+  std::auto_ptr<StreamSoundSource> music_source;
+  std::auto_ptr<StreamSoundSource> next_music_source;
 
   bool music_enabled;
   std::string current_music;
