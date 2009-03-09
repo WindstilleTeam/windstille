@@ -38,28 +38,47 @@ SoundFile*
 SoundFile::load(const std::string& filename)
 {
   PHYSFS_file* file = PHYSFS_openRead(filename.c_str());
-  if(!file) {
-    std::stringstream msg;
-    msg << "Couldn't open '" << filename << "': " << PHYSFS_getLastError();
-    throw std::runtime_error(msg.str());
-  }
-    
-  try {
-    char magic[4];
-    if(PHYSFS_read(file, magic, sizeof(magic), 1) != 1)
-      throw std::runtime_error("Couldn't read magic, file too short");
-    PHYSFS_seek(file, 0);
-    if(strncmp(magic, "RIFF", 4) == 0)
-      return new WavSoundFile(file);
-    else if(strncmp(magic, "OggS", 4) == 0)
-      return new OggSoundFile(file);
-    else
-      throw std::runtime_error("Unknown file format");
-  } catch(std::exception& e) {
-    std::stringstream msg;
-    msg << "Couldn't read '" << filename << "': " << e.what();
-    throw std::runtime_error(msg.str());
-  }
+
+  if (!file) 
+    {
+      std::stringstream msg;
+      msg << "Couldn't open '" << filename << "': " << PHYSFS_getLastError();
+      throw std::runtime_error(msg.str());
+    }
+  else
+    {
+      try {
+        char magic[4];
+
+        if (PHYSFS_read(file, magic, sizeof(magic), 1) != 1)
+          {
+            throw std::runtime_error("Couldn't read magic, file too short");
+          }
+        else
+          {
+            PHYSFS_seek(file, 0);
+
+            if (strncmp(magic, "RIFF", 4) == 0)
+              {
+                return new WavSoundFile(file);
+              }
+            else if (strncmp(magic, "OggS", 4) == 0)
+              {
+                return new OggSoundFile(file);
+              }
+            else
+              {
+                throw std::runtime_error("Unknown file format");
+              }
+          }
+      } 
+      catch(std::exception& e) 
+        {
+          std::stringstream msg;
+          msg << "Couldn't read '" << filename << "': " << e.what();
+          throw std::runtime_error(msg.str());
+        }
+    }
 }
 
 /* EOF */

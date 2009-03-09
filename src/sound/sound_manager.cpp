@@ -243,38 +243,39 @@ SoundManager::play_music(const std::string& filename, bool fade)
   if (filename != current_music)
     {
       current_music = filename;
-      if (!music_enabled)
-        return;
 
-      try 
+      if (music_enabled)
         {
-          std::auto_ptr<StreamSoundSource> newmusic(new StreamSoundSource(SoundFile::load(filename)));
+          try 
+            {
+              std::auto_ptr<StreamSoundSource> newmusic(new StreamSoundSource(SoundFile::load(filename)));
 
-          alSourcef(newmusic->source, AL_ROLLOFF_FACTOR, 0);
+              alSourcef(newmusic->source, AL_ROLLOFF_FACTOR, 0);
  
-          if (fade) 
-            {
-              if (music_source.get() &&
-                  music_source->getFadeState() != StreamSoundSource::FadingOff)
+              if (fade) 
                 {
-                  music_source->setFading(StreamSoundSource::FadingOff, .7f);
+                  if (music_source.get() &&
+                      music_source->getFadeState() != StreamSoundSource::FadingOff)
+                    {
+                      music_source->setFading(StreamSoundSource::FadingOff, .7f);
+                    }
+
+                  next_music_source = newmusic;
+                } 
+              else 
+                {
+                  music_source = newmusic;
+
+                  music_source->play();
+
+                  next_music_source.reset();
                 }
-
-              next_music_source = newmusic;
-            } 
-          else 
-            {
-              music_source = newmusic;
-
-              music_source->play();
-
-              next_music_source.reset();
             }
-        }
-      catch(std::exception& e) 
-        {
-          std::cerr << "Couldn't play music file '" << filename << "': "
-                    << e.what() << "\n";
+          catch(std::exception& e) 
+            {
+              std::cerr << "Couldn't play music file '" << filename << "': "
+                        << e.what() << "\n";
+            }
         }
     }
 }
@@ -324,6 +325,7 @@ SoundManager::update()
       for(SoundSources::iterator i = sources.begin(); i != sources.end(); ) 
         {
           SoundSource* source = *i;
+
           if (!source->playing()) 
             {
               delete source;

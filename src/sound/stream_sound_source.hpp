@@ -40,10 +40,9 @@ public:
   void update();
   
 private:
-  static const size_t STREAMBUFFERSIZE = 1024 * 500;
-  static const size_t STREAMFRAGMENTS = 5;
-  static const size_t STREAMFRAGMENTSIZE 
-    = STREAMBUFFERSIZE / STREAMFRAGMENTS;
+  static const size_t STREAMBUFFERSIZE   = 1024 * 500;
+  static const size_t STREAMFRAGMENTS    = 5;
+  static const size_t STREAMFRAGMENTSIZE = STREAMBUFFERSIZE / STREAMFRAGMENTS;
 
   void fillBufferAndQueue(ALuint buffer);
   SoundFile* file;

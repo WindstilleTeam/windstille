@@ -82,7 +82,7 @@ private:
   void check_alc_error(const char* message);
   static void check_al_error(const char* message);
 
-  ALCdevice* device;
+  ALCdevice*  device;
   ALCcontext* context;
   bool sound_enabled;
 

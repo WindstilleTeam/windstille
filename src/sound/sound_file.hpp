@@ -25,8 +25,8 @@
 class SoundFile
 {
 public:
-  virtual ~SoundFile()
-  { }
+  SoundFile() {}
+  virtual ~SoundFile() {}
 
   virtual size_t read(void* buffer, size_t buffer_size) = 0;
   virtual void reset() = 0;
@@ -37,6 +37,7 @@ public:
   /// size in bytes
   size_t size;
 
+public:
   static SoundFile* load(const std::string& filename);
 };
 
