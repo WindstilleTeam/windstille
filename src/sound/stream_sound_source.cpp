@@ -41,11 +41,14 @@ StreamSoundSource::StreamSoundSource(std::auto_ptr<SoundFile> file_)
   catch(...) 
     {
       alDeleteBuffers(STREAMFRAGMENTS, buffers);
+      throw;
     }
 }
 
 StreamSoundSource::~StreamSoundSource()
 {
+  stop();
+
   alDeleteBuffers(STREAMFRAGMENTS, buffers);
   SoundManager::check_al_error("Couldn't delete audio buffers: ");
 }
@@ -70,11 +73,12 @@ StreamSoundSource::update()
         }
   
       // we might have to restart the source if we had a buffer underrun
-      if (!playing()) {
-        std::cerr << "Restarting audio source because of buffer underrun.\n";
-        alSourcePlay(source);
-        SoundManager::check_al_error("Couldn't restart audio source: ");
-      }
+      if (!playing()) 
+        {
+          std::cerr << "Restarting audio source because of buffer underrun.\n";
+          alSourcePlay(source);
+          SoundManager::check_al_error("Couldn't restart audio source: ");
+        }
 
       if (fade_state == FadingOn) 
         {
