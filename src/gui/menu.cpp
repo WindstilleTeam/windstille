@@ -46,6 +46,10 @@ Menu::add_enum(const std::string& name, int index,
                const boost::function<void (int)>& callback)
 {
   std::auto_ptr<EnumMenuItem> enum_item(new EnumMenuItem(menu.get(), name));
+
+  if (callback)
+    enum_item->sig_change().connect(callback);
+
   EnumMenuItem& obj = *enum_item;
   menu->add_item(enum_item.release());
   return obj;
@@ -57,7 +61,8 @@ Menu::add_slider(const std::string& name,
                  const boost::function<void (int)>& callback)
 {
   std::auto_ptr<SliderMenuItem> slider(new SliderMenuItem(menu.get(), name, value, min_value, max_value, step));
-  slider->sig_change().connect(callback);
+  if (callback)
+    slider->sig_change().connect(callback);
   menu->add_item(slider.release());
 }
 
@@ -66,12 +71,13 @@ Menu::add_button(const std::string& name,
                  const boost::function<void ()>& callback)
 {
   std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu.get(), name));
-  scenario_button->sig_click().connect(callback);
+  if (callback)
+    scenario_button->sig_click().connect(callback);
   menu->add_item(scenario_button.release());
 }
 
 void
-Menu::push_screen()
+Menu::show()
 {
   group->pack(menu.release());
   manager->get_root()->add_child(group.release());

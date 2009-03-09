@@ -48,88 +48,50 @@
 void
 MenuManager::display_option_menu()
 {
-  using namespace gui;
-  std::auto_ptr<GUIManager> manager(new GUIManager());
+  gui::Menu menu("Options", create_centered_rect(500, 340));
 
-  std::auto_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 340),
-                                                         "Options",
-                                                         manager->get_root()));
+  menu.add_slider("Master Volume",  config.get_int("master-volume"), 0, 100, 10,
+                 boost::bind(&MenuManager::menu_master_volume, _1));
 
-  // Begin Menu
-  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
+  menu.add_slider("Music Volume", config.get_int("music-volume"), 0, 100, 10,
+                  boost::bind(&MenuManager::menu_music_volume, _1));
 
-  menu->set_font(Fonts::vera20);
+  menu.add_slider("SFX Volume", config.get_int("sfx-volume"), 0, 100, 10, 
+                  boost::bind(&MenuManager::menu_sfx_volume, _1));
 
-  {
-    std::auto_ptr<SliderMenuItem> master_volume_item(new SliderMenuItem(menu.get(), "Master Volume",   
-                                                                        config.get_int("master-volume"), 0, 100, 10));
-    master_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_master_volume, _1));
-    menu->add_item(master_volume_item.release());
-  }
-
-  {
-    std::auto_ptr<SliderMenuItem> music_volume_item(new SliderMenuItem(menu.get(), "Music Volume",   
-                                                                       config.get_int("music-volume"), 0, 100, 10));
-    music_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_music_volume, _1));
-    menu->add_item(music_volume_item.release());
-  }
-
-  {
-    std::auto_ptr<SliderMenuItem> sfx_volume_item(new SliderMenuItem(menu.get(), "SFX Volume",  
-                                                                     config.get_int("sfx-volume"), 0, 100, 10));
-    sfx_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_sfx_volume, _1));
-    menu->add_item(sfx_volume_item.release());
-  }
-
-  {
-    std::auto_ptr<SliderMenuItem> voice_volume_item(new SliderMenuItem(menu.get(), "Voice Volume", 
-                                                                       config.get_int("voice-volume"), 0, 100, 10));
-    voice_volume_item->sig_change().connect(boost::bind(&MenuManager::menu_voice_volume, _1));
-    menu->add_item(voice_volume_item.release());
-  }
-
-  std::auto_ptr<EnumMenuItem> aspect_item(new EnumMenuItem(menu.get(), "Aspect Ratio", 0));
-  aspect_item->add_pair(0, "4:3");
-  aspect_item->add_pair(1, "5:4");
-  aspect_item->add_pair(2, "16:9");
-  aspect_item->add_pair(3, "16:10");
-  aspect_item->add_pair(4, "letterbox");
-  menu->add_item(aspect_item.release());
+  menu.add_slider("Voice Volume", config.get_int("voice-volume"), 0, 100, 10, 
+                  boost::bind(&MenuManager::menu_voice_volume, _1));
   
-  std::auto_ptr<EnumMenuItem> show_fps_item(new EnumMenuItem(menu.get(), "Show FPS", config.get_bool("show-fps")));
-  show_fps_item->add_pair(0, "off");
-  show_fps_item->add_pair(1, "on");
-  show_fps_item->sig_change().connect(boost::bind(&MenuManager::menu_show_fps, _1));
-  menu->add_item(show_fps_item.release());
+  menu.add_enum("Aspect Ratio", 0)
+    .add_pair(0, "4:3")
+    .add_pair(1, "5:4")
+    .add_pair(2, "16:9")
+    .add_pair(3, "16:10")
+    .add_pair(4, "letterbox");
+  
+  menu.add_enum("Show FPS", config.get_bool("show-fps"), 
+                boost::bind(&MenuManager::menu_show_fps, _1))
+    .add_pair(0, "off")
+    .add_pair(1, "on");
+  
+  menu.add_enum("Fullscreen", config.get_bool("fullscreen"),
+                boost::bind(&MenuManager::menu_fullscreen, _1))
+    .add_pair(0, "off")
+    .add_pair(1, "on");
+  
+  menu.add_enum("Difficulty", 1)
+    .add_pair(0, "easy")
+    .add_pair(1, "medium")
+    .add_pair(2, "hard");
 
-  std::auto_ptr<EnumMenuItem> fullscreen_item(new EnumMenuItem(menu.get(), "Fullscreen", config.get_bool("fullscreen")));
-  fullscreen_item->add_pair(0, "off");
-  fullscreen_item->add_pair(1, "on");
-  fullscreen_item->sig_change().connect(boost::bind(&MenuManager::menu_fullscreen, _1));
-  menu->add_item(fullscreen_item.release());
-
-  std::auto_ptr<EnumMenuItem> difficulty_item(new EnumMenuItem(menu.get(), "Difficulty", 1));
-  difficulty_item->add_pair(0, "easy");
-  difficulty_item->add_pair(1, "medium");
-  difficulty_item->add_pair(2, "hard");
-  menu->add_item(difficulty_item.release());
-
-  std::auto_ptr<SliderMenuItem> gamma_item(new SliderMenuItem(menu.get(), "Gamma",  100, 10, 200, 10));
-  gamma_item->sig_change().connect(boost::bind(&MenuManager::menu_gamma, _1));
-  menu->add_item(gamma_item.release());
+  menu.add_slider("Gamma",  100, 10, 200, 10, boost::bind(&MenuManager::menu_gamma, _1));
 
 #ifdef HAVE_CWIID
   if (wiimote)
-    {
-      std::auto_ptr<ButtonMenuItem> wiimote_button(new ButtonMenuItem(menu.get(), "Try to Connect Wiimote"));
-      wiimote_button->sig_click().connect(boost::bind(&MenuManager::menu_wiimote));
-      menu->add_item(wiimote_button.release());
-    }
+    menu.add_button("Try to Connect Wiimote", boost::bind(&MenuManager::menu_wiimote));
 #endif
 
-  group->pack(menu.release());
-  manager->get_root()->add_child(group.release());
-  screen_manager.push_overlay(manager.release());
+  menu.show();
 }
 
 void
@@ -231,22 +193,14 @@ MenuManager::display_pause_menu()
   menu.add_button("Help", boost::bind(&MenuManager::display_help));
   menu.add_button("Return to Title Screen", boost::bind(&MenuManager::menu_exit));
   
-  menu.push_screen();
+  menu.show();
 }
 
 void
 MenuManager::display_models_menu()
 {
-  using namespace gui;
-  std::auto_ptr<GUIManager> manager(new GUIManager());
-
-  std::auto_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(550, 376),
-                                                         "Select Model",
-                                                         manager->get_root()));
-
-  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
-  menu->set_font(Fonts::vera20);
-
+  gui::Menu menu("Select Model", create_centered_rect(550, 376));
+  
   std::vector<std::string> models;
   models.push_back("models/characters/bob/bob.wsprite");
   models.push_back("models/characters/jane/jane.wsprite");
@@ -263,56 +217,32 @@ MenuManager::display_models_menu()
 
   for(std::vector<std::string>::iterator i = models.begin(); i != models.end(); ++i)
     {
-      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu.get(), *i));
-      scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_show_model, std::string(*i)));
-      menu->add_item(scenario_button.release());
+      menu.add_button(*i, boost::bind(&MenuManager::menu_show_model, std::string(*i)));
     }
-
-  group->pack(menu.release());
-  manager->get_root()->add_child(group.release());
-  screen_manager.push_overlay(manager.release());  
+  
+  menu.show();
 }
 
 void
 MenuManager::display_particle_menu()
 {
-  using namespace gui;
-  std::auto_ptr<GUIManager> manager(new GUIManager());
-
-  std::auto_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(400, 340), 
-                                                         "Particle Systems",
-                                                         manager->get_root()));
-
-  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
-  menu->set_font(Fonts::vera20);
+  gui::Menu menu("Particle Systems", create_centered_rect(400, 340));
 
   std::vector<std::string> scenarios;
   scenarios.push_back("particlesystems/fire.particles");
   
   for(std::vector<std::string>::iterator i = scenarios.begin(); i != scenarios.end(); ++i)
     {
-      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu.get(), *i));
-      scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_show_particle_system, *i));
-      menu->add_item(scenario_button.release());
+      menu.add_button(*i, boost::bind(&MenuManager::menu_show_particle_system, *i));
     }
 
-  group->pack(menu.release());
-  manager->get_root()->add_child(group.release());
-  screen_manager.push_overlay(manager.release());
+  menu.show();
 }
 
 void
 MenuManager::display_scenario_menu()
 {
-  using namespace gui;
-  std::auto_ptr<GUIManager> manager(new GUIManager());
-
-  std::auto_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 340),
-                                                         "Select Scenario",
-                                                         manager->get_root()));
-
-  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
-  menu->set_font(Fonts::vera20);
+  gui::Menu menu("Select Scenario", create_centered_rect(500, 340));
 
   std::vector<std::string> scenarios;
   scenarios.push_back("sectors/apartment/apartment.wst");
@@ -325,47 +255,29 @@ MenuManager::display_scenario_menu()
   
   for(std::vector<std::string>::iterator i = scenarios.begin(); i != scenarios.end(); ++i)
     {
-      std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu.get(), *i));
-      scenario_button->sig_click().connect(boost::bind(&MenuManager::menu_start_scenario, *i));
-      menu->add_item(scenario_button.release());
+      menu.add_button(*i, boost::bind(&MenuManager::menu_start_scenario, *i));
     }
 
-  group->pack(menu.release());
-  manager->get_root()->add_child(group.release());
-  screen_manager.push_overlay(manager.release());
+  menu.show();
 }
 
 void
 MenuManager::display_debug_menu()
 {
-  using namespace gui;
-  std::auto_ptr<GUIManager> manager(new GUIManager());
-
-  std::auto_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 340),
-                                                         "Debug",
-                                                         manager->get_root()));
-
-  // Begin Menu
-  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), true, group.get()));
-  menu->set_font(Fonts::vera20);
+  gui::Menu menu("Debug", create_centered_rect(500, 340));
 
   Color amb = Sector::current()->get_ambient_light();
 
-  std::auto_ptr<SliderMenuItem> r_ambient_light_item(new SliderMenuItem(menu.get(), "Ambient Light (Red)", int(amb.r*100), 0, 100, 10));
-  r_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, _1, 0));
-  menu->add_item(r_ambient_light_item.release());
+  menu.add_slider("Ambient Light (Red)", int(amb.r*100), 0, 100, 10, 
+                  boost::bind(&MenuManager::menu_ambient_light, _1, 0));
 
-  std::auto_ptr<SliderMenuItem> g_ambient_light_item(new SliderMenuItem(menu.get(), "Ambient Light (Green)", int(amb.g*100), 0, 100, 10));
-  g_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, _1, 1));
-  menu->add_item(g_ambient_light_item.release());
+  menu.add_slider("Ambient Light (Green)", int(amb.g*100), 0, 100, 10, 
+                  boost::bind(&MenuManager::menu_ambient_light, _1, 1));
 
-  std::auto_ptr<SliderMenuItem> b_ambient_light_item(new SliderMenuItem(menu.get(), "Ambient Light (Blue)", int(amb.b*100), 0, 100, 10));
-  b_ambient_light_item->sig_change().connect(boost::bind(&MenuManager::menu_ambient_light, _1, 2));
-  menu->add_item(b_ambient_light_item.release());
+  menu.add_slider("Ambient Light (Blue)", int(amb.b*100), 0, 100, 10, 
+                  boost::bind(&MenuManager::menu_ambient_light, _1, 2));
 
-  group->pack(menu.release());
-  manager->get_root()->add_child(group.release());
-  screen_manager.push_overlay(manager.release()); 
+  menu.show();
 }
 
 void
