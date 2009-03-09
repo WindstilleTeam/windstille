@@ -43,30 +43,35 @@ SoundManager::SoundManager()
   try 
     {
       device = alcOpenDevice(0);
-      if (device == 0) 
+
+      if (!device)
         {
           print_openal_version();
           throw std::runtime_error("Couldn't open audio device.");
         }
+      else
+        {
+          int attributes[] = { 0 };
 
-      int attributes[] = { 0 };
+          context = alcCreateContext(device, attributes);
+          check_alc_error("Couldn't create audio context: ");
 
-      context = alcCreateContext(device, attributes);
-      check_alc_error("Couldn't create audio context: ");
-      alcMakeContextCurrent(context);
-      check_alc_error("Couldn't select audio context: ");
+          alcMakeContextCurrent(context);
+          check_alc_error("Couldn't select audio context: ");
 
-      check_al_error("Audio error after init: ");
-      sound_enabled = true;
+          check_al_error("Audio error after init: ");
+          sound_enabled = true;
+        }
     } 
   catch(std::exception& e) 
-    {
-      device = 0;
+    { // disable sound
+      device  = 0;
       context = 0;
+      sound_enabled = false;
+
       std::cerr << "Couldn't initialize audio device:" << e.what() << "\n";
       print_openal_version();
-      // disable sound
-      enable_sound(false);
+      
       std::cout << "Disabling sound\n";
     }
 }
@@ -76,10 +81,7 @@ SoundManager::~SoundManager()
   music_source.reset();
   next_music_source.reset();
 
-  for(SoundSources::iterator i = sources.begin(); i != sources.end(); ++i) 
-    {
-      delete *i;
-    }
+  sources.clear();
 
   for(SoundBuffers::iterator i = buffers.begin(); i != buffers.end(); ++i) 
     {
@@ -181,9 +183,9 @@ SoundManager::play(const std::string& filename, const Vector2f& pos)
             }
 
           source->play();
-          sources.push_back(source.release());
+          sources.push_back(boost::shared_ptr<SoundSource>(source.release()));
         }
-    } 
+    }
   catch(std::exception& e) 
     {
       std::cout << "Couldn't play sound " << filename << ": " << e.what() << "\n";
@@ -322,11 +324,8 @@ SoundManager::update()
       // check for finished sound sources
       for(SoundSources::iterator i = sources.begin(); i != sources.end(); ) 
         {
-          SoundSource* source = *i;
-
-          if (!source->playing()) 
+          if (!(*i)->playing())
             {
-              delete source;
               i = sources.erase(i);
             } 
           else 

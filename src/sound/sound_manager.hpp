@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SOUND_SOUND_MANAGER_HPP
 #define HEADER_WINDSTILLE_SOUND_SOUND_MANAGER_HPP
 
+#include <boost/shared_ptr.hpp>
 #include <memory>
 #include <string>
 #include <vector>
@@ -88,7 +89,7 @@ private:
 
   typedef std::map<std::string, ALuint> SoundBuffers;
   SoundBuffers buffers;
-  typedef std::vector<SoundSource*> SoundSources;
+  typedef std::vector<boost::shared_ptr<SoundSource> > SoundSources;
   SoundSources sources;
 
   std::auto_ptr<StreamSoundSource> music_source;
