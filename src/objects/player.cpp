@@ -354,14 +354,19 @@ Player::update_stand()
     } 
   else if (controller.button_was_pressed(AIM_BUTTON))
     {
-      // TODO remove me later, just here for testing
-      Grenade* grenade = new Grenade();
-      grenade->set_pos(get_pos() + Vector2f(50, -300));
-      grenade->set_velocity(Vector2f(20, -10));
-      Sector::current()->add(grenade);
-      
-      sprite.set_action("PullGun");
-      state = PULL_GUN;
+      if (0)
+        {
+          // TODO remove me later, just here for testing
+          Grenade* grenade = new Grenade();
+          grenade->set_pos(get_pos() + Vector2f(50, -300));
+          grenade->set_velocity(Vector2f(20, -10));
+          Sector::current()->add(grenade);
+        }
+      else
+        {
+          sprite.set_action("PullGun");
+          state = PULL_GUN;
+        }
     }
   else if (controller.get_axis_state(X_AXIS) < -0.5f) 
     {
