@@ -63,7 +63,7 @@ public:
   EnumMenuItem(MenuComponent* parent_, 
                const std::string& label_, int index_ = 0);
   
-  void add_pair(int value, const std::string& label);
+  EnumMenuItem& add_pair(int value, const std::string& label);
 
   void incr();
   void decr();

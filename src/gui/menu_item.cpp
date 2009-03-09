@@ -81,13 +81,15 @@ EnumMenuItem::EnumMenuItem(MenuComponent* parent_,
 {
 }
 
-void
+EnumMenuItem&
 EnumMenuItem::add_pair(int value, const std::string& label)
 {
   EnumValue enum_value;
   enum_value.value = value;
   enum_value.label = label;
   labels.push_back(enum_value);
+
+  return *this;
 }
 
 void
