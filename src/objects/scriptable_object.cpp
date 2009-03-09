@@ -16,11 +16,10 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
+#include "engine/sector.hpp"
 #include "app/globals.hpp"
 #include "scriptable_object.hpp"
 #include "sprite2d/manager.hpp"
-#include "engine/script_manager.hpp"
 
 ScriptableObject::ScriptableObject(FileReader& props)
   : z_pos(50),
@@ -114,7 +113,9 @@ void
 ScriptableObject::use()
 {
   if (!use_script.empty())
-    ScriptManager::current()->run_script(use_script, name);
+    {
+      Sector::current()->call_script_function(use_script);
+    }
 }
 
 void

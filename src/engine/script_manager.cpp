@@ -127,31 +127,17 @@ ScriptManager::~ScriptManager()
   current_ = 0;
 }
 
-void
+boost::shared_ptr<SquirrelVM>
 ScriptManager::run_script_file(const std::string& filename, bool global)
 {
   IFileStream in(filename);
-  run_script(in, filename, global);
-}
 
-void
-ScriptManager::run_script(const std::string& the_string,
-                          const std::string& sourcename, 
-                          bool global)
-{
-  std::istringstream stream(the_string);
-  run_script(stream, sourcename, global);
-}
-
-void
-ScriptManager::run_script(std::istream& in, const std::string& sourcename, bool global)
-{
   if (global)
     {
       // Scripts run in the global namespace must not suspend
 
       // Compile the script and push it on the stack
-      if(sq_compile(vm, squirrel_read_char, &in, sourcename.c_str(), true) < 0)
+      if(sq_compile(vm, squirrel_read_char, &in, filename.c_str(), true) < 0)
         throw SquirrelError(vm, "Couldn't parse script");
 
       // Set 'this' environment
@@ -159,12 +145,14 @@ ScriptManager::run_script(std::istream& in, const std::string& sourcename, bool 
 
       // Execute the script
       if (SQ_FAILED(sq_call(vm, 1, false, true)))
-        throw SquirrelError(vm, "SquirrelVM::run(): " + sourcename + ": Couldn't start script");
+        throw SquirrelError(vm, "SquirrelVM::run(): " + filename + ": Couldn't start script");
 
       if (sq_getvmstate(vm) != SQ_VMSTATE_IDLE)
         {
-          throw std::runtime_error("ScriptManager::run_script(): " + sourcename + ": global scripts must not suspend");
+          throw std::runtime_error("ScriptManager::run_script(): " + filename + ": global scripts must not suspend");
         }
+
+      return boost::shared_ptr<SquirrelVM>();
     }
   else
     {
@@ -173,7 +161,7 @@ ScriptManager::run_script(std::istream& in, const std::string& sourcename, bool 
       // Look if the VM is associated with the source file
       for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
         {
-          if ((*i)->get_name() == sourcename)
+          if ((*i)->get_name() == filename)
             {
               it = i;
               break;
@@ -186,17 +174,19 @@ ScriptManager::run_script(std::istream& in, const std::string& sourcename, bool 
           if ((*it)->is_idle())
             {
               (*it)->call("run");
+              return *it;
             }
           else
             {
-              throw std::runtime_error(sourcename + ": ScriptManager::run_script(): Script must be idle to be 'run()'");
+              throw std::runtime_error(filename + ": ScriptManager::run_script(): Script must be idle to be 'run()'");
             }
         }
       else
         { // Add VM to the list of VMs
-          squirrel_vms.push_back(boost::shared_ptr<SquirrelVM>(new SquirrelVM(in, sourcename, vm)));     
+          squirrel_vms.push_back(boost::shared_ptr<SquirrelVM>(new SquirrelVM(in, filename, vm)));     
           squirrel_vms.back()->call("init");
           squirrel_vms.back()->call("run");
+          return squirrel_vms.back();
         }
     }
 }

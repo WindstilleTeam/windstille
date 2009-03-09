@@ -83,15 +83,7 @@ public:
   void update();
 
   /** Load script from \a filename and runs it */
-  void run_script_file(const std::string& filename, bool global = false);
-
-  /** Takes the Squirrel expression in \a script and evaluates it, \a
-      sourcename is the filename and used in error messages */
-  void run_script(const std::string& script, const std::string& sourcename, bool global = false);
-
-  /** Load script from \a in and runs it, \a sourcename is the
-      filename and used in error messages */
-  void run_script(std::istream& in, const std::string& sourcename, bool global = false);
+  boost::shared_ptr<SquirrelVM> run_script_file(const std::string& filename, bool global = false);
 
   HSQUIRRELVM get_vm() const { return vm; }
 

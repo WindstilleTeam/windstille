@@ -47,6 +47,7 @@
 #include "objects/scriptable_object.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "scripting/squirrel_error.hpp"
+#include "squirrel_vm.hpp"
 
 #include "sector.hpp"
 
@@ -178,8 +179,11 @@ Sector::activate()
   commit_removes();
 
   sound_manager->play_music(music);
+
   if (!init_script.empty())
-    ScriptManager::current()->run_script_file(get_directory() + init_script);
+    {
+      vm = ScriptManager::current()->run_script_file(get_directory() + init_script);
+    }
 }
 
 void
@@ -307,6 +311,26 @@ Sector::get_directory() const
   std::string directory = filename;
   directory.erase(directory.rfind('/')+1);
   return directory;
+}
+
+void
+Sector::call_script_function(const std::string& name)
+{
+  if (!vm.get())
+    {
+      throw std::runtime_error("Sector::call_script_function(): Can't call function '" + name + "' without a init script");
+    }
+  else
+    {
+      if (!vm->is_idle())
+        {
+          throw std::runtime_error("Sector::call_script_function(): VM must be idle to call  '" + name + "'");
+        }
+      else
+        {
+          vm->call(name);
+        }
+    }
 }
 
 /* EOF */

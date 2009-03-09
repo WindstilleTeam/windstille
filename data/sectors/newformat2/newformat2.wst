@@ -189,7 +189,7 @@
      (y 686)
      (width 95)
      (height 146)
-     (script "startfire()"))
+     (callback "startfire"))
 
     (trigger
      (name "water-trigger")
@@ -197,7 +197,7 @@
      (y 687)
      (width 25)
      (height 146)
-     (script "stopfire()"))
+     (callback "stopfire"))
 
     (box
       (name "Box0")

@@ -27,7 +27,7 @@ class Trigger : public GameObject
 {
 private:
   Rectf area;
-  std::string script;
+  std::string callback;
   /// has the trigger been activated at least once
   bool triggered;
   /// trigger active in last frame

@@ -35,7 +35,7 @@ Trigger::Trigger(FileReader& props)
   props.get("y", y);
   props.get("width", width);
   props.get("height", height);
-  props.get("script", script);
+  props.get("callback", callback);
   props.get("one-time-trigger", one_time_trigger);
   props.print_unused_warnings("trigger");
 
@@ -58,7 +58,7 @@ Trigger::draw (SceneContext& )
 }
 
 void
-Trigger::update (float )
+Trigger::update(float delta)
 {
   //FIXME use proper collision detection
   Player* player = Player::current();
@@ -72,11 +72,14 @@ Trigger::update (float )
 
   if(last_trigger == false) {
     triggered = true;
-    try {
-      ScriptManager::current()->run_script(script, "TriggerObject");
-    } catch(std::exception& e) {
-      std::cerr << "Couldn't run trigger-script: " << e.what() << "\n";
-    }
+    try 
+      {
+        Sector::current()->call_script_function(callback);
+      }
+    catch(std::exception& e) 
+      {
+        std::cerr << "Couldn't run trigger-script: " << e.what() << "\n";
+      }
   }
   last_trigger = true;
 }

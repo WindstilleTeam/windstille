@@ -34,6 +34,7 @@ class SpawnPoint;
 class CollisionEngine;
 class NavigationGraph;
 class Entity;
+class SquirrelVM;
 
 /** */
 class Sector
@@ -48,6 +49,8 @@ private:
   std::string name;
   std::string music;
   std::string init_script;
+  
+  boost::shared_ptr<SquirrelVM> vm;
 
   typedef std::vector<boost::shared_ptr<GameObject> > Objects;
   Objects objects;
@@ -107,10 +110,12 @@ public:
   TileMap* get_tilemap() const { return interactive_tilemap; }
   TileMap* get_tilemap2() const { return interactivebackground_tilemap; }
   void     set_tilemap(TileMap* t);
-  Player* get_player() const
+  Player*  get_player() const
   {
     return player;
   }
+
+  void call_script_function(const std::string& name);
   
 private:
   Sector (const Sector&);
