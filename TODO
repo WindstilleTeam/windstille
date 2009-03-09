@@ -1,13 +1,13 @@
 Windstille ToDo
 ===============
 
+* some functions in scripts require '::' before them so that they can
+  be found, not quite clear why or exactly when this happens
+
+* currently the ScriptManager is global, meaning scripts are never
+  cleaned up on Sector changes, this needs to be fixed
+
 * "bounce collision" error is caused by grenade that spawns into a wall
-
-* scripts should be able to be persisstant, so that you could call a
-  function on an event in a script
-
-* scripts need to be split into sections/functions, so that we can
-  have a section that is run only once for creating variables (doable via run_before(), but ugly)
 
 * join Player and Character somewhat or derive one from the other
 
