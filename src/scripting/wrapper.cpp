@@ -1568,6 +1568,29 @@ static SQInteger spawn_object_wrapper(HSQUIRRELVM vm)
   return Scripting::spawn_object(vm);
 }
 
+static SQInteger spawn_script_wrapper(HSQUIRRELVM vm)
+{
+  const SQChar* arg0;
+  if(SQ_FAILED(sq_getstring(vm, 2, &arg0))) {
+    sq_throwerror(vm, _SC("Argument 1 not a string"));
+    return SQ_ERROR;
+  }
+
+  try {
+    Scripting::spawn_script(arg0);
+
+    return 0;
+
+  } catch(std::exception& e) {
+    sq_throwerror(vm, e.what());
+    return SQ_ERROR;
+  } catch(...) {
+    sq_throwerror(vm, _SC("Unexpected exception while executing function 'spawn_script'"));
+    return SQ_ERROR;
+  }
+
+}
+
 } // end of namespace Wrapper
 void create_squirrel_instance(HSQUIRRELVM v, Scripting::GameObject* object, bool setup_releasehook)
 {
@@ -2058,6 +2081,13 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   sq_newclosure(v, &spawn_object_wrapper, 0);
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'spawn_object'");
+  }
+
+  sq_pushstring(v, "spawn_script", -1);
+  sq_newclosure(v, &spawn_script_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
+  if(SQ_FAILED(sq_createslot(v, -3))) {
+    throw SquirrelError(v, "Couldn't register function 'spawn_script'");
   }
 
   // Register class GameObject

@@ -367,6 +367,11 @@ SQInteger spawn_object(HSQUIRRELVM v)
   return 0;
 }
 
+void spawn_script(const std::string& filename)
+{
+  ScriptManager::current()->run_script_file(filename);
+}
+
 } // namespace Scripting
 
 /* EOF */
