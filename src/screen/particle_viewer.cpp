@@ -22,6 +22,7 @@
 #include "screen/particle_viewer.hpp"
 #include "screen_manager.hpp"
 #include "util/sexpr_file_reader.hpp"
+#include "display/display.hpp"
 
 // Components
 #include "gui/button.hpp"
@@ -146,10 +147,18 @@ ParticleViewer::draw()
 {
   sc.reset_modelview();
 
-  for(int y = -background.get_width(); y < 600 + background.get_height(); y += background.get_height())
-    for(int x = -background.get_width(); x < 800 + background.get_width(); x += background.get_width())
-      sc.color().draw(background, Vector2f(x + int(pos.x) % background.get_width(),
-                                         y + int(pos.y) % background.get_height()), -900);
+  for(int y = -background.get_width(); 
+      y < Display::get_height() + background.get_height(); 
+      y += background.get_height())
+    {
+      for(int x = -background.get_width(); 
+          x < Display::get_width() + background.get_width(); 
+          x += background.get_width())
+        {
+          sc.color().draw(background, Vector2f(x + int(pos.x) % background.get_width(),
+                                               y + int(pos.y) % background.get_height()), -900);
+        }
+    }
 
   sc.translate(400 + pos.x, 600 + pos.y);
   sc.light().fill_screen(Color(0.4, 0.4, 0.4));
