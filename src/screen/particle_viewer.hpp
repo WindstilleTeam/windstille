@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_SCREEN_PARTICLE_VIEWER_HPP
 
 #include <memory>
+#include <boost/shared_ptr.hpp>
 #include "screen.hpp"
 #include "sprite2d/sprite.hpp"
 #include "gui/gui_manager.hpp"
@@ -37,17 +38,11 @@ class ParticleViewer : public Screen
 {
 private:
   SceneContext sc;
-  typedef std::vector<ParticleSystem*> Systems;
+  typedef std::vector<boost::shared_ptr<ParticleSystem> > Systems;
   Systems systems;
   Sprite background;
 
   Vector2f pos;
-  bool   show_gui;
-  std::auto_ptr<gui::GUIManager> manager;
-  gui::TabComponent* tab;
-
-  typedef std::vector<ParticleSystemGUI*> ParticleSystemGUIs;
-  ParticleSystemGUIs guis;
 
 public:
   ParticleViewer();
