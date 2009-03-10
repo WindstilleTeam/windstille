@@ -97,7 +97,7 @@ MenuManager::display_option_menu()
 void
 MenuManager::display_main_menu()
 {
-  gui::Menu menu("", create_positioned_rect(Vector2f(400-20, 200), Sizef(250, 254)));
+  gui::Menu menu("", create_positioned_rect(Vector2f(400-20, 200), Sizef(250, 254)), false);
 
   menu.add_button("Select Scenario", boost::bind(&MenuManager::display_scenario_menu));
   menu.add_button("Navigation Test", boost::bind(&MenuManager::menu_show_navigation_test));
