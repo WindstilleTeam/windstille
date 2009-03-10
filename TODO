@@ -1,5 +1,11 @@
 Windstille ToDo
 ===============
+
+This is a list of tasks that need to be done in Windstille. This list
+is neither complete nor authoritative, so don't just blindly implement
+from this list, instead use this list just as guide for things that
+might be worth to implement, but not necesarrily have to. Some ideas
+in this list might actually be bad and better solved by other means.
 
 Scripting
 =========
@@ -17,7 +23,8 @@ Scripting
   bob = get_object("barkeeper")
   bob.say()
 
-* player can launch PDA or inventory when in a dialog, this will break the script
+* player can launch PDA or inventory when in a dialog, this will break
+  the script
 
 * currently the ScriptManager is global, meaning scripts are never
   cleaned up on Sector changes, this needs to be fixed
@@ -30,7 +37,8 @@ Scripting
   spawn_object("shockwave", {pos=[0,0]})
 
 * conversations really should be data with hooks for scripts, not pure
-  scripts
+  scripts (FIXME: not clear if there is enough benefit and flexibilty
+  to try that)
 
 * print and println behave different on console
 
@@ -40,6 +48,10 @@ Input Handling
 * implement proper dead-zone in input handling
 
 * allow to load multiple controller config files at once
+
+* add zoom via xbox360 analog trigger buttons
+
+* mouse support for menu
 
 Sound Handling
 ==============
@@ -50,26 +62,19 @@ Sound Handling
 Miscellaneous
 =============
 
+* add support for dynamic resize to Menu's, currently Menus have
+  scroll bars on large resolutions and empty space when they have to
+  few items
+
 * create a UTF32 string class, maybe based on basic_string<>, for use in console
 
-* using a screen size != 800x600 breaks menu (missplaced), background object
-
-  loads to ugly fonts, should render
-  the fonts so that we get 1:1 pixel mapping, can be just calculate
-  their needed size and blit with floats, or do we need magic to blit
-  with ints to avoid rounding errors?
-
-* add zoom via xbox360 analog trigger buttons
-
-* add pause menu to all screens that don't already have it
-
-* "bounce collision" error is caused by grenade that spawns into a wall
-
-* join Player and Character somewhat or derive one from the other
+* join Player and Character somewhat or derive one from the other, so
+  that one can have scripted people running and jumping around
 
 * implement aspect-ration switching at runtime (menu entry is there,
   just no code) and change default screen ration to that seen in the
-  artwork pictures
+  artwork pictures (FIXME: full resolution switch would be more useful
+  then just aspect-ratio switch)
 
 * add support for empty sectors (sectors without a player character,
   for use in intro.wst and similar cutscenes)
@@ -81,50 +86,20 @@ Miscellaneous
 * do not save command line options given on the command line by
   default or add a --vanilla option or so
 
-* make lightmap resolution independent
-
-* remodel titlescreen as 3D model
-
-* seperate and document components better:
-
-  - collision engine
-  - BabyXML
-  - tinygettext
-  - Sprite2D
-  - Sprite3D
-  - particle systems
-  - Dialog/Conversation
-
-* update random number generator:
-  http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html
+* make lightmap resolution independent (done, but an artifact remains
+  when the resolution isn't dividable by LIGHTMAP_DIV)
 
 * write a LucasArts-like dialog system (i.e. non-blocking text,
   instead of JRPG like boxes with portraits), see SpeechManager
 
 * PDA needs scrolling text thing (right analog stick?)
 
-* mouse support for menu
-
-* Add more markup to TextArea: (not really needed with LucasArts-like dialog)
-    <font color="#ffbbcc"></font>: Use arbitary color
-    <b></b>: make text properly bold
-    <i></i>: make text properly italic 
-
 * Specify the capabilites that the different subsystems need to have
-
-* menu_manager.cpp doesn't use auto_ptr everywhere since
-  pack(Component* ) needs to be done before some other actions, which
-  can't be done in a streightforward manner with auto_ptr
-
-  pack(child)
-    child->set_rect()     
-  child->add_item(menuitem) <- doesn't work when size isn't set
 
 * make Console not derive from ostream
 
-* GridComponent and ParticleViewer leak
-
-* Screens might fit better into app/
+* GridComponent and ParticleViewer leak (FIXME: Kick out
+  GridComponent, since it doesn't work anyway?)
 
 Profiling
 =========
@@ -159,8 +134,10 @@ Bugs
 Random Things
 =============
 
-* create doll class or enhance character class, so that they can
-  perform tasks, walk around, etc.
+* Add more markup to TextArea: (not really needed with LucasArts-like dialog)
+    <font color="#ffbbcc"></font>: Use arbitary color
+    <b></b>: make text properly bold
+    <i></i>: make text properly italic 
 
 * create a mission that is playable
 
@@ -178,9 +155,31 @@ Random Things
 
 * setting glLineWidth() leads to some interesting artefacts on the
   menus which might be a cool effect
+
+* using a non-square pixel aspect ratio leads to ugly fonts, fonts
+  could be rendered with that aspect ratio in mind so that they are
+  'pixel-perfect', instead of scaled by OpenGL
+
+* remodel titlescreen as 3D model
+
+* update random number generator:
+  http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html
+
 
 Code Cleanup
 ============
+
+* seperate and document components better:
+
+  - collision engine
+  - BabyXML
+  - tinygettext
+  - Sprite2D
+  - Sprite3D
+  - particle systems
+  - Dialog/Conversation
+
+* Screens might fit better into app/ then screen/
 
 * unify copyright header and #ifdef guards
 
