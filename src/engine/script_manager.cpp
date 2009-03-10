@@ -200,26 +200,16 @@ ScriptManager::update()
     }
 }
 
-void
-ScriptManager::set_wakeup_event(HSQUIRRELVM vm, WakeupData event, float timeout)
+boost::shared_ptr<SquirrelVM>
+ScriptManager::get_vm(HSQUIRRELVM v) const
 {
-  assert(event.type >= 0 && event.type < MAX_WAKEUP_EVENT_COUNT);
-
-  // find the VM in the list and update it
-  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
+  for(SquirrelVMs::const_iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
     {
-      if((*i)->get_vm() == vm) 
-        {
-          (*i)->set_wakeup_event(event, timeout);
-          return;
-        }
+      if ((*i)->get_vm() == v)
+        return *i;
     }
-}
 
-void
-ScriptManager::set_wakeup_event(HSQUIRRELVM vm, WakeupEvent event, float timeout)
-{
-  set_wakeup_event(vm, WakeupData(event), timeout);
+  return boost::shared_ptr<SquirrelVM>();
 }
 
 void
@@ -247,11 +237,11 @@ ScriptManager::remove_object_from_squirrel(boost::shared_ptr<GameObject> object)
   sq_pushroottable(v);
   sq_pushstring(v, OBJECTS_TABLE, -1);
   if(SQ_FAILED(sq_get(v, -2)))
-  {
-    std::ostringstream msg;
-    msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
-    throw SquirrelError(v, msg.str());
-  }
+    {
+      std::ostringstream msg;
+      msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
+      throw SquirrelError(v, msg.str());
+    }
 
   // remove object from table
   sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
@@ -300,21 +290,21 @@ ScriptManager::expose_object_to_squirrel(boost::shared_ptr<GameObject> object)
   sq_pushroottable(v);
   sq_pushstring(v, OBJECTS_TABLE, -1);
   if(SQ_FAILED(sq_get(v, -2)))
-  {
-    std::ostringstream msg;
-    msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
-    throw SquirrelError(v, msg.str());
-  }
+    {
+      std::ostringstream msg;
+      msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
+      throw SquirrelError(v, msg.str());
+    }
   
   // create squirrel instance and register in table
   sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
   create_squirrel_instance(v, object);
   if(SQ_FAILED(sq_createslot(v, -3)))
-  {
-    std::ostringstream msg;
-    msg << "Couldn't register object in objects taböe";
-    throw SquirrelError(v, msg.str());
-  }
+    {
+      std::ostringstream msg;
+      msg << "Couldn't register object in objects taböe";
+      throw SquirrelError(v, msg.str());
+    }
 
   // pop roottable and objects table
   sq_pop(v, 2);

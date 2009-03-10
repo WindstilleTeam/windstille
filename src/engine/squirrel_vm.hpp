@@ -39,7 +39,9 @@ public:
   SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELVM parent_vm);
   ~SquirrelVM();
 
-  void set_wakeup_event(const ScriptManager::WakeupData& event, float timeout);
+  void set_wakeup_event(const ScriptManager::WakeupData&  event, float timeout = -1);
+  void set_wakeup_event(const ScriptManager::WakeupEvent& event, float timeout = -1);
+
   void fire_wakeup_event(const ScriptManager::WakeupData& event);
 
   /** Resumes the evaluation of the VM if a wakeup has happened.

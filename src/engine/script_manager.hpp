@@ -87,8 +87,7 @@ public:
 
   HSQUIRRELVM get_vm() const { return vm; }
 
-  void set_wakeup_event(HSQUIRRELVM vm, WakeupEvent event, float timeout = -1);
-  void set_wakeup_event(HSQUIRRELVM vm, WakeupData  event, float timeout = -1);
+  boost::shared_ptr<SquirrelVM> get_vm(HSQUIRRELVM v) const;
 
   void fire_wakeup_event(WakeupEvent event);
   void fire_wakeup_event(WakeupData  event);

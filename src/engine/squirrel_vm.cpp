@@ -100,6 +100,12 @@ SquirrelVM::~SquirrelVM()
 }
 
 void
+SquirrelVM::set_wakeup_event(const ScriptManager::WakeupEvent& event, float timeout)
+{
+  set_wakeup_event(ScriptManager::WakeupData(event), timeout);
+}
+
+void
 SquirrelVM::set_wakeup_event(const ScriptManager::WakeupData& event, float timeout)
 {
   waiting_for_events = event;

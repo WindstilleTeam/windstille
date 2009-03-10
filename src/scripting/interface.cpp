@@ -33,6 +33,7 @@
 #include "hud/pda.hpp"
 #include "util/sexpr_file_reader.hpp"
 #include "display/display.hpp"
+#include "engine/squirrel_vm.hpp"
 #include "hud/controller_help_window.hpp"
 
 namespace Scripting
@@ -125,22 +126,42 @@ void set_controller_help_active(bool active)
 
 void wait(HSQUIRRELVM vm, float time)
 {
-  ScriptManager::current()->set_wakeup_event(vm, ScriptManager::TIME, time);
+  boost::shared_ptr<SquirrelVM> ptr = ScriptManager::current()->get_vm(vm);
+
+  if (ptr.get())
+    {
+      ptr->set_wakeup_event(ScriptManager::TIME, time);
+    }
 }
 
 void wait_for_dialog(HSQUIRRELVM vm)
 {
-  ScriptManager::current()->set_wakeup_event(vm, ScriptManager::DIALOG_CLOSED);
+  boost::shared_ptr<SquirrelVM> ptr = ScriptManager::current()->get_vm(vm);
+
+  if (ptr.get())
+    {
+      ptr->set_wakeup_event(ScriptManager::DIALOG_CLOSED);
+    }
 }
 
 void wait_for_camera(HSQUIRRELVM vm)
 {
-  ScriptManager::current()->set_wakeup_event(vm, ScriptManager::CAMERA_DONE);
+  boost::shared_ptr<SquirrelVM> ptr = ScriptManager::current()->get_vm(vm);
+
+  if (ptr.get())
+    {
+      ptr->set_wakeup_event(ScriptManager::CAMERA_DONE);
+    }
 }
 
 void wait_for_fade(HSQUIRRELVM vm)
 {
-  ScriptManager::current()->set_wakeup_event(vm, ScriptManager::FADE_DONE);
+  boost::shared_ptr<SquirrelVM> ptr = ScriptManager::current()->get_vm(vm);
+
+  if (ptr.get())
+    {
+      ptr->set_wakeup_event(ScriptManager::FADE_DONE);
+    }
 }
 
 void speech_show(const std::string& text, float x, float y)
@@ -231,9 +252,14 @@ int  conversation_get_selection()
   return Conversation::current()->get_selection();
 }
 
-void wait_for_conversation(HSQUIRRELVM v)
+void wait_for_conversation(HSQUIRRELVM vm)
 {
-  ScriptManager::current()->set_wakeup_event(v, ScriptManager::CONVERSATION_CLOSED);
+  boost::shared_ptr<SquirrelVM> ptr = ScriptManager::current()->get_vm(vm);
+
+  if (ptr.get())
+    {
+      ptr->set_wakeup_event(ScriptManager::CONVERSATION_CLOSED);
+    }
 }
 
 SQInteger display(HSQUIRRELVM v) __custom
