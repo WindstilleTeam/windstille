@@ -86,6 +86,12 @@ Miscellaneous
 * do not save command line options given on the command line by
   default or add a --vanilla option or so
 
+  or
+   
+  rewrite Config class and properly seperate config from command line
+  and config done via option menu, i.e. command line settings
+  shouldn't be persistent unless told so
+
 * make lightmap resolution independent (done, but an artifact remains
   when the resolution isn't dividable by LIGHTMAP_DIV)
 
@@ -131,6 +137,13 @@ Bugs
 
 * miniswig causes bison++ to crash
 
+3D Things
+==========
+
+* bone animation
+
+* change the game to a righthand coordinate system
+
 Random Things
 =============
 
@@ -141,30 +154,24 @@ Random Things
 
 * create a mission that is playable
 
-* bone animation
-
-* change the game to a righthand coordinate system
-
-* rewrite Config class and properly seperate config from command line
-  and config done via option menu, i.e. command line settings
-  shouldn't be persistent unless told so
-
 * add line numbers to error messages from lisp
 
 * use non-euler angles in the model viewer
-
-* setting glLineWidth() leads to some interesting artefacts on the
-  menus which might be a cool effect
 
 * using a non-square pixel aspect ratio leads to ugly fonts, fonts
   could be rendered with that aspect ratio in mind so that they are
   'pixel-perfect', instead of scaled by OpenGL
 
-* remodel titlescreen as 3D model
-
 * update random number generator:
   http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html
+
+Graphics
+========
 
+* remodel titlescreen as 3D model
+
+* setting glLineWidth() leads to some interesting artefacts on the
+  menus which might be a cool effect
 
 Code Cleanup
 ============
