@@ -10,6 +10,17 @@ in this list might actually be bad and better solved by other means.
 Scripting
 =========
 
+* add a way to print content of stack
+
+* miniswig does not support __suspend with a return value, should be
+  fixed, since Squirrel can handle it. Trouble is that the return
+  value is created by the sq_wakeupvm() call, not by the
+  sq_suspendvm() one, so its not actually in the wrapper code, but in
+  the normal C++ code
+
+  Return value has problem, works in same cases, but returns NULL for
+  barrobot.nut in apartment.wst
+
 * Currently we wakeup on conditions that are broadcasted to all
   scripts, in some situation it might make more sense to attach the
   script directly to the object that sends the signal
@@ -61,6 +72,8 @@ Sound Handling
 
 Miscellaneous
 =============
+
+* console doesn't adopt to screen size
 
 * add support for dynamic resize to Menu's, currently Menus have
   scroll bars on large resolutions and empty space when they have to
@@ -143,6 +156,38 @@ Bugs
 * bone animation
 
 * change the game to a righthand coordinate system
+
+Level Design
+============
+
+* implement light switches in apartment
+
+  Currently the light switch-off sequence is done in the use script,
+  this however makes it blocking, it would be nice if the switch-off
+  sequence could be handled in a seperate script, but that would
+  require a way to apport that script, since else a switch-on could
+  collide with a switch-off script
+
+  possible solution:
+
+  function init() {
+    lamp_sequence = spawn_script_norun("lamp_sequence.nut");
+  }
+
+  function init() {
+      ...
+      lamp_sequence.call("switch_on");
+      ...
+      lamp_sequence.call("switch_off");
+      ...
+  }
+
+  The lamp_sequence.nut script would take control over the process and
+  buffer call's when it is busy, once no longer busy it would pick the
+  next task from the stack. Different scripts could use different
+  stack behaviour, i.e. in the lamp_sequence() it would be useful to
+  have a task-stack of size 1 and discard everything else
+  
 
 Random Things
 =============
