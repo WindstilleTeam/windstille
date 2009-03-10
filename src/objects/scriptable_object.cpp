@@ -114,8 +114,6 @@ ScriptableObject::update(float delta)
 void
 ScriptableObject::use()
 {
-  std::cout << "Use: " << script_file << std::endl;
-
   if (!script_file.empty())
     {
       try 
