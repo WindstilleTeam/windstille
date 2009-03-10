@@ -72,7 +72,7 @@ function game_speed(...)
 function conversation_get()
 {
   conversation_show();
-  wait_for_conversation();
+  println("wait_for_conversation: " + wait_for_conversation());
   return conversation_get_selection();
 }
 

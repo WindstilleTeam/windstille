@@ -157,7 +157,9 @@ SquirrelVM::update()
 
             try 
               {
-                if (sq_wakeupvm(vm, false, false, true) < 0)
+                // Try to return a value
+                sq_pushinteger(vm, 45); 
+                if (sq_wakeupvm(vm, SQTrue, SQTrue, SQTrue) < 0)
                   {
                     throw SquirrelError(vm, name, "Couldn't resume script");
                   }
