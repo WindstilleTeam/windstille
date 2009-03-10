@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_SCREEN_MANAGER_HPP
 #define HEADER_WINDSTILLE_SCREEN_SCREEN_MANAGER_HPP
 
+#include <boost/shared_ptr.hpp>
+
 class Screen;
 
 /**
@@ -30,13 +32,14 @@ class ScreenManager
 private:
   enum ScreenAction { NONE, POP_SCREEN, PUSH_SCREEN, CLEAR_SCREENS };
 
-  std::vector<Screen*> screens;
+  typedef std::vector<boost::shared_ptr<Screen> > Screens;
+  Screens screens;
   ScreenAction screen_action;
-  Screen*      screen_screen;
+  boost::shared_ptr<Screen> screen_screen;
 
-  std::vector<Screen*> overlay_screens;
+  Screens overlay_screens;
   ScreenAction overlay_screen_action;
-  Screen*      overlay_screen_screen;
+  boost::shared_ptr<Screen> overlay_screen_screen;
 
   unsigned int ticks;
 

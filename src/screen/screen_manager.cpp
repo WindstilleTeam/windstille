@@ -59,22 +59,14 @@ ScreenManager::ScreenManager()
     do_quit(false)
 {
   screen_action = NONE;
-  screen_screen = 0;
-
   overlay_screen_action = NONE;
-  overlay_screen_screen = 0;
 
   ticks = 0;
 }
 
 ScreenManager::~ScreenManager()
 {
-  for(std::vector<Screen*>::iterator i = screens.begin(); i != screens.end(); ++i)
-    delete *i;
   screens.clear();
-    
-  for(std::vector<Screen*>::iterator i = overlay_screens.begin(); i != overlay_screens.end(); ++i)
-    delete *i;
   overlay_screens.clear();
 }
 
@@ -137,7 +129,7 @@ ScreenManager::run()
         {
         case PUSH_SCREEN:
           overlay_screens.push_back(overlay_screen_screen);
-          overlay_screen_screen = 0;
+          overlay_screen_screen = boost::shared_ptr<Screen>();
           break;
 
         case POP_SCREEN:
@@ -147,14 +139,11 @@ ScreenManager::run()
             }
           else
             {
-              delete overlay_screens.back();
               overlay_screens.pop_back();
             }
           break;
 
         case CLEAR_SCREENS:
-          for(std::vector<Screen*>::iterator i = overlay_screens.begin(); i != overlay_screens.end(); ++i)
-            delete *i;
           overlay_screens.clear();
           break;
 
@@ -168,20 +157,17 @@ ScreenManager::run()
         {
         case PUSH_SCREEN:
           screens.push_back(screen_screen);
-          screen_screen = 0;
+          screen_screen = boost::shared_ptr<Screen>();
           screens.back()->on_startup();
           break;
 
         case POP_SCREEN:
-          delete screens.back();
           screens.pop_back();
           if (!screens.empty())
             screens.back()->on_startup();
           break;
 
         case CLEAR_SCREENS:
-          for(std::vector<Screen*>::iterator i = screens.begin(); i != screens.end(); ++i)
-            delete *i;
           screens.clear();
           break;
 
@@ -346,7 +332,7 @@ ScreenManager::push_screen(Screen* s)
   assert(screen_screen == 0);
 
   screen_action = PUSH_SCREEN;
-  screen_screen = s;
+  screen_screen = boost::shared_ptr<Screen>(s);
 }
 
 void
@@ -358,10 +344,10 @@ ScreenManager::pop_screen()
 void
 ScreenManager::push_overlay(Screen* s)
 {
-  assert(overlay_screen_screen == 0);
+  assert(!overlay_screen_screen.get());
 
   overlay_screen_action = PUSH_SCREEN;
-  overlay_screen_screen = s;
+  overlay_screen_screen = boost::shared_ptr<Screen>(s);
 }
 
 void
