@@ -1,5 +1,54 @@
 Windstille ToDo
 ===============
+
+Scripting
+=========
+
+* Currently we wakeup on conditions that are broadcasted to all
+  scripts, in some situation it might make more sense to attach the
+  script directly to the object that sends the signal
+
+* some functions in scripts require '::' before them so that they can
+  be found, not quite clear why or exactly when this happens
+
+* objects are currently all exported to squirrel, while we should
+  probally use id-tags and accessor functions instead:
+
+  bob = get_object("barkeeper")
+  bob.say()
+
+* player can launch PDA or inventory when in a dialog, this will break the script
+
+* currently the ScriptManager is global, meaning scripts are never
+  cleaned up on Sector changes, this needs to be fixed
+
+* figure out proper 'namespaces' for the scripting, i.e. gfx_ or
+  video_ for all display related stuff and so on, so that
+  tab-completion works better and things become more readable
+
+* document scripting tricks somewhere:
+  spawn_object("shockwave", {pos=[0,0]})
+
+* conversations really should be data with hooks for scripts, not pure
+  scripts
+
+* print and println behave different on console
+
+Input Handling
+==============
+
+* implement proper dead-zone in input handling
+
+* allow to load multiple controller config files at once
+
+Sound Handling
+==============
+
+* split music, voice and sound fx into seperate context or allow to
+  change their volume by other means
+
+Miscellaneous
+=============
 
 * create a UTF32 string class, maybe based on basic_string<>, for use in console
 
@@ -10,17 +59,9 @@ Windstille ToDo
   their needed size and blit with floats, or do we need magic to blit
   with ints to avoid rounding errors?
 
-* player can launch PDA or inventory when in a dialog, this will break the script
-
 * add zoom via xbox360 analog trigger buttons
 
 * add pause menu to all screens that don't already have it
-
-* some functions in scripts require '::' before them so that they can
-  be found, not quite clear why or exactly when this happens
-
-* currently the ScriptManager is global, meaning scripts are never
-  cleaned up on Sector changes, this needs to be fixed
 
 * "bounce collision" error is caused by grenade that spawns into a wall
 
@@ -30,20 +71,8 @@ Windstille ToDo
   just no code) and change default screen ration to that seen in the
   artwork pictures
 
-* objects are currently all exported to squirrel, while we should
-  probally use id-tags and accessor functions instead:
-
-  bob = get_object("barkeeper")
-  bob.say()
-
 * add support for empty sectors (sectors without a player character,
   for use in intro.wst and similar cutscenes)
-
-* figure out proper 'namespaces' for the scripting, i.e. gfx_ or
-  video_ for all display related stuff and so on, so that
-  tab-completion works better and things become more readable
-
-* implement quit() scripting command that aborts a script in the middle (used for debugging)
 
 * HUD elements are whole screens, should be something simpler, also a
   seperation between HUD (energybar, speech, etc.) and Overlays
@@ -66,21 +95,11 @@ Windstille ToDo
   - particle systems
   - Dialog/Conversation
 
-* unify copyright header and #ifdef guards
+* update random number generator:
+  http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html
 
- for i in */*.hpp; do echo $i; NAME=$(echo $i | sed "s/[\/\.]/_/g;s/^/HEADER_WINDSTILLE_/" | tr [a-z] [A-Z]);  sed  -i "s/^\(#[a-z]*\) *HEADER_WINDSTILLE_.*/\1 $NAME/" $i; done
-
-* update random number generator: http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html
-
-* document scripting tricks somewhere:
-  spawn_object("shockwave", {pos=[0,0]})
-
-* miniswig causes bison++ to crash
-
-* find a astyle/bcpp/whatever configuration that matches the current
-  coding style, maybe a little script that uses Emacs would do
-
-* write a LucasArts-like dialog system (i.e. non-blocking text, instead of JRPG like boxes with portraits), see SpeechManager
+* write a LucasArts-like dialog system (i.e. non-blocking text,
+  instead of JRPG like boxes with portraits), see SpeechManager
 
 * PDA needs scrolling text thing (right analog stick?)
 
@@ -93,9 +112,6 @@ Windstille ToDo
 
 * Specify the capabilites that the different subsystems need to have
 
-* conversations really should be data with hooks for scripts, not pure
-  scripts
-
 * menu_manager.cpp doesn't use auto_ptr everywhere since
   pack(Component* ) needs to be done before some other actions, which
   can't be done in a streightforward manner with auto_ptr
@@ -104,14 +120,17 @@ Windstille ToDo
     child->set_rect()     
   child->add_item(menuitem) <- doesn't work when size isn't set
 
-* figure out why running the game engine is extremely slow in
-  valgrind, while pause menu is fast
-
 * make Console not derive from ostream
 
 * GridComponent and ParticleViewer leak
 
 * Screens might fit better into app/
+
+Profiling
+=========
+
+* figure out why running the game engine is extremely slow in
+  valgrind, while pause menu is fast
 
 * gprof results:
 
@@ -121,15 +140,11 @@ Windstille ToDo
  11.55      2.06     0.41    79225     0.00     0.00  Sprite3D::draw(Vector2f const&, Matrix const&) const
   3.94      2.20     0.14  1133610     0.00     0.00  OpenGLState::activate()
 
-Windstille Bugs
-===============
+Bugs
+====
 
-* Jane's hat is white, caused by one mesh using two textures, could be
-  fixed in either the exporter or in the model itself (FIXME: still an
-  issue? Seems to be fixed)
-  
-* quickly tapping forward-back-hold down forward makes your character play
-  the walking animation without actually moving anywhere
+* quickly tapping forward-back-hold down forward makes your character
+  play the walking animation without actually moving anywhere
    
 * Pressing left (or right), jump and and run at the same time throws an
   exception that causes the game to exit:
@@ -138,36 +153,43 @@ Windstille Bugs
 
   in general the game shouldn't crash when stuff isn't found, but
   instead fallback to placeholders and give a error message on the console
+
+* miniswig causes bison++ to crash
 
-http://orange.blender.org/blog/the-amazing-incredible-monkey-brush#more-49
+Random Things
+=============
 
-Input Handling:
----------------
-- add option to configure dead zone
-- implement proper dead-zone in input handling
-- allow to load multiple controller config files
+* create doll class or enhance character class, so that they can
+  perform tasks, walk around, etc.
 
-Sound Handling:
----------------
-- split music, voice and sound fx into seperate context or allow to
-  change their volume by other means
+* create a mission that is playable
 
-Misc:
------
+* bone animation
 
-- create doll class
-- a mission that is playable
-- polish PDA
-- bone animation
-- print and println behave different on console
-- change the game to a righthand coordinate system
-- rewrite Config class and properly seperate config from command line
+* change the game to a righthand coordinate system
+
+* rewrite Config class and properly seperate config from command line
   and config done via option menu, i.e. command line settings
   shouldn't be persistent unless told so
-- add line numbers to error messages from lisp
-- fix memory leak in SExprFileReader
-- use non-euler angles in the model viewer
-- setting glLineWidth() leads to some interesting artefacts on the
-  menus which might be a cool effect
 
+* add line numbers to error messages from lisp
+
+* use non-euler angles in the model viewer
+
+* setting glLineWidth() leads to some interesting artefacts on the
+  menus which might be a cool effect
+
+Code Cleanup
+============
+
+* unify copyright header and #ifdef guards
+
+ for i in */*.hpp; do echo $i; NAME=$(echo $i | sed "s/[\/\.]/_/g;s/^/HEADER_WINDSTILLE_/" | tr [a-z] [A-Z]);  sed  -i "s/^\(#[a-z]*\) *HEADER_WINDSTILLE_.*/\1 $NAME/" $i; done
+
+* find a astyle/bcpp/whatever configuration that matches the current
+  coding style, maybe a little script that uses Emacs would do
+
+
+http://orange.blender.org/blog/the-amazing-incredible-monkey-brush#more-49
+
 # EOF #
