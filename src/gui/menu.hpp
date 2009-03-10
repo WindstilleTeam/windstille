@@ -40,7 +40,12 @@ private:
   std::auto_ptr<MenuComponent>  menu;
 
 public:
-  Menu(const std::string& name, const Rectf& rect);
+  /** 
+   *  Construct a Menu, if \a parent is given no GUIManager will be
+   *  created and show() will not work, use create_group() instead and
+   *  add the result to your parent component.
+   */
+  Menu(const std::string& name, const Rectf& rect, Component* parent = 0);
   ~Menu();
 
   EnumMenuItem& add_enum(const std::string& name,  
@@ -54,7 +59,11 @@ public:
   void  add_button(const std::string& name,
                    const boost::function<void ()>& callback = boost::function<void ()>());
 
+  RootComponent*  get_root() const;
+  GroupComponent* get_group() const;
+
   void show();
+  std::auto_ptr<GroupComponent> create_group();
 
 private:
   Menu (const Menu&);

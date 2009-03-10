@@ -51,7 +51,7 @@ MenuManager::display_option_menu()
   gui::Menu menu("Options", create_centered_rect(500, 340));
 
   menu.add_slider("Master Volume",  config.get_int("master-volume"), 0, 100, 10,
-                 boost::bind(&MenuManager::menu_master_volume, _1));
+                  boost::bind(&MenuManager::menu_master_volume, _1));
 
   menu.add_slider("Music Volume", config.get_int("music-volume"), 0, 100, 10,
                   boost::bind(&MenuManager::menu_music_volume, _1));
@@ -97,84 +97,41 @@ MenuManager::display_option_menu()
 void
 MenuManager::display_main_menu()
 {
-  using namespace gui;
-  std::auto_ptr<GUIManager> manager(new GUIManager());
+  gui::Menu menu("", create_positioned_rect(Vector2f(400-20, 200), Sizef(250, 254)));
 
-  std::auto_ptr<GroupComponent> text_group(new GroupComponent(Rectf(Vector2f(Display::get_width()/2 - 390,
-                                                                             Display::get_height() - 100),
-                                                                    Size(800 - 20, 
-                                                                         100 - 10)),
-                                                              "",
-                                                              manager->get_root()));
+  menu.add_button("Select Scenario", boost::bind(&MenuManager::display_scenario_menu));
+  menu.add_button("Navigation Test", boost::bind(&MenuManager::menu_show_navigation_test));
+  if (0) menu.add_button("Armature Test", boost::bind(&MenuManager::menu_show_armature_test));
+  menu.add_button("Geometry Test", boost::bind(&MenuManager::menu_show_geometry_test));
+  menu.add_button("Model Viewer", boost::bind(&MenuManager::display_models_menu));
+  menu.add_button("Particle Systems", boost::bind(&MenuManager::display_particle_menu));
+  menu.add_button("Options", boost::bind(&MenuManager::display_option_menu));
+  menu.add_button("Credits", boost::bind(&MenuManager::display_credits));
+  menu.add_button("Help", boost::bind(&MenuManager::display_help));
+  menu.add_button("Quit", boost::bind(&MenuManager::menu_quit));
+    
+  { // Construct Copyright box
+    std::auto_ptr<gui::GroupComponent> text_group
+      (new gui::GroupComponent(Rectf(Vector2f(Display::get_width()/2 - 390,
+                                              Display::get_height() - 100),
+                                     Size(800 - 20, 
+                                          100 - 10)),
+                               "",
+                               menu.get_root()));
 
-  std::auto_ptr<TextView> text(new TextView(text_group->get_child_rect(), text_group.get()));
-  text->set_font(Fonts::vera12);
-  text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
-                 "\n"
-                 "This program is free software: you can redistribute it and/or modify "
-                 "it under the terms of the GNU General Public License as published by "
-                 "the Free Software Foundation, either version 3 of the License, or "
-                 "(at your option) any later version.");
-  text_group->pack(text.release());
-  manager->get_root()->add_child(text_group.release());
+    std::auto_ptr<gui::TextView> text(new gui::TextView(text_group->get_child_rect(), text_group.get()));
+    text->set_font(Fonts::vera12);
+    text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
+                   "\n"
+                   "This program is free software: you can redistribute it and/or modify "
+                   "it under the terms of the GNU General Public License as published by "
+                   "the Free Software Foundation, either version 3 of the License, or "
+                   "(at your option) any later version.");
+    text_group->pack(text.release());
+    menu.get_root()->add_child(text_group.release());
+  }
 
-  std::auto_ptr<GroupComponent> group(new GroupComponent(create_positioned_rect(Vector2f(400-20, 200), 
-                                                                                Sizef(250, 254)),
-                                                         "",
-                                                         manager->get_root()));
-
-  // Begin Menu
-  std::auto_ptr<MenuComponent> menu(new MenuComponent(group->get_child_rect(), false, group.get()));
-
-  menu->set_font(Fonts::vera20);
-
-  std::auto_ptr<ButtonMenuItem> select_scenario_button(new ButtonMenuItem(menu.get(), "Select Scenario"));
-  select_scenario_button->sig_click().connect(boost::bind(&MenuManager::display_scenario_menu));
-  menu->add_item(select_scenario_button.release());
-
-  std::auto_ptr<ButtonMenuItem> navigation_test_button(new ButtonMenuItem(menu.get(), "Navigation Test"));
-  navigation_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_navigation_test));
-  menu->add_item(navigation_test_button.release());
-
-  if (0)
-    {
-      std::auto_ptr<ButtonMenuItem> armature_test_button(new ButtonMenuItem(menu.get(), "Armature Test"));
-      armature_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_armature_test));
-      menu->add_item(armature_test_button.release());
-    }
-
-  std::auto_ptr<ButtonMenuItem> geometry_test_button(new ButtonMenuItem(menu.get(), "Geometry Test"));
-  geometry_test_button->sig_click().connect(boost::bind(&MenuManager::menu_show_geometry_test));
-  menu->add_item(geometry_test_button.release());
-
-  std::auto_ptr<ButtonMenuItem> model_viewer_button(new ButtonMenuItem(menu.get(), "Model Viewer"));
-  model_viewer_button->sig_click().connect(boost::bind(&MenuManager::display_models_menu));
-  menu->add_item(model_viewer_button.release());
-
-  std::auto_ptr<ButtonMenuItem> particles_button(new ButtonMenuItem(menu.get(), "Particle Systems"));
-  particles_button->sig_click().connect(boost::bind(&MenuManager::display_particle_menu));
-  menu->add_item(particles_button.release());
-
-  std::auto_ptr<ButtonMenuItem> options_button(new ButtonMenuItem(menu.get(), "Options"));
-  options_button->sig_click().connect(boost::bind(&MenuManager::display_option_menu));
-  menu->add_item(options_button.release());
-
-  std::auto_ptr<ButtonMenuItem> credits_button(new ButtonMenuItem(menu.get(), "Credits"));
-  credits_button->sig_click().connect(boost::bind(&MenuManager::display_credits));
-  menu->add_item(credits_button.release());
-
-  std::auto_ptr<ButtonMenuItem> help_button(new ButtonMenuItem(menu.get(), "Help"));
-  help_button->sig_click().connect(boost::bind(&MenuManager::display_help));
-  menu->add_item(help_button.release());
-
-  std::auto_ptr<ButtonMenuItem> quit_button(new ButtonMenuItem(menu.get(), "Quit"));
-  quit_button->sig_click().connect(boost::bind(&MenuManager::menu_quit));
-  menu->add_item(quit_button.release());
-  // End: Option Menu
-
-  group->pack(menu.release());
-  manager->get_root()->add_child(group.release());
-  screen_manager.push_overlay(manager.release());
+  menu.show();
 }
 
 void
@@ -286,11 +243,12 @@ MenuManager::display_help()
   using namespace gui;
   std::auto_ptr<GUIManager> manager(new GUIManager());
 
-  std::auto_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400),
+  std::auto_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400), 
                                                          "Help",
                                                          manager->get_root()));
 
-  std::auto_ptr<TextView> text(new TextView(group->get_child_rect(), group.get()));
+  std::auto_ptr<TextView> text(new TextView(group->get_child_rect(), 
+                                            group.get()));
 
   text->set_font(Fonts::vera12);
   text->set_text("This is a tech-demo of Windstille. Its not meant "
@@ -314,7 +272,7 @@ MenuManager::display_help()
                  "s - jump/ok\n"
                  );
   text->set_active(true);
-
+  
   group->pack(text.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release());

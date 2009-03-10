@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <assert.h>
 #include "component.hpp"
 #include "root_component.hpp"
 #include "gui_manager.hpp"
@@ -28,10 +29,15 @@
 
 namespace gui {
 
-Menu::Menu(const std::string& name, const Rectf& rect)
+Menu::Menu(const std::string& name, const Rectf& rect, Component* parent)
 {
-  manager.reset(new GUIManager());
-  group.reset(new GroupComponent(rect, name, manager->get_root()));
+  if (!parent)
+    {
+      manager.reset(new GUIManager());
+      parent = manager->get_root();
+    }  
+
+  group.reset(new GroupComponent(rect, name, parent));
   menu.reset(new MenuComponent(group->get_child_rect(), true, group.get()));
 
   menu->set_font(Fonts::vera20);
@@ -76,12 +82,35 @@ Menu::add_button(const std::string& name,
   menu->add_item(scenario_button.release());
 }
 
+RootComponent*
+Menu::get_root() const
+{
+  assert(manager.get());
+  return manager->get_root();
+}
+
+GroupComponent*
+Menu::get_group() const
+{
+  return group.get();
+}
+
 void
 Menu::show()
 {
+  assert(manager.get());
+
   group->pack(menu.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release());
+}
+
+std::auto_ptr<GroupComponent>
+Menu::create_group()
+{
+  assert(manager.get() == 0);
+  group->pack(menu.release());
+  return group;
 }
 
 } // namespace gui
