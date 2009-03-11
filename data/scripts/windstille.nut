@@ -103,8 +103,8 @@ class Dialog {
 
 function add_dialog(align, character, portrait, text)
 {
-  ::dialog_show(align, character, portrait, text);
-  ::wait_for_dialog();  
+  dialog_show(align, character, portrait, text);
+  wait_for_dialog();  
 }
 
 /* Some debugging/testing stuff */

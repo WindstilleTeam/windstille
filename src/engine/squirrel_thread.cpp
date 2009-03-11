@@ -184,9 +184,6 @@ SquirrelThread::update()
 
             try 
               {
-                std::cout << "Before: WakeUp: " << std::endl;
-                Scripting::print_squirrel_stack(thread);
-
                 // Try to return a value
                 if (sq_wakeupvm(thread, SQFalse, SQFalse, SQTrue) < 0)
                   {
@@ -196,13 +193,9 @@ SquirrelThread::update()
                   {
                     if(sq_getvmstate(thread) == SQ_VMSTATE_IDLE) 
                       { // Cleanup stack
-                        std::cout << "XXXXXXXX Cleanup stack" << std::endl;
                         sq_settop(thread, oldtop);
                       }
                   }
-               
-                std::cout << "After: WakeUp: " << std::endl;
-                Scripting::print_squirrel_stack(thread);
               }
             catch(std::exception& e) 
               {
@@ -250,7 +243,7 @@ SquirrelThread::call(const std::string& function)
       std::cout << "'------------------------------------------" << std::endl;
     }
 
-  std::cout << "SquirrelThread::call(\"" << function << "\")" << std::endl;
+  //std::cout << "SquirrelThread::call(\"" << function << "\")" << std::endl;
 
   oldtop = sq_gettop(thread);
 
@@ -278,12 +271,9 @@ SquirrelThread::call(const std::string& function)
     {
       sq_settop(thread, oldtop);
 
-      if (1)
+      if (0)
         std::cout << filename << ": Function '" << function << "' not found in roottable" << std::endl;
     }
-
-  std::cout << "Call: " << function << std::endl;
-  Scripting::print_squirrel_stack(thread);
 }
 
 /* EOF */

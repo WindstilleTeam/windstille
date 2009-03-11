@@ -10,7 +10,17 @@ in this list might actually be bad and better solved by other means.
 Scripting
 =========
 
-* add a way to print content of stack
+* ScriptableObject is a bad name, since all objects should be
+  scriptable in one form or another
+
+* add typechecking to __custom functions in miniswig, something like
+  this might work:
+
+  void foobar(HSQUIRRELVM vm) __custom("if")
+
+  where the string is in the syntax of sq_setparamscheck()
+
+* implement more advanced tab-completion for console
 
 * miniswig does not support __suspend with a return value, should be
   fixed, since Squirrel can handle it. Trouble is that the return
@@ -25,8 +35,12 @@ Scripting
   scripts, in some situation it might make more sense to attach the
   script directly to the object that sends the signal
 
-* some functions in scripts require '::' before them so that they can
-  be found, not quite clear why or exactly when this happens
+* some functions in data/scripts/windstille.nut require '::' before
+  them so that they can be found, not quite clear why or exactly when
+  this happens, seems to happen only in classes, not in normal
+  function, in theory at least they should get resolved by delegation
+  from the current environment to the roottable, but that doesn't
+  happen
 
 * objects are currently all exported to squirrel, while we should
   probally use id-tags and accessor functions instead:
@@ -72,6 +86,8 @@ Sound Handling
 
 Miscellaneous
 =============
+
+* When starting sector directly from command line, "Return to title screen" doesn't work
 
 * console doesn't adopt to screen size
 
@@ -186,7 +202,23 @@ Level Design
   buffer call's when it is busy, once no longer busy it would pick the
   next task from the stack. Different scripts could use different
   stack behaviour, i.e. in the lamp_sequence() it would be useful to
-  have a task-stack of size 1 and discard everything else
+  have a task-stack of size 1 and discard everything else.
+
+  In addition to spawning a script, it would be good if there would be
+  a way to spawn an object or a function, since that way the logic can
+  be kept in one file.
+
+  spawn_function(function() {
+     obj <- FoobarObject();
+     obj.run();
+  })
+
+* implement a door with two segments that slide sideways when the door
+  opens, think about how that can be implemented properly in scripting
+  (two parallel events that have to be waited for)
+
+  -> a solution in scripting isn't a good idea here, this is something
+     that would be much better solved by a 2D animation system
   
 
 Random Things

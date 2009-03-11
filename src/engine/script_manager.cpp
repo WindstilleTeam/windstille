@@ -81,32 +81,36 @@ ScriptManager::ScriptManager()
     {
       // register default error handlers
       sqstd_seterrorhandlers(vm);
-      // register squirrel libs
-      sq_pushroottable(vm);
 
-      /* FIXME: None of these should be needed for scripts
+      { // register squirrel libs in the root table
+        
+        sq_pushroottable(vm);
+      
+        /* FIXME: None of these should be needed for scripts
 
-         if(sqstd_register_bloblib(v) < 0)
-         throw SquirrelError(v, "Couldn't register blob lib");
+           if(SQ_FAILED(sqstd_register_bloblib(v)))
+           throw SquirrelError(v, "Couldn't register blob lib");
 
-         if(sqstd_register_iolib(v) < 0)
-         throw SquirrelError(v, "Couldn't register io lib");
+           if(SQ_FAILED(sqstd_register_iolib(v)))
+           throw SquirrelError(v, "Couldn't register io lib");
 
-         if(sqstd_register_systemlib(v) < 0)
-         throw SquirrelError(v, "Couldn't register system lib");
-      */
+           if(SQ_FAILED(sqstd_register_systemlib(v)))
+           throw SquirrelError(v, "Couldn't register system lib");
+        */
 
-      if(sqstd_register_mathlib(vm) < 0)
-        throw SquirrelError(vm, "Couldn't register math lib");
+        if(SQ_FAILED(sqstd_register_mathlib(vm)))
+          throw SquirrelError(vm, "Couldn't register math lib");
 
-      if(sqstd_register_stringlib(vm) < 0)
-        throw SquirrelError(vm, "Couldn't register string lib");
+        if(SQ_FAILED(sqstd_register_stringlib(vm)))
+          throw SquirrelError(vm, "Couldn't register string lib");
 
-      // register print function
-      sq_setprintfunc(vm, printfunc);
+        // register print function
+        sq_setprintfunc(vm, printfunc);
   
-      // register windstille API
-      Scripting::register_windstille_wrapper(vm);
+        // register windstille API
+        Scripting::register_windstille_wrapper(vm);
+        sq_pop(vm, 1);
+      }
 
       // Create the empty "objects" table
       sq_pushroottable(vm);
@@ -145,14 +149,20 @@ ScriptManager::run_script_file(const std::string& filename, bool global)
 
       // Execute the script
       if (SQ_FAILED(sq_call(vm, 1, false, true)))
-        throw SquirrelError(vm, "SquirrelThread::run(): " + filename + ": Couldn't start script");
-
-      if (sq_getvmstate(vm) != SQ_VMSTATE_IDLE)
         {
-          throw std::runtime_error("ScriptManager::run_script(): " + filename + ": global scripts must not suspend");
+          throw SquirrelError(vm, "SquirrelThread::run(): " + filename + ": Couldn't start script");
         }
+      else
+        {
+          sq_pop(vm, 1);
 
-      return boost::shared_ptr<SquirrelThread>();
+          if (sq_getvmstate(vm) != SQ_VMSTATE_IDLE)
+            {
+              throw std::runtime_error("ScriptManager::run_script(): '" + filename + "': global scripts must not suspend");
+            }
+
+          return boost::shared_ptr<SquirrelThread>();
+        }
     }
   else
     {
