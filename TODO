@@ -10,6 +10,12 @@ in this list might actually be bad and better solved by other means.
 Scripting
 =========
 
+* reentering a sector twice barfs because:
+
+  std::exception: Squirrel error: sectors/apartment/init.nut:
+  SquirrelThread: couldn't call 'run' (sectors/apartment/flicker.nut:
+  ScriptManager::run_script(): Script must be idle to be 'run()')
+
 * ScriptableObject is a bad name, since all objects should be
   scriptable in one form or another
 
@@ -70,6 +76,16 @@ Scripting
 Input Handling
 ==============
 
+* change of input context is troublesome: when the user selects a
+  dialog and confirms it, the character starts to walk into the
+  direction that the player indicated.
+
+  Possible solution: wait till the controller is in neutral position
+  before sending events to the next Screen
+
+* reconfigure the controls to behave like Tomb Raider (Xbox360 pad:
+  A:jump, B:duck, X:run, Y:interact), move PDA elsewhere
+
 * implement proper dead-zone in input handling
 
 * allow to load multiple controller config files at once
@@ -86,6 +102,8 @@ Sound Handling
 
 Miscellaneous
 =============
+
+* scrap inventory and redesign it
 
 * When starting sector directly from command line, "Return to title screen" doesn't work
 
