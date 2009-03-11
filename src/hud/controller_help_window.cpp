@@ -70,33 +70,36 @@ ControllerHelpWindow::draw()
 {
   const Controller& controller = InputManager::get_controller();
 
-  Display::fill_rounded_rect(Rectf(50, 50, 400, 250), 10.0f, Color(0.0f, 0.0f, 0.25f, 0.9));
-  Display::draw_rounded_rect(Rectf(50, 50, 400, 250), 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  Vector2f pos(Display::get_width()  - 350 - 16, 
+               Display::get_height() - 200 - 16);
 
-  draw_stick(Vector2f(100, 100),
+  Display::fill_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(0.0f, 0.0f, 0.25f, 0.9));
+  Display::draw_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+
+  draw_stick(pos + Vector2f(50, 50),
              controller.get_button_state(VIEW_CENTER_BUTTON),
              controller.get_axis_state(X_AXIS),
              controller.get_axis_state(Y_AXIS));
 
-  draw_stick(Vector2f(300, 200),
+  draw_stick(pos + Vector2f(250, 150),
              controller.get_button_state(VIEW_CENTER_BUTTON),
              controller.get_axis_state(X2_AXIS),
              controller.get_axis_state(Y2_AXIS));
 
-  draw_button(Vector2f(175, 100), controller.get_button_state(INVENTORY_BUTTON));
-  draw_button(Vector2f(275, 100), controller.get_button_state(PAUSE_BUTTON));
+  draw_button(pos + Vector2f(125, 50), controller.get_button_state(INVENTORY_BUTTON));
+  draw_button(pos + Vector2f(225, 50), controller.get_button_state(PAUSE_BUTTON));
 
-  Vector2f face_pos(350, 100);
-  draw_button(face_pos + Vector2f(  0,  25), controller.get_button_state(PRIMARY_BUTTON));
-  draw_button(face_pos + Vector2f (25,   0), controller.get_button_state(SECONDARY_BUTTON));
-  draw_button(face_pos + Vector2f(-25,   0), controller.get_button_state(TERTIARY_BUTTON));
-  draw_button(face_pos + Vector2f(  0, -25), controller.get_button_state(QUATERNARY_BUTTON));
+  Vector2f face_pos(300, 50);
+  draw_button(pos + face_pos + Vector2f(  0,  25), controller.get_button_state(PRIMARY_BUTTON));
+  draw_button(pos + face_pos + Vector2f (25,   0), controller.get_button_state(SECONDARY_BUTTON));
+  draw_button(pos + face_pos + Vector2f(-25,   0), controller.get_button_state(TERTIARY_BUTTON));
+  draw_button(pos + face_pos + Vector2f(  0, -25), controller.get_button_state(QUATERNARY_BUTTON));
 
-  Vector2f dpad_pos(150, 200);
-  draw_button(dpad_pos + Vector2f(  0,  25), controller.get_button_state(MENU_DOWN_BUTTON));
-  draw_button(dpad_pos + Vector2f (25,   0), controller.get_button_state(MENU_RIGHT_BUTTON));
-  draw_button(dpad_pos + Vector2f(-25,   0), controller.get_button_state(MENU_LEFT_BUTTON));
-  draw_button(dpad_pos + Vector2f(  0, -25), controller.get_button_state(MENU_UP_BUTTON));
+  Vector2f dpad_pos(100, 150);
+  draw_button(pos + dpad_pos + Vector2f(  0,  25), controller.get_button_state(MENU_DOWN_BUTTON));
+  draw_button(pos + dpad_pos + Vector2f (25,   0), controller.get_button_state(MENU_RIGHT_BUTTON));
+  draw_button(pos + dpad_pos + Vector2f(-25,   0), controller.get_button_state(MENU_LEFT_BUTTON));
+  draw_button(pos + dpad_pos + Vector2f(  0, -25), controller.get_button_state(MENU_UP_BUTTON));
 }
 
 void
