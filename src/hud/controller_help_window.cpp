@@ -37,12 +37,12 @@ ControllerHelpWindow::draw_button(const Vector2f& pos, bool pressed)
   if (pressed)
     {
       Display::fill_circle(pos, 12.0f, Color(0.8f, 0.0f, 0.0f));
-      Display::draw_circle(pos, 12.0f, Color(1.0f, 0.0f, 0.0f));
+      //Display::draw_circle(pos, 12.0f, Color(1.0f, 0.0f, 0.0f));
     }
   else
     {
       Display::fill_circle(pos, 12.0f, Color(1.0f, 1.0f, 1.0f, 0.2f));
-      Display::draw_circle(pos, 12.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+      //Display::draw_circle(pos, 12.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
     }
 }
 
@@ -53,7 +53,7 @@ ControllerHelpWindow::draw_stick(const Vector2f& pos, bool pressed, float x, flo
   Rectf rect(pos - Vector2f(size.width, size.height)/2, size);
 
   Display::fill_rounded_rect(rect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.2f));
-  Display::draw_rounded_rect(rect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  //Display::draw_rounded_rect(rect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   Vector2f stick_pos(rect.left + rect.get_width()/2  + x * (rect.get_width()-16.0f)/2,
                      rect.top  + rect.get_height()/2 + y * (rect.get_width()-16.0f)/2);
@@ -80,7 +80,7 @@ ControllerHelpWindow::draw_trigger(const Vector2f& pos, float value)
                                            rect.get_height())),
                        Color(1.0f, 0.0f, 0.0f));
 
-  Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  //Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
 }
 
 void
