@@ -172,7 +172,8 @@ InventoryImpl::update(float delta, const Controller& controller)
 
   if (moving == 0)
     {
-      if (controller.button_was_pressed(USE_BUTTON) ||
+      if (controller.button_was_pressed(OK_BUTTON) ||
+          controller.button_was_pressed(CANCEL_BUTTON) ||
           controller.button_was_pressed(INVENTORY_BUTTON))
         {
           GameSession::current()->set_control_state(GameSession::GAME);
