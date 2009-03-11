@@ -87,7 +87,7 @@ public:
 
   HSQUIRRELVM get_vm() const { return vm; }
 
-  boost::shared_ptr<SquirrelThread> get_vm(HSQUIRRELVM v) const;
+  boost::shared_ptr<SquirrelThread> get_thread(HSQUIRRELVM v) const;
 
   void fire_wakeup_event(WakeupEvent event);
   void fire_wakeup_event(WakeupData  event);

@@ -223,10 +223,10 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
 
 void print_squirrel_stack(HSQUIRRELVM v)
 {
-    printf("--------------------------------------------------------------\n");
+    printf(",-------------------------------------------------------------\n");
     int count = sq_gettop(v);
     for(int i = 1; i <= count; ++i) {
-        printf("%d: ",i);
+        printf("| %d: ",i);
         switch(sq_gettype(v, i))
         {
             case OT_NULL:
@@ -286,7 +286,7 @@ void print_squirrel_stack(HSQUIRRELVM v)
         }
         printf("\n");
     }
-    printf("--------------------------------------------------------------\n");
+    printf("'-------------------------------------------------------------\n");
 }
 
 void load_squirrel_table(HSQUIRRELVM v, int table_idx, const lisp::Lisp* lisp)

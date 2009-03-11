@@ -47,7 +47,7 @@
 #include "objects/scriptable_object.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "scripting/squirrel_error.hpp"
-#include "squirrel_vm.hpp"
+#include "squirrel_thread.hpp"
 
 #include "sector.hpp"
 

@@ -18,7 +18,7 @@
 
 #include "scripting/util.hpp"
 #include "scripting/squirrel_error.hpp"
-#include "squirrel_vm.hpp"
+#include "squirrel_thread.hpp"
 
 using Scripting::SquirrelError;
 
@@ -34,69 +34,97 @@ static SQInteger squirrel_read_char(SQUserPointer file)
     return c;
 }
 
-SquirrelThread::SquirrelThread(std::istream& in, const std::string& arg_name, HSQUIRRELVM parent_vm)
-  : name(arg_name),
-    parent_vm(parent_vm),
-    waiting_for_events(ScriptManager::NO_EVENT),
-    wakeup_time(0)
+void
+SquirrelThread::create_thread()
 {
-  vm = sq_newthread(parent_vm, 1024);
+  assert(!thread);
 
-  if (vm == 0)
+  thread = sq_newthread(parent_vm, 1024);  // create thread and store it on the stack
+
+  if (thread == 0)
     {
-      throw SquirrelError(vm, name, "Couldn't create new VM");
+      throw SquirrelError(thread, filename, "Couldn't create new THREAD");
     }
   else
-    {
-      // retrieve reference to thread from stack and increase refcounter
+    { // Create a HSQOBJECT to hold a reference to the thread
 
-      // Init the object
-      sq_resetobject(&vm_obj);
+      sq_resetobject(&thread_obj); // init the object
 
-      // store thread created by sq_newthread into vm_obj
-      if(sq_getstackobj(parent_vm, -1, &vm_obj) < 0)
+      // store thread created by sq_newthread into thread_obj
+      if (sq_getstackobj(parent_vm, -1, &thread_obj) < 0)
         {
-          throw SquirrelError(parent_vm, name, "Couldn't get coroutine vm from stack");
+          throw SquirrelError(parent_vm, filename, "Couldn't get coroutine thread from stack");
         }
       else
         {
-          // Add reference and remove object from stack
-          sq_addref(parent_vm, &vm_obj);
-          sq_pop(parent_vm, 1);
+          sq_addref(parent_vm, &thread_obj); // add reference
+          sq_pop(parent_vm, 1); // remove the thread from the stack
         }
-      
-      HSQOBJECT env;
-      sq_resetobject(&env);
+    }
+}
 
-      sq_newtable(vm);
-      if(sq_getstackobj(vm, -1, &env) < 0) throw SquirrelError(parent_vm, name, "Couldn't get table from stack");
-      sq_addref(vm, &env); // FIXME: needs to be freed
+SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm, std::istream& in, const std::string& filename)
+  : filename(filename),
+    parent_vm(parent_vm),
+    thread(0),
+    oldtop(-1),
+    waiting_for_events(ScriptManager::NO_EVENT),
+    wakeup_time(0)
+{
+  create_thread();
 
-      // Create a completly empty environment and set delegate it to the roottable
-      sq_pushobject(vm, env); // table
-      sq_pushroottable(vm);   // table, root
-      sq_setdelegate(vm, -2); // table.set_delegate(root)
-      sq_pop(vm, 1);          //
+  { // create a local environment for the thread
+    HSQOBJECT env;
+    sq_resetobject(&env);
 
-      sq_pushobject(vm, env);
-      sq_setroottable(vm);
+    sq_newtable(thread);
 
-      // FIXME: Belongs in run(), but there we don't have the 'in' anymore
-      // Compile the script and push it on the stack
-      if(sq_compile(vm, squirrel_read_char, &in, name.c_str(), true) < 0)
-        throw SquirrelError(vm, name, "Couldn't parse script");
+    // store the object in env
+    if(sq_getstackobj(thread, -1, &env) < 0) 
+      {
+        throw SquirrelError(parent_vm, filename, "couldn't get table from stack");
+      }
+    else
+      {
+        {
+          sq_addref(thread, &env); 
+          sq_pop(thread, 1); // remove env from stack
+    
+          // set old roottable as delegate on env
+          sq_pushobject(thread, env); // push env
+          sq_pushroottable(thread);   // [env, root]
+          sq_setdelegate(thread, -2); // env.set_delegate(root)
+          sq_pop(thread, 1);          // pop env
 
-      sq_pushroottable(vm);
+          // set env as new roottable
+          sq_pushobject(thread, env);
+          sq_setroottable(thread);
 
-      // Start the script that was previously compiled
-      if (SQ_FAILED(sq_call(vm, 1, false, true)))
-        throw SquirrelError(vm, name, "SquirrelThread::run(): Couldn't start script");
+          sq_release(thread, &env);
+        }
+      }
+  }
+
+  // compile the script and push it on the stack
+  if(sq_compile(thread, squirrel_read_char, &in, filename.c_str(), SQTrue) < 0)
+    throw SquirrelError(thread, filename, "Couldn't parse script");
+
+  // start the script that was previously compiled
+  sq_pushroottable(thread);
+  if (SQ_FAILED(sq_call(thread, 1, SQFalse, SQTrue)))
+    {
+      sq_pop(thread, 1); // pop the compiled closure
+      throw SquirrelError(thread, filename, "SquirrelThread::run(): Couldn't start script");
+    }
+  else
+    {
+      sq_pop(thread, 1); // pop the compiled closure
     }
 }
 
 SquirrelThread::~SquirrelThread()
 {
-  sq_release(vm, &vm_obj);  
+  sq_release(parent_vm, &thread_obj);
 }
 
 void
@@ -145,24 +173,36 @@ SquirrelThread::fire_wakeup_event(const ScriptManager::WakeupData& event)
 void
 SquirrelThread::update()
 {
-  int vm_state = sq_getvmstate(vm);
+  int thread_state = sq_getvmstate(thread);
     
-  switch(vm_state)
+  switch(thread_state)
     {
       case SQ_VMSTATE_SUSPENDED:
-        if (wakeup_time > 0 && 
-            game_time >= wakeup_time) 
+        if (wakeup_time > 0 && game_time >= wakeup_time)
           {
             waiting_for_events = ScriptManager::WakeupData(ScriptManager::NO_EVENT);
 
             try 
               {
+                std::cout << "Before: WakeUp: " << std::endl;
+                Scripting::print_squirrel_stack(thread);
+
                 // Try to return a value
-                sq_pushinteger(vm, 45); 
-                if (sq_wakeupvm(vm, SQTrue, SQTrue, SQTrue) < 0)
+                if (sq_wakeupvm(thread, SQFalse, SQFalse, SQTrue) < 0)
                   {
-                    throw SquirrelError(vm, name, "Couldn't resume script");
+                    throw SquirrelError(thread, filename, "Couldn't resume script");
                   }
+                else
+                  {
+                    if(sq_getvmstate(thread) == SQ_VMSTATE_IDLE) 
+                      { // Cleanup stack
+                        std::cout << "XXXXXXXX Cleanup stack" << std::endl;
+                        sq_settop(thread, oldtop);
+                      }
+                  }
+               
+                std::cout << "After: WakeUp: " << std::endl;
+                Scripting::print_squirrel_stack(thread);
               }
             catch(std::exception& e) 
               {
@@ -185,46 +225,65 @@ SquirrelThread::update()
 bool
 SquirrelThread::is_suspended() const
 {
-  int vm_state = sq_getvmstate(vm);
-  return vm_state == SQ_VMSTATE_SUSPENDED;
+  int thread_state = sq_getvmstate(thread);
+  return thread_state == SQ_VMSTATE_SUSPENDED;
 }
 
 bool
 SquirrelThread::is_idle() const
 {
-  int vm_state = sq_getvmstate(vm);
-  return vm_state == SQ_VMSTATE_IDLE;
+  int thread_state = sq_getvmstate(thread);
+  return thread_state == SQ_VMSTATE_IDLE;
 }
 
 void
 SquirrelThread::call(const std::string& function)
 {
-  sq_pushroottable(vm);
+  if (0)
+    { // Debug stuff that prints the current roottable and its delegate
+      sq_pushroottable(thread);
+      std::cout << ".------------------------------------------" << std::endl;
+      std::cout << "################\nRootTable:\n{{{" << Scripting::squirrel2string(thread, -1) << "\n}}}" << std::endl;
+      sq_getdelegate(thread, -1);
+      std::cout << "################\nDelegate:\n{{{" << Scripting::squirrel2string(thread, -1) << "\n}}}" << std::endl;
+      sq_pop(thread, 2);
+      std::cout << "'------------------------------------------" << std::endl;
+    }
 
-  //std::cout << "################\nRootTable:\n{{{" << Scripting::squirrel2string(vm, -1) << "\n}}}" << std::endl;
-  sq_getdelegate(vm, -1);
-  //std::cout << "################\nDelegate:\n{{{" << Scripting::squirrel2string(vm, -1) << "\n}}}" << std::endl;
-  sq_pop(vm, 1);
+  std::cout << "SquirrelThread::call(\"" << function << "\")" << std::endl;
+
+  oldtop = sq_gettop(thread);
 
   // Lookup the function in the roottable and put it on the stack
-  sq_pushstring(vm, function.c_str(), -1);
-  if (SQ_SUCCEEDED(sq_get(vm, -2)))
+  sq_pushroottable(thread);
+  sq_pushstring(thread, function.c_str(), -1);
+  if (SQ_SUCCEEDED(sq_get(thread, -2)))
     {
-      // Call the function
-      sq_pushroottable(vm); // 'this' (function environment object)
-      if (SQ_FAILED(sq_call(vm, 1, false, true)))
-        {
-          // FIXME: doesn't this mess up the stack?
-          throw SquirrelError(vm, name, "SquirrelThread: couldn't call '" + function + "'");
-        }
+      sq_pushroottable(thread);
 
-      // Cleanup
-      sq_pop(vm, 2); //pops the roottable and the function
+      if (SQ_FAILED(sq_call(thread, 1, SQFalse, SQTrue)))
+        {
+          sq_settop(thread, oldtop);
+          throw SquirrelError(thread, filename, "SquirrelThread: couldn't call '" + function + "'");
+        }
+      else
+        {
+          if(sq_getvmstate(thread) != SQ_VMSTATE_SUSPENDED) 
+            {
+              sq_settop(thread, oldtop);
+            }
+        }
     }
   else
     {
-      sq_pop(vm, 1); //pops the roottable
+      sq_settop(thread, oldtop);
+
+      if (1)
+        std::cout << filename << ": Function '" << function << "' not found in roottable" << std::endl;
     }
+
+  std::cout << "Call: " << function << std::endl;
+  Scripting::print_squirrel_stack(thread);
 }
 
 /* EOF */

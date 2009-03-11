@@ -126,7 +126,7 @@ void set_controller_help_active(bool active)
 
 void wait(HSQUIRRELVM vm, float time)
 {
-  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_vm(vm);
+  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
     {
@@ -136,7 +136,7 @@ void wait(HSQUIRRELVM vm, float time)
 
 void wait_for_dialog(HSQUIRRELVM vm)
 {
-  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_vm(vm);
+  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
     {
@@ -146,7 +146,7 @@ void wait_for_dialog(HSQUIRRELVM vm)
 
 void wait_for_camera(HSQUIRRELVM vm)
 {
-  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_vm(vm);
+  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
     {
@@ -156,7 +156,7 @@ void wait_for_camera(HSQUIRRELVM vm)
 
 void wait_for_fade(HSQUIRRELVM vm)
 {
-  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_vm(vm);
+  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
     {
@@ -254,7 +254,7 @@ int  conversation_get_selection()
 
 void wait_for_conversation(HSQUIRRELVM vm)
 {
-  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_vm(vm);
+  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
     {

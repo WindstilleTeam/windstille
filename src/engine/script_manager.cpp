@@ -29,7 +29,7 @@
 #include <sqstdmath.h>
 #include <sqstdstring.h>
 
-#include "squirrel_vm.hpp"
+#include "squirrel_thread.hpp"
 #include "app/console.hpp"
 #include "scripting/wrapper.hpp"
 #include "scripting/util.hpp"
@@ -161,7 +161,7 @@ ScriptManager::run_script_file(const std::string& filename, bool global)
       // Look if the VM is associated with the source file
       for(SquirrelThreads::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
         {
-          if ((*i)->get_name() == filename)
+          if ((*i)->get_filename() == filename)
             {
               it = i;
               break;
@@ -183,7 +183,7 @@ ScriptManager::run_script_file(const std::string& filename, bool global)
         }
       else
         { // Add VM to the list of VMs
-          squirrel_vms.push_back(boost::shared_ptr<SquirrelThread>(new SquirrelThread(in, filename, vm)));     
+          squirrel_vms.push_back(boost::shared_ptr<SquirrelThread>(new SquirrelThread(vm, in, filename)));     
           squirrel_vms.back()->call("init");
           squirrel_vms.back()->call("run");
           return squirrel_vms.back();
@@ -201,11 +201,11 @@ ScriptManager::update()
 }
 
 boost::shared_ptr<SquirrelThread>
-ScriptManager::get_vm(HSQUIRRELVM v) const
+ScriptManager::get_thread(HSQUIRRELVM v) const
 {
   for(SquirrelThreads::const_iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
     {
-      if ((*i)->get_vm() == v)
+      if ((*i)->get_thread() == v)
         return *i;
     }
 

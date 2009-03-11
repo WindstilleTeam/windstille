@@ -27,16 +27,20 @@
 class SquirrelThread
 {
 private:
-  std::string name;
+  std::string filename;
   HSQUIRRELVM parent_vm;
-  HSQUIRRELVM vm;
-  HSQOBJECT   vm_obj;
+  HSQUIRRELVM thread;
+  HSQOBJECT   thread_obj;
+
+  SQInteger oldtop;
     
   ScriptManager::WakeupData  waiting_for_events;
   float       wakeup_time;
 
+  void create_thread();
+
 public:
-  SquirrelThread(std::istream& in, const std::string& arg_name, HSQUIRRELVM parent_vm);
+  SquirrelThread(HSQUIRRELVM parent_vm, std::istream& in, const std::string& arg_name);
   ~SquirrelThread();
 
   void set_wakeup_event(const ScriptManager::WakeupData&  event, float timeout = -1);
@@ -51,9 +55,13 @@ public:
   bool is_suspended() const;
   bool is_idle() const;
 
-  std::string get_name() const { return name; }
-  HSQUIRRELVM get_vm() const { return vm; }
+  std::string get_filename() const { return filename; }
+  HSQUIRRELVM get_thread() const { return thread; }
   void call(const std::string& function);
+
+private:
+  SquirrelThread(const SquirrelThread&);
+  SquirrelThread& operator=(const SquirrelThread&);
 };
 
 #endif
