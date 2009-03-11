@@ -25,91 +25,83 @@
 
 ControllerHelpWindow* ControllerHelpWindow::current_ = 0;
 
-class ControllerHelpWindowImpl
-{
-public:
-  std::auto_ptr<TextArea> text_area;
-  bool active;
-};
-
 ControllerHelpWindow::ControllerHelpWindow()
-  : impl(new ControllerHelpWindowImpl)
 {
   current_ = this;
-  int width  = 200;
-  int height = 120;
-  
-  impl->active = false;
-  impl->text_area = std::auto_ptr<TextArea>(new TextArea(Rect(Point(Display::get_width() - width - 16,
-                                                                    Display::get_height() - height - 16),
-                                                              Size(width, height)), false));
-  impl->text_area->set_font(Fonts::ttffont);
-  impl->text_area->set_text("Control Help\n"
-                            "------------\n"
-                            "walk: left/right\n"
-                            "duck: down\n\n"
-                            "primary/run:    s\n"
-                            "secondary/jump: d\n"
-                            "tertiary:       a\n"
-                            "pda:            w\n"
-                            );
+}
+
+void
+ControllerHelpWindow::draw_button(const Vector2f& pos, bool pressed)
+{  
+  if (pressed)
+    {
+      Display::fill_circle(pos, 12.0f, Color(0.8f, 0.0f, 0.0f));
+      Display::draw_circle(pos, 12.0f, Color(1.0f, 0.0f, 0.0f));
+    }
+  else
+    {
+      Display::fill_circle(pos, 12.0f, Color(1.0f, 1.0f, 1.0f, 0.2f));
+      Display::draw_circle(pos, 12.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+    }
+}
+
+void
+ControllerHelpWindow::draw_stick(const Vector2f& pos, bool pressed, float x, float y)
+{
+  Size size(75, 75);
+  Rectf rect(pos - Vector2f(size.width, size.height)/2, size);
+
+  Display::fill_rounded_rect(rect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.2f));
+  Display::draw_rounded_rect(rect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+
+  Vector2f stick_pos(rect.left + rect.get_width()/2  + x * (rect.get_width()-16.0f)/2,
+                     rect.top  + rect.get_height()/2 + y * (rect.get_width()-16.0f)/2);
+
+  if (pressed)
+    Display::fill_circle(stick_pos, 10.0f, Color(0.8f, 0, 0));
+  else
+    Display::fill_circle(stick_pos, 10.0f, Color(1.0f, 0, 0, 0.25f));
+
+  Display::draw_circle(stick_pos, 10.0f, Color(1.0f, 0, 0)); 
 }
 
 void
 ControllerHelpWindow::draw()
 {
-  if (!impl->active)
-    return;
-    
-  const Rectf& rect = impl->text_area->get_rect().grow(8.0f);
+  const Controller& controller = InputManager::get_controller();
 
-  Display::fill_rounded_rect(rect, 16.0f, Color(0.3f, 0.3f, 0.5f, 0.5f));
-  Display::draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
-  impl->text_area->draw();
+  Display::fill_rounded_rect(Rectf(50, 50, 400, 250), 10.0f, Color(0.0f, 0.0f, 0.25f, 0.9));
+  Display::draw_rounded_rect(Rectf(50, 50, 400, 250), 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-  Controller controller = InputManager::get_controller();
-  
-  Rectf crect(Vector2f(rect.right - 100, rect.top - 100 - 8.0f),
-              Size(100, 100));
+  draw_stick(Vector2f(100, 100),
+             controller.get_button_state(VIEW_CENTER_BUTTON),
+             controller.get_axis_state(X_AXIS),
+             controller.get_axis_state(Y_AXIS));
 
-  Display::fill_rounded_rect(crect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.2f));
-  Display::draw_rounded_rect(crect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  draw_stick(Vector2f(300, 200),
+             controller.get_button_state(VIEW_CENTER_BUTTON),
+             controller.get_axis_state(X2_AXIS),
+             controller.get_axis_state(Y2_AXIS));
 
-  Vector2f pos(crect.left + crect.get_width()/2  + controller.get_axis_state(X_AXIS) * (crect.get_width()-16.0f)/2,
-             crect.top  + crect.get_height()/2 + controller.get_axis_state(Y_AXIS)   * (crect.get_width()-16.0f)/2);
+  draw_button(Vector2f(175, 100), controller.get_button_state(INVENTORY_BUTTON));
+  draw_button(Vector2f(275, 100), controller.get_button_state(PAUSE_BUTTON));
 
-  Display::fill_circle(pos, 10.0f, Color(0.8f, 0, 0));
-  Display::draw_circle(pos, 10.0f, Color(1.0f, 0, 0));
+  Vector2f face_pos(350, 100);
+  draw_button(face_pos + Vector2f(  0,  25), controller.get_button_state(PRIMARY_BUTTON));
+  draw_button(face_pos + Vector2f (25,   0), controller.get_button_state(SECONDARY_BUTTON));
+  draw_button(face_pos + Vector2f(-25,   0), controller.get_button_state(TERTIARY_BUTTON));
+  draw_button(face_pos + Vector2f(  0, -25), controller.get_button_state(QUATERNARY_BUTTON));
 
-  for(int i = 0; i < 6; ++i)
-    {
-      if (controller.get_button_state(i))
-        {
-          Display::fill_circle(Vector2f(crect.left - 16.0f, crect.top + (crect.get_height()-20)/3 * i + 10.0f),
-                               10.0f, Color(0.8f, 0, 0));
-          Display::draw_circle(Vector2f(crect.left - 16.0f, crect.top + (crect.get_height()-20)/3 * i + 10.0f),
-                               10.0f, Color(1.0f, 0.0f, 0.0f));
-        }
-      else
-        {
-          Display::fill_circle(Vector2f(crect.left - 16.0f, crect.top + (crect.get_height()-20)/3 * i + 10.0f),
-                               10.0f, Color(1.0f, 1.0f, 1.0f, 0.2f));
-          Display::draw_circle(Vector2f(crect.left - 16.0f, crect.top + (crect.get_height()-20)/3 * i + 10.0f),
-                               10.0f,  Color(1.0f, 1.0f, 1.0f, 0.5f));
-        }
-    }
+  Vector2f dpad_pos(150, 200);
+  draw_button(dpad_pos + Vector2f(  0,  25), controller.get_button_state(MENU_DOWN_BUTTON));
+  draw_button(dpad_pos + Vector2f (25,   0), controller.get_button_state(MENU_RIGHT_BUTTON));
+  draw_button(dpad_pos + Vector2f(-25,   0), controller.get_button_state(MENU_LEFT_BUTTON));
+  draw_button(dpad_pos + Vector2f(  0, -25), controller.get_button_state(MENU_UP_BUTTON));
 }
 
 void
 ControllerHelpWindow::update(float delta, const Controller& )
 {
-  impl->text_area->update(delta);
-}
-
-void
-ControllerHelpWindow::set_active(bool active)
-{
-  impl->active = active;
 }
 
 /* EOF */

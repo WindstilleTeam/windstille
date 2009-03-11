@@ -27,12 +27,16 @@ class ControllerHelpWindowImpl;
 /** */
 class ControllerHelpWindow : public Screen
 {
+private:
+  void draw_button(const Vector2f& pos, bool pressed);
+  void draw_stick(const Vector2f& pos, bool pressed, float x, float y);
+  
 public:
   ControllerHelpWindow(); 
 
   void draw();
   void update(float delta, const Controller& controller);
-  void set_active(bool active);
+
   static ControllerHelpWindow* current() { return current_; }
 
 private:

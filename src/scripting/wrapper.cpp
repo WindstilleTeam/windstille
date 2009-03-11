@@ -776,29 +776,6 @@ static SQInteger camera_set_zoom_wrapper(HSQUIRRELVM vm)
 
 }
 
-static SQInteger set_controller_help_active_wrapper(HSQUIRRELVM vm)
-{
-  SQBool arg0;
-  if(SQ_FAILED(sq_getbool(vm, 2, &arg0))) {
-    sq_throwerror(vm, _SC("Argument 1 not a bool"));
-    return SQ_ERROR;
-  }
-
-  try {
-    Scripting::set_controller_help_active(arg0 == SQTrue);
-
-    return 0;
-
-  } catch(std::exception& e) {
-    sq_throwerror(vm, e.what());
-    return SQ_ERROR;
-  } catch(...) {
-    sq_throwerror(vm, _SC("Unexpected exception while executing function 'set_controller_help_active'"));
-    return SQ_ERROR;
-  }
-
-}
-
 static SQInteger speech_show_wrapper(HSQUIRRELVM vm)
 {
   const SQChar* arg0;
@@ -1832,13 +1809,6 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'camera_set_zoom'");
-  }
-
-  sq_pushstring(v, "set_controller_help_active", -1);
-  sq_newclosure(v, &set_controller_help_active_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t b ");
-  if(SQ_FAILED(sq_createslot(v, -3))) {
-    throw SquirrelError(v, "Couldn't register function 'set_controller_help_active'");
   }
 
   sq_pushstring(v, "speech_show", -1);

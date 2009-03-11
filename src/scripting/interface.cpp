@@ -119,11 +119,6 @@ void camera_set_active(bool active)
     Camera::current()->set_mode(Camera::CAMERA_INACTIVE);
 }
 
-void set_controller_help_active(bool active)
-{
-  ControllerHelpWindow::current()->set_active(active);
-}
-
 void wait(HSQUIRRELVM vm, float time)
 {
   boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);

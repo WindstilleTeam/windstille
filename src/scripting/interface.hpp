@@ -46,7 +46,6 @@ void camera_end_path();
 
 void camera_set_pos(float x, float y);
 void camera_set_zoom(float z);
-void set_controller_help_active(bool active);
 
 // dialog alignment constants
 static const int VCENTER = 0x00;

@@ -40,6 +40,8 @@ enum InputEventName
     PRIMARY_BUTTON,   // used to ok a dialog or for running
     SECONDARY_BUTTON, // used to cancel a dialog or for jumping
     TERTIARY_BUTTON,  // used to cancel a dialog or for jumping
+    QUATERNARY_BUTTON, 
+
     PDA_BUTTON,       // display the PDA
     INVENTORY_BUTTON, // display inventory button
     
@@ -61,7 +63,9 @@ enum InputEventName
 
 #define JUMP_BUTTON   PRIMARY_BUTTON
 #define RUN_BUTTON    TERTIARY_BUTTON
-#define USE_BUTTON    SECONDARY_BUTTON
+#define USE_BUTTON    QUATERNARY_BUTTON
+#define CRAWL_BUTTON  SECONDARY_BUTTON
+
 #define OK_BUTTON     PRIMARY_BUTTON
 #define CANCEL_BUTTON SECONDARY_BUTTON
 

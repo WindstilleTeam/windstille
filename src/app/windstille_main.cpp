@@ -169,9 +169,10 @@ WindstilleMain::init_modules()
   ScriptManager::current()->run_script_file("scripts/windstille.nut", true);
 
   { // Fill controller_description with data
-    controller_description.add_button("primary-button",   PRIMARY_BUTTON);
-    controller_description.add_button("secondary-button", SECONDARY_BUTTON);
-    controller_description.add_button("tertiary-button",  TERTIARY_BUTTON);
+    controller_description.add_button("primary-button",    PRIMARY_BUTTON);
+    controller_description.add_button("secondary-button",  SECONDARY_BUTTON);
+    controller_description.add_button("tertiary-button",   TERTIARY_BUTTON);
+    controller_description.add_button("quaternary-button", QUATERNARY_BUTTON);
 
     controller_description.add_button("menu-up-button",   MENU_UP_BUTTON);
     controller_description.add_button("menu-down-button", MENU_DOWN_BUTTON);
