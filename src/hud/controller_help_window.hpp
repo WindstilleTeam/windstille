@@ -30,6 +30,7 @@ class ControllerHelpWindow : public Screen
 private:
   void draw_button(const Vector2f& pos, bool pressed);
   void draw_stick(const Vector2f& pos, bool pressed, float x, float y);
+  void draw_trigger(const Vector2f& pos, float value);
   
 public:
   ControllerHelpWindow(); 

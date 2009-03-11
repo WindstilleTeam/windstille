@@ -48,6 +48,7 @@ private:
   int   last_fps;
   float overlap_delta;
   bool  do_quit;
+  bool show_controller_help_window;
 
 public:
   ScreenManager();

@@ -32,6 +32,7 @@
 #include "input/input_configurator.hpp"
 #include "sound/sound_manager.hpp"
 #include "gui/gui_manager.hpp"
+#include "hud/controller_help_window.hpp"
 #include "screen_manager.hpp"
 
 // GUI Stuff, can be removed if gui is a bit better organised
@@ -50,13 +51,14 @@
 #endif
 
 ScreenManager screen_manager; 
-
+
 ScreenManager::ScreenManager()
   : time_counter(0),
     frame_counter(0),
     last_fps(0),
     overlap_delta(0),
-    do_quit(false)
+    do_quit(false),
+    show_controller_help_window(false)
 {
   screen_action = NONE;
   overlay_screen_action = NONE;
@@ -76,6 +78,8 @@ ScreenManager::run()
   do_quit = false;
 
   ticks = SDL_GetTicks();
+
+  ControllerHelpWindow controller_help_window;
 
   while (!do_quit)
     {
@@ -105,7 +109,7 @@ ScreenManager::run()
   
           delta -= step;
         }
-
+      
       overlap_delta = delta;
 
       SoundManager::current()->update();
@@ -115,6 +119,9 @@ ScreenManager::run()
 
       if (!overlay_screens.empty())
         overlay_screens.back()->draw();
+
+      if (show_controller_help_window)
+        controller_help_window.draw();
 
       console.draw();
 
@@ -127,53 +134,53 @@ ScreenManager::run()
       // Commit any pending screen actions
       switch(overlay_screen_action)
         {
-        case PUSH_SCREEN:
-          overlay_screens.push_back(overlay_screen_screen);
-          overlay_screen_screen = boost::shared_ptr<Screen>();
-          break;
+          case PUSH_SCREEN:
+            overlay_screens.push_back(overlay_screen_screen);
+            overlay_screen_screen = boost::shared_ptr<Screen>();
+            break;
 
-        case POP_SCREEN:
-          if (overlay_screens.empty())
-            {
-              std::cout << "Error: ScreenManager: trying to pop_overlay with empty stack" << std::endl;
-            }
-          else
-            {
-              overlay_screens.pop_back();
-            }
-          break;
+          case POP_SCREEN:
+            if (overlay_screens.empty())
+              {
+                std::cout << "Error: ScreenManager: trying to pop_overlay with empty stack" << std::endl;
+              }
+            else
+              {
+                overlay_screens.pop_back();
+              }
+            break;
 
-        case CLEAR_SCREENS:
-          overlay_screens.clear();
-          break;
+          case CLEAR_SCREENS:
+            overlay_screens.clear();
+            break;
 
-        case NONE:
-          // nothing
-          break;
+          case NONE:
+            // nothing
+            break;
         }
       overlay_screen_action = NONE;
 
       switch(screen_action)
         {
-        case PUSH_SCREEN:
-          screens.push_back(screen_screen);
-          screen_screen = boost::shared_ptr<Screen>();
-          screens.back()->on_startup();
-          break;
-
-        case POP_SCREEN:
-          screens.pop_back();
-          if (!screens.empty())
+          case PUSH_SCREEN:
+            screens.push_back(screen_screen);
+            screen_screen = boost::shared_ptr<Screen>();
             screens.back()->on_startup();
-          break;
+            break;
 
-        case CLEAR_SCREENS:
-          screens.clear();
-          break;
+          case POP_SCREEN:
+            screens.pop_back();
+            if (!screens.empty())
+              screens.back()->on_startup();
+            break;
 
-        case NONE:
-          // nothing
-          break;
+          case CLEAR_SCREENS:
+            screens.clear();
+            break;
+
+          case NONE:
+            // nothing
+            break;
         }
       screen_action = NONE;
 
@@ -189,123 +196,127 @@ ScreenManager::poll_events()
     {
       switch(event.type)
         {
-        case SDL_QUIT:
-          // FIXME: This should be a bit more gentle, but will do for now
-          std::cout << "Ctrl-c or Window-close pressed, game is going to quit" << std::endl;
-          quit();
-          break;
+          case SDL_QUIT:
+            // FIXME: This should be a bit more gentle, but will do for now
+            std::cout << "Ctrl-c or Window-close pressed, game is going to quit" << std::endl;
+            quit();
+            break;
           
-        case SDL_ACTIVEEVENT:
-          // event.active
-          break;
+          case SDL_ACTIVEEVENT:
+            // event.active
+            break;
           
-        case SDL_VIDEORESIZE:
-          // event.resize
-          break;
+          case SDL_VIDEORESIZE:
+            // event.resize
+            break;
               
-        case SDL_VIDEOEXPOSE:
-          // event.expose
-          break;
+          case SDL_VIDEOEXPOSE:
+            // event.expose
+            break;
                 
-        case SDL_USEREVENT:
-          // event.user
-          break;
+          case SDL_USEREVENT:
+            // event.user
+            break;
                     
-        case SDL_SYSWMEVENT:
-          // event.syswm
-          break;
-          break;
+          case SDL_SYSWMEVENT:
+            // event.syswm
+            break;
+            break;
 
-        case SDL_KEYDOWN:
-        case SDL_KEYUP:
-          if (event.key.state)
-            {    
-              switch (event.key.keysym.sym)
-                {
-                case SDLK_F6:
-                  SDL_ShowCursor(SDL_ENABLE);   // SDL_ENABLE to show the mouse cursor (default)
-                  SDL_WM_GrabInput(SDL_GRAB_OFF); // SDL_GRAB_OFF to not grab input (default)
-                  break;
+          case SDL_KEYDOWN:
+          case SDL_KEYUP:
+            if (event.key.state)
+              {    
+                switch (event.key.keysym.sym)
+                  {
+                    case SDLK_F6:
+                      SDL_ShowCursor(SDL_ENABLE);   // SDL_ENABLE to show the mouse cursor (default)
+                      SDL_WM_GrabInput(SDL_GRAB_OFF); // SDL_GRAB_OFF to not grab input (default)
+                      break;
 
-                case SDLK_F7:
-                  SDL_ShowCursor(SDL_DISABLE);   // SDL_ENABLE to show the mouse cursor (default)
-                  SDL_WM_GrabInput(SDL_GRAB_ON); // SDL_GRAB_OFF to not grab input (default)
-                  break;
-      
-                case SDLK_F9:
-                  push_overlay(new InputConfigurator());
-                  break;
+                    case SDLK_F7:
+                      SDL_ShowCursor(SDL_DISABLE);   // SDL_ENABLE to show the mouse cursor (default)
+                      SDL_WM_GrabInput(SDL_GRAB_ON); // SDL_GRAB_OFF to not grab input (default)
+                      break;
+                  
+                    case SDLK_F8:
+                      show_controller_help_window = !show_controller_help_window;
+                      break;
 
-                case SDLK_F10:
-                  config.set_bool("show-fps", !config.get_bool("show-fps"));
-                  break;
+                    case SDLK_F9:
+                      push_overlay(new InputConfigurator());
+                      break;
+
+                    case SDLK_F10:
+                      config.set_bool("show-fps", !config.get_bool("show-fps"));
+                      break;
               
-                case SDLK_F11:
-                  config.set_bool("fullscreen", !config.get_bool("fullscreen"));
-                  Display::set_fullscreen(config.get_bool("fullscreen"));
-                  break;
+                    case SDLK_F11:
+                      config.set_bool("fullscreen", !config.get_bool("fullscreen"));
+                      Display::set_fullscreen(config.get_bool("fullscreen"));
+                      break;
               
 #ifndef WIN32
-                case SDLK_F12:
-                  {
-                    // FIXME: Replace this with Physfs stuff
-                    int count = 0;
-                    std::string filename;
-                    do {
-                      filename = (boost::format("/tmp/windstille%04d.png") % count).str();
-                      count += 1;
-                    } while(access(filename.c_str(), F_OK) == 0);
+                    case SDLK_F12:
+                      {
+                        // FIXME: Replace this with Physfs stuff
+                        int count = 0;
+                        std::string filename;
+                        do {
+                          filename = (boost::format("/tmp/windstille%04d.png") % count).str();
+                          count += 1;
+                        } while(access(filename.c_str(), F_OK) == 0);
 
-                    Display::save_screenshot(filename);
-                    console << "Writing screenshot to: '" << filename << "'" << std::endl;
-                  }
-                  break;
+                        Display::save_screenshot(filename);
+                        console << "Writing screenshot to: '" << filename << "'" << std::endl;
+                      }
+                      break;
 #endif
               
-                default:
-                  if (!console.is_active())
-                    {
-                      if (!overlay_screens.empty())
-                        overlay_screens.back()->handle_event(event);
-                      else if (!screens.empty())
-                        screens.back()->handle_event(event);
-                    }
-                  break;
-                }
-            }
+                    default:
+                      if (!console.is_active())
+                        {
+                          if (!overlay_screens.empty())
+                            overlay_screens.back()->handle_event(event);
+                          else if (!screens.empty())
+                            screens.back()->handle_event(event);
+                        }
+                      break;
+                  }
+              }
               
-          if (!console.is_active() && event.key.state && event.key.keysym.sym == SDLK_F1)
-            {
-              console.activate();
-            }
-          else
-            {
-              if (InputManagerSDL::current())
-                InputManagerSDL::current()->on_event(event);
-            }
-          break;
+            if (!console.is_active() && event.key.state && event.key.keysym.sym == SDLK_F1)
+              {
+                console.activate();
+              }
+            else
+              {
+                if (InputManagerSDL::current())
+                  InputManagerSDL::current()->on_event(event);
+              }
+            break;
 
-        case SDL_MOUSEBUTTONUP:
-        case SDL_MOUSEBUTTONDOWN:
-        case SDL_MOUSEMOTION:
-        case SDL_JOYAXISMOTION:
-        case SDL_JOYBALLMOTION:
-        case SDL_JOYHATMOTION:
-        case SDL_JOYBUTTONUP:
-        case SDL_JOYBUTTONDOWN:
-          if (InputManagerSDL::current())
-            InputManagerSDL::current()->on_event(event);
+          case SDL_MOUSEBUTTONUP:
+          case SDL_MOUSEBUTTONDOWN:
+          case SDL_MOUSEMOTION:
+          case SDL_JOYAXISMOTION:
+          case SDL_JOYBALLMOTION:
+          case SDL_JOYHATMOTION:
+          case SDL_JOYBUTTONUP:
+          case SDL_JOYBUTTONDOWN:
+            if (InputManagerSDL::current())
+              InputManagerSDL::current()->on_event(event);
 
-          if (!overlay_screens.empty())
-            overlay_screens.back()->handle_event(event);
-          break;
+            if (!overlay_screens.empty())
+              overlay_screens.back()->handle_event(event);
+            break;
         
-        default:
-          if (!overlay_screens.empty())
-            overlay_screens.back()->handle_event(event);
-          else if (!screens.empty())
-            screens.back()->handle_event(event);
-          break;
+          default:
+            if (!overlay_screens.empty())
+              overlay_screens.back()->handle_event(event);
+            else if (!screens.empty())
+              screens.back()->handle_event(event);
+            break;
         }
     }
 }
@@ -367,5 +378,5 @@ ScreenManager::quit()
 {
   do_quit = true;
 }
-
+
 /* EOF */

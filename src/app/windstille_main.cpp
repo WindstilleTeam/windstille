@@ -169,24 +169,33 @@ WindstilleMain::init_modules()
   ScriptManager::current()->run_script_file("scripts/windstille.nut", true);
 
   { // Fill controller_description with data
+    
+    // DPad
+    controller_description.add_button("menu-up-button",    MENU_UP_BUTTON);
+    controller_description.add_button("menu-down-button",  MENU_DOWN_BUTTON);
+    controller_description.add_button("menu-left-button",  MENU_LEFT_BUTTON);
+    controller_description.add_button("menu-right-button", MENU_RIGHT_BUTTON);
+
+    // Face Button
     controller_description.add_button("primary-button",    PRIMARY_BUTTON);
     controller_description.add_button("secondary-button",  SECONDARY_BUTTON);
     controller_description.add_button("tertiary-button",   TERTIARY_BUTTON);
     controller_description.add_button("quaternary-button", QUATERNARY_BUTTON);
 
-    controller_description.add_button("menu-up-button",   MENU_UP_BUTTON);
-    controller_description.add_button("menu-down-button", MENU_DOWN_BUTTON);
+    // Stick Buttons
+    controller_description.add_button("left-stick-button",  LEFT_STICK_BUTTON);
+    controller_description.add_button("right-stick-button", RIGHT_STICK_BUTTON);
 
-    controller_description.add_button("menu-left-button",  MENU_LEFT_BUTTON);
-    controller_description.add_button("menu-right-button", MENU_RIGHT_BUTTON);
-  
-    controller_description.add_button("view-center-button", VIEW_CENTER_BUTTON);
+    // Shoulder Button
+    controller_description.add_button("left-shoulder-button",  LEFT_SHOULDER_BUTTON);
+    controller_description.add_button("right-shoulder-button", RIGHT_SHOULDER_BUTTON);
 
-    controller_description.add_button("pda-button",       PDA_BUTTON);
-    controller_description.add_button("inventory-button", INVENTORY_BUTTON);
+    // Back/Start
+    controller_description.add_button("select-button",    SELECT_BUTTON);
+    controller_description.add_button("start-button",     START_BUTTON);
 
-    controller_description.add_button("aim-button",       AIM_BUTTON);
-    controller_description.add_button("pause-button",     PAUSE_BUTTON);
+    controller_description.add_axis("left-trigger-axis",  LEFT_TRIGGER_AXIS);
+    controller_description.add_axis("right-trigger-axis", RIGHT_TRIGGER_AXIS);
 
     controller_description.add_axis("x-axis", X_AXIS);
     controller_description.add_axis("y-axis", Y_AXIS);

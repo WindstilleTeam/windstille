@@ -29,25 +29,29 @@ enum InputEventName
     MOUSE_MOTION_X, 
     MOUSE_MOTION_Y, 
 
-    X_AXIS, // used to run left/right
-    Y_AXIS,  // used to aim up/down
+    X_AXIS,
+    Y_AXIS,
 
     X2_AXIS,
     Y2_AXIS, 
+
+    LEFT_STICK_BUTTON,    
+    RIGHT_STICK_BUTTON,
+
+    PRIMARY_BUTTON,
+    SECONDARY_BUTTON,
+    TERTIARY_BUTTON,
+    QUATERNARY_BUTTON,
+
+    LEFT_SHOULDER_BUTTON,
+    RIGHT_SHOULDER_BUTTON,
+
+    LEFT_TRIGGER_AXIS,
+    RIGHT_TRIGGER_AXIS,
+
+    SELECT_BUTTON,
+    START_BUTTON,
     
-    VIEW_CENTER_BUTTON,
-
-    PRIMARY_BUTTON,   // used to ok a dialog or for running
-    SECONDARY_BUTTON, // used to cancel a dialog or for jumping
-    TERTIARY_BUTTON,  // used to cancel a dialog or for jumping
-    QUATERNARY_BUTTON, 
-
-    PDA_BUTTON,       // display the PDA
-    INVENTORY_BUTTON, // display inventory button
-    
-    PAUSE_BUTTON,     // used to pause the game
-    AIM_BUTTON,       // used to draw the gun and aim
-
     // Keys for menu navigation, they come with hardcoded defaults for
     // the keyboard, a joystick might emmit them as well
     ESCAPE_BUTTON,
@@ -61,6 +65,7 @@ enum InputEventName
     LAST_EVENT
   };
 
+// Map the physical buttons to logical names
 #define JUMP_BUTTON   PRIMARY_BUTTON
 #define RUN_BUTTON    TERTIARY_BUTTON
 #define USE_BUTTON    QUATERNARY_BUTTON
@@ -68,6 +73,13 @@ enum InputEventName
 
 #define OK_BUTTON     PRIMARY_BUTTON
 #define CANCEL_BUTTON SECONDARY_BUTTON
+
+#define VIEW_CENTER_BUTTON RIGHT_STICK_BUTTON
+#define PAUSE_BUTTON       START_BUTTON
+#define PDA_BUTTON         SELECT_BUTTON
+
+#define INVENTORY_BUTTON   LEFT_SHOULDER_BUTTON
+#define AIM_BUTTON         RIGHT_SHOULDER_BUTTON
 
 extern ControllerDescription controller_description;
 

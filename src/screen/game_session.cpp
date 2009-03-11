@@ -85,8 +85,6 @@ public:
 
   Color fade_color;
 
-  // GUI Elements
-  ControllerHelpWindow controller_help_window;
   SpeechManager speech_manager;
 
   // Active GUI Elements
@@ -139,12 +137,6 @@ GameSessionImpl::draw()
 
   // Render the scene to the screen
   sc.render();
-
-  if (!cutscene_mode)
-    {
-      // Draw HUD
-      controller_help_window.draw();
-    }
 
   if (cutscene_mode || cutscene_value > 0.0f)
     {
@@ -259,7 +251,6 @@ GameSessionImpl::update(float delta, const Controller& controller)
           break;
         }
       
-      controller_help_window.update(delta, controller);
       speech_manager.update(delta, controller);
     }
 

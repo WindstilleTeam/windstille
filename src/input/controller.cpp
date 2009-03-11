@@ -28,6 +28,24 @@ Controller::Controller()
 }
 
 float
+Controller::get_trigger_state(int name) const
+{
+  float value = get_axis_state(name)/2.0f + 0.5f;
+  if (value < 0.001f)
+    {
+      return 0;
+    }
+  else if (value > 0.999f)
+    {
+      return 1.0f;
+    }
+  else
+    {
+      return value;
+    }
+}
+
+float
 Controller::get_axis_state(int id) const
 {
   assert(id < int(states.size()));

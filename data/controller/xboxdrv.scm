@@ -8,17 +8,22 @@
  (x2-axis (joystick-axis (device 0)  (axis 2)))
  (y2-axis (joystick-axis (device 0)  (axis 3)))
 
- (view-center-button (joystick-button (device 0)  (button 10)))
+ (left-trigger-axis   (joystick-axis (device 0)  (axis 5)))
+ (right-trigger-axis  (joystick-axis (device 0)  (axis 4)))
+
+ (left-stick-button  (joystick-button (device 0)  (button  9)))
+ (right-stick-button (joystick-button (device 0)  (button 10)))
 
  (primary-button    (joystick-button (device 0)  (button 0)))
  (secondary-button  (joystick-button (device 0)  (button 1)))
  (tertiary-button   (joystick-button (device 0)  (button 2)))
+ (quaternary-button (joystick-button (device 0)  (button 3)))
 
- (pda-button        (joystick-button (device 0)  (button 3)))
+ (left-shoulder-button    (joystick-button (device 0)  (button 4)))
+ (right-shoulder-button   (joystick-button (device 0)  (button 5)))
 
- (aim-button        (joystick-button (device 0)  (button 5)))
- (pause-button      (joystick-button (device 0)  (button 7)))
- (inventory-button  (joystick-button (device 0)  (button 6)))
+ (select-button     (joystick-button (device 0)  (button 6)))
+ (start-button      (joystick-button (device 0)  (button 7)))
 
  ;; allow to use the dpad for menu navigation
  (menu-up-button    (joystick-axis-button (device 0) (axis 7) (up #t)))

@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <memory>
 #include "input/input_manager.hpp"
 #include "display/display.hpp"
@@ -66,6 +67,23 @@ ControllerHelpWindow::draw_stick(const Vector2f& pos, bool pressed, float x, flo
 }
 
 void
+ControllerHelpWindow::draw_trigger(const Vector2f& pos, float value)
+{
+  Sizef size(60, 20);
+  Rectf rect(pos - Vector2f(size.width/2, size.height/2), size);
+
+  Display::fill_rect(rect,  Color(1.0f, 1.0f, 1.0f, 0.2f));
+  
+  if (value > 0.0f)
+    Display::fill_rect(Rectf(Vector2f(rect.left, rect.top),
+                                     Sizef(rect.get_width() * value,
+                                           rect.get_height())),
+                       Color(1.0f, 0.0f, 0.0f));
+
+  Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+}
+
+void
 ControllerHelpWindow::draw()
 {
   const Controller& controller = InputManager::get_controller();
@@ -76,20 +94,26 @@ ControllerHelpWindow::draw()
   Display::fill_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(0.0f, 0.0f, 0.25f, 0.9));
   Display::draw_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-  draw_stick(pos + Vector2f(50, 50),
-             controller.get_button_state(VIEW_CENTER_BUTTON),
+  draw_stick(pos + Vector2f(50, 75),
+             controller.get_button_state(LEFT_STICK_BUTTON),
              controller.get_axis_state(X_AXIS),
              controller.get_axis_state(Y_AXIS));
 
   draw_stick(pos + Vector2f(250, 150),
-             controller.get_button_state(VIEW_CENTER_BUTTON),
+             controller.get_button_state(RIGHT_STICK_BUTTON),
              controller.get_axis_state(X2_AXIS),
              controller.get_axis_state(Y2_AXIS));
 
-  draw_button(pos + Vector2f(125, 50), controller.get_button_state(INVENTORY_BUTTON));
-  draw_button(pos + Vector2f(225, 50), controller.get_button_state(PAUSE_BUTTON));
+  draw_trigger(pos + Vector2f(45,  20), controller.get_trigger_state(LEFT_TRIGGER_AXIS));
+  draw_trigger(pos + Vector2f(305, 20), controller.get_trigger_state(RIGHT_TRIGGER_AXIS));
 
-  Vector2f face_pos(300, 50);
+  draw_button(pos + Vector2f(125, 75), controller.get_button_state(SELECT_BUTTON));
+  draw_button(pos + Vector2f(225, 75), controller.get_button_state(START_BUTTON));
+
+  draw_button(pos + Vector2f(100, 22), controller.get_button_state(LEFT_SHOULDER_BUTTON));
+  draw_button(pos + Vector2f(250, 22), controller.get_button_state(RIGHT_SHOULDER_BUTTON));
+
+  Vector2f face_pos(300, 75);
   draw_button(pos + face_pos + Vector2f(  0,  25), controller.get_button_state(PRIMARY_BUTTON));
   draw_button(pos + face_pos + Vector2f (25,   0), controller.get_button_state(SECONDARY_BUTTON));
   draw_button(pos + face_pos + Vector2f(-25,   0), controller.get_button_state(TERTIARY_BUTTON));
