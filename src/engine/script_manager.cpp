@@ -127,7 +127,7 @@ ScriptManager::~ScriptManager()
   current_ = 0;
 }
 
-boost::shared_ptr<SquirrelVM>
+boost::shared_ptr<SquirrelThread>
 ScriptManager::run_script_file(const std::string& filename, bool global)
 {
   IFileStream in(filename);
@@ -145,21 +145,21 @@ ScriptManager::run_script_file(const std::string& filename, bool global)
 
       // Execute the script
       if (SQ_FAILED(sq_call(vm, 1, false, true)))
-        throw SquirrelError(vm, "SquirrelVM::run(): " + filename + ": Couldn't start script");
+        throw SquirrelError(vm, "SquirrelThread::run(): " + filename + ": Couldn't start script");
 
       if (sq_getvmstate(vm) != SQ_VMSTATE_IDLE)
         {
           throw std::runtime_error("ScriptManager::run_script(): " + filename + ": global scripts must not suspend");
         }
 
-      return boost::shared_ptr<SquirrelVM>();
+      return boost::shared_ptr<SquirrelThread>();
     }
   else
     {
-      SquirrelVMs::iterator it = squirrel_vms.end();
+      SquirrelThreads::iterator it = squirrel_vms.end();
 
       // Look if the VM is associated with the source file
-      for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
+      for(SquirrelThreads::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
         {
           if ((*i)->get_name() == filename)
             {
@@ -183,7 +183,7 @@ ScriptManager::run_script_file(const std::string& filename, bool global)
         }
       else
         { // Add VM to the list of VMs
-          squirrel_vms.push_back(boost::shared_ptr<SquirrelVM>(new SquirrelVM(in, filename, vm)));     
+          squirrel_vms.push_back(boost::shared_ptr<SquirrelThread>(new SquirrelThread(in, filename, vm)));     
           squirrel_vms.back()->call("init");
           squirrel_vms.back()->call("run");
           return squirrel_vms.back();
@@ -194,22 +194,22 @@ ScriptManager::run_script_file(const std::string& filename, bool global)
 void
 ScriptManager::update()
 {
-  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
+  for(SquirrelThreads::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
     {
       (*i)->update();
     }
 }
 
-boost::shared_ptr<SquirrelVM>
+boost::shared_ptr<SquirrelThread>
 ScriptManager::get_vm(HSQUIRRELVM v) const
 {
-  for(SquirrelVMs::const_iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
+  for(SquirrelThreads::const_iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
     {
       if ((*i)->get_vm() == v)
         return *i;
     }
 
-  return boost::shared_ptr<SquirrelVM>();
+  return boost::shared_ptr<SquirrelThread>();
 }
 
 void
@@ -217,7 +217,7 @@ ScriptManager::fire_wakeup_event(WakeupData event)
 {
   assert(event.type >= 0 && event.type < MAX_WAKEUP_EVENT_COUNT);
 
-  for(SquirrelVMs::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
+  for(SquirrelThreads::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
     {
       (*i)->fire_wakeup_event(event);
     }

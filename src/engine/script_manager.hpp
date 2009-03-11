@@ -29,7 +29,7 @@
 #include "scripting/wrapper.hpp"
 #include "scripting/util.hpp"
 
-class SquirrelVM;
+class SquirrelThread;
 
 /**
  * This class is responsible for managing all running squirrel threads
@@ -71,8 +71,8 @@ public:
   };
 
 private:  
-  typedef std::list<boost::shared_ptr<SquirrelVM> > SquirrelVMs;
-  SquirrelVMs squirrel_vms;
+  typedef std::list<boost::shared_ptr<SquirrelThread> > SquirrelThreads;
+  SquirrelThreads squirrel_vms;
 
   HSQUIRRELVM vm;
 
@@ -83,11 +83,11 @@ public:
   void update();
 
   /** Load script from \a filename and runs it */
-  boost::shared_ptr<SquirrelVM> run_script_file(const std::string& filename, bool global = false);
+  boost::shared_ptr<SquirrelThread> run_script_file(const std::string& filename, bool global = false);
 
   HSQUIRRELVM get_vm() const { return vm; }
 
-  boost::shared_ptr<SquirrelVM> get_vm(HSQUIRRELVM v) const;
+  boost::shared_ptr<SquirrelThread> get_vm(HSQUIRRELVM v) const;
 
   void fire_wakeup_event(WakeupEvent event);
   void fire_wakeup_event(WakeupData  event);

@@ -34,7 +34,7 @@ class SpawnPoint;
 class CollisionEngine;
 class NavigationGraph;
 class Entity;
-class SquirrelVM;
+class SquirrelThread;
 
 /** */
 class Sector
@@ -50,7 +50,7 @@ private:
   std::string music;
   std::string init_script;
   
-  boost::shared_ptr<SquirrelVM> vm;
+  boost::shared_ptr<SquirrelThread> vm;
 
   typedef std::vector<boost::shared_ptr<GameObject> > Objects;
   Objects objects;

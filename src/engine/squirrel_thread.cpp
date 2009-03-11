@@ -34,7 +34,7 @@ static SQInteger squirrel_read_char(SQUserPointer file)
     return c;
 }
 
-SquirrelVM::SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELVM parent_vm)
+SquirrelThread::SquirrelThread(std::istream& in, const std::string& arg_name, HSQUIRRELVM parent_vm)
   : name(arg_name),
     parent_vm(parent_vm),
     waiting_for_events(ScriptManager::NO_EVENT),
@@ -90,23 +90,23 @@ SquirrelVM::SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELV
 
       // Start the script that was previously compiled
       if (SQ_FAILED(sq_call(vm, 1, false, true)))
-        throw SquirrelError(vm, name, "SquirrelVM::run(): Couldn't start script");
+        throw SquirrelError(vm, name, "SquirrelThread::run(): Couldn't start script");
     }
 }
 
-SquirrelVM::~SquirrelVM()
+SquirrelThread::~SquirrelThread()
 {
   sq_release(vm, &vm_obj);  
 }
 
 void
-SquirrelVM::set_wakeup_event(const ScriptManager::WakeupEvent& event, float timeout)
+SquirrelThread::set_wakeup_event(const ScriptManager::WakeupEvent& event, float timeout)
 {
   set_wakeup_event(ScriptManager::WakeupData(event), timeout);
 }
 
 void
-SquirrelVM::set_wakeup_event(const ScriptManager::WakeupData& event, float timeout)
+SquirrelThread::set_wakeup_event(const ScriptManager::WakeupData& event, float timeout)
 {
   waiting_for_events = event;
 
@@ -121,7 +121,7 @@ SquirrelVM::set_wakeup_event(const ScriptManager::WakeupData& event, float timeo
 }
 
 void
-SquirrelVM::fire_wakeup_event(const ScriptManager::WakeupData& event)
+SquirrelThread::fire_wakeup_event(const ScriptManager::WakeupData& event)
 { 
   if (waiting_for_events.type == event.type && 
       waiting_for_events.type != ScriptManager::NO_EVENT)
@@ -143,7 +143,7 @@ SquirrelVM::fire_wakeup_event(const ScriptManager::WakeupData& event)
 }
 
 void
-SquirrelVM::update()
+SquirrelThread::update()
 {
   int vm_state = sq_getvmstate(vm);
     
@@ -183,21 +183,21 @@ SquirrelVM::update()
 }
 
 bool
-SquirrelVM::is_suspended() const
+SquirrelThread::is_suspended() const
 {
   int vm_state = sq_getvmstate(vm);
   return vm_state == SQ_VMSTATE_SUSPENDED;
 }
 
 bool
-SquirrelVM::is_idle() const
+SquirrelThread::is_idle() const
 {
   int vm_state = sq_getvmstate(vm);
   return vm_state == SQ_VMSTATE_IDLE;
 }
 
 void
-SquirrelVM::call(const std::string& function)
+SquirrelThread::call(const std::string& function)
 {
   sq_pushroottable(vm);
 
@@ -215,7 +215,7 @@ SquirrelVM::call(const std::string& function)
       if (SQ_FAILED(sq_call(vm, 1, false, true)))
         {
           // FIXME: doesn't this mess up the stack?
-          throw SquirrelError(vm, name, "SquirrelVM: couldn't call '" + function + "'");
+          throw SquirrelError(vm, name, "SquirrelThread: couldn't call '" + function + "'");
         }
 
       // Cleanup

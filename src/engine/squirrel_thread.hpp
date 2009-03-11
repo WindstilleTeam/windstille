@@ -24,7 +24,7 @@
 
 #include "script_manager.hpp"
 
-class SquirrelVM
+class SquirrelThread
 {
 private:
   std::string name;
@@ -36,8 +36,8 @@ private:
   float       wakeup_time;
 
 public:
-  SquirrelVM(std::istream& in, const std::string& arg_name, HSQUIRRELVM parent_vm);
-  ~SquirrelVM();
+  SquirrelThread(std::istream& in, const std::string& arg_name, HSQUIRRELVM parent_vm);
+  ~SquirrelThread();
 
   void set_wakeup_event(const ScriptManager::WakeupData&  event, float timeout = -1);
   void set_wakeup_event(const ScriptManager::WakeupEvent& event, float timeout = -1);
