@@ -42,14 +42,14 @@ MenuItem::draw(const Rectf& rect, bool is_active)
       Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
       Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
       font_color = Color(1.0f, 1.0f, 1.0f);
-      fade_timer = 1.0f;
+      fade_timer = 2.0f;
     } 
   else 
     {
       if (fade_timer != 0.0f)
         {
-          Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f * fade_timer));
-          Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f * fade_timer));
+          //Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f * fade_timer));
+          //Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f * fade_timer));
           font_color = Color(0.75f + 0.25f * fade_timer, 
                              0.75f + 0.25f * fade_timer, 
                              0.75f + 0.25f * fade_timer, 
