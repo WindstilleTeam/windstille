@@ -84,6 +84,7 @@ public:
 
   /** Load script from \a filename and runs it */
   boost::shared_ptr<SquirrelThread> run_script_file(const std::string& filename, bool global = false);
+  boost::shared_ptr<SquirrelThread> create_script();
 
   HSQUIRRELVM get_vm() const { return vm; }
 

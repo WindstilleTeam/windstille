@@ -116,6 +116,7 @@ void render_mask_set(int mask);
 SQInteger spawn_object(HSQUIRRELVM v) __custom;
 
 void spawn_script(const std::string& filename);
+SQInteger spawn_function(HSQUIRRELVM v) __custom;
 
 } // namespace Scripting
 

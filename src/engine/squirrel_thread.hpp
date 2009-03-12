@@ -27,11 +27,13 @@
 class SquirrelThread
 {
 private:
-  std::string filename;
   HSQUIRRELVM parent_vm;
+  bool isolated;
+
   HSQUIRRELVM thread;
   HSQOBJECT   thread_obj;
 
+  std::string filename;
   SQInteger oldtop;
     
   ScriptManager::WakeupData  waiting_for_events;
@@ -40,8 +42,15 @@ private:
   void create_thread();
 
 public:
-  SquirrelThread(HSQUIRRELVM parent_vm, std::istream& in, const std::string& arg_name);
+  SquirrelThread(HSQUIRRELVM parent_vm, bool isolated = true);
   ~SquirrelThread();
+
+  /** Load a script into the new thread */
+  void load(std::istream& in, const std::string& filename);
+
+  /** Load function at position \a idx into this SquirrelThread and
+      execute it */
+  void load(HSQUIRRELVM vm, SQInteger idx);
 
   void set_wakeup_event(const ScriptManager::WakeupData&  event, float timeout = -1);
   void set_wakeup_event(const ScriptManager::WakeupEvent& event, float timeout = -1);

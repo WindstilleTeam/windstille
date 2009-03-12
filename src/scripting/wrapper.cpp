@@ -1568,6 +1568,11 @@ static SQInteger spawn_script_wrapper(HSQUIRRELVM vm)
 
 }
 
+static SQInteger spawn_function_wrapper(HSQUIRRELVM vm)
+{
+  return Scripting::spawn_function(vm);
+}
+
 } // end of namespace Wrapper
 void create_squirrel_instance(HSQUIRRELVM v, Scripting::GameObject* object, bool setup_releasehook)
 {
@@ -2058,6 +2063,12 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'spawn_script'");
+  }
+
+  sq_pushstring(v, "spawn_function", -1);
+  sq_newclosure(v, &spawn_function_wrapper, 0);
+  if(SQ_FAILED(sq_createslot(v, -3))) {
+    throw SquirrelError(v, "Couldn't register function 'spawn_function'");
   }
 
   // Register class GameObject

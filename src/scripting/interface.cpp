@@ -367,6 +367,15 @@ void spawn_script(const std::string& filename)
   ScriptManager::current()->run_script_file(Sector::current()->get_directory() + filename);
 }
 
+SQInteger spawn_function(HSQUIRRELVM v) __custom
+{
+  boost::shared_ptr<SquirrelThread> thread = ScriptManager::current()->create_script();
+  thread->load(v, -1);
+  sq_pop(v, 1);
+
+  return 0;
+}
+
 } // namespace Scripting
 
 /* EOF */

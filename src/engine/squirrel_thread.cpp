@@ -63,62 +63,107 @@ SquirrelThread::create_thread()
     }
 }
 
-SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm, std::istream& in, const std::string& filename)
-  : filename(filename),
-    parent_vm(parent_vm),
+SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm, bool isolated)
+  : parent_vm(parent_vm),
+    isolated(isolated),
     thread(0),
+    filename("<unset>"),
     oldtop(-1),
     waiting_for_events(ScriptManager::NO_EVENT),
     wakeup_time(0)
 {
   create_thread();
 
-  { // create a local environment for the thread
-    HSQOBJECT env;
-    sq_resetobject(&env);
+  if (isolated)
+    { // create a local environment for the thread
+      HSQOBJECT env;
+      sq_resetobject(&env);
 
-    sq_newtable(thread);
+      sq_newtable(thread);
 
-    // store the object in env
-    if(sq_getstackobj(thread, -1, &env) < 0) 
-      {
-        throw SquirrelError(parent_vm, filename, "couldn't get table from stack");
-      }
-    else
-      {
+      // store the object in env
+      if(sq_getstackobj(thread, -1, &env) < 0) 
         {
-          sq_addref(thread, &env); 
-          sq_pop(thread, 1); // remove env from stack
-    
-          // set old roottable as delegate on env
-          sq_pushobject(thread, env); // push env
-          sq_pushroottable(thread);   // [env, root]
-          sq_setdelegate(thread, -2); // env.set_delegate(root)
-          sq_pop(thread, 1);          // pop env
-
-          // set env as new roottable
-          sq_pushobject(thread, env);
-          sq_setroottable(thread);
-
-          sq_release(thread, &env);
+          throw SquirrelError(parent_vm, filename, "couldn't get table from stack");
         }
-      }
-  }
+      else
+        {
+          {
+            sq_addref(thread, &env); 
+            sq_pop(thread, 1); // remove env from stack
+    
+            // set old roottable as delegate on env
+            sq_pushobject(thread, env); // push env
+            sq_pushroottable(thread);   // [env, root]
+            sq_setdelegate(thread, -2); // env.set_delegate(root)
+            sq_pop(thread, 1);          // pop env
+
+            // set env as new roottable
+            sq_pushobject(thread, env);
+            sq_setroottable(thread);
+
+            sq_release(thread, &env);
+          }
+        }
+    }
+}
+
+void
+SquirrelThread::load(std::istream& in, const std::string& filename_)
+{
+  filename = filename_;
+
+  oldtop = sq_gettop(thread);
 
   // compile the script and push it on the stack
-  if(sq_compile(thread, squirrel_read_char, &in, filename.c_str(), SQTrue) < 0)
-    throw SquirrelError(thread, filename, "Couldn't parse script");
+  if(SQ_FAILED(sq_compile(thread, squirrel_read_char, &in, filename.c_str(), SQTrue)))
+    {
+      throw SquirrelError(thread, filename, "Couldn't parse script");
+    }
+  else
+    {
+      // start the script that was previously compiled
+      sq_pushroottable(thread);
+      if (SQ_FAILED(sq_call(thread, 1, SQFalse, SQTrue)))
+        {
+          sq_pop(thread, 1); // pop the compiled closure
+          throw SquirrelError(thread, filename, "SquirrelThread::load(): Couldn't start script");
+        }
+      else
+        {
+          if (sq_getvmstate(thread) != SQ_VMSTATE_IDLE)
+            {
+              throw SquirrelError(thread, filename, "SquirrelThread::load(): Script '" + filename +
+                                  "' must not suspend outside of run call");
+            }
+          sq_pop(thread, 1); // pop the compiled closure
+        }
+    }
+}
 
-  // start the script that was previously compiled
+void
+SquirrelThread::load(HSQUIRRELVM vm, SQInteger idx)
+{
+  oldtop = sq_gettop(thread);
+
+  sq_move(thread, vm, idx);
+  // FIXME: Could check object type here
+
+  // Execute the function
   sq_pushroottable(thread);
   if (SQ_FAILED(sq_call(thread, 1, SQFalse, SQTrue)))
     {
-      sq_pop(thread, 1); // pop the compiled closure
+      if(sq_getvmstate(thread) == SQ_VMSTATE_IDLE)
+        { // Cleanup stack
+          sq_settop(thread, oldtop);
+        }
+
       throw SquirrelError(thread, filename, "SquirrelThread::run(): Couldn't start script");
     }
   else
     {
-      sq_pop(thread, 1); // pop the compiled closure
+      if(sq_getvmstate(thread) == SQ_VMSTATE_IDLE)
+        sq_settop(thread, oldtop);
     }
 }
 
