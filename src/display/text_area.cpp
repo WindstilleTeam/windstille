@@ -17,13 +17,14 @@
 */
 
 #include <assert.h>
-
+#include <iostream>
 #include "display/opengl_state.hpp"
 #include "font/ttf_font.hpp"
 #include "text_area.hpp"
 #include "util/baby_xml.hpp"
 #include "font/fonts.hpp"
 #include "text_area.hpp"
+#include "display.hpp"
 
 struct TextAreaCommand 
 {
@@ -48,6 +49,8 @@ public:
   bool progress_complete;
   std::vector<TextAreaCommand> commands;
   Vector2f cursor_pos;
+  float scroll_offset;
+  float max_scroll_offset;
 };
 
 TextArea::TextArea(const Rectf& rect, bool letter_by_letter)
@@ -60,11 +63,12 @@ TextArea::TextArea(const Rectf& rect, bool letter_by_letter)
   impl->letter_by_letter = letter_by_letter;
   impl->progress_complete = false;
   impl->passed_time = 0;
+  impl->scroll_offset = 0.0f;
+  impl->max_scroll_offset = -1.0f; // FIXME: Bad magick value
 }
 
 TextArea::~TextArea()
 {
-  delete impl;
 }
 
 void
@@ -76,6 +80,9 @@ TextArea::set_rect(const Rectf& rect)
 void
 TextArea::set_text(const std::string& str)
 {
+  impl->scroll_offset     = 0.0f;
+  impl->max_scroll_offset = -1.0f;
+
   impl->commands.clear();
 
   BabyXML xml(str);
@@ -154,7 +161,8 @@ TextArea::draw()
   state.activate();
 
   glPushMatrix();
-  glTranslatef(impl->rect.left, impl->rect.top + impl->font->get_height(), 0);
+  glTranslatef(impl->rect.left, impl->rect.top + impl->font->get_height() - impl->scroll_offset, 0);
+
   // Voodoo to get non-blurry fonts
   float mx = -0.375;
   float my = -0.375; 
@@ -170,6 +178,7 @@ TextArea::draw()
   float eat_time = impl->passed_time;
   bool sinus = false;
   bool break_writing = false;
+
   std::vector<TextAreaCommand>::const_iterator i = impl->commands.begin();
   for(; i != impl->commands.end(); ++i)
     {
@@ -178,176 +187,195 @@ TextArea::draw()
         
       switch (i->type)
         {
-        case TextAreaCommand::START:
-          if (i->content == "b")
-            {
-              top_color    = Color(1.0f, 0.0f, 0.0f);
-              bottom_color = Color(0.8f, 0.0f, 0.0f);
-            }
-          else if (i->content == "i")
-            {
-              top_color    = Color(0.65f, 0.7f, 1.0f);
-              bottom_color = Color(0.65f, 0.7f, 1.0f);
-            }
-          else if (i->content == "small")
-            {
-              is_small = true;
-            }
-          else if (i->content == "large")
-            {
-              is_large = true;
-            }
-          else if (i->content == "sleep")
-            {
-              eat_time -= 1.0f;
-            }
-          else if (i->content == "sin")
-            {
-              sinus = true;
-            }
-          break;
+          case TextAreaCommand::START:
+            if (i->content == "b")
+              {
+                top_color    = Color(1.0f, 0.0f, 0.0f);
+                bottom_color = Color(0.8f, 0.0f, 0.0f);
+              }
+            else if (i->content == "i")
+              {
+                top_color    = Color(0.65f, 0.7f, 1.0f);
+                bottom_color = Color(0.65f, 0.7f, 1.0f);
+              }
+            else if (i->content == "small")
+              {
+                is_small = true;
+              }
+            else if (i->content == "large")
+              {
+                is_large = true;
+              }
+            else if (i->content == "sleep")
+              {
+                eat_time -= 1.0f;
+              }
+            else if (i->content == "sin")
+              {
+                sinus = true;
+              }
+            break;
 
-        case TextAreaCommand::END:
-          if (i->content == "b" || i->content == "i")
-            {
-              top_color    = Color(1.0f, 1.0f, 1.0f);
-              bottom_color = Color(1.0f, 1.0f, 1.0f);
-            }
-          else if (i->content == "small")
-            {
-              is_small = false;
-            }
-          else if (i->content == "large")
-            {
-              is_large = false;
-            }
-          else if (i->content == "sin")
-            {
-              sinus = false;
-            }
-          break;
+          case TextAreaCommand::END:
+            if (i->content == "b" || i->content == "i")
+              {
+                top_color    = Color(1.0f, 1.0f, 1.0f);
+                bottom_color = Color(1.0f, 1.0f, 1.0f);
+              }
+            else if (i->content == "small")
+              {
+                is_small = false;
+              }
+            else if (i->content == "large")
+              {
+                is_large = false;
+              }
+            else if (i->content == "sin")
+              {
+                sinus = false;
+              }
+            break;
           
-        case TextAreaCommand::WORD:
-        retry:
-          int word_width;
+          case TextAreaCommand::WORD:
+            retry:
+            int word_width;
 
-          if (is_small)
-            word_width = static_cast<int>(impl->font->get_width(i->content) * 0.6f);
-          else if (is_large)
-            word_width = static_cast<int>(impl->font->get_width(i->content) * 2.0f);
-          else
-            word_width = impl->font->get_width(i->content);
+            if (is_small)
+              word_width = static_cast<int>(impl->font->get_width(i->content) * 0.6f);
+            else if (is_large)
+              word_width = static_cast<int>(impl->font->get_width(i->content) * 2.0f);
+            else
+              word_width = impl->font->get_width(i->content);
           
-          if (i->content == "\n")
-            {
-              x_pos = 0;
-              y_pos += impl->font->get_height() + impl->v_space;
-            }
-          else if (x_pos + word_width > impl->rect.get_width() && word_width <= impl->rect.get_width())
-            {
-              x_pos = 0;
-              y_pos += impl->font->get_height() + impl->v_space;
-              goto retry;
-            }
-          else
-            {
-              if (x_pos == 0 && i->content == " ")
-                {
-                  // ignore space at the beginning of a line
-                }
-              else
-                {
-                  for(std::string::const_iterator j = i->content.begin(); j != i->content.end(); ++j)
-                    {
-                      if (impl->letter_by_letter && eat_time <= 0)
-                        {
-                          break_writing = true;
-                          break;
-                        }
+            if (i->content == "\n")
+              {
+                x_pos = 0;
+                y_pos += impl->font->get_height() + impl->v_space;
+              }
+            else if (x_pos + word_width > impl->rect.get_width() && word_width <= impl->rect.get_width())
+              {
+                x_pos = 0;
+                y_pos += impl->font->get_height() + impl->v_space;
+                goto retry;
+              }
+            else
+              {
+                if (x_pos == 0 && i->content == " ")
+                  {
+                    // ignore space at the beginning of a line
+                  }
+                else
+                  {
+                    for(std::string::const_iterator j = i->content.begin(); j != i->content.end(); ++j)
+                      {
+                        if (impl->letter_by_letter && eat_time <= 0)
+                          {
+                            break_writing = true;
+                            break;
+                          }
                         
-                      int x = x_pos;
-                      int y = y_pos;
+                        int x = x_pos;
+                        int y = y_pos;
 
-                      if (sinus) // FIXME: this could actually work per vertex
-                        y += static_cast<int>(sin(impl->passed_time * 10.0f + x_pos / 15.0f) * 5.0f);
+                        if (sinus) // FIXME: this could actually work per vertex
+                          y += static_cast<int>(sin(impl->passed_time * 10.0f + x_pos / 15.0f) * 5.0f);
 
-                      if (*j == '.' || *j == '\n')
-                        eat_time -= 0.50f;
-                      else
-                        eat_time -= 0.05f;
+                        if (*j == '.' || *j == '\n')
+                          eat_time -= 0.50f;
+                        else
+                          eat_time -= 0.05f;
 
-                      const TTFCharacter& character = impl->font->get_character(*j);
+                        const TTFCharacter& character = impl->font->get_character(*j);
                       
-                      if (is_small)
-                        {
-                          float scale = 0.6f;
-                          glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
-                          glTexCoord2f(character.uv.left, character.uv.top);
-                          glVertex2f(x + scale * character.pos.left + mx,
-                                     y + scale * (character.pos.top  + my));
+                        bool draw_it = (y_pos >= impl->scroll_offset && 
+                                        y_pos < impl->scroll_offset + impl->rect.get_height() 
+                                        - (impl->font->get_height()));
+                        if (is_small)
+                          {
+                            float scale = 0.6f;
+                            if (draw_it)
+                              {
+                                glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
+                                glTexCoord2f(character.uv.left, character.uv.top);
+                                glVertex2f(x + scale * character.pos.left + mx,
+                                           y + scale * (character.pos.top  + my));
 
-                          glTexCoord2f(character.uv.right, character.uv.top);
-                          glVertex2f(x + scale * character.pos.right + mx, 
-                                     y + scale * (character.pos.top) + my);
+                                glTexCoord2f(character.uv.right, character.uv.top);
+                                glVertex2f(x + scale * character.pos.right + mx, 
+                                           y + scale * (character.pos.top) + my);
 
-                          glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
-                          glTexCoord2f(character.uv.right, character.uv.bottom);
-                          glVertex2f(x + scale * character.pos.right  + mx, 
-                                     y + scale * (character.pos.bottom) + my);
+                                glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
+                                glTexCoord2f(character.uv.right, character.uv.bottom);
+                                glVertex2f(x + scale * character.pos.right  + mx, 
+                                           y + scale * (character.pos.bottom) + my);
 
-                          glTexCoord2f(character.uv.left, character.uv.bottom);
-                          glVertex2f(x + scale * character.pos.left   + mx, 
-                                     y + scale * (character.pos.bottom) + my);
-                          x_pos += static_cast<int>(scale * character.advance);
-                        }
-                      else if (is_large)
-                        {
-                          float scale = 2.0f;
-                          glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
-                          glTexCoord2f(character.uv.left, character.uv.top);
-                          glVertex2f(x + scale * character.pos.left + mx,
-                                     y + (character.pos.top  + my));
+                                glTexCoord2f(character.uv.left, character.uv.bottom);
+                                glVertex2f(x + scale * character.pos.left   + mx, 
+                                           y + scale * (character.pos.bottom) + my);
+                              }
+                            x_pos += static_cast<int>(scale * character.advance);
+                          }
+                        else if (is_large)
+                          {
+                            float scale = 2.0f;
+                            if (draw_it)
+                              {
+                                glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
+                                glTexCoord2f(character.uv.left, character.uv.top);
+                                glVertex2f(x + scale * character.pos.left + mx,
+                                           y + (character.pos.top  + my));
 
-                          glTexCoord2f(character.uv.right, character.uv.top);
-                          glVertex2f(x + scale * character.pos.right + mx, 
-                                     y + (character.pos.top) + my);
+                                glTexCoord2f(character.uv.right, character.uv.top);
+                                glVertex2f(x + scale * character.pos.right + mx, 
+                                           y + (character.pos.top) + my);
 
-                          glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
-                          glTexCoord2f(character.uv.right, character.uv.bottom);
-                          glVertex2f(x + scale * character.pos.right  + mx, 
-                                     y + (character.pos.bottom) + my);
+                                glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
+                                glTexCoord2f(character.uv.right, character.uv.bottom);
+                                glVertex2f(x + scale * character.pos.right  + mx, 
+                                           y + (character.pos.bottom) + my);
 
-                          glTexCoord2f(character.uv.left, character.uv.bottom);
-                          glVertex2f(x + scale * character.pos.left   + mx, 
-                                     y + (character.pos.bottom) + my);
-                          x_pos += static_cast<int>(scale * character.advance);
-                        }
-                      else   
-                        {
-                          glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
-                          glTexCoord2f(character.uv.left, character.uv.top);
-                          glVertex2f(x + character.pos.left + mx,
-                                     y + character.pos.top  + my);
+                                glTexCoord2f(character.uv.left, character.uv.bottom);
+                                glVertex2f(x + scale * character.pos.left   + mx, 
+                                           y + (character.pos.bottom) + my);
+                              }
+                            x_pos += static_cast<int>(scale * character.advance);
+                          }
+                        else   
+                          {
+                            if (draw_it)
+                              {
+                                glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
+                                glTexCoord2f(character.uv.left, character.uv.top);
+                                glVertex2f(x + character.pos.left + mx,
+                                           y + character.pos.top  + my);
 
-                          glTexCoord2f(character.uv.right, character.uv.top);
-                          glVertex2f(x + character.pos.right + mx, 
-                                     y + character.pos.top   + my);
+                                glTexCoord2f(character.uv.right, character.uv.top);
+                                glVertex2f(x + character.pos.right + mx, 
+                                           y + character.pos.top   + my);
 
-                          glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
-                          glTexCoord2f(character.uv.right, character.uv.bottom);
-                          glVertex2f(x + character.pos.right  + mx, 
-                                     y + character.pos.bottom + my);
+                                glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
+                                glTexCoord2f(character.uv.right, character.uv.bottom);
+                                glVertex2f(x + character.pos.right  + mx, 
+                                           y + character.pos.bottom + my);
 
-                          glTexCoord2f(character.uv.left, character.uv.bottom);
-                          glVertex2f(x + character.pos.left   + mx, 
-                                     y + character.pos.bottom + my);
-                          x_pos += character.advance;
-                        }
-                    }
-                }
-            }
-          break;
+                                glTexCoord2f(character.uv.left, character.uv.bottom);
+                                glVertex2f(x + character.pos.left   + mx, 
+                                           y + character.pos.bottom + my);
+                              }
+                            x_pos += character.advance;
+                          }
+                      }
+                  }
+              }
+            break;
         }
+    }
+
+  if (impl->max_scroll_offset == -1.0f)
+    {
+      impl->max_scroll_offset = y_pos - impl->rect.get_height();
+      if (impl->max_scroll_offset < 0)
+        impl->max_scroll_offset = 0;
     }
 
   // FIXME: This is not correct, since the last command itself might
@@ -377,6 +405,23 @@ Vector2f
 TextArea::get_cursor_pos() const
 {
   return impl->cursor_pos;
+}
+
+float
+TextArea::get_scroll_offset() const
+{
+  return impl->scroll_offset;
+}
+
+void
+TextArea::set_scroll_offset(float s)
+{
+  if (s < 0.0f)
+    impl->scroll_offset = 0.0f;
+  else if (impl->max_scroll_offset > 0 && s > impl->max_scroll_offset)
+    impl->scroll_offset = impl->max_scroll_offset;
+  else
+    impl->scroll_offset = s;
 }
 
 /* EOF */

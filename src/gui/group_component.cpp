@@ -78,8 +78,8 @@ GroupComponent::get_child_rect() const
 {
   int padding = 6;
 
-  return Rectf(rect.left + padding,
-               rect.top  + padding + (title.empty() ? 0 : Fonts::vera20->get_height() + 24),
+  return Rectf(rect.left   + padding,
+               rect.top    + padding + (title.empty() ? 0 : Fonts::vera20->get_height() + 18),
                rect.right  - padding,
                rect.bottom - padding);
 }

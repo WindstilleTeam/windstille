@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include "input/controller.hpp"
 #include "text_view.hpp"
 
@@ -41,6 +42,8 @@ void
 TextView::update(float delta, const Controller& controller)
 {
   text_area.update(delta);
+
+  text_area.set_scroll_offset(text_area.get_scroll_offset() + 500.0f * controller.get_axis_state(Y2_AXIS) * delta);
 
   for(InputEventLst::const_iterator i = controller.get_events().begin(); i != controller.get_events().end(); ++i) 
     {

@@ -19,8 +19,9 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_TEXT_AREA_HPP
 #define HEADER_WINDSTILLE_DISPLAY_TEXT_AREA_HPP
 
-#include "math/rect.hpp"
+#include <memory>
 #include <string>
+#include "math/rect.hpp"
 
 class TTFFont;
 class TextAreaImpl;
@@ -59,8 +60,12 @@ public:
   /** Return the position of the last character in the TextArea,
       usefull to display a blinking cursor or things like that */
   Vector2f get_cursor_pos() const;
+
+  float get_scroll_offset() const;
+  void  set_scroll_offset(float s);
+
 private:
-  TextAreaImpl* impl;
+  std::auto_ptr<TextAreaImpl> impl;
 };
 
 #endif
