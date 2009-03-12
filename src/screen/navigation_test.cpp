@@ -228,12 +228,12 @@ NavigationTest::update(float delta, const Controller& controller)
       }
     }
   
-  if (controller.button_was_pressed(VIEW_CENTER_BUTTON))
+  if (controller.button_was_pressed(SELECT_BUTTON))
     {
       graph->save(std::cout);
     }
 
-  if (controller.button_was_pressed(PDA_BUTTON))
+  if (controller.button_was_pressed(QUATERNARY_BUTTON))
     {
       if (selected_node) {
         graph->remove_node(selected_node);
