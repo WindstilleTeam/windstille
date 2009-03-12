@@ -132,10 +132,10 @@ ScriptManager::~ScriptManager()
 }
 
 boost::shared_ptr<SquirrelThread>
-ScriptManager::create_script()
+ScriptManager::create_script(HSQUIRRELVM parent_vm, bool isolated)
 {
   // Add VM to the list of VMs
-  squirrel_vms.push_back(boost::shared_ptr<SquirrelThread>(new SquirrelThread(vm)));
+  squirrel_vms.push_back(boost::shared_ptr<SquirrelThread>(new SquirrelThread(parent_vm, isolated)));
   return squirrel_vms.back();
 }
 
@@ -201,7 +201,7 @@ ScriptManager::run_script_file(const std::string& filename, bool global)
         }
       else
         { // Add VM to the list of VMs
-          squirrel_vms.push_back(boost::shared_ptr<SquirrelThread>(new SquirrelThread(vm)));
+          squirrel_vms.push_back(boost::shared_ptr<SquirrelThread>(new SquirrelThread(vm, true)));
           squirrel_vms.back()->load(in, filename);
           squirrel_vms.back()->call("init");
           squirrel_vms.back()->call("run");

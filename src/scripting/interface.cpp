@@ -369,7 +369,7 @@ void spawn_script(const std::string& filename)
 
 SQInteger spawn_function(HSQUIRRELVM v) __custom
 {
-  boost::shared_ptr<SquirrelThread> thread = ScriptManager::current()->create_script();
+  boost::shared_ptr<SquirrelThread> thread = ScriptManager::current()->create_script(v, false);
   thread->load(v, -1);
   sq_pop(v, 1);
 

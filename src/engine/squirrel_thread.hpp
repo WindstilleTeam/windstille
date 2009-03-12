@@ -42,7 +42,7 @@ private:
   void create_thread();
 
 public:
-  SquirrelThread(HSQUIRRELVM parent_vm, bool isolated = true);
+  SquirrelThread(HSQUIRRELVM parent_vm, bool isolated);
   ~SquirrelThread();
 
   /** Load a script into the new thread */

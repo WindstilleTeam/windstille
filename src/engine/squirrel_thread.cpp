@@ -63,9 +63,9 @@ SquirrelThread::create_thread()
     }
 }
 
-SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm, bool isolated)
+SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm, bool isolated_)
   : parent_vm(parent_vm),
-    isolated(isolated),
+    isolated(isolated_),
     thread(0),
     filename("<unset>"),
     oldtop(-1),
@@ -74,6 +74,7 @@ SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm, bool isolated)
 {
   create_thread();
 
+  std::cout << "SquirrelThread: isolated = " << isolated << std::endl;
   if (isolated)
     { // create a local environment for the thread
       HSQOBJECT env;
@@ -88,22 +89,20 @@ SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm, bool isolated)
         }
       else
         {
-          {
-            sq_addref(thread, &env); 
-            sq_pop(thread, 1); // remove env from stack
+          sq_addref(thread, &env); 
+          sq_pop(thread, 1); // remove env from stack
     
-            // set old roottable as delegate on env
-            sq_pushobject(thread, env); // push env
-            sq_pushroottable(thread);   // [env, root]
-            sq_setdelegate(thread, -2); // env.set_delegate(root)
-            sq_pop(thread, 1);          // pop env
+          // set old roottable as delegate on env
+          sq_pushobject(thread, env); // push env
+          sq_pushroottable(thread);   // [env, root]
+          sq_setdelegate(thread, -2); // env.set_delegate(root)
+          sq_pop(thread, 1);          // pop env
 
-            // set env as new roottable
-            sq_pushobject(thread, env);
-            sq_setroottable(thread);
+          // set env as new roottable
+          sq_pushobject(thread, env);
+          sq_setroottable(thread);
 
-            sq_release(thread, &env);
-          }
+          sq_release(thread, &env);
         }
     }
 }
