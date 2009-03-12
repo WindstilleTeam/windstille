@@ -10,6 +10,41 @@ in this list might actually be bad and better solved by other means.
 Scripting
 =========
 
+* add ability to wait on custom event and add ability to fire of a
+  custom event:
+
+    wait_for("bob arrives at bar");
+    ...
+    fire("bob arrives at bar");
+
+  also add abilty for callbacks:
+
+    register_callback("bob arrives at bar", function(){
+       // do stuff
+    });
+
+  In which VM shall this be executed? In a new one? Wouldn't that be
+  the same as:
+
+    spawn_function(function(){
+       // needed so that the callback can be called multiple times 
+       while(true) { 
+         wait_for("bob arrives at bar");
+         // do stuff
+       }
+    });
+
+* think about if scripts spawned in a sector should be parented to the
+  sectors init script or to the root_vm, the later one is currently
+  the case, the first one however would make it easier to share
+  variables between scripts, on the other shared variable should often
+  be available across sectors, so a better sharing mechanism is likely needed
+
+  -> scripts could share state via a 'state' table defined in windstille.nut
+
+* add option to SquirrelThread to be removed after its done or removed
+  when a specific function is called (useful for spawning functions)
+
 * reentering a sector twice barfs because:
 
   std::exception: Squirrel error: sectors/apartment/init.nut:
@@ -71,14 +106,15 @@ Scripting
   scripts (FIXME: not clear if there is enough benefit and flexibilty
   to try that)
 
-* print and println behave different on console
+* print and println behave different on console (?)
 
 Input Handling
 ==============
 
 * change of input context is troublesome: when the user selects a
   dialog and confirms it, the character starts to walk into the
-  direction that the player indicated.
+  direction that the player indicated, because the stick still points
+  in that direction after OK_BUTTON is pressed.
 
   Possible solution: wait till the controller is in neutral position
   before sending events to the next Screen
@@ -199,6 +235,8 @@ Bugs
 
 Level Design
 ============
+
+* fix the particle system in newformat2.wst, speed/lifetime is wrong
 
 * implement light switches in apartment
 
