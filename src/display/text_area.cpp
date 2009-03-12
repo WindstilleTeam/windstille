@@ -151,7 +151,15 @@ void
 TextArea::draw()
 {
   assert(impl->font);
+  if (impl->max_scroll_offset > 0.0f)
+    {
+      float height = impl->max_scroll_offset + impl->rect.get_height();
 
+      Display::fill_rounded_rect(Rectf(Vector2f(impl->rect.right + 4,
+                                                impl->rect.top + impl->scroll_offset*impl->rect.get_height()/height), 
+                                       Sizef(8, impl->rect.get_height()*impl->rect.get_height()/height)),
+                                 4.0f, Color(1.0f, 1.0f, 1.0f, 0.25f));
+    }
   OpenGLState state;
   
   state.bind_texture(impl->font->get_texture());
@@ -418,7 +426,7 @@ TextArea::set_scroll_offset(float s)
 {
   if (s < 0.0f)
     impl->scroll_offset = 0.0f;
-  else if (impl->max_scroll_offset > 0 && s > impl->max_scroll_offset)
+  else if (s > impl->max_scroll_offset)
     impl->scroll_offset = impl->max_scroll_offset;
   else
     impl->scroll_offset = s;
