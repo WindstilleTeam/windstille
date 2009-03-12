@@ -103,6 +103,11 @@ Sound Handling
 Miscellaneous
 =============
 
+* Add option for ControllerHelpWindow to option menu
+
+* cleanup display/text_area.cpp, having scrolling and running text
+  together doesn't make all that much sense, also functions are too large 
+
 * scrap inventory and redesign it
 
 * When starting sector directly from command line, "Return to title screen" doesn't work
@@ -145,7 +150,8 @@ Miscellaneous
 * write a LucasArts-like dialog system (i.e. non-blocking text,
   instead of JRPG like boxes with portraits), see SpeechManager
 
-* PDA needs scrolling text thing (right analog stick?)
+* PDA needs scrolling text thing (right analog stick?), TextArea has
+  it implemented, but events don't to pass through PDA
 
 * Specify the capabilites that the different subsystems need to have
 
@@ -262,6 +268,11 @@ Random Things
 
 Graphics
 ========
+
+* aspect-ratio/resolution options:
+
+  - let the user select a resolution from all the ones that are available from X11 (see Pingus for code)
+  - have "aspect-ratio: auto" (calc from resolution) and 5:4, 4:3, 16:9, 16:10 overrides
 
 * remodel titlescreen as 3D model
 
