@@ -378,5 +378,18 @@ ScreenManager::quit()
 {
   do_quit = true;
 }
+
+void
+ScreenManager::show_controller_debug(bool v)
+{
+  show_controller_help_window = v;
+}
+
+bool
+ScreenManager::get_show_controller_debug() const
+{
+  return show_controller_help_window;
+}
+
 
 /* EOF */

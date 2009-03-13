@@ -78,7 +78,12 @@ MenuManager::display_option_menu()
                 boost::bind(&MenuManager::menu_fullscreen, _1))
     .add_pair(0, "off")
     .add_pair(1, "on");
-  
+
+  menu.add_enum("Controller Debug", screen_manager.get_show_controller_debug(),
+                boost::bind(&MenuManager::menu_controller_debug, _1))
+    .add_pair(0, "off")
+    .add_pair(1, "on");
+
   menu.add_enum("Difficulty", 1)
     .add_pair(0, "easy")
     .add_pair(1, "medium")
@@ -432,6 +437,12 @@ MenuManager::menu_fullscreen(int i)
 {
   config.set_bool("fullscreen", i);
   Display::set_fullscreen(config.get_bool("fullscreen"));
+}
+
+void
+MenuManager::menu_controller_debug(int i)
+{
+  screen_manager.show_controller_debug(i);
 }
 
 void

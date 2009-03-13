@@ -48,7 +48,7 @@ private:
   int   last_fps;
   float overlap_delta;
   bool  do_quit;
-  bool show_controller_help_window;
+  bool  show_controller_help_window;
 
 public:
   ScreenManager();
@@ -64,13 +64,18 @@ public:
   void push_screen(Screen* s);
   void pop_screen();
 
-  /** Push an overlay screen, the screen will be delete'ed once it is no longer needed */
+  /**
+   *  Push an overlay screen, the screen will be delete'ed once it is
+   *  no longer needed. An overlay is a non-fullscreen screen like a
+   *  menu that is layed over a fullscreen-screen and receives input.
+   */
   void push_overlay(Screen* s);
   void pop_overlay();
   void clear_overlay();
 
   // Callbacks, FIXME: Could be moved to a seperate class
-  void show_fps(int i);
+  void show_controller_debug(bool v);
+  bool get_show_controller_debug() const;
 
 private:
   void poll_events();

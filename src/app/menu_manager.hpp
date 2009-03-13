@@ -56,6 +56,7 @@ private:
   static void menu_exit();
   static void menu_show_fps(int i);
   static void menu_fullscreen(int i);
+  static void menu_controller_debug(int i);
   static void menu_continue();
 
   static void menu_master_volume(int i);
