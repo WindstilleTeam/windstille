@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_HUD_PDA_HPP
 #define HEADER_WINDSTILLE_HUD_PDA_HPP
 
+#include <memory>
 #include "sprite2d/sprite.hpp"
 #include "screen/screen.hpp"
 
@@ -48,7 +49,7 @@ class PDA : public Screen
 {
 private:
   Sprite    background;
-  TextArea* text_area;
+  std::auto_ptr<TextArea>  text_area;
   std::vector<DialogEntry> dialogs;
   std::vector<ObjectiveEntry> objectives;   
   
