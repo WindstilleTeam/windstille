@@ -1,16 +1,25 @@
 Windstille ToDo
 ===============
 
-This is a list of tasks that need to be done in Windstille. This list
-is neither complete nor authoritative, so don't just blindly implement
-from this list, instead use this list just as guide for things that
-might be worth to implement, but not necesarrily have to. Some ideas
-in this list might actually be bad and better solved by other means.
+This is a list of tasks that need to be done in Windstille. However
+this list is neither complete nor authoritative, so don't just blindly
+implement things from this list, instead use this list just as guide
+for things that might be worth to implement, but not necesarrily have
+to. Some ideas in this list might actually be bad and better solved by
+other means.
 
 Scripting
 =========
 
-* add function that clears all scripts and rereads them from file
+* maybe: introduce some cleaner seperation between scripts that are
+  allowed to suspend and those that aren't
+
+* NavigationGraph needs hooks into scripting, so that things can be
+  triggered when a character passes over a specific trigger node or
+  things like that.
+
+* add function that clears all scripts and rereads them from file (for
+  debugging)
 
 * add check that looks into a scripts root table to see if init()
   and/or run() is present
@@ -147,12 +156,19 @@ Miscellaneous
 =============
 
 * implement proper word wrap in SpeechManager and also add code to
-  'unstuck' speech bubbles when they go over the window border
+  'unstuck' speech bubbles when they go over the window border.
+
+  Also SpeechManager should act in worldspace, not screenspace or
+  something clever inbetween.
 
 * Add option for ControllerHelpWindow to option menu
 
-* cleanup display/text_area.cpp, having scrolling and running text
-  together doesn't make all that much sense, also functions are too large 
+* cleanup TextArea/text_area.cpp, having scrolling and running text
+  together doesn't make all that much sense, also functions are too
+  large
+
+  Scrollbar is to far on the left, outside of the actual Rect, need to
+  shrink horizontal width if text needs a scrollbar
 
 * scrap inventory and redesign it
 
@@ -164,7 +180,8 @@ Miscellaneous
   scroll bars on large resolutions and empty space when they have to
   few items
 
-* create a UTF32 string class, maybe based on basic_string<>, for use in console
+* create a UTF32 string class, maybe based on basic_string<uint32_t>,
+  for use in console
 
 * join Player and Character somewhat or derive one from the other, so
   that one can have scripted people running and jumping around
@@ -191,17 +208,15 @@ Miscellaneous
   shouldn't be persistent unless told so
 
 * make lightmap resolution independent (done, but an artifact remains
-  when the resolution isn't dividable by LIGHTMAP_DIV)
+  when the resolution isn't dividable by LIGHTMAP_DIV):
 
-* PDA needs scrolling text thing (right analog stick?), TextArea has
-  it implemented, but events don't to pass through PDA
+  1680x1050 -> 1050 / 4 -> 262.5 -> 262 * 4 -> 1048
+
+  two pixel missing at the bottom
 
 * Specify the capabilites that the different subsystems need to have
 
 * make Console not derive from ostream
-
-* GridComponent and ParticleViewer leak (FIXME: Kick out
-  GridComponent, since it doesn't work anyway?)
 
 Profiling
 =========

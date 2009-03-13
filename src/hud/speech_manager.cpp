@@ -31,8 +31,8 @@ public:
   Vector2f    pos;
   Color       color;
   float       seconds_passed;
-  float       wpm;
-
+  float       seconds_till_done;
+  
   Speech(int id, const std::string& text, const Vector2f& pos, const Color& color);
     
   void draw();
@@ -47,12 +47,22 @@ Speech::Speech(int id_, const std::string& text_, const Vector2f& pos_, const Co
     color(color_),
     seconds_passed(0.0f)
 {
+  // FIXME: Calculate words by other means, this isn't good for long text
+  float words = 2 + text.size() / 5.0f;
+  float words_per_minute = 150.0f;
+  float words_per_second = words_per_minute / 60.0f;
+
+  seconds_till_done = words / words_per_second;
 }
 
 void 
 Speech::draw()
 {
-  Fonts::vera20->draw_center(pos, text, color);
+  // Do not display any text for 0.1 seconds before we are doen, so
+  // that we get an empty gap between succesive text on the screen,
+  // which is needed to make text look more like natural speech.
+  if (seconds_passed < (seconds_till_done - .1f))
+    Fonts::vera20->draw_center(pos, text, color);
 }
 
 void
@@ -64,11 +74,7 @@ Speech::update(float delta)
 bool
 Speech::is_done() const
 {
-  float words = 2 + text.size() / 5.0f;
-  float words_per_minute = 150.0f;
-  float words_per_second = words_per_minute / 60.0f;
-  
-  return (seconds_passed * words_per_second) > words;
+  return seconds_passed > seconds_till_done;
 }
 
 SpeechManager::SpeechManager()
