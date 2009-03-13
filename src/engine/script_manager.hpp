@@ -51,6 +51,7 @@ public:
       TIME,
       DIALOG_CLOSED,
       CONVERSATION_CLOSED,
+      SPEECH_DONE,
       FADE_DONE,
       CAMERA_DONE,
       GAMEOBJECT_DONE,
@@ -67,6 +68,7 @@ public:
     union {
       // GAMEOBJECT_DONE
       GameObject* game_object;
+      int id;
     };
   };
 

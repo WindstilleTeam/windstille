@@ -10,6 +10,11 @@ in this list might actually be bad and better solved by other means.
 Scripting
 =========
 
+* add function that clears all scripts and rereads them from file
+
+* add check that looks into a scripts root table to see if init()
+  and/or run() is present
+
 * add ability to wait on custom event and add ability to fire of a
   custom event:
 
@@ -111,6 +116,8 @@ Scripting
 Input Handling
 ==============
 
+* get rid of global game_time variable
+
 * change of input context is troublesome: when the user selects a
   dialog and confirms it, the character starts to walk into the
   direction that the player indicated, because the stick still points
@@ -138,6 +145,9 @@ Sound Handling
 
 Miscellaneous
 =============
+
+* implement proper word wrap in SpeechManager and also add code to
+  'unstuck' speech bubbles when they go over the window border
 
 * Add option for ControllerHelpWindow to option menu
 
@@ -182,9 +192,6 @@ Miscellaneous
 
 * make lightmap resolution independent (done, but an artifact remains
   when the resolution isn't dividable by LIGHTMAP_DIV)
-
-* write a LucasArts-like dialog system (i.e. non-blocking text,
-  instead of JRPG like boxes with portraits), see SpeechManager
 
 * PDA needs scrolling text thing (right analog stick?), TextArea has
   it implemented, but events don't to pass through PDA

@@ -200,6 +200,13 @@ SquirrelThread::fire_wakeup_event(const ScriptManager::WakeupData& event)
     {
       switch (event.type)
         {
+          case ScriptManager::SPEECH_DONE:
+            if (waiting_for_events.id == event.id)
+              {
+                wakeup_time = game_time;
+              }
+            break;
+
           case ScriptManager::GAMEOBJECT_DONE:
             if (waiting_for_events.game_object == event.game_object)
               {

@@ -17,6 +17,7 @@
 */
 
 #include <vector>
+#include <assert.h>
 #include "wrapper.interface.hpp"
 #include "util.hpp"
 #include "interface.hpp"
@@ -159,9 +160,17 @@ void wait_for_fade(HSQUIRRELVM vm)
     }
 }
 
-void speech_show(const std::string& text, float x, float y)
+int speech_show(const std::string& text, float x, float y, float r, float g, float b)
 {
-  SpeechManager::current()->add(text, Vector2f(x, y));
+  return SpeechManager::current()->add(text, Vector2f(x, y), Color(r, g, b));
+}
+
+void wait_for_speech(HSQUIRRELVM vm, int i) __suspend
+{
+  ScriptManager::WakeupData data;
+  data.type = ScriptManager::SPEECH_DONE;
+  data.id   = i;
+  ScriptManager::current()->get_thread(vm)->set_wakeup_event(data);
 }
 
 void dialog_show(int alignment, const std::string& character, const std::string& portrait, const std::string& text)

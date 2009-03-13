@@ -16,35 +16,55 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "engine/entity.hpp"
+#include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "speech_manager.hpp"
 
 SpeechManager* SpeechManager::current_ = 0;
 
-SpeechManager::Speech::Speech(const std::string& text, const Vector2f& pos, const Color& color)
-  : text(text),
-    pos(pos),
-    color(color),
+class Speech 
+{
+public:
+  int id;
+  std::string text;
+  Vector2f    pos;
+  Color       color;
+  float       seconds_passed;
+  float       wpm;
+
+  Speech(int id, const std::string& text, const Vector2f& pos, const Color& color);
+    
+  void draw();
+  void update(float delta);
+  bool is_done() const;
+};
+
+Speech::Speech(int id_, const std::string& text_, const Vector2f& pos_, const Color& color_)
+  : id(id_),
+    text(text_),
+    pos(pos_),
+    color(color_),
     seconds_passed(0.0f)
 {
 }
 
 void 
-SpeechManager::Speech::draw()
+Speech::draw()
 {
-  Fonts::vera20->draw(pos, text, color);
+  Fonts::vera20->draw_center(pos, text, color);
 }
 
 void
-SpeechManager::Speech::update(float delta)
+Speech::update(float delta)
 {
   seconds_passed += delta;
 }
 
 bool
-SpeechManager::Speech::is_done() const
+Speech::is_done() const
 {
-  float words = 1 + text.size() / 5.0f;
+  float words = 2 + text.size() / 5.0f;
   float words_per_minute = 150.0f;
   float words_per_second = words_per_minute / 60.0f;
   
@@ -52,6 +72,7 @@ SpeechManager::Speech::is_done() const
 }
 
 SpeechManager::SpeechManager()
+  : speech_id(1)
 {
   assert(current_ == 0);
   current_ = this;
@@ -68,10 +89,24 @@ SpeechManager::~SpeechManager()
   current_ = 0;
 }
 
-void
-SpeechManager::add(const std::string& text, const Vector2f& pos, const Color& color)
+int
+SpeechManager::add(const std::string& text, 
+                   const Entity& entity,
+                   const Color& color)
 {
-  speeches.push_back(new Speech(text, pos, color));
+  return add(text, entity.get_pos(), color);
+}
+
+
+int
+SpeechManager::add(const std::string& text, 
+                   const Vector2f& pos, 
+                   const Color& color)
+{
+  int this_speech_id = speech_id;
+  speeches.push_back(new Speech(this_speech_id, text, pos, color));
+  speech_id += 1;
+  return this_speech_id;
 }
 
 void
@@ -97,6 +132,11 @@ SpeechManager::update(float delta, const Controller& controller)
     {  
       if ((*i)->is_done())
         {
+          ScriptManager::WakeupData event;
+          event.type = ScriptManager::SPEECH_DONE;
+          event.id   = (*i)->id;
+          ScriptManager::current()->fire_wakeup_event(event);
+
           delete *i;
           *i = 0;
         }

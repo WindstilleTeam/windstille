@@ -37,7 +37,8 @@ RENDER_MASK_ALL            <- (RENDER_MASK_HIGHLIGHTMAP |
                                RENDER_MASK_COLORMAP | 
                                RENDER_MASK_BLURMAP)
 
-has_nightvision <- false;
+state <- {}
+  has_nightvision <- false;
 
 function nightvision_enabled(...)
 {
@@ -72,9 +73,20 @@ function game_speed(...)
 function conversation_get()
 {
   conversation_show();
-  println("wait_for_conversation: " + wait_for_conversation());
+  wait_for_conversation();
+  //println("wait_for_conversation: " + );
   return conversation_get_selection();
 }
+
+function conversation(arr)
+{
+  foreach(val in arr) {
+    conversation_add2(val[0], val[1])
+  }
+
+  return ::conversation_get();
+}
+
 
 class Dialog {
   constructor(arg_align, arg_character, arg_portrait)

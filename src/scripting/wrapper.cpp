@@ -793,17 +793,57 @@ static SQInteger speech_show_wrapper(HSQUIRRELVM vm)
     sq_throwerror(vm, _SC("Argument 3 not a float"));
     return SQ_ERROR;
   }
+  SQFloat arg3;
+  if(SQ_FAILED(sq_getfloat(vm, 5, &arg3))) {
+    sq_throwerror(vm, _SC("Argument 4 not a float"));
+    return SQ_ERROR;
+  }
+  SQFloat arg4;
+  if(SQ_FAILED(sq_getfloat(vm, 6, &arg4))) {
+    sq_throwerror(vm, _SC("Argument 5 not a float"));
+    return SQ_ERROR;
+  }
+  SQFloat arg5;
+  if(SQ_FAILED(sq_getfloat(vm, 7, &arg5))) {
+    sq_throwerror(vm, _SC("Argument 6 not a float"));
+    return SQ_ERROR;
+  }
 
   try {
-    Scripting::speech_show(arg0, static_cast<float> (arg1), static_cast<float> (arg2));
+    int return_value = Scripting::speech_show(arg0, static_cast<float> (arg1), static_cast<float> (arg2), static_cast<float> (arg3), static_cast<float> (arg4), static_cast<float> (arg5));
 
-    return 0;
+    sq_pushinteger(vm, return_value);
+    return 1;
 
   } catch(std::exception& e) {
     sq_throwerror(vm, e.what());
     return SQ_ERROR;
   } catch(...) {
     sq_throwerror(vm, _SC("Unexpected exception while executing function 'speech_show'"));
+    return SQ_ERROR;
+  }
+
+}
+
+static SQInteger wait_for_speech_wrapper(HSQUIRRELVM vm)
+{
+  HSQUIRRELVM arg0 = vm;
+  SQInteger arg1;
+  if(SQ_FAILED(sq_getinteger(vm, 2, &arg1))) {
+    sq_throwerror(vm, _SC("Argument 1 not an integer"));
+    return SQ_ERROR;
+  }
+
+  try {
+    Scripting::wait_for_speech(arg0, static_cast<int> (arg1));
+
+    return sq_suspendvm(vm);
+
+  } catch(std::exception& e) {
+    sq_throwerror(vm, e.what());
+    return SQ_ERROR;
+  } catch(...) {
+    sq_throwerror(vm, _SC("Unexpected exception while executing function 'wait_for_speech'"));
     return SQ_ERROR;
   }
 
@@ -1818,9 +1858,16 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "speech_show", -1);
   sq_newclosure(v, &speech_show_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s f|i f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s f|i f|i f|i f|i f|i ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'speech_show'");
+  }
+
+  sq_pushstring(v, "wait_for_speech", -1);
+  sq_newclosure(v, &wait_for_speech_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t i ");
+  if(SQ_FAILED(sq_createslot(v, -3))) {
+    throw SquirrelError(v, "Couldn't register function 'wait_for_speech'");
   }
 
   sq_pushstring(v, "dialog_show", -1);

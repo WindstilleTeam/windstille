@@ -26,6 +26,7 @@
 #include "display/color.hpp"
 
 class Entity;
+class Speech;
 
 /** The SpeechManager displays speech text over characters or
     objects, similar to what you see in LucasArts games */
@@ -37,24 +38,9 @@ public:
   static SpeechManager* current() { return current_; }
 
 private:
-  class Speech 
-  {
-  public:
-    std::string text;
-    Vector2f    pos;
-    Color       color;
-    float       seconds_passed;
-    float       wpm;
-
-    Speech(const std::string& text, const Vector2f& pos, const Color& color);
-    
-    void draw();
-    void update(float delta);
-    bool is_done() const;
-  };
-
   typedef std::vector<Speech*> Speeches;
   Speeches speeches;
+  int speech_id;
 
 public:
   SpeechManager();
@@ -68,9 +54,13 @@ public:
    *  @param pos   The position of the speech bubble in screen coordinates
    *  @param color The color of the speech bubble
    */
-  void add(const std::string& text, 
-           const Vector2f& pos, 
-           const Color& color = Color(1.0f, 1.0f, 1.0f));
+  int add(const std::string& text, 
+          const Vector2f& pos, 
+          const Color& color = Color(1.0f, 1.0f, 1.0f));
+  
+  int add(const std::string& text, 
+          const Entity& entity,
+          const Color& color = Color(1.0f, 1.0f, 1.0f));
 
   void draw();
   void update(float delta, const Controller& controller);

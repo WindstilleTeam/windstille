@@ -55,7 +55,8 @@ static const int HCENTER = 0x00;
 static const int TOP     = 0x10;
 static const int BOTTOM  = 0x20;
 
-void speech_show(const std::string& text, float x, float y);
+int  speech_show(const std::string& text, float x, float y, float r, float g, float b);
+void wait_for_speech(HSQUIRRELVM vm, int i) __suspend;
 
 void dialog_show(int alignment, const std::string& character, const std::string& portrait, const std::string& text);
 void wait_for_dialog(HSQUIRRELVM vm) __suspend;

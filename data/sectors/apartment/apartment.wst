@@ -217,6 +217,17 @@
       (use-verb "Look")
       (script "barrobot.nut")
     )
+
+
+    (scriptable-object
+      (name "barrobot2")
+      (pos 770 177)
+      (z-pos -100)
+      (sprite  "models/objects/barrobot/barrobotsprite.sprite")
+      (active true)
+      (use-verb "Look")
+      (script "barrobot2.nut")
+    )
     
     (scriptable-object      
      (name "flashlight")
