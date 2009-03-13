@@ -51,7 +51,7 @@ EnumMenuItem&
 Menu::add_enum(const std::string& name, int index,
                const boost::function<void (int)>& callback)
 {
-  std::auto_ptr<EnumMenuItem> enum_item(new EnumMenuItem(menu.get(), name));
+  std::auto_ptr<EnumMenuItem> enum_item(new EnumMenuItem(menu.get(), name, index));
 
   if (callback)
     enum_item->sig_change().connect(callback);
