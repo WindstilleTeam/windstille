@@ -16,12 +16,13 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <sstream>
 #include "input/input_manager.hpp"
 #include "display/display.hpp"
 #include "display/text_area.hpp"
 #include "font/fonts.hpp"
 #include "pda.hpp"
-
+
 DialogEntry::DialogEntry(const std::string& arg_character, const std::string& arg_text)
   : character(arg_character),
     text(arg_text)
@@ -34,11 +35,18 @@ ObjectiveEntry::ObjectiveEntry(const std::string& arg_name, const std::string& a
     complete(false)
 {
 }
-
+
 PDA::PDA()
-  : state(PDA_OBJECTIVES)
+  : state(PDA_OBJECTIVES),
+    old_state(PDA_NONE)
 { 
   background = Sprite("images/pda/pda.sprite");
+
+  ui_area.reset(new TextArea(Rectf(70, 83, 385, 520).grow(-12.0f), false));
+  text_area.reset(new TextArea(Rectf(70, 83+56, 385, 520).grow(-12.0f), false));
+
+  ui_area->set_font(Fonts::vera12);
+  text_area->set_font(Fonts::vera12);
 }
 
 PDA::~PDA()
@@ -48,21 +56,18 @@ PDA::~PDA()
 void
 PDA::draw()
 {
-  if (text_area.get())
-    {
-      // Darken the background a bit
-      Display::fill_rect(Rect(0, 0, Display::get_width(), Display::get_height()), Color(0.0f, 0.0f, 0.0f, 0.25f));
+  // Darken the background a bit
+  Display::fill_rect(Rect(0, 0, Display::get_width(), Display::get_height()), Color(0.0f, 0.0f, 0.0f, 0.25f));
 
-      Rectf rect = text_area->get_rect().grow(8.0f);
+  background.draw(Vector2f(30, 30));
 
-      background.draw(Vector2f(30, 30));
-      
-      rect.top += 56;
-      Display::fill_rounded_rect(rect, 16.0f, Color(0.3f, 0.3f, 0.5f, 0.5f));
-      Display::draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  Rectf rect = text_area->get_rect().grow(8.0f);
+  
+  Display::fill_rounded_rect(rect, 16.0f, Color(0.1f, 0.1f, 0.2f, 0.8f));
+  //Display::draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-      text_area->draw();
-    }
+  ui_area->draw();
+  text_area->draw();
 }
 
 void
@@ -76,13 +81,13 @@ PDA::update(float delta, const Controller& controller)
         {
           if (i->axis.name == MENU_LEFT_BUTTON && i->button.down) 
             {
-              state = static_cast<pda_state>(state + 1);
+              state = static_cast<PDAState>(state + 1);
               if (state > PDA_DIALOGS)
                 state = PDA_OBJECTIVES;
             }
           else if (i->axis.name == MENU_RIGHT_BUTTON && i->button.down) 
             {
-              state = static_cast<pda_state>(state - 1);
+              state = static_cast<PDAState>(state - 1);
               if (state < PDA_OBJECTIVES)
                 state = PDA_DIALOGS;
             }
@@ -90,47 +95,57 @@ PDA::update(float delta, const Controller& controller)
     }
   
   if (text_area.get())
-    text_area->set_scroll_offset(text_area->get_scroll_offset() + 500.0f * controller.get_axis_state(Y2_AXIS) * delta);
-    
-  switch (state) 
     {
-      case PDA_OBJECTIVES:
-        show_objectives();
-        break;
-
-      case PDA_DIALOGS:
-        show_dialogs();
-        break;
+      text_area->set_scroll_offset(text_area->get_scroll_offset() + 500.0f * controller.get_axis_state(Y2_AXIS) * delta);
     }
- 
-  if (new_text != old_text) 
-    {
-      // FIXME: Unneeded could just use set_text
-      text_area.reset(new TextArea(Rectf(70, 83, 385, 520).grow(-12.0f), false));
-      text_area->set_font(Fonts::ttffont);
-      text_area->set_text(new_text);
     
-      old_text = new_text;
+  if (old_state != state) 
+    {
+      old_state = state;
+
+      switch (state) 
+        {
+          case PDA_NONE:
+            break;
+
+          case PDA_OBJECTIVES:
+            generate_objectives();
+            break;
+
+          case PDA_DIALOGS:
+            generate_dialogs();
+            break;
+        }
     }
   
   text_area->update(delta);
 }
 
 void
+PDA::force_regeneration()
+{
+  old_state = PDA_NONE;
+}
+
+void
 PDA::add_dialog(const std::string& character, const std::string& text)
 {
+  force_regeneration();
   dialogs.push_back(DialogEntry(character, text));
 }
 
 void
 PDA::add_objective(const std::string& name, const std::string& text)
 {
+  force_regeneration();
   objectives.push_back(ObjectiveEntry(name, text));
 }
 
 void
 PDA::objective_complete(const std::string& name)
-{
+{  
+  force_regeneration();
+
   for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i) 
     {
       if (i->name == name)
@@ -164,37 +179,42 @@ PDA::is_objective_complete(const std::string& name)
 }
 
 void
-PDA::show_objectives()
+PDA::generate_objectives()
 {
-  new_text = "<large>Personal Digital Assistant</large>\n";
-  new_text += "<b>objectives</b> - dialogs\n\n";
+  ui_area->set_text("<large>Personal Digital Assistant</large>\n"
+                    "<b>objectives</b> - dialogs");
   
+  std::ostringstream out;
   for (std::vector<ObjectiveEntry>::reverse_iterator i = objectives.rbegin(); i != objectives.rend(); ++i) 
     {
-      new_text += i->name;
-      new_text += ": ";
+      out << i->name << ": ";
 
       if (i->complete)
-        new_text += "complete\n";
+        out << "complete\n";
       else
-        new_text += "incomplete\n";
+        out << "incomplete\n";
 
-      new_text += i->text + "\n\n";
+      out << i->text + "\n\n";
     }
+
+  text_area->set_text(out.str());
 }
 
 void
-PDA::show_dialogs()
+PDA::generate_dialogs()
 {
-  new_text = "<large>Personal Digital Assistant</large>\n";
-  new_text += "objectives - <b>dialogs</b>\n\n";
+  ui_area->set_text("<large>Personal Digital Assistant</large>\n"
+                    "objectives - <b>dialogs</b>");
   
+  std::ostringstream out;
   for (std::vector<DialogEntry>::reverse_iterator i = dialogs.rbegin(); i != dialogs.rend(); ++i) 
     {
-      new_text += i->character;
-      new_text += ": ";
-      new_text += i->text + '\n';
+      if (i->character == "Jane")
+        out << "<i>" << i->character << ":</i> " << i->text << '\n';
+      else
+        out << "<b>" << i->character << ":</b> " << i->text << '\n';
     }
+  text_area->set_text(out.str());
 }
-
+
 /* EOF */

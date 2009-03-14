@@ -24,7 +24,7 @@
 #include "screen/screen.hpp"
 
 class TextArea;
-
+
 class DialogEntry
 {
 public:
@@ -43,22 +43,26 @@ public:
   std::string text;
   bool complete;
 };
-
+
 /** */
 class PDA : public Screen
 {
 private:
   Sprite    background;
+
+  std::auto_ptr<TextArea>  ui_area;
   std::auto_ptr<TextArea>  text_area;
+
   std::vector<DialogEntry> dialogs;
   std::vector<ObjectiveEntry> objectives;   
   
-  std::string new_text;  
-  std::string old_text;
-  enum pda_state { PDA_OBJECTIVES, PDA_DIALOGS } state;
+  enum PDAState { PDA_NONE, PDA_OBJECTIVES, PDA_DIALOGS };
+  PDAState state;
+  PDAState old_state;
 
-  void show_objectives();
-  void show_dialogs();
+  void generate_objectives();
+  void generate_dialogs();
+  void force_regeneration();
 
 public:
   PDA();
@@ -73,7 +77,7 @@ public:
   bool is_objective_given(const std::string& name);
   bool is_objective_complete(const std::string& name);
 };
-
+
 #endif
 
 /* EOF */
