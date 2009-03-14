@@ -98,6 +98,7 @@ Player::draw (SceneContext& sc)
   Entity* obj = find_useable_entity();
   if (obj)
     {
+      // FIXME: Highlight layer is the wrong place for this
       std::string use_str = "[" + obj->get_use_verb() + "]";
       sc.highlight().draw(use_str, obj->get_pos().x, obj->get_pos().y - 150, 1000);
     }

@@ -62,8 +62,8 @@ TextArea::TextArea(const Rectf& rect, bool letter_by_letter)
   impl->v_space = 2;
   impl->letter_by_letter = letter_by_letter;
   impl->progress_complete = false;
-  impl->passed_time = 0;
-  impl->scroll_offset = 0.0f;
+  impl->passed_time       = 0;
+  impl->scroll_offset     = 0.0f;
   impl->max_scroll_offset = -1.0f; // FIXME: Bad magick value
 }
 
