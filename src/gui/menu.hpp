@@ -60,10 +60,8 @@ public:
                    const boost::function<void ()>& callback = boost::function<void ()>());
 
   RootComponent*  get_root() const;
-  GroupComponent* get_group() const;
 
   void show();
-  std::auto_ptr<GroupComponent> create_group();
 
 private:
   Menu (const Menu&);

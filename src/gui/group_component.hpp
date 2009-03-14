@@ -45,6 +45,8 @@ public:
 
   Rectf get_child_rect() const;
 
+  bool has_title() const { return !title.empty(); }
+
 private:
   GroupComponent (const GroupComponent&);
   GroupComponent& operator= (const GroupComponent&);

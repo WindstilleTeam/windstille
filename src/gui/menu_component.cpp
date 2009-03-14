@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <iostream>
 #include "sound/sound_manager.hpp"
 #include "input/controller.hpp"
@@ -198,14 +199,13 @@ MenuComponent::get_prefered_width() const
     {
     width = std::max(get_width())
     }  */
-  return 200; // FIXME:
+  return rect.get_width();
 }
 
 float
 MenuComponent::get_prefered_height() const
 {
-  float step = font->get_height() + 20.0f;
-  return step * items.size();
+  return item_height() * std::min(10, int(items.size())) + 12.0f;
 }
 
 float
@@ -235,6 +235,26 @@ MenuComponent::adjust_scroll_offset()
           scroll_offset = current_item;
         }
     }  
+}
+
+void
+MenuComponent::set_screen_rect(const Rectf& rect)
+{
+  num_displayable_items = static_cast<int>(rect.get_height() / item_height());  
+
+  if (num_displayable_items < int(items.size()))
+    {
+      scroll_mode   = true;
+      scroll_offset = 0;
+    }
+  else
+    {
+      scroll_mode   = false;
+      scroll_offset = 0;
+    }
+
+  
+  Component::set_screen_rect(rect);
 }
 
 } // namespace gui

@@ -89,28 +89,30 @@ Menu::get_root() const
   return manager->get_root();
 }
 
-GroupComponent*
-Menu::get_group() const
-{
-  return group.get();
-}
-
 void
 Menu::show()
 {
   assert(manager.get());
+  
+  {
+    Rectf rect = group->get_screen_rect();
+
+    Vector2f center((rect.left + rect.right) / 2.0f,
+                    (rect.top + rect.bottom) / 2.0f);
+
+    Sizef size(menu->get_prefered_width(), 
+               menu->get_prefered_height() + (group->has_title()?Fonts::vera20->get_height() + 18:0.0f));
+
+    group->set_screen_rect(Rectf(Vector2f(center.x - size.width/2.0f,
+                                          center.y - size.height/2.0f),
+                                 size));
+
+    menu->set_screen_rect(group->get_child_rect());
+  }
 
   group->pack(menu.release());
   manager->get_root()->add_child(group.release());
   screen_manager.push_overlay(manager.release());
-}
-
-std::auto_ptr<GroupComponent>
-Menu::create_group()
-{
-  assert(manager.get() == 0);
-  group->pack(menu.release());
-  return group;
 }
 
 } // namespace gui

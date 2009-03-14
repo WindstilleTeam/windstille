@@ -137,7 +137,13 @@ Input Handling
 
 * Input deadzone is problematic when trying to get angle of a stick,
   deadzone needs to act different there then when X/Y are handled
-  seperatly
+  seperatly. Temporary workaround is to move deadzone out of the input
+  code into the app code, which is problematic as well. Alternatives
+  might be more high-level ways to access the stick:
+
+  void get_stick_state(X_AXIS, Y_AXIS, &angle, &length);
+  bool stick_is_centered(X_AXIS, Y_AXIS);
+  float get_axis_state(X_AXIS, bool ignore_deadzone = false);
 
 * change of input context is troublesome: when the user selects a
   dialog and confirms it, the character starts to walk into the
@@ -166,6 +172,15 @@ Sound Handling
 
 Miscellaneous
 =============
+
+* set dynamic maximum size for auto resizing Menus depending on
+  resolution
+
+* add way to jump without running
+
+* animation must be less strongly coupled to movement
+
+* add way to skip through SpeechManager Speech lines (B-button)
 
 * raycasting in laserpointer is broken, doesn't work if angle is 0
   (maybe not worth to fix since it will be replaced with
@@ -201,10 +216,6 @@ Miscellaneous
 * When starting sector directly from command line, "Return to title screen" doesn't work
 
 * console doesn't adopt to screen size
-
-* add support for dynamic resize to Menu's, currently Menus have
-  scroll bars on large resolutions and empty space when they have to
-  few items
 
 * create a UTF32 string class for use in console, basically
   basic_string<uint32_t> and a convert function to UTF-8 should be
@@ -355,6 +366,8 @@ Random Things
 
 Graphics
 ========
+
+* Model lower-poly version of Jane and stuff
 
 * aspect-ratio/resolution options:
 

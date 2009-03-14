@@ -66,6 +66,9 @@ public:
 
   void     set_font(TTFFont* font_);
   TTFFont* get_font();
+
+  virtual void set_screen_rect(const Rectf& rect);
+
 private:
   MenuComponent (const MenuComponent&);
   MenuComponent& operator= (const MenuComponent&);
