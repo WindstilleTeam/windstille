@@ -173,6 +173,8 @@ Sound Handling
 Miscellaneous
 =============
 
+* using aspect-ration different to screen resolution, lots of things break
+
 * set dynamic maximum size for auto resizing Menus depending on
   resolution
 

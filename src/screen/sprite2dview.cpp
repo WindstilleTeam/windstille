@@ -138,7 +138,7 @@ Sprite2DView::draw()
               small.set_scale(scale);
 
               small.draw(Vector2f(DISPLAY_W - width,
-                                DISPLAY_H - height));
+                                  DISPLAY_H - height));
             }
           else
             {
