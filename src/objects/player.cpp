@@ -148,11 +148,11 @@ Player::update(float delta)
 
   controller = InputManager::get_controller();
 
-  if (fabsf(controller.get_axis_state(X2_AXIS)) > 0.25f ||
-      fabsf(controller.get_axis_state(Y2_AXIS)) > 0.25f)
+  if (fabsf(controller.get_axis_state(X2_AXIS, false)) > 0.25f ||
+      fabsf(controller.get_axis_state(Y2_AXIS, false)) > 0.25f)
     {
-      float angle = atan2f(controller.get_axis_state(Y2_AXIS),
-                           controller.get_axis_state(X2_AXIS));
+      float angle = atan2f(controller.get_axis_state(Y2_AXIS, false),
+                           controller.get_axis_state(X2_AXIS, false));
 
       laser_pointer->set_active(true);
       laser_pointer->set_angle(angle);

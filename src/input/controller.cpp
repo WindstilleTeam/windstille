@@ -17,6 +17,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <math.h>
 #include <assert.h>
 #include "app/controller_def.hpp"
 #include "controller.hpp"
@@ -46,12 +47,22 @@ Controller::get_trigger_state(int name) const
 }
 
 float
-Controller::get_axis_state(int id) const
+Controller::get_axis_state(int id, bool use_deadzone) const
 {
   assert(id < int(states.size()));
-  return states[id].axis;
-}
-        
+
+  if (use_deadzone)
+    {
+      if (fabsf(states[id].axis) > 0.1f) // FIXME: Hardcoded Deadzone
+        return states[id].axis;
+      else
+        return 0.0f;
+    }
+  else
+    {
+      return states[id].axis;
+    }
+}      
 
 bool
 Controller::get_button_state(int id) const

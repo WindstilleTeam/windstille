@@ -43,7 +43,7 @@ public:
   Controller();
 
   float get_trigger_state(int name) const;
-  float get_axis_state  (int name) const;
+  float get_axis_state  (int name, bool use_deadzone = true) const;
   bool  get_button_state(int name) const;
   float get_ball_state  (int name) const;
 
