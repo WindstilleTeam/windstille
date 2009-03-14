@@ -35,7 +35,7 @@
 
 InputManagerSDL* InputManagerSDL::current_ = 0;
 
-const int dead_zone =  8192;
+const int dead_zone = 0;
 
 class InputManagerSDLImpl
 {
@@ -378,11 +378,7 @@ InputManagerSDL::on_joy_axis_event(const SDL_JoyAxisEvent& event)
       if (event.which  == i->device &&
           event.axis   == i->axis)
         {
-          if (event.value < -dead_zone)
-            {
-              add_axis_event(i->event, event.value/(i->invert?-32768.0f:32768.0f));
-            }
-          else if (event.value > dead_zone)
+          if (abs(event.value) > dead_zone)
             {
               add_axis_event(i->event, event.value/(i->invert?-32768.0f:32768.0f));
             }
@@ -401,18 +397,18 @@ InputManagerSDL::on_joy_axis_event(const SDL_JoyAxisEvent& event)
           event.axis  == i->axis)
         {
           if (i->up)
-            {
+            { // signal button press when axis is up
               if (event.value < -dead_zone)
                 add_button_event(i->event, true);
               else 
                 add_button_event(i->event, false);
             }
           else
-            {
+            { // signal button press when axis is down
               if (event.value > dead_zone)
                 add_button_event(i->event, true);
-              else 
-                add_button_event(i->event, false);              
+              else
+                add_button_event(i->event, false);
             }
         }
     }
@@ -698,7 +694,7 @@ InputManagerSDL::clear_bindings()
 }
 
 void
-InputManagerSDL::add_axis_event  (int name, float pos)
+InputManagerSDL::add_axis_event(int name, float pos)
 {
   // Convert analog axis events into digital menu movements
   // FIXME: add key repeat

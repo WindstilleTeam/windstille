@@ -111,11 +111,13 @@ Player::draw (SceneContext& sc)
   weapon->draw(sc);
   sc.pop_modelview();
 
-
+  if (laser_pointer->is_active())
+    {
   sc.push_modelview();
   sc.translate(pos.x, pos.y - 80);
   laser_pointer->draw(sc);
   sc.pop_modelview();
+    }
 }
 
 void
@@ -140,23 +142,25 @@ void
 Player::update(float delta)
 {
   weapon->update(delta);
-  laser_pointer->update(delta);
+
+  if (laser_pointer->is_active())
+    laser_pointer->update(delta);
 
   controller = InputManager::get_controller();
 
-  {
-    if (fabsf(controller.get_axis_state(X2_AXIS)) > 0.2f ||
-        fabsf(controller.get_axis_state(Y2_AXIS)) > 0.2f)
-      {
-        float angle = atan2f(controller.get_axis_state(Y2_AXIS),
-                             controller.get_axis_state(X2_AXIS));
+  if (fabsf(controller.get_axis_state(X2_AXIS)) > 0.25f ||
+      fabsf(controller.get_axis_state(Y2_AXIS)) > 0.25f)
+    {
+      float angle = atan2f(controller.get_axis_state(Y2_AXIS),
+                           controller.get_axis_state(X2_AXIS));
 
-        laser_pointer->set_angle(angle);
-      }
-    // laser_pointer->set_angle(laser_pointer->get_angle() + controller.get_axis_state(Y_AXIS) * delta);
-  }
-
-  //std::cout << controller.get_axis_state(Y2_AXIS) * M_PI << std::endl;
+      laser_pointer->set_active(true);
+      laser_pointer->set_angle(angle);
+    }
+  else
+    {
+      laser_pointer->set_active(false);
+    }
 
   if (GameSession::current()->is_active())
     {
@@ -410,7 +414,7 @@ Player::set_walk(Direction direction)
 void
 Player::update_walk()
 {
-  if (controller.get_axis_state(X_AXIS) == 0)
+  if (fabsf(controller.get_axis_state(X_AXIS)) < 0.5f) // Hardcoded DEAD_ZONE, somewhat evil 
     {
       leave_walk();
       set_stand();

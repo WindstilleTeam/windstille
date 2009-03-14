@@ -11,6 +11,13 @@ other means.
 Scripting
 =========
 
+* ParticleSystem could be hooked up to scripting
+
+* add a way to bind keys to script functions for use in debugging
+
+  bind("F9", "toggle_this")
+  bind("F9", function() { /* do stuff */ })
+
 * maybe: introduce some cleaner seperation between scripts that are
   allowed to suspend and those that aren't
 
@@ -119,9 +126,6 @@ Scripting
   video_ for all display related stuff and so on, so that
   tab-completion works better and things become more readable
 
-* document scripting tricks somewhere:
-  spawn_object("shockwave", {pos=[0,0]})
-
 * conversations really should be data with hooks for scripts, not pure
   scripts (FIXME: not clear if there is enough benefit and flexibilty
   to try that)
@@ -131,7 +135,9 @@ Scripting
 Input Handling
 ==============
 
-* get rid of global game_time variable
+* Input deadzone is problematic when trying to get angle of a stick,
+  deadzone needs to act different there then when X/Y are handled
+  seperatly
 
 * change of input context is troublesome: when the user selects a
   dialog and confirms it, the character starts to walk into the
@@ -160,6 +166,12 @@ Sound Handling
 
 Miscellaneous
 =============
+
+* raycasting in laserpointer is broken, doesn't work if angle is 0
+  (maybe not worth to fix since it will be replaced with
+  NavigationMesh)
+
+* get rid of global game_time variable
 
 * No object shall grab input by itself, instead the Screen should
   route it, i.e. Player is grabbing input itself, this leads to
