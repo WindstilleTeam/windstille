@@ -45,11 +45,8 @@ static const float RUN_SPEED = 256.0;
 
 Player* Player::current_ = 0;
 
-Player::Player () :
-  light("images/light3.sprite"),
-  flashlight("images/flashlightlight.sprite"),
-  flashlighthighlight("images/flashlighthighlight.sprite"),
-  state(STAND)
+Player::Player () 
+ : state(STAND)
 {
   current_ = this;
 
@@ -89,15 +86,6 @@ Player::~Player()
 void
 Player::draw (SceneContext& sc)
 {
-  //light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-  //light.set_scale(4.0f);
-
-  flashlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-  flashlight.set_scale(2.0f);
-
-  flashlighthighlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-  flashlighthighlight.set_scale(2.0f);
-
   if (1)
     { // draw the 'stand-on' tile
       sc.highlight().fill_rect(Rect(Point(int(pos.x)/32 * 32, (int(pos.y)/32 + 1) * 32),
@@ -105,8 +93,6 @@ Player::draw (SceneContext& sc)
                                Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
     }
 
-  //sc.highlight().draw(flashlighthighlight, pos - Vector2f(40, 80), 100.0f);
-  //sc.light().draw(flashlight, pos - Vector2f(40, 80), 100.0f);
   sprite.draw(sc.color(), pos, z_pos);
 
   Entity* obj = find_useable_entity();

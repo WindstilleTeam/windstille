@@ -39,9 +39,6 @@ class Player : public Entity
 private:
   Controller controller;
 
-  Sprite   light;
-  Sprite   flashlight;
-  Sprite   flashlighthighlight;
   Sprite3D sprite;
   std::auto_ptr<SoundSource> sound_source;
 
