@@ -41,11 +41,11 @@ Config::Config()
   add(new ConfigValue<bool>("music",          _("Enable Music"), true, true));
   add(new ConfigValue<bool>("sound",          _("Enable Sound"), true, true));
   
-  add(new ConfigValue<int>("aspect-width",    _("Aspect Width"),   true, 800));
-  add(new ConfigValue<int>("aspect-height",   _("Aspect Height"),  true, 600));
+  add(new ConfigValue<int>("aspect-width",    _("Aspect Width"),   true, 1280));
+  add(new ConfigValue<int>("aspect-height",   _("Aspect Height"),  true,  800));
 
-  add(new ConfigValue<int>("screen-width",    _("Screen Width"),   true, 800));
-  add(new ConfigValue<int>("screen-height",   _("Screen Height"), true, 600));
+  add(new ConfigValue<int>("screen-width",    _("Screen Width"),   true, 1280));
+  add(new ConfigValue<int>("screen-height",   _("Screen Height"),  true,  800));
 
   add(new ConfigValue<std::string>("levelfile",       _("Levelfile to be used at startup"), false));
 
