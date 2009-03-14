@@ -29,8 +29,9 @@ class SceneContext;
 class Randomizer;
 struct Particle;
 class ParticleSystem;
-
-struct Particle {
+
+struct Particle
+{
   /** Position of the particle */
   float x;
   float y;
@@ -46,9 +47,7 @@ struct Particle {
       isn't active and ready to respawn */
   float t;
 };
-
-
-/** */
+
 class ParticleSystem : public Entity
 {
 public:
@@ -187,7 +186,7 @@ private:
   ParticleSystem (const ParticleSystem&);
   ParticleSystem& operator= (const ParticleSystem&);
 };
-
+
 #endif
 
 /* EOF */
