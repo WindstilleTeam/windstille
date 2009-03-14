@@ -144,8 +144,17 @@ Player::update(float delta)
 
   controller = InputManager::get_controller();
 
-  laser_pointer->set_angle(laser_pointer->get_angle() + controller.get_axis_state(Y_AXIS) * delta);
-  //laser_pointer->set_angle(controller.get_axis_state(Y2_AXIS) * M_PI);
+  {
+    if (fabsf(controller.get_axis_state(X2_AXIS)) > 0.2f ||
+        fabsf(controller.get_axis_state(Y2_AXIS)) > 0.2f)
+      {
+        float angle = atan2f(controller.get_axis_state(Y2_AXIS),
+                             controller.get_axis_state(X2_AXIS));
+
+        laser_pointer->set_angle(angle);
+      }
+    // laser_pointer->set_angle(laser_pointer->get_angle() + controller.get_axis_state(Y_AXIS) * delta);
+  }
 
   //std::cout << controller.get_axis_state(Y2_AXIS) * M_PI << std::endl;
 

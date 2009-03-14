@@ -42,10 +42,14 @@ LaserPointer::~LaserPointer()
 
 static float find_max(float pos, float v)
 {
-  if (v == 0) 
-    return 0;
+  if (v == 0)
+    { 
+      return 0;
+    }
   else if (v < 0)
-    return fmodf(fmodf(pos, TILE_SIZE) + TILE_SIZE, TILE_SIZE)/fabsf(v);
+    {
+      return fmodf(fmodf(pos, TILE_SIZE) + TILE_SIZE, TILE_SIZE)/fabsf(v);
+    }
   else // if (v > 0)
     {
       return fmodf(fmodf(-pos, TILE_SIZE) + TILE_SIZE, TILE_SIZE)/v;
@@ -108,6 +112,7 @@ LaserPointer::draw(SceneContext& sc)
   target = pos + Vector2f(t * direction.x, t * direction.y);
   
   Vector2f ray = target - pos;
+
   VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0,0), 10000,
                                                                    sc.highlight().get_modelview());
   array->set_mode(GL_LINES);
