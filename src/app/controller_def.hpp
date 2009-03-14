@@ -51,6 +51,7 @@ enum InputEventName
 
     SELECT_BUTTON,
     START_BUTTON,
+    DEBUG_BUTTON,
     
     // Keys for menu navigation, they come with hardcoded defaults for
     // the keyboard, a joystick might emmit them as well

@@ -24,6 +24,7 @@
 
  (select-button     (joystick-button (device 0)  (button 6)))
  (start-button      (joystick-button (device 0)  (button 7)))
+ (debug-button      (joystick-button (device 0)  (button 8)))
 
  ;; allow to use the dpad for menu navigation
  (menu-up-button    (joystick-axis-button (device 0) (axis 7) (up #t)))

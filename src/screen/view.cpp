@@ -78,14 +78,17 @@ View::update (float delta)
 
   const Controller& controller = InputManager::get_controller();
 
-  if (controller.get_button_state(VIEW_CENTER_BUTTON)) 
+  if (controller.get_button_state(DEBUG_BUTTON))
     {
-      transform = Vector2f(0, 0);
-      zoom = 1.0;
-    }
+      if (controller.get_button_state(VIEW_CENTER_BUTTON)) 
+        {
+          transform = Vector2f(0, 0);
+          zoom = 1.0;
+        }
 
-  transform.x += 0.5f * controller.get_axis_state(X2_AXIS) / zoom;
-  transform.y += 0.5f * controller.get_axis_state(Y2_AXIS) / zoom;
+      transform.x += 1.5f * controller.get_axis_state(X2_AXIS) / zoom;
+      transform.y += 1.5f * controller.get_axis_state(Y2_AXIS) / zoom;
+    }
 }
 
 Rectf

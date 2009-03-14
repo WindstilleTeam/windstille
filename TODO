@@ -166,8 +166,7 @@ Miscellaneous
   problems
 
 * map laserpointer to the second analog-stick, make mapping absolute,
-  not relative, also add option to toggle between debugging mapping
-  and gameplay mapping (i.e. moving view via second analogstick)
+  not relative
 
 * maybe create an additional layer in SceneContext for drawing things
   like Speech and other worldspace GUI elements to it

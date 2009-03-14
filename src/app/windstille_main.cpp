@@ -193,6 +193,7 @@ WindstilleMain::init_modules()
     // Back/Start
     controller_description.add_button("select-button",    SELECT_BUTTON);
     controller_description.add_button("start-button",     START_BUTTON);
+    controller_description.add_button("debug-button",     DEBUG_BUTTON);
 
     controller_description.add_axis("left-trigger-axis",  LEFT_TRIGGER_AXIS);
     controller_description.add_axis("right-trigger-axis", RIGHT_TRIGGER_AXIS);
