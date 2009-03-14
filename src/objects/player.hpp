@@ -124,8 +124,6 @@ private:
    * TODO: can we generalize this mechanism? Or create a small specification
    * language for this?
    */
-  
-
   void update_ducked();
   void update_ducking();
   void update_listen();

@@ -51,6 +51,8 @@ Player::Player () :
   flashlighthighlight("images/flashlighthighlight.sprite"),
   state(STAND)
 {
+  current_ = this;
+
   sprite = Sprite3D("models/characters/jane/jane.wsprite");
   pos.x = 320;
   pos.y = 200;
@@ -58,7 +60,6 @@ Player::Player () :
 
   jumping = false;
   energy = MAX_ENERGY;
-  current_ = this;
 
   hit_count = 0.0f;
   sprite.set_action("Stand");
@@ -82,6 +83,7 @@ Player::Player () :
 
 Player::~Player()
 {
+  current_ = 0;
 }
 
 void
@@ -132,7 +134,7 @@ Player::draw (SceneContext& sc)
 void
 Player::start_listening()
 {
-  if(state == STAND_TO_LISTEN || state == LISTEN)
+  if (state == STAND_TO_LISTEN || state == LISTEN)
     return;
 
   set_stand_to_listen(false);
@@ -141,7 +143,7 @@ Player::start_listening()
 void
 Player::stop_listening()
 {
-  if(state != LISTEN && state != STAND_TO_LISTEN)
+  if (state != LISTEN && state != STAND_TO_LISTEN)
     return;
   
   set_stand_to_listen(true);
@@ -162,58 +164,59 @@ Player::update(float delta)
 
   if (GameSession::current()->is_active())
     {
-      switch(state) {
-        case STAND:
-        case WALK:
-          update_walk_stand();
-          break;
-        case RUN:
-          update_run();
-          break;
-        case DUCKING:
-          update_ducking();
-          break;
-        case DUCKED:
-          update_ducked();
-          break;
-        case TURNAROUND:
-          update_turnaround();
-          break;
-        case STAND_TO_LISTEN:
-          update_stand_to_listen();
-          break;
-        case LISTEN:
-          update_listen();
-          break;
-        case JUMP_BEGIN:
-          update_jump_begin();
-          break;
-        case JUMP_AIR:
-          update_jump_air();
-          break;
-        case JUMP_LAND:
-          update_jump_land();
-          break;
-        case JUMP_UP_BEGIN:
-          update_jump_up_begin();
-          break;
-        case JUMP_UP_AIR:
-          update_jump_up_air();
-          break;
-        case JUMP_UP_LAND:
-          update_jump_up_land();
-          break;
-        case PULL_GUN:
-          update_pull_gun();
-          break;
-        case STAIRS_DOWN:
-        case STAIRS_UP:
-          update_stairs(delta);
-          break;
-        default:
-          assert(false);
-          break;
-      }
+      switch(state)
+        {
+          case STAND:
+          case WALK:
+            update_walk_stand();
+            break;
+          case RUN:
+            update_run();
+            break;
+          case DUCKING:
+            update_ducking();
+            break;
+          case DUCKED:
+            update_ducked();
+            break;
+          case TURNAROUND:
+            update_turnaround();
+            break;
+          case STAND_TO_LISTEN:
+            update_stand_to_listen();
+            break;
+          case LISTEN:
+            update_listen();
+            break;
+          case JUMP_BEGIN:
+            update_jump_begin();
+            break;
+          case JUMP_AIR:
+            update_jump_air();
+            break;
+          case JUMP_LAND:
+            update_jump_land();
+            break;
+          case JUMP_UP_BEGIN:
+            update_jump_up_begin();
+            break;
+          case JUMP_UP_AIR:
+            update_jump_up_air();
+            break;
+          case JUMP_UP_LAND:
+            update_jump_up_land();
+            break;
+          case PULL_GUN:
+            update_pull_gun();
+            break;
+          case STAIRS_DOWN:
+          case STAIRS_UP:
+            update_stairs(delta);
+            break;
+          default:
+            assert(false);
+            break;
+        }
     }
 
   // fall down
@@ -237,55 +240,58 @@ Player::set_stand()
 void
 Player::update_walk_stand()
 {
-  if (controller.get_axis_state(Y_AXIS) > 0.5f) {
-    TileMap* tilemap = Sector::current()->get_tilemap2();
-    if (tilemap)
-      {
-        Point p(int(pos.x)/32, (int(pos.y)/32 + 1));
-        unsigned int col = tilemap->get_pixel(p.x, p.y);
+  if (controller.get_axis_state(Y_AXIS) > 0.5f)
+    {
+      TileMap* tilemap = Sector::current()->get_tilemap2();
+      if (tilemap)
+        {
+          Point p(int(pos.x)/32, (int(pos.y)/32 + 1));
+          unsigned int col = tilemap->get_pixel(p.x, p.y);
 
-        if ((col & TILE_STAIRS) && ((get_direction() == WEST && (col & TILE_LEFT)) ||
-                                    (get_direction() == EAST && (col & TILE_RIGHT))))
-          {
-            delete contact;
-            contact = new StairContact(tilemap, p);
+          if ((col & TILE_STAIRS) && ((get_direction() == WEST && (col & TILE_LEFT)) ||
+                                      (get_direction() == EAST && (col & TILE_RIGHT))))
+            {
+              delete contact;
+              contact = new StairContact(tilemap, p);
 
-            std::cout << "Stair mode" << std::endl;
-            state = STAIRS_DOWN;
-            //c_object->get_check_domains() & (~CollisionObject::DOMAIN_TILEMAP));
-            Sector::current()->get_collision_engine()->remove(c_object);
-            z_pos = -10.0f;
-            return;
-          }
-        else
-          {
-            set_ducking();
-            return;
-          }
-      }
-  } else if (controller.get_axis_state(Y_AXIS) < -0.5f) {
-    TileMap* tilemap = Sector::current()->get_tilemap2();
-    if (tilemap)
-      {
-        Point p(int(pos.x)/32 + ((get_direction() == WEST) ? -1 : +1), (int(pos.y)/32));
-        unsigned int col = tilemap->get_pixel(p.x, p.y);
+              std::cout << "Stair mode" << std::endl;
+              state = STAIRS_DOWN;
+              //c_object->get_check_domains() & (~CollisionObject::DOMAIN_TILEMAP));
+              Sector::current()->get_collision_engine()->remove(c_object);
+              z_pos = -10.0f;
+              return;
+            }
+          else
+            {
+              set_ducking();
+              return;
+            }
+        }
+    }
+  else if (controller.get_axis_state(Y_AXIS) < -0.5f)
+    {
+      TileMap* tilemap = Sector::current()->get_tilemap2();
+      if (tilemap)
+        {
+          Point p(int(pos.x)/32 + ((get_direction() == WEST) ? -1 : +1), (int(pos.y)/32));
+          unsigned int col = tilemap->get_pixel(p.x, p.y);
 
-        if ((col & TILE_STAIRS) && ((get_direction() == EAST && (col & TILE_LEFT)) ||
-                                    (get_direction() == WEST && (col & TILE_RIGHT))))
-          {
-            delete contact;
-            contact = new StairContact(tilemap, p);
+          if ((col & TILE_STAIRS) && ((get_direction() == EAST && (col & TILE_LEFT)) ||
+                                      (get_direction() == WEST && (col & TILE_RIGHT))))
+            {
+              delete contact;
+              contact = new StairContact(tilemap, p);
 
-            state = STAIRS_UP;
-            //c_object->get_check_domains() & (~CollisionObject::DOMAIN_TILEMAP));
-            Sector::current()->get_collision_engine()->remove(c_object);
-            z_pos = -10.0f;
-            return;
-          }
-      }    
-  }
+              state = STAIRS_UP;
+              //c_object->get_check_domains() & (~CollisionObject::DOMAIN_TILEMAP));
+              Sector::current()->get_collision_engine()->remove(c_object);
+              z_pos = -10.0f;
+              return;
+            }
+        }    
+    }
 
-  if(state == STAND)
+  if (state == STAND)
     update_stand();
   else
     update_walk();
@@ -298,10 +304,14 @@ Player::update_stairs(float delta)
 
   if (controller.get_axis_state(X_AXIS) < -0.5f ||
       controller.get_axis_state(Y_AXIS) > 0.5f)
-    contact->advance(-WALK_SPEED * delta * 0.7f);
+    {
+      contact->advance(-WALK_SPEED * delta * 0.7f);
+    }
   else if (controller.get_axis_state(X_AXIS) > 0.5f ||
            controller.get_axis_state(Y_AXIS) < -0.5f)
-    contact->advance(WALK_SPEED * delta * 0.7f);
+    {
+      contact->advance(WALK_SPEED * delta * 0.7f);
+    }
 
   velocity = Vector2f(0, 0);
   c_object->set_pos(contact->get_pos());
@@ -339,7 +349,7 @@ Player::find_useable_entity()
 void
 Player::update_stand()
 { 
-  if(controller.button_was_pressed(USE_BUTTON))
+  if (controller.button_was_pressed(USE_BUTTON))
     {
       Entity* obj = find_useable_entity();
       if (obj)
@@ -347,8 +357,8 @@ Player::update_stand()
       return;
     }
     
-  if(controller.button_was_pressed(JUMP_BUTTON)
-     && controller.get_axis_state(Y_AXIS) > 0.5f) 
+  if (controller.button_was_pressed(JUMP_BUTTON)
+      && controller.get_axis_state(Y_AXIS) > 0.5f) 
     {
       set_jump_up_begin();
     } 
@@ -370,14 +380,14 @@ Player::update_stand()
     }
   else if (controller.get_axis_state(X_AXIS) < -0.5f) 
     {
-      if(get_direction() == WEST)
+      if (get_direction() == WEST)
         set_walk(WEST);
       else
         set_turnaround();
     }
   else if (controller.get_axis_state(X_AXIS) > 0.5f) 
     {
-      if(get_direction() == EAST)
+      if (get_direction() == EAST)
         set_walk(EAST);
       else
         set_turnaround();
@@ -390,7 +400,7 @@ Player::set_walk(Direction direction)
   try_set_action("Walk");
   sprite.set_rot(direction == EAST);
   state = WALK;
-  if(direction == EAST)
+  if (direction == EAST)
     velocity.x = WALK_SPEED;
   else
     velocity.x = -WALK_SPEED;
@@ -404,24 +414,27 @@ Player::set_walk(Direction direction)
 void
 Player::update_walk()
 {
-  if (controller.get_axis_state(X_AXIS) == 0) {
-    leave_walk();
-    set_stand();
-    return;
-  }
+  if (controller.get_axis_state(X_AXIS) == 0)
+    {
+      leave_walk();
+      set_stand();
+      return;
+    }
 
   if ((get_direction() == WEST && controller.get_axis_state(X_AXIS) > 0.5f) ||
-      (get_direction() == EAST && controller.get_axis_state(X_AXIS) < -0.5f)) {
-    leave_walk();
-    set_turnaround();
-    return;
-  }
+      (get_direction() == EAST && controller.get_axis_state(X_AXIS) < -0.5f))
+    {
+      leave_walk();
+      set_turnaround();
+      return;
+    }
   
-  if(controller.get_button_state(RUN_BUTTON)) {
-    leave_walk();
-    set_run();
-    return;
-  }
+  if (controller.get_button_state(RUN_BUTTON))
+    {
+      leave_walk();
+      set_run();
+      return;
+    }
 }
 
 void
@@ -444,22 +457,26 @@ void
 Player::update_ducking()
 {
   // ducking
-  if(sprite.switched_actions()) {
-    if(sprite.get_action() == "Ducking")
-      set_ducked();
-    else
-      set_stand();
-    return;
-  }
+  if (sprite.switched_actions()) 
+    {
+      if (sprite.get_action() == "Ducking")
+        set_ducked();
+      else
+        set_stand();
+      return;
+    }
   
-  if(!(controller.get_axis_state(Y_AXIS) > 0.5f) && sprite.get_speed() > 0) {
-    sprite.set_speed(-1.0);
-    sprite.set_next_action("Stand");
-    state = STAND;
-  } else if(controller.get_axis_state(Y_AXIS) > 0.5f && sprite.get_speed() < 0) {
-    sprite.set_speed(1.0);
-    sprite.set_next_action("Ducking");
-  }
+  if (!(controller.get_axis_state(Y_AXIS) > 0.5f) && sprite.get_speed() > 0) 
+    {
+      sprite.set_speed(-1.0);
+      sprite.set_next_action("Stand");
+      state = STAND;
+    } 
+  else if (controller.get_axis_state(Y_AXIS) > 0.5f && sprite.get_speed() < 0) 
+    {
+      sprite.set_speed(1.0);
+      sprite.set_next_action("Ducking");
+    }
 }
 
 void
@@ -472,11 +489,12 @@ Player::set_ducked()
 void
 Player::update_ducked()
 {
-  if(!controller.get_axis_state(Y_AXIS) > 0.5f) {
-    state = DUCKING;
-    sprite.set_action("StandToDuck", -1.0);
-    sprite.set_next_action("Stand");
-  }  
+  if (!controller.get_axis_state(Y_AXIS) > 0.5f)
+    {
+      state = DUCKING;
+      sprite.set_action("StandToDuck", -1.0);
+      sprite.set_next_action("Stand");
+    }  
 }
 
 void
@@ -492,43 +510,51 @@ Player::set_turnaround()
 void
 Player::update_turnaround()
 {
-  if(sprite.switched_actions()) {
-    if(sprite.get_rot()) {
-      set_walk(EAST);
-    } else {
-      set_walk(WEST);
+  if (sprite.switched_actions()) 
+    {
+      if (sprite.get_rot())
+        {
+          set_walk(EAST);
+        }
+      else {
+        set_walk(WEST);
+      }
+    } 
+  if ((sprite.get_rot() && controller.get_axis_state(X_AXIS) > 0.5f) ||
+      (!sprite.get_rot() && controller.get_axis_state(X_AXIS) < -0.5f)) 
+    {
+      sprite.set_speed(-1.0);
+      sprite.set_next_action("Walk");
+      state = WALK;
     }
-  } 
-  if((sprite.get_rot() && controller.get_axis_state(X_AXIS) > 0.5f) ||
-     (!sprite.get_rot() && controller.get_axis_state(X_AXIS) < -0.5f)) {
-    sprite.set_speed(-1.0);
-    sprite.set_next_action("Walk");
-    state = WALK;
-  }
 }
 
 void
 Player::set_stand_to_listen(bool backwards)
 {
   try_set_action("StandtoListen", backwards ? -1.0 : 1.0);
-  if(!backwards) {
-    sprite.set_next_action("Listen");
-    velocity = Vector2f(0, 0);
-  } else {
-    sprite.set_next_action("Stand");
-  }
+  if (!backwards) 
+    {
+      sprite.set_next_action("Listen");
+      velocity = Vector2f(0, 0);
+    } 
+  else
+    {
+      sprite.set_next_action("Stand");
+    }
   state = STAND_TO_LISTEN;
 }
 
 void
 Player::update_stand_to_listen()
 {
-  if(sprite.switched_actions()) {
-    if(sprite.get_action() == "Stand")
-      set_stand();
-    else
-      set_listen();
-  }
+  if (sprite.switched_actions()) 
+    {
+      if (sprite.get_action() == "Stand")
+        set_stand();
+      else
+        set_listen();
+    }
 }
 
 void
@@ -548,7 +574,7 @@ void
 Player::set_run()
 {
   try_set_action("Run");
-  if(get_direction() == EAST)
+  if (get_direction() == EAST)
     velocity.x = RUN_SPEED;
   else
     velocity.x = -RUN_SPEED;  
@@ -563,16 +589,18 @@ Player::set_run()
 void
 Player::update_run()
 {
-  if(!controller.get_button_state(RUN_BUTTON)) {
-    leave_run();
-    set_walk(get_direction());
-    return;
-  }
-  if(controller.get_button_state(JUMP_BUTTON)) {
-    leave_run();
-    set_jump_begin();
-    return;
-  }
+  if (!controller.get_button_state(RUN_BUTTON)) 
+    {
+      leave_run();
+      set_walk(get_direction());
+      return;
+    }
+  if (controller.get_button_state(JUMP_BUTTON)) 
+    {
+      leave_run();
+      set_jump_begin();
+      return;
+    }
 }
 
 void
@@ -584,35 +612,46 @@ Player::leave_run()
 void
 Player::set_jump_begin()
 {
-  if(sprite.before_marker("RightFoot")) {
-    sprite.set_next_action("JumpRightFoot");
-    sprite.abort_at_marker("RightFoot");
-    jump_foot = LEFT_FOOT;
-  } else if(sprite.before_marker("LeftFoot")) {
-    sprite.set_next_action("JumpLeftFoot");
-    sprite.abort_at_marker("LeftFoot");
-    jump_foot = RIGHT_FOOT;
-  } else {
-    sprite.set_next_action("JumpRightFoot");
-    sprite.abort_at_marker("RightFoot");
-    jump_foot = LEFT_FOOT;
-  }
+  if (sprite.before_marker("RightFoot")) 
+    {
+      sprite.set_next_action("JumpRightFoot");
+      sprite.abort_at_marker("RightFoot");
+      jump_foot = LEFT_FOOT;
+    } 
+  else if (sprite.before_marker("LeftFoot")) 
+    {
+      sprite.set_next_action("JumpLeftFoot");
+      sprite.abort_at_marker("LeftFoot");
+      jump_foot = RIGHT_FOOT;
+    } 
+  else 
+    {
+      sprite.set_next_action("JumpRightFoot");
+      sprite.abort_at_marker("RightFoot");
+      jump_foot = LEFT_FOOT;
+    }
   state = JUMP_BEGIN;
 }
 
 void
 Player::update_jump_begin()
 {
-  if(sprite.switched_actions()) {
-    if(sprite.get_action() == "JumpLeftFoot") {
-      sprite.set_next_action("JumpLeftFootAir");
-    } else if(sprite.get_action() == "JumpRightFoot") {
-      sprite.set_next_action("JumpRightFootAir");
-    } else {
-      set_jump_air();
-      return;
+  if (sprite.switched_actions()) 
+    {
+      if (sprite.get_action() == "JumpLeftFoot") 
+        {
+          sprite.set_next_action("JumpLeftFootAir");
+        } 
+      else if (sprite.get_action() == "JumpRightFoot") 
+        {
+          sprite.set_next_action("JumpRightFootAir");
+        } 
+      else
+        {
+          set_jump_air();
+          return;
+        }
     }
-  }
 }
 
 void
@@ -626,10 +665,11 @@ Player::set_jump_air()
 void
 Player::update_jump_air()
 {
-  if(sprite.switched_actions()) {
-    set_jump_land();
-    return;
-  }
+  if (sprite.switched_actions()) 
+    {
+      set_jump_land();
+      return;
+    }
 }
 
 void
@@ -642,10 +682,11 @@ Player::set_jump_land()
 void
 Player::update_jump_land()
 {
-  if(sprite.switched_actions()) {
-    set_run();
-    return;
-  }
+  if (sprite.switched_actions()) 
+    {
+      set_run();
+      return;
+    }
 }
 
 void
@@ -658,10 +699,11 @@ Player::set_jump_up_begin()
 void
 Player::update_jump_up_begin()
 {
-  if(sprite.switched_actions()) {
-    set_jump_up_air();
-    return;
-  }
+  if (sprite.switched_actions()) 
+    {
+      set_jump_up_air();
+      return;
+    }
 }
 
 void
@@ -675,10 +717,11 @@ Player::set_jump_up_air()
 void
 Player::update_jump_up_air()
 {
-  if(sprite.switched_actions()) {
-    set_jump_up_land();
-    return;
-  }
+  if (sprite.switched_actions()) 
+    {
+      set_jump_up_land();
+      return;
+    }
 }
 
 void
@@ -691,10 +734,11 @@ Player::set_jump_up_land()
 void
 Player::update_jump_up_land()
 {
-  if(sprite.switched_actions()) {
-    set_stand();
-    return;
-  }
+  if (sprite.switched_actions()) 
+    {
+      set_stand();
+      return;
+    }
 }
 
 void
@@ -716,10 +760,8 @@ Player::get_direction() const
 void
 Player::try_set_action(const std::string& name, float speed)
 {
-  if(sprite.get_action() == name)
-    return;
-  
-  sprite.set_action(name, speed);
+  if (sprite.get_action() != name)
+    sprite.set_action(name, speed);
 }
 
 int
