@@ -767,7 +767,6 @@ Player::collision(const CollisionData& data)
       cur_vel.x = 0;
     }
   c_object->set_velocity (cur_vel);
-  
 }
 
 void 

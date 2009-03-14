@@ -98,8 +98,8 @@ public:
 
   int get_movement_state() { return state; }
 
-  void draw (SceneContext& gc);
-  void update (float delta);
+  void draw(SceneContext& gc);
+  void update(float delta);
 
   void start_listening();
   void stop_listening();
@@ -125,42 +125,43 @@ private:
    * language for this?
    */
   
-  void update_walk_stand();
-  void set_stand();
-  void update_stand();
-  void set_walk(Direction direction);
-  void update_walk();
-  void leave_walk();
-  void set_ducking();
-  void update_ducking();
-  void set_ducked();
-  void update_ducked();
-  void set_turnaround();
-  void update_turnaround();
-  void set_stand_to_listen(bool backwards);
-  void update_stand_to_listen();
-  void set_listen();
-  void update_listen();
-  void set_run();
-  void update_run();
-  void leave_run();
-  
-  void set_jump_begin();
-  void update_jump_begin();
-  void set_jump_air();
-  void update_jump_air();
-  void set_jump_land();
-  void update_jump_land();
-  
-  void set_jump_up_begin();
-  void update_jump_up_begin();
-  void set_jump_up_air();
-  void update_jump_up_air();
-  void set_jump_up_land();
-  void update_jump_up_land();
 
+  void update_ducked();
+  void update_ducking();
+  void update_listen();
+  void update_run();
+  void update_stand();
+  void update_stand_to_listen();
+  void update_turnaround();
+  void update_walk();
+  void update_walk_stand();
+  void update_jump_air();
+  void update_jump_begin();
+  void update_jump_land();
+  void update_jump_up_air();
+  void update_jump_up_begin();
+  void update_jump_up_land();
   void update_pull_gun();
   void update_stairs(float delta);
+
+  void leave_run();
+  void leave_walk();
+  void set_ducked();
+  void set_ducking();
+  void set_listen();
+  void set_run();
+  void set_stand();
+  void set_stand_to_listen(bool backwards);
+  void set_turnaround();
+  void set_walk(Direction direction);
+  
+  void set_jump_air();
+  void set_jump_begin();
+  void set_jump_land();
+  
+  void set_jump_up_air();
+  void set_jump_up_begin();
+  void set_jump_up_land();
 
   /**
    * Sets an action for the sprite. In contrast to sprite->set_action this

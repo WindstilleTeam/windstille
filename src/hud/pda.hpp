@@ -62,6 +62,7 @@ private:
 
 public:
   PDA();
+  virtual ~PDA();
 
   void draw();
   void update(float delta, const Controller& controller);

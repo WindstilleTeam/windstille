@@ -45,6 +45,7 @@ public:
   enum ControlState { DIALOG, GAME, CONVERSATION };
 private:
   static GameSession* current_; 
+
 public:
   static GameSession* current() { return current_; } 
 

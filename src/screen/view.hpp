@@ -49,7 +49,7 @@ public:
   Vector2f screen_to_world(const Vector2f& point);
 
   void draw(SceneContext& gc);
-  void update(float delta, const Controller& controller);
+  void update(float delta);
 
   static View* current() { return current_; }
 

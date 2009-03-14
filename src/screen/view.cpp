@@ -21,13 +21,15 @@
 #include "collision/collision_engine.hpp"
 #include "objects/player.hpp"
 #include "engine/sector.hpp"
+#include "input/input_manager.hpp"
 #include "view.hpp"
 
 View* View::current_ = 0;
 
 View::View()
   : state(Display::get_width(), Display::get_height()),
-    zoom(1.0), transform(0, 0)
+    zoom(1.0), 
+    transform(0, 0)
 {
   current_ = this;
 }
@@ -39,23 +41,30 @@ View::draw (SceneContext& sc)
   // pixel-jitter when scrolling with subpixel values and pixel
   // precise images.
   if (camera.get_zoom() == 1.0)
-    state.set_pos(Vector2f(static_cast<int>(camera.get_pos().x),
-                         static_cast<int>(camera.get_pos().y)));
+    {
+      state.set_pos(Vector2f(static_cast<int>(camera.get_pos().x),
+                             static_cast<int>(camera.get_pos().y)));
+    }
   else
-    state.set_pos(camera.get_pos());
+    {
+      state.set_pos(camera.get_pos());
+    }
 
   state.set_zoom(camera.get_zoom() + (zoom - 1.0f));
   state.set_pos(state.get_pos() + Vector2f(transform.x, transform.y));
 
   state.push(sc);
+
   Sector::current()->draw(sc);
+
   if (collision_debug)
     Sector::current()->get_collision_engine()->draw(sc.highlight());
+
   state.pop(sc);
 }
 
 void
-View::update (float delta, const Controller& controller)
+View::update (float delta)
 {
   camera.update(delta);
 
@@ -63,13 +72,17 @@ View::update (float delta, const Controller& controller)
 
   if (keystate[SDLK_KP_PLUS])
     zoom *= 1.0 + delta;
+
   if (keystate[SDLK_KP_MINUS])
     zoom *= 1.0 - delta;
 
-  if(controller.get_button_state(VIEW_CENTER_BUTTON)) {
+  const Controller& controller = InputManager::get_controller();
+
+  if (controller.get_button_state(VIEW_CENTER_BUTTON)) 
+    {
       transform = Vector2f(0, 0);
       zoom = 1.0;
-  }
+    }
 
   transform.x += 0.5f * controller.get_axis_state(X2_AXIS) / zoom;
   transform.y += 0.5f * controller.get_axis_state(Y2_AXIS) / zoom;

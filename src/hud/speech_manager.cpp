@@ -82,8 +82,6 @@ SpeechManager::SpeechManager()
 {
   assert(current_ == 0);
   current_ = this;
-
-  add("Hello World", Vector2f(320, 200), Color(255, 255, 0));
 }
 
 SpeechManager::~SpeechManager()
@@ -96,18 +94,13 @@ SpeechManager::~SpeechManager()
 }
 
 int
-SpeechManager::add(const std::string& text, 
-                   const Entity& entity,
-                   const Color& color)
+SpeechManager::add(const std::string& text, const Entity& entity, const Color& color)
 {
   return add(text, entity.get_pos(), color);
 }
 
-
 int
-SpeechManager::add(const std::string& text, 
-                   const Vector2f& pos, 
-                   const Color& color)
+SpeechManager::add(const std::string& text, const Vector2f& pos, const Color& color)
 {
   int this_speech_id = speech_id;
   speeches.push_back(new Speech(this_speech_id, text, pos, color));
@@ -126,7 +119,7 @@ SpeechManager::draw()
 }
 
 void
-SpeechManager::update(float delta, const Controller& controller)
+SpeechManager::update(float delta)
 {
   for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
     {

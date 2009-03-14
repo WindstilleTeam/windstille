@@ -93,9 +93,12 @@ public:
   Inventory     inventory;
   PDA           pda;
 
+  /** Pointer to either pda, inventory, conversation or
+      dialog_manager. Receives input and gets drawn to the screen */
   Screen* current_gui;
 
-  GameSessionImpl() {
+  GameSessionImpl() 
+  {
     current_gui    = 0;
     cutscene_mode  = false;
     cutscene_value = 0.0f;
@@ -105,21 +108,29 @@ public:
     fade_time      = 1.0f;
   }
 
-  ~GameSessionImpl() {
+  ~GameSessionImpl() 
+  {
   }
 
   void draw();
+
+  void update_cutscene(float delta);
+  void update_input(float delta);
+  void update_controller(float delta, const Controller& controller);
+  void update_game(float delta);
   void update(float delta, const Controller& controller);
+  
   void handle_event(const SDL_Event& event);
 };
 
 GameSession::GameSession(const std::string& arg_filename)
   : impl(new GameSessionImpl())
 {
+  current_ = this;
+
   impl->filename = arg_filename;
 
   if (debug) std::cout << "Creating new GameSession" << std::endl;
-  current_ = this;
 
   impl->pause = false;
   
@@ -128,6 +139,7 @@ GameSession::GameSession(const std::string& arg_filename)
 
 GameSession::~GameSession()
 {
+  current_ = 0;
 }
 
 void
@@ -153,7 +165,7 @@ GameSessionImpl::draw()
   if (fade_state == FADEOUT || fade_state == FADEIN)
     {
       Display::fill_rect(Rect(0, 0, 
-                               Display::get_width(), Display::get_height()),
+                              Display::get_width(), Display::get_height()),
                          Color(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
     }
 
@@ -167,8 +179,8 @@ GameSessionImpl::draw()
 }
 
 void
-GameSessionImpl::update(float delta, const Controller& controller)
-{  
+GameSessionImpl::update_cutscene(float delta)
+{
   // Cutscene stuff (black bars that fade-in/out
   if (cutscene_mode)
     cutscene_value += delta * 0.75f;
@@ -178,55 +190,59 @@ GameSessionImpl::update(float delta, const Controller& controller)
   if (cutscene_value > 1.0f)
     cutscene_value = 1.0f;
   else if (cutscene_value < 0.0f)
-    cutscene_value = 0.0f;
+    cutscene_value = 0.0f;  
+}
 
-  // if (controller.button_was_pressed(PAUSE_BUTTON))
-  // pause = !pause;
-
+void
+GameSessionImpl::update_input(float delta)
+{
   Uint8 *keystate = SDL_GetKeyState(NULL);
   
   // Hacks to play around with the game speed
   if(keystate[SDLK_KP1])
     game_speed *= 1.0 - delta;
+
   if(keystate[SDLK_KP3])
     game_speed *= 1.0 + delta;
+
   if(keystate[SDLK_KP5])
-    game_speed = 1.0;
- 
-  delta *= game_speed;
+    game_speed = 1.0;  
+}
 
-  // Update the game
-  if (!pause)
-    {
-      game_time += delta;
-      ScriptManager::current()->update();
+void
+GameSessionImpl::update_game(float delta)
+{
+  game_time += delta;
+  ScriptManager::current()->update();
       
-      view.update(delta, controller);
-      sector->update(delta);
+  view.update(delta);
+  sector->update(delta);
+      
+  speech_manager.update(delta);
   
-      switch (fade_state)
-        {
-        case FADEIN:
-          if (fadeout_value <= 0.0f)
-            {
-              fade_state = RUNNING;
-              fadeout_value = 0.0f;
-              ScriptManager::current()->fire_wakeup_event(ScriptManager::FADE_DONE);
-            }
-          else
-            {
-              fadeout_value -= delta * fade_time;
-            }
-          break;
+  switch (fade_state)
+    {
+      case FADEIN:
+        if (fadeout_value <= 0.0f)
+          {
+            fade_state = RUNNING;
+            fadeout_value = 0.0f;
+            ScriptManager::current()->fire_wakeup_event(ScriptManager::FADE_DONE);
+          }
+        else
+          {
+            fadeout_value -= delta * fade_time;
+          }
+        break;
 
-        case FADEOUT:
-          if (fadeout_value >= 1.0f)
-            { 
-              fadeout_value = 1.0f;
-              ScriptManager::current()->fire_wakeup_event(ScriptManager::FADE_DONE);
+      case FADEOUT:
+        if (fadeout_value >= 1.0f)
+          { 
+            fadeout_value = 1.0f;
+            ScriptManager::current()->fire_wakeup_event(ScriptManager::FADE_DONE);
 
-              switch(next_action)
-                {
+            switch(next_action)
+              {
                 case CHANGE_SECTOR_ACTION:
                   GameSession::current()->set_sector(filename);
                   break;
@@ -237,23 +253,22 @@ GameSessionImpl::update(float delta, const Controller& controller)
 
                 default:
                   break;
-                }
-            }
-          else
-            {
-              fadeout_value += delta * fade_time;
-            }
-          break;
+              }
+          }
+        else
+          {
+            fadeout_value += delta * fade_time;
+          }
+        break;
 
-        case RUNNING:
-          if (current_gui)
-            current_gui->update(delta, controller);
-          break;
-        }
-      
-      speech_manager.update(delta, controller);
+      case RUNNING:
+        break;
     }
+}
 
+void
+GameSessionImpl::update_controller(float delta, const Controller& controller)
+{ 
   // Handle key presses
   if (controller.button_was_pressed(PDA_BUTTON))
     {
@@ -274,6 +289,31 @@ GameSessionImpl::update(float delta, const Controller& controller)
     {
       MenuManager::display_pause_menu();
     }
+
+  if (current_gui)
+    {
+      current_gui->update(delta, controller);
+    }
+  else
+    {
+      // FIXME: route controller to player
+    }
+}
+
+void
+GameSessionImpl::update(float delta, const Controller& controller)
+{  
+  update_cutscene(delta);
+
+  delta *= game_speed;
+
+  // Update the game
+  if (!pause)
+    {
+      update_game(delta);
+    }
+  
+  update_controller(delta, controller);
 }
 
 void
@@ -307,71 +347,72 @@ GameSession::set_sector(const std::string& )
   
   impl->sector->activate();
   
-  if (debug) std::cout << "Finished changing sector" << std::endl;
+  if (debug) 
+    std::cout << "Finished changing sector" << std::endl;
 }
 
 void
 GameSessionImpl::handle_event(const SDL_Event& event)
 {
   switch(event.type)
-  {
-    case SDL_KEYDOWN:
-    case SDL_KEYUP:
-      if (event.key.state)
-        {    
-          switch (event.key.keysym.sym)
-            {
-            case SDLK_1:
-              sc.set_render_mask(sc.get_render_mask() ^ SceneContext::COLORMAP);
-              console << "Toggled COLORMAP: " << ((sc.get_render_mask() & SceneContext::COLORMAP) > 0) << std::endl;
-              break;
+    {
+      case SDL_KEYDOWN:
+      case SDL_KEYUP:
+        if (event.key.state)
+          {    
+            switch (event.key.keysym.sym)
+              {
+                case SDLK_1:
+                  sc.set_render_mask(sc.get_render_mask() ^ SceneContext::COLORMAP);
+                  console << "Toggled COLORMAP: " << ((sc.get_render_mask() & SceneContext::COLORMAP) > 0) << std::endl;
+                  break;
 
-            case SDLK_2:
-              sc.set_render_mask(sc.get_render_mask() ^ SceneContext::LIGHTMAP);
-              console << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & SceneContext::LIGHTMAP) > 0) << std::endl;
-              break;
+                case SDLK_2:
+                  sc.set_render_mask(sc.get_render_mask() ^ SceneContext::LIGHTMAP);
+                  console << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & SceneContext::LIGHTMAP) > 0) << std::endl;
+                  break;
       
-            case SDLK_3:
-              sc.set_render_mask(sc.get_render_mask() ^ SceneContext::HIGHLIGHTMAP);
-              console << "Toggled HIGHLIGHTMAP: " << ((sc.get_render_mask() & SceneContext::HIGHLIGHTMAP) > 0) << std::endl;
-              break;      
+                case SDLK_3:
+                  sc.set_render_mask(sc.get_render_mask() ^ SceneContext::HIGHLIGHTMAP);
+                  console << "Toggled HIGHLIGHTMAP: " << ((sc.get_render_mask() & SceneContext::HIGHLIGHTMAP) > 0) << std::endl;
+                  break;      
   
-            case SDLK_4:
-              sc.set_render_mask(sc.get_render_mask() ^ SceneContext::LIGHTMAPSCREEN);
-              console << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN) > 0) << std::endl;
-              break;
+                case SDLK_4:
+                  sc.set_render_mask(sc.get_render_mask() ^ SceneContext::LIGHTMAPSCREEN);
+                  console << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN) > 0) << std::endl;
+                  break;
 
-            case SDLK_5:
-              sc.set_render_mask(sc.get_render_mask() ^ SceneContext::BLURMAP);
-              console << "Toggled blurmap: " << ((sc.get_render_mask() & SceneContext::BLURMAP) > 0) << std::endl;
-              break;
+                case SDLK_5:
+                  sc.set_render_mask(sc.get_render_mask() ^ SceneContext::BLURMAP);
+                  console << "Toggled blurmap: " << ((sc.get_render_mask() & SceneContext::BLURMAP) > 0) << std::endl;
+                  break;
 
 
-            case SDLK_c:
-              if (debug) {
-                collision_debug = !collision_debug;
-                console << "Collision Debugging " << (collision_debug ? "enabled" : "disabled") << std::endl;
+                case SDLK_c:
+                  if (debug) {
+                    collision_debug = !collision_debug;
+                    console << "Collision Debugging " << (collision_debug ? "enabled" : "disabled") << std::endl;
+                  }
+                  break;
+
+                case SDLK_F2:
+                  MenuManager::display_debug_menu();
+                  break;
+        
+                default:
+                  break;
               }
-              break;
-
-            case SDLK_F2:
-              MenuManager::display_debug_menu();
-              break;
+          }
+        break;
         
-            default:
-              break;
-            }
+      case SDL_MOUSEBUTTONDOWN:
+        {
+          Vector2f real_pos = GameSession::current()->get_view()->screen_to_world(Vector2f(event.button.x,
+                                                                                           event.button.y));      
+          console << "Click at: " << int(real_pos.x) << ", " << int(real_pos.y) << std::endl;
         }
-      break;
-        
-    case SDL_MOUSEBUTTONDOWN:
-      {
-        Vector2f real_pos = GameSession::current()->get_view()->screen_to_world(Vector2f(event.button.x,
-                                                                                  event.button.y));      
-        console << "Click at: " << int(real_pos.x) << ", " << int(real_pos.y) << std::endl;
-      }
-      break;
-  }
+        break;
+    }
 }
 
 void
@@ -421,17 +462,17 @@ GameSession::set_control_state(ControlState state)
 {
   switch(state)
     {
-    case DIALOG:
-      impl->current_gui = &impl->dialog_manager;
-      break;
+      case DIALOG:
+        impl->current_gui = &impl->dialog_manager;
+        break;
 
-    case CONVERSATION:
-      impl->current_gui = &impl->conversation;
-      break;
+      case CONVERSATION:
+        impl->current_gui = &impl->conversation;
+        break;
 
-    case GAME:
-      impl->current_gui = 0;
-      break;
+      case GAME:
+        impl->current_gui = 0;
+        break;
     }
 }
 

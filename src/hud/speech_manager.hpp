@@ -21,7 +21,6 @@
 
 #include <string>
 #include <vector>
-#include "screen/screen.hpp"
 #include "math/vector2f.hpp"
 #include "display/color.hpp"
 
@@ -30,7 +29,7 @@ class Speech;
 
 /** The SpeechManager displays speech text over characters or
     objects, similar to what you see in LucasArts games */
-class SpeechManager : public Screen
+class SpeechManager
 {
 private:
   static SpeechManager* current_;
@@ -63,7 +62,7 @@ public:
           const Color& color = Color(1.0f, 1.0f, 1.0f));
 
   void draw();
-  void update(float delta, const Controller& controller);
+  void update(float delta);
 
 private:
   SpeechManager (const SpeechManager&);

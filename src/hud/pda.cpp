@@ -41,6 +41,10 @@ PDA::PDA()
   background = Sprite("images/pda/pda.sprite");
 }
 
+PDA::~PDA()
+{
+}
+
 void
 PDA::draw()
 {

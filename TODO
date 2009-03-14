@@ -14,6 +14,12 @@ Scripting
 * maybe: introduce some cleaner seperation between scripts that are
   allowed to suspend and those that aren't
 
+  - name them differently
+  - name their trigger/hooks differently
+  - remove suspendable functions from roottable
+  - put suspendable functions into a different namespace
+  - ...
+
 * NavigationGraph needs hooks into scripting, so that things can be
   triggered when a character passes over a specific trigger node or
   things like that.
@@ -155,13 +161,22 @@ Sound Handling
 Miscellaneous
 =============
 
+* No object shall grab input by itself, instead the Screen should
+  route it, i.e. Player is grabbing input itself, this leads to
+  problems
+
+* map laserpointer to the second analog-stick, make mapping absolute,
+  not relative, also add option to toggle between debugging mapping
+  and gameplay mapping (i.e. moving view via second analogstick)
+
+* maybe create an additional layer in SceneContext for drawing things
+  like Speech and other worldspace GUI elements to it
+
 * implement proper word wrap in SpeechManager and also add code to
   'unstuck' speech bubbles when they go over the window border.
 
   Also SpeechManager should act in worldspace, not screenspace or
   something clever inbetween.
-
-* Add option for ControllerHelpWindow to option menu
 
 * cleanup TextArea/text_area.cpp, having scrolling and running text
   together doesn't make all that much sense, also functions are too
@@ -180,8 +195,9 @@ Miscellaneous
   scroll bars on large resolutions and empty space when they have to
   few items
 
-* create a UTF32 string class, maybe based on basic_string<uint32_t>,
-  for use in console
+* create a UTF32 string class for use in console, basically
+  basic_string<uint32_t> and a convert function to UTF-8 should be
+  enough
 
 * join Player and Character somewhat or derive one from the other, so
   that one can have scripted people running and jumping around

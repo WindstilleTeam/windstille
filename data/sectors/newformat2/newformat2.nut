@@ -19,7 +19,6 @@ function stopfire()
 
 function run()
 {
-  set_controller_help_active(true);
   objects.player_flames2.set_active(false);
   objects.player_flames.set_active(false);      
 
