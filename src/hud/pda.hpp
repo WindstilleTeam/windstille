@@ -48,6 +48,7 @@ public:
 class PDA : public Screen
 {
 private:
+  Vector2f  pos;
   Sprite    background;
 
   std::auto_ptr<TextArea>  ui_area;

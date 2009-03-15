@@ -37,13 +37,16 @@ ObjectiveEntry::ObjectiveEntry(const std::string& arg_name, const std::string& a
 }
 
 PDA::PDA()
-  : state(PDA_OBJECTIVES),
+  : pos(100.0f, 100.0f),
+    state(PDA_OBJECTIVES),
     old_state(PDA_NONE)
 { 
   background = Sprite("images/pda/pda.sprite");
 
-  ui_area.reset(new TextArea(Rectf(70, 83, 385, 520).grow(-12.0f), false));
-  text_area.reset(new TextArea(Rectf(70, 83+56, 385, 520).grow(-12.0f), false));
+  ui_area.reset(new TextArea(Rectf(pos + Vector2f(40.0f, 50.0f), 
+                                   Sizef(315.0f, 435.0f)).grow(-12.0f), false));
+  text_area.reset(new TextArea(Rectf(pos + Vector2f(40.0f, 50.0f) + Vector2f(0.0f, 56.0f),
+                                     Sizef(315.0f, 380.0f)).grow(-12.0f), false));
 
   ui_area->set_font(Fonts::vera12);
   text_area->set_font(Fonts::vera12);
@@ -59,7 +62,7 @@ PDA::draw()
   // Darken the background a bit
   Display::fill_rect(Rect(0, 0, Display::get_width(), Display::get_height()), Color(0.0f, 0.0f, 0.0f, 0.25f));
 
-  background.draw(Vector2f(30, 30));
+  background.draw(pos);
 
   Rectf rect = text_area->get_rect().grow(8.0f);
   
