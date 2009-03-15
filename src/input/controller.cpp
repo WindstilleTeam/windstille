@@ -53,7 +53,7 @@ Controller::get_axis_state(int id, bool use_deadzone) const
 
   if (use_deadzone)
     {
-      if (fabsf(states[id].axis) > 0.1f) // FIXME: Hardcoded Deadzone
+      if (fabsf(states[id].axis) > 0.25f) // FIXME: Hardcoded Deadzone
         return states[id].axis;
       else
         return 0.0f;
