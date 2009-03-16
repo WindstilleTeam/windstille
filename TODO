@@ -11,6 +11,10 @@ other means.
 Scripting
 =========
 
+* add Ctrl-k, Ctrl-k shortcuts to console
+
+* save command history of the console between runs
+
 * ParticleSystem could be hooked up to scripting
 
 * add a way to bind keys to script functions for use in debugging
@@ -88,13 +92,6 @@ Scripting
 * ScriptableObject is a bad name, since all objects should be
   scriptable in one form or another
 
-* add typechecking to __custom functions in miniswig, something like
-  this might work:
-
-  void foobar(HSQUIRRELVM vm) __custom("if")
-
-  where the string is in the syntax of sq_setparamscheck()
-
 * implement more advanced tab-completion for console
 
 * miniswig does not support __suspend with a return value, should be
@@ -142,6 +139,9 @@ Scripting
 Input Handling
 ==============
 
+* analog trigger handling is a little problematic, since the axis is
+  neutral at -32768, not at 0.
+
 * Input deadzone is problematic when trying to get angle of a stick,
   deadzone needs to act different there then when X/Y are handled
   seperatly. Temporary workaround is to move deadzone out of the input
@@ -180,10 +180,12 @@ Sound Handling
 Miscellaneous
 =============
 
+* Display::push/pop_cliprect() doesn't handle different aspect-ratios properly
+
+* lightmap is broken with non-standard aspect-ratio
+
 * why does src/navigation/node.hpp use SegmentPosition? Doesn't seem
   right
-
-* using aspect-ration different to screen resolution, lots of things break
 
 * set dynamic maximum size for auto resizing Menus depending on
   resolution
@@ -422,5 +424,6 @@ Code Cleanup
 
 
 http://orange.blender.org/blog/the-amazing-incredible-monkey-brush#more-49
+Hypatia
 
 # EOF #
