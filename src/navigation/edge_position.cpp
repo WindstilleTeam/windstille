@@ -16,35 +16,35 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "segment.hpp"
+#include "edge.hpp"
 #include "node.hpp"
 #include "display/display.hpp"
-#include "segment_position.hpp"
+#include "edge_position.hpp"
 
-SegmentPosition::SegmentPosition()
-  : segment(0),
+EdgePosition::EdgePosition()
+  : edge(0),
     pos(0.0f)
 {
 }
 
-SegmentPosition::SegmentPosition(Segment* segment_, float pos_)
-  : segment(segment_),
+EdgePosition::EdgePosition(Edge* edge_, float pos_)
+  : edge(edge_),
     pos(pos_)
 {  
 }
 
 void
-SegmentPosition::set_pos(Segment* segment_, float pos_)
+EdgePosition::set_pos(Edge* edge_, float pos_)
 {
-  segment = segment_;
+  edge = edge_;
   pos     = pos_;
 }
 
 void
-SegmentPosition::advance(float& adv, Node*& next_node)
+EdgePosition::advance(float& adv, Node*& next_node)
 {
-  Vector2f p1 = segment->get_node1()->get_pos();
-  Vector2f p2 = segment->get_node2()->get_pos();
+  Vector2f p1 = edge->get_node1()->get_pos();
+  Vector2f p2 = edge->get_node2()->get_pos();
   
   float length = (p2 - p1).length();
   
@@ -57,7 +57,7 @@ SegmentPosition::advance(float& adv, Node*& next_node)
       if (pos > 1.0f) {
         adv = (pos - 1.0f) * length;
         pos = 1.0f;
-        next_node = segment->get_node2();
+        next_node = edge->get_node2();
       } else {
         adv = 0;
       }
@@ -68,7 +68,7 @@ SegmentPosition::advance(float& adv, Node*& next_node)
       if (pos < 0.0f) {
         adv = pos * length;
         pos = 0;
-        next_node = segment->get_node1();
+        next_node = edge->get_node1();
       } else {
         adv = 0;
       }
@@ -76,17 +76,17 @@ SegmentPosition::advance(float& adv, Node*& next_node)
 }
 
 void
-SegmentPosition::advance(Vector2f& adv, Node*& next_node)
+EdgePosition::advance(Vector2f& adv, Node*& next_node)
 {
   // FIXME: This might be optimizable
-  Vector2f p1 = segment->get_node1()->get_pos();
-  Vector2f p2 = segment->get_node2()->get_pos();
+  Vector2f p1 = edge->get_node1()->get_pos();
+  Vector2f p2 = edge->get_node2()->get_pos();
   
-  Vector2f segment_v = p2 - p1;
+  Vector2f edge_v = p2 - p1;
 
-  Vector2f proj = adv.project(segment_v);
+  Vector2f proj = adv.project(edge_v);
 
-  float angle = atan2(segment_v.y, segment_v.x) - atan2(proj.y, proj.x);
+  float angle = atan2(edge_v.y, edge_v.x) - atan2(proj.y, proj.x);
 
   // Check if we are going forward or backward
   float advf;
@@ -107,10 +107,10 @@ SegmentPosition::advance(Vector2f& adv, Node*& next_node)
 }
 
 Vector2f
-SegmentPosition::get_pos() const
+EdgePosition::get_pos() const
 {
-  Vector2f p1 = segment->get_node1()->get_pos();
-  Vector2f p2 = segment->get_node2()->get_pos();
+  Vector2f p1 = edge->get_node1()->get_pos();
+  Vector2f p2 = edge->get_node2()->get_pos();
 
   return p1 + pos*(p2 - p1);
 }

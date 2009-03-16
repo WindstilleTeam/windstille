@@ -25,8 +25,8 @@
 
 class Node;
 class FileReader;
-class Segment;
-class SegmentPosition;
+class Edge;
+class EdgePosition;
 
 template<typename Data>
 class PointerHandle
@@ -60,18 +60,18 @@ public:
   }
 };
 
-typedef PointerHandle<Node>    NodeHandle; 
-typedef PointerHandle<Segment> SegmentHandle; 
+typedef PointerHandle<Node> NodeHandle; 
+typedef PointerHandle<Edge> EdgeHandle; 
 
 /** */
 class NavigationGraph
 {
 private:
-  typedef std::vector<Node*>    Nodes;
-  typedef std::vector<Segment*> Segments;
+  typedef std::vector<Node*> Nodes;
+  typedef std::vector<Edge*> Edges;
 
-  Nodes    nodes;
-  Segments segments;
+  Nodes nodes;
+  Edges edges;
   
   // insert some spartial thingy here
 
@@ -81,16 +81,16 @@ public:
 
   // FIXME: It might be worth it to return handles that can be
   // validated instead of pure pointers
-  NodeHandle    add_node(const Vector2f& pos);
-  SegmentHandle add_segment(NodeHandle node1, NodeHandle node2);
+  NodeHandle add_node(const Vector2f& pos);
+  EdgeHandle add_edge(NodeHandle node1, NodeHandle node2);
 
   void remove_node(NodeHandle node);
-  void remove_segment(SegmentHandle segment);
+  void remove_edge(EdgeHandle edge);
 
-  void split_segment(SegmentHandle segment);
+  void split_edge(EdgeHandle edge);
 
-  /** Find segments that intersect with the given line */
-  std::vector<SegmentPosition> find_intersections(const Line& line);
+  /** Find edges that intersect with the given line */
+  std::vector<EdgePosition> find_intersections(const Line& line);
 
   /** Find nodes that are near within the \a radius */
   std::vector<NodeHandle> find_nodes(const Vector2f& pos, float radius);
@@ -98,10 +98,10 @@ public:
   /** Find the closest node, limit search to nodes in radius */
   NodeHandle find_closest_node(const Vector2f& pos, float radius);
 
-  SegmentHandle find_closest_segment(const Vector2f& pos, float radius);
+  EdgeHandle find_closest_edge(const Vector2f& pos, float radius);
 
-  /** Find segments that are near the given point */
-  std::vector<SegmentHandle> find_segments(const Vector2f& pos, float radius);
+  /** Find edges that are near the given point */
+  std::vector<EdgeHandle> find_edges(const Vector2f& pos, float radius);
 
   /** Draw the navigation graph, for debugging only */
   void draw();
@@ -109,8 +109,8 @@ public:
   void load(FileReader& reader);
   void save(std::ostream& out);
 
-  bool valid(Segment* segment);
-  bool valid(Node*    node);
+  bool valid(Edge* edge);
+  bool valid(Node* node);
 
 private:
   NavigationGraph (const NavigationGraph&);

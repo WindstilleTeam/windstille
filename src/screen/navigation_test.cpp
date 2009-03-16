@@ -27,8 +27,8 @@
 #include "app/menu_manager.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
-#include "navigation/segment_position.hpp"
-#include "navigation/segment.hpp"
+#include "navigation/edge_position.hpp"
+#include "navigation/edge.hpp"
 #include "navigation_test.hpp"
 
 NavigationTest::NavigationTest()
@@ -36,7 +36,7 @@ NavigationTest::NavigationTest()
     player(200,200),
     graph(new NavigationGraph()),
     connection(0),
-    selected_segment(0),
+    selected_edge(0),
     selected_node(0),
     node_to_connect(0)
 {
@@ -52,9 +52,9 @@ NavigationTest::NavigationTest()
   //Node* node3 = graph->add_node(Vector2f(500, 300));
   //Node* node4 = graph->add_node(Vector2f(700, 400));
 
-  graph->add_segment(node1, node2);
-  //graph->add_segment(node2, node3);
-  //graph->add_segment(node3, node4);
+  graph->add_edge(node1, node2);
+  //graph->add_edge(node2, node3);
+  //graph->add_edge(node3, node4);
   
 }
 
@@ -84,8 +84,8 @@ NavigationTest::draw()
   if (selected_node)
     Display::draw_circle(selected_node->get_pos(), 12.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
 
-  if (selected_segment)
-    Display::draw_line(selected_segment->get_line(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+  if (selected_edge)
+    Display::draw_line(selected_edge->get_line(), Color(1.0f, 1.0f, 1.0f, 1.0f));
 
   Display::fill_circle(player, 12.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
 
@@ -119,7 +119,7 @@ NavigationTest::update(float delta, const Controller& controller)
       if (node_to_connect)
         {
           if (selected_node)
-            graph->add_segment(node_to_connect, selected_node);
+            graph->add_edge(node_to_connect, selected_node);
           
           node_to_connect = 0;
         }
@@ -127,10 +127,10 @@ NavigationTest::update(float delta, const Controller& controller)
         {
           node_to_connect = selected_node;
         }
-      else if (selected_segment)
+      else if (selected_edge)
         {
-          graph->split_segment(selected_segment);
-          selected_segment = 0;
+          graph->split_edge(selected_edge);
+          selected_edge = 0;
         }
       else
         {
@@ -164,28 +164,28 @@ NavigationTest::update(float delta, const Controller& controller)
       
       if (!advance.is_null())
         { // Not all advancement got used up, which means we have hit
-          // the end of a segment
+          // the end of a edge
 
           // FIXME: This should be a while loop, currently we are just
           // discarding the rest movement
 
-          SegmentPosition next_segment;
+          EdgePosition next_edge;
           float length = 0;
-          for(Node::Segments::iterator i = next_node->segments.begin(); i != next_node->segments.end(); ++i)
+          for(Node::Edges::iterator i = next_node->edges.begin(); i != next_node->edges.end(); ++i)
             {
-              if (connection->get_segment() != i->segment)
-                { // Find out into the direction of which segment the stick is pointing
-                  Vector2f proj = stick.project(i->segment->get_vector());
+              if (connection->get_edge() != i->edge)
+                { // Find out into the direction of which edge the stick is pointing
+                  Vector2f proj = stick.project(i->edge->get_vector());
                   
                   if (proj.length() > length)
                     {
-                      next_segment = *i;
+                      next_edge = *i;
                       length       = proj.length();
                     }
                 }
             }
               
-          if (!next_segment.segment)
+          if (!next_edge.edge)
             {
               std::cout << "Dead End" << std::endl;
               connection.reset();
@@ -197,7 +197,7 @@ NavigationTest::update(float delta, const Controller& controller)
           else
             {
               std::cout << "transition" << std::endl;
-              *connection = next_segment;
+              *connection = next_edge;
             }
         }
 
@@ -221,11 +221,11 @@ NavigationTest::update(float delta, const Controller& controller)
           player.y -= 0.5f * 512.0f * delta;
         }
 
-      std::vector<SegmentPosition> positions = graph->find_intersections(Line(old_player, player));
+      std::vector<EdgePosition> positions = graph->find_intersections(Line(old_player, player));
       if (!positions.empty()) 
         {
           std::cout << "Doing connection" << std::endl;
-          connection.reset(new SegmentPosition(positions.front()));
+          connection.reset(new EdgePosition(positions.front()));
         }
     }
   
@@ -241,19 +241,19 @@ NavigationTest::update(float delta, const Controller& controller)
         selected_node = 0;
       } 
       
-      if (selected_segment) {
-        graph->remove_segment(selected_segment);
-        selected_segment = 0;
+      if (selected_edge) {
+        graph->remove_edge(selected_edge);
+        selected_edge = 0;
       }      
     }
 
   selected_node = graph->find_closest_node(cursor, 32.0f);
   if (!selected_node)
-    selected_segment = graph->find_closest_segment(cursor, 32.0f);
+    selected_edge = graph->find_closest_edge(cursor, 32.0f);
   else
-    selected_segment = 0;
+    selected_edge = 0;
 
-  if (connection.get() && !graph->valid(connection->get_segment()))
+  if (connection.get() && !graph->valid(connection->get_edge()))
     {
       connection.reset();
     }

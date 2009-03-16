@@ -30,19 +30,19 @@ Node::~Node()
 }
 
 void
-Node::add_segment(const SegmentPosition& position)
+Node::add_edge(const EdgePosition& position)
 {
-  segments.push_back(position);
+  edges.push_back(position);
 }
 
 void
-Node::remove_segment(Segment* segment)
+Node::remove_edge(Edge* edge)
 {
-  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
     {
-      if (i->segment == segment)
+      if (i->edge == edge)
         {
-          segments.erase(i);
+          edges.erase(i);
           return;
         }
     }

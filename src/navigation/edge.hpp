@@ -26,7 +26,7 @@
 class Node;
 
 /** */
-class Segment
+class Edge
 {
 private:
   Node* node1;
@@ -35,11 +35,11 @@ private:
   Properties properties;
 
 public:
-  Segment(Node* node1_, Node* node2_, Properties props_ = 0);
-  ~Segment();
+  Edge(Node* node1_, Node* node2_, Properties props_ = 0);
+  ~Edge();
 
   /** Calculate the angle between two segments */
-  float angle(Segment* seg);
+  float angle(Edge* seg);
   
   Node* get_node1() const { return node1; } 
   Node* get_node2() const { return node2; } 
@@ -50,8 +50,8 @@ public:
   Vector2f get_vector() const;
   
 private:
-  Segment (const Segment&);
-  Segment& operator= (const Segment&);
+  Edge (const Edge&);
+  Edge& operator= (const Edge&);
 };
 
 #endif

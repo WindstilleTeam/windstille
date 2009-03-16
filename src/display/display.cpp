@@ -42,7 +42,7 @@ Display::draw_line(const Line& line, const Color& color)
 }
 
 void
-Display::draw_segment(const Line& line, const Color& color)
+Display::draw_line_with_normal(const Line& line, const Color& color)
 {
   Vector2f normal = (line.p2 - line.p1);
 

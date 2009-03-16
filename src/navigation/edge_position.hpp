@@ -16,37 +16,37 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_NAVIGATION_SEGMENT_POSITION_HPP
-#define HEADER_WINDSTILLE_NAVIGATION_SEGMENT_POSITION_HPP
+#ifndef HEADER_WINDSTILLE_NAVIGATION_EDGE_POSITION_HPP
+#define HEADER_WINDSTILLE_NAVIGATION_EDGE_POSITION_HPP
 
 #include "math/vector2f.hpp"
 
-class Segment;
+class Edge;
 class Node;
 
 /** 
  */
-class SegmentPosition
+class EdgePosition
 {
 public:
-  Segment* segment;
+  Edge* edge;
 
-  /** Position on the segment, stored with range [0,1], not
+  /** Position on the edge, stored with range [0,1], not
       world-co */
   float pos;
 
 public:
-  SegmentPosition();
-  SegmentPosition(Segment* segment_, float pos_);
+  EdgePosition();
+  EdgePosition(Edge* edge_, float pos_);
 
-  void set_pos(Segment* segment_, float pos_);
+  void set_pos(Edge* edge_, float pos_);
 
   /** Move forward \a adv of units in world-co, when a node is hit,
    *  the function returns and let the user decide how to continue
    *
    *  @param[in,out] adv the amount of advancment to be done, the
    *                     amount of units that wheren't use on the
-   *                     given segment
+   *                     given edge
    *
    *  @param[out] next_node if the advance ends at a node, it gets
    *                        returned in next_node
@@ -55,19 +55,19 @@ public:
   
   /** Move forward \a adv of units in world-co, when a node is hit,
    *  the function returns and let the user decide how to
-   *  continue. \a adv is projected onto the current segment to figure
+   *  continue. \a adv is projected onto the current edge to figure
    *  out how far we should go
    *
    * @param[in,out] adv the amount of advancment to be done, the
    *                    amount of units that wheren't use on the given
-   *                    segment
+   *                    edge
    *
    * @param[out] next_node if the advance ends at a node, it gets
    *                       returned in next_node
    */  
   void advance(Vector2f& adv, Node*& next_node);
 
-  Segment* get_segment() const { return segment; }
+  Edge* get_edge() const { return edge; }
   float    get_float_pos() const { return pos; }
 
   Vector2f get_pos() const;

@@ -22,7 +22,7 @@
 #include <vector>
 #include "math/vector2f.hpp"
 
-#include "segment_position.hpp"
+#include "edge_position.hpp"
 
 /** */
 class Node
@@ -31,9 +31,9 @@ private:
   Vector2f pos;
   
 public:
-  /** Segments connected to this node */
-  typedef std::vector<SegmentPosition> Segments;
-  Segments segments;
+  /** Edges connected to this node */
+  typedef std::vector<EdgePosition> Edges;
+  Edges edges;
 
 public:
   Node(const Vector2f& pos_);
@@ -42,11 +42,11 @@ public:
   Vector2f get_pos() const { return pos; }
   void     set_pos(const Vector2f& p) { pos = p; }
 
-  /** Connect the given segment to the node, the position is used to
-      mark the end of the segment that is actually connected */
-  void add_segment(const SegmentPosition& segment);
+  /** Connect the given edge to the node, the position is used to
+      mark the end of the edge that is actually connected */
+  void add_edge(const EdgePosition& edge);
 
-  void remove_segment(Segment* segment);
+  void remove_edge(Edge* edge);
 
 private:
   Node(const Node&);

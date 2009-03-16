@@ -42,7 +42,7 @@ public:
   static void draw_rounded_rect(const Rectf& rect, float radius, const Color& color);
 
   /** Same as draw_line, but in addition draw a normal on top of the line */
-  static void draw_segment(const Line& line, const Color& color);
+  static void draw_line_with_normal(const Line& line, const Color& color);
 
   static void draw_line(const Line& line, const Color& color);
   static void draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color);

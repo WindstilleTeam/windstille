@@ -18,39 +18,39 @@
 
 #include <assert.h>
 #include "node.hpp"
-#include "segment.hpp"
+#include "edge.hpp"
 
-Segment::Segment(Node* node1_, Node* node2_, Properties props_)
+Edge::Edge(Node* node1_, Node* node2_, Properties props_)
   : node1(node1_), 
     node2(node2_),
     properties(props_)
 {
-  node1->add_segment(SegmentPosition(this, 0.0f));
-  node2->add_segment(SegmentPosition(this, 1.0f));
+  node1->add_edge(EdgePosition(this, 0.0f));
+  node2->add_edge(EdgePosition(this, 1.0f));
 }
 
-Segment::~Segment()
+Edge::~Edge()
 {
-  node1->remove_segment(this);
-  node2->remove_segment(this);
+  node1->remove_edge(this);
+  node2->remove_edge(this);
 }
 
 float
-Segment::angle(Segment* /*seg*/)
+Edge::angle(Edge* /*seg*/)
 {
   assert(!"Implement me");
   return 0.0f;
 }
 
 Line
-Segment::get_line() const
+Edge::get_line() const
 {
   return Line(node1->get_pos(),
               node2->get_pos());
 }
 
 Vector2f
-Segment::get_vector() const
+Edge::get_vector() const
 {
   return node2->get_pos() - node1->get_pos();
 }

@@ -22,9 +22,9 @@
 #include <algorithm>
 #include "display/display.hpp"
 #include "node.hpp"
-#include "segment.hpp"
+#include "edge.hpp"
 #include "util/file_reader.hpp"
-#include "segment_position.hpp"
+#include "edge_position.hpp"
 #include "navigation_graph.hpp"
 
 NavigationGraph::NavigationGraph()
@@ -34,9 +34,9 @@ NavigationGraph::NavigationGraph()
 
 NavigationGraph::~NavigationGraph()
 {
-  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
     delete *i;
-  segments.clear();
+  edges.clear();
 
   for (Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
     delete *i;
@@ -52,14 +52,14 @@ NavigationGraph::add_node(const Vector2f& pos)
 }
 
 void
-NavigationGraph::remove_segment(SegmentHandle segment)
+NavigationGraph::remove_edge(EdgeHandle edge)
 {
   // FIXME: Slow
-  Segments::iterator i = std::find(segments.begin(), segments.end(), segment.get());
-  if (i != segments.end())
+  Edges::iterator i = std::find(edges.begin(), edges.end(), edge.get());
+  if (i != edges.end())
     {
-      segments.erase(i);
-      delete segment.get();
+      edges.erase(i);
+      delete edge.get();
     }
 
   // FIXME: Throw exception here
@@ -70,8 +70,8 @@ NavigationGraph::remove_node(NodeHandle node)
 {
   // FIXME: Slow
 
-  // Remove all segments that would get invalid by removing the node
-  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+  // Remove all edges that would get invalid by removing the node
+  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
     {
       if ((*i)->get_node1() == node.get() ||
           (*i)->get_node2() == node.get())
@@ -81,10 +81,10 @@ NavigationGraph::remove_node(NodeHandle node)
         }
     }
 
-  Segments::iterator new_end = std::remove(segments.begin(), segments.end(), (Segment*)0);
-  if (new_end != segments.end())
+  Edges::iterator new_end = std::remove(edges.begin(), edges.end(), (Edge*)0);
+  if (new_end != edges.end())
     { 
-      segments.erase(new_end, segments.end());
+      edges.erase(new_end, edges.end());
     }
   
   // Remove the node itself 
@@ -96,41 +96,41 @@ NavigationGraph::remove_node(NodeHandle node)
     }  
 }
 
-SegmentHandle
-NavigationGraph::add_segment(NodeHandle node1, NodeHandle node2)
+EdgeHandle
+NavigationGraph::add_edge(NodeHandle node1, NodeHandle node2)
 {
   if (node1.get() != node2.get()) // node links to themself are forbidden
-    { // FIXME: Find a way to figure out if the given segment already exists
-      Segment* segment = new Segment(node1.get(), node2.get());
-      segments.push_back(segment);
-      return SegmentHandle(segment);
+    { // FIXME: Find a way to figure out if the given edge already exists
+      Edge* edge = new Edge(node1.get(), node2.get());
+      edges.push_back(edge);
+      return EdgeHandle(edge);
     }
   else
     {
-      return SegmentHandle();
+      return EdgeHandle();
     }
 }
 
 void
-NavigationGraph::split_segment(SegmentHandle segment)
+NavigationGraph::split_edge(EdgeHandle edge)
 {
-  NodeHandle node1 = NodeHandle(segment->get_node1());
-  NodeHandle node3 = NodeHandle(segment->get_node2());
+  NodeHandle node1 = NodeHandle(edge->get_node1());
+  NodeHandle node3 = NodeHandle(edge->get_node2());
   NodeHandle node2 = add_node(0.5f * (node1->get_pos() + node3->get_pos()));
 
-  remove_segment(segment);
-  add_segment(node1, node2);  
-  add_segment(node2, node3);  
+  remove_edge(edge);
+  add_edge(node1, node2);  
+  add_edge(node2, node3);  
 }
 
-std::vector<SegmentPosition>
+std::vector<EdgePosition>
 NavigationGraph::find_intersections(const Line& line)
 {
   // FIXME: we might want to only return the first intersection, not
   // all of them or alternativly return ua
-  std::vector<SegmentPosition> ret;
+  std::vector<EdgePosition> ret;
  
-  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
     {
       Line seg_line((*i)->get_node1()->get_pos(),
                     (*i)->get_node2()->get_pos());
@@ -138,7 +138,7 @@ NavigationGraph::find_intersections(const Line& line)
       float ua, ub;
       if (line.intersect(seg_line, ua, ub))
         {
-          ret.push_back(SegmentPosition(*i, ub));
+          ret.push_back(EdgePosition(*i, ub));
         }
     }
 
@@ -163,18 +163,18 @@ NavigationGraph::find_nodes(const Vector2f& pos, float radius)
   return ret;
 }
 
-std::vector<SegmentHandle>
-NavigationGraph::find_segments(const Vector2f& pos, float radius)
+std::vector<EdgeHandle>
+NavigationGraph::find_edges(const Vector2f& pos, float radius)
 {
-  std::vector<SegmentHandle> ret;
+  std::vector<EdgeHandle> ret;
  
-  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
     {
       float distance = Line((*i)->get_node1()->get_pos(),
                             (*i)->get_node2()->get_pos()).distance(pos);
       if (distance < radius)
         {
-          ret.push_back(SegmentHandle(*i));
+          ret.push_back(EdgeHandle(*i));
         }
     }
 
@@ -201,34 +201,34 @@ NavigationGraph::find_closest_node(const Vector2f& pos, float radius)
   return NodeHandle(node);
 }
 
-SegmentHandle
-NavigationGraph::find_closest_segment(const Vector2f& pos, float radius)
+EdgeHandle
+NavigationGraph::find_closest_edge(const Vector2f& pos, float radius)
 {
-  Segment* segment   = 0;
+  Edge* edge   = 0;
   float min_distance = radius;
 
-  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
     {
       float current_distance = Line((*i)->get_node1()->get_pos(),
                                     (*i)->get_node2()->get_pos()).distance(pos);
       if (current_distance < min_distance)
         {
           min_distance = current_distance;
-          segment = *i;
+          edge = *i;
         }
     }
 
-  return SegmentHandle(segment);
+  return EdgeHandle(edge);
 }
 
 void
 NavigationGraph::draw()
 {
-  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)
+  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
     {
-      Display::draw_segment(Line((*i)->get_node1()->get_pos(),
-                                 (*i)->get_node2()->get_pos()),
-                            Color(1.0f, 0.0f, 0.0f));
+      Display::draw_line_with_normal(Line((*i)->get_node1()->get_pos(),
+                                          (*i)->get_node2()->get_pos()),
+                                     Color(1.0f, 0.0f, 0.0f));
     }
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
@@ -271,13 +271,13 @@ NavigationGraph::load(FileReader& reader)
         }
     }
   
-  FileReader segments_group_reader;
-  if (reader.get("segments", segments_group_reader))
+  FileReader edges_group_reader;
+  if (reader.get("edges", edges_group_reader))
     {
-      std::vector<FileReader> segments_reader = segments_group_reader.get_sections();
-      for(std::vector<FileReader>::iterator i = segments_reader.begin(); i != segments_reader.end(); ++i)
+      std::vector<FileReader> edges_reader = edges_group_reader.get_sections();
+      for(std::vector<FileReader>::iterator i = edges_reader.begin(); i != edges_reader.end(); ++i)
         {
-          if (i->get_name() == "segment")
+          if (i->get_name() == "edge")
             {
               int node_left;
               int node_right;
@@ -292,23 +292,23 @@ NavigationGraph::load(FileReader& reader)
 
                   if (node_left_ptr != id2ptr.end() && node_right_ptr != id2ptr.end())
                     {
-                      Segment* segment = new Segment(node_left_ptr->second, node_right_ptr->second, properties);
-                      segments.push_back(segment);
+                      Edge* edge = new Edge(node_left_ptr->second, node_right_ptr->second, properties);
+                      edges.push_back(edge);
                     }
                   else
                     {
-                      std::cout << "NavigationGraph: segment: Couldn't lookup ids: "
+                      std::cout << "NavigationGraph: edge: Couldn't lookup ids: "
                                 << node_left << " " << node_right << std::endl;
                     }
                 }
               else
                 {
-                  std::cout << "NavigationGraph:load: segments: segment: parse error" << std::endl;
+                  std::cout << "NavigationGraph:load: edges: edge: parse error" << std::endl;
                 }
             }
           else
             {
-              std::cout << "NavigationGraph:load: segments: Unknown tag: " << i->get_name() << std::endl;
+              std::cout << "NavigationGraph:load: edges: Unknown tag: " << i->get_name() << std::endl;
             }
         }      
     }
@@ -332,9 +332,9 @@ NavigationGraph::save(std::ostream& out)
         << std::setw(3) << (*i)->get_pos().x << " " << (*i)->get_pos().y << "))\n";
   out << " )\n";
 
-  out << "  (segments\n";
-  for(Segments::iterator i = segments.begin(); i != segments.end(); ++i)  
-    out << "    (segment "
+  out << "  (edges\n";
+  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)  
+    out << "    (edge "
         << "(node1 " << std::setw(3) << ptr2id[(*i)->get_node1()] << ") "
         << "(node2 " << std::setw(3) << ptr2id[(*i)->get_node2()] << ") "
         << "(properties " << (*i)->get_properties() << "))\n";
@@ -346,10 +346,10 @@ NavigationGraph::save(std::ostream& out)
 }
 
 bool
-NavigationGraph::valid(Segment* segment)
+NavigationGraph::valid(Edge* edge)
 {
   // FIXME: Slow
-  return std::find(segments.begin(), segments.end(), segment) != segments.end();
+  return std::find(edges.begin(), edges.end(), edge) != edges.end();
 }
 
 bool

@@ -23,8 +23,8 @@
 #include "screen.hpp"
 
 class NavigationGraph;
-class SegmentPosition;
-class Segment;
+class EdgePosition;
+class Edge;
 class Node;
 
 /** */
@@ -37,10 +37,10 @@ private:
   Vector2f old_player;
   
   std::auto_ptr<NavigationGraph> graph;
-  std::auto_ptr<SegmentPosition> connection;
+  std::auto_ptr<EdgePosition> connection;
 
-  SegmentHandle selected_segment;
-  NodeHandle    selected_node;
+  EdgeHandle selected_edge;
+  NodeHandle selected_node;
 
   NodeHandle node_to_connect;
 
