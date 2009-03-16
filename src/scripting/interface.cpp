@@ -358,41 +358,44 @@ void render_mask_set(int mask)
 
 SQInteger spawn_object(HSQUIRRELVM v)
 {
-  using namespace lisp;
-  
-  const char* objname;
-  sq_getstring(v, -2, &objname);
-
-  // FIXME: Do we memleak here?
-  std::vector<lisp::Lisp*> entries;
-  entries.push_back(new Lisp(Lisp::TYPE_SYMBOL, objname));
-  table_to_lisp(v, -1, entries);
-
-  try 
+  if (Sector::current())
     {
-      SExprFileReader reader(new Lisp(entries), true);
-      Sector::current()->add_object(reader);
-    }
-  catch (std::exception& e) 
-    {
-      std::cerr << "Error parsing object in spawn_object: " << e.what()
-                << "\n";
-    }
+      const char* objname = 0;
+      sq_getstring(v, -2, &objname);
 
+      // Newly created objects are deleted in ~SExprFileReader() and ~Lisp()
+      std::vector<lisp::Lisp*> entries;
+      entries.push_back(new lisp::Lisp(lisp::Lisp::TYPE_SYMBOL, objname));
+      table_to_lisp(v, -1, entries);
+
+      try 
+        {
+          SExprFileReader reader(new lisp::Lisp(entries), true);
+          Sector::current()->add_object(reader);
+        }
+      catch (std::exception& e) 
+        {
+          std::cerr << "Error parsing object in spawn_object: " << e.what()
+                    << "\n";
+        }
+    }
   return 0;
 }
 
 void spawn_script(const std::string& filename)
 {
-  ScriptManager::current()->run_script_file(Sector::current()->get_directory() + filename);
+  if (ScriptManager::current())
+    ScriptManager::current()->run_script_file(Sector::current()->get_directory() + filename);
 }
 
 SQInteger spawn_function(HSQUIRRELVM v)
 {
-  boost::shared_ptr<SquirrelThread> thread = ScriptManager::current()->create_script(v, false);
-  thread->load(v, -1);
-  sq_pop(v, 1);
-
+  if (ScriptManager::current())
+    {
+      boost::shared_ptr<SquirrelThread> thread = ScriptManager::current()->create_script(v, false);
+      thread->load(v, -1);
+      sq_pop(v, 1);
+    }
   return 0;
 }
 
