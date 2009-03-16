@@ -400,7 +400,6 @@ SQInteger lisp2string(HSQUIRRELVM v)
 {
   std::vector<lisp::Lisp*> entries;
 
-  entries.push_back(new lisp::Lisp(lisp::Lisp::TYPE_SYMBOL, "TABLE"));
   table_to_lisp(v, -1, entries);
 
   for(std::vector<lisp::Lisp*>::iterator i = entries.begin(); i != entries.end(); ++i)
