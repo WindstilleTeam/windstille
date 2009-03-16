@@ -37,8 +37,7 @@ Trigger::Trigger(FileReader& props)
   props.get("height", height);
   props.get("callback", callback);
   props.get("one-time-trigger", one_time_trigger);
-  props.print_unused_warnings("trigger");
-
+  
   if(x < 0 || y < 0 || width < 0 || height < 0)
     throw std::runtime_error("Invalid or missing area in Trigger object");
  
@@ -58,29 +57,31 @@ Trigger::draw (SceneContext& )
 }
 
 void
-Trigger::update(float delta)
+Trigger::update(float /*delta*/)
 {
   //FIXME use proper collision detection
   Player* player = Player::current();
-  if(!area.is_inside(player->get_pos())) {
-    last_trigger = false;
-    return;
-  }
+  if(!area.is_inside(player->get_pos())) 
+    {
+      last_trigger = false;
+      return;
+    }
   
   if(triggered && one_time_trigger)
     return;
 
-  if(last_trigger == false) {
-    triggered = true;
-    try 
-      {
-        Sector::current()->call_script_function(callback);
-      }
-    catch(std::exception& e) 
-      {
-        std::cerr << "Couldn't run trigger-script: " << e.what() << "\n";
-      }
-  }
+  if(last_trigger == false) 
+    {
+      triggered = true;
+      try 
+        {
+          Sector::current()->call_script_function(callback);
+        }
+      catch(std::exception& e) 
+        {
+          std::cerr << "Couldn't run trigger-script: " << e.what() << "\n";
+        }
+    }
   last_trigger = true;
 }
 

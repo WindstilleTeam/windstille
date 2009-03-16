@@ -41,7 +41,6 @@ Box::Box(FileReader& props)
   props.get("vel", vel);
   props.get("name", name);
   props.get("gravity", gravity);
-  props.print_unused_warnings("box object");
   
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in Box");

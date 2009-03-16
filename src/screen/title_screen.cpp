@@ -46,7 +46,7 @@ TitleScreen::draw()
 }
 
 void
-TitleScreen::update(float delta, const Controller& controller)
+TitleScreen::update(float delta, const Controller& /*controller*/)
 {
   background.update(delta);
 }

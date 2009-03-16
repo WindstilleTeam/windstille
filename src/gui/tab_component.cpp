@@ -24,7 +24,7 @@
 
 namespace gui {
 
-TabComponent::TabComponent(FileReader& reader, Component* parent)
+TabComponent::TabComponent(Component* parent)
   : Component(parent)
 {
   assert(0);

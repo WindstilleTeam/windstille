@@ -43,8 +43,7 @@ ScriptableObject::ScriptableObject(FileReader& props)
   props.get("active", active);
   props.get("flash-speed", flash_speed); // FIXME: bad name, should be something more generic
   props.get("z-pos", z_pos);
-  props.print_unused_warnings("scriptable-object");
-  
+    
   if (use_verb != "")
     set_useable(true);
   

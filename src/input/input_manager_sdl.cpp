@@ -478,7 +478,7 @@ InputManagerSDL::on_event(const SDL_Event& event)
 }
 
 void
-InputManagerSDL::update(float delta)
+InputManagerSDL::update(float /*delta*/)
 {
 #ifdef HAVE_CWIID
   if (wiimote && wiimote->is_connected())
@@ -565,9 +565,9 @@ InputManagerSDL::bind_mouse_button(int event, int device, int button)
 }
 
 void
-InputManagerSDL::bind_joystick_hat_axis(int event, int device, int axis)
+InputManagerSDL::bind_joystick_hat_axis(int /*event*/, int /*device*/, int /*axis*/)
 {
-  
+  assert(!"Implement me");
 }
 
 void

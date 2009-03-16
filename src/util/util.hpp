@@ -54,6 +54,9 @@ static inline void assert_gl(const char* message)
         << gluErrorString(error);
     throw std::runtime_error(msg.str());
   }
+#else
+  // Stop compiler from issueing 'unused parameter'
+  do { (void)(message); } while (0);
 #endif
 }
 

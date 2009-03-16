@@ -31,7 +31,7 @@ private:
   std::string label;
 
 public:
-  Button(FileReader& reader, Component* parent);
+  Button(Component* parent);
   Button(const std::string& label, Component* parent);
   ~Button();
 

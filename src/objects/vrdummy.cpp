@@ -23,8 +23,7 @@ VRDummy::VRDummy(FileReader& props)
 {
   props.get("name", name);
   props.get("pos",  pos);
-  props.print_unused_warnings("VRDummy");
-  
+    
   sprite = Sprite3D("models/characters/vrdummy/vrdummy.wsprite");
   rotation = 0;
 

@@ -87,11 +87,11 @@ SDL_Surface* create_surface_rgba(int width, int height)
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
   SDL_Surface* pixelbuffer = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                                  1024, 1024, 32,
+                                                  width, height, 32,
                                                   0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
 #else
   SDL_Surface* pixelbuffer = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                                  1024, 1024, 32,
+                                                  width, height, 32,
                                                   0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 #endif
   return pixelbuffer;

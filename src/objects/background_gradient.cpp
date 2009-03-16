@@ -50,7 +50,7 @@ BackgroundGradient::~BackgroundGradient()
 }
   
 void
-BackgroundGradient::update(float delta)
+BackgroundGradient::update(float /*delta*/)
 {
 }
 

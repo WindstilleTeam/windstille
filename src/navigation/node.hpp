@@ -40,13 +40,14 @@ public:
   ~Node();
 
   Vector2f get_pos() const { return pos; }
-  void   set_pos(const Vector2f& p) { pos = p; }
+  void     set_pos(const Vector2f& p) { pos = p; }
 
   /** Connect the given segment to the node, the position is used to
       mark the end of the segment that is actually connected */
   void add_segment(const SegmentPosition& segment);
 
   void remove_segment(Segment* segment);
+
 private:
   Node(const Node&);
   Node& operator=(const Node&);

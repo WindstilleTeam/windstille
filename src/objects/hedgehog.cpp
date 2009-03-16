@@ -29,8 +29,7 @@ Hedgehog::Hedgehog(FileReader& props)
 {
   props.get("name", name);
   props.get("pos",  pos);
-  props.print_unused_warnings("hedgehog");
-  
+    
   direction_left = false;
   state = WALKING;
   light.set_blend_func(GL_SRC_ALPHA, GL_ONE);

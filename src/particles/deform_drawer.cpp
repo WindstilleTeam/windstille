@@ -162,7 +162,7 @@ public:
   bool needs_prepare() { return true; }
 };
 
-DeformDrawer::DeformDrawer(FileReader& props)
+DeformDrawer::DeformDrawer(FileReader& /*props*/)
   : framebuffer(GL_TEXTURE_RECTANGLE_ARB, 800, 600),
     surface("images/particles/deform2.png")
 {

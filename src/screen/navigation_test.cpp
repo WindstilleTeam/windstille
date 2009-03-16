@@ -109,10 +109,10 @@ NavigationTest::update(float delta, const Controller& controller)
     }
 
   cursor += Vector2f(controller.get_axis_state(X_AXIS) * 500.0f * delta,
-                   controller.get_axis_state(Y_AXIS) * 500.0f * delta);
+                     controller.get_axis_state(Y_AXIS) * 500.0f * delta);
 
   stick = Vector2f(controller.get_axis_state(X2_AXIS),
-                 controller.get_axis_state(Y2_AXIS));
+                   controller.get_axis_state(Y2_AXIS));
 
   if (controller.button_was_pressed(PRIMARY_BUTTON))
     {
@@ -222,10 +222,11 @@ NavigationTest::update(float delta, const Controller& controller)
         }
 
       std::vector<SegmentPosition> positions = graph->find_intersections(Line(old_player, player));
-      if (!positions.empty()) {
-        std::cout << "Doing connection" << std::endl;
-        connection.reset(new SegmentPosition(positions.front()));
-      }
+      if (!positions.empty()) 
+        {
+          std::cout << "Doing connection" << std::endl;
+          connection.reset(new SegmentPosition(positions.front()));
+        }
     }
   
   if (controller.button_was_pressed(SELECT_BUTTON))

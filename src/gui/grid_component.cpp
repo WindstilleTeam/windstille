@@ -23,7 +23,7 @@
 
 namespace gui {
 
-GridComponent::GridComponent(FileReader& reader, Component* parent)
+GridComponent::GridComponent(Component* parent)
   : Component(parent)
 {
   assert(0);  

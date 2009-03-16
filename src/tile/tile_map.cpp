@@ -93,10 +93,7 @@ TileMap::TileMap(FileReader& props)
         }
     }
 
-  props.print_unused_warnings("tilemap");
-
-
-  if(field.size() == 0)
+  if (field.size() == 0)
     throw std::runtime_error("No tiles defined in tilemap");  
 }
 

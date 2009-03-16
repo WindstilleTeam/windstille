@@ -36,7 +36,7 @@ Segment::~Segment()
 }
 
 float
-Segment::angle(Segment* seg)
+Segment::angle(Segment* /*seg*/)
 {
   assert(!"Implement me");
   return 0.0f;

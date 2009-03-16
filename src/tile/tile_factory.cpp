@@ -82,7 +82,6 @@ TileFactory::TileFactory (const std::string& filename)
         // ignore
       }
     }
-  reader.print_unused_warnings("TileFactory");
 }
 
 TileFactory::~TileFactory()

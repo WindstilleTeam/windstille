@@ -200,7 +200,7 @@ Wiimote::set_rumble(bool r)
 }
 
 void
-Wiimote::add_button_event(int device, int button, bool down)
+Wiimote::add_button_event(int /*device*/, int button, bool down)
 {
   // std::cout << "Wiimote::add_button_event: " << device << " " << button << " " << down << std::endl;
   WiimoteEvent event;
@@ -214,7 +214,7 @@ Wiimote::add_button_event(int device, int button, bool down)
 }
 
 void
-Wiimote::add_axis_event(int device, int axis, float pos)
+Wiimote::add_axis_event(int /*device*/, int axis, float pos)
 {
   //std::cout << "Wiimote::add_axis_event: " << device << " " << axis << " " << pos << std::endl;
 
@@ -229,7 +229,7 @@ Wiimote::add_axis_event(int device, int axis, float pos)
 }
 
 void
-Wiimote::add_acc_event(int device, int accelerometer, float x, float y, float z)
+Wiimote::add_acc_event(int /*device*/, int accelerometer, float x, float y, float z)
 {
   WiimoteEvent event;
 
@@ -270,7 +270,7 @@ Wiimote::on_status(const cwiid_status_mesg& msg)
 }
 
 void
-Wiimote::on_error(const cwiid_error_mesg& msg)
+Wiimote::on_error(const cwiid_error_mesg& /*msg*/)
 {
   std::cout << "On Error" << std::endl;
 
@@ -430,7 +430,7 @@ Wiimote::err(cwiid_wiimote_t* w, const char *s, va_list ap)
 }
 
 void
-Wiimote::mesg(cwiid_wiimote_t* w, int mesg_count, union cwiid_mesg mesg[])
+Wiimote::mesg(cwiid_wiimote_t* /*w*/, int mesg_count, union cwiid_mesg mesg[])
 {
   pthread_mutex_lock(&mutex);
 

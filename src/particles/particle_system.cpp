@@ -208,7 +208,6 @@ ParticleSystem::ParticleSystem(FileReader& props)
   //props.get("line-distribution",   ); // 2xvector2
   //props.get("circle", ); // float
   //props.get("rect-distribution", ); // vector2
-  props.print_unused_warnings("ParticleSystem");
 }
 
 ParticleSystem::ParticleSystem()
@@ -332,8 +331,9 @@ ParticleSystem::set_bunching(float factor)
 }
 
 void
-ParticleSystem::set_cycles(float num)
+ParticleSystem::set_cycles(float /*num*/)
 {
+  assert(!"Implement me");
 }
 
 void

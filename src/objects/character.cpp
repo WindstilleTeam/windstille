@@ -43,7 +43,6 @@ Character::Character(FileReader& props)
   props.get("z-pos", z_pos);
   props.get("sprite3d", sprite3d_filename);
   props.get("action", action_name);
-  props.print_unused_warnings("character");
   
   sprite = Sprite3D(sprite3d_filename);
 

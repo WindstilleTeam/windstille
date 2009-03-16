@@ -127,7 +127,7 @@ ControllerHelpWindow::draw()
 }
 
 void
-ControllerHelpWindow::update(float delta, const Controller& )
+ControllerHelpWindow::update(float /*delta*/, const Controller& )
 {
 }
 

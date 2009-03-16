@@ -343,52 +343,55 @@ Config::is_set(const std::string& name)
 void
 Config::load()
 {
-  try {
-    FileReader reader = FileReader::parse("config");
-    if(reader.get_name() != "windstille-config") {
-      std::cerr << "Warning: Config file is not a windstille-config file.\n";
+  try 
+    {
+      FileReader reader = FileReader::parse("config");
+      if(reader.get_name() != "windstille-config") 
+        {
+          std::cerr << "Warning: Config file is not a windstille-config file.\n";
+          return;
+        }
+    
+      for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
+        { // FIXME: all this dynamic_casting is overcomplicated crap
+          if (dynamic_cast<ConfigValue<int>*>(i->second))
+            {
+              int v;
+              if (reader.get(i->first.c_str(), v))
+                set_int(i->first, v);
+            }
+          else if (dynamic_cast<ConfigValue<bool>*>(i->second))
+            {
+              bool v;
+              if (reader.get(i->first.c_str(), v))
+                set_bool(i->first, v);
+            }
+          else if (dynamic_cast<ConfigValue<float>*>(i->second))
+            {
+              float v;
+              if (reader.get(i->first.c_str(), v))
+                set_float(i->first, v);
+            }
+          else if (dynamic_cast<ConfigValue<std::string>*>(i->second))
+            {
+              std::string v;
+              if (reader.get(i->first.c_str(), v))
+                set_string(i->first, v);
+            }
+          else 
+            {
+              std::cout << "Config: Unknown type for: " << i->first << std::endl;
+            }
+        }
+    
+      // TODO read controller config
+    } 
+  catch(std::exception& e) 
+    {
+      std::cerr << "Couldn't open config file: " << e.what() << "\n"
+                << "This is normal on first startup!\n";
       return;
     }
-    
-    for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
-      { // FIXME: all this dynamic_casting is overcomplicated crap
-        if (dynamic_cast<ConfigValue<int>*>(i->second))
-          {
-            int v;
-            if (reader.get(i->first.c_str(), v))
-              set_int(i->first, v);
-          }
-        else if (dynamic_cast<ConfigValue<bool>*>(i->second))
-          {
-            bool v;
-            if (reader.get(i->first.c_str(), v))
-              set_bool(i->first, v);
-          }
-        else if (dynamic_cast<ConfigValue<float>*>(i->second))
-          {
-            float v;
-            if (reader.get(i->first.c_str(), v))
-              set_float(i->first, v);
-          }
-        else if (dynamic_cast<ConfigValue<std::string>*>(i->second))
-          {
-            std::string v;
-            if (reader.get(i->first.c_str(), v))
-              set_string(i->first, v);
-          }
-        else 
-          {
-            std::cout << "Config: Unknown type for: " << i->first << std::endl;
-          }
-      }
-    reader.print_unused_warnings("configfile");
-
-    // TODO read controller config
-  } catch(std::exception& e) {
-    std::cerr << "Couldn't open config file: " << e.what() << "\n"
-              << "This is normal on first startup!\n";
-    return;
-  }
 }
 
 void

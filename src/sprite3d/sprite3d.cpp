@@ -246,7 +246,7 @@ public:
     : DrawingRequest(pos, z_pos, modelview), sprite(sprite)
   {}
 
-  void draw(const Texture& tmp_texture)
+  void draw(const Texture& /*tmp_texture*/)
   {
     sprite->draw(pos, modelview);
   }

@@ -24,7 +24,7 @@
 
 namespace gui {
 
-Button::Button(FileReader& reader, Component* parent)
+Button::Button(Component* parent)
   : Component(parent)
 {
   assert(0);

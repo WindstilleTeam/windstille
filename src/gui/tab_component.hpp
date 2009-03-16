@@ -46,7 +46,7 @@ private:
   int current_tab;
 
 public:
-  TabComponent(FileReader& reader, Component* parent);
+  TabComponent(Component* parent);
   TabComponent(const Rectf& rect, Component* parent);
   ~TabComponent();
 

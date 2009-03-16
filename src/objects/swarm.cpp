@@ -36,8 +36,7 @@ Swarm::Swarm(FileReader& props)
   props.get("pos",   pos);
   props.get("count", count);
   props.get("turn-speed", turn_speed);
-  props.print_unused_warnings("swarm");
-
+  
   agents.resize(count);
 
   for(Agents::iterator i = agents.begin(); i != agents.end(); ++i)

@@ -24,7 +24,7 @@
 #include "display/texture_manager.hpp"
 #include "nightvision.hpp"
 
-Nightvision::Nightvision(FileReader& props)
+Nightvision::Nightvision(FileReader& /*props*/)
   : nightvision("images/nightvision.sprite")
 {
   name = "nightvision";

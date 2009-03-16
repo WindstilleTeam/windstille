@@ -33,7 +33,7 @@ private:
   float   zoom;
 
 public:
-  Automap(FileReader& reader, Component* parent);
+  Automap(Component* parent);
   Automap(const Rectf& rect, Component* parent);
   ~Automap();
 

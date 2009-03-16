@@ -53,7 +53,7 @@ private:
   float padding;
 
 public:
-  GridComponent(FileReader& reader, Component* parent);
+  GridComponent(Component* parent);
   GridComponent(const Rectf& rect, int weight, int height, Component* parent);
   virtual ~GridComponent();
   

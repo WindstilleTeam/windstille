@@ -26,8 +26,7 @@ SpiderMine::SpiderMine(FileReader& props)
 {
   props.get("name", name);
   props.get("pos",  pos);
-  props.print_unused_warnings("spidermine");
-  
+    
   sprite = Sprite("images/spider_mine.sprite");
   //sprite.set_scale(.5, .5);
   initial_position = pos;

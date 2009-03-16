@@ -29,8 +29,7 @@ Elevator::Elevator(FileReader& props)
   props.get("sprite", spritename);
   props.get("pos", pos);
   props.get("name", name);
-  props.print_unused_warnings("elevator");
-
+  
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in Elevator");
 

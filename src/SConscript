@@ -81,7 +81,6 @@ env.Program('../windstille', [
 'gui/automap.cpp',
 'gui/button.cpp',
 'gui/component.cpp',
-'gui/component_factory.cpp',
 'gui/grid_component.cpp',
 'gui/group_component.cpp',
 'gui/gui_manager.cpp',

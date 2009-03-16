@@ -29,8 +29,7 @@ Liquid::Liquid(FileReader& props)
 
   props.get("pos",    pos);
   props.get("width",  width);
-  props.print_unused_warnings("Liquid");
-
+  
   heightfield1 = &heightfield_store1;
   heightfield2 = &heightfield_store2;
 

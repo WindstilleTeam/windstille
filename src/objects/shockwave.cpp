@@ -223,8 +223,7 @@ Shockwave::Shockwave(FileReader& props)
   : noise("images/noise3.png")
 {
   props.get("pos", pos);
-  props.print_unused_warnings("Shockwave");
-
+  
   radius = 100.0f;
 
   noise.set_wrap(GL_REPEAT);

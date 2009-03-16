@@ -144,16 +144,13 @@ SpriteData::parse_action(const std::string& dir, FileReader& reader)
       grid_reader.get("x-size", x_size);
       grid_reader.get("y-size", y_size);
 
-      grid_reader.print_unused_warnings("action image-grid");
-
       if(filename == "" || x_size <= 0 || y_size <= 0)
         throw std::runtime_error("Invalid or too few data in image-grid");
       
       SurfaceManager::current()->load_grid(dir + "/" + filename,
                                            action->surfaces, x_size, y_size);
     }
-  reader.print_unused_warnings("sprite action");
-  
+    
   if(action->name == "")
     throw std::runtime_error("No Name defined for action");
   if(action->surfaces.size() == 0) {

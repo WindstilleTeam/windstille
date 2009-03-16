@@ -75,8 +75,6 @@ public:
   bool read(const char* name, std::vector<float>& v);
   bool read(const char* name, std::vector<std::string>& v);
 
-  void print_unused_warnings(const std::string& title) const;
-
 private:
   boost::shared_ptr<FileReaderImpl> impl;
 };

@@ -359,7 +359,7 @@ static bool has_prefix(const std::string& lhs, const std::string rhs)
 static std::string longest_prefix(const std::string& lhs, const std::string rhs)
 {
   std::string::size_type i;
-  for(i = 0; i < lhs.size() && i < rhs.size() && lhs[i] == rhs[i]; ++i);
+  for(i = 0; i < lhs.size() && i < rhs.size() && lhs[i] == rhs[i]; ++i) {};
   return lhs.substr(0, i);
 }
 

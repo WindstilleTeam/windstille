@@ -117,7 +117,6 @@ Sector::parse_file(const std::string& filename)
       add_object(*i);
     }
 
-  reader.print_unused_warnings("sector");
   if (debug) std::cout << "Finished parsing" << std::endl;
 }
 

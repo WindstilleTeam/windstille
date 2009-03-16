@@ -36,9 +36,7 @@ TileDescription::TileDescription(FileReader& props)
   props.get("colmap", colmap);
   props.get("width",  width);
   props.get("height", height);
-    
-  props.print_unused_warnings("tiles");
-
+  
   if(filename == "")
     throw std::runtime_error("Missing color-image");
 }

@@ -160,10 +160,4 @@ FileReader::get_sections() const
     return std::vector<FileReader>();
 }
 
-void
-FileReader::print_unused_warnings(const std::string& title) const
-{
-  // unimplemented
-}
-
 /* EOF */

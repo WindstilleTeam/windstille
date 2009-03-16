@@ -42,7 +42,7 @@ Label::draw()
 }
 
 void
-Label::update(float delta, const Controller& controller)
+Label::update(float /*delta*/, const Controller& /*controller*/)
 {
   set_active(false);
 }

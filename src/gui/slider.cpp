@@ -84,7 +84,7 @@ Slider::draw()
 }
 
 void
-Slider::update(float delta, const Controller& controller)
+Slider::update(float /*delta*/, const Controller& controller)
 {
   for(InputEventLst::const_iterator i = controller.get_events().begin(); i != controller.get_events().end(); ++i) 
     {

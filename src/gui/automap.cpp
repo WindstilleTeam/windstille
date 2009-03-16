@@ -25,7 +25,7 @@
 
 namespace gui {
 
-Automap::Automap(FileReader& reader, Component* parent)
+Automap::Automap(Component* parent)
   : Component(parent)
 {
   assert(0);
