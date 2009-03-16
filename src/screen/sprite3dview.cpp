@@ -123,13 +123,13 @@ Sprite3DView::update(float delta, const Controller& controller)
         current_action -= 1;
     }
 
-  if (controller.get_button_state(PRIMARY_BUTTON))
+  if (controller.get_button_state(RIGHT_SHOULDER_BUTTON))
     {
-      scale *= 1.0f + 0.3f * delta;
+      scale *= 1.0f + 0.6f * delta;
     }
-  else if (controller.get_button_state(PDA_BUTTON))
+  else if (controller.get_button_state(LEFT_SHOULDER_BUTTON))
     {
-      scale /= 1.0f + 0.3f * delta;
+      scale /= 1.0f + 0.6f * delta;
     }
   
   if (last_action != current_action && !actions.empty())
@@ -138,11 +138,11 @@ Sprite3DView::update(float delta, const Controller& controller)
     }
 
   rotation = Quaternion(Vector3(0.0f, 1.0f, 0.0f),
-                        -controller.get_axis_state(X_AXIS) * delta * 4.0f) * rotation;
+                        -controller.get_axis_state(X2_AXIS) * delta * 4.0f) * rotation;
   rotation = Quaternion(Vector3(1.0f, 0.0f, 0.0f),
-                        controller.get_axis_state(X2_AXIS) * delta * 4.0f) * rotation;
-  rotation = Quaternion(Vector3(0.0f, 0.0f, 1.0f),
                         controller.get_axis_state(Y2_AXIS) * delta * 4.0f) * rotation;
+  rotation = Quaternion(Vector3(0.0f, 0.0f, 1.0f),
+                        controller.get_axis_state(X_AXIS) * delta * 4.0f) * rotation;
 
   if (controller.get_button_state(VIEW_CENTER_BUTTON))
     {
