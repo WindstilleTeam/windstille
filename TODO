@@ -61,6 +61,13 @@ Scripting
        }
     });
 
+  Also an ability to create unique events could be useful (not clear
+  for exactly what, so implementation can wait):
+
+    shared.event_id <- wait_for_unique_event()
+    ...
+    fire(shared.event_id);
+
 * think about if scripts spawned in a sector should be parented to the
   sectors init script or to the root_vm, the later one is currently
   the case, the first one however would make it easier to share
@@ -172,6 +179,9 @@ Sound Handling
 
 Miscellaneous
 =============
+
+* why does src/navigation/node.hpp use SegmentPosition? Doesn't seem
+  right
 
 * using aspect-ration different to screen resolution, lots of things break
 
@@ -380,6 +390,13 @@ Graphics
 
 * setting glLineWidth() leads to some interesting artefacts on the
   menus which might be a cool effect
+
+Editor
+======
+
+* make Windstille flexible enough so that it can work in non-SDL
+  settings, more exactly it should be embeddable into a GtkWidget (or
+  shall the editor be completly seperate?)
 
 Code Cleanup
 ============
