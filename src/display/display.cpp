@@ -30,10 +30,11 @@
 #include "util/util.hpp"
 #include <assert.h>
 
-SDL_Surface* Display::window       = 0;
+Size              Display::aspect_size;
+SDL_Surface*      Display::window = 0;
 std::vector<Rect> Display::cliprects;
 std::vector<Framebuffer> framebuffers;
-
+
 void
 Display::draw_line(const Line& line, const Color& color)
 {
@@ -211,15 +212,27 @@ Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
 }
 
 int
-Display::get_width()
+Display::get_window_width()
 {
   return window->w;
 }
 
 int
-Display::get_height()
+Display::get_window_height()
 {
   return window->h;
+}
+
+int
+Display::get_width()
+{
+  return Display::aspect_size.width;
+}
+
+int
+Display::get_height()
+{
+  return Display::aspect_size.height;
 }
 
 void
@@ -268,9 +281,11 @@ Display::init()
   //glOrtho(0.0, window->w, window->h, 0.0, -1000.0, 1000.0);
   
   // glOrtho(0.0, 800, 0.0, 600.0, 1000.0, -1000.0); // proper right-hand CO
+  Display::aspect_size = Size(config.get_int("aspect-width"), 
+                              config.get_int("aspect-height"));
+
   glOrtho(0.0, 
-          config.get_int("aspect-width"), 
-          config.get_int("aspect-height"),
+          aspect_size.width, aspect_size.height,
           0.0, 1000.0, -1000.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -486,22 +501,22 @@ Display::set_gamma(float r, float g, float b)
 void
 Display::save_screenshot(const std::string& filename)
 {
-  int len = get_width() * get_height() * 3;
+  int len = get_window_width() * get_window_height() * 3;
   GLbyte* pixels = new GLbyte[len];
-  glReadPixels(0, 0, get_width(), get_height(), GL_RGB, GL_UNSIGNED_BYTE, pixels);
+  glReadPixels(0, 0, get_window_width(), get_window_height(), GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
   if (0)
     {
-      int pitch = get_width() * 3;
+      int pitch = get_window_width() * 3;
 
       // save to ppm
       std::ofstream out(filename.c_str());
       out << "P6\n"
           << "# Windstille Screenshot\n"
-          << get_width() << " " << get_height() << "\n"
+          << get_window_width() << " " << get_window_height() << "\n"
           << "255\n";
       
-      for(int y = get_height()-1; y >= 0; --y)
+      for(int y = get_window_height()-1; y >= 0; --y)
         out.write(reinterpret_cast<const char*>(pixels + y*pitch), pitch);
 
       out.close();
@@ -509,10 +524,10 @@ Display::save_screenshot(const std::string& filename)
   else if (0) // BMP saving
     {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, get_width(), get_height(), 24, get_width()*3,
+      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, get_window_width(), get_window_height(), 24, get_window_width()*3,
                                                       0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
 #else
-      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, get_width(), get_height(), 24, get_width()*3,
+      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, get_window_width(), get_window_height(), 24, get_window_width()*3,
                                                       0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 #endif
 
@@ -530,7 +545,7 @@ Display::save_screenshot(const std::string& filename)
         }
       else
         {
-          int pitch   = get_width() * 3;
+          int pitch   = get_window_width() * 3;
           png_structp png_ptr;
           png_infop   info_ptr;
 
@@ -540,7 +555,7 @@ Display::save_screenshot(const std::string& filename)
           png_init_io(png_ptr, fp);
 
           png_set_IHDR(png_ptr, info_ptr, 
-                       get_width(), get_height(), 8 /* bitdepth */,
+                       get_window_width(), get_window_height(), 8 /* bitdepth */,
                        PNG_COLOR_TYPE_RGB,
                        PNG_INTERLACE_NONE, 
                        PNG_COMPRESSION_TYPE_BASE, 
@@ -549,9 +564,9 @@ Display::save_screenshot(const std::string& filename)
           png_set_compression_level(png_ptr, 6);
           png_write_info(png_ptr, info_ptr);
 
-          png_uint_32 height = get_height();
+          png_uint_32 height = get_window_height();
 
-		  png_bytep* row_pointers = new png_bytep[height];
+          png_bytep* row_pointers = new png_bytep[height];
    
           // generate row pointers
           for (unsigned int k = 0; k < height; k++)
@@ -563,8 +578,8 @@ Display::save_screenshot(const std::string& filename)
 
           fclose(fp);
 
-		  delete[] pixels;
-		  delete[] row_pointers;
+          delete[] pixels;
+          delete[] row_pointers;
         }
     }
 }

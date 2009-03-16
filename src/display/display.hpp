@@ -21,6 +21,7 @@
 
 #include <vector>
 #include <SDL.h>
+#include "math/size.hpp"
 #include "math/rect.hpp"
 #include "math/line.hpp"
 #include "color.hpp"
@@ -29,6 +30,7 @@
 class Display
 {
 private:
+  static Size aspect_size;
   static std::vector<Rect> cliprects;
   static SDL_Surface* window;
 
@@ -53,6 +55,9 @@ public:
 
   static int  get_width();
   static int  get_height();
+
+  static int  get_window_width();
+  static int  get_window_height();
 
   static void set_fullscreen(bool fullscreen);
 
