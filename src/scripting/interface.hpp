@@ -24,6 +24,29 @@
 #include <squirrel.h>
 #endif
 
+/*
+  List of sq_setparamscheck() types:
+
+  '|' can be used as 'or' to accept multiple type
+
+  'o' null
+  'i' integer
+  'f' float
+  'n' integer or float
+  's' string
+  't' table
+  'a' array
+  'u' userdata
+  'c' closure and nativeclosure
+  'g' generator
+  'p' userpointer
+  'v' thread
+  'x' instance(class instance)
+  'y' class
+  'b' bool
+  '.' any type
+*/
+
 namespace Scripting {
 
 void set_sector(const std::string& filename);
@@ -89,8 +112,9 @@ void  set_game_speed(float v);
 //Waits the specified time in seconds.
 void wait(HSQUIRRELVM vm, float time) __suspend;
 
-SQInteger display(HSQUIRRELVM) __custom;
-SQInteger println(HSQUIRRELVM) __custom;
+SQInteger display(HSQUIRRELVM) __custom("t.");
+SQInteger println(HSQUIRRELVM) __custom("t.");
+SQInteger print_stack(HSQUIRRELVM) __custom("t");
 
 void set_console_font(const std::string& font, int size);
 void set_gamma(float g);
@@ -107,6 +131,8 @@ void internal_fadein(float time);
 int  render_mask_get();
 void render_mask_set(int mask);
 
+SQInteger lisp2string(HSQUIRRELVM v) __custom("tt|a");
+
 /**
  * Spawn object. Parameters:
  *    name:    string with name of object
@@ -114,10 +140,10 @@ void render_mask_set(int mask);
  *
  * Example: spawn_object("scriptable-object", {name="blup", pos=[350,370], sprite="images/arrow.sprite"});
  */
-SQInteger spawn_object(HSQUIRRELVM v) __custom;
+SQInteger spawn_object(HSQUIRRELVM v) __custom("tst");
 
 void spawn_script(const std::string& filename);
-SQInteger spawn_function(HSQUIRRELVM v) __custom;
+SQInteger spawn_function(HSQUIRRELVM v) __custom("c");
 
 } // namespace Scripting
 

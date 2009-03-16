@@ -17,7 +17,7 @@
 */
 
 #ifndef SCRIPTING_API
-#  define __custom
+#  define __custom(x)
 #  define __suspend
 #endif
 

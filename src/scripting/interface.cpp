@@ -165,7 +165,7 @@ int speech_show(const std::string& text, float x, float y, float r, float g, flo
   return SpeechManager::current()->add(text, Vector2f(x, y), Color(r, g, b));
 }
 
-void wait_for_speech(HSQUIRRELVM vm, int i) __suspend
+void wait_for_speech(HSQUIRRELVM vm, int i)
 {
   ScriptManager::WakeupData data;
   data.type = ScriptManager::SPEECH_DONE;
@@ -266,15 +266,26 @@ void wait_for_conversation(HSQUIRRELVM vm)
     }
 }
 
-SQInteger display(HSQUIRRELVM v) __custom
+SQInteger display(HSQUIRRELVM v)
 {
   console << squirrel2string(v, -1);
+  sq_pop(v, 1);
   return 0;
 }
 
-SQInteger println(HSQUIRRELVM v) __custom
+SQInteger println(HSQUIRRELVM v)
 {
   console << squirrel2string(v, -1) << std::endl;
+  sq_pop(v, 1);
+  return 0;
+}
+
+SQInteger print_stack(HSQUIRRELVM v) __custom("")
+{
+  SQInteger top = sq_gettop(v);
+  for(int i = 1; i <= top; ++i)
+    console << i << " " << squirrel2string(v, i) << std::endl;
+
   return 0;
 }
 
@@ -350,18 +361,18 @@ SQInteger spawn_object(HSQUIRRELVM v)
   using namespace lisp;
   
   const char* objname;
-  sq_getstring(v, 2, &objname);
+  sq_getstring(v, -2, &objname);
 
   // FIXME: Do we memleak here?
   std::vector<lisp::Lisp*> entries;
   entries.push_back(new Lisp(Lisp::TYPE_SYMBOL, objname));
-  table_to_lisp(v, 3, entries);
+  table_to_lisp(v, -1, entries);
 
   try 
     {
       SExprFileReader reader(new Lisp(entries), true);
       Sector::current()->add_object(reader);
-    } 
+    }
   catch (std::exception& e) 
     {
       std::cerr << "Error parsing object in spawn_object: " << e.what()
@@ -376,12 +387,31 @@ void spawn_script(const std::string& filename)
   ScriptManager::current()->run_script_file(Sector::current()->get_directory() + filename);
 }
 
-SQInteger spawn_function(HSQUIRRELVM v) __custom
+SQInteger spawn_function(HSQUIRRELVM v)
 {
   boost::shared_ptr<SquirrelThread> thread = ScriptManager::current()->create_script(v, false);
   thread->load(v, -1);
   sq_pop(v, 1);
 
+  return 0;
+}
+
+SQInteger lisp2string(HSQUIRRELVM v) 
+{
+  std::vector<lisp::Lisp*> entries;
+
+  entries.push_back(new lisp::Lisp(lisp::Lisp::TYPE_SYMBOL, "TABLE"));
+  table_to_lisp(v, -1, entries);
+
+  for(std::vector<lisp::Lisp*>::iterator i = entries.begin(); i != entries.end(); ++i)
+    {
+      console << (i - entries.begin()) << ": ";
+      std::stringstream str;
+      (*i)->print(str);
+      console << str.str();
+      console << std::endl;
+    }
+   
   return 0;
 }
 

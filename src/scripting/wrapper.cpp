@@ -1336,6 +1336,11 @@ static SQInteger println_wrapper(HSQUIRRELVM vm)
   return Scripting::println(vm);
 }
 
+static SQInteger print_stack_wrapper(HSQUIRRELVM vm)
+{
+  return Scripting::print_stack(vm);
+}
+
 static SQInteger set_console_font_wrapper(HSQUIRRELVM vm)
 {
   const SQChar* arg0;
@@ -1580,6 +1585,11 @@ static SQInteger render_mask_set_wrapper(HSQUIRRELVM vm)
 
 }
 
+static SQInteger lisp2string_wrapper(HSQUIRRELVM vm)
+{
+  return Scripting::lisp2string(vm);
+}
+
 static SQInteger spawn_object_wrapper(HSQUIRRELVM vm)
 {
   return Scripting::spawn_object(vm);
@@ -1774,7 +1784,7 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "stop_music", -1);
   sq_newclosure(v, &stop_music_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'stop_music'");
   }
@@ -1830,7 +1840,7 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "camera_add_point", -1);
   sq_newclosure(v, &camera_add_point_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n n n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'camera_add_point'");
   }
@@ -1844,21 +1854,21 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "camera_set_pos", -1);
   sq_newclosure(v, &camera_set_pos_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'camera_set_pos'");
   }
 
   sq_pushstring(v, "camera_set_zoom", -1);
   sq_newclosure(v, &camera_set_zoom_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'camera_set_zoom'");
   }
 
   sq_pushstring(v, "speech_show", -1);
   sq_newclosure(v, &speech_show_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s f|i f|i f|i f|i f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t s n n n n n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'speech_show'");
   }
@@ -2005,28 +2015,37 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "set_game_speed", -1);
   sq_newclosure(v, &set_game_speed_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_game_speed'");
   }
 
   sq_pushstring(v, "wait", -1);
   sq_newclosure(v, &wait_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'wait'");
   }
 
   sq_pushstring(v, "display", -1);
   sq_newclosure(v, &display_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "t.");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'display'");
   }
 
   sq_pushstring(v, "println", -1);
   sq_newclosure(v, &println_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "t.");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'println'");
+  }
+
+  sq_pushstring(v, "print_stack", -1);
+  sq_newclosure(v, &print_stack_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "t");
+  if(SQ_FAILED(sq_createslot(v, -3))) {
+    throw SquirrelError(v, "Couldn't register function 'print_stack'");
   }
 
   sq_pushstring(v, "set_console_font", -1);
@@ -2038,14 +2057,14 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "set_gamma", -1);
   sq_newclosure(v, &set_gamma_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_gamma'");
   }
 
   sq_pushstring(v, "set_gamma_rgb", -1);
   sq_newclosure(v, &set_gamma_rgb_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n n n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_gamma_rgb'");
   }
@@ -2073,14 +2092,14 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "internal_fadeout_rgb", -1);
   sq_newclosure(v, &internal_fadeout_rgb_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i f|i f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n n n n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'internal_fadeout_rgb'");
   }
 
   sq_pushstring(v, "internal_fadein", -1);
   sq_newclosure(v, &internal_fadein_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'internal_fadein'");
   }
@@ -2099,8 +2118,16 @@ void register_windstille_wrapper(HSQUIRRELVM v)
     throw SquirrelError(v, "Couldn't register function 'render_mask_set'");
   }
 
+  sq_pushstring(v, "lisp2string", -1);
+  sq_newclosure(v, &lisp2string_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "tt|a");
+  if(SQ_FAILED(sq_createslot(v, -3))) {
+    throw SquirrelError(v, "Couldn't register function 'lisp2string'");
+  }
+
   sq_pushstring(v, "spawn_object", -1);
   sq_newclosure(v, &spawn_object_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "tst");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'spawn_object'");
   }
@@ -2114,6 +2141,7 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "spawn_function", -1);
   sq_newclosure(v, &spawn_function_wrapper, 0);
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "c");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'spawn_function'");
   }
@@ -2189,7 +2217,7 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "set_pos", -1);
   sq_newclosure(v, &TestObject_set_pos_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'set_pos'");
   }
@@ -2250,14 +2278,14 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   }
   sq_pushstring(v, "move_to", -1);
   sq_newclosure(v, &ScriptableObject_move_to_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i f|i f|i f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n n n n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'move_to'");
   }
 
   sq_pushstring(v, "start_flash", -1);
   sq_newclosure(v, &ScriptableObject_start_flash_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t f|i ");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t n ");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'start_flash'");
   }
