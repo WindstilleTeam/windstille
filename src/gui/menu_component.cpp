@@ -31,7 +31,7 @@ namespace gui {
 MenuComponent::MenuComponent(const Rectf& rect, bool allow_cancel_, Component* parent)
   : Component(rect, parent),
     current_item(0),
-    font(Fonts::vera16),
+    font(Fonts::vera20),
     allow_cancel(allow_cancel_),
     scroll_mode(false),
     scroll_offset(0),

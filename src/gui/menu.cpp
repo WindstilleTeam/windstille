@@ -39,7 +39,6 @@ Menu::Menu(const std::string& name, const Rectf& rect, bool allow_cancel, Compon
 
   group.reset(new GroupComponent(rect, name, parent));
   menu.reset(new MenuComponent(group->get_child_rect(), allow_cancel, group.get()));
-
   menu->set_font(Fonts::vera20);
 }
 

@@ -22,18 +22,14 @@
 
 TTFFont* Fonts::ttffont = 0;
 TTFFont* Fonts::vera12  = 0;
-TTFFont* Fonts::vera16  = 0;
 TTFFont* Fonts::vera20  = 0;
-TTFFont* Fonts::vera28  = 0;
 
 void
 Fonts::init()
 {
-  ttffont = new TTFFont("fonts/VeraMono.ttf", 12, BorderFontEffect(1, true));
+  ttffont = new TTFFont("fonts/VeraMono.ttf", 14, BorderFontEffect(1, true));
   vera12  = new TTFFont("fonts/Vera.ttf",     12, BorderFontEffect(2, true));
-  vera16  = new TTFFont("fonts/Vera.ttf",     16, BorderFontEffect(2, true));
   vera20  = new TTFFont("fonts/Vera.ttf",     20, BorderFontEffect(2, true));
-  vera28  = new TTFFont("fonts/Vera.ttf",     28, BorderFontEffect(2, true));
 }
 
 void
@@ -41,9 +37,7 @@ Fonts::deinit()
 {
   delete ttffont;
   delete vera12;
-  delete vera16;
   delete vera20;
-  delete vera28;
 }
 
 /* EOF */

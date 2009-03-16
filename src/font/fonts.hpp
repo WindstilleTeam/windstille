@@ -25,9 +25,7 @@ class Fonts {
 public:
   static TTFFont* ttffont;
   static TTFFont* vera12;
-  static TTFFont* vera16;
   static TTFFont* vera20;
-  static TTFFont* vera28;
 
   static void init();
   static void deinit();
