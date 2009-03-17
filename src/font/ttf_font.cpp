@@ -25,14 +25,14 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
-#include "display/opengl_state.hpp"
-#include "physfs/physfs_stream.hpp"
-#include "display/texture_manager.hpp"
 #include "display/blitter.hpp"
-#include "ttf_font.hpp"
+#include "display/opengl_state.hpp"
+#include "display/texture_manager.hpp"
 #include "font_effect.hpp"
+#include "physfs/physfs_stream.hpp"
+#include "ttf_font.hpp"
 #include "util/util.hpp"
-
+
 TTFCharacter::TTFCharacter(const Rect& pos_,
                            const Rectf& uv_, 
                            int advance_)
@@ -41,7 +41,7 @@ TTFCharacter::TTFCharacter(const Rect& pos_,
     advance(advance_)
 {
 }
-
+
 class TTFFontImpl
 {
 public:
@@ -58,9 +58,9 @@ public:
   /** OpenGL Texture which holds all the characters */
   Texture texture;
 };
-
+
 FT_Library TTFFontImpl::library;
-
+
 TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effect)
   : impl(new TTFFontImpl())
 {
@@ -161,7 +161,6 @@ TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effec
 
 TTFFont::~TTFFont()
 {
-  delete impl;
 }
 
 const TTFCharacter&
@@ -241,7 +240,7 @@ TTFFont::get_texture() const
 {
   return impl->texture;
 }
-
+
 void
 TTFFont::init()
 {
@@ -257,5 +256,5 @@ TTFFont::deinit()
 {
   FT_Done_FreeType( TTFFontImpl::library );
 }
-
+
 /* EOF */

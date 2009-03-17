@@ -19,16 +19,19 @@
 #ifndef HEADER_WINDSTILLE_FONT_TTF_FONT_HPP
 #define HEADER_WINDSTILLE_FONT_TTF_FONT_HPP
 
-#include <string>
 #include <GL/glew.h>
 #include <GL/gl.h>
+#include <memory>
+#include <string>
+
 #include "display/color.hpp"
+#include "display/texture.hpp"
 #include "math/rect.hpp"
 #include "no_font_effect.hpp"
-#include "display/texture.hpp"
-
+
 class FontEffect;
-
+class TTFFontImpl;
+
 class TTFCharacter
 {
 public:
@@ -46,16 +49,14 @@ public:
 
   TTFCharacter(const Rect& pos, const Rectf& uv, int advance);
 };
-
-class TTFFontImpl;
-
-/** */
+
 class TTFFont
 {
 public:
   static void init();
   static void deinit();
 
+public:
   TTFFont(const std::string& file, int size, const FontEffect& effect = NoFontEffect());
   ~TTFFont();
 
@@ -78,9 +79,9 @@ public:
   void draw_center(const Vector2f& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
 
 private:
-  TTFFontImpl* impl;
+  std::auto_ptr<TTFFontImpl> impl;
 };
-
+
 #endif
 
 /* EOF */

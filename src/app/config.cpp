@@ -72,6 +72,7 @@ Config::~Config()
     {
       delete i->second;
     }
+  config_values.clear();
 }
 
 void 

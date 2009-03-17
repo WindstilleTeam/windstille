@@ -24,7 +24,7 @@
 #include <typeinfo>
 #include <stdexcept>
 #include "lisp/writer.hpp"
-
+
 class ConfigValueBase
 {
 private:
@@ -60,7 +60,7 @@ public:
 
   virtual void write(lisp::Writer& writer) =0;
 };
-
+
 template<class T>
 class ConfigValue : public ConfigValueBase
 {
@@ -110,7 +110,7 @@ inline std::ostream& operator<<(std::ostream &o, const ConfigValueBase& value)
 {
   return value.print(o);
 }
-
+
 class Config
 {
 private:
@@ -118,6 +118,7 @@ private:
   ConfigValues config_values;
 
   void add(ConfigValueBase*);
+
 public:
   Config();
   ~Config();
@@ -162,7 +163,7 @@ public:
 
   void debug_print(std::ostream& out);
 };
-
+
 extern Config config;
 
 #endif
