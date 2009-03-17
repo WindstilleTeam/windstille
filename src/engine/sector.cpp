@@ -212,10 +212,12 @@ void Sector::update(float delta)
 
   collision_engine->update(delta);
 
-  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i) {
-    if ((*i)->is_active())
-      (*i)->update(delta);
-  }
+  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i) 
+    {
+      if ((*i)->is_active())
+        (*i)->update(delta);
+    }
+
   commit_removes();
 }
 

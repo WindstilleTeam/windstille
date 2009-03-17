@@ -37,8 +37,6 @@ class Weapon;
 class Player : public Entity
 {
 private:
-  Controller controller;
-
   Sprite3D sprite;
   std::auto_ptr<SoundSource> sound_source;
 
@@ -97,6 +95,7 @@ public:
 
   void draw(SceneContext& gc);
   void update(float delta);
+  void update(const Controller& controller, float delta);
 
   void start_listening();
   void stop_listening();
@@ -121,23 +120,23 @@ private:
    * TODO: can we generalize this mechanism? Or create a small specification
    * language for this?
    */
-  void update_ducked();
-  void update_ducking();
-  void update_listen();
-  void update_run();
-  void update_stand();
-  void update_stand_to_listen();
-  void update_turnaround();
-  void update_walk();
-  void update_walk_stand();
-  void update_jump_air();
-  void update_jump_begin();
-  void update_jump_land();
-  void update_jump_up_air();
-  void update_jump_up_begin();
-  void update_jump_up_land();
-  void update_pull_gun();
-  void update_stairs(float delta);
+  void update_ducked(const Controller& controller);
+  void update_ducking(const Controller& controller);
+  void update_listen(const Controller& controller);
+  void update_run(const Controller& controller);
+  void update_stand(const Controller& controller);
+  void update_stand_to_listen(const Controller& controller);
+  void update_turnaround(const Controller& controller);
+  void update_walk(const Controller& controller);
+  void update_walk_stand(const Controller& controller);
+  void update_jump_air(const Controller& controller);
+  void update_jump_begin(const Controller& controller);
+  void update_jump_land(const Controller& controller);
+  void update_jump_up_air(const Controller& controller);
+  void update_jump_up_begin(const Controller& controller);
+  void update_jump_up_land(const Controller& controller);
+  void update_pull_gun(const Controller& controller);
+  void update_stairs(const Controller& controller, float delta);
 
   void leave_run();
   void leave_walk();

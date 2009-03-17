@@ -289,6 +289,11 @@ GameSessionImpl::update_controller(float delta, const Controller& controller)
     {
       MenuManager::display_pause_menu();
     }
+  else
+    {
+      if (!current_gui)
+        Player::current()->update(controller, delta);
+    }
 
   if (current_gui)
     {

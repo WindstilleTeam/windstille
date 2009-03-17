@@ -138,15 +138,18 @@ Player::stop_listening()
   set_stand_to_listen(true);
 }
 
+void
+Player::update(float /*delta*/)
+{
+}
+
 void 
-Player::update(float delta)
+Player::update(const Controller& controller, float delta)
 {
   weapon->update(delta);
 
   if (laser_pointer->is_active())
     laser_pointer->update(delta);
-
-  controller = InputManager::get_controller();
 
   if (fabsf(controller.get_axis_state(X2_AXIS, false)) > 0.25f ||
       fabsf(controller.get_axis_state(Y2_AXIS, false)) > 0.25f)
@@ -168,50 +171,50 @@ Player::update(float delta)
         {
           case STAND:
           case WALK:
-            update_walk_stand();
+            update_walk_stand(controller);
             break;
           case RUN:
-            update_run();
+            update_run(controller);
             break;
           case DUCKING:
-            update_ducking();
+            update_ducking(controller);
             break;
           case DUCKED:
-            update_ducked();
+            update_ducked(controller);
             break;
           case TURNAROUND:
-            update_turnaround();
+            update_turnaround(controller);
             break;
           case STAND_TO_LISTEN:
-            update_stand_to_listen();
+            update_stand_to_listen(controller);
             break;
           case LISTEN:
-            update_listen();
+            update_listen(controller);
             break;
           case JUMP_BEGIN:
-            update_jump_begin();
+            update_jump_begin(controller);
             break;
           case JUMP_AIR:
-            update_jump_air();
+            update_jump_air(controller);
             break;
           case JUMP_LAND:
-            update_jump_land();
+            update_jump_land(controller);
             break;
           case JUMP_UP_BEGIN:
-            update_jump_up_begin();
+            update_jump_up_begin(controller);
             break;
           case JUMP_UP_AIR:
-            update_jump_up_air();
+            update_jump_up_air(controller);
             break;
           case JUMP_UP_LAND:
-            update_jump_up_land();
+            update_jump_up_land(controller);
             break;
           case PULL_GUN:
-            update_pull_gun();
+            update_pull_gun(controller);
             break;
           case STAIRS_DOWN:
           case STAIRS_UP:
-            update_stairs(delta);
+            update_stairs(controller, delta);
             break;
           default:
             assert(false);
@@ -238,7 +241,7 @@ Player::set_stand()
 }
 
 void
-Player::update_walk_stand()
+Player::update_walk_stand(const Controller& controller)
 {
   if (controller.get_axis_state(Y_AXIS) > 0.5f)
     {
@@ -292,13 +295,13 @@ Player::update_walk_stand()
     }
 
   if (state == STAND)
-    update_stand();
+    update_stand(controller);
   else
-    update_walk();
+    update_walk(controller);
 }
 
 void
-Player::update_stairs(float delta)
+Player::update_stairs(const Controller& controller, float delta)
 {
   assert(contact);
 
@@ -347,7 +350,7 @@ Player::find_useable_entity()
 
 
 void
-Player::update_stand()
+Player::update_stand(const Controller& controller)
 { 
   if (controller.button_was_pressed(USE_BUTTON))
     {
@@ -412,7 +415,7 @@ Player::set_walk(Direction direction)
 }
 
 void
-Player::update_walk()
+Player::update_walk(const Controller& controller)
 {
   if (fabsf(controller.get_axis_state(X_AXIS)) < 0.5f) // Hardcoded DEAD_ZONE, somewhat evil 
     {
@@ -454,7 +457,7 @@ Player::set_ducking()
 }
 
 void
-Player::update_ducking()
+Player::update_ducking(const Controller& controller)
 {
   // ducking
   if (sprite.switched_actions()) 
@@ -487,7 +490,7 @@ Player::set_ducked()
 }
 
 void
-Player::update_ducked()
+Player::update_ducked(const Controller& controller)
 {
   if (!controller.get_axis_state(Y_AXIS) > 0.5f)
     {
@@ -508,7 +511,7 @@ Player::set_turnaround()
 }
 
 void
-Player::update_turnaround()
+Player::update_turnaround(const Controller& controller)
 {
   if (sprite.switched_actions()) 
     {
@@ -546,7 +549,7 @@ Player::set_stand_to_listen(bool backwards)
 }
 
 void
-Player::update_stand_to_listen()
+Player::update_stand_to_listen(const Controller& /*controller*/)
 {
   if (sprite.switched_actions()) 
     {
@@ -565,7 +568,7 @@ Player::set_listen()
 }
 
 void
-Player::update_listen()
+Player::update_listen(const Controller& /*controller*/)
 {
   // nothing
 }
@@ -587,7 +590,7 @@ Player::set_run()
 }
 
 void
-Player::update_run()
+Player::update_run(const Controller& controller)
 {
   if (!controller.get_button_state(RUN_BUTTON)) 
     {
@@ -634,7 +637,7 @@ Player::set_jump_begin()
 }
 
 void
-Player::update_jump_begin()
+Player::update_jump_begin(const Controller& /*controller*/)
 {
   if (sprite.switched_actions()) 
     {
@@ -663,7 +666,7 @@ Player::set_jump_air()
 }
 
 void
-Player::update_jump_air()
+Player::update_jump_air(const Controller& /*controller*/)
 {
   if (sprite.switched_actions()) 
     {
@@ -680,7 +683,7 @@ Player::set_jump_land()
 }
 
 void
-Player::update_jump_land()
+Player::update_jump_land(const Controller& /*controller*/)
 {
   if (sprite.switched_actions()) 
     {
@@ -697,7 +700,7 @@ Player::set_jump_up_begin()
 }
 
 void
-Player::update_jump_up_begin()
+Player::update_jump_up_begin(const Controller& /*controller*/)
 {
   if (sprite.switched_actions()) 
     {
@@ -715,7 +718,7 @@ Player::set_jump_up_air()
 }
 
 void
-Player::update_jump_up_air()
+Player::update_jump_up_air(const Controller& /*controller*/)
 {
   if (sprite.switched_actions()) 
     {
@@ -732,7 +735,7 @@ Player::set_jump_up_land()
 }
 
 void
-Player::update_jump_up_land()
+Player::update_jump_up_land(const Controller& /*controller*/)
 {
   if (sprite.switched_actions()) 
     {
@@ -742,7 +745,7 @@ Player::update_jump_up_land()
 }
 
 void
-Player::update_pull_gun()
+Player::update_pull_gun(const Controller& controller)
 {
   if (!controller.get_button_state(AIM_BUTTON))
     {
