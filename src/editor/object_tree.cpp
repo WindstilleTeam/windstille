@@ -71,7 +71,6 @@ ObjectTree::ObjectTree()
   treeview.expand_all();
 
   add(treeview);
-  treeview.show();
 }
 
 ObjectTree::~ObjectTree()

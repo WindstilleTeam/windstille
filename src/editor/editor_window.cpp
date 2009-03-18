@@ -17,6 +17,7 @@
 */
 
 #include <iostream>
+#include <gtkmm/filechooserdialog.h>
 #include <gtkmm/actiongroup.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toolbar.h>
@@ -36,6 +37,7 @@ EditorWindow::EditorWindow()
     "      <menuitem action='New'/>"
     "      <menuitem action='Open'/>"
     "      <menuitem action='Save'/>"
+    "      <menuitem action='Close'/>"
     "      <separator/>"
     "      <menuitem action='Quit'/>"
     "    </menu>"
@@ -81,9 +83,14 @@ EditorWindow::EditorWindow()
   action_group = Gtk::ActionGroup::create();
 
   action_group->add(Gtk::Action::create("MenuFile",    "_File"));
-  action_group->add(Gtk::Action::create("New",         Gtk::Stock::NEW));
-  action_group->add(Gtk::Action::create("Open",        Gtk::Stock::OPEN));
-  action_group->add(Gtk::Action::create("Save",        Gtk::Stock::SAVE));
+  action_group->add(Gtk::Action::create("New",         Gtk::Stock::NEW),
+                    sigc::mem_fun(*this, &EditorWindow::on_new));
+  action_group->add(Gtk::Action::create("Open",        Gtk::Stock::OPEN),
+                    sigc::mem_fun(*this, &EditorWindow::on_open));
+  action_group->add(Gtk::Action::create("Save",        Gtk::Stock::SAVE),
+                    sigc::mem_fun(*this, &EditorWindow::on_save));
+  action_group->add(Gtk::Action::create("Close",       Gtk::Stock::CLOSE),
+                    sigc::mem_fun(*this, &EditorWindow::on_close));
   action_group->add(Gtk::Action::create("Quit",        Gtk::Stock::QUIT),
                     sigc::mem_fun(*this, &EditorWindow::on_quit));
 
@@ -117,35 +124,25 @@ EditorWindow::EditorWindow()
   vbox.pack_start(*ui_manager->get_widget("/MenuBar"), Gtk::PACK_SHRINK);
   vbox.pack_start(*ui_manager->get_widget("/ToolBar"), Gtk::PACK_SHRINK);
   vbox.add(hbox);
-  vbox.add(status);
+  vbox.pack_end(status, Gtk::PACK_SHRINK);
 
   // Hbox
   hbox.pack_start(*ui_manager->get_widget("/ToolBox"), Gtk::PACK_SHRINK);
   dynamic_cast<Gtk::Toolbar*>(ui_manager->get_widget("/ToolBox"))->set_orientation(Gtk::ORIENTATION_VERTICAL);
   hbox.add(hpaned);
 
-  hpaned.add(text_view);
+  notebook.set_size_request(1024, 640);
+
+  vpaned.set_size_request(300, -1);
+
+  hpaned.add(notebook);
   hpaned.add(vpaned);
   vpaned.add1(object_tree);
+  
   vpaned.add2(object_tree2);
 
   // Window
   add(vbox);
-
-  text_view.set_size_request(800, 600);
-  //object_tree.set_size_request(300, 500);
-
-  // Show everything
-  text_view.show();
-  object_tree.show();
-  object_tree2.show();
-  status.show();
-
-  hpaned.show();
-  vpaned.show();
-
-  hbox.show();
-  vbox.show();
 }
 
 EditorWindow::~EditorWindow()
@@ -163,6 +160,83 @@ void
 EditorWindow::on_quit()
 {
   hide();
+}
+
+void
+EditorWindow::on_new()
+{
+  std::cout << "on_new" << std::endl;
+  // FIXME: Memleaking placeholder
+  Gtk::TextView* page = new Gtk::TextView();
+  //page->set_text("Hello World");
+  notebook.append_page(*page, Glib::ustring::compose("Sector %1", notebook.get_n_pages()));
+  page->show();
+}
+
+void
+EditorWindow::on_open()
+{
+  Gtk::FileChooserDialog dialog("Open File",
+                                Gtk::FILE_CHOOSER_ACTION_OPEN);
+  dialog.set_transient_for(*this);
+
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::OPEN,   Gtk::RESPONSE_OK);
+
+  switch(dialog.run())
+    {
+      case(Gtk::RESPONSE_OK):
+        {
+          std::cout << "Select clicked." << std::endl;
+          std::cout << "Folder selected: " << dialog.get_filename()
+                    << std::endl;
+          break;
+        }
+
+      case(Gtk::RESPONSE_CANCEL):
+        {
+          std::cout << "Cancel clicked." << std::endl;
+          break;
+        }
+    }
+}
+
+void
+EditorWindow::on_save()
+{
+  Gtk::FileChooserDialog dialog("Save File",
+                                Gtk::FILE_CHOOSER_ACTION_SAVE);
+  dialog.set_transient_for(*this);
+
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
+
+  switch(dialog.run())
+    {
+      case(Gtk::RESPONSE_OK):
+        {
+          std::cout << "Select clicked." << std::endl;
+          std::cout << "Folder selected: " << dialog.get_filename()
+                    << std::endl;
+          break;
+        }
+
+      case(Gtk::RESPONSE_CANCEL):
+        {
+          std::cout << "Cancel clicked." << std::endl;
+          break;
+        }
+    }
+}
+
+void
+EditorWindow::on_close()
+{
+  int page = notebook.get_current_page();
+  if (page != -1)
+    {
+      notebook.remove_page(page);
+    }
 }
 
 /* EOF */

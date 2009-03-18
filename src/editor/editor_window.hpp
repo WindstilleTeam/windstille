@@ -24,6 +24,7 @@
 #include <gtkmm/textview.h>
 #include <gtkmm/paned.h>
 #include <gtkmm/window.h>
+#include <gtkmm/notebook.h>
 
 #include "object_tree.hpp"
 
@@ -36,7 +37,7 @@ private:
   Gtk::VPaned vpaned;
   Gtk::Statusbar status;
   
-  Gtk::TextView text_view;
+  Gtk::Notebook notebook;
   ObjectTree    object_tree;
   ObjectTree    object_tree2;
 
@@ -48,6 +49,11 @@ public:
   virtual ~EditorWindow();
 
 protected:
+  void on_new();
+  void on_open();
+  void on_save();
+  void on_close();
+
   void on_about_clicked();
   void on_quit();
 
