@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Feb 14 18:05:56 2009 -->
+<!--Generated with glade3 3.4.5 on Wed Mar 18 03:01:47 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="window1">
     <property name="default_width">1024</property>
@@ -188,16 +188,185 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <widget class="GtkTextView" id="textview2">
+                  <widget class="GtkNotebook" id="notebook2">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">Add Object Selector here</property>
+                    <child>
+                      <widget class="GtkTextView" id="textview4">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">Windstille Informations
+=======================
+
+Windstille is a classic 2d jump'n shoot game in which the player will
+be placed in a foreign alien world and has to find its way back into
+safety. Windstille is currently available for GNU/Linux and Windows.
+Its webpage at which one might find new versions, source code,
+artworks and more informations is located at:
+
+ * http://windstille.berlios.de/
+
+The latest development version can be obtained by:
+
+ $ svn co svn://svn.berlios.de/windstille/trunk/windstille
+
+For informations on how to compile and run Windstille see the file
+INSTALL. Windstille makes use of OpenGL so you will need working
+hardware 3d support.
+
+Windstille is covered under the GNU GPL, which means that you can copy
+and even modify it pretty much as you like, as long as you keep the
+copyright headers in place and distribute the source too if you
+distribute binaries, see the file COPYING for details.
+
+
+# EOF #
+</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label17">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">page 1</property>
+                      </widget>
+                      <packing>
+                        <property name="type">tab</property>
+                        <property name="tab_fill">False</property>
+                      </packing>
+                    </child>
                   </widget>
                   <packing>
                     <property name="resize">False</property>
+                    <property name="shrink">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkVBox" id="vbox2">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkExpander" id="Object Selector">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <widget class="GtkTextView" id="textview2">
+                            <property name="height_request">300</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+Add Object Selector here
+</property>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="Objects">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Palette</property>
+                          </widget>
+                          <packing>
+                            <property name="type">label_item</property>
+                          </packing>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkExpander" id="expander1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <widget class="GtkTextView" id="textview1">
+                            <property name="height_request">200</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">Add Minimap here
+Add Minimap here
+Add Minimap here
+Add Minimap here
+Add Minimap here
+Add Minimap here
+</property>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label1">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Minimap</property>
+                          </widget>
+                          <packing>
+                            <property name="type">label_item</property>
+                          </packing>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkExpander" id="expander2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <widget class="GtkScrolledWindow" id="scrolledwindow2">
+                            <property name="height_request">300</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                            <child>
+                              <widget class="GtkTreeView" id="treeview1">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                              </widget>
+                            </child>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label2">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Objects</property>
+                          </widget>
+                          <packing>
+                            <property name="type">label_item</property>
+                          </packing>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="resize">True</property>
                     <property name="shrink">True</property>
                   </packing>
                 </child>

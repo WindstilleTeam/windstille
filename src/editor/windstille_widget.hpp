@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 #include <gtkglmm.h>
 #include <gtkmm/gl/widget.h>
 
+/** OpenGL drawing area into which the Windstille game will be
+    embedded */
 class WindstilleWidget 
   : public Gtk::DrawingArea,
     public Gtk::GL::Widget<WindstilleWidget>
