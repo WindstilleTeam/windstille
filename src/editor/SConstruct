@@ -9,7 +9,9 @@ env.ParseConfig('Magick++-config --libs --cppflags')
 env.ParseConfig('pkg-config --cflags --libs libcurl')
 env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4 libglademm-2.4 gtkglextmm-1.2')
 
-env.Program('editor', ['editor.cpp',
-                       'windstille_widget.cpp'])
+env.Program('editor', ['main.cpp',
+                       'object_tree.cpp',
+                       'about_window.cpp',
+                       'editor_window.cpp'])
 
 # EOF #
