@@ -19,10 +19,13 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 #define HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 
+#include <vector>
 #include <iostream>
 #include <gtkglmm.h>
 #include <gdkmm/dragcontext.h>
 #include <gtkmm/gl/widget.h>
+
+#include "math/vector2f.hpp"
 
 /** OpenGL drawing area into which the Windstille game will be
     embedded */
@@ -31,8 +34,8 @@ class WindstilleWidget
     public Gtk::GL::Widget<WindstilleWidget>
 {
 private:
-    
-
+  std::vector<Vector2f> objects;
+  
 public:
   WindstilleWidget();
   virtual ~WindstilleWidget();
@@ -50,6 +53,7 @@ public:
   virtual bool key_press(GdkEventKey* event);
   virtual bool key_release(GdkEventKey* event);
 
+  // Drag&Drop
   virtual void on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context);
   virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>&, int x, int y,
                                      const Gtk::SelectionData& data, guint info, guint time);

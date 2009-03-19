@@ -57,11 +57,13 @@ Sector::Sector(const std::string& arg_filename)
   : filename(arg_filename),
     player(0)    
 { 
+  current_ = this;
+
   if (debug) std::cout << "Creating new Sector" << std::endl;
+
   collision_engine = std::auto_ptr<CollisionEngine>(new CollisionEngine());
   navigation_graph = std::auto_ptr<NavigationGraph>(new NavigationGraph());
 
-  current_ = this;
   interactive_tilemap = 0;
   interactivebackground_tilemap = 0;
 
@@ -73,10 +75,9 @@ Sector::Sector(const std::string& arg_filename)
   collision_engine->add(new CollisionObject(interactive_tilemap));
 
   // Spawn the Player
-  if(!player) {
-    player = new Player();
-    add(player);
-  }
+  player = new Player();
+  add(player);
+
   player->set_pos(Vector2f(300,200));
 }
 

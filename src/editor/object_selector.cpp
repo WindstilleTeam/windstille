@@ -80,7 +80,8 @@ ObjectSelector::~ObjectSelector()
 void
 ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 {
-  context->set_icon(Gdk::Pixbuf::create_from_file("icon.png"), 0, 0);
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file("icon.png");
+  context->set_icon(pixbuf, pixbuf->get_width()/2, pixbuf->get_height()/2);
 }
 
 void

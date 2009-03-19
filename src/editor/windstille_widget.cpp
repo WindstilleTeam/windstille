@@ -138,27 +138,32 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (!glwindow->gl_begin(get_gl_context()))
-    return false;
-
-  //std::cout << "Draw" << std::endl;
-  {
-    glBegin(GL_QUADS);
-    glVertex2f(150, 100);
-    glVertex2f(200, 100);
-    glVertex2f(200, 200);
-    glVertex2f(100, 200);
-    glEnd();
-  }
-
-  // Swap buffers.
-  if (glwindow->is_double_buffered())
-    glwindow->swap_buffers();
+    {
+      return false;
+    }
   else
-    glFlush();
+    {
+      //std::cout << "Draw" << std::endl;
+      glBegin(GL_QUADS);
+      for(std::vector<Vector2f>::iterator i = objects.begin(); i != objects.end(); ++i)
+        {
+          glVertex2f(i->x - 50, i->y - 50);
+          glVertex2f(i->x + 50, i->y - 50);
+          glVertex2f(i->x + 50, i->y + 50);
+          glVertex2f(i->x - 50, i->y + 50);
+        }
+      glEnd();
 
-  glwindow->gl_end();
+      // Swap buffers.
+      if (glwindow->is_double_buffered())
+        glwindow->swap_buffers();
+      else
+        glFlush();
 
-  return true;
+      glwindow->gl_end();
+
+      return true;
+    }
 }
 
 bool
@@ -231,6 +236,8 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
 {
   std::cout << "WindstilleWidget: on_drag_data_received: "
             << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
+
+  objects.push_back(Vector2f(x, y));
 }
 
 void
