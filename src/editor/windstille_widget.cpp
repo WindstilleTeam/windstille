@@ -89,9 +89,14 @@ WindstilleWidget::on_realize()
 
   if (glwindow->gl_begin(get_gl_context()))
     {
-      //Framebuffer::init();
-      //Framebuffer::reshape(Size(get_width(), get_height()));
+      glViewport(0, 0, get_width(), get_height());
+      glMatrixMode(GL_PROJECTION);
+      glLoadIdentity();
+      glOrtho(0.0, get_width(), get_height(), 0.0, 1000.0, -1000.0);
 
+      glMatrixMode(GL_MODELVIEW);
+      glLoadIdentity();
+  
       glwindow->gl_end();
     }
 }
@@ -102,15 +107,25 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* event)
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   // *** OpenGL BEGIN ***
-  if (glwindow->gl_begin(get_gl_context()))
-    return false;
+  if (!glwindow->gl_begin(get_gl_context()))
+    {
+      return false;
+    }
+  else
+    {
+      glViewport(0, 0, get_width(), get_height());
+      glMatrixMode(GL_PROJECTION);
+      glLoadIdentity();
+      glOrtho(0.0, get_width(), get_height(), 0.0, 1000.0, -1000.0);
 
-  //Framebuffer::reshape(Size(get_width(), get_height()));
+      glMatrixMode(GL_MODELVIEW);
+      glLoadIdentity();
+  
 
-  glwindow->gl_end();
-  // *** OpenGL END ***
+      glwindow->gl_end();
 
-  return true;
+      return true;
+    }
 }
 
 bool
@@ -121,7 +136,15 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
   if (!glwindow->gl_begin(get_gl_context()))
     return false;
 
-  //viewer->draw();
+  std::cout << "Draw" << std::endl;
+  {
+    glBegin(GL_QUADS);
+    glVertex2f(150, 100);
+    glVertex2f(200, 100);
+    glVertex2f(200, 200);
+    glVertex2f(100, 200);
+    glEnd();
+  }
 
   // Swap buffers.
   if (glwindow->is_double_buffered())

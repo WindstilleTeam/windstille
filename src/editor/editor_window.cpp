@@ -30,6 +30,7 @@
 EditorWindow::EditorWindow()
 {
   set_title("Windstille Editor");
+  set_default_size(800, 600);
 
   Glib::ustring ui_info =
     "<ui>"
@@ -132,17 +133,14 @@ EditorWindow::EditorWindow()
   dynamic_cast<Gtk::Toolbar*>(ui_manager->get_widget("/ToolBox"))->set_orientation(Gtk::ORIENTATION_VERTICAL);
   hbox.add(hpaned);
 
-  notebook.set_size_request(1024, 640);
-
-  vpaned.set_size_request(300, -1);
-
-  object_selector.set_size_request(-1, 300);
-
-  hpaned.add(notebook);
-  hpaned.add(vpaned);
+  vpaned.set_size_request(250, -1);
+  //object_selector.set_size_request(-1, 300);
+  
+  hpaned.pack1(notebook, Gtk::EXPAND);
+  hpaned.pack2(vpaned,   Gtk::SHRINK);
  
-  vpaned.add1(object_selector);
-  vpaned.add2(object_tree);
+  vpaned.pack1(object_selector, Gtk::EXPAND);
+  vpaned.pack2(object_tree,     Gtk::SHRINK);
 
   // Window
   add(vbox);

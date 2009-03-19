@@ -32,7 +32,7 @@ int main(int argc, char** argv)
       Gtk::GL::init(&argc, &argv);
 
       EditorWindow window;
-
+      
       window.show_all();
 
       Gtk::Main::run(window);
