@@ -22,6 +22,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/label.h>
+#include <gdkmm/dragcontext.h>
 #include <gtkmm/iconview.h>
 
 class ObjectSelector : public Gtk::VBox
@@ -36,8 +37,11 @@ public:
   virtual ~ObjectSelector();
 
 protected:
-  virtual void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context);
-
+  void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context);
+  void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context,
+                        Gtk::SelectionData& selection_data, 
+                        guint info, guint time);
+  
 private:
   ObjectSelector(const ObjectSelector&);
   ObjectSelector& operator=(const ObjectSelector&);

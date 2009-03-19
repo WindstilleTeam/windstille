@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <gtkmm/liststore.h>
 #include <gtkmm/treemodelcolumn.h>
 #include "object_selector.hpp"
@@ -58,7 +59,9 @@ ObjectSelector::ObjectSelector()
   std::vector<Gtk::TargetEntry> targets;
   targets.push_back(Gtk::TargetEntry("WindstilleObject"));
   iconview.drag_source_set(targets, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY);
+
   iconview.signal_drag_begin().connect(sigc::mem_fun(*this, &ObjectSelector::on_drag_begin));
+  iconview.signal_drag_data_get().connect(sigc::mem_fun(*this, &ObjectSelector::on_drag_data_get));
 
   scrolled.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
 
@@ -78,6 +81,15 @@ void
 ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 {
   context->set_icon(Gdk::Pixbuf::create_from_file("icon.png"), 0, 0);
+}
+
+void
+ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context, 
+                                 Gtk::SelectionData& selection_data, 
+                                 guint info, guint time)
+{
+  std::cout << "ObjectSelector: on_drag_data_get" << std::endl;
+  selection_data.set("raw", "data");
 }
 
 /* EOF */

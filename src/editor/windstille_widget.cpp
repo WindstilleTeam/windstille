@@ -220,7 +220,7 @@ WindstilleWidget::key_release(GdkEventKey* event)
 bool
 WindstilleWidget::on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time)
 {
-  std::cout << "on_drag_drop: " << x << ", " << y << ": " << std::endl;
+  std::cout << "WindstilleWidget: on_drag_drop: " << x << ", " << y << ": " << std::endl;
   return true;
 }
 
@@ -229,13 +229,14 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
                                         int x, int y, const Gtk::SelectionData& data,
                                         guint info, guint time)
 {
-  std::cout << "on_drag_data_received: " << x << ", " << y << ": " << std::endl;
+  std::cout << "WindstilleWidget: on_drag_data_received: "
+            << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
 }
 
 void
 WindstilleWidget::on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context)
 {
-  std::cout << "on_drag_finish()" << std::endl;
+  std::cout << "WindstilleWidget: on_drag_finish()" << std::endl;
 }
 
 /* EOF */
