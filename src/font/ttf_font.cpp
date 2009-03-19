@@ -27,6 +27,7 @@
 
 #include "display/blitter.hpp"
 #include "display/opengl_state.hpp"
+#include "display/software_surface.hpp"
 #include "display/texture_manager.hpp"
 #include "font_effect.hpp"
 #include "physfs/physfs_stream.hpp"
@@ -85,9 +86,8 @@ TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effec
   FT_Select_Charmap(face,  FT_ENCODING_UNICODE);
 
   // FIXME: should calculate texture size, based on font size
-  SDL_Surface* pixelbuffer = create_surface_rgba(1024, 1024);
-  SDL_SetAlpha(pixelbuffer, 0, 0);
-
+  SoftwareSurface pixelbuffer(1024, 1024);
+  
   int x_pos = 1;
   int y_pos = 1;
   
@@ -124,39 +124,30 @@ TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effec
                          effect.get_y_offset(-face->glyph->bitmap_top)),
                    Size(glyph_width, glyph_height));
 
-          Rectf uv(x_pos/float(pixelbuffer->w),
-                   y_pos/float(pixelbuffer->h),
-                   (x_pos + glyph_width)/float(pixelbuffer->w),
-                   (y_pos + glyph_height)/float(pixelbuffer->h));
+          Rectf uv(x_pos/float(pixelbuffer.get_width()),
+                   y_pos/float(pixelbuffer.get_height()),
+                   (x_pos + glyph_width)/float(pixelbuffer.get_width()),
+                   (y_pos + glyph_height)/float(pixelbuffer.get_height()));
       
           impl->characters.push_back(TTFCharacter(pos, uv,
                                                   face->glyph->advance.x >> 6));
 
           // we leave a one pixel border around the letters which we fill with generate_border
           x_pos += glyph_width + 2;
-          if (x_pos + max_glyph_height + 2 > pixelbuffer->w) // FIXME: should use glyph_width of the next glyph instead of max_glyph_height
+          if (x_pos + max_glyph_height + 2 > pixelbuffer.get_width()) // FIXME: should use glyph_width of the next glyph instead of max_glyph_height
             {
               y_pos += max_glyph_height + 2;
               x_pos = 1;
             }
 
-          if (y_pos + max_glyph_height + 2 > pixelbuffer->h)
+          if (y_pos + max_glyph_height + 2 > pixelbuffer.get_height())
             throw std::runtime_error("Font Texture to small");
         }
     }
   FT_Done_Face(face);
 
-  try 
-    {
-      impl->texture = Texture(pixelbuffer);
-      impl->texture.set_filter(GL_NEAREST);
-    }
-  catch(...) 
-    {
-      SDL_FreeSurface(pixelbuffer);
-      throw;
-    }
-  SDL_FreeSurface(pixelbuffer);
+  impl->texture = Texture(pixelbuffer);
+  impl->texture.set_filter(GL_NEAREST);
 }
 
 TTFFont::~TTFFont()

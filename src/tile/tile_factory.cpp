@@ -18,8 +18,6 @@
 
 #include <string>
 #include <sstream>
-#include <SDL.h>
-#include <SDL_image.h>
 #include <assert.h>
 #include <sstream>
 #include <iostream>
@@ -31,6 +29,7 @@
 #include "tile_description.hpp"
 #include "util/sexpr_file_reader.hpp"
 #include "display/surface_manager.hpp"
+#include "display/software_surface.hpp"
 #include "display/texture.hpp"
 #include "physfs/physfs_sdl.hpp"
 
@@ -39,23 +38,19 @@ TileFactory* TileFactory::current_ = 0;
 std::string TileFactory::tile_def_file = "tiles.scm";
 
 /** Check if the given region of the given image is fully transparent */
-bool surface_empty(SDL_Surface* image, int sx, int sy, int w, int h)
-{
-  SDL_LockSurface(image);
-  
-  unsigned char* data = static_cast<unsigned char*>(image->pixels);
+bool surface_empty(const SoftwareSurface& image, int sx, int sy, int w, int h)
+{ 
+  unsigned char* data = static_cast<unsigned char*>(image.get_pixels());
   
   for(int y = sy; y < sy + h; ++y)
     for(int x = sx; x < sx + w; ++x)
       {
-        if (data[y * image->pitch + 4*x + 3] != 0)
+        if (data[y * image.get_pitch() + 4*x + 3] != 0)
           { 
-            SDL_UnlockSurface(image);
             return false;
           }
       }
 
-  SDL_UnlockSurface(image);
   return true;
 }
 
@@ -129,7 +124,7 @@ TileFactory::parse_tiles(FileReader& reader)
 }
 
 void
-TileFactory::pack(int id, int colmap, SDL_Surface* image, const Rect& rect)
+TileFactory::pack(int id, int colmap, const SoftwareSurface& image, const Rect& rect)
 {
   if(id < int(tiles.size())
      && tiles[id] != 0

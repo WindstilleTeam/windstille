@@ -61,6 +61,7 @@ env.Program('../windstille', [
 'display/scene_context.cpp',
 'display/shader_object.cpp',
 'display/shader_program.cpp',
+'display/software_surface.cpp',
 'display/surface.cpp',
 'display/surface_manager.cpp',
 'display/text_area.cpp',

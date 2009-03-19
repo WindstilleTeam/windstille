@@ -19,10 +19,9 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
-#include <SDL.h>
-#include <SDL_image.h>
 #include "physfs/physfs_sdl.hpp"
 #include "app/globals.hpp"
+#include "display/software_surface.hpp"
 #include "tile.hpp"
 #include "tile_packer.hpp"
 #include "tile_factory.hpp"
@@ -47,55 +46,38 @@ TileDescription::load(TileFactory* factory)
   if (debug)
     std::cout << "Loading tiles: " << filename << std::endl;
 
-  SDL_Surface* image = IMG_Load_RW(get_physfs_SDLRWops(filename), 1);
-  if(!image) 
+  SoftwareSurface image(filename);
+
+  int num_tiles = width * height; //(image->w/TILE_RESOLUTION) * (image->h/TILE_RESOLUTION);
+  if (int(colmap.size()) != num_tiles)
     {
-      std::ostringstream msg;
-      msg << "Couldn't load image '" << filename << "': " << SDL_GetError();
-      throw std::runtime_error(msg.str());
+      std::ostringstream str;
+      str << "'colmap' information and num_tiles mismatch (" 
+          << colmap.size() << " != " << num_tiles << ") for image '" << filename << "'";
+      throw std::runtime_error(str.str());
     }
-  else
+
+  if (int(ids.size()) != num_tiles)
     {
-      try 
-        {
-          int num_tiles = width * height; //(image->w/TILE_RESOLUTION) * (image->h/TILE_RESOLUTION);
-          if (int(colmap.size()) != num_tiles)
-            {
-              std::ostringstream str;
-              str << "'colmap' information and num_tiles mismatch (" 
-                  << colmap.size() << " != " << num_tiles << ") for image '" << filename << "'";
-              throw std::runtime_error(str.str());
-            }
-
-          if (int(ids.size()) != num_tiles)
-            {
-              std::ostringstream str;
-              str << "'ids' information and num_tiles mismatch (" 
-                  << ids.size() << " != " << num_tiles << ") for image '" << filename << "'";
-              throw std::runtime_error(str.str());
-            }
+      std::ostringstream str;
+      str << "'ids' information and num_tiles mismatch (" 
+          << ids.size() << " != " << num_tiles << ") for image '" << filename << "'";
+      throw std::runtime_error(str.str());
+    }
     
-          int i = 0;
-          for (int y = 0; y < height*TILE_RESOLUTION; y += TILE_RESOLUTION)
-            {
-              for (int x = 0; x < width*TILE_RESOLUTION; x += TILE_RESOLUTION)
-                {
-                  if(ids[i] != -1)
-                    {
-                      factory->pack(ids[i], colmap[i], image,
-                                    Rect(x, y, x+TILE_RESOLUTION, y+TILE_RESOLUTION));
-                    }
-
-                  i += 1; 
-                }
-            }
-        } 
-      catch(...) 
+  int i = 0;
+  for (int y = 0; y < height*TILE_RESOLUTION; y += TILE_RESOLUTION)
+    {
+      for (int x = 0; x < width*TILE_RESOLUTION; x += TILE_RESOLUTION)
         {
-          SDL_FreeSurface(image);
-          throw;
+          if(ids[i] != -1)
+            {
+              factory->pack(ids[i], colmap[i], image,
+                            Rect(x, y, x+TILE_RESOLUTION, y+TILE_RESOLUTION));
+            }
+
+          i += 1; 
         }
-      SDL_FreeSurface(image);
     }
 }
 

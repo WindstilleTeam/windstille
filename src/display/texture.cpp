@@ -22,6 +22,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include "texture.hpp"
+#include "display/software_surface.hpp"
 #include "display/opengl_state.hpp"
 #include "texture_manager.hpp"
 #include "util/util.hpp"
@@ -83,19 +84,17 @@ static inline bool is_power_of_2(int v)
   return (v & (v-1)) == 0;
 }
 
-Texture::Texture(SDL_Surface* image, GLint glformat)
+Texture::Texture(const SoftwareSurface& image, GLint glformat)
   : impl(new TextureImpl())
 {
   impl->target = GL_TEXTURE_2D;
-  impl->width  = image->w;
-  impl->height = image->h;
+  impl->width  = image.get_width();
+  impl->height = image.get_height();
 
-  const SDL_PixelFormat* format = image->format;
-
-  if(!is_power_of_2(image->w) || !is_power_of_2(image->h))
+  if(!is_power_of_2(image.get_width()) || !is_power_of_2(image.get_height()))
     throw std::runtime_error("image has no power of 2 size");
 
-  if(format->BitsPerPixel != 24 && format->BitsPerPixel != 32)
+  if (image.get_bits_per_pixel() != 24 && image.get_bits_per_pixel() != 32)
     throw std::runtime_error("image has not 24 or 32 bit color depth");
 
   // FIXME: User SDL_ConvertSurface to bring images in the right format
@@ -105,17 +104,19 @@ Texture::Texture(SDL_Surface* image, GLint glformat)
     {
       GLint maxt;
       glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxt);
-      if(image->w > maxt || image->h > maxt)
+
+      if(image.get_width() > maxt || image.get_height() > maxt)
         {
           throw std::runtime_error("Texture size not supported");
         }
 
       GLint sdl_format;
-      if (format->BytesPerPixel == 3)
+
+      if (image.get_bytes_per_pixel() == 3)
         {
           sdl_format = GL_RGB;
         }
-      else if (format->BytesPerPixel == 4)
+      else if (image.get_bytes_per_pixel() == 4)
         {
           sdl_format = GL_RGBA;
         }
@@ -129,10 +130,10 @@ Texture::Texture(SDL_Surface* image, GLint glformat)
       state.activate();
 
       glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-      glPixelStorei(GL_UNPACK_ROW_LENGTH, image->pitch/format->BytesPerPixel);
+      glPixelStorei(GL_UNPACK_ROW_LENGTH, image.get_pitch() / image.get_bytes_per_pixel());
       glTexImage2D(impl->target, 0, glformat,
-                   image->w, image->h, 0, sdl_format,
-                   GL_UNSIGNED_BYTE, image->pixels);
+                   image.get_width(), image.get_height(), 0, sdl_format,
+                   GL_UNSIGNED_BYTE, image.get_pixels());
 
       assert_gl("creating texture");
 
@@ -173,14 +174,15 @@ Texture::get_handle() const
 }
 
 void
-Texture::put(SDL_Surface* image, int x, int y)
+Texture::put(const SoftwareSurface& image, int x, int y)
 {
   GLint sdl_format;
-  if (image->format->BytesPerPixel == 3)
+
+  if (image.get_bytes_per_pixel() == 3)
     {
       sdl_format = GL_RGB;
     }
-  else if (image->format->BytesPerPixel == 4)
+  else if (image.get_bytes_per_pixel() == 4)
     {
       sdl_format = GL_RGBA;
     }
@@ -196,11 +198,11 @@ Texture::put(SDL_Surface* image, int x, int y)
   // FIXME: Add some checks here to make sure image has the right format 
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   glPixelStorei(GL_UNPACK_ROW_LENGTH,
-                image->pitch / image->format->BytesPerPixel);
+                image.get_pitch() / image.get_bytes_per_pixel());
 
   glTexSubImage2D(impl->target, 0, x, y,
-                  image->w, image->h, sdl_format, GL_UNSIGNED_BYTE,
-                  image->pixels);
+                  image.get_width(), image.get_height(), sdl_format, GL_UNSIGNED_BYTE,
+                  image.get_pixels());
 }
 
 void

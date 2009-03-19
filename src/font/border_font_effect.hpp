@@ -45,7 +45,7 @@ public:
   int get_x_offset(int orig_glyph_offset) const;
   int get_y_offset(int orig_glyph_offset) const;
   
-  void blit(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, int y_pos) const;
+  void blit(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const;
 
 private:
   BorderFontEffect (const BorderFontEffect&);

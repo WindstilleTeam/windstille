@@ -17,6 +17,7 @@
 */
 
 #include <algorithm>
+#include "display/software_surface.hpp"
 #include "border_font_effect.hpp"
 
 BorderFontEffect::BorderFontEffect(int size_, bool outline_)
@@ -60,22 +61,20 @@ BorderFontEffect::get_y_offset(int orig_glyph_offset) const
 }
 
 void
-BorderFontEffect::blit(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, int y_pos) const
+BorderFontEffect::blit(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const
 {
-  SDL_LockSurface(target);
-  
   x_pos += size;
   y_pos += size;
 
   int start_x = std::max(0, -x_pos);
   int start_y = std::max(0, -y_pos);
   
-  int end_x = std::min(brush.width, target->w - x_pos);
-  int end_y = std::min(brush.rows,  target->h - y_pos);
+  int end_x = std::min(brush.width, target.get_width()  - x_pos);
+  int end_y = std::min(brush.rows,  target.get_height() - y_pos);
 
-  unsigned char* target_buf = static_cast<unsigned char*>(target->pixels);
+  unsigned char* target_buf = static_cast<unsigned char*>(target.get_pixels());
 
-  int target_pitch = target->pitch;
+  int target_pitch = target.get_pitch();
 
   uint8_t red   = 0;
   uint8_t blue  = 0;
@@ -120,8 +119,6 @@ BorderFontEffect::blit(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, i
             target_buf[target_pos + 3] = std::min(target_buf[target_pos + 3] + brush.buffer[brush_pos], 255);
           }
     }
-
-  SDL_UnlockSurface(target);
-}
+}  
 
 /* EOF */

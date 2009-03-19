@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,36 +16,38 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_DISPLAY_FRAMEBUFFER_HPP
-#define HEADER_WINDSTILLE_DISPLAY_FRAMEBUFFER_HPP
+#ifndef HEADER_SOFTWARE_SURFACE_HPP
+#define HEADER_SOFTWARE_SURFACE_HPP
 
-#include "texture.hpp"
+#include "SDL.h"
+#include <boost/shared_ptr.hpp>
+#include <string>
 
-class FramebufferImpl;
+class SoftwareSurfaceImpl;
 
-class Framebuffer
+class SoftwareSurface
 {
 public:
-  Framebuffer();
-  Framebuffer(GLenum target, int width, int height);
-  ~Framebuffer();
-  
-  int get_width()  const;
-  int get_height() const;
-  Texture get_texture();
+  enum Format {
+    RGB,
+    RGBA
+  };
 
-  GLuint get_handle() const;
+  SoftwareSurface(const std::string& filename);
+  SoftwareSurface(int width, int height, Format format = RGBA);
+  ~SoftwareSurface();
 
-  /** 
-   * true if the Framebuffer is valid and usable, false if not 
-   */
-  operator bool() const;
+  int   get_bytes_per_pixel() const;
+  int   get_bits_per_pixel() const;
+  int   get_width() const;
+  int   get_pitch() const;
+  int   get_height() const;
+  void* get_pixels() const;
 
-  bool operator==(const Framebuffer&) const;
-  bool operator!=(const Framebuffer&) const;
+  SDL_Surface* get_surface() const;
 
 private:
-  boost::shared_ptr<FramebufferImpl> impl;
+  boost::shared_ptr<SoftwareSurfaceImpl> impl;
 };
 
 #endif

@@ -62,78 +62,81 @@ WindstilleMain::~WindstilleMain()
 int 
 WindstilleMain::main(int argc, char** argv)
 {
-  try {
-    config.parse_args(argc, argv);
+  try 
+    {
+      config.parse_args(argc, argv);
 
-    init_physfs(argv[0]);
-    init_sdl();
+      init_physfs(argv[0]);
+      init_sdl();
 
-    config.load();
+      config.load();
     
-    config.parse_args(argc, argv);
+      config.parse_args(argc, argv);
 
-    init_modules();
+      init_modules();
     
-    if (debug) std::cout << "Starting file: '" << config.get_string("levelfile") << "'" 
-                         << std::endl;
+      if (debug) 
+        std::cout << "Starting file: '" << config.get_string("levelfile") << "'" << std::endl;
     
-    std::string levelfile;
-    if (config.get<std::string>("levelfile").is_set())
-      {
-        // FIXME: Looks a little hacky, doesn't it?
-        std::string leveldir = dirname(config.get_string("levelfile"));
-        PHYSFS_addToSearchPath(leveldir.c_str(), true);
-        levelfile = basename(config.get_string("levelfile"));
-      }
+      std::string levelfile;
+      if (config.get<std::string>("levelfile").is_set())
+        {
+          // FIXME: Looks a little hacky, doesn't it?
+          std::string leveldir = dirname(config.get_string("levelfile"));
+          PHYSFS_addToSearchPath(leveldir.c_str(), true);
+          levelfile = basename(config.get_string("levelfile"));
+        }
 
-    if (sprite3dview)
-      {
-        std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
+      if (sprite3dview)
+        {
+          std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
 
-        if (!levelfile.empty())
-          sprite3dview->set_model(levelfile);
+          if (!levelfile.empty())
+            sprite3dview->set_model(levelfile);
 
-        // Launching Sprite3DView instead of game
-        screen_manager.push_screen(sprite3dview.release());
-      }
-    else if (sprite2dview)
-      {
-        std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
+          // Launching Sprite3DView instead of game
+          screen_manager.push_screen(sprite3dview.release());
+        }
+      else if (sprite2dview)
+        {
+          std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
 
-        if (!levelfile.empty())
-          sprite2dview->set_sprite(levelfile);
+          if (!levelfile.empty())
+            sprite2dview->set_sprite(levelfile);
 
-        // Launching Sprite2DView instead of game
-        screen_manager.push_screen(sprite2dview.release());
-      }
-    else if (particleview)
-      {
-        ParticleViewer* particle_viewer = new ParticleViewer();
-        if (!levelfile.empty())
-          particle_viewer->load(levelfile);
-        screen_manager.push_screen(particle_viewer);
-      }
-    else
-      {
-        if (levelfile.empty())
-          {
-            //screen_manager.push_screen(new GameSession("levels/newformat2.wst"));
-            screen_manager.push_screen(new TitleScreen());
-          }
-        else
-          {
-            screen_manager.push_screen(new GameSession(levelfile));
-          }
-      }
+          // Launching Sprite2DView instead of game
+          screen_manager.push_screen(sprite2dview.release());
+        }
+      else if (particleview)
+        {
+          ParticleViewer* particle_viewer = new ParticleViewer();
+          if (!levelfile.empty())
+            particle_viewer->load(levelfile);
+          screen_manager.push_screen(particle_viewer);
+        }
+      else
+        {
+          if (levelfile.empty())
+            {
+              //screen_manager.push_screen(new GameSession("levels/newformat2.wst"));
+              screen_manager.push_screen(new TitleScreen());
+            }
+          else
+            {
+              screen_manager.push_screen(new GameSession(levelfile));
+            }
+        }
         
-    screen_manager.run();
+      screen_manager.run();
     
-    deinit_modules();
+      deinit_modules();
 
-  } catch (std::exception& err)
+    } 
+  catch (std::exception& err)
     {
       std::cout << "std::exception: " << err.what() << std::endl;
-    } catch (...)
+    }
+  catch (...)
     {
       std::cout << "Error catched something unknown?!" << std::endl;
     }
@@ -263,11 +266,11 @@ WindstilleMain::init_sdl()
 #endif
 
   if (SDL_Init(flags) < 0)
-      {
-        std::stringstream msg;
-        msg << "Couldn't initialize SDL: " << SDL_GetError();
-        throw std::runtime_error(msg.str());
-      }
+    {
+      std::stringstream msg;
+      msg << "Couldn't initialize SDL: " << SDL_GetError();
+      throw std::runtime_error(msg.str());
+    }
 
   SDL_EnableUNICODE(1);
 }
@@ -370,10 +373,10 @@ WindstilleMain::init_physfs(const char* argv0)
       PHYSFS_freeList(search_path);
     }
 }
-
+
 int main(int argc, char** argv)
 {
   return WindstilleMain().main(argc, argv);
 }
-
+
 /* EOF */

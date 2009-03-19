@@ -24,6 +24,7 @@
 #include "tile_packer.hpp"
 #include "util/util.hpp"
 #include "display/blitter.hpp"
+#include "display/software_surface.hpp"
 
 class TilePackerImpl
 {
@@ -60,40 +61,31 @@ TilePacker::~TilePacker()
 /** Pack a tile and return the position where it is placed in the
     pixel buffer */
 Rectf
-TilePacker::pack(SDL_Surface* image, int x, int y, int w, int h)
+TilePacker::pack(const SoftwareSurface& image, int x, int y, int w, int h)
 {
   assert(w == TILE_RESOLUTION && h == TILE_RESOLUTION);
   assert(!is_full());
 
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  SDL_Surface* convert = SDL_CreateRGBSurface(SDL_SWSURFACE,
-    w+2, h+2, 32,
-    0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-#else
-  SDL_Surface* convert = SDL_CreateRGBSurface(SDL_SWSURFACE,
-    w+2, h+2, 32,
-      0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-#endif
-  if(convert == 0)
-    throw std::runtime_error("Couldn't pack texture: out of memory");
+  SoftwareSurface convert(w+2, h+2);
 
   SDL_Rect source_rect;
   source_rect.x = x;
   source_rect.y = y;
   source_rect.w = w;
   source_rect.h = h;
+
   SDL_Rect dest_rect;
   dest_rect.x = 1;
   dest_rect.y = 1;
   dest_rect.w = w;
   dest_rect.h = h;
-  SDL_SetAlpha(image, 0, 0);
-  SDL_BlitSurface(image, &source_rect, convert, &dest_rect);
+
+  SDL_BlitSurface(image.get_surface(), &source_rect, convert.get_surface(), &dest_rect);
+
   generate_border(convert, 1, 1, TILE_RESOLUTION, TILE_RESOLUTION);
 
   impl->texture.put(convert, impl->x_pos, impl->y_pos);
-  SDL_FreeSurface(convert);
-
+  
   assert_gl("updating tilepacker texture");
 
   Rectf rect(Vector2f(static_cast<float>(impl->x_pos+1)/impl->width, 

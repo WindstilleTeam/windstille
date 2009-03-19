@@ -23,11 +23,11 @@
 #include <string>
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include <SDL.h>
 #include <boost/shared_ptr.hpp>
-
+
+class SoftwareSurface;
 class TextureImpl;
-
+
 class Texture
 {
 public:
@@ -39,10 +39,10 @@ public:
   explicit Texture(const std::string& filename);
 
   /**
-   * Upload an SDL_Surface onto an OpenGL texture. The surface must have power
+   * Upload an SoftwareSurface onto an OpenGL texture. The surface must have power
    * of 2 dimensions
    * */
-  explicit Texture(SDL_Surface* image, GLint format = GL_RGBA);
+  explicit Texture(const SoftwareSurface& image, GLint format = GL_RGBA);
 
   /** 
    * Create an empty Texture with the given dimensions
@@ -65,7 +65,7 @@ public:
   void set_filter(GLenum mode);
 
   /** Uploads the given image to the given coordinates */
-  void put(SDL_Surface* image, int x, int y);
+  void put(const SoftwareSurface& image, int x, int y);
 
   GLuint get_handle() const;
   
@@ -81,7 +81,7 @@ public:
 private:
   boost::shared_ptr<TextureImpl> impl;
 };
-
+
 #endif
 
 /* EOF */

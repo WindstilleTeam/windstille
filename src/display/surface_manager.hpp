@@ -22,7 +22,6 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <SDL.h>
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include "texture.hpp"
@@ -53,7 +52,7 @@ public:
   void load_grid(const std::string& filename,
       std::vector<Surface>& surfaces, int width, int height);
 
-  Texture create_texture(SDL_Surface* image, 
+  Texture create_texture(const SoftwareSurface& image,
                          float& maxu, float& maxv);
 
   /** Removes all cached Sprites that are no longer in use */

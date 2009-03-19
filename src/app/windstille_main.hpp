@@ -49,8 +49,6 @@
 
 #include "screen/screen.hpp"
 
-struct SDL_Surface;
-
 class WindstilleMain
 {  
 public:

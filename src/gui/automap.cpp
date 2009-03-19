@@ -21,6 +21,7 @@
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
 #include "display/display.hpp"
+#include "display/software_surface.hpp"
 #include "automap.hpp"
 
 namespace gui {
@@ -37,47 +38,33 @@ Automap::Automap(const Rectf& rect, Component* parent)
     zoom(6.0f)
 {
   TileMap* tilemap = Sector::current()->get_tilemap();
-  
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  SDL_Surface* image = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                            tilemap->get_width(), tilemap->get_height(), 32,
-                                            0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-#else
-  SDL_Surface* image = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                            tilemap->get_width(), tilemap->get_height(), 32,
-                                            0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-#endif
 
-  SDL_LockSurface(image);
+  SoftwareSurface image(tilemap->get_width(), tilemap->get_height());
   
-  unsigned char* buffer = static_cast<unsigned char*>(image->pixels);
+  unsigned char* buffer = static_cast<unsigned char*>(image.get_pixels());
 
-  for(int y = 0; y < image->h; ++y)
-    for(int x = 0; x < image->w; ++x)
+  for(int y = 0; y < image.get_height(); ++y)
+    for(int x = 0; x < image.get_width(); ++x)
       {
         if (tilemap->get_pixel(x, y))
           {
-            buffer[image->pitch * y + 4*x + 0] = 255;
-            buffer[image->pitch * y + 4*x + 1] = 255;
-            buffer[image->pitch * y + 4*x + 2] = 255;
-            buffer[image->pitch * y + 4*x + 3] = 255;
+            buffer[image.get_pitch() * y + 4*x + 0] = 255;
+            buffer[image.get_pitch() * y + 4*x + 1] = 255;
+            buffer[image.get_pitch() * y + 4*x + 2] = 255;
+            buffer[image.get_pitch() * y + 4*x + 3] = 255;
           }
         else
           {
-            buffer[image->pitch * y + 4*x + 0] = 0;
-            buffer[image->pitch * y + 4*x + 1] = 0;
-            buffer[image->pitch * y + 4*x + 2] = 0;
-            buffer[image->pitch * y + 4*x + 3] = 255;
+            buffer[image.get_pitch() * y + 4*x + 0] = 0;
+            buffer[image.get_pitch() * y + 4*x + 1] = 0;
+            buffer[image.get_pitch() * y + 4*x + 2] = 0;
+            buffer[image.get_pitch() * y + 4*x + 3] = 255;
           }
       }
 
   surface = Surface(tilemap->get_width(), tilemap->get_height());
   surface.get_texture().set_filter(GL_NEAREST);
   surface.get_texture().put(image, 0, 0);
-
-  SDL_UnlockSurface(image);
-
-  SDL_FreeSurface(image);
 }
 
 Automap::~Automap()

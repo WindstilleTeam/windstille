@@ -18,12 +18,12 @@
 #ifndef HEADER_BLITTER_HPP
 #define HEADER_BLITTER_HPP
 
-#include <SDL.h>
-
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
-
+
+class SoftwareSurface;
+
 /** Duplicate all the edge pixel of the given rectangle to the outside
     of the rectangle, thus creating a border around the given
     rectangle, this is needed for OpenGL textures to avoid filtering
@@ -34,10 +34,9 @@
     X 4 5 6 X  / 4 4 5 6 6
     X X X X X    4 4 5 6 6
 */
-void generate_border(SDL_Surface* surface, int x_pos, int y_pos, int width, int height);
-void blit_ftbitmap(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, int y_pos);
-SDL_Surface* create_surface_rgba(int width, int height);
-
+void generate_border(const SoftwareSurface& surface, int x_pos, int y_pos, int width, int height);
+void blit_ftbitmap(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos);
+
 #endif
 
 /* EOF */

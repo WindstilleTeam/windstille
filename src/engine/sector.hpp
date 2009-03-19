@@ -110,10 +110,6 @@ public:
   TileMap* get_tilemap() const { return interactive_tilemap; }
   TileMap* get_tilemap2() const { return interactivebackground_tilemap; }
   void     set_tilemap(TileMap* t);
-  Player*  get_player() const
-  {
-    return player;
-  }
 
   void call_script_function(const std::string& name);
   

@@ -21,21 +21,23 @@
 #include <iostream>
 #include <algorithm>
 #include <stdint.h>
+
+#include "display/software_surface.hpp"
 #include "blitter.hpp"
 
-void generate_border(SDL_Surface* surface,
+void generate_border(const SoftwareSurface& surface,
                      int x_pos, int y_pos, int width, int height)
 {
-  assert(surface->format->BitsPerPixel == 32);
-  SDL_LockSurface(surface);
+  assert(surface.get_bits_per_pixel() == 32);
  
-  uint8_t* data = static_cast<uint8_t*>(surface->pixels);
-  int pitch = surface->pitch;
+  uint8_t* data = static_cast<uint8_t*>(surface.get_pixels());
+  int pitch = surface.get_pitch();
 
   // duplicate the top line
   memcpy(data + (y_pos-1)*pitch + 4*x_pos, 
          data + (y_pos)*pitch + 4*x_pos,
          4*width);
+
   // duplicate the bottom line
   memcpy(data + (y_pos+height)*pitch + 4*x_pos, 
          data + (y_pos+height-1)*pitch + 4*x_pos,  
@@ -49,24 +51,20 @@ void generate_border(SDL_Surface* surface,
       p = reinterpret_cast<uint32_t*> (data + (y*pitch + 4*(x_pos + width)));
       *p = *(p-1);
     }
-
-  SDL_UnlockSurface(surface);
 }
 
 void 
-blit_ftbitmap(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, int y_pos)
+blit_ftbitmap(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos)
 {
-  SDL_LockSurface(target);
-  
   int start_x = std::max(0, -x_pos);
   int start_y = std::max(0, -y_pos);
   
-  int end_x = std::min(brush.width, target->w  - x_pos);
-  int end_y = std::min(brush.rows,  target->h - y_pos);
+  int end_x = std::min(brush.width, target.get_width()  - x_pos);
+  int end_y = std::min(brush.rows,  target.get_height() - y_pos);
 
-  unsigned char* target_buf = static_cast<unsigned char*>(target->pixels);
+  unsigned char* target_buf = static_cast<unsigned char*>(target.get_pixels());
 
-  int target_pitch = target->pitch;
+  int target_pitch = target.get_pitch();
 
   for (int y = start_y; y < end_y; ++y)
     for (int x = start_x; x < end_x; ++x)
@@ -79,8 +77,6 @@ blit_ftbitmap(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, int y_pos)
         target_buf[target_pos + 2] = 255;
         target_buf[target_pos + 3] = brush.buffer[brush_pos];
       }
-    
-  SDL_UnlockSurface(target);
 }
 
 SDL_Surface* create_surface_rgba(int width, int height)

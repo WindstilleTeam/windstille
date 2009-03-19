@@ -22,7 +22,7 @@
 #include "texture.hpp"
 #include "render_buffer.hpp"
 #include "framebuffer.hpp"
-
+
 class FramebufferImpl
 {
 public:
@@ -56,7 +56,7 @@ public:
     glDeleteFramebuffersEXT(1, &handle);
   }
 };
-
+
 Framebuffer::Framebuffer()
 {
 }
@@ -112,5 +112,5 @@ Framebuffer::operator!=(const Framebuffer& other) const
 {
   return impl.get() != other.impl.get();
 }
-
+
 /* EOF */

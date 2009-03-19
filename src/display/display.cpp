@@ -244,48 +244,50 @@ Display::init()
     {
       throw std::runtime_error("Display:: Couldn't create window");
     }
+  else
+    {
+      SDL_WM_SetCaption("Windstille", 0 /* icon */);
 
-  SDL_WM_SetCaption("Windstille", 0 /* icon */);
+      GLenum err = glewInit();
+      if(err != GLEW_OK) {
+        std::ostringstream msg;
+        msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
+        throw std::runtime_error(msg.str());
+      }
+      /*
+        if(!GLEW_EXT_framebuffer_object) {
+        std::ostringstream msg;
+        msg << "Display:: Framebuffer opengl extension not supported";
+        throw std::runtime_error(msg.str());
+        }
+      */
 
-  GLenum err = glewInit();
-  if(err != GLEW_OK) {
-    std::ostringstream msg;
-    msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
-    throw std::runtime_error(msg.str());
-  }
-  /*
-    if(!GLEW_EXT_framebuffer_object) {
-    std::ostringstream msg;
-    msg << "Display:: Framebuffer opengl extension not supported";
-    throw std::runtime_error(msg.str());
-    }
-  */
+      glViewport(0, 0, window->w, window->h);
+      glMatrixMode(GL_PROJECTION);
+      glLoadIdentity();
 
-  glViewport(0, 0, window->w, window->h);
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
+      static const float cl_pixelcenter_constant = 0.375;
 
-  static const float cl_pixelcenter_constant = 0.375;
-
-  //glOrtho(0.0, window->w, window->h, 0.0, -1000.0, 1000.0);
+      //glOrtho(0.0, window->w, window->h, 0.0, -1000.0, 1000.0);
   
-  // glOrtho(0.0, 800, 0.0, 600.0, 1000.0, -1000.0); // proper right-hand CO
-  Display::aspect_size = Size(config.get_int("aspect-width"), 
-                              config.get_int("aspect-height"));
+      // glOrtho(0.0, 800, 0.0, 600.0, 1000.0, -1000.0); // proper right-hand CO
+      Display::aspect_size = Size(config.get_int("aspect-width"), 
+                                  config.get_int("aspect-height"));
 
-  glOrtho(0.0, 
-          aspect_size.width, aspect_size.height,
-          0.0, 1000.0, -1000.0);
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  glTranslated(cl_pixelcenter_constant, cl_pixelcenter_constant, 0.0);
+      glOrtho(0.0, 
+              aspect_size.width, aspect_size.height,
+              0.0, 1000.0, -1000.0);
+      glMatrixMode(GL_MODELVIEW);
+      glLoadIdentity();
+      glTranslated(cl_pixelcenter_constant, cl_pixelcenter_constant, 0.0);
 
-  if (config.get_int("anti-aliasing"))
-    glEnable(GL_MULTISAMPLE_ARB); 
+      if (config.get_int("anti-aliasing"))
+        glEnable(GL_MULTISAMPLE_ARB); 
 
-  assert_gl("setup projection");
+      assert_gl("setup projection");
 
-  OpenGLState::init();
+      OpenGLState::init();
+    }
 }
 
 void

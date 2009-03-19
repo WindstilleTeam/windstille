@@ -19,11 +19,12 @@
 #ifndef HEADER_WINDSTILLE_FONT_FONT_EFFECT_HPP
 #define HEADER_WINDSTILLE_FONT_FONT_EFFECT_HPP
 
-#include <SDL.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
-
+
+class SoftwareSurface;
+
 /** 
  *  The FontEffect class manages the blitting from a glyph bitmap to
  *  the SDL_Surface, it allows to apply different kinds of effects to
@@ -45,13 +46,13 @@ public:
   virtual int get_x_offset(int orig_glyph_offset) const =0;
   virtual int get_y_offset(int orig_glyph_offset) const =0;
   
-  virtual void blit(SDL_Surface* target, const FT_Bitmap& brush, int x_pos, int y_pos) const =0;
+  virtual void blit(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const =0;
 
 private:
   FontEffect (const FontEffect&);
   FontEffect& operator= (const FontEffect&);
 };
-
+
 #endif
 
 /* EOF */
