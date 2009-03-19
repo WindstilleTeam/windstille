@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <boost/scoped_array.hpp>
 #include <png.h>
 #include <math.h>
 #include <errno.h>
@@ -209,18 +210,6 @@ Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
   glVertex2f(irect.left, irect.top - radius);
 
   glEnd();
-}
-
-int
-Display::get_window_width()
-{
-  return window->w;
-}
-
-int
-Display::get_window_height()
-{
-  return window->h;
 }
 
 int
@@ -501,33 +490,38 @@ Display::set_gamma(float r, float g, float b)
 void
 Display::save_screenshot(const std::string& filename)
 {
-  int len = get_window_width() * get_window_height() * 3;
-  GLbyte* pixels = new GLbyte[len];
-  glReadPixels(0, 0, get_window_width(), get_window_height(), GL_RGB, GL_UNSIGNED_BYTE, pixels);
+  const int width  = window->w;
+  const int height = window->h;
+
+  int len = width * height * 3;
+
+  boost::scoped_array<GLbyte> pixels(new GLbyte[len]);
+
+  glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels.get());
 
   if (0)
     {
-      int pitch = get_window_width() * 3;
+      int pitch = width * 3;
 
       // save to ppm
       std::ofstream out(filename.c_str());
       out << "P6\n"
           << "# Windstille Screenshot\n"
-          << get_window_width() << " " << get_window_height() << "\n"
+          << width << " " << height << "\n"
           << "255\n";
       
-      for(int y = get_window_height()-1; y >= 0; --y)
-        out.write(reinterpret_cast<const char*>(pixels + y*pitch), pitch);
+      for(int y = height-1; y >= 0; --y)
+        out.write(reinterpret_cast<const char*>(pixels.get() + y*pitch), pitch);
 
       out.close();
     }
   else if (0) // BMP saving
     {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, get_window_width(), get_window_height(), 24, get_window_width()*3,
+      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels.get(), width, height, 24, width*3,
                                                       0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
 #else
-      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels, get_window_width(), get_window_height(), 24, get_window_width()*3,
+      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels.get(), width, height, 24, width*3,
                                                       0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 #endif
 
@@ -545,7 +539,7 @@ Display::save_screenshot(const std::string& filename)
         }
       else
         {
-          int pitch   = get_window_width() * 3;
+          int pitch   = width * 3;
           png_structp png_ptr;
           png_infop   info_ptr;
 
@@ -555,7 +549,7 @@ Display::save_screenshot(const std::string& filename)
           png_init_io(png_ptr, fp);
 
           png_set_IHDR(png_ptr, info_ptr, 
-                       get_window_width(), get_window_height(), 8 /* bitdepth */,
+                       width, height, 8 /* bitdepth */,
                        PNG_COLOR_TYPE_RGB,
                        PNG_INTERLACE_NONE, 
                        PNG_COMPRESSION_TYPE_BASE, 
@@ -564,22 +558,17 @@ Display::save_screenshot(const std::string& filename)
           png_set_compression_level(png_ptr, 6);
           png_write_info(png_ptr, info_ptr);
 
-          png_uint_32 height = get_window_height();
-
-          png_bytep* row_pointers = new png_bytep[height];
+          boost::scoped_array<png_bytep> row_pointers(new png_bytep[height]);
    
           // generate row pointers
-          for (unsigned int k = 0; k < height; k++)
-            row_pointers[k] = reinterpret_cast<png_byte*>(pixels + ((height - k - 1) * pitch));
+          for (int k = 0; k < height; k++)
+            row_pointers[k] = reinterpret_cast<png_byte*>(pixels.get() + ((height - k - 1) * pitch));
 
-          png_write_image(png_ptr, row_pointers);
+          png_write_image(png_ptr, row_pointers.get());
 
           png_write_end(png_ptr, info_ptr);
 
           fclose(fp);
-
-          delete[] pixels;
-          delete[] row_pointers;
         }
     }
 }

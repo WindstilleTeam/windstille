@@ -26,7 +26,7 @@
 #include "math/line.hpp"
 #include "color.hpp"
 #include "display/framebuffer.hpp"
-
+
 class Display
 {
 private:
@@ -56,9 +56,6 @@ public:
   static int  get_width();
   static int  get_height();
 
-  static int  get_window_width();
-  static int  get_window_height();
-
   static void set_fullscreen(bool fullscreen);
 
   static void push_cliprect(const Rect& rect);
@@ -74,7 +71,7 @@ public:
 
   static void init();
 };
-
+
 #endif
 
 /* EOF */
