@@ -35,6 +35,9 @@ public:
   ObjectSelector();
   virtual ~ObjectSelector();
 
+protected:
+  virtual void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context);
+
 private:
   ObjectSelector(const ObjectSelector&);
   ObjectSelector& operator=(const ObjectSelector&);

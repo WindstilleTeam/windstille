@@ -65,9 +65,13 @@ WindstilleWidget::WindstilleWidget()
   signal_key_press_event().connect(sigc::mem_fun(this, &WindstilleWidget::key_press));
   signal_key_release_event().connect(sigc::mem_fun(this, &WindstilleWidget::key_release));
 
+  signal_drag_data_received().connect(sigc::mem_fun(this, &WindstilleWidget::on_drag_data_received));
+  //signal_drag_finish().connect(sigc::mem_fun(this, &WindstilleWidget::on_drag_finish));
 
-  Glib::signal_timeout().connect(sigc::mem_fun(this, &WindstilleWidget::on_timeout),
-                                 33);
+  // Glib::signal_timeout().connect(sigc::mem_fun(this, &WindstilleWidget::on_timeout), 33);
+  std::vector<Gtk::TargetEntry> targets;
+  targets.push_back(Gtk::TargetEntry("WindstilleObject"));
+  drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 }
 
 WindstilleWidget::~WindstilleWidget()
@@ -136,7 +140,7 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
   if (!glwindow->gl_begin(get_gl_context()))
     return false;
 
-  std::cout << "Draw" << std::endl;
+  //std::cout << "Draw" << std::endl;
   {
     glBegin(GL_QUADS);
     glVertex2f(150, 100);
@@ -172,8 +176,8 @@ bool
 WindstilleWidget::mouse_down(GdkEventButton* event)
 {
   grab_focus();
-  //std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
-  // viewer->on_mouse_button_down(Vector2i(event->x, event->y), event->button);
+  std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
+  //ewer->on_mouse_button_down(Vector2i(event->x, event->y), event->button);
   return false;
 }
 
@@ -194,7 +198,7 @@ WindstilleWidget::scroll(GdkEventScroll* event)
 bool
 WindstilleWidget::mouse_up(GdkEventButton* event)
 {
-  //std::cout << "Button Release: " << event->x << ", " << event->y << " - " << event->button << std::endl;
+  std::cout << "Button Release: " << event->x << ", " << event->y << " - " << event->button << std::endl;
   //viewer->on_mouse_button_up(Vector2i(event->x, event->y), event->button);
   return false;
 }
@@ -211,6 +215,27 @@ WindstilleWidget::key_release(GdkEventKey* event)
 { // /usr/include/gtk-2.0/gdk/gdkkeysyms.h
   std::cout << "KeyRelease: " << (int)event->keyval << std::endl;
   return true;
+}
+
+bool
+WindstilleWidget::on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time)
+{
+  std::cout << "on_drag_drop: " << x << ", " << y << ": " << std::endl;
+  return true;
+}
+
+void
+WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context,
+                                        int x, int y, const Gtk::SelectionData& data,
+                                        guint info, guint time)
+{
+  std::cout << "on_drag_data_received: " << x << ", " << y << ": " << std::endl;
+}
+
+void
+WindstilleWidget::on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context)
+{
+  std::cout << "on_drag_finish()" << std::endl;
 }
 
 /* EOF */

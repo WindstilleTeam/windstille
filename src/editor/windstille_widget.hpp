@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <gtkglmm.h>
+#include <gdkmm/dragcontext.h>
 #include <gtkmm/gl/widget.h>
 
 /** OpenGL drawing area into which the Windstille game will be
@@ -48,6 +49,11 @@ public:
 
   virtual bool key_press(GdkEventKey* event);
   virtual bool key_release(GdkEventKey* event);
+
+  virtual void on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context);
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>&, int x, int y,
+                                     const Gtk::SelectionData& data, guint info, guint time);
+  virtual bool on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time);
 
 private:
   WindstilleWidget (const WindstilleWidget&);

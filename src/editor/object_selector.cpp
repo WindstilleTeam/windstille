@@ -55,6 +55,13 @@ ObjectSelector::ObjectSelector()
 
   iconview.set_model(list_store);
 
+  std::vector<Gtk::TargetEntry> targets;
+  targets.push_back(Gtk::TargetEntry("WindstilleObject"));
+  iconview.drag_source_set(targets, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY);
+  iconview.signal_drag_begin().connect(sigc::mem_fun(*this, &ObjectSelector::on_drag_begin));
+
+  scrolled.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
+
   scrolled.add(iconview);
   pack_start(label, Gtk::PACK_SHRINK);
   add(scrolled);
@@ -65,6 +72,12 @@ ObjectSelector::ObjectSelector()
 ObjectSelector::~ObjectSelector()
 {
 
+}
+
+void
+ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
+{
+  context->set_icon(Gdk::Pixbuf::create_from_file("icon.png"), 0, 0);
 }
 
 /* EOF */
