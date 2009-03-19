@@ -286,7 +286,7 @@ WindstilleMain::init_physfs(const char* argv0)
   // PHYSFS_setSaneConfig
   const char* application = "windstille";
   const char* userdir = PHYSFS_getUserDir();
-  const char* dirsep  = PHYSFS_getDirSeparator();
+  
   boost::scoped_array<char> writedir(new char[strlen(userdir) + strlen(application) + 2]);
 
   // Set configuration directory
@@ -315,31 +315,7 @@ WindstilleMain::init_physfs(const char* argv0)
         }
     }
   PHYSFS_addToSearchPath(writedir.get(), 0);
-
-  // Search for archives and add them to the search path
-  const char* archiveExt = "zip";
-  char** rc = PHYSFS_enumerateFiles("/");
-  size_t extlen = strlen(archiveExt);
-
-  for(char** i = rc; *i != 0; ++i)
-    {
-      size_t l = strlen(*i);
-      if ((l > extlen) && ((*i)[l - extlen - 1] == '.'))
-        {
-          const char* ext = (*i) + (l - extlen);
-
-          if (strcasecmp(ext, archiveExt) == 0)
-            {
-              const char* d = PHYSFS_getRealDir(*i);
-              boost::scoped_array<char> str(new char[strlen(d) + strlen(dirsep) + l + 1]);
-              sprintf(str.get(), "%s%s%s", d, dirsep, *i);
-              PHYSFS_addToSearchPath(str.get(), 1);
-            }
-        }
-    }
-
-  PHYSFS_freeList(rc);
-
+  
   // when started from source dir...
   ::datadir = PHYSFS_getBaseDir();
   ::datadir += "data/";
