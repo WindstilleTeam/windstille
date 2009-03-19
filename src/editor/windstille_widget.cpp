@@ -65,7 +65,7 @@ WindstilleWidget::WindstilleWidget()
   signal_key_press_event().connect(sigc::mem_fun(this, &WindstilleWidget::key_press));
   signal_key_release_event().connect(sigc::mem_fun(this, &WindstilleWidget::key_release));
 
-  signal_drag_data_received().connect(sigc::mem_fun(this, &WindstilleWidget::on_drag_data_received));
+  //signal_drag_data_received().connect(sigc::mem_fun(this, &WindstilleWidget::on_drag_data_received));
   //signal_drag_finish().connect(sigc::mem_fun(this, &WindstilleWidget::on_drag_finish));
 
   // Glib::signal_timeout().connect(sigc::mem_fun(this, &WindstilleWidget::on_timeout), 33);
