@@ -282,76 +282,80 @@ WindstilleMain::init_physfs(const char* argv0)
       throw std::runtime_error(msg.str());
     }
 
-  // Initialize physfs (this is a slightly modified version of
-  // PHYSFS_setSaneConfig
-  const char* application = "windstille";
-  const char* userdir = PHYSFS_getUserDir();
+  { // Initialize physfs (this is a slightly modified version of
+    // PHYSFS_setSaneConfig
+    const char* application = "windstille";
+    const char* userdir = PHYSFS_getUserDir();
   
-  boost::scoped_array<char> writedir(new char[strlen(userdir) + strlen(application) + 2]);
+    boost::scoped_array<char> writedir(new char[strlen(userdir) + strlen(application) + 2]);
 
-  // Set configuration directory
-  sprintf(writedir.get(), "%s.%s", userdir, application);
-  if (!PHYSFS_setWriteDir(writedir.get()))
-    {
-      // try to create the directory
-      boost::scoped_array<char> mkdir(new char[strlen(application) + 2]);
+    // Set configuration directory
+    sprintf(writedir.get(), "%s.%s", userdir, application);
+    if (!PHYSFS_setWriteDir(writedir.get()))
+      {
+        // try to create the directory
+        boost::scoped_array<char> mkdir(new char[strlen(application) + 2]);
 
-      sprintf(mkdir.get(), ".%s", application);
+        sprintf(mkdir.get(), ".%s", application);
 
-      if (!PHYSFS_setWriteDir(userdir) || !PHYSFS_mkdir(mkdir.get())) 
-        {
-          std::ostringstream msg;
-          msg << "Failed creating configuration directory '"
-              << writedir << "': " << PHYSFS_getLastError();
-          throw std::runtime_error(msg.str());
-        }
+        if (!PHYSFS_setWriteDir(userdir) || !PHYSFS_mkdir(mkdir.get())) 
+          {
+            std::ostringstream msg;
+            msg << "Failed creating configuration directory '"
+                << writedir << "': " << PHYSFS_getLastError();
+            throw std::runtime_error(msg.str());
+          }
 
-      if (!PHYSFS_setWriteDir(writedir.get())) 
-        {
-          std::ostringstream msg;
-          msg << "Failed to use configuration directory '"
-              <<  writedir << "': " << PHYSFS_getLastError();
-          throw std::runtime_error(msg.str());
-        }
-    }
-  PHYSFS_addToSearchPath(writedir.get(), 0);
-  
-  // when started from source dir...
-  ::datadir = PHYSFS_getBaseDir();
-  ::datadir += "data/";
-  std::string testfname = ::datadir;
-  testfname += "tiles.scm";
-  bool sourcedir = false;
-  FILE* f = fopen(testfname.c_str(), "r");
-  if (f)
-    {
-      fclose(f);
-      if (!PHYSFS_addToSearchPath(::datadir.c_str(), 1))
-        {
-          std::cout << "Warning: Couldn't add '" << ::datadir
-                    << "' to physfs searchpath: " << PHYSFS_getLastError() << "\n";
-        } else {
-        sourcedir = true;
+        if (!PHYSFS_setWriteDir(writedir.get())) 
+          {
+            std::ostringstream msg;
+            msg << "Failed to use configuration directory '"
+                <<  writedir << "': " << PHYSFS_getLastError();
+            throw std::runtime_error(msg.str());
+          }
       }
-    }
+    PHYSFS_addToSearchPath(writedir.get(), 0);
+  }
 
-  if (!sourcedir)
-    {
+  { // when started from source dir...
+    ::datadir = PHYSFS_getBaseDir();
+    ::datadir += "data/";
+    std::string testfname = ::datadir;
+    testfname += "tiles.scm";
+    bool sourcedir = false;
+    FILE* f = fopen(testfname.c_str(), "r");
+    if (f)
+      {
+        fclose(f);
+        if (!PHYSFS_addToSearchPath(::datadir.c_str(), 1))
+          {
+            std::cout << "Warning: Couldn't add '" << ::datadir
+                      << "' to physfs searchpath: " << PHYSFS_getLastError() << "\n";
+          }
+        else 
+          {
+            sourcedir = true;
+          }
+      }
+  
+    if (!sourcedir)
+      {
 #if defined(APPDATADIR) || defined(ENABLE_BINRELOC)
 #ifdef ENABLE_BINRELOC
-      char* brdatadir = br_strcat(DATADIR, "/" PACKAGE_NAME);
-      ::datadir = brdatadir;
-      free(brdatadir);
+        char* brdatadir = br_strcat(DATADIR, "/" PACKAGE_NAME);
+        ::datadir = brdatadir;
+        free(brdatadir);
 #else
-      ::datadir = APPDATADIR;
+        ::datadir = APPDATADIR;
 #endif
-      if (!PHYSFS_addToSearchPath(::datadir.c_str(), 1))
-        {
-          std::cout << "Couldn't add '" << ::datadir
-                    << "' to physfs searchpath: " << PHYSFS_getLastError() << "\n";
-        }
+        if (!PHYSFS_addToSearchPath(::datadir.c_str(), 1))
+          {
+            std::cout << "Couldn't add '" << ::datadir
+                      << "' to physfs searchpath: " << PHYSFS_getLastError() << "\n";
+          }
 #endif
-    }
+      }
+  }
 
   // allow symbolic links
   PHYSFS_permitSymbolicLinks(1);
