@@ -16,34 +16,28 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_OBJECT_TREE_HPP
-#define HEADER_WINDSTILLE_EDITOR_OBJECT_TREE_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_OBJECT_SELECTOR_HPP
+#define HEADER_WINDSTILLE_EDITOR_OBJECT_SELECTOR_HPP
 
-#include <gtkmm/treeview.h>
+#include <gtkmm/box.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/label.h>
-#include <gtkmm/box.h>
-#include <gtkmm/uimanager.h>
-#include <gtkmm/actiongroup.h>
+#include <gtkmm/iconview.h>
 
-class ObjectTree : public Gtk::VBox
+class ObjectSelector : public Gtk::VBox
 {
 private:
   Gtk::Label label;
   Gtk::ScrolledWindow scrolled;
-  Gtk::TreeView treeview;
-
-  Glib::RefPtr<Gtk::UIManager>   ui_manager;
-  Glib::RefPtr<Gtk::ActionGroup> action_group;
-
-public:
-  ObjectTree();
-  virtual ~ObjectTree();
+  Gtk::IconView iconview;
   
+public:
+  ObjectSelector();
+  virtual ~ObjectSelector();
 
 private:
-  ObjectTree(const ObjectTree&);
-  ObjectTree& operator=(const ObjectTree&);
+  ObjectSelector(const ObjectSelector&);
+  ObjectSelector& operator=(const ObjectSelector&);
 };
 
 #endif

@@ -26,6 +26,7 @@
 #include <gtkmm/window.h>
 #include <gtkmm/notebook.h>
 
+#include "object_selector.hpp"
 #include "object_tree.hpp"
 
 class EditorWindow : public Gtk::Window
@@ -38,8 +39,8 @@ private:
   Gtk::Statusbar status;
   
   Gtk::Notebook notebook;
-  ObjectTree    object_tree;
-  ObjectTree    object_tree2;
+  ObjectSelector object_selector;
+  ObjectTree     object_tree;
 
   Glib::RefPtr<Gtk::UIManager>   ui_manager;
   Glib::RefPtr<Gtk::ActionGroup> action_group;

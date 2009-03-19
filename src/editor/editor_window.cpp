@@ -23,6 +23,7 @@
 #include <gtkmm/toolbar.h>
 #include <gtkmm/stock.h>
 
+#include "windstille_widget.hpp"
 #include "about_window.hpp"
 #include "editor_window.hpp"
 
@@ -135,11 +136,13 @@ EditorWindow::EditorWindow()
 
   vpaned.set_size_request(300, -1);
 
+  object_selector.set_size_request(-1, 300);
+
   hpaned.add(notebook);
   hpaned.add(vpaned);
-  vpaned.add1(object_tree);
-  
-  vpaned.add2(object_tree2);
+ 
+  vpaned.add1(object_selector);
+  vpaned.add2(object_tree);
 
   // Window
   add(vbox);
@@ -166,11 +169,21 @@ void
 EditorWindow::on_new()
 {
   std::cout << "on_new" << std::endl;
-  // FIXME: Memleaking placeholder
-  Gtk::TextView* page = new Gtk::TextView();
-  //page->set_text("Hello World");
-  notebook.append_page(*page, Glib::ustring::compose("Sector %1", notebook.get_n_pages()));
-  page->show();
+  if (0)
+    {
+      // FIXME: Memleaking placeholder
+      Gtk::TextView* page = new Gtk::TextView();
+      //page->set_text("Hello World");
+      notebook.append_page(*page, Glib::ustring::compose("Sector %1", notebook.get_n_pages()));
+      page->show();
+    }
+  else
+    {
+      WindstilleWidget* windstille = new WindstilleWidget();
+      notebook.set_current_page
+        (notebook.append_page(*windstille, Glib::ustring::compose("Sector %1", notebook.get_n_pages())));
+      windstille->show();
+    }
 }
 
 void

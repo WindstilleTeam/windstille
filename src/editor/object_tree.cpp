@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <gtkmm/stock.h>
+#include <gtkmm/toolbar.h>
 #include <gtkmm/treemodel.h>
 #include <gtkmm/treestore.h>
 #include <gtkmm/treemodelcolumn.h>
@@ -36,6 +38,7 @@ public:
 };
 
 ObjectTree::ObjectTree()
+  : label("Scene Tree", Gtk::ALIGN_LEFT)
 {
   ObjectTreeColumns columns;
   Glib::RefPtr<Gtk::TreeStore> list_store = Gtk::TreeStore::create(columns);
@@ -58,9 +61,8 @@ ObjectTree::ObjectTree()
       (*it2)[columns.visible] = false;
     }
 
-  treeview.set_headers_clickable();
-  // set_headers_visible(false);
-  // set_grid_lines(Gtk::TREE_VIEW_GRID_LINES_BOTH);
+  //treeview.set_headers_clickable();
+  treeview.set_headers_visible(false);
   treeview.set_enable_tree_lines();
   treeview.set_model(list_store);
 
@@ -70,7 +72,32 @@ ObjectTree::ObjectTree()
 
   treeview.expand_all();
 
-  add(treeview);
+  ui_manager   = Gtk::UIManager::create();
+  action_group = Gtk::ActionGroup::create();
+  
+  action_group->add(Gtk::Action::create("ExpandAll", Gtk::Stock::MEDIA_PLAY));
+  action_group->add(Gtk::Action::create("ShowAll",   Gtk::Stock::ZOOM_100));
+
+  ui_manager->insert_action_group(action_group);
+
+  ui_manager->add_ui_from_string("<ui>"
+                                 "  <toolbar  name='ToolBar'>"
+                                 "    <toolitem action='ExpandAll'/>"
+                                 "    <toolitem action='ShowAll'/>"
+                                 "  </toolbar>"
+                                 "</ui>");
+  
+  Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/ToolBar"));
+
+  toolbar.set_icon_size(Gtk::ICON_SIZE_MENU);
+
+  scrolled.add(treeview);
+
+  pack_start(label, Gtk::PACK_SHRINK);
+  pack_start(toolbar, Gtk::PACK_SHRINK);
+  add(scrolled);
+
+  show_all();
 }
 
 ObjectTree::~ObjectTree()

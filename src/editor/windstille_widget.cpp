@@ -87,13 +87,13 @@ WindstilleWidget::on_realize()
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
-  if (!glwindow->gl_begin(get_gl_context()))
-    return;
+  if (glwindow->gl_begin(get_gl_context()))
+    {
+      //Framebuffer::init();
+      //Framebuffer::reshape(Size(get_width(), get_height()));
 
-  //Framebuffer::init();
-  //Framebuffer::reshape(Size(get_width(), get_height()));
-
-  glwindow->gl_end();
+      glwindow->gl_end();
+    }
 }
 
 bool
@@ -102,7 +102,7 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* event)
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   // *** OpenGL BEGIN ***
-  if (!glwindow->gl_begin(get_gl_context()))
+  if (glwindow->gl_begin(get_gl_context()))
     return false;
 
   //Framebuffer::reshape(Size(get_width(), get_height()));

@@ -11,7 +11,9 @@ env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4 libglademm-2.4 gtkglextmm-
 
 env.Program('editor', ['main.cpp',
                        'object_tree.cpp',
+                       'object_selector.cpp',
                        'about_window.cpp',
+                       'windstille_widget.cpp',
                        'editor_window.cpp'])
 
 # EOF #
