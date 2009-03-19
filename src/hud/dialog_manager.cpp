@@ -32,12 +32,10 @@ DialogManager* DialogManager::current_ = 0;
 DialogManager::DialogManager()
 {
   current_ = this;
-  text_area = 0;
 }
 
 DialogManager::~DialogManager()
 {
-  delete text_area;
 }
 
 void
@@ -181,10 +179,8 @@ DialogManager::create_text()
 
   Size dialog_size(dialog_width, dialog_height);
 
-
-  delete text_area;
-  text_area = new TextArea(Rect(Point(text_rect.left, text_rect.top + Fonts::vera20->get_height()),
-                                Size(text_width, 200)), true);
+  text_area.reset(new TextArea(Rect(Point(text_rect.left, text_rect.top + Fonts::vera20->get_height()),
+                                    Size(text_width, 200)), true));
   text_area->set_font(Fonts::vera20);
   text_area->set_text(text);
 }
