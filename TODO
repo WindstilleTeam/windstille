@@ -11,10 +11,6 @@ other means.
 Scripting
 =========
 
-* add Ctrl-k, Ctrl-k shortcuts to console
-
-* save command history of the console between runs
-
 * ParticleSystem could be hooked up to scripting
 
 * add a way to bind keys to script functions for use in debugging
@@ -139,8 +135,17 @@ Scripting
 Input Handling
 ==============
 
+* input in Navigation Graph test uses deadzone, but shouldn't
+
+* remove secondary controller, instead accept multiple --controller
+  options and store the files in a list
+
 * analog trigger handling is a little problematic, since the axis is
   neutral at -32768, not at 0.
+
+* src/input/controller.hpp should keep not only the current state, but
+  also the last state, this would allow proper detection of button
+  presses and axis movements over a threshold
 
 * Input deadzone is problematic when trying to get angle of a stick,
   deadzone needs to act different there then when X/Y are handled
@@ -180,6 +185,61 @@ Sound Handling
 Miscellaneous
 =============
 
+* work on Object introspection, see: ~/projects/lang/c++/introspection.cpp
+
+  class GameObject {
+    PropertiesClass property_class() {
+      static PropertyClass* this_class = 0;
+      if (!this_class) {
+                 
+      } else {
+
+      }
+    }
+    Properties properties() {
+       static PropertiesClass this_class;
+       if (!PropertiesClass 
+    }
+  }
+
+* remove DEBUG macro or give it a clearer defined purpose, currently
+  used only in a few tiny places
+
+* add way to TextArea to layout text with a fixed indent after a linebreak:
+
+  Bob: "Hi, how are you, yada yada yada yada yada yada
+        yada yada yada yada yada yada yada yada yada yada
+        yada yada yada"
+
+* add Ctrl-k, Ctrl-k shortcuts to console
+
+* save command history of the console between runs
+
+* move the concept of parenting into .scm
+  
+  (scriptable-object 
+       (parent "player")
+       ...)
+
+  tricky since parent name can't be resolved at object creation, only
+  later
+
+* extend the concept of parenting to other(all?) objects
+
+* write "objects/decal.cpp" class, i.e. simple Surface class for
+  non-animated objects:
+
+  (decal (pos x y) 
+
+         ;; relative to pos
+         (quad x1 y1 ;; defaults to Rectf(Vector2f(0, 0), imagesize)
+               x2 y2
+               x3 y3
+               x4 y4)
+         (image "images/greychess.png")
+         (layer "color")
+         )
+
 * Display::push/pop_cliprect() doesn't handle different aspect-ratios properly
 
 * lightmap is broken with non-standard aspect-ratio
@@ -201,10 +261,6 @@ Miscellaneous
   NavigationMesh)
 
 * get rid of global game_time variable
-
-* No object shall grab input by itself, instead the Screen should
-  route it, i.e. Player is grabbing input itself, this leads to
-  problems
 
 * map laserpointer to the second analog-stick, make mapping absolute,
   not relative
@@ -360,6 +416,12 @@ Level Design
 Random Things
 =============
 
+* UTF8 support is missing in:
+  
+  - BabyXML
+  - TTFFont
+  - Console
+
 * Add more markup to TextArea: (not really needed with LucasArts-like dialog)
     <font color="#ffbbcc"></font>: Use arbitary color
     <b></b>: make text properly bold
@@ -369,11 +431,15 @@ Random Things
 
 * add line numbers to error messages from lisp
 
-* use non-euler angles in the model viewer
+* rotation in 3d model viewer feels a little weird, could maybe be
+  improved somehow
 
 * using a non-square pixel aspect ratio leads to ugly fonts, fonts
   could be rendered with that aspect ratio in mind so that they are
-  'pixel-perfect', instead of scaled by OpenGL
+  'pixel-perfect', instead of scaled by OpenGL. This requires:
+
+  - a UI that is reasonably flexible to handle changes in font size
+  - some code that scales/unscales the Font before drawing it
 
 * update random number generator:
   http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html
@@ -396,9 +462,67 @@ Graphics
 Editor
 ======
 
+* implement dialog to change level properties:
+
+  - name
+  - ambient color (Gtk::ColorSelection)
+  - level size (?)
+
+* implement dialog to change objects properties
+
+* figure out how to properly draw controls in the Workspace (resize,
+  rotation, vertices of a quad),
+
+* SceneModel seems easier to implement then Sandbox'ing, maybe go with
+  that first. TreeModel could be used directly to presenet the Scene,
+  instead of trying to keep to things synced.
+
+* Sandbox Pro&Contra:
+
+  + very fast getting in and out of the game
+  + edit game while it is running
+  + no obscure version incompatibilty between editor and game objects
+  + game editability can be reused in scripts
+
+  - game engine gets more complex
+
+* Sandbox Implementation (similar to Feuerkraft):
+
+  - add introspection to objects via PropertySets (see Feuerkraft),
+    allows animation as well as easy editing and serialization
+  - add a draw_editor() or a draw(bool editor)
+  - some stuff for modifier handles
+
 * make Windstille flexible enough so that it can work in non-SDL
   settings, more exactly it should be embeddable into a GtkWidget (or
   shall the editor be completly seperate?)
+
+* should objects in the editor be based on real Windstille objects or
+  on mookup objects?
+
+* Editor Toolbox:
+
+  - Object Select Tool (move objects around)
+  - Object Manipulation Tool (move vertices in the object around)
+  - Zoom Tool
+
+* Editor Toolbar:
+
+  - Visualize parent/child relationship (little arrows)
+  - Object Properties
+
+* Object List
+
+  - plain image
+  - prefabs
+  - enemies
+  - active objects (doors, switches, etc.)
+
+* Layer List
+
+  - display objects in the scene as tree
+  - objects can be parented to each other
+  - objects and object groups can be toggled invisible/transparent
 
 Code Cleanup
 ============
@@ -407,10 +531,9 @@ Code Cleanup
 
   - collision engine
   - BabyXML
-  - tinygettext
   - Sprite2D
   - Sprite3D
-  - particle systems
+  - ParticleSystem
   - Dialog/Conversation
 
 * Screens might fit better into app/ then screen/
