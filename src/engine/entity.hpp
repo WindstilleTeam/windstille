@@ -20,10 +20,12 @@
 #define HEADER_WINDSTILLE_ENGINE_ENTITY_HPP
 
 #include <boost/signal.hpp>
-#include "math/vector2f.hpp"
-#include "engine/game_object.hpp"
-#include "collision/collision_object.hpp"
 
+#include "properties/properties.hpp"
+#include "collision/collision_object.hpp"
+#include "engine/game_object.hpp"
+#include "math/vector2f.hpp"
+
 /** A GameObject which has a position and some other properties which
     are shared among all/most things in the world */
 class Entity : public GameObject
@@ -73,11 +75,13 @@ public:
 
   boost::signal<void ()>& sig_done() { return done; }
 
+  virtual Properties get_properties();
+ 
 private:
   Entity (const Entity&);
   Entity& operator= (const Entity&);
 };
-
+
 #endif
 
 /* EOF */

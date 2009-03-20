@@ -150,6 +150,9 @@ env.Program('../windstille', [
         'particles/surface_drawer.cpp',
         'physfs/physfs_sdl.cpp',
         'physfs/physfs_stream.cpp',
+        'properties/property.cpp',
+        'properties/property_set.cpp',
+        'properties/properties.cpp',
         'screen/armature_test.cpp',
         'screen/game_session.cpp',
         'screen/geometry_test.cpp',
@@ -204,11 +207,11 @@ editor_env.ParseConfig('pkg-config --cflags --libs libcurl')
 editor_env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4 gtkglextmm-1.2')
 
 editor_env.Program('editor/editor', ['editor/main.cpp',
-                              'editor/object_tree.cpp',
-                              'editor/object_selector.cpp',
-                              'editor/about_window.cpp',
-                              'editor/windstille_widget.cpp',
-                              'editor/editor_window.cpp'])
+                                     'editor/object_tree.cpp',
+                                     'editor/object_selector.cpp',
+                                     'editor/about_window.cpp',
+                                     'editor/windstille_widget.cpp',
+                                     'editor/editor_window.cpp'])
 
 
 # EOF #

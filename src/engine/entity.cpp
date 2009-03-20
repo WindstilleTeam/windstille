@@ -17,11 +17,13 @@
 */
 
 #include <assert.h>
+#include "properties/property_set.hpp"
+#include "properties/property.hpp"
 #include "app/globals.hpp"
 #include "sector.hpp"
 #include "tile/tile_map.hpp"
 #include "entity.hpp"
-
+
 Entity::Entity()
   : velocity(0, 0),
     useable(false)
@@ -60,4 +62,17 @@ Entity::set_parent(Entity* parent_)
     }
 }
 
+Properties
+Entity::get_properties()
+{
+  static PropertySet* type = 0;
+  if (!type) 
+    {
+      type = new PropertySet("Entity");
+      type->add_bool("usable", &Entity::useable);
+    }
+
+  return Properties(type, this);
+}
+
 /* EOF */
