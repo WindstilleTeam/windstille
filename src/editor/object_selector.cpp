@@ -69,7 +69,7 @@ ObjectSelector::ObjectSelector()
   pack_start(label, Gtk::PACK_SHRINK);
   add(scrolled);
   
-  show_all();
+  //show_all();
 }
 
 ObjectSelector::~ObjectSelector()

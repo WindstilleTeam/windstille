@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <gtkmm/stock.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/treemodel.h>
@@ -43,7 +44,6 @@ ObjectTree::ObjectTree()
   ObjectTreeColumns columns;
   Glib::RefPtr<Gtk::TreeStore> list_store = Gtk::TreeStore::create(columns);
 
- 
   Gtk::TreeStore::iterator root = list_store->append();
   (*root)[columns.type]    = Gdk::Pixbuf::create_from_file("type.png");
   (*root)[columns.name]    = Glib::ustring("Scene");
@@ -100,11 +100,47 @@ ObjectTree::ObjectTree()
   pack_start(toolbar, Gtk::PACK_SHRINK);
   add(scrolled);
 
-  show_all();
+  list_store->signal_row_changed().connect(sigc::mem_fun(*this, &ObjectTree::on_row_changed));
+  list_store->signal_row_deleted().connect(sigc::mem_fun(*this, &ObjectTree::on_row_deleted));
+  list_store->signal_row_has_child_toggled().connect(sigc::mem_fun(*this, &ObjectTree::on_row_has_child_toggled));
+  list_store->signal_row_inserted().connect(sigc::mem_fun(*this, &ObjectTree::on_row_inserted));
+  list_store->signal_rows_reordered().connect(sigc::mem_fun(*this, &ObjectTree::on_rows_reordered));
+
+  //show_all();
 }
 
 ObjectTree::~ObjectTree()
 {
+}
+
+void
+ObjectTree::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+{
+  std::cout << "ObjectTree:on_row_changed" << std::endl;
+}
+
+void
+ObjectTree::on_row_deleted(const Gtk::TreeModel::Path& path)
+{
+  std::cout << "ObjectTree:on_row_deleted" << std::endl;
+}
+
+void
+ObjectTree::on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+{
+  std::cout << "ObjectTree:on_row_has_child_toggled" << std::endl;
+}
+
+void
+ObjectTree::on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+{
+  std::cout << "ObjectTree:on_row_inserted" << std::endl;
+}
+
+void
+ObjectTree::on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order)
+{
+  std::cout << "ObjectTree:on_row_reordered" << std::endl;
 }
 
 /* EOF */

@@ -24,6 +24,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/box.h>
 #include <gtkmm/uimanager.h>
+#include <gtkmm/treemodel.h>
 #include <gtkmm/actiongroup.h>
 
 class ObjectTree : public Gtk::VBox
@@ -40,6 +41,11 @@ public:
   ObjectTree();
   virtual ~ObjectTree();
   
+  void on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
+  void on_row_deleted(const Gtk::TreeModel::Path& path);
+  void on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
+  void on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
+  void on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order);
 
 private:
   ObjectTree(const ObjectTree&);

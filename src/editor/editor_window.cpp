@@ -171,21 +171,10 @@ void
 EditorWindow::on_new()
 {
   std::cout << "on_new" << std::endl;
-  if (0)
-    {
-      // FIXME: Memleaking placeholder
-      Gtk::TextView* page = new Gtk::TextView();
-      //page->set_text("Hello World");
-      notebook.append_page(*page, Glib::ustring::compose("Sector %1", notebook.get_n_pages()));
-      page->show();
-    }
-  else
-    {
-      WindstilleWidget* windstille = new WindstilleWidget();
-      notebook.set_current_page
-        (notebook.append_page(*windstille, Glib::ustring::compose("Sector %1", notebook.get_n_pages())));
-      windstille->show();
-    }
+  WindstilleWidget* windstille = new WindstilleWidget();
+  int new_page = notebook.append_page(*windstille, Glib::ustring::compose("Sector %1", notebook.get_n_pages()));
+  windstille->show();
+  notebook.set_current_page(new_page);
 }
 
 void
