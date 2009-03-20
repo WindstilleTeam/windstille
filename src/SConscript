@@ -206,12 +206,13 @@ editor_env.ParseConfig('Magick++-config --libs --cppflags')
 editor_env.ParseConfig('pkg-config --cflags --libs libcurl')
 editor_env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4 gtkglextmm-1.2')
 
-editor_env.Program('editor/editor', ['editor/main.cpp',
-                                     'editor/object_tree.cpp',
-                                     'editor/object_selector.cpp',
-                                     'editor/about_window.cpp',
-                                     'editor/windstille_widget.cpp',
-                                     'editor/editor_window.cpp'])
-
+editor_env.Program('../windstille-editor', [
+        'editor/main.cpp',
+        'editor/object_tree.cpp',
+        'editor/object_selector.cpp',
+        'editor/about_window.cpp',
+        'editor/windstille_widget.cpp',
+        'editor/editor_window.cpp'
+        ])
 
 # EOF #

@@ -45,19 +45,19 @@ ObjectTree::ObjectTree()
   Glib::RefPtr<Gtk::TreeStore> list_store = Gtk::TreeStore::create(columns);
 
   Gtk::TreeStore::iterator root = list_store->append();
-  (*root)[columns.type]    = Gdk::Pixbuf::create_from_file("type.png");
+  (*root)[columns.type]    = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*root)[columns.name]    = Glib::ustring("Scene");
   (*root)[columns.visible] = false;
 
   for(int i = 0; i < 10; ++i)
     {
       Gtk::TreeStore::iterator it  = list_store->append(root->children());
-      (*it)[columns.type]    = Gdk::Pixbuf::create_from_file("type.png");
+      (*it)[columns.type]    = Gdk::Pixbuf::create_from_file("data/editor/type.png");
       (*it)[columns.name]    = Glib::ustring("Hello World");
       (*it)[columns.visible] = false;
 
       Gtk::TreeModel::iterator it2  = list_store->append(it->children());
-      (*it2)[columns.type]    = Gdk::Pixbuf::create_from_file("type.png");
+      (*it2)[columns.type]    = Gdk::Pixbuf::create_from_file("data/editor/type.png");
       (*it2)[columns.name]    = Glib::ustring("Hello World");
       (*it2)[columns.visible] = false;
     }

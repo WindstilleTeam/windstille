@@ -39,7 +39,7 @@ ObjectSelector::ObjectSelector()
   ObjectIconColumns columns;
   Glib::RefPtr<Gtk::ListStore> list_store = Gtk::ListStore::create(columns);
 
-  Glib::RefPtr<Gdk::Pixbuf> icon = Gdk::Pixbuf::create_from_file("icon.png");
+  Glib::RefPtr<Gdk::Pixbuf> icon = Gdk::Pixbuf::create_from_file("data/editor/icon.png");
 
   iconview.modify_base(Gtk::STATE_NORMAL, Gdk::Color("grey"));
   
@@ -80,7 +80,7 @@ ObjectSelector::~ObjectSelector()
 void
 ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file("icon.png");
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file("data/editor/icon.png");
   context->set_icon(pixbuf, pixbuf->get_width()/2, pixbuf->get_height()/2);
 }
 
