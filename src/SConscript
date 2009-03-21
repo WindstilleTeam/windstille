@@ -57,8 +57,8 @@ math_lib = math_env.StaticLibrary('math', [
         'math/vector2f.cpp',
         ])
 
-display_env = Environment(CPPPATH=['.'],
-                          CXXFLAGS=['-Wall', '-Werror', '-O2', '-g'])
+display_env = conf_env.Clone()
+display_env['CPPPATH'] = ['.', '..']
 display_env.ParseConfig('sdl-config --cflags --libs')
 display_env.ParseConfig('freetype-config --libs --cflags')
 
@@ -224,7 +224,7 @@ env.Program('../windstille', [
 
 editor_env = Environment(CPPPATH=['.'],
                          CXXFLAGS=['-Wall', '-Werror', '-O2', '-g'],
-                         LIBS = [display_lib, physfs_lib, util_lib, math_lib, 'GL', 'GLEW', 'SDL_image', 'physfs'])
+                         LIBS = [display_lib, util_lib, physfs_lib, math_lib, 'GL', 'GLEW', 'SDL_image', 'physfs'])
 
 editor_env.ParseConfig('pkg-config libpng --libs --cflags')
 editor_env.ParseConfig('sdl-config --cflags --libs')

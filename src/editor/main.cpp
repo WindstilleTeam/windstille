@@ -16,10 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <GL/glew.h>
+#include <GL/gl.h>
 #include <iostream>
-#include <gtkmm.h>
+#include <stdexcept>
+#include <sstream>
+#include <gtkmm/main.h>
 #include <gtkglmm.h>
-#include <gtkmm/gl/widget.h>
+#include <physfs.h>
 
 #include "editor_window.hpp"
 #include "main.hpp"
@@ -31,6 +35,15 @@ WindstilleEditor::main(int argc, char** argv)
     {
       Gtk::Main kit(&argc, &argv);
       Gtk::GL::init(&argc, &argv);
+
+            if (!PHYSFS_init(argv[0]))
+        {
+          std::ostringstream msg;
+          msg << "Couldn't initialize physfs: " << PHYSFS_getLastError();
+          throw std::runtime_error(msg.str());
+        }
+  
+      PHYSFS_addToSearchPath("data/", 0);
 
       EditorWindow window;
       

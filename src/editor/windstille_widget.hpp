@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 #define HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 
+#include <memory>
 #include <GL/glew.h>
 #include <GL/gl.h>
 
@@ -39,7 +40,7 @@ class WindstilleWidget
 {
 private:
   std::vector<Vector2f> objects;
-    SceneContext sc;
+  std::auto_ptr<SceneContext> sc;
   
 public:
   WindstilleWidget();

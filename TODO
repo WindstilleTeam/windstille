@@ -464,6 +464,9 @@ Graphics
 Editor
 ======
 
+* use SceneContext in WindstilleWidget and setup Physfs,
+  SurfaceManager, TextureManager and everything else that is needed
+
 * add a new layer to SceneContext that is used for UI elements, such
   as control handles for scale or rotate, could maybe also used for
   use-verbs and stuff. The new layer shall only translate objects, but

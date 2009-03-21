@@ -22,7 +22,16 @@
 
 #include <gtkmm.h>
 
+
+#include "sprite2d/sprite.hpp"
+#include "display/texture_manager.hpp"
+#include "display/surface_manager.hpp"
+#include "display/opengl_state.hpp"
+
+#include "display/surface.hpp"
 #include "windstille_widget.hpp"
+
+bool lib_init = false;
 
 WindstilleWidget::WindstilleWidget()
 {
@@ -87,12 +96,26 @@ WindstilleWidget::on_timeout()
 void
 WindstilleWidget::on_realize()
 {
+  std::cout << "WindstilleWidget::on_realize()" << std::endl;
+
   Gtk::DrawingArea::on_realize();
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (glwindow->gl_begin(get_gl_context()))
     {
+      if (!lib_init)
+        {
+          lib_init = true;
+          OpenGLState::init();
+          //texture_manager  = new TextureManager();
+          //new SurfaceManager();
+          //sprite2d_manager = new SpriteManager();
+          //sc.reset(new SceneContext());
+        }
+
+      //Surface surface("images/hedgehog.png");
+      
       glViewport(0, 0, get_width(), get_height());
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
@@ -135,6 +158,7 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* event)
 bool
 WindstilleWidget::on_expose_event(GdkEventExpose* event)
 {
+  std::cout << "WindstilleWidget::on_expose()" << std::endl;
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (!glwindow->gl_begin(get_gl_context()))
