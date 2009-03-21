@@ -75,8 +75,10 @@ OpenGLState::init()
 
   global_ = new OpenGLState();
 
+#if 0
   if (debug)
     global_->verify();
+#endif
 }
 
 OpenGLState*
@@ -313,8 +315,10 @@ OpenGLState::activate()
         }
     }
 
+#if 0
   if (debug)
     verify();
+#endif
 }
 
 void

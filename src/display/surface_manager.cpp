@@ -42,7 +42,8 @@ SurfaceManager::SurfaceManager()
 
 SurfaceManager::~SurfaceManager()
 {
-  if(debug)
+#if 0 
+  if (debug)
     {
       for(Surfaces::iterator i = surfaces.begin(); i != surfaces.end(); ++i)
         {
@@ -50,6 +51,7 @@ SurfaceManager::~SurfaceManager()
           std::cerr << "Warning: Surface '" << i->first << "' not released.\n";
         }
     }
+#endif
 
   current_ = 0;
 }

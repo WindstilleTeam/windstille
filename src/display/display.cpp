@@ -23,7 +23,6 @@
 #include <fstream>
 #include <stdexcept>
 #include <SDL.h>
-#include "app/console.hpp"
 #include "app/config.hpp"
 #include "math/math.hpp"
 #include "display/opengl_state.hpp"
@@ -32,7 +31,6 @@
 #include <assert.h>
 
 Size              Display::aspect_size;
-SDL_Surface*      Display::window = 0;
 std::vector<Rect> Display::cliprects;
 std::vector<Framebuffer> framebuffers;
 
@@ -225,87 +223,6 @@ Display::get_height()
 }
 
 void
-Display::init()
-{
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
-  SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
-  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
-  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
-
-  if (config.get_int("anti-aliasing"))
-    {
-      SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 ); // boolean value, either it's enabled or not
-      SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, config.get_int("anti-aliasing") ); // 0, 2, or 4 for number of samples
-    }
-
-  window = SDL_SetVideoMode(config.get_int("screen-width"), config.get_int("screen-height"),
-                            0, SDL_OPENGL | (config.get_bool("fullscreen") ? SDL_FULLSCREEN : 0));
-  if (!window)
-    {
-      throw std::runtime_error("Display:: Couldn't create window");
-    }
-  else
-    {
-      SDL_WM_SetCaption("Windstille", 0 /* icon */);
-
-      GLenum err = glewInit();
-      if(err != GLEW_OK) {
-        std::ostringstream msg;
-        msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
-        throw std::runtime_error(msg.str());
-      }
-      /*
-        if(!GLEW_EXT_framebuffer_object) {
-        std::ostringstream msg;
-        msg << "Display:: Framebuffer opengl extension not supported";
-        throw std::runtime_error(msg.str());
-        }
-      */
-
-      glViewport(0, 0, window->w, window->h);
-      glMatrixMode(GL_PROJECTION);
-      glLoadIdentity();
-
-      static const float cl_pixelcenter_constant = 0.375;
-
-      //glOrtho(0.0, window->w, window->h, 0.0, -1000.0, 1000.0);
-  
-      // glOrtho(0.0, 800, 0.0, 600.0, 1000.0, -1000.0); // proper right-hand CO
-      Display::aspect_size = Size(config.get_int("aspect-width"), 
-                                  config.get_int("aspect-height"));
-
-      glOrtho(0.0, 
-              aspect_size.width, aspect_size.height,
-              0.0, 1000.0, -1000.0);
-      glMatrixMode(GL_MODELVIEW);
-      glLoadIdentity();
-      glTranslated(cl_pixelcenter_constant, cl_pixelcenter_constant, 0.0);
-
-      if (config.get_int("anti-aliasing"))
-        glEnable(GL_MULTISAMPLE_ARB); 
-
-      assert_gl("setup projection");
-
-      OpenGLState::init();
-    }
-}
-
-void
-Display::set_fullscreen(bool fullscreen)
-{ 
-  Uint32 flags = SDL_OPENGL;
-  if (fullscreen)
-    flags |= SDL_FULLSCREEN;
-
-  window = SDL_SetVideoMode(config.get_int("screen-width"), config.get_int("screen-height"),
-                            0, flags);
-  if (!window)
-    {
-      throw std::runtime_error("Display:: Couldn't create window");
-    }
-}
-
-void
 Display::draw_circle(const Vector2f& pos, float radius, const Color& color, int segments)
 {
   assert(segments >= 0);
@@ -492,6 +409,8 @@ Display::set_gamma(float r, float g, float b)
 void
 Display::save_screenshot(const std::string& filename)
 {
+  SDL_Surface* window = SDL_GetVideoSurface();
+
   const int width  = window->w;
   const int height = window->h;
 
@@ -536,7 +455,7 @@ Display::save_screenshot(const std::string& filename)
 
       if (!fp)
         {
-          console << "Error: Couldn't save screenshot: " << strerror(errno) << std::endl;
+          std::cout << "Error: Couldn't save screenshot: " << strerror(errno) << std::endl;
           return;
         }
       else

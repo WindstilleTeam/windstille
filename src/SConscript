@@ -18,9 +18,85 @@
 Import('conf_env', 'features')
 
 SConscript('scripting/SConscript')
+
+util_env = conf_env.Clone()
+util_env['CPPPATH'] = ['.', '..']
+util_lib = util_env.StaticLibrary('util', [
+        'lisp/getters.cpp',
+        'lisp/lexer.cpp',
+        'lisp/lisp.cpp',
+        'lisp/parser.cpp',
+        'lisp/properties.cpp',
+        'lisp/writer.cpp',
+        'util/baby_xml.cpp',
+        'util/command_line.cpp',
+        'util/command_line_generic.cpp',
+        'util/file_reader.cpp',
+        'util/getter.cpp',
+        'util/response_curve.cpp',
+        'util/sexpr_file_reader.cpp',
+        'util/util.cpp',
+        ])
+
+physfs_env = conf_env.Clone()
+physfs_env['CPPPATH'] = ['.', '..']
+physfs_env.ParseConfig('sdl-config --cflags --libs')
+physfs_lib = physfs_env.StaticLibrary('physfs', [
+        'physfs/physfs_sdl.cpp',
+        'physfs/physfs_stream.cpp'])
+
+math_env = conf_env.Clone()
+math_env['CPPPATH'] = ['.']
+math_lib = math_env.StaticLibrary('math', [
+        'math/line.cpp',
+        'math/matrix.cpp',
+        'math/origin.cpp',
+        'math/quaternion.cpp',
+        'math/random.cpp',
+        'math/rect.cpp',
+        'math/vector2f.cpp',
+        ])
+
+display_env = Environment(CPPPATH=['.'],
+                          CXXFLAGS=['-Wall', '-Werror', '-O2', '-g'])
+display_env.ParseConfig('sdl-config --cflags --libs')
+display_env.ParseConfig('freetype-config --libs --cflags')
 
+display_lib = display_env.StaticLibrary('display', [
+        'font/border_font_effect.cpp',
+        'font/no_font_effect.cpp',
+        'font/fonts.cpp',
+        'font/ttf_font.cpp',
+
+        'display/blitter.cpp',
+        'display/display.cpp',
+        'display/drawing_context.cpp',
+        'display/framebuffer.cpp',
+        'display/graphic_context_state.cpp',
+        'display/opengl_state.cpp',
+        'display/render_buffer.cpp',
+        'display/scene_context.cpp',
+        'display/shader_object.cpp',
+        'display/shader_program.cpp',
+        'display/software_surface.cpp',
+        'display/surface.cpp',
+        'display/surface_manager.cpp',
+        'display/text_area.cpp',
+        'display/texture.cpp',
+        'display/texture_manager.cpp',
+        'display/vertex_array_drawing_request.cpp',
+        
+        'sprite2d/data.cpp',
+        'sprite2d/manager.cpp',
+        'sprite2d/sprite.cpp',
+        'sprite3d/data.cpp',
+        'sprite3d/manager.cpp',
+        'sprite3d/sprite3d.cpp',
+        ])
+
 env = conf_env.Clone()
-env.Append(LIBS    = ['GL', 'GLU', 'GLEW', 'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals'])
+env.Append(LIBS    = [display_lib, physfs_lib, util_lib, math_lib,
+                      'GL', 'GLU', 'GLEW', 'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals'])
 env.Append(LIBPATH = ['../external/'] )
 env.Append(CPPPATH = ['.', '..', '../external/SQUIRREL2/include/'])
 
@@ -51,23 +127,6 @@ env.Program('../windstille', [
         'collision/collision_object.cpp',
         'collision/collision_test.cpp',
         'collision/stair_contact.cpp',
-        'display/blitter.cpp',
-        'display/display.cpp',
-        'display/drawing_context.cpp',
-        'display/framebuffer.cpp',
-        'display/graphic_context_state.cpp',
-        'display/opengl_state.cpp',
-        'display/render_buffer.cpp',
-        'display/scene_context.cpp',
-        'display/shader_object.cpp',
-        'display/shader_program.cpp',
-        'display/software_surface.cpp',
-        'display/surface.cpp',
-        'display/surface_manager.cpp',
-        'display/text_area.cpp',
-        'display/texture.cpp',
-        'display/texture_manager.cpp',
-        'display/vertex_array_drawing_request.cpp',
         'engine/camera.cpp',
         'engine/entity.cpp',
         'engine/game_object.cpp',
@@ -75,10 +134,6 @@ env.Program('../windstille', [
         'engine/script_manager.cpp',
         'engine/squirrel_thread.cpp',
         'engine/sector.cpp',
-        'font/border_font_effect.cpp',
-        'font/no_font_effect.cpp',
-        'font/fonts.cpp',
-        'font/ttf_font.cpp',
         'gui/automap.cpp',
         'gui/button.cpp',
         'gui/component.cpp',
@@ -107,19 +162,6 @@ env.Program('../windstille', [
         'input/input_manager_impl.cpp',
         'input/input_manager_sdl.cpp',
         'input/wiimote.cpp',
-        'lisp/getters.cpp',
-        'lisp/lexer.cpp',
-        'lisp/lisp.cpp',
-        'lisp/parser.cpp',
-        'lisp/properties.cpp',
-        'lisp/writer.cpp',
-        'math/line.cpp',
-        'math/matrix.cpp',
-        'math/origin.cpp',
-        'math/quaternion.cpp',
-        'math/random.cpp',
-        'math/rect.cpp',
-        'math/vector2f.cpp',
         'navigation/navigation_graph.cpp',
         'navigation/node.cpp',
         'navigation/properties.cpp',
@@ -148,8 +190,6 @@ env.Program('../windstille', [
         'particles/particle_system.cpp',
         'particles/spark_drawer.cpp',
         'particles/surface_drawer.cpp',
-        'physfs/physfs_sdl.cpp',
-        'physfs/physfs_stream.cpp',
         'properties/property.cpp',
         'properties/property_set.cpp',
         'properties/properties.cpp',
@@ -174,31 +214,17 @@ env.Program('../windstille', [
         'sound/sound_manager.cpp',
         'sound/sound_source.cpp',
         'sound/stream_sound_source.cpp',
-        'sprite2d/data.cpp',
-        'sprite2d/manager.cpp',
-        'sprite2d/sprite.cpp',
-        'sprite3d/data.cpp',
-        'sprite3d/manager.cpp',
-        'sprite3d/sprite3d.cpp',
         'tile/tile.cpp',
         'tile/tile_description.cpp',
         'tile/tile_factory.cpp',
         'tile/tile_map.cpp',
         'tile/tile_packer.cpp',
-        'util/baby_xml.cpp',
-        'util/command_line.cpp',
-        'util/command_line_generic.cpp',
-        'util/file_reader.cpp',
-        'util/getter.cpp',
-        'util/response_curve.cpp',
-        'util/sexpr_file_reader.cpp',
-        'util/util.cpp',
         'screen/view.cpp',
         ])
 
 editor_env = Environment(CPPPATH=['.'],
                          CXXFLAGS=['-Wall', '-Werror', '-O2', '-g'],
-                         LIBS = ['GL', 'GLEW'])
+                         LIBS = [display_lib, physfs_lib, util_lib, math_lib, 'GL', 'GLEW', 'SDL_image', 'physfs'])
 
 editor_env.ParseConfig('pkg-config libpng --libs --cflags')
 editor_env.ParseConfig('sdl-config --cflags --libs')

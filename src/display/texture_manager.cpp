@@ -37,12 +37,14 @@ TextureManager::TextureManager()
 
 TextureManager::~TextureManager()
 {
+#if 0
   if(debug)
   {
     for(Textures::iterator i = textures.begin(); i != textures.end(); ++i) {
       std::cerr << "Warning: Texture '" << i->first << "' not released.\n";
     }
   }
+#endif
 }
 
 Texture

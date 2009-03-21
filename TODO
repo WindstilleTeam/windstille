@@ -185,6 +185,8 @@ Sound Handling
 Miscellaneous
 =============
 
+* get rid of global debug
+
 * work on Object introspection, see: ~/projects/lang/c++/introspection.cpp
 
   class GameObject {

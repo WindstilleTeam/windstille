@@ -16,47 +16,54 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "SDL.h"
+
 #include "windstille.hpp"
 
 #include <boost/scoped_array.hpp>
 #include <stdio.h>
 #include <physfs.h>
 
-#include "globals.hpp"
-#include "screen/screen.hpp"
-#include "windstille_main.hpp"
-#include "font/fonts.hpp"
-#include "screen/game_session.hpp"
-#include "screen/title_screen.hpp"
-#include "engine/sector.hpp"
-#include "input/input_manager.hpp"
-#include "sound/sound_manager.hpp"
-#include "tile/tile_factory.hpp"
-#include "engine/script_manager.hpp"
 #include "config.hpp"
-#include "util/util.hpp"
-#include "font/ttf_font.hpp"
 #include "display/display.hpp"
+#include "display/opengl_state.hpp"
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
-#include "sprite3d/manager.hpp"
-#include "screen/screen_manager.hpp"
-#include "screen/sprite3dview.hpp"
-#include "screen/sprite2dview.hpp"
+#include "engine/script_manager.hpp"
+#include "engine/sector.hpp"
+#include "font/fonts.hpp"
+#include "font/ttf_font.hpp"
+#include "globals.hpp"
+#include "input/input_manager.hpp"
+#include "screen/game_session.hpp"
 #include "screen/particle_viewer.hpp"
+#include "screen/screen.hpp"
+#include "screen/screen_manager.hpp"
+#include "screen/sprite2dview.hpp"
+#include "screen/sprite3dview.hpp"
+#include "screen/title_screen.hpp"
+#include "sound/sound_manager.hpp"
 #include "sprite2d/manager.hpp"
+#include "sprite3d/manager.hpp"
+#include "tile/tile_factory.hpp"
+#include "util/util.hpp"
+#include "windstille_main.hpp"
 
 #ifdef WIN32
 #include "shlwapi.h"
 #define strcasecmp lstrcmpiA 
 #endif
 
+WindstilleMain* WindstilleMain::current_ = 0;
+
 WindstilleMain::WindstilleMain()
 {
+  current_ = this;
 }
 
 WindstilleMain::~WindstilleMain()
 {
+  current_ = 0;
 }
 
 int 
@@ -150,13 +157,95 @@ WindstilleMain::main(int argc, char** argv)
 }
 
 void
+WindstilleMain::set_fullscreen(bool fullscreen)
+{ 
+  Uint32 flags = SDL_OPENGL;
+  if (fullscreen)
+    flags |= SDL_FULLSCREEN;
+
+  SDL_Surface* window = SDL_SetVideoMode(config.get_int("screen-width"), config.get_int("screen-height"),
+                                         0, flags);
+  if (!window)
+    {
+      throw std::runtime_error("Display:: Couldn't create window");
+    }
+}
+
+void
+WindstilleMain::init_display()
+{
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
+  SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
+  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
+  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
+
+  if (config.get_int("anti-aliasing"))
+    {
+      SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 ); // boolean value, either it's enabled or not
+      SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, config.get_int("anti-aliasing") ); // 0, 2, or 4 for number of samples
+    }
+
+  SDL_Surface* window = SDL_SetVideoMode(config.get_int("screen-width"), config.get_int("screen-height"),
+                                        0, SDL_OPENGL | (config.get_bool("fullscreen") ? SDL_FULLSCREEN : 0));
+
+  if (!window)
+    {
+      throw std::runtime_error("Display:: Couldn't create window");
+    }
+  else
+    {
+      SDL_WM_SetCaption("Windstille", 0 /* icon */);
+
+      GLenum err = glewInit();
+      if(err != GLEW_OK) {
+        std::ostringstream msg;
+        msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
+        throw std::runtime_error(msg.str());
+      }
+      /*
+        if(!GLEW_EXT_framebuffer_object) {
+        std::ostringstream msg;
+        msg << "Display:: Framebuffer opengl extension not supported";
+        throw std::runtime_error(msg.str());
+        }
+      */
+
+      glViewport(0, 0, window->w, window->h);
+      glMatrixMode(GL_PROJECTION);
+      glLoadIdentity();
+
+      static const float cl_pixelcenter_constant = 0.375;
+
+      //glOrtho(0.0, window->w, window->h, 0.0, -1000.0, 1000.0);
+  
+      // glOrtho(0.0, 800, 0.0, 600.0, 1000.0, -1000.0); // proper right-hand CO
+      Display::aspect_size = Size(config.get_int("aspect-width"), 
+                                  config.get_int("aspect-height"));
+
+      glOrtho(0.0, 
+              Display::get_width(), Display::get_height(),
+              0.0, 1000.0, -1000.0);
+      glMatrixMode(GL_MODELVIEW);
+      glLoadIdentity();
+      glTranslated(cl_pixelcenter_constant, cl_pixelcenter_constant, 0.0);
+
+      if (config.get_int("anti-aliasing"))
+        glEnable(GL_MULTISAMPLE_ARB); 
+
+      assert_gl("setup projection");
+
+      OpenGLState::init();
+    }
+}
+
+void
 WindstilleMain::init_modules()
 {
   if (debug) std::cout << "Initialising Freetype2" << std::endl;
     
   TTFFont::init();
   
-  Display::init();
+  init_display();
 
   if (debug) std::cout << "Initialising Fonts" << std::endl;
   Fonts::init(); 

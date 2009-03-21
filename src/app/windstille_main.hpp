@@ -50,14 +50,21 @@
 #include "screen/screen.hpp"
 
 class WindstilleMain
-{  
+{ 
+private:
+  static WindstilleMain* current_;
+public:
+  static WindstilleMain* current() { return current_; }
+
 public:
   WindstilleMain();
   ~WindstilleMain();
 
   int main(int argc, char** argv);
+  void set_fullscreen(bool fullscreen);
 
 private:
+  void init_display();
   void init_sdl();
   void init_physfs(const char* argv0);
   void init_modules();

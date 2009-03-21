@@ -30,10 +30,11 @@
 class Display
 {
 private:
-  static Size aspect_size;
   static std::vector<Rect> cliprects;
-  static SDL_Surface* window;
 
+public:
+  static Size aspect_size;
+  
 public:
   static void fill_rect(const Rectf& rect, const Color& color);
   static void draw_rect(const Rectf& rect, const Color& color);
@@ -55,8 +56,6 @@ public:
 
   static int  get_width();
   static int  get_height();
-
-  static void set_fullscreen(bool fullscreen);
 
   static void push_cliprect(const Rect& rect);
   static void pop_cliprect();

@@ -23,6 +23,7 @@
 #include "console.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
+#include "app/windstille_main.hpp"
 #include "screen/game_session.hpp"
 #include "gui/group_component.hpp"
 #include "gui/gui_manager.hpp"
@@ -436,7 +437,7 @@ void
 MenuManager::menu_fullscreen(int i)
 {
   config.set_bool("fullscreen", i);
-  Display::set_fullscreen(config.get_bool("fullscreen"));
+  WindstilleMain::current()->set_fullscreen(config.get_bool("fullscreen"));
 }
 
 void

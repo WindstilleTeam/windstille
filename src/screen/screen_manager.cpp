@@ -28,6 +28,7 @@
 #include "screen.hpp"
 #include "font/fonts.hpp"
 #include "app/config.hpp"
+#include "app/windstille_main.hpp"
 #include "input/input_manager.hpp"
 #include "input/input_configurator.hpp"
 #include "sound/sound_manager.hpp"
@@ -253,7 +254,7 @@ ScreenManager::poll_events()
               
                     case SDLK_F11:
                       config.set_bool("fullscreen", !config.get_bool("fullscreen"));
-                      Display::set_fullscreen(config.get_bool("fullscreen"));
+                      WindstilleMain::current()->set_fullscreen(config.get_bool("fullscreen"));
                       break;
               
 #ifndef WIN32

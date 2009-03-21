@@ -19,12 +19,16 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 #define HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 
+#include <GL/glew.h>
+#include <GL/gl.h>
+
 #include <vector>
 #include <iostream>
 #include <gtkglmm.h>
 #include <gdkmm/dragcontext.h>
 #include <gtkmm/gl/widget.h>
 
+#include "display/scene_context.hpp"
 #include "math/vector2f.hpp"
 
 /** OpenGL drawing area into which the Windstille game will be
@@ -35,6 +39,7 @@ class WindstilleWidget
 {
 private:
   std::vector<Vector2f> objects;
+    SceneContext sc;
   
 public:
   WindstilleWidget();
