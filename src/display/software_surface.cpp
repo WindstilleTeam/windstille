@@ -19,6 +19,8 @@
 #include <sstream>
 #include <stdexcept>
 #include <SDL_image.h>
+
+#include "math/rect.hpp"
 #include "physfs/physfs_sdl.hpp"
 #include "software_surface.hpp"
 
@@ -111,6 +113,32 @@ SDL_Surface*
 SoftwareSurface::get_surface() const
 {
   return impl->surface;
+}
+
+void
+SoftwareSurface::blit(SoftwareSurface& dst, int x, int y) const
+{
+  SDL_Rect dst_rect;
+  dst_rect.x = x;
+  dst_rect.y = y;
+
+  SDL_BlitSurface(impl->surface, 0, dst.impl->surface, &dst_rect);
+}
+
+void
+SoftwareSurface::blit(const Rect& src_rect_, SoftwareSurface& dst, int x, int y) const
+{
+  SDL_Rect src_rect;
+  src_rect.x = src_rect_.left;
+  src_rect.y = src_rect_.top;
+  src_rect.w = src_rect_.get_width();
+  src_rect.h = src_rect_.get_height();
+
+  SDL_Rect dst_rect;
+  dst_rect.x = x;
+  dst_rect.y = y;
+  
+  SDL_BlitSurface(impl->surface, &src_rect, dst.impl->surface, &dst_rect);
 }
 
 /* EOF */

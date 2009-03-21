@@ -23,6 +23,7 @@
 #include <boost/shared_ptr.hpp>
 #include <string>
 
+class Rect;
 class SoftwareSurfaceImpl;
 
 class SoftwareSurface
@@ -43,6 +44,9 @@ public:
   int   get_pitch() const;
   int   get_height() const;
   void* get_pixels() const;
+
+  void blit(SoftwareSurface& dst, int x, int y) const;
+  void blit(const Rect& src_rect, SoftwareSurface& dst, int x, int y) const;
 
   SDL_Surface* get_surface() const;
 

@@ -139,7 +139,7 @@ SurfaceManager::create_texture(const SoftwareSurface& image,
 
   SoftwareSurface convert(texture_w, texture_h);
 
-  SDL_BlitSurface(image.get_surface(), 0, convert.get_surface(), 0);
+  image.blit(convert, 0, 0);
 
   Texture texture = Texture(convert);
   
