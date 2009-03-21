@@ -33,28 +33,10 @@
 
 bool lib_init = false;
 
-WindstilleWidget::WindstilleWidget()
+WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
+                                   const Glib::RefPtr<const Gdk::GL::Context>& share_list)
 {
-  Glib::RefPtr<Gdk::GL::Config> glconfig;
-
-  glconfig = Gdk::GL::Config::create(Gdk::GL::MODE_RGB    |
-                                     Gdk::GL::MODE_DEPTH  |
-                                     Gdk::GL::MODE_DOUBLE);
-  if (!glconfig)
-    {
-      std::cerr << "*** Cannot find the double-buffered visual.\n"
-                << "*** Trying single-buffered visual.\n";
-
-      // Try single-buffered visual
-      glconfig = Gdk::GL::Config::create(Gdk::GL::MODE_RGB   |
-                                         Gdk::GL::MODE_DEPTH);
-      if (!glconfig)
-        {
-          throw std::runtime_error("*** Cannot find any OpenGL-capable visual.");
-        }
-    }
- 
-  set_gl_capability(glconfig);
+  set_gl_capability(glconfig, share_list);
 
   add_events(Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
              Gdk::KEY_PRESS_MASK      | Gdk::KEY_RELEASE_MASK | 
@@ -118,9 +100,10 @@ WindstilleWidget::on_realize()
           //texture_manager  = new TextureManager();
           new SurfaceManager();
           //sprite2d_manager = new SpriteManager();
-          sc.reset(new SceneContext());
         }
-
+      
+      if (!sc.get())
+        sc.reset(new SceneContext());
       
       glViewport(0, 0, get_width(), get_height());
       glMatrixMode(GL_PROJECTION);
@@ -164,7 +147,7 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* event)
 bool
 WindstilleWidget::on_expose_event(GdkEventExpose* event)
 {
-  std::cout << "WindstilleWidget::on_expose()" << std::endl;
+  //std::cout << "WindstilleWidget::on_expose()" << std::endl;
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (!glwindow->gl_begin(get_gl_context()))

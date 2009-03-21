@@ -36,7 +36,7 @@ WindstilleEditor::main(int argc, char** argv)
       Gtk::Main kit(&argc, &argv);
       Gtk::GL::init(&argc, &argv);
 
-            if (!PHYSFS_init(argv[0]))
+      if (!PHYSFS_init(argv[0]))
         {
           std::ostringstream msg;
           msg << "Couldn't initialize physfs: " << PHYSFS_getLastError();
@@ -44,10 +44,20 @@ WindstilleEditor::main(int argc, char** argv)
         }
   
       PHYSFS_addToSearchPath("data/", 0);
+      
+      Glib::RefPtr<const Gdk::GL::Config> 
+        glconfig = Gdk::GL::Config::create(Gdk::GL::MODE_RGB    |
+                                           Gdk::GL::MODE_DEPTH  |
+                                           Gdk::GL::MODE_DOUBLE);
+      if (!glconfig)
+        {
+          throw std::runtime_error("*** Cannot find any OpenGL-capable visual.");
+        }
 
-      EditorWindow window;
+      EditorWindow window(glconfig);
       
       window.show_all();
+      window.show_minimap(false);
 
       Gtk::Main::run(window);
     }

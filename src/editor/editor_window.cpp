@@ -27,7 +27,9 @@
 #include "about_window.hpp"
 #include "editor_window.hpp"
 
-EditorWindow::EditorWindow()
+EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
+  : minimap_widget(glconfig_),
+    glconfig(glconfig_)
 {
   set_title("Windstille Editor");
   set_default_size(1024, 768);
@@ -124,7 +126,7 @@ EditorWindow::EditorWindow()
 
   // Packing
 
-  // Vbox
+  // Main Vbox
   vbox.pack_start(*ui_manager->get_widget("/MenuBar"), Gtk::PACK_SHRINK);
   vbox.pack_start(*ui_manager->get_widget("/ToolBar"), Gtk::PACK_SHRINK);
   vbox.add(hbox);
@@ -139,9 +141,12 @@ EditorWindow::EditorWindow()
   //object_selector.set_size_request(250, 300);
   //object_tree.set_size_request(250, 300);
   
-  hpaned.pack1(notebook, Gtk::EXPAND);
-  hpaned.pack2(vpaned,   Gtk::SHRINK);
+  hpaned.pack1(notebook,     Gtk::EXPAND);
+  hpaned.pack2(sidebar_vbox, Gtk::SHRINK);
  
+  sidebar_vbox.pack_start(vpaned, Gtk::PACK_EXPAND_WIDGET);
+  sidebar_vbox.pack_start(minimap_widget, Gtk::PACK_SHRINK);
+  
   vpaned.pack1(object_selector, Gtk::EXPAND);
   vpaned.pack2(object_tree,     Gtk::SHRINK);
 
@@ -173,10 +178,15 @@ void
 EditorWindow::on_new()
 {
   std::cout << "on_new" << std::endl;
-  WindstilleWidget* windstille = new WindstilleWidget();
-  int new_page = notebook.append_page(*windstille, Glib::ustring::compose("Sector %1", notebook.get_n_pages()));
+
+  // FIXME: We abuse the minimap as our root GLContext
+  WindstilleWidget* windstille = new WindstilleWidget(glconfig, minimap_widget.get_gl_context());
+
+  Glib::ustring title = Glib::ustring::compose("Sector %1", notebook.get_n_pages());
+  int new_page = notebook.append_page(*windstille, title);
   windstille->show();
-  notebook.set_current_page(new_page);
+  notebook.set_current_page(new_page); 
+
 }
 
 void
@@ -242,6 +252,19 @@ EditorWindow::on_close()
   if (page != -1)
     {
       notebook.remove_page(page);
+    }
+}
+
+void
+EditorWindow::show_minimap(bool v)
+{
+  if (v)
+    {
+      minimap_widget.show();
+    }
+  else
+    {
+      minimap_widget.hide();
     }
 }
 

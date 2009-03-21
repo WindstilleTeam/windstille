@@ -43,7 +43,8 @@ private:
   std::auto_ptr<SceneContext> sc;
   
 public:
-  WindstilleWidget();
+  WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig,
+                   const Glib::RefPtr<const Gdk::GL::Context>& share_list);
   virtual ~WindstilleWidget();
 
   virtual void on_realize();

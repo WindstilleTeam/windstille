@@ -26,6 +26,7 @@
 #include <gtkmm/window.h>
 #include <gtkmm/notebook.h>
 
+#include "minimap_widget.hpp"
 #include "object_selector.hpp"
 #include "object_tree.hpp"
 
@@ -33,21 +34,27 @@ class EditorWindow : public Gtk::Window
 {
 private:
   Gtk::VBox   vbox;
+  Gtk::VBox   sidebar_vbox;
   Gtk::HBox   hbox;
   Gtk::HPaned hpaned;
   Gtk::VPaned vpaned;
   Gtk::Statusbar status;
   
-  Gtk::Notebook notebook;
+  Gtk::Notebook  notebook;
   ObjectSelector object_selector;
   ObjectTree     object_tree;
+  MinimapWidget  minimap_widget;
 
   Glib::RefPtr<Gtk::UIManager>   ui_manager;
   Glib::RefPtr<Gtk::ActionGroup> action_group;
+  Glib::RefPtr<Gdk::GL::Context> share_list;
+  Glib::RefPtr<const Gdk::GL::Config>  glconfig;
 
 public:
-  EditorWindow();
+  EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig);
   virtual ~EditorWindow();
+
+  void show_minimap(bool v);
 
 protected:
   void on_new();

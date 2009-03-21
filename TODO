@@ -328,6 +328,19 @@ Miscellaneous
 
 * make Console not derive from ostream
 
+OpenGL
+======
+
+* check for features before using them:
+
+glewInit();
+if (glewIsSupported("GL_VERSION_2_0"))
+printf("Ready for OpenGL 2.0\n");
+else {
+printf("OpenGL 2.0 not supported\n");
+exit(1);
+}
+
 Profiling
 =========
 
@@ -418,6 +431,8 @@ Level Design
 Random Things
 =============
 
+* add a music player that allows to play all music files of Windstille
+
 * UTF8 support is missing in:
   
   - BabyXML
@@ -463,6 +478,8 @@ Graphics
 
 Editor
 ======
+
+* share GL context between different sectors, need dummy Context, abuse minimap for that
 
 * use SceneContext in WindstilleWidget and setup Physfs,
   SurfaceManager, TextureManager and everything else that is needed
