@@ -115,6 +115,8 @@ WindstilleWidget::on_realize()
   
       glwindow->gl_end();
     }
+
+  state.set_size(get_width(), get_height());
 }
 
 bool
@@ -159,6 +161,8 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
       //std::cout << "Draw" << std::endl;
       if (sc.get())
         {
+          state.push(*sc);
+
           { // not visible since SceneContext rendering clears the screen
             OpenGLState state;
             state.color(Color(1.0f, 1.0f, 1.0f));
@@ -181,6 +185,8 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
               sc->color().draw(surface, i->x+50, i->y+50);
             }
           sc->render();
+
+          state.pop(*sc);
         }
 
       // Swap buffers.
@@ -240,14 +246,38 @@ WindstilleWidget::mouse_up(GdkEventButton* event)
 bool
 WindstilleWidget::key_press(GdkEventKey* event)
 {
-  std::cout << "KeyPress: " << (int)event->keyval << std::endl;
+  switch(event->keyval)
+    {
+      case GDK_Left:
+        state.set_pos(state.get_pos() + Vector2f(-100.0f, 0.0f));
+        queue_draw();
+        break;
+
+      case GDK_Right:
+        state.set_pos(state.get_pos() + Vector2f(100.0f, 0.0f));
+        queue_draw();
+        break;
+
+      case GDK_Up:
+        state.set_pos(state.get_pos() + Vector2f(0.0f, -100.0f));
+        queue_draw();
+        break;
+
+      case GDK_Down:
+        state.set_pos(state.get_pos() + Vector2f(0.0f, 100.0f));
+        queue_draw();
+        break;
+    }
+
+  std::cout << state.get_pos() << std::endl;
+
   return true;
 }
 
 bool
 WindstilleWidget::key_release(GdkEventKey* event)
 { // /usr/include/gtk-2.0/gdk/gdkkeysyms.h
-  std::cout << "KeyRelease: " << (int)event->keyval << std::endl;
+  //std::cout << "KeyRelease: " << (int)event->keyval << std::endl;
   return true;
 }
 

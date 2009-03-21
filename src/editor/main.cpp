@@ -59,6 +59,8 @@ WindstilleEditor::main(int argc, char** argv)
       window.show_all();
       window.show_minimap(false);
 
+      window.on_new();
+      
       Gtk::Main::run(window);
     }
   catch(std::exception& err)

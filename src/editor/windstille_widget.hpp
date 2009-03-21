@@ -29,6 +29,7 @@
 #include <gdkmm/dragcontext.h>
 #include <gtkmm/gl/widget.h>
 
+#include "display/graphic_context_state.hpp"
 #include "display/scene_context.hpp"
 #include "math/vector2f.hpp"
 
@@ -39,6 +40,7 @@ class WindstilleWidget
     public Gtk::GL::Widget<WindstilleWidget>
 {
 private:
+  GraphicContextState   state;
   std::vector<Vector2f> objects;
   std::auto_ptr<SceneContext> sc;
   

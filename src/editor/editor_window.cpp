@@ -19,6 +19,7 @@
 #include <iostream>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/actiongroup.h>
+#include <gtkmm/icontheme.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/stock.h>
@@ -78,8 +79,9 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='Quit'/>"
     "  </toolbar>"
     "  <toolbar  name='ToolBox'>"
-    "    <toolitem action='Open'/>"
-    "    <toolitem action='Quit'/>"
+    "    <toolitem action='SelectTool'/>"
+    "    <toolitem action='NodeTool'/>"
+    "    <toolitem action='ZoomTool'/>"
     "  </toolbar>"
     "</ui>";
 
@@ -113,6 +115,15 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("MenuHelp",    "_Help"));
   action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
                     sigc::mem_fun(*this, &EditorWindow::on_about_clicked));
+
+  Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
+  icon_theme->append_search_path("data/editor/");
+
+  // Tools
+  action_group->add(Gtk::Action::create("MenuTools",  "_Tools"));
+  action_group->add(Gtk::Action::create_with_icon_name("SelectTool", "select_tool", "Select Tool", "Select Tool"));
+  action_group->add(Gtk::Action::create_with_icon_name("NodeTool",   "node_tool",   "Node Tool", "Node Tool"));
+  action_group->add(Gtk::Action::create_with_icon_name("ZoomTool",   "zoom_tool",   "Zoom Tool", "Zoom Tool"));
 
   // signal_size_allocate().connect (sigc::mem_fun (*this, &EditorWindow::on_window_size_allocate), false);
   // signal_realize().connect (sigc::mem_fun (*this, &EditorWindow::on_window_realize));

@@ -56,7 +56,7 @@ public:
 
   void show_minimap(bool v);
 
-protected:
+public:
   void on_new();
   void on_open();
   void on_save();

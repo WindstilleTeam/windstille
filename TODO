@@ -479,6 +479,8 @@ Graphics
 Editor
 ======
 
+* add grid
+
 * share GL context between different sectors, need dummy Context, abuse minimap for that
 
 * use SceneContext in WindstilleWidget and setup Physfs,
