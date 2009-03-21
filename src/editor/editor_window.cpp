@@ -112,15 +112,17 @@ EditorWindow::EditorWindow()
   action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
                     sigc::mem_fun(*this, &EditorWindow::on_about_clicked));
 
-  //sigc::mem_fun(*this, &EditorWindow::on_action_file_new) );
-  //sigc::mem_fun(*this, &EditorWindow::on_action_file_open) );
-  //sigc::mem_fun(*this, &EditorWindow::on_action_file_quit) );
+  // signal_size_allocate().connect (sigc::mem_fun (*this, &EditorWindow::on_window_size_allocate), false);
+  // signal_realize().connect (sigc::mem_fun (*this, &EditorWindow::on_window_realize));
 
   ui_manager->insert_action_group(action_group);
 
   ui_manager->add_ui_from_string(ui_info);
 
   add_accel_group(ui_manager->get_accel_group());
+
+
+  // Packing
 
   // Vbox
   vbox.pack_start(*ui_manager->get_widget("/MenuBar"), Gtk::PACK_SHRINK);

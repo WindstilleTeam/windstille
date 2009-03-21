@@ -462,6 +462,11 @@ Graphics
 Editor
 ======
 
+* add a new layer to SceneContext that is used for UI elements, such
+  as control handles for scale or rotate, could maybe also used for
+  use-verbs and stuff. The new layer shall only translate objects, but
+  not scale or rotate them
+
 * implement dialog to change level properties:
 
   - name

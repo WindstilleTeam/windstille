@@ -23,7 +23,27 @@
 void
 NoFontEffect::blit(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const
 {
-  blit_ftbitmap(target, brush, x_pos, y_pos);
+  int start_x = std::max(0, -x_pos);
+  int start_y = std::max(0, -y_pos);
+  
+  int end_x = std::min(brush.width, target.get_width()  - x_pos);
+  int end_y = std::min(brush.rows,  target.get_height() - y_pos);
+
+  unsigned char* target_buf = static_cast<unsigned char*>(target.get_pixels());
+
+  int target_pitch = target.get_pitch();
+
+  for (int y = start_y; y < end_y; ++y)
+    for (int x = start_x; x < end_x; ++x)
+      {
+        int target_pos = (y + y_pos) * target_pitch + 4*(x + x_pos);
+        int brush_pos  = y * brush.pitch + x;
+            
+        target_buf[target_pos + 0] = 255;
+        target_buf[target_pos + 1] = 255;
+        target_buf[target_pos + 2] = 255;
+        target_buf[target_pos + 3] = brush.buffer[brush_pos];
+      }
 }
 
 /* EOF */

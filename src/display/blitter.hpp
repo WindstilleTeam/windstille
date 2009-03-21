@@ -35,7 +35,6 @@ class SoftwareSurface;
     X X X X X    4 4 5 6 6
 */
 void generate_border(const SoftwareSurface& surface, int x_pos, int y_pos, int width, int height);
-void blit_ftbitmap(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos);
 
 #endif
 

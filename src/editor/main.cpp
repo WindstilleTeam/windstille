@@ -23,8 +23,9 @@
 
 #include "editor_window.hpp"
 #include "main.hpp"
-
-int main(int argc, char** argv)
+
+int
+WindstilleEditor::main(int argc, char** argv)
 {
   try 
     {
@@ -41,8 +42,13 @@ int main(int argc, char** argv)
     {
       std::cout << "Exception: " << err.what() << std::endl;
     }
-
   return 0;
 }
-
+
+int main(int argc, char** argv)
+{
+  WindstilleEditor app;
+  return app.main(argc, argv);
+}
+
 /* EOF */

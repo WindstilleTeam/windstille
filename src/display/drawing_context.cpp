@@ -29,14 +29,14 @@
 #include "display/vertex_array_drawing_request.hpp"
 #include "display/scene_context.hpp"
 #include "display/surface.hpp"
-
+
 struct DrawingRequestsSorter
 {
   bool operator()(DrawingRequest* a, DrawingRequest* b) {
     return a->get_z_pos() < b->get_z_pos();
   }
 };
-
+
 class FillScreenDrawingRequest : public DrawingRequest
 {
 private:
@@ -56,7 +56,7 @@ public:
     glClear(GL_COLOR_BUFFER_BIT);
   }
 };
-
+
 class TextDrawingRequest : public DrawingRequest
 {
 private:
@@ -75,7 +75,7 @@ public:
     glPopMatrix();
   }
 };
-
+
 class SurfaceDrawingRequest : public DrawingRequest
 {
 private:
@@ -100,7 +100,7 @@ public:
     glPopMatrix();
   }
 };
-
+
 DrawingContext::DrawingContext()
 {
   modelview_stack.push_back(Matrix::identity());
@@ -336,5 +336,5 @@ DrawingContext::fill_rect(const Rectf& rect, const Color& color, float z_pos)
 
   draw(array);
 }
-
+
 /* EOF */

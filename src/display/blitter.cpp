@@ -24,7 +24,7 @@
 
 #include "display/software_surface.hpp"
 #include "blitter.hpp"
-
+
 void generate_border(const SoftwareSurface& surface,
                      int x_pos, int y_pos, int width, int height)
 {
@@ -52,45 +52,5 @@ void generate_border(const SoftwareSurface& surface,
       *p = *(p-1);
     }
 }
-
-void 
-blit_ftbitmap(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos)
-{
-  int start_x = std::max(0, -x_pos);
-  int start_y = std::max(0, -y_pos);
-  
-  int end_x = std::min(brush.width, target.get_width()  - x_pos);
-  int end_y = std::min(brush.rows,  target.get_height() - y_pos);
-
-  unsigned char* target_buf = static_cast<unsigned char*>(target.get_pixels());
-
-  int target_pitch = target.get_pitch();
-
-  for (int y = start_y; y < end_y; ++y)
-    for (int x = start_x; x < end_x; ++x)
-      {
-        int target_pos = (y + y_pos) * target_pitch + 4*(x + x_pos);
-        int brush_pos  = y * brush.pitch + x;
-            
-        target_buf[target_pos + 0] = 255;
-        target_buf[target_pos + 1] = 255;
-        target_buf[target_pos + 2] = 255;
-        target_buf[target_pos + 3] = brush.buffer[brush_pos];
-      }
-}
-
-SDL_Surface* create_surface_rgba(int width, int height)
-{
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  SDL_Surface* pixelbuffer = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                                  width, height, 32,
-                                                  0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-#else
-  SDL_Surface* pixelbuffer = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                                  width, height, 32,
-                                                  0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-#endif
-  return pixelbuffer;
-}
-
+
 /* EOF */
