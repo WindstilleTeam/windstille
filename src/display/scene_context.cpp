@@ -42,6 +42,8 @@ public:
   DrawingContext color;
   DrawingContext light;
   DrawingContext highlight; 
+  DrawingContext control; 
+
   unsigned int   render_mask;
   
   struct Framebuffers 
@@ -105,6 +107,11 @@ SceneContext::highlight()
   return impl->highlight; 
 }
 
+DrawingContext&
+SceneContext::control()
+{
+  return impl->control;
+}
 
 /** Translate the drawing context */
 void
@@ -113,6 +120,7 @@ SceneContext::translate(float x, float y)
   impl->color.translate(x, y);
   impl->light.translate(x, y);
   impl->highlight.translate(x, y);
+  impl->control.translate(x, y);
 }
 
 /** Set the rotation of the drawing context */
@@ -122,6 +130,7 @@ SceneContext::rotate(float angel, float x, float y, float z)
   impl->color.rotate(angel, x, y, z);
   impl->light.rotate(angel, x, y, z);
   impl->highlight.rotate(angel, x, y, z);
+  impl->control.rotate(angel, x, y, z);
 }
 
 /** Set the scaling of the drawing context */
@@ -131,6 +140,7 @@ SceneContext::scale(float x, float y)
   impl->color.scale(x, y);
   impl->light.scale(x, y);
   impl->highlight.scale(x, y);
+  impl->control.scale(x, y);
 }
 
 void
@@ -139,6 +149,7 @@ SceneContext::mult_modelview(const Matrix& matrix)
   impl->color.mult(matrix);
   impl->light.mult(matrix);
   impl->highlight.mult(matrix);
+  impl->control.mult(matrix);
 }
 
 void
@@ -147,6 +158,7 @@ SceneContext::push_modelview()
   impl->color.push_modelview();
   impl->light.push_modelview();
   impl->highlight.push_modelview();
+  impl->control.push_modelview();
 }
 
 void
@@ -155,6 +167,7 @@ SceneContext::pop_modelview()
   impl->color.pop_modelview();
   impl->light.pop_modelview();
   impl->highlight.pop_modelview();
+  impl->control.pop_modelview();
 }
 
 void
@@ -163,6 +176,7 @@ SceneContext::reset_modelview()
   impl->color.reset_modelview();
   impl->light.reset_modelview();
   impl->highlight.reset_modelview();
+  impl->control.reset_modelview();
 }
 
 
@@ -239,18 +253,6 @@ SceneContext::render_lightmap()
   glVertex2f(0, impl->framebuffers->lightmap.get_height() * LIGHTMAP_DIV);
 
   glEnd();
-}
-
-void
-SceneContext::render_colormap()
-{
-  
-}
-
-void
-SceneContext::render_highlightmap()
-{
-  
 }
 
 void

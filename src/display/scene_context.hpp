@@ -54,6 +54,12 @@ public:
       darkness */
   DrawingContext& highlight();
 
+  /** The control layer is used for objects that shall neither rotate
+      nor scale, but only translate. It is used for HUD and control
+      elements, such as text or editor control handles and drawn above
+      all other layers. */
+  DrawingContext& control();
+
   /** Translate the drawing context */
   void translate(float x, float y);
 
@@ -70,7 +76,7 @@ public:
   void reset_modelview();
 
   /** Takes all the buffers and combines them to form the final image
-      that will be shown on the screen */
+      that will be shown on the screen. */
   void render();
 
   enum { COLORMAP       = 1<<0,
@@ -80,6 +86,8 @@ public:
          BLURMAP        = 1<<4
   };
 
+  /** The render mask allows to switch of some layers and effects for
+      debugging. */
   void set_render_mask(unsigned int mask);
   unsigned int get_render_mask();
 
@@ -89,8 +97,6 @@ public:
   void render_without_framebuffers();
 
   void render_lightmap();
-  void render_colormap();
-  void render_highlightmap();
 
   void eval(DrawingRequest* request);
 
