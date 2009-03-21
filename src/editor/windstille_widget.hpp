@@ -68,6 +68,10 @@ public:
                                      const Gtk::SelectionData& data, guint info, guint time);
   virtual bool on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time);
 
+  void on_zoom_in();
+  void on_zoom_out();
+  void on_zoom_100();
+
 private:
   WindstilleWidget (const WindstilleWidget&);
   WindstilleWidget& operator= (const WindstilleWidget&);

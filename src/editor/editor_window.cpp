@@ -106,10 +106,12 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("Paste",       Gtk::Stock::PASTE));
 
   action_group->add(Gtk::Action::create("MenuView",    "_View"));
-  action_group->add(Gtk::Action::create("Zoom100",     Gtk::Stock::ZOOM_100));
-  action_group->add(Gtk::Action::create("ZoomIn",      Gtk::Stock::ZOOM_IN));
-  action_group->add(Gtk::Action::create("ZoomOut",     Gtk::Stock::ZOOM_OUT));
-
+  action_group->add(Gtk::Action::create("Zoom100",     Gtk::Stock::ZOOM_100),
+                    sigc::mem_fun(*this, &EditorWindow::on_zoom_100));
+  action_group->add(Gtk::Action::create("ZoomIn",      Gtk::Stock::ZOOM_IN),
+                    sigc::mem_fun(*this, &EditorWindow::on_zoom_in));
+  action_group->add(Gtk::Action::create("ZoomOut",     Gtk::Stock::ZOOM_OUT),
+                    sigc::mem_fun(*this, &EditorWindow::on_zoom_out));
   action_group->add(Gtk::Action::create("Play",        Gtk::Stock::MEDIA_PLAY));
 
   action_group->add(Gtk::Action::create("MenuHelp",    "_Help"));
@@ -276,6 +278,44 @@ EditorWindow::show_minimap(bool v)
   else
     {
       minimap_widget.hide();
+    }
+}
+
+void
+EditorWindow::on_zoom_in()
+{
+  WindstilleWidget* wst = get_windstille_widget();
+  if (wst)
+    wst->on_zoom_in();
+}
+
+void
+EditorWindow::on_zoom_out()
+{
+  WindstilleWidget* wst = get_windstille_widget();
+  if (wst)
+    wst->on_zoom_out();
+}
+
+void
+EditorWindow::on_zoom_100()
+{
+  WindstilleWidget* wst = get_windstille_widget();
+  if (wst)
+    wst->on_zoom_100();
+}
+
+WindstilleWidget*
+EditorWindow::get_windstille_widget()
+{
+  int page = notebook.get_current_page();
+  if (page == -1)
+    {
+      return 0;
+    }
+  else
+    {
+      return static_cast<WindstilleWidget*>(notebook.get_nth_page(page));
     }
 }
 

@@ -30,6 +30,8 @@
 #include "object_selector.hpp"
 #include "object_tree.hpp"
 
+class WindstilleWidget;
+
 class EditorWindow : public Gtk::Window
 {
 private:
@@ -65,6 +67,12 @@ public:
   void on_about_clicked();
   void on_quit();
 
+  void on_zoom_in();
+  void on_zoom_out();
+  void on_zoom_100();
+
+  WindstilleWidget* get_windstille_widget();
+  
 private:
   EditorWindow(const EditorWindow&);
   EditorWindow& operator=(const EditorWindow&);
