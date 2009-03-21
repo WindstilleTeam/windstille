@@ -107,14 +107,20 @@ WindstilleWidget::on_realize()
       if (!lib_init)
         {
           lib_init = true;
+          GLenum err = glewInit();
+          if(err != GLEW_OK) {
+            std::ostringstream msg;
+            msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
+            throw std::runtime_error(msg.str());
+          }
+
           OpenGLState::init();
           //texture_manager  = new TextureManager();
-          //new SurfaceManager();
+          new SurfaceManager();
           //sprite2d_manager = new SpriteManager();
-          //sc.reset(new SceneContext());
+          sc.reset(new SceneContext());
         }
 
-      //Surface surface("images/hedgehog.png");
       
       glViewport(0, 0, get_width(), get_height());
       glMatrixMode(GL_PROJECTION);
@@ -168,15 +174,31 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
   else
     {
       //std::cout << "Draw" << std::endl;
-      glBegin(GL_QUADS);
-      for(std::vector<Vector2f>::iterator i = objects.begin(); i != objects.end(); ++i)
+      if (sc.get())
         {
-          glVertex2f(i->x - 50, i->y - 50);
-          glVertex2f(i->x + 50, i->y - 50);
-          glVertex2f(i->x + 50, i->y + 50);
-          glVertex2f(i->x - 50, i->y + 50);
+          { // not visible since SceneContext rendering clears the screen
+            OpenGLState state;
+            state.color(Color(1.0f, 1.0f, 1.0f));
+            state.activate();
+
+            glBegin(GL_QUADS);
+            for(std::vector<Vector2f>::iterator i = objects.begin(); i != objects.end(); ++i)
+              {
+                glVertex2f(i->x - 50, i->y - 50);
+                glVertex2f(i->x + 50, i->y - 50);
+                glVertex2f(i->x + 50, i->y + 50);
+                glVertex2f(i->x - 50, i->y + 50);
+              }
+            glEnd();
+          }
+
+          Surface surface("images/hedgehog.png");
+          for(std::vector<Vector2f>::iterator i = objects.begin(); i != objects.end(); ++i)
+            {
+              sc->color().draw(surface, i->x+50, i->y+50);
+            }
+          sc->render();
         }
-      glEnd();
 
       // Swap buffers.
       if (glwindow->is_double_buffered())
