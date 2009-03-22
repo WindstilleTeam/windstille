@@ -240,6 +240,8 @@ editor_env.Program('../windstille-editor', [
         'editor/windstille_widget.cpp',
         'editor/minimap_widget.cpp',
         'editor/scroll_tool.cpp',
+        'editor/zoom_tool.cpp',
+        'editor/select_tool.cpp',
         'editor/editor_window.cpp'
         ])
 

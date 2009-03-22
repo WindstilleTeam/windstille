@@ -16,27 +16,30 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_TOOL_HPP
-#define HEADER_WINDSTILLE_EDITOR_TOOL_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_SELECT_TOOL_HPP
+#define HEADER_WINDSTILLE_EDITOR_SELECT_TOOL_HPP
 
-#include <gdkmm.h>
+#include "math/rect.hpp"
+#include "tool.hpp"
 
-class WindstilleWidget;
-
-class Tool
+class SelectTool : public Tool
 {
-public:
-  Tool() {}
-  virtual ~Tool() {}
+private:
+  Vector2f click_pos;
+  Rectf    rect;
+  bool     rect_valid;
 
-  virtual bool mouse_down (GdkEventButton* event, WindstilleWidget* wst) = 0;
-  virtual bool mouse_move(GdkEventMotion* event, WindstilleWidget* wst) = 0;
-  virtual bool mouse_up(GdkEventButton* event, WindstilleWidget* wst) = 0;
-  virtual void draw(SceneContext& sc) {}
+public:
+  SelectTool();
+  
+  bool mouse_down (GdkEventButton* event, WindstilleWidget* wst);
+  bool mouse_move(GdkEventMotion* event, WindstilleWidget* wst);
+  bool mouse_up(GdkEventButton* event, WindstilleWidget* wst);
+  void draw(SceneContext& sc);
 
 private:
-  Tool(const Tool&);
-  Tool& operator=(const Tool&);
+  SelectTool(const SelectTool&);
+  SelectTool& operator=(const SelectTool&);
 };
 
 #endif

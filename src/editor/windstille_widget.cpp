@@ -31,12 +31,17 @@
 #include "display/surface.hpp"
 #include "windstille_widget.hpp"
 #include "scroll_tool.hpp"
+#include "zoom_tool.hpp"
+#include "select_tool.hpp"
 
 bool lib_init = false;
 
 WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list)
- : scroll_tool(new ScrollTool())
+  : current_tool(0),
+    scroll_tool(new ScrollTool()),
+    select_tool(new SelectTool()),
+    zoom_tool(new ZoomTool())
 {
   set_gl_capability(glconfig, share_list);
 
@@ -167,27 +172,15 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
         {
           state.push(*sc);
 
-          { // not visible since SceneContext rendering clears the screen
-            OpenGLState state;
-            state.color(Color(1.0f, 1.0f, 1.0f));
-            state.activate();
-
-            glBegin(GL_QUADS);
-            for(std::vector<Vector2f>::iterator i = objects.begin(); i != objects.end(); ++i)
-              {
-                glVertex2f(i->x - 50, i->y - 50);
-                glVertex2f(i->x + 50, i->y - 50);
-                glVertex2f(i->x + 50, i->y + 50);
-                glVertex2f(i->x - 50, i->y + 50);
-              }
-            glEnd();
-          }
-
           Surface surface("images/hedgehog.png");
           for(std::vector<Vector2f>::iterator i = objects.begin(); i != objects.end(); ++i)
             {
               sc->color().draw(surface, i->x+50, i->y+50);
             }
+
+          if (current_tool)
+            current_tool->draw(*sc);
+
           sc->render();
 
           state.pop(*sc);
@@ -225,7 +218,12 @@ WindstilleWidget::mouse_down(GdkEventButton* event)
   grab_focus();
   std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
   //ewer->on_mouse_button_down(Vector2i(event->x, event->y), event->button);
-  if (event->button == 2)
+  if (event->button == 1)
+    {
+      current_tool = select_tool.get();
+      select_tool->mouse_down(event, this);
+    }
+  else if (event->button == 2)
     {
       current_tool = scroll_tool.get();
       scroll_tool->mouse_down(event, this);
@@ -255,7 +253,12 @@ WindstilleWidget::mouse_up(GdkEventButton* event)
 
   std::cout << "Button Release: " << event->x << ", " << event->y << " - " << event->button << std::endl;
   //viewer->on_mouse_button_up(Vector2i(event->x, event->y), event->button);
-  if (event->button == 2)
+  if (event->button == 1)
+    {
+      select_tool->mouse_down(event, this);
+      queue_draw();
+    }
+  else if (event->button == 2)
     {
       scroll_tool->mouse_up(event, this);
       queue_draw();

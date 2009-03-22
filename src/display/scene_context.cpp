@@ -300,6 +300,8 @@ SceneContext::render_with_framebuffers()
       Display::pop_framebuffer();
     }
 
+  impl->control.render(*this);
+
   if (1) 
     {
       // Render the screen framebuffer to the actual screen 
@@ -337,6 +339,7 @@ SceneContext::render_with_framebuffers()
   impl->color.clear();
   impl->light.clear();
   impl->highlight.clear();
+  impl->control.clear();
 }
 
 void
@@ -410,10 +413,14 @@ SceneContext::render_without_framebuffers()
       impl->highlight.render(*this);
     }  
 
+  impl->control.render(*this);
+
   // Clear all DrawingContexts
   impl->color.clear();
   impl->light.clear();
   impl->highlight.clear();
+  impl->control.clear();
+  
 }
 
 void
