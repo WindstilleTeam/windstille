@@ -157,6 +157,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
 
   add_accel_group(ui_manager->get_accel_group());
 
+  notebook.signal_switch_page().connect(sigc::mem_fun(*this, &EditorWindow::on_switch_page));
 
   // Packing
 
@@ -222,6 +223,7 @@ EditorWindow::on_new()
   windstille->show();
   notebook.set_current_page(new_page); 
 
+  object_tree.set_model(windstille->get_sector_model());
 }
 
 void
@@ -287,6 +289,9 @@ EditorWindow::on_close()
   if (page != -1)
     {
       notebook.remove_page(page);
+
+      if (!get_windstille_widget())
+        object_tree.set_model(0);
     }
 }
 
@@ -355,6 +360,16 @@ EditorWindow::get_windstille_widget()
     {
       return static_cast<WindstilleWidget*>(notebook.get_nth_page(page));
     }
+}
+
+void
+EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
+{
+  std::cout << "on_switch_page(" << page << ", " << page_num << ")" << std::endl;
+  if (get_windstille_widget())
+    object_tree.set_model(get_windstille_widget()->get_sector_model());
+  else
+    object_tree.set_model(0);
 }
 
 /* EOF */

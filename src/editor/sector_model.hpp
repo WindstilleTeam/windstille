@@ -19,15 +19,43 @@
 #ifndef HEADER_SECTOR_MODEL_HPP
 #define HEADER_SECTOR_MODEL_HPP
 
+#include <memory>
 #include <gtkmm/treestore.h>
 #include <vector>
 #include "math/vector2f.hpp"
 
 class SceneContext;
+class ObjectTreeColumns;
+
+class ObjectTreeColumns : public Gtk::TreeModel::ColumnRecord
+{
+private:
+  static ObjectTreeColumns* instance_;
+
+public:
+  static ObjectTreeColumns& instance() {
+    if (instance_)
+      return *instance_;
+    else
+      return *(instance_ = new ObjectTreeColumns());
+  }
+
+  Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > type_icon;
+  Gtk::TreeModelColumn<Glib::ustring>              name;
+  Gtk::TreeModelColumn<bool>                       visible;
+
+private:
+  ObjectTreeColumns() {
+    add(type_icon); 
+    add(name); 
+    add(visible); 
+  }
+};
 
 class SectorModel
 {
 private:
+  Gtk::TreeStore::iterator root_it;
   Glib::RefPtr<Gtk::TreeStore> objects_tree;
   std::vector<Vector2f> objects;
 
@@ -36,6 +64,16 @@ public:
 
   void add(const Vector2f& obj);
   void draw(SceneContext& sc);
+
+  // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;
+
+  Glib::RefPtr<Gtk::TreeStore> get_objects_tree() { return objects_tree; }
+
+  void on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
+  void on_row_deleted(const Gtk::TreeModel::Path& path);
+  void on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
+  void on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
+  void on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order);
 
 private:
   SectorModel(const SectorModel&);

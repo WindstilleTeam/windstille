@@ -88,6 +88,7 @@ public:
   void on_zoom_out();
   void on_zoom_100();
 
+  void on_switch_page(GtkNotebookPage* page, guint page_num);
   void on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool*);
 
   Tool* get_current_tool() const;

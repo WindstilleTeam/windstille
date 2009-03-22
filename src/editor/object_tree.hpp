@@ -27,6 +27,8 @@
 #include <gtkmm/treemodel.h>
 #include <gtkmm/actiongroup.h>
 
+class SectorModel;
+
 class ObjectTree : public Gtk::VBox
 {
 private:
@@ -40,12 +42,8 @@ private:
 public:
   ObjectTree();
   virtual ~ObjectTree();
-  
-  void on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
-  void on_row_deleted(const Gtk::TreeModel::Path& path);
-  void on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
-  void on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
-  void on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order);
+
+  void set_model(SectorModel* model);
 
 private:
   ObjectTree(const ObjectTree&);
