@@ -190,4 +190,18 @@ GraphicContextState::get_height() const
   return impl->height; 
 }
 
+GraphicContextState
+GraphicContextState::clone() const
+{
+  GraphicContextState tmp;
+
+  tmp.impl->width    = impl->width;
+  tmp.impl->height   = impl->height;
+  tmp.impl->offset   = impl->offset;
+  tmp.impl->zoom     = impl->zoom;
+  tmp.impl->rotation = impl->rotation;
+
+  return tmp;
+}
+
 /* EOF */

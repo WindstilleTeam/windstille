@@ -30,11 +30,13 @@
 
 #include "display/surface.hpp"
 #include "windstille_widget.hpp"
+#include "scroll_tool.hpp"
 
 bool lib_init = false;
 
 WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list)
+ : scroll_tool(new ScrollTool())
 {
   set_gl_capability(glconfig, share_list);
 
@@ -204,26 +206,6 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
 }
 
 bool
-WindstilleWidget::mouse_move(GdkEventMotion* event)
-{
-  //std::cout << "Motion: " << event->x << ", " << event->y << std::endl;
-  
-  // Trigger redraw
-  // queue_draw();
-
-  return true;
-}
-
-bool
-WindstilleWidget::mouse_down(GdkEventButton* event)
-{
-  grab_focus();
-  std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
-  //ewer->on_mouse_button_down(Vector2i(event->x, event->y), event->button);
-  return false;
-}
-
-bool
 WindstilleWidget::scroll(GdkEventScroll* event)
 {
   if (event->direction == GDK_SCROLL_UP)
@@ -236,15 +218,51 @@ WindstilleWidget::scroll(GdkEventScroll* event)
     }
   return false;
 }
+
+bool
+WindstilleWidget::mouse_down(GdkEventButton* event)
+{
+  grab_focus();
+  std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
+  //ewer->on_mouse_button_down(Vector2i(event->x, event->y), event->button);
+  if (event->button == 2)
+    {
+      current_tool = scroll_tool.get();
+      scroll_tool->mouse_down(event, this);
+    }
+
+  return false;
+}
+
+bool
+WindstilleWidget::mouse_move(GdkEventMotion* event)
+{
+  std::cout << "Motion: " << event->x << ", " << event->y << std::endl;
+  
+  if (current_tool)
+    {
+      current_tool->mouse_move(event, this);
+      queue_draw();
+    }
+  
+  return true;
+}
 
 bool
 WindstilleWidget::mouse_up(GdkEventButton* event)
 {
+  current_tool = 0;
+
   std::cout << "Button Release: " << event->x << ", " << event->y << " - " << event->button << std::endl;
   //viewer->on_mouse_button_up(Vector2i(event->x, event->y), event->button);
+  if (event->button == 2)
+    {
+      scroll_tool->mouse_up(event, this);
+      queue_draw();
+    }
   return false;
 }
-
+
 bool
 WindstilleWidget::key_press(GdkEventKey* event)
 {
@@ -282,7 +300,7 @@ WindstilleWidget::key_release(GdkEventKey* event)
   //std::cout << "KeyRelease: " << (int)event->keyval << std::endl;
   return true;
 }
-
+
 bool
 WindstilleWidget::on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time)
 {
@@ -306,7 +324,7 @@ WindstilleWidget::on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context)
 {
   std::cout << "WindstilleWidget: on_drag_finish()" << std::endl;
 }
-
+
 void
 WindstilleWidget::on_zoom_in()
 {

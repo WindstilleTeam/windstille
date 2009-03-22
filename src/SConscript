@@ -239,6 +239,7 @@ editor_env.Program('../windstille-editor', [
         'editor/about_window.cpp',
         'editor/windstille_widget.cpp',
         'editor/minimap_widget.cpp',
+        'editor/scroll_tool.cpp',
         'editor/editor_window.cpp'
         ])
 

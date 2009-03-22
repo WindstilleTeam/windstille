@@ -68,6 +68,8 @@ public:
 
   Vector2f screen_to_world(const Vector2f& pos);
 
+  GraphicContextState clone() const;
+
 private:
   boost::shared_ptr<GraphicContextStateImpl> impl;
 };

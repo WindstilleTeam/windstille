@@ -33,6 +33,9 @@
 #include "display/scene_context.hpp"
 #include "math/vector2f.hpp"
 
+class Tool;
+class ScrollTool;
+
 /** OpenGL drawing area into which the Windstille game will be
     embedded */
 class WindstilleWidget 
@@ -43,11 +46,14 @@ private:
   GraphicContextState   state;
   std::vector<Vector2f> objects;
   std::auto_ptr<SceneContext> sc;
-  
+  Tool* current_tool;
+  std::auto_ptr<ScrollTool> scroll_tool;
 public:
   WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig,
                    const Glib::RefPtr<const Gdk::GL::Context>& share_list);
   virtual ~WindstilleWidget();
+
+  GraphicContextState& get_state() { return state; }
 
   virtual void on_realize();
   virtual bool on_timeout();
