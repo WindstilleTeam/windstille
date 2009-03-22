@@ -100,12 +100,11 @@ Display::draw_rect(const Rectf& rect, const Color& color)
   state.color(color);
   state.activate();
 
-  glBegin(GL_LINE_STRIP);
+  glBegin(GL_LINE_LOOP);
   glVertex2f(rect.left,  rect.top);
   glVertex2f(rect.right, rect.top);
   glVertex2f(rect.right, rect.bottom);
   glVertex2f(rect.left,  rect.bottom);
-  glVertex2f(rect.left,  rect.top);
   glEnd();
 }
 
