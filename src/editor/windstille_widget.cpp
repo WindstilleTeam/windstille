@@ -19,29 +19,23 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-
 #include <gtkmm.h>
-
 
 #include "sprite2d/sprite.hpp"
 #include "display/texture_manager.hpp"
 #include "display/surface_manager.hpp"
 #include "display/opengl_state.hpp"
-
 #include "display/surface.hpp"
 #include "windstille_widget.hpp"
+#include "editor_window.hpp"
 #include "scroll_tool.hpp"
-#include "zoom_tool.hpp"
-#include "select_tool.hpp"
 
 bool lib_init = false;
 
 WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list)
-  : current_tool(0),
-    scroll_tool(new ScrollTool()),
-    select_tool(new SelectTool()),
-    zoom_tool(new ZoomTool())
+  : active_tool(0),
+    scroll_tool(new ScrollTool())
 {
   set_gl_capability(glconfig, share_list);
 
@@ -178,8 +172,8 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
               sc->color().draw(surface, i->x+50, i->y+50);
             }
 
-          if (current_tool)
-            current_tool->draw(*sc);
+          if (active_tool)
+            active_tool->draw(*sc);
 
           sc->render();
 
@@ -220,13 +214,13 @@ WindstilleWidget::mouse_down(GdkEventButton* event)
   //ewer->on_mouse_button_down(Vector2i(event->x, event->y), event->button);
   if (event->button == 1)
     {
-      current_tool = select_tool.get();
-      select_tool->mouse_down(event, this);
+      active_tool = EditorWindow::current()->get_current_tool();
+      active_tool->mouse_down(event, *this);
     }
   else if (event->button == 2)
     {
-      current_tool = scroll_tool.get();
-      scroll_tool->mouse_down(event, this);
+      active_tool = scroll_tool.get();
+      active_tool->mouse_down(event, *this);
     }
 
   return false;
@@ -235,11 +229,11 @@ WindstilleWidget::mouse_down(GdkEventButton* event)
 bool
 WindstilleWidget::mouse_move(GdkEventMotion* event)
 {
-  std::cout << "Motion: " << event->x << ", " << event->y << std::endl;
+  //std::cout << "Motion: " << event->x << ", " << event->y << std::endl;
   
-  if (current_tool)
+  if (active_tool)
     {
-      current_tool->mouse_move(event, this);
+      active_tool->mouse_move(event, *this);
       queue_draw();
     }
   
@@ -249,18 +243,18 @@ WindstilleWidget::mouse_move(GdkEventMotion* event)
 bool
 WindstilleWidget::mouse_up(GdkEventButton* event)
 {
-  current_tool = 0;
+  active_tool = 0;
 
   std::cout << "Button Release: " << event->x << ", " << event->y << " - " << event->button << std::endl;
   //viewer->on_mouse_button_up(Vector2i(event->x, event->y), event->button);
   if (event->button == 1)
     {
-      select_tool->mouse_down(event, this);
+      EditorWindow::current()->get_current_tool()->mouse_up(event, *this);
       queue_draw();
     }
   else if (event->button == 2)
     {
-      scroll_tool->mouse_up(event, this);
+      scroll_tool->mouse_up(event, *this);
       queue_draw();
     }
   return false;

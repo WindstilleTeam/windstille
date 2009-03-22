@@ -35,8 +35,6 @@
 
 class Tool;
 class ScrollTool;
-class SelectTool;
-class ZoomTool;
 
 /** OpenGL drawing area into which the Windstille game will be
     embedded */
@@ -48,10 +46,8 @@ private:
   GraphicContextState   state;
   std::vector<Vector2f> objects;
   std::auto_ptr<SceneContext> sc;
-  Tool* current_tool;
+  Tool* active_tool;
   std::auto_ptr<ScrollTool> scroll_tool;
-  std::auto_ptr<SelectTool> select_tool;
-  std::auto_ptr<ZoomTool>   zoom_tool;
 
 public:
   WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig,

@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_EDITOR_WINDOW_HPP
 #define HEADER_WINDSTILLE_EDITOR_EDITOR_WINDOW_HPP
 
+#include <memory>
 #include <gtkmm/box.h>
 #include <gtkmm/statusbar.h>
 #include <gtkmm/textview.h>
@@ -30,10 +31,18 @@
 #include "object_selector.hpp"
 #include "object_tree.hpp"
 
+class Tool;
 class WindstilleWidget;
+class SelectTool;
+class ZoomTool;
 
 class EditorWindow : public Gtk::Window
 {
+private:
+  static EditorWindow* current_;
+public:
+  static EditorWindow* current() { return current_; }
+
 private:
   Gtk::VBox   vbox;
   Gtk::VBox   sidebar_vbox;
@@ -51,7 +60,15 @@ private:
   Glib::RefPtr<Gtk::ActionGroup> action_group;
   Glib::RefPtr<Gdk::GL::Context> share_list;
   Glib::RefPtr<const Gdk::GL::Config>  glconfig;
+  
+  Glib::RefPtr<Gtk::RadioAction> select_tool_action;
+  Glib::RefPtr<Gtk::RadioAction> node_tool_action;
+  Glib::RefPtr<Gtk::RadioAction> zoom_tool_action;
 
+  std::auto_ptr<SelectTool> select_tool;
+  std::auto_ptr<ZoomTool>   zoom_tool;
+  Tool* current_tool;
+  
 public:
   EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig);
   virtual ~EditorWindow();
@@ -71,6 +88,9 @@ public:
   void on_zoom_out();
   void on_zoom_100();
 
+  void on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool*);
+
+  Tool* get_current_tool() const;
   WindstilleWidget* get_windstille_widget();
   
 private:

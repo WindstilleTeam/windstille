@@ -26,17 +26,17 @@ ZoomTool::ZoomTool()
 }
 
 bool
-ZoomTool::mouse_down (GdkEventButton* event, WindstilleWidget* wst)
+ZoomTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 {
-  click_pos = wst->get_state().screen_to_world(Vector2f(event->x, event->y));
+  click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
   rect_valid = false;
   return true;
 }
 
 bool
-ZoomTool::mouse_move(GdkEventMotion* event, WindstilleWidget* wst)
+ZoomTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
-  Vector2f pos = wst->get_state().screen_to_world(Vector2f(event->x, event->y));
+  Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
 
   rect.left   = click_pos.x;
   rect.top    = click_pos.y;
@@ -48,9 +48,12 @@ ZoomTool::mouse_move(GdkEventMotion* event, WindstilleWidget* wst)
 }
 
 bool
-ZoomTool::mouse_up(GdkEventButton* event, WindstilleWidget* wst)
+ZoomTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   // Zoom objects
+  std::cout << "Zoom To: " << rect << std::endl;
+  rect.normalize();
+  wst.get_state().zoom_to(rect);
   rect_valid = false;
   return true;
 }

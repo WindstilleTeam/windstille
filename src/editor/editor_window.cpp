@@ -19,6 +19,7 @@
 #include <iostream>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/actiongroup.h>
+#include <gtkmm/radioaction.h>
 #include <gtkmm/icontheme.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toolbar.h>
@@ -27,11 +28,20 @@
 #include "windstille_widget.hpp"
 #include "about_window.hpp"
 #include "editor_window.hpp"
+#include "zoom_tool.hpp"
+#include "select_tool.hpp"
+
+EditorWindow* EditorWindow::current_ = 0;
 
 EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   : minimap_widget(glconfig_),
-    glconfig(glconfig_)
+    glconfig(glconfig_),
+    select_tool(new SelectTool()),
+    zoom_tool(new ZoomTool()),
+    current_tool(select_tool.get())
 {
+  current_ = this;
+
   set_title("Windstille Editor");
   set_default_size(1024, 768);
 
@@ -55,6 +65,11 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='ZoomIn'/>"
     "      <menuitem action='ZoomOut'/>"
     "      <menuitem action='Zoom100'/>"
+    "    </menu>"
+    "    <menu action='MenuTools'>"
+    "      <menuitem action='SelectTool'/>"
+    "      <menuitem action='NodeTool'/>"
+    "      <menuitem action='ZoomTool'/>"
     "    </menu>"
     "    <menu action='MenuHelp'>"
     "      <menuitem action='About'/>"
@@ -123,9 +138,15 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
 
   // Tools
   action_group->add(Gtk::Action::create("MenuTools",  "_Tools"));
-  action_group->add(Gtk::Action::create_with_icon_name("SelectTool", "select_tool", "Select Tool", "Select Tool"));
-  action_group->add(Gtk::Action::create_with_icon_name("NodeTool",   "node_tool",   "Node Tool", "Node Tool"));
-  action_group->add(Gtk::Action::create_with_icon_name("ZoomTool",   "zoom_tool",   "Zoom Tool", "Zoom Tool"));
+  Gtk::RadioButtonGroup tool_group;
+  
+  select_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "SelectTool", "select_tool", "Select Tool", "Select Tool");
+  node_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "NodeTool",   "node_tool",   "Node Tool", "Node Tool");
+  zoom_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "ZoomTool",   "zoom_tool",   "Zoom Tool", "Zoom Tool");
+
+  action_group->add(select_tool_action, sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), select_tool_action, select_tool.get()));
+  action_group->add(node_tool_action,   sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), node_tool_action, select_tool.get()));
+  action_group->add(zoom_tool_action,   sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), zoom_tool_action, zoom_tool.get()));
 
   // signal_size_allocate().connect (sigc::mem_fun (*this, &EditorWindow::on_window_size_allocate), false);
   // signal_realize().connect (sigc::mem_fun (*this, &EditorWindow::on_window_realize));
@@ -172,6 +193,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
 
 EditorWindow::~EditorWindow()
 {
+  current_ = 0;
 }
 
 void
@@ -303,6 +325,22 @@ EditorWindow::on_zoom_100()
   WindstilleWidget* wst = get_windstille_widget();
   if (wst)
     wst->on_zoom_100();
+}
+
+void
+EditorWindow::on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool* tool)
+{
+  std::cout << "on_tool_select()" << action->get_active() << std::endl;
+  if (action->get_active())
+    {
+      current_tool = tool;
+    }
+}
+
+Tool*
+EditorWindow::get_current_tool() const
+{
+  return current_tool;
 }
 
 WindstilleWidget*

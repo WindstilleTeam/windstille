@@ -25,30 +25,30 @@ ScrollTool::ScrollTool()
 }
 
 bool
-ScrollTool::mouse_down(GdkEventButton* event, WindstilleWidget* wst)
+ScrollTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
-  orig_state = wst->get_state().clone();
+  orig_state = wst.get_state().clone();
   orig_click = orig_state.screen_to_world(Vector2f(event->x, event->y));
   
   return true;
 }
 
 bool
-ScrollTool::mouse_move(GdkEventMotion* event, WindstilleWidget* wst)
+ScrollTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(event->x, event->y));
 
-  wst->get_state().set_pos(orig_state.get_pos() + offset);
+  wst.get_state().set_pos(orig_state.get_pos() + offset);
 
   return true;
 }
 
 bool
-ScrollTool::mouse_up(GdkEventButton* event, WindstilleWidget* wst)
+ScrollTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(event->x, event->y));
 
-  wst->get_state().set_pos(orig_state.get_pos() + offset);
+  wst.get_state().set_pos(orig_state.get_pos() + offset);
 
   return true;
 }

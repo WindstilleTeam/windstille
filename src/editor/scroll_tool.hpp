@@ -32,9 +32,9 @@ private:
 public:
   ScrollTool();
 
-  virtual bool mouse_down(GdkEventButton* event, WindstilleWidget* wst);
-  virtual bool mouse_move(GdkEventMotion* event, WindstilleWidget* wst);
-  virtual bool mouse_up(GdkEventButton* event, WindstilleWidget* wst);
+  virtual bool mouse_down(GdkEventButton* event, WindstilleWidget& wst);
+  virtual bool mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
+  virtual bool mouse_up(GdkEventButton* event, WindstilleWidget& wst);
 
 private:
   ScrollTool(const ScrollTool&);

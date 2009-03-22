@@ -26,17 +26,17 @@ SelectTool::SelectTool()
 }
 
 bool
-SelectTool::mouse_down (GdkEventButton* event, WindstilleWidget* wst)
+SelectTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 {
-  click_pos = wst->get_state().screen_to_world(Vector2f(event->x, event->y));
+  click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
   rect_valid = false;
   return true;
 }
 
 bool
-SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget* wst)
+SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
-  Vector2f pos = wst->get_state().screen_to_world(Vector2f(event->x, event->y));
+  Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
 
   rect.left   = click_pos.x;
   rect.top    = click_pos.y;
@@ -48,7 +48,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget* wst)
 }
 
 bool
-SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget* wst)
+SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   // Select objects
   rect_valid = false;
