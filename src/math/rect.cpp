@@ -27,7 +27,7 @@
 **    (if your name is missing here, please add it)
 */
 
-
+#include <ostream>
 #include <cmath>
 
 #include "rect.hpp"
@@ -58,5 +58,15 @@ Rect Rect::get_rot_bounds(Origin origin, int x, int y, float angle) const
 	return get_rot_bounds(
 		Point(left, top) + calc_origin(origin, get_size()) + Point(x, y),
 		angle);
+}
+
+std::ostream& operator<<(std::ostream& s, const Rect& rect)
+{
+  return s << "Rect(" << rect.left << ", " << rect.top << ", " << rect.right << ", " << rect.bottom << ")";
+}
+
+std::ostream& operator<<(std::ostream& s, const Rectf& rect)
+{
+  return s << "Rectf(" << rect.left << ", " << rect.top << ", " << rect.right << ", " << rect.bottom << ")";
 }
 
