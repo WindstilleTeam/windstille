@@ -16,6 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <gdkmm/pixbuf.h>
+#include "display/scene_context.hpp"
+#include "display/surface.hpp"
 #include "sector_model.hpp"
 
 class ObjectTreeColumns : public Gtk::TreeModel::ColumnRecord
@@ -34,7 +37,26 @@ public:
 
 SectorModel::SectorModel()
 {
-  objects = Gtk::TreeStore::create(columns);
+  ObjectTreeColumns columns;
+  objects_tree = Gtk::TreeStore::create(columns);
+}
+
+void
+SectorModel::add(const Vector2f& obj)
+{
+  objects.push_back(obj);
+}
+
+void
+SectorModel::draw(SceneContext& sc)
+{
+  Surface surface("images/hedgehog.png");
+
+  for(std::vector<Vector2f>::iterator i = objects.begin(); i != objects.end(); ++i)
+    {
+      sc.color().draw(surface, i->x, i->y);
+      sc.control().fill_rect(Rectf(*i - Vector2f(8, 8), Sizef(16, 16)), Color(1,0,0));
+    }
 }
 
 /* EOF */

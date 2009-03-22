@@ -26,15 +26,18 @@
 #include "display/surface_manager.hpp"
 #include "display/opengl_state.hpp"
 #include "display/surface.hpp"
-#include "windstille_widget.hpp"
 #include "editor_window.hpp"
 #include "scroll_tool.hpp"
+#include "sector_model.hpp"
+
+#include "windstille_widget.hpp"
 
 bool lib_init = false;
 
 WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list)
-  : active_tool(0),
+  : sector_model(new SectorModel()),
+    active_tool(0),
     scroll_tool(new ScrollTool())
 {
   set_gl_capability(glconfig, share_list);
@@ -161,24 +164,7 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
     }
   else
     {
-      //std::cout << "Draw" << std::endl;
-      if (sc.get())
-        {
-          state.push(*sc);
-
-          Surface surface("images/hedgehog.png");
-          for(std::vector<Vector2f>::iterator i = objects.begin(); i != objects.end(); ++i)
-            {
-              sc->color().draw(surface, i->x+50, i->y+50);
-            }
-
-          if (active_tool)
-            active_tool->draw(*sc);
-
-          sc->render();
-
-          state.pop(*sc);
-        }
+      draw();
 
       // Swap buffers.
       if (glwindow->is_double_buffered())
@@ -189,6 +175,25 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
       glwindow->gl_end();
 
       return true;
+    }
+}
+
+void
+WindstilleWidget::draw()
+{
+  //std::cout << "Draw" << std::endl;
+  if (sc.get())
+    {
+      state.push(*sc);
+
+      sector_model->draw(*sc);
+
+      if (active_tool)
+        active_tool->draw(*sc);
+
+      sc->render();
+
+      state.pop(*sc);
     }
 }
 
@@ -313,7 +318,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
   std::cout << "WindstilleWidget: on_drag_data_received: "
             << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
 
-  objects.push_back(Vector2f(x, y));
+  sector_model->add(state.screen_to_world(Vector2f(x, y)));
 }
 
 void
@@ -341,6 +346,12 @@ WindstilleWidget::on_zoom_100()
 {
   state.set_zoom(1.0f);
   queue_draw();
+}
+
+SectorModel*
+WindstilleWidget::get_sector_model()
+{
+  return sector_model.get();
 }
 
 /* EOF */

@@ -19,20 +19,29 @@
 #ifndef HEADER_SECTOR_MODEL_HPP
 #define HEADER_SECTOR_MODEL_HPP
 
-/** */
+#include <gtkmm/treestore.h>
+#include <vector>
+#include "math/vector2f.hpp"
+
+class SceneContext;
+
 class SectorModel
 {
 private:
-  Glib::RefPtr<Gtk::TreeStore> objects;
+  Glib::RefPtr<Gtk::TreeStore> objects_tree;
+  std::vector<Vector2f> objects;
 
 public:
   SectorModel();
+
+  void add(const Vector2f& obj);
+  void draw(SceneContext& sc);
 
 private:
   SectorModel(const SectorModel&);
   SectorModel& operator=(const SectorModel&);
 };
-
+
 #endif
 
 /* EOF */

@@ -35,6 +35,7 @@
 
 class Tool;
 class ScrollTool;
+class SectorModel;
 
 /** OpenGL drawing area into which the Windstille game will be
     embedded */
@@ -43,8 +44,9 @@ class WindstilleWidget
     public Gtk::GL::Widget<WindstilleWidget>
 {
 private:
+  std::auto_ptr<SectorModel> sector_model;
+
   GraphicContextState   state;
-  std::vector<Vector2f> objects;
   std::auto_ptr<SceneContext> sc;
   Tool* active_tool;
   std::auto_ptr<ScrollTool> scroll_tool;
@@ -78,6 +80,10 @@ public:
   void on_zoom_in();
   void on_zoom_out();
   void on_zoom_100();
+  
+  void draw();
+
+  SectorModel* get_sector_model();
 
 private:
   WindstilleWidget (const WindstilleWidget&);
