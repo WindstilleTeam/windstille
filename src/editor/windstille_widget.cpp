@@ -330,21 +330,21 @@ WindstilleWidget::on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context)
 void
 WindstilleWidget::on_zoom_in()
 {
-  state.set_zoom(state.get_zoom() * 1.25f);
+  state.set_zoom(Vector2f(get_width()/2, get_height()/2), state.get_zoom() * 1.25f);
   queue_draw();
 }
 
 void
 WindstilleWidget::on_zoom_out()
 {
-  state.set_zoom(state.get_zoom() * (1.0f/1.25f));
+  state.set_zoom(Vector2f(get_width()/2, get_height()/2), state.get_zoom() * (1.0f/1.25f));
   queue_draw();
 }
 
 void
 WindstilleWidget::on_zoom_100()
 {
-  state.set_zoom(1.0f);
+  state.set_zoom(Vector2f(get_width()/2, get_height()/2), 1.0f);
   queue_draw();
 }
 
