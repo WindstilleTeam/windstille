@@ -62,6 +62,19 @@ SectorModel::draw(SceneContext& sc)
       (*i)->draw(sc);
     }
 }
+
+ObjectModelHandle
+SectorModel::get_object_at(const Vector2f& pos) const
+{
+  for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
+    {
+      if ((*i)->get_bounding_box().is_inside(pos))
+        {
+          return *i;
+        }
+    }
+  return ObjectModelHandle();
+}
 
 void
 SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)

@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_SELECT_TOOL_HPP
 
 #include "math/rect.hpp"
+#include "object_model.hpp"
 #include "tool.hpp"
 
 class SelectTool : public Tool
@@ -27,8 +28,15 @@ class SelectTool : public Tool
 private:
   Vector2f click_pos;
   Rectf    rect;
-  bool     rect_valid;
-
+  ObjectModelHandle object;
+  Vector2f object_pos;
+  
+  enum { 
+    SELECT_MODE,
+    DRAG_MODE,
+    NO_MODE
+  } mode;
+  
 public:
   SelectTool();
   

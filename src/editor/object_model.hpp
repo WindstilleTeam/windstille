@@ -45,6 +45,7 @@ public:
   
   std::string get_name() const { return name; }
   Vector2f get_pos() const { return pos; }
+  void set_pos(const Vector2f& pos_)  {  pos = pos_; }
   
   void draw(SceneContext& sc);
   Rectf get_bounding_box() const;

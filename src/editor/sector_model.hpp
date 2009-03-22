@@ -79,6 +79,8 @@ public:
   void on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
   void on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order);
 
+  ObjectModelHandle get_object_at(const Vector2f& pos) const;
+
 private:
   SectorModel(const SectorModel&);
   SectorModel& operator=(const SectorModel&);

@@ -17,19 +17,36 @@
 */
 
 #include "display/scene_context.hpp"
+#include "sector_model.hpp"
 #include "windstille_widget.hpp"
 #include "select_tool.hpp"
 
 SelectTool::SelectTool()
-  : rect_valid(false)
+  : mode(NO_MODE)
+    
 {
 }
 
 bool
-SelectTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
+SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
-  rect_valid = false;
+
+  if ((object = wst.get_sector_model()->get_object_at(click_pos)).get())
+    {
+      mode = DRAG_MODE;
+      object_pos = object->get_pos();
+    }
+  else
+    {
+      rect.left   = click_pos.x;
+      rect.top    = click_pos.y;
+      rect.right  = click_pos.x;
+      rect.bottom = click_pos.y;
+      
+      mode = SELECT_MODE;
+    }
+
   return true;
 }
 
@@ -38,12 +55,18 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
 
-  rect.left   = click_pos.x;
-  rect.top    = click_pos.y;
-  rect.right  = pos.x;
-  rect.bottom = pos.y;
+  if (mode == DRAG_MODE)
+    {
+      object->set_pos(object_pos - click_pos + pos);
+    }
+  else if (mode == SELECT_MODE)
+    {
+      rect.left   = click_pos.x;
+      rect.top    = click_pos.y;
+      rect.right  = pos.x;
+      rect.bottom = pos.y;
+    }
   
-  rect_valid = true;
   return true;
 }
 
@@ -51,14 +74,24 @@ bool
 SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   // Select objects
-  rect_valid = false;
+  if (mode == DRAG_MODE)
+    {
+      
+    }
+  else if (mode == SELECT_MODE)
+    {
+      mode = NO_MODE;
+    }
+
+  mode = NO_MODE;
+
   return true;
 }
 
 void
 SelectTool::draw(SceneContext& sc)
 {
-  if (rect_valid)
+  if (mode == SELECT_MODE)
     {
       sc.control().fill_rect(rect, Color(0.5f, 0.5f, 1.0f, 0.25));
       sc.control().draw_rect(rect, Color(0.5f, 0.5f, 1.0f)); 
