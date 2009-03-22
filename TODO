@@ -185,6 +185,8 @@ Sound Handling
 Miscellaneous
 =============
 
+* move has_suffix, has_prefix and stuff into StringUtil class
+
 * get rid of global debug
 
 * work on Object introspection, see: ~/projects/lang/c++/introspection.cpp

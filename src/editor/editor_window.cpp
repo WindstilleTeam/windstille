@@ -190,6 +190,11 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
 
   // Window
   add(vbox);
+
+  fill_object_selector("data/images/objects/");
+  fill_object_selector("data/images/inventory/");
+  fill_object_selector("data/images/portraits/");
+  fill_object_selector("data/images/");
 }
 
 EditorWindow::~EditorWindow()
@@ -359,6 +364,32 @@ EditorWindow::get_windstille_widget()
   else
     {
       return static_cast<WindstilleWidget*>(notebook.get_nth_page(page));
+    }
+}
+
+static bool has_suffix(const std::string& str, const std::string& suffix)
+{
+  if (str.length() >= suffix.length())
+    return str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0;
+  else
+    return false;
+}
+
+void
+EditorWindow::fill_object_selector(const std::string& directory)
+{
+  Glib::Dir dir(directory);
+  for(Glib::Dir::iterator i = dir.begin(); i != dir.end(); ++i)
+    {
+      if (has_suffix(*i, ".png"))
+        {
+          Glib::ustring path = directory;
+          path += *i;
+
+          Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(path);
+
+          object_selector.add_object(path, pixbuf->scale_simple(32, 32, Gdk::INTERP_TILES));
+        }
     }
 }
 

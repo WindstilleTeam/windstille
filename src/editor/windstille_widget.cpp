@@ -318,7 +318,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
   std::cout << "WindstilleWidget: on_drag_data_received: "
             << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
 
-  sector_model->add(state.screen_to_world(Vector2f(x, y)));
+  sector_model->add(data.get_data_as_string(), state.screen_to_world(Vector2f(x, y)));
 }
 
 void

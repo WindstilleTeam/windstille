@@ -22,6 +22,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/label.h>
+#include <gtkmm/liststore.h>
 #include <gdkmm/dragcontext.h>
 #include <gtkmm/iconview.h>
 
@@ -31,10 +32,14 @@ private:
   Gtk::Label label;
   Gtk::ScrolledWindow scrolled;
   Gtk::IconView iconview;
+  Glib::RefPtr<Gtk::ListStore> list_store;
   
 public:
   ObjectSelector();
   virtual ~ObjectSelector();
+
+  void add_object(const std::string& pathname,
+                  const Glib::RefPtr<Gdk::Pixbuf>& icon);
 
 protected:
   void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context);

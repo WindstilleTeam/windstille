@@ -17,42 +17,48 @@
 */
 
 #include <iostream>
-#include <gtkmm/liststore.h>
+#include <boost/function.hpp>
+#include <gtkmm/treeselection.h>
 #include <gtkmm/treemodelcolumn.h>
+
 #include "object_selector.hpp"
 
 class ObjectIconColumns : public Gtk::TreeModel::ColumnRecord
 {
 public:
-  Gtk::TreeModelColumn<Glib::ustring> pathname;
-  Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> >   icon;
+  Gtk::TreeModelColumn<std::string> pathname;
+  Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> >  icon;
   
+  static ObjectIconColumns& instance() {
+    if (instance_)
+      return *instance_;
+    else
+      return *(instance_ = new ObjectIconColumns());
+  }
+
+private:
+  static ObjectIconColumns* instance_;
+
   ObjectIconColumns() {
     add(pathname); 
     add(icon);
   }
 };
+
+ObjectIconColumns* ObjectIconColumns::instance_ = 0;
 
 ObjectSelector::ObjectSelector()
   : label("Object Selector", Gtk::ALIGN_LEFT)
 {
-  ObjectIconColumns columns;
-  Glib::RefPtr<Gtk::ListStore> list_store = Gtk::ListStore::create(columns);
+  list_store = Gtk::ListStore::create(ObjectIconColumns::instance());
 
-  Glib::RefPtr<Gdk::Pixbuf> icon = Gdk::Pixbuf::create_from_file("data/editor/icon.png");
-
-  iconview.modify_base(Gtk::STATE_NORMAL, Gdk::Color("grey"));
+  // Change background color
+  // iconview.modify_base(Gtk::STATE_NORMAL, Gdk::Color("grey"));
   
-  for(int i = 0; i < 10; ++i)
-    {
-      Gtk::ListStore::iterator it  = list_store->append();
-      (*it)[columns.pathname] = Glib::ustring("Hello World");
-      (*it)[columns.icon]     = icon;
-    }
   iconview.set_model(list_store);
 
-  iconview.set_pixbuf_column(columns.icon);
-  //iconview.set_text_column(columns.pathname);
+  iconview.set_pixbuf_column(ObjectIconColumns::instance().icon);
+  //iconview.set_text_column(ObjectIconColumns::instance().pathname);
 
   iconview.set_model(list_store);
 
@@ -78,11 +84,31 @@ ObjectSelector::~ObjectSelector()
 }
 
 void
+ObjectSelector::add_object(const std::string& pathname,
+                           const Glib::RefPtr<Gdk::Pixbuf>& icon)
+{
+  Gtk::ListStore::iterator it  = list_store->append();
+  (*it)[ObjectIconColumns::instance().pathname] = pathname;
+  (*it)[ObjectIconColumns::instance().icon]     = icon;
+}
+                    
+void
 ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file("data/editor/icon.png");
+  std::string iconpath = "data/editor/icon.png";
+
+Gtk::IconView::ArrayHandle_TreePaths selection = iconview.get_selected_items();
+  for(Gtk::IconView::ArrayHandle_TreePaths::iterator i = selection.begin();
+      i != selection.end();
+      ++i)
+    {
+      Gtk::ListStore::iterator it = list_store->get_iter(*i);
+      iconpath = (*it)[ObjectIconColumns::instance().pathname];
+    }
+
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath);
   context->set_icon(pixbuf, pixbuf->get_width()/2, pixbuf->get_height()/2);
-}
+}     
 
 void
 ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context, 
@@ -90,7 +116,20 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context,
                                  guint info, guint time)
 {
   std::cout << "ObjectSelector: on_drag_data_get" << std::endl;
-  selection_data.set("raw", "data");
+
+  Gtk::IconView::ArrayHandle_TreePaths selection = iconview.get_selected_items();
+
+  for(Gtk::IconView::ArrayHandle_TreePaths::iterator i = selection.begin();
+      i != selection.end();
+      ++i)
+    {
+      Gtk::ListStore::iterator it = list_store->get_iter(*i);
+
+      //if (it)
+      //  std::cout << "on_drag_begin: " << (*it)[ObjectIconColumns::instance().pathname] << std::endl;
+
+      selection_data.set("data", (*it)[ObjectIconColumns::instance().pathname]);
+    }
 }
 
 /* EOF */

@@ -22,6 +22,8 @@
 #include <memory>
 #include <gtkmm/treestore.h>
 #include <vector>
+
+#include "object_model.hpp"
 #include "math/vector2f.hpp"
 
 class SceneContext;
@@ -55,14 +57,16 @@ private:
 class SectorModel
 {
 private:
+  typedef std::vector<ObjectModelHandle> Objects;
+
   Gtk::TreeStore::iterator root_it;
   Glib::RefPtr<Gtk::TreeStore> objects_tree;
-  std::vector<Vector2f> objects;
+  Objects objects;
 
 public:
   SectorModel();
 
-  void add(const Vector2f& obj);
+  void add(const std::string& path, const Vector2f& obj);
   void draw(SceneContext& sc);
 
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;

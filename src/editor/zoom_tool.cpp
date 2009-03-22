@@ -61,7 +61,6 @@ ZoomTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 void
 ZoomTool::draw(SceneContext& sc)
 {
-  std::cout << "draw: " << rect_valid << std::endl;
   if (rect_valid)
     {
       sc.control().fill_rect(rect, Color(1.0f, 1.0f, 0.0f, 0.25));

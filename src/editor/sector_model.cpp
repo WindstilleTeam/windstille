@@ -42,24 +42,24 @@ SectorModel::SectorModel()
 }
 
 void
-SectorModel::add(const Vector2f& obj)
+SectorModel::add(const std::string& path, const Vector2f& pos)
 {
+  ObjectModelHandle obj = ObjectModel::create("obj:" + path, path, pos);
+
   objects.push_back(obj);
+
   Gtk::TreeStore::iterator it = objects_tree->append(root_it->children());
   (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
-  (*it)[ObjectTreeColumns::instance().name]      = Glib::ustring("Object");
+  (*it)[ObjectTreeColumns::instance().name]      = obj->get_name();
   (*it)[ObjectTreeColumns::instance().visible]   = false; 
 }
 
 void
 SectorModel::draw(SceneContext& sc)
 {
-  Surface surface("images/hedgehog.png");
-
-  for(std::vector<Vector2f>::iterator i = objects.begin(); i != objects.end(); ++i)
+  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
-      sc.color().draw(surface, i->x, i->y);
-      sc.control().fill_rect(Rectf(*i - Vector2f(8, 8), Sizef(16, 16)), Color(1,0,0));
+      (*i)->draw(sc);
     }
 }
 

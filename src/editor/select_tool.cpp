@@ -58,7 +58,6 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 void
 SelectTool::draw(SceneContext& sc)
 {
-  std::cout << "draw: " << rect_valid << std::endl;
   if (rect_valid)
     {
       sc.control().fill_rect(rect, Color(0.5f, 0.5f, 1.0f, 0.25));
