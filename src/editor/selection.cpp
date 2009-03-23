@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include "selection.hpp"
 
 Selection::Selection()
@@ -30,6 +31,20 @@ void
 Selection::add(const ObjectModelHandle& object)
 {
   objects.push_back(object);
+}
+
+void
+Selection::remove(const ObjectModelHandle& object)
+{
+  Objects::iterator it = std::find(objects.begin(), objects.end(), object);
+  if (it != objects.end())
+    {
+      objects.erase(it);
+    }
+  else
+    {
+      std::cout << "Selection:remove(): object not in selection" << std::endl;
+    }
 }
 
 bool

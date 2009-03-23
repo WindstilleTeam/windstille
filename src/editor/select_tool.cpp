@@ -38,12 +38,28 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       if (wst.get_selection()->has_object(object))
         {
           selection = wst.get_selection();
+          if (event->state & GDK_SHIFT_MASK)
+            {
+              selection->remove(object);
+            }
+          else
+            {
+              selection = wst.get_selection();
+            }
         }
       else
         {
-          selection = Selection::create();
-          selection->add(object);
-          wst.set_selection(selection);
+          if (event->state & GDK_SHIFT_MASK)
+            {
+              selection = wst.get_selection();
+              selection->add(object);
+            }
+          else
+            {
+              selection = Selection::create();
+              selection->add(object);
+              wst.set_selection(selection);
+            }
         }
       
       mode = DRAG_MODE;

@@ -93,6 +93,9 @@ public:
   void selection_raise_to_top();
   void selection_lower_to_bottom();
 
+  void selection_connect_parent();
+  void selection_clear_parent();
+
   SectorModel* get_sector_model();
   void set_selection(const SelectionHandle& selection);
   SelectionHandle get_selection() const;

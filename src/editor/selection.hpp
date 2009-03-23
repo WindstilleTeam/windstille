@@ -44,7 +44,10 @@ public:
   ~Selection();
 
   void add(const ObjectModelHandle& object);
+  void remove(const ObjectModelHandle& object);
   
+  int size() const { return objects.size(); }
+
   Selection::iterator begin() { return objects.begin(); }
   Selection::iterator end()   { return objects.end(); }
 

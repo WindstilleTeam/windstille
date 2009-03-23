@@ -192,7 +192,10 @@ WindstilleWidget::draw()
 
       for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
         {
-          sc->control().draw_rect((*i)->get_bounding_box(), Color(0.5f, 0.5f, 1.0f, 1.0f));
+          if (i == selection->begin())
+            sc->control().draw_rect((*i)->get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+          else
+            sc->control().draw_rect((*i)->get_bounding_box(), Color(0.5f, 0.5f, 1.0f, 1.0f));
         }
 
       if (active_tool)
@@ -240,6 +243,33 @@ WindstilleWidget::selection_lower_to_bottom()
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
       sector_model->lower_to_bottom(*i);
+    }
+  queue_draw();
+}
+
+void
+WindstilleWidget::selection_connect_parent()
+{
+  if (selection->size() >= 2)
+    {
+      ObjectModelHandle parent = *selection->begin();
+
+      Selection::iterator i = selection->begin();
+      ++i;
+      for(; i != selection->end(); ++i)
+        {
+          (*i)->set_parent(parent);
+        }
+    }
+  queue_draw();
+}
+
+void
+WindstilleWidget::selection_clear_parent()
+{
+  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      (*i)->set_parent(ObjectModelHandle());
     }
   queue_draw();
 }

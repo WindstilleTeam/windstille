@@ -62,10 +62,13 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='Paste'/>"
     "    </menu>"
     "    <menu action='MenuObject'>"
-    "      <menuitem action='LowerObjectToBottom'/>"
-    "      <menuitem action='LowerObject'/>"
-    "      <menuitem action='RaiseObject'/>"
     "      <menuitem action='RaiseObjectToTop'/>"
+    "      <menuitem action='RaiseObject'/>"
+    "      <menuitem action='LowerObject'/>"
+    "      <menuitem action='LowerObjectToBottom'/>"
+    "      <separator/>"
+    "      <menuitem action='ConnectParent'/>"
+    "      <menuitem action='ClearParent'/>"
     "    </menu>"
     "    <menu action='MenuView'>"
     "      <menuitem action='ZoomIn'/>"
@@ -87,6 +90,9 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='Open'/>"
     "    <toolitem action='Save'/>"
     "    <separator/>"
+    "    <toolitem action='Undo'/>"
+    "    <toolitem action='Redo'/>"
+    "    <separator/>"
     "    <toolitem action='Cut'/>"
     "    <toolitem action='Copy'/>"
     "    <toolitem action='Paste'/>"
@@ -95,10 +101,13 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='ZoomOut'/>"
     "    <toolitem action='Zoom100'/>"
     "    <separator/>"
-    "    <toolitem action='RaiseObjectToTop'/>"
-    "    <toolitem action='RaiseObject'/>"
-    "    <toolitem action='LowerObject'/>"
     "    <toolitem action='LowerObjectToBottom'/>"
+    "    <toolitem action='LowerObject'/>"
+    "    <toolitem action='RaiseObject'/>"
+    "    <toolitem action='RaiseObjectToTop'/>"
+    "    <separator/>"
+    "    <toolitem action='ConnectParent'/>"
+    "    <toolitem action='ClearParent'/>"
     "    <separator/>"
     "    <toolitem action='Play'/>"
     "    <separator/>"
@@ -129,6 +138,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::mem_fun(*this, &EditorWindow::on_quit));
 
   action_group->add(Gtk::Action::create("MenuEdit",    "_Edit"));
+  action_group->add(Gtk::Action::create("Undo",        Gtk::Stock::UNDO));
+  action_group->add(Gtk::Action::create("Redo",        Gtk::Stock::REDO));
   action_group->add(Gtk::Action::create("Cut",         Gtk::Stock::CUT));
   action_group->add(Gtk::Action::create("Copy",        Gtk::Stock::COPY));
   action_group->add(Gtk::Action::create("Paste",       Gtk::Stock::PASTE));
@@ -142,6 +153,12 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_lower));                    
   action_group->add(Gtk::Action::create_with_icon_name("LowerObjectToBottom", "object_lower_to_bottom", "Lower To Bottom", "Lower Object to Bottom"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_lower_to_bottom));
+
+  action_group->add(Gtk::Action::create_with_icon_name("ConnectParent", "connect_parent", "Connect Parent", "Connect Parent"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_connect_parent));
+  action_group->add(Gtk::Action::create_with_icon_name("ClearParent", "clear_parent", "Clear Parent", "Clear Parent"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_clear_parent));
+
 
   action_group->add(Gtk::Action::create("MenuView",    "_View"));
   action_group->add(Gtk::Action::create("Zoom100",     Gtk::Stock::ZOOM_100),
@@ -181,6 +198,13 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   add_accel_group(ui_manager->get_accel_group());
 
   notebook.signal_switch_page().connect(sigc::mem_fun(*this, &EditorWindow::on_switch_page));
+
+  // Disable unimplemented stuff:
+  action_group->get_action("Undo")->set_sensitive(false);
+  action_group->get_action("Redo")->set_sensitive(false);
+  action_group->get_action("Cut")->set_sensitive(false);
+  action_group->get_action("Copy")->set_sensitive(false);
+  action_group->get_action("Paste")->set_sensitive(false);
 
   // Packing
 

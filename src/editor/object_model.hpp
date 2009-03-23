@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_HPP
 
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include <string>
 
 #include "display/surface.hpp"
@@ -28,6 +29,7 @@
 class ObjectModel;
 class SceneContext;
 typedef boost::shared_ptr<ObjectModel> ObjectModelHandle;
+typedef boost::weak_ptr<ObjectModel>   ObjectModelPtr;
 
 class ObjectModel
 {
@@ -35,19 +37,26 @@ public:
   static ObjectModelHandle create(const std::string& name, const std::string& path, const Vector2f& pos);
 
 private:
+  ObjectModelPtr parent_ptr;
+
   std::string name;
-  Vector2f     pos;
-  Surface  surface;
+  Vector2f    rel_pos;
+  Surface     surface;
 
   Vector2f move_offset;
 
 public:
   ObjectModel(const std::string& name, const std::string& path, const Vector2f& pos);
   ~ObjectModel();
+
+  void set_parent(const ObjectModelHandle& parent_);
   
   std::string get_name() const { return name; }
-  Vector2f get_pos() const { return pos; }
-  void set_pos(const Vector2f& pos_)  {  pos = pos_; }
+
+  Vector2f get_world_pos() const;
+
+  Vector2f get_rel_pos() const { return rel_pos; }
+  void     set_rel_pos(const Vector2f& rel_pos_)  {  rel_pos = rel_pos_; }
   
   void draw(SceneContext& sc);
   Rectf get_bounding_box() const;

@@ -485,6 +485,12 @@ Graphics
 Editor
 ======
 
+* add a Rect::contains(Rect) call
+
+* duplicate objects
+
+* shift click to add object to selection instead of replace selection
+
 * add ways to toggle light, color, highlight layers on/off in the
   editor
 
@@ -494,7 +500,8 @@ Editor
 * save bitmask along with object to allow pixel perfect click
   selection
 
-* add object snapping
+* add object snapping (snap to other objects bounding boxes, snap to
+  custom snap-points, snap to integer positions, snap to grid)
 
 * add grid
 
