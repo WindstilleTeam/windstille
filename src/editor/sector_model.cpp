@@ -75,6 +75,22 @@ SectorModel::get_object_at(const Vector2f& pos) const
     }
   return ObjectModelHandle();
 }
+
+SelectionHandle
+SectorModel::get_selection(const Rectf& rect) const
+{
+  SelectionHandle selection = Selection::create();
+
+  for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
+    {
+      if ((*i)->get_bounding_box().is_overlapped(rect))
+        {
+          selection->add(*i);
+        }
+    }
+
+  return selection;
+}
 
 void
 SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)

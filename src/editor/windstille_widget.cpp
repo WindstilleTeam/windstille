@@ -67,6 +67,8 @@ WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  g
   std::vector<Gtk::TargetEntry> targets;
   targets.push_back(Gtk::TargetEntry("WindstilleObject"));
   drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
+
+  selection = Selection::create();
 }
 
 WindstilleWidget::~WindstilleWidget()
@@ -187,6 +189,11 @@ WindstilleWidget::draw()
       state.push(*sc);
 
       sector_model->draw(*sc);
+
+      for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+        {
+          sc->control().draw_rect((*i)->get_bounding_box(), Color(0.5f, 0.5f, 1.0f, 1.0f));
+        }
 
       if (active_tool)
         active_tool->draw(*sc);
@@ -346,6 +353,18 @@ WindstilleWidget::on_zoom_100()
 {
   state.set_zoom(Vector2f(get_width()/2, get_height()/2), 1.0f);
   queue_draw();
+}
+
+void
+WindstilleWidget::set_selection(const SelectionHandle& selection_)
+{
+  selection = selection_;
+}
+
+SelectionHandle
+WindstilleWidget::get_selection() const
+{
+  return selection;
 }
 
 SectorModel*

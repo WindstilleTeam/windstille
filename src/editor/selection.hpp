@@ -16,37 +16,47 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_SELECT_TOOL_HPP
-#define HEADER_WINDSTILLE_EDITOR_SELECT_TOOL_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_SELECTION_HPP
+#define HEADER_WINDSTILLE_EDITOR_SELECTION_HPP
 
-#include "math/rect.hpp"
+#include <vector>
+#include <boost/shared_ptr.hpp>
+
 #include "object_model.hpp"
-#include "tool.hpp"
 
-class SelectTool : public Tool
+class Selection;
+typedef boost::shared_ptr<Selection> SelectionHandle;
+
+class Selection
 {
 private:
-  Vector2f click_pos;
-  Rectf    rect;
-  SelectionHandle selection;
-  
-  enum { 
-    SELECT_MODE,
-    DRAG_MODE,
-    NO_MODE
-  } mode;
-  
-public:
-  SelectTool();
-  
-  bool mouse_down (GdkEventButton* event, WindstilleWidget& wst);
-  bool mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
-  bool mouse_up(GdkEventButton* event, WindstilleWidget& wst);
-  void draw(SceneContext& sc);
+  typedef std::vector<ObjectModelHandle> Objects;
+  Objects objects;
 
+public:
+  typedef Objects::iterator iterator;
+
+public:
+  static SelectionHandle create() { return SelectionHandle(new Selection()); }
+
+  Selection();
+  ~Selection();
+
+  void add(const ObjectModelHandle& object);
+
+  iterator begin();
+  iterator end();
+  bool empty() const;
+
+  bool has_object(ObjectModelHandle object) const;
+
+  void on_move_start();
+  void on_move_update(const Vector2f& offset);
+  void on_move_end(const Vector2f& offset);
+  
 private:
-  SelectTool(const SelectTool&);
-  SelectTool& operator=(const SelectTool&);
+  Selection(const Selection&);
+  Selection& operator=(const Selection&);
 };
 
 #endif

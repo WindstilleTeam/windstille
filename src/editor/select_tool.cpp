@@ -31,11 +31,23 @@ bool
 SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
-
-  if ((object = wst.get_sector_model()->get_object_at(click_pos)).get())
+  
+  ObjectModelHandle object = wst.get_sector_model()->get_object_at(click_pos);
+  if (object.get())
     {
+      if (wst.get_selection()->has_object(object))
+        {
+          selection = wst.get_selection();
+        }
+      else
+        {
+          selection = Selection::create();
+          selection->add(object);
+          wst.set_selection(selection);
+        }
+      
       mode = DRAG_MODE;
-      object_pos = object->get_pos();
+      selection->on_move_start();
     }
   else
     {
@@ -57,7 +69,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 
   if (mode == DRAG_MODE)
     {
-      object->set_pos(object_pos - click_pos + pos);
+      selection->on_move_update(pos - click_pos);
     }
   else if (mode == SELECT_MODE)
     {
@@ -73,14 +85,18 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 bool
 SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
+  Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+
   // Select objects
   if (mode == DRAG_MODE)
     {
-      
+      selection->on_move_end(pos - click_pos);
     }
   else if (mode == SELECT_MODE)
     {
       mode = NO_MODE;
+      rect.normalize();
+      wst.set_selection(wst.get_sector_model()->get_selection(rect));
     }
 
   mode = NO_MODE;

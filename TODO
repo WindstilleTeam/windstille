@@ -481,6 +481,8 @@ Graphics
 Editor
 ======
 
+* add object snapping
+
 * add grid
 
 * add a way to draw objects to DrawingContext that only does

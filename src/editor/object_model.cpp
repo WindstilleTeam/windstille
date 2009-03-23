@@ -45,15 +45,32 @@ ObjectModel::~ObjectModel()
 void
 ObjectModel::draw(SceneContext& sc)
 {
-  sc.color().draw(surface, pos.x, pos.y);
-  sc.control().draw_rect(get_bounding_box(), Color(1,1,1,0.5f));
-  sc.control().fill_rect(Rectf(pos - Vector2f(8, 8), Sizef(16, 16)), Color(1,0,0));
+  sc.color().draw(surface, pos.x+move_offset.x, pos.y+move_offset.y);
+  sc.control().fill_rect(Rectf(pos - Vector2f(8, 8) + move_offset, Sizef(16, 16)), Color(1,0,0));
 }
 
 Rectf
 ObjectModel::get_bounding_box() const
 {
-  return Rectf(pos, Sizef(surface.get_width(), surface.get_height()));
+  return Rectf(pos+move_offset, Sizef(surface.get_width(), surface.get_height()));
+}
+
+void
+ObjectModel::on_move_start()
+{  
+}
+
+void
+ObjectModel::on_move_update(const Vector2f& offset)
+{
+  move_offset = offset;
+}
+
+void
+ObjectModel::on_move_end(const Vector2f& offset)
+{
+  pos += move_offset;
+  move_offset = Vector2f(0,0);
 }
 
 /* EOF */

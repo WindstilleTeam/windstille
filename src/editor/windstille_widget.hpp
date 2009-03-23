@@ -32,6 +32,7 @@
 #include "display/graphic_context_state.hpp"
 #include "display/scene_context.hpp"
 #include "math/vector2f.hpp"
+#include "selection.hpp"
 
 class Tool;
 class ScrollTool;
@@ -50,6 +51,7 @@ private:
   std::auto_ptr<SceneContext> sc;
   Tool* active_tool;
   std::auto_ptr<ScrollTool> scroll_tool;
+  SelectionHandle selection;
 
 public:
   WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig,
@@ -84,6 +86,8 @@ public:
   void draw();
 
   SectorModel* get_sector_model();
+  void set_selection(const SelectionHandle& selection);
+  SelectionHandle get_selection() const;
 
 private:
   WindstilleWidget (const WindstilleWidget&);

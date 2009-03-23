@@ -39,6 +39,8 @@ private:
   Vector2f     pos;
   Surface  surface;
 
+  Vector2f move_offset;
+
 public:
   ObjectModel(const std::string& name, const std::string& path, const Vector2f& pos);
   ~ObjectModel();
@@ -49,6 +51,10 @@ public:
   
   void draw(SceneContext& sc);
   Rectf get_bounding_box() const;
+
+  void on_move_start();
+  void on_move_update(const Vector2f& offset);
+  void on_move_end(const Vector2f& offset);
 
 private:
   ObjectModel(const ObjectModel&);
