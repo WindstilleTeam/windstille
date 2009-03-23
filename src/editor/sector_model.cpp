@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <assert.h>
 #include <iostream>
 #include <gdkmm/pixbuf.h>
 
@@ -90,6 +91,77 @@ SectorModel::get_selection(const Rectf& rect) const
     }
 
   return selection;
+}
+
+struct OverlapsWith
+{
+  Rectf rect;
+
+  OverlapsWith(const Rectf& rect_)
+    : rect(rect_)
+  {}
+
+  bool operator()(const ObjectModelHandle& object) {
+    return rect.is_overlapped(object->get_bounding_box());
+  }
+};
+
+void
+SectorModel::raise(ObjectModelHandle object)
+{
+  Objects::iterator i = std::find(objects.begin(), objects.end(), object);
+  assert(i != objects.end());
+  Objects::iterator j = i;
+  ++j;
+  j = std::find_if(j, objects.end(), OverlapsWith(object->get_bounding_box()));
+
+  if (j == objects.end())
+    {
+      // object overlaps with no other object, no point in raising it
+    }
+  else
+    {
+      objects.erase(i);
+      objects.insert(++j, object);
+    }
+}
+
+void
+SectorModel::lower(ObjectModelHandle object)
+{
+  // Mostly the same as raise, just with reverse iterators
+  Objects::reverse_iterator i = std::find(objects.rbegin(), objects.rend(), object);
+
+  Objects::reverse_iterator j = i;
+  ++j;
+  j = std::find_if(j, objects.rend(), OverlapsWith(object->get_bounding_box()));
+
+  if (j == objects.rend())
+    {
+      // object overlaps with no other object, no point in lowering it
+    }
+  else
+    {
+      // the base() of base in one further then where the reverse
+      // iterator was, so we have to move back to get the same
+      // position
+      objects.erase(--(i.base()));
+      objects.insert(--(j.base()), object);
+    }
+}
+
+void
+SectorModel::raise_to_top(ObjectModelHandle object)
+{
+  objects.remove(object);
+  objects.push_back(object); 
+}
+
+void
+SectorModel::lower_to_bottom(ObjectModelHandle object)
+{
+  objects.remove(object);
+  objects.push_front(object); 
 }
 
 void

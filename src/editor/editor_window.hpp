@@ -94,6 +94,8 @@ public:
   Tool* get_current_tool() const;
   WindstilleWidget* get_windstille_widget();
   
+  void call_with_windstille_widget(void (WindstilleWidget::*func)());
+
 private:
   EditorWindow(const EditorWindow&);
   EditorWindow& operator=(const EditorWindow&);

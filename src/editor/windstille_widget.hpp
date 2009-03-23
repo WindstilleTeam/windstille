@@ -32,6 +32,7 @@
 #include "display/graphic_context_state.hpp"
 #include "display/scene_context.hpp"
 #include "math/vector2f.hpp"
+#include "control_point.hpp"
 #include "selection.hpp"
 
 class Tool;
@@ -46,6 +47,7 @@ class WindstilleWidget
 {
 private:
   std::auto_ptr<SectorModel> sector_model;
+  std::vector<ControlPointHandle> control_points;
 
   GraphicContextState   state;
   std::auto_ptr<SceneContext> sc;
@@ -84,6 +86,12 @@ public:
   void on_zoom_100();
   
   void draw();
+
+  void selection_raise();
+  void selection_lower();
+
+  void selection_raise_to_top();
+  void selection_lower_to_bottom();
 
   SectorModel* get_sector_model();
   void set_selection(const SelectionHandle& selection);

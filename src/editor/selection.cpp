@@ -32,18 +32,6 @@ Selection::add(const ObjectModelHandle& object)
   objects.push_back(object);
 }
 
-Selection::iterator
-Selection::begin()
-{
-  return objects.begin();
-}
-
-Selection::iterator
-Selection::end()
-{
-  return objects.end();
-}
-
 bool
 Selection::empty() const
 {

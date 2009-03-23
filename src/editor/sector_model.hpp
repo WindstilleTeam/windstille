@@ -58,7 +58,7 @@ private:
 class SectorModel
 {
 private:
-  typedef std::vector<ObjectModelHandle> Objects;
+  typedef std::list<ObjectModelHandle> Objects;
 
   Gtk::TreeStore::iterator root_it;
   Glib::RefPtr<Gtk::TreeStore> objects_tree;
@@ -83,6 +83,11 @@ public:
   ObjectModelHandle get_object_at(const Vector2f& pos) const;
   SelectionHandle   get_selection(const Rectf& rect) const;
   
+  void raise_to_top(ObjectModelHandle object);
+  void lower_to_bottom(ObjectModelHandle object);
+  void raise(ObjectModelHandle object);
+  void lower(ObjectModelHandle object);
+
 private:
   SectorModel(const SectorModel&);
   SectorModel& operator=(const SectorModel&);

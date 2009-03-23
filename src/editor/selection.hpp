@@ -35,6 +35,7 @@ private:
 
 public:
   typedef Objects::iterator iterator;
+  typedef Objects::reverse_iterator reverse_iterator;
 
 public:
   static SelectionHandle create() { return SelectionHandle(new Selection()); }
@@ -43,9 +44,13 @@ public:
   ~Selection();
 
   void add(const ObjectModelHandle& object);
+  
+  Selection::iterator begin() { return objects.begin(); }
+  Selection::iterator end()   { return objects.end(); }
 
-  iterator begin();
-  iterator end();
+  Selection::reverse_iterator rbegin() { return objects.rbegin(); }
+  Selection::reverse_iterator rend() { return objects.rend(); }
+
   bool empty() const;
 
   bool has_object(ObjectModelHandle object) const;

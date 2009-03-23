@@ -204,6 +204,46 @@ WindstilleWidget::draw()
     }
 }
 
+void
+WindstilleWidget::selection_raise()
+{
+  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      sector_model->raise(*i);
+    }
+  queue_draw();
+}
+
+void
+WindstilleWidget::selection_lower()
+{
+  for(Selection::reverse_iterator i = selection->rbegin(); i != selection->rend(); ++i)
+    {
+      sector_model->lower(*i);
+    }
+  queue_draw();
+}
+
+void
+WindstilleWidget::selection_raise_to_top()
+{
+  for(Selection::reverse_iterator i = selection->rbegin(); i != selection->rend(); ++i)
+    {
+      sector_model->raise_to_top(*i);
+    }
+  queue_draw();
+}
+
+void
+WindstilleWidget::selection_lower_to_bottom()
+{
+  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      sector_model->lower_to_bottom(*i);
+    }
+  queue_draw();
+}
+
 bool
 WindstilleWidget::scroll(GdkEventScroll* event)
 {

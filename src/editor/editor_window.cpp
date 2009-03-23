@@ -61,6 +61,12 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='Copy'/>"
     "      <menuitem action='Paste'/>"
     "    </menu>"
+    "    <menu action='MenuObject'>"
+    "      <menuitem action='LowerObjectToBottom'/>"
+    "      <menuitem action='LowerObject'/>"
+    "      <menuitem action='RaiseObject'/>"
+    "      <menuitem action='RaiseObjectToTop'/>"
+    "    </menu>"
     "    <menu action='MenuView'>"
     "      <menuitem action='ZoomIn'/>"
     "      <menuitem action='ZoomOut'/>"
@@ -75,6 +81,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='About'/>"
     "    </menu>"
     "  </menubar>"
+    ""
     "  <toolbar  name='ToolBar'>"
     "    <toolitem action='New'/>"
     "    <toolitem action='Open'/>"
@@ -88,11 +95,17 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='ZoomOut'/>"
     "    <toolitem action='Zoom100'/>"
     "    <separator/>"
+    "    <toolitem action='RaiseObjectToTop'/>"
+    "    <toolitem action='RaiseObject'/>"
+    "    <toolitem action='LowerObject'/>"
+    "    <toolitem action='LowerObjectToBottom'/>"
+    "    <separator/>"
     "    <toolitem action='Play'/>"
     "    <separator/>"
     "    <toolitem action='About'/>"
     "    <toolitem action='Quit'/>"
     "  </toolbar>"
+    ""
     "  <toolbar  name='ToolBox'>"
     "    <toolitem action='SelectTool'/>"
     "    <toolitem action='NodeTool'/>"
@@ -119,6 +132,16 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("Cut",         Gtk::Stock::CUT));
   action_group->add(Gtk::Action::create("Copy",        Gtk::Stock::COPY));
   action_group->add(Gtk::Action::create("Paste",       Gtk::Stock::PASTE));
+
+  action_group->add(Gtk::Action::create("MenuObject",    "_Object"));
+  action_group->add(Gtk::Action::create_with_icon_name("RaiseObjectToTop", "object_raise_to_top", "Raise To Top", "Raise Object to Top"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_raise_to_top));
+  action_group->add(Gtk::Action::create_with_icon_name("RaiseObject", "object_raise", "Raise", "Raise Object"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_raise));
+  action_group->add(Gtk::Action::create_with_icon_name("LowerObject", "object_lower", "Lower", "Lower Object"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_lower));                    
+  action_group->add(Gtk::Action::create_with_icon_name("LowerObjectToBottom", "object_lower_to_bottom", "Lower To Bottom", "Lower Object to Bottom"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_lower_to_bottom));
 
   action_group->add(Gtk::Action::create("MenuView",    "_View"));
   action_group->add(Gtk::Action::create("Zoom100",     Gtk::Stock::ZOOM_100),
@@ -401,6 +424,16 @@ EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
     object_tree.set_model(get_windstille_widget()->get_sector_model());
   else
     object_tree.set_model(0);
+}
+
+void
+EditorWindow::call_with_windstille_widget(void (WindstilleWidget::*func)())
+{
+  WindstilleWidget* wst = get_windstille_widget();
+  if (wst)
+    {
+      (wst->*func)();
+    }
 }
 
 /* EOF */

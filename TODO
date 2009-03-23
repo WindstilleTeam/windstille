@@ -185,6 +185,10 @@ Sound Handling
 Miscellaneous
 =============
 
+* raise/lower of multiple objects at once is a bit wonky, when objects
+  reach the bottom/top they will change their relative order in the
+  selection
+
 * move has_suffix, has_prefix and stuff into StringUtil class
 
 * get rid of global debug
@@ -480,6 +484,15 @@ Graphics
 
 Editor
 ======
+
+* add ways to toggle light, color, highlight layers on/off in the
+  editor
+
+* add ways to insert objects to light, color, highlight layer (likely
+  best to have objects now for themselves on which layer they belong)
+
+* save bitmask along with object to allow pixel perfect click
+  selection
 
 * add object snapping
 
