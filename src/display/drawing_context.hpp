@@ -69,6 +69,7 @@ public:
   void draw(DrawingRequest* request);
   void draw(const Sprite&   sprite,  const Vector2f& pos, float z = 0);
   void draw(const std::string& text,    float x, float y, float z = 0);
+  void draw(const Surface surface, const Vector2f& pos, float z = 0, float alpha = 0);
   void draw(const Surface surface, float x, float y, float z = 0, float alpha = 0);
   void draw(const Surface surface, const SurfaceDrawingParameters& params, float z_pos = 0);
   /*} */

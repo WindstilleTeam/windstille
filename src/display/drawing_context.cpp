@@ -158,6 +158,12 @@ DrawingContext::draw(const Surface surface, const SurfaceDrawingParameters& para
 }
 
 void
+DrawingContext::draw(const Surface surface, const Vector2f& pos, float z, float alpha)
+{
+  draw(surface, pos.x, pos.y, z, alpha);
+}
+
+void
 DrawingContext::draw(Surface surface, float x, float y, float z, float )
 {
   draw(new SurfaceDrawingRequest(surface,
