@@ -21,8 +21,7 @@
 
 #include <vector>
 #include "engine/entity.hpp"
-
-/** */
+
 class Liquid : public Entity
 {
 private:
@@ -46,7 +45,7 @@ private:
   Liquid (const Liquid&);
   Liquid& operator= (const Liquid&);
 };
-
+
 #endif
 
 /* EOF */

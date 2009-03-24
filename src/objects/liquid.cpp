@@ -21,7 +21,7 @@
 #include "liquid.hpp"
 
 #define SAMPLES 5
-
+
 Liquid::Liquid(FileReader& props)
 {
   int width = 10;
@@ -135,5 +135,5 @@ Liquid::update(float delta)
       std::swap(heightfield2, heightfield1);
     }
 }
-
+
 /* EOF */
