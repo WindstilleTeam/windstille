@@ -60,6 +60,9 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='Cut'/>"
     "      <menuitem action='Copy'/>"
     "      <menuitem action='Paste'/>"
+    "      <separator/>"
+    "      <menuitem action='Delete'/>"
+    "      <menuitem action='Duplicate'/>"
     "    </menu>"
     "    <menu action='MenuObject'>"
     "      <menuitem action='RaiseObjectToTop'/>"
@@ -100,6 +103,9 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='Cut'/>"
     "    <toolitem action='Copy'/>"
     "    <toolitem action='Paste'/>"
+    "    <separator/>"
+    "    <toolitem action='Delete'/>"
+    "    <toolitem action='Duplicate'/>"
     "    <separator/>"
     "    <toolitem action='ZoomIn'/>"
     "    <toolitem action='ZoomOut'/>"
@@ -151,6 +157,11 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("Cut",         Gtk::Stock::CUT));
   action_group->add(Gtk::Action::create("Copy",        Gtk::Stock::COPY));
   action_group->add(Gtk::Action::create("Paste",       Gtk::Stock::PASTE));
+
+  action_group->add(Gtk::Action::create("Delete",      Gtk::Stock::DELETE),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_delete));
+  action_group->add(Gtk::Action::create_with_icon_name("Duplicate", "duplicate", "Duplicate Object", "Duplicate Object"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_duplicate));
 
   action_group->add(Gtk::Action::create("MenuObject",    "_Object"));
   action_group->add(Gtk::Action::create_with_icon_name("RaiseObjectToTop", "object_raise_to_top", "Raise To Top", "Raise Object to Top"),

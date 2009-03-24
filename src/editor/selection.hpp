@@ -55,6 +55,7 @@ public:
   Selection::reverse_iterator rend() { return objects.rend(); }
 
   bool empty() const;
+  void clear() { objects.clear(); }
 
   bool has_object(ObjectModelHandle object) const;
 

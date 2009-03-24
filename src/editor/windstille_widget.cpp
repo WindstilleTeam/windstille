@@ -276,6 +276,37 @@ WindstilleWidget::selection_clear_parent()
   queue_draw();
 }
 
+void
+WindstilleWidget::selection_duplicate()
+{
+  SelectionHandle new_selection = Selection::create();
+  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      ObjectModelHandle obj = (*i)->clone();
+      
+      // Move clone a litte to make it more obvious that something happened
+      obj->set_rel_pos(obj->get_rel_pos() + Vector2f(32.0f, 32.0f));
+
+      sector_model->add(obj);
+      new_selection->add(obj);
+    }
+  selection = new_selection;
+
+  queue_draw();
+}
+
+void
+WindstilleWidget::selection_delete()
+{
+ for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      sector_model->remove(*i);
+    } 
+ selection->clear();
+
+ queue_draw();
+}
+
 bool
 WindstilleWidget::scroll(GdkEventScroll* event)
 {

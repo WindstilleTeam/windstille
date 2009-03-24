@@ -54,6 +54,12 @@ SectorModel::add(const ObjectModelHandle& object)
 }
 
 void
+SectorModel::remove(const ObjectModelHandle& object)
+{
+  objects.remove(object);
+}
+
+void
 SectorModel::draw(SceneContext& sc)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)

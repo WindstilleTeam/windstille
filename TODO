@@ -489,8 +489,6 @@ Editor
 
 * add a Rect::contains(Rect) call
 
-* duplicate objects
-
 * shift click to add object to selection instead of replace selection
 
 * add ways to toggle light, color, highlight layers on/off in the

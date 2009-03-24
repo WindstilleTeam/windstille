@@ -95,6 +95,9 @@ public:
 
   void selection_connect_parent();
   void selection_clear_parent();
+  
+  void selection_duplicate();
+  void selection_delete();
 
   SectorModel* get_sector_model();
   void set_selection(const SelectionHandle& selection);

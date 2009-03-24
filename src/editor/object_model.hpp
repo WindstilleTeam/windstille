@@ -42,6 +42,7 @@ private:
   ObjectModelPtr parent_ptr;
 
   std::string name;
+  std::string path;
   Vector2f    rel_pos;
   Surface     surface;
   MapType     type;
@@ -67,6 +68,8 @@ public:
   void on_move_start();
   void on_move_update(const Vector2f& offset);
   void on_move_end(const Vector2f& offset);
+
+  ObjectModelHandle clone() const;
 
 private:
   ObjectModel(const ObjectModel&);
