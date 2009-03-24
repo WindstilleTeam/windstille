@@ -185,6 +185,8 @@ Sound Handling
 Miscellaneous
 =============
 
+* image-grid in Sprite seems broken
+
 * remove GameObject::get_world(), use Sector::current() instead
   (difference might matter on sector change)
 

@@ -28,12 +28,55 @@
 #include "display/surface_drawing_parameters.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "display/scene_context.hpp"
+#include "display/display.hpp"
 #include "display/surface.hpp"
 
 struct DrawingRequestsSorter
 {
   bool operator()(DrawingRequest* a, DrawingRequest* b) {
     return a->get_z_pos() < b->get_z_pos();
+  }
+};
+
+class FillScreenPatternDrawingRequest : public DrawingRequest
+{
+private:
+  Texture texture;
+
+public:
+  FillScreenPatternDrawingRequest(const Texture& texture_)
+    : DrawingRequest(Vector2f(0, 0), -1000.0f), 
+      texture(texture_)
+  {}
+
+  virtual ~FillScreenPatternDrawingRequest() {}
+
+  void draw(const Texture& /*tmp_texture*/) 
+  {
+    OpenGLState state;
+    state.enable(GL_BLEND);
+    state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    state.bind_texture(texture);
+    state.activate();
+
+    float u = Display::get_width() / float(texture.get_width());
+    float v = Display::get_height() / float(texture.get_height());
+
+    glBegin(GL_QUADS);
+    {
+      glTexCoord2f(0, 0);
+      glVertex2f(0, 0);
+    
+      glTexCoord2f(u, 0.0f);
+      glVertex2f(Display::get_width(), 0);
+
+      glTexCoord2f(u, v);
+      glVertex2f(Display::get_width(), Display::get_height());
+
+      glTexCoord2f(0.0f, v);
+      glVertex2f(0,  Display::get_height());
+    }
+    glEnd();
   }
 };
 
@@ -181,6 +224,12 @@ void
 DrawingContext::fill_screen(const Color& color)
 {
   draw(new FillScreenDrawingRequest(color));
+}
+
+void
+DrawingContext::fill_pattern(const Texture& pattern)
+{
+  draw(new FillScreenPatternDrawingRequest(pattern));
 }
 
 void

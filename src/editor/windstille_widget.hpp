@@ -31,6 +31,7 @@
 
 #include "display/graphic_context_state.hpp"
 #include "display/scene_context.hpp"
+#include "display/texture.hpp"
 #include "math/vector2f.hpp"
 #include "control_point.hpp"
 #include "decal_object_model.hpp"
@@ -56,6 +57,7 @@ private:
   std::auto_ptr<ScrollTool> scroll_tool;
   SelectionHandle selection;
   DecalObjectModel::MapType map_type;
+  Texture background_pattern;
 
 public:
   WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig,

@@ -114,6 +114,9 @@ WindstilleWidget::on_realize()
       if (!sc.get())
         sc.reset(new SceneContext());
       
+      background_pattern = Texture("images/chesspattern.png");
+      background_pattern.set_wrap(GL_REPEAT);
+
       glViewport(0, 0, get_width(), get_height());
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
@@ -200,8 +203,8 @@ WindstilleWidget::draw()
   if (sc.get())
     {
       state.push(*sc);
-
-      //sc->light().fill_screen(Color(0.25f, 0.25f, 0.25f));
+      
+      sc->color().fill_pattern(background_pattern);
 
       sector_model->draw(*sc);
 

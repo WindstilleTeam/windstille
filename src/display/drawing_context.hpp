@@ -26,6 +26,7 @@
 #include "color.hpp"
 #include "drawing_request.hpp"
 
+class Texture;
 class Surface;
 class SurfaceDrawingParameters;
 class SceneContext;
@@ -59,6 +60,8 @@ public:
       clear() in that it doesn't remove other DrawingRequest from the
       queue */
   void fill_screen(const Color& color);
+
+  void fill_pattern(const Texture& pattern);
 
   void draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color, float z_pos = 0);
 
