@@ -22,6 +22,7 @@
 #include <gtkmm.h>
 
 #include "sprite2d/sprite.hpp"
+#include "display/display.hpp"
 #include "display/texture_manager.hpp"
 #include "display/surface_manager.hpp"
 #include "display/opengl_state.hpp"
@@ -38,7 +39,8 @@ WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  g
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list)
   : sector_model(new SectorModel()),
     active_tool(0),
-    scroll_tool(new ScrollTool())
+    scroll_tool(new ScrollTool()),
+    map_type(ObjectModel::COLORMAP)
 {
   set_gl_capability(glconfig, share_list);
 
@@ -129,6 +131,8 @@ bool
 WindstilleWidget::on_configure_event(GdkEventConfigure* event)
 {
   state.set_size(get_width(), get_height());
+  Display::aspect_size.width  = get_width();
+  Display::aspect_size.height = get_height();
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
@@ -188,7 +192,7 @@ WindstilleWidget::draw()
     {
       state.push(*sc);
 
-      sc->light().fill_screen(Color(0.25f, 0.25f, 0.25f));
+      //sc->light().fill_screen(Color(0.25f, 0.25f, 0.25f));
 
       sector_model->draw(*sc);
 
@@ -380,6 +384,21 @@ WindstilleWidget::key_press(GdkEventKey* event)
 {
   switch(event->keyval)
     {
+      case GDK_1:
+        map_type = ObjectModel::COLORMAP;
+        std::cout << "COLORMAP" << std::endl;
+        break;
+
+      case GDK_2:
+        map_type = ObjectModel::LIGHTMAP;
+        std::cout << "LIGHTMAP" << std::endl;
+        break;
+
+      case GDK_3:
+        map_type = ObjectModel::HIGHLIGHTMAP;
+        std::cout << "HIGHLIGHTMAP" << std::endl;
+        break;
+
       case GDK_Left:
         state.set_pos(state.get_pos() + Vector2f(-100.0f, 0.0f));
         queue_draw();
@@ -431,7 +450,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
   ObjectModelHandle object = ObjectModel::create(data.get_data_as_string(),
                                                  data.get_data_as_string(), 
                                                  state.screen_to_world(Vector2f(x, y)),
-                                                 ObjectModel::COLORMAP);
+                                                 map_type);
   sector_model->add(object);
 }
 

@@ -59,8 +59,8 @@ MinimapWidget::on_expose_event(GdkEventExpose* event)
     }
   else
     {
-      glClear(GL_COLOR_BUFFER_BIT);
-      glwindow->swap_buffers();
+      //glClear(GL_COLOR_BUFFER_BIT);
+      //glwindow->swap_buffers();
       glwindow->gl_end();
 
       return true;

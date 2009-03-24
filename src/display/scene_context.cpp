@@ -346,6 +346,13 @@ SceneContext::render_with_framebuffers()
 void
 SceneContext::render_without_framebuffers()
 {
+  // Resize Lightmap, only needed in the editor, FIXME: move this into a 'set_size()' call
+  if (impl->lightmap.get_width()  != Display::get_width()/LIGHTMAP_DIV ||
+      impl->lightmap.get_height() != Display::get_height()/LIGHTMAP_DIV)
+    {
+      impl->lightmap = Surface(Display::get_width()/LIGHTMAP_DIV, Display::get_height()/LIGHTMAP_DIV);
+    }
+
   if (impl->render_mask & LIGHTMAPSCREEN)
     {
       // Render the lightmap to the framebuffers->lightmap

@@ -47,8 +47,8 @@ WindstilleEditor::main(int argc, char** argv)
       PHYSFS_addToSearchPath("data/", 0);
       
       Glib::RefPtr<const Gdk::GL::Config> 
-        glconfig = Gdk::GL::Config::create(Gdk::GL::MODE_RGB    |
-                                           Gdk::GL::MODE_DEPTH  |
+        glconfig = Gdk::GL::Config::create(Gdk::GL::MODE_RGB |
+                                           //Gdk::GL::MODE_DEPTH);
                                            Gdk::GL::MODE_DOUBLE);
       if (!glconfig)
         {
