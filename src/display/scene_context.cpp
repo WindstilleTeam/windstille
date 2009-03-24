@@ -67,6 +67,7 @@ public:
     : render_mask(SceneContext::COLORMAP |
                   SceneContext::LIGHTMAP | 
                   SceneContext::HIGHLIGHTMAP | 
+                  SceneContext::CONTROLMAP | 
                   SceneContext::LIGHTMAPSCREEN |
                   SceneContext::BLURMAP),
       framebuffers(0),
@@ -301,7 +302,8 @@ SceneContext::render_with_framebuffers()
       Display::pop_framebuffer();
     }
 
-  impl->control.render(*this);
+  if (impl->render_mask & CONTROLMAP)
+    impl->control.render(*this);
 
   if (1) 
     {
@@ -421,7 +423,8 @@ SceneContext::render_without_framebuffers()
       impl->highlight.render(*this);
     }  
 
-  impl->control.render(*this);
+  if (impl->render_mask & CONTROLMAP)
+    impl->control.render(*this);
 
   // Clear all DrawingContexts
   impl->color.clear();

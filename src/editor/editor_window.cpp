@@ -81,6 +81,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='ToggleColorLayer'/>"
     "      <menuitem action='ToggleLightLayer'/>"
     "      <menuitem action='ToggleHighlightLayer'/>"
+    "      <menuitem action='ToggleControlLayer'/>"
     "    </menu>"
     "    <menu action='MenuTools'>"
     "      <menuitem action='SelectTool'/>"
@@ -130,6 +131,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='ToggleColorLayer'/>"
     "    <toolitem action='ToggleLightLayer'/>"
     "    <toolitem action='ToggleHighlightLayer'/>"
+    "    <toolitem action='ToggleControlLayer'/>"
     "  </toolbar>"
     "</ui>";
 
@@ -192,10 +194,12 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   Glib::RefPtr<Gtk::ToggleAction> toggle_color_layer = Gtk::ToggleAction::create_with_icon_name("ToggleColorLayer", "color", "Toogle Color Layer", "Toogle Color Layer");
   Glib::RefPtr<Gtk::ToggleAction> toggle_light_layer = Gtk::ToggleAction::create_with_icon_name("ToggleLightLayer", "light", "Toogle Light Layer", "Toogle Light Layer");
   Glib::RefPtr<Gtk::ToggleAction> toggle_highlight_layer = Gtk::ToggleAction::create_with_icon_name("ToggleHighlightLayer", "highlight", "Toogle Highlight Layer", "Toogle Highlight Layer");
+  Glib::RefPtr<Gtk::ToggleAction> toggle_control_layer = Gtk::ToggleAction::create_with_icon_name("ToggleControlLayer", "control", "Toogle Control Layer", "Toogle Control Layer");
   
   toggle_color_layer->set_active(true);
   toggle_light_layer->set_active(true);
   toggle_highlight_layer->set_active(true);
+  toggle_control_layer->set_active(true);
 
   action_group->add(toggle_color_layer,
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_color_layer, (uint32_t)SceneContext::COLORMAP));
@@ -203,6 +207,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_light_layer, (uint32_t)SceneContext::LIGHTMAP));
   action_group->add(toggle_highlight_layer,
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_highlight_layer, (uint32_t)SceneContext::HIGHLIGHTMAP));
+  action_group->add(toggle_control_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_control_layer, (uint32_t)SceneContext::CONTROLMAP));
 
   // Tools
   action_group->add(Gtk::Action::create("MenuTools",  "_Tools"));

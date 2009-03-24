@@ -82,8 +82,9 @@ public:
   enum { COLORMAP       = 1<<0,
          LIGHTMAP       = 1<<1,
          HIGHLIGHTMAP   = 1<<2,
-         LIGHTMAPSCREEN = 1<<3,
-         BLURMAP        = 1<<4
+         CONTROLMAP     = 1<<3,
+         LIGHTMAPSCREEN = 1<<4,
+         BLURMAP        = 1<<5
   };
 
   /** The render mask allows to switch of some layers and effects for
