@@ -33,28 +33,19 @@ typedef boost::weak_ptr<ObjectModel>   ObjectModelPtr;
 
 class ObjectModel
 {
-public:
-  enum MapType { COLORMAP, LIGHTMAP, HIGHLIGHTMAP };
-  static ObjectModelHandle create(const std::string& name, const std::string& path, const Vector2f& pos,
-                                  MapType type = COLORMAP);
-
 private:
-  ObjectModelPtr parent_ptr;
-
   std::string name;
-  std::string path;
   Vector2f    rel_pos;
-  Surface     surface;
-  MapType     type;
 
+  ObjectModelPtr parent_ptr;
   Vector2f move_offset;
 
 public:
-  ObjectModel(const std::string& name, const std::string& path, const Vector2f& pos, MapType type);
-  ~ObjectModel();
-
-  void set_parent(const ObjectModelHandle& parent_);
+  ObjectModel();
+  ObjectModel(const std::string& name, const Vector2f& pos);
+  virtual ~ObjectModel();
   
+  void set_parent(const ObjectModelHandle& parent_);
   std::string get_name() const { return name; }
 
   Vector2f get_world_pos() const;
@@ -62,18 +53,13 @@ public:
   Vector2f get_rel_pos() const { return rel_pos; }
   void     set_rel_pos(const Vector2f& rel_pos_)  {  rel_pos = rel_pos_; }
   
-  void draw(SceneContext& sc);
-  Rectf get_bounding_box() const;
-
   void on_move_start();
   void on_move_update(const Vector2f& offset);
   void on_move_end(const Vector2f& offset);
 
-  ObjectModelHandle clone() const;
-
-private:
-  ObjectModel(const ObjectModel&);
-  ObjectModel& operator=(const ObjectModel&);
+  virtual void draw(SceneContext& sc);
+  virtual Rectf get_bounding_box() const = 0;
+  virtual ObjectModelHandle clone() const =0;
 };
 
 #endif

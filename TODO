@@ -485,12 +485,31 @@ Graphics
 Editor
 ======
 
-* toggle control layer visibility
+* think about Undo/Redo
+
+* add a Blender like layer system:
+ 
+  - layers are a 1 bit in a uint32_t
+  - each Object has a layer mask
+  - when doing a get_selection(Rect(), layermask), objects check
+    against the layer mask and are ignored when they don't match
+  - layers can be visible or hidden, again draw(layermask) is used to
+    check objects for layer membership
+  - objects can belong to multiple layers at once
+  - advantage of this is that layers exist outside the whole sorting
+    logic, so all that stuff can remain unchanged
+
+* add button to toggle control layer visibility
 
 * Display::aspect_size is ugly, turn that into a Display::set_size();
 
-* implement non-Surface based objects, i.e. a simple Path or a full
-  NavigationGraph
+* implement non-Surface based objects:
+
+   - seperate Surface stuff, turn it into a scaleable/rotatable decal quad
+   - simple path
+   - full NavigationGraph
+   - Sprite
+   - Sprite3d / Character
 
 * light layer doesn't work in the editor
 
@@ -502,7 +521,12 @@ Editor
   - circular parentship causes universe to explode
   - cloning doesn't preserve parentship  
 
-* ObjectSelector/IconView allows drag&drop even when nothing is selected
+  - parents could be handled like normal objects, but with the
+    SelectTool traversing all children and marking them before the
+    move begings, Ctrl could be used to toggle this behaviour
+
+* ObjectSelector/IconView allows drag&drop even when nothing is
+  selected, leading to a Grumbel dummy image drag&drop without effect
 
 * add a Rect::contains(Rect) call and adjust SelectTool
 

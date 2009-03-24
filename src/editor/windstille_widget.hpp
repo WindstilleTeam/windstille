@@ -33,6 +33,7 @@
 #include "display/scene_context.hpp"
 #include "math/vector2f.hpp"
 #include "control_point.hpp"
+#include "decal_object_model.hpp"
 #include "selection.hpp"
 
 class Tool;
@@ -54,7 +55,7 @@ private:
   Tool* active_tool;
   std::auto_ptr<ScrollTool> scroll_tool;
   SelectionHandle selection;
-  ObjectModel::MapType map_type;
+  DecalObjectModel::MapType map_type;
 
 public:
   WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig,

@@ -40,7 +40,7 @@ WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  g
   : sector_model(new SectorModel()),
     active_tool(0),
     scroll_tool(new ScrollTool()),
-    map_type(ObjectModel::COLORMAP)
+    map_type(DecalObjectModel::COLORMAP)
 {
   set_gl_capability(glconfig, share_list);
 
@@ -385,17 +385,17 @@ WindstilleWidget::key_press(GdkEventKey* event)
   switch(event->keyval)
     {
       case GDK_1:
-        map_type = ObjectModel::COLORMAP;
+        map_type = DecalObjectModel::COLORMAP;
         std::cout << "COLORMAP" << std::endl;
         break;
 
       case GDK_2:
-        map_type = ObjectModel::LIGHTMAP;
+        map_type = DecalObjectModel::LIGHTMAP;
         std::cout << "LIGHTMAP" << std::endl;
         break;
 
       case GDK_3:
-        map_type = ObjectModel::HIGHLIGHTMAP;
+        map_type = DecalObjectModel::HIGHLIGHTMAP;
         std::cout << "HIGHLIGHTMAP" << std::endl;
         break;
 
@@ -447,10 +447,10 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
   std::cout << "WindstilleWidget: on_drag_data_received: "
             << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
 
-  ObjectModelHandle object = ObjectModel::create(data.get_data_as_string(),
-                                                 data.get_data_as_string(), 
-                                                 state.screen_to_world(Vector2f(x, y)),
-                                                 map_type);
+  ObjectModelHandle object = DecalObjectModel::create(data.get_data_as_string(),
+                                                      state.screen_to_world(Vector2f(x, y)),
+                                                      data.get_data_as_string().substr(5), 
+                                                      map_type);
   sector_model->add(object);
 }
 
