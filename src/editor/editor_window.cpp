@@ -20,11 +20,11 @@
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/actiongroup.h>
 #include <gtkmm/radioaction.h>
-#include <gtkmm/icontheme.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/stock.h>
 
+#include "display/scene_context.hpp"
 #include "windstille_widget.hpp"
 #include "about_window.hpp"
 #include "editor_window.hpp"
@@ -74,6 +74,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='ZoomIn'/>"
     "      <menuitem action='ZoomOut'/>"
     "      <menuitem action='Zoom100'/>"
+    "      <separator/>"
+    "      <menuitem action='ToggleColorLayer'/>"
+    "      <menuitem action='ToggleLightLayer'/>"
+    "      <menuitem action='ToggleHighlightLayer'/>"
     "    </menu>"
     "    <menu action='MenuTools'>"
     "      <menuitem action='SelectTool'/>"
@@ -119,6 +123,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='SelectTool'/>"
     "    <toolitem action='NodeTool'/>"
     "    <toolitem action='ZoomTool'/>"
+    "    <separator/>"
+    "    <toolitem action='ToggleColorLayer'/>"
+    "    <toolitem action='ToggleLightLayer'/>"
+    "    <toolitem action='ToggleHighlightLayer'/>"
     "  </toolbar>"
     "</ui>";
 
@@ -173,8 +181,20 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
                     sigc::mem_fun(*this, &EditorWindow::on_about_clicked));
 
-  Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
-  icon_theme->append_search_path("data/editor/");
+  Glib::RefPtr<Gtk::ToggleAction> toggle_color_layer = Gtk::ToggleAction::create_with_icon_name("ToggleColorLayer", "color", "Toogle Color Layer", "Toogle Color Layer");
+  Glib::RefPtr<Gtk::ToggleAction> toggle_light_layer = Gtk::ToggleAction::create_with_icon_name("ToggleLightLayer", "light", "Toogle Light Layer", "Toogle Light Layer");
+  Glib::RefPtr<Gtk::ToggleAction> toggle_highlight_layer = Gtk::ToggleAction::create_with_icon_name("ToggleHighlightLayer", "highlight", "Toogle Highlight Layer", "Toogle Highlight Layer");
+  
+  toggle_color_layer->set_active(true);
+  toggle_light_layer->set_active(true);
+  toggle_highlight_layer->set_active(true);
+
+  action_group->add(toggle_color_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_color_layer, (uint32_t)SceneContext::COLORMAP));
+  action_group->add(toggle_light_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_light_layer, (uint32_t)SceneContext::LIGHTMAP));
+  action_group->add(toggle_highlight_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_highlight_layer, (uint32_t)SceneContext::HIGHLIGHTMAP));
 
   // Tools
   action_group->add(Gtk::Action::create("MenuTools",  "_Tools"));
@@ -391,6 +411,27 @@ EditorWindow::on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool* tool)
   if (action->get_active())
     {
       current_tool = tool;
+    }
+}
+
+void
+EditorWindow::toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, uint32_t mask)
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      SceneContext& sc = *wst->get_sc();
+
+      if (action->get_active())
+        {
+          sc.set_render_mask(sc.get_render_mask() | mask);
+        }
+      else
+        {
+          sc.set_render_mask(sc.get_render_mask() & (~mask));
+        }
+
+      std::cout << "mask: " << sc.get_render_mask() << std::endl;
+      wst->queue_draw();
     }
 }
 

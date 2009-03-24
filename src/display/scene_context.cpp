@@ -69,7 +69,8 @@ public:
                   SceneContext::HIGHLIGHTMAP | 
                   SceneContext::LIGHTMAPSCREEN |
                   SceneContext::BLURMAP),
-      framebuffers(0), //new Framebuffers())
+      framebuffers(0),
+      //framebuffers(new Framebuffers()),
       lightmap(Display::get_width()/LIGHTMAP_DIV, Display::get_height()/LIGHTMAP_DIV)
   {
   }

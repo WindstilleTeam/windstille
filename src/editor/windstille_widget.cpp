@@ -188,6 +188,8 @@ WindstilleWidget::draw()
     {
       state.push(*sc);
 
+      sc->light().fill_screen(Color(0.25f, 0.25f, 0.25f));
+
       sector_model->draw(*sc);
 
       for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
@@ -395,7 +397,11 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
   std::cout << "WindstilleWidget: on_drag_data_received: "
             << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
 
-  sector_model->add(data.get_data_as_string(), state.screen_to_world(Vector2f(x, y)));
+  ObjectModelHandle object = ObjectModel::create(data.get_data_as_string(),
+                                                 data.get_data_as_string(), 
+                                                 state.screen_to_world(Vector2f(x, y)),
+                                                 ObjectModel::COLORMAP);
+  sector_model->add(object);
 }
 
 void

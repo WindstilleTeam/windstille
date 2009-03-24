@@ -34,7 +34,9 @@ typedef boost::weak_ptr<ObjectModel>   ObjectModelPtr;
 class ObjectModel
 {
 public:
-  static ObjectModelHandle create(const std::string& name, const std::string& path, const Vector2f& pos);
+  enum MapType { COLORMAP, LIGHTMAP, HIGHLIGHTMAP };
+  static ObjectModelHandle create(const std::string& name, const std::string& path, const Vector2f& pos,
+                                  MapType type = COLORMAP);
 
 private:
   ObjectModelPtr parent_ptr;
@@ -42,11 +44,12 @@ private:
   std::string name;
   Vector2f    rel_pos;
   Surface     surface;
+  MapType     type;
 
   Vector2f move_offset;
 
 public:
-  ObjectModel(const std::string& name, const std::string& path, const Vector2f& pos);
+  ObjectModel(const std::string& name, const std::string& path, const Vector2f& pos, MapType type);
   ~ObjectModel();
 
   void set_parent(const ObjectModelHandle& parent_);

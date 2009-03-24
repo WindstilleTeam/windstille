@@ -100,6 +100,8 @@ public:
   void set_selection(const SelectionHandle& selection);
   SelectionHandle get_selection() const;
 
+  SceneContext* get_sc() const { return sc.get(); }
+
 private:
   WindstilleWidget (const WindstilleWidget&);
   WindstilleWidget& operator= (const WindstilleWidget&);

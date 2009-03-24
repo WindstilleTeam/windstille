@@ -67,7 +67,7 @@ private:
 public:
   SectorModel();
 
-  void add(const std::string& path, const Vector2f& obj);
+  void add(const ObjectModelHandle& object);
   void draw(SceneContext& sc);
 
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;

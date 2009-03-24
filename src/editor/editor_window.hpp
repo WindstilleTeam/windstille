@@ -24,6 +24,7 @@
 #include <gtkmm/statusbar.h>
 #include <gtkmm/textview.h>
 #include <gtkmm/paned.h>
+#include <gtkmm/toggleaction.h>
 #include <gtkmm/window.h>
 #include <gtkmm/notebook.h>
 
@@ -90,6 +91,8 @@ public:
 
   void on_switch_page(GtkNotebookPage* page, guint page_num);
   void on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool*);
+
+  void toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, uint32_t mask);
 
   Tool* get_current_tool() const;
   WindstilleWidget* get_windstille_widget();

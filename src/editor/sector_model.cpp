@@ -43,15 +43,13 @@ SectorModel::SectorModel()
 }
 
 void
-SectorModel::add(const std::string& path, const Vector2f& pos)
+SectorModel::add(const ObjectModelHandle& object)  
 {
-  ObjectModelHandle obj = ObjectModel::create("obj:" + path, path, pos);
-
-  objects.push_back(obj);
+  objects.push_back(object);
 
   Gtk::TreeStore::iterator it = objects_tree->append(root_it->children());
   (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
-  (*it)[ObjectTreeColumns::instance().name]      = obj->get_name();
+  (*it)[ObjectTreeColumns::instance().name]      = object->get_name();
   (*it)[ObjectTreeColumns::instance().visible]   = false; 
 }
 

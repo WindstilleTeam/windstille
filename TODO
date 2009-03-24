@@ -485,6 +485,8 @@ Graphics
 Editor
 ======
 
+* circular parentship causes universe to explode
+
 * add a Rect::contains(Rect) call
 
 * duplicate objects

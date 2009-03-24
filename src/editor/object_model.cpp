@@ -18,18 +18,21 @@
 
 #include <iostream>
 
+#include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
 #include "object_model.hpp"
 
 ObjectModelHandle
-ObjectModel::create(const std::string& name, const std::string& path, const Vector2f& pos)
+ObjectModel::create(const std::string& name, const std::string& path, const Vector2f& pos,
+                    MapType type)
 {
-  return ObjectModelHandle(new ObjectModel(name, path, pos));
+  return ObjectModelHandle(new ObjectModel(name, path, pos, type));
 }
 
-ObjectModel::ObjectModel(const std::string& name_, const std::string& path, const Vector2f& rel_pos_)
+ObjectModel::ObjectModel(const std::string& name_, const std::string& path, const Vector2f& rel_pos_, MapType type_)
   : name(name_),
-    rel_pos(rel_pos_)
+    rel_pos(rel_pos_),
+    type(type_)
 {
   std::cout << "Path: " << path << std::endl;
   surface = Surface(path.substr(5)); // cut "data/" part
@@ -80,8 +83,25 @@ ObjectModel::draw(SceneContext& sc)
     {
       sc.control().draw_line(wo_pos, parent->get_world_pos(), Color(0,0,1, 0.5f));
     }
-     
-  sc.color().draw(surface, wo_pos);
+
+  switch(type)
+    {
+      case COLORMAP:
+        sc.color().draw(surface, wo_pos); 
+        break;
+
+      case LIGHTMAP:
+        sc.light().draw(surface, SurfaceDrawingParameters()
+                        .set_pos(wo_pos)
+                        .set_blend_func(GL_SRC_ALPHA, GL_ONE)); 
+        break;
+
+      case HIGHLIGHTMAP:
+        sc.highlight().draw(surface, SurfaceDrawingParameters()
+                            .set_pos(wo_pos)
+                            .set_blend_func(GL_SRC_ALPHA, GL_ONE)); 
+        break;
+    }
   sc.control().fill_rect(Rectf(wo_pos - Vector2f(8, 8), Sizef(16, 16)), Color(1,0,0));
 }
 

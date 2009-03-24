@@ -21,6 +21,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
+#include <gtkmm/icontheme.h>
 #include <gtkmm/main.h>
 #include <gtkglmm.h>
 #include <physfs.h>
@@ -54,6 +55,9 @@ WindstilleEditor::main(int argc, char** argv)
           throw std::runtime_error("*** Cannot find any OpenGL-capable visual.");
         }
 
+      Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
+      icon_theme->append_search_path("data/editor/");
+      
       EditorWindow window(glconfig);
       
       window.show_all();
