@@ -39,17 +39,18 @@ TileMap::TileMap(FileReader& props)
   props.get("z-pos", z_pos);
   props.get("width", width);
   props.get("height", height);
-  if(width <= 0 || height <= 0) {
-    throw std::runtime_error(
-                             "Invalid width or height defined or "
-                             "data defined before width and height");  
-  }
+
+  if(width <= 0 || height <= 0) 
+    {
+      throw std::runtime_error("Invalid width or height defined or "
+                               "data defined before width and height");  
+    }
  
-  if(width <= 0 || height <= 0) {
-    throw std::runtime_error(
-                             "Invalid width or height defined or "
-                             "data defined before width and height");
-  }
+  if(width <= 0 || height <= 0) 
+    {
+      throw std::runtime_error("Invalid width or height defined or "
+                               "data defined before width and height");
+    }
 
   std::string data_filename;
   if (props.get("data-file", data_filename))
