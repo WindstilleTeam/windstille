@@ -185,6 +185,13 @@ WindstilleWidget::on_expose_event(GdkEventExpose* event)
 }
 
 void
+WindstilleWidget::update(float delta)
+{
+  std::cout << this << " WindstilleWidget::update(" << delta << ")" << std::endl;
+  //queue_draw();
+}
+
+void
 WindstilleWidget::draw()
 {
   //std::cout << "Draw" << std::endl;

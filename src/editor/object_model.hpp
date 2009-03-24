@@ -58,6 +58,7 @@ public:
   void on_move_end(const Vector2f& offset);
 
   virtual void draw(SceneContext& sc);
+  virtual void update(float delta) {}
   virtual Rectf get_bounding_box() const = 0;
   virtual ObjectModelHandle clone() const =0;
 };

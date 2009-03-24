@@ -66,9 +66,13 @@ private:
   Glib::RefPtr<Gtk::RadioAction> node_tool_action;
   Glib::RefPtr<Gtk::RadioAction> zoom_tool_action;
 
+  Glib::RefPtr<Gtk::ToggleAction> play_action;
+
   std::auto_ptr<SelectTool> select_tool;
   std::auto_ptr<ZoomTool>   zoom_tool;
   Tool* current_tool;
+
+  sigc::connection  timeout_connection;
   
 public:
   EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig);
@@ -81,6 +85,9 @@ public:
   void on_open();
   void on_save();
   void on_close();
+
+  bool on_timeout();
+  void on_play();
 
   void on_about_clicked();
   void on_quit();

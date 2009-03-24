@@ -185,7 +185,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_in));
   action_group->add(Gtk::Action::create("ZoomOut",     Gtk::Stock::ZOOM_OUT),
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_out));
-  action_group->add(Gtk::Action::create("Play",        Gtk::Stock::MEDIA_PLAY));
+  action_group->add(play_action = Gtk::ToggleAction::create("Play",        Gtk::Stock::MEDIA_PLAY), 
+                    sigc::mem_fun(*this, &EditorWindow::on_play));
 
   action_group->add(Gtk::Action::create("MenuHelp",    "_Help"));
   action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
@@ -512,6 +513,33 @@ EditorWindow::call_with_windstille_widget(void (WindstilleWidget::*func)())
   if (wst)
     {
       (wst->*func)();
+    }
+}
+
+bool
+EditorWindow::on_timeout()
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      wst->update(0.050f);
+    }
+  return true;
+}
+
+void
+EditorWindow::on_play()
+{
+  if (play_action->get_active())
+    {
+      std::cout << "Play" << std::endl;
+      timeout_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &EditorWindow::on_timeout),
+                                                          50,
+                                                          Glib::PRIORITY_DEFAULT);
+    }
+  else
+    {
+      std::cout << "Stop" << std::endl;
+      timeout_connection.disconnect();
     }
 }
 

@@ -88,6 +88,7 @@ public:
   void on_zoom_100();
   
   void draw();
+  void update(float delta);
 
   void selection_raise();
   void selection_lower();
