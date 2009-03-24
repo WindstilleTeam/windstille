@@ -485,17 +485,26 @@ Graphics
 Editor
 ======
 
-* circular parentship causes universe to explode
+* toggle control layer visibility
 
-* add a Rect::contains(Rect) call
+* Display::aspect_size is ugly, turn that into a Display::set_size();
 
-* shift click to add object to selection instead of replace selection
+* implement non-Surface based objects, i.e. a simple Path or a full
+  NavigationGraph
 
-* add ways to toggle light, color, highlight layers on/off in the
-  editor
+* light layer doesn't work in the editor
 
-* add ways to insert objects to light, color, highlight layer (likely
-  best to have objects now for themselves on which layer they belong)
+* reevaluate the current parent/child implementation, since its very
+  tricky currently to move a parent without affecting the child, which
+  might be useful in some situation (i.e. hold Ctrl pressed to move
+  only the parent, not the children)
+
+  - circular parentship causes universe to explode
+  - cloning doesn't preserve parentship  
+
+* ObjectSelector/IconView allows drag&drop even when nothing is selected
+
+* add a Rect::contains(Rect) call and adjust SelectTool
 
 * save bitmask along with object to allow pixel perfect click
   selection
