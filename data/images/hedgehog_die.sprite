@@ -1,0 +1,13 @@
+(sprite
+ (action
+  (name "default")
+  (speed 10.0)
+  (scale 2.0)
+  (images
+   "hedgehog_die1.png"
+   "hedgehog_die2.png"
+   "hedgehog_die3.png"
+   "hedgehog_die4.png"
+   "hedgehog_die5.png")))
+
+;; EOF ;;

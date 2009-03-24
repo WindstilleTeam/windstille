@@ -26,6 +26,7 @@
 #include <gtkglmm.h>
 #include <physfs.h>
 
+#include "sprite2d/manager.hpp"
 #include "editor_window.hpp"
 #include "main.hpp"
 
@@ -54,6 +55,8 @@ WindstilleEditor::main(int argc, char** argv)
         {
           throw std::runtime_error("*** Cannot find any OpenGL-capable visual.");
         }
+
+      sprite2d_manager = new SpriteManager();
 
       Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
       icon_theme->append_search_path("data/editor/");

@@ -1,0 +1,11 @@
+(sprite
+ (action
+  (name "default")
+  (speed 10.0)
+  (scale 2.0)
+  (image-grid
+   (file "explosion.png")
+   (x-size 64)
+   (y-size 98))))
+
+;; EOF ;;

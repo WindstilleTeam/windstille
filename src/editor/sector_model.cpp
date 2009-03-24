@@ -68,6 +68,15 @@ SectorModel::draw(SceneContext& sc)
     }
 }
 
+void
+SectorModel::update(float delta)
+{
+  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
+    {
+      (*i)->update(delta);
+    }
+}
+
 ObjectModelHandle
 SectorModel::get_object_at(const Vector2f& pos) const
 {

@@ -185,6 +185,9 @@ Sound Handling
 Miscellaneous
 =============
 
+* remove GameObject::get_world(), use Sector::current() instead
+  (difference might matter on sector change)
+
 * raise/lower of multiple objects at once is a bit wonky, when objects
   reach the bottom/top they will change their relative order in the
   selection
@@ -484,6 +487,10 @@ Graphics
 
 Editor
 ======
+
+* add default background pattern instead of black
+
+* think about load/save
 
 * think about Undo/Redo
 

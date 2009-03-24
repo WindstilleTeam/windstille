@@ -50,7 +50,7 @@ public:
    * The created surfaces will be added to the surfaces vector.
    */
   void load_grid(const std::string& filename,
-      std::vector<Surface>& surfaces, int width, int height);
+                 std::vector<Surface>& surfaces, int width, int height);
 
   Texture create_texture(const SoftwareSurface& image,
                          float& maxu, float& maxv);
