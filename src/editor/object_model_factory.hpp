@@ -16,34 +16,21 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_DECAL_OBJECT_MODEL_HPP
-#define HEADER_WINDSTILLE_EDITOR_DECAL_OBJECT_MODEL_HPP
+#ifndef HEADER_OBJECT_MODEL_FACTOR_HPP
+#define HEADER_OBJECT_MODEL_FACTOR_HPP
 
-#include "display/surface.hpp"
 #include "object_model.hpp"
 
-class DecalObjectModel : public ObjectModel
+class FileReader;
+
+class ObjectModelFactory
 {
 public:
-  enum MapType { COLORMAP, LIGHTMAP, HIGHLIGHTMAP };
-
-  static ObjectModelHandle create(const std::string& name, const Vector2f& pos, const std::string& path, MapType type);
-
+  static ObjectModelHandle create(FileReader& reader);
+  
 private:
-  std::string path;
-  Surface surface;
-  MapType type;
-
-public:
-  DecalObjectModel(FileReader& reader);
-  DecalObjectModel(const std::string& name, const Vector2f& rel_pos, 
-                   const std::string& path_, MapType type_);
-  ~DecalObjectModel();
-
-  void draw(SceneContext& sc);
-  Rectf get_bounding_box() const;
-  ObjectModelHandle clone() const;
-  void write(FileWriter& writer) const;
+  ObjectModelFactory(const ObjectModelFactory&);
+  ObjectModelFactory& operator=(const ObjectModelFactory&);
 };
 
 #endif

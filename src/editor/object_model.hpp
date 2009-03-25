@@ -29,6 +29,7 @@
 #include "snap_data.hpp"
 
 class ObjectModel;
+class FileReader;
 class SceneContext;
 typedef boost::shared_ptr<ObjectModel> ObjectModelHandle;
 typedef boost::weak_ptr<ObjectModel>   ObjectModelPtr;
@@ -44,6 +45,7 @@ private:
 
 public:
   ObjectModel();
+  ObjectModel(FileReader& reader);
   ObjectModel(const std::string& name, const Vector2f& pos);
   virtual ~ObjectModel();
   

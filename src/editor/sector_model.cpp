@@ -16,13 +16,16 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <fstream>
 #include <limits>
 #include <assert.h>
 #include <iostream>
 #include <gdkmm/pixbuf.h>
 
+#include "util/file_reader.hpp"
 #include "display/scene_context.hpp"
 #include "display/surface.hpp"
+#include "object_model_factory.hpp"
 #include "sector_model.hpp"
 
 ObjectTreeColumns* ObjectTreeColumns::instance_ = 0;
@@ -197,6 +200,35 @@ SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& i
     }
 
   return best_snap;
+}
+
+void
+SectorModel::load(const std::string& filename)
+{
+  std::ifstream stream(filename.c_str());
+  if (!stream)
+    {
+      throw std::runtime_error("File not found " + filename);
+    }
+  else
+    {
+  FileReader reader = FileReader::parse(stream, filename);
+  if (reader.get_name() == "windstille-sector")
+    {
+      std::vector<FileReader> sections = reader.get_sections();
+      for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+        {
+          if (i->get_name() == "objects")
+            {
+              std::vector<FileReader> objects_sections = i->get_sections();
+              for(std::vector<FileReader>::iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
+                {
+                  add(ObjectModelFactory::create(*j));
+                }
+            }
+        }
+    }
+    }
 }
 
 void

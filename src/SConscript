@@ -241,6 +241,7 @@ editor_env.Program('../windstille-editor', [
         'editor/main.cpp',
         'editor/minimap_widget.cpp',
         'editor/object_model.cpp',      
+        'editor/object_model_factory.cpp',
         'editor/object_selector.cpp',
         'editor/object_tree.cpp',
         'editor/scroll_tool.cpp',

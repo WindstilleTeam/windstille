@@ -107,6 +107,8 @@ public:
   Tool* get_current_tool() const;
   WindstilleWidget* get_windstille_widget();
   
+  void load_file(const std::string& filename);
+
   void call_with_windstille_widget(void (WindstilleWidget::*func)());
 
 private:

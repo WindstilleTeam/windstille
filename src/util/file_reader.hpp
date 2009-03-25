@@ -23,15 +23,16 @@
 #include <vector>
 #include "getter.hpp"
 #include <boost/shared_ptr.hpp>
-
+
 class FileReaderImpl;
-
+
 /** Interface to read name/value pairs out of some kind of file or
     structure */
 class FileReader
 {
 public:
   static FileReader parse(const std::string& filename);
+  static FileReader parse(std::istream& stream, const std::string& filename);
 
   FileReader(boost::shared_ptr<FileReaderImpl> impl_);
   FileReader();
@@ -78,7 +79,7 @@ public:
 private:
   boost::shared_ptr<FileReaderImpl> impl;
 };
-
+
 #endif
 
 /* EOF */

@@ -18,6 +18,7 @@
 
 #include <iostream>
 
+#include "util/file_reader.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
 #include "object_model.hpp"
@@ -26,6 +27,14 @@ ObjectModel::ObjectModel(const std::string& name_, const Vector2f& rel_pos_)
   : name(name_),
     rel_pos(rel_pos_)
 {
+}
+
+ObjectModel::ObjectModel(FileReader& reader)
+{
+  std::string parent;
+  reader.read("name", name);
+  reader.get("pos",  rel_pos);
+  reader.read("parent",  parent);
 }
 
 ObjectModel::~ObjectModel()

@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "util/file_reader.hpp"
 #include "display/surface.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
@@ -28,6 +29,16 @@ DecalObjectModel::create(const std::string& name, const Vector2f& pos,
   return ObjectModelHandle(new DecalObjectModel(name, pos, path, type));
 }
 
+DecalObjectModel::DecalObjectModel(FileReader& reader)
+  : ObjectModel(reader)
+{
+  int map_type = 0;
+  reader.read("path", path);
+  reader.read("type", map_type);
+  type = (MapType)map_type;
+  surface = Surface(path);
+}
+
 DecalObjectModel::DecalObjectModel(const std::string& name, const Vector2f& rel_pos, 
                                    const std::string& path_, MapType type_)
   : ObjectModel("DecalObjectModel", rel_pos),

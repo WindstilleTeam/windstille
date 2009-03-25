@@ -93,6 +93,7 @@ public:
 
   SnapData snap_object(const Rectf& object, const std::set<ObjectModelHandle>& ignore_objects) const;
 
+  void load(const std::string& filename);
   void write(FileWriter& writer) const;
 
 private:

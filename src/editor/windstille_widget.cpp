@@ -515,5 +515,12 @@ WindstilleWidget::get_sector_model()
 {
   return sector_model.get();
 }
+
+void
+WindstilleWidget::load_file(const std::string& filename)
+{
+  sector_model->load(filename);
+  queue_draw();
+}
 
 /* EOF */

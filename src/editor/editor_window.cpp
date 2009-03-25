@@ -321,6 +321,14 @@ EditorWindow::on_new()
 }
 
 void
+EditorWindow::load_file(const std::string& filename)
+{
+  on_new();
+  WindstilleWidget* wst = get_windstille_widget();
+  wst->load_file(filename);
+}
+
+void
 EditorWindow::on_open()
 {
   Gtk::FileChooserDialog dialog("Open File",
@@ -337,6 +345,8 @@ EditorWindow::on_open()
           std::cout << "Select clicked." << std::endl;
           std::cout << "Folder selected: " << dialog.get_filename()
                     << std::endl;
+          
+          load_file(dialog.get_filename());
           break;
         }
 

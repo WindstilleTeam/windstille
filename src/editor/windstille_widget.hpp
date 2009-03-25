@@ -110,6 +110,8 @@ public:
 
   SceneContext* get_sc() const { return sc.get(); }
 
+  void load_file(const std::string& filename);
+
 private:
   WindstilleWidget (const WindstilleWidget&);
   WindstilleWidget& operator= (const WindstilleWidget&);
