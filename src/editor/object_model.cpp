@@ -89,7 +89,7 @@ ObjectModel::on_move_update(const Vector2f& offset)
 void
 ObjectModel::on_move_end(const Vector2f& offset)
 {
-  rel_pos += move_offset;
+  rel_pos += offset;
   move_offset = Vector2f(0,0);
 }
 
