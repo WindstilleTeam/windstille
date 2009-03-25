@@ -181,7 +181,8 @@ SectorModel::lower_to_bottom(ObjectModelHandle object)
 SnapData
 SectorModel::snap_object(const Rectf& rect) const
 {
-  float min_offset = std::numeric_limits<float>::max();
+  float min_x_offset = std::numeric_limits<float>::max();
+  float min_y_offset = std::numeric_limits<float>::max();
   SnapData best_snap;
 
   // Find the smallest snap offset
@@ -189,13 +190,23 @@ SectorModel::snap_object(const Rectf& rect) const
     {
       SnapData snap = (*i)->snap_object(rect);
 
-      if (snap.x_set || snap.y_set)
+      if (snap.x_set)
         {
-          if (snap.offset.length() < min_offset)
+          if (snap.offset.x < min_x_offset)
             {
-              min_offset = snap.offset.length();
+              min_x_offset = snap.offset.x;
+              best_snap.offset.x = snap.offset.x;
+              best_snap.x_set = true;
+            }
+        }
 
-              best_snap = snap;
+      if (snap.y_set)
+        {
+          if (snap.offset.y < min_y_offset)
+            {
+              min_y_offset = snap.offset.y;
+              best_snap.offset.y = snap.offset.y;
+              best_snap.y_set = true;
             }
         }
     }

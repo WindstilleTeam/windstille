@@ -128,10 +128,16 @@ ObjectModel::snap_object(const Rectf& in) const
           float y_snap = 0.0f;
 
           if (fabs(rect.top - in.top) < snap_threshold)
-            y_snap = rect.top - in.top;
+            {
+              y_snap = rect.top - in.top;
+              snap.y_set = true;
+            }
 
           if (fabs(rect.bottom - in.bottom) < snap_threshold)
-            y_snap = rect.bottom - in.bottom;
+            {
+              y_snap = rect.bottom - in.bottom;
+              snap.y_set = true;
+            }
 
           if (left_dist < right_dist)
             { // snap to left edge
@@ -140,7 +146,6 @@ ObjectModel::snap_object(const Rectf& in) const
                   snap.offset.x = rect.left - in.right;
                   snap.offset.y = y_snap;
                   snap.x_set = true;
-                  snap.y_set = true;
                 }
             }
           else
@@ -150,7 +155,6 @@ ObjectModel::snap_object(const Rectf& in) const
                   snap.offset.x = rect.right - in.left;
                   snap.offset.y = y_snap;
                   snap.x_set = true;
-                  snap.y_set = true;
                 }
             }
         }
@@ -163,10 +167,16 @@ ObjectModel::snap_object(const Rectf& in) const
           float x_snap = 0.0f;
 
           if (fabs(rect.left - in.left) < snap_threshold)
-            x_snap = rect.left - in.left;
+            {
+              x_snap = rect.left - in.left;
+              snap.x_set = true;
+            }
 
           if (fabs(rect.right - in.right) < snap_threshold)
-            x_snap = rect.right - in.right;
+            {
+              x_snap = rect.right - in.right;
+              snap.x_set = true;
+            }
 
           if (top_dist < bottom_dist)
             { // snap to top edge
@@ -174,7 +184,6 @@ ObjectModel::snap_object(const Rectf& in) const
                 {
                   snap.offset.x = x_snap;
                   snap.offset.y = rect.top - in.bottom;
-                  snap.x_set = true;
                   snap.y_set = true;
                 }
             }
@@ -184,7 +193,6 @@ ObjectModel::snap_object(const Rectf& in) const
                 {
                   snap.offset.x = x_snap;
                   snap.offset.y = rect.bottom - in.top;
-                  snap.x_set = true;
                   snap.y_set = true;
                 }
             }
