@@ -35,7 +35,9 @@ private:
     DRAG_MODE,
     NO_MODE
   } mode;
-  
+
+  Vector2f process_snap(WindstilleWidget& wst);
+
 public:
   SelectTool();
   

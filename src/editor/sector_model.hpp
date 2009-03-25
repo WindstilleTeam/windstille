@@ -19,6 +19,7 @@
 #ifndef HEADER_SECTOR_MODEL_HPP
 #define HEADER_SECTOR_MODEL_HPP
 
+#include <set>
 #include <memory>
 #include <gtkmm/treestore.h>
 #include <vector>
@@ -90,7 +91,7 @@ public:
   void raise(ObjectModelHandle object);
   void lower(ObjectModelHandle object);
 
-  SnapData snap_object(const ObjectModelHandle& object) const;
+  SnapData snap_object(const Rectf& object, const std::set<ObjectModelHandle>& ignore_objects) const;
 
   void write(lisp::Writer& writer) const;
 

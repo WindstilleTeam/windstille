@@ -31,6 +31,23 @@ public:
       x_set(false),
       y_set(false)
   {}
+  
+  void merge(const SnapData& rhs) 
+  {
+    if (((x_set && rhs.x_set) && (rhs.offset.x < offset.x)) ||
+        (!x_set && rhs.x_set))
+      {
+        offset.x = rhs.offset.x;
+        x_set = true;
+      }
+
+    if (((y_set && rhs.y_set) && (rhs.offset.y < offset.y)) ||
+        (!y_set && rhs.y_set))
+      {
+        offset.y = rhs.offset.y;
+        y_set = true;
+      }
+  }
 };
 
 #endif

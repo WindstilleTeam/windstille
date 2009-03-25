@@ -179,40 +179,20 @@ SectorModel::lower_to_bottom(ObjectModelHandle object)
 }
 
 SnapData
-SectorModel::snap_object(const ObjectModelHandle& object) const
+SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ignore_objects) const
 {
-  float min_x_offset = std::numeric_limits<float>::max();
-  float min_y_offset = std::numeric_limits<float>::max();
+  //float min_x_offset = std::numeric_limits<float>::max();
+  //float min_y_offset = std::numeric_limits<float>::max();
   SnapData best_snap;
-
-  const Rectf& rect = object->get_bounding_box();
 
   // Find the smallest snap offset
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
     {
-      if (object != *i)
+      // object is not in the list of objects to ignore
+      if (ignore_objects.find(*i) == ignore_objects.end())
         {
           SnapData snap = (*i)->snap_object(rect);
-
-          if (snap.x_set)
-            {
-              if (snap.offset.x < min_x_offset)
-                {
-                  min_x_offset = snap.offset.x;
-                  best_snap.offset.x = snap.offset.x;
-                  best_snap.x_set = true;
-                }
-            }
-
-          if (snap.y_set)
-            {
-              if (snap.offset.y < min_y_offset)
-                {
-                  min_y_offset = snap.offset.y;
-                  best_snap.offset.y = snap.offset.y;
-                  best_snap.y_set = true;
-                }
-            }
+          best_snap.merge(snap);
         }
     }
 

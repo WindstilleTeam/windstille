@@ -78,6 +78,21 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
   return true;
 }
 
+Vector2f
+SelectTool::process_snap(WindstilleWidget& wst)
+{
+  std::set<ObjectModelHandle> objects(selection->begin(), selection->end());
+  SnapData best_snap;
+
+  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      SnapData snap = wst.get_sector_model()->snap_object((*i)->get_bounding_box(), objects);
+      best_snap.merge(snap);
+    }
+              
+  return best_snap.offset;
+ }
+
 bool
 SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
@@ -86,13 +101,10 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
   if (mode == DRAG_MODE)
     {
       selection->on_move_update(pos - click_pos);
-
-      if ((event->state & GDK_CONTROL_MASK) && selection->size() == 1)
+      
+      if (event->state & GDK_CONTROL_MASK)
         {
-          SnapData snap = wst.get_sector_model()->snap_object(*selection->begin());
-          
-          if (snap.x_set || snap.y_set)
-            selection->on_move_update(pos - click_pos + snap.offset);
+          selection->on_move_update(pos - click_pos + process_snap(wst));
         }
     }
   else if (mode == SELECT_MODE)
@@ -115,17 +127,15 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
   if (mode == DRAG_MODE)
     {
       selection->on_move_update(pos - click_pos);
-
-      Vector2f p = pos - click_pos;
-      if ((event->state & GDK_CONTROL_MASK) && selection->size() == 1)
-        {
-          SnapData snap = wst.get_sector_model()->snap_object(*selection->begin());
-          
-          if (snap.x_set || snap.y_set)
-            p += snap.offset;
-        }
       
-      selection->on_move_end(p);
+      if (event->state & GDK_CONTROL_MASK)
+        {
+          selection->on_move_end(pos - click_pos + process_snap(wst));
+        }
+      else
+        {
+          selection->on_move_end(pos - click_pos);
+        }
     }
   else if (mode == SELECT_MODE)
     {
