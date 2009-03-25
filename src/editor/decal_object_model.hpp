@@ -30,6 +30,7 @@ public:
   static ObjectModelHandle create(const std::string& name, const Vector2f& pos, const std::string& path, MapType type);
 
 private:
+  std::string path;
   Surface surface;
   MapType type;
 
@@ -41,6 +42,7 @@ public:
   void draw(SceneContext& sc);
   Rectf get_bounding_box() const;
   ObjectModelHandle clone() const;
+  void write(lisp::Writer& writer) const;
 };
 
 #endif

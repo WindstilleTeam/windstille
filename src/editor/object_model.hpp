@@ -23,6 +23,7 @@
 #include <boost/weak_ptr.hpp>
 #include <string>
 
+#include "lisp/writer.hpp"
 #include "display/surface.hpp"
 #include "math/vector2f.hpp"
 #include "snap_data.hpp"
@@ -64,6 +65,8 @@ public:
   virtual void update(float delta) {}
   virtual Rectf get_bounding_box() const = 0;
   virtual ObjectModelHandle clone() const =0;
+
+  virtual void write(lisp::Writer& writer) const =0;
 };
 
 #endif

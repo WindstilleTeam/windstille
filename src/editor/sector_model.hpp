@@ -92,6 +92,8 @@ public:
 
   SnapData snap_object(const ObjectModelHandle& object) const;
 
+  void write(lisp::Writer& writer) const;
+
 private:
   SectorModel(const SectorModel&);
   SectorModel& operator=(const SectorModel&);

@@ -22,6 +22,7 @@
 SpriteObjectModel::SpriteObjectModel(const std::string& name_, const Vector2f& rel_pos_,
                                      const std::string& path_)
   : ObjectModel(name_, rel_pos_),
+    path(path_),
     sprite(path_)
 {
 }
@@ -52,6 +53,14 @@ ObjectModelHandle
 SpriteObjectModel::clone() const
 {
   return ObjectModelHandle(new SpriteObjectModel(*this));
+}
+
+void
+SpriteObjectModel::write(lisp::Writer& writer) const
+{
+  writer.start_list("sprite");
+  writer.write_string("path", path);
+  writer.end_list("sprite");
 }
 
 /* EOF */

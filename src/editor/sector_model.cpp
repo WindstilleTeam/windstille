@@ -218,6 +218,28 @@ SectorModel::snap_object(const ObjectModelHandle& object) const
 
   return best_snap;
 }
+
+void
+SectorModel::write(lisp::Writer& writer) const
+{
+  writer.write_comment(";; -*- scheme -*-");
+  writer.start_list("windstille-sector");
+
+  writer.write_int("version", 1);
+  writer.write_string("name", "");
+  // writer.write_color("ambient-color", );
+  writer.write_string("init-script", "init.nut");
+
+  writer.start_list("objects");
+  for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
+    {
+      (*i)->write(writer);
+    }
+  writer.end_list("objects");
+ 
+  writer.end_list("windstille-sector");
+  writer.write_comment(";; EOF ;;");
+}
 
 void
 SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)

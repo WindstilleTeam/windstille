@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <fstream>
 #include <iostream>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/actiongroup.h>
@@ -30,6 +31,7 @@
 #include "editor_window.hpp"
 #include "zoom_tool.hpp"
 #include "select_tool.hpp"
+#include "sector_model.hpp"
 
 EditorWindow* EditorWindow::current_ = 0;
 
@@ -363,6 +365,13 @@ EditorWindow::on_save()
           std::cout << "Select clicked." << std::endl;
           std::cout << "Folder selected: " << dialog.get_filename()
                     << std::endl;
+
+          std::ofstream out(dialog.get_filename().c_str());
+          lisp::Writer writer(&out);
+          if (WindstilleWidget* wst = get_windstille_widget())
+            {
+              wst->get_sector_model()->write(writer);
+            }
           break;
         }
 

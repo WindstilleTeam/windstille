@@ -31,6 +31,7 @@ DecalObjectModel::create(const std::string& name, const Vector2f& pos,
 DecalObjectModel::DecalObjectModel(const std::string& name, const Vector2f& rel_pos, 
                                    const std::string& path_, MapType type_)
   : ObjectModel("DecalObjectModel", rel_pos),
+    path(path_),
     surface(path_),
     type(type_)
 {
@@ -82,6 +83,15 @@ ObjectModelHandle
 DecalObjectModel::clone() const
 {
   return ObjectModelHandle(new DecalObjectModel(*this));
+}
+
+void
+DecalObjectModel::write(lisp::Writer& writer) const
+{
+  writer.start_list("decal");
+  writer.write_string("path", path);
+  writer.write_int("type", type);
+  writer.end_list("decal");
 }
 
 /* EOF */

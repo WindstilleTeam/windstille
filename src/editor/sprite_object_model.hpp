@@ -25,6 +25,7 @@
 class SpriteObjectModel : public ObjectModel
 {
 private:
+  std::string path;
   Sprite sprite;
 
 public:
@@ -36,6 +37,7 @@ public:
   void update(float delta);
   Rectf get_bounding_box() const;
   ObjectModelHandle clone() const;
+  void write(lisp::Writer& writer) const;
 };
 
 #endif
