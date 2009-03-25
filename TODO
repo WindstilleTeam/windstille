@@ -490,8 +490,6 @@ Graphics
 Editor
 ======
 
-* add default background pattern instead of black
-
 * think about load/save
 
 * think about Undo/Redo
@@ -508,8 +506,6 @@ Editor
   - advantage of this is that layers exist outside the whole sorting
     logic, so all that stuff can remain unchanged
 
-* add button to toggle control layer visibility
-
 * Display::aspect_size is ugly, turn that into a Display::set_size();
 
 * implement non-Surface based objects:
@@ -519,8 +515,6 @@ Editor
    - full NavigationGraph
    - Sprite
    - Sprite3d / Character
-
-* light layer doesn't work in the editor
 
 * reevaluate the current parent/child implementation, since its very
   tricky currently to move a parent without affecting the child, which
@@ -542,8 +536,11 @@ Editor
 * save bitmask along with object to allow pixel perfect click
   selection
 
-* add object snapping (snap to other objects bounding boxes, snap to
-  custom snap-points, snap to integer positions, snap to grid)
+* add more ways to snapping objects:
+
+  - snap to snap-points
+  - snap to integer positions
+  - snap to grid
 
 * add grid
 
