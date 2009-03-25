@@ -91,7 +91,7 @@ ObjectModel::draw(SceneContext& sc)
       sc.control().draw_line(wo_pos, parent->get_world_pos(), Color(0,0,1, 0.5f));
     }
 
-  sc.control().fill_rect(Rectf(wo_pos - Vector2f(8, 8), Sizef(16, 16)), Color(1,0,0));
+  //sc.control().fill_rect(Rectf(wo_pos - Vector2f(8, 8), Sizef(16, 16)), Color(1,0,0));
 }
 
 void

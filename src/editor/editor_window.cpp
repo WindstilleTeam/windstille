@@ -280,9 +280,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   // Window
   add(vbox);
 
+  fill_object_selector("data/images/decal/");
+  //fill_object_selector("data/images/inventory/");
+  //fill_object_selector("data/images/portraits/");
   fill_object_selector("data/images/objects/");
-  fill_object_selector("data/images/inventory/");
-  fill_object_selector("data/images/portraits/");
   fill_object_selector("data/images/");
 }
 

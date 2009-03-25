@@ -204,7 +204,8 @@ WindstilleWidget::draw()
     {
       state.push(*sc);
       
-      sc->color().fill_pattern(background_pattern);
+      //sc->color().fill_pattern(background_pattern);
+      sc->color().fill_screen(Color());
 
       sector_model->draw(*sc);
 
