@@ -94,7 +94,7 @@ ObjectModel::on_move_end(const Vector2f& offset)
 }
 
 static bool overlap(float l1, float r1,
-             float l2, float r2)
+                    float l2, float r2)
 {
   if (r1 < l2)
     return false;
@@ -122,8 +122,7 @@ ObjectModel::snap_object(const Rectf& in) const
 
   if (x_dist < y_dist)
     { // closer on the X axis
-      if (overlap(rect.top, rect.bottom,
-                  in.top, in.bottom))
+      if (overlap(rect.top, rect.bottom,  in.top, in.bottom))
         {
           float y_snap = 0.0f;
 
@@ -161,8 +160,7 @@ ObjectModel::snap_object(const Rectf& in) const
     }
   else
     { // closer on the Y axis
-      if (overlap(rect.left, rect.right,
-                  in.left, in.right))
+      if (overlap(rect.left, rect.right,  in.left, in.right))
         {
           float x_snap = 0.0f;
 
