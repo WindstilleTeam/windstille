@@ -108,7 +108,7 @@ bool
 ObjectModel::snap_object(const Rectf& in, Vector2f& snap_offset_out) const
 {
   const Rectf& rect = get_bounding_box();
-  float snap_threshold = 32.0f;
+  float snap_threshold = 16.0f;
   bool  snapped = false;
 
   // Reset offset to zero, since it might not be
@@ -126,13 +126,21 @@ ObjectModel::snap_object(const Rectf& in, Vector2f& snap_offset_out) const
       if (overlap(rect.top, rect.bottom,
                   in.top, in.bottom))
         {
+          float y_snap = 0.0f;
+
+          if (fabs(rect.top - in.top) < snap_threshold)
+            y_snap = rect.top - in.top;
+
+          if (fabs(rect.bottom - in.bottom) < snap_threshold)
+            y_snap = rect.bottom - in.bottom;
+
           if (left_dist < right_dist)
             { // snap to left edge
               if (left_dist < snap_threshold)
                 {
                   snap_offset.x = rect.left - in.right;
+                  snap_offset.y = y_snap;
                   snapped = true;
-                
                 }
             }
           else
@@ -140,6 +148,7 @@ ObjectModel::snap_object(const Rectf& in, Vector2f& snap_offset_out) const
               if (right_dist < snap_threshold)
                 {
                   snap_offset.x = rect.right - in.left;
+                  snap_offset.y = y_snap;
                   snapped = true;
                 }
             }
@@ -150,10 +159,19 @@ ObjectModel::snap_object(const Rectf& in, Vector2f& snap_offset_out) const
       if (overlap(rect.left, rect.right,
                   in.left, in.right))
         {
+          float x_snap = 0.0f;
+
+          if (fabs(rect.left - in.left) < snap_threshold)
+            x_snap = rect.left - in.left;
+
+          if (fabs(rect.right - in.right) < snap_threshold)
+            x_snap = rect.right - in.right;
+
           if (top_dist < bottom_dist)
             { // snap to top edge
               if (top_dist < snap_threshold)
                 {
+                  snap_offset.x = x_snap;
                   snap_offset.y = rect.top - in.bottom;
                   snapped = true;
                 }
@@ -162,6 +180,7 @@ ObjectModel::snap_object(const Rectf& in, Vector2f& snap_offset_out) const
             { // snap to bottom edge
               if (bottom_dist < snap_threshold)
                 {
+                  snap_offset.x = x_snap;
                   snap_offset.y = rect.bottom - in.top;
                   snapped = true;
                 }

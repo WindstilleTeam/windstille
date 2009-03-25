@@ -201,8 +201,6 @@ SectorModel::snap_object(const Rectf& rect, Vector2f& best_snap_offset) const
         }
     }
 
-  std::cout << "SnapTest: " << snap_offset_found << std::endl;
-
   return snap_offset_found;
 }
 
