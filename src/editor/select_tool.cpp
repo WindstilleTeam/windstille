@@ -114,15 +114,18 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
   // Select objects
   if (mode == DRAG_MODE)
     {
-      selection->on_move_end(pos - click_pos);
+      selection->on_move_update(pos - click_pos);
 
+      Vector2f p = pos - click_pos;
       if ((event->state & GDK_CONTROL_MASK) && selection->size() == 1)
         {
           SnapData snap = wst.get_sector_model()->snap_object(*selection->begin());
           
           if (snap.x_set || snap.y_set)
-            selection->on_move_update(pos - click_pos + snap.offset);
+            p += snap.offset;
         }
+      
+      selection->on_move_end(p);
     }
   else if (mode == SELECT_MODE)
     {
