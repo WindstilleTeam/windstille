@@ -25,6 +25,7 @@
 
 #include "display/surface.hpp"
 #include "math/vector2f.hpp"
+#include "snap_data.hpp"
 
 class ObjectModel;
 class SceneContext;
@@ -57,7 +58,7 @@ public:
   void on_move_update(const Vector2f& offset);
   void on_move_end(const Vector2f& offset);
 
-  bool snap_object(const Rectf& rect, Vector2f& snap_offset) const;
+  SnapData snap_object(const Rectf& rect) const;
 
   virtual void draw(SceneContext& sc);
   virtual void update(float delta) {}

@@ -89,10 +89,11 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 
       if (selection->size() == 1)
         {
-          Vector2f snap_offset;
-          if (wst.get_sector_model()->snap_object((*selection->begin())->get_bounding_box(), snap_offset))
+          SnapData snap = wst.get_sector_model()->snap_object((*selection->begin())->get_bounding_box());
+          
+          if (snap.x_set || snap.y_set)
             {
-              selection->on_move_update(pos - click_pos + snap_offset);              
+              selection->on_move_update(pos - click_pos + snap.offset);
             }
         }
     }

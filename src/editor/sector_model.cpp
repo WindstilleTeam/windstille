@@ -178,30 +178,29 @@ SectorModel::lower_to_bottom(ObjectModelHandle object)
   objects.push_front(object); 
 }
 
-bool
-SectorModel::snap_object(const Rectf& rect, Vector2f& best_snap_offset) const
+SnapData
+SectorModel::snap_object(const Rectf& rect) const
 {
   float min_offset = std::numeric_limits<float>::max();
-  bool snap_offset_found = false;
+  SnapData best_snap;
 
   // Find the smallest snap offset
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
     {
-      Vector2f snap_offset;
+      SnapData snap = (*i)->snap_object(rect);
 
-      if ((*i)->snap_object(rect, snap_offset))
+      if (snap.x_set || snap.y_set)
         {
-          if (snap_offset.length() < min_offset)
+          if (snap.offset.length() < min_offset)
             {
-              min_offset = snap_offset.length();
+              min_offset = snap.offset.length();
 
-              best_snap_offset  = snap_offset;
-              snap_offset_found = true;
+              best_snap = snap;
             }
         }
     }
 
-  return snap_offset_found;
+  return best_snap;
 }
 
 void

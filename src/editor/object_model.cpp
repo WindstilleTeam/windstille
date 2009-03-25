@@ -104,15 +104,14 @@ static bool overlap(float l1, float r1,
     return true;
 }
 
-bool
-ObjectModel::snap_object(const Rectf& in, Vector2f& snap_offset_out) const
+SnapData
+ObjectModel::snap_object(const Rectf& in) const
 {
   const Rectf& rect = get_bounding_box();
   float snap_threshold = 16.0f;
-  bool  snapped = false;
-
+  
   // Reset offset to zero, since it might not be
-  Vector2f snap_offset(0,0);
+  SnapData snap;
 
   float left_dist   = fabs(rect.left - in.right);
   float right_dist  = fabs(rect.right - in.left);
@@ -138,18 +137,20 @@ ObjectModel::snap_object(const Rectf& in, Vector2f& snap_offset_out) const
             { // snap to left edge
               if (left_dist < snap_threshold)
                 {
-                  snap_offset.x = rect.left - in.right;
-                  snap_offset.y = y_snap;
-                  snapped = true;
+                  snap.offset.x = rect.left - in.right;
+                  snap.offset.y = y_snap;
+                  snap.x_set = true;
+                  snap.y_set = true;
                 }
             }
           else
             { // snap to right edge
               if (right_dist < snap_threshold)
                 {
-                  snap_offset.x = rect.right - in.left;
-                  snap_offset.y = y_snap;
-                  snapped = true;
+                  snap.offset.x = rect.right - in.left;
+                  snap.offset.y = y_snap;
+                  snap.x_set = true;
+                  snap.y_set = true;
                 }
             }
         }
@@ -171,27 +172,26 @@ ObjectModel::snap_object(const Rectf& in, Vector2f& snap_offset_out) const
             { // snap to top edge
               if (top_dist < snap_threshold)
                 {
-                  snap_offset.x = x_snap;
-                  snap_offset.y = rect.top - in.bottom;
-                  snapped = true;
+                  snap.offset.x = x_snap;
+                  snap.offset.y = rect.top - in.bottom;
+                  snap.x_set = true;
+                  snap.y_set = true;
                 }
             }
           else
             { // snap to bottom edge
               if (bottom_dist < snap_threshold)
                 {
-                  snap_offset.x = x_snap;
-                  snap_offset.y = rect.bottom - in.top;
-                  snapped = true;
+                  snap.offset.x = x_snap;
+                  snap.offset.y = rect.bottom - in.top;
+                  snap.x_set = true;
+                  snap.y_set = true;
                 }
             }
         }      
     }
 
-  if (snapped)
-    snap_offset_out = snap_offset;
-
-  return snapped;
+  return snap;
 }
 
 /* EOF */
