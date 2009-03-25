@@ -90,7 +90,7 @@ public:
   void raise(ObjectModelHandle object);
   void lower(ObjectModelHandle object);
 
-  SnapData snap_object(const Rectf& rect) const;
+  SnapData snap_object(const ObjectModelHandle& object) const;
 
 private:
   SectorModel(const SectorModel&);
