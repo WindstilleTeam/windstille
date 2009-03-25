@@ -46,6 +46,7 @@ public:
   FileWriter& write(const std::string& name, int value);
   FileWriter& write(const std::string& name, float value);
   FileWriter& write(const std::string& name, const std::string& value);
+  FileWriter& write(const std::string& name, const char* value);
   FileWriter& write(const std::string& name, const Color& value);
   FileWriter& write(const std::string& name, const Vector2f& value);
 

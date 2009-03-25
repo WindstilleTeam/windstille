@@ -104,6 +104,14 @@ std::string escape_string(const std::string& in)
 }
 
 FileWriter&
+FileWriter::write(const std::string& name, const char* value)
+{
+  indent();
+  out << "(" << name << " \"" << escape_string(value) << "\")\n";
+  return *this;
+}
+
+FileWriter&
 FileWriter::write(const std::string& name, const std::string& value)
 {
   indent();
