@@ -57,6 +57,8 @@ public:
   void on_move_update(const Vector2f& offset);
   void on_move_end(const Vector2f& offset);
 
+  bool snap_object(const Rectf& rect, Vector2f& snap_offset) const;
+
   virtual void draw(SceneContext& sc);
   virtual void update(float delta) {}
   virtual Rectf get_bounding_box() const = 0;

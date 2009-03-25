@@ -67,6 +67,7 @@ private:
   Glib::RefPtr<Gtk::RadioAction> zoom_tool_action;
 
   Glib::RefPtr<Gtk::ToggleAction> play_action;
+  Glib::RefPtr<Gtk::ToggleAction> snap_action;
 
   std::auto_ptr<SelectTool> select_tool;
   std::auto_ptr<ZoomTool>   zoom_tool;
@@ -89,6 +90,7 @@ public:
 
   bool on_timeout();
   void on_play();
+  void on_snap();
 
   void on_about_clicked();
   void on_quit();

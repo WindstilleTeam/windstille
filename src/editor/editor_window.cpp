@@ -72,6 +72,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <separator/>"
     "      <menuitem action='ConnectParent'/>"
     "      <menuitem action='ClearParent'/>"
+    "      <separator/>"
+    "      <menuitem action='Snap'/>"
     "    </menu>"
     "    <menu action='MenuView'>"
     "      <menuitem action='ZoomIn'/>"
@@ -120,6 +122,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='ConnectParent'/>"
     "    <toolitem action='ClearParent'/>"
     "    <separator/>"
+    "    <toolitem action='Snap'/>"
     "    <toolitem action='Play'/>"
     "  </toolbar>"
     ""
@@ -185,8 +188,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_in));
   action_group->add(Gtk::Action::create("ZoomOut",     Gtk::Stock::ZOOM_OUT),
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_out));
-  action_group->add(play_action = Gtk::ToggleAction::create("Play",        Gtk::Stock::MEDIA_PLAY), 
+  action_group->add(play_action = Gtk::ToggleAction::create("Play", Gtk::Stock::MEDIA_PLAY), 
                     sigc::mem_fun(*this, &EditorWindow::on_play));
+  action_group->add(snap_action = Gtk::ToggleAction::create("Snap", Gtk::Stock::MEDIA_PAUSE),
+                    sigc::mem_fun(*this, &EditorWindow::on_snap));
 
   action_group->add(Gtk::Action::create("MenuHelp",    "_Help"));
   action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
@@ -540,6 +545,19 @@ EditorWindow::on_play()
     {
       std::cout << "Stop" << std::endl;
       timeout_connection.disconnect();
+    }
+}
+
+void
+EditorWindow::on_snap()
+{
+  if (snap_action->get_active())
+    {
+      std::cout << "Snap" << std::endl;
+    }
+  else
+    {
+      std::cout << "Snap Off" << std::endl;
     }
 }
 

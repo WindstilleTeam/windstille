@@ -90,6 +90,8 @@ public:
   void raise(ObjectModelHandle object);
   void lower(ObjectModelHandle object);
 
+  bool snap_object(const Rectf& rect, Vector2f& snap_offset) const;
+
 private:
   SectorModel(const SectorModel&);
   SectorModel& operator=(const SectorModel&);

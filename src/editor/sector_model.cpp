@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <limits>
 #include <assert.h>
 #include <iostream>
 #include <gdkmm/pixbuf.h>
@@ -175,6 +176,34 @@ SectorModel::lower_to_bottom(ObjectModelHandle object)
 {
   objects.remove(object);
   objects.push_front(object); 
+}
+
+bool
+SectorModel::snap_object(const Rectf& rect, Vector2f& best_snap_offset) const
+{
+  float min_offset = std::numeric_limits<float>::max();
+  bool snap_offset_found = false;
+
+  // Find the smallest snap offset
+  for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
+    {
+      Vector2f snap_offset;
+
+      if ((*i)->snap_object(rect, snap_offset))
+        {
+          if (snap_offset.length() < min_offset)
+            {
+              min_offset = snap_offset.length();
+
+              best_snap_offset  = snap_offset;
+              snap_offset_found = true;
+            }
+        }
+    }
+
+  std::cout << "SnapTest: " << snap_offset_found << std::endl;
+
+  return snap_offset_found;
 }
 
 void

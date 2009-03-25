@@ -459,9 +459,10 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
   std::cout << "WindstilleWidget: on_drag_data_received: "
             << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
   
-  sector_model->add(ObjectModelHandle(new SpriteObjectModel("SpriteObjectModel", state.screen_to_world(Vector2f(x, y)),
-                                                            "images/hedgehog_die.sprite")));
-                                                            //"images/explosion.sprite")));
+  if (0)
+    sector_model->add(ObjectModelHandle(new SpriteObjectModel("SpriteObjectModel", state.screen_to_world(Vector2f(x, y)),
+                                                              "images/hedgehog_die.sprite")));
+  //"images/explosion.sprite")));
 
   ObjectModelHandle object = DecalObjectModel::create(data.get_data_as_string(),
                                                       state.screen_to_world(Vector2f(x, y)),
