@@ -32,6 +32,7 @@ util_lib = util_env.StaticLibrary('util', [
         'util/command_line.cpp',
         'util/command_line_generic.cpp',
         'util/file_reader.cpp',
+        'util/file_writer.cpp',
         'util/getter.cpp',
         'util/response_curve.cpp',
         'util/sexpr_file_reader.cpp',

@@ -56,11 +56,12 @@ SpriteObjectModel::clone() const
 }
 
 void
-SpriteObjectModel::write(lisp::Writer& writer) const
+SpriteObjectModel::write(FileWriter& writer) const
 {
-  writer.start_list("sprite");
-  writer.write_string("path", path);
-  writer.end_list("sprite");
+  writer.start_section("sprite");
+  ObjectModel::write_member(writer);
+  writer.write("path", path);
+  writer.end_section();
 }
 
 /* EOF */

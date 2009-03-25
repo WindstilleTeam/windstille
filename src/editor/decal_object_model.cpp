@@ -86,12 +86,13 @@ DecalObjectModel::clone() const
 }
 
 void
-DecalObjectModel::write(lisp::Writer& writer) const
+DecalObjectModel::write(FileWriter& writer) const
 {
-  writer.start_list("decal");
-  writer.write_string("path", path);
-  writer.write_int("type", type);
-  writer.end_list("decal");
+  writer.start_section("decal");
+  ObjectModel::write_member(writer);
+  writer.write("path",    path);
+  writer.write("type",    type);
+  writer.end_section();
 }
 
 /* EOF */

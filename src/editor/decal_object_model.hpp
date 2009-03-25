@@ -42,7 +42,7 @@ public:
   void draw(SceneContext& sc);
   Rectf get_bounding_box() const;
   ObjectModelHandle clone() const;
-  void write(lisp::Writer& writer) const;
+  void write(FileWriter& writer) const;
 };
 
 #endif

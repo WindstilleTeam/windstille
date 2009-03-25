@@ -32,6 +32,16 @@ ObjectModel::~ObjectModel()
 {
 }
 
+FileWriter&
+ObjectModel::write_member(FileWriter& writer) const
+{
+  ObjectModelHandle parent = parent_ptr.lock();
+
+  return writer
+    .write("pos", rel_pos)
+    .write("parent", parent.get() ? parent->get_name() : "");
+}
+
 void
 ObjectModel::set_parent(const ObjectModelHandle& parent_)
 {

@@ -185,8 +185,12 @@ Sound Handling
 Miscellaneous
 =============
 
-* make FileReader work more like lisp::Writer, i.e. less functional,
-  keeping the current cursor position
+* replace lisp::Writer with custom FileWriter (used in config)
+
+* make FileReader work more like lisp::Writer, i.e. less
+  const/functional, keeping the current cursor position. Main issue
+  with the current FileReader is the way sections are handled, which
+  isn't pretty
 
 * image-grid in Sprite seems broken
 

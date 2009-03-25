@@ -200,25 +200,25 @@ SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& i
 }
 
 void
-SectorModel::write(lisp::Writer& writer) const
+SectorModel::write(FileWriter& writer) const
 {
-  writer.write_comment(";; -*- scheme -*-");
-  writer.start_list("windstille-sector");
+  writer.write_raw(";; -*- scheme -*-\n");
+  writer.start_section("windstille-sector");
 
-  writer.write_int("version", 1);
-  writer.write_string("name", "");
-  // writer.write_color("ambient-color", );
-  writer.write_string("init-script", "init.nut");
+  writer.write("version", 1);
+  writer.write("name", "");
+  writer.write("ambient-color", Color());
+  writer.write("init-script", "init.nut");
 
-  writer.start_list("objects");
+  writer.start_section("objects");
   for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
     {
       (*i)->write(writer);
     }
-  writer.end_list("objects");
+  writer.end_section();
  
-  writer.end_list("windstille-sector");
-  writer.write_comment(";; EOF ;;");
+  writer.end_section();
+  writer.write_raw("\n;; EOF ;;\n");
 }
 
 void

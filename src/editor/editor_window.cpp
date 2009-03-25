@@ -367,7 +367,7 @@ EditorWindow::on_save()
                     << std::endl;
 
           std::ofstream out(dialog.get_filename().c_str());
-          lisp::Writer writer(&out);
+          FileWriter writer(out);
           if (WindstilleWidget* wst = get_windstille_widget())
             {
               wst->get_sector_model()->write(writer);

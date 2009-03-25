@@ -93,7 +93,7 @@ public:
 
   SnapData snap_object(const Rectf& object, const std::set<ObjectModelHandle>& ignore_objects) const;
 
-  void write(lisp::Writer& writer) const;
+  void write(FileWriter& writer) const;
 
 private:
   SectorModel(const SectorModel&);
