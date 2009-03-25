@@ -499,6 +499,14 @@ Graphics
 Editor
 ======
 
+* lightmap objects are hard to see
+
+* decal needs to be scalable and have vertices moveable
+
+* add button to toggle background pattern
+
+* make duplicated objects insert near those from which they where cloned
+
 * WindstilleWidget contains garbage when its first created, it gets
   however cleaned up in later redraws
 
@@ -508,7 +516,7 @@ Editor
 
 * add a Blender like layer system:
  
-  - layers are a 1 bit in a uint32_t
+  - layers are a 1 bit in a uint32_t (or uint64_t if needed)
   - each Object has a layer mask
   - when doing a get_selection(Rect(), layermask), objects check
     against the layer mask and are ignored when they don't match
@@ -517,6 +525,14 @@ Editor
   - objects can belong to multiple layers at once
   - advantage of this is that layers exist outside the whole sorting
     logic, so all that stuff can remain unchanged
+  - maybe all this isn't enough
+
+  - use for layer system:
+
+    - levels are naturally constructed out of multiple layers, such as
+      background, foreground, etc. Also certain things need to be
+      grouped, a wall of tiles should be easily moveable without the
+      danger of ripping the tiles appart
 
 * Display::aspect_size is ugly, turn that into a Display::set_size();
 

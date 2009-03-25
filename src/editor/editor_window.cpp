@@ -24,6 +24,7 @@
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/stock.h>
+#include <gtkmm/separatortoolitem.h>
 
 #include "display/scene_context.hpp"
 #include "windstille_widget.hpp"
@@ -32,6 +33,7 @@
 #include "zoom_tool.hpp"
 #include "select_tool.hpp"
 #include "sector_model.hpp"
+#include "layer_widget.hpp"
 
 EditorWindow* EditorWindow::current_ = 0;
 
@@ -45,7 +47,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   current_ = this;
 
   set_title("Windstille Editor");
-  set_default_size(1024, 768);
+  set_default_size(1280, 800);
 
   Glib::ustring ui_info =
     "<ui>"
@@ -126,6 +128,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <separator/>"
     //"    <toolitem action='Snap'/>"
     "    <toolitem action='Play'/>"
+    "    <separator/>"
     "  </toolbar>"
     ""
     "  <toolbar  name='ToolBox'>"
@@ -248,6 +251,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->get_action("Copy")->set_sensitive(false);
   action_group->get_action("Paste")->set_sensitive(false);
 
+  Gtk::Toolbar* toolbar = static_cast<Gtk::Toolbar*>(ui_manager->get_widget("/ToolBar"));
+  toolbar->append(*(Gtk::manage(new Gtk::SeparatorToolItem())));
+  toolbar->append(*(Gtk::manage(new LayerWidget())));
+
   // Packing
 
   // Main Vbox
@@ -311,7 +318,7 @@ EditorWindow::on_new()
   std::cout << "on_new" << std::endl;
 
   // FIXME: We abuse the minimap as our root GLContext
-  WindstilleWidget* windstille = new WindstilleWidget(glconfig, minimap_widget.get_gl_context());
+  WindstilleWidget* windstille = Gtk::manage(new WindstilleWidget(glconfig, minimap_widget.get_gl_context()));
 
   Glib::ustring title = Glib::ustring::compose("Sector %1", notebook.get_n_pages());
   int new_page = notebook.append_page(*windstille, title);

@@ -1,0 +1,66 @@
+/*
+**  Windstille - A Sci-Fi Action-Adventure Game
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>
+**
+**  This program is free software: you can redistribute it and/or modify
+**  it under the terms of the GNU General Public License as published by
+**  the Free Software Foundation, either version 3 of the License, or
+**  (at your option) any later version.
+**  
+**  This program is distributed in the hope that it will be useful,
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**  GNU General Public License for more details.
+**  
+**  You should have received a copy of the GNU General Public License
+**  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include <iostream>
+#include <gtkmm/togglebutton.h>
+#include <gtkmm/separator.h>
+#include "layer_widget.hpp"
+
+LayerWidget::LayerWidget()
+  : table(2, 19, false)
+{
+  int layer_number = 0;
+  for(int y = 0; y < 2; ++y)
+    for(int x = 0; x < 19; ++x)
+      {
+        if ((x+1) % 5)
+          {
+            Gtk::ToggleButton* button = Gtk::manage(new Gtk::ToggleButton());
+            button->set_size_request(16, 16);
+            table.attach(*button, x, x+1, y, y+1);
+
+            button->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &LayerWidget::on_layer_toggle), 
+                                                        button, layer_number));
+            layer_number += 1;
+          }
+        else
+          {
+            if (y == 0)
+              {
+                Gtk::VSeparator* separator = Gtk::manage(new Gtk::VSeparator());
+                //Gtk::Widget* separator = Gtk::manage(new Gtk::Widget());
+                separator->set_size_request(12, -1);
+                table.attach(*separator, x, x+1, 0, 2);
+              }
+          }
+      }
+
+  add(table);
+}
+
+LayerWidget::~LayerWidget()
+{  
+}
+
+void
+LayerWidget::on_layer_toggle(Gtk::ToggleButton* button, int layer)
+{
+  std::cout << "Layer: " << layer << " -> " << button->get_active() << std::endl;
+}
+
+/* EOF */
