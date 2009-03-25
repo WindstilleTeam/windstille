@@ -432,7 +432,7 @@ WindstilleWidget::key_press(GdkEventKey* event)
         break;
     }
 
-  std::cout << state.get_pos() << std::endl;
+  //std::cout << state.get_pos() << std::endl;
 
   return true;
 }

@@ -87,7 +87,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     {
       selection->on_move_update(pos - click_pos);
 
-      if (selection->size() == 1)
+      if ((event->state & GDK_CONTROL_MASK) && selection->size() == 1)
         {
           SnapData snap = wst.get_sector_model()->snap_object(*selection->begin());
           
@@ -115,6 +115,14 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
   if (mode == DRAG_MODE)
     {
       selection->on_move_end(pos - click_pos);
+
+      if ((event->state & GDK_CONTROL_MASK) && selection->size() == 1)
+        {
+          SnapData snap = wst.get_sector_model()->snap_object(*selection->begin());
+          
+          if (snap.x_set || snap.y_set)
+            selection->on_move_update(pos - click_pos + snap.offset);
+        }
     }
   else if (mode == SELECT_MODE)
     {
