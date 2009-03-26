@@ -40,6 +40,7 @@ public:
                    const std::string& path_, MapType type_);
   ~DecalObjectModel();
 
+  bool is_snappable() const { return type == COLORMAP; }
   void draw(SceneContext& sc);
   Rectf get_bounding_box() const;
   ObjectModelHandle clone() const;

@@ -195,7 +195,8 @@ SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& i
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
     {
       // object is not in the list of objects to ignore
-      if (ignore_objects.find(*i) == ignore_objects.end())
+      if ((*i)->is_snappable() &&
+          ignore_objects.find(*i) == ignore_objects.end())
         {
           SnapData snap = (*i)->snap_object(rect);
           best_snap.merge(snap);

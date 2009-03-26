@@ -68,6 +68,8 @@ public:
 
   SnapData snap_object(const Rectf& rect) const;
 
+  virtual bool is_snappable() const { return true; }
+
   virtual void draw(SceneContext& sc);
   virtual void update(float delta) {}
   virtual Rectf get_bounding_box() const = 0;
