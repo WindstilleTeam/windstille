@@ -63,6 +63,9 @@ public:
   void on_move_update(const Vector2f& offset);
   void on_move_end(const Vector2f& offset);
   
+  /** Performs a deep clone of the selection */
+  SelectionHandle clone() const;
+
 private:
   Selection(const Selection&);
   Selection& operator=(const Selection&);

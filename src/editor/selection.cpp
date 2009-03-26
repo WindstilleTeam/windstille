@@ -86,5 +86,18 @@ Selection::on_move_end(const Vector2f& offset)
       (*i)->on_move_end(offset);
     }
 }
+
+SelectionHandle
+Selection::clone() const
+{
+  SelectionHandle selection = Selection::create();
+
+  for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
+    {
+      selection->add((*i)->clone());
+    }
+
+  return selection;
+}
 
 /* EOF */

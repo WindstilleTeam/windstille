@@ -165,9 +165,12 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("MenuEdit",    "_Edit"));
   action_group->add(Gtk::Action::create("Undo",        Gtk::Stock::UNDO));
   action_group->add(Gtk::Action::create("Redo",        Gtk::Stock::REDO));
-  action_group->add(Gtk::Action::create("Cut",         Gtk::Stock::CUT));
-  action_group->add(Gtk::Action::create("Copy",        Gtk::Stock::COPY));
-  action_group->add(Gtk::Action::create("Paste",       Gtk::Stock::PASTE));
+  action_group->add(Gtk::Action::create("Cut",         Gtk::Stock::CUT),
+                    sigc::mem_fun(*this, &EditorWindow::on_cut));
+  action_group->add(Gtk::Action::create("Copy",        Gtk::Stock::COPY),
+                    sigc::mem_fun(*this, &EditorWindow::on_copy));
+  action_group->add(Gtk::Action::create("Paste",       Gtk::Stock::PASTE),
+                    sigc::mem_fun(*this, &EditorWindow::on_paste));
 
   action_group->add(Gtk::Action::create("Delete",      Gtk::Stock::DELETE),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_delete));
@@ -260,9 +263,6 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   // Disable unimplemented stuff:
   action_group->get_action("Undo")->set_sensitive(false);
   action_group->get_action("Redo")->set_sensitive(false);
-  action_group->get_action("Cut")->set_sensitive(false);
-  action_group->get_action("Copy")->set_sensitive(false);
-  action_group->get_action("Paste")->set_sensitive(false);
 
   Gtk::Toolbar* toolbar = static_cast<Gtk::Toolbar*>(ui_manager->get_widget("/ToolBar"));
   toolbar->append(*(Gtk::manage(new Gtk::SeparatorToolItem())));
@@ -638,6 +638,45 @@ EditorWindow::on_snap()
   else
     {
       std::cout << "Snap Off" << std::endl;
+    }
+}
+
+void
+EditorWindow::on_cut()
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      clipboard = wst->get_selection()->clone();
+      wst->selection_delete();
+      queue_draw();
+    }
+}
+
+void
+EditorWindow::on_copy()
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      clipboard = wst->get_selection()->clone();
+    }
+}
+
+void
+EditorWindow::on_paste()
+{
+  if (clipboard.get())
+    {
+      if (WindstilleWidget* wst = get_windstille_widget())
+        {
+          for(Selection::reverse_iterator i = clipboard->rbegin(); i != clipboard->rend(); ++i)
+            {
+              wst->get_sector_model()->add(*i);
+            }
+
+          wst->set_selection(clipboard);
+          clipboard = clipboard->clone();
+          queue_draw();
+        }
     }
 }
 

@@ -28,6 +28,7 @@
 #include <gtkmm/window.h>
 #include <gtkmm/notebook.h>
 
+#include "selection.hpp"
 #include "minimap_widget.hpp"
 #include "object_selector.hpp"
 #include "object_tree.hpp"
@@ -76,7 +77,8 @@ private:
   LayerWidget* layer_widget;
 
   sigc::connection  timeout_connection;
-  
+  SelectionHandle   clipboard;
+
 public:
   EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig);
   virtual ~EditorWindow();
@@ -100,6 +102,10 @@ public:
   void on_zoom_in();
   void on_zoom_out();
   void on_zoom_100();
+
+  void on_cut();
+  void on_copy();
+  void on_paste();
   
   void on_layer_toggle(int layer, bool status);
 
