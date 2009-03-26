@@ -36,6 +36,7 @@ class Tool;
 class WindstilleWidget;
 class SelectTool;
 class ZoomTool;
+class LayerWidget;
 
 class EditorWindow : public Gtk::Window
 {
@@ -72,6 +73,7 @@ private:
   std::auto_ptr<SelectTool> select_tool;
   std::auto_ptr<ZoomTool>   zoom_tool;
   Tool* current_tool;
+  LayerWidget* layer_widget;
 
   sigc::connection  timeout_connection;
   
@@ -98,11 +100,14 @@ public:
   void on_zoom_in();
   void on_zoom_out();
   void on_zoom_100();
+  
+  void on_layer_toggle(int layer, bool status);
 
   void on_switch_page(GtkNotebookPage* page, guint page_num);
   void on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool*);
 
   void toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, uint32_t mask);
+  void toggle_background_layer(Glib::RefPtr<Gtk::ToggleAction> action);
 
   Tool* get_current_tool() const;
   WindstilleWidget* get_windstille_widget();

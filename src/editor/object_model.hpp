@@ -64,6 +64,7 @@ public:
   void on_move_end(const Vector2f& offset);
 
   Layer get_layer() const { return layer; }
+  void  set_layer(const Layer& layer_) { layer = layer_; }
 
   SnapData snap_object(const Rectf& rect) const;
 

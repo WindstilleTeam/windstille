@@ -41,6 +41,7 @@ public:
 
   virtual bool read_bool  (const char* name, bool&)        const =0;
   virtual bool read_int   (const char* name, int&)         const =0;
+  virtual bool read_uint32(const char* name, uint32_t&)    const =0;
   virtual bool read_float (const char* name, float&)       const =0;
   virtual bool read_string(const char* name, std::string&) const =0;
 

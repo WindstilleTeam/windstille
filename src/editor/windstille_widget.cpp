@@ -41,7 +41,9 @@ WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  g
   : sector_model(new SectorModel()),
     active_tool(0),
     scroll_tool(new ScrollTool()),
-    map_type(DecalObjectModel::COLORMAP)
+    map_type(DecalObjectModel::COLORMAP),
+    draw_background_pattern(true),
+    layer_mask(1)
 {
   set_gl_capability(glconfig, share_list);
 
@@ -204,8 +206,10 @@ WindstilleWidget::draw()
     {
       state.push(*sc);
       
-      //sc->color().fill_pattern(background_pattern);
-      sc->color().fill_screen(Color());
+      if (draw_background_pattern)
+        sc->color().fill_pattern(background_pattern);
+      else
+        sc->color().fill_screen(Color());
 
       sector_model->draw(*sc);
 
@@ -469,6 +473,14 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
                                                       state.screen_to_world(Vector2f(x, y)),
                                                       data.get_data_as_string().substr(5), 
                                                       map_type);
+
+  // if layer mask is 0, set it to all layers instead, so that the
+  // object doesn't become unusable
+  if (!layer_mask)
+    object->set_layer(Layer());
+  else
+    object->set_layer(layer_mask);
+
   sector_model->add(object);
 }
 

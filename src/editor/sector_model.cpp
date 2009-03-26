@@ -82,11 +82,12 @@ SectorModel::update(float delta)
 }
 
 ObjectModelHandle
-SectorModel::get_object_at(const Vector2f& pos) const
+SectorModel::get_object_at(const Vector2f& pos, const Layer& layer) const
 {
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
     {
-      if ((*i)->get_bounding_box().is_inside(pos))
+      if (layer.match((*i)->get_layer()) &&
+          (*i)->get_bounding_box().is_inside(pos))
         {
           return *i;
         }
@@ -95,13 +96,14 @@ SectorModel::get_object_at(const Vector2f& pos) const
 }
 
 SelectionHandle
-SectorModel::get_selection(const Rectf& rect) const
+SectorModel::get_selection(const Rectf& rect, const Layer& layer) const
 {
   SelectionHandle selection = Selection::create();
 
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
     {
-      if ((*i)->get_bounding_box().is_overlapped(rect))
+      if (layer.match((*i)->get_layer()) &&
+          (*i)->get_bounding_box().is_overlapped(rect))
         {
           selection->add(*i);
         }

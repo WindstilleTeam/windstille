@@ -18,8 +18,7 @@
 
 #ifndef HEADER_WINDSTILLE_EDITOR_LAYER_HPP
 #define HEADER_WINDSTILLE_EDITOR_LAYER_HPP
-
-/** */
+
 class Layer
 {
 private:
@@ -29,14 +28,35 @@ public:
   Layer() : mask(~0) {}
   Layer(uint32_t mask_) : mask(mask_) {}
 
-  uint32_t get_mask() const;
+  uint32_t get_mask() const { return mask; }
 
   bool match(const Layer& rhs) const
   {
     return (mask & rhs.mask);
   }
-};
 
+  void set(unsigned int layer, bool enable)
+  {
+    if (enable)
+      {
+        mask = mask | (1<<layer);
+      }
+    else
+      {
+        mask = mask & (~(1<<layer));
+      }
+  }
+
+  bool get(unsigned int layer) const 
+  {
+    return mask & (1<<layer);
+  }
+
+  operator bool() {
+    return mask;
+  }
+};
+
 #endif
 
 /* EOF */

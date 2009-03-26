@@ -81,6 +81,18 @@ public:
     return false;
   }
 
+  bool read_uint32(const char* name, uint32_t& v) const 
+  {
+    lisp::Lisp* item = get_subsection_item(name);
+    if (item && item->get_type() == lisp::Lisp::TYPE_INT)
+      {
+        // FIXME: Not good: overflow
+        v = item->get_int();
+        return true;
+      }
+    return false;
+  }
+
   bool read_float(const char* name, float& v) const 
   {
     lisp::Lisp* item = get_subsection_item(name);

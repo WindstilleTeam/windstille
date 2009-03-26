@@ -32,7 +32,7 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
   
-  ObjectModelHandle object = wst.get_sector_model()->get_object_at(click_pos);
+  ObjectModelHandle object = wst.get_sector_model()->get_object_at(click_pos, wst.get_layer_mask());
   if (object.get())
     {
       if (wst.get_selection()->has_object(object))
@@ -141,7 +141,7 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     {
       mode = NO_MODE;
       rect.normalize();
-      wst.set_selection(wst.get_sector_model()->get_selection(rect));
+      wst.set_selection(wst.get_sector_model()->get_selection(rect, wst.get_layer_mask()));
     }
 
   mode = NO_MODE;

@@ -44,6 +44,7 @@ public:
 
   FileWriter& write(const std::string& name, bool value);
   FileWriter& write(const std::string& name, int value);
+  FileWriter& write(const std::string& name, uint32_t value);
   FileWriter& write(const std::string& name, float value);
   FileWriter& write(const std::string& name, const std::string& value);
   FileWriter& write(const std::string& name, const char* value);

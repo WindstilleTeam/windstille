@@ -88,6 +88,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='ToggleLightLayer'/>"
     "      <menuitem action='ToggleHighlightLayer'/>"
     "      <menuitem action='ToggleControlLayer'/>"
+    "      <menuitem action='ToggleBackgroundLayer'/>"
     "    </menu>"
     "    <menu action='MenuTools'>"
     "      <menuitem action='SelectTool'/>"
@@ -140,6 +141,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='ToggleLightLayer'/>"
     "    <toolitem action='ToggleHighlightLayer'/>"
     "    <toolitem action='ToggleControlLayer'/>"
+    "    <toolitem action='ToggleBackgroundLayer'/>"
     "  </toolbar>"
     "</ui>";
 
@@ -202,15 +204,18 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
                     sigc::mem_fun(*this, &EditorWindow::on_about_clicked));
 
-  Glib::RefPtr<Gtk::ToggleAction> toggle_color_layer = Gtk::ToggleAction::create_with_icon_name("ToggleColorLayer", "color", "Toogle Color Layer", "Toogle Color Layer");
-  Glib::RefPtr<Gtk::ToggleAction> toggle_light_layer = Gtk::ToggleAction::create_with_icon_name("ToggleLightLayer", "light", "Toogle Light Layer", "Toogle Light Layer");
+  Glib::RefPtr<Gtk::ToggleAction> toggle_color_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleColorLayer", "color", "Toogle Color Layer", "Toogle Color Layer");
+  Glib::RefPtr<Gtk::ToggleAction> toggle_light_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleLightLayer", "light", "Toogle Light Layer", "Toogle Light Layer");
   Glib::RefPtr<Gtk::ToggleAction> toggle_highlight_layer = Gtk::ToggleAction::create_with_icon_name("ToggleHighlightLayer", "highlight", "Toogle Highlight Layer", "Toogle Highlight Layer");
-  Glib::RefPtr<Gtk::ToggleAction> toggle_control_layer = Gtk::ToggleAction::create_with_icon_name("ToggleControlLayer", "control", "Toogle Control Layer", "Toogle Control Layer");
+  Glib::RefPtr<Gtk::ToggleAction> toggle_control_layer   = Gtk::ToggleAction::create_with_icon_name("ToggleControlLayer", "control", "Toogle Control Layer", "Toogle Control Layer");
+
+  Glib::RefPtr<Gtk::ToggleAction> background_layer = Gtk::ToggleAction::create_with_icon_name("ToggleBackgroundLayer", "background_layer", "Toggle Background Layer", "Toggle Background Layer");
   
   toggle_color_layer->set_active(true);
   toggle_light_layer->set_active(true);
   toggle_highlight_layer->set_active(true);
   toggle_control_layer->set_active(true);
+  background_layer->set_active(true);
 
   action_group->add(toggle_color_layer,
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_color_layer, (uint32_t)SceneContext::COLORMAP));
@@ -220,6 +225,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_highlight_layer, (uint32_t)SceneContext::HIGHLIGHTMAP));
   action_group->add(toggle_control_layer,
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_control_layer, (uint32_t)SceneContext::CONTROLMAP));
+  action_group->add(background_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_background_layer), background_layer));
 
   // Tools
   action_group->add(Gtk::Action::create("MenuTools",  "_Tools"));
@@ -253,7 +260,9 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
 
   Gtk::Toolbar* toolbar = static_cast<Gtk::Toolbar*>(ui_manager->get_widget("/ToolBar"));
   toolbar->append(*(Gtk::manage(new Gtk::SeparatorToolItem())));
-  toolbar->append(*(Gtk::manage(new LayerWidget())));
+  layer_widget = Gtk::manage(new LayerWidget());
+  toolbar->append(*layer_widget);
+  layer_widget->signal_layer_toggle.connect(sigc::mem_fun(*this, &EditorWindow::on_layer_toggle));
 
   // Packing
 
@@ -281,7 +290,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   vpaned.pack1(object_selector, Gtk::EXPAND);
   vpaned.pack2(object_tree,     Gtk::SHRINK);
 
-  hpaned.set_position(730);
+  hpaned.set_position(1024);
   vpaned.set_position(420);
 
   // Window
@@ -318,14 +327,15 @@ EditorWindow::on_new()
   std::cout << "on_new" << std::endl;
 
   // FIXME: We abuse the minimap as our root GLContext
-  WindstilleWidget* windstille = Gtk::manage(new WindstilleWidget(glconfig, minimap_widget.get_gl_context()));
+  WindstilleWidget* wst = Gtk::manage(new WindstilleWidget(glconfig, minimap_widget.get_gl_context()));
 
   Glib::ustring title = Glib::ustring::compose("Sector %1", notebook.get_n_pages());
-  int new_page = notebook.append_page(*windstille, title);
-  windstille->show();
-  notebook.set_current_page(new_page); 
+  int new_page = notebook.append_page(*wst, title);
+  wst->show();
+  notebook.set_current_page(new_page);
 
-  object_tree.set_model(windstille->get_sector_model());
+  object_tree.set_model(wst->get_sector_model());
+  layer_widget->update(wst->get_layer_mask());
 }
 
 void
@@ -482,6 +492,16 @@ EditorWindow::toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, uint32
     }
 }
 
+void
+EditorWindow::toggle_background_layer(Glib::RefPtr<Gtk::ToggleAction> action)
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      wst->set_draw_background_pattern(action->get_active());
+      wst->queue_draw();
+    }
+}
+
 Tool*
 EditorWindow::get_current_tool() const
 {
@@ -532,10 +552,15 @@ void
 EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
 {
   std::cout << "on_switch_page(" << page << ", " << page_num << ")" << std::endl;
-  if (get_windstille_widget())
-    object_tree.set_model(get_windstille_widget()->get_sector_model());
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      object_tree.set_model(wst->get_sector_model());
+      layer_widget->update(wst->get_layer_mask());
+    }
   else
-    object_tree.set_model(0);
+    {
+      object_tree.set_model(0);
+    }
 }
 
 void
@@ -556,6 +581,17 @@ EditorWindow::on_timeout()
       wst->update(0.050f);
     }
   return true;
+}
+
+void
+EditorWindow::on_layer_toggle(int layer, bool status)
+{
+  std::cout << "EditorWindow::on_layer_toggle(" << layer << ", " << status << ")" << std::endl;
+
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      wst->get_layer_mask().set(layer, status);
+    }
 }
 
 void

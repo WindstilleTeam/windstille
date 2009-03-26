@@ -22,16 +22,22 @@
 #include <gtkmm/toolitem.h>
 #include <gtkmm/table.h>
 
+class Layer;
+
 class LayerWidget : public Gtk::ToolItem
 {
 private:
   Gtk::Table table;
+  std::vector<Gtk::ToggleButton*> buttons;
 
 public:
   LayerWidget();
   ~LayerWidget();
 
   void on_layer_toggle(Gtk::ToggleButton* button, int layer);
+  void update(const Layer& layer);
+
+  sigc::signal<void, int, bool> signal_layer_toggle;
 
 private:
   LayerWidget(const LayerWidget&);

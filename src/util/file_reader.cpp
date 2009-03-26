@@ -84,6 +84,15 @@ FileReader::get_name() const
 }
 
 bool
+FileReader::read(const char* name, uint32_t& value)
+{
+  if (impl.get())
+    return impl->read_uint32(name, value);
+  else
+    return false;
+}
+
+bool
 FileReader::read(const char* name, int& value)
 {
   if (impl.get())

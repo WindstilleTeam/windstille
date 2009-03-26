@@ -66,6 +66,7 @@ public:
   // FIXME: Is there any nice way to not use two different names?
   bool read(const char* name, FileReader& v);
 
+  bool read(const char* name, uint32_t& v);
   bool read(const char* name, int&   v);
   bool read(const char* name, float& v);
   bool read(const char* name, bool& v);

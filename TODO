@@ -499,6 +499,16 @@ Graphics
 Editor
 ======
 
+* lisp can't save uint32_t, maybe should save layer mask as string or so
+
+* add recent files
+
+* add difference between "save" and "save as", along with overwrite warnings
+
+* add second toolbar, first one is getting a little crowded
+
+* disable light layer on default/startup
+
 * lightmap objects are hard to see
 
 * decal needs to be scalable and have vertices moveable
@@ -513,6 +523,8 @@ Editor
 * think about load/save
 
 * think about Undo/Redo
+
+* layer move tool
 
 * add a Blender like layer system:
  

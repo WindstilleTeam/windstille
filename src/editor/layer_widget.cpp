@@ -19,6 +19,8 @@
 #include <iostream>
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/separator.h>
+
+#include "layer.hpp"
 #include "layer_widget.hpp"
 
 LayerWidget::LayerWidget()
@@ -36,6 +38,7 @@ LayerWidget::LayerWidget()
 
             button->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &LayerWidget::on_layer_toggle), 
                                                         button, layer_number));
+            buttons.push_back(button);
             layer_number += 1;
           }
         else
@@ -61,6 +64,16 @@ void
 LayerWidget::on_layer_toggle(Gtk::ToggleButton* button, int layer)
 {
   std::cout << "Layer: " << layer << " -> " << button->get_active() << std::endl;
+  signal_layer_toggle(layer, button->get_active());
+}
+
+void
+LayerWidget::update(const Layer& layer)
+{
+  for(int i = 0; i < 32; ++i)
+    {
+      buttons[i]->set_active(layer.get(i));
+    }
 }
 
 /* EOF */
