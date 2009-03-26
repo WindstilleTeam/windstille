@@ -81,17 +81,30 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 Vector2f
 SelectTool::process_snap(WindstilleWidget& wst)
 {
-  std::set<ObjectModelHandle> objects(selection->begin(), selection->end());
+  // ignore all objects in the selection
+  std::set<ObjectModelHandle> ignore_objects(selection->begin(), selection->end());
+
+  if (!wst.get_draw_only_active_layer())
+    {
+      // ignore all objects not on the current active layer
+      for(SectorModel::iterator i = wst.get_sector_model()->begin();
+          i != wst.get_sector_model()->end(); ++i)
+        {
+          if (!wst.get_layer_mask().match((*i)->get_layers()))
+            ignore_objects.insert(*i);
+        }
+    }
+
   SnapData best_snap;
 
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
-      SnapData snap = wst.get_sector_model()->snap_object((*i)->get_bounding_box(), objects);
+      SnapData snap = wst.get_sector_model()->snap_object((*i)->get_bounding_box(), ignore_objects);
       best_snap.merge(snap);
     }
               
   return best_snap.offset;
- }
+}
 
 bool
 SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)

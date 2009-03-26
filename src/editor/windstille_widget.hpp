@@ -120,6 +120,7 @@ public:
 
   void set_draw_background_pattern(bool v) { draw_background_pattern = v; }
   void set_draw_only_active_layer(bool v) { draw_only_active_layers = v; }
+  bool get_draw_only_active_layer() const { return draw_only_active_layers; }
 
 private:
   WindstilleWidget (const WindstilleWidget&);

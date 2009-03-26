@@ -21,8 +21,8 @@
 
 #include <gtkmm/toolitem.h>
 #include <gtkmm/table.h>
-
-class Layers;
+
+#include "layers.hpp"
 
 class LayerWidget : public Gtk::ToolItem
 {
@@ -36,6 +36,8 @@ public:
 
   void on_layer_toggle(Gtk::ToggleButton* button, int layer);
   void update(const Layers& layers);
+
+  Layers get_layers() const;
 
   sigc::signal<void, int, bool> signal_layer_toggle;
 

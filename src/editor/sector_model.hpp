@@ -64,8 +64,10 @@ private:
   Gtk::TreeStore::iterator root_it;
   Glib::RefPtr<Gtk::TreeStore> objects_tree;
   Objects objects;
-
+  
 public:
+  typedef Objects::iterator iterator;
+
   SectorModel();
 
   void add(const ObjectModelHandle& object);
@@ -95,6 +97,9 @@ public:
 
   void load(const std::string& filename);
   void write(FileWriter& writer) const;
+
+  iterator begin() { return objects.begin(); }
+  iterator end() { return objects.end(); }
 
 private:
   SectorModel(const SectorModel&);

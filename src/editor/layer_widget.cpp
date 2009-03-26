@@ -74,5 +74,16 @@ LayerWidget::update(const Layers& layers)
       buttons[i]->set_active(layers.get(i));
     }
 }
+
+Layers
+LayerWidget::get_layers() const
+{
+  Layers layers;
+  for(int i = 0; i < layers.size(); ++i)
+    {
+      layers.set(i, buttons[i]->get_active());
+    }
+  return layers;
+}
 
 /* EOF */

@@ -213,9 +213,9 @@ WindstilleWidget::draw()
         sc->color().fill_screen(Color());
 
       if (draw_only_active_layers)
-        sector_model->draw(*sc, layer_mask);
-      else
         sector_model->draw(*sc, Layers());
+      else
+        sector_model->draw(*sc, layer_mask);
 
       for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
         {
