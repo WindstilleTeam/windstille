@@ -20,15 +20,15 @@
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/separator.h>
 
-#include "layer.hpp"
+#include "layers.hpp"
 #include "layer_widget.hpp"
 
 LayerWidget::LayerWidget()
-  : table(2, 19, false)
+  : table(2, 9, false)
 {
   int layer_number = 0;
   for(int y = 0; y < 2; ++y)
-    for(int x = 0; x < 19; ++x)
+    for(int x = 0; x < 9; ++x)
       {
         if ((x+1) % 5)
           {
@@ -63,16 +63,15 @@ LayerWidget::~LayerWidget()
 void
 LayerWidget::on_layer_toggle(Gtk::ToggleButton* button, int layer)
 {
-  std::cout << "Layer: " << layer << " -> " << button->get_active() << std::endl;
   signal_layer_toggle(layer, button->get_active());
 }
 
 void
-LayerWidget::update(const Layer& layer)
+LayerWidget::update(const Layers& layers)
 {
-  for(int i = 0; i < 32; ++i)
+  for(int i = 0; i < layers.size(); ++i)
     {
-      buttons[i]->set_active(layer.get(i));
+      buttons[i]->set_active(layers.get(i));
     }
 }
 

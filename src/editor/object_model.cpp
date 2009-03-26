@@ -36,10 +36,9 @@ ObjectModel::ObjectModel(FileReader& reader)
   reader.get("pos",  rel_pos);
   reader.read("parent",  parent);
   
-  // FIXME: Bad, will overflow
   int layer_mask = 1;
-  reader.read("layer",  layer_mask);
-  layer = Layer(layer_mask);
+  reader.read("layer", layer_mask);
+  layers = Layers(layer_mask);
 }
 
 ObjectModel::~ObjectModel()
@@ -54,7 +53,7 @@ ObjectModel::write_member(FileWriter& writer) const
   return writer
     .write("pos", rel_pos)
     .write("parent", parent.get() ? parent->get_name() : "")
-    .write("layer", layer.get_mask());
+    .write("layer", layers.get_mask());
 }
 
 void

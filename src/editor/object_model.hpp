@@ -23,7 +23,7 @@
 #include <boost/weak_ptr.hpp>
 #include <string>
 
-#include "layer.hpp"
+#include "layers.hpp"
 #include "util/file_writer.hpp"
 #include "display/surface.hpp"
 #include "math/vector2f.hpp"
@@ -40,7 +40,7 @@ class ObjectModel
 private:
   std::string name;
   Vector2f    rel_pos;
-  Layer  layer;
+  Layers      layers;
 
   ObjectModelPtr parent_ptr;
   Vector2f move_offset;
@@ -63,8 +63,8 @@ public:
   void on_move_update(const Vector2f& offset);
   void on_move_end(const Vector2f& offset);
 
-  Layer get_layer() const { return layer; }
-  void  set_layer(const Layer& layer_) { layer = layer_; }
+  Layers get_layers() const { return layers; }
+  void   set_layers(const Layers& layers_) { layers = layers_; }
 
   SnapData snap_object(const Rectf& rect) const;
 

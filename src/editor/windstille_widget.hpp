@@ -36,7 +36,7 @@
 #include "control_point.hpp"
 #include "decal_object_model.hpp"
 #include "selection.hpp"
-#include "layer.hpp"
+#include "layers.hpp"
 
 class Tool;
 class ScrollTool;
@@ -60,7 +60,7 @@ private:
   DecalObjectModel::MapType map_type;
   Texture background_pattern;
   bool draw_background_pattern;
-  Layer layer_mask;
+  Layers layer_mask;
   
 public:
   WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig,
@@ -111,7 +111,7 @@ public:
   void set_selection(const SelectionHandle& selection);
   SelectionHandle get_selection() const;
 
-  Layer& get_layer_mask() { return layer_mask; }
+  Layers& get_layer_mask() { return layer_mask; }
 
   SceneContext* get_sc() const { return sc.get(); }
 

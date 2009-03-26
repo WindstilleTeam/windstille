@@ -499,7 +499,18 @@ Graphics
 Editor
 ======
 
-* lisp can't save uint32_t, maybe should save layer mask as string or so
+* add a way to move object to a different layer
+
+* add keyboard shortcut important stuff:
+
+  - layer toggle 1,2,3,4,5,...
+  - color, light, highlight toggle
+  - mark all objects
+  - delete object
+  - duplicate object
+
+* lisp can't save uint32_t, maybe should save layer mask as string or
+  limit it to a uint16_t or whatever
 
 * add recent files
 
@@ -511,16 +522,13 @@ Editor
 
 * lightmap objects are hard to see
 
-* decal needs to be scalable and have vertices moveable
-
-* add button to toggle background pattern
+* decal needs to be scalable and have vertices moveable, also color
+  needs to be adjustable
 
 * make duplicated objects insert near those from which they where cloned
 
 * WindstilleWidget contains garbage when its first created, it gets
   however cleaned up in later redraws
-
-* think about load/save
 
 * think about Undo/Redo
 

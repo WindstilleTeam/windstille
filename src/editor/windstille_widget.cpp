@@ -477,9 +477,9 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
   // if layer mask is 0, set it to all layers instead, so that the
   // object doesn't become unusable
   if (!layer_mask)
-    object->set_layer(Layer());
+    object->set_layers(Layers());
   else
-    object->set_layer(layer_mask);
+    object->set_layers(layer_mask);
 
   sector_model->add(object);
 }

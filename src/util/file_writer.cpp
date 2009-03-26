@@ -80,14 +80,6 @@ FileWriter::write(const std::string& name, int value)
 }
 
 FileWriter&
-FileWriter::write(const std::string& name, uint32_t value)
-{
-  indent();
-  out << "(" << name << " " << value << ")\n";
-  return *this;
-}
-
-FileWriter&
 FileWriter::write(const std::string& name, float value)
 {
   indent();
