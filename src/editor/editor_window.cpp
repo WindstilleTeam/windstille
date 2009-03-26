@@ -89,6 +89,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='ToggleHighlightLayer'/>"
     "      <menuitem action='ToggleControlLayer'/>"
     "      <menuitem action='ToggleBackgroundLayer'/>"
+    "      <menuitem action='ToggleVisibleLayer'/>"
     "    </menu>"
     "    <menu action='MenuTools'>"
     "      <menuitem action='SelectTool'/>"
@@ -142,6 +143,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='ToggleHighlightLayer'/>"
     "    <toolitem action='ToggleControlLayer'/>"
     "    <toolitem action='ToggleBackgroundLayer'/>"
+    "    <toolitem action='ToggleVisibleLayer'/>"
     "  </toolbar>"
     "</ui>";
 
@@ -210,12 +212,14 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   Glib::RefPtr<Gtk::ToggleAction> toggle_control_layer   = Gtk::ToggleAction::create_with_icon_name("ToggleControlLayer", "control", "Toogle Control Layer", "Toogle Control Layer");
 
   Glib::RefPtr<Gtk::ToggleAction> background_layer = Gtk::ToggleAction::create_with_icon_name("ToggleBackgroundLayer", "background_layer", "Toggle Background Layer", "Toggle Background Layer");
+  Glib::RefPtr<Gtk::ToggleAction> visible_layer    = Gtk::ToggleAction::create_with_icon_name("ToggleVisibleLayer", "draw_visible_layer", "Toggle Only Active Layer", "Toggle Only Active Layer");
   
   toggle_color_layer->set_active(true);
   toggle_light_layer->set_active(true);
   toggle_highlight_layer->set_active(true);
   toggle_control_layer->set_active(true);
   background_layer->set_active(true);
+  visible_layer->set_active(true);
 
   action_group->add(toggle_color_layer,
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_color_layer, (uint32_t)SceneContext::COLORMAP));
@@ -227,6 +231,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_control_layer, (uint32_t)SceneContext::CONTROLMAP));
   action_group->add(background_layer,
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_background_layer), background_layer));
+  action_group->add(visible_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_draw_only_active_layer), visible_layer));
 
   // Tools
   action_group->add(Gtk::Action::create("MenuTools",  "_Tools"));
@@ -493,6 +499,16 @@ EditorWindow::toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, uint32
 }
 
 void
+EditorWindow::toggle_draw_only_active_layer(Glib::RefPtr<Gtk::ToggleAction> action)
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      wst->set_draw_only_active_layer(action->get_active());
+      wst->queue_draw();
+    }
+}
+
+void
 EditorWindow::toggle_background_layer(Glib::RefPtr<Gtk::ToggleAction> action)
 {
   if (WindstilleWidget* wst = get_windstille_widget())
@@ -591,6 +607,7 @@ EditorWindow::on_layer_toggle(int layer, bool status)
   if (WindstilleWidget* wst = get_windstille_widget())
     {
       wst->get_layer_mask().set(layer, status);
+      wst->queue_draw();
     }
 }
 

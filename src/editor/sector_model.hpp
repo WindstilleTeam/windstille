@@ -70,7 +70,7 @@ public:
 
   void add(const ObjectModelHandle& object);
   void remove(const ObjectModelHandle& object);
-  void draw(SceneContext& sc);
+  void draw(SceneContext& sc, const Layers& layers);
   void update(float delta);
 
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;

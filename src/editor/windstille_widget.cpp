@@ -43,7 +43,8 @@ WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  g
     scroll_tool(new ScrollTool()),
     map_type(DecalObjectModel::COLORMAP),
     draw_background_pattern(true),
-    layer_mask(1)
+    layer_mask(1),
+    draw_only_active_layers(true)
 {
   set_gl_capability(glconfig, share_list);
 
@@ -211,7 +212,10 @@ WindstilleWidget::draw()
       else
         sc->color().fill_screen(Color());
 
-      sector_model->draw(*sc);
+      if (draw_only_active_layers)
+        sector_model->draw(*sc, layer_mask);
+      else
+        sector_model->draw(*sc, Layers());
 
       for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
         {

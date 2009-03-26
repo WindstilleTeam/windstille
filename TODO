@@ -499,6 +499,14 @@ Graphics
 Editor
 ======
 
+* maybe limit snapping by layer, maybe as an option via button, since
+  snapping to a background texture is annoying, while snapping to the
+  ground can be very important
+
+  - could limit snapping to all visible layers and add a button to toggle layer visibility
+
+* add button and keyboard shortcut to mark/unmark all layers
+
 * add a way to move object to a different layer
 
 * add keyboard shortcut important stuff:

@@ -61,6 +61,7 @@ private:
   Texture background_pattern;
   bool draw_background_pattern;
   Layers layer_mask;
+  bool draw_only_active_layers;
   
 public:
   WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig,
@@ -118,6 +119,7 @@ public:
   void load_file(const std::string& filename);
 
   void set_draw_background_pattern(bool v) { draw_background_pattern = v; }
+  void set_draw_only_active_layer(bool v) { draw_only_active_layers = v; }
 
 private:
   WindstilleWidget (const WindstilleWidget&);

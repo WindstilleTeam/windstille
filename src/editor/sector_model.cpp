@@ -64,11 +64,12 @@ SectorModel::remove(const ObjectModelHandle& object)
 }
 
 void
-SectorModel::draw(SceneContext& sc)
+SectorModel::draw(SceneContext& sc, const Layers& layers)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
-      (*i)->draw(sc);
+      if (layers.match((*i)->get_layers()))
+        (*i)->draw(sc);
     }
 }
 
