@@ -501,6 +501,48 @@ Graphics
 Editor
 ======
 
+* background pattern goes away when Color pattern is disabled, since
+  its draw to the Colormap
+
+* use last object in selection as parent instead of first? might be more natural
+
+* use the right button for something
+
+  - zoom tool: zoom out
+  - select tool: context menu
+    - delete object
+    - duplicate object
+    - parent object
+    - move to different layer
+
+* use for layer system:
+
+  - levels are naturally constructed out of multiple layers, such as
+    background, foreground, lights, shadow stuff, decal, etc. Also
+    certain things need to be grouped, a wall of tiles should be
+    easily moveable without the danger of ripping the tiles appart
+
+  - base layer system on the parenting system:
+
+    - make a special LayerObjectModel object, that acts like an Empty
+      for most part, but shows up in the ObjectTree
+    - make new objects automatically parent to stuff in the ObjectTree
+    - need a way to bring objects to the same sorting order then their
+      parent
+    - advantage: layers themself can be grouped, i.e. (wall-base,
+      wall-decal, wall-shadows)
+
+ - alternative: build layer system around GroupObjectModel
+    
+    - an Object that contains child objects
+    - trouble: groups will be hard to edit
+
+* layer move tool
+
+* highlight content of rect selection while the rect gets dragged
+
+* add way to refresh content of ObjectSelector
+
 * highlight map is problematic, since objects don't cover highlights,
   maybe rendering a stencil mask might help
 
@@ -555,28 +597,6 @@ Editor
   however cleaned up in later redraws
 
 * think about Undo/Redo
-
-* layer move tool
-
-* add a Blender like layer system:
- 
-  - layers are a 1 bit in a uint32_t (or uint64_t if needed)
-  - each Object has a layer mask
-  - when doing a get_selection(Rect(), layermask), objects check
-    against the layer mask and are ignored when they don't match
-  - layers can be visible or hidden, again draw(layermask) is used to
-    check objects for layer membership
-  - objects can belong to multiple layers at once
-  - advantage of this is that layers exist outside the whole sorting
-    logic, so all that stuff can remain unchanged
-  - maybe all this isn't enough
-
-  - use for layer system:
-
-    - levels are naturally constructed out of multiple layers, such as
-      background, foreground, etc. Also certain things need to be
-      grouped, a wall of tiles should be easily moveable without the
-      danger of ripping the tiles appart
 
 * Display::aspect_size is ugly, turn that into a Display::set_size();
 
