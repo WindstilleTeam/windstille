@@ -48,6 +48,7 @@ public:
   Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > type_icon;
   Gtk::TreeModelColumn<Glib::ustring>              name;
   Gtk::TreeModelColumn<bool>                       visible;
+  Gtk::TreeModelColumn<bool>                       locked;
   Gtk::TreeModelColumn<HardLayerHandle>            layer;
 
 private:
@@ -55,6 +56,7 @@ private:
     add(type_icon); 
     add(name); 
     add(visible); 
+    add(locked);
     add(layer);
   }
 };
@@ -72,12 +74,14 @@ public:
   SectorModel();
 
   void draw(SceneContext& sc, const Layers& layers);
+
   void update(float delta);
+  void update(float delta, const Gtk::TreeRow& row);
 
   void add_layer(const std::string& name, const Gtk::TreeModel::Path& path);
   void delete_layer(Gtk::TreeModel::Path& path);
 
-  void add(const ObjectModelHandle& object);
+  void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
   void remove(const ObjectModelHandle& object);
 
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;

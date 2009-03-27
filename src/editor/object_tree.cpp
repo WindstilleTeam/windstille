@@ -31,16 +31,10 @@ ObjectTree::ObjectTree(EditorWindow& editor_)
   : editor(editor_),
     label("Layer Manager", Gtk::ALIGN_LEFT)
 {
-  //treeview.set_headers_clickable();
+  treeview.set_headers_clickable();
   treeview.set_headers_visible(false);
   treeview.set_enable_tree_lines();
   treeview.set_reorderable();
-
-  treeview.append_column("Type", ObjectTreeColumns::instance().type_icon);
-  treeview.append_column_editable("Name", ObjectTreeColumns::instance().name);
-  treeview.append_column_editable("Visible", ObjectTreeColumns::instance().visible);
-
-  treeview.expand_all();
 
   ui_manager   = Gtk::UIManager::create();
   action_group = Gtk::ActionGroup::create();
@@ -86,6 +80,15 @@ ObjectTree::set_model(SectorModel* model)
   if (model)
     {
       treeview.set_model(model->get_layer_tree());
+
+      // Recreate all the columns, since if we don't do that, we lose
+      // editability for some reason
+      treeview.remove_all_columns();
+      treeview.append_column("Type", ObjectTreeColumns::instance().type_icon);
+      treeview.append_column_editable("Name", ObjectTreeColumns::instance().name);
+      treeview.append_column_editable("Visible", ObjectTreeColumns::instance().visible);
+      treeview.append_column_editable("Visible", ObjectTreeColumns::instance().locked);
+
       treeview.expand_all();
       treeview.set_cursor(Gtk::TreeModel::Path("0"));
     }

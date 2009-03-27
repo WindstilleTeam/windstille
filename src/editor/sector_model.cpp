@@ -22,6 +22,8 @@
 #include <iostream>
 #include <gdkmm/pixbuf.h>
 
+#include "editor_window.hpp"
+#include "windstille_widget.hpp"
 #include "util/file_reader.hpp"
 #include "display/scene_context.hpp"
 #include "display/surface.hpp"
@@ -57,7 +59,7 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
   (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[ObjectTreeColumns::instance().name]      = name;
   (*it)[ObjectTreeColumns::instance().visible]   = true; 
-  (*it)[ObjectTreeColumns::instance().layer]     = root_layer->add_layer(); 
+  (*it)[ObjectTreeColumns::instance().layer]     = HardLayerHandle(new HardLayer());
 }
 
 void
@@ -67,39 +69,146 @@ SectorModel::delete_layer(Gtk::TreeModel::Path& path)
 }
 
 void
-SectorModel::add(const ObjectModelHandle& object)  
+SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path)
 {
-  root_layer->add(object);
+  Gtk::TreeStore::iterator it = layer_tree->get_iter(path);
+  ((HardLayerHandle)(*it)[ObjectTreeColumns::instance().layer])->add(object);
 }
+
+struct RemoveObjectFunctor
+{
+  const ObjectModelHandle& object;
+
+  RemoveObjectFunctor(const ObjectModelHandle& object_)
+    : object(object_)
+  {}
+
+  bool remove(const Gtk::TreeModel::iterator& it)
+  {
+    ((HardLayerHandle)((*it)[ObjectTreeColumns::instance().layer]))->remove(object);
+    return false; // continue tree traversal
+  }
+};
 
 void
 SectorModel::remove(const ObjectModelHandle& object)
 {
-  root_layer->remove(object);
+  RemoveObjectFunctor func(object);
+  layer_tree->foreach_iter(sigc::mem_fun(func, &RemoveObjectFunctor::remove));
 }
+
+struct DrawLayerFunctor
+{
+  SceneContext& sc;
+  const Layers&       layers;
+
+  DrawLayerFunctor(SceneContext& sc_, const Layers& layers_)
+    : sc(sc_), layers(layers_)
+  {}
+
+  bool draw(const Gtk::TreeModel::iterator& it) 
+  {
+    if ((*it)[ObjectTreeColumns::instance().visible])
+      {      
+        ((HardLayerHandle)((*it)[ObjectTreeColumns::instance().layer]))->draw(sc, layers);
+      }
+
+    return false;
+  }
+};
 
 void
 SectorModel::draw(SceneContext& sc, const Layers& layers)
 {
-  root_layer->draw(sc, layers);
+  DrawLayerFunctor func(sc, layers);
+  layer_tree->foreach_iter(sigc::mem_fun(func, &DrawLayerFunctor::draw));
 }
+
+struct LayerUpdateFunctor
+{
+  float& delta;
+  
+  LayerUpdateFunctor(float& delta_)
+    : delta(delta_)
+  {}
+
+  bool update(const Gtk::TreeModel::iterator& it)
+  {
+    if ((*it)[ObjectTreeColumns::instance().visible])
+      {      
+        ((HardLayerHandle)((*it)[ObjectTreeColumns::instance().layer]))->update(delta);
+      }
+    return false;    
+  }
+};
 
 void
 SectorModel::update(float delta)
 {
-  root_layer->update(delta);
+  LayerUpdateFunctor func(delta);
+  layer_tree->foreach_iter(sigc::mem_fun(func, &LayerUpdateFunctor::update));
 }
+
+struct LayerGetObjectAt
+{
+  const Vector2f& pos;
+  const Layers&   layers;
+  ObjectModelHandle object;
+
+  LayerGetObjectAt(const Vector2f& pos_, const Layers& layers_)
+    : pos(pos_),
+      layers(layers_)
+  {}
+
+  bool get_object_at(const Gtk::TreeModel::iterator& it)
+  {
+    if ((*it)[ObjectTreeColumns::instance().visible])
+      {
+        object = ((HardLayerHandle)((*it)[ObjectTreeColumns::instance().layer]))->get_object_at(pos, layers);
+        if (object.get())
+          return true;
+      }
+    return false;
+  }
+};
 
 ObjectModelHandle
 SectorModel::get_object_at(const Vector2f& pos, const Layers& layers) const
 {
-  return root_layer->get_object_at(pos, layers);
+  LayerGetObjectAt func(pos, layers);
+  layer_tree->foreach_iter(sigc::mem_fun(func, &LayerGetObjectAt::get_object_at));
+  return func.object;
 }
+
+struct LayerGetSelection
+{
+  const Rectf& rect;
+  const Layers& layers;
+  SelectionHandle selection;
+
+  LayerGetSelection(const Rectf& rect_, const Layers& layers_)
+    : rect(rect_),
+      layers(layers_),
+      selection(Selection::create())
+  {}
+
+  bool get_selection(const Gtk::TreeModel::iterator& it)
+  {
+    if ((*it)[ObjectTreeColumns::instance().visible])
+      {
+        SelectionHandle new_sel = ((HardLayerHandle)((*it)[ObjectTreeColumns::instance().layer]))->get_selection(rect, layers);
+        selection->add(new_sel->begin(), new_sel->end());
+      }
+    return false;
+  }
+};
 
 SelectionHandle
 SectorModel::get_selection(const Rectf& rect, const Layers& layers) const
 {
-  return root_layer->get_selection(rect, layers);
+  LayerGetSelection func(rect, layers);
+  layer_tree->foreach_iter(sigc::mem_fun(func, &LayerGetSelection::get_selection));
+  return func.selection;
 }
 
 void
@@ -161,7 +270,7 @@ SectorModel::load(const std::string& filename)
                   std::vector<FileReader> objects_sections = objects_reader.get_sections();
                   for(std::vector<FileReader>::iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
                     {
-                      add(ObjectModelFactory::create(*j));
+                      //FIXME: add(ObjectModelFactory::create(*j));
                     }
                 }
             }
@@ -211,12 +320,20 @@ void
 SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
   std::cout << "ObjectTree:on_row_changed" << std::endl;
+  if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
+    {
+      wst->queue_draw();
+    }
 }
 
 void
 SectorModel::on_row_deleted(const Gtk::TreeModel::Path& path)
 {
   std::cout << "ObjectTree:on_row_deleted" << std::endl;
+  if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
+    {
+      wst->queue_draw();
+    }
 }
 
 void

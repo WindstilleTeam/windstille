@@ -696,7 +696,6 @@ EditorWindow::on_delete_layer()
       std::cout << "Deleting layer: " << wst << std::endl;
       Gtk::TreeModel::Path path;
       Gtk::TreeViewColumn* focus_column;
-
       object_tree.get_treeview().get_cursor(path, focus_column);
 
       wst->get_sector_model()->delete_layer(path);
@@ -728,9 +727,13 @@ EditorWindow::on_paste()
     {
       if (WindstilleWidget* wst = get_windstille_widget())
         {
+          Gtk::TreeModel::Path path;
+          Gtk::TreeViewColumn* focus_column;
+          object_tree.get_treeview().get_cursor(path, focus_column);
+
           for(Selection::reverse_iterator i = clipboard->rbegin(); i != clipboard->rend(); ++i)
             {
-              wst->get_sector_model()->add(*i);
+              wst->get_sector_model()->add(*i, path);
             }
 
           wst->set_selection(clipboard);

@@ -26,14 +26,6 @@ HardLayer::~HardLayer()
 {
 }
 
-HardLayerHandle
-HardLayer::add_layer()
-{
-  HardLayerHandle layer(new HardLayer());
-  child_layers.push_back(layer);
-  return layer;
-}
-
 void
 HardLayer::add(const ObjectModelHandle& object)
 {

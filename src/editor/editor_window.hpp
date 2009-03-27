@@ -130,6 +130,8 @@ public:
   void on_delete_layer();
 
   Tool* get_current_tool() const;
+
+  ObjectTree& get_object_tree() { return object_tree; }
   WindstilleWidget* get_windstille_widget();
   
   void load_file(const std::string& filename);

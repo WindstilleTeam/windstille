@@ -34,16 +34,12 @@ class HardLayer
 {
 private:
   typedef std::list<ObjectModelHandle> Objects;
-  typedef std::list<HardLayerHandle>   HardLayers;
 
   Objects objects;
-  HardLayers child_layers;
 
 public:
   HardLayer();
   ~HardLayer();
-
-  HardLayerHandle add_layer();
 
   void add(const ObjectModelHandle& object);
   void remove(const ObjectModelHandle& object);

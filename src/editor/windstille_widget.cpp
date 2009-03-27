@@ -318,6 +318,10 @@ WindstilleWidget::selection_clear_parent()
 void
 WindstilleWidget::selection_duplicate()
 {
+  Gtk::TreeModel::Path path;
+  Gtk::TreeViewColumn* focus_column;
+  EditorWindow::current()->get_object_tree().get_treeview().get_cursor(path, focus_column);
+
   SelectionHandle new_selection = Selection::create();
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
@@ -326,7 +330,7 @@ WindstilleWidget::selection_duplicate()
       // Move clone a litte to make it more obvious that something happened
       obj->set_rel_pos(obj->get_rel_pos() + Vector2f(32.0f, 32.0f));
 
-      sector_model->add(obj);
+      sector_model->add(obj, path);
       new_selection->add(obj);
     }
   selection = new_selection;
@@ -482,11 +486,6 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
   std::cout << "WindstilleWidget: on_drag_data_received: "
             << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
   
-  if (0)
-    sector_model->add(ObjectModelHandle(new SpriteObjectModel("SpriteObjectModel", state.screen_to_world(Vector2f(x, y)),
-                                                              "images/hedgehog_die.sprite")));
-  //"images/explosion.sprite")));
-
   ObjectModelHandle object = DecalObjectModel::create(data.get_data_as_string(),
                                                       state.screen_to_world(Vector2f(x, y)),
                                                       data.get_data_as_string().substr(5), 
@@ -499,7 +498,12 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
   else
     object->set_layers(layer_mask);
 
-  sector_model->add(object);
+  Gtk::TreeModel::Path path;
+  Gtk::TreeViewColumn* focus_column;
+
+  EditorWindow::current()->get_object_tree().get_treeview().get_cursor(path, focus_column);
+
+  sector_model->add(object, path);
 }
 
 void
