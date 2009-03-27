@@ -61,7 +61,7 @@ public:
       queue */
   void fill_screen(const Color& color);
 
-  void fill_pattern(const Texture& pattern);
+  void fill_pattern(const Texture& pattern, const Vector2f& offset);
 
   void draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color, float z_pos = 0);
 

@@ -118,7 +118,7 @@ WindstilleWidget::on_realize()
       if (!sc.get())
         sc.reset(new SceneContext());
       
-      background_pattern = Texture("images/chesspattern.png");
+      background_pattern = Texture("editor/background_layer.png");
       background_pattern.set_wrap(GL_REPEAT);
 
       glViewport(0, 0, get_width(), get_height());
@@ -209,7 +209,8 @@ WindstilleWidget::draw()
       state.push(*sc);
       
       if (draw_background_pattern)
-        sc->color().fill_pattern(background_pattern);
+        sc->color().fill_pattern(background_pattern, 
+                                 state.get_offset() * state.get_zoom());
       else
         sc->color().fill_screen(Color());
 

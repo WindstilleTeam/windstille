@@ -41,12 +41,13 @@ struct DrawingRequestsSorter
 class FillScreenPatternDrawingRequest : public DrawingRequest
 {
 private:
-  Texture texture;
-
+  Texture  texture;
+  Vector2f offset;
 public:
-  FillScreenPatternDrawingRequest(const Texture& texture_)
+  FillScreenPatternDrawingRequest(const Texture& texture_, const Vector2f& offset_)
     : DrawingRequest(Vector2f(0, 0), -1000.0f), 
-      texture(texture_)
+      texture(texture_),
+      offset(offset_)
   {}
 
   virtual ~FillScreenPatternDrawingRequest() {}
@@ -59,21 +60,27 @@ public:
     state.bind_texture(texture);
     state.activate();
 
-    float u = Display::get_width() / float(texture.get_width());
+    float u = Display::get_width()  / float(texture.get_width());
     float v = Display::get_height() / float(texture.get_height());
+
+    float u_start = -offset.x / float(texture.get_width());
+    float v_start = -offset.y / float(texture.get_height());
+
+    u -= offset.x / float(texture.get_width());
+    v -= offset.y / float(texture.get_height());
 
     glBegin(GL_QUADS);
     {
-      glTexCoord2f(0, 0);
+      glTexCoord2f(u_start, v_start);
       glVertex2f(0, 0);
     
-      glTexCoord2f(u, 0.0f);
+      glTexCoord2f(u, v_start);
       glVertex2f(Display::get_width(), 0);
 
       glTexCoord2f(u, v);
       glVertex2f(Display::get_width(), Display::get_height());
 
-      glTexCoord2f(0.0f, v);
+      glTexCoord2f(u_start, v);
       glVertex2f(0,  Display::get_height());
     }
     glEnd();
@@ -227,9 +234,9 @@ DrawingContext::fill_screen(const Color& color)
 }
 
 void
-DrawingContext::fill_pattern(const Texture& pattern)
+DrawingContext::fill_pattern(const Texture& pattern, const Vector2f& offset)
 {
-  draw(new FillScreenPatternDrawingRequest(pattern));
+  draw(new FillScreenPatternDrawingRequest(pattern, offset));
 }
 
 void
