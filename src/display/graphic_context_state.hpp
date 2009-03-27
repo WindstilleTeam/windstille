@@ -57,6 +57,8 @@ public:
   void     set_pos(const Vector2f& pos);
   Vector2f get_pos() const;
 
+  Vector2f get_offset() const;
+
   /** Set zoom to z, while ensuring that the screen position \a pos
       (normaly the position of the mouse pointer) stays in the same
       position even after zoomed in/out */

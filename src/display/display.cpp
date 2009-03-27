@@ -356,6 +356,37 @@ Display::fill_arc(const Vector2f& pos, float radius, float start, float end, con
 }
 
 void
+Display::draw_grid(const Vector2f& offset, const Sizef& size, const Color& rgba)
+{
+  OpenGLState state;
+
+  state.enable(GL_BLEND);
+  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  state.color(rgba);
+  state.activate();
+ 
+  glBegin(GL_LINES);
+  //glColor4ub(rgba.r, rgba.g, rgba.b, rgba.a);
+
+  float start_x = fmodf(offset.x, size.width);
+  float start_y = fmodf(offset.y, size.height);
+
+  for(float x = start_x; x < Display::get_width(); x += size.width)
+    {
+      glVertex2f(x, 0);
+      glVertex2f(x, Display::get_height());
+    }
+
+  for(float y = start_y; y < Display::get_height(); y += size.height)
+    {
+      glVertex2f(0, y);
+      glVertex2f(Display::get_width(), y);
+    }
+
+  glEnd();  
+}
+
+void
 Display::push_cliprect(const Rect& rect_)
 {
   Rect rect = rect_;

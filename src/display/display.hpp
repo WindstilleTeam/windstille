@@ -54,6 +54,8 @@ public:
   static void draw_arc(const Vector2f& pos, float radius, float start, float end, const Color& color, int segments = 16);
   static void fill_arc(const Vector2f& pos, float radius, float start, float end, const Color& color, int segments = 16);
 
+  static void draw_grid(const Vector2f& offset, const Sizef& size, const Color& color);
+
   static int  get_width();
   static int  get_height();
 

@@ -62,6 +62,7 @@ private:
   bool draw_background_pattern;
   Layers layer_mask;
   bool draw_only_active_layers;
+  bool grid_enabled;
   
 public:
   WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig,
@@ -121,6 +122,7 @@ public:
   void set_draw_background_pattern(bool v) { draw_background_pattern = v; }
   void set_draw_only_active_layer(bool v) { draw_only_active_layers = v; }
   bool get_draw_only_active_layer() const { return draw_only_active_layers; }
+  void enable_grid(bool v) { grid_enabled = v; }
 
 private:
   WindstilleWidget (const WindstilleWidget&);

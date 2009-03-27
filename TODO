@@ -185,6 +185,8 @@ Sound Handling
 Miscellaneous
 =============
 
+* move particle system into library
+
 * Make FileWriter not place ')' on a new line
 
 * replace lisp::Writer with custom FileWriter (used in config)
@@ -499,11 +501,30 @@ Graphics
 Editor
 ======
 
-* maybe limit snapping by layer, maybe as an option via button, since
-  snapping to a background texture is annoying, while snapping to the
-  ground can be very important
+* highlight map is problematic, since objects don't cover highlights,
+  maybe rendering a stencil mask might help
 
-  - could limit snapping to all visible layers and add a button to toggle layer visibility
+* add Blender like EmptyObjectModel
+
+* spacenav support for scrolling?
+
+* do a continous zoom file zoom button is pressed (timeout callback)
+
+* add recent files
+
+* ObjectProperty Dialog:
+
+  Dialogs must be generic and usable by all Objects, supported type
+  requirements:
+
+  - Vector2f
+  - std::string
+  - Layer
+  - Color
+  - int
+  - float
+  - bool
+  - enum
 
 * add button and keyboard shortcut to mark/unmark all layers
 
@@ -516,11 +537,6 @@ Editor
   - mark all objects
   - delete object
   - duplicate object
-
-* lisp can't save uint32_t, maybe should save layer mask as string or
-  limit it to a uint16_t or whatever
-
-* add recent files
 
 * add difference between "save" and "save as", along with overwrite warnings
 
@@ -600,8 +616,6 @@ Editor
   - snap to integer positions
   - snap to grid
 
-* add grid
-
 * add a way to draw objects to DrawingContext that only does
   translation, but not rotation and scaling, for use in UIElements,
   overlay text, etc.
@@ -611,8 +625,6 @@ Editor
   - name
   - ambient color (Gtk::ColorSelection)
   - level size (?)
-
-* implement dialog to change objects properties
 
 * figure out how to properly draw controls in the Workspace (resize,
   rotation, vertices of a quad),

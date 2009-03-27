@@ -95,6 +95,12 @@ GraphicContextState::set_pos(const Vector2f& pos)
 }
 
 Vector2f
+GraphicContextState::get_offset() const
+{
+  return impl->offset;
+}
+
+Vector2f
 GraphicContextState::get_pos() const
 {
   return Vector2f(-impl->offset.x + (get_width()/2  / impl->zoom),

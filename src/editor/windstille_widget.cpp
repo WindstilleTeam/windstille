@@ -44,7 +44,8 @@ WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  g
     map_type(DecalObjectModel::COLORMAP),
     draw_background_pattern(true),
     layer_mask(1),
-    draw_only_active_layers(true)
+    draw_only_active_layers(true),
+    grid_enabled(false)
 {
   set_gl_capability(glconfig, share_list);
 
@@ -229,8 +230,13 @@ WindstilleWidget::draw()
         active_tool->draw(*sc);
 
       sc->render();
-
       state.pop(*sc);
+
+      if (grid_enabled)
+        {
+          Display::draw_grid(state.get_offset() * state.get_zoom(),
+                             Sizef(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.5f));
+        }
     }
 }
 
