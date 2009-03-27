@@ -91,6 +91,8 @@ WindstilleWidget::on_timeout()
 void
 WindstilleWidget::on_realize()
 {
+  state.set_size(get_width(), get_height());
+
   std::cout << "WindstilleWidget::on_realize()" << std::endl;
 
   Gtk::DrawingArea::on_realize();
@@ -116,7 +118,10 @@ WindstilleWidget::on_realize()
         }
       
       if (!sc.get())
-        sc.reset(new SceneContext());
+        {
+          sc.reset(new SceneContext());
+          sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
+        }
       
       background_pattern = Texture("editor/background_layer.png");
       background_pattern.set_wrap(GL_REPEAT);
@@ -131,8 +136,6 @@ WindstilleWidget::on_realize()
   
       glwindow->gl_end();
     }
-
-  state.set_size(get_width(), get_height());
 }
 
 bool
@@ -209,10 +212,14 @@ WindstilleWidget::draw()
       state.push(*sc);
       
       if (draw_background_pattern)
-        sc->color().fill_pattern(background_pattern, 
-                                 state.get_offset() * state.get_zoom());
+        {
+          sc->color().fill_pattern(background_pattern, 
+                                   state.get_offset() * state.get_zoom());
+        }
       else
-        sc->color().fill_screen(Color());
+        {
+          sc->color().fill_screen(Color());
+        }
 
       if (draw_only_active_layers)
         sector_model->draw(*sc, Layers());

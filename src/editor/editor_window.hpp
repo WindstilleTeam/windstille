@@ -68,6 +68,15 @@ private:
   Glib::RefPtr<Gtk::RadioAction> node_tool_action;
   Glib::RefPtr<Gtk::RadioAction> zoom_tool_action;
 
+  Glib::RefPtr<Gtk::ToggleAction> toggle_color_layer;
+  Glib::RefPtr<Gtk::ToggleAction> toggle_light_layer;
+  Glib::RefPtr<Gtk::ToggleAction> toggle_highlight_layer;
+  Glib::RefPtr<Gtk::ToggleAction> toggle_control_layer;
+
+  Glib::RefPtr<Gtk::ToggleAction> background_layer;
+  Glib::RefPtr<Gtk::ToggleAction> visible_layer;
+  Glib::RefPtr<Gtk::ToggleAction> grid_layer;
+
   Glib::RefPtr<Gtk::ToggleAction> play_action;
   Glib::RefPtr<Gtk::ToggleAction> snap_action;
 

@@ -120,9 +120,12 @@ public:
   void load_file(const std::string& filename);
 
   void set_draw_background_pattern(bool v) { draw_background_pattern = v; }
+  bool get_draw_background_pattern() const { return draw_background_pattern; }
+
   void set_draw_only_active_layer(bool v) { draw_only_active_layers = v; }
   bool get_draw_only_active_layer() const { return draw_only_active_layers; }
   void enable_grid(bool v) { grid_enabled = v; }
+  bool get_enable_grid() const { return grid_enabled; }
 
 private:
   WindstilleWidget (const WindstilleWidget&);

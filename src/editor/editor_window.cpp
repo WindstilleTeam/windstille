@@ -211,17 +211,17 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
                     sigc::mem_fun(*this, &EditorWindow::on_about_clicked));
 
-  Glib::RefPtr<Gtk::ToggleAction> toggle_color_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleColorLayer", "color", "Toogle Color Layer", "Toogle Color Layer");
-  Glib::RefPtr<Gtk::ToggleAction> toggle_light_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleLightLayer", "light", "Toogle Light Layer", "Toogle Light Layer");
-  Glib::RefPtr<Gtk::ToggleAction> toggle_highlight_layer = Gtk::ToggleAction::create_with_icon_name("ToggleHighlightLayer", "highlight", "Toogle Highlight Layer", "Toogle Highlight Layer");
-  Glib::RefPtr<Gtk::ToggleAction> toggle_control_layer   = Gtk::ToggleAction::create_with_icon_name("ToggleControlLayer", "control", "Toogle Control Layer", "Toogle Control Layer");
+  toggle_color_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleColorLayer", "color", "Toogle Color Layer", "Toogle Color Layer");
+  toggle_light_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleLightLayer", "light", "Toogle Light Layer", "Toogle Light Layer");
+  toggle_highlight_layer = Gtk::ToggleAction::create_with_icon_name("ToggleHighlightLayer", "highlight", "Toogle Highlight Layer", "Toogle Highlight Layer");
+  toggle_control_layer   = Gtk::ToggleAction::create_with_icon_name("ToggleControlLayer", "control", "Toogle Control Layer", "Toogle Control Layer");
 
-  Glib::RefPtr<Gtk::ToggleAction> background_layer = Gtk::ToggleAction::create_with_icon_name("ToggleBackgroundLayer", "background_layer", "Toggle Background Layer", "Toggle Background Layer");
-  Glib::RefPtr<Gtk::ToggleAction> visible_layer    = Gtk::ToggleAction::create_with_icon_name("ToggleVisibleLayer", "draw_visible_layer", "Toggle Only Active Layer", "Toggle Only Active Layer");
-  Glib::RefPtr<Gtk::ToggleAction> grid_layer    = Gtk::ToggleAction::create_with_icon_name("ToggleGridLayer", "grid", "Toggle Grid Layer", "Toggle Grid Layer");
+  background_layer = Gtk::ToggleAction::create_with_icon_name("ToggleBackgroundLayer", "background_layer", "Toggle Background Layer", "Toggle Background Layer");
+  visible_layer    = Gtk::ToggleAction::create_with_icon_name("ToggleVisibleLayer", "draw_visible_layer", "Toggle Only Active Layer", "Toggle Only Active Layer");
+  grid_layer       = Gtk::ToggleAction::create_with_icon_name("ToggleGridLayer", "grid", "Toggle Grid Layer", "Toggle Grid Layer");
   
   toggle_color_layer->set_active(true);
-  toggle_light_layer->set_active(true);
+  toggle_light_layer->set_active(false);
   toggle_highlight_layer->set_active(true);
   toggle_control_layer->set_active(true);
   background_layer->set_active(true);
@@ -588,6 +588,15 @@ EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
     {
       object_tree.set_model(wst->get_sector_model());
       layer_widget->update(wst->get_layer_mask());
+
+      toggle_color_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::COLORMAP);
+      toggle_light_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::LIGHTMAP);
+      toggle_highlight_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::HIGHLIGHTMAP);
+      toggle_control_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::CONTROLMAP);
+
+      background_layer->set_active(wst->get_draw_background_pattern());
+      visible_layer->set_active(wst->get_draw_only_active_layer());
+      grid_layer->set_active(wst->get_enable_grid());
     }
   else
     {
