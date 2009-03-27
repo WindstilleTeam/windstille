@@ -23,11 +23,13 @@
 #include <gtkmm/treestore.h>
 #include <gtkmm/treemodelcolumn.h>
 
+#include "editor_window.hpp"
 #include "sector_model.hpp"
 #include "object_tree.hpp"
 
-ObjectTree::ObjectTree()
-  : label("Scene Tree", Gtk::ALIGN_LEFT)
+ObjectTree::ObjectTree(EditorWindow& editor_)
+  : editor(editor_),
+    label("Scene Tree", Gtk::ALIGN_LEFT)
 {
   //treeview.set_headers_clickable();
   treeview.set_headers_visible(false);
@@ -43,15 +45,17 @@ ObjectTree::ObjectTree()
   ui_manager   = Gtk::UIManager::create();
   action_group = Gtk::ActionGroup::create();
   
-  action_group->add(Gtk::Action::create("ExpandAll", Gtk::Stock::MEDIA_PLAY));
-  action_group->add(Gtk::Action::create("ShowAll",   Gtk::Stock::ZOOM_100));
+  action_group->add(Gtk::Action::create("NewLayer", Gtk::Stock::NEW),
+                    sigc::mem_fun(editor, &EditorWindow::on_new_layer));
+  action_group->add(Gtk::Action::create("DeleteLayer", Gtk::Stock::DELETE),
+                    sigc::mem_fun(editor, &EditorWindow::on_delete_layer));
 
   ui_manager->insert_action_group(action_group);
 
   ui_manager->add_ui_from_string("<ui>"
                                  "  <toolbar  name='ToolBar'>"
-                                 "    <toolitem action='ExpandAll'/>"
-                                 "    <toolitem action='ShowAll'/>"
+                                 "    <toolitem action='NewLayer'/>"
+                                 "    <toolitem action='DeleteLayer'/>"
                                  "  </toolbar>"
                                  "</ui>");
   

@@ -49,14 +49,20 @@ SectorModel::SectorModel()
 }
 
 void
+SectorModel::add_layer(const std::string& name)
+{
+  Gtk::TreeStore::iterator it = objects_tree->append(root_it->children());
+  (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
+  (*it)[ObjectTreeColumns::instance().name]      = name;
+  (*it)[ObjectTreeColumns::instance().visible]   = false; 
+
+  root_layer->add_layer();
+}
+
+void
 SectorModel::add(const ObjectModelHandle& object)  
 {
   root_layer->add(object);
-
-  Gtk::TreeStore::iterator it = objects_tree->append(root_it->children());
-  (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
-  (*it)[ObjectTreeColumns::instance().name]      = object->get_name();
-  (*it)[ObjectTreeColumns::instance().visible]   = false; 
 }
 
 void

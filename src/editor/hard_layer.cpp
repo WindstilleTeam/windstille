@@ -29,6 +29,12 @@ HardLayer::~HardLayer()
 }
 
 void
+HardLayer::add_layer()
+{
+  child_layers.push_back(HardLayerHandle(new HardLayer("Child layer")));
+}
+
+void
 HardLayer::add(const ObjectModelHandle& object)
 {
   objects.push_back(object);
@@ -190,6 +196,13 @@ HardLayer::write(FileWriter& writer) const
   writer.start_section("layer");
   writer.write("name",    name);
   writer.write("visible", visible);
+
+  writer.start_section("child-layers");
+  for(HardLayers::const_iterator i = child_layers.begin(); i != child_layers.end(); ++i)
+    {
+      (*i)->write(writer);
+    }
+  writer.end_section();
 
   writer.start_section("objects");
   for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)

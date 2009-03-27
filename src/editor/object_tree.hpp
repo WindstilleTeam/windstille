@@ -28,10 +28,12 @@
 #include <gtkmm/actiongroup.h>
 
 class SectorModel;
+class EditorWindow;
 
 class ObjectTree : public Gtk::VBox
 {
 private:
+  EditorWindow& editor;
   Gtk::Label label;
   Gtk::ScrolledWindow scrolled;
   Gtk::TreeView treeview;
@@ -40,7 +42,7 @@ private:
   Glib::RefPtr<Gtk::ActionGroup> action_group;
 
 public:
-  ObjectTree();
+  ObjectTree(EditorWindow& editor);
   virtual ~ObjectTree();
 
   void set_model(SectorModel* model);

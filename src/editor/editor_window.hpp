@@ -126,6 +126,9 @@ public:
   void toggle_draw_only_active_layer(Glib::RefPtr<Gtk::ToggleAction> action);
   void toggle_grid_layer(Glib::RefPtr<Gtk::ToggleAction> action);
 
+  void on_new_layer();
+  void on_delete_layer();
+
   Tool* get_current_tool() const;
   WindstilleWidget* get_windstille_widget();
   

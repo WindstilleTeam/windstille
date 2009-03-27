@@ -34,11 +34,13 @@
 #include "select_tool.hpp"
 #include "sector_model.hpp"
 #include "layer_widget.hpp"
+#include "editor_window.hpp"
 
 EditorWindow* EditorWindow::current_ = 0;
 
 EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
-  : minimap_widget(glconfig_),
+  : object_tree(*this),
+    minimap_widget(glconfig_),
     glconfig(glconfig_),
     select_tool(new SelectTool()),
     zoom_tool(new ZoomTool()),
@@ -683,6 +685,25 @@ EditorWindow::on_copy()
   if (WindstilleWidget* wst = get_windstille_widget())
     {
       clipboard = wst->get_selection()->clone();
+    }
+}
+
+void
+EditorWindow::on_delete_layer()
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      std::cout << "Deleting layer: " << wst << std::endl;
+    }
+}
+
+void
+EditorWindow::on_new_layer()
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      std::cout << "Adding layer" << std::endl;
+      wst->get_sector_model()->add_layer("New Layer");
     }
 }
 
