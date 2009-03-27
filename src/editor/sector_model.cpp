@@ -32,6 +32,8 @@ ObjectTreeColumns* ObjectTreeColumns::instance_ = 0;
 
 SectorModel::SectorModel()
 {  
+  root_layer = HardLayerHandle(new HardLayer("HardLayer"));
+
   objects_tree = Gtk::TreeStore::create(ObjectTreeColumns::instance());
 
   root_it = objects_tree->append();
@@ -49,7 +51,7 @@ SectorModel::SectorModel()
 void
 SectorModel::add(const ObjectModelHandle& object)  
 {
-  objects.push_back(object);
+  root_layer->add(object);
 
   Gtk::TreeStore::iterator it = objects_tree->append(root_it->children());
   (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
@@ -60,150 +62,61 @@ SectorModel::add(const ObjectModelHandle& object)
 void
 SectorModel::remove(const ObjectModelHandle& object)
 {
-  objects.remove(object);
+  root_layer->remove(object);
 }
 
 void
 SectorModel::draw(SceneContext& sc, const Layers& layers)
 {
-  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      if (layers.match((*i)->get_layers()))
-        (*i)->draw(sc);
-    }
+  root_layer->draw(sc, layers);
 }
 
 void
 SectorModel::update(float delta)
 {
-  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      (*i)->update(delta);
-    }
+  root_layer->update(delta);
 }
 
 ObjectModelHandle
 SectorModel::get_object_at(const Vector2f& pos, const Layers& layers) const
 {
-  for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
-    {
-      if (layers.match((*i)->get_layers()) &&
-          (*i)->get_bounding_box().is_inside(pos))
-        {
-          return *i;
-        }
-    }
-  return ObjectModelHandle();
+  return root_layer->get_object_at(pos, layers);
 }
 
 SelectionHandle
 SectorModel::get_selection(const Rectf& rect, const Layers& layers) const
 {
-  SelectionHandle selection = Selection::create();
-
-  for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
-    {
-      if (layers.match((*i)->get_layers()) &&
-          (*i)->get_bounding_box().is_overlapped(rect))
-        {
-          selection->add(*i);
-        }
-    }
-
-  return selection;
+  return root_layer->get_selection(rect, layers);
 }
-
-struct OverlapsWith
-{
-  Rectf rect;
-
-  OverlapsWith(const Rectf& rect_)
-    : rect(rect_)
-  {}
-
-  bool operator()(const ObjectModelHandle& object) {
-    return rect.is_overlapped(object->get_bounding_box());
-  }
-};
 
 void
 SectorModel::raise(ObjectModelHandle object)
 {
-  Objects::iterator i = std::find(objects.begin(), objects.end(), object);
-  assert(i != objects.end());
-  Objects::iterator j = i;
-  ++j;
-  j = std::find_if(j, objects.end(), OverlapsWith(object->get_bounding_box()));
-
-  if (j == objects.end())
-    {
-      // object overlaps with no other object, no point in raising it
-    }
-  else
-    {
-      objects.erase(i);
-      objects.insert(++j, object);
-    }
+  root_layer->raise(object);
 }
 
 void
 SectorModel::lower(ObjectModelHandle object)
 {
-  // Mostly the same as raise, just with reverse iterators
-  Objects::reverse_iterator i = std::find(objects.rbegin(), objects.rend(), object);
-
-  Objects::reverse_iterator j = i;
-  ++j;
-  j = std::find_if(j, objects.rend(), OverlapsWith(object->get_bounding_box()));
-
-  if (j == objects.rend())
-    {
-      // object overlaps with no other object, no point in lowering it
-    }
-  else
-    {
-      // the base() of base in one further then where the reverse
-      // iterator was, so we have to move back to get the same
-      // position
-      objects.erase(--(i.base()));
-      objects.insert(--(j.base()), object);
-    }
+  root_layer->lower(object);
 }
 
 void
 SectorModel::raise_to_top(ObjectModelHandle object)
 {
-  objects.remove(object);
-  objects.push_back(object); 
+  root_layer->raise_to_top(object);
 }
 
 void
 SectorModel::lower_to_bottom(ObjectModelHandle object)
 {
-  objects.remove(object);
-  objects.push_front(object); 
+  root_layer->lower_to_bottom(object);
 }
 
 SnapData
 SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ignore_objects) const
 {
-  //float min_x_offset = std::numeric_limits<float>::max();
-  //float min_y_offset = std::numeric_limits<float>::max();
-  SnapData best_snap;
-
-  // Find the smallest snap offset
-  for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
-    {
-      // object is not in the list of objects to ignore
-      if ((*i)->is_snappable() &&
-          ignore_objects.find(*i) == ignore_objects.end())
-        {
-          SnapData snap = (*i)->snap_object(rect);
-          best_snap.merge(snap);
-        }
-    }
-
-  return best_snap;
+  return root_layer->snap_object(rect, ignore_objects);
 }
 
 void
@@ -216,22 +129,30 @@ SectorModel::load(const std::string& filename)
     }
   else
     {
-  FileReader reader = FileReader::parse(stream, filename);
-  if (reader.get_name() == "windstille-sector")
-    {
-      std::vector<FileReader> sections = reader.get_sections();
-      for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+      FileReader reader = FileReader::parse(stream, filename);
+      if (reader.get_name() == "windstille-sector")
         {
-          if (i->get_name() == "objects")
+          std::vector<FileReader> sections = reader.get_sections();
+          for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
             {
-              std::vector<FileReader> objects_sections = i->get_sections();
-              for(std::vector<FileReader>::iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
+              if (i->get_name() == "layer")
                 {
-                  add(ObjectModelFactory::create(*j));
+                  FileReader objects_reader;
+                  std::string name;
+                  bool visible;
+
+                  i->read("name", name);
+                  i->read("visible", visible);
+                  i->read("objects", objects_reader);
+                  
+                  std::vector<FileReader> objects_sections = objects_reader.get_sections();
+                  for(std::vector<FileReader>::iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
+                    {
+                      add(ObjectModelFactory::create(*j));
+                    }
                 }
             }
         }
-    }
     }
 }
 
@@ -246,12 +167,7 @@ SectorModel::write(FileWriter& writer) const
   writer.write("ambient-color", Color());
   writer.write("init-script", "init.nut");
 
-  writer.start_section("objects");
-  for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      (*i)->write(writer);
-    }
-  writer.end_section();
+  root_layer->write(writer);
  
   writer.end_section();
   writer.write_raw("\n;; EOF ;;\n");

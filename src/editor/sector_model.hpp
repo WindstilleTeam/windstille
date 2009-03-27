@@ -24,6 +24,7 @@
 #include <gtkmm/treestore.h>
 #include <vector>
 
+#include "hard_layer.hpp"
 #include "selection.hpp"
 #include "object_model.hpp"
 #include "math/vector2f.hpp"
@@ -59,21 +60,20 @@ private:
 class SectorModel
 {
 private:
-  typedef std::list<ObjectModelHandle> Objects;
-
   Gtk::TreeStore::iterator root_it;
   Glib::RefPtr<Gtk::TreeStore> objects_tree;
-  Objects objects;
+  HardLayerHandle root_layer;
   
 public:
-  typedef Objects::iterator iterator;
+  //typedef Objects::iterator iterator;
 
   SectorModel();
 
-  void add(const ObjectModelHandle& object);
-  void remove(const ObjectModelHandle& object);
   void draw(SceneContext& sc, const Layers& layers);
   void update(float delta);
+
+  void add(const ObjectModelHandle& object);
+  void remove(const ObjectModelHandle& object);
 
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;
 
@@ -98,8 +98,8 @@ public:
   void load(const std::string& filename);
   void write(FileWriter& writer) const;
 
-  iterator begin() { return objects.begin(); }
-  iterator end() { return objects.end(); }
+  //iterator begin() { return objects.begin(); }
+  //iterator end() { return objects.end(); }
 
 private:
   SectorModel(const SectorModel&);
