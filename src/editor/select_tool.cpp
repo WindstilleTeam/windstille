@@ -154,7 +154,15 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     {
       mode = NO_MODE;
       rect.normalize();
-      wst.set_selection(wst.get_sector_model()->get_selection(rect, wst.get_layer_mask()));
+      if (event->state & GDK_SHIFT_MASK)
+        {
+          SelectionHandle new_selection = wst.get_sector_model()->get_selection(rect, wst.get_layer_mask());
+          wst.get_selection()->add(new_selection->begin(), new_selection->end());
+        }
+      else
+        {
+          wst.set_selection(wst.get_sector_model()->get_selection(rect, wst.get_layer_mask()));
+        }
     }
 
   mode = NO_MODE;

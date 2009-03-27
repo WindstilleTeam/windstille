@@ -43,6 +43,14 @@ public:
   Selection();
   ~Selection();
 
+  template<class Iter>
+  void add(Iter begin, Iter end) {
+    for(Iter i = begin; i != end; ++i)
+      {
+        add(*i);
+      }
+  }
+
   void add(const ObjectModelHandle& object);
   void remove(const ObjectModelHandle& object);
   
