@@ -4,6 +4,7 @@
   (name "")
   (ambient-color 0 0 0 1)
   (init-script "init.nut")
+  (layer
   (objects
     (decal
       (pos 1562.96 829.374)
@@ -1819,6 +1820,6 @@
       (type 0)
       )
     )
-  )
+  ))
 
 ;; EOF ;;
