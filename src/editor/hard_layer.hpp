@@ -36,16 +36,14 @@ private:
   typedef std::list<ObjectModelHandle> Objects;
   typedef std::list<HardLayerHandle>   HardLayers;
 
-  std::string name;
-  bool visible;
   Objects objects;
   HardLayers child_layers;
 
 public:
-  HardLayer(const std::string& name);
+  HardLayer();
   ~HardLayer();
 
-  void add_layer();
+  HardLayerHandle add_layer();
 
   void add(const ObjectModelHandle& object);
   void remove(const ObjectModelHandle& object);

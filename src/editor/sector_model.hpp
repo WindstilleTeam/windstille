@@ -48,12 +48,14 @@ public:
   Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > type_icon;
   Gtk::TreeModelColumn<Glib::ustring>              name;
   Gtk::TreeModelColumn<bool>                       visible;
+  Gtk::TreeModelColumn<HardLayerHandle>            layer;
 
 private:
   ObjectTreeColumns() {
     add(type_icon); 
     add(name); 
     add(visible); 
+    add(layer);
   }
 };
 
@@ -61,7 +63,7 @@ class SectorModel
 {
 private:
   Gtk::TreeStore::iterator root_it;
-  Glib::RefPtr<Gtk::TreeStore> objects_tree;
+  Glib::RefPtr<Gtk::TreeStore> layer_tree;
   HardLayerHandle root_layer;
   
 public:
@@ -80,7 +82,7 @@ public:
 
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;
 
-  Glib::RefPtr<Gtk::TreeStore> get_objects_tree() { return objects_tree; }
+  Glib::RefPtr<Gtk::TreeStore> get_layer_tree() { return layer_tree; }
 
   void on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
   void on_row_deleted(const Gtk::TreeModel::Path& path);
@@ -100,6 +102,7 @@ public:
 
   void load(const std::string& filename);
   void write(FileWriter& writer) const;
+  void write(FileWriter& writer, const Gtk::TreeRow& row) const;
 
   //iterator begin() { return objects.begin(); }
   //iterator end() { return objects.end(); }

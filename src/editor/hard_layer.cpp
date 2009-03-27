@@ -18,9 +18,7 @@
 
 #include "hard_layer.hpp"
 
-HardLayer::HardLayer(const std::string& name_)
-  : name(name_),
-    visible(true)
+HardLayer::HardLayer()
 {
 }
 
@@ -28,10 +26,12 @@ HardLayer::~HardLayer()
 {
 }
 
-void
+HardLayerHandle
 HardLayer::add_layer()
 {
-  child_layers.push_back(HardLayerHandle(new HardLayer("Child layer")));
+  HardLayerHandle layer(new HardLayer());
+  child_layers.push_back(layer);
+  return layer;
 }
 
 void
@@ -54,7 +54,6 @@ HardLayer::draw(SceneContext& sc, const Layers& layers)
       if (layers.match((*i)->get_layers()))
         (*i)->draw(sc);
     }
-
 }
 
 void
@@ -193,25 +192,10 @@ HardLayer::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ign
 void
 HardLayer::write(FileWriter& writer) const
 {
-  writer.start_section("layer");
-  writer.write("name",    name);
-  writer.write("visible", visible);
-
-  writer.start_section("child-layers");
-  for(HardLayers::const_iterator i = child_layers.begin(); i != child_layers.end(); ++i)
-    {
-      (*i)->write(writer);
-    }
-  writer.end_section();
-
-  writer.start_section("objects");
   for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
     {
       (*i)->write(writer);
     }
-  writer.end_section();
-
-  writer.end_section();
 }
 
 HardLayerHandle

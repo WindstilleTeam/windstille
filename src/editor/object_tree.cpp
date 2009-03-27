@@ -62,15 +62,15 @@ ObjectTree::ObjectTree(EditorWindow& editor_)
   
   Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/ToolBar"));
 
-  treeview.signal_cursor_changed().connect(sigc::mem_fun(*this, &ObjectTree::on_cursor_changed));
-  treeview.signal_columns_changed().connect(sigc::mem_fun(*this, &ObjectTree::on_columns_changed));
+  //treeview.signal_cursor_changed().connect(sigc::mem_fun(*this, &ObjectTree::on_cursor_changed));
+  //treeview.signal_columns_changed().connect(sigc::mem_fun(*this, &ObjectTree::on_columns_changed));
 
   toolbar.set_icon_size(Gtk::ICON_SIZE_MENU);
 
   scrolled.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
   scrolled.add(treeview);
 
-  pack_start(label, Gtk::PACK_SHRINK);
+  pack_start(label,   Gtk::PACK_SHRINK);
   pack_start(toolbar, Gtk::PACK_SHRINK);
   add(scrolled);
   //show_all();
@@ -85,7 +85,7 @@ ObjectTree::set_model(SectorModel* model)
 {
   if (model)
     {
-      treeview.set_model(model->get_objects_tree());
+      treeview.set_model(model->get_layer_tree());
       treeview.expand_all();
       treeview.set_cursor(Gtk::TreeModel::Path("0"));
     }

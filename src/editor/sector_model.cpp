@@ -32,38 +32,38 @@ ObjectTreeColumns* ObjectTreeColumns::instance_ = 0;
 
 SectorModel::SectorModel()
 {  
-  root_layer = HardLayerHandle(new HardLayer("HardLayer"));
+  root_layer = HardLayerHandle(new HardLayer());
 
-  objects_tree = Gtk::TreeStore::create(ObjectTreeColumns::instance());
+  layer_tree = Gtk::TreeStore::create(ObjectTreeColumns::instance());
 
-  root_it = objects_tree->append();
+  root_it = layer_tree->append();
   (*root_it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*root_it)[ObjectTreeColumns::instance().name]      = Glib::ustring("Scene");
-  (*root_it)[ObjectTreeColumns::instance().visible]   = false;
+  (*root_it)[ObjectTreeColumns::instance().visible]   = true;
+  (*root_it)[ObjectTreeColumns::instance().layer]     = root_layer;
 
-  objects_tree->signal_row_changed().connect(sigc::mem_fun(*this, &SectorModel::on_row_changed));
-  objects_tree->signal_row_deleted().connect(sigc::mem_fun(*this, &SectorModel::on_row_deleted));
-  objects_tree->signal_row_has_child_toggled().connect(sigc::mem_fun(*this, &SectorModel::on_row_has_child_toggled));
-  objects_tree->signal_row_inserted().connect(sigc::mem_fun(*this, &SectorModel::on_row_inserted));
-  objects_tree->signal_rows_reordered().connect(sigc::mem_fun(*this, &SectorModel::on_rows_reordered));
+  layer_tree->signal_row_changed().connect(sigc::mem_fun(*this, &SectorModel::on_row_changed));
+  layer_tree->signal_row_deleted().connect(sigc::mem_fun(*this, &SectorModel::on_row_deleted));
+  layer_tree->signal_row_has_child_toggled().connect(sigc::mem_fun(*this, &SectorModel::on_row_has_child_toggled));
+  layer_tree->signal_row_inserted().connect(sigc::mem_fun(*this, &SectorModel::on_row_inserted));
+  layer_tree->signal_rows_reordered().connect(sigc::mem_fun(*this, &SectorModel::on_rows_reordered));
 }
 
 void
 SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path)
 {
-  Gtk::TreeStore::iterator it = objects_tree->append(objects_tree->get_iter(path)->children());
+  Gtk::TreeStore::iterator it = layer_tree->append(layer_tree->get_iter(path)->children());
 
   (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[ObjectTreeColumns::instance().name]      = name;
-  (*it)[ObjectTreeColumns::instance().visible]   = false; 
-
-  root_layer->add_layer();
+  (*it)[ObjectTreeColumns::instance().visible]   = true; 
+  (*it)[ObjectTreeColumns::instance().layer]     = root_layer->add_layer(); 
 }
 
 void
 SectorModel::delete_layer(Gtk::TreeModel::Path& path)
 {
-  objects_tree->erase(objects_tree->get_iter(path));
+  layer_tree->erase(layer_tree->get_iter(path));
 }
 
 void
@@ -180,10 +180,31 @@ SectorModel::write(FileWriter& writer) const
   writer.write("ambient-color", Color());
   writer.write("init-script", "init.nut");
 
-  root_layer->write(writer);
- 
+  write(writer, *(layer_tree->children().begin()));
+
   writer.end_section();
   writer.write_raw("\n;; EOF ;;\n");
+}
+
+void
+SectorModel::write(FileWriter& writer, const Gtk::TreeRow& row) const
+{
+  writer.start_section("layer");
+  writer.write("name",   (Glib::ustring)(row[ObjectTreeColumns::instance().name]));
+  writer.write("visible",          (bool)row[ObjectTreeColumns::instance().visible]);
+
+  writer.start_section("objects");
+  root_layer->write(writer);
+  writer.end_section();
+
+  writer.start_section("child-layers");
+  for(Gtk::TreeStore::Children::iterator i = row.children().begin(); i != row.children().end(); ++i)
+    {
+      write(writer, *i);
+    }
+  writer.end_section();
+
+  writer.end_section();
 }
 
 void
