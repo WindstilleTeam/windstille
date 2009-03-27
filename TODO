@@ -501,6 +501,8 @@ Graphics
 Editor
 ======
 
+* drawing is broken after loading a level, only get fixed when toggling Light layer
+
 * background pattern goes away when Color pattern is disabled, since
   its draw to the Colormap
 
@@ -544,7 +546,9 @@ Editor
 * add way to refresh content of ObjectSelector
 
 * highlight map is problematic, since objects don't cover highlights,
-  maybe rendering a stencil mask might help
+  maybe rendering a stencil mask might help, other alternative would
+  be occulsion querys, but they only work for Geforce3 and Up. Have to
+  wait and see how much of a problem that is in practice
 
 * add Blender like EmptyObjectModel
 

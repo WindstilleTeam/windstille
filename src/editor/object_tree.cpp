@@ -29,7 +29,7 @@
 
 ObjectTree::ObjectTree(EditorWindow& editor_)
   : editor(editor_),
-    label("Scene Tree", Gtk::ALIGN_LEFT)
+    label("Layer Manager", Gtk::ALIGN_LEFT)
 {
   //treeview.set_headers_clickable();
   treeview.set_headers_visible(false);
@@ -37,7 +37,7 @@ ObjectTree::ObjectTree(EditorWindow& editor_)
   treeview.set_reorderable();
 
   treeview.append_column("Type", ObjectTreeColumns::instance().type_icon);
-  treeview.append_column("Name", ObjectTreeColumns::instance().name);
+  treeview.append_column_editable("Name", ObjectTreeColumns::instance().name);
   treeview.append_column_editable("Visible", ObjectTreeColumns::instance().visible);
 
   treeview.expand_all();
@@ -56,10 +56,14 @@ ObjectTree::ObjectTree(EditorWindow& editor_)
                                  "  <toolbar  name='ToolBar'>"
                                  "    <toolitem action='NewLayer'/>"
                                  "    <toolitem action='DeleteLayer'/>"
+                                 "    <separator/>"
                                  "  </toolbar>"
                                  "</ui>");
   
   Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/ToolBar"));
+
+  treeview.signal_cursor_changed().connect(sigc::mem_fun(*this, &ObjectTree::on_cursor_changed));
+  treeview.signal_columns_changed().connect(sigc::mem_fun(*this, &ObjectTree::on_columns_changed));
 
   toolbar.set_icon_size(Gtk::ICON_SIZE_MENU);
 
@@ -83,11 +87,29 @@ ObjectTree::set_model(SectorModel* model)
     {
       treeview.set_model(model->get_objects_tree());
       treeview.expand_all();
+      treeview.set_cursor(Gtk::TreeModel::Path("0"));
     }
   else
     {
       treeview.set_model(Glib::RefPtr<Gtk::TreeStore>());
     }
+}
+
+void
+ObjectTree::on_cursor_changed()
+{
+  Gtk::TreeModel::Path path;
+  Gtk::TreeViewColumn* focus_column;
+  treeview.get_cursor(path, focus_column);
+  
+  std::cout << "on_cursor_changed: " << path.to_string() << std::endl;
+}
+
+void
+ObjectTree::on_columns_changed()
+{
+  std::cout << "ObjectTree::on_columns_changed()" << std::endl;
+  treeview.expand_all();
 }
 
 /* EOF */

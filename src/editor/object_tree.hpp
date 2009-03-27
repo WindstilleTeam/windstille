@@ -47,6 +47,11 @@ public:
 
   void set_model(SectorModel* model);
 
+  void on_cursor_changed();
+  void on_columns_changed();
+
+  Gtk::TreeView& get_treeview() { return treeview; }
+
 private:
   ObjectTree(const ObjectTree&);
   ObjectTree& operator=(const ObjectTree&);

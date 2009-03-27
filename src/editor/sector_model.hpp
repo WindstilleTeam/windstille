@@ -72,7 +72,8 @@ public:
   void draw(SceneContext& sc, const Layers& layers);
   void update(float delta);
 
-  void add_layer(const std::string& name);
+  void add_layer(const std::string& name, const Gtk::TreeModel::Path& path);
+  void delete_layer(Gtk::TreeModel::Path& path);
 
   void add(const ObjectModelHandle& object);
   void remove(const ObjectModelHandle& object);
