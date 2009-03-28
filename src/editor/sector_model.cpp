@@ -172,28 +172,40 @@ SectorModel::get_selection(const Rectf& rect, const Layers& layermask) const
   return selection;
 }
 
+HardLayerHandle
+SectorModel::get_layer(ObjectModelHandle object)
+{
+  const HardLayers& layers = get_layers();
+  for(HardLayers::const_iterator i = layers.begin(); i != layers.end(); ++i)
+    {
+      if ((*i)->has_object(object))
+        return *i;
+    }
+  return HardLayerHandle();
+}
+
 void
 SectorModel::raise(ObjectModelHandle object)
 {
-  root_layer->raise(object);
+  get_layer(object)->raise(object);
 }
 
 void
 SectorModel::lower(ObjectModelHandle object)
 {
-  root_layer->lower(object);
+  get_layer(object)->lower(object);
 }
 
 void
 SectorModel::raise_to_top(ObjectModelHandle object)
 {
-  root_layer->raise_to_top(object);
+  get_layer(object)->raise_to_top(object);
 }
 
 void
 SectorModel::lower_to_bottom(ObjectModelHandle object)
 {
-  root_layer->lower_to_bottom(object);
+  get_layer(object)->lower_to_bottom(object);
 }
 
 SnapData

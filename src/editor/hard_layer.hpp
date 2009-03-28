@@ -53,6 +53,8 @@ public:
   void set_visible(bool v) { visible = v; }
   void set_locked(bool v) { locked = v; }
 
+  bool has_object(const ObjectModelHandle& object) const;
+
   void add(const ObjectModelHandle& object);
   void remove(const ObjectModelHandle& object);
 

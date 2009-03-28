@@ -99,6 +99,8 @@ public:
 
   ObjectModelHandle get_object_at(const Vector2f& pos, const Layers& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const Layers& layers) const;
+
+  HardLayerHandle get_layer(ObjectModelHandle object);
   
   void raise_to_top(ObjectModelHandle object);
   void lower_to_bottom(ObjectModelHandle object);

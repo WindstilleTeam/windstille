@@ -28,6 +28,12 @@ HardLayer::~HardLayer()
 {
 }
 
+bool
+HardLayer::has_object(const ObjectModelHandle& object) const
+{
+  return std::find(objects.begin(), objects.end(), object) != objects.end();
+}
+
 void
 HardLayer::add(const ObjectModelHandle& object)
 {
