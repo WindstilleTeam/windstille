@@ -351,7 +351,7 @@ SectorModel::write(FileWriter& writer) const
   write(writer, *(layer_tree->children().begin()));
 
   writer.end_section();
-  writer.write_raw("\n;; EOF ;;\n");
+  writer.write_raw("\n\n;; EOF ;;\n");
 }
 
 void

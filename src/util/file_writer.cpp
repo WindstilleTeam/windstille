@@ -34,6 +34,7 @@ FileWriter::~FileWriter()
 void
 FileWriter::indent()
 {
+  out << '\n';
   for(int i = 0; i < indent_count; ++i)
     out << "  ";
 }
@@ -49,7 +50,7 @@ FileWriter&
 FileWriter::start_section(const std::string& name)
 {
   indent();
-  out << "(" << name << "\n";
+  out << "(" << name;
   indent_count += 1;
   return *this;
 }
@@ -57,8 +58,7 @@ FileWriter::start_section(const std::string& name)
 FileWriter&
 FileWriter::end_section()
 {
-  indent();
-  out << ")\n";
+  out << ")";
   indent_count -= 1;
   return *this;
 }
@@ -67,7 +67,7 @@ FileWriter&
 FileWriter::write(const std::string& name, bool value)
 {
   indent();
-  out << "(" << name << " " << value << ")\n";
+  out << "(" << name << " " << value << ")";
   return *this;
 }
 
@@ -75,7 +75,7 @@ FileWriter&
 FileWriter::write(const std::string& name, int value)
 {
   indent();
-  out << "(" << name << " " << value << ")\n";
+  out << "(" << name << " " << value << ")";
   return *this;
 }
 
@@ -83,7 +83,7 @@ FileWriter&
 FileWriter::write(const std::string& name, float value)
 {
   indent();
-  out << "(" << name << " " << value << ")\n";
+  out << "(" << name << " " << value << ")";
   return *this;
 }
 
@@ -107,7 +107,7 @@ FileWriter&
 FileWriter::write(const std::string& name, const char* value)
 {
   indent();
-  out << "(" << name << " \"" << escape_string(value) << "\")\n";
+  out << "(" << name << " \"" << escape_string(value) << "\")";
   return *this;
 }
 
@@ -115,7 +115,7 @@ FileWriter&
 FileWriter::write(const std::string& name, const std::string& value)
 {
   indent();
-  out << "(" << name << " \"" << escape_string(value) << "\")\n";
+  out << "(" << name << " \"" << escape_string(value) << "\")";
   return *this;
 }
 
@@ -123,7 +123,7 @@ FileWriter&
 FileWriter::write(const std::string& name, const Color& value)
 {
   indent();
-  out << "(" << name << " " << value.r << " " << value.g << " " << value.b << " " << value.a << ")\n";
+  out << "(" << name << " " << value.r << " " << value.g << " " << value.b << " " << value.a << ")";
   return *this;
 }
 
@@ -131,7 +131,7 @@ FileWriter&
 FileWriter::write(const std::string& name, const Vector2f& value)
 {
   indent();
-  out << "(" << name << " " << value.x << " " << value.y << ")\n";
+  out << "(" << name << " " << value.x << " " << value.y << ")";
   return *this;
 }
 
