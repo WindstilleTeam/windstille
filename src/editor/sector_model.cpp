@@ -71,14 +71,28 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
 void
 SectorModel::delete_layer(const Gtk::TreeModel::Path& path)
 {
-  layer_tree->erase(layer_tree->get_iter(path));
+  if (path.empty())
+    {
+      std::cout << "SectorModel::delete_layer(): invalid empty path" << std::endl;
+    }
+  else
+    {
+      layer_tree->erase(layer_tree->get_iter(path));
+    }
 }
 
 void
 SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path)
 {
-  Gtk::TreeStore::iterator it = layer_tree->get_iter(path);
-  ((HardLayerHandle)(*it)[ObjectTreeColumns::instance().layer])->add(object);
+  if (path.empty())
+    {
+      std::cout << "SectorModel::add(): invalid empty path" << std::endl;
+    }
+  else
+    { 
+      Gtk::TreeStore::iterator it = layer_tree->get_iter(path);
+      ((HardLayerHandle)(*it)[ObjectTreeColumns::instance().layer])->add(object);
+    }
 }
 
 struct GetLayersFunctor
