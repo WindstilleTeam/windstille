@@ -18,6 +18,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <glibmm/miscutils.h>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/actiongroup.h>
 #include <gtkmm/radioaction.h>
@@ -57,9 +58,11 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <menu action='MenuFile'>"
     "      <menuitem action='New'/>"
     "      <menuitem action='Open'/>"
-    "      <menuitem action='Save'/>"
-    "      <menuitem action='Close'/>"
     "      <separator/>"
+    "      <menuitem action='Save'/>"
+    "      <menuitem action='SaveAs'/>"
+    "      <separator/>"
+    "      <menuitem action='Close'/>"
     "      <menuitem action='Quit'/>"
     "    </menu>"
     "    <menu action='MenuEdit'>"
@@ -110,6 +113,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='New'/>"
     "    <toolitem action='Open'/>"
     "    <toolitem action='Save'/>"
+    "    <toolitem action='SaveAs'/>"
     "    <separator/>"
     "    <toolitem action='Undo'/>"
     "    <toolitem action='Redo'/>"
@@ -163,6 +167,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::mem_fun(*this, &EditorWindow::on_open));
   action_group->add(Gtk::Action::create("Save",        Gtk::Stock::SAVE),
                     sigc::mem_fun(*this, &EditorWindow::on_save));
+  action_group->add(Gtk::Action::create("SaveAs",        Gtk::Stock::SAVE_AS),
+                    sigc::mem_fun(*this, &EditorWindow::on_save_as));
   action_group->add(Gtk::Action::create("Close",       Gtk::Stock::CLOSE),
                     sigc::mem_fun(*this, &EditorWindow::on_close));
   action_group->add(Gtk::Action::create("Quit",        Gtk::Stock::QUIT),
@@ -347,7 +353,7 @@ EditorWindow::on_new()
   // FIXME: We abuse the minimap as our root GLContext
   WindstilleWidget* wst = Gtk::manage(new WindstilleWidget(glconfig, minimap_widget.get_gl_context()));
 
-  Glib::ustring title = Glib::ustring::compose("Sector %1", notebook.get_n_pages());
+  Glib::ustring title = Glib::ustring::compose("Unsaved Sector %1", notebook.get_n_pages()+1);
   int new_page = notebook.append_page(*wst, title);
   wst->show();
   notebook.set_current_page(new_page);
@@ -362,6 +368,8 @@ EditorWindow::load_file(const std::string& filename)
   on_new();
   WindstilleWidget* wst = get_windstille_widget();
   wst->load_file(filename);
+  wst->set_filename(filename);
+  notebook.set_tab_label_text(*notebook.get_nth_page(notebook.get_current_page()), Glib::path_get_basename(filename));
 }
 
 void
@@ -373,6 +381,7 @@ EditorWindow::on_open()
 
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(Gtk::Stock::OPEN,   Gtk::RESPONSE_OK);
+  dialog.set_current_folder("data/sectors/");
 
   switch(dialog.run())
     {
@@ -397,34 +406,70 @@ EditorWindow::on_open()
 void
 EditorWindow::on_save()
 {
-  Gtk::FileChooserDialog dialog("Save File",
-                                Gtk::FILE_CHOOSER_ACTION_SAVE);
-  dialog.set_transient_for(*this);
-
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
-
-  switch(dialog.run())
+  if (WindstilleWidget* wst = get_windstille_widget())
     {
-      case(Gtk::RESPONSE_OK):
+      if (wst->get_filename().empty())
         {
-          std::cout << "Select clicked." << std::endl;
-          std::cout << "Folder selected: " << dialog.get_filename()
-                    << std::endl;
-
-          std::ofstream out(dialog.get_filename().c_str());
-          FileWriter writer(out);
-          if (WindstilleWidget* wst = get_windstille_widget())
-            {
-              wst->get_sector_model()->write(writer);
-            }
-          break;
+          on_save_as();
         }
-
-      case(Gtk::RESPONSE_CANCEL):
+      else
         {
-          std::cout << "Cancel clicked." << std::endl;
-          break;
+          std::ofstream out(wst->get_filename().c_str());
+          FileWriter writer(out);
+          wst->get_sector_model()->write(writer);
+        }
+    }
+}
+
+void
+EditorWindow::on_save_as()
+{
+  int page = notebook.get_current_page();
+  if (page == -1)
+    {
+      // do nothing;
+    }
+  else
+    {
+      Gtk::FileChooserDialog dialog("Save File",
+                                    Gtk::FILE_CHOOSER_ACTION_SAVE);
+      dialog.set_transient_for(*this);
+      
+      dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+      dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
+
+      WindstilleWidget* wst = static_cast<WindstilleWidget*>(notebook.get_nth_page(page));
+ 
+      if (wst->get_filename().empty())
+        dialog.set_current_folder("data/sectors/");
+      else
+        dialog.set_current_folder(Glib::path_get_dirname(wst->get_filename()));
+
+      switch(dialog.run())
+        {
+          case(Gtk::RESPONSE_OK):
+            {
+              std::cout << "Select clicked." << std::endl;
+              std::cout << "Folder selected: " << dialog.get_filename()
+                        << std::endl;
+
+              std::string filename = dialog.get_filename();
+              std::ofstream out(filename.c_str());
+              FileWriter writer(out);
+
+              wst->get_sector_model()->write(writer);
+              wst->set_filename(filename);
+
+              notebook.set_tab_label_text(*notebook.get_nth_page(page), Glib::path_get_basename(filename));
+
+              break;
+            }
+
+          case(Gtk::RESPONSE_CANCEL):
+            {
+              std::cout << "Cancel clicked." << std::endl;
+              break;
+            }
         }
     }
 }

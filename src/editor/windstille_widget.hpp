@@ -51,6 +51,7 @@ class WindstilleWidget
     public Gtk::GL::Widget<WindstilleWidget>
 {
 private:
+  std::string filename;
   std::auto_ptr<SectorModel> sector_model;
   std::vector<ControlPointHandle> control_points;
 
@@ -131,6 +132,9 @@ public:
 
   HardLayerHandle get_current_layer();
   Gtk::TreeModel::Path get_current_layer_path();
+
+  std::string get_filename() const { return filename; }
+  void set_filename(const std::string& filename_) { filename = filename_; }
 
 private:
   WindstilleWidget (const WindstilleWidget&);

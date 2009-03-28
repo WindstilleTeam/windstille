@@ -99,6 +99,7 @@ public:
   void on_new();
   void on_open();
   void on_save();
+  void on_save_as();
   void on_close();
 
   bool on_timeout();

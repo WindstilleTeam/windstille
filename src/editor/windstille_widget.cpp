@@ -571,8 +571,9 @@ WindstilleWidget::get_sector_model()
 }
 
 void
-WindstilleWidget::load_file(const std::string& filename)
+WindstilleWidget::load_file(const std::string& filename_)
 {
+  filename = filename_;
   sector_model->load(filename);
   queue_draw();
 }
