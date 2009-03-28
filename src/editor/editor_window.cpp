@@ -22,6 +22,8 @@
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/actiongroup.h>
 #include <gtkmm/radioaction.h>
+#include <gtkmm/recentaction.h>
+#include <gtkmm/recentmanager.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/stock.h>
@@ -57,7 +59,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "  <menubar name='MenuBar'>"
     "    <menu action='MenuFile'>"
     "      <menuitem action='New'/>"
-    "      <menuitem action='Open'/>"
+    //"      <menuitem action='FileOpen'/>"
+    "      <menuitem action='FileRecentFiles'/>"
     "      <separator/>"
     "      <menuitem action='Save'/>"
     "      <menuitem action='SaveAs'/>"
@@ -111,7 +114,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     ""
     "  <toolbar  name='ToolBar'>"
     "    <toolitem action='New'/>"
-    "    <toolitem action='Open'/>"
+    //"    <toolitem action='FileOpen'/>"
+    "    <toolitem action='FileRecentFiles'/>"
     "    <toolitem action='Save'/>"
     "    <toolitem action='SaveAs'/>"
     "    <separator/>"
@@ -163,7 +167,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("MenuFile",    "_File"));
   action_group->add(Gtk::Action::create("New",         Gtk::Stock::NEW),
                     sigc::mem_fun(*this, &EditorWindow::on_new));
-  action_group->add(Gtk::Action::create("Open",        Gtk::Stock::OPEN),
+  action_group->add(Gtk::Action::create("FileOpen",    Gtk::Stock::OPEN),
                     sigc::mem_fun(*this, &EditorWindow::on_open));
   action_group->add(Gtk::Action::create("Save",        Gtk::Stock::SAVE),
                     sigc::mem_fun(*this, &EditorWindow::on_save));
@@ -173,6 +177,20 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::mem_fun(*this, &EditorWindow::on_close));
   action_group->add(Gtk::Action::create("Quit",        Gtk::Stock::QUIT),
                     sigc::mem_fun(*this, &EditorWindow::on_quit));
+
+  {
+    Glib::RefPtr<Gtk::RecentAction> recent_action = Gtk::RecentAction::create("FileRecentFiles", Gtk::Stock::OPEN);
+
+    Gtk::RecentFilter* filter= Gtk::manage(new Gtk::RecentFilter);
+    filter->add_mime_type("application/windstille");
+    //filter->add_application("Windstille Editor");
+    //filter->add_pattern("*.wst");
+    recent_action->set_filter(*filter);
+
+    recent_action->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_recent_file), recent_action));
+    action_group->add(recent_action, 
+                      sigc::mem_fun(*this, &EditorWindow::on_open));
+  }
 
   action_group->add(Gtk::Action::create("MenuEdit",    "_Edit"));
   action_group->add(Gtk::Action::create("Undo",        Gtk::Stock::UNDO));
@@ -365,11 +383,18 @@ EditorWindow::on_new()
 void
 EditorWindow::load_file(const std::string& filename)
 {
-  on_new();
-  WindstilleWidget* wst = get_windstille_widget();
-  wst->load_file(filename);
-  wst->set_filename(filename);
-  notebook.set_tab_label_text(*notebook.get_nth_page(notebook.get_current_page()), Glib::path_get_basename(filename));
+  try 
+    {
+      on_new();
+      WindstilleWidget* wst = get_windstille_widget();
+      wst->load_file(filename);
+      wst->set_filename(filename);
+      notebook.set_tab_label_text(*notebook.get_nth_page(notebook.get_current_page()), Glib::path_get_basename(filename));
+    }
+  catch(std::exception& err)
+    {
+      std::cout << "EditorWindow::load_file: " << err.what() << std::endl;
+    }
 }
 
 void
@@ -391,6 +416,8 @@ EditorWindow::on_open()
           std::cout << "Folder selected: " << dialog.get_filename()
                     << std::endl;
           
+          add_recent_file(dialog.get_filename());
+
           load_file(dialog.get_filename());
           break;
         }
@@ -434,7 +461,8 @@ EditorWindow::on_save_as()
       Gtk::FileChooserDialog dialog("Save File",
                                     Gtk::FILE_CHOOSER_ACTION_SAVE);
       dialog.set_transient_for(*this);
-      
+      dialog.set_do_overwrite_confirmation(true);
+
       dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
       dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
 
@@ -461,6 +489,7 @@ EditorWindow::on_save_as()
               wst->set_filename(filename);
 
               notebook.set_tab_label_text(*notebook.get_nth_page(page), Glib::path_get_basename(filename));
+              add_recent_file(filename);
 
               break;
             }
@@ -790,6 +819,30 @@ EditorWindow::on_select_all()
       selection->add(layer->begin(), layer->end());
       wst->set_selection(selection);
     }
+}
+
+void
+EditorWindow::on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_action)
+{
+  Glib::RefPtr<const Gtk::RecentInfo> item = recent_action->get_current_item();
+
+  std::cout << "On Recent File:" << item->get_uri() << std::endl;
+  if (item->exists())
+      load_file(Glib::filename_from_uri(item->get_uri()));
+}
+
+void
+EditorWindow::add_recent_file(const std::string& filename)
+{
+  Gtk::RecentManager::Data data;
+  data.display_name = Glib::path_get_basename(filename);
+  data.app_name     = "Windstille Editor";
+  data.app_exec     = "windstille-editor";
+  data.groups.push_back("Windstille");
+  data.is_private   = false;
+  data.mime_type    = "application/windstille";
+
+  Gtk::RecentManager::get_default()->add_item(Glib::filename_to_uri(filename), data);
 }
 
 /* EOF */

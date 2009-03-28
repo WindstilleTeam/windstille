@@ -185,9 +185,9 @@ Sound Handling
 Miscellaneous
 =============
 
-* move particle system into library
+* make FileReader const
 
-* Make FileWriter not place ')' on a new line
+* move particle system into library
 
 * replace lisp::Writer with custom FileWriter (used in config)
 
@@ -501,11 +501,35 @@ Graphics
 Editor
 ======
 
-* make FileReader const
+* make use of Statusbar
+
+* reevaluate the current parent/child implementation, since its very
+  tricky currently to move a parent without affecting the child, which
+  might be useful in some situation (i.e. hold Ctrl pressed to move
+  only the parent, not the children). Other issues:
+
+  - circular parentship causes universe to explode
+  - cloning doesn't preserve parentship  
+  - parents could be handled like normal objects, but with the
+    SelectTool traversing all children and marking them before the
+    move begings, Ctrl could be used to toggle this behaviour
+  - having classic groups of objects, where clicking one object moves
+    all in the group could be useful (like when each object is parent
+    to each other object in the group)
+  - parent refers to name, but name isn't guranteed unique, so loading/saving breaks
+
+* Layer Manager, new functions:
+
+  - show all
+  - hide all
+  - lock all except current layer
 
 * New Layer System:
 
   - rename HardLayer to Layer and Layers to LayerMask/SelectionMask
+
+  - normal Layers can contain child layers, which seems like a bad
+    idea, better way would have special objectless parent layers
 
 * drawing is broken after loading a level, only get fixed when toggling Light layer
 
@@ -539,8 +563,6 @@ Editor
 
 * do a continous zoom while the zoom-button is pressed (timeout callback)
 
-* add recent files
-
 * ObjectProperty Dialog:
 
   Dialogs must be generic and usable by all Objects, supported type
@@ -567,8 +589,6 @@ Editor
   - delete object
   - duplicate object
 
-* add difference between "save" and "save as", along with overwrite warnings
-
 * add second toolbar, first one is getting a little crowded
 
 * disable light layer on default/startup
@@ -594,20 +614,6 @@ Editor
    - full NavigationGraph
    - Sprite
    - Sprite3d / Character
-
-* reevaluate the current parent/child implementation, since its very
-  tricky currently to move a parent without affecting the child, which
-  might be useful in some situation (i.e. hold Ctrl pressed to move
-  only the parent, not the children)
-
-  - circular parentship causes universe to explode
-  - cloning doesn't preserve parentship  
-  - parents could be handled like normal objects, but with the
-    SelectTool traversing all children and marking them before the
-    move begings, Ctrl could be used to toggle this behaviour
-  - having classic groups of objects, where clicking one object moves
-    all in the group could be useful (like when each object is parent
-    to each other object in the group)
 
 * ObjectSelector/IconView allows drag&drop even when nothing is
   selected, leading to a Grumbel dummy image drag&drop without effect

@@ -26,6 +26,7 @@
 #include <gtkmm/paned.h>
 #include <gtkmm/toggleaction.h>
 #include <gtkmm/window.h>
+#include <gtkmm/recentaction.h>
 #include <gtkmm/notebook.h>
 
 #include "selection.hpp"
@@ -141,6 +142,10 @@ public:
 
   void call_with_windstille_widget(void (WindstilleWidget::*func)());
 
+  void on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_action);
+  
+  void add_recent_file(const std::string& filename);
+  
 private:
   EditorWindow(const EditorWindow&);
   EditorWindow& operator=(const EditorWindow&);
