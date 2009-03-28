@@ -67,9 +67,10 @@ private:
   Gtk::TreeStore::iterator root_it;
   Glib::RefPtr<Gtk::TreeStore> layer_tree;
   HardLayerHandle root_layer;
-  
+
 public:
   //typedef Objects::iterator iterator;
+  typedef std::vector<HardLayerHandle> HardLayers;
 
   SectorModel();
 
@@ -79,10 +80,12 @@ public:
   void update(float delta, const Gtk::TreeRow& row);
 
   void add_layer(const std::string& name, const Gtk::TreeModel::Path& path);
-  void delete_layer(Gtk::TreeModel::Path& path);
+  void delete_layer(const Gtk::TreeModel::Path& path);
 
   void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
   void remove(const ObjectModelHandle& object);
+
+  HardLayers get_layers() const;
 
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;
 
@@ -107,6 +110,8 @@ public:
   void load(const std::string& filename);
   void write(FileWriter& writer) const;
   void write(FileWriter& writer, const Gtk::TreeRow& row) const;
+
+  void queue_draw();
 
   //iterator begin() { return objects.begin(); }
   //iterator end() { return objects.end(); }

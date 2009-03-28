@@ -36,10 +36,22 @@ private:
   typedef std::list<ObjectModelHandle> Objects;
 
   Objects objects;
-
+  std::string name;
+  bool visible;
+  bool locked;
+  
 public:
   HardLayer();
   ~HardLayer();
+
+  void set_name(const std::string& str) { name = str; }
+  std::string get_name() const { return name; }
+
+  bool is_visible() const { return visible; }
+  bool is_locked() const { return locked; }
+
+  void set_visible(bool v) { visible = v; }
+  void set_locked(bool v) { locked = v; }
 
   void add(const ObjectModelHandle& object);
   void remove(const ObjectModelHandle& object);

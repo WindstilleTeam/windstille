@@ -501,6 +501,28 @@ Graphics
 Editor
 ======
 
+* New Layer System:
+
+  - needs a way to iterate in reverse over all layers, needed since
+    select() and draw() work in different directions
+
+  - need an easy way to get the layer on which an object is for
+    raise()/lower(), etc.
+
+  - a way to iterate over layers in classic way could be helpful
+
+  - need a clean way to get the current layer
+
+  - a locked layer should be ignored in all select operations, so that
+    it can't be moved by accident, adding to them should be forbidden
+    as well
+
+  - adding a "std::vector<HardLayerHandle> get_layers() const" seems
+    most simple, trouble is that visible/locked/name data might get
+    out of sync
+
+  - add function to select all objects on the current layer
+
 * drawing is broken after loading a level, only get fixed when toggling Light layer
 
 * background pattern goes away when Color pattern is disabled, since

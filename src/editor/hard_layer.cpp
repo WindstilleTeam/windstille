@@ -19,6 +19,8 @@
 #include "hard_layer.hpp"
 
 HardLayer::HardLayer()
+  : visible(true),
+    locked(false)
 {
 }
 
