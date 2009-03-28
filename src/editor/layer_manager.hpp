@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_OBJECT_TREE_HPP
-#define HEADER_WINDSTILLE_EDITOR_OBJECT_TREE_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_LAYER_MANAGER_HPP
+#define HEADER_WINDSTILLE_EDITOR_LAYER_MANAGER_HPP
 
 #include <gtkmm/treeview.h>
 #include <gtkmm/scrolledwindow.h>
@@ -30,7 +30,7 @@
 class SectorModel;
 class EditorWindow;
 
-class ObjectTree : public Gtk::VBox
+class LayerManager : public Gtk::VBox
 {
 private:
   EditorWindow& editor;
@@ -42,8 +42,8 @@ private:
   Glib::RefPtr<Gtk::ActionGroup> action_group;
 
 public:
-  ObjectTree(EditorWindow& editor);
-  virtual ~ObjectTree();
+  LayerManager(EditorWindow& editor);
+  virtual ~LayerManager();
 
   void set_model(SectorModel* model);
 
@@ -53,8 +53,8 @@ public:
   Gtk::TreeView& get_treeview() { return treeview; }
 
 private:
-  ObjectTree(const ObjectTree&);
-  ObjectTree& operator=(const ObjectTree&);
+  LayerManager(const LayerManager&);
+  LayerManager& operator=(const LayerManager&);
 };
 
 #endif

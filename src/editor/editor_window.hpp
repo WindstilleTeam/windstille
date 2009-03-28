@@ -31,7 +31,7 @@
 #include "selection.hpp"
 #include "minimap_widget.hpp"
 #include "object_selector.hpp"
-#include "object_tree.hpp"
+#include "layer_manager.hpp"
 
 class Tool;
 class WindstilleWidget;
@@ -56,7 +56,7 @@ private:
   
   Gtk::Notebook  notebook;
   ObjectSelector object_selector;
-  ObjectTree     object_tree;
+  LayerManager     layer_manager;
   MinimapWidget  minimap_widget;
 
   Glib::RefPtr<Gtk::UIManager>   ui_manager;
@@ -133,7 +133,7 @@ public:
 
   Tool* get_current_tool() const;
 
-  ObjectTree& get_object_tree() { return object_tree; }
+  LayerManager& get_layer_manager() { return layer_manager; }
   WindstilleWidget* get_windstille_widget();
   
   void load_file(const std::string& filename);

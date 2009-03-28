@@ -39,7 +39,7 @@
 EditorWindow* EditorWindow::current_ = 0;
 
 EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
-  : object_tree(*this),
+  : layer_manager(*this),
     minimap_widget(glconfig_),
     glconfig(glconfig_),
     select_tool(new SelectTool()),
@@ -297,7 +297,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
 
   // vpaned.set_size_request(250, -1);
   //object_selector.set_size_request(250, 300);
-  //object_tree.set_size_request(250, 300);
+  //layer_manager.set_size_request(250, 300);
   
   hpaned.pack1(notebook,     Gtk::EXPAND);
   hpaned.pack2(sidebar_vbox, Gtk::SHRINK);
@@ -306,7 +306,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   sidebar_vbox.pack_start(minimap_widget, Gtk::PACK_SHRINK);
   
   vpaned.pack1(object_selector, Gtk::EXPAND);
-  vpaned.pack2(object_tree,     Gtk::SHRINK);
+  vpaned.pack2(layer_manager,     Gtk::SHRINK);
 
   hpaned.set_position(1000);
   vpaned.set_position(420);
@@ -352,7 +352,7 @@ EditorWindow::on_new()
   wst->show();
   notebook.set_current_page(new_page);
 
-  object_tree.set_model(wst->get_sector_model());
+  layer_manager.set_model(wst->get_sector_model());
   layer_widget->update(wst->get_layer_mask());
 }
 
@@ -438,7 +438,7 @@ EditorWindow::on_close()
       notebook.remove_page(page);
 
       if (!get_windstille_widget())
-        object_tree.set_model(0);
+        layer_manager.set_model(0);
     }
 }
 
@@ -592,7 +592,7 @@ EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
   std::cout << "on_switch_page(" << page << ", " << page_num << ")" << std::endl;
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      object_tree.set_model(wst->get_sector_model());
+      layer_manager.set_model(wst->get_sector_model());
       layer_widget->update(wst->get_layer_mask());
 
       toggle_color_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::COLORMAP);
@@ -606,7 +606,7 @@ EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
     }
   else
     {
-      object_tree.set_model(0);
+      layer_manager.set_model(0);
     }
 }
 
@@ -710,7 +710,7 @@ EditorWindow::on_new_layer()
       std::cout << "Adding layer" << std::endl;
       wst->get_sector_model()->add_layer("New Layer", wst->get_current_layer_path());
 
-      object_tree.get_treeview().expand_all();
+      layer_manager.get_treeview().expand_all();
     }
 }
 

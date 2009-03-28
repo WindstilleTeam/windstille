@@ -25,9 +25,9 @@
 
 #include "editor_window.hpp"
 #include "sector_model.hpp"
-#include "object_tree.hpp"
+#include "layer_manager.hpp"
 
-ObjectTree::ObjectTree(EditorWindow& editor_)
+LayerManager::LayerManager(EditorWindow& editor_)
   : editor(editor_),
     label("Layer Manager", Gtk::ALIGN_LEFT)
 {
@@ -56,8 +56,8 @@ ObjectTree::ObjectTree(EditorWindow& editor_)
   
   Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/ToolBar"));
 
-  //treeview.signal_cursor_changed().connect(sigc::mem_fun(*this, &ObjectTree::on_cursor_changed));
-  //treeview.signal_columns_changed().connect(sigc::mem_fun(*this, &ObjectTree::on_columns_changed));
+  //treeview.signal_cursor_changed().connect(sigc::mem_fun(*this, &LayerManager::on_cursor_changed));
+  //treeview.signal_columns_changed().connect(sigc::mem_fun(*this, &LayerManager::on_columns_changed));
 
   toolbar.set_icon_size(Gtk::ICON_SIZE_MENU);
 
@@ -70,12 +70,12 @@ ObjectTree::ObjectTree(EditorWindow& editor_)
   //show_all();
 }
 
-ObjectTree::~ObjectTree()
+LayerManager::~LayerManager()
 {
 }
 
 void
-ObjectTree::set_model(SectorModel* model)
+LayerManager::set_model(SectorModel* model)
 {
   if (model)
     {
@@ -84,10 +84,10 @@ ObjectTree::set_model(SectorModel* model)
       // Recreate all the columns, since if we don't do that, we lose
       // editability for some reason
       treeview.remove_all_columns();
-      treeview.append_column("Type", ObjectTreeColumns::instance().type_icon);
-      treeview.append_column_editable("Name", ObjectTreeColumns::instance().name);
-      treeview.append_column_editable("Visible", ObjectTreeColumns::instance().visible);
-      treeview.append_column_editable("Locked", ObjectTreeColumns::instance().locked);
+      treeview.append_column("Type", LayerManagerColumns::instance().type_icon);
+      treeview.append_column_editable("Name", LayerManagerColumns::instance().name);
+      treeview.append_column_editable("Visible", LayerManagerColumns::instance().visible);
+      treeview.append_column_editable("Locked", LayerManagerColumns::instance().locked);
 
       treeview.expand_all();
       treeview.set_cursor(Gtk::TreeModel::Path("0"));
@@ -99,7 +99,7 @@ ObjectTree::set_model(SectorModel* model)
 }
 
 void
-ObjectTree::on_cursor_changed()
+LayerManager::on_cursor_changed()
 {
   Gtk::TreeModel::Path path;
   Gtk::TreeViewColumn* focus_column;
@@ -109,9 +109,9 @@ ObjectTree::on_cursor_changed()
 }
 
 void
-ObjectTree::on_columns_changed()
+LayerManager::on_columns_changed()
 {
-  std::cout << "ObjectTree::on_columns_changed()" << std::endl;
+  std::cout << "LayerManager::on_columns_changed()" << std::endl;
   treeview.expand_all();
 }
 

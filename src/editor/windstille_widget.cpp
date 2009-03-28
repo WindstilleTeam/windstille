@@ -320,7 +320,7 @@ WindstilleWidget::selection_duplicate()
 {
   Gtk::TreeModel::Path path;
   Gtk::TreeViewColumn* focus_column;
-  EditorWindow::current()->get_object_tree().get_treeview().get_cursor(path, focus_column);
+  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
 
   SelectionHandle new_selection = Selection::create();
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
@@ -501,7 +501,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
   Gtk::TreeModel::Path path;
   Gtk::TreeViewColumn* focus_column;
 
-  EditorWindow::current()->get_object_tree().get_treeview().get_cursor(path, focus_column);
+  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
 
   sector_model->add(object, path);
 }
@@ -550,7 +550,7 @@ WindstilleWidget::get_current_layer()
 {
   Gtk::TreeModel::Path path;
   Gtk::TreeViewColumn* focus_column;
-  EditorWindow::current()->get_object_tree().get_treeview().get_cursor(path, focus_column);
+  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
 
   return sector_model->get_layer(path);  
 }
@@ -560,7 +560,7 @@ WindstilleWidget::get_current_layer_path()
 {
   Gtk::TreeModel::Path path;
   Gtk::TreeViewColumn* focus_column;
-  EditorWindow::current()->get_object_tree().get_treeview().get_cursor(path, focus_column);
+  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
   return path;
 }
 

@@ -30,19 +30,19 @@
 #include "object_model_factory.hpp"
 #include "sector_model.hpp"
 
-ObjectTreeColumns* ObjectTreeColumns::instance_ = 0;
+LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
 SectorModel::SectorModel()
 {  
-  layer_tree = Gtk::TreeStore::create(ObjectTreeColumns::instance());
+  layer_tree = Gtk::TreeStore::create(LayerManagerColumns::instance());
 
   Gtk::TreeStore::iterator it = layer_tree->append();
 
-  (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
-  (*it)[ObjectTreeColumns::instance().name]      = Glib::ustring("Scene");
-  (*it)[ObjectTreeColumns::instance().visible]   = true;
-  (*it)[ObjectTreeColumns::instance().locked]    = false;
-  (*it)[ObjectTreeColumns::instance().layer]     = HardLayerHandle(new HardLayer());
+  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
+  (*it)[LayerManagerColumns::instance().name]      = Glib::ustring("Scene");
+  (*it)[LayerManagerColumns::instance().visible]   = true;
+  (*it)[LayerManagerColumns::instance().locked]    = false;
+  (*it)[LayerManagerColumns::instance().layer]     = HardLayerHandle(new HardLayer());
 
   layer_tree->signal_row_changed().connect(sigc::mem_fun(*this, &SectorModel::on_row_changed));
   layer_tree->signal_row_deleted().connect(sigc::mem_fun(*this, &SectorModel::on_row_deleted));
@@ -61,11 +61,11 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
   else
     it = layer_tree->append(layer_tree->get_iter(path)->children());
 
-  (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
-  (*it)[ObjectTreeColumns::instance().name]      = name;
-  (*it)[ObjectTreeColumns::instance().visible]   = true; 
-  (*it)[ObjectTreeColumns::instance().locked]    = false; 
-  (*it)[ObjectTreeColumns::instance().layer]     = HardLayerHandle(new HardLayer());
+  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
+  (*it)[LayerManagerColumns::instance().name]      = name;
+  (*it)[LayerManagerColumns::instance().visible]   = true; 
+  (*it)[LayerManagerColumns::instance().locked]    = false; 
+  (*it)[LayerManagerColumns::instance().layer]     = HardLayerHandle(new HardLayer());
 }
 
 void
@@ -91,7 +91,7 @@ SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& pa
   else
     { 
       Gtk::TreeStore::iterator it = layer_tree->get_iter(path);
-      ((HardLayerHandle)(*it)[ObjectTreeColumns::instance().layer])->add(object);
+      ((HardLayerHandle)(*it)[LayerManagerColumns::instance().layer])->add(object);
     }
 }
 
@@ -105,7 +105,7 @@ struct GetLayersFunctor
 
   bool get_layers(const Gtk::TreeModel::iterator& it)
   {
-    objects.push_back((*it)[ObjectTreeColumns::instance().layer]);
+    objects.push_back((*it)[LayerManagerColumns::instance().layer]);
     return false;
   }
 };
@@ -127,7 +127,7 @@ SectorModel::get_layer(const Gtk::TreeModel::Path& path) const
       Gtk::TreeModel::iterator it = layer_tree->get_iter(path);
       if (it)
         {
-          return (*it)[ObjectTreeColumns::instance().layer];
+          return (*it)[LayerManagerColumns::instance().layer];
         }
       else
         {
@@ -297,11 +297,11 @@ SectorModel::load_layer(FileReader reader, const Gtk::TreeModel::Row* parent)
   // Append the layer to the tree
   Gtk::TreeStore::iterator it = parent ? layer_tree->append(parent->children()) : it = layer_tree->append();
 
-  (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
-  (*it)[ObjectTreeColumns::instance().name]      = name;
-  (*it)[ObjectTreeColumns::instance().visible]   = visible; 
-  (*it)[ObjectTreeColumns::instance().locked]    = locked; 
-  (*it)[ObjectTreeColumns::instance().layer]     = layer;
+  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
+  (*it)[LayerManagerColumns::instance().name]      = name;
+  (*it)[LayerManagerColumns::instance().visible]   = visible; 
+  (*it)[LayerManagerColumns::instance().locked]    = locked; 
+  (*it)[LayerManagerColumns::instance().layer]     = layer;
   
   const std::vector<FileReader>& layers_sections = layers_reader.get_sections();
   for(std::vector<FileReader>::const_iterator j = layers_sections.begin(); j != layers_sections.end(); ++j)
@@ -358,12 +358,12 @@ void
 SectorModel::write(FileWriter& writer, const Gtk::TreeRow& row) const
 {
   writer.start_section("layer");
-  writer.write("name",    (Glib::ustring)(row[ObjectTreeColumns::instance().name]));
-  writer.write("visible", (bool)row[ObjectTreeColumns::instance().visible]);
-  writer.write("locked",  (bool)row[ObjectTreeColumns::instance().locked]);
+  writer.write("name",    (Glib::ustring)(row[LayerManagerColumns::instance().name]));
+  writer.write("visible", (bool)row[LayerManagerColumns::instance().visible]);
+  writer.write("locked",  (bool)row[LayerManagerColumns::instance().locked]);
 
   writer.start_section("objects");
-  ((HardLayerHandle)row[ObjectTreeColumns::instance().layer])->write(writer);
+  ((HardLayerHandle)row[LayerManagerColumns::instance().layer])->write(writer);
   writer.end_section();
 
   writer.start_section("child-layers");
@@ -388,16 +388,16 @@ SectorModel::queue_draw()
 void
 SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
-  std::cout << "ObjectTree:on_row_changed" << std::endl;
+  std::cout << "LayerManager:on_row_changed" << std::endl;
   if (iter)
     {
       // Update the Layer object with data from the tree
-      HardLayerHandle layer = (*iter)[ObjectTreeColumns::instance().layer];
+      HardLayerHandle layer = (*iter)[LayerManagerColumns::instance().layer];
       if (layer.get())
         {
-          layer->set_name(((Glib::ustring)(*iter)[ObjectTreeColumns::instance().name]).raw());
-          layer->set_visible((*iter)[ObjectTreeColumns::instance().visible]);
-          layer->set_locked((*iter)[ObjectTreeColumns::instance().locked]);
+          layer->set_name(((Glib::ustring)(*iter)[LayerManagerColumns::instance().name]).raw());
+          layer->set_visible((*iter)[LayerManagerColumns::instance().visible]);
+          layer->set_locked((*iter)[LayerManagerColumns::instance().locked]);
         }
     }
   queue_draw();
@@ -406,26 +406,26 @@ SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeMod
 void
 SectorModel::on_row_deleted(const Gtk::TreeModel::Path& path)
 {
-  std::cout << "ObjectTree:on_row_deleted" << std::endl;
+  std::cout << "LayerManager:on_row_deleted" << std::endl;
   queue_draw();
 }
 
 void
 SectorModel::on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
-  std::cout << "ObjectTree:on_row_has_child_toggled" << std::endl;
+  std::cout << "LayerManager:on_row_has_child_toggled" << std::endl;
 }
 
 void
 SectorModel::on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
-  std::cout << "ObjectTree:on_row_inserted" << std::endl;
+  std::cout << "LayerManager:on_row_inserted" << std::endl;
 }
 
 void
 SectorModel::on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order)
 {
-  std::cout << "ObjectTree:on_row_reordered" << std::endl;
+  std::cout << "LayerManager:on_row_reordered" << std::endl;
 }
 
 /* EOF */

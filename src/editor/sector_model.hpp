@@ -30,19 +30,19 @@
 #include "math/vector2f.hpp"
 
 class SceneContext;
-class ObjectTreeColumns;
+class LayerManagerColumns;
 
-class ObjectTreeColumns : public Gtk::TreeModel::ColumnRecord
+class LayerManagerColumns : public Gtk::TreeModel::ColumnRecord
 {
 private:
-  static ObjectTreeColumns* instance_;
+  static LayerManagerColumns* instance_;
 
 public:
-  static ObjectTreeColumns& instance() {
+  static LayerManagerColumns& instance() {
     if (instance_)
       return *instance_;
     else
-      return *(instance_ = new ObjectTreeColumns());
+      return *(instance_ = new LayerManagerColumns());
   }
 
   Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > type_icon;
@@ -52,7 +52,7 @@ public:
   Gtk::TreeModelColumn<HardLayerHandle>            layer;
 
 private:
-  ObjectTreeColumns() {
+  LayerManagerColumns() {
     add(type_icon); 
     add(name); 
     add(visible); 
