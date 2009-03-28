@@ -52,6 +52,8 @@ public:
   virtual ~ObjectModel();
   
   void set_parent(const ObjectModelHandle& parent_);
+  ObjectModelHandle get_parent() const;
+
   std::string get_name() const { return name; }
 
   Vector2f get_world_pos() const;

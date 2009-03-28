@@ -56,19 +56,44 @@ ObjectModel::write_member(FileWriter& writer) const
     .write("layer", layers.get_mask());
 }
 
+ObjectModelHandle
+ObjectModel::get_parent() const
+{
+  ObjectModelHandle parent = parent_ptr.lock();
+  return parent;
+}
+
 void
 ObjectModel::set_parent(const ObjectModelHandle& parent_)
 {
-  if (ObjectModelHandle parent = parent_ptr.lock())
+  { // Remove the old parent
+    ObjectModelHandle parent = parent_ptr.lock();
+    if (parent)
+      { 
+        rel_pos += parent->get_world_pos();
+        parent_ptr = ObjectModelPtr();
+      }
+  }
+
+  // Check that we don't create a loop to 'this' by parenting
+  ObjectModelHandle pptr = parent_;
+  while(pptr.get())
     {
-      rel_pos += parent->get_world_pos();
+      if (pptr.get() == this)
+        {
+          std::cout << "Error: Trying to create parent loop" << std::endl;
+          parent_ptr = ObjectModelPtr();
+          return;
+        }
+      pptr = pptr->get_parent();
     }
 
+  // Set new parent
   if (parent_.get())
     {
       rel_pos -= parent_->get_world_pos();
     }
-  
+
   parent_ptr = parent_;
 }
 
