@@ -121,6 +121,8 @@ public:
   void on_switch_page(GtkNotebookPage* page, guint page_num);
   void on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool*);
 
+  void on_select_all();
+
   void toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, uint32_t mask);
   void toggle_background_layer(Glib::RefPtr<Gtk::ToggleAction> action);
   void toggle_draw_only_active_layer(Glib::RefPtr<Gtk::ToggleAction> action);

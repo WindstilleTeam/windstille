@@ -77,12 +77,13 @@ public:
   void update(float delta);
   void update(float delta, const Gtk::TreeRow& row);
 
-  void add_layer(const std::string& name, const Gtk::TreeModel::Path& path);
+  void add_layer(const std::string& name, const Gtk::TreeModel::Path& path = Gtk::TreeModel::Path());
   void delete_layer(const Gtk::TreeModel::Path& path);
 
   void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
   void remove(const ObjectModelHandle& object);
 
+  HardLayerHandle get_layer(const Gtk::TreeModel::Path& path) const;
   HardLayers get_layers() const;
 
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;
@@ -108,6 +109,7 @@ public:
   SnapData snap_object(const Rectf& object, const std::set<ObjectModelHandle>& ignore_objects) const;
 
   void load(const std::string& filename);
+  void load_layer(FileReader filename, const Gtk::TreeModel::Row* parent);
   void write(FileWriter& writer) const;
   void write(FileWriter& writer, const Gtk::TreeRow& row) const;
 

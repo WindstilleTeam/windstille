@@ -41,8 +41,13 @@ private:
   bool locked;
   
 public:
+  typedef Objects::iterator iterator;
+
   HardLayer();
   ~HardLayer();
+
+  iterator begin() { return objects.begin(); }
+  iterator end()   { return objects.end(); }
 
   void set_name(const std::string& str) { name = str; }
   std::string get_name() const { return name; }

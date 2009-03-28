@@ -54,7 +54,12 @@ SectorModel::SectorModel()
 void
 SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path)
 {
-  Gtk::TreeStore::iterator it = layer_tree->append(layer_tree->get_iter(path)->children());
+  Gtk::TreeStore::iterator it;
+
+  if (path.empty())
+    it = layer_tree->append();
+  else
+    it = layer_tree->append(layer_tree->get_iter(path)->children());
 
   (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[ObjectTreeColumns::instance().name]      = name;
@@ -98,6 +103,27 @@ SectorModel::get_layers() const
   GetLayersFunctor func(lst);
   layer_tree->foreach_iter(sigc::mem_fun(func, &GetLayersFunctor::get_layers));
   return lst;
+}
+
+HardLayerHandle
+SectorModel::get_layer(const Gtk::TreeModel::Path& path) const
+{
+  if (!path.empty())
+    {
+      Gtk::TreeModel::iterator it = layer_tree->get_iter(path);
+      if (it)
+        {
+          return (*it)[ObjectTreeColumns::instance().layer];
+        }
+      else
+        {
+          return HardLayerHandle();
+        }
+    }
+  else
+    {
+      return HardLayerHandle();
+    }
 }
 
 void
@@ -226,8 +252,55 @@ SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& i
 }
 
 void
+SectorModel::load_layer(FileReader reader, const Gtk::TreeModel::Row* parent)
+{
+  FileReader objects_reader;
+  FileReader layers_reader;
+
+  std::string name = "New Layer";
+  bool visible = true;;
+  bool locked  = false;
+
+  reader.read("name", name);
+  reader.read("visible", visible);
+  reader.read("locked", locked);
+  reader.read("objects", objects_reader);
+  reader.read("child-layers", layers_reader);
+
+  std::cout << "loading layer: " << reader.get_name() << " " << name << " " << visible << " " << locked << std::endl;
+
+  HardLayerHandle layer = HardLayerHandle(new HardLayer());
+  layer->set_name(name);
+  layer->set_visible(visible);
+  layer->set_locked(locked);
+
+  const std::vector<FileReader>& objects_sections = objects_reader.get_sections();
+  for(std::vector<FileReader>::const_iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
+    {
+      layer->add(ObjectModelFactory::create(*j));
+    }
+
+  // Append the layer to the tree
+  Gtk::TreeStore::iterator it = parent ? layer_tree->append(parent->children()) : it = layer_tree->append();
+
+  (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
+  (*it)[ObjectTreeColumns::instance().name]      = name;
+  (*it)[ObjectTreeColumns::instance().visible]   = visible; 
+  (*it)[ObjectTreeColumns::instance().locked]    = locked; 
+  (*it)[ObjectTreeColumns::instance().layer]     = layer;
+  
+  const std::vector<FileReader>& layers_sections = layers_reader.get_sections();
+  for(std::vector<FileReader>::const_iterator j = layers_sections.begin(); j != layers_sections.end(); ++j)
+    {
+      load_layer(*j, &*it);
+    }
+}
+
+void
 SectorModel::load(const std::string& filename)
 {
+  layer_tree->clear();
+
   std::ifstream stream(filename.c_str());
   if (!stream)
     {
@@ -238,28 +311,12 @@ SectorModel::load(const std::string& filename)
       FileReader reader = FileReader::parse(stream, filename);
       if (reader.get_name() == "windstille-sector")
         {
-          std::vector<FileReader> sections = reader.get_sections();
-          for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+          const std::vector<FileReader>& sections = reader.get_sections();
+          for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
             {
               if (i->get_name() == "layer")
                 {
-                  FileReader objects_reader;
-                  FileReader layers_reader;
-                  std::string name;
-                  bool visible;
-                  bool locked;
-
-                  i->read("name", name);
-                  i->read("visible", visible);
-                  i->read("visible", locked);
-                  i->read("objects", objects_reader);
-                  i->read("child-layers", layers_reader);
-                  
-                  std::vector<FileReader> objects_sections = objects_reader.get_sections();
-                  for(std::vector<FileReader>::iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
-                    {
-                      //FIXME: add(ObjectModelFactory::create(*j));
-                    }
+                  load_layer(*i, 0);
                 }
             }
         }

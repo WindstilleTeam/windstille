@@ -544,6 +544,25 @@ WindstilleWidget::get_selection() const
 {
   return selection;
 }
+
+HardLayerHandle
+WindstilleWidget::get_current_layer()
+{
+  Gtk::TreeModel::Path path;
+  Gtk::TreeViewColumn* focus_column;
+  EditorWindow::current()->get_object_tree().get_treeview().get_cursor(path, focus_column);
+
+  return sector_model->get_layer(path);  
+}
+
+Gtk::TreeModel::Path
+WindstilleWidget::get_current_layer_path()
+{
+  Gtk::TreeModel::Path path;
+  Gtk::TreeViewColumn* focus_column;
+  EditorWindow::current()->get_object_tree().get_treeview().get_cursor(path, focus_column);
+  return path;
+}
 
 SectorModel*
 WindstilleWidget::get_sector_model()

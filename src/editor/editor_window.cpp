@@ -69,6 +69,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <separator/>"
     "      <menuitem action='Delete'/>"
     "      <menuitem action='Duplicate'/>"
+    "      <separator/>"
+    "      <menuitem action='SelectAll'/>"
     "    </menu>"
     "    <menu action='MenuObject'>"
     "      <menuitem action='RaiseObjectToTop'/>"
@@ -175,6 +177,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::mem_fun(*this, &EditorWindow::on_copy));
   action_group->add(Gtk::Action::create("Paste",       Gtk::Stock::PASTE),
                     sigc::mem_fun(*this, &EditorWindow::on_paste));
+  action_group->add(Gtk::Action::create("SelectAll",       Gtk::Stock::SELECT_ALL),
+                    sigc::mem_fun(*this, &EditorWindow::on_select_all));
 
   action_group->add(Gtk::Action::create("Delete",      Gtk::Stock::DELETE),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_delete));
@@ -694,11 +698,7 @@ EditorWindow::on_delete_layer()
   if (WindstilleWidget* wst = get_windstille_widget())
     {
       std::cout << "Deleting layer: " << wst << std::endl;
-      Gtk::TreeModel::Path path;
-      Gtk::TreeViewColumn* focus_column;
-      object_tree.get_treeview().get_cursor(path, focus_column);
-
-      wst->get_sector_model()->delete_layer(path);
+      wst->get_sector_model()->delete_layer(wst->get_current_layer_path());
     }
 }
 
@@ -708,13 +708,7 @@ EditorWindow::on_new_layer()
   if (WindstilleWidget* wst = get_windstille_widget())
     {
       std::cout << "Adding layer" << std::endl;
-
-      Gtk::TreeModel::Path path;
-      Gtk::TreeViewColumn* focus_column;
-
-      object_tree.get_treeview().get_cursor(path, focus_column);
-
-      wst->get_sector_model()->add_layer("New Layer", path);
+      wst->get_sector_model()->add_layer("New Layer", wst->get_current_layer_path());
 
       object_tree.get_treeview().expand_all();
     }
@@ -727,19 +721,29 @@ EditorWindow::on_paste()
     {
       if (WindstilleWidget* wst = get_windstille_widget())
         {
-          Gtk::TreeModel::Path path;
-          Gtk::TreeViewColumn* focus_column;
-          object_tree.get_treeview().get_cursor(path, focus_column);
-
+          HardLayerHandle layer = wst->get_current_layer();
           for(Selection::reverse_iterator i = clipboard->rbegin(); i != clipboard->rend(); ++i)
             {
-              wst->get_sector_model()->add(*i, path);
+              layer->add(*i);
             }
 
           wst->set_selection(clipboard);
           clipboard = clipboard->clone();
           queue_draw();
         }
+    }
+}
+
+void
+EditorWindow::on_select_all()
+{
+  // Select all on current layer
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      HardLayerHandle layer = wst->get_current_layer();
+      SelectionHandle selection = Selection::create();
+      selection->add(layer->begin(), layer->end());
+      wst->set_selection(selection);
     }
 }
 

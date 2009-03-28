@@ -26,7 +26,7 @@ class FileReader;
 class ObjectModelFactory
 {
 public:
-  static ObjectModelHandle create(FileReader& reader);
+  static ObjectModelHandle create(FileReader reader);
   
 private:
   ObjectModelFactory(const ObjectModelFactory&);
