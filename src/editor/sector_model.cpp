@@ -34,15 +34,15 @@ ObjectTreeColumns* ObjectTreeColumns::instance_ = 0;
 
 SectorModel::SectorModel()
 {  
-  root_layer = HardLayerHandle(new HardLayer());
-
   layer_tree = Gtk::TreeStore::create(ObjectTreeColumns::instance());
 
-  root_it = layer_tree->append();
-  (*root_it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
-  (*root_it)[ObjectTreeColumns::instance().name]      = Glib::ustring("Scene");
-  (*root_it)[ObjectTreeColumns::instance().visible]   = true;
-  (*root_it)[ObjectTreeColumns::instance().layer]     = root_layer;
+  Gtk::TreeStore::iterator it = layer_tree->append();
+
+  (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
+  (*it)[ObjectTreeColumns::instance().name]      = Glib::ustring("Scene");
+  (*it)[ObjectTreeColumns::instance().visible]   = true;
+  (*it)[ObjectTreeColumns::instance().locked]    = false;
+  (*it)[ObjectTreeColumns::instance().layer]     = HardLayerHandle(new HardLayer());
 
   layer_tree->signal_row_changed().connect(sigc::mem_fun(*this, &SectorModel::on_row_changed));
   layer_tree->signal_row_deleted().connect(sigc::mem_fun(*this, &SectorModel::on_row_deleted));
@@ -59,6 +59,7 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
   (*it)[ObjectTreeColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[ObjectTreeColumns::instance().name]      = name;
   (*it)[ObjectTreeColumns::instance().visible]   = true; 
+  (*it)[ObjectTreeColumns::instance().locked]    = false; 
   (*it)[ObjectTreeColumns::instance().layer]     = HardLayerHandle(new HardLayer());
 }
 
@@ -243,12 +244,16 @@ SectorModel::load(const std::string& filename)
               if (i->get_name() == "layer")
                 {
                   FileReader objects_reader;
+                  FileReader layers_reader;
                   std::string name;
                   bool visible;
+                  bool locked;
 
                   i->read("name", name);
                   i->read("visible", visible);
+                  i->read("visible", locked);
                   i->read("objects", objects_reader);
+                  i->read("child-layers", layers_reader);
                   
                   std::vector<FileReader> objects_sections = objects_reader.get_sections();
                   for(std::vector<FileReader>::iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
@@ -282,11 +287,12 @@ void
 SectorModel::write(FileWriter& writer, const Gtk::TreeRow& row) const
 {
   writer.start_section("layer");
-  writer.write("name",   (Glib::ustring)(row[ObjectTreeColumns::instance().name]));
-  writer.write("visible",          (bool)row[ObjectTreeColumns::instance().visible]);
+  writer.write("name",    (Glib::ustring)(row[ObjectTreeColumns::instance().name]));
+  writer.write("visible", (bool)row[ObjectTreeColumns::instance().visible]);
+  writer.write("locked",  (bool)row[ObjectTreeColumns::instance().locked]);
 
   writer.start_section("objects");
-  root_layer->write(writer);
+  ((HardLayerHandle)row[ObjectTreeColumns::instance().layer])->write(writer);
   writer.end_section();
 
   writer.start_section("child-layers");

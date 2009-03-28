@@ -64,9 +64,7 @@ private:
 class SectorModel
 {
 private:
-  Gtk::TreeStore::iterator root_it;
   Glib::RefPtr<Gtk::TreeStore> layer_tree;
-  HardLayerHandle root_layer;
 
 public:
   //typedef Objects::iterator iterator;
