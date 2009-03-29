@@ -623,8 +623,6 @@ Editor
 * ObjectSelector/IconView allows drag&drop even when nothing is
   selected, leading to a Grumbel dummy image drag&drop without effect
 
-* add a Rect::contains(Rect) call and adjust SelectTool
-
 * save a bitmask along with an object to allow pixel perfect click
   selection, for scaled, rotated or otherwise deformed objects the
   mouse coordinates need to be transformed into texture space

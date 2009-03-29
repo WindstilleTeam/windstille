@@ -302,6 +302,12 @@ public:
 	{
 		return (r.left < right && r.right > left && r.top < bottom && r.bottom > top);
 	}
+
+	bool contains(const Rectf& rect) const
+	{
+          return rect.left >= left && rect.right <= right &&
+            rect.top >= top && rect.bottom <= bottom;
+	}
 	
 //! Operations:
 public:

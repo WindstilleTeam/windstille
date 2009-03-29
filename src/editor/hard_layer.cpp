@@ -96,7 +96,7 @@ HardLayer::get_selection(const Rectf& rect, const Layers& layers) const
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
     {
       if (layers.match((*i)->get_layers()) &&
-          (*i)->get_bounding_box().is_overlapped(rect))
+          rect.contains((*i)->get_bounding_box()))
         {
           selection->add(*i);
         }
