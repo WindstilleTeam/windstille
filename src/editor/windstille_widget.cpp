@@ -318,11 +318,15 @@ WindstilleWidget::selection_clear_parent()
 void
 WindstilleWidget::selection_duplicate()
 {
+  std::map<ObjectModelHandle, ObjectModelHandle> parent_map;
+
   SelectionHandle new_selection = Selection::create();
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
       HardLayerHandle layer = sector_model->get_layer(*i);
-      ObjectModelHandle obj = (*i)->clone();     
+      ObjectModelHandle obj = (*i)->clone();
+
+      parent_map[*i] = obj;
 
       if (!layer)
         {
@@ -336,7 +340,27 @@ WindstilleWidget::selection_duplicate()
           new_selection->add(obj);
         }
     }
+
   selection = new_selection;
+
+  // Second pass to set the parents to the cloned objects
+  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      if ((*i)->get_parent())
+        {
+          std::map<ObjectModelHandle, ObjectModelHandle>::iterator it = parent_map.find((*i)->get_parent());
+          
+          if (it == parent_map.end())
+            {
+              // When the parent wasn't part of the selection, leave
+              // the parent untouched
+            }
+          else
+            {
+              (*i)->set_parent(it->second);
+            }
+        }
+    }
 
   queue_draw();
 }

@@ -517,7 +517,6 @@ Editor
   might be useful in some situation (i.e. hold Ctrl pressed to move
   only the parent, not the children). Other issues:
 
-  - cloning doesn't preserve parentship **IMPORTANT**
   - loading doesn't preserve parentship **IMPORTANT**
   - parents could be handled like normal objects, but with the
     SelectTool traversing all children and marking them before the
