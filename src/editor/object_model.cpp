@@ -18,6 +18,7 @@
 
 #include <iostream>
 
+#include "editor_window.hpp"
 #include "util/file_reader.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
@@ -81,7 +82,8 @@ ObjectModel::set_parent(const ObjectModelHandle& parent_)
     {
       if (pptr.get() == this)
         {
-          std::cout << "Error: Trying to create parent loop" << std::endl;
+          EditorWindow::current()->print("Error: Trying to create parent loop");
+
           parent_ptr = ObjectModelPtr();
           return;
         }

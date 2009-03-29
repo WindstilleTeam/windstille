@@ -73,7 +73,7 @@ SectorModel::delete_layer(const Gtk::TreeModel::Path& path)
 {
   if (path.empty())
     {
-      std::cout << "SectorModel::delete_layer(): invalid empty path" << std::endl;
+      EditorWindow::current()->print("SectorModel::delete_layer(): invalid empty path");
     }
   else
     {
@@ -86,7 +86,7 @@ SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& pa
 {
   if (path.empty())
     {
-      std::cout << "SectorModel::add(): invalid empty path" << std::endl;
+      EditorWindow::current()->print("SectorModel::add(): invalid empty path");
     }
   else
     { 

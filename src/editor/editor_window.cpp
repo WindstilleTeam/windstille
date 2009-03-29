@@ -388,10 +388,14 @@ EditorWindow::load_file(const std::string& filename)
       wst->load_file(filename);
       wst->set_filename(filename);
       notebook.set_tab_label_text(*notebook.get_nth_page(notebook.get_current_page()), Glib::path_get_basename(filename));
+
+      print("Loaded: " + filename);
     }
   catch(std::exception& err)
     {
-      std::cout << "EditorWindow::load_file: " << err.what() << std::endl;
+      std::ostringstream str;
+      str << "EditorWindow::load_file: " << err.what();
+      print(str.str());
     }
 }
 
@@ -442,6 +446,7 @@ EditorWindow::on_save()
           std::ofstream out(wst->get_filename().c_str());
           FileWriter writer(out);
           wst->get_sector_model()->write(writer);
+          print("Wrote: " + wst->get_filename());
         }
     }
 }
@@ -488,7 +493,7 @@ EditorWindow::on_save_as()
 
               notebook.set_tab_label_text(*notebook.get_nth_page(page), Glib::path_get_basename(filename));
               add_recent_file(filename);
-
+              print("Wrote: " + filename);
               break;
             }
 
@@ -829,6 +834,21 @@ EditorWindow::add_recent_file(const std::string& filename)
   data.mime_type    = "application/windstille";
 
   Gtk::RecentManager::get_default()->add_item(Glib::filename_to_uri(filename), data);
+}
+
+bool
+EditorWindow::remove_message(guint id)
+{
+  status.remove_message(id);
+  return false;
+}
+
+void
+EditorWindow::print(const std::string& text)
+{
+  guint id = status.push(text);
+  std::cout << "[LOG] " << text << std::endl;
+  Glib::signal_timeout().connect(sigc::bind(sigc::mem_fun(*this, &EditorWindow::remove_message), id), 6000);
 }
 
 /* EOF */

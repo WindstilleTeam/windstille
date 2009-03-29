@@ -425,17 +425,17 @@ WindstilleWidget::key_press(GdkEventKey* event)
     {
       case GDK_1:
         map_type = DecalObjectModel::COLORMAP;
-        std::cout << "COLORMAP" << std::endl;
+        EditorWindow::current()->print("COLORMAP");
         break;
 
       case GDK_2:
         map_type = DecalObjectModel::LIGHTMAP;
-        std::cout << "LIGHTMAP" << std::endl;
+        EditorWindow::current()->print("LIGHTMAP");
         break;
 
       case GDK_3:
         map_type = DecalObjectModel::HIGHLIGHTMAP;
-        std::cout << "HIGHLIGHTMAP" << std::endl;
+        EditorWindow::current()->print("HIGHLIGHT");
         break;
 
       case GDK_Left:

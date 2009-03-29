@@ -144,6 +144,9 @@ public:
   void on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_action);
   
   void add_recent_file(const std::string& filename);
+
+  void print(const std::string& text);
+  bool remove_message(guint id);
   
 private:
   EditorWindow(const EditorWindow&);

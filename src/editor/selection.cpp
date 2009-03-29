@@ -17,6 +17,7 @@
 */
 
 #include <iostream>
+#include "editor_window.hpp"
 #include "selection.hpp"
 
 Selection::Selection()
@@ -43,7 +44,7 @@ Selection::remove(const ObjectModelHandle& object)
     }
   else
     {
-      std::cout << "Selection:remove(): object not in selection" << std::endl;
+      EditorWindow::current()->print("Selection:remove(): object not in selection");
     }
 }
 
