@@ -185,6 +185,8 @@ Sound Handling
 Miscellaneous
 =============
 
+* Display::aspect_size is ugly, turn that into a Display::set_size();
+
 * make FileReader const
 
 * move particle system into library
@@ -502,14 +504,16 @@ Editor
 ======
 
 * make use of Statusbar
+  - display mouse coordinates in WorldCo
+  - display what Ctrl/Shift do for the current tool
 
 * reevaluate the current parent/child implementation, since its very
   tricky currently to move a parent without affecting the child, which
   might be useful in some situation (i.e. hold Ctrl pressed to move
   only the parent, not the children). Other issues:
 
-  - circular parentship causes universe to explode
   - cloning doesn't preserve parentship  
+  - loading doesn't preserve parentship
   - parents could be handled like normal objects, but with the
     SelectTool traversing all children and marking them before the
     move begings, Ctrl could be used to toggle this behaviour
@@ -522,7 +526,9 @@ Editor
 
   - show all
   - hide all
-  - lock all except current layer
+  - lock all
+  - unlock all
+  - lock all except current layer (IMPORTANT)
 
 * New Layer System:
 
@@ -530,6 +536,10 @@ Editor
 
   - normal Layers can contain child layers, which seems like a bad
     idea, better way would have special objectless parent layers
+
+* add button and keyboard shortcut to mark/unmark all layers in the layermask
+
+* add a way to move object to a different layer
 
 * drawing is broken after loading a level, only get fixed when toggling Light layer
 
@@ -555,7 +565,9 @@ Editor
 * highlight map is problematic, since objects don't cover highlights,
   maybe rendering a stencil mask might help, other alternative would
   be occulsion querys, but they only work for Geforce3 and Up. Have to
-  wait and see how much of a problem that is in practice
+  wait and see how much of a problem that is in practice, ray-casting
+  would be doable as well, but won't work well with 3d sprites or
+  scaling
 
 * add Blender like EmptyObjectModel
 
@@ -577,10 +589,6 @@ Editor
   - bool
   - enum
 
-* add button and keyboard shortcut to mark/unmark all layers in the layermask
-
-* add a way to move object to a different layer
-
 * add keyboard shortcut important stuff:
 
   - layer toggle 1,2,3,4,5,...
@@ -591,21 +599,16 @@ Editor
 
 * add second toolbar, first one is getting a little crowded
 
-* disable light layer on default/startup
-
-* lightmap objects are hard to see
+* lightmap objects are hard to see (not that big an issue with the new
+  layer system)
 
 * decal needs to be scalable and have vertices moveable, also color
   needs to be adjustable
 
-* make duplicated objects insert near those from which they where cloned
-
-* WindstilleWidget contains garbage when its first created, it gets
-  however cleaned up in later redraws
+* make duplicated objects insert near those from which they where
+  cloned (maybe have "Paste" and "Paste On Top")
 
 * think about Undo/Redo
-
-* Display::aspect_size is ugly, turn that into a Display::set_size();
 
 * implement non-Surface based objects:
 
@@ -620,14 +623,15 @@ Editor
 
 * add a Rect::contains(Rect) call and adjust SelectTool
 
-* save bitmask along with object to allow pixel perfect click
-  selection
+* save a bitmask along with an object to allow pixel perfect click
+  selection, for scaled, rotated or otherwise deformed objects the
+  mouse coordinates need to be transformed into texture space
 
 * add more ways to snapping objects:
 
   - snap to snap-points
-  - snap to integer positions
-  - snap to grid
+  - snap to integer positions (important)
+  - snap to grid (important)
 
 * add a way to draw objects to DrawingContext that only does
   translation, but not rotation and scaling, for use in UIElements,
