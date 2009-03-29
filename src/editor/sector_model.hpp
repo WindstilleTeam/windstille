@@ -89,6 +89,7 @@ public:
 
   HardLayerHandle get_layer(const Gtk::TreeModel::Path& path) const;
   HardLayers get_layers() const;
+  HardLayerHandle get_layer(ObjectModelHandle object);
   
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;
 
@@ -102,8 +103,6 @@ public:
 
   ObjectModelHandle get_object_at(const Vector2f& pos, const Layers& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const Layers& layers) const;
-
-  HardLayerHandle get_layer(ObjectModelHandle object);
   
   void raise_to_top(ObjectModelHandle object);
   void lower_to_bottom(ObjectModelHandle object);

@@ -506,10 +506,6 @@ Graphics
 Editor
 ======
 
-* duplicate should not insert objects on the current layer, but on the
-  layer the objects they are on, this would allow duplicating whole
-  multi-layered rooms with ease
-
 * QuadTree could be useful when levels get larger
 
 * make use of Statusbar

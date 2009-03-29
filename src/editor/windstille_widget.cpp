@@ -318,20 +318,23 @@ WindstilleWidget::selection_clear_parent()
 void
 WindstilleWidget::selection_duplicate()
 {
-  Gtk::TreeModel::Path path;
-  Gtk::TreeViewColumn* focus_column;
-  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
-
   SelectionHandle new_selection = Selection::create();
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
-      ObjectModelHandle obj = (*i)->clone();
-      
-      // Move clone a litte to make it more obvious that something happened
-      obj->set_rel_pos(obj->get_rel_pos() + Vector2f(32.0f, 32.0f));
+      HardLayerHandle layer = sector_model->get_layer(*i);
+      ObjectModelHandle obj = (*i)->clone();     
 
-      sector_model->add(obj, path);
-      new_selection->add(obj);
+      if (!layer)
+        {
+          EditorWindow::current()->print("Couldn't find parent layer while duplicating");
+        }
+      else
+        {
+          // Move clone a litte to make it more obvious that something happened
+          obj->set_rel_pos(obj->get_rel_pos() + Vector2f(32.0f, 32.0f));
+          layer->add(obj);
+          new_selection->add(obj);
+        }
     }
   selection = new_selection;
 
