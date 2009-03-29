@@ -405,6 +405,9 @@ Bugs
 Level Design
 ============
 
+* create a test sector that as open sky, currently most test levels
+  are indoor
+
 * fix the particle system in newformat2.wst, speed/lifetime is wrong
 
 * implement light switches in apartment
@@ -503,6 +506,12 @@ Graphics
 Editor
 ======
 
+* duplicate should not insert objects on the current layer, but on the
+  layer the objects they are on, this would allow duplicating whole
+  multi-layered rooms with ease
+
+* QuadTree could be useful when levels get larger
+
 * make use of Statusbar
   - display mouse coordinates in WorldCo
   - display what Ctrl/Shift do for the current tool
@@ -512,8 +521,8 @@ Editor
   might be useful in some situation (i.e. hold Ctrl pressed to move
   only the parent, not the children). Other issues:
 
-  - cloning doesn't preserve parentship  
-  - loading doesn't preserve parentship
+  - cloning doesn't preserve parentship **IMPORTANT**
+  - loading doesn't preserve parentship **IMPORTANT**
   - parents could be handled like normal objects, but with the
     SelectTool traversing all children and marking them before the
     move begings, Ctrl could be used to toggle this behaviour
@@ -522,14 +531,6 @@ Editor
     to each other object in the group)
   - parent refers to name, but name isn't guranteed unique, so loading/saving breaks
 
-* Layer Manager, new functions:
-
-  - show all
-  - hide all
-  - lock all
-  - unlock all
-  - lock all except current layer (IMPORTANT)
-
 * New Layer System:
 
   - rename HardLayer to Layer and Layers to LayerMask/SelectionMask
@@ -537,11 +538,16 @@ Editor
   - normal Layers can contain child layers, which seems like a bad
     idea, better way would have special objectless parent layers
 
+  - there might be a need for special layers, such as a background
+    layer or a color gradient layer, that doesn't contain objects, but
+    is meaningful by itself
+
 * add button and keyboard shortcut to mark/unmark all layers in the layermask
 
 * add a way to move object to a different layer
 
-* drawing is broken after loading a level, only get fixed when toggling Light layer
+* drawing is broken after loading a level, only get fixed when
+  toggling Light layer, (bug in OpenGLState maybe?)
 
 * background pattern goes away when Color pattern is disabled, since
   its draw to the Colormap
@@ -717,7 +723,11 @@ Code Cleanup
 
 * find a astyle/bcpp/whatever configuration that matches the current
   coding style, maybe a little script that uses Emacs would do
+
+Sound Effects
+=============
 
+* sound of a large power switch being toggled
 
 http://orange.blender.org/blog/the-amazing-incredible-monkey-brush#more-49
 Hypatia
