@@ -36,6 +36,7 @@ LayerManager::LayerManager(EditorWindow& editor_)
   treeview.set_enable_tree_lines();
   treeview.set_reorderable();
 
+  // FIXME: Don't create new ones, reuse the EditorWindow ones
   ui_manager   = Gtk::UIManager::create();
   action_group = Gtk::ActionGroup::create();
   
@@ -44,6 +45,20 @@ LayerManager::LayerManager(EditorWindow& editor_)
   action_group->add(Gtk::Action::create("DeleteLayer", Gtk::Stock::DELETE),
                     sigc::mem_fun(editor, &EditorWindow::on_delete_layer));
 
+  action_group->add(Gtk::Action::create_with_icon_name("ShowAll", "show_all", "Show All", "Show All Layer"),
+                    sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_show_all), true));
+  action_group->add(Gtk::Action::create_with_icon_name("HideAll", "hide_all", "Hide All", "Hide All Layer"),
+                    sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_show_all), false));
+  action_group->add(Gtk::Action::create_with_icon_name("LockAll", "lock_all", "Lock All", "Lock All Layer"),
+                    sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_lock_all), true));
+  action_group->add(Gtk::Action::create_with_icon_name("UnlockAll", "unlock_all", "Unlock All", "Unlock All Layer"),
+                    sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_lock_all), false));
+
+  Glib::RefPtr<Gtk::ToggleAction> auto_lock = Gtk::ToggleAction::create_with_icon_name("AutoLock", "auto_lock", "Auto Lock All", "All layers except the current ones are treated as locked");
+  action_group->add(auto_lock,
+                    sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_auto_lock), auto_lock));
+
+
   ui_manager->insert_action_group(action_group);
 
   ui_manager->add_ui_from_string("<ui>"
@@ -51,6 +66,13 @@ LayerManager::LayerManager(EditorWindow& editor_)
                                  "    <toolitem action='NewLayer'/>"
                                  "    <toolitem action='DeleteLayer'/>"
                                  "    <separator/>"
+                                 "    <toolitem action='ShowAll'/>"
+                                 "    <toolitem action='HideAll'/>"
+                                 "    <separator/>"
+                                 "    <toolitem action='LockAll'/>"
+                                 "    <toolitem action='UnlockAll'/>"
+                                 "    <separator/>"
+                                 "    <toolitem action='AutoLock'/>"
                                  "  </toolbar>"
                                  "</ui>");
   

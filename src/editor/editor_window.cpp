@@ -814,6 +814,24 @@ EditorWindow::on_select_all()
 }
 
 void
+EditorWindow::on_show_all(bool v)
+{
+    std::cout << "ShowAll: " << v << std::endl;
+}
+
+void
+EditorWindow::on_lock_all(bool v)
+{
+  std::cout << "LockAll: " << v << std::endl;
+}
+
+void
+EditorWindow::on_auto_lock(Glib::RefPtr<Gtk::ToggleAction> auto_lock)
+{
+  std::cout << "autoLock: " << auto_lock->get_active() << std::endl;
+}
+
+void
 EditorWindow::on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_action)
 {
   Glib::RefPtr<const Gtk::RecentInfo> item = recent_action->get_current_item();

@@ -20,12 +20,19 @@
 
 HardLayer::HardLayer()
   : visible(true),
-    locked(false)
+    locked(false),
+    row_ptr(0)
 {
 }
 
 HardLayer::~HardLayer()
 {
+}
+
+void
+HardLayer::set_row_ptr(Gtk::TreeModel::Row* row_ptr_)
+{
+  row_ptr = row_ptr_;
 }
 
 bool

@@ -143,6 +143,10 @@ public:
 
   void on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_action);
   
+  void on_show_all(bool v);
+  void on_lock_all(bool v);
+  void on_auto_lock(Glib::RefPtr<Gtk::ToggleAction> auto_lock);
+
   void add_recent_file(const std::string& filename);
 
   void print(const std::string& text);

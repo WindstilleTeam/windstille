@@ -87,14 +87,11 @@ SelectTool::process_snap(WindstilleWidget& wst)
   if (!wst.get_draw_only_active_layer())
     {
       // ignore all objects not on the current active layer
-#if 0
-      // FIXME: Code broke due to hard layer
-      for(SectorModel::iterator i = wst.get_sector_model()->begin(); i != wst.get_sector_model()->end(); ++i)
-        {
+      for(HardLayer::iterator i = wst.get_current_layer()->begin(); i != wst.get_current_layer()->end(); ++i)
+        { // FIXME: Should iterate over all objects, not just objects in the current layer
           if (!wst.get_layer_mask().match((*i)->get_layers()))
             ignore_objects.insert(*i);
         }
-#endif
     }
 
   SnapData best_snap;

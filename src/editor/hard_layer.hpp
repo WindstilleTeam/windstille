@@ -23,6 +23,7 @@
 #include <list>
 #include <set>
 #include <string>
+#include <gtkmm/treemodel.h>
 
 #include "selection.hpp"
 #include "object_model.hpp"
@@ -40,11 +41,15 @@ private:
   bool visible;
   bool locked;
   
+  Gtk::TreeModel::Row* row_ptr;
+
 public:
   typedef Objects::iterator iterator;
 
   HardLayer();
   ~HardLayer();
+  
+  void set_row_ptr(Gtk::TreeModel::Row* row_ptr);
 
   iterator begin() { return objects.begin(); }
   iterator end()   { return objects.end(); }
