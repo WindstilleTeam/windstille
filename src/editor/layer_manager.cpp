@@ -21,6 +21,7 @@
 #include <gtkmm/toolbar.h>
 #include <gtkmm/treemodel.h>
 #include <gtkmm/treestore.h>
+#include <gtkmm/treeview.h>
 #include <gtkmm/treemodelcolumn.h>
 
 #include "editor_window.hpp"
@@ -54,9 +55,10 @@ LayerManager::LayerManager(EditorWindow& editor_)
   action_group->add(Gtk::Action::create_with_icon_name("UnlockAll", "unlock_all", "Unlock All", "Unlock All Layer"),
                     sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_lock_all), false));
 
-  Glib::RefPtr<Gtk::ToggleAction> auto_lock = Gtk::ToggleAction::create_with_icon_name("AutoLock", "auto_lock", "Auto Lock All", "All layers except the current ones are treated as locked");
+  auto_lock = Gtk::ToggleAction::create_with_icon_name("AutoLock", "auto_lock", "Auto Lock All", "All layers except the current ones are treated as locked");
   action_group->add(auto_lock,
-                    sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_auto_lock), auto_lock));
+                    sigc::bind(sigc::mem_fun(*this, &LayerManager::on_auto_lock), auto_lock));
+                    //sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_auto_lock), auto_lock));
 
 
   ui_manager->insert_action_group(action_group);
@@ -78,7 +80,7 @@ LayerManager::LayerManager(EditorWindow& editor_)
   
   Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/ToolBar"));
 
-  //treeview.signal_cursor_changed().connect(sigc::mem_fun(*this, &LayerManager::on_cursor_changed));
+  treeview.signal_cursor_changed().connect(sigc::mem_fun(*this, &LayerManager::on_cursor_changed));
   //treeview.signal_columns_changed().connect(sigc::mem_fun(*this, &LayerManager::on_columns_changed));
 
   toolbar.set_icon_size(Gtk::ICON_SIZE_MENU);
@@ -123,11 +125,21 @@ LayerManager::set_model(SectorModel* model)
 void
 LayerManager::on_cursor_changed()
 {
-  Gtk::TreeModel::Path path;
-  Gtk::TreeViewColumn* focus_column;
-  treeview.get_cursor(path, focus_column);
+  if (auto_lock->get_active())
+    {
+      Gtk::TreeModel::Path path;
+      Gtk::TreeViewColumn* focus_column;
+      treeview.get_cursor(path, focus_column);
   
-  //std::cout << "on_cursor_changed: " << path.to_string() << std::endl;
+      //std::cout << "on_cursor_changed: " << path.to_string() << std::endl;
+      Gtk::TreeModel::iterator it = treeview.get_model()->get_iter(path);
+      if (it)
+        {
+          EditorWindow::current()->on_lock_all(true);
+          (*it)[LayerManagerColumns::instance().locked] = false;
+          ((HardLayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
+        }
+    }
 }
 
 void
@@ -135,6 +147,12 @@ LayerManager::on_columns_changed()
 {
   //std::cout << "LayerManager::on_columns_changed()" << std::endl;
   treeview.expand_all();
+}
+
+void
+LayerManager::on_auto_lock(Glib::RefPtr<Gtk::ToggleAction> auto_lock)
+{
+  on_cursor_changed();
 }
 
 /* EOF */

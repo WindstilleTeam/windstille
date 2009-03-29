@@ -38,8 +38,9 @@ private:
   Gtk::ScrolledWindow scrolled;
   Gtk::TreeView treeview;
 
-  Glib::RefPtr<Gtk::UIManager>   ui_manager;
-  Glib::RefPtr<Gtk::ActionGroup> action_group;
+  Glib::RefPtr<Gtk::UIManager>    ui_manager;
+  Glib::RefPtr<Gtk::ActionGroup>  action_group;
+  Glib::RefPtr<Gtk::ToggleAction> auto_lock;
 
 public:
   LayerManager(EditorWindow& editor);
@@ -51,6 +52,8 @@ public:
   void on_columns_changed();
 
   Gtk::TreeView& get_treeview() { return treeview; }
+
+  void on_auto_lock(Glib::RefPtr<Gtk::ToggleAction> auto_lock);
 
 private:
   LayerManager(const LayerManager&);
