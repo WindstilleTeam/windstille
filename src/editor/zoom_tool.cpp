@@ -50,8 +50,7 @@ ZoomTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 bool
 ZoomTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
-  // Zoom objects
-  std::cout << "Zoom To: " << rect << std::endl;
+  //std::cout << "Zoom To: " << rect << std::endl;
   rect.normalize();
   wst.get_state().zoom_to(rect);
   rect_valid = false;

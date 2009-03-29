@@ -105,13 +105,13 @@ LayerManager::on_cursor_changed()
   Gtk::TreeViewColumn* focus_column;
   treeview.get_cursor(path, focus_column);
   
-  std::cout << "on_cursor_changed: " << path.to_string() << std::endl;
+  //std::cout << "on_cursor_changed: " << path.to_string() << std::endl;
 }
 
 void
 LayerManager::on_columns_changed()
 {
-  std::cout << "LayerManager::on_columns_changed()" << std::endl;
+  //std::cout << "LayerManager::on_columns_changed()" << std::endl;
   treeview.expand_all();
 }
 

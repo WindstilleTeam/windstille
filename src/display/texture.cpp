@@ -54,8 +54,6 @@ Texture::Texture()
 Texture::Texture(const std::string& filename)
 {
   *this = texture_manager->get(filename);
-
-  std::cout << "Filename: " << filename << " -> " << get_handle() << std::endl;
 }
 
 Texture::Texture(GLenum target, int width, int height, GLint format)

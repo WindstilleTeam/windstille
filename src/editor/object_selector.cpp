@@ -115,7 +115,7 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context,
                                  Gtk::SelectionData& selection_data, 
                                  guint info, guint time)
 {
-  std::cout << "ObjectSelector: on_drag_data_get" << std::endl;
+  //std::cout << "ObjectSelector: on_drag_data_get" << std::endl;
 
   Gtk::IconView::ArrayHandle_TreePaths selection = iconview.get_selected_items();
 
@@ -126,7 +126,7 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context,
       Gtk::ListStore::iterator it = list_store->get_iter(*i);
 
       //if (it)
-      //  std::cout << "on_drag_begin: " << (*it)[ObjectIconColumns::instance().pathname] << std::endl;
+      //std::cout << "on_drag_begin: " << (*it)[ObjectIconColumns::instance().pathname] << std::endl;
 
       selection_data.set("data", (*it)[ObjectIconColumns::instance().pathname]);
     }

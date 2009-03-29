@@ -59,7 +59,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "  <menubar name='MenuBar'>"
     "    <menu action='MenuFile'>"
     "      <menuitem action='New'/>"
-    //"      <menuitem action='FileOpen'/>"
+    "      <menuitem action='FileOpen'/>"
     "      <menuitem action='FileRecentFiles'/>"
     "      <separator/>"
     "      <menuitem action='Save'/>"
@@ -234,8 +234,6 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_out));
   action_group->add(play_action = Gtk::ToggleAction::create("Play", Gtk::Stock::MEDIA_PLAY), 
                     sigc::mem_fun(*this, &EditorWindow::on_play));
-  action_group->add(snap_action = Gtk::ToggleAction::create("Snap", Gtk::Stock::MEDIA_PAUSE),
-                    sigc::mem_fun(*this, &EditorWindow::on_snap));
 
   action_group->add(Gtk::Action::create("MenuHelp",    "_Help"));
   action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
@@ -366,7 +364,7 @@ EditorWindow::on_quit()
 void
 EditorWindow::on_new()
 {
-  std::cout << "on_new" << std::endl;
+  //std::cout << "on_new" << std::endl;
 
   // FIXME: We abuse the minimap as our root GLContext
   WindstilleWidget* wst = Gtk::manage(new WindstilleWidget(glconfig, minimap_widget.get_gl_context()));
@@ -412,9 +410,9 @@ EditorWindow::on_open()
     {
       case(Gtk::RESPONSE_OK):
         {
-          std::cout << "Select clicked." << std::endl;
-          std::cout << "Folder selected: " << dialog.get_filename()
-                    << std::endl;
+          //std::cout << "Select clicked." << std::endl;
+          //std::cout << "Folder selected: " << dialog.get_filename()
+          //          << std::endl;
           
           add_recent_file(dialog.get_filename());
 
@@ -424,7 +422,7 @@ EditorWindow::on_open()
 
       case(Gtk::RESPONSE_CANCEL):
         {
-          std::cout << "Cancel clicked." << std::endl;
+          //std::cout << "Cancel clicked." << std::endl;
           break;
         }
     }
@@ -477,9 +475,9 @@ EditorWindow::on_save_as()
         {
           case(Gtk::RESPONSE_OK):
             {
-              std::cout << "Select clicked." << std::endl;
-              std::cout << "Folder selected: " << dialog.get_filename()
-                        << std::endl;
+              //std::cout << "Select clicked." << std::endl;
+              //std::cout << "Folder selected: " << dialog.get_filename()
+              //          << std::endl;
 
               std::string filename = dialog.get_filename();
               std::ofstream out(filename.c_str());
@@ -496,7 +494,7 @@ EditorWindow::on_save_as()
 
           case(Gtk::RESPONSE_CANCEL):
             {
-              std::cout << "Cancel clicked." << std::endl;
+              //std::cout << "Cancel clicked." << std::endl;
               break;
             }
         }
@@ -556,7 +554,7 @@ EditorWindow::on_zoom_100()
 void
 EditorWindow::on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool* tool)
 {
-  std::cout << "on_tool_select()" << action->get_active() << std::endl;
+  //std::cout << "on_tool_select()" << action->get_active() << std::endl;
   if (action->get_active())
     {
       current_tool = tool;
@@ -579,7 +577,7 @@ EditorWindow::toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, uint32
           sc.set_render_mask(sc.get_render_mask() & (~mask));
         }
 
-      std::cout << "mask: " << sc.get_render_mask() << std::endl;
+      //std::cout << "mask: " << sc.get_render_mask() << std::endl;
       wst->queue_draw();
     }
 }
@@ -663,7 +661,8 @@ EditorWindow::fill_object_selector(const std::string& directory)
 void
 EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
 {
-  std::cout << "on_switch_page(" << page << ", " << page_num << ")" << std::endl;
+  //std::cout << "on_switch_page(" << page << ", " << page_num << ")" << std::endl;
+
   if (WindstilleWidget* wst = get_windstille_widget())
     {
       layer_manager.set_model(wst->get_sector_model());
@@ -707,7 +706,7 @@ EditorWindow::on_timeout()
 void
 EditorWindow::on_layer_toggle(int layer, bool status)
 {
-  std::cout << "EditorWindow::on_layer_toggle(" << layer << ", " << status << ")" << std::endl;
+  //std::cout << "EditorWindow::on_layer_toggle(" << layer << ", " << status << ")" << std::endl;
 
   if (WindstilleWidget* wst = get_windstille_widget())
     {
@@ -721,28 +720,15 @@ EditorWindow::on_play()
 {
   if (play_action->get_active())
     {
-      std::cout << "Play" << std::endl;
+      //std::cout << "Play" << std::endl;
       timeout_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &EditorWindow::on_timeout),
                                                           50,
                                                           Glib::PRIORITY_DEFAULT);
     }
   else
     {
-      std::cout << "Stop" << std::endl;
+      //std::cout << "Stop" << std::endl;
       timeout_connection.disconnect();
-    }
-}
-
-void
-EditorWindow::on_snap()
-{
-  if (snap_action->get_active())
-    {
-      std::cout << "Snap" << std::endl;
-    }
-  else
-    {
-      std::cout << "Snap Off" << std::endl;
     }
 }
 
@@ -771,7 +757,7 @@ EditorWindow::on_delete_layer()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      std::cout << "Deleting layer: " << wst << std::endl;
+      //std::cout << "Deleting layer: " << wst << std::endl;
       wst->get_sector_model()->delete_layer(wst->get_current_layer_path());
     }
 }
@@ -781,7 +767,7 @@ EditorWindow::on_new_layer()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      std::cout << "Adding layer" << std::endl;
+      //std::cout << "Adding layer" << std::endl;
       wst->get_sector_model()->add_layer("New Layer", wst->get_current_layer_path());
 
       layer_manager.get_treeview().expand_all();
@@ -826,7 +812,7 @@ EditorWindow::on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_actio
 {
   Glib::RefPtr<const Gtk::RecentInfo> item = recent_action->get_current_item();
 
-  std::cout << "On Recent File:" << item->get_uri() << std::endl;
+  //std::cout << "On Recent File:" << item->get_uri() << std::endl;
   if (item->exists())
       load_file(Glib::filename_from_uri(item->get_uri()));
 }

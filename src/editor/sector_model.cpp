@@ -281,7 +281,7 @@ SectorModel::load_layer(FileReader reader, const Gtk::TreeModel::Row* parent)
   reader.read("objects", objects_reader);
   reader.read("child-layers", layers_reader);
 
-  std::cout << "loading layer: " << reader.get_name() << " " << name << " " << visible << " " << locked << std::endl;
+  //std::cout << "loading layer: " << reader.get_name() << " " << name << " " << visible << " " << locked << std::endl;
 
   HardLayerHandle layer = HardLayerHandle(new HardLayer());
   layer->set_name(name);
@@ -388,7 +388,8 @@ SectorModel::queue_draw()
 void
 SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
-  std::cout << "LayerManager:on_row_changed" << std::endl;
+  //std::cout << "LayerManager:on_row_changed" << std::endl;
+
   if (iter)
     {
       // Update the Layer object with data from the tree
@@ -406,26 +407,27 @@ SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeMod
 void
 SectorModel::on_row_deleted(const Gtk::TreeModel::Path& path)
 {
-  std::cout << "LayerManager:on_row_deleted" << std::endl;
+  //std::cout << "LayerManager:on_row_deleted" << std::endl;
+  
   queue_draw();
 }
 
 void
 SectorModel::on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
-  std::cout << "LayerManager:on_row_has_child_toggled" << std::endl;
+  //std::cout << "LayerManager:on_row_has_child_toggled" << std::endl;
 }
 
 void
 SectorModel::on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
-  std::cout << "LayerManager:on_row_inserted" << std::endl;
+  //std::cout << "LayerManager:on_row_inserted" << std::endl;
 }
 
 void
 SectorModel::on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order)
 {
-  std::cout << "LayerManager:on_row_reordered" << std::endl;
+  //std::cout << "LayerManager:on_row_reordered" << std::endl;
 }
 
 /* EOF */

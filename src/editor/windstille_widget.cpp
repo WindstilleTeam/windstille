@@ -93,7 +93,7 @@ WindstilleWidget::on_realize()
 {
   state.set_size(get_width(), get_height());
 
-  std::cout << "WindstilleWidget::on_realize()" << std::endl;
+  //std::cout << "WindstilleWidget::on_realize()" << std::endl;
 
   Gtk::DrawingArea::on_realize();
 
@@ -368,7 +368,7 @@ bool
 WindstilleWidget::mouse_down(GdkEventButton* event)
 {
   grab_focus();
-  std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
+  //std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
   //ewer->on_mouse_button_down(Vector2i(event->x, event->y), event->button);
   if (event->button == 1)
     {
@@ -403,7 +403,7 @@ WindstilleWidget::mouse_up(GdkEventButton* event)
 {
   active_tool = 0;
 
-  std::cout << "Button Release: " << event->x << ", " << event->y << " - " << event->button << std::endl;
+  //std::cout << "Button Release: " << event->x << ", " << event->y << " - " << event->button << std::endl;
   //viewer->on_mouse_button_up(Vector2i(event->x, event->y), event->button);
   if (event->button == 1)
     {
@@ -474,7 +474,7 @@ WindstilleWidget::key_release(GdkEventKey* event)
 bool
 WindstilleWidget::on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time)
 {
-  std::cout << "WindstilleWidget: on_drag_drop: " << x << ", " << y << ": " << std::endl;
+  //std::cout << "WindstilleWidget: on_drag_drop: " << x << ", " << y << ": " << std::endl;
   return true;
 }
 
@@ -483,8 +483,8 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
                                         int x, int y, const Gtk::SelectionData& data,
                                         guint info, guint time)
 {
-  std::cout << "WindstilleWidget: on_drag_data_received: "
-            << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
+  //std::cout << "WindstilleWidget: on_drag_data_received: "
+  //          << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
   
   ObjectModelHandle object = DecalObjectModel::create(data.get_data_as_string(),
                                                       state.screen_to_world(Vector2f(x, y)),
@@ -509,7 +509,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
 void
 WindstilleWidget::on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context)
 {
-  std::cout << "WindstilleWidget: on_drag_finish()" << std::endl;
+  //std::cout << "WindstilleWidget: on_drag_finish()" << std::endl;
 }
 
 void

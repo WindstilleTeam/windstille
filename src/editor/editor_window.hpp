@@ -105,7 +105,6 @@ public:
 
   bool on_timeout();
   void on_play();
-  void on_snap();
 
   void on_about_clicked();
   void on_quit();
