@@ -38,11 +38,13 @@ SectorModel::SectorModel()
 
   Gtk::TreeStore::iterator it = layer_tree->append();
 
+  HardLayerHandle layer(new HardLayer());
+
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[LayerManagerColumns::instance().name]      = Glib::ustring("Scene");
   (*it)[LayerManagerColumns::instance().visible]   = true;
   (*it)[LayerManagerColumns::instance().locked]    = false;
-  (*it)[LayerManagerColumns::instance().layer]     = HardLayerHandle(new HardLayer());
+  (*it)[LayerManagerColumns::instance().layer]     = layer;
 
   layer_tree->signal_row_changed().connect(sigc::mem_fun(*this, &SectorModel::on_row_changed));
   layer_tree->signal_row_deleted().connect(sigc::mem_fun(*this, &SectorModel::on_row_deleted));
@@ -284,9 +286,6 @@ SectorModel::load_layer(FileReader reader, const Gtk::TreeModel::Row* parent)
   //std::cout << "loading layer: " << reader.get_name() << " " << name << " " << visible << " " << locked << std::endl;
 
   HardLayerHandle layer = HardLayerHandle(new HardLayer());
-  layer->set_name(name);
-  layer->set_visible(visible);
-  layer->set_locked(locked);
 
   const std::vector<FileReader>& objects_sections = objects_reader.get_sections();
   for(std::vector<FileReader>::const_iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
@@ -302,6 +301,8 @@ SectorModel::load_layer(FileReader reader, const Gtk::TreeModel::Row* parent)
   (*it)[LayerManagerColumns::instance().visible]   = visible; 
   (*it)[LayerManagerColumns::instance().locked]    = locked; 
   (*it)[LayerManagerColumns::instance().layer]     = layer;
+
+  layer->update(*it);
   
   const std::vector<FileReader>& layers_sections = layers_reader.get_sections();
   for(std::vector<FileReader>::const_iterator j = layers_sections.begin(); j != layers_sections.end(); ++j)
@@ -376,6 +377,43 @@ SectorModel::write(FileWriter& writer, const Gtk::TreeRow& row) const
   writer.end_section();
 }
 
+struct PropSetFunctor
+{
+  bool v;
+
+  PropSetFunctor(bool v_)
+    : v(v_)
+  {}
+
+  bool set_visible(const Gtk::TreeModel::iterator& it)
+  {
+    (*it)[LayerManagerColumns::instance().visible] = v;
+    ((HardLayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
+    return false;
+  }
+  
+  bool set_locked(const Gtk::TreeModel::iterator& it)
+  {
+    (*it)[LayerManagerColumns::instance().locked] = v;
+    ((HardLayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
+    return false;
+  }
+};
+
+void
+SectorModel::set_all_visible(bool v)
+{
+  PropSetFunctor func(v);
+  layer_tree->foreach_iter(sigc::mem_fun(func, &PropSetFunctor::set_visible));
+}
+
+void
+SectorModel::set_all_locked(bool v)
+{
+  PropSetFunctor func(v);
+  layer_tree->foreach_iter(sigc::mem_fun(func, &PropSetFunctor::set_locked));
+}
+
 void
 SectorModel::queue_draw()
 {
@@ -394,11 +432,9 @@ SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeMod
     {
       // Update the Layer object with data from the tree
       HardLayerHandle layer = (*iter)[LayerManagerColumns::instance().layer];
-      if (layer.get())
+      if (layer)
         {
-          layer->set_name(((Glib::ustring)(*iter)[LayerManagerColumns::instance().name]).raw());
-          layer->set_visible((*iter)[LayerManagerColumns::instance().visible]);
-          layer->set_locked((*iter)[LayerManagerColumns::instance().locked]);
+          layer->update(*iter);
         }
     }
   queue_draw();

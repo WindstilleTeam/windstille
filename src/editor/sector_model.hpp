@@ -22,6 +22,7 @@
 #include <set>
 #include <memory>
 #include <gtkmm/treestore.h>
+#include <gdkmm/pixbuf.h>
 #include <vector>
 
 #include "hard_layer.hpp"
@@ -77,6 +78,9 @@ public:
   void update(float delta);
   void update(float delta, const Gtk::TreeRow& row);
 
+  void set_all_visible(bool v);
+  void set_all_locked(bool v);
+
   void add_layer(const std::string& name, const Gtk::TreeModel::Path& path = Gtk::TreeModel::Path());
   void delete_layer(const Gtk::TreeModel::Path& path);
 
@@ -85,7 +89,7 @@ public:
 
   HardLayerHandle get_layer(const Gtk::TreeModel::Path& path) const;
   HardLayers get_layers() const;
-
+  
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;
 
   Glib::RefPtr<Gtk::TreeStore> get_layer_tree() { return layer_tree; }

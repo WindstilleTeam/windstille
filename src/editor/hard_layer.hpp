@@ -40,9 +40,7 @@ private:
   std::string name;
   bool visible;
   bool locked;
-  
-  Gtk::TreeModel::Row* row_ptr;
-
+    
 public:
   typedef Objects::iterator iterator;
 
@@ -60,8 +58,9 @@ public:
   bool is_visible() const { return visible; }
   bool is_locked() const { return locked; }
 
-  void set_visible(bool v) { visible = v; }
-  void set_locked(bool v) { locked = v; }
+  // These must not be used, since they don't update the Gtk::TreeModel::Row
+  //void set_visible(bool v) { visible = v; }
+  //void set_locked(bool v) { locked = v; }
 
   bool has_object(const ObjectModelHandle& object) const;
 
@@ -70,6 +69,7 @@ public:
 
   void draw(SceneContext& sc, const Layers& layers);
   void update(float delta);
+  void update(const Gtk::TreeModel::Row& row);
 
   ObjectModelHandle get_object_at(const Vector2f& pos, const Layers& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const Layers& layers) const;

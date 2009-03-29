@@ -16,23 +16,17 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "sector_model.hpp"
 #include "hard_layer.hpp"
 
 HardLayer::HardLayer()
   : visible(true),
-    locked(false),
-    row_ptr(0)
+    locked(false)
 {
 }
 
 HardLayer::~HardLayer()
 {
-}
-
-void
-HardLayer::set_row_ptr(Gtk::TreeModel::Row* row_ptr_)
-{
-  row_ptr = row_ptr_;
 }
 
 bool
@@ -61,6 +55,14 @@ HardLayer::draw(SceneContext& sc, const Layers& layers)
       if (layers.match((*i)->get_layers()))
         (*i)->draw(sc);
     }
+}
+
+void
+HardLayer::update(const Gtk::TreeModel::Row& row)
+{
+  name    = ((Glib::ustring)row[LayerManagerColumns::instance().name]).raw();
+  visible = row[LayerManagerColumns::instance().visible];
+  locked  = row[LayerManagerColumns::instance().locked];
 }
 
 void

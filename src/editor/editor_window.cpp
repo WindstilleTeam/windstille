@@ -18,6 +18,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <gdkmm/pixbuf.h>
 #include <glibmm/miscutils.h>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/actiongroup.h>
@@ -816,13 +817,21 @@ EditorWindow::on_select_all()
 void
 EditorWindow::on_show_all(bool v)
 {
-    std::cout << "ShowAll: " << v << std::endl;
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      wst->get_sector_model()->set_all_visible(v);
+      wst->queue_draw();
+    }
 }
 
 void
 EditorWindow::on_lock_all(bool v)
 {
-  std::cout << "LockAll: " << v << std::endl;
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      wst->get_sector_model()->set_all_locked(v);
+      wst->queue_draw();
+    }
 }
 
 void
