@@ -54,17 +54,17 @@ private:
   Gtk::HPaned hpaned;
   Gtk::VPaned vpaned;
   Gtk::Statusbar status;
-  
-  Gtk::Notebook  notebook;
-  ObjectSelector object_selector;
-  LayerManager     layer_manager;
-  MinimapWidget  minimap_widget;
 
   Glib::RefPtr<Gtk::UIManager>   ui_manager;
   Glib::RefPtr<Gtk::ActionGroup> action_group;
   Glib::RefPtr<Gdk::GL::Context> share_list;
-  Glib::RefPtr<const Gdk::GL::Config>  glconfig;
-  
+  Glib::RefPtr<const Gdk::GL::Config> glconfig; 
+
+  Gtk::Notebook  notebook;
+  ObjectSelector object_selector;
+  LayerManager   layer_manager;
+  MinimapWidget  minimap_widget;
+
   Glib::RefPtr<Gtk::RadioAction> select_tool_action;
   Glib::RefPtr<Gtk::RadioAction> node_tool_action;
   Glib::RefPtr<Gtk::RadioAction> zoom_tool_action;
@@ -150,6 +150,9 @@ public:
 
   void print(const std::string& text);
   bool remove_message(guint id);
+
+  Glib::RefPtr<Gtk::UIManager>   get_ui_manager() const { return ui_manager; }
+  Glib::RefPtr<Gtk::ActionGroup> get_action_group() const { return action_group; }
   
 private:
   EditorWindow(const EditorWindow&);

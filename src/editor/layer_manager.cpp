@@ -37,25 +37,25 @@ LayerManager::LayerManager(EditorWindow& editor_)
   treeview.set_enable_tree_lines();
   treeview.set_reorderable();
 
-  // FIXME: Don't create new ones, reuse the EditorWindow ones
-  ui_manager   = Gtk::UIManager::create();
-  action_group = Gtk::ActionGroup::create();
-  
+  Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
+  Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
+
+  action_group->add(Gtk::Action::create("MenuLayer",   "_Layer"));
   action_group->add(Gtk::Action::create("NewLayer", Gtk::Stock::NEW),
                     sigc::mem_fun(editor, &EditorWindow::on_new_layer));
   action_group->add(Gtk::Action::create("DeleteLayer", Gtk::Stock::DELETE),
                     sigc::mem_fun(editor, &EditorWindow::on_delete_layer));
 
-  action_group->add(Gtk::Action::create_with_icon_name("ShowAll", "show_all", "Show All", "Show All Layer"),
+  action_group->add(Gtk::Action::create_with_icon_name("ShowAllLayer", "show_all", "Show All", "Show All Layer"),
                     sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_show_all), true));
-  action_group->add(Gtk::Action::create_with_icon_name("HideAll", "hide_all", "Hide All", "Hide All Layer"),
+  action_group->add(Gtk::Action::create_with_icon_name("HideAllLayer", "hide_all", "Hide All", "Hide All Layer"),
                     sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_show_all), false));
-  action_group->add(Gtk::Action::create_with_icon_name("LockAll", "lock_all", "Lock All", "Lock All Layer"),
+  action_group->add(Gtk::Action::create_with_icon_name("LockAllLayer", "lock_all", "Lock All", "Lock All Layer"),
                     sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_lock_all), true));
-  action_group->add(Gtk::Action::create_with_icon_name("UnlockAll", "unlock_all", "Unlock All", "Unlock All Layer"),
+  action_group->add(Gtk::Action::create_with_icon_name("UnlockAllLayer", "unlock_all", "Unlock All", "Unlock All Layer"),
                     sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_lock_all), false));
 
-  auto_lock = Gtk::ToggleAction::create_with_icon_name("AutoLock", "auto_lock", "Auto Lock All", "All layers except the current ones are treated as locked");
+  auto_lock = Gtk::ToggleAction::create_with_icon_name("AutoLockLayer", "auto_lock", "Auto Lock All", "All layers except the current ones are treated as locked");
   action_group->add(auto_lock,
                     sigc::bind(sigc::mem_fun(*this, &LayerManager::on_auto_lock), auto_lock));
                     //sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_auto_lock), auto_lock));
@@ -63,21 +63,21 @@ LayerManager::LayerManager(EditorWindow& editor_)
   ui_manager->insert_action_group(action_group);
 
   ui_manager->add_ui_from_string("<ui>"
-                                 "  <toolbar  name='ToolBar'>"
+                                 "  <toolbar  name='LayerManagerToolBar'>"
                                  "    <toolitem action='NewLayer'/>"
                                  "    <toolitem action='DeleteLayer'/>"
                                  "    <separator/>"
-                                 "    <toolitem action='ShowAll'/>"
-                                 "    <toolitem action='HideAll'/>"
+                                 "    <toolitem action='ShowAllLayer'/>"
+                                 "    <toolitem action='HideAllLayer'/>"
                                  "    <separator/>"
-                                 "    <toolitem action='LockAll'/>"
-                                 "    <toolitem action='UnlockAll'/>"
+                                 "    <toolitem action='LockAllLayer'/>"
+                                 "    <toolitem action='UnlockAllLayer'/>"
                                  "    <separator/>"
-                                 "    <toolitem action='AutoLock'/>"
+                                 "    <toolitem action='AutoLockLayer'/>"
                                  "  </toolbar>"
                                  "</ui>");
   
-  Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/ToolBar"));
+  Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/LayerManagerToolBar"));
 
   treeview.signal_cursor_changed().connect(sigc::mem_fun(*this, &LayerManager::on_cursor_changed));
   //treeview.signal_columns_changed().connect(sigc::mem_fun(*this, &LayerManager::on_columns_changed));

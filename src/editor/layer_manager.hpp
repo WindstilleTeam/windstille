@@ -38,8 +38,6 @@ private:
   Gtk::ScrolledWindow scrolled;
   Gtk::TreeView treeview;
 
-  Glib::RefPtr<Gtk::UIManager>    ui_manager;
-  Glib::RefPtr<Gtk::ActionGroup>  action_group;
   Glib::RefPtr<Gtk::ToggleAction> auto_lock;
 
 public:

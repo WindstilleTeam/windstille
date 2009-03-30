@@ -43,9 +43,11 @@
 EditorWindow* EditorWindow::current_ = 0;
 
 EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
-  : layer_manager(*this),
-    minimap_widget(glconfig_),
+  : ui_manager(Gtk::UIManager::create()),
+    action_group(Gtk::ActionGroup::create()),
     glconfig(glconfig_),
+    layer_manager(*this),
+    minimap_widget(glconfig_),
     select_tool(new SelectTool()),
     zoom_tool(new ZoomTool()),
     current_tool(select_tool.get())
@@ -89,6 +91,18 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='ClearParent'/>"
     "      <separator/>"
     //"      <menuitem action='Snap'/>"
+    "    </menu>"
+    "    <menu action='MenuLayer'>"
+    "      <menuitem action='NewLayer'/>"
+    "      <menuitem action='DeleteLayer'/>"
+    "      <separator/>"
+    "      <menuitem action='ShowAllLayer'/>"
+    "      <menuitem action='HideAllLayer'/>"
+    "      <separator/>"
+    "      <menuitem action='LockAllLayer'/>"
+    "      <menuitem action='UnlockAllLayer'/>"
+    "      <separator/>"
+    "      <menuitem action='AutoLockLayer'/>"
     "    </menu>"
     "    <menu action='MenuView'>"
     "      <menuitem action='ZoomIn'/>"
@@ -161,9 +175,6 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='ToggleGridLayer'/>"
     "  </toolbar>"
     "</ui>";
-
-  ui_manager   = Gtk::UIManager::create();
-  action_group = Gtk::ActionGroup::create();
 
   action_group->add(Gtk::Action::create("MenuFile",    "_File"));
   action_group->add(Gtk::Action::create("New",         Gtk::Stock::NEW),
@@ -841,7 +852,7 @@ EditorWindow::on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_actio
 
   //std::cout << "On Recent File:" << item->get_uri() << std::endl;
   if (item->exists())
-      load_file(Glib::filename_from_uri(item->get_uri()));
+    load_file(Glib::filename_from_uri(item->get_uri()));
 }
 
 void
