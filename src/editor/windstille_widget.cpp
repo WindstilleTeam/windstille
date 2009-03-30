@@ -321,7 +321,7 @@ WindstilleWidget::selection_duplicate()
   std::map<ObjectModelHandle, ObjectModelHandle> parent_map;
 
   SelectionHandle new_selection = Selection::create();
-  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+  for(Selection::reverse_iterator i = selection->rbegin(); i != selection->rend(); ++i)
     {
       HardLayerHandle layer = sector_model->get_layer(*i);
       ObjectModelHandle obj = (*i)->clone();
