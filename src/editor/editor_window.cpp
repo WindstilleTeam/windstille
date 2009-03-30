@@ -61,7 +61,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <menu action='MenuFile'>"
     "      <menuitem action='New'/>"
     "      <menuitem action='FileOpen'/>"
-    "      <menuitem action='FileRecentFiles'/>"
+    //"      <menuitem action='FileRecentFiles'/>"
     "      <separator/>"
     "      <menuitem action='Save'/>"
     "      <menuitem action='SaveAs'/>"
