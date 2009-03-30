@@ -53,9 +53,14 @@ ObjectSelector::ObjectSelector()
   list_store = Gtk::ListStore::create(ObjectIconColumns::instance());
 
   // Change background color
-  // iconview.modify_base(Gtk::STATE_NORMAL, Gdk::Color("grey"));
+  // iconview.modify_base(Gtk::STATE_NORMAL, Gdk::Color("#444444"));
   
   iconview.set_model(list_store);
+
+  // Trying to get spacing to minimum, without much effect
+  iconview.set_spacing(0);
+  iconview.set_column_spacing(0);
+  iconview.set_row_spacing(0);
 
   iconview.set_pixbuf_column(ObjectIconColumns::instance().icon);
   //iconview.set_text_column(ObjectIconColumns::instance().pathname);
