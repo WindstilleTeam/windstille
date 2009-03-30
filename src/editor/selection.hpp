@@ -70,7 +70,6 @@ public:
   bool empty() const;
   void clear() { objects.clear(); }
 
-  bool contains(ObjectModelHandle object) const;
   bool has_object(ObjectModelHandle object) const;
 
   void on_move_start();

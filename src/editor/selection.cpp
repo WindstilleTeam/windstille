@@ -62,21 +62,15 @@ Selection::has_object(ObjectModelHandle object) const
 }
 
 bool
-Selection::contains(ObjectModelHandle object) const
-{
-  return std::find(objects.begin(), objects.end(), object) != objects.end();
-}
-
-bool
 Selection::contains_parent(ObjectModelHandle object)
 {
   ObjectModelHandle parent = object->get_parent();
   while (parent)
     {
-      if (contains(object))
+      if (has_object(parent))
         return true;
 
-      parent = object->get_parent();
+      parent = parent->get_parent();
     }
 
   return false;
