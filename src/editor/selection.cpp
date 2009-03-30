@@ -92,10 +92,31 @@ SelectionHandle
 Selection::clone() const
 {
   SelectionHandle selection = Selection::create();
-
+  std::map<ObjectModelHandle, ObjectModelHandle> parent_map;
   for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
     {
-      selection->add((*i)->clone());
+      ObjectModelHandle obj = (*i)->clone();
+      parent_map[*i] = obj;
+      selection->add(obj);
+    }
+
+  // Second pass to set the parents to the cloned objects
+  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      if ((*i)->get_parent())
+        {
+          std::map<ObjectModelHandle, ObjectModelHandle>::iterator it = parent_map.find((*i)->get_parent());
+          
+          if (it == parent_map.end())
+            {
+              // When the parent wasn't part of the selection, leave
+              // the parent untouched
+            }
+          else
+            {
+              (*i)->set_parent(it->second);
+            }
+        }
     }
 
   return selection;
