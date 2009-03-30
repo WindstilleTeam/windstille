@@ -1,12 +1,13 @@
 Windstille ToDo
 ===============
 
-This is a list of tasks that need to be done in Windstille. However
-this list is neither complete nor authoritative, so don't just blindly
-implement things from this list, instead use this list just as guide
-for things that might be worth to implement, but not necesarrily have
-to. Some ideas in this list might actually be bad and better solved by
-other means.
+This is a list of tasks and issues that might be worth to implement or
+fix. This list is however not an authorative list of things that must
+be done, its a collection of random things that pop up during
+development, therefore not everything in here might be well thought
+out or worth to implement. Use your brain before implementing anything
+on this list and always thing about how useful a new feature would be
+in the context of the whole game.
 
 Scripting
 =========
@@ -502,6 +503,23 @@ Graphics
 Editor
 ======
 
+* implement Blender-like grab-handles, that toggle between
+  scale/rotation/etc., but also allow limit of move along the x- or
+  y-axis
+
+* figure out how to properly draw controls in the Workspace (resize,
+  rotation, vertices of a quad),
+
+* make use of Statusbar
+  - display mouse coordinates in WorldCo
+  - display what Ctrl/Shift do for the current tool
+
+* add more ways to snapping objects:
+
+  - snap to snap-points
+  - snap to integer positions (IMPORTANT)
+  - snap to grid (IMPORTANT)
+
 * reevaluate the current parent/child implementation, since its very
   tricky currently to move a parent without affecting the child, which
   might be useful in some situation (i.e. hold Ctrl pressed to move
@@ -520,22 +538,17 @@ Editor
 
 * raise/lower of multiple objects at once is a bit wonky, when objects
   reach the bottom/top they will change their relative order in the
-  selection
+  selection (not a big deal with layers)
 
-* set cursor in LayerManager when loading a level
+* set cursor in LayerManager when loading a level, as not setting it
+  leads to crash and trouble
 
 * QuadTree could be useful when levels get larger
 
-* make use of Statusbar
-  - display mouse coordinates in WorldCo
-  - display what Ctrl/Shift do for the current tool
-
 * New Layer System:
 
-  - rename HardLayer to Layer and Layers to LayerMask/SelectionMask
-
   - normal Layers can contain child layers, which seems like a bad
-    idea, better way would have special objectless parent layers
+    idea, better way would be to have special objectless parent layers
 
   - there might be a need for special layers, such as a background
     layer or a color gradient layer, that doesn't contain objects, but
@@ -630,12 +643,6 @@ Editor
   selection, for scaled, rotated or otherwise deformed objects the
   mouse coordinates need to be transformed into texture space
 
-* add more ways to snapping objects:
-
-  - snap to snap-points
-  - snap to integer positions (important)
-  - snap to grid (important)
-
 * add a way to draw objects to DrawingContext that only does
   translation, but not rotation and scaling, for use in UIElements,
   overlay text, etc.
@@ -645,9 +652,6 @@ Editor
   - name
   - ambient color (Gtk::ColorSelection)
   - level size (?)
-
-* figure out how to properly draw controls in the Workspace (resize,
-  rotation, vertices of a quad),
 
 * SceneModel seems easier to implement then Sandbox'ing, maybe go with
   that first. TreeModel could be used directly to presenet the Scene,
@@ -660,7 +664,7 @@ Editor
   + no obscure version incompatibilty between editor and game objects
   + game editability can be reused in scripts
 
-  - game engine gets more complex
+  - game and editor engine gets more complex
 
 * Sandbox Implementation (similar to Feuerkraft):
 
@@ -676,12 +680,6 @@ Editor
 * should objects in the editor be based on real Windstille objects or
   on mookup objects?
 
-* Editor Toolbox:
-
-  - Object Select Tool (move objects around)
-  - Object Manipulation Tool (move vertices in the object around)
-  - Zoom Tool
-
 * Editor Toolbar:
 
   - Visualize parent/child relationship (little arrows)
@@ -693,12 +691,6 @@ Editor
   - prefabs
   - enemies
   - active objects (doors, switches, etc.)
-
-* Layer List
-
-  - display objects in the scene as tree
-  - objects can be parented to each other
-  - objects and object groups can be toggled invisible/transparent
 
 Code Cleanup
 ============
