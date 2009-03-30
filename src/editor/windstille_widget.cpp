@@ -530,7 +530,10 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
 
   EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
 
-  sector_model->add(object, path);
+  if (!path.gobj())
+    std::cout << "WindstilleWidget::on_drag_data_received(): Error: Couldn't get path" << std::endl;
+  else
+    sector_model->add(object, path);
 }
 
 void
@@ -579,7 +582,15 @@ WindstilleWidget::get_current_layer()
   Gtk::TreeViewColumn* focus_column;
   EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
 
-  return sector_model->get_layer(path);  
+  if (!path.gobj())
+    {
+      std::cout << "WindstilleWidget::get_current_layer(): Error: Couldn't get path" << std::endl;
+      return HardLayerHandle();
+    }
+  else
+    {
+      return sector_model->get_layer(path);  
+    }
 }
 
 Gtk::TreeModel::Path
@@ -588,7 +599,16 @@ WindstilleWidget::get_current_layer_path()
   Gtk::TreeModel::Path path;
   Gtk::TreeViewColumn* focus_column;
   EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
-  return path;
+
+  if (!path.gobj())
+    {
+      std::cout << "WindstilleWidget::get_current_layer_path(): Error: Couldn't get path" << std::endl;
+      return Gtk::TreeModel::Path();
+    }
+  else
+    {
+      return path;
+    }
 }
 
 SectorModel*

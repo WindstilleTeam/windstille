@@ -129,14 +129,21 @@ LayerManager::on_cursor_changed()
       Gtk::TreeModel::Path path;
       Gtk::TreeViewColumn* focus_column;
       treeview.get_cursor(path, focus_column);
-  
-      //std::cout << "on_cursor_changed: " << path.to_string() << std::endl;
-      Gtk::TreeModel::iterator it = treeview.get_model()->get_iter(path);
-      if (it)
+      
+      if (!path.gobj())
         {
-          EditorWindow::current()->on_lock_all(true);
-          (*it)[LayerManagerColumns::instance().locked] = false;
-          ((HardLayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
+          std::cout << "LayerManager::on_cursor_changed(): Error: Couldn't get path" << std::endl;
+        }
+      else
+        {
+          //std::cout << "on_cursor_changed: " << path.to_string() << std::endl;
+          Gtk::TreeModel::iterator it = treeview.get_model()->get_iter(path);
+          if (it)
+            {
+              EditorWindow::current()->on_lock_all(true);
+              (*it)[LayerManagerColumns::instance().locked] = false;
+              ((HardLayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
+            }
         }
     }
 }
