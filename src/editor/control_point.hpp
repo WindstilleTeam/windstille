@@ -29,16 +29,18 @@ typedef boost::shared_ptr<ControlPoint> ControlPointHandle;
 
 class ControlPoint
 {
+public:
+  static ControlPointHandle create(const Vector2f& pos);
+
 private:
   Vector2f     pos;
   Vector2f  offset;
 
 public:
-  ControlPoint();
+  ControlPoint(const Vector2f& pos);
   ~ControlPoint();
   
-  virtual void update() = 0;
-  virtual void draw(SceneContext& sc) = 0;
+  void draw(SceneContext& sc);
 
   Rectf get_bounding_box() const;
 

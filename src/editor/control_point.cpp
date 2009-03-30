@@ -16,9 +16,18 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
+#include "display/scene_context.hpp"
 #include "control_point.hpp"
 
-ControlPoint::ControlPoint()
+ControlPointHandle
+ControlPoint::create(const Vector2f& pos)
+{
+  return ControlPointHandle(new ControlPoint(pos));
+}
+
+ControlPoint::ControlPoint(const Vector2f& pos_)
+  : pos(pos_)
 {
 }
 
@@ -48,6 +57,13 @@ Rectf
 ControlPoint::get_bounding_box() const
 {
   return Rectf(pos - Vector2f(8.0f, 8.0f), Sizef(16.0f ,16.0f));
+}
+
+void
+ControlPoint::draw(SceneContext& sc)
+{
+  sc.control().fill_rect(get_bounding_box().grow(4.0f), Color(0.0f, 0.0f, 0.0f));
+  sc.control().fill_rect(get_bounding_box(), Color(1.0f, 0.0f, 0.0f));
 }
 
 /* EOF */

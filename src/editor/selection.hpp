@@ -23,6 +23,7 @@
 #include <set>
 #include <boost/shared_ptr.hpp>
 
+#include "control_point.hpp"
 #include "object_model.hpp"
 
 class Selection;
@@ -35,6 +36,8 @@ private:
   Objects objects;
 
   std::set<ObjectModelHandle> non_moveable_objects;
+
+  bool moving;
 
   bool contains_parent(ObjectModelHandle object);
 
@@ -68,7 +71,9 @@ public:
   Selection::reverse_iterator rend() { return objects.rend(); }
 
   bool empty() const;
-  void clear() { objects.clear(); }
+  void clear();
+
+  bool is_moving() const { return moving; }
 
   bool has_object(ObjectModelHandle object) const;
 
@@ -78,6 +83,12 @@ public:
   
   /** Performs a deep clone of the selection */
   SelectionHandle clone() const;
+
+  void add_control_points(std::vector<ControlPointHandle>& control_points);
+
+  Rectf get_bounding_box() const;
+
+  sigc::signal<void> signal_changed;
 
 private:
   Selection(const Selection&);

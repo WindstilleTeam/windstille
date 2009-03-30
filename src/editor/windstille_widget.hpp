@@ -136,6 +136,8 @@ public:
   std::string get_filename() const { return filename; }
   void set_filename(const std::string& filename_) { filename = filename_; }
 
+  void on_selection_change();
+
 private:
   WindstilleWidget (const WindstilleWidget&);
   WindstilleWidget& operator= (const WindstilleWidget&);

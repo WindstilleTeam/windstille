@@ -75,7 +75,7 @@ WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  g
   targets.push_back(Gtk::TargetEntry("WindstilleObject"));
   drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
-  selection = Selection::create();
+  set_selection(Selection::create());
 }
 
 WindstilleWidget::~WindstilleWidget()
@@ -226,12 +226,23 @@ WindstilleWidget::draw()
       else
         sector_model->draw(*sc, select_mask);
 
-      for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+      if (!selection->empty())
         {
-          if (i == selection->begin())
-            sc->control().draw_rect((*i)->get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));
-          else
-            sc->control().draw_rect((*i)->get_bounding_box(), Color(0.5f, 0.5f, 1.0f, 1.0f));
+          for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+            {
+              if (i == selection->begin())
+                sc->control().draw_rect((*i)->get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+              else
+                sc->control().draw_rect((*i)->get_bounding_box(), Color(0.5f, 0.5f, 1.0f, 1.0f));
+            }
+
+          //sc->control().draw_rect(selection->get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+        }
+
+      for(std::vector<ControlPointHandle>::iterator i = control_points.begin();
+          i != control_points.end(); ++i)
+        {
+          (*i)->draw(*sc);
         }
 
       if (active_tool)
@@ -567,6 +578,8 @@ void
 WindstilleWidget::set_selection(const SelectionHandle& selection_)
 {
   selection = selection_;
+  selection->signal_changed.connect(sigc::mem_fun(this, &WindstilleWidget::on_selection_change));
+  on_selection_change();
 }
 
 SelectionHandle
@@ -608,7 +621,22 @@ WindstilleWidget::get_current_layer_path()
   else
     {
       return path;
+     }
+}
+
+void
+WindstilleWidget::on_selection_change()
+{
+  control_points.clear();
+
+  if (!selection->is_moving())
+    {
+      selection->add_control_points(control_points);
     }
+  
+  queue_draw();
+
+  std::cout << "WindstilleWidget::on_selection_change(): " << selection->size() << " " << control_points.size() << std::endl;
 }
 
 SectorModel*

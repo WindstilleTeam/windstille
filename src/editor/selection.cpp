@@ -21,6 +21,7 @@
 #include "selection.hpp"
 
 Selection::Selection()
+  : moving(false)
 {
 }
 
@@ -32,6 +33,7 @@ void
 Selection::add(const ObjectModelHandle& object)
 {
   objects.push_back(object);
+  signal_changed();
 }
 
 void
@@ -41,6 +43,7 @@ Selection::remove(const ObjectModelHandle& object)
   if (it != objects.end())
     {
       objects.erase(it);
+      signal_changed();
     }
   else
     {
@@ -52,6 +55,13 @@ bool
 Selection::empty() const
 {
   return objects.empty();
+}
+
+void
+Selection::clear()
+{ 
+  objects.clear(); 
+  signal_changed();
 }
 
 bool
@@ -79,6 +89,8 @@ Selection::contains_parent(ObjectModelHandle object)
 void
 Selection::on_move_start()
 {
+  moving = true;
+
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
       if (contains_parent(*i))
@@ -92,6 +104,8 @@ Selection::on_move_start()
       if (non_moveable_objects.find(*i) == non_moveable_objects.end())
         (*i)->on_move_start();
     }
+
+  signal_changed();
 }
 
 void
@@ -107,6 +121,8 @@ Selection::on_move_update(const Vector2f& offset)
 void
 Selection::on_move_end(const Vector2f& offset)
 {
+  moving = false;
+
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
       if (non_moveable_objects.find(*i) == non_moveable_objects.end())
@@ -114,6 +130,8 @@ Selection::on_move_end(const Vector2f& offset)
     }
 
   non_moveable_objects.clear();
+
+  signal_changed();
 }
 
 SelectionHandle
@@ -148,6 +166,38 @@ Selection::clone() const
     }
 
   return selection;
+}
+
+Rectf
+Selection::get_bounding_box() const
+{
+  if (empty())
+    {
+      return Rectf();
+    }
+  else
+    {
+      Rectf rect = objects.front()->get_bounding_box();
+      for(Objects::const_iterator i = objects.begin()+1; i != objects.end(); ++i)
+        {
+          rect = rect.grow((*i)->get_bounding_box());
+        }
+      return rect;
+    }
+}
+
+void
+Selection::add_control_points(std::vector<ControlPointHandle>& control_points)
+{
+  std::cout << "Adding ControlPoints" << std::endl;
+  if (!empty())
+    {
+      const Rectf& rect = get_bounding_box();
+      control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.top)));
+      control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.top)));
+      control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.bottom)));
+      control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.bottom)));
+    }
 }
 
 /* EOF */
