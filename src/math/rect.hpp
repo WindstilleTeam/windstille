@@ -35,6 +35,7 @@
 #include "math/origin.hpp"
 #include "math/vector2f.hpp"
 #include "math/size.hpp"
+#include "math/math.hpp"
 
 class Rectf;
 
@@ -376,6 +377,14 @@ public:
                              right  + x,
                              bottom + y);
 	}
+  
+  // Construct a rectangle large enough
+  Rectf grow(const Rectf& rect) const {
+    return Rectf(math::min(left, rect.left),
+                 math::min(top, rect.top),
+                 math::max(right, rect.right),
+                 math::max(bottom, rect.bottom));
+  }
 };
 
 inline Rect::Rect(const Rectf& rect)
