@@ -16,24 +16,24 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_LAYERS_HPP
-#define HEADER_WINDSTILLE_EDITOR_LAYERS_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_SELECT_MASK_HPP
+#define HEADER_WINDSTILLE_EDITOR_SELECT_MASK_HPP
 
-class Layers
+class SelectMask
 {
 private:
   uint16_t mask;
 
 public:
-  Layers() : mask(~0) {}
-  Layers(uint16_t mask_) : mask(mask_) {}
+  SelectMask() : mask(~0) {}
+  SelectMask(uint16_t mask_) : mask(mask_) {}
 
   uint16_t get_mask() const
   {
     return mask; 
   }
 
-  bool match(const Layers& rhs) const
+  bool match(const SelectMask& rhs) const
   {
     return (mask & rhs.mask);
   }

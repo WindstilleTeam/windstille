@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SECTOR_MODEL_HPP
-#define HEADER_SECTOR_MODEL_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_SECTOR_MODEL_HPP
+#define HEADER_WINDSTILLE_EDITOR_SECTOR_MODEL_HPP
 
 #include <set>
 #include <memory>
@@ -73,7 +73,7 @@ public:
 
   SectorModel();
 
-  void draw(SceneContext& sc, const Layers& layers);
+  void draw(SceneContext& sc, const SelectMask& layers);
 
   void update(float delta);
   void update(float delta, const Gtk::TreeRow& row);
@@ -101,8 +101,8 @@ public:
   void on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
   void on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order);
 
-  ObjectModelHandle get_object_at(const Vector2f& pos, const Layers& layers) const;
-  SelectionHandle   get_selection(const Rectf& rect, const Layers& layers) const;
+  ObjectModelHandle get_object_at(const Vector2f& pos, const SelectMask& layers) const;
+  SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
   
   void raise_to_top(ObjectModelHandle object);
   void lower_to_bottom(ObjectModelHandle object);

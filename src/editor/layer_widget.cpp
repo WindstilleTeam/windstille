@@ -20,7 +20,7 @@
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/separator.h>
 
-#include "layers.hpp"
+#include "select_mask.hpp"
 #include "layer_widget.hpp"
 
 LayerWidget::LayerWidget()
@@ -67,7 +67,7 @@ LayerWidget::on_layer_toggle(Gtk::ToggleButton* button, int layer)
 }
 
 void
-LayerWidget::update(const Layers& layers)
+LayerWidget::update(const SelectMask& layers)
 {
   for(int i = 0; i < layers.size(); ++i)
     {
@@ -75,15 +75,15 @@ LayerWidget::update(const Layers& layers)
     }
 }
 
-Layers
-LayerWidget::get_layers() const
+SelectMask
+LayerWidget::get_select_mask() const
 {
-  Layers layers;
-  for(int i = 0; i < layers.size(); ++i)
+  SelectMask select_mask;
+  for(int i = 0; i < select_mask.size(); ++i)
     {
-      layers.set(i, buttons[i]->get_active());
+      select_mask.set(i, buttons[i]->get_active());
     }
-  return layers;
+  return select_mask;
 }
 
 /* EOF */

@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_ABOUT_WINDOW_HPP
-#define HEADER_ABOUT_WINDOW_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_ABOUT_WINDOW_HPP
+#define HEADER_WINDSTILLE_EDITOR_ABOUT_WINDOW_HPP
 
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/box.h>

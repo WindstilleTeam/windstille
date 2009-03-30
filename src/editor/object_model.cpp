@@ -36,9 +36,9 @@ ObjectModel::ObjectModel(const FileReader& reader)
   reader.get("name", name);
   reader.get("pos",  rel_pos);
   
-  int layer_mask = 1;
-  reader.get("layer", layer_mask);
-  layers = Layers(layer_mask);
+  int mask = 1;
+  reader.get("select-mask", mask);
+  select_mask = SelectMask(mask);
 }
 
 ObjectModel::~ObjectModel()
@@ -62,7 +62,7 @@ ObjectModel::write_member(FileWriter& writer) const
     .write("id", get_id())
     .write("pos", rel_pos)
     .write("parent", parent.get() ? parent->get_id() : "")
-    .write("layer", layers.get_mask());
+    .write("select-mask", select_mask.get_mask());
 }
 
 ObjectModelHandle

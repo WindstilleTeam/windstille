@@ -37,7 +37,7 @@
 #include "control_point.hpp"
 #include "decal_object_model.hpp"
 #include "selection.hpp"
-#include "layers.hpp"
+#include "select_mask.hpp"
 #include "hard_layer.hpp"
 
 class Tool;
@@ -63,7 +63,7 @@ private:
   DecalObjectModel::MapType map_type;
   Texture background_pattern;
   bool draw_background_pattern;
-  Layers layer_mask;
+  SelectMask select_mask;
   bool draw_only_active_layers;
   bool grid_enabled;
   
@@ -116,7 +116,7 @@ public:
   void set_selection(const SelectionHandle& selection);
   SelectionHandle get_selection() const;
 
-  Layers& get_layer_mask() { return layer_mask; }
+  SelectMask& get_select_mask() { return select_mask; }
 
   SceneContext* get_sc() const { return sc.get(); }
 

@@ -43,7 +43,7 @@ WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  g
     scroll_tool(new ScrollTool()),
     map_type(DecalObjectModel::COLORMAP),
     draw_background_pattern(true),
-    layer_mask(1),
+    select_mask(1),
     draw_only_active_layers(true),
     grid_enabled(false)
 {
@@ -222,9 +222,9 @@ WindstilleWidget::draw()
         }
 
       if (draw_only_active_layers)
-        sector_model->draw(*sc, Layers());
+        sector_model->draw(*sc, SelectMask());
       else
-        sector_model->draw(*sc, layer_mask);
+        sector_model->draw(*sc, select_mask);
 
       for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
         {
@@ -520,10 +520,10 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
 
   // if layer mask is 0, set it to all layers instead, so that the
   // object doesn't become unusable
-  if (!layer_mask)
-    object->set_layers(Layers());
+  if (!select_mask)
+    object->set_select_mask(SelectMask());
   else
-    object->set_layers(layer_mask);
+    object->set_select_mask(select_mask);
 
   Gtk::TreeModel::Path path;
   Gtk::TreeViewColumn* focus_column;

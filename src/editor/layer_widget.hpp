@@ -22,7 +22,7 @@
 #include <gtkmm/toolitem.h>
 #include <gtkmm/table.h>
 
-#include "layers.hpp"
+#include "select_mask.hpp"
 
 class LayerWidget : public Gtk::ToolItem
 {
@@ -35,9 +35,9 @@ public:
   ~LayerWidget();
 
   void on_layer_toggle(Gtk::ToggleButton* button, int layer);
-  void update(const Layers& layers);
+  void update(const SelectMask& layers);
 
-  Layers get_layers() const;
+  SelectMask get_select_mask() const;
 
   sigc::signal<void, int, bool> signal_layer_toggle;
 

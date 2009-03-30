@@ -67,12 +67,12 @@ public:
   void add(const ObjectModelHandle& object);
   void remove(const ObjectModelHandle& object);
 
-  void draw(SceneContext& sc, const Layers& layers);
+  void draw(SceneContext& sc, const SelectMask& layers);
   void update(float delta);
   void update(const Gtk::TreeModel::Row& row);
 
-  ObjectModelHandle get_object_at(const Vector2f& pos, const Layers& layers) const;
-  SelectionHandle   get_selection(const Rectf& rect, const Layers& layers) const;
+  ObjectModelHandle get_object_at(const Vector2f& pos, const SelectMask& layers) const;
+  SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
 
   void raise_to_top(ObjectModelHandle object);
   void lower_to_bottom(ObjectModelHandle object);

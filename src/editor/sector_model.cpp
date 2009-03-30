@@ -154,7 +154,7 @@ SectorModel::remove(const ObjectModelHandle& object)
 }
 
 void
-SectorModel::draw(SceneContext& sc, const Layers& layermask)
+SectorModel::draw(SceneContext& sc, const SelectMask& layermask)
 {
   const HardLayers& layers = get_layers();
  
@@ -178,7 +178,7 @@ SectorModel::update(float delta)
 }
 
 ObjectModelHandle
-SectorModel::get_object_at(const Vector2f& pos, const Layers& layermask) const
+SectorModel::get_object_at(const Vector2f& pos, const SelectMask& layermask) const
 {
   const HardLayers& layers = get_layers();
   SelectionHandle selection = Selection::create();
@@ -198,7 +198,7 @@ SectorModel::get_object_at(const Vector2f& pos, const Layers& layermask) const
 }
 
 SelectionHandle
-SectorModel::get_selection(const Rectf& rect, const Layers& layermask) const
+SectorModel::get_selection(const Rectf& rect, const SelectMask& layermask) const
 {
   const HardLayers& layers = get_layers();
   SelectionHandle selection = Selection::create();

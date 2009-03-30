@@ -48,11 +48,11 @@ HardLayer::remove(const ObjectModelHandle& object)
 }
 
 void
-HardLayer::draw(SceneContext& sc, const Layers& layers)
+HardLayer::draw(SceneContext& sc, const SelectMask& select_mask)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
-      if (layers.match((*i)->get_layers()))
+      if (select_mask.match((*i)->get_select_mask()))
         (*i)->draw(sc);
     }
 }
@@ -75,11 +75,11 @@ HardLayer::update(float delta)
 }
 
 ObjectModelHandle
-HardLayer::get_object_at(const Vector2f& pos, const Layers& layers) const
+HardLayer::get_object_at(const Vector2f& pos, const SelectMask& select_mask) const
 {
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
     {
-      if (layers.match((*i)->get_layers()) &&
+      if (select_mask.match((*i)->get_select_mask()) &&
           (*i)->get_bounding_box().is_inside(pos))
         {
           return *i;
@@ -89,13 +89,13 @@ HardLayer::get_object_at(const Vector2f& pos, const Layers& layers) const
 }
 
 SelectionHandle
-HardLayer::get_selection(const Rectf& rect, const Layers& layers) const
+HardLayer::get_selection(const Rectf& rect, const SelectMask& select_mask) const
 {
  SelectionHandle selection = Selection::create();
 
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
     {
-      if (layers.match((*i)->get_layers()) &&
+      if (select_mask.match((*i)->get_select_mask()) &&
           rect.contains((*i)->get_bounding_box()))
         {
           selection->add(*i);

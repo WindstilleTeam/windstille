@@ -32,7 +32,7 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
   
-  ObjectModelHandle object = wst.get_sector_model()->get_object_at(click_pos, wst.get_layer_mask());
+  ObjectModelHandle object = wst.get_sector_model()->get_object_at(click_pos, wst.get_select_mask());
   if (object.get())
     {
       if (wst.get_selection()->has_object(object))
@@ -89,7 +89,7 @@ SelectTool::process_snap(WindstilleWidget& wst)
       // ignore all objects not on the current active layer
       for(HardLayer::iterator i = wst.get_current_layer()->begin(); i != wst.get_current_layer()->end(); ++i)
         { // FIXME: Should iterate over all objects, not just objects in the current layer
-          if (!wst.get_layer_mask().match((*i)->get_layers()))
+          if (!wst.get_select_mask().match((*i)->get_select_mask()))
             ignore_objects.insert(*i);
         }
     }
@@ -155,12 +155,12 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
       rect.normalize();
       if (event->state & GDK_SHIFT_MASK)
         {
-          SelectionHandle new_selection = wst.get_sector_model()->get_selection(rect, wst.get_layer_mask());
+          SelectionHandle new_selection = wst.get_sector_model()->get_selection(rect, wst.get_select_mask());
           wst.get_selection()->add(new_selection->begin(), new_selection->end());
         }
       else
         {
-          wst.set_selection(wst.get_sector_model()->get_selection(rect, wst.get_layer_mask()));
+          wst.set_selection(wst.get_sector_model()->get_selection(rect, wst.get_select_mask()));
         }
     }
 

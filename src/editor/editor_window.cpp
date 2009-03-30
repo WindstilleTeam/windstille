@@ -388,7 +388,7 @@ EditorWindow::on_new()
   notebook.set_current_page(new_page);
 
   layer_manager.set_model(wst->get_sector_model());
-  layer_widget->update(wst->get_layer_mask());
+  layer_widget->update(wst->get_select_mask());
 }
 
 void
@@ -684,7 +684,7 @@ EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
   if (WindstilleWidget* wst = get_windstille_widget())
     {
       layer_manager.set_model(wst->get_sector_model());
-      layer_widget->update(wst->get_layer_mask());
+      layer_widget->update(wst->get_select_mask());
 
       toggle_color_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::COLORMAP);
       toggle_light_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::LIGHTMAP);
@@ -728,7 +728,7 @@ EditorWindow::on_layer_toggle(int layer, bool status)
 
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      wst->get_layer_mask().set(layer, status);
+      wst->get_select_mask().set(layer, status);
       wst->queue_draw();
     }
 }
