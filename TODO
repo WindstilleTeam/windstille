@@ -203,10 +203,6 @@ Miscellaneous
 * remove GameObject::get_world(), use Sector::current() instead
   (difference might matter on sector change)
 
-* raise/lower of multiple objects at once is a bit wonky, when objects
-  reach the bottom/top they will change their relative order in the
-  selection
-
 * move has_suffix, has_prefix and stuff into StringUtil class
 
 * get rid of global debug
@@ -506,25 +502,33 @@ Graphics
 Editor
 ======
 
-* QuadTree could be useful when levels get larger
-
-* make use of Statusbar
-  - display mouse coordinates in WorldCo
-  - display what Ctrl/Shift do for the current tool
-
 * reevaluate the current parent/child implementation, since its very
   tricky currently to move a parent without affecting the child, which
   might be useful in some situation (i.e. hold Ctrl pressed to move
   only the parent, not the children). Other issues:
 
-  - loading doesn't preserve parentship **IMPORTANT**
   - parents could be handled like normal objects, but with the
     SelectTool traversing all children and marking them before the
-    move begings, Ctrl could be used to toggle this behaviour
+    move begings, Ctrl could be used to toggle this behaviour (sounds
+    a little weird, we also don't have a way to iterate children from
+    a parent)
+
   - having classic groups of objects, where clicking one object moves
     all in the group could be useful (like when each object is parent
-    to each other object in the group)
-  - parent refers to name, but name isn't guranteed unique, so loading/saving breaks
+    to each other object in the group), wouldn't allow an easy way to
+    edit objects in the Group, which however might be a good thing
+
+* raise/lower of multiple objects at once is a bit wonky, when objects
+  reach the bottom/top they will change their relative order in the
+  selection
+
+* set cursor in LayerManager when loading a level
+
+* QuadTree could be useful when levels get larger
+
+* make use of Statusbar
+  - display mouse coordinates in WorldCo
+  - display what Ctrl/Shift do for the current tool
 
 * New Layer System:
 

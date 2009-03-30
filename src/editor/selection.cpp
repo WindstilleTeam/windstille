@@ -61,12 +61,42 @@ Selection::has_object(ObjectModelHandle object) const
   return it != objects.end();
 }
 
+bool
+Selection::contains(ObjectModelHandle object) const
+{
+  return std::find(objects.begin(), objects.end(), object) != objects.end();
+}
+
+bool
+Selection::contains_parent(ObjectModelHandle object)
+{
+  ObjectModelHandle parent = object->get_parent();
+  while (parent)
+    {
+      if (contains(object))
+        return true;
+
+      parent = object->get_parent();
+    }
+
+  return false;
+}
+
 void
 Selection::on_move_start()
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
-      (*i)->on_move_start();
+      if (contains_parent(*i))
+        {
+          non_moveable_objects.insert(*i);
+        }
+    }
+
+  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
+    {
+      if (non_moveable_objects.find(*i) == non_moveable_objects.end())
+        (*i)->on_move_start();
     }
 }
 
@@ -75,7 +105,8 @@ Selection::on_move_update(const Vector2f& offset)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
-      (*i)->on_move_update(offset);
+      if (non_moveable_objects.find(*i) == non_moveable_objects.end())
+        (*i)->on_move_update(offset);
     }
 }
 
@@ -84,8 +115,11 @@ Selection::on_move_end(const Vector2f& offset)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
-      (*i)->on_move_end(offset);
+      if (non_moveable_objects.find(*i) == non_moveable_objects.end())
+        (*i)->on_move_end(offset);
     }
+
+  non_moveable_objects.clear();
 }
 
 SelectionHandle

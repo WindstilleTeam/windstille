@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_SELECTION_HPP
 
 #include <vector>
+#include <set>
 #include <boost/shared_ptr.hpp>
 
 #include "object_model.hpp"
@@ -32,6 +33,10 @@ class Selection
 private:
   typedef std::vector<ObjectModelHandle> Objects;
   Objects objects;
+
+  std::set<ObjectModelHandle> non_moveable_objects;
+
+  bool contains_parent(ObjectModelHandle object);
 
 public:
   typedef Objects::iterator iterator;
@@ -65,6 +70,7 @@ public:
   bool empty() const;
   void clear() { objects.clear(); }
 
+  bool contains(ObjectModelHandle object) const;
   bool has_object(ObjectModelHandle object) const;
 
   void on_move_start();
