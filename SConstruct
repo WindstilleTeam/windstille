@@ -35,12 +35,10 @@ def CheckSDL(context, version):
 
 def CheckPhysFS(context, version):
     optionFile = env['CACHEDIR'] + 'libphysfs.cache.py'
-    opts = Options(optionFile)
-    opts.AddOptions(
-        ('CACHED_LIBPHYSFS',   'Whether libphysfs is available'),
-        ('CXXFLAGS_LIBPHYSFS', ''),
-        ('LINKFLAGS_LIBPHYSFS',''),
-        )
+    opts = Variables(optionFile)
+    opts.AddVariables(('CACHED_LIBPHYSFS',    'Whether libphysfs is available'),
+                      ('CXXFLAGS_LIBPHYSFS',  ''),
+                      ('LINKFLAGS_LIBPHYSFS', ''))
     opts.Update(context.env)
 
     context.Message( 'Checking for PhysFS >= %s ...' % version )
@@ -155,7 +153,7 @@ int main()
 
 conf_env = Environment()
 
-opts = Options(['options.cache', 'custom.py'], ARGUMENTS)
+opts = Variables(['options.cache', 'custom.py'], ARGUMENTS)
 opts.Add('CPPPATH', 'Additional preprocessor paths')
 opts.Add('CPPFLAGS', 'Additional preprocessor flags')
 opts.Add('CPPDEFINES', 'defined constants')
