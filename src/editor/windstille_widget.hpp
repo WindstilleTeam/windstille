@@ -136,6 +136,8 @@ public:
   std::string get_filename() const { return filename; }
   void set_filename(const std::string& filename_) { filename = filename_; }
 
+  ControlPointHandle get_control_point(const Vector2f& pos) const;
+
   void on_selection_change();
 
 private:

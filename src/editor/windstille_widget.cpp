@@ -638,6 +638,18 @@ WindstilleWidget::on_selection_change()
 
   std::cout << "WindstilleWidget::on_selection_change(): " << selection->size() << " " << control_points.size() << std::endl;
 }
+
+ControlPointHandle
+WindstilleWidget::get_control_point(const Vector2f& pos) const
+{
+  for(std::vector<ControlPointHandle>::const_iterator i = control_points.begin();  
+      i != control_points.end(); ++i)
+    {
+      if ((*i)->get_bounding_box().is_inside(pos))
+        return *i;
+    }
+  return ControlPointHandle();
+}
 
 SectorModel*
 WindstilleWidget::get_sector_model()

@@ -29,10 +29,12 @@ private:
   Vector2f click_pos;
   Rectf    rect;
   SelectionHandle selection;
-  
+  ControlPointHandle ctrl_point;
+
   enum { 
     SELECT_MODE,
-    DRAG_MODE,
+    OBJECT_DRAG_MODE,
+    CONTROL_DRAG_MODE,
     NO_MODE
   } mode;
 

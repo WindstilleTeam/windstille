@@ -45,12 +45,16 @@ void
 ControlPoint::on_move_update(const Vector2f& offset_)
 {
   offset = offset_;
+  std::cout << "on_move_update: " << offset << std::endl;
 }
 
 void
 ControlPoint::on_move_end(const Vector2f& offset_)
 {
   offset = offset_;
+  std::cout << "on_move_end: " << offset << std::endl;
+
+  offset = Vector2f();
 }
 
 Rectf
@@ -62,8 +66,12 @@ ControlPoint::get_bounding_box() const
 void
 ControlPoint::draw(SceneContext& sc)
 {
-  sc.control().fill_rect(get_bounding_box().grow(4.0f), Color(0.0f, 0.0f, 0.0f));
-  sc.control().fill_rect(get_bounding_box(), Color(1.0f, 0.0f, 0.0f));
+  Rectf rect = get_bounding_box();
+
+  rect += offset;
+
+  sc.control().fill_rect(rect.grow(4.0f), Color(0.0f, 0.0f, 0.0f));
+  sc.control().fill_rect(rect, Color(1.0f, 0.0f, 0.0f));
 }
 
 /* EOF */
