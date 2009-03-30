@@ -25,7 +25,7 @@
 #include <gdkmm/pixbuf.h>
 #include <vector>
 
-#include "hard_layer.hpp"
+#include "layer.hpp"
 #include "selection.hpp"
 #include "object_model.hpp"
 #include "math/vector2f.hpp"
@@ -50,7 +50,7 @@ public:
   Gtk::TreeModelColumn<Glib::ustring>              name;
   Gtk::TreeModelColumn<bool>                       visible;
   Gtk::TreeModelColumn<bool>                       locked;
-  Gtk::TreeModelColumn<HardLayerHandle>            layer;
+  Gtk::TreeModelColumn<LayerHandle>            layer;
 
 private:
   LayerManagerColumns() {
@@ -69,7 +69,7 @@ private:
 
 public:
   //typedef Objects::iterator iterator;
-  typedef std::vector<HardLayerHandle> HardLayers;
+  typedef std::vector<LayerHandle> Layers;
 
   SectorModel();
 
@@ -87,9 +87,9 @@ public:
   void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
   void remove(const ObjectModelHandle& object);
 
-  HardLayerHandle get_layer(const Gtk::TreeModel::Path& path) const;
-  HardLayers get_layers() const;
-  HardLayerHandle get_layer(ObjectModelHandle object);
+  LayerHandle get_layer(const Gtk::TreeModel::Path& path) const;
+  Layers get_layers() const;
+  LayerHandle get_layer(ObjectModelHandle object);
   
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;
 

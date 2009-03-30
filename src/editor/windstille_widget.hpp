@@ -38,7 +38,7 @@
 #include "decal_object_model.hpp"
 #include "selection.hpp"
 #include "select_mask.hpp"
-#include "hard_layer.hpp"
+#include "layer.hpp"
 
 class Tool;
 class ScrollTool;
@@ -130,7 +130,7 @@ public:
   void enable_grid(bool v) { grid_enabled = v; }
   bool get_enable_grid() const { return grid_enabled; }
 
-  HardLayerHandle get_current_layer();
+  LayerHandle get_current_layer();
   Gtk::TreeModel::Path get_current_layer_path();
 
   std::string get_filename() const { return filename; }

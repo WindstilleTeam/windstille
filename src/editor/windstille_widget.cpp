@@ -323,7 +323,7 @@ WindstilleWidget::selection_duplicate()
   SelectionHandle new_selection = Selection::create();
   for(Selection::reverse_iterator i = selection->rbegin(); i != selection->rend(); ++i)
     {
-      HardLayerHandle layer = sector_model->get_layer(*i);
+      LayerHandle layer = sector_model->get_layer(*i);
       ObjectModelHandle obj = (*i)->clone();
 
       parent_map[*i] = obj;
@@ -575,7 +575,7 @@ WindstilleWidget::get_selection() const
   return selection;
 }
 
-HardLayerHandle
+LayerHandle
 WindstilleWidget::get_current_layer()
 {
   Gtk::TreeModel::Path path;
@@ -585,7 +585,7 @@ WindstilleWidget::get_current_layer()
   if (!path.gobj())
     {
       std::cout << "WindstilleWidget::get_current_layer(): Error: Couldn't get path" << std::endl;
-      return HardLayerHandle();
+      return LayerHandle();
     }
   else
     {

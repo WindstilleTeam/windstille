@@ -17,38 +17,38 @@
 */
 
 #include "sector_model.hpp"
-#include "hard_layer.hpp"
+#include "layer.hpp"
 
-HardLayer::HardLayer()
+Layer::Layer()
   : visible(true),
     locked(false)
 {
 }
 
-HardLayer::~HardLayer()
+Layer::~Layer()
 {
 }
 
 bool
-HardLayer::has_object(const ObjectModelHandle& object) const
+Layer::has_object(const ObjectModelHandle& object) const
 {
   return std::find(objects.begin(), objects.end(), object) != objects.end();
 }
 
 void
-HardLayer::add(const ObjectModelHandle& object)
+Layer::add(const ObjectModelHandle& object)
 {
   objects.push_back(object);
 }
 
 void
-HardLayer::remove(const ObjectModelHandle& object)
+Layer::remove(const ObjectModelHandle& object)
 {
   objects.remove(object);
 }
 
 void
-HardLayer::draw(SceneContext& sc, const SelectMask& select_mask)
+Layer::draw(SceneContext& sc, const SelectMask& select_mask)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
@@ -58,7 +58,7 @@ HardLayer::draw(SceneContext& sc, const SelectMask& select_mask)
 }
 
 void
-HardLayer::update(const Gtk::TreeModel::Row& row)
+Layer::update(const Gtk::TreeModel::Row& row)
 {
   name    = ((Glib::ustring)row[LayerManagerColumns::instance().name]).raw();
   visible = row[LayerManagerColumns::instance().visible];
@@ -66,7 +66,7 @@ HardLayer::update(const Gtk::TreeModel::Row& row)
 }
 
 void
-HardLayer::update(float delta)
+Layer::update(float delta)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
@@ -75,7 +75,7 @@ HardLayer::update(float delta)
 }
 
 ObjectModelHandle
-HardLayer::get_object_at(const Vector2f& pos, const SelectMask& select_mask) const
+Layer::get_object_at(const Vector2f& pos, const SelectMask& select_mask) const
 {
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
     {
@@ -89,7 +89,7 @@ HardLayer::get_object_at(const Vector2f& pos, const SelectMask& select_mask) con
 }
 
 SelectionHandle
-HardLayer::get_selection(const Rectf& rect, const SelectMask& select_mask) const
+Layer::get_selection(const Rectf& rect, const SelectMask& select_mask) const
 {
  SelectionHandle selection = Selection::create();
 
@@ -106,14 +106,14 @@ HardLayer::get_selection(const Rectf& rect, const SelectMask& select_mask) const
 }
 
 void
-HardLayer::raise_to_top(ObjectModelHandle object)
+Layer::raise_to_top(ObjectModelHandle object)
 {
   objects.remove(object);
   objects.push_back(object); 
 }
 
 void
-HardLayer::lower_to_bottom(ObjectModelHandle object)
+Layer::lower_to_bottom(ObjectModelHandle object)
 {
   objects.remove(object);
   objects.push_front(object); 
@@ -133,7 +133,7 @@ struct OverlapsWith
 };
 
 void
-HardLayer::raise(ObjectModelHandle object)
+Layer::raise(ObjectModelHandle object)
 {
   Objects::iterator i = std::find(objects.begin(), objects.end(), object);
   assert(i != objects.end());
@@ -153,7 +153,7 @@ HardLayer::raise(ObjectModelHandle object)
 }
 
 void
-HardLayer::lower(ObjectModelHandle object)
+Layer::lower(ObjectModelHandle object)
 {
   // Mostly the same as raise, just with reverse iterators
   Objects::reverse_iterator i = std::find(objects.rbegin(), objects.rend(), object);
@@ -177,7 +177,7 @@ HardLayer::lower(ObjectModelHandle object)
 }
 
 SnapData
-HardLayer::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ignore_objects) const
+Layer::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ignore_objects) const
 {
   //float min_x_offset = std::numeric_limits<float>::max();
   //float min_y_offset = std::numeric_limits<float>::max();
@@ -199,7 +199,7 @@ HardLayer::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ign
 }
 
 void
-HardLayer::write(FileWriter& writer) const
+Layer::write(FileWriter& writer) const
 {
   for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
     {
@@ -207,10 +207,10 @@ HardLayer::write(FileWriter& writer) const
     }
 }
 
-HardLayerHandle
-HardLayer::clone() const
+LayerHandle
+Layer::clone() const
 {
-  return HardLayerHandle();
+  return LayerHandle();
 }
 
 /* EOF */

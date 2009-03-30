@@ -38,7 +38,7 @@ SectorModel::SectorModel()
 
   Gtk::TreeStore::iterator it = layer_tree->append();
 
-  HardLayerHandle layer(new HardLayer());
+  LayerHandle layer(new Layer());
 
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[LayerManagerColumns::instance().name]      = Glib::ustring("Scene");
@@ -67,7 +67,7 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
   (*it)[LayerManagerColumns::instance().name]      = name;
   (*it)[LayerManagerColumns::instance().visible]   = true; 
   (*it)[LayerManagerColumns::instance().locked]    = false; 
-  (*it)[LayerManagerColumns::instance().layer]     = HardLayerHandle(new HardLayer());
+  (*it)[LayerManagerColumns::instance().layer]     = LayerHandle(new Layer());
 }
 
 void
@@ -93,15 +93,15 @@ SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& pa
   else
     { 
       Gtk::TreeStore::iterator it = layer_tree->get_iter(path);
-      ((HardLayerHandle)(*it)[LayerManagerColumns::instance().layer])->add(object);
+      ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->add(object);
     }
 }
 
 struct GetLayersFunctor
 {
-  SectorModel::HardLayers& objects;
+  SectorModel::Layers& objects;
 
-  GetLayersFunctor(SectorModel::HardLayers& objects_) 
+  GetLayersFunctor(SectorModel::Layers& objects_) 
     : objects(objects_)
   {}
 
@@ -112,16 +112,16 @@ struct GetLayersFunctor
   }
 };
 
-SectorModel::HardLayers
+SectorModel::Layers
 SectorModel::get_layers() const
 {
-  HardLayers lst;
+  Layers lst;
   GetLayersFunctor func(lst);
   layer_tree->foreach_iter(sigc::mem_fun(func, &GetLayersFunctor::get_layers));
   return lst;
 }
 
-HardLayerHandle
+LayerHandle
 SectorModel::get_layer(const Gtk::TreeModel::Path& path) const
 {
   if (path)
@@ -133,21 +133,21 @@ SectorModel::get_layer(const Gtk::TreeModel::Path& path) const
         }
       else
         {
-          return HardLayerHandle();
+          return LayerHandle();
         }
     }
   else
     {
-      return HardLayerHandle();
+      return LayerHandle();
     }
 }
 
 void
 SectorModel::remove(const ObjectModelHandle& object)
 {
-  const HardLayers& layers = get_layers();
+  const Layers& layers = get_layers();
  
-  for(HardLayers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
+  for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
     {
       (*i)->remove(object);
     }
@@ -156,9 +156,9 @@ SectorModel::remove(const ObjectModelHandle& object)
 void
 SectorModel::draw(SceneContext& sc, const SelectMask& layermask)
 {
-  const HardLayers& layers = get_layers();
+  const Layers& layers = get_layers();
  
-  for(HardLayers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
+  for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
     {
       if ((*i)->is_visible())
         (*i)->draw(sc, layermask);
@@ -168,9 +168,9 @@ SectorModel::draw(SceneContext& sc, const SelectMask& layermask)
 void
 SectorModel::update(float delta)
 {
-  const HardLayers& layers = get_layers();
+  const Layers& layers = get_layers();
 
-  for(HardLayers::const_iterator i = layers.begin(); i != layers.end(); ++i)
+  for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
     {
       if ((*i)->is_visible())
         (*i)->update(delta);
@@ -180,10 +180,10 @@ SectorModel::update(float delta)
 ObjectModelHandle
 SectorModel::get_object_at(const Vector2f& pos, const SelectMask& layermask) const
 {
-  const HardLayers& layers = get_layers();
+  const Layers& layers = get_layers();
   SelectionHandle selection = Selection::create();
 
-  for(HardLayers::const_iterator i = layers.begin(); i != layers.end(); ++i)
+  for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
     {
       if ((*i)->is_visible() && !(*i)->is_locked())
         {
@@ -200,10 +200,10 @@ SectorModel::get_object_at(const Vector2f& pos, const SelectMask& layermask) con
 SelectionHandle
 SectorModel::get_selection(const Rectf& rect, const SelectMask& layermask) const
 {
-  const HardLayers& layers = get_layers();
+  const Layers& layers = get_layers();
   SelectionHandle selection = Selection::create();
 
-  for(HardLayers::const_iterator i = layers.begin(); i != layers.end(); ++i)
+  for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
     {
       if ((*i)->is_visible() && !(*i)->is_locked())
         {
@@ -215,16 +215,16 @@ SectorModel::get_selection(const Rectf& rect, const SelectMask& layermask) const
   return selection;
 }
 
-HardLayerHandle
+LayerHandle
 SectorModel::get_layer(ObjectModelHandle object)
 {
-  const HardLayers& layers = get_layers();
-  for(HardLayers::const_iterator i = layers.begin(); i != layers.end(); ++i)
+  const Layers& layers = get_layers();
+  for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
     {
       if ((*i)->has_object(object))
         return *i;
     }
-  return HardLayerHandle();
+  return LayerHandle();
 }
 
 void
@@ -254,10 +254,10 @@ SectorModel::lower_to_bottom(ObjectModelHandle object)
 SnapData
 SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ignore_objects) const
 {
-  const HardLayers& layers = get_layers();
+  const Layers& layers = get_layers();
 
   SnapData snap_data;
-  for(HardLayers::const_iterator i = layers.begin(); i != layers.end(); ++i)
+  for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
     {
       if ((*i)->is_visible())
         {
@@ -287,7 +287,7 @@ SectorModel::load_layer(const FileReader& reader, const Gtk::TreeModel::Row* par
 
   //std::cout << "loading layer: " << reader.get_name() << " " << name << " " << visible << " " << locked << std::endl;
 
-  HardLayerHandle layer = HardLayerHandle(new HardLayer());
+  LayerHandle layer = LayerHandle(new Layer());
 
   const std::vector<FileReader>& objects_sections = objects_reader.get_sections();
   for(std::vector<FileReader>::const_iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
@@ -378,7 +378,7 @@ SectorModel::write(FileWriter& writer) const
   writer.write_raw(";; -*- scheme -*-\n");
   writer.start_section("windstille-sector");
 
-  writer.write("version", 1);
+  writer.write("version", 2);
   writer.write("name", "");
   writer.write("ambient-color", Color());
   writer.write("init-script", "init.nut");
@@ -398,7 +398,7 @@ SectorModel::write(FileWriter& writer, const Gtk::TreeRow& row) const
   writer.write("locked",  (bool)row[LayerManagerColumns::instance().locked]);
 
   writer.start_section("objects");
-  ((HardLayerHandle)row[LayerManagerColumns::instance().layer])->write(writer);
+  ((LayerHandle)row[LayerManagerColumns::instance().layer])->write(writer);
   writer.end_section();
 
   writer.start_section("child-layers");
@@ -422,14 +422,14 @@ struct PropSetFunctor
   bool set_visible(const Gtk::TreeModel::iterator& it)
   {
     (*it)[LayerManagerColumns::instance().visible] = v;
-    ((HardLayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
+    ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
     return false;
   }
   
   bool set_locked(const Gtk::TreeModel::iterator& it)
   {
     (*it)[LayerManagerColumns::instance().locked] = v;
-    ((HardLayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
+    ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
     return false;
   }
 };
@@ -465,7 +465,7 @@ SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeMod
   if (iter)
     {
       // Update the Layer object with data from the tree
-      HardLayerHandle layer = (*iter)[LayerManagerColumns::instance().layer];
+      LayerHandle layer = (*iter)[LayerManagerColumns::instance().layer];
       if (layer)
         {
           layer->update(*iter);

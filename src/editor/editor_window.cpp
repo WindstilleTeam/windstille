@@ -799,7 +799,7 @@ EditorWindow::on_paste()
     {
       if (WindstilleWidget* wst = get_windstille_widget())
         {
-          HardLayerHandle layer = wst->get_current_layer();
+          LayerHandle layer = wst->get_current_layer();
           for(Selection::reverse_iterator i = clipboard->rbegin(); i != clipboard->rend(); ++i)
             {
               layer->add(*i);
@@ -818,7 +818,7 @@ EditorWindow::on_select_all()
   // Select all on current layer
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      HardLayerHandle layer = wst->get_current_layer();
+      LayerHandle layer = wst->get_current_layer();
       SelectionHandle selection = Selection::create();
       selection->add(layer->begin(), layer->end());
       wst->set_selection(selection);

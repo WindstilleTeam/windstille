@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_HARD_LAYER_HPP
-#define HEADER_WINDSTILLE_EDITOR_HARD_LAYER_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_LAYER_HPP
+#define HEADER_WINDSTILLE_EDITOR_LAYER_HPP
 
 #include <boost/shared_ptr.hpp>
 #include <list>
@@ -28,10 +28,10 @@
 #include "selection.hpp"
 #include "object_model.hpp"
 
-class HardLayer;
-typedef boost::shared_ptr<HardLayer> HardLayerHandle;
+class Layer;
+typedef boost::shared_ptr<Layer> LayerHandle;
 
-class HardLayer
+class Layer
 {
 private:
   typedef std::list<ObjectModelHandle> Objects;
@@ -44,8 +44,8 @@ private:
 public:
   typedef Objects::iterator iterator;
 
-  HardLayer();
-  ~HardLayer();
+  Layer();
+  ~Layer();
   
   void set_row_ptr(Gtk::TreeModel::Row* row_ptr);
 
@@ -83,11 +83,11 @@ public:
 
   void write(FileWriter& writer) const;
 
-  HardLayerHandle clone() const;
+  LayerHandle clone() const;
   
 private:
-  HardLayer(const HardLayer&);
-  HardLayer& operator=(const HardLayer&);
+  Layer(const Layer&);
+  Layer& operator=(const Layer&);
 };
 
 #endif

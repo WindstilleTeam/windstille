@@ -239,7 +239,7 @@ editor_env.Program('../windstille-editor', [
         'editor/decal_object_model.cpp',
         'editor/editor_window.cpp',
         'editor/layer_widget.cpp',
-        'editor/hard_layer.cpp',
+        'editor/layer.cpp',
         'editor/main.cpp',
         'editor/minimap_widget.cpp',
         'editor/object_model.cpp',      

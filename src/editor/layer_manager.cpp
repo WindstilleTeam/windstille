@@ -142,7 +142,7 @@ LayerManager::on_cursor_changed()
             {
               EditorWindow::current()->on_lock_all(true);
               (*it)[LayerManagerColumns::instance().locked] = false;
-              ((HardLayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
+              ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
             }
         }
     }
