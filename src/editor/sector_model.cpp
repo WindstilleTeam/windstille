@@ -58,7 +58,7 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
 {
   Gtk::TreeStore::iterator it;
 
-  if (path.empty())
+  if (!path)
     it = layer_tree->append();
   else
     it = layer_tree->append(layer_tree->get_iter(path)->children());
@@ -73,7 +73,7 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
 void
 SectorModel::delete_layer(const Gtk::TreeModel::Path& path)
 {
-  if (path.empty())
+  if (!path)
     {
       EditorWindow::current()->print("SectorModel::delete_layer(): invalid empty path");
     }
@@ -86,7 +86,7 @@ SectorModel::delete_layer(const Gtk::TreeModel::Path& path)
 void
 SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path)
 {
-  if (path.empty())
+  if (!path)
     {
       EditorWindow::current()->print("SectorModel::add(): invalid empty path");
     }
@@ -124,7 +124,7 @@ SectorModel::get_layers() const
 HardLayerHandle
 SectorModel::get_layer(const Gtk::TreeModel::Path& path) const
 {
-  if (!path.empty())
+  if (path)
     {
       Gtk::TreeModel::iterator it = layer_tree->get_iter(path);
       if (it)
@@ -268,7 +268,9 @@ SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& i
 }
 
 void
-SectorModel::load_layer(FileReader reader, const Gtk::TreeModel::Row* parent)
+SectorModel::load_layer(FileReader reader, const Gtk::TreeModel::Row* parent_row, 
+                        std::map<std::string, ObjectModelHandle>& id_table,
+                        std::map<ObjectModelHandle, std::string>& parent_table)
 {
   FileReader objects_reader;
   FileReader layers_reader;
@@ -277,11 +279,11 @@ SectorModel::load_layer(FileReader reader, const Gtk::TreeModel::Row* parent)
   bool visible = true;;
   bool locked  = false;
 
-  reader.read("name", name);
-  reader.read("visible", visible);
-  reader.read("locked", locked);
-  reader.read("objects", objects_reader);
-  reader.read("child-layers", layers_reader);
+  reader.get("name", name);
+  reader.get("visible", visible);
+  reader.get("locked", locked);
+  reader.get("objects", objects_reader);
+  reader.get("child-layers", layers_reader);
 
   //std::cout << "loading layer: " << reader.get_name() << " " << name << " " << visible << " " << locked << std::endl;
 
@@ -290,11 +292,26 @@ SectorModel::load_layer(FileReader reader, const Gtk::TreeModel::Row* parent)
   const std::vector<FileReader>& objects_sections = objects_reader.get_sections();
   for(std::vector<FileReader>::const_iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
     {
-      layer->add(ObjectModelFactory::create(*j));
+      ObjectModelHandle obj = ObjectModelFactory::create(*j);
+
+      layer->add(obj);
+
+      std::string id_str;
+      if (j->read("id", id_str))
+        {
+          id_table[id_str] = obj;
+        }
+
+      std::string parent_str;
+      if (j->read("parent", parent_str))
+        {
+          if (!parent_str.empty())
+            parent_table[obj] = parent_str;
+        }
     }
 
   // Append the layer to the tree
-  Gtk::TreeStore::iterator it = parent ? layer_tree->append(parent->children()) : it = layer_tree->append();
+  Gtk::TreeStore::iterator it = parent_row ? layer_tree->append(parent_row->children()) : it = layer_tree->append();
 
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[LayerManagerColumns::instance().name]      = name;
@@ -307,7 +324,7 @@ SectorModel::load_layer(FileReader reader, const Gtk::TreeModel::Row* parent)
   const std::vector<FileReader>& layers_sections = layers_reader.get_sections();
   for(std::vector<FileReader>::const_iterator j = layers_sections.begin(); j != layers_sections.end(); ++j)
     {
-      load_layer(*j, &*it);
+      load_layer(*j, &(*it), id_table, parent_table);
     }
 }
 
@@ -323,6 +340,9 @@ SectorModel::load(const std::string& filename)
     }
   else
     {
+      std::map<std::string, ObjectModelHandle> id_table;
+      std::map<ObjectModelHandle, std::string> parent_table;
+
       FileReader reader = FileReader::parse(stream, filename);
       if (reader.get_name() == "windstille-sector")
         {
@@ -331,7 +351,21 @@ SectorModel::load(const std::string& filename)
             {
               if (i->get_name() == "layer")
                 {
-                  load_layer(*i, 0);
+                  load_layer(*i, 0, id_table, parent_table);
+                }
+            }
+          
+          // Set the parents properly
+          for(std::map<ObjectModelHandle, std::string>::iterator i = parent_table.begin(); i != parent_table.end(); ++i)
+            {
+              std::map<std::string, ObjectModelHandle>::iterator j = id_table.find(i->second);
+              if (j == id_table.end())
+                {
+                  std::cout << "Error: Couldn't resolve 'id': " << i->second << std::endl;
+                }
+              else
+                {
+                  i->first->set_parent(j->second, false);
                 }
             }
         }

@@ -60,7 +60,6 @@ LayerManager::LayerManager(EditorWindow& editor_)
                     sigc::bind(sigc::mem_fun(*this, &LayerManager::on_auto_lock), auto_lock));
                     //sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_auto_lock), auto_lock));
 
-
   ui_manager->insert_action_group(action_group);
 
   ui_manager->add_ui_from_string("<ui>"

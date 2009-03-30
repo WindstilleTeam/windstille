@@ -51,10 +51,11 @@ public:
   ObjectModel(const std::string& name, const Vector2f& pos);
   virtual ~ObjectModel();
   
-  void set_parent(const ObjectModelHandle& parent_);
+  void set_parent(const ObjectModelHandle& parent_, bool recalc_pos = true);
   ObjectModelHandle get_parent() const;
 
   std::string get_name() const { return name; }
+  std::string get_id() const;
 
   Vector2f get_world_pos() const;
 

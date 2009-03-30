@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_OBJECT_MODEL_FACTOR_HPP
-#define HEADER_OBJECT_MODEL_FACTOR_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_FACTOR_HPP
+#define HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_FACTOR_HPP
 
 #include "object_model.hpp"
 

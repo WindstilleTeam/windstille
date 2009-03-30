@@ -17,6 +17,7 @@
 */
 
 #include <iostream>
+#include <sstream>
 
 #include "editor_window.hpp"
 #include "util/file_reader.hpp"
@@ -32,18 +33,24 @@ ObjectModel::ObjectModel(const std::string& name_, const Vector2f& rel_pos_)
 
 ObjectModel::ObjectModel(FileReader& reader)
 {
-  std::string parent;
-  reader.read("name", name);
+  reader.get("name", name);
   reader.get("pos",  rel_pos);
-  reader.read("parent",  parent);
   
   int layer_mask = 1;
-  reader.read("layer", layer_mask);
+  reader.get("layer", layer_mask);
   layers = Layers(layer_mask);
 }
 
 ObjectModel::~ObjectModel()
 {
+}
+
+std::string
+ObjectModel::get_id() const
+{
+  std::ostringstream os;
+  os << this;
+  return os.str();
 }
 
 FileWriter&
@@ -52,8 +59,9 @@ ObjectModel::write_member(FileWriter& writer) const
   ObjectModelHandle parent = parent_ptr.lock();
 
   return writer
+    .write("id", get_id())
     .write("pos", rel_pos)
-    .write("parent", parent.get() ? parent->get_name() : "")
+    .write("parent", parent.get() ? parent->get_id() : "")
     .write("layer", layers.get_mask());
 }
 
@@ -65,7 +73,7 @@ ObjectModel::get_parent() const
 }
 
 void
-ObjectModel::set_parent(const ObjectModelHandle& parent_)
+ObjectModel::set_parent(const ObjectModelHandle& parent_, bool recalc_pos)
 {
   { // Remove the old parent
     ObjectModelHandle parent = parent_ptr.lock();
@@ -91,7 +99,7 @@ ObjectModel::set_parent(const ObjectModelHandle& parent_)
     }
 
   // Set new parent
-  if (parent_.get())
+  if (parent_.get() && recalc_pos)
     {
       rel_pos -= parent_->get_world_pos();
     }

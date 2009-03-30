@@ -33,8 +33,8 @@ DecalObjectModel::DecalObjectModel(FileReader& reader)
   : ObjectModel(reader)
 {
   int map_type = 0;
-  reader.read("path", path);
-  reader.read("type", map_type);
+  reader.get("path", path);
+  reader.get("type", map_type);
   type = (MapType)map_type;
   surface = Surface(path);
 }
