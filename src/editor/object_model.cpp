@@ -31,7 +31,7 @@ ObjectModel::ObjectModel(const std::string& name_, const Vector2f& rel_pos_)
 {
 }
 
-ObjectModel::ObjectModel(FileReader& reader)
+ObjectModel::ObjectModel(const FileReader& reader)
 {
   reader.get("name", name);
   reader.get("pos",  rel_pos);

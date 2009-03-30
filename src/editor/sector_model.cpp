@@ -268,7 +268,7 @@ SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& i
 }
 
 void
-SectorModel::load_layer(FileReader reader, const Gtk::TreeModel::Row* parent_row, 
+SectorModel::load_layer(const FileReader& reader, const Gtk::TreeModel::Row* parent_row, 
                         std::map<std::string, ObjectModelHandle>& id_table,
                         std::map<ObjectModelHandle, std::string>& parent_table)
 {

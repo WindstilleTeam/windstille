@@ -47,7 +47,7 @@ private:
 
 public:
   ObjectModel();
-  ObjectModel(FileReader& reader);
+  ObjectModel(const FileReader& reader);
   ObjectModel(const std::string& name, const Vector2f& pos);
   virtual ~ObjectModel();
   

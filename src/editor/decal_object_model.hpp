@@ -35,7 +35,7 @@ private:
   MapType type;
 
 public:
-  DecalObjectModel(FileReader& reader);
+  DecalObjectModel(const FileReader& reader);
   DecalObjectModel(const std::string& name, const Vector2f& rel_pos, 
                    const std::string& path_, MapType type_);
   ~DecalObjectModel();

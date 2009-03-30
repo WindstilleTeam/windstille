@@ -29,7 +29,7 @@ DecalObjectModel::create(const std::string& name, const Vector2f& pos,
   return ObjectModelHandle(new DecalObjectModel(name, pos, path, type));
 }
 
-DecalObjectModel::DecalObjectModel(FileReader& reader)
+DecalObjectModel::DecalObjectModel(const FileReader& reader)
   : ObjectModel(reader)
 {
   int map_type = 0;

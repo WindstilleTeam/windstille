@@ -112,7 +112,7 @@ public:
   SnapData snap_object(const Rectf& object, const std::set<ObjectModelHandle>& ignore_objects) const;
 
   void load(const std::string& filename);
-  void load_layer(FileReader filename, const Gtk::TreeModel::Row* parent, 
+  void load_layer(const FileReader& filename, const Gtk::TreeModel::Row* parent, 
                   std::map<std::string, ObjectModelHandle>& id_table,
                   std::map<ObjectModelHandle, std::string>& parent_table);
   void write(FileWriter& writer) const;

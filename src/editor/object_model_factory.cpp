@@ -23,7 +23,7 @@
 #include "object_model_factory.hpp"
 
 ObjectModelHandle
-ObjectModelFactory::create(FileReader reader)
+ObjectModelFactory::create(const FileReader& reader)
 {
   if (reader.get_name() == "decal")
     {
