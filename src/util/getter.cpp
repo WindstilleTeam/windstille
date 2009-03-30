@@ -24,7 +24,7 @@
 #include "file_reader.hpp"
 #include "getter.hpp"
 
-bool get(FileReader& reader, const char* name, Vector2f&  value)
+bool get(const FileReader& reader, const char* name, Vector2f&  value)
 {
   std::vector<float> floats;
   if (reader.get(name, floats) && floats.size() == 2) {
@@ -36,7 +36,7 @@ bool get(FileReader& reader, const char* name, Vector2f&  value)
   }  
 }
 
-bool get(FileReader& reader, const char* name, Vector3& value)
+bool get(const FileReader& reader, const char* name, Vector3& value)
 {
   std::vector<float> floats;
   if (reader.get(name, floats) && floats.size() == 3) {
@@ -49,7 +49,7 @@ bool get(FileReader& reader, const char* name, Vector3& value)
   }
 }
 
-bool get(FileReader& reader, const char* name, Quaternion& value)
+bool get(const FileReader& reader, const char* name, Quaternion& value)
 {
   std::vector<float> floats;
   if (reader.get(name, floats) && floats.size() == 4) {
@@ -63,7 +63,7 @@ bool get(FileReader& reader, const char* name, Quaternion& value)
   }
 }
 
-bool get(FileReader& reader, const char* name, Matrix& m)
+bool get(const FileReader& reader, const char* name, Matrix& m)
 {
   std::vector<float> floats;
   if (reader.get(name, floats) && floats.size() == 16) {  
@@ -90,7 +90,7 @@ bool get(FileReader& reader, const char* name, Matrix& m)
   }
 }
 
-bool get(FileReader& reader, const char* name, Color& value)
+bool get(const FileReader& reader, const char* name, Color& value)
 {
   std::vector<float> floats;
   if (reader.get(name, floats)) {
@@ -121,16 +121,16 @@ bool get(FileReader& reader, const char* name, Color& value)
 
 // Getters for primitive types
 // FIXME: Ugly, maybe there is a better way then to have different read/get names for the function
-bool get(FileReader& reader, const char* name, FileReader& v) { return reader.read(name, v); }
+bool get(const FileReader& reader, const char* name, FileReader& v) { return reader.read(name, v); }
 
-bool get(FileReader& reader, const char* name, int&   v) { return reader.read(name, v); }
-bool get(FileReader& reader, const char* name, float& v) { return reader.read(name, v); }
-bool get(FileReader& reader, const char* name, bool& v) { return reader.read(name, v); }
-bool get(FileReader& reader, const char* name, std::string& v) { return reader.read(name, v); }
+bool get(const FileReader& reader, const char* name, int&   v) { return reader.read(name, v); }
+bool get(const FileReader& reader, const char* name, float& v) { return reader.read(name, v); }
+bool get(const FileReader& reader, const char* name, bool& v) { return reader.read(name, v); }
+bool get(const FileReader& reader, const char* name, std::string& v) { return reader.read(name, v); }
 
-bool get(FileReader& reader, const char* name, std::vector<bool>&   v) { return reader.read(name, v); }
-bool get(FileReader& reader, const char* name, std::vector<int>&   v) { return reader.read(name, v); }
-bool get(FileReader& reader, const char* name, std::vector<float>& v) { return reader.read(name, v); }
-bool get(FileReader& reader, const char* name, std::vector<std::string>& v) { return reader.read(name, v); }
+bool get(const FileReader& reader, const char* name, std::vector<bool>&   v) { return reader.read(name, v); }
+bool get(const FileReader& reader, const char* name, std::vector<int>&   v) { return reader.read(name, v); }
+bool get(const FileReader& reader, const char* name, std::vector<float>& v) { return reader.read(name, v); }
+bool get(const FileReader& reader, const char* name, std::vector<std::string>& v) { return reader.read(name, v); }
 
 /* EOF */

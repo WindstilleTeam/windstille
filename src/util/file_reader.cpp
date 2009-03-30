@@ -84,7 +84,7 @@ FileReader::get_name() const
 }
 
 bool
-FileReader::read(const char* name, int& value)
+FileReader::read(const char* name, int& value) const
 {
   if (impl.get())
     return impl->read_int(name, value);
@@ -93,7 +93,7 @@ FileReader::read(const char* name, int& value)
 }
 
 bool
-FileReader::read(const char* name, float& value)
+FileReader::read(const char* name, float& value) const
 {
   if (impl.get())
     return impl->read_float(name, value);
@@ -102,7 +102,7 @@ FileReader::read(const char* name, float& value)
 }
 
 bool
-FileReader::read(const char* name, bool& value)
+FileReader::read(const char* name, bool& value) const
 {
   if (impl.get())
     return impl->read_bool(name, value);
@@ -111,7 +111,7 @@ FileReader::read(const char* name, bool& value)
 }
 
 bool
-FileReader::read(const char* name, std::string& value)
+FileReader::read(const char* name, std::string& value) const
 {
   if (impl.get())
     return impl->read_string(name, value);
@@ -120,7 +120,7 @@ FileReader::read(const char* name, std::string& value)
 }
 
 bool
-FileReader::read(const char* name, std::vector<int>& value)
+FileReader::read(const char* name, std::vector<int>& value) const
 {
   if (impl.get())
     return impl->get(name, value);
@@ -129,7 +129,7 @@ FileReader::read(const char* name, std::vector<int>& value)
 }
 
 bool
-FileReader::read(const char* name, std::vector<bool>&   value)
+FileReader::read(const char* name, std::vector<bool>&   value) const
 {
   if (impl.get())
     return impl->get(name, value);
@@ -138,7 +138,7 @@ FileReader::read(const char* name, std::vector<bool>&   value)
 }
 
 bool
-FileReader::read(const char* name, std::vector<std::string>& value)
+FileReader::read(const char* name, std::vector<std::string>& value) const
 {
   if (impl.get())
     return impl->get(name, value);
@@ -147,7 +147,7 @@ FileReader::read(const char* name, std::vector<std::string>& value)
 }
 
 bool
-FileReader::read(const char* name, std::vector<float>& value)
+FileReader::read(const char* name, std::vector<float>& value) const
 {
   if (impl.get())
     return impl->get(name, value);
@@ -156,7 +156,7 @@ FileReader::read(const char* name, std::vector<float>& value)
 }
 
 bool
-FileReader::read(const char* name, FileReader& reader)
+FileReader::read(const char* name, FileReader& reader) const
 {
   if (impl.get())
     return impl->read_section(name, reader);

@@ -45,12 +45,13 @@ public:
 
   /** Generic getter function for non-standard types, see getter.hpp */
   template<typename T>
-  bool get(const char* name, T& v) {
+  bool get(const char* name, T& v) const
+  {
     return ::get(*this, name, v);
   }
  
   template<class E, class T>
-  bool get(const char* name, E& value, T enum2string)
+  bool get(const char* name, E& value, T enum2string) const
   {
     std::string str;
     if (get(name, str))
@@ -64,17 +65,17 @@ public:
 
   // Primitive types
   // FIXME: Is there any nice way to not use two different names?
-  bool read(const char* name, FileReader& v);
+  bool read(const char* name, FileReader& v) const;
 
-  bool read(const char* name, int&   v);
-  bool read(const char* name, float& v);
-  bool read(const char* name, bool& v);
-  bool read(const char* name, std::string& v);
+  bool read(const char* name, int&   v) const;
+  bool read(const char* name, float& v) const;
+  bool read(const char* name, bool& v) const;
+  bool read(const char* name, std::string& v) const;
 
-  bool read(const char* name, std::vector<bool>&   v);
-  bool read(const char* name, std::vector<int>&   v);
-  bool read(const char* name, std::vector<float>& v);
-  bool read(const char* name, std::vector<std::string>& v);
+  bool read(const char* name, std::vector<bool>&   v) const;
+  bool read(const char* name, std::vector<int>&   v) const;
+  bool read(const char* name, std::vector<float>& v) const;
+  bool read(const char* name, std::vector<std::string>& v) const;
 
 private:
   boost::shared_ptr<FileReaderImpl> impl;

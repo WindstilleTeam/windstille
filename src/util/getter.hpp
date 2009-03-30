@@ -28,24 +28,24 @@ class Vector2f;
 class Vector3;
 class Matrix;
 
-bool get(FileReader& reader, const char* name, Matrix& value);
-bool get(FileReader& reader, const char* name, Quaternion& value);
-bool get(FileReader& reader, const char* name, Color& value);
-bool get(FileReader& reader, const char* name, Vector2f& value);
-bool get(FileReader& reader, const char* name, Vector3& value);
+bool get(const FileReader& reader, const char* name, Matrix& value);
+bool get(const FileReader& reader, const char* name, Quaternion& value);
+bool get(const FileReader& reader, const char* name, Color& value);
+bool get(const FileReader& reader, const char* name, Vector2f& value);
+bool get(const FileReader& reader, const char* name, Vector3& value);
 
 // Primitive types
-bool get(FileReader& reader, const char* name, FileReader& v);
+bool get(const FileReader& reader, const char* name, FileReader& v);
 
-bool get(FileReader& reader, const char* name, int&   v);
-bool get(FileReader& reader, const char* name, float& v);
-bool get(FileReader& reader, const char* name, bool& v);
-bool get(FileReader& reader, const char* name, std::string& v);
+bool get(const FileReader& reader, const char* name, int&   v);
+bool get(const FileReader& reader, const char* name, float& v);
+bool get(const FileReader& reader, const char* name, bool& v);
+bool get(const FileReader& reader, const char* name, std::string& v);
 
-bool get(FileReader& reader, const char* name, std::vector<bool>&   v);
-bool get(FileReader& reader, const char* name, std::vector<int>&   v); 
-bool get(FileReader& reader, const char* name, std::vector<float>& v);
-bool get(FileReader& reader, const char* name, std::vector<std::string>& v);
+bool get(const FileReader& reader, const char* name, std::vector<bool>&   v);
+bool get(const FileReader& reader, const char* name, std::vector<int>&   v); 
+bool get(const FileReader& reader, const char* name, std::vector<float>& v);
+bool get(const FileReader& reader, const char* name, std::vector<std::string>& v);
 
 #endif
 
