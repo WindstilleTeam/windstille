@@ -686,9 +686,16 @@ EditorWindow::fill_object_selector(const std::string& directory)
         int size     = 48; // size of the icon
         int min_size = 16; // minimum width/height of the icon after scaling
 
-        icon = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, size, size);
-
-        icon->fill(0x444444ff);
+        if (1)
+          {
+            icon = Gdk::Pixbuf::create_from_file("data/editor/icon_bg.png");
+            size = std::max(icon->get_width(), icon->get_height());
+          }
+        else
+          {
+            icon = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, size, size);
+            icon->fill(0x444444ff);
+          }
 
         // Scale pixbuf to icon size while keeping aspect ratio intact
         double x_scale = (double)size / pixbuf->get_width();
