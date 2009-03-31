@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_DECAL_OBJECT_MODEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_DECAL_OBJECT_MODEL_HPP
 
+#include "math/quad.hpp"
 #include "display/surface.hpp"
 #include "object_model.hpp"
 
@@ -32,6 +33,7 @@ public:
 private:
   std::string path;
   Surface surface;
+  Quad quad;
   MapType type;
 
 public:

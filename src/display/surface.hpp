@@ -23,10 +23,10 @@
 #include <boost/shared_ptr.hpp>
 #include "math/rect.hpp"
 #include "texture.hpp"
-
+
 class SurfaceDrawingParameters;
 class SurfaceImpl;
-
+
 /**
  * Surface class. This class basically holds a reference to an opengl texture
  * along with texture coordinates that specify a rectangle on that texture.
@@ -68,7 +68,7 @@ public:
 private:
   boost::shared_ptr<SurfaceImpl> impl;
 };
-
+
 #endif
 
 /* EOF */

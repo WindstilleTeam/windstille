@@ -29,8 +29,10 @@
 class Texture;
 class Surface;
 class SurfaceDrawingParameters;
+class DrawingParameters;
 class SceneContext;
 class Sprite;
+class Quad;
 
 /** The DrawingContext collects all DrawingRequests and allows you to
     flush them all down to the graphics card in one run, this has the
@@ -75,6 +77,8 @@ public:
   void draw(const Surface surface, const Vector2f& pos, float z = 0, float alpha = 0);
   void draw(const Surface surface, float x, float y, float z = 0, float alpha = 0);
   void draw(const Surface surface, const SurfaceDrawingParameters& params, float z_pos = 0);
+  void draw(const Surface surface, const Vector2f& pos, const Quad& quad,
+            const DrawingParameters& params, float z_pos = 0);
   /*} */
   
   /** Translate the drawing context */

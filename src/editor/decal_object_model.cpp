@@ -18,7 +18,7 @@
 
 #include "util/file_reader.hpp"
 #include "display/surface.hpp"
-#include "display/surface_drawing_parameters.hpp"
+#include "display/drawing_parameters.hpp"
 #include "display/scene_context.hpp"
 #include "decal_object_model.hpp"
 
@@ -37,6 +37,8 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader)
   reader.get("type", map_type);
   type = (MapType)map_type;
   surface = Surface(path);
+
+  quad = Quad(0, 0, surface.get_width(), surface.get_height());
 }
 
 DecalObjectModel::DecalObjectModel(const std::string& name, const Vector2f& rel_pos, 
@@ -46,6 +48,7 @@ DecalObjectModel::DecalObjectModel(const std::string& name, const Vector2f& rel_
     surface(path_),
     type(type_)
 {
+  quad = Quad(0, 0, surface.get_width(), surface.get_height());
 }
 
 DecalObjectModel::~DecalObjectModel()
@@ -64,19 +67,18 @@ DecalObjectModel::draw(SceneContext& sc)
   switch(type)
     {
       case COLORMAP:
-        sc.color().draw(surface, wo_pos + center_offset); 
+        sc.color().draw(surface, wo_pos + center_offset, quad,
+                        DrawingParameters());
         break;
 
       case LIGHTMAP:
-        sc.light().draw(surface, SurfaceDrawingParameters()
-                        .set_pos(wo_pos + center_offset)
-                        .set_blend_func(GL_SRC_ALPHA, GL_ONE)); 
+        sc.light().draw(surface, wo_pos + center_offset, quad, 
+                        DrawingParameters().set_blend_func(GL_SRC_ALPHA, GL_ONE));
         break;
 
       case HIGHLIGHTMAP:
-        sc.highlight().draw(surface, SurfaceDrawingParameters()
-                            .set_pos(wo_pos + center_offset)
-                            .set_blend_func(GL_SRC_ALPHA, GL_ONE)); 
+        sc.highlight().draw(surface, wo_pos + center_offset, quad, 
+                            DrawingParameters().set_blend_func(GL_SRC_ALPHA, GL_ONE));
         break;
     }
 }

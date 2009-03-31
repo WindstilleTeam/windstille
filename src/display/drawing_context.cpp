@@ -21,15 +21,18 @@
 #include <iosfwd>
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include "font/fonts.hpp"
-#include "sprite2d/sprite.hpp"
-#include "drawing_context.hpp"
-#include "display/opengl_state.hpp"
-#include "display/surface_drawing_parameters.hpp"
-#include "display/vertex_array_drawing_request.hpp"
-#include "display/scene_context.hpp"
+
 #include "display/display.hpp"
+#include "display/opengl_state.hpp"
+#include "display/scene_context.hpp"
 #include "display/surface.hpp"
+#include "display/surface_drawing_parameters.hpp"
+#include "display/drawing_parameters.hpp"
+#include "display/vertex_array_drawing_request.hpp"
+#include "drawing_context.hpp"
+#include "font/fonts.hpp"
+#include "math/quad.hpp"
+#include "sprite2d/sprite.hpp"
 
 struct DrawingRequestsSorter
 {
@@ -91,6 +94,7 @@ class FillScreenDrawingRequest : public DrawingRequest
 {
 private:
   Color color;
+
 public:
   FillScreenDrawingRequest(const Color& color_) 
     : DrawingRequest(Vector2f(0, 0), -1000.0f), color(color_)
@@ -123,6 +127,55 @@ public:
     glMultMatrixf(modelview.matrix);
     Fonts::ttffont->draw(pos, text);
     glPopMatrix();
+  }
+};
+
+class SurfaceQuadDrawingRequest : public DrawingRequest
+{
+private:
+  Surface surface;
+  Quad quad;
+  DrawingParameters params;
+
+public:
+  SurfaceQuadDrawingRequest(Surface surface_, const Vector2f& pos_, const Quad& quad_, 
+                            const DrawingParameters& params_, float z_pos_,
+                            const Matrix modelview_)
+    : DrawingRequest(pos_, z_pos_, modelview_),
+      surface(surface_),
+      quad(quad_),
+      params(params_)
+  {
+  }
+
+  void draw(const Texture& /*tmp_texture*/) 
+  {
+    OpenGLState state;
+    state.enable(GL_BLEND);
+    state.set_blend_func(params.blendfunc_src, params.blendfunc_dst);
+    state.bind_texture(surface.get_texture());
+    state.activate();
+
+    glPushMatrix();
+    glMultMatrixf(modelview.matrix);
+
+    glBegin(GL_QUADS);
+    {
+      glTexCoord2f(surface.get_uv().left, surface.get_uv().top);
+      glVertex2f(pos.x + quad.p1.x, pos.y + quad.p1.y);
+    
+      glTexCoord2f(surface.get_uv().right, surface.get_uv().top);
+      glVertex2f(pos.x + quad.p2.x, pos.y + quad.p2.y);
+
+      glTexCoord2f(surface.get_uv().right, surface.get_uv().bottom);
+      glVertex2f(pos.x + quad.p3.x, pos.y + quad.p3.y);
+
+      glTexCoord2f(surface.get_uv().left, surface.get_uv().bottom);
+      glVertex2f(pos.x + quad.p4.x, pos.y + quad.p4.y);
+    }
+    glEnd();
+
+    glPopMatrix();    
   }
 };
 
@@ -198,6 +251,14 @@ DrawingContext::draw(const Sprite& sprite,  const Vector2f& pos, float z_pos)
        .set_color(sprite.get_color())
        .set_scale(sprite.get_scale()),
        z_pos);
+}
+
+void
+DrawingContext::draw(const Surface surface, const Vector2f& pos, const Quad& quad,
+                     const DrawingParameters& params, float z_pos)
+{
+  draw(new SurfaceQuadDrawingRequest(surface, pos, quad, params, z_pos,
+                                     modelview_stack.back()));
 }
 
 void
