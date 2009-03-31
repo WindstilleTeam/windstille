@@ -27,6 +27,7 @@
 #include "util/file_writer.hpp"
 #include "display/surface.hpp"
 #include "math/vector2f.hpp"
+#include "editor/control_point.hpp"
 #include "snap_data.hpp"
 
 class ObjectModel;
@@ -37,7 +38,7 @@ typedef boost::weak_ptr<ObjectModel>   ObjectModelPtr;
 
 class ObjectModel
 {
-private:
+protected:
   std::string name;
   Vector2f    rel_pos;
   SelectMask  select_mask;
@@ -80,6 +81,8 @@ public:
 
   virtual void write(FileWriter& writer) const =0;
   virtual FileWriter& write_member(FileWriter& writer) const;
+
+  virtual void add_control_points(std::vector<ControlPointHandle>& control_points) {}
 };
 
 #endif

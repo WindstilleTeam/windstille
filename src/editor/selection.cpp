@@ -192,11 +192,18 @@ Selection::add_control_points(std::vector<ControlPointHandle>& control_points)
   std::cout << "Adding ControlPoints" << std::endl;
   if (!empty())
     {
-      const Rectf& rect = get_bounding_box();
-      control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.top)));
-      control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.top)));
-      control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.bottom)));
-      control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.bottom)));
+      if (size() == 1)
+        {
+          objects[0]->add_control_points(control_points);
+        }
+      else
+        {
+          const Rectf& rect = get_bounding_box();
+          control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.top)));
+          control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.top)));
+          control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.bottom)));
+          control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.bottom)));
+        }
     }
 }
 

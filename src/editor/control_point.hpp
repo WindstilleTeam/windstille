@@ -44,9 +44,9 @@ public:
 
   Rectf get_bounding_box() const;
 
-  void on_move_start();
-  void on_move_update(const Vector2f& offset);
-  void on_move_end(const Vector2f& offset);
+  virtual void on_move_start();
+  virtual void on_move_update(const Vector2f& offset);
+  virtual void on_move_end(const Vector2f& offset);
 
 private:
   ControlPoint(const ControlPoint&);

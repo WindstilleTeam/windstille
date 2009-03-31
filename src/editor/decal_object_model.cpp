@@ -107,5 +107,45 @@ DecalObjectModel::write(FileWriter& writer) const
   writer.write("type",    type);
   writer.end_section();
 }
+
+class QuadControlPoint : public ControlPoint
+{
+private:
+  Quad& quad;
+  int n;
+
+public:
+  QuadControlPoint(int n_, Quad& quad_, const Vector2f& pos_)
+    : ControlPoint(pos_),
+      quad(quad_),
+      n(n_)
+  {}
+
+  void on_move_start() {}
+  void on_move_update(const Vector2f& offset) {}
+  void on_move_end(const Vector2f& offset)
+  {
+    if (n == 0)
+      quad.p1 += offset;
+    else if (n == 1)
+      quad.p2 += offset;
+    else if (n == 2)
+      quad.p3 += offset;
+    else if (n == 3)
+      quad.p4 += offset;
+  }  
+};
+
+void
+DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_points)
+{
+  Vector2f center_offset(-surface.get_width()/2,
+                         -surface.get_height()/2);
+
+  control_points.push_back(ControlPointHandle(new QuadControlPoint(0, quad, quad.p1 + get_world_pos() + center_offset)));
+  control_points.push_back(ControlPointHandle(new QuadControlPoint(1, quad, quad.p2 + get_world_pos() + center_offset)));
+  control_points.push_back(ControlPointHandle(new QuadControlPoint(2, quad, quad.p3 + get_world_pos() + center_offset)));
+  control_points.push_back(ControlPointHandle(new QuadControlPoint(3, quad, quad.p4 + get_world_pos() + center_offset)));
+}
 
 /* EOF */

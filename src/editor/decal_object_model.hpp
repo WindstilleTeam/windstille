@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_DECAL_OBJECT_MODEL_HPP
 
 #include "math/quad.hpp"
+#include "control_point.hpp"
 #include "display/surface.hpp"
 #include "object_model.hpp"
 
@@ -47,6 +48,8 @@ public:
   Rectf get_bounding_box() const;
   ObjectModelHandle clone() const;
   void write(FileWriter& writer) const;
+
+  void add_control_points(std::vector<ControlPointHandle>& control_points);
 };
 
 #endif
