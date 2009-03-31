@@ -89,7 +89,7 @@ DecalObjectModel::get_bounding_box() const
   Vector2f center_offset(-surface.get_width()/2,
                          -surface.get_height()/2);
 
-  return Rectf(get_world_pos() + center_offset, Sizef(surface.get_width(), surface.get_height()));
+  return quad.get_bounding_box() + get_world_pos() + center_offset;
 }
 
 ObjectModelHandle
