@@ -20,6 +20,8 @@
 #define HEADER_WINDSTILLE_EDITOR_CONTROL_POINT_HPP
 
 #include <boost/shared_ptr.hpp>
+
+#include "display/surface.hpp"
 #include "math/rect.hpp"
 #include "math/vector2f.hpp"
 
@@ -33,16 +35,17 @@ public:
   static ControlPointHandle create(const Vector2f& pos);
 
 protected:
-  Vector2f     pos;
+  Surface   surface;
+  Vector2f  pos;
   Vector2f  offset;
 
 public:
-  ControlPoint(const Vector2f& pos);
-  ~ControlPoint();
+  ControlPoint(const Surface& surface, const Vector2f& pos);
+  virtual ~ControlPoint();
   
-  void draw(SceneContext& sc);
+  virtual void draw(SceneContext& sc);
 
-  Rectf get_bounding_box() const;
+  virtual Rectf get_bounding_box() const;
 
   virtual void on_move_start();
   virtual void on_move_update(const Vector2f& offset);

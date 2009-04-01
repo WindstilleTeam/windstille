@@ -187,9 +187,17 @@ Selection::get_bounding_box() const
 }
 
 void
+Selection::reset()
+{
+  for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
+    {
+      (*i)->reset();
+    }
+}
+
+void
 Selection::add_control_points(std::vector<ControlPointHandle>& control_points)
 {
-  std::cout << "Adding ControlPoints" << std::endl;
   if (!empty())
     {
       if (size() == 1)

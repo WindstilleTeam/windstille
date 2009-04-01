@@ -88,6 +88,8 @@ public:
 
   Rectf get_bounding_box() const;
 
+  void reset();
+
   sigc::signal<void> signal_changed;
 
 private:

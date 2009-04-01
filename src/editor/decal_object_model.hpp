@@ -59,6 +59,8 @@ public:
   ObjectModelHandle clone() const;
   void write(FileWriter& writer) const;
 
+  void reset();
+
   void add_control_points(std::vector<ControlPointHandle>& control_points);
 };
 

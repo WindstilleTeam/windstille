@@ -23,11 +23,12 @@
 ControlPointHandle
 ControlPoint::create(const Vector2f& pos)
 {
-  return ControlPointHandle(new ControlPoint(pos));
+  return ControlPointHandle(new ControlPoint(Surface("editor/handle.png"), pos));
 }
 
-ControlPoint::ControlPoint(const Vector2f& pos_)
-  : pos(pos_)
+ControlPoint::ControlPoint(const Surface& surface_, const Vector2f& pos_)
+  : surface(surface_),
+    pos(pos_)
 {
 }
 
@@ -60,7 +61,7 @@ ControlPoint::on_move_end(const Vector2f& offset_)
 Rectf
 ControlPoint::get_bounding_box() const
 {
-  return Rectf(pos - Vector2f(8.0f, 8.0f), Sizef(16.0f ,16.0f));
+  return Rectf(pos - Vector2f(11.0f, 11.0f), Sizef(22.0f, 22.0f));
 }
 
 void
@@ -70,8 +71,9 @@ ControlPoint::draw(SceneContext& sc)
 
   rect += offset;
 
-  sc.control().fill_rect(rect.grow(4.0f), Color(0.0f, 0.0f, 0.0f));
-  sc.control().fill_rect(rect, Color(1.0f, 0.0f, 0.0f));
+  //sc.control().fill_rect(rect.grow(4.0f), Color(0.0f, 0.0f, 0.0f));
+  //sc.control().fill_rect(rect, Color(1.0f, 0.0f, 0.0f));
+  sc.control().draw_control(surface, pos, 0.0f);
 }
 
 /* EOF */

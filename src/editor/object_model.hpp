@@ -72,6 +72,9 @@ public:
 
   SnapData snap_object(const Rectf& rect) const;
 
+  /** Reset scale and rotation to default values */
+  virtual void reset();
+
   virtual bool is_snappable() const { return true; }
 
   virtual void draw(SceneContext& sc);

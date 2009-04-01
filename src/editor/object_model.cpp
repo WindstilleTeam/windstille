@@ -152,6 +152,11 @@ ObjectModel::on_move_end(const Vector2f& offset)
   move_offset = Vector2f(0,0);
 }
 
+void
+ObjectModel::reset()
+{
+}
+
 static bool overlap(float l1, float r1,
                     float l2, float r2)
 {
