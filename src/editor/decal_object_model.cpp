@@ -39,9 +39,10 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader)
   int map_type = 0;
   reader.get("path", path);
   reader.get("type", map_type);
+  type = (MapType)map_type;
+
   reader.get("scale", scale);
   reader.get("angle", angle);
-  type = (MapType)map_type;
   surface = Surface(path);
 }
 
@@ -84,21 +85,21 @@ DecalObjectModel::draw(SceneContext& sc)
                          -surface.get_height()/2);
 
   DrawingContext* dc = 0; 
-
+  SurfaceDrawingParameters params;
   switch(type)
     {
-      case COLORMAP:     dc = &sc.color();
-      case LIGHTMAP:     dc = &sc.light();
-      case HIGHLIGHTMAP: dc = &sc.highlight();
+      case COLORMAP:     dc = &sc.color(); break;
+      case LIGHTMAP:     dc = &sc.light();     params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
+      case HIGHLIGHTMAP: dc = &sc.highlight(); params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
     }
 
   center_offset.x *= scale.x;
   center_offset.y *= scale.y;
 
-  dc->draw(surface, SurfaceDrawingParameters()
-                        .set_pos(wo_pos + center_offset)
-                        .set_angle(angle)
-                        .set_scale(scale));
+  dc->draw(surface, params
+           .set_pos(wo_pos + center_offset)
+           .set_angle(angle)
+           .set_scale(scale));
 }
 
 Rectf
@@ -166,8 +167,6 @@ public:
 
     float new_angle = orig_angle + current_angle - base_angle;
     object->set_angle(new_angle);
-
-    std::cout << new_angle << std::endl;
   }
   
   void on_move_end(const Vector2f& offset_)
@@ -200,7 +199,8 @@ public:
     Vector2f start   = pos - object->get_world_pos();
     Vector2f current = (pos + offset) - object->get_world_pos();
 
-    std::cout << "on_move_update: " << (current.x / start.x) << " " << (current.y / start.y) << std::endl;  
+    //std::cout << "on_move_update: " << (current.x / start.x) << " " << (current.y / start.y) << std::endl;  
+
     Vector2f new_scale = current / start;
     new_scale.x *= orig_scale.x;
     new_scale.y *= orig_scale.y;
