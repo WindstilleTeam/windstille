@@ -148,22 +148,29 @@ Surface::draw(const SurfaceDrawingParameters& params) const
   state.activate();
 
   glBegin(GL_QUADS);
+  if (0) // params.rotation)
+    {
 
-  // FIXME: This is just a primitive prototype, should take things
-  // like hotspot and flip into account 
-  glTexCoord2f(impl->uv.left, impl->uv.top);
-  glVertex2f(params.pos.x, params.pos.y);
+    }
+  else
+    {
+      // FIXME: This is just a primitive prototype, should take things
+      // like hotspot and flip into account 
+      glTexCoord2f(impl->uv.left, impl->uv.top);
+      glVertex2f(params.pos.x, params.pos.y);
 
-  glTexCoord2f(impl->uv.right, impl->uv.top);
-  glVertex2f(params.pos.x + impl->size.width * params.scale, params.pos.y);
+      glTexCoord2f(impl->uv.right, impl->uv.top);
+      glVertex2f(params.pos.x + impl->size.width * params.scale.x, 
+                 params.pos.y);
 
-  glTexCoord2f(impl->uv.right, impl->uv.bottom);
-  glVertex2f(params.pos.x + impl->size.width * params.scale, 
-             params.pos.y + impl->size.height * params.scale);
+      glTexCoord2f(impl->uv.right, impl->uv.bottom);
+      glVertex2f(params.pos.x + impl->size.width  * params.scale.x, 
+                 params.pos.y + impl->size.height * params.scale.y);
 
-  glTexCoord2f(impl->uv.left, impl->uv.bottom);
-  glVertex2f(params.pos.x, params.pos.y + impl->size.height * params.scale);
-
+      glTexCoord2f(impl->uv.left, impl->uv.bottom);
+      glVertex2f(params.pos.x, 
+                 params.pos.y + impl->size.height * params.scale.y);
+    }
   glEnd(); 
 }
 

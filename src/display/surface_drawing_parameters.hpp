@@ -40,7 +40,7 @@ public:
 
   float rotation;
 
-  float scale;
+  Vector2f scale;
 
   SurfaceDrawingParameters()
   {
@@ -52,12 +52,12 @@ public:
     color = Color(1.0f, 1.0f, 1.0f, 1.0f);
   
     rotation = 0.0f;
-    scale    = 1.0f;
+    scale    = Vector2f(1.0f, 1.0f);
   }
 
   SurfaceDrawingParameters& set_scale(float s) 
   { 
-    scale    = s; 
+    scale    = Vector2f(s, s); 
     return *this; 
   }
 
@@ -69,7 +69,13 @@ public:
 
   SurfaceDrawingParameters& set_rotation(float r) 
   { 
-    rotation = r; 
+    rotation = r;
+    return *this; 
+  }
+
+  SurfaceDrawingParameters& set_scale(const Vector2f& s) 
+  { 
+    scale = s;
     return *this; 
   }
 

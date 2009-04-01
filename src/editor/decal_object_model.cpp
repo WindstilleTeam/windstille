@@ -16,9 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include "util/file_reader.hpp"
 #include "display/surface.hpp"
 #include "display/drawing_parameters.hpp"
+#include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
 #include "decal_object_model.hpp"
 
@@ -30,15 +32,17 @@ DecalObjectModel::create(const std::string& name, const Vector2f& pos,
 }
 
 DecalObjectModel::DecalObjectModel(const FileReader& reader)
-  : ObjectModel(reader)
+  : ObjectModel(reader),
+    scale(1.0f, 1.0f),
+    angle(0.0f)
 {
   int map_type = 0;
   reader.get("path", path);
   reader.get("type", map_type);
+  reader.get("scale", scale);
+  reader.get("angle", angle);
   type = (MapType)map_type;
   surface = Surface(path);
-
-  quad = Quad(0, 0, surface.get_width(), surface.get_height());
 }
 
 DecalObjectModel::DecalObjectModel(const std::string& name, const Vector2f& rel_pos, 
@@ -46,13 +50,20 @@ DecalObjectModel::DecalObjectModel(const std::string& name, const Vector2f& rel_
   : ObjectModel("DecalObjectModel", rel_pos),
     path(path_),
     surface(path_),
-    type(type_)
+    type(type_),
+    scale(1.0f, 1.0f),
+    angle(0.0f)
 {
-  quad = Quad(0, 0, surface.get_width(), surface.get_height());
 }
 
 DecalObjectModel::~DecalObjectModel()
 {
+}
+
+void
+DecalObjectModel::set_scale(const Vector2f& scale_)
+{
+  scale = scale_;
 }
 
 void
@@ -64,32 +75,37 @@ DecalObjectModel::draw(SceneContext& sc)
   Vector2f center_offset(-surface.get_width()/2,
                          -surface.get_height()/2);
 
+  DrawingContext* dc = 0; 
+
   switch(type)
     {
-      case COLORMAP:
-        sc.color().draw(surface, wo_pos + center_offset, quad,
-                        DrawingParameters());
-        break;
-
-      case LIGHTMAP:
-        sc.light().draw(surface, wo_pos + center_offset, quad, 
-                        DrawingParameters().set_blend_func(GL_SRC_ALPHA, GL_ONE));
-        break;
-
-      case HIGHLIGHTMAP:
-        sc.highlight().draw(surface, wo_pos + center_offset, quad, 
-                            DrawingParameters().set_blend_func(GL_SRC_ALPHA, GL_ONE));
-        break;
+      case COLORMAP:     dc = &sc.color();
+      case LIGHTMAP:     dc = &sc.light();
+      case HIGHLIGHTMAP: dc = &sc.highlight();
     }
+
+  center_offset.x *= scale.x;
+  center_offset.y *= scale.y;
+
+  dc->draw(surface, SurfaceDrawingParameters()
+                        .set_pos(wo_pos + center_offset)
+                        .set_rotation(angle)
+                        .set_scale(scale));
 }
 
 Rectf
 DecalObjectModel::get_bounding_box() const
 {
-  Vector2f center_offset(-surface.get_width()/2,
-                         -surface.get_height()/2);
+  Vector2f center_offset(surface.get_width()/2,
+                         surface.get_height()/2);
 
-  return quad.get_bounding_box() + get_world_pos() + center_offset;
+  center_offset.x *= scale.x;
+  center_offset.y *= scale.y;
+
+  Rectf r(get_world_pos() - center_offset,
+          get_world_pos() + center_offset);
+  r.normalize();
+  return r;
 }
 
 ObjectModelHandle
@@ -105,47 +121,58 @@ DecalObjectModel::write(FileWriter& writer) const
   ObjectModel::write_member(writer);
   writer.write("path",    path);
   writer.write("type",    type);
+  writer.write("scale",   scale);
+  writer.write("angle",   angle);
   writer.end_section();
 }
 
-class QuadControlPoint : public ControlPoint
+class DecalControlPoint : public ControlPoint
 {
 private:
-  Quad& quad;
-  int n;
+  DecalObjectModel* object;
+  Vector2f orig_scale;
 
 public:
-  QuadControlPoint(int n_, Quad& quad_, const Vector2f& pos_)
+  DecalControlPoint(DecalObjectModel* object_, const Vector2f& pos_)
     : ControlPoint(pos_),
-      quad(quad_),
-      n(n_)
+      object(object_),
+      orig_scale(object_->get_scale())
   {}
 
-  void on_move_start() {}
-  void on_move_update(const Vector2f& offset) {}
-  void on_move_end(const Vector2f& offset)
+  void on_move_start() 
   {
-    if (n == 0)
-      quad.p1 += offset;
-    else if (n == 1)
-      quad.p2 += offset;
-    else if (n == 2)
-      quad.p3 += offset;
-    else if (n == 3)
-      quad.p4 += offset;
-  }  
+  }
+
+  void on_move_update(const Vector2f& offset_) 
+  {
+    offset = offset_;
+
+    Vector2f start   = pos - object->get_world_pos();
+    Vector2f current = (pos + offset) - object->get_world_pos();
+
+    std::cout << "on_move_update: " << (current.x / start.x) << " " << (current.y / start.y) << std::endl;  
+    Vector2f new_scale = current / start;
+    new_scale.x *= orig_scale.x;
+    new_scale.y *= orig_scale.y;
+    object->set_scale(new_scale);
+  }
+  
+  void on_move_end(const Vector2f& offset_)
+  {
+    on_move_update(offset_);
+  }
 };
 
 void
 DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_points)
 {
-  Vector2f center_offset(-surface.get_width()/2,
-                         -surface.get_height()/2);
+  float w = surface.get_width()/2  * scale.x;
+  float h = surface.get_height()/2 * scale.y;
 
-  control_points.push_back(ControlPointHandle(new QuadControlPoint(0, quad, quad.p1 + get_world_pos() + center_offset)));
-  control_points.push_back(ControlPointHandle(new QuadControlPoint(1, quad, quad.p2 + get_world_pos() + center_offset)));
-  control_points.push_back(ControlPointHandle(new QuadControlPoint(2, quad, quad.p3 + get_world_pos() + center_offset)));
-  control_points.push_back(ControlPointHandle(new QuadControlPoint(3, quad, quad.p4 + get_world_pos() + center_offset)));
+  control_points.push_back(ControlPointHandle(new DecalControlPoint(this, get_world_pos() - Vector2f(-w, -h))));
+  control_points.push_back(ControlPointHandle(new DecalControlPoint(this, get_world_pos() - Vector2f( w, -h))));
+  control_points.push_back(ControlPointHandle(new DecalControlPoint(this, get_world_pos() - Vector2f( w,  h))));
+  control_points.push_back(ControlPointHandle(new DecalControlPoint(this, get_world_pos() - Vector2f(-w,  h))));
 }
 
 /* EOF */

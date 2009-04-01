@@ -32,7 +32,7 @@ class ControlPoint
 public:
   static ControlPointHandle create(const Vector2f& pos);
 
-private:
+protected:
   Vector2f     pos;
   Vector2f  offset;
 

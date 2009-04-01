@@ -650,6 +650,19 @@ WindstilleWidget::get_control_point(const Vector2f& pos) const
     }
   return ControlPointHandle();
 }
+
+void
+WindstilleWidget::clear_control_points()
+{
+  control_points.clear();
+}
+
+void
+WindstilleWidget::create_control_points()
+{
+  control_points.clear();
+  selection->add_control_points(control_points);
+}
 
 SectorModel*
 WindstilleWidget::get_sector_model()

@@ -138,6 +138,9 @@ public:
 
   ControlPointHandle get_control_point(const Vector2f& pos) const;
 
+  void clear_control_points();
+  void create_control_points();
+
   void on_selection_change();
 
 private:

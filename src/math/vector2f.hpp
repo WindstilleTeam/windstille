@@ -71,6 +71,11 @@ public:
       return Vector2f(x / s, y / s);
     }
 
+  Vector2f operator/(const Vector2f& s) const
+    {
+      return Vector2f(x / s.x, y / s.y);
+    }
+
   Vector2f operator-() const
     {
       return Vector2f(-x, -y);

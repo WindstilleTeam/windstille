@@ -36,6 +36,7 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
   if (ctrl_point)
     {
       mode = CONTROL_DRAG_MODE;
+      wst.clear_control_points();
       ctrl_point->on_move_start();
     }
   else
@@ -152,6 +153,7 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
   if (mode == CONTROL_DRAG_MODE)
     {
       ctrl_point->on_move_end(pos - click_pos);
+      wst.create_control_points();
     }
   else if (mode == OBJECT_DRAG_MODE)
     {

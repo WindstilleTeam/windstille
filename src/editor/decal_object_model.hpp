@@ -34,14 +34,21 @@ public:
 private:
   std::string path;
   Surface surface;
-  Quad quad;
   MapType type;
+
+  /** scale of the object, independed in x and y axis */
+  Vector2f scale;
+
+  float    angle;
 
 public:
   DecalObjectModel(const FileReader& reader);
   DecalObjectModel(const std::string& name, const Vector2f& rel_pos, 
                    const std::string& path_, MapType type_);
   ~DecalObjectModel();
+
+  void set_scale(const Vector2f& scale);
+  Vector2f get_scale() const { return scale; }
 
   bool is_snappable() const { return type == COLORMAP; }
   void draw(SceneContext& sc);
