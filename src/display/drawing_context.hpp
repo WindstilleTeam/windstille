@@ -79,6 +79,7 @@ public:
   void draw(const Surface surface, const SurfaceDrawingParameters& params, float z_pos = 0);
   void draw(const Surface surface, const Vector2f& pos, const Quad& quad,
             const DrawingParameters& params, float z_pos = 0);
+  void draw_control(const Surface surface, const Vector2f& pos, float angle, float z_pos = 0);
   /*} */
   
   /** Translate the drawing context */

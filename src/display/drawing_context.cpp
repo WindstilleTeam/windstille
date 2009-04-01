@@ -22,6 +22,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 
+#include "math/vector3.hpp"
 #include "display/display.hpp"
 #include "display/opengl_state.hpp"
 #include "display/scene_context.hpp"
@@ -140,7 +141,7 @@ private:
 public:
   SurfaceQuadDrawingRequest(Surface surface_, const Vector2f& pos_, const Quad& quad_, 
                             const DrawingParameters& params_, float z_pos_,
-                            const Matrix modelview_)
+                            const Matrix& modelview_)
     : DrawingRequest(pos_, z_pos_, modelview_),
       surface(surface_),
       quad(quad_),
@@ -187,9 +188,10 @@ private:
 
 public:
   SurfaceDrawingRequest(Surface surface, const SurfaceDrawingParameters& params, float z_pos_,
-                        const Matrix modelview)
+                        const Matrix& modelview)
     : DrawingRequest(pos, z_pos_, modelview), surface(surface), params(params)
   {}
+
   virtual ~SurfaceDrawingRequest()
   {}
 
@@ -199,6 +201,42 @@ public:
     glMultMatrixf(modelview.matrix);
 
     surface.draw(params);
+
+    glPopMatrix();
+  }
+};
+
+class ControlDrawingRequest : public DrawingRequest
+{
+private:
+  Surface surface;
+  float angle;
+
+public:
+  ControlDrawingRequest(Surface surface_, const Vector2f& pos_, float angle_, float z_pos_,
+                        const Matrix& modelview_)
+    : DrawingRequest(pos_, z_pos_, modelview_), 
+      surface(surface_), 
+      angle(angle_)
+  {}
+
+  virtual ~ControlDrawingRequest() {}
+
+  void draw(const Texture& /*tmp_texture*/)
+  {
+    glPushMatrix();
+
+    // FIXME: This looks badly broken, should modelview.multiply() be enough?
+    glTranslatef(modelview.matrix[12],
+                 modelview.matrix[13],
+                 modelview.matrix[14]);
+
+    Vector3 p = modelview.multiply(Vector3(pos.x, pos.y, 0.0f));
+
+    surface.draw(SurfaceDrawingParameters()
+                 .set_angle(angle)
+                 .set_pos(Vector2f(p.x - surface.get_width()/2,
+                                   p.y - surface.get_height()/2)));
 
     glPopMatrix();
   }
@@ -286,6 +324,12 @@ void
 DrawingContext::draw(const std::string& text, float x, float y, float z)
 { 
   draw(new TextDrawingRequest(text, Vector2f(x, y), z, modelview_stack.back()));
+}
+
+void
+DrawingContext::draw_control(const Surface surface, const Vector2f& pos, float angle, float z_pos)
+{
+  draw(new ControlDrawingRequest(surface, pos, angle, z_pos, modelview_stack.back()));
 }
 
 void

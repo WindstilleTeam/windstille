@@ -154,7 +154,7 @@ Surface::draw(const SurfaceDrawingParameters& params) const
 
   Quad quad(params.pos.x, 
             params.pos.y,
-            params.pos.x + impl->size.width * params.scale.x, 
+            params.pos.x + impl->size.width  * params.scale.x, 
             params.pos.y + impl->size.height * params.scale.y);
 
   quad.rotate(params.angle);
