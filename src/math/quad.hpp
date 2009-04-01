@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_MATH_QUAD_HPP
 #define HEADER_WINDSTILLE_MATH_QUAD_HPP
 
+#include <math.h>
+
 #include "math.hpp"
 #include "vector2f.hpp"
 #include "rect.hpp"
@@ -59,6 +61,17 @@ public:
                  math::min(math::min(math::min(p1.y, p2.y), p3.y), p4.y),
                  math::max(math::max(math::max(p1.x, p2.x), p3.x), p4.x),
                  math::max(math::max(math::max(p1.y, p2.y), p3.y), p4.y));
+  }
+
+  void rotate(float angle)
+  {
+    Vector2f center((p1.x + p2.x + p3.x + p4.x) / 4.0f,
+                    (p1.y + p2.y + p3.y + p4.y) / 4.0f);
+
+    p1 = center + (p1 - center).rotate(angle);
+    p2 = center + (p2 - center).rotate(angle);
+    p3 = center + (p3 - center).rotate(angle);
+    p4 = center + (p4 - center).rotate(angle);
   }
 };
 

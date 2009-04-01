@@ -61,10 +61,18 @@ DecalObjectModel::~DecalObjectModel()
 }
 
 void
+DecalObjectModel::set_angle(float angle_)
+{
+  angle = angle_;
+}
+
+void
 DecalObjectModel::set_scale(const Vector2f& scale_)
 {
   scale = scale_;
 }
+
+
 
 void
 DecalObjectModel::draw(SceneContext& sc)
@@ -89,7 +97,7 @@ DecalObjectModel::draw(SceneContext& sc)
 
   dc->draw(surface, SurfaceDrawingParameters()
                         .set_pos(wo_pos + center_offset)
-                        .set_rotation(angle)
+                        .set_angle(angle)
                         .set_scale(scale));
 }
 
@@ -125,15 +133,57 @@ DecalObjectModel::write(FileWriter& writer) const
   writer.write("angle",   angle);
   writer.end_section();
 }
+
+class DecalRotateControlPoint : public ControlPoint
+{
+private:
+  DecalObjectModel* object;
+  float orig_angle;
+  Vector2f center;
 
-class DecalControlPoint : public ControlPoint
+public:
+  DecalRotateControlPoint(DecalObjectModel* object_, const Vector2f& pos_)
+    : ControlPoint(pos_),
+      object(object_),
+      orig_angle(object->get_angle()),
+      center(object->get_world_pos())
+    {
+  }
+
+  void on_move_start() 
+  {
+  }
+
+  void on_move_update(const Vector2f& offset_) 
+  {
+    offset = offset_;
+
+    Vector2f base = pos - center;
+    float base_angle = atan2(base.y, base.x);
+
+    Vector2f current = (pos+offset) - center;
+    float current_angle = atan2(current.y, current.x);
+
+    float new_angle = orig_angle + current_angle - base_angle;
+    object->set_angle(new_angle);
+
+    std::cout << new_angle << std::endl;
+  }
+  
+  void on_move_end(const Vector2f& offset_)
+  {
+    on_move_update(offset_);
+  }
+};
+
+class DecalScaleControlPoint : public ControlPoint
 {
 private:
   DecalObjectModel* object;
   Vector2f orig_scale;
 
 public:
-  DecalControlPoint(DecalObjectModel* object_, const Vector2f& pos_)
+  DecalScaleControlPoint(DecalObjectModel* object_, const Vector2f& pos_)
     : ControlPoint(pos_),
       object(object_),
       orig_scale(object_->get_scale())
@@ -162,17 +212,23 @@ public:
     on_move_update(offset_);
   }
 };
-
+
 void
 DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_points)
 {
   float w = surface.get_width()/2  * scale.x;
   float h = surface.get_height()/2 * scale.y;
 
-  control_points.push_back(ControlPointHandle(new DecalControlPoint(this, get_world_pos() - Vector2f(-w, -h))));
-  control_points.push_back(ControlPointHandle(new DecalControlPoint(this, get_world_pos() - Vector2f( w, -h))));
-  control_points.push_back(ControlPointHandle(new DecalControlPoint(this, get_world_pos() - Vector2f( w,  h))));
-  control_points.push_back(ControlPointHandle(new DecalControlPoint(this, get_world_pos() - Vector2f(-w,  h))));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, get_world_pos() - Vector2f(-w, -h))));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, get_world_pos() - Vector2f( w, -h))));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, get_world_pos() - Vector2f( w,  h))));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, get_world_pos() - Vector2f(-w,  h))));
+
+
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, get_world_pos() - Vector2f( w,  0))));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, get_world_pos() - Vector2f(-w,  0))));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, get_world_pos() - Vector2f( 0,  h))));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, get_world_pos() - Vector2f( 0, -h))));
 }
 
 /* EOF */

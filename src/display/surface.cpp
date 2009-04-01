@@ -16,8 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
+
 #include "surface.hpp"
 #include "math/vector2f.hpp"
+#include "math/quad.hpp"
 #include "display/opengl_state.hpp"
 #include "surface_drawing_parameters.hpp"
 #include "surface_manager.hpp"
@@ -148,29 +151,26 @@ Surface::draw(const SurfaceDrawingParameters& params) const
   state.activate();
 
   glBegin(GL_QUADS);
-  if (0) // params.rotation)
-    {
 
-    }
-  else
-    {
-      // FIXME: This is just a primitive prototype, should take things
-      // like hotspot and flip into account 
-      glTexCoord2f(impl->uv.left, impl->uv.top);
-      glVertex2f(params.pos.x, params.pos.y);
+  Quad quad(params.pos.x, 
+            params.pos.y,
+            params.pos.x + impl->size.width * params.scale.x, 
+            params.pos.y + impl->size.height * params.scale.y);
 
-      glTexCoord2f(impl->uv.right, impl->uv.top);
-      glVertex2f(params.pos.x + impl->size.width * params.scale.x, 
-                 params.pos.y);
+  quad.rotate(params.angle);
+  
+  glTexCoord2f(impl->uv.left, impl->uv.top);
+  glVertex2f(quad.p1.x, quad.p1.y);
 
-      glTexCoord2f(impl->uv.right, impl->uv.bottom);
-      glVertex2f(params.pos.x + impl->size.width  * params.scale.x, 
-                 params.pos.y + impl->size.height * params.scale.y);
+  glTexCoord2f(impl->uv.right, impl->uv.top);
+  glVertex2f(quad.p2.x, quad.p2.y);
 
-      glTexCoord2f(impl->uv.left, impl->uv.bottom);
-      glVertex2f(params.pos.x, 
-                 params.pos.y + impl->size.height * params.scale.y);
-    }
+  glTexCoord2f(impl->uv.right, impl->uv.bottom);
+  glVertex2f(quad.p3.x, quad.p3.y);
+
+  glTexCoord2f(impl->uv.left, impl->uv.bottom);
+  glVertex2f(quad.p4.x, quad.p4.y);
+
   glEnd(); 
 }
 

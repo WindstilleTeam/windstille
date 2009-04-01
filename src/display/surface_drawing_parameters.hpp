@@ -38,7 +38,7 @@ public:
   /** Includes color and alpha settings */
   Color   color;
 
-  float rotation;
+  float angle;
 
   Vector2f scale;
 
@@ -51,7 +51,7 @@ public:
     
     color = Color(1.0f, 1.0f, 1.0f, 1.0f);
   
-    rotation = 0.0f;
+    angle = 0.0f;
     scale    = Vector2f(1.0f, 1.0f);
   }
 
@@ -67,9 +67,9 @@ public:
     return *this; 
   }
 
-  SurfaceDrawingParameters& set_rotation(float r) 
+  SurfaceDrawingParameters& set_angle(float r) 
   { 
-    rotation = r;
+    angle = r;
     return *this; 
   }
 

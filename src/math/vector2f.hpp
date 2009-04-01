@@ -25,24 +25,24 @@ class Vector2f
 {
 public:
   Vector2f(float nx, float ny)
-      : x(nx), y(ny)
+    : x(nx), y(ny)
   { }
   Vector2f(const Vector2f& other)
-      : x(other.x), y(other.y)
+    : x(other.x), y(other.y)
   { }
   Vector2f()
-      : x(0), y(0)
+    : x(0), y(0)
   { }
 
   bool operator ==(const Vector2f& other) const
-    {
-      return x == other.x && y == other.y;
-    }
+  {
+    return x == other.x && y == other.y;
+  }
 
   bool operator !=(const Vector2f& other) const
-    {
-      return !(x == other.x && y == other.y);
-    }
+  {
+    return !(x == other.x && y == other.y);
+  }
 
   const Vector2f& operator=(const Vector2f& other)
   {
@@ -52,34 +52,34 @@ public:
   }
 
   Vector2f operator+(const Vector2f& other) const
-    {
-      return Vector2f(x + other.x, y + other.y);
-    }
+  {
+    return Vector2f(x + other.x, y + other.y);
+  }
 
   Vector2f operator-(const Vector2f& other) const
-    {
-      return Vector2f(x - other.x, y - other.y);
-    }
+  {
+    return Vector2f(x - other.x, y - other.y);
+  }
 
   Vector2f operator*(float s) const
-    {
-      return Vector2f(x * s, y * s);
-    }
+  {
+    return Vector2f(x * s, y * s);
+  }
 
   Vector2f operator/(float s) const
-    {
-      return Vector2f(x / s, y / s);
-    }
+  {
+    return Vector2f(x / s, y / s);
+  }
 
   Vector2f operator/(const Vector2f& s) const
-    {
-      return Vector2f(x / s.x, y / s.y);
-    }
+  {
+    return Vector2f(x / s.x, y / s.y);
+  }
 
   Vector2f operator-() const
-    {
-      return Vector2f(-x, -y);
-    }
+  {
+    return Vector2f(-x, -y);
+  }
 
   const Vector2f& operator +=(const Vector2f& other)
   {
@@ -115,9 +115,9 @@ public:
 
   /// Scalar product of 2 vectors
   float operator*(const Vector2f& other) const
-    {
-      return x*other.x + y*other.y;
-    }
+  {
+    return x*other.x + y*other.y;
+  }
 
   /** Project vecter a onto vector b and return the resulting vector */
   Vector2f project(const Vector2f& b);

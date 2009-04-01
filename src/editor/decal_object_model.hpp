@@ -50,6 +50,9 @@ public:
   void set_scale(const Vector2f& scale);
   Vector2f get_scale() const { return scale; }
 
+  void set_angle(float angle);
+  float get_angle() const { return angle; }
+
   bool is_snappable() const { return type == COLORMAP; }
   void draw(SceneContext& sc);
   Rectf get_bounding_box() const;

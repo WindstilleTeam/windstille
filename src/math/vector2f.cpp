@@ -41,8 +41,8 @@ Vector2f::magnitude() const
 Vector2f
 Vector2f::rotate(float angle) const
 {
-  float len = magnitude();
-  return Vector2f(len * cos(angle), len * sin(angle));
+  return Vector2f(x * cos(angle) - y * sin(angle),
+                  x * sin(angle) + y * cos(angle));
 }
 
 Vector2f
