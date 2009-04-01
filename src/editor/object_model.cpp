@@ -136,20 +136,34 @@ ObjectModel::draw(SceneContext& sc)
 
 void
 ObjectModel::on_move_start()
-{  
+{
 }
 
 void
 ObjectModel::on_move_update(const Vector2f& offset)
 {
-  move_offset = offset;
+  // Cut to integer positions
+  move_offset.x = floorf(offset.x);
+  move_offset.y = floorf(offset.y);
+
+  // Cut to integer positions
+  rel_pos.x = floorf(rel_pos.x);
+  rel_pos.y = floorf(rel_pos.y);
 }
 
 void
 ObjectModel::on_move_end(const Vector2f& offset)
 {
-  rel_pos += offset;
+  // Cut to integer positions
+  move_offset.x = floorf(offset.x);
+  move_offset.y = floorf(offset.y);
+
+  rel_pos += move_offset;
   move_offset = Vector2f(0,0);
+
+  // Cut to integer positions
+  rel_pos.x = floorf(rel_pos.x);
+  rel_pos.y = floorf(rel_pos.y);
 }
 
 void

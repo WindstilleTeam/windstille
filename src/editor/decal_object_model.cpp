@@ -73,8 +73,6 @@ DecalObjectModel::set_scale(const Vector2f& scale_)
   scale = scale_;
 }
 
-
-
 void
 DecalObjectModel::draw(SceneContext& sc)
 {
