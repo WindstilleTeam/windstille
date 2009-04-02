@@ -302,21 +302,53 @@ WindstilleWidget::selection_lower_to_bottom()
 void
 WindstilleWidget::selection_vflip()
 {
- for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+  if (!selection->empty())
     {
-      (*i)->set_vflip(!(*i)->get_vflip());
+      if (selection->size() > 1)
+        {
+          const Vector2f& center = selection->get_bounding_box().get_center();
+          for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+            {
+              Vector2f pos = (*i)->get_rel_pos();
+          
+              pos.y = center.y + (center.y - pos.y);
+          
+              (*i)->set_rel_pos(pos);
+            }
+        }
+
+      for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+        {
+          (*i)->set_vflip(!(*i)->get_vflip());
+        }
+      queue_draw();
     }
-  queue_draw();
 }
 
 void
 WindstilleWidget::selection_hflip()
 {
- for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+  if (!selection->empty())
     {
-      (*i)->set_hflip(!(*i)->get_hflip());
+      if (selection->size() > 1)
+        {
+          const Vector2f& center = selection->get_bounding_box().get_center();
+          for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+            {
+              Vector2f pos = (*i)->get_rel_pos();
+          
+              pos.x = center.x + (center.x - pos.x);
+          
+              (*i)->set_rel_pos(pos);
+            }
+        }
+
+      for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+        {
+          (*i)->set_hflip(!(*i)->get_hflip());
+        }
+      queue_draw();
     }
-  queue_draw();
 }
 
 void
