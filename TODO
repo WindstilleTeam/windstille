@@ -507,15 +507,31 @@ Graphics
 Editor
 ======
 
+* add shift-toggle to rotation to 90/180/270 degree, etc., pass
+  GdkEvent modifier mask to control point
+
+* things are getting messy, we have: 
+
+   - hflip, vflip (works on UV)
+   - scale
+   - angle
+  
+  This all could be replaced with a translation matrix:
+
+   + would make things more general
+
+   - flipping via uv is trivial and doesn't lead to any trouble with
+     float instability/snapping
+
+   - rotation and scale can't easily be reset or edited separately
+
+   - float instability might lead to gaps between objects
+
 * (id ...) is a string'ified pointer, while this work, this causes the
   levels to be different after each and every load/save cycle, should
   be something more constant
 
-* scale drag&drop sprite to current zoom level
-
 * add rectangle overlay that indicates the visible area of the game (i.e. one screen in current zoom size
-
-* add flip for decal
 
 * bounding rect doesn't rotate, controls don't rotate
 
@@ -527,7 +543,7 @@ Editor
 
 * implement Blender-like grab-handles, that toggle between
   scale/rotation/etc., but also allow limit of move along the x- or
-  y-axis
+  y-axis only
 
 * figure out how to properly draw controls in the Workspace (resize,
   rotation, vertices of a quad),
@@ -547,6 +563,9 @@ Editor
   might be useful in some situation (i.e. hold Ctrl pressed to move
   only the parent, not the children). Other issues:
 
+  - flipping doesn't work for parented objects when parent is in the
+    selection
+
   - parents could be handled like normal objects, but with the
     SelectTool traversing all children and marking them before the
     move begings, Ctrl could be used to toggle this behaviour (sounds
@@ -557,6 +576,8 @@ Editor
     all in the group could be useful (like when each object is parent
     to each other object in the group), wouldn't allow an easy way to
     edit objects in the Group, which however might be a good thing
+
+  - current parenthandling makes things like flipping much more complicated
 
 * raise/lower of multiple objects at once is a bit wonky, when objects
   reach the bottom/top they will change their relative order in the

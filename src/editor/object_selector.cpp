@@ -23,6 +23,7 @@
 #include <gtkmm/toolbar.h>
 #include <gtkmm/treemodelcolumn.h>
 
+#include "windstille_widget.hpp"
 #include "editor_window.hpp"
 #include "object_selector.hpp"
 
@@ -129,7 +130,7 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 {
   std::string iconpath = "data/editor/icon.png";
 
-Gtk::IconView::ArrayHandle_TreePaths selection = iconview.get_selected_items();
+  Gtk::IconView::ArrayHandle_TreePaths selection = iconview.get_selected_items();
   for(Gtk::IconView::ArrayHandle_TreePaths::iterator i = selection.begin();
       i != selection.end();
       ++i)
@@ -139,6 +140,12 @@ Gtk::IconView::ArrayHandle_TreePaths selection = iconview.get_selected_items();
     }
 
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath);
+  if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
+    {
+      pixbuf = pixbuf->scale_simple(std::max(4, int(pixbuf->get_width()  * wst->get_state().get_zoom())),
+                                    std::max(4, int(pixbuf->get_height() * wst->get_state().get_zoom())),
+                                    Gdk::INTERP_TILES);
+    }
   context->set_icon(pixbuf, pixbuf->get_width()/2, pixbuf->get_height()/2);
 }     
 
