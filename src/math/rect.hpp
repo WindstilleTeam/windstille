@@ -370,6 +370,11 @@ public:
     bottom += offset.y;
   }
 
+  Vector2f get_center() const {
+    return Vector2f((left + right) / 2.0f,
+                    (top + bottom) / 2.0f);
+  }
+
   // Moves each edge f away from the center, thus width = old_width + 2*f
   Rectf grow(float f) const {
     return Rectf(left   - f, 
