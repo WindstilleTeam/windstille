@@ -36,9 +36,11 @@
 
 bool lib_init = false;
 
-WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
+WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
+                                   const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list)
-  : sector_model(new SectorModel()),
+  : editor(editor_),
+    sector_model(new SectorModel()),
     active_tool(0),
     scroll_tool(new ScrollTool()),
     map_type(DecalObjectModel::COLORMAP),
@@ -48,6 +50,31 @@ WindstilleWidget::WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>&  g
     grid_enabled(false)
 {
   set_gl_capability(glconfig, share_list);
+
+  {
+    Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
+    Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
+   
+    action_group->add(Gtk::Action::create("PopupMenu",   "_PopupMenu")); 
+    //action_group->add(Gtk::Action::create("ObjectReset", Gtk::Stock::REFRESH));
+
+    ui_manager->insert_action_group(action_group);
+
+    ui_manager->add_ui_from_string("<ui>"
+                                   "  <popup name='PopupMenu'>"
+                                   "    <menuitem action='Delete'/>"
+                                   "    <menuitem action='Duplicate'/>"
+                                   "    <separator/>"
+                                   "    <menuitem action='ConnectParent'/>"
+                                   "    <menuitem action='ClearParent'/>"
+                                   "    <separator/>"
+                                   "    <menuitem action='HFlipObject'/>"
+                                   "    <menuitem action='VFlipObject'/>"
+                                   "    <separator/>"
+                                   //"    <menuitem action='ObjectReset'/>"
+                                   "  </popup>"
+                                   "</ui>");
+  }
 
   add_events(Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
              Gdk::KEY_PRESS_MASK      | Gdk::KEY_RELEASE_MASK | 
@@ -458,20 +485,30 @@ bool
 WindstilleWidget::mouse_down(GdkEventButton* event)
 {
   grab_focus();
-  //std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
+  std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
   //ewer->on_mouse_button_down(Vector2i(event->x, event->y), event->button);
   if (event->button == 1)
-    {
+    { // Tool
       active_tool = EditorWindow::current()->get_current_tool();
       active_tool->mouse_down(event, *this);
+      return true;
     }
   else if (event->button == 2)
-    {
+    { // Scroll
       active_tool = scroll_tool.get();
       active_tool->mouse_down(event, *this);
+      return true;
     }
-
-  return false;
+  else if (event->button == 3)
+    { // Context Menu
+      Gtk::Menu* menu = static_cast<Gtk::Menu*>(editor.get_ui_manager()->get_widget("/PopupMenu"));
+      menu->popup(event->button, event->time);
+      return true;
+    }
+  else
+    {
+      return false;
+    }
 }
 
 bool

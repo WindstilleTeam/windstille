@@ -43,6 +43,7 @@
 class Tool;
 class ScrollTool;
 class SectorModel;
+class EditorWindow;
 
 /** OpenGL drawing area into which the Windstille game will be
     embedded */
@@ -51,6 +52,8 @@ class WindstilleWidget
     public Gtk::GL::Widget<WindstilleWidget>
 {
 private:
+  EditorWindow& editor;
+
   std::string filename;
   std::auto_ptr<SectorModel> sector_model;
   std::vector<ControlPointHandle> control_points;
@@ -68,7 +71,8 @@ private:
   bool grid_enabled;
   
 public:
-  WindstilleWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig,
+  WindstilleWidget(EditorWindow& editor,
+                   const Glib::RefPtr<const Gdk::GL::Config>& glconfig,
                    const Glib::RefPtr<const Gdk::GL::Context>& share_list);
   virtual ~WindstilleWidget();
 

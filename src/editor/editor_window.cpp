@@ -391,7 +391,7 @@ EditorWindow::on_new()
   //std::cout << "on_new" << std::endl;
 
   // FIXME: We abuse the minimap as our root GLContext
-  WindstilleWidget* wst = Gtk::manage(new WindstilleWidget(glconfig, minimap_widget.get_gl_context()));
+  WindstilleWidget* wst = Gtk::manage(new WindstilleWidget(*this, glconfig, minimap_widget.get_gl_context()));
 
   Glib::ustring title = Glib::ustring::compose("Unsaved Sector %1", notebook.get_n_pages()+1);
   int new_page = notebook.append_page(*wst, title);
