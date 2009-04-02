@@ -19,8 +19,11 @@
 #include <iostream>
 #include <boost/function.hpp>
 #include <gtkmm/treeselection.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/toolbar.h>
 #include <gtkmm/treemodelcolumn.h>
 
+#include "editor_window.hpp"
 #include "object_selector.hpp"
 
 class ObjectIconColumns : public Gtk::TreeModel::ColumnRecord
@@ -47,9 +50,26 @@ private:
 
 ObjectIconColumns* ObjectIconColumns::instance_ = 0;
 
-ObjectSelector::ObjectSelector()
-  : label("Object Selector", Gtk::ALIGN_LEFT)
+ObjectSelector::ObjectSelector(EditorWindow& editor_)
+  : editor(editor_),
+    label("Object Selector", Gtk::ALIGN_LEFT)
 {
+  Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
+  Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
+
+  action_group->add(Gtk::Action::create("ObjectSelectorRefresh", Gtk::Stock::REFRESH),
+                    sigc::mem_fun(*this, &ObjectSelector::refresh));
+
+  ui_manager->insert_action_group(action_group);
+
+  ui_manager->add_ui_from_string("<ui>"
+                                 "  <toolbar name='ObjectSelectorToolBar'>"
+                                 "    <toolitem action='ObjectSelectorRefresh'/>"
+                                 "  </toolbar>"
+                                 "</ui>");
+
+  Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/ObjectSelectorToolBar"));
+  
   list_store = Gtk::ListStore::create(ObjectIconColumns::instance());
 
   // Change background color
@@ -78,8 +98,9 @@ ObjectSelector::ObjectSelector()
 
   scrolled.add(iconview);
   pack_start(label, Gtk::PACK_SHRINK);
+
+  pack_start(toolbar, Gtk::PACK_SHRINK);
   add(scrolled);
-  
   //show_all();
 }
 
@@ -95,6 +116,12 @@ ObjectSelector::add_object(const std::string& pathname,
   Gtk::ListStore::iterator it  = list_store->append();
   (*it)[ObjectIconColumns::instance().pathname] = pathname;
   (*it)[ObjectIconColumns::instance().icon]     = icon;
+}
+
+void
+ObjectSelector::refresh()
+{
+  std::cout << "Refresh" << std::endl;
 }
                     
 void

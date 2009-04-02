@@ -26,20 +26,26 @@
 #include <gdkmm/dragcontext.h>
 #include <gtkmm/iconview.h>
 
+class EditorWindow;
+
 class ObjectSelector : public Gtk::VBox
 {
 private:
+  EditorWindow& editor;
+
   Gtk::Label label;
   Gtk::ScrolledWindow scrolled;
   Gtk::IconView iconview;
   Glib::RefPtr<Gtk::ListStore> list_store;
   
 public:
-  ObjectSelector();
+  ObjectSelector(EditorWindow& editor);
   virtual ~ObjectSelector();
 
   void add_object(const std::string& pathname,
                   const Glib::RefPtr<Gdk::Pixbuf>& icon);
+
+  void refresh();
 
 protected:
   void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context);
