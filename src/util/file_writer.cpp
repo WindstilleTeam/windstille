@@ -67,7 +67,7 @@ FileWriter&
 FileWriter::write(const std::string& name, bool value)
 {
   indent();
-  out << "(" << name << " " << value << ")";
+  out << "(" << name << " " << (value?"#t":"#f") << ")";
   return *this;
 }
 
