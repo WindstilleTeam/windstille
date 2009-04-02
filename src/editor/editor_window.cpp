@@ -342,7 +342,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   vpaned.pack1(object_selector, Gtk::EXPAND);
   vpaned.pack2(layer_manager,     Gtk::SHRINK);
 
-  hpaned.set_position(1000);
+  hpaned.set_position(970);
   vpaned.set_position(420);
 
   // Window
