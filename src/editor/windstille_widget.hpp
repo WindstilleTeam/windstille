@@ -106,6 +106,9 @@ public:
   void selection_raise_to_top();
   void selection_lower_to_bottom();
 
+  void selection_vflip();
+  void selection_hflip();
+
   void selection_connect_parent();
   void selection_clear_parent();
   

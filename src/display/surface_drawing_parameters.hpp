@@ -42,6 +42,9 @@ public:
 
   Vector2f scale;
 
+  bool hflip;
+  bool vflip;
+
   SurfaceDrawingParameters()
   {
     blendfunc_src = GL_SRC_ALPHA;
@@ -53,6 +56,9 @@ public:
   
     angle = 0.0f;
     scale    = Vector2f(1.0f, 1.0f);
+
+    hflip = false;
+    vflip = false;
   }
 
   SurfaceDrawingParameters& set_scale(float s) 
@@ -82,6 +88,18 @@ public:
   SurfaceDrawingParameters& set_pos(const Vector2f& p) 
   { 
     pos = p;
+    return *this;
+  }
+
+  SurfaceDrawingParameters& set_hflip(bool v)
+  {
+    hflip = v;
+    return *this;
+  }
+
+  SurfaceDrawingParameters& set_vflip(bool v)
+  {
+    vflip = v;
     return *this;
   }
   

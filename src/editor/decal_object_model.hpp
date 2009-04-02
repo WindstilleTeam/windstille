@@ -41,6 +41,9 @@ private:
 
   float    angle;
 
+  bool hflip;
+  bool vflip;
+
 public:
   DecalObjectModel(const FileReader& reader);
   DecalObjectModel(const std::string& name, const Vector2f& rel_pos, 
@@ -58,6 +61,12 @@ public:
   Rectf get_bounding_box() const;
   ObjectModelHandle clone() const;
   void write(FileWriter& writer) const;
+
+  bool get_hflip() const { return hflip; }
+  bool get_vflip() const { return vflip; }
+
+  void set_hflip(bool t) { hflip = t; }
+  void set_vflip(bool t) { vflip = t; }
 
   void reset();
 

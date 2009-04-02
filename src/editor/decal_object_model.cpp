@@ -34,7 +34,9 @@ DecalObjectModel::create(const std::string& name, const Vector2f& pos,
 DecalObjectModel::DecalObjectModel(const FileReader& reader)
   : ObjectModel(reader),
     scale(1.0f, 1.0f),
-    angle(0.0f)
+    angle(0.0f),
+    hflip(false),
+    vflip(false)
 {
   int map_type = 0;
   reader.get("path", path);
@@ -43,6 +45,8 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader)
 
   reader.get("scale", scale);
   reader.get("angle", angle);
+  reader.get("hflip", hflip);
+  reader.get("vflip", vflip);
   surface = Surface(path);
 }
 
@@ -53,7 +57,9 @@ DecalObjectModel::DecalObjectModel(const std::string& name, const Vector2f& rel_
     surface(path_),
     type(type_),
     scale(1.0f, 1.0f),
-    angle(0.0f)
+    angle(0.0f),
+    hflip(false),
+    vflip(false)
 {
 }
 
@@ -97,6 +103,8 @@ DecalObjectModel::draw(SceneContext& sc)
   dc->draw(surface, params
            .set_pos(wo_pos + center_offset)
            .set_angle(angle)
+           .set_hflip(hflip)
+           .set_vflip(vflip)
            .set_scale(scale));
 }
 
@@ -137,6 +145,8 @@ DecalObjectModel::write(FileWriter& writer) const
   writer.write("type",    type);
   writer.write("scale",   scale);
   writer.write("angle",   angle);
+  writer.write("hflip",   hflip);
+  writer.write("vflip",   vflip);
   writer.end_section();
 }
 

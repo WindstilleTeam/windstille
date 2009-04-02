@@ -72,6 +72,12 @@ public:
 
   SnapData snap_object(const Rectf& rect) const;
 
+  virtual bool get_hflip() const { return false; }
+  virtual bool get_vflip() const { return false; }
+
+  virtual void set_hflip(bool) { }
+  virtual void set_vflip(bool) { }
+
   /** Reset scale and rotation to default values */
   virtual void reset();
 

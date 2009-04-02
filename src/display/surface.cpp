@@ -152,6 +152,14 @@ Surface::draw(const SurfaceDrawingParameters& params) const
 
   glBegin(GL_QUADS);
 
+  Rectf uv = impl->uv;
+
+  if (params.hflip)
+    std::swap(uv.left, uv.right);
+
+  if (params.vflip)
+    std::swap(uv.top, uv.bottom);
+
   Quad quad(params.pos.x, 
             params.pos.y,
             params.pos.x + impl->size.width  * params.scale.x, 
@@ -159,16 +167,16 @@ Surface::draw(const SurfaceDrawingParameters& params) const
 
   quad.rotate(params.angle);
   
-  glTexCoord2f(impl->uv.left, impl->uv.top);
+  glTexCoord2f(uv.left, uv.top);
   glVertex2f(quad.p1.x, quad.p1.y);
 
-  glTexCoord2f(impl->uv.right, impl->uv.top);
+  glTexCoord2f(uv.right, uv.top);
   glVertex2f(quad.p2.x, quad.p2.y);
 
-  glTexCoord2f(impl->uv.right, impl->uv.bottom);
+  glTexCoord2f(uv.right, uv.bottom);
   glVertex2f(quad.p3.x, quad.p3.y);
 
-  glTexCoord2f(impl->uv.left, impl->uv.bottom);
+  glTexCoord2f(uv.left, uv.bottom);
   glVertex2f(quad.p4.x, quad.p4.y);
 
   glEnd(); 

@@ -300,6 +300,26 @@ WindstilleWidget::selection_lower_to_bottom()
 }
 
 void
+WindstilleWidget::selection_vflip()
+{
+ for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      (*i)->set_vflip(!(*i)->get_vflip());
+    }
+  queue_draw();
+}
+
+void
+WindstilleWidget::selection_hflip()
+{
+ for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      (*i)->set_hflip(!(*i)->get_hflip());
+    }
+  queue_draw();
+}
+
+void
 WindstilleWidget::selection_connect_parent()
 {
   if (selection->size() >= 2)

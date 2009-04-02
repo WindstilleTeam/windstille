@@ -46,6 +46,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   : ui_manager(Gtk::UIManager::create()),
     action_group(Gtk::ActionGroup::create()),
     glconfig(glconfig_),
+    object_selector(*this),
     layer_manager(*this),
     minimap_widget(glconfig_),
     select_tool(new SelectTool()),
@@ -86,6 +87,9 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='RaiseObject'/>"
     "      <menuitem action='LowerObject'/>"
     "      <menuitem action='LowerObjectToBottom'/>"
+    "      <separator/>"
+    "      <menuitem action='HFlipObject'/>"
+    "      <menuitem action='VFlipObject'/>"
     "      <separator/>"
     "      <menuitem action='ConnectParent'/>"
     "      <menuitem action='ClearParent'/>"
@@ -152,6 +156,9 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='LowerObject'/>"
     "    <toolitem action='RaiseObject'/>"
     "    <toolitem action='RaiseObjectToTop'/>"
+    "    <separator/>"
+    "    <toolitem action='HFlipObject'/>"
+    "    <toolitem action='VFlipObject'/>"
     "    <separator/>"
     "    <toolitem action='ConnectParent'/>"
     "    <toolitem action='ClearParent'/>"
@@ -236,6 +243,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create_with_icon_name("ClearParent", "clear_parent", "Clear Parent", "Clear Parent"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_clear_parent));
 
+  action_group->add(Gtk::Action::create_with_icon_name("HFlipObject", "object_hflip", "Horizontal Flip", "Horizontal Flip"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_hflip));
+  action_group->add(Gtk::Action::create_with_icon_name("VFlipObject", "object_vflip", "Vertical Flip", "Vertical Flip"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_vflip));
 
   action_group->add(Gtk::Action::create("MenuView",    "_View"));
   action_group->add(Gtk::Action::create("Zoom100",     Gtk::Stock::ZOOM_100),
