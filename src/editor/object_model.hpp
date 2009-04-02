@@ -59,6 +59,7 @@ public:
   std::string get_id() const;
 
   Vector2f get_world_pos() const;
+  void set_world_pos(const Vector2f& p);
 
   Vector2f get_rel_pos() const { return rel_pos; }
   void     set_rel_pos(const Vector2f& rel_pos_)  {  rel_pos = rel_pos_; }

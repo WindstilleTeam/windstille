@@ -309,11 +309,11 @@ WindstilleWidget::selection_vflip()
           const Vector2f& center = selection->get_bounding_box().get_center();
           for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
             {
-              Vector2f pos = (*i)->get_rel_pos();
+              Vector2f pos = (*i)->get_world_pos();
           
               pos.y = center.y + (center.y - pos.y);
           
-              (*i)->set_rel_pos(pos);
+              (*i)->set_world_pos(pos);
             }
         }
 
@@ -335,11 +335,11 @@ WindstilleWidget::selection_hflip()
           const Vector2f& center = selection->get_bounding_box().get_center();
           for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
             {
-              Vector2f pos = (*i)->get_rel_pos();
+              Vector2f pos = (*i)->get_world_pos();
           
               pos.x = center.x + (center.x - pos.x);
           
-              (*i)->set_rel_pos(pos);
+              (*i)->set_world_pos(pos);
             }
         }
 

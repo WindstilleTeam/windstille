@@ -122,6 +122,15 @@ ObjectModel::get_world_pos() const
 }
 
 void
+ObjectModel::set_world_pos(const Vector2f& p)
+{
+  if (parent_ptr.lock())
+    rel_pos += p - get_world_pos();
+  else
+    rel_pos = p;
+}
+
+void
 ObjectModel::draw(SceneContext& sc)
 {
   Vector2f wo_pos = get_world_pos();
