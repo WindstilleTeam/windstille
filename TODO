@@ -668,8 +668,7 @@ Editor
 
 * add keyboard shortcut important stuff:
 
-  - layer toggle 1,2,3,4,5,... (obsoleted by new layer system)
-  - color, light, highlight toggle
+  - color, light, highlight toggle (1,2,3 are currently used up for the object selector)
   - next/previous layer: Ctrl-PageUp/Down
 
 * add second toolbar, first one is getting a little crowded
