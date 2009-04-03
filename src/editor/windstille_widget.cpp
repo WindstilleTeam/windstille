@@ -62,7 +62,6 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
 
     ui_manager->add_ui_from_string("<ui>"
                                    "  <popup name='PopupMenu'>"
-                                   "    <menuitem action='Delete'/>"
                                    "    <menuitem action='Duplicate'/>"
                                    "    <separator/>"
                                    "    <menuitem action='ConnectParent'/>"
@@ -71,6 +70,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
                                    "    <menuitem action='HFlipObject'/>"
                                    "    <menuitem action='VFlipObject'/>"
                                    "    <separator/>"
+                                   "    <menuitem action='Delete'/>"
                                    //"    <menuitem action='ObjectReset'/>"
                                    "  </popup>"
                                    "</ui>");
@@ -548,6 +548,8 @@ WindstilleWidget::mouse_up(GdkEventButton* event)
 bool
 WindstilleWidget::key_press(GdkEventKey* event)
 {
+  std::cout << event->keyval << " keypress " << state.get_pos() << std::endl;
+
   switch(event->keyval)
     {
       case GDK_1:
@@ -565,9 +567,20 @@ WindstilleWidget::key_press(GdkEventKey* event)
         EditorWindow::current()->print("HIGHLIGHT");
         break;
 
+      case GDK_a:
+        EditorWindow::current()->on_select_all();
+        break;
+
+      case GDK_d:
+        selection_duplicate();
+        break;
+
+      case GDK_Delete:
+        selection_delete();
+        break;
+
       case GDK_Left:
         state.set_pos(state.get_pos() + Vector2f(-100.0f, 0.0f));
-        queue_draw();
         break;
 
       case GDK_Right:
@@ -585,8 +598,6 @@ WindstilleWidget::key_press(GdkEventKey* event)
         queue_draw();
         break;
     }
-
-  //std::cout << state.get_pos() << std::endl;
 
   return true;
 }

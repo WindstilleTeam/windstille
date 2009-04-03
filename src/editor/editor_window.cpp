@@ -221,11 +221,13 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("Paste",       Gtk::Stock::PASTE),
                     sigc::mem_fun(*this, &EditorWindow::on_paste));
   action_group->add(Gtk::Action::create("SelectAll",       Gtk::Stock::SELECT_ALL),
+                    Gtk::AccelKey("<control>a"),
                     sigc::mem_fun(*this, &EditorWindow::on_select_all));
 
   action_group->add(Gtk::Action::create("Delete",      Gtk::Stock::DELETE),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_delete));
   action_group->add(Gtk::Action::create_with_icon_name("Duplicate", "duplicate", "Duplicate Object", "Duplicate Object"),
+                    Gtk::AccelKey(GDK_d, Gdk::CONTROL_MASK),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_duplicate));
 
   action_group->add(Gtk::Action::create("MenuObject",    "_Object"));
@@ -252,8 +254,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("Zoom100",     Gtk::Stock::ZOOM_100),
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_100));
   action_group->add(Gtk::Action::create("ZoomIn",      Gtk::Stock::ZOOM_IN),
+                    Gtk::AccelKey(GDK_plus, Gdk::CONTROL_MASK),
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_in));
   action_group->add(Gtk::Action::create("ZoomOut",     Gtk::Stock::ZOOM_OUT),
+                    Gtk::AccelKey(GDK_minus, Gdk::CONTROL_MASK),
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_out));
   action_group->add(play_action = Gtk::ToggleAction::create("Play", Gtk::Stock::MEDIA_PLAY), 
                     sigc::mem_fun(*this, &EditorWindow::on_play));

@@ -507,6 +507,21 @@ Graphics
 Editor
 ======
 
+* maybe make Layers not be hardwired into the level struture, but add
+  them as independed meta-data:
+ 
+  (layers
+    (layer (objects 1)
+           (child-layers
+             (layers
+               (layer (objects 2 3))))))
+
+  (objects
+    (decal (id 1) ...)
+    (decal (id 2) ...)
+    (decal (id 3) ...)
+    ...)
+
 * add shift-toggle to rotation to 90/180/270 degree, etc., pass
   GdkEvent modifier mask to control point
 
@@ -521,7 +536,8 @@ Editor
    + would make things more general
 
    - flipping via uv is trivial and doesn't lead to any trouble with
-     float instability/snapping
+     float instability/snapping, could be easily extended to
+     90/180/270 rotations
 
    - rotation and scale can't easily be reset or edited separately
 
@@ -652,11 +668,8 @@ Editor
 
 * add keyboard shortcut important stuff:
 
-  - layer toggle 1,2,3,4,5,...
+  - layer toggle 1,2,3,4,5,... (obsoleted by new layer system)
   - color, light, highlight toggle
-  - mark all objects
-  - delete object
-  - duplicate object
   - next/previous layer: Ctrl-PageUp/Down
 
 * add second toolbar, first one is getting a little crowded
