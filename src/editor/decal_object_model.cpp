@@ -48,6 +48,7 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader)
   reader.get("hflip", hflip);
   reader.get("vflip", vflip);
   surface = Surface(path);
+  software_surface = SoftwareSurface(path);
 }
 
 DecalObjectModel::DecalObjectModel(const std::string& name, const Vector2f& rel_pos, 
@@ -55,6 +56,7 @@ DecalObjectModel::DecalObjectModel(const std::string& name, const Vector2f& rel_
   : ObjectModel("DecalObjectModel", rel_pos),
     path(path_),
     surface(path_),
+    software_surface(path_),
     type(type_),
     scale(1.0f, 1.0f),
     angle(0.0f),
@@ -272,6 +274,9 @@ bool
 DecalObjectModel::is_at(const Vector2f& pos) const
 {
   Vector2f p = pos - get_world_pos();
+
+  // Transform mouse coordinates into coordinates relative to the
+  // center of the unscaled and unrotated image
   p = p.rotate(-angle);
   p.x /= scale.x;
   p.y /= scale.y;
@@ -279,7 +284,8 @@ DecalObjectModel::is_at(const Vector2f& pos) const
   if (fabsf(p.x) < surface.get_width()/2 &&
       fabsf(p.y) < surface.get_height()/2)
     {
-      return true;
+      return software_surface.is_at(static_cast<int>(p.x + surface.get_width()/2),
+                                    static_cast<int>(p.y + surface.get_height()/2));
     }
   else
     {

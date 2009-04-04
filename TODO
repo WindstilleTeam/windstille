@@ -186,9 +186,13 @@ Sound Handling
 Miscellaneous
 =============
 
-* Display::aspect_size is ugly, turn that into a Display::set_size();
+* maybe add special support for opaque textures, i.e. Textures with
+  1-bit alpha, which could be used to bucket sort drawing requests and
+  reduce texture switches (in case those ever start posing a problem)
 
-* make FileReader const
+* http://www.blackpawn.com/texts/lightmaps/default.html
+
+* Display::aspect_size is ugly, turn that into a Display::set_size();
 
 * move particle system into library
 
@@ -488,7 +492,10 @@ Random Things
 Graphics
 ========
 
-* generate .png's directly from .xcf's
+* do *NOT* use power of two textures, use multiple of 64/128 instead
+  (128 is easy to snap, power of two doesn't help, since textures are packed)
+
+* generate .png's automatically from .xcf's via scons
 
 * figure out a way how to properly organize graphics/decal
 
@@ -506,6 +513,17 @@ Graphics
 
 Editor
 ======
+
+* share SoftwareSurface via Manager class
+
+* add binlocate support
+
+* add an icon to the editor
+
+* remove the empty default sector when loading another level and the
+  default sector hasn't been modified
+
+* add a way to adjust the ambient lighting (button to change color) 
 
 * maybe make Layers not be hardwired into the level struture, but add
   them as independed meta-data:
@@ -537,15 +555,16 @@ Editor
 
    - flipping via uv is trivial and doesn't lead to any trouble with
      float instability/snapping, could be easily extended to
-     90/180/270 rotations
+     90/180/270 rotations (see Pingus source)
 
    - rotation and scale can't easily be reset or edited separately
+     with matrix
 
    - float instability might lead to gaps between objects
 
 * (id ...) is a string'ified pointer, while this work, this causes the
-  levels to be different after each and every load/save cycle, should
-  be something more constant
+  levels to be different after each and every load/save cycle, which
+  leads to ugly huge diff in SVN, should be something more constant
 
 * add rectangle overlay that indicates the visible area of the game (i.e. one screen in current zoom size
 
@@ -694,10 +713,6 @@ Editor
 
 * ObjectSelector/IconView allows drag&drop even when nothing is
   selected, leading to a Grumbel dummy image drag&drop without effect
-
-* save a bitmask along with an object to allow pixel perfect click
-  selection, for scaled, rotated or otherwise deformed objects the
-  mouse coordinates need to be transformed into texture space
 
 * add a way to draw objects to DrawingContext that only does
   translation, but not rotation and scaling, for use in UIElements,

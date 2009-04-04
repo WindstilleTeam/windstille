@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SOFTWARE_SURFACE_HPP
-#define HEADER_SOFTWARE_SURFACE_HPP
+#ifndef HEADER_WINDSTILLE_DISPLAY_SOFTWARE_SURFACE_HPP
+#define HEADER_WINDSTILLE_DISPLAY_SOFTWARE_SURFACE_HPP
 
 #include "SDL.h"
 #include <boost/shared_ptr.hpp>
@@ -34,6 +34,7 @@ public:
     RGBA
   };
 
+  SoftwareSurface() {}
   SoftwareSurface(const std::string& filename);
   SoftwareSurface(int width, int height, Format format = RGBA);
   ~SoftwareSurface();
@@ -49,6 +50,10 @@ public:
   void blit(const Rect& src_rect, SoftwareSurface& dst, int x, int y) const;
 
   SDL_Surface* get_surface() const;
+
+  bool is_at(int x, int y) const;
+
+  operator bool() { return impl; }
 
 private:
   boost::shared_ptr<SoftwareSurfaceImpl> impl;

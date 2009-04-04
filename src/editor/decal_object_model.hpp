@@ -22,6 +22,7 @@
 #include "math/quad.hpp"
 #include "control_point.hpp"
 #include "display/surface.hpp"
+#include "display/software_surface.hpp"
 #include "object_model.hpp"
 
 class DecalObjectModel : public ObjectModel
@@ -34,6 +35,7 @@ public:
 private:
   std::string path;
   Surface surface;
+  SoftwareSurface software_surface;
   MapType type;
 
   /** scale of the object, independed in x and y axis */
