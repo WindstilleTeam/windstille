@@ -82,6 +82,8 @@ public:
   /** Reset scale and rotation to default values */
   virtual void reset();
 
+  virtual bool is_at(const Vector2f& pos) const;
+
   virtual bool is_snappable() const { return true; }
 
   virtual void draw_select(SceneContext& sc, bool highlight);

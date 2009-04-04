@@ -71,6 +71,8 @@ public:
   void set_hflip(bool t) { hflip = t; }
   void set_vflip(bool t) { vflip = t; }
 
+  bool is_at(const Vector2f& pos) const;
+
   void reset();
 
   void add_control_points(std::vector<ControlPointHandle>& control_points);

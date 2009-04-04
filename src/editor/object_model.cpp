@@ -189,6 +189,12 @@ ObjectModel::reset()
 {
 }
 
+bool
+ObjectModel::is_at(const Vector2f& pos) const
+{
+  return get_bounding_box().is_inside(pos);
+}
+
 static bool overlap(float l1, float r1,
                     float l2, float r2)
 {

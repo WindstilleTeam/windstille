@@ -80,7 +80,7 @@ Layer::get_object_at(const Vector2f& pos, const SelectMask& select_mask) const
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
     {
       if (select_mask.match((*i)->get_select_mask()) &&
-          (*i)->get_bounding_box().is_inside(pos))
+          (*i)->is_at(pos))
         {
           return *i;
         }

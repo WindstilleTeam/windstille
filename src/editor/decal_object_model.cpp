@@ -77,6 +77,10 @@ void
 DecalObjectModel::set_scale(const Vector2f& scale_)
 {
   scale = scale_;
+
+  // Disallow negative scale
+  scale.x = fabsf(scale.x);
+  scale.y = fabsf(scale.y);
 }
 
 void
@@ -207,9 +211,7 @@ public:
   void draw(SceneContext& sc)
   {
     Rectf rect = get_bounding_box();
-
     rect += offset;
-
     sc.control().draw_control(surface, pos, ctrl_angle);
   }
 };
@@ -218,12 +220,14 @@ class DecalScaleControlPoint : public ControlPoint
 {
 private:
   DecalObjectModel* object;
+  float ctrl_angle;
   Vector2f orig_scale;
 
 public:
-  DecalScaleControlPoint(DecalObjectModel* object_, const Vector2f& pos_)
+  DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_)
     : ControlPoint(Surface("editor/scale_handle.png"), pos_),
       object(object_),
+      ctrl_angle(ctrl_angle_),
       orig_scale(object_->get_scale())
   {}
 
@@ -233,16 +237,21 @@ public:
 
   void on_move_update(const Vector2f& offset_) 
   {
-    offset = offset_;
+    offset = offset_; 
 
     Vector2f start   = pos - object->get_world_pos();
     Vector2f current = (pos + offset) - object->get_world_pos();
 
-    //std::cout << "on_move_update: " << (current.x / start.x) << " " << (current.y / start.y) << std::endl;  
+    start    = start.rotate(-object->get_angle());
+    current = current.rotate(-object->get_angle());
+    
+    //std::cout << "on_move_update: " << current.x << " " << current.y << std::endl;  
 
     Vector2f new_scale = current / start;
+
     new_scale.x *= orig_scale.x;
     new_scale.y *= orig_scale.y;
+
     object->set_scale(new_scale);
   }
   
@@ -250,7 +259,33 @@ public:
   {
     on_move_update(offset_);
   }
+
+  void draw(SceneContext& sc)
+  {
+    Rectf rect = get_bounding_box();
+    rect += offset;
+    sc.control().draw_control(surface, pos, ctrl_angle);
+  }
 };
+
+bool
+DecalObjectModel::is_at(const Vector2f& pos) const
+{
+  Vector2f p = pos - get_world_pos();
+  p = p.rotate(-angle);
+  p.x /= scale.x;
+  p.y /= scale.y;
+
+  if (fabsf(p.x) < surface.get_width()/2 &&
+      fabsf(p.y) < surface.get_height()/2)
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
 
 void
 DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_points)
@@ -258,15 +293,22 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
   float w = surface.get_width()/2  * scale.x;
   float h = surface.get_height()/2 * scale.y;
 
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, get_world_pos() - Vector2f(-w, -h))));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, get_world_pos() - Vector2f( w, -h))));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, get_world_pos() - Vector2f( w,  h))));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, get_world_pos() - Vector2f(-w,  h))));
+  Rectf rect(-w, -h, w, h);
+  Quad quad1(rect);
+  quad1.rotate(angle);
 
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, M_PI, get_world_pos() - Vector2f(-32-w, -32-h))));
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, M_PI+M_PI/2, get_world_pos() - Vector2f(32+w, -32-h))));
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, M_PI+2*M_PI/2, get_world_pos() - Vector2f(32+w,  32+h))));
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, M_PI+3*M_PI/2, get_world_pos() - Vector2f(-32-w, 32+h))));
+  Quad quad2(rect.grow(32));
+  quad2.rotate(angle);
+
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 0*M_PI/2, get_world_pos() + quad1.p1)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 1*M_PI/2, get_world_pos() + quad1.p2)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 2*M_PI/2, get_world_pos() + quad1.p3)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 3*M_PI/2, get_world_pos() + quad1.p4)));
+
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 0*M_PI/2, get_world_pos() + quad2.p1)));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 1*M_PI/2, get_world_pos() + quad2.p2)));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 2*M_PI/2, get_world_pos() + quad2.p3)));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 3*M_PI/2, get_world_pos() + quad2.p4)));
 }
 
 /* EOF */
