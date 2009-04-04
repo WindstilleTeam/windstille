@@ -1,0 +1,189 @@
+;; -*- scheme -*-
+
+(windstille-sector
+  (version 1)
+  (name "")
+  (ambient-color 0 0 0 1)
+  (init-script "init.nut")
+  (layer
+    (name "Scene")
+    (visible 1)
+    (locked 1)
+    (objects
+      (decal
+        (pos 540.188 405.812)
+        (parent "")
+        (layer 1)
+        (path "images/objects/bar/seat.png")
+        (type 0))
+      (decal
+        (pos 805.375 380.812)
+        (parent "")
+        (layer 1)
+        (path "images/objects/bar/door.png")
+        (type 0))
+      (decal
+        (pos 329.25 444.812)
+        (parent "")
+        (layer 1)
+        (path "images/objects/bar/table.png")
+        (type 0))
+      (decal
+        (pos 1059 323)
+        (parent "")
+        (layer 1)
+        (path "images/objects/bar/doubledoor.png")
+        (type 0))
+      (decal
+        (pos -123.812 465.812)
+        (parent "")
+        (layer 1)
+        (path "images/objects/bar.png")
+        (type 0))
+      (decal
+        (pos 997.375 572.812)
+        (parent "")
+        (layer 1)
+        (path "images/objects/blueground.png")
+        (type 0))
+      (decal
+        (pos 741.375 572.812)
+        (parent "")
+        (layer 1)
+        (path "images/objects/blueground.png")
+        (type 0))
+      (decal
+        (pos 229.375 572.812)
+        (parent "")
+        (layer 1)
+        (path "images/objects/blueground.png")
+        (type 0))
+      (decal
+        (pos 485.375 572.812)
+        (parent "")
+        (layer 1)
+        (path "images/objects/blueground.png")
+        (type 0))
+      (decal
+        (pos -282.625 572.812)
+        (parent "")
+        (layer 1)
+        (path "images/objects/blueground.png")
+        (type 0))
+      (decal
+        (pos -26.6251 572.812)
+        (parent "")
+        (layer 1)
+        (path "images/objects/blueground.png")
+        (type 0)))
+    (child-layers
+      (layer
+        (name "Stuff")
+        (visible 1)
+        (locked 1)
+        (objects
+          (decal
+            (pos -10.8125 433.812)
+            (parent "")
+            (layer 1)
+            (path "images/objects/bar/stool.png")
+            (type 0))
+          (decal
+            (pos 610.188 379.812)
+            (parent "")
+            (layer 1)
+            (path "images/objects/bar/seat_separator.png")
+            (type 0)))
+        (child-layers))
+      (layer
+        (name "Shadow")
+        (visible 1)
+        (locked 1)
+        (objects
+          (decal
+            (pos 414.367 555.053)
+            (parent "")
+            (layer 1)
+            (path "images/decal/dark.png")
+            (type 0)))
+        (child-layers))
+      (layer
+        (name "Wall")
+        (visible 1)
+        (locked 0)
+        (objects
+          (decal
+            (pos 933.375 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall3.png")
+            (type 0))
+          (decal
+            (pos 1061.37 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall2.png")
+            (type 0))
+          (decal
+            (pos 805.375 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall1.png")
+            (type 0))
+          (decal
+            (pos 421.375 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall1.png")
+            (type 0))
+          (decal
+            (pos 677.375 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall2.png")
+            (type 0))
+          (decal
+            (pos 549.375 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall3.png")
+            (type 0))
+          (decal
+            (pos 37.3748 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall1.png")
+            (type 0))
+          (decal
+            (pos 293.375 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall2.png")
+            (type 0))
+          (decal
+            (pos 165.375 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall3.png")
+            (type 0))
+          (decal
+            (pos -346.625 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall1.png")
+            (type 0))
+          (decal
+            (pos -90.6252 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall2.png")
+            (type 0))
+          (decal
+            (pos -218.625 316.812)
+            (parent "")
+            (layer 1)
+            (path "images/decal/wall3.png")
+            (type 0)))
+        (child-layers)))))
+
+;; EOF ;;
