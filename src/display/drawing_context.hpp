@@ -70,6 +70,9 @@ public:
   void draw_rect(const Rectf& rect, const Color& color, float z_pos = 0);
   void fill_rect(const Rectf& rect, const Color& color, float z_pos = 0);
 
+  void draw_quad(const Quad& quad, const Color& color, float z_pos = 0);
+  void fill_quad(const Quad& quad, const Color& color, float z_pos = 0);
+
   /*{ */
   void draw(DrawingRequest* request);
   void draw(const Sprite&   sprite,  const Vector2f& pos, float z = 0);

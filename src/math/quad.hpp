@@ -37,6 +37,13 @@ public:
   Quad()
   {}
 
+  Quad(const Rectf& rect) 
+    : p1(rect.left, rect.top),
+      p2(rect.right, rect.top),
+      p3(rect.right, rect.bottom),
+      p4(rect.left, rect.bottom)
+  {}
+
   Quad(float x1, float y1,
        float x2, float y2)
     : p1(x1, y1),

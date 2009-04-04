@@ -73,6 +73,40 @@ Display::draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& colo
 }
 
 void
+Display::fill_quad(const Quad& quad, const Color& color)
+{
+  OpenGLState state;
+  state.enable(GL_BLEND);
+  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  state.color(color);
+  state.activate();
+
+  glBegin(GL_QUADS);
+  glVertex2f(quad.p1.x, quad.p1.y);
+  glVertex2f(quad.p2.x, quad.p2.y);
+  glVertex2f(quad.p3.x, quad.p3.y);
+  glVertex2f(quad.p4.x, quad.p4.y);
+  glEnd();  
+}
+
+void
+Display::draw_quad(const Quad& quad, const Color& color)
+{
+  OpenGLState state;
+  state.enable(GL_BLEND);
+  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  state.color(color);
+  state.activate();
+
+  glBegin(GL_LINE_LOOP);
+  glVertex2f(quad.p1.x, quad.p1.y);
+  glVertex2f(quad.p2.x, quad.p2.y);
+  glVertex2f(quad.p3.x, quad.p3.y);
+  glVertex2f(quad.p4.x, quad.p4.y);
+  glEnd();
+}
+
+void
 Display::fill_rect(const Rectf& rect, const Color& color)
 {
   OpenGLState state;

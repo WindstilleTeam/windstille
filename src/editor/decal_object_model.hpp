@@ -57,7 +57,10 @@ public:
   float get_angle() const { return angle; }
 
   bool is_snappable() const { return type == COLORMAP; }
+
+  void draw_select(SceneContext& sc, bool highlight);
   void draw(SceneContext& sc);
+
   Rectf get_bounding_box() const;
   ObjectModelHandle clone() const;
   void write(FileWriter& writer) const;

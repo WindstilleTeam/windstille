@@ -259,10 +259,7 @@ WindstilleWidget::draw()
         {
           for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
             {
-              if (i == selection->begin())
-                sc->control().draw_rect((*i)->get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));
-              else
-                sc->control().draw_rect((*i)->get_bounding_box(), Color(0.5f, 0.5f, 1.0f, 1.0f));
+              (*i)->draw_select(*sc, i == selection->begin());
             }
 
           //sc->control().draw_rect(selection->get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));

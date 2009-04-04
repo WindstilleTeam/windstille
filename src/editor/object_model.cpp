@@ -131,6 +131,15 @@ ObjectModel::set_world_pos(const Vector2f& p)
 }
 
 void
+ObjectModel::draw_select(SceneContext& sc, bool highlight)
+{
+  if (highlight)
+    sc.control().draw_rect(get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+  else
+    sc.control().draw_rect(get_bounding_box(), Color(0.5f, 0.5f, 1.0f, 1.0f));
+}
+
+void
 ObjectModel::draw(SceneContext& sc)
 {
   Vector2f wo_pos = get_world_pos();

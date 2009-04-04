@@ -84,6 +84,8 @@ public:
 
   virtual bool is_snappable() const { return true; }
 
+  virtual void draw_select(SceneContext& sc, bool highlight);
+
   virtual void draw(SceneContext& sc);
   virtual void update(float delta) {}
   virtual Rectf get_bounding_box() const = 0;

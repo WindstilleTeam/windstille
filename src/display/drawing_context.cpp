@@ -456,11 +456,57 @@ DrawingContext::draw_line(const Vector2f& pos1, const Vector2f& pos2, const Colo
 }
 
 void
+DrawingContext::draw_quad(const Quad& quad, const Color& color, float z_pos)
+{
+  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos, modelview_stack.back());
+
+  array->set_mode(GL_LINE_LOOP);
+  array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  array->color(color);
+  array->vertex(quad.p1.x, quad.p1.y);
+
+  array->color(color);
+  array->vertex(quad.p2.x, quad.p2.y);
+
+  array->color(color);
+  array->vertex(quad.p3.x, quad.p3.y);
+
+  array->color(color);
+  array->vertex(quad.p4.x, quad.p4.y);
+  
+  draw(array);
+}
+
+void
+DrawingContext::fill_quad(const Quad& quad, const Color& color, float z_pos)
+{
+  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos, modelview_stack.back());
+
+  array->set_mode(GL_QUADS);
+  array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  array->color(color);
+  array->vertex(quad.p1.x, quad.p1.y);
+
+  array->color(color);
+  array->vertex(quad.p2.x, quad.p2.y);
+
+  array->color(color);
+  array->vertex(quad.p3.x, quad.p3.y);
+
+  array->color(color);
+  array->vertex(quad.p4.x, quad.p4.y);
+
+  draw(array); 
+}
+
+void
 DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
 {
   VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos, modelview_stack.back());
 
-  array->set_mode(GL_LINE_STRIP);
+  array->set_mode(GL_LINE_LOOP);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   array->color(color);
@@ -474,9 +520,6 @@ DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
 
   array->color(color);
   array->vertex(rect.left, rect.bottom);  
-  
-  array->color(color);
-  array->vertex(rect.left, rect.top);
   
   draw(array);
 }

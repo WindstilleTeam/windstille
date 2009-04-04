@@ -23,6 +23,7 @@
 #include <SDL.h>
 #include "math/size.hpp"
 #include "math/rect.hpp"
+#include "math/quad.hpp"
 #include "math/line.hpp"
 #include "color.hpp"
 #include "display/framebuffer.hpp"
@@ -36,6 +37,9 @@ public:
   static Size aspect_size;
   
 public:
+  static void fill_quad(const Quad& quad, const Color& color);
+  static void draw_quad(const Quad& quad, const Color& color);
+
   static void fill_rect(const Rectf& rect, const Color& color);
   static void draw_rect(const Rectf& rect, const Color& color);
 

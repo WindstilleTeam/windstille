@@ -80,6 +80,19 @@ DecalObjectModel::set_scale(const Vector2f& scale_)
 }
 
 void
+DecalObjectModel::draw_select(SceneContext& sc, bool highlight)
+{
+  Quad quad(get_bounding_box());
+  
+  quad.rotate(angle);
+
+  if (highlight)
+    sc.control().draw_quad(quad, Color(0.5f, 1.0f, 1.0f, 1.0f));
+  else
+    sc.control().draw_quad(quad, Color(0.5f, 0.5f, 1.0f, 1.0f));
+}
+
+void
 DecalObjectModel::draw(SceneContext& sc)
 {
   ObjectModel::draw(sc);
