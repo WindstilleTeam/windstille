@@ -64,11 +64,20 @@ WindstilleEditor::main(int argc, char** argv)
       icon_theme->append_search_path("data/editor/");
       
       EditorWindow window(glconfig);
-      
       window.show_all();
       window.show_minimap(false);
 
-      window.on_new();
+      if (argc == 1)
+        {
+          window.on_new();
+        }
+      else
+        {
+          for(int i = 1; i < argc; ++i)
+            {
+              window.load_file(argv[i]);
+            }
+        }
       
       Gtk::Main::run(window);
     }
