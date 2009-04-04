@@ -346,6 +346,9 @@ SectorModel::load(const std::string& filename)
       FileReader reader = FileReader::parse(stream, filename);
       if (reader.get_name() == "windstille-sector")
         {
+          ambient_color = Color(0,0,0,1);
+          reader.get("ambient-color", ambient_color);
+
           const std::vector<FileReader>& sections = reader.get_sections();
           for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
             {
@@ -380,7 +383,7 @@ SectorModel::write(FileWriter& writer) const
 
   writer.write("version", 2);
   writer.write("name", "");
-  writer.write("ambient-color", Color());
+  writer.write("ambient-color", ambient_color);
   writer.write("init-script", "init.nut");
 
   write(writer, *(layer_tree->children().begin()));

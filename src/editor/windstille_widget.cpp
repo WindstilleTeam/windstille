@@ -238,6 +238,8 @@ WindstilleWidget::draw()
     {
       state.push(*sc);
       
+      sc->light().fill_screen(sector_model->get_ambient_color());
+
       if (draw_background_pattern)
         {
           sc->color().fill_pattern(background_pattern, 

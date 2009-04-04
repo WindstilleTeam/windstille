@@ -25,6 +25,7 @@
 #include <gdkmm/pixbuf.h>
 #include <vector>
 
+#include "display/color.hpp"
 #include "layer.hpp"
 #include "selection.hpp"
 #include "object_model.hpp"
@@ -66,7 +67,8 @@ class SectorModel
 {
 private:
   Glib::RefPtr<Gtk::TreeStore> layer_tree;
-
+  Color ambient_color;
+  
 public:
   //typedef Objects::iterator iterator;
   typedef std::vector<LayerHandle> Layers;
@@ -86,6 +88,9 @@ public:
 
   void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
   void remove(const ObjectModelHandle& object);
+
+  void  set_ambient_color(const Color& color) { ambient_color = color; }
+  Color get_ambient_color() const { return ambient_color; }
 
   LayerHandle get_layer(const Gtk::TreeModel::Path& path) const;
   Layers get_layers() const;

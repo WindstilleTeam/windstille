@@ -139,6 +139,9 @@ public:
   
   void load_file(const std::string& filename);
 
+  /** Queue a file to be loaded once the editor is full realized */
+  void queue_for_load(const std::string& filename);
+
   void call_with_windstille_widget(void (WindstilleWidget::*func)());
 
   void on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_action);
