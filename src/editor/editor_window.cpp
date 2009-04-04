@@ -64,6 +64,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <menu action='MenuFile'>"
     "      <menuitem action='New'/>"
     "      <menuitem action='FileOpen'/>"
+    // FIXME: This doesn't work, RecentActon seems to create both an
+    // Open entry, as well as a menu-button, with the toolbar this
+    // works fine, with the menu it doesn't as both entries are merged
+    // into one, activating the callback on hover
     //"      <menuitem action='FileRecentFiles'/>"
     "      <separator/>"
     "      <menuitem action='Save'/>"
@@ -199,6 +203,14 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
 
   {
     Glib::RefPtr<Gtk::RecentAction> recent_action = Gtk::RecentAction::create("FileRecentFiles", Gtk::Stock::OPEN);
+
+    // Not sure what this does, but it seems to help bring recent items up to the top
+    recent_action->set_sort_type(Gtk::RECENT_SORT_MRU);
+
+    // Show only file:// resources
+    recent_action->set_local_only();
+
+    recent_action->set_limit(25);
 
     Gtk::RecentFilter* filter= Gtk::manage(new Gtk::RecentFilter);
     filter->add_mime_type("application/windstille");
