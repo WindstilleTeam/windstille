@@ -105,8 +105,8 @@ bool get(const FileReader& reader, const char* name, Color& value)
     else if (floats.size() == 4)
       {
         value.r = floats[0];
-        value.b = floats[1];
-        value.g = floats[2];
+        value.g = floats[1];
+        value.b = floats[2];
         value.a = floats[3];
         return true;
       }
