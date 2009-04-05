@@ -186,11 +186,13 @@ Sound Handling
 Miscellaneous
 =============
 
+* replace power_of_two function with one not based on a slow while() loop
+
 * maybe add special support for opaque textures, i.e. Textures with
   1-bit alpha, which could be used to bucket sort drawing requests and
   reduce texture switches (in case those ever start posing a problem)
 
-* http://www.blackpawn.com/texts/lightmaps/default.html
+* Write a texture packer: http://www.blackpawn.com/texts/lightmaps/default.html
 
 * Display::aspect_size is ugly, turn that into a Display::set_size();
 
@@ -513,6 +515,13 @@ Graphics
 
 Editor
 ======
+
+* Texture::put can't handle non-RGBA surface
+
+* add a SoftwareSurface::grow() which creates a new SoftwareSurface
+  with a 1px boarder for fixing texture blend issue
+
+* add way to convert Texture to SoftwareSurface for debugging
 
 * share SoftwareSurface via Manager class
 

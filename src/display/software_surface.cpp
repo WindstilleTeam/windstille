@@ -171,5 +171,21 @@ SoftwareSurface::is_at(int x, int y) const
       return false;
     }
 }
+
+SoftwareSurface
+SoftwareSurface::add_1px_border() const
+{
+  SoftwareSurface surface(get_width()+2, get_height()+2);
+
+  // FIXME: Really slow
+  blit(surface, 0, 0);
+  blit(surface, 2, 0);
+  blit(surface, 0, 2);
+  blit(surface, 2, 2);
+
+  blit(surface, 1, 1);
+
+  return surface;
+}
 
 /* EOF */

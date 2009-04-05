@@ -73,7 +73,6 @@ SurfaceManager::get(const std::string& filename)
 
       if (1)
         {
-          // FIXME: Need to 'grow' the image by 1 pixel, so we don't get blending artifacts
           Surface result = texture_packer->upload(image);
           surfaces.insert(std::make_pair(filename, result));
           return result;              

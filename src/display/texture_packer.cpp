@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <stdexcept>
 #include <memory>
 
@@ -141,8 +142,11 @@ TexturePacker::allocate(const Size& size, Rect& rect, Texture& texture)
 }
 
 Surface
-TexturePacker::upload(const SoftwareSurface& surface)
+TexturePacker::upload(const SoftwareSurface& in_surface)
 {
+  // Add a 1px border around surfaces to avoid blending artifacts
+  SoftwareSurface surface = in_surface.add_1px_border();
+
   Size    size(surface.get_width(), surface.get_height());
   Rect    rect;
   Texture texture;
@@ -155,10 +159,12 @@ TexturePacker::upload(const SoftwareSurface& surface)
     {
       texture.put(surface, rect.left, rect.top);
 
+      //std::cout << "Texture: " << texture.get_handle() << " " << rect << std::endl;
+
       return Surface(texture,
-                     Rectf(float(rect.left)  / texture.get_width(), float(rect.top)    / texture.get_height(),
-                           float(rect.right) / texture.get_width(), float(rect.bottom) / texture.get_height()),
-                     surface.get_width(), surface.get_height());
+                     Rectf(float(rect.left+1)  / texture.get_width(), float(rect.top+1)    / texture.get_height(),
+                           float(rect.right-1) / texture.get_width(), float(rect.bottom-1) / texture.get_height()),
+                     in_surface.get_width(), in_surface.get_height());
     }
 }
 
