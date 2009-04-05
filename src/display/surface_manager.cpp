@@ -30,11 +30,13 @@
 #include "surface.hpp"
 #include "software_surface.hpp"
 #include "texture_manager.hpp"
+#include "texture_packer.hpp"
 #include "physfs/physfs_sdl.hpp"
 
 SurfaceManager* SurfaceManager::current_ = 0;
-
+
 SurfaceManager::SurfaceManager()
+  : texture_packer(new TexturePacker(Size(2048, 2048)))
 {
   assert(current_ == 0);
   current_ = this;
@@ -69,24 +71,33 @@ SurfaceManager::get(const std::string& filename)
     {
       SoftwareSurface image(filename);
 
-      float maxu, maxv;
-      Texture texture;
-
-      try
+      if (1)
         {
-          texture = create_texture(image, maxu, maxv);
+          // FIXME: Need to 'grow' the image by 1 pixel, so we don't get blending artifacts
+          Surface result = texture_packer->upload(image);
+          surfaces.insert(std::make_pair(filename, result));
+          return result;              
         }
-      catch(std::exception& e)
+      else
         {
-          std::ostringstream msg;
-          msg << "Couldn't create texture for '" << filename << "': " << e.what();
-          throw std::runtime_error(msg.str());
-        }
+          float maxu, maxv;
+          Texture texture;
 
-      Surface result(texture, Rectf(0, 0, maxu, maxv), image.get_width(), image.get_height());
-      surfaces.insert(std::make_pair(filename, result));
-  
-      return result;
+          try
+            {
+              texture = create_texture(image, maxu, maxv);
+            }
+          catch(std::exception& e)
+            {
+              std::ostringstream msg;
+              msg << "Couldn't create texture for '" << filename << "': " << e.what();
+              throw std::runtime_error(msg.str());
+            }
+        
+          Surface result(texture, Rectf(0, 0, maxu, maxv), image.get_width(), image.get_height());
+          surfaces.insert(std::make_pair(filename, result));
+          return result;
+        }      
     }
 }
 
@@ -162,6 +173,5 @@ SurfaceManager::cleanup()
         }
     }
 }
-
-
+
 /* EOF */

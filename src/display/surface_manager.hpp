@@ -19,15 +19,17 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SURFACE_MANAGER_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SURFACE_MANAGER_HPP
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <map>
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include "texture.hpp"
-
+
 class Surface;
-
+class TexturePacker;
+
 /**
  * This class keeps a list of loaded surfaces and manages loading new ones
  */
@@ -37,6 +39,8 @@ private:
   static SurfaceManager* current_; 
 public:
   static SurfaceManager* current() { return current_; } 
+
+  std::auto_ptr<TexturePacker> texture_packer;
 
 public:
   SurfaceManager();
@@ -61,7 +65,7 @@ public:
   typedef std::map<std::string, Surface> Surfaces;
   Surfaces surfaces;
 };
-
+
 #endif
 
 /* EOF */

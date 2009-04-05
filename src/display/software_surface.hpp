@@ -22,6 +22,8 @@
 #include "SDL.h"
 #include <boost/shared_ptr.hpp>
 #include <string>
+
+#include "math/size.hpp"
 
 class Rect;
 class SoftwareSurfaceImpl;
@@ -44,6 +46,7 @@ public:
   int   get_width() const;
   int   get_pitch() const;
   int   get_height() const;
+  Size  get_size() const;
   void* get_pixels() const;
 
   void blit(SoftwareSurface& dst, int x, int y) const;

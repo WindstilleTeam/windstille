@@ -85,6 +85,7 @@ display_lib = display_env.StaticLibrary('display', [
         'display/text_area.cpp',
         'display/texture.cpp',
         'display/texture_manager.cpp',
+        'display/texture_packer.cpp',
         'display/vertex_array_drawing_request.cpp',
         
         'sprite2d/data.cpp',

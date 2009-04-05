@@ -98,6 +98,13 @@ SoftwareSurface::get_height() const
   return impl->surface->h;
 }
 
+Size
+SoftwareSurface::get_size() const
+{
+  return Size(impl->surface->w, 
+              impl->surface->h);
+}
+
 int
 SoftwareSurface::get_pitch() const
 {
