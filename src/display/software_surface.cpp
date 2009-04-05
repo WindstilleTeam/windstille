@@ -155,9 +155,16 @@ SoftwareSurface::is_at(int x, int y) const
   if (x >= 0 && x < impl->surface->w &&
       y >= 0 && y < impl->surface->h)
     {
-      uint8_t* pixels = (uint8_t*)impl->surface->pixels;
-      
-      return pixels[y * impl->surface->pitch + x*4 + 3] > 128;
+      if (get_bits_per_pixel() == 32)
+        {
+          uint8_t* pixels = (uint8_t*)impl->surface->pixels;
+          
+          return pixels[y * impl->surface->pitch + x*4 + 3] > 128;
+        }
+      else
+        {
+          return true;
+        }
     }
   else
     {
