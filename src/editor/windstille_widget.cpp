@@ -451,6 +451,8 @@ WindstilleWidget::selection_duplicate()
         }
     }
 
+  on_selection_change();
+
   queue_draw();
 }
 
