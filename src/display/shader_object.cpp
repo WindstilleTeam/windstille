@@ -20,7 +20,7 @@
 #include <iostream>
 #include <stdio.h>
 #include "util/util.hpp"
-
+
 /** Read a file, user must free() the returned pointer */
 static GLchar* load_file(const char* filename)
 {
@@ -48,7 +48,7 @@ static GLchar* load_file(const char* filename)
   fclose(f);
   return str;
 }
-
+
 class ShaderObjectImpl
 {
 public:
@@ -64,7 +64,7 @@ public:
     glDeleteObjectARB(handle);
   }
 };
-
+
 ShaderObject::ShaderObject(GLenum type, const std::string& filename)
   : impl(new ShaderObjectImpl(type))
 {
@@ -127,5 +127,5 @@ ShaderObject::print_log()
     }
   assert_gl("print_log3");
 }
-
+
 /* EOF */

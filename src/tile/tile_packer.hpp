@@ -23,10 +23,10 @@
 #include <GL/gl.h>
 #include "display/texture.hpp"
 #include "math/rect.hpp"
-
+
 class SoftwareSurface;
 class TilePackerImpl;
-
+
 /** Creates a pixelbuffer of the given size and packs 32x32 large
     tiles into it for later conversion to a texture */
 class TilePacker
@@ -50,7 +50,7 @@ public:
 private:
   TilePackerImpl* impl;
 };
-
+
 #endif
 
 /* EOF */

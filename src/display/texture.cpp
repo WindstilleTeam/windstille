@@ -26,7 +26,7 @@
 #include "display/opengl_state.hpp"
 #include "texture_manager.hpp"
 #include "util/util.hpp"
-
+
 class TextureImpl
 {
 public:
@@ -46,7 +46,7 @@ public:
     glDeleteTextures(1, &handle);
   }
 };
-
+
 Texture::Texture()
 {
 }
@@ -248,5 +248,5 @@ Texture::get_target() const
 {
   return impl->target;
 }
-
+
 /* EOF */

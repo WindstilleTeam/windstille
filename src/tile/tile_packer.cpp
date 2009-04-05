@@ -25,7 +25,7 @@
 #include "util/util.hpp"
 #include "display/blitter.hpp"
 #include "display/software_surface.hpp"
-
+
 class TilePackerImpl
 {
 public:
@@ -38,7 +38,7 @@ public:
   int width;
   int height;
 };
-
+
 TilePacker::TilePacker(int width, int height)
   : impl(new TilePackerImpl())
 {
@@ -117,5 +117,5 @@ TilePacker::get_texture() const
 {
   return impl->texture;
 }
-
+
 /* EOF */

@@ -24,7 +24,7 @@
 #include "display/opengl_state.hpp"
 #include "surface_drawing_parameters.hpp"
 #include "surface_manager.hpp"
-
+
 class SurfaceImpl
 {
 public:
@@ -43,7 +43,7 @@ public:
    */
   Size size;
 };
-
+
 Surface::Surface()
 {
 }
@@ -55,6 +55,7 @@ Surface::Surface(const std::string& filename)
 }
 
 static int power_of_two(int val) {
+  // FIXME: Replace this with a non-while loop based one
   int result = 1;
   while(result < val)
     result *= 2;
@@ -181,5 +182,5 @@ Surface::draw(const SurfaceDrawingParameters& params) const
 
   glEnd(); 
 }
-
+
 /* EOF */

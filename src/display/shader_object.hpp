@@ -23,10 +23,9 @@
 #include <GL/gl.h>
 #include <string>
 #include <boost/shared_ptr.hpp>
-
+
 class ShaderObjectImpl;
-
-/** */
+
 class ShaderObject
 {
 public:
@@ -41,7 +40,7 @@ public:
 private:
   boost::shared_ptr<ShaderObjectImpl> impl;
 };
-
+
 #endif
 
 /* EOF */
