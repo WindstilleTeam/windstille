@@ -172,5 +172,11 @@ SurfaceManager::cleanup()
         }
     }
 }
+
+void
+SurfaceManager::save_all_as_png() const
+{
+  texture_packer->save_all_as_png();
+}
 
 /* EOF */

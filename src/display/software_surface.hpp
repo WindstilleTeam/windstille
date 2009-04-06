@@ -57,6 +57,8 @@ public:
       edge pixels.  */
   SoftwareSurface add_1px_border() const;
 
+  void save_png(const std::string& filename) const;
+
   SDL_Surface* get_surface() const;
 
   bool is_at(int x, int y) const;

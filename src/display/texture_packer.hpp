@@ -44,6 +44,8 @@ public:
   Surface upload(const SoftwareSurface& surface);
   bool    allocate(const Size& size, Rect& rect, Texture& texture);
   
+  void save_all_as_png() const;
+
 private:
   TexturePacker(const TexturePacker&);
   TexturePacker& operator=(const TexturePacker&);

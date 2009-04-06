@@ -226,6 +226,20 @@ Texture::set_filter(GLenum mode)
   glTexParameteri(impl->target, GL_TEXTURE_MAG_FILTER, mode);
 }
 
+SoftwareSurface
+Texture::get_software_surface() const
+{
+  OpenGLState state;
+  state.bind_texture(*this);
+  state.activate();
+
+  SoftwareSurface surface(impl->width, impl->height);
+
+  glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface.get_pixels());
+
+  return surface;
+}
+
 Texture::operator bool() const
 {
   return impl.get();

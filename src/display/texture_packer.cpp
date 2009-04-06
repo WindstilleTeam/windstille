@@ -96,6 +96,8 @@ public:
   ~TexturePackerTexture()
   {}
 
+  Texture get_texture() const { return texture; }
+
   bool allocate(const Size& size, Rect& out_rect, Texture& out_texture)
   {
     if (space.allocate(size, out_rect))
@@ -165,6 +167,21 @@ TexturePacker::upload(const SoftwareSurface& in_surface)
                      Rectf(float(rect.left+1)  / texture.get_width(), float(rect.top+1)    / texture.get_height(),
                            float(rect.right-1) / texture.get_width(), float(rect.bottom-1) / texture.get_height()),
                      in_surface.get_width(), in_surface.get_height());
+    }
+}
+
+void
+TexturePacker::save_all_as_png() const
+{
+  for(Textures::const_iterator i = textures.begin(); i != textures.end(); ++i)
+    {
+      Texture texture = (*i)->get_texture();
+      SoftwareSurface surface = texture.get_software_surface();
+
+      char filename[1024];
+      sprintf(filename, "/tmp/texture_packer%04d.png", int(i - textures.begin()));
+      std::cout << "Saving: " << filename << std::endl;
+      surface.save_png(filename);
     }
 }
 

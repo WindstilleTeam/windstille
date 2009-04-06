@@ -576,6 +576,10 @@ WindstilleWidget::key_press(GdkEventKey* event)
         selection_duplicate();
         break;
 
+      case GDK_s:
+        SurfaceManager::current()->save_all_as_png();
+        break;
+
       case GDK_Delete:
         selection_delete();
         break;

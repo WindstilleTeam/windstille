@@ -40,7 +40,11 @@ private:
 public:
   static SurfaceManager* current() { return current_; } 
 
+private:
   std::auto_ptr<TexturePacker> texture_packer;
+  
+  typedef std::map<std::string, Surface> Surfaces;
+  Surfaces surfaces;
 
 public:
   SurfaceManager();
@@ -61,9 +65,8 @@ public:
 
   /** Removes all cached Sprites that are no longer in use */
   void cleanup();
-  
-  typedef std::map<std::string, Surface> Surfaces;
-  Surfaces surfaces;
+
+  void save_all_as_png() const;
 };
 
 #endif

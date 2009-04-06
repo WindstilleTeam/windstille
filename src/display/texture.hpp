@@ -75,6 +75,8 @@ public:
    */ 
   GLenum get_target() const;
 
+  SoftwareSurface get_software_surface() const;
+
   /** true if the Texture is valid and usable, false if not */
   operator bool() const;
 
