@@ -21,8 +21,7 @@
 
 #include "file_reader.hpp"
 #include "lisp/lisp.hpp"
-
-/** */
+
 class SExprFileReader : public FileReader
 {
 private:
@@ -30,7 +29,7 @@ public:
   SExprFileReader(const lisp::Lisp* root, const lisp::Lisp* lisp);
   SExprFileReader(const lisp::Lisp* lisp, bool delete_sexpr = false);
 };
-
+
 #endif
 
 /* EOF */
