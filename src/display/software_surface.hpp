@@ -52,11 +52,6 @@ public:
   void blit(SoftwareSurface& dst, int x, int y) const;
   void blit(const Rect& src_rect, SoftwareSurface& dst, int x, int y) const;
 
-  /** Creates a copy of the original surface with an added a 1pix
-      border around the original. The border contains duplicates the
-      edge pixels.  */
-  SoftwareSurface add_1px_border() const;
-
   void save_png(const std::string& filename) const;
 
   SDL_Surface* get_surface() const;

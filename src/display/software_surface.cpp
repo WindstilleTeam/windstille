@@ -175,22 +175,6 @@ SoftwareSurface::is_at(int x, int y) const
     }
 }
 
-SoftwareSurface
-SoftwareSurface::add_1px_border() const
-{
-  SoftwareSurface surface(get_width()+2, get_height()+2);
-
-  // FIXME: Really slow and leaves out the edge pixels
-  blit(surface, 1, 0);
-  blit(surface, 1, 2);
-  blit(surface, 0, 1);
-  blit(surface, 2, 1);
-
-  blit(surface, 1, 1);
-
-  return surface;
-}
-
 void
 SoftwareSurface::save_png(const std::string& filename) const
 {

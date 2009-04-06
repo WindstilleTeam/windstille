@@ -52,7 +52,10 @@ public:
             used = true;
             out_rect = Rect(Point(rect.left, rect.top), size);
 
-            // FIXME: Make this alterate between horizontal and vertical splitting
+            // FIXME: Make this alterate between horizontal and
+            // vertical splitting or chose whichever split options
+            // leads to less 'ugly' rectangle (how much different does
+            // this make in terms of packing density?)
             left.reset(new TextureSpace(Rect(out_rect.left,  out_rect.bottom,
                                              out_rect.right, rect.bottom)));
 
@@ -144,12 +147,12 @@ TexturePacker::allocate(const Size& size, Rect& rect, Texture& texture)
 }
 
 Surface
-TexturePacker::upload(const SoftwareSurface& in_surface)
+TexturePacker::upload(const SoftwareSurface& surface)
 {
   // Add a 1px border around surfaces to avoid blending artifacts
-  SoftwareSurface surface = in_surface.add_1px_border();
+  //SoftwareSurface surface = in_surface.add_1px_border();
 
-  Size    size(surface.get_width(), surface.get_height());
+  Size    size(surface.get_width()+2, surface.get_height()+2);
   Rect    rect;
   Texture texture;
 
@@ -159,14 +162,38 @@ TexturePacker::upload(const SoftwareSurface& in_surface)
     }
   else
     {
-      texture.put(surface, rect.left, rect.top);
+      // duplicate border pixel
 
-      //std::cout << "Texture: " << texture.get_handle() << " " << rect << std::endl;
+      // top
+      texture.put(surface, Rect(Point(0, 0), Size(surface.get_width(), 1)), 
+                  rect.left+1, rect.top);
+      // bottom
+      texture.put(surface, Rect(Point(0, surface.get_height()-1), Size(surface.get_width(), 1)), 
+                  rect.left+1, rect.bottom-1);
+      // left
+      texture.put(surface, Rect(Point(0, 0), Size(1, surface.get_height())), 
+                  rect.left, rect.top+1);
+      // right
+      texture.put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, surface.get_height())),
+                  rect.right-1, rect.top+1);
+
+      // duplicate corner pixels
+      texture.put(surface, Rect(Point(0, 0), Size(1, 1)), 
+                  rect.left, rect.top);     
+      texture.put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, 1)), 
+                  rect.right-1, rect.top);
+      texture.put(surface, Rect(Point(surface.get_width()-1, surface.get_height()-1), Size(1, 1)), 
+                  rect.right-1, rect.bottom-1);
+      texture.put(surface, Rect(Point(0, surface.get_height()-1), Size(1, 1)),
+                  rect.left, rect.bottom-1);
+
+      // draw the main surface
+      texture.put(surface, rect.left+1, rect.top+1);
 
       return Surface(texture,
                      Rectf(float(rect.left+1)  / texture.get_width(), float(rect.top+1)    / texture.get_height(),
                            float(rect.right-1) / texture.get_width(), float(rect.bottom-1) / texture.get_height()),
-                     in_surface.get_width(), in_surface.get_height());
+                     surface.get_width(), surface.get_height());
     }
 }
 

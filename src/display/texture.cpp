@@ -21,6 +21,8 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/gl.h>
+
+#include "math/rect.hpp"
 #include "texture.hpp"
 #include "display/software_surface.hpp"
 #include "display/opengl_state.hpp"
@@ -169,6 +171,40 @@ GLuint
 Texture::get_handle() const
 {
   return impl->handle;
+}
+
+void
+Texture::put(const SoftwareSurface& image, const Rect& srcrect, int x, int y)
+{
+  GLint sdl_format;
+
+  if (image.get_bytes_per_pixel() == 3)
+    {
+      sdl_format = GL_RGB;
+    }
+  else if (image.get_bytes_per_pixel() == 4)
+    {
+      sdl_format = GL_RGBA;
+    }
+  else
+    {
+      throw std::runtime_error("Texture: Image format not supported");
+    }
+
+  OpenGLState state;
+  state.bind_texture(*this);
+  state.activate();
+
+  // FIXME: Add some checks here to make sure image has the right format 
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+  glPixelStorei(GL_UNPACK_ROW_LENGTH,
+                image.get_pitch() / image.get_bytes_per_pixel());
+
+  glTexSubImage2D(impl->target, 0, x, y,
+                  srcrect.get_width(), srcrect.get_height(), sdl_format, GL_UNSIGNED_BYTE,
+                  static_cast<uint8_t*>(image.get_pixels())
+                  + srcrect.top  * image.get_pitch()
+                  + srcrect.left * image.get_bytes_per_pixel());
 }
 
 void

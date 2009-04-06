@@ -27,6 +27,7 @@
 
 class SoftwareSurface;
 class TextureImpl;
+class Rect;
 
 class Texture
 {
@@ -66,6 +67,10 @@ public:
 
   /** Uploads the given image to the given coordinates */
   void put(const SoftwareSurface& image, int x, int y);
+  
+  /** Uploads the given subsection \a srcrect of \a image to the given
+      coordinates */
+  void put(const SoftwareSurface& image, const Rect& srcrect, int x, int y);
 
   GLuint get_handle() const;
   
