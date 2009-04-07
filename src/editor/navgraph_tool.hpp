@@ -19,8 +19,11 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_NAVGRAPH_TOOL_HPP
 #define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_TOOL_HPP
 
+#include <set>
+
 #include "math/rect.hpp"
 #include "tool.hpp"
+#include "navigation/navigation_graph.hpp"
 
 class NavgraphTool : public Tool
 {
@@ -29,10 +32,13 @@ private:
   Rectf    rect;
 
   enum { 
-    SELECT_MODE,
-    DRAG_MODE,
-    NO_MODE
+    SELECT_MODE, // select multiple nodes at once
+    DRAG_MODE,   // move nodes around
+    EDGE_MODE,   // create an edge between two nodes
+    NO_MODE      // mode is determined by next click
   } mode;
+
+  std::set<NodeHandle> selection;
 
 public:
   NavgraphTool();

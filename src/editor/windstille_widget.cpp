@@ -271,8 +271,8 @@ WindstilleWidget::draw()
           (*i)->draw(*sc);
         }
 
-      if (active_tool)
-        active_tool->draw(*sc);
+      if (EditorWindow::current()->get_current_tool())
+        EditorWindow::current()->get_current_tool()->draw(*sc);
 
       sc->render();
       state.pop(*sc);

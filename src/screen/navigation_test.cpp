@@ -34,11 +34,7 @@
 NavigationTest::NavigationTest()
   : cursor(400, 300),
     player(200,200),
-    graph(new NavigationGraph()),
-    connection(0),
-    selected_edge(0),
-    selected_node(0),
-    node_to_connect(0)
+    graph(new NavigationGraph())
 {
   try {
     FileReader reader = FileReader::parse("navigation.nav");
