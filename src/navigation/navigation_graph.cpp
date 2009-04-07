@@ -175,7 +175,7 @@ NavigationGraph::find_nodes(const Rectf& rect)
     {  
       if (rect.is_inside((*i)->get_pos()))
         {
-          ret.push_back(*i);
+          ret.push_back(NodeHandle(*i));
         }
     }
 

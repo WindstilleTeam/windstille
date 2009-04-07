@@ -52,14 +52,27 @@ public:
     return data;
   }
 
+  inline const Data* operator->() const {
+    return data;
+  }
+
   inline Data& operator*()  {
+    return *data;
+  }
+
+  inline const Data& operator*() const {
     return *data;
   }
 
   operator bool() {
     return data != 0;
   }
+
+  bool operator<(const PointerHandle<Data>& other) const {
+    return this->data < other.data;
+  }
 };
+
 
 typedef PointerHandle<Node> NodeHandle; 
 typedef PointerHandle<Edge> EdgeHandle; 
