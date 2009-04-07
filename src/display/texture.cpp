@@ -196,7 +196,7 @@ Texture::put(const SoftwareSurface& image, const Rect& srcrect, int x, int y)
   state.activate();
 
   // FIXME: Add some checks here to make sure image has the right format 
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // FIXME: Does SDL always use 4?
   glPixelStorei(GL_UNPACK_ROW_LENGTH,
                 image.get_pitch() / image.get_bytes_per_pixel());
 
