@@ -179,7 +179,9 @@ void
 SoftwareSurface::save_png(const std::string& filename) const
 {
   // FIXME: This is upside down  
-  if (get_bits_per_pixel() != 32)
+
+  if (get_bytes_per_pixel() != 4 &&
+      get_bytes_per_pixel() != 3)
     {
       std::cout << "SoftwareSurface::save_png(): Unsupported pixel format" << std::endl;
       return;
@@ -206,7 +208,7 @@ SoftwareSurface::save_png(const std::string& filename) const
 
       png_set_IHDR(png_ptr, info_ptr, 
                    get_width(), get_height(), 8 /* bitdepth */,
-                   PNG_COLOR_TYPE_RGBA,
+                   (get_bytes_per_pixel() == 32) ? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_RGB,
                    PNG_INTERLACE_NONE, 
                    PNG_COMPRESSION_TYPE_BASE, 
                    PNG_FILTER_TYPE_BASE);

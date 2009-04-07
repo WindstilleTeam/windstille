@@ -196,7 +196,7 @@ Texture::put(const SoftwareSurface& image, const Rect& srcrect, int x, int y)
   state.activate();
 
   // FIXME: Add some checks here to make sure image has the right format 
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
   glPixelStorei(GL_UNPACK_ROW_LENGTH,
                 image.get_pitch() / image.get_bytes_per_pixel());
 
@@ -210,33 +210,7 @@ Texture::put(const SoftwareSurface& image, const Rect& srcrect, int x, int y)
 void
 Texture::put(const SoftwareSurface& image, int x, int y)
 {
-  GLint sdl_format;
-
-  if (image.get_bytes_per_pixel() == 3)
-    {
-      sdl_format = GL_RGB;
-    }
-  else if (image.get_bytes_per_pixel() == 4)
-    {
-      sdl_format = GL_RGBA;
-    }
-  else
-    {
-      throw std::runtime_error("Texture: Image format not supported");
-    }
-
-  OpenGLState state;
-  state.bind_texture(*this);
-  state.activate();
-
-  // FIXME: Add some checks here to make sure image has the right format 
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-  glPixelStorei(GL_UNPACK_ROW_LENGTH,
-                image.get_pitch() / image.get_bytes_per_pixel());
-
-  glTexSubImage2D(impl->target, 0, x, y,
-                  image.get_width(), image.get_height(), sdl_format, GL_UNSIGNED_BYTE,
-                  image.get_pixels());
+  put(image, Rect(0, 0, image.get_width(), image.get_height()), x, y);
 }
 
 void
