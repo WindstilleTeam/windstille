@@ -33,6 +33,7 @@ class DrawingParameters;
 class SceneContext;
 class Sprite;
 class Quad;
+class Line;
 
 /** The DrawingContext collects all DrawingRequests and allows you to
     flush them all down to the graphics card in one run, this has the
@@ -65,6 +66,7 @@ public:
 
   void fill_pattern(const Texture& pattern, const Vector2f& offset);
 
+  void draw_line(const Line& line, const Color& color, float z_pos = 0);
   void draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color, float z_pos = 0);
 
   void draw_rect(const Rectf& rect, const Color& color, float z_pos = 0);

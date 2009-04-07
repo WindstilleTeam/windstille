@@ -439,6 +439,12 @@ DrawingContext::get_clip_rect()
 }
 
 void
+DrawingContext::draw_line(const Line& line, const Color& color, float z_pos)
+{
+  draw_line(line.p1, line.p2, color, z_pos);
+}
+
+void
 DrawingContext::draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color, float z_pos)
 {
   VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos, modelview_stack.back());
