@@ -22,6 +22,9 @@
 #include <iostream>
 #include <gdkmm/pixbuf.h>
 
+#include "navigation/navigation_graph.hpp"
+#include "navigation/edge.hpp"
+#include "navigation/node.hpp"
 #include "editor_window.hpp"
 #include "windstille_widget.hpp"
 #include "util/file_reader.hpp"
@@ -33,7 +36,15 @@
 LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
 SectorModel::SectorModel()
+ : nav_graph(new NavigationGraph())
 {  
+  try {
+    FileReader reader = FileReader::parse("navigation.nav");
+    nav_graph->load(reader);
+  } catch(std::exception& err) {
+    std::cout << "NavigationTest: " << err.what() << std::endl;
+  }
+
   layer_tree = Gtk::TreeStore::create(LayerManagerColumns::instance());
 
   Gtk::TreeStore::iterator it = layer_tree->append();
@@ -51,6 +62,10 @@ SectorModel::SectorModel()
   layer_tree->signal_row_has_child_toggled().connect(sigc::mem_fun(*this, &SectorModel::on_row_has_child_toggled));
   layer_tree->signal_row_inserted().connect(sigc::mem_fun(*this, &SectorModel::on_row_inserted));
   layer_tree->signal_rows_reordered().connect(sigc::mem_fun(*this, &SectorModel::on_rows_reordered));
+}
+
+SectorModel::~SectorModel()
+{
 }
 
 void
@@ -156,12 +171,27 @@ SectorModel::remove(const ObjectModelHandle& object)
 void
 SectorModel::draw(SceneContext& sc, const SelectMask& layermask)
 {
+  // Draw Layers
   const Layers& layers = get_layers();
  
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
     {
       if ((*i)->is_visible())
         (*i)->draw(sc, layermask);
+    }
+
+  // Draw Navgraph
+  for(NavigationGraph::Edges::iterator i = nav_graph->get_edges().begin(); i != nav_graph->get_edges().end(); ++i)
+    {
+      sc.control().draw_line(Line((*i)->get_node1()->get_pos(),
+                                  (*i)->get_node2()->get_pos()),
+                             Color(1.0f, 0.0f, 0.0f));
+    }
+
+  for(NavigationGraph::Nodes::iterator i = nav_graph->get_nodes().begin(); i != nav_graph->get_nodes().end(); ++i)
+    {
+      sc.control().fill_rect(Rectf((*i)->get_pos() - Vector2f(4,4), Sizef(9, 9)),
+                             Color(1.0f, 1.0f, 0.0f));
     }
 }
 

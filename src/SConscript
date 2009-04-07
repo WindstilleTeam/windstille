@@ -58,6 +58,16 @@ math_lib = math_env.StaticLibrary('math', [
         'math/vector2f.cpp',
         ])
 
+navgraph_env = conf_env.Clone()
+navgraph_env['CPPPATH'] = ['.']
+navgraph_lib = navgraph_env.StaticLibrary('navgraph', [
+        'navigation/navigation_graph.cpp',
+        'navigation/node.cpp',
+        'navigation/properties.cpp',
+        'navigation/edge.cpp',
+        'navigation/edge_position.cpp',
+        ])
+
 display_env = conf_env.Clone()
 display_env['CPPPATH'] = ['.', '..']
 display_env.ParseConfig('sdl-config --cflags --libs')
@@ -97,7 +107,7 @@ display_lib = display_env.StaticLibrary('display', [
         ])
 
 env = conf_env.Clone()
-env.Append(LIBS    = [display_lib, physfs_lib, util_lib, math_lib,
+env.Append(LIBS    = [navgraph_lib, display_lib, physfs_lib, util_lib, math_lib,
                       'GL', 'GLU', 'GLEW', 'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals'])
 env.Append(LIBPATH = ['../external/'] )
 env.Append(CPPPATH = ['.', '..', '../external/SQUIRREL2/include/'])
@@ -164,11 +174,6 @@ env.Program('../windstille', [
         'input/input_manager_impl.cpp',
         'input/input_manager_sdl.cpp',
         'input/wiimote.cpp',
-        'navigation/navigation_graph.cpp',
-        'navigation/node.cpp',
-        'navigation/properties.cpp',
-        'navigation/edge.cpp',
-        'navigation/edge_position.cpp',
         'objects/background_gradient.cpp',
         'objects/bomb.cpp',
         'objects/box.cpp',
@@ -226,7 +231,7 @@ env.Program('../windstille', [
 
 editor_env = Environment(CPPPATH=['.'],
                          CXXFLAGS=['-Wall', '-Werror', '-O2', '-g'],
-                         LIBS = [display_lib, util_lib, physfs_lib, math_lib, 'GL', 'GLEW', 'SDL_image', 'physfs'])
+                         LIBS = [navgraph_lib, display_lib, util_lib, physfs_lib, math_lib, 'GL', 'GLEW', 'SDL_image', 'physfs'])
 
 editor_env.ParseConfig('pkg-config libpng --libs --cflags')
 editor_env.ParseConfig('sdl-config --cflags --libs')

@@ -31,6 +31,7 @@
 #include "object_model.hpp"
 #include "math/vector2f.hpp"
 
+class NavigationGraph;
 class SceneContext;
 class LayerManagerColumns;
 
@@ -66,6 +67,7 @@ private:
 class SectorModel
 {
 private:
+  std::auto_ptr<NavigationGraph> nav_graph;
   Glib::RefPtr<Gtk::TreeStore> layer_tree;
   Color ambient_color;
   
@@ -74,6 +76,7 @@ public:
   typedef std::vector<LayerHandle> Layers;
 
   SectorModel();
+  ~SectorModel();
 
   void draw(SceneContext& sc, const SelectMask& layers);
 
@@ -122,6 +125,8 @@ public:
                   std::map<ObjectModelHandle, std::string>& parent_table);
   void write(FileWriter& writer) const;
   void write(FileWriter& writer, const Gtk::TreeRow& row) const;
+
+  NavigationGraph* get_nav_graph() const { return nav_graph.get(); }
 
   void queue_draw();
 
