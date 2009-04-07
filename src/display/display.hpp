@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_DISPLAY_DISPLAY_HPP
 
 #include <vector>
-#include <SDL.h>
+
 #include "math/size.hpp"
 #include "math/rect.hpp"
 #include "math/quad.hpp"
