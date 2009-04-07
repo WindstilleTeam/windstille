@@ -23,6 +23,7 @@
 #include <vector>
 #include "math/line.hpp"
 
+class Rectf;
 class Node;
 class FileReader;
 class Edge;
@@ -97,6 +98,8 @@ public:
 
   /** Find nodes that are near within the \a radius */
   std::vector<NodeHandle> find_nodes(const Vector2f& pos, float radius);
+
+  std::vector<NodeHandle> find_nodes(const Rectf& rect);
 
   /** Find the closest node, limit search to nodes in radius */
   NodeHandle find_closest_node(const Vector2f& pos, float radius);

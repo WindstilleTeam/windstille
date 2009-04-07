@@ -20,11 +20,14 @@
 #include <iomanip>
 #include <map>
 #include <algorithm>
+
+#include "math/rect.hpp"
 #include "display/display.hpp"
-#include "node.hpp"
 #include "edge.hpp"
-#include "util/file_reader.hpp"
 #include "edge_position.hpp"
+#include "node.hpp"
+#include "util/file_reader.hpp"
+
 #include "navigation_graph.hpp"
 
 NavigationGraph::NavigationGraph()
@@ -160,6 +163,22 @@ NavigationGraph::find_nodes(const Vector2f& pos, float radius)
         }
     }
   
+  return ret;
+}
+
+std::vector<NodeHandle>
+NavigationGraph::find_nodes(const Rectf& rect)
+{
+  std::vector<NodeHandle> ret;
+
+  for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
+    {  
+      if (rect.is_inside((*i)->get_pos()))
+        {
+          ret.push_back(*i);
+        }
+    }
+
   return ret;
 }
 
