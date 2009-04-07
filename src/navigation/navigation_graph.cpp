@@ -26,12 +26,12 @@
 #include "util/file_reader.hpp"
 #include "edge_position.hpp"
 #include "navigation_graph.hpp"
-
+
 NavigationGraph::NavigationGraph()
 {
   
 }
-
+
 NavigationGraph::~NavigationGraph()
 {
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
@@ -42,7 +42,7 @@ NavigationGraph::~NavigationGraph()
     delete *i;
   nodes.clear();
 }
-
+
 NodeHandle
 NavigationGraph::add_node(const Vector2f& pos)
 {
@@ -50,7 +50,7 @@ NavigationGraph::add_node(const Vector2f& pos)
   nodes.push_back(node);
   return NodeHandle(node);
 }
-
+
 void
 NavigationGraph::remove_edge(EdgeHandle edge)
 {
@@ -64,7 +64,7 @@ NavigationGraph::remove_edge(EdgeHandle edge)
 
   // FIXME: Throw exception here
 }
-
+
 void
 NavigationGraph::remove_node(NodeHandle node)
 {
@@ -95,7 +95,7 @@ NavigationGraph::remove_node(NodeHandle node)
       delete node.get();
     }  
 }
-
+
 EdgeHandle
 NavigationGraph::add_edge(NodeHandle node1, NodeHandle node2)
 {
@@ -110,7 +110,7 @@ NavigationGraph::add_edge(NodeHandle node1, NodeHandle node2)
       return EdgeHandle();
     }
 }
-
+
 void
 NavigationGraph::split_edge(EdgeHandle edge)
 {
@@ -122,7 +122,7 @@ NavigationGraph::split_edge(EdgeHandle edge)
   add_edge(node1, node2);  
   add_edge(node2, node3);  
 }
-
+
 std::vector<EdgePosition>
 NavigationGraph::find_intersections(const Line& line)
 {
@@ -144,7 +144,7 @@ NavigationGraph::find_intersections(const Line& line)
 
   return ret;
 }
-
+
 std::vector<NodeHandle>
 NavigationGraph::find_nodes(const Vector2f& pos, float radius)
 {
@@ -162,7 +162,7 @@ NavigationGraph::find_nodes(const Vector2f& pos, float radius)
   
   return ret;
 }
-
+
 std::vector<EdgeHandle>
 NavigationGraph::find_edges(const Vector2f& pos, float radius)
 {
@@ -180,7 +180,7 @@ NavigationGraph::find_edges(const Vector2f& pos, float radius)
 
   return ret;
 }
-
+
 NodeHandle
 NavigationGraph::find_closest_node(const Vector2f& pos, float radius)
 {
@@ -200,7 +200,7 @@ NavigationGraph::find_closest_node(const Vector2f& pos, float radius)
   
   return NodeHandle(node);
 }
-
+
 EdgeHandle
 NavigationGraph::find_closest_edge(const Vector2f& pos, float radius)
 {
@@ -220,7 +220,7 @@ NavigationGraph::find_closest_edge(const Vector2f& pos, float radius)
 
   return EdgeHandle(edge);
 }
-
+
 void
 NavigationGraph::draw()
 {
@@ -237,7 +237,7 @@ NavigationGraph::draw()
                          Color(1.0f, 1.0f, 0.0f));
     }
 }
-
+
 void
 NavigationGraph::load(FileReader& reader)
 {
@@ -344,14 +344,14 @@ NavigationGraph::save(std::ostream& out)
 
   out.flags(old_flags); // restore flags
 }
-
+
 bool
 NavigationGraph::valid(Edge* edge)
 {
   // FIXME: Slow
   return std::find(edges.begin(), edges.end(), edge) != edges.end();
 }
-
+
 bool
 NavigationGraph::valid(Node* node)
 {

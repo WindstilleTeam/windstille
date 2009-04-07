@@ -22,12 +22,12 @@
 #include <iosfwd>
 #include <vector>
 #include "math/line.hpp"
-
+
 class Node;
 class FileReader;
 class Edge;
 class EdgePosition;
-
+
 template<typename Data>
 class PointerHandle
 {
@@ -59,17 +59,17 @@ public:
     return data != 0;
   }
 };
-
+
 typedef PointerHandle<Node> NodeHandle; 
 typedef PointerHandle<Edge> EdgeHandle; 
-
-/** */
+
 class NavigationGraph
 {
-private:
+public:
   typedef std::vector<Node*> Nodes;
   typedef std::vector<Edge*> Edges;
 
+private:
   Nodes nodes;
   Edges edges;
   
@@ -78,6 +78,9 @@ private:
 public:
   NavigationGraph();
   ~NavigationGraph();
+
+  Nodes& get_nodes() { return nodes; }
+  Edges& get_edges() { return edges; }
 
   // FIXME: It might be worth it to return handles that can be
   // validated instead of pure pointers
@@ -116,7 +119,7 @@ private:
   NavigationGraph (const NavigationGraph&);
   NavigationGraph& operator= (const NavigationGraph&);
 };
-
+
 #endif
 
 /* EOF */
