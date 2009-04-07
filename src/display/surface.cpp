@@ -54,20 +54,12 @@ Surface::Surface(const std::string& filename)
   *this = SurfaceManager::current()->get(filename);
 }
 
-static int power_of_two(int val) {
-  // FIXME: Replace this with a non-while loop based one
-  int result = 1;
-  while(result < val)
-    result *= 2;
-  return result;
-}
-
 Surface::Surface(int width, int height)
   : impl(new SurfaceImpl())
 {
   impl->size  = Size(width, height);
 
-  impl->texture = Texture(GL_TEXTURE_2D, power_of_two(width), power_of_two(height));
+  impl->texture = Texture(GL_TEXTURE_2D, math::round_to_power_of_two(width), math::round_to_power_of_two(height));
   impl->uv      = Rectf(0, 0,
                         float(impl->size.width)  / impl->texture.get_width(),
                         float(impl->size.height) / impl->texture.get_height());

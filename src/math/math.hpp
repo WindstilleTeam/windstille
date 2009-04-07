@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_MATH_MATH_HPP
 
 #include <assert.h>
+#include <limits>
 #include <math.h>
 
 namespace math {
@@ -50,7 +51,7 @@ T mid (const T& a, const T& b, const T& c)
 
 inline float normalize_angle(float radians)
 {
-  radians = fmod (radians, static_cast<float>(2.0 * M_PI));
+  radians = fmodf(radians, static_cast<float>(2.0 * M_PI));
   if (radians < 0.0)
     radians += 2.0 * M_PI;
   // Floating point math is so loathsome.  In sp98test, the assertion
@@ -62,6 +63,25 @@ inline float normalize_angle(float radians)
   // FIXME: This gets triggered from time to time!
   //  assert (radians >= 0.0 && radians < 2.0 * M_PI);
   return radians;
+}
+
+inline bool is_power_of_two(int n)
+{
+  return (n > 0) && ((n & (n - 1)) == 0);
+}
+
+template<typename T>
+inline T round_to_power_of_two(T n)
+{
+  n = n - 1;
+
+  int bits = std::numeric_limits<T>::digits;
+  for(int i = 1; i < bits; i *= 2)
+    n = n | (n >> i);
+  
+  n = n + 1;
+  
+  return n;
 }
 
 inline float deg2rad(float degree)

@@ -24,14 +24,15 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 
-#include "util/util.hpp"
 #include "app/globals.hpp"
-#include "texture.hpp"
-#include "surface.hpp"
+#include "math/math.hpp"
+#include "physfs/physfs_sdl.hpp"
 #include "software_surface.hpp"
+#include "surface.hpp"
+#include "texture.hpp"
 #include "texture_manager.hpp"
 #include "texture_packer.hpp"
-#include "physfs/physfs_sdl.hpp"
+#include "util/util.hpp"
 
 SurfaceManager* SurfaceManager::current_ = 0;
 
@@ -135,19 +136,12 @@ SurfaceManager::load_grid(const std::string& filename,
     }
 }
 
-static int power_of_two(int val) {
-  int result = 1;
-  while(result < val)
-    result *= 2;
-  return result;
-}
-
 Texture
 SurfaceManager::create_texture(const SoftwareSurface& image,
                                float& maxu, float& maxv)
 {
-  int texture_w = power_of_two(image.get_width());
-  int texture_h = power_of_two(image.get_height());
+  int texture_w = math::round_to_power_of_two(image.get_width());
+  int texture_h = math::round_to_power_of_two(image.get_height());
 
   SoftwareSurface convert(texture_w, texture_h);
 
