@@ -16,42 +16,36 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_SELECT_TOOL_HPP
-#define HEADER_WINDSTILLE_EDITOR_SELECT_TOOL_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_NAVGRAPH_TOOL_HPP
+#define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_TOOL_HPP
 
 #include "math/rect.hpp"
-#include "object_model.hpp"
 #include "tool.hpp"
 
-class SelectTool : public Tool
+class NavgraphTool : public Tool
 {
 private:
   Vector2f click_pos;
   Rectf    rect;
-  SelectionHandle selection;
-  ControlPointHandle ctrl_point;
 
   enum { 
     SELECT_MODE,
-    OBJECT_DRAG_MODE,
-    CONTROL_DRAG_MODE,
+    DRAG_MODE,
     NO_MODE
   } mode;
 
-  Vector2f process_snap(WindstilleWidget& wst);
-
 public:
-  SelectTool();
-  
+  NavgraphTool();
+
   bool mouse_down (GdkEventButton* event, WindstilleWidget& wst);
   bool mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
   bool mouse_up(GdkEventButton* event, WindstilleWidget& wst);
-
+  
   void draw(SceneContext& sc);
 
 private:
-  SelectTool(const SelectTool&);
-  SelectTool& operator=(const SelectTool&);
+  NavgraphTool(const NavgraphTool&);
+  NavgraphTool& operator=(const NavgraphTool&);
 };
 
 #endif

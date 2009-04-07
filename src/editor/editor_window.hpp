@@ -39,6 +39,7 @@ class WindstilleWidget;
 class SelectTool;
 class ZoomTool;
 class LayerWidget;
+class NavgraphTool;
 
 class EditorWindow : public Gtk::Window
 {
@@ -82,6 +83,7 @@ private:
   Glib::RefPtr<Gtk::ToggleAction> snap_action;
 
   std::auto_ptr<SelectTool> select_tool;
+  std::auto_ptr<NavgraphTool> navgraph_tool;
   std::auto_ptr<ZoomTool>   zoom_tool;
   Tool* current_tool;
   LayerWidget* layer_widget;

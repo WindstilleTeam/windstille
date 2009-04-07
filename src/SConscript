@@ -252,6 +252,7 @@ editor_env.Program('../windstille-editor', [
         'editor/object_model_factory.cpp',
         'editor/object_selector.cpp',
         'editor/layer_manager.cpp',
+        'editor/navgraph_tool.cpp',
         'editor/scroll_tool.cpp',
         'editor/sector_model.cpp',
         'editor/select_tool.cpp',

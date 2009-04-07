@@ -21,6 +21,7 @@
 
 #include <gdkmm.h>
 
+class SceneContext;
 class WindstilleWidget;
 
 class Tool
