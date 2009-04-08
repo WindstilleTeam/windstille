@@ -250,9 +250,9 @@ WindstilleWidget::draw()
         }
 
       if (draw_only_active_layers)
-        sector_model->draw(*sc, SelectMask());
+        sector_model->draw(*sc, SelectMask(), editor.get_draw_navgraph());
       else
-        sector_model->draw(*sc, select_mask);
+        sector_model->draw(*sc, select_mask, editor.get_draw_navgraph());
 
       if (!selection->empty())
         {

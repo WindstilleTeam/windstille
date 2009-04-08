@@ -612,6 +612,8 @@ EditorWindow::on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool* tool)
   if (action->get_active())
     {
       current_tool = tool;
+      if (WindstilleWidget* wst = get_windstille_widget())
+        wst->queue_draw();
     }
 }
 
@@ -762,6 +764,16 @@ EditorWindow::fill_object_selector(const std::string& directory)
 
       object_selector.add_object(*i, icon);
     }
+}
+
+bool
+EditorWindow::get_draw_navgraph() const
+{
+  if (current_tool == navgraph_insert_tool.get() ||
+      current_tool == navgraph_select_tool.get())
+    return true;
+  else
+    return false;
 }
 
 void

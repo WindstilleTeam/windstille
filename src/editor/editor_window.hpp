@@ -156,6 +156,8 @@ public:
 
   void add_recent_file(const std::string& filename);
 
+  bool get_draw_navgraph() const;
+
   void print(const std::string& text);
   bool remove_message(guint id);
 

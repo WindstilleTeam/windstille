@@ -162,7 +162,7 @@ SectorModel::remove(const ObjectModelHandle& object)
 }
 
 void
-SectorModel::draw(SceneContext& sc, const SelectMask& layermask)
+SectorModel::draw(SceneContext& sc, const SelectMask& layermask, bool draw_navgraph)
 {
   // Draw Layers
   const Layers& layers = get_layers();
@@ -174,17 +174,20 @@ SectorModel::draw(SceneContext& sc, const SelectMask& layermask)
     }
 
   // Draw Navgraph
-  for(NavigationGraph::Edges::iterator i = nav_graph->get_edges().begin(); i != nav_graph->get_edges().end(); ++i)
+  if (draw_navgraph)
     {
-      sc.control().draw_line(Line((*i)->get_node1()->get_pos(),
-                                  (*i)->get_node2()->get_pos()),
-                             Color(1.0f, 0.0f, 0.0f));
-    }
+      for(NavigationGraph::Edges::iterator i = nav_graph->get_edges().begin(); i != nav_graph->get_edges().end(); ++i)
+        {
+          sc.control().draw_line(Line((*i)->get_node1()->get_pos(),
+                                      (*i)->get_node2()->get_pos()),
+                                 Color(1.0f, 0.0f, 0.0f));
+        }
 
-  for(NavigationGraph::Nodes::iterator i = nav_graph->get_nodes().begin(); i != nav_graph->get_nodes().end(); ++i)
-    {
-      sc.control().fill_rect(Rectf((*i)->get_pos() - Vector2f(4,4), Sizef(9, 9)),
-                             Color(1.0f, 1.0f, 0.0f));
+      for(NavigationGraph::Nodes::iterator i = nav_graph->get_nodes().begin(); i != nav_graph->get_nodes().end(); ++i)
+        {
+          sc.control().fill_rect(Rectf((*i)->get_pos() - Vector2f(4,4), Sizef(9, 9)),
+                                 Color(1.0f, 1.0f, 0.0f));
+        }
     }
 }
 

@@ -78,7 +78,7 @@ public:
   SectorModel();
   ~SectorModel();
 
-  void draw(SceneContext& sc, const SelectMask& layers);
+  void draw(SceneContext& sc, const SelectMask& layers, bool draw_navgraph);
 
   void update(float delta);
   void update(float delta, const Gtk::TreeRow& row);
