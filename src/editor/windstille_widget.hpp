@@ -60,7 +60,6 @@ private:
 
   GraphicContextState   state;
   std::auto_ptr<SceneContext> sc;
-  Tool* active_tool;
   std::auto_ptr<ScrollTool> scroll_tool;
   SelectionHandle selection;
   DecalObjectModel::MapType map_type;

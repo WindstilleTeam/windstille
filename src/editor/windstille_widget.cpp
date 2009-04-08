@@ -41,7 +41,6 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list)
   : editor(editor_),
     sector_model(new SectorModel()),
-    active_tool(0),
     scroll_tool(new ScrollTool()),
     map_type(DecalObjectModel::COLORMAP),
     draw_background_pattern(true),
@@ -493,14 +492,12 @@ WindstilleWidget::mouse_down(GdkEventButton* event)
   //ewer->on_mouse_button_down(Vector2i(event->x, event->y), event->button);
   if (event->button == 1)
     { // Tool
-      active_tool = EditorWindow::current()->get_current_tool();
-      active_tool->mouse_down(event, *this);
+      EditorWindow::current()->get_current_tool()->mouse_down(event, *this);
       return true;
     }
   else if (event->button == 2)
     { // Scroll
-      active_tool = scroll_tool.get();
-      active_tool->mouse_down(event, *this);
+      scroll_tool->mouse_down(event, *this);
       return true;
     }
   else if (event->button == 3)
@@ -520,11 +517,8 @@ WindstilleWidget::mouse_move(GdkEventMotion* event)
 {
   //std::cout << "Motion: " << event->x << ", " << event->y << std::endl;
   
-  if (active_tool)
-    {
-      active_tool->mouse_move(event, *this);
-      queue_draw();
-    }
+  EditorWindow::current()->get_current_tool()->mouse_move(event, *this);
+  scroll_tool->mouse_move(event, *this);
   
   return true;
 }
@@ -532,8 +526,6 @@ WindstilleWidget::mouse_move(GdkEventMotion* event)
 bool
 WindstilleWidget::mouse_up(GdkEventButton* event)
 {
-  active_tool = 0;
-
   //std::cout << "Button Release: " << event->x << ", " << event->y << " - " << event->button << std::endl;
   //viewer->on_mouse_button_up(Vector2i(event->x, event->y), event->button);
   if (event->button == 1)
@@ -546,6 +538,7 @@ WindstilleWidget::mouse_up(GdkEventButton* event)
       scroll_tool->mouse_up(event, *this);
       queue_draw();
     }
+
   return false;
 }
 

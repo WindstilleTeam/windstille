@@ -74,12 +74,14 @@ NavgraphSelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
         {
           NodeHandle node = *selection.begin();
           node->set_pos(pos);
+          wst.queue_draw();
         }
         break;
 
       case SELECT_MODE:
         rect.right  = pos.x;
         rect.bottom = pos.y;
+        wst.queue_draw();
         break;
 
       case NO_MODE:
@@ -96,6 +98,7 @@ NavgraphSelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
   switch(mode)
     {
       case DRAG_MODE:
+        wst.queue_draw();
         break;
 
       case SELECT_MODE:

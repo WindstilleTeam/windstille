@@ -36,6 +36,7 @@ private:
   } mode;
 
   NodeHandle last_node;
+  NodeHandle connection_node;
 
 public:
   NavgraphInsertTool();

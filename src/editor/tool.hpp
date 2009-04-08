@@ -33,6 +33,7 @@ public:
   virtual void mouse_down (GdkEventButton* event, WindstilleWidget& wst) = 0;
   virtual void mouse_move(GdkEventMotion* event, WindstilleWidget& wst) = 0;
   virtual void mouse_up(GdkEventButton* event, WindstilleWidget& wst) = 0;
+
   virtual void draw(SceneContext& sc) {}
 
 private:
