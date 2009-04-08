@@ -39,7 +39,8 @@ class WindstilleWidget;
 class SelectTool;
 class ZoomTool;
 class LayerWidget;
-class NavgraphTool;
+class NavgraphInsertTool;
+class NavgraphSelectTool;
 
 class EditorWindow : public Gtk::Window
 {
@@ -67,7 +68,8 @@ private:
   MinimapWidget  minimap_widget;
 
   Glib::RefPtr<Gtk::RadioAction> select_tool_action;
-  Glib::RefPtr<Gtk::RadioAction> node_tool_action;
+  Glib::RefPtr<Gtk::RadioAction> navgraph_insert_tool_action;
+  Glib::RefPtr<Gtk::RadioAction> navgraph_select_tool_action;
   Glib::RefPtr<Gtk::RadioAction> zoom_tool_action;
 
   Glib::RefPtr<Gtk::ToggleAction> toggle_color_layer;
@@ -82,9 +84,10 @@ private:
   Glib::RefPtr<Gtk::ToggleAction> play_action;
   Glib::RefPtr<Gtk::ToggleAction> snap_action;
 
-  std::auto_ptr<SelectTool> select_tool;
-  std::auto_ptr<NavgraphTool> navgraph_tool;
-  std::auto_ptr<ZoomTool>   zoom_tool;
+  std::auto_ptr<SelectTool>   select_tool;
+  std::auto_ptr<NavgraphInsertTool> navgraph_insert_tool;
+  std::auto_ptr<NavgraphSelectTool> navgraph_select_tool;
+  std::auto_ptr<ZoomTool>     zoom_tool;
   Tool* current_tool;
   LayerWidget* layer_widget;
 

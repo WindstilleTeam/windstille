@@ -36,7 +36,8 @@
 #include "editor_window.hpp"
 #include "zoom_tool.hpp"
 #include "select_tool.hpp"
-#include "navgraph_tool.hpp"
+#include "navgraph_insert_tool.hpp"
+#include "navgraph_select_tool.hpp"
 #include "sector_model.hpp"
 #include "layer_widget.hpp"
 #include "editor_window.hpp"
@@ -51,7 +52,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     layer_manager(*this),
     minimap_widget(glconfig_),
     select_tool(new SelectTool()),
-    navgraph_tool(new NavgraphTool()),
+    navgraph_insert_tool(new NavgraphInsertTool()),
+    navgraph_select_tool(new NavgraphSelectTool()),
     zoom_tool(new ZoomTool()),
     current_tool(select_tool.get())
 {
@@ -129,7 +131,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    </menu>"
     "    <menu action='MenuTools'>"
     "      <menuitem action='SelectTool'/>"
-    "      <menuitem action='NavgraphTool'/>"
+    "      <menuitem action='NavgraphInsertTool'/>"
+    "      <menuitem action='NavgraphSelectTool'/>"
     "      <menuitem action='ZoomTool'/>"
     "    </menu>"
     "    <menu action='MenuHelp'>"
@@ -176,7 +179,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     ""
     "  <toolbar  name='ToolBox'>"
     "    <toolitem action='SelectTool'/>"
-    "    <toolitem action='NavgraphTool'/>"
+    "    <toolitem action='NavgraphInsertTool'/>"
+    "    <toolitem action='NavgraphSelectTool'/>"
     "    <toolitem action='ZoomTool'/>"
     "    <separator/>"
     "    <toolitem action='ToggleColorLayer'/>"
@@ -317,11 +321,14 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   Gtk::RadioButtonGroup tool_group;
   
   select_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "SelectTool", "select_tool", "Select Tool", "Select Tool");
-  node_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "NavgraphTool",   "node_tool",   "Navgraph Tool", "Navgraph Tool");
+  navgraph_insert_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "NavgraphInsertTool", "node_tool",   "Navgraph Insert Tool", "Navgraph Insert Tool");
+  navgraph_select_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "NavgraphSelectTool", "node_tool",   "Navgraph Select Tool", "Navgraph Select Tool");
   zoom_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "ZoomTool",   "zoom_tool",   "Zoom Tool", "Zoom Tool");
 
   action_group->add(select_tool_action, sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), select_tool_action, select_tool.get()));
-  action_group->add(node_tool_action,   sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), node_tool_action, navgraph_tool.get()));
+  action_group->add(navgraph_insert_tool_action, sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), navgraph_insert_tool_action, navgraph_insert_tool.get()));
+
+  action_group->add(navgraph_select_tool_action, sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), navgraph_select_tool_action, navgraph_select_tool.get()));
   action_group->add(zoom_tool_action,   sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), zoom_tool_action, zoom_tool.get()));
 
   // signal_size_allocate().connect (sigc::mem_fun (*this, &EditorWindow::on_window_size_allocate), false);

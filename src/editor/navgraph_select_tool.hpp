@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_NAVGRAPH_TOOL_HPP
-#define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_TOOL_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_NAVGRAPH_SELECT_TOOL_HPP
+#define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_SELECT_TOOL_HPP
 
 #include <set>
 
@@ -25,33 +25,22 @@
 #include "tool.hpp"
 #include "navigation/navigation_graph.hpp"
 
-class NavgraphTool : public Tool
+class NavgraphSelectTool : public Tool
 {
 private:
-  Vector2f click_pos;
-  Rectf    rect;
-
-  enum { 
-    SELECT_MODE, // select multiple nodes at once
-    DRAG_MODE,   // move nodes around
-    EDGE_MODE,   // create an edge between two nodes
-    NO_MODE      // mode is determined by next click
-  } mode;
-
-  std::set<NodeHandle> selection;
-
 public:
-  NavgraphTool();
+  NavgraphSelectTool();
+  ~NavgraphSelectTool();
 
-  bool mouse_down (GdkEventButton* event, WindstilleWidget& wst);
+  bool mouse_down(GdkEventButton* event, WindstilleWidget& wst);
   bool mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
   bool mouse_up(GdkEventButton* event, WindstilleWidget& wst);
   
   void draw(SceneContext& sc);
 
 private:
-  NavgraphTool(const NavgraphTool&);
-  NavgraphTool& operator=(const NavgraphTool&);
+  NavgraphSelectTool(const NavgraphSelectTool&);
+  NavgraphSelectTool& operator=(const NavgraphSelectTool&);
 };
 
 #endif

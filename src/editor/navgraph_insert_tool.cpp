@@ -21,14 +21,14 @@
 #include "navigation/node.hpp"
 #include "windstille_widget.hpp"
 
-#include "navgraph_tool.hpp"
+#include "navgraph_insert_tool.hpp"
 
-NavgraphTool::NavgraphTool()
+NavgraphInsertTool::NavgraphInsertTool()
 {
 }
 
 bool
-NavgraphTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
+NavgraphInsertTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 {
   click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
   NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
@@ -62,7 +62,7 @@ NavgraphTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 }
 
 bool
-NavgraphTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
+NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
 
@@ -91,7 +91,7 @@ NavgraphTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 }
 
 bool
-NavgraphTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
+NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
   NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
@@ -109,7 +109,7 @@ NavgraphTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
           rect.normalize();
           const std::vector<NodeHandle>& lst = navgraph.find_nodes(rect);
           selection.insert(lst.begin(), lst.end());
-          std::cout << "NavgraphTool::select: " << selection.size() << std::endl;
+          std::cout << "NavgraphInsertTool::select: " << selection.size() << std::endl;
           wst.queue_draw();
         }
         break;
@@ -124,7 +124,7 @@ NavgraphTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 }
   
 void
-NavgraphTool::draw(SceneContext& sc)
+NavgraphInsertTool::draw(SceneContext& sc)
 {
   if (mode == SELECT_MODE)
     {
@@ -132,7 +132,7 @@ NavgraphTool::draw(SceneContext& sc)
       sc.control().draw_rect(rect, Color(1.0f, 0.5f, 0.5f)); 
     }
 
-  std::cout << "NavgraphTool::draw: " << selection.size() << std::endl;
+  std::cout << "NavgraphInsertTool::draw: " << selection.size() << std::endl;
   for(std::set<NodeHandle>::const_iterator i = selection.begin(); i != selection.end(); ++i)
     {
       sc.control().draw_rect(Rectf((*i)->get_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
