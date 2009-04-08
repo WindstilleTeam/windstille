@@ -27,6 +27,7 @@
 #include "edge_position.hpp"
 #include "node.hpp"
 #include "util/file_reader.hpp"
+#include "util/file_writer.hpp"
 
 #include "navigation_graph.hpp"
 
@@ -260,6 +261,9 @@ NavigationGraph::draw()
 void
 NavigationGraph::load(FileReader& reader)
 {
+  nodes.clear();
+  edges.clear();
+
   int id_count = 1;
   std::map<int, Node*> id2ptr;
 
@@ -335,7 +339,7 @@ NavigationGraph::load(FileReader& reader)
 
 void
 NavigationGraph::save(std::ostream& out)
-{
+{ // FIXME: Obsolete
   int id = 1;
   std::map<Node*, int> ptr2id;
 
@@ -362,6 +366,38 @@ NavigationGraph::save(std::ostream& out)
   out << ")\n";
 
   out.flags(old_flags); // restore flags
+}
+
+void
+NavigationGraph::write(FileWriter& writer)
+{
+  std::map<Node*, int> ptr2id;
+
+  {
+    for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
+      ptr2id[*i] = i - nodes.begin() + 1;
+  }
+
+  writer.start_section("nodes");
+  for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
+    {
+      writer.start_section("node");
+      writer.write("id", ptr2id[*i]);
+      writer.write("pos", (*i)->get_pos());
+      writer.end_section();
+    }
+  writer.end_section();
+
+  writer.start_section("edges");
+  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)  
+    {
+      writer.start_section("edge");
+      writer.write("node1", ptr2id[(*i)->get_node1()]);
+      writer.write("node2", ptr2id[(*i)->get_node2()]);
+      writer.write("properties", (int)(*i)->get_properties());
+      writer.end_section();
+    }
+  writer.end_section();
 }
 
 bool

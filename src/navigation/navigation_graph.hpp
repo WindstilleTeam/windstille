@@ -26,6 +26,7 @@
 class Rectf;
 class Node;
 class FileReader;
+class FileWriter;
 class Edge;
 class EdgePosition;
 
@@ -127,6 +128,7 @@ public:
 
   void load(FileReader& reader);
   void save(std::ostream& out);
+  void write(FileWriter& writer);
 
   bool valid(Edge* edge);
   bool valid(Node* node);

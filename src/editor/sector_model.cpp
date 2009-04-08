@@ -379,6 +379,10 @@ SectorModel::load(const std::string& filename)
           ambient_color = Color(0,0,0,1);
           reader.get("ambient-color", ambient_color);
 
+          FileReader navigation_section;
+          reader.get("navigation", navigation_section);
+          nav_graph->load(navigation_section);
+
           const std::vector<FileReader>& sections = reader.get_sections();
           for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
             {
@@ -415,6 +419,10 @@ SectorModel::write(FileWriter& writer) const
   writer.write("name", "");
   writer.write("ambient-color", ambient_color);
   writer.write("init-script", "init.nut");
+
+  writer.start_section("navigation");
+  nav_graph->write(writer);
+  writer.end_section();
 
   write(writer, *(layer_tree->children().begin()));
 
