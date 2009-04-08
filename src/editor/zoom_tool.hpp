@@ -26,8 +26,12 @@ class ZoomTool : public Tool
 {
 private:
   Vector2f click_pos;
-  Rectf    rect;
-  bool     rect_valid;
+  Vector2f mouse_pos;
+
+  enum { 
+    RECT_MODE,
+    NO_MODE
+  } mode;
 
 public:
   ZoomTool();
@@ -35,6 +39,9 @@ public:
   void mouse_down (GdkEventButton* event, WindstilleWidget& wst);
   void mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
   void mouse_up(GdkEventButton* event, WindstilleWidget& wst);
+
+  void mouse_right_down(GdkEventButton* event, WindstilleWidget& wst);
+
   void draw(SceneContext& sc);
 
 private:

@@ -48,7 +48,6 @@ NavgraphSelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
     }
   else if (edge)
     {
-      navgraph.remove_edge(edge);
       mode = NO_MODE;
     }
   else
@@ -127,7 +126,6 @@ NavgraphSelectTool::draw(SceneContext& sc)
       sc.control().draw_rect(rect, Color(1.0f, 0.5f, 0.5f)); 
     }
 
-  std::cout << "NavgraphInsertTool::draw: " << selection.size() << std::endl;
   for(std::set<NodeHandle>::const_iterator i = selection.begin(); i != selection.end(); ++i)
     {
       sc.control().draw_rect(Rectf((*i)->get_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));

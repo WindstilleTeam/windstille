@@ -44,8 +44,10 @@ public:
   SelectTool();
   
   void mouse_down (GdkEventButton* event, WindstilleWidget& wst);
-  void mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
   void mouse_up(GdkEventButton* event, WindstilleWidget& wst);
+  void mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
+
+  void mouse_right_down(GdkEventButton* event, WindstilleWidget& wst);
 
   void draw(SceneContext& sc);
 

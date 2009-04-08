@@ -19,7 +19,9 @@
 #include "sector_model.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
+#include "navigation/edge.hpp"
 #include "windstille_widget.hpp"
+#include "editor_window.hpp"
 
 #include "navgraph_insert_tool.hpp"
 
@@ -85,8 +87,21 @@ void
 NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
-
   mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+
+  {
+    NodeHandle new_mouse_over_node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
+    EdgeHandle new_mouse_over_edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
+
+    if (new_mouse_over_node != mouse_over_node ||
+        new_mouse_over_edge != mouse_over_edge)
+      {
+        mouse_over_node = new_mouse_over_node; 
+        mouse_over_edge = new_mouse_over_edge; 
+
+        wst.queue_draw();
+      }
+  }
 
   switch(mode)
     {
@@ -117,12 +132,42 @@ NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
         break;
     }
 }
+
+void
+NavgraphInsertTool::mouse_right_down(GdkEventButton* event, WindstilleWidget& wst)
+{
+  NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
+
+  NodeHandle node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
+  EdgeHandle edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
+
+  if (node)
+    {
+      navgraph.remove_node(node);
+
+      mouse_over_edge = EdgeHandle();
+      mouse_over_node = NodeHandle();
+
+      wst.queue_draw();
+    }
+  else if (edge)
+    {
+      navgraph.remove_edge(edge);
+
+      mouse_over_edge = EdgeHandle();
+      mouse_over_node = NodeHandle();
+
+      wst.queue_draw();
+    }
+  else
+    {
+      
+    }
+}  
   
 void
 NavgraphInsertTool::draw(SceneContext& sc)
 {
-  std::cout << "Draw: " << last_node << std::endl;
-
   if (last_node)
     {
       if (connection_node)
@@ -136,6 +181,16 @@ NavgraphInsertTool::draw(SceneContext& sc)
         }
 
       sc.control().draw_rect(Rectf(last_node->get_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
+    }
+
+  if (mouse_over_node)
+    {
+      sc.control().draw_rect(Rectf(mouse_over_node->get_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));      
+    }
+  else if (mouse_over_edge)
+    {
+      sc.control().draw_line(mouse_over_edge->get_node1()->get_pos(), 
+                             mouse_over_edge->get_node2()->get_pos(), Color(1,1,1));
     }
 }
   

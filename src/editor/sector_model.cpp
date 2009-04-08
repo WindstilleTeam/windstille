@@ -37,14 +37,7 @@ LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
 SectorModel::SectorModel()
  : nav_graph(new NavigationGraph())
-{  
-  try {
-    FileReader reader = FileReader::parse("navigation.nav");
-    nav_graph->load(reader);
-  } catch(std::exception& err) {
-    std::cout << "NavigationTest: " << err.what() << std::endl;
-  }
-
+{
   layer_tree = Gtk::TreeStore::create(LayerManagerColumns::instance());
 
   Gtk::TreeStore::iterator it = layer_tree->append();

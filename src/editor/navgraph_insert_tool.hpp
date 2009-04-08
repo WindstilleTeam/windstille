@@ -38,6 +38,9 @@ private:
   NodeHandle last_node;
   NodeHandle connection_node;
 
+  NodeHandle mouse_over_node;
+  EdgeHandle mouse_over_edge;
+
 public:
   NavgraphInsertTool();
 
@@ -45,6 +48,8 @@ public:
   void mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
   void mouse_up(GdkEventButton* event, WindstilleWidget& wst);
   
+  void mouse_right_down(GdkEventButton* event, WindstilleWidget& wst);
+
   void draw(SceneContext& sc);
 
 private:

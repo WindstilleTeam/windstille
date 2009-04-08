@@ -16,33 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_TOOL_HPP
-#define HEADER_WINDSTILLE_EDITOR_TOOL_HPP
-
-#include <gdkmm.h>
+#include "node_selection.hpp"
 
-class SceneContext;
-class WindstilleWidget;
-
-class Tool
+NodeSelection::NodeSelection()
 {
-public:
-  Tool() {}
-  virtual ~Tool() {}
+}
 
-  virtual void mouse_down (GdkEventButton* event, WindstilleWidget& wst) = 0;
-  virtual void mouse_up(GdkEventButton* event, WindstilleWidget& wst) = 0;
-  virtual void mouse_move(GdkEventMotion* event, WindstilleWidget& wst) = 0;
-
-  virtual void mouse_right_down(GdkEventButton* event, WindstilleWidget& wst) {}
-
-  virtual void draw(SceneContext& sc) {}
-
-private:
-  Tool(const Tool&);
-  Tool& operator=(const Tool&);
-};
+NodeSelection::~NodeSelection()
+{
+}
 
-#endif
-
 /* EOF */

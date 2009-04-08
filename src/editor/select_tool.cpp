@@ -16,9 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <gtkmm/menu.h>
+
 #include "display/scene_context.hpp"
 #include "sector_model.hpp"
 #include "windstille_widget.hpp"
+#include "editor_window.hpp"
 #include "select_tool.hpp"
 
 SelectTool::SelectTool()
@@ -84,6 +87,8 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
           mode = SELECT_MODE;
         }
     }
+
+  wst.queue_draw();
 }
 
 Vector2f
@@ -121,6 +126,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
   if (mode == CONTROL_DRAG_MODE)
     {
       ctrl_point->on_move_update(pos - click_pos);
+      wst.queue_draw();
     }
   else if (mode == OBJECT_DRAG_MODE)
     {
@@ -130,6 +136,8 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
         {
           selection->on_move_update(pos - click_pos + process_snap(wst));
         }
+
+      wst.queue_draw();
     }
   else if (mode == SELECT_MODE)
     {
@@ -137,6 +145,8 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
       rect.top    = click_pos.y;
       rect.right  = pos.x;
       rect.bottom = pos.y;
+
+      wst.queue_draw();
     }
 }
 
@@ -150,6 +160,7 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     {
       ctrl_point->on_move_end(pos - click_pos);
       wst.create_control_points();
+      wst.queue_draw();
     }
   else if (mode == OBJECT_DRAG_MODE)
     {
@@ -163,6 +174,7 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
         {
           selection->on_move_end(pos - click_pos);
         }
+      wst.queue_draw();
     }
   else if (mode == SELECT_MODE)
     {
@@ -177,9 +189,17 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
         {
           wst.set_selection(wst.get_sector_model()->get_selection(rect, wst.get_select_mask()));
         }
+      wst.queue_draw();
     }
 
   mode = NO_MODE;
+}
+
+void
+SelectTool::mouse_right_down(GdkEventButton* event, WindstilleWidget& wst)
+{
+  Gtk::Menu* menu = static_cast<Gtk::Menu*>(EditorWindow::current()->get_ui_manager()->get_widget("/PopupMenu"));
+  menu->popup(event->button, event->time);
 }
 
 void

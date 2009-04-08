@@ -21,44 +21,62 @@
 #include "zoom_tool.hpp"
 
 ZoomTool::ZoomTool()
-  : rect_valid(false)
+  : mode(NO_MODE)
 {
 }
 
 void
 ZoomTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 {
-  click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
-  rect_valid = false;
+  if (mode == NO_MODE)
+    {
+      mouse_pos = click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+
+      mode = RECT_MODE;
+
+      wst.queue_draw();
+    }
 }
 
 void
 ZoomTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
-  Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
-
-  rect.left   = click_pos.x;
-  rect.top    = click_pos.y;
-  rect.right  = pos.x;
-  rect.bottom = pos.y;
-  
-  rect_valid = true;
+  if (mode == RECT_MODE)
+    {
+      mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+      wst.queue_draw();
+    }
 }
 
 void
 ZoomTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
-  //std::cout << "Zoom To: " << rect << std::endl;
-  rect.normalize();
-  wst.get_state().zoom_to(rect);
-  rect_valid = false;
+  if (mode == RECT_MODE)
+    {
+      Rectf rect(click_pos, mouse_pos);
+      rect.normalize();
+      wst.get_state().zoom_to(rect);
+
+      mode = NO_MODE;
+
+      wst.queue_draw();
+    }
+}
+
+void
+ZoomTool::mouse_right_down(GdkEventButton* event, WindstilleWidget& wst)
+{
+  wst.on_zoom_out();
 }
 
 void
 ZoomTool::draw(SceneContext& sc)
 {
-  if (rect_valid)
+  if (mode == RECT_MODE)
     {
+      Rectf rect(click_pos, mouse_pos);
+      rect.normalize();
+
       sc.control().fill_rect(rect, Color(1.0f, 1.0f, 0.0f, 0.25));
       sc.control().draw_rect(rect, Color(1.0f, 1.0f, 0.0f)); 
     }

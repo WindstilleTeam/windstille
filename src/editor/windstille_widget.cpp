@@ -270,7 +270,6 @@ WindstilleWidget::draw()
           (*i)->draw(*sc);
         }
 
-      std::cout << "Drawing stuff" << (EditorWindow::current()->get_current_tool()) << std::endl;
       if (EditorWindow::current()->get_current_tool())
         {
           EditorWindow::current()->get_current_tool()->draw(*sc);
@@ -502,8 +501,7 @@ WindstilleWidget::mouse_down(GdkEventButton* event)
     }
   else if (event->button == 3)
     { // Context Menu
-      Gtk::Menu* menu = static_cast<Gtk::Menu*>(editor.get_ui_manager()->get_widget("/PopupMenu"));
-      menu->popup(event->button, event->time);
+      EditorWindow::current()->get_current_tool()->mouse_right_down(event, *this);
       return true;
     }
   else

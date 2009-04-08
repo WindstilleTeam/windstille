@@ -258,6 +258,7 @@ editor_env.Program('../windstille-editor', [
         'editor/sector_model.cpp',
         'editor/select_tool.cpp',
         'editor/selection.cpp',
+        'editor/node_selection.cpp',
         'editor/sprite_object_model.cpp',
         'editor/windstille_widget.cpp',
         'editor/zoom_tool.cpp',
