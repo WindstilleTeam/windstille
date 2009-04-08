@@ -24,39 +24,60 @@
 #include "navgraph_insert_tool.hpp"
 
 NavgraphInsertTool::NavgraphInsertTool()
+  : mode(NO_MODE)
 {
 }
 
 bool
 NavgraphInsertTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 {
-  click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
   NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
 
-  NodeHandle node = navgraph.find_closest_node(click_pos, 16.0f); // FIXME: Radius should scale with zoom
-  EdgeHandle edge = navgraph.find_closest_edge(click_pos, 16.0f);
+  NodeHandle node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
+  EdgeHandle edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
-  if (node)
+  switch(mode)
     {
-      mode = DRAG_MODE;
-      selection.clear();
-      selection.insert(node);
+      case EDGE_MODE:
+        {
+          if (node)
+            { // connect last node with existing node
+              navgraph.add_edge(last_node, node);
+              last_node = NodeHandle();
+            }
+          else
+            { // connect last node with newly created node
+              node = navgraph.add_node(mouse_pos);
+              navgraph.add_edge(last_node, node);
+              last_node = NodeHandle();
+            }
+          mode = NO_MODE;        
+        }
+        break;
+
+      case NO_MODE:
+        {
+          if (node)
+            {
+              last_node = node;
+              mode = EDGE_MODE;
+            }
+          else if (edge)
+            {
+              navgraph.remove_edge(edge);
+              mode = NO_MODE;
+            }
+          else
+            {
+              last_node = navgraph.add_node(mouse_pos);
+              mode = EDGE_MODE;
+            }
+        }
+        break;
     }
-  else if (edge)
-    {
-      navgraph.remove_edge(edge);
-      mode = NO_MODE;
-    }
-  else
-    {
-      rect.left   = click_pos.x;
-      rect.top    = click_pos.y;
-      rect.right  = click_pos.x;
-      rect.bottom = click_pos.y;
-      
-      selection.clear();
-      mode = SELECT_MODE;
-    }
+
+  wst.queue_draw();
 
   return true;
 }
@@ -64,28 +85,18 @@ NavgraphInsertTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 bool
 NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
-  Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
 
   switch(mode)
     {
       case EDGE_MODE:
         break;
 
-      case DRAG_MODE:
-        {
-          NodeHandle node = *selection.begin();
-          node->set_pos(pos);
-        }
-        break;
-
-      case SELECT_MODE:
-        rect.right  = pos.x;
-        rect.bottom = pos.y;
-        break;
-
       case NO_MODE:
         break;
     }
+
+  wst.queue_draw();
 
   return true;
 }
@@ -93,32 +104,19 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 bool
 NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
-  Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
-  NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
+  mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  //NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
 
   switch(mode)
     {
-      case DRAG_MODE:
-        break;
-
       case EDGE_MODE:
-        break;
-
-      case SELECT_MODE:
-        {
-          rect.normalize();
-          const std::vector<NodeHandle>& lst = navgraph.find_nodes(rect);
-          selection.insert(lst.begin(), lst.end());
-          std::cout << "NavgraphInsertTool::select: " << selection.size() << std::endl;
-          wst.queue_draw();
-        }
         break;
 
       case NO_MODE:
         break;
     }
 
-  mode = NO_MODE;
+  wst.queue_draw();
 
   return true;
 }
@@ -126,16 +124,11 @@ NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 void
 NavgraphInsertTool::draw(SceneContext& sc)
 {
-  if (mode == SELECT_MODE)
+  std::cout << "Draw: " << last_node << std::endl;
+  if (last_node)
     {
-      sc.control().fill_rect(rect, Color(1.0f, 0.5f, 0.5f, 0.25));
-      sc.control().draw_rect(rect, Color(1.0f, 0.5f, 0.5f)); 
-    }
-
-  std::cout << "NavgraphInsertTool::draw: " << selection.size() << std::endl;
-  for(std::set<NodeHandle>::const_iterator i = selection.begin(); i != selection.end(); ++i)
-    {
-      sc.control().draw_rect(Rectf((*i)->get_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
+      //sc.control().draw_line(last_node->get_pos(), mouse_pos, Color(1,1,1));
+      sc.control().draw_rect(Rectf(last_node->get_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
     }
 }
   

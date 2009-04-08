@@ -28,6 +28,17 @@
 class NavgraphSelectTool : public Tool
 {
 private:
+  Vector2f click_pos;  
+  Rectf    rect;
+
+  enum { 
+    SELECT_MODE, // select multiple nodes at once
+    DRAG_MODE,   // move nodes around
+    NO_MODE      // mode is determined by next click
+  } mode;
+
+  std::set<NodeHandle> selection;
+
 public:
   NavgraphSelectTool();
   ~NavgraphSelectTool();

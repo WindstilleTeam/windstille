@@ -28,17 +28,14 @@
 class NavgraphInsertTool : public Tool
 {
 private:
-  Vector2f click_pos;
-  Rectf    rect;
+  Vector2f mouse_pos;
 
   enum { 
-    SELECT_MODE, // select multiple nodes at once
-    DRAG_MODE,   // move nodes around
     EDGE_MODE,   // create an edge between two nodes
     NO_MODE      // mode is determined by next click
   } mode;
 
-  std::set<NodeHandle> selection;
+  NodeHandle last_node;
 
 public:
   NavgraphInsertTool();
