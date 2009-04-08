@@ -186,6 +186,9 @@ Sound Handling
 Miscellaneous
 =============
 
+* SurfaceManager::load_grid() bypasses TexturePacker, doesn't do
+  border pixel duplication
+
 * replace power_of_two function with one not based on a slow while() loop
 
 * maybe add special support for opaque textures, i.e. Textures with
@@ -494,8 +497,11 @@ Random Things
 Graphics
 ========
 
+* do not make light larger then 256, maybe even smaller is ok
+
 * do *NOT* use power of two textures, use multiple of 64/128 instead
-  (128 is easy to snap, power of two doesn't help, since textures are packed)
+  (128 is easy to snap, power of two doesn't help, since textures are
+  packed and get a 1px border added)
 
 * generate .png's automatically from .xcf's via scons
 
@@ -516,14 +522,46 @@ Graphics
 Editor
 ======
 
-* Texture::put can't handle non-RGBA surface
+* tools are not drawn/updated when no button is pressed
 
-* add a SoftwareSurface::grow() which creates a new SoftwareSurface
-  with a 1px boarder for fixing texture blend issue
+* NavgraphTool (see Construo):
+ 
+  - in Construo insertion and selection are two different tool
 
-* add way to convert Texture to SoftwareSurface for debugging
+  Insert Tool:
+  ============
+  click on empty space: insert_node, start_edge
+  click on node: start_edge
+  right click on edge: delete_edge
+  right click on node: delete_node, delete_connected_edges
 
-* share SoftwareSurface via Manager class
+  needed modifier (shift, ctrl, alt):
+
+   - horizontal/vertical/45 degree
+   - continue-line, allowing the insertion of a multiple control point
+     line in a single step
+
+  Select Tool:
+  ============
+   click on node: nothing 
+   click on empty space: selection rect
+   click on selection: drag
+ 
+   right click&drag rotates
+  
+* replace PointerHandle in NavigationGraph with boost::shared_ptr or
+  boost::weak_ptr, tricky, since it easily leads to recuriseve links
+
+* turn the Selection into a kind-of ControlPoint, this would allow to
+  keep the move/offset logic out of the ObjectModel
+
+* maybe have different RGB and RGBA Textures in the TexturePacker
+
+* add a tiny timeout before an objects can be moved, so that its
+  easier to mark an object without accidently moving it
+
+* share SoftwareSurface via Manager class, generalize Manager classes
+  -> template
 
 * add binlocate support
 
@@ -640,6 +678,9 @@ Editor
   - there might be a need for special layers, such as a background
     layer or a color gradient layer, that doesn't contain objects, but
     is meaningful by itself
+
+  - having structured layers (tree) doesn't seem all that useful,
+    maybe flat layer list would be enough and easier to use
 
 * add button and keyboard shortcut to mark/unmark all layers in the layermask
 
