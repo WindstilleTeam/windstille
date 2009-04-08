@@ -271,8 +271,11 @@ WindstilleWidget::draw()
           (*i)->draw(*sc);
         }
 
+      std::cout << "Drawing stuff" << (EditorWindow::current()->get_current_tool()) << std::endl;
       if (EditorWindow::current()->get_current_tool())
-        EditorWindow::current()->get_current_tool()->draw(*sc);
+        {
+          EditorWindow::current()->get_current_tool()->draw(*sc);
+        }
 
       sc->render();
       state.pop(*sc);

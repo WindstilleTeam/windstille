@@ -28,7 +28,7 @@ NavgraphInsertTool::NavgraphInsertTool()
 {
 }
 
-bool
+void
 NavgraphInsertTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 {
   mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
@@ -78,11 +78,9 @@ NavgraphInsertTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
     }
 
   wst.queue_draw();
-
-  return true;
 }
 
-bool
+void
 NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
@@ -97,11 +95,9 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     }
 
   wst.queue_draw();
-
-  return true;
 }
 
-bool
+void
 NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
@@ -117,8 +113,6 @@ NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     }
 
   wst.queue_draw();
-
-  return true;
 }
   
 void
@@ -127,7 +121,7 @@ NavgraphInsertTool::draw(SceneContext& sc)
   std::cout << "Draw: " << last_node << std::endl;
   if (last_node)
     {
-      //sc.control().draw_line(last_node->get_pos(), mouse_pos, Color(1,1,1));
+      sc.control().draw_line(last_node->get_pos(), mouse_pos, Color(1,1,1));
       sc.control().draw_rect(Rectf(last_node->get_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
     }
 }

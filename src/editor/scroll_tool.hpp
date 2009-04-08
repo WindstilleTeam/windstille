@@ -28,13 +28,14 @@ class ScrollTool : public Tool
 private:
   GraphicContextState orig_state;
   Vector2f orig_click;
+  enum { SCROLLING, NO_MODE } mode;
 
 public:
   ScrollTool();
 
-  virtual bool mouse_down(GdkEventButton* event, WindstilleWidget& wst);
-  virtual bool mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
-  virtual bool mouse_up(GdkEventButton* event, WindstilleWidget& wst);
+  virtual void mouse_down(GdkEventButton* event, WindstilleWidget& wst);
+  virtual void mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
+  virtual void mouse_up(GdkEventButton* event, WindstilleWidget& wst);
 
 private:
   ScrollTool(const ScrollTool&);

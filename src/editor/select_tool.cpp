@@ -27,7 +27,7 @@ SelectTool::SelectTool()
 {
 }
 
-bool
+void
 SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
@@ -84,8 +84,6 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
           mode = SELECT_MODE;
         }
     }
-
-  return true;
 }
 
 Vector2f
@@ -115,7 +113,7 @@ SelectTool::process_snap(WindstilleWidget& wst)
   return best_snap.offset;
 }
 
-bool
+void
 SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
@@ -140,11 +138,9 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
       rect.right  = pos.x;
       rect.bottom = pos.y;
     }
-  
-  return true;
 }
 
-bool
+void
 SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
@@ -184,8 +180,6 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     }
 
   mode = NO_MODE;
-
-  return true;
 }
 
 void

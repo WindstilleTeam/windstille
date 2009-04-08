@@ -21,36 +21,37 @@
 #include "scroll_tool.hpp"
 
 ScrollTool::ScrollTool()
+  : mode(NO_MODE)
 {
 }
 
-bool
+void
 ScrollTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   orig_state = wst.get_state().clone();
   orig_click = orig_state.screen_to_world(Vector2f(event->x, event->y));
-  
-  return true;
+  mode = SCROLLING;
 }
 
-bool
+void
 ScrollTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
-  Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(event->x, event->y));
-
-  wst.get_state().set_pos(orig_state.get_pos() + offset);
-
-  return true;
+  if (mode == SCROLLING)
+    {
+      Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(event->x, event->y));
+      wst.get_state().set_pos(orig_state.get_pos() + offset);
+    }
 }
 
-bool
+void
 ScrollTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
-  Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(event->x, event->y));
-
-  wst.get_state().set_pos(orig_state.get_pos() + offset);
-
-  return true;
+  if (mode == SCROLLING)
+    {
+      Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(event->x, event->y));
+      wst.get_state().set_pos(orig_state.get_pos() + offset);
+      mode = NO_MODE;
+    }
 }
 
 /* EOF */

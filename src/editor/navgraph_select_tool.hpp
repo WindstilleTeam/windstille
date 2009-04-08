@@ -43,9 +43,9 @@ public:
   NavgraphSelectTool();
   ~NavgraphSelectTool();
 
-  bool mouse_down(GdkEventButton* event, WindstilleWidget& wst);
-  bool mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
-  bool mouse_up(GdkEventButton* event, WindstilleWidget& wst);
+  void mouse_down(GdkEventButton* event, WindstilleWidget& wst);
+  void mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
+  void mouse_up(GdkEventButton* event, WindstilleWidget& wst);
   
   void draw(SceneContext& sc);
 

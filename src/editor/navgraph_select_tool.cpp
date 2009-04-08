@@ -31,7 +31,7 @@ NavgraphSelectTool::~NavgraphSelectTool()
 {
 }
 
-bool
+void
 NavgraphSelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
@@ -61,11 +61,9 @@ NavgraphSelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       selection.clear();
       mode = SELECT_MODE;
     }
-
-  return true;
 }
 
-bool
+void
 NavgraphSelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
@@ -87,11 +85,9 @@ NavgraphSelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
       case NO_MODE:
         break;
     }
-
-  return true;
 }
 
-bool
+void
 NavgraphSelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
@@ -117,8 +113,6 @@ NavgraphSelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     }
 
   mode = NO_MODE;
-
-  return true;
 }
 
 void
