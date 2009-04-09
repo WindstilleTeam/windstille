@@ -23,6 +23,8 @@
 #include "display/drawing_parameters.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
+#include "decal_scale_control_point.hpp"
+#include "decal_rotate_control_point.hpp"
 
 #include "decal_object_model.hpp"
 
@@ -171,118 +173,6 @@ DecalObjectModel::write(FileWriter& writer) const
   writer.end_section();
 }
 
-class DecalRotateControlPoint : public ControlPoint
-{
-private:
-  DecalObjectModel* object;
-  float ctrl_angle;
-  float orig_angle;
-  Vector2f center;
-
-public:
-  DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_)
-    : ControlPoint(Surface("editor/rotate_handle.png"), pos_),
-      object(object_),
-      ctrl_angle(ctrl_angle_),
-      orig_angle(object->get_angle()),
-      center(object->get_world_pos())
-  {
-  }
-
-  void on_move_start(GdkEventMotion* event) 
-  {
-  }
-
-  void on_move_update(GdkEventMotion* event, const Vector2f& offset_) 
-  {
-    offset = offset_;
-
-    Vector2f base = pos - center;
-    float base_angle = atan2(base.y, base.x);
-
-    Vector2f current = (pos+offset) - center;
-    float current_angle = atan2(current.y, current.x);
-
-    float new_angle = orig_angle + current_angle - base_angle;
-    object->set_angle(new_angle);
-  }
-  
-  void on_move_end(GdkEventMotion* event, const Vector2f& offset_)
-  {
-    on_move_update(event, offset_);
-  }
-
-  void draw(SceneContext& sc)
-  {
-    Rectf rect = get_bounding_box();
-    rect += offset;
-    sc.control().draw_control(surface, pos, ctrl_angle);
-  }
-};
-
-class DecalScaleControlPoint : public ControlPoint
-{
-private:
-  DecalObjectModel* object;
-  float ctrl_angle;
-  Vector2f orig_scale;
-  bool x_scale;
-  bool y_scale;
-
-public:
-  DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_, bool x_scale_ = true, bool y_scale_ = true)
-    : ControlPoint(Surface("editor/scale_handle.png"), pos_),
-      object(object_),
-      ctrl_angle(ctrl_angle_),
-      orig_scale(object_->get_scale()),
-      x_scale(x_scale_),
-      y_scale(y_scale_)
-  {}
-
-  void on_move_start(GdkEventButton* event) 
-  {
-  }
-
-  void on_move_update(GdkEventMotion* event, const Vector2f& offset_) 
-  {
-    offset = offset_; 
-
-    Vector2f start   = pos - object->get_world_pos();
-    Vector2f current = (pos + offset) - object->get_world_pos();
-
-    start    = start.rotate(-object->get_angle());
-    current = current.rotate(-object->get_angle());
-    
-    Vector2f new_scale = orig_scale;
-
-    if (x_scale)
-      {
-        new_scale.x = current.x / start.x;
-        new_scale.x *= orig_scale.x;
-      }
-
-    if (y_scale)
-      {
-        new_scale.y = current.y / start.y;
-        new_scale.y *= orig_scale.y;
-      }
-
-    object->set_scale(new_scale);
-  }
-  
-  void on_move_end(GdkEventButton* event, const Vector2f& offset_)
-  {
-    on_move_update(0/*event*/, offset_);
-  }
-
-  void draw(SceneContext& sc)
-  {
-    Rectf rect = get_bounding_box();
-    rect += offset;
-    sc.control().draw_control(surface, pos, ctrl_angle);
-  }
-};
-
 bool
 DecalObjectModel::is_at(const Vector2f& pos) const
 {
