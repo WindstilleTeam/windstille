@@ -38,19 +38,19 @@ ControlPoint::~ControlPoint()
 
 
 void
-ControlPoint::on_move_start()
+ControlPoint::on_move_start(GdkEventButton* event)
 {
 }
 
 void
-ControlPoint::on_move_update(const Vector2f& offset_)
+ControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& offset_)
 {
   offset = offset_;
   std::cout << "on_move_update: " << offset << std::endl;
 }
 
 void
-ControlPoint::on_move_end(const Vector2f& offset_)
+ControlPoint::on_move_end(GdkEventButton* event, const Vector2f& offset_)
 {
   offset = offset_;
   std::cout << "on_move_end: " << offset << std::endl;

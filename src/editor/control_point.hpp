@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_CONTROL_POINT_HPP
 
 #include <boost/shared_ptr.hpp>
+#include <gdkmm/event.h>
 
 #include "display/surface.hpp"
 #include "math/rect.hpp"
@@ -47,9 +48,9 @@ public:
 
   virtual Rectf get_bounding_box() const;
 
-  virtual void on_move_start();
-  virtual void on_move_update(const Vector2f& offset);
-  virtual void on_move_end(const Vector2f& offset);
+  virtual void on_move_start(GdkEventButton* event);
+  virtual void on_move_update(GdkEventMotion* event, const Vector2f& offset);
+  virtual void on_move_end(GdkEventButton* event, const Vector2f& offset);
 
 private:
   ControlPoint(const ControlPoint&);

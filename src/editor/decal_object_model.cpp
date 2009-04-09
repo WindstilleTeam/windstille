@@ -17,11 +17,13 @@
 */
 
 #include <iostream>
+
 #include "util/file_reader.hpp"
 #include "display/surface.hpp"
 #include "display/drawing_parameters.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
+
 #include "decal_object_model.hpp"
 
 ObjectModelHandle
@@ -187,11 +189,11 @@ public:
   {
   }
 
-  void on_move_start() 
+  void on_move_start(GdkEventMotion* event) 
   {
   }
 
-  void on_move_update(const Vector2f& offset_) 
+  void on_move_update(GdkEventMotion* event, const Vector2f& offset_) 
   {
     offset = offset_;
 
@@ -205,9 +207,9 @@ public:
     object->set_angle(new_angle);
   }
   
-  void on_move_end(const Vector2f& offset_)
+  void on_move_end(GdkEventMotion* event, const Vector2f& offset_)
   {
-    on_move_update(offset_);
+    on_move_update(event, offset_);
   }
 
   void draw(SceneContext& sc)
@@ -237,11 +239,11 @@ public:
       y_scale(y_scale_)
   {}
 
-  void on_move_start() 
+  void on_move_start(GdkEventButton* event) 
   {
   }
 
-  void on_move_update(const Vector2f& offset_) 
+  void on_move_update(GdkEventMotion* event, const Vector2f& offset_) 
   {
     offset = offset_; 
 
@@ -268,9 +270,9 @@ public:
     object->set_scale(new_scale);
   }
   
-  void on_move_end(const Vector2f& offset_)
+  void on_move_end(GdkEventButton* event, const Vector2f& offset_)
   {
-    on_move_update(offset_);
+    on_move_update(0/*event*/, offset_);
   }
 
   void draw(SceneContext& sc)
