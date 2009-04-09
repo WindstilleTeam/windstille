@@ -66,7 +66,7 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
 {
   Gtk::TreeStore::iterator it;
 
-  if (!path)
+  if (path.empty())
     it = layer_tree->append();
   else
     it = layer_tree->append(layer_tree->get_iter(path)->children());
@@ -81,7 +81,7 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
 void
 SectorModel::delete_layer(const Gtk::TreeModel::Path& path)
 {
-  if (!path)
+  if (path.empty())
     {
       EditorWindow::current()->print("SectorModel::delete_layer(): invalid empty path");
     }
@@ -94,7 +94,7 @@ SectorModel::delete_layer(const Gtk::TreeModel::Path& path)
 void
 SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path)
 {
-  if (!path)
+  if (path.empty())
     {
       EditorWindow::current()->print("SectorModel::add(): invalid empty path");
     }
@@ -132,7 +132,7 @@ SectorModel::get_layers() const
 LayerHandle
 SectorModel::get_layer(const Gtk::TreeModel::Path& path) const
 {
-  if (path)
+  if (!path.empty())
     {
       Gtk::TreeModel::iterator it = layer_tree->get_iter(path);
       if (it)
