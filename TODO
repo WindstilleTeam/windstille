@@ -6,8 +6,9 @@ fix. This list is however not an authorative list of things that must
 be done, its a collection of random things that pop up during
 development, therefore not everything in here might be well thought
 out or worth to implement. Use your brain before implementing anything
-on this list and always thing about how useful a new feature would be
-in the context of the whole game.
+on this list and always think about how useful a new feature would be
+in the context of the whole game or if a potential performance
+enhanchment, actually enhanchmes anything at all.
 
 Scripting
 =========
@@ -185,6 +186,9 @@ Sound Handling
 
 Miscellaneous
 =============
+
+* sorting DrawingRequest can be speed up by a bucket sort, as most
+  requests don't make use of z-pos
 
 * SurfaceManager::load_grid() bypasses TexturePacker, doesn't do
   border pixel duplication
@@ -388,6 +392,9 @@ Profiling
 Bugs
 ====
 
+* drawing is broken after loading a level, only get fixed when
+  toggling Light layer, (bug in OpenGLState maybe?)
+
 * quickly tapping forward-back-hold down forward makes your character
   play the walking animation without actually moving anywhere
    
@@ -522,7 +529,27 @@ Graphics
 Editor
 ======
 
-* tools are not drawn/updated when no button is pressed
+* add support for collision shapes, to mark lights or other objects as
+  shootable/interactable
+
+* a type of NavGraphNode that only sits on the graph without the
+  ability to deform it could be very useful to represent doors and
+  such
+
+* a trapezoid deformation for quads could be useful for lights
+
+* add glLineWidth() to OpenGL state and use it in NavGraph drawing/highlighting
+
+* make NavGraph insert tool automatically split edge when new nodes is
+  on edge
+
+* add keyboard shortcuts to flatten current NodeSelection
+
+* add a way to delete navgraph nodes (need to move Selection out of
+  tool, generalize it or just use right button)
+
+* tools are not drawn/updated when no button is pressed (active_tool
+  variable is at fault)
 
 * NavgraphTool (see Construo):
  
@@ -549,8 +576,9 @@ Editor
  
    right click&drag rotates
   
-* replace PointerHandle in NavigationGraph with boost::shared_ptr or
-  boost::weak_ptr, tricky, since it easily leads to recuriseve links
+* replace PointerHandle in NavigationGraph with boost::shared_ptr
+  and/or boost::weak_ptr, tricky, since it easily leads to recuriseve
+  links
 
 * turn the Selection into a kind-of ControlPoint, this would allow to
   keep the move/offset logic out of the ObjectModel
@@ -685,9 +713,6 @@ Editor
 * add button and keyboard shortcut to mark/unmark all layers in the layermask
 
 * add a way to move object to a different layer
-
-* drawing is broken after loading a level, only get fixed when
-  toggling Light layer, (bug in OpenGLState maybe?)
 
 * background pattern goes away when Color pattern is disabled, since
   its draw to the Colormap
