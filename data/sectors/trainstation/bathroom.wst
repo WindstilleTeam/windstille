@@ -5,13 +5,44 @@
   (name "")
   (ambient-color 0 0 0 1)
   (init-script "init.nut")
+  (navigation
+    (nodes
+      (node
+        (id 1)
+        (pos 362.219 227.562))
+      (node
+        (id 2)
+        (pos 361.219 605.562))
+      (node
+        (id 3)
+        (pos 1379.22 603.562))
+      (node
+        (id 4)
+        (pos 1380.22 216.562)))
+    (edges
+      (edge
+        (node1 1)
+        (node2 2)
+        (properties 0))
+      (edge
+        (node1 2)
+        (node2 3)
+        (properties 0))
+      (edge
+        (node1 3)
+        (node2 4)
+        (properties 0))
+      (edge
+        (node1 4)
+        (node2 1)
+        (properties 0))))
   (layer
     (name "Scene")
     (visible #t)
     (locked #t)
     (objects
       (decal
-        (id "0x99bfda8")
+        (id "0x9d1bdd8")
         (pos 958 491)
         (parent "")
         (select-mask 1)
@@ -23,12 +54,84 @@
         (vflip #f)))
     (child-layers
       (layer
+        (name "LightLight")
+        (visible #t)
+        (locked #f)
+        (objects
+          (decal
+            (id "0xa167988")
+            (pos 548 546)
+            (parent "")
+            (select-mask 1)
+            (path "images/decal/light2.png")
+            (type 1)
+            (scale 3.57812 2.56836)
+            (angle 0)
+            (hflip #f)
+            (vflip #f))
+          (decal
+            (id "0x9d18430")
+            (pos 559 291)
+            (parent "")
+            (select-mask 1)
+            (path "images/decal/light2.png")
+            (type 1)
+            (scale 3.23438 1.83594)
+            (angle 0)
+            (hflip #f)
+            (vflip #f))
+          (decal
+            (id "0x9d2f100")
+            (pos 870 563)
+            (parent "")
+            (select-mask 1)
+            (path "images/decal/light2.png")
+            (type 1)
+            (scale 3.57812 2.56836)
+            (angle 0)
+            (hflip #f)
+            (vflip #f))
+          (decal
+            (id "0xa168798")
+            (pos 881 308)
+            (parent "")
+            (select-mask 1)
+            (path "images/decal/light2.png")
+            (type 1)
+            (scale 3.23438 1.83594)
+            (angle 0)
+            (hflip #f)
+            (vflip #f))
+          (decal
+            (id "0x9d26380")
+            (pos 1218 284)
+            (parent "")
+            (select-mask 1)
+            (path "images/decal/light2.png")
+            (type 1)
+            (scale 3.23438 1.83594)
+            (angle 0)
+            (hflip #f)
+            (vflip #f))
+          (decal
+            (id "0xa16c198")
+            (pos 1187 554)
+            (parent "")
+            (select-mask 1)
+            (path "images/decal/light2.png")
+            (type 1)
+            (scale 3.57812 2.56836)
+            (angle 0)
+            (hflip #f)
+            (vflip #f)))
+        (child-layers))
+      (layer
         (name "Light")
         (visible #t)
         (locked #t)
         (objects
           (decal
-            (id "0x99c2fa0")
+            (id "0x9d34330")
             (pos 575 244)
             (parent "")
             (select-mask 1)
@@ -39,7 +142,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99c32f8")
+            (id "0x9d1f0e8")
             (pos 878 246)
             (parent "")
             (select-mask 1)
@@ -50,7 +153,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99c37f8")
+            (id "0x9d1fa78")
             (pos 1167 242)
             (parent "")
             (select-mask 1)
@@ -67,7 +170,7 @@
         (locked #t)
         (objects
           (decal
-            (id "0x99c39a8")
+            (id "0x9d1fbb8")
             (pos 1409 210)
             (parent "")
             (select-mask 1)
@@ -78,7 +181,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99c3da0")
+            (id "0x9d1fd80")
             (pos 1437 666)
             (parent "")
             (select-mask 1)
@@ -89,7 +192,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99f7480")
+            (id "0x9d1fe98")
             (pos 318 663)
             (parent "")
             (select-mask 1)
@@ -100,7 +203,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99f83f8")
+            (id "0x9d494c0")
             (pos 294 191)
             (parent "")
             (select-mask 1)
@@ -111,7 +214,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99f76a0")
+            (id "0x9d49658")
             (pos 852 159)
             (parent "")
             (select-mask 1)
@@ -122,7 +225,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99f7a38")
+            (id "0x9d490e8")
             (pos 857 156)
             (parent "")
             (select-mask 1)
@@ -133,7 +236,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99f7b80")
+            (id "0x9d492c8")
             (pos 864 684)
             (parent "")
             (select-mask 1)
@@ -144,7 +247,7 @@
             (hflip #f)
             (vflip #t))
           (decal
-            (id "0x9a38dc8")
+            (id "0x9d48f08")
             (pos 867 687)
             (parent "")
             (select-mask 1)
@@ -155,7 +258,7 @@
             (hflip #f)
             (vflip #t))
           (decal
-            (id "0x9a38e88")
+            (id "0x9d79c68")
             (pos 301 432)
             (parent "")
             (select-mask 1)
@@ -166,7 +269,7 @@
             (hflip #f)
             (vflip #t))
           (decal
-            (id "0x9a490d0")
+            (id "0x9d89e18")
             (pos 280 438)
             (parent "")
             (select-mask 1)
@@ -177,7 +280,7 @@
             (hflip #f)
             (vflip #t))
           (decal
-            (id "0x9a59238")
+            (id "0x9d89f00")
             (pos 1471 416)
             (parent "")
             (select-mask 1)
@@ -188,7 +291,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9a69458")
+            (id "0x9daa0b0")
             (pos 1471 408)
             (parent "")
             (select-mask 1)
@@ -205,7 +308,7 @@
         (locked #t)
         (objects
           (decal
-            (id "0x9a79630")
+            (id "0x9dca4a8")
             (pos 422 672)
             (parent "")
             (select-mask 1)
@@ -216,7 +319,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9abb278")
+            (id "0x9ddae78")
             (pos 550 672)
             (parent "")
             (select-mask 1)
@@ -227,7 +330,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9acb600")
+            (id "0x9dfb130")
             (pos 678 672)
             (parent "")
             (select-mask 1)
@@ -238,7 +341,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9afc1a0")
+            (id "0x9e1b3a0")
             (pos 806 672)
             (parent "")
             (select-mask 1)
@@ -249,7 +352,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9b1cb20")
+            (id "0x9e1b4b8")
             (pos 934 672)
             (parent "")
             (select-mask 1)
@@ -260,7 +363,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9b3cd70")
+            (id "0x9e2b558")
             (pos 1062 672)
             (parent "")
             (select-mask 1)
@@ -271,7 +374,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9b3cdf8")
+            (id "0x9e3b868")
             (pos 1190 672)
             (parent "")
             (select-mask 1)
@@ -282,7 +385,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9b4d0a8")
+            (id "0x9e4b978")
             (pos 1318 672)
             (parent "")
             (select-mask 1)
@@ -293,7 +396,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9b5d268")
+            (id "0x9e4ba38")
             (pos 422 160)
             (parent "")
             (select-mask 1)
@@ -304,7 +407,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9b6d410")
+            (id "0x9e7be00")
             (pos 550 160)
             (parent "")
             (select-mask 1)
@@ -315,7 +418,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9b7d620")
+            (id "0x9e8bfd8")
             (pos 678 160)
             (parent "")
             (select-mask 1)
@@ -326,7 +429,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9b8d7a8")
+            (id "0x9e7bf60")
             (pos 806 160)
             (parent "")
             (select-mask 1)
@@ -337,7 +440,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9b8d888")
+            (id "0x9eac518")
             (pos 934 160)
             (parent "")
             (select-mask 1)
@@ -348,7 +451,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9badac0")
+            (id "0x9ebc660")
             (pos 1062 160)
             (parent "")
             (select-mask 1)
@@ -359,7 +462,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9bbdc28")
+            (id "0x9e9c2e8")
             (pos 1190 160)
             (parent "")
             (select-mask 1)
@@ -370,7 +473,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9bcdf58")
+            (id "0x9ecc870")
             (pos 1318 160)
             (parent "")
             (select-mask 1)
@@ -381,7 +484,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9bde0a0")
+            (id "0x9edca28")
             (pos 1443 543)
             (parent "")
             (select-mask 1)
@@ -392,7 +495,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9bee310")
+            (id "0x9eecdd0")
             (pos 1442 415)
             (parent "")
             (select-mask 1)
@@ -403,7 +506,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9bfe4a0")
+            (id "0x9f0cfe0")
             (pos 1441 289)
             (parent "")
             (select-mask 1)
@@ -414,7 +517,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9c0e678")
+            (id "0x9f1d0a0")
             (pos 297 291)
             (parent "")
             (select-mask 1)
@@ -425,7 +528,7 @@
             (hflip #f)
             (vflip #t))
           (decal
-            (id "0x9c0e780")
+            (id "0x9f2d298")
             (pos 298 418)
             (parent "")
             (select-mask 1)
@@ -436,7 +539,7 @@
             (hflip #f)
             (vflip #t))
           (decal
-            (id "0x9c2e940")
+            (id "0x9f3d5a0")
             (pos 297 544)
             (parent "")
             (select-mask 1)
@@ -450,10 +553,10 @@
       (layer
         (name "Objects")
         (visible #t)
-        (locked #f)
+        (locked #t)
         (objects
           (decal
-            (id "0x9c3eb30")
+            (id "0x9f4d7f0")
             (pos 1141 415)
             (parent "")
             (select-mask 1)
@@ -464,7 +567,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99f7348")
+            (id "0x9d1f700")
             (pos 1289 519)
             (parent "")
             (select-mask 1)
@@ -475,7 +578,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9c4eda8")
+            (id "0x9d1e058")
             (pos 569 227)
             (parent "")
             (select-mask 1)
@@ -486,7 +589,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99d60b8")
+            (id "0x9ddac08")
             (pos 1163 229)
             (parent "")
             (select-mask 1)
@@ -497,7 +600,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99f7d50")
+            (id "0x9f5d930")
             (pos 877 229)
             (parent "")
             (select-mask 1)
@@ -508,7 +611,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99d68c8")
+            (id "0x9d32830")
             (pos 1140 496)
             (parent "")
             (select-mask 1)
@@ -525,7 +628,7 @@
         (locked #t)
         (objects
           (decal
-            (id "0x99d66f0")
+            (id "0x9d1e230")
             (pos 1142 549)
             (parent "")
             (select-mask 1)
@@ -536,7 +639,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99d6228")
+            (id "0x9d1e160")
             (pos 1275 590)
             (parent "")
             (select-mask 1)
@@ -553,7 +656,7 @@
         (locked #t)
         (objects
           (decal
-            (id "0x99d70f8")
+            (id "0x9d330f8")
             (pos 870 247)
             (parent "")
             (select-mask 1)
@@ -564,7 +667,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99d6420")
+            (id "0x9d33210")
             (pos 868 590)
             (parent "")
             (select-mask 1)
@@ -575,7 +678,7 @@
             (hflip #t)
             (vflip #t))
           (decal
-            (id "0x9cad268")
+            (id "0x9d33e28")
             (pos 1341 418)
             (parent "")
             (select-mask 1)
@@ -586,7 +689,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99d7298")
+            (id "0x9d33a00")
             (pos 399 421)
             (parent "")
             (select-mask 1)
@@ -603,7 +706,7 @@
         (locked #t)
         (objects
           (decal
-            (id "0x9ccd738")
+            (id "0x9d32330")
             (pos 422 544)
             (parent "")
             (select-mask 1)
@@ -614,7 +717,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x99c20c8")
+            (id "0x9fe4e00")
             (pos 550 544)
             (parent "")
             (select-mask 1)
@@ -625,7 +728,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9d0e9b8")
+            (id "0x9d324f8")
             (pos 422 416)
             (parent "")
             (select-mask 1)
@@ -636,7 +739,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9d1ecd8")
+            (id "0x9ff4f48")
             (pos 550 416)
             (parent "")
             (select-mask 1)
@@ -647,7 +750,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9d0eac0")
+            (id "0xa005250")
             (pos 422 288)
             (parent "")
             (select-mask 1)
@@ -658,7 +761,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9d2ee28")
+            (id "0xa0253c0")
             (pos 550 288)
             (parent "")
             (select-mask 1)
@@ -669,7 +772,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9d3f150")
+            (id "0xa0356d0")
             (pos 678 544)
             (parent "")
             (select-mask 1)
@@ -680,7 +783,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9d5f2c0")
+            (id "0xa0458a8")
             (pos 678 416)
             (parent "")
             (select-mask 1)
@@ -691,7 +794,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9d6f4e0")
+            (id "0xa005158")
             (pos 678 288)
             (parent "")
             (select-mask 1)
@@ -702,7 +805,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9d3efe8")
+            (id "0xa0559d8")
             (pos 806 288)
             (parent "")
             (select-mask 1)
@@ -713,7 +816,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9d7f780")
+            (id "0xa065d80")
             (pos 1062 544)
             (parent "")
             (select-mask 1)
@@ -724,7 +827,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9d8f9b8")
+            (id "0xa085fc0")
             (pos 1062 416)
             (parent "")
             (select-mask 1)
@@ -735,7 +838,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9dafce8")
+            (id "0xa096090")
             (pos 934 288)
             (parent "")
             (select-mask 1)
@@ -746,7 +849,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9dafda0")
+            (id "0xa0a63a0")
             (pos 1062 288)
             (parent "")
             (select-mask 1)
@@ -757,7 +860,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9dd0090")
+            (id "0xa0b6578")
             (pos 1190 544)
             (parent "")
             (select-mask 1)
@@ -768,7 +871,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9de0138")
+            (id "0xa085ec8")
             (pos 1318 544)
             (parent "")
             (select-mask 1)
@@ -779,7 +882,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9df03a0")
+            (id "0xa0c66a8")
             (pos 1190 416)
             (parent "")
             (select-mask 1)
@@ -790,7 +893,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9dcff28")
+            (id "0xa0d68a8")
             (pos 1318 416)
             (parent "")
             (select-mask 1)
@@ -801,7 +904,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9e00668")
+            (id "0xa0f6b80")
             (pos 1190 288)
             (parent "")
             (select-mask 1)
@@ -812,7 +915,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9e20b10")
+            (id "0xa106e88")
             (pos 1318 288)
             (parent "")
             (select-mask 1)
@@ -823,7 +926,7 @@
             (hflip #f)
             (vflip #f))
           (decal
-            (id "0x9e108d0")
+            (id "0xa117070")
             (pos 875 467)
             (parent "")
             (select-mask 1)
