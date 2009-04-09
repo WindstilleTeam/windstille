@@ -243,6 +243,8 @@ editor_env.Program('../windstille-editor', [
         'editor/about_window.cpp',
         'editor/control_point.cpp',
         'editor/decal_object_model.cpp',
+        'editor/decal_rotate_control_point.cpp',
+        'editor/decal_scale_control_point.cpp',
         'editor/editor_window.cpp',
         'editor/layer_widget.cpp',
         'editor/layer.cpp',
