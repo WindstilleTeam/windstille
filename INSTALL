@@ -12,21 +12,41 @@ To compile Windstille you need:
  * physfs
  * boost
  * scons
- * bison
+ * bison (bison++ will not work)
  * flex
+ * gtkmm (for the editor only)
+ * gtkglextmm (for the editor only)
 
-In most cases these will come with your distribution.
+In most cases these will come with your distribution. In Ubuntu you
+can install them with:
 
-The game does not support installation right now, just compile with:
+ % sudo apt-get install \
+     bison \
+     flex \
+     libboost-dev \
+     libboost-signals-dev \
+     libboost-thread-dev \
+     libfreetype6-dev \
+     libphysfs-dev \
+     libsdl-image1.2-dev \
+     libsdl1.2-dev \
+     scons \
+     libpng12-dev \
+     libopenal-dev \
+     libgtkmm-2.4-dev \
+     libgtkglextmm-x11-1.2-dev
 
- $ scons
+For compilation type:
+
+ % scons
 
 and run it from inside its source directory with:
 
- $ ./windstille
+ % ./windstille
 
-Compile on FreeBSD:
+Installation
+============
 
-<AnMaster> CPPFLAGS="-I/usr/local/include -D_SQ64" CXXFLAGS="-DICONV_CONST=const" LDFLAGS="-lpng -L/usr/local/lib" ./configure --prefix=$HOME/test --with-ogg=/usr/local --with-libOpenAL=/usr/local --with-libphysfs=/usr/local
+Installation isn't currently supported, run the executables directly from the source tree.
 
 # EOF #

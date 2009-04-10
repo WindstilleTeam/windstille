@@ -262,20 +262,6 @@ Miscellaneous
 
 * extend the concept of parenting to other(all?) objects
 
-* write "objects/decal.cpp" class, i.e. simple Surface class for
-  non-animated objects:
-
-  (decal (pos x y) 
-
-         ;; relative to pos
-         (quad x1 y1 ;; defaults to Rectf(Vector2f(0, 0), imagesize)
-               x2 y2
-               x3 y3
-               x4 y4)
-         (image "images/greychess.png")
-         (layer "color")
-         )
-
 * Display::push/pop_cliprect() doesn't handle different aspect-ratios properly
 
 * lightmap is broken with non-standard aspect-ratio
@@ -529,6 +515,9 @@ Graphics
 Editor
 ======
 
+* add special blocker objects, i.e. black boxes that have a
+  configurable fadeout
+
 * add support for collision shapes, to mark lights or other objects as
   shootable/interactable
 
@@ -604,10 +593,8 @@ Editor
   them as independed meta-data:
  
   (layers
-    (layer (objects 1)
-           (child-layers
-             (layers
-               (layer (objects 2 3))))))
+    (layer (objects 1))
+    (layer (objects 2 3)))
 
   (objects
     (decal (id 1) ...)
@@ -700,15 +687,9 @@ Editor
 
 * New Layer System:
 
-  - normal Layers can contain child layers, which seems like a bad
-    idea, better way would be to have special objectless parent layers
-
   - there might be a need for special layers, such as a background
     layer or a color gradient layer, that doesn't contain objects, but
     is meaningful by itself
-
-  - having structured layers (tree) doesn't seem all that useful,
-    maybe flat layer list would be enough and easier to use
 
 * add button and keyboard shortcut to mark/unmark all layers in the layermask
 
@@ -837,6 +818,12 @@ Editor
   - prefabs
   - enemies
   - active objects (doors, switches, etc.)
+
+Build System
+============
+
+* write a script that builds cross compile environment with mingw on Ubuntu
+
 
 Code Cleanup
 ============

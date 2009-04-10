@@ -1,5 +1,5 @@
 Source Code
-===========
+============
 
 The main source code of Windstille (src/) is covered under the GPLv3
 or later, as indicated at the top of the files. You can find the full
@@ -26,9 +26,9 @@ Extra Notes:
 Graphics
 ========
 
-Graphics in Windstille are covered under Creative Commons
-Attribution-ShareAlike 3.0 or later (cc-by-sa). You can find the full license
-text at:
+Graphics (.png, .xcf, .blend) in Windstille are covered under Creative
+Commons Attribution-ShareAlike 3.0 or later (cc-by-sa). You can find
+the full license text at:
 
  * http://creativecommons.org/licenses/by-sa/3.0/
 
