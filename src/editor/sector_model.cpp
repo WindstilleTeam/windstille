@@ -38,9 +38,9 @@ LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 SectorModel::SectorModel()
  : nav_graph(new NavigationGraph())
 {
-  layer_tree = Gtk::TreeStore::create(LayerManagerColumns::instance());
+  layer_tree = Gtk::ListStore::create(LayerManagerColumns::instance());
 
-  Gtk::TreeStore::iterator it = layer_tree->append();
+  Gtk::ListStore::iterator it = layer_tree->append();
 
   LayerHandle layer(new Layer());
 
@@ -64,12 +64,12 @@ SectorModel::~SectorModel()
 void
 SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path)
 {
-  Gtk::TreeStore::iterator it;
+  Gtk::ListStore::iterator it;
 
   if (path.empty())
     it = layer_tree->append();
   else
-    it = layer_tree->append(layer_tree->get_iter(path)->children());
+    it = layer_tree->insert(layer_tree->get_iter(path));
 
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[LayerManagerColumns::instance().name]      = name;
@@ -100,7 +100,7 @@ SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& pa
     }
   else
     { 
-      Gtk::TreeStore::iterator it = layer_tree->get_iter(path);
+      Gtk::ListStore::iterator it = layer_tree->get_iter(path);
       ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->add(object);
     }
 }
@@ -294,7 +294,7 @@ SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& i
 }
 
 void
-SectorModel::load_layer(const FileReader& reader, const Gtk::TreeModel::Row* parent_row, 
+SectorModel::load_layer(const FileReader& reader, 
                         std::map<std::string, ObjectModelHandle>& id_table,
                         std::map<ObjectModelHandle, std::string>& parent_table)
 {
@@ -309,7 +309,6 @@ SectorModel::load_layer(const FileReader& reader, const Gtk::TreeModel::Row* par
   reader.get("visible", visible);
   reader.get("locked", locked);
   reader.get("objects", objects_reader);
-  reader.get("child-layers", layers_reader);
 
   //std::cout << "loading layer: " << reader.get_name() << " " << name << " " << visible << " " << locked << std::endl;
 
@@ -337,7 +336,7 @@ SectorModel::load_layer(const FileReader& reader, const Gtk::TreeModel::Row* par
     }
 
   // Append the layer to the tree
-  Gtk::TreeStore::iterator it = parent_row ? layer_tree->append(parent_row->children()) : it = layer_tree->append();
+  Gtk::ListStore::iterator it = layer_tree->append();
 
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[LayerManagerColumns::instance().name]      = name;
@@ -346,12 +345,6 @@ SectorModel::load_layer(const FileReader& reader, const Gtk::TreeModel::Row* par
   (*it)[LayerManagerColumns::instance().layer]     = layer;
 
   layer->update(*it);
-  
-  const std::vector<FileReader>& layers_sections = layers_reader.get_sections();
-  for(std::vector<FileReader>::const_iterator j = layers_sections.begin(); j != layers_sections.end(); ++j)
-    {
-      load_layer(*j, &(*it), id_table, parent_table);
-    }
 }
 
 void
@@ -379,13 +372,13 @@ SectorModel::load(const std::string& filename)
           reader.get("navigation", navigation_section);
           nav_graph->load(navigation_section);
 
-          const std::vector<FileReader>& sections = reader.get_sections();
+          FileReader layers_section;
+          reader.get("layers", layers_section);
+
+          const std::vector<FileReader>& sections = layers_section.get_sections();
           for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
             {
-              if (i->get_name() == "layer")
-                {
-                  load_layer(*i, 0, id_table, parent_table);
-                }
+              load_layer(*i, id_table, parent_table);
             }
           
           // Set the parents properly
@@ -420,32 +413,26 @@ SectorModel::write(FileWriter& writer) const
   nav_graph->write(writer);
   writer.end_section();
 
-  write(writer, *(layer_tree->children().begin()));
-
-  writer.end_section();
-  writer.write_raw("\n\n;; EOF ;;\n");
-}
-
-void
-SectorModel::write(FileWriter& writer, const Gtk::TreeRow& row) const
-{
-  writer.start_section("layer");
-  writer.write("name",    (Glib::ustring)(row[LayerManagerColumns::instance().name]));
-  writer.write("visible", (bool)row[LayerManagerColumns::instance().visible]);
-  writer.write("locked",  (bool)row[LayerManagerColumns::instance().locked]);
-
-  writer.start_section("objects");
-  ((LayerHandle)row[LayerManagerColumns::instance().layer])->write(writer);
-  writer.end_section();
-
-  writer.start_section("child-layers");
-  for(Gtk::TreeStore::Children::iterator i = row.children().begin(); i != row.children().end(); ++i)
+  writer.start_section("layers");
+  for(Gtk::ListStore::Children::iterator i = layer_tree->children().begin(); i != layer_tree->children().end(); ++i)
     {
-      write(writer, *i);
+      const Gtk::TreeRow& row = *i;
+
+      writer.start_section("layer");
+      writer.write("name",    (Glib::ustring)(row[LayerManagerColumns::instance().name]));
+      writer.write("visible", (bool)row[LayerManagerColumns::instance().visible]);
+      writer.write("locked",  (bool)row[LayerManagerColumns::instance().locked]);
+
+      writer.start_section("objects");
+      ((LayerHandle)row[LayerManagerColumns::instance().layer])->write(writer);
+      writer.end_section();
+
+      writer.end_section();
     }
   writer.end_section();
 
   writer.end_section();
+  writer.write_raw("\n\n;; EOF ;;\n");
 }
 
 struct PropSetFunctor
@@ -508,6 +495,7 @@ SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeMod
           layer->update(*iter);
         }
     }
+
   queue_draw();
 }
 

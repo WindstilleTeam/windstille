@@ -20,7 +20,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/treemodel.h>
-#include <gtkmm/treestore.h>
+#include <gtkmm/liststore.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/treemodelcolumn.h>
 
@@ -117,7 +117,7 @@ LayerManager::set_model(SectorModel* model)
     }
   else
     {
-      treeview.set_model(Glib::RefPtr<Gtk::TreeStore>());
+      treeview.set_model(Glib::RefPtr<Gtk::ListStore>());
     }
 }
 

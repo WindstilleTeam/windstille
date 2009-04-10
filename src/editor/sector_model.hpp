@@ -21,7 +21,7 @@
 
 #include <set>
 #include <memory>
-#include <gtkmm/treestore.h>
+#include <gtkmm/liststore.h>
 #include <gdkmm/pixbuf.h>
 #include <vector>
 
@@ -68,7 +68,7 @@ class SectorModel
 {
 private:
   std::auto_ptr<NavigationGraph> nav_graph;
-  Glib::RefPtr<Gtk::TreeStore> layer_tree;
+  Glib::RefPtr<Gtk::ListStore> layer_tree;
   Color ambient_color;
   
 public:
@@ -101,7 +101,7 @@ public:
   
   // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;
 
-  Glib::RefPtr<Gtk::TreeStore> get_layer_tree() { return layer_tree; }
+  Glib::RefPtr<Gtk::ListStore> get_layer_tree() { return layer_tree; }
 
   void on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
   void on_row_deleted(const Gtk::TreeModel::Path& path);
@@ -120,11 +120,10 @@ public:
   SnapData snap_object(const Rectf& object, const std::set<ObjectModelHandle>& ignore_objects) const;
 
   void load(const std::string& filename);
-  void load_layer(const FileReader& filename, const Gtk::TreeModel::Row* parent, 
+  void load_layer(const FileReader& filename, 
                   std::map<std::string, ObjectModelHandle>& id_table,
                   std::map<ObjectModelHandle, std::string>& parent_table);
   void write(FileWriter& writer) const;
-  void write(FileWriter& writer, const Gtk::TreeRow& row) const;
 
   NavigationGraph* get_nav_graph() const { return nav_graph.get(); }
 
