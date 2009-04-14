@@ -42,9 +42,13 @@ public:
   ObjectSelector(EditorWindow& editor);
   virtual ~ObjectSelector();
 
-  void add_object(const std::string& pathname,
-                  const Glib::RefPtr<Gdk::Pixbuf>& icon);
+  void add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
+                 const std::string& pathname,
+                 const std::string& url);
 
+  void add_decals_from_directory(const std::string& pathname);
+
+  void populate();
   void refresh();
 
 protected:

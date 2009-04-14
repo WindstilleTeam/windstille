@@ -98,7 +98,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
 
   // Glib::signal_timeout().connect(sigc::mem_fun(this, &WindstilleWidget::on_timeout), 33);
   std::vector<Gtk::TargetEntry> targets;
-  targets.push_back(Gtk::TargetEntry("WindstilleObject"));
+  targets.push_back(Gtk::TargetEntry("application/x-windstille-decal"));
   drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
   set_selection(Selection::create());

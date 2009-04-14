@@ -30,6 +30,7 @@
 class ObjectIconColumns : public Gtk::TreeModel::ColumnRecord
 {
 public:
+  Gtk::TreeModelColumn<std::string> url;
   Gtk::TreeModelColumn<std::string> pathname;
   Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> >  icon;
   
@@ -45,6 +46,7 @@ private:
 
   ObjectIconColumns() {
     add(pathname); 
+    add(url);
     add(icon);
   }
 };
@@ -76,6 +78,8 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   // Change background color
   // iconview.modify_base(Gtk::STATE_NORMAL, Gdk::Color("#444444"));
   
+  set_border_width(1);
+
   iconview.set_model(list_store);
 
   // Trying to get spacing to minimum, without much effect
@@ -89,7 +93,11 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   iconview.set_model(list_store);
 
   std::vector<Gtk::TargetEntry> targets;
-  targets.push_back(Gtk::TargetEntry("WindstilleObject"));
+  //targets.push_back(Gtk::TargetEntry("image/png"));
+  targets.push_back(Gtk::TargetEntry("text/uri-list"));
+  targets.push_back(Gtk::TargetEntry("STRING"));
+  targets.push_back(Gtk::TargetEntry("text/plain"));
+  targets.push_back(Gtk::TargetEntry("application/x-windstille-decal"));
   iconview.drag_source_set(targets, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY);
 
   iconview.signal_drag_begin().connect(sigc::mem_fun(*this, &ObjectSelector::on_drag_begin));
@@ -111,18 +119,112 @@ ObjectSelector::~ObjectSelector()
 }
 
 void
-ObjectSelector::add_object(const std::string& pathname,
-                           const Glib::RefPtr<Gdk::Pixbuf>& icon)
+ObjectSelector::add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
+                          const std::string& pathname,
+                          const std::string& url)
 {
-  Gtk::ListStore::iterator it  = list_store->append();
+  Gtk::ListStore::iterator it = list_store->append();
+
   (*it)[ObjectIconColumns::instance().pathname] = pathname;
+  (*it)[ObjectIconColumns::instance().url]      = url;
   (*it)[ObjectIconColumns::instance().icon]     = icon;
 }
 
+static bool has_suffix(const std::string& str, const std::string& suffix)
+{
+  if (str.length() >= suffix.length())
+    return str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0;
+  else
+    return false;
+}
+
+void
+ObjectSelector::add_decals_from_directory(const std::string& pathname)
+{
+  std::vector<Glib::ustring> images;
+
+  Glib::Dir dir(pathname);
+  for(Glib::Dir::iterator i = dir.begin(); i != dir.end(); ++i)
+    {
+      if (has_suffix(*i, ".png"))
+        {
+          Glib::ustring path = pathname;
+          path += *i;
+          images.push_back(path);
+        }
+    }
+
+  std::sort(images.begin(), images.end());
+
+  for(std::vector<Glib::ustring>::iterator i = images.begin(); i != images.end(); ++i)    
+    {
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(*i);
+      Glib::RefPtr<Gdk::Pixbuf> icon;
+
+      { // Create an icon, by scaling it down, keeping aspect
+        // intact and adding a background (important to make drag&drop easier)
+        int size     = 48; // size of the icon
+        int min_size = 16; // minimum width/height of the icon after scaling
+
+        if (1)
+          {
+            icon = Gdk::Pixbuf::create_from_file("data/editor/icon_bg.png");
+            size = std::max(icon->get_width(), icon->get_height());
+          }
+        else
+          {
+            icon = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, size, size);
+            icon->fill(0x444444ff);
+          }
+
+        // Scale pixbuf to icon size while keeping aspect ratio intact
+        double x_scale = (double)size / pixbuf->get_width();
+        double y_scale = (double)size / pixbuf->get_height();
+
+        if (x_scale * pixbuf->get_width() < min_size)
+          x_scale = min_size / pixbuf->get_width();
+
+        if (y_scale * pixbuf->get_height() < min_size)
+          y_scale = min_size / pixbuf->get_height();
+
+        if (pixbuf->get_width() > pixbuf->get_height())              
+          y_scale = x_scale;
+        else
+          x_scale = y_scale;
+
+        int r_w = int(pixbuf->get_width() * x_scale);
+        int r_h = int(pixbuf->get_height() * y_scale);
+
+        pixbuf->composite(icon, 
+                          (size - r_w)/2, (size - r_h)/2,
+                          r_w, r_h,
+                          (size - r_w)/2, (size - r_h)/2,
+                          x_scale, y_scale,
+                          Gdk::INTERP_TILES, 
+                          255);
+      }
+
+      add_decal(icon, *i, 
+                "file:///home/ingo/projects/windstille/trunk/windstille/" + *i);
+    }
+}
+
+void
+ObjectSelector::populate()
+{
+  add_decals_from_directory("data/images/decal/");
+  add_decals_from_directory("data/images/objects/bar/");
+  add_decals_from_directory("data/images/objects/");
+  add_decals_from_directory("data/images/");
+  //("data/images/inventory/");
+  //("data/images/portraits/");
+}
 void
 ObjectSelector::refresh()
 {
-  std::cout << "Refresh" << std::endl;
+  std::cout << "ObjectSelector::refresh()" << std::endl;
+  list_store->clear();
+  populate();
 }
                     
 void
@@ -164,10 +266,18 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context,
     {
       Gtk::ListStore::iterator it = list_store->get_iter(*i);
 
-      //if (it)
-      //std::cout << "on_drag_begin: " << (*it)[ObjectIconColumns::instance().pathname] << std::endl;
+      std::cout << "TARGET: " << selection_data.get_target() << std::endl;
 
-      selection_data.set("data", (*it)[ObjectIconColumns::instance().pathname]);
+      if (selection_data.get_target() == "application/x-windstille-decal")
+        {
+          const std::string& str = (*it)[ObjectIconColumns::instance().pathname];
+          selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), str.length());
+        }
+      else
+        {
+          const std::string& str = (*it)[ObjectIconColumns::instance().url];
+          selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), str.length());
+        }
     }
 }
 

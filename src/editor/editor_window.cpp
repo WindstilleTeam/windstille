@@ -384,12 +384,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   // Window
   add(vbox);
 
-  fill_object_selector("data/images/decal/");
-  fill_object_selector("data/images/objects/bar/");
-  //fill_object_selector("data/images/inventory/");
-  //fill_object_selector("data/images/portraits/");
-  fill_object_selector("data/images/objects/");
-  fill_object_selector("data/images/");
+  object_selector.populate();
 }
 
 EditorWindow::~EditorWindow()
@@ -685,84 +680,6 @@ EditorWindow::get_windstille_widget()
   else
     {
       return static_cast<WindstilleWidget*>(notebook.get_nth_page(page));
-    }
-}
-
-static bool has_suffix(const std::string& str, const std::string& suffix)
-{
-  if (str.length() >= suffix.length())
-    return str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0;
-  else
-    return false;
-}
-
-void
-EditorWindow::fill_object_selector(const std::string& directory)
-{
-  std::vector<Glib::ustring> images;
-
-  Glib::Dir dir(directory);
-  for(Glib::Dir::iterator i = dir.begin(); i != dir.end(); ++i)
-    {
-      if (has_suffix(*i, ".png"))
-        {
-          Glib::ustring path = directory;
-          path += *i;
-          images.push_back(path);
-        }
-    }
-
-  std::sort(images.begin(), images.end());
-
-  for(std::vector<Glib::ustring>::iterator i = images.begin(); i != images.end(); ++i)    
-    {
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(*i);
-      Glib::RefPtr<Gdk::Pixbuf> icon;
-
-      { // Create an icon, by scaling it down, keeping aspect
-        // intact and adding a background (important to make drag&drop easier)
-        int size     = 48; // size of the icon
-        int min_size = 16; // minimum width/height of the icon after scaling
-
-        if (1)
-          {
-            icon = Gdk::Pixbuf::create_from_file("data/editor/icon_bg.png");
-            size = std::max(icon->get_width(), icon->get_height());
-          }
-        else
-          {
-            icon = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, size, size);
-            icon->fill(0x444444ff);
-          }
-
-        // Scale pixbuf to icon size while keeping aspect ratio intact
-        double x_scale = (double)size / pixbuf->get_width();
-        double y_scale = (double)size / pixbuf->get_height();
-
-        if (x_scale * pixbuf->get_width() < min_size)
-          x_scale = min_size / pixbuf->get_width();
-
-        if (y_scale * pixbuf->get_height() < min_size)
-          y_scale = min_size / pixbuf->get_height();
-
-        if (pixbuf->get_width() > pixbuf->get_height())              
-          y_scale = x_scale;
-        else
-          x_scale = y_scale;
-
-        int r_w = int(pixbuf->get_width() * x_scale);
-        int r_h = int(pixbuf->get_height() * y_scale);
-
-        pixbuf->composite(icon, 
-                          (size - r_w)/2, (size - r_h)/2,
-                          r_w, r_h,
-                          (size - r_w)/2, (size - r_h)/2,
-                          x_scale, y_scale,
-                          Gdk::INTERP_TILES, 
-                          255);
-      }
-
-      object_selector.add_object(*i, icon);
     }
 }
 

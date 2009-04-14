@@ -99,8 +99,7 @@ public:
   virtual ~EditorWindow();
 
   void show_minimap(bool v);
-  void fill_object_selector(const std::string& directory);
-
+  
 public:
   void on_new();
   void on_open();
