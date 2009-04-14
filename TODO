@@ -187,6 +187,8 @@ Sound Handling
 Miscellaneous
 =============
 
+* View class could be done away, as it doesn't have any clear purpose
+
 * sorting DrawingRequest can be speed up by a bucket sort, as most
   requests don't make use of z-pos
 
@@ -515,6 +517,20 @@ Graphics
 Editor
 ======
 
+* new boost1.37 seems to be missing boost_signals, instead it has
+  boost_signals-mt, do we want to get funcky with configure checks or
+  ignore and stay boost1.35 or so?
+
+* add (maybe) a LispWriter::start_section(name, bool compact) to create:
+
+  (object (name "aeu") (...))
+
+  instead of
+
+  (object
+    (name "aeu")
+    (...))
+
 * add special blocker objects, i.e. black boxes that have a
   configurable fadeout
 
@@ -536,9 +552,6 @@ Editor
 
 * add a way to delete navgraph nodes (need to move Selection out of
   tool, generalize it or just use right button)
-
-* tools are not drawn/updated when no button is pressed (active_tool
-  variable is at fault)
 
 * NavgraphTool (see Construo):
  
@@ -711,12 +724,10 @@ Editor
 
 * highlight content of rect selection while the rect gets dragged
 
-* add way to refresh content of ObjectSelector (i.e. load new images
-  from disk)
-
-* highlight map is problematic, since objects don't cover highlights,
-  maybe rendering a stencil mask might help, other alternative would
-  be occulsion querys, but they only work for Geforce3 and Up. Have to
+* highlight map is problematic, since objects don't cover highlights
+  (i.e. train infront of a highlight in the background), maybe
+  rendering a stencil mask might help, other alternative would be
+  occulsion querys, but they only work for Geforce3 and Up. Have to
   wait and see how much of a problem that is in practice, ray-casting
   would be doable as well, but won't work well with 3d sprites or
   scaling
@@ -751,8 +762,7 @@ Editor
 * lightmap objects are hard to see (not that big an issue with the new
   layer system)
 
-* decal needs to be scalable and have vertices moveable, also color
-  needs to be adjustable
+* decal color needs to be adjustable
 
 * make duplicated objects insert near those from which they where
   cloned (maybe have "Paste" and "Paste On Top")
@@ -763,26 +773,17 @@ Editor
 
    - seperate Surface stuff, turn it into a scaleable/rotatable decal quad
    - simple path
-   - full NavigationGraph
    - Sprite
    - Sprite3d / Character
 
 * ObjectSelector/IconView allows drag&drop even when nothing is
   selected, leading to a Grumbel dummy image drag&drop without effect
 
-* add a way to draw objects to DrawingContext that only does
-  translation, but not rotation and scaling, for use in UIElements,
-  overlay text, etc.
-
 * implement dialog to change level properties:
 
   - name
   - ambient color (Gtk::ColorSelection)
   - level size (?)
-
-* SceneModel seems easier to implement then Sandbox'ing, maybe go with
-  that first. TreeModel could be used directly to presenet the Scene,
-  instead of trying to keep to things synced.
 
 * Sandbox Pro&Contra:
 
@@ -803,9 +804,6 @@ Editor
 * make Windstille flexible enough so that it can work in non-SDL
   settings, more exactly it should be embeddable into a GtkWidget (or
   shall the editor be completly seperate?)
-
-* should objects in the editor be based on real Windstille objects or
-  on mookup objects?
 
 * Editor Toolbar:
 
