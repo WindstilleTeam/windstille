@@ -24,40 +24,40 @@
 #include <sqstdio.h> 
 #include <sqstdaux.h> 
 
-#include "app/menu_manager.hpp"
-#include "font/fonts.hpp"
-#include "engine/sector.hpp"
 #include "app/console.hpp"
-#include "engine/game_object.hpp"
-#include "objects/player.hpp"
-#include "tile/tile_map.hpp"
-#include "screen_manager.hpp"
-#include "view.hpp"
-#include "hud/dialog_manager.hpp"
-#include "hud/speech_manager.hpp"
+#include "app/menu_manager.hpp"
 #include "app/windstille_main.hpp"
+#include "collision/collision_engine.hpp"
+#include "display/display.hpp"
 #include "display/scene_context.hpp"
-#include "scripting/util.hpp"
-#include "scripting/wrapper.hpp"
+#include "display/surface.hpp"
+#include "display/surface_manager.hpp"
+#include "engine/game_object.hpp"
+#include "engine/script_manager.hpp"
+#include "engine/sector.hpp"
+#include "font/fonts.hpp"
+#include "hud/conversation.hpp"
+#include "hud/dialog_manager.hpp"
+#include "hud/inventory.hpp"
+#include "hud/pda.hpp"
+#include "hud/speech_manager.hpp"
 #include "input/input_manager.hpp"
+#include "objects/player.hpp"
+#include "objects/test_object.hpp"
 #include "particles/particle_system.hpp"
 #include "particles/spark_drawer.hpp"
 #include "particles/surface_drawer.hpp"
-#include "engine/script_manager.hpp"
+#include "screen_manager.hpp"
+#include "scripting/util.hpp"
+#include "scripting/wrapper.hpp"
 #include "sound/sound_manager.hpp"
-#include "hud/conversation.hpp"
-#include "collision/collision_engine.hpp"
-#include "objects/test_object.hpp"
-#include "hud/inventory.hpp"
-#include "display/surface_manager.hpp"
-#include "display/surface.hpp"
-#include "display/display.hpp"
-#include "hud/pda.hpp"
+#include "tile/tile_map.hpp"
+#include "view.hpp"
 
 #include "game_session.hpp"
 
 GameSession* GameSession::current_ = 0; 
-
+
 class GameSessionImpl
 {
 public:
@@ -122,7 +122,7 @@ public:
   
   void handle_event(const SDL_Event& event);
 };
-
+
 GameSession::GameSession(const std::string& arg_filename)
   : impl(new GameSessionImpl())
 {
@@ -528,5 +528,5 @@ GameSession::get_scene_context()
 {
   return &(impl->sc);
 }
-
+
 /* EOF */

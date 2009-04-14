@@ -22,7 +22,7 @@
 #include "display/scene_context.hpp"
 #include "sprite3d/sprite3d.hpp"
 #include "screen.hpp"
-
+
 /**
  * A simple class to view 3d sprites and their different actions,
  * mostly usefull for debugging 
@@ -53,7 +53,7 @@ private:
   Sprite3DView (const Sprite3DView&);
   Sprite3DView& operator= (const Sprite3DView&);
 };
-
+
 #endif
 
 /* EOF */

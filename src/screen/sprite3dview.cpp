@@ -17,15 +17,16 @@
 */
 
 #include <iostream>
-#include "input/controller.hpp"
-#include "display/display.hpp"
+
 #include "app/console.hpp"
-#include "font/ttf_font.hpp"
-#include "font/fonts.hpp"
 #include "app/menu_manager.hpp"
+#include "display/display.hpp"
+#include "font/fonts.hpp"
+#include "font/ttf_font.hpp"
+#include "input/controller.hpp"
 #include "screen_manager.hpp"
 #include "sprite3dview.hpp"
-
+
 Sprite3DView::Sprite3DView()
 {
   current_action = 0;
@@ -161,5 +162,5 @@ Sprite3DView::handle_event(const SDL_Event& )
 {
   
 }
-
+
 /* EOF */

@@ -21,13 +21,14 @@
 
 #include <string>
 #include <squirrel.h>
-#include "display/scene_context.hpp"
-#include "app/console.hpp"
-#include "screen.hpp"
-#include "hud/controller_help_window.hpp"
-#include "sprite2d/sprite.hpp"
-#include "app/globals.hpp"
 
+#include "app/console.hpp"
+#include "app/globals.hpp"
+#include "display/scene_context.hpp"
+#include "hud/controller_help_window.hpp"
+#include "screen.hpp"
+#include "sprite2d/sprite.hpp"
+
 class PDA;
 class EnergyBar;
 class View;
@@ -38,7 +39,7 @@ class Conversation;
 class Inventory;
 
 class GameSessionImpl;
-
+
 class GameSession : public Screen
 {
 public:
@@ -47,7 +48,7 @@ private:
   static GameSession* current_; 
 
 public:
-  static GameSession* current() { return current_; } 
+  static GameSession* current() { return current_; }
 
   GameSession(const std::string& arg_filename);
   virtual ~GameSession();
@@ -88,7 +89,7 @@ public:
 private:
   boost::shared_ptr<GameSessionImpl> impl;
 };
-
+
 #endif
 
 /* EOF */

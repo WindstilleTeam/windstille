@@ -25,7 +25,7 @@
 #include "view.hpp"
 
 View* View::current_ = 0;
-
+
 View::View()
   : state(Display::get_width(), Display::get_height()),
     zoom(1.0), 
@@ -102,5 +102,5 @@ View::screen_to_world(const Vector2f& point)
 {
   return state.screen_to_world(point);
 }
-
+
 /* EOF */

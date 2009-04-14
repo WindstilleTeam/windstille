@@ -22,10 +22,10 @@
 #include "display/graphic_context_state.hpp"
 #include "engine/camera.hpp"
 #include "math/vector2f.hpp"
-
+
 class Controller;
 class SceneContext;
-
+
 /** This class is the gui component which renders the world to the
     screen */
 class View
@@ -56,7 +56,7 @@ public:
 protected:
   static View* current_;
 };
-
+
 #endif
 
 /* EOF */

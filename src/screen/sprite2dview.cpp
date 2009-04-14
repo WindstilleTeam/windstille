@@ -32,7 +32,7 @@ extern std::vector<std::string> arg_files;
 
 #define DISPLAY_W 800
 #define DISPLAY_H 600
-
+
 Sprite2DView::Sprite2DView()
 {
   auto_scroll = false;
@@ -394,5 +394,5 @@ Sprite2DView::set_sprite(const std::string& filename)
   sprite = Sprite(filename);
   ignore_delta = true;
 }
-
+
 /* EOF */
