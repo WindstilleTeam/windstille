@@ -24,6 +24,9 @@
 #include "editor_window.hpp"
 #include "select_tool.hpp"
 
+static const uint32_t MOVE_TIMEOUT = 100;
+static const int MOVE_THRESHOLD = 16.0f;
+
 SelectTool::SelectTool()
   : mode(NO_MODE)
     
@@ -33,6 +36,7 @@ SelectTool::SelectTool()
 void
 SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
+  start_time = event->time;
   click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
 
   ctrl_point = wst.get_control_point(click_pos);
@@ -130,14 +134,20 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     }
   else if (mode == OBJECT_DRAG_MODE)
     {
-      selection->on_move_update(pos - click_pos);
-      
-      if (event->state & GDK_CONTROL_MASK)
+      Vector2f offset = pos - click_pos;
+          
+      if ((event->time - start_time) > MOVE_TIMEOUT ||
+          offset.length() > MOVE_THRESHOLD)
         {
-          selection->on_move_update(pos - click_pos + process_snap(wst));
-        }
+          selection->on_move_update(offset);
+      
+          if (event->state & GDK_CONTROL_MASK)
+            {
+              selection->on_move_update(pos - click_pos + process_snap(wst));
+            }
 
-      wst.queue_draw();
+          wst.queue_draw();
+        }
     }
   else if (mode == SELECT_MODE)
     {
@@ -164,17 +174,26 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     }
   else if (mode == OBJECT_DRAG_MODE)
     {
-      selection->on_move_update(pos - click_pos);
+      if ((event->time - start_time) > MOVE_TIMEOUT)
+        {
+          Vector2f offset = pos - click_pos;
+
+          if (event->time - start_time > MOVE_TIMEOUT ||
+              offset.length() > MOVE_THRESHOLD)
+            {
+              selection->on_move_update(pos - click_pos);
       
-      if (event->state & GDK_CONTROL_MASK)
-        {
-          selection->on_move_end(pos - click_pos + process_snap(wst));
+              if (event->state & GDK_CONTROL_MASK)
+                {
+                  selection->on_move_end(pos - click_pos + process_snap(wst));
+                }
+              else
+                {
+                  selection->on_move_end(pos - click_pos);
+                }
+              wst.queue_draw();
+            }
         }
-      else
-        {
-          selection->on_move_end(pos - click_pos);
-        }
-      wst.queue_draw();
     }
   else if (mode == SELECT_MODE)
     {
