@@ -517,6 +517,8 @@ Graphics
 Editor
 ======
 
+* figure out a way to rename image files without breaking the levels
+
 * new boost1.37 seems to be missing boost_signals, instead it has
   boost_signals-mt, do we want to get funcky with configure checks or
   ignore and stay boost1.35 or so?
@@ -548,7 +550,8 @@ Editor
 * make NavGraph insert tool automatically split edge when new nodes is
   on edge
 
-* add keyboard shortcuts to flatten current NodeSelection
+* add keyboard shortcuts to flatten (set same x or y value for all)
+  current NodeSelection, also add snapping to grid and stuff
 
 * add a way to delete navgraph nodes (need to move Selection out of
   tool, generalize it or just use right button)
@@ -586,9 +589,6 @@ Editor
   keep the move/offset logic out of the ObjectModel
 
 * maybe have different RGB and RGBA Textures in the TexturePacker
-
-* add a tiny timeout before an objects can be moved, so that its
-  easier to mark an object without accidently moving it
 
 * share SoftwareSurface via Manager class, generalize Manager classes
   -> template
