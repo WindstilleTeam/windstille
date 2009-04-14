@@ -121,6 +121,8 @@ public:
   void selection_reset_rotation();
   void selection_reset_scale();
 
+  void selection_object_properties();
+
   SectorModel* get_sector_model();
   void set_selection(const SelectionHandle& selection);
   SelectionHandle get_selection() const;

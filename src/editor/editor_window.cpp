@@ -85,8 +85,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='Copy'/>"
     "      <menuitem action='Paste'/>"
     "      <separator/>"
-    "      <menuitem action='Delete'/>"
     "      <menuitem action='Duplicate'/>"
+    "      <menuitem action='Delete'/>"
     "      <separator/>"
     "      <menuitem action='SelectAll'/>"
     "    </menu>"
@@ -155,8 +155,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='Copy'/>"
     "    <toolitem action='Paste'/>"
     "    <separator/>"
-    "    <toolitem action='Delete'/>"
     "    <toolitem action='Duplicate'/>"
+    "    <toolitem action='Delete'/>"
     "    <separator/>"
     "    <toolitem action='ZoomIn'/>"
     "    <toolitem action='ZoomOut'/>"
@@ -269,6 +269,9 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_reset_rotation));
   action_group->add(Gtk::Action::create_with_icon_name("ResetScale", "reload", "Reset Scale", "Reset Scale"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_reset_scale));
+
+  action_group->add(Gtk::Action::create_with_icon_name("ObjectProperties", "properties", "Object Properties", "Object Properties"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_object_properties));
 
   action_group->add(Gtk::Action::create_with_icon_name("HFlipObject", "object_hflip", "Horizontal Flip", "Horizontal Flip"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_hflip));

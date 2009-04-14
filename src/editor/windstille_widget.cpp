@@ -62,6 +62,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
     ui_manager->add_ui_from_string("<ui>"
                                    "  <popup name='PopupMenu'>"
                                    "    <menuitem action='Duplicate'/>"
+                                   "    <menuitem action='Delete'/>"
                                    "    <separator/>"
                                    "    <menuitem action='ConnectParent'/>"
                                    "    <menuitem action='ClearParent'/>"
@@ -72,7 +73,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
                                    "    <menuitem action='ResetRotation'/>"
                                    "    <menuitem action='ResetScale'/>"
                                    "    <separator/>"
-                                   "    <menuitem action='Delete'/>"
+                                   "    <menuitem action='ObjectProperties'/>"
                                    //"    <menuitem action='ObjectReset'/>"
                                    "  </popup>"
                                    "</ui>");
@@ -469,6 +470,12 @@ WindstilleWidget::selection_reset_rotation()
     }
   on_selection_change();
   queue_draw();
+}
+
+void
+WindstilleWidget::selection_object_properties()
+{
+  std::cout << "Display Dialog" << std::endl;
 }
 
 void
