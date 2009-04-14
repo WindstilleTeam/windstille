@@ -38,6 +38,8 @@ private:
   Gtk::IconView iconview;
   Glib::RefPtr<Gtk::ListStore> list_store;
   
+  class Columns;
+
 public:
   ObjectSelector(EditorWindow& editor);
   virtual ~ObjectSelector();

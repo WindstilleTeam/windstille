@@ -27,31 +27,31 @@
 #include "editor_window.hpp"
 #include "object_selector.hpp"
 
-class ObjectIconColumns : public Gtk::TreeModel::ColumnRecord
+class ObjectSelector::Columns : public Gtk::TreeModel::ColumnRecord
 {
 public:
   Gtk::TreeModelColumn<std::string> url;
   Gtk::TreeModelColumn<std::string> pathname;
   Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> >  icon;
   
-  static ObjectIconColumns& instance() {
+  static ObjectSelector::Columns& instance() {
     if (instance_)
       return *instance_;
     else
-      return *(instance_ = new ObjectIconColumns());
+      return *(instance_ = new ObjectSelector::Columns());
   }
 
 private:
-  static ObjectIconColumns* instance_;
+  static ObjectSelector::Columns* instance_;
 
-  ObjectIconColumns() {
+  Columns() {
     add(pathname); 
     add(url);
     add(icon);
   }
 };
 
-ObjectIconColumns* ObjectIconColumns::instance_ = 0;
+ObjectSelector::Columns* ObjectSelector::Columns::instance_ = 0;
 
 ObjectSelector::ObjectSelector(EditorWindow& editor_)
   : editor(editor_),
@@ -73,7 +73,7 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
 
   Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/ObjectSelectorToolBar"));
   
-  list_store = Gtk::ListStore::create(ObjectIconColumns::instance());
+  list_store = Gtk::ListStore::create(Columns::instance());
 
   // Change background color
   // iconview.modify_base(Gtk::STATE_NORMAL, Gdk::Color("#444444"));
@@ -87,8 +87,8 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   iconview.set_column_spacing(0);
   iconview.set_row_spacing(0);
 
-  iconview.set_pixbuf_column(ObjectIconColumns::instance().icon);
-  //iconview.set_text_column(ObjectIconColumns::instance().pathname);
+  iconview.set_pixbuf_column(Columns::instance().icon);
+  //iconview.set_text_column(Columns::instance().pathname);
 
   iconview.set_model(list_store);
 
@@ -125,9 +125,9 @@ ObjectSelector::add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
 {
   Gtk::ListStore::iterator it = list_store->append();
 
-  (*it)[ObjectIconColumns::instance().pathname] = pathname;
-  (*it)[ObjectIconColumns::instance().url]      = url;
-  (*it)[ObjectIconColumns::instance().icon]     = icon;
+  (*it)[Columns::instance().pathname] = pathname;
+  (*it)[Columns::instance().url]      = url;
+  (*it)[Columns::instance().icon]     = icon;
 }
 
 static bool has_suffix(const std::string& str, const std::string& suffix)
@@ -238,7 +238,7 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
       ++i)
     {
       Gtk::ListStore::iterator it = list_store->get_iter(*i);
-      iconpath = (*it)[ObjectIconColumns::instance().pathname];
+      iconpath = (*it)[Columns::instance().pathname];
     }
 
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath);
@@ -270,12 +270,12 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context,
 
       if (selection_data.get_target() == "application/x-windstille-decal")
         {
-          const std::string& str = (*it)[ObjectIconColumns::instance().pathname];
+          const std::string& str = (*it)[Columns::instance().pathname];
           selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), str.length());
         }
       else
         {
-          const std::string& str = (*it)[ObjectIconColumns::instance().url];
+          const std::string& str = (*it)[Columns::instance().url];
           selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), str.length());
         }
     }
