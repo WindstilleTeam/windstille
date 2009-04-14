@@ -34,7 +34,8 @@ class ObjectSelector::Columns : public Gtk::TreeModel::ColumnRecord
 public:
   Gtk::TreeModelColumn<std::string> url;
   Gtk::TreeModelColumn<std::string> pathname;
-  Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> >  icon;
+  Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > icon;
+  Gtk::TreeModelColumn<uint32_t>    filter_mask;
   
   static ObjectSelector::Columns& instance() {
     if (instance_)
@@ -50,6 +51,7 @@ private:
     add(pathname); 
     add(url);
     add(icon);
+    add(filter_mask);
   }
 };
 
@@ -57,7 +59,8 @@ ObjectSelector::Columns* ObjectSelector::Columns::instance_ = 0;
 
 ObjectSelector::ObjectSelector(EditorWindow& editor_)
   : editor(editor_),
-    label("Object Selector", Gtk::ALIGN_LEFT)
+    label("Object Selector", Gtk::ALIGN_LEFT),
+    filter_mask(OBJECT_GROUP_ALL)
 {
 #if 0
   Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
@@ -82,11 +85,17 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   refresh_button.set_relief(Gtk::RELIEF_NONE);
   refresh_button.signal_clicked().connect(sigc::mem_fun(*this, &ObjectSelector::refresh));
 
-  filter_box.append_text("All");
-  filter_box.append_text("Walls & Ground");
-  filter_box.append_text("Decor");
-  filter_box.append_text("Lights");
-  filter_box.append_text("Highlights");
+  filter_entries.push_back(ComboBoxEntry("All", OBJECT_GROUP_ALL));
+  filter_entries.push_back(ComboBoxEntry("Walls & Ground", OBJECT_GROUP_DECAL | OBJECT_GROUP_WALL | OBJECT_GROUP_GROUND));
+  filter_entries.push_back(ComboBoxEntry("Decor", OBJECT_GROUP_DECAL | OBJECT_GROUP_DECOR));
+  filter_entries.push_back(ComboBoxEntry("Lights", OBJECT_GROUP_LIGHT));
+  filter_entries.push_back(ComboBoxEntry("Highlights", OBJECT_GROUP_HIGHLIGHT));
+
+  for(std::vector<ComboBoxEntry>::const_iterator i = filter_entries.begin(); i != filter_entries.end(); ++i)
+    {
+      filter_box.append_text(i->name);
+    }
+
   filter_box.set_active(0);
   filter_box.signal_changed().connect(sigc::mem_fun(*this, &ObjectSelector::on_filter_changed));
 
@@ -108,8 +117,6 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
 
   iconview.set_pixbuf_column(Columns::instance().icon);
   //iconview.set_text_column(Columns::instance().pathname);
-
-  iconview.set_model(list_store);
 
   std::vector<Gtk::TargetEntry> targets;
   //targets.push_back(Gtk::TargetEntry("image/png"));
@@ -145,13 +152,15 @@ ObjectSelector::~ObjectSelector()
 void
 ObjectSelector::add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
                           const std::string& pathname,
-                          const std::string& url)
+                          const std::string& url,
+                          uint32_t filter)
 {
   Gtk::ListStore::iterator it = list_store->append();
 
-  (*it)[Columns::instance().pathname] = pathname;
-  (*it)[Columns::instance().url]      = url;
-  (*it)[Columns::instance().icon]     = icon;
+  (*it)[Columns::instance().pathname]    = pathname;
+  (*it)[Columns::instance().url]         = url;
+  (*it)[Columns::instance().icon]        = icon;
+  (*it)[Columns::instance().filter_mask] = filter;
 }
 
 static bool has_suffix(const std::string& str, const std::string& suffix)
@@ -165,11 +174,11 @@ static bool has_suffix(const std::string& str, const std::string& suffix)
 bool
 ObjectSelector::filter(const Gtk::TreeModel::const_iterator& it)
 {
-  return true;
+  return (*it)[Columns::instance().filter_mask] & filter_mask;
 }
 
 void
-ObjectSelector::add_decals_from_directory(const std::string& pathname)
+ObjectSelector::add_decals_from_directory(const std::string& pathname, uint32_t filter)
 {
   std::vector<Glib::ustring> images;
 
@@ -235,17 +244,18 @@ ObjectSelector::add_decals_from_directory(const std::string& pathname)
       }
 
       add_decal(icon, *i, 
-                "file:///home/ingo/projects/windstille/trunk/windstille/" + *i);
+                "file:///home/ingo/projects/windstille/trunk/windstille/" + *i, 
+                filter);
     }
 }
 
 void
 ObjectSelector::populate()
 {
-  add_decals_from_directory("data/images/decal/");
-  add_decals_from_directory("data/images/objects/bar/");
-  add_decals_from_directory("data/images/objects/");
-  add_decals_from_directory("data/images/");
+  add_decals_from_directory("data/images/decal/", OBJECT_GROUP_DECAL);
+  add_decals_from_directory("data/images/objects/bar/", OBJECT_GROUP_DECAL | OBJECT_GROUP_OBJECT | OBJECT_GROUP_DECOR);
+  add_decals_from_directory("data/images/objects/", OBJECT_GROUP_DECAL | OBJECT_GROUP_OBJECT | OBJECT_GROUP_DECOR);
+  add_decals_from_directory("data/images/", OBJECT_GROUP_LIGHT);
   //("data/images/inventory/");
   //("data/images/portraits/");
 }
@@ -261,6 +271,7 @@ void
 ObjectSelector::on_filter_changed()
 {
   std::cout << "on_filter_changed(): " << filter_box.get_active_row_number() << std::endl;
+  filter_mask = filter_entries[filter_box.get_active_row_number()].filter_mask;
   list_filter->refilter();
 }
                     

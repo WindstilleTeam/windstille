@@ -42,7 +42,43 @@ private:
   Gtk::ComboBoxText filter_box;
   Glib::RefPtr<Gtk::TreeModelFilter> list_filter;
 
+  struct ComboBoxEntry {
+    std::string name;
+    uint32_t filter_mask;
+
+    ComboBoxEntry(const std::string& name_, 
+                  uint32_t filter_mask_)
+      : name(name_),
+        filter_mask(filter_mask_)
+    {}
+  };
+
+  std::vector<ComboBoxEntry> filter_entries;
+
   class Columns;
+
+  enum {
+    OBJECT_GROUP_LIGHT      = (1<<0),
+    OBJECT_GROUP_HIGHLIGHT  = (1<<1),
+    OBJECT_GROUP_DECAL      = (1<<2),
+
+    OBJECT_GROUP_GROUND     = (1<<3),
+    OBJECT_GROUP_BACKGROUND = (1<<4),
+    OBJECT_GROUP_WALL       = (1<<5),
+    OBJECT_GROUP_OBJECT     = (1<<6),
+    OBJECT_GROUP_DECOR      = (1<<7),
+    OBJECT_GROUP_DOOR       = (1<<8),
+    OBJECT_GROUP_LAMP       = (1<<9),
+
+    OBJECT_GROUP_CHARACTER  = (1<<10),
+    OBJECT_GROUP_CREATURE   = (1<<11),
+
+    OBJECT_GROUP_PARTICLESYSTEM = (1<<12),
+
+    OBJECT_GROUP_ALL        = ~0
+  };
+
+  uint32_t filter_mask;
 
 public:
   ObjectSelector(EditorWindow& editor);
@@ -50,9 +86,10 @@ public:
 
   void add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
                  const std::string& pathname,
-                 const std::string& url);
+                 const std::string& url,
+                 uint32_t filter);
 
-  void add_decals_from_directory(const std::string& pathname);
+  void add_decals_from_directory(const std::string& pathname, uint32_t filter);
 
   void populate();
   void refresh();
