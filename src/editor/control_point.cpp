@@ -53,8 +53,6 @@ void
 ControlPoint::on_move_end(GdkEventButton* event, const Vector2f& offset_)
 {
   offset = offset_;
-  std::cout << "on_move_end: " << offset << std::endl;
-
   offset = Vector2f();
 }
 

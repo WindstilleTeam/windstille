@@ -674,7 +674,7 @@ void
 WindstilleWidget::set_selection(const SelectionHandle& selection_)
 {
   selection = selection_;
-  selection->signal_changed.connect(sigc::mem_fun(this, &WindstilleWidget::on_selection_change));
+  selection->signal_changed.connect(sigc::mem_fun(*this, &WindstilleWidget::on_selection_change));
   on_selection_change();
 }
 

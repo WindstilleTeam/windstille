@@ -79,7 +79,6 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
             }
       
           mode = OBJECT_DRAG_MODE;
-          selection->on_move_start();
         }
       else
         {
@@ -139,11 +138,14 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
       if ((event->time - start_time) > MOVE_TIMEOUT ||
           offset.length() > MOVE_THRESHOLD)
         {
+          if (!selection->is_moving())
+            selection->on_move_start();
+
           selection->on_move_update(offset);
       
           if (event->state & GDK_CONTROL_MASK)
             {
-              selection->on_move_update(pos - click_pos + process_snap(wst));
+              selection->on_move_update(offset + process_snap(wst));
             }
 
           wst.queue_draw();
@@ -174,25 +176,22 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     }
   else if (mode == OBJECT_DRAG_MODE)
     {
-      if ((event->time - start_time) > MOVE_TIMEOUT)
-        {
-          Vector2f offset = pos - click_pos;
+      Vector2f offset = pos - click_pos;
 
-          if (event->time - start_time > MOVE_TIMEOUT ||
-              offset.length() > MOVE_THRESHOLD)
-            {
-              selection->on_move_update(pos - click_pos);
+      if (event->time - start_time > MOVE_TIMEOUT ||
+          offset.length() > MOVE_THRESHOLD)
+        {
+          selection->on_move_update(offset);
       
-              if (event->state & GDK_CONTROL_MASK)
-                {
-                  selection->on_move_end(pos - click_pos + process_snap(wst));
-                }
-              else
-                {
-                  selection->on_move_end(pos - click_pos);
-                }
-              wst.queue_draw();
+          if (event->state & GDK_CONTROL_MASK)
+            {
+              selection->on_move_end(offset + process_snap(wst));
             }
+          else
+            {
+              selection->on_move_end(offset);
+            }
+          wst.queue_draw();
         }
     }
   else if (mode == SELECT_MODE)
