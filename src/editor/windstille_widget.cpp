@@ -69,6 +69,9 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
                                    "    <menuitem action='HFlipObject'/>"
                                    "    <menuitem action='VFlipObject'/>"
                                    "    <separator/>"
+                                   "    <menuitem action='ResetRotation'/>"
+                                   "    <menuitem action='ResetScale'/>"
+                                   "    <separator/>"
                                    "    <menuitem action='Delete'/>"
                                    //"    <menuitem action='ObjectReset'/>"
                                    "  </popup>"
@@ -451,6 +454,36 @@ WindstilleWidget::selection_duplicate()
     }
 
   set_selection(new_selection);
+}
+
+void
+WindstilleWidget::selection_reset_rotation()
+{
+  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      DecalObjectModel* decal = dynamic_cast<DecalObjectModel*>(i->get());
+      if (decal)
+        {
+          decal->set_angle(0.0f);
+        }
+    }
+  on_selection_change();
+  queue_draw();
+}
+
+void
+WindstilleWidget::selection_reset_scale()
+{
+ for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      DecalObjectModel* decal = dynamic_cast<DecalObjectModel*>(i->get());
+      if (decal)
+        {
+          decal->set_scale(Vector2f(1.0f, 1.0f));
+        }
+    }
+ on_selection_change();
+ queue_draw();
 }
 
 void

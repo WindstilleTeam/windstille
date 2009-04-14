@@ -118,6 +118,9 @@ public:
   void selection_duplicate();
   void selection_delete();
 
+  void selection_reset_rotation();
+  void selection_reset_scale();
+
   SectorModel* get_sector_model();
   void set_selection(const SelectionHandle& selection);
   SelectionHandle get_selection() const;

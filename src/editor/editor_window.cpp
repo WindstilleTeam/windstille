@@ -125,6 +125,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='ToggleLightLayer'/>"
     "      <menuitem action='ToggleHighlightLayer'/>"
     "      <menuitem action='ToggleControlLayer'/>"
+    "      <separator/>"
     "      <menuitem action='ToggleBackgroundLayer'/>"
     "      <menuitem action='ToggleVisibleLayer'/>"
     "      <menuitem action='ToggleGridLayer'/>"
@@ -187,6 +188,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <toolitem action='ToggleLightLayer'/>"
     "    <toolitem action='ToggleHighlightLayer'/>"
     "    <toolitem action='ToggleControlLayer'/>"
+    "    <separator/>"
     "    <toolitem action='ToggleBackgroundLayer'/>"
     "    <toolitem action='ToggleVisibleLayer'/>"
     "    <toolitem action='ToggleGridLayer'/>"
@@ -262,6 +264,11 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_connect_parent));
   action_group->add(Gtk::Action::create_with_icon_name("ClearParent", "clear_parent", "Clear Parent", "Clear Parent"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_clear_parent));
+
+  action_group->add(Gtk::Action::create_with_icon_name("ResetRotation", "reload", "Reset Rotation", "Reset Rotation"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_reset_rotation));
+  action_group->add(Gtk::Action::create_with_icon_name("ResetScale", "reload", "Reset Scale", "Reset Scale"),
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_reset_scale));
 
   action_group->add(Gtk::Action::create_with_icon_name("HFlipObject", "object_hflip", "Horizontal Flip", "Horizontal Flip"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_hflip));
