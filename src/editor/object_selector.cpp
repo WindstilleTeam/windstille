@@ -19,7 +19,6 @@
 #include <iostream>
 #include <boost/function.hpp>
 #include <gtkmm/treeselection.h>
-#include <gtkmm/comboboxtext.h>
 #include <gtkmm/separatortoolitem.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/image.h>
@@ -83,22 +82,24 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   refresh_button.set_relief(Gtk::RELIEF_NONE);
   refresh_button.signal_clicked().connect(sigc::mem_fun(*this, &ObjectSelector::refresh));
 
-
-  Gtk::ComboBoxText& combo_box = *Gtk::manage(new Gtk::ComboBoxText());
-  combo_box.append_text("All");
-  combo_box.append_text("Walls & Ground");
-  combo_box.append_text("Decor");
-  combo_box.append_text("Lights");
-  combo_box.append_text("Highlights");
+  filter_box.append_text("All");
+  filter_box.append_text("Walls & Ground");
+  filter_box.append_text("Decor");
+  filter_box.append_text("Lights");
+  filter_box.append_text("Highlights");
+  filter_box.set_active(0);
+  filter_box.signal_changed().connect(sigc::mem_fun(*this, &ObjectSelector::on_filter_changed));
 
   list_store = Gtk::ListStore::create(Columns::instance());
-
+  list_filter = Gtk::TreeModelFilter::create(list_store);
+  list_filter->set_visible_func(sigc::mem_fun(*this, &ObjectSelector::filter));
+  
   // Change background color
   // iconview.modify_base(Gtk::STATE_NORMAL, Gdk::Color("#444444"));
   
   set_border_width(1);
 
-  iconview.set_model(list_store);
+  iconview.set_model(list_filter);
 
   // Trying to get spacing to minimum, without much effect
   iconview.set_spacing(0);
@@ -129,7 +130,7 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   Gtk::HBox& hbox = *Gtk::manage(new Gtk::HBox());
   //hbox.pack_start(toolbar,   Gtk::PACK_SHRINK);
   hbox.pack_start(refresh_button,   Gtk::PACK_SHRINK);
-  hbox.pack_start(combo_box, Gtk::PACK_SHRINK);
+  hbox.pack_start(filter_box, Gtk::PACK_SHRINK);
   pack_start(hbox, Gtk::PACK_SHRINK);
   
   add(scrolled);
@@ -159,6 +160,12 @@ static bool has_suffix(const std::string& str, const std::string& suffix)
     return str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0;
   else
     return false;
+}
+
+bool
+ObjectSelector::filter(const Gtk::TreeModel::const_iterator& it)
+{
+  return true;
 }
 
 void
@@ -248,6 +255,13 @@ ObjectSelector::refresh()
   std::cout << "ObjectSelector::refresh()" << std::endl;
   list_store->clear();
   populate();
+}
+
+void
+ObjectSelector::on_filter_changed()
+{
+  std::cout << "on_filter_changed(): " << filter_box.get_active_row_number() << std::endl;
+  list_filter->refilter();
 }
                     
 void

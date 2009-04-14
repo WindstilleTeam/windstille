@@ -23,7 +23,9 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/label.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/comboboxtext.h>
 #include <gdkmm/dragcontext.h>
+#include <gtkmm/treemodelfilter.h>
 #include <gtkmm/iconview.h>
 
 class EditorWindow;
@@ -37,7 +39,9 @@ private:
   Gtk::ScrolledWindow scrolled;
   Gtk::IconView iconview;
   Glib::RefPtr<Gtk::ListStore> list_store;
-  
+  Gtk::ComboBoxText filter_box;
+  Glib::RefPtr<Gtk::TreeModelFilter> list_filter;
+
   class Columns;
 
 public:
@@ -52,6 +56,7 @@ public:
 
   void populate();
   void refresh();
+  bool filter(const Gtk::TreeModel::const_iterator& it);
 
 protected:
   void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context);
@@ -59,6 +64,8 @@ protected:
                         Gtk::SelectionData& selection_data, 
                         guint info, guint time);
   
+  void on_filter_changed();
+
 private:
   ObjectSelector(const ObjectSelector&);
   ObjectSelector& operator=(const ObjectSelector&);
