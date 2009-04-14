@@ -19,7 +19,10 @@
 #include <iostream>
 #include <boost/function.hpp>
 #include <gtkmm/treeselection.h>
+#include <gtkmm/comboboxtext.h>
+#include <gtkmm/separatortoolitem.h>
 #include <gtkmm/stock.h>
+#include <gtkmm/image.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/treemodelcolumn.h>
 
@@ -57,6 +60,7 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   : editor(editor_),
     label("Object Selector", Gtk::ALIGN_LEFT)
 {
+#if 0
   Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
   Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
 
@@ -72,7 +76,21 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
                                  "</ui>");
 
   Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/ObjectSelectorToolBar"));
-  
+#endif
+
+  Gtk::Button& refresh_button = *Gtk::manage(new Gtk::Button());
+  refresh_button.add(*Gtk::manage(new Gtk::Image(Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU)));
+  refresh_button.set_relief(Gtk::RELIEF_NONE);
+  refresh_button.signal_clicked().connect(sigc::mem_fun(*this, &ObjectSelector::refresh));
+
+
+  Gtk::ComboBoxText& combo_box = *Gtk::manage(new Gtk::ComboBoxText());
+  combo_box.append_text("All");
+  combo_box.append_text("Walls & Ground");
+  combo_box.append_text("Decor");
+  combo_box.append_text("Lights");
+  combo_box.append_text("Highlights");
+
   list_store = Gtk::ListStore::create(Columns::instance());
 
   // Change background color
@@ -108,7 +126,12 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   scrolled.add(iconview);
   pack_start(label, Gtk::PACK_SHRINK);
 
-  pack_start(toolbar, Gtk::PACK_SHRINK);
+  Gtk::HBox& hbox = *Gtk::manage(new Gtk::HBox());
+  //hbox.pack_start(toolbar,   Gtk::PACK_SHRINK);
+  hbox.pack_start(refresh_button,   Gtk::PACK_SHRINK);
+  hbox.pack_start(combo_box, Gtk::PACK_SHRINK);
+  pack_start(hbox, Gtk::PACK_SHRINK);
+  
   add(scrolled);
   //show_all();
 }
