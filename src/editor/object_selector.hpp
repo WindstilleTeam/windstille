@@ -38,9 +38,10 @@ private:
   Gtk::Label label;
   Gtk::ScrolledWindow scrolled;
   Gtk::IconView iconview;
-  Glib::RefPtr<Gtk::ListStore> list_store;
-  Gtk::ComboBoxText filter_box;
+  Glib::RefPtr<Gtk::ListStore>       list_store;
   Glib::RefPtr<Gtk::TreeModelFilter> list_filter;
+
+  Gtk::ComboBoxText filter_box;
 
   struct ComboBoxEntry {
     std::string name;

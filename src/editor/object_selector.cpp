@@ -99,16 +99,13 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   filter_box.set_active(0);
   filter_box.signal_changed().connect(sigc::mem_fun(*this, &ObjectSelector::on_filter_changed));
 
-  list_store = Gtk::ListStore::create(Columns::instance());
+  list_store  = Gtk::ListStore::create(Columns::instance());
   list_filter = Gtk::TreeModelFilter::create(list_store);
   list_filter->set_visible_func(sigc::mem_fun(*this, &ObjectSelector::filter));
+  iconview.set_model(list_filter);
   
   // Change background color
   // iconview.modify_base(Gtk::STATE_NORMAL, Gdk::Color("#444444"));
-  
-  set_border_width(1);
-
-  iconview.set_model(list_filter);
 
   // Trying to get spacing to minimum, without much effect
   iconview.set_spacing(0);
@@ -119,7 +116,6 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   //iconview.set_text_column(Columns::instance().pathname);
 
   std::vector<Gtk::TargetEntry> targets;
-  //targets.push_back(Gtk::TargetEntry("image/png"));
   targets.push_back(Gtk::TargetEntry("text/uri-list"));
   targets.push_back(Gtk::TargetEntry("STRING"));
   targets.push_back(Gtk::TargetEntry("text/plain"));
@@ -262,7 +258,6 @@ ObjectSelector::populate()
 void
 ObjectSelector::refresh()
 {
-  std::cout << "ObjectSelector::refresh()" << std::endl;
   list_store->clear();
   populate();
 }
@@ -270,7 +265,6 @@ ObjectSelector::refresh()
 void
 ObjectSelector::on_filter_changed()
 {
-  std::cout << "on_filter_changed(): " << filter_box.get_active_row_number() << std::endl;
   filter_mask = filter_entries[filter_box.get_active_row_number()].filter_mask;
   list_filter->refilter();
 }
@@ -285,7 +279,9 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
       i != selection.end();
       ++i)
     {
-      Gtk::ListStore::iterator it = list_store->get_iter(*i);
+      Gtk::TreeModel::Path path = list_filter->convert_path_to_child_path(*i);
+      Gtk::ListStore::iterator it = list_store->get_iter(path);
+
       iconpath = (*it)[Columns::instance().pathname];
     }
 
@@ -306,15 +302,14 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context,
 {
   //std::cout << "ObjectSelector: on_drag_data_get" << std::endl;
 
-  Gtk::IconView::ArrayHandle_TreePaths selection = iconview.get_selected_items();
+  const Gtk::IconView::ArrayHandle_TreePaths& selection = iconview.get_selected_items();
 
-  for(Gtk::IconView::ArrayHandle_TreePaths::iterator i = selection.begin();
+  for(Gtk::IconView::ArrayHandle_TreePaths::const_iterator i = selection.begin();
       i != selection.end();
       ++i)
     {
-      Gtk::ListStore::iterator it = list_store->get_iter(*i);
-
-      //std::cout << "TARGET: " << selection_data.get_target() << std::endl;
+      Gtk::TreeModel::Path path = list_filter->convert_path_to_child_path(*i);
+      Gtk::ListStore::iterator it = list_store->get_iter(path);
 
       if (selection_data.get_target() == "application/x-windstille-decal")
         {
