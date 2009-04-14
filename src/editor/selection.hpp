@@ -57,6 +57,7 @@ public:
       {
         add(*i);
       }
+    signal_changed();
   }
 
   void add(const ObjectModelHandle& object);
@@ -68,7 +69,7 @@ public:
   Selection::iterator end()   { return objects.end(); }
 
   Selection::reverse_iterator rbegin() { return objects.rbegin(); }
-  Selection::reverse_iterator rend() { return objects.rend(); }
+  Selection::reverse_iterator rend()   { return objects.rend(); }
 
   bool empty() const;
   void clear();

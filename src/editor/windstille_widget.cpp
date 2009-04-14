@@ -431,10 +431,8 @@ WindstilleWidget::selection_duplicate()
         }
     }
 
-  selection = new_selection;
-
   // Second pass to set the parents to the cloned objects
-  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+  for(Selection::iterator i = new_selection->begin(); i != new_selection->end(); ++i)
     {
       if ((*i)->get_parent())
         {
@@ -452,9 +450,7 @@ WindstilleWidget::selection_duplicate()
         }
     }
 
-  on_selection_change();
-
-  queue_draw();
+  set_selection(new_selection);
 }
 
 void
@@ -487,8 +483,9 @@ bool
 WindstilleWidget::mouse_down(GdkEventButton* event)
 {
   grab_focus();
-  std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
-  //ewer->on_mouse_button_down(Vector2i(event->x, event->y), event->button);
+
+  //std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
+
   if (event->button == 1)
     { // Tool
       EditorWindow::current()->get_current_tool()->mouse_down(event, *this);
@@ -543,7 +540,7 @@ WindstilleWidget::mouse_up(GdkEventButton* event)
 bool
 WindstilleWidget::key_press(GdkEventKey* event)
 {
-  std::cout << event->keyval << " keypress " << state.get_pos() << std::endl;
+  //std::cout << event->keyval << " keypress " << state.get_pos() << std::endl;
 
   switch(event->keyval)
     {
@@ -734,8 +731,6 @@ WindstilleWidget::on_selection_change()
     }
   
   queue_draw();
-
-  std::cout << "WindstilleWidget::on_selection_change(): " << selection->size() << " " << control_points.size() << std::endl;
 }
 
 ControlPointHandle

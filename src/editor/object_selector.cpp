@@ -314,7 +314,7 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context,
     {
       Gtk::ListStore::iterator it = list_store->get_iter(*i);
 
-      std::cout << "TARGET: " << selection_data.get_target() << std::endl;
+      //std::cout << "TARGET: " << selection_data.get_target() << std::endl;
 
       if (selection_data.get_target() == "application/x-windstille-decal")
         {
