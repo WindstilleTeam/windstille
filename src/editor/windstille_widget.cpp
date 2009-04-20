@@ -31,6 +31,8 @@
 #include "scroll_tool.hpp"
 #include "sector_model.hpp"
 #include "undo_manager.hpp"
+#include "group_command.hpp"
+#include "object_commands.hpp"
 
 #include "sprite_object_model.hpp"
 #include "windstille_widget.hpp"
@@ -510,12 +512,17 @@ WindstilleWidget::selection_reset_scale()
 void
 WindstilleWidget::selection_delete()
 {
- for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
-    {
-      sector_model->remove(*i);
-    } 
- selection->clear();
+  boost::shared_ptr<GroupCommand> group_cmd(new GroupCommand());
 
+  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+    {
+      group_cmd->add(CommandHandle(new ObjectRemoveCommand(*sector_model, *i)));
+    }
+
+  undo_manager->execute(group_cmd);
+  EditorWindow::current()->update_undo_state();
+
+ selection->clear();
  queue_draw();
 }
 

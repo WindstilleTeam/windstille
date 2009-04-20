@@ -16,40 +16,36 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_GROUP_COMMAND_HPP
-#define HEADER_WINDSTILLE_EDITOR_GROUP_COMMAND_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_OBJECT_COMMANDS_HPP
+#define HEADER_WINDSTILLE_EDITOR_OBJECT_COMMANDS_HPP
 
+#include "layer.hpp"
+#include "object_model.hpp"
 #include "command.hpp"
 
-class GroupCommand : public Command
+class ObjectRemoveCommand : public Command
 {
 private:
-  typedef std::vector<CommandHandle> Commands;
-  Commands cmds;
+  ObjectModelHandle    object;
+  LayerHandle          layer;
 
 public:
-  GroupCommand() {}
-  ~GroupCommand() {}
-
-  void add(CommandHandle cmd) {
-    cmds.push_back(cmd);
-  }
-
+  ObjectRemoveCommand(SectorModel& sector, ObjectModelHandle object_)
+    : object(object_),
+      layer(sector.get_layer(object))
+  {}
+  virtual ~ObjectRemoveCommand() {}
+  
   void redo() {
-    for(Commands::const_iterator i = cmds.begin(); i != cmds.end(); ++i)
-      (*i)->redo();
+    layer->remove(object);
   }
 
   void undo() {
-    for(Commands::const_reverse_iterator i = cmds.rbegin(); i != cmds.rend(); ++i)
-      (*i)->undo();
+    layer->add(object);
   }
 
-private:
-  GroupCommand(const GroupCommand&);
-  GroupCommand& operator=(const GroupCommand&);
 };
-
-#endif
 
+#endif
+
 /* EOF */

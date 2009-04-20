@@ -161,6 +161,22 @@ SectorModel::remove(const ObjectModelHandle& object)
     }
 }
 
+LayerHandle
+SectorModel::get_layer(const ObjectModelHandle& object) const
+{
+  const Layers& layers = get_layers();
+ 
+  for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
+    {
+      if ((*i)->has_object(object))
+        {
+          return *i;
+        }
+    }  
+  
+  return LayerHandle();
+}
+
 void
 SectorModel::draw(SceneContext& sc, const SelectMask& layermask, bool draw_navgraph)
 {

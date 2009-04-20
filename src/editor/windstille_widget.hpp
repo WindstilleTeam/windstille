@@ -130,6 +130,7 @@ public:
   void selection_object_properties();
 
   SectorModel* get_sector_model();
+  UndoManager* get_undo_manager() const { return undo_manager.get(); }
   void set_selection(const SelectionHandle& selection);
   SelectionHandle get_selection() const;
 

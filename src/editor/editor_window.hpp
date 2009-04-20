@@ -117,6 +117,11 @@ public:
   void on_zoom_out();
   void on_zoom_100();
 
+  void on_undo();
+  void on_redo();
+
+  void update_undo_state();
+
   void on_cut();
   void on_copy();
   void on_paste();

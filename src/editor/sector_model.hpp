@@ -91,6 +91,7 @@ public:
 
   void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
   void remove(const ObjectModelHandle& object);
+  LayerHandle get_layer(const ObjectModelHandle& object) const;
 
   void  set_ambient_color(const Color& color) { ambient_color = color; }
   Color get_ambient_color() const { return ambient_color; }

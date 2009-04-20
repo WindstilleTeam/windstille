@@ -30,6 +30,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/separatortoolitem.h>
 
+#include "undo_manager.hpp"
 #include "display/scene_context.hpp"
 #include "windstille_widget.hpp"
 #include "about_window.hpp"
@@ -232,8 +233,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   }
 
   action_group->add(Gtk::Action::create("MenuEdit",    "_Edit"));
-  action_group->add(Gtk::Action::create("Undo",        Gtk::Stock::UNDO));
-  action_group->add(Gtk::Action::create("Redo",        Gtk::Stock::REDO));
+  action_group->add(Gtk::Action::create("Undo",        Gtk::Stock::UNDO),
+                    sigc::mem_fun(*this, &EditorWindow::on_undo));
+  action_group->add(Gtk::Action::create("Redo",        Gtk::Stock::REDO),
+                    sigc::mem_fun(*this, &EditorWindow::on_redo));
   action_group->add(Gtk::Action::create("Cut",         Gtk::Stock::CUT),
                     sigc::mem_fun(*this, &EditorWindow::on_cut));
   action_group->add(Gtk::Action::create("Copy",        Gtk::Stock::COPY),
@@ -608,6 +611,38 @@ EditorWindow::on_zoom_100()
   WindstilleWidget* wst = get_windstille_widget();
   if (wst)
     wst->on_zoom_100();
+}
+
+void
+EditorWindow::update_undo_state()
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      action_group->get_action("Undo")->set_sensitive(wst->get_undo_manager()->can_undo());
+      action_group->get_action("Redo")->set_sensitive(wst->get_undo_manager()->can_redo());
+    }
+}
+
+void
+EditorWindow::on_undo()
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      wst->undo();
+      update_undo_state();
+      queue_draw();
+    }
+}
+
+void
+EditorWindow::on_redo()
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      wst->redo();
+      update_undo_state();
+      queue_draw();
+    }
 }
 
 void
