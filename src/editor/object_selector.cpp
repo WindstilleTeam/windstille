@@ -90,6 +90,7 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   filter_entries.push_back(ComboBoxEntry("Decor", OBJECT_GROUP_DECAL | OBJECT_GROUP_DECOR));
   filter_entries.push_back(ComboBoxEntry("Lights", OBJECT_GROUP_LIGHT));
   filter_entries.push_back(ComboBoxEntry("Highlights", OBJECT_GROUP_HIGHLIGHT));
+  filter_entries.push_back(ComboBoxEntry("Particle Systems", OBJECT_GROUP_PARTICLESYSTEM));
 
   for(std::vector<ComboBoxEntry>::const_iterator i = filter_entries.begin(); i != filter_entries.end(); ++i)
     {
@@ -272,7 +273,7 @@ ObjectSelector::on_filter_changed()
 void
 ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 {
-  std::string iconpath = "data/editor/icon.png";
+  std::string iconpath;
 
   Gtk::IconView::ArrayHandle_TreePaths selection = iconview.get_selected_items();
   for(Gtk::IconView::ArrayHandle_TreePaths::iterator i = selection.begin();
@@ -285,15 +286,22 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
       iconpath = (*it)[Columns::instance().pathname];
     }
 
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath);
-  if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
+  if (iconpath.empty())
     {
-      pixbuf = pixbuf->scale_simple(std::max(4, int(pixbuf->get_width()  * wst->get_state().get_zoom())),
-                                    std::max(4, int(pixbuf->get_height() * wst->get_state().get_zoom())),
-                                    Gdk::INTERP_TILES);
+      // refuse drag: how?
     }
-  context->set_icon(pixbuf, pixbuf->get_width()/2, pixbuf->get_height()/2);
-}     
+  else
+    {
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath);
+      if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
+        {
+          pixbuf = pixbuf->scale_simple(std::max(4, int(pixbuf->get_width()  * wst->get_state().get_zoom())),
+                                        std::max(4, int(pixbuf->get_height() * wst->get_state().get_zoom())),
+                                        Gdk::INTERP_TILES);
+        }
+      context->set_icon(pixbuf, pixbuf->get_width()/2, pixbuf->get_height()/2);
+    }
+}
 
 void
 ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context, 
