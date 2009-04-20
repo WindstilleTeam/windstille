@@ -513,12 +513,10 @@ void
 WindstilleWidget::selection_delete()
 {
   boost::shared_ptr<GroupCommand> group_cmd(new GroupCommand());
-
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
       group_cmd->add(CommandHandle(new ObjectRemoveCommand(*sector_model, *i)));
     }
-
   undo_manager->execute(group_cmd);
   EditorWindow::current()->update_undo_state();
 
@@ -699,9 +697,14 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
   EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
 
   if (!path.gobj())
-    std::cout << "WindstilleWidget::on_drag_data_received(): Error: Couldn't get path" << std::endl;
+    {
+      std::cout << "WindstilleWidget::on_drag_data_received(): Error: Couldn't get path" << std::endl;
+    }
   else
-    sector_model->add(object, path);
+    {
+      undo_manager->execute(CommandHandle(new ObjectAddCommand(sector_model->get_layer(path), object)));
+      EditorWindow::current()->update_undo_state();
+    }
 }
 
 void

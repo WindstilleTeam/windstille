@@ -26,13 +26,13 @@
 class ObjectRemoveCommand : public Command
 {
 private:
-  ObjectModelHandle    object;
   LayerHandle          layer;
+  ObjectModelHandle    object;
 
 public:
   ObjectRemoveCommand(SectorModel& sector, ObjectModelHandle object_)
-    : object(object_),
-      layer(sector.get_layer(object))
+    : layer(sector.get_layer(object_)),
+      object(object_)
   {}
   virtual ~ObjectRemoveCommand() {}
   
@@ -44,6 +44,28 @@ public:
     layer->add(object);
   }
 
+};
+
+class ObjectAddCommand : public Command
+{
+private:
+  LayerHandle          layer;
+  ObjectModelHandle    object;
+  
+public:
+  ObjectAddCommand(LayerHandle layer_, ObjectModelHandle object_)
+    : layer(layer_),
+      object(object_)
+  {}
+  virtual ~ObjectAddCommand() {}
+  
+  void redo() {
+    layer->add(object);
+  }
+
+  void undo() {
+    layer->remove(object);
+  }
 };
 
 #endif
