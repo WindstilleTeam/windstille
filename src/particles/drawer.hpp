@@ -21,7 +21,7 @@
 
 class DrawingContext;
 class ParticleSystem;
-
+
 // FIXME: Rename this to ParticleDrawer or move it into a "namespace particles"
 class Drawer
 {
@@ -29,7 +29,7 @@ public:
   virtual ~Drawer() {}
   virtual void draw(DrawingContext& sc, ParticleSystem& psys) =0;
 };
-
+
 #endif
 
 /* EOF */

@@ -65,7 +65,7 @@ ParticleSystem::ParticleSystem(FileReader& props)
   props.get("bunching", p_bunching);
   set_bunching(p_bunching);
 
-  props.get("name", name);
+  //FIXME: commented since it causes trouble for the editor: props.get("name", name);
     
   float p_lifetime;
   if (props.get("lifetime", p_lifetime))
@@ -267,8 +267,11 @@ ParticleSystem::spawn(Particle& particle)
 {
   randomizer->set_pos(particle);
 
-  particle.x   += (parent ? parent->get_pos().x : 0) + x_pos + spawn_x;
-  particle.y   += (parent ? parent->get_pos().y : 0) + y_pos + spawn_y;
+  particle.x   += x_pos + spawn_x;
+  particle.y   += y_pos + spawn_y;
+  // FIXME: parent handling disabled due to work on the editor
+  // particle.x   += (parent ? parent->get_pos().x : 0) + x_pos + spawn_x;
+  // particle.y   += (parent ? parent->get_pos().y : 0) + y_pos + spawn_y;
 
   float direction = rnd.drand(cone_start, cone_stop);
   float speed     = rnd.drand(speed_start, speed_stop);

@@ -16,12 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "display/drawing_context.hpp"
+#include "util/file_reader.hpp"
 #include "display/drawing_request.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "particle_system.hpp"
 #include "display/color.hpp"
 #include "spark_drawer.hpp"
-
+
 SparkDrawer::SparkDrawer(FileReader& props)
 {
   width = 1.0f;
@@ -74,5 +76,5 @@ SparkDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
 
   dc.draw(buffer);
 }
-
+
 /* EOF */

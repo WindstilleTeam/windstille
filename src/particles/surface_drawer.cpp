@@ -16,12 +16,13 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "util/file_reader.cpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "particle_system.hpp"
-#include "app/console.hpp" 
 #include "display/surface_manager.hpp"
+#include "display/drawing_context.hpp"
 #include "surface_drawer.hpp"
-
+
 SurfaceDrawer::SurfaceDrawer(Surface surface_)
   : surface(surface_)
 {
@@ -45,7 +46,7 @@ static GLenum string2blendfunc(const std::string& str)
   }
   // FIXME: Implement the rest blendfunc here
   else {
-    console << "Unknown blendfunc: '" << str << "'" << std::endl;
+    std::cout << "string2blendfunc: Unknown blendfunc: '" << str << "'" << std::endl;
     return GL_ONE;
   }
 }
@@ -140,5 +141,5 @@ SurfaceDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
 
   dc.draw(buffer);
 }
-
+
 /* EOF */

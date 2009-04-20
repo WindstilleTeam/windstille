@@ -19,12 +19,14 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_PARTICLE_SYSTEM_HPP
 #define HEADER_WINDSTILLE_PARTICLES_PARTICLE_SYSTEM_HPP
 
+#include <memory>
 #include <vector>
 
+#include "math/rect.hpp"
 #include "display/color.hpp"
 #include "drawer.hpp"
-#include "engine/entity.hpp"
-
+
+class FileReader;
 class SceneContext;
 class Randomizer;
 struct Particle;
@@ -48,7 +50,7 @@ struct Particle
   float t;
 };
 
-class ParticleSystem : public Entity
+class ParticleSystem
 {
 public:
   typedef std::vector<Particle> Particles;
