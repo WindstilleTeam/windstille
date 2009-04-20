@@ -30,6 +30,7 @@
 #include "editor_window.hpp"
 #include "scroll_tool.hpp"
 #include "sector_model.hpp"
+#include "undo_manager.hpp"
 
 #include "sprite_object_model.hpp"
 #include "windstille_widget.hpp"
@@ -40,6 +41,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
                                    const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list)
   : editor(editor_),
+    undo_manager(new UndoManager()),
     sector_model(new SectorModel()),
     scroll_tool(new ScrollTool()),
     map_type(DecalObjectModel::COLORMAP),
@@ -288,6 +290,18 @@ WindstilleWidget::draw()
                              Sizef(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.5f));
         }
     }
+}
+
+void
+WindstilleWidget::undo()
+{
+  undo_manager->undo();
+}
+
+void
+WindstilleWidget::redo()
+{
+  undo_manager->redo();
 }
 
 void

@@ -13,6 +13,11 @@ enhanchment, actually enhanchmes anything at all.
 Scripting
 =========
 
+* http://udn.epicgames.com/Three/UnrealScriptReference.html
+* http://www.modwiki.net/wiki/Scripting
+* http://developer.valvesoftware.com/wiki/Scripted_sequence
+* http://developer.valvesoftware.com/wiki/Faceposer
+
 * ParticleSystem could be hooked up to scripting
 
 * add a way to bind keys to script functions for use in debugging
@@ -588,7 +593,8 @@ Editor
 * turn the Selection into a kind-of ControlPoint, this would allow to
   keep the move/offset logic out of the ObjectModel
 
-* maybe have different RGB and RGBA Textures in the TexturePacker
+* maybe have different RGB and RGBA Textures in the TexturePacker to
+  save a bit of space
 
 * share SoftwareSurface via Manager class, generalize Manager classes
   -> template
@@ -768,6 +774,31 @@ Editor
   cloned (maybe have "Paste" and "Paste On Top")
 
 * think about Undo/Redo
+
+  * CommandGroupCommand
+
+  * NodeAddCommand
+  * NodeRemoveCommand
+  * EdgeAddCommand
+  * EdgeRemoveCommand
+  * NodeSetPosCommand
+
+  * ObjectAddCommand
+  * ObjectRemoveCommand
+  * ObjectSetAngleCommand
+  * ObjectSetScaleCommand
+  * ObjectSetPosCommand
+  * ObjectSetParent
+  * ObjectSetHFlip
+  * ObjectSetVFlip
+  * ObjectReorderCommand (raise/lower)
+
+  * LayerAddCommand
+  * LayerRemovedCommand
+  * LayerReorderCommand
+
+  * GenericCommand(Object objects[],
+                   sigc::mem_fun(&ObjectModel::set_pos));
 
 * implement non-Surface based objects:
 

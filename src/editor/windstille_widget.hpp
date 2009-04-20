@@ -41,6 +41,7 @@
 #include "layer.hpp"
 
 class Tool;
+class UndoManager;
 class ScrollTool;
 class SectorModel;
 class EditorWindow;
@@ -53,6 +54,8 @@ class WindstilleWidget
 {
 private:
   EditorWindow& editor;
+
+  std::auto_ptr<UndoManager> undo_manager;
 
   std::string filename;
   std::auto_ptr<SectorModel> sector_model;
@@ -102,6 +105,9 @@ public:
   
   void draw();
   void update(float delta);
+
+  void undo();
+  void redo();
 
   void selection_raise();
   void selection_lower();

@@ -68,6 +68,15 @@ navgraph_lib = navgraph_env.StaticLibrary('navgraph', [
         'navigation/edge_position.cpp',
         ])
 
+particles_env = conf_env.Clone()
+particles_env['CPPPATH'] = ['.']
+particles_lib = particles_env.StaticLibrary('particles', [
+        'particles/deform_drawer.cpp',
+        'particles/particle_system.cpp',
+        'particles/spark_drawer.cpp',
+        'particles/surface_drawer.cpp',
+        ])
+
 display_env = conf_env.Clone()
 display_env['CPPPATH'] = ['.', '..']
 display_env.ParseConfig('sdl-config --cflags --libs')
@@ -107,7 +116,7 @@ display_lib = display_env.StaticLibrary('display', [
         ])
 
 env = conf_env.Clone()
-env.Append(LIBS    = [navgraph_lib, display_lib, physfs_lib, util_lib, math_lib,
+env.Append(LIBS    = [particles_lib, navgraph_lib, display_lib, physfs_lib, util_lib, math_lib,
                       'GL', 'GLU', 'GLEW', 'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals'])
 env.Append(LIBPATH = ['../external/'] )
 env.Append(CPPPATH = ['.', '..', '../external/SQUIRREL2/include/'])
@@ -193,10 +202,6 @@ env.Program('../windstille', [
         'objects/test_object.cpp',
         'objects/trigger.cpp',
         'objects/vrdummy.cpp',
-        'particles/deform_drawer.cpp',
-        'particles/particle_system.cpp',
-        'particles/spark_drawer.cpp',
-        'particles/surface_drawer.cpp',
         'properties/property.cpp',
         'properties/property_set.cpp',
         'properties/properties.cpp',
@@ -231,7 +236,7 @@ env.Program('../windstille', [
 
 editor_env = Environment(CPPPATH=['.'],
                          CXXFLAGS=['-Wall', '-Werror', '-O2', '-g'],
-                         LIBS = [navgraph_lib, display_lib, util_lib, physfs_lib, math_lib, 'GL', 'GLEW', 'SDL_image', 'physfs'])
+                         LIBS = [particles_lib, navgraph_lib, display_lib, util_lib, physfs_lib, math_lib, 'GL', 'GLEW', 'SDL_image', 'physfs'])
 
 editor_env.ParseConfig('pkg-config libpng --libs --cflags')
 editor_env.ParseConfig('sdl-config --cflags --libs')
@@ -253,6 +258,7 @@ editor_env.Program('../windstille-editor', [
         'editor/object_model.cpp',      
         'editor/object_model_factory.cpp',
         'editor/object_selector.cpp',
+        'editor/particle_system_object_model.cpp',
         'editor/layer_manager.cpp',
         'editor/navgraph_insert_tool.cpp',
         'editor/navgraph_select_tool.cpp',
@@ -264,6 +270,7 @@ editor_env.Program('../windstille-editor', [
         'editor/sprite_object_model.cpp',
         'editor/windstille_widget.cpp',
         'editor/zoom_tool.cpp',
+        'editor/undo_manager.cpp',
         ])
 
 # EOF #
