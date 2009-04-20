@@ -34,7 +34,7 @@
 #include "gui/list_view.hpp"
 #include "gui/text_view.hpp"
 #include "gui/automap.hpp"
-
+
 ParticleViewer::ParticleViewer()
 {
   background = Sprite("images/greychess.sprite");
@@ -117,5 +117,5 @@ ParticleViewer::update(float delta, const Controller& controller)
       MenuManager::display_pause_menu();
     }
 }
-
+
 /* EOF */

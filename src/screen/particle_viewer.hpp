@@ -24,13 +24,14 @@
 #include "screen.hpp"
 #include "sprite2d/sprite.hpp"
 #include "gui/gui_manager.hpp"
+#include "display/scene_context.hpp"
 #include "particles/particle_system.hpp"
-
+
 namespace gui {
 class Slider;
 class TabComponent;
 }
-
+
 class ParticleSystemGUI;
 
 /** */
@@ -56,7 +57,7 @@ private:
   ParticleViewer (const ParticleViewer&);
   ParticleViewer& operator= (const ParticleViewer&);
 };
-
+
 #endif
 
 /* EOF */
