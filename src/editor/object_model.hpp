@@ -47,7 +47,6 @@ protected:
   Vector2f move_offset;
 
 public:
-  ObjectModel();
   ObjectModel(const FileReader& reader);
   ObjectModel(const std::string& name, const Vector2f& pos);
   virtual ~ObjectModel();
