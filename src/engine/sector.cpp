@@ -156,7 +156,7 @@ Sector::add_object(FileReader& reader)
   } else if (reader.get_name() == "nightvision") {
     add(new Nightvision(reader));
   } else if (reader.get_name() == "particle-system") {
-    add(new ParticleSystem(reader));
+    // FIXME: disabled due to work on the editor: add(new ParticleSystem(reader));
   } else if(reader.get_name() == "scriptable-object") {    
     add(new ScriptableObject(reader));
   } else if (reader.get_name() == "vrdummy") {
