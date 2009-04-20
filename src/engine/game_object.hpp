@@ -33,9 +33,10 @@ class GameObject
 {
 private:
   static Sector* world;
-  
-protected:
+
   bool remove_flag;
+ 
+protected:
 
   /**
    * name of the GameObject. Note: You should not change it anymore once the
