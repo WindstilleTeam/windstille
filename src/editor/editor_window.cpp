@@ -845,9 +845,7 @@ EditorWindow::on_delete_layer()
       //wst->get_sector_model()->delete_layer(wst->get_current_layer_path());
 
       CommandHandle cmd(new LayerDeleteCommand(*wst->get_sector_model(), wst->get_current_layer_path()));
-      wst->get_undo_manager()->execute(cmd);
-      EditorWindow::current()->update_undo_state();
-      queue_draw();
+      wst->execute(cmd);
     }
 }
 
@@ -860,9 +858,7 @@ EditorWindow::on_new_layer()
       //wst->get_sector_model()->add_layer("New Layer", wst->get_current_layer_path());
 
       CommandHandle cmd(new LayerAddCommand(*wst->get_sector_model(), wst->get_current_layer_path()));
-      wst->get_undo_manager()->execute(cmd);
-      EditorWindow::current()->update_undo_state();
-      queue_draw();
+      wst->execute(cmd);
 
       layer_manager.get_treeview().expand_all();
     }

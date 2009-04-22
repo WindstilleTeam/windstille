@@ -118,6 +118,14 @@ WindstilleWidget::~WindstilleWidget()
 {
 }
 
+void
+WindstilleWidget::execute(CommandHandle cmd)
+{
+  undo_manager->execute(cmd);
+  EditorWindow::current()->update_undo_state();
+  queue_draw();
+}
+
 bool
 WindstilleWidget::on_timeout()
 {
@@ -377,9 +385,7 @@ WindstilleWidget::selection_vflip()
                                                               boost::bind(&ObjectModel::set_vflip, *i, !(*i)->get_vflip()))));
         }
 
-      undo_manager->execute(group_command);
-      EditorWindow::current()->update_undo_state();
-      queue_draw();
+      execute(group_command);
     }
 }
 
@@ -412,9 +418,7 @@ WindstilleWidget::selection_hflip()
                                                               boost::bind(&ObjectModel::set_hflip, *i, !(*i)->get_hflip()))));
         }
 
-      undo_manager->execute(group_command);
-      EditorWindow::current()->update_undo_state();
-      queue_draw();
+      execute(group_command);
     }
 }
 
@@ -436,9 +440,7 @@ WindstilleWidget::selection_connect_parent()
                                                               boost::bind(&ObjectModel::set_parent, *i, parent, true))));
         }
 
-      undo_manager->execute(group_command);
-      EditorWindow::current()->update_undo_state();
-      queue_draw();
+      execute(group_command);
     }
 }
 
@@ -454,9 +456,7 @@ WindstilleWidget::selection_clear_parent()
                                                           boost::bind(&ObjectModel::set_parent, *i, ObjectModelHandle(), true))));
     }
 
-  undo_manager->execute(group_command);
-  EditorWindow::current()->update_undo_state();
-  queue_draw();
+  execute(group_command);
 }
 
 void
@@ -507,8 +507,7 @@ WindstilleWidget::selection_duplicate()
         }
     }
 
-  undo_manager->execute(group_command);
-  EditorWindow::current()->update_undo_state();
+  execute(group_command);
   set_selection(new_selection);
 }
 
@@ -530,9 +529,7 @@ WindstilleWidget::selection_reset_rotation()
     }
 
   on_selection_change();
-  undo_manager->execute(group_command);
-  EditorWindow::current()->update_undo_state();
-  queue_draw();
+  execute(group_command);
 }
 
 void
@@ -558,9 +555,7 @@ WindstilleWidget::selection_reset_scale()
     }
 
  on_selection_change();
- undo_manager->execute(group_command);
- EditorWindow::current()->update_undo_state();
- queue_draw();
+ execute(group_command);
 }
 
 void
@@ -571,12 +566,10 @@ WindstilleWidget::selection_delete()
     {
       group_cmd->add(CommandHandle(new ObjectRemoveCommand(*sector_model, *i)));
     }
-  undo_manager->execute(group_cmd);
-  EditorWindow::current()->update_undo_state();
-  EditorWindow::current()->update_undo_state();
 
- selection->clear();
- queue_draw();
+  execute(group_cmd);
+  selection->clear();
+  queue_draw();
 }
 
 bool
@@ -757,8 +750,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
     }
   else
     {
-      undo_manager->execute(CommandHandle(new ObjectAddCommand(sector_model->get_layer(path), object)));
-      EditorWindow::current()->update_undo_state();
+      execute(CommandHandle(new ObjectAddCommand(sector_model->get_layer(path), object)));
     }
 }
 

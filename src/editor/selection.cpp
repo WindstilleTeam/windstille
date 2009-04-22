@@ -151,9 +151,7 @@ Selection::on_move_end(WindstilleWidget& wst, const Vector2f& offset)
     }
 
   non_moveable_objects.clear();
-
-  wst.get_undo_manager()->execute(group_command);
-  EditorWindow::current()->update_undo_state();
+  wst.execute(group_command);
   signal_changed();
 }
 

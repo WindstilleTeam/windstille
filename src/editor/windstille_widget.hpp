@@ -39,6 +39,7 @@
 #include "selection.hpp"
 #include "select_mask.hpp"
 #include "layer.hpp"
+#include "command.hpp"
 
 class Tool;
 class UndoManager;
@@ -79,6 +80,8 @@ public:
   virtual ~WindstilleWidget();
 
   GraphicContextState& get_state() { return state; }
+
+  void execute(CommandHandle);
 
   virtual void on_realize();
   virtual bool on_timeout();
