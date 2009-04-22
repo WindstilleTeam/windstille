@@ -458,6 +458,7 @@ WindstilleWidget::selection_clear_parent()
 void
 WindstilleWidget::selection_duplicate()
 {
+  boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
   std::map<ObjectModelHandle, ObjectModelHandle> parent_map;
 
   SelectionHandle new_selection = Selection::create();
@@ -476,8 +477,10 @@ WindstilleWidget::selection_duplicate()
         {
           // Move clone a litte to make it more obvious that something happened
           obj->set_rel_pos(obj->get_rel_pos() + Vector2f(32.0f, 32.0f));
-          layer->add(obj);
           new_selection->add(obj);
+
+          //layer->add(obj);
+          group_command->add(CommandHandle(new ObjectAddCommand(layer, obj)));
         }
     }
 
@@ -499,6 +502,8 @@ WindstilleWidget::selection_duplicate()
             }
         }
     }
+
+  undo_manager->execute(group_command);
 
   set_selection(new_selection);
 }
