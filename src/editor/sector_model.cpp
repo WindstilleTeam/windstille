@@ -43,12 +43,12 @@ SectorModel::SectorModel()
   Gtk::ListStore::iterator it = layer_tree->append();
 
   LayerHandle layer(new Layer());
-
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[LayerManagerColumns::instance().name]      = Glib::ustring("Scene");
   (*it)[LayerManagerColumns::instance().visible]   = true;
   (*it)[LayerManagerColumns::instance().locked]    = false;
   (*it)[LayerManagerColumns::instance().layer]     = layer;
+  layer->sync(*it);
 
   layer_tree->signal_row_changed().connect(sigc::mem_fun(*this, &SectorModel::on_row_changed));
   layer_tree->signal_row_deleted().connect(sigc::mem_fun(*this, &SectorModel::on_row_deleted));
@@ -72,9 +72,9 @@ SectorModel::add_layer(LayerHandle layer, const Gtk::TreeModel::Path& path)
     it = layer_tree->insert(layer_tree->get_iter(path));
   
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
-  (*it)[LayerManagerColumns::instance().name]      = "Restored Layer";
-  (*it)[LayerManagerColumns::instance().visible]   = true; 
-  (*it)[LayerManagerColumns::instance().locked]    = false; 
+  (*it)[LayerManagerColumns::instance().name]      = layer->get_name();
+  (*it)[LayerManagerColumns::instance().visible]   = layer->is_visible();
+  (*it)[LayerManagerColumns::instance().locked]    = layer->is_locked();
   (*it)[LayerManagerColumns::instance().layer]     = layer;
 }
 
@@ -88,11 +88,13 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
   else
     it = layer_tree->insert(layer_tree->get_iter(path));
 
+  LayerHandle layer(new Layer());
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[LayerManagerColumns::instance().name]      = name;
   (*it)[LayerManagerColumns::instance().visible]   = true; 
   (*it)[LayerManagerColumns::instance().locked]    = false; 
-  (*it)[LayerManagerColumns::instance().layer]     = LayerHandle(new Layer());
+  (*it)[LayerManagerColumns::instance().layer]     = layer;
+  layer->sync(*it);
 }
 
 void
@@ -377,7 +379,7 @@ SectorModel::load_layer(const FileReader& reader,
   (*it)[LayerManagerColumns::instance().locked]    = locked; 
   (*it)[LayerManagerColumns::instance().layer]     = layer;
 
-  layer->update(*it);
+  layer->sync(*it);
 }
 
 void
@@ -479,14 +481,14 @@ struct PropSetFunctor
   bool set_visible(const Gtk::TreeModel::iterator& it)
   {
     (*it)[LayerManagerColumns::instance().visible] = v;
-    ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
+    ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->sync(*it);
     return false;
   }
   
   bool set_locked(const Gtk::TreeModel::iterator& it)
   {
     (*it)[LayerManagerColumns::instance().locked] = v;
-    ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->update(*it);
+    ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->sync(*it);
     return false;
   }
 };
@@ -525,7 +527,7 @@ SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeMod
       LayerHandle layer = (*iter)[LayerManagerColumns::instance().layer];
       if (layer)
         {
-          layer->update(*iter);
+          layer->sync(*iter);
         }
     }
 

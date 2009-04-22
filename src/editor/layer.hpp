@@ -69,7 +69,7 @@ public:
 
   void draw(SceneContext& sc, const SelectMask& layers);
   void update(float delta);
-  void update(const Gtk::TreeModel::Row& row);
+  void sync(const Gtk::TreeModel::Row& row);
 
   ObjectModelHandle get_object_at(const Vector2f& pos, const SelectMask& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;

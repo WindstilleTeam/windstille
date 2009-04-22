@@ -58,7 +58,7 @@ Layer::draw(SceneContext& sc, const SelectMask& select_mask)
 }
 
 void
-Layer::update(const Gtk::TreeModel::Row& row)
+Layer::sync(const Gtk::TreeModel::Row& row)
 {
   name    = ((Glib::ustring)row[LayerManagerColumns::instance().name]).raw();
   visible = row[LayerManagerColumns::instance().visible];
