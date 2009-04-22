@@ -44,7 +44,6 @@ protected:
   SelectMask  select_mask;
 
   ObjectModelPtr parent_ptr;
-  Vector2f move_offset;
 
 public:
   ObjectModel(const FileReader& reader);
@@ -61,11 +60,7 @@ public:
   void set_world_pos(const Vector2f& p);
 
   Vector2f get_rel_pos() const { return rel_pos; }
-  void     set_rel_pos(const Vector2f& rel_pos_)  {  rel_pos = rel_pos_; }
-  
-  void on_move_start();
-  void on_move_update(const Vector2f& offset);
-  void on_move_end(const Vector2f& offset);
+  void     set_rel_pos(const Vector2f& rel_pos_);
 
   SelectMask get_select_mask() const { return select_mask; }
   void   set_select_mask(const SelectMask& select_mask_) { select_mask = select_mask_; }

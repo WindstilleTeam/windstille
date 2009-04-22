@@ -787,19 +787,19 @@ Editor
   * ObjectRemoveCommand   [done]
   * ObjectReorderCommand (raise/lower)
 
-  * ObjectSetAngleCommand
-  * ObjectSetScaleCommand
-  * ObjectSetPosCommand
-  * ObjectSetParent
-  * ObjectSetHFlip
-  * ObjectSetVFlip
+  * ObjectSetAngleCommand [done]
+  * ObjectSetScaleCommand [done]
+  * ObjectSetPosCommand   [done]
+  * ObjectSetParent       [done]
+  * ObjectSetHFlip        [done]
+  * ObjectSetVFlip        [done]
 
   * LayerAddCommand
   * LayerRemovedCommand
   * LayerReorderCommand
 
-  * GenericCommand(Object objects[],
-                   sigc::mem_fun(&ObjectModel::set_pos));
+  * FunctorCommand(boost::functor<void ()>& undo,
+                   boost::functor<void ()>& redo); [done]
 
 * implement non-Surface based objects:
 

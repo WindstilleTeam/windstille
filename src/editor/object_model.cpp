@@ -113,11 +113,11 @@ ObjectModel::get_world_pos() const
   ObjectModelHandle parent = parent_ptr.lock();
   if (parent.get())
     {
-      return rel_pos + move_offset + parent->get_world_pos();
+      return rel_pos + parent->get_world_pos();
     }
   else
     {
-      return rel_pos + move_offset;
+      return rel_pos;
     }
 }
 
@@ -128,6 +128,14 @@ ObjectModel::set_world_pos(const Vector2f& p)
     rel_pos += p - get_world_pos();
   else
     rel_pos = p;
+}
+
+void
+ObjectModel::set_rel_pos(const Vector2f& rel_pos_)
+{
+  // Cut to integer positions
+  rel_pos.x = floorf(rel_pos_.x);
+  rel_pos.y = floorf(rel_pos_.y);
 }
 
 void
@@ -150,38 +158,6 @@ ObjectModel::draw(SceneContext& sc)
     }
 
   //sc.control().fill_rect(Rectf(wo_pos - Vector2f(8, 8), Sizef(16, 16)), Color(1,0,0));
-}
-
-void
-ObjectModel::on_move_start()
-{
-}
-
-void
-ObjectModel::on_move_update(const Vector2f& offset)
-{
-  // Cut to integer positions
-  move_offset.x = floorf(offset.x);
-  move_offset.y = floorf(offset.y);
-
-  // Cut to integer positions
-  rel_pos.x = floorf(rel_pos.x);
-  rel_pos.y = floorf(rel_pos.y);
-}
-
-void
-ObjectModel::on_move_end(const Vector2f& offset)
-{
-  // Cut to integer positions
-  move_offset.x = floorf(offset.x);
-  move_offset.y = floorf(offset.y);
-
-  rel_pos += move_offset;
-  move_offset = Vector2f(0,0);
-
-  // Cut to integer positions
-  rel_pos.x = floorf(rel_pos.x);
-  rel_pos.y = floorf(rel_pos.y);
 }
 
 void

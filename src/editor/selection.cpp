@@ -17,6 +17,12 @@
 */
 
 #include <iostream>
+#include <boost/bind.hpp>
+
+#include "undo_manager.hpp"
+#include "group_command.hpp"
+#include "functor_command.hpp"
+#include "windstille_widget.hpp"
 #include "editor_window.hpp"
 #include "selection.hpp"
 
@@ -99,10 +105,15 @@ Selection::on_move_start()
         }
     }
 
+  object_orig_poss.clear();
+
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
       if (non_moveable_objects.find(*i) == non_moveable_objects.end())
-        (*i)->on_move_start();
+        {
+          //(*i)->on_move_start();
+          object_orig_poss.push_back((*i)->get_rel_pos());
+        }
     }
 
   signal_changed();
@@ -114,23 +125,35 @@ Selection::on_move_update(const Vector2f& offset)
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
       if (non_moveable_objects.find(*i) == non_moveable_objects.end())
-        (*i)->on_move_update(offset);
+        {
+          (*i)->set_rel_pos(object_orig_poss[i - objects.begin()] + offset);
+        }
     }
 }
 
 void
-Selection::on_move_end(const Vector2f& offset)
+Selection::on_move_end(WindstilleWidget& wst, const Vector2f& offset)
 {
   moving = false;
+
+  boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
 
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
       if (non_moveable_objects.find(*i) == non_moveable_objects.end())
-        (*i)->on_move_end(offset);
+        {
+          //(*i)->on_move_end(offset);
+          //(*i)->set_rel_pos(object_orig_poss[i - objects.begin()]);
+
+          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_poss[i - objects.begin()]),
+                                                              boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_poss[i - objects.begin()] + offset))));
+        }
     }
 
   non_moveable_objects.clear();
 
+  wst.get_undo_manager()->execute(group_command);
+  EditorWindow::current()->update_undo_state();
   signal_changed();
 }
 

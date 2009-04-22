@@ -756,6 +756,8 @@ EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
       background_layer->set_active(wst->get_draw_background_pattern());
       visible_layer->set_active(wst->get_draw_only_active_layer());
       grid_layer->set_active(wst->get_enable_grid());
+
+      update_undo_state();
     }
   else
     {

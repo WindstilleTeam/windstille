@@ -378,6 +378,7 @@ WindstilleWidget::selection_vflip()
         }
 
       undo_manager->execute(group_command);
+      EditorWindow::current()->update_undo_state();
       queue_draw();
     }
 }
@@ -412,6 +413,7 @@ WindstilleWidget::selection_hflip()
         }
 
       undo_manager->execute(group_command);
+      EditorWindow::current()->update_undo_state();
       queue_draw();
     }
 }
@@ -435,6 +437,7 @@ WindstilleWidget::selection_connect_parent()
         }
 
       undo_manager->execute(group_command);
+      EditorWindow::current()->update_undo_state();
       queue_draw();
     }
 }
@@ -452,6 +455,7 @@ WindstilleWidget::selection_clear_parent()
     }
 
   undo_manager->execute(group_command);
+  EditorWindow::current()->update_undo_state();
   queue_draw();
 }
 
@@ -504,7 +508,7 @@ WindstilleWidget::selection_duplicate()
     }
 
   undo_manager->execute(group_command);
-
+  EditorWindow::current()->update_undo_state();
   set_selection(new_selection);
 }
 
@@ -527,6 +531,7 @@ WindstilleWidget::selection_reset_rotation()
 
   on_selection_change();
   undo_manager->execute(group_command);
+  EditorWindow::current()->update_undo_state();
   queue_draw();
 }
 
@@ -554,6 +559,7 @@ WindstilleWidget::selection_reset_scale()
 
  on_selection_change();
  undo_manager->execute(group_command);
+ EditorWindow::current()->update_undo_state();
  queue_draw();
 }
 
@@ -566,6 +572,7 @@ WindstilleWidget::selection_delete()
       group_cmd->add(CommandHandle(new ObjectRemoveCommand(*sector_model, *i)));
     }
   undo_manager->execute(group_cmd);
+  EditorWindow::current()->update_undo_state();
   EditorWindow::current()->update_undo_state();
 
  selection->clear();

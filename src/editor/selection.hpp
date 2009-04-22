@@ -27,6 +27,7 @@
 #include "object_model.hpp"
 
 class Selection;
+class WindstilleWidget;
 typedef boost::shared_ptr<Selection> SelectionHandle;
 
 class Selection
@@ -34,6 +35,8 @@ class Selection
 private:
   typedef std::vector<ObjectModelHandle> Objects;
   Objects objects;
+
+  std::vector<Vector2f> object_orig_poss;
 
   std::set<ObjectModelHandle> non_moveable_objects;
 
@@ -80,7 +83,7 @@ public:
 
   void on_move_start();
   void on_move_update(const Vector2f& offset);
-  void on_move_end(const Vector2f& offset);
+  void on_move_end(WindstilleWidget& wst, const Vector2f& offset);
   
   /** Performs a deep clone of the selection */
   SelectionHandle clone() const;

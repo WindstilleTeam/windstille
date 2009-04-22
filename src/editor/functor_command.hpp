@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_FUNCTOR_COMMAND_HPP
 #define HEADER_WINDSTILLE_EDITOR_FUNCTOR_COMMAND_HPP
 
+#include <boost/function.hpp>
+
 #include "command.hpp"
 
 class FunctorCommand : public Command

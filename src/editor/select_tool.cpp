@@ -185,11 +185,11 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
       
           if (event->state & GDK_CONTROL_MASK)
             {
-              selection->on_move_end(offset + process_snap(wst));
+              selection->on_move_end(wst, offset + process_snap(wst));
             }
           else
             {
-              selection->on_move_end(offset);
+              selection->on_move_end(wst, offset);
             }
           wst.queue_draw();
         }
