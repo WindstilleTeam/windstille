@@ -783,15 +783,16 @@ Editor
   * EdgeRemoveCommand
   * NodeSetPosCommand
 
-  * ObjectAddCommand
-  * ObjectRemoveCommand
+  * ObjectAddCommand      [done]
+  * ObjectRemoveCommand   [done]
+  * ObjectReorderCommand (raise/lower)
+
   * ObjectSetAngleCommand
   * ObjectSetScaleCommand
   * ObjectSetPosCommand
   * ObjectSetParent
   * ObjectSetHFlip
   * ObjectSetVFlip
-  * ObjectReorderCommand (raise/lower)
 
   * LayerAddCommand
   * LayerRemovedCommand

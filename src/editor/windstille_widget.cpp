@@ -20,6 +20,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <gtkmm.h>
+#include <boost/bind.hpp>
 
 #include "sprite2d/sprite.hpp"
 #include "display/display.hpp"
@@ -33,6 +34,7 @@
 #include "undo_manager.hpp"
 #include "group_command.hpp"
 #include "object_commands.hpp"
+#include "functor_command.hpp"
 
 #include "sprite_object_model.hpp"
 #include "windstille_widget.hpp"
@@ -351,6 +353,8 @@ WindstilleWidget::selection_vflip()
 {
   if (!selection->empty())
     {
+      boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+
       if (selection->size() > 1)
         {
           const Vector2f& center = selection->get_bounding_box().get_center();
@@ -360,14 +364,20 @@ WindstilleWidget::selection_vflip()
           
               pos.y = center.y + (center.y - pos.y);
           
-              (*i)->set_world_pos(pos);
+              //(*i)->set_world_pos(pos);
+              group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
+                                                                  boost::bind(&ObjectModel::set_world_pos, *i, pos))));
             }
         }
 
       for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
         {
-          (*i)->set_vflip(!(*i)->get_vflip());
+          //(*i)->set_vflip(!(*i)->get_vflip());
+          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_vflip, *i,  (*i)->get_vflip()),
+                                                              boost::bind(&ObjectModel::set_vflip, *i, !(*i)->get_vflip()))));
         }
+
+      undo_manager->execute(group_command);
       queue_draw();
     }
 }
@@ -377,6 +387,8 @@ WindstilleWidget::selection_hflip()
 {
   if (!selection->empty())
     {
+      boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+
       if (selection->size() > 1)
         {
           const Vector2f& center = selection->get_bounding_box().get_center();
@@ -386,14 +398,20 @@ WindstilleWidget::selection_hflip()
           
               pos.x = center.x + (center.x - pos.x);
           
-              (*i)->set_world_pos(pos);
+              //(*i)->set_world_pos(pos);
+              group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
+                                                                  boost::bind(&ObjectModel::set_world_pos, *i, pos))));
             }
         }
 
       for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
         {
-          (*i)->set_hflip(!(*i)->get_hflip());
+          //(*i)->set_hflip(!(*i)->get_hflip());
+          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_hflip, *i,  (*i)->get_hflip()),
+                                                              boost::bind(&ObjectModel::set_hflip, *i, !(*i)->get_hflip()))));
         }
+
+      undo_manager->execute(group_command);
       queue_draw();
     }
 }
@@ -403,25 +421,37 @@ WindstilleWidget::selection_connect_parent()
 {
   if (selection->size() >= 2)
     {
+      boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+
       ObjectModelHandle parent = *selection->begin();
 
       Selection::iterator i = selection->begin();
       ++i;
       for(; i != selection->end(); ++i)
         {
-          (*i)->set_parent(parent);
+          //(*i)->set_parent(parent);
+          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
+                                                              boost::bind(&ObjectModel::set_parent, *i, parent, true))));
         }
+
+      undo_manager->execute(group_command);
+      queue_draw();
     }
-  queue_draw();
 }
 
 void
 WindstilleWidget::selection_clear_parent()
 {
+  boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
-      (*i)->set_parent(ObjectModelHandle());
+      //(*i)->set_parent(ObjectModelHandle());
+      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
+                                                          boost::bind(&ObjectModel::set_parent, *i, ObjectModelHandle(), true))));
     }
+
+  undo_manager->execute(group_command);
   queue_draw();
 }
 
@@ -476,15 +506,22 @@ WindstilleWidget::selection_duplicate()
 void
 WindstilleWidget::selection_reset_rotation()
 {
+  boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
       DecalObjectModel* decal = dynamic_cast<DecalObjectModel*>(i->get());
+
       if (decal)
         {
-          decal->set_angle(0.0f);
+          //decal->set_angle(0.0f);
+          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&DecalObjectModel::set_angle, decal, decal->get_angle()),
+                                                              boost::bind(&DecalObjectModel::set_angle, decal, 0.0f))));
         }
     }
+
   on_selection_change();
+  undo_manager->execute(group_command);
   queue_draw();
 }
 
@@ -497,15 +534,21 @@ WindstilleWidget::selection_object_properties()
 void
 WindstilleWidget::selection_reset_scale()
 {
+  boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+
  for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
       DecalObjectModel* decal = dynamic_cast<DecalObjectModel*>(i->get());
       if (decal)
         {
-          decal->set_scale(Vector2f(1.0f, 1.0f));
+          //decal->set_scale(Vector2f(1.0f, 1.0f));
+          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&DecalObjectModel::set_scale, decal, decal->get_scale()),
+                                                              boost::bind(&DecalObjectModel::set_scale, decal, Vector2f(1.0f, 1.0f)))));
         }
     }
+
  on_selection_change();
+ undo_manager->execute(group_command);
  queue_draw();
 }
 

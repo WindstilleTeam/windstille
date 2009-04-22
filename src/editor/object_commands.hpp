@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_OBJECT_COMMANDS_HPP
 #define HEADER_WINDSTILLE_EDITOR_OBJECT_COMMANDS_HPP
 
+#include <boost/function.hpp>
+
 #include "layer.hpp"
 #include "object_model.hpp"
 #include "command.hpp"
@@ -65,6 +67,30 @@ public:
 
   void undo() {
     layer->remove(object);
+  }
+};
+
+class ObjectSetPosCommand : public Command
+{
+private:
+  ObjectModelHandle    object;
+  Vector2f             orig_pos;
+  Vector2f             new_pos;
+  
+public:
+  ObjectSetPosCommand(ObjectModelHandle object_, const Vector2f& new_pos_)
+    : object(object_),
+      orig_pos(object->get_rel_pos()),
+      new_pos(new_pos_)
+  {}
+  virtual ~ObjectSetPosCommand() {}
+  
+  void redo() {
+    object->set_rel_pos(new_pos);
+  }
+
+  void undo() {
+    object->set_rel_pos(orig_pos);
   }
 };
 
