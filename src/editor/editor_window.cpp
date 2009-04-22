@@ -30,6 +30,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/separatortoolitem.h>
 
+#include "layer_commands.hpp"
 #include "undo_manager.hpp"
 #include "display/scene_context.hpp"
 #include "windstille_widget.hpp"
@@ -41,6 +42,7 @@
 #include "navgraph_select_tool.hpp"
 #include "sector_model.hpp"
 #include "layer_widget.hpp"
+
 #include "editor_window.hpp"
 
 EditorWindow* EditorWindow::current_ = 0;
@@ -840,7 +842,12 @@ EditorWindow::on_delete_layer()
   if (WindstilleWidget* wst = get_windstille_widget())
     {
       //std::cout << "Deleting layer: " << wst << std::endl;
-      wst->get_sector_model()->delete_layer(wst->get_current_layer_path());
+      //wst->get_sector_model()->delete_layer(wst->get_current_layer_path());
+
+      CommandHandle cmd(new LayerDeleteCommand(*wst->get_sector_model(), wst->get_current_layer_path()));
+      wst->get_undo_manager()->execute(cmd);
+      EditorWindow::current()->update_undo_state();
+      queue_draw();
     }
 }
 
@@ -850,7 +857,12 @@ EditorWindow::on_new_layer()
   if (WindstilleWidget* wst = get_windstille_widget())
     {
       //std::cout << "Adding layer" << std::endl;
-      wst->get_sector_model()->add_layer("New Layer", wst->get_current_layer_path());
+      //wst->get_sector_model()->add_layer("New Layer", wst->get_current_layer_path());
+
+      CommandHandle cmd(new LayerAddCommand(*wst->get_sector_model(), wst->get_current_layer_path()));
+      wst->get_undo_manager()->execute(cmd);
+      EditorWindow::current()->update_undo_state();
+      queue_draw();
 
       layer_manager.get_treeview().expand_all();
     }

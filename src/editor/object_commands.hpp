@@ -36,7 +36,6 @@ public:
     : layer(sector.get_layer(object_)),
       object(object_)
   {}
-  virtual ~ObjectRemoveCommand() {}
   
   void redo() {
     layer->remove(object);
@@ -59,7 +58,6 @@ public:
     : layer(layer_),
       object(object_)
   {}
-  virtual ~ObjectAddCommand() {}
   
   void redo() {
     layer->add(object);
@@ -83,7 +81,6 @@ public:
       orig_pos(object->get_rel_pos()),
       new_pos(new_pos_)
   {}
-  virtual ~ObjectSetPosCommand() {}
   
   void redo() {
     object->set_rel_pos(new_pos);

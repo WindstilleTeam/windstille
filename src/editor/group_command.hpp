@@ -30,7 +30,6 @@ private:
 
 public:
   GroupCommand() {}
-  ~GroupCommand() {}
 
   void add(CommandHandle cmd) {
     cmds.push_back(cmd);

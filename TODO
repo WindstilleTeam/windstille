@@ -522,6 +522,8 @@ Graphics
 Editor
 ======
 
+* unify delete/remove/erase a bit
+
 * figure out a way to rename image files without breaking the levels
 
 * new boost1.37 seems to be missing boost_signals, instead it has
@@ -775,7 +777,7 @@ Editor
 
 * think about Undo/Redo
 
-  * CommandGroupCommand
+  * CommandGroupCommand  [done]
 
   * NodeAddCommand
   * NodeRemoveCommand
@@ -794,8 +796,8 @@ Editor
   * ObjectSetHFlip        [done]
   * ObjectSetVFlip        [done]
 
-  * LayerAddCommand
-  * LayerRemovedCommand
+  * LayerAddCommand     [done, except proper order]
+  * LayerRemovedCommand [done, except proper order]
   * LayerReorderCommand
 
   * FunctorCommand(boost::functor<void ()>& undo,

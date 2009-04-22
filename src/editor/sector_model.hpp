@@ -52,7 +52,7 @@ public:
   Gtk::TreeModelColumn<Glib::ustring>              name;
   Gtk::TreeModelColumn<bool>                       visible;
   Gtk::TreeModelColumn<bool>                       locked;
-  Gtk::TreeModelColumn<LayerHandle>            layer;
+  Gtk::TreeModelColumn<LayerHandle>                layer;
 
 private:
   LayerManagerColumns() {
@@ -68,11 +68,10 @@ class SectorModel
 {
 private:
   std::auto_ptr<NavigationGraph> nav_graph;
-  Glib::RefPtr<Gtk::ListStore> layer_tree;
+  Glib::RefPtr<Gtk::ListStore>   layer_tree;
   Color ambient_color;
   
 public:
-  //typedef Objects::iterator iterator;
   typedef std::vector<LayerHandle> Layers;
 
   SectorModel();
@@ -87,6 +86,7 @@ public:
   void set_all_locked(bool v);
 
   void add_layer(const std::string& name, const Gtk::TreeModel::Path& path = Gtk::TreeModel::Path());
+  void add_layer(LayerHandle layer, const Gtk::TreeModel::Path& path = Gtk::TreeModel::Path());
   void delete_layer(const Gtk::TreeModel::Path& path);
 
   void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
@@ -100,8 +100,6 @@ public:
   Layers get_layers() const;
   LayerHandle get_layer(ObjectModelHandle object);
   
-  // void select_objects(const Rectf& rect, bool replace_old_selection = true) const;
-
   Glib::RefPtr<Gtk::ListStore> get_layer_tree() { return layer_tree; }
 
   void on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
@@ -129,9 +127,6 @@ public:
   NavigationGraph* get_nav_graph() const { return nav_graph.get(); }
 
   void queue_draw();
-
-  //iterator begin() { return objects.begin(); }
-  //iterator end() { return objects.end(); }
 
 private:
   SectorModel(const SectorModel&);

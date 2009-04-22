@@ -62,6 +62,23 @@ SectorModel::~SectorModel()
 }
 
 void
+SectorModel::add_layer(LayerHandle layer, const Gtk::TreeModel::Path& path)
+{
+ Gtk::ListStore::iterator it;
+
+  if (path.empty())
+    it = layer_tree->append();
+  else
+    it = layer_tree->insert(layer_tree->get_iter(path));
+  
+  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
+  (*it)[LayerManagerColumns::instance().name]      = "Restored Layer";
+  (*it)[LayerManagerColumns::instance().visible]   = true; 
+  (*it)[LayerManagerColumns::instance().locked]    = false; 
+  (*it)[LayerManagerColumns::instance().layer]     = layer;
+}
+
+void
 SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path)
 {
   Gtk::ListStore::iterator it;
@@ -519,7 +536,6 @@ void
 SectorModel::on_row_deleted(const Gtk::TreeModel::Path& path)
 {
   //std::cout << "LayerManager:on_row_deleted" << std::endl;
-  
   queue_draw();
 }
 
