@@ -205,5 +205,6 @@ Export('conf_env', 'features')
 
 SConscript('external/SConscript')
 SConscript('src/SConscript')
+SConscript('data/SConscript')
 
 # EOF #
