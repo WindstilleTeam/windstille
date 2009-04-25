@@ -37,6 +37,8 @@
 #pragma once
 #endif
 
+#include <iostream>
+
 class Sizef;
 
 //: 2D (width,height) size structure.
@@ -157,5 +159,10 @@ inline Size::Size(const Sizef& s)
 	: width(static_cast<int>(s.width)),
 	  height(static_cast<int>(s.height))
 {}
+
+inline std::ostream& operator<<(std::ostream& s, const Size& size) 
+{
+  return s << "Size(" << size.width << ", " << size.height << ")";
+}
 
 #endif
