@@ -340,9 +340,9 @@ SectorModel::load_layer(const FileReader& reader,
   bool visible = true;;
   bool locked  = false;
 
-  reader.get("name", name);
+  reader.get("name",    name);
   reader.get("visible", visible);
-  reader.get("locked", locked);
+  reader.get("locked",  locked);
   reader.get("objects", objects_reader);
 
   //std::cout << "loading layer: " << reader.get_name() << " " << name << " " << visible << " " << locked << std::endl;
