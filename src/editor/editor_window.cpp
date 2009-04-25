@@ -80,6 +80,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "      <menuitem action='Save'/>"
     "      <menuitem action='SaveAs'/>"
     "      <separator/>"
+    "      <menuitem action='SaveScreenshot'/>"
+    "      <separator/>"
     "      <menuitem action='Close'/>"
     "      <menuitem action='Quit'/>"
     "    </menu>"
@@ -211,6 +213,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::mem_fun(*this, &EditorWindow::on_close));
   action_group->add(Gtk::Action::create("Quit",        Gtk::Stock::QUIT),
                     sigc::mem_fun(*this, &EditorWindow::on_quit));
+
+  action_group->add(Gtk::Action::create_with_icon_name("SaveScreenshot", "saveas", "Save Screenshot", "Save Screenshot"),
+                    Gtk::AccelKey(GDK_F12, Gdk::CONTROL_MASK),
+                    sigc::mem_fun(*this, &EditorWindow::on_save_screenshot));
 
   {
     Glib::RefPtr<Gtk::RecentAction> recent_action = Gtk::RecentAction::create("FileRecentFiles", Gtk::Stock::OPEN);
@@ -560,6 +566,50 @@ EditorWindow::on_save_as()
             {
               //std::cout << "Cancel clicked." << std::endl;
               break;
+            }
+        }
+    }
+}
+
+void
+EditorWindow::on_save_screenshot()
+{
+  int page = notebook.get_current_page();
+  if (page == -1)
+    {
+      // do nothing;
+    }
+  else
+    {
+      if (WindstilleWidget* wst = static_cast<WindstilleWidget*>(notebook.get_nth_page(page)))
+        {
+          Gtk::FileChooserDialog dialog("Save Screenshot",
+                                        Gtk::FILE_CHOOSER_ACTION_SAVE);
+          dialog.set_transient_for(*this);
+          dialog.set_do_overwrite_confirmation(true);
+
+          dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+          dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
+
+
+ 
+          dialog.set_current_folder("/tmp/");
+
+          switch(dialog.run())
+            {
+              case(Gtk::RESPONSE_OK):
+                {
+                  std::string filename = dialog.get_filename();
+                  std::cout << "unimplemented screenshot: " << filename << std::endl;
+                  wst->save_screenshot(filename);
+                  break;
+                }
+
+              case(Gtk::RESPONSE_CANCEL):
+                {
+                  //std::cout << "Cancel clicked." << std::endl;
+                  break;
+                }
             }
         }
     }

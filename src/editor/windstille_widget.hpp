@@ -164,6 +164,8 @@ public:
 
   void on_selection_change();
 
+  void save_screenshot(const std::string& filename);
+
 private:
   WindstilleWidget (const WindstilleWidget&);
   WindstilleWidget& operator= (const WindstilleWidget&);

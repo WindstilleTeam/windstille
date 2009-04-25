@@ -868,6 +868,18 @@ WindstilleWidget::create_control_points()
   control_points.clear();
   selection->add_control_points(control_points);
 }
+
+void
+WindstilleWidget::save_screenshot(const std::string& filename)
+{
+  Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
+
+  if (glwindow->gl_begin(get_gl_context()))
+    {
+      Display::save_screenshot(filename);
+      glwindow->gl_end();
+    }
+}
 
 SectorModel*
 WindstilleWidget::get_sector_model()

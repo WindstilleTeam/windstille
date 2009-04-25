@@ -473,29 +473,33 @@ Display::set_gamma(float r, float g, float b)
 void
 Display::save_screenshot(const std::string& filename)
 {
-  SDL_Surface* window = SDL_GetVideoSurface();
+  GLint viewport[4];
+  glGetIntegerv(GL_VIEWPORT, viewport);
+  Size size(viewport[2], viewport[3]);
 
-  const int width  = window->w;
-  const int height = window->h;
+  std::cout << "Viewpoint: " << size << std::endl;
 
-  int len = width * height * 3;
+  size.width /= 4;
+  size.width *= 4;
 
+  int len = size.width * size.height * 3;
+  
   boost::scoped_array<GLbyte> pixels(new GLbyte[len]);
 
-  glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels.get());
+  glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, pixels.get());
 
   if (0)
     {
-      int pitch = width * 3;
+      int pitch = size.width * 3;
 
       // save to ppm
       std::ofstream out(filename.c_str());
       out << "P6\n"
           << "# Windstille Screenshot\n"
-          << width << " " << height << "\n"
+          << size.width << " " << size.height << "\n"
           << "255\n";
       
-      for(int y = height-1; y >= 0; --y)
+      for(int y = size.height-1; y >= 0; --y)
         out.write(reinterpret_cast<const char*>(pixels.get() + y*pitch), pitch);
 
       out.close();
@@ -503,10 +507,10 @@ Display::save_screenshot(const std::string& filename)
   else if (0) // BMP saving
     {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels.get(), width, height, 24, width*3,
+      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels.get(), size.width, size.height, 24, size.width*3,
                                                       0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
 #else
-      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels.get(), width, height, 24, width*3,
+      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels.get(), size.width, size.height, 24, size.width*3,
                                                       0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 #endif
 
@@ -524,7 +528,7 @@ Display::save_screenshot(const std::string& filename)
         }
       else
         {
-          int pitch   = width * 3;
+          int pitch   = size.width * 3;
           png_structp png_ptr;
           png_infop   info_ptr;
 
@@ -534,7 +538,7 @@ Display::save_screenshot(const std::string& filename)
           png_init_io(png_ptr, fp);
 
           png_set_IHDR(png_ptr, info_ptr, 
-                       width, height, 8 /* bitdepth */,
+                       size.width, size.height, 8 /* bitdepth */,
                        PNG_COLOR_TYPE_RGB,
                        PNG_INTERLACE_NONE, 
                        PNG_COMPRESSION_TYPE_BASE, 
@@ -543,11 +547,11 @@ Display::save_screenshot(const std::string& filename)
           png_set_compression_level(png_ptr, 6);
           png_write_info(png_ptr, info_ptr);
 
-          boost::scoped_array<png_bytep> row_pointers(new png_bytep[height]);
+          boost::scoped_array<png_bytep> row_pointers(new png_bytep[size.height]);
    
           // generate row pointers
-          for (int k = 0; k < height; k++)
-            row_pointers[k] = reinterpret_cast<png_byte*>(pixels.get() + ((height - k - 1) * pitch));
+          for (int k = 0; k < size.height; k++)
+            row_pointers[k] = reinterpret_cast<png_byte*>(pixels.get() + ((size.height - k - 1) * pitch));
 
           png_write_image(png_ptr, row_pointers.get());
 

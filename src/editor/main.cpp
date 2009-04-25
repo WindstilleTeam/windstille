@@ -49,7 +49,8 @@ WindstilleEditor::main(int argc, char** argv)
       PHYSFS_addToSearchPath("data/", 0);
       
       Glib::RefPtr<const Gdk::GL::Config> 
-        glconfig = Gdk::GL::Config::create(Gdk::GL::MODE_RGB |
+        glconfig = Gdk::GL::Config::create(/* FIXME: Using RGBA instead of RGB to make Display::save_screenshot work*/
+                                           Gdk::GL::MODE_RGBA | 
                                            //Gdk::GL::MODE_DEPTH);
                                            Gdk::GL::MODE_DOUBLE);
       if (!glconfig)
