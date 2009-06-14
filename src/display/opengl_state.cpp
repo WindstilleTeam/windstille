@@ -226,7 +226,7 @@ OpenGLState::activate()
   // do nothing for now, should be implemented later on
   impl->was_activated = true;
 
-  OpenGLState* global = OpenGLState::global();;
+  OpenGLState* global = OpenGLState::global();
   assert(global);
 
   // always apply color since it might have got changed between a glBegin/glEnd
@@ -273,6 +273,8 @@ OpenGLState::activate()
     {
       if (impl->texture[i] != global->impl->texture[i])
         { 
+          // FIXME: glActiveTexture() makes the game crash on Matrox
+          // G450, without that line it works
           glActiveTexture(GL_TEXTURE0 + i);
           if (impl->texture[i])
             {
