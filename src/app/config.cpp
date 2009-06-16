@@ -18,6 +18,7 @@
 
 #include "windstille.hpp"
 
+#include <stdio.h>
 #include <boost/format.hpp>
 #include <memory>
 #include <iostream>

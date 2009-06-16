@@ -17,7 +17,9 @@
 */
 
 #include <string.h>
+#include <stdint.h>
 #include <stdexcept>
+
 #include "wav_sound_file.hpp"
 
 static inline uint32_t read32LE(PHYSFS_file* file)

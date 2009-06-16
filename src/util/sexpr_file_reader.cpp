@@ -18,6 +18,8 @@
 
 #include <assert.h>
 #include <string.h>
+#include <stdint.h>
+
 #include "lisp/parser.hpp"
 #include "lisp/getters.hpp"
 #include "display/color.hpp"

@@ -20,6 +20,8 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <stdio.h>
+#include <iostream>
 
 #include <assert.h>
 #include "lisp/lisp.hpp"

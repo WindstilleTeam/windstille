@@ -16,10 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "shader_program.hpp"
 #include <iostream>
+#include <stdio.h>
+
 #include "shader_object.hpp"
 #include "util/util.hpp"
+#include "shader_program.hpp"
 
 class ShaderProgramImpl
 {

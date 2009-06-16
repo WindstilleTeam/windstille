@@ -17,6 +17,8 @@
 */
 
 #include <boost/bind.hpp>
+#include <iostream>
+
 #include "physics.hpp"
 
 Physics::Physics(Entity* entity)
@@ -59,7 +61,7 @@ Physics::collision(const CollisionData& data)
 void
 Physics::elastic_collision(const CollisionData& data, const Physics& other)
 {
-  printf("elastic collision.\n");
+  std::cout << "elastic collision." << std::endl;
   // we could calculate this cheaper if we'd do it once for both objects and not
   // each object on it's own...
 
@@ -81,7 +83,7 @@ Physics::elastic_collision(const CollisionData& data, const Physics& other)
 void
 Physics::bounce_collision(const CollisionData& data)
 {
-  printf("bounce collision.\n");
+  std::cout << "bounce collision." << std::endl;
   Vector2f collision_vel = data.direction * (velocity() * data.direction);
 
   velocity() -= collision_vel * (1.0 + bounciness);
