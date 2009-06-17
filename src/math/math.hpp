@@ -25,6 +25,8 @@
 
 namespace math {
 
+const float pi = 3.14159265358979323846f;
+
 template<class T> 
 T min (const T& a, const T& b) 
 {
@@ -51,17 +53,17 @@ T mid (const T& a, const T& b, const T& c)
 
 inline float normalize_angle(float radians)
 {
-  radians = fmodf(radians, static_cast<float>(2.0 * M_PI));
-  if (radians < 0.0)
-    radians += 2.0 * M_PI;
+  radians = fmodf(radians, 2.0f * math::pi);
+  if (radians < 0.0f)
+    radians += 2.0f * math::pi;
   // Floating point math is so loathsome.  In sp98test, the assertion
   // was barfing at P = 180 because a very small negative number plus
   // 2 PI was equalling 2 PI.  Gakk!
-  if (radians == 2.0 * M_PI)
-    radians = 0.0;
+  if (radians == 2.0f * math::pi)
+    radians = 0.0f;
   
   // FIXME: This gets triggered from time to time!
-  //  assert (radians >= 0.0 && radians < 2.0 * M_PI);
+  //  assert (radians >= 0.0 && radians < 2.0 * math::pi);
   return radians;
 }
 
@@ -86,12 +88,12 @@ inline T round_to_power_of_two(T n)
 
 inline float deg2rad(float degree)
 {
-  return degree / 180.0f * M_PI;
+  return degree / 180.0f * math::pi;
 }
 
 inline float rad2deg(float radians)
 {
-  return radians / M_PI * 180.0f;
+  return radians / math::pi * 180.0f;
 }
 
 } // namespace math

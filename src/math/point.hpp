@@ -81,7 +81,7 @@ public:
 		// Because MSVC sucks ass wrt standards compliance, it gets it own special function calls
 		#ifdef _MSC_VER
 		const float c = (float) sqrt((float)r.x*(float)r.x + (float)r.y*(float)r.y);
-		const float nw = (float)(atan2((float)r.y, (float)r.x) + ((angle + 180) * M_PI / 180));
+		const float nw = (float)(atan2((float)r.y, (float)r.x) + ((angle + 180) * math::pi / 180));
 		r.x = (int)((sin(1.5 * M_PI - nw) * c) + 0.5) + hotspot.x;
 		r.y = -(int)((sin(nw) * c) + 0.5) + hotspot.y;
 		#else

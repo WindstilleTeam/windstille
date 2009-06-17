@@ -167,16 +167,16 @@ Display::fill_rounded_rect(const Rectf& rect, float radius, const Color& color)
   glBegin(GL_QUAD_STRIP);
   for(int i = 0; i <= n; ++i)
     {
-      float x = sinf(i * (M_PI/2) / n) * radius;
-      float y = cosf(i * (M_PI/2) / n) * radius;
+      float x = sinf(i * (math::pi/2) / n) * radius;
+      float y = cosf(i * (math::pi/2) / n) * radius;
 
       glVertex2f(irect.left  - x, irect.top - y);
       glVertex2f(irect.right + x, irect.top - y);
     }
   for(int i = 0; i <= n; ++i)
     {
-      float x = cosf(i * (M_PI/2) / n) * radius;
-      float y = sinf(i * (M_PI/2) / n) * radius;
+      float x = cosf(i * (math::pi/2) / n) * radius;
+      float y = sinf(i * (math::pi/2) / n) * radius;
 
       glVertex2f(irect.left  - x, irect.bottom + y);
       glVertex2f(irect.right + x, irect.bottom + y);
@@ -209,31 +209,31 @@ Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
   glBegin(GL_LINE_STRIP);
   for(int i = 0; i <= n; ++i)
     {
-      float x = sinf(i * (M_PI/2) / n) * radius;
-      float y = cosf(i * (M_PI/2) / n) * radius;
+      float x = sinf(i * (math::pi/2) / n) * radius;
+      float y = cosf(i * (math::pi/2) / n) * radius;
 
       glVertex2f(irect.left  - x, irect.top - y);
     }
   for(int i = 0; i <= n; ++i)
     {
-      float x = cosf(i * (M_PI/2) / n) * radius;
-      float y = sinf(i * (M_PI/2) / n) * radius;
+      float x = cosf(i * (math::pi/2) / n) * radius;
+      float y = sinf(i * (math::pi/2) / n) * radius;
 
       glVertex2f(irect.left  - x, irect.bottom + y);
     }
 
   for(int i = 0; i <= n; ++i)
     {
-      float x = sinf(i * (M_PI/2) / n) * radius;
-      float y = cosf(i * (M_PI/2) / n) * radius;
+      float x = sinf(i * (math::pi/2) / n) * radius;
+      float y = cosf(i * (math::pi/2) / n) * radius;
 
       glVertex2f(irect.right + x, irect.bottom + y);
     }
 
   for(int i = 0; i <= n; ++i)
     {
-      float x = cosf(i * (M_PI/2) / n) * radius;
-      float y = sinf(i * (M_PI/2) / n) * radius;
+      float x = cosf(i * (math::pi/2) / n) * radius;
+      float y = sinf(i * (math::pi/2) / n) * radius;
         
       glVertex2f(irect.right + x, irect.top - y);
     }
@@ -273,8 +273,8 @@ Display::draw_circle(const Vector2f& pos, float radius, const Color& color, int 
   glVertex2f(radius + pos.x, pos.y);
   for(int i = 1; i < segments; ++i)
     {
-      float x = cosf(i * (M_PI/2) / n) * radius;
-      float y = sinf(i * (M_PI/2) / n) * radius;
+      float x = cosf(i * (math::pi/2) / n) * radius;
+      float y = sinf(i * (math::pi/2) / n) * radius;
       
       glVertex2f(x + pos.x, y + pos.y);
     }
@@ -300,8 +300,8 @@ Display::fill_circle(const Vector2f& pos, float radius, const Color& color, int 
   glVertex2f(radius + pos.x, pos.y);
   for(int i = 1; i < segments; ++i)
     {
-      float x = cosf(i * (M_PI/2) / n) * radius;
-      float y = sinf(i * (M_PI/2) / n) * radius;
+      float x = cosf(i * (math::pi/2) / n) * radius;
+      float y = sinf(i * (math::pi/2) / n) * radius;
       
       glVertex2f(x + pos.x, y + pos.y);
     }
@@ -320,7 +320,7 @@ Display::draw_arc(const Vector2f& pos, float radius, float start, float end, con
     }
   else
     {
-      float step  = (2.0f * M_PI) / segments;
+      float step  = (2.0f * math::pi) / segments;
 
       if (start > end) 
         std::swap(start, end);
@@ -360,7 +360,7 @@ Display::fill_arc(const Vector2f& pos, float radius, float start, float end, con
     }
   else
     {
-      float step  = (2.0f * M_PI) / segments;
+      float step  = (2.0f * math::pi) / segments;
 
       if (start > end) 
         std::swap(start, end);
