@@ -39,7 +39,7 @@ View::draw (SceneContext& sc)
 {
   if (camera.get_zoom() == 1.0)
     {
-      state.set_pos(Vector2f(camera.get_pos().x), camera.get_pos().y);
+      state.set_pos(Vector2f(camera.get_pos().x, camera.get_pos().y));
     }
   else
     {
