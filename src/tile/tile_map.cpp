@@ -200,7 +200,7 @@ TileMap::is_ground (float x, float y)
     }
 
   if (field(x_pos, y_pos))
-    return field(x_pos, y_pos)->get_colmap();
+    return field(x_pos, y_pos)->get_colmap() != 0;
   else
     return 0;
 }

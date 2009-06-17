@@ -136,7 +136,7 @@ LaserPointer::draw(SceneContext& sc)
 void
 LaserPointer::update(float delta)
 {
-  progress += 0.1 * delta;
+  progress += 0.1f * delta;
 }
 
 float

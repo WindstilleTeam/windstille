@@ -492,7 +492,7 @@ Player::set_ducked()
 void
 Player::update_ducked(const Controller& controller)
 {
-  if (!controller.get_axis_state(Y_AXIS) > 0.5f)
+  if (!(controller.get_axis_state(Y_AXIS) > 0.5f))
     {
       state = DUCKING;
       sprite.set_action("StandToDuck", -1.0);
@@ -535,7 +535,7 @@ Player::update_turnaround(const Controller& controller)
 void
 Player::set_stand_to_listen(bool backwards)
 {
-  try_set_action("StandtoListen", backwards ? -1.0 : 1.0);
+  try_set_action("StandtoListen", backwards ? -1.0f : 1.0f);
   if (!backwards) 
     {
       sprite.set_next_action("Listen");

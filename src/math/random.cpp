@@ -106,6 +106,24 @@ Random::drand()
   /* divided by 2^32-1 */
 }
 
+float
+Random::frand(float start, float end)
+{
+  return drand(start, end);
+}
+
+float
+Random::frand(float range)
+{
+  return frand(range);
+}
+
+float
+Random::frand()
+{
+  return frand();
+}
+
 int
 Random::sign()
 {

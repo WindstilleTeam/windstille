@@ -61,7 +61,7 @@ public:
 
   Tile(unsigned int arg_colmap);
 
-  unsigned get_colmap() const { return colmap; }
+  unsigned int get_colmap() const { return colmap; }
 };
 
 #endif

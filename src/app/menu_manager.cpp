@@ -118,8 +118,8 @@ MenuManager::display_main_menu()
     
   { // Construct Copyright box
     std::auto_ptr<gui::GroupComponent> text_group
-      (new gui::GroupComponent(Rectf(Vector2f(Display::get_width()/2 - 390,
-                                              Display::get_height() - 100),
+      (new gui::GroupComponent(Rectf(Vector2f(Display::get_width()/2 - 390.0f,
+                                              Display::get_height()  - 100.0f),
                                      Size(800 - 20, 
                                           100 - 10)),
                                "",

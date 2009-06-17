@@ -50,9 +50,9 @@ void play_music(const std::string& musicfile)
   SoundManager::current()->play_music(musicfile);
 }
 
-void stop_music(float fadetime)
+void stop_music(bool fade)
 {
-  SoundManager::current()->stop_music(fadetime);
+  SoundManager::current()->stop_music(fade);
 }
 
 void play_sound(const std::string& soundfile)

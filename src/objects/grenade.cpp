@@ -21,7 +21,8 @@
 #include "grenade.hpp"
 
 Grenade::Grenade()
-  : sprite("models/objects/grenade/grenade.wsprite"), physics(this)
+  : sprite("models/objects/grenade/grenade.wsprite"), 
+    physics(this)
 {
   c_object.reset(new CollisionObject(this, Rectf(0, 0, 32, 32)));
   physics.register_collobj(*c_object);

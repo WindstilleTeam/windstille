@@ -41,13 +41,13 @@ Swarm::Swarm(FileReader& props)
 
   for(Agents::iterator i = agents.begin(); i != agents.end(); ++i)
     {
-      i->pos.x = pos.x + rnd.drand(-100, 100);
-      i->pos.y = pos.y + rnd.drand(-100, 100);
+      i->pos.x = pos.x + rnd.frand(-100, 100);
+      i->pos.y = pos.y + rnd.frand(-100, 100);
 
-      i->angle = rnd.drand(-M_PI, M_PI);
-      i->speed = rnd.drand(50.0f, 200.0f);
+      i->angle = rnd.frand(-M_PI, M_PI);
+      i->speed = rnd.frand(50.0f, 200.0f);
 
-      i->max_speed = rnd.drand(100.0f, 200.0f);
+      i->max_speed = rnd.frand(100.0f, 200.0f);
 
       i->turn_speed = i->max_speed/30.0f;
 
@@ -91,7 +91,7 @@ Swarm::update(float delta)
   int x, y;
   SDL_GetMouseState(&x, &y);
   
-  target = GameSession::current()->get_view()->screen_to_world(Vector2f(x, y));
+  target = GameSession::current()->get_view()->screen_to_world(Vector2f(static_cast<float>(x), static_cast<float>(y)));
 
   for(Agents::iterator i = agents.begin(); i != agents.end(); ++i)
     {
@@ -107,7 +107,7 @@ Swarm::update(float delta)
         {
           if (fabs(relative_angle) < 0.3f)
             {
-              //i->angle += rnd.drand(-1.0f, 1.0f) * delta;
+              //i->angle += rnd.frand(-1.0f, 1.0f) * delta;
               if (i->speed < i->max_speed) 
                 i->speed += 100.0f * delta;
             }
@@ -121,13 +121,13 @@ Swarm::update(float delta)
         }
       else
         {
-          i->angle += rnd.drand(-15.0f, 15.0f) * delta;
+          i->angle += rnd.frand(-15.0f, 15.0f) * delta;
           //i->speed += 150.0f - fabs(i->angle);
-          i->speed = rnd.drand(50.0f, 100.0f);
+          i->speed = rnd.frand(50.0f, 100.0f);
         }
 
-      i->pos.x += i->speed * cos(i->angle) * delta;
-      i->pos.y += i->speed * sin(i->angle) * delta;
+      i->pos.x += i->speed * cosf(i->angle) * delta;
+      i->pos.y += i->speed * sinf(i->angle) * delta;
     }
 }
 

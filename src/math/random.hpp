@@ -50,6 +50,10 @@ public:
   /** Returns a random number between \a start and \a end */
   double drand(double start, double end);
 
+  float frand(float start, float end);
+  float frand(float range);
+  float frand();
+
   /** Returns either 1 or -1 */
   int sign();
 private:

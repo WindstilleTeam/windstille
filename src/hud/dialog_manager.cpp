@@ -69,7 +69,7 @@ DialogManager::draw()
                                int(text_area->get_rect().get_height()
                                    + text_border_y * 2.0f));
 
-  Point pos(0,0);
+  Vector2f pos(0.0f, 0.0f);
   if(alignment & LEFT) {
     pos.x = outer_border_x;
   } else if(alignment & RIGHT) {
@@ -90,7 +90,7 @@ DialogManager::draw()
     Rectf rect(pos.x,
                pos.y,
                pos.x + dialog_width,
-               pos.y + 200);
+               pos.y + 200.0f);
     
     Display::fill_rounded_rect(rect, 16.0f,
                                Color(0, 0, 0.3f, 0.5f));
@@ -98,7 +98,7 @@ DialogManager::draw()
                                Color(0.6f, 1.0f, 1.0f, 0.8f));
   
     portrait.draw(Vector2f(pos.x + portrait_border_x,
-                         pos.y + portrait_border_y));
+                           pos.y + portrait_border_y));
   }
   
   text_area->draw();

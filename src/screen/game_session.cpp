@@ -174,7 +174,8 @@ GameSessionImpl::draw()
   if (pause)
     {
       if ((SDL_GetTicks() / 1000) % 2)
-        Fonts::vera20->draw(Vector2f(Display::get_width()/2, Display::get_height()/2), "Pause");
+        Fonts::vera20->draw(Vector2f(Display::get_width()/2.0f, Display::get_height()/2.0f), 
+                            "Pause");
     }
 }
 
@@ -200,13 +201,13 @@ GameSessionImpl::update_input(float delta)
   
   // Hacks to play around with the game speed
   if(keystate[SDLK_KP1])
-    game_speed *= 1.0 - delta;
+    game_speed *= 1.0f - delta;
 
   if(keystate[SDLK_KP3])
-    game_speed *= 1.0 + delta;
+    game_speed *= 1.0f + delta;
 
   if(keystate[SDLK_KP5])
-    game_speed = 1.0;  
+    game_speed = 1.0f;
 }
 
 void

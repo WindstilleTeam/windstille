@@ -84,8 +84,8 @@ public:
     float display_time;
   };
 
-  int x_pos;
-  int y_pos;
+  float x_pos;
+  float y_pos;
   typedef std::vector<ConsoleEntry> Buffer;
   Buffer buffer;
 
@@ -102,8 +102,8 @@ public:
   ConsoleImpl(Console& console_)
     : console(console_)
   {
-    x_pos = 16;
-    y_pos = 600-16;
+    x_pos = 16.0f;
+    y_pos = 600.0f - 16.0f;
 
     active = false;
     history_position = 1; 

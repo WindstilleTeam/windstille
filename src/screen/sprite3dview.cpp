@@ -62,7 +62,7 @@ Sprite3DView::draw()
   sc.color().fill_screen(Color(0.5, 0.0, 0.5));
 
   sc.push_modelview();
-  sc.translate(Display::get_width()/2, Display::get_height()/2);
+  sc.translate(Display::get_width()/2.0f, Display::get_height()/2.0f);
   sc.scale(scale, scale);
 
   // Rotate
@@ -79,8 +79,8 @@ Sprite3DView::draw()
   //sc.color().draw("Hello World", 100, 100);
   sc.render();
   
-  int x = 10;
-  int y =  Fonts::vera12->get_height() + 5;
+  float x = 10.0f;
+  float y =  Fonts::vera12->get_height() + 5.0f;
   int line_height = Fonts::vera12->get_height()+5;
 
   for(int i = 0; i < int(actions.size()); ++i)
@@ -94,10 +94,10 @@ Sprite3DView::draw()
 
 
       y += line_height;
-      if (y > 580)
+      if (y > 580.0f)
         {
-          x += 200;
-          y =  Fonts::vera12->get_height() + 5;
+          x += 200.0f;
+          y =  Fonts::vera12->get_height() + 5.0f;
         }
     }
 }

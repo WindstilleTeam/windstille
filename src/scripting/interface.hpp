@@ -53,7 +53,7 @@ void set_sector(const std::string& filename);
 
 void play_music(const std::string& musicfile);
 
-void stop_music(float fadetime);
+void stop_music(bool fade);
 
 void play_sound(const std::string& soundfile);
 

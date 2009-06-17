@@ -502,14 +502,14 @@ static SQInteger play_music_wrapper(HSQUIRRELVM vm)
 
 static SQInteger stop_music_wrapper(HSQUIRRELVM vm)
 {
-  SQFloat arg0;
-  if(SQ_FAILED(sq_getfloat(vm, 2, &arg0))) {
-    sq_throwerror(vm, _SC("Argument 1 not a float"));
+  SQBool arg0;
+  if(SQ_FAILED(sq_getbool(vm, 2, &arg0))) {
+    sq_throwerror(vm, _SC("Argument 1 not a bool"));
     return SQ_ERROR;
   }
 
   try {
-    Scripting::stop_music(static_cast<float> (arg0));
+    Scripting::stop_music(arg0 == SQTrue);
 
     return 0;
 
@@ -1784,7 +1784,7 @@ void register_windstille_wrapper(HSQUIRRELVM v)
 
   sq_pushstring(v, "stop_music", -1);
   sq_newclosure(v, &stop_music_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|tn");
+  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|tb");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'stop_music'");
   }

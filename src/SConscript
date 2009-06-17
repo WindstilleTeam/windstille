@@ -117,7 +117,7 @@ display_lib = display_env.StaticLibrary('display', [
 
 env = conf_env.Clone()
 env.Append(LIBS    = [particles_lib, navgraph_lib, display_lib, physfs_lib, util_lib, math_lib,
-                      'GL', 'GLU', 'GLEW', 'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals'])
+                      'GL', 'GLU', 'GLEW', 'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals-mt'])
 env.Append(LIBPATH = ['../external/'] )
 env.Append(CPPPATH = ['.', '..', '../external/SQUIRREL2/include/'])
 

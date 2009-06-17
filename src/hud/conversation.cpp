@@ -73,7 +73,7 @@ Conversation::draw()
   for(int i = 0; i < (int)choices.size(); ++i)
     { // FIXME:
       Vector2f offset(0.0f, 1.0f);
-      offset = offset.rotate(math::deg2rad(segment*i) - M_PI/2);
+      offset = offset.rotate(math::deg2rad(segment*i) - math::pi/2);
 
       float start = -segment/2 - 90.0f + segment*i;
       float end   = -segment/2 - 90.0f + segment*(i+1);
@@ -82,8 +82,8 @@ Conversation::draw()
 
       Vector2f textpos = pos + Vector2f(0, 16.0f);
       // FIXME: Doesn't handle multi line text
-      Sizef size(Fonts::vera20->get_width(choices[i].topic) + 40,
-                 Fonts::vera20->get_height() + 25);
+      Sizef size(Fonts::vera20->get_width(choices[i].topic) + 40.0f,
+                 Fonts::vera20->get_height() + 25.0f);
       Rectf  rect(textpos + distance * offset - Vector2f(size.width/2, size.height - 15), size);
 
       if (i == selection)
@@ -97,7 +97,7 @@ Conversation::draw()
                                             textpos.y + distance * offset.y), 
                                      choices[i].topic, Color(1.0f, 1.0f, 0.0f));
 
-          Fonts::vera20->draw_center(Vector2f(400, Display::get_height() - 32),
+          Fonts::vera20->draw_center(Vector2f(400.0f, Display::get_height() - 32.0f),
                                      choices[i].text, Color(1.0f, 1.0f, 1.0f));
           Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 0.0f));
         }

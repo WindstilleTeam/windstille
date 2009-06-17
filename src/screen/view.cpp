@@ -37,13 +37,9 @@ View::View()
 void
 View::draw (SceneContext& sc)
 {
-  // Casting here isn't really necessary, but should about some
-  // pixel-jitter when scrolling with subpixel values and pixel
-  // precise images.
   if (camera.get_zoom() == 1.0)
     {
-      state.set_pos(Vector2f(static_cast<int>(camera.get_pos().x),
-                             static_cast<int>(camera.get_pos().y)));
+      state.set_pos(Vector2f(camera.get_pos().x), camera.get_pos().y);
     }
   else
     {
@@ -71,10 +67,10 @@ View::update (float delta)
   Uint8 *keystate = SDL_GetKeyState(NULL);
 
   if (keystate[SDLK_KP_PLUS])
-    zoom *= 1.0 + delta;
+    zoom *= 1.0f + delta;
 
   if (keystate[SDLK_KP_MINUS])
-    zoom *= 1.0 - delta;
+    zoom *= 1.0f - delta;
 
   const Controller& controller = InputManager::get_controller();
 

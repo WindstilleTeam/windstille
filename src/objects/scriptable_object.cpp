@@ -215,7 +215,7 @@ ScriptableObject::flash()
     highlight.set_alpha(alpha);
     light.set_alpha(alpha);
   } else {
-    float alpha = 1.0 - (fmodf(time, flash_speed) / flash_speed);
+    float alpha = 1.0f - (fmodf(time, flash_speed) / flash_speed);
     // fade off
     highlight.set_alpha(alpha);
     light.set_alpha(alpha);

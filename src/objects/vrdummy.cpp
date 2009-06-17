@@ -59,8 +59,8 @@ VRDummy::update(float delta)
   
   if (jump_time >= 1.0f && velocity == Vector2f(0, 0)) 
     {
-      velocity = Vector2f(rnd.drand(-300.0f, 300.0f),
-                        rnd.drand(-300.0f, 300.0f));
+      velocity = Vector2f(rnd.frand(-300.0f, 300.0f),
+                          rnd.frand(-300.0f, 300.0f));
     }
 
   if (jump_time >= 1.5f)
