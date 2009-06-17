@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Windstille", "Windstille.vcproj", "{277486D4-93D4-45AC-80A0-0349ECF6AF64}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D83F6203-842E-472B-8676-5BFAEA030083} = {D83F6203-842E-472B-8676-5BFAEA030083}
+		{55DC1A23-2A86-42B2-8EB4-32AD469AC2B7} = {55DC1A23-2A86-42B2-8EB4-32AD469AC2B7}
+		{9018F093-2463-44A8-B3D2-F5B79D176F6C} = {9018F093-2463-44A8-B3D2-F5B79D176F6C}
+		{C0EE2BEA-8E37-4802-AB33-05FCFF021ACD} = {C0EE2BEA-8E37-4802-AB33-05FCFF021ACD}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Display", "Display.vcproj", "{C0EE2BEA-8E37-4802-AB33-05FCFF021ACD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Math", "Math.vcproj", "{D83F6203-842E-472B-8676-5BFAEA030083}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysFSWrapper", "PhysFSWrapper.vcproj", "{55DC1A23-2A86-42B2-8EB4-32AD469AC2B7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Util", "Util.vcproj", "{9018F093-2463-44A8-B3D2-F5B79D176F6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{277486D4-93D4-45AC-80A0-0349ECF6AF64}.Debug|Win32.ActiveCfg = Debug|Win32
+		{277486D4-93D4-45AC-80A0-0349ECF6AF64}.Debug|Win32.Build.0 = Debug|Win32
+		{277486D4-93D4-45AC-80A0-0349ECF6AF64}.Release|Win32.ActiveCfg = Release|Win32
+		{277486D4-93D4-45AC-80A0-0349ECF6AF64}.Release|Win32.Build.0 = Release|Win32
+		{C0EE2BEA-8E37-4802-AB33-05FCFF021ACD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C0EE2BEA-8E37-4802-AB33-05FCFF021ACD}.Debug|Win32.Build.0 = Debug|Win32
+		{C0EE2BEA-8E37-4802-AB33-05FCFF021ACD}.Release|Win32.ActiveCfg = Release|Win32
+		{C0EE2BEA-8E37-4802-AB33-05FCFF021ACD}.Release|Win32.Build.0 = Release|Win32
+		{D83F6203-842E-472B-8676-5BFAEA030083}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D83F6203-842E-472B-8676-5BFAEA030083}.Debug|Win32.Build.0 = Debug|Win32
+		{D83F6203-842E-472B-8676-5BFAEA030083}.Release|Win32.ActiveCfg = Release|Win32
+		{D83F6203-842E-472B-8676-5BFAEA030083}.Release|Win32.Build.0 = Release|Win32
+		{55DC1A23-2A86-42B2-8EB4-32AD469AC2B7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{55DC1A23-2A86-42B2-8EB4-32AD469AC2B7}.Debug|Win32.Build.0 = Debug|Win32
+		{55DC1A23-2A86-42B2-8EB4-32AD469AC2B7}.Release|Win32.ActiveCfg = Release|Win32
+		{55DC1A23-2A86-42B2-8EB4-32AD469AC2B7}.Release|Win32.Build.0 = Release|Win32
+		{9018F093-2463-44A8-B3D2-F5B79D176F6C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9018F093-2463-44A8-B3D2-F5B79D176F6C}.Debug|Win32.Build.0 = Debug|Win32
+		{9018F093-2463-44A8-B3D2-F5B79D176F6C}.Release|Win32.ActiveCfg = Release|Win32
+		{9018F093-2463-44A8-B3D2-F5B79D176F6C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
