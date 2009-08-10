@@ -74,9 +74,9 @@ Texture::Texture(GLenum target, int width, int height, GLint format)
 
   glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP);
-  glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP);
-  glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP);
+  glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
 
 static inline bool is_power_of_2(int v)
@@ -131,17 +131,31 @@ Texture::Texture(const SoftwareSurface& image, GLint glformat)
 
       glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
       glPixelStorei(GL_UNPACK_ROW_LENGTH, image.get_pitch() / image.get_bytes_per_pixel());
-      glTexImage2D(impl->target, 0, glformat,
-                   image.get_width(), image.get_height(), 0, sdl_format,
-                   GL_UNSIGNED_BYTE, image.get_pixels());
+
+      if (0)
+        {
+          glTexImage2D(impl->target, 0, glformat,
+                       image.get_width(), image.get_height(), 0, sdl_format,
+                       GL_UNSIGNED_BYTE, image.get_pixels());
+
+          glTexParameteri(impl->target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+          glTexParameteri(impl->target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        }
+      else
+        {
+          gluBuild2DMipmaps(impl->target, glformat,
+                            image.get_width(), image.get_height(), sdl_format,
+                            GL_UNSIGNED_BYTE, image.get_pixels());
+
+          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        }
 
       assert_gl("creating texture");
 
-      glTexParameteri(impl->target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-      glTexParameteri(impl->target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glTexParameteri(impl->target, GL_TEXTURE_WRAP_S, GL_CLAMP);
-      glTexParameteri(impl->target, GL_TEXTURE_WRAP_T, GL_CLAMP);
-      glTexParameteri(impl->target, GL_TEXTURE_WRAP_R, GL_CLAMP);
+      glTexParameteri(impl->target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameteri(impl->target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+      glTexParameteri(impl->target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
       assert_gl("setting texture parameters");
     } 
