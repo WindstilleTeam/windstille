@@ -94,7 +94,7 @@ SurfaceManager::get(const std::string& filename)
               throw std::runtime_error(msg.str());
             }
         
-          Surface result(texture, Rectf(0, 0, maxu, maxv), image.get_width(), image.get_height());
+          Surface result(texture, Rectf(0, 0, maxu, maxv), Sizef(image.get_width(), image.get_height()));
           surfaces.insert(std::make_pair(filename, result));
           return result;
         }      
@@ -131,7 +131,7 @@ SurfaceManager::load_grid(const std::string& filename,
           float s_min_v = maxv * x / static_cast<float>(image.get_height());
           float s_max_v = (maxv * (x + height)) / static_cast<float>(image.get_height());
 
-          surfaces.push_back(Surface(texture, Rectf(s_min_u, s_min_v, s_max_u, s_max_v), width, height));
+          surfaces.push_back(Surface(texture, Rectf(s_min_u, s_min_v, s_max_u, s_max_v), Sizef(width, height)));
         }
     }
 }

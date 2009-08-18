@@ -22,6 +22,7 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 #include "math/rect.hpp"
+#include "math/size.hpp"
 #include "texture.hpp"
 
 class SurfaceDrawingParameters;
@@ -42,17 +43,17 @@ public:
   /** 
    * Create a new Surface object from a Texture
    * @param texture The Texture to use
-   * @param rect The rectangle of the texture to use in (0-1) notation
+   * @param uv The rectangle of the texture to use in (0-1) notation
    * @param width  Width of the surface on the screen
    * @param height Height of the surface on the screen
    */
-  Surface(Texture texture, const Rectf& rect, int width, int height);
+  Surface(Texture texture, const Rectf& uv, const Sizef& size);
   Surface(int width, int height);
   ~Surface();
   
-  int get_width()  const;
-  int get_height() const;
-
+  float get_width()  const;
+  float get_height() const;
+  
   Texture get_texture() const;
 
   /** Returns texture coordinates for the Surface rectangle */

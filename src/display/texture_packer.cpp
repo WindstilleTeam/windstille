@@ -193,7 +193,7 @@ TexturePacker::upload(const SoftwareSurface& surface)
       return Surface(texture,
                      Rectf(float(rect.left+1)  / texture.get_width(), float(rect.top+1)    / texture.get_height(),
                            float(rect.right-1) / texture.get_width(), float(rect.bottom-1) / texture.get_height()),
-                     surface.get_width(), surface.get_height());
+                     Sizef(surface.get_width(), surface.get_height()));
     }
 }
 

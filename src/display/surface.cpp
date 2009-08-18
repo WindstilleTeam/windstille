@@ -41,7 +41,7 @@ public:
   /**
    * The size of the Surface in pixels
    */
-  Size size;
+  Sizef size;
 };
 
 Surface::Surface()
@@ -61,30 +61,29 @@ Surface::Surface(int width, int height)
 
   impl->texture = Texture(GL_TEXTURE_2D, math::round_to_power_of_two(width), math::round_to_power_of_two(height));
   impl->uv      = Rectf(0, 0,
-                        float(impl->size.width)  / impl->texture.get_width(),
-                        float(impl->size.height) / impl->texture.get_height());
+                        impl->size.width  / impl->texture.get_width(),
+                        impl->size.height / impl->texture.get_height());
 }
 
-Surface::Surface(Texture texture, const Rectf& rect, int width, int height)
+Surface::Surface(Texture texture, const Rectf& uv, const Sizef& size)
   : impl(new SurfaceImpl())
 {
   impl->texture = texture;
-  impl->size.width   = width;
-  impl->size.height  = height;
-  impl->uv      = rect;
+  impl->uv      = uv;
+  impl->size    = size;
 }
 
 Surface::~Surface()
 {
 }
 
-int
+float
 Surface::get_width()  const
 {
   return impl->size.width;
 }
 
-int
+float
 Surface::get_height() const
 { 
   return impl->size.height; 
