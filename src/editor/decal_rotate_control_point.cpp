@@ -39,10 +39,10 @@ DecalRotateControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& o
   offset = offset_;
 
   Vector2f base = pos - center;
-  float base_angle = atan2(base.y, base.x);
+  float base_angle = atan2f(base.y, base.x);
 
   Vector2f current = (pos+offset) - center;
-  float current_angle = atan2(current.y, current.x);
+  float current_angle = atan2f(current.y, current.x);
 
   float new_angle = orig_angle + current_angle - base_angle;
 

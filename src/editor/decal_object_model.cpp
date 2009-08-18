@@ -221,20 +221,20 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
              Vector2f(-w,  0));
   quad3.rotate(angle);
 
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 0*M_PI/2, get_world_pos() + quad1.p1)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 1*M_PI/2, get_world_pos() + quad1.p2)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 2*M_PI/2, get_world_pos() + quad1.p3)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 3*M_PI/2, get_world_pos() + quad1.p4)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 0*math::pi/2, get_world_pos() + quad1.p1)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 1*math::pi/2, get_world_pos() + quad1.p2)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 2*math::pi/2, get_world_pos() + quad1.p3)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 3*math::pi/2, get_world_pos() + quad1.p4)));
 
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, M_PI/4 + angle + 0*M_PI/2, get_world_pos() + quad3.p1, false, true)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, M_PI/4 + angle + 1*M_PI/2, get_world_pos() + quad3.p2, true,  false)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, M_PI/4 + angle + 2*M_PI/2, get_world_pos() + quad3.p3, false, true)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, M_PI/4 + angle + 3*M_PI/2, get_world_pos() + quad3.p4, true,  false)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, math::pi/4 + angle + 0*math::pi/2, get_world_pos() + quad3.p1, false, true)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, math::pi/4 + angle + 1*math::pi/2, get_world_pos() + quad3.p2, true,  false)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, math::pi/4 + angle + 2*math::pi/2, get_world_pos() + quad3.p3, false, true)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, math::pi/4 + angle + 3*math::pi/2, get_world_pos() + quad3.p4, true,  false)));
 
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 0*M_PI/2, get_world_pos() + quad2.p1)));
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 1*M_PI/2, get_world_pos() + quad2.p2)));
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 2*M_PI/2, get_world_pos() + quad2.p3)));
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 3*M_PI/2, get_world_pos() + quad2.p4)));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 0*math::pi/2, get_world_pos() + quad2.p1)));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 1*math::pi/2, get_world_pos() + quad2.p2)));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 2*math::pi/2, get_world_pos() + quad2.p3)));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 3*math::pi/2, get_world_pos() + quad2.p4)));
 }
 
 /* EOF */
