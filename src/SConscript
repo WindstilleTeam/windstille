@@ -23,33 +23,33 @@ SConscript('scripting/SConscript')
 
 # libutil
 util_env = conf_env.Clone()
-util_env['CPPPATH'] = ['.', '..']
+util_env.Append(CPPPATH=['.'])
 util_lib = util_env.StaticLibrary('util', glob('lisp/*.cpp') + glob('util/*.cpp'))
 
 # libphysfs
 physfs_env = conf_env.Clone()
-physfs_env['CPPPATH'] = ['.', '..']
+physfs_env.Append(CPPPATH=['.'])
 physfs_env.ParseConfig('sdl-config --cflags --libs')
 physfs_lib = physfs_env.StaticLibrary('physfs', glob('physfs/*.cpp'))
 
 # libmath
 math_env = conf_env.Clone()
-math_env['CPPPATH'] = ['.']
+math_env.Append(CPPPATH=['.'])
 math_lib = math_env.StaticLibrary('math', glob('math/*.cpp'))
 
 # libnavgraph
 navgraph_env = conf_env.Clone()
-navgraph_env['CPPPATH'] = ['.']
+navgraph_env.Append(CPPPATH=['.'])
 navgraph_lib = navgraph_env.StaticLibrary('navgraph', glob('navigation/*.cpp'))
 
 # libparticles
 particles_env = conf_env.Clone()
-particles_env['CPPPATH'] = ['.']
+particles_env.Append(CPPPATH=['.'])
 particles_lib = particles_env.StaticLibrary('particles', glob('particles/*.cpp'))
 
 # libdisplay
 display_env = conf_env.Clone()
-display_env['CPPPATH'] = ['.', '..']
+display_env.Append(CPPPATH=['.'])
 display_env.ParseConfig('sdl-config --cflags --libs')
 display_env.ParseConfig('freetype-config --libs --cflags')
 display_lib = display_env.StaticLibrary('display', 
@@ -88,6 +88,7 @@ env.Program('../windstille',
             glob('sound/*.cpp') +
             glob('scripting/*.cpp') +
             glob('engine/*.cpp') +
+#            glob('gui/*.cpp') +
             [
         'gui/automap.cpp',
         'gui/button.cpp',
@@ -121,6 +122,7 @@ editor_env.ParseConfig('pkg-config --cflags --libs libcurl')
 editor_env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4 gtkglextmm-1.2')
 
 editor_env.Program('../windstille-editor',
+#                   glob('editor/*.cpp'))
                    [
         'editor/about_window.cpp',
         'editor/control_point.cpp',
