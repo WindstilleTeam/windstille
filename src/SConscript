@@ -88,24 +88,7 @@ env.Program('../windstille',
             glob('sound/*.cpp') +
             glob('scripting/*.cpp') +
             glob('engine/*.cpp') +
-#            glob('gui/*.cpp') +
-            [
-        'gui/automap.cpp',
-        'gui/button.cpp',
-        'gui/component.cpp',
-        'gui/grid_component.cpp',
-        'gui/group_component.cpp',
-        'gui/gui_manager.cpp',
-        'gui/label.cpp',
-        'gui/list_view.cpp',
-        'gui/menu.cpp',
-        'gui/menu_component.cpp',
-        'gui/menu_item.cpp',
-        'gui/root_component.cpp',
-        'gui/slider.cpp',
-        'gui/tab_component.cpp',
-        'gui/text_view.cpp',
-        ])
+            glob('gui/*.cpp'))
 
 debug_cxxflags = ["-O0", "-g", "-Wall", "-ansi", "-pedantic", "-Wnon-virtual-dtor", "-Werror"] # "-Wconversion",
 # -W: unused parameter
