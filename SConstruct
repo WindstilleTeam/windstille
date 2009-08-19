@@ -17,6 +17,8 @@
 
 import sys, os
 sys.path.append('scons')
+
+CacheDir('cache/')
 
 def CheckSDL(context, version):
     context.Message( 'Checking for SDL >= %s ...' % version )

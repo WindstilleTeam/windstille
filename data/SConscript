@@ -22,6 +22,7 @@ Import('conf_env', 'features')
 data_env = conf_env.Clone()
 
 data_env.Append(BUILDERS = { "xcf2png" : Builder(action = "xcf2png $SOURCE -o $TARGET",
+                                                 src_suffix = ".xcf",
                                                  suffix = ".png") })
 
 for filename in glob.glob("images/decal/*.xcf"):

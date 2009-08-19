@@ -27,29 +27,32 @@ IpoCurve::~IpoCurve()
 }
 
 float
-IpoCurve::evalutate(float x)
+IpoCurve::evalutate(float /*x*/)
 {
   // find bezier points left and right from t
   Vector2f left;
   Vector2f right;
 
   // calculate the value t from x
-  float t;
+  //float t;
 
   // calculate the result
 
   //def bezier(p0, p1, p2, p3, t):
   //    return p0*(1-t)**3 + 3*p1*t*((1-t)**2) + 3*p2*(t**2)*(1-t) + p3*t**3
+  return 0.0f;
 }
 
 void
-IpoCurve::add_point(const BezierPoint& p)
+IpoCurve::add_point(const BezierPoint& /*p*/)
 {
+  /*
   assert(points.empty() ||
          points.back().point.x < p.x &&
          p.handle_left.x < p.x &&
          p.x < p.handle_right.x);
   points.push_back(p);
+  */
 }
 
 /* EOF */

@@ -19,7 +19,7 @@ squirrel_env.Library('squirrel',
 # ______________________________________________________________________
 #
 
-miniswig_env = Environment(CPPPATH=['../..'],
+miniswig_env = Environment(CPPPATH=['../..', "..", "miniswig"],
                            CXXFILESUFFIX = ".cpp",
                            YACCFLAGS=['-d', '--no-lines'])
 
@@ -30,12 +30,10 @@ miniswig = miniswig_env.Program('miniswig/miniswig',
                                  'miniswig/xmlwriter.cpp',
                                  'miniswig/create_wrapper.cpp',
                                  'miniswig/main.cpp',
-                                 'miniswig/tree.cpp'], 
-                                CPPPATH=["..", "miniswig"])
+                                 'miniswig/tree.cpp'])
 
 # bison -d --no-lines -o tools/miniswig/parser.cpp tools/miniswig/parser.yy
 
 Export('miniswig')
-
 
 # EOF #

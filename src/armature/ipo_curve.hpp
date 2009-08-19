@@ -19,6 +19,10 @@
 #ifndef HEADER_WINDSTILLE_ARMATURE_IPO_CURVE_HPP
 #define HEADER_WINDSTILLE_ARMATURE_IPO_CURVE_HPP
 
+#include <vector>
+
+#include "math/vector2f.hpp"
+
 struct BezierPoint
 {
   Vector2f handle_left;

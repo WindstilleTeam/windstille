@@ -15,111 +15,55 @@
 ##  You should have received a copy of the GNU General Public License
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from glob import glob
+
 Import('conf_env', 'features')
 
 SConscript('scripting/SConscript')
 
+# libutil
 util_env = conf_env.Clone()
 util_env['CPPPATH'] = ['.', '..']
-util_lib = util_env.StaticLibrary('util', [
-        'lisp/getters.cpp',
-        'lisp/lexer.cpp',
-        'lisp/lisp.cpp',
-        'lisp/parser.cpp',
-        'lisp/properties.cpp',
-        'lisp/writer.cpp',
-        'util/baby_xml.cpp',
-        'util/command_line.cpp',
-        'util/command_line_generic.cpp',
-        'util/file_reader.cpp',
-        'util/file_writer.cpp',
-        'util/getter.cpp',
-        'util/response_curve.cpp',
-        'util/sexpr_file_reader.cpp',
-        'util/util.cpp',
-        ])
-
+util_lib = util_env.StaticLibrary('util', glob('lisp/*.cpp') + glob('util/*.cpp'))
+
+# libphysfs
 physfs_env = conf_env.Clone()
 physfs_env['CPPPATH'] = ['.', '..']
 physfs_env.ParseConfig('sdl-config --cflags --libs')
-physfs_lib = physfs_env.StaticLibrary('physfs', [
-        'physfs/physfs_sdl.cpp',
-        'physfs/physfs_stream.cpp'])
-
+physfs_lib = physfs_env.StaticLibrary('physfs', glob('physfs/*.cpp'))
+
+# libmath
 math_env = conf_env.Clone()
 math_env['CPPPATH'] = ['.']
-math_lib = math_env.StaticLibrary('math', [
-        'math/line.cpp',
-        'math/matrix.cpp',
-        'math/origin.cpp',
-        'math/quaternion.cpp',
-        'math/random.cpp',
-        'math/rect.cpp',
-        'math/vector2f.cpp',
-        ])
-
+math_lib = math_env.StaticLibrary('math', glob('math/*.cpp'))
+
+# libnavgraph
 navgraph_env = conf_env.Clone()
 navgraph_env['CPPPATH'] = ['.']
-navgraph_lib = navgraph_env.StaticLibrary('navgraph', [
-        'navigation/navigation_graph.cpp',
-        'navigation/node.cpp',
-        'navigation/properties.cpp',
-        'navigation/edge.cpp',
-        'navigation/edge_position.cpp',
-        ])
-
+navgraph_lib = navgraph_env.StaticLibrary('navgraph', glob('navigation/*.cpp'))
+
+# libparticles
 particles_env = conf_env.Clone()
 particles_env['CPPPATH'] = ['.']
-particles_lib = particles_env.StaticLibrary('particles', [
-        'particles/deform_drawer.cpp',
-        'particles/particle_system.cpp',
-        'particles/spark_drawer.cpp',
-        'particles/surface_drawer.cpp',
-        ])
-
+particles_lib = particles_env.StaticLibrary('particles', glob('particles/*.cpp'))
+
+# libdisplay
 display_env = conf_env.Clone()
 display_env['CPPPATH'] = ['.', '..']
 display_env.ParseConfig('sdl-config --cflags --libs')
 display_env.ParseConfig('freetype-config --libs --cflags')
-
-display_lib = display_env.StaticLibrary('display', [
-        'font/border_font_effect.cpp',
-        'font/no_font_effect.cpp',
-        'font/fonts.cpp',
-        'font/ttf_font.cpp',
-
-        'display/blitter.cpp',
-        'display/display.cpp',
-        'display/drawing_context.cpp',
-        'display/framebuffer.cpp',
-        'display/graphic_context_state.cpp',
-        'display/opengl_state.cpp',
-        'display/render_buffer.cpp',
-        'display/scene_context.cpp',
-        'display/shader_object.cpp',
-        'display/shader_program.cpp',
-        'display/software_surface.cpp',
-        'display/surface.cpp',
-        'display/surface_manager.cpp',
-        'display/text_area.cpp',
-        'display/texture.cpp',
-        'display/texture_manager.cpp',
-        'display/texture_packer.cpp',
-        'display/vertex_array_drawing_request.cpp',
-        
-        'sprite2d/data.cpp',
-        'sprite2d/manager.cpp',
-        'sprite2d/sprite.cpp',
-        'sprite3d/data.cpp',
-        'sprite3d/manager.cpp',
-        'sprite3d/sprite3d.cpp',
-        ])
+display_lib = display_env.StaticLibrary('display', 
+                                        glob('font/*.cpp') +
+                                        glob('display/*.cpp') +
+                                        glob('sprite2d/*.cpp') +
+                                        glob('sprite3d/*.cpp'))
 
 env = conf_env.Clone()
-env.Append(LIBS    = [particles_lib, navgraph_lib, display_lib, physfs_lib, util_lib, math_lib,
-                      'GL', 'GLU', 'GLEW', 'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals-mt'])
-env.Append(LIBPATH = ['../external/'] )
-env.Append(CPPPATH = ['.', '..', '../external/SQUIRREL2/include/'])
+env.Append(LIBS=[particles_lib, navgraph_lib, display_lib, physfs_lib, util_lib, math_lib,
+                 'GL', 'GLU', 'GLEW',
+                 'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals-mt'])
+env.Append(LIBPATH=['../external/'])
+env.Append(CPPPATH=['.', '..', '../external/SQUIRREL2/include/'])
 
 if features['64bit']:
     env.Append(CPPDEFINES = '_SQ64')
@@ -131,30 +75,20 @@ if features['cwiid']:
 env.ParseConfig('sdl-config --cflags --libs')
 env.ParseConfig('freetype-config --libs --cflags')
 
-env.Program('../windstille', [
-        'app/config.cpp',
-        'app/console.cpp',
-        'app/controller_def.cpp',
-        'app/globals.cpp',
-        'app/menu_manager.cpp',
-        'app/windstille_main.cpp',
-        'armature/armature.cpp',
-        'armature/bone.cpp',
-        'armature/mesh.cpp',
-        'armature/model.cpp',
-        'armature/pose.cpp',
-        'collision/collision_data.cpp',
-        'collision/collision_engine.cpp',
-        'collision/collision_object.cpp',
-        'collision/collision_test.cpp',
-        'collision/stair_contact.cpp',
-        'engine/camera.cpp',
-        'engine/entity.cpp',
-        'engine/game_object.cpp',
-        'engine/physics.cpp',
-        'engine/script_manager.cpp',
-        'engine/squirrel_thread.cpp',
-        'engine/sector.cpp',
+env.Program('../windstille', 
+            glob('app/*.cpp') +
+            glob('armature/*.cpp') +
+            glob('collision/*.cpp') +
+            glob('input/*.cpp') +
+            glob('hud/*.cpp') +
+            glob('objects/*.cpp') +
+            glob('screen/*.cpp') +
+            glob('properties/*.cpp') +
+            glob('tile/*.cpp') +
+            glob('sound/*.cpp') +
+            glob('scripting/*.cpp') +
+            glob('engine/*.cpp') +
+            [
         'gui/automap.cpp',
         'gui/button.cpp',
         'gui/component.cpp',
@@ -170,73 +104,15 @@ env.Program('../windstille', [
         'gui/slider.cpp',
         'gui/tab_component.cpp',
         'gui/text_view.cpp',
-        'hud/controller_help_window.cpp',
-        'hud/conversation.cpp',
-        'hud/dialog_manager.cpp',
-        'hud/inventory.cpp',
-        'hud/pda.cpp',
-        'hud/speech_manager.cpp',
-        'input/controller.cpp',
-        'input/controller_description.cpp',
-        'input/input_configurator.cpp',
-        'input/input_manager.cpp',
-        'input/input_manager_impl.cpp',
-        'input/input_manager_sdl.cpp',
-        'input/wiimote.cpp',
-        'objects/background_gradient.cpp',
-        'objects/bomb.cpp',
-        'objects/box.cpp',
-        'objects/character.cpp',
-        'objects/elevator.cpp',
-        'objects/grenade.cpp',
-        'objects/hedgehog.cpp',
-        'objects/laser_pointer.cpp',
-        'objects/liquid.cpp',
-        'objects/nightvision.cpp',
-        'objects/pistol.cpp',
-        'objects/player.cpp',
-        'objects/scriptable_object.cpp',
-        'objects/shockwave.cpp',
-        'objects/spider_mine.cpp',
-        'objects/swarm.cpp',
-        'objects/test_object.cpp',
-        'objects/trigger.cpp',
-        'objects/vrdummy.cpp',
-        'properties/property.cpp',
-        'properties/property_set.cpp',
-        'properties/properties.cpp',
-        'screen/armature_test.cpp',
-        'screen/game_session.cpp',
-        'screen/geometry_test.cpp',
-        'screen/navigation_test.cpp',
-        'screen/particle_viewer.cpp',
-        'screen/screen.cpp',
-        'screen/screen_manager.cpp',
-        'screen/sprite2dview.cpp',
-        'screen/sprite3dview.cpp',
-        'screen/title_screen.cpp',
-        'scripting/game_objects.cpp',
-        'scripting/interface.cpp',
-        'scripting/squirrel_error.cpp',
-        'scripting/util.cpp',
-        'scripting/wrapper.cpp',
-        'sound/sound_file.cpp',
-        'sound/wav_sound_file.cpp',
-        'sound/ogg_sound_file.cpp',
-        'sound/sound_manager.cpp',
-        'sound/sound_source.cpp',
-        'sound/stream_sound_source.cpp',
-        'tile/tile.cpp',
-        'tile/tile_description.cpp',
-        'tile/tile_factory.cpp',
-        'tile/tile_map.cpp',
-        'tile/tile_packer.cpp',
-        'screen/view.cpp',
         ])
 
+debug_cxxflags = ["-O0", "-g", "-Wall", "-ansi", "-pedantic", "-Wnon-virtual-dtor", "-Werror"] # "-Wconversion",
+# -W: unused parameter
+# ['-Wall', '-Werror', '-O2', '-g'],
 editor_env = Environment(CPPPATH=['.'],
-                         CXXFLAGS=['-Wall', '-Werror', '-O2', '-g'],
-                         LIBS = [particles_lib, navgraph_lib, display_lib, util_lib, physfs_lib, math_lib, 'GL', 'GLEW', 'SDL_image', 'physfs'])
+                         CXXFLAGS=debug_cxxflags,
+                         LIBS = [particles_lib, navgraph_lib, display_lib, util_lib, physfs_lib, math_lib,
+                                 'GL', 'GLEW', 'SDL_image', 'physfs'])
 
 editor_env.ParseConfig('pkg-config libpng --libs --cflags')
 editor_env.ParseConfig('sdl-config --cflags --libs')
@@ -244,7 +120,8 @@ editor_env.ParseConfig('Magick++-config --libs --cppflags')
 editor_env.ParseConfig('pkg-config --cflags --libs libcurl')
 editor_env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4 gtkglextmm-1.2')
 
-editor_env.Program('../windstille-editor', [
+editor_env.Program('../windstille-editor',
+                   [
         'editor/about_window.cpp',
         'editor/control_point.cpp',
         'editor/decal_object_model.cpp',

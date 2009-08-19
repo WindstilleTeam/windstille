@@ -10,6 +10,11 @@ on this list and always think about how useful a new feature would be
 in the context of the whole game or if a potential performance
 enhanchment, actually enhanchmes anything at all.
 
+Porting
+=======
+
+Microsoft compiler don't have inttypes.h, need to write a replacement header
+
 Scripting
 =========
 
@@ -191,6 +196,8 @@ Sound Handling
 
 Miscellaneous
 =============
+
+* figure out how to enable mipmapping into the tile and surface packer
 
 * View class could be done away, as it doesn't have any clear purpose
 
@@ -522,6 +529,8 @@ Graphics
 Editor
 ======
 
+* Fix screenshot support (very crashy/buggy on different screensizes and stuff (padding error?))
+
 * unify delete/remove/erase a bit
 
 * figure out a way to rename image files without breaking the levels
@@ -784,6 +793,9 @@ Editor
   * EdgeAddCommand
   * EdgeRemoveCommand
   * NodeSetPosCommand
+
+  * UndoCopy
+  * UndoPaste
 
   * ObjectAddCommand      [done]
   * ObjectRemoveCommand   [done]
