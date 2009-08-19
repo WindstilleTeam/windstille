@@ -7,16 +7,19 @@
 #define __windstille_WRAPPER_H__
 
 #include <squirrel.h>
-#include "wrapper.interface.hpp"
 
 namespace Scripting
 {
 
 void register_windstille_wrapper(HSQUIRRELVM v);
 
+class GameObject;
 void create_squirrel_instance(HSQUIRRELVM v, Scripting::GameObject* object, bool setup_releasehook = false);
+class TestObject;
 void create_squirrel_instance(HSQUIRRELVM v, Scripting::TestObject* object, bool setup_releasehook = false);
+class Player;
 void create_squirrel_instance(HSQUIRRELVM v, Scripting::Player* object, bool setup_releasehook = false);
+class ScriptableObject;
 void create_squirrel_instance(HSQUIRRELVM v, Scripting::ScriptableObject* object, bool setup_releasehook = false);
 
 }

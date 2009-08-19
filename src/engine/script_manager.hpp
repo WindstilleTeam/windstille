@@ -30,6 +30,7 @@
 #include "scripting/util.hpp"
 
 class SquirrelThread;
+class GameObject;
 
 /**
  * This class is responsible for managing all running squirrel threads

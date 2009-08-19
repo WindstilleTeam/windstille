@@ -16,9 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "squirrel_thread.hpp"
+
+#include "app/globals.hpp"
 #include "scripting/util.hpp"
 #include "scripting/squirrel_error.hpp"
-#include "squirrel_thread.hpp"
+#include "scripting/game_objects.hpp"
 
 using Scripting::SquirrelError;
 

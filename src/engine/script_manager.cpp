@@ -33,6 +33,7 @@
 #include "app/console.hpp"
 #include "scripting/wrapper.hpp"
 #include "scripting/util.hpp"
+#include "scripting/game_objects.hpp"
 #include "scripting/squirrel_error.hpp"
 #include "physfs/physfs_stream.hpp"
 
