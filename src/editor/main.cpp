@@ -82,9 +82,13 @@ WindstilleEditor::main(int argc, char** argv)
       
       Gtk::Main::run(window);
     }
+  catch(Glib::Exception& err)
+    {
+      std::cout << "Glib::Exception: " << err.what() << std::endl;
+    }
   catch(std::exception& err)
     {
-      std::cout << "Exception: " << err.what() << std::endl;
+      std::cout << "std::exception: " << err.what() << std::endl;
     }
   return 0;
 }
