@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_PROPERTIES_PROPERTIES_HPP
 #define HEADER_WINDSTILLE_PROPERTIES_PROPERTIES_HPP
 
+#include <vector>
 #include <string>
 
 class PropertySet;

@@ -59,6 +59,8 @@ display_lib = display_env.StaticLibrary('display',
                                         glob('sprite3d/*.cpp'))
 
 env = conf_env.Clone()
+env.ParseConfig('sdl-config --cflags --libs')
+env.ParseConfig('freetype-config --libs --cflags')
 env.Append(LIBS=[particles_lib, navgraph_lib, display_lib, physfs_lib, util_lib, math_lib,
                  'GL', 'GLU', 'GLEW',
                  'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals-mt'])
@@ -71,9 +73,6 @@ if features['64bit']:
 if features['cwiid']:
     env.Append(CPPDEFINES = 'HAVE_CWIID')
     env.Append(LIBS = 'cwiid')
-
-env.ParseConfig('sdl-config --cflags --libs')
-env.ParseConfig('freetype-config --libs --cflags')
 
 env.Program('../windstille', 
             glob('app/*.cpp') +
@@ -104,37 +103,6 @@ editor_env.ParseConfig('Magick++-config --libs --cppflags')
 editor_env.ParseConfig('pkg-config --cflags --libs libcurl')
 editor_env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4 gtkglextmm-1.2')
 
-editor_env.Program('../windstille-editor',
-#                   glob('editor/*.cpp'))
-                   [
-        'editor/about_window.cpp',
-        'editor/control_point.cpp',
-        'editor/decal_object_model.cpp',
-        'editor/decal_rotate_control_point.cpp',
-        'editor/decal_scale_control_point.cpp',
-        'editor/editor_window.cpp',
-        'editor/layer_widget.cpp',
-#        'editor/group_command.cpp',
-        'editor/layer.cpp',
-        'editor/main.cpp',
-        'editor/minimap_widget.cpp',
-        'editor/object_model.cpp',
-#        'editor/object_commands.cpp',
-        'editor/object_model_factory.cpp',
-        'editor/object_selector.cpp',
-        'editor/particle_system_object_model.cpp',
-        'editor/layer_manager.cpp',
-        'editor/navgraph_insert_tool.cpp',
-        'editor/navgraph_select_tool.cpp',
-        'editor/scroll_tool.cpp',
-        'editor/sector_model.cpp',
-        'editor/select_tool.cpp',
-        'editor/selection.cpp',
-        'editor/node_selection.cpp',
-        'editor/sprite_object_model.cpp',
-        'editor/windstille_widget.cpp',
-        'editor/zoom_tool.cpp',
-        'editor/undo_manager.cpp',
-        ])
+editor_env.Program('../windstille-editor', glob('editor/*.cpp'))
 
 # EOF #
