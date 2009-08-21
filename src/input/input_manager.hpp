@@ -21,6 +21,8 @@
 
 #include <string>
 #include <vector>
+#include <boost/scoped_ptr.hpp>
+
 #include "controller.hpp"
 #include "input_event.hpp"
 
@@ -30,21 +32,24 @@ class InputManagerImpl;
 class InputManager
 {
 private:
-  static InputManagerImpl* impl;
+  static InputManager* s_current;
+public:
+  static InputManager* current() { return s_current; }
 
 public:
-  /** Init the InputManager */
-  static void init();
-  static void deinit();
+  InputManager();
+  ~InputManager();
 
   /** Load configuration file \a filename */
-  static void load(const std::string& filename);
+  void load(const std::string& filename);
 
-  static void update(float delta);
-  static const Controller& get_controller();
-  static void clear();
+  void update(float delta);
+  const Controller& get_controller();
+  void clear();
 
 private:
+  boost::scoped_ptr<InputManagerImpl> impl;
+
   InputManager(const InputManager&);
   InputManager& operator=(const InputManager&);
 };

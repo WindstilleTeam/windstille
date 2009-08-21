@@ -48,8 +48,8 @@ PDA::PDA()
   text_area.reset(new TextArea(Rectf(pos + Vector2f(40.0f, 50.0f) + Vector2f(0.0f, 56.0f),
                                      Sizef(315.0f, 380.0f)).grow(-12.0f), false));
 
-  ui_area->set_font(Fonts::vera12);
-  text_area->set_font(Fonts::vera12);
+  ui_area->set_font(Fonts::current()->vera12.get());
+  text_area->set_font(Fonts::current()->vera12.get());
 }
 
 PDA::~PDA()

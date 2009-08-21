@@ -179,9 +179,9 @@ DialogManager::create_text()
 
   Size dialog_size(dialog_width, dialog_height);
 
-  text_area.reset(new TextArea(Rect(Point(text_rect.left, text_rect.top + Fonts::vera20->get_height()),
+  text_area.reset(new TextArea(Rect(Point(text_rect.left, text_rect.top + Fonts::current()->vera20->get_height()),
                                     Size(text_width, 200)), true));
-  text_area->set_font(Fonts::vera20);
+  text_area->set_font(Fonts::current()->vera20.get());
   text_area->set_text(text);
 }
 

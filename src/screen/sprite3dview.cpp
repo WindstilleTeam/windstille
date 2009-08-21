@@ -80,16 +80,16 @@ Sprite3DView::draw()
   sc.render();
   
   float x = 10.0f;
-  float y =  Fonts::vera12->get_height() + 5.0f;
-  int line_height = Fonts::vera12->get_height()+5;
+  float y =  Fonts::current()->vera12->get_height() + 5.0f;
+  int line_height = Fonts::current()->vera12->get_height()+5;
 
   for(int i = 0; i < int(actions.size()); ++i)
     {
       if (i == current_action)
-        Fonts::vera12->draw(Vector2f(x, y),
+        Fonts::current()->vera12->draw(Vector2f(x, y),
                             actions[i], Color(1.0f, 1.0f, 1.0f));
       else
-        Fonts::vera12->draw(Vector2f(x, y),
+        Fonts::current()->vera12->draw(Vector2f(x, y),
                             actions[i], Color(0.7f, 0.7f, 0.7f));
 
 
@@ -97,7 +97,7 @@ Sprite3DView::draw()
       if (y > 580.0f)
         {
           x += 200.0f;
-          y =  Fonts::vera12->get_height() + 5.0f;
+          y =  Fonts::current()->vera12->get_height() + 5.0f;
         }
     }
 }

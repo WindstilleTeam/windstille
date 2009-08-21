@@ -36,7 +36,7 @@ ListView::~ListView()
 void
 ListView::draw()
 {
-  TTFFont* font = Fonts::vera20;
+  TTFFont* font = Fonts::current()->vera20.get();
 
   float x = rect.left;
   float y = rect.top + font->get_height();

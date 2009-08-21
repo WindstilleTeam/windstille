@@ -19,16 +19,25 @@
 #ifndef HEADER_WINDSTILLE_FONT_FONTS_HPP
 #define HEADER_WINDSTILLE_FONT_FONTS_HPP
 
+#include <boost/scoped_ptr.hpp>
+
 #include "ttf_font.hpp"
 
-class Fonts {
+class Fonts 
+{
+private:
+  static Fonts* s_current;
 public:
-  static TTFFont* ttffont;
-  static TTFFont* vera12;
-  static TTFFont* vera20;
+  static Fonts* current() { return s_current; }
 
-  static void init();
-  static void deinit();
+public:
+  boost::scoped_ptr<TTFFont> ttffont;
+  boost::scoped_ptr<TTFFont> vera12;
+  boost::scoped_ptr<TTFFont> vera20;
+
+public:
+  Fonts();
+  ~Fonts();
 };
 
 #endif

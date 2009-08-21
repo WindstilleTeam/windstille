@@ -248,4 +248,14 @@ TTFFont::deinit()
   FT_Done_FreeType( TTFFontImpl::library );
 }
 
+TTFFontManager::TTFFontManager()
+{
+  TTFFont::init();
+}
+
+TTFFontManager::~TTFFontManager()
+{
+  TTFFont::deinit();
+}
+
 /* EOF */

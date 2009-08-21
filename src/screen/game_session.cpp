@@ -174,8 +174,8 @@ GameSessionImpl::draw()
   if (pause)
     {
       if ((SDL_GetTicks() / 1000) % 2)
-        Fonts::vera20->draw(Vector2f(Display::get_width()/2.0f, Display::get_height()/2.0f), 
-                            "Pause");
+        Fonts::current()->vera20->draw(Vector2f(Display::get_width()/2.0f, Display::get_height()/2.0f), 
+                                       "Pause");
     }
 }
 

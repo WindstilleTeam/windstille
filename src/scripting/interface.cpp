@@ -128,9 +128,9 @@ void wait(HSQUIRRELVM vm, float time)
   boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
-    {
-      ptr->set_wakeup_event(ScriptManager::TIME, time);
-    }
+  {
+    ptr->set_wakeup_event(ScriptManager::TIME, time);
+  }
 }
 
 void wait_for_dialog(HSQUIRRELVM vm)
@@ -138,9 +138,9 @@ void wait_for_dialog(HSQUIRRELVM vm)
   boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
-    {
-      ptr->set_wakeup_event(ScriptManager::DIALOG_CLOSED);
-    }
+  {
+    ptr->set_wakeup_event(ScriptManager::DIALOG_CLOSED);
+  }
 }
 
 void wait_for_camera(HSQUIRRELVM vm)
@@ -148,9 +148,9 @@ void wait_for_camera(HSQUIRRELVM vm)
   boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
-    {
-      ptr->set_wakeup_event(ScriptManager::CAMERA_DONE);
-    }
+  {
+    ptr->set_wakeup_event(ScriptManager::CAMERA_DONE);
+  }
 }
 
 void wait_for_fade(HSQUIRRELVM vm)
@@ -158,9 +158,9 @@ void wait_for_fade(HSQUIRRELVM vm)
   boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
-    {
-      ptr->set_wakeup_event(ScriptManager::FADE_DONE);
-    }
+  {
+    ptr->set_wakeup_event(ScriptManager::FADE_DONE);
+  }
 }
 
 int speech_show(const std::string& text, float x, float y, float r, float g, float b)
@@ -222,10 +222,10 @@ void list_objects()
   const std::vector<boost::shared_ptr< ::GameObject > >& objects = Sector::current()->get_objects();
   
   for(std::vector<boost::shared_ptr< ::GameObject > >::const_iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      if (!(*i)->get_name().empty())
-        console << (*i)->get_name() << std::endl;
-    }
+  {
+    if (!(*i)->get_name().empty())
+      console << (*i)->get_name() << std::endl;
+  }
 }
 
 float get_game_speed()
@@ -264,9 +264,9 @@ void wait_for_conversation(HSQUIRRELVM vm)
   boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
-    {
-      ptr->set_wakeup_event(ScriptManager::CONVERSATION_CLOSED);
-    }
+  {
+    ptr->set_wakeup_event(ScriptManager::CONVERSATION_CLOSED);
+  }
 }
 
 SQInteger display(HSQUIRRELVM v)
@@ -304,12 +304,12 @@ bool get_debug()
 
 void set_console_font(const std::string& font, int size)
 {
-  TTFFont* oldfont = Fonts::ttffont;
-
-  try {
-    Fonts::ttffont = new TTFFont("fonts/" + font, size);
-    delete oldfont;
-  } catch(std::exception& err) {
+  try 
+  {
+    Fonts::current()->ttffont.reset(new TTFFont("fonts/" + font, size));
+  }
+  catch(std::exception& err) 
+  {
     console << err.what() << std::endl;
   }
 }
@@ -362,26 +362,26 @@ void render_mask_set(int mask)
 SQInteger spawn_object(HSQUIRRELVM v)
 {
   if (Sector::current())
+  {
+    const char* objname = 0;
+    sq_getstring(v, -2, &objname);
+
+    // Newly created objects are deleted in ~SExprFileReader() and ~Lisp()
+    std::vector<lisp::Lisp*> entries;
+    entries.push_back(new lisp::Lisp(lisp::Lisp::TYPE_SYMBOL, objname));
+    table_to_lisp(v, -1, entries);
+
+    try 
     {
-      const char* objname = 0;
-      sq_getstring(v, -2, &objname);
-
-      // Newly created objects are deleted in ~SExprFileReader() and ~Lisp()
-      std::vector<lisp::Lisp*> entries;
-      entries.push_back(new lisp::Lisp(lisp::Lisp::TYPE_SYMBOL, objname));
-      table_to_lisp(v, -1, entries);
-
-      try 
-        {
-          SExprFileReader reader(new lisp::Lisp(entries), true);
-          Sector::current()->add_object(reader);
-        }
-      catch (std::exception& e) 
-        {
-          std::cerr << "Error parsing object in spawn_object: " << e.what()
-                    << "\n";
-        }
+      SExprFileReader reader(new lisp::Lisp(entries), true);
+      Sector::current()->add_object(reader);
     }
+    catch (std::exception& e) 
+    {
+      std::cerr << "Error parsing object in spawn_object: " << e.what()
+                << "\n";
+    }
+  }
   return 0;
 }
 
@@ -394,11 +394,11 @@ void spawn_script(const std::string& filename)
 SQInteger spawn_function(HSQUIRRELVM v)
 {
   if (ScriptManager::current())
-    {
-      boost::shared_ptr<SquirrelThread> thread = ScriptManager::current()->create_script(v, false);
-      thread->load(v, -1);
-      sq_pop(v, 1);
-    }
+  {
+    boost::shared_ptr<SquirrelThread> thread = ScriptManager::current()->create_script(v, false);
+    thread->load(v, -1);
+    sq_pop(v, 1);
+  }
   return 0;
 }
 
@@ -409,13 +409,13 @@ SQInteger lisp2string(HSQUIRRELVM v)
   table_to_lisp(v, -1, entries);
 
   for(std::vector<lisp::Lisp*>::iterator i = entries.begin(); i != entries.end(); ++i)
-    {
-      console << (i - entries.begin()) << ": ";
-      std::stringstream str;
-      (*i)->print(str);
-      console << str.str();
-      console << std::endl;
-    }
+  {
+    console << (i - entries.begin()) << ": ";
+    std::stringstream str;
+    (*i)->print(str);
+    console << str.str();
+    console << std::endl;
+  }
    
   return 0;
 }

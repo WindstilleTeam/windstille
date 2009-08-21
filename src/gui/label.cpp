@@ -36,9 +36,9 @@ Label::draw()
 {
   //Display::fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
   //Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
-  Fonts::vera12->draw(Vector2f(rect.left + 5/*+ rect.get_width()/2*/, rect.top + rect.get_height()/2 + 3),
-                      label,
-                      Color(1.0f, 1.0f, 1.0f, 1.0f));
+  Fonts::current()->vera12->draw(Vector2f(rect.left + 5/*+ rect.get_width()/2*/, rect.top + rect.get_height()/2 + 3),
+                                 label,
+                                 Color(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 void

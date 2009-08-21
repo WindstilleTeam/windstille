@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <assert.h>
 #include <iostream>
 #include <assert.h>
 #include <stdexcept>
@@ -26,18 +27,17 @@
 #include "input_manager_impl.hpp"
 #include "input_manager.hpp"
 
-InputManagerImpl* InputManager::impl = 0;
+InputManager* InputManager::s_current = 0;
 
-void
-InputManager::init()
+InputManager::InputManager()
+  : impl(new InputManagerSDL())
 {
-  impl = new InputManagerSDL();
+  assert(!s_current);
+  s_current = this;
 }
 
-void 
-InputManager::deinit()
+InputManager::~InputManager()
 {
-  delete impl;
 }
 
 void

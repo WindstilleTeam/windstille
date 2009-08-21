@@ -83,17 +83,17 @@ WindstilleMain::main(int argc, char** argv)
     config.parse_args(argc, argv);
 
     {
-      m_window.reset(new OpenGLWindow());
-        
-      TTFFont::init(); 
-      Fonts::init(); 
-
+      OpenGLWindow      window;
+      TTFFontManager    ttffont_manager;
+      Fonts             fonts;
       SoundManager      sound_manager;
       TextureManager    texture_manager;
       SurfaceManager    surface_manager;
       SpriteManager     sprite_manager;
       sprite3d::Manager sprite3d_manager;
       ScriptManager     script_manager;
+      InputManager      input_manager;
+      TileFactory       tile_factory("tiles.scm");
 
       init_modules();
     
@@ -101,10 +101,9 @@ WindstilleMain::main(int argc, char** argv)
 
       config.save();
     
-      deinit_modules();
       PHYSFS_deinit();
     }
-  } 
+  }
   catch (std::exception& err)
   {
     std::cout << "std::exception: " << err.what() << std::endl;
@@ -186,7 +185,6 @@ WindstilleMain::init_modules()
   SoundManager::current()->enable_sound(config.get_bool("sound"));
   SoundManager::current()->enable_music(config.get_bool("music"));
 
-
   ScriptManager::current()->run_script_file("scripts/windstille.nut", true);
 
   { // Fill controller_description with data
@@ -229,29 +227,15 @@ WindstilleMain::init_modules()
     controller_description.add_ball("mouse-motion-y", MOUSE_MOTION_Y);
   }
     
-  {
-    InputManager::init();
-      
+  {     
     if (config.get<std::string>("primary-controller-file").is_set())
-      InputManager::load(config.get<std::string>("primary-controller-file").get());
+      InputManager::current()->load(config.get<std::string>("primary-controller-file").get());
     else
-      InputManager::load("controller/keyboard.scm");
+      InputManager::current()->load("controller/keyboard.scm");
 
     if (config.get<std::string>("secondary-controller-file").is_set())
-      InputManager::load(config.get<std::string>("secondary-controller-file").get());
+      InputManager::current()->load(config.get<std::string>("secondary-controller-file").get());
   }
-
-  if (debug) std::cout << "Initialising TileFactory" << std::endl;
-  TileFactory::init();
-}
-
-void
-WindstilleMain::deinit_modules()
-{
-  TileFactory::deinit();
-  InputManager::deinit();
-  Fonts::deinit();
-  TTFFont::deinit();
 }
 
 void

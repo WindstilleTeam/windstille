@@ -82,17 +82,17 @@ ScreenManager::run()
 
     while (delta > step)
     {
-      InputManager::update(delta);
+      InputManager::current()->update(delta);
 
       console.update(step);
       if (!console.is_active())
       {
         if (!overlay_screens.empty())
-          overlay_screens.back()->update(step, InputManager::get_controller());
+          overlay_screens.back()->update(step, InputManager::current()->get_controller());
         else if (!screens.empty())
-          screens.back()->update(step, InputManager::get_controller());
+          screens.back()->update(step, InputManager::current()->get_controller());
       }
-      InputManager::clear();
+      InputManager::current()->clear();
   
       delta -= step;
     }
@@ -331,7 +331,7 @@ ScreenManager::draw_fps()
   
   std::ostringstream out;
   out << "FPS: " << last_fps;
-  Fonts::ttffont->draw(Vector2f(Display::get_width() - 100, 30), out.str());
+  Fonts::current()->ttffont->draw(Vector2f(Display::get_width() - 100, 30), out.str());
 }
 
 void

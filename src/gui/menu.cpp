@@ -39,7 +39,7 @@ Menu::Menu(const std::string& name, const Rectf& rect, bool allow_cancel, Compon
 
   group.reset(new GroupComponent(rect, name, parent));
   menu.reset(new MenuComponent(group->get_child_rect(), allow_cancel, group.get()));
-  menu->set_font(Fonts::vera20);
+  menu->set_font(Fonts::current()->vera20.get());
 }
 
 Menu::~Menu()
@@ -100,7 +100,7 @@ Menu::show()
                     (rect.top + rect.bottom) / 2.0f);
 
     Sizef size(menu->get_prefered_width(), 
-               menu->get_prefered_height() + (group->has_title()?Fonts::vera20->get_height() + 18:0.0f));
+               menu->get_prefered_height() + (group->has_title() ? Fonts::current()->vera20->get_height() + 18 : 0.0f));
 
     group->set_screen_rect(Rectf(Vector2f(center.x - size.width/2.0f,
                                           center.y - size.height/2.0f),

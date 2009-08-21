@@ -82,6 +82,13 @@ private:
   std::auto_ptr<TTFFontImpl> impl;
 };
 
+class TTFFontManager
+{
+public:
+  TTFFontManager();
+  ~TTFFontManager();
+};
+
 #endif
 
 /* EOF */

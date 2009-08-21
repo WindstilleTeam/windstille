@@ -62,7 +62,7 @@ Speech::draw()
   // that we get an empty gap between succesive text on the screen,
   // which is needed to make text look more like natural speech.
   if (seconds_passed < (seconds_till_done - .1f))
-    Fonts::vera20->draw_center(pos, text, color);
+    Fonts::current()->vera20->draw_center(pos, text, color);
 }
 
 void

@@ -51,8 +51,6 @@
 
 #include "screen/screen.hpp"
 
-class OpenGLWindow;
-
 class WindstilleMain
 { 
 private:
@@ -72,9 +70,6 @@ private:
   void init_physfs(const char* argv0);
   void init_modules();
   void deinit_modules();
-
-private:
-  boost::scoped_ptr<OpenGLWindow> m_window;
 };
 
 #endif

@@ -16,28 +16,25 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <assert.h>
+
 #include "app/globals.hpp"
 #include "border_font_effect.hpp"
 #include "fonts.hpp"
 
-TTFFont* Fonts::ttffont = 0;
-TTFFont* Fonts::vera12  = 0;
-TTFFont* Fonts::vera20  = 0;
+Fonts* Fonts::s_current = 0;
 
-void
-Fonts::init()
+Fonts::Fonts()
+  : ttffont(new TTFFont("fonts/VeraMono.ttf", 14, BorderFontEffect(1, true))),
+    vera12(new TTFFont("fonts/Vera.ttf",     12, BorderFontEffect(2, true))),
+    vera20(new TTFFont("fonts/Vera.ttf",     20, BorderFontEffect(2, true)))
 {
-  ttffont = new TTFFont("fonts/VeraMono.ttf", 14, BorderFontEffect(1, true));
-  vera12  = new TTFFont("fonts/Vera.ttf",     12, BorderFontEffect(2, true));
-  vera20  = new TTFFont("fonts/Vera.ttf",     20, BorderFontEffect(2, true));
+  assert(!s_current);
+  s_current = this;
 }
 
-void
-Fonts::deinit()
+Fonts::~Fonts()
 {
-  delete ttffont;
-  delete vera12;
-  delete vera20;
 }
 
 /* EOF */

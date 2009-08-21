@@ -72,7 +72,7 @@ View::update (float delta)
   if (keystate[SDLK_KP_MINUS])
     zoom *= 1.0f - delta;
 
-  const Controller& controller = InputManager::get_controller();
+  const Controller& controller = InputManager::current()->get_controller();
 
   if (controller.get_button_state(DEBUG_BUTTON))
     {

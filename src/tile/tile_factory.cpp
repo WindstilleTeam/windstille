@@ -22,6 +22,7 @@
 #include <sstream>
 #include <iostream>
 #include <memory>
+
 #include "app/globals.hpp"
 #include "tile.hpp"
 #include "tile_packer.hpp"
@@ -34,8 +35,6 @@
 #include "physfs/physfs_sdl.hpp"
 
 TileFactory* TileFactory::current_ = 0;
-
-std::string TileFactory::tile_def_file = "tiles.scm";
 
 /** Check if the given region of the given image is fully transparent */
 bool surface_empty(const SoftwareSurface& image, int sx, int sy, int w, int h)
@@ -54,8 +53,11 @@ bool surface_empty(const SoftwareSurface& image, int sx, int sy, int w, int h)
   return true;
 }
 
-TileFactory::TileFactory (const std::string& filename)
+TileFactory::TileFactory(const std::string& filename)
 {
+  assert(!current_);
+  current_ = this;
+
   packers.push_back(new TilePacker(1024, 1024));
   packers.push_back(new TilePacker(1024, 1024));
   color_packer     = 0;
@@ -174,20 +176,6 @@ TileFactory::create(int id)
 
       return tiles[id];
     }
-}
-
-void
-TileFactory::init()
-{
-  assert(current_ == 0);
-  current_ = new TileFactory(tile_def_file);
-}
-
-/** Destroy the default TileFactor */
-void
-TileFactory::deinit()
-{
-  delete current_;
 }
 
 /* EOF */

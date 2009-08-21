@@ -43,8 +43,6 @@ private:
   std::vector<TileDescription*> descriptions;
   
 public:
-  static std::string tile_def_file;
-
   typedef Tiles::iterator iterator;
   
   iterator begin() { return tiles.begin(); }
@@ -53,7 +51,7 @@ public:
   /** Create a TileFactory from a given tile definition file */
   TileFactory(const std::string& filename);
   ~TileFactory();
-
+  
   /**
    * Create a new tile, or loads&create it if it is not already
    * available
@@ -64,12 +62,6 @@ public:
    * Adds a surface to the TileFactory
    */
   void pack(int id, int colmap, const SoftwareSurface& image, const Rect& rect);
-
-  /** Create the default TileFactor*/
-  static void init();
-
-  /** Destroy the default TileFactor*/
-  static void deinit();
 
   /** Access the default TileFactor*/
   static TileFactory* current() { return current_; }

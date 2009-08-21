@@ -151,9 +151,9 @@ ConsoleImpl::draw()
   int y = y_pos;
 
   if (active)
-    y -= Fonts::ttffont->get_height() + 2;
+    y -= Fonts::current()->ttffont->get_height() + 2;
 
-  int num_lines = 600 / (Fonts::ttffont->get_height() + 2);
+  int num_lines = 600 / (Fonts::current()->ttffont->get_height() + 2);
 
   if (console.is_active())
     Display::fill_rect(Rect(0,0, Display::get_width(), 600),
@@ -167,9 +167,9 @@ ConsoleImpl::draw()
           if (buffer[i].display_time > 4.0f && !console.is_active())
             alpha = 1.0f - (buffer[i].display_time - 4.0f);
 
-          Fonts::ttffont->draw(Vector2f(x_pos, y), buffer[i].message, Color(0.88f, 0.88f, 1.0f, alpha));
+          Fonts::current()->ttffont->draw(Vector2f(x_pos, y), buffer[i].message, Color(0.88f, 0.88f, 1.0f, alpha));
         }
-      y -= Fonts::ttffont->get_height() + 2;
+      y -= Fonts::current()->ttffont->get_height() + 2;
     }
 
   if (active)
@@ -183,7 +183,7 @@ ConsoleImpl::draw()
             str += "_";
         }
 
-      Fonts::ttffont->draw(Vector2f(x_pos, y_pos), "> " + str, Color(1.0f, 1.0f, 1.0f));
+      Fonts::current()->ttffont->draw(Vector2f(x_pos, y_pos), "> " + str, Color(1.0f, 1.0f, 1.0f));
     }
 }
 
@@ -197,7 +197,7 @@ ConsoleImpl::update(float delta)
 
   if (active)
     {
-      InputEventLst events = InputManager::get_controller().get_events();
+      InputEventLst events = InputManager::current()->get_controller().get_events();
   
       for (InputEventLst::iterator i = events.begin(); i != events.end(); ++i)
         {
@@ -538,7 +538,7 @@ void
 Console::activate()
 {
   // Get rid of all input events so that we don't double press
-  InputManager::clear();
+  InputManager::current()->clear();
   impl->active = true;
 
   SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);

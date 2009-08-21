@@ -43,7 +43,7 @@ GroupComponent::draw()
 
   if (!title.empty())
     {
-      TTFFont* font = Fonts::vera20;
+      TTFFont* font = Fonts::current()->vera20.get();
       font->draw_center(Vector2f(rect.left + rect.get_width()/2, rect.top + font->get_height() + 5), 
                         title, Color(1.0f, 1.0f, 1.0f));
 
@@ -79,7 +79,7 @@ GroupComponent::get_child_rect() const
   int padding = 6;
 
   return Rectf(rect.left   + padding,
-               rect.top    + padding + (title.empty() ? 0 : Fonts::vera20->get_height() + 18),
+               rect.top    + padding + (title.empty() ? 0 : Fonts::current()->vera20->get_height() + 18),
                rect.right  - padding,
                rect.bottom - padding);
 }
