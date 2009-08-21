@@ -19,37 +19,34 @@
 #include <boost/format.hpp>
 #include <iostream>
 #ifndef WIN32
-#include <unistd.h>
+#  include <unistd.h>
 #endif
-#include "game_session.hpp"
-#include "input/input_manager_sdl.hpp"
-#include "display/display.hpp"
-#include "app/globals.hpp"
-#include "screen.hpp"
-#include "font/fonts.hpp"
+
 #include "app/config.hpp"
+#include "app/globals.hpp"
 #include "app/windstille_main.hpp"
-#include "input/input_manager.hpp"
-#include "input/input_configurator.hpp"
-#include "sound/sound_manager.hpp"
+#include "display/display.hpp"
+#include "font/fonts.hpp"
+#include "game_session.hpp"
 #include "gui/gui_manager.hpp"
 #include "hud/controller_help_window.hpp"
+#include "input/input_configurator.hpp"
+#include "input/input_manager.hpp"
+#include "input/input_manager_sdl.hpp"
+#include "screen.hpp"
 #include "screen_manager.hpp"
+#include "sound/sound_manager.hpp"
 
 // GUI Stuff, can be removed if gui is a bit better organised
-#include "gui/button.hpp"
-#include "gui/slider.hpp"
-#include "gui/root_component.hpp"
-#include "gui/grid_component.hpp"
-#include "gui/menu_component.hpp"
-#include "gui/tab_component.hpp"
-#include "gui/list_view.hpp"
-#include "gui/text_view.hpp"
 #include "gui/automap.hpp"
-
-#ifdef WIN32
-#define snprintf _snprintf
-#endif
+#include "gui/button.hpp"
+#include "gui/grid_component.hpp"
+#include "gui/list_view.hpp"
+#include "gui/menu_component.hpp"
+#include "gui/root_component.hpp"
+#include "gui/slider.hpp"
+#include "gui/tab_component.hpp"
+#include "gui/text_view.hpp"
 
 ScreenManager screen_manager; 
 
@@ -80,113 +77,127 @@ ScreenManager::run()
 
   ticks = SDL_GetTicks();
 
-  ControllerHelpWindow controller_help_window;
+  //controller_help_window = new ControllerHelpWindow();
+  apply_pending_actions();
 
-  while (!do_quit)
+  while (!do_quit && !screens.empty())
+  {
+    /// Amount of time the world moves forward each update(), this is
+    /// independed of the number of frames and always constant
+    static const float step = .001;
+
+    Uint32 now = SDL_GetTicks();
+    float delta = static_cast<float>(now - ticks) / 1000.0f + overlap_delta;
+    ticks = now;
+
+    time_counter += delta;
+
+    while (delta > step)
     {
-      /// Amount of time the world moves forward each update(), this is
-      /// independed of the number of frames and always constant
-      static const float step = .001;
+      InputManager::update(delta);
 
-      Uint32 now = SDL_GetTicks();
-      float delta = static_cast<float>(now - ticks) / 1000.0f + overlap_delta;
-      ticks = now;
-
-      time_counter  += delta;
-
-      while (delta > step)
-        {
-          InputManager::update(delta);
-
-          console.update(step);
-          if (!console.is_active())
-            {
-              if (!overlay_screens.empty())
-                overlay_screens.back()->update(step, InputManager::get_controller());
-              else if (!screens.empty())
-                screens.back()->update(step, InputManager::get_controller());
-            }
-          InputManager::clear();
+      console.update(step);
+      if (!console.is_active())
+      {
+        if (!overlay_screens.empty())
+          overlay_screens.back()->update(step, InputManager::get_controller());
+        else if (!screens.empty())
+          screens.back()->update(step, InputManager::get_controller());
+      }
+      InputManager::clear();
   
-          delta -= step;
-        }
-      
-      overlap_delta = delta;
-
-      SoundManager::current()->update();
-
-      if (!screens.empty())
-        screens.back()->draw();
-
-      if (!overlay_screens.empty())
-        overlay_screens.back()->draw();
-
-      if (show_controller_help_window)
-        controller_help_window.draw();
-
-      console.draw();
-
-      if (config.get_bool("show-fps"))
-        draw_fps();
-
-      SDL_GL_SwapBuffers();
-      frame_counter += 1;
-
-      // Commit any pending screen actions
-      switch(overlay_screen_action)
-        {
-          case PUSH_SCREEN:
-            overlay_screens.push_back(overlay_screen_screen);
-            overlay_screen_screen = boost::shared_ptr<Screen>();
-            break;
-
-          case POP_SCREEN:
-            if (overlay_screens.empty())
-              {
-                std::cout << "Error: ScreenManager: trying to pop_overlay with empty stack" << std::endl;
-              }
-            else
-              {
-                overlay_screens.pop_back();
-              }
-            break;
-
-          case CLEAR_SCREENS:
-            overlay_screens.clear();
-            break;
-
-          case NONE:
-            // nothing
-            break;
-        }
-      overlay_screen_action = NONE;
-
-      switch(screen_action)
-        {
-          case PUSH_SCREEN:
-            screens.push_back(screen_screen);
-            screen_screen = boost::shared_ptr<Screen>();
-            screens.back()->on_startup();
-            break;
-
-          case POP_SCREEN:
-            screens.pop_back();
-            if (!screens.empty())
-              screens.back()->on_startup();
-            break;
-
-          case CLEAR_SCREENS:
-            screens.clear();
-            break;
-
-          case NONE:
-            // nothing
-            break;
-        }
-      screen_action = NONE;
-
-      poll_events();
+      delta -= step;
     }
+      
+    overlap_delta = delta;
+
+    SoundManager::current()->update();
+
+    draw();
+
+    frame_counter += 1;
+
+    poll_events();
+
+    apply_pending_actions();
+  }
+}
+
+void
+ScreenManager::draw()
+{
+  if (!screens.empty())
+    screens.back()->draw();
+
+  if (!overlay_screens.empty())
+    overlay_screens.back()->draw();
+
+  // if (show_controller_help_window)
+  //   controller_help_window.draw();
+
+  console.draw();
+
+  if (config.get_bool("show-fps"))
+    draw_fps();
+
+  SDL_GL_SwapBuffers();
+}
+
+void
+ScreenManager::apply_pending_actions()
+{
+  // Commit any pending screen actions
+  switch(overlay_screen_action)
+  {
+    case PUSH_SCREEN:
+      overlay_screens.push_back(overlay_screen_screen);
+      overlay_screen_screen = boost::shared_ptr<Screen>();
+      break;
+
+    case POP_SCREEN:
+      if (overlay_screens.empty())
+      {
+        std::cout << "Error: ScreenManager: trying to pop_overlay with empty stack" << std::endl;
+      }
+      else
+      {
+        overlay_screens.pop_back();
+      }
+      break;
+
+    case CLEAR_SCREENS:
+      overlay_screens.clear();
+      break;
+
+    case NONE:
+      // nothing
+      break;
+  }
+  overlay_screen_action = NONE;
+
+  switch(screen_action)
+  {
+    case PUSH_SCREEN:
+      screens.push_back(screen_screen);
+      screen_screen = boost::shared_ptr<Screen>();
+      screens.back()->on_startup();
+      break;
+
+    case POP_SCREEN:
+      screens.pop_back();
+      if (!screens.empty())
+        screens.back()->on_startup();
+      break;
+
+    case CLEAR_SCREENS:
+      screens.clear();
+      break;
+
+    case NONE:
+      // nothing
+      break;
+  }
+  screen_action = NONE;
 }
 
 void
@@ -333,9 +344,9 @@ ScreenManager::draw_fps()
       frame_counter = 0;
     }
   
-  char output[20];
-  snprintf(output, sizeof(output), "FPS: %d", last_fps);
-  Fonts::ttffont->draw(Vector2f(Display::get_width() - 100, 30), output);
+  std::ostringstream out;
+  out << "FPS: " << last_fps;
+  Fonts::ttffont->draw(Vector2f(Display::get_width() - 100, 30), out.str());
 }
 
 void

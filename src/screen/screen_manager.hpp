@@ -50,6 +50,9 @@ private:
   bool  do_quit;
   bool  show_controller_help_window;
 
+  void apply_pending_actions();
+  void draw();
+  
 public:
   ScreenManager();
   ~ScreenManager();
