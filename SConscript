@@ -145,14 +145,12 @@ squirrel_env = Environment(CPPPATH  = ['external/SQUIRREL2/include'],
 if features['64bit']:
     squirrel_env.Append(CPPDEFINES = '_SQ64')
 
-# squirrel_env.Append(CXXFLAGS = conf_env['CXXFLAGS'])
-
 squirrel_env.Library('squirrel',
                      Glob('external/SQUIRREL2/squirrel/*.cpp') +
                      Glob('external/SQUIRREL2/sqstdlib/*.cpp'))
 
 
-miniswig_env = Environment(CPPPATH=['.', 'miniswig'],
+miniswig_env = Environment(CPPPATH=['.', 'external/miniswig/'],
                            CXXFILESUFFIX = ".cpp",
                            YACCFLAGS=['-d', '--no-lines'])
 
@@ -176,29 +174,19 @@ env.Depends(env.Command(['src/scripting/wrapper.cpp', 'src/scripting/wrapper.hpp
                         ["$MINISWIG  --input $SOURCE --output-cpp ${TARGETS[0]} --output-hpp ${TARGETS[1]} --module windstille --select-namespace Scripting"]),
             miniswig_bin)
 
-# libutil
-util_env = Environment(CPPPATH=['src'], CXXFLAGS=debug_cxxflags)
-util_lib = util_env.StaticLibrary('util', Glob('src/lisp/*.cpp') + Glob('src/util/*.cpp'))
+wstlib_env    = Environment(CPPPATH=['src'], CXXFLAGS=debug_cxxflags)
+util_lib      = wstlib_env.StaticLibrary('util', Glob('src/lisp/*.cpp') + Glob('src/util/*.cpp'))
+math_lib      = wstlib_env.StaticLibrary('math', Glob('src/math/*.cpp'))
+navgraph_lib  = wstlib_env.StaticLibrary('navgraph', Glob('src/navigation/*.cpp'))
+particles_lib = wstlib_env.StaticLibrary('particles', Glob('src/particles/*.cpp'))
 
 # libphysfs
-physfs_env = Environment(CPPPATH=['src'], CXXFLAGS=debug_cxxflags)
+physfs_env = wstlib_env.Clone()
 physfs_env.ParseConfig('sdl-config --cflags --libs')
 physfs_lib = physfs_env.StaticLibrary('src/physfs', Glob('src/physfs/*.cpp'))
 
-# libmath
-math_env = Environment(CPPPATH=['src'], CXXFLAGS=debug_cxxflags)
-math_lib = math_env.StaticLibrary('math', Glob('src/math/*.cpp'))
-
-# libnavgraph
-navgraph_env = Environment(CPPPATH=['src'], CXXFLAGS=debug_cxxflags)
-navgraph_lib = navgraph_env.StaticLibrary('navgraph', Glob('src/navigation/*.cpp'))
-
-# libparticles
-particles_env = Environment(CPPPATH=['src'], CXXFLAGS=debug_cxxflags)
-particles_lib = particles_env.StaticLibrary('particles', Glob('src/particles/*.cpp'))
-
 # libdisplay
-display_env = Environment(CPPPATH=['src'], CXXFLAGS=debug_cxxflags)
+display_env = wstlib_env.Clone()
 display_env.ParseConfig('sdl-config --cflags --libs')
 display_env.ParseConfig('freetype-config --libs --cflags')
 display_lib = display_env.StaticLibrary('display', 
@@ -206,14 +194,15 @@ display_lib = display_env.StaticLibrary('display',
                                         Glob('src/display/*.cpp') +
                                         Glob('src/sprite2d/*.cpp') +
                                         Glob('src/sprite3d/*.cpp'))
-
 
 windstille_env = Environment(CXXFLAGS=debug_cxxflags,
                   CPPPATH=['src', '.', 'external/SQUIRREL2/include/'],
                   LIBPATH=['external/'],
                   LIBS=[particles_lib, navgraph_lib, display_lib, physfs_lib, util_lib, math_lib,
                         'GL', 'GLU', 'GLEW',
-                        'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png', 'boost_signals-mt'])
+                        'squirrel', 'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png',
+                        # FIXME: Add configure checks for exact boost library name
+                        'boost_signals-mt', 'boost_filesystem-mt'])
 
 windstille_env.ParseConfig('sdl-config --cflags --libs')
 windstille_env.ParseConfig('freetype-config --libs --cflags')
@@ -262,5 +251,16 @@ data_env.Append(BUILDERS = { "xcf2png" : Builder(action = "xcf2png $SOURCE -o $T
 
 for filename in Glob("data/images/decal/*.xcf"):
     data_env.xcf2png(filename)
+
+data_files = ["data/sounds/*.wav",
+              "data/sounds/*.ogg",
+              "data/fonts/*.ttf",
+              "data/images/*.png",
+              "data/images/*/*.png",
+              "data/images/*/*/*.png"]
+
+for pattern in data_files:
+    for filename in Glob(pattern):
+        File(filename)
 
 # EOF #
