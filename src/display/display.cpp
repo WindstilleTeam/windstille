@@ -16,19 +16,20 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "display/display.hpp"
+
+#include <assert.h>
 #include <boost/scoped_array.hpp>
 #include <png.h>
 #include <math.h>
 #include <errno.h>
 #include <fstream>
 #include <stdexcept>
-#include <SDL.h>
+
 #include "app/config.hpp"
 #include "math/math.hpp"
 #include "display/opengl_state.hpp"
-#include "display.hpp"
 #include "util/util.hpp"
-#include <assert.h>
 
 Size              Display::aspect_size;
 std::vector<Rect> Display::cliprects;
@@ -462,15 +463,6 @@ Display::pop_cliprect()
 }
 
 void
-Display::set_gamma(float r, float g, float b)
-{
-  if (SDL_SetGamma(r, g, b) == -1)
-    {
-      // Couldn't set gamma
-    }
-}
-
-void
 Display::save_screenshot(const std::string& filename)
 {
   GLint viewport[4];
@@ -503,19 +495,6 @@ Display::save_screenshot(const std::string& filename)
         out.write(reinterpret_cast<const char*>(pixels.get() + y*pitch), pitch);
 
       out.close();
-    }
-  else if (0) // BMP saving
-    {
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels.get(), size.width, size.height, 24, size.width*3,
-                                                      0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-#else
-      SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixels.get(), size.width, size.height, 24, size.width*3,
-                                                      0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-#endif
-
-      SDL_SaveBMP(surface, filename.c_str());
-      SDL_FreeSurface(surface);
     }
   else // PNG saving
     {

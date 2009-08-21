@@ -16,26 +16,29 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "wrapper.interface.hpp"
+#include "interface.hpp"
+
 #include <vector>
 #include <assert.h>
-#include "wrapper.interface.hpp"
-#include "util.hpp"
-#include "interface.hpp"
-#include "sound/sound_manager.hpp"
-#include "screen/game_session.hpp"
-#include "hud/dialog_manager.hpp"
-#include "hud/speech_manager.hpp"
-#include "hud/conversation.hpp"
+
+#include "app/config.hpp"
+#include "display/display.hpp"
+#include "display/opengl_window.hpp"
+#include "engine/camera.hpp"
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
-#include "font/fonts.hpp"
-#include "engine/camera.hpp"
-#include "app/config.hpp"
-#include "hud/pda.hpp"
-#include "util/sexpr_file_reader.hpp"
-#include "display/display.hpp"
 #include "engine/squirrel_thread.hpp"
+#include "font/fonts.hpp"
 #include "hud/controller_help_window.hpp"
+#include "hud/conversation.hpp"
+#include "hud/dialog_manager.hpp"
+#include "hud/pda.hpp"
+#include "hud/speech_manager.hpp"
+#include "screen/game_session.hpp"
+#include "sound/sound_manager.hpp"
+#include "util.hpp"
+#include "util/sexpr_file_reader.hpp"
 
 namespace Scripting
 {
@@ -313,12 +316,12 @@ void set_console_font(const std::string& font, int size)
 
 void set_gamma(float g)
 {
-  Display::set_gamma(g, g, g);
+  OpenGLWindow::current()->set_gamma(g, g, g);
 }
 
 void set_gamma_rgb(float r, float g, float b)
 {
-  Display::set_gamma(r, g, b);
+  OpenGLWindow::current()->set_gamma(r, g, b);
 }
 
 void show_config()

@@ -20,9 +20,15 @@
 #define HEADER_WINDSTILLE_DISPLAY_OPENGL_WINDOW_HPP
 
 #include <SDL.h>
+#include <string>
 
 class OpenGLWindow
 {
+private:
+  static OpenGLWindow* s_current;
+public:
+  static OpenGLWindow* current() { return s_current; }
+
 private:
   SDL_Surface* m_window;
 
@@ -34,6 +40,7 @@ public:
   int get_height() const { return m_window->h; }
 
   void set_fullscreen(bool fullscreen);
+  void set_gamma(float r, float g, float b);
 
 private:
   OpenGLWindow(const OpenGLWindow&);

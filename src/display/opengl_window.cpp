@@ -18,6 +18,7 @@
 
 #include "display/opengl_window.hpp"
 
+#include <assert.h>
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <SDL/SDL_image.h>
@@ -28,8 +29,13 @@
 #include "display/display.hpp"
 #include "app/config.hpp"
 
+OpenGLWindow* OpenGLWindow::s_current = 0;
+
 OpenGLWindow::OpenGLWindow()
 {
+  assert(s_current);
+  s_current = this;
+
   atexit(SDL_Quit);
 
   SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1); // vsync
@@ -57,7 +63,8 @@ OpenGLWindow::OpenGLWindow()
   else
     {
       GLenum err = glewInit();
-      if(err != GLEW_OK) {
+      if(err != GLEW_OK) 
+      {
         std::ostringstream msg;
         msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
         throw std::runtime_error(msg.str());
@@ -82,8 +89,7 @@ OpenGLWindow::OpenGLWindow()
       Display::aspect_size = Size(config.get_int("aspect-width"), 
                                   config.get_int("aspect-height"));
 
-      glOrtho(0.0, 
-              Display::get_width(), Display::get_height(),
+      glOrtho(0.0, Display::get_width(), Display::get_height(),
               0.0, 1000.0, -1000.0);
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
@@ -117,6 +123,15 @@ OpenGLWindow::set_fullscreen(bool fullscreen)
   if (!m_window)
     {
       throw std::runtime_error("OpenGLWindow: Couldn't create window");
+    }
+}
+
+void
+OpenGLWindow::set_gamma(float r, float g, float b)
+{
+  if (SDL_SetGamma(r, g, b) == -1)
+    {
+      // Couldn't set gamma
     }
 }
 

@@ -70,8 +70,6 @@ public:
   static void pop_framebuffer();
   static Framebuffer get_framebuffer();
 
-  static void set_gamma(float r, float g, float b);
-
   static void save_screenshot(const std::string& filename);
 
   static void init();

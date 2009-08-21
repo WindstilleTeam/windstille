@@ -18,6 +18,7 @@
 
 #include <math.h>
 #include <iostream>
+
 #include "display/display.hpp"
 #include "app/windstille_main.hpp"
 #include "screen.hpp"
