@@ -508,7 +508,7 @@ Display::save_screenshot(const Pathname& filename)
         }
       else
         {
-          int pitch   = size.width * 3;
+          int pitch = size.width * 3;
           png_structp png_ptr;
           png_infop   info_ptr;
 
@@ -524,7 +524,7 @@ Display::save_screenshot(const Pathname& filename)
                        PNG_COMPRESSION_TYPE_BASE, 
                        PNG_FILTER_TYPE_BASE);
       
-          png_set_compression_level(png_ptr, 6);
+          png_set_compression_level(png_ptr, 3);
           png_write_info(png_ptr, info_ptr);
 
           boost::scoped_array<png_bytep> row_pointers(new png_bytep[size.height]);
