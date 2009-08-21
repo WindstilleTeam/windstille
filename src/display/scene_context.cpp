@@ -18,8 +18,9 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
-
+#include <assert.h>
 #include <iostream>
+#include <boost/scoped_ptr.hpp>
 
 #include "util/util.hpp"
 #include "display/display.hpp"
@@ -30,7 +31,6 @@
 #include "shader_object.hpp"
 #include "framebuffer.hpp"
 #include "scene_context.hpp"
-#include <assert.h>
 
 // The lightmap has a resolution of screen.w/LIGHTMAP, screen.h/LIGHTMAP
 #define LIGHTMAP_DIV 4
@@ -60,7 +60,7 @@ public:
     }
   };
   
-  Framebuffers* framebuffers;
+  boost::scoped_ptr<Framebuffers> framebuffers;
   Surface lightmap;
 
   SceneContextImpl() 
@@ -78,7 +78,6 @@ public:
 
   ~SceneContextImpl()
   {
-    delete framebuffers;
   }
 };
 
