@@ -1,11 +1,21 @@
 SQUIRREL2/ - http://squirrel-lang.org
+-------------------------------------
     SQUIRREL2/ is a verbatim copy of the squirrel tarball, to update
     it, just remove SQUIRREL2 and extract a new tarball. 
     Some non-critical -Wall fixes where done, see:
 
      % svn diff -r 2535:2536
 
+
 miniswig/ - Squirrel Wrapper Generator
+--------------------------------------
     uses svn:externals should update automatically
+
+
+binreloc-2.0/
+-------------
+ * downloaded from http://autopackage.org/download-tools.html
+ * source files generated with "./generate.pl normal" (see binreloc docu)
+
 
 # EOF #

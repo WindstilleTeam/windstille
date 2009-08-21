@@ -174,6 +174,9 @@ env.Depends(env.Command(['src/scripting/wrapper.cpp', 'src/scripting/wrapper.hpp
                         ["$MINISWIG  --input $SOURCE --output-cpp ${TARGETS[0]} --output-hpp ${TARGETS[1]} --module windstille --select-namespace Scripting"]),
             miniswig_bin)
 
+
+binreloc_lib = StaticLibrary("binreloc", ["external/binreloc-2.0/binreloc.c"], CPPDEFINES=["ENABLE_BINRELOC"])
+
 wstlib_env    = Environment(CPPPATH=['src'], CXXFLAGS=debug_cxxflags)
 util_lib      = wstlib_env.StaticLibrary('util', Glob('src/lisp/*.cpp') + Glob('src/util/*.cpp'))
 math_lib      = wstlib_env.StaticLibrary('math', Glob('src/math/*.cpp'))
@@ -231,7 +234,7 @@ windstille_env.Program('windstille',
 
 editor_env = Environment(CPPPATH=['src'],
                          CXXFLAGS=debug_cxxflags,
-                         LIBS = [particles_lib, navgraph_lib, display_lib, util_lib, physfs_lib, math_lib,
+                         LIBS = [particles_lib, navgraph_lib, display_lib, util_lib, physfs_lib, math_lib, binreloc_lib,
                                  'GL', 'GLEW', 'SDL_image', 'physfs'])
 
 editor_env.ParseConfig('Magick++-config --libs --cppflags')
