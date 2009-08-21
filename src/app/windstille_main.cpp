@@ -69,93 +69,115 @@ int
 WindstilleMain::main(int argc, char** argv)
 {
   try 
-    {
-      Pathname::set_datadir(System::find_default_datadir());
-      Pathname::set_userdir(System::find_default_userdir());
+  {
+    Pathname::set_datadir(System::find_default_datadir());
+    Pathname::set_userdir(System::find_default_userdir());
 
-      config.parse_args(argc, argv);
+    config.parse_args(argc, argv);
 
-      init_physfs(argv[0]);
-      init_sdl();
+    init_physfs(argv[0]);
+    init_sdl();
 
-      config.load();
+    config.load();
     
-      config.parse_args(argc, argv);
+    config.parse_args(argc, argv);
+
+    {
+      m_window.reset(new OpenGLWindow());
+        
+      TTFFont::init(); 
+
+      Fonts::init(); 
+      new SoundManager();
+  
+      if (debug) std::cout << "Initialising ScriptManager" << std::endl;
+      texture_manager  = new TextureManager();
+      new SurfaceManager();
+      new ScriptManager();
+      sprite2d_manager = new SpriteManager();
+      sprite3d_manager = new sprite3d::Manager();
 
       init_modules();
     
-      if (debug) 
-        std::cout << "Starting file: '" << config.get_string("levelfile") << "'" << std::endl;
+      run();
+    }
+
+    config.save();
     
-      if (config.get<std::string>("levelfile").is_set())
-        {
-          // FIXME: Looks a little hacky, doesn't it?
-          std::string leveldir = dirname(config.get_string("levelfile"));
-          PHYSFS_addToSearchPath(leveldir.c_str(), true);
-          std::string levelfile = basename(config.get_string("levelfile"));
-
-          // FIXME: file-type "detection" is pretty basic, only works
-          // with s-expr and nothing else
-          std::string file_type = FileReader::parse(levelfile).get_name();
-
-          if (file_type == "sprite3d") // FIXME: sprite3d isn't actually a sexpr file
-            {
-              std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
-
-              if (!levelfile.empty())
-                sprite3dview->set_model(levelfile);
-
-              // Launching Sprite3DView instead of game
-              screen_manager.push_screen(sprite3dview.release());
-            }
-          else if (file_type == "sprite") // FIXME: PNG are sprites too
-            {
-              std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
-
-              if (!levelfile.empty())
-                sprite2dview->set_sprite(levelfile);
-
-              // Launching Sprite2DView instead of game
-              screen_manager.push_screen(sprite2dview.release());
-            }
-          else if (file_type == "particle-systems")
-            {
-              ParticleViewer* particle_viewer = new ParticleViewer();
-              if (!levelfile.empty())
-                particle_viewer->load(levelfile);
-              screen_manager.push_screen(particle_viewer);
-            }
-          else if (file_type == "windstille-sector")
-            {
-              screen_manager.push_screen(new GameSession(levelfile));
-            }
-          else
-            {
-              throw std::runtime_error("Unknown filetype '" + file_type + "'");
-            }
-        }
-      else
-        {
-          screen_manager.push_screen(new TitleScreen());
-        }
-        
-      screen_manager.run();
-
-      config.save();
-    
-      deinit_modules();
-      PHYSFS_deinit();
-    } 
+    deinit_modules();
+    PHYSFS_deinit();
+  } 
   catch (std::exception& err)
-    {
-      std::cout << "std::exception: " << err.what() << std::endl;
-    }
+  {
+    std::cout << "std::exception: " << err.what() << std::endl;
+  }
   catch (...)
-    {
-      std::cout << "Error catched something unknown?!" << std::endl;
-    }
+  {
+    std::cout << "Error catched something unknown?!" << std::endl;
+  }
 
   return 0;
+}
+
+void
+WindstilleMain::run()
+{
+  if (debug) 
+    std::cout << "Starting file: '" << config.get_string("levelfile") << "'" << std::endl;
+    
+  if (config.get<std::string>("levelfile").is_set())
+  {
+    // FIXME: Looks a little hacky, doesn't it?
+    std::string leveldir = dirname(config.get_string("levelfile"));
+    PHYSFS_addToSearchPath(leveldir.c_str(), true);
+    std::string levelfile = basename(config.get_string("levelfile"));
+
+    // FIXME: file-type "detection" is pretty basic, only works
+    // with s-expr and nothing else
+    std::string file_type = FileReader::parse(levelfile).get_name();
+
+    if (file_type == "sprite3d") // FIXME: sprite3d isn't actually a sexpr file
+    {
+      std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
+
+      if (!levelfile.empty())
+        sprite3dview->set_model(levelfile);
+
+      // Launching Sprite3DView instead of game
+      screen_manager.push_screen(sprite3dview.release());
+    }
+    else if (file_type == "sprite") // FIXME: PNG are sprites too
+    {
+      std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
+
+      if (!levelfile.empty())
+        sprite2dview->set_sprite(levelfile);
+
+      // Launching Sprite2DView instead of game
+      screen_manager.push_screen(sprite2dview.release());
+    }
+    else if (file_type == "particle-systems")
+    {
+      ParticleViewer* particle_viewer = new ParticleViewer();
+      if (!levelfile.empty())
+        particle_viewer->load(levelfile);
+      screen_manager.push_screen(particle_viewer);
+    }
+    else if (file_type == "windstille-sector")
+    {
+      screen_manager.push_screen(new GameSession(levelfile));
+    }
+    else
+    {
+      throw std::runtime_error("Unknown filetype '" + file_type + "'");
+    }
+  }
+  else
+  {
+    screen_manager.push_screen(new TitleScreen());
+  }
+  
+  screen_manager.run();
 }
 
 void
@@ -167,25 +189,11 @@ WindstilleMain::set_fullscreen(bool fullscreen)
 void
 WindstilleMain::init_modules()
 {
-  if (debug) std::cout << "Initialising Freetype2" << std::endl;
-    
-  m_window.reset(new OpenGLWindow());
-
-  TTFFont::init(); 
-
   if (debug) std::cout << "Initialising Fonts" << std::endl;
-  Fonts::init(); 
-  new SoundManager();
   SoundManager::current()->set_master_volume(config.get_int("master-volume")/100.0f);
   SoundManager::current()->enable_sound(config.get_bool("sound"));
   SoundManager::current()->enable_music(config.get_bool("music"));
 
-  if (debug) std::cout << "Initialising ScriptManager" << std::endl;
-  texture_manager  = new TextureManager();
-  new SurfaceManager();
-  new ScriptManager();
-  sprite2d_manager = new SpriteManager();
-  sprite3d_manager = new sprite3d::Manager();
 
   ScriptManager::current()->run_script_file("scripts/windstille.nut", true);
 
