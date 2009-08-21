@@ -23,6 +23,7 @@
 #include <SDL/SDL_image.h>
 
 #include "util/util.hpp" 
+#include "util/pathname.hpp"
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
 #include "app/config.hpp"
@@ -44,7 +45,7 @@ OpenGLWindow::OpenGLWindow()
     }
   
   SDL_WM_SetCaption("Windstille", "Windstille");
-  //SDL_WM_SetIcon(IMG_Load(Pathname("data/icon.png").getSysPath().c_str()), NULL);
+  SDL_WM_SetIcon(IMG_Load(Pathname("icon.png").get_sys_path().c_str()), NULL);
 
   m_window = SDL_SetVideoMode(config.get_int("screen-width"), config.get_int("screen-height"),
                               0, SDL_OPENGL | (config.get_bool("fullscreen") ? SDL_FULLSCREEN : 0));
