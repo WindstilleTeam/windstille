@@ -30,6 +30,7 @@
 #include "math/math.hpp"
 #include "display/opengl_state.hpp"
 #include "util/util.hpp"
+#include "util/pathname.hpp"
 
 Size              Display::aspect_size;
 std::vector<Rect> Display::cliprects;
@@ -463,13 +464,13 @@ Display::pop_cliprect()
 }
 
 void
-Display::save_screenshot(const std::string& filename)
+Display::save_screenshot(const Pathname& filename)
 {
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
   Size size(viewport[2], viewport[3]);
 
-  std::cout << "Viewpoint: " << size << std::endl;
+  // std::cout << "Viewpoint: " << size << std::endl;
 
   size.width /= 4;
   size.width *= 4;
@@ -485,7 +486,7 @@ Display::save_screenshot(const std::string& filename)
       int pitch = size.width * 3;
 
       // save to ppm
-      std::ofstream out(filename.c_str());
+      std::ofstream out(filename.get_sys_path().c_str());
       out << "P6\n"
           << "# Windstille Screenshot\n"
           << size.width << " " << size.height << "\n"
@@ -498,7 +499,7 @@ Display::save_screenshot(const std::string& filename)
     }
   else 
     { // PNG saving
-      FILE* fp = fopen(filename.c_str(), "w");
+      FILE* fp = fopen(filename.get_sys_path().c_str(), "w");
 
       if (!fp)
         {

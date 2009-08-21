@@ -27,6 +27,8 @@
 #include "math/line.hpp"
 #include "color.hpp"
 #include "display/framebuffer.hpp"
+
+class Pathname;
 
 class Display
 {
@@ -70,7 +72,7 @@ public:
   static void pop_framebuffer();
   static Framebuffer get_framebuffer();
 
-  static void save_screenshot(const std::string& filename);
+  static void save_screenshot(const Pathname& filename);
 
   static void init();
 };

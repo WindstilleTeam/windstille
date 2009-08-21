@@ -27,13 +27,14 @@
 #include "app/windstille_main.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
-#include "game_session.hpp"
+#include "screen/game_session.hpp"
 #include "hud/controller_help_window.hpp"
 #include "input/input_configurator.hpp"
 #include "input/input_manager.hpp"
 #include "input/input_manager_sdl.hpp"
-#include "screen.hpp"
+#include "screen/screen.hpp"
 #include "sound/sound_manager.hpp"
+#include "util/pathname.hpp"
 
 ScreenManager screen_manager; 
 
@@ -258,11 +259,11 @@ ScreenManager::poll_events()
                       {
                         // FIXME: Replace this with Physfs stuff
                         int count = 0;
-                        std::string filename;
+                        Pathname filename;
                         do {
-                          filename = (boost::format("/tmp/windstille%04d.png") % count).str();
+                          filename = Pathname((boost::format("screenshots/windstille%04d.png") % count).str(), Pathname::kUserPath);
                           count += 1;
-                        } while(boost::filesystem::exists(filename));
+                        } while(filename.exists());
 
                         Display::save_screenshot(filename);
                         console << "Writing screenshot to: '" << filename << "'" << std::endl;

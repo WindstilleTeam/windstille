@@ -302,6 +302,7 @@ WindstilleMain::init_physfs(const char* argv0)
   else
   {
     boost::filesystem::create_directory(Pathname::get_userdir());
+    boost::filesystem::create_directory(Pathname("screenshots", Pathname::kUserPath).get_sys_path());
 
     PHYSFS_setWriteDir(Pathname::get_userdir().c_str());
     PHYSFS_addToSearchPath(Pathname::get_userdir().c_str(), 0);

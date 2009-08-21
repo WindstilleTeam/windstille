@@ -28,6 +28,7 @@
 #include "display/surface_manager.hpp"
 #include "display/opengl_state.hpp"
 #include "display/surface.hpp"
+#include "util/pathname.hpp"
 #include "editor_window.hpp"
 #include "scroll_tool.hpp"
 #include "sector_model.hpp"
@@ -876,7 +877,7 @@ WindstilleWidget::save_screenshot(const std::string& filename)
 
   if (glwindow->gl_begin(get_gl_context()))
     {
-      Display::save_screenshot(filename);
+      Display::save_screenshot(Pathname(filename, Pathname::kSysPath));
       glwindow->gl_end();
     }
 }
