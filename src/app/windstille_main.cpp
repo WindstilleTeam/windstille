@@ -87,53 +87,57 @@ WindstilleMain::main(int argc, char** argv)
       if (debug) 
         std::cout << "Starting file: '" << config.get_string("levelfile") << "'" << std::endl;
     
-      std::string levelfile;
       if (config.get<std::string>("levelfile").is_set())
         {
           // FIXME: Looks a little hacky, doesn't it?
           std::string leveldir = dirname(config.get_string("levelfile"));
           PHYSFS_addToSearchPath(leveldir.c_str(), true);
-          levelfile = basename(config.get_string("levelfile"));
-        }
+          std::string levelfile = basename(config.get_string("levelfile"));
 
-      if (sprite3dview)
-        {
-          std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
+          // FIXME: file-type "detection" is pretty basic, only works
+          // with s-expr and nothing else
+          std::string file_type = FileReader::parse(levelfile).get_name();
+          std::cout << file_type << std::endl;
 
-          if (!levelfile.empty())
-            sprite3dview->set_model(levelfile);
-
-          // Launching Sprite3DView instead of game
-          screen_manager.push_screen(sprite3dview.release());
-        }
-      else if (sprite2dview)
-        {
-          std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
-
-          if (!levelfile.empty())
-            sprite2dview->set_sprite(levelfile);
-
-          // Launching Sprite2DView instead of game
-          screen_manager.push_screen(sprite2dview.release());
-        }
-      else if (particleview)
-        {
-          ParticleViewer* particle_viewer = new ParticleViewer();
-          if (!levelfile.empty())
-            particle_viewer->load(levelfile);
-          screen_manager.push_screen(particle_viewer);
-        }
-      else
-        {
-          if (levelfile.empty())
+          if (file_type == "sprite3d") // FIXME: sprite3d isn't actually a sexpr file
             {
-              //screen_manager.push_screen(new GameSession("levels/newformat2.wst"));
-              screen_manager.push_screen(new TitleScreen());
+              std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
+
+              if (!levelfile.empty())
+                sprite3dview->set_model(levelfile);
+
+              // Launching Sprite3DView instead of game
+              screen_manager.push_screen(sprite3dview.release());
             }
-          else
+          else if (file_type == "sprite") // FIXME: PNG are sprites too
+            {
+              std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
+
+              if (!levelfile.empty())
+                sprite2dview->set_sprite(levelfile);
+
+              // Launching Sprite2DView instead of game
+              screen_manager.push_screen(sprite2dview.release());
+            }
+          else if (file_type == "particle-systems")
+            {
+              ParticleViewer* particle_viewer = new ParticleViewer();
+              if (!levelfile.empty())
+                particle_viewer->load(levelfile);
+              screen_manager.push_screen(particle_viewer);
+            }
+          else if (file_type == "windstille-sector")
             {
               screen_manager.push_screen(new GameSession(levelfile));
             }
+          else
+            {
+              throw std::runtime_error("Unknown filetype '" + file_type + "'");
+            }
+        }
+      else
+        {
+          screen_manager.push_screen(new TitleScreen());
         }
         
       screen_manager.run();

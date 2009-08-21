@@ -32,8 +32,4 @@ bool debug = false;
 bool collision_debug = false;
 bool sound_disabled  = false;
 
-bool sprite3dview    = false;
-bool sprite2dview    = false;
-bool particleview    = false;
-
 /* EOF */
