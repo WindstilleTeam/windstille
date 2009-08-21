@@ -59,6 +59,7 @@ Surface::Surface(int width, int height)
 {
   impl->size  = Size(width, height);
 
+  // FIXME: rounding to power of two shouldn't be needed in OpenGL2.0 or later
   impl->texture = Texture(GL_TEXTURE_2D, math::round_to_power_of_two(width), math::round_to_power_of_two(height));
   impl->uv      = Rectf(0, 0,
                         impl->size.width  / impl->texture.get_width(),

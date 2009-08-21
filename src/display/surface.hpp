@@ -66,6 +66,7 @@ public:
   operator bool() const;
 
   long use_count() const { return impl.use_count(); }
+
 private:
   boost::shared_ptr<SurfaceImpl> impl;
 };

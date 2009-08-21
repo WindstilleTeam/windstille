@@ -47,7 +47,11 @@
 #ifndef HEADER_WINDSTILLE_APP_WINDSTILLE_MAIN_HPP
 #define HEADER_WINDSTILLE_APP_WINDSTILLE_MAIN_HPP
 
+#include <boost/scoped_ptr.hpp>
+
 #include "screen/screen.hpp"
+
+class OpenGLWindow;
 
 class WindstilleMain
 { 
@@ -64,11 +68,13 @@ public:
   void set_fullscreen(bool fullscreen);
 
 private:
-  void init_display();
   void init_sdl();
   void init_physfs(const char* argv0);
   void init_modules();
   void deinit_modules();
+
+private:
+  boost::scoped_ptr<OpenGLWindow> m_window;
 };
 
 #endif
