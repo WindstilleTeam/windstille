@@ -193,6 +193,7 @@ MenuManager::display_particle_menu()
 
   std::vector<std::string> scenarios;
   scenarios.push_back("particlesystems/fire.particles");
+  scenarios.push_back("particlesystems/water.particles");
   
   for(std::vector<std::string>::iterator i = scenarios.begin(); i != scenarios.end(); ++i)
     {
