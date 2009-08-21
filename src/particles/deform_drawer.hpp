@@ -40,6 +40,7 @@ private:
   Framebuffer    framebuffer;
   Surface        surface;
   ShaderProgram  shader_program;
+
 public:
   DeformDrawer(FileReader& props);
   ~DeformDrawer();

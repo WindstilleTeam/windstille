@@ -481,7 +481,7 @@ Display::save_screenshot(const std::string& filename)
   glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, pixels.get());
 
   if (0)
-    {
+    { // PPM saving
       int pitch = size.width * 3;
 
       // save to ppm
@@ -496,8 +496,8 @@ Display::save_screenshot(const std::string& filename)
 
       out.close();
     }
-  else // PNG saving
-    {
+  else 
+    { // PNG saving
       FILE* fp = fopen(filename.c_str(), "w");
 
       if (!fp)
