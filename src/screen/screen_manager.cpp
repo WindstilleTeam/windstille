@@ -16,11 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "screen/screen_manager.hpp"
+
 #include <boost/format.hpp>
+#include <boost/filesystem.hpp>
 #include <iostream>
-#ifndef WIN32
-#  include <unistd.h>
-#endif
 
 #include "app/config.hpp"
 #include "app/globals.hpp"
@@ -28,25 +28,12 @@
 #include "display/display.hpp"
 #include "font/fonts.hpp"
 #include "game_session.hpp"
-#include "gui/gui_manager.hpp"
 #include "hud/controller_help_window.hpp"
 #include "input/input_configurator.hpp"
 #include "input/input_manager.hpp"
 #include "input/input_manager_sdl.hpp"
 #include "screen.hpp"
-#include "screen_manager.hpp"
 #include "sound/sound_manager.hpp"
-
-// GUI Stuff, can be removed if gui is a bit better organised
-#include "gui/automap.hpp"
-#include "gui/button.hpp"
-#include "gui/grid_component.hpp"
-#include "gui/list_view.hpp"
-#include "gui/menu_component.hpp"
-#include "gui/root_component.hpp"
-#include "gui/slider.hpp"
-#include "gui/tab_component.hpp"
-#include "gui/text_view.hpp"
 
 ScreenManager screen_manager; 
 
@@ -233,7 +220,6 @@ ScreenManager::poll_events()
           case SDL_SYSWMEVENT:
             // event.syswm
             break;
-            break;
 
           case SDL_KEYDOWN:
           case SDL_KEYUP:
@@ -268,7 +254,6 @@ ScreenManager::poll_events()
                       WindstilleMain::current()->set_fullscreen(config.get_bool("fullscreen"));
                       break;
               
-#ifndef WIN32
                     case SDLK_F12:
                       {
                         // FIXME: Replace this with Physfs stuff
@@ -277,13 +262,12 @@ ScreenManager::poll_events()
                         do {
                           filename = (boost::format("/tmp/windstille%04d.png") % count).str();
                           count += 1;
-                        } while(access(filename.c_str(), F_OK) == 0);
+                        } while(boost::filesystem::exists(filename));
 
                         Display::save_screenshot(filename);
                         console << "Writing screenshot to: '" << filename << "'" << std::endl;
                       }
                       break;
-#endif
               
                     default:
                       if (!console.is_active())

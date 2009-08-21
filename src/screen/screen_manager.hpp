@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_SCREEN_SCREEN_MANAGER_HPP
 
 #include <boost/shared_ptr.hpp>
+#include <vector>
 
 class Screen;
 
