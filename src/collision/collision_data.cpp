@@ -27,7 +27,9 @@ CollisionData::merge(const CollisionData &r)
 	*this=r;
     }
   else if (state == NONE)
-    *this=r;
+    {
+      *this=r;
+    }
 
   return *this;
 }
