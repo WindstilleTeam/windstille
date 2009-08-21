@@ -33,7 +33,7 @@ OpenGLWindow* OpenGLWindow::s_current = 0;
 
 OpenGLWindow::OpenGLWindow()
 {
-  assert(s_current);
+  assert(!s_current);
   s_current = this;
 
   atexit(SDL_Quit);
