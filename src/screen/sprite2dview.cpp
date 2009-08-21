@@ -269,7 +269,7 @@ Sprite2DView::next_image(int i)
       console << index << ": " << directory[index] << std::endl;
     }
 
-  sprite2d_manager->cleanup();
+  SpriteManager::current()->cleanup();
   SurfaceManager::current()->cleanup();
 }
 

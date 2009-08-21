@@ -86,26 +86,24 @@ WindstilleMain::main(int argc, char** argv)
       m_window.reset(new OpenGLWindow());
         
       TTFFont::init(); 
-
       Fonts::init(); 
-      new SoundManager();
-  
-      if (debug) std::cout << "Initialising ScriptManager" << std::endl;
-      texture_manager  = new TextureManager();
-      new SurfaceManager();
-      new ScriptManager();
-      sprite2d_manager = new SpriteManager();
-      sprite3d_manager = new sprite3d::Manager();
+
+      SoundManager      sound_manager;
+      TextureManager    texture_manager;
+      SurfaceManager    surface_manager;
+      SpriteManager     sprite_manager;
+      sprite3d::Manager sprite3d_manager;
+      ScriptManager     script_manager;
 
       init_modules();
     
       run();
-    }
 
-    config.save();
+      config.save();
     
-    deinit_modules();
-    PHYSFS_deinit();
+      deinit_modules();
+      PHYSFS_deinit();
+    }
   } 
   catch (std::exception& err)
   {
@@ -181,12 +179,6 @@ WindstilleMain::run()
 }
 
 void
-WindstilleMain::set_fullscreen(bool fullscreen)
-{ 
-  m_window->set_fullscreen(fullscreen);
-}
-
-void
 WindstilleMain::init_modules()
 {
   if (debug) std::cout << "Initialising Fonts" << std::endl;
@@ -258,23 +250,7 @@ WindstilleMain::deinit_modules()
 {
   TileFactory::deinit();
   InputManager::deinit();
-
-  delete sprite3d_manager;
-  sprite3d_manager = 0;
-
-  delete sprite2d_manager;
-  sprite2d_manager = 0;
-
-  delete ScriptManager::current();
-  
-  delete SurfaceManager::current();
-
-  delete texture_manager;
-  texture_manager = 0;
-  
-  delete SoundManager::current();
   Fonts::deinit();
-
   TTFFont::deinit();
 }
 

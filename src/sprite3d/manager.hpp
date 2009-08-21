@@ -28,20 +28,23 @@ class Data;
 
 class Manager
 {
+private:
+  static Manager* s_current;
+public:
+  static Manager* current() { return s_current; }
+
 public:
   Manager();
   ~Manager();
 
   Data* create_data(const std::string& filename);
-
+    
 private:
   typedef std::map<std::string, Data*> Datas;
   Datas datas;
 };
 
 } // namespace sprite3d
-
-extern sprite3d::Manager* sprite3d_manager;
 
 #endif
 

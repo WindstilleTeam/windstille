@@ -158,7 +158,7 @@ Mesh::Mesh(FileReader& reader, const std::string& path)
 #endif
 
   texture_filename = path + basename(texture_filename);
-  texture = texture_manager->get(texture_filename);
+  texture = TextureManager::current()->get(texture_filename);
 
   // Check that all vectors contain enough values for the given number
   // of vertices

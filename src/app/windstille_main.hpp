@@ -65,7 +65,6 @@ public:
   ~WindstilleMain();
 
   int main(int argc, char** argv);
-  void set_fullscreen(bool fullscreen);
 
 private:
   void run();

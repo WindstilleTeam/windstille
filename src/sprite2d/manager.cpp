@@ -18,14 +18,19 @@
 */
 
 #include "sprite2d/manager.hpp"
+
+#include <iostream>
+#include <assert.h>
+
 #include "sprite2d/data.hpp"
 #include "sprite2d/sprite.hpp"
-#include <iostream>
 
-SpriteManager* sprite2d_manager = 0;
+SpriteManager* SpriteManager::s_current = 0;
 
 SpriteManager::SpriteManager()
 {
+  assert(!s_current);
+  s_current = this;
 }
 
 SpriteManager::~SpriteManager()

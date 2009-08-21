@@ -41,7 +41,7 @@ Sprite3D::Sprite3D()
 }
 
 Sprite3D::Sprite3D(const std::string& filename)
-  : data(sprite3d_manager->create_data(filename)),
+  : data(sprite3d::Manager::current()->create_data(filename)),
     actions_switched(false)
 {
   frame1.action         = &data->actions[0];

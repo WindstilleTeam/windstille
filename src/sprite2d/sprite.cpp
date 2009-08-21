@@ -35,7 +35,7 @@ Sprite::Sprite()
 
 Sprite::Sprite(const std::string& filename)
 {
-  data = sprite2d_manager->create_data(filename);
+  data = SpriteManager::current()->create_data(filename);
 
   current_action = data->actions[0];
   vflip    = false;

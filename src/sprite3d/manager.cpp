@@ -20,13 +20,14 @@
 #include "sprite3d/data.hpp"
 #include "sprite3d/sprite3d.hpp"
 
-sprite3d::Manager* sprite3d_manager = 0;
+namespace sprite3d {
 
-namespace sprite3d
-{
+Manager* Manager::s_current = 0;
 
 Manager::Manager()
 {
+  assert(!s_current);
+  s_current = this;
 }
 
 Manager::~Manager()

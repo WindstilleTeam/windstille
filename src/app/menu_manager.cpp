@@ -18,12 +18,12 @@
 
 #include <memory>
 #include <boost/bind.hpp>
+
 #include "config.hpp"
 #include "sound/sound_manager.hpp"
 #include "console.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
-#include "app/windstille_main.hpp"
 #include "screen/game_session.hpp"
 #include "gui/group_component.hpp"
 #include "gui/gui_manager.hpp"
@@ -39,6 +39,7 @@
 #include "screen/armature_test.hpp"
 #include "screen/navigation_test.hpp"
 #include "gui/menu_item.hpp"
+#include "display/opengl_window.hpp"
 #ifdef HAVE_CWIID
 #include "input/wiimote.hpp"
 #endif
@@ -438,7 +439,7 @@ void
 MenuManager::menu_fullscreen(int i)
 {
   config.set_bool("fullscreen", i);
-  WindstilleMain::current()->set_fullscreen(config.get_bool("fullscreen"));
+  OpenGLWindow::current()->set_fullscreen(config.get_bool("fullscreen"));
 }
 
 void

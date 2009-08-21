@@ -31,6 +31,11 @@ class Texture;
  */
 class TextureManager
 {
+private:
+  static TextureManager* s_current; 
+public:
+  static TextureManager* current() { return s_current; }
+
 public:
   TextureManager();
   ~TextureManager();

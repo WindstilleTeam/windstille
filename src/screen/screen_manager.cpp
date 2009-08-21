@@ -24,14 +24,14 @@
 
 #include "app/config.hpp"
 #include "app/globals.hpp"
-#include "app/windstille_main.hpp"
 #include "display/display.hpp"
+#include "display/opengl_window.hpp"
 #include "font/fonts.hpp"
-#include "screen/game_session.hpp"
 #include "hud/controller_help_window.hpp"
 #include "input/input_configurator.hpp"
 #include "input/input_manager.hpp"
 #include "input/input_manager_sdl.hpp"
+#include "screen/game_session.hpp"
 #include "screen/screen.hpp"
 #include "sound/sound_manager.hpp"
 #include "util/pathname.hpp"
@@ -252,7 +252,7 @@ ScreenManager::poll_events()
               
                     case SDLK_F11:
                       config.set_bool("fullscreen", !config.get_bool("fullscreen"));
-                      WindstilleMain::current()->set_fullscreen(config.get_bool("fullscreen"));
+                      OpenGLWindow::current()->set_fullscreen(config.get_bool("fullscreen"));
                       break;
               
                     case SDLK_F12:

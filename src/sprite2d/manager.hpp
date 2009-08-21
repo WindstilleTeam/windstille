@@ -29,6 +29,11 @@ typedef boost::shared_ptr<SpriteData> SpriteDataPtr;
 
 class SpriteManager
 {
+private:
+  static SpriteManager* s_current;
+public:
+  static SpriteManager* current() { return s_current; }
+
 public:
   SpriteManager();
   ~SpriteManager();
@@ -41,8 +46,6 @@ private:
   typedef std::map<std::string, SpriteDataPtr> Datas;
   Datas datas;
 };
-
-extern SpriteManager* sprite2d_manager;
 
 #endif
 
