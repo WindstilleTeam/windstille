@@ -21,6 +21,7 @@
 #include "windstille.hpp"
 
 #include <boost/scoped_array.hpp>
+#include <boost/filesystem.hpp>
 #include <stdio.h>
 #include <physfs.h>
 
@@ -69,10 +70,10 @@ WindstilleMain::main(int argc, char** argv)
 {
   try 
     {
-      config.parse_args(argc, argv);
-
       Pathname::set_datadir(System::find_default_datadir());
       Pathname::set_userdir(System::find_default_userdir());
+
+      config.parse_args(argc, argv);
 
       init_physfs(argv[0]);
       init_sdl();
@@ -293,99 +294,35 @@ void
 WindstilleMain::init_physfs(const char* argv0)
 {
   if (!PHYSFS_init(argv0))
-    {
-      std::stringstream msg;
-      msg << "Couldn't initialize physfs: " << PHYSFS_getLastError();
-      throw std::runtime_error(msg.str());
-    }
-
-  { // Initialize physfs (this is a slightly modified version of
-    // PHYSFS_setSaneConfig
-    const char* application = "windstille";
-    const char* userdir = PHYSFS_getUserDir();
-  
-    boost::scoped_array<char> writedir(new char[strlen(userdir) + strlen(application) + 2]);
-
-    // Set configuration directory
-    sprintf(writedir.get(), "%s.%s", userdir, application);
-    if (!PHYSFS_setWriteDir(writedir.get()))
-      {
-        // try to create the directory
-        boost::scoped_array<char> mkdir(new char[strlen(application) + 2]);
-
-        sprintf(mkdir.get(), ".%s", application);
-
-        if (!PHYSFS_setWriteDir(userdir) || !PHYSFS_mkdir(mkdir.get())) 
-          {
-            std::ostringstream msg;
-            msg << "Failed creating configuration directory '"
-                << writedir << "': " << PHYSFS_getLastError();
-            throw std::runtime_error(msg.str());
-          }
-
-        if (!PHYSFS_setWriteDir(writedir.get())) 
-          {
-            std::ostringstream msg;
-            msg << "Failed to use configuration directory '"
-                <<  writedir << "': " << PHYSFS_getLastError();
-            throw std::runtime_error(msg.str());
-          }
-      }
-    PHYSFS_addToSearchPath(writedir.get(), 0);
+  {
+    std::stringstream msg;
+    msg << "Couldn't initialize physfs: " << PHYSFS_getLastError();
+    throw std::runtime_error(msg.str());
   }
+  else
+  {
+    boost::filesystem::create_directory(Pathname::get_userdir());
 
-  { // when started from source dir...
-    ::datadir = PHYSFS_getBaseDir();
-    ::datadir += "data/";
-    std::string testfname = ::datadir;
-    testfname += "tiles.scm";
-    bool sourcedir = false;
-    FILE* f = fopen(testfname.c_str(), "r");
-    if (f)
-      {
-        fclose(f);
-        if (!PHYSFS_addToSearchPath(::datadir.c_str(), 1))
-          {
-            std::cout << "Warning: Couldn't add '" << ::datadir
-                      << "' to physfs searchpath: " << PHYSFS_getLastError() << "\n";
-          }
-        else 
-          {
-            sourcedir = true;
-          }
-      }
-  
-    if (!sourcedir)
-      {
-#if defined(APPDATADIR) || defined(ENABLE_BINRELOC)
-#ifdef ENABLE_BINRELOC
-        char* brdatadir = br_strcat(DATADIR, "/" PACKAGE_NAME);
-        ::datadir = brdatadir;
-        free(brdatadir);
-#else
-        ::datadir = APPDATADIR;
-#endif
-        if (!PHYSFS_addToSearchPath(::datadir.c_str(), 1))
-          {
-            std::cout << "Couldn't add '" << ::datadir
-                      << "' to physfs searchpath: " << PHYSFS_getLastError() << "\n";
-          }
-#endif
-      }
-  }
+    PHYSFS_setWriteDir(Pathname::get_userdir().c_str());
+    PHYSFS_addToSearchPath(Pathname::get_userdir().c_str(), 0);
+    PHYSFS_addToSearchPath(Pathname::get_datadir().c_str(), 0);
 
-  // allow symbolic links
-  PHYSFS_permitSymbolicLinks(1);
+    // allow symbolic links
+    PHYSFS_permitSymbolicLinks(1);
 
-  //show search Path
-  if (debug)
+    //show search Path
+    if (debug)
     {
+      std::cout << "userdir: " << Pathname::get_userdir() << std::endl;
+      std::cout << "datadir: " << Pathname::get_datadir() << std::endl;
+
       std::cout << "SearchPath:" << std::endl;
       char** search_path = PHYSFS_getSearchPath();
       for(char** i = search_path; *i != NULL; i++)
         std::cout << "  " << *i << std::endl;;
       PHYSFS_freeList(search_path);
     }
+  }
 }
 
 int main(int argc, char** argv)

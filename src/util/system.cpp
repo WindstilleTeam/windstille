@@ -76,16 +76,26 @@ std::string System::find_default_userdir()
     return out.str();
   }
 #else
-  char* home = getenv("HOME");
-  if (!home)
+  char* xdg_config_home = getenv("XDG_CONFIG_HOME");
+  if (xdg_config_home)
   {
-    throw std::runtime_error("HOME environment variable not set");
+      std::ostringstream out;
+      out << xdg_config_home << "/windstille/";
+      return out.str();   
   }
   else
   {
-    std::ostringstream out;
-    out << home << "/.windstille/";
-    return out.str();
+    char* home = getenv("HOME");
+    if (!home)
+    {
+      throw std::runtime_error("HOME environment variable not set");
+    }
+    else
+    {
+      std::ostringstream out;
+      out << home << "/.config/windstille/";
+      return out.str();
+    }
   }
 #endif
 }

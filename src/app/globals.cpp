@@ -18,9 +18,7 @@
 
 #include "globals.hpp"
 
-std::string datadir;
-
-int TILE_SIZE    = 32;
+int TILE_SIZE       = 32;
 int TILE_RESOLUTION = 64;
 
 float game_time = 0.0f;

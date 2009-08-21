@@ -16,13 +16,15 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "windstille.hpp"
+#include "app/config.hpp"
 
 #include <stdio.h>
 #include <boost/format.hpp>
 #include <memory>
 #include <iostream>
-#include "config.hpp"
+
+#include "app/windstille.hpp"
+#include "util/pathname.hpp"
 #include "util/sexpr_file_reader.hpp"
 #include "util/command_line.hpp"
 #include "globals.hpp"
@@ -218,7 +220,7 @@ Config::parse_args(int argc, char** argv)
           break;
 
         case 'd':
-          datadir = argp.get_argument();
+          Pathname::set_datadir(argp.get_argument());
           break;
 
         case debug_flag:
