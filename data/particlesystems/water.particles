@@ -2,9 +2,9 @@
 
 (particle-systems
  (particle-system
-  (drawer (spark-drawer (color 0.25 0.5 1.0) (width 0.3)))
+  (drawer (spark-drawer (color 0.25 0.5 1.0) (width 2.5)))
   (z-pos 900)
-  (count 2000)
+  (count 1000)
   (pos 0 -200)
   (layer "highlight")
   (velocity 100 200)
@@ -13,9 +13,9 @@
   (distribution (line-distribution (x1 -25)  (y1 0) (x2 25) (y2 0))))
 
   (particle-system
-   (drawer (spark-drawer (color 0.8 0.8 1.0) (width 0.5)))
+   (drawer (spark-drawer (color 0.8 0.8 1.0) (width 2.5)))
    (z-pos 900)
-   (count 2000)
+   (count 1000)
    (pos 0 -200)
    (layer "highlight")
    (velocity 100 200)
