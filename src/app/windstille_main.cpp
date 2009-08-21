@@ -48,12 +48,9 @@
 #include "sprite3d/manager.hpp"
 #include "tile/tile_factory.hpp"
 #include "util/util.hpp"
+#include "util/pathname.hpp"
+#include "util/system.hpp"
 #include "windstille_main.hpp"
-
-#ifdef WIN32
-#include "shlwapi.h"
-#define strcasecmp lstrcmpiA 
-#endif
 
 WindstilleMain* WindstilleMain::current_ = 0;
 
@@ -73,6 +70,9 @@ WindstilleMain::main(int argc, char** argv)
   try 
     {
       config.parse_args(argc, argv);
+
+      Pathname::set_datadir(System::find_default_datadir());
+      Pathname::set_userdir(System::find_default_userdir());
 
       init_physfs(argv[0]);
       init_sdl();
