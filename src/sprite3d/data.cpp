@@ -18,11 +18,13 @@
 
 #include "sprite3d/data.hpp"
 
+#include <boost/scoped_array.hpp>
 #include <iostream>
 #include <physfs.h>
 #include <string.h>
 #include <sstream>
 #include <stdexcept>
+
 #include "util/util.hpp"
 #include "app/globals.hpp"
 #include "display/texture_manager.hpp"
@@ -34,26 +36,27 @@ static const int FORMAT_VERSION = 2;
 
 static inline float read_float(PHYSFS_file* file)
 {
-  union {
-    uint32_t i;
-    float    f;
-  } result;
+  float result;
 
-  if(PHYSFS_readULE32(file, &result.i) == 0) {
+  if(PHYSFS_readULE32(file, reinterpret_cast<PHYSFS_uint32*>(&result)) == 0) 
+  {
     std::ostringstream msg;
     msg << "Problem reading float value: " << PHYSFS_getLastError();
     throw std::runtime_error(msg.str());
   }
-
-  // FIXME: is this platform independent? -> should be, since
-  // endianess is handled in readULE32
-  return result.f;
+  else
+  {
+    // FIXME: is this platform independent? -> should be, since
+    // endianess is handled in readULE32
+    return result;
+  }
 }
 
 static inline uint16_t read_uint16_t(PHYSFS_file* file)
 {
   uint16_t result;
-  if(PHYSFS_readULE16(file, &result) == 0) {
+  if(PHYSFS_readULE16(file, &result) == 0) 
+  {
     std::ostringstream msg;
     msg << "Problem reading uint16 value: " << PHYSFS_getLastError();
     throw std::runtime_error(msg.str());
@@ -63,17 +66,20 @@ static inline uint16_t read_uint16_t(PHYSFS_file* file)
 
 static inline std::string read_string(PHYSFS_file* file, size_t size)
 {
-  char* buffer = new char[size+1];
-  if(PHYSFS_read(file, buffer, size, 1) != 1) {
+  boost::scoped_array<char> buffer(new char[size+1]);
+  if(PHYSFS_read(file, buffer.get(), size, 1) != 1) 
+  {
     std::ostringstream msg;
     msg << "Problem reading string value: " << PHYSFS_getLastError();
     throw std::runtime_error(msg.str());
   }
-  buffer[size] = 0;
-  std::string ret = buffer;
-  delete[] buffer;
+  else
+  {
+    buffer[size] = 0;
+    std::string ret = buffer.get();
 
-  return ret;
+    return ret;
+  }
 }
 
 Data::Data(const std::string& filename)
@@ -210,16 +216,16 @@ Data::get_action(const std::string& name) const
   }
 
   if (actions.empty())
-    {
-      std::ostringstream msg;
-      msg << "No action with name '" << name << "' defined";
-      throw std::runtime_error(msg.str());
-    }
+  {
+    std::ostringstream msg;
+    msg << "No action with name '" << name << "' defined";
+    throw std::runtime_error(msg.str());
+  }
   else
-    {
-      std::cout << "No action with name '" << name << "' defined" << std::endl;
-      return actions.front();
-    }
+  {
+    std::cout << "No action with name '" << name << "' defined" << std::endl;
+    return actions.front();
+  }
 }
 
 const Marker&

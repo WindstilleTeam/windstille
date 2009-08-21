@@ -18,12 +18,14 @@
 
 #include "sprite3d/sprite3d.hpp"
 
+#include <boost/scoped_array.hpp>
 #include <assert.h>
 #include <vector>
 #include <stdint.h>
 #include <sstream>
 #include <stdexcept>
 #include <physfs.h>
+
 #include "display/drawing_request.hpp"
 #include "display/scene_context.hpp"
 #include "app/globals.hpp"
@@ -335,14 +337,14 @@ Sprite3D::draw(const Vector2f& pos, const Matrix& modelview) const
   OpenGLState state;
 
   if (blend_sfactor != GL_ONE || blend_dfactor != GL_ZERO)
-    {
-      state.enable(GL_BLEND);
-      state.set_blend_func(blend_sfactor, blend_dfactor);
-    }
+  {
+    state.enable(GL_BLEND);
+    state.set_blend_func(blend_sfactor, blend_dfactor);
+  }
   else
-    {
-      state.enable(GL_DEPTH_TEST);
-    }
+  {
+    state.enable(GL_DEPTH_TEST);
+  }
 
   state.enable_client_state(GL_VERTEX_ARRAY);
   state.enable_client_state(GL_NORMAL_ARRAY);
@@ -354,52 +356,55 @@ Sprite3D::draw(const Vector2f& pos, const Matrix& modelview) const
   const ActionFrame& aframe2 = frame2.action->frames[frame2.frame];
   
   for(uint16_t m = 0; m < data->meshs.size(); ++m) 
+  {
+    const Mesh& mesh = data->meshs[m];
+    const MeshVertices& vertices1 = aframe1.meshs[m];
+    const MeshVertices& vertices2 = aframe2.meshs[m];
+
+    // set texture
+    state.bind_texture(mesh.texture);
+
+    // blend between frame1 + frame2
+    boost::scoped_array<float> verts(new float[mesh.vertex_count * 3]);
+    if(frame1.rot == frame2.rot) 
     {
-      const Mesh& mesh = data->meshs[m];
-      const MeshVertices& vertices1 = aframe1.meshs[m];
-      const MeshVertices& vertices2 = aframe2.meshs[m];
-
-      // set texture
-      state.bind_texture(mesh.texture);
-
-      // blend between frame1 + frame2
-      float* verts = new float[mesh.vertex_count * 3];
-      if(frame1.rot == frame2.rot) {
-        for(uint16_t v = 0; v < mesh.vertex_count*3; ++v) {
-          float v1 = vertices1.vertices[v];
-          float v2 = vertices2.vertices[v];
-          verts[v] = interpolate(v1, v2, blend_time);
-        }
-      } else {
-        // need to manually rotate 180 degree here because frames have different
-        // rot values (=> x=-x, y=y, z=-z)
-        for(uint16_t v = 0; v < mesh.vertex_count*3; ) {
-          // X coord
-          float v1 = vertices1.vertices[v];
-          float v2 = -vertices2.vertices[v];
-          verts[v++] = interpolate(v1, v2, blend_time);
-          // Y coord
-          v1 = vertices1.vertices[v];
-          v2 = vertices2.vertices[v];
-          verts[v++] = interpolate(v1, v2, blend_time);
-          // Z coord
-          v1 = vertices1.vertices[v];
-          v2 = -vertices2.vertices[v];                            
-          verts[v++] = interpolate(v1, v2, blend_time);          
-        }
+      for(uint16_t v = 0; v < mesh.vertex_count*3; ++v) 
+      {
+        float v1 = vertices1.vertices[v];
+        float v2 = vertices2.vertices[v];
+        verts[v] = interpolate(v1, v2, blend_time);
       }
-
-      state.activate();
-
-      // draw mesh
-      glVertexPointer(3, GL_FLOAT, 0, verts);
-      glNormalPointer(GL_FLOAT, 0, &*mesh.normals.begin());
-      glTexCoordPointer(2, GL_FLOAT, 0, &*mesh.tex_coords.begin());
-      glDrawElements(GL_TRIANGLES, mesh.triangle_count * 3, GL_UNSIGNED_SHORT,
-                     &*mesh.vertex_indices.begin());
-
-      delete[] verts;
+    } 
+    else 
+    {
+      // need to manually rotate 180 degree here because frames have different
+      // rot values (=> x=-x, y=y, z=-z)
+      for(uint16_t v = 0; v < mesh.vertex_count*3; ) 
+      {
+        // X coord
+        float v1 = vertices1.vertices[v];
+        float v2 = -vertices2.vertices[v];
+        verts[v++] = interpolate(v1, v2, blend_time);
+        // Y coord
+        v1 = vertices1.vertices[v];
+        v2 = vertices2.vertices[v];
+        verts[v++] = interpolate(v1, v2, blend_time);
+        // Z coord
+        v1 = vertices1.vertices[v];
+        v2 = -vertices2.vertices[v];                            
+        verts[v++] = interpolate(v1, v2, blend_time);          
+      }
     }
+
+    state.activate();
+
+    // draw mesh
+    glVertexPointer(3, GL_FLOAT, 0, verts.get());
+    glNormalPointer(GL_FLOAT, 0, &*mesh.normals.begin());
+    glTexCoordPointer(2, GL_FLOAT, 0, &*mesh.tex_coords.begin());
+    glDrawElements(GL_TRIANGLES, mesh.triangle_count * 3, GL_UNSIGNED_SHORT,
+                   &*mesh.vertex_indices.begin());
+  }
 
   assert_gl("rendering 3d sprite");      
 
