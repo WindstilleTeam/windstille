@@ -97,7 +97,6 @@ WindstilleMain::main(int argc, char** argv)
           // FIXME: file-type "detection" is pretty basic, only works
           // with s-expr and nothing else
           std::string file_type = FileReader::parse(levelfile).get_name();
-          std::cout << file_type << std::endl;
 
           if (file_type == "sprite3d") // FIXME: sprite3d isn't actually a sexpr file
             {
@@ -141,10 +140,11 @@ WindstilleMain::main(int argc, char** argv)
         }
         
       screen_manager.run();
+
+      config.save();
     
       deinit_modules();
       PHYSFS_deinit();
-      config.save();
     } 
   catch (std::exception& err)
     {
@@ -310,9 +310,8 @@ WindstilleMain::init_physfs(const char* argv0)
     // allow symbolic links
     PHYSFS_permitSymbolicLinks(1);
 
-    //show search Path
     if (debug)
-    {
+    { //show search Path
       std::cout << "userdir: " << Pathname::get_userdir() << std::endl;
       std::cout << "datadir: " << Pathname::get_datadir() << std::endl;
 
