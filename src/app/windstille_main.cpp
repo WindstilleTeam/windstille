@@ -139,7 +139,8 @@ WindstilleMain::main(int argc, char** argv)
       screen_manager.run();
     
       deinit_modules();
-
+      PHYSFS_deinit();
+      config.save();
     } 
   catch (std::exception& err)
     {
@@ -149,11 +150,6 @@ WindstilleMain::main(int argc, char** argv)
     {
       std::cout << "Error catched something unknown?!" << std::endl;
     }
-
-  config.save();
-
-  SDL_Quit();
-  PHYSFS_deinit();
 
   return 0;
 }
