@@ -57,7 +57,7 @@ public:
   static void deinit();
 
 public:
-  TTFFont(const std::string& file, int size, const FontEffect& effect = NoFontEffect());
+  TTFFont(const Pathname& file, int size, const FontEffect& effect = NoFontEffect());
   ~TTFFont();
 
   /** */

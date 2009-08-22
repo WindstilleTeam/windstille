@@ -62,14 +62,14 @@ public:
 
 FT_Library TTFFontImpl::library;
 
-TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effect)
+TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect)
   : impl(new TTFFontImpl())
 {
   assert(size_ > 0);
 
   impl->size = size_;
 
-  IFileStream fin(filename);
+  IFileStream fin(filename.get_physfs_path());
   std::istreambuf_iterator<char> first(fin), last;
   std::vector<char> buffer(first, last); 
 
@@ -78,7 +78,9 @@ TTFFont::TTFFont(const std::string& filename, int size_, const FontEffect& effec
                          reinterpret_cast<FT_Byte*>(&*buffer.begin()), buffer.size(), 
                          0, &face))
     {
-      throw std::runtime_error("Couldn't load font: '" + filename + "'");
+      std::ostringstream str;
+      str << "Couldn't load font: " << filename;
+      throw std::runtime_error(str.str());
     }
   
   FT_Set_Pixel_Sizes(face, impl->size, impl->size);
