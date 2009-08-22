@@ -51,7 +51,7 @@ public:
   
   void draw();
   void update(float delta, const Controller& controller);
-  void load(const std::string& filename);
+  void load(const Pathname& filename);
 
 private:
   ParticleViewer (const ParticleViewer&);

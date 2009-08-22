@@ -48,17 +48,17 @@ ScriptableObject::ScriptableObject(FileReader& props)
     set_useable(true);
   
   if(spritename != "")
-    sprite = Sprite(spritename);
+    sprite = Sprite(Pathname(spritename));
   
   if (highlightname != "")
     {
-      highlight = Sprite(highlightname);
+      highlight = Sprite(Pathname(highlightname));
       highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
     }
 
   if (lightname != "")
     {
-      light = Sprite(lightname);
+      light = Sprite(Pathname(lightname));
       light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
     }
     

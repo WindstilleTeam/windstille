@@ -251,7 +251,7 @@ Sprite2DView::next_image(int i)
 
       do {
         try {
-          new_sprite = Sprite(dir[index]);
+          new_sprite = Sprite(Pathname(dir[index]));
           retry = false;
         } catch(std::exception& e) {
           // FIXME: won't work in combination with shuffle
@@ -389,7 +389,7 @@ Sprite2DView::update(float delta, const Controller& controller)
 }
 
 void
-Sprite2DView::set_sprite(const std::string& filename)
+Sprite2DView::set_sprite(const Pathname& filename)
 {
   sprite = Sprite(filename);
   ignore_delta = true;

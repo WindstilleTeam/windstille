@@ -22,10 +22,10 @@
 #include "hedgehog.hpp"
 
 Hedgehog::Hedgehog(FileReader& props)
-  : sprite("images/hedgehog.sprite"),
-    die_sprite("images/hedgehog_die1.sprite"),
-    light("images/hedgehog_light.sprite"),
-    highlight("images/hedgehog_highlight.sprite")
+  : sprite(Pathname("images/hedgehog.sprite")),
+    die_sprite(Pathname("images/hedgehog_die1.sprite")),
+    light(Pathname("images/hedgehog_light.sprite")),
+    highlight(Pathname("images/hedgehog_highlight.sprite"))
 {
   props.get("name", name);
   props.get("pos",  pos);

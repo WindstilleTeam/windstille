@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "util/pathname.hpp"
 #include "display/scene_context.hpp"
 #include "sprite_object_model.hpp"
 
@@ -23,7 +24,7 @@ SpriteObjectModel::SpriteObjectModel(const std::string& name_, const Vector2f& r
                                      const std::string& path_)
   : ObjectModel(name_, rel_pos_),
     path(path_),
-    sprite(path_)
+    sprite(Pathname(path_))
 {
 }
 

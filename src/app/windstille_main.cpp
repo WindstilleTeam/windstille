@@ -118,27 +118,24 @@ WindstilleMain::main(int argc, char** argv)
 
 void
 WindstilleMain::run()
-{
-  if (debug) 
-    std::cout << "Starting file: '" << config.get_string("levelfile") << "'" << std::endl;
-    
+{  
   if (config.get<std::string>("levelfile").is_set())
   {
-    // FIXME: Looks a little hacky, doesn't it?
-    std::string leveldir = dirname(config.get_string("levelfile"));
-    PHYSFS_addToSearchPath(leveldir.c_str(), true);
-    std::string levelfile = basename(config.get_string("levelfile"));
+    Pathname filename(config.get_string("levelfile"), Pathname::kSysPath);
+
+    if (debug) 
+      std::cout << "Starting file: " << filename << std::endl;
 
     // FIXME: file-type "detection" is pretty basic, only works
     // with s-expr and nothing else
-    std::string file_type = FileReader::parse(levelfile).get_name();
+    std::string file_type = FileReader::parse(filename).get_name();
 
     if (file_type == "sprite3d") // FIXME: sprite3d isn't actually a sexpr file
     {
       std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
 
-      if (!levelfile.empty())
-        sprite3dview->set_model(levelfile);
+      if (!filename.empty())
+        sprite3dview->set_model(filename);
 
       // Launching Sprite3DView instead of game
       screen_manager.push_screen(sprite3dview.release());
@@ -147,8 +144,8 @@ WindstilleMain::run()
     {
       std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
 
-      if (!levelfile.empty())
-        sprite2dview->set_sprite(levelfile);
+      if (!filename.empty())
+        sprite2dview->set_sprite(filename);
 
       // Launching Sprite2DView instead of game
       screen_manager.push_screen(sprite2dview.release());
@@ -156,13 +153,13 @@ WindstilleMain::run()
     else if (file_type == "particle-systems")
     {
       ParticleViewer* particle_viewer = new ParticleViewer();
-      if (!levelfile.empty())
-        particle_viewer->load(levelfile);
+      if (!filename.empty())
+        particle_viewer->load(filename);
       screen_manager.push_screen(particle_viewer);
     }
     else if (file_type == "windstille-sector")
     {
-      screen_manager.push_screen(new GameSession(Pathname(levelfile)));
+      screen_manager.push_screen(new GameSession(filename));
     }
     else
     {

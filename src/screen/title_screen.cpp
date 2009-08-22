@@ -16,14 +16,16 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "screen/title_screen.hpp"
+
 #include <iostream>
+
 #include "display/display.hpp"
 #include "app/menu_manager.hpp"
-#include "title_screen.hpp"
 
 TitleScreen::TitleScreen()
 {
-  background = Sprite("images/titlescreen.sprite");
+  background = Sprite(Pathname("images/titlescreen.sprite"));
   background.set_scale(std::max(float(Display::get_width())  / background.get_width(),
                                 float(Display::get_height()) / background.get_height()));
 }

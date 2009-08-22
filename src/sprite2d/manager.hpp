@@ -24,7 +24,9 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 
+class Pathname;
 class SpriteData;
+
 typedef boost::shared_ptr<SpriteData> SpriteDataPtr;
 
 class SpriteManager
@@ -38,12 +40,12 @@ public:
   SpriteManager();
   ~SpriteManager();
 
-  SpriteDataPtr create_data(const std::string& filename);
+  SpriteDataPtr create_data(const Pathname& filename);
   
   /** Removes all cached Sprites that are no longer in use */
   void cleanup();
 private:
-  typedef std::map<std::string, SpriteDataPtr> Datas;
+  typedef std::map<Pathname, SpriteDataPtr> Datas;
   Datas datas;
 };
 

@@ -21,13 +21,13 @@
 #include "sprite2d/manager.hpp"
 
 SpiderMine::SpiderMine(FileReader& props)
-  : explode("images/explosion.sprite"),
-    explode_light("images/explolight.sprite")
+  : explode(Pathname("images/explosion.sprite")),
+    explode_light(Pathname("images/explolight.sprite"))
 {
   props.get("name", name);
   props.get("pos",  pos);
     
-  sprite = Sprite("images/spider_mine.sprite");
+  sprite = Sprite(Pathname("images/spider_mine.sprite"));
   //sprite.set_scale(.5, .5);
   initial_position = pos;
   walk_speed = 160;

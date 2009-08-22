@@ -165,23 +165,23 @@ MenuManager::display_models_menu()
 {
   gui::Menu menu("Select Model", create_centered_rect(550, 376));
   
-  std::vector<std::string> models;
-  models.push_back("models/characters/bob/bob.wsprite");
-  models.push_back("models/characters/jane/jane.wsprite");
-  models.push_back("models/characters/monster/monster.wsprite");
-  models.push_back("models/characters/powersuit/powersuit.wsprite");
-  models.push_back("models/characters/sophie/sophie.wsprite");
-  models.push_back("models/characters/spider/spider.wsprite");
-  models.push_back("models/characters/vrdummy/vrdummy.wsprite");
-  models.push_back("models/characters/yagor/yagor.wsprite");
-  models.push_back("models/objects/grenade/grenade.wsprite");
-  models.push_back("models/objects/pistol/pistol.wsprite");
-  models.push_back("models/vehicles/shuttle/shuttle.wsprite");
-  models.push_back("models/vehicles/train/train.wsprite"); 
+  std::vector<Pathname> models;
+  models.push_back(Pathname("models/characters/bob/bob.wsprite"));
+  models.push_back(Pathname("models/characters/jane/jane.wsprite"));
+  models.push_back(Pathname("models/characters/monster/monster.wsprite"));
+  models.push_back(Pathname("models/characters/powersuit/powersuit.wsprite"));
+  models.push_back(Pathname("models/characters/sophie/sophie.wsprite"));
+  models.push_back(Pathname("models/characters/spider/spider.wsprite"));
+  models.push_back(Pathname("models/characters/vrdummy/vrdummy.wsprite"));
+  models.push_back(Pathname("models/characters/yagor/yagor.wsprite"));
+  models.push_back(Pathname("models/objects/grenade/grenade.wsprite"));
+  models.push_back(Pathname("models/objects/pistol/pistol.wsprite"));
+  models.push_back(Pathname("models/vehicles/shuttle/shuttle.wsprite"));
+  models.push_back(Pathname("models/vehicles/train/train.wsprite")); 
 
-  for(std::vector<std::string>::iterator i = models.begin(); i != models.end(); ++i)
+  for(std::vector<Pathname>::const_iterator i = models.begin(); i != models.end(); ++i)
     {
-      menu.add_button(*i, boost::bind(&MenuManager::menu_show_model, std::string(*i)));
+      menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_show_model, *i));
     }
   
   menu.show();
@@ -192,14 +192,14 @@ MenuManager::display_particle_menu()
 {
   gui::Menu menu("Particle Systems", create_centered_rect(400, 340));
 
-  std::vector<std::string> scenarios;
-  scenarios.push_back("particlesystems/fire.particles");
-  scenarios.push_back("particlesystems/water.particles");
+  std::vector<Pathname> scenarios;
+  scenarios.push_back(Pathname("particlesystems/fire.particles"));
+  scenarios.push_back(Pathname("particlesystems/water.particles"));
   
-  for(std::vector<std::string>::iterator i = scenarios.begin(); i != scenarios.end(); ++i)
-    {
-      menu.add_button(*i, boost::bind(&MenuManager::menu_show_particle_system, *i));
-    }
+  for(std::vector<Pathname>::const_iterator i = scenarios.begin(); i != scenarios.end(); ++i)
+  {
+    menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_show_particle_system, *i));
+  }
 
   menu.show();
 }
@@ -385,11 +385,11 @@ MenuManager::create_centered_rect(float w, float h)
 // Callbacks
 
 void
-MenuManager::menu_show_model(const std::string& model)
+MenuManager::menu_show_model(const Pathname& filename)
 {
   std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
 
-  sprite3dview->set_model(model);
+  sprite3dview->set_model(filename);
 
   // Launching Sprite3DView instead of game
   screen_manager.push_screen(sprite3dview.release());
@@ -397,10 +397,10 @@ MenuManager::menu_show_model(const std::string& model)
 }
 
 void
-MenuManager::menu_show_particle_system(const std::string& file)
+MenuManager::menu_show_particle_system(const Pathname& filename)
 {
   std::auto_ptr<ParticleViewer> particle_viewer(new ParticleViewer());
-  particle_viewer->load(file);
+  particle_viewer->load(filename);
 
   screen_manager.push_screen(particle_viewer.release());
   screen_manager.clear_overlay();

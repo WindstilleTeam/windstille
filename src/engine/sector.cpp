@@ -310,7 +310,7 @@ std::string
 Sector::get_directory() const
 {
   // FIXME: Not pretty
-  std::string directory = filename.get_sys_path();
+  std::string directory = filename.get_physfs_path();
   directory.erase(directory.rfind('/')+1);
   return directory;
 }

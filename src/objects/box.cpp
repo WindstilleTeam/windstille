@@ -45,7 +45,7 @@ Box::Box(FileReader& props)
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in Box");
   
-  sprite = Sprite(spritename);
+  sprite = Sprite(Pathname(spritename));
   
   colobj = new CollisionObject(this, Rectf(0, 0, width, height));
   colobj->set_velocity(vel);

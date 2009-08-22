@@ -28,9 +28,10 @@
 #include "display/surface.hpp"
 #include "display/surface_manager.hpp"
 
-SpriteData::SpriteData(const std::string& filename)
+SpriteData::SpriteData(const Pathname& pathname)
 {
-  if (PHYSFS_exists(filename.c_str()))
+  std::string filename = pathname.get_physfs_path();
+  if (pathname.exists())
     {
       if (has_suffix(filename, ".sprite"))
         {

@@ -45,7 +45,7 @@ public:
   void draw();
   void update(float delta, const Controller& controller);
 
-  void set_model(const std::string& filename);
+  void set_model(const Pathname& filename);
   
   void handle_event(const SDL_Event& );
 

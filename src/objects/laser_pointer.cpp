@@ -26,8 +26,8 @@
 LaserPointer::LaserPointer()
 {
   noise = Texture("images/noise2.png");
-  laserpointer = Sprite("images/laserpointer.sprite");
-  laserpointer_light = Sprite("images/laserpointer_light.sprite");
+  laserpointer = Sprite(Pathname("images/laserpointer.sprite"));
+  laserpointer_light = Sprite(Pathname("images/laserpointer_light.sprite"));
   laserpointer_light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
   noise.set_wrap(GL_REPEAT);
   noise.set_filter(GL_LINEAR);

@@ -77,7 +77,7 @@ public:
   void next_image(int i = 1);
   void prev_image(int i = 1) { next_image(-i); }
 
-  void set_sprite(const std::string& filename);
+  void set_sprite(const Pathname& filename);
   void prepare_sprite(Sprite& sprite);
 
 private:

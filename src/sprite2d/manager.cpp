@@ -22,6 +22,7 @@
 #include <iostream>
 #include <assert.h>
 
+#include "util/pathname.hpp"
 #include "sprite2d/data.hpp"
 #include "sprite2d/sprite.hpp"
 
@@ -38,7 +39,7 @@ SpriteManager::~SpriteManager()
 }
 
 SpriteDataPtr
-SpriteManager::create_data(const std::string& filename)
+SpriteManager::create_data(const Pathname& filename)
 {
   Datas::iterator i = datas.find(filename);
   if(i != datas.end())

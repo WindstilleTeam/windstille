@@ -27,7 +27,7 @@ VRDummy::VRDummy(FileReader& props)
   sprite = Sprite3D(Pathname("models/characters/vrdummy/vrdummy.wsprite"));
   rotation = 0;
 
-  highlight = Sprite("images/hedgehog_highlight.sprite");
+  highlight = Sprite(Pathname("images/hedgehog_highlight.sprite"));
   highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
   
   jump_time = 0;

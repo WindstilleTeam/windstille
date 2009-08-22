@@ -21,11 +21,11 @@
 #include "bomb.hpp"
 
 Bomb::Bomb(int x, int y)
-  : sprite("images/bomb.sprite"),
-    explo("images/explo.sprite"),
-    light("images/bomblight.sprite"),
-    highlight("images/bombhighlight.sprite"),
-    explolight("images/explolight.sprite"),
+  : sprite(Pathname("images/bomb.sprite")),
+    explo(Pathname("images/explo.sprite")),
+    light(Pathname("images/bomblight.sprite")),
+    highlight(Pathname("images/bombhighlight.sprite")),
+    explolight(Pathname("images/explolight.sprite")),
     pos(x, int(y/TILE_SIZE+1)*TILE_SIZE),
     count(2.0f),
     state(COUNTDOWN),

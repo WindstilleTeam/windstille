@@ -16,14 +16,17 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "hud/inventory.hpp"
+
 #include <iostream>
 #include <vector>
+
+#include "font/fonts.hpp"
+#include "input/controller.hpp"
+#include "input/input_manager.hpp"
 #include "screen/game_session.hpp"
 #include "sprite2d/sprite.hpp"
-#include "font/fonts.hpp"
-#include "input/input_manager.hpp"
-#include "input/controller.hpp"
-#include "inventory.hpp"
+#include "util/pathname.hpp"
 
 class InventoryItem
 {
@@ -32,7 +35,7 @@ public:
   Sprite sprite;
   
   InventoryItem(const std::string& name, const std::string& filename)
-    : name(name), sprite(filename)
+    : name(name), sprite(Pathname(filename))
   {
   }
 };
@@ -69,8 +72,8 @@ public:
 Inventory::Inventory()
   : impl(new InventoryImpl())
 {
-  impl->slot = Sprite("images/inventory/slot.sprite");
-  impl->slothighlight = Sprite("images/inventory/slothighlight.sprite");
+  impl->slot = Sprite(Pathname("images/inventory/slot.sprite"));
+  impl->slothighlight = Sprite(Pathname("images/inventory/slothighlight.sprite"));
   impl->moving = false;
   impl->add_angle = 0.0f;
   impl->current_item = 0;

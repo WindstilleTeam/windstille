@@ -33,7 +33,7 @@ Elevator::Elevator(FileReader& props)
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in Elevator");
 
-  sprite = Sprite(spritename);
+  sprite = Sprite(Pathname(spritename));
   size  = Size(128, 64);
   colobject = new CollisionObject(this, Rectf(Vector2f(0,0), size));
   Sector::current()->get_collision_engine()->add(colobject);

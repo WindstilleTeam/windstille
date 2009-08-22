@@ -25,7 +25,7 @@
 #include "nightvision.hpp"
 
 Nightvision::Nightvision(FileReader& /*props*/)
-  : nightvision("images/nightvision.sprite")
+  : nightvision(Pathname("images/nightvision.sprite"))
 {
   name = "nightvision";
   noise = Texture("images/noise.png");

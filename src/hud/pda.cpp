@@ -41,7 +41,7 @@ PDA::PDA()
     state(PDA_OBJECTIVES),
     old_state(PDA_NONE)
 { 
-  background = Sprite("images/pda/pda.sprite");
+  background = Sprite(Pathname("images/pda/pda.sprite"));
 
   ui_area.reset(new TextArea(Rectf(pos + Vector2f(40.0f, 50.0f), 
                                    Sizef(315.0f, 435.0f)).grow(-12.0f), false));

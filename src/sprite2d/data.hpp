@@ -47,7 +47,7 @@ private:
   SpriteAction* parse_action(const std::string& dir, FileReader& reader);
 
 public:
-  SpriteData(const std::string& filename);
+  SpriteData(const Pathname& filename);
   virtual ~SpriteData();
 
   typedef std::vector<SpriteAction*> Actions;

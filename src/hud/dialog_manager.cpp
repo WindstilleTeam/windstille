@@ -16,15 +16,18 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "hud/dialog_manager.hpp"
+
 #include <iostream>
+
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
 #include "input/controller.hpp"
 #include "input/input_manager.hpp"
-#include "dialog_manager.hpp"
 #include "engine/script_manager.hpp"
 #include "display/text_area.hpp"
 #include "display/display.hpp"
+#include "util/pathname.hpp"
 #include "app/config.hpp"
 
 DialogManager* DialogManager::current_ = 0;
@@ -43,7 +46,7 @@ DialogManager::add_dialog(int alignment_, const std::string& portrait_, const st
 { 
   delay     = 0.0;
   alignment = alignment_;
-  portrait  = Sprite(portrait_);
+  portrait  = Sprite(Pathname(portrait_));
   portrait.set_scale(0.65f);
   text      = text_;
   caption = false;

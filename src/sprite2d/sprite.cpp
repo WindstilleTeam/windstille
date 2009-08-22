@@ -33,7 +33,7 @@ Sprite::Sprite()
 {  
 }
 
-Sprite::Sprite(const std::string& filename)
+Sprite::Sprite(const Pathname& filename)
 {
   data = SpriteManager::current()->create_data(filename);
 

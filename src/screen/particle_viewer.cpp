@@ -37,7 +37,7 @@
 
 ParticleViewer::ParticleViewer()
 {
-  background = Sprite("images/greychess.sprite");
+  background = Sprite(Pathname("images/greychess.sprite"));
 }
 
 ParticleViewer::~ParticleViewer()
@@ -45,7 +45,7 @@ ParticleViewer::~ParticleViewer()
 }
 
 void
-ParticleViewer::load(const std::string& filename)
+ParticleViewer::load(const Pathname& filename)
 {
   std::cout << "ParticleViewer: loading " << filename << std::endl;
 

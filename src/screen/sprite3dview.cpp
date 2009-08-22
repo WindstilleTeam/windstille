@@ -46,9 +46,9 @@ Sprite3DView::~Sprite3DView()
 }
 
 void
-Sprite3DView::set_model(const std::string& filename)
+Sprite3DView::set_model(const Pathname& filename)
 {
-  sprite  = Sprite3D(Pathname(filename));
+  sprite  = Sprite3D(filename);
   actions = sprite.get_actions();
 }
 

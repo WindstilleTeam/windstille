@@ -23,6 +23,8 @@
 #include <string>
 #include <GL/glew.h>
 #include <GL/gl.h>
+
+#include "util/pathname.hpp"
 #include "display/color.hpp"
 #include "display/surface.hpp"
 #include "math/vector2f.hpp"
@@ -60,7 +62,7 @@ public:
   /** Load a sprite from file or in-case the .sprite file isn't found
       search for a .png with the same name and use that as a simple
       one-file sprite */
-  Sprite(const std::string& filename);
+  Sprite(const Pathname& filename);
   Sprite(const SpriteDataPtr data);
   ~Sprite();
 
