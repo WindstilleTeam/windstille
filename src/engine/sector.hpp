@@ -23,18 +23,20 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+
+#include "util/pathname.hpp"
 #include "display/color.hpp"
 
+class CollisionEngine;
+class Entity;
 class FileReader;
 class GameObject;
-class TileMap;
+class NavigationGraph;
 class Player;
 class SceneContext;
 class SpawnPoint;
-class CollisionEngine;
-class NavigationGraph;
-class Entity;
 class SquirrelThread;
+class TileMap;
 
 /** */
 class Sector
@@ -45,7 +47,7 @@ public:
   static Sector* current() { return current_; }
   
 private:
-  std::string filename;
+  Pathname filename;
   std::string name;
   std::string music;
   std::string init_script;
@@ -69,16 +71,16 @@ private:
 
   Player* player;
 
-  void parse_file(const std::string& filename);
+  void parse_file(const Pathname& filename);
 
   void commit_adds();
   void commit_removes();
 
 public:
-  Sector(const std::string& filename);
+  Sector(const Pathname& filename);
   ~Sector();
 
-  std::string get_filename() const;
+  Pathname get_filename() const;
   std::string get_directory() const;
 
   void draw(SceneContext& gc);

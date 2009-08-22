@@ -16,15 +16,18 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/console.hpp"
+
 #include <assert.h>
-#include "math/rect.hpp"
-#include "font/fonts.hpp"
-#include "screen/game_session.hpp"
-#include "input/input_manager.hpp"
-#include "engine/script_manager.hpp"
+
+#include "util/pathname.hpp"
 #include "display/display.hpp"
+#include "engine/script_manager.hpp"
+#include "font/fonts.hpp"
+#include "input/input_manager.hpp"
+#include "math/rect.hpp"
+#include "screen/game_session.hpp"
 #include "scripting/util.hpp"
-#include "console.hpp"
 
 Console console;
 
@@ -444,7 +447,7 @@ ConsoleImpl::eval_command_line()
     }
   else if (command_line == "reset")
     {
-      GameSession::current()->set_sector("levels/newformat2.wst");
+      GameSession::current()->set_sector(Pathname("levels/newformat2.wst"));
     }
   else if (command_line == "show")
     {

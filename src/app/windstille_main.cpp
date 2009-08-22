@@ -162,7 +162,7 @@ WindstilleMain::run()
     }
     else if (file_type == "windstille-sector")
     {
-      screen_manager.push_screen(new GameSession(levelfile));
+      screen_manager.push_screen(new GameSession(Pathname(levelfile)));
     }
     else
     {

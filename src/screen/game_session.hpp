@@ -37,6 +37,7 @@ class Player;
 class DialogManager;
 class Conversation;
 class Inventory;
+class Pathname;
 
 class GameSessionImpl;
 
@@ -50,7 +51,7 @@ private:
 public:
   static GameSession* current() { return current_; }
 
-  GameSession(const std::string& arg_filename);
+  GameSession(const Pathname& arg_filename);
   virtual ~GameSession();
 
   View* get_view();
@@ -62,10 +63,10 @@ public:
   void set_control_state(ControlState state);
 
   /** Switches the sector instantly without fadeout */
-  void set_sector(const std::string& filename);
+  void set_sector(const Pathname& filename);
 
   /** Fades out then switches sectors and fades in again */
-  void change_sector(const std::string& filename);
+  void change_sector(const Pathname& filename);
 
   /** Set the GameSession into a mode for cutscenes, this means for
       most part to switch into a 16:9 viewmode with black borders */

@@ -68,7 +68,7 @@ public:
   std::auto_ptr<Sector> sector;
   View    view;
 
-  std::string filename;
+  Pathname filename;
 
   bool pause;
   
@@ -123,7 +123,7 @@ public:
   void handle_event(const SDL_Event& event);
 };
 
-GameSession::GameSession(const std::string& arg_filename)
+GameSession::GameSession(const Pathname& arg_filename)
   : impl(new GameSessionImpl())
 {
   current_ = this;
@@ -323,7 +323,7 @@ GameSessionImpl::update(float delta, const Controller& controller)
 }
 
 void
-GameSession::change_sector(const std::string& arg_filename)
+GameSession::change_sector(const Pathname& arg_filename)
 {
   impl->filename = arg_filename;
  
@@ -342,7 +342,7 @@ GameSession::change_sector(const std::string& arg_filename)
 }
 
 void
-GameSession::set_sector(const std::string& )
+GameSession::set_sector(const Pathname& /* FIXME: huh? */)
 {
   impl->sector = std::auto_ptr<Sector>(new Sector(impl->filename));
  

@@ -20,7 +20,10 @@
 #define HEADER_WINDSTILLE_APP_MENU_MANAGER_HPP
 
 #include <vector>
+
 #include "math/rect.hpp"
+
+class Pathname;
 
 /** 
  *  The MenuManager creates and displays the metagame menus (main,
@@ -65,12 +68,12 @@ private:
   static void menu_music_volume(int i);
 
   static void menu_ambient_light(int i, int component);
-  static void menu_start_scenario(std::string scenario);
-  static void menu_show_model(std::string scenario);
+  static void menu_start_scenario(const Pathname& scenario);
+  static void menu_show_model(const std::string& scenario);
   static void menu_show_geometry_test();
   static void menu_show_armature_test();
   static void menu_show_navigation_test();
-  static void menu_show_particle_system(std::string file);
+  static void menu_show_particle_system(const std::string& file);
   static void menu_gamma(int i);
   static void menu_wiimote();
 };

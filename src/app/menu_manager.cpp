@@ -209,18 +209,18 @@ MenuManager::display_scenario_menu()
 {
   gui::Menu menu("Select Scenario", create_centered_rect(500, 340));
 
-  std::vector<std::string> scenarios;
-  scenarios.push_back("sectors/apartment/apartment.wst");
-  scenarios.push_back("sectors/bluestone/bluestone.wst");
-  scenarios.push_back("sectors/forest/forest.wst");
-  scenarios.push_back("sectors/industrial/industrial.wst");
-  scenarios.push_back("sectors/intro/intro.wst");
-  scenarios.push_back("sectors/newformat2/newformat2.wst");
-  scenarios.push_back("sectors/virtualreality/virtualreality.wst");
+  std::vector<Pathname> scenarios;
+  scenarios.push_back(Pathname("sectors/apartment/apartment.wst"));
+  scenarios.push_back(Pathname("sectors/bluestone/bluestone.wst"));
+  scenarios.push_back(Pathname("sectors/forest/forest.wst"));
+  scenarios.push_back(Pathname("sectors/industrial/industrial.wst"));
+  scenarios.push_back(Pathname("sectors/intro/intro.wst"));
+  scenarios.push_back(Pathname("sectors/newformat2/newformat2.wst"));
+  scenarios.push_back(Pathname("sectors/virtualreality/virtualreality.wst"));
   
-  for(std::vector<std::string>::iterator i = scenarios.begin(); i != scenarios.end(); ++i)
+  for(std::vector<Pathname>::const_iterator i = scenarios.begin(); i != scenarios.end(); ++i)
     {
-      menu.add_button(*i, boost::bind(&MenuManager::menu_start_scenario, *i));
+      menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_start_scenario, *i));
     }
 
   menu.show();
@@ -385,7 +385,7 @@ MenuManager::create_centered_rect(float w, float h)
 // Callbacks
 
 void
-MenuManager::menu_show_model(std::string model)
+MenuManager::menu_show_model(const std::string& model)
 {
   std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
 
@@ -397,7 +397,7 @@ MenuManager::menu_show_model(std::string model)
 }
 
 void
-MenuManager::menu_show_particle_system(std::string file)
+MenuManager::menu_show_particle_system(const std::string& file)
 {
   std::auto_ptr<ParticleViewer> particle_viewer(new ParticleViewer());
   particle_viewer->load(file);
@@ -409,7 +409,7 @@ MenuManager::menu_show_particle_system(std::string file)
 void
 MenuManager::menu_start_game()
 {
-  screen_manager.push_screen(new GameSession("levels/newformat2.wst"));
+  screen_manager.push_screen(new GameSession(Pathname("levels/newformat2.wst")));
   screen_manager.pop_overlay();
 }
 
@@ -422,7 +422,7 @@ MenuManager::menu_quit()
 }
 
 void
-MenuManager::menu_start_scenario(std::string scenario)
+MenuManager::menu_start_scenario(const Pathname& scenario)
 {
   std::cout << "Starting: " << scenario << std::endl;
   screen_manager.push_screen(new GameSession(scenario));

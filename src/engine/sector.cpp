@@ -53,7 +53,7 @@
 
 Sector* Sector::current_ = 0;
 
-Sector::Sector(const std::string& arg_filename)
+Sector::Sector(const Pathname& arg_filename)
   : filename(arg_filename),
     player(0)    
 { 
@@ -86,7 +86,7 @@ Sector::~Sector()
 }
 
 void
-Sector::parse_file(const std::string& filename)
+Sector::parse_file(const Pathname& filename)
 {
   if (debug) std::cout << "Sector:parse_file '" << filename << "'" << std::endl;
   
@@ -300,7 +300,7 @@ Sector::get_ambient_light() const
   return ambient_light;
 }
 
-std::string
+Pathname
 Sector::get_filename () const
 {
   return filename;
@@ -310,7 +310,7 @@ std::string
 Sector::get_directory() const
 {
   // FIXME: Not pretty
-  std::string directory = filename;
+  std::string directory = filename.get_sys_path();
   directory.erase(directory.rfind('/')+1);
   return directory;
 }
