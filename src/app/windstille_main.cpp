@@ -126,11 +126,9 @@ WindstilleMain::run()
     if (debug) 
       std::cout << "Starting file: " << filename << std::endl;
 
-    // FIXME: file-type "detection" is pretty basic, only works
-    // with s-expr and nothing else
-    std::string file_type = FileReader::parse(filename).get_name();
+    const std::string file_type = filename.get_extension();
 
-    if (file_type == "sprite3d") // FIXME: sprite3d isn't actually a sexpr file
+    if (file_type == "wsprite")
     {
       std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
 
@@ -140,7 +138,7 @@ WindstilleMain::run()
       // Launching Sprite3DView instead of game
       screen_manager.push_screen(sprite3dview.release());
     }
-    else if (file_type == "sprite") // FIXME: PNG are sprites too
+    else if (file_type == "sprite" || file_type == "png" || file_type == "jpg")
     {
       std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
 
@@ -150,14 +148,14 @@ WindstilleMain::run()
       // Launching Sprite2DView instead of game
       screen_manager.push_screen(sprite2dview.release());
     }
-    else if (file_type == "particle-systems")
+    else if (file_type == "particles")
     {
       ParticleViewer* particle_viewer = new ParticleViewer();
       if (!filename.empty())
         particle_viewer->load(filename);
       screen_manager.push_screen(particle_viewer);
     }
-    else if (file_type == "windstille-sector")
+    else if (file_type == "wst")
     {
       screen_manager.push_screen(new GameSession(filename));
     }
