@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "texture_manager.hpp"
+#include "display/texture_manager.hpp"
 
 #include <assert.h>
 #include <iostream>
@@ -52,7 +52,7 @@ TextureManager::~TextureManager()
 }
 
 Texture
-TextureManager::get(const std::string& filename)
+TextureManager::get(const Pathname& filename)
 {
   Textures::iterator i = textures.find(filename);
   if(i != textures.end())
@@ -73,7 +73,7 @@ TextureManager::get(const std::string& filename)
       catch(std::exception& e) 
         {
           std::cerr << e.what() << std::endl;
-          return get("images/404.png");
+          return get(Pathname("images/404.png"));
         }
     }
 }

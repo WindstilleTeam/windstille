@@ -46,7 +46,7 @@ Liquid::Liquid(FileReader& props)
   for(int i = 50; i < 70 && i < int(heightfield1->size()); ++i)
     (*heightfield1)[i] += 0.0025f;
 
-  texture = Texture("images/textures/water.png");
+  texture = Texture(Pathname("images/textures/water.png"));
   texture.set_wrap(GL_REPEAT);
 }
 

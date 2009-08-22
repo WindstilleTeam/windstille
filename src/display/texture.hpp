@@ -24,6 +24,8 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <boost/shared_ptr.hpp>
+
+#include "util/pathname.hpp"
 
 class SoftwareSurface;
 class TextureImpl;
@@ -37,7 +39,7 @@ public:
   explicit Texture();
 
   /** Load a texture from file */
-  explicit Texture(const std::string& filename);
+  explicit Texture(const Pathname& filename);
 
   /**
    * Upload an SoftwareSurface onto an OpenGL texture. The surface must have power

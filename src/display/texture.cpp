@@ -17,16 +17,17 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "display/texture.hpp"
+
 #include <stdexcept>
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/gl.h>
 
 #include "math/rect.hpp"
-#include "texture.hpp"
 #include "display/software_surface.hpp"
 #include "display/opengl_state.hpp"
-#include "texture_manager.hpp"
+#include "display/texture_manager.hpp"
 #include "util/util.hpp"
 
 class TextureImpl
@@ -53,7 +54,7 @@ Texture::Texture()
 {
 }
 
-Texture::Texture(const std::string& filename)
+Texture::Texture(const Pathname& filename)
 {
   *this = TextureManager::current()->get(filename);
 }

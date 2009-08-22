@@ -28,7 +28,7 @@ Nightvision::Nightvision(FileReader& /*props*/)
   : nightvision(Pathname("images/nightvision.sprite"))
 {
   name = "nightvision";
-  noise = Texture("images/noise.png");
+  noise = Texture(Pathname("images/noise.png"));
   noise.set_wrap(GL_REPEAT);
   noise.set_filter(GL_LINEAR);
 }

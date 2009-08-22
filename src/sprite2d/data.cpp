@@ -30,68 +30,69 @@
 
 SpriteData::SpriteData(const Pathname& pathname)
 {
-  std::string filename = pathname.get_physfs_path();
   if (pathname.exists())
-    {
-      if (has_suffix(filename, ".sprite"))
-        {
-          FileReader reader = FileReader::parse(filename);
+  {
+    const std::string ext = pathname.get_extension();
 
-          if(reader.get_name() != "sprite") {
-            std::ostringstream msg;
-            msg << "File '" << filename << "' is not a windstille sprite";
-            throw std::runtime_error(msg.str());
-          }
+    if (ext == "sprite")
+    {
+      FileReader reader = FileReader::parse(pathname);
+
+      if(reader.get_name() != "sprite") {
+        std::ostringstream msg;
+        msg << "File " << pathname << " is not a windstille sprite";
+        throw std::runtime_error(msg.str());
+      }
     
-          std::string dir = dirname(filename);
-          parse(dir, reader);
-        }
-      else if (has_suffix(tolowercase(filename), ".png") || has_suffix(tolowercase(filename), ".jpg"))
-        {
-          if (PHYSFS_exists(filename.c_str()))
-            {
-              std::auto_ptr<SpriteAction> action(new SpriteAction());
-              action->name   = "default";
-              action->speed  = 1.0;
-              action->scale  = 1.0f;
-              action->offset = Vector2f(0, 0);
-              action->surfaces.push_back(Surface(filename));
-              actions.push_back(action.release());
-            }
-          else
-            {
-              throw std::runtime_error("Couldn't find '" + filename + "'");
-            }
-        }
-      else
-        {
-          throw std::runtime_error("Sprite filename has unknown suffix: '" + filename + "'");
-        }
+      std::string dir = dirname(pathname.get_physfs_path());
+      parse(dir, reader);
     }
-  else if (filename.length() > std::string(".sprite").length())
-    { // If sprite file is not found, we search for a file with the
-      // same name ending in .png
-      std::string pngfile = filename.substr(0, filename.length() - std::string(".sprite").length()) + ".png";
-
-      if (PHYSFS_exists(pngfile.c_str()))
-        {
-          std::auto_ptr<SpriteAction> action(new SpriteAction);
-          action->name   = "default";
-          action->speed  = 1.0;
-          action->scale  = 1.0f;
-          action->offset = Vector2f(0, 0);
-          action->surfaces.push_back(Surface(pngfile));
-          actions.push_back(action.release());
-        }
-      else
-        {
-          throw std::runtime_error("Couldn't find '" + filename + "'");
-        }
-    }
-  else
+    else if (ext == "png" || ext == "jpg")
     {
-      throw std::runtime_error("Couldn't find '" + filename + "'");
+      std::auto_ptr<SpriteAction> action(new SpriteAction());
+      action->name   = "default";
+      action->speed  = 1.0;
+      action->scale  = 1.0f;
+      action->offset = Vector2f(0, 0);
+      action->surfaces.push_back(Surface(pathname));
+      actions.push_back(action.release());
     }
+    else
+    {
+      std::ostringstream str;
+      str << "Sprite " << pathname << " has unknown suffix: '" << ext  << "'";
+      throw std::runtime_error(str.str());
+    }
+  }
+  else if (pathname.get_raw_path().length() > std::string(".sprite").length())
+  { // If sprite file is not found, we search for a file with the
+    // same name ending in .png
+    Pathname pngfile(pathname.get_raw_path().substr(0, pathname.get_raw_path().length() - std::string(".sprite").length()) + ".png",
+                     pathname.get_type());
+
+    if (pngfile.exists())
+    {
+      std::auto_ptr<SpriteAction> action(new SpriteAction);
+      action->name   = "default";
+      action->speed  = 1.0;
+      action->scale  = 1.0f;
+      action->offset = Vector2f(0, 0);
+      action->surfaces.push_back(Surface(pngfile));
+      actions.push_back(action.release());
+    }
+    else
+    {
+      std::ostringstream str;
+      str << "Couldn't find " << pngfile;
+      throw std::runtime_error(str.str());
+    }
+  }
+  else
+  {
+    std::ostringstream str;
+    str << "Couldn't find " << pathname;
+    throw std::runtime_error(str.str());
+  }
 }
 
 SpriteData::~SpriteData()
@@ -132,7 +133,7 @@ SpriteData::parse_action(const std::string& dir, FileReader& reader)
 
       for(std::vector<std::string>::iterator file = image_files.begin(); file != image_files.end(); ++file)
         {
-          action->surfaces.push_back(SurfaceManager::current()->get(dir + "/" + *file));
+          action->surfaces.push_back(SurfaceManager::current()->get(Pathname(dir + "/" + *file)));
         }
     }
   else if(reader.get("image-grid", grid_reader)) 
@@ -148,7 +149,7 @@ SpriteData::parse_action(const std::string& dir, FileReader& reader)
       if(filename.empty() || x_size <= 0 || y_size <= 0)
         throw std::runtime_error("Invalid or too few data in image-grid");
       
-      SurfaceManager::current()->load_grid(dir + "/" + filename,
+      SurfaceManager::current()->load_grid(Pathname(dir + "/" + filename),
                                            action->surfaces, x_size, y_size);
     }
     

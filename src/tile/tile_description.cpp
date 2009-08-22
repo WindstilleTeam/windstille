@@ -19,13 +19,14 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
-#include "physfs/physfs_sdl.hpp"
+
 #include "app/globals.hpp"
 #include "display/software_surface.hpp"
-#include "tile.hpp"
-#include "tile_packer.hpp"
-#include "tile_factory.hpp"
-#include "tile_description.hpp"
+#include "physfs/physfs_sdl.hpp"
+#include "tile/tile.hpp"
+#include "tile/tile_description.hpp"
+#include "tile/tile_factory.hpp"
+#include "tile/tile_packer.hpp"
 
 TileDescription::TileDescription(FileReader& props)
   : width(0), height(0)
@@ -46,7 +47,8 @@ TileDescription::load(TileFactory* factory)
   if (debug)
     std::cout << "Loading tiles: " << filename << std::endl;
 
-  SoftwareSurface image(filename);
+  // FIXM: SoftwareSurface image(Pathname(filename)); doesn't work, as its handled as function declaration!?
+  SoftwareSurface image = SoftwareSurface(Pathname(filename));
 
   int num_tiles = width * height; //(image->w/TILE_RESOLUTION) * (image->h/TILE_RESOLUTION);
   if (int(colmap.size()) != num_tiles)

@@ -62,8 +62,8 @@ public:
   /** Load a sprite from file or in-case the .sprite file isn't found
       search for a .png with the same name and use that as a simple
       one-file sprite */
-  Sprite(const Pathname& filename);
-  Sprite(const SpriteDataPtr data);
+  explicit Sprite(const Pathname& filename);
+  explicit Sprite(const SpriteDataPtr data);
   ~Sprite();
 
   void update(float delta);

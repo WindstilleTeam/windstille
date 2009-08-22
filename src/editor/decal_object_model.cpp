@@ -51,16 +51,16 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader)
   reader.get("angle", angle);
   reader.get("hflip", hflip);
   reader.get("vflip", vflip);
-  surface = Surface(path);
-  software_surface = SoftwareSurface(path);
+  surface = Surface(Pathname(path));
+  software_surface = SoftwareSurface(Pathname(path));
 }
 
 DecalObjectModel::DecalObjectModel(const std::string& name, const Vector2f& rel_pos, 
                                    const std::string& path_, MapType type_)
   : ObjectModel("DecalObjectModel", rel_pos),
     path(path_),
-    surface(path_),
-    software_surface(path_),
+    surface(Pathname(path_)),
+    software_surface(Pathname(path_)),
     type(type_),
     scale(1.0f, 1.0f),
     angle(0.0f),

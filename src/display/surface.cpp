@@ -16,14 +16,15 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "display/surface.hpp"
+
 #include <iostream>
 
-#include "surface.hpp"
-#include "math/vector2f.hpp"
-#include "math/quad.hpp"
 #include "display/opengl_state.hpp"
-#include "surface_drawing_parameters.hpp"
-#include "surface_manager.hpp"
+#include "math/quad.hpp"
+#include "math/vector2f.hpp"
+#include "display/surface_drawing_parameters.hpp"
+#include "display/surface_manager.hpp"
 
 class SurfaceImpl
 {
@@ -48,7 +49,7 @@ Surface::Surface()
 {
 }
 
-Surface::Surface(const std::string& filename)
+Surface::Surface(const Pathname& filename)
 {
   // FIXME: a bit ugly, should move some of the surface_manager code over here
   *this = SurfaceManager::current()->get(filename);

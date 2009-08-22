@@ -24,6 +24,7 @@
 #include <stdexcept>
 #include <SDL_image.h>
 
+#include "util/pathname.hpp"
 #include "math/rect.hpp"
 #include "physfs/physfs_sdl.hpp"
 #include "software_surface.hpp"
@@ -34,10 +35,10 @@ public:
   SDL_Surface* surface;
 };
 
-SoftwareSurface::SoftwareSurface(const std::string& filename)
+SoftwareSurface::SoftwareSurface(const Pathname& filename)
   : impl(new SoftwareSurfaceImpl())
 {
-  impl->surface = IMG_Load_RW(get_physfs_SDLRWops(filename), 1);
+  impl->surface = IMG_Load(filename.get_sys_path().c_str());
 
   if (!impl->surface)
     {

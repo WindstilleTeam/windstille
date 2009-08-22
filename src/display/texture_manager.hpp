@@ -24,6 +24,8 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 
+#include "util/pathname.hpp"
+
 class Texture;
 
 /**
@@ -48,10 +50,10 @@ public:
    * SurfaceManager for images with other dimensions.
    * Note: Texture is a refcounted class, store it with Ref<Texture>
    */
-  Texture get(const std::string& filename);
+  Texture get(const Pathname& filename);
 
 private:
-  typedef std::map<std::string, Texture> Textures;
+  typedef std::map<Pathname, Texture> Textures;
   Textures textures;
 };
 

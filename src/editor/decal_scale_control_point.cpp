@@ -21,7 +21,7 @@
 
 DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_, 
                                                bool x_scale_, bool y_scale_)
-  : ControlPoint(Surface("editor/scale_handle.png"), pos_),
+  : ControlPoint(Surface(Pathname("editor/scale_handle.png")), pos_),
     object(object_),
     ctrl_angle(ctrl_angle_),
     orig_scale(object_->get_scale()),

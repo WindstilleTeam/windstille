@@ -23,7 +23,7 @@
 ControlPointHandle
 ControlPoint::create(const Vector2f& pos)
 {
-  return ControlPointHandle(new ControlPoint(Surface("editor/handle.png"), pos));
+  return ControlPointHandle(new ControlPoint(Surface(Pathname("editor/handle.png")), pos));
 }
 
 ControlPoint::ControlPoint(const Surface& surface_, const Vector2f& pos_)

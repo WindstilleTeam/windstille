@@ -220,7 +220,7 @@ public:
 };
 
 Shockwave::Shockwave(FileReader& props)
-  : noise("images/noise3.png")
+  : noise(Pathname("images/noise3.png"))
 {
   props.get("pos", pos);
   

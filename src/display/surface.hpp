@@ -21,6 +21,8 @@
 
 #include <string>
 #include <boost/shared_ptr.hpp>
+
+#include "util/pathname.hpp"
 #include "math/rect.hpp"
 #include "math/size.hpp"
 #include "texture.hpp"
@@ -38,7 +40,7 @@ class Surface
 {
 public:
   Surface();
-  Surface(const std::string& filename);
+  explicit Surface(const Pathname& filename);
   
   /** 
    * Create a new Surface object from a Texture

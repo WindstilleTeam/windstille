@@ -19,12 +19,12 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SURFACE_MANAGER_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SURFACE_MANAGER_HPP
 
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <string>
 #include <vector>
 #include <map>
-#include <GL/glew.h>
-#include <GL/gl.h>
+
+#include "util/pathname.hpp"
 #include "texture.hpp"
 
 class Surface;
@@ -41,9 +41,9 @@ public:
   static SurfaceManager* current() { return current_; } 
 
 private:
-  std::auto_ptr<TexturePacker> texture_packer;
+  boost::scoped_ptr<TexturePacker> texture_packer;
   
-  typedef std::map<std::string, Surface> Surfaces;
+  typedef std::map<Pathname, Surface> Surfaces;
   Surfaces surfaces;
 
 public:
@@ -51,13 +51,13 @@ public:
   ~SurfaceManager();
 
   /** returns a surface containing the image specified with filename */
-  Surface get(const std::string& filename);
+  Surface get(const Pathname& filename);
 
   /**
    * Loads an image and splits it into several Surfaces sized width and height.
    * The created surfaces will be added to the surfaces vector.
    */
-  void load_grid(const std::string& filename,
+  void load_grid(const Pathname& filename,
                  std::vector<Surface>& surfaces, int width, int height);
 
   Texture create_texture(const SoftwareSurface& image,

@@ -60,7 +60,7 @@ SurfaceManager::~SurfaceManager()
 }
 
 Surface
-SurfaceManager::get(const std::string& filename)
+SurfaceManager::get(const Pathname& filename)
 {
   Surfaces::iterator i = surfaces.find(filename);
 
@@ -102,7 +102,7 @@ SurfaceManager::get(const std::string& filename)
 }
 
 void
-SurfaceManager::load_grid(const std::string& filename,
+SurfaceManager::load_grid(const Pathname& filename,
                           std::vector<Surface>& surfaces,
                           int width, int height)
 {

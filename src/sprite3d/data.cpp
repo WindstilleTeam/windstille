@@ -121,7 +121,7 @@ Data::Data(const Pathname& filename)
       mesh.triangle_count = read_uint16_t(file);
       mesh.vertex_count   = read_uint16_t(file);
 
-      mesh.texture = TextureManager::current()->get(texturename);
+      mesh.texture = TextureManager::current()->get(Pathname(texturename));
 
       // read triangles
       mesh.vertex_indices.reserve(mesh.triangle_count * 3);

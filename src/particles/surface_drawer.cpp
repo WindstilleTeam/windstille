@@ -61,7 +61,7 @@ SurfaceDrawer::SurfaceDrawer(FileReader& props)
   props.get("blendfunc-src", blendfunc_src_str);
   props.get("blendfunc-dst", blendfunc_dst_str);
     
-  surface = SurfaceManager::current()->get(surface_file);
+  surface = SurfaceManager::current()->get(Pathname(surface_file));
 
   blendfunc_src  = string2blendfunc(blendfunc_src_str);
   blendfunc_dest = string2blendfunc(blendfunc_dst_str);

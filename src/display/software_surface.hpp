@@ -23,6 +23,7 @@
 #include <boost/shared_ptr.hpp>
 #include <string>
 
+#include "util/pathname.hpp"
 #include "math/size.hpp"
 
 class Rect;
@@ -37,7 +38,7 @@ public:
   };
 
   SoftwareSurface() {}
-  SoftwareSurface(const std::string& filename);
+  explicit SoftwareSurface(const Pathname& filename);
   SoftwareSurface(int width, int height, Format format = RGBA);
   ~SoftwareSurface();
 
