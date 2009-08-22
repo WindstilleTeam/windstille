@@ -169,6 +169,24 @@ Pathname::get_sys_path() const
   }
 }
 
+std::string
+Pathname::get_extension() const
+{
+  for(int i = m_path.size()-1; i >= 0; --i)
+  {
+    if (m_path[i] == '.')
+    {
+      return m_path.substr(i+1);
+    }
+    else if (m_path[i] == '/')
+    {
+      return std::string();
+    }
+  }
+
+  return std::string();
+}
+
 bool
 Pathname::operator<(const Pathname& rhs) const
 {

@@ -111,6 +111,9 @@ public:
   /** Returns the type of this Pathname */
   PathType    get_type()    const { return m_type; }
 
+  /** Returns the files extension ('png', 'jpg', 'sprite', etc.) */
+  std::string get_extension() const;
+
   bool operator<(const Pathname& rhs) const;
 
 private:
