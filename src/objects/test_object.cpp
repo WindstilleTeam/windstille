@@ -33,7 +33,7 @@ TestObject::TestObject(FileReader& props)
   
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in TestObject");
-  sprite = Sprite3D(spritename);
+  sprite = Sprite3D(Pathname(spritename));
 }
 
 TestObject::~TestObject()
@@ -69,7 +69,7 @@ void
 TestObject::set_sprite(const std::string& filename)
 {
   try {
-    sprite = Sprite3D(filename);
+    sprite = Sprite3D(Pathname(filename));
   } catch(std::exception& e) {
     std::cerr << "Couldn't change sprite to '" << filename << "': " 
               << e.what() << "\n";
@@ -104,7 +104,7 @@ TestObject::attach(const std::string& spritename,
                    const std::string& attachement_point)
 {
   AttachedSprite asprite;
-  asprite.sprite = Sprite3D(spritename);
+  asprite.sprite = Sprite3D(Pathname(spritename));
   asprite.attachpoint = sprite.get_attachment_point_id(attachement_point);
   attached_sprites.push_back(asprite);
 }

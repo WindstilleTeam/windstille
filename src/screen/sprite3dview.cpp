@@ -31,7 +31,7 @@ Sprite3DView::Sprite3DView()
 {
   current_action = 0;
 
-  sprite = Sprite3D("models/characters/jane/jane.wsprite");
+  sprite = Sprite3D(Pathname("models/characters/jane/jane.wsprite"));
   actions = sprite.get_actions();
 
   sprite.set_action(actions[current_action]);
@@ -48,7 +48,7 @@ Sprite3DView::~Sprite3DView()
 void
 Sprite3DView::set_model(const std::string& filename)
 {
-  sprite  = Sprite3D(filename);
+  sprite  = Sprite3D(Pathname(filename));
   actions = sprite.get_actions();
 }
 

@@ -21,8 +21,10 @@
 
 #include <string>
 #include <vector>
-#include "getter.hpp"
 #include <boost/shared_ptr.hpp>
+
+#include "util/pathname.hpp"
+#include "util/getter.hpp"
 
 class FileReaderImpl;
 
@@ -31,6 +33,7 @@ class FileReaderImpl;
 class FileReader
 {
 public:
+  static FileReader parse(const Pathname& filename);
   static FileReader parse(const std::string& filename);
   static FileReader parse(std::istream& stream, const std::string& filename);
 

@@ -17,6 +17,7 @@
 */
 
 #include "sprite3d/manager.hpp"
+
 #include "sprite3d/data.hpp"
 #include "sprite3d/sprite3d.hpp"
 
@@ -37,7 +38,7 @@ Manager::~Manager()
 }
 
 Data*
-Manager::create_data(const std::string& filename)
+Manager::create_data(const Pathname& filename)
 {
   Datas::iterator i = datas.find(filename);
   if(i != datas.end())

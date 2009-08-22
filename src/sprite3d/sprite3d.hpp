@@ -47,7 +47,7 @@ public:
   typedef uint16_t PointID;
 
   Sprite3D();
-  Sprite3D(const std::string& filename);
+  Sprite3D(const Pathname& filename);
   ~Sprite3D();
 
   /**

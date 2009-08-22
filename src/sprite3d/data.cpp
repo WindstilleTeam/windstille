@@ -26,6 +26,7 @@
 #include <stdexcept>
 
 #include "util/util.hpp"
+#include "util/pathname.hpp"
 #include "app/globals.hpp"
 #include "display/texture_manager.hpp"
 #include "display/texture.hpp"
@@ -82,9 +83,9 @@ static inline std::string read_string(PHYSFS_file* file, size_t size)
   }
 }
 
-Data::Data(const std::string& filename)
+Data::Data(const Pathname& filename)
 {
-  PHYSFS_file* file = PHYSFS_openRead(filename.c_str());
+  PHYSFS_file* file = PHYSFS_openRead(filename.get_physfs_path().c_str());
   if(!file) {
     std::ostringstream msg;
     msg << "Couldn't open '" << filename << "': "
@@ -116,7 +117,7 @@ Data::Data(const std::string& filename)
       Mesh& mesh = *i;
 
       std::string texturename = read_string(file, 64);
-      texturename = dirname(filename) + basename(texturename);
+      texturename = dirname(filename.get_physfs_path()) + basename(texturename);
       mesh.triangle_count = read_uint16_t(file);
       mesh.vertex_count   = read_uint16_t(file);
 

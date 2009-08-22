@@ -22,6 +22,8 @@
 #include <string>
 #include <map>
 
+#include "util/pathname.hpp"
+
 namespace sprite3d {
 
 class Data;
@@ -37,10 +39,10 @@ public:
   Manager();
   ~Manager();
 
-  Data* create_data(const std::string& filename);
+  Data* create_data(const Pathname& filename);
     
 private:
-  typedef std::map<std::string, Data*> Datas;
+  typedef std::map<Pathname, Data*> Datas;
   Datas datas;
 };
 

@@ -28,6 +28,8 @@
 #include "math/vector3.hpp"
 #include "math/quaternion.hpp"
 
+class Pathname;
+
 namespace sprite3d
 {
 
@@ -45,7 +47,7 @@ struct Marker;
 class Data
 {
 public:
-  Data(const std::string& filename);
+  Data(const Pathname& filename);
   ~Data();
 
   const Action& get_action(const std::string& name) const;

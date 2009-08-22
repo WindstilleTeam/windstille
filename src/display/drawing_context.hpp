@@ -107,6 +107,7 @@ public:
 
   /** Return the area of the screen that will be visible*/
   Rectf get_clip_rect();
+
 private:
   DrawingContext (const DrawingContext&);
   DrawingContext& operator= (const DrawingContext&);

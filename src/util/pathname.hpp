@@ -103,11 +103,15 @@ public:
    */
   std::string get_sys_path() const;
 
+  std::string get_physfs_path() const;
+
   /** Returns the relative unprocessed path */
   std::string get_raw_path() const { return m_path; }
 
   /** Returns the type of this Pathname */
   PathType    get_type()    const { return m_type; }
+
+  bool operator<(const Pathname& rhs) const;
 
 private:
   std::string m_path;

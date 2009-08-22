@@ -23,7 +23,7 @@ Pistol::Pistol()
   : laser_pointer(0)
 {
   laser_pointer = new LaserPointer();
-  sprite = Sprite3D("models/objects/pistol/pistol.wsprite");
+  sprite = Sprite3D(Pathname("models/objects/pistol/pistol.wsprite"));
 }
 
 Pistol::~Pistol()

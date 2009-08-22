@@ -24,7 +24,7 @@ VRDummy::VRDummy(FileReader& props)
   props.get("name", name);
   props.get("pos",  pos);
     
-  sprite = Sprite3D("models/characters/vrdummy/vrdummy.wsprite");
+  sprite = Sprite3D(Pathname("models/characters/vrdummy/vrdummy.wsprite"));
   rotation = 0;
 
   highlight = Sprite("images/hedgehog_highlight.sprite");

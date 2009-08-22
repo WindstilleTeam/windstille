@@ -44,7 +44,7 @@ Character::Character(FileReader& props)
   props.get("sprite3d", sprite3d_filename);
   props.get("action", action_name);
   
-  sprite = Sprite3D(sprite3d_filename);
+  sprite = Sprite3D(Pathname(sprite3d_filename));
 
   if (!action_name.empty())
     sprite.set_action(action_name);

@@ -16,11 +16,21 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "file_reader.hpp"
+
+#include <fstream>
+
 #include "lisp/parser.hpp"
 #include "sexpr_file_reader.hpp"
-#include "file_reader.hpp"
 #include "file_reader_impl.hpp"
 
+FileReader
+FileReader::parse(const Pathname& filename)
+{
+  std::ifstream in(filename.get_sys_path().c_str());
+  return FileReader::parse(in, filename.get_sys_path());
+}
+
 FileReader
 FileReader::parse(std::istream& stream, const std::string& filename)
 {

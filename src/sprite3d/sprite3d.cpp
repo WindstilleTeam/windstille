@@ -42,7 +42,7 @@ Sprite3D::Sprite3D()
 {
 }
 
-Sprite3D::Sprite3D(const std::string& filename)
+Sprite3D::Sprite3D(const Pathname& filename)
   : data(sprite3d::Manager::current()->create_data(filename)),
     actions_switched(false)
 {

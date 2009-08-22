@@ -50,7 +50,7 @@ Player::Player ()
 {
   current_ = this;
 
-  sprite = Sprite3D("models/characters/jane/jane.wsprite");
+  sprite = Sprite3D(Pathname("models/characters/jane/jane.wsprite"));
   pos.x = 320;
   pos.y = 200;
   name = "player";
