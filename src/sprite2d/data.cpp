@@ -29,6 +29,7 @@
 #include "display/surface_manager.hpp"
 
 SpriteData::SpriteData(const Pathname& pathname)
+  : actions()
 {
   if (pathname.exists())
   {

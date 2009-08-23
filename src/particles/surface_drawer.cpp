@@ -24,9 +24,10 @@
 #include "surface_drawer.hpp"
 
 SurfaceDrawer::SurfaceDrawer(Surface surface_)
-  : surface(surface_)
+  : surface(surface_),
+    blendfunc_src(),
+    blendfunc_dest()
 {
-  
 }
 
 static GLenum string2blendfunc(const std::string& str)

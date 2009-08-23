@@ -84,6 +84,9 @@ static inline std::string read_string(PHYSFS_file* file, size_t size)
 }
 
 Data::Data(const Pathname& filename)
+  : meshs(),
+    attachment_points(),
+    actions()
 {
   PHYSFS_file* file = PHYSFS_openRead(filename.get_physfs_path().c_str());
   if(!file) {

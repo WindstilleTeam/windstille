@@ -34,21 +34,41 @@ extern std::vector<std::string> arg_files;
 #define DISPLAY_H 600
 
 Sprite2DView::Sprite2DView()
+  : sc(),
+    directory(),
+    shuffle_directory(),
+    mode(),
+    zoom(),
+    pos(),
+    width(),
+    height(),
+    aspect(),
+    index(),
+    sprite(),
+    new_sprite(),
+    fadein(),
+    scale(),
+    offset(),
+    display_time(),
+    show_thumbnail(),
+    ignore_delta(),
+    shuffle(),
+    auto_scroll()
 {
   auto_scroll = false;
   index = 0;
 
   for(std::vector<std::string>::iterator i = arg_files.begin(); i != arg_files.end(); ++i)
-    {
-      if (PHYSFS_isDirectory(i->c_str()))
-        { 
-          adddir(i->c_str());
-        }
-      else
-        {
-          directory.push_back(*i);
-        }
+  {
+    if (PHYSFS_isDirectory(i->c_str()))
+    { 
+      adddir(i->c_str());
     }
+    else
+    {
+      directory.push_back(*i);
+    }
+  }
   
   shuffle_directory = directory;
   shuffle = false;
@@ -73,7 +93,6 @@ Sprite2DView::Sprite2DView()
   next_image(0);
   sprite = new_sprite;
   new_sprite = Sprite();
-
 }
 
 void

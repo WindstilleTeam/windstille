@@ -164,7 +164,8 @@ public:
 
 DeformDrawer::DeformDrawer(FileReader& /*props*/)
   : framebuffer(GL_TEXTURE_RECTANGLE_ARB, 800, 600),
-    surface(Pathname("images/particles/deform2.png"))
+    surface(Pathname("images/particles/deform2.png")),
+    shader_program()
 {
   shader_program.attach(ShaderObject(GL_FRAGMENT_SHADER_ARB, "data/shader/particledeform.frag"));
   shader_program.link();

@@ -36,8 +36,11 @@
 #include "gui/automap.hpp"
 
 ParticleViewer::ParticleViewer()
+  : sc(),
+    systems(),
+    background(Pathname("images/greychess.sprite")),
+    pos()
 {
-  background = Sprite(Pathname("images/greychess.sprite"));
 }
 
 ParticleViewer::~ParticleViewer()

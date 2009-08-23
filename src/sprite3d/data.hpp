@@ -79,6 +79,15 @@ struct Mesh
   std::vector<uint16_t> vertex_indices;
   std::vector<float>    tex_coords;
   std::vector<float>    normals;
+
+  Mesh()
+    : texture(),
+      vertex_count(),
+      triangle_count(),
+      vertex_indices(),
+      tex_coords(),
+      normals()
+  {}
 };
 
 /** Position of an AttachmentPoint */
@@ -86,6 +95,11 @@ struct AttachmentPointPosition
 {
   Vector3    pos;  // x, y, z
   Quaternion quat; // w, x, y, z
+
+  AttachmentPointPosition()
+    : pos(),
+      quat()
+  {}
 };
 
 /**

@@ -36,7 +36,8 @@
 
 
 SurfaceManager::SurfaceManager()
-  : texture_packer(new TexturePacker(Size(2048, 2048)))
+  : texture_packer(new TexturePacker(Size(2048, 2048))),
+    surfaces()
 {
 }
 

@@ -37,10 +37,18 @@ private:
     Point parent;
 
     ComponentBox() 
-      : component(0), span(1, 1), parent(-1, -1) {}
+      : type(),
+        component(0), 
+        span(1, 1), 
+        parent(-1, -1) 
+    {}
 
     ComponentBox(Component* c, const Size& s, const Point& parent_ = Point(-1, -1))
-      : component(c), span(s), parent(parent_) {}
+      : type(),
+        component(c),
+        span(s),
+        parent(parent_) 
+    {}
 
     bool is_simple()  const { return (span.width == 1 && span.height == 1); }
     bool has_parent() const { return (parent.x != -1 || parent.y != -1); }

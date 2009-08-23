@@ -31,6 +31,11 @@ public:
   {
     std::string name;
     std::string value;
+
+    Attribute()
+      : name(),
+        value()
+    {}
   };
 
   struct Node

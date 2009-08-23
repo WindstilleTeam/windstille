@@ -33,8 +33,14 @@
 
 NavigationTest::NavigationTest()
   : cursor(400, 300),
+    stick(),
     player(200,200),
-    graph(new NavigationGraph())
+    old_player(),
+    graph(new NavigationGraph()),
+    connection(),
+    selected_edge(),
+    selected_node(),
+    node_to_connect()
 {
   try 
   {
@@ -54,7 +60,6 @@ NavigationTest::NavigationTest()
   graph->add_edge(node1, node2);
   //graph->add_edge(node2, node3);
   //graph->add_edge(node3, node4);
-  
 }
 
 void

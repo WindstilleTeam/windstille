@@ -25,9 +25,9 @@
 #include "spark_drawer.hpp"
 
 SparkDrawer::SparkDrawer(FileReader& props)
+  : color(1.0f, 1.0f, 1.0f),
+    width(1.0f)    
 {
-  width = 1.0f;
-  color = Color(1.0f, 1.0f, 1.0f);
   props.get("color", color);
   props.get("width", width);
 }

@@ -28,6 +28,12 @@
 #include "sprite3dview.hpp"
 
 Sprite3DView::Sprite3DView()
+  : sc(),
+    sprite(),
+    actions(),
+    current_action(),
+    rotation(),
+    scale()
 {
   current_action = 0;
 

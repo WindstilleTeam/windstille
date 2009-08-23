@@ -27,14 +27,15 @@
 class GeometryTest : public Screen
 {
 private:
+  Line line1;
+  Line line2;
+
   Vector2f cursor;
   Vector2f cursor2;
   Vector2f collision_point;
 
   int point_count;
 
-  Line line1;
-  Line line2;
   bool had_prev_collision;
 
 public:

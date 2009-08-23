@@ -20,7 +20,8 @@
 #include "node.hpp"
 
 Node::Node(const Vector2f& pos_)
-  : pos(pos_)
+  : pos(pos_),
+    edges()
     // FIXME: Do something with id
 {
 }

@@ -64,6 +64,10 @@ public:
       scroll_offset(),
       max_scroll_offset()
   {}
+
+private:
+  TextAreaImpl(const TextAreaImpl&);
+  TextAreaImpl& operator=(const TextAreaImpl&);
 };
 
 TextArea::TextArea(const Rectf& rect, bool letter_by_letter)

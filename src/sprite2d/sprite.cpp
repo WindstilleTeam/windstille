@@ -30,10 +30,34 @@
 #include "util/util.hpp"
 
 Sprite::Sprite()
-{  
+  : data(),
+    current_action(0),
+    frame(0),
+    speed(0),
+    alpha(0),
+    pingpong(),
+    reverse(),
+    vflip(),
+    blend_sfactor(),
+    blend_dfactor(),
+    scale(),
+    color()
+{
 }
 
 Sprite::Sprite(const Pathname& filename)
+  : data(),
+    current_action(0),
+    frame(0),
+    speed(0),
+    alpha(0),
+    pingpong(),
+    reverse(),
+    vflip(),
+    blend_sfactor(),
+    blend_dfactor(),
+    scale(),
+    color()
 {
   data = SpriteManager::current()->create_data(filename);
 
@@ -51,7 +75,18 @@ Sprite::Sprite(const Pathname& filename)
 }
 
 Sprite::Sprite(const SpriteDataPtr data)
-  : data(data)
+  : data(data),
+    current_action(0),
+    frame(0),
+    speed(0),
+    alpha(0),
+    pingpong(),
+    reverse(),
+    vflip(),
+    blend_sfactor(),
+    blend_dfactor(),
+    scale(),
+    color()
 {
   current_action = data->actions[0];
   vflip = false;

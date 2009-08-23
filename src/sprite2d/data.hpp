@@ -38,6 +38,15 @@ struct SpriteAction
   Vector2f    offset;
   float       scale;
   Surfaces    surfaces;
+
+public: 
+  SpriteAction()
+    : name(),
+      speed(),
+      offset(),
+      scale(),
+      surfaces()
+  {}
 };
 
 class SpriteData

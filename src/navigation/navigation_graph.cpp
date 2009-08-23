@@ -32,8 +32,9 @@
 #include "navigation_graph.hpp"
 
 NavigationGraph::NavigationGraph()
-{
-  
+  : nodes(),
+    edges()
+{  
 }
 
 NavigationGraph::~NavigationGraph()

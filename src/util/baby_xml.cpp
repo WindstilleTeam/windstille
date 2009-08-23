@@ -259,9 +259,14 @@ public:
         column_no += 1;
       }
   }
+
+private:
+  BabyXMLReader (const BabyXMLReader&);
+  BabyXMLReader& operator= (const BabyXMLReader&);
 };
 
 BabyXML::BabyXML(const std::string& text)
+  : nodes()
 {
   BabyXMLReader(text, this);
 }

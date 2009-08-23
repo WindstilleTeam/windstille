@@ -29,18 +29,16 @@
 #include "display/display.hpp"
 
 GeometryTest::GeometryTest()
+  : line1(Vector2f(300, 300),
+          Vector2f(500, 300)),
+    line2(Vector2f(400, 200),
+          Vector2f(400, 400)),
+    cursor(line1.p1),
+    cursor2(line1.p2),
+    collision_point(),
+    point_count(0),
+    had_prev_collision(true)
 {
-  point_count = 0;
-  had_prev_collision = true;
-
-  line1 = Line(Vector2f(300, 300),
-               Vector2f(500, 300));
-
-  line2 = Line(Vector2f(400, 200),
-               Vector2f(400, 400));
-
-  cursor  = line1.p1;
-  cursor2 = line1.p2;
 }
 
 void

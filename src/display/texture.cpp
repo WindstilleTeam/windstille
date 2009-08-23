@@ -39,6 +39,10 @@ public:
   int    height;
 
   TextureImpl()
+    : target(0),
+      handle(0),
+      width(0),
+      height(0)
   {
     glGenTextures(1, &handle);
     assert_gl("creating texture handle."); 
@@ -51,10 +55,12 @@ public:
 };
 
 Texture::Texture()
+  : impl()
 {
 }
 
 Texture::Texture(const Pathname& filename)
+  : impl()
 {
   *this = TextureManager::current()->get(filename);
 }

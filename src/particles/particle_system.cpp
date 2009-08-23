@@ -29,37 +29,28 @@
 #include "randomizer.hpp"
 
 ParticleSystem::ParticleSystem(FileReader& props)
- : randomizer(new PointRandomizer())
+  : particles(),
+    life_time(1.0f),
+    randomizer(new PointRandomizer()),
+    drawer(),
+    spawn_x(0),
+    spawn_y(0),
+    x_pos(320.0f),
+    y_pos(240.0f),
+    z_pos(0),
+    gravity_x(0.0f),
+    gravity_y(-10.0f),
+    cone_start(0),
+    cone_stop(2.0f * math::pi),
+    bunching(1.0f),
+    layer(SceneContext::COLORMAP),
+    size_start(1.0f),
+    size_stop(1.0f),
+    speed_start(100.0),
+    speed_stop(200.0f),
+    color_start(1.0f, 1.0f, 1.0f, 1.0f),
+    color_stop(   0,    0,    0,    0)
 {
-  // Init some defaults
-  x_pos      = 320.0f;
-  y_pos      = 240.0f;
-  z_pos      = 0;
-
-  spawn_x    = 0;
-  spawn_y    = 0;
-
-  life_time  = 1.0f;
-
-  bunching = 1.0f;
-
-  gravity_x = 0.0f;
-  gravity_y = -10.0f;
-
-  cone_start = 0;
-  cone_stop  = 2*M_PI;
-
-  size_start = 1.0f;
-  size_stop  = 1.0f;
-
-  speed_start = 100.0;
-  speed_stop  = 200.0f;
-
-  color_start = Color(1.0f, 1.0f, 1.0f, 1.0f);
-  color_stop  = Color(   0,    0,    0,    0);
-
-  layer = SceneContext::COLORMAP;
-
   float p_bunching = 1.0; 
   props.get("bunching", p_bunching);
   set_bunching(p_bunching);
@@ -210,30 +201,27 @@ ParticleSystem::ParticleSystem(FileReader& props)
 }
 
 ParticleSystem::ParticleSystem()
- : randomizer(new PointRandomizer)
+  : life_time(1.0f),
+    randomizer(new PointRandomizer()),
+    drawer(),
+    spawn_x(0),
+    spawn_y(0),
+    x_pos(320.0f),
+    y_pos(240.0f),
+    z_pos(0),
+    gravity_x(0.0f),
+    gravity_y(-10.0f),
+    cone_start(0),
+    cone_stop(2.0f * math::pi),
+    bunching(1.0f),
+    layer(SceneContext::COLORMAP),
+    size_start(1.0f),
+    size_stop(1.0f),
+    speed_start(100.0),
+    speed_stop(200.0f),
+    color_start(1.0f, 1.0f, 1.0f, 1.0f),
+    color_stop(   0,    0,    0,    0)
 {
-  x_pos      = 320.0f;
-  y_pos      = 240.0f;
-  z_pos      = 0;
-  life_time  = 1.0f;
-
-  bunching = 1.0f;
-
-  gravity_x = 0.0f;
-  gravity_y = -10.0f;
-
-  cone_start = 0;
-  cone_stop  = 2*M_PI;
-
-  size_start = 1.0f;
-  size_stop  = 1.0f;
-
-  speed_start = 100.0;
-  speed_stop  = 200.0f;
-
-  color_start = Color(1.0f, 1.0f, 1.0f, 1.0f);
-  color_stop  = Color(  0,   0,   0,   0);
-
   set_count(70);
 }
 
