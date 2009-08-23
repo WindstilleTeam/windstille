@@ -21,7 +21,7 @@ start_time = time.time()
 
 CacheDir('cache')
 
-debug_cxxflags = ["-O0", "-g", "-Wall", "-ansi", "-pedantic", "-Wnon-virtual-dtor", "-Werror"] # "-Wconversion",
+debug_cxxflags = ["-O0", "-g", "-W", "-Wall", "-ansi", "-pedantic", "-Wnon-virtual-dtor", "-Werror"] # "-Wconversion",
 
 # YACC
 yacc_test_text = """

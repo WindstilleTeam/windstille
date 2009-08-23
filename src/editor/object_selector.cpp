@@ -304,9 +304,9 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 }
 
 void
-ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context, 
+ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& /*context*/,
                                  Gtk::SelectionData& selection_data, 
-                                 guint info, guint time)
+                                 guint /*info*/, guint /*time*/)
 {
   //std::cout << "ObjectSelector: on_drag_data_get" << std::endl;
 

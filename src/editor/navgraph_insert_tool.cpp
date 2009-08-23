@@ -134,7 +134,7 @@ NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 }
 
 void
-NavgraphInsertTool::mouse_right_down(GdkEventButton* event, WindstilleWidget& wst)
+NavgraphInsertTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget& wst)
 {
   NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
 

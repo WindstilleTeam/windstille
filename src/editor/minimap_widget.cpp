@@ -25,31 +25,31 @@ MinimapWidget::MinimapWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig
 }
 
 bool
-MinimapWidget::mouse_move(GdkEventMotion* event)
+MinimapWidget::mouse_move(GdkEventMotion* /*event*/)
 {
   return false;
 }
 
 bool
-MinimapWidget::mouse_down (GdkEventButton* event)
+MinimapWidget::mouse_down (GdkEventButton* /*event*/)
 {
   return false;
 }
 
 bool
-MinimapWidget::mouse_up(GdkEventButton* event)
+MinimapWidget::mouse_up(GdkEventButton* /*event*/)
 {
   return false;
 }
 
 bool
-MinimapWidget::scroll(GdkEventScroll* event)
+MinimapWidget::scroll(GdkEventScroll* /*event*/)
 {
   return false;
 }
 
 bool
-MinimapWidget::on_expose_event(GdkEventExpose* event)
+MinimapWidget::on_expose_event(GdkEventExpose* /*event*/)
 {
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 

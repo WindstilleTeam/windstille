@@ -786,7 +786,7 @@ EditorWindow::get_draw_navgraph() const
 }
 
 void
-EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
+EditorWindow::on_switch_page(GtkNotebookPage* /*page*/, guint /*page_num*/)
 {
   //std::cout << "on_switch_page(" << page << ", " << page_num << ")" << std::endl;
 

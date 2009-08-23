@@ -34,9 +34,9 @@ public:
   virtual void mouse_up(GdkEventButton* event, WindstilleWidget& wst) = 0;
   virtual void mouse_move(GdkEventMotion* event, WindstilleWidget& wst) = 0;
 
-  virtual void mouse_right_down(GdkEventButton* event, WindstilleWidget& wst) {}
+  virtual void mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget& /*wst*/) {}
 
-  virtual void draw(SceneContext& sc) {}
+  virtual void draw(SceneContext& /*sc*/) {}
 
 private:
   Tool(const Tool&);

@@ -156,7 +156,7 @@ LayerManager::on_columns_changed()
 }
 
 void
-LayerManager::on_auto_lock(Glib::RefPtr<Gtk::ToggleAction> auto_lock)
+LayerManager::on_auto_lock(Glib::RefPtr<Gtk::ToggleAction> /*auto_lock*/)
 {
   on_cursor_changed();
 }

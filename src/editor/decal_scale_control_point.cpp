@@ -30,12 +30,12 @@ DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float 
 {}
 
 void
-DecalScaleControlPoint::on_move_start(GdkEventButton* event)
+DecalScaleControlPoint::on_move_start(GdkEventButton* /*event*/)
 { 
 }
 
 void
-DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& offset_) 
+DecalScaleControlPoint::on_move_update(GdkEventMotion* /*event*/, const Vector2f& offset_) 
 {
   offset = offset_; 
 
@@ -63,7 +63,7 @@ DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& of
 }
   
 void
-DecalScaleControlPoint::on_move_end(GdkEventButton* event, const Vector2f& offset_)
+DecalScaleControlPoint::on_move_end(GdkEventButton* /*event*/, const Vector2f& offset_)
 {
   on_move_update(0/*event*/, offset_);
 }

@@ -55,7 +55,7 @@ ParticleSystemObjectModel::clone() const
 }
 
 void
-ParticleSystemObjectModel::write(FileWriter& writer) const
+ParticleSystemObjectModel::write(FileWriter& /*writer*/) const
 {
 }
 

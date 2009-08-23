@@ -49,7 +49,7 @@ ZoomTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 }
 
 void
-ZoomTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
+ZoomTool::mouse_up(GdkEventButton* /*event*/, WindstilleWidget& wst)
 {
   if (mode == RECT_MODE)
     {
@@ -64,7 +64,7 @@ ZoomTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 }
 
 void
-ZoomTool::mouse_right_down(GdkEventButton* event, WindstilleWidget& wst)
+ZoomTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget& wst)
 {
   wst.on_zoom_out();
 }

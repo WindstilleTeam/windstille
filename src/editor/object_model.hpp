@@ -83,14 +83,14 @@ public:
   virtual void draw_select(SceneContext& sc, bool highlight);
 
   virtual void draw(SceneContext& sc);
-  virtual void update(float delta) {}
+  virtual void update(float /*delta*/) {}
   virtual Rectf get_bounding_box() const = 0;
   virtual ObjectModelHandle clone() const =0;
 
   virtual void write(FileWriter& writer) const =0;
   virtual FileWriter& write_member(FileWriter& writer) const;
 
-  virtual void add_control_points(std::vector<ControlPointHandle>& control_points) {}
+  virtual void add_control_points(std::vector<ControlPointHandle>& /*control_points*/) {}
 };
 
 #endif

@@ -184,7 +184,7 @@ WindstilleWidget::on_realize()
 }
 
 bool
-WindstilleWidget::on_configure_event(GdkEventConfigure* event)
+WindstilleWidget::on_configure_event(GdkEventConfigure* /*event*/)
 {
   state.set_size(get_width(), get_height());
   Display::aspect_size.width  = get_width();
@@ -215,7 +215,7 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* event)
 }
 
 bool
-WindstilleWidget::on_expose_event(GdkEventExpose* event)
+WindstilleWidget::on_expose_event(GdkEventExpose* /*event*/)
 {
   //std::cout << "WindstilleWidget::on_expose()" << std::endl;
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
@@ -707,23 +707,23 @@ WindstilleWidget::key_press(GdkEventKey* event)
 }
 
 bool
-WindstilleWidget::key_release(GdkEventKey* event)
+WindstilleWidget::key_release(GdkEventKey* /*event*/)
 { // /usr/include/gtk-2.0/gdk/gdkkeysyms.h
   //std::cout << "KeyRelease: " << (int)event->keyval << std::endl;
   return true;
 }
 
 bool
-WindstilleWidget::on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time)
+WindstilleWidget::on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& /*context*/, int /*x*/, int /*y*/, guint /*time*/)
 {
   //std::cout << "WindstilleWidget: on_drag_drop: " << x << ", " << y << ": " << std::endl;
   return true;
 }
 
 void
-WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context,
+WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*context*/,
                                         int x, int y, const Gtk::SelectionData& data,
-                                        guint info, guint time)
+                                        guint /*info*/, guint /*time*/)
 {
   //std::cout << "WindstilleWidget: on_drag_data_received: "
   //          << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
@@ -756,7 +756,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& co
 }
 
 void
-WindstilleWidget::on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context)
+WindstilleWidget::on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& /*context*/)
 {
   //std::cout << "WindstilleWidget: on_drag_finish()" << std::endl;
 }

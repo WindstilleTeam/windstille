@@ -214,7 +214,7 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 }
 
 void
-SelectTool::mouse_right_down(GdkEventButton* event, WindstilleWidget& wst)
+SelectTool::mouse_right_down(GdkEventButton* event, WindstilleWidget& /*wst*/)
 {
   Gtk::Menu* menu = static_cast<Gtk::Menu*>(EditorWindow::current()->get_ui_manager()->get_widget("/PopupMenu"));
   menu->popup(event->button, event->time);
