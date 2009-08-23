@@ -31,10 +31,10 @@
 ArmatureTest::ArmatureTest()
 {
   FileReader model_reader = FileReader::parse("armature/mesh.mesh");
-  model = std::auto_ptr<Model>(new Model(model_reader, "armature/"));
+  model.reset(new Model(model_reader, "armature/"));
 
   FileReader armature_reader = FileReader::parse("armature/armature.arm");
-  armature = std::auto_ptr<Armature>(new Armature(armature_reader));
+  armature.reset(new Armature(armature_reader));
 
   std::vector<std::string> file_lst;
   {

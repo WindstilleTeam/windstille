@@ -31,8 +31,8 @@
 namespace gui {
 
 GUIManager::GUIManager()
+ : root(new RootComponent(Rectf(0,0,800,600)))
 {
-  root = std::auto_ptr<RootComponent>(new RootComponent(Rectf(0,0,800,600)));
 }
 
 GUIManager::~GUIManager()

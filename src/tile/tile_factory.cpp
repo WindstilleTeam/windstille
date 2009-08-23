@@ -21,7 +21,7 @@
 #include <assert.h>
 #include <sstream>
 #include <iostream>
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 
 #include "app/globals.hpp"
 #include "tile.hpp"

@@ -19,7 +19,7 @@
 
 #include <iostream>
 #include <sstream>
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <stdio.h>
 #include <iostream>
 

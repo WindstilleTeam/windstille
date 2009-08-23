@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_GUI_GUI_MANAGER_HPP
 #define HEADER_WINDSTILLE_GUI_GUI_MANAGER_HPP
 
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include "screen/screen.hpp"
 
 namespace gui {
@@ -30,7 +30,7 @@ class RootComponent;
 class GUIManager : public Screen
 {
 private:
-  std::auto_ptr<RootComponent> root;
+  boost::scoped_ptr<RootComponent> root;
 
 public:
   GUIManager();

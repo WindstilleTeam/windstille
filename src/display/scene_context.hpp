@@ -19,8 +19,9 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SCENE_CONTEXT_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SCENE_CONTEXT_HPP
 
-#include <memory>
-#include "drawing_context.hpp"
+#include <boost/scoped_ptr.hpp>
+
+#include "display/drawing_context.hpp"
 
 class SceneContextImpl;
 
@@ -102,7 +103,7 @@ public:
   void eval(DrawingRequest* request);
 
 private:
-  std::auto_ptr<SceneContextImpl> impl;
+  boost::scoped_ptr<SceneContextImpl> impl;
 
   SceneContext (const SceneContext&);
   SceneContext& operator= (const SceneContext&);

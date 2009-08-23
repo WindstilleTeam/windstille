@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 #define HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <GL/glew.h>
 #include <GL/gl.h>
 
@@ -56,15 +56,15 @@ class WindstilleWidget
 private:
   EditorWindow& editor;
 
-  std::auto_ptr<UndoManager> undo_manager;
+  boost::scoped_ptr<UndoManager> undo_manager;
 
   std::string filename;
-  std::auto_ptr<SectorModel> sector_model;
+  boost::scoped_ptr<SectorModel> sector_model;
   std::vector<ControlPointHandle> control_points;
 
   GraphicContextState   state;
-  std::auto_ptr<SceneContext> sc;
-  std::auto_ptr<ScrollTool> scroll_tool;
+  boost::scoped_ptr<SceneContext> sc;
+  boost::scoped_ptr<ScrollTool> scroll_tool;
   SelectionHandle selection;
   DecalObjectModel::MapType map_type;
   Texture background_pattern;

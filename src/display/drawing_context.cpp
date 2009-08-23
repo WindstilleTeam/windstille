@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <boost/scoped_ptr.hpp>
 #include <assert.h>
 #include <iostream>
 #include <iosfwd>
@@ -542,13 +543,13 @@ DrawingContext::fill_rect(const Rectf& rect, const Color& color, float z_pos)
   array->vertex(rect.left, rect.top);
 
   array->color(color);
-  array->vertex(rect.right, rect.top);  
+  array->vertex(rect.right, rect.top);
 
   array->color(color);
-  array->vertex(rect.right, rect.bottom);  
+  array->vertex(rect.right, rect.bottom);
 
   array->color(color);
-  array->vertex(rect.left, rect.bottom);  
+  array->vertex(rect.left, rect.bottom);
 
   draw(array);
 }

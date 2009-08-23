@@ -19,10 +19,10 @@
 #ifndef HEADER_WINDSTILLE_ENGINE_SECTOR_HPP
 #define HEADER_WINDSTILLE_ENGINE_SECTOR_HPP
 
-#include <memory>
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 
 #include "util/pathname.hpp"
 #include "display/color.hpp"
@@ -66,8 +66,8 @@ private:
   TileMap* interactive_tilemap;
   TileMap* interactivebackground_tilemap;
 
-  std::auto_ptr<CollisionEngine> collision_engine;
-  std::auto_ptr<NavigationGraph> navigation_graph;
+  boost::scoped_ptr<CollisionEngine> collision_engine;
+  boost::scoped_ptr<NavigationGraph> navigation_graph;
 
   Player* player;
 

@@ -74,7 +74,7 @@ Player::Player ()
   z_pos = 100.0f;
 
   contact = 0;
-  weapon = std::auto_ptr<Weapon>(new Pistol());
+  weapon.reset(new Pistol());
   laser_pointer = ((Pistol*)weapon.get())->laser_pointer;
 }
 

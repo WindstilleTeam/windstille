@@ -20,7 +20,7 @@
 
 #include <stdio.h>
 #include <boost/format.hpp>
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <iostream>
 
 #include "app/windstille.hpp"

@@ -17,7 +17,7 @@
 */
 
 #include <iostream>
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include "input/input_manager.hpp"
 #include "display/display.hpp"
 #include "display/text_area.hpp"

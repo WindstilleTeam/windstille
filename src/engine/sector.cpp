@@ -55,15 +55,14 @@ Sector* Sector::current_ = 0;
 
 Sector::Sector(const Pathname& arg_filename)
   : filename(arg_filename),
-    player(0)    
+    collision_engine(new CollisionEngine()),
+    navigation_graph(new NavigationGraph()),
+    player(0)
 { 
   current_ = this;
 
   if (debug) std::cout << "Creating new Sector" << std::endl;
-
-  collision_engine = std::auto_ptr<CollisionEngine>(new CollisionEngine());
-  navigation_graph = std::auto_ptr<NavigationGraph>(new NavigationGraph());
-
+  
   interactive_tilemap = 0;
   interactivebackground_tilemap = 0;
 

@@ -67,7 +67,7 @@ void
 GroupComponent::pack(Component* component)
 {
   assert(child.get() == 0);
-  child = std::auto_ptr<Component>(component);
+  child.reset(component);
 
   child->set_screen_rect(get_child_rect());
   child->set_active(true);

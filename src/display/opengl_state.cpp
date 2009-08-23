@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "opengl_state.hpp"
+#include "display/opengl_state.hpp"
 
 #include <assert.h>
 #include <map>

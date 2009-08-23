@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <boost/bind.hpp>
 
 #include "config.hpp"

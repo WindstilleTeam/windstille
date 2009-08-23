@@ -21,7 +21,7 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 
 class Framebuffer;
 class Texture;
@@ -103,7 +103,7 @@ public:
    */
   void verify();
 private:
-  std::auto_ptr<OpenGLStateImpl> impl;
+  boost::scoped_ptr<OpenGLStateImpl> impl;
 
   OpenGLState (const OpenGLState&);
   OpenGLState& operator= (const OpenGLState&);

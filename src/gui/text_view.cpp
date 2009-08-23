@@ -16,9 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "gui/text_view.hpp"
+
 #include <iostream>
+
 #include "input/controller.hpp"
-#include "text_view.hpp"
 
 namespace gui {
 

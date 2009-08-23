@@ -21,7 +21,7 @@
 #include <assert.h>
 #include <stdexcept>
 #include <sstream>
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 
 #include "input_manager_sdl.hpp"
 #include "input_manager_impl.hpp"

@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_GUI_GROUP_COMPONENT_HPP
 #define HEADER_WINDSTILLE_GUI_GROUP_COMPONENT_HPP
 
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <string>
 #include "component.hpp"
 
@@ -30,7 +30,7 @@ class GroupComponent : public Component
 {
 private:
   std::string title;
-  std::auto_ptr<Component> child;
+  boost::scoped_ptr<Component> child;
 
 public:
   GroupComponent(const Rectf& rect, const std::string& title_, Component* parent);

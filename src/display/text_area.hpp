@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_TEXT_AREA_HPP
 #define HEADER_WINDSTILLE_DISPLAY_TEXT_AREA_HPP
 
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <string>
 #include "math/rect.hpp"
 
@@ -65,7 +65,7 @@ public:
   void  set_scroll_offset(float s);
 
 private:
-  std::auto_ptr<TextAreaImpl> impl;
+  boost::scoped_ptr<TextAreaImpl> impl;
 };
 
 #endif

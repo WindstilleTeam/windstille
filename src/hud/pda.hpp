@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_HUD_PDA_HPP
 #define HEADER_WINDSTILLE_HUD_PDA_HPP
 
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include "sprite2d/sprite.hpp"
 #include "screen/screen.hpp"
 
@@ -51,8 +51,8 @@ private:
   Vector2f  pos;
   Sprite    background;
 
-  std::auto_ptr<TextArea>  ui_area;
-  std::auto_ptr<TextArea>  text_area;
+  boost::scoped_ptr<TextArea>  ui_area;
+  boost::scoped_ptr<TextArea>  text_area;
 
   std::vector<DialogEntry> dialogs;
   std::vector<ObjectiveEntry> objectives;   

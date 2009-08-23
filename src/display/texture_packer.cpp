@@ -18,7 +18,7 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 
 #include "math/point.hpp"
 #include "display/software_surface.hpp"

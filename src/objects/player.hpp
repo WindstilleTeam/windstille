@@ -19,15 +19,14 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_PLAYER_HPP
 #define HEADER_WINDSTILLE_OBJECTS_PLAYER_HPP
 
-#include <memory>
-#include "sprite2d/sprite.hpp"
-#include "input/controller.hpp"
-#include "sprite3d/sprite3d.hpp"
-#include "sound/sound_source.hpp"
-#include "math/vector2f.hpp"
 #include "app/globals.hpp"
-#include "engine/entity.hpp"
 #include "display/surface.hpp"
+#include "engine/entity.hpp"
+#include "input/controller.hpp"
+#include "math/vector2f.hpp"
+#include "sound/sound_source.hpp"
+#include "sprite2d/sprite.hpp"
+#include "sprite3d/sprite3d.hpp"
 
 class Controller;
 class Contact;
@@ -38,7 +37,7 @@ class Player : public Entity
 {
 private:
   Sprite3D sprite;
-  std::auto_ptr<SoundSource> sound_source;
+  //std::auto_ptr<SoundSource> sound_source;
 
   bool jumping;
   bool bomb_placed;
@@ -49,7 +48,7 @@ private:
 
   LaserPointer* laser_pointer;
   Contact* contact;
-  std::auto_ptr<Weapon> weapon;
+  boost::scoped_ptr<Weapon> weapon;
 
 public:
   enum State

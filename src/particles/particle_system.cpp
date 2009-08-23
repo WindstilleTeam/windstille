@@ -29,10 +29,9 @@
 #include "randomizer.hpp"
 
 ParticleSystem::ParticleSystem(FileReader& props)
+ : randomizer(new PointRandomizer())
 {
   // Init some defaults
-  randomizer = std::auto_ptr<Randomizer>(new PointRandomizer());
-
   x_pos      = 320.0f;
   y_pos      = 240.0f;
   z_pos      = 0;
@@ -211,9 +210,8 @@ ParticleSystem::ParticleSystem(FileReader& props)
 }
 
 ParticleSystem::ParticleSystem()
+ : randomizer(new PointRandomizer)
 {
-  randomizer = std::auto_ptr<Randomizer>(new PointRandomizer);
-
   x_pos      = 320.0f;
   y_pos      = 240.0f;
   z_pos      = 0;
@@ -246,7 +244,7 @@ ParticleSystem::~ParticleSystem()
 void
 ParticleSystem::set_drawer(Drawer* drawer_)
 {
-  drawer = std::auto_ptr<Drawer>(drawer_);
+  drawer.reset(drawer_);
 }
   
 void
@@ -356,26 +354,26 @@ ParticleSystem::set_spawn_point(float x, float y)
 void
 ParticleSystem::set_point_distribution()
 {
-  randomizer = std::auto_ptr<Randomizer>(new PointRandomizer());
+  randomizer.reset(new PointRandomizer());
 }
 
 void
 ParticleSystem::set_line_distribution(float x1, float y1,
                                       float x2, float y2)
 {
-  randomizer = std::auto_ptr<Randomizer>(new LineRandomizer(x1, y1, x2, y2));
+  randomizer.reset(new LineRandomizer(x1, y1, x2, y2));
 }
 
 void
 ParticleSystem::set_circle_distribution(float radius)
 {
-  randomizer = std::auto_ptr<Randomizer>(new CircleRandomizer(radius));
+  randomizer.reset(new CircleRandomizer(radius));
 }
 
 void
 ParticleSystem::set_rect_distribution(const Rectf& rect)
 {
-  randomizer = std::auto_ptr<Randomizer>(new RectRandomizer(rect));
+  randomizer.reset(new RectRandomizer(rect));
 }
 
 void

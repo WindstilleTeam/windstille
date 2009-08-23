@@ -28,7 +28,7 @@ IFileStreambuf::IFileStreambuf(const std::string& filename)
     file = PHYSFS_openRead(filename.c_str());
     if(file == 0) {
         std::stringstream msg;
-        msg << "Couldn't open file '" << filename << "': "
+        msg << "IFileStreambuf: Couldn't open file '" << filename << "': "
             << PHYSFS_getLastError();
         throw std::runtime_error(msg.str());
     }
@@ -105,7 +105,7 @@ OFileStreambuf::OFileStreambuf(const std::string& filename)
     file = PHYSFS_openWrite(filename.c_str());
     if(file == 0) {
         std::stringstream msg;
-        msg << "Couldn't open file '" << filename << "': "
+        msg << "OFileStreambuf: Couldn't open file '" << filename << "': "
             << PHYSFS_getLastError();
         throw std::runtime_error(msg.str());
     }

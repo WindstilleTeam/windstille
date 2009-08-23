@@ -21,7 +21,7 @@
 
 #include <physfs.h>
 #include <iostream>
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <sstream>
 #include <stdexcept>
 #include "util/util.hpp"

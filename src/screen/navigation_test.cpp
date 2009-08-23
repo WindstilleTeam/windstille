@@ -36,10 +36,13 @@ NavigationTest::NavigationTest()
     player(200,200),
     graph(new NavigationGraph())
 {
-  try {
+  try 
+  {
     FileReader reader = FileReader::parse("navigation.nav");
     graph->load(reader);
-  } catch(std::exception& err) {
+  }
+  catch(std::exception& err) 
+  {
     std::cout << "NavigationTest: " << err.what() << std::endl;
   }
 

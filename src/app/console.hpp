@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_APP_CONSOLE_HPP
 #define HEADER_WINDSTILLE_APP_CONSOLE_HPP
 
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <vector>
 #include <sstream>
 
@@ -49,7 +49,7 @@ private:
   Console (const Console&);
   Console& operator= (const Console&);
 
-  std::auto_ptr<ConsoleImpl> impl;
+  boost::scoped_ptr<ConsoleImpl> impl;
 };
 
 extern Console console;

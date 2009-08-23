@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_SECTOR_MODEL_HPP
 
 #include <set>
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <gtkmm/liststore.h>
 #include <gdkmm/pixbuf.h>
 #include <vector>
@@ -67,7 +67,7 @@ private:
 class SectorModel
 {
 private:
-  std::auto_ptr<NavigationGraph> nav_graph;
+  boost::scoped_ptr<NavigationGraph> nav_graph;
   Glib::RefPtr<Gtk::ListStore>   layer_tree;
   Color ambient_color;
   

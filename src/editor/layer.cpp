@@ -16,8 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "sector_model.hpp"
-#include "layer.hpp"
+#include "editor/layer.hpp"
+
+#include "editor/sector_model.hpp"
 
 Layer::Layer()
   : visible(true),

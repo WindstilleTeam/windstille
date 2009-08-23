@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_PARTICLE_VIEWER_HPP
 #define HEADER_WINDSTILLE_SCREEN_PARTICLE_VIEWER_HPP
 
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include "screen.hpp"
 #include "sprite2d/sprite.hpp"
