@@ -23,15 +23,11 @@
 #include "font/fonts.hpp"
 #include "util/pathname.hpp"
 
-Fonts* Fonts::s_current = 0;
-
 Fonts::Fonts()
   : ttffont(new TTFFont(Pathname("fonts/VeraMono.ttf"), 14, BorderFontEffect(1, true))),
     vera12(new TTFFont(Pathname("fonts/Vera.ttf"),     12, BorderFontEffect(2, true))),
     vera20(new TTFFont(Pathname("fonts/Vera.ttf"),     20, BorderFontEffect(2, true)))
 {
-  assert(!s_current);
-  s_current = this;
 }
 
 Fonts::~Fonts()

@@ -22,13 +22,14 @@
 #include "display/graphic_context_state.hpp"
 #include "engine/camera.hpp"
 #include "math/vector2f.hpp"
+#include "util/currenton.hpp"
 
 class Controller;
 class SceneContext;
 
 /** This class is the gui component which renders the world to the
     screen */
-class View
+class View : public Currenton<View>
 {
 private:
   GraphicContextState state;
@@ -50,11 +51,6 @@ public:
 
   void draw(SceneContext& gc);
   void update(float delta);
-
-  static View* current() { return current_; }
-
-protected:
-  static View* current_;
 };
 
 #endif

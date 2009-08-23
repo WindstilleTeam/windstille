@@ -21,7 +21,9 @@
 
 #include <SDL.h>
 #include <boost/scoped_ptr.hpp>
-#include "input_manager_impl.hpp"
+
+#include "input/input_manager_impl.hpp"
+#include "util/currenton.hpp"
 
 class FileReader;
 class InputManagerSDLImpl;
@@ -92,13 +94,9 @@ struct WiimoteAxisBinding
 };
 
 /** */
-class InputManagerSDL : public InputManagerImpl
+class InputManagerSDL : public InputManagerImpl,
+                        public Currenton<InputManagerSDL>
 {
-private:
-  static InputManagerSDL* current_;
-public:
-  static InputManagerSDL* current() { return current_; }
-
 public:
   InputManagerSDL();
   virtual ~InputManagerSDL();

@@ -25,6 +25,7 @@
 #include <boost/scoped_ptr.hpp>
 
 #include "util/pathname.hpp"
+#include "util/currenton.hpp"
 #include "display/color.hpp"
 
 class CollisionEngine;
@@ -39,14 +40,12 @@ class SquirrelThread;
 class TileMap;
 
 /** */
-class Sector
-{
-private: 
-  static Sector* current_;  
-public:
-  static Sector* current() { return current_; }
-  
+class Sector : public Currenton<Sector>
+{ 
 private:
+  boost::scoped_ptr<CollisionEngine> collision_engine;
+  boost::scoped_ptr<NavigationGraph> navigation_graph;
+
   Pathname filename;
   std::string name;
   std::string music;
@@ -65,9 +64,6 @@ private:
   /** The TileMap with which the player interacts */
   TileMap* interactive_tilemap;
   TileMap* interactivebackground_tilemap;
-
-  boost::scoped_ptr<CollisionEngine> collision_engine;
-  boost::scoped_ptr<NavigationGraph> navigation_graph;
 
   Player* player;
 

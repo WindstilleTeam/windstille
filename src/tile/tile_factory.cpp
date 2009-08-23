@@ -34,8 +34,6 @@
 #include "display/texture.hpp"
 #include "physfs/physfs_sdl.hpp"
 
-TileFactory* TileFactory::current_ = 0;
-
 /** Check if the given region of the given image is fully transparent */
 bool surface_empty(const SoftwareSurface& image, int sx, int sy, int w, int h)
 { 
@@ -55,9 +53,6 @@ bool surface_empty(const SoftwareSurface& image, int sx, int sy, int w, int h)
 
 TileFactory::TileFactory(const std::string& filename)
 {
-  assert(!current_);
-  current_ = this;
-
   packers.push_back(new TilePacker(1024, 1024));
   packers.push_back(new TilePacker(1024, 1024));
   color_packer     = 0;

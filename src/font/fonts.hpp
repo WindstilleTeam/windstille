@@ -21,15 +21,11 @@
 
 #include <boost/scoped_ptr.hpp>
 
-#include "ttf_font.hpp"
+#include "util/currenton.hpp"
+#include "font/ttf_font.hpp"
 
-class Fonts 
+class Fonts : public Currenton<Fonts>
 {
-private:
-  static Fonts* s_current;
-public:
-  static Fonts* current() { return s_current; }
-
 public:
   boost::scoped_ptr<TTFFont> ttffont;
   boost::scoped_ptr<TTFFont> vera12;

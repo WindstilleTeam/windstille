@@ -53,16 +53,12 @@
 #include "util/system.hpp"
 #include "windstille_main.hpp"
 
-WindstilleMain* WindstilleMain::current_ = 0;
-
 WindstilleMain::WindstilleMain()
 {
-  current_ = this;
 }
 
 WindstilleMain::~WindstilleMain()
 {
-  current_ = 0;
 }
 
 int 

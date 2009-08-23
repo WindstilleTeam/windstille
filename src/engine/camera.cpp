@@ -22,8 +22,6 @@
 #include "display/display.hpp"
 #include "camera.hpp"
 
-Camera* Camera::current_ = 0;
-
 /**
  * Calculate the distance between two camera PathPoints, distance here
  * means not only the distance between the points itself, but also
@@ -65,7 +63,6 @@ Camera::Camera()
   : pos(0, 0), zoom(1.0f)
 {
   path_pos = 0;
-  current_ = this;
   mode     = CAMERA_FOLLOW_PLAYER;
 }
 

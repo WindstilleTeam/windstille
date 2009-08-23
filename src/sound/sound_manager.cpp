@@ -29,7 +29,6 @@
 
 #include "sound_manager.hpp"
 
-SoundManager* SoundManager::current_ = 0;
 
 SoundManager::SoundManager()
   : device(0), 
@@ -37,9 +36,6 @@ SoundManager::SoundManager()
     sound_enabled(false), 
     music_enabled(true)
 {
-  assert(current_ == 0);
-  current_ = this; 
-
   try 
     {
       device = alcOpenDevice(0);
@@ -98,8 +94,6 @@ SoundManager::~SoundManager()
     {
       alcCloseDevice(device);
     }
-
-  current_ = 0; 
 }
 
 ALuint

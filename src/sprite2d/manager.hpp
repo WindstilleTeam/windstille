@@ -24,18 +24,15 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 
+#include "util/currenton.hpp"
+
 class Pathname;
 class SpriteData;
 
 typedef boost::shared_ptr<SpriteData> SpriteDataPtr;
 
-class SpriteManager
+class SpriteManager : public Currenton<SpriteManager>
 {
-private:
-  static SpriteManager* s_current;
-public:
-  static SpriteManager* current() { return s_current; }
-
 public:
   SpriteManager();
   ~SpriteManager();

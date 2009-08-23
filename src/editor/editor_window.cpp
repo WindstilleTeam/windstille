@@ -45,8 +45,6 @@
 
 #include "editor_window.hpp"
 
-EditorWindow* EditorWindow::current_ = 0;
-
 EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   : ui_manager(Gtk::UIManager::create()),
     action_group(Gtk::ActionGroup::create()),
@@ -60,8 +58,6 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     zoom_tool(new ZoomTool()),
     current_tool(select_tool.get())
 {
-  current_ = this;
-
   set_title("Windstille Editor");
   set_default_size(1280, 800);
 
@@ -410,7 +406,6 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
 
 EditorWindow::~EditorWindow()
 {
-  current_ = 0;
 }
 
 void

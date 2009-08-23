@@ -51,15 +51,15 @@
 
 #include "sector.hpp"
 
-Sector* Sector::current_ = 0;
+//Sector* Sector::current_ = 0;
 
 Sector::Sector(const Pathname& arg_filename)
-  : filename(arg_filename),
-    collision_engine(new CollisionEngine()),
+  : collision_engine(new CollisionEngine()),
     navigation_graph(new NavigationGraph()),
+    filename(arg_filename),
     player(0)
 { 
-  current_ = this;
+  //current_ = this;
 
   if (debug) std::cout << "Creating new Sector" << std::endl;
   

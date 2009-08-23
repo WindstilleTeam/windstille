@@ -22,21 +22,18 @@
 #include <boost/scoped_ptr.hpp>
 #include <vector>
 #include <string>
-#include "sprite2d/sprite.hpp"
+
 #include "app/globals.hpp"
 #include "screen/screen.hpp"
+#include "sprite2d/sprite.hpp"
+#include "util/currenton.hpp"
 
 class TextArea;
 
 /** */
-class DialogManager : public Screen
+class DialogManager : public Screen,
+                      public Currenton<DialogManager>
 {
-private:
-  static DialogManager* current_;
-
-public:
-  static DialogManager* current() { return current_; }
-
 private:
   void create_text();
   

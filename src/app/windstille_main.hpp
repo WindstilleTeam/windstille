@@ -49,15 +49,11 @@
 
 #include <boost/scoped_ptr.hpp>
 
+#include "util/currenton.hpp"
 #include "screen/screen.hpp"
 
-class WindstilleMain
+class WindstilleMain : public Currenton<WindstilleMain>
 { 
-private:
-  static WindstilleMain* current_;
-public:
-  static WindstilleMain* current() { return current_; }
-
 public:
   WindstilleMain();
   ~WindstilleMain();

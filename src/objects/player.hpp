@@ -27,13 +27,15 @@
 #include "sound/sound_source.hpp"
 #include "sprite2d/sprite.hpp"
 #include "sprite3d/sprite3d.hpp"
+#include "util/currenton.hpp"
 
 class Controller;
 class Contact;
 class LaserPointer;
 class Weapon;
 
-class Player : public Entity
+class Player : public Entity,
+               public Currenton<Player>
 {
 private:
   Sprite3D sprite;
@@ -163,11 +165,6 @@ private:
   void try_set_action(const std::string& name, float speed = 1.0);
 
   Direction get_direction() const;
-
-public:
-  static Player* current() { return current_; }
-private:
-  static Player* current_;
 };
 
 #endif

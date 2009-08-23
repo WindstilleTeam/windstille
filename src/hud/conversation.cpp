@@ -27,13 +27,10 @@
 #include "pda.hpp"
 #include "screen/game_session.hpp"
 
-Conversation* Conversation::current_ = 0;
-
 Conversation::Conversation()
   : pos(400, 300),
     time(0)
 {
-  current_ = this;
   active = false;
   selection = 0;
 }

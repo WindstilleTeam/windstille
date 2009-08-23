@@ -31,12 +31,8 @@
 #include "software_surface.hpp"
 #include "physfs/physfs_sdl.hpp"
 
-TextureManager* TextureManager::s_current = 0;
-
 TextureManager::TextureManager()
 {
-  assert(!s_current);
-  s_current = this;
 }
 
 TextureManager::~TextureManager()

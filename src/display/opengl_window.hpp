@@ -22,13 +22,10 @@
 #include <SDL.h>
 #include <string>
 
-class OpenGLWindow
-{
-private:
-  static OpenGLWindow* s_current;
-public:
-  static OpenGLWindow* current() { return s_current; }
+#include "util/currenton.hpp"
 
+class OpenGLWindow : public Currenton<OpenGLWindow>
+{
 private:
   SDL_Surface* m_window;
 

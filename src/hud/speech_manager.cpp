@@ -21,8 +21,6 @@
 #include "font/fonts.hpp"
 #include "speech_manager.hpp"
 
-SpeechManager* SpeechManager::current_ = 0;
-
 class Speech 
 {
 public:
@@ -80,8 +78,6 @@ Speech::is_done() const
 SpeechManager::SpeechManager()
   : speech_id(1)
 {
-  assert(current_ == 0);
-  current_ = this;
 }
 
 SpeechManager::~SpeechManager()
@@ -89,8 +85,6 @@ SpeechManager::~SpeechManager()
   for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
     delete *i;
   speeches.clear();
-
-  current_ = 0;
 }
 
 int

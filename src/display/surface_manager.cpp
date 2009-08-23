@@ -34,13 +34,10 @@
 #include "texture_packer.hpp"
 #include "util/util.hpp"
 
-SurfaceManager* SurfaceManager::current_ = 0;
 
 SurfaceManager::SurfaceManager()
   : texture_packer(new TexturePacker(Size(2048, 2048)))
 {
-  assert(current_ == 0);
-  current_ = this;
 }
 
 SurfaceManager::~SurfaceManager()
@@ -55,8 +52,6 @@ SurfaceManager::~SurfaceManager()
         }
     }
 #endif
-
-  current_ = 0;
 }
 
 Surface

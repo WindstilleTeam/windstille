@@ -21,11 +21,14 @@
 
 #include <vector>
 #include <string>
+
 #include "screen/screen.hpp"
+#include "util/currenton.hpp"
 
 /** Displays a list of text strings from which the user can select
     one, used to form multiple-choice dialogs */
-class Conversation : public Screen
+class Conversation : public Screen,
+                     public Currenton<Conversation>
 {
 private:
   Vector2f pos;
@@ -48,10 +51,7 @@ private:
   typedef std::vector<Choice> Choices;
   Choices choices;
   
-  static Conversation* current_;
-public:
-  static Conversation* current() { assert(current_); return current_; }
-  
+public:  
   Conversation();
 
   void draw();

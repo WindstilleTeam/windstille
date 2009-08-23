@@ -22,10 +22,13 @@
 #include "screen/screen.hpp"
 #include <boost/shared_ptr.hpp>
 
+#include "util/currenton.hpp"
+
 class ControllerHelpWindowImpl;
 
 /** */
-class ControllerHelpWindow : public Screen
+class ControllerHelpWindow : public Screen,
+                             public Currenton<ControllerHelpWindow>
 {
 private:
   void draw_button(const Vector2f& pos, bool pressed);
@@ -37,8 +40,6 @@ public:
 
   void draw();
   void update(float delta, const Controller& controller);
-
-  static ControllerHelpWindow* current() { return current_; }
 
 private:
   boost::shared_ptr<ControllerHelpWindowImpl> impl;

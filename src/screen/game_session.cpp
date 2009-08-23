@@ -55,8 +55,6 @@
 #include "view.hpp"
 
 #include "game_session.hpp"
-
-GameSession* GameSession::current_ = 0; 
 
 class GameSessionImpl
 {
@@ -126,8 +124,6 @@ public:
 GameSession::GameSession(const Pathname& arg_filename)
   : impl(new GameSessionImpl())
 {
-  current_ = this;
-
   impl->filename = arg_filename;
 
   if (debug) std::cout << "Creating new GameSession" << std::endl;
@@ -139,7 +135,6 @@ GameSession::GameSession(const Pathname& arg_filename)
 
 GameSession::~GameSession()
 {
-  current_ = 0;
 }
 
 void

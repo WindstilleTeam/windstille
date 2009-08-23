@@ -33,8 +33,6 @@
 #include "wiimote.hpp"
 #endif
 
-InputManagerSDL* InputManagerSDL::current_ = 0;
-
 const int dead_zone = 0;
 
 class InputManagerSDLImpl
@@ -229,8 +227,6 @@ InputManagerSDL::parse_config(FileReader& reader)
 InputManagerSDL::InputManagerSDL()
   : impl(new InputManagerSDLImpl)
 {
-  current_ = this;
-
   for (int i = 0; i < SDLK_LAST; ++i) {
     char* key_name = SDL_GetKeyName(static_cast<SDLKey>(i));
     impl->keyidmapping[key_name] = static_cast<SDLKey>(i);

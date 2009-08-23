@@ -30,11 +30,8 @@
 #include "util/pathname.hpp"
 #include "app/config.hpp"
 
-DialogManager* DialogManager::current_ = 0;
-
 DialogManager::DialogManager()
 {
-  current_ = this;
 }
 
 DialogManager::~DialogManager()

@@ -23,12 +23,8 @@
 
 namespace sprite3d {
 
-Manager* Manager::s_current = 0;
-
 Manager::Manager()
 {
-  assert(!s_current);
-  s_current = this;
 }
 
 Manager::~Manager()

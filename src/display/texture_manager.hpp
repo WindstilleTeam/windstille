@@ -24,6 +24,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 
+#include "util/currenton.hpp"
 #include "util/pathname.hpp"
 
 class Texture;
@@ -31,13 +32,8 @@ class Texture;
 /**
  * This class manages a map of image files to OpenGL textures.
  */
-class TextureManager
+class TextureManager : public Currenton<TextureManager>
 {
-private:
-  static TextureManager* s_current; 
-public:
-  static TextureManager* current() { return s_current; }
-
 public:
   TextureManager();
   ~TextureManager();

@@ -21,13 +21,15 @@
 
 #include <map>
 #include <string>
-#include "tile_description.hpp"
+
+#include "tile/tile_description.hpp"
+#include "util/currenton.hpp"
 
 class Tile;
 class TilePacker;
 
 /** */
-class TileFactory
+class TileFactory : public Currenton<TileFactory>
 {
 private:
   typedef std::vector<Tile*> Tiles;
@@ -35,8 +37,6 @@ private:
   typedef std::vector<TilePacker*> TilePackers;
   TilePackers packers;
   int color_packer;
-
-  static TileFactory* current_;
 
   friend class TileDescription;
 
@@ -62,9 +62,6 @@ public:
    * Adds a surface to the TileFactory
    */
   void pack(int id, int colmap, const SoftwareSurface& image, const Rect& rect);
-
-  /** Access the default TileFactor*/
-  static TileFactory* current() { return current_; }
 
 private:
   void parse_tiles(FileReader& reader);

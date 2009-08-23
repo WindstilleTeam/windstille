@@ -29,10 +29,11 @@
 #include <gtkmm/recentaction.h>
 #include <gtkmm/notebook.h>
 
-#include "selection.hpp"
-#include "minimap_widget.hpp"
-#include "object_selector.hpp"
-#include "layer_manager.hpp"
+#include "util/currenton.hpp"
+#include "editor/selection.hpp"
+#include "editor/minimap_widget.hpp"
+#include "editor/object_selector.hpp"
+#include "editor/layer_manager.hpp"
 
 class Tool;
 class WindstilleWidget;
@@ -42,13 +43,9 @@ class LayerWidget;
 class NavgraphInsertTool;
 class NavgraphSelectTool;
 
-class EditorWindow : public Gtk::Window
+class EditorWindow : public Gtk::Window,
+                     public Currenton<EditorWindow>
 {
-private:
-  static EditorWindow* current_;
-public:
-  static EditorWindow* current() { return current_; }
-
 private:
   Gtk::VBox   vbox;
   Gtk::VBox   sidebar_vbox;

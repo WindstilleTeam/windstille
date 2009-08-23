@@ -26,12 +26,8 @@
 #include "sprite2d/data.hpp"
 #include "sprite2d/sprite.hpp"
 
-SpriteManager* SpriteManager::s_current = 0;
-
 SpriteManager::SpriteManager()
 {
-  assert(!s_current);
-  s_current = this;
 }
 
 SpriteManager::~SpriteManager()

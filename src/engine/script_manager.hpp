@@ -26,6 +26,7 @@
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 
+#include "util/currenton.hpp"
 #include "scripting/wrapper.hpp"
 #include "scripting/util.hpp"
 
@@ -38,13 +39,8 @@ class GameObject;
  * It contains functions for loading and starting script, keeps a list of
  * suspended scripts and receives wakeup events for them
  */
-class ScriptManager
+class ScriptManager : public Currenton<ScriptManager>
 {
-private:
-  static ScriptManager* current_;
-public:
-  static ScriptManager* current() { return current_; }
-
 public:
   enum WakeupEvent 
     {

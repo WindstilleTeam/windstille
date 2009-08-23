@@ -26,8 +26,9 @@
 #include "app/globals.hpp"
 #include "display/scene_context.hpp"
 #include "hud/controller_help_window.hpp"
-#include "screen.hpp"
+#include "screen/screen.hpp"
 #include "sprite2d/sprite.hpp"
+#include "util/currenton.hpp"
 
 class PDA;
 class EnergyBar;
@@ -41,15 +42,11 @@ class Pathname;
 
 class GameSessionImpl;
 
-class GameSession : public Screen
+class GameSession : public Screen,
+                    public Currenton<GameSession>
 {
 public:
   enum ControlState { DIALOG, GAME, CONVERSATION };
-private:
-  static GameSession* current_; 
-
-public:
-  static GameSession* current() { return current_; }
 
   GameSession(const Pathname& arg_filename);
   virtual ~GameSession();

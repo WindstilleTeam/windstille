@@ -29,6 +29,7 @@
 #include <AL/al.h>
 
 #include "math/vector2f.hpp"
+#include "util/currenton.hpp"
 
 typedef void* SoundHandle;
 
@@ -36,7 +37,7 @@ class SoundFile;
 class SoundSource;
 class StreamSoundSource;
 
-class SoundManager
+class SoundManager : public Currenton<SoundManager>
 {
 public:
   SoundManager();
@@ -97,11 +98,6 @@ private:
 
   bool music_enabled;
   std::string current_music;
-
-private:
-  static SoundManager* current_; 
-public:
-  static SoundManager* current() { return current_; } 
 };
 
 #endif

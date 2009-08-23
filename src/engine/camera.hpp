@@ -19,12 +19,14 @@
 #ifndef HEADER_WINDSTILLE_ENGINE_CAMERA_HPP
 #define HEADER_WINDSTILLE_ENGINE_CAMERA_HPP
 
+#include "util/currenton.hpp"
+
 /** 
  * This class manages the virtual camera movement, it follows the
  * player, allows the player to watch around, might zoom out if
  * interesting stuff happens out of the screen and such
  */
-class Camera
+class Camera : public Currenton<Camera>
 {
 public:
   enum Mode { CAMERA_INACTIVE, CAMERA_FOLLOW_PLAYER, CAMERA_FOLLOW_PATH };
@@ -61,10 +63,7 @@ private:
   std::vector<PathPoint> path;
   float path_pos;
 
-  static Camera* current_;
 public:
-  static Camera* current() { return current_; }
-
   Camera();
 
   void   update(float delta);

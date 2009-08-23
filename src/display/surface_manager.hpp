@@ -25,7 +25,8 @@
 #include <map>
 
 #include "util/pathname.hpp"
-#include "texture.hpp"
+#include "util/currenton.hpp"
+#include "display/texture.hpp"
 
 class Surface;
 class TexturePacker;
@@ -33,13 +34,8 @@ class TexturePacker;
 /**
  * This class keeps a list of loaded surfaces and manages loading new ones
  */
-class SurfaceManager
+class SurfaceManager : public Currenton<SurfaceManager>
 {
-private:
-  static SurfaceManager* current_; 
-public:
-  static SurfaceManager* current() { return current_; } 
-
 private:
   boost::scoped_ptr<TexturePacker> texture_packer;
   

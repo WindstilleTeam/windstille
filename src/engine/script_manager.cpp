@@ -42,8 +42,6 @@ using Scripting::SquirrelError;
 // The table (works like a namespace here) where the game objects will appear
 static const char* OBJECTS_TABLE = "objects";
 
-ScriptManager* ScriptManager::current_ = 0;
-
 // FIXME: Replace this with sq_compilebufer()
 static SQInteger squirrel_read_char(SQUserPointer file)
 {
@@ -70,9 +68,6 @@ static void printfunc(HSQUIRRELVM, const char* str, ...)
 
 ScriptManager::ScriptManager()
 {
-  assert(current_ == 0);
-  current_ = this;
-
   vm = sq_open(1024);
   if(vm == 0)
     {
@@ -129,7 +124,6 @@ ScriptManager::~ScriptManager()
   squirrel_vms.clear();
 
   sq_close(vm);
-  current_ = 0;
 }
 
 boost::shared_ptr<SquirrelThread>

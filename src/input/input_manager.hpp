@@ -23,19 +23,15 @@
 #include <vector>
 #include <boost/scoped_ptr.hpp>
 
-#include "controller.hpp"
-#include "input_event.hpp"
+#include "input/controller.hpp"
+#include "input/input_event.hpp"
+#include "util/currenton.hpp"
 
 class InputManagerImpl;
 
 /** */
-class InputManager
+class InputManager : public Currenton<InputManager>
 {
-private:
-  static InputManager* s_current;
-public:
-  static InputManager* current() { return s_current; }
-
 public:
   InputManager();
   ~InputManager();

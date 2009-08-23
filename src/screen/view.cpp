@@ -24,14 +24,12 @@
 #include "input/input_manager.hpp"
 #include "view.hpp"
 
-View* View::current_ = 0;
 
 View::View()
   : state(Display::get_width(), Display::get_height()),
     zoom(1.0), 
     transform(0, 0)
 {
-  current_ = this;
 }
 
 void

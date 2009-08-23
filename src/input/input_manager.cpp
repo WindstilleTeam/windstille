@@ -27,13 +27,9 @@
 #include "input_manager_impl.hpp"
 #include "input_manager.hpp"
 
-InputManager* InputManager::s_current = 0;
-
 InputManager::InputManager()
   : impl(new InputManagerSDL())
 {
-  assert(!s_current);
-  s_current = this;
 }
 
 InputManager::~InputManager()

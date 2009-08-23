@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2005 Matthias Braun <matze@braunis.de>
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,33 +16,32 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_SPRITE3D_MANAGER_HPP
-#define HEADER_WINDSTILLE_SPRITE3D_MANAGER_HPP
+#ifndef HEADER_WINDSTILLE_UTIL_CURRENTON_HPP
+#define HEADER_WINDSTILLE_UTIL_CURRENTON_HPP
 
-#include <string>
-#include <map>
+#include <assert.h>
 
-#include "util/pathname.hpp"
-#include "util/currenton.hpp"
-
-namespace sprite3d {
-
-class Data;
-
-class Manager : public Currenton<Manager>
+/** 
+ *   A 'Currenton' allows access to the currently active instance of a
+ *   class. It is kind of like a singleton, but without handling the
+ *   object construction itself or in other words its a glorified
+ *   global variable that points to the instance of a class.
+ */
+template<class C>
+class Currenton
 {
-public:
-  Manager();
-  ~Manager();
-
-  Data* create_data(const Pathname& filename);
-    
 private:
-  typedef std::map<Pathname, Data*> Datas;
-  Datas datas;
+  static C* s_current; 
+
+protected:
+  Currenton()  { assert(!s_current); s_current = static_cast<C*>(this); }
+  ~Currenton() { s_current = 0; }
+  
+public:
+  static C* current() { return s_current; }
 };
 
-} // namespace sprite3d
+template<class C> C* Currenton<C>::s_current = 0;
 
 #endif
 

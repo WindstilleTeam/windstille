@@ -21,21 +21,18 @@
 
 #include <string>
 #include <vector>
+
 #include "math/vector2f.hpp"
 #include "display/color.hpp"
+#include "util/currenton.hpp"
 
 class Entity;
 class Speech;
 
 /** The SpeechManager displays speech text over characters or
     objects, similar to what you see in LucasArts games */
-class SpeechManager
+class SpeechManager : public Currenton<SpeechManager>
 {
-private:
-  static SpeechManager* current_;
-public:
-  static SpeechManager* current() { return current_; }
-
 private:
   typedef std::vector<Speech*> Speeches;
   Speeches speeches;

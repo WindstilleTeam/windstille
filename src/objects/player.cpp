@@ -43,13 +43,9 @@ static const int MAX_ENERGY = 16;
 static const float WALK_SPEED = 128.0;
 static const float RUN_SPEED = 256.0;
 
-Player* Player::current_ = 0;
-
 Player::Player () 
  : state(STAND)
 {
-  current_ = this;
-
   sprite = Sprite3D(Pathname("models/characters/jane/jane.wsprite"));
   pos.x = 320;
   pos.y = 200;
@@ -80,7 +76,6 @@ Player::Player ()
 
 Player::~Player()
 {
-  current_ = 0;
 }
 
 void
