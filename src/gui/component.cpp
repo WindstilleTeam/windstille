@@ -22,7 +22,8 @@
 namespace gui {
 
 Component::Component(Component* parent)
-  : parent(parent),
+  : rect(),
+    parent(parent),
     active(false)
 {
 }

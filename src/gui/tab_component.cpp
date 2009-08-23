@@ -25,15 +25,18 @@
 namespace gui {
 
 TabComponent::TabComponent(Component* parent)
-  : Component(parent)
+  : Component(parent),
+    tabs(),
+    current_tab(0)
 {
   assert(0);
 }
 
 TabComponent::TabComponent(const Rectf& rect, Component* parent)
-  : Component(rect, parent)
+  : Component(rect, parent),
+    tabs(),
+    current_tab(0)
 {
-  current_tab = 0;
 }
 
 TabComponent::~TabComponent()

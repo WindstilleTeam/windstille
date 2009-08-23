@@ -46,6 +46,10 @@ public:
 
   virtual void draw(const Rectf& rect, bool is_active);
   virtual void update(float delta);
+  
+private:
+  MenuItem(const MenuItem&);
+  MenuItem& operator=(const MenuItem&);
 };
 
 class EnumMenuItem : public MenuItem 
@@ -54,6 +58,11 @@ private: // FIXME: Convert this into a generic enum/value slider
   struct EnumValue {
     std::string label;
     int         value;
+
+    EnumValue()
+      : label(),
+        value()
+    {}
   };
   
   int index;

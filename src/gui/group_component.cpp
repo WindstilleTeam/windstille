@@ -26,7 +26,8 @@ namespace gui {
 
 GroupComponent::GroupComponent(const Rectf& rect, const std::string& title_, Component* parent)
   : Component(rect, parent),
-    title(title_)
+    title(title_),
+    child()
 {
   
 }

@@ -38,28 +38,28 @@ MenuItem::draw(const Rectf& rect, bool is_active)
   TTFFont* font = parent->get_font();
   
   if (is_active) 
-    {
-      Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
-      Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
-      font_color = Color(1.0f, 1.0f, 1.0f);
-      fade_timer = 2.0f;
-    } 
+  {
+    Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
+    Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
+    font_color = Color(1.0f, 1.0f, 1.0f);
+    fade_timer = 2.0f;
+  } 
   else 
+  {
+    if (fade_timer != 0.0f)
     {
-      if (fade_timer != 0.0f)
-        {
-          //Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f * fade_timer));
-          //Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f * fade_timer));
-          font_color = Color(0.75f + 0.25f * fade_timer, 
-                             0.75f + 0.25f * fade_timer, 
-                             0.75f + 0.25f * fade_timer, 
-                             1.0f);
-        }
-      else
-        {
-          font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
-        }
+      //Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f * fade_timer));
+      //Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f * fade_timer));
+      font_color = Color(0.75f + 0.25f * fade_timer, 
+                         0.75f + 0.25f * fade_timer, 
+                         0.75f + 0.25f * fade_timer, 
+                         1.0f);
     }
+    else
+    {
+      font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
+    }
+  }
 
   font->draw(Vector2f(rect.left + font->get_height(), rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
              label, font_color);
@@ -77,7 +77,9 @@ MenuItem::update(float delta)
 EnumMenuItem::EnumMenuItem(MenuComponent* parent_, 
                            const std::string& label_, int index_)
   : MenuItem(parent_, label_),
-    index(index_)
+    index(index_),
+    labels(),
+    on_change()
 {
 }
 
@@ -121,16 +123,16 @@ EnumMenuItem::draw(const Rectf& rect, bool is_active)
   TTFFont* font = parent->get_font();
   Color font_color;
   if (is_active)
-    {
-      font_color = Color(1.0f, 1.0f, 1.0f);
-    }
+  {
+    font_color = Color(1.0f, 1.0f, 1.0f);
+  }
   else
-    {
-      font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
-    }
+  {
+    font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
+  }
 
   font->draw(Vector2f(rect.right - font->get_height() - font->get_width(labels[index].label),
-                    rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
+                      rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
              labels[index].label,
              font_color);
 }
@@ -142,7 +144,8 @@ SliderMenuItem::SliderMenuItem(MenuComponent* parent_,
     value(value_),
     min_value(min_value_),
     max_value(max_value_),
-    step(step_)
+    step(step_),
+    on_change()
 {  
 }
 
@@ -177,13 +180,13 @@ SliderMenuItem::draw(const Rectf& rect, bool is_active)
 
   Color color;
   if (is_active)
-    {
-      color = Color(1.0f, 1.0f, 1.0f);
-    }
+  {
+    color = Color(1.0f, 1.0f, 1.0f);
+  }
   else
-    {
-      color = Color(0.75f, 0.75f, 0.75f, 1.0f);
-    }
+  {
+    color = Color(0.75f, 0.75f, 0.75f, 1.0f);
+  }
 
   Display::fill_rounded_rect(Rectf(Vector2f(rect.right - 4 - total_width, rect.top + 4),
                                    Sizef(width, rect.get_height() - 8)), 
@@ -198,7 +201,8 @@ SliderMenuItem::draw(const Rectf& rect, bool is_active)
 }
 
 ButtonMenuItem::ButtonMenuItem(MenuComponent* parent_, const std::string& label_)
-  : MenuItem(parent_, label_)
+  : MenuItem(parent_, label_),
+    on_click()
 {
 }
 

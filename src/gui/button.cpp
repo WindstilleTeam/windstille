@@ -25,7 +25,8 @@
 namespace gui {
 
 Button::Button(Component* parent)
-  : Component(parent)
+  : Component(parent),
+    label()
 {
   assert(0);
 }

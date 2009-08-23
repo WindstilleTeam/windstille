@@ -98,6 +98,10 @@ private:
 
   bool music_enabled;
   std::string current_music;
+
+private:
+  SoundManager(const SoundManager&);
+  SoundManager& operator=(const SoundManager&);
 };
 
 #endif

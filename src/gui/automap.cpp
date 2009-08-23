@@ -27,13 +27,17 @@
 namespace gui {
 
 Automap::Automap(Component* parent)
-  : Component(parent)
+  : Component(parent),
+    surface(),
+    pos(),
+    zoom()
 {
   assert(0);
 }
 
 Automap::Automap(const Rectf& rect, Component* parent)
   : Component(rect, parent),
+    surface(),
     pos(0.0f, 0.0f),
     zoom(6.0f)
 {

@@ -34,10 +34,30 @@ private:
     std::string label;
     Component*  component;
 
-    Tab() : component(0) {}
+    Tab() 
+      : label(),
+        component(0) 
+    {}
     
     Tab(const std::string& label_, Component* c)
-      : label(label_), component(c) {}
+      : label(label_),
+        component(c) 
+    {}
+
+    Tab(const Tab& rhs)
+      : label(rhs.label),
+        component(rhs.component)
+    {}
+
+    Tab& operator=(const Tab& rhs)
+    {
+      if (this != &rhs)
+      {
+        label     = rhs.label;
+        component = rhs.component;
+      }
+      return *this;
+    }
   };
 
   typedef std::vector<Tab> Tabs;
@@ -54,6 +74,7 @@ public:
   void update(float delta, const Controller& controller);
 
   void pack(const std::string& name, Component* component);
+
 private:
   TabComponent (const TabComponent&);
   TabComponent& operator= (const TabComponent&);

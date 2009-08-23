@@ -30,6 +30,9 @@
 namespace gui {
 
 Menu::Menu(const std::string& name, const Rectf& rect, bool allow_cancel, Component* parent)
+  : manager(),
+    group(),
+    menu()
 {
   if (!parent)
     {

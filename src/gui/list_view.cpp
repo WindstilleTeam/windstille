@@ -24,9 +24,11 @@
 namespace gui {
 
 ListView::ListView(const Rectf& rect, Component* parent)
-  : Component(rect, parent)
+  : Component(rect, parent),
+    columns(),
+    items(),
+    current_item(0)
 {
-  current_item = 0;
 }
 
 ListView::~ListView()

@@ -30,6 +30,7 @@ namespace gui {
 
 MenuComponent::MenuComponent(const Rectf& rect, bool allow_cancel_, Component* parent)
   : Component(rect, parent),
+    items(),
     current_item(0),
     font(Fonts::current()->vera20.get()),
     allow_cancel(allow_cancel_),

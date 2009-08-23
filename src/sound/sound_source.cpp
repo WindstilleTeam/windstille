@@ -20,6 +20,7 @@
 #include "sound_manager.hpp"
 
 SoundSource::SoundSource()
+  : source()
 {
   alGenSources(1, &source);
   SoundManager::check_al_error("Couldn't create audio source: ");

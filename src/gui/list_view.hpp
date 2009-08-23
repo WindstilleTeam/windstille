@@ -32,6 +32,11 @@ private:
   struct Column {
     std::string title;
     float       width;
+    
+    Column()
+      : title(),
+        width()
+    {}
   };
   
 public:
@@ -41,6 +46,7 @@ public:
     Item(const std::string& el1, 
          const std::string& el2,
          const std::string& el3)
+      : columns()
     {
       columns.push_back(el1);
       columns.push_back(el2);
