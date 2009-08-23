@@ -47,95 +47,100 @@ class Vector2f;
 //- !header=core.h!
 class Point
 {
-// Construction:
+  // Construction:
 public:
-	//: Constructs a point.
-	//param x: Initial x value.
-	//param y: Initial y value.
-	//param p: Point to use for initial values.
-	Point()
-	{ return; }
+  //: Constructs a point.
+  //param x: Initial x value.
+  //param y: Initial y value.
+  //param p: Point to use for initial values.
+  Point()
+    : x(0), y(0)
+  {}
 
-	Point(int x, int y)
-	: x(x), y(y) { }
+  Point(int x, int y)
+    : x(x), 
+      y(y)
+  {}
 
-	Point(const Point &p)
-	{ x = p.x; y = p.y; }
+  Point(const Point &p)
+    : x(p.x),
+      y(p.y)
+  {}
 
-	explicit Point(const Vector2f& p);
+  explicit Point(const Vector2f& p);
 
-// Operations:
+  // Operations:
 public:
-	//: Return a rotated version of this point.
-	//param hotspot: The point around which to rotate.
-	//param angle: The amount of degrees to rotate by, clockwise.
-	Point rotate(
-		const Point &hotspot,
-		float angle) const
-	{
-		//Move the hotspot to 0,0
-		Point r(x - hotspot.x, y - hotspot.y);
+  //: Return a rotated version of this point.
+  //param hotspot: The point around which to rotate.
+  //param angle: The amount of degrees to rotate by, clockwise.
+  Point rotate(
+    const Point &hotspot,
+    float angle) const
+  {
+    //Move the hotspot to 0,0
+    Point r(x - hotspot.x, y - hotspot.y);
 		
-		//Do some Grumbel voodoo.
+    //Do some Grumbel voodoo.
 
-		// Because MSVC sucks ass wrt standards compliance, it gets it own special function calls
-		#ifdef _MSC_VER
-		const float c = (float) sqrt((float)r.x*(float)r.x + (float)r.y*(float)r.y);
-		const float nw = (float)(atan2((float)r.y, (float)r.x) + ((angle + 180) * math::pi / 180));
-		r.x = (int)((sin(1.5 * M_PI - nw) * c) + 0.5) + hotspot.x;
-		r.y = -(int)((sin(nw) * c) + 0.5) + hotspot.y;
-		#else
-		const float c = (float) std::sqrt((float)r.x*(float)r.x + (float)r.y*(float)r.y);
-		const float nw = (float)(std::atan2((float)r.y, (float)r.x) + ((angle + 180) * M_PI / 180));
- 		r.x = (int)((std::sin(1.5 * M_PI - nw) * c) + 0.5) + hotspot.x;
-		r.y = -(int)((std::sin(nw) * c) + 0.5) + hotspot.y;
-		#endif
+    // Because MSVC sucks ass wrt standards compliance, it gets it own special function calls
+#ifdef _MSC_VER
+    const float c = (float) sqrt((float)r.x*(float)r.x + (float)r.y*(float)r.y);
+    const float nw = (float)(atan2((float)r.y, (float)r.x) + ((angle + 180) * math::pi / 180));
+    r.x = (int)((sin(1.5 * M_PI - nw) * c) + 0.5) + hotspot.x;
+    r.y = -(int)((sin(nw) * c) + 0.5) + hotspot.y;
+#else
+    const float c = (float) std::sqrt((float)r.x*(float)r.x + (float)r.y*(float)r.y);
+    const float nw = (float)(std::atan2((float)r.y, (float)r.x) + ((angle + 180) * M_PI / 180));
+    r.x = (int)((std::sin(1.5 * M_PI - nw) * c) + 0.5) + hotspot.x;
+    r.y = -(int)((std::sin(nw) * c) + 0.5) + hotspot.y;
+#endif
 
-		return r;
-	}
+    return r;
+  }
 
-	//: Return the distance to another point.
-	//param Point &p: The other point.
-	int distance( const Point &p ) const
-	{
-		#ifdef _MSC_VER
-    	return int(sqrt(double((x-p.x)*(x-p.x) + (y-p.y)*(y-p.y))) + 0.5f);
-		#else
-    	return int(std::sqrt(double((x-p.x)*(x-p.x) + (y-p.y)*(y-p.y))) + 0.5f);
-		#endif
-	}
+  //: Return the distance to another point.
+  //param Point &p: The other point.
+  int distance( const Point &p ) const
+  {
+#ifdef _MSC_VER
+    return int(sqrt(double((x-p.x)*(x-p.x) + (y-p.y)*(y-p.y))) + 0.5f);
+#else
+    return int(std::sqrt(double((x-p.x)*(x-p.x) + (y-p.y)*(y-p.y))) + 0.5f);
+#endif
+  }
 	
-	//: Translate point.
-	Point &operator+=(const Point &p)
-	{ x += p.x; y += p.y; return *this; }
+  //: Translate point.
+  Point &operator+=(const Point &p)
+  { x += p.x; y += p.y; return *this; }
 
-	//: Translate point negatively.
-	Point &operator-=(const Point &p)
-	{ x -= p.x; y -= p.y; return *this; }
+  //: Translate point negatively.
+  Point &operator-=(const Point &p)
+  { x -= p.x; y -= p.y; return *this; }
 	
-	//: Point + Point operator.
-	Point operator+(const Point &p) const
-	{ return Point(x + p.x, y + p.y); }
+  //: Point + Point operator.
+  Point operator+(const Point &p) const
+  { return Point(x + p.x, y + p.y); }
 
-	//: Point - Point operator.
-	Point operator-(const Point &p) const
-	{ return Point(x - p.x, y - p.y); }
+  //: Point - Point operator.
+  Point operator-(const Point &p) const
+  { return Point(x - p.x, y - p.y); }
 
-	//: Point == Point operator (deep compare)
-	bool operator==(const Point &p) const
-	{ return (x == p.x) && (y == p.y); }
+  //: Point == Point operator (deep compare)
+  bool operator==(const Point &p) const
+  { return (x == p.x) && (y == p.y); }
 
-	//: Point != Point operator (deep compare)
-	bool operator!=(const Point &p) const
-	{ return (x != p.x) || (y != p.y); }
+  //: Point != Point operator (deep compare)
+  bool operator!=(const Point &p) const
+  { return (x != p.x) || (y != p.y); }
 
-// Attributes:
+  // Attributes:
 public:
-	//: X coordinate.
-	int x;
+  //: X coordinate.
+  int x;
 
-	//: Y coordinate.
-	int y;
+  //: Y coordinate.
+  int y;
 };
 
 inline Point::Point(const Vector2f& p)

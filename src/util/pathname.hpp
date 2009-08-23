@@ -76,7 +76,8 @@ public:
   };
   
   Pathname()
-    : m_type(kEmpty)
+    : m_path(),
+      m_type(kEmpty)
   {}
 
   /** Create a Pathname object. 

@@ -54,18 +54,35 @@ public:
   //param point: Initial top-left position of rectangle.
   //param size: Initial size of rectangle.
   //param rect: Initial rectangle position and size.
-  Rect() { left = right = top = bottom = 0; }
+  Rect() 
+    : left(0),
+      top(0),
+      right(0),
+      bottom(0)
+  {}
 
   explicit Rect(const Rectf& rect);
 
   Rect(int new_left, int new_top, int new_right, int new_bottom)
-  { left = new_left; top = new_top; right = new_right; bottom = new_bottom; }
+    : left(new_left),
+      top(new_top),
+      right(new_right),
+      bottom(new_bottom)
+  {}
 
   Rect(const Point &p, const Size &size)
-  { left = p.x; top = p.y; right = left + size.width; bottom = top + size.height; }
+    : left(p.x),
+      top(p.y),
+      right(left + size.width),
+      bottom(top + size.height) 
+  {}
 
   Rect(const Rect &rect)
-  { left = rect.left; top = rect.top; right = rect.right; bottom = rect.bottom; }
+    : left(rect.left),
+      top(rect.top),
+      right(rect.right),
+      bottom(rect.bottom)
+  {}
 
   //: Rect += Rect operator.
   Rect &operator+=(const Rect &r)
@@ -214,7 +231,12 @@ public:
   //param point: Initial top-left position of rectangle.
   //param size: Initial size of rectangle.
   //param rect: Initial rectangle position and size.
-  Rectf() { left = right = top = bottom = 0.0f; }
+  Rectf()
+    : left(0.0f),
+      top(0.0f),
+      right(0.0f),
+      bottom(0.0f)
+  {}
 
   Rectf(const Rect& rect)
     : left((float)rect.left), 
@@ -224,10 +246,18 @@ public:
   {}
 
   Rectf(float new_left, float new_top, float new_right, float new_bottom)
-  { left = new_left; top = new_top; right = new_right; bottom = new_bottom; }
+    : left(new_left),
+      top(new_top),
+      right(new_right),
+      bottom(new_bottom)
+  {}
 
   Rectf(const Vector2f &p, const Sizef &size)
-  { left = p.x; top = p.y; right = left + size.width; bottom = top + size.height; }
+    : left(p.x),
+      top(p.y),
+      right(left + size.width),
+      bottom(top + size.height)
+  {}
 
   Rectf(const Vector2f& p1, const Vector2f& p2)
     :  left(p1.x),
@@ -237,7 +267,11 @@ public:
   {}
 
   Rectf(const Rectf &rect)
-  { left = rect.left; top = rect.top; right = rect.right; bottom = rect.bottom; }
+    : left(rect.left),
+      top(rect.top),
+      right(rect.right),
+      bottom(rect.bottom)
+  {}
 
   //: Rect += Rect operator.
   Rectf &operator+=(const Rectf &r)

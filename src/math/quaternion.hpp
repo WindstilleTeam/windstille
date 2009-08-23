@@ -44,10 +44,12 @@ public:
    *  @param theta  the angle of rotation in radians
    */
   Quaternion(const Vector3& axis, float theta)
+    : w(cosf(theta/2)),
+      x(),
+      y(),
+      z()
   {
-    w = cosf(theta/2);
-
-    float s = sinf(theta/2);
+    float s = sinf(theta/2.0f);
     x = axis.x * s;
     y = axis.y * s;
     z = axis.z * s;

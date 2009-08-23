@@ -29,7 +29,7 @@ public:
   Vector2f p1;
   Vector2f p2;
 
-  Line() {}
+  Line() : p1(), p2() {}
   
   Line(const Vector2f& p1,
        const Vector2f& p2);  

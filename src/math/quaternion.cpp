@@ -23,7 +23,7 @@
 float
 Quaternion::magnitude() const
 {
-  return sqrt(w*w + x*x + y*y + z*z);
+  return sqrtf(w*w + x*x + y*y + z*z);
 }
 
 void
@@ -83,7 +83,7 @@ Quaternion::slerp(const Quaternion& o, float t) const
    */
   float dot = dot_product(o);
 
-  const float DOT_THRESHOLD = 0.995;
+  const float DOT_THRESHOLD = 0.995f;
   if(dot > DOT_THRESHOLD) {
     // quaternions are too close, lineary interpolate them
     Quaternion result = *this + (o - *this)*t;
@@ -92,13 +92,13 @@ Quaternion::slerp(const Quaternion& o, float t) const
   }
   
   dot = clamp(dot, -1 ,1); // robustness
-  float theta_O = acos(dot);
+  float theta_O = acosf(dot);
   float theta = theta_O * t;
 
   Quaternion v2 = o - (*this * dot);
   v2.normalize();
 
-  return (*this * cos(theta)) + (v2 * sin(theta));
+  return (*this * cosf(theta)) + (v2 * sinf(theta));
 }
 
 /* EOF */

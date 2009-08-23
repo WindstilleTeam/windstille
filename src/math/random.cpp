@@ -25,6 +25,7 @@
  */
 
 Random::Random(unsigned long s)
+  : mti(0)
 {
   mt[0]= s & 0xffffffffUL;
   for (mti=1; mti<N; mti++) {
@@ -109,7 +110,7 @@ Random::drand()
 float
 Random::frand(float start, float end)
 {
-  return drand(start, end);
+  return static_cast<float>(drand(start, end));
 }
 
 float

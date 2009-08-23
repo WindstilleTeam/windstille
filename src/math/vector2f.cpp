@@ -35,14 +35,14 @@ Vector2f Vector2f::unit() const
 float
 Vector2f::magnitude() const
 {
-  return sqrt(x*x + y*y);
+  return sqrtf(x*x + y*y);
 }
 
 Vector2f
 Vector2f::rotate(float angle) const
 {
-  return Vector2f(x * cos(angle) - y * sin(angle),
-                  x * sin(angle) + y * cos(angle));
+  return Vector2f(x * cosf(angle) - y * sinf(angle),
+                  x * sinf(angle) + y * cosf(angle));
 }
 
 Vector2f
