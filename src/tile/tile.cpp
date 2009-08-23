@@ -21,10 +21,13 @@
 #include "tile.hpp"
 
 Tile::Tile(unsigned int arg_colmap)
-  : colmap(arg_colmap)
+  : id(),
+    packer(-1),
+    uv(),
+    texture(),
+    colmap(arg_colmap),
+    desc(0)
 {
-  packer = -1;
-  desc = 0;
 }
 
 /* EOF */

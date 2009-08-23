@@ -201,7 +201,8 @@ ParticleSystem::ParticleSystem(FileReader& props)
 }
 
 ParticleSystem::ParticleSystem()
-  : life_time(1.0f),
+  : particles(),
+    life_time(1.0f),
     randomizer(new PointRandomizer()),
     drawer(),
     spawn_x(0),

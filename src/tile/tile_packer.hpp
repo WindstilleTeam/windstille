@@ -21,6 +21,8 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
+#include <boost/scoped_ptr.hpp>
+
 #include "display/texture.hpp"
 #include "math/rect.hpp"
 
@@ -48,7 +50,11 @@ public:
   Texture get_texture() const;
 
 private:
-  TilePackerImpl* impl;
+  boost::scoped_ptr<TilePackerImpl> impl;
+
+private:
+  TilePacker(const TilePacker&);
+  TilePacker& operator=(const TilePacker&);
 };
 
 #endif

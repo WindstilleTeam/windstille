@@ -29,6 +29,9 @@
 #include <inttypes.h>
 
 TileMap::TileMap(FileReader& props)
+  : field(),
+    z_pos(),
+    total_time()
 {
   int width = -1;
   int height = -1;

@@ -122,7 +122,8 @@ private:
 };
 
 TexturePacker::TexturePacker(const Size& texture_size_)
-  : texture_size(texture_size_)
+  : texture_size(texture_size_),
+    textures()
 {
 }
 

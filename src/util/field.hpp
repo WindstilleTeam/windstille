@@ -34,12 +34,16 @@ public:
   typedef typename std::vector<T>::iterator iterator;
 
   Field()
-    : width(0), height(0)
+    : width(0),
+      height(0), 
+      vec()
   {
   }
 
   Field (int w, int h) 
-    : width (w), height (h), vec (width * height)
+    : width(w), 
+      height(h), 
+      vec(width * height)
   {
   }
 

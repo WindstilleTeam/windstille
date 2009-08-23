@@ -52,6 +52,10 @@ bool surface_empty(const SoftwareSurface& image, int sx, int sy, int w, int h)
 }
 
 TileFactory::TileFactory(const std::string& filename)
+  : tiles(),
+    packers(),
+    color_packer(),
+    descriptions()
 {
   packers.push_back(new TilePacker(1024, 1024));
   packers.push_back(new TilePacker(1024, 1024));

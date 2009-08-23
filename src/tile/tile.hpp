@@ -62,6 +62,10 @@ public:
   Tile(unsigned int arg_colmap);
 
   unsigned int get_colmap() const { return colmap; }
+
+private:
+  Tile(const Tile&);
+  Tile& operator=(const Tile&);
 };
 
 #endif

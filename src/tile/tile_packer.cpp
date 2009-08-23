@@ -63,7 +63,6 @@ TilePacker::TilePacker(int width, int height)
 
 TilePacker::~TilePacker()
 {
-  delete impl;
 }
 
 /** Pack a tile and return the position where it is placed in the
