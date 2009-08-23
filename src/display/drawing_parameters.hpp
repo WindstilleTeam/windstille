@@ -37,12 +37,10 @@ public:
   Color   color;
 
   DrawingParameters()
-  {
-    blendfunc_src = GL_SRC_ALPHA;
-    blendfunc_dst = GL_ONE_MINUS_SRC_ALPHA;
-
-    color = Color(1.0f, 1.0f, 1.0f, 1.0f);
-  }
+    : blendfunc_src(GL_SRC_ALPHA),
+      blendfunc_dst(GL_ONE_MINUS_SRC_ALPHA),
+      color(1.0f, 1.0f, 1.0f, 1.0f)
+  {}
 
   DrawingParameters& set_color(const Color& c)
   { 

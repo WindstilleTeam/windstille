@@ -32,6 +32,7 @@
 #include "physfs/physfs_sdl.hpp"
 
 TextureManager::TextureManager()
+  : textures()
 {
 }
 

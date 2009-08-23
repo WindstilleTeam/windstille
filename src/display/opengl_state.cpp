@@ -50,7 +50,12 @@ public:
   std::map<GLenum, bool> client_state;
 
   OpenGLStateImpl()
-    : was_activated(false)
+    : was_activated(false),
+      color(),
+      blend_sfactor(GL_SRC_ALPHA),
+      blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
+      state(),
+      client_state()
   {}
 };
 

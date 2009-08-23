@@ -25,36 +25,40 @@
 namespace lisp
 {
 
-  class Writer
-  {
-  public:
-    Writer(const std::string& filename);
-    Writer(std::ostream* out);
-    ~Writer();
+class Writer
+{
+public:
+  Writer(const std::string& filename);
+  Writer(std::ostream* out);
+  ~Writer();
 
-    void write_comment(const std::string& comment);
+  void write_comment(const std::string& comment);
 
-    void start_list(const std::string& listname);
+  void start_list(const std::string& listname);
 
-    void write_int(const std::string& name, int value);
-    void write_float(const std::string& name, float value);
-    void write_string(const std::string& name, const std::string& value,
-        bool translatable = false);
-    void write_bool(const std::string& name, bool value);
-    void write_int_vector(const std::string& name, const std::vector<int>& value);
-    void write_int_vector(const std::string& name, const std::vector<unsigned int>& value);
-    // add more write-functions when needed...
+  void write_int(const std::string& name, int value);
+  void write_float(const std::string& name, float value);
+  void write_string(const std::string& name, const std::string& value,
+                    bool translatable = false);
+  void write_bool(const std::string& name, bool value);
+  void write_int_vector(const std::string& name, const std::vector<int>& value);
+  void write_int_vector(const std::string& name, const std::vector<unsigned int>& value);
+  // add more write-functions when needed...
 
-    void end_list(const std::string& listname);
+  void end_list(const std::string& listname);
 
-  private:
-    void indent();
+private:
+  void indent();
 
-    std::ostream* out;
-    bool out_owned;
-    int indent_depth;
-    std::vector<std::string> lists;
-  };
+  std::ostream* out;
+  bool out_owned;
+  int indent_depth;
+  std::vector<std::string> lists;
+
+private:
+  Writer (const Writer&);
+  Writer& operator= (const Writer&);
+};
   
 } //namespace lisp
 

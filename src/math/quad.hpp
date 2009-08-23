@@ -35,6 +35,10 @@ public:
   Vector2f p4;
 
   Quad()
+    : p1(),
+      p2(),
+      p3(),
+      p4()
   {}
 
   Quad(const Rectf& rect) 

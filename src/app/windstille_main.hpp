@@ -66,6 +66,10 @@ private:
   void init_physfs(const char* argv0);
   void init_modules();
   void deinit_modules();
+
+private:
+  WindstilleMain (const WindstilleMain&);
+  WindstilleMain& operator= (const WindstilleMain&);
 };
 
 #endif

@@ -54,6 +54,20 @@ public:
   std::vector<SDL_Joystick*> joysticks;
 
   std::map<std::string, SDLKey> keyidmapping;
+
+  InputManagerSDLImpl()
+    : joystick_button_bindings(),
+      joystick_button_axis_bindings(),
+      joystick_axis_bindings(),
+      joystick_axis_button_bindings(),
+      keyboard_button_bindings(),
+      keyboard_axis_bindings(),
+      mouse_button_bindings(),
+      wiimote_button_bindings(),
+      wiimote_axis_bindings(),
+      joysticks(),
+      keyidmapping()
+  {}
 };
 
 std::string
@@ -376,7 +390,7 @@ InputManagerSDL::on_joy_axis_event(const SDL_JoyAxisEvent& event)
         {
           if (abs(event.value) > dead_zone)
             {
-              add_axis_event(i->event, event.value/(i->invert?-32768.0f:32768.0f));
+              add_axis_event(i->event, event.value / (i->invert ? -32768.0f : 32768.0f));
             }
           else
             {
@@ -525,7 +539,7 @@ InputManagerSDL::update(float /*delta*/)
                            event.acc.y,
                            event.acc.z);
                  
-                  float roll = atan(event.acc.x/event.acc.z);
+                  float roll = atanf(static_cast<float>(event.acc.x / event.acc.z));
                   if (event.acc.z <= 0.0) {
                     roll += M_PI * ((event.acc.x > 0.0) ? 1 : -1);
                   }

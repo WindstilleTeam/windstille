@@ -119,10 +119,10 @@ MenuManager::display_main_menu()
     
   { // Construct Copyright box
     std::auto_ptr<gui::GroupComponent> text_group
-      (new gui::GroupComponent(Rectf(Vector2f(Display::get_width()/2 - 390.0f,
-                                              Display::get_height()  - 100.0f),
-                                     Size(800 - 20, 
-                                          100 - 10)),
+      (new gui::GroupComponent(Rectf(Vector2f(static_cast<float>(Display::get_width())/2.0f - 390.0f,
+                                              static_cast<float>(Display::get_height())     - 100.0f),
+                                     Sizef(800.0f - 20.0f, 
+                                           100.0f - 10.0f)),
                                "",
                                menu.get_root()));
 
@@ -535,28 +535,28 @@ void
 MenuManager::menu_master_volume(int i)
 {
   config.set_int("master-volume", i);
-  SoundManager::current()->set_master_volume((i/100.0f));
+  SoundManager::current()->set_master_volume(static_cast<float>(i)/100.0f);
 }
 
 void
 MenuManager::menu_music_volume(int i)
 {
   config.set_int("music-volume", i);
-  SoundManager::current()->set_music_volume((i/100.0f));
+  SoundManager::current()->set_music_volume(static_cast<float>(i)/100.0f);
 }
 
 void
 MenuManager::menu_voice_volume(int i)
 {
   config.set_int("voice-volume", i);
-  SoundManager::current()->set_voice_volume((i/100.0f));
+  SoundManager::current()->set_voice_volume(static_cast<float>(i)/100.0f);
 }
 
 void
 MenuManager::menu_sfx_volume(int i)
 {
   config.set_int("sfx-volume", i);
-  SoundManager::current()->set_sfx_volume((i/100.0f));
+  SoundManager::current()->set_sfx_volume(static_cast<float>(i)/100.0f);
 }
 
 /* EOF */

@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <sstream>
 
 IFileStreambuf::IFileStreambuf(const std::string& filename)
+: file(0)
 {
     file = PHYSFS_openRead(filename.c_str());
     if(file == 0) {
@@ -101,6 +102,7 @@ IFileStreambuf::seekoff(off_type off, std::ios_base::seekdir dir,
 //---------------------------------------------------------------------------
 
 OFileStreambuf::OFileStreambuf(const std::string& filename)
+  : file(0)
 {
     file = PHYSFS_openWrite(filename.c_str());
     if(file == 0) {

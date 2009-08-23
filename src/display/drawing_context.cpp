@@ -65,8 +65,8 @@ public:
     state.bind_texture(texture);
     state.activate();
 
-    float u = Display::get_width()  / static_cast<float>(texture.get_width());
-    float v = Display::get_height() / static_cast<float>(texture.get_height());
+    float u = static_cast<float>(Display::get_width())  / static_cast<float>(texture.get_width());
+    float v = static_cast<float>(Display::get_height()) / static_cast<float>(texture.get_height());
 
     float u_start = -offset.x / static_cast<float>(texture.get_width());
     float v_start = -offset.y / static_cast<float>(texture.get_height());
@@ -80,13 +80,13 @@ public:
       glVertex2f(0, 0);
     
       glTexCoord2f(u, v_start);
-      glVertex2f(Display::get_width(), 0);
+      glVertex2f(static_cast<float>(Display::get_width()), 0);
 
       glTexCoord2f(u, v);
-      glVertex2f(Display::get_width(), Display::get_height());
+      glVertex2f(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()));
 
       glTexCoord2f(u_start, v);
-      glVertex2f(0,  Display::get_height());
+      glVertex2f(0,  static_cast<float>(Display::get_height()));
     }
     glEnd();
   }
@@ -348,17 +348,17 @@ DrawingContext::fill_pattern(const Texture& pattern, const Vector2f& offset)
 void
 DrawingContext::rotate(float angle, float x, float y, float z)
 {
-  double len2 = x*x+y*y+z*z;
+  float len2 = x*x+y*y+z*z;
   if (len2 != 1.0)
     {
-      double len = sqrt(len2);
+      float len = sqrtf(len2);
       x /= len;
       y /= len;
       z /= len;
     }
 
-  double c = cos(angle*3.14159265/180);
-  double s = sin(angle*3.14159265/180);
+  float c = cosf(angle*3.14159265f/180.0f);
+  float s = sinf(angle*3.14159265f/180.0f);
 
   Matrix matrix = Matrix::identity();
   matrix[0]  = x*x*(1-c)+c;

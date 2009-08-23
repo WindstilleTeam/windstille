@@ -36,7 +36,7 @@ private:
 
 protected:
   Currenton()  { assert(!s_current); s_current = static_cast<C*>(this); }
-  ~Currenton() { s_current = 0; }
+  virtual ~Currenton() { s_current = 0; }
   
 public:
   static C* current() { return s_current; }

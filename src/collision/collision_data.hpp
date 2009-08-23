@@ -46,9 +46,13 @@ struct CollisionData
   CollisionObject* object2;
 
   CollisionData()
-  {
-    state    = NONE;
-    col_time = 0;
+    : state(NONE),
+      direction(),
+      delta(0.0f),
+      col_time(0.0f),
+      object1(0),
+      object2(0)
+  {  
   }
 
   CollisionData merge(const CollisionData &r);

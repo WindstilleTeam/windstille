@@ -48,7 +48,11 @@ protected:
   bool active;
 
 public:
-  GameObject() : remove_flag(false), active(true) {}
+  GameObject() 
+  : remove_flag(false), 
+    name(),
+    active(true)
+  {}
   virtual ~GameObject() {}
 
   /**
@@ -103,6 +107,10 @@ public:
     
   static void set_world (Sector* w) { world = w; }
   Sector* get_world () const { return world; }
+
+private:
+  GameObject (const GameObject&);
+  GameObject& operator= (const GameObject&);
 };
 
 #endif

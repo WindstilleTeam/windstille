@@ -32,16 +32,19 @@ public:
   Vector2f offset;
   float zoom;
   float rotation;
+
+  GraphicContextStateImpl()
+    : width(1),
+      height(1),
+      offset(0.0f, 0.0f),
+      zoom(1.0f),
+      rotation(0)
+  {}
 };
 
 GraphicContextState::GraphicContextState()
   : impl(new GraphicContextStateImpl())
 {
-  impl->width  = 1;
-  impl->height = 1; 
-  impl->offset = Vector2f(0,0);
-  impl->zoom   = 1.0f;
-  impl->rotation = 0;
 }
 
 GraphicContextState::GraphicContextState(int w, int h)

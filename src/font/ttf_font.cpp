@@ -58,6 +58,12 @@ public:
 
   /** OpenGL Texture which holds all the characters */
   Texture texture;
+
+  TTFFontImpl()
+    : characters(),
+      size(0),
+      texture()
+  {}
 };
 
 FT_Library TTFFontImpl::library;
@@ -208,7 +214,7 @@ TTFFont::draw(const Vector2f& pos_, const std::string& str, const Color& color)
       glVertex2f(pos.x + static_cast<float>(character.pos.left)   + mx, 
                  pos.y + static_cast<float>(character.pos.bottom) + my);
 
-      pos.x += character.advance;       
+      pos.x += static_cast<float>(character.advance);
     }
   glEnd();
 }
@@ -216,7 +222,7 @@ TTFFont::draw(const Vector2f& pos_, const std::string& str, const Color& color)
 void
 TTFFont::draw_center(const Vector2f& pos, const std::string& str, const Color& color)
 {
-  draw(Vector2f(pos.x - get_width(str)/2, pos.y), str, color);
+  draw(Vector2f(pos.x - static_cast<float>(get_width(str))/2.0f, pos.y), str, color);
 }
 
 int

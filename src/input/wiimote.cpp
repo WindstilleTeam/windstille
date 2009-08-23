@@ -39,13 +39,19 @@ Wiimote::deinit()
 }
 
 Wiimote::Wiimote()
-  : m_wiimote(0),
+  : mutex(),
+    m_wiimote(0),
     m_rumble(false),
     m_led_state(0),
     m_nunchuk_btns(0),
     m_nunchuk_stick_x(0),
     m_nunchuk_stick_y(0),
-    m_buttons(0)
+    m_buttons(0),
+    wiimote_zero(),
+    wiimote_one(),
+    nunchuk_zero(),
+    nunchuk_one(),
+    events()
 {
   pthread_mutex_init(&mutex, NULL);
 
@@ -176,8 +182,8 @@ void
 Wiimote::set_led(int num, bool state)
 {
   assert(num >= 1 && num <= 4);
-
-  int new_led_state = m_led_state;
+  
+  unsigned char new_led_state = m_led_state;
   if (state)
     new_led_state |= (1 << (num-1));
   else // (!state)
@@ -314,9 +320,9 @@ Wiimote::on_acc(const cwiid_acc_mesg& msg)
   //printf("Acc Report: x=%d, y=%d, z=%d\n", msg.acc[0], msg.acc[1], msg.acc[2]);
 
   add_acc_event(0, 0, 
-                (msg.acc[0] - wiimote_zero.x) / float(wiimote_one.x - wiimote_zero.x),
-                (msg.acc[1] - wiimote_zero.y) / float(wiimote_one.y - wiimote_zero.y),
-                (msg.acc[2] - wiimote_zero.z) / float(wiimote_one.z - wiimote_zero.z));
+                (msg.acc[0] - wiimote_zero.x) / static_cast<float>(wiimote_one.x - wiimote_zero.x),
+                (msg.acc[1] - wiimote_zero.y) / static_cast<float>(wiimote_one.y - wiimote_zero.y),
+                (msg.acc[2] - wiimote_zero.z) / static_cast<float>(wiimote_one.z - wiimote_zero.z));
 }
 
 void

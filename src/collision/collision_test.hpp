@@ -32,8 +32,10 @@ struct SweepResult
   float t1;
 
   SweepResult()
+    : state(COL_NEVER),
+      t0(0.0f),
+      t1(0.0f)
   {
-    state=COL_NEVER;
   }
 
   bool collision(float delta) const

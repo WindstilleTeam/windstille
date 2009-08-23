@@ -46,20 +46,15 @@ public:
   bool vflip;
 
   SurfaceDrawingParameters()
-  {
-    blendfunc_src = GL_SRC_ALPHA;
-    blendfunc_dst = GL_ONE_MINUS_SRC_ALPHA;
-
-    pos = Vector2f(0, 0);
-    
-    color = Color(1.0f, 1.0f, 1.0f, 1.0f);
-  
-    angle = 0.0f;
-    scale    = Vector2f(1.0f, 1.0f);
-
-    hflip = false;
-    vflip = false;
-  }
+    : blendfunc_src(GL_SRC_ALPHA),
+      blendfunc_dst(GL_ONE_MINUS_SRC_ALPHA),
+      pos(0, 0),
+      color(1.0f, 1.0f, 1.0f, 1.0f),
+      angle(0.0f),
+      scale(1.0f, 1.0f),
+      hflip(false),
+      vflip(false)
+  {}
 
   SurfaceDrawingParameters& set_scale(float s) 
   { 

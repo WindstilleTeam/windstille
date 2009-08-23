@@ -29,7 +29,7 @@ protected:
   Controller controller;
 
 public:
-  InputManagerImpl() {}
+  InputManagerImpl() : controller() {}
   virtual ~InputManagerImpl() {}
 
   virtual void load(const std::string& filename) =0;

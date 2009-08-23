@@ -37,7 +37,7 @@ public:
     RGBA
   };
 
-  SoftwareSurface() {}
+  SoftwareSurface() : impl() {}
   explicit SoftwareSurface(const Pathname& filename);
   SoftwareSurface(int width, int height, Format format = RGBA);
   ~SoftwareSurface();

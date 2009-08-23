@@ -31,7 +31,8 @@ public:
   RenderBuffer render_buffer;
   
   FramebufferImpl(GLenum target, int width, int height)
-    : texture(target, width, height),
+    : handle(0),
+      texture(target, width, height),
       render_buffer(GL_DEPTH_COMPONENT24, width, height)
   {
     glGenFramebuffersEXT(1, &handle);
@@ -58,6 +59,7 @@ public:
 };
 
 Framebuffer::Framebuffer()
+  : impl()
 {
 }
 

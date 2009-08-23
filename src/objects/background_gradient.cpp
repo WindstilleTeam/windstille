@@ -22,9 +22,9 @@
 #include "background_gradient.hpp"
 
 BackgroundGradient::BackgroundGradient(FileReader& props)
+  : colors(),
+    z_pos(0.0f)
 {
-  z_pos = 0.0;
-
   props.get("z-pos",  z_pos);
   props.get("colors", colors);
   if (colors.size() % (3 + 4 + 4 + 2) != 0)
@@ -67,7 +67,8 @@ BackgroundGradient::draw(SceneContext& sc)
   Color topcolor(0.0f, 0.0f, 0.5f);
   Color bottomcolor(0.5f, 0.5f, 1.0f);
 
-  Rect rect(0, 0, Display::get_width(), Display::get_height());
+  Rectf rect(0.0f, 0.0f, 
+             static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()));
   VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos, 
                                                                    sc.color().get_modelview());
 
@@ -76,33 +77,33 @@ BackgroundGradient::draw(SceneContext& sc)
 
   for(int i = 0; i < int(colors.size()); i += (3 + 4 + 4 + 2))
     {
-      float& start    = colors[i + 0];
-      float& midpoint = colors[i + 1];
-      float& end      = colors[i + 2];
-      Color color1(colors[i + 3], colors[i + 4], colors[i + 5], colors[i + 6]);
-      Color color2(colors[i + 7], colors[i + 8], colors[i + 9], colors[i + 10]);
-      Color midcolor((color1.r + color2.r)/2,
+      const float& start    = colors[i + 0];
+      const float& midpoint = colors[i + 1];
+      const float& end      = colors[i + 2];
+      const Color color1(colors[i + 3], colors[i + 4], colors[i + 5], colors[i + 6]);
+      const Color color2(colors[i + 7], colors[i + 8], colors[i + 9], colors[i + 10]);
+      const Color midcolor((color1.r + color2.r)/2,
                      (color1.g + color2.g)/2,
                      (color1.b + color2.b)/2,
                      (color1.a + color2.a)/2);
 
       array->color(color1);
-      array->vertex(rect.left, rect.top + start*rect.get_height());
+      array->vertex(rect.left, rect.top + start * rect.get_height());
 
       array->color(color1);
-      array->vertex(rect.right, rect.top + start*rect.get_height());
+      array->vertex(rect.right, rect.top + start * rect.get_height());
 
       array->color(midcolor);
-      array->vertex(rect.left, rect.top + midpoint*rect.get_height());
+      array->vertex(rect.left, rect.top + midpoint * rect.get_height());
 
       array->color(midcolor);
-      array->vertex(rect.right, rect.top + midpoint*rect.get_height());
+      array->vertex(rect.right, rect.top + midpoint * rect.get_height());
 
       array->color(color2);
-      array->vertex(rect.left, rect.top + end*rect.get_height());
+      array->vertex(rect.left, rect.top + end * rect.get_height());
 
       array->color(color2);
-      array->vertex(rect.right, rect.top + end*rect.get_height());  
+      array->vertex(rect.right, rect.top + end * rect.get_height());  
     }
 
   sc.color().draw(array);  

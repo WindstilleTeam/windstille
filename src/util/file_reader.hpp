@@ -39,6 +39,7 @@ public:
 
   FileReader(boost::shared_ptr<FileReaderImpl> impl_);
   FileReader();
+  virtual ~FileReader() {}
 
   /** Name of the current section */
   std::string get_name() const;

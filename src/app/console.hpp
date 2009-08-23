@@ -46,10 +46,11 @@ public:
   void execute(const std::string& str);
 
 private:
+  boost::scoped_ptr<ConsoleImpl> impl;
+
+private:
   Console (const Console&);
   Console& operator= (const Console&);
-
-  boost::scoped_ptr<ConsoleImpl> impl;
 };
 
 extern Console console;
