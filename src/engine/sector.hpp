@@ -38,6 +38,7 @@ class SceneContext;
 class SpawnPoint;
 class SquirrelThread;
 class TileMap;
+class SceneGraph;
 
 /** */
 class Sector : public Currenton<Sector>
@@ -45,6 +46,7 @@ class Sector : public Currenton<Sector>
 private:
   boost::scoped_ptr<CollisionEngine> collision_engine;
   boost::scoped_ptr<NavigationGraph> navigation_graph;
+  boost::scoped_ptr<SceneGraph>      scene_graph;
 
   Pathname filename;
   std::string name;

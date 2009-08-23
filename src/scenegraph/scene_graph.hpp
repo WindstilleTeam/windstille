@@ -16,33 +16,26 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_UTIL_CURRENTON_HPP
-#define HEADER_WINDSTILLE_UTIL_CURRENTON_HPP
+#ifndef HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
+#define HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
 
-#include <assert.h>
+#include <boost/shared_ptr.hpp>
 
-/** 
- *   A 'Currenton' allows access to the currently active instance of a
- *   class via the static current() function. It is kind of like a
- *   singleton, but without handling the object construction itself or
- *   in other words its a glorified global variable that points to the
- *   current instance of a class.
- */
-template<class C>
-class Currenton
+class DrawingRequest;
+
+class SceneGraph
 {
 private:
-  static C* s_current; 
-
-protected:
-  Currenton()  { assert(!s_current); s_current = static_cast<C*>(this); }
-  ~Currenton() { s_current = 0; }
-  
 public:
-  static C* current() { return s_current; }
-};
+  SceneGraph();
 
-template<class C> C* Currenton<C>::s_current = 0;
+  void add_drawable(boost::shared_ptr<DrawingRequest> drawable);
+  void remove_drawable(boost::shared_ptr<DrawingRequest> drawable);
+
+private:
+  SceneGraph(const SceneGraph&);
+  SceneGraph& operator=(const SceneGraph&);
+};
 
 #endif
 

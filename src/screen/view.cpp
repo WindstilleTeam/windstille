@@ -17,13 +17,13 @@
 */
 
 #include <SDL.h>
+
 #include "display/display.hpp"
 #include "collision/collision_engine.hpp"
 #include "objects/player.hpp"
 #include "engine/sector.hpp"
 #include "input/input_manager.hpp"
 #include "view.hpp"
-
 
 View::View()
   : state(Display::get_width(), Display::get_height()),

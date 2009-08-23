@@ -16,34 +16,10 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_UTIL_CURRENTON_HPP
-#define HEADER_WINDSTILLE_UTIL_CURRENTON_HPP
+#include "scene_graph.hpp"
 
-#include <assert.h>
-
-/** 
- *   A 'Currenton' allows access to the currently active instance of a
- *   class via the static current() function. It is kind of like a
- *   singleton, but without handling the object construction itself or
- *   in other words its a glorified global variable that points to the
- *   current instance of a class.
- */
-template<class C>
-class Currenton
+SceneGraph::SceneGraph()
 {
-private:
-  static C* s_current; 
-
-protected:
-  Currenton()  { assert(!s_current); s_current = static_cast<C*>(this); }
-  ~Currenton() { s_current = 0; }
-  
-public:
-  static C* current() { return s_current; }
-};
-
-template<class C> C* Currenton<C>::s_current = 0;
-
-#endif
+}
 
 /* EOF */

@@ -47,6 +47,7 @@
 #include "objects/scriptable_object.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "scripting/squirrel_error.hpp"
+#include "scenegraph/scene_graph.hpp"
 #include "squirrel_thread.hpp"
 
 #include "sector.hpp"
@@ -56,6 +57,7 @@
 Sector::Sector(const Pathname& arg_filename)
   : collision_engine(new CollisionEngine()),
     navigation_graph(new NavigationGraph()),
+    scene_graph(new SceneGraph()),
     filename(arg_filename),
     player(0)
 { 

@@ -92,7 +92,7 @@ Inventory::~Inventory()
 void
 InventoryImpl::draw()
 {
-  Vector2f pos = Vector2f(400, 300); // View::current()->screen_Player::currently->get_pos();
+  Vector2f pos = Vector2f(400, 300);
 
   int num_items = items.size();
   float step_angle = (2*M_PI) / num_items;
