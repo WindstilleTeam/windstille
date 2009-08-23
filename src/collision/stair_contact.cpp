@@ -22,7 +22,10 @@
 #include "stair_contact.hpp"
 
 StairContact::StairContact(TileMap* tilemap_, const Point& pos_)
-  : tilemap(tilemap_), pos(pos_), advancement(0.0f)
+  : tilemap(tilemap_), 
+    pos(pos_), 
+    advancement(0.0f),
+    tile_type()
 {
   unsigned int col = tilemap->get_pixel(pos.x, pos.y);
   if (!(col & TILE_STAIRS))

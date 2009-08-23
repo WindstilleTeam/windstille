@@ -29,7 +29,17 @@
  ***********************************************************************/
 
 CollisionObject::CollisionObject(GameObject* game_object, const Rectf& rect_)
-  : primitive(rect_)
+ : object_type(),
+   pos(),
+   velocity(),
+   game_object(),
+   collision(),
+   primitive(rect_),
+   tilemap(),
+   is_unstuckable(),
+   is_unstuck_movable(),
+   is_domains(),
+   check_domains()
 {
   object_type        = RECTANGLE;
   is_unstuckable     = true;
@@ -43,7 +53,17 @@ CollisionObject::CollisionObject(GameObject* game_object, const Rectf& rect_)
 }
 
 CollisionObject::CollisionObject(TileMap* tilemap_)
-  : tilemap(tilemap_)
+ : object_type(),
+   pos(),
+   velocity(),
+   game_object(),
+   collision(),
+   primitive(),
+   tilemap(tilemap_),
+   is_unstuckable(),
+   is_unstuck_movable(),
+   is_domains(),
+   check_domains() 
 {
   object_type        = TILEMAP;
   is_unstuckable     = true;

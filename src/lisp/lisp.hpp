@@ -17,6 +17,9 @@
 #ifndef __LISP_HPP__
 #define __LISP_HPP__
 
+// unions aren't properly handled by -Weffc++, so we switch the warning off
+#pragma GCC diagnostic ignored "-Weffc++"
+
 #include <string>
 #include <vector>
 #include <iostream>

@@ -28,6 +28,9 @@
 #include "swarm.hpp"
 
 Swarm::Swarm(FileReader& props)
+  : agents(),
+    target(),
+    turn_speed()
 {
   int count = 100;
   turn_speed = 7.0f;

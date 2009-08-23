@@ -22,6 +22,7 @@
 namespace Scripting {
 
 SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& context, const std::string& message) throw()
+  : message()
 {
   std::ostringstream msg;
   msg << "Squirrel error: " << context << ": " << message << " (";
@@ -41,6 +42,7 @@ SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& context, const st
 }
 
 SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& message) throw()
+  : message()
 {
   std::ostringstream msg;
   msg << "Squirrel error: " << message << " (";

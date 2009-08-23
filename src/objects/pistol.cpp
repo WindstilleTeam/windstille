@@ -20,10 +20,9 @@
 #include "pistol.hpp"
 
 Pistol::Pistol()
-  : laser_pointer(0)
+  : sprite(Pathname("models/objects/pistol/pistol.wsprite")),
+    laser_pointer(new LaserPointer())
 {
-  laser_pointer = new LaserPointer();
-  sprite = Sprite3D(Pathname("models/objects/pistol/pistol.wsprite"));
 }
 
 Pistol::~Pistol()

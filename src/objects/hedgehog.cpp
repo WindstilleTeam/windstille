@@ -25,13 +25,13 @@ Hedgehog::Hedgehog(FileReader& props)
   : sprite(Pathname("images/hedgehog.sprite")),
     die_sprite(Pathname("images/hedgehog_die1.sprite")),
     light(Pathname("images/hedgehog_light.sprite")),
-    highlight(Pathname("images/hedgehog_highlight.sprite"))
+    highlight(Pathname("images/hedgehog_highlight.sprite")),
+    direction_left(false),
+    state(WALKING)
 {
   props.get("name", name);
   props.get("pos",  pos);
     
-  direction_left = false;
-  state = WALKING;
   light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
   highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
 }

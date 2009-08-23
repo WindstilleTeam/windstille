@@ -29,6 +29,8 @@ std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r, bool
  ***********************************************************************/
 
 CollisionEngine::CollisionEngine()
+  : objects(),
+    unstuck_velocity()
 {
   unstuck_velocity = 50.0f;
 }

@@ -28,6 +28,12 @@ struct InputEventDefinition
   InputEventType type;
   int            id;
   std::string    name;
+
+  InputEventDefinition()
+    : type(),
+      id(),
+      name()
+  {}
 };
 
 /** */

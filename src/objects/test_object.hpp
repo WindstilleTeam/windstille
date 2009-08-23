@@ -45,6 +45,11 @@ private:
   struct AttachedSprite {
     Sprite3D sprite;
     Sprite3D::PointID attachpoint;
+
+    AttachedSprite()
+      : sprite(),
+        attachpoint()
+    {}
   };
   std::vector<AttachedSprite> attached_sprites;
   Vector2f pos;

@@ -19,6 +19,7 @@
 #include "screen/screen_manager.hpp"
 
 #include <boost/format.hpp>
+
 #include <boost/filesystem.hpp>
 #include <iostream>
 

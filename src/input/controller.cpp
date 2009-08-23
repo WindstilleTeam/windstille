@@ -23,9 +23,9 @@
 #include "controller.hpp"
 
 Controller::Controller()
+  : states(),
+    events(LAST_EVENT)// FIXME: need to mark states with type
 {
-  // FIXME: need to mark states with type
-  states.resize(LAST_EVENT);
 }
 
 float

@@ -27,7 +27,10 @@
 #include "input_configurator.hpp"
 
 InputConfigurator::InputConfigurator()
-  : wait_for_plus(false),
+  : items(),
+    wait_for_plus(false),
+    minus(),
+    out(),
     area(Rectf(120, 100,
                Display::get_width()  - 120, 
                Display::get_height() - 100), 

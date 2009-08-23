@@ -51,6 +51,15 @@ public:
   Items items;
   int current_item;
 
+  InventoryImpl()
+    : moving(),
+      add_angle(),
+      slot(),
+      slothighlight(),
+      items(),
+      current_item()
+  {}
+
   void update(float delta, const Controller& controller);
   void draw();
   

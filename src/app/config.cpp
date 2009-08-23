@@ -36,6 +36,7 @@ std::vector<std::string> arg_files;
 Config config;
 
 Config::Config()
+  : config_values()
 {
   add(new ConfigValue<int> ("anti-aliasing",  _("Use NUMx Anti-Aliasing"), true, 0));
   add(new ConfigValue<bool>("fullscreen",     _("Use fullscreen"),         true, false));

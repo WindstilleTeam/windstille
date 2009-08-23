@@ -21,6 +21,8 @@
 
 
 ControllerDescription::ControllerDescription()
+  : str_to_event(),
+    id_to_event()
 {
 }
 

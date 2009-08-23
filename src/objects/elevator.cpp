@@ -23,6 +23,9 @@
 #include "sprite2d/manager.hpp"
 
 Elevator::Elevator(FileReader& props)
+  : size(),
+    colobject(),
+    sprite()
 {
   std::string spritename;
 

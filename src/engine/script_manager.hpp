@@ -19,6 +19,9 @@
 #ifndef HEADER_WINDSTILLE_ENGINE_SCRIPT_MANAGER_HPP
 #define HEADER_WINDSTILLE_ENGINE_SCRIPT_MANAGER_HPP
 
+// unions aren't properly handled by -Weffc++, so we switch the warning off
+#pragma GCC diagnostic ignored "-Weffc++"
+
 #include <vector>
 #include <list>
 #include <map>
@@ -55,7 +58,6 @@ public:
       MAX_WAKEUP_EVENT_COUNT
     };
 
-#pragma GCC diagnostic warning "-Weffc++"
   struct WakeupData 
   {
     explicit WakeupData() : type(NO_EVENT) {}

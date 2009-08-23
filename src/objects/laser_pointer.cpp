@@ -24,6 +24,11 @@
 #include "laser_pointer.hpp"
 
 LaserPointer::LaserPointer()
+ : noise(),
+   laserpointer(),
+   laserpointer_light(),
+   progress(),
+   angle()
 {
   noise = Texture(Pathname("images/noise2.png"));
   laserpointer = Sprite(Pathname("images/laserpointer.sprite"));

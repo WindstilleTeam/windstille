@@ -25,7 +25,8 @@
 #include "entity.hpp"
 
 Entity::Entity()
-  : pos(),
+  : done(),
+    pos(),
     velocity(0, 0),
     useable(false),
     use_verb(),

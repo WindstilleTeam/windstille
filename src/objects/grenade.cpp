@@ -22,9 +22,9 @@
 
 Grenade::Grenade()
   : sprite(Pathname("models/objects/grenade/grenade.wsprite")), 
-    physics(this)
+    physics(this),
+    c_object(new CollisionObject(this, Rectf(0, 0, 32, 32)))
 {
-  c_object.reset(new CollisionObject(this, Rectf(0, 0, 32, 32)));
   physics.register_collobj(*c_object);
 
   Sector::current()->get_collision_engine()->add(c_object.get());

@@ -30,10 +30,12 @@ public:
   {
     return &currentval;
   }
+
   T operator*() const
   {
     return currentval;
   }
+
   bool next() {
     bool res;
     do {

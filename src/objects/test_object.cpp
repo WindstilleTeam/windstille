@@ -23,6 +23,9 @@
 #include "sprite3d/manager.hpp"
 
 TestObject::TestObject(FileReader& props)
+  : sprite(),
+    attached_sprites(),
+    pos()
 {
   pos = Vector2f(0, 0);
   std::string spritename;

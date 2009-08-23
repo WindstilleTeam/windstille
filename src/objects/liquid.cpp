@@ -23,6 +23,12 @@
 #define SAMPLES 5
 
 Liquid::Liquid(FileReader& props)
+  : texture(),
+    t(),
+    heightfield_store1(),
+    heightfield_store2(),
+    heightfield1(),
+    heightfield2()
 {
   int width = 10;
   t = 0;

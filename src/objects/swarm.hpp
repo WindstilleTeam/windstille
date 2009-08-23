@@ -30,6 +30,15 @@ public:
   float  speed;
   float  max_speed;
   float  turn_speed;
+
+  SwarmAgent()
+    : pos(),
+      last_pos(),
+      angle(),
+      speed(),
+      max_speed(),
+      turn_speed()
+  {}
 };
 
 /** */
@@ -42,6 +51,7 @@ private:
   Vector2f target;
 
   float turn_speed; 
+
 public:
   Swarm(FileReader& reader);
   

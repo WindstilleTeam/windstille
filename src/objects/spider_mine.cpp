@@ -21,8 +21,14 @@
 #include "sprite2d/manager.hpp"
 
 SpiderMine::SpiderMine(FileReader& props)
-  : explode(Pathname("images/explosion.sprite")),
-    explode_light(Pathname("images/explolight.sprite"))
+  : sprite(),
+    explode(Pathname("images/explosion.sprite")),
+    explode_light(Pathname("images/explolight.sprite")),
+    initial_position(),
+    walk_speed(160),
+    jump_time(0.0),
+    state(WAIT),
+    exploded(false)
 {
   props.get("name", name);
   props.get("pos",  pos);
@@ -30,10 +36,6 @@ SpiderMine::SpiderMine(FileReader& props)
   sprite = Sprite(Pathname("images/spider_mine.sprite"));
   //sprite.set_scale(.5, .5);
   initial_position = pos;
-  walk_speed = 160;
-  exploded = false;
-  state = WAIT;
-  jump_time = 0.0;
 }
 
 SpiderMine::~SpiderMine()

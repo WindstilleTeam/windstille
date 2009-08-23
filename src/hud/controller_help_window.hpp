@@ -42,7 +42,6 @@ public:
   void update(float delta, const Controller& controller);
 
 private:
-  boost::shared_ptr<ControllerHelpWindowImpl> impl;
   static ControllerHelpWindow* current_;
 };
 

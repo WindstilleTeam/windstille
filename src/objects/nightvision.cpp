@@ -25,10 +25,10 @@
 #include "nightvision.hpp"
 
 Nightvision::Nightvision(FileReader& /*props*/)
-  : nightvision(Pathname("images/nightvision.sprite"))
+  : nightvision(Pathname("images/nightvision.sprite")),
+    noise(Pathname("images/noise.png"))
 {
   name = "nightvision";
-  noise = Texture(Pathname("images/noise.png"));
   noise.set_wrap(GL_REPEAT);
   noise.set_filter(GL_LINEAR);
 }

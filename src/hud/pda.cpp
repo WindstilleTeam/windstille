@@ -38,6 +38,11 @@ ObjectiveEntry::ObjectiveEntry(const std::string& arg_name, const std::string& a
 
 PDA::PDA()
   : pos(100.0f, 100.0f),
+    background(),
+    ui_area(),
+    text_area(),
+    dialogs(),
+    objectives(),
     state(PDA_OBJECTIVES),
     old_state(PDA_NONE)
 { 
