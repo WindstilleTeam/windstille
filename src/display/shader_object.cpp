@@ -57,8 +57,8 @@ public:
   GLhandleARB handle;
 
   ShaderObjectImpl(GLenum type)
+    : handle(glCreateShaderObjectARB(type))
   {
-    handle = glCreateShaderObjectARB(type);
   }
 
   ~ShaderObjectImpl()

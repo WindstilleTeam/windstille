@@ -27,6 +27,9 @@
 #include "armature.hpp"
 
 Armature::Armature(FileReader& reader)
+  : name(),
+    bones(),
+    root_bone(0)
 {
   parse(reader);
 }

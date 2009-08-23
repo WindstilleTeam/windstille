@@ -38,13 +38,29 @@ using namespace sprite3d;
 
 Sprite3D::Sprite3D()
   : data(0), 
-    actions_switched(false)
+    actions_switched(false),
+    frame1(),
+    frame2(),
+    blend_time(0.0f),
+    next_frame(),
+    next_action(),
+    abort_at_frame(),
+    blend_sfactor(GL_ONE),
+    blend_dfactor(GL_ZERO)
 {
 }
 
 Sprite3D::Sprite3D(const Pathname& filename)
   : data(sprite3d::Manager::current()->create_data(filename)),
-    actions_switched(false)
+    actions_switched(false),
+    frame1(),
+    frame2(),
+    blend_time(0.0f),
+    next_frame(),
+    next_action(),
+    abort_at_frame(),
+    blend_sfactor(GL_ONE),
+    blend_dfactor(GL_ZERO)
 {
   frame1.action         = &data->actions[0];
   frame1.frame          = 0;
@@ -54,10 +70,6 @@ Sprite3D::Sprite3D(const Pathname& filename)
   abort_at_frame.action = 0;
   next_frame.action     = 0;
   next_action.action    = 0;
-  blend_time            = 0.0;
-
-  blend_sfactor = GL_ONE;
-  blend_dfactor = GL_ZERO;
 }
 
 Sprite3D::~Sprite3D()

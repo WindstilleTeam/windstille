@@ -34,6 +34,7 @@ private:
   Bones bones;
   
   Bone* root_bone;
+
 public:
   Armature(FileReader& reader);
   ~Armature();

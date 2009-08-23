@@ -29,6 +29,12 @@ public:
   std::string name;
   int         bone_id;
   Quaternion  quat;
+
+  PoseBone()
+    : name(),
+      bone_id(),
+      quat()
+  {}
 };
 
 #endif

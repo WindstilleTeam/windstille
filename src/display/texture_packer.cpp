@@ -30,13 +30,15 @@ class TextureSpace
 private:
   Rect          rect;
   bool          used;
-  std::auto_ptr<TextureSpace> left;
-  std::auto_ptr<TextureSpace> right;
+  boost::scoped_ptr<TextureSpace> left;
+  boost::scoped_ptr<TextureSpace> right;
 
 public:
   TextureSpace(const Rect& rect_)
     : rect(rect_),
-      used(false)
+      used(false),
+      left(),
+      right()
   {}
 
   ~TextureSpace()

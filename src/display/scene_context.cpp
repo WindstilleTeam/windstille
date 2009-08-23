@@ -64,7 +64,11 @@ public:
   Surface lightmap;
 
   SceneContextImpl() 
-    : render_mask(SceneContext::COLORMAP |
+    : color(),
+      light(),
+      highlight(),
+      control(),
+      render_mask(SceneContext::COLORMAP |
                   SceneContext::LIGHTMAP | 
                   SceneContext::HIGHLIGHTMAP | 
                   SceneContext::CONTROLMAP | 

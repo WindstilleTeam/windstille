@@ -93,7 +93,7 @@ struct AttachmentPointPosition
  */
 struct MeshVertices
 {
-  MeshVertices() {}
+  MeshVertices() : vertices() {}
   std::vector<float> vertices;
 };
 
@@ -107,6 +107,11 @@ struct Marker
 {
   std::string name;
   uint16_t    frame;
+
+  Marker()
+    : name(),
+      frame()
+  {}
 };
 
 /** 
@@ -116,7 +121,8 @@ struct Marker
 struct ActionFrame
 {
   ActionFrame()
-    : meshs(0)
+    : meshs(),
+      attachment_points()
   { }
   std::vector<MeshVertices> meshs;
   std::vector<AttachmentPointPosition> attachment_points;
@@ -128,7 +134,10 @@ struct ActionFrame
 struct Action
 {
   Action()
-    : markers(0), frames(0)
+    : name(),
+      speed(),
+      markers(0), 
+      frames(0)
   { }
   std::string  name;
   float        speed;

@@ -42,8 +42,17 @@ public:
     std::string content;
     Attributes attributes;
 
-    Node() : type(NONE) {}
-    Node(Type type_, const std::string& content_ = std::string()) : type(type_), content(content_) {}
+    Node() 
+      : type(NONE), 
+        content(), 
+        attributes() 
+    {}
+
+    Node(Type type_, const std::string& content_ = std::string()) 
+      : type(type_), 
+        content(content_),
+        attributes()
+    {}
   };
 
   typedef std::vector<Node> Nodes;

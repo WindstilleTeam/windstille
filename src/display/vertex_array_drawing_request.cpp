@@ -23,11 +23,15 @@
 
 VertexArrayDrawingRequest::VertexArrayDrawingRequest(const Vector2f& pos_, float z_pos_, 
                                                      const Matrix& modelview_)
-  : DrawingRequest(pos_, z_pos_, modelview_)
+  : DrawingRequest(pos_, z_pos_, modelview_),
+    mode(GL_QUADS),
+    blend_sfactor(GL_SRC_ALPHA),
+    blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
+    texture(),
+    colors(),
+    texcoords(),
+    vertices()
 {
-  blend_sfactor = GL_SRC_ALPHA;
-  blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
-  mode = GL_QUADS;
 }
 
 int

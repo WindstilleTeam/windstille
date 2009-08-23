@@ -129,6 +129,10 @@ public:
   boost::signal<void (const CollisionData &)>& sig_collision() { return collision; }
 
   friend class CollisionEngine;
+
+private:
+  CollisionObject(const CollisionObject&);
+  CollisionObject& operator=(const CollisionObject&);
 };
 
 #endif

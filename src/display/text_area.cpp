@@ -51,6 +51,19 @@ public:
   Vector2f cursor_pos;
   float scroll_offset;
   float max_scroll_offset;
+
+  TextAreaImpl()
+    : font(),
+      rect(),
+      passed_time(),
+      v_space(),
+      letter_by_letter(),
+      progress_complete(),
+      commands(),
+      cursor_pos(),
+      scroll_offset(),
+      max_scroll_offset()
+  {}
 };
 
 TextArea::TextArea(const Rectf& rect, bool letter_by_letter)

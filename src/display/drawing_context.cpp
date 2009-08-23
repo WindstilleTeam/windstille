@@ -244,6 +244,8 @@ public:
 };
 
 DrawingContext::DrawingContext()
+  : drawingrequests(),
+    modelview_stack()
 {
   modelview_stack.push_back(Matrix::identity());
 }

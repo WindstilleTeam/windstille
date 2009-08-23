@@ -22,6 +22,8 @@
 #include "pose.hpp"
 
 Pose::Pose(FileReader& reader)
+  : name(),
+    bones()
 {
   if (reader.get_name() != "pose")
     {

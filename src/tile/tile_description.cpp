@@ -29,7 +29,8 @@
 #include "tile/tile_packer.hpp"
 
 TileDescription::TileDescription(FileReader& props)
-  : width(0), height(0)
+  : width(0), 
+    height(0)
 {
   props.get("ids",    ids);
   props.get("image",  filename);

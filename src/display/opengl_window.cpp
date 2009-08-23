@@ -30,6 +30,7 @@
 #include "app/config.hpp"
 
 OpenGLWindow::OpenGLWindow()
+ : m_window(0)
 {
   atexit(SDL_Quit);
 

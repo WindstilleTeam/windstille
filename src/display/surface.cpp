@@ -43,13 +43,21 @@ public:
    * The size of the Surface in pixels
    */
   Sizef size;
+
+  SurfaceImpl()
+    : texture(),
+      uv(),
+      size()
+  {}
 };
 
 Surface::Surface()
+  : impl()
 {
 }
 
 Surface::Surface(const Pathname& filename)
+  : impl()
 {
   // FIXME: a bit ugly, should move some of the surface_manager code over here
   *this = SurfaceManager::current()->get(filename);

@@ -28,9 +28,9 @@ class ShaderProgramImpl
 public:
   GLhandleARB handle;
 
-  ShaderProgramImpl() {
-    handle = glCreateProgramObjectARB();
-  }
+  ShaderProgramImpl() 
+    : handle(glCreateProgramObjectARB())
+  {}
 
   ~ShaderProgramImpl() {
     glDeleteObjectARB(handle);

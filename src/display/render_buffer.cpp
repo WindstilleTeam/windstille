@@ -27,6 +27,7 @@ public:
   GLuint handle;
 
   RenderBufferImpl(GLenum format, int width, int height)
+    : handle(0)
   {
     glGenRenderbuffersEXT(1, &handle);
 

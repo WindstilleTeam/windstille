@@ -23,6 +23,8 @@
 #include "model.hpp"
 
 Model::Model(FileReader& reader, const std::string& path)
+  : name(),
+    meshes()
 {
   if (reader.get_name() != "windstille-model")
     throw std::runtime_error("Not a 'windstille-model' file, its '" + reader.get_name() + "'");

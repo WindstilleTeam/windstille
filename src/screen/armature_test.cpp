@@ -29,6 +29,14 @@
 #include "armature_test.hpp"
 
 ArmatureTest::ArmatureTest()
+  : model(),
+    armature(),
+    poses(),
+    pose_idx(0),
+    time(0.0f),
+    xrot(0.0f),
+    yrot(0.0f),
+    zrot(0.0f)
 {
   FileReader model_reader = FileReader::parse("armature/mesh.mesh");
   model.reset(new Model(model_reader, "armature/"));

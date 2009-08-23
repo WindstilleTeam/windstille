@@ -37,6 +37,14 @@ public:
 
   int width;
   int height;
+
+  TilePackerImpl()
+    : x_pos(),
+      y_pos(),
+      texture(),
+      width(),
+      height()
+  {}
 };
 
 TilePacker::TilePacker(int width, int height)
