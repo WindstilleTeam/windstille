@@ -19,6 +19,7 @@
 #include "ipo_curve.hpp"
 
 IpoCurve::IpoCurve()
+  : points()
 {
 }
 

@@ -40,6 +40,10 @@ public:
   void update(float delta);
 
   void fire(bool enable);
+
+private:
+  Pistol(const Pistol&);
+  Pistol& operator=(const Pistol&);
 };
 
 #endif

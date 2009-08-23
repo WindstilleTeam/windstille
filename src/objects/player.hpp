@@ -165,6 +165,10 @@ private:
   void try_set_action(const std::string& name, float speed = 1.0);
 
   Direction get_direction() const;
+
+private:
+  Player(const Player&);
+  Player& operator=(const Player&);
 };
 
 #endif

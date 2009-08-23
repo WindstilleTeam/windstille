@@ -24,8 +24,8 @@
 #include "app/menu_manager.hpp"
 
 TitleScreen::TitleScreen()
+  : background(Pathname("images/titlescreen.sprite"))
 {
-  background = Sprite(Pathname("images/titlescreen.sprite"));
   background.set_scale(std::max(float(Display::get_width())  / background.get_width(),
                                 float(Display::get_height()) / background.get_height()));
 }

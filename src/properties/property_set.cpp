@@ -24,7 +24,8 @@
 
 PropertySet::PropertySet(const std::string& name_, PropertySet* parent_)
   : parent(parent_),
-    name(name_)
+    name(name_),
+    properties()
 {  
 }
 

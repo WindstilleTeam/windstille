@@ -31,8 +31,8 @@
 #include "command_line_generic.hpp"
 
 CommandLine::CommandLine()
+  : impl(new CommandLine_Generic())
 {
-	impl = new CommandLine_Generic();
 }
 
 CommandLine::~CommandLine()

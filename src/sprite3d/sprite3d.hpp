@@ -48,6 +48,8 @@ public:
 
   Sprite3D();
   explicit Sprite3D(const Pathname& filename);
+  Sprite3D(const Sprite3D&);
+  Sprite3D& operator=(const Sprite3D&);
   ~Sprite3D();
 
   /**
@@ -140,6 +142,7 @@ private:
 
   void set_next_frame();
 
+private:
   const sprite3d::Data* data;
   bool actions_switched;
 

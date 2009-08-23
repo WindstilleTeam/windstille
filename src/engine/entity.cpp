@@ -25,10 +25,12 @@
 #include "entity.hpp"
 
 Entity::Entity()
-  : velocity(0, 0),
-    useable(false)
+  : pos(),
+    velocity(0, 0),
+    useable(false),
+    use_verb(),
+    parent(0)
 {
-  parent = 0;
 }
 
 Entity::~Entity()

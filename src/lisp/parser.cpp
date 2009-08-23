@@ -35,6 +35,7 @@ class ParseError : public std::exception
 {
 public:
   ParseError(const Parser* parser, const std::string& message) throw()
+    : string()
   {
     std::ostringstream msg;
     msg << "Parse error in file '" << parser->filename << "' line "

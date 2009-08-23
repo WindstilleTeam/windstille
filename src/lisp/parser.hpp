@@ -42,6 +42,10 @@ private:
   std::string filename;
   Lexer* lexer;
   Lexer::TokenType token;
+
+private:
+  Parser(const Parser&);
+  Parser& operator=(const Parser&);
 };
 
 } // end of namespace lisp

@@ -60,10 +60,11 @@ Camera::PathPoint interpolate_path(const std::vector<Camera::PathPoint>& path, f
 }
 
 Camera::Camera()
-  : pos(0, 0), zoom(1.0f)
-{
-  path_pos = 0;
-  mode     = CAMERA_FOLLOW_PLAYER;
+  : mode(CAMERA_FOLLOW_PLAYER),
+    pos(0, 0), 
+    zoom(1.0f),
+    path_pos(0)
+{  
 }
 
 void

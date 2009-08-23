@@ -18,10 +18,10 @@
 
 #include "ogg_sound_file.hpp"
 
-OggSoundFile::OggSoundFile(PHYSFS_file* file)
+OggSoundFile::OggSoundFile(PHYSFS_file* file_)
+  : file(file_),
+    vorbis_file()
 {
-  this->file = file;
-
   ov_callbacks callbacks = { cb_read, cb_seek, cb_close, cb_tell };
   ov_open_callbacks(file, &vorbis_file, 0, 0, callbacks);
 

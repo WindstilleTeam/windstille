@@ -40,10 +40,10 @@ static inline uint16_t read16LE(PHYSFS_file* file)
   return result;
 }
 
-WavSoundFile::WavSoundFile(PHYSFS_file* file)
+WavSoundFile::WavSoundFile(PHYSFS_file* file_)
+  : file(file_),
+    datastart()
 {
-  this->file = file;
-
   char magic[4];
   if(PHYSFS_read(file, magic, sizeof(magic), 1) != 1)
     throw std::runtime_error("Couldn't read file magic (not a wave file)");

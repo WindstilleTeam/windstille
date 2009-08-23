@@ -32,6 +32,7 @@ private:
 
   float rotation;
   float jump_time;
+
 public:
   VRDummy(FileReader& props);
   ~VRDummy();

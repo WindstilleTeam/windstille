@@ -96,6 +96,24 @@ public:
   Screen* current_gui;
 
   GameSessionImpl() 
+    : sc(),
+      fadeout_value(),
+      fade_time(),
+      sector(),
+      view(),
+      filename(),
+      pause(),
+      cutscene_value(),
+      cutscene_mode(),
+      next_action(),
+      fade_state(),
+      fade_color(),
+      speech_manager(),
+      dialog_manager(),
+      conversation(),
+      inventory(),
+      pda(),
+      current_gui()
   {
     current_gui    = 0;
     cutscene_mode  = false;
@@ -119,6 +137,10 @@ public:
   void update(float delta, const Controller& controller);
   
   void handle_event(const SDL_Event& event);
+
+private:
+  GameSessionImpl (const GameSessionImpl&);
+  GameSessionImpl& operator= (const GameSessionImpl&);
 };
 
 GameSession::GameSession(const Pathname& arg_filename)

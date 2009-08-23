@@ -23,26 +23,29 @@
 #include "sound_file.hpp"
 
 StreamSoundSource::StreamSoundSource(std::auto_ptr<SoundFile> file_)
+  : file(file_),
+    format(),
+    fade_state(),
+    fade_start_ticks(),
+    fade_time()
 {
-  file = file_;
-
   alGenBuffers(STREAMFRAGMENTS, buffers);
   SoundManager::check_al_error("Couldn't allocate audio buffers: ");
 
   format = SoundManager::get_sample_format(file.get());
 
   try 
+  {
+    for(size_t i = 0; i < STREAMFRAGMENTS; ++i) 
     {
-      for(size_t i = 0; i < STREAMFRAGMENTS; ++i) 
-        {
-          fillBufferAndQueue(buffers[i]);
-        }
+      fillBufferAndQueue(buffers[i]);
     }
+  }
   catch(...) 
-    {
-      alDeleteBuffers(STREAMFRAGMENTS, buffers);
-      throw;
-    }
+  {
+    alDeleteBuffers(STREAMFRAGMENTS, buffers);
+    throw;
+  }
 }
 
 StreamSoundSource::~StreamSoundSource()

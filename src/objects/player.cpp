@@ -44,7 +44,19 @@ static const float WALK_SPEED = 128.0;
 static const float RUN_SPEED = 256.0;
 
 Player::Player () 
- : state(STAND)
+  : sprite(),
+    jumping(),
+    bomb_placed(),
+    hit_count(),
+    energy(),
+    c_object(),
+    laser_pointer(),
+    contact(),
+    weapon(),
+    state(STAND),
+    jump_foot(),
+    reload_time(),
+    z_pos()
 {
   sprite = Sprite3D(Pathname("models/characters/jane/jane.wsprite"));
   pos.x = 320;

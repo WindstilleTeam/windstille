@@ -48,6 +48,10 @@ private:
   Vector2f force;
   float air_friction;
   float contact_friction;
+
+private:
+  Physics(const Physics&);
+  Physics& operator=(const Physics&);
 };
 
 #endif

@@ -73,6 +73,10 @@ protected:
 private:
   Console* console;
   char buf[1024];
+
+private:
+  ConsoleStreambuf (const ConsoleStreambuf&);
+  ConsoleStreambuf& operator= (const ConsoleStreambuf&);
 };
 
 //-------------------------------------------------------------------------------
@@ -103,16 +107,18 @@ public:
   ConsoleEntry current_entry;
 
   ConsoleImpl(Console& console_)
-    : console(console_)
+    : console(console_),
+      x_pos(16.0f),
+      y_pos(600.0f - 16.0f),
+      buffer(),
+      command_line(),
+      active(false),
+      history(),
+      history_position(1),
+      cursor_pos(0),
+      scroll_offset(0),
+      current_entry()
   {
-    x_pos = 16.0f;
-    y_pos = 600.0f - 16.0f;
-
-    active = false;
-    history_position = 1; 
-
-    scroll_offset = 0;
-    cursor_pos  = 0;   
   }
 
   void draw();
@@ -132,17 +138,17 @@ public:
     current_entry.display_time = 0;
 
     for (int i = 0; i < len; ++i)
+    {
+      if (buf[i] == '\n' || (current_entry.message.size() > 80 && buf[i] == ' ')) // primitive linebreak
       {
-        if (buf[i] == '\n' || (current_entry.message.size() > 80 && buf[i] == ' ')) // primitive linebreak
-          {
-            buffer.push_back(current_entry);
-            current_entry = ConsoleEntry();
-          }
-        else
-          {
-            current_entry.message += buf[i];
-          }
+        buffer.push_back(current_entry);
+        current_entry = ConsoleEntry();
       }
+      else
+      {
+        current_entry.message += buf[i];
+      }
+    }
   }
 };
 

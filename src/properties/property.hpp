@@ -52,7 +52,8 @@ private:
   } value;
 
   PropertyImpl(Type type)
-    : Property(type)
+    : Property(type),
+      value()
   {}
 
 public:

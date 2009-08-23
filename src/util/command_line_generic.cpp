@@ -40,6 +40,11 @@
 #endif
 
 CommandLine_Generic::CommandLine_Generic()
+  : help_indent(),
+    programm(),
+    options(),
+    parsed_options(),
+    current_option()
 {
   help_indent = 18;
 }

@@ -27,6 +27,7 @@
 
 View::View()
   : state(Display::get_width(), Display::get_height()),
+    camera(),
     zoom(1.0), 
     transform(0, 0)
 {

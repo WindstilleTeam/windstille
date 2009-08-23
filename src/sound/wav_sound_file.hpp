@@ -35,6 +35,10 @@ private:
   PHYSFS_file* file;
   
   PHYSFS_sint64 datastart;
+
+private:
+  WavSoundFile(const WavSoundFile&);
+  WavSoundFile& operator=(const WavSoundFile&);
 };
 
 #endif

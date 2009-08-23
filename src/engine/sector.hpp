@@ -69,6 +69,7 @@ private:
 
   Player* player;
 
+private:
   void parse_file(const Pathname& filename);
 
   void commit_adds();

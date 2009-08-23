@@ -72,6 +72,39 @@ Sprite3D::Sprite3D(const Pathname& filename)
   next_action.action    = 0;
 }
 
+Sprite3D::Sprite3D(const Sprite3D& rhs)
+  : data(rhs.data),
+    actions_switched(rhs.actions_switched),
+    frame1(rhs.frame1),
+    frame2(rhs.frame2),
+    blend_time(rhs.blend_time),
+    next_frame(rhs.next_frame),
+    next_action(rhs.next_action),
+    abort_at_frame(rhs.abort_at_frame),
+    blend_sfactor(rhs.blend_sfactor),
+    blend_dfactor(rhs.blend_dfactor)
+{
+}
+
+Sprite3D&
+Sprite3D::operator=(const Sprite3D& rhs)
+{
+  if (this != &rhs)
+  {
+    data             = rhs.data;
+    actions_switched = rhs.actions_switched;
+    frame1           = rhs.frame1;
+    frame2           = rhs.frame2;
+    blend_time       = rhs.blend_time;
+    next_frame       = rhs.next_frame;
+    next_action      = rhs.next_action;
+    abort_at_frame   = rhs.abort_at_frame;
+    blend_sfactor    = rhs.blend_sfactor;
+    blend_dfactor    = rhs.blend_dfactor;
+  }
+  return *this;
+}
+
 Sprite3D::~Sprite3D()
 {
 }
@@ -266,6 +299,10 @@ public:
   {
     sprite->draw(pos, modelview);
   }
+
+private:
+  Sprite3DDrawingRequest(const Sprite3DDrawingRequest&);
+  Sprite3DDrawingRequest& operator=(const Sprite3DDrawingRequest&);
 };
 
 void

@@ -55,6 +55,7 @@ public:
       MAX_WAKEUP_EVENT_COUNT
     };
 
+#pragma GCC diagnostic warning "-Weffc++"
   struct WakeupData 
   {
     explicit WakeupData() : type(NO_EVENT) {}
@@ -94,6 +95,10 @@ public:
   
   void expose_object_to_squirrel(boost::shared_ptr<GameObject> object);
   void remove_object_from_squirrel(boost::shared_ptr<GameObject> object);
+
+private:
+  ScriptManager(const ScriptManager&);
+  ScriptManager& operator=(const ScriptManager&);
 };
 
 #endif

@@ -19,7 +19,17 @@
 #include "bone.hpp"
 
 Bone::Bone()
-  : parent(0)
+  : name(),
+    children_names(),
+    parent_name(),
+    children(),
+    parent(0),
+    length(),
+    quat(),
+    offset(),
+    render_matrix(),
+    render_head(),
+    render_tail()
 {
 }
 

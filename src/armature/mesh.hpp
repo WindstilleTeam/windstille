@@ -36,6 +36,12 @@ struct VertexGroup
   std::string bone_name;
   float       weight;
   std::vector<int> vertices;
+
+  VertexGroup()
+    : bone_name(),
+      weight(),
+      vertices()
+  {}
 };
 
 struct Vertex
@@ -50,6 +56,16 @@ struct Vertex
   std::vector<float> weights;
   std::vector<std::string> bone_names;
   std::vector<Bone*> bones;
+
+  Vertex()
+    : pos(),
+      normal(),
+      texcoord(),
+      render_pos(),
+      weights(),
+      bone_names(),
+      bones()
+  {}
 };
 
 /** */

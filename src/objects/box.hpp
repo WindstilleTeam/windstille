@@ -41,6 +41,10 @@ public:
   void update(float delta);
 
   void draw(SceneContext& gc);
+
+private:
+  Box(const Box&);
+  Box& operator=(const Box&);
 };
 
 #endif

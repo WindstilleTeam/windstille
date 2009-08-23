@@ -81,6 +81,7 @@ FileReader::FileReader(boost::shared_ptr<FileReaderImpl> impl_)
 }
 
 FileReader::FileReader()
+  : impl()
 {
 }
 

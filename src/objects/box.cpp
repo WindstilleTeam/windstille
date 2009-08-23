@@ -27,6 +27,9 @@
 #include "sprite2d/manager.hpp"
 
 Box::Box(FileReader& props)
+  : sprite(),
+    colobj(0),
+    gravity()
 {
   gravity = 0.0f;
   float width  = 64.0f;

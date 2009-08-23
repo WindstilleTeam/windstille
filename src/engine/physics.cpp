@@ -22,12 +22,13 @@
 #include "physics.hpp"
 
 Physics::Physics(Entity* entity)
-  : entity(entity)
+  : entity(entity),
+    mass(200.0),
+    bounciness(1.0),
+    force(),
+    air_friction(0.0),
+    contact_friction(0.0)
 {
-  mass = 200.0;
-  bounciness = 1.0;
-  air_friction = 0.0;
-  contact_friction = 0.0;
 }
 
 Physics::~Physics()

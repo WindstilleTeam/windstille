@@ -101,6 +101,43 @@ Sprite::Sprite(const SpriteDataPtr data)
   blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
 }
 
+Sprite::Sprite(const Sprite& rhs)
+  : data(rhs.data),
+    current_action(rhs.current_action),
+    frame(rhs.frame),
+    speed(rhs.speed),
+    alpha(rhs.alpha),
+    pingpong(rhs.pingpong),
+    reverse(rhs.reverse),
+    vflip(rhs.vflip),
+    blend_sfactor(rhs.blend_sfactor),
+    blend_dfactor(rhs.blend_dfactor),
+    scale(rhs.scale),
+    color(rhs.color)
+{
+}
+
+Sprite&
+Sprite::operator=(const Sprite& rhs)
+{
+  if (this != &rhs)
+  {
+    data           = rhs.data;
+    current_action = rhs.current_action;
+    frame          = rhs.frame;
+    speed          = rhs.speed;
+    alpha          = rhs.alpha;
+    pingpong       = rhs.pingpong;
+    reverse        = rhs.reverse;
+    vflip          = rhs.vflip;
+    blend_sfactor  = rhs.blend_sfactor;
+    blend_dfactor  = rhs.blend_dfactor;
+    scale          = rhs.scale;
+    color          = rhs.color; 
+  }
+  return *this;
+}
+
 Sprite::~Sprite()
 {
 }

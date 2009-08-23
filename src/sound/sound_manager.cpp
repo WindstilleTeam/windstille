@@ -34,7 +34,12 @@ SoundManager::SoundManager()
   : device(0), 
     context(0), 
     sound_enabled(false), 
-    music_enabled(true)
+    buffers(),
+    sources(),
+    music_source(),
+    next_music_source(),
+    music_enabled(true),
+    current_music()
 {
   try 
     {

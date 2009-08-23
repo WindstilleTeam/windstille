@@ -64,6 +64,8 @@ public:
       one-file sprite */
   explicit Sprite(const Pathname& filename);
   explicit Sprite(const SpriteDataPtr data);
+  Sprite(const Sprite&);
+  Sprite& operator=(const Sprite&);
   ~Sprite();
 
   void update(float delta);
@@ -105,10 +107,6 @@ public:
 
   /** true if the Sprite is valid and usable, false if not */
   operator bool() const;
-
-private:
-  Sprite(const Sprite&);
-  Sprite& operator=(const Sprite&);
 };
 
 #endif

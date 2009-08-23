@@ -42,6 +42,10 @@ private:
   
   PHYSFS_file* file;
   OggVorbis_File vorbis_file;
+
+private:
+  OggSoundFile(const OggSoundFile&);
+  OggSoundFile& operator=(const OggSoundFile&);
 };
 
 #endif

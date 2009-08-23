@@ -59,8 +59,17 @@ Sector::Sector(const Pathname& arg_filename)
     navigation_graph(new NavigationGraph()),
     scene_graph(new SceneGraph()),
     filename(arg_filename),
+    name(),
+    music(),
+    init_script(),
+    vm(),
+    objects(),
+    new_objects(),
+    ambient_light(),
+    interactive_tilemap(0),
+    interactivebackground_tilemap(0),
     player(0)
-{ 
+{
   //current_ = this;
 
   if (debug) std::cout << "Creating new Sector" << std::endl;

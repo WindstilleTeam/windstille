@@ -27,7 +27,15 @@
 #include "mesh.hpp"
 
 Mesh::Mesh(FileReader& reader, const std::string& path)
-  : blend_sfactor(GL_ONE),
+  : name(),
+    vertices(),
+    normals(),
+    texcoords(),
+    triangles(),
+    groups(),
+    vertices_(),
+    texture(),
+    blend_sfactor(GL_ONE),
     blend_dfactor(GL_ZERO)
 {
   if (reader.get_name() != "mesh")

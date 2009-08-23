@@ -24,7 +24,8 @@ namespace lisp
 {
     
 Lisp::Lisp(int val)
-  : type(TYPE_INT)
+  : type(TYPE_INT),
+    v()
 {
   v.int_ = val;
 }

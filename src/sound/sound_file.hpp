@@ -26,7 +26,12 @@
 class SoundFile
 {
 public:
-  SoundFile() {}
+  SoundFile() 
+    : channels(),
+      rate(),
+      bits_per_sample(),
+      size()
+  {}
   virtual ~SoundFile() {}
 
   virtual size_t read(void* buffer, size_t buffer_size) = 0;

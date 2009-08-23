@@ -53,6 +53,9 @@ static GLenum string2blendfunc(const std::string& str)
 }
 
 SurfaceDrawer::SurfaceDrawer(FileReader& props)
+  : surface(),
+    blendfunc_src(),
+    blendfunc_dest()
 {
   std::string blendfunc_src_str = "src_alpha";
   std::string blendfunc_dst_str = "one_minus_src_alpha";

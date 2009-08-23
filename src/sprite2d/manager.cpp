@@ -27,6 +27,7 @@
 #include "sprite2d/sprite.hpp"
 
 SpriteManager::SpriteManager()
+  : datas()
 {
 }
 

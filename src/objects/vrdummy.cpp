@@ -20,6 +20,10 @@
 #include "vrdummy.hpp"
 
 VRDummy::VRDummy(FileReader& props)
+  : sprite(),
+    highlight(),
+    rotation(),
+    jump_time()
 {
   props.get("name", name);
   props.get("pos",  pos);

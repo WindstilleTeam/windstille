@@ -29,12 +29,17 @@ private:
   Sizef size;
   CollisionObject* colobject;
   Sprite sprite;
+
 public:
   Elevator(FileReader& props);
   ~Elevator();
 
   void draw(SceneContext& sc);
   void update(float delta);
+
+private:
+  Elevator(const Elevator&);
+  Elevator& operator=(const Elevator&);
 };
 
 #endif

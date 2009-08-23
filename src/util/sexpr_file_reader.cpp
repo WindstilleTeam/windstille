@@ -244,6 +244,9 @@ private:
     return 0;
   } 
 
+private:
+  SExprFileReaderImpl(const SExprFileReaderImpl&);
+  SExprFileReaderImpl& operator=(const SExprFileReaderImpl&);
 };
 
 SExprFileReader::SExprFileReader(const lisp::Lisp* sexpr, bool delete_sexpr)
