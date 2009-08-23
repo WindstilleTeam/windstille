@@ -45,9 +45,9 @@ public:
    */
   Quaternion(const Vector3& axis, float theta)
   {
-    w = cos(theta/2);
+    w = cosf(theta/2);
 
-    float s = sin(theta/2);
+    float s = sinf(theta/2);
     x = axis.x * s;
     y = axis.y * s;
     z = axis.z * s;

@@ -126,10 +126,10 @@ TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect)
                          effect.get_y_offset(-face->glyph->bitmap_top)),
                    Size(glyph_width, glyph_height));
 
-          Rectf uv(x_pos/float(pixelbuffer.get_width()),
-                   y_pos/float(pixelbuffer.get_height()),
-                   (x_pos + glyph_width)/float(pixelbuffer.get_width()),
-                   (y_pos + glyph_height)/float(pixelbuffer.get_height()));
+          Rectf uv(static_cast<float>(x_pos) / static_cast<float>(pixelbuffer.get_width()),
+                   static_cast<float>(y_pos) / static_cast<float>(pixelbuffer.get_height()),
+                   static_cast<float>(x_pos + glyph_width)/static_cast<float>(pixelbuffer.get_width()),
+                   static_cast<float>(y_pos + glyph_height)/static_cast<float>(pixelbuffer.get_height()));
       
           impl->characters.push_back(TTFCharacter(pos, uv,
                                                   face->glyph->advance.x >> 6));
@@ -173,8 +173,8 @@ void
 TTFFont::draw(const Vector2f& pos_, const std::string& str, const Color& color)
 {
   // FIXME: Little bit hacky to throw it just in
-  Vector2f pos(static_cast<int>(pos_.x),
-             static_cast<int>(pos_.y));
+  Vector2f pos(truncf(pos_.x),
+               truncf(pos_.y));
 
   OpenGLState state;
 
@@ -193,20 +193,20 @@ TTFFont::draw(const Vector2f& pos_, const std::string& str, const Color& color)
       const TTFCharacter& character = impl->characters[*i];
       
       glTexCoord2f(character.uv.left, character.uv.top);
-      glVertex2f(pos.x + character.pos.left + mx,
-                 pos.y + character.pos.top  + my);
+      glVertex2f(pos.x + static_cast<float>(character.pos.left) + mx,
+                 pos.y + static_cast<float>(character.pos.top)  + my);
 
       glTexCoord2f(character.uv.right, character.uv.top);
-      glVertex2f(pos.x + character.pos.right + mx, 
-                 pos.y + character.pos.top   + my);
+      glVertex2f(pos.x + static_cast<float>(character.pos.right) + mx, 
+                 pos.y + static_cast<float>(character.pos.top)   + my);
 
       glTexCoord2f(character.uv.right, character.uv.bottom);
-      glVertex2f(pos.x + character.pos.right  + mx, 
-                 pos.y + character.pos.bottom + my);
+      glVertex2f(pos.x + static_cast<float>(character.pos.right)  + mx, 
+                 pos.y + static_cast<float>(character.pos.bottom) + my);
 
       glTexCoord2f(character.uv.left, character.uv.bottom);
-      glVertex2f(pos.x + character.pos.left   + mx, 
-                 pos.y + character.pos.bottom + my);
+      glVertex2f(pos.x + static_cast<float>(character.pos.left)   + mx, 
+                 pos.y + static_cast<float>(character.pos.bottom) + my);
 
       pos.x += character.advance;       
     }

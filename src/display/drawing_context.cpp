@@ -65,14 +65,14 @@ public:
     state.bind_texture(texture);
     state.activate();
 
-    float u = Display::get_width()  / float(texture.get_width());
-    float v = Display::get_height() / float(texture.get_height());
+    float u = Display::get_width()  / static_cast<float>(texture.get_width());
+    float v = Display::get_height() / static_cast<float>(texture.get_height());
 
-    float u_start = -offset.x / float(texture.get_width());
-    float v_start = -offset.y / float(texture.get_height());
+    float u_start = -offset.x / static_cast<float>(texture.get_width());
+    float v_start = -offset.y / static_cast<float>(texture.get_height());
 
-    u -= offset.x / float(texture.get_width());
-    v -= offset.y / float(texture.get_height());
+    u -= offset.x / static_cast<float>(texture.get_width());
+    v -= offset.y / static_cast<float>(texture.get_height());
 
     glBegin(GL_QUADS);
     {

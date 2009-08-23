@@ -98,7 +98,7 @@ BorderFontEffect::blit(const SoftwareSurface& target, const FT_Bitmap& brush, in
               target_buf[target_pos + 0] = red;
               target_buf[target_pos + 1] = blue;
               target_buf[target_pos + 2] = green;
-              target_buf[target_pos + 3] = std::min(target_buf[target_pos + 3] + brush.buffer[brush_pos], 255);
+              target_buf[target_pos + 3] = static_cast<uint8_t>(std::min(target_buf[target_pos + 3] + brush.buffer[brush_pos], 255));
             }
       }
 
@@ -113,10 +113,10 @@ BorderFontEffect::blit(const SoftwareSurface& target, const FT_Bitmap& brush, in
         
             int alpha = brush.buffer[brush_pos];
 
-            target_buf[target_pos + 0] = std::min((target_buf[target_pos + 0] * (255 - alpha) + alpha * 255)/255, 255);
-            target_buf[target_pos + 1] = std::min((target_buf[target_pos + 1] * (255 - alpha) + alpha * 255)/255, 255);
-            target_buf[target_pos + 2] = std::min((target_buf[target_pos + 2] * (255 - alpha) + alpha * 255)/255, 255);
-            target_buf[target_pos + 3] = std::min(target_buf[target_pos + 3] + brush.buffer[brush_pos], 255);
+            target_buf[target_pos + 0] = static_cast<uint8_t>(std::min((target_buf[target_pos + 0] * (255 - alpha) + alpha * 255)/255, 255));
+            target_buf[target_pos + 1] = static_cast<uint8_t>(std::min((target_buf[target_pos + 1] * (255 - alpha) + alpha * 255)/255, 255));
+            target_buf[target_pos + 2] = static_cast<uint8_t>(std::min((target_buf[target_pos + 2] * (255 - alpha) + alpha * 255)/255, 255));
+            target_buf[target_pos + 3] = static_cast<uint8_t>(std::min(target_buf[target_pos + 3] + brush.buffer[brush_pos], 255));
           }
     }
 }  
