@@ -127,28 +127,19 @@ WindstilleMain::run()
     if (file_type == "wsprite")
     {
       std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
-
-      if (!filename.empty())
-        sprite3dview->set_model(filename);
-
-      // Launching Sprite3DView instead of game
+      sprite3dview->set_model(filename);
       screen_manager.push_screen(sprite3dview.release());
     }
     else if (file_type == "sprite" || file_type == "png" || file_type == "jpg")
     {
       std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
-
-      if (!filename.empty())
-        sprite2dview->set_sprite(filename);
-
-      // Launching Sprite2DView instead of game
+      sprite2dview->set_sprite(filename);
       screen_manager.push_screen(sprite2dview.release());
     }
     else if (file_type == "particles")
     {
       ParticleViewer* particle_viewer = new ParticleViewer();
-      if (!filename.empty())
-        particle_viewer->load(filename);
+      particle_viewer->load(filename);
       screen_manager.push_screen(particle_viewer);
     }
     else if (file_type == "wst")
