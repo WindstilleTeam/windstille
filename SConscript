@@ -24,15 +24,20 @@ CacheDir('cache')
 debug_cxxflags = [
     "-O0",
     "-g",
-    "-ansi", "-pedantic",
+    "-ansi",
+    "-pedantic",
     "-Wall",
     "-Wextra",
     "-Wnon-virtual-dtor",
     "-Weffc++",
     "-Wconversion",
-    #"-Wshadow",
     "-Werror",
+    #"-Wshadow",
+    #"-Wunreachable-code",
+    #"-Winline",
     ]
+
+windstille_cxxflags = debug_cxxflags
 
 # YACC
 yacc_test_text = """
@@ -112,8 +117,7 @@ class Project:
         self.features = {
             "64bit" : 0,
             "cwiid" : 0
-            }
-        
+            }        
 
     def build_all(self):
         self.configure()
@@ -125,7 +129,7 @@ class Project:
         self.build_windstille_editor()
         self.build_windstille_data()
         self.build_testapps()
-
+        
     def configure(self):
         conf_env = Environment()
 
@@ -210,7 +214,7 @@ class Project:
 
     def build_wstlib(self):
         wstlib_env    = Environment(CPPPATH=['src', 'external/binreloc-2.0/', "src/scripting/"],
-                                    CXXFLAGS=debug_cxxflags,
+                                    CXXFLAGS=windstille_cxxflags,
                                     CPPDEFINES=["HAVE_BINRELOC"])
         self.util_lib      = wstlib_env.StaticLibrary('util', Glob('src/lisp/*.cpp') + Glob('src/util/*.cpp'))
         self.math_lib      = wstlib_env.StaticLibrary('math', Glob('src/math/*.cpp'))
@@ -219,13 +223,13 @@ class Project:
         
         # libphysfs
         physfs_env = wstlib_env.Clone()
-        physfs_env.ParseConfig('sdl-config --cflags --libs')
+        physfs_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
         self.physfs_lib = physfs_env.StaticLibrary('src/physfs', Glob('src/physfs/*.cpp'))
 
         # libdisplay
         display_env = wstlib_env.Clone()
-        display_env.ParseConfig('sdl-config --cflags --libs')
-        display_env.ParseConfig('freetype-config --libs --cflags')
+        display_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
+        display_env.ParseConfig('freetype-config --libs --cflags | sed "s/-I/-isystem/g"')
         self.display_lib = display_env.StaticLibrary('display', 
                                                      Glob('src/font/*.cpp') +
                                                      Glob('src/display/*.cpp') +
@@ -234,7 +238,7 @@ class Project:
                                                      Glob('src/sprite3d/*.cpp'))
 
     def build_windstille(self):
-        windstille_env = Environment(CXXFLAGS=debug_cxxflags,
+        windstille_env = Environment(CXXFLAGS=windstille_cxxflags,
                                      CPPPATH=['src', '.', 'external/SQUIRREL2/include/', 'src/scripting/'],
                                      CPPDEFINES=["HAVE_BINRELOC"],
                                      LIBS=[self.particles_lib, self.navgraph_lib, self.display_lib, self.physfs_lib,
@@ -245,8 +249,8 @@ class Project:
                                            # FIXME: Add configure checks for exact boost library name
                                            'boost_signals-mt', 'boost_filesystem-mt'])
 
-        windstille_env.ParseConfig('sdl-config --cflags --libs')
-        windstille_env.ParseConfig('freetype-config --libs --cflags')
+        windstille_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
+        windstille_env.ParseConfig('freetype-config --libs --cflags | sed "s/-I/-isystem/g"')
 
         if self.features['64bit']:
             windstille_env.Append(CPPDEFINES = '_SQ64')
@@ -273,15 +277,15 @@ class Project:
     def build_windstille_editor(self):
         editor_env = Environment(CPPPATH=['src'],
                                  CPPDEFINES=["HAVE_BINRELOC"],
-                                 CXXFLAGS=debug_cxxflags,
+                                 CXXFLAGS=windstille_cxxflags,
                                  LIBS = [self.particles_lib, self.navgraph_lib, self.display_lib,
                                          self.util_lib, self.physfs_lib, self.math_lib, self.binreloc_lib,
                                          'GL', 'GLEW', 'SDL_image', 'physfs', 'boost_filesystem-mt'])
 
-        editor_env.ParseConfig('Magick++-config --libs --cppflags')
-        editor_env.ParseConfig('sdl-config --cflags --libs')
-        editor_env.ParseConfig('pkg-config --cflags --libs libcurl')
-        editor_env.ParseConfig('pkg-config --cflags --libs libpng')
+        editor_env.ParseConfig('Magick++-config --libs --cppflags | sed "s/-I/-isystem/g"')
+        editor_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
+        editor_env.ParseConfig('pkg-config --cflags --libs libcurl | sed "s/-I/-isystem/g"')
+        editor_env.ParseConfig('pkg-config --cflags --libs libpng | sed "s/-I/-isystem/g"')
 
         # Turn -I options into -isystem, so we don't get warnings from external libraries
         editor_env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4 | sed "s/-I/-isystem/g"')
@@ -292,7 +296,7 @@ class Project:
     def build_testapps(self):
         env = Environment(OBJPREFIX="test__",
                           CPPPATH=['src'],
-                          CXXFLAGS=debug_cxxflags,
+                          CXXFLAGS=windstille_cxxflags,
                           CPPDEFINES=["__TEST__"])
         env.Program("test_babyxml", ["src/util/baby_xml.cpp"])
         env.Program("test_response_curve", ["src/util/response_curve.cpp"])
