@@ -116,13 +116,13 @@ Random::frand(float start, float end)
 float
 Random::frand(float range)
 {
-  return frand(range);
+  return static_cast<float>(drand(range));
 }
 
 float
 Random::frand()
 {
-  return frand();
+  return static_cast<float>(drand());
 }
 
 int
