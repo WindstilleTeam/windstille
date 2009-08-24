@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "objects/player.hpp"
+
 #include <boost/bind.hpp>
 
 #include "collision/collision_engine.hpp"
@@ -24,7 +26,6 @@
 #include "objects/grenade.hpp"
 #include "objects/laser_pointer.hpp"
 #include "objects/pistol.hpp"
-#include "objects/player.hpp"
 #include "screen/game_session.hpp"
 #include "tile/tile.hpp"
 #include "tile/tile_map.hpp"

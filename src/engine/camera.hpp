@@ -19,6 +19,9 @@
 #ifndef HEADER_WINDSTILLE_ENGINE_CAMERA_HPP
 #define HEADER_WINDSTILLE_ENGINE_CAMERA_HPP
 
+#include <vector>
+
+#include "math/vector2f.hpp"
 #include "util/currenton.hpp"
 
 /** 

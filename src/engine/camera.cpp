@@ -16,11 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "engine/camera.hpp"
+
 #include "objects/player.hpp"
 #include "engine/sector.hpp"
 #include "engine/script_manager.hpp"
 #include "display/display.hpp"
-#include "engine/camera.hpp"
 
 /**
  * Calculate the distance between two camera PathPoints, distance here

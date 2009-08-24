@@ -16,9 +16,10 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "objects/box.hpp"
+
 #include <boost/bind.hpp>
 
-#include "objects/box.hpp"
 #include "collision/collision_engine.hpp"
 
 Box::Box(FileReader& props)

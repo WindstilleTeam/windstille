@@ -16,10 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "engine/entity.hpp"
+
 #include "properties/property_set.hpp"
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
-#include "engine/entity.hpp"
 
 Entity::Entity()
   : done(),

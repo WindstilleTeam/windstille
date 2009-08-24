@@ -16,13 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "armature/armature.hpp"
+
 #include <GL/glew.h>
 #include <stdexcept>
 
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
 #include "armature/pose.hpp"
-#include "armature/armature.hpp"
 
 Armature::Armature(FileReader& reader)
   : name(),

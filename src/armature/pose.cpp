@@ -16,10 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "armature/pose.hpp"
+
 #include <stdexcept>
 
 #include "util/file_reader.hpp"
-#include "armature/pose.hpp"
 
 Pose::Pose(FileReader& reader)
   : name(),

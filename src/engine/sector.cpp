@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "engine/sector.hpp"
+
 #include "objects/background_gradient.hpp"
 #include "tile/tile_map.hpp"
 #include "objects/player.hpp"
@@ -38,9 +40,6 @@
 #include "navigation/navigation_graph.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "engine/squirrel_thread.hpp"
-
-
-//Sector* Sector::current_ = 0;
 
 Sector::Sector(const Pathname& arg_filename)
   : collision_engine(new CollisionEngine()),
