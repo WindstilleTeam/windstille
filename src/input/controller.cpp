@@ -23,8 +23,8 @@
 #include "controller.hpp"
 
 Controller::Controller()
-  : states(),
-    events(LAST_EVENT)// FIXME: need to mark states with type
+  : states(LAST_EVENT),
+    events()// FIXME: need to mark states with type
 {
 }
 
