@@ -41,6 +41,10 @@ public:
   void on_move_end(GdkEventButton* event, const Vector2f& offset_);
 
   void draw(SceneContext& sc);
+
+private:
+  DecalScaleControlPoint (const DecalScaleControlPoint&);
+  DecalScaleControlPoint& operator= (const DecalScaleControlPoint&);
 };
 
 #endif

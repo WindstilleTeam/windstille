@@ -391,7 +391,7 @@ InputManagerSDL::on_joy_axis_event(const SDL_JoyAxisEvent& event)
         {
           if (abs(event.value) > dead_zone)
             {
-              add_axis_event(i->event, event.value / (i->invert ? -32768.0f : 32768.0f));
+              add_axis_event(i->event, static_cast<float>(event.value) / (i->invert ? -32768.0f : 32768.0f));
             }
           else
             {
@@ -542,7 +542,7 @@ InputManagerSDL::update(float /*delta*/)
                  
                   float roll = atanf(static_cast<float>(event.acc.x / event.acc.z));
                   if (event.acc.z <= 0.0) {
-                    roll += math::pi * ((event.acc.x > 0.0f) ? 1 : -1);
+                    roll += math::pi * ((event.acc.x > 0.0f) ? 1.0f : -1.0f);
                   }
                   roll *= -1;
 

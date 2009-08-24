@@ -158,8 +158,8 @@ ScriptableObject::move(float delta)
   float propx = 0;
   float propy = 0;
   
-  float adx = fabs(dx);
-  float ady = fabs(dy);
+  float adx = fabsf(dx);
+  float ady = fabsf(dy);
   
   //we can't divide by 0 because we return above if !dx and !dy
   if (dx < 0)
@@ -179,8 +179,8 @@ ScriptableObject::move(float delta)
   velocity.y += dvy;
     
   //don't accelerate past max speed
-  float max_vx = fabs(target_speed * propx);
-  float max_vy = fabs(target_speed * propy);
+  float max_vx = fabsf(target_speed * propx);
+  float max_vy = fabsf(target_speed * propy);
   
   if (velocity.x > max_vx)
     velocity.x = max_vx;

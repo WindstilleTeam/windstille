@@ -141,7 +141,7 @@ TabComponent::pack(const std::string& name, Component* component)
 
   int padding = 6;
   component->set_screen_rect(Rectf(rect.left + padding,
-                                   rect.top  + padding + Fonts::current()->vera20->get_height() + 10,
+                                   rect.top  + padding + Fonts::current()->vera20->get_height() + 10.0f,
                                    rect.right  - padding,
                                    rect.bottom - padding
                                    ));

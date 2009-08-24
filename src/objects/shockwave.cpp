@@ -80,8 +80,8 @@ public:
     state.bind_texture(screen_texture, 0);
     state.activate();
 
-    float radius = (count)*2.0f + 20.0f; // enlarge radius by 20.0f to handle texture displacement 
-    float minradius = 2.0f*count - 164.0f;
+    float radius = static_cast<float>(count)*2.0f + 20.0f; // enlarge radius by 20.0f to handle texture displacement 
+    float minradius = 2.0f * static_cast<float>(count) - 164.0f;
     if (minradius < 0)
       minradius = 0;
 
@@ -92,7 +92,7 @@ public:
     glBegin(GL_QUADS);
     for (int i = 0; i < segments; ++i)
       {
-        float angel = (2*M_PI / segments);
+        float angel = 2.0f * math::pi / static_cast<float>(segments);
 
         float x1 =  sinf(angel*i)*radius;
         float y1 = -cosf(angel*i)*radius;

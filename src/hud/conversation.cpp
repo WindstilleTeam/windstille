@@ -135,7 +135,7 @@ Conversation::update(float delta, const Controller& controller)
       fabs(controller.get_axis_state(Y_AXIS)) > 0.3f)
     {
       float segment = 360.0f / static_cast<float>(choices.size());
-      float angle = math::rad2deg(math::normalize_angle(atan2f(direction.y, direction.x) + M_PI/2 + math::deg2rad(segment/2.0f)));
+      float angle = math::rad2deg(math::normalize_angle(atan2f(direction.y, direction.x) + math::pi/2.0f + math::deg2rad(segment/2.0f)));
 
       int new_selection = int(angle / segment);
       new_selection = math::mid(0, new_selection, int(choices.size()));

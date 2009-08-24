@@ -39,7 +39,7 @@ GroupComponent::~GroupComponent()
 void
 GroupComponent::draw()
 {
-  Display::fill_rounded_rect(rect, 5.0f, Color(0.0f, 0.0f, 0.0f, 0.7));
+  Display::fill_rounded_rect(rect, 5.0f, Color(0.0f, 0.0f, 0.0f, 0.7f));
   Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   if (!title.empty())

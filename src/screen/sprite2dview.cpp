@@ -339,7 +339,7 @@ Sprite2DView::update(float delta, const Controller& controller)
       delta = 0.0f;
     }
   
-  display_time += delta * 0.5;
+  display_time += delta * 0.5f;
 
   switch(mode) {
   case SLIDESHOW:

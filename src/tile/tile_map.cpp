@@ -211,13 +211,18 @@ TileMap::is_ground (float x, float y)
 static float find_max(float pos, float v)
 {
   if (v == 0) 
+  {
     return 0;
+  }
   else if (v < 0)
-    return fmodf(fmodf(pos, TILE_SIZE) + TILE_SIZE, TILE_SIZE)/fabsf(v);
+  {
+    return fmodf(fmodf(pos, static_cast<float>(TILE_SIZE)) + static_cast<float>(TILE_SIZE), static_cast<float>(TILE_SIZE)) / fabsf(v);
+  }
   else // if (v > 0)
-    {
-      return fmodf(fmodf(-pos, TILE_SIZE) + TILE_SIZE, TILE_SIZE)/v;
-    }
+  {
+    return fmodf(fmodf(-pos, static_cast<float>(TILE_SIZE) + static_cast<float>(TILE_SIZE)),
+                 static_cast<float>(TILE_SIZE)) / v;
+  }
 }
 
 Vector2f
@@ -239,8 +244,8 @@ TileMap::raycast(const Vector2f& pos, float angle)
   float tMaxX = find_max(pos.x, direction.x);
   float tMaxY = find_max(pos.y, direction.y);
 
-  float tDeltaX = (direction.x == 0) ? 0 : fabsf(TILE_SIZE / direction.x);
-  float tDeltaY = (direction.y == 0) ? 0 : fabsf(TILE_SIZE / direction.y);
+  float tDeltaX = (direction.x == 0) ? 0 : fabsf(static_cast<float>(TILE_SIZE) / direction.x);
+  float tDeltaY = (direction.y == 0) ? 0 : fabsf(static_cast<float>(TILE_SIZE) / direction.y);
 
   float t = 0;
 

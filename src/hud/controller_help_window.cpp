@@ -50,7 +50,7 @@ void
 ControllerHelpWindow::draw_stick(const Vector2f& pos, bool pressed, float x, float y)
 {
   Size size(75, 75);
-  Rectf rect(pos - Vector2f(size.width, size.height)/2, size);
+  Rectf rect(pos - Vector2f(static_cast<float>(size.width), static_cast<float>(size.height)) / 2.0f, size);
 
   Display::fill_rounded_rect(rect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.2f));
   //Display::draw_rounded_rect(rect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
@@ -88,8 +88,8 @@ ControllerHelpWindow::draw()
 {
   const Controller& controller = InputManager::current()->get_controller();
 
-  Vector2f pos(Display::get_width()  - 350 - 16, 
-               Display::get_height() - 200 - 16);
+  Vector2f pos(static_cast<float>(Display::get_width())  - 350.0f - 16.0f, 
+               static_cast<float>(Display::get_height()) - 200.0f - 16.0f);
 
   Display::fill_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(0.0f, 0.0f, 0.25f, 0.9f));
   Display::draw_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(1.0f, 1.0f, 1.0f,  0.5f));

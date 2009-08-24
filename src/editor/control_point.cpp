@@ -28,7 +28,8 @@ ControlPoint::create(const Vector2f& pos)
 
 ControlPoint::ControlPoint(const Surface& surface_, const Vector2f& pos_)
   : surface(surface_),
-    pos(pos_)
+    pos(pos_),
+    offset()
 {
 }
 

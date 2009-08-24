@@ -47,7 +47,7 @@ Swarm::Swarm(FileReader& props)
       i->pos.x = pos.x + rnd.frand(-100, 100);
       i->pos.y = pos.y + rnd.frand(-100, 100);
 
-      i->angle = rnd.frand(-M_PI, M_PI);
+      i->angle = rnd.frand(-math::pi, math::pi);
       i->speed = rnd.frand(50.0f, 200.0f);
 
       i->max_speed = rnd.frand(100.0f, 200.0f);

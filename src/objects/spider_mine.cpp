@@ -45,17 +45,20 @@ SpiderMine::~SpiderMine()
 void
 SpiderMine::update(float delta)
 {   
-  if (state == EXPLODE) {
+  if (state == EXPLODE) 
+  {
     explode.update(delta);
     if (explode.is_finished())
       remove();
-  } else {
+  } 
+  else 
+  {
     search_for_player(delta);
     
     if (on_ground()) {
       if (velocity.y > 0) {
         velocity.y = 0;
-        pos.y = int(pos.y / TILE_SIZE) * TILE_SIZE + TILE_SIZE - 1;
+        pos.y = int(pos.y / static_cast<float>(TILE_SIZE)) * static_cast<float>(TILE_SIZE) + static_cast<float>(TILE_SIZE) - 1.0f;
       }
 
     } else {

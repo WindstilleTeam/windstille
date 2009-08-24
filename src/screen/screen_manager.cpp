@@ -76,7 +76,7 @@ ScreenManager::run()
   {
     /// Amount of time the world moves forward each update(), this is
     /// independed of the number of frames and always constant
-    static const float step = .001;
+    static const float step = 0.001f;
 
     Uint32 now = SDL_GetTicks();
     float delta = static_cast<float>(now - ticks) / 1000.0f + overlap_delta;
@@ -327,15 +327,15 @@ ScreenManager::draw_fps()
 {
   if(time_counter > 1) 
     {
-      last_fps = int(frame_counter / time_counter);
+      last_fps = int(static_cast<float>(frame_counter) / time_counter);
 
-      time_counter  = fmodf(time_counter, 1.0);
+      time_counter  = fmodf(static_cast<float>(time_counter), 1.0f);
       frame_counter = 0;
     }
   
   std::ostringstream out;
   out << "FPS: " << last_fps;
-  Fonts::current()->ttffont->draw(Vector2f(Display::get_width() - 100, 30), out.str());
+  Fonts::current()->ttffont->draw(Vector2f(static_cast<float>(Display::get_width()) - 100.0f, 30.0f), out.str());
 }
 
 void

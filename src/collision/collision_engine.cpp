@@ -141,7 +141,7 @@ int c_roundup(float f)
 int c_round(float f)
 {
   int i = static_cast<int>(f);
-  if(fabsf(f-i)>0.5)
+  if(fabsf(f-static_cast<float>(i)) > 0.5f)
     {
       if(i>0)
 	i++;
@@ -157,7 +157,7 @@ bool is_rect_free(TileMap *tilemap, int l, int t, int w,int h)
   for (x=l; x<=l+w; x++)
     for (y=t; y<=t+h; y++)
       {
-	if (tilemap->is_ground( x * TILE_SIZE, y * TILE_SIZE))
+	if (tilemap->is_ground(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE)))
 	  return false;
       }
   return true;

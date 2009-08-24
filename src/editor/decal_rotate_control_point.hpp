@@ -38,6 +38,10 @@ public:
   void on_move_end(GdkEventMotion* event, const Vector2f& offset_);
 
   void draw(SceneContext& sc);
+
+private:
+  DecalRotateControlPoint (const DecalRotateControlPoint&);
+  DecalRotateControlPoint& operator= (const DecalRotateControlPoint&);
 };
 
 #endif

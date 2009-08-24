@@ -60,22 +60,22 @@ Nightvision::draw(SceneContext& sc)
       array->set_texture(noise);
       array->set_blend_func(GL_DST_COLOR, GL_ZERO);
 
-      float u = rnd.drand()/0.5f;
-      float v = rnd.drand()/0.5f;
-      float w = 4.0f/6.0f;
-      float h = 3.0f/6.0f;
+      float u = rnd.frand() / 0.5f;
+      float v = rnd.frand() / 0.5f;
+      float w = 4.0f / 6.0f;
+      float h = 3.0f / 6.0f;
 
       array->texcoord(u, v);
       array->vertex(0, 0);
 
       array->texcoord(u + w, v);
-      array->vertex(Display::get_width(), 0);
+      array->vertex(static_cast<float>(Display::get_width()), 0);
 
       array->texcoord(u + w, v + h);
-      array->vertex(Display::get_width(), Display::get_height());
+      array->vertex(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()));
 
       array->texcoord(u, v + h);
-      array->vertex(0, Display::get_height());
+      array->vertex(0, static_cast<float>(Display::get_height()));
       
       if (0) // second noise level
         {

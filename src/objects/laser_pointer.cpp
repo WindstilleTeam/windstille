@@ -73,7 +73,7 @@ LaserPointer::draw(SceneContext& sc)
   int x = static_cast<int>(pos.x / TILE_SIZE);
   int y = static_cast<int>(pos.y / TILE_SIZE);
 
-  Vector2f direction(cos(angle) * 100.0f, sin(angle) * 100.0f);
+  Vector2f direction(cosf(angle) * 100.0f, sinf(angle) * 100.0f);
 
   int step_x = (direction.x > 0) ? 1 : -1;
   int step_y = (direction.y > 0) ? 1 : -1;
