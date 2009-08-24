@@ -140,8 +140,8 @@ int c_roundup(float f)
 
 int c_round(float f)
 {
-  int i=(int)f;
-  if(fabs(f-i)>0.5)
+  int i = static_cast<int>(f);
+  if(fabsf(f-i)>0.5)
     {
       if(i>0)
 	i++;
@@ -312,8 +312,8 @@ CollisionEngine::update(float delta)
 			  r.object2 = *j;
 			  col_data = r;
 			  min_time = r.col_time;
-			  if (min_time > 0.0005)
-			    min_time -= 0.0005;
+			  if (min_time > 0.0005f)
+			    min_time -= 0.0005f;
 			}
 		    }
 		}
@@ -530,10 +530,10 @@ bool tilemap_collision(TileMap *tilemap, const Rectf &r)
   int miny, maxy;
   int x, y;
 
-  minx = (int)(r.left   / TILE_SIZE);
-  maxx = (int)(r.right  / TILE_SIZE);
-  miny = (int)(r.top    / TILE_SIZE);
-  maxy = (int)(r.bottom / TILE_SIZE);
+  minx = static_cast<int>(r.left   / TILE_SIZE);
+  maxx = static_cast<int>(r.right  / TILE_SIZE);
+  miny = static_cast<int>(r.top    / TILE_SIZE);
+  maxy = static_cast<int>(r.bottom / TILE_SIZE);
 
   assert(maxy>=miny);
   assert(maxx>=minx);
@@ -556,10 +556,10 @@ std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r,bool 
   int miny, maxy;
   int x, y;
 
-  minx = (int)r.left   / TILE_SIZE;
-  maxx = (int)r.right  / TILE_SIZE;
-  miny = (int)r.top    / TILE_SIZE;
-  maxy = (int)r.bottom / TILE_SIZE;
+  minx = static_cast<int>(r.left   / TILE_SIZE);
+  maxx = static_cast<int>(r.right  / TILE_SIZE);
+  miny = static_cast<int>(r.top    / TILE_SIZE);
+  maxy = static_cast<int>(r.bottom / TILE_SIZE);
 
   for (y = std::max (0, miny); y <= std::min (maxy, tilemap->get_height() - 1); ++y)
     for (x = std::max (0, minx); x <= std::min (maxx, tilemap->get_width() - 1); ++x)

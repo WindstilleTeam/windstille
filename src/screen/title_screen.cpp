@@ -43,8 +43,8 @@ TitleScreen::on_startup()
 void
 TitleScreen::draw()
 {
-  background.draw(Vector2f(Display::get_width() /2  - (background.get_width()  * background.get_scale()/2),
-                           Display::get_height()/2  - (background.get_height() * background.get_scale()/2)));
+  background.draw(Vector2f(Display::get_width()  / 2.0f - (background.get_width()  * background.get_scale() / 2.0f),
+                           Display::get_height() / 2.0f - (background.get_height() * background.get_scale() / 2.0f)));
 }
 
 void

@@ -34,8 +34,8 @@ protected:
   Matrix  modelview;
 
 public:
-  DrawingRequest(const Vector2f& pos_, float z_pos = 0,  const Matrix& modelview_ = Matrix::identity())
-    : pos(pos_), z_pos(z_pos), modelview(modelview_)
+  DrawingRequest(const Vector2f& pos_, float z_pos_ = 0,  const Matrix& modelview_ = Matrix::identity())
+    : pos(pos_), z_pos(z_pos_), modelview(modelview_)
   {}
   virtual ~DrawingRequest() {}
   

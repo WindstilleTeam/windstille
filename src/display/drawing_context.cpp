@@ -188,9 +188,12 @@ private:
   SurfaceDrawingParameters params;
 
 public:
-  SurfaceDrawingRequest(Surface surface, const SurfaceDrawingParameters& params, float z_pos_,
-                        const Matrix& modelview)
-    : DrawingRequest(pos, z_pos_, modelview), surface(surface), params(params)
+  SurfaceDrawingRequest(Surface surface_, const SurfaceDrawingParameters& params_,
+                        float z_pos_,
+                        const Matrix& modelview_)
+    : DrawingRequest(pos, z_pos_, modelview_), 
+      surface(surface_), 
+      params(params_)
   {}
 
   virtual ~SurfaceDrawingRequest()

@@ -35,8 +35,8 @@ public:
     : w(0), x(0), y(0), z(0)
   {}
 
-  Quaternion(float w, float x, float y, float z)
-    : w(w), x(x), y(y), z(z)
+  Quaternion(float w_, float x_, float y_, float z_)
+    : w(w_), x(x_), y(y_), z(z_)
   {}
 
   /** Construct a Quaternion representing a rotation 

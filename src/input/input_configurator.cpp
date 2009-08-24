@@ -31,9 +31,10 @@ InputConfigurator::InputConfigurator()
     wait_for_plus(false),
     minus(),
     out(),
-    area(Rectf(120, 100,
-               Display::get_width()  - 120, 
-               Display::get_height() - 100), 
+    area(Rectf(120.0f,
+               100.0f,
+               static_cast<float>(Display::get_width())  - 120.0f,
+               static_cast<float>(Display::get_height()) - 100.0f), 
          false)
 {
   out << "Input Configurator\n"
@@ -79,9 +80,9 @@ InputConfigurator::add_configure_item(ConfigureItem::Mode mode, int event_id)
 void
 InputConfigurator::draw()
 {
-  Rectf rect(100, 75,
-             Display::get_width()  - 100, 
-             Display::get_height() - 75);
+  Rectf rect(100.0f, 75.0f,
+             static_cast<float>(Display::get_width())  - 100.0f, 
+             static_cast<float>(Display::get_height()) - 75.0f);
 
   Display::fill_rounded_rect(rect, 16.0f, Color(0.3f, 0.3f, 0.5f, 0.5f));
   Display::draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f)); 

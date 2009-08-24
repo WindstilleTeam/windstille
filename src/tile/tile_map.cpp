@@ -145,16 +145,16 @@ TileMap::draw (SceneContext& sc)
               }
             
             request->texcoord(tile->uv.left, tile->uv.top);
-            request->vertex(x * TILE_SIZE, y * TILE_SIZE);
+            request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE));
 
             request->texcoord(tile->uv.right, tile->uv.top);
-            request->vertex(x * TILE_SIZE + TILE_SIZE, y * TILE_SIZE);
-
+            request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE));
+            
             request->texcoord(tile->uv.right, tile->uv.bottom);
-            request->vertex(x * TILE_SIZE + TILE_SIZE, y * TILE_SIZE + TILE_SIZE);
+            request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
             
             request->texcoord(tile->uv.left, tile->uv.bottom);
-            request->vertex(x * TILE_SIZE, y * TILE_SIZE + TILE_SIZE); 
+            request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE)); 
           }
       }
 

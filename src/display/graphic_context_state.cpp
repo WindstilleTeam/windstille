@@ -69,9 +69,11 @@ GraphicContextState::push(SceneContext& sc)
 {
   sc.push_modelview();
 
-  sc.translate(impl->width/2, impl->height/2);
+  sc.translate(static_cast<float>(impl->width)  / 2.0f, 
+               static_cast<float>(impl->height) / 2.0f);
   sc.rotate(impl->rotation);
-  sc.translate(-impl->width/2, -impl->height/2);
+  sc.translate(static_cast<float>(-impl->width)  / 2.0f,
+               static_cast<float>(-impl->height) / 2.0f);
 
   sc.scale(get_zoom(), get_zoom());
   sc.translate(impl->offset.x, impl->offset.y);
@@ -88,15 +90,15 @@ GraphicContextState::get_clip_rect()
 {
   return Rectf(Vector2f(-impl->offset.x,
                          -impl->offset.y),
-               Sizef(get_width()  / impl->zoom,
-                     get_height() / impl->zoom));
+               Sizef(static_cast<float>(get_width())  / impl->zoom,
+                     static_cast<float>(get_height()) / impl->zoom));
 }
-
+    
 void
 GraphicContextState::set_pos(const Vector2f& pos)
 {
-  impl->offset.x = -pos.x + (get_width()/2  / impl->zoom);
-  impl->offset.y = -pos.y + (get_height()/2 / impl->zoom);
+  impl->offset.x = -pos.x + (static_cast<float>(get_width())  / 2.0f / impl->zoom);
+  impl->offset.y = -pos.y + (static_cast<float>(get_height()) / 2.0f / impl->zoom);
 }
 
 Vector2f
@@ -108,8 +110,8 @@ GraphicContextState::get_offset() const
 Vector2f
 GraphicContextState::get_pos() const
 {
-  return Vector2f(-impl->offset.x + (get_width()/2  / impl->zoom),
-                   -impl->offset.y + (get_height()/2  / impl->zoom));
+  return Vector2f(-impl->offset.x + (static_cast<float>(get_width())  / 2.0f / impl->zoom),
+                  -impl->offset.y + (static_cast<float>(get_height()) / 2.0f / impl->zoom));
 }
 
 void
@@ -147,33 +149,33 @@ GraphicContextState::zoom_to (const Rectf& rect)
   //std::cout << "Screen: " << screen_relation << " Zoom: " << rect_relation << std::endl;
   if (rect_relation < screen_relation) // take width, ignore height
     {
-      impl->zoom = get_width()/width; 
+      impl->zoom = static_cast<float>(get_width()) / width; 
     }
   else // take height, ignore width
     {
-      impl->zoom = get_height()/height;
+      impl->zoom = static_cast<float>(get_height()) / height;
     }
 
-  impl->offset.x = (get_width()  / (2*impl->zoom)) - center_x;
-  impl->offset.y = (get_height() / (2*impl->zoom)) - center_y;
+  impl->offset.x = (static_cast<float>(get_width())  / (2.0f * impl->zoom)) - center_x;
+  impl->offset.y = (static_cast<float>(get_height()) / (2.0f * impl->zoom)) - center_y;
 }
 
 Vector2f
 GraphicContextState::screen_to_world(const Vector2f& pos_)
 {
   Vector2f pos(pos_.x, pos_.y);
-  float sa = sin(-impl->rotation/180.0f*M_PI);
-  float ca = cos(-impl->rotation/180.0f*M_PI);
+  float sa = sinf(-impl->rotation / 180.0f * math::pi);
+  float ca = cosf(-impl->rotation / 180.0f * math::pi);
 
-  float dx = pos.x - impl->width/2;
-  float dy = pos.y - impl->height/2;
+  float dx = pos.x - static_cast<float>(impl->width)  / 2.0f;
+  float dy = pos.y - static_cast<float>(impl->height) / 2.0f;
 
-  pos.x = impl->width/2  + (ca * dx - sa * dy);
-  pos.y = impl->height/2 + (sa * dx + ca * dy);
+  pos.x = static_cast<float>(impl->width)  / 2.0f + (ca * dx - sa * dy);
+  pos.y = static_cast<float>(impl->height) / 2.0f + (sa * dx + ca * dy);
 
-  Vector2f p((float(pos.x) / impl->zoom) - impl->offset.x, 
-              (float(pos.y) / impl->zoom) - impl->offset.y);
-
+  Vector2f p((static_cast<float>(pos.x) / impl->zoom) - impl->offset.x, 
+             (static_cast<float>(pos.y) / impl->zoom) - impl->offset.y);
+  
   return p;
 }
 

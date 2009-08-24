@@ -46,7 +46,7 @@ Speech::Speech(int id_, const std::string& text_, const Vector2f& pos_, const Co
     seconds_passed(0.0f)
 {
   // FIXME: Calculate words by other means, this isn't good for long text
-  float words = 2 + text.size() / 5.0f;
+  float words = 2.0f + static_cast<float>(text.size()) / 5.0f;
   float words_per_minute = 150.0f;
   float words_per_second = words_per_minute / 60.0f;
 

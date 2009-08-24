@@ -41,7 +41,7 @@ ListView::draw()
   TTFFont* font = Fonts::current()->vera20.get();
 
   float x = rect.left;
-  float y = rect.top + font->get_height();
+  float y = rect.top + static_cast<float>(font->get_height());
   float padding = 10;
 
   for(int i = 0; i < int(columns.size()); ++i)
@@ -61,10 +61,10 @@ ListView::draw()
 
       if (j == current_item)
         Display::fill_rect(Rectf(x, y,
-                                 rect.right, y + font->get_height()), 
+                                 rect.right, y + static_cast<float>(font->get_height())), 
                            is_active() ? Color(0.5f, 0.5f, 1.0f, 0.8f) : Color(0.5f, 0.5f, 1.0f, 0.3f));
 
-      y += font->get_height();
+      y += static_cast<float>(font->get_height());
           
       for(int i = 0; i < int(items[j].columns.size()) && i < int(columns.size()); ++i)
         {

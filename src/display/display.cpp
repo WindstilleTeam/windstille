@@ -296,14 +296,14 @@ Display::fill_circle(const Vector2f& pos, float radius, const Color& color, int 
   state.color(color);
   state.activate();
 
-  float n = segments/4.0f;
+  float n = static_cast<float>(segments) / 4.0f;
   glBegin(GL_TRIANGLE_FAN);
   glVertex2f(pos.x, pos.y);
   glVertex2f(radius + pos.x, pos.y);
   for(int i = 1; i < segments; ++i)
     {
-      float x = cosf(i * (math::pi/2) / n) * radius;
-      float y = sinf(i * (math::pi/2) / n) * radius;
+      float x = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
+      float y = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
       
       glVertex2f(x + pos.x, y + pos.y);
     }
@@ -322,7 +322,7 @@ Display::draw_arc(const Vector2f& pos, float radius, float start, float end, con
     }
   else
     {
-      float step  = (2.0f * math::pi) / segments;
+      float step  = (2.0f * math::pi) / static_cast<float>(segments);
 
       if (start > end) 
         std::swap(start, end);
@@ -362,7 +362,7 @@ Display::fill_arc(const Vector2f& pos, float radius, float start, float end, con
     }
   else
     {
-      float step  = (2.0f * math::pi) / segments;
+      float step  = (2.0f * math::pi) / static_cast<float>(segments);
 
       if (start > end) 
         std::swap(start, end);
@@ -410,13 +410,13 @@ Display::draw_grid(const Vector2f& offset, const Sizef& size, const Color& rgba)
   for(float x = start_x; x < Display::get_width(); x += size.width)
     {
       glVertex2f(x, 0);
-      glVertex2f(x, Display::get_height());
+      glVertex2f(x, static_cast<float>(Display::get_height()));
     }
 
   for(float y = start_y; y < Display::get_height(); y += size.height)
     {
       glVertex2f(0, y);
-      glVertex2f(Display::get_width(), y);
+      glVertex2f(static_cast<float>(Display::get_width()), y);
     }
 
   glEnd();  

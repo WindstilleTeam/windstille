@@ -29,7 +29,7 @@ static SQInteger squirrel_read_char(SQUserPointer file)
 {
   std::istream* in = reinterpret_cast<std::istream*> (file);
 
-  char c = in->get();
+  char c = static_cast<char>(in->get());
 
   if (in->eof())
     return 0;

@@ -175,21 +175,21 @@ Matrix::multiply(const Vector3& v) const
 Matrix
 Matrix::scale(float x, float y, float z)
 {
-  Matrix matrix = Matrix::identity();
-  matrix[0]  = x;
-  matrix[5]  = y;
-  matrix[10] = z;
-  return multiply(matrix);
+  Matrix m = Matrix::identity();
+  m[0]  = x;
+  m[5]  = y;
+  m[10] = z;
+  return multiply(m);
 }
 
 Matrix
 Matrix::translate(float x, float y, float z)
 {
-  Matrix matrix = Matrix::identity();
-  matrix[12] = x;
-  matrix[13] = y;
-  matrix[14] = z;
-  return multiply(matrix);
+  Matrix m = Matrix::identity();
+  m[12] = x;
+  m[13] = y;
+  m[14] = z;
+  return multiply(m);
 }
 
 Matrix

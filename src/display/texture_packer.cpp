@@ -194,9 +194,11 @@ TexturePacker::upload(const SoftwareSurface& surface)
       texture.put(surface, rect.left+1, rect.top+1);
 
       return Surface(texture,
-                     Rectf(float(rect.left+1)  / texture.get_width(), float(rect.top+1)    / texture.get_height(),
-                           float(rect.right-1) / texture.get_width(), float(rect.bottom-1) / texture.get_height()),
-                     Sizef(surface.get_width(), surface.get_height()));
+                     Rectf(static_cast<float>(rect.left+1)   / static_cast<float>(texture.get_width()),
+                           static_cast<float>(rect.top+1)    / static_cast<float>(texture.get_height()),
+                           static_cast<float>(rect.right-1)  / static_cast<float>(texture.get_width()), 
+                           static_cast<float>(rect.bottom-1) / static_cast<float>(texture.get_height())),
+                     Sizef(static_cast<float>(surface.get_width()), static_cast<float>(surface.get_height())));
     }
 }
 

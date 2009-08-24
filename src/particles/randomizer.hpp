@@ -44,8 +44,8 @@ public:
     : rect(rect_) {}
  
   void set_pos(Particle& p) {
-    p.x = rnd.drand(rect.left, rect.right);
-    p.y = rnd.drand(rect.top,  rect.bottom);
+    p.x = rnd.frand(rect.left, rect.right);
+    p.y = rnd.frand(rect.top,  rect.bottom);
   }
 };
 
@@ -58,8 +58,8 @@ public:
 
   void set_pos(Particle& p) {
     // FIXME: BROKEN!!!!!
-    p.x = rnd.drand(-radius, radius);
-    p.y = sqrt((radius*radius) - (p.x*p.x)) * rnd.drand(-1.0f, 1.0f);
+    p.x = rnd.frand(-radius, radius);
+    p.y = sqrtf((radius*radius) - (p.x*p.x)) * rnd.frand(-1.0f, 1.0f);
   }
 };
 
@@ -73,7 +73,7 @@ public:
   {}
 
   void set_pos(Particle& p) {
-    float l = rnd.drand();
+    float l = rnd.frand();
     p.x = x1 + (x2-x1) * l;
     p.y = y1 + (y2-y1) * l;
   }

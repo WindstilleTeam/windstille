@@ -76,16 +76,16 @@ TilePacker::pack(const SoftwareSurface& image, int x, int y, int w, int h)
   SoftwareSurface convert(w+2, h+2);
 
   SDL_Rect source_rect;
-  source_rect.x = x;
-  source_rect.y = y;
-  source_rect.w = w;
-  source_rect.h = h;
+  source_rect.x = static_cast<Sint16>(x);
+  source_rect.y = static_cast<Sint16>(y);
+  source_rect.w = static_cast<Sint16>(w);
+  source_rect.h = static_cast<Sint16>(h);
 
   SDL_Rect dest_rect;
-  dest_rect.x = 1;
-  dest_rect.y = 1;
-  dest_rect.w = w;
-  dest_rect.h = h;
+  dest_rect.x = static_cast<Sint16>(1);
+  dest_rect.y = static_cast<Sint16>(1);
+  dest_rect.w = static_cast<Sint16>(w);
+  dest_rect.h = static_cast<Sint16>(h);
 
   SDL_BlitSurface(image.get_surface(), &source_rect, convert.get_surface(), &dest_rect);
 
@@ -95,10 +95,10 @@ TilePacker::pack(const SoftwareSurface& image, int x, int y, int w, int h)
   
   assert_gl("updating tilepacker texture");
 
-  Rectf rect(Vector2f(static_cast<float>(impl->x_pos+1)/impl->width, 
-                    static_cast<float>(impl->y_pos+1)/impl->height), 
-             Sizef(static_cast<float>(TILE_RESOLUTION)/impl->width, 
-                   static_cast<float>(TILE_RESOLUTION)/impl->height));
+  Rectf rect(Vector2f(static_cast<float>(impl->x_pos + 1) / impl->width, 
+                      static_cast<float>(impl->y_pos + 1) / impl->height), 
+             Sizef(static_cast<float>(TILE_RESOLUTION) / impl->width, 
+                   static_cast<float>(TILE_RESOLUTION) / impl->height));
 
   // we move by TILE_RESOLUTION+1 to avoid tiles bleeding into each other
   // when blending

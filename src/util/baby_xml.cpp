@@ -152,8 +152,8 @@ public:
           } 
         else if (c == '&') 
           {
-            c += read_entity();
-          } 
+            c += read_entity(); // FIXME: This can't be right
+          }
         else 
           {
             incr_cursor();

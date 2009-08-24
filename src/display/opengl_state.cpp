@@ -220,9 +220,9 @@ OpenGLState::disable_client_state(GLenum array)
 }
 
 void
-OpenGLState::color(const Color& color)
+OpenGLState::color(const Color& color_)
 {
-  impl->color = color;
+  impl->color = color_;
 }
 
 void
@@ -231,8 +231,8 @@ OpenGLState::activate()
   // do nothing for now, should be implemented later on
   impl->was_activated = true;
 
-  OpenGLState* global = OpenGLState::global();
-  assert(global);
+  OpenGLState* global_state = OpenGLState::global();
+  assert(global_state);
 
   // always apply color since it might have got changed between a glBegin/glEnd
   glColor4f(impl->color.r, impl->color.g, impl->color.b, impl->color.a);
@@ -240,50 +240,50 @@ OpenGLState::activate()
   for(std::map<GLenum, bool>::iterator i = impl->state.begin();
       i != impl->state.end(); ++i)
     {
-      if (global->get_state(i->first) != i->second)
+      if (global_state->get_state(i->first) != i->second)
         {
           if (i->second)
             glEnable(i->first);
           else
             glDisable(i->first);
 
-          global->set_state(i->first, i->second);
+          global_state->set_state(i->first, i->second);
         }
     }
 
   for(std::map<GLenum, bool>::iterator i = impl->client_state.begin();
       i != impl->client_state.end(); ++i)
     {
-      if (global->get_client_state(i->first) != i->second)
+      if (global_state->get_client_state(i->first) != i->second)
         {
           if (i->second)
             glEnableClientState(i->first);
           else
             glDisableClientState(i->first);
 
-          global->set_client_state(i->first, i->second);
+          global_state->set_client_state(i->first, i->second);
         }
     }
 
-  if (impl->blend_sfactor != global->impl->blend_sfactor ||
-      impl->blend_dfactor != global->impl->blend_dfactor)
+  if (impl->blend_sfactor != global_state->impl->blend_sfactor ||
+      impl->blend_dfactor != global_state->impl->blend_dfactor)
     {
       glBlendFunc(impl->blend_sfactor, impl->blend_dfactor);
 
-      global->impl->blend_sfactor = impl->blend_sfactor;
-      global->impl->blend_dfactor = impl->blend_dfactor;
+      global_state->impl->blend_sfactor = impl->blend_sfactor;
+      global_state->impl->blend_dfactor = impl->blend_dfactor;
     }
 
   for(int i = 0; i < MAX_TEXTURE_UNITS; ++i)
     {
-      if (impl->texture[i] != global->impl->texture[i])
+      if (impl->texture[i] != global_state->impl->texture[i])
         { 
           // FIXME: glActiveTexture() makes the game crash on Matrox
           // G450, without that line it works
           glActiveTexture(GL_TEXTURE0 + i);
           if (impl->texture[i])
             {
-              global->impl->texture[i] = impl->texture[i];
+              global_state->impl->texture[i] = impl->texture[i];
 
               switch (impl->texture[i].get_target())
                 {
@@ -317,7 +317,7 @@ OpenGLState::activate()
               glDisable(GL_TEXTURE_RECTANGLE_ARB);
               glDisable(GL_TEXTURE_2D);
 
-              global->impl->texture[i] = impl->texture[i];
+              global_state->impl->texture[i] = impl->texture[i];
             }
         }
     }

@@ -187,8 +187,8 @@ SceneContext::reset_modelview()
 
 void draw_disc(int count)
 {
-  float radius = (count)*2.0f;
-  float minradius = 2.0f*count - 164.0f;
+  float radius = static_cast<float>(count) * 2.0f;
+  float minradius = 2.0f * static_cast<float>(count) - 164.0f;
   if (minradius < 0)
     minradius = 0;
   glClear(GL_DEPTH_BUFFER_BIT);
@@ -198,13 +198,13 @@ void draw_disc(int count)
   glBegin(GL_QUADS);
   for (int i = 0; i < segments; ++i)
     {
-      float angel = (2*M_PI / segments);
+      float angel = 2.0f * math::pi / static_cast<float>(segments);
 
-      float x1 =  sin(angel*i)*radius;
-      float y1 = -cos(angel*i)*radius;
+      float x1 =  sinf(angel * static_cast<float>(i)) * radius;
+      float y1 = -cosf(angel * static_cast<float>(i)) * radius;
 
-      float x2 =  sin(angel*(i+1))*radius;
-      float y2 = -cos(angel*(i+1))*radius;
+      float x2 =  sinf(angel * static_cast<float>(i+1)) * radius;
+      float y2 = -cosf(angel * static_cast<float>(i+1)) * radius;
 
       glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
       glTexCoord2f(x1/512.0f+0.5f, y1/512.0f+0.5f);
@@ -213,12 +213,11 @@ void draw_disc(int count)
       glTexCoord2f(x2/512.0f+0.5f, y2/512.0f+0.5f);
       glVertex3f(x2+256, y2+256, 0);
 
+      float x3 =  sinf(angel * static_cast<float>(i)) * minradius;
+      float y3 = -cosf(angel * static_cast<float>(i)) * minradius;
 
-      float x3 =  sin(angel*i)*minradius;
-      float y3 = -cos(angel*i)*minradius;
-
-      float x4 =  sin(angel*(i+1))*minradius;
-      float y4 = -cos(angel*(i+1))*minradius;
+      float x4 =  sinf(angel * static_cast<float>(i+1)) * minradius;
+      float y4 = -cosf(angel * static_cast<float>(i+1)) * minradius;
 
       glColor4f(1.0f, 1.0f, 1.0f, 0.0f);
       glTexCoord2f(x4/512.0f+0.5f, y4/512.0f+0.5f);
@@ -232,7 +231,9 @@ void draw_disc(int count)
 void
 SceneContext::render_lightmap()
 {
-  Rect uv(0, 0, impl->framebuffers->lightmap.get_width(), impl->framebuffers->lightmap.get_height());
+  Rectf uv(0, 0,
+           static_cast<float>(impl->framebuffers->lightmap.get_width()), 
+           static_cast<float>(impl->framebuffers->lightmap.get_height()));
 
   OpenGLState state;
 
@@ -248,14 +249,14 @@ SceneContext::render_lightmap()
   glVertex2f(0, 0);
 
   glTexCoord2f(uv.right, uv.bottom);
-  glVertex2f(impl->framebuffers->lightmap.get_width() * LIGHTMAP_DIV, 0);
+  glVertex2f(static_cast<float>(impl->framebuffers->lightmap.get_width() * LIGHTMAP_DIV), 0.0f);
 
   glTexCoord2f(uv.right, uv.top);
-  glVertex2f(impl->framebuffers->lightmap.get_width() * LIGHTMAP_DIV,
-             impl->framebuffers->lightmap.get_height() * LIGHTMAP_DIV);
+  glVertex2f(static_cast<float>(impl->framebuffers->lightmap.get_width()  * LIGHTMAP_DIV),
+             static_cast<float>(impl->framebuffers->lightmap.get_height() * LIGHTMAP_DIV));
 
   glTexCoord2f(uv.left, uv.top);
-  glVertex2f(0, impl->framebuffers->lightmap.get_height() * LIGHTMAP_DIV);
+  glVertex2f(0.0f, static_cast<float>(impl->framebuffers->lightmap.get_height() * LIGHTMAP_DIV));
 
   glEnd();
 }
@@ -273,8 +274,8 @@ SceneContext::render_with_framebuffers()
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
       glPushMatrix();
-      glTranslatef(0, Display::get_height()-(Display::get_height()/LIGHTMAP_DIV), 0);
-      glScalef(1.0f/LIGHTMAP_DIV, 1.0f/LIGHTMAP_DIV, 1.0f);
+      glTranslatef(0.0f, static_cast<float>(Display::get_height() - (Display::get_height() / LIGHTMAP_DIV)), 0.0f);
+      glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
       impl->light.render(*this);
       glPopMatrix();
 
@@ -313,9 +314,9 @@ SceneContext::render_with_framebuffers()
       // Render the screen framebuffer to the actual screen 
       OpenGLState state;
 
-      Rectf uv(0.375, 0.375, 
-               impl->framebuffers->screen.get_width()  + 0.375,
-               impl->framebuffers->screen.get_height() + 0.375);
+      Rectf uv(0.375f, 0.375f, 
+               static_cast<float>(impl->framebuffers->screen.get_width())  + 0.375f,
+               static_cast<float>(impl->framebuffers->screen.get_height()) + 0.375f);
 
       if (impl->render_mask & BLURMAP)
         state.bind_texture(impl->framebuffers->screen.get_texture(), 0);
@@ -330,13 +331,13 @@ SceneContext::render_with_framebuffers()
       glVertex2f(0, 0);
 
       glTexCoord2f(uv.right, uv.bottom);
-      glVertex2f(Display::get_width(), 0);
+      glVertex2f(static_cast<float>(Display::get_width()), 0);
 
       glTexCoord2f(uv.right, uv.top);
-      glVertex2f(Display::get_width(), Display::get_height());
+      glVertex2f(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()));
 
       glTexCoord2f(uv.left, uv.top);
-      glVertex2f(0, Display::get_height());
+      glVertex2f(0.0f, static_cast<float>(Display::get_height()));
 
       glEnd();
     }
@@ -364,8 +365,8 @@ SceneContext::render_without_framebuffers()
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
       glPushMatrix();
-      glTranslatef(0, Display::get_height() - (Display::get_height()/LIGHTMAP_DIV), 0);
-      glScalef(1.0f/LIGHTMAP_DIV, 1.0f/LIGHTMAP_DIV, 1.0f);
+      glTranslatef(0.0f, static_cast<float>(Display::get_height()) - static_cast<float>(Display::get_height()/LIGHTMAP_DIV), 0.0f);
+      glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
       impl->light.render(*this);
       glPopMatrix();
 
@@ -379,7 +380,8 @@ SceneContext::render_without_framebuffers()
         glCopyTexSubImage2D(GL_TEXTURE_2D, 0,
                             0, 0, 
                             0, 0, //Display::get_height() - impl->lightmap.get_height(),
-                            impl->lightmap.get_width(), impl->lightmap.get_height());
+                            static_cast<GLsizei>(impl->lightmap.get_width()), 
+                            static_cast<GLsizei>(impl->lightmap.get_height()));
       }
     }
 

@@ -56,8 +56,8 @@ public:
     : width(0), height(0)
   {}
 
-  Size(int width, int height)
-    : width(width), height(height) 
+  Size(int width_, int height_)
+    : width(width_), height(height_) 
   {}
 
   Size(const Size &s)
@@ -121,9 +121,9 @@ public:
       height(static_cast<float>(s.height))
   {}
 
-  Sizef(float width, float height)
-    : width(width), 
-      height(height) 
+  Sizef(float width_, float height_)
+    : width(width_), 
+      height(height_) 
   {}
 
   Sizef(const Sizef &s)

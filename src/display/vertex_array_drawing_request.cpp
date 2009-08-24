@@ -147,12 +147,12 @@ VertexArrayDrawingRequest::add_texcoords(const float* coords, size_t n)
 }
 
 void
-VertexArrayDrawingRequest::color(const Color& color)
+VertexArrayDrawingRequest::color(const Color& color_)
 {
-  colors.push_back(static_cast<unsigned char>(color.r * 255));
-  colors.push_back(static_cast<unsigned char>(color.g * 255));
-  colors.push_back(static_cast<unsigned char>(color.b * 255));
-  colors.push_back(static_cast<unsigned char>(color.a * 255));
+  colors.push_back(static_cast<unsigned char>(color_.r * 255));
+  colors.push_back(static_cast<unsigned char>(color_.g * 255));
+  colors.push_back(static_cast<unsigned char>(color_.b * 255));
+  colors.push_back(static_cast<unsigned char>(color_.a * 255));
 }
 
 void

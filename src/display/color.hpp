@@ -25,8 +25,8 @@ public:
   Color()
     : r(0), g(0), b(0), a(1.0)
   { }
-  Color(float r, float g, float b, float a = 1.0)
-    : r(r), g(g), b(b), a(a)
+  Color(float r_, float g_, float b_, float a_ = 1.0)
+    : r(r_), g(g_), b(b_), a(a_)
   { }
 
   float r, g, b, a;

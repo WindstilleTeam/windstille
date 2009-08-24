@@ -68,7 +68,7 @@ Sprite3DView::draw()
   sc.color().fill_screen(Color(0.5, 0.0, 0.5));
 
   sc.push_modelview();
-  sc.translate(Display::get_width()/2.0f, Display::get_height()/2.0f);
+  sc.translate(static_cast<float>(Display::get_width())/2.0f, static_cast<float>(Display::get_height())/2.0f);
   sc.scale(scale, scale);
 
   // Rotate
@@ -86,7 +86,7 @@ Sprite3DView::draw()
   sc.render();
   
   float x = 10.0f;
-  float y =  Fonts::current()->vera12->get_height() + 5.0f;
+  float y =  static_cast<float>(Fonts::current()->vera12->get_height()) + 5.0f;
   int line_height = Fonts::current()->vera12->get_height()+5;
 
   for(int i = 0; i < int(actions.size()); ++i)
@@ -99,11 +99,11 @@ Sprite3DView::draw()
                             actions[i], Color(0.7f, 0.7f, 0.7f));
 
 
-      y += line_height;
+      y += static_cast<float>(line_height);
       if (y > 580.0f)
         {
           x += 200.0f;
-          y =  Fonts::current()->vera12->get_height() + 5.0f;
+          y =  static_cast<float>(Fonts::current()->vera12->get_height()) + 5.0f;
         }
     }
 }

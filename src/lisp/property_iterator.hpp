@@ -8,8 +8,8 @@ namespace lisp
 {
 
 struct ListEntry {
-  ListEntry(const lisp::Lisp* lisp)
-    : lisp(lisp), used(false)
+  ListEntry(const lisp::Lisp* lisp_)
+    : lisp(lisp_), used(false)
   {}
   
   const Lisp* lisp;

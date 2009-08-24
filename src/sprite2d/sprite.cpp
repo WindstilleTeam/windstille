@@ -74,8 +74,8 @@ Sprite::Sprite(const Pathname& filename)
   blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
 }
 
-Sprite::Sprite(const SpriteDataPtr data)
-  : data(data),
+Sprite::Sprite(const SpriteDataPtr data_)
+  : data(data_),
     current_action(0),
     frame(0),
     speed(0),
@@ -149,8 +149,8 @@ Sprite::update(float delta)
   if(reverse)
     step = -step;
 
-  frame = fmodf(frame + current_action->surfaces.size() + step,
-                current_action->surfaces.size());
+  frame = fmodf(frame + static_cast<float>(current_action->surfaces.size()) + step,
+                static_cast<float>(current_action->surfaces.size()));
 }
 
 void
@@ -191,9 +191,9 @@ Sprite::set_blend_func(GLenum sfactor, GLenum dfactor)
 }
 
 void
-Sprite::set_vflip(bool vflip)
+Sprite::set_vflip(bool vflip_)
 {
-  this->vflip = vflip;
+  vflip = vflip_;
 }
 
 bool
@@ -203,9 +203,9 @@ Sprite::get_vflip() const
 }
 
 void
-Sprite::set_pingpong(bool pingpong)
+Sprite::set_pingpong(bool pingpong_)
 {
-  this->pingpong = pingpong;
+  pingpong = pingpong_;
 }
 
 bool
@@ -215,9 +215,9 @@ Sprite::get_pingpong() const
 }
 
 void
-Sprite::set_speed(float speed)
+Sprite::set_speed(float speed_)
 {
-  this->speed = speed;
+  speed = speed_;
 }
 
 float
@@ -229,7 +229,7 @@ Sprite::get_speed() const
 void
 Sprite::set_alpha(float alpha)
 {
-  this->color.a = alpha;
+  color.a = alpha;
 }
 
 float
@@ -311,16 +311,16 @@ Sprite::get_blend_dfactor() const
   return blend_dfactor;
 }
 
-int
+float
 Sprite::get_width() const
 {
-  return current_action->surfaces[ static_cast<int> (frame) ].get_width();
+  return current_action->surfaces[ static_cast<int>(frame) ].get_width();
 }
 
-int
+float
 Sprite::get_height() const
 {
-  return current_action->surfaces[ static_cast<int> (frame) ].get_height();
+  return current_action->surfaces[ static_cast<int>(frame) ].get_height();
 }
 
 /* EOF */

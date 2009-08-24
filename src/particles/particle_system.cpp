@@ -260,12 +260,12 @@ ParticleSystem::spawn(Particle& particle)
   // particle.x   += (parent ? parent->get_pos().x : 0) + x_pos + spawn_x;
   // particle.y   += (parent ? parent->get_pos().y : 0) + y_pos + spawn_y;
 
-  float direction = rnd.drand(cone_start, cone_stop);
-  float speed     = rnd.drand(speed_start, speed_stop);
-  particle.v_x    = cos(direction) * speed;
-  particle.v_y    = sin(direction) * speed;
+  float direction = rnd.frand(cone_start, cone_stop);
+  float speed     = rnd.frand(speed_start, speed_stop);
+  particle.v_x    = cosf(direction) * speed;
+  particle.v_y    = sinf(direction) * speed;
 
-  particle.angle = rnd.drand(360);
+  particle.angle = rnd.frand(360.0f);
 
   particle.t   = fmodf(particle.t, life_time);
 }
@@ -309,7 +309,7 @@ ParticleSystem::set_count(int num)
       for(Particles::size_type i = old_size; i < particles.size(); ++i)
         {
           spawn(particles[i]);
-          particles[i].t = life_time * bunching * float(i)/particles.size();
+          particles[i].t = life_time * bunching * static_cast<float>(i) / static_cast<float>(particles.size());
         }
     }
 }
@@ -368,8 +368,8 @@ ParticleSystem::set_rect_distribution(const Rectf& rect)
 void
 ParticleSystem::set_cone(float start_angle, float stop_angle)
 {
-  cone_start = start_angle * M_PI/180.0f;
-  cone_stop  = stop_angle  * M_PI/180.0f;
+  cone_start = start_angle * math::pi/180.0f;
+  cone_stop  = stop_angle  * math::pi/180.0f;
 }
 
 void

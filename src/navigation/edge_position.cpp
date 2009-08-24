@@ -86,7 +86,7 @@ EdgePosition::advance(Vector2f& adv, Node*& next_node)
 
   Vector2f proj = adv.project(edge_v);
 
-  float angle = atan2(edge_v.y, edge_v.x) - atan2(proj.y, proj.x);
+  float angle = atan2f(edge_v.y, edge_v.x) - atan2f(proj.y, proj.x);
 
   // Check if we are going forward or backward
   float advf;

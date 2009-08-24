@@ -90,7 +90,9 @@ SurfaceManager::get(const Pathname& filename)
               throw std::runtime_error(msg.str());
             }
         
-          Surface result(texture, Rectf(0, 0, maxu, maxv), Sizef(image.get_width(), image.get_height()));
+          Surface result(texture, Rectf(0.0f, 0.0f, maxu, maxv),
+                         Sizef(static_cast<float>(image.get_width()),
+                               static_cast<float>(image.get_height())));
           surfaces.insert(std::make_pair(filename, result));
           return result;
         }      
@@ -122,12 +124,15 @@ SurfaceManager::load_grid(const Pathname& filename,
     {
       for(int x = 0; x <= image.get_width() - width + 1; x += width)
         {
-          float s_min_u = maxu * x / static_cast<float>(image.get_width());
-          float s_max_u = (maxu * (x + width)) / static_cast<float>(image.get_width());
-          float s_min_v = maxv * x / static_cast<float>(image.get_height());
-          float s_max_v = (maxv * (x + height)) / static_cast<float>(image.get_height());
+          float s_min_u = maxu * static_cast<float>(x) / static_cast<float>(image.get_width());
+          float s_min_v = maxv * static_cast<float>(x) / static_cast<float>(image.get_height());
+          float s_max_u = (maxu * (static_cast<float>(x + width)))  / static_cast<float>(image.get_width());
+          float s_max_v = (maxv * (static_cast<float>(x + height))) / static_cast<float>(image.get_height());
 
-          surfaces.push_back(Surface(texture, Rectf(s_min_u, s_min_v, s_max_u, s_max_v), Sizef(width, height)));
+          surfaces.push_back(Surface(texture, 
+                                     Rectf(s_min_u, s_min_v, s_max_u, s_max_v), 
+                                     Sizef(static_cast<float>(width),
+                                           static_cast<float>(height))));
         }
     }
 }

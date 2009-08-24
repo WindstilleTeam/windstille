@@ -130,9 +130,9 @@ SoftwareSurface::get_surface() const
 void
 SoftwareSurface::blit(SoftwareSurface& dst, int x, int y) const
 {
-  SDL_Rect dst_rect;
-  dst_rect.x = x;
-  dst_rect.y = y;
+  SDL_Rect dst_rect; 
+  dst_rect.x = static_cast<Sint16>(x);
+  dst_rect.y = static_cast<Sint16>(y);
 
   SDL_BlitSurface(impl->surface, 0, dst.impl->surface, &dst_rect);
 }
@@ -141,14 +141,14 @@ void
 SoftwareSurface::blit(const Rect& src_rect_, SoftwareSurface& dst, int x, int y) const
 {
   SDL_Rect src_rect;
-  src_rect.x = src_rect_.left;
-  src_rect.y = src_rect_.top;
-  src_rect.w = src_rect_.get_width();
-  src_rect.h = src_rect_.get_height();
+  src_rect.x = static_cast<Sint16>(src_rect_.left);
+  src_rect.y = static_cast<Sint16>(src_rect_.top);
+  src_rect.w = static_cast<Sint16>(src_rect_.get_width());
+  src_rect.h = static_cast<Sint16>(src_rect_.get_height());
 
   SDL_Rect dst_rect;
-  dst_rect.x = x;
-  dst_rect.y = y;
+  dst_rect.x = static_cast<Sint16>(x);
+  dst_rect.y = static_cast<Sint16>(y);
   
   SDL_BlitSurface(impl->surface, &src_rect, dst.impl->surface, &dst_rect);
 }

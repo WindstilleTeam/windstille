@@ -217,7 +217,7 @@ Sprite3D::set_speed(float speed)
   if ((speed <  0.0f && frame1.speed >= 0.0f) ||
       (speed >= 0.0f && frame1.speed <  0.0f)) 
     {
-      blend_time = 1.0 - blend_time;
+      blend_time = 1.0f - blend_time;
       std::swap(frame1, frame2);
     }
 
@@ -290,9 +290,9 @@ private:
   const Sprite3D* sprite;
 
 public:
-  Sprite3DDrawingRequest(const Sprite3D* sprite, const Vector2f& pos, float z_pos,
-                       const Matrix& modelview)
-    : DrawingRequest(pos, z_pos, modelview), sprite(sprite)
+  Sprite3DDrawingRequest(const Sprite3D* sprite, 
+                         const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
+    : DrawingRequest(pos_, z_pos_, modelview_), sprite(sprite)
   {}
 
   void draw(const Texture& /*tmp_texture*/)
@@ -343,8 +343,9 @@ Sprite3D::update(float delta)
   if(frame1.speed < 0)
     time_delta = -time_delta;
   
-  while(blend_time + time_delta >= 1.0) {
-    delta -= (1.0 - blend_time) / (frame1.action->speed * frame1.speed);
+  while(blend_time + time_delta >= 1.0f)
+  {
+    delta -= (1.0f - blend_time) / (frame1.action->speed * frame1.speed);
     set_next_frame();
 
     time_delta = delta * frame1.action->speed * frame1.speed;

@@ -46,11 +46,11 @@ ResponseCurve::get(float v)
       v = math::mid(i_min, v, i_max);
 
       int   bucket_count = samples.size() - 1;
-      float bucket_size  = (i_max - i_min) / bucket_count;
+      float bucket_size  = (i_max - i_min) / static_cast<float>(bucket_count);
       
       int bucket_index = int((v - i_min) / bucket_size);
 
-      float t = ((v - i_min) - (bucket_index * bucket_size)) / bucket_size;
+      float t = ((v - i_min) - (static_cast<float>(bucket_index) * bucket_size)) / bucket_size;
       
       return ((1.0f - t) * samples[bucket_index]) + (t * samples[bucket_index + 1]);
     }

@@ -102,8 +102,8 @@ public:
 
   Vector2f get_offset() const;
 
-  int get_width() const;
-  int get_height() const;
+  float get_width() const;
+  float get_height() const;
 
   /** true if the Sprite is valid and usable, false if not */
   operator bool() const;

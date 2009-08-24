@@ -186,7 +186,9 @@ TextArea::draw()
   state.activate();
 
   glPushMatrix();
-  glTranslatef(impl->rect.left, impl->rect.top + impl->font->get_height() - impl->scroll_offset, 0);
+  glTranslatef(impl->rect.left, 
+               impl->rect.top + static_cast<float>(impl->font->get_height()) - impl->scroll_offset, 
+               0.0f);
 
   // Voodoo to get non-blurry fonts
   float mx = -0.375;
@@ -266,9 +268,9 @@ TextArea::draw()
             int word_width;
 
             if (is_small)
-              word_width = static_cast<int>(impl->font->get_width(i->content) * 0.6f);
+              word_width = static_cast<int>(static_cast<float>(impl->font->get_width(i->content)) * 0.6f);
             else if (is_large)
-              word_width = static_cast<int>(impl->font->get_width(i->content) * 2.0f);
+              word_width = static_cast<int>(static_cast<float>(impl->font->get_width(i->content)) * 2.0f);
             else
               word_width = impl->font->get_width(i->content);
           
