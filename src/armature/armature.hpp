@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_ARMATURE_ARMATURE_HPP
 
 #include <vector>
+
 #include "armature/bone.hpp"
 #include "util/file_reader.hpp"
 

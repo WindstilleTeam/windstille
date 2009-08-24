@@ -23,6 +23,7 @@
 #include <GL/gl.h>
 #include <string>
 #include <vector>
+
 #include "math/vector2f.hpp"
 #include "math/vector3.hpp"
 #include "display/texture.hpp"

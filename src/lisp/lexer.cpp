@@ -18,6 +18,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string.h>
+
 #include "lisp/lexer.hpp"
 
 namespace lisp

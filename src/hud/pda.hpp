@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_HUD_PDA_HPP
 
 #include <boost/scoped_ptr.hpp>
+
 #include "sprite2d/sprite.hpp"
 #include "screen/screen.hpp"
 

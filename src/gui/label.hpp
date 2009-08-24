@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_GUI_LABEL_HPP
 
 #include <string>
+
 #include "gui/component.hpp"
 
 namespace gui {

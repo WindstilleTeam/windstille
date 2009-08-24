@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_INPUT_CONTROLLER_HPP
 
 #include <vector>
+
 #include "app/controller_def.hpp"
 #include "input/input_event.hpp"
 

@@ -21,6 +21,7 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
+
 #include "math/vector2f.hpp"
 #include "display/color.hpp"
 

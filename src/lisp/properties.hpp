@@ -2,6 +2,7 @@
 #define __PROPERTIES_HPP__
 
 #include <vector>
+
 #include "lisp/getters.hpp"
 #include "lisp/property_iterator.hpp"
 

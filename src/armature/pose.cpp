@@ -17,6 +17,7 @@
 */
 
 #include <stdexcept>
+
 #include "util/file_reader.hpp"
 #include "armature/pose.hpp"
 

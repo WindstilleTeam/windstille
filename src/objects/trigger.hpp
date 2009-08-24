@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_OBJECTS_TRIGGER_HPP
 
 #include <vector>
+
 #include "engine/game_object.hpp"
 
 /** */

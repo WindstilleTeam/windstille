@@ -17,6 +17,7 @@
 */
 
 #include <iostream>
+
 #include "math/math.hpp"
 #include "input/wiimote.hpp"
 

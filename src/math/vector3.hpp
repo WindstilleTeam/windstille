@@ -20,6 +20,7 @@
 #define __VECTOR3_HPP__
 
 #include <iostream>
+
 #include "math/matrix.hpp"
 
 /**

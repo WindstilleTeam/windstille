@@ -21,6 +21,7 @@
 
 #include <string>
 #include <vector>
+
 #include "math/quaternion.hpp"
 #include "math/vector3.hpp"
 #include "math/matrix.hpp"

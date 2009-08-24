@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_ENGINE_GAME_OBJECT_HPP
 
 #include <string>
+
 #include "util/file_reader.hpp"
 #include "display/scene_context.hpp"
 

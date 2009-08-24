@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_DISPLAY_VERTEX_ARRAY_DRAWING_REQUEST_HPP
 
 #include <vector>
+
 #include "display/color.hpp"
 #include "math/matrix.hpp"
 #include "display/texture.hpp"

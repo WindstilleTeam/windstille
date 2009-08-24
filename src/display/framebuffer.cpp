@@ -17,6 +17,7 @@
 */
 
 #include <GL/glew.h>
+
 #include "util/util.hpp"
 #include "display/render_buffer.hpp"
 #include "display/framebuffer.hpp"

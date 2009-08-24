@@ -18,6 +18,7 @@
 
 #include <SDL.h>
 #include <boost/scoped_array.hpp>
+
 #include "sound/stream_sound_source.hpp"
 #include "sound/sound_manager.hpp"
 #include "sound/sound_file.hpp"

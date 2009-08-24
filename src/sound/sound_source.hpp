@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_SOUND_SOUND_SOURCE_HPP
 
 #include <AL/al.h>
+
 #include "math/vector2f.hpp"
 
 class SoundSource

@@ -21,6 +21,7 @@
 
 #include <vector>
 #include <string>
+
 #include "util/file_reader.hpp"
 
 class TileFactory;

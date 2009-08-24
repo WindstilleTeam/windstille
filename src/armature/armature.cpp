@@ -18,6 +18,7 @@
 
 #include <GL/glew.h>
 #include <stdexcept>
+
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
 #include "armature/pose.hpp"

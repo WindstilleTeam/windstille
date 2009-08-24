@@ -17,6 +17,7 @@
 */
 
 #include <GL/glew.h>
+
 #include "screen/geometry_test.hpp"
 #include "app/console.hpp"
 #include "input/controller.hpp"

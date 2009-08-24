@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_SOUND_WAV_SOUND_FILE_HPP
 
 #include <physfs.h>
+
 #include "sound/sound_file.hpp"
 
 class WavSoundFile : public SoundFile

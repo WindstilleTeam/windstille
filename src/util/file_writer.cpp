@@ -17,6 +17,7 @@
 */
 
 #include <sstream>
+
 #include "display/color.hpp"
 #include "math/vector2f.hpp"
 #include "util/file_writer.hpp"

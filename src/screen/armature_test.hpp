@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_SCREEN_ARMATURE_TEST_HPP
 
 #include <boost/scoped_ptr.hpp>
+
 #include "armature/armature.hpp"
 #include "armature/model.hpp"
 #include "screen/screen.hpp"

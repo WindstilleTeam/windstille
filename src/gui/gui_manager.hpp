@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_GUI_GUI_MANAGER_HPP
 
 #include <boost/scoped_ptr.hpp>
+
 #include "screen/screen.hpp"
 
 namespace gui {

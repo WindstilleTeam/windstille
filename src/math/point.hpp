@@ -38,6 +38,7 @@
 #endif
 
 #include <cmath>
+
 #include "vector2f.hpp"
 
 class Vector2f;

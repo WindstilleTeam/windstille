@@ -17,6 +17,7 @@
 
 #include <cmath>
 #include <iostream>
+
 #include "math/vector2f.hpp"
 
 void

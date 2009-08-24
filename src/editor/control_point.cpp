@@ -17,6 +17,7 @@
 */
 
 #include <iostream>
+
 #include "display/scene_context.hpp"
 #include "editor/control_point.hpp"
 

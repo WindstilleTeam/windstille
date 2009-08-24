@@ -21,6 +21,7 @@
 
 #include <boost/scoped_ptr.hpp>
 #include <string>
+
 #include "math/rect.hpp"
 
 class TTFFont;

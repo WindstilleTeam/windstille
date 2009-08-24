@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_NAVIGATION_NODE_HPP
 
 #include <vector>
+
 #include "math/vector2f.hpp"
 
 #include "navigation/edge_position.hpp"

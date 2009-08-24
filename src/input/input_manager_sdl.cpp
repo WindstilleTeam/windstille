@@ -19,12 +19,13 @@
 #include <boost/format.hpp>
 
 #include <sstream>
+
 #include "math/math.hpp"
 #include "app/config.hpp"
 #include "util/file_reader.hpp"
-#include "input/input_manager_sdl.hpp"
+#include "input_manager_sdl.hpp"
 #ifdef HAVE_CWIID
-#include "input/wiimote.hpp"
+#include "wiimote.hpp"
 #endif
 
 const int dead_zone = 0;

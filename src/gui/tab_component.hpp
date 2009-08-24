@@ -21,6 +21,7 @@
 
 #include <string>
 #include <vector>
+
 #include "gui/component.hpp"
 
 namespace gui {

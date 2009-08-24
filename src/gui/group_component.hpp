@@ -21,6 +21,7 @@
 
 #include <boost/scoped_ptr.hpp>
 #include <string>
+
 #include "gui/component.hpp"
 
 namespace gui {

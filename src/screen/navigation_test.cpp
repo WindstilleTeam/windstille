@@ -17,6 +17,7 @@
 */
 
 #include <GL/glew.h>
+
 #include "util/sexpr_file_reader.hpp"
 #include "input/controller.hpp"
 #include "display/display.hpp"

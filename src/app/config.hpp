@@ -23,6 +23,7 @@
 #include <string>
 #include <typeinfo>
 #include <stdexcept>
+
 #include "lisp/writer.hpp"
 
 class ConfigValueBase

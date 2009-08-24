@@ -17,6 +17,7 @@
 */
 
 #include <assert.h>
+
 #include "navigation/node.hpp"
 #include "navigation/edge.hpp"
 

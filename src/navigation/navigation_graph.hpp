@@ -21,6 +21,7 @@
 
 #include <iosfwd>
 #include <vector>
+
 #include "math/line.hpp"
 
 class Rectf;

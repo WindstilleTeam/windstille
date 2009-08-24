@@ -21,6 +21,7 @@
 #define HEADER_WINDSTILLE_OBJECTS_SCRIPTABLE_OBJECT_HPP
 
 #include <string>
+
 #include "engine/entity.hpp"
 #include "sprite2d/sprite.hpp"
 

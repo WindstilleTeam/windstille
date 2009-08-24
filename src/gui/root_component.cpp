@@ -17,6 +17,7 @@
 */
 
 #include <algorithm>
+
 #include "app/console.hpp"
 #include "input/controller.hpp"
 #include "gui/root_component.hpp"

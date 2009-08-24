@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_ARMATURE_POSE_BONE_HPP
 
 #include <string>
+
 #include "math/quaternion.hpp"
 
 /** */

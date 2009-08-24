@@ -20,6 +20,7 @@
 #define __QUATERNION_HPP__
 
 #include <math.h>
+
 #include "vector3.hpp"
 #include "math/matrix.hpp"
 

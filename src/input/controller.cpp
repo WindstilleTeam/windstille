@@ -19,6 +19,7 @@
 
 #include <math.h>
 #include <assert.h>
+
 #include "input/controller.hpp"
 
 Controller::Controller()

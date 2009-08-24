@@ -24,6 +24,7 @@
 #include <vector>
 #include <GL/glew.h>
 #include <GL/gl.h>
+
 #include "util/util.hpp"
 #include "util/file_reader.hpp"
 #include "math/vector2f.hpp"

@@ -23,6 +23,7 @@
 #include "math/matrix.hpp"
 #include "math/rect.hpp"
 #include <vector>
+
 #include "display/color.hpp"
 #include "display/drawing_request.hpp"
 

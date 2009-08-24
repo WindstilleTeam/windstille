@@ -18,6 +18,7 @@
 #define __LISPPARSER_H__
 
 #include <string>
+
 #include "lisp/lexer.hpp"
 
 namespace lisp
