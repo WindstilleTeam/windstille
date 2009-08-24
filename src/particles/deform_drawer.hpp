@@ -25,6 +25,7 @@
 #include "display/drawing_context.hpp"
 #include "particles/drawer.hpp"
 
+class FileReader;
 class SceneContext;
 class ParticleSystem;
 

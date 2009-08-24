@@ -16,13 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "particles/deform_drawer.hpp"
+
 #include <GL/glew.h>
 
 #include "display/display.hpp"
 #include "display/shader_object.hpp"
 #include "particles/particle_system.hpp"
 #include "display/opengl_state.hpp"
-#include "particles/deform_drawer.hpp"
 
 class DeformDrawerRequest : public DrawingRequest
 {

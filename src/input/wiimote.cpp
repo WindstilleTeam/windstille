@@ -16,10 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "input/wiimote.hpp"
+
 #include <iostream>
 
 #include "math/math.hpp"
-#include "input/wiimote.hpp"
 
 Wiimote* wiimote = 0;
 

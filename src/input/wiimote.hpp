@@ -22,6 +22,7 @@
 #ifdef HAVE_CWIID
 
 #include <vector>
+#include <pthread.h>
 #include <cwiid.h>
 
 struct WiimoteButtonEvent
