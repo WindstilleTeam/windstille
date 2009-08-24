@@ -31,7 +31,7 @@ debug_cxxflags = [
     "-Weffc++",
     "-Wconversion",
     #"-Wshadow",
-    #"-Werror",
+    "-Werror",
     ]
 
 # YACC
@@ -280,10 +280,12 @@ class Project:
 
         editor_env.ParseConfig('Magick++-config --libs --cppflags')
         editor_env.ParseConfig('sdl-config --cflags --libs')
-        editor_env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4')
-        editor_env.ParseConfig('pkg-config --cflags --libs gtkglextmm-1.2')
         editor_env.ParseConfig('pkg-config --cflags --libs libcurl')
         editor_env.ParseConfig('pkg-config --cflags --libs libpng')
+
+        # Turn -I options into -isystem, so we don't get warnings from external libraries
+        editor_env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4 | sed "s/-I/-isystem/g"')
+        editor_env.ParseConfig('pkg-config --cflags --libs gtkglextmm-1.2 | sed "s/-I/-isystem/g"')
 
         editor_env.Program('windstille-editor', Glob('src/editor/*.cpp'))
 
