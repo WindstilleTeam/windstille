@@ -152,7 +152,7 @@ public:
           } 
         else if (c == '&') 
           {
-            c += read_entity(); // FIXME: This can't be right
+            content += read_entity();
           }
         else 
           {
@@ -310,7 +310,7 @@ int main(int argc, char** argv)
 
           for(std::vector<BabyXML::Attribute>::iterator j = i->attributes.begin(); j != i->attributes.end(); ++j)
             {
-              std::cout << " " << j->name << "=" << j->value;
+              std::cout << " " << j->name << "='" << j->value << "'";
             }
 
           std::cout << std::endl;
