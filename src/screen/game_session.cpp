@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "screen/game_session.hpp"
+
 #include <math.h>
 #include <sstream>
 #include <stdarg.h>
@@ -24,15 +26,8 @@
 #include <sqstdio.h> 
 #include <sqstdaux.h> 
 
-#include "app/console.hpp"
 #include "app/menu_manager.hpp"
-#include "app/windstille_main.hpp"
-#include "collision/collision_engine.hpp"
 #include "display/display.hpp"
-#include "display/scene_context.hpp"
-#include "display/surface.hpp"
-#include "display/surface_manager.hpp"
-#include "engine/game_object.hpp"
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
 #include "font/fonts.hpp"
@@ -41,20 +36,11 @@
 #include "hud/inventory.hpp"
 #include "hud/pda.hpp"
 #include "hud/speech_manager.hpp"
-#include "input/input_manager.hpp"
+#include "input/controller.hpp"
 #include "objects/player.hpp"
-#include "objects/test_object.hpp"
-#include "particles/particle_system.hpp"
-#include "particles/spark_drawer.hpp"
-#include "particles/surface_drawer.hpp"
-#include "screen_manager.hpp"
-#include "scripting/util.hpp"
-#include "scripting/wrapper.hpp"
+#include "screen/screen_manager.hpp"
+#include "screen/view.hpp"
 #include "sound/sound_manager.hpp"
-#include "tile/tile_map.hpp"
-#include "view.hpp"
-
-#include "game_session.hpp"
 
 class GameSessionImpl
 {
