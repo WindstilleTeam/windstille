@@ -200,7 +200,7 @@ class Project:
         env = Environment(MINISWIG=miniswig_bin)
 
         env.Depends(env.Command('src/scripting/miniswig.tmp', 'src/scripting/wrapper.interface.hpp',
-                                ["cpp -x c  -CC $SOURCE -o $TARGET -DSCRIPTING_API"]),
+                                ["$CXX -E -Isrc/ -x c -CC $SOURCE -o $TARGET -DSCRIPTING_API"]),
                     ['src/scripting/interface.hpp',
                      'src/scripting/game_objects.hpp'])
 
