@@ -16,10 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
 #include "properties/property_set.hpp"
-#include "properties/property.hpp"
-#include "app/globals.hpp"
 #include "sector.hpp"
 #include "tile/tile_map.hpp"
 #include "entity.hpp"

@@ -17,8 +17,6 @@
 */
 
 #include <iostream>
-#include <assert.h>
-#include <pthread.h>
 #include "math/math.hpp"
 #include "wiimote.hpp"
 

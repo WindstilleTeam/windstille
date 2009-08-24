@@ -16,12 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <math.h>
-#include <iostream>
 #include "particle_system.hpp"
 #include "display/scene_context.hpp"
-#include "math/vector2f.hpp"
-#include "display/color.hpp"
 #include "util/file_reader.hpp"
 #include "spark_drawer.hpp"
 #include "deform_drawer.hpp"

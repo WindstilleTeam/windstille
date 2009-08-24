@@ -17,27 +17,20 @@
 */
 
 #include "wrapper.interface.hpp"
-#include "interface.hpp"
 
-#include <vector>
-#include <assert.h>
 
 #include "app/config.hpp"
-#include "display/display.hpp"
 #include "display/opengl_window.hpp"
 #include "engine/camera.hpp"
-#include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
 #include "engine/squirrel_thread.hpp"
 #include "font/fonts.hpp"
-#include "hud/controller_help_window.hpp"
 #include "hud/conversation.hpp"
 #include "hud/dialog_manager.hpp"
 #include "hud/pda.hpp"
 #include "hud/speech_manager.hpp"
 #include "screen/game_session.hpp"
 #include "sound/sound_manager.hpp"
-#include "util.hpp"
 #include "util/sexpr_file_reader.hpp"
 
 namespace Scripting

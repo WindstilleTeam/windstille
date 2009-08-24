@@ -16,15 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
-#include <iostream>
-#include <assert.h>
-#include <stdexcept>
-#include <sstream>
-#include <boost/scoped_ptr.hpp>
 
 #include "input_manager_sdl.hpp"
-#include "input_manager_impl.hpp"
 #include "input_manager.hpp"
 
 InputManager::InputManager(const ControllerDescription& controller_description)

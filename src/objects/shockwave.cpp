@@ -17,9 +17,6 @@
 */
 
 #include "display/opengl_state.hpp"
-#include "display/drawing_request.hpp"
-#include "display/texture.hpp"
-#include "display/shader_program.hpp"
 #include "display/shader_object.hpp"
 #include "shockwave.hpp"
 

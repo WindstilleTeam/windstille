@@ -16,23 +16,17 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
 #include <vector>
 #include <stdexcept>
 #include <sstream>
 
 #include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
 
 #include "display/blitter.hpp"
 #include "display/opengl_state.hpp"
 #include "display/software_surface.hpp"
-#include "display/texture_manager.hpp"
-#include "font_effect.hpp"
 #include "physfs/physfs_stream.hpp"
 #include "ttf_font.hpp"
-#include "util/util.hpp"
 
 TTFCharacter::TTFCharacter(const Rect& pos_,
                            const Rectf& uv_, 

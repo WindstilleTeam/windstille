@@ -18,7 +18,6 @@
 
 #include "spider_mine.hpp"
 #include "player.hpp"
-#include "sprite2d/manager.hpp"
 
 SpiderMine::SpiderMine(FileReader& props)
   : sprite(),

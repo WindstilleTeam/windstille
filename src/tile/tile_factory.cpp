@@ -16,23 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <string>
-#include <sstream>
-#include <assert.h>
-#include <sstream>
-#include <iostream>
-#include <boost/scoped_ptr.hpp>
 
-#include "app/globals.hpp"
 #include "tile.hpp"
 #include "tile_packer.hpp"
 #include "tile_factory.hpp"
-#include "tile_description.hpp"
 #include "util/sexpr_file_reader.hpp"
-#include "display/surface_manager.hpp"
 #include "display/software_surface.hpp"
-#include "display/texture.hpp"
-#include "physfs/physfs_sdl.hpp"
 
 /** Check if the given region of the given image is fully transparent */
 bool surface_empty(const SoftwareSurface& image, int sx, int sy, int w, int h)

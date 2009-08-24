@@ -3,15 +3,7 @@
  *  'src/scripting/wrapper.interface.hpp'
  * DO NOT CHANGE
  */
-#include <config.h>
 
-#include <new>
-#include <assert.h>
-#include <string>
-#include <sstream>
-#include <squirrel.h>
-#include "squirrel_error.hpp"
-#include "wrapper.interface.hpp"
 
 namespace Scripting
 {

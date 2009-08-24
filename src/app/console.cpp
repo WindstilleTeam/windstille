@@ -16,18 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "app/console.hpp"
-
-#include <assert.h>
-
-#include "util/pathname.hpp"
 #include "display/display.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "input/input_manager.hpp"
-#include "math/rect.hpp"
 #include "screen/game_session.hpp"
-#include "scripting/util.hpp"
 
 Console console;
 

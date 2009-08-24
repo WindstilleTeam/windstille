@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,45 +16,30 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "root_component.hpp"
-#include "screen/screen_manager.hpp"
-#include "gui_manager.hpp"
-
-namespace gui {
-
-GUIManager::GUIManager()
- : root(new RootComponent(Rectf(0,0,800,600)))
+#include "editor/property_dialog.hpp"
+
+PropertyDialog::PropertyDialog(Properties& /*properties*/)
 {
-}
-
-GUIManager::~GUIManager()
-{
-}
-
-void
-GUIManager::draw()
-{
-  root->draw();
-}
-
-void
-GUIManager::update(float delta, const Controller& controller)
-{
-  root->update(delta, controller);
-
-  if (!root->is_active())
+#if 0
+  std::vector<std::string> props = properties.get_properties();
+  for(std::vector<std::string>::iterator i = props.begin(); i != props.end(); ++i)
     {
-      //FIXME: This doesn't work when GUI isn't an overlay
-      screen_manager.pop_overlay();
+      Property& prop = properties.get_property(*i);
+      if (prop.get_type() == "int")
+        {
+          new Gtk::Label(*i);
+          new Gtk::TextEntry();
+        }
+      else if (prop.get_type() == "float")
+        {
+        }
     }
+#endif 
 }
 
-RootComponent*
-GUIManager::get_root() const
+PropertyDialog::~PropertyDialog()
 {
-  return root.get();
 }
-
-} // namespace gui
-
+    
+
 /* EOF */

@@ -19,7 +19,6 @@
 #include "edge.hpp"
 #include "node.hpp"
 #include "display/display.hpp"
-#include "edge_position.hpp"
 
 EdgePosition::EdgePosition()
   : edge(0),

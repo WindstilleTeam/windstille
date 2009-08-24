@@ -16,14 +16,10 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
-#include <iostream>
 #include "display/opengl_state.hpp"
-#include "font/ttf_font.hpp"
-#include "text_area.hpp"
+#include "display/text_area.hpp"
 #include "util/baby_xml.hpp"
 #include "font/fonts.hpp"
-#include "text_area.hpp"
 #include "display.hpp"
 
 struct TextAreaCommand 

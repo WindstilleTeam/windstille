@@ -17,13 +17,10 @@
 */
 
 #include <GL/glew.h>
-#include <GL/gl.h>
-#include <iostream>
 #include <stdexcept>
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
 #include "pose.hpp"
-#include "math/vector3.hpp"
 #include "armature.hpp"
 
 Armature::Armature(FileReader& reader)

@@ -18,19 +18,12 @@
 
 #include "display/display.hpp"
 
-#include <assert.h>
 #include <boost/scoped_array.hpp>
 #include <png.h>
-#include <math.h>
 #include <errno.h>
 #include <fstream>
-#include <stdexcept>
 
-#include "app/config.hpp"
-#include "math/math.hpp"
 #include "display/opengl_state.hpp"
-#include "util/util.hpp"
-#include "util/pathname.hpp"
 
 Size              Display::aspect_size;
 std::vector<Rect> Display::cliprects;

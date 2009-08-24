@@ -18,13 +18,10 @@
 
 #include "display/opengl_window.hpp"
 
-#include <assert.h>
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <SDL/SDL_image.h>
 
 #include "util/util.hpp" 
-#include "util/pathname.hpp"
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
 #include "app/config.hpp"

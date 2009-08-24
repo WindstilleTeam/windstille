@@ -18,7 +18,6 @@
 
 #include "screen/title_screen.hpp"
 
-#include <iostream>
 
 #include "display/display.hpp"
 #include "app/menu_manager.hpp"

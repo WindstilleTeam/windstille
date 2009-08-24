@@ -18,13 +18,9 @@
 
 #include "app/config.hpp"
 
-#include <stdio.h>
 #include <boost/format.hpp>
-#include <boost/scoped_ptr.hpp>
-#include <iostream>
 
 #include "app/windstille.hpp"
-#include "util/pathname.hpp"
 #include "util/sexpr_file_reader.hpp"
 #include "util/command_line.hpp"
 #include "globals.hpp"

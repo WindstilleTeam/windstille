@@ -17,7 +17,6 @@
 */
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "render_buffer.hpp"
 

@@ -19,15 +19,8 @@
 
 #include "sprite2d/sprite.hpp"
 
-#include <math.h>
-#include <GL/gl.h>
-#include "display/drawing_request.hpp"
-#include "display/scene_context.hpp"
 #include "sprite2d/data.hpp"
-#include "sprite2d/manager.hpp"
 #include "display/surface_drawing_parameters.hpp"
-#include "display/color.hpp"
-#include "util/util.hpp"
 
 Sprite::Sprite()
   : data(),

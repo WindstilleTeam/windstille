@@ -18,15 +18,10 @@
 
 #include "hud/inventory.hpp"
 
-#include <iostream>
-#include <vector>
 
 #include "font/fonts.hpp"
 #include "input/controller.hpp"
-#include "input/input_manager.hpp"
 #include "screen/game_session.hpp"
-#include "sprite2d/sprite.hpp"
-#include "util/pathname.hpp"
 
 class InventoryItem
 {

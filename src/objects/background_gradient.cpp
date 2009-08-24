@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
 #include "display/vertex_array_drawing_request.hpp"
 #include "display/display.hpp"
 #include "background_gradient.hpp"

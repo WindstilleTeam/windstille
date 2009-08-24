@@ -18,18 +18,9 @@
 
 #include "display/texture_manager.hpp"
 
-#include <assert.h>
-#include <iostream>
-#include <sstream>
-#include <stdexcept>
-#include <GL/glew.h>
-#include <GL/gl.h>
 
-#include "util/util.hpp"
-#include "app/globals.hpp"
 #include "texture.hpp"
 #include "software_surface.hpp"
-#include "physfs/physfs_sdl.hpp"
 
 TextureManager::TextureManager()
   : textures()

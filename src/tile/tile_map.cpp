@@ -16,17 +16,16 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "tile/tile_map.hpp"
+
 #include <sstream>
 #include <stdexcept>
 #include <physfs.h>
-#include "tile_map.hpp"
-#include "tile.hpp"
-#include "tile_factory.hpp"
-#include "app/globals.hpp"
+
+#include "tile/tile.hpp"
+#include "tile/tile_factory.hpp"
 #include "screen/view.hpp"
 #include "display/vertex_array_drawing_request.hpp"
-#include "collision/collision_engine.hpp"
-#include <inttypes.h>
 
 TileMap::TileMap(FileReader& props)
   : field(),

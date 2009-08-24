@@ -18,24 +18,14 @@
 
 #include <boost/bind.hpp>
 
-#include "app/console.hpp"
-#include "app/controller_def.hpp"
-#include "app/globals.hpp"
 #include "collision/collision_engine.hpp"
 #include "collision/stair_contact.hpp"
-#include "display/surface_manager.hpp"
 #include "engine/sector.hpp"
 #include "grenade.hpp"
-#include "hud/pda.hpp"
-#include "input/controller.hpp"
 #include "laser_pointer.hpp"
-#include "objects/bomb.hpp"
-#include "particles/particle_system.hpp"
 #include "pistol.hpp"
 #include "player.hpp"
 #include "screen/game_session.hpp"
-#include "sound/sound_manager.hpp"
-#include "sprite3d/manager.hpp"
 #include "tile/tile.hpp"
 #include "tile/tile_map.hpp"
 

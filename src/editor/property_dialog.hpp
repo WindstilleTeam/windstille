@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,45 +16,25 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "root_component.hpp"
-#include "screen/screen_manager.hpp"
-#include "gui_manager.hpp"
+#ifndef HEADER_WINDSTILLE_EDITOR_PROPERTY_DIALOG_HPP
+#define HEADER_WINDSTILLE_EDITOR_PROPERTY_DIALOG_HPP
 
-namespace gui {
+#include <gtkmm/dialog.h>
 
-GUIManager::GUIManager()
- : root(new RootComponent(Rectf(0,0,800,600)))
+#include "properties/properties.hpp"
+
+class PropertyDialog : public Gtk::Dialog
 {
-}
-
-GUIManager::~GUIManager()
-{
-}
-
-void
-GUIManager::draw()
-{
-  root->draw();
-}
-
-void
-GUIManager::update(float delta, const Controller& controller)
-{
-  root->update(delta, controller);
-
-  if (!root->is_active())
-    {
-      //FIXME: This doesn't work when GUI isn't an overlay
-      screen_manager.pop_overlay();
-    }
-}
-
-RootComponent*
-GUIManager::get_root() const
-{
-  return root.get();
-}
-
-} // namespace gui
+private:
+public:
+  PropertyDialog(Properties& properties);
+  ~PropertyDialog();
+  
+private:
+  PropertyDialog(const PropertyDialog&);
+  PropertyDialog& operator=(const PropertyDialog&);
+};
+
+#endif
 
 /* EOF */

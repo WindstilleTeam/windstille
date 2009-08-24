@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
 #include "input/controller.hpp"
 #include "font/fonts.hpp"
 #include "display/display.hpp"

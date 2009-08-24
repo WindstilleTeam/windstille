@@ -17,14 +17,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <sstream>
 #include <boost/scoped_ptr.hpp>
-#include <stdio.h>
-#include <iostream>
 
-#include <assert.h>
-#include "lisp/lisp.hpp"
 #include "lisp/parser.hpp"
 #include "lisp/properties.hpp"
 #include "lisp/writer.hpp"

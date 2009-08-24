@@ -18,7 +18,6 @@
 
 #include <sstream>
 #include <stdexcept>
-#include <iostream>
 #include "baby_xml.hpp"
 
 class BabyXMLReader
@@ -283,7 +282,6 @@ BabyXML::add_node(const Node& node)
 }
 
 #ifdef __TEST__
-// g++ -Wall -Werror -O2 -g -o baby_xml baby_xml.cpp -D__TEST__ 
 #include <iostream>
 
 int main(int argc, char** argv)

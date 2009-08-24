@@ -18,7 +18,6 @@
 
 #include "display/vertex_array_drawing_request.hpp"
 #include "objects/player.hpp"
-#include "collision/collision_engine.hpp"
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
 #include "laser_pointer.hpp"

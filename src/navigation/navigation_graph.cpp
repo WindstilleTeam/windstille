@@ -16,15 +16,10 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
 #include <iomanip>
-#include <map>
-#include <algorithm>
 
-#include "math/rect.hpp"
 #include "display/display.hpp"
 #include "edge.hpp"
-#include "edge_position.hpp"
 #include "node.hpp"
 #include "util/file_reader.hpp"
 #include "util/file_writer.hpp"

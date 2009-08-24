@@ -17,15 +17,11 @@
 */
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <physfs.h>
 
 #include "input/controller.hpp"
-#include "display/display.hpp"
 #include "screen_manager.hpp"
-#include "display/display.hpp"
 #include "armature/pose.hpp"
-#include "armature/model.hpp"
 #include "armature_test.hpp"
 
 ArmatureTest::ArmatureTest()

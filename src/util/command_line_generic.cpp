@@ -30,7 +30,6 @@
 #include <iomanip>
 #include <iostream>
 #include <stdexcept>
-#include <stdio.h>
 
 #include "command_line_generic.hpp"
 

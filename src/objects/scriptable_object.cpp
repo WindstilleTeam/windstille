@@ -21,7 +21,6 @@
 #include "engine/sector.hpp"
 #include "app/globals.hpp"
 #include "scriptable_object.hpp"
-#include "sprite2d/manager.hpp"
 
 ScriptableObject::ScriptableObject(FileReader& props)
   : z_pos(50),

@@ -16,15 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdexcept>
 #include <boost/bind.hpp>
 #include "box.hpp"
-#include "app/globals.hpp"
 #include "collision/collision_engine.hpp"
-#include "math/vector2f.hpp"
-#include "tile/tile_map.hpp"
-#include "math/random.hpp"
-#include "sprite2d/manager.hpp"
 
 Box::Box(FileReader& props)
   : sprite(),

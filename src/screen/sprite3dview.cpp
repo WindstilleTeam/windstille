@@ -16,15 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
 
-#include "app/console.hpp"
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
-#include "font/ttf_font.hpp"
 #include "input/controller.hpp"
-#include "screen_manager.hpp"
 #include "sprite3dview.hpp"
 
 Sprite3DView::Sprite3DView()

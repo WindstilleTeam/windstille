@@ -16,11 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
 #include <stdexcept>
 
 #include "test_object.hpp"
-#include "sprite3d/manager.hpp"
 
 TestObject::TestObject(FileReader& props)
   : sprite(),

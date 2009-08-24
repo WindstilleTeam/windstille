@@ -16,16 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
 #include <string.h>
-#include <stdint.h>
 
-#include "lisp/parser.hpp"
 #include "lisp/getters.hpp"
-#include "display/color.hpp"
-#include "math/size.hpp"
-#include "math/vector2f.hpp"
-#include "math/vector3.hpp"
 #include "file_reader_impl.hpp"
 #include "sexpr_file_reader.hpp"
 

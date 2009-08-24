@@ -16,8 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
-#include "component.hpp"
 #include "root_component.hpp"
 #include "gui_manager.hpp"
 #include "menu_item.hpp"
@@ -25,7 +23,6 @@
 #include "group_component.hpp"
 #include "screen/screen_manager.hpp"
 #include "menu.hpp"
-#include "font/fonts.hpp"
 
 namespace gui {
 

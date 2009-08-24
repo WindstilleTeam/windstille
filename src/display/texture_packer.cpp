@@ -16,11 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
 #include <stdexcept>
 #include <boost/scoped_ptr.hpp>
 
-#include "math/point.hpp"
 #include "display/software_surface.hpp"
 
 #include "texture_packer.hpp"

@@ -18,11 +18,9 @@
 
 #include "display/surface.hpp"
 
-#include <iostream>
 
 #include "display/opengl_state.hpp"
 #include "math/quad.hpp"
-#include "math/vector2f.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/surface_manager.hpp"
 

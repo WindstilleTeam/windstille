@@ -16,24 +16,19 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <boost/scoped_ptr.hpp>
 #include <boost/bind.hpp>
 
 #include "config.hpp"
 #include "sound/sound_manager.hpp"
-#include "console.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
 #include "gui/group_component.hpp"
-#include "gui/gui_manager.hpp"
-#include "gui/menu_component.hpp"
 #include "gui/root_component.hpp"
 #include "gui/text_view.hpp"
 #include "screen/particle_viewer.hpp"
 #include "screen/screen_manager.hpp"
 #include "engine/sector.hpp"
-#include "sprite3d/manager.hpp"
 #include "screen/sprite3dview.hpp"
 #include "screen/geometry_test.hpp"
 #include "screen/armature_test.hpp"

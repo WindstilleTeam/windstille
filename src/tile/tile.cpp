@@ -16,8 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include "app/globals.hpp"
 #include "tile.hpp"
 
 Tile::Tile(unsigned int arg_colmap)

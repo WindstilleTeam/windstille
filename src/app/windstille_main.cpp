@@ -16,40 +16,25 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "SDL.h"
-
-#include "windstille.hpp"
-
-#include <boost/scoped_array.hpp>
 #include <boost/filesystem.hpp>
-#include <stdio.h>
 #include <physfs.h>
 
 #include "config.hpp"
-#include "display/display.hpp"
-#include "display/opengl_state.hpp"
 #include "display/opengl_window.hpp"
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
 #include "engine/script_manager.hpp"
-#include "engine/sector.hpp"
 #include "font/fonts.hpp"
-#include "font/ttf_font.hpp"
-#include "globals.hpp"
 #include "input/input_manager.hpp"
 #include "screen/game_session.hpp"
 #include "screen/particle_viewer.hpp"
-#include "screen/screen.hpp"
 #include "screen/screen_manager.hpp"
 #include "screen/sprite2dview.hpp"
 #include "screen/sprite3dview.hpp"
 #include "screen/title_screen.hpp"
 #include "sound/sound_manager.hpp"
-#include "sprite2d/manager.hpp"
 #include "sprite3d/manager.hpp"
 #include "tile/tile_factory.hpp"
-#include "util/util.hpp"
-#include "util/pathname.hpp"
 #include "util/system.hpp"
 #include "windstille_main.hpp"
 

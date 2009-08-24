@@ -18,21 +18,14 @@
 
 /** Used SDL_mixer and glest source as reference */
 
-#include "sound_file.hpp"
 
 #include <string.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <algorithm>
 #include <stdexcept>
 #include <sstream>
-#include <assert.h>
-#include <physfs.h>
 
 #include "ogg_sound_file.hpp"
 #include "wav_sound_file.hpp"
 
-#include <fstream>
 
 std::auto_ptr<SoundFile>
 SoundFile::load(const std::string& filename)

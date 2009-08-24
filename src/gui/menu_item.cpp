@@ -18,7 +18,6 @@
 
 #include "sound/sound_manager.hpp"
 #include "display/display.hpp"
-#include "font/ttf_font.hpp"
 #include "menu_component.hpp"
 
 #include "menu_item.hpp"

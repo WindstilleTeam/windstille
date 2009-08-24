@@ -16,24 +16,16 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <boost/scoped_ptr.hpp>
-#include <assert.h>
-#include <iostream>
-#include <iosfwd>
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "math/vector3.hpp"
 #include "display/display.hpp"
 #include "display/opengl_state.hpp"
 #include "display/scene_context.hpp"
-#include "display/surface.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/drawing_parameters.hpp"
 #include "display/vertex_array_drawing_request.hpp"
-#include "drawing_context.hpp"
 #include "font/fonts.hpp"
-#include "math/quad.hpp"
 #include "sprite2d/sprite.hpp"
 
 struct DrawingRequestsSorter

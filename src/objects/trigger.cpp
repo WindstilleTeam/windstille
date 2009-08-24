@@ -16,12 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdexcept>
-#include <list>
 #include "engine/sector.hpp"
 #include "trigger.hpp"
 #include "objects/player.hpp"
-#include "engine/script_manager.hpp"
 
 Trigger::Trigger(FileReader& props)
   : triggered(false), one_time_trigger(false)

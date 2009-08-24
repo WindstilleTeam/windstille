@@ -18,13 +18,7 @@
 
 #include "screen/game_session.hpp"
 
-#include <math.h>
-#include <sstream>
-#include <stdarg.h>
 
-#include <squirrel.h> 
-#include <sqstdio.h> 
-#include <sqstdaux.h> 
 
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
@@ -36,7 +30,6 @@
 #include "hud/inventory.hpp"
 #include "hud/pda.hpp"
 #include "hud/speech_manager.hpp"
-#include "input/controller.hpp"
 #include "objects/player.hpp"
 #include "screen/screen_manager.hpp"
 #include "screen/view.hpp"

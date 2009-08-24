@@ -16,11 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <math.h>
 
-#include "app/globals.hpp"
 #include "player.hpp"
-#include "engine/sector.hpp"
 #include "hedgehog.hpp"
 
 Hedgehog::Hedgehog(FileReader& props)

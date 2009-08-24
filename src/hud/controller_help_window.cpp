@@ -16,12 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <boost/scoped_ptr.hpp>
 #include "input/input_manager.hpp"
 #include "display/display.hpp"
-#include "display/text_area.hpp"
-#include "font/fonts.hpp"
 #include "controller_help_window.hpp"
 
 ControllerHelpWindow* ControllerHelpWindow::current_ = 0;

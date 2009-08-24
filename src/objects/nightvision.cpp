@@ -16,12 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "app/globals.hpp"
 #include "math/random.hpp"
-#include "math/matrix.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "display/display.hpp"
-#include "display/texture_manager.hpp"
 #include "nightvision.hpp"
 
 Nightvision::Nightvision(FileReader& /*props*/)

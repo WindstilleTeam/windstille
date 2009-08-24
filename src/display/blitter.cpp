@@ -17,13 +17,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-#include <assert.h>
-#include <iostream>
-#include <algorithm>
-#include <stdint.h>
 
 #include "display/software_surface.hpp"
-#include "blitter.hpp"
 
 void generate_border(const SoftwareSurface& surface,
                      int x_pos, int y_pos, int width, int height)

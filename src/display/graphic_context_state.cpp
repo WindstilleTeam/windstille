@@ -17,9 +17,7 @@
 
 #include "display/graphic_context_state.hpp"
 
-#include <math.h>
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "display/scene_context.hpp"
 

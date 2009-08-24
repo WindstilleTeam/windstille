@@ -18,21 +18,11 @@
 
 #include "surface_manager.hpp"
 
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
-#include <GL/glew.h>
-#include <GL/gl.h>
 
-#include "app/globals.hpp"
-#include "math/math.hpp"
-#include "physfs/physfs_sdl.hpp"
 #include "software_surface.hpp"
-#include "surface.hpp"
-#include "texture.hpp"
-#include "texture_manager.hpp"
 #include "texture_packer.hpp"
-#include "util/util.hpp"
 
 
 SurfaceManager::SurfaceManager()

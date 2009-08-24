@@ -16,19 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <math.h>
-#include <iostream>
 
-#include "display/display.hpp"
-#include "app/windstille_main.hpp"
-#include "screen.hpp"
-#include "font/fonts.hpp"
-#include "app/globals.hpp"
-#include "app/console.hpp"
-#include "app/config.hpp"
-#include "input/input_manager.hpp"
-#include "input/input_manager_sdl.hpp"
-#include "sound/sound_manager.hpp"
+#include "screen/screen.hpp"
 
 Screen::Screen()
 {

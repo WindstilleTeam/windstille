@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
 #include "tile/tile.hpp"
 #include "tile/tile_map.hpp"
 #include "stair_contact.hpp"

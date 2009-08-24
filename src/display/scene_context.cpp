@@ -17,19 +17,11 @@
 */
 
 #include <GL/glew.h>
-#include <GL/gl.h>
-#include <assert.h>
-#include <iostream>
-#include <boost/scoped_ptr.hpp>
 
-#include "util/util.hpp"
 #include "display/display.hpp"
 #include "display/surface.hpp"
 #include "display/opengl_state.hpp"
 
-#include "shader_program.hpp"
-#include "shader_object.hpp"
-#include "framebuffer.hpp"
 #include "scene_context.hpp"
 
 // The lightmap has a resolution of screen.w/LIGHTMAP, screen.h/LIGHTMAP

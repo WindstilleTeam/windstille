@@ -18,17 +18,13 @@
 
 #include "hud/dialog_manager.hpp"
 
-#include <iostream>
 
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
 #include "input/controller.hpp"
-#include "input/input_manager.hpp"
 #include "engine/script_manager.hpp"
 #include "display/text_area.hpp"
 #include "display/display.hpp"
-#include "util/pathname.hpp"
-#include "app/config.hpp"
 
 DialogManager::DialogManager()
 {

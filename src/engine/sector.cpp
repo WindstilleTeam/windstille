@@ -16,24 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <sstream>
-#include <stdexcept>
-#include "util/sexpr_file_reader.hpp"
-#include "app/globals.hpp"
-#include "display/scene_context.hpp"
 #include "objects/background_gradient.hpp"
 #include "tile/tile_map.hpp"
-#include "engine/game_object.hpp"
 #include "objects/player.hpp"
 #include "objects/trigger.hpp"
 #include "objects/test_object.hpp"
 #include "objects/vrdummy.hpp"
 #include "sound/sound_manager.hpp"
-#include "script_manager.hpp"
 #include "collision/collision_engine.hpp"
-#include "particles/particle_system.hpp"
-#include "objects/test_object.hpp"
 #include "objects/elevator.hpp"
 #include "objects/nightvision.hpp"
 #include "objects/character.hpp"
@@ -46,11 +36,9 @@
 #include "objects/box.hpp"
 #include "objects/scriptable_object.hpp"
 #include "navigation/navigation_graph.hpp"
-#include "scripting/squirrel_error.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "squirrel_thread.hpp"
 
-#include "sector.hpp"
 
 //Sector* Sector::current_ = 0;
 

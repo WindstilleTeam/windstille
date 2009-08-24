@@ -16,11 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdexcept>
 #include "elevator.hpp"
 #include "engine/sector.hpp"
 #include "collision/collision_engine.hpp"
-#include "sprite2d/manager.hpp"
 
 Elevator::Elevator(FileReader& props)
   : size(),

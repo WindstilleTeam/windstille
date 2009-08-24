@@ -17,7 +17,6 @@
 */
 
 #include "engine/game_object.hpp"
-#include "sector.hpp"
 
 Sector* GameObject::world;
 

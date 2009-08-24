@@ -17,7 +17,6 @@
 */
 
 #include <boost/bind.hpp>
-#include <iostream>
 
 #include "physics.hpp"
 

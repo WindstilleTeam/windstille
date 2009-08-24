@@ -16,11 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "math/math.hpp"
 #include "input/controller.hpp"
-#include "input/input_manager.hpp"
 #include "font/fonts.hpp"
-#include "math/rect.hpp"
 #include "engine/script_manager.hpp"
 #include "display/display.hpp"
 #include "conversation.hpp"
@@ -129,7 +126,7 @@ Conversation::update(float delta, const Controller& controller)
   grow = fabsf(sinf(time * 3.0f)) * 4.0f;
 
   direction = Vector2f(controller.get_axis_state(X_AXIS),
-                     controller.get_axis_state(Y_AXIS));
+                       controller.get_axis_state(Y_AXIS));
 
   if (fabs(controller.get_axis_state(X_AXIS)) > 0.3f ||
       fabs(controller.get_axis_state(Y_AXIS)) > 0.3f)

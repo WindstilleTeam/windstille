@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/blitter.hpp"
 #include "display/software_surface.hpp"
 #include "no_font_effect.hpp"
 

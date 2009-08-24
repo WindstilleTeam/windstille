@@ -17,12 +17,9 @@
 */
 
 #include "math/vector2f.hpp"
-#include "math/vector3.hpp"
 #include "math/quaternion.hpp"
-#include "math/matrix.hpp"
 #include "display/color.hpp"
 #include "file_reader.hpp"
-#include "getter.hpp"
 
 bool get(const FileReader& reader, const char* name, Vector2f&  value)
 {

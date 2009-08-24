@@ -19,14 +19,11 @@
 #include <boost/scoped_array.hpp>
 #include <png.h>
 #include <errno.h>
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <SDL_image.h>
 
-#include "util/pathname.hpp"
 #include "math/rect.hpp"
-#include "physfs/physfs_sdl.hpp"
 #include "software_surface.hpp"
 
 class SoftwareSurfaceImpl

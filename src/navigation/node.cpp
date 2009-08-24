@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <algorithm>
 #include "node.hpp"
 
 Node::Node(const Vector2f& pos_)

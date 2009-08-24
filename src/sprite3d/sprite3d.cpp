@@ -19,20 +19,10 @@
 #include "sprite3d/sprite3d.hpp"
 
 #include <boost/scoped_array.hpp>
-#include <assert.h>
-#include <vector>
-#include <stdint.h>
-#include <sstream>
-#include <stdexcept>
-#include <physfs.h>
 
-#include "display/drawing_request.hpp"
-#include "display/scene_context.hpp"
-#include "app/globals.hpp"
 #include "util/util.hpp"
 #include "display/opengl_state.hpp"
 #include "sprite3d/manager.hpp"
-#include "sprite3d/data.hpp"
 
 using namespace sprite3d;
 

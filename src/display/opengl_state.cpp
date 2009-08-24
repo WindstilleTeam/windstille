@@ -18,13 +18,10 @@
 
 #include "display/opengl_state.hpp"
 
-#include <assert.h>
-#include <map>
 #include <iostream>
+
 #include "texture.hpp"
-#include "color.hpp"
-#include "app/globals.hpp"
-#include "display/display.hpp"
+#include "display/color.hpp"
 #include "util/util.hpp"
 
 #define MAX_TEXTURE_UNITS 4

@@ -17,7 +17,6 @@
 */
 
 #include <string.h>
-#include <stdint.h>
 #include <stdexcept>
 
 #include "wav_sound_file.hpp"

@@ -17,23 +17,12 @@
 */
 
 #include "app/menu_manager.hpp"
-#include "gui/gui_manager.hpp"
 #include "input/controller.hpp"
 #include "screen/particle_viewer.hpp"
-#include "screen_manager.hpp"
 #include "util/sexpr_file_reader.hpp"
 #include "display/display.hpp"
 
 // Components
-#include "gui/button.hpp"
-#include "gui/label.hpp"
-#include "gui/slider.hpp"
-#include "gui/root_component.hpp"
-#include "gui/grid_component.hpp"
-#include "gui/tab_component.hpp"
-#include "gui/list_view.hpp"
-#include "gui/text_view.hpp"
-#include "gui/automap.hpp"
 
 ParticleViewer::ParticleViewer()
   : sc(),

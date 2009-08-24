@@ -16,13 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <algorithm>
 #include <physfs.h>
 
-#include "display/display.hpp"
-#include "sprite2d/manager.hpp"
-#include "math/math.hpp"
 #include "app/console.hpp"
 #include "input/controller.hpp"
 #include "display/surface_manager.hpp"

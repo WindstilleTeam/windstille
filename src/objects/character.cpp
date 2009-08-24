@@ -16,18 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "character.hpp"
-#include "engine/sector.hpp"
-#include "screen/game_session.hpp"
-#include "scripting/wrapper.interface.hpp"
-#include "hud/dialog_manager.hpp"
-#include "engine/script_manager.hpp"
-#include "physfs/physfs_stream.hpp"
-#include "app/console.hpp"
-#include "sprite3d/manager.hpp"
-#include "util/util.hpp"
+#include "objects/character.hpp"
 
-#include <exception>
+#include "engine/sector.hpp"
+#include "engine/script_manager.hpp"
+#include "app/console.hpp"
+
 
 Character::Character(FileReader& props)
   : sprite(),

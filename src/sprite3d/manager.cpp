@@ -19,7 +19,6 @@
 #include "sprite3d/manager.hpp"
 
 #include "sprite3d/data.hpp"
-#include "sprite3d/sprite3d.hpp"
 
 namespace sprite3d {
 

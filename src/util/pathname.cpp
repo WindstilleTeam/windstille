@@ -18,8 +18,6 @@
 
 #include "util/pathname.hpp"
 
-#include <assert.h>
-#include <iostream>
 #include <sstream>
 #include <boost/filesystem.hpp>
 

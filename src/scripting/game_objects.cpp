@@ -16,10 +16,10 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "wrapper.interface.hpp"
-#include "engine/entity.hpp"
+#include "scripting/game_objects.hpp"
+
 #include "engine/sector.hpp"
-#include "game_objects.hpp"
+#include "engine/game_object.hpp"
 
 namespace Scripting {
 

@@ -18,7 +18,6 @@
 
 #include "gui/text_view.hpp"
 
-#include <iostream>
 
 #include "input/controller.hpp"
 

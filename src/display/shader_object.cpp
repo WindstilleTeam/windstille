@@ -17,8 +17,6 @@
 */
 
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "util/util.hpp"
 #include "shader_object.hpp"

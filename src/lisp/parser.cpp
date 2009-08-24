@@ -18,11 +18,6 @@
 
 #include <boost/scoped_ptr.hpp>
 #include <string.h>
-#include <sstream>
-#include <cassert>
-#include <iostream>
-#include <string>
-#include <exception>
 
 #include "physfs/physfs_stream.hpp"
 #include "parser.hpp"

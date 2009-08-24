@@ -17,14 +17,9 @@
 */
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include "geometry_test.hpp"
-#include "math/rect.hpp"
 #include "app/console.hpp"
-#include "math/size.hpp"
-#include "app/controller_def.hpp"
 #include "input/controller.hpp"
-#include "screen_manager.hpp"
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
 

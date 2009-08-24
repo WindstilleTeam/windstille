@@ -20,22 +20,16 @@
 
 #include <boost/format.hpp>
 
-#include <boost/filesystem.hpp>
-#include <iostream>
 
 #include "app/config.hpp"
-#include "app/globals.hpp"
 #include "display/display.hpp"
 #include "display/opengl_window.hpp"
 #include "font/fonts.hpp"
-#include "hud/controller_help_window.hpp"
 #include "input/input_configurator.hpp"
 #include "input/input_manager.hpp"
 #include "input/input_manager_sdl.hpp"
 #include "screen/game_session.hpp"
-#include "screen/screen.hpp"
 #include "sound/sound_manager.hpp"
-#include "util/pathname.hpp"
 
 ScreenManager screen_manager; 
 

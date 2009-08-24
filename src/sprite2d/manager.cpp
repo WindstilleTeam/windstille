@@ -19,12 +19,8 @@
 
 #include "sprite2d/manager.hpp"
 
-#include <iostream>
-#include <assert.h>
 
-#include "util/pathname.hpp"
 #include "sprite2d/data.hpp"
-#include "sprite2d/sprite.hpp"
 
 SpriteManager::SpriteManager()
   : datas()

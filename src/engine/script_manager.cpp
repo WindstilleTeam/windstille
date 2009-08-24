@@ -19,20 +19,12 @@
 #include "script_manager.hpp"
 
 #include <stdarg.h>
-#include <stdexcept>
-#include <sstream>
-#include <fstream>
-#include <sqstdio.h>
 #include <sqstdaux.h>
-#include <sqstdblob.h>
-#include <sqstdsystem.h>
 #include <sqstdmath.h>
 #include <sqstdstring.h>
 
 #include "squirrel_thread.hpp"
 #include "app/console.hpp"
-#include "scripting/wrapper.hpp"
-#include "scripting/util.hpp"
 #include "scripting/game_objects.hpp"
 #include "scripting/squirrel_error.hpp"
 #include "physfs/physfs_stream.hpp"

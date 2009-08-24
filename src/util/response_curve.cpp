@@ -16,8 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
-#include <iostream>
 #include "math/math.hpp"
 #include "response_curve.hpp"
 

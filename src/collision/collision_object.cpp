@@ -17,12 +17,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
+#include "collision/collision_object.hpp"
 
 #include "display/drawing_context.hpp"
-#include "display/display.hpp"
-#include "collision_object.hpp"
-#include "collision_engine.hpp"
 
 /***********************************************************************
  * CollisionObject

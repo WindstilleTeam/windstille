@@ -29,11 +29,9 @@
 
 #include <assert.h>
 #include <string.h>
-#include <iostream>
 #include <iomanip>
 #include <math.h>
 #include "vector3.hpp"
-#include "matrix.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
 // Matrix construction:

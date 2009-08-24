@@ -16,13 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
-#include <stdexcept>
-#include <iostream>
 #include "util/util.hpp"
 #include "display/opengl_state.hpp"
 #include "display/texture_manager.hpp"
-#include "util/file_reader.hpp"
 #include "armature.hpp"
 #include "mesh.hpp"
 

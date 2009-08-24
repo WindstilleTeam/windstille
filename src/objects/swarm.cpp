@@ -16,12 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "app/globals.hpp"
 #include "display/vertex_array_drawing_request.hpp"
-#include "engine/sector.hpp"
-#include "math/math.hpp"
 #include "math/random.hpp"
-#include "player.hpp"
 #include "screen/game_session.hpp"
 #include "screen/view.hpp"
 

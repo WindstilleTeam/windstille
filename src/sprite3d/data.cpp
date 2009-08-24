@@ -19,17 +19,10 @@
 #include "sprite3d/data.hpp"
 
 #include <boost/scoped_array.hpp>
-#include <iostream>
 #include <physfs.h>
-#include <string.h>
-#include <sstream>
-#include <stdexcept>
 
 #include "util/util.hpp"
-#include "util/pathname.hpp"
-#include "app/globals.hpp"
 #include "display/texture_manager.hpp"
-#include "display/texture.hpp"
 
 namespace sprite3d {
 

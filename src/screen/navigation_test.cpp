@@ -16,18 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
-#include <iostream>
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include "util/sexpr_file_reader.hpp"
 #include "input/controller.hpp"
 #include "display/display.hpp"
-#include "screen_manager.hpp"
 #include "app/menu_manager.hpp"
-#include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
-#include "navigation/edge_position.hpp"
 #include "navigation/edge.hpp"
 #include "navigation_test.hpp"
 

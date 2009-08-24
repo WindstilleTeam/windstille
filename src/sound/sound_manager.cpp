@@ -17,14 +17,10 @@
 */
 
 #include <boost/scoped_array.hpp>
-#include <assert.h>
 #include <stdexcept>
-#include <iostream>
 #include <sstream>
-#include <memory>
 
 #include "sound_file.hpp"
-#include "sound_source.hpp"
 #include "stream_sound_source.hpp"
 
 #include "sound_manager.hpp"

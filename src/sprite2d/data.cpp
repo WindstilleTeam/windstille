@@ -19,13 +19,6 @@
 
 #include "sprite2d/data.hpp"
 
-#include <physfs.h>
-#include <iostream>
-#include <boost/scoped_ptr.hpp>
-#include <sstream>
-#include <stdexcept>
-#include "util/util.hpp"
-#include "display/surface.hpp"
 #include "display/surface_manager.hpp"
 
 SpriteData::SpriteData(const Pathname& pathname)

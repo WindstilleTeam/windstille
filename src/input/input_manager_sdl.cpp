@@ -18,17 +18,10 @@
 
 #include <boost/format.hpp>
 
-#include <assert.h>
-#include <math.h>
-#include <iostream>
 #include <sstream>
-#include <stdexcept>
-#include <stdio.h>
-#include <vector>
 #include "math/math.hpp"
 #include "app/config.hpp"
 #include "util/file_reader.hpp"
-#include "app/controller_def.hpp"
 #include "input_manager_sdl.hpp"
 #ifdef HAVE_CWIID
 #include "wiimote.hpp"

@@ -19,10 +19,6 @@
 
 #include "display/texture.hpp"
 
-#include <stdexcept>
-#include <iostream>
-#include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "math/rect.hpp"
 #include "display/software_surface.hpp"

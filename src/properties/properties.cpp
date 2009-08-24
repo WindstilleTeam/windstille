@@ -19,7 +19,6 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "property.hpp"
 #include "property_set.hpp"
 #include "properties.hpp"
 

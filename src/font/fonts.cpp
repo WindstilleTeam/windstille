@@ -16,12 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
 
-#include "app/globals.hpp"
 #include "font/border_font_effect.hpp"
 #include "font/fonts.hpp"
-#include "util/pathname.hpp"
 
 Fonts::Fonts()
   : ttffont(new TTFFont(Pathname("fonts/VeraMono.ttf"), 14, BorderFontEffect(1, true))),

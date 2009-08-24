@@ -16,10 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
 #include <GL/glew.h>
-#include <GL/gl.h>
-#include "display/texture.hpp"
 #include "app/globals.hpp"
 #include "tile_packer.hpp"
 #include "util/util.hpp"

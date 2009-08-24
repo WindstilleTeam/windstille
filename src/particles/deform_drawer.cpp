@@ -17,12 +17,10 @@
 */
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "display/display.hpp"
 #include "display/shader_object.hpp"
 #include "particle_system.hpp"
-#include "display/drawing_request.hpp"
 #include "display/opengl_state.hpp"
 #include "deform_drawer.hpp"
 

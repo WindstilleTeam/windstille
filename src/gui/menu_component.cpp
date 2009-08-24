@@ -16,15 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <algorithm>
-#include <iostream>
 #include "sound/sound_manager.hpp"
 #include "input/controller.hpp"
 #include "menu_component.hpp"
 #include "gui/tab_component.hpp"
 #include "display/display.hpp"
 #include "menu_item.hpp"
-#include "math/math.hpp"
 
 namespace gui {
 

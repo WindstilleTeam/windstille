@@ -16,17 +16,13 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
 
 #include "app/globals.hpp"
 #include "display/software_surface.hpp"
-#include "physfs/physfs_sdl.hpp"
-#include "tile/tile.hpp"
-#include "tile/tile_description.hpp"
+#include "math/rect.hpp"
 #include "tile/tile_factory.hpp"
-#include "tile/tile_packer.hpp"
 
 TileDescription::TileDescription(FileReader& props)
  : ids(),
