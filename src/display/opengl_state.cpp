@@ -20,7 +20,7 @@
 
 #include <iostream>
 
-#include "texture.hpp"
+#include "display/texture.hpp"
 #include "display/color.hpp"
 #include "util/util.hpp"
 

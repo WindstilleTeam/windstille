@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "random.hpp"
+#include "math/random.hpp"
 
 /* This file is based on:
  * A C-program for MT19937, with initialization improved 2002/1/26.

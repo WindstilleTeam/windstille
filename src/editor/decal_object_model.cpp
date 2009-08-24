@@ -23,10 +23,10 @@
 #include "display/drawing_parameters.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
-#include "decal_scale_control_point.hpp"
-#include "decal_rotate_control_point.hpp"
+#include "editor/decal_scale_control_point.hpp"
+#include "editor/decal_rotate_control_point.hpp"
 
-#include "decal_object_model.hpp"
+#include "editor/decal_object_model.hpp"
 
 ObjectModelHandle
 DecalObjectModel::create(const std::string& name, const Vector2f& pos,

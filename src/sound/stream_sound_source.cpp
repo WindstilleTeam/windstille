@@ -18,9 +18,9 @@
 
 #include <SDL.h>
 #include <boost/scoped_array.hpp>
-#include "stream_sound_source.hpp"
-#include "sound_manager.hpp"
-#include "sound_file.hpp"
+#include "sound/stream_sound_source.hpp"
+#include "sound/sound_manager.hpp"
+#include "sound/sound_file.hpp"
 
 StreamSoundSource::StreamSoundSource(std::auto_ptr<SoundFile> file_)
   : file(file_),

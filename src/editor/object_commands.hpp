@@ -21,9 +21,9 @@
 
 #include <boost/function.hpp>
 
-#include "layer.hpp"
-#include "object_model.hpp"
-#include "command.hpp"
+#include "editor/layer.hpp"
+#include "editor/object_model.hpp"
+#include "editor/command.hpp"
 
 class ObjectRemoveCommand : public Command
 {

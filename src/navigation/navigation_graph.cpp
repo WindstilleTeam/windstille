@@ -19,12 +19,12 @@
 #include <iomanip>
 
 #include "display/display.hpp"
-#include "edge.hpp"
-#include "node.hpp"
+#include "navigation/edge.hpp"
+#include "navigation/node.hpp"
 #include "util/file_reader.hpp"
 #include "util/file_writer.hpp"
 
-#include "navigation_graph.hpp"
+#include "navigation/navigation_graph.hpp"
 
 NavigationGraph::NavigationGraph()
   : nodes(),

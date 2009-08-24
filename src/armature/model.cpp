@@ -18,8 +18,8 @@
 
 #include <stdexcept>
 #include "util/file_reader.hpp"
-#include "mesh.hpp"
-#include "model.hpp"
+#include "armature/mesh.hpp"
+#include "armature/model.hpp"
 
 Model::Model(FileReader& reader, const std::string& path)
   : name(),

@@ -20,8 +20,8 @@
 #include <stdexcept>
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
-#include "pose.hpp"
-#include "armature.hpp"
+#include "armature/pose.hpp"
+#include "armature/armature.hpp"
 
 Armature::Armature(FileReader& reader)
   : name(),

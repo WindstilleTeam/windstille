@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_FRAMEBUFFER_HPP
 #define HEADER_WINDSTILLE_DISPLAY_FRAMEBUFFER_HPP
 
-#include "texture.hpp"
+#include "display/texture.hpp"
 
 class FramebufferImpl;
 

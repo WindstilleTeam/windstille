@@ -1,5 +1,5 @@
 
-#include "properties.hpp"
+#include "lisp/properties.hpp"
 
 namespace lisp
 {

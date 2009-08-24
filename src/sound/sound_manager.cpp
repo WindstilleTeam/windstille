@@ -20,10 +20,10 @@
 #include <stdexcept>
 #include <sstream>
 
-#include "sound_file.hpp"
-#include "stream_sound_source.hpp"
+#include "sound/sound_file.hpp"
+#include "sound/stream_sound_source.hpp"
 
-#include "sound_manager.hpp"
+#include "sound/sound_manager.hpp"
 
 
 SoundManager::SoundManager()

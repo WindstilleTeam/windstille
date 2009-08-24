@@ -24,7 +24,7 @@
 
 #include "math/rect.hpp"
 #include "display/color.hpp"
-#include "drawer.hpp"
+#include "particles/drawer.hpp"
 
 class FileReader;
 class SceneContext;

@@ -19,8 +19,8 @@
 #include "display/drawing_context.hpp"
 #include "util/file_reader.hpp"
 #include "display/vertex_array_drawing_request.hpp"
-#include "particle_system.hpp"
-#include "spark_drawer.hpp"
+#include "particles/particle_system.hpp"
+#include "particles/spark_drawer.hpp"
 
 SparkDrawer::SparkDrawer(FileReader& props)
   : color(1.0f, 1.0f, 1.0f),

@@ -16,14 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "sector_model.hpp"
+#include "editor/sector_model.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
 #include "navigation/edge.hpp"
-#include "windstille_widget.hpp"
-#include "editor_window.hpp"
+#include "editor/windstille_widget.hpp"
+#include "editor/editor_window.hpp"
 
-#include "navgraph_insert_tool.hpp"
+#include "editor/navgraph_insert_tool.hpp"
 
 NavgraphInsertTool::NavgraphInsertTool()
   : mouse_pos(),

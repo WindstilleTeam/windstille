@@ -16,13 +16,13 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "surface_manager.hpp"
+#include "display/surface_manager.hpp"
 
 #include <sstream>
 #include <stdexcept>
 
-#include "software_surface.hpp"
-#include "texture_packer.hpp"
+#include "display/software_surface.hpp"
+#include "display/texture_packer.hpp"
 
 
 SurfaceManager::SurfaceManager()

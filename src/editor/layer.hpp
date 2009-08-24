@@ -25,8 +25,8 @@
 #include <string>
 #include <gtkmm/treemodel.h>
 
-#include "selection.hpp"
-#include "object_model.hpp"
+#include "editor/selection.hpp"
+#include "editor/object_model.hpp"
 
 class Layer;
 typedef boost::shared_ptr<Layer> LayerHandle;

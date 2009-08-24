@@ -22,7 +22,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include "math/vector2f.hpp"
-#include "color.hpp"
+#include "display/color.hpp"
 
 /** Helper class which holds all the parameters that you can tweak
     when you want to draw a Surface */

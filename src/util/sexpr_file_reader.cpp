@@ -19,8 +19,8 @@
 #include <string.h>
 
 #include "lisp/getters.hpp"
-#include "file_reader_impl.hpp"
-#include "sexpr_file_reader.hpp"
+#include "util/file_reader_impl.hpp"
+#include "util/sexpr_file_reader.hpp"
 
 class SExprFileReaderImpl: public FileReaderImpl
 {

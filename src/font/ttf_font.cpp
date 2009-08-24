@@ -26,7 +26,7 @@
 #include "display/opengl_state.hpp"
 #include "display/software_surface.hpp"
 #include "physfs/physfs_stream.hpp"
-#include "ttf_font.hpp"
+#include "font/ttf_font.hpp"
 
 TTFCharacter::TTFCharacter(const Rect& pos_,
                            const Rectf& uv_, 

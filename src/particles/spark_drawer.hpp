@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_SPARK_DRAWER_HPP
 #define HEADER_WINDSTILLE_PARTICLES_SPARK_DRAWER_HPP
 
-#include "drawer.hpp"
+#include "particles/drawer.hpp"
 
 class SceneContext;
 class ParticleSystem;

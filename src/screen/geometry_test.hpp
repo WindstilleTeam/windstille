@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_GEOMETRY_TEST_HPP
 #define HEADER_WINDSTILLE_SCREEN_GEOMETRY_TEST_HPP
 
-#include "screen.hpp"
+#include "screen/screen.hpp"
 #include "math/vector2f.hpp"
 #include "math/line.hpp"
 

@@ -23,8 +23,8 @@
 #include "math/matrix.hpp"
 #include "math/rect.hpp"
 #include <vector>
-#include "color.hpp"
-#include "drawing_request.hpp"
+#include "display/color.hpp"
+#include "display/drawing_request.hpp"
 
 class Texture;
 class Surface;

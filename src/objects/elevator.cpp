@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "elevator.hpp"
+#include "objects/elevator.hpp"
 #include "engine/sector.hpp"
 #include "collision/collision_engine.hpp"
 

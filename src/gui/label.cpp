@@ -17,7 +17,7 @@
 */
 
 #include "font/fonts.hpp"
-#include "label.hpp"
+#include "gui/label.hpp"
 
 namespace gui {
 

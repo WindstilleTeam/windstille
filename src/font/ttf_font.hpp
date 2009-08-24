@@ -27,7 +27,7 @@
 #include "display/color.hpp"
 #include "display/texture.hpp"
 #include "math/rect.hpp"
-#include "no_font_effect.hpp"
+#include "font/no_font_effect.hpp"
 
 class FontEffect;
 class TTFFontImpl;

@@ -20,7 +20,7 @@
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
 #include "app/globals.hpp"
-#include "scriptable_object.hpp"
+#include "objects/scriptable_object.hpp"
 
 ScriptableObject::ScriptableObject(FileReader& props)
   : z_pos(50),

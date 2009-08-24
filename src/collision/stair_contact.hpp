@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_COLLISION_STAIR_CONTACT_HPP
 #define HEADER_WINDSTILLE_COLLISION_STAIR_CONTACT_HPP
 
-#include "contact.hpp"
+#include "collision/contact.hpp"
 
 class TileMap;
 

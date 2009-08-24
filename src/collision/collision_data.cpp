@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "collision_data.hpp"
+#include "collision/collision_data.hpp"
 
 CollisionData
 CollisionData::merge(const CollisionData &r)

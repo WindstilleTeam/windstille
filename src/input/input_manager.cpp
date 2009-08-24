@@ -17,8 +17,8 @@
 */
 
 
-#include "input_manager_sdl.hpp"
-#include "input_manager.hpp"
+#include "input/input_manager_sdl.hpp"
+#include "input/input_manager.hpp"
 
 InputManager::InputManager(const ControllerDescription& controller_description)
   : impl(new InputManagerSDL(controller_description))

@@ -17,8 +17,8 @@
 */
 
 
-#include "player.hpp"
-#include "hedgehog.hpp"
+#include "objects/player.hpp"
+#include "objects/hedgehog.hpp"
 
 Hedgehog::Hedgehog(FileReader& props)
   : sprite(Pathname("images/hedgehog.sprite")),

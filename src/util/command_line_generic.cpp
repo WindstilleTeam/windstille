@@ -31,7 +31,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "command_line_generic.hpp"
+#include "util/command_line_generic.hpp"
 
 
 #ifdef WIN32

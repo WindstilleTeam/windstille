@@ -18,7 +18,7 @@
 
 #include <iostream>
 #include "math/math.hpp"
-#include "wiimote.hpp"
+#include "input/wiimote.hpp"
 
 Wiimote* wiimote = 0;
 

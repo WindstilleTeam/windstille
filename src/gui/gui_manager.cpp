@@ -16,9 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "root_component.hpp"
+#include "gui/root_component.hpp"
 #include "screen/screen_manager.hpp"
-#include "gui_manager.hpp"
+#include "gui/gui_manager.hpp"
 
 namespace gui {
 

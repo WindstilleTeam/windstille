@@ -23,8 +23,8 @@
 #include <set>
 #include <boost/shared_ptr.hpp>
 
-#include "control_point.hpp"
-#include "object_model.hpp"
+#include "editor/control_point.hpp"
+#include "editor/object_model.hpp"
 
 class Selection;
 class WindstilleWidget;

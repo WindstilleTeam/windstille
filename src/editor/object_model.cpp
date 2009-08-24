@@ -19,11 +19,11 @@
 #include <iostream>
 #include <sstream>
 
-#include "editor_window.hpp"
+#include "editor/editor_window.hpp"
 #include "util/file_reader.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
-#include "object_model.hpp"
+#include "editor/object_model.hpp"
 
 ObjectModel::ObjectModel(const std::string& name_, const Vector2f& rel_pos_)
   : name(name_),

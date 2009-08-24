@@ -16,13 +16,13 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "root_component.hpp"
-#include "gui_manager.hpp"
-#include "menu_item.hpp"
-#include "menu_component.hpp"
-#include "group_component.hpp"
+#include "gui/root_component.hpp"
+#include "gui/gui_manager.hpp"
+#include "gui/menu_item.hpp"
+#include "gui/menu_component.hpp"
+#include "gui/group_component.hpp"
 #include "screen/screen_manager.hpp"
-#include "menu.hpp"
+#include "gui/menu.hpp"
 
 namespace gui {
 

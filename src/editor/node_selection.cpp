@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "node_selection.hpp"
+#include "editor/node_selection.hpp"
 
 NodeSelection::NodeSelection()
   : nodes()

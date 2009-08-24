@@ -18,7 +18,7 @@
 
 #include "display/opengl_state.hpp"
 #include "display/shader_object.hpp"
-#include "shockwave.hpp"
+#include "objects/shockwave.hpp"
 
 class ShockwaveDrawingRequest : public DrawingRequest
 {

@@ -22,7 +22,7 @@
 #include "display/surface.hpp"
 #include "display/opengl_state.hpp"
 
-#include "scene_context.hpp"
+#include "display/scene_context.hpp"
 
 // The lightmap has a resolution of screen.w/LIGHTMAP, screen.h/LIGHTMAP
 #define LIGHTMAP_DIV 4

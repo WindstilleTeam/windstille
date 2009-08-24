@@ -18,9 +18,9 @@
 
 #include "sound/sound_manager.hpp"
 #include "display/display.hpp"
-#include "menu_component.hpp"
+#include "gui/menu_component.hpp"
 
-#include "menu_item.hpp"
+#include "gui/menu_item.hpp"
 
 namespace gui {
 

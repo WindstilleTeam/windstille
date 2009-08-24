@@ -27,7 +27,7 @@
 **    (if your name is missing here, please add it)
 */
 
-#include "command_line_generic.hpp"
+#include "util/command_line_generic.hpp"
 
 CommandLine::CommandLine()
   : impl(new CommandLine_Generic())

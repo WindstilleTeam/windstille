@@ -29,16 +29,16 @@
 #include "display/opengl_state.hpp"
 #include "display/surface.hpp"
 #include "util/pathname.hpp"
-#include "editor_window.hpp"
-#include "scroll_tool.hpp"
-#include "sector_model.hpp"
-#include "undo_manager.hpp"
-#include "group_command.hpp"
-#include "object_commands.hpp"
-#include "functor_command.hpp"
+#include "editor/editor_window.hpp"
+#include "editor/scroll_tool.hpp"
+#include "editor/sector_model.hpp"
+#include "editor/undo_manager.hpp"
+#include "editor/group_command.hpp"
+#include "editor/object_commands.hpp"
+#include "editor/functor_command.hpp"
 
-#include "sprite_object_model.hpp"
-#include "windstille_widget.hpp"
+#include "editor/sprite_object_model.hpp"
+#include "editor/windstille_widget.hpp"
 
 bool lib_init = false;
 

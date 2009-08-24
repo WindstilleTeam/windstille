@@ -18,7 +18,7 @@
 
 #include <iostream>
 #include "display/scene_context.hpp"
-#include "control_point.hpp"
+#include "editor/control_point.hpp"
 
 ControlPointHandle
 ControlPoint::create(const Vector2f& pos)

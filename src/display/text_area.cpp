@@ -20,7 +20,7 @@
 #include "display/text_area.hpp"
 #include "util/baby_xml.hpp"
 #include "font/fonts.hpp"
-#include "display.hpp"
+#include "display/display.hpp"
 
 struct TextAreaCommand 
 {

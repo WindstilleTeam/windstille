@@ -22,7 +22,7 @@
 #include <map>
 #include <string>
 
-#include "input_event.hpp"
+#include "input/input_event.hpp"
 
 struct InputEventDefinition 
 {

@@ -19,7 +19,7 @@
 #include <boost/filesystem.hpp>
 #include <physfs.h>
 
-#include "config.hpp"
+#include "app/config.hpp"
 #include "display/opengl_window.hpp"
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
@@ -36,7 +36,7 @@
 #include "sprite3d/manager.hpp"
 #include "tile/tile_factory.hpp"
 #include "util/system.hpp"
-#include "windstille_main.hpp"
+#include "app/windstille_main.hpp"
 
 WindstilleMain::WindstilleMain()
 {

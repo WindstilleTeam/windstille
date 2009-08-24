@@ -17,7 +17,7 @@
 */
 
 #include "display/software_surface.hpp"
-#include "border_font_effect.hpp"
+#include "font/border_font_effect.hpp"
 
 BorderFontEffect::BorderFontEffect(int size_, bool outline_)
   : size(size_),

@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "tile.hpp"
+#include "tile/tile.hpp"
 
 Tile::Tile(unsigned int arg_colmap)
   : id(),

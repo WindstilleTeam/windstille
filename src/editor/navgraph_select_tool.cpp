@@ -16,12 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "sector_model.hpp"
+#include "editor/sector_model.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
-#include "windstille_widget.hpp"
+#include "editor/windstille_widget.hpp"
 
-#include "navgraph_select_tool.hpp"
+#include "editor/navgraph_select_tool.hpp"
 
 NavgraphSelectTool::NavgraphSelectTool()
   : click_pos(),

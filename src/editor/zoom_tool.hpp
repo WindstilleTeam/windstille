@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_ZOOM_TOOL_HPP
 
 #include "math/rect.hpp"
-#include "tool.hpp"
+#include "editor/tool.hpp"
 
 class ZoomTool : public Tool
 {

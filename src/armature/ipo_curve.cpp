@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "ipo_curve.hpp"
+#include "armature/ipo_curve.hpp"
 
 IpoCurve::IpoCurve()
   : points()

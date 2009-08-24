@@ -21,9 +21,9 @@
 
 #include <math.h>
 
-#include "math.hpp"
+#include "math/math.hpp"
 #include "vector2f.hpp"
-#include "rect.hpp"
+#include "math/rect.hpp"
 
 class Quad
 {

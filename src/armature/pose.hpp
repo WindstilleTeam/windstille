@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-#include "pose_bone.hpp"
+#include "armature/pose_bone.hpp"
 
 class FileReader;
 

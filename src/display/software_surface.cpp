@@ -24,7 +24,7 @@
 #include <SDL_image.h>
 
 #include "math/rect.hpp"
-#include "software_surface.hpp"
+#include "display/software_surface.hpp"
 
 class SoftwareSurfaceImpl
 {

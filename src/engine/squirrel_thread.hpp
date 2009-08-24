@@ -22,7 +22,7 @@
 #include <string>
 #include <squirrel.h>
 
-#include "script_manager.hpp"
+#include "engine/script_manager.hpp"
 
 class SquirrelThread
 {

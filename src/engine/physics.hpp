@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_ENGINE_PHYSICS_HPP
 
 #include "collision/collision_data.hpp"
-#include "entity.hpp"
+#include "engine/entity.hpp"
 
 class Physics
 {

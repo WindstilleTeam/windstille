@@ -20,10 +20,10 @@
 #define HEADER_WINDSTILLE_EDITOR_DECAL_OBJECT_MODEL_HPP
 
 #include "math/quad.hpp"
-#include "control_point.hpp"
+#include "editor/control_point.hpp"
 #include "display/surface.hpp"
 #include "display/software_surface.hpp"
-#include "object_model.hpp"
+#include "editor/object_model.hpp"
 
 class DecalObjectModel : public ObjectModel
 {

@@ -17,8 +17,8 @@
 */
 
 #include <assert.h>
-#include "node.hpp"
-#include "edge.hpp"
+#include "navigation/node.hpp"
+#include "navigation/edge.hpp"
 
 Edge::Edge(Node* node1_, Node* node2_, Properties props_)
   : node1(node1_), 

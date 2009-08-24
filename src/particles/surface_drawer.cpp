@@ -18,10 +18,10 @@
 
 #include "util/file_reader.cpp"
 #include "display/vertex_array_drawing_request.hpp"
-#include "particle_system.hpp"
+#include "particles/particle_system.hpp"
 #include "display/surface_manager.hpp"
 #include "display/drawing_context.hpp"
-#include "surface_drawer.hpp"
+#include "particles/surface_drawer.hpp"
 
 SurfaceDrawer::SurfaceDrawer(Surface surface_)
   : surface(surface_),

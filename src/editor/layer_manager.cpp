@@ -24,9 +24,9 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/treemodelcolumn.h>
 
-#include "editor_window.hpp"
-#include "sector_model.hpp"
-#include "layer_manager.hpp"
+#include "editor/editor_window.hpp"
+#include "editor/sector_model.hpp"
+#include "editor/layer_manager.hpp"
 
 LayerManager::LayerManager(EditorWindow& editor_)
   : editor(editor_),

@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_GUI_ROOT_COMPONENT_HPP
 
 #include <vector>
-#include "component.hpp"
+#include "gui/component.hpp"
 
 namespace gui {
 

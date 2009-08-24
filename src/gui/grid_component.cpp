@@ -18,7 +18,7 @@
 
 #include "display/display.hpp"
 #include "input/controller.hpp"
-#include "grid_component.hpp"
+#include "gui/grid_component.hpp"
 
 namespace gui {
 

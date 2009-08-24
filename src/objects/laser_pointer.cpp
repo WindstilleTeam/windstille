@@ -20,7 +20,7 @@
 #include "objects/player.hpp"
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
-#include "laser_pointer.hpp"
+#include "objects/laser_pointer.hpp"
 
 LaserPointer::LaserPointer()
  : noise(),

@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "squirrel_thread.hpp"
+#include "engine/squirrel_thread.hpp"
 
 #include "app/globals.hpp"
 #include "scripting/squirrel_error.hpp"

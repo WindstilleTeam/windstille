@@ -21,7 +21,7 @@
 #include "screen/game_session.hpp"
 #include "screen/view.hpp"
 
-#include "swarm.hpp"
+#include "objects/swarm.hpp"
 
 Swarm::Swarm(FileReader& props)
   : agents(),

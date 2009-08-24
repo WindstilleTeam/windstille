@@ -25,7 +25,7 @@
 #include "util/pathname.hpp"
 #include "math/rect.hpp"
 #include "math/size.hpp"
-#include "texture.hpp"
+#include "display/texture.hpp"
 
 class SurfaceDrawingParameters;
 class SurfaceImpl;

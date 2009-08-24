@@ -20,9 +20,9 @@
 #include <physfs.h>
 
 #include "input/controller.hpp"
-#include "screen_manager.hpp"
+#include "screen/screen_manager.hpp"
 #include "armature/pose.hpp"
-#include "armature_test.hpp"
+#include "screen/armature_test.hpp"
 
 ArmatureTest::ArmatureTest()
   : model(),

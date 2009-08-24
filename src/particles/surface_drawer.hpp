@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_PARTICLES_SURFACE_DRAWER_HPP
 
 #include "display/surface.hpp"
-#include "drawer.hpp"
+#include "particles/drawer.hpp"
 
 class SurfaceDrawer : public Drawer
 {

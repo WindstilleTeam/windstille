@@ -16,14 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "script_manager.hpp"
+#include "engine/script_manager.hpp"
 
 #include <stdarg.h>
 #include <sqstdaux.h>
 #include <sqstdmath.h>
 #include <sqstdstring.h>
 
-#include "squirrel_thread.hpp"
+#include "engine/squirrel_thread.hpp"
 #include "app/console.hpp"
 #include "scripting/game_objects.hpp"
 #include "scripting/squirrel_error.hpp"

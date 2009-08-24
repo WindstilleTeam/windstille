@@ -22,7 +22,7 @@
 #include <boost/scoped_ptr.hpp>
 #include "armature/armature.hpp"
 #include "armature/model.hpp"
-#include "screen.hpp"
+#include "screen/screen.hpp"
 
 /** */
 class ArmatureTest : public Screen

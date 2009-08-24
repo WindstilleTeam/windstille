@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_SCROLL_TOOL_HPP
 
 #include "display/graphic_context_state.hpp"
-#include "tool.hpp"
+#include "editor/tool.hpp"
 
 /** */
 class ScrollTool : public Tool

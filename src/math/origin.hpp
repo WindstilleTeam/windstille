@@ -33,8 +33,8 @@
 #ifndef HEADER_MATH_ORIGIN_HPP
 #define HEADER_MATH_ORIGIN_HPP
 
-#include "size.hpp"
-#include "point.hpp"
+#include "math/size.hpp"
+#include "math/point.hpp"
 #include "vector2f.hpp"
 
 namespace origin {

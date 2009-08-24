@@ -23,7 +23,7 @@
 #include "objects/player.hpp"
 #include "engine/sector.hpp"
 #include "input/input_manager.hpp"
-#include "view.hpp"
+#include "screen/view.hpp"
 
 View::View()
   : state(Display::get_width(), Display::get_height()),

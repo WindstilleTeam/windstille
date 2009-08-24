@@ -18,8 +18,8 @@
 
 #include <GL/glew.h>
 #include "util/util.hpp"
-#include "render_buffer.hpp"
-#include "framebuffer.hpp"
+#include "display/render_buffer.hpp"
+#include "display/framebuffer.hpp"
 
 class FramebufferImpl
 {

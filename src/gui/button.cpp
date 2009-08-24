@@ -19,7 +19,7 @@
 #include "display/display.hpp"
 #include "font/fonts.hpp"
 #include "input/controller.hpp"
-#include "button.hpp"
+#include "gui/button.hpp"
 
 namespace gui {
 

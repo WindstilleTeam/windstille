@@ -19,7 +19,7 @@
 #include "engine/entity.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
-#include "speech_manager.hpp"
+#include "hud/speech_manager.hpp"
 
 class Speech 
 {

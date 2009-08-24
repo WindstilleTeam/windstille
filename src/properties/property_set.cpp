@@ -19,7 +19,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "property_set.hpp"
+#include "properties/property_set.hpp"
 
 PropertySet::PropertySet(const std::string& name_, PropertySet* parent_)
   : parent(parent_),

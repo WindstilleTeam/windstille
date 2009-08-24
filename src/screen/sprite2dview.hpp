@@ -21,7 +21,7 @@
 
 #include "display/scene_context.hpp"
 #include "sprite2d/sprite.hpp"
-#include "screen.hpp"
+#include "screen/screen.hpp"
 
 /**
  * A simple class to view 3d sprites and their different actions,

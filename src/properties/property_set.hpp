@@ -23,7 +23,7 @@
 #include <map>
 #include <string>
 
-#include "property.hpp"
+#include "properties/property.hpp"
 
 class PropertySet
 {

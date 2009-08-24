@@ -25,9 +25,9 @@
 #include <gtkmm/toolbar.h>
 #include <gtkmm/treemodelcolumn.h>
 
-#include "windstille_widget.hpp"
-#include "editor_window.hpp"
-#include "object_selector.hpp"
+#include "editor/windstille_widget.hpp"
+#include "editor/editor_window.hpp"
+#include "editor/object_selector.hpp"
 
 class ObjectSelector::Columns : public Gtk::TreeModel::ColumnRecord
 {

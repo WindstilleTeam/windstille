@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "edge.hpp"
-#include "node.hpp"
+#include "navigation/edge.hpp"
+#include "navigation/node.hpp"
 #include "display/display.hpp"
 
 EdgePosition::EdgePosition()

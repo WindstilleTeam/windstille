@@ -17,9 +17,9 @@
 */
 
 
-#include "tile.hpp"
-#include "tile_packer.hpp"
-#include "tile_factory.hpp"
+#include "tile/tile.hpp"
+#include "tile/tile_packer.hpp"
+#include "tile/tile_factory.hpp"
 #include "util/sexpr_file_reader.hpp"
 #include "display/software_surface.hpp"
 

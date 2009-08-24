@@ -23,7 +23,7 @@
 #include "lisp/properties.hpp"
 #include "lisp/writer.hpp"
 
-#include "util.hpp"
+#include "scripting/util.hpp"
 
 namespace Scripting {
 

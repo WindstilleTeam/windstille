@@ -18,7 +18,7 @@
 
 #include "util/pathname.hpp"
 #include "display/scene_context.hpp"
-#include "sprite_object_model.hpp"
+#include "editor/sprite_object_model.hpp"
 
 SpriteObjectModel::SpriteObjectModel(const std::string& name_, const Vector2f& rel_pos_,
                                      const std::string& path_)

@@ -20,9 +20,9 @@
 
 #include "display/display.hpp"
 #include "display/shader_object.hpp"
-#include "particle_system.hpp"
+#include "particles/particle_system.hpp"
 #include "display/opengl_state.hpp"
-#include "deform_drawer.hpp"
+#include "particles/deform_drawer.hpp"
 
 class DeformDrawerRequest : public DrawingRequest
 {

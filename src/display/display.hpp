@@ -25,7 +25,7 @@
 #include "math/rect.hpp"
 #include "math/quad.hpp"
 #include "math/line.hpp"
-#include "color.hpp"
+#include "display/color.hpp"
 #include "display/framebuffer.hpp"
 
 class Pathname;

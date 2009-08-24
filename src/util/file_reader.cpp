@@ -20,8 +20,8 @@
 #include <fstream>
 
 #include "lisp/parser.hpp"
-#include "sexpr_file_reader.hpp"
-#include "file_reader_impl.hpp"
+#include "util/sexpr_file_reader.hpp"
+#include "util/file_reader_impl.hpp"
 
 FileReader
 FileReader::parse(const Pathname& filename)

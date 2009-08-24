@@ -21,7 +21,7 @@
 
 #include <vector>
 #include "app/controller_def.hpp"
-#include "input_event.hpp"
+#include "input/input_event.hpp"
 
 /** The Controller class presents the current state of the controller
     and the input events that occurred on the controller since the

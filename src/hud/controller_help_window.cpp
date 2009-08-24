@@ -18,7 +18,7 @@
 
 #include "input/input_manager.hpp"
 #include "display/display.hpp"
-#include "controller_help_window.hpp"
+#include "hud/controller_help_window.hpp"
 
 ControllerHelpWindow* ControllerHelpWindow::current_ = 0;
 

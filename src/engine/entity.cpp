@@ -17,9 +17,9 @@
 */
 
 #include "properties/property_set.hpp"
-#include "sector.hpp"
+#include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
-#include "entity.hpp"
+#include "engine/entity.hpp"
 
 Entity::Entity()
   : done(),

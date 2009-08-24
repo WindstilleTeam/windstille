@@ -17,7 +17,7 @@
 */
 
 #include "app/globals.hpp"
-#include "bomb.hpp"
+#include "objects/bomb.hpp"
 
 Bomb::Bomb(int x, int y)
   : sprite(Pathname("images/bomb.sprite")),

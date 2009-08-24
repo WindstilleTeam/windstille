@@ -18,7 +18,7 @@
 
 #include "display/display.hpp"
 #include "font/fonts.hpp"
-#include "group_component.hpp"
+#include "gui/group_component.hpp"
 
 namespace gui {
 

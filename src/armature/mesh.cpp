@@ -19,8 +19,8 @@
 #include "util/util.hpp"
 #include "display/opengl_state.hpp"
 #include "display/texture_manager.hpp"
-#include "armature.hpp"
-#include "mesh.hpp"
+#include "armature/armature.hpp"
+#include "armature/mesh.hpp"
 
 Mesh::Mesh(FileReader& reader, const std::string& path)
   : name(),

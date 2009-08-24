@@ -17,8 +17,8 @@
 */
 
 #include "math/vector2f.hpp"
-#include "windstille_widget.hpp"
-#include "scroll_tool.hpp"
+#include "editor/windstille_widget.hpp"
+#include "editor/scroll_tool.hpp"
 
 ScrollTool::ScrollTool()
   : orig_state(),

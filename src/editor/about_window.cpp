@@ -17,7 +17,7 @@
 */
 
 #include <gtkmm/stock.h>
-#include "about_window.hpp"
+#include "editor/about_window.hpp"
 
 AboutWindow::AboutWindow()
 {

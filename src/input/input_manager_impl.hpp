@@ -19,8 +19,8 @@
 #ifndef HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_IMPL_HPP
 #define HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_IMPL_HPP
 
-#include "controller.hpp"
-#include "input_event.hpp"
+#include "input/controller.hpp"
+#include "input/input_event.hpp"
 
 /** */
 class InputManagerImpl

@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "minimap_widget.hpp"
+#include "editor/minimap_widget.hpp"
 
 MinimapWidget::MinimapWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig)
 {

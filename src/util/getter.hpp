@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_UTIL_GETTER_HPP
 #define HEADER_WINDSTILLE_UTIL_GETTER_HPP
 
-#include "file_reader.hpp"
+#include "util/file_reader.hpp"
 
 class FileReader;
 class Quaternion;

@@ -18,7 +18,7 @@
 
 #include <stdexcept>
 
-#include "test_object.hpp"
+#include "objects/test_object.hpp"
 
 TestObject::TestObject(FileReader& props)
   : sprite(),

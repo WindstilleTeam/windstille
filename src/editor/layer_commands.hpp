@@ -19,9 +19,9 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_LAYER_COMMANDS_HPP
 #define HEADER_WINDSTILLE_EDITOR_LAYER_COMMANDS_HPP
 
-#include "layer.hpp"
-#include "command.hpp"
-#include "sector_model.hpp"
+#include "editor/layer.hpp"
+#include "editor/command.hpp"
+#include "editor/sector_model.hpp"
 
 class LayerAddCommand : public Command
 {

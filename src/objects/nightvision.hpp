@@ -20,8 +20,8 @@
 #define HEADER_WINDSTILLE_OBJECTS_NIGHTVISION_HPP
 
 #include "display/texture.hpp"
-#include "sprite2d/sprite.hpp"
 #include "engine/game_object.hpp"
+#include "sprite2d/sprite.hpp"
 
 // FIXME: shouldn't really be a game object, but makes testing easier
 class Nightvision : public GameObject

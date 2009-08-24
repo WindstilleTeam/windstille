@@ -21,7 +21,7 @@
 
 #include "math/line.hpp"
 #include "math/vector2f.hpp"
-#include "properties.hpp"
+#include "navigation/properties.hpp"
 
 class Node;
 

@@ -19,10 +19,10 @@
 #include <gtkmm/menu.h>
 
 #include "display/scene_context.hpp"
-#include "sector_model.hpp"
-#include "windstille_widget.hpp"
-#include "editor_window.hpp"
-#include "select_tool.hpp"
+#include "editor/sector_model.hpp"
+#include "editor/windstille_widget.hpp"
+#include "editor/editor_window.hpp"
+#include "editor/select_tool.hpp"
 
 static const uint32_t MOVE_TIMEOUT = 100;
 static const int MOVE_THRESHOLD = 16.0f;

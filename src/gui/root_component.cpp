@@ -19,7 +19,7 @@
 #include <algorithm>
 #include "app/console.hpp"
 #include "input/controller.hpp"
-#include "root_component.hpp"
+#include "gui/root_component.hpp"
 
 namespace gui {
 

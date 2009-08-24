@@ -25,13 +25,13 @@
 #include "navigation/navigation_graph.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
-#include "editor_window.hpp"
-#include "windstille_widget.hpp"
+#include "editor/editor_window.hpp"
+#include "editor/windstille_widget.hpp"
 #include "util/file_reader.hpp"
 #include "display/scene_context.hpp"
 #include "display/surface.hpp"
-#include "object_model_factory.hpp"
-#include "sector_model.hpp"
+#include "editor/object_model_factory.hpp"
+#include "editor/sector_model.hpp"
 
 LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 

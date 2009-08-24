@@ -18,7 +18,7 @@
 
 #include <GL/glew.h>
 
-#include "render_buffer.hpp"
+#include "display/render_buffer.hpp"
 
 class RenderBufferImpl
 {

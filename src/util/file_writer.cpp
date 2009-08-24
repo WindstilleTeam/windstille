@@ -19,7 +19,7 @@
 #include <sstream>
 #include "display/color.hpp"
 #include "math/vector2f.hpp"
-#include "file_writer.hpp"
+#include "util/file_writer.hpp"
 
 FileWriter::FileWriter(std::ostream& out_)
   : out(out_),

@@ -19,7 +19,7 @@
 #include "input/controller.hpp"
 #include "font/fonts.hpp"
 #include "display/display.hpp"
-#include "tab_component.hpp"
+#include "gui/tab_component.hpp"
 
 namespace gui {
 

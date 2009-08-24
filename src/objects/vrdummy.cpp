@@ -17,7 +17,7 @@
 */
 
 #include "math/random.hpp"
-#include "vrdummy.hpp"
+#include "objects/vrdummy.hpp"
 
 VRDummy::VRDummy(FileReader& props)
   : sprite(),

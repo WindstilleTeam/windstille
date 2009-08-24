@@ -21,7 +21,7 @@
 
 #include <memory>
 #include <stdio.h>
-#include "sound_source.hpp"
+#include "sound/sound_source.hpp"
 
 class SoundFile;
 

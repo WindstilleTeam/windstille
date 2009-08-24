@@ -19,12 +19,12 @@
 #include <iostream>
 #include <boost/bind.hpp>
 
-#include "undo_manager.hpp"
-#include "group_command.hpp"
-#include "functor_command.hpp"
-#include "windstille_widget.hpp"
-#include "editor_window.hpp"
-#include "selection.hpp"
+#include "editor/undo_manager.hpp"
+#include "editor/group_command.hpp"
+#include "editor/functor_command.hpp"
+#include "editor/windstille_widget.hpp"
+#include "editor/editor_window.hpp"
+#include "editor/selection.hpp"
 
 Selection::Selection()
   : objects(),

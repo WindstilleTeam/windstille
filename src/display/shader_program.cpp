@@ -18,9 +18,9 @@
 
 #include <iostream>
 
-#include "shader_object.hpp"
+#include "display/shader_object.hpp"
 #include "util/util.hpp"
-#include "shader_program.hpp"
+#include "display/shader_program.hpp"
 
 class ShaderProgramImpl
 {

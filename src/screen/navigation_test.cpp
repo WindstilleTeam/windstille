@@ -23,7 +23,7 @@
 #include "app/menu_manager.hpp"
 #include "navigation/node.hpp"
 #include "navigation/edge.hpp"
-#include "navigation_test.hpp"
+#include "screen/navigation_test.hpp"
 
 NavigationTest::NavigationTest()
   : cursor(400, 300),

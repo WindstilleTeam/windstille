@@ -17,7 +17,7 @@
 */
 
 #include "display/scene_context.hpp"
-#include "decal_scale_control_point.hpp"
+#include "editor/decal_scale_control_point.hpp"
 
 DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_, 
                                                bool x_scale_, bool y_scale_)

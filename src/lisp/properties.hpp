@@ -2,8 +2,8 @@
 #define __PROPERTIES_HPP__
 
 #include <vector>
-#include "getters.hpp"
-#include "property_iterator.hpp"
+#include "lisp/getters.hpp"
+#include "lisp/property_iterator.hpp"
 
 namespace lisp
 {

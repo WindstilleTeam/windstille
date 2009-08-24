@@ -23,7 +23,7 @@
 #include <boost/signals.hpp>
 #include "math/vector2f.hpp"
 #include "math/rect.hpp"
-#include "collision_data.hpp"
+#include "collision/collision_data.hpp"
 
 class DrawingContext;
 class TileMap;

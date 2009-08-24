@@ -19,8 +19,8 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_DECAL_ROTATE_CONTROL_POINT_HPP
 #define HEADER_WINDSTILLE_EDITOR_DECAL_ROTATE_CONTROL_POINT_HPP
 
-#include "decal_object_model.hpp"
-#include "control_point.hpp"
+#include "editor/decal_object_model.hpp"
+#include "editor/control_point.hpp"
 
 class DecalRotateControlPoint : public ControlPoint
 {

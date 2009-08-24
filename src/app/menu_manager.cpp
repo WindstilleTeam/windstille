@@ -16,31 +16,32 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/menu_manager.hpp"
+
 #include <boost/bind.hpp>
 
-#include "config.hpp"
-#include "sound/sound_manager.hpp"
+#include "app/config.hpp"
 #include "display/display.hpp"
+#include "display/opengl_window.hpp"
+#include "engine/sector.hpp"
 #include "font/fonts.hpp"
-#include "screen/game_session.hpp"
 #include "gui/group_component.hpp"
+#include "gui/menu_item.hpp"
 #include "gui/root_component.hpp"
 #include "gui/text_view.hpp"
+#include "screen/armature_test.hpp"
+#include "screen/game_session.hpp"
+#include "screen/geometry_test.hpp"
+#include "screen/navigation_test.hpp"
 #include "screen/particle_viewer.hpp"
 #include "screen/screen_manager.hpp"
-#include "engine/sector.hpp"
 #include "screen/sprite3dview.hpp"
-#include "screen/geometry_test.hpp"
-#include "screen/armature_test.hpp"
-#include "screen/navigation_test.hpp"
-#include "gui/menu_item.hpp"
-#include "display/opengl_window.hpp"
+#include "sound/sound_manager.hpp"
 #ifdef HAVE_CWIID
-#include "input/wiimote.hpp"
+#  include "input/wiimote.hpp"
 #endif
-#include "gui/menu.hpp"
 #include "app/windstille.hpp"
-#include "menu_manager.hpp"
+#include "gui/menu.hpp"
 
 void
 MenuManager::display_option_menu()

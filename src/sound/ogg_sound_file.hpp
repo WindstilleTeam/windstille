@@ -23,7 +23,7 @@
 #include <vorbis/vorbisfile.h>
 #include <physfs.h>
 
-#include "sound_file.hpp"
+#include "sound/sound_file.hpp"
 
 class OggSoundFile : public SoundFile
 {

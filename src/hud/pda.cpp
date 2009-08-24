@@ -21,7 +21,7 @@
 #include "display/display.hpp"
 #include "display/text_area.hpp"
 #include "font/fonts.hpp"
-#include "pda.hpp"
+#include "hud/pda.hpp"
 
 DialogEntry::DialogEntry(const std::string& arg_character, const std::string& arg_text)
   : character(arg_character),

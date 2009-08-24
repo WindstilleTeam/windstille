@@ -22,9 +22,9 @@
 #include "math/math.hpp"
 #include "app/config.hpp"
 #include "util/file_reader.hpp"
-#include "input_manager_sdl.hpp"
+#include "input/input_manager_sdl.hpp"
 #ifdef HAVE_CWIID
-#include "wiimote.hpp"
+#include "input/wiimote.hpp"
 #endif
 
 const int dead_zone = 0;

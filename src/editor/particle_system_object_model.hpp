@@ -19,7 +19,7 @@
 #ifndef HEADER_PARTICLE_SYSTEM_OBJECT_MODEL_HPP
 #define HEADER_PARTICLE_SYSTEM_OBJECT_MODEL_HPP
 
-#include "object_model.hpp"
+#include "editor/object_model.hpp"
 
 class ParticleSystem;
 

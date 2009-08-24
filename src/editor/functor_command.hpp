@@ -21,7 +21,7 @@
 
 #include <boost/function.hpp>
 
-#include "command.hpp"
+#include "editor/command.hpp"
 
 class FunctorCommand : public Command
 {

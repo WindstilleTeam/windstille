@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_UNDO_MANAGER_HPP
 
 #include <vector>
-#include "command.hpp"
+#include "editor/command.hpp"
 
 class UndoManager
 {

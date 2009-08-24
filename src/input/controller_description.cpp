@@ -17,7 +17,7 @@
 */
 
 #include <stdexcept>
-#include "controller_description.hpp"
+#include "input/controller_description.hpp"
 
 
 ControllerDescription::ControllerDescription()

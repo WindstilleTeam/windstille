@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "wrapper.interface.hpp"
+#include "scripting/wrapper.interface.hpp"
 
 
 #include "app/config.hpp"

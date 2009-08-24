@@ -16,13 +16,13 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "particle_system.hpp"
+#include "particles/particle_system.hpp"
 #include "display/scene_context.hpp"
 #include "util/file_reader.hpp"
-#include "spark_drawer.hpp"
-#include "deform_drawer.hpp"
-#include "surface_drawer.hpp"
-#include "randomizer.hpp"
+#include "particles/spark_drawer.hpp"
+#include "particles/deform_drawer.hpp"
+#include "particles/surface_drawer.hpp"
+#include "particles/randomizer.hpp"
 
 ParticleSystem::ParticleSystem(FileReader& props)
   : particles(),

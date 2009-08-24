@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "bone.hpp"
+#include "armature/bone.hpp"
 
 Bone::Bone()
   : name(),

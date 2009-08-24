@@ -22,7 +22,7 @@
 #include <set>
 
 #include "math/rect.hpp"
-#include "tool.hpp"
+#include "editor/tool.hpp"
 #include "navigation/navigation_graph.hpp"
 
 class NavgraphSelectTool : public Tool

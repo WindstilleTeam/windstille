@@ -17,7 +17,7 @@
 */
 
 #include "display/scene_context.hpp"
-#include "decal_rotate_control_point.hpp"
+#include "editor/decal_rotate_control_point.hpp"
 
 DecalRotateControlPoint::DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_)
   : ControlPoint(Surface(Pathname("editor/rotate_handle.png")), pos_),

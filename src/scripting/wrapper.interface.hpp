@@ -23,7 +23,7 @@
 
 // All functions that shall get exported to the scripting interface
 // have to be included here
-#include "interface.hpp"
-#include "game_objects.hpp"
+#include "scripting/interface.hpp"
+#include "scripting/game_objects.hpp"
 
 /* EOF */

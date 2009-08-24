@@ -20,8 +20,8 @@
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/separator.h>
 
-#include "select_mask.hpp"
-#include "layer_widget.hpp"
+#include "editor/select_mask.hpp"
+#include "editor/layer_widget.hpp"
 
 LayerWidget::LayerWidget()
   : table(2, 9, false),

@@ -16,8 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "objects/trigger.hpp"
+
 #include "engine/sector.hpp"
-#include "trigger.hpp"
 #include "objects/player.hpp"
 
 Trigger::Trigger(FileReader& props)

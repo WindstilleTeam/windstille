@@ -19,8 +19,8 @@
 #include "display/texture_manager.hpp"
 
 
-#include "texture.hpp"
-#include "software_surface.hpp"
+#include "display/texture.hpp"
+#include "display/software_surface.hpp"
 
 TextureManager::TextureManager()
   : textures()

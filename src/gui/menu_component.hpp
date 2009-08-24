@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 #include "font/fonts.hpp"
-#include "component.hpp"
+#include "gui/component.hpp"
 
 class TTFFont;
 

@@ -17,8 +17,8 @@
 */
 
 #include "display/scene_context.hpp"
-#include "windstille_widget.hpp"
-#include "zoom_tool.hpp"
+#include "editor/windstille_widget.hpp"
+#include "editor/zoom_tool.hpp"
 
 ZoomTool::ZoomTool()
   : click_pos(),

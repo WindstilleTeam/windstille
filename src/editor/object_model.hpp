@@ -23,12 +23,12 @@
 #include <boost/weak_ptr.hpp>
 #include <string>
 
-#include "select_mask.hpp"
+#include "editor/select_mask.hpp"
 #include "util/file_writer.hpp"
 #include "display/surface.hpp"
 #include "math/vector2f.hpp"
 #include "editor/control_point.hpp"
-#include "snap_data.hpp"
+#include "editor/snap_data.hpp"
 
 class ObjectModel;
 class FileReader;

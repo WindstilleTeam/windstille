@@ -17,7 +17,7 @@
 */
 
 #include "display/software_surface.hpp"
-#include "no_font_effect.hpp"
+#include "font/no_font_effect.hpp"
 
 void
 NoFontEffect::blit(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const

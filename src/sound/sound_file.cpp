@@ -23,8 +23,8 @@
 #include <stdexcept>
 #include <sstream>
 
-#include "ogg_sound_file.hpp"
-#include "wav_sound_file.hpp"
+#include "sound/ogg_sound_file.hpp"
+#include "sound/wav_sound_file.hpp"
 
 
 std::auto_ptr<SoundFile>

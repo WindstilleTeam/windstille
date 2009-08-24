@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "input_manager_impl.hpp"
+#include "input/input_manager_impl.hpp"
 
 void
 InputManagerImpl::add_axis_event(int name, float pos)

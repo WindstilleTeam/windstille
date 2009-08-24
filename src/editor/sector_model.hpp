@@ -26,9 +26,9 @@
 #include <vector>
 
 #include "display/color.hpp"
-#include "layer.hpp"
-#include "selection.hpp"
-#include "object_model.hpp"
+#include "editor/layer.hpp"
+#include "editor/selection.hpp"
+#include "editor/object_model.hpp"
 #include "math/vector2f.hpp"
 
 class NavigationGraph;

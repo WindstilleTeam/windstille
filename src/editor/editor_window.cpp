@@ -33,20 +33,20 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/separatortoolitem.h>
 
-#include "layer_commands.hpp"
-#include "undo_manager.hpp"
+#include "editor/layer_commands.hpp"
+#include "editor/undo_manager.hpp"
 #include "display/scene_context.hpp"
-#include "windstille_widget.hpp"
-#include "about_window.hpp"
-#include "editor_window.hpp"
-#include "zoom_tool.hpp"
-#include "select_tool.hpp"
-#include "navgraph_insert_tool.hpp"
-#include "navgraph_select_tool.hpp"
-#include "sector_model.hpp"
-#include "layer_widget.hpp"
+#include "editor/windstille_widget.hpp"
+#include "editor/about_window.hpp"
+#include "editor/editor_window.hpp"
+#include "editor/zoom_tool.hpp"
+#include "editor/select_tool.hpp"
+#include "editor/navgraph_insert_tool.hpp"
+#include "editor/navgraph_select_tool.hpp"
+#include "editor/sector_model.hpp"
+#include "editor/layer_widget.hpp"
 
-#include "editor_window.hpp"
+#include "editor/editor_window.hpp"
 
 EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   : vbox(),

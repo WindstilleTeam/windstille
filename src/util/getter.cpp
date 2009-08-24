@@ -19,7 +19,7 @@
 #include "math/vector2f.hpp"
 #include "math/quaternion.hpp"
 #include "display/color.hpp"
-#include "file_reader.hpp"
+#include "util/file_reader.hpp"
 
 bool get(const FileReader& reader, const char* name, Vector2f&  value)
 {

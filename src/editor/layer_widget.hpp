@@ -22,7 +22,7 @@
 #include <gtkmm/toolitem.h>
 #include <gtkmm/table.h>
 
-#include "select_mask.hpp"
+#include "editor/select_mask.hpp"
 
 class LayerWidget : public Gtk::ToolItem
 {

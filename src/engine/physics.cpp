@@ -18,7 +18,7 @@
 
 #include <boost/bind.hpp>
 
-#include "physics.hpp"
+#include "engine/physics.hpp"
 
 Physics::Physics(Entity* entity)
   : entity(entity),

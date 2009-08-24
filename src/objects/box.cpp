@@ -17,7 +17,7 @@
 */
 
 #include <boost/bind.hpp>
-#include "box.hpp"
+#include "objects/box.hpp"
 #include "collision/collision_engine.hpp"
 
 Box::Box(FileReader& props)

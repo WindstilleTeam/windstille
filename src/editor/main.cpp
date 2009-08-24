@@ -29,8 +29,8 @@
 #include "util/system.hpp"
 #include "sprite2d/manager.hpp"
 #include "display/texture_manager.hpp"
-#include "editor_window.hpp"
-#include "main.hpp"
+#include "editor/editor_window.hpp"
+#include "editor/main.hpp"
 
 int
 WindstilleEditor::main(int argc, char** argv)

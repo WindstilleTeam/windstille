@@ -21,7 +21,7 @@
 
 #include "display/software_surface.hpp"
 
-#include "texture_packer.hpp"
+#include "display/texture_packer.hpp"
 
 class TextureSpace
 {

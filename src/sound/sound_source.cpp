@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "sound_source.hpp"
-#include "sound_manager.hpp"
+#include "sound/sound_source.hpp"
+#include "sound/sound_manager.hpp"
 
 SoundSource::SoundSource()
   : source()

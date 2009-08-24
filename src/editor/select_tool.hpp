@@ -22,8 +22,8 @@
 #include <stdint.h>
 
 #include "math/rect.hpp"
-#include "object_model.hpp"
-#include "tool.hpp"
+#include "editor/object_model.hpp"
+#include "editor/tool.hpp"
 
 class SelectTool : public Tool
 {

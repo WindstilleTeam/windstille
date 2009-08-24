@@ -20,8 +20,8 @@
 #include <string.h>
 
 #include "physfs/physfs_stream.hpp"
-#include "parser.hpp"
-#include "lisp.hpp"
+#include "lisp/parser.hpp"
+#include "lisp/lisp.hpp"
 
 namespace lisp
 {

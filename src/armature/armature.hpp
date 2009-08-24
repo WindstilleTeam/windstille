@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_ARMATURE_ARMATURE_HPP
 
 #include <vector>
-#include "bone.hpp"
+#include "armature/bone.hpp"
 #include "util/file_reader.hpp"
 
 class Pose;

@@ -22,7 +22,7 @@
 #include "tile/tile_map.hpp"
 #include "display/display.hpp"
 #include "display/software_surface.hpp"
-#include "automap.hpp"
+#include "gui/automap.hpp"
 
 namespace gui {
 

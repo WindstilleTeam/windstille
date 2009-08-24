@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "ogg_sound_file.hpp"
+#include "sound/ogg_sound_file.hpp"
 
 OggSoundFile::OggSoundFile(PHYSFS_file* file_)
   : file(file_),

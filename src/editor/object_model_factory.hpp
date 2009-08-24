@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_FACTOR_HPP
 #define HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_FACTOR_HPP
 
-#include "object_model.hpp"
+#include "editor/object_model.hpp"
 
 class FileReader;
 

@@ -18,10 +18,10 @@
 
 #include "sound/sound_manager.hpp"
 #include "input/controller.hpp"
-#include "menu_component.hpp"
+#include "gui/menu_component.hpp"
 #include "gui/tab_component.hpp"
 #include "display/display.hpp"
-#include "menu_item.hpp"
+#include "gui/menu_item.hpp"
 
 namespace gui {
 

@@ -18,7 +18,7 @@
 
 #include <GL/glew.h>
 #include "app/globals.hpp"
-#include "tile_packer.hpp"
+#include "tile/tile_packer.hpp"
 #include "util/util.hpp"
 #include "display/blitter.hpp"
 #include "display/software_surface.hpp"

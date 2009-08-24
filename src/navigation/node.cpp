@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "node.hpp"
+#include "navigation/node.hpp"
 
 Node::Node(const Vector2f& pos_)
   : pos(pos_),

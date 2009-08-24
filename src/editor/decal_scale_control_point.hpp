@@ -20,8 +20,8 @@
 #define HEADER_WINDSTILLE_EDITOR_DECAL_SCALE_CONTROL_POINT_HPP
 
 #include "math/vector2f.hpp"
-#include "control_point.hpp"
-#include "decal_object_model.hpp"
+#include "editor/control_point.hpp"
+#include "editor/decal_object_model.hpp"
 
 class DecalScaleControlPoint : public ControlPoint
 {

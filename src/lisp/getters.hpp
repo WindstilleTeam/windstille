@@ -12,7 +12,7 @@
 #ifndef __GETTERS_HPP__
 #define __GETTERS_HPP__
 
-#include "lisp.hpp"
+#include "lisp/lisp.hpp"
 
 namespace lisp
 {

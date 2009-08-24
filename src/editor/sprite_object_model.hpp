@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_SPRITE_OBJECT_MODEL_HPP
 
 #include "sprite2d/sprite.hpp"
-#include "object_model.hpp"
+#include "editor/object_model.hpp"
 
 class SpriteObjectModel : public ObjectModel
 {

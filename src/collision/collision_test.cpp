@@ -17,7 +17,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "collision_test.hpp"
+#include "collision/collision_test.hpp"
 #include <assert.h>
 
 SweepResult simple_sweep_1d(float a, float aw, float av,

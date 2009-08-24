@@ -28,7 +28,7 @@
 */
 
 
-#include "rect.hpp"
+#include "math/rect.hpp"
 
 #define cl_min(a,b) ((a < b) ? a : b)
 #define cl_max(a,b) ((a > b) ? a : b)

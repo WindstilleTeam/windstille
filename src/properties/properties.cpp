@@ -19,8 +19,8 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "property_set.hpp"
-#include "properties.hpp"
+#include "properties/property_set.hpp"
+#include "properties/properties.hpp"
 
 Properties::Properties(PropertySet* pset_, void* object_)
   : pset(pset_),

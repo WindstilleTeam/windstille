@@ -19,7 +19,7 @@
 
 #include <math.h>
 #include <assert.h>
-#include "controller.hpp"
+#include "input/controller.hpp"
 
 Controller::Controller()
   : states(LAST_EVENT),

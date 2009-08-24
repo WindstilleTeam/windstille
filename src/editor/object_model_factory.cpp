@@ -19,8 +19,8 @@
 #include <stdexcept>
 
 #include "util/file_reader.hpp"
-#include "decal_object_model.hpp"
-#include "object_model_factory.hpp"
+#include "editor/decal_object_model.hpp"
+#include "editor/object_model_factory.hpp"
 
 ObjectModelHandle
 ObjectModelFactory::create(const FileReader& reader)

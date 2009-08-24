@@ -37,7 +37,7 @@
 #include "objects/scriptable_object.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "scenegraph/scene_graph.hpp"
-#include "squirrel_thread.hpp"
+#include "engine/squirrel_thread.hpp"
 
 
 //Sector* Sector::current_ = 0;

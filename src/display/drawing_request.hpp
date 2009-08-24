@@ -22,7 +22,7 @@
 #include "math/vector2f.hpp"
 #include "math/rect.hpp"
 #include "math/matrix.hpp"
-#include "texture.hpp"
+#include "display/texture.hpp"
 
 /** 
  */

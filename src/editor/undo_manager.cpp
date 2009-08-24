@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "undo_manager.hpp"
+#include "editor/undo_manager.hpp"
 
 UndoManager::UndoManager()
   : undo_stack(),

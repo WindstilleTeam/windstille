@@ -18,7 +18,7 @@
 
 #include "engine/sector.hpp"
 #include "collision/collision_engine.hpp"
-#include "grenade.hpp"
+#include "objects/grenade.hpp"
 
 Grenade::Grenade()
   : sprite(Pathname("models/objects/grenade/grenade.wsprite")), 

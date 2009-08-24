@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_FONT_BORDER_FONT_EFFECT_HPP
 #define HEADER_WINDSTILLE_FONT_BORDER_FONT_EFFECT_HPP
 
-#include "font_effect.hpp"
+#include "font/font_effect.hpp"
 
 /** */
 class BorderFontEffect : public FontEffect

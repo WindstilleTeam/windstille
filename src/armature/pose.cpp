@@ -18,7 +18,7 @@
 
 #include <stdexcept>
 #include "util/file_reader.hpp"
-#include "pose.hpp"
+#include "armature/pose.hpp"
 
 Pose::Pose(FileReader& reader)
   : name(),

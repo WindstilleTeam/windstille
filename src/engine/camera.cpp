@@ -17,10 +17,10 @@
 */
 
 #include "objects/player.hpp"
-#include "sector.hpp"
-#include "script_manager.hpp"
+#include "engine/sector.hpp"
+#include "engine/script_manager.hpp"
 #include "display/display.hpp"
-#include "camera.hpp"
+#include "engine/camera.hpp"
 
 /**
  * Calculate the distance between two camera PathPoints, distance here

@@ -16,10 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "math/random.hpp"
-#include "display/vertex_array_drawing_request.hpp"
+#include "objects/nightvision.hpp"
+
 #include "display/display.hpp"
-#include "nightvision.hpp"
+#include "display/vertex_array_drawing_request.hpp"
+#include "math/random.hpp"
 
 Nightvision::Nightvision(FileReader& /*props*/)
   : nightvision(Pathname("images/nightvision.sprite")),

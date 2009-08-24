@@ -23,7 +23,7 @@
 #include "display/shader_program.hpp"
 #include "display/framebuffer.hpp"
 #include "display/drawing_context.hpp"
-#include "drawer.hpp"
+#include "particles/drawer.hpp"
 
 class SceneContext;
 class ParticleSystem;

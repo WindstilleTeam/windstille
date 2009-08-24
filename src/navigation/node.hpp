@@ -22,7 +22,7 @@
 #include <vector>
 #include "math/vector2f.hpp"
 
-#include "edge_position.hpp"
+#include "navigation/edge_position.hpp"
 
 /** */
 class Node

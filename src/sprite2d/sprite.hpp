@@ -29,7 +29,7 @@
 #include "display/surface.hpp"
 #include "math/vector2f.hpp"
 #include "math/matrix.hpp"
-#include "manager.hpp"
+#include "sprite2d/manager.hpp"
 
 class DrawingContext;
 class Color;
