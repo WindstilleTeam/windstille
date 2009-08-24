@@ -83,16 +83,15 @@ private:
   /** Type of layer to which this particle system gets drawn */
   unsigned int layer;
 
-public:
   float size_start;
   float size_stop;
-private:
+
   float speed_start;
   float speed_stop;
 
-public:
   Color color_start;
   Color color_stop;
+
 private:
   void spawn(Particle& particle);
 
@@ -175,6 +174,12 @@ public:
 
   iterator begin() { return particles.begin(); }
   iterator end()   { return particles.end(); }
+
+  float get_size_start() const { return size_start; }
+  float get_size_stop()  const { return size_stop; }
+
+  const Color& get_color_start() const { return color_start; }
+  const Color& get_color_stop()  const { return color_stop;  }
 
   float get_x_pos() { return x_pos; }
   float get_y_pos() { return y_pos; } 

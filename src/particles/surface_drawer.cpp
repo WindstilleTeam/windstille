@@ -104,13 +104,14 @@ SurfaceDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
       if (i->t != -1.0f)
         {
           float p = 1.0f - psys.get_progress(i->t);
-          Color color(psys.color_start.r * p + psys.color_stop.r * (1.0f - p),
-                      psys.color_start.g * p + psys.color_stop.g * (1.0f - p),
-                      psys.color_start.b * p + psys.color_stop.b * (1.0f - p),
-                      psys.color_start.a * p + psys.color_stop.a * (1.0f - p));
+          Color color(psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
+                      psys.get_color_start().g * p + psys.get_color_stop().g * (1.0f - p),
+                      psys.get_color_start().b * p + psys.get_color_stop().b * (1.0f - p),
+                      psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));
 
           // scale
-          float scale  = psys.size_start + psys.get_progress(i->t)*(psys.size_stop - psys.size_start);
+          float scale  = psys.get_size_start() + 
+            psys.get_progress(i->t) * (psys.get_size_stop() - psys.get_size_start());
           
           float width  = surface.get_width()  * scale;
           float height = surface.get_height() * scale;
