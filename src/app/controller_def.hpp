@@ -21,6 +21,7 @@
 
 #include <map>
 #include <string>
+
 #include "input/input_event.hpp"
 #include "input/controller_description.hpp"
 
@@ -82,7 +83,11 @@ enum InputEventName
 #define INVENTORY_BUTTON   LEFT_SHOULDER_BUTTON
 #define AIM_BUTTON         RIGHT_SHOULDER_BUTTON
 
-extern ControllerDescription controller_description;
+class WindstilleControllerDescription : public ControllerDescription
+{
+public:
+  WindstilleControllerDescription();
+};
 
 #endif
 

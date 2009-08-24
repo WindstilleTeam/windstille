@@ -21,6 +21,7 @@
 
 #include <map>
 #include <string>
+
 #include "input_event.hpp"
 
 struct InputEventDefinition 
@@ -45,7 +46,7 @@ private:
 
 public:
   ControllerDescription();
-  ~ControllerDescription();
+  virtual ~ControllerDescription();
 
   void add_button(const std::string& name, int id);
   void add_axis  (const std::string& name, int id); 

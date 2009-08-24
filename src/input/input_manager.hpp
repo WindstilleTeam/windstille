@@ -33,14 +33,15 @@ class InputManagerImpl;
 class InputManager : public Currenton<InputManager>
 {
 public:
-  InputManager();
+  InputManager(const ControllerDescription& controller_description);
   ~InputManager();
 
   /** Load configuration file \a filename */
   void load(const std::string& filename);
 
   void update(float delta);
-  const Controller& get_controller();
+  const ControllerDescription& get_controller_description() const;
+  const Controller& get_controller() const;
   void clear();
 
 private:

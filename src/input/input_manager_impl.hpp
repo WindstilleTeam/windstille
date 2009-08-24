@@ -26,15 +26,20 @@
 class InputManagerImpl
 {
 protected:
+  ControllerDescription controller_description;
   Controller controller;
 
 public:
-  InputManagerImpl() : controller() {}
+  InputManagerImpl(const ControllerDescription& controller_description_) 
+    : controller_description(controller_description_),
+      controller() 
+  {}
   virtual ~InputManagerImpl() {}
 
   virtual void load(const std::string& filename) =0;
   virtual void update(float delta) =0;
   
+  const ControllerDescription& get_controller_description() const { return controller_description; }
   const Controller& get_controller() const;
   void clear();
 

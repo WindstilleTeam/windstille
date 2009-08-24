@@ -88,7 +88,8 @@ WindstilleMain::main(int argc, char** argv)
       SpriteManager     sprite_manager;
       sprite3d::Manager sprite3d_manager;
       ScriptManager     script_manager;
-      InputManager      input_manager;
+      WindstilleControllerDescription controller_description;
+      InputManager      input_manager(controller_description);
       TileFactory       tile_factory("tiles.scm");
 
       init_modules();
@@ -168,46 +169,6 @@ WindstilleMain::init_modules()
   SoundManager::current()->enable_music(config.get_bool("music"));
 
   ScriptManager::current()->run_script_file("scripts/windstille.nut", true);
-
-  { // Fill controller_description with data
-    
-    // DPad
-    controller_description.add_button("menu-up-button",    MENU_UP_BUTTON);
-    controller_description.add_button("menu-down-button",  MENU_DOWN_BUTTON);
-    controller_description.add_button("menu-left-button",  MENU_LEFT_BUTTON);
-    controller_description.add_button("menu-right-button", MENU_RIGHT_BUTTON);
-
-    // Face Button
-    controller_description.add_button("primary-button",    PRIMARY_BUTTON);
-    controller_description.add_button("secondary-button",  SECONDARY_BUTTON);
-    controller_description.add_button("tertiary-button",   TERTIARY_BUTTON);
-    controller_description.add_button("quaternary-button", QUATERNARY_BUTTON);
-
-    // Stick Buttons
-    controller_description.add_button("left-stick-button",  LEFT_STICK_BUTTON);
-    controller_description.add_button("right-stick-button", RIGHT_STICK_BUTTON);
-
-    // Shoulder Button
-    controller_description.add_button("left-shoulder-button",  LEFT_SHOULDER_BUTTON);
-    controller_description.add_button("right-shoulder-button", RIGHT_SHOULDER_BUTTON);
-
-    // Back/Start
-    controller_description.add_button("select-button",    SELECT_BUTTON);
-    controller_description.add_button("start-button",     START_BUTTON);
-    controller_description.add_button("debug-button",     DEBUG_BUTTON);
-
-    controller_description.add_axis("left-trigger-axis",  LEFT_TRIGGER_AXIS);
-    controller_description.add_axis("right-trigger-axis", RIGHT_TRIGGER_AXIS);
-
-    controller_description.add_axis("x-axis", X_AXIS);
-    controller_description.add_axis("y-axis", Y_AXIS);
-
-    controller_description.add_axis("x2-axis", X2_AXIS);
-    controller_description.add_axis("y2-axis", Y2_AXIS);
-
-    controller_description.add_ball("mouse-motion-x", MOUSE_MOTION_X);
-    controller_description.add_ball("mouse-motion-y", MOUSE_MOTION_Y);
-  }
     
   {     
     if (config.get<std::string>("primary-controller-file").is_set())

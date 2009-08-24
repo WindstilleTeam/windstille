@@ -18,6 +18,44 @@
 
 #include "controller_def.hpp"
 
-ControllerDescription controller_description;
+WindstilleControllerDescription::WindstilleControllerDescription()
+{
+  // DPad
+  add_button("menu-up-button",    MENU_UP_BUTTON);
+  add_button("menu-down-button",  MENU_DOWN_BUTTON);
+  add_button("menu-left-button",  MENU_LEFT_BUTTON);
+  add_button("menu-right-button", MENU_RIGHT_BUTTON);
+
+  // Face Button
+  add_button("primary-button",    PRIMARY_BUTTON);
+  add_button("secondary-button",  SECONDARY_BUTTON);
+  add_button("tertiary-button",   TERTIARY_BUTTON);
+  add_button("quaternary-button", QUATERNARY_BUTTON);
+
+  // Stick Buttons
+  add_button("left-stick-button",  LEFT_STICK_BUTTON);
+  add_button("right-stick-button", RIGHT_STICK_BUTTON);
+
+  // Shoulder Button
+  add_button("left-shoulder-button",  LEFT_SHOULDER_BUTTON);
+  add_button("right-shoulder-button", RIGHT_SHOULDER_BUTTON);
+
+  // Back/Start
+  add_button("select-button",    SELECT_BUTTON);
+  add_button("start-button",     START_BUTTON);
+  add_button("debug-button",     DEBUG_BUTTON);
+
+  add_axis("left-trigger-axis",  LEFT_TRIGGER_AXIS);
+  add_axis("right-trigger-axis", RIGHT_TRIGGER_AXIS);
+
+  add_axis("x-axis", X_AXIS);
+  add_axis("y-axis", Y_AXIS);
+
+  add_axis("x2-axis", X2_AXIS);
+  add_axis("y2-axis", Y2_AXIS);
+
+  add_ball("mouse-motion-x", MOUSE_MOTION_X);
+  add_ball("mouse-motion-y", MOUSE_MOTION_Y);
+}
 
 /* EOF */

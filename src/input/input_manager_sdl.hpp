@@ -98,7 +98,7 @@ class InputManagerSDL : public InputManagerImpl,
                         public Currenton<InputManagerSDL>
 {
 public:
-  InputManagerSDL();
+  InputManagerSDL(const ControllerDescription& controller_description);
   virtual ~InputManagerSDL();
 
   void load(const std::string& filename);

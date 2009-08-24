@@ -27,8 +27,8 @@
 #include "input_manager_impl.hpp"
 #include "input_manager.hpp"
 
-InputManager::InputManager()
-  : impl(new InputManagerSDL())
+InputManager::InputManager(const ControllerDescription& controller_description)
+  : impl(new InputManagerSDL(controller_description))
 {
 }
 
@@ -49,8 +49,15 @@ InputManager::update(float delta)
   impl->update(delta);
 }
 
+const ControllerDescription&
+InputManager::get_controller_description() const
+{
+  assert(impl);
+  return impl->get_controller_description();
+}
+
 const Controller&
-InputManager::get_controller()
+InputManager::get_controller() const
 {
   assert(impl);
   return impl->get_controller();

@@ -16,15 +16,18 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "input/input_configurator.hpp"
+
 #include <iostream>
 #include <stdexcept>
+
 #include "display/display.hpp"
 #include "math/rect.hpp"
 #include "app/controller_def.hpp"
 #include "font/fonts.hpp"
 #include "screen/screen_manager.hpp"
 #include "input/input_manager_sdl.hpp"
-#include "input_configurator.hpp"
+#include "input/input_manager.hpp"
 
 InputConfigurator::InputConfigurator()
   : items(),
@@ -104,11 +107,15 @@ InputConfigurator::print_item()
       
       if (item.mode == ConfigureItem::CONFIGURE_AXIS)
         {
-          out << "Configuring " << controller_description.get_definition(item.event_id).name << ": " << std::endl;
+          out << "Configuring " 
+              << InputManager::current()->get_controller_description().get_definition(item.event_id).name
+              << ": " << std::endl;
         }
       else if (item.mode == ConfigureItem::CONFIGURE_BUTTON)
         {
-          out << "Configuring " << controller_description.get_definition(item.event_id).name << ": " << std::endl;
+          out << "Configuring " 
+              << InputManager::current()->get_controller_description().get_definition(item.event_id).name 
+              << ": " << std::endl;
         }
     }
 

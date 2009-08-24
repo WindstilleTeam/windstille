@@ -239,8 +239,9 @@ InputManagerSDL::parse_config(FileReader& reader)
     }
 }
 
-InputManagerSDL::InputManagerSDL()
-  : impl(new InputManagerSDLImpl)
+InputManagerSDL::InputManagerSDL(const ControllerDescription& controller_description)
+  : InputManagerImpl(controller_description),
+    impl(new InputManagerSDLImpl)
 {
   for (int i = 0; i < SDLK_LAST; ++i) {
     char* key_name = SDL_GetKeyName(static_cast<SDLKey>(i));

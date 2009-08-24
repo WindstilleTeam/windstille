@@ -20,6 +20,8 @@
 #define HEADER_WINDSTILLE_INPUT_INPUT_CONFIGURATOR_HPP
 
 #include <sstream>
+#include <vector>
+
 #include "screen/screen.hpp"
 #include "display/text_area.hpp"
 
