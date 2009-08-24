@@ -32,8 +32,6 @@
 OpenGLWindow::OpenGLWindow()
  : m_window(0)
 {
-  atexit(SDL_Quit);
-
   SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1); // vsync
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
   SDL_GL_SetAttribute(SDL_GL_RED_SIZE,   5);

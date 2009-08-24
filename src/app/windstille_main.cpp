@@ -163,7 +163,6 @@ WindstilleMain::run()
 void
 WindstilleMain::init_modules()
 {
-  if (debug) std::cout << "Initialising Fonts" << std::endl;
   SoundManager::current()->set_master_volume(static_cast<float>(config.get_int("master-volume"))/100.0f);
   SoundManager::current()->enable_sound(config.get_bool("sound"));
   SoundManager::current()->enable_music(config.get_bool("music"));
@@ -192,13 +191,16 @@ WindstilleMain::init_sdl()
 #endif
 
   if (SDL_Init(flags) < 0)
-    {
-      std::stringstream msg;
-      msg << "Couldn't initialize SDL: " << SDL_GetError();
-      throw std::runtime_error(msg.str());
-    }
-
-  SDL_EnableUNICODE(1);
+  {
+    std::stringstream msg;
+    msg << "Couldn't initialize SDL: " << SDL_GetError();
+    throw std::runtime_error(msg.str());
+  }
+  else
+  {
+    atexit(SDL_Quit);
+    SDL_EnableUNICODE(1);
+  }
 }
 
 void
