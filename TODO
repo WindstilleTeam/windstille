@@ -15,6 +15,17 @@ Porting
 
 Microsoft compiler don't have inttypes.h, need to write a replacement header
 
+Logging
+=======
+
+* implement logging and make it useful
+
+  * log when a file is loaded (Surface, Font, Level, etc.)
+ 
+  * log when a sector is changed
+
+  * include a timestemp in the log
+
 Scripting
 =========
 
@@ -197,6 +208,9 @@ Sound Handling
 Miscellaneous
 =============
 
+* automatically detect the file type provided on the command line and
+  launch the correct viewer
+
 * figure out how to enable mipmapping into the tile and surface packer
 
 * View class could be done away, as it doesn't have any clear purpose
@@ -365,6 +379,11 @@ Miscellaneous
 OpenGL
 ======
 
+* OpenGL 2.0 supports non-power-of-two textures with mipmaps, that
+  should be used instead of the texture packer
+
+* mipmapping needs to be enabled
+
 * check for features before using them:
 
 glewInit();
@@ -528,6 +547,8 @@ Graphics
 
 Editor
 ======
+
+* add some command  line options to the editor (--datadir, --userdir, etc.)
 
 * Fix screenshot support (very crashy/buggy on different screensizes and stuff (padding error?))
 
@@ -868,6 +889,23 @@ Build System
 
 * write a script that builds cross compile environment with mingw on Ubuntu
 
+* optimize SConscript, currently takes 10.5sec to run, which is
+  ridiculously slow
+  
+  * using variant_dir increases the build time from 9.5 to 10.5 seconds
+
+  * Decider() has no noticable impact on build times
+
+  * Cachedir() has no noticable negative impact on build times
+
+  * reading the SConscript itself takes around 1.5 seconds, can be cut
+    down to 0.8 seconds by removing the browsing of data files
+
+  * build_windstille_editor() takes 7 seconds 
+
+  * build_windstille() takes 3 seconds 
+
+  * building just the external libraries takes just 0.7sec in total
 
 Code Cleanup
 ============
