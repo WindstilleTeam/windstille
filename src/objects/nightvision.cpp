@@ -116,8 +116,8 @@ Nightvision::draw(SceneContext& sc)
                                      float(Display::get_height()) / nightvision.get_height()));
 
       sc.highlight().draw(nightvision, 
-                          Vector2f(Display::get_width() /2  - (nightvision.get_width()  * nightvision.get_scale()/2),
-                                   Display::get_height()/2  - (nightvision.get_height() * nightvision.get_scale()/2)),
+                          Vector2f(static_cast<float>(Display::get_width()) / 2.0f - (nightvision.get_width()  * nightvision.get_scale() / 2.0f),
+                                   static_cast<float>(Display::get_height())/ 2.0f - (nightvision.get_height() * nightvision.get_scale() / 2.0f)),
                           10000);
       sc.highlight().pop_modelview();
     }

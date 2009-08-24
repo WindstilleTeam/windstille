@@ -100,7 +100,7 @@ StreamSoundSource::update()
       else if (fade_state == FadingOff) 
         {
           unsigned int ticks = SDL_GetTicks();
-          float time = (ticks - fade_start_ticks) / 1000.0f;
+          float time = static_cast<float>(ticks - fade_start_ticks) / 1000.0f;
 
           if (time >= fade_time) 
             {
