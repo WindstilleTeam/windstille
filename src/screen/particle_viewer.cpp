@@ -79,24 +79,24 @@ ParticleViewer::draw()
 {
   sc.reset_modelview();
 
-  for(int y = -background.get_width(); 
-      y < Display::get_height() + background.get_height(); 
+  for(float y = -background.get_width(); 
+      y < static_cast<float>(Display::get_height()) + background.get_height(); 
       y += background.get_height())
     {
-      for(int x = -background.get_width(); 
-          x < Display::get_width() + background.get_width(); 
+      for(float x = -background.get_width(); 
+          x < static_cast<float>(Display::get_width()) + background.get_width(); 
           x += background.get_width())
         {
-          sc.color().draw(background, Vector2f(x + int(pos.x) % background.get_width(),
-                                               y + int(pos.y) % background.get_height()), -900);
+          sc.color().draw(background, Vector2f(x + fmodf(pos.x, background.get_width()),
+                                               y + fmodf(pos.y, background.get_height())), -900);
         }
     }
 
-  sc.translate(Display::get_width()/2 + pos.x, 
-               Display::get_height()/2 + pos.y);
-  sc.light().fill_screen(Color(0.4, 0.4, 0.4));
-  //sc.light().fill_screen(Color(1.0, 1.0, 1.0));
-  sc.color().fill_screen(Color(0.0, 0.0, 0.0));
+  sc.translate(static_cast<float>(Display::get_width())  / 2.0f + pos.x, 
+               static_cast<float>(Display::get_height()) / 2.0f + pos.y);
+  sc.light().fill_screen(Color(0.4f, 0.4f, 0.4f));
+  //sc.light().fill_screen(Color(1.0f, 1.0f, 1.0f));
+  sc.color().fill_screen(Color(0.0f, 0.0f, 0.0f));
 
   for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
     (*i)->draw(sc);

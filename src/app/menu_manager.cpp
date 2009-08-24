@@ -470,11 +470,11 @@ MenuManager::menu_ambient_light(int i, int component)
       Color amb = Sector::current()->get_ambient_light();
 
       if (component == 0)
-        amb.r = i / 100.0f;
+        amb.r = static_cast<float>(i) / 100.0f;
       else if (component == 1)
-        amb.g = i / 100.0f;
+        amb.g = static_cast<float>(i) / 100.0f;
       else if (component == 2)
-        amb.b = i / 100.0f;
+        amb.b = static_cast<float>(i) / 100.0f;
 
       Sector::current()->set_ambient_light(amb);
     }
@@ -504,7 +504,7 @@ MenuManager::menu_show_navigation_test()
 void
 MenuManager::menu_gamma(int i)
 {
-  float gamma = i / 100.0f;
+  float gamma = static_cast<float>(i) / 100.0f;
   SDL_SetGamma(gamma, gamma, gamma);
 }
 
