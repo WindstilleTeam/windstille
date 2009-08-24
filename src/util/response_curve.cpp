@@ -58,6 +58,7 @@ ResponseCurve::get(float v)
 
 #ifdef __TEST__
 #include <iostream>
+#include <stdlib.h>
 
 int main(int argc, char** argv)
 {
@@ -74,7 +75,7 @@ int main(int argc, char** argv)
 
       ResponseCurve curve(0.0f, 1.0f, samples_vec);
 
-      std::cout << curve.get(atof(argv[1])) << std::endl;
+      std::cout << curve.get(static_cast<float>(atof(argv[1]))) << std::endl;
     }
   return 0;
 }

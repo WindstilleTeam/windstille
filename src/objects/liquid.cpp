@@ -45,7 +45,7 @@ Liquid::Liquid(FileReader& props)
   for(std::vector<float>::size_type i = 2; i < heightfield1->size()-2; ++i)
     {
       (*heightfield1)[i] = sin(i/float(heightfield1->size()) * 10.0f) * 0.5f
-        + sin(i/float(heightfield1->size()) * 5.0f) * .5f;
+        + sinf(i / static_cast<float>(heightfield1->size()) * 5.0f) * .5f;
       (*heightfield2)[i] = (*heightfield1)[i];
     }
 
@@ -76,18 +76,18 @@ Liquid::draw(SceneContext& sc)
         float c = 0.5f;
         if (i > 0)
           {
-            float angle = atan2(32.0f* ((*heightfield1)[i] - (*heightfield1)[i-1]), 3.2f);
+            float angle = atan2f(32.0f* ((*heightfield1)[i] - (*heightfield1)[i-1]), 3.2f);
             c = std::min(1.0f, std::max(0.5f, 8.0f * (angle/float(M_PI)) + 0.5f));
           }
 
         array->color(Color(0.5f, 0.5f, 1.0f, 0.7f));
         array->texcoord((i * 32.0f/SAMPLES) * texscale + sin(t + i/10.0f)*0.2f,
-                        (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sin(t+i/10.0f)*0.2f);
+                        (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t+i/10.0f)*0.2f);
         array->vertex(i * 32.0f/SAMPLES, -32.0f * (*heightfield1)[i] + 8.0f);
 
         array->color(Color(c, c, 1.0f, 1.0f));
         array->texcoord((i * 32.0f/SAMPLES) * texscale + sin(t + i/10.0f)*0.2f,
-                        (-32.0f * (*heightfield1)[i]) * texscale + sin(t+i/10.0f)*0.2f);
+                        (-32.0f * (*heightfield1)[i]) * texscale + sinf(t+i/10.0f)*0.2f);
         array->vertex(i * 32.0f/SAMPLES, -32.0f * (*heightfield1)[i]);
       }
 
@@ -103,13 +103,13 @@ Liquid::draw(SceneContext& sc)
     for(std::vector<float>::size_type i = 0; i < heightfield1->size(); ++i)
       {
         array->color(Color(0.0f, 0.0f, 0.5f, 0.7f));
-        array->texcoord((i * 32.0f/SAMPLES) * texscale + sin(t + i/10.0f)*0.2f,
-                        (64.0f) * texscale + sin(t+i/10.0f)*0.2f);
+        array->texcoord((i * 32.0f/SAMPLES) * texscale + sinf(t + i/10.0f)*0.2f,
+                        (64.0f) * texscale + sinf(t+i/10.0f)*0.2f);
         array->vertex(i * 32.0f/SAMPLES, 64.0f);
 
         array->color(Color(0.5f, 0.5f, 1.0f, 0.7f));
         array->texcoord((i * 32.0f/SAMPLES) * texscale + sin(t + i/10.0f)*0.2f,
-                        (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sin(t+i/10.0f)*0.2f);
+                        (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t+i/10.0f)*0.2f);
         array->vertex(i * 32.0f/SAMPLES, -32.0f * (*heightfield1)[i] + 8.0f);
       }
 

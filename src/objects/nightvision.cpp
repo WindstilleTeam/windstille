@@ -79,21 +79,21 @@ Nightvision::draw(SceneContext& sc)
       
       if (0) // second noise level
         {
-          u = rnd.drand();
-          v = rnd.drand();
+          u = rnd.frand();
+          v = rnd.frand();
           float size = 4.0f;
 
           array->texcoord(u, v);
           array->vertex(0, 0, 1.0f);
 
           array->texcoord(u + size, v);
-          array->vertex(Display::get_width(), 0, 1.0f);
+          array->vertex(static_cast<float>(Display::get_width()), 0.0f, 1.0f);
 
           array->texcoord(u + size, v + size);
-          array->vertex(Display::get_width(), Display::get_height(), 1.0f);
+          array->vertex(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()), 1.0f);
 
           array->texcoord(u, v + size);
-          array->vertex(0, Display::get_height(), 1.0f);
+          array->vertex(0.0f, static_cast<float>(Display::get_height()), 1.0f);
         }
 
       sc.light().draw(array);

@@ -91,8 +91,8 @@ ControllerHelpWindow::draw()
   Vector2f pos(Display::get_width()  - 350 - 16, 
                Display::get_height() - 200 - 16);
 
-  Display::fill_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(0.0f, 0.0f, 0.25f, 0.9));
-  Display::draw_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  Display::fill_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(0.0f, 0.0f, 0.25f, 0.9f));
+  Display::draw_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(1.0f, 1.0f, 1.0f,  0.5f));
 
   draw_stick(pos + Vector2f(50, 75),
              controller.get_button_state(LEFT_STICK_BUTTON),

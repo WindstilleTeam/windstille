@@ -169,7 +169,7 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
   int ry = c_round (std::min (r.top, r.bottom)  / TILE_SIZE);
   
   float fw = r.right - r.left;
-  float fh = fabs (r.bottom   - r.top);
+  float fh = fabsf(r.bottom   - r.top);
   
   int rw = c_roundup (fw / TILE_SIZE);
   int rh = c_roundup (fh / TILE_SIZE);
@@ -205,7 +205,7 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
     {
       dx = i->left - r.left / TILE_SIZE;
       dy = i->top  - r.top  / TILE_SIZE;
-      d = sqrt( dx * dx + dy * dy );
+      d = sqrtf( dx * dx + dy * dy );
       if (d < distance)
 	{
 	  distance=d;
@@ -694,7 +694,7 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
 	  r.bottom += dy;
 
 	  if(last_zero && ct==0.0f)
-	    time += 0.0005;
+	    time += 0.0005f;
 	  else
 	    time += ct;
 	  last_zero=(ct==0.0f);

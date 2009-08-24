@@ -19,6 +19,8 @@
 #include "undo_manager.hpp"
 
 UndoManager::UndoManager()
+  : undo_stack(),
+    redo_stack()
 {
 }
 

@@ -42,7 +42,7 @@ void file_to_string(const std::string& filename, std::string& str)
   std::ifstream in(filename.c_str());
   while (true)
     {
-      char c = in.get();
+      char c = static_cast<char>(in.get());
       if (!in.good())
         break;
       str += c;
@@ -61,7 +61,7 @@ std::string tolowercase(const std::string& str)
 {
   std::string out;
   for(std::string::const_iterator i = str.begin();  i != str.end(); ++i)
-    out += tolower(*i);
+    out += static_cast<char>(tolower(*i));
   return out;
 }
 

@@ -56,7 +56,7 @@ protected:
       
     if(c != traits_type::eof()) {
       char str[1];
-      str[0] = c;
+      str[0] = static_cast<char>(c);
       console->add(str, 1);
     }
 
@@ -157,7 +157,7 @@ public:
 void
 ConsoleImpl::draw()
 {
-  int y = y_pos;
+  int y = static_cast<int>(y_pos);
 
   if (active)
     y -= Fonts::current()->ttffont->get_height() + 2;
@@ -176,7 +176,8 @@ ConsoleImpl::draw()
           if (buffer[i].display_time > 4.0f && !console.is_active())
             alpha = 1.0f - (buffer[i].display_time - 4.0f);
 
-          Fonts::current()->ttffont->draw(Vector2f(x_pos, y), buffer[i].message, Color(0.88f, 0.88f, 1.0f, alpha));
+          Fonts::current()->ttffont->draw(Vector2f(x_pos, static_cast<float>(y)), buffer[i].message, 
+                                          Color(0.88f, 0.88f, 1.0f, alpha));
         }
       y -= Fonts::current()->ttffont->get_height() + 2;
     }

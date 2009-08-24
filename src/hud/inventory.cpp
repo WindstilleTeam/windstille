@@ -104,7 +104,7 @@ InventoryImpl::draw()
   Vector2f pos = Vector2f(400, 300);
 
   int num_items = items.size();
-  float step_angle = (2*M_PI) / num_items;
+  float step_angle = (2.0f * math::pi) / static_cast<float>(num_items);
 
   for(int i = 0; i < int(items.size()); ++i)
     {
@@ -140,7 +140,7 @@ Inventory::update(float delta, const Controller& controller)
 void
 InventoryImpl::update(float delta, const Controller& controller)
 {
-  float step_angle = (2*M_PI) / items.size();
+  float step_angle = (2.0f * math::pi) / static_cast<float>(items.size());
   if (fabsf(add_angle) > step_angle)
     {
       if (moving == 1)

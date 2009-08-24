@@ -542,11 +542,11 @@ InputManagerSDL::update(float /*delta*/)
                  
                   float roll = atanf(static_cast<float>(event.acc.x / event.acc.z));
                   if (event.acc.z <= 0.0) {
-                    roll += M_PI * ((event.acc.x > 0.0) ? 1 : -1);
+                    roll += math::pi * ((event.acc.x > 0.0f) ? 1 : -1);
                   }
                   roll *= -1;
 
-                  float pitch = atan(event.acc.y/event.acc.z*cos(roll));
+                  float pitch = atanf(event.acc.y / event.acc.z * cosf(roll));
 
                   add_axis_event(X2_AXIS, math::mid(-1.0f, -float(pitch / M_PI), 1.0f));
                   add_axis_event(Y2_AXIS, math::mid(-1.0f, -float(roll  / M_PI), 1.0f));

@@ -87,7 +87,7 @@ Physics::bounce_collision(const CollisionData& data)
   std::cout << "bounce collision." << std::endl;
   Vector2f collision_vel = data.direction * (velocity() * data.direction);
 
-  velocity() -= collision_vel * (1.0 + bounciness);
+  velocity() -= collision_vel * (1.0f + bounciness);
   //force -= collision_vel * (1.0f + bounciness) * mass / data.delta;
 
   // TODO apply friction
@@ -97,7 +97,7 @@ void
 Physics::update(float delta)
 {
   // add gravity force (TODO make it configurable per Sector)
-  force += Vector2f(0, 9.81 * mass);
+  force += Vector2f(0, 9.81f * mass);
 
   //force -= velocity() * air_friction;
   

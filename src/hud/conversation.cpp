@@ -126,7 +126,7 @@ Conversation::update(float delta, const Controller& controller)
   if (!active)
     return;
 
-  grow = fabs(sinf(time * 3.0f)) * 4.0f;
+  grow = fabsf(sinf(time * 3.0f)) * 4.0f;
 
   direction = Vector2f(controller.get_axis_state(X_AXIS),
                      controller.get_axis_state(Y_AXIS));
@@ -134,7 +134,7 @@ Conversation::update(float delta, const Controller& controller)
   if (fabs(controller.get_axis_state(X_AXIS)) > 0.3f ||
       fabs(controller.get_axis_state(Y_AXIS)) > 0.3f)
     {
-      float segment = 360.0f / choices.size();
+      float segment = 360.0f / static_cast<float>(choices.size());
       float angle = math::rad2deg(math::normalize_angle(atan2f(direction.y, direction.x) + M_PI/2 + math::deg2rad(segment/2.0f)));
 
       int new_selection = int(angle / segment);

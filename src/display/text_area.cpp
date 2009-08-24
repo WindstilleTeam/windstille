@@ -301,11 +301,11 @@ TextArea::draw()
                             break;
                           }
                         
-                        int x = x_pos;
-                        int y = y_pos;
-
+                        float x = static_cast<float>(x_pos);
+                        float y = static_cast<float>(y_pos);
+                        
                         if (sinus) // FIXME: this could actually work per vertex
-                          y += static_cast<int>(sin(impl->passed_time * 10.0f + x_pos / 15.0f) * 5.0f);
+                          y += sinf(impl->passed_time * 10.0f + static_cast<float>(x_pos) / 15.0f) * 5.0f;
 
                         if (*j == '.' || *j == '\n')
                           eat_time -= 0.50f;
@@ -315,8 +315,7 @@ TextArea::draw()
                         const TTFCharacter& character = impl->font->get_character(*j);
                       
                         bool draw_it = (y_pos >= impl->scroll_offset && 
-                                        y_pos < impl->scroll_offset + impl->rect.get_height() 
-                                        - (impl->font->get_height()));
+                                        y_pos < impl->scroll_offset + impl->rect.get_height() - static_cast<float>(impl->font->get_height()));
                         if (is_small)
                           {
                             float scale = 0.6f;
@@ -324,23 +323,23 @@ TextArea::draw()
                               {
                                 glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
                                 glTexCoord2f(character.uv.left, character.uv.top);
-                                glVertex2f(x + scale * character.pos.left + mx,
-                                           y + scale * (character.pos.top  + my));
+                                glVertex2f(x + scale * static_cast<float>(character.pos.left) + mx,
+                                           y + scale * static_cast<float>(character.pos.top)  + my);
 
                                 glTexCoord2f(character.uv.right, character.uv.top);
-                                glVertex2f(x + scale * character.pos.right + mx, 
-                                           y + scale * (character.pos.top) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.right) + mx, 
+                                           y + scale * static_cast<float>(character.pos.top)   + my);
 
                                 glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
                                 glTexCoord2f(character.uv.right, character.uv.bottom);
-                                glVertex2f(x + scale * character.pos.right  + mx, 
-                                           y + scale * (character.pos.bottom) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.right)  + mx, 
+                                           y + scale * static_cast<float>(character.pos.bottom) + my);
 
                                 glTexCoord2f(character.uv.left, character.uv.bottom);
-                                glVertex2f(x + scale * character.pos.left   + mx, 
-                                           y + scale * (character.pos.bottom) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.left)   + mx, 
+                                           y + scale * static_cast<float>(character.pos.bottom) + my);
                               }
-                            x_pos += static_cast<int>(scale * character.advance);
+                            x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
                           }
                         else if (is_large)
                           {
@@ -349,23 +348,23 @@ TextArea::draw()
                               {
                                 glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
                                 glTexCoord2f(character.uv.left, character.uv.top);
-                                glVertex2f(x + scale * character.pos.left + mx,
-                                           y + (character.pos.top  + my));
+                                glVertex2f(x + scale * static_cast<float>(character.pos.left) + mx,
+                                           y + static_cast<float>(character.pos.top) + my);
 
                                 glTexCoord2f(character.uv.right, character.uv.top);
-                                glVertex2f(x + scale * character.pos.right + mx, 
-                                           y + (character.pos.top) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.right) + mx, 
+                                           y + static_cast<float>(character.pos.top) + my);
 
                                 glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
                                 glTexCoord2f(character.uv.right, character.uv.bottom);
-                                glVertex2f(x + scale * character.pos.right  + mx, 
-                                           y + (character.pos.bottom) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.right) + mx, 
+                                           y + static_cast<float>(character.pos.bottom) + my);
 
                                 glTexCoord2f(character.uv.left, character.uv.bottom);
-                                glVertex2f(x + scale * character.pos.left   + mx, 
-                                           y + (character.pos.bottom) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.left) + mx, 
+                                           y + static_cast<float>(character.pos.bottom) + my);
                               }
-                            x_pos += static_cast<int>(scale * character.advance);
+                            x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
                           }
                         else   
                           {
@@ -373,21 +372,21 @@ TextArea::draw()
                               {
                                 glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
                                 glTexCoord2f(character.uv.left, character.uv.top);
-                                glVertex2f(x + character.pos.left + mx,
-                                           y + character.pos.top  + my);
+                                glVertex2f(x + static_cast<float>(character.pos.left) + mx,
+                                           y + static_cast<float>(character.pos.top)  + my);
 
                                 glTexCoord2f(character.uv.right, character.uv.top);
-                                glVertex2f(x + character.pos.right + mx, 
-                                           y + character.pos.top   + my);
+                                glVertex2f(x + static_cast<float>(character.pos.right) + mx, 
+                                           y + static_cast<float>(character.pos.top)   + my);
 
                                 glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
                                 glTexCoord2f(character.uv.right, character.uv.bottom);
-                                glVertex2f(x + character.pos.right  + mx, 
-                                           y + character.pos.bottom + my);
+                                glVertex2f(x + static_cast<float>(character.pos.right)  + mx, 
+                                           y + static_cast<float>(character.pos.bottom) + my);
 
                                 glTexCoord2f(character.uv.left, character.uv.bottom);
-                                glVertex2f(x + character.pos.left   + mx, 
-                                           y + character.pos.bottom + my);
+                                glVertex2f(x + static_cast<float>(character.pos.left)   + mx, 
+                                           y + static_cast<float>(character.pos.bottom) + my);
                               }
                             x_pos += character.advance;
                           }
@@ -400,7 +399,7 @@ TextArea::draw()
 
   if (impl->max_scroll_offset == -1.0f)
     {
-      impl->max_scroll_offset = y_pos - impl->rect.get_height();
+      impl->max_scroll_offset = static_cast<float>(y_pos) - impl->rect.get_height();
       if (impl->max_scroll_offset < 0)
         impl->max_scroll_offset = 0;
     }
@@ -413,7 +412,8 @@ TextArea::draw()
   glEnd();
   glPopMatrix();
 
-  impl->cursor_pos = Vector2f(x_pos + impl->rect.left, y_pos + impl->rect.top);
+  impl->cursor_pos = Vector2f(static_cast<float>(x_pos) + impl->rect.left, 
+                              static_cast<float>(y_pos) + impl->rect.top);
 }
 
 void

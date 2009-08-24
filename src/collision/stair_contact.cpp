@@ -106,11 +106,15 @@ Vector2f
 StairContact::get_pos() const
 {
   if (tile_type & TILE_RIGHT)
+  {
     return Vector2f(static_cast<float>(pos.x) * 32.0f + 16.0f + 32.0f * advancement,
                     static_cast<float>(pos.y) * 32.0f + 16.0f + 32.0f * advancement);
+  }
   else // (tile_type & TILE_LEFT)
-    return Vector2f(pos.x * 32 + 16 + 32 * advancement,
-                  pos.y * 32 + 16 - 32 * advancement);
+  {
+    return Vector2f(static_cast<float>(pos.x) * 32.0f + 16.0f + 32.0f * advancement,
+                    static_cast<float>(pos.y) * 32.0f + 16.0f - 32.0f * advancement);
+  }
 }
 
 bool

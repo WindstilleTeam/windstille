@@ -94,11 +94,11 @@ public:
       {
         float angel = (2*M_PI / segments);
 
-        float x1 =  sin(angel*i)*radius;
-        float y1 = -cos(angel*i)*radius;
+        float x1 =  sinf(angel*i)*radius;
+        float y1 = -cosf(angel*i)*radius;
 
-        float x2 =  sin(angel*(i+1))*radius;
-        float y2 = -cos(angel*(i+1))*radius;
+        float x2 =  sinf(angel*(i+1))*radius;
+        float y2 = -cosf(angel*(i+1))*radius;
 
         glTexCoord2f(x1+256, (y1+256));
         glVertex3f(x1+256, y1+256, 0);
@@ -107,11 +107,11 @@ public:
         glVertex3f(x2+256, y2+256, 0);
 
 
-        float x3 =  sin(angel*i)*minradius;
-        float y3 = -cos(angel*i)*minradius;
+        float x3 =  sinf(angel*i)*minradius;
+        float y3 = -cosf(angel*i)*minradius;
 
-        float x4 =  sin(angel*(i+1))*minradius;
-        float y4 = -cos(angel*(i+1))*minradius;
+        float x4 =  sinf(angel*(i+1))*minradius;
+        float y4 = -cosf(angel*(i+1))*minradius;
 
         glTexCoord2f(x4+256, (y4+256));
         glVertex3f(x4+256, y4+256, 0);
@@ -187,13 +187,13 @@ public:
     glBegin(GL_QUADS);
     for (int i = 0; i < segments; ++i)
       {
-        float angel = (2*M_PI / segments);
+        float angel = 2.0f * math::pi / static_cast<float>(segments);
 
-        float x1 =  sin(angel*i)*radius;
-        float y1 = -cos(angel*i)*radius;
+        float x1 =  sinf(angel*i)*radius;
+        float y1 = -cosf(angel*i)*radius;
 
-        float x2 =  sin(angel*(i+1))*radius;
-        float y2 = -cos(angel*(i+1))*radius;
+        float x2 =  sinf(angel*(i+1))*radius;
+        float y2 = -cosf(angel*(i+1))*radius;
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         glTexCoord2f(x1/512.0f+0.5f, y1/512.0f+0.5f);
@@ -203,11 +203,11 @@ public:
         glVertex3f(x2+256, y2+256, 0);
 
 
-        float x3 =  sin(angel*i)*minradius;
-        float y3 = -cos(angel*i)*minradius;
+        float x3 =  sinf(angel*i)*minradius;
+        float y3 = -cosf(angel*i)*minradius;
 
-        float x4 =  sin(angel*(i+1))*minradius;
-        float y4 = -cos(angel*(i+1))*minradius;
+        float x4 =  sinf(angel*(i+1))*minradius;
+        float y4 = -cosf(angel*(i+1))*minradius;
 
         glColor4f(1.0f, 1.0f, 1.0f, 0.0f);
         glTexCoord2f(x4/512.0f+0.5f, y4/512.0f+0.5f);
