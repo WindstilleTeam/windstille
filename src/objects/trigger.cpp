@@ -21,7 +21,11 @@
 #include "objects/player.hpp"
 
 Trigger::Trigger(FileReader& props)
-  : triggered(false), one_time_trigger(false)
+  : area(),
+    callback(),
+    triggered(false), 
+    last_trigger(),
+    one_time_trigger(false)
 {
   float x = -1;
   float y = -1;
