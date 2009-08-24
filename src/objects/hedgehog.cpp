@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <math.h>
+
 #include "app/globals.hpp"
 #include "player.hpp"
 #include "engine/sector.hpp"
@@ -78,15 +80,15 @@ Hedgehog::update(float delta)
       if (on_ground())
         {
           was_on_ground = true;
-          if (velocity.y > 0)
+          if (velocity.y > 0.0f)
             {
-              velocity.y = 0;
-              pos.y = int(pos.y / TILE_SIZE) * TILE_SIZE + TILE_SIZE - 1;
+              velocity.y = 0.0f;
+              pos.y = truncf(pos.y / static_cast<float>(TILE_SIZE)) * static_cast<float>(TILE_SIZE) + static_cast<float>(TILE_SIZE) - 1.0f;
             }
           if (direction_left)
-            velocity.x = -32;
+            velocity.x = -32.0f;
           else
-            velocity.x = 32;
+            velocity.x = 32.0f;
         }
       else
         {

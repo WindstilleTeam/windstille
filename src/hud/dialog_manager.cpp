@@ -73,17 +73,17 @@ DialogManager::draw()
   if(alignment & LEFT) {
     pos.x = outer_border_x;
   } else if(alignment & RIGHT) {
-    pos.x = Display::get_width() - dialog_width - outer_border_x;
+    pos.x = static_cast<float>(Display::get_width() - dialog_width - outer_border_x);
   } else {
-    pos.x = (Display::get_width() - dialog_width) / 2;
+    pos.x = static_cast<float>((Display::get_width() - dialog_width) / 2);
   }
 
   if(alignment & TOP) {
-    pos.y = outer_border_y;
+    pos.y = static_cast<float>(outer_border_y);
   } else if(alignment & BOTTOM) {
-    pos.y = Display::get_height() - dialog_height - outer_border_y;
+    pos.y = static_cast<float>(Display::get_height() - dialog_height - outer_border_y);
   } else {
-    pos.y = (Display::get_height() - dialog_height) / 2;
+    pos.y = static_cast<float>((Display::get_height() - dialog_height) / 2);
   }
 
   if (!caption) {
@@ -107,7 +107,8 @@ DialogManager::draw()
     {
       const Vector2f& pos = text_area->get_cursor_pos();
       Rectf cursor(pos.x + 8, pos.y + 8, pos.x + 24, pos.y + 24);
-      Display::fill_rect(cursor, Color(1.0, 1.0, 1.0, fabsf(sinf(SDL_GetTicks() / 1000.0f * math::pi * 3.0f))));
+      Display::fill_rect(cursor, Color(1.0, 1.0, 1.0, 
+                                       fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * math::pi * 3.0f))));
     }
 }
 

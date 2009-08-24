@@ -94,11 +94,11 @@ public:
       {
         float angel = 2.0f * math::pi / static_cast<float>(segments);
 
-        float x1 =  sinf(angel*i)*radius;
-        float y1 = -cosf(angel*i)*radius;
+        float x1 =  sinf(angel*static_cast<float>(i))*radius;
+        float y1 = -cosf(angel*static_cast<float>(i))*radius;
 
-        float x2 =  sinf(angel*(i+1))*radius;
-        float y2 = -cosf(angel*(i+1))*radius;
+        float x2 =  sinf(angel*(static_cast<float>(i)+1))*radius;
+        float y2 = -cosf(angel*(static_cast<float>(i)+1))*radius;
 
         glTexCoord2f(x1+256, (y1+256));
         glVertex3f(x1+256, y1+256, 0);
@@ -107,11 +107,11 @@ public:
         glVertex3f(x2+256, y2+256, 0);
 
 
-        float x3 =  sinf(angel*i)*minradius;
-        float y3 = -cosf(angel*i)*minradius;
+        float x3 =  sinf(angel*static_cast<float>(i))*minradius;
+        float y3 = -cosf(angel*static_cast<float>(i))*minradius;
 
-        float x4 =  sinf(angel*(i+1))*minradius;
-        float y4 = -cosf(angel*(i+1))*minradius;
+        float x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
+        float y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
 
         glTexCoord2f(x4+256, (y4+256));
         glVertex3f(x4+256, y4+256, 0);
@@ -177,8 +177,8 @@ public:
 
   void draw_disc(int count)
   {
-    float radius = (count)*2.0f;
-    float minradius = 2.0f*count - 164.0f;
+    float radius = static_cast<float>(count)*2.0f;
+    float minradius = 2.0f * static_cast<float>(count) - 164.0f;
     if (minradius < 0)
       minradius = 0;
 
@@ -189,11 +189,11 @@ public:
       {
         float angel = 2.0f * math::pi / static_cast<float>(segments);
 
-        float x1 =  sinf(angel*i)*radius;
-        float y1 = -cosf(angel*i)*radius;
+        float x1 =  sinf(angel*static_cast<float>(i))*radius;
+        float y1 = -cosf(angel*static_cast<float>(i))*radius;
 
-        float x2 =  sinf(angel*(i+1))*radius;
-        float y2 = -cosf(angel*(i+1))*radius;
+        float x2 =  sinf(angel*(static_cast<float>(i)+1))*radius;
+        float y2 = -cosf(angel*(static_cast<float>(i)+1))*radius;
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         glTexCoord2f(x1/512.0f+0.5f, y1/512.0f+0.5f);
@@ -203,11 +203,11 @@ public:
         glVertex3f(x2+256, y2+256, 0);
 
 
-        float x3 =  sinf(angel*i)*minradius;
-        float y3 = -cosf(angel*i)*minradius;
+        float x3 =  sinf(angel*static_cast<float>(i))*minradius;
+        float y3 = -cosf(angel*static_cast<float>(i))*minradius;
 
-        float x4 =  sinf(angel*(i+1))*minradius;
-        float y4 = -cosf(angel*(i+1))*minradius;
+        float x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
+        float y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
 
         glColor4f(1.0f, 1.0f, 1.0f, 0.0f);
         glTexCoord2f(x4/512.0f+0.5f, y4/512.0f+0.5f);

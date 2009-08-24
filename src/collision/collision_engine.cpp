@@ -165,14 +165,14 @@ bool is_rect_free(TileMap *tilemap, int l, int t, int w,int h)
 
 Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
 {
-  int rx = c_round (r.left / TILE_SIZE);
-  int ry = c_round (std::min (r.top, r.bottom)  / TILE_SIZE);
+  int rx = c_round(r.left / static_cast<float>(TILE_SIZE));
+  int ry = c_round(std::min (r.top, r.bottom)  / static_cast<float>(TILE_SIZE));
   
   float fw = r.right - r.left;
   float fh = fabsf(r.bottom   - r.top);
   
-  int rw = c_roundup (fw / TILE_SIZE);
-  int rh = c_roundup (fh / TILE_SIZE);
+  int rw = c_roundup (fw / static_cast<float>(TILE_SIZE));
+  int rh = c_roundup (fh / static_cast<float>(TILE_SIZE));
 
   std::vector<Rectf> rects;
 
@@ -203,8 +203,8 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
   Rectf nr;
   for (std::vector<Rectf>::iterator i = rects.begin(); i != rects.end(); ++i)
     {
-      dx = i->left - r.left / TILE_SIZE;
-      dy = i->top  - r.top  / TILE_SIZE;
+      dx = i->left - r.left / static_cast<float>(TILE_SIZE);
+      dy = i->top  - r.top  / static_cast<float>(TILE_SIZE);
       d = sqrtf( dx * dx + dy * dy );
       if (d < distance)
 	{
@@ -232,8 +232,8 @@ CollisionEngine::unstuck_tilemap(CollisionObject& a, CollisionObject& b, float d
 
   Rectf target = get_next_free_rect(a.tilemap, rb);
   
-  target.left   *= TILE_SIZE;
-  target.top    *= TILE_SIZE;
+  target.left   *= static_cast<float>(TILE_SIZE);
+  target.top    *= static_cast<float>(TILE_SIZE);
   target.right  = target.left + (rb.right - rb.left);
   target.bottom = target.top  + (rb.top - rb.bottom);
 
@@ -241,13 +241,13 @@ CollisionEngine::unstuck_tilemap(CollisionObject& a, CollisionObject& b, float d
 
   if(target.top < rb.top)
     {
-      float add = c_roundup (target.bottom / TILE_SIZE) * TILE_SIZE - target.bottom;
+      float add = static_cast<float>(c_roundup(target.bottom / static_cast<float>(TILE_SIZE))) * static_cast<float>(TILE_SIZE) - target.bottom;
       target.top    += add;
       target.bottom += add;
     }
   if(target.left < rb.left)
     {
-      float add = c_roundup (target.right / TILE_SIZE) * TILE_SIZE - target.right;
+      float add = static_cast<float>(c_roundup(target.right / static_cast<float>(TILE_SIZE))) * static_cast<float>(TILE_SIZE) - target.right;
       target.left  += add;
       target.right += add;
     }
@@ -530,10 +530,10 @@ bool tilemap_collision(TileMap *tilemap, const Rectf &r)
   int miny, maxy;
   int x, y;
 
-  minx = static_cast<int>(r.left   / TILE_SIZE);
-  maxx = static_cast<int>(r.right  / TILE_SIZE);
-  miny = static_cast<int>(r.top    / TILE_SIZE);
-  maxy = static_cast<int>(r.bottom / TILE_SIZE);
+  minx = static_cast<int>(r.left   / static_cast<float>(TILE_SIZE));
+  maxx = static_cast<int>(r.right  / static_cast<float>(TILE_SIZE));
+  miny = static_cast<int>(r.top    / static_cast<float>(TILE_SIZE));
+  maxy = static_cast<int>(r.bottom / static_cast<float>(TILE_SIZE));
 
   assert(maxy>=miny);
   assert(maxx>=minx);
@@ -541,7 +541,7 @@ bool tilemap_collision(TileMap *tilemap, const Rectf &r)
   for (y = std::max (0, miny); y <= std::min (maxy, tilemap->get_height() - 1); ++y)
     for (x = std::max (0, minx); x <= std::min (maxx, tilemap->get_width() - 1); ++x)
       {
-	if(tilemap->is_ground (x * TILE_SIZE, y * TILE_SIZE ))
+	if(tilemap->is_ground (static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE) ))
 	  {
 	    return true;
 	  }
@@ -556,17 +556,20 @@ std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r,bool 
   int miny, maxy;
   int x, y;
 
-  minx = static_cast<int>(r.left   / TILE_SIZE);
-  maxx = static_cast<int>(r.right  / TILE_SIZE);
-  miny = static_cast<int>(r.top    / TILE_SIZE);
-  maxy = static_cast<int>(r.bottom / TILE_SIZE);
+  minx = static_cast<int>(r.left   / static_cast<float>(TILE_SIZE));
+  maxx = static_cast<int>(r.right  / static_cast<float>(TILE_SIZE));
+  miny = static_cast<int>(r.top    / static_cast<float>(TILE_SIZE));
+  maxy = static_cast<int>(r.bottom / static_cast<float>(TILE_SIZE));
 
   for (y = std::max (0, miny); y <= std::min (maxy, tilemap->get_height() - 1); ++y)
     for (x = std::max (0, minx); x <= std::min (maxx, tilemap->get_width() - 1); ++x)
       {
-	if(tilemap->is_ground (x * TILE_SIZE, y * TILE_SIZE ) == is_ground)
+	if(tilemap->is_ground (static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE) ) == is_ground)
 	  {
-	    rect_list.push_back (Rectf (x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE));
+	    rect_list.push_back (Rectf (static_cast<float>(x * TILE_SIZE), 
+                                        static_cast<float>(y * TILE_SIZE), 
+                                        static_cast<float>(TILE_SIZE), 
+                                        static_cast<float>(TILE_SIZE)));
 	  }
       }
   return rect_list;
@@ -640,27 +643,27 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
 
       if(first_time)
 	{
-	  next_x = get_integer(*x / TILE_SIZE,vel.x) * TILE_SIZE;
-	  next_y = get_integer(*y / TILE_SIZE,vel.y) * TILE_SIZE;
+	  next_x = get_integer(static_cast<float>(*x) / static_cast<float>(TILE_SIZE), vel.x) * TILE_SIZE;
+	  next_y = get_integer(static_cast<float>(*y) / static_cast<float>(TILE_SIZE), vel.y) * TILE_SIZE;
 	  first_time = false;
 	}
       else
 	{
-	  next_x = get_next_integer ((*x / TILE_SIZE), vel.x) * TILE_SIZE;
-	  next_y = get_next_integer ((*y / TILE_SIZE), vel.y) * TILE_SIZE;
+	  next_x = get_next_integer ((static_cast<float>(*x) / static_cast<float>(TILE_SIZE)), vel.x) * TILE_SIZE;
+          next_y = get_next_integer ((static_cast<float>(*y) / static_cast<float>(TILE_SIZE)), vel.y) * TILE_SIZE;
 
 	 
-	  assert ( next_x * c_sign(vel.x) > *x * c_sign(vel.x) || vel.x == 0.0f);
-	  assert ( next_y * c_sign(vel.y) > *y * c_sign(vel.y) || vel.y == 0.0f);
+	  assert ( static_cast<float>(next_x) * static_cast<float>(c_sign(vel.x)) > *x * static_cast<float>(c_sign(vel.x)) || vel.x == 0.0f);
+          assert ( static_cast<float>(next_y) * static_cast<float>(c_sign(vel.y)) > *y * static_cast<float>(c_sign(vel.y)) || vel.y == 0.0f);
 	}
 
       if (vel.x != 0.0f)
-	tx = (next_x - *x) / vel.x;
+	tx = (static_cast<float>(next_x) - *x) / vel.x;
       else
 	tx = 10000.0f;
 
       if (vel.y != 0.0f)
-	ty = (next_y - *y) / vel.y;
+	ty = (static_cast<float>(next_y) - *y) / vel.y;
       else
 	ty = 10000.0f;
 
@@ -704,13 +707,13 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
 	  
 	  if (tx < ty)
 	    {
-	      tmp.left  += c_sign(vel.x);
-	      tmp.right += c_sign(vel.x);
+	      tmp.left  += static_cast<float>(c_sign(vel.x));
+              tmp.right += static_cast<float>(c_sign(vel.x));
 	    }
 	  else
 	    {
-	      tmp.top    += c_sign(vel.y);
-	      tmp.bottom += c_sign(vel.y);
+	      tmp.top    += static_cast<float>(c_sign(vel.y));
+	      tmp.bottom += static_cast<float>(c_sign(vel.y));
 	    }
 
 	  // check collision with tilemap
@@ -721,9 +724,9 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
 	      result.col_time = time;
 	      
 	      if (tx < ty)
-		result.direction=Vector2f(c_sign (vel.x), 0);
+		result.direction = Vector2f(static_cast<float>(c_sign(vel.x)), 0.0f);
 	      else
-		result.direction=Vector2f(0, c_sign (vel.y));
+		result.direction = Vector2f(0, static_cast<float>(c_sign(vel.y)));
 	      return result;
 	    }
 	}

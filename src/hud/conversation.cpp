@@ -65,22 +65,22 @@ Conversation::draw()
   
   Display::fill_circle(pos, 42.0f, Color(0.5f, 0.5f, 0.5f, 0.75f), 24);
 
-  float segment = 360.0f / choices.size();
+  float segment = 360.0f / static_cast<float>(choices.size());
 
   for(int i = 0; i < (int)choices.size(); ++i)
     { // FIXME:
       Vector2f offset(0.0f, 1.0f);
-      offset = offset.rotate(math::deg2rad(segment*i) - math::pi/2);
+      offset = offset.rotate(math::deg2rad(segment * static_cast<float>(i)) - math::pi/2.0f);
 
-      float start = -segment/2 - 90.0f + segment*i;
-      float end   = -segment/2 - 90.0f + segment*(i+1);
+      float start = -segment / 2.0f - 90.0f + segment * static_cast<float>(i);
+      float end   = -segment / 2.0f - 90.0f + segment * static_cast<float>(i+1);
       
       float distance = 160.0f;
 
       Vector2f textpos = pos + Vector2f(0, 16.0f);
       // FIXME: Doesn't handle multi line text
-      Sizef size(Fonts::current()->vera20->get_width(choices[i].topic) + 40.0f,
-                 Fonts::current()->vera20->get_height() + 25.0f);
+      Sizef size(static_cast<float>(Fonts::current()->vera20->get_width(choices[i].topic)) + 40.0f,
+                 static_cast<float>(Fonts::current()->vera20->get_height()) + 25.0f);
       Rectf  rect(textpos + distance * offset - Vector2f(size.width/2, size.height - 15), size);
 
       if (i == selection)
@@ -94,7 +94,7 @@ Conversation::draw()
                                                          textpos.y + distance * offset.y), 
                                                 choices[i].topic, Color(1.0f, 1.0f, 0.0f));
           
-          Fonts::current()->vera20->draw_center(Vector2f(400.0f, Display::get_height() - 32.0f),
+          Fonts::current()->vera20->draw_center(Vector2f(400.0f, static_cast<float>(Display::get_height()) - 32.0f),
                                                 choices[i].text, Color(1.0f, 1.0f, 1.0f));
           Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 0.0f));
         }

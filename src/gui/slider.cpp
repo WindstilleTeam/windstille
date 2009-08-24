@@ -68,10 +68,10 @@ Slider::draw()
   Display::fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
   Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
   
-  int width = 30;
-  Rectf slider_rect(Vector2f(rect.left + (rect.get_width()-width) * ((pos-min)/float(max - min)),
-                             rect.top + 2),
-                    Sizef(width, rect.get_height()-4));
+  float width = 30.0f;
+  Rectf slider_rect(Vector2f(rect.left + (rect.get_width()-width) * (static_cast<float>(pos-min)/static_cast<float>(max - min)),
+                             rect.top + 2.0f),
+                    Sizef(width, rect.get_height() - 4.0f));
   if (is_active())
     {
       Display::fill_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 0.5f));

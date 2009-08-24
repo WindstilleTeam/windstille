@@ -53,11 +53,11 @@ static float find_max(float pos, float v)
     }
   else if (v < 0)
     {
-      return fmodf(fmodf(pos, TILE_SIZE) + TILE_SIZE, TILE_SIZE)/fabsf(v);
+      return fmodf(fmodf(pos, static_cast<float>(TILE_SIZE)) + static_cast<float>(TILE_SIZE), static_cast<float>(TILE_SIZE))/fabsf(v);
     }
   else // if (v > 0)
     {
-      return fmodf(fmodf(-pos, TILE_SIZE) + TILE_SIZE, TILE_SIZE)/v;
+      return fmodf(fmodf(-pos, static_cast<float>(TILE_SIZE)) + static_cast<float>(TILE_SIZE), static_cast<float>(TILE_SIZE))/v;
     }
 }
 
@@ -70,8 +70,8 @@ LaserPointer::draw(SceneContext& sc)
   Vector2f target; // = Sector::current()->get_collision_engine()->raycast(pos, angle);
 
   // Ray position in Tile units
-  int x = static_cast<int>(pos.x / TILE_SIZE);
-  int y = static_cast<int>(pos.y / TILE_SIZE);
+  int x = static_cast<int>(pos.x / static_cast<float>(TILE_SIZE));
+  int y = static_cast<int>(pos.y / static_cast<float>(TILE_SIZE));
 
   Vector2f direction(cosf(angle) * 100.0f, sinf(angle) * 100.0f);
 
@@ -81,8 +81,8 @@ LaserPointer::draw(SceneContext& sc)
   float tMaxX = find_max(pos.x, direction.x);
   float tMaxY = find_max(pos.y, direction.y);
 
-  float tDeltaX = (direction.x == 0) ? 0 : fabsf(TILE_SIZE / direction.x);
-  float tDeltaY = (direction.y == 0) ? 0 : fabsf(TILE_SIZE / direction.y);
+  float tDeltaX = (direction.x == 0) ? 0 : fabsf(static_cast<float>(TILE_SIZE) / direction.x);
+  float tDeltaY = (direction.y == 0) ? 0 : fabsf(static_cast<float>(TILE_SIZE) / direction.y);
 
   float t = 0;
 

@@ -69,14 +69,14 @@ MenuComponent::draw()
     { // we can only display a subset of items and have to scroll
       for(int i = 0; i < num_displayable_items; ++i)
         {
-          items[i+scroll_offset]->draw(Rectf(rect.left, rect.top + i * step + 2.0f, 
-                                             rect.right - 32, rect.top + (i+1) * step - 2.0f), 
+          items[i+scroll_offset]->draw(Rectf(rect.left, rect.top + static_cast<float>(i) * step + 2.0f, 
+                                             rect.right - 32.0f, rect.top + static_cast<float>(i+1) * step - 2.0f), 
                                        is_active() && (int(i+scroll_offset) == current_item));
         }
       
       // draw scrollbar
-      float scrollbar_height = (rect.get_height()-4.0f) * num_displayable_items / items.size();
-      float scrollbar_incr   = (rect.get_height()-4.0f) * scroll_offset / items.size();
+      float scrollbar_height = (rect.get_height() - 4.0f) * static_cast<float>(num_displayable_items) / static_cast<float>(items.size());
+      float scrollbar_incr   = (rect.get_height() - 4.0f) * static_cast<float>(scroll_offset) / static_cast<float>(items.size());
 
       Display::fill_rounded_rect(Rectf(rect.right - 24, rect.top + 2.0f + scrollbar_incr,
                                        rect.right - 2,  rect.top + 2.0f + scrollbar_incr + scrollbar_height),
@@ -92,8 +92,8 @@ MenuComponent::draw()
     { // all items fit on the screen
       for(Items::size_type i = 0; i < items.size(); ++i)
         {
-          items[i]->draw(Rectf(rect.left, rect.top + i * step + 2.0f, 
-                               rect.right, rect.top + (i+1) * step - 2.0f), 
+          items[i]->draw(Rectf(rect.left, rect.top + static_cast<float>(i) * step + 2.0f, 
+                               rect.right, rect.top + static_cast<float>(i+1) * step - 2.0f), 
                          is_active() && (int(i) == current_item));
         }
     }
@@ -206,20 +206,20 @@ MenuComponent::get_prefered_width() const
 float
 MenuComponent::get_prefered_height() const
 {
-  return item_height() * std::min(10, int(items.size())) + 12.0f;
+  return item_height() * static_cast<float>(std::min(10, int(items.size()))) + 12.0f;
 }
 
 float
 MenuComponent::calc_height()
 {
-  return items.size() * item_height();
+  return static_cast<float>(items.size()) * item_height();
 }
 
 float
 MenuComponent::item_height() const
 {
   float spacing = 10.0f;
-  return font->get_height() + spacing*2.0f;
+  return static_cast<float>(font->get_height()) + spacing * 2.0f;
 }
 
 void 

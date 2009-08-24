@@ -78,8 +78,8 @@ Camera::update(float delta)
 
     case CAMERA_FOLLOW_PLAYER:
       {
-        int hscroll_threshold = 100;
-        int vscroll_threshold = 150;
+        float hscroll_threshold = 100.0f;
+        float vscroll_threshold  = 150.0f;
 
         Vector2f tpos = Player::current()->get_pos();
 
@@ -95,11 +95,11 @@ Camera::update(float delta)
         else if (dist < -vscroll_threshold)
           pos.y = tpos.y + vscroll_threshold;
 
-        float start_x = Display::get_width()/2;
-        float end_x   = Sector::current()->get_width() - Display::get_width()/2;
+        float start_x = static_cast<float>(Display::get_width()) / 2.0f;
+        float end_x   = static_cast<float>(Sector::current()->get_width()) - static_cast<float>(Display::get_width()) / 2.0f;
 
-        float start_y = Display::get_height()/2;
-        float end_y   = Sector::current()->get_height() - Display::get_height()/2;
+        float start_y = static_cast<float>(Display::get_height()) / 2.0f;
+        float end_y   = static_cast<float>(Sector::current()->get_height()) - static_cast<float>(Display::get_height()) / 2.0f;
 
         if (pos.x < start_x)
           pos.x = start_x;

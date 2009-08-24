@@ -183,13 +183,13 @@ Wiimote::set_led(int num, bool state)
 {
   assert(num >= 1 && num <= 4);
   
-  unsigned char new_led_state = m_led_state;
+  unsigned int new_led_state = m_led_state;
   if (state)
-    new_led_state |= (1 << (num-1));
+    new_led_state |= (1u << (num-1));
   else // (!state)
-    new_led_state &= ~(1 << (num-1));
+    new_led_state &= ~(1u << (num-1));
 
-  set_led(new_led_state);
+  set_led(static_cast<unsigned char>(new_led_state));
 }
 
 void
@@ -295,7 +295,7 @@ Wiimote::on_button(const cwiid_btn_mesg& msg)
 {
 #define CHECK_BTN(btn, num) if (changes & btn) add_button_event(0, num, m_buttons & btn)
 
-  uint16_t changes = m_buttons ^ msg.buttons;
+  uint16_t changes = static_cast<uint16_t>(m_buttons ^ msg.buttons);
   m_buttons = msg.buttons;
  
   CHECK_BTN(CWIID_BTN_A, 0);
@@ -320,9 +320,9 @@ Wiimote::on_acc(const cwiid_acc_mesg& msg)
   //printf("Acc Report: x=%d, y=%d, z=%d\n", msg.acc[0], msg.acc[1], msg.acc[2]);
 
   add_acc_event(0, 0, 
-                (msg.acc[0] - wiimote_zero.x) / static_cast<float>(wiimote_one.x - wiimote_zero.x),
-                (msg.acc[1] - wiimote_zero.y) / static_cast<float>(wiimote_one.y - wiimote_zero.y),
-                (msg.acc[2] - wiimote_zero.z) / static_cast<float>(wiimote_one.z - wiimote_zero.z));
+                static_cast<float>(msg.acc[0] - wiimote_zero.x) / static_cast<float>(wiimote_one.x - wiimote_zero.x),
+                static_cast<float>(msg.acc[1] - wiimote_zero.y) / static_cast<float>(wiimote_one.y - wiimote_zero.y),
+                static_cast<float>(msg.acc[2] - wiimote_zero.z) / static_cast<float>(wiimote_one.z - wiimote_zero.z));
 }
 
 void
@@ -345,11 +345,11 @@ inline float to_float(uint8_t min,
 {
   if (value < center)
     {
-      return math::mid(-1.0f, -(center - value) / float(center - min), 1.0f);
+      return math::mid(-1.0f, -static_cast<float>(center - value) / static_cast<float>(center - min), 1.0f);
     }
   else if (value > center)
     {
-      return math::mid(-1.0f, (value - center) / float(max - center), 1.0f);
+      return math::mid(-1.0f, static_cast<float>(value - center) / static_cast<float>(max - center), 1.0f);
     }
   else 
     {
@@ -360,7 +360,7 @@ inline float to_float(uint8_t min,
 void
 Wiimote::on_nunchuck(const cwiid_nunchuk_mesg& msg)
 {
-  uint8_t changes = m_nunchuk_btns ^ msg.buttons;
+  uint8_t changes = static_cast<uint8_t>(m_nunchuk_btns ^ msg.buttons);
   m_nunchuk_btns  = msg.buttons;
 
 #define CHECK_NCK_BTN(btn, num) if (changes & btn) add_button_event(0, num, m_nunchuk_btns & btn)
@@ -386,9 +386,9 @@ Wiimote::on_nunchuck(const cwiid_nunchuk_mesg& msg)
     }
 
   add_acc_event(0, 1, 
-                (msg.acc[0] - nunchuk_zero.x) / float(nunchuk_one.x - nunchuk_zero.x),
-                (msg.acc[1] - nunchuk_zero.y) / float(nunchuk_one.y - nunchuk_zero.y),
-                (msg.acc[2] - nunchuk_zero.z) / float(nunchuk_one.z - nunchuk_zero.z));
+                static_cast<float>(msg.acc[0] - nunchuk_zero.x) / static_cast<float>(nunchuk_one.x - nunchuk_zero.x),
+                static_cast<float>(msg.acc[1] - nunchuk_zero.y) / static_cast<float>(nunchuk_one.y - nunchuk_zero.y),
+                static_cast<float>(msg.acc[2] - nunchuk_zero.z) / static_cast<float>(nunchuk_one.z - nunchuk_zero.z));
   if (0)
     printf("Nunchuk Report: btns=%.2X stick=(%3d,%3d) (%5.2f, %5.2f) acc.x=%d acc.y=%d acc.z=%d\n", 
            msg.buttons,

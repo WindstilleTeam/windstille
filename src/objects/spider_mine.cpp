@@ -58,7 +58,7 @@ SpiderMine::update(float delta)
     if (on_ground()) {
       if (velocity.y > 0) {
         velocity.y = 0;
-        pos.y = int(pos.y / static_cast<float>(TILE_SIZE)) * static_cast<float>(TILE_SIZE) + static_cast<float>(TILE_SIZE) - 1.0f;
+        pos.y = truncf(pos.y / static_cast<float>(TILE_SIZE)) * static_cast<float>(TILE_SIZE) + static_cast<float>(TILE_SIZE) - 1.0f;
       }
 
     } else {

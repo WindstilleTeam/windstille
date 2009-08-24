@@ -61,7 +61,8 @@ MenuItem::draw(const Rectf& rect, bool is_active)
     }
   }
 
-  font->draw(Vector2f(rect.left + font->get_height(), rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
+  font->draw(Vector2f(rect.left + static_cast<float>(font->get_height()),
+                      rect.top + static_cast<float>(font->get_height())/2.0f + rect.get_height() / 2.0f - 2.0f),
              label, font_color);
 }
 
@@ -131,8 +132,8 @@ EnumMenuItem::draw(const Rectf& rect, bool is_active)
     font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
   }
 
-  font->draw(Vector2f(rect.right - font->get_height() - font->get_width(labels[index].label),
-                      rect.top + font->get_height()/2.0f + rect.get_height()/2.0f - 2.0f),
+  font->draw(Vector2f(rect.right - static_cast<float>(font->get_height())      - static_cast<float>(font->get_width(labels[index].label)),
+                      rect.top   + static_cast<float>(font->get_height())/2.0f + static_cast<float>(rect.get_height())/2.0f - 2.0f),
              labels[index].label,
              font_color);
 }
@@ -175,9 +176,9 @@ void
 SliderMenuItem::draw(const Rectf& rect, bool is_active)
 {
   MenuItem::draw(rect, is_active);
-  int total_width = 200;
-  int width = total_width * value / (max_value - min_value);
-
+  float total_width = 200.0f;
+  float width = total_width * static_cast<float>(value) / static_cast<float>(max_value - min_value);
+  
   Color color;
   if (is_active)
   {
@@ -188,13 +189,13 @@ SliderMenuItem::draw(const Rectf& rect, bool is_active)
     color = Color(0.75f, 0.75f, 0.75f, 1.0f);
   }
 
-  Display::fill_rounded_rect(Rectf(Vector2f(rect.right - 4 - total_width, rect.top + 4),
+  Display::fill_rounded_rect(Rectf(Vector2f(rect.right - 4.0f - total_width, rect.top + 4.0f),
                                    Sizef(width, rect.get_height() - 8)), 
                              5.0f,
                              Color(0.75f*color.r, 0.75f*color.g, 0.75f*color.b, color.a));
 
 
-  Display::draw_rounded_rect(Rectf(Vector2f(rect.right - 4 - total_width, rect.top + 4),
+  Display::draw_rounded_rect(Rectf(Vector2f(rect.right - 4.0f - total_width, rect.top + 4.0f),
                                    Sizef(total_width, rect.get_height() - 8)), 
                              5.0f,
                              color);

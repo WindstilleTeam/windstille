@@ -26,7 +26,7 @@ Bomb::Bomb(int x, int y)
     light(Pathname("images/bomblight.sprite")),
     highlight(Pathname("images/bombhighlight.sprite")),
     explolight(Pathname("images/explolight.sprite")),
-    pos(x, static_cast<float>(int(y/TILE_SIZE+1)*TILE_SIZE)),
+    pos(static_cast<float>(x), static_cast<float>((y / TILE_SIZE + 1) * TILE_SIZE)),
     count(2.0f),
     state(COUNTDOWN),
     exploded(false)
