@@ -29,7 +29,7 @@ private:
   Commands cmds;
 
 public:
-  GroupCommand() {}
+  GroupCommand() : cmds() {}
 
   void add(CommandHandle cmd) {
     cmds.push_back(cmd);

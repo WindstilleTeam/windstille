@@ -36,7 +36,9 @@
 LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
 SectorModel::SectorModel()
- : nav_graph(new NavigationGraph())
+  : nav_graph(new NavigationGraph()),
+    layer_tree(),
+    ambient_color()
 {
   layer_tree = Gtk::ListStore::create(LayerManagerColumns::instance());
 

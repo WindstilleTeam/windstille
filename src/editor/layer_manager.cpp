@@ -30,7 +30,10 @@
 
 LayerManager::LayerManager(EditorWindow& editor_)
   : editor(editor_),
-    label("Layer Manager", Gtk::ALIGN_LEFT)
+    label("Layer Manager", Gtk::ALIGN_LEFT),
+    scrolled(),
+    treeview(),
+    auto_lock()
 {
   treeview.set_headers_clickable();
   treeview.set_headers_visible(true);

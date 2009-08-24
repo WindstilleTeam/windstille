@@ -28,8 +28,12 @@ static const uint32_t MOVE_TIMEOUT = 100;
 static const int MOVE_THRESHOLD = 16.0f;
 
 SelectTool::SelectTool()
-  : mode(NO_MODE)
-    
+ : click_pos(),
+   rect(),
+   selection(),
+   ctrl_point(),
+   start_time(),
+   mode(NO_MODE)    
 {
 }
 
@@ -37,7 +41,7 @@ void
 SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   start_time = event->time;
-  click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  click_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
 
   ctrl_point = wst.get_control_point(click_pos);
   if (ctrl_point)
@@ -124,7 +128,7 @@ SelectTool::process_snap(WindstilleWidget& wst)
 void
 SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
-  Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  Vector2f pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
 
   if (mode == CONTROL_DRAG_MODE)
     {
@@ -165,7 +169,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 void
 SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
-  Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  Vector2f pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
 
   // Select objects
   if (mode == CONTROL_DRAG_MODE)

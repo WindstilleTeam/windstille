@@ -16,6 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// /usr/include/gtkmm-2.4/gtkmm/recentmanager.h causes warning, so we have to disable -Weffc++
+#pragma GCC diagnostic ignored "-Weffc++"
+
 #include <fstream>
 #include <iostream>
 #include <gdkmm/pixbuf.h>
@@ -46,17 +49,41 @@
 #include "editor_window.hpp"
 
 EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
-  : ui_manager(Gtk::UIManager::create()),
+  : vbox(),
+    sidebar_vbox(),
+    hbox(),
+    hpaned(),
+    vpaned(),
+    status(),
+    ui_manager(Gtk::UIManager::create()),
     action_group(Gtk::ActionGroup::create()),
+    share_list(),
     glconfig(glconfig_),
+    notebook(),
     object_selector(*this),
     layer_manager(*this),
     minimap_widget(glconfig_),
+    select_tool_action(),
+    navgraph_insert_tool_action(),
+    navgraph_select_tool_action(),
+    zoom_tool_action(),
+    toggle_color_layer(),
+    toggle_light_layer(),
+    toggle_highlight_layer(),
+    toggle_control_layer(),
+    background_layer(),
+    visible_layer(),
+    grid_layer(),
+    play_action(),
+    snap_action(),
     select_tool(new SelectTool()),
     navgraph_insert_tool(new NavgraphInsertTool()),
     navgraph_select_tool(new NavgraphSelectTool()),
     zoom_tool(new ZoomTool()),
-    current_tool(select_tool.get())
+    current_tool(select_tool.get()),
+    layer_widget(),
+    timeout_connection(),
+    clipboard()
 {
   set_title("Windstille Editor");
   set_default_size(1280, 800);

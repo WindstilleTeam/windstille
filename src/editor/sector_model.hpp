@@ -55,7 +55,13 @@ public:
   Gtk::TreeModelColumn<LayerHandle>                layer;
 
 private:
-  LayerManagerColumns() {
+  LayerManagerColumns() 
+    : type_icon(),
+      name(),
+      visible(),
+      locked(),
+      layer()
+  {
     add(type_icon); 
     add(name); 
     add(visible); 

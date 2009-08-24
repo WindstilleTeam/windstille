@@ -24,6 +24,10 @@
 #include "navgraph_select_tool.hpp"
 
 NavgraphSelectTool::NavgraphSelectTool()
+  : click_pos(),
+    rect(),
+    mode(),
+    selection()
 {
 }
 
@@ -34,7 +38,7 @@ NavgraphSelectTool::~NavgraphSelectTool()
 void
 NavgraphSelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
-  click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  click_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
   NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
 
   NodeHandle node = navgraph.find_closest_node(click_pos, 16.0f); // FIXME: Radius should scale with zoom
@@ -65,7 +69,7 @@ NavgraphSelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 void
 NavgraphSelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
-  Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  Vector2f pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
 
   switch(mode)
     {
@@ -91,7 +95,7 @@ NavgraphSelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 void
 NavgraphSelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
-  Vector2f pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  Vector2f pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
   NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
 
   switch(mode)

@@ -37,6 +37,10 @@ DecalObjectModel::create(const std::string& name, const Vector2f& pos,
 
 DecalObjectModel::DecalObjectModel(const FileReader& reader)
   : ObjectModel(reader),
+    path(),
+    surface(),
+    software_surface(),
+    type(),
     scale(1.0f, 1.0f),
     angle(0.0f),
     hflip(false),

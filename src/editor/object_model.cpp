@@ -27,18 +27,24 @@
 
 ObjectModel::ObjectModel(const std::string& name_, const Vector2f& rel_pos_)
   : name(name_),
-    rel_pos(rel_pos_)
+    rel_pos(rel_pos_),
+    select_mask(),
+    parent_ptr()
 {
 }
 
 ObjectModel::ObjectModel(const FileReader& reader)
+  : name(),
+    rel_pos(),
+    select_mask(),
+    parent_ptr()
 {
   reader.get("name", name);
   reader.get("pos",  rel_pos);
   
   int mask = 1;
   reader.get("select-mask", mask);
-  select_mask = SelectMask(mask);
+  select_mask = SelectMask(static_cast<uint16_t>(mask));
 }
 
 ObjectModel::~ObjectModel()
@@ -191,10 +197,10 @@ ObjectModel::snap_object(const Rectf& in) const
   // Reset offset to zero, since it might not be
   SnapData snap;
 
-  float left_dist   = fabs(rect.left - in.right);
-  float right_dist  = fabs(rect.right - in.left);
-  float top_dist    = fabs(rect.top - in.bottom);
-  float bottom_dist = fabs(rect.bottom - in.top);
+  float left_dist   = fabsf(rect.left - in.right);
+  float right_dist  = fabsf(rect.right - in.left);
+  float top_dist    = fabsf(rect.top - in.bottom);
+  float bottom_dist = fabsf(rect.bottom - in.top);
   float x_dist = std::min(left_dist, right_dist);
   float y_dist = std::min(top_dist, bottom_dist);
 

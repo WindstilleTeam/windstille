@@ -47,7 +47,12 @@ public:
 private:
   static ObjectSelector::Columns* instance_;
 
-  Columns() {
+  Columns() 
+    : url(),
+      pathname(),
+      icon(),
+      filter_mask()
+  {
     add(pathname); 
     add(url);
     add(icon);
@@ -60,6 +65,12 @@ ObjectSelector::Columns* ObjectSelector::Columns::instance_ = 0;
 ObjectSelector::ObjectSelector(EditorWindow& editor_)
   : editor(editor_),
     label("Object Selector", Gtk::ALIGN_LEFT),
+    scrolled(),
+    iconview(),
+    list_store(),
+    list_filter(),
+    filter_box(),
+    filter_entries(),
     filter_mask(OBJECT_GROUP_ALL)
 {
 #if 0
@@ -93,9 +104,9 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_)
   filter_entries.push_back(ComboBoxEntry("Particle Systems", OBJECT_GROUP_PARTICLESYSTEM));
 
   for(std::vector<ComboBoxEntry>::const_iterator i = filter_entries.begin(); i != filter_entries.end(); ++i)
-    {
-      filter_box.append_text(i->name);
-    }
+  {
+    filter_box.append_text(i->name);
+  }
 
   filter_box.set_active(0);
   filter_box.signal_changed().connect(sigc::mem_fun(*this, &ObjectSelector::on_filter_changed));
@@ -295,8 +306,8 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
       Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath);
       if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
         {
-          pixbuf = pixbuf->scale_simple(std::max(4, int(pixbuf->get_width()  * wst->get_state().get_zoom())),
-                                        std::max(4, int(pixbuf->get_height() * wst->get_state().get_zoom())),
+          pixbuf = pixbuf->scale_simple(std::max(4, int(static_cast<float>(pixbuf->get_width())  * wst->get_state().get_zoom())),
+                                        std::max(4, int(static_cast<float>(pixbuf->get_height()) * wst->get_state().get_zoom())),
                                         Gdk::INTERP_TILES);
         }
       context->set_icon(pixbuf, pixbuf->get_width()/2, pixbuf->get_height()/2);

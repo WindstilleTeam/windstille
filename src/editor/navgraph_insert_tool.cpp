@@ -26,14 +26,19 @@
 #include "navgraph_insert_tool.hpp"
 
 NavgraphInsertTool::NavgraphInsertTool()
-  : mode(NO_MODE)
+  : mouse_pos(),
+    mode(NO_MODE),
+    last_node(),
+    connection_node(),
+    mouse_over_node(),
+    mouse_over_edge()
 {
 }
 
 void
 NavgraphInsertTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 {
-  mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
   NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
 
   NodeHandle node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
@@ -87,7 +92,7 @@ void
 NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
-  mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
 
   {
     NodeHandle new_mouse_over_node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
@@ -118,7 +123,7 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 void
 NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
-  mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+  mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
   //NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
 
   switch(mode)

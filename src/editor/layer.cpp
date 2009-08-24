@@ -21,7 +21,9 @@
 #include "editor/sector_model.hpp"
 
 Layer::Layer()
-  : visible(true),
+  : objects(),
+    name(),
+    visible(true),
     locked(false)
 {
 }

@@ -27,7 +27,11 @@
 #include "selection.hpp"
 
 Selection::Selection()
-  : moving(false)
+  : objects(),
+    object_orig_poss(),
+    non_moveable_objects(),
+    moving(false),
+    signal_changed()
 {
 }
 

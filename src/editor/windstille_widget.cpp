@@ -47,9 +47,15 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list)
   : editor(editor_),
     undo_manager(new UndoManager()),
+    filename(),
     sector_model(new SectorModel()),
+    control_points(),
+    state(),
+    sc(),
     scroll_tool(new ScrollTool()),
+    selection(),
     map_type(DecalObjectModel::COLORMAP),
+    background_pattern(),
     draw_background_pattern(true),
     select_mask(1),
     draw_only_active_layers(true),
@@ -729,7 +735,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*
   //          << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
   
   ObjectModelHandle object = DecalObjectModel::create(data.get_data_as_string(),
-                                                      state.screen_to_world(Vector2f(x, y)),
+                                                      state.screen_to_world(Vector2f(static_cast<float>(x), static_cast<float>(y))),
                                                       data.get_data_as_string().substr(5), 
                                                       map_type);
 
@@ -764,21 +770,23 @@ WindstilleWidget::on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& /*context
 void
 WindstilleWidget::on_zoom_in()
 {
-  state.set_zoom(Vector2f(get_width()/2, get_height()/2), state.get_zoom() * 1.25f);
+  state.set_zoom(Vector2f(static_cast<float>(get_width())/2.0f, static_cast<float>(get_height())/2.0f), state.get_zoom() * 1.25f);
   queue_draw();
 }
 
 void
 WindstilleWidget::on_zoom_out()
 {
-  state.set_zoom(Vector2f(get_width()/2, get_height()/2), state.get_zoom() * (1.0f/1.25f));
+  state.set_zoom(Vector2f(static_cast<float>(get_width())/2.0f, static_cast<float>(get_height())/2.0f), state.get_zoom() * (1.0f/1.25f));
   queue_draw();
 }
 
 void
 WindstilleWidget::on_zoom_100()
 {
-  state.set_zoom(Vector2f(get_width()/2, get_height()/2), 1.0f);
+  state.set_zoom(Vector2f(static_cast<float>(get_width())  / 2.0f, 
+                          static_cast<float>(get_height()) / 2.0f),
+                 1.0f);
   queue_draw();
 }
 

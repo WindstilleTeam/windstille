@@ -26,6 +26,7 @@
 #include <gtkglmm.h>
 #include <physfs.h>
 
+#include "util/system.hpp"
 #include "sprite2d/manager.hpp"
 #include "display/texture_manager.hpp"
 #include "editor_window.hpp"
@@ -36,6 +37,9 @@ WindstilleEditor::main(int argc, char** argv)
 {
   try 
     {
+      Pathname::set_datadir(System::find_default_datadir());
+      Pathname::set_userdir(System::find_default_userdir());
+
       Gtk::Main kit(&argc, &argv);
       Gtk::GL::init(&argc, &argv);
 

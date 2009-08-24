@@ -42,11 +42,11 @@ public:
   {
     if (enable)
       {
-        mask = mask | (1<<layer);
+        mask = static_cast<uint16_t>(mask | (1u<<layer));
       }
     else
       {
-        mask = mask & (~(1<<layer));
+        mask = static_cast<uint16_t>(mask & (~(1u<<layer)));
       }
   }
 

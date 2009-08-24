@@ -21,7 +21,9 @@
 #include "zoom_tool.hpp"
 
 ZoomTool::ZoomTool()
-  : mode(NO_MODE)
+  : click_pos(),
+    mouse_pos(),
+    mode(NO_MODE)
 {
 }
 
@@ -30,7 +32,7 @@ ZoomTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 {
   if (mode == NO_MODE)
     {
-      mouse_pos = click_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+      mouse_pos = click_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
 
       mode = RECT_MODE;
 
@@ -43,7 +45,7 @@ ZoomTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   if (mode == RECT_MODE)
     {
-      mouse_pos = wst.get_state().screen_to_world(Vector2f(event->x, event->y));
+      mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
       wst.queue_draw();
     }
 }

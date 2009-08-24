@@ -24,7 +24,9 @@
 #include "layer_widget.hpp"
 
 LayerWidget::LayerWidget()
-  : table(2, 9, false)
+  : table(2, 9, false),
+    buttons(),
+    signal_layer_toggle()
 {
   int layer_number = 0;
   for(int y = 0; y < 2; ++y)

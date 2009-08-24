@@ -19,6 +19,7 @@
 #include "node_selection.hpp"
 
 NodeSelection::NodeSelection()
+  : nodes()
 {
 }
 
