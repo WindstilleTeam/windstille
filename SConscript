@@ -21,7 +21,18 @@ start_time = time.time()
 
 CacheDir('cache')
 
-debug_cxxflags = ["-O0", "-g", "-W", "-Wall", "-ansi", "-pedantic", "-Wnon-virtual-dtor", "-Werror"] # "-Wconversion",
+debug_cxxflags = [
+    "-O0",
+    "-g",
+    "-ansi", "-pedantic",
+    "-Wall",
+    "-Wextra",
+    "-Wnon-virtual-dtor",
+    "-Weffc++",
+    "-Wconversion",
+    #"-Wshadow",
+    #"-Werror",
+    ]
 
 # YACC
 yacc_test_text = """
@@ -113,6 +124,7 @@ class Project:
         self.build_windstille()
         self.build_windstille_editor()
         self.build_windstille_data()
+        self.build_testapps()
 
     def configure(self):
         conf_env = Environment()
@@ -172,7 +184,7 @@ class Project:
                                    CXXFILESUFFIX = ".cpp",
                                    YACCFLAGS=['-d', '--no-lines'])
 
-        miniswig_bin = miniswig_env.Program('external/miniswig/miniswig',
+        miniswig_bin = miniswig_env.Program('miniswig',
                                             ['external/miniswig/parser.yy',
                                              'external/miniswig/lexer.ll',
                                              'external/miniswig/create_docu.cpp',
@@ -181,7 +193,7 @@ class Project:
                                              'external/miniswig/main.cpp',
                                              'external/miniswig/tree.cpp'])
 
-        env = Environment(MINISWIG='external/miniswig/miniswig')
+        env = Environment(MINISWIG=miniswig_bin)
 
         env.Depends(env.Command('src/scripting/miniswig.tmp', 'src/scripting/wrapper.interface.hpp',
                                 ["cpp -x c  -CC $SOURCE -o $TARGET -DSCRIPTING_API"]),
@@ -189,7 +201,7 @@ class Project:
                      'src/scripting/game_objects.hpp'])
 
         env.Depends(env.Command(['src/scripting/wrapper.cpp', 'src/scripting/wrapper.hpp'], 'src/scripting/miniswig.tmp',
-                                ["$MINISWIG  --input $SOURCE --output-cpp ${TARGETS[0]} --output-hpp ${TARGETS[1]} "+
+                                ["$MINISWIG --input $SOURCE --output-cpp ${TARGETS[0]} --output-hpp ${TARGETS[1]} "+
                                  "--module windstille --select-namespace Scripting"]),
                     miniswig_bin)
 
@@ -274,6 +286,15 @@ class Project:
         editor_env.ParseConfig('pkg-config --cflags --libs libpng')
 
         editor_env.Program('windstille-editor', Glob('src/editor/*.cpp'))
+
+    def build_testapps(self):
+        env = Environment(OBJPREFIX="test__",
+                          CPPPATH=['src'],
+                          CXXFLAGS=debug_cxxflags,
+                          CPPDEFINES=["__TEST__"])
+        env.Program("test_babyxml", ["src/util/baby_xml.cpp"])
+        env.Program("test_response_curve", ["src/util/response_curve.cpp"])
+        env.Program("test_random", ["src/math/random.cpp"])
 
     def build_windstille_data(self):
         data_env = Environment()
