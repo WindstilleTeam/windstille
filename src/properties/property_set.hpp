@@ -40,18 +40,18 @@ public:
   void add(const std::string& name, Property* property);
 
   template<class C>
-  void add_int(const std::string& name, bool C::*ptr)
+  void add_int(const std::string& name_, bool C::*ptr)
   { 
-    add(name, PropertyImpl<C>::create_int(ptr));
+    add(name_, PropertyImpl<C>::create_int(ptr));
   }
 
   template<class C>
-  void add_bool(const std::string& name, bool C::*ptr)
+  void add_bool(const std::string& name_, bool C::*ptr)
   { 
-    add(name, PropertyImpl<C>::create_bool(ptr));
+    add(name_, PropertyImpl<C>::create_bool(ptr));
   }
 
-  Property* get(const std::string& name) const;
+  Property* get(const std::string& name_) const;
 
   void get_properties(std::vector<std::string>& lst) const;
 

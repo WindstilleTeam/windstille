@@ -76,16 +76,16 @@ SurfaceDrawer::~SurfaceDrawer()
 }
   
 void
-SurfaceDrawer::set_texture(Surface surface)
+SurfaceDrawer::set_texture(Surface surface_)
 {
-  this->surface = surface;
+  surface = surface_;
 }
 
 void
-SurfaceDrawer::set_blendfuncs(GLenum blendfunc_src, GLenum blendfunc_dest)
+SurfaceDrawer::set_blendfuncs(GLenum blendfunc_src_, GLenum blendfunc_dest_)
 {
-  this->blendfunc_src  = blendfunc_src;
-  this->blendfunc_dest = blendfunc_dest;
+  blendfunc_src  = blendfunc_src_;
+  blendfunc_dest = blendfunc_dest_;
 }
 
 void

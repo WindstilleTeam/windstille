@@ -27,12 +27,12 @@ public:
   ShaderProgram shader_program;
   float radius;
 
-  ShockwaveDrawingRequest(const Vector2f& pos, 
+  ShockwaveDrawingRequest(const Vector2f& pos_, 
                           const Texture&       noise_,
                           const ShaderProgram& shader_program_,
                           float r,
                           const Matrix& modelview_) 
-    : DrawingRequest(pos, 500.0f, modelview_),
+    : DrawingRequest(pos_, 500.0f, modelview_),
       noise(noise_),
       shader_program(shader_program_),
       radius(r)
@@ -60,16 +60,16 @@ public:
 
     { // Apply modelview matrix to texture matrix so that we can
       // give texcoords as screencords
-      GLdouble modelview[16];
+      GLdouble m[16];
       glMatrixMode(GL_MODELVIEW);
-      glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+      glGetDoublev(GL_MODELVIEW_MATRIX, m);
       glMatrixMode(GL_TEXTURE);
       glLoadIdentity();
       glTranslatef(0, 599, 0);
       glScalef(1, -1, 1);
-      glMultMatrixd(modelview);
+      glMultMatrixd(m);
 
-      //glLoadMatrixd(modelview);
+      //glLoadMatrixd(m);
     }
 
     int count = int(radius);
@@ -77,7 +77,7 @@ public:
     state.bind_texture(screen_texture, 0);
     state.activate();
 
-    float radius = static_cast<float>(count)*2.0f + 20.0f; // enlarge radius by 20.0f to handle texture displacement 
+    float rad = static_cast<float>(count)*2.0f + 20.0f; // enlarge radius by 20.0f to handle texture displacement 
     float minradius = 2.0f * static_cast<float>(count) - 164.0f;
     if (minradius < 0)
       minradius = 0;
@@ -91,11 +91,11 @@ public:
       {
         float angel = 2.0f * math::pi / static_cast<float>(segments);
 
-        float x1 =  sinf(angel*static_cast<float>(i))*radius;
-        float y1 = -cosf(angel*static_cast<float>(i))*radius;
+        float x1 =  sinf(angel*static_cast<float>(i))*rad;
+        float y1 = -cosf(angel*static_cast<float>(i))*rad;
 
-        float x2 =  sinf(angel*(static_cast<float>(i)+1))*radius;
-        float y2 = -cosf(angel*(static_cast<float>(i)+1))*radius;
+        float x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
+        float y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
 
         glTexCoord2f(x1+256, (y1+256));
         glVertex3f(x1+256, y1+256, 0);
@@ -173,7 +173,7 @@ public:
 
   void draw_disc(int count)
   {
-    float radius = static_cast<float>(count)*2.0f;
+    float rad = static_cast<float>(count)*2.0f;
     float minradius = 2.0f * static_cast<float>(count) - 164.0f;
     if (minradius < 0)
       minradius = 0;
@@ -185,11 +185,11 @@ public:
       {
         float angel = 2.0f * math::pi / static_cast<float>(segments);
 
-        float x1 =  sinf(angel*static_cast<float>(i))*radius;
-        float y1 = -cosf(angel*static_cast<float>(i))*radius;
+        float x1 =  sinf(angel*static_cast<float>(i))*rad;
+        float y1 = -cosf(angel*static_cast<float>(i))*rad;
 
-        float x2 =  sinf(angel*(static_cast<float>(i)+1))*radius;
-        float y2 = -cosf(angel*(static_cast<float>(i)+1))*radius;
+        float x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
+        float y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         glTexCoord2f(x1/512.0f+0.5f, y1/512.0f+0.5f);

@@ -436,41 +436,41 @@ Wiimote::err(cwiid_wiimote_t* w, const char *s, va_list ap)
 }
 
 void
-Wiimote::mesg(cwiid_wiimote_t* /*w*/, int mesg_count, union cwiid_mesg mesg[])
+Wiimote::mesg(cwiid_wiimote_t* /*w*/, int mesg_count, union cwiid_mesg msg[])
 {
   pthread_mutex_lock(&mutex);
 
   //std::cout << "StatusCallback: " << w << " " << mesg_count << std::endl;
   for (int i=0; i < mesg_count; i++)
     {
-      switch (mesg[i].type) 
+      switch (msg[i].type) 
         {
         case CWIID_MESG_STATUS:
-          wiimote->on_status(mesg[i].status_mesg);
+          wiimote->on_status(msg[i].status_mesg);
           break;
 
         case CWIID_MESG_BTN:
-          wiimote->on_button(mesg[i].btn_mesg);
+          wiimote->on_button(msg[i].btn_mesg);
           break;
 
         case CWIID_MESG_ACC:
-          wiimote->on_acc(mesg[i].acc_mesg);
+          wiimote->on_acc(msg[i].acc_mesg);
           break;
 
         case CWIID_MESG_IR:
-          wiimote->on_ir(mesg[i].ir_mesg);
+          wiimote->on_ir(msg[i].ir_mesg);
           break;
 
         case CWIID_MESG_NUNCHUK:
-          wiimote->on_nunchuck(mesg[i].nunchuk_mesg);
+          wiimote->on_nunchuck(msg[i].nunchuk_mesg);
           break;
 
         case CWIID_MESG_CLASSIC:
-          wiimote->on_classic(mesg[i].classic_mesg);
+          wiimote->on_classic(msg[i].classic_mesg);
           break;
 
         case CWIID_MESG_ERROR:
-          wiimote->on_error(mesg[i].error_mesg);
+          wiimote->on_error(msg[i].error_mesg);
           break;
 
         default:

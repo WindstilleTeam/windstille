@@ -33,10 +33,10 @@ public:
   ParticleSystem&   psys;
   ShaderProgram&    shader_program;
 
-  DeformDrawerRequest(const Vector2f& pos_, float z_pos,  const Matrix& modelview_,
+  DeformDrawerRequest(const Vector2f& pos_, float z_pos_,  const Matrix& modelview_,
                       Framebuffer& framebuffer_, Surface& surface_, ParticleSystem& psys_,
                       ShaderProgram& shader_program_)
-    : DrawingRequest(pos_, z_pos, modelview_),
+    : DrawingRequest(pos_, z_pos_, modelview_),
       framebuffer(framebuffer_), surface(surface_), psys(psys_), 
       shader_program(shader_program_)
   {}

@@ -91,7 +91,7 @@ SurfaceManager::get(const Pathname& filename)
 
 void
 SurfaceManager::load_grid(const Pathname& filename,
-                          std::vector<Surface>& surfaces,
+                          std::vector<Surface>& out_surfaces,
                           int width, int height)
 {
   SoftwareSurface image(filename);
@@ -119,10 +119,10 @@ SurfaceManager::load_grid(const Pathname& filename,
           float s_max_u = (maxu * (static_cast<float>(x + width)))  / static_cast<float>(image.get_width());
           float s_max_v = (maxv * (static_cast<float>(x + height))) / static_cast<float>(image.get_height());
 
-          surfaces.push_back(Surface(texture, 
-                                     Rectf(s_min_u, s_min_v, s_max_u, s_max_v), 
-                                     Sizef(static_cast<float>(width),
-                                           static_cast<float>(height))));
+          out_surfaces.push_back(Surface(texture, 
+                                         Rectf(s_min_u, s_min_v, s_max_u, s_max_v), 
+                                         Sizef(static_cast<float>(width),
+                                               static_cast<float>(height))));
         }
     }
 }

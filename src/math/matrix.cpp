@@ -206,20 +206,20 @@ Matrix::rotate(float angle, float x, float y, float z)
   float c = cosf(angle * 3.14159265f / 180.0f);
   float s = sinf(angle * 3.14159265f / 180.0f);
 
-  Matrix matrix = Matrix::identity();
-  matrix[0]  = x*x*(1-c)+c;
-  matrix[1]  = y*x*(1-c)+z*s;
-  matrix[2]  = x*z*(1-c)-y*s;
+  Matrix m = Matrix::identity();
+  m[0]  = x*x*(1-c)+c;
+  m[1]  = y*x*(1-c)+z*s;
+  m[2]  = x*z*(1-c)-y*s;
 
-  matrix[4]  = x*y*(1-c)-z*s;
-  matrix[5]  = y*y*(1-c)+c;
-  matrix[6]  = y*z*(1-c)+x*s;
+  m[4]  = x*y*(1-c)-z*s;
+  m[5]  = y*y*(1-c)+c;
+  m[6]  = y*z*(1-c)+x*s;
 
-  matrix[8]  = x*z*(1-c)+y*s;
-  matrix[9]  = y*z*(1-c)-x*s;
-  matrix[10] = z*z*(1-c)+c;
+  m[8]  = x*z*(1-c)+y*s;
+  m[9]  = y*z*(1-c)-x*s;
+  m[10] = z*z*(1-c)+c;
 
-  return multiply(matrix);
+  return multiply(m);
 }
 // http://www.cvl.iis.u-tokyo.ac.jp/~miyazaki/tech/teche23.html
 // http://gpwiki.org/index.php/MathGem:Fast_Matrix_Inversion

@@ -110,14 +110,14 @@ Armature::parse(FileReader& reader)
 }
 
 Bone*
-Armature::get_bone(const std::string& name)
+Armature::get_bone(const std::string& name_)
 {
   for(Bones::iterator i = bones.begin(); i != bones.end(); ++i)
     {
-      if ((*i)->name == name)
+      if ((*i)->name == name_)
         return *i;
     }
-  std::cout << "Error: Bone: '" << name << "' not found" << std::endl;
+  std::cout << "Error: Bone: '" << name_ << "' not found" << std::endl;
   return 0;
 }
 

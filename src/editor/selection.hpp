@@ -55,8 +55,8 @@ public:
   ~Selection();
 
   template<class Iter>
-  void add(Iter begin, Iter end) {
-    for(Iter i = begin; i != end; ++i)
+  void add(Iter begin_, Iter end_) {
+    for(Iter i = begin_; i != end_; ++i)
       {
         add(*i);
       }

@@ -28,8 +28,8 @@ public:
   std::string name;
   Sprite sprite;
   
-  InventoryItem(const std::string& name, const std::string& filename)
-    : name(name), sprite(Pathname(filename))
+  InventoryItem(const std::string& name_, const std::string& filename_)
+    : name(name_), sprite(Pathname(filename_))
   {
   }
 };

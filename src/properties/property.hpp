@@ -50,8 +50,8 @@ private:
     float C::*float_value;
   } value;
 
-  PropertyImpl(Type type)
-    : Property(type),
+  PropertyImpl(Type type_)
+    : Property(type_),
       value()
   {}
 

@@ -22,9 +22,9 @@
 
 namespace gui {
 
-TextView::TextView(const Rectf& rect, Component* component)
-  : Component(rect, component),
-    text_area(rect, false)
+TextView::TextView(const Rectf& rect_, Component* component_)
+  : Component(rect_, component_),
+    text_area(rect_, false)
 {
 }
 
@@ -62,10 +62,10 @@ TextView::update(float delta, const Controller& controller)
 }
 
 void
-TextView::set_screen_rect(const Rectf& rect)
+TextView::set_screen_rect(const Rectf& rect_)
 {
-  Component::set_screen_rect(rect);
-  text_area.set_rect(rect.grow(-16.0f, -4.0f));
+  Component::set_screen_rect(rect_);
+  text_area.set_rect(rect_.grow(-16.0f, -4.0f));
 }
 
 void

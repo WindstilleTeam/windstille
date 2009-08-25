@@ -64,8 +64,8 @@ SquirrelThread::create_thread()
     }
 }
 
-SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm, bool isolated_)
-  : parent_vm(parent_vm),
+SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm_, bool isolated_)
+  : parent_vm(parent_vm_),
     isolated(isolated_),
     thread(0),
     filename("<unset>"),

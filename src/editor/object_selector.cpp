@@ -161,14 +161,14 @@ void
 ObjectSelector::add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
                           const std::string& pathname,
                           const std::string& url,
-                          uint32_t filter)
+                          uint32_t filter_)
 {
   Gtk::ListStore::iterator it = list_store->append();
 
   (*it)[Columns::instance().pathname]    = pathname;
   (*it)[Columns::instance().url]         = url;
   (*it)[Columns::instance().icon]        = icon;
-  (*it)[Columns::instance().filter_mask] = filter;
+  (*it)[Columns::instance().filter_mask] = filter_;
 }
 
 static bool has_suffix(const std::string& str, const std::string& suffix)
@@ -186,7 +186,7 @@ ObjectSelector::filter(const Gtk::TreeModel::const_iterator& it)
 }
 
 void
-ObjectSelector::add_decals_from_directory(const std::string& pathname, uint32_t filter)
+ObjectSelector::add_decals_from_directory(const std::string& pathname, uint32_t filter_)
 {
   std::vector<Glib::ustring> images;
 
@@ -195,9 +195,9 @@ ObjectSelector::add_decals_from_directory(const std::string& pathname, uint32_t 
     {
       if (has_suffix(*i, ".png"))
         {
-          Glib::ustring path = pathname;
-          path += *i;
-          images.push_back(path);
+          Glib::ustring path_ = pathname;
+          path_ += *i;
+          images.push_back(path_);
         }
     }
 
@@ -253,7 +253,7 @@ ObjectSelector::add_decals_from_directory(const std::string& pathname, uint32_t 
 
       add_decal(icon, *i, 
                 "file:///home/ingo/projects/windstille/trunk/windstille/" + *i, 
-                filter);
+                filter_);
     }
 }
 
@@ -291,8 +291,8 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
       i != selection.end();
       ++i)
     {
-      Gtk::TreeModel::Path path = list_filter->convert_path_to_child_path(*i);
-      Gtk::ListStore::iterator it = list_store->get_iter(path);
+      Gtk::TreeModel::Path path_ = list_filter->convert_path_to_child_path(*i);
+      Gtk::ListStore::iterator it = list_store->get_iter(path_);
 
       iconpath = (*it)[Columns::instance().pathname];
     }
@@ -327,8 +327,8 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& /*context
       i != selection.end();
       ++i)
     {
-      Gtk::TreeModel::Path path = list_filter->convert_path_to_child_path(*i);
-      Gtk::ListStore::iterator it = list_store->get_iter(path);
+      Gtk::TreeModel::Path path_ = list_filter->convert_path_to_child_path(*i);
+      Gtk::ListStore::iterator it = list_store->get_iter(path_);
 
       if (selection_data.get_target() == "application/x-windstille-decal")
         {

@@ -580,13 +580,13 @@ WindstilleWidget::selection_delete()
 }
 
 bool
-WindstilleWidget::scroll(GdkEventScroll* event)
+WindstilleWidget::scroll(GdkEventScroll* event_)
 {
-  if (event->direction == GDK_SCROLL_UP)
+  if (event_->direction == GDK_SCROLL_UP)
     {
       //viewer->get_state().zoom(1.1f, Vector2i(event->x, event->y));
     }
-  else if (event->direction == GDK_SCROLL_DOWN)
+  else if (event_->direction == GDK_SCROLL_DOWN)
     {
       //viewer->get_state().zoom(1.0f/1.1f, Vector2i(event->x, event->y));
     }
@@ -594,25 +594,25 @@ WindstilleWidget::scroll(GdkEventScroll* event)
 }
 
 bool
-WindstilleWidget::mouse_down(GdkEventButton* event)
+WindstilleWidget::mouse_down(GdkEventButton* event_)
 {
   grab_focus();
 
-  //std::cout << "Button Press: " << event->x << ", " << event->y << " - " << event->button << std::endl;
+  //std::cout << "Button Press: " << event_->x << ", " << event_->y << " - " << event_->button << std::endl;
 
-  if (event->button == 1)
+  if (event_->button == 1)
     { // Tool
-      EditorWindow::current()->get_current_tool()->mouse_down(event, *this);
+      EditorWindow::current()->get_current_tool()->mouse_down(event_, *this);
       return true;
     }
-  else if (event->button == 2)
+  else if (event_->button == 2)
     { // Scroll
-      scroll_tool->mouse_down(event, *this);
+      scroll_tool->mouse_down(event_, *this);
       return true;
     }
-  else if (event->button == 3)
+  else if (event_->button == 3)
     { // Context Menu
-      EditorWindow::current()->get_current_tool()->mouse_right_down(event, *this);
+      EditorWindow::current()->get_current_tool()->mouse_right_down(event_, *this);
       return true;
     }
   else
@@ -622,29 +622,29 @@ WindstilleWidget::mouse_down(GdkEventButton* event)
 }
 
 bool
-WindstilleWidget::mouse_move(GdkEventMotion* event)
+WindstilleWidget::mouse_move(GdkEventMotion* event_)
 {
-  //std::cout << "Motion: " << event->x << ", " << event->y << std::endl;
+  //std::cout << "Motion: " << event_->x << ", " << event_->y << std::endl;
   
-  EditorWindow::current()->get_current_tool()->mouse_move(event, *this);
-  scroll_tool->mouse_move(event, *this);
+  EditorWindow::current()->get_current_tool()->mouse_move(event_, *this);
+  scroll_tool->mouse_move(event_, *this);
   
   return true;
 }
 
 bool
-WindstilleWidget::mouse_up(GdkEventButton* event)
+WindstilleWidget::mouse_up(GdkEventButton* event_)
 {
-  //std::cout << "Button Release: " << event->x << ", " << event->y << " - " << event->button << std::endl;
-  //viewer->on_mouse_button_up(Vector2i(event->x, event->y), event->button);
-  if (event->button == 1)
+  //std::cout << "Button Release: " << event_->x << ", " << event_->y << " - " << event_->button << std::endl;
+  //viewer->on_mouse_button_up(Vector2i(event_->x, event_->y), event_->button);
+  if (event_->button == 1)
     {
-      EditorWindow::current()->get_current_tool()->mouse_up(event, *this);
+      EditorWindow::current()->get_current_tool()->mouse_up(event_, *this);
       queue_draw();
     }
-  else if (event->button == 2)
+  else if (event_->button == 2)
     {
-      scroll_tool->mouse_up(event, *this);
+      scroll_tool->mouse_up(event_, *this);
       queue_draw();
     }
 
@@ -652,11 +652,11 @@ WindstilleWidget::mouse_up(GdkEventButton* event)
 }
 
 bool
-WindstilleWidget::key_press(GdkEventKey* event)
+WindstilleWidget::key_press(GdkEventKey* event_)
 {
-  //std::cout << event->keyval << " keypress " << state.get_pos() << std::endl;
+  //std::cout << event_->keyval << " keypress " << state.get_pos() << std::endl;
 
-  switch(event->keyval)
+  switch(event_->keyval)
     {
       case GDK_1:
         map_type = DecalObjectModel::COLORMAP;
@@ -713,9 +713,9 @@ WindstilleWidget::key_press(GdkEventKey* event)
 }
 
 bool
-WindstilleWidget::key_release(GdkEventKey* /*event*/)
+WindstilleWidget::key_release(GdkEventKey* /*event_*/)
 { // /usr/include/gtk-2.0/gdk/gdkkeysyms.h
-  //std::cout << "KeyRelease: " << (int)event->keyval << std::endl;
+  //std::cout << "KeyRelease: " << (int)event_->keyval << std::endl;
   return true;
 }
 
@@ -746,18 +746,18 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*
   else
     object->set_select_mask(select_mask);
 
-  Gtk::TreeModel::Path path;
+  Gtk::TreeModel::Path path_;
   Gtk::TreeViewColumn* focus_column;
 
-  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
+  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path_, focus_column);
 
-  if (!path.gobj())
+  if (!path_.gobj())
     {
       std::cout << "WindstilleWidget::on_drag_data_received(): Error: Couldn't get path" << std::endl;
     }
   else
     {
-      execute(CommandHandle(new ObjectAddCommand(sector_model->get_layer(path), object)));
+      execute(CommandHandle(new ObjectAddCommand(sector_model->get_layer(path_), object)));
     }
 }
 
@@ -807,36 +807,36 @@ WindstilleWidget::get_selection() const
 LayerHandle
 WindstilleWidget::get_current_layer()
 {
-  Gtk::TreeModel::Path path;
+  Gtk::TreeModel::Path path_;
   Gtk::TreeViewColumn* focus_column;
-  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
+  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path_, focus_column);
 
-  if (!path.gobj())
+  if (!path_.gobj())
     {
       std::cout << "WindstilleWidget::get_current_layer(): Error: Couldn't get path" << std::endl;
       return LayerHandle();
     }
   else
     {
-      return sector_model->get_layer(path);  
+      return sector_model->get_layer(path_);  
     }
 }
 
 Gtk::TreeModel::Path
 WindstilleWidget::get_current_layer_path()
 {
-  Gtk::TreeModel::Path path;
+  Gtk::TreeModel::Path path_;
   Gtk::TreeViewColumn* focus_column;
-  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path, focus_column);
+  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path_, focus_column);
 
-  if (!path.gobj())
+  if (!path_.gobj())
     {
       std::cout << "WindstilleWidget::get_current_layer_path(): Error: Couldn't get path" << std::endl;
       return Gtk::TreeModel::Path();
     }
   else
     {
-      return path;
+      return path_;
      }
 }
 
@@ -879,13 +879,13 @@ WindstilleWidget::create_control_points()
 }
 
 void
-WindstilleWidget::save_screenshot(const std::string& filename)
+WindstilleWidget::save_screenshot(const std::string& filename_)
 {
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (glwindow->gl_begin(get_gl_context()))
     {
-      Display::save_screenshot(Pathname(filename, Pathname::kSysPath));
+      Display::save_screenshot(Pathname(filename_, Pathname::kSysPath));
       glwindow->gl_end();
     }
 }

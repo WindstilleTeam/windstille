@@ -50,9 +50,9 @@ Grenade::update(float delta)
 }
 
 void
-Grenade::set_velocity(const Vector2f& velocity)
+Grenade::set_velocity(const Vector2f& velocity_)
 {
-  this->velocity = velocity;
+  velocity = velocity_;
 }
 
 /* EOF */

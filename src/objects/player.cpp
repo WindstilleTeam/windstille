@@ -31,7 +31,7 @@
 #include "tile/tile_map.hpp"
 
 static const int MAX_ENERGY = 16;
-static const float WALK_SPEED = 128.0;
+static const float WALK_SPEED = 100.0;
 static const float RUN_SPEED = 256.0;
 
 Player::Player () 
@@ -91,7 +91,7 @@ Player::draw (SceneContext& sc)
                                Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
     }
 
-  sprite.draw(sc.color(), pos, z_pos);
+  sprite.draw(sc.color(), pos + Vector2f(0.0f, 1.0f), z_pos);
 
   Entity* obj = find_useable_entity();
   if (obj)
@@ -758,10 +758,10 @@ Player::get_direction() const
 }
 
 void
-Player::try_set_action(const std::string& name, float speed)
+Player::try_set_action(const std::string& name_, float speed)
 {
-  if (sprite.get_action() != name)
-    sprite.set_action(name, speed);
+  if (sprite.get_action() != name_)
+    sprite.set_action(name_, speed);
 }
 
 int
@@ -812,10 +812,10 @@ Player::collision(const CollisionData& data)
 }
 
 void 
-Player::set_pos(Vector2f pos)
+Player::set_pos(Vector2f pos_)
 {
-  Entity::set_pos(pos);
-  c_object->set_pos(pos);
+  Entity::set_pos(pos_);
+  c_object->set_pos(pos_);
 }
 
 /* EOF */

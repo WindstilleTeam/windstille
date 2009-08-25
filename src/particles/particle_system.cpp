@@ -83,10 +83,6 @@ ParticleSystem::ParticleSystem(FileReader& props)
   if (props.get("size", p_size))
     set_size(p_size.x, p_size.y);
 
-  Vector2f p_aspect;
-  if (props.get("aspect", p_aspect))
-    set_aspect(p_aspect.x, p_aspect.y);
-
   props.get("color-begin", color_start);
   props.get("color-end",   color_stop);
   
@@ -389,17 +385,10 @@ ParticleSystem::set_size(float from, float to)
 }
 
 void
-ParticleSystem::set_aspect(float from, float to)
+ParticleSystem::set_color(const Color& color_start_, const Color& color_end_)
 {
-  (void) from;
-  (void) to;
-}
-
-void
-ParticleSystem::set_color(const Color& start, const Color& end)
-{
-  color_start = start;
-  color_stop  = end;
+  color_start = color_start_;
+  color_stop  = color_end_;
 }
 
 void

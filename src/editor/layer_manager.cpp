@@ -129,18 +129,18 @@ LayerManager::on_cursor_changed()
 {
   if (auto_lock->get_active())
     {
-      Gtk::TreeModel::Path path;
+      Gtk::TreeModel::Path path_;
       Gtk::TreeViewColumn* focus_column;
-      treeview.get_cursor(path, focus_column);
+      treeview.get_cursor(path_, focus_column);
       
-      if (!path.gobj())
+      if (!path_.gobj())
         {
           std::cout << "LayerManager::on_cursor_changed(): Error: Couldn't get path" << std::endl;
         }
       else
         {
           //std::cout << "on_cursor_changed: " << path.to_string() << std::endl;
-          Gtk::TreeModel::iterator it = treeview.get_model()->get_iter(path);
+          Gtk::TreeModel::iterator it = treeview.get_model()->get_iter(path_);
           if (it)
             {
               EditorWindow::current()->on_lock_all(true);

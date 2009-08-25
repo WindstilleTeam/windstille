@@ -83,14 +83,14 @@ Sector::~Sector()
 }
 
 void
-Sector::parse_file(const Pathname& filename)
+Sector::parse_file(const Pathname& filename_)
 {
-  if (debug) std::cout << "Sector:parse_file '" << filename << "'" << std::endl;
+  if (debug) std::cout << "Sector:parse_file '" << filename_ << "'" << std::endl;
   
-  FileReader reader = FileReader::parse(filename);
+  FileReader reader = FileReader::parse(filename_);
   if(reader.get_name() != "windstille-sector") {
     std::ostringstream msg;
-    msg << "'" << filename << "' is not a windstille-sector file";
+    msg << "'" << filename_ << "' is not a windstille-sector file";
     throw std::runtime_error(msg.str());
   }
   
@@ -254,11 +254,11 @@ Sector::add(GameObject* obj)
 }
 
 GameObject*
-Sector::get_object(const std::string& name) const
+Sector::get_object(const std::string& name_) const
 {
   for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i) 
     {
-      if ((*i)->get_name() == name)
+      if ((*i)->get_name() == name_)
         {
           return i->get();
         }
@@ -313,21 +313,21 @@ Sector::get_directory() const
 }
 
 void
-Sector::call_script_function(const std::string& name)
+Sector::call_script_function(const std::string& name_)
 {
   if (!vm.get())
     {
-      throw std::runtime_error("Sector::call_script_function(): Can't call function '" + name + "' without a init script");
+      throw std::runtime_error("Sector::call_script_function(): Can't call function '" + name_ + "' without a init script");
     }
   else
     {
       if (!vm->is_idle())
         {
-          throw std::runtime_error("Sector::call_script_function(): VM must be idle to call  '" + name + "'");
+          throw std::runtime_error("Sector::call_script_function(): VM must be idle to call  '" + name_ + "'");
         }
       else
         {
-          vm->call(name);
+          vm->call(name_);
         }
     }
 }

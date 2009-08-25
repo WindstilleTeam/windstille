@@ -498,7 +498,6 @@ ConsoleImpl::execute(const std::string& str_)
   std::string str = str_; //"return (" + str_ + ")";
 
   int i = str.length();
-  const char* buffer = str.c_str();
 
   HSQUIRRELVM vm = ScriptManager::current()->get_vm();
 
@@ -507,7 +506,7 @@ ConsoleImpl::execute(const std::string& str_)
 
   try 
     {
-      if(SQ_SUCCEEDED(sq_compilebuffer(vm, buffer, i, _SC("interactive console"), SQTrue)))
+      if(SQ_SUCCEEDED(sq_compilebuffer(vm, str.c_str(), i, _SC("interactive console"), SQTrue)))
         {
           sq_pushroottable(vm);
           if(SQ_SUCCEEDED(sq_call(vm, 1, 1/*retval*/, true))) 

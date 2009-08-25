@@ -24,8 +24,8 @@
 
 namespace gui {
 
-RootComponent::RootComponent(const Rectf& rect)
-  : Component(rect, 0),
+RootComponent::RootComponent(const Rectf& rect_)
+  : Component(rect_, 0),
     focus(0),
     children()
 {

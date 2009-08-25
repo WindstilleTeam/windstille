@@ -280,9 +280,9 @@ private:
   const Sprite3D* sprite;
 
 public:
-  Sprite3DDrawingRequest(const Sprite3D* sprite, 
+  Sprite3DDrawingRequest(const Sprite3D* sprite_, 
                          const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
-    : DrawingRequest(pos_, z_pos_, modelview_), sprite(sprite)
+    : DrawingRequest(pos_, z_pos_, modelview_), sprite(sprite_)
   {}
 
   void draw(const Texture& /*tmp_texture*/)

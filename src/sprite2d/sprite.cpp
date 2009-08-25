@@ -29,7 +29,6 @@ Sprite::Sprite()
     current_action(0),
     frame(0),
     speed(0),
-    alpha(0),
     pingpong(),
     reverse(),
     vflip(),
@@ -45,7 +44,6 @@ Sprite::Sprite(const Pathname& filename)
     current_action(0),
     frame(0),
     speed(0),
-    alpha(0),
     pingpong(),
     reverse(),
     vflip(),
@@ -62,7 +60,6 @@ Sprite::Sprite(const Pathname& filename)
   speed    = 1.0;
   pingpong = false;
   reverse  = false;
-  alpha    = 0.0;
   scale = current_action->scale;
   color    = Color(1.0f, 1.0f, 1.0f);
   blend_sfactor = GL_SRC_ALPHA;
@@ -74,7 +71,6 @@ Sprite::Sprite(const SpriteDataPtr data_)
     current_action(0),
     frame(0),
     speed(0),
-    alpha(0),
     pingpong(),
     reverse(),
     vflip(),
@@ -89,7 +85,6 @@ Sprite::Sprite(const SpriteDataPtr data_)
   speed = 1.0;
   pingpong = false;
   reverse = false;
-  alpha = 0.0;
   scale = current_action->scale;
   color    = Color(1.0f, 1.0f, 1.0f);
   blend_sfactor = GL_SRC_ALPHA;
@@ -101,7 +96,6 @@ Sprite::Sprite(const Sprite& rhs)
     current_action(rhs.current_action),
     frame(rhs.frame),
     speed(rhs.speed),
-    alpha(rhs.alpha),
     pingpong(rhs.pingpong),
     reverse(rhs.reverse),
     vflip(rhs.vflip),
@@ -121,7 +115,6 @@ Sprite::operator=(const Sprite& rhs)
     current_action = rhs.current_action;
     frame          = rhs.frame;
     speed          = rhs.speed;
-    alpha          = rhs.alpha;
     pingpong       = rhs.pingpong;
     reverse        = rhs.reverse;
     vflip          = rhs.vflip;
@@ -164,7 +157,6 @@ Sprite::set_action(const std::string& name)
           speed    = 1.0;
           frame    = 0;
           vflip    = false;
-          alpha    = 0.0;
           scale    = current_action->scale;
           color    = Color(1.0f, 1.0f, 1.0f);
           blend_sfactor = GL_SRC_ALPHA;
@@ -230,7 +222,7 @@ Sprite::set_alpha(float alpha)
 float
 Sprite::get_alpha() const
 {
-  return alpha;
+  return color.a;
 }
 
 Surface
@@ -248,8 +240,6 @@ Sprite::get_offset() const
 void
 Sprite::draw(const Vector2f& pos) const
 {
-  // FIXME: Sprite needs to get a whole list with possible parameters
-  // (color, blendfunc, ...), not just alpha
   Surface surface = current_action->surfaces[ static_cast<int> (frame) ];
   surface.draw(SurfaceDrawingParameters()
                .set_pos(pos + (current_action->offset * scale))

@@ -21,11 +21,11 @@
 
 namespace Scripting {
 
-SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& context, const std::string& message) throw()
+SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& context, const std::string& message_) throw()
   : message()
 {
   std::ostringstream msg;
-  msg << "Squirrel error: " << context << ": " << message << " (";
+  msg << "Squirrel error: " << context << ": " << message_ << " (";
   const char* lasterr;
   sq_getlasterror(v);
   if(sq_gettype(v, -1) != OT_STRING)
@@ -38,14 +38,14 @@ SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& context, const st
   }
   sq_pop(v, 1);
   msg << lasterr << ")";
-  this->message = msg.str();
+  message = msg.str();
 }
 
-SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& message) throw()
+SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& message_) throw()
   : message()
 {
   std::ostringstream msg;
-  msg << "Squirrel error: " << message << " (";
+  msg << "Squirrel error: " << message_ << " (";
   const char* lasterr;
   sq_getlasterror(v);
   if(sq_gettype(v, -1) != OT_STRING)
@@ -58,7 +58,7 @@ SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& message) throw()
   }
   sq_pop(v, 1);
   msg << lasterr << ")";
-  this->message = msg.str();
+  message = msg.str();
 }
 
 SquirrelError::~SquirrelError() throw()

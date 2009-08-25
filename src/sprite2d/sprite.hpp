@@ -41,7 +41,6 @@ private:
 
   float frame;
   float speed;
-  float alpha;
 
   bool   pingpong;
   bool   reverse;

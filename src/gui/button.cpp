@@ -23,15 +23,15 @@
 
 namespace gui {
 
-Button::Button(Component* parent)
-  : Component(parent),
+Button::Button(Component* parent_)
+  : Component(parent_),
     label()
 {
   assert(0);
 }
 
-Button::Button(const std::string& label_, Component* parent)
-  : Component(Rectf(), parent),
+Button::Button(const std::string& label_, Component* parent_)
+  : Component(Rectf(), parent_),
     label(label_)
 {
 }

@@ -240,15 +240,16 @@ CollisionEngine::unstuck_tilemap(CollisionObject& a, CollisionObject& b, float d
 
   if(target.top < rb.top)
     {
-      float add = static_cast<float>(c_roundup(target.bottom / static_cast<float>(TILE_SIZE))) * static_cast<float>(TILE_SIZE) - target.bottom;
-      target.top    += add;
-      target.bottom += add;
+      float v = static_cast<float>(c_roundup(target.bottom / static_cast<float>(TILE_SIZE)))
+        * static_cast<float>(TILE_SIZE) - target.bottom;
+      target.top    += v;
+      target.bottom += v;
     }
   if(target.left < rb.left)
     {
-      float add = static_cast<float>(c_roundup(target.right / static_cast<float>(TILE_SIZE))) * static_cast<float>(TILE_SIZE) - target.right;
-      target.left  += add;
-      target.right += add;
+      float v = static_cast<float>(c_roundup(target.right / static_cast<float>(TILE_SIZE))) * static_cast<float>(TILE_SIZE) - target.right;
+      target.left  += v;
+      target.right += v;
     }
 
   b.pos = Vector2f(target.left-b.primitive.left, target.top-b.primitive.top);

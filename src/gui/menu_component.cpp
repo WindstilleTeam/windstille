@@ -25,8 +25,8 @@
 
 namespace gui {
 
-MenuComponent::MenuComponent(const Rectf& rect, bool allow_cancel_, Component* parent)
-  : Component(rect, parent),
+MenuComponent::MenuComponent(const Rectf& rect_, bool allow_cancel_, Component* parent_)
+  : Component(rect_, parent_),
     items(),
     current_item(0),
     font(Fonts::current()->vera20.get()),
@@ -236,9 +236,9 @@ MenuComponent::adjust_scroll_offset()
 }
 
 void
-MenuComponent::set_screen_rect(const Rectf& rect)
+MenuComponent::set_screen_rect(const Rectf& rect_)
 {
-  num_displayable_items = static_cast<int>(rect.get_height() / item_height());  
+  num_displayable_items = static_cast<int>(rect_.get_height() / item_height());  
 
   if (num_displayable_items < int(items.size()))
     {
@@ -252,7 +252,7 @@ MenuComponent::set_screen_rect(const Rectf& rect)
     }
 
   
-  Component::set_screen_rect(rect);
+  Component::set_screen_rect(rect_);
 }
 
 } // namespace gui

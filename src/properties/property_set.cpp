@@ -37,13 +37,13 @@ PropertySet::~PropertySet()
 }
   
 void
-PropertySet::add(const std::string& name, Property* property)
+PropertySet::add(const std::string& name_, Property* property)
 {
-  Property*& i = properties[name];
+  Property*& i = properties[name_];
   if (i)
     {
       std::ostringstream str;
-      str << "PropertySet::add: Name conflict: '" << name << "' already used";
+      str << "PropertySet::add: Name conflict: '" << name_ << "' already used";
       throw std::runtime_error(str.str());
     }
   else
@@ -53,13 +53,13 @@ PropertySet::add(const std::string& name, Property* property)
 }
 
 Property*
-PropertySet::get(const std::string& name) const
+PropertySet::get(const std::string& name_) const
 {
-  std::map<std::string, Property*>::const_iterator i = properties.find(name);
+  std::map<std::string, Property*>::const_iterator i = properties.find(name_);
   if (i == properties.end())
     {
       if (parent)
-        return parent->get(name);
+        return parent->get(name_);
       else
         return 0;
     }

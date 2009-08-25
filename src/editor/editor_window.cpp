@@ -859,13 +859,13 @@ EditorWindow::on_timeout()
 }
 
 void
-EditorWindow::on_layer_toggle(int layer, bool status)
+EditorWindow::on_layer_toggle(int layer, bool status_)
 {
   //std::cout << "EditorWindow::on_layer_toggle(" << layer << ", " << status << ")" << std::endl;
 
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      wst->get_select_mask().set(layer, status);
+      wst->get_select_mask().set(layer, status_);
       wst->queue_draw();
     }
 }

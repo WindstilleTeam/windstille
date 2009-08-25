@@ -159,9 +159,6 @@ public:
       along their lifetime */
   void set_size  (float from, float to);
 
-  /** set the aspect ratio from which they will start and end */
-  void set_aspect(float from, float to);
-
   /** Set the color at which the particles will start */
   void set_color(const Color& start, const Color& end);
 

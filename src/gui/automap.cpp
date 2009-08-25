@@ -26,8 +26,8 @@
 
 namespace gui {
 
-Automap::Automap(Component* parent)
-  : Component(parent),
+Automap::Automap(Component* parent_)
+  : Component(parent_),
     surface(),
     pos(),
     zoom()
@@ -35,8 +35,8 @@ Automap::Automap(Component* parent)
   assert(0);
 }
 
-Automap::Automap(const Rectf& rect, Component* parent)
-  : Component(rect, parent),
+Automap::Automap(const Rectf& rect_, Component* parent_)
+  : Component(rect_, parent_),
     surface(),
     pos(0.0f, 0.0f),
     zoom(6.0f)

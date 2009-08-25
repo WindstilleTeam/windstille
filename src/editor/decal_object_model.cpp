@@ -59,9 +59,9 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader)
   software_surface = SoftwareSurface(Pathname(path));
 }
 
-DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const Vector2f& rel_pos, 
+DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const Vector2f& rel_pos_, 
                                    const std::string& path_, MapType type_)
-  : ObjectModel("DecalObjectModel", rel_pos),
+  : ObjectModel("DecalObjectModel", rel_pos_),
     path(path_),
     surface(Pathname(path_)),
     software_surface(Pathname(path_)),

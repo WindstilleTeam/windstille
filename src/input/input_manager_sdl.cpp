@@ -233,8 +233,8 @@ InputManagerSDL::parse_config(FileReader& reader)
     }
 }
 
-InputManagerSDL::InputManagerSDL(const ControllerDescription& controller_description)
-  : InputManager(controller_description),
+InputManagerSDL::InputManagerSDL(const ControllerDescription& controller_description_)
+  : InputManager(controller_description_),
     impl(new InputManagerSDLImpl)
 {
   for (int i = 0; i < SDLK_LAST; ++i) {

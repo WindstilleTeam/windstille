@@ -126,13 +126,14 @@ OFileStreambuf::overflow(int c)
         return 0;
 
     size_t size = pptr() - pbase();
+
     PHYSFS_sint64 res = PHYSFS_write(file, pbase(), 1, size);
     if(res <= 0)
-        return traits_type::eof();
-    
+      return traits_type::eof();
+
     if(c != traits_type::eof()) {
-        PHYSFS_sint64 res = PHYSFS_write(file, &c, 1, 1);
-        if(res <= 0)
+        PHYSFS_sint64 r = PHYSFS_write(file, &c, 1, 1);
+        if(r <= 0)
             return traits_type::eof();
     }
 

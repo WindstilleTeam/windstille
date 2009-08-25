@@ -139,30 +139,30 @@ Sprite2DView::draw()
         {
           Sprite small = sprite;
           small.set_alpha(1.0f);
-          float width  = small.get_width();
-          float height = small.get_height();
-          float scale;
-          if (width > height)
+          float w  = small.get_width();
+          float h = small.get_height();
+          float s;
+          if (w > h)
             {
-              scale = 125.0f / width;
+              s = 125.0f / w;
 
-              width  *= scale;
-              height *= scale;
-              small.set_scale(scale);
+              w  *= s;
+              h *= s;
+              small.set_scale(s);
 
-              small.draw(Vector2f(DISPLAY_W - width,
-                                  DISPLAY_H - height));
+              small.draw(Vector2f(DISPLAY_W - w,
+                                  DISPLAY_H - h));
             }
           else
             {
-              scale = 125.0f / height;
+              s = 125.0f / h;
 
-              width  *= scale;
-              height *= scale;
-              small.set_scale(scale);
+              w  *= s;
+              h *= s;
+              small.set_scale(s);
 
-              small.draw(Vector2f(DISPLAY_W - width,
-                                DISPLAY_H - height));
+              small.draw(Vector2f(DISPLAY_W - w,
+                                DISPLAY_H - h));
             }
         }        
       break;
@@ -185,10 +185,10 @@ Sprite2DView::update_slideshow(float delta, const Controller& controller)
 
       if (aspect > 4.0/3.0)
         { // expand vertical
-          float scale = DISPLAY_H/height;
-          width  *= scale;
-          height *= scale;
-          sprite.set_scale(scale);
+          float s = DISPLAY_H/height;
+          width  *= s;
+          height *= s;
+          sprite.set_scale(s);
 
           if (offset - (width - DISPLAY_W) > 0)
             {
@@ -206,10 +206,10 @@ Sprite2DView::update_slideshow(float delta, const Controller& controller)
         }
       else
         { // expand horizontal
-          float scale = 800.0f/width;
-          width  *= scale;
-          height *= scale;
-          sprite.set_scale(scale);
+          float s = 800.0f/width;
+          width  *= s;
+          height *= s;
+          sprite.set_scale(s);
 
           if (offset - (height - DISPLAY_H) > 0)
             {
@@ -287,25 +287,25 @@ Sprite2DView::next_image(int i)
 }
 
 void
-Sprite2DView::prepare_sprite(Sprite& sprite)
+Sprite2DView::prepare_sprite(Sprite& sprite_)
 {
-  float width  = sprite.get_width();
-  float height = sprite.get_height();
-  float aspect = width/height;
+  float w = sprite_.get_width();
+  float h = sprite_.get_height();
+  float a = w/h;
 
-  if (aspect > 4.0/3.0)
+  if (a > 4.0/3.0)
     { // expand vertical
-      float scale = DISPLAY_H/height;
-      width  *= scale;
-      height *= scale;
-      sprite.set_scale(scale);
+      float s = DISPLAY_H/h;
+      w *= s;
+      h *= s;
+      sprite_.set_scale(s);
     }
   else
     { // expand horizontal
-      float scale = DISPLAY_W/width;
-      width  *= scale;
-      height *= scale;
-      sprite.set_scale(scale);
+      float s = DISPLAY_W/w;
+      w *= s;
+      h *= s;
+      sprite_.set_scale(s);
     }  
 }
 

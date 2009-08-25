@@ -22,8 +22,8 @@
 
 namespace gui {
 
-Slider::Slider(Component* parent)
-  : Component(parent),
+Slider::Slider(Component* parent_)
+  : Component(parent_),
     min(0),
     max(100),
     step(10),

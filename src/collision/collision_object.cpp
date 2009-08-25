@@ -26,28 +26,19 @@
  * CollisionObject
  ***********************************************************************/
 
-CollisionObject::CollisionObject(GameObject* game_object, const Rectf& rect_)
- : object_type(),
-   pos(),
-   velocity(),
-   game_object(),
+CollisionObject::CollisionObject(GameObject* game_object_, const Rectf& rect_)
+ : object_type(RECTANGLE),
+   pos(0,0),
+   velocity(0,0),
+   game_object(game_object_),
    collision(),
    primitive(rect_),
    tilemap(),
-   is_unstuckable(),
-   is_unstuck_movable(),
-   is_domains(),
-   check_domains()
+   is_unstuckable(true),
+   is_unstuck_movable(true),
+   is_domains(DOMAIN_PLAYER  | DOMAIN_ENEMY),
+   check_domains(DOMAIN_TILEMAP | DOMAIN_PLAYER | DOMAIN_ENEMY)
 {
-  object_type        = RECTANGLE;
-  is_unstuckable     = true;
-  is_unstuck_movable = true;
-  velocity           = Vector2f(0,0);
-  pos                = Vector2f(0,0);
-  game_object        = game_object;
-
-  is_domains    = DOMAIN_PLAYER  | DOMAIN_ENEMY;
-  check_domains = DOMAIN_TILEMAP | DOMAIN_PLAYER | DOMAIN_ENEMY;
 }
 
 CollisionObject::CollisionObject(TileMap* tilemap_)

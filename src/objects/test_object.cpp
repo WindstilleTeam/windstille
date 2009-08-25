@@ -89,9 +89,9 @@ TestObject::set_action(const std::string& action)
 }
 
 void
-TestObject::set_pos(const Vector2f& pos)
+TestObject::set_pos(const Vector2f& pos_)
 {
-  this->pos = pos;
+  pos = pos_;
 }
 
 void

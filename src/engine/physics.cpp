@@ -22,8 +22,8 @@
 
 #include "collision/collision_object.hpp"
 
-Physics::Physics(Entity* entity)
-  : entity(entity),
+Physics::Physics(Entity* entity_)
+  : entity(entity_),
     mass(200.0),
     bounciness(1.0),
     force(),

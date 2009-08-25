@@ -20,9 +20,9 @@
 
 namespace gui {
 
-Component::Component(Component* parent)
+Component::Component(Component* parent_)
   : rect(),
-    parent(parent),
+    parent(parent_),
     active(false)
 {
 }
