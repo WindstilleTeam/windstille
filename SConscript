@@ -16,6 +16,7 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
+import os
 
 start_time = time.time()
 
@@ -36,8 +37,6 @@ debug_cxxflags = [
     #"-Wunreachable-code",
     #"-Winline",
     ]
-
-windstille_cxxflags = debug_cxxflags
 
 # YACC
 yacc_test_text = """
@@ -114,13 +113,17 @@ int main()
 
 class Project:
     def __init__(self):
+        self.cxx = 'g++-4.4'
+        self.cxxflags = debug_cxxflags
+        
         self.features = {
             "64bit" : 0,
             "cwiid" : 0
             }        
 
     def build_all(self):
-        self.configure()
+        if not GetOption('clean'):
+            self.configure()
         self.build_squirrel()
         self.build_miniswig()
         self.build_binreloc()
@@ -131,7 +134,7 @@ class Project:
         self.build_testapps()
         
     def configure(self):
-        env = Environment()
+        self.env = Environment(CXXFLAGS=self.cxxflags)
 
         # FIXME: None of the options are used, as only self.features
         # makes it across function calls
@@ -149,13 +152,22 @@ class Project:
         opts.Add('LINKFLAGS', 'Linker Compiler flags')
         opts.Add('CC', 'C Compiler')
         opts.Add('CXX', 'C++ Compiler')  
-        opts.Update(env)
-        opts.Save('options.cache', env)
-        Help(opts.GenerateHelpText(env))
+        opts.Update(self.env)
+        opts.Save('options.cache', self.env)
+        Help(opts.GenerateHelpText(self.env))
 
-        conf = Configure(env, custom_tests = { 'Check32bit' : Check32bit,
-                                               'CheckYacc'  : CheckYacc,
-                                               'CheckLex'   : CheckLex})
+        conf = Configure(self.env, custom_tests = { 'Check32bit' : Check32bit,
+                                                    'CheckYacc'  : CheckYacc,
+                                                    'CheckLex'   : CheckLex})
+
+        # conf.CheckCXX()
+
+        if 'CXX' in os.environ:
+            conf.env.Replace(CXX = os.environ['CXX'])
+        elif self.cxx:
+            conf.env.Replace(CXX=self.cxx)
+        print("Using compiler " + conf.env['CXX'])
+        
         if conf.Check32bit() == "64bit":
             # conf.env.Append(CXXFLAGS="-D_SQ64")
             self.features["64bit"] = 1
@@ -171,11 +183,12 @@ class Project:
             print "yacc or bison not found, aborting."
             Exit(1)
 
-        env = conf.Finish()
+        self.env = conf.Finish()
 
     def build_squirrel(self):
-        squirrel_env = Environment(CPPPATH  = ['external/SQUIRREL2/include'],
-                                   CXXFLAGS = ["-fno-rtti", "-g", "-DDEBUG"])
+        squirrel_env = Environment()
+        squirrel_env.Append(CPPPATH  = ['external/SQUIRREL2/include'],
+                            CXXFLAGS = ["-fno-rtti", "-g", "-DDEBUG"])
 
         if self.features['64bit']:
             squirrel_env.Append(CPPDEFINES = '_SQ64')
@@ -186,9 +199,10 @@ class Project:
 
 
     def build_miniswig(self):
-        miniswig_env = Environment(CPPPATH=['.', 'external/miniswig/'],
-                                   CXXFILESUFFIX = ".cpp",
-                                   YACCFLAGS=['-d', '--no-lines'])
+        miniswig_env = self.env.Clone()
+        miniswig_env.Append(CPPPATH=['.', 'external/miniswig/'],
+                            CXXFILESUFFIX = ".cpp",
+                            YACCFLAGS=['-d', '--no-lines'])
 
         miniswig_bin = miniswig_env.Program('miniswig',
                                             ['external/miniswig/parser.yy',
@@ -199,7 +213,8 @@ class Project:
                                              'external/miniswig/main.cpp',
                                              'external/miniswig/tree.cpp'])
 
-        env = Environment(MINISWIG=miniswig_bin)
+        env = self.env.Clone()
+        env.Append(MINISWIG=miniswig_bin)
 
         env.Depends(env.Command('src/scripting/miniswig.tmp', 'src/scripting/wrapper.interface.hpp',
                                 ["$CXX -E -Isrc/ -x c -CC $SOURCE -o $TARGET -DSCRIPTING_API"]),
@@ -215,9 +230,9 @@ class Project:
         self.binreloc_lib = StaticLibrary("binreloc", ["external/binreloc-2.0/binreloc.c"], CPPDEFINES=["ENABLE_BINRELOC"])
 
     def build_wstlib(self):
-        wstlib_env    = Environment(CPPPATH=['src', 'external/binreloc-2.0/', "src/scripting/"],
-                                    CXXFLAGS=windstille_cxxflags,
-                                    CPPDEFINES=["HAVE_BINRELOC"])
+        wstlib_env    = self.env.Clone()
+        wstlib_env.Append(CPPPATH=['src', 'external/binreloc-2.0/', "src/scripting/"],
+                          CPPDEFINES=["HAVE_BINRELOC"])
         self.util_lib      = wstlib_env.StaticLibrary('util', Glob('src/lisp/*.cpp') + Glob('src/util/*.cpp'))
         self.math_lib      = wstlib_env.StaticLibrary('math', Glob('src/math/*.cpp'))
         self.navgraph_lib  = wstlib_env.StaticLibrary('navgraph', Glob('src/navigation/*.cpp'))
@@ -240,16 +255,16 @@ class Project:
                                                      Glob('src/sprite3d/*.cpp'))
 
     def build_windstille(self):
-        windstille_env = Environment(CXXFLAGS=windstille_cxxflags,
-                                     CPPPATH=['src', '.', 'external/SQUIRREL2/include/', 'src/scripting/'],
-                                     CPPDEFINES=["HAVE_BINRELOC"],
-                                     LIBS=[self.particles_lib, self.navgraph_lib, self.display_lib, self.physfs_lib,
-                                           self.util_lib, self.math_lib,
-                                           self.binreloc_lib, self.squirrel_lib, 
-                                           'GL', 'GLU', 'GLEW',
-                                           'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png',
-                                           # FIXME: Add configure checks for exact boost library name
-                                           'boost_signals-mt', 'boost_filesystem-mt'])
+        windstille_env = self.env.Clone()
+        windstille_env.Append(CPPPATH=['src', '.', 'external/SQUIRREL2/include/', 'src/scripting/'],
+                              CPPDEFINES=["HAVE_BINRELOC"],
+                              LIBS=[self.particles_lib, self.navgraph_lib, self.display_lib, self.physfs_lib,
+                                    self.util_lib, self.math_lib,
+                                    self.binreloc_lib, self.squirrel_lib, 
+                                    'GL', 'GLU', 'GLEW',
+                                    'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png',
+                                    # FIXME: Add configure checks for exact boost library name
+                                    'boost_signals-mt', 'boost_filesystem-mt'])
 
         windstille_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
         windstille_env.ParseConfig('freetype-config --libs --cflags | sed "s/-I/-isystem/g"')
@@ -277,12 +292,12 @@ class Project:
                                Glob('src/tile/*.cpp'))
 
     def build_windstille_editor(self):
-        editor_env = Environment(CPPPATH=['src'],
-                                 CPPDEFINES=["HAVE_BINRELOC"],
-                                 CXXFLAGS=windstille_cxxflags,
-                                 LIBS = [self.particles_lib, self.navgraph_lib, self.display_lib,
-                                         self.util_lib, self.physfs_lib, self.math_lib, self.binreloc_lib,
-                                         'GL', 'GLEW', 'SDL_image', 'physfs', 'boost_filesystem-mt'])
+        editor_env = self.env.Clone()
+        editor_env.Append(CPPPATH=['src'],
+                          CPPDEFINES=["HAVE_BINRELOC"],
+                          LIBS = [self.particles_lib, self.navgraph_lib, self.display_lib,
+                                  self.util_lib, self.physfs_lib, self.math_lib, self.binreloc_lib,
+                                  'GL', 'GLEW', 'SDL_image', 'physfs', 'boost_filesystem-mt'])
 
         editor_env.ParseConfig('Magick++-config --libs --cppflags | sed "s/-I/-isystem/g"')
         editor_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
@@ -296,17 +311,17 @@ class Project:
         editor_env.Program('windstille-editor', Glob('src/editor/*.cpp'))
 
     def build_testapps(self):
-        env = Environment(OBJPREFIX="test__",
-                          CPPPATH=['src'],
-                          CXXFLAGS=windstille_cxxflags,
-                          CPPDEFINES=["__TEST__"])
+        env = self.env.Clone()
+        env.Append(OBJPREFIX="test__",
+                   CPPPATH=['src'],
+                   CPPDEFINES=["__TEST__"])
         env.Program("test_babyxml", ["src/util/baby_xml.cpp"])
         env.Program("test_response_curve", ["src/util/response_curve.cpp"])
         env.Program("test_random", ["src/math/random.cpp"])
 
     def build_windstille_data(self):
-        data_env = Environment()
-
+        data_env = self.env.Clone()
+        
         data_env.Append(BUILDERS = { "xcf2png" : Builder(action = "xcf2png $SOURCE -o $TARGET",
                                                          src_suffix = ".xcf",
                                                          suffix = ".png") })
