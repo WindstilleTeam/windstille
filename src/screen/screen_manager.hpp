@@ -20,9 +20,11 @@
 #define HEADER_WINDSTILLE_SCREEN_SCREEN_MANAGER_HPP
 
 #include <boost/shared_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <vector>
 
 class Screen;
+class ControllerHelpWindow;
 
 /**
  *  The ScreenManager handles overlays like Option Menus, Main Menus
@@ -50,6 +52,7 @@ private:
   float overlap_delta;
   bool  do_quit;
   bool  show_controller_help_window;
+  boost::scoped_ptr<ControllerHelpWindow> controller_help_window;
 
   void apply_pending_actions();
   void draw();

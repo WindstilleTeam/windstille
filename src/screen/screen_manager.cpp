@@ -62,7 +62,7 @@ ScreenManager::run()
 
   ticks = SDL_GetTicks();
 
-  //controller_help_window = new ControllerHelpWindow();
+  controller_help_window.reset(new ControllerHelpWindow());
   apply_pending_actions();
 
   while (!do_quit && !screens.empty())
@@ -117,8 +117,8 @@ ScreenManager::draw()
   if (!overlay_screens.empty())
     overlay_screens.back()->draw();
 
-  // if (show_controller_help_window)
-  //   controller_help_window.draw();
+  if (show_controller_help_window)
+     controller_help_window->draw();
 
   console.draw();
 
