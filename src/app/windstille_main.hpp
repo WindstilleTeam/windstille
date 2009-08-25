@@ -47,12 +47,7 @@
 #ifndef HEADER_WINDSTILLE_APP_WINDSTILLE_MAIN_HPP
 #define HEADER_WINDSTILLE_APP_WINDSTILLE_MAIN_HPP
 
-#include <boost/scoped_ptr.hpp>
-
-#include "util/currenton.hpp"
-#include "screen/screen.hpp"
-
-class WindstilleMain : public Currenton<WindstilleMain>
+class WindstilleMain
 { 
 public:
   WindstilleMain();
