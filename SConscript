@@ -131,8 +131,13 @@ class Project:
         self.build_testapps()
         
     def configure(self):
-        conf_env = Environment()
+        env = Environment()
 
+        # FIXME: None of the options are used, as only self.features
+        # makes it across function calls
+        
+        # FIXME: Giving multiple CCFLAGS doesn't work since they have to be
+        # broken down to a list
         opts = Variables(['options.cache', 'custom.py'], ARGUMENTS)
         opts.Add('CPPPATH', 'Additional preprocessor paths')
         opts.Add('CPPFLAGS', 'Additional preprocessor flags')
@@ -144,16 +149,13 @@ class Project:
         opts.Add('LINKFLAGS', 'Linker Compiler flags')
         opts.Add('CC', 'C Compiler')
         opts.Add('CXX', 'C++ Compiler')  
-        opts.Update(conf_env)
-        opts.Save('options.cache', conf_env)
-        Help(opts.GenerateHelpText(conf_env))
+        opts.Update(env)
+        opts.Save('options.cache', env)
+        Help(opts.GenerateHelpText(env))
 
-        # FIXME: Giving multiple CCFLAGS doesn't work since they have to be
-        # broken down to a list
-
-        conf = Configure(conf_env, custom_tests = { 'Check32bit' : Check32bit,
-                                                    'CheckYacc'  : CheckYacc,
-                                                    'CheckLex'   : CheckLex})
+        conf = Configure(env, custom_tests = { 'Check32bit' : Check32bit,
+                                               'CheckYacc'  : CheckYacc,
+                                               'CheckLex'   : CheckLex})
         if conf.Check32bit() == "64bit":
             # conf.env.Append(CXXFLAGS="-D_SQ64")
             self.features["64bit"] = 1
@@ -169,7 +171,7 @@ class Project:
             print "yacc or bison not found, aborting."
             Exit(1)
 
-        conf_env = conf.Finish()
+        env = conf.Finish()
 
     def build_squirrel(self):
         squirrel_env = Environment(CPPPATH  = ['external/SQUIRREL2/include'],
