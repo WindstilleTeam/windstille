@@ -87,6 +87,8 @@ private:
   };
   Foot jump_foot;
   
+  enum Direction { WEST, EAST };
+
   double reload_time;
   float  z_pos;
 

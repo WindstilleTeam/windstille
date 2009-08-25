@@ -16,18 +16,16 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-int TILE_SIZE       = 32;
-int TILE_RESOLUTION = 64;
-
 float game_time = 0.0f;
 
 float game_speed = 1.0f;
+
 #ifdef DEBUG
 bool debug = true;
 #else
 bool debug = false;
 #endif
+
 bool collision_debug = false;
-bool sound_disabled  = false;
 
 /* EOF */

@@ -19,10 +19,8 @@
 #ifndef HEADER_WINDSTILLE_APP_GLOBALS_HPP
 #define HEADER_WINDSTILLE_APP_GLOBALS_HPP
 
-typedef enum { WEST, EAST} Direction;
-
-extern int TILE_SIZE;
-extern int TILE_RESOLUTION;
+const int TILE_SIZE       = 32;
+const int TILE_RESOLUTION = 64;
 
 const float GRAVITY = 1500;
 
@@ -36,8 +34,6 @@ extern float game_speed;
 
 extern bool debug;
 extern bool collision_debug;
-
-enum GameMainState { RUN_GAME, LOAD_MENU, LOAD_GAME_SESSION, QUIT_GAME };
 
 #endif
 

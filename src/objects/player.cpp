@@ -751,7 +751,7 @@ Player::update_pull_gun(const Controller& controller)
     }
 }
 
-Direction
+Player::Direction
 Player::get_direction() const
 {
   return sprite.get_rot() ? EAST : WEST;
