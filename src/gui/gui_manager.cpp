@@ -45,7 +45,7 @@ GUIManager::update(float delta, const Controller& controller)
   if (!root->is_active())
     {
       //FIXME: This doesn't work when GUI isn't an overlay
-      screen_manager.pop_overlay();
+      ScreenManager::current()->pop_overlay();
     }
 }
 

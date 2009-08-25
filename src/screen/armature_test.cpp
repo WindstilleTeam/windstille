@@ -105,7 +105,7 @@ ArmatureTest::update(float delta, const Controller& controller)
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))
     {
-      screen_manager.pop_screen();
+      ScreenManager::current()->pop_screen();
     }
 
   if (controller.button_was_pressed(PRIMARY_BUTTON))

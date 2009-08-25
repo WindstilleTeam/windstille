@@ -244,7 +244,7 @@ GameSessionImpl::update_game(float delta)
                   break;
 
                 case QUIT_ACTION:
-                  screen_manager.quit();
+                  ScreenManager::current()->quit();
                   break;
 
                 default:

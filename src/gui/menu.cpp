@@ -111,7 +111,7 @@ Menu::show()
 
   group->pack(menu.release());
   manager->get_root()->add_child(group.release());
-  screen_manager.push_overlay(manager.release());
+  ScreenManager::current()->push_overlay(manager.release());
 }
 
 } // namespace gui

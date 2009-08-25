@@ -23,6 +23,8 @@
 #include <boost/scoped_ptr.hpp>
 #include <vector>
 
+#include "util/currenton.hpp"
+
 class Screen;
 class ControllerHelpWindow;
 
@@ -30,7 +32,7 @@ class ControllerHelpWindow;
  *  The ScreenManager handles overlays like Option Menus, Main Menus
  *  and such
  */
-class ScreenManager
+class ScreenManager : public Currenton<ScreenManager>
 {
 private:
   enum ScreenAction { NONE, POP_SCREEN, PUSH_SCREEN, CLEAR_SCREENS };
@@ -91,8 +93,6 @@ private:
   ScreenManager (const ScreenManager&);
   ScreenManager& operator= (const ScreenManager&);
 };
-
-extern ScreenManager screen_manager; 
 
 #endif
 

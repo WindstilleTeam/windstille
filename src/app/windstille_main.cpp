@@ -76,6 +76,7 @@ WindstilleMain::main(int argc, char** argv)
       ScriptManager     script_manager;
       WindstilleControllerDescription controller_description;
       InputManagerSDL   input_manager(controller_description);
+      ScreenManager     screen_manager;
       TileFactory       tile_factory("tiles.scm");
 
       init_modules();
@@ -115,23 +116,23 @@ WindstilleMain::run()
     {
       std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
       sprite3dview->set_model(filename);
-      screen_manager.push_screen(sprite3dview.release());
+      ScreenManager::current()->push_screen(sprite3dview.release());
     }
     else if (file_type == "sprite" || file_type == "png" || file_type == "jpg")
     {
       std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
       sprite2dview->set_sprite(filename);
-      screen_manager.push_screen(sprite2dview.release());
+      ScreenManager::current()->push_screen(sprite2dview.release());
     }
     else if (file_type == "particles")
     {
       ParticleViewer* particle_viewer = new ParticleViewer();
       particle_viewer->load(filename);
-      screen_manager.push_screen(particle_viewer);
+      ScreenManager::current()->push_screen(particle_viewer);
     }
     else if (file_type == "wst")
     {
-      screen_manager.push_screen(new GameSession(filename));
+      ScreenManager::current()->push_screen(new GameSession(filename));
     }
     else
     {
@@ -140,10 +141,10 @@ WindstilleMain::run()
   }
   else
   {
-    screen_manager.push_screen(new TitleScreen());
+    ScreenManager::current()->push_screen(new TitleScreen());
   }
   
-  screen_manager.run();
+  ScreenManager::current()->run();
 }
 
 void

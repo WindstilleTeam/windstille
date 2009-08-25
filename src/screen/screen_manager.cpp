@@ -30,7 +30,6 @@
 #include "screen/game_session.hpp"
 #include "sound/sound_manager.hpp"
 
-ScreenManager screen_manager; 
 
 ScreenManager::ScreenManager()
   : screens(),
