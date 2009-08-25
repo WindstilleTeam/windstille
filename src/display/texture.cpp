@@ -19,6 +19,7 @@
 
 #include "display/texture.hpp"
 
+#include <stdint.h>
 #include <stdexcept>
 
 #include "math/rect.hpp"

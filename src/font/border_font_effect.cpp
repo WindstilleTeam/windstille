@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <stdint.h>
+
 #include "display/software_surface.hpp"
 #include "font/border_font_effect.hpp"
 

@@ -18,6 +18,8 @@
 
 #include <string.h>
 #include <stdexcept>
+#include <stdio.h>
+#include <stdint.h>
 
 #include "sound/wav_sound_file.hpp"
 

@@ -17,6 +17,7 @@
 */
 
 #include <string.h>
+#include <stdint.h>
 
 #include "lisp/getters.hpp"
 #include "util/file_reader_impl.hpp"

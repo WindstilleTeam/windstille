@@ -17,6 +17,7 @@
 */
 
 #include <stdexcept>
+#include <stdio.h>
 #include <boost/scoped_ptr.hpp>
 
 #include "display/software_surface.hpp"

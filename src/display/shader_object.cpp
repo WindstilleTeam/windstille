@@ -18,6 +18,7 @@
 
 #include "display/shader_object.hpp"
 
+#include <stdio.h>
 #include <iostream>
 
 #include "util/util.hpp"

@@ -19,6 +19,7 @@
 
 #include "blitter.hpp"
 
+#include <stdint.h>
 #include <string.h>
 
 #include "display/software_surface.hpp"

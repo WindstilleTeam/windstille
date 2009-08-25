@@ -20,6 +20,8 @@
 
 #include <sstream>
 #include <stdexcept>
+#include <stdio.h>
+#include <stdint.h>
 #include <physfs.h>
 
 #include "tile/tile.hpp"

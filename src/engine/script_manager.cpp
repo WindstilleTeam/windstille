@@ -19,6 +19,7 @@
 #include "engine/script_manager.hpp"
 
 #include <stdarg.h>
+#include <stdio.h>
 #include <sqstdaux.h>
 #include <sqstdmath.h>
 #include <sqstdstring.h>

@@ -21,6 +21,7 @@
 
 #include <GL/glew.h>
 #include <vector>
+#include <stdint.h>
 
 #include "display/texture.hpp"
 #include "math/quaternion.hpp"

@@ -65,7 +65,7 @@ ShaderProgram::get_uniform_location(const char* name)
   loc = glGetUniformLocationARB(impl->handle, name);
 
   if (loc == -1)
-    printf("No such uniform named \"%s\"\n", name);
+    std::cout << "No such uniform named \"%s\"\n" << name << std::endl;
 
   assert_gl("ShaderProgram::get_uniform_location()");
 

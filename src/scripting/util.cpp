@@ -19,6 +19,7 @@
 
 #include <boost/scoped_ptr.hpp>
 #include <sstream>
+#include <stdio.h>
 
 #include "lisp/parser.hpp"
 #include "lisp/properties.hpp"

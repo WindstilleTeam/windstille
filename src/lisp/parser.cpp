@@ -20,6 +20,7 @@
 
 #include <boost/scoped_ptr.hpp>
 #include <sstream>
+#include <stdio.h>
 #include <string.h>
 
 #include "lisp/lisp.hpp"

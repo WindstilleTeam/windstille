@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_NAVIGATION_PROPERTIES_HPP
 #define HEADER_WINDSTILLE_NAVIGATION_PROPERTIES_HPP
 
+#include <stdint.h>
+
 enum {
   WALKABLE = (1<<0),
   WALL     = (1<<1),

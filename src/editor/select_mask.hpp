@@ -18,6 +18,8 @@
 
 #ifndef HEADER_WINDSTILLE_EDITOR_SELECT_MASK_HPP
 #define HEADER_WINDSTILLE_EDITOR_SELECT_MASK_HPP
+
+#include <stdint.h>
 
 class SelectMask
 {

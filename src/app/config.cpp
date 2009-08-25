@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <boost/format.hpp>
+#include <stdio.h>
 
 #include "app/windstille.hpp"
 #include "util/sexpr_file_reader.hpp"
