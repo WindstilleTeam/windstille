@@ -97,7 +97,7 @@ Player::draw (SceneContext& sc)
                                Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
     }
 
-  sprite.draw(sc.color(), pos + Vector2f(0.0f, 1.0f), z_pos);
+  //sprite.draw(sc.color(), pos + Vector2f(0.0f, 1.0f), z_pos);
 
   Entity* obj = find_useable_entity();
   if (obj)
@@ -235,7 +235,7 @@ Player::update(const Controller& controller, float delta)
 
   pos = c_object->get_pos();
 
-  m_drawable->set_pos(pos + Vector2f(10,10));
+  m_drawable->set_pos(pos);
 }
 
 void
