@@ -24,14 +24,12 @@
 #include "math/matrix.hpp"
 #include "display/texture.hpp"
 
-/** 
- */
 class DrawingRequest
 {
 protected:
-  Vector2f  pos;
-  float   z_pos;
-  Matrix  modelview;
+  Vector2f pos;
+  float    z_pos;
+  Matrix   modelview;
 
 public:
   DrawingRequest(const Vector2f& pos_, float z_pos_ = 0,  const Matrix& modelview_ = Matrix::identity())

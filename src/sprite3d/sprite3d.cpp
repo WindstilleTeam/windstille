@@ -23,6 +23,7 @@
 #include "util/util.hpp"
 #include "display/opengl_state.hpp"
 #include "sprite3d/manager.hpp"
+#include "sprite3d/sprite3d_drawing_request.hpp"
 
 using namespace sprite3d;
 
@@ -273,27 +274,6 @@ Sprite3D::get_attachment_point_matrix(PointID id) const
 
   return result;
 }
-
-class Sprite3DDrawingRequest : public DrawingRequest
-{
-private:
-  const Sprite3D* sprite;
-
-public:
-  Sprite3DDrawingRequest(const Sprite3D* sprite_, 
-                         const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
-    : DrawingRequest(pos_, z_pos_, modelview_), sprite(sprite_)
-  {}
-
-  void draw(const Texture& /*tmp_texture*/)
-  {
-    sprite->draw(pos, modelview);
-  }
-
-private:
-  Sprite3DDrawingRequest(const Sprite3DDrawingRequest&);
-  Sprite3DDrawingRequest& operator=(const Sprite3DDrawingRequest&);
-};
 
 void
 Sprite3D::set_next_frame()

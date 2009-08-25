@@ -35,12 +35,15 @@ class LaserPointer;
 class CollisionObject;
 class CollisionData;
 class Weapon;
+class Sprite3DDrawingRequest;
 
 class Player : public Entity,
                public Currenton<Player>
 {
 private:
   Sprite3D sprite;
+
+  boost::shared_ptr<Sprite3DDrawingRequest> m_drawable;
   //std::auto_ptr<SoundSource> sound_source;
 
   bool jumping;

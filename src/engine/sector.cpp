@@ -39,6 +39,7 @@
 #include "objects/scriptable_object.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "scenegraph/scene_graph.hpp"
+#include "scenegraph/scene_graph_drawing_request.hpp"
 #include "engine/squirrel_thread.hpp"
 
 Sector::Sector(const Pathname& arg_filename)
@@ -193,6 +194,8 @@ Sector::draw(SceneContext& sc)
       if ((*i)->is_active())
         (*i)->draw(sc);
     }
+
+  sc.color().draw(new SceneGraphDrawingRequest(*scene_graph, sc.color().get_modelview()));
 }
 
 void Sector::commit_adds()

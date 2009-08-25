@@ -16,32 +16,36 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
-#define HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
+#ifndef HEADER_WINDSTILLE_SPRITE3D_SPRITE3D_DRAWING_REQUEST_HPP
+#define HEADER_WINDSTILLE_SPRITE3D_SPRITE3D_DRAWING_REQUEST_HPP
 
-#include <boost/shared_ptr.hpp>
-#include <vector>
+#include "sprite3d/sprite3d.hpp"
+#include "display/drawing_request.hpp"
 
-class DrawingRequest;
-class Texture;
-
-class SceneGraph
+class Sprite3DDrawingRequest : public DrawingRequest
 {
 private:
-  typedef std::vector<boost::shared_ptr<DrawingRequest> > DrawingRequests;
-  DrawingRequests m_drawing_requests;
+  const Sprite3D* sprite;
 
 public:
-  SceneGraph();
+  Sprite3DDrawingRequest(const Sprite3D* sprite_, 
+                         const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
+    : DrawingRequest(pos_, z_pos_, modelview_), sprite(sprite_)
+  {}
 
-  void add_drawable(boost::shared_ptr<DrawingRequest> drawable);
-  void remove_drawable(boost::shared_ptr<DrawingRequest> drawable);
+  void draw(const Texture& /*tmp_texture*/)
+  {
+    sprite->draw(pos, modelview);
+  }
 
-  void draw(const Texture& tmp_texture);
+  void set_pos(const Vector2f& pos_)
+  {
+    pos = pos_;
+  }
 
 private:
-  SceneGraph(const SceneGraph&);
-  SceneGraph& operator=(const SceneGraph&);
+  Sprite3DDrawingRequest(const Sprite3DDrawingRequest&);
+  Sprite3DDrawingRequest& operator=(const Sprite3DDrawingRequest&);
 };
 
 #endif

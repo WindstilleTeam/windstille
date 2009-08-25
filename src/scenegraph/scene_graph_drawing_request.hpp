@@ -16,32 +16,32 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
-#define HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
+#ifndef HEADER_SCENE_GRAPH_DRAWING_REQUEST_HPP
+#define HEADER_SCENE_GRAPH_DRAWING_REQUEST_HPP
 
-#include <boost/shared_ptr.hpp>
-#include <vector>
+#include "scenegraph/scene_graph.hpp"
+#include "display/drawing_request.hpp"
 
-class DrawingRequest;
-class Texture;
-
-class SceneGraph
+class SceneGraphDrawingRequest : public DrawingRequest
 {
 private:
-  typedef std::vector<boost::shared_ptr<DrawingRequest> > DrawingRequests;
-  DrawingRequests m_drawing_requests;
+  SceneGraph& m_sg;
 
 public:
-  SceneGraph();
+  SceneGraphDrawingRequest(SceneGraph& sg, const Matrix& modelview_)
+    : DrawingRequest(Vector2f(), 1000, modelview_),
+      m_sg(sg)
+  {}
 
-  void add_drawable(boost::shared_ptr<DrawingRequest> drawable);
-  void remove_drawable(boost::shared_ptr<DrawingRequest> drawable);
+  void draw(const Texture& tmp_texture)
+  {
+    glPushMatrix();
+    glMultMatrixf(modelview.matrix);
 
-  void draw(const Texture& tmp_texture);
+    m_sg.draw(tmp_texture);
 
-private:
-  SceneGraph(const SceneGraph&);
-  SceneGraph& operator=(const SceneGraph&);
+    glPopMatrix();
+  }
 };
 
 #endif

@@ -29,6 +29,8 @@
 #include "screen/game_session.hpp"
 #include "tile/tile.hpp"
 #include "tile/tile_map.hpp"
+#include "scenegraph/scene_graph.hpp"
+#include "sprite3d/sprite3d_drawing_request.hpp"
 
 static const int MAX_ENERGY = 16;
 static const float WALK_SPEED = 100.0;
@@ -36,6 +38,7 @@ static const float RUN_SPEED = 256.0;
 
 Player::Player () 
   : sprite(),
+    m_drawable(),
     jumping(),
     bomb_placed(),
     hit_count(),
@@ -75,6 +78,9 @@ Player::Player ()
   contact = 0;
   weapon.reset(new Pistol());
   laser_pointer = ((Pistol*)weapon.get())->laser_pointer;
+
+  m_drawable.reset(new Sprite3DDrawingRequest(&sprite, Vector2f(200, 600), 100.0f, Matrix::identity()));
+  Sector::current()->get_scene_graph().add_drawable(m_drawable);
 }
 
 Player::~Player()
@@ -228,6 +234,8 @@ Player::update(const Controller& controller, float delta)
   c_object->set_velocity (velocity);
 
   pos = c_object->get_pos();
+
+  m_drawable->set_pos(pos + Vector2f(10,10));
 }
 
 void

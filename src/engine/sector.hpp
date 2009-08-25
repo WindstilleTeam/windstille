@@ -104,6 +104,7 @@ public:
   void add_object(FileReader& reader);
 
   CollisionEngine* get_collision_engine() const { return collision_engine.get(); }
+  SceneGraph& get_scene_graph() const { return *scene_graph; }
 
   GameObject* get_object(const std::string& name) const;
 

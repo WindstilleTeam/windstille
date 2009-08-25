@@ -415,7 +415,7 @@ SceneContext::render_without_framebuffers()
   if (impl->render_mask & HIGHLIGHTMAP)
     {
       impl->highlight.render(*this);
-    }  
+    }
 
   if (impl->render_mask & CONTROLMAP)
     impl->control.render(*this);
@@ -424,8 +424,7 @@ SceneContext::render_without_framebuffers()
   impl->color.clear();
   impl->light.clear();
   impl->highlight.clear();
-  impl->control.clear();
-  
+  impl->control.clear(); 
 }
 
 void
