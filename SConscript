@@ -202,7 +202,7 @@ class Project:
 
 
     def build_miniswig(self):
-        miniswig_env = self.env.Clone()
+        miniswig_env = Environment()
         miniswig_env.Append(CPPPATH=['.', 'external/miniswig/'],
                             CXXFILESUFFIX = ".cpp",
                             YACCFLAGS=['-d', '--no-lines'])
