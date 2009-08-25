@@ -19,6 +19,8 @@
 
 #include "sprite2d/sprite.hpp"
 
+#include <stdexcept>
+
 #include "sprite2d/data.hpp"
 #include "display/surface_drawing_parameters.hpp"
 

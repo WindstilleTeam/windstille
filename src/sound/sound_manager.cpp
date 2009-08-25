@@ -18,6 +18,7 @@
 
 #include <boost/scoped_array.hpp>
 #include <stdexcept>
+#include <iostream>
 #include <sstream>
 
 #include "sound/sound_file.hpp"

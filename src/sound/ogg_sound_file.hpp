@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_SOUND_OGG_SOUND_FILE_HPP
 #define HEADER_WINDSTILLE_SOUND_OGG_SOUND_FILE_HPP
 
-#include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 #include <physfs.h>
 

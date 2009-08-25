@@ -18,7 +18,7 @@
 
 #include "scripting/wrapper.interface.hpp"
 
-
+#include "lisp/lisp.hpp"
 #include "app/config.hpp"
 #include "display/opengl_window.hpp"
 #include "engine/camera.hpp"

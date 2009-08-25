@@ -18,7 +18,6 @@
 #ifndef SUPERTUX_LISPWRITER_H
 #define SUPERTUX_LISPWRITER_H
 
-#include <iostream>
 #include <string>
 #include <vector>
 

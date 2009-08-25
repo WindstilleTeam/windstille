@@ -20,9 +20,6 @@
 #define HEADER_WINDSTILLE_EDITOR_ABOUT_WINDOW_HPP
 
 #include <gtkmm/aboutdialog.h>
-#include <gtkmm/box.h>
-#include <gtkmm/textview.h>
-#include <gtkmm/button.h>
 
 class AboutWindow : public Gtk::AboutDialog
 {

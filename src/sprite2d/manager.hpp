@@ -20,7 +20,6 @@
 #ifndef HEADER_WINDSTILLE_SPRITE2D_MANAGER_HPP
 #define HEADER_WINDSTILLE_SPRITE2D_MANAGER_HPP
 
-#include <string>
 #include <map>
 #include <boost/shared_ptr.hpp>
 

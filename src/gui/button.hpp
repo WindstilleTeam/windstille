@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_GUI_BUTTON_HPP
 #define HEADER_WINDSTILLE_GUI_BUTTON_HPP
 
-#include <string>
 
 #include "gui/component.hpp"
 

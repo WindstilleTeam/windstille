@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_UTIL_PATHNAME_HPP
 #define HEADER_WINDSTILLE_UTIL_PATHNAME_HPP
 
-#include <iosfwd>
 #include <string>
 #include <map>
 

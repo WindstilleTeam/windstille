@@ -18,6 +18,7 @@
 
 #include "app/config.hpp"
 
+#include <iostream>
 #include <boost/format.hpp>
 
 #include "app/windstille.hpp"

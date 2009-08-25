@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_HUD_CONTROLLER_HELP_WINDOW_HPP
 
 #include "screen/screen.hpp"
-#include <boost/shared_ptr.hpp>
 
 #include "util/currenton.hpp"
 

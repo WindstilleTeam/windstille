@@ -22,7 +22,6 @@
 
 #include <boost/signals.hpp>
 
-#include "math/vector2f.hpp"
 #include "math/rect.hpp"
 #include "collision/collision_data.hpp"
 

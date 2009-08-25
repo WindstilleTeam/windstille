@@ -22,9 +22,7 @@
 #include <boost/signal.hpp>
 
 #include "properties/properties.hpp"
-#include "collision/collision_object.hpp"
 #include "engine/game_object.hpp"
-#include "math/vector2f.hpp"
 
 /** A GameObject which has a position and some other properties which
     are shared among all/most things in the world */

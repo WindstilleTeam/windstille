@@ -19,9 +19,7 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_GRENADE_HPP
 #define HEADER_WINDSTILLE_OBJECTS_GRENADE_HPP
 
-#include <boost/scoped_ptr.hpp>
 
-#include "engine/entity.hpp"
 #include "engine/physics.hpp"
 #include "sprite3d/sprite3d.hpp"
 

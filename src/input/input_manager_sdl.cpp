@@ -17,7 +17,7 @@
 */
 
 #include <boost/format.hpp>
-
+#include <iostream>
 #include <sstream>
 
 #include "math/math.hpp"
@@ -25,7 +25,7 @@
 #include "util/file_reader.hpp"
 #include "input_manager_sdl.hpp"
 #ifdef HAVE_CWIID
-#include "wiimote.hpp"
+#  include "wiimote.hpp"
 #endif
 
 const int dead_zone = 0;

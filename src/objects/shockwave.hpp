@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_OBJECTS_SHOCKWAVE_HPP
 
 #include "display/shader_program.hpp"
-#include "display/texture.hpp"
 #include "engine/game_object.hpp"
 
 /** */

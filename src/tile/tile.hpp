@@ -19,9 +19,7 @@
 #ifndef HEADER_WINDSTILLE_TILE_TILE_HPP
 #define HEADER_WINDSTILLE_TILE_TILE_HPP
 
-#include <assert.h>
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "display/texture.hpp"
 #include "math/rect.hpp"

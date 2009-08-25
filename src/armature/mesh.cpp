@@ -16,11 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "armature/mesh.hpp"
+
+#include <stdexcept>
+
 #include "util/util.hpp"
 #include "display/opengl_state.hpp"
 #include "display/texture_manager.hpp"
 #include "armature/armature.hpp"
-#include "armature/mesh.hpp"
 
 Mesh::Mesh(FileReader& reader, const std::string& path)
   : name(),

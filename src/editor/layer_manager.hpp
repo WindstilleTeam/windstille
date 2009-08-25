@@ -19,13 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_LAYER_MANAGER_HPP
 #define HEADER_WINDSTILLE_EDITOR_LAYER_MANAGER_HPP
 
-#include <gtkmm/treeview.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/label.h>
-#include <gtkmm/box.h>
 #include <gtkmm/uimanager.h>
-#include <gtkmm/treemodel.h>
-#include <gtkmm/actiongroup.h>
 
 class SectorModel;
 class EditorWindow;

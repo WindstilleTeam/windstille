@@ -20,8 +20,7 @@
 #define HEADER_WINDSTILLE_SOUND_SOUND_FILE_HPP
 
 #include <memory>
-#include <stdio.h>
-#include <iostream>
+#include <string>
 
 class SoundFile
 {

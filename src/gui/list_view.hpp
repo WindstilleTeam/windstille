@@ -19,9 +19,6 @@
 #ifndef HEADER_WINDSTILLE_GUI_LIST_VIEW_HPP
 #define HEADER_WINDSTILLE_GUI_LIST_VIEW_HPP
 
-#include <vector>
-#include <string>
-
 #include "gui/component.hpp"
 
 namespace gui { 

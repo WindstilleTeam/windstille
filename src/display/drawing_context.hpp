@@ -19,12 +19,8 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_DRAWING_CONTEXT_HPP
 #define HEADER_WINDSTILLE_DISPLAY_DRAWING_CONTEXT_HPP
 
-#include "math/vector2f.hpp"
-#include "math/matrix.hpp"
-#include "math/rect.hpp"
 #include <vector>
 
-#include "display/color.hpp"
 #include "display/drawing_request.hpp"
 
 class Texture;
@@ -35,6 +31,7 @@ class SceneContext;
 class Sprite;
 class Quad;
 class Line;
+class Color;
 
 /** The DrawingContext collects all DrawingRequests and allows you to
     flush them all down to the graphics card in one run, this has the

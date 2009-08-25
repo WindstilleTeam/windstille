@@ -16,9 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/scene_context.hpp"
-#include "editor/windstille_widget.hpp"
 #include "editor/zoom_tool.hpp"
+
+#include "display/scene_context.hpp"
+#include "display/color.hpp"
+#include "editor/windstille_widget.hpp"
 
 ZoomTool::ZoomTool()
   : click_pos(),

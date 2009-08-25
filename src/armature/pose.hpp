@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_ARMATURE_POSE_HPP
 #define HEADER_WINDSTILLE_ARMATURE_POSE_HPP
 
-#include <string>
 #include <vector>
 
 #include "armature/pose_bone.hpp"

@@ -27,6 +27,8 @@
 
 class Tile;
 class TilePacker;
+class SoftwareSurface;
+class Rect;
 
 /** */
 class TileFactory : public Currenton<TileFactory>

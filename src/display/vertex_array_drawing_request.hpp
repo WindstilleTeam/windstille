@@ -22,8 +22,6 @@
 #include <vector>
 
 #include "display/color.hpp"
-#include "math/matrix.hpp"
-#include "display/texture.hpp"
 #include "display/drawing_request.hpp"
 
 /** */

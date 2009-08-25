@@ -19,8 +19,6 @@
 #ifndef HEADER_WINDSTILLE_GUI_MENU_HPP
 #define HEADER_WINDSTILLE_GUI_MENU_HPP
 
-#include <memory>
-
 namespace gui {
 
 class GUIManager;

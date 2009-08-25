@@ -16,12 +16,14 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+#include "lisp/parser.hpp"
+
 #include <boost/scoped_ptr.hpp>
+#include <sstream>
 #include <string.h>
 
-#include "physfs/physfs_stream.hpp"
-#include "lisp/parser.hpp"
 #include "lisp/lisp.hpp"
+#include "physfs/physfs_stream.hpp"
 
 namespace lisp
 {

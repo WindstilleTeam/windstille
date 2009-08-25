@@ -19,14 +19,10 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_HPP
 
-#include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include <string>
 
 #include "editor/select_mask.hpp"
 #include "util/file_writer.hpp"
-#include "display/surface.hpp"
-#include "math/vector2f.hpp"
 #include "editor/control_point.hpp"
 #include "editor/snap_data.hpp"
 

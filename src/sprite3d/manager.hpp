@@ -19,8 +19,6 @@
 #ifndef HEADER_WINDSTILLE_SPRITE3D_MANAGER_HPP
 #define HEADER_WINDSTILLE_SPRITE3D_MANAGER_HPP
 
-#include <string>
-#include <map>
 
 #include "util/pathname.hpp"
 #include "util/currenton.hpp"

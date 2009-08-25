@@ -18,9 +18,6 @@
 
 #ifndef HEADER_WINDSTILLE_UTIL_FILE_WRITER_HPP
 #define HEADER_WINDSTILLE_UTIL_FILE_WRITER_HPP
-
-#include <ostream>
-#include <string>
 
 class Color;
 class Vector2f;

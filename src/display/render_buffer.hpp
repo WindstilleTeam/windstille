@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_RENDER_BUFFER_HPP
 #define HEADER_WINDSTILLE_DISPLAY_RENDER_BUFFER_HPP
 
-#include <GL/gl.h>
 #include <boost/shared_ptr.hpp>
 
 class RenderBufferImpl;

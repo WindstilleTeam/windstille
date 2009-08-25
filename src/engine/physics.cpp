@@ -20,6 +20,8 @@
 
 #include <boost/bind.hpp>
 
+#include "collision/collision_object.hpp"
+
 Physics::Physics(Entity* entity)
   : entity(entity),
     mass(200.0),

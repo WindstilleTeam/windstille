@@ -20,7 +20,10 @@
 #define HEADER_WINDSTILLE_UTIL_SEXPR_FILE_READER_HPP
 
 #include "util/file_reader.hpp"
-#include "lisp/lisp.hpp"
+
+namespace lisp {
+class Lisp;
+} // namespace lisp
 
 class SExprFileReader : public FileReader
 {

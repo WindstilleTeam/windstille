@@ -35,7 +35,6 @@
 
 #include "math/size.hpp"
 #include "math/point.hpp"
-#include "vector2f.hpp"
 
 namespace origin {
 

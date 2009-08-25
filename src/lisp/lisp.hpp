@@ -20,10 +20,8 @@
 // unions aren't properly handled by -Weffc++, so we switch the warning off
 #pragma GCC diagnostic ignored "-Weffc++"
 
-#include <string>
 #include <vector>
 #include <iostream>
-#include <sstream>
 #include <stdexcept>
 #include <assert.h>
 

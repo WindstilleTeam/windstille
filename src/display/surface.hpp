@@ -19,12 +19,8 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SURFACE_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SURFACE_HPP
 
-#include <string>
-#include <boost/shared_ptr.hpp>
 
-#include "util/pathname.hpp"
 #include "math/rect.hpp"
-#include "math/size.hpp"
 #include "display/texture.hpp"
 
 class SurfaceDrawingParameters;

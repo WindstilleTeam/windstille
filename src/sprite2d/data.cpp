@@ -19,6 +19,8 @@
 
 #include "sprite2d/data.hpp"
 
+#include <stdexcept>
+
 #include "display/surface_manager.hpp"
 
 SpriteData::SpriteData(const Pathname& pathname)

@@ -19,8 +19,6 @@
 #ifndef HEADER_WINDSTILLE_GUI_GROUP_COMPONENT_HPP
 #define HEADER_WINDSTILLE_GUI_GROUP_COMPONENT_HPP
 
-#include <boost/scoped_ptr.hpp>
-#include <string>
 
 #include "gui/component.hpp"
 

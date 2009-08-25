@@ -20,6 +20,7 @@
 
 #include <boost/scoped_array.hpp>
 #include <physfs.h>
+#include <stdexcept>
 
 #include "util/util.hpp"
 #include "display/texture_manager.hpp"

@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_ARMATURE_MESH_HPP
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <string>
 #include <vector>
 

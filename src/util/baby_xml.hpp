@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_UTIL_BABY_XML_HPP
 #define HEADER_WINDSTILLE_UTIL_BABY_XML_HPP
 
-#include <string>
 #include <vector>
 
 /** Parser for a flat XML-like tag soup, it doesn't support recursive

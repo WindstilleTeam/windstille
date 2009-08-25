@@ -20,8 +20,6 @@
 #define HEADER_WINDSTILLE_APP_CONFIG_HPP
 
 #include <map>
-#include <string>
-#include <typeinfo>
 #include <stdexcept>
 
 #include "lisp/writer.hpp"

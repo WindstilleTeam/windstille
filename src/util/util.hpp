@@ -19,12 +19,7 @@
 #ifndef HEADER_WINDSTILLE_UTIL_UTIL_HPP
 #define HEADER_WINDSTILLE_UTIL_UTIL_HPP
 
-#include <string>
-#include <stdexcept>
 #include <sstream>
-#include <GL/glew.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
 
 std::string dirname(const std::string& filename);
 std::string basename(const std::string& filename);

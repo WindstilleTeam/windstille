@@ -20,8 +20,7 @@
 #define HEADER_WINDSTILLE_APP_CONSOLE_HPP
 
 #include <boost/scoped_ptr.hpp>
-#include <vector>
-#include <sstream>
+#include <ostream>
 
 class ConsoleImpl;
 

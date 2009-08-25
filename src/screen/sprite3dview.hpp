@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_SPRITE3DVIEW_HPP
 #define HEADER_WINDSTILLE_SCREEN_SPRITE3DVIEW_HPP
 
-#include "display/scene_context.hpp"
 #include "sprite3d/sprite3d.hpp"
 #include "screen/screen.hpp"
 

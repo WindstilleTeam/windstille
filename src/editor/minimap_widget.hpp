@@ -20,8 +20,6 @@
 #define HEADER_WINDSTILLE_EDITOR_MINIMAP_WIDGET_HPP
 
 #include <gtkglmm.h>
-#include <gdkmm/dragcontext.h>
-#include <gtkmm/gl/widget.h>
 
 /** Minimap Widget, 
  */

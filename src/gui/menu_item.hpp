@@ -20,10 +20,7 @@
 #define HEADER_WINDSTILLE_GUI_MENU_ITEM_HPP
 
 #include <boost/signal.hpp>
-#include <string>
-#include <vector>
 
-#include "math/rect.hpp"
 
 namespace gui {
 

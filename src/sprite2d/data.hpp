@@ -20,14 +20,10 @@
 #ifndef HEADER_WINDSTILLE_SPRITE2D_DATA_HPP
 #define HEADER_WINDSTILLE_SPRITE2D_DATA_HPP
 
-#include <string>
-#include <vector>
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "util/util.hpp"
 #include "util/file_reader.hpp"
-#include "math/vector2f.hpp"
 #include "display/surface.hpp"
 
 struct SpriteAction

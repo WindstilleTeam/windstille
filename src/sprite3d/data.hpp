@@ -19,14 +19,10 @@
 #ifndef HEADER_WINDSTILLE_SPRITE3D_DATA_HPP
 #define HEADER_WINDSTILLE_SPRITE3D_DATA_HPP
 
-#include <stdint.h>
-#include <string>
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <vector>
 
 #include "display/texture.hpp"
-#include "math/vector3.hpp"
 #include "math/quaternion.hpp"
 
 class Pathname;

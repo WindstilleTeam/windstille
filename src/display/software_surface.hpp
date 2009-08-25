@@ -19,12 +19,13 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SOFTWARE_SURFACE_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SOFTWARE_SURFACE_HPP
 
-#include "SDL.h"
 #include <boost/shared_ptr.hpp>
-#include <string>
 
 #include "util/pathname.hpp"
 #include "math/size.hpp"
+
+typedef struct SDL_Surface SDL_Surface;
+
 
 class Rect;
 class SoftwareSurfaceImpl;

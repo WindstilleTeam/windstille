@@ -22,14 +22,15 @@
 #include <iosfwd>
 #include <vector>
 
-#include "math/line.hpp"
 
-class Rectf;
-class Node;
-class FileReader;
-class FileWriter;
+class Vector2f;
 class Edge;
 class EdgePosition;
+class FileReader;
+class FileWriter;
+class Line;
+class Node;
+class Rectf;
 
 template<typename Data>
 class PointerHandle

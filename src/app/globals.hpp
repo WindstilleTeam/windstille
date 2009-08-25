@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_APP_GLOBALS_HPP
 #define HEADER_WINDSTILLE_APP_GLOBALS_HPP
 
-#include <string>
 
 typedef enum { WEST, EAST} Direction;
 

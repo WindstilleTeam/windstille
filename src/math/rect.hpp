@@ -30,11 +30,8 @@
 #ifndef __MATH_RECT_HPP__
 #define __MATH_RECT_HPP__
 
-#include <iosfwd>
 
 #include "math/origin.hpp"
-#include "math/vector2f.hpp"
-#include "math/size.hpp"
 #include "math/math.hpp"
 
 class Rectf;

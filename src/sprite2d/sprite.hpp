@@ -20,15 +20,10 @@
 #ifndef HEADER_WINDSTILLE_SPRITE2D_SPRITE_HPP
 #define HEADER_WINDSTILLE_SPRITE2D_SPRITE_HPP
 
-#include <string>
 #include <GL/glew.h>
-#include <GL/gl.h>
 
-#include "util/pathname.hpp"
 #include "display/color.hpp"
 #include "display/surface.hpp"
-#include "math/vector2f.hpp"
-#include "math/matrix.hpp"
 #include "sprite2d/manager.hpp"
 
 class DrawingContext;

@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "display/drawing_context.hpp"
+
 #include <GL/glew.h>
 
 #include "math/vector3.hpp"

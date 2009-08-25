@@ -22,7 +22,6 @@
 #include <math.h>
 
 #include "vector3.hpp"
-#include "math/matrix.hpp"
 
 class Quaternion
 {

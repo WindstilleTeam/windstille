@@ -17,6 +17,7 @@
 */
 
 #include <GL/glew.h>
+#include <SDL.h>
 
 #include "app/globals.hpp"
 #include "tile/tile_packer.hpp"

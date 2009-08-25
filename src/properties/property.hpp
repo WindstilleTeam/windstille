@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_PROPERTIES_PROPERTY_HPP
 #define HEADER_WINDSTILLE_PROPERTIES_PROPERTY_HPP
 
-#include <string>
 
 class Property
 {

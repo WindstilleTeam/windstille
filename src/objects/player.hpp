@@ -32,6 +32,8 @@
 class Controller;
 class Contact;
 class LaserPointer;
+class CollisionObject;
+class CollisionData;
 class Weapon;
 
 class Player : public Entity,

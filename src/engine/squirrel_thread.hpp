@@ -19,8 +19,6 @@
 #ifndef HEADER_WINDSTILLE_ENGINE_SQUIRREL_VM_HPP
 #define HEADER_WINDSTILLE_ENGINE_SQUIRREL_VM_HPP
 
-#include <string>
-#include <squirrel.h>
 
 #include "engine/script_manager.hpp"
 

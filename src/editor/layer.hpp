@@ -19,14 +19,9 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_LAYER_HPP
 #define HEADER_WINDSTILLE_EDITOR_LAYER_HPP
 
-#include <boost/shared_ptr.hpp>
-#include <list>
-#include <set>
-#include <string>
 #include <gtkmm/treemodel.h>
 
 #include "editor/selection.hpp"
-#include "editor/object_model.hpp"
 
 class Layer;
 typedef boost::shared_ptr<Layer> LayerHandle;

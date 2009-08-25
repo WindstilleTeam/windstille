@@ -19,8 +19,6 @@
 #ifndef HEADER_WINDSTILLE_GUI_MENU_COMPONENT_HPP
 #define HEADER_WINDSTILLE_GUI_MENU_COMPONENT_HPP
 
-#include <string>
-#include <vector>
 
 #include "font/fonts.hpp"
 #include "gui/component.hpp"

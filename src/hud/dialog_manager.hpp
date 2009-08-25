@@ -21,12 +21,9 @@
 
 #include <boost/scoped_ptr.hpp>
 #include <vector>
-#include <string>
 
-#include "app/globals.hpp"
 #include "screen/screen.hpp"
 #include "sprite2d/sprite.hpp"
-#include "util/currenton.hpp"
 
 class TextArea;
 

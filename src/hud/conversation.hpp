@@ -19,11 +19,8 @@
 #ifndef HEADER_WINDSTILLE_HUD_CONVERSATION_HPP
 #define HEADER_WINDSTILLE_HUD_CONVERSATION_HPP
 
-#include <vector>
-#include <string>
 
 #include "screen/screen.hpp"
-#include "util/currenton.hpp"
 
 /** Displays a list of text strings from which the user can select
     one, used to form multiple-choice dialogs */

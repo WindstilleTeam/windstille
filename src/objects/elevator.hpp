@@ -22,7 +22,8 @@
 #include "engine/entity.hpp"
 #include "sprite2d/sprite.hpp"
 
-/** */
+class CollisionObject;
+
 class Elevator : public Entity
 {
 private:

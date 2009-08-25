@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_DISPLAY_OPENGL_WINDOW_HPP
 
 #include <SDL.h>
-#include <string>
 
 #include "util/currenton.hpp"
 

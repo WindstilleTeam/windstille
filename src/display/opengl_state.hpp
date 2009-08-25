@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_DISPLAY_OPENGL_STATE_HPP
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <boost/scoped_ptr.hpp>
 
 class Framebuffer;

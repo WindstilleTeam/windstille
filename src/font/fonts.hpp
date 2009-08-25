@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_FONT_FONTS_HPP
 #define HEADER_WINDSTILLE_FONT_FONTS_HPP
 
-#include <boost/scoped_ptr.hpp>
 
 #include "util/currenton.hpp"
 #include "font/ttf_font.hpp"

@@ -21,8 +21,6 @@
 
 #include <vector>
 
-#include "math/size.hpp"
-#include "math/rect.hpp"
 #include "math/quad.hpp"
 #include "math/line.hpp"
 #include "display/color.hpp"

@@ -19,6 +19,7 @@
 
 #include "collision/collision_object.hpp"
 
+#include "display/color.hpp"
 #include "display/drawing_context.hpp"
 
 /***********************************************************************
