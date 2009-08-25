@@ -548,8 +548,6 @@ Graphics
 Editor
 ======
 
-* add some command  line options to the editor (--datadir, --userdir, etc.)
-
 * Fix screenshot support (very crashy/buggy on different screensizes and stuff (padding error?))
 
 * unify delete/remove/erase a bit

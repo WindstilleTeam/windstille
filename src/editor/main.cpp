@@ -27,6 +27,7 @@
 #include <physfs.h>
 
 #include "util/system.hpp"
+#include "util/command_line.hpp"
 #include "sprite2d/manager.hpp"
 #include "display/texture_manager.hpp"
 #include "editor/editor_window.hpp"
@@ -36,64 +37,95 @@ int
 WindstilleEditor::main(int argc, char** argv)
 {
   try 
+  {
+    std::string datadir;
+    std::vector<std::string> rest_args;
+    
+    CommandLine argp;
+    argp.set_help_indent(24);
+    argp.add_usage ("[LEVELFILE]");
+    argp.add_doc   ("Windstille Level Editor");
+    argp.add_option('h', "help",       "", "Print this help");
+    argp.add_option('d', "datadir", "DIR", "Fetch game data from DIR");
+    
+    argp.parse_args(argc, argv);
+
+    while (argp.next())
     {
-      Pathname::set_datadir(System::find_default_datadir());
-      Pathname::set_userdir(System::find_default_userdir());
+      switch (argp.get_key())
+      {
+        case 'd':
+          datadir = argp.get_argument();
+          break;
 
-      Gtk::Main kit(&argc, &argv);
-      Gtk::GL::init(&argc, &argv);
+        case 'h':
+          argp.print_help();
+          exit(EXIT_SUCCESS);
+          break;
 
-      if (!PHYSFS_init(argv[0]))
-        {
-          std::ostringstream msg;
-          msg << "Couldn't initialize physfs: " << PHYSFS_getLastError();
-          throw std::runtime_error(msg.str());
-        }
+        case CommandLine::REST_ARG:
+          rest_args.push_back(argp.get_argument());
+          break;
+      }
+    }
+    
+    Pathname::set_datadir(datadir.empty() ? System::find_default_datadir() : datadir);
+    Pathname::set_userdir(System::find_default_userdir());
+
+    Gtk::Main kit(&argc, &argv);
+    Gtk::GL::init(&argc, &argv);
+
+    if (!PHYSFS_init(argv[0]))
+    {
+      std::ostringstream msg;
+      msg << "Couldn't initialize physfs: " << PHYSFS_getLastError();
+      throw std::runtime_error(msg.str());
+    }
   
-      PHYSFS_addToSearchPath("data/", 0);
+    PHYSFS_addToSearchPath(Pathname::get_datadir().c_str(), 0);
       
-      Glib::RefPtr<const Gdk::GL::Config> 
-        glconfig = Gdk::GL::Config::create(/* FIXME: Using RGBA instead of RGB to make Display::save_screenshot work*/
-                                           Gdk::GL::MODE_RGBA | 
-                                           //Gdk::GL::MODE_DEPTH);
-                                           Gdk::GL::MODE_DOUBLE);
-      if (!glconfig)
-        {
-          throw std::runtime_error("*** Cannot find any OpenGL-capable visual.");
-        }
-
-      SpriteManager  sprite2d_manager;
-      TextureManager texture_manager;
-
-      Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
-      icon_theme->append_search_path("data/editor/");
-      
-      EditorWindow window(glconfig);
-      window.show_all();
-      window.show_minimap(false);
-
-      if (argc == 1)
-        {
-          window.on_new();
-        }
-      else
-        {
-          for(int i = 1; i < argc; ++i)
-            {
-              window.load_file(argv[i]);
-            }
-        }
-      
-      Gtk::Main::run(window);
+    Glib::RefPtr<const Gdk::GL::Config> 
+      glconfig = Gdk::GL::Config::create(/* FIXME: Using RGBA instead of RGB to make Display::save_screenshot work*/
+        Gdk::GL::MODE_RGBA | 
+        //Gdk::GL::MODE_DEPTH);
+        Gdk::GL::MODE_DOUBLE);
+    if (!glconfig)
+    {
+      throw std::runtime_error("*** Cannot find any OpenGL-capable visual.");
     }
+
+    SpriteManager  sprite2d_manager;
+    TextureManager texture_manager;
+
+    Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
+    icon_theme->append_search_path("data/editor/");
+      
+    EditorWindow window(glconfig);
+    window.show_all();
+    window.show_minimap(false);
+
+    if (rest_args.empty())
+    {
+      window.on_new();
+    }
+    else
+    {
+      for(std::vector<std::string>::iterator i = rest_args.begin(); i != rest_args.end(); ++i)
+      {
+        window.load_file(*i);
+      }
+    }
+      
+    Gtk::Main::run(window);
+  }
   catch(Glib::Exception& err)
-    {
-      std::cout << "Glib::Exception: " << err.what() << std::endl;
-    }
+  {
+    std::cout << "Glib::Exception: " << err.what() << std::endl;
+  }
   catch(std::exception& err)
-    {
-      std::cout << "std::exception: " << err.what() << std::endl;
-    }
+  {
+    std::cout << "std::exception: " << err.what() << std::endl;
+  }
   return 0;
 }
 
