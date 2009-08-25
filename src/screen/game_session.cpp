@@ -18,7 +18,6 @@
 
 #include "screen/game_session.hpp"
 
-
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
 #include "engine/script_manager.hpp"
@@ -41,7 +40,7 @@ public:
 
   float fadeout_value;
   float fade_time;
-  std::auto_ptr<Sector> sector;
+  boost::scoped_ptr<Sector> sector;
   View    view;
 
   Pathname filename;
@@ -340,7 +339,7 @@ GameSession::change_sector(const Pathname& arg_filename)
 void
 GameSession::set_sector(const Pathname& /* FIXME: huh? */)
 {
-  impl->sector = std::auto_ptr<Sector>(new Sector(impl->filename));
+  impl->sector.reset(new Sector(impl->filename));
  
   GameObject::set_world(impl->sector.get());
 
