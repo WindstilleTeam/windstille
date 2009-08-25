@@ -134,7 +134,7 @@ class Project:
         self.build_testapps()
         
     def configure(self):
-        self.env = Environment(CXXFLAGS=self.cxxflags)
+        self.env = Environment()
 
         # FIXME: None of the options are used, as only self.features
         # makes it across function calls
@@ -161,6 +161,9 @@ class Project:
                                                     'CheckLex'   : CheckLex})
 
         # conf.CheckCXX()
+
+        if self.cxxflags:
+            conf.env.Append(CXXFLAGS=self.cxxflags)
 
         if 'CXX' in os.environ:
             conf.env.Replace(CXX = os.environ['CXX'])
