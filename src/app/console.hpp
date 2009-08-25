@@ -20,15 +20,19 @@
 #define HEADER_WINDSTILLE_APP_CONSOLE_HPP
 
 #include <boost/scoped_ptr.hpp>
-#include <ostream>
+#include <iosfwd>
+
+#include "util/currenton.hpp"
 
 class ConsoleImpl;
 
-class Console : public std::ostream
+class Console : public Currenton<Console>
 {
 public:
   Console();
   ~Console();
+
+  std::ostream& get_ostream() const; 
 
   void draw();
   void update(float delta);
@@ -40,7 +44,7 @@ public:
   void scroll(int lines);
 
   void add(char* buf, int len);
-  
+
   /** execute the given string */
   void execute(const std::string& str);
 
@@ -52,7 +56,7 @@ private:
   Console& operator= (const Console&);
 };
 
-extern Console console;
+#define ConsoleLog Console::current()->get_ostream()
 
 #endif
 

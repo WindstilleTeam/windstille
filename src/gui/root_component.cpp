@@ -87,7 +87,7 @@ RootComponent::set_focus(Component* child_)
     }
   else
     {
-      console << "Error: Need to add_child() first befor calling set_focus()" << std::endl;
+      ConsoleLog << "Error: Need to add_child() first befor calling set_focus()" << std::endl;
     }
 }
 

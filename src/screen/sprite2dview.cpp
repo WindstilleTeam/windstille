@@ -279,7 +279,7 @@ Sprite2DView::next_image(int i)
       ignore_delta = true;
       fadein = 0.0f;
       prepare_sprite(new_sprite);
-      console << index << ": " << directory[index] << std::endl;
+      ConsoleLog << index << ": " << directory[index] << std::endl;
     }
 
   SpriteManager::current()->cleanup();

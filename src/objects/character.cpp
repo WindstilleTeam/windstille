@@ -64,11 +64,13 @@ void
 Character::use()
 {
   try 
-    {
-      ScriptManager::current()->run_script_file(Sector::current()->get_directory() + name + ".nut");
-    } catch (std::exception& e) {
-      console << e.what() << std::endl;
-    }
+  {
+    ScriptManager::current()->run_script_file(Sector::current()->get_directory() + name + ".nut");
+  } 
+  catch (std::exception& e) 
+  {
+    ConsoleLog << e.what() << std::endl;
+  }
 }
 
 /* EOF */

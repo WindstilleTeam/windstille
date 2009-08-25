@@ -120,7 +120,7 @@ ScriptableObject::use()
         }
       catch (std::exception& e) 
         {
-          console << e.what() << std::endl;
+          ConsoleLog << e.what() << std::endl;
         }
     }
 }

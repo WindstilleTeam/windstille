@@ -16,13 +16,15 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/console.hpp"
+
+#include <ostream>
+
 #include "display/display.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "input/input_manager_sdl.hpp"
 #include "screen/game_session.hpp"
-
-Console console;
 
 class ConsoleStreambuf : public std::streambuf
 {
@@ -79,6 +81,8 @@ class ConsoleImpl
 public:
   Console& console;
 
+  std::ostream ostream;
+
   struct ConsoleEntry {
     std::string message;
     float display_time;
@@ -101,6 +105,7 @@ public:
 
   ConsoleImpl(Console& console_)
     : console(console_),
+      ostream(new ConsoleStreambuf(&console)),
       x_pos(16.0f),
       y_pos(600.0f - 16.0f),
       buffer(),
@@ -313,10 +318,10 @@ ConsoleImpl::update(float delta)
 void
 ConsoleImpl::maybe_newline()
 {
-  console << std::flush;
+  ConsoleLog << std::flush;
   if (!current_entry.message.empty())
     {
-      console << std::endl;
+      ConsoleLog << std::endl;
     }
 }
 
@@ -340,7 +345,7 @@ ConsoleImpl::get_roottable()
         }
       else
         {
-          console << "Unknown key type for element" << std::endl;
+          ConsoleLog << "Unknown key type for element" << std::endl;
         }
                               
       sq_pop(v,2); //pops key and val before the nex iteration
@@ -413,12 +418,12 @@ ConsoleImpl::tab_complete()
     }
   else 
     {
-      console << "> " << command_line << std::endl;
+      ConsoleLog << "> " << command_line << std::endl;
       for(std::vector<std::string>::iterator i = completions.begin(); i != completions.end(); ++i)
         {
-          console << *i << " ";
+          ConsoleLog << *i << " ";
         }
-      console << std::endl;
+      ConsoleLog << std::endl;
 
       command_line = find_longest_prefix(completions);
       cursor_pos = command_line.size();
@@ -434,7 +439,7 @@ ConsoleImpl::eval_command_line()
       history_position = history.size();
     }
                       
-  console << "> " << command_line << std::endl;
+  ConsoleLog << "> " << command_line << std::endl;
 
   if (command_line == "quit" || command_line == "exit")
     {
@@ -442,7 +447,7 @@ ConsoleImpl::eval_command_line()
     }
   else if (command_line == "help")
     {
-      console << "This is a script console, can enter stuff in here that will then be evaluated.\n"
+      ConsoleLog << "This is a script console, can enter stuff in here that will then be evaluated.\n"
               << "Type 'quit' to exit the console." << std::endl;
     }
   else if (command_line == "reset")
@@ -454,7 +459,7 @@ ConsoleImpl::eval_command_line()
       HSQUIRRELVM v = ScriptManager::current()->get_vm();
 
       int size = sq_getsize(v, -1);
-      console << size << " elements on the root table" << std::endl;
+      ConsoleLog << size << " elements on the root table" << std::endl;
 
       sq_pushroottable(v);
 
@@ -466,11 +471,11 @@ ConsoleImpl::eval_command_line()
           const SQChar *s;
           if (SQ_SUCCEEDED(sq_getstring(v,-2, &s)))
             {
-              console << s << " -> " << Scripting::squirrel2string(v, -1) << std::endl;
+              ConsoleLog << s << " -> " << Scripting::squirrel2string(v, -1) << std::endl;
             }
           else
             {
-              console << "Unknown key type for element" << std::endl;
+              ConsoleLog << "Unknown key type for element" << std::endl;
             }
                               
           sq_pop(v,2); //pops key and val before the nex iteration
@@ -509,7 +514,7 @@ ConsoleImpl::execute(const std::string& str_)
             {
               // FIXME: This does only work when somebody is doing a 'return', i.e. almost never
               if (sq_gettype(vm, -1) != OT_NULL)
-                console << Scripting::squirrel2string(vm, -1) << std::endl;
+                ConsoleLog << Scripting::squirrel2string(vm, -1) << std::endl;
               // else
               //   console << "(null)" << std::endl;
             }
@@ -528,13 +533,18 @@ ConsoleImpl::execute(const std::string& str_)
 //-------------------------------------------------------------------------------
 
 Console::Console()
-  : std::ostream(new ConsoleStreambuf(this)),
-    impl(new ConsoleImpl(*this))
+  : impl(new ConsoleImpl(*this))
 {
 }
 
 Console::~Console()
 {
+}
+
+std::ostream&
+Console::get_ostream() const
+{
+  return impl->ostream;
 }
 
 void

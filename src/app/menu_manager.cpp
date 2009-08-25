@@ -511,18 +511,18 @@ MenuManager::menu_wiimote()
   if (wiimote && !wiimote->is_connected())
     {
       // FIXME: This never appears on screen due to timeout
-      console << "Trying to connect Wiimote: Press buttons 1 and 2 to connect" << std::endl;
+      ConsoleLog << "Trying to connect Wiimote: Press buttons 1 and 2 to connect" << std::endl;
 
       wiimote->connect();
 
       if (wiimote->is_connected())
-        console << "Wiimote connected" << std::endl;
+        ConsoleLog << "Wiimote connected" << std::endl;
       else
-        console << "Wiimote connection failed" << std::endl;
+        ConsoleLog << "Wiimote connection failed" << std::endl;
     }
   else
     {
-      console << "Wiimote already is connected" << std::endl;
+      ConsoleLog << "Wiimote already is connected" << std::endl;
     }
 #endif
 }

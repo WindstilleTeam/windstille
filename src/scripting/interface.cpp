@@ -217,7 +217,7 @@ void list_objects()
   for(std::vector<boost::shared_ptr< ::GameObject > >::const_iterator i = objects.begin(); i != objects.end(); ++i)
   {
     if (!(*i)->get_name().empty())
-      console << (*i)->get_name() << std::endl;
+      ConsoleLog << (*i)->get_name() << std::endl;
   }
 }
 
@@ -264,14 +264,14 @@ void wait_for_conversation(HSQUIRRELVM vm)
 
 SQInteger display(HSQUIRRELVM v)
 {
-  console << squirrel2string(v, -1);
+  ConsoleLog << squirrel2string(v, -1);
   sq_pop(v, 1);
   return 0;
 }
 
 SQInteger println(HSQUIRRELVM v)
 {
-  console << squirrel2string(v, -1) << std::endl;
+  ConsoleLog << squirrel2string(v, -1) << std::endl;
   sq_pop(v, 1);
   return 0;
 }
@@ -280,7 +280,7 @@ SQInteger print_stack(HSQUIRRELVM v) __custom("")
 {
   SQInteger top = sq_gettop(v);
   for(int i = 1; i <= top; ++i)
-    console << i << " " << squirrel2string(v, i) << std::endl;
+    ConsoleLog << i << " " << squirrel2string(v, i) << std::endl;
 
   return 0;
 }
@@ -303,7 +303,7 @@ void set_console_font(const std::string& font, int size)
   }
   catch(std::exception& err) 
   {
-    console << err.what() << std::endl;
+    ConsoleLog << err.what() << std::endl;
   }
 }
 
@@ -319,7 +319,7 @@ void set_gamma_rgb(float r, float g, float b)
 
 void show_config()
 {
-  config.debug_print(console);
+  config.debug_print(ConsoleLog);
 }
 
 void cutscene_begin()
@@ -403,11 +403,11 @@ SQInteger lisp2string(HSQUIRRELVM v)
 
   for(std::vector<lisp::Lisp*>::iterator i = entries.begin(); i != entries.end(); ++i)
   {
-    console << (i - entries.begin()) << ": ";
+    ConsoleLog << (i - entries.begin()) << ": ";
     std::stringstream str;
     (*i)->print(str);
-    console << str.str();
-    console << std::endl;
+    ConsoleLog << str.str();
+    ConsoleLog << std::endl;
   }
    
   return 0;

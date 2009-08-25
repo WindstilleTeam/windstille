@@ -80,8 +80,8 @@ ScreenManager::run()
     {
       InputManagerSDL::current()->update(delta);
 
-      console.update(step);
-      if (!console.is_active())
+      Console::current()->update(step);
+      if (!Console::current()->is_active())
       {
         if (!overlay_screens.empty())
           overlay_screens.back()->update(step, InputManagerSDL::current()->get_controller());
@@ -119,7 +119,7 @@ ScreenManager::draw()
   if (show_controller_help_window)
      controller_help_window->draw();
 
-  console.draw();
+  Console::current()->draw();
 
   if (config.get_bool("show-fps"))
     draw_fps();
@@ -262,12 +262,12 @@ ScreenManager::poll_events()
                         } while(filename.exists());
 
                         Display::save_screenshot(filename);
-                        console << "Writing screenshot to: '" << filename << "'" << std::endl;
+                        ConsoleLog << "Writing screenshot to: '" << filename << "'" << std::endl;
                       }
                       break;
               
                     default:
-                      if (!console.is_active())
+                      if (!Console::current()->is_active())
                         {
                           if (!overlay_screens.empty())
                             overlay_screens.back()->handle_event(event);
@@ -278,9 +278,9 @@ ScreenManager::poll_events()
                   }
               }
               
-            if (!console.is_active() && event.key.state && event.key.keysym.sym == SDLK_F1)
+            if (!Console::current()->is_active() && event.key.state && event.key.keysym.sym == SDLK_F1)
               {
-                console.activate();
+                Console::current()->activate();
               }
             else
               {

@@ -53,7 +53,7 @@ static void printfunc(HSQUIRRELVM, const char* str, ...)
   va_list arglist; 
   va_start(arglist, str); 
   vsprintf(buf, str, arglist);
-  console << (char*)buf;
+  ConsoleLog << (char*)buf;
   puts(buf);
   va_end(arglist); 
 }

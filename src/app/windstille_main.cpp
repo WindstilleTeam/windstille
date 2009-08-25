@@ -21,6 +21,7 @@
 #include <physfs.h>
 
 #include "app/config.hpp"
+#include "app/console.hpp"
 #include "display/opengl_window.hpp"
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
@@ -68,6 +69,7 @@ WindstilleMain::main(int argc, char** argv)
       OpenGLWindow      window;
       TTFFontManager    ttffont_manager;
       Fonts             fonts;
+      Console           console;
       SoundManager      sound_manager;
       TextureManager    texture_manager;
       SurfaceManager    surface_manager;

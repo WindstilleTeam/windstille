@@ -109,13 +109,13 @@ GeometryTest::update(float delta, const Controller& controller)
   if (line1.intersect(line2, collision_point))
     {
       if (!had_prev_collision)
-        console << "Collision" << std::endl;
+        ConsoleLog << "Collision" << std::endl;
       had_prev_collision = true;
     }
   else
     {
       if (had_prev_collision)
-        console << "No Collision" << std::endl;
+        ConsoleLog << "No Collision" << std::endl;
       had_prev_collision = false;
       collision_point = Vector2f(32, 32);
     }
