@@ -19,7 +19,6 @@
 #include "screen/game_session.hpp"
 
 
-
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
 #include "engine/script_manager.hpp"
@@ -389,7 +388,6 @@ GameSessionImpl::handle_event(const SDL_Event& event)
                   sc.set_render_mask(sc.get_render_mask() ^ SceneContext::BLURMAP);
                   console << "Toggled blurmap: " << ((sc.get_render_mask() & SceneContext::BLURMAP) > 0) << std::endl;
                   break;
-
 
                 case SDLK_c:
                   if (debug) {

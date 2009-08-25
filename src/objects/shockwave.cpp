@@ -103,7 +103,6 @@ public:
         glTexCoord2f(x2+256, (y2+256));
         glVertex3f(x2+256, y2+256, 0);
 
-
         float x3 =  sinf(angel*static_cast<float>(i))*minradius;
         float y3 = -cosf(angel*static_cast<float>(i))*minradius;
 
@@ -198,7 +197,6 @@ public:
 
         glTexCoord2f(x2/512.0f+0.5f, y2/512.0f+0.5f);
         glVertex3f(x2+256, y2+256, 0);
-
 
         float x3 =  sinf(angel*static_cast<float>(i))*minradius;
         float y3 = -cosf(angel*static_cast<float>(i))*minradius;

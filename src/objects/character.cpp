@@ -22,7 +22,6 @@
 #include "engine/script_manager.hpp"
 #include "app/console.hpp"
 
-
 Character::Character(FileReader& props)
   : sprite(),
     z_pos(100.0f)

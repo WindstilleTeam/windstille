@@ -19,7 +19,6 @@
 
 #include "sprite2d/manager.hpp"
 
-
 #include "sprite2d/data.hpp"
 
 SpriteManager::SpriteManager()

@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
@@ -93,7 +92,6 @@ Sprite3DView::draw()
       else
         Fonts::current()->vera12->draw(Vector2f(x, y),
                             actions[i], Color(0.7f, 0.7f, 0.7f));
-
 
       y += static_cast<float>(line_height);
       if (y > 580.0f)

@@ -613,7 +613,6 @@ EditorWindow::on_save_screenshot()
           dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
           dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
 
-
  
           dialog.set_current_folder("/tmp/");
 

@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef HEADER_WINDSTILLE_OBJECTS_SCRIPTABLE_OBJECT_HPP
 #define HEADER_WINDSTILLE_OBJECTS_SCRIPTABLE_OBJECT_HPP
 

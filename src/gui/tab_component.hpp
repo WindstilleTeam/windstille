@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_GUI_TAB_COMPONENT_HPP
 #define HEADER_WINDSTILLE_GUI_TAB_COMPONENT_HPP
 
-
 #include "gui/component.hpp"
 
 namespace gui {

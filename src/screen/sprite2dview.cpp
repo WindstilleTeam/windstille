@@ -84,7 +84,6 @@ Sprite2DView::Sprite2DView()
   show_thumbnail = false;
   ignore_delta = false;
 
-
   next_image(0);
   sprite = new_sprite;
   new_sprite = Sprite();

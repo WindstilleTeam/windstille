@@ -336,7 +336,6 @@ CollisionEngine::update(float delta)
       frame-=min_time;
       min_time=0;
 
-
       // check tries
       --max_tries;
       if (max_tries == 0)
@@ -490,7 +489,6 @@ CollisionEngine::collide(CollisionObject& a, CollisionObject& b, float delta)
     }
 }
 
-
 int get_next_integer(float f, float direction)
 {
   int result;
@@ -609,8 +607,6 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
       
       return result;
     }
-
-
 
   float time=0.0f;
   

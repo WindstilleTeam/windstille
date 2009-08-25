@@ -18,7 +18,6 @@
 
 #include "hud/inventory.hpp"
 
-
 #include "font/fonts.hpp"
 #include "input/controller.hpp"
 #include "screen/game_session.hpp"

@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_APP_MENU_MANAGER_HPP
 #define HEADER_WINDSTILLE_APP_MENU_MANAGER_HPP
 
-
 #include "math/rect.hpp"
 
 class Pathname;

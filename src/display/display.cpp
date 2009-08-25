@@ -150,7 +150,6 @@ Display::fill_rounded_rect(const Rectf& rect, float radius, const Color& color)
               rect.right   - radius,
               rect.bottom  - radius);
 
-
   OpenGLState state;
 
   state.enable(GL_BLEND);

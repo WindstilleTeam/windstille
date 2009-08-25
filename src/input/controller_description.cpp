@@ -20,7 +20,6 @@
 
 #include "input/controller_description.hpp"
 
-
 ControllerDescription::ControllerDescription()
   : str_to_event(),
     id_to_event()

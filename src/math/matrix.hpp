@@ -30,7 +30,6 @@
 #ifndef HEADER_MATH_MATRIX_HPP
 #define HEADER_MATH_MATRIX_HPP
 
-
 class Vector3;
 
 //: 4x4 Matrix.

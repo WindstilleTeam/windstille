@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_APP_CONTROLLER_DEF_HPP
 #define HEADER_WINDSTILLE_APP_CONTROLLER_DEF_HPP
 
-
 #include "input/controller_description.hpp"
 
 enum InputEventName

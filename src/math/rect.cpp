@@ -27,7 +27,6 @@
 **    (if your name is missing here, please add it)
 */
 
-
 #include "math/rect.hpp"
 
 #define cl_min(a,b) ((a < b) ? a : b)

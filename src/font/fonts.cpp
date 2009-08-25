@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "font/border_font_effect.hpp"
 #include "font/fonts.hpp"
 

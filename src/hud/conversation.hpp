@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_HUD_CONVERSATION_HPP
 #define HEADER_WINDSTILLE_HUD_CONVERSATION_HPP
 
-
 #include "screen/screen.hpp"
 
 /** Displays a list of text strings from which the user can select

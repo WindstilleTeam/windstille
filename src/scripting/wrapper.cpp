@@ -4,7 +4,6 @@
  * DO NOT CHANGE
  */
 
-
 namespace Scripting
 {
 namespace Wrapper

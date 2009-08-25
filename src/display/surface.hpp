@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SURFACE_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SURFACE_HPP
 
-
 #include "math/rect.hpp"
 #include "display/texture.hpp"
 

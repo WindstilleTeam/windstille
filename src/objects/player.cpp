@@ -346,7 +346,6 @@ Player::find_useable_entity()
   return 0;  
 }
 
-
 void
 Player::update_stand(const Controller& controller)
 { 

@@ -18,7 +18,6 @@
 
 #include "input/input_configurator.hpp"
 
-
 #include "display/display.hpp"
 #include "font/fonts.hpp"
 #include "screen/screen_manager.hpp"

@@ -118,4 +118,3 @@ ScriptableObject::start_flash(float speed)
 
 /* EOF */
 
-

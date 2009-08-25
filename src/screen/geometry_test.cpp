@@ -95,7 +95,6 @@ GeometryTest::update(float delta, const Controller& controller)
         point_count = 0;
     }
 
-
   if (point_count == 0)
     {
       line1.p1 = cursor;

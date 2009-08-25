@@ -193,7 +193,6 @@ SliderMenuItem::draw(const Rectf& rect, bool is_active)
                              5.0f,
                              Color(0.75f*color.r, 0.75f*color.g, 0.75f*color.b, color.a));
 
-
   Display::draw_rounded_rect(Rectf(Vector2f(rect.right - 4.0f - total_width, rect.top + 4.0f),
                                    Sizef(total_width, rect.get_height() - 8)), 
                              5.0f,

@@ -20,7 +20,6 @@
 
 #include <boost/format.hpp>
 
-
 #include "app/config.hpp"
 #include "display/display.hpp"
 #include "display/opengl_window.hpp"

@@ -38,7 +38,6 @@ ControlPoint::~ControlPoint()
 {
 }
 
-
 void
 ControlPoint::on_move_start(GdkEventButton* /*event*/)
 {

@@ -30,7 +30,6 @@
 #ifndef __MATH_RECT_HPP__
 #define __MATH_RECT_HPP__
 
-
 #include "math/origin.hpp"
 #include "math/math.hpp"
 

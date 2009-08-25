@@ -1,7 +1,6 @@
 #ifndef __PROPERTIES_HPP__
 #define __PROPERTIES_HPP__
 
-
 #include "lisp/getters.hpp"
 #include "lisp/property_iterator.hpp"
 

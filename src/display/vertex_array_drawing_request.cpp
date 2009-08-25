@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "display/opengl_state.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 

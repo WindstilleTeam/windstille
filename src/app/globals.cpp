@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 int TILE_SIZE       = 32;
 int TILE_RESOLUTION = 64;
 

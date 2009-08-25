@@ -439,6 +439,5 @@ void ConfigValue<std::string>::write(lisp::Writer& writer) {
   writer.write_string(get_name(), data);
 }
 
-
 /* EOF */
 

@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_ARMATURE_ARMATURE_HPP
 #define HEADER_WINDSTILLE_ARMATURE_ARMATURE_HPP
 
-
 #include "armature/bone.hpp"
 #include "util/file_reader.hpp"
 

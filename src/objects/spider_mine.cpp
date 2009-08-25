@@ -157,5 +157,4 @@ SpiderMine::die()
   state = EXPLODE;
 }
 
-
 /* EOF */

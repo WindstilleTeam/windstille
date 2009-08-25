@@ -58,7 +58,6 @@ enum Origin
 
 typedef origin::Origin Origin;
 
-
 //: Returns the anchor point for the origin within the dimensions of the size structure.
 //- !group=Display/Display 2D!
 //- !header=display.h!

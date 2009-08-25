@@ -18,7 +18,6 @@
 
 #include "math/quaternion.hpp"
 
-
 float
 Quaternion::magnitude() const
 {

@@ -102,7 +102,6 @@ ParticleViewer::update(float delta, const Controller& controller)
   for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
     (*i)->update(delta);
 
-
   pos.x -= controller.get_axis_state(X_AXIS) * delta * 400.0f;
   pos.y -= controller.get_axis_state(Y_AXIS) * delta * 400.0f;
 

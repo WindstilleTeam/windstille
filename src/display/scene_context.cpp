@@ -176,7 +176,6 @@ SceneContext::reset_modelview()
   impl->control.reset_modelview();
 }
 
-
 void draw_disc(int count)
 {
   float radius = static_cast<float>(count) * 2.0f;
@@ -283,7 +282,6 @@ SceneContext::render_with_framebuffers()
       Display::pop_framebuffer();
     }
 
-
   if (impl->render_mask & LIGHTMAP)
     { // Renders the lightmap to the screen
       Display::push_framebuffer(impl->framebuffers->screen);
@@ -383,7 +381,6 @@ SceneContext::render_without_framebuffers()
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       impl->color.render(*this);
     }
-
 
   if (impl->render_mask & LIGHTMAP)
     { // Renders the lightmap to the screen     

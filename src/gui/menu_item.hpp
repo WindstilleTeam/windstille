@@ -21,7 +21,6 @@
 
 #include <boost/signal.hpp>
 
-
 namespace gui {
 
 class MenuComponent;

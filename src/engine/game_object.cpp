@@ -20,5 +20,4 @@
 
 Sector* GameObject::world;
 
-
 /* EOF */

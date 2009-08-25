@@ -18,7 +18,6 @@
 
 #include "hud/dialog_manager.hpp"
 
-
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
 #include "input/controller.hpp"

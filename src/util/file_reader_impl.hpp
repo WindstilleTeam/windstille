@@ -54,7 +54,6 @@ public:
   virtual std::vector<std::string> get_section_names() const =0;
 };
 
-
 #endif
 
 /* EOF */

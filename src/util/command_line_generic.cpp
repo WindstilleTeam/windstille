@@ -33,7 +33,6 @@
 
 #include "util/command_line_generic.hpp"
 
-
 #ifdef WIN32
 #define snprintf _snprintf
 #endif
