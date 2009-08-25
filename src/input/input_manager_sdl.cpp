@@ -234,7 +234,7 @@ InputManagerSDL::parse_config(FileReader& reader)
 }
 
 InputManagerSDL::InputManagerSDL(const ControllerDescription& controller_description)
-  : InputManagerImpl(controller_description),
+  : InputManager(controller_description),
     impl(new InputManagerSDLImpl)
 {
   for (int i = 0; i < SDLK_LAST; ++i) {
@@ -758,7 +758,7 @@ InputManagerSDL::add_axis_event(int name, float pos)
         }
     }
 
-  InputManagerImpl::add_axis_event(name, pos);
+  InputManager::add_axis_event(name, pos);
 }
 
 /* EOF */

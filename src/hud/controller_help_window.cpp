@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "input/input_manager.hpp"
+#include "input/input_manager_sdl.hpp"
 #include "display/display.hpp"
 #include "hud/controller_help_window.hpp"
 
@@ -82,7 +82,7 @@ ControllerHelpWindow::draw_trigger(const Vector2f& pos, float value)
 void
 ControllerHelpWindow::draw()
 {
-  const Controller& controller = InputManager::current()->get_controller();
+  const Controller& controller = InputManagerSDL::current()->get_controller();
 
   Vector2f pos(static_cast<float>(Display::get_width())  - 350.0f - 16.0f, 
                static_cast<float>(Display::get_height()) - 200.0f - 16.0f);

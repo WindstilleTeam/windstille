@@ -18,11 +18,11 @@
 
 #include <SDL.h>
 
-#include "display/display.hpp"
 #include "collision/collision_engine.hpp"
-#include "objects/player.hpp"
+#include "display/display.hpp"
 #include "engine/sector.hpp"
-#include "input/input_manager.hpp"
+#include "input/input_manager_sdl.hpp"
+#include "objects/player.hpp"
 #include "screen/view.hpp"
 
 View::View()
@@ -71,7 +71,7 @@ View::update (float delta)
   if (keystate[SDLK_KP_MINUS])
     zoom *= 1.0f - delta;
 
-  const Controller& controller = InputManager::current()->get_controller();
+  const Controller& controller = InputManagerSDL::current()->get_controller();
 
   if (controller.get_button_state(DEBUG_BUTTON))
     {

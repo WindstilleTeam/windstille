@@ -19,7 +19,7 @@
 #include "display/display.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
-#include "input/input_manager.hpp"
+#include "input/input_manager_sdl.hpp"
 #include "screen/game_session.hpp"
 
 Console console;
@@ -200,7 +200,7 @@ ConsoleImpl::update(float delta)
 
   if (active)
     {
-      InputEventLst events = InputManager::current()->get_controller().get_events();
+      InputEventLst events = InputManagerSDL::current()->get_controller().get_events();
   
       for (InputEventLst::iterator i = events.begin(); i != events.end(); ++i)
         {
@@ -541,7 +541,7 @@ void
 Console::activate()
 {
   // Get rid of all input events so that we don't double press
-  InputManager::current()->clear();
+  InputManagerSDL::current()->clear();
   impl->active = true;
 
   SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);

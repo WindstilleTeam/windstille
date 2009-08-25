@@ -22,7 +22,7 @@
 #include <SDL.h>
 #include <boost/scoped_ptr.hpp>
 
-#include "input/input_manager_impl.hpp"
+#include "input/input_manager.hpp"
 #include "util/currenton.hpp"
 
 class FileReader;
@@ -94,7 +94,7 @@ struct WiimoteAxisBinding
 };
 
 /** */
-class InputManagerSDL : public InputManagerImpl,
+class InputManagerSDL : public InputManager,
                         public Currenton<InputManagerSDL>
 {
 public:
@@ -127,7 +127,7 @@ public:
 
   void on_event(const SDL_Event& event);
 
-  void add_axis_event  (int name, float pos);
+  void add_axis_event(int name, float pos);
 
 private:
   void on_key_event(const SDL_KeyboardEvent& key);

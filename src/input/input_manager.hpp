@@ -19,34 +19,36 @@
 #ifndef HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_HPP
 #define HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_HPP
 
-#include <string>
-#include <vector>
-#include <boost/scoped_ptr.hpp>
-
 #include "input/controller.hpp"
 #include "input/input_event.hpp"
 #include "util/currenton.hpp"
 
-class InputManagerImpl;
-
-/** */
-class InputManager : public Currenton<InputManager>
+class InputManager
 {
+protected:
+  ControllerDescription controller_description;
+  Controller controller;
+
 public:
-  InputManager(const ControllerDescription& controller_description);
-  ~InputManager();
+  InputManager(const ControllerDescription& controller_description_) 
+    : controller_description(controller_description_),
+      controller() 
+  {}
+  virtual ~InputManager() {}
 
-  /** Load configuration file \a filename */
-  void load(const std::string& filename);
-
-  void update(float delta);
-  const ControllerDescription& get_controller_description() const;
+  virtual void load(const std::string& filename) =0;
+  virtual void update(float delta) =0;
+  
+  const ControllerDescription& get_controller_description() const { return controller_description; }
   const Controller& get_controller() const;
   void clear();
 
-private:
-  boost::scoped_ptr<InputManagerImpl> impl;
+  virtual void add_axis_event  (int name, float pos);
+  virtual void add_ball_event  (int name, float pos);
+  virtual void add_button_event(int name, bool down);
+  virtual void add_keyboard_event(int name, KeyboardEvent::KeyType key_type, int code);
 
+private:
   InputManager(const InputManager&);
   InputManager& operator=(const InputManager&);
 };

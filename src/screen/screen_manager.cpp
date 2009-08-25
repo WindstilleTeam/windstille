@@ -79,17 +79,17 @@ ScreenManager::run()
 
     while (delta > step)
     {
-      InputManager::current()->update(delta);
+      InputManagerSDL::current()->update(delta);
 
       console.update(step);
       if (!console.is_active())
       {
         if (!overlay_screens.empty())
-          overlay_screens.back()->update(step, InputManager::current()->get_controller());
+          overlay_screens.back()->update(step, InputManagerSDL::current()->get_controller());
         else if (!screens.empty())
-          screens.back()->update(step, InputManager::current()->get_controller());
+          screens.back()->update(step, InputManagerSDL::current()->get_controller());
       }
-      InputManager::current()->clear();
+      InputManagerSDL::current()->clear();
   
       delta -= step;
     }

@@ -26,7 +26,7 @@
 #include "display/texture_manager.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
-#include "input/input_manager.hpp"
+#include "input/input_manager_sdl.hpp"
 #include "screen/game_session.hpp"
 #include "screen/particle_viewer.hpp"
 #include "screen/screen_manager.hpp"
@@ -75,7 +75,7 @@ WindstilleMain::main(int argc, char** argv)
       sprite3d::Manager sprite3d_manager;
       ScriptManager     script_manager;
       WindstilleControllerDescription controller_description;
-      InputManager      input_manager(controller_description);
+      InputManagerSDL   input_manager(controller_description);
       TileFactory       tile_factory("tiles.scm");
 
       init_modules();
@@ -157,12 +157,12 @@ WindstilleMain::init_modules()
     
   {     
     if (config.get<std::string>("primary-controller-file").is_set())
-      InputManager::current()->load(config.get<std::string>("primary-controller-file").get());
+      InputManagerSDL::current()->load(config.get<std::string>("primary-controller-file").get());
     else
-      InputManager::current()->load("controller/keyboard.scm");
+      InputManagerSDL::current()->load("controller/keyboard.scm");
 
     if (config.get<std::string>("secondary-controller-file").is_set())
-      InputManager::current()->load(config.get<std::string>("secondary-controller-file").get());
+      InputManagerSDL::current()->load(config.get<std::string>("secondary-controller-file").get());
   }
 }
 

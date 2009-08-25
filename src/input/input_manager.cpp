@@ -16,49 +16,68 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "input/input_manager_sdl.hpp"
 #include "input/input_manager.hpp"
 
-InputManager::InputManager(const ControllerDescription& controller_description)
-  : impl(new InputManagerSDL(controller_description))
+void
+InputManager::add_axis_event(int name, float pos)
 {
-}
+  InputEvent event;
 
-InputManager::~InputManager()
-{
+  event.type = AXIS_EVENT;
+  event.axis.name = name;
+  event.axis.pos  = pos;
+
+  controller.add_event(event);
+  controller.set_axis_state(name, pos);
 }
 
 void
-InputManager::load(const std::string& filename)
+InputManager::add_ball_event  (int name, float pos)
 {
-  impl->load(filename);
+  InputEvent event;
+
+  event.type = BALL_EVENT;
+  event.axis.name = name;
+  event.axis.pos  = pos;
+
+  controller.add_event(event);
+  controller.set_ball_state(name, pos);  
 }
 
 void
-InputManager::update(float delta)
+InputManager::add_button_event(int name, bool down)
 {
-  assert(impl);
-  impl->update(delta);
+  InputEvent event;
+
+  event.type = BUTTON_EVENT;
+  event.button.name = name;
+  event.button.down = down;
+
+  controller.add_event(event);
+  controller.set_button_state(name, down);
 }
 
-const ControllerDescription&
-InputManager::get_controller_description() const
+void
+InputManager::add_keyboard_event(int , KeyboardEvent::KeyType key_type, int code)
 {
-  assert(impl);
-  return impl->get_controller_description();
-}
+  InputEvent event;
+  event.type = KEYBOARD_EVENT;
+  event.keyboard.key_type = key_type;
+  event.keyboard.code     = code;
 
-const Controller&
-InputManager::get_controller() const
-{
-  assert(impl);
-  return impl->get_controller();
+  controller.add_event(event);
 }
 
 void
 InputManager::clear()
 {
-  impl->clear();
+  controller.clear();
+}
+
+const Controller&
+InputManager::get_controller() const
+{
+  return controller;
 }
 
 /* EOF */

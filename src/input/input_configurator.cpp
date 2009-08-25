@@ -103,13 +103,13 @@ InputConfigurator::print_item()
       if (item.mode == ConfigureItem::CONFIGURE_AXIS)
         {
           out << "Configuring " 
-              << InputManager::current()->get_controller_description().get_definition(item.event_id).name
+              << InputManagerSDL::current()->get_controller_description().get_definition(item.event_id).name
               << ": " << std::endl;
         }
       else if (item.mode == ConfigureItem::CONFIGURE_BUTTON)
         {
           out << "Configuring " 
-              << InputManager::current()->get_controller_description().get_definition(item.event_id).name 
+              << InputManagerSDL::current()->get_controller_description().get_definition(item.event_id).name 
               << ": " << std::endl;
         }
     }
