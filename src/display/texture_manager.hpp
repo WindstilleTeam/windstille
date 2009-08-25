@@ -53,8 +53,6 @@ private:
   Textures textures;
 };
 
-extern TextureManager* texture_manager;
-
 #endif
 
 /* EOF */
