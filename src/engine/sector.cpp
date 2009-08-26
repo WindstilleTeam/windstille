@@ -180,7 +180,9 @@ Sector::activate()
 
   if (!init_script.empty())
     {
-      vm = ScriptManager::current()->run_script_file(get_directory() + init_script);
+      Pathname path = get_directory();
+      path.append_path(init_script);
+      vm = ScriptManager::current()->run_script_file(path);
     }
 }
 
@@ -306,13 +308,10 @@ Sector::get_filename () const
   return filename;
 }
 
-std::string
+Pathname
 Sector::get_directory() const
 {
-  // FIXME: Not pretty
-  std::string directory = filename.get_physfs_path();
-  directory.erase(directory.rfind('/')+1);
-  return directory;
+  return filename.get_dirname();
 }
 
 void

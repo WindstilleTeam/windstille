@@ -34,7 +34,7 @@ View::View()
 }
 
 void
-View::draw (SceneContext& sc)
+View::draw(SceneContext& sc, Sector& sector)
 {
   if (camera.get_zoom() == 1.0)
     {
@@ -50,10 +50,10 @@ View::draw (SceneContext& sc)
 
   state.push(sc);
 
-  Sector::current()->draw(sc);
+  sector.draw(sc);
 
   if (collision_debug)
-    Sector::current()->get_collision_engine()->draw(sc.highlight());
+    sector.get_collision_engine()->draw(sc.highlight());
 
   state.pop(sc);
 }

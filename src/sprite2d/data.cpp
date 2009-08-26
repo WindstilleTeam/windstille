@@ -40,8 +40,7 @@ SpriteData::SpriteData(const Pathname& pathname)
         throw std::runtime_error(msg.str());
       }
     
-      std::string dir = dirname(pathname.get_physfs_path());
-      parse(dir, reader);
+      parse(pathname.get_dirname(), reader);
     }
     else if (ext == "png" || ext == "jpg")
     {
@@ -98,7 +97,7 @@ SpriteData::~SpriteData()
 }
 
 void
-SpriteData::parse(const std::string& dir, FileReader& reader)
+SpriteData::parse(const Pathname& dir, FileReader& reader)
 {
   std::vector<FileReader> sections = reader.get_sections();
   for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
@@ -109,7 +108,7 @@ SpriteData::parse(const std::string& dir, FileReader& reader)
 }
 
 SpriteAction*
-SpriteData::parse_action(const std::string& dir, FileReader& reader)
+SpriteData::parse_action(const Pathname& dir, FileReader& reader)
 {
   std::auto_ptr<SpriteAction> action (new SpriteAction);
   action->speed = 1.0;
@@ -129,7 +128,9 @@ SpriteData::parse_action(const std::string& dir, FileReader& reader)
 
       for(std::vector<std::string>::iterator file = image_files.begin(); file != image_files.end(); ++file)
         {
-          action->surfaces.push_back(SurfaceManager::current()->get(Pathname(dir + "/" + *file)));
+          Pathname path = dir;
+          path.append_path(*file);
+          action->surfaces.push_back(SurfaceManager::current()->get(path));
         }
     }
   else if(reader.get("image-grid", grid_reader)) 
@@ -145,8 +146,9 @@ SpriteData::parse_action(const std::string& dir, FileReader& reader)
       if(filename.empty() || x_size <= 0 || y_size <= 0)
         throw std::runtime_error("Invalid or too few data in image-grid");
       
-      SurfaceManager::current()->load_grid(Pathname(dir + "/" + filename),
-                                           action->surfaces, x_size, y_size);
+      Pathname path = dir;
+      path.append_path(filename);
+      SurfaceManager::current()->load_grid(path, action->surfaces, x_size, y_size);
     }
     
   if(action->name == "")

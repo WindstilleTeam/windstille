@@ -80,7 +80,7 @@ public:
   ~Sector();
 
   Pathname get_filename() const;
-  std::string get_directory() const;
+  Pathname get_directory() const;
 
   void draw(SceneContext& gc);
   void update(float delta);

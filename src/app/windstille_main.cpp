@@ -156,7 +156,7 @@ WindstilleMain::init_modules()
   SoundManager::current()->enable_sound(config.get_bool("sound"));
   SoundManager::current()->enable_music(config.get_bool("music"));
 
-  ScriptManager::current()->run_script_file("scripts/windstille.nut", true);
+  ScriptManager::current()->run_script_file(Pathname("scripts/windstille.nut"), true);
     
   {     
     if (config.get<std::string>("primary-controller-file").is_set())

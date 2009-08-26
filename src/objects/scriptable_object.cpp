@@ -116,7 +116,9 @@ ScriptableObject::use()
     {
       try 
         {
-          ScriptManager::current()->run_script_file(Sector::current()->get_directory() + name + ".nut");
+          Pathname path = Sector::current()->get_directory();
+          path.append_path(name).append_text(".nut");
+          ScriptManager::current()->run_script_file(path);
         }
       catch (std::exception& e) 
         {

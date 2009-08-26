@@ -381,7 +381,11 @@ SQInteger spawn_object(HSQUIRRELVM v)
 void spawn_script(const std::string& filename)
 {
   if (ScriptManager::current())
-    ScriptManager::current()->run_script_file(Sector::current()->get_directory() + filename);
+  {
+    Pathname path = Sector::current()->get_directory();
+    path.append_path(filename);
+    ScriptManager::current()->run_script_file(path);
+  }
 }
 
 SQInteger spawn_function(HSQUIRRELVM v)

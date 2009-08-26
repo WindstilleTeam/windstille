@@ -20,6 +20,7 @@
 #include <vector>
 #include <stdexcept>
 #include <sstream>
+#include <fstream>
 
 #include <ft2build.h>
 
@@ -70,7 +71,7 @@ TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect)
 
   impl->size = size_;
 
-  IFileStream fin(filename.get_physfs_path());
+  std::ifstream fin(filename.get_sys_path().c_str(), std::ios::binary);
   std::istreambuf_iterator<char> first(fin), last;
   std::vector<char> buffer(first, last); 
 

@@ -49,7 +49,7 @@ public:
   Rectf get_clip_rect();
   Vector2f screen_to_world(const Vector2f& point);
 
-  void draw(SceneContext& gc);
+  void draw(SceneContext& gc, Sector& sector);
   void update(float delta);
 };
 

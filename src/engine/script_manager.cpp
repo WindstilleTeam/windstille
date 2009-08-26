@@ -23,6 +23,7 @@
 #include <sqstdaux.h>
 #include <sqstdmath.h>
 #include <sqstdstring.h>
+#include <fstream>
 
 #include "engine/squirrel_thread.hpp"
 #include "app/console.hpp"
@@ -128,16 +129,16 @@ ScriptManager::create_script(HSQUIRRELVM parent_vm, bool isolated)
 }
 
 boost::shared_ptr<SquirrelThread>
-ScriptManager::run_script_file(const std::string& filename, bool global)
+ScriptManager::run_script_file(const Pathname& filename, bool global)
 {
-  IFileStream in(filename);
+  std::ifstream in(filename.get_sys_path().c_str());
 
   if (global)
     {
       // Scripts run in the global namespace must not suspend
 
       // Compile the script and push it on the stack
-      if(sq_compile(vm, squirrel_read_char, &in, filename.c_str(), true) < 0)
+      if (sq_compile(vm, squirrel_read_char, &in, filename.get_sys_path().c_str(), true) < 0)
         throw SquirrelError(vm, "Couldn't parse script");
 
       // Set 'this' environment
@@ -146,7 +147,9 @@ ScriptManager::run_script_file(const std::string& filename, bool global)
       // Execute the script
       if (SQ_FAILED(sq_call(vm, 1, false, true)))
         {
-          throw SquirrelError(vm, "SquirrelThread::run(): " + filename + ": Couldn't start script");
+          std::ostringstream str;
+          str << "SquirrelThread::run(): " << filename << ": Couldn't start script";
+          throw SquirrelError(vm, str.str());
         }
       else
         {
@@ -154,7 +157,9 @@ ScriptManager::run_script_file(const std::string& filename, bool global)
 
           if (sq_getvmstate(vm) != SQ_VMSTATE_IDLE)
             {
-              throw std::runtime_error("ScriptManager::run_script(): '" + filename + "': global scripts must not suspend");
+              std::ostringstream str;
+              str << "ScriptManager::run_script(): '" << filename << "': global scripts must not suspend";
+              throw std::runtime_error(str.str());
             }
 
           return boost::shared_ptr<SquirrelThread>();
@@ -184,7 +189,9 @@ ScriptManager::run_script_file(const std::string& filename, bool global)
             }
           else
             {
-              throw std::runtime_error(filename + ": ScriptManager::run_script(): Script must be idle to be 'run()'");
+              std::ostringstream str;
+              str << filename << ": ScriptManager::run_script(): Script must be idle to be 'run()'";
+              throw std::runtime_error(str.str());
             }
         }
       else

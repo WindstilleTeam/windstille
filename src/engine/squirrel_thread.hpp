@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_ENGINE_SQUIRREL_VM_HPP
 
 #include "engine/script_manager.hpp"
+#include "util/pathname.hpp"
 
 class SquirrelThread
 {
@@ -30,7 +31,7 @@ private:
   HSQUIRRELVM thread;
   HSQOBJECT   thread_obj;
 
-  std::string filename;
+  Pathname filename;
   SQInteger oldtop;
     
   ScriptManager::WakeupData  waiting_for_events;
@@ -43,7 +44,7 @@ public:
   ~SquirrelThread();
 
   /** Load a script into the new thread */
-  void load(std::istream& in, const std::string& filename);
+  void load(std::istream& in, const Pathname& filename);
 
   /** Load function at position \a idx into this SquirrelThread and
       execute it */
@@ -61,7 +62,7 @@ public:
   bool is_suspended() const;
   bool is_idle() const;
 
-  std::string get_filename() const { return filename; }
+  Pathname get_filename() const { return filename; }
   HSQUIRRELVM get_thread() const { return thread; }
   void call(const std::string& function);
 

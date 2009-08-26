@@ -18,6 +18,8 @@
 
 #include "engine/squirrel_thread.hpp"
 
+#include <sstream>
+
 #include "app/globals.hpp"
 #include "scripting/squirrel_error.hpp"
 
@@ -109,14 +111,14 @@ SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm_, bool isolated_)
 }
 
 void
-SquirrelThread::load(std::istream& in, const std::string& filename_)
+SquirrelThread::load(std::istream& in, const Pathname& filename_)
 {
   filename = filename_;
 
   oldtop = sq_gettop(thread);
 
   // compile the script and push it on the stack
-  if(SQ_FAILED(sq_compile(thread, squirrel_read_char, &in, filename.c_str(), SQTrue)))
+  if (SQ_FAILED(sq_compile(thread, squirrel_read_char, &in, filename.get_sys_path().c_str(), SQTrue)))
     {
       throw SquirrelError(thread, filename, "Couldn't parse script");
     }
@@ -133,8 +135,9 @@ SquirrelThread::load(std::istream& in, const std::string& filename_)
         {
           if (sq_getvmstate(thread) != SQ_VMSTATE_IDLE)
             {
-              throw SquirrelError(thread, filename, "SquirrelThread::load(): Script '" + filename +
-                                  "' must not suspend outside of run call");
+              std::ostringstream str;
+              str << "SquirrelThread::load(): Script '" << filename << "' must not suspend outside of run call";
+              throw SquirrelError(thread, filename, str.str());
             }
           sq_pop(thread, 1); // pop the compiled closure
         }

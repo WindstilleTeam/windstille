@@ -17,9 +17,32 @@
 */
 
 #include "scripting/squirrel_error.hpp"
+
 #include <sstream>
 
+#include "util/pathname.hpp"
+
 namespace Scripting {
+
+SquirrelError::SquirrelError(HSQUIRRELVM v, const Pathname& path, const std::string& message_) throw()
+  : message()
+{
+  std::ostringstream msg;
+  msg << "Squirrel error: " << path << ": " << message_ << " (";
+  const char* lasterr;
+  sq_getlasterror(v);
+  if(sq_gettype(v, -1) != OT_STRING)
+  {
+    lasterr = "no error info";
+  }
+  else
+  {
+    sq_getstring(v, -1, &lasterr);
+  }
+  sq_pop(v, 1);
+  msg << lasterr << ")";
+  message = msg.str();
+}
 
 SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& context, const std::string& message_) throw()
   : message()

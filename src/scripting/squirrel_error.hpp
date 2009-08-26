@@ -22,6 +22,8 @@
 #include <squirrel.h>
 #include <stdexcept>
 
+class Pathname;
+
 namespace Scripting
 {
 
@@ -32,6 +34,7 @@ namespace Scripting
 class SquirrelError : public std::exception
 {
 public:
+  SquirrelError(HSQUIRRELVM v, const Pathname& path, const std::string& message) throw();
   SquirrelError(HSQUIRRELVM v, const std::string& context, const std::string& message) throw();
   SquirrelError(HSQUIRRELVM v, const std::string& message) throw();
   virtual ~SquirrelError() throw();

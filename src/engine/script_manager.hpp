@@ -35,6 +35,7 @@
 
 class SquirrelThread;
 class GameObject;
+class Pathname;
 
 /**
  * This class is responsible for managing all running squirrel threads
@@ -85,7 +86,7 @@ public:
   void update();
 
   /** Load script from \a filename and runs it */
-  boost::shared_ptr<SquirrelThread> run_script_file(const std::string& filename, bool global = false);
+  boost::shared_ptr<SquirrelThread> run_script_file(const Pathname& filename, bool global = false);
   boost::shared_ptr<SquirrelThread> create_script(HSQUIRRELVM parent_vm, bool isolated);
 
   HSQUIRRELVM get_vm() const { return vm; }

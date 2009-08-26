@@ -139,7 +139,7 @@ GameSession::~GameSession()
 void
 GameSessionImpl::draw()
 {
-  view.draw(sc);
+  view.draw(sc, *sector);
 
   // Render the scene to the screen
   sc.render();

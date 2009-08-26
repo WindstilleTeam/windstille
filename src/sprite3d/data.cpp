@@ -114,7 +114,7 @@ Data::Data(const Pathname& filename)
       Mesh& mesh = *i;
 
       std::string texturename = read_string(file, 64);
-      texturename = dirname(filename.get_physfs_path()) + basename(texturename);
+      texturename = filename.get_dirname().get_physfs_path() + basename(texturename);
       mesh.triangle_count = read_uint16_t(file);
       mesh.vertex_count   = read_uint16_t(file);
 
