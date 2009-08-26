@@ -122,8 +122,11 @@ class Project:
             }        
 
     def build_all(self):
+        self.env = Environment()
+
         if not GetOption('clean'):
             self.configure()
+        
         self.build_squirrel()
         self.build_miniswig()
         self.build_binreloc()
@@ -134,8 +137,6 @@ class Project:
         self.build_testapps()
         
     def configure(self):
-        self.env = Environment()
-
         # FIXME: None of the options are used, as only self.features
         # makes it across function calls
         
@@ -261,8 +262,8 @@ class Project:
         windstille_env = self.env.Clone()
         windstille_env.Append(CPPPATH=['src', '.', 'external/SQUIRREL2/include/', 'src/scripting/'],
                               CPPDEFINES=["HAVE_BINRELOC"],
-                              LIBS=[self.particles_lib, self.navgraph_lib, self.display_lib, self.physfs_lib,
-                                    self.util_lib, self.math_lib,
+                              LIBS=[self.particles_lib, self.navgraph_lib, self.display_lib, 
+                                    self.util_lib, self.math_lib, self.physfs_lib,
                                     self.binreloc_lib, self.squirrel_lib, 
                                     'GL', 'GLU', 'GLEW',
                                     'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png',
