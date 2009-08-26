@@ -59,6 +59,8 @@ public:
 
   int num_vertices() const;
 
+  void clear();
+
   void set_mode(GLenum mode_);
   void set_texture(Texture texture);
   void set_blend_func(GLenum sfactor, GLenum dfactor);

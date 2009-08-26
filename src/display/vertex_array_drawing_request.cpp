@@ -39,6 +39,14 @@ VertexArrayDrawingRequest::num_vertices() const
 }
 
 void
+VertexArrayDrawingRequest::clear()
+{
+  colors.clear();
+  texcoords.clear();
+  vertices.clear();
+}
+
+void
 VertexArrayDrawingRequest::draw(const Texture& /*tmp_texture*/)
 {
   draw(0, num_vertices());
