@@ -10,10 +10,20 @@ on this list and always think about how useful a new feature would be
 in the context of the whole game or if a potential performance
 enhanchment, actually enhanchmes anything at all.
 
+SceneGraph
+==========
+
+* extract the scene composition from SceneContext and turn it into its
+  own class
+
+* write a object/decal.hpp class for use with the new level format
+
+* change the editor to use the SceneGraph instead of the SceneContext API
+
 Porting
 =======
 
-Microsoft compiler don't have inttypes.h, need to write a replacement header
+* Microsoft compiler don't have inttypes.h, need to write a replacement header
 
 Logging
 =======
