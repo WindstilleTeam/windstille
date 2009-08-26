@@ -19,7 +19,10 @@
 #include "sprite3d/data.hpp"
 
 #include <boost/scoped_array.hpp>
+#include <fstream>
 #include <physfs.h>
+#include <string.h>
+#include <errno.h>
 #include <stdexcept>
 
 #include "util/util.hpp"
@@ -29,51 +32,51 @@ namespace sprite3d {
 
 static const int FORMAT_VERSION = 2;
 
-static inline float read_float(PHYSFS_file* file)
+static inline float read_float(std::istream& in)
 {
   float result;
-
-  if(PHYSFS_readULE32(file, reinterpret_cast<PHYSFS_uint32*>(&result)) == 0) 
+  
+  if (!in.read(reinterpret_cast<char*>(&result), sizeof(result)))
   {
     std::ostringstream msg;
-    msg << "Problem reading float value: " << PHYSFS_getLastError();
+    msg << "Problem reading float value: " << strerror(errno);
     throw std::runtime_error(msg.str());
   }
   else
   {
-    // FIXME: is this platform independent? -> should be, since
-    // endianess is handled in readULE32
     return result;
   }
 }
 
-static inline uint16_t read_uint16_t(PHYSFS_file* file)
+static inline uint16_t read_uint16_t(std::istream& in)
 {
   uint16_t result;
-  if(PHYSFS_readULE16(file, &result) == 0) 
+
+  if (!in.read(reinterpret_cast<char*>(&result), sizeof(result)))
   {
     std::ostringstream msg;
-    msg << "Problem reading uint16 value: " << PHYSFS_getLastError();
+    msg << "Problem reading uint16 value: " << strerror(errno);
     throw std::runtime_error(msg.str());
   }
-  return result;
+  {
+    return result;
+  }
 }
 
-static inline std::string read_string(PHYSFS_file* file, size_t size)
+static inline std::string read_string(std::istream& in, size_t size)
 {
   boost::scoped_array<char> buffer(new char[size+1]);
-  if(PHYSFS_read(file, buffer.get(), size, 1) != 1) 
+
+  if (!in.read(reinterpret_cast<char*>(buffer.get()), size))
   {
     std::ostringstream msg;
-    msg << "Problem reading string value: " << PHYSFS_getLastError();
+    msg << "Problem reading string value: " << strerror(errno);
     throw std::runtime_error(msg.str());
   }
   else
   {
-    buffer[size] = 0;
-    std::string ret = buffer.get();
-
-    return ret;
+    buffer[size] = '\0';
+    return std::string(buffer.get());
   }
 }
 
@@ -82,123 +85,136 @@ Data::Data(const Pathname& filename)
     attachment_points(),
     actions()
 {
-  PHYSFS_file* file = PHYSFS_openRead(filename.get_physfs_path().c_str());
-  if(!file) {
+  std::ifstream in(filename.get_sys_path().c_str(), std::ios::binary);
+
+  if (!in) 
+  {
     std::ostringstream msg;
-    msg << "Couldn't open '" << filename << "': "
-        << PHYSFS_getLastError();
+    msg << "Couldn't open '" << filename << "'";
     throw std::runtime_error(msg.str());
   }
 
-  try {
-    std::string magic = read_string(file, 4);
+  try 
+  {
+    std::string magic = read_string(in, 4);
     if(magic != "W3DS")
       throw std::runtime_error("Not a windstille 3d sprite file");
-    uint16_t format_version = read_uint16_t(file);
+    uint16_t format_version = read_uint16_t(in);
     if(format_version > FORMAT_VERSION)
       throw std::runtime_error("sprite file format too new");
     if(format_version < FORMAT_VERSION)
       throw std::runtime_error("sprite file format too old");
 
-    uint16_t mesh_count = read_uint16_t(file);
+    uint16_t mesh_count = read_uint16_t(in);
     if(mesh_count == 0)
       throw std::runtime_error("Sprite3D contains no meshs");
-    uint16_t attachment_point_count = read_uint16_t(file);
-    uint16_t action_count = read_uint16_t(file);
+    uint16_t attachment_point_count = read_uint16_t(in);
+    uint16_t action_count = read_uint16_t(in);
     if(action_count == 0)
       throw std::runtime_error("Sprite3D contains no actions");
 
     // read meshs
     meshs.resize(mesh_count);
-    for(std::vector<Mesh>::iterator i = meshs.begin(); i != meshs.end(); ++i) {
+    for(std::vector<Mesh>::iterator i = meshs.begin(); i != meshs.end(); ++i) 
+    {
       Mesh& mesh = *i;
 
-      std::string texturename = read_string(file, 64);
+      std::string texturename = read_string(in, 64);
       texturename = filename.get_dirname().get_physfs_path() + basename(texturename);
-      mesh.triangle_count = read_uint16_t(file);
-      mesh.vertex_count   = read_uint16_t(file);
+      mesh.triangle_count = read_uint16_t(in);
+      mesh.vertex_count   = read_uint16_t(in);
 
       mesh.texture = TextureManager::current()->get(Pathname(texturename));
 
       // read triangles
       mesh.vertex_indices.reserve(mesh.triangle_count * 3);
-      for(uint16_t v = 0; v < mesh.triangle_count * 3; ++v) {
-        mesh.vertex_indices.push_back(read_uint16_t(file));
+      for(uint16_t v = 0; v < mesh.triangle_count * 3; ++v) 
+      {
+        mesh.vertex_indices.push_back(read_uint16_t(in));
       }
       
       mesh.normals.reserve(mesh.triangle_count * 3);
-      for(uint16_t n = 0; n < mesh.triangle_count * 3; ++n) {
-        mesh.normals.push_back(read_float(file));
+      for(uint16_t n = 0; n < mesh.triangle_count * 3; ++n) 
+      {
+        mesh.normals.push_back(read_float(in));
       }
 
       mesh.tex_coords.reserve(mesh.vertex_count * 2);
-      for(uint16_t v = 0; v < mesh.vertex_count * 2; ++v) {
-        mesh.tex_coords.push_back(read_float(file));
+      for(uint16_t v = 0; v < mesh.vertex_count * 2; ++v) 
+      {
+        mesh.tex_coords.push_back(read_float(in));
       }
     }
 
     // read attachment points
     attachment_points.reserve(attachment_point_count);
-    for(uint16_t a = 0; a < attachment_point_count; ++a) {
-      attachment_points.push_back(read_string(file, 64));
+    for(uint16_t a = 0; a < attachment_point_count; ++a) 
+    {
+      attachment_points.push_back(read_string(in, 64));
     }
 
     // read actions
     actions.resize(action_count);
-    for(std::vector<Action>::iterator i = actions.begin(); i != actions.end(); ++i) {
+    for(std::vector<Action>::iterator i = actions.begin(); i != actions.end(); ++i) 
+    {
       Action& action = *i;
 
-      action.name = read_string(file, 64);
-      action.speed = read_float(file);
-      uint16_t marker_count = read_uint16_t(file);
-      uint16_t frame_count  = read_uint16_t(file);
+      action.name = read_string(in, 64);
+      action.speed = read_float(in);
+      uint16_t marker_count = read_uint16_t(in);
+      uint16_t frame_count  = read_uint16_t(in);
 
       // read markers
       action.markers.resize(marker_count);
-      for(uint16_t m = 0; m < action.markers.size(); ++m) {
+      for(uint16_t m = 0; m < action.markers.size(); ++m) 
+      {
         Marker& marker = action.markers[m];
-        marker.name  = read_string(file, 64);
-        marker.frame = read_uint16_t(file);
+        marker.name  = read_string(in, 64);
+        marker.frame = read_uint16_t(in);
       }
 
       // read frames
       action.frames.resize(frame_count);
-      for(uint16_t f = 0; f < action.frames.size(); ++f) {
+      for(uint16_t f = 0; f < action.frames.size(); ++f) 
+      {
         ActionFrame& frame = action.frames[f];
         
         frame.meshs.resize(mesh_count);
-        for(uint16_t m = 0; m < mesh_count; ++m) {
+        for(uint16_t m = 0; m < mesh_count; ++m) 
+        {
           MeshVertices& mesh = frame.meshs[m];
 
           mesh.vertices.resize(meshs[m].vertex_count * 3);
-          for(uint16_t v = 0; v < meshs[m].vertex_count * 3; ++v) {
-            mesh.vertices[v] = read_float(file);
+          for(uint16_t v = 0; v < meshs[m].vertex_count * 3; ++v) 
+          {
+            mesh.vertices[v] = read_float(in);
           }
         }
 
         frame.attachment_points.resize(attachment_point_count);
-        for(uint16_t a = 0; a < attachment_point_count; ++a) {
+        for(uint16_t a = 0; a < attachment_point_count; ++a) 
+        {
           AttachmentPointPosition& point = frame.attachment_points[a];
 
-          point.pos.x = read_float(file);
-          point.pos.y = read_float(file);
-          point.pos.z = read_float(file);
+          point.pos.x = read_float(in);
+          point.pos.y = read_float(in);
+          point.pos.z = read_float(in);
 
-          point.quat.w = -read_float(file);
-          point.quat.x =  read_float(file);
-          point.quat.y =  read_float(file);
-          point.quat.z =  read_float(file);
+          point.quat.w = -read_float(in);
+          point.quat.x =  read_float(in);
+          point.quat.y =  read_float(in);
+          point.quat.z =  read_float(in);
           point.quat.normalize();
         }
       }
     }
-  } catch(std::exception& e) {
-    PHYSFS_close(file);
+  }
+  catch(std::exception& e) 
+  {
     std::ostringstream msg;
     msg << "Problem while reading '" << filename << "': " << e.what();
     throw std::runtime_error(msg.str());
   }
-  PHYSFS_close(file);
 }
 
 Data::~Data()
