@@ -193,6 +193,65 @@ Pathname::operator<(const Pathname& rhs) const
     m_type < rhs.m_type;
 }
 
+Pathname
+Pathname::get_dirname() const
+{
+  std::string::size_type i = m_path.rfind('/');
+  if (i == std::string::npos)
+  {
+    return Pathname("", m_type);
+  }
+  else
+  {
+    return Pathname(m_path.substr(0, i+1), m_type);
+  }
+}
+
+Pathname
+Pathname::get_basename() const
+{
+  std::string::size_type i = m_path.rfind('/');
+  if (i == std::string::npos)
+  {
+    return *this;
+  }
+  else
+  {
+    return Pathname(m_path.substr(i+1), m_type);
+  }
+}
+
+Pathname&
+Pathname::append_text(const std::string& path)
+{
+  m_path += path;
+  return *this;
+}
+
+Pathname&
+Pathname::append_path(const std::string& path)
+{
+  if ( !m_path.empty() && m_path[m_path.size()-1] != '/' )
+  {
+    m_path += '/';
+    m_path += path;
+  }
+  else
+  {
+    m_path += path;
+  }
+
+  return *this;
+}
+
+bool
+Pathname::operator==(const Pathname& rhs) const
+{
+  return
+    m_path == rhs.m_path && 
+    m_type == rhs.m_type;
+}
+
 std::ostream& operator<<(std::ostream& s, const Pathname& path)
 {
   switch(path.get_type())
@@ -214,5 +273,30 @@ std::ostream& operator<<(std::ostream& s, const Pathname& path)
       return s;
   }
 }
+
+#ifdef __TEST__
+#include <iostream>
+
+int main(int argc, char** argv)
+{
+  if (argc == 1)
+  {
+    
+  }
+  else
+  {
+    for(int i = 1; i < argc; ++i)
+    {
+      Pathname pathname(argv[i], Pathname::kSysPath);
+      std::cout << "syspath: " << pathname.get_sys_path() << std::endl;
+      std::cout << "basename: " << pathname.get_basename() << std::endl;
+      std::cout << "dirname:  " << pathname.get_dirname() << std::endl;
+      std::cout << std::endl;
+    }
+  }
+
+  return 0;
+}
+#endif
 
 /* EOF */

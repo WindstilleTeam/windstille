@@ -96,6 +96,16 @@ public:
 
   bool exists() const;
 
+  Pathname get_dirname() const;
+  Pathname get_basename() const;
+  
+  /** Appends the given path segment to Pathname, adding a '/'
+   *  inbetween when needed */
+  Pathname& append_path(const std::string& path);
+
+  /** Appends text to the end of the path, not adding a '/' inbetween */
+  Pathname& append_text(const std::string& path);
+
   /**
    *  Convert the given path and type to a string that points to the
    *  native filesystem path and which can be used in fopen(),
@@ -115,6 +125,8 @@ public:
   std::string get_extension() const;
 
   bool operator<(const Pathname& rhs) const;
+
+  bool operator==(const Pathname& rhs) const;
 
 private:
   std::string m_path;

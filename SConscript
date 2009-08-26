@@ -33,9 +33,9 @@ debug_cxxflags = [
     "-Weffc++",
     "-Wconversion",
     "-Werror",
-    #"-Wshadow",
+    "-Wshadow",
+    "-Winline",
     #"-Wunreachable-code",
-    #"-Winline",
     ]
 
 # YACC
@@ -321,6 +321,7 @@ class Project:
         env.Program("test_babyxml", ["src/util/baby_xml.cpp"])
         env.Program("test_response_curve", ["src/util/response_curve.cpp"])
         env.Program("test_random", ["src/math/random.cpp"])
+        env.Program("test_pathname", ["src/util/pathname.cpp"], LIBS=['boost_filesystem-mt'])
 
     def build_windstille_data(self):
         data_env = self.env.Clone()
