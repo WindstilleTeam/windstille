@@ -26,218 +26,23 @@
 #include "display/opengl_state.hpp"
 #include "display/scene_context.hpp"
 #include "display/surface_drawing_parameters.hpp"
-#include "display/vertex_array_drawing_request.hpp"
 #include "font/fonts.hpp"
 #include "math/vector3.hpp"
 #include "sprite2d/sprite.hpp"
+
+#include "display/control_drawing_request.hpp"
+#include "display/fill_screen_drawing_request.hpp"
+#include "display/fill_screen_pattern_drawing_request.hpp"
+#include "display/surface_drawing_request.hpp"
+#include "display/surface_quad_drawing_request.hpp"
+#include "display/text_drawing_request.hpp"
+#include "display/vertex_array_drawing_request.hpp"
+#include "display/vertex_array_drawing_request.hpp"
 
 struct DrawingRequestsSorter
 {
   bool operator()(DrawingRequest* a, DrawingRequest* b) {
     return a->get_z_pos() < b->get_z_pos();
-  }
-};
-
-class FillScreenPatternDrawingRequest : public DrawingRequest
-{
-private:
-  Texture  texture;
-  Vector2f offset;
-public:
-  FillScreenPatternDrawingRequest(const Texture& texture_, const Vector2f& offset_)
-    : DrawingRequest(Vector2f(0, 0), -1000.0f), 
-      texture(texture_),
-      offset(offset_)
-  {}
-
-  virtual ~FillScreenPatternDrawingRequest() {}
-
-  void draw(const Texture& /*tmp_texture*/) 
-  {
-    OpenGLState state;
-    state.enable(GL_BLEND);
-    state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    state.bind_texture(texture);
-    state.activate();
-
-    float u = static_cast<float>(Display::get_width())  / static_cast<float>(texture.get_width());
-    float v = static_cast<float>(Display::get_height()) / static_cast<float>(texture.get_height());
-
-    float u_start = -offset.x / static_cast<float>(texture.get_width());
-    float v_start = -offset.y / static_cast<float>(texture.get_height());
-
-    u -= offset.x / static_cast<float>(texture.get_width());
-    v -= offset.y / static_cast<float>(texture.get_height());
-
-    glBegin(GL_QUADS);
-    {
-      glTexCoord2f(u_start, v_start);
-      glVertex2f(0, 0);
-    
-      glTexCoord2f(u, v_start);
-      glVertex2f(static_cast<float>(Display::get_width()), 0);
-
-      glTexCoord2f(u, v);
-      glVertex2f(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()));
-
-      glTexCoord2f(u_start, v);
-      glVertex2f(0,  static_cast<float>(Display::get_height()));
-    }
-    glEnd();
-  }
-};
-
-class FillScreenDrawingRequest : public DrawingRequest
-{
-private:
-  Color color;
-
-public:
-  FillScreenDrawingRequest(const Color& color_) 
-    : DrawingRequest(Vector2f(0, 0), -1000.0f), color(color_)
-  {
-  }
-  virtual ~FillScreenDrawingRequest() {}
-
-  void draw(const Texture& /*tmp_texture*/) {
-    OpenGLState state;
-    // FIXME: move clear color to opengl_state
-    state.activate();
-    glClearColor(color.r, color.g, color.b, color.a);
-    glClear(GL_COLOR_BUFFER_BIT);
-  }
-};
-
-class TextDrawingRequest : public DrawingRequest
-{
-private:
-  std::string text;
-public:
-  TextDrawingRequest(const std::string& text_, const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
-    : DrawingRequest(pos_, z_pos_, modelview_),
-      text(text_)
-  {}
-  virtual ~TextDrawingRequest() {}
-
-  void draw(const Texture& /*tmp_texture*/) {
-    glPushMatrix();
-    glMultMatrixf(modelview.matrix);
-    Fonts::current()->ttffont->draw(pos, text);
-    glPopMatrix();
-  }
-};
-
-class SurfaceQuadDrawingRequest : public DrawingRequest
-{
-private:
-  Surface surface;
-  Quad quad;
-  DrawingParameters params;
-
-public:
-  SurfaceQuadDrawingRequest(Surface surface_, const Vector2f& pos_, const Quad& quad_, 
-                            const DrawingParameters& params_, float z_pos_,
-                            const Matrix& modelview_)
-    : DrawingRequest(pos_, z_pos_, modelview_),
-      surface(surface_),
-      quad(quad_),
-      params(params_)
-  {
-  }
-
-  void draw(const Texture& /*tmp_texture*/) 
-  {
-    OpenGLState state;
-    state.enable(GL_BLEND);
-    state.set_blend_func(params.blendfunc_src, params.blendfunc_dst);
-    state.bind_texture(surface.get_texture());
-    state.activate();
-
-    glPushMatrix();
-    glMultMatrixf(modelview.matrix);
-
-    glBegin(GL_QUADS);
-    {
-      glTexCoord2f(surface.get_uv().left, surface.get_uv().top);
-      glVertex2f(pos.x + quad.p1.x, pos.y + quad.p1.y);
-    
-      glTexCoord2f(surface.get_uv().right, surface.get_uv().top);
-      glVertex2f(pos.x + quad.p2.x, pos.y + quad.p2.y);
-
-      glTexCoord2f(surface.get_uv().right, surface.get_uv().bottom);
-      glVertex2f(pos.x + quad.p3.x, pos.y + quad.p3.y);
-
-      glTexCoord2f(surface.get_uv().left, surface.get_uv().bottom);
-      glVertex2f(pos.x + quad.p4.x, pos.y + quad.p4.y);
-    }
-    glEnd();
-
-    glPopMatrix();    
-  }
-};
-
-class SurfaceDrawingRequest : public DrawingRequest
-{
-private:
-  Surface surface;
-  SurfaceDrawingParameters params;
-
-public:
-  SurfaceDrawingRequest(Surface surface_, const SurfaceDrawingParameters& params_,
-                        float z_pos_,
-                        const Matrix& modelview_)
-    : DrawingRequest(pos, z_pos_, modelview_), 
-      surface(surface_), 
-      params(params_)
-  {}
-
-  virtual ~SurfaceDrawingRequest()
-  {}
-
-  void draw(const Texture& /*tmp_texture*/) 
-  {
-    glPushMatrix();
-    glMultMatrixf(modelview.matrix);
-
-    surface.draw(params);
-
-    glPopMatrix();
-  }
-};
-
-class ControlDrawingRequest : public DrawingRequest
-{
-private:
-  Surface surface;
-  float angle;
-
-public:
-  ControlDrawingRequest(Surface surface_, const Vector2f& pos_, float angle_, float z_pos_,
-                        const Matrix& modelview_)
-    : DrawingRequest(pos_, z_pos_, modelview_), 
-      surface(surface_), 
-      angle(angle_)
-  {}
-
-  virtual ~ControlDrawingRequest() {}
-
-  void draw(const Texture& /*tmp_texture*/)
-  {
-    glPushMatrix();
-
-    // FIXME: This looks badly broken, should modelview.multiply() be enough?
-    glTranslatef(modelview.matrix[12],
-                 modelview.matrix[13],
-                 modelview.matrix[14]);
-
-    Vector3 p = modelview.multiply(Vector3(pos.x, pos.y, 0.0f));
-
-    surface.draw(SurfaceDrawingParameters()
-                 .set_angle(angle)
-                 .set_pos(Vector2f(p.x - surface.get_width()/2,
-                                   p.y - surface.get_height()/2)));
-
-    glPopMatrix();
   }
 };
 
