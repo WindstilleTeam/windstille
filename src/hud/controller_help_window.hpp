@@ -39,9 +39,6 @@ public:
 
   void draw();
   void update(float delta, const Controller& controller);
-
-private:
-  static ControllerHelpWindow* current_;
 };
 
 #endif

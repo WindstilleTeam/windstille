@@ -20,11 +20,8 @@
 #include "display/display.hpp"
 #include "hud/controller_help_window.hpp"
 
-ControllerHelpWindow* ControllerHelpWindow::current_ = 0;
-
 ControllerHelpWindow::ControllerHelpWindow()
 {
-  current_ = this;
 }
 
 void

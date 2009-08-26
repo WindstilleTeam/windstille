@@ -58,8 +58,6 @@ Sector::Sector(const Pathname& arg_filename)
     interactivebackground_tilemap(0),
     player(0)
 {
-  //current_ = this;
-
   if (debug) std::cout << "Creating new Sector" << std::endl;
   
   interactive_tilemap = 0;
