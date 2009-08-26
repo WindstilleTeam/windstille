@@ -25,17 +25,9 @@
 class Decal : public GameObject
 {
 private:
-  Surface m_surface;
-
-  /** scale of the object, independed in x and y axis */
-  Vector2f m_scale;
-  float    m_angle;
-
-  bool m_hflip;
-  bool m_vflip;
 
 public:
-  Decal();
+  Decal(const FileReader& reader);
   ~Decal();
   
   void draw (SceneContext& context);

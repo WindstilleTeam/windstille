@@ -18,29 +18,30 @@
 
 #include "engine/sector.hpp"
 
-#include "objects/background_gradient.hpp"
-#include "tile/tile_map.hpp"
-#include "objects/player.hpp"
-#include "objects/trigger.hpp"
-#include "objects/test_object.hpp"
-#include "objects/vrdummy.hpp"
-#include "sound/sound_manager.hpp"
 #include "collision/collision_engine.hpp"
-#include "objects/elevator.hpp"
-#include "objects/nightvision.hpp"
-#include "objects/character.hpp"
-#include "objects/laser_pointer.hpp"
-#include "objects/swarm.hpp"
-#include "objects/liquid.hpp"
-#include "objects/shockwave.hpp"
-#include "objects/hedgehog.hpp"
-#include "objects/spider_mine.hpp"
-#include "objects/box.hpp"
-#include "objects/scriptable_object.hpp"
+#include "engine/squirrel_thread.hpp"
 #include "navigation/navigation_graph.hpp"
+#include "objects/background_gradient.hpp"
+#include "objects/box.hpp"
+#include "objects/character.hpp"
+#include "objects/decal.hpp"
+#include "objects/elevator.hpp"
+#include "objects/hedgehog.hpp"
+#include "objects/laser_pointer.hpp"
+#include "objects/liquid.hpp"
+#include "objects/nightvision.hpp"
+#include "objects/player.hpp"
+#include "objects/scriptable_object.hpp"
+#include "objects/shockwave.hpp"
+#include "objects/spider_mine.hpp"
+#include "objects/swarm.hpp"
+#include "objects/test_object.hpp"
+#include "objects/trigger.hpp"
+#include "objects/vrdummy.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/scene_graph_drawing_request.hpp"
-#include "engine/squirrel_thread.hpp"
+#include "sound/sound_manager.hpp"
+#include "tile/tile_map.hpp"
 
 Sector::Sector(const Pathname& arg_filename)
   : collision_engine(new CollisionEngine()),
@@ -87,34 +88,38 @@ Sector::parse_file(const Pathname& filename_)
   if (debug) std::cout << "Sector:parse_file '" << filename_ << "'" << std::endl;
   
   FileReader reader = FileReader::parse(filename_);
-  if(reader.get_name() != "windstille-sector") {
+  if(reader.get_name() != "windstille-sector") 
+  {
     std::ostringstream msg;
     msg << "'" << filename_ << "' is not a windstille-sector file";
     throw std::runtime_error(msg.str());
-  }
-  
-  int version = 1;
-  if(!reader.get("version", version))
-    std::cerr << "Warning no version specified in levelformat.\n";
-  if(version > 1)
-    std::cerr << "Warning: format version is newer than game.\n";
+  } 
+  else
+  {
+    int version = 1;
+    if (!reader.get("version", version))
+      std::cerr << "Warning no version specified in levelformat.\n";
 
-  reader.get("name",          name);
-  reader.get("music",         music);
-  reader.get("init-script",   init_script);
-  reader.get("ambient-color", ambient_light);
-  
-  FileReader objects_reader;
-  if(reader.get("objects", objects_reader) == false)
-    throw std::runtime_error("No objects specified");
+    if (version > 3)
+      std::cerr << "Warning: format version is newer than game.\n";
 
-  std::vector<FileReader> objects_readers = objects_reader.get_sections();
-  for(std::vector<FileReader>::iterator i = objects_readers.begin(); i != objects_readers.end(); ++i)
+    reader.get("name",          name);
+    reader.get("music",         music);
+    reader.get("init-script",   init_script);
+    reader.get("ambient-color", ambient_light);
+  
+    FileReader objects_reader;
+    if(reader.get("objects", objects_reader) == false)
+      throw std::runtime_error("No objects specified");
+
+    std::vector<FileReader> objects_readers = objects_reader.get_sections();
+    for(std::vector<FileReader>::iterator i = objects_readers.begin(); i != objects_readers.end(); ++i)
     {
       add_object(*i);
     }
 
-  if (debug) std::cout << "Finished parsing" << std::endl;
+    if (debug) std::cout << "Finished parsing" << std::endl;
+  }
 }
 
 void
@@ -155,6 +160,8 @@ Sector::add_object(FileReader& reader)
     // FIXME: disabled due to work on the editor: add(new ParticleSystem(reader));
   } else if(reader.get_name() == "scriptable-object") {    
     add(new ScriptableObject(reader));
+  } else if(reader.get_name() == "decal") {    
+    add(new Decal(reader));
   } else if (reader.get_name() == "vrdummy") {
     add(new VRDummy(reader));
   } else if (reader.get_name() == "swarm") {

@@ -19,6 +19,10 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SURFACE_QUAD_DRAWING_REQUEST_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SURFACE_QUAD_DRAWING_REQUEST_HPP
 
+#include "math/vector2f.hpp"
+#include "math/quad.hpp"
+#include "display/drawing_request.hpp"
+
 class SurfaceQuadDrawingRequest : public DrawingRequest
 {
 private:

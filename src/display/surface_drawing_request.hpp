@@ -19,6 +19,9 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SURFACE_DRAWING_REQUEST_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SURFACE_DRAWING_REQUEST_HPP
 
+#include "display/surface_drawing_request.hpp"
+#include "display/surface_drawing_parameters.hpp"
+
 class SurfaceDrawingRequest : public DrawingRequest
 {
 private:

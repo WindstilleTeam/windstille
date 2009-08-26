@@ -441,7 +441,7 @@ SectorModel::write(FileWriter& writer) const
   writer.write_raw(";; -*- scheme -*-\n");
   writer.start_section("windstille-sector");
 
-  writer.write("version", 2);
+  writer.write("version", 3);
   writer.write("name", "");
   writer.write("ambient-color", ambient_color);
   writer.write("init-script", "init.nut");

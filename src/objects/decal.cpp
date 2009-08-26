@@ -16,17 +16,44 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "decal.hpp"
+#include "objects/decal.hpp"
 
-Decal::Decal()
-  : m_surface(),
-    m_scale(),
-    m_angle(),
-    m_hflip(),
-    m_vflip()
+#include "engine/sector.hpp"
+#include "scenegraph/scene_graph.hpp"
+#include "display/surface_drawing_request.hpp"
+#include "display/surface_drawing_parameters.hpp"
+
+Decal::Decal(const FileReader& reader)
 {
-  //m_drawable.reset(new Sprite3DDrawingRequest(&sprite, Vector2f(200, 600), 100.0f, Matrix::identity()));
-  //Sector::current()->get_scene_graph().add_drawable(m_drawable);
+  std::string path;
+  Vector2f pos;
+  Vector2f scale(1.0f, 1.0f);
+  float    angle = 0.0f;
+
+  bool hflip = false;
+  bool vflip = false;
+
+  reader.get("pos",   pos);
+  reader.get("path",  path);
+  reader.get("scale", scale);
+  reader.get("angle", angle);
+  reader.get("vflip", vflip);
+  reader.get("hflip", hflip);
+
+  Surface surface = Surface(Pathname(path));
+
+  SurfaceDrawingParameters params;
+  boost::shared_ptr<SurfaceDrawingRequest> drawable(new SurfaceDrawingRequest(surface,
+                                                                              params
+                                                                              .set_pos(pos)
+                                                                              .set_angle(angle)
+                                                                              .set_hflip(hflip)
+                                                                              .set_vflip(vflip)
+                                                                              .set_scale(scale),
+                                                                              0, 
+                                                                              Matrix::identity()));
+
+  Sector::current()->get_scene_graph().add_drawable(drawable);
 }
 
 Decal::~Decal()
