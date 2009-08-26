@@ -52,9 +52,10 @@ public:
 
 class TTFFont
 {
-public:
+private:
   static void init();
   static void deinit();
+  friend class TTFFontManager;
 
 public:
   TTFFont(const Pathname& file, int size, const FontEffect& effect = NoFontEffect());
@@ -82,6 +83,10 @@ private:
   boost::scoped_ptr<TTFFontImpl> impl;
 };
 
+/** 
+ * Simple wrapper class to call TTFFont::init()/deinit() so we can
+ * use proper RAII.
+ */
 class TTFFontManager
 {
 public:
