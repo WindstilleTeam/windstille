@@ -63,6 +63,7 @@ private:
   std::vector<ControlPointHandle> control_points;
 
   GraphicContextState   state;
+  boost::scoped_ptr<Compositor> compositor;
   boost::scoped_ptr<SceneContext> sc;
   boost::scoped_ptr<ScrollTool> scroll_tool;
   SelectionHandle selection;

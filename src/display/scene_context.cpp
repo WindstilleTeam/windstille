@@ -24,10 +24,6 @@
 
 #include "display/scene_context.hpp"
 
-// The lightmap has a resolution of screen.w/LIGHTMAP, screen.h/LIGHTMAP
-#define LIGHTMAP_DIV 4
-#define BLURMAP_DIV  1
-
 class SceneContextImpl
 {
 public:
@@ -37,23 +33,6 @@ public:
   DrawingContext control; 
 
   unsigned int   render_mask;
-  
-  struct Framebuffers 
-  {
-    Framebuffer screen;
-    Framebuffer tmp;
-    Framebuffer lightmap;   
-
-    Framebuffers() 
-      : screen  (GL_TEXTURE_RECTANGLE_ARB, Display::get_width(), Display::get_height()),
-        tmp     (GL_TEXTURE_RECTANGLE_ARB, Display::get_width(), Display::get_height()),
-        lightmap(GL_TEXTURE_RECTANGLE_ARB, Display::get_width()/LIGHTMAP_DIV, Display::get_height()/LIGHTMAP_DIV)
-    {
-    }
-  };
-  
-  boost::scoped_ptr<Framebuffers> framebuffers;
-  Surface lightmap;
 
   SceneContextImpl() 
     : color(),
@@ -65,10 +44,7 @@ public:
                   SceneContext::HIGHLIGHTMAP | 
                   SceneContext::CONTROLMAP | 
                   SceneContext::LIGHTMAPSCREEN |
-                  SceneContext::BLURMAP),
-      framebuffers(0),
-      //framebuffers(new Framebuffers()),
-      lightmap(Display::get_width()/LIGHTMAP_DIV, Display::get_height()/LIGHTMAP_DIV)
+                  SceneContext::BLURMAP)
   {
   }
 
@@ -220,227 +196,6 @@ void draw_disc(int count)
 }
 
 void
-SceneContext::render_lightmap()
-{
-  Rectf uv(0, 0,
-           static_cast<float>(impl->framebuffers->lightmap.get_width()), 
-           static_cast<float>(impl->framebuffers->lightmap.get_height()));
-
-  OpenGLState state;
-
-  state.bind_texture(impl->framebuffers->lightmap.get_texture());
-      
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_DST_COLOR, GL_ZERO); // multiple the lightmap with the screen
-  state.activate();
-
-  glBegin(GL_QUADS);
-
-  glTexCoord2f(uv.left, uv.bottom);
-  glVertex2f(0, 0);
-
-  glTexCoord2f(uv.right, uv.bottom);
-  glVertex2f(static_cast<float>(impl->framebuffers->lightmap.get_width() * LIGHTMAP_DIV), 0.0f);
-
-  glTexCoord2f(uv.right, uv.top);
-  glVertex2f(static_cast<float>(impl->framebuffers->lightmap.get_width()  * LIGHTMAP_DIV),
-             static_cast<float>(impl->framebuffers->lightmap.get_height() * LIGHTMAP_DIV));
-
-  glTexCoord2f(uv.left, uv.top);
-  glVertex2f(0.0f, static_cast<float>(impl->framebuffers->lightmap.get_height() * LIGHTMAP_DIV));
-
-  glEnd();
-}
-
-void
-SceneContext::render_with_framebuffers()
-{
-  glClear(GL_DEPTH_BUFFER_BIT);
-      
-  if (impl->render_mask & LIGHTMAPSCREEN)
-    {
-      // Render the lightmap to the framebuffers->lightmap
-      Display::push_framebuffer(impl->framebuffers->lightmap);
-      
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-      glPushMatrix();
-      glTranslatef(0.0f, static_cast<float>(Display::get_height() - (Display::get_height() / LIGHTMAP_DIV)), 0.0f);
-      glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
-      impl->light.render(*this);
-      glPopMatrix();
-
-      Display::pop_framebuffer();
-    }
-
-  if (impl->render_mask & COLORMAP)
-    {
-      // Render the colormap to the framebuffers->screen
-      Display::push_framebuffer(impl->framebuffers->screen);
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      impl->color.render(*this);
-      Display::pop_framebuffer();
-    }
-
-  if (impl->render_mask & LIGHTMAP)
-    { // Renders the lightmap to the screen
-      Display::push_framebuffer(impl->framebuffers->screen);
-      render_lightmap();
-      Display::pop_framebuffer();
-    }
-
-  if (impl->render_mask & HIGHLIGHTMAP)
-    {
-      Display::push_framebuffer(impl->framebuffers->screen);
-      impl->highlight.render(*this);
-      Display::pop_framebuffer();
-    }
-
-  if (impl->render_mask & CONTROLMAP)
-    impl->control.render(*this);
-
-  if (1) 
-    {
-      // Render the screen framebuffer to the actual screen 
-      OpenGLState state;
-
-      Rectf uv(0.375f, 0.375f, 
-               static_cast<float>(impl->framebuffers->screen.get_width())  + 0.375f,
-               static_cast<float>(impl->framebuffers->screen.get_height()) + 0.375f);
-
-      if (impl->render_mask & BLURMAP)
-        state.bind_texture(impl->framebuffers->screen.get_texture(), 0);
-      else
-        state.bind_texture(impl->framebuffers->tmp.get_texture(), 0);
-
-      state.activate();
-
-      glBegin(GL_QUADS);
-
-      glTexCoord2f(uv.left, uv.bottom);
-      glVertex2f(0, 0);
-
-      glTexCoord2f(uv.right, uv.bottom);
-      glVertex2f(static_cast<float>(Display::get_width()), 0);
-
-      glTexCoord2f(uv.right, uv.top);
-      glVertex2f(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()));
-
-      glTexCoord2f(uv.left, uv.top);
-      glVertex2f(0.0f, static_cast<float>(Display::get_height()));
-
-      glEnd();
-    }
-
-  // Clear all DrawingContexts
-  impl->color.clear();
-  impl->light.clear();
-  impl->highlight.clear();
-  impl->control.clear();
-}
-
-void
-SceneContext::render_without_framebuffers()
-{
-  // Resize Lightmap, only needed in the editor, FIXME: move this into a 'set_size()' call
-  if (impl->lightmap.get_width()  != Display::get_width()/LIGHTMAP_DIV ||
-      impl->lightmap.get_height() != Display::get_height()/LIGHTMAP_DIV)
-    {
-      impl->lightmap = Surface(Display::get_width()/LIGHTMAP_DIV, Display::get_height()/LIGHTMAP_DIV);
-    }
-
-  if (impl->render_mask & LIGHTMAPSCREEN)
-    {
-      // Render the lightmap to the framebuffers->lightmap
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-      glPushMatrix();
-      glTranslatef(0.0f, static_cast<float>(Display::get_height()) - static_cast<float>(Display::get_height()/LIGHTMAP_DIV), 0.0f);
-      glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
-      impl->light.render(*this);
-      glPopMatrix();
-
-      { // Copy lightmap to a texture
-        OpenGLState state;
-        
-        // Weird y-pos is needed since OpenGL is upside down when it comes to y-coordinate
-        state.bind_texture(impl->lightmap.get_texture());
-        state.activate();
-
-        glCopyTexSubImage2D(GL_TEXTURE_2D, 0,
-                            0, 0, 
-                            0, 0, //Display::get_height() - impl->lightmap.get_height(),
-                            static_cast<GLsizei>(impl->lightmap.get_width()), 
-                            static_cast<GLsizei>(impl->lightmap.get_height()));
-      }
-    }
-
-  if (impl->render_mask & COLORMAP)
-    {
-      // Render the colormap to the framebuffers->screen
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      impl->color.render(*this);
-    }
-
-  if (impl->render_mask & LIGHTMAP)
-    { // Renders the lightmap to the screen     
-      OpenGLState state;
-
-      Rectf uv = impl->lightmap.get_uv();
-
-      state.bind_texture(impl->lightmap.get_texture());
-
-      state.enable(GL_BLEND);
-      state.set_blend_func(GL_DST_COLOR, GL_ZERO);
-      state.activate();
-
-      glBegin(GL_QUADS);
-
-      glTexCoord2f(uv.left, uv.bottom);
-      glVertex2f(0, 0);
-
-      glTexCoord2f(uv.right, uv.bottom);
-      glVertex2f(impl->lightmap.get_width() * LIGHTMAP_DIV, 0);
-
-      glTexCoord2f(uv.right, uv.top);
-      glVertex2f(impl->lightmap.get_width()  * LIGHTMAP_DIV,
-                 impl->lightmap.get_height() * LIGHTMAP_DIV);
-
-      glTexCoord2f(uv.left, uv.top);
-      glVertex2f(0, impl->lightmap.get_height() * LIGHTMAP_DIV);
-
-      glEnd();
-    }
-
-  if (impl->render_mask & HIGHLIGHTMAP)
-    {
-      impl->highlight.render(*this);
-    }
-
-  if (impl->render_mask & CONTROLMAP)
-    impl->control.render(*this);
-
-  // Clear all DrawingContexts
-  impl->color.clear();
-  impl->light.clear();
-  impl->highlight.clear();
-  impl->control.clear(); 
-}
-
-void
-SceneContext::render()
-{
-  if (impl->framebuffers)
-    {
-      render_with_framebuffers();
-    }
-  else
-    {
-      render_without_framebuffers();
-    }
-}
-
-void
 SceneContext::set_render_mask(unsigned int mask)
 {
   impl->render_mask = mask;
@@ -469,25 +224,6 @@ SceneContext::get_layer(unsigned int type)
     default:
       assert(!"SceneContext::get_layer(): Unknown type");
       return impl->color; // never reached, but makes compiler happy
-    }
-}
-
-void
-SceneContext::eval(DrawingRequest* request)
-{
-  if (impl->framebuffers && request->needs_prepare())
-    {
-      Display::push_framebuffer(impl->framebuffers->tmp);
-      request->prepare(impl->framebuffers->screen.get_texture());
-      Display::pop_framebuffer();
-      
-      Display::push_framebuffer(impl->framebuffers->screen);
-      request->draw(impl->framebuffers->tmp.get_texture());
-      Display::pop_framebuffer();
-    }
-  else
-    {
-      request->draw(Texture());
     }
 }
 

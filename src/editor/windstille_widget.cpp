@@ -24,6 +24,7 @@
 
 #include "sprite2d/sprite.hpp"
 #include "display/display.hpp"
+#include "display/compositor.hpp"
 #include "display/texture_manager.hpp"
 #include "display/surface_manager.hpp"
 #include "display/opengl_state.hpp"
@@ -51,6 +52,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
     sector_model(new SectorModel()),
     control_points(),
     state(),
+    compositor(),
     sc(),
     scroll_tool(new ScrollTool()),
     selection(),
@@ -171,6 +173,7 @@ WindstilleWidget::on_realize()
       if (!sc.get())
         {
           sc.reset(new SceneContext());
+          compositor.reset(new Compositor());
           sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
         }
       
@@ -300,7 +303,8 @@ WindstilleWidget::draw()
           EditorWindow::current()->get_current_tool()->draw(*sc);
         }
 
-      sc->render();
+      compositor->render(*sc);
+
       state.pop(*sc);
 
       if (grid_enabled)

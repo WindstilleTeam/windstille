@@ -20,6 +20,7 @@
 
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
+#include "display/compositor.hpp"
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
 #include "font/fonts.hpp"
@@ -36,6 +37,7 @@
 class GameSessionImpl
 {
 public:
+  Compositor compositor;
   SceneContext sc;
 
   float fadeout_value;
@@ -142,7 +144,7 @@ GameSessionImpl::draw()
   view.draw(sc, *sector);
 
   // Render the scene to the screen
-  sc.render();
+  compositor.render(sc);
 
   if (cutscene_mode || cutscene_value > 0.0f)
     {

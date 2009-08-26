@@ -20,14 +20,15 @@
 
 #include <GL/glew.h>
 
-#include "math/vector3.hpp"
+#include "display/compositor.hpp"
 #include "display/display.hpp"
+#include "display/drawing_parameters.hpp"
 #include "display/opengl_state.hpp"
 #include "display/scene_context.hpp"
 #include "display/surface_drawing_parameters.hpp"
-#include "display/drawing_parameters.hpp"
 #include "display/vertex_array_drawing_request.hpp"
 #include "font/fonts.hpp"
+#include "math/vector3.hpp"
 #include "sprite2d/sprite.hpp"
 
 struct DrawingRequestsSorter
@@ -253,13 +254,13 @@ DrawingContext::~DrawingContext()
 }
 
 void
-DrawingContext::render(SceneContext& sc)
+DrawingContext::render(Compositor& comp)
 {
   std::stable_sort(drawingrequests.begin(), drawingrequests.end(), DrawingRequestsSorter());
   
   for(DrawingRequests::iterator i = drawingrequests.begin(); i != drawingrequests.end(); ++i)
     {
-      sc.eval(*i);
+      comp.eval(*i);
     }
 }
 

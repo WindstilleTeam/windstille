@@ -23,7 +23,8 @@
 #include "sprite3dview.hpp"
 
 Sprite3DView::Sprite3DView()
-  : sc(),
+  : compositor(),
+    sc(),
     sprite(),
     actions(),
     current_action(),
@@ -78,7 +79,7 @@ Sprite3DView::draw()
 
   sc.light().fill_screen(Color(1.0, 1.0, 1.0));
   //sc.color().draw("Hello World", 100, 100);
-  sc.render();
+  compositor.render(sc);
   
   float x = 10.0f;
   float y =  static_cast<float>(Fonts::current()->vera12->get_height()) + 5.0f;

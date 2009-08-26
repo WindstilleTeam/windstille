@@ -19,8 +19,9 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_SPRITE3DVIEW_HPP
 #define HEADER_WINDSTILLE_SCREEN_SPRITE3DVIEW_HPP
 
-#include "sprite3d/sprite3d.hpp"
+#include "display/compositor.hpp"
 #include "screen/screen.hpp"
+#include "sprite3d/sprite3d.hpp"
 
 /**
  * A simple class to view 3d sprites and their different actions,
@@ -29,6 +30,7 @@
 class Sprite3DView : public Screen
 {
 private:
+  Compositor compositor;
   SceneContext sc;
   Sprite3D sprite;
   std::vector<std::string> actions;

@@ -22,11 +22,12 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include "display/compositor.hpp"
+#include "display/scene_context.hpp"
+#include "gui/gui_manager.hpp"
+#include "particles/particle_system.hpp"
 #include "screen/screen.hpp"
 #include "sprite2d/sprite.hpp"
-#include "gui/gui_manager.hpp"
-#include "display/scene_context.hpp"
-#include "particles/particle_system.hpp"
 
 namespace gui {
 class Slider;
@@ -39,6 +40,7 @@ class ParticleSystemGUI;
 class ParticleViewer : public Screen
 {
 private:
+  Compositor compositor;
   SceneContext sc;
   typedef std::vector<boost::shared_ptr<ParticleSystem> > Systems;
   Systems systems;

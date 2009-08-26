@@ -76,16 +76,13 @@ public:
   void pop_modelview();
   void reset_modelview();
 
-  /** Takes all the buffers and combines them to form the final image
-      that will be shown on the screen. */
-  void render();
-
-  enum { COLORMAP       = 1<<0,
-         LIGHTMAP       = 1<<1,
-         HIGHLIGHTMAP   = 1<<2,
-         CONTROLMAP     = 1<<3,
-         LIGHTMAPSCREEN = 1<<4,
-         BLURMAP        = 1<<5
+  enum { 
+    COLORMAP       = 1<<0,
+    LIGHTMAP       = 1<<1,
+    HIGHLIGHTMAP   = 1<<2,
+    CONTROLMAP     = 1<<3,
+    LIGHTMAPSCREEN = 1<<4,
+    BLURMAP        = 1<<5
   };
 
   /** The render mask allows to switch of some layers and effects for
@@ -94,13 +91,6 @@ public:
   unsigned int get_render_mask();
 
   DrawingContext& get_layer(unsigned int t);
-
-  void render_with_framebuffers();
-  void render_without_framebuffers();
-
-  void render_lightmap();
-
-  void eval(DrawingRequest* request);
 
 private:
   boost::scoped_ptr<SceneContextImpl> impl;

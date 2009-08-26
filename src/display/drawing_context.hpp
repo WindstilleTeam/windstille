@@ -32,6 +32,7 @@ class Sprite;
 class Quad;
 class Line;
 class Color;
+class Compositor;
 
 /** The DrawingContext collects all DrawingRequests and allows you to
     flush them all down to the graphics card in one run, this has the
@@ -52,7 +53,7 @@ public:
   ~DrawingContext();
 
   /** Draws everything in the drawing context to the screen */
-  void render(SceneContext& sc);
+  void render(Compositor& sc);
 
   /** Empties the drawing context */
   void clear();

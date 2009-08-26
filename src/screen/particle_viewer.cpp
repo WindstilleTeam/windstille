@@ -27,7 +27,8 @@
 #include "util/sexpr_file_reader.hpp"
 
 ParticleViewer::ParticleViewer()
-  : sc(),
+  : compositor(),
+    sc(),
     systems(),
     background(Pathname("images/greychess.sprite")),
     pos()
@@ -93,7 +94,7 @@ ParticleViewer::draw()
   for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
     (*i)->draw(sc);
 
-  sc.render();
+  compositor.render(sc);
 }
 
 void
