@@ -62,8 +62,28 @@ GraphicContextState::set_size(int w, int h)
   impl->height = h;
 }
 
+Matrix
+GraphicContextState::get_matrix() const
+{
+  Matrix matrix = Matrix::identity();
+
+  matrix = matrix.translate(static_cast<float>(impl->width)  / 2.0f, 
+                   static_cast<float>(impl->height) / 2.0f,
+                   0.0f);
+  matrix = matrix.rotate(impl->rotation, 0.0f, 0.0f, 1.0f);
+  matrix = matrix.translate(static_cast<float>(-impl->width)  / 2.0f,
+               static_cast<float>(-impl->height) / 2.0f, 
+               0.0f);
+
+  matrix = matrix.scale(get_zoom(), get_zoom(), 1.0f);
+  
+  matrix = matrix.translate(impl->offset.x, impl->offset.y, 0.0f); 
+
+  return matrix;
+}
+
 void
-GraphicContextState::push(SceneContext& sc)
+GraphicContextState::push(SceneContext& sc) const
 {
   sc.push_modelview();
 
@@ -78,7 +98,7 @@ GraphicContextState::push(SceneContext& sc)
 }
 
 void
-GraphicContextState::pop(SceneContext& sc)
+GraphicContextState::pop(SceneContext& sc) const
 {
   sc.pop_modelview();
 }
@@ -128,7 +148,7 @@ GraphicContextState::set_zoom(float z)
 }
 
 float
-GraphicContextState::get_zoom()
+GraphicContextState::get_zoom() const
 {
   return impl->zoom;
 }

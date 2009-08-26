@@ -22,11 +22,13 @@
 
 #include "display/display.hpp"
 #include "display/drawing_request.hpp"
+#include "display/graphic_context_state.hpp"
 #include "display/framebuffer.hpp"
 #include "display/opengl_state.hpp"
 #include "display/scene_context.hpp"
 #include "display/surface.hpp"
 #include "math/rect.hpp"
+#include "scenegraph/scene_graph.hpp"
 
 // The lightmap has a resolution of screen.w/LIGHTMAP, screen.h/LIGHTMAP
 #define LIGHTMAP_DIV 4
@@ -54,7 +56,8 @@ struct CompositorImpl
   CompositorImpl()
     : framebuffers(0),
       //framebuffers(new Framebuffers()),
-      lightmap(Display::get_width()/LIGHTMAP_DIV, Display::get_height()/LIGHTMAP_DIV)
+      lightmap(Display::get_width()  / LIGHTMAP_DIV,
+               Display::get_height() / LIGHTMAP_DIV)
   {}
 };
 
@@ -68,7 +71,7 @@ Compositor::~Compositor()
 }
 
 void
-Compositor::render_lightmap(SceneContext& /*sc*/)
+Compositor::render_lightmap(SceneContext& /*sc*/, SceneGraph* /*sg*/)
 {
   Rectf uv(0, 0,
            static_cast<float>(impl->framebuffers->lightmap.get_width()), 
@@ -101,7 +104,7 @@ Compositor::render_lightmap(SceneContext& /*sc*/)
 }
 
 void
-Compositor::render_with_framebuffers(SceneContext& sc)
+Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg)
 {
   glClear(GL_DEPTH_BUFFER_BIT);
       
@@ -133,7 +136,7 @@ Compositor::render_with_framebuffers(SceneContext& sc)
   if (sc.get_render_mask() & SceneContext::LIGHTMAP)
   { // Renders the lightmap to the screen
     Display::push_framebuffer(impl->framebuffers->screen);
-    render_lightmap(sc);
+    render_lightmap(sc, sg);
     Display::pop_framebuffer();
   }
 
@@ -188,7 +191,7 @@ Compositor::render_with_framebuffers(SceneContext& sc)
 }
 
 void
-Compositor::render_without_framebuffers(SceneContext& sc)
+Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state)
 {
   // Resize Lightmap, only needed in the editor, FIXME: move this into a 'set_size()' call
   if (impl->lightmap.get_width()  != Display::get_width()/LIGHTMAP_DIV ||
@@ -228,6 +231,14 @@ Compositor::render_without_framebuffers(SceneContext& sc)
     // Render the colormap to the framebuffers->screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     sc.color().render(*this);
+
+    if (sg)
+    {
+      glPushMatrix();
+      glMultMatrixf(gc_state.get_matrix().matrix);
+      sg->draw(Texture());
+      glPopMatrix();
+    }
   }
 
   if (sc.get_render_mask() & SceneContext::LIGHTMAP)
@@ -276,15 +287,15 @@ Compositor::render_without_framebuffers(SceneContext& sc)
 }
 
 void
-Compositor::render(SceneContext& sc)
+Compositor::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state)
 {
   if (impl->framebuffers)
   {
-    render_with_framebuffers(sc);
+    render_with_framebuffers(sc, sg);
   }
   else
   {
-    render_without_framebuffers(sc);
+    render_without_framebuffers(sc, sg, state);
   }
 }
 

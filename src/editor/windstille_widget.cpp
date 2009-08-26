@@ -303,7 +303,8 @@ WindstilleWidget::draw()
           EditorWindow::current()->get_current_tool()->draw(*sc);
         }
 
-      compositor->render(*sc);
+      compositor->render(*sc, 0, GraphicContextState(Display::get_width(),
+                                                     Display::get_height()));
 
       state.pop(*sc);
 

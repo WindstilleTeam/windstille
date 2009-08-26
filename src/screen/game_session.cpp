@@ -142,9 +142,9 @@ void
 GameSessionImpl::draw()
 {
   view.draw(sc, *sector);
-
+  
   // Render the scene to the screen
-  compositor.render(sc);
+  compositor.render(sc, &sector->get_scene_graph(), view.get_gc_state());
 
   if (cutscene_mode || cutscene_value > 0.0f)
     {

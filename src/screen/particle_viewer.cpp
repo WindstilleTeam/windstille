@@ -23,6 +23,7 @@
 
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
+#include "display/graphic_context_state.hpp"
 #include "input/controller.hpp"
 #include "util/sexpr_file_reader.hpp"
 
@@ -94,7 +95,8 @@ ParticleViewer::draw()
   for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
     (*i)->draw(sc);
 
-  compositor.render(sc);
+  compositor.render(sc, 0, GraphicContextState(Display::get_width(),
+                                               Display::get_height()));
 }
 
 void

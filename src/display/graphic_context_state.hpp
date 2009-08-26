@@ -18,9 +18,11 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_GRAPHIC_CONTEXT_STATE_HPP
 #define HEADER_WINDSTILLE_DISPLAY_GRAPHIC_CONTEXT_STATE_HPP
 
+#include <boost/shared_ptr.hpp>
+
 #include "math/rect.hpp"
 #include "math/vector2f.hpp"
-#include <boost/shared_ptr.hpp>
+#include "math/matrix.hpp"
 
 class SceneContext;
 
@@ -37,8 +39,10 @@ public:
 
   void set_size(int w, int h);
 
-  void push(SceneContext& sc);
-  void pop(SceneContext& sc);
+  Matrix get_matrix() const;
+
+  void push(SceneContext& sc) const;
+  void pop(SceneContext& sc) const;
 
   /** Return a rectangle in world coordinates that represents the area
       visible on the screen */
@@ -64,7 +68,7 @@ public:
       position even after zoomed in/out */
   void  set_zoom(const Vector2f& pos, float z);
   void  set_zoom(float z);
-  float get_zoom(); 
+  float get_zoom() const; 
 
   void zoom_to (const Rectf& rect);
 

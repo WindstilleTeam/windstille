@@ -16,11 +16,13 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "screen/sprite3dview.hpp"
+
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
 #include "input/controller.hpp"
-#include "sprite3dview.hpp"
+#include "display/graphic_context_state.hpp"
 
 Sprite3DView::Sprite3DView()
   : compositor(),
@@ -79,7 +81,8 @@ Sprite3DView::draw()
 
   sc.light().fill_screen(Color(1.0, 1.0, 1.0));
   //sc.color().draw("Hello World", 100, 100);
-  compositor.render(sc);
+  compositor.render(sc, 0, GraphicContextState(Display::get_width(),
+                                               Display::get_height()));
   
   float x = 10.0f;
   float y =  static_cast<float>(Fonts::current()->vera12->get_height()) + 5.0f;

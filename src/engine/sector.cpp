@@ -197,7 +197,7 @@ Sector::draw(SceneContext& sc)
         (*i)->draw(sc);
     }
 
-  sc.color().draw(new SceneGraphDrawingRequest(*scene_graph, sc.color().get_modelview()));
+  //sc.color().draw(new SceneGraphDrawingRequest(*scene_graph, sc.color().get_modelview()));
 }
 
 void Sector::commit_adds()

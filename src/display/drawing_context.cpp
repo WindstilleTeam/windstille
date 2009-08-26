@@ -281,7 +281,7 @@ DrawingContext::draw(DrawingRequest* request)
 }
 
 void
-DrawingContext::draw(const Sprite& sprite,  const Vector2f& pos, float z_pos)
+DrawingContext::draw(const Sprite& sprite, const Vector2f& pos, float z_pos)
 {
   draw(sprite.get_current_surface(),
        SurfaceDrawingParameters()
