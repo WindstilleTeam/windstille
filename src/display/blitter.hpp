@@ -15,8 +15,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-#ifndef HEADER_BLITTER_HPP
-#define HEADER_BLITTER_HPP
+#ifndef HEADER_WINDSTILLE_DISPLAY_BLITTER_HPP
+#define HEADER_WINDSTILLE_DISPLAY_BLITTER_HPP
 
 class SoftwareSurface;
 

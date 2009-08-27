@@ -30,8 +30,8 @@
 //! clanCore="Math"
 //! header=core.h
 
-#ifndef HEADER_MATH_POINT_HPP
-#define HEADER_MATH_POINT_HPP
+#ifndef HEADER_WINDSTILLE_MATH_POINT_HPP
+#define HEADER_WINDSTILLE_MATH_POINT_HPP
 
 #if _MSC_VER > 1000
 #pragma once

@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_ENGINE_SQUIRREL_VM_HPP
-#define HEADER_WINDSTILLE_ENGINE_SQUIRREL_VM_HPP
+#ifndef HEADER_WINDSTILLE_ENGINE_SQUIRREL_THREAD_HPP
+#define HEADER_WINDSTILLE_ENGINE_SQUIRREL_THREAD_HPP
 
 #include "engine/script_manager.hpp"
 #include "util/pathname.hpp"

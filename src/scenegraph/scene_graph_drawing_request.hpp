@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_SCENE_GRAPH_DRAWING_REQUEST_HPP
-#define HEADER_SCENE_GRAPH_DRAWING_REQUEST_HPP
+#ifndef HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_DRAWING_REQUEST_HPP
+#define HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_DRAWING_REQUEST_HPP
 
 #include "scenegraph/scene_graph.hpp"
 #include "display/drawing_request.hpp"

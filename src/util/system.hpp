@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SYSTEM_H_
-#define SYSTEM_H_
+#ifndef HEADER_WINDSTILLE_UTIL_SYSTEM_HPP
+#define HEADER_WINDSTILLE_UTIL_SYSTEM_HPP
 
 #include <string>
 

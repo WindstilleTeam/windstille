@@ -27,8 +27,8 @@
 **    (if your name is missing here, please add it)
 */
 
-#ifndef HEADER_MATH_MATRIX_HPP
-#define HEADER_MATH_MATRIX_HPP
+#ifndef HEADER_WINDSTILLE_MATH_MATRIX_HPP
+#define HEADER_WINDSTILLE_MATH_MATRIX_HPP
 
 class Vector3;
 
