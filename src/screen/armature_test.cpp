@@ -34,10 +34,10 @@ ArmatureTest::ArmatureTest()
     yrot(0.0f),
     zrot(0.0f)
 {
-  FileReader model_reader = FileReader::parse("armature/mesh.mesh");
+  FileReader model_reader = FileReader::parse(Pathname("armature/mesh.mesh"));
   model.reset(new Model(model_reader, "armature/"));
 
-  FileReader armature_reader = FileReader::parse("armature/armature.arm");
+  FileReader armature_reader = FileReader::parse(Pathname("armature/armature.arm"));
   armature.reset(new Armature(armature_reader));
 
   std::vector<std::string> file_lst;
@@ -46,7 +46,9 @@ ArmatureTest::ArmatureTest()
     for (char **i = dirlist; *i != NULL; ++i)
       if (!PHYSFS_isDirectory((std::string("armature/pose/") + *i).c_str())) {
         std::cout << "PoseFile: " << *i << std::endl;
-        FileReader pose_reader = FileReader::parse(std::string("armature/pose/") + *i);
+        Pathname path("armature/pose/");
+        path.append_path(*i);
+        FileReader pose_reader = FileReader::parse(path);
         poses.push_back(new Pose(pose_reader));       
       }
     PHYSFS_freeList(dirlist);

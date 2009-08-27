@@ -106,7 +106,7 @@ static bool has_suffix(const std::string& str, const std::string& suffix)
 }
 
 void
-InputManagerSDL::load(const std::string& filename)
+InputManagerSDL::load(const Pathname& filename)
 {
   FileReader reader = FileReader::parse(filename);
 

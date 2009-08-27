@@ -51,7 +51,7 @@ public:
   iterator end()   { return tiles.end(); }
 
   /** Create a TileFactory from a given tile definition file */
-  TileFactory(const std::string& filename);
+  TileFactory(const Pathname& filename);
   ~TileFactory();
   
   /**

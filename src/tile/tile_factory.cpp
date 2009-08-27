@@ -43,7 +43,7 @@ bool surface_empty(const SoftwareSurface& image, int sx, int sy, int w, int h)
   return true;
 }
 
-TileFactory::TileFactory(const std::string& filename)
+TileFactory::TileFactory(const Pathname& filename)
   : tiles(),
     packers(),
     color_packer(),

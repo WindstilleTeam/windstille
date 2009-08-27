@@ -34,7 +34,6 @@ class FileReader
 {
 public:
   static FileReader parse(const Pathname& filename);
-  static FileReader parse(const std::string& filename);
   static FileReader parse(std::istream& stream, const std::string& filename);
 
   FileReader(boost::shared_ptr<FileReaderImpl> impl_);

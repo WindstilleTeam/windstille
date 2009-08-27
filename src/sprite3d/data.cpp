@@ -120,11 +120,12 @@ Data::Data(const Pathname& filename)
       Mesh& mesh = *i;
 
       std::string texturename = read_string(in, 64);
-      texturename = filename.get_dirname().get_physfs_path() + basename(texturename);
       mesh.triangle_count = read_uint16_t(in);
       mesh.vertex_count   = read_uint16_t(in);
 
-      mesh.texture = TextureManager::current()->get(Pathname(texturename));
+      Pathname path = filename.get_dirname();
+      path.append_path(basename(texturename));
+      mesh.texture = TextureManager::current()->get(path);
 
       // read triangles
       mesh.vertex_indices.reserve(mesh.triangle_count * 3);

@@ -19,6 +19,7 @@
 #include "lisp/parser.hpp"
 
 #include <boost/scoped_ptr.hpp>
+#include <fstream>
 #include <sstream>
 #include <stdio.h>
 #include <string.h>
@@ -67,7 +68,7 @@ Parser::~Parser()
 Lisp*
 Parser::parse(const std::string& filename)
 {
-  IFileStream in(filename);
+  std::ifstream in(filename.c_str());
   if(!in.good()) {
     std::stringstream msg;
     msg << "Parser problem: Couldn't open file '" << filename << "'.";

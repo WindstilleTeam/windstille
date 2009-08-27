@@ -79,7 +79,7 @@ WindstilleMain::main(int argc, char** argv)
       WindstilleControllerDescription controller_description;
       InputManagerSDL   input_manager(controller_description);
       ScreenManager     screen_manager;
-      TileFactory       tile_factory("tiles.scm");
+      TileFactory       tile_factory = TileFactory(Pathname("tiles.scm"));
 
       init_modules();
     
@@ -160,12 +160,12 @@ WindstilleMain::init_modules()
     
   {     
     if (config.get<std::string>("primary-controller-file").is_set())
-      InputManagerSDL::current()->load(config.get<std::string>("primary-controller-file").get());
+      InputManagerSDL::current()->load(Pathname(config.get<std::string>("primary-controller-file").get()));
     else
-      InputManagerSDL::current()->load("controller/keyboard.scm");
+      InputManagerSDL::current()->load(Pathname("controller/keyboard.scm"));
 
     if (config.get<std::string>("secondary-controller-file").is_set())
-      InputManagerSDL::current()->load(config.get<std::string>("secondary-controller-file").get());
+      InputManagerSDL::current()->load(Pathname(config.get<std::string>("secondary-controller-file").get()));
   }
 }
 

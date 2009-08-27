@@ -39,7 +39,7 @@ NavigationTest::NavigationTest()
 {
   try 
   {
-    FileReader reader = FileReader::parse("navigation.nav");
+    FileReader reader = FileReader::parse(Pathname("navigation.nav"));
     graph->load(reader);
   }
   catch(std::exception& err) 

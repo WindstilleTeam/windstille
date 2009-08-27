@@ -36,9 +36,6 @@ public:
   {}
   virtual ~InputManager() {}
 
-  virtual void load(const std::string& filename) =0;
-  virtual void update(float delta) =0;
-  
   const ControllerDescription& get_controller_description() const { return controller_description; }
   const Controller& get_controller() const;
   void clear();

@@ -27,6 +27,7 @@
 
 class FileReader;
 class InputManagerSDLImpl;
+class Pathname;
 
 struct JoystickButtonBinding
 {
@@ -101,7 +102,7 @@ public:
   InputManagerSDL(const ControllerDescription& controller_description);
   virtual ~InputManagerSDL();
 
-  void load(const std::string& filename);
+  void load(const Pathname& filename);
 
   void update(float delta);
 
