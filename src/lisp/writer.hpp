@@ -21,13 +21,15 @@
 #include <string>
 #include <vector>
 
+class Pathname;
+
 namespace lisp
 {
 
 class Writer
 {
 public:
-  Writer(const std::string& filename);
+  Writer(const Pathname& filename);
   Writer(std::ostream* out);
   ~Writer();
 

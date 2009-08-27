@@ -24,6 +24,7 @@
 #include "lisp/parser.hpp"
 #include "lisp/properties.hpp"
 #include "lisp/writer.hpp"
+#include "util/pathname.hpp"
 
 #include "scripting/util.hpp"
 
@@ -434,7 +435,7 @@ void save_squirrel_table(HSQUIRRELVM v, int table_idx, lisp::Writer& writer)
 
 void save_squirrel_table(HSQUIRRELVM v, int table_idx, const std::string& file)
 {
-  lisp::Writer writer(file);
+  lisp::Writer writer(Pathname(file, Pathname::kUserPath));
 
   writer.start_list("squirrel-state");
   save_squirrel_table(v, table_idx, writer);

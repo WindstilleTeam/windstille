@@ -381,7 +381,7 @@ void
 Config::save()
 {
   try {
-    lisp::Writer writer("config");
+    lisp::Writer writer(Pathname("config", Pathname::kUserPath));
 
     writer.write_comment(";; -*- scheme -*-");
     writer.write_comment(";; Windstille Config - automatically read and written on startup/quit");

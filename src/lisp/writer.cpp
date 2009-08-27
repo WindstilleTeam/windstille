@@ -16,18 +16,22 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "lisp/writer.hpp"
+
+#include <fstream>
+
+#include "util/pathname.hpp"
 #include "physfs/physfs_stream.hpp"
 
 namespace lisp
 {
 
-Writer::Writer(const std::string& filename)
+Writer::Writer(const Pathname& filename)
   : out(),
     out_owned(),
     indent_depth(),
     lists()
 {
-  out = new OFileStream(filename);
+  out = new std::ofstream(filename.get_sys_path().c_str());
   out_owned = true;
   indent_depth = 0;
 }
