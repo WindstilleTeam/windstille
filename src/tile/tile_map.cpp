@@ -22,7 +22,6 @@
 #include <stdexcept>
 #include <stdio.h>
 #include <stdint.h>
-#include <physfs.h>
 
 #include "tile/tile.hpp"
 #include "tile/tile_factory.hpp"
@@ -56,48 +55,19 @@ TileMap::TileMap(FileReader& props)
                                "data defined before width and height");
     }
 
-  std::string data_filename;
-  if (props.get("data-file", data_filename))
-    {
-      PHYSFS_file* file = PHYSFS_openRead(data_filename.c_str());
-      if (!file)
-        {
-          throw std::runtime_error("Couldn't open tiledata file: " + data_filename);
-        }
-      
-      field = Field<Tile*>(width, height);
-
-      for(int y = 0; y < height; ++y)
-        for(int x = 0; x < width; ++x)
-          {
-            uint16_t result;
-            if(PHYSFS_readULE16(file, &result) == 0) {
-              std::ostringstream msg;
-              msg << "Problem reading uint16 value: " << PHYSFS_getLastError();
-              throw std::runtime_error(msg.str());
-            }
-
-            field(x, y) = TileFactory::current()->create(result);
-          }
-
-      PHYSFS_close(file);
-    }
-  else // read data directly from the levelfile
-    {
-      Field<int> tmpfield(width, height);
-
-      props.get("data", tmpfield.get_vector());
+  Field<int> tmpfield(width, height);
   
-      field = Field<Tile*>(width, height);
-      for (int y = 0; y < field.get_height (); ++y) 
-        {
-          for (int x = 0; x < field.get_width (); ++x)
-            {
-              field(x, y) = TileFactory::current()->create(tmpfield(x, y));
-            }
-        }
+  props.get("data", tmpfield.get_vector());
+  
+  field = Field<Tile*>(width, height);
+  for (int y = 0; y < field.get_height (); ++y) 
+  {
+    for (int x = 0; x < field.get_width (); ++x)
+    {
+      field(x, y) = TileFactory::current()->create(tmpfield(x, y));
     }
-
+  }
+  
   if (field.size() == 0)
     throw std::runtime_error("No tiles defined in tilemap");  
 }
