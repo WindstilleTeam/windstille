@@ -10,15 +10,22 @@ on this list and always think about how useful a new feature would be
 in the context of the whole game or if a potential performance
 enhanchment, actually enhanchmes anything at all.
 
+Pathname/PhysFS
+===============
+
+* Pathname needs a way to browse directories (wrapper boost::filesystem)
+
+* Sound stuff still uses PhysFS
+
 SceneGraph
 ==========
 
-* extract the scene composition from SceneContext and turn it into its
-  own class
-
-* write a object/decal.hpp class for use with the new level format
-
 * change the editor to use the SceneGraph instead of the SceneContext API
+
+* new levelformat use a different coordinate system then the old one,
+  figure out which to use before doing the final conversion
+
+* 
 
 Porting
 =======
