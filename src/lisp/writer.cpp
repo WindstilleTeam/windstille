@@ -18,9 +18,9 @@
 #include "lisp/writer.hpp"
 
 #include <fstream>
+#include <iostream>
 
 #include "util/pathname.hpp"
-#include "physfs/physfs_stream.hpp"
 
 namespace lisp
 {

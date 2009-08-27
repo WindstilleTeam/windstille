@@ -27,7 +27,6 @@
 #include "display/blitter.hpp"
 #include "display/opengl_state.hpp"
 #include "display/software_surface.hpp"
-#include "physfs/physfs_stream.hpp"
 #include "font/ttf_font.hpp"
 
 TTFCharacter::TTFCharacter(const Rect& pos_,

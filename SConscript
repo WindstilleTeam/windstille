@@ -242,11 +242,6 @@ class Project:
         self.navgraph_lib  = wstlib_env.StaticLibrary('navgraph', Glob('src/navigation/*.cpp'))
         self.particles_lib = wstlib_env.StaticLibrary('particles', Glob('src/particles/*.cpp'))
         
-        # libphysfs
-        physfs_env = wstlib_env.Clone()
-        physfs_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
-        self.physfs_lib = physfs_env.StaticLibrary('src/physfs', Glob('src/physfs/*.cpp'))
-
         # libdisplay
         display_env = wstlib_env.Clone()
         display_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
@@ -263,7 +258,7 @@ class Project:
         windstille_env.Append(CPPPATH=['src', '.', 'external/SQUIRREL2/include/', 'src/scripting/'],
                               CPPDEFINES=["HAVE_BINRELOC"],
                               LIBS=[self.particles_lib, self.navgraph_lib, self.display_lib, 
-                                    self.util_lib, self.math_lib, self.physfs_lib,
+                                    self.util_lib, self.math_lib, 
                                     self.binreloc_lib, self.squirrel_lib, 
                                     'GL', 'GLU', 'GLEW',
                                     'physfs', 'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png',
@@ -300,7 +295,7 @@ class Project:
         editor_env.Append(CPPPATH=['src'],
                           CPPDEFINES=["HAVE_BINRELOC"],
                           LIBS = [self.particles_lib, self.navgraph_lib, self.display_lib,
-                                  self.util_lib, self.physfs_lib, self.math_lib, self.binreloc_lib,
+                                  self.util_lib, self.math_lib, self.binreloc_lib,
                                   'GL', 'GLEW', 'SDL_image', 'physfs', 'boost_filesystem-mt'])
 
         editor_env.ParseConfig('Magick++-config --libs --cppflags | sed "s/-I/-isystem/g"')

@@ -25,7 +25,6 @@
 #include <string.h>
 
 #include "lisp/lisp.hpp"
-#include "physfs/physfs_stream.hpp"
 
 namespace lisp
 {
