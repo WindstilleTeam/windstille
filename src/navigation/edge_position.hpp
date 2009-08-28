@@ -24,8 +24,6 @@
 class Edge;
 class Node;
 
-/** 
- */
 class EdgePosition
 {
 public:
@@ -68,7 +66,7 @@ public:
   void advance(Vector2f& adv, Node*& next_node);
 
   Edge* get_edge() const { return edge; }
-  float    get_float_pos() const { return pos; }
+  float get_float_pos() const { return pos; }
 
   Vector2f get_pos() const;
 };
