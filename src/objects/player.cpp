@@ -152,8 +152,8 @@ Player::update(const Controller& controller, float delta)
 {
   if (!Sector::current()->get_tilemap())
   {
-    pos.x += controller.get_axis_state(X_AXIS);
-    pos.y += controller.get_axis_state(Y_AXIS);
+    pos.x += controller.get_axis_state(X_AXIS) * delta * 1000.0f;
+    pos.y += controller.get_axis_state(Y_AXIS) * delta * 1000.0f;
     
     m_drawable->set_pos(pos);
   }
