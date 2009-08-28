@@ -160,12 +160,14 @@ WindstilleMain::init_modules()
     
   {     
     if (config.get<std::string>("primary-controller-file").is_set())
-      InputManagerSDL::current()->load(Pathname(config.get<std::string>("primary-controller-file").get()));
+      InputManagerSDL::current()->load(Pathname(config.get<std::string>("primary-controller-file").get(), 
+                                                Pathname::kSysPath));
     else
       InputManagerSDL::current()->load(Pathname("controller/keyboard.scm"));
 
     if (config.get<std::string>("secondary-controller-file").is_set())
-      InputManagerSDL::current()->load(Pathname(config.get<std::string>("secondary-controller-file").get()));
+      InputManagerSDL::current()->load(Pathname(config.get<std::string>("secondary-controller-file").get(),
+                                                Pathname::kSysPath));
   }
 }
 
