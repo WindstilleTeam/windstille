@@ -214,6 +214,8 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
     if (sg)
     {
       glPushMatrix();
+      glTranslatef(0.0f, static_cast<float>(Display::get_height()) - static_cast<float>(Display::get_height()/LIGHTMAP_DIV), 0.0f);
+      glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
       glMultMatrixf(gc_state.get_matrix().matrix);
       sg->draw(Texture(), SceneContext::LIGHTMAP);
       glPopMatrix();
