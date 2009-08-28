@@ -150,13 +150,22 @@ Player::update(float /*delta*/)
 void 
 Player::update(const Controller& controller, float delta)
 {
-  weapon->update(delta);
+  if (!Sector::current()->get_tilemap())
+  {
+    pos.x += controller.get_axis_state(X_AXIS);
+    pos.y += controller.get_axis_state(Y_AXIS);
+    
+    m_drawable->set_pos(pos);
+  }
+  else
+  {
+    weapon->update(delta);
 
-  if (laser_pointer->is_active())
-    laser_pointer->update(delta);
+    if (laser_pointer->is_active())
+      laser_pointer->update(delta);
 
-  if (fabsf(controller.get_axis_state(X2_AXIS, false)) > 0.25f ||
-      fabsf(controller.get_axis_state(Y2_AXIS, false)) > 0.25f)
+    if (fabsf(controller.get_axis_state(X2_AXIS, false)) > 0.25f ||
+        fabsf(controller.get_axis_state(Y2_AXIS, false)) > 0.25f)
     {
       float angle = atan2f(controller.get_axis_state(Y2_AXIS, false),
                            controller.get_axis_state(X2_AXIS, false));
@@ -164,78 +173,79 @@ Player::update(const Controller& controller, float delta)
       laser_pointer->set_active(true);
       laser_pointer->set_angle(angle);
     }
-  else
+    else
     {
       laser_pointer->set_active(false);
     }
 
-  if (GameSession::current()->is_active())
+    if (GameSession::current()->is_active())
     {
       switch(state)
-        {
-          case STAND:
-          case WALK:
-            update_walk_stand(controller);
-            break;
-          case RUN:
-            update_run(controller);
-            break;
-          case DUCKING:
-            update_ducking(controller);
-            break;
-          case DUCKED:
-            update_ducked(controller);
-            break;
-          case TURNAROUND:
-            update_turnaround(controller);
-            break;
-          case STAND_TO_LISTEN:
-            update_stand_to_listen(controller);
-            break;
-          case LISTEN:
-            update_listen(controller);
-            break;
-          case JUMP_BEGIN:
-            update_jump_begin(controller);
-            break;
-          case JUMP_AIR:
-            update_jump_air(controller);
-            break;
-          case JUMP_LAND:
-            update_jump_land(controller);
-            break;
-          case JUMP_UP_BEGIN:
-            update_jump_up_begin(controller);
-            break;
-          case JUMP_UP_AIR:
-            update_jump_up_air(controller);
-            break;
-          case JUMP_UP_LAND:
-            update_jump_up_land(controller);
-            break;
-          case PULL_GUN:
-            update_pull_gun(controller);
-            break;
-          case STAIRS_DOWN:
-          case STAIRS_UP:
-            update_stairs(controller, delta);
-            break;
-          default:
-            assert(false);
-            break;
-        }
+      {
+        case STAND:
+        case WALK:
+          update_walk_stand(controller);
+          break;
+        case RUN:
+          update_run(controller);
+          break;
+        case DUCKING:
+          update_ducking(controller);
+          break;
+        case DUCKED:
+          update_ducked(controller);
+          break;
+        case TURNAROUND:
+          update_turnaround(controller);
+          break;
+        case STAND_TO_LISTEN:
+          update_stand_to_listen(controller);
+          break;
+        case LISTEN:
+          update_listen(controller);
+          break;
+        case JUMP_BEGIN:
+          update_jump_begin(controller);
+          break;
+        case JUMP_AIR:
+          update_jump_air(controller);
+          break;
+        case JUMP_LAND:
+          update_jump_land(controller);
+          break;
+        case JUMP_UP_BEGIN:
+          update_jump_up_begin(controller);
+          break;
+        case JUMP_UP_AIR:
+          update_jump_up_air(controller);
+          break;
+        case JUMP_UP_LAND:
+          update_jump_up_land(controller);
+          break;
+        case PULL_GUN:
+          update_pull_gun(controller);
+          break;
+        case STAIRS_DOWN:
+        case STAIRS_UP:
+          update_stairs(controller, delta);
+          break;
+        default:
+          assert(false);
+          break;
+      }
     }
 
-  // fall down
-  velocity.y += GRAVITY * delta;
+    // fall down
+    velocity.y += GRAVITY * delta;
 
-  sprite.update(delta);
+    sprite.update(delta);
 
-  c_object->set_velocity (velocity);
+    c_object->set_velocity (velocity);
 
-  pos = c_object->get_pos();
+    pos = c_object->get_pos();
 
-  m_drawable->set_pos(pos);
+    m_drawable->set_pos(pos);
+  }
 }
 
 void
