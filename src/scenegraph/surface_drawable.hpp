@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_DISPLAY_SURFACE_DRAWING_REQUEST_HPP
-#define HEADER_WINDSTILLE_DISPLAY_SURFACE_DRAWING_REQUEST_HPP
+#ifndef HEADER_WINDSTILLE_SCENEGRAPH_SURFACE_DRAWABLE_HPP
+#define HEADER_WINDSTILLE_SCENEGRAPH_SURFACE_DRAWABLE_HPP
 
 #include "scenegraph/surface_drawable.hpp"
 #include "display/surface_drawing_parameters.hpp"

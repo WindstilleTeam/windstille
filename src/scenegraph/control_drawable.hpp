@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_DISPLAY_CONTROL_DRAWING_REQUEST_HPP
-#define HEADER_WINDSTILLE_DISPLAY_CONTROL_DRAWING_REQUEST_HPP
+#ifndef HEADER_WINDSTILLE_SCENEGRAPH_CONTROL_DRAWABLE_HPP
+#define HEADER_WINDSTILLE_SCENEGRAPH_CONTROL_DRAWABLE_HPP
 
 class ControlDrawable : public Drawable
 {
