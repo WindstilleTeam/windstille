@@ -19,7 +19,6 @@
 #include "engine/camera.hpp"
 
 #include "objects/player.hpp"
-#include "engine/sector.hpp"
 #include "engine/script_manager.hpp"
 #include "display/display.hpp"
 
@@ -95,24 +94,6 @@ Camera::update(float delta)
           pos.y = tpos.y - vscroll_threshold;
         else if (dist < -vscroll_threshold)
           pos.y = tpos.y + vscroll_threshold;
-
-        float start_x = static_cast<float>(Display::get_width()) / 2.0f;
-        float end_x   = static_cast<float>(Sector::current()->get_width()) - static_cast<float>(Display::get_width()) / 2.0f;
-
-        float start_y = static_cast<float>(Display::get_height()) / 2.0f;
-        float end_y   = static_cast<float>(Sector::current()->get_height()) - static_cast<float>(Display::get_height()) / 2.0f;
-
-        if (pos.x < start_x)
-          pos.x = start_x;
-
-        if (pos.y < start_y)
-          pos.y = start_y;
-
-        if (pos.x > end_x)
-          pos.x = end_x;
-
-        if (pos.y > end_y)
-          pos.y = end_y;
       }
       break;
 
