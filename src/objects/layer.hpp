@@ -16,27 +16,37 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_OBJECTS_DECAL_HPP
-#define HEADER_WINDSTILLE_OBJECTS_DECAL_HPP
+#ifndef HEADER_WINDSTILLE_OBJECTS_LAYER_HPP
+#define HEADER_WINDSTILLE_OBJECTS_LAYER_HPP
 
-#include "display/surface.hpp"
 #include "engine/game_object.hpp"
 
-class Decal : public GameObject
+class Layer : public GameObject
 {
 private:
-  
+  typedef std::vector<boost::shared_ptr<GameObject> > Objects;
 
-public:
-  Decal(const FileReader& reader);
-  ~Decal();
-  
-  void draw (SceneContext& context);
-  void update (float delta);
+  Objects objects;
+
+  /** container for newly created GameObjects (they'll be added once per frame
+   * in the update function */
+  Objects new_objects;
 
 private:
-  Decal(const Decal&);
-  Decal& operator=(const Decal&);
+  void commit_adds();
+  void commit_removes();
+
+public:
+  Layer(const FileReader& reader);
+  ~Layer();
+
+  void draw (SceneContext& context);
+  void update (float delta);
+ 
+
+private:
+  Layer(const Layer&);
+  Layer& operator=(const Layer&);
 };
 
 #endif

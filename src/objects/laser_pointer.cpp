@@ -64,77 +64,80 @@ void
 LaserPointer::draw(SceneContext& sc)
 {
   TileMap* tilemap = Sector::current()->get_tilemap();
-  Vector2f pos = Player::current()->get_pos();
-  pos.y -= 80;
-  Vector2f target; // = Sector::current()->get_collision_engine()->raycast(pos, angle);
+  if (tilemap)
+  {
+    Vector2f pos = Player::current()->get_pos();
+    pos.y -= 80;
+    Vector2f target; // = Sector::current()->get_collision_engine()->raycast(pos, angle);
 
-  // Ray position in Tile units
-  int x = static_cast<int>(pos.x / static_cast<float>(TILE_SIZE));
-  int y = static_cast<int>(pos.y / static_cast<float>(TILE_SIZE));
+    // Ray position in Tile units
+    int x = static_cast<int>(pos.x / static_cast<float>(TILE_SIZE));
+    int y = static_cast<int>(pos.y / static_cast<float>(TILE_SIZE));
 
-  Vector2f direction(cosf(angle) * 100.0f, sinf(angle) * 100.0f);
+    Vector2f direction(cosf(angle) * 100.0f, sinf(angle) * 100.0f);
 
-  int step_x = (direction.x > 0) ? 1 : -1;
-  int step_y = (direction.y > 0) ? 1 : -1;
+    int step_x = (direction.x > 0) ? 1 : -1;
+    int step_y = (direction.y > 0) ? 1 : -1;
 
-  float tMaxX = find_max(pos.x, direction.x);
-  float tMaxY = find_max(pos.y, direction.y);
+    float tMaxX = find_max(pos.x, direction.x);
+    float tMaxY = find_max(pos.y, direction.y);
 
-  float tDeltaX = (direction.x == 0) ? 0 : fabsf(static_cast<float>(TILE_SIZE) / direction.x);
-  float tDeltaY = (direction.y == 0) ? 0 : fabsf(static_cast<float>(TILE_SIZE) / direction.y);
+    float tDeltaX = (direction.x == 0) ? 0 : fabsf(static_cast<float>(TILE_SIZE) / direction.x);
+    float tDeltaY = (direction.y == 0) ? 0 : fabsf(static_cast<float>(TILE_SIZE) / direction.y);
 
-  float t = 0;
+    float t = 0;
 
-  while(x >= 0 && x < tilemap->get_width() &&
-        y >= 0 && y < tilemap->get_height())
+    while(x >= 0 && x < tilemap->get_width() &&
+          y >= 0 && y < tilemap->get_height())
     {
       //sc.color().fill_rect(Rectf(Vector2f(x * TILE_SIZE, y * TILE_SIZE), Size(TILE_SIZE, TILE_SIZE)), 
       //                     Color(1.0, 1.0, 1.0, 0.5), 500);
 
       if (tilemap->get_pixel(x, y))
-        {
-          //return Vector2f(x * TILE_SIZE, y * TILE_SIZE);
-          goto done;
-        }
+      {
+        //return Vector2f(x * TILE_SIZE, y * TILE_SIZE);
+        goto done;
+      }
 
       // move one tile
       if (tMaxX < tMaxY)
-        {
-          t = tMaxX;
-          tMaxX += tDeltaX;
-          x = x + step_x;
-        }
+      {
+        t = tMaxX;
+        tMaxX += tDeltaX;
+        x = x + step_x;
+      }
       else 
-        {
-          t = tMaxY;
-          tMaxY += tDeltaY;
-          y = y + step_y;
-        }
+      {
+        t = tMaxY;
+        tMaxY += tDeltaY;
+        y = y + step_y;
+      }
     }
   
- done:
-  target = pos + Vector2f(t * direction.x, t * direction.y);
+  done:
+    target = pos + Vector2f(t * direction.x, t * direction.y);
   
-  Vector2f ray = target - pos;
+    Vector2f ray = target - pos;
 
-  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0,0), 10000,
-                                                                   sc.highlight().get_modelview());
-  array->set_mode(GL_LINES);
-  array->set_texture(noise);
-  array->set_blend_func(GL_SRC_ALPHA, GL_ONE);
+    VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0,0), 10000,
+                                                                     sc.highlight().get_modelview());
+    array->set_mode(GL_LINES);
+    array->set_texture(noise);
+    array->set_blend_func(GL_SRC_ALPHA, GL_ONE);
 
-  array->color(Color(1.0f, 0.0f, 0.0f, 1.0f));
-  array->texcoord(0, progress);
-  array->vertex(0, 0);
+    array->color(Color(1.0f, 0.0f, 0.0f, 1.0f));
+    array->texcoord(0, progress);
+    array->vertex(0, 0);
 
-  array->color(Color(1.0f, 0.0f, 0.0f, 1.0f));
-  array->texcoord((target - pos).magnitude()/256.0f, progress);
-  array->vertex(ray.x, ray.y);
+    array->color(Color(1.0f, 0.0f, 0.0f, 1.0f));
+    array->texcoord((target - pos).magnitude()/256.0f, progress);
+    array->vertex(ray.x, ray.y);
 
-  sc.highlight().draw(array);
-  laserpointer.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-  sc.highlight().draw(laserpointer, ray);
-  sc.light().draw(laserpointer_light, ray);
+    sc.highlight().draw(array);
+    laserpointer.set_blend_func(GL_SRC_ALPHA, GL_ONE);
+    sc.highlight().draw(laserpointer, ray);
+    sc.light().draw(laserpointer_light, ray);
+  }
 }
 
 void

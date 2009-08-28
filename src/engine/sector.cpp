@@ -25,6 +25,7 @@
 #include "objects/box.hpp"
 #include "objects/character.hpp"
 #include "objects/decal.hpp"
+#include "objects/layer.hpp"
 #include "objects/elevator.hpp"
 #include "objects/hedgehog.hpp"
 #include "objects/laser_pointer.hpp"
@@ -65,11 +66,11 @@ Sector::Sector(const Pathname& arg_filename)
   interactivebackground_tilemap = 0;
 
   parse_file(filename);
-  if (!interactive_tilemap)
-    throw std::runtime_error("No interactive-tilemap available");
-
-  // add interactive to collision engine
-  collision_engine->add(new CollisionObject(interactive_tilemap));
+  if (interactive_tilemap)
+  {
+    // add interactive to collision engine
+    collision_engine->add(new CollisionObject(interactive_tilemap));
+  }
 
   // Spawn the Player
   player = new Player();
@@ -162,6 +163,8 @@ Sector::add_object(FileReader& reader)
     add(new ScriptableObject(reader));
   } else if(reader.get_name() == "decal") {    
     add(new Decal(reader));
+  } else if(reader.get_name() == "layer") {    
+    add(new Layer(reader));
   } else if (reader.get_name() == "vrdummy") {
     add(new VRDummy(reader));
   } else if (reader.get_name() == "swarm") {
@@ -280,13 +283,19 @@ Sector::get_object(const std::string& name_) const
 int
 Sector::get_width () const
 {
-  return interactive_tilemap->get_width() * TILE_SIZE;
+  if (interactive_tilemap)
+    return interactive_tilemap->get_width() * TILE_SIZE;
+  else
+    return 2560;
 }
 
 int
 Sector::get_height () const
 {
-  return interactive_tilemap->get_height() * TILE_SIZE;
+  if (interactive_tilemap)
+    return interactive_tilemap->get_height() * TILE_SIZE;
+  else
+    return 1600;
 }
 
 void
