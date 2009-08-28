@@ -31,7 +31,16 @@ FileReader
 FileReader::parse(const Pathname& filename)
 {
   std::ifstream in(filename.get_sys_path().c_str());
-  return FileReader::parse(in, filename.get_sys_path());
+  if (!in)
+  {
+    std::ostringstream str;
+    str << "Couldn't open file: " << filename;
+    throw std::runtime_error(str.str());
+  }
+  else
+  {
+    return FileReader::parse(in, filename.get_sys_path());
+  }
 }
 
 FileReader
