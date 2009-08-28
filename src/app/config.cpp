@@ -328,7 +328,7 @@ Config::load()
 {
   try 
     {
-      FileReader reader = FileReader::parse(Pathname("config"));
+      FileReader reader = FileReader::parse(Pathname("config", Pathname::kUserPath));
       if(reader.get_name() != "windstille-config") 
         {
           std::cerr << "Warning: Config file is not a windstille-config file.\n";
