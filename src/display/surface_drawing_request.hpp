@@ -40,6 +40,8 @@ public:
   virtual ~SurfaceDrawingRequest()
   {}
 
+  SurfaceDrawingParameters& get_params() { return params; }
+
   void draw(const Texture& /*tmp_texture*/) 
   {
     glPushMatrix();

@@ -57,7 +57,9 @@ Sector::Sector(const Pathname& arg_filename)
     ambient_light(),
     interactive_tilemap(0),
     interactivebackground_tilemap(0),
-    player(0)
+    player(0),
+    id_table(),
+    parent_table()
 {
   if (debug) std::cout << "Creating new Sector" << std::endl;
   
@@ -118,6 +120,20 @@ Sector::parse_file(const Pathname& filename_)
       add_object(*i);
     }
 
+    // Set the parents properly
+    for(std::map<GameObject*, std::string>::iterator i = parent_table.begin(); i != parent_table.end(); ++i)
+    {
+      std::map<std::string, GameObject*>::iterator j = id_table.find(i->second);
+      if (j == id_table.end())
+      {
+        std::cout << "Error: Couldn't resolve 'id': " << i->second << std::endl;
+      }
+      else
+      {
+        i->first->set_parent(j->second);
+      }
+    }
+
     if (debug) std::cout << "Finished parsing" << std::endl;
   }
 }
@@ -125,7 +141,9 @@ Sector::parse_file(const Pathname& filename_)
 void
 Sector::add_object(FileReader& reader)
 {
-  if(reader.get_name() == "tilemap") {
+  GameObject* obj;
+  if(reader.get_name() == "tilemap") 
+  {
     std::auto_ptr<TileMap> tilemap(new TileMap(reader));
 
     if (tilemap->get_name() == "interactive")
@@ -133,47 +151,103 @@ Sector::add_object(FileReader& reader)
     else if (tilemap->get_name() == "interactivebackground")
       interactivebackground_tilemap = tilemap.get();
 
-    add(tilemap.release());
-  } else if(reader.get_name() == "background") {
+    obj = tilemap.release();
+  }
+  else if(reader.get_name() == "background")
+  {
     // TODO
-  } else if (reader.get_name() == "background-gradient") {
-    add(new BackgroundGradient(reader));
-  } else if(reader.get_name() == "trigger") {
-    add(new Trigger(reader));
-  } else if(reader.get_name() == "box") {
-    add(new Box(reader));
-  } else if(reader.get_name() == "shockwave") {
-    add(new Shockwave(reader));
-  } else if(reader.get_name() == "elevator") {
-    add(new Elevator(reader));
-  } else if(reader.get_name() == "character") {    
-    add(new Character(reader));
-  } else if(reader.get_name() == "spider-mine") {
-    add(new SpiderMine(reader));
-  } else if(reader.get_name() == "hedgehog") {
-    add(new Hedgehog(reader));
-  } else if(reader.get_name() == "test-object") {
-    add(new TestObject(reader));
-  } else if (reader.get_name() == "nightvision") {
-    add(new Nightvision(reader));
-  } else if (reader.get_name() == "particle-system") {
-    // FIXME: disabled due to work on the editor: add(new ParticleSystem(reader));
-  } else if(reader.get_name() == "scriptable-object") {    
-    add(new ScriptableObject(reader));
-  } else if(reader.get_name() == "decal") {    
-    add(new Decal(reader));
-  } else if(reader.get_name() == "layer") {    
-    add(new Layer(reader));
-  } else if (reader.get_name() == "vrdummy") {
-    add(new VRDummy(reader));
-  } else if (reader.get_name() == "swarm") {
-    add(new Swarm(reader));
-  } else if (reader.get_name() == "laserpointer") {
-    add(new LaserPointer());
-  } else if (reader.get_name() == "liquid") {
-    add(new Liquid(reader));
-  } else {
+  }
+  else if (reader.get_name() == "background-gradient")
+  {
+    obj = new BackgroundGradient(reader);
+  }
+  else if(reader.get_name() == "trigger")
+  {
+    obj = new Trigger(reader);
+  }
+  else if(reader.get_name() == "box")
+  {
+    obj = new Box(reader);
+  }
+  else if(reader.get_name() == "shockwave")
+  {
+    obj = new Shockwave(reader);
+  }
+  else if(reader.get_name() == "elevator")
+  {
+    obj = new Elevator(reader);
+  }
+  else if(reader.get_name() == "character")
+  {    
+    obj = new Character(reader);
+  }
+  else if(reader.get_name() == "spider-mine")
+  {
+    obj = new SpiderMine(reader);
+  }
+  else if(reader.get_name() == "hedgehog")
+  {
+    obj = new Hedgehog(reader);
+  }
+  else if(reader.get_name() == "test-object")
+  {
+    obj = new TestObject(reader);
+  }
+  else if (reader.get_name() == "nightvision")
+  {
+    obj = new Nightvision(reader);
+  }
+  else if (reader.get_name() == "particle-system")
+  {
+    // FIXME: disabled due to work on the editor: obj = new ParticleSystem(reader);
+  }
+  else if(reader.get_name() == "scriptable-object")
+  {    
+    obj = new ScriptableObject(reader);
+  }
+  else if(reader.get_name() == "decal")
+  {    
+    obj = new Decal(reader);
+  }
+  else if(reader.get_name() == "layer")
+  {    
+    obj = new Layer(reader);
+  }
+  else if (reader.get_name() == "vrdummy")
+  {
+    obj = new VRDummy(reader);
+  }
+  else if (reader.get_name() == "swarm")
+  {
+    obj = new Swarm(reader);
+  }
+  else if (reader.get_name() == "laserpointer")
+  {
+    obj = new LaserPointer();
+  }
+  else if (reader.get_name() == "liquid")
+  {
+    obj = new Liquid(reader);
+  } 
+  else 
+  {
     std::cout << "Skipping unknown Object: " << reader.get_name() << "\n";
+  }
+
+  if (obj)
+  {
+    std::string id_str;
+    if (reader.read("id", id_str))
+    {
+      id_table[id_str] = obj;
+    }
+
+    std::string parent_str;
+    if (reader.read("parent", parent_str))
+    {
+      if (!parent_str.empty())
+        parent_table[obj] = parent_str;
+    }
   }
 }
 
@@ -186,11 +260,11 @@ Sector::activate()
   SoundManager::current()->play_music(music);
 
   if (!init_script.empty())
-    {
-      Pathname path = get_directory();
-      path.append_path(init_script);
-      vm = ScriptManager::current()->run_script_file(path);
-    }
+  {
+    Pathname path = get_directory();
+    path.append_path(init_script);
+    vm = ScriptManager::current()->run_script_file(path);
+  }
 }
 
 void

@@ -109,6 +109,8 @@ public:
   static void set_world (Sector* w) { world = w; }
   Sector* get_world () const { return world; }
 
+  virtual void set_parent(GameObject* /*parent*/) {}
+
 private:
   GameObject (const GameObject&);
   GameObject& operator= (const GameObject&);

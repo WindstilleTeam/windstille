@@ -69,6 +69,9 @@ private:
 
   Player* player;
 
+  std::map<std::string, GameObject*> id_table;
+  std::map<GameObject*, std::string> parent_table;
+
 private:
   void parse_file(const Pathname& filename);
 

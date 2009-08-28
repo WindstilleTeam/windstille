@@ -19,13 +19,17 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_DECAL_HPP
 #define HEADER_WINDSTILLE_OBJECTS_DECAL_HPP
 
+#include <boost/shared_ptr.hpp>
+
 #include "display/surface.hpp"
 #include "engine/game_object.hpp"
+
+class SurfaceDrawingRequest;
 
 class Decal : public GameObject
 {
 private:
-  
+  boost::shared_ptr<SurfaceDrawingRequest> drawable;
 
 public:
   Decal(const FileReader& reader);
@@ -33,6 +37,8 @@ public:
   
   void draw (SceneContext& context);
   void update (float delta);
+
+  void set_parent(GameObject* parent);
 
 private:
   Decal(const Decal&);

@@ -25,6 +25,7 @@
 #include "display/scene_context.hpp"
 
 Decal::Decal(const FileReader& reader)
+  : drawable()
 {
   std::string path;
   Vector2f pos;
@@ -56,15 +57,18 @@ Decal::Decal(const FileReader& reader)
     case 2: params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
   }
 
-  boost::shared_ptr<SurfaceDrawingRequest> drawable(new SurfaceDrawingRequest(surface,
-                                                                              params
-                                                                              .set_pos(pos)
-                                                                              .set_angle(angle)
-                                                                              .set_hflip(hflip)
-                                                                              .set_vflip(vflip)
-                                                                              .set_scale(scale),
-                                                                              0, 
-                                                                              Matrix::identity()));
+  Vector2f center_offset(-surface.get_width() /2,
+                         -surface.get_height()/2);
+
+  drawable.reset(new SurfaceDrawingRequest(surface,
+                                           params
+                                           .set_pos(pos + center_offset)
+                                           .set_angle(angle)
+                                           .set_hflip(hflip)
+                                           .set_vflip(vflip)
+                                           .set_scale(scale),
+                                           0, 
+                                           Matrix::identity()));
 
   switch(map_type)
   {
@@ -96,6 +100,17 @@ Decal::draw(SceneContext& /*context*/)
 void
 Decal::update(float /*delta*/)
 {
+}
+
+void
+Decal::set_parent(GameObject* parent)
+{
+  Decal* decal = dynamic_cast<Decal*>(parent);
+  if (decal)
+  { // FIXME: Not going to work with double parenting
+    drawable->get_params().set_pos(drawable->get_params().pos +
+                                   decal->drawable->get_params().pos);
+  }
 }
 
 /* EOF */
