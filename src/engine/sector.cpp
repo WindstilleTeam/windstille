@@ -40,6 +40,7 @@
 #include "objects/trigger.hpp"
 #include "objects/vrdummy.hpp"
 #include "scenegraph/scene_graph.hpp"
+#include "scenegraph/navigation_graph_drawable.hpp"
 #include "sound/sound_manager.hpp"
 #include "tile/tile_map.hpp"
 
@@ -78,6 +79,8 @@ Sector::Sector(const Pathname& arg_filename)
   add(player);
 
   player->set_pos(Vector2f(300,200));
+
+  scene_graph->add_drawable(boost::shared_ptr<Drawable>(new NavigationGraphDrawable(navigation_graph.get())));
 }
 
 Sector::~Sector()
@@ -95,7 +98,7 @@ Sector::parse_file(const Pathname& filename_)
     std::ostringstream msg;
     msg << "'" << filename_ << "' is not a windstille-sector file";
     throw std::runtime_error(msg.str());
-  } 
+  }
   else
   {
     int version = 1;
@@ -111,8 +114,10 @@ Sector::parse_file(const Pathname& filename_)
     reader.get("ambient-color", ambient_light);
   
     FileReader objects_reader;
-    if(reader.get("objects", objects_reader) == false)
+    if (!reader.get("objects", objects_reader))
+    {
       throw std::runtime_error("No objects specified");
+    }
 
     std::vector<FileReader> objects_readers = objects_reader.get_sections();
     for(std::vector<FileReader>::iterator i = objects_readers.begin(); i != objects_readers.end(); ++i)
@@ -132,6 +137,12 @@ Sector::parse_file(const Pathname& filename_)
       {
         i->first->set_parent(j->second);
       }
+    }
+
+    FileReader navgraph_reader;
+    if (reader.get("navigation", navgraph_reader))
+    {
+      navigation_graph->load(navgraph_reader);
     }
 
     if (debug) std::cout << "Finished parsing" << std::endl;
