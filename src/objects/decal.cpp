@@ -60,6 +60,9 @@ Decal::Decal(const FileReader& reader)
   Vector2f center_offset(-surface.get_width() /2,
                          -surface.get_height()/2);
 
+  center_offset.x *= scale.x;
+  center_offset.y *= scale.y;
+
   drawable.reset(new SurfaceDrawable(surface,
                                            params
                                            .set_pos(pos + center_offset)
@@ -112,6 +115,9 @@ Decal::set_parent(GameObject* parent)
 
     Vector2f center_offset(-drawable->get_surface().get_width() /2,
                            -drawable->get_surface().get_height()/2);
+
+    center_offset.x *= drawable->get_params().scale.x;
+    center_offset.y *= drawable->get_params().scale.y;
 
     drawable->get_params().set_pos(pos + center_offset);
   }
