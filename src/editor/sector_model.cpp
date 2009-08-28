@@ -204,7 +204,7 @@ SectorModel::draw(SceneContext& sc, const SelectMask& layermask, bool draw_navgr
   // Draw Layers
   const Layers& layers = get_layers();
  
-  for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
+  for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
     {
       if ((*i)->is_visible())
         (*i)->draw(sc, layermask);
@@ -246,7 +246,7 @@ SectorModel::get_object_at(const Vector2f& pos, const SelectMask& layermask) con
   const Layers& layers = get_layers();
   SelectionHandle selection = Selection::create();
 
-  for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
+  for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
     {
       if ((*i)->is_visible() && !(*i)->is_locked())
         {
@@ -266,7 +266,7 @@ SectorModel::get_selection(const Rectf& rect, const SelectMask& layermask) const
   const Layers& layers = get_layers();
   SelectionHandle selection = Selection::create();
 
-  for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
+  for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
     {
       if ((*i)->is_visible() && !(*i)->is_locked())
         {
@@ -282,7 +282,7 @@ LayerHandle
 SectorModel::get_layer(ObjectModelHandle object)
 {
   const Layers& layers = get_layers();
-  for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
+  for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
     {
       if ((*i)->has_object(object))
         return *i;

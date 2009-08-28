@@ -40,7 +40,7 @@ SceneGraph::remove_drawable(boost::shared_ptr<Drawable> /*drawable*/)
 void
 SceneGraph::draw(const Texture& tmp_texture, unsigned int mask)
 {
-  for(Drawables::reverse_iterator i = m_drawables.rbegin(); i != m_drawables.rend(); ++i)
+  for(Drawables::iterator i = m_drawables.begin(); i != m_drawables.end(); ++i)
   {
     if ((*i)->get_render_mask() & mask)
       (*i)->draw(tmp_texture);
