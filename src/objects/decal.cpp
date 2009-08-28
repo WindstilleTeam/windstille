@@ -22,6 +22,7 @@
 #include "scenegraph/scene_graph.hpp"
 #include "display/surface_drawing_request.hpp"
 #include "display/surface_drawing_parameters.hpp"
+#include "display/scene_context.hpp"
 
 Decal::Decal(const FileReader& reader)
 {
@@ -33,6 +34,9 @@ Decal::Decal(const FileReader& reader)
   bool hflip = false;
   bool vflip = false;
 
+  int map_type = 0;
+  reader.get("type", map_type);
+
   reader.get("pos",   pos);
   reader.get("path",  path);
   reader.get("scale", scale);
@@ -43,6 +47,15 @@ Decal::Decal(const FileReader& reader)
   Surface surface = Surface(Pathname(path));
 
   SurfaceDrawingParameters params;
+
+  switch(map_type)
+  {
+    // FIXME: Evil hardcoded constans, see edtior/decal_object_model.hpp
+    case 0: break;
+    case 1: params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
+    case 2: params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
+  }
+
   boost::shared_ptr<SurfaceDrawingRequest> drawable(new SurfaceDrawingRequest(surface,
                                                                               params
                                                                               .set_pos(pos)
@@ -53,6 +66,21 @@ Decal::Decal(const FileReader& reader)
                                                                               0, 
                                                                               Matrix::identity()));
 
+  switch(map_type)
+  {
+    // FIXME: Evil hardcoded constans
+    case 0: // color
+      drawable->set_render_mask(SceneContext::COLORMAP);
+      break;
+
+    case 1: // lightmap
+      drawable->set_render_mask(SceneContext::LIGHTMAP);
+      break;
+
+    case 2: // highlight
+      drawable->set_render_mask(SceneContext::HIGHLIGHTMAP);
+      break;
+  }
   Sector::current()->get_scene_graph().add_drawable(drawable);
 }
 

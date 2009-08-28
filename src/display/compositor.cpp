@@ -211,6 +211,14 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
     sc.light().render(*this);
     glPopMatrix();
 
+    if (sg)
+    {
+      glPushMatrix();
+      glMultMatrixf(gc_state.get_matrix().matrix);
+      sg->draw(Texture(), SceneContext::LIGHTMAP);
+      glPopMatrix();
+    }
+
     { // Copy lightmap to a texture
       OpenGLState state;
         
@@ -236,7 +244,7 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
     {
       glPushMatrix();
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(Texture());
+      sg->draw(Texture(), SceneContext::COLORMAP);
       glPopMatrix();
     }
   }
@@ -274,6 +282,14 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
   if (sc.get_render_mask() & SceneContext::HIGHLIGHTMAP)
   {
     sc.highlight().render(*this);
+
+    if (sg)
+    {
+      glPushMatrix();
+      glMultMatrixf(gc_state.get_matrix().matrix);
+      sg->draw(Texture(), SceneContext::HIGHLIGHTMAP);
+      glPopMatrix();
+    }
   }
 
   if (sc.get_render_mask() & SceneContext::CONTROLMAP)

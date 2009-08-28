@@ -40,7 +40,6 @@
 #include "objects/trigger.hpp"
 #include "objects/vrdummy.hpp"
 #include "scenegraph/scene_graph.hpp"
-#include "scenegraph/scene_graph_drawing_request.hpp"
 #include "sound/sound_manager.hpp"
 #include "tile/tile_map.hpp"
 

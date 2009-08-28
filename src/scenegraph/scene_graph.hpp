@@ -37,7 +37,7 @@ public:
   void add_drawable(boost::shared_ptr<DrawingRequest> drawable);
   void remove_drawable(boost::shared_ptr<DrawingRequest> drawable);
 
-  void draw(const Texture& tmp_texture);
+  void draw(const Texture& tmp_texture, unsigned int mask);
 
 private:
   SceneGraph(const SceneGraph&);

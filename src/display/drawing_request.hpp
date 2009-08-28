@@ -30,10 +30,14 @@ protected:
   Vector2f pos;
   float    z_pos;
   Matrix   modelview;
+  unsigned int render_mask;
 
 public:
   DrawingRequest(const Vector2f& pos_, float z_pos_ = 0,  const Matrix& modelview_ = Matrix::identity())
-    : pos(pos_), z_pos(z_pos_), modelview(modelview_)
+    : pos(pos_), 
+      z_pos(z_pos_), 
+      modelview(modelview_),
+      render_mask(0)
   {}
   virtual ~DrawingRequest() {}
   
@@ -67,6 +71,9 @@ public:
 
   Matrix get_modelview() const
   { return modelview; }
+
+  void set_render_mask(unsigned int mask) { render_mask = mask; }
+  unsigned int get_render_mask() const { return render_mask; }
 
 private:
   DrawingRequest (const DrawingRequest&);
