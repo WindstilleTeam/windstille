@@ -57,8 +57,8 @@ public:
    * You should call this every frame
    */
   void update(float delta);
-  void draw(DrawingContext& sc, const Vector2f& pos, float z_pos) const;
-  void draw(DrawingContext& sc, const Matrix& matrix, float z_pos) const;
+  void draw(DrawingContext& sc, const Vector2f& pos, float z_pos);
+  void draw(DrawingContext& sc, const Matrix& matrix, float z_pos);
   
   /**
    * Changes action (after the currently shown animation frame)
@@ -126,7 +126,7 @@ public:
   
 private:  
   friend class Sprite3DDrawable;
-  void draw(const Vector2f& pos, const Matrix& modelview) const;
+  void draw(const Vector2f& pos, const Matrix& modelview);
   
   struct Frame {
     const sprite3d::Action* action;

@@ -25,11 +25,11 @@
 class Sprite3DDrawable : public Drawable
 {
 private:
-  const Sprite3D* sprite;
+  Sprite3D* sprite;
 
 public:
-  Sprite3DDrawable(const Sprite3D* sprite_, 
-                         const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
+  Sprite3DDrawable(Sprite3D* sprite_, 
+                   const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
     : Drawable(pos_, z_pos_, modelview_), sprite(sprite_)
   {}
 
@@ -42,6 +42,8 @@ public:
   {
     pos = pos_;
   }
+
+  Sprite3D* get_sprite() const { return sprite; }
 
 private:
   Sprite3DDrawable(const Sprite3DDrawable&);
