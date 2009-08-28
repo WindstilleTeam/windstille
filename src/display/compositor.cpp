@@ -21,7 +21,7 @@
 #include <GL/glew.h>
 
 #include "display/display.hpp"
-#include "display/drawing_request.hpp"
+#include "scenegraph/drawing_request.hpp"
 #include "display/graphic_context_state.hpp"
 #include "display/framebuffer.hpp"
 #include "display/opengl_state.hpp"

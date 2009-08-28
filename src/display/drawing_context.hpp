@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include "display/drawing_request.hpp"
+#include "scenegraph/drawing_request.hpp"
 
 class Texture;
 class Surface;

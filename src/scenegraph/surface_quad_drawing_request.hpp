@@ -21,7 +21,7 @@
 
 #include "math/vector2f.hpp"
 #include "math/quad.hpp"
-#include "display/drawing_request.hpp"
+#include "scenegraph/drawing_request.hpp"
 
 class SurfaceQuadDrawingRequest : public DrawingRequest
 {

@@ -23,7 +23,7 @@
 #include "util/util.hpp"
 #include "display/opengl_state.hpp"
 #include "sprite3d/manager.hpp"
-#include "sprite3d/sprite3d_drawing_request.hpp"
+#include "scenegraph/sprite3d_drawing_request.hpp"
 
 using namespace sprite3d;
 

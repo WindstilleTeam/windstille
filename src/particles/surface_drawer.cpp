@@ -17,7 +17,7 @@
 */
 
 #include "util/file_reader.cpp"
-#include "display/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawing_request.hpp"
 #include "particles/particle_system.hpp"
 #include "display/surface_manager.hpp"
 #include "display/drawing_context.hpp"

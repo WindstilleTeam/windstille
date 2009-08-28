@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawing_request.hpp"
 #include "math/random.hpp"
 #include "screen/game_session.hpp"
 #include "screen/view.hpp"

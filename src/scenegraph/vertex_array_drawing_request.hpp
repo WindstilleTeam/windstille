@@ -22,7 +22,7 @@
 #include <vector>
 
 #include "display/color.hpp"
-#include "display/drawing_request.hpp"
+#include "scenegraph/drawing_request.hpp"
 
 /** */
 class VertexArrayDrawingRequest : public DrawingRequest

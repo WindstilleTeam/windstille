@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_SPRITE3D_SPRITE3D_DRAWING_REQUEST_HPP
 
 #include "sprite3d/sprite3d.hpp"
-#include "display/drawing_request.hpp"
+#include "scenegraph/drawing_request.hpp"
 
 class Sprite3DDrawingRequest : public DrawingRequest
 {

@@ -20,7 +20,7 @@
 
 #include "engine/sector.hpp"
 #include "scenegraph/scene_graph.hpp"
-#include "display/surface_drawing_request.hpp"
+#include "scenegraph/surface_drawing_request.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
 

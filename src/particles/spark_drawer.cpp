@@ -18,7 +18,7 @@
 
 #include "display/drawing_context.hpp"
 #include "util/file_reader.hpp"
-#include "display/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawing_request.hpp"
 #include "particles/particle_system.hpp"
 #include "particles/spark_drawer.hpp"
 

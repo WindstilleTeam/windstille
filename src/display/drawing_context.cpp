@@ -30,14 +30,14 @@
 #include "math/vector3.hpp"
 #include "sprite2d/sprite.hpp"
 
-#include "display/control_drawing_request.hpp"
-#include "display/fill_screen_drawing_request.hpp"
-#include "display/fill_screen_pattern_drawing_request.hpp"
-#include "display/surface_drawing_request.hpp"
-#include "display/surface_quad_drawing_request.hpp"
-#include "display/text_drawing_request.hpp"
-#include "display/vertex_array_drawing_request.hpp"
-#include "display/vertex_array_drawing_request.hpp"
+#include "scenegraph/control_drawing_request.hpp"
+#include "scenegraph/fill_screen_drawing_request.hpp"
+#include "scenegraph/fill_screen_pattern_drawing_request.hpp"
+#include "scenegraph/surface_drawing_request.hpp"
+#include "scenegraph/surface_quad_drawing_request.hpp"
+#include "scenegraph/text_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawing_request.hpp"
 
 struct DrawingRequestsSorter
 {

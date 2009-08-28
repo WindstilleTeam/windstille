@@ -17,7 +17,7 @@
 */
 
 #include "display/opengl_state.hpp"
-#include "display/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawing_request.hpp"
 
 VertexArrayDrawingRequest::VertexArrayDrawingRequest(const Vector2f& pos_, float z_pos_, 
                                                      const Matrix& modelview_)

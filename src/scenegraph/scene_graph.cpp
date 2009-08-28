@@ -18,7 +18,7 @@
 
 #include "scenegraph/scene_graph.hpp"
 
-#include "display/drawing_request.hpp"
+#include "scenegraph/drawing_request.hpp"
 
 SceneGraph::SceneGraph()
   : m_drawing_requests()

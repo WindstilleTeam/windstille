@@ -30,7 +30,7 @@
 #include "tile/tile.hpp"
 #include "tile/tile_map.hpp"
 #include "scenegraph/scene_graph.hpp"
-#include "sprite3d/sprite3d_drawing_request.hpp"
+#include "scenegraph/sprite3d_drawing_request.hpp"
 
 static const int MAX_ENERGY = 16;
 static const float WALK_SPEED = 100.0;
