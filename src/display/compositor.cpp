@@ -239,7 +239,9 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
   if (sc.get_render_mask() & SceneContext::COLORMAP)
   {
     // Render the colormap to the framebuffers->screen
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     sc.color().render(*this);
 
     if (sg)
