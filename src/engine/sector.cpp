@@ -248,6 +248,8 @@ Sector::add_object(FileReader& reader)
       if (!parent_str.empty())
         parent_table[obj] = parent_str;
     }
+
+    add(obj);
   }
 }
 
