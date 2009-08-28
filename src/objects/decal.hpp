@@ -30,6 +30,7 @@ class Decal : public GameObject
 {
 private:
   boost::shared_ptr<SurfaceDrawingRequest> drawable;
+  Vector2f pos;
 
 public:
   Decal(const FileReader& reader);

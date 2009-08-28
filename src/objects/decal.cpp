@@ -25,10 +25,10 @@
 #include "display/scene_context.hpp"
 
 Decal::Decal(const FileReader& reader)
-  : drawable()
+  : drawable(),
+    pos()
 {
   std::string path;
-  Vector2f pos;
   Vector2f scale(1.0f, 1.0f);
   float    angle = 0.0f;
 
@@ -108,8 +108,12 @@ Decal::set_parent(GameObject* parent)
   Decal* decal = dynamic_cast<Decal*>(parent);
   if (decal)
   { // FIXME: Not going to work with double parenting
-    drawable->get_params().set_pos(drawable->get_params().pos +
-                                   decal->drawable->get_params().pos);
+    pos += decal->pos;
+
+    Vector2f center_offset(-drawable->get_surface().get_width() /2,
+                           -drawable->get_surface().get_height()/2);
+
+    drawable->get_params().set_pos(pos + center_offset);
   }
 }
 
