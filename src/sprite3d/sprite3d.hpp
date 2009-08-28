@@ -125,7 +125,7 @@ public:
   void set_blend_func(GLenum sfactor, GLenum dfactor);
   
 private:  
-  friend class Sprite3DDrawingRequest;
+  friend class Sprite3DDrawable;
   void draw(const Vector2f& pos, const Matrix& modelview) const;
   
   struct Frame {

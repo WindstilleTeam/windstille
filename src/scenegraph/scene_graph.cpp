@@ -18,21 +18,21 @@
 
 #include "scenegraph/scene_graph.hpp"
 
-#include "scenegraph/drawing_request.hpp"
+#include "scenegraph/drawable.hpp"
 
 SceneGraph::SceneGraph()
-  : m_drawing_requests()
+  : m_drawables()
 {
 }
 
 void
-SceneGraph::add_drawable(boost::shared_ptr<DrawingRequest> drawable)
+SceneGraph::add_drawable(boost::shared_ptr<Drawable> drawable)
 {
-  m_drawing_requests.push_back(drawable);
+  m_drawables.push_back(drawable);
 }
 
 void
-SceneGraph::remove_drawable(boost::shared_ptr<DrawingRequest> /*drawable*/)
+SceneGraph::remove_drawable(boost::shared_ptr<Drawable> /*drawable*/)
 {
   // FIXME: implement me
 }
@@ -40,7 +40,7 @@ SceneGraph::remove_drawable(boost::shared_ptr<DrawingRequest> /*drawable*/)
 void
 SceneGraph::draw(const Texture& tmp_texture, unsigned int mask)
 {
-  for(DrawingRequests::reverse_iterator i = m_drawing_requests.rbegin(); i != m_drawing_requests.rend(); ++i)
+  for(Drawables::reverse_iterator i = m_drawables.rbegin(); i != m_drawables.rend(); ++i)
   {
     if ((*i)->get_render_mask() & mask)
       (*i)->draw(tmp_texture);

@@ -22,10 +22,10 @@
 #include <vector>
 
 #include "display/color.hpp"
-#include "scenegraph/drawing_request.hpp"
+#include "scenegraph/drawable.hpp"
 
 /** */
-class VertexArrayDrawingRequest : public DrawingRequest
+class VertexArrayDrawable : public Drawable
 {
 private:
   GLenum mode;
@@ -39,7 +39,7 @@ private:
   std::vector<float> vertices;
 
 public:
-  VertexArrayDrawingRequest(const Vector2f& pos_, float z_pos_, const Matrix& modelview_);
+  VertexArrayDrawable(const Vector2f& pos_, float z_pos_, const Matrix& modelview_);
 
   void draw(const Texture& tmp_texture);
   void draw(int start, int end);

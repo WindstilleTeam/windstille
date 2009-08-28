@@ -20,26 +20,26 @@
 #include "display/shader_object.hpp"
 #include "objects/shockwave.hpp"
 
-class ShockwaveDrawingRequest : public DrawingRequest
+class ShockwaveDrawable : public Drawable
 {
 public:
   Texture       noise;
   ShaderProgram shader_program;
   float radius;
 
-  ShockwaveDrawingRequest(const Vector2f& pos_, 
+  ShockwaveDrawable(const Vector2f& pos_, 
                           const Texture&       noise_,
                           const ShaderProgram& shader_program_,
                           float r,
                           const Matrix& modelview_) 
-    : DrawingRequest(pos_, 500.0f, modelview_),
+    : Drawable(pos_, 500.0f, modelview_),
       noise(noise_),
       shader_program(shader_program_),
       radius(r)
   {
   }
 
-  ~ShockwaveDrawingRequest()
+  ~ShockwaveDrawable()
   {
   }
 
@@ -238,7 +238,7 @@ Shockwave::~Shockwave()
 void
 Shockwave::draw (SceneContext& sc)
 {
-  sc.highlight().draw(new ShockwaveDrawingRequest(pos,
+  sc.highlight().draw(new ShockwaveDrawable(pos,
                                                    noise,
                                                    shader_program,
                                                    radius,

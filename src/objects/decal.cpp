@@ -20,7 +20,7 @@
 
 #include "engine/sector.hpp"
 #include "scenegraph/scene_graph.hpp"
-#include "scenegraph/surface_drawing_request.hpp"
+#include "scenegraph/surface_drawable.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
 
@@ -60,7 +60,7 @@ Decal::Decal(const FileReader& reader)
   Vector2f center_offset(-surface.get_width() /2,
                          -surface.get_height()/2);
 
-  drawable.reset(new SurfaceDrawingRequest(surface,
+  drawable.reset(new SurfaceDrawable(surface,
                                            params
                                            .set_pos(pos + center_offset)
                                            .set_angle(angle)

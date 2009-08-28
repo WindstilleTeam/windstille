@@ -21,7 +21,7 @@
 #include <GL/glew.h>
 
 #include "display/display.hpp"
-#include "scenegraph/drawing_request.hpp"
+#include "scenegraph/drawable.hpp"
 #include "display/graphic_context_state.hpp"
 #include "display/framebuffer.hpp"
 #include "display/opengl_state.hpp"
@@ -318,7 +318,7 @@ Compositor::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& 
 }
 
 void
-Compositor::eval(DrawingRequest* request)
+Compositor::eval(Drawable* request)
 {
   if (impl->framebuffers && request->needs_prepare())
     {

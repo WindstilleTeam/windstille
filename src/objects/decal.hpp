@@ -24,12 +24,12 @@
 #include "display/surface.hpp"
 #include "engine/game_object.hpp"
 
-class SurfaceDrawingRequest;
+class SurfaceDrawable;
 
 class Decal : public GameObject
 {
 private:
-  boost::shared_ptr<SurfaceDrawingRequest> drawable;
+  boost::shared_ptr<SurfaceDrawable> drawable;
   Vector2f pos;
 
 public:

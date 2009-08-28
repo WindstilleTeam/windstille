@@ -17,11 +17,11 @@
 */
 
 #include "display/opengl_state.hpp"
-#include "scenegraph/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
-VertexArrayDrawingRequest::VertexArrayDrawingRequest(const Vector2f& pos_, float z_pos_, 
+VertexArrayDrawable::VertexArrayDrawable(const Vector2f& pos_, float z_pos_, 
                                                      const Matrix& modelview_)
-  : DrawingRequest(pos_, z_pos_, modelview_),
+  : Drawable(pos_, z_pos_, modelview_),
     mode(GL_QUADS),
     blend_sfactor(GL_SRC_ALPHA),
     blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
@@ -33,13 +33,13 @@ VertexArrayDrawingRequest::VertexArrayDrawingRequest(const Vector2f& pos_, float
 }
 
 int
-VertexArrayDrawingRequest::num_vertices() const
+VertexArrayDrawable::num_vertices() const
 {
   return vertices.size()/3;
 }
 
 void
-VertexArrayDrawingRequest::clear()
+VertexArrayDrawable::clear()
 {
   colors.clear();
   texcoords.clear();
@@ -47,13 +47,13 @@ VertexArrayDrawingRequest::clear()
 }
 
 void
-VertexArrayDrawingRequest::draw(const Texture& /*tmp_texture*/)
+VertexArrayDrawable::draw(const Texture& /*tmp_texture*/)
 {
   draw(0, num_vertices());
 }
 
 void
-VertexArrayDrawingRequest::draw(int start, int end)
+VertexArrayDrawable::draw(int start, int end)
 {
   assert(!vertices.empty());
   assert(texcoords.empty() || int(texcoords.size()/2) == num_vertices());
@@ -109,13 +109,13 @@ VertexArrayDrawingRequest::draw(int start, int end)
 }
 
 void
-VertexArrayDrawingRequest::vertex(const Vector2f& vec, float z)
+VertexArrayDrawable::vertex(const Vector2f& vec, float z)
 {
   vertex(vec.x, vec.y, z);
 }
 
 void
-VertexArrayDrawingRequest::vertex(float x, float y, float z)
+VertexArrayDrawable::vertex(float x, float y, float z)
 {
   vertices.push_back(x + pos.x);
   vertices.push_back(y + pos.y);
@@ -123,14 +123,14 @@ VertexArrayDrawingRequest::vertex(float x, float y, float z)
 }
 
 void
-VertexArrayDrawingRequest::texcoord(float u, float v)
+VertexArrayDrawable::texcoord(float u, float v)
 {
   texcoords.push_back(u);
   texcoords.push_back(v);
 }
 
 void
-VertexArrayDrawingRequest::add_texcoords(const Rectf& rect)
+VertexArrayDrawable::add_texcoords(const Rectf& rect)
 {
   texcoords.push_back(rect.left);
   texcoords.push_back(rect.top);
@@ -143,7 +143,7 @@ VertexArrayDrawingRequest::add_texcoords(const Rectf& rect)
 }
 
 void
-VertexArrayDrawingRequest::add_texcoords(const float* coords, size_t n)
+VertexArrayDrawable::add_texcoords(const float* coords, size_t n)
 {
   assert(n % 2 == 0);
   for(size_t i = 0; i < n; ++i)
@@ -153,7 +153,7 @@ VertexArrayDrawingRequest::add_texcoords(const float* coords, size_t n)
 }
 
 void
-VertexArrayDrawingRequest::color(const Color& color_)
+VertexArrayDrawable::color(const Color& color_)
 {
   colors.push_back(static_cast<unsigned char>(color_.r * 255));
   colors.push_back(static_cast<unsigned char>(color_.g * 255));
@@ -162,20 +162,20 @@ VertexArrayDrawingRequest::color(const Color& color_)
 }
 
 void
-VertexArrayDrawingRequest::set_texture(Texture texture_)
+VertexArrayDrawable::set_texture(Texture texture_)
 {
   texture = texture_;
 }
 
 void
-VertexArrayDrawingRequest::set_blend_func(GLenum sfactor, GLenum dfactor)
+VertexArrayDrawable::set_blend_func(GLenum sfactor, GLenum dfactor)
 {
   blend_sfactor = sfactor;
   blend_dfactor = dfactor;
 }
 
 void
-VertexArrayDrawingRequest::set_mode(GLenum mode_)
+VertexArrayDrawable::set_mode(GLenum mode_)
 {
   mode = mode_;
 }

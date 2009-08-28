@@ -17,7 +17,7 @@
 */
 
 #include "util/file_reader.cpp"
-#include "scenegraph/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 #include "particles/particle_system.hpp"
 #include "display/surface_manager.hpp"
 #include "display/drawing_context.hpp"
@@ -91,8 +91,8 @@ SurfaceDrawer::set_blendfuncs(GLenum blendfunc_src_, GLenum blendfunc_dest_)
 void
 SurfaceDrawer::draw(DrawingContext& dc, ParticleSystem& psys) 
 {          
-  VertexArrayDrawingRequest* buffer 
-    = new VertexArrayDrawingRequest(Vector2f(psys.get_x_pos(), psys.get_y_pos()), psys.get_z_pos(),
+  VertexArrayDrawable* buffer 
+    = new VertexArrayDrawable(Vector2f(psys.get_x_pos(), psys.get_y_pos()), psys.get_z_pos(),
                                     dc.get_modelview());
 
   buffer->set_mode(GL_QUADS);

@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "scenegraph/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 #include "math/random.hpp"
 #include "screen/game_session.hpp"
 #include "screen/view.hpp"
@@ -57,7 +57,7 @@ Swarm::Swarm(FileReader& props)
 void
 Swarm::draw(SceneContext& sc)
 {
-  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), 
+  VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), 
                                                                    1000.0f, sc.highlight().get_modelview());
 
   array->set_mode(GL_QUADS);

@@ -20,19 +20,19 @@
 #define HEADER_WINDSTILLE_DISPLAY_FILL_SCREEN_PATTERN_DRAWING_REQUEST_HPP
 
 
-class FillScreenPatternDrawingRequest : public DrawingRequest
+class FillScreenPatternDrawable : public Drawable
 {
 private:
   Texture  texture;
   Vector2f offset;
 public:
-  FillScreenPatternDrawingRequest(const Texture& texture_, const Vector2f& offset_)
-    : DrawingRequest(Vector2f(0, 0), -1000.0f), 
+  FillScreenPatternDrawable(const Texture& texture_, const Vector2f& offset_)
+    : Drawable(Vector2f(0, 0), -1000.0f), 
       texture(texture_),
       offset(offset_)
   {}
 
-  virtual ~FillScreenPatternDrawingRequest() {}
+  virtual ~FillScreenPatternDrawable() {}
 
   void draw(const Texture& /*tmp_texture*/) 
   {

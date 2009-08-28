@@ -23,7 +23,7 @@
 #include "util/util.hpp"
 #include "display/opengl_state.hpp"
 #include "sprite3d/manager.hpp"
-#include "scenegraph/sprite3d_drawing_request.hpp"
+#include "scenegraph/sprite3d_drawable.hpp"
 
 using namespace sprite3d;
 
@@ -329,13 +329,13 @@ Sprite3D::update(float delta)
 void
 Sprite3D::draw(DrawingContext& dc, const Vector2f& pos, float z_pos) const
 {
-  dc.draw(new Sprite3DDrawingRequest(this, pos, z_pos, dc.get_modelview()));
+  dc.draw(new Sprite3DDrawable(this, pos, z_pos, dc.get_modelview()));
 }
 
 void
 Sprite3D::draw(DrawingContext& dc, const Matrix& , float ) const
 {
-  dc.draw(new Sprite3DDrawingRequest(this, Vector2f(0, 0), 0.0f, dc.get_modelview()));
+  dc.draw(new Sprite3DDrawable(this, Vector2f(0, 0), 0.0f, dc.get_modelview()));
 }
 
 static inline float interpolate(float v1, float v2, float t)

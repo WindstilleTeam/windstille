@@ -16,26 +16,36 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_DISPLAY_TEXT_DRAWING_REQUEST_HPP
-#define HEADER_WINDSTILLE_DISPLAY_TEXT_DRAWING_REQUEST_HPP
+#ifndef HEADER_WINDSTILLE_SPRITE3D_SPRITE3D_DRAWING_REQUEST_HPP
+#define HEADER_WINDSTILLE_SPRITE3D_SPRITE3D_DRAWING_REQUEST_HPP
 
-class TextDrawingRequest : public DrawingRequest
+#include "sprite3d/sprite3d.hpp"
+#include "scenegraph/drawable.hpp"
+
+class Sprite3DDrawable : public Drawable
 {
 private:
-  std::string text;
-public:
-  TextDrawingRequest(const std::string& text_, const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
-    : DrawingRequest(pos_, z_pos_, modelview_),
-      text(text_)
-  {}
-  virtual ~TextDrawingRequest() {}
+  const Sprite3D* sprite;
 
-  void draw(const Texture& /*tmp_texture*/) {
-    glPushMatrix();
-    glMultMatrixf(modelview.matrix);
-    Fonts::current()->ttffont->draw(pos, text);
-    glPopMatrix();
+public:
+  Sprite3DDrawable(const Sprite3D* sprite_, 
+                         const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
+    : Drawable(pos_, z_pos_, modelview_), sprite(sprite_)
+  {}
+
+  void draw(const Texture& /*tmp_texture*/)
+  {
+    sprite->draw(pos, modelview);
   }
+
+  void set_pos(const Vector2f& pos_)
+  {
+    pos = pos_;
+  }
+
+private:
+  Sprite3DDrawable(const Sprite3DDrawable&);
+  Sprite3DDrawable& operator=(const Sprite3DDrawable&);
 };
 
 #endif

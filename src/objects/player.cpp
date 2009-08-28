@@ -30,7 +30,7 @@
 #include "tile/tile.hpp"
 #include "tile/tile_map.hpp"
 #include "scenegraph/scene_graph.hpp"
-#include "scenegraph/sprite3d_drawing_request.hpp"
+#include "scenegraph/sprite3d_drawable.hpp"
 
 static const int MAX_ENERGY = 16;
 static const float WALK_SPEED = 100.0;
@@ -79,7 +79,7 @@ Player::Player ()
   weapon.reset(new Pistol());
   laser_pointer = ((Pistol*)weapon.get())->laser_pointer;
 
-  m_drawable.reset(new Sprite3DDrawingRequest(&sprite, Vector2f(200, 600), 100.0f, Matrix::identity()));
+  m_drawable.reset(new Sprite3DDrawable(&sprite, Vector2f(200, 600), 100.0f, Matrix::identity()));
   Sector::current()->get_scene_graph().add_drawable(m_drawable);
 }
 

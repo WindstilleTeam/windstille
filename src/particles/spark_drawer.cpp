@@ -18,7 +18,7 @@
 
 #include "display/drawing_context.hpp"
 #include "util/file_reader.hpp"
-#include "scenegraph/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 #include "particles/particle_system.hpp"
 #include "particles/spark_drawer.hpp"
 
@@ -33,7 +33,7 @@ SparkDrawer::SparkDrawer(FileReader& props)
 void
 SparkDrawer::draw(DrawingContext& dc, ParticleSystem& psys) 
 {
-  VertexArrayDrawingRequest* buffer = new VertexArrayDrawingRequest(Vector2f(0, 0), psys.get_z_pos(),
+  VertexArrayDrawable* buffer = new VertexArrayDrawable(Vector2f(0, 0), psys.get_z_pos(),
                                                                     dc.get_modelview());
   if (width == 1.0f)
     {

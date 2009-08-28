@@ -18,7 +18,7 @@
 
 #include "objects/background_gradient.hpp"
 
-#include "scenegraph/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 #include "display/display.hpp"
 
 BackgroundGradient::BackgroundGradient(FileReader& props)
@@ -69,7 +69,7 @@ BackgroundGradient::draw(SceneContext& sc)
 
   Rectf rect(0.0f, 0.0f, 
              static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()));
-  VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos, 
+  VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), z_pos, 
                                                                    sc.color().get_modelview());
 
   array->set_mode(GL_QUAD_STRIP);

@@ -25,7 +25,7 @@
 #include "particles/particle_system.hpp"
 #include "display/opengl_state.hpp"
 
-class DeformDrawerRequest : public DrawingRequest
+class DeformDrawerRequest : public Drawable
 {
 public:
   Framebuffer&      framebuffer;
@@ -36,7 +36,7 @@ public:
   DeformDrawerRequest(const Vector2f& pos_, float z_pos_,  const Matrix& modelview_,
                       Framebuffer& framebuffer_, Surface& surface_, ParticleSystem& psys_,
                       ShaderProgram& shader_program_)
-    : DrawingRequest(pos_, z_pos_, modelview_),
+    : Drawable(pos_, z_pos_, modelview_),
       framebuffer(framebuffer_), surface(surface_), psys(psys_), 
       shader_program(shader_program_)
   {}

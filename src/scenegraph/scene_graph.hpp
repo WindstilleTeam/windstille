@@ -22,20 +22,20 @@
 #include <boost/shared_ptr.hpp>
 #include <vector>
 
-class DrawingRequest;
+class Drawable;
 class Texture;
 
 class SceneGraph
 {
 private:
-  typedef std::vector<boost::shared_ptr<DrawingRequest> > DrawingRequests;
-  DrawingRequests m_drawing_requests;
+  typedef std::vector<boost::shared_ptr<Drawable> > Drawables;
+  Drawables m_drawables;
 
 public:
   SceneGraph();
 
-  void add_drawable(boost::shared_ptr<DrawingRequest> drawable);
-  void remove_drawable(boost::shared_ptr<DrawingRequest> drawable);
+  void add_drawable(boost::shared_ptr<Drawable> drawable);
+  void remove_drawable(boost::shared_ptr<Drawable> drawable);
 
   void draw(const Texture& tmp_texture, unsigned int mask);
 

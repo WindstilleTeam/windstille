@@ -21,9 +21,9 @@
 
 #include "math/vector2f.hpp"
 #include "math/quad.hpp"
-#include "scenegraph/drawing_request.hpp"
+#include "scenegraph/drawable.hpp"
 
-class SurfaceQuadDrawingRequest : public DrawingRequest
+class SurfaceQuadDrawable : public Drawable
 {
 private:
   Surface surface;
@@ -31,10 +31,10 @@ private:
   DrawingParameters params;
 
 public:
-  SurfaceQuadDrawingRequest(Surface surface_, const Vector2f& pos_, const Quad& quad_, 
+  SurfaceQuadDrawable(Surface surface_, const Vector2f& pos_, const Quad& quad_, 
                             const DrawingParameters& params_, float z_pos_,
                             const Matrix& modelview_)
-    : DrawingRequest(pos_, z_pos_, modelview_),
+    : Drawable(pos_, z_pos_, modelview_),
       surface(surface_),
       quad(quad_),
       params(params_)

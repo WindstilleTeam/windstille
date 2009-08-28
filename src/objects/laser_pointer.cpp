@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "scenegraph/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 #include "objects/player.hpp"
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
@@ -119,7 +119,7 @@ LaserPointer::draw(SceneContext& sc)
   
     Vector2f ray = target - pos;
 
-    VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0,0), 10000,
+    VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0,0), 10000,
                                                                      sc.highlight().get_modelview());
     array->set_mode(GL_LINES);
     array->set_texture(noise);

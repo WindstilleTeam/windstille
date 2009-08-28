@@ -19,7 +19,7 @@
 #include "objects/nightvision.hpp"
 
 #include "display/display.hpp"
-#include "scenegraph/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 #include "math/random.hpp"
 
 Nightvision::Nightvision(FileReader& /*props*/)
@@ -52,7 +52,7 @@ Nightvision::draw(SceneContext& sc)
 
   if (1)
     {
-      VertexArrayDrawingRequest* array = new VertexArrayDrawingRequest(Vector2f(0, 0), 10000,
+      VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), 10000,
                                                                        sc.light().get_modelview());
       array->set_mode(GL_QUADS);
       array->set_texture(noise);

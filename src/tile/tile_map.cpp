@@ -26,7 +26,7 @@
 #include "tile/tile.hpp"
 #include "tile/tile_factory.hpp"
 #include "screen/view.hpp"
-#include "scenegraph/vertex_array_drawing_request.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
 TileMap::TileMap(FileReader& props)
   : field(),
@@ -92,7 +92,7 @@ TileMap::draw (SceneContext& sc)
             std::min(field.get_width(),  clip_rect.right/TILE_SIZE + 1),
             std::min(field.get_height(), clip_rect.bottom/TILE_SIZE + 1));
   
-  std::vector<VertexArrayDrawingRequest*> requests;
+  std::vector<VertexArrayDrawable*> requests;
   for (int y = rect.top;   y < rect.bottom; ++y)
     for (int x = rect.left; x < rect.right; ++x)
       {
@@ -105,10 +105,10 @@ TileMap::draw (SceneContext& sc)
             if(packer >= int(requests.size()))
               requests.resize(packer+1);
 
-            VertexArrayDrawingRequest*& request = requests[packer];
+            VertexArrayDrawable*& request = requests[packer];
             if (!request)
               {
-                request = new VertexArrayDrawingRequest(Vector2f(0, 0), z_pos,
+                request = new VertexArrayDrawable(Vector2f(0, 0), z_pos,
                                                         sc.color().get_modelview());
                 request->set_mode(GL_QUADS);
                 request->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -129,7 +129,7 @@ TileMap::draw (SceneContext& sc)
           }
       }
 
-  for(std::vector<VertexArrayDrawingRequest*>::iterator i = requests.begin(); i != requests.end(); ++i)
+  for(std::vector<VertexArrayDrawable*>::iterator i = requests.begin(); i != requests.end(); ++i)
     {
       if (*i)
         sc.color().draw(*i);

@@ -19,21 +19,21 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_CONTROL_DRAWING_REQUEST_HPP
 #define HEADER_WINDSTILLE_DISPLAY_CONTROL_DRAWING_REQUEST_HPP
 
-class ControlDrawingRequest : public DrawingRequest
+class ControlDrawable : public Drawable
 {
 private:
   Surface surface;
   float angle;
 
 public:
-  ControlDrawingRequest(Surface surface_, const Vector2f& pos_, float angle_, float z_pos_,
+  ControlDrawable(Surface surface_, const Vector2f& pos_, float angle_, float z_pos_,
                         const Matrix& modelview_)
-    : DrawingRequest(pos_, z_pos_, modelview_), 
+    : Drawable(pos_, z_pos_, modelview_), 
       surface(surface_), 
       angle(angle_)
   {}
 
-  virtual ~ControlDrawingRequest() {}
+  virtual ~ControlDrawable() {}
 
   void draw(const Texture& /*tmp_texture*/)
   {

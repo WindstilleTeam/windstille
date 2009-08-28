@@ -22,7 +22,7 @@
 #include <boost/scoped_ptr.hpp>
 
 class CompositorImpl;
-class DrawingRequest;
+class Drawable;
 class GraphicContextState;
 class SceneContext;
 class SceneGraph;
@@ -34,7 +34,7 @@ public:
   ~Compositor();
 
   void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);
-  void eval(DrawingRequest* request);
+  void eval(Drawable* request);
 
 private:
   void render_with_framebuffers(SceneContext& sc, SceneGraph* sg);

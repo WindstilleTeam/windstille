@@ -24,7 +24,7 @@
 #include "math/matrix.hpp"
 #include "display/texture.hpp"
 
-class DrawingRequest
+class Drawable
 {
 protected:
   Vector2f pos;
@@ -33,16 +33,16 @@ protected:
   unsigned int render_mask;
 
 public:
-  DrawingRequest(const Vector2f& pos_, float z_pos_ = 0,  const Matrix& modelview_ = Matrix::identity())
+  Drawable(const Vector2f& pos_, float z_pos_ = 0,  const Matrix& modelview_ = Matrix::identity())
     : pos(pos_), 
       z_pos(z_pos_), 
       modelview(modelview_),
       render_mask(0)
   {}
-  virtual ~DrawingRequest() {}
+  virtual ~Drawable() {}
   
   /**
-   * The draw() method does the important work in DrawingRequest,
+   * The draw() method does the important work in Drawable,
    * ie. it is the place where you can access the screen with raw
    * OpenGL methods. The \a tmp_texture provides a texture of the
    * current framebuffer, you have to copy the \a screen_texture to it
@@ -51,7 +51,7 @@ public:
   virtual void draw(const Texture& tmp_texture) = 0;
 
   /**
-   * This method is called before draw() to allow the DrawingRequest
+   * This method is called before draw() to allow the Drawable
    * to copy content from \a screen_texture, which is the current
    * framebuffer to a temporary buffer which can then be used in
    * draw() for deformation effects
@@ -76,8 +76,8 @@ public:
   unsigned int get_render_mask() const { return render_mask; }
 
 private:
-  DrawingRequest (const DrawingRequest&);
-  DrawingRequest& operator= (const DrawingRequest&);
+  Drawable (const Drawable&);
+  Drawable& operator= (const Drawable&);
 };
 
 #endif

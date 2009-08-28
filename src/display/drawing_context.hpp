@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include "scenegraph/drawing_request.hpp"
+#include "scenegraph/drawable.hpp"
 
 class Texture;
 class Surface;
@@ -34,7 +34,7 @@ class Line;
 class Color;
 class Compositor;
 
-/** The DrawingContext collects all DrawingRequests and allows you to
+/** The DrawingContext collects all Drawables and allows you to
     flush them all down to the graphics card in one run, this has the
     advantage that it is possible to z-sort, texture-id sort or
     otherwise optimize the drawing. In addition to that it also allows
@@ -43,8 +43,8 @@ class Compositor;
 class DrawingContext
 {
 private:
-  typedef std::vector<DrawingRequest*> DrawingRequests;
-  DrawingRequests drawingrequests;
+  typedef std::vector<Drawable*> Drawables;
+  Drawables drawingrequests;
 
   std::vector<Matrix> modelview_stack;
 
@@ -59,7 +59,7 @@ public:
   void clear();
 
   /** Fills the screen with a given color, this is different from
-      clear() in that it doesn't remove other DrawingRequest from the
+      clear() in that it doesn't remove other Drawable from the
       queue */
   void fill_screen(const Color& color);
 
@@ -75,7 +75,7 @@ public:
   void fill_quad(const Quad& quad, const Color& color, float z_pos = 0);
 
   /*{ */
-  void draw(DrawingRequest* request);
+  void draw(Drawable* request);
   void draw(const Sprite&   sprite,  const Vector2f& pos, float z = 0);
   void draw(const std::string& text,    float x, float y, float z = 0);
   void draw(const Surface surface, const Vector2f& pos, float z = 0, float alpha = 0);

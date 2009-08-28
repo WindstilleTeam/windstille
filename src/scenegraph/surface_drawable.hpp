@@ -19,25 +19,25 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SURFACE_DRAWING_REQUEST_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SURFACE_DRAWING_REQUEST_HPP
 
-#include "scenegraph/surface_drawing_request.hpp"
+#include "scenegraph/surface_drawable.hpp"
 #include "display/surface_drawing_parameters.hpp"
 
-class SurfaceDrawingRequest : public DrawingRequest
+class SurfaceDrawable : public Drawable
 {
 private:
   Surface surface;
   SurfaceDrawingParameters params;
 
 public:
-  SurfaceDrawingRequest(Surface surface_, const SurfaceDrawingParameters& params_,
+  SurfaceDrawable(Surface surface_, const SurfaceDrawingParameters& params_,
                         float z_pos_,
                         const Matrix& modelview_)
-    : DrawingRequest(pos, z_pos_, modelview_), 
+    : Drawable(pos, z_pos_, modelview_), 
       surface(surface_), 
       params(params_)
   {}
 
-  virtual ~SurfaceDrawingRequest()
+  virtual ~SurfaceDrawable()
   {}
   
   Surface get_surface() const { return surface; }

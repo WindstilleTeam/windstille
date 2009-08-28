@@ -21,17 +21,17 @@
 
 
 
-class FillScreenDrawingRequest : public DrawingRequest
+class FillScreenDrawable : public Drawable
 {
 private:
   Color color;
 
 public:
-  FillScreenDrawingRequest(const Color& color_) 
-    : DrawingRequest(Vector2f(0, 0), -1000.0f), color(color_)
+  FillScreenDrawable(const Color& color_) 
+    : Drawable(Vector2f(0, 0), -1000.0f), color(color_)
   {
   }
-  virtual ~FillScreenDrawingRequest() {}
+  virtual ~FillScreenDrawable() {}
 
   void draw(const Texture& /*tmp_texture*/) {
     OpenGLState state;
