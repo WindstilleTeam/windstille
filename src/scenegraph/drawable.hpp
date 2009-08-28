@@ -37,7 +37,7 @@ public:
     : pos(pos_), 
       z_pos(z_pos_), 
       modelview(modelview_),
-      render_mask(0)
+      render_mask(1) // FIXME: Evil hardcoded constant
   {}
   virtual ~Drawable() {}
   
