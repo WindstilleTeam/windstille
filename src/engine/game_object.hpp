@@ -33,8 +33,6 @@ class Sector;
 class GameObject
 {
 private:
-  static Sector* world;
-
   bool remove_flag;
  
 protected:
@@ -106,9 +104,6 @@ public:
    */
   virtual void update (float delta) = 0;
     
-  static void set_world (Sector* w) { world = w; }
-  Sector* get_world () const { return world; }
-
   virtual void set_parent(GameObject* /*parent*/) {}
 
 private:

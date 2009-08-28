@@ -45,13 +45,13 @@ Entity::set_pos(Vector2f pos_)
 bool
 Entity::on_ground() const
 {
-  return get_world ()->get_tilemap()->is_ground(pos.x, pos.y+16);
+  return Sector::current()->get_tilemap()->is_ground(pos.x, pos.y+16);
 }
 
 bool 
 Entity::in_wall() const
 {
-  return get_world ()->get_tilemap()->is_ground(pos.x, pos.y);
+  return Sector::current()->get_tilemap()->is_ground(pos.x, pos.y);
 }
 
 void

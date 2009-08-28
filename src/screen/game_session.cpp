@@ -342,11 +342,6 @@ void
 GameSession::set_sector(const Pathname& /* FIXME: huh? */)
 {
   impl->sector.reset(new Sector(impl->filename));
- 
-  GameObject::set_world(impl->sector.get());
-
-  //FIXME: does the TestObject class still need to exist?
-  //sector->add(new TestObject());
   
   impl->sector->activate();
   

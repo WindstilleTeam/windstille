@@ -18,6 +18,4 @@
 
 #include "engine/game_object.hpp"
 
-Sector* GameObject::world;
-
 /* EOF */
