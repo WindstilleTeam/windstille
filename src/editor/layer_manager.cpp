@@ -48,6 +48,8 @@ LayerManager::LayerManager(EditorWindow& editor_)
                     sigc::mem_fun(editor, &EditorWindow::on_new_layer));
   action_group->add(Gtk::Action::create("DeleteLayer", Gtk::Stock::DELETE),
                     sigc::mem_fun(editor, &EditorWindow::on_delete_layer));
+  action_group->add(Gtk::Action::create("ReverseLayers", Gtk::Stock::SORT_ASCENDING),
+                    sigc::mem_fun(editor, &EditorWindow::on_reverse_layers));
 
   action_group->add(Gtk::Action::create_with_icon_name("ShowAllLayer", "show_all", "Show All", "Show All Layer"),
                     sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_show_all), true));

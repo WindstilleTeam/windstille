@@ -138,6 +138,7 @@ public:
 
   void on_new_layer();
   void on_delete_layer();
+  void on_reverse_layers();
 
   Tool* get_current_tool() const;
 

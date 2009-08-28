@@ -94,7 +94,8 @@ public:
   void add_layer(const std::string& name, const Gtk::TreeModel::Path& path = Gtk::TreeModel::Path());
   void add_layer(LayerHandle layer, const Gtk::TreeModel::Path& path = Gtk::TreeModel::Path());
   void delete_layer(const Gtk::TreeModel::Path& path);
-
+  void reverse_layers();
+  
   void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
   void remove(const ObjectModelHandle& object);
   LayerHandle get_layer(const ObjectModelHandle& object) const;

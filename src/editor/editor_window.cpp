@@ -135,6 +135,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <menu action='MenuLayer'>"
     "      <menuitem action='NewLayer'/>"
     "      <menuitem action='DeleteLayer'/>"
+    "      <menuitem action='ReverseLayers'/>"
     "      <separator/>"
     "      <menuitem action='ShowAllLayer'/>"
     "      <menuitem action='HideAllLayer'/>"
@@ -917,6 +918,16 @@ EditorWindow::on_delete_layer()
 
       CommandHandle cmd(new LayerDeleteCommand(*wst->get_sector_model(), wst->get_current_layer_path()));
       wst->execute(cmd);
+      queue_draw();
+    }
+}
+
+void
+EditorWindow::on_reverse_layers()
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+    {
+      wst->get_sector_model()->reverse_layers();
     }
 }
 
