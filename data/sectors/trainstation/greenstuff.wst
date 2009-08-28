@@ -8,7 +8,7 @@
   (navigation
     (nodes)
     (edges))
-  (layers
+  (objects
     (layer
       (name "Light")
       (visible #t)

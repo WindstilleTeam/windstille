@@ -410,7 +410,7 @@ SectorModel::load(const std::string& filename)
           nav_graph->load(navigation_section);
 
           FileReader layers_section;
-          reader.get("layers", layers_section);
+          reader.get("objects", layers_section);
 
           const std::vector<FileReader>& sections = layers_section.get_sections();
           for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
@@ -450,7 +450,7 @@ SectorModel::write(FileWriter& writer) const
   nav_graph->write(writer);
   writer.end_section();
 
-  writer.start_section("layers");
+  writer.start_section("objects");
   for(Gtk::ListStore::Children::iterator i = layer_tree->children().begin(); i != layer_tree->children().end(); ++i)
     {
       const Gtk::TreeRow& row = *i;

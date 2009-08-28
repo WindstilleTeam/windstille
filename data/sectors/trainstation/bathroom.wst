@@ -36,7 +36,7 @@
         (node1 4)
         (node2 1)
         (properties 0))))
-  (layers
+  (objects
     (layer
       (name "Scene")
       (visible #t)

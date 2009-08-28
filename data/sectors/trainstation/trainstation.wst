@@ -74,7 +74,7 @@
         (node1 10)
         (node2 4)
         (properties 0))))
-  (layers
+  (objects
     (layer
       (name "Trainstation")
       (visible #t)
