@@ -30,9 +30,11 @@
 
 Doll::Doll()
   : m_drawable(),
+    m_velocity(),
     m_pos(200, 600),
     m_last_pos(m_pos),
-    m_edge_position()
+    m_edge_position(),
+    m_state(kNoState)
 {
   Sprite3D sprite(Pathname("models/characters/jane/jane.wsprite"));
   m_drawable.reset(new Sprite3DDrawable(sprite, m_pos, 100.0f, Matrix::identity()));
@@ -40,7 +42,7 @@ Doll::Doll()
 
   Sector::current()->get_scene_graph().add_drawable(m_drawable);
 
-  m_drawable->get_sprite().set_next_action("Walk");
+  set_state_falling();
 }
 
 Doll::~Doll()
@@ -55,15 +57,189 @@ Doll::update (float /*delta*/)
 void
 Doll::update(const Controller& controller, float delta)
 {
+  Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
+                 controller.get_axis_state(Y_AXIS) * delta * 200.0f);
+
+  switch(m_state)
+  {
+    case kFalling:  update_falling(controller, delta);  break;
+    case kWalking:  update_walking(controller, delta);  break;
+    case kRunning:  update_running(controller, delta);  break;
+    case kStanding: update_standing(controller, delta); break;
+    case kDucking:  update_ducking(controller, delta);  break;
+    case kNoState:  break;
+  }
+
+  m_drawable->get_sprite().update(delta);
+  m_drawable->set_pos(m_pos);
+  m_last_pos = m_pos;
+}
+
+void
+Doll::set_state_falling()
+{
+  if (m_state != kFalling)
+  {
+    m_state = kFalling;
+  }
+}
+
+void
+Doll::set_state_standing()
+{
+  if (m_state != kStanding)
+  {
+    m_state = kStanding;
+    m_drawable->get_sprite().set_action("Stand");
+  }
+}
+
+void
+Doll::set_state_walking()
+{
+  if (m_state != kWalking)
+  {
+    m_state = kWalking;
+    m_drawable->get_sprite().set_action("Walk");
+  }
+}
+
+void
+Doll::set_state_running()
+{
+  if (m_state != kRunning)
+  {
+    m_state = kRunning;
+    m_drawable->get_sprite().set_action("Run");
+  }
+}
+
+void
+Doll::set_state_ducking()
+{
+  if (m_state != kDucking)
+  {
+    m_state = kDucking;
+    m_drawable->get_sprite().set_action("StandToDuck");
+    m_drawable->get_sprite().set_next_action("Ducking");
+  }
+}
+
+void
+Doll::update_falling(const Controller& controller, float delta)
+{
+  Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
+                 controller.get_axis_state(Y_AXIS) * delta * 200.0f);
+
+  m_pos += stick;
+  m_pos.y += 1000.0f * delta;
+
+  const std::vector<EdgePosition>& intersections =
+    Sector::current()->get_navigation_graph().find_intersections(Line(m_last_pos, m_pos));
+
+  if (!intersections.empty())
+  {
+    std::cout << "Attaching to navgraph" << std::endl;
+    m_edge_position.reset(new EdgePosition(intersections.front()));
+    set_state_standing();
+  }
+}
+
+void
+Doll::update_standing(const Controller& controller, float /*delta*/)
+{
+  if (controller.get_axis_state(Y_AXIS) > 0)
+  {
+    set_state_ducking();
+  }
+  else if (controller.get_axis_state(X_AXIS) > 0 ||
+           controller.get_axis_state(X_AXIS) < 0)
+  {
+    if (controller.get_button_state(RUN_BUTTON))
+    {
+      set_state_running();
+    }
+    else
+    {
+      set_state_walking();
+    }
+  }
+}
+
+void
+Doll::update_walking(const Controller& controller, float delta)
+{
+  Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
+                 controller.get_axis_state(Y_AXIS) * delta * 200.0f);  
+  walk(stick);
+
+  if (controller.get_axis_state(X_AXIS) == 0)
+  {
+    set_state_standing();
+  }
+  else if (controller.get_button_state(RUN_BUTTON))
+  {
+    set_state_running();
+  }
+}
+
+void
+Doll::update_running(const Controller& controller, float delta)
+{
+  Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
+                 controller.get_axis_state(Y_AXIS) * delta * 200.0f);
+
+  walk(stick * 2.5f);
+
+  if (controller.get_axis_state(X_AXIS) == 0)
+  {
+    set_state_standing();
+  }
+  else if (!controller.get_button_state(RUN_BUTTON))
+  {
+    set_state_walking();
+  }
+}
+
+void
+Doll::update_ducking(const Controller& controller, float /*delta*/)
+{ 
+  if (controller.get_axis_state(Y_AXIS) < 0)
+  {
+    set_state_standing();
+  }
+  else if (controller.get_axis_state(X_AXIS) > 0 ||
+           controller.get_axis_state(X_AXIS) < 0)
+  {
+    if (controller.get_button_state(RUN_BUTTON))
+    {
+      set_state_running();
+    }
+    else
+    {
+      set_state_walking();
+    }
+  }
+}
+
+void
+Doll::walk(const Vector2f& adv_)
+{
+  if (adv_.x > 0)
+  {
+    m_drawable->get_sprite().set_rot(true);
+  }
+  else if (adv_.x < 0)
+  {
+    m_drawable->get_sprite().set_rot(false);
+  }
+
   if (m_edge_position.get())
   {
     Node* next_node = 0;
-    Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 1000.0f,
-                   controller.get_axis_state(Y_AXIS) * delta * 1000.0f);
-    Vector2f adv(stick);
-    m_edge_position->advance(adv, 
-                             next_node);
-      
+    Vector2f adv(adv_);
+    m_edge_position->advance(adv, next_node);
+
     if (!adv.is_null())
     { // Not all advancement got used up, which means we have hit
       // the end of a edge
@@ -77,7 +253,7 @@ Doll::update(const Controller& controller, float delta)
       {
         if (m_edge_position->get_edge() != i->edge)
         { // Find out into the direction of which edge the stick is pointing
-          Vector2f proj = stick.project(i->edge->get_vector());
+          Vector2f proj = adv_.project(i->edge->get_vector());
                   
           if (proj.length() > length)
           {
@@ -100,32 +276,13 @@ Doll::update(const Controller& controller, float delta)
       }
       else
       {
-        std::cout << "transition: " << next_edge << std::endl;
+        //std::cout << "transition: " << next_edge << std::endl;
         *m_edge_position = next_edge;
       }
     }
 
     m_pos = m_edge_position->get_pos();
   }
-  else
-  {
-    m_pos.x += controller.get_axis_state(X_AXIS) * delta * 1000.0f;
-    m_pos.y += controller.get_axis_state(Y_AXIS) * delta * 1000.0f;
-
-    const std::vector<EdgePosition>& intersections =
-      Sector::current()->get_navigation_graph().find_intersections(Line(m_last_pos, m_pos));
-
-    if (!intersections.empty())
-    {
-      std::cout << "Attaching to navgraph" << std::endl;
-      m_edge_position.reset(new EdgePosition(intersections.front()));
-    }
-
-    m_last_pos = m_pos;
-  }
-
-  m_drawable->get_sprite().update(delta);
-  m_drawable->set_pos(m_pos);
 }
 
 /* EOF */

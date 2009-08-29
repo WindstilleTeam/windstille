@@ -29,14 +29,26 @@ class Sprite3DDrawable;
 class Controller;
 class EdgePosition;
 
+/** A controllable character */
 class Doll : public GameObject,
              public Currenton<Doll>
 {
 private:
+  enum State {
+    kNoState,
+    kFalling,
+    kWalking,
+    kRunning,
+    kStanding,
+    kDucking
+  };
+
   boost::shared_ptr<Sprite3DDrawable> m_drawable;
+  Vector2f m_velocity;
   Vector2f m_pos;
   Vector2f m_last_pos;
   boost::scoped_ptr<EdgePosition> m_edge_position;
+  State m_state;
   
 public:
   Doll();
@@ -47,6 +59,21 @@ public:
   void update(const Controller& controller, float delta);
   
   Vector2f get_pos() const { return m_pos; }
+
+private:
+  void walk(const Vector2f& adv);
+
+  void set_state_falling();
+  void set_state_standing();
+  void set_state_walking();
+  void set_state_running();
+  void set_state_ducking();
+
+  void update_falling(const Controller& controller, float delta);
+  void update_standing(const Controller& controller, float delta);
+  void update_walking(const Controller& controller, float delta);
+  void update_running(const Controller& controller, float delta);
+  void update_ducking(const Controller& controller, float delta);
 
 private:
   Doll(const Doll&);
