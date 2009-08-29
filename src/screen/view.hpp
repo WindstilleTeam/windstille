@@ -35,9 +35,8 @@ private:
   GraphicContextState state;
   Camera camera;
 
-  // debugging helpers
-  float zoom;
-  Vector2f transform;
+  float    m_debug_zoom;
+  Vector2f m_debug_transform;
 
 public:
   View();

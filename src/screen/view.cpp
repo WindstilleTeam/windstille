@@ -28,25 +28,16 @@
 View::View()
   : state(Display::get_width(), Display::get_height()),
     camera(),
-    zoom(1.0), 
-    transform(0, 0)
+    m_debug_zoom(1.0), 
+    m_debug_transform(0, 0)
 {
 }
 
 void
 View::draw(SceneContext& sc, Sector& sector)
 {
-  if (camera.get_zoom() == 1.0)
-    {
-      state.set_pos(Vector2f(camera.get_pos().x, camera.get_pos().y));
-    }
-  else
-    {
-      state.set_pos(camera.get_pos());
-    }
-
-  state.set_zoom(camera.get_zoom() + (zoom - 1.0f));
-  state.set_pos(state.get_pos() + Vector2f(transform.x, transform.y));
+  state.set_zoom(camera.get_zoom() + (m_debug_zoom - 1.0f));
+  state.set_pos(camera.get_pos() + m_debug_transform);
 
   state.push(sc);
 
@@ -66,10 +57,10 @@ View::update (float delta)
   Uint8 *keystate = SDL_GetKeyState(NULL);
 
   if (keystate[SDLK_KP_PLUS])
-    zoom *= 1.0f + delta;
+    m_debug_zoom *= 1.0f + delta;
 
   if (keystate[SDLK_KP_MINUS])
-    zoom *= 1.0f - delta;
+    m_debug_zoom *= 1.0f - delta;
 
   const Controller& controller = InputManagerSDL::current()->get_controller();
 
@@ -77,12 +68,12 @@ View::update (float delta)
     {
       if (controller.get_button_state(VIEW_CENTER_BUTTON)) 
         {
-          transform = Vector2f(0, 0);
-          zoom = 1.0;
+          m_debug_transform = Vector2f(0, 0);
+          m_debug_zoom = 1.0;
         }
 
-      transform.x += 1.5f * controller.get_axis_state(X2_AXIS) / zoom;
-      transform.y += 1.5f * controller.get_axis_state(Y2_AXIS) / zoom;
+      m_debug_transform.x += 1000.0f * controller.get_axis_state(X2_AXIS) * delta / m_debug_zoom;
+      m_debug_transform.y += 1000.0f * controller.get_axis_state(Y2_AXIS) * delta / m_debug_zoom;
     }
 }
 
