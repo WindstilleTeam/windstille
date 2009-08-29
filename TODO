@@ -15,22 +15,42 @@ Pathname/PhysFS
 
 * Pathname needs a way to browse directories (wrapper boost::filesystem)
 
-* Sound stuff still uses PhysFS
+* Sound stuff still uses PhysFS, should be switched to std::ifstream
 
 SceneGraph
 ==========
 
 * change the editor to use the SceneGraph instead of the SceneContext API
 
-* new levelformat use a different coordinate system then the old one,
-  figure out which to use before doing the final conversion
+* new levelformat use a different coordinate system then the old one
+  (128px = 1meter instead of 64px), figure out which to use before
+  doing the final conversion
 
-* 
+* might have some advantage to place stuff in a QuadTree, when you have a complex level
+
+Display
+=======
+
+* Display::push/pop_cliprect() doesn't handle different aspect-ratios properly
+
+* lightmap is broken with non-standard aspect-ratio
+
+* implement aspect-ration switching at runtime (menu entry is there,
+  just no code) and change default screen ration to that seen in the
+  artwork pictures (FIXME: full resolution switch would be more useful
+  then just aspect-ratio switch)
+
+* make lightmap resolution independent (done, but an artifact remains
+  when the resolution isn't dividable by LIGHTMAP_DIV):
+
+  1680x1050 -> 1050 / 4 -> 262.5 -> 262 * 4 -> 1048
+
+  two pixel missing at the bottom
 
 Porting
 =======
 
-* Microsoft compiler don't have inttypes.h, need to write a replacement header
+* Microsoft compiler don't have stdint.h, need to write a replacement header
 
 Logging
 =======
@@ -225,15 +245,9 @@ Sound Handling
 Miscellaneous
 =============
 
-* automatically detect the file type provided on the command line and
-  launch the correct viewer
-
 * figure out how to enable mipmapping into the tile and surface packer
 
 * View class could be done away, as it doesn't have any clear purpose
-
-* sorting DrawingRequest can be speed up by a bucket sort, as most
-  requests don't make use of z-pos
 
 * SurfaceManager::load_grid() bypasses TexturePacker, doesn't do
   border pixel duplication
@@ -243,8 +257,6 @@ Miscellaneous
 * maybe add special support for opaque textures, i.e. Textures with
   1-bit alpha, which could be used to bucket sort drawing requests and
   reduce texture switches (in case those ever start posing a problem)
-
-* Write a texture packer: http://www.blackpawn.com/texts/lightmaps/default.html
 
 * Display::aspect_size is ugly, turn that into a Display::set_size();
 
@@ -286,30 +298,18 @@ Miscellaneous
 * remove DEBUG macro or give it a clearer defined purpose, currently
   used only in a few tiny places
 
-* add way to TextArea to layout text with a fixed indent after a linebreak:
+* add way to TextArea to layout text with a fixed indent after a
+  linebreak (for use in the PDA):
 
   Bob: "Hi, how are you, yada yada yada yada yada yada
         yada yada yada yada yada yada yada yada yada yada
         yada yada yada"
 
-* add Ctrl-k, Ctrl-k shortcuts to console
+* add Ctrl-a, Ctrl-k shortcuts to console
 
 * save command history of the console between runs
 
-* move the concept of parenting into .scm
-  
-  (scriptable-object 
-       (parent "player")
-       ...)
-
-  tricky since parent name can't be resolved at object creation, only
-  later
-
-* extend the concept of parenting to other(all?) objects
-
-* Display::push/pop_cliprect() doesn't handle different aspect-ratios properly
-
-* lightmap is broken with non-standard aspect-ratio
+* cleanup the parenting code
 
 * why does src/navigation/node.hpp use SegmentPosition? Doesn't seem
   right
@@ -329,9 +329,6 @@ Miscellaneous
 
 * get rid of global game_time variable
 
-* map laserpointer to the second analog-stick, make mapping absolute,
-  not relative
-
 * maybe create an additional layer in SceneContext for drawing things
   like Speech and other worldspace GUI elements to it
 
@@ -350,8 +347,6 @@ Miscellaneous
 
 * scrap inventory and redesign it
 
-* When starting sector directly from command line, "Return to title screen" doesn't work
-
 * console doesn't adopt to screen size
 
 * create a UTF32 string class for use in console, basically
@@ -360,11 +355,6 @@ Miscellaneous
 
 * join Player and Character somewhat or derive one from the other, so
   that one can have scripted people running and jumping around
-
-* implement aspect-ration switching at runtime (menu entry is there,
-  just no code) and change default screen ration to that seen in the
-  artwork pictures (FIXME: full resolution switch would be more useful
-  then just aspect-ratio switch)
 
 * add support for empty sectors (sectors without a player character,
   for use in intro.wst and similar cutscenes)
@@ -382,16 +372,7 @@ Miscellaneous
   and config done via option menu, i.e. command line settings
   shouldn't be persistent unless told so
 
-* make lightmap resolution independent (done, but an artifact remains
-  when the resolution isn't dividable by LIGHTMAP_DIV):
-
-  1680x1050 -> 1050 / 4 -> 262.5 -> 262 * 4 -> 1048
-
-  two pixel missing at the bottom
-
 * Specify the capabilites that the different subsystems need to have
-
-* make Console not derive from ostream
 
 OpenGL
 ======
