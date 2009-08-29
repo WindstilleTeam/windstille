@@ -67,12 +67,23 @@ Doll::update(const Controller& controller, float delta)
     case kRunning:  update_running(controller, delta);  break;
     case kStanding: update_standing(controller, delta); break;
     case kDucking:  update_ducking(controller, delta);  break;
+    case kJumpUp:   update_jump_up(controller, delta);  break;
     case kNoState:  break;
   }
 
   m_drawable->get_sprite().update(delta);
   m_drawable->set_pos(m_pos);
   m_last_pos = m_pos;
+}
+
+void
+Doll::set_state_jump_up()
+{
+  if (m_state != kJumpUp)
+  {
+    m_state = kJumpUp;
+    m_drawable->get_sprite().set_next_action("JumpUp");
+  }
 }
 
 void
@@ -152,6 +163,11 @@ Doll::update_standing(const Controller& controller, float /*delta*/)
   {
     set_state_ducking();
   }
+  else if (controller.get_button_state(JUMP_BUTTON))
+  {
+    std::cout << "Jump Up" << std::endl;
+    set_state_jump_up();
+  }
   else if (controller.get_axis_state(X_AXIS) > 0 ||
            controller.get_axis_state(X_AXIS) < 0)
   {
@@ -220,6 +236,15 @@ Doll::update_ducking(const Controller& controller, float /*delta*/)
       set_state_walking();
     }
   }
+}
+
+void
+Doll::update_jump_up(const Controller& controller, float /*delta*/)
+{
+  if (!controller.get_button_state(JUMP_BUTTON))
+  {
+    set_state_standing();
+  }  
 }
 
 void

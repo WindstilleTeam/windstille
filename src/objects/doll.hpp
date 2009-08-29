@@ -40,7 +40,8 @@ private:
     kWalking,
     kRunning,
     kStanding,
-    kDucking
+    kDucking,
+    kJumpUp
   };
 
   boost::shared_ptr<Sprite3DDrawable> m_drawable;
@@ -68,12 +69,14 @@ private:
   void set_state_walking();
   void set_state_running();
   void set_state_ducking();
+  void set_state_jump_up();
 
   void update_falling(const Controller& controller, float delta);
   void update_standing(const Controller& controller, float delta);
   void update_walking(const Controller& controller, float delta);
   void update_running(const Controller& controller, float delta);
   void update_ducking(const Controller& controller, float delta);
+  void update_jump_up(const Controller& controller, float delta);
 
 private:
   Doll(const Doll&);
