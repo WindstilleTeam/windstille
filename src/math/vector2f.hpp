@@ -120,7 +120,7 @@ public:
   }
 
   /** Project vecter a onto vector b and return the resulting vector */
-  Vector2f project(const Vector2f& b);
+  Vector2f project(const Vector2f& b) const;
 
   float magnitude() const;
   float length() const { return magnitude(); }
@@ -128,7 +128,7 @@ public:
   Vector2f unit() const;
   void   normalize();
 
-  float dot(const Vector2f& b);
+  float dot(const Vector2f& b) const;
 
   bool is_null() const;
 

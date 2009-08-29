@@ -47,15 +47,15 @@ Vector2f::rotate(float angle) const
 }
 
 Vector2f
-Vector2f::project(const Vector2f& b)
+Vector2f::project(const Vector2f& b) const
 {
-  float dp = this->dot(b);
+  float dp = dot(b);
   return Vector2f((dp / (b.x*b.x + b.y*b.y) ) * b.x,
-                (dp / (b.x*b.x + b.y*b.y) ) * b.y);
+                  (dp / (b.x*b.x + b.y*b.y) ) * b.y);
 }
 
 float
-Vector2f::dot(const Vector2f& b)
+Vector2f::dot(const Vector2f& b) const
 {
   return (x * b.x + y * b.y);
 }
