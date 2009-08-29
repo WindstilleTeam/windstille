@@ -25,11 +25,11 @@
 class Sprite3DDrawable : public Drawable
 {
 private:
-  Sprite3D* m_sprite;
-  float m_scale;
+  Sprite3D m_sprite;
+  float    m_scale;
 
 public:
-  Sprite3DDrawable(Sprite3D* sprite, 
+  Sprite3DDrawable(const Sprite3D& sprite, 
                    const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
     : Drawable(pos_, z_pos_, modelview_), 
       m_sprite(sprite),
@@ -41,7 +41,7 @@ public:
     Matrix matrix = modelview;
     matrix = matrix.translate(pos.x, pos.y, z_pos);
     matrix = matrix.scale(m_scale, m_scale, m_scale);
-    m_sprite->draw(Vector2f(0.0f, 0.0f), matrix);
+    m_sprite.draw(Vector2f(0.0f, 0.0f), matrix);
   }
 
   void set_pos(const Vector2f& pos_)
@@ -59,7 +59,7 @@ public:
     m_scale = scale;
   }
 
-  Sprite3D* get_sprite() const
+  Sprite3D& get_sprite()
   { 
     return m_sprite; 
   }

@@ -79,9 +79,8 @@ Player::Player ()
   weapon.reset(new Pistol());
   laser_pointer = ((Pistol*)weapon.get())->laser_pointer;
 
-  m_drawable.reset(new Sprite3DDrawable(&sprite, Vector2f(200, 600), 100.0f, Matrix::identity()));
+  m_drawable.reset(new Sprite3DDrawable(sprite, Vector2f(200, 600), 100.0f, Matrix::identity()));
   Sector::current()->get_scene_graph().add_drawable(m_drawable);
-  m_drawable->set_scale(2.0f);
 }
 
 Player::~Player()

@@ -30,6 +30,7 @@
 #include "hud/pda.hpp"
 #include "hud/speech_manager.hpp"
 #include "objects/player.hpp"
+#include "objects/doll.hpp"
 #include "screen/screen_manager.hpp"
 #include "screen/view.hpp"
 #include "sound/sound_manager.hpp"
@@ -290,7 +291,12 @@ GameSessionImpl::update_controller(float delta, const Controller& controller)
   else
     {
       if (!current_gui)
-        Player::current()->update(controller, delta);
+      {
+        if (Player::current())
+          Player::current()->update(controller, delta);
+        else if (Doll::current())
+          Doll::current()->update(controller, delta);
+      }
     }
 
   if (current_gui)

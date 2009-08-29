@@ -329,13 +329,13 @@ Sprite3D::update(float delta)
 void
 Sprite3D::draw(DrawingContext& dc, const Vector2f& pos, float z_pos)
 {
-  dc.draw(new Sprite3DDrawable(this, pos, z_pos, dc.get_modelview()));
+  dc.draw(new Sprite3DDrawable(*this, pos, z_pos, dc.get_modelview()));
 }
 
 void
 Sprite3D::draw(DrawingContext& dc, const Matrix& , float )
 {
-  dc.draw(new Sprite3DDrawable(this, Vector2f(0, 0), 0.0f, dc.get_modelview()));
+  dc.draw(new Sprite3DDrawable(*this, Vector2f(0, 0), 0.0f, dc.get_modelview()));
 }
 
 static inline float interpolate(float v1, float v2, float t)

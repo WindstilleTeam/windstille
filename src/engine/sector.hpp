@@ -39,6 +39,7 @@ class SpawnPoint;
 class SquirrelThread;
 class TileMap;
 class SceneGraph;
+class Doll;
 
 /** */
 class Sector : public Currenton<Sector>
@@ -68,6 +69,7 @@ private:
   TileMap* interactivebackground_tilemap;
 
   Player* player;
+  Doll*   doll;
 
   std::map<std::string, GameObject*> id_table;
   std::map<GameObject*, std::string> parent_table;
@@ -108,6 +110,7 @@ public:
 
   CollisionEngine* get_collision_engine() const { return collision_engine.get(); }
   SceneGraph& get_scene_graph() const { return *scene_graph; }
+  NavigationGraph& get_navigation_graph() const { return *navigation_graph; }
 
   GameObject* get_object(const std::string& name) const;
 

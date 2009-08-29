@@ -32,6 +32,7 @@
 #include "objects/liquid.hpp"
 #include "objects/nightvision.hpp"
 #include "objects/player.hpp"
+#include "objects/doll.hpp"
 #include "objects/scriptable_object.hpp"
 #include "objects/shockwave.hpp"
 #include "objects/spider_mine.hpp"
@@ -72,13 +73,17 @@ Sector::Sector(const Pathname& arg_filename)
   {
     // add interactive to collision engine
     collision_engine->add(new CollisionObject(interactive_tilemap));
+
+    // Spawn the Player
+    player = new Player();
+    player->set_pos(Vector2f(300,200));
+    add(player);
   }
-
-  // Spawn the Player
-  player = new Player();
-  add(player);
-
-  player->set_pos(Vector2f(300,200));
+  else
+  {
+    doll = new Doll();
+    add(doll);
+  }
 
   scene_graph->add_drawable(boost::shared_ptr<Drawable>(new NavigationGraphDrawable(navigation_graph.get())));
 }

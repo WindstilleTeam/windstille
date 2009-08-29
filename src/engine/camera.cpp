@@ -19,6 +19,7 @@
 #include "engine/camera.hpp"
 
 #include "objects/player.hpp"
+#include "objects/doll.hpp"
 #include "engine/script_manager.hpp"
 #include "display/display.hpp"
 
@@ -81,7 +82,11 @@ Camera::update(float delta)
         float hscroll_threshold = 100.0f;
         float vscroll_threshold  = 150.0f;
 
-        Vector2f tpos = Player::current()->get_pos();
+        Vector2f tpos;
+        if (Player::current())
+          tpos = Player::current()->get_pos();
+        else if (Doll::current())
+          tpos = Doll::current()->get_pos();
 
         float dist = tpos.x - pos.x;
         if (dist > hscroll_threshold)
