@@ -54,8 +54,8 @@ struct CompositorImpl
   Surface lightmap;
 
   CompositorImpl()
-    : framebuffers(0),
-      //framebuffers(new Framebuffers()),
+    : //framebuffers(0),
+      framebuffers(new Framebuffers()),
       lightmap(Display::get_width()  / LIGHTMAP_DIV,
                Display::get_height() / LIGHTMAP_DIV)
   {}
@@ -104,7 +104,8 @@ Compositor::render_lightmap(SceneContext& /*sc*/, SceneGraph* /*sg*/)
 }
 
 void
-Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg)
+Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
+                                     const GraphicContextState& gc_state)
 {
   glClear(GL_DEPTH_BUFFER_BIT);
       
@@ -119,6 +120,15 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg)
     glTranslatef(0.0f, static_cast<float>(Display::get_height() - (Display::get_height() / LIGHTMAP_DIV)), 0.0f);
     glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
     sc.light().render(*this);
+
+    if (sg)
+    {
+      glPushMatrix();
+      glMultMatrixf(gc_state.get_matrix().matrix);
+      sg->draw(Texture(), SceneContext::LIGHTMAP);
+      glPopMatrix();
+    }
+
     glPopMatrix();
 
     Display::pop_framebuffer();
@@ -130,6 +140,15 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg)
     Display::push_framebuffer(impl->framebuffers->screen);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     sc.color().render(*this);
+
+    if (sg)
+    {
+      glPushMatrix();
+      glMultMatrixf(gc_state.get_matrix().matrix);
+      sg->draw(Texture(), SceneContext::COLORMAP);
+      glPopMatrix();
+    }
+
     Display::pop_framebuffer();
   }
 
@@ -144,6 +163,15 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg)
   {
     Display::push_framebuffer(impl->framebuffers->screen);
     sc.highlight().render(*this);
+
+    if (sg)
+    {
+      glPushMatrix();
+      glMultMatrixf(gc_state.get_matrix().matrix);
+      sg->draw(Texture(), SceneContext::HIGHLIGHTMAP);
+      glPopMatrix();
+    }
+
     Display::pop_framebuffer();
   }
 
@@ -194,7 +222,7 @@ void
 Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state)
 {
   // Resize Lightmap, only needed in the editor, FIXME: move this into a 'set_size()' call
-  if (impl->lightmap.get_width()  != Display::get_width()/LIGHTMAP_DIV ||
+  if (impl->lightmap.get_width()  != Display::get_width() /LIGHTMAP_DIV ||
       impl->lightmap.get_height() != Display::get_height()/LIGHTMAP_DIV)
   {
     impl->lightmap = Surface(Display::get_width()/LIGHTMAP_DIV, Display::get_height()/LIGHTMAP_DIV);
@@ -311,7 +339,7 @@ Compositor::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& 
 {
   if (impl->framebuffers)
   {
-    render_with_framebuffers(sc, sg);
+    render_with_framebuffers(sc, sg, state);
   }
   else
   {
