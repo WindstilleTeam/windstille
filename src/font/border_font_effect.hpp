@@ -47,9 +47,11 @@ public:
   
   void blit(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const;
 
-private:
-  BorderFontEffect (const BorderFontEffect&);
-  BorderFontEffect& operator= (const BorderFontEffect&);
+  /* disabled for g++-4.2 compatibilty
+  private:
+    BorderFontEffect (const BorderFontEffect&);
+    BorderFontEffect& operator= (const BorderFontEffect&);
+  */
 };
 
 #endif

@@ -38,9 +38,11 @@ public:
   
   void blit(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const;
   
+  /* disabled for g++-4.2 compatibilty
 private:
   NoFontEffect (const NoFontEffect&);
   NoFontEffect& operator= (const NoFontEffect&);
+  */
 };
 
 #endif
