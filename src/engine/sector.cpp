@@ -18,6 +18,8 @@
 
 #include "engine/sector.hpp"
 
+#include <sstream>
+
 #include "collision/collision_engine.hpp"
 #include "engine/squirrel_thread.hpp"
 #include "navigation/navigation_graph.hpp"

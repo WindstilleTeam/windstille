@@ -24,6 +24,7 @@
 #include <sqstdmath.h>
 #include <sqstdstring.h>
 #include <fstream>
+#include <sstream>
 
 #include "engine/squirrel_thread.hpp"
 #include "app/console.hpp"

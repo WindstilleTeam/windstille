@@ -18,6 +18,8 @@
 
 #include "scripting/wrapper.interface.hpp"
 
+#include <sstream>
+
 #include "lisp/lisp.hpp"
 #include "app/config.hpp"
 #include "display/opengl_window.hpp"
@@ -408,7 +410,7 @@ SQInteger lisp2string(HSQUIRRELVM v)
   for(std::vector<lisp::Lisp*>::iterator i = entries.begin(); i != entries.end(); ++i)
   {
     ConsoleLog << (i - entries.begin()) << ": ";
-    std::stringstream str;
+    std::ostringstream str;
     (*i)->print(str);
     ConsoleLog << str.str();
     ConsoleLog << std::endl;
