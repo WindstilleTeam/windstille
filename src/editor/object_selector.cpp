@@ -35,7 +35,7 @@ public:
   Gtk::TreeModelColumn<std::string> url;
   Gtk::TreeModelColumn<std::string> pathname;
   Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > icon;
-  Gtk::TreeModelColumn<uint32_t>    filter_mask;
+  Gtk::TreeModelColumn<unsigned int>    filter_mask;
   
   static ObjectSelector::Columns& instance() {
     if (instance_)
@@ -161,7 +161,7 @@ void
 ObjectSelector::add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
                           const std::string& pathname,
                           const std::string& url,
-                          uint32_t filter_)
+                          unsigned int filter_)
 {
   Gtk::ListStore::iterator it = list_store->append();
 
@@ -186,7 +186,7 @@ ObjectSelector::filter(const Gtk::TreeModel::const_iterator& it)
 }
 
 void
-ObjectSelector::add_decals_from_directory(const std::string& pathname, uint32_t filter_)
+ObjectSelector::add_decals_from_directory(const std::string& pathname, unsigned int filter_)
 {
   std::vector<Glib::ustring> images;
 

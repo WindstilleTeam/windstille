@@ -131,7 +131,7 @@ public:
 
   void on_select_all();
 
-  void toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, uint32_t mask);
+  void toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, unsigned int mask);
   void toggle_background_layer(Glib::RefPtr<Gtk::ToggleAction> action);
   void toggle_draw_only_active_layer(Glib::RefPtr<Gtk::ToggleAction> action);
   void toggle_grid_layer(Glib::RefPtr<Gtk::ToggleAction> action);

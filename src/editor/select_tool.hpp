@@ -19,8 +19,6 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_SELECT_TOOL_HPP
 #define HEADER_WINDSTILLE_EDITOR_SELECT_TOOL_HPP
 
-#include <stdint.h>
-
 #include "math/rect.hpp"
 #include "editor/object_model.hpp"
 #include "editor/tool.hpp"
@@ -32,7 +30,7 @@ private:
   Rectf    rect;
   SelectionHandle selection;
   ControlPointHandle ctrl_point;
-  uint32_t start_time;
+  guint32 start_time;
   
   enum { 
     SELECT_MODE,

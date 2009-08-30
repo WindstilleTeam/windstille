@@ -44,7 +44,7 @@ ObjectModel::ObjectModel(const FileReader& reader)
   
   int mask = 1;
   reader.get("select-mask", mask);
-  select_mask = SelectMask(static_cast<uint16_t>(mask));
+  select_mask = SelectMask(static_cast<unsigned int>(mask));
 }
 
 ObjectModel::~ObjectModel()
@@ -68,7 +68,7 @@ ObjectModel::write_member(FileWriter& writer) const
     .write("id", get_id())
     .write("pos", rel_pos)
     .write("parent", parent.get() ? parent->get_id() : "")
-    .write("select-mask", select_mask.get_mask());
+    .write("select-mask", static_cast<int>(select_mask.get_mask()));
 }
 
 ObjectModelHandle

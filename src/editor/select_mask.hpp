@@ -18,19 +18,17 @@
 
 #ifndef HEADER_WINDSTILLE_EDITOR_SELECT_MASK_HPP
 #define HEADER_WINDSTILLE_EDITOR_SELECT_MASK_HPP
-
-#include <stdint.h>
 
 class SelectMask
 {
 private:
-  uint16_t mask;
+  unsigned int mask;
 
 public:
-  SelectMask() : mask(~0) {}
-  SelectMask(uint16_t mask_) : mask(mask_) {}
+  SelectMask() : mask(~0u) {}
+  SelectMask(unsigned int mask_) : mask(mask_) {}
 
-  uint16_t get_mask() const
+  unsigned int get_mask() const
   {
     return mask; 
   }
@@ -44,11 +42,11 @@ public:
   {
     if (enable)
       {
-        mask = static_cast<uint16_t>(mask | (1u<<layer));
+        mask = mask | (1u<<layer);
       }
     else
       {
-        mask = static_cast<uint16_t>(mask & (~(1u<<layer)));
+        mask = mask & (~(1u<<layer));
       }
   }
 

@@ -347,13 +347,13 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   grid_layer->set_active(false);
 
   action_group->add(toggle_color_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_color_layer, (uint32_t)SceneContext::COLORMAP));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_color_layer, (unsigned int)SceneContext::COLORMAP));
   action_group->add(toggle_light_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_light_layer, (uint32_t)SceneContext::LIGHTMAP));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_light_layer, (unsigned int)SceneContext::LIGHTMAP));
   action_group->add(toggle_highlight_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_highlight_layer, (uint32_t)SceneContext::HIGHLIGHTMAP));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_highlight_layer, (unsigned int)SceneContext::HIGHLIGHTMAP));
   action_group->add(toggle_control_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_control_layer, (uint32_t)SceneContext::CONTROLMAP));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_control_layer, (unsigned int)SceneContext::CONTROLMAP));
   action_group->add(background_layer,
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_background_layer), background_layer));
   action_group->add(visible_layer,
@@ -732,7 +732,7 @@ EditorWindow::on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool* tool)
 }
 
 void
-EditorWindow::toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, uint32_t mask)
+EditorWindow::toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, unsigned int mask)
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
