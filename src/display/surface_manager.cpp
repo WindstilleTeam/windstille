@@ -26,7 +26,7 @@
 
 
 SurfaceManager::SurfaceManager()
-  : texture_packer(new TexturePacker(Size(2048, 2048))),
+  : texture_packer(0), // (new TexturePacker(Size(2048, 2048))),
     surfaces()
 {
 }
@@ -51,42 +51,43 @@ SurfaceManager::get(const Pathname& filename)
   Surfaces::iterator i = surfaces.find(filename);
 
   if(i != surfaces.end())
-    { // Surface in cache, return it
-      return i->second;
-    }
+  { // Surface in cache, return it
+    return i->second;
+  }
   else
+  {
+    SoftwareSurface software_surface(filename);
+
+    if (texture_packer)
     {
-      SoftwareSurface image(filename);
-
-      if (1)
-        {
-          Surface result = texture_packer->upload(image);
-          surfaces.insert(std::make_pair(filename, result));
-          return result;              
-        }
-      else
-        {
-          float maxu, maxv;
-          Texture texture;
-
-          try
-            {
-              texture = create_texture(image, maxu, maxv);
-            }
-          catch(std::exception& e)
-            {
-              std::ostringstream msg;
-              msg << "Couldn't create texture for '" << filename << "': " << e.what();
-              throw std::runtime_error(msg.str());
-            }
-        
-          Surface result(texture, Rectf(0.0f, 0.0f, maxu, maxv),
-                         Sizef(static_cast<float>(image.get_width()),
-                               static_cast<float>(image.get_height())));
-          surfaces.insert(std::make_pair(filename, result));
-          return result;
-        }      
+      Surface result = texture_packer->upload(software_surface);
+      surfaces.insert(std::make_pair(filename, result));
+      return result;              
     }
+    else
+    {
+      float maxu = 0.0f;
+      float maxv = 0.0f;
+      Texture texture;
+
+      try
+      {
+        texture = create_texture(software_surface, &maxu, &maxv);
+      }
+      catch(std::exception& e)
+      {
+        std::ostringstream msg;
+        msg << "Couldn't create texture for '" << filename << "': " << e.what();
+        throw std::runtime_error(msg.str());
+      }
+        
+      Surface result(texture, Rectf(0.0f, 0.0f, maxu, maxv),
+                     Sizef(static_cast<float>(software_surface.get_width()),
+                           static_cast<float>(software_surface.get_height())));
+      surfaces.insert(std::make_pair(filename, result));
+      return result;
+    }
+  }
 }
 
 void
@@ -101,7 +102,7 @@ SurfaceManager::load_grid(const Pathname& filename,
 
   try
     {                                                                       
-      texture = create_texture(image, maxu, maxv);
+      texture = create_texture(image, &maxu, &maxv);
     }
   catch(std::exception& e)
     {
@@ -129,10 +130,11 @@ SurfaceManager::load_grid(const Pathname& filename,
 
 Texture
 SurfaceManager::create_texture(const SoftwareSurface& image,
-                               float& maxu, float& maxv)
+                               float* maxu, float* maxv)
 {
-  int texture_w = math::round_to_power_of_two(image.get_width());
-  int texture_h = math::round_to_power_of_two(image.get_height());
+  // OpenGL2.0 should be fine with non-power-of-two
+  int texture_w = image.get_width();  //math::round_to_power_of_two(image.get_width());
+  int texture_h = image.get_height(); //math::round_to_power_of_two(image.get_height());
 
   SoftwareSurface convert(texture_w, texture_h);
 
@@ -140,8 +142,8 @@ SurfaceManager::create_texture(const SoftwareSurface& image,
 
   Texture texture = Texture(convert);
   
-  maxu = static_cast<float>(image.get_width())/static_cast<float>(texture_w);
-  maxv = static_cast<float>(image.get_height())/static_cast<float>(texture_h);
+  *maxu = static_cast<float>(image.get_width())  / static_cast<float>(texture_w);
+  *maxv = static_cast<float>(image.get_height()) / static_cast<float>(texture_h);
 
   return texture;
 }

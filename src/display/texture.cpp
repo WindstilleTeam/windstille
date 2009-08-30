@@ -96,8 +96,9 @@ Texture::Texture(const SoftwareSurface& image, GLint glformat)
   impl->width  = image.get_width();
   impl->height = image.get_height();
 
-  if(!is_power_of_2(image.get_width()) || !is_power_of_2(image.get_height()))
-    throw std::runtime_error("image has no power of 2 size");
+  // Should be ok with OpenGL2.0
+  //if(!is_power_of_2(image.get_width()) || !is_power_of_2(image.get_height()))
+  //throw std::runtime_error("image has no power of 2 size");
 
   if (image.get_bits_per_pixel() != 24 && image.get_bits_per_pixel() != 32)
     throw std::runtime_error("image has not 24 or 32 bit color depth");
@@ -138,23 +139,23 @@ Texture::Texture(const SoftwareSurface& image, GLint glformat)
       glPixelStorei(GL_UNPACK_ROW_LENGTH, image.get_pitch() / image.get_bytes_per_pixel());
 
       if (0)
-        {
-          glTexImage2D(impl->target, 0, glformat,
-                       image.get_width(), image.get_height(), 0, sdl_format,
-                       GL_UNSIGNED_BYTE, image.get_pixels());
-
-          glTexParameteri(impl->target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-          glTexParameteri(impl->target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        }
+      { // no mipmapping
+        glTexImage2D(impl->target, 0, glformat,
+                     image.get_width(), image.get_height(), 0, sdl_format,
+                     GL_UNSIGNED_BYTE, image.get_pixels());
+        
+        glTexParameteri(impl->target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(impl->target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      }
       else
-        {
-          gluBuild2DMipmaps(impl->target, glformat,
-                            image.get_width(), image.get_height(), sdl_format,
-                            GL_UNSIGNED_BYTE, image.get_pixels());
-
-          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        }
+      { // use mipmapping
+        gluBuild2DMipmaps(impl->target, glformat,
+                          image.get_width(), image.get_height(), sdl_format,
+                          GL_UNSIGNED_BYTE, image.get_pixels());
+        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      }
 
       assert_gl("creating texture");
 

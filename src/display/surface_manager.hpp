@@ -57,7 +57,7 @@ public:
                  std::vector<Surface>& surfaces, int width, int height);
 
   Texture create_texture(const SoftwareSurface& image,
-                         float& maxu, float& maxv);
+                         float* maxu, float* maxv);
 
   /** Removes all cached Sprites that are no longer in use */
   void cleanup();
