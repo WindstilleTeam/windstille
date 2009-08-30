@@ -86,7 +86,8 @@ Doll::set_state_jump_up()
   if (m_state != kJumpUp)
   {
     m_state = kJumpUp;
-    m_drawable->get_sprite().set_next_action("JumpUp");
+    m_drawable->get_sprite().set_action("JumpUp");
+    m_drawable->get_sprite().set_next_action("Stand");
   }
 }
 
@@ -188,6 +189,12 @@ Doll::set_state_climbing()
     m_drawable->get_sprite().set_action("Climb");
   }
 }
+
+void
+Doll::set_state_jump()
+{
+    
+}
 
 void
 Doll::update_falling(const Controller& controller, float delta)
@@ -216,7 +223,7 @@ Doll::update_standing(const Controller& controller, float /*delta*/)
   {
     set_state_ducking();
   }
-  else if (controller.get_button_state(JUMP_BUTTON))
+  else if (controller.button_was_pressed(JUMP_BUTTON))
   {
     std::cout << "Jump Up" << std::endl;
     set_state_jump_up();
@@ -306,12 +313,12 @@ Doll::update_ducking(const Controller& controller, float /*delta*/)
 }
 
 void
-Doll::update_jump_up(const Controller& controller, float /*delta*/)
+Doll::update_jump_up(const Controller& /*controller*/, float /*delta*/)
 {
-  if (!controller.get_button_state(JUMP_BUTTON))
+  if (m_drawable->get_sprite().switched_actions())
   {
     set_state_standing();
-  }  
+  }
 }
 
 void
@@ -419,6 +426,11 @@ Doll::update_swinging(const Controller& /*controller*/, float /*delta*/)
 
 void
 Doll::update_climbing(const Controller& /*controller*/, float /*delta*/)
+{
+}
+
+void
+Doll::update_jump(const Controller& /*controller*/, float /*delta*/)
 {
 }
 

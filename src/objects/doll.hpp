@@ -78,6 +78,7 @@ private:
   void set_state_listing();
   void set_state_swinging();
   void set_state_climbing();
+  void set_state_jump();
 
   void update_falling(const Controller& controller, float delta);
   void update_standing(const Controller& controller, float delta);
@@ -89,7 +90,7 @@ private:
   void update_listing(const Controller& controller, float delta);
   void update_swinging(const Controller& controller, float delta);
   void update_climbing(const Controller& controller, float delta);
-
+  void update_jump(const Controller& controller, float delta);
 
 private:
   Doll(const Doll&);
