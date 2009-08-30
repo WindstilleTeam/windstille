@@ -301,11 +301,14 @@ Sector::draw(SceneContext& sc)
 
 void Sector::commit_adds()
 {
-  // Add new game objects
-  for(Objects::iterator i = new_objects.begin(); i != new_objects.end(); ++i) {
-    objects.push_back(*i);
+  if (!new_objects.empty())
+  {
+    // Add new game objects
+    for(Objects::iterator i = new_objects.begin(); i != new_objects.end(); ++i) {
+      objects.push_back(*i);
+    }
+    new_objects.clear();
   }
-  new_objects.clear();
 }
 
 void Sector::update(float delta)
