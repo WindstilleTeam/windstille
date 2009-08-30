@@ -37,7 +37,8 @@ public:
   void eval(Drawable* request);
 
 private:
-  void render_with_framebuffers(SceneContext& sc, SceneGraph* sg);
+  void render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
+                                const GraphicContextState& state);
   void render_without_framebuffers(SceneContext& sc, SceneGraph* sg, 
                                    const GraphicContextState& state);
 
