@@ -41,8 +41,6 @@ class Player : public Entity,
                public Currenton<Player>
 {
 private:
-  Sprite3D sprite;
-
   boost::shared_ptr<Sprite3DDrawable> m_drawable;
   //std::auto_ptr<SoundSource> sound_source;
 

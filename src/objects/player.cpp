@@ -37,8 +37,7 @@ static const float WALK_SPEED = 100.0;
 static const float RUN_SPEED = 256.0;
 
 Player::Player () 
-  : sprite(),
-    m_drawable(),
+  : m_drawable(),
     jumping(),
     bomb_placed(),
     hit_count(),
@@ -52,7 +51,7 @@ Player::Player ()
     reload_time(),
     z_pos()
 {
-  sprite = Sprite3D(Pathname("models/characters/jane/jane.wsprite"));
+  Sprite3D sprite(Pathname("models/characters/jane/jane.wsprite"));
   pos.x = 320;
   pos.y = 200;
   name = "player";
@@ -97,7 +96,7 @@ Player::draw (SceneContext& sc)
                                Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
     }
 
-  //sprite.draw(sc.color(), pos + Vector2f(0.0f, 1.0f), z_pos);
+  //m_drawable->get_sprite().draw(sc.color(), pos + Vector2f(0.0f, 1.0f), z_pos);
 
   Entity* obj = find_useable_entity();
   if (obj)
@@ -108,10 +107,10 @@ Player::draw (SceneContext& sc)
     }
   
   // Draw weapon at the 'Weapon' attachment point
-  Sprite3D::PointID id = sprite.get_attachment_point_id("Weapon");
+  Sprite3D::PointID id = m_drawable->get_sprite().get_attachment_point_id("Weapon");
   sc.push_modelview();
   sc.translate(pos.x, pos.y);
-  sc.mult_modelview(sprite.get_attachment_point_matrix(id));
+  sc.mult_modelview(m_drawable->get_sprite().get_attachment_point_matrix(id));
   weapon->draw(sc);
   sc.pop_modelview();
 
@@ -238,7 +237,7 @@ Player::update(const Controller& controller, float delta)
     // fall down
     velocity.y += GRAVITY * delta;
 
-    sprite.update(delta);
+    m_drawable->get_sprite().update(delta);
 
     c_object->set_velocity (velocity);
 
@@ -392,7 +391,7 @@ Player::update_stand(const Controller& controller)
         }
       else
         {
-          sprite.set_action("PullGun");
+          m_drawable->get_sprite().set_action("PullGun");
           state = PULL_GUN;
         }
     }
@@ -416,7 +415,7 @@ void
 Player::set_walk(Direction direction)
 {
   try_set_action("Walk");
-  sprite.set_rot(direction == EAST);
+  m_drawable->get_sprite().set_rot(direction == EAST);
   state = WALK;
   if (direction == EAST)
     velocity.x = WALK_SPEED;
@@ -466,7 +465,7 @@ void
 Player::set_ducking()
 {
   try_set_action("StandToDuck");
-  sprite.set_next_action("Ducking");
+  m_drawable->get_sprite().set_next_action("Ducking");
   state = DUCKING;
   velocity.x = 0;
 }
@@ -475,32 +474,32 @@ void
 Player::update_ducking(const Controller& controller)
 {
   // ducking
-  if (sprite.switched_actions()) 
+  if (m_drawable->get_sprite().switched_actions()) 
     {
-      if (sprite.get_action() == "Ducking")
+      if (m_drawable->get_sprite().get_action() == "Ducking")
         set_ducked();
       else
         set_stand();
       return;
     }
   
-  if (!(controller.get_axis_state(Y_AXIS) > 0.5f) && sprite.get_speed() > 0) 
+  if (!(controller.get_axis_state(Y_AXIS) > 0.5f) && m_drawable->get_sprite().get_speed() > 0) 
     {
-      sprite.set_speed(-1.0);
-      sprite.set_next_action("Stand");
+      m_drawable->get_sprite().set_speed(-1.0);
+      m_drawable->get_sprite().set_next_action("Stand");
       state = STAND;
     } 
-  else if (controller.get_axis_state(Y_AXIS) > 0.5f && sprite.get_speed() < 0) 
+  else if (controller.get_axis_state(Y_AXIS) > 0.5f && m_drawable->get_sprite().get_speed() < 0) 
     {
-      sprite.set_speed(1.0);
-      sprite.set_next_action("Ducking");
+      m_drawable->get_sprite().set_speed(1.0);
+      m_drawable->get_sprite().set_next_action("Ducking");
     }
 }
 
 void
 Player::set_ducked()
 {
-  assert(sprite.get_action() == "Ducking");
+  assert(m_drawable->get_sprite().get_action() == "Ducking");
   state = DUCKED;
 }
 
@@ -510,8 +509,8 @@ Player::update_ducked(const Controller& controller)
   if (!(controller.get_axis_state(Y_AXIS) > 0.5f))
     {
       state = DUCKING;
-      sprite.set_action("StandToDuck", -1.0);
-      sprite.set_next_action("Stand");
+      m_drawable->get_sprite().set_action("StandToDuck", -1.0);
+      m_drawable->get_sprite().set_next_action("Stand");
     }  
 }
 
@@ -520,17 +519,17 @@ Player::set_turnaround()
 {
   velocity.x = 0;
   try_set_action("Turn");
-  sprite.set_next_action("Walk");
-  sprite.set_next_rot(! sprite.get_rot());
+  m_drawable->get_sprite().set_next_action("Walk");
+  m_drawable->get_sprite().set_next_rot(! m_drawable->get_sprite().get_rot());
   state = TURNAROUND;
 }
 
 void
 Player::update_turnaround(const Controller& controller)
 {
-  if (sprite.switched_actions()) 
+  if (m_drawable->get_sprite().switched_actions()) 
     {
-      if (sprite.get_rot())
+      if (m_drawable->get_sprite().get_rot())
         {
           set_walk(EAST);
         }
@@ -538,11 +537,11 @@ Player::update_turnaround(const Controller& controller)
         set_walk(WEST);
       }
     } 
-  if ((sprite.get_rot() && controller.get_axis_state(X_AXIS) > 0.5f) ||
-      (!sprite.get_rot() && controller.get_axis_state(X_AXIS) < -0.5f)) 
+  if ((m_drawable->get_sprite().get_rot() && controller.get_axis_state(X_AXIS) > 0.5f) ||
+      (!m_drawable->get_sprite().get_rot() && controller.get_axis_state(X_AXIS) < -0.5f)) 
     {
-      sprite.set_speed(-1.0);
-      sprite.set_next_action("Walk");
+      m_drawable->get_sprite().set_speed(-1.0);
+      m_drawable->get_sprite().set_next_action("Walk");
       state = WALK;
     }
 }
@@ -553,12 +552,12 @@ Player::set_stand_to_listen(bool backwards)
   try_set_action("StandtoListen", backwards ? -1.0f : 1.0f);
   if (!backwards) 
     {
-      sprite.set_next_action("Listen");
+      m_drawable->get_sprite().set_next_action("Listen");
       velocity = Vector2f(0, 0);
     } 
   else
     {
-      sprite.set_next_action("Stand");
+      m_drawable->get_sprite().set_next_action("Stand");
     }
   state = STAND_TO_LISTEN;
 }
@@ -566,9 +565,9 @@ Player::set_stand_to_listen(bool backwards)
 void
 Player::update_stand_to_listen(const Controller& /*controller*/)
 {
-  if (sprite.switched_actions()) 
+  if (m_drawable->get_sprite().switched_actions()) 
     {
-      if (sprite.get_action() == "Stand")
+      if (m_drawable->get_sprite().get_action() == "Stand")
         set_stand();
       else
         set_listen();
@@ -630,22 +629,22 @@ Player::leave_run()
 void
 Player::set_jump_begin()
 {
-  if (sprite.before_marker("RightFoot")) 
+  if (m_drawable->get_sprite().before_marker("RightFoot")) 
     {
-      sprite.set_next_action("JumpRightFoot");
-      sprite.abort_at_marker("RightFoot");
+      m_drawable->get_sprite().set_next_action("JumpRightFoot");
+      m_drawable->get_sprite().abort_at_marker("RightFoot");
       jump_foot = LEFT_FOOT;
     } 
-  else if (sprite.before_marker("LeftFoot")) 
+  else if (m_drawable->get_sprite().before_marker("LeftFoot")) 
     {
-      sprite.set_next_action("JumpLeftFoot");
-      sprite.abort_at_marker("LeftFoot");
+      m_drawable->get_sprite().set_next_action("JumpLeftFoot");
+      m_drawable->get_sprite().abort_at_marker("LeftFoot");
       jump_foot = RIGHT_FOOT;
     } 
   else 
     {
-      sprite.set_next_action("JumpRightFoot");
-      sprite.abort_at_marker("RightFoot");
+      m_drawable->get_sprite().set_next_action("JumpRightFoot");
+      m_drawable->get_sprite().abort_at_marker("RightFoot");
       jump_foot = LEFT_FOOT;
     }
   state = JUMP_BEGIN;
@@ -654,15 +653,15 @@ Player::set_jump_begin()
 void
 Player::update_jump_begin(const Controller& /*controller*/)
 {
-  if (sprite.switched_actions()) 
+  if (m_drawable->get_sprite().switched_actions()) 
     {
-      if (sprite.get_action() == "JumpLeftFoot") 
+      if (m_drawable->get_sprite().get_action() == "JumpLeftFoot") 
         {
-          sprite.set_next_action("JumpLeftFootAir");
+          m_drawable->get_sprite().set_next_action("JumpLeftFootAir");
         } 
-      else if (sprite.get_action() == "JumpRightFoot") 
+      else if (m_drawable->get_sprite().get_action() == "JumpRightFoot") 
         {
-          sprite.set_next_action("JumpRightFootAir");
+          m_drawable->get_sprite().set_next_action("JumpRightFootAir");
         } 
       else
         {
@@ -676,14 +675,14 @@ void
 Player::set_jump_air()
 {
   velocity.y = -450;
-  sprite.set_next_action("JumpLandSofttoRun");
+  m_drawable->get_sprite().set_next_action("JumpLandSofttoRun");
   state = JUMP_AIR;
 }
 
 void
 Player::update_jump_air(const Controller& /*controller*/)
 {
-  if (sprite.switched_actions()) 
+  if (m_drawable->get_sprite().switched_actions()) 
     {
       set_jump_land();
       return;
@@ -693,14 +692,14 @@ Player::update_jump_air(const Controller& /*controller*/)
 void
 Player::set_jump_land()
 {
-  sprite.set_next_action("Run");
+  m_drawable->get_sprite().set_next_action("Run");
   state = JUMP_LAND;
 }
 
 void
 Player::update_jump_land(const Controller& /*controller*/)
 {
-  if (sprite.switched_actions()) 
+  if (m_drawable->get_sprite().switched_actions()) 
     {
       set_run();
       return;
@@ -710,14 +709,14 @@ Player::update_jump_land(const Controller& /*controller*/)
 void
 Player::set_jump_up_begin()
 {
-  sprite.set_next_action("JumpUp");
+  m_drawable->get_sprite().set_next_action("JumpUp");
   state = JUMP_UP_BEGIN;
 }
 
 void
 Player::update_jump_up_begin(const Controller& /*controller*/)
 {
-  if (sprite.switched_actions()) 
+  if (m_drawable->get_sprite().switched_actions()) 
     {
       set_jump_up_air();
       return;
@@ -728,14 +727,14 @@ void
 Player::set_jump_up_air()
 {
   velocity.y = -400;
-  sprite.set_next_action("JumpLandSofttoRun");
+  m_drawable->get_sprite().set_next_action("JumpLandSofttoRun");
   state = JUMP_UP_AIR;
 }
 
 void
 Player::update_jump_up_air(const Controller& /*controller*/)
 {
-  if (sprite.switched_actions()) 
+  if (m_drawable->get_sprite().switched_actions()) 
     {
       set_jump_up_land();
       return;
@@ -745,14 +744,14 @@ Player::update_jump_up_air(const Controller& /*controller*/)
 void
 Player::set_jump_up_land()
 {
-  sprite.set_next_action("Stand");
+  m_drawable->get_sprite().set_next_action("Stand");
   state = JUMP_UP_LAND;
 }
 
 void
 Player::update_jump_up_land(const Controller& /*controller*/)
 {
-  if (sprite.switched_actions()) 
+  if (m_drawable->get_sprite().switched_actions()) 
     {
       set_stand();
       return;
@@ -764,7 +763,7 @@ Player::update_pull_gun(const Controller& controller)
 {
   if (!controller.get_button_state(AIM_BUTTON))
     {
-      sprite.set_next_action("Stand");      
+      m_drawable->get_sprite().set_next_action("Stand");      
       state = STAND;
     }
 }
@@ -772,14 +771,14 @@ Player::update_pull_gun(const Controller& controller)
 Player::Direction
 Player::get_direction() const
 {
-  return sprite.get_rot() ? EAST : WEST;
+  return m_drawable->get_sprite().get_rot() ? EAST : WEST;
 }
 
 void
 Player::try_set_action(const std::string& name_, float speed)
 {
-  if (sprite.get_action() != name_)
-    sprite.set_action(name_, speed);
+  if (m_drawable->get_sprite().get_action() != name_)
+    m_drawable->get_sprite().set_action(name_, speed);
 }
 
 int
