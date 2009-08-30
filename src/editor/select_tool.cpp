@@ -25,7 +25,7 @@
 #include "editor/select_tool.hpp"
 
 static const uint32_t MOVE_TIMEOUT = 100;
-static const int MOVE_THRESHOLD = 16.0f;
+static const int MOVE_THRESHOLD = 16;
 
 SelectTool::SelectTool()
  : click_pos(),
