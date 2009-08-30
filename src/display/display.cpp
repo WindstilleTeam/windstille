@@ -538,8 +538,6 @@ void
 Display::push_framebuffer(Framebuffer& framebuffer)
 {
   framebuffers.push_back(framebuffer);
-  // FIXME: How expensive is it to switch framebuffers? might be worth
-  // to optimze some switches away
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffers.back().get_handle());
 }
 

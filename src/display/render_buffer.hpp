@@ -23,7 +23,6 @@
 
 class RenderBufferImpl;
 
-/** */
 class RenderBuffer
 {
 public:
