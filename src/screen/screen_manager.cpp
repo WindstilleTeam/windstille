@@ -104,6 +104,8 @@ ScreenManager::run()
     poll_events();
 
     apply_pending_actions();
+
+    SDL_Delay(5);
   }
 }
 
