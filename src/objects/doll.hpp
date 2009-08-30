@@ -41,6 +41,10 @@ private:
     kRunning,
     kStanding,
     kDucking,
+    kRolling,
+    kListing,
+    kSwinging,
+    kClimbing,
     kJumpUp
   };
 
@@ -70,6 +74,10 @@ private:
   void set_state_running();
   void set_state_ducking();
   void set_state_jump_up();
+  void set_state_rolling();
+  void set_state_listing();
+  void set_state_swinging();
+  void set_state_climbing();
 
   void update_falling(const Controller& controller, float delta);
   void update_standing(const Controller& controller, float delta);
@@ -77,6 +85,11 @@ private:
   void update_running(const Controller& controller, float delta);
   void update_ducking(const Controller& controller, float delta);
   void update_jump_up(const Controller& controller, float delta);
+  void update_rolling(const Controller& controller, float delta);
+  void update_listing(const Controller& controller, float delta);
+  void update_swinging(const Controller& controller, float delta);
+  void update_climbing(const Controller& controller, float delta);
+
 
 private:
   Doll(const Doll&);

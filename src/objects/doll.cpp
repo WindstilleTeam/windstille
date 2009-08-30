@@ -68,6 +68,10 @@ Doll::update(const Controller& controller, float delta)
     case kStanding: update_standing(controller, delta); break;
     case kDucking:  update_ducking(controller, delta);  break;
     case kJumpUp:   update_jump_up(controller, delta);  break;
+    case kRolling:  update_rolling(controller, delta);  break;
+    case kListing:  update_listing(controller, delta);  break;
+    case kSwinging: update_swinging(controller, delta);  break;
+    case kClimbing: update_climbing(controller, delta);  break;
     case kNoState:  break;
   }
 
@@ -137,6 +141,55 @@ Doll::set_state_ducking()
 }
 
 void
+Doll::set_state_rolling()
+{
+  if (m_state != kRolling)
+  {
+    m_drawable->get_sprite().set_action("Roll");
+
+    switch(m_state)
+    {
+      case kStanding: m_drawable->get_sprite().set_next_action("Stand"); break;
+      case kWalking:  m_drawable->get_sprite().set_next_action("Walk"); break;
+      case kRunning:  m_drawable->get_sprite().set_next_action("Run"); break;
+      default:        m_drawable->get_sprite().set_next_action("Run"); break;
+    }
+
+    m_state = kRolling;
+  }
+}
+
+void
+Doll::set_state_listing()
+{
+  if (m_state != kListing)
+  {
+    m_state = kListing;
+    m_drawable->get_sprite().set_action("Listen");
+  }
+}
+
+void
+Doll::set_state_swinging()
+{
+  if (m_state != kSwinging)
+  {
+    m_state = kSwinging;
+    m_drawable->get_sprite().set_action("Switching");
+  }
+}
+
+void
+Doll::set_state_climbing()
+{
+  if (m_state != kClimbing)
+  {
+    m_state = kClimbing;
+    m_drawable->get_sprite().set_action("Climb");
+  }
+}
+
+void
 Doll::update_falling(const Controller& controller, float delta)
 {
   Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
@@ -189,13 +242,20 @@ Doll::update_walking(const Controller& controller, float delta)
                  controller.get_axis_state(Y_AXIS) * delta * 200.0f);  
   walk(stick);
 
-  if (controller.get_axis_state(X_AXIS) == 0)
+  if (controller.get_axis_state(Y_AXIS) > 0)
   {
-    set_state_standing();
+    set_state_rolling();
   }
-  else if (controller.get_button_state(RUN_BUTTON))
+  else
   {
-    set_state_running();
+    if (controller.get_axis_state(X_AXIS) == 0)
+    {
+      set_state_standing();
+    }
+    else if (controller.get_button_state(RUN_BUTTON))
+    {
+      set_state_running();
+    }
   }
 }
 
@@ -207,13 +267,20 @@ Doll::update_running(const Controller& controller, float delta)
 
   walk(stick * 2.5f);
 
-  if (controller.get_axis_state(X_AXIS) == 0)
+  if (controller.get_axis_state(Y_AXIS) > 0)
   {
-    set_state_standing();
+    set_state_rolling();
   }
-  else if (!controller.get_button_state(RUN_BUTTON))
+  else
   {
-    set_state_walking();
+    if (controller.get_axis_state(X_AXIS) == 0)
+    {
+      set_state_standing();
+    }
+    else if (!controller.get_button_state(RUN_BUTTON))
+    {
+      set_state_walking();
+    }
   }
 }
 
@@ -308,6 +375,51 @@ Doll::walk(const Vector2f& adv_)
 
     m_pos = m_edge_position->get_pos();
   }
+}
+
+void
+Doll::update_rolling(const Controller& controller, float delta)
+{
+  Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
+                 controller.get_axis_state(Y_AXIS) * delta * 200.0f);
+
+  walk(stick * 2.5f);
+
+  // FIXME: Need an Sprite::action_done() instead
+  if (m_drawable->get_sprite().switched_actions())
+  {
+    if (controller.get_axis_state(X_AXIS) > 0 ||
+        controller.get_axis_state(X_AXIS) < 0)
+    {
+      if (controller.get_button_state(RUN_BUTTON))   
+      {
+        set_state_running();
+      }
+      else
+      {
+        set_state_walking();
+      }
+    }
+    else
+    {
+      set_state_standing();
+    }
+  }
+}
+
+void
+Doll::update_listing(const Controller& /*controller*/, float /*delta*/)
+{
+}
+
+void
+Doll::update_swinging(const Controller& /*controller*/, float /*delta*/)
+{
+}
+
+void
+Doll::update_climbing(const Controller& /*controller*/, float /*delta*/)
+{
 }
 
 /* EOF */
