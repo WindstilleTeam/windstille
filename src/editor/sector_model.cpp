@@ -23,6 +23,7 @@
 #include <gdkmm/pixbuf.h>
 
 #include "navigation/navigation_graph.hpp"
+#include "scenegraph/scene_graph.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
 #include "editor/editor_window.hpp"
@@ -37,6 +38,7 @@ LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
 SectorModel::SectorModel()
   : nav_graph(new NavigationGraph()),
+    scene_graph(new SceneGraph()),
     layer_tree(),
     ambient_color()
 {

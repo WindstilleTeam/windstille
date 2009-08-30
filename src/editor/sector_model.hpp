@@ -32,6 +32,7 @@
 #include "math/vector2f.hpp"
 
 class NavigationGraph;
+class SceneGraph;
 class SceneContext;
 class LayerManagerColumns;
 
@@ -74,7 +75,8 @@ class SectorModel
 {
 private:
   boost::scoped_ptr<NavigationGraph> nav_graph;
-  Glib::RefPtr<Gtk::ListStore>   layer_tree;
+  boost::scoped_ptr<SceneGraph>      scene_graph;
+  Glib::RefPtr<Gtk::ListStore> layer_tree;
   Color ambient_color;
   
 public:
@@ -132,6 +134,7 @@ public:
   void write(FileWriter& writer) const;
 
   NavigationGraph* get_nav_graph() const { return nav_graph.get(); }
+  SceneGraph*      get_scene_graph() const { return scene_graph.get(); }
 
   void queue_draw();
 
