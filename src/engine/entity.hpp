@@ -52,13 +52,6 @@ public:
 
   virtual void set_pos(Vector2f pos);
 
-  /** Called once per frame to allow the object to draw itself */
-  virtual void draw(SceneContext& gc) = 0;
-
-  /** Called, possible multiple times, per frame to let the object
-      update its position and properties */
-  virtual void update(float delta) = 0;
-
   /** Called when the player uses this entity */
   virtual void use() {}
 
