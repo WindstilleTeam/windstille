@@ -28,6 +28,7 @@ class Drawer
 public:
   virtual ~Drawer() {}
   virtual void draw(DrawingContext& sc, ParticleSystem& psys) =0;
+  virtual void draw(const ParticleSystem& psys) const =0;
 };
 
 #endif

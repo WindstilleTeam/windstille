@@ -32,21 +32,33 @@ SurfaceDrawer::SurfaceDrawer(Surface surface_)
 
 static GLenum string2blendfunc(const std::string& str)
 {
-  if (str == "src_alpha") {
+  if (str == "src_alpha") 
+  {
     return GL_SRC_ALPHA;
-  } else if (str == "one_minus_src_alpha") {
+  }
+  else if (str == "one_minus_src_alpha") 
+  {
     return GL_ONE_MINUS_SRC_ALPHA;
-  } else if (str == "dst_alpha") {
+  }
+  else if (str == "dst_alpha") 
+  {
     return GL_DST_ALPHA;
-  } else if (str == "one_minus_dst_alpha") {
+  }
+  else if (str == "one_minus_dst_alpha") 
+  {
     return GL_ONE_MINUS_SRC_ALPHA;
-  } else if (str == "one") {
+  }
+  else if (str == "one") 
+  {
     return GL_ONE;
-  } else if (str == "zero") {
+  }
+  else if (str == "zero") 
+  {
     return GL_ZERO;
   }
   // FIXME: Implement the rest blendfunc here
-  else {
+  else 
+  {
     std::cout << "string2blendfunc: Unknown blendfunc: '" << str << "'" << std::endl;
     return GL_ONE;
   }
@@ -145,6 +157,11 @@ SurfaceDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
     }
 
   dc.draw(buffer);
+}
+
+void
+SurfaceDrawer::draw(const ParticleSystem& /*psys*/) const
+{
 }
 
 /* EOF */

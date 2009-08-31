@@ -242,6 +242,19 @@ ParticleSystem::draw(SceneContext& sc)
 }
 
 void
+ParticleSystem::draw() const
+{
+  if (drawer.get())
+    {
+      drawer->draw(*this);
+    }
+  else
+    {
+      std::cout << "ParticleSystem: No drawer set" << std::endl;
+    } 
+}
+
+void
 ParticleSystem::spawn(Particle& particle)
 {
   randomizer->set_pos(particle);

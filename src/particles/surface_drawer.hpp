@@ -38,6 +38,7 @@ public:
   void set_blendfuncs(GLenum blendfunc_src, GLenum blendfunc_dst);
 
   void draw(DrawingContext& sc, ParticleSystem& psys);
+  void draw(const ParticleSystem& psys) const;
 };
 
 #endif

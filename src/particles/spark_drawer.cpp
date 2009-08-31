@@ -80,5 +80,10 @@ SparkDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
 
   dc.draw(buffer);
 }
+
+void
+SparkDrawer::draw(const ParticleSystem& /*psys*/) const
+{
+}
 
 /* EOF */

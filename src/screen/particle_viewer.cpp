@@ -24,12 +24,14 @@
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
 #include "display/graphic_context_state.hpp"
+#include "scenegraph/particle_system_drawable.hpp"
 #include "input/controller.hpp"
 #include "util/sexpr_file_reader.hpp"
 
 ParticleViewer::ParticleViewer()
   : compositor(Display::get_size()),
     sc(),
+    sg(),
     systems(),
     background(Pathname("images/greychess.sprite")),
     pos()
@@ -66,6 +68,12 @@ ParticleViewer::load(const Pathname& filename)
     }
 
   std::cout << systems.size() << " particle systems ready to go" << std::endl;
+
+
+  for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
+  {
+    sg.add_drawable(boost::shared_ptr<Drawable>(new ParticleSystemDrawable(**i)));
+  }
 }
   
 void
@@ -95,7 +103,7 @@ ParticleViewer::draw()
   for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
     (*i)->draw(sc);
 
-  compositor.render(sc, 0, GraphicContextState(Display::get_width(),
+  compositor.render(sc, &sg, GraphicContextState(Display::get_width(),
                                                Display::get_height()));
 }
 

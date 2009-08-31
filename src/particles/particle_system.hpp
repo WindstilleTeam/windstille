@@ -98,15 +98,16 @@ private:
 public:
   ParticleSystem();
   ParticleSystem(FileReader& props);
-  virtual ~ParticleSystem();
+  ~ParticleSystem();
 
   void set_drawer(Drawer*);
 
   /** Draws the particle system to the screen */
-  virtual void draw(SceneContext& sc);
+  void draw(SceneContext& sc);
+  void draw() const;
 
   /** Update the particle system \a delta seconds */
-  virtual void update(float delta);
+  void update(float delta);
   
   /** Set how many particles will be used */
   void set_count(int num);

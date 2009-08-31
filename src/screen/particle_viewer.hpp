@@ -24,6 +24,7 @@
 
 #include "display/compositor.hpp"
 #include "display/scene_context.hpp"
+#include "scenegraph/scene_graph.hpp"
 #include "gui/gui_manager.hpp"
 #include "particles/particle_system.hpp"
 #include "screen/screen.hpp"
@@ -42,6 +43,7 @@ class ParticleViewer : public Screen
 private:
   Compositor compositor;
   SceneContext sc;
+  SceneGraph   sg;
   typedef std::vector<boost::shared_ptr<ParticleSystem> > Systems;
   Systems systems;
   Sprite background;

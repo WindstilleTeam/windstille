@@ -47,6 +47,7 @@ public:
   ~DeformDrawer();
 
   void draw(DrawingContext& sc, ParticleSystem& psys);
+  void draw(const ParticleSystem& /*psys*/) const {}
 private:
   DeformDrawer (const DeformDrawer&);
   DeformDrawer& operator= (const DeformDrawer&);

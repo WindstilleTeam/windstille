@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,27 +16,20 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_PARTICLES_SPARK_DRAWER_HPP
-#define HEADER_WINDSTILLE_PARTICLES_SPARK_DRAWER_HPP
+#include "scenegraph/particle_system_drawable.hpp"
 
-#include "particles/drawer.hpp"
+#include "particles/particle_system.hpp"
 
-class SceneContext;
-class ParticleSystem;
-
-class SparkDrawer : public Drawer
+ParticleSystemDrawable::ParticleSystemDrawable(const ParticleSystem& particle_system)
+  : Drawable(Vector2f()),
+    m_particle_system(particle_system)
 {
-private:
-  Color color;
-  float width;
+}
 
-public:
-  SparkDrawer(FileReader& props);
-
-  void draw(DrawingContext& dc, ParticleSystem& psys);
-  void draw(const ParticleSystem& psys) const;
-};
-
-#endif
+void
+ParticleSystemDrawable::draw(const Texture& /*tmp_texture*/)
+{
+  m_particle_system.draw();
+}
 
 /* EOF */
