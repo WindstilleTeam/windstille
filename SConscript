@@ -26,7 +26,7 @@ preset_cxxflags = {
     'release':     [ "-O3", "-s"  ],
     'profile':     [ "-O2", "-g3", "-pg" ],
     'debug':       [ "-O0", "-g3" ],
-    'development': [ "-O0", "-g3",
+    'development': [ "-O2", "-g3",
                      "-ansi",
                      "-pedantic",
                      "-Wall",
@@ -36,10 +36,15 @@ preset_cxxflags = {
                      "-Wconversion",
                      "-Werror",
                      "-Wshadow",
-                     "-Winline",
-                     #"-Wunreachable-code",
+                     "-Wcast-qual",
+                     "-Winit-self", # only works with >= -O1
+                     # "-Winline",
+                     # "-Wfloat-equal",
+                     # "-Wunreachable-code",
                      ]
     }
+
+
 
 preset_linkflags = {
     'release': [],

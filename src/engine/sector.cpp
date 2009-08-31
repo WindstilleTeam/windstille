@@ -159,7 +159,7 @@ Sector::parse_file(const Pathname& filename_)
 void
 Sector::add_object(FileReader& reader)
 {
-  GameObject* obj;
+  GameObject* obj = 0;
   if(reader.get_name() == "tilemap") 
   {
     std::auto_ptr<TileMap> tilemap(new TileMap(reader));

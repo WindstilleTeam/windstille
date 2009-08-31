@@ -341,7 +341,7 @@ ConsoleImpl::get_roottable()
       const SQChar *s;
       if (SQ_SUCCEEDED(sq_getstring(v,-2, &s)))
         {
-          roottable.push_back((char*)s); // FIXME: likely not going to work on 64bit
+          roottable.push_back(static_cast<const char*>(s)); // FIXME: likely not going to work on 64bit
         }
       else
         {
