@@ -418,7 +418,7 @@ ParticleSystem::set_velocity(float from, float to)
 }
 
 float
-ParticleSystem::get_progress(float t)
+ParticleSystem::get_progress(float t) const
 {
   return std::max(0.0f, std::min(1.0f, t/life_time));
 }

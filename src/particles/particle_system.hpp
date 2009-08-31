@@ -55,6 +55,7 @@ class ParticleSystem
 public:
   typedef std::vector<Particle> Particles;
   typedef Particles::iterator iterator;
+  typedef Particles::const_iterator const_iterator;
 
 private:
   Particles particles;
@@ -173,19 +174,24 @@ public:
   iterator begin() { return particles.begin(); }
   iterator end()   { return particles.end(); }
 
+  const_iterator begin() const { return particles.begin(); }
+  const_iterator end()   const { return particles.end(); }
+
   float get_size_start() const { return size_start; }
   float get_size_stop()  const { return size_stop; }
 
   const Color& get_color_start() const { return color_start; }
   const Color& get_color_stop()  const { return color_stop;  }
 
-  float get_x_pos() { return x_pos; }
-  float get_y_pos() { return y_pos; } 
-  float get_z_pos() { return z_pos; } 
+  float get_x_pos() const { return x_pos; }
+  float get_y_pos() const { return y_pos; } 
+  float get_z_pos() const { return z_pos; } 
 
   /** Returns the how much a particle has progressed, this is
       particle.life_time with fade_in/fade_out applied  */
-  float get_progress(float t);
+  float get_progress(float t) const;
+
+  unsigned int get_layer() const { return layer; }
 
 private:
   ParticleSystem (const ParticleSystem&);

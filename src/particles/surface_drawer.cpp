@@ -160,8 +160,62 @@ SurfaceDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
 }
 
 void
-SurfaceDrawer::draw(const ParticleSystem& /*psys*/) const
+SurfaceDrawer::draw(const ParticleSystem& psys) const
 {
+  VertexArrayDrawable* buffer 
+    = new VertexArrayDrawable(Vector2f(psys.get_x_pos(), psys.get_y_pos()), psys.get_z_pos(),
+                              Matrix::identity());
+
+  buffer->set_mode(GL_QUADS);
+  buffer->set_texture(surface.get_texture());
+  buffer->set_blend_func(blendfunc_src, blendfunc_dest);
+
+  for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
+    {
+      if (i->t != -1.0f)
+        {
+          float p = 1.0f - psys.get_progress(i->t);
+          Color color(psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
+                      psys.get_color_start().g * p + psys.get_color_stop().g * (1.0f - p),
+                      psys.get_color_start().b * p + psys.get_color_stop().b * (1.0f - p),
+                      psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));
+
+          // scale
+          float scale  = psys.get_size_start() + 
+            psys.get_progress(i->t) * (psys.get_size_stop() - psys.get_size_start());
+          
+          float width  = surface.get_width()  * scale;
+          float height = surface.get_height() * scale;
+              
+          // rotate
+          float x_rot = width/2;
+          float y_rot = height/2; 
+
+          if (i->angle != 0)
+            {
+              float s = sinf(math::pi * i->angle/180.0f);
+              float c = cosf(math::pi * i->angle/180.0f);
+              x_rot = (width/2) * c - (height/2) * s;
+              y_rot = (width/2) * s + (height/2) * c;
+            }
+
+          buffer->add_texcoords(surface.get_uv());
+
+          buffer->color(color);
+          buffer->vertex(i->x - x_rot, i->y - y_rot);
+
+          buffer->color(color);
+          buffer->vertex(i->x + y_rot, i->y - x_rot);
+
+          buffer->color(color);
+          buffer->vertex(i->x + x_rot, i->y + y_rot);
+
+          buffer->color(color);
+          buffer->vertex(i->x - y_rot, i->y + x_rot);
+        }
+    }
+
+  buffer->draw(Texture());
 }
 
 /* EOF */

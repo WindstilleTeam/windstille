@@ -24,6 +24,7 @@ ParticleSystemDrawable::ParticleSystemDrawable(const ParticleSystem& particle_sy
   : Drawable(Vector2f()),
     m_particle_system(particle_system)
 {
+  set_render_mask(particle_system.get_layer());
 }
 
 void

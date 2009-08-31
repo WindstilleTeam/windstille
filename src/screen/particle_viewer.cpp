@@ -69,7 +69,6 @@ ParticleViewer::load(const Pathname& filename)
 
   std::cout << systems.size() << " particle systems ready to go" << std::endl;
 
-
   for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
   {
     sg.add_drawable(boost::shared_ptr<Drawable>(new ParticleSystemDrawable(**i)));
@@ -84,15 +83,15 @@ ParticleViewer::draw()
   for(float y = -background.get_width(); 
       y < static_cast<float>(Display::get_height()) + background.get_height(); 
       y += background.get_height())
+  {
+    for(float x = -background.get_width(); 
+        x < static_cast<float>(Display::get_width()) + background.get_width(); 
+        x += background.get_width())
     {
-      for(float x = -background.get_width(); 
-          x < static_cast<float>(Display::get_width()) + background.get_width(); 
-          x += background.get_width())
-        {
-          sc.color().draw(background, Vector2f(x + fmodf(pos.x, background.get_width()),
-                                               y + fmodf(pos.y, background.get_height())), -900);
-        }
+      sc.color().draw(background, Vector2f(x + fmodf(pos.x, background.get_width()),
+                                           y + fmodf(pos.y, background.get_height())), -900);
     }
+  }
 
   sc.translate(static_cast<float>(Display::get_width())  / 2.0f + pos.x, 
                static_cast<float>(Display::get_height()) / 2.0f + pos.y);
@@ -100,11 +99,15 @@ ParticleViewer::draw()
   //sc.light().fill_screen(Color(1.0f, 1.0f, 1.0f));
   sc.color().fill_screen(Color(0.0f, 0.0f, 0.0f));
 
-  for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
-    (*i)->draw(sc);
+  if (0)
+  { // FIXME: Old SceneContext code, can be removed
+    for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
+      (*i)->draw(sc);
+  }
 
-  compositor.render(sc, &sg, GraphicContextState(Display::get_width(),
-                                               Display::get_height()));
+  GraphicContextState state(Display::get_width(), Display::get_height());
+  state.set_pos(-pos);
+  compositor.render(sc, &sg, state);
 }
 
 void
