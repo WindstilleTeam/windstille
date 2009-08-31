@@ -19,37 +19,48 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_FILL_SCREEN_PATTERN_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_FILL_SCREEN_PATTERN_DRAWABLE_HPP
 
+#include "display/opengl_state.hpp"
+#include "scenegraph/drawable.hpp"
 
 class FillScreenPatternDrawable : public Drawable
 {
 private:
-  Texture  texture;
-  Vector2f offset;
+  Texture  m_texture;
+  Vector2f m_offset;
+
 public:
-  FillScreenPatternDrawable(const Texture& texture_, const Vector2f& offset_)
+  FillScreenPatternDrawable(const Texture& texture, const Vector2f& offset)
     : Drawable(Vector2f(0, 0), -1000.0f), 
-      texture(texture_),
-      offset(offset_)
+      m_texture(texture),
+      m_offset(offset)
   {}
 
   virtual ~FillScreenPatternDrawable() {}
+
+  void set_offset(const Vector2f& offset)
+  {
+    m_offset = offset;
+  }
 
   void draw(const Texture& /*tmp_texture*/) 
   {
     OpenGLState state;
     state.enable(GL_BLEND);
     state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    state.bind_texture(texture);
+    state.bind_texture(m_texture);
     state.activate();
 
-    float u = static_cast<float>(Display::get_width())  / static_cast<float>(texture.get_width());
-    float v = static_cast<float>(Display::get_height()) / static_cast<float>(texture.get_height());
+    float u = static_cast<float>(Display::get_width())  / static_cast<float>(m_texture.get_width());
+    float v = static_cast<float>(Display::get_height()) / static_cast<float>(m_texture.get_height());
 
-    float u_start = -offset.x / static_cast<float>(texture.get_width());
-    float v_start = -offset.y / static_cast<float>(texture.get_height());
+    float u_start = -m_offset.x / static_cast<float>(m_texture.get_width());
+    float v_start = -m_offset.y / static_cast<float>(m_texture.get_height());
 
-    u -= offset.x / static_cast<float>(texture.get_width());
-    v -= offset.y / static_cast<float>(texture.get_height());
+    u -= m_offset.x / static_cast<float>(m_texture.get_width());
+    v -= m_offset.y / static_cast<float>(m_texture.get_height());
+
+    glPushMatrix();
+    glLoadIdentity();
 
     glBegin(GL_QUADS);
     {
@@ -66,6 +77,8 @@ public:
       glVertex2f(0,  static_cast<float>(Display::get_height()));
     }
     glEnd();
+
+    glPopMatrix();
   }
 };
 
