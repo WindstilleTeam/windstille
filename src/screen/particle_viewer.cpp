@@ -25,6 +25,8 @@
 #include "display/display.hpp"
 #include "display/graphic_context_state.hpp"
 #include "scenegraph/particle_system_drawable.hpp"
+#include "scenegraph/fill_screen_pattern_drawable.hpp"
+#include "scenegraph/fill_screen_drawable.hpp"
 #include "input/controller.hpp"
 #include "util/sexpr_file_reader.hpp"
 
@@ -34,7 +36,9 @@ ParticleViewer::ParticleViewer()
     sg(),
     systems(),
     background(Pathname("images/greychess.sprite")),
-    pos()
+    pos(),
+    m_background_drawable(),
+    m_color_fill_drawable()
 {
 }
 
@@ -60,42 +64,41 @@ ParticleViewer::load(const Pathname& filename)
 
   std::vector<FileReader> sections = root_reader.get_sections();
   for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
-    { 
-      if (i->get_name() == "particle-system")
-        {
-          systems.push_back(boost::shared_ptr<ParticleSystem>(new ParticleSystem(*i)));
-        }
+  { 
+    if (i->get_name() == "particle-system")
+    {
+      systems.push_back(boost::shared_ptr<ParticleSystem>(new ParticleSystem(*i)));
     }
+  }
 
   std::cout << systems.size() << " particle systems ready to go" << std::endl;
 
-  for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
   {
-    sg.add_drawable(boost::shared_ptr<Drawable>(new ParticleSystemDrawable(**i)));
+    // Build the SceneGraph
+    Texture pattern_texture(Pathname("images/greychess.png"));
+    pattern_texture.set_wrap(GL_REPEAT);
+
+    m_background_drawable.reset(new FillScreenPatternDrawable(pattern_texture, Vector2f()));
+    m_color_fill_drawable.reset(new FillScreenDrawable(Color(0.4f, 0.4f, 0.4f)));
+                                                            
+    m_background_drawable->set_render_mask(SceneContext::COLORMAP);
+    m_color_fill_drawable->set_render_mask(SceneContext::LIGHTMAP);
+
+    sg.add_drawable(m_background_drawable);
+    sg.add_drawable(m_color_fill_drawable);
+
+    for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
+    {
+      sg.add_drawable(boost::shared_ptr<Drawable>(new ParticleSystemDrawable(**i)));
+    }
   }
 }
   
 void
 ParticleViewer::draw()
 {
-  sc.reset_modelview();
+  m_background_drawable->set_offset(pos);
 
-  for(float y = -background.get_width(); 
-      y < static_cast<float>(Display::get_height()) + background.get_height(); 
-      y += background.get_height())
-  {
-    for(float x = -background.get_width(); 
-        x < static_cast<float>(Display::get_width()) + background.get_width(); 
-        x += background.get_width())
-    {
-      sc.color().draw(background, Vector2f(x + fmodf(pos.x, background.get_width()),
-                                           y + fmodf(pos.y, background.get_height())), -900);
-    }
-  }
-
-  // Ambient lighting
-  sc.light().fill_screen(Color(0.4f, 0.4f, 0.4f));
-  
   GraphicContextState state(Display::get_width(), Display::get_height());
   state.set_pos(-pos);
   compositor.render(sc, &sg, state);

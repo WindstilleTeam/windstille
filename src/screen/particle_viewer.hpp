@@ -34,6 +34,9 @@ namespace gui {
 class Slider;
 class TabComponent;
 }
+
+class FillScreenPatternDrawable;
+class FillScreenDrawable;
 
 class ParticleSystemGUI;
 
@@ -49,6 +52,9 @@ private:
   Sprite background;
 
   Vector2f pos;
+
+  boost::shared_ptr<FillScreenPatternDrawable> m_background_drawable;
+  boost::shared_ptr<FillScreenDrawable>        m_color_fill_drawable;
 
 public:
   ParticleViewer();
