@@ -30,6 +30,7 @@
 #include "util/command_line.hpp"
 #include "sprite2d/manager.hpp"
 #include "display/texture_manager.hpp"
+#include "display/surface_manager.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/main.hpp"
 
@@ -94,8 +95,9 @@ WindstilleEditor::main(int argc, char** argv)
       throw std::runtime_error("*** Cannot find any OpenGL-capable visual.");
     }
 
-    SpriteManager  sprite2d_manager;
     TextureManager texture_manager;
+    SurfaceManager surface_manager;
+    SpriteManager  sprite2d_manager;
 
     Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
     icon_theme->append_search_path("data/editor/");

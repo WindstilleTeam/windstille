@@ -144,11 +144,15 @@ WindstilleWidget::on_timeout()
 void
 WindstilleWidget::on_realize()
 {
-  state.set_size(get_width(), get_height());
-
-  //std::cout << "WindstilleWidget::on_realize()" << std::endl;
-
   Gtk::DrawingArea::on_realize();
+
+  std::cout << "on_realize: " << get_width() << "x" << get_height() << std::endl;
+
+  state.set_size(get_width(), get_height());
+  Display::aspect_size.width  = get_width();
+  Display::aspect_size.height = get_height();
+
+  std::cout << Display::aspect_size << std::endl;
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
@@ -165,9 +169,6 @@ WindstilleWidget::on_realize()
           }
 
           OpenGLState::init();
-          //texture_manager  = new TextureManager();
-          new SurfaceManager();
-          //sprite2d_manager = new SpriteManager();
         }
       
       if (!sc.get())
@@ -193,21 +194,24 @@ WindstilleWidget::on_realize()
 }
 
 bool
-WindstilleWidget::on_configure_event(GdkEventConfigure* /*event*/)
+WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 {
-  state.set_size(get_width(), get_height());
-  Display::aspect_size.width  = get_width();
-  Display::aspect_size.height = get_height();
+  Display::aspect_size.width  = ev->width;
+  Display::aspect_size.height = ev->height;
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
-  // *** OpenGL BEGIN ***
   if (!glwindow->gl_begin(get_gl_context()))
     {
       return false;
     }
   else
     {
+      if (compositor.get())
+      {
+        compositor.reset(new Compositor());
+      }
+
       glViewport(0, 0, get_width(), get_height());
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
@@ -216,7 +220,6 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* /*event*/)
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
   
-
       glwindow->gl_end();
 
       return true;
@@ -226,7 +229,6 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* /*event*/)
 bool
 WindstilleWidget::on_expose_event(GdkEventExpose* /*event*/)
 {
-  //std::cout << "WindstilleWidget::on_expose()" << std::endl;
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (!glwindow->gl_begin(get_gl_context()))
@@ -303,7 +305,7 @@ WindstilleWidget::draw()
           EditorWindow::current()->get_current_tool()->draw(*sc);
         }
 
-      compositor->render(*sc, sector_model->get_scene_graph(), GraphicContextState(get_width(), get_height()));
+      compositor->render(*sc, sector_model->get_scene_graph(), state);
 
       state.pop(*sc);
 
