@@ -16,8 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "scenegraph/vertex_array_drawable.hpp"
 #include "objects/liquid.hpp"
+
+#include "scenegraph/vertex_array_drawable.hpp"
+#include "engine/sector.hpp"
+#include "scenegraph/scene_graph.hpp"
 
 #define SAMPLES 5
 
@@ -27,7 +30,9 @@ Liquid::Liquid(FileReader& props)
     heightfield_store1(),
     heightfield_store2(),
     heightfield1(),
-    heightfield2()
+    heightfield2(),
+    m_water_top(),
+    m_water_body()
 {
   int width = 10;
   t = 0;
@@ -53,6 +58,16 @@ Liquid::Liquid(FileReader& props)
 
   texture = Texture(Pathname("images/textures/water.png"));
   texture.set_wrap(GL_REPEAT);
+  
+  m_water_top.reset(new VertexArrayDrawable(Vector2f(pos.x, pos.y), 10000,
+                                            Matrix::identity())); //sc.light().get_modelview()));
+
+  m_water_body.reset(new VertexArrayDrawable(Vector2f(pos.x, pos.y), 10000,
+                                             Matrix::identity())); // sc.light().get_modelview());
+
+  Sector::current()->get_scene_graph().add_drawable(m_water_top);
+  Sector::current()->get_scene_graph().add_drawable(m_water_body);
+  update_scene_graph();
 }
 
 Liquid::~Liquid()
@@ -60,85 +75,87 @@ Liquid::~Liquid()
 }
 
 void
-Liquid::draw(SceneContext& sc)
+Liquid::update(float delta)
 {
-  float texscale = 1.0f/128.0f;
-  {
-    VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(pos.x, pos.y), 10000,
-                                                                     sc.light().get_modelview());
-    array->set_texture(texture);
-    array->set_mode(GL_QUAD_STRIP);
-    array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  { // Update the heightfield data
+    t += delta * 1.0f;
+    float factor = 0.1f * delta;
 
-    for(std::vector<float>::size_type i = 0; i < heightfield1->size(); ++i)
+    for(int samples = 0; samples < 3; ++samples)
+    {
+      for(std::vector<float>::size_type i = 2; i < heightfield1->size()-2; ++i)
       {
-        float c = 0.5f;
-        if (i > 0)
-          {
-            float angle = atan2f(32.0f* ((*heightfield1)[i] - (*heightfield1)[i-1]), 3.2f);
-            c = std::min(1.0f, std::max(0.5f, 8.0f * (angle/float(M_PI)) + 0.5f));
-          }
-
-        array->color(Color(0.5f, 0.5f, 1.0f, 0.7f));
-        array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
-                        (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
-        array->vertex(static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i] + 8.0f);
-
-        array->color(Color(c, c, 1.0f, 1.0f));
-        array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
-                        (-32.0f * (*heightfield1)[i]) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
-        array->vertex(static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i]);
+        float value = 
+          factor * ((*heightfield1)[i-2] +
+                    (*heightfield1)[i-1] +
+                    (*heightfield1)[i+1] +
+                    (*heightfield1)[i+2])                      
+          - (factor * 4 * (*heightfield1)[i])
+          + (2*(*heightfield1)[i])
+          - (*heightfield2)[i];
+      
+        (*heightfield2)[i] = value * 0.99999f;
       }
-
-    sc.color().draw(array);
+      std::swap(heightfield2, heightfield1);
+    }
   }
-  {
-    VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(pos.x, pos.y), 10000,
-                                                                     sc.light().get_modelview());
-    array->set_texture(texture);
-    array->set_mode(GL_QUAD_STRIP);
-    array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    for(std::vector<float>::size_type i = 0; i < heightfield1->size(); ++i)
-      {
-        array->color(Color(0.0f, 0.0f, 0.5f, 0.7f));
-        array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
-                        (64.0f) * texscale + sinf(t+static_cast<float>(i)/10.0f)*0.2f);
-        array->vertex(static_cast<float>(i) * 32.0f/static_cast<float>(SAMPLES), 64.0f);
-
-        array->color(Color(0.5f, 0.5f, 1.0f, 0.7f));
-        array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f) * 0.2f,
-                        (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
-        array->vertex(static_cast<float>(i) * 32.0f/static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i] + 8.0f);
-      }
-
-    sc.color().draw(array);
-  }
+  update_scene_graph();
 }
 
 void
-Liquid::update(float delta)
+Liquid::update_scene_graph()
 {
-  t += delta * 1.0f;
-  float factor = 0.1f * delta;
+  // Update the SceneGraph
+  float texscale = 1.0f/128.0f;
+  { // water top
+    VertexArrayDrawable* array = m_water_top.get();
+    array->clear();
+    array->set_texture(texture);
+    array->set_mode(GL_QUAD_STRIP);
+    array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  for(int samples = 0; samples < 3; ++samples)
+    for(std::vector<float>::size_type i = 0; i < heightfield1->size(); ++i)
     {
-      for(std::vector<float>::size_type i = 2; i < heightfield1->size()-2; ++i)
-        {
-          float value = 
-            factor * ((*heightfield1)[i-2] +
-                      (*heightfield1)[i-1] +
-                      (*heightfield1)[i+1] +
-                      (*heightfield1)[i+2])                      
-            - (factor * 4 * (*heightfield1)[i])
-            + (2*(*heightfield1)[i])
-            - (*heightfield2)[i];
-      
-          (*heightfield2)[i] = value * 0.99999f;
-        }
-      std::swap(heightfield2, heightfield1);
+      float c = 0.5f;
+      if (i > 0)
+      {
+        float angle = atan2f(32.0f* ((*heightfield1)[i] - (*heightfield1)[i-1]), 3.2f);
+        c = std::min(1.0f, std::max(0.5f, 8.0f * (angle/float(M_PI)) + 0.5f));
+      }
+
+      array->color(Color(0.5f, 0.5f, 1.0f, 0.7f));
+      array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
+                      (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
+      array->vertex(static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i] + 8.0f);
+
+      array->color(Color(c, c, 1.0f, 1.0f));
+      array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
+                      (-32.0f * (*heightfield1)[i]) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
+      array->vertex(static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i]);
     }
+  }
+
+  { // water body
+    VertexArrayDrawable* array = m_water_body.get();
+    array->clear();
+    array->set_texture(texture);
+    array->set_mode(GL_QUAD_STRIP);
+    array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    for(std::vector<float>::size_type i = 0; i < heightfield1->size(); ++i)
+    {
+      array->color(Color(0.0f, 0.0f, 0.5f, 0.7f));
+      array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
+                      (64.0f) * texscale + sinf(t+static_cast<float>(i)/10.0f)*0.2f);
+      array->vertex(static_cast<float>(i) * 32.0f/static_cast<float>(SAMPLES), 64.0f);
+
+      array->color(Color(0.5f, 0.5f, 1.0f, 0.7f));
+      array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f) * 0.2f,
+                      (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
+      array->vertex(static_cast<float>(i) * 32.0f/static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i] + 8.0f);
+    }
+  }
 }
 
 /* EOF */

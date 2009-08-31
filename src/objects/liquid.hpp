@@ -22,6 +22,8 @@
 #include <vector>
 
 #include "engine/entity.hpp"
+
+class VertexArrayDrawable;
 
 class Liquid : public Entity
 {
@@ -35,12 +37,17 @@ private:
   std::vector<float>* heightfield1;
   std::vector<float>* heightfield2;
 
+  boost::shared_ptr<VertexArrayDrawable> m_water_top;
+  boost::shared_ptr<VertexArrayDrawable> m_water_body;
+
 public:
   Liquid(FileReader& props);
   ~Liquid();
 
-  void draw(SceneContext& sc);
   void update(float delta);
+
+private:
+  void update_scene_graph();
 
 private:
   Liquid (const Liquid&);
