@@ -93,18 +93,9 @@ ParticleViewer::draw()
     }
   }
 
-  sc.translate(static_cast<float>(Display::get_width())  / 2.0f + pos.x, 
-               static_cast<float>(Display::get_height()) / 2.0f + pos.y);
+  // Ambient lighting
   sc.light().fill_screen(Color(0.4f, 0.4f, 0.4f));
-  //sc.light().fill_screen(Color(1.0f, 1.0f, 1.0f));
-  sc.color().fill_screen(Color(0.0f, 0.0f, 0.0f));
-
-  if (0)
-  { // FIXME: Old SceneContext code, can be removed
-    for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
-      (*i)->draw(sc);
-  }
-
+  
   GraphicContextState state(Display::get_width(), Display::get_height());
   state.set_pos(-pos);
   compositor.render(sc, &sg, state);
