@@ -172,7 +172,7 @@ Matrix::multiply(const Vector3& v) const
 }
 
 Matrix
-Matrix::scale(float x, float y, float z)
+Matrix::scale(float x, float y, float z) const
 {
   Matrix m = Matrix::identity();
   m[0]  = x;
@@ -182,7 +182,7 @@ Matrix::scale(float x, float y, float z)
 }
 
 Matrix
-Matrix::translate(float x, float y, float z)
+Matrix::translate(float x, float y, float z) const
 {
   Matrix m = Matrix::identity();
   m[12] = x;
@@ -192,7 +192,7 @@ Matrix::translate(float x, float y, float z)
 }
 
 Matrix
-Matrix::rotate(float angle, float x, float y, float z)
+Matrix::rotate(float angle, float x, float y, float z) const
 {
   float len2 = x*x+y*y+z*z;
   if (len2 != 1.0)

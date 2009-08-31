@@ -111,9 +111,9 @@ public:
   Matrix transpose() const;
 
   //: Multiply the matrix with the given scale/translate/rotate matrix
-  Matrix scale(float x, float y, float z);
-  Matrix translate(float x, float y, float z);
-  Matrix rotate(float angle, float x, float y, float z);
+  Matrix scale(float x, float y, float z) const;
+  Matrix translate(float x, float y, float z) const;
+  Matrix rotate(float angle, float x, float y, float z) const;
 
   //! Implementation:
 private:
