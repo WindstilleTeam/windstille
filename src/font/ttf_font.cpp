@@ -150,7 +150,6 @@ TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect)
   FT_Done_Face(face);
 
   impl->texture = Texture(pixelbuffer);
-  impl->texture.set_filter(GL_NEAREST);
 }
 
 TTFFont::~TTFFont()
