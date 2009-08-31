@@ -186,9 +186,6 @@ TextArea::draw()
                impl->rect.top + static_cast<float>(impl->font->get_height()) - impl->scroll_offset, 
                0.0f);
 
-  // Voodoo to get non-blurry fonts
-  float mx = -0.375;
-  float my = -0.375; 
   glBegin(GL_QUADS);
 
   int x_pos = 0;
@@ -319,21 +316,21 @@ TextArea::draw()
                               {
                                 glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
                                 glTexCoord2f(character.uv.left, character.uv.top);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.left) + mx,
-                                           y + scale * static_cast<float>(character.pos.top)  + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.left),
+                                           y + scale * static_cast<float>(character.pos.top));
 
                                 glTexCoord2f(character.uv.right, character.uv.top);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.right) + mx, 
-                                           y + scale * static_cast<float>(character.pos.top)   + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                                           y + scale * static_cast<float>(character.pos.top));
 
                                 glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
                                 glTexCoord2f(character.uv.right, character.uv.bottom);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.right)  + mx, 
-                                           y + scale * static_cast<float>(character.pos.bottom) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                                           y + scale * static_cast<float>(character.pos.bottom));
 
                                 glTexCoord2f(character.uv.left, character.uv.bottom);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.left)   + mx, 
-                                           y + scale * static_cast<float>(character.pos.bottom) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.left), 
+                                           y + scale * static_cast<float>(character.pos.bottom));
                               }
                             x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
                           }
@@ -344,21 +341,21 @@ TextArea::draw()
                               {
                                 glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
                                 glTexCoord2f(character.uv.left, character.uv.top);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.left) + mx,
-                                           y + static_cast<float>(character.pos.top) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.left),
+                                           y + static_cast<float>(character.pos.top));
 
                                 glTexCoord2f(character.uv.right, character.uv.top);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.right) + mx, 
-                                           y + static_cast<float>(character.pos.top) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                                           y + static_cast<float>(character.pos.top));
 
                                 glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
                                 glTexCoord2f(character.uv.right, character.uv.bottom);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.right) + mx, 
-                                           y + static_cast<float>(character.pos.bottom) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                                           y + static_cast<float>(character.pos.bottom));
 
                                 glTexCoord2f(character.uv.left, character.uv.bottom);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.left) + mx, 
-                                           y + static_cast<float>(character.pos.bottom) + my);
+                                glVertex2f(x + scale * static_cast<float>(character.pos.left), 
+                                           y + static_cast<float>(character.pos.bottom));
                               }
                             x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
                           }
@@ -368,21 +365,21 @@ TextArea::draw()
                               {
                                 glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
                                 glTexCoord2f(character.uv.left, character.uv.top);
-                                glVertex2f(x + static_cast<float>(character.pos.left) + mx,
-                                           y + static_cast<float>(character.pos.top)  + my);
+                                glVertex2f(x + static_cast<float>(character.pos.left),
+                                           y + static_cast<float>(character.pos.top));
 
                                 glTexCoord2f(character.uv.right, character.uv.top);
-                                glVertex2f(x + static_cast<float>(character.pos.right) + mx, 
-                                           y + static_cast<float>(character.pos.top)   + my);
+                                glVertex2f(x + static_cast<float>(character.pos.right), 
+                                           y + static_cast<float>(character.pos.top));
 
                                 glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
                                 glTexCoord2f(character.uv.right, character.uv.bottom);
-                                glVertex2f(x + static_cast<float>(character.pos.right)  + mx, 
-                                           y + static_cast<float>(character.pos.bottom) + my);
+                                glVertex2f(x + static_cast<float>(character.pos.right), 
+                                           y + static_cast<float>(character.pos.bottom));
 
                                 glTexCoord2f(character.uv.left, character.uv.bottom);
-                                glVertex2f(x + static_cast<float>(character.pos.left)   + mx, 
-                                           y + static_cast<float>(character.pos.bottom) + my);
+                                glVertex2f(x + static_cast<float>(character.pos.left), 
+                                           y + static_cast<float>(character.pos.bottom));
                               }
                             x_pos += character.advance;
                           }

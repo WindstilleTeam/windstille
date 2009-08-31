@@ -189,9 +189,9 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
     // Render the screen framebuffer to the actual screen 
     OpenGLState state;
 
-    Rectf uv(0.375f, 0.375f, 
-             static_cast<float>(impl->framebuffers->screen.get_width())  + 0.375f,
-             static_cast<float>(impl->framebuffers->screen.get_height()) + 0.375f);
+    Rectf uv(0, 0, 
+             static_cast<float>(impl->framebuffers->screen.get_width()),
+             static_cast<float>(impl->framebuffers->screen.get_height()));
 
     if (sc.get_render_mask() & SceneContext::BLURMAP)
       state.bind_texture(impl->framebuffers->screen.get_texture(), 0);

@@ -72,8 +72,6 @@ OpenGLWindow::OpenGLWindow()
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
 
-      static const float cl_pixelcenter_constant = 0.375;
-
       Display::aspect_size = Size(config.get_int("aspect-width"), 
                                   config.get_int("aspect-height"));
 
@@ -81,7 +79,12 @@ OpenGLWindow::OpenGLWindow()
               0.0, 1000.0, -1000.0);
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
-      glTranslated(cl_pixelcenter_constant, cl_pixelcenter_constant, 0.0);
+
+      if (0) // disabled for the moment, as it seems to do more harm then good
+      { // Magic pixel center constant, without that textures drawn in
+        // pixel coordinates might end up blurry       
+        glTranslated(0.375f, 0.375f, 0.0);
+      }
 
       if (config.get_int("anti-aliasing"))
         glEnable(GL_MULTISAMPLE_ARB); 
