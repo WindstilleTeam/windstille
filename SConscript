@@ -22,21 +22,32 @@ start_time = time.time()
 
 CacheDir('cache')
 
-debug_cxxflags = [
-    "-O0",
-    "-g",
-    "-ansi",
-    "-pedantic",
-    "-Wall",
-    "-Wextra",
-    "-Wnon-virtual-dtor",
-    "-Weffc++",
-    "-Wconversion",
-    "-Werror",
-    "-Wshadow",
-    "-Winline",
-    #"-Wunreachable-code",
-    ]
+preset_cxxflags = {
+    'release':     [ "-O3", "-s"  ],
+    'profile':     [ "-O2", "-g3", "-pg" ],
+    'debug':       [ "-O0", "-g3" ],
+    'development': [ "-O0", "-g3",
+                     "-ansi",
+                     "-pedantic",
+                     "-Wall",
+                     "-Wextra",
+                     "-Wnon-virtual-dtor",
+                     "-Weffc++",
+                     "-Wconversion",
+                     "-Werror",
+                     "-Wshadow",
+                     "-Winline",
+                     #"-Wunreachable-code",
+                     ]
+    }
+
+preset_linkflags = {
+    'release': [],
+    'profile': [ "-pg" ],
+    'debug':   [],
+    'development': []
+    }
+
 
 # YACC
 yacc_test_text = """
@@ -113,20 +124,17 @@ int main()
 
 class Project:
     def __init__(self):
-        self.cxx = 'g++-4.4'
-        self.cxxflags = debug_cxxflags
-        
         self.features = {
             "64bit" : 0,
             "cwiid" : 0
-            }        
+            }
 
     def build_all(self):
         self.env = Environment()
 
         if not GetOption('clean'):
             self.configure()
-        
+
         self.build_squirrel()
         self.build_miniswig()
         self.build_binreloc()
@@ -135,14 +143,14 @@ class Project:
         self.build_windstille_editor()
         self.build_windstille_data()
         self.build_testapps()
-        
+
     def configure(self):
         # FIXME: None of the options are used, as only self.features
         # makes it across function calls
-        
+
         # FIXME: Giving multiple CCFLAGS doesn't work since they have to be
         # broken down to a list
-        opts = Variables(['options.cache', 'custom.py'], ARGUMENTS)
+        opts = Variables(['custom.py'], ARGUMENTS)
         opts.Add('CPPPATH', 'Additional preprocessor paths')
         opts.Add('CPPFLAGS', 'Additional preprocessor flags')
         opts.Add('CPPDEFINES', 'defined constants')
@@ -152,26 +160,29 @@ class Project:
         opts.Add('CXXFLAGS', 'C++ Compiler flags')
         opts.Add('LINKFLAGS', 'Linker Compiler flags')
         opts.Add('CC', 'C Compiler')
-        opts.Add('CXX', 'C++ Compiler')  
+        opts.Add('CXX', 'C++ Compiler')
+        opts.Add('BUILD', 'Build type: release, profile, debug, development')
         opts.Update(self.env)
-        opts.Save('options.cache', self.env)
+        # opts.Save('options.cache', self.env)
         Help(opts.GenerateHelpText(self.env))
+
+        if 'BUILD' in self.env:
+            self.env.Append(CXXFLAGS  = preset_cxxflags[self.env['BUILD']],
+                            LINKFLAGS = preset_linkflags[self.env['BUILD']])
+        else:
+            self.env.Append(CXXFLAGS  = preset_cxxflags['release'],
+                            LINKFLAGS = preset_linkflags['release'])
 
         conf = Configure(self.env, custom_tests = { 'Check32bit' : Check32bit,
                                                     'CheckYacc'  : CheckYacc,
                                                     'CheckLex'   : CheckLex})
 
-        # conf.CheckCXX()
+        if self.env['CXX']:
+            print "Using C++ compiler...", self.env['CXX']
+        else:
+            print "Error: C++ compiler missing"
+            Exit(1)
 
-        if self.cxxflags:
-            conf.env.Append(CXXFLAGS=self.cxxflags)
-
-        if 'CXX' in os.environ:
-            conf.env.Replace(CXX = os.environ['CXX'])
-        elif self.cxx:
-            conf.env.Replace(CXX=self.cxx)
-        print("Using compiler " + conf.env['CXX'])
-        
         if conf.Check32bit() == "64bit":
             # conf.env.Append(CXXFLAGS="-D_SQ64")
             self.features["64bit"] = 1
@@ -241,7 +252,7 @@ class Project:
         self.math_lib      = wstlib_env.StaticLibrary('math', Glob('src/math/*.cpp'))
         self.navgraph_lib  = wstlib_env.StaticLibrary('navgraph', Glob('src/navigation/*.cpp'))
         self.particles_lib = wstlib_env.StaticLibrary('particles', Glob('src/particles/*.cpp'))
-        
+
         # libdisplay
         display_env = wstlib_env.Clone()
         display_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
@@ -321,7 +332,7 @@ class Project:
 
     def build_windstille_data(self):
         data_env = self.env.Clone()
-        
+
         data_env.Append(BUILDERS = { "xcf2png" : Builder(action = "xcf2png $SOURCE -o $TARGET",
                                                          src_suffix = ".xcf",
                                                          suffix = ".png") })
