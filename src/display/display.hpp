@@ -23,6 +23,7 @@
 
 #include "math/quad.hpp"
 #include "math/line.hpp"
+#include "math/size.hpp"
 #include "display/color.hpp"
 #include "display/framebuffer.hpp"
 
@@ -62,6 +63,8 @@ public:
 
   static int  get_width();
   static int  get_height();
+
+  static Size get_size() { return Size(get_width(), get_height()); }
 
   static void push_cliprect(const Rect& rect);
   static void pop_cliprect();

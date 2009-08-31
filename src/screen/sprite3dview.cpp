@@ -25,7 +25,7 @@
 #include "display/graphic_context_state.hpp"
 
 Sprite3DView::Sprite3DView()
-  : compositor(),
+  : compositor(Display::get_size()),
     sc(),
     sprite(),
     actions(),

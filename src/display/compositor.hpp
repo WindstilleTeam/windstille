@@ -26,11 +26,12 @@ class Drawable;
 class GraphicContextState;
 class SceneContext;
 class SceneGraph;
+class Size;
 
 class Compositor
 {
 public:
-  Compositor();
+  Compositor(const Size& size);
   ~Compositor();
 
   void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);

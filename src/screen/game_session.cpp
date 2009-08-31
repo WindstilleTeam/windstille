@@ -76,7 +76,8 @@ public:
   Screen* current_gui;
 
   GameSessionImpl() 
-    : sc(),
+    : compositor(Size(Display::get_width(), Display::get_height())),
+      sc(),
       fadeout_value(),
       fade_time(),
       sector(),
