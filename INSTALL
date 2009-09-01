@@ -48,7 +48,8 @@ For compilation type:
 
 and run it from inside its source directory with:
 
- % ./windstille
+ % build/windstille -d data/
+
 
 Installation
 ============

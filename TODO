@@ -10,6 +10,38 @@ on this list and always think about how useful a new feature would be
 in the context of the whole game or if a potential performance
 enhanchment, actually enhanchmes anything at all.
 
+Overview
+========
+
+* use control layer for NavGraph draving and other debug stuff
+
+* use SceneGraph in objects that already use VertexArray
+  (BackgroundGradient, Swarm)
+
+* need multiple render path:
+
+  * MatrixG450: seems a lost cause, way to slow and only 16bit
+  * Geforce2MX: doesn't have Framebuffer object and shader
+  * Geforce???: has Framebuffer object and shader
+
+* use SceneGraph in the editor 
+
+* add z/layer ordering to NavGraph
+
+* add trigger to NavGraph
+
+* add Grid snapping to the Editor
+
+* build a more complete scenario
+
+* tweak graphics (lightmaps are to big, stuff doesn't tile properly, etc.)
+
+* implement jumping: 
+
+  * calculate an arc from the current pos to the next ledge or landing spot
+
+  * let character travel that arc
+
 Animation
 =========
 
@@ -49,6 +81,8 @@ Navigation Graph
 
 Display
 =======
+
+* Display::aspect_size is ugly, turning it into a Display::set_size() wouldn't help much
 
 * OpenGLState class is really slow (rewrite it to not use std::map, also remove the impl allocation)
 
@@ -275,10 +309,6 @@ Miscellaneous
   1-bit alpha, which could be used to bucket sort drawing requests and
   reduce texture switches (in case those ever start posing a problem)
 
-* Display::aspect_size is ugly, turn that into a Display::set_size();
-
-* move particle system into library
-
 * replace lisp::Writer with custom FileWriter (used in config)
 
 * make FileReader work more like lisp::Writer, i.e. less
@@ -454,8 +484,6 @@ Level Design
 
 * create a test sector that as open sky, currently most test levels
   are indoor
-
-* fix the particle system in newformat2.wst, speed/lifetime is wrong
 
 * implement light switches in apartment
 
@@ -931,7 +959,6 @@ Code Cleanup
   - BabyXML
   - Sprite2D
   - Sprite3D
-  - ParticleSystem
   - Dialog/Conversation
 
 * Screens might fit better into app/ then screen/
