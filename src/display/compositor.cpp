@@ -62,8 +62,8 @@ struct CompositorImpl
   {
       if (GLEW_EXT_framebuffer_object) 
       {
-        framebuffers.reset(new Framebuffers(size));
         std::cout  << "Display:: framebuffer_object extension is supported" << std::endl;
+        framebuffers.reset(new Framebuffers(size));
       }
       else
       {

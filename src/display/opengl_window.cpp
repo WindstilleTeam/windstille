@@ -27,7 +27,7 @@
 #include "app/config.hpp"
 
 OpenGLWindow::OpenGLWindow()
- : m_window(0)
+  : m_window(0)
 {
   SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1); // vsync
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
@@ -36,10 +36,10 @@ OpenGLWindow::OpenGLWindow()
   SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,  5);
 
   if (config.get_int("anti-aliasing"))
-    {
-      SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 ); // boolean value, either it's enabled or not
-      SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, config.get_int("anti-aliasing") ); // 0, 2, or 4 for number of samples
-    }
+  {
+    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 ); // boolean value, either it's enabled or not
+    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, config.get_int("anti-aliasing") ); // 0, 2, or 4 for number of samples
+  }
   
   SDL_WM_SetCaption("Windstille", "Windstille");
   SDL_WM_SetIcon(IMG_Load(Pathname("icon.png").get_sys_path().c_str()), NULL);
@@ -48,18 +48,21 @@ OpenGLWindow::OpenGLWindow()
                               0, SDL_OPENGL | (config.get_bool("fullscreen") ? SDL_FULLSCREEN : 0));
 
   if (!m_window)
-    {
-      throw std::runtime_error("Display:: Couldn't create window");
-    }
+  {
+    throw std::runtime_error("Display:: Couldn't create window");
+  }
   else
+  {
+    GLenum err = glewInit();
+    if (err != GLEW_OK) 
     {
-      GLenum err = glewInit();
-      if (err != GLEW_OK) 
-      {
-        std::ostringstream msg;
-        msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
-        throw std::runtime_error(msg.str());
-      }
+      std::ostringstream msg;
+      msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
+      throw std::runtime_error(msg.str());
+    }
+    else
+    {
+      std::cout << "glewInit() successfull" << std::endl;
 
       glViewport(0, 0, m_window->w, m_window->h);
       glMatrixMode(GL_PROJECTION);
@@ -86,6 +89,7 @@ OpenGLWindow::OpenGLWindow()
 
       OpenGLState::init();
     }
+  }
 }
 
 OpenGLWindow::~OpenGLWindow()
