@@ -22,6 +22,7 @@
 
  (select-button     (keyboard-button (key "p")))
  (start-button      (keyboard-button (key "u")))
+ (debug-button      (keyboard-button (key "d")))
 
  ;; don't bind those, since they only make sense on analog gamepads
  ;; with an additional dpad, on digital devices x-axs and y-axis
