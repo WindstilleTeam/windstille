@@ -41,7 +41,7 @@ private:
 public:
   VertexArrayDrawable(const Vector2f& pos_, float z_pos_, const Matrix& modelview_);
 
-  void draw(const Texture& tmp_texture);
+  void draw();
   void draw(int start, int end);
 
   void vertex(float x, float y, float z = 0.0f);

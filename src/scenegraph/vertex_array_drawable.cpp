@@ -47,7 +47,7 @@ VertexArrayDrawable::clear()
 }
 
 void
-VertexArrayDrawable::draw(const Texture& /*tmp_texture*/)
+VertexArrayDrawable::draw()
 {
   draw(0, num_vertices());
 }

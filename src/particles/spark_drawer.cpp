@@ -82,7 +82,7 @@ SparkDrawer::draw(const ParticleSystem& psys) const
         }
     }
 
-  buffer->draw(Texture());
+  buffer->draw();
 }
 
 /* EOF */

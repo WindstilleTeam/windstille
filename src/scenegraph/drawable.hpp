@@ -44,27 +44,9 @@ public:
   /**
    * The draw() method does the important work in Drawable,
    * ie. it is the place where you can access the screen with raw
-   * OpenGL methods. The \a tmp_texture provides a texture of the
-   * current framebuffer, you have to copy the \a screen_texture to it
-   * to contain usefull content
+   * OpenGL methods. 
    */
-  virtual void draw(const Texture& tmp_texture) = 0;
-
-  /**
-   * This method is called before draw() to allow the Drawable
-   * to copy content from \a screen_texture, which is the current
-   * framebuffer to a temporary buffer which can then be used in
-   * draw() for deformation effects
-   */
-  virtual void prepare(const Texture& screen_texture) {
-      (void) screen_texture;
-  }
-
-  /**
-   * Override this and let it return true if you need to prepare()
-   * function call
-   */
-  virtual bool needs_prepare() { return false; }
+  virtual void draw() = 0;
   
   /** Returns the position at which the request should be drawn */
   float get_z_pos() const { return z_pos; }

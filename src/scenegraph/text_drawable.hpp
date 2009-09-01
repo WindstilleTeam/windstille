@@ -30,7 +30,7 @@ public:
   {}
   virtual ~TextDrawable() {}
 
-  void draw(const Texture& /*tmp_texture*/) {
+  void draw() {
     glPushMatrix();
     glMultMatrixf(modelview.matrix);
     Fonts::current()->ttffont->draw(pos, text);

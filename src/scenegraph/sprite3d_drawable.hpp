@@ -36,7 +36,7 @@ public:
       m_scale(1.0f)
   {}
 
-  void draw(const Texture& /*tmp_texture*/)
+  void draw()
   {
     Matrix matrix = modelview;
     matrix = matrix.translate(pos.x, pos.y, z_pos);

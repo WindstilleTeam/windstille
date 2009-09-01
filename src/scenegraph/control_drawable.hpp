@@ -35,7 +35,7 @@ public:
 
   virtual ~ControlDrawable() {}
 
-  void draw(const Texture& /*tmp_texture*/)
+  void draw()
   {
     glPushMatrix();
 

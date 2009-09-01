@@ -31,7 +31,7 @@ private:
 public:
   ParticleSystemDrawable(const ParticleSystem& particle_system);
 
-  void draw(const Texture& tmp_texture);
+  void draw();
 
 private:
   ParticleSystemDrawable(const ParticleSystemDrawable&);

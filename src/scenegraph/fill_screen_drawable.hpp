@@ -31,7 +31,8 @@ public:
   }
   virtual ~FillScreenDrawable() {}
 
-  void draw(const Texture& /*tmp_texture*/) {
+  void draw()
+  {
     OpenGLState state;
     // FIXME: move clear color to opengl_state
     state.activate();

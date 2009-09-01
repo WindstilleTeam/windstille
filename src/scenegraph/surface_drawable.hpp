@@ -43,7 +43,7 @@ public:
   Surface get_surface() const { return surface; }
   SurfaceDrawingParameters& get_params() { return params; }
 
-  void draw(const Texture& /*tmp_texture*/) 
+  void draw()
   {
     glPushMatrix();
     glMultMatrixf(modelview.matrix);

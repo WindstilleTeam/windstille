@@ -43,8 +43,9 @@ public:
   
   virtual ~DeformDrawerRequest() {}
   
-  void draw(const Texture& tmp_texture) 
+  void draw()
   {
+#if 0
     Display::push_framebuffer(framebuffer);
     glClear(GL_COLOR_BUFFER_BIT);
     draw_particles();
@@ -78,6 +79,7 @@ public:
 
       glUseProgramObjectARB(0);
     }
+#endif
   }
 
   void draw_particles()

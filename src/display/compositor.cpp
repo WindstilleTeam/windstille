@@ -39,12 +39,10 @@ struct CompositorImpl
   struct Framebuffers 
   {
     Framebuffer screen;
-    Framebuffer tmp;
     Framebuffer lightmap;   
 
     Framebuffers(const Size& size) 
       : screen  (GL_TEXTURE_RECTANGLE_ARB, size.width, size.height),
-        tmp     (GL_TEXTURE_RECTANGLE_ARB, size.width, size.height),
         lightmap(GL_TEXTURE_RECTANGLE_ARB, size.width / LIGHTMAP_DIV, size.height / LIGHTMAP_DIV)
     {
     }
@@ -136,7 +134,7 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
     {
       glPushMatrix();
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(Texture(), SceneContext::LIGHTMAP);
+      sg->draw(SceneContext::LIGHTMAP);
       glPopMatrix();
     }
 
@@ -156,7 +154,7 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
     {
       glPushMatrix();
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(Texture(), SceneContext::COLORMAP);
+      sg->draw(SceneContext::COLORMAP);
       glPopMatrix();
     }
 
@@ -179,7 +177,7 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
     {
       glPushMatrix();
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(Texture(), SceneContext::HIGHLIGHTMAP);
+      sg->draw(SceneContext::HIGHLIGHTMAP);
       glPopMatrix();
     }
 
@@ -202,10 +200,7 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
              static_cast<float>(impl->framebuffers->screen.get_width()),
              static_cast<float>(impl->framebuffers->screen.get_height()));
 
-    if (sc.get_render_mask() & SceneContext::BLURMAP)
-      state.bind_texture(impl->framebuffers->screen.get_texture(), 0);
-    else
-      state.bind_texture(impl->framebuffers->tmp.get_texture(), 0);
+    state.bind_texture(impl->framebuffers->screen.get_texture(), 0);
 
     state.activate();
 
@@ -260,7 +255,7 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
       glTranslatef(0.0f, static_cast<float>(impl->m_size.height) - static_cast<float>(impl->m_size.height/LIGHTMAP_DIV), 0.0f);
       glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(Texture(), SceneContext::LIGHTMAP);
+      sg->draw(SceneContext::LIGHTMAP);
       glPopMatrix();
     }
 
@@ -291,7 +286,7 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
     {
       glPushMatrix();
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(Texture(), SceneContext::COLORMAP);
+      sg->draw(SceneContext::COLORMAP);
       glPopMatrix();
     }
   }
@@ -334,7 +329,7 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
     {
       glPushMatrix();
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(Texture(), SceneContext::HIGHLIGHTMAP);
+      sg->draw(SceneContext::HIGHLIGHTMAP);
       glPopMatrix();
     }
   }
@@ -365,19 +360,15 @@ Compositor::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& 
 void
 Compositor::eval(Drawable* request)
 {
-  if (impl->framebuffers && request->needs_prepare())
-    {
-      Display::push_framebuffer(impl->framebuffers->tmp);
-      request->prepare(impl->framebuffers->screen.get_texture());
-      Display::pop_framebuffer();
-      
+  if (impl->framebuffers)
+    {    
       Display::push_framebuffer(impl->framebuffers->screen);
-      request->draw(impl->framebuffers->tmp.get_texture());
+      request->draw();
       Display::pop_framebuffer();
     }
   else
     {
-      request->draw(Texture());
+      request->draw();
     }
 }
 

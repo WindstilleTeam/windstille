@@ -35,7 +35,7 @@ public:
       m_navgraph(navgraph)
   {}
 
-  void draw(const Texture& /*tmp_texture*/)
+  void draw()
   {
     //Display::fill_rect(Rectf(-100, -100, 100, 1000), Color(1.0f, 0.0f, 0.0f));
 

@@ -102,14 +102,14 @@ DrawingContext::draw(const Surface surface, const Vector2f& pos, const Quad& qua
                      const DrawingParameters& params, float z_pos)
 {
   draw(new SurfaceQuadDrawable(surface, pos, quad, params, z_pos,
-                                     modelview_stack.back()));
+                               modelview_stack.back()));
 }
 
 void
 DrawingContext::draw(const Surface surface, const SurfaceDrawingParameters& params, float z_pos)
 {
   draw(new SurfaceDrawable(surface, params, z_pos,
-                                 modelview_stack.back()));
+                           modelview_stack.back()));
 }
 
 void

@@ -44,11 +44,7 @@ public:
   {
   }
 
-  bool  needs_prepare()
-  {
-    return true; 
-  }
-    
+#if 0
   void prepare(const Texture& screen_texture)
   {
     // FIXME: Clear stuff is only for debugging
@@ -123,9 +119,11 @@ public:
 
     glPopMatrix();
   }
+#endif
 
-  void draw(const Texture& tmp_texture)
+  void draw()
   {
+#if 0
     glPushMatrix();
     glMultMatrixf(modelview.matrix);
     glTranslatef(pos.x, pos.y, 0);
@@ -170,6 +168,7 @@ public:
         glUseProgramObjectARB(0);
       }
     glPopMatrix();
+#endif
   }
 
   void draw_disc(int count)

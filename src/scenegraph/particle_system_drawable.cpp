@@ -28,7 +28,7 @@ ParticleSystemDrawable::ParticleSystemDrawable(const ParticleSystem& particle_sy
 }
 
 void
-ParticleSystemDrawable::draw(const Texture& /*tmp_texture*/)
+ParticleSystemDrawable::draw()
 {
   m_particle_system.draw();
 }

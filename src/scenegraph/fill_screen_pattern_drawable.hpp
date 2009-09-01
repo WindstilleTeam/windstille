@@ -42,7 +42,7 @@ public:
     m_offset = offset;
   }
 
-  void draw(const Texture& /*tmp_texture*/) 
+  void draw() 
   {
     OpenGLState state;
     state.enable(GL_BLEND);
