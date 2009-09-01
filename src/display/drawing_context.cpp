@@ -28,6 +28,7 @@
 #include "display/surface_drawing_parameters.hpp"
 #include "font/fonts.hpp"
 #include "math/vector3.hpp"
+#include "math/line.hpp"
 #include "sprite2d/sprite.hpp"
 
 #include "scenegraph/control_drawable.hpp"
@@ -59,13 +60,13 @@ DrawingContext::~DrawingContext()
 }
 
 void
-DrawingContext::render(Compositor& comp)
+DrawingContext::render(Compositor& /*comp*/)
 {
   std::stable_sort(drawingrequests.begin(), drawingrequests.end(), DrawablesSorter());
   
   for(Drawables::iterator i = drawingrequests.begin(); i != drawingrequests.end(); ++i)
     {
-      comp.eval(*i);
+      (*i)->draw();
     }
 }
 

@@ -35,7 +35,6 @@ public:
   ~Compositor();
 
   void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);
-  void eval(Drawable* request);
 
 private:
   void render_with_framebuffers(SceneContext& sc, SceneGraph* sg,

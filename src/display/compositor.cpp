@@ -120,9 +120,10 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
       
   if (sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN)
   {
-    // Render the lightmap to the framebuffers->lightmap
+    // Render the lightmap to framebuffers->lightmap
     Display::push_framebuffer(impl->framebuffers->lightmap);
-      
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix();
@@ -145,8 +146,9 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
 
   if (sc.get_render_mask() & SceneContext::COLORMAP)
   {
-    // Render the colormap to the framebuffers->screen
+    // Render the colormap to framebuffers->screen
     Display::push_framebuffer(impl->framebuffers->screen);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     sc.color().render(*this);
 
@@ -277,7 +279,7 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
   if (sc.get_render_mask() & SceneContext::COLORMAP)
   {
     // Render the colormap to the framebuffers->screen
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     sc.color().render(*this);
@@ -355,21 +357,6 @@ Compositor::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& 
   {
     render_without_framebuffers(sc, sg, state);
   }
-}
-
-void
-Compositor::eval(Drawable* request)
-{
-  if (impl->framebuffers)
-    {    
-      Display::push_framebuffer(impl->framebuffers->screen);
-      request->draw();
-      Display::pop_framebuffer();
-    }
-  else
-    {
-      request->draw();
-    }
 }
 
 /* EOF */
