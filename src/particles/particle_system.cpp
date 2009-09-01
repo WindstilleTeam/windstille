@@ -226,20 +226,7 @@ void
 ParticleSystem::set_drawer(Drawer* drawer_)
 {
   drawer.reset(drawer_);
-}
-  
-void
-ParticleSystem::draw(SceneContext& sc)
-{
-  if (drawer.get())
-    {
-      drawer->draw(sc.get_layer(layer), *this);
-    }
-  else
-    {
-      std::cout << "ParticleSystem: No drawer set" << std::endl;
-    }
-}
+} 
 
 void
 ParticleSystem::draw() const

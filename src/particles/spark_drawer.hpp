@@ -23,17 +23,18 @@
 
 class SceneContext;
 class ParticleSystem;
+class VertexArrayDrawable;
 
 class SparkDrawer : public Drawer
 {
 private:
   Color color;
   float width;
+  boost::shared_ptr<VertexArrayDrawable> buffer;
 
 public:
   SparkDrawer(FileReader& props);
 
-  void draw(DrawingContext& dc, ParticleSystem& psys);
   void draw(const ParticleSystem& psys) const;
 };
 

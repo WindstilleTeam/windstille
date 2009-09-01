@@ -104,7 +104,6 @@ public:
   void set_drawer(Drawer*);
 
   /** Draws the particle system to the screen */
-  void draw(SceneContext& sc);
   void draw() const;
 
   /** Update the particle system \a delta seconds */

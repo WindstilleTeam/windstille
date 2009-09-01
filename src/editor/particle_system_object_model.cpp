@@ -30,10 +30,8 @@ ParticleSystemObjectModel::~ParticleSystemObjectModel()
 }
 
 void
-ParticleSystemObjectModel::draw(SceneContext& sc)
+ParticleSystemObjectModel::draw(SceneContext& /*sc*/)
 {
-  for(ParticleSystems::iterator i = systems.begin(); i != systems.end(); ++i)
-    (*i)->draw(sc);
 }
 
 void

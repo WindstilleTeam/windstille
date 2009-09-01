@@ -75,6 +75,8 @@ public:
   void set_render_mask(unsigned int mask) { render_mask = mask; }
   unsigned int get_render_mask() const { return render_mask; }
 
+  void set_pos(const Vector2f& pos_) { pos = pos_; }
+
 private:
   Drawable (const Drawable&);
   Drawable& operator= (const Drawable&);

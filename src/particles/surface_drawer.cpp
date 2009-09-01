@@ -63,11 +63,12 @@ static GLenum string2blendfunc(const std::string& str)
     return GL_ONE;
   }
 }
-
+
 SurfaceDrawer::SurfaceDrawer(FileReader& props)
   : surface(),
     blendfunc_src(),
-    blendfunc_dest()
+    blendfunc_dest(),
+    buffer()
 {
   std::string blendfunc_src_str = "src_alpha";
   std::string blendfunc_dst_str = "one_minus_src_alpha";
@@ -81,6 +82,10 @@ SurfaceDrawer::SurfaceDrawer(FileReader& props)
 
   blendfunc_src  = string2blendfunc(blendfunc_src_str);
   blendfunc_dest = string2blendfunc(blendfunc_dst_str);
+
+  // FIXME: Bad idea, as the psys isn't fully loaded as this point 
+  buffer.reset(new VertexArrayDrawable(Vector2f(), 0.0f,
+                                       Matrix::identity()));
 }
 
 SurfaceDrawer::~SurfaceDrawer() 
@@ -101,70 +106,10 @@ SurfaceDrawer::set_blendfuncs(GLenum blendfunc_src_, GLenum blendfunc_dest_)
 }
 
 void
-SurfaceDrawer::draw(DrawingContext& dc, ParticleSystem& psys) 
-{
-  VertexArrayDrawable* buffer 
-    = new VertexArrayDrawable(Vector2f(psys.get_x_pos(), psys.get_y_pos()), psys.get_z_pos(),
-                              dc.get_modelview());
-
-  buffer->set_mode(GL_QUADS);
-  buffer->set_texture(surface.get_texture());
-  buffer->set_blend_func(blendfunc_src, blendfunc_dest);
-
-  for(ParticleSystem::Particles::iterator i = psys.begin(); i != psys.end(); ++i)
-    {
-      if (i->t != -1.0f)
-        {
-          float p = 1.0f - psys.get_progress(i->t);
-          Color color(psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
-                      psys.get_color_start().g * p + psys.get_color_stop().g * (1.0f - p),
-                      psys.get_color_start().b * p + psys.get_color_stop().b * (1.0f - p),
-                      psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));
-
-          // scale
-          float scale  = psys.get_size_start() + 
-            psys.get_progress(i->t) * (psys.get_size_stop() - psys.get_size_start());
-          
-          float width  = surface.get_width()  * scale;
-          float height = surface.get_height() * scale;
-              
-          // rotate
-          float x_rot = width/2;
-          float y_rot = height/2; 
-
-          if (i->angle != 0)
-            {
-              float s = sinf(math::pi * i->angle/180.0f);
-              float c = cosf(math::pi * i->angle/180.0f);
-              x_rot = (width/2) * c - (height/2) * s;
-              y_rot = (width/2) * s + (height/2) * c;
-            }
-
-          buffer->add_texcoords(surface.get_uv());
-
-          buffer->color(color);
-          buffer->vertex(i->x - x_rot, i->y - y_rot);
-
-          buffer->color(color);
-          buffer->vertex(i->x + y_rot, i->y - x_rot);
-
-          buffer->color(color);
-          buffer->vertex(i->x + x_rot, i->y + y_rot);
-
-          buffer->color(color);
-          buffer->vertex(i->x - y_rot, i->y + x_rot);
-        }
-    }
-
-  dc.draw(buffer);
-}
-
-void
 SurfaceDrawer::draw(const ParticleSystem& psys) const
 {
-  boost::shared_ptr<VertexArrayDrawable> buffer(new VertexArrayDrawable(Vector2f(psys.get_x_pos(), psys.get_y_pos()),
-                                                                        psys.get_z_pos(),
-                                                                        Matrix::identity()));
+  buffer->clear();
+  buffer->set_pos(Vector2f(psys.get_x_pos(), psys.get_y_pos()));
 
   buffer->set_mode(GL_QUADS);
   buffer->set_texture(surface.get_texture());

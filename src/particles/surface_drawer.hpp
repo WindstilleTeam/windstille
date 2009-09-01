@@ -22,12 +22,15 @@
 #include "display/surface.hpp"
 #include "particles/drawer.hpp"
 
+class VertexArrayDrawable;
+
 class SurfaceDrawer : public Drawer
 {
 private:
   Surface surface;
   GLenum blendfunc_src;
   GLenum blendfunc_dest;
+  boost::shared_ptr<VertexArrayDrawable> buffer;
   
 public:
   SurfaceDrawer(FileReader& props);
@@ -37,7 +40,6 @@ public:
   void set_texture(Surface surface);
   void set_blendfuncs(GLenum blendfunc_src, GLenum blendfunc_dst);
 
-  void draw(DrawingContext& sc, ParticleSystem& psys);
   void draw(const ParticleSystem& psys) const;
 };
 
