@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2000 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,26 +16,18 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_DISPLAY_COLOR_HPP
-#define HEADER_WINDSTILLE_DISPLAY_COLOR_HPP
+#include "display/color.hpp"
 
-#include <iosfwd>
+#include <ostream>
 
-class Color
+std::ostream& operator<<(std::ostream& out, const Color& color)
 {
-public:
-  Color()
-    : r(0), g(0), b(0), a(1.0)
-  { }
-  Color(float r_, float g_, float b_, float a_ = 1.0)
-    : r(r_), g(g_), b(b_), a(a_)
-  { }
-
-  float r, g, b, a;
-};
-
-std::ostream& operator<<(std::ostream& out, const Color& color);
-
-#endif
+  return out << "Color("
+             << color.r << ", "
+             << color.g << ", "
+             << color.b << ", "
+             << color.a
+             << ")";
+}
 
 /* EOF */
