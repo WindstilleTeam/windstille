@@ -105,7 +105,7 @@ SurfaceDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
 {          
   VertexArrayDrawable* buffer 
     = new VertexArrayDrawable(Vector2f(psys.get_x_pos(), psys.get_y_pos()), psys.get_z_pos(),
-                                    dc.get_modelview());
+                              dc.get_modelview());
 
   buffer->set_mode(GL_QUADS);
   buffer->set_texture(surface.get_texture());

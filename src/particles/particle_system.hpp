@@ -127,6 +127,9 @@ public:
   /** The position of the particle system in world coordinates */
   void set_pos(float x, float y);
 
+  /** The position of the particle system in world coordinates */
+  void set_pos(const Vector2f& pos);
+
   /** The position from which the particles spawn, x,y are in world
       coordinates, this is relative to the position you can set via
       set_pos() */

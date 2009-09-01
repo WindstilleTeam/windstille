@@ -332,6 +332,13 @@ ParticleSystem::set_cycles(float /*num*/)
 }
 
 void
+ParticleSystem::set_pos(const Vector2f& pos)
+{
+  x_pos = pos.x;
+  y_pos = pos.y; 
+}
+
+void
 ParticleSystem::set_pos(float x, float y)
 {
   x_pos = x;
