@@ -85,9 +85,9 @@ SparkDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
 void
 SparkDrawer::draw(const ParticleSystem& psys) const
 {
-  VertexArrayDrawable* buffer = new VertexArrayDrawable(Vector2f(psys.get_x_pos(), psys.get_y_pos()), 
-                                                        psys.get_z_pos(),
-                                                        Matrix::identity());
+  boost::shared_ptr<VertexArrayDrawable> buffer(new VertexArrayDrawable(Vector2f(psys.get_x_pos(), psys.get_y_pos()), 
+                                                                        psys.get_z_pos(),
+                                                                        Matrix::identity()));
   if (width == 1.0f)
     {
       buffer->set_mode(GL_LINES);

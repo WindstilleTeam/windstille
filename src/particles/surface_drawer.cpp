@@ -102,7 +102,7 @@ SurfaceDrawer::set_blendfuncs(GLenum blendfunc_src_, GLenum blendfunc_dest_)
 
 void
 SurfaceDrawer::draw(DrawingContext& dc, ParticleSystem& psys) 
-{          
+{
   VertexArrayDrawable* buffer 
     = new VertexArrayDrawable(Vector2f(psys.get_x_pos(), psys.get_y_pos()), psys.get_z_pos(),
                               dc.get_modelview());
@@ -162,9 +162,9 @@ SurfaceDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
 void
 SurfaceDrawer::draw(const ParticleSystem& psys) const
 {
-  VertexArrayDrawable* buffer 
-    = new VertexArrayDrawable(Vector2f(psys.get_x_pos(), psys.get_y_pos()), psys.get_z_pos(),
-                              Matrix::identity());
+  boost::shared_ptr<VertexArrayDrawable> buffer(new VertexArrayDrawable(Vector2f(psys.get_x_pos(), psys.get_y_pos()),
+                                                                        psys.get_z_pos(),
+                                                                        Matrix::identity()));
 
   buffer->set_mode(GL_QUADS);
   buffer->set_texture(surface.get_texture());
