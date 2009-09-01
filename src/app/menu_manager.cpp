@@ -37,6 +37,7 @@
 #include "screen/screen_manager.hpp"
 #include "screen/sprite3dview.hpp"
 #include "sound/sound_manager.hpp"
+#include "util/directory.hpp"
 #ifdef HAVE_CWIID
 #  include "input/wiimote.hpp"
 #endif
@@ -205,7 +206,7 @@ MenuManager::display_scenario_menu()
 {
   gui::Menu menu("Select Scenario", create_centered_rect(500, 340));
 
-  std::vector<Pathname> scenarios;
+  std::vector<Pathname> scenarios = Directory::read(Pathname("sectors/trainstation/"), ".wst");
   scenarios.push_back(Pathname("sectors/apartment/apartment.wst"));
   scenarios.push_back(Pathname("sectors/bluestone/bluestone.wst"));
   scenarios.push_back(Pathname("sectors/forest/forest.wst"));
