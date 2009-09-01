@@ -61,13 +61,6 @@ OpenGLWindow::OpenGLWindow()
         throw std::runtime_error(msg.str());
       }
 
-      if (!GLEW_EXT_framebuffer_object) 
-      {
-        std::ostringstream msg;
-        msg << "Display:: Framebuffer opengl extension not supported";
-        throw std::runtime_error(msg.str());
-      }
-
       glViewport(0, 0, m_window->w, m_window->h);
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();

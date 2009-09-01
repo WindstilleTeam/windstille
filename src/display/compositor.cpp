@@ -55,12 +55,21 @@ struct CompositorImpl
   Size m_size;
 
   CompositorImpl(const Size& size)
-    : //framebuffers(0),
-      framebuffers(new Framebuffers(size)),
+    : framebuffers(0),
       lightmap(size.width  / LIGHTMAP_DIV,
                size.height / LIGHTMAP_DIV),
       m_size(size)
-  {}
+  {
+      if (GLEW_EXT_framebuffer_object) 
+      {
+        framebuffers.reset(new Framebuffers(size));
+        std::cout  << "Display:: framebuffer_object extension is supported" << std::endl;
+      }
+      else
+      {
+        std::cout  << "Display:: framebuffer_object extension is not supported" << std::endl;
+      }
+  }
 };
 
 Compositor::Compositor(const Size& size)
