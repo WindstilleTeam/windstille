@@ -33,9 +33,6 @@ public:
 
   void draw()
   {
-    OpenGLState state;
-    // FIXME: move clear color to opengl_state
-    state.activate();
     glClearColor(color.r, color.g, color.b, color.a);
     glClear(GL_COLOR_BUFFER_BIT);
   }
