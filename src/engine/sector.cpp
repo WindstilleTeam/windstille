@@ -23,18 +23,24 @@
 #include "collision/collision_engine.hpp"
 #include "engine/squirrel_thread.hpp"
 #include "navigation/navigation_graph.hpp"
+#include "scenegraph/navigation_graph_drawable.hpp"
+#include "scenegraph/scene_graph.hpp"
+#include "sound/sound_manager.hpp"
+#include "tile/tile_map.hpp"
+
 #include "objects/background_gradient.hpp"
 #include "objects/box.hpp"
 #include "objects/character.hpp"
 #include "objects/decal.hpp"
-#include "objects/layer.hpp"
+#include "objects/doll.hpp"
 #include "objects/elevator.hpp"
 #include "objects/hedgehog.hpp"
 #include "objects/laser_pointer.hpp"
+#include "objects/layer.hpp"
 #include "objects/liquid.hpp"
 #include "objects/nightvision.hpp"
+#include "objects/particle_systems.hpp"
 #include "objects/player.hpp"
-#include "objects/doll.hpp"
 #include "objects/scriptable_object.hpp"
 #include "objects/shockwave.hpp"
 #include "objects/spider_mine.hpp"
@@ -42,10 +48,6 @@
 #include "objects/test_object.hpp"
 #include "objects/trigger.hpp"
 #include "objects/vrdummy.hpp"
-#include "scenegraph/scene_graph.hpp"
-#include "scenegraph/navigation_graph_drawable.hpp"
-#include "sound/sound_manager.hpp"
-#include "tile/tile_map.hpp"
 
 Sector::Sector(const Pathname& arg_filename)
   : collision_engine(new CollisionEngine()),
@@ -246,7 +248,11 @@ Sector::add_object(FileReader& reader)
   else if (reader.get_name() == "liquid")
   {
     obj = new Liquid(reader);
-  } 
+  }
+  else if (reader.get_name() == "particle-systems")
+  {
+    obj = new ParticleSystems(reader);
+  }
   else 
   {
     std::cout << "Skipping unknown Object: " << reader.get_name() << "\n";
