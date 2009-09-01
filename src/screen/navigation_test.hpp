@@ -21,6 +21,7 @@
 
 #include <boost/scoped_ptr.hpp>
 
+#include "math/vector2f.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "screen/screen.hpp"
 

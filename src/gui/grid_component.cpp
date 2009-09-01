@@ -17,6 +17,7 @@
 */
 
 #include "display/display.hpp"
+#include "display/color.hpp"
 #include "input/controller.hpp"
 #include "gui/grid_component.hpp"
 

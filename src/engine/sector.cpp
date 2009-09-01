@@ -303,8 +303,6 @@ Sector::draw(SceneContext& sc)
       if ((*i)->is_active())
         (*i)->draw(sc);
     }
-
-  //sc.color().draw(new SceneGraphDrawable(*scene_graph, sc.color().get_modelview()));
 }
 
 void Sector::commit_adds()

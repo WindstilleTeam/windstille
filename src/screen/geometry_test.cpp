@@ -16,13 +16,15 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "screen/geometry_test.hpp"
+
 #include <GL/glew.h>
 
-#include "screen/geometry_test.hpp"
 #include "app/console.hpp"
-#include "input/controller.hpp"
 #include "app/menu_manager.hpp"
+#include "display/color.hpp"
 #include "display/display.hpp"
+#include "input/controller.hpp"
 
 GeometryTest::GeometryTest()
   : line1(Vector2f(300, 300),

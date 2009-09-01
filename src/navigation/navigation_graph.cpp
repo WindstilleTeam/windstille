@@ -19,6 +19,8 @@
 #include <iomanip>
 
 #include "display/display.hpp"
+#include "display/color.hpp"
+#include "math/rect.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
 #include "util/file_reader.hpp"

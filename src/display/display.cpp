@@ -23,6 +23,9 @@
 #include <errno.h>
 #include <fstream>
 
+#include "display/color.hpp"
+#include "math/quad.hpp"
+#include "math/line.hpp"
 #include "display/opengl_state.hpp"
 
 Size              Display::aspect_size;

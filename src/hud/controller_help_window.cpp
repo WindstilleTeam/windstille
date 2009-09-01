@@ -17,7 +17,9 @@
 */
 
 #include "input/input_manager_sdl.hpp"
+#include "math/rect.hpp"
 #include "display/display.hpp"
+#include "display/color.hpp"
 #include "hud/controller_help_window.hpp"
 
 ControllerHelpWindow::ControllerHelpWindow()

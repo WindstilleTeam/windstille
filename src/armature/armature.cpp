@@ -23,6 +23,7 @@
 
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
+#include "display/color.hpp"
 #include "armature/pose.hpp"
 
 Armature::Armature(FileReader& reader)

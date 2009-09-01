@@ -16,15 +16,17 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "screen/navigation_test.hpp"
+
 #include <GL/glew.h>
 
-#include "util/sexpr_file_reader.hpp"
-#include "input/controller.hpp"
-#include "display/display.hpp"
 #include "app/menu_manager.hpp"
-#include "navigation/node.hpp"
+#include "display/color.hpp"
+#include "display/display.hpp"
+#include "input/controller.hpp"
 #include "navigation/edge.hpp"
-#include "screen/navigation_test.hpp"
+#include "navigation/node.hpp"
+#include "util/sexpr_file_reader.hpp"
 
 NavigationTest::NavigationTest()
   : cursor(400, 300),

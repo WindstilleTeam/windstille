@@ -18,6 +18,7 @@
 
 #include "input/controller.hpp"
 #include "display/display.hpp"
+#include "display/color.hpp"
 #include "gui/slider.hpp"
 
 namespace gui {
