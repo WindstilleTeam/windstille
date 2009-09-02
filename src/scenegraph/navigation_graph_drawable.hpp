@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_SCENEGRAPH_NAVIGATION_GRAPH_DRAWABLE_HPP
 
 #include "display/display.hpp"
+#include "display/scene_context.hpp"
 #include "scenegraph/drawable.hpp"
 
 class NavigationGraph;
@@ -33,12 +34,12 @@ public:
   NavigationGraphDrawable(NavigationGraph* navgraph)
     : Drawable(Vector2f(), 1000.0f, Matrix::identity()),
       m_navgraph(navgraph)
-  {}
+  {
+    set_render_mask(SceneContext::CONTROLMAP);
+  }
 
   void draw()
   {
-    //Display::fill_rect(Rectf(-100, -100, 100, 1000), Color(1.0f, 0.0f, 0.0f));
-
     glLineWidth(4.0f);
     m_navgraph->draw();
     glLineWidth(1.0f);
