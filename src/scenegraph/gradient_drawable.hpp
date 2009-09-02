@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,28 +16,27 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_OBJECTS_BACKGROUND_GRADIENT_HPP
-#define HEADER_WINDSTILLE_OBJECTS_BACKGROUND_GRADIENT_HPP
+#ifndef HEADER_WINDSTILLE_SCENEGRAPH_GRADIENT_DRAWABLE_HPP
+#define HEADER_WINDSTILLE_SCENEGRAPH_GRADIENT_DRAWABLE_HPP
 
-#include "engine/game_object.hpp"
+#include <vector>
+#include <boost/scoped_ptr.hpp>
 
-class GradientDrawable;
+#include "scenegraph/vertex_array_drawable.hpp"
 
-class BackgroundGradient : public GameObject
+class GradientDrawable : public Drawable
 {
 private:
-  boost::shared_ptr<GradientDrawable> drawable;
+  boost::scoped_ptr<VertexArrayDrawable> array;
 
 public:
-  BackgroundGradient(FileReader& props);
-  ~BackgroundGradient();
+  GradientDrawable(const std::vector<float>& colors);
   
-  void update (float delta);
-  void draw (SceneContext& gc);
-    
+  void draw();
+
 private:
-  BackgroundGradient (const BackgroundGradient&);
-  BackgroundGradient& operator= (const BackgroundGradient&);
+  GradientDrawable(const GradientDrawable&);
+  GradientDrawable& operator=(const GradientDrawable&);
 };
 
 #endif
