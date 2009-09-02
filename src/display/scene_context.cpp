@@ -207,24 +207,4 @@ SceneContext::get_render_mask()
   return impl->render_mask;
 }
 
-DrawingContext&
-SceneContext::get_layer(unsigned int type)
-{
-  switch(type)
-    {
-    case COLORMAP:
-      return impl->color;
-
-    case LIGHTMAP:
-      return impl->light;
-
-    case HIGHLIGHTMAP:
-      return impl->highlight;
-
-    default:
-      assert(!"SceneContext::get_layer(): Unknown type");
-      return impl->color; // never reached, but makes compiler happy
-    }
-}
-
 /* EOF */

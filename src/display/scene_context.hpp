@@ -89,9 +89,7 @@ public:
       debugging. */
   void set_render_mask(unsigned int mask);
   unsigned int get_render_mask();
-
-  DrawingContext& get_layer(unsigned int t);
-
+  
 private:
   boost::scoped_ptr<SceneContextImpl> impl;
 
