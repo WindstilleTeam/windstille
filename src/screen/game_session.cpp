@@ -381,15 +381,15 @@ GameSessionImpl::handle_event(const SDL_Event& event)
                   sc.set_render_mask(sc.get_render_mask() ^ SceneContext::HIGHLIGHTMAP);
                   ConsoleLog << "Toggled HIGHLIGHTMAP: " << ((sc.get_render_mask() & SceneContext::HIGHLIGHTMAP) > 0) << std::endl;
                   break;      
-  
+
                 case SDLK_4:
+                  sc.set_render_mask(sc.get_render_mask() ^ SceneContext::CONTROLMAP);
+                  ConsoleLog << "Toggled CONTROLMAP: " << ((sc.get_render_mask() & SceneContext::CONTROLMAP) > 0) << std::endl;
+                  break;
+  
+                case SDLK_5:
                   sc.set_render_mask(sc.get_render_mask() ^ SceneContext::LIGHTMAPSCREEN);
                   ConsoleLog << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN) > 0) << std::endl;
-                  break;
-
-                case SDLK_5:
-                  sc.set_render_mask(sc.get_render_mask() ^ SceneContext::BLURMAP);
-                  ConsoleLog << "Toggled blurmap: " << ((sc.get_render_mask() & SceneContext::BLURMAP) > 0) << std::endl;
                   break;
 
                 case SDLK_c:

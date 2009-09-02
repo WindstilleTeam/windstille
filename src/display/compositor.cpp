@@ -144,52 +144,56 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
     Display::pop_framebuffer();
   }
 
-  if (sc.get_render_mask() & SceneContext::COLORMAP)
-  {
-    // Render the colormap to framebuffers->screen
+  { // Render the main screen
     Display::push_framebuffer(impl->framebuffers->screen);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    sc.color().render(*this);
 
-    if (sg)
+    if (sc.get_render_mask() & SceneContext::COLORMAP)
     {
-      glPushMatrix();
-      glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(SceneContext::COLORMAP);
-      glPopMatrix();
+      // Render the colormap to framebuffers->screen
+      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      sc.color().render(*this);
+
+      if (sg)
+      {
+        glPushMatrix();
+        glMultMatrixf(gc_state.get_matrix().matrix);
+        sg->draw(SceneContext::COLORMAP);
+        glPopMatrix();
+      }
     }
 
-    Display::pop_framebuffer();
-  }
-
-  if (sc.get_render_mask() & SceneContext::LIGHTMAP)
-  { // Renders the lightmap to the screen
-    Display::push_framebuffer(impl->framebuffers->screen);
-    render_lightmap(sc, sg);
-    Display::pop_framebuffer();
-  }
-
-  if (sc.get_render_mask() & SceneContext::HIGHLIGHTMAP)
-  {
-    Display::push_framebuffer(impl->framebuffers->screen);
-    sc.highlight().render(*this);
-
-    if (sg)
-    {
-      glPushMatrix();
-      glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(SceneContext::HIGHLIGHTMAP);
-      glPopMatrix();
+    if (sc.get_render_mask() & SceneContext::LIGHTMAP)
+    { // Renders the lightmap to the screen
+      render_lightmap(sc, sg);
     }
 
-    Display::pop_framebuffer();
-  }
+    if (sc.get_render_mask() & SceneContext::HIGHLIGHTMAP)
+    {
+      sc.highlight().render(*this);
 
-  if (sc.get_render_mask() & SceneContext::CONTROLMAP)
-  {
-    Display::push_framebuffer(impl->framebuffers->screen);
-    sc.control().render(*this);
+      if (sg)
+      {
+        glPushMatrix();
+        glMultMatrixf(gc_state.get_matrix().matrix);
+        sg->draw(SceneContext::HIGHLIGHTMAP);
+        glPopMatrix();
+      }
+    }
+
+    if (sc.get_render_mask() & SceneContext::CONTROLMAP)
+    {
+      sc.control().render(*this);
+
+      if (sg)
+      {
+        glPushMatrix();
+        glMultMatrixf(gc_state.get_matrix().matrix);
+        sg->draw(SceneContext::CONTROLMAP);
+        glPopMatrix();
+      }
+    }
+
     Display::pop_framebuffer();
   }
 
