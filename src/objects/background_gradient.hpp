@@ -31,9 +31,6 @@ private:
 public:
   BackgroundGradient(FileReader& props);
   ~BackgroundGradient();
-  
-  void update (float delta);
-  void draw (SceneContext& gc);
     
 private:
   BackgroundGradient (const BackgroundGradient&);

@@ -55,15 +55,5 @@ BackgroundGradient::BackgroundGradient(FileReader& props)
 BackgroundGradient::~BackgroundGradient()
 {  
 }
-  
-void
-BackgroundGradient::update(float /*delta*/)
-{
-}
-
-void
-BackgroundGradient::draw(SceneContext& /*sc*/)
-{
-}
 
 /* EOF */

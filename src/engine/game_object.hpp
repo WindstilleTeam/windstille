@@ -94,7 +94,7 @@ public:
   /**
    * The object should draw itself when this function is called
    */
-  virtual void draw (SceneContext& /*sc*/) {}
+  virtual void draw (SceneContext& sc) {}
 
   /**
    * This function is called from time to time to give the object a chance to
@@ -102,9 +102,9 @@ public:
    * update call in seconds. It is possible that there are multiple objects
    * between 2 draw() calls or multiple draw() calls between 2 updates
    */
-  virtual void update (float delta) = 0;
+  virtual void update (float delta) {}
     
-  virtual void set_parent(GameObject* /*parent*/) {}
+  virtual void set_parent(GameObject* parent) {}
 
 private:
   GameObject (const GameObject&);
