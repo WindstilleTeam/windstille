@@ -43,8 +43,7 @@ public:
                   SceneContext::LIGHTMAP | 
                   SceneContext::HIGHLIGHTMAP | 
                   SceneContext::CONTROLMAP | 
-                  SceneContext::LIGHTMAPSCREEN |
-                  SceneContext::BLURMAP)
+                  SceneContext::LIGHTMAPSCREEN)
   {
   }
 

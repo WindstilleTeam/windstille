@@ -23,9 +23,10 @@
 #include "font/fonts.hpp"
 #include "input/controller.hpp"
 #include "display/graphic_context_state.hpp"
+#include "display/opengl_window.hpp"
 
 Sprite3DView::Sprite3DView()
-  : compositor(Display::get_size()),
+  : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),
     sc(),
     sprite(),
     actions(),

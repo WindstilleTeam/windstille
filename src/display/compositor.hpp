@@ -31,7 +31,7 @@ class Size;
 class Compositor
 {
 public:
-  Compositor(const Size& size);
+  Compositor(const Size& window, const Size& viewport);
   ~Compositor();
 
   void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);

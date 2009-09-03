@@ -174,7 +174,8 @@ WindstilleWidget::on_realize()
       if (!sc.get())
         {
           sc.reset(new SceneContext());
-          compositor.reset(new Compositor(Size(get_width(), get_height())));
+          compositor.reset(new Compositor(Size(get_width(), get_height()),
+                                          Size(get_width(), get_height())));
           sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
         }
       
@@ -209,7 +210,8 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
     {
       if (compositor.get())
       {
-        compositor.reset(new Compositor(Size(ev->width, ev->height)));
+        compositor.reset(new Compositor(Size(ev->width, ev->height),
+                                        Size(ev->width, ev->height)));
       }
 
       glViewport(0, 0, get_width(), get_height());

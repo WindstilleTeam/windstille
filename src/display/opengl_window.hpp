@@ -22,6 +22,7 @@
 #include <SDL.h>
 
 #include "util/currenton.hpp"
+#include "math/size.hpp"
 
 class OpenGLWindow : public Currenton<OpenGLWindow>
 {
@@ -32,8 +33,9 @@ public:
   OpenGLWindow();
   ~OpenGLWindow();
 
-  int get_width()  const { return m_window->w; }
-  int get_height() const { return m_window->h; }
+  int  get_width()  const { return m_window->w; }
+  int  get_height() const { return m_window->h; }
+  Size get_size()   const { return Size(m_window->w, m_window->h); }
 
   void set_fullscreen(bool fullscreen);
   void set_gamma(float r, float g, float b);

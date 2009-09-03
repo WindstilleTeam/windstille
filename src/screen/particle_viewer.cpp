@@ -23,6 +23,7 @@
 
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
+#include "display/opengl_window.hpp"
 #include "display/graphic_context_state.hpp"
 #include "scenegraph/particle_system_drawable.hpp"
 #include "scenegraph/fill_screen_pattern_drawable.hpp"
@@ -31,7 +32,7 @@
 #include "util/sexpr_file_reader.hpp"
 
 ParticleViewer::ParticleViewer()
-  : compositor(Display::get_size()),
+  : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),
     sc(),
     sg(),
     systems(),

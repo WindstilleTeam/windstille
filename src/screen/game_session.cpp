@@ -21,6 +21,7 @@
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
 #include "display/compositor.hpp"
+#include "display/opengl_window.hpp"
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
 #include "font/fonts.hpp"
@@ -76,7 +77,7 @@ public:
   Screen* current_gui;
 
   GameSessionImpl() 
-    : compositor(Size(Display::get_width(), Display::get_height())),
+    : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),
       sc(),
       fadeout_value(),
       fade_time(),
