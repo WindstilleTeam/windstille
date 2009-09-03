@@ -38,6 +38,7 @@ preset_cxxflags = {
                      "-Wshadow",
                      "-Wcast-qual",
                      "-Winit-self", # only works with >= -O1
+                     "-Wunused-parameter",
                      # "-Winline",
                      # "-Wfloat-equal",
                      # "-Wunreachable-code",
@@ -334,6 +335,8 @@ class Project:
         env.Program("test_response_curve", ["src/util/response_curve.cpp"])
         env.Program("test_random", ["src/math/random.cpp"])
         env.Program("test_pathname", ["src/util/pathname.cpp"], LIBS=['boost_filesystem-mt'])
+        env.Program("test_directory", ["src/util/directory.cpp"], LIBS=['boost_filesystem-mt', self.util_lib])
+        env.Program("test_easing", ["src/math/easing.cpp"])
 
     def build_windstille_data(self):
         data_env = self.env.Clone()
