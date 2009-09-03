@@ -41,8 +41,8 @@ struct CompositorImpl
     Framebuffer lightmap;   
 
     Framebuffers(const Size& window) 
-      : screen  (GL_TEXTURE_RECTANGLE_ARB, window.width, window.height),
-        lightmap(GL_TEXTURE_RECTANGLE_ARB, window.width / LIGHTMAP_DIV, window.height / LIGHTMAP_DIV)
+      : screen  (GL_TEXTURE_2D, window.width, window.height),
+        lightmap(GL_TEXTURE_2D, window.width / LIGHTMAP_DIV, window.height / LIGHTMAP_DIV)
     {
     }
   };
@@ -83,30 +83,26 @@ Compositor::~Compositor()
 void
 Compositor::render_lightmap(SceneContext& /*sc*/, SceneGraph* /*sg*/)
 {
-  Rectf uv(0, 0,
-           static_cast<float>(impl->framebuffers->lightmap.get_width()), 
-           static_cast<float>(impl->framebuffers->lightmap.get_height()));
-
   OpenGLState state;
 
   state.bind_texture(impl->framebuffers->lightmap.get_texture());
       
   state.enable(GL_BLEND);
-  state.set_blend_func(GL_DST_COLOR, GL_ZERO); // multiple the lightmap with the screen
+  state.set_blend_func(GL_DST_COLOR, GL_ZERO); // multiply the lightmap with the screen
   state.activate();
 
   glBegin(GL_QUADS);
   {
-    glTexCoord2f(uv.left, uv.bottom);
+    glTexCoord2i(0, 1);
     glVertex2i(0, 0);
 
-    glTexCoord2f(uv.right, uv.bottom);
+    glTexCoord2i(1, 1);
     glVertex2i(impl->m_viewport.width, 0);
 
-    glTexCoord2f(uv.right, uv.top);
+    glTexCoord2i(1, 0);
     glVertex2i(impl->m_viewport.width, impl->m_viewport.height);
 
-    glTexCoord2f(uv.left, uv.top);
+    glTexCoord2i(0, 0);
     glVertex2i(0, impl->m_viewport.height);
   }
   glEnd();
@@ -202,28 +198,27 @@ Compositor::render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
     // Render the screen framebuffer to the actual screen 
     OpenGLState state;
 
-    Rectf uv(0, 0, 
-             static_cast<float>(impl->framebuffers->screen.get_width()),
-             static_cast<float>(impl->framebuffers->screen.get_height()));
+    //static_cast<float>(impl->framebuffers->screen.get_width()),
+    //static_cast<float>(impl->framebuffers->screen.get_height()));
 
     state.bind_texture(impl->framebuffers->screen.get_texture(), 0);
 
     state.activate();
 
     glBegin(GL_QUADS);
+    {
+      glTexCoord2i(0, 1);
+      glVertex2i(0, 0);
 
-    glTexCoord2f(uv.left, uv.bottom);
-    glVertex2f(0, 0);
+      glTexCoord2i(1, 1);
+      glVertex2i(impl->m_viewport.width, 0);
 
-    glTexCoord2f(uv.right, uv.bottom);
-    glVertex2f(static_cast<float>(impl->m_viewport.width), 0);
+      glTexCoord2i(1, 0);
+      glVertex2i(impl->m_viewport.width, impl->m_viewport.height);
 
-    glTexCoord2f(uv.right, uv.top);
-    glVertex2f(static_cast<float>(impl->m_viewport.width), static_cast<float>(impl->m_viewport.height));
-
-    glTexCoord2f(uv.left, uv.top);
-    glVertex2f(0.0f, static_cast<float>(impl->m_viewport.height));
-
+      glTexCoord2i(0, 0);
+      glVertex2i(0.0f, impl->m_viewport.height);
+    }
     glEnd();
   }
 
@@ -238,6 +233,7 @@ void
 Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state)
 {
   // Resize Lightmap, only needed in the editor, FIXME: move this into a 'set_size()' call
+  if (0)
   if (impl->lightmap.get_width()  != impl->m_window.width /LIGHTMAP_DIV ||
       impl->lightmap.get_height() != impl->m_window.height/LIGHTMAP_DIV)
   {
@@ -247,10 +243,11 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
   if (sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN)
   {
     // Render the lightmap to the framebuffers->lightmap
+    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix();
-    glTranslatef(0.0f, static_cast<float>(impl->m_viewport.height) - static_cast<float>(impl->m_viewport.height/LIGHTMAP_DIV), 0.0f);
+    //glTranslatef(0.0f, static_cast<float>(impl->m_viewport.height) - static_cast<float>(impl->m_window.height/LIGHTMAP_DIV), 0.0f);
     glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
     sc.light().render(*this);
     glPopMatrix();
@@ -258,7 +255,7 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
     if (sg)
     {
       glPushMatrix();
-      glTranslatef(0.0f, static_cast<float>(impl->m_viewport.height) - static_cast<float>(impl->m_viewport.height/LIGHTMAP_DIV), 0.0f);
+      //glTranslatef(0.0f, static_cast<float>(impl->m_viewport.height) - static_cast<float>(impl->m_window.height/LIGHTMAP_DIV), 0.0f);
       glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
       glMultMatrixf(gc_state.get_matrix().matrix);
       sg->draw(SceneContext::LIGHTMAP);
@@ -272,9 +269,11 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
       state.bind_texture(impl->lightmap.get_texture());
       state.activate();
 
-      glCopyTexSubImage2D(GL_TEXTURE_2D, 0,
-                          0, 0, 
-                          0, 0, //impl->m_window.height - impl->lightmap.get_height(),
+      glCopyTexSubImage2D(GL_TEXTURE_2D, 
+                          0, // level
+                          0, 0, // xoffset, yoffset
+                          0, 
+                          impl->m_window.height - static_cast<GLsizei>(impl->lightmap.get_height()),
                           static_cast<GLsizei>(impl->lightmap.get_width()), 
                           static_cast<GLsizei>(impl->lightmap.get_height()));
     }
@@ -301,8 +300,6 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
   { // Renders the lightmap to the screen     
     OpenGLState state;
 
-    Rectf uv = impl->lightmap.get_uv();
-
     state.bind_texture(impl->lightmap.get_texture());
 
     state.enable(GL_BLEND);
@@ -311,18 +308,17 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
 
     glBegin(GL_QUADS);
 
-    glTexCoord2f(uv.left, uv.bottom);
-    glVertex2f(0, 0);
+    glTexCoord2i(0, 1);
+    glVertex2i(0, 0);
 
-    glTexCoord2f(uv.right, uv.bottom);
-    glVertex2f(impl->lightmap.get_width() * LIGHTMAP_DIV, 0);
+    glTexCoord2i(1, 1);
+    glVertex2i(impl->m_viewport.width, 0);
 
-    glTexCoord2f(uv.right, uv.top);
-    glVertex2f(impl->lightmap.get_width()  * LIGHTMAP_DIV,
-               impl->lightmap.get_height() * LIGHTMAP_DIV);
+    glTexCoord2i(1, 0);
+    glVertex2i(impl->m_viewport.width, impl->m_viewport.height);
 
-    glTexCoord2f(uv.left, uv.top);
-    glVertex2f(0, impl->lightmap.get_height() * LIGHTMAP_DIV);
+    glTexCoord2i(0, 0);
+    glVertex2i(0, impl->m_viewport.height);
 
     glEnd();
   }
@@ -341,7 +337,17 @@ Compositor::render_without_framebuffers(SceneContext& sc, SceneGraph* sg, const 
   }
 
   if (sc.get_render_mask() & SceneContext::CONTROLMAP)
+  {
     sc.control().render(*this);
+
+    if (sg)
+    {
+      glPushMatrix();
+      glMultMatrixf(gc_state.get_matrix().matrix);
+      sg->draw(SceneContext::CONTROLMAP);
+      glPopMatrix();
+    }
+  }
   
   // Clear all DrawingContexts
   sc.color().clear();
