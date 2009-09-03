@@ -60,7 +60,7 @@ DrawingContext::~DrawingContext()
 }
 
 void
-DrawingContext::render(Compositor& /*comp*/)
+DrawingContext::render()
 {
   std::stable_sort(drawingrequests.begin(), drawingrequests.end(), DrawablesSorter());
   

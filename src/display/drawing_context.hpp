@@ -53,7 +53,7 @@ public:
   ~DrawingContext();
 
   /** Draws everything in the drawing context to the screen */
-  void render(Compositor& sc);
+  void render();
 
   /** Empties the drawing context */
   void clear();

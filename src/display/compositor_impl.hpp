@@ -16,36 +16,33 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/compositor.hpp"
+#ifndef HEADER_WINDSTILLE_DISPLAY_COMPOSITOR_IMPL_HPP
+#define HEADER_WINDSTILLE_DISPLAY_COMPOSITOR_IMPL_HPP
 
-#include <GL/glew.h>
+#include "math/size.hpp"
 
-#include "display/framebuffer_compositor_impl.hpp"
-#include "display/basic_compositor_impl.hpp"
-
-Compositor::Compositor(const Size& window, const Size& viewport)
-  : impl()
+class SceneContext;
+class SceneGraph;
+class GraphicContextState;
+
+class CompositorImpl
 {
-  if (GLEW_EXT_framebuffer_object)
-  {
-    std::cout  << "Display:: framebuffer_object extension is supported" << std::endl;
-    impl.reset(new FramebufferCompositorImpl(window, viewport));
-  }
-  else
-  {
-    std::cout  << "Display:: framebuffer_object extension is not supported" << std::endl;   
-    impl.reset(new BasicCompositorImpl(window, viewport));
-  }
-}
+protected:
+  Size m_window;
+  Size m_viewport; 
 
-Compositor::~Compositor()
-{
-}
+public:
+  CompositorImpl(const Size& window, const Size& viewport)
+    : m_window(window),
+      m_viewport(viewport)
+  {}
 
-void
-Compositor::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state)
-{
-  impl->render(sc, sg, state);
-}
+  virtual ~CompositorImpl()
+  {}
+
+  virtual void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state) =0;
+};
+
+#endif
 
 /* EOF */

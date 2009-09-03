@@ -22,7 +22,6 @@
 #include <boost/scoped_ptr.hpp>
 
 class CompositorImpl;
-class Drawable;
 class GraphicContextState;
 class SceneContext;
 class SceneGraph;
@@ -35,18 +34,6 @@ public:
   ~Compositor();
 
   void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);
-
-private:
-  void render_with_framebuffers(SceneContext& sc, SceneGraph* sg,
-                                const GraphicContextState& state);
-  void render_without_framebuffers(SceneContext& sc, SceneGraph* sg, 
-                                   const GraphicContextState& state);
-
-  void render_lightmap(SceneContext& sc, SceneGraph* sg);
-
-private:
-  Compositor(const Compositor&);
-  Compositor& operator=(const Compositor&);
 
 private:
   boost::scoped_ptr<CompositorImpl> impl;

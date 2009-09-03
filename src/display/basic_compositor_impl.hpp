@@ -16,36 +16,27 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/compositor.hpp"
+#ifndef HEADER_BASIC_COMPOSITOR_IMPL_HPP
+#define HEADER_BASIC_COMPOSITOR_IMPL_HPP
 
-#include <GL/glew.h>
+#include "display/compositor_impl.hpp"
+#include "display/surface.hpp"
 
-#include "display/framebuffer_compositor_impl.hpp"
-#include "display/basic_compositor_impl.hpp"
-
-Compositor::Compositor(const Size& window, const Size& viewport)
-  : impl()
+class BasicCompositorImpl : public CompositorImpl
 {
-  if (GLEW_EXT_framebuffer_object)
-  {
-    std::cout  << "Display:: framebuffer_object extension is supported" << std::endl;
-    impl.reset(new FramebufferCompositorImpl(window, viewport));
-  }
-  else
-  {
-    std::cout  << "Display:: framebuffer_object extension is not supported" << std::endl;   
-    impl.reset(new BasicCompositorImpl(window, viewport));
-  }
-}
+private:
+  Surface m_lightmap;
 
-Compositor::~Compositor()
-{
-}
+public:
+  BasicCompositorImpl(const Size& window, const Size& viewport);
 
-void
-Compositor::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state)
-{
-  impl->render(sc, sg, state);
-}
+  void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state);
+  
+private:
+  BasicCompositorImpl(const BasicCompositorImpl&);
+  BasicCompositorImpl& operator=(const BasicCompositorImpl&);
+};
+
+#endif
 
 /* EOF */

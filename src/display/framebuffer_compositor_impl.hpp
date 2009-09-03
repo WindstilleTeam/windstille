@@ -16,36 +16,31 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/compositor.hpp"
+#ifndef HEADER_WINDSTILLE_DISPLAY_FRAMEBUFFER_COMPOSITOR_IMPL_HPP
+#define HEADER_WINDSTILLE_DISPLAY_FRAMEBUFFER_COMPOSITOR_IMPL_HPP
 
-#include <GL/glew.h>
+#include "display/framebuffer.hpp"
+#include "display/compositor_impl.hpp"
 
-#include "display/framebuffer_compositor_impl.hpp"
-#include "display/basic_compositor_impl.hpp"
-
-Compositor::Compositor(const Size& window, const Size& viewport)
-  : impl()
+class FramebufferCompositorImpl : public CompositorImpl
 {
-  if (GLEW_EXT_framebuffer_object)
-  {
-    std::cout  << "Display:: framebuffer_object extension is supported" << std::endl;
-    impl.reset(new FramebufferCompositorImpl(window, viewport));
-  }
-  else
-  {
-    std::cout  << "Display:: framebuffer_object extension is not supported" << std::endl;   
-    impl.reset(new BasicCompositorImpl(window, viewport));
-  }
-}
+private:
+  Framebuffer m_screen;
+  Framebuffer m_lightmap;   
 
-Compositor::~Compositor()
-{
-}
+public:
+  FramebufferCompositorImpl(const Size& window, const Size& viewport);
 
-void
-Compositor::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state)
-{
-  impl->render(sc, sg, state);
-}
+  void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);
+
+private:
+  void render_lightmap(SceneContext& /*sc*/, SceneGraph* /*sg*/);
+
+private:
+  FramebufferCompositorImpl(const FramebufferCompositorImpl&);
+  FramebufferCompositorImpl& operator=(const FramebufferCompositorImpl&);
+};
+
+#endif
 
 /* EOF */
