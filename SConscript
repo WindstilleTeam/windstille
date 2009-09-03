@@ -38,7 +38,7 @@ preset_cxxflags = {
                      "-Wshadow",
                      "-Wcast-qual",
                      "-Winit-self", # only works with >= -O1
-                     "-Wunused-parameter",
+                     "-Wno-unused-parameter",
                      # "-Winline",
                      # "-Wfloat-equal",
                      # "-Wunreachable-code",
