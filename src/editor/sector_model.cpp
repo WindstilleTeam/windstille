@@ -361,30 +361,28 @@ SectorModel::load_layer(const FileReader& reader,
   reader.get("locked",  locked);
   reader.get("objects", objects_reader);
 
-  //std::cout << "loading layer: " << reader.get_name() << " " << name << " " << visible << " " << locked << std::endl;
-
   LayerHandle layer = LayerHandle(new Layer());
 
   const std::vector<FileReader>& objects_sections = objects_reader.get_sections();
   for(std::vector<FileReader>::const_iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
+  {
+    ObjectModelHandle obj = ObjectModelFactory::create(*j);
+
+    layer->add(obj);
+
+    std::string id_str;
+    if (j->read("id", id_str))
     {
-      ObjectModelHandle obj = ObjectModelFactory::create(*j);
-
-      layer->add(obj);
-
-      std::string id_str;
-      if (j->read("id", id_str))
-        {
-          id_table[id_str] = obj;
-        }
-
-      std::string parent_str;
-      if (j->read("parent", parent_str))
-        {
-          if (!parent_str.empty())
-            parent_table[obj] = parent_str;
-        }
+      id_table[id_str] = obj;
     }
+
+    std::string parent_str;
+    if (j->read("parent", parent_str))
+    {
+      if (!parent_str.empty())
+        parent_table[obj] = parent_str;
+    }
+  }
 
   // Append the layer to the tree
   Gtk::ListStore::iterator it = layer_tree->append();
@@ -405,48 +403,55 @@ SectorModel::load(const std::string& filename)
 
   std::ifstream stream(filename.c_str());
   if (!stream)
-    {
-      throw std::runtime_error("File not found " + filename);
-    }
+  {
+    throw std::runtime_error("File not found " + filename);
+  }
   else
+  {
+    std::map<std::string, ObjectModelHandle> id_table;
+    std::map<ObjectModelHandle, std::string> parent_table;
+
+    FileReader reader = FileReader::parse(stream, filename);
+    if (reader.get_name() == "windstille-sector")
     {
-      std::map<std::string, ObjectModelHandle> id_table;
-      std::map<ObjectModelHandle, std::string> parent_table;
+      ambient_color = Color(0,0,0,1);
+      reader.get("ambient-color", ambient_color);
 
-      FileReader reader = FileReader::parse(stream, filename);
-      if (reader.get_name() == "windstille-sector")
+      FileReader navigation_section;
+      reader.get("navigation", navigation_section);
+      nav_graph->load(navigation_section);
+
+      FileReader layers_section;
+      reader.get("objects", layers_section);
+
+      const std::vector<FileReader>& sections = layers_section.get_sections();
+      for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
+      {
+        if (i->get_name() == "layer")
         {
-          ambient_color = Color(0,0,0,1);
-          reader.get("ambient-color", ambient_color);
-
-          FileReader navigation_section;
-          reader.get("navigation", navigation_section);
-          nav_graph->load(navigation_section);
-
-          FileReader layers_section;
-          reader.get("objects", layers_section);
-
-          const std::vector<FileReader>& sections = layers_section.get_sections();
-          for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
-            {
-              load_layer(*i, id_table, parent_table);
-            }
-          
-          // Set the parents properly
-          for(std::map<ObjectModelHandle, std::string>::iterator i = parent_table.begin(); i != parent_table.end(); ++i)
-            {
-              std::map<std::string, ObjectModelHandle>::iterator j = id_table.find(i->second);
-              if (j == id_table.end())
-                {
-                  std::cout << "Error: Couldn't resolve 'id': " << i->second << std::endl;
-                }
-              else
-                {
-                  i->first->set_parent(j->second, false);
-                }
-            }
+          load_layer(*i, id_table, parent_table);
         }
+        else
+        {
+          std::cout << "SectorModel::load: ignoring unknown type '" << i->get_name() << "'" << std::endl;
+        }
+      }
+          
+      // Set the parents properly
+      for(std::map<ObjectModelHandle, std::string>::iterator i = parent_table.begin(); i != parent_table.end(); ++i)
+      {
+        std::map<std::string, ObjectModelHandle>::iterator j = id_table.find(i->second);
+        if (j == id_table.end())
+        {
+          std::cout << "Error: Couldn't resolve 'id': " << i->second << std::endl;
+        }
+        else
+        {
+          i->first->set_parent(j->second, false);
+        }
+      }
     }
+  }
 }
 
 void
