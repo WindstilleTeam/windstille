@@ -52,7 +52,6 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix();
-    //glTranslatef(0.0f, static_cast<float>(m_viewport.height) - static_cast<float>(m_window.height/LIGHTMAP_DIV), 0.0f);
     glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
     sc.light().render();
     glPopMatrix();
@@ -60,7 +59,6 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
     if (sg)
     {
       glPushMatrix();
-      //glTranslatef(0.0f, static_cast<float>(m_viewport.height) - static_cast<float>(m_window.height/LIGHTMAP_DIV), 0.0f);
       glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
       glMultMatrixf(gc_state.get_matrix().matrix);
       sg->draw(SceneContext::LIGHTMAP);
@@ -70,15 +68,14 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
     { // Copy lightmap to a texture
       OpenGLState state;
         
-      // Weird y-pos is needed since OpenGL is upside down when it comes to y-coordinate
       state.bind_texture(m_lightmap.get_texture());
       state.activate();
 
       glCopyTexSubImage2D(GL_TEXTURE_2D, 
-                          0, // level
+                          0,    // mipmap level
                           0, 0, // xoffset, yoffset
-                          0, 
-                          m_window.height - static_cast<GLsizei>(m_lightmap.get_height()),
+                          0, // x
+                          m_window.height - static_cast<GLsizei>(m_lightmap.get_height()), // y (OpenGL is upside down)
                           static_cast<GLsizei>(m_lightmap.get_width()), 
                           static_cast<GLsizei>(m_lightmap.get_height()));
     }

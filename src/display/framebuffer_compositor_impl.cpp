@@ -64,8 +64,6 @@ FramebufferCompositorImpl::render_lightmap(SceneContext& /*sc*/, SceneGraph* /*s
 void
 FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state)
 {
-  glClear(GL_DEPTH_BUFFER_BIT);
-      
   if (sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN)
   {
     // Render the lightmap to framebuffers->lightmap
@@ -77,6 +75,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
     glPushMatrix();
     glTranslatef(0.0f, static_cast<float>(m_viewport.height - (m_viewport.height / LIGHTMAP_DIV)), 0.0f);
     glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV);
+
     sc.light().render();
 
     if (sg)
@@ -100,6 +99,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
       // Render the colormap to framebuffers->screen
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
       sc.color().render();
 
       if (sg)
@@ -149,9 +149,6 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
   {
     // Render the screen framebuffer to the actual screen 
     OpenGLState state;
-
-    //static_cast<float>(m_screen.get_width()),
-    //static_cast<float>(m_screen.get_height()));
 
     state.bind_texture(m_screen.get_texture(), 0);
 
