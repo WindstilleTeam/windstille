@@ -21,23 +21,24 @@
 
 #include "math/vector2f.hpp"
 #include "math/quad.hpp"
+#include "display/opengl_state.hpp"
 #include "scenegraph/drawable.hpp"
 
 class SurfaceQuadDrawable : public Drawable
 {
 private:
-  Surface surface;
-  Quad quad;
-  DrawingParameters params;
+  Surface m_surface;
+  Quad m_quad;
+  DrawingParameters m_params;
 
 public:
-  SurfaceQuadDrawable(Surface surface_, const Vector2f& pos_, const Quad& quad_, 
-                            const DrawingParameters& params_, float z_pos_,
-                            const Matrix& modelview_)
+  SurfaceQuadDrawable(Surface surface, const Vector2f& pos_, const Quad& quad, 
+                      const DrawingParameters& params, float z_pos_,
+                      const Matrix& modelview_)
     : Drawable(pos_, z_pos_, modelview_),
-      surface(surface_),
-      quad(quad_),
-      params(params_)
+      m_surface(surface),
+      m_quad(quad),
+      m_params(params)
   {
   }
 
@@ -45,8 +46,8 @@ public:
   {
     OpenGLState state;
     state.enable(GL_BLEND);
-    state.set_blend_func(params.blendfunc_src, params.blendfunc_dst);
-    state.bind_texture(surface.get_texture());
+    state.set_blend_func(m_params.blendfunc_src, m_params.blendfunc_dst);
+    state.bind_texture(m_surface.get_texture());
     state.activate();
 
     glPushMatrix();
@@ -54,22 +55,24 @@ public:
 
     glBegin(GL_QUADS);
     {
-      glTexCoord2f(surface.get_uv().left, surface.get_uv().top);
-      glVertex2f(pos.x + quad.p1.x, pos.y + quad.p1.y);
+      glTexCoord2f(m_surface.get_uv().left, m_surface.get_uv().top);
+      glVertex2f(pos.x + m_quad.p1.x, pos.y + m_quad.p1.y);
     
-      glTexCoord2f(surface.get_uv().right, surface.get_uv().top);
-      glVertex2f(pos.x + quad.p2.x, pos.y + quad.p2.y);
+      glTexCoord2f(m_surface.get_uv().right, m_surface.get_uv().top);
+      glVertex2f(pos.x + m_quad.p2.x, pos.y + m_quad.p2.y);
 
-      glTexCoord2f(surface.get_uv().right, surface.get_uv().bottom);
-      glVertex2f(pos.x + quad.p3.x, pos.y + quad.p3.y);
+      glTexCoord2f(m_surface.get_uv().right, m_surface.get_uv().bottom);
+      glVertex2f(pos.x + m_quad.p3.x, pos.y + m_quad.p3.y);
 
-      glTexCoord2f(surface.get_uv().left, surface.get_uv().bottom);
-      glVertex2f(pos.x + quad.p4.x, pos.y + quad.p4.y);
+      glTexCoord2f(m_surface.get_uv().left, m_surface.get_uv().bottom);
+      glVertex2f(pos.x + m_quad.p4.x, pos.y + m_quad.p4.y);
     }
     glEnd();
 
     glPopMatrix();    
   }
+
+  void set_quad(const Quad& quad) { m_quad = quad; }
 };
 
 #endif

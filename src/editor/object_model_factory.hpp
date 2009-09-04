@@ -22,6 +22,7 @@
 #include "editor/object_model.hpp"
 
 class FileReader;
+class SectorModel;
 
 class ObjectModelFactory
 {

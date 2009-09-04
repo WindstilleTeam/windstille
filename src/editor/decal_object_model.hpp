@@ -24,6 +24,8 @@
 #include "display/surface.hpp"
 #include "display/software_surface.hpp"
 #include "editor/object_model.hpp"
+
+class SurfaceQuadDrawable;
 
 class DecalObjectModel : public ObjectModel
 {
@@ -45,6 +47,8 @@ private:
 
   bool hflip;
   bool vflip;
+
+  boost::shared_ptr<SurfaceQuadDrawable> m_drawable;
 
 public:
   DecalObjectModel(const FileReader& reader);
@@ -78,6 +82,14 @@ public:
   void reset();
 
   void add_control_points(std::vector<ControlPointHandle>& control_points);
+
+  void add_to_sector(SectorModel& sector);
+  void remove_from_sector(SectorModel& sector);
+  void sync();
+
+  void set_world_pos(const Vector2f& p);
+  void set_rel_pos(const Vector2f& rel_pos_);
+  void set_select_mask(const SelectMask& select_mask_);
 };
 
 #endif

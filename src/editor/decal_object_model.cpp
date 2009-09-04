@@ -22,9 +22,13 @@
 #include "display/surface.hpp"
 #include "display/drawing_parameters.hpp"
 #include "display/surface_drawing_parameters.hpp"
+#include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
 #include "editor/decal_scale_control_point.hpp"
 #include "editor/decal_rotate_control_point.hpp"
+#include "scenegraph/surface_quad_drawable.hpp"
+#include "scenegraph/scene_graph.hpp"
+#include "editor/sector_model.hpp"
 
 #include "editor/decal_object_model.hpp"
 
@@ -44,7 +48,8 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader)
     scale(1.0f, 1.0f),
     angle(0.0f),
     hflip(false),
-    vflip(false)
+    vflip(false),
+    m_drawable()
 {
   int map_type = 0;
   reader.get("path", path);
@@ -69,7 +74,8 @@ DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const Vector2f& 
     scale(1.0f, 1.0f),
     angle(0.0f),
     hflip(false),
-    vflip(false)
+    vflip(false),
+    m_drawable()
 {
 }
 
@@ -81,6 +87,7 @@ void
 DecalObjectModel::set_angle(float angle_)
 {
   angle = angle_;
+  sync();
 }
 
 void
@@ -91,6 +98,7 @@ DecalObjectModel::set_scale(const Vector2f& scale_)
   // Disallow negative scale
   scale.x = fabsf(scale.x);
   scale.y = fabsf(scale.y);
+  sync();
 }
 
 void
@@ -109,30 +117,33 @@ DecalObjectModel::draw_select(SceneContext& sc, bool highlight)
 void
 DecalObjectModel::draw(SceneContext& sc)
 {
-  ObjectModel::draw(sc);
+  if (0)
+  {
+    ObjectModel::draw(sc);
 
-  Vector2f wo_pos = get_world_pos();
-  Vector2f center_offset(-surface.get_width()/2,
-                         -surface.get_height()/2);
+    Vector2f wo_pos = get_world_pos();
+    Vector2f center_offset(-surface.get_width()/2,
+                           -surface.get_height()/2);
 
-  DrawingContext* dc = 0; 
-  SurfaceDrawingParameters params;
-  switch(type)
+    DrawingContext* dc = 0; 
+    SurfaceDrawingParameters params;
+    switch(type)
     {
       case COLORMAP:     dc = &sc.color(); break;
       case LIGHTMAP:     dc = &sc.light();     params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
       case HIGHLIGHTMAP: dc = &sc.highlight(); params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
     }
 
-  center_offset.x *= scale.x;
-  center_offset.y *= scale.y;
+    center_offset.x *= scale.x;
+    center_offset.y *= scale.y;
 
-  dc->draw(surface, params
-           .set_pos(wo_pos + center_offset)
-           .set_angle(angle)
-           .set_hflip(hflip)
-           .set_vflip(vflip)
-           .set_scale(scale));
+    dc->draw(surface, params
+             .set_pos(wo_pos + center_offset)
+             .set_angle(angle)
+             .set_hflip(hflip)
+             .set_vflip(vflip)
+             .set_scale(scale));
+  }
 }
 
 Rectf
@@ -239,6 +250,55 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
   control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 1*math::pi/2, get_world_pos() + quad2.p2)));
   control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 2*math::pi/2, get_world_pos() + quad2.p3)));
   control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 3*math::pi/2, get_world_pos() + quad2.p4)));
+}
+
+void
+DecalObjectModel::add_to_sector(SectorModel& sector)
+{
+  m_drawable.reset(new SurfaceQuadDrawable(surface, Vector2f(), Quad(get_bounding_box()),
+                                           DrawingParameters(), 0.0f,
+                                           Matrix::identity()));
+  sector.get_scene_graph()->add_drawable(m_drawable);
+  std::cout << "DecalObjectModel::add_to_sector(SectorModel& sector)" << std::endl;
+}
+
+void
+DecalObjectModel::remove_from_sector(SectorModel& sector)
+{
+  sector.get_scene_graph()->remove_drawable(m_drawable);
+  std::cout << "DecalObjectModel::remove_from_sector(SectorModel& sector)" << std::endl;
+}
+
+void
+DecalObjectModel::sync()
+{
+  if (m_drawable)
+  {
+    Quad quad(get_bounding_box());
+    quad.rotate(angle);
+    m_drawable->set_quad(quad);
+  }
+}
+
+void
+DecalObjectModel::set_world_pos(const Vector2f& p)
+{
+  ObjectModel::set_world_pos(p);
+  sync();
+}
+
+void
+DecalObjectModel::set_rel_pos(const Vector2f& rel_pos_)
+{
+  ObjectModel::set_rel_pos(rel_pos_);
+  sync();
+}
+
+void
+DecalObjectModel::set_select_mask(const SelectMask& select_mask_)
+{
+  ObjectModel::set_select_mask(select_mask_);
+  sync();
 }
 
 /* EOF */

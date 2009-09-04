@@ -264,7 +264,6 @@ WindstilleWidget::update(float delta)
 void
 WindstilleWidget::draw()
 {
-  //std::cout << "Draw" << std::endl;
   if (sc.get())
     {
       state.push(*sc);

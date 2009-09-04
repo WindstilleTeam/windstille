@@ -38,6 +38,9 @@ public:
   Rectf get_bounding_box() const;
   ObjectModelHandle clone() const;
   void write(FileWriter& writer) const;
+
+  void add_to_sector(SectorModel& sector) {}
+  void remove_from_sector(SectorModel& sector) {}
 };
 
 #endif

@@ -32,9 +32,11 @@ SceneGraph::add_drawable(boost::shared_ptr<Drawable> drawable)
 }
 
 void
-SceneGraph::remove_drawable(boost::shared_ptr<Drawable> /*drawable*/)
+SceneGraph::remove_drawable(boost::shared_ptr<Drawable> drawable)
 {
-  // FIXME: implement me
+  Drawables::iterator i = std::find(m_drawables.begin(), m_drawables.end(), drawable);
+  if (i != m_drawables.end())
+    m_drawables.erase(i);
 }
 
 void

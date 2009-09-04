@@ -46,7 +46,7 @@ SectorModel::SectorModel()
 
   Gtk::ListStore::iterator it = layer_tree->append();
 
-  LayerHandle layer(new Layer());
+  LayerHandle layer(new Layer(*this));
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[LayerManagerColumns::instance().name]      = Glib::ustring("Scene");
   (*it)[LayerManagerColumns::instance().visible]   = true;
@@ -92,7 +92,7 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
   else
     it = layer_tree->insert(layer_tree->get_iter(path));
 
-  LayerHandle layer(new Layer());
+  LayerHandle layer(new Layer(*this));
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
   (*it)[LayerManagerColumns::instance().name]      = name;
   (*it)[LayerManagerColumns::instance().visible]   = true; 
@@ -137,7 +137,21 @@ SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& pa
     { 
       Gtk::ListStore::iterator it = layer_tree->get_iter(path);
       ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->add(object);
+      object->add_to_sector(*this);
     }
+}
+
+void
+SectorModel::remove(const ObjectModelHandle& object)
+{
+  const Layers& layers = get_layers();
+ 
+  for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
+    {
+      (*i)->remove(object);
+    }
+
+  object->remove_from_sector(*this);
 }
 
 struct GetLayersFunctor
@@ -182,17 +196,6 @@ SectorModel::get_layer(const Gtk::TreeModel::Path& path) const
   else
     {
       return LayerHandle();
-    }
-}
-
-void
-SectorModel::remove(const ObjectModelHandle& object)
-{
-  const Layers& layers = get_layers();
- 
-  for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
-    {
-      (*i)->remove(object);
     }
 }
 
@@ -361,26 +364,33 @@ SectorModel::load_layer(const FileReader& reader,
   reader.get("locked",  locked);
   reader.get("objects", objects_reader);
 
-  LayerHandle layer = LayerHandle(new Layer());
+  LayerHandle layer = LayerHandle(new Layer(*this));
 
   const std::vector<FileReader>& objects_sections = objects_reader.get_sections();
   for(std::vector<FileReader>::const_iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
   {
-    ObjectModelHandle obj = ObjectModelFactory::create(*j);
-
-    layer->add(obj);
-
-    std::string id_str;
-    if (j->read("id", id_str))
+    try 
     {
-      id_table[id_str] = obj;
+      ObjectModelHandle obj = ObjectModelFactory::create(*j);
+
+      layer->add(obj);
+
+      std::string id_str;
+      if (j->read("id", id_str))
+      {
+        id_table[id_str] = obj;
+      }
+
+      std::string parent_str;
+      if (j->read("parent", parent_str))
+      {
+        if (!parent_str.empty())
+          parent_table[obj] = parent_str;
+      }
     }
-
-    std::string parent_str;
-    if (j->read("parent", parent_str))
+    catch(std::exception& err)
     {
-      if (!parent_str.empty())
-        parent_table[obj] = parent_str;
+      std::cout << "SectorModel::load_layer: " << err.what() << std::endl;
     }
   }
 

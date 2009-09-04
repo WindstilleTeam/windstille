@@ -41,6 +41,9 @@ public:
 
   void write(FileWriter& writer) const;
 
+  void add_to_sector(SectorModel& sector) {}
+  void remove_from_sector(SectorModel& sector) {}
+
 private:
   ParticleSystemObjectModel(const ParticleSystemObjectModel&);
   ParticleSystemObjectModel& operator=(const ParticleSystemObjectModel&);

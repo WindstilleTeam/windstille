@@ -20,8 +20,9 @@
 
 #include "editor/sector_model.hpp"
 
-Layer::Layer()
-  : objects(),
+Layer::Layer(SectorModel& sector)
+  : m_sector(sector),
+    objects(),
     name(),
     visible(true),
     locked(false)
@@ -42,12 +43,14 @@ void
 Layer::add(const ObjectModelHandle& object)
 {
   objects.push_back(object);
+  object->add_to_sector(m_sector);
 }
 
 void
 Layer::remove(const ObjectModelHandle& object)
 {
   objects.remove(object);
+  object->remove_from_sector(m_sector);
 }
 
 void

@@ -31,6 +31,7 @@ class Layer
 private:
   typedef std::list<ObjectModelHandle> Objects;
 
+  SectorModel& m_sector;
   Objects objects;
   std::string name;
   bool visible;
@@ -39,7 +40,7 @@ private:
 public:
   typedef Objects::iterator iterator;
 
-  Layer();
+  Layer(SectorModel& sector);
   ~Layer();
   
   void set_row_ptr(Gtk::TreeModel::Row* row_ptr);

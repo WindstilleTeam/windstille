@@ -29,6 +29,7 @@
 class ObjectModel;
 class FileReader;
 class SceneContext;
+class SectorModel;
 typedef boost::shared_ptr<ObjectModel> ObjectModelHandle;
 typedef boost::weak_ptr<ObjectModel>   ObjectModelPtr;
 
@@ -52,14 +53,14 @@ public:
   std::string get_name() const { return name; }
   std::string get_id() const;
 
-  Vector2f get_world_pos() const;
-  void set_world_pos(const Vector2f& p);
+  virtual Vector2f get_world_pos() const;
+  virtual void set_world_pos(const Vector2f& p);
 
-  Vector2f get_rel_pos() const { return rel_pos; }
-  void     set_rel_pos(const Vector2f& rel_pos_);
-
-  SelectMask get_select_mask() const { return select_mask; }
-  void   set_select_mask(const SelectMask& select_mask_) { select_mask = select_mask_; }
+  virtual Vector2f get_rel_pos() const { return rel_pos; }
+  virtual void     set_rel_pos(const Vector2f& rel_pos_);
+  
+  virtual SelectMask get_select_mask() const { return select_mask; }
+  virtual void   set_select_mask(const SelectMask& select_mask_) { select_mask = select_mask_; }
 
   SnapData snap_object(const Rectf& rect) const;
 
@@ -80,13 +81,19 @@ public:
 
   virtual void draw(SceneContext& sc);
   virtual void update(float /*delta*/) {}
-  virtual Rectf get_bounding_box() const = 0;
+  virtual Rectf get_bounding_box() const =0;
   virtual ObjectModelHandle clone() const =0;
 
   virtual void write(FileWriter& writer) const =0;
   virtual FileWriter& write_member(FileWriter& writer) const;
 
-  virtual void add_control_points(std::vector<ControlPointHandle>& /*control_points*/) {}
+  virtual void add_control_points(std::vector<ControlPointHandle>& control_points) {}
+  
+  /** This lets the object add things to the SceneGraph or do other
+      things needed to make it properly visible in the SectorModel */
+  virtual void add_to_sector(SectorModel& sector)    =0;
+
+  virtual void remove_from_sector(SectorModel& sector) =0;
 };
 
 #endif
