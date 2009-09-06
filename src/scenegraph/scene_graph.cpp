@@ -40,6 +40,12 @@ SceneGraph::remove_drawable(boost::shared_ptr<Drawable> drawable)
 }
 
 void
+SceneGraph::clear()
+{
+  m_drawables.clear();
+}
+
+void
 SceneGraph::draw(unsigned int mask)
 {
   for(Drawables::iterator i = m_drawables.begin(); i != m_drawables.end(); ++i)

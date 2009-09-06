@@ -36,6 +36,8 @@ public:
 
   void add_drawable(boost::shared_ptr<Drawable> drawable);
   void remove_drawable(boost::shared_ptr<Drawable> drawable);
+  
+  void clear();
 
   void draw(unsigned int mask);
 

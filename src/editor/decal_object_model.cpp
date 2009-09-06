@@ -259,14 +259,14 @@ DecalObjectModel::add_to_sector(SectorModel& sector)
                                            DrawingParameters(), 0.0f,
                                            Matrix::identity()));
   sector.get_scene_graph()->add_drawable(m_drawable);
-  std::cout << "DecalObjectModel::add_to_sector(SectorModel& sector)" << std::endl;
+  //std::cout << "DecalObjectModel::add_to_sector(SectorModel& sector)" << std::endl;
 }
 
 void
 DecalObjectModel::remove_from_sector(SectorModel& sector)
 {
   sector.get_scene_graph()->remove_drawable(m_drawable);
-  std::cout << "DecalObjectModel::remove_from_sector(SectorModel& sector)" << std::endl;
+  //std::cout << "DecalObjectModel::remove_from_sector(SectorModel& sector)" << std::endl;
 }
 
 void

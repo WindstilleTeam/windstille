@@ -138,6 +138,8 @@ public:
 
   void queue_draw();
 
+  void rebuild_scene_graph();
+
 private:
   SectorModel(const SectorModel&);
   SectorModel& operator=(const SectorModel&);

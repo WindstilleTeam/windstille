@@ -116,6 +116,7 @@ Layer::raise_to_top(ObjectModelHandle object)
 {
   objects.remove(object);
   objects.push_back(object); 
+  m_sector.rebuild_scene_graph();
 }
 
 void
@@ -123,6 +124,7 @@ Layer::lower_to_bottom(ObjectModelHandle object)
 {
   objects.remove(object);
   objects.push_front(object); 
+  m_sector.rebuild_scene_graph();
 }
 
 struct OverlapsWith
@@ -155,6 +157,8 @@ Layer::raise(ObjectModelHandle object)
     {
       objects.erase(i);
       objects.insert(++j, object);
+      
+      m_sector.rebuild_scene_graph();
     }
 }
 
@@ -179,6 +183,8 @@ Layer::lower(ObjectModelHandle object)
       // position
       objects.erase(--(i.base()));
       objects.insert(--(j.base()), object);
+
+      m_sector.rebuild_scene_graph();
     }
 }
 
@@ -211,12 +217,6 @@ Layer::write(FileWriter& writer) const
     {
       (*i)->write(writer);
     }
-}
-
-LayerHandle
-Layer::clone() const
-{
-  return LayerHandle();
 }
 
 /* EOF */

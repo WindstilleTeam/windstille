@@ -537,6 +537,28 @@ SectorModel::set_all_locked(bool v)
   PropSetFunctor func(v);
   layer_tree->foreach_iter(sigc::mem_fun(func, &PropSetFunctor::set_locked));
 }
+
+void
+SectorModel::rebuild_scene_graph()
+{
+  scene_graph->clear();
+
+  const Layers& layers = get_layers();
+  for(Layers::const_iterator layer = layers.begin(); layer != layers.end(); ++layer)
+  {
+    if (*layer)
+    {
+      for(Layer::const_iterator obj = (*layer)->begin(); obj != (*layer)->end(); ++obj)
+      {
+        if ((*layer)->is_visible())
+        {
+          (*obj)->add_to_sector(*this);
+        }
+      }
+    }
+  }
+  queue_draw();
+}
 
 void
 SectorModel::queue_draw()
@@ -561,15 +583,14 @@ SectorModel::on_row_changed(const Gtk::TreeModel::Path& /*path*/, const Gtk::Tre
           layer->sync(*iter);
         }
     }
-
-  queue_draw();
+  rebuild_scene_graph();
 }
 
 void
 SectorModel::on_row_deleted(const Gtk::TreeModel::Path& /*path*/)
 {
-  //std::cout << "LayerManager:on_row_deleted" << std::endl;
-  queue_draw();
+  std::cout << "LayerManager:on_row_deleted" << std::endl;
+  rebuild_scene_graph();
 }
 
 void
@@ -581,13 +602,15 @@ SectorModel::on_row_has_child_toggled(const Gtk::TreeModel::Path& /*path*/, cons
 void
 SectorModel::on_row_inserted(const Gtk::TreeModel::Path& /*path*/, const Gtk::TreeModel::iterator& /*iter*/)
 {
-  //std::cout << "LayerManager:on_row_inserted" << std::endl;
+  std::cout << "LayerManager:on_row_inserted" << std::endl;
+  rebuild_scene_graph();
 }
 
 void
 SectorModel::on_rows_reordered(const Gtk::TreeModel::Path& /*path*/, const Gtk::TreeModel::iterator& /*iter*/, int* /*new_order*/)
 {
-  //std::cout << "LayerManager:on_row_reordered" << std::endl;
+  std::cout << "LayerManager:on_row_reordered" << std::endl;
+  rebuild_scene_graph();
 }
 
 /* EOF */

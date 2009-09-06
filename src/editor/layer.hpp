@@ -39,6 +39,7 @@ private:
     
 public:
   typedef Objects::iterator iterator;
+  typedef Objects::const_iterator const_iterator;
 
   Layer(SectorModel& sector);
   ~Layer();
@@ -47,6 +48,9 @@ public:
 
   iterator begin() { return objects.begin(); }
   iterator end()   { return objects.end(); }
+
+  const_iterator begin() const { return objects.begin(); }
+  const_iterator end()   const { return objects.end(); }
 
   void set_name(const std::string& str) { name = str; }
   std::string get_name() const { return name; }
@@ -79,8 +83,6 @@ public:
 
   void write(FileWriter& writer) const;
 
-  LayerHandle clone() const;
-  
 private:
   Layer(const Layer&);
   Layer& operator=(const Layer&);
