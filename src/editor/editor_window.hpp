@@ -41,7 +41,6 @@ class SelectTool;
 class ZoomTool;
 class LayerWidget;
 class NavgraphInsertTool;
-class NavgraphSelectTool;
 
 class EditorWindow : public Gtk::Window,
                      public Currenton<EditorWindow>
@@ -83,7 +82,6 @@ private:
 
   boost::scoped_ptr<SelectTool>   select_tool;
   boost::scoped_ptr<NavgraphInsertTool> navgraph_insert_tool;
-  boost::scoped_ptr<NavgraphSelectTool> navgraph_select_tool;
   boost::scoped_ptr<ZoomTool>     zoom_tool;
   Tool* current_tool;
   LayerWidget* layer_widget;

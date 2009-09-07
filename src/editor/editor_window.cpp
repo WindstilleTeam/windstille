@@ -42,7 +42,6 @@
 #include "editor/zoom_tool.hpp"
 #include "editor/select_tool.hpp"
 #include "editor/navgraph_insert_tool.hpp"
-#include "editor/navgraph_select_tool.hpp"
 #include "editor/sector_model.hpp"
 #include "editor/layer_widget.hpp"
 
@@ -78,7 +77,6 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     snap_action(),
     select_tool(new SelectTool()),
     navgraph_insert_tool(new NavgraphInsertTool()),
-    navgraph_select_tool(new NavgraphSelectTool()),
     zoom_tool(new ZoomTool()),
     current_tool(select_tool.get()),
     layer_widget(),
@@ -162,7 +160,6 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "    <menu action='MenuTools'>"
     "      <menuitem action='SelectTool'/>"
     "      <menuitem action='NavgraphInsertTool'/>"
-    "      <menuitem action='NavgraphSelectTool'/>"
     "      <menuitem action='ZoomTool'/>"
     "    </menu>"
     "    <menu action='MenuHelp'>"
@@ -210,7 +207,6 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     "  <toolbar  name='ToolBox'>"
     "    <toolitem action='SelectTool'/>"
     "    <toolitem action='NavgraphInsertTool'/>"
-    "    <toolitem action='NavgraphSelectTool'/>"
     "    <toolitem action='ZoomTool'/>"
     "    <separator/>"
     "    <toolitem action='ToggleColorLayer'/>"
@@ -367,13 +363,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   
   select_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "SelectTool", "select_tool", "Select Tool", "Select Tool");
   navgraph_insert_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "NavgraphInsertTool", "navgraph_insert_tool",   "Navgraph Insert Tool", "Navgraph Insert Tool");
-  navgraph_select_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "NavgraphSelectTool", "navgraph_select_tool",   "Navgraph Select Tool", "Navgraph Select Tool");
   zoom_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "ZoomTool", "zoom_tool",   "Zoom Tool", "Zoom Tool");
 
   action_group->add(select_tool_action, sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), select_tool_action, select_tool.get()));
   action_group->add(navgraph_insert_tool_action, sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), navgraph_insert_tool_action, navgraph_insert_tool.get()));
-
-  action_group->add(navgraph_select_tool_action, sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), navgraph_select_tool_action, navgraph_select_tool.get()));
   action_group->add(zoom_tool_action,   sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), zoom_tool_action, zoom_tool.get()));
 
   // signal_size_allocate().connect (sigc::mem_fun (*this, &EditorWindow::on_window_size_allocate), false);
@@ -805,8 +798,7 @@ EditorWindow::get_windstille_widget()
 bool
 EditorWindow::get_draw_navgraph() const
 {
-  if (current_tool == navgraph_insert_tool.get() ||
-      current_tool == navgraph_select_tool.get())
+  if (current_tool == navgraph_insert_tool.get())
     return true;
   else
     return false;
