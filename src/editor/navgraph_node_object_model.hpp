@@ -19,15 +19,33 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_NAVGRAPH_NODE_OBJECT_MODEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_NODE_OBJECT_MODEL_HPP
 
+#include <boost/shared_ptr.hpp>
+
 #include "editor/object_model.hpp"
+#include "navigation/navigation_graph.hpp"
+
+class VertexArrayDrawable;
 
 class NavGraphNodeObjectModel : public ObjectModel
 {
 private:
+  boost::shared_ptr<VertexArrayDrawable> m_drawable;
+  NodeHandle m_node;
+
 public:
-  NavGraphNodeObjectModel(const Vector2f& pos);
+  NavGraphNodeObjectModel(const Vector2f& pos, SectorModel& sector);
 
   void add_to_scenegraph(SceneGraph& sg);
+  void set_rel_pos(const Vector2f& rel_pos_);
+  void sync_drawable();
+
+  void on_remove();
+  
+  NodeHandle get_node() const { return m_node; }
+
+  Rectf get_bounding_box() const;
+  ObjectModelHandle clone() const;
+  void write(FileWriter& writer) const;
 
 private:
   NavGraphNodeObjectModel(const NavGraphNodeObjectModel&);

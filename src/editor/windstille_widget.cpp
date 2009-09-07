@@ -132,7 +132,7 @@ WindstilleWidget::execute(CommandHandle cmd)
 {
   undo_manager->execute(cmd);
   EditorWindow::current()->update_undo_state();
-  queue_draw();
+  sector_model->rebuild_scene_graph();
 }
 
 bool

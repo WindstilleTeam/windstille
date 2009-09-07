@@ -18,14 +18,46 @@
 
 #include "editor/navgraph_edge_object_model.hpp"
 
-NavGraphEdgeObjectModel::NavGraphEdgeObjectModel()
-  : ObjectModel("NavGraphEdgeObjectModel", Vector2f())
+#include "editor/navgraph_node_object_model.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
+#include "scenegraph/scene_graph.hpp"
+
+NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(boost::weak_ptr<NavGraphNodeObjectModel> lhs,
+                                                 boost::weak_ptr<NavGraphNodeObjectModel> rhs)
+  : ObjectModel("NavGraphEdgeObjectModel", Vector2f()),
+    m_lhs(lhs),
+    m_rhs(rhs),
+    m_drawable()
 {
+}
+
+void
+NavGraphEdgeObjectModel::update(float delta)
+{
+  if (m_drawable)
+  {
+    boost::shared_ptr<NavGraphNodeObjectModel> lhs = m_lhs.lock();
+    boost::shared_ptr<NavGraphNodeObjectModel> rhs = m_rhs.lock();
+
+    if (lhs && rhs)
+    {
+      m_drawable->clear();
+
+      m_drawable->color(Color(0.0f, 1.0f, 1.0f));
+      m_drawable->vertex(lhs->get_world_pos());
+
+      m_drawable->color(Color(0.0f, 1.0f, 1.0f));
+      m_drawable->vertex(rhs->get_world_pos());
+    }
+  }
 }
 
 void
 NavGraphEdgeObjectModel::add_to_scenegraph(SceneGraph& sg)
 {
+  m_drawable.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix::identity()));
+  update(0.0f);
+  sg.add_drawable(m_drawable);
 }
 
 /* EOF */

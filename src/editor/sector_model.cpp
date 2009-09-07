@@ -557,6 +557,7 @@ SectorModel::rebuild_scene_graph()
       }
     }
   }
+
   queue_draw();
 }
 

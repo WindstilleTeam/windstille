@@ -88,7 +88,6 @@ public:
   void draw(SceneContext& sc, const SelectMask& layers, bool draw_navgraph);
 
   void update(float delta);
-  void update(float delta, const Gtk::TreeRow& row);
 
   void set_all_visible(bool v);
   void set_all_locked(bool v);

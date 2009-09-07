@@ -16,14 +16,16 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "editor/navgraph_insert_tool.hpp"
+
 #include "editor/sector_model.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
 #include "navigation/edge.hpp"
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
-
-#include "editor/navgraph_insert_tool.hpp"
+#include "editor/navgraph_node_object_model.hpp"
+#include "editor/object_commands.hpp"
 
 NavgraphInsertTool::NavgraphInsertTool()
   : mouse_pos(),
@@ -36,10 +38,11 @@ NavgraphInsertTool::NavgraphInsertTool()
 }
 
 void
-NavgraphInsertTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
+NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
   NavigationGraph& navgraph = *wst.get_sector_model()->get_nav_graph();
+  SectorModel* sector = wst.get_sector_model();
 
   NodeHandle node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
   EdgeHandle edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
@@ -56,7 +59,10 @@ NavgraphInsertTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
             }
           else
             { // connect last node with newly created node
-              node = navgraph.add_node(mouse_pos);
+              NavGraphNodeObjectModel* obj = new NavGraphNodeObjectModel(mouse_pos, *sector);
+              node = obj->get_node();
+              wst.execute(CommandHandle(new ObjectAddCommand(wst.get_current_layer(), ObjectModelHandle(obj))));
+
               navgraph.add_edge(last_node, node);
               last_node = NodeHandle();
             }
@@ -78,7 +84,10 @@ NavgraphInsertTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
             }
           else
             {
-              last_node = navgraph.add_node(mouse_pos);
+              NavGraphNodeObjectModel* obj = new NavGraphNodeObjectModel(mouse_pos, *sector);
+              last_node = obj->get_node();
+              wst.execute(CommandHandle(new ObjectAddCommand(wst.get_current_layer(), ObjectModelHandle(obj))));
+              
               mode = EDGE_MODE;
             }
         }

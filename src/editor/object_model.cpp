@@ -131,15 +131,15 @@ void
 ObjectModel::set_world_pos(const Vector2f& p)
 {
   if (parent_ptr.lock())
-    rel_pos += p - get_world_pos();
+    set_rel_pos(rel_pos + (p - get_world_pos()));
   else
-    rel_pos = p;
+    set_rel_pos(p);
 }
 
 void
 ObjectModel::set_rel_pos(const Vector2f& rel_pos_)
 {
-  // Cut to integer positions
+  // FIXME: Cut to integer positions, might not be the right place to do this
   rel_pos.x = floorf(rel_pos_.x);
   rel_pos.y = floorf(rel_pos_.y);
 }

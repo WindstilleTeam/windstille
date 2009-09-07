@@ -16,18 +16,29 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_NAVGRAPH_NODE_OBJECT_MODEL_HPP
-#define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_NODE_OBJECT_MODEL_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_NAVGRAPH_EDGE_OBJECT_MODEL_HPP
+#define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_EDGE_OBJECT_MODEL_HPP
+
+#include <boost/weak_ptr.hpp>
 
 #include "editor/object_model.hpp"
+
+class NavGraphNodeObjectModel;
+class VertexArrayDrawable;
 
 class NavGraphEdgeObjectModel : public ObjectModel
 {
 private:
+  boost::weak_ptr<NavGraphNodeObjectModel> m_lhs;
+  boost::weak_ptr<NavGraphNodeObjectModel> m_rhs;
+  boost::shared_ptr<VertexArrayDrawable> m_drawable;
+  
 public:
-  NavGraphEdgeObjectModel();
+  NavGraphEdgeObjectModel(boost::weak_ptr<NavGraphNodeObjectModel> lhs,
+                          boost::weak_ptr<NavGraphNodeObjectModel> rhs);
 
   void add_to_scenegraph(SceneGraph& sg);
+  void update(float delta);
 
 private:
   NavGraphEdgeObjectModel(const NavGraphEdgeObjectModel&);

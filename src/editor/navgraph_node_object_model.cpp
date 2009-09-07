@@ -18,13 +18,78 @@
 
 #include "editor/navgraph_node_object_model.hpp"
 
-NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos)
-  : ObjectModel("NavGraphNodeObjectModel", pos)
+#include "editor/sector_model.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
+#include "scenegraph/scene_graph.hpp"
+#include "navigation/node.hpp"
+
+NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos, SectorModel& sector)
+  : ObjectModel("NavGraphNodeObjectModel", pos),
+    m_drawable(),
+    m_node()
 {
+  m_node = sector.get_nav_graph()->add_node(pos);
 }
 
 void
 NavGraphNodeObjectModel::add_to_scenegraph(SceneGraph& sg)
+{
+  if (!m_drawable)
+    m_drawable.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix::identity()));
+
+  sync_drawable();
+  sg.add_drawable(m_drawable);
+}
+
+void
+NavGraphNodeObjectModel::sync_drawable()
+{
+  if (m_drawable)
+  {
+    m_drawable->clear();
+
+    m_drawable->color(Color(1.0f, 0.0f, 0.0f));
+    m_drawable->vertex(get_world_pos() + Vector2f(-10.0f, -10.0f));
+
+    m_drawable->color(Color(1.0f, 0.0f, 0.0f));
+    m_drawable->vertex(get_world_pos() + Vector2f(10.0f, -10.0f));
+
+    m_drawable->color(Color(1.0f, 0.0f, 0.0f));
+    m_drawable->vertex(get_world_pos() + Vector2f(10.0f, 10.0f));
+
+    m_drawable->color(Color(1.0f, 0.0f, 0.0f));
+    m_drawable->vertex(get_world_pos() + Vector2f(-10.0f, 10.0f));
+  }
+}
+
+void
+NavGraphNodeObjectModel::set_rel_pos(const Vector2f& rel_pos_)
+{
+  ObjectModel::set_rel_pos(rel_pos_);
+  m_node->set_pos(get_world_pos());
+}
+
+void
+NavGraphNodeObjectModel::on_remove()
+{
+  // remove connected edges
+}
+
+Rectf
+NavGraphNodeObjectModel::get_bounding_box() const
+{
+  return Rectf(get_world_pos() - Vector2f(10.0f, 10.0f),
+               Sizef(20.0f, 20.0f));
+}
+
+ObjectModelHandle 
+NavGraphNodeObjectModel::clone() const
+{
+  return ObjectModelHandle();
+}
+
+void
+NavGraphNodeObjectModel::write(FileWriter& writer) const
 {
 }
 

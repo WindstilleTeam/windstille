@@ -82,7 +82,7 @@ public:
 
   GraphicContextState& get_state() { return state; }
 
-  void execute(CommandHandle);
+  void execute(CommandHandle cmd);
 
   virtual void on_realize();
   virtual bool on_timeout();
