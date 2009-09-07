@@ -83,8 +83,7 @@ public:
 
   void add_control_points(std::vector<ControlPointHandle>& control_points);
 
-  void add_to_sector(SectorModel& sector);
-  void remove_from_sector(SectorModel& sector);
+  void add_to_scenegraph(SceneGraph& sg);
   void sync();
 
   void set_world_pos(const Vector2f& p);

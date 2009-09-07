@@ -43,14 +43,14 @@ void
 Layer::add(const ObjectModelHandle& object)
 {
   objects.push_back(object);
-  object->add_to_sector(m_sector);
+  m_sector.rebuild_scene_graph();
 }
 
 void
 Layer::remove(const ObjectModelHandle& object)
 {
   objects.remove(object);
-  object->remove_from_sector(m_sector);
+  m_sector.rebuild_scene_graph();
 }
 
 void

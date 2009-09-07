@@ -39,8 +39,7 @@ public:
   ObjectModelHandle clone() const;
   void write(FileWriter& writer) const;
 
-  void add_to_sector(SectorModel& sector) {}
-  void remove_from_sector(SectorModel& sector) {}
+  void add_to_scenegraph(SceneGraph& sg) {}
 };
 
 #endif

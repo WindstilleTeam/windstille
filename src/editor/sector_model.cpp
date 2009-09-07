@@ -137,7 +137,7 @@ SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& pa
     { 
       Gtk::ListStore::iterator it = layer_tree->get_iter(path);
       ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->add(object);
-      object->add_to_sector(*this);
+      rebuild_scene_graph();
     }
 }
 
@@ -150,8 +150,7 @@ SectorModel::remove(const ObjectModelHandle& object)
     {
       (*i)->remove(object);
     }
-
-  object->remove_from_sector(*this);
+  rebuild_scene_graph();
 }
 
 struct GetLayersFunctor
@@ -541,6 +540,7 @@ SectorModel::set_all_locked(bool v)
 void
 SectorModel::rebuild_scene_graph()
 {
+  // FIXME: should make a queue_rebuild_scene_graph() to limit the number of rebuilds per frame to 1
   scene_graph->clear();
 
   const Layers& layers = get_layers();
@@ -552,7 +552,7 @@ SectorModel::rebuild_scene_graph()
       {
         if ((*layer)->is_visible())
         {
-          (*obj)->add_to_sector(*this);
+          (*obj)->add_to_scenegraph(*scene_graph);
         }
       }
     }

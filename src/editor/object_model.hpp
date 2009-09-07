@@ -30,6 +30,8 @@ class ObjectModel;
 class FileReader;
 class SceneContext;
 class SectorModel;
+class SceneGraph;
+
 typedef boost::shared_ptr<ObjectModel> ObjectModelHandle;
 typedef boost::weak_ptr<ObjectModel>   ObjectModelPtr;
 
@@ -91,9 +93,7 @@ public:
   
   /** This lets the object add things to the SceneGraph or do other
       things needed to make it properly visible in the SectorModel */
-  virtual void add_to_sector(SectorModel& sector)    =0;
-
-  virtual void remove_from_sector(SectorModel& sector) =0;
+  virtual void add_to_scenegraph(SceneGraph& sg) =0;
 };
 
 #endif
