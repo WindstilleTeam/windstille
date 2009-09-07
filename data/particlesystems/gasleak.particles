@@ -1,0 +1,21 @@
+;; -*- scheme -*-
+
+(particle-systems
+ ;; Fire itself
+ (particle-system
+  (pos 0 0)
+  (count 10)
+  (lifetime 1.0)
+  (z-pos 1000)
+  (layer "color")
+  (velocity 90 100)
+  (cone 45 0)
+  (gravity 0 -1.0)
+  (size 5.0 0.5)
+  (distribution (point-distribution))
+  (drawer (surface-drawer (image "images/particles/smoke.png")
+                          (blendfunc-src "src_alpha")
+                          (blendfunc-dst "one"))))
+)
+
+;; EOF ;;

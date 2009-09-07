@@ -29,19 +29,19 @@
 
 
  ;; Fire Light
-;  (particle-system
-;   (pos 0 0)
-;   (lifetime 1.0)
-;   (count 20)
-;   (layer "light")
-;   (z-pos 1000)
-;   (velocity 200 300)
-;   (cone -95 -85)
-;   (gravity 0 0)
-;   (distribution (line-distribution (x1 -50) (y1 0) (x2 50) (y2 0)))
-;   (drawer (surface-drawer (image "images/particles/fire_light.png")
-;                           (blendfunc-src "src_alpha")
-;                           (blendfunc-dst "one"))))
+  (particle-system
+   (pos 0 0)
+   (lifetime 2.0)
+   (count 10)
+   (layer "light")
+   (z-pos 1000)
+   (velocity 200 300)
+   (cone -95 -85)
+   (gravity 0 0)
+   (distribution (line-distribution (x1 -50) (y1 0) (x2 50) (y2 0)))
+   (drawer (surface-drawer (image "images/particles/fire_light.png")
+                           (blendfunc-src "src_alpha")
+                           (blendfunc-dst "one"))))
  
  ;; Fire itself
  (particle-system

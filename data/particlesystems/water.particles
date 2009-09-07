@@ -5,23 +5,25 @@
   (drawer (spark-drawer (color 0.25 0.5 1.0) (width 2.5)))
   (z-pos 900)
   (count 1000)
+ (lifetime 1.5) 
   (pos 0 -200)
   (layer "color")
   (velocity 100 200)
   (cone -10 -170)
   (gravity 0  .5)
-  (distribution (line-distribution (x1 -25)  (y1 0) (x2 25) (y2 0))))
+  (distribution (line-distribution (x1 -50)  (y1 0) (x2 50) (y2 0))))
 
   (particle-system
    (drawer (spark-drawer (color 0.8 0.8 1.0) (width 2.5)))
    (z-pos 900)
    (count 1000)
+   (lifetime 1.5) 
    (pos 0 -200)
    (layer "color")
    (velocity 100 200)
    (cone -50 -130)
    (gravity 0  .5)
-   (distribution (line-distribution (x1 -25)  (y1 0) (x2 25) (y2 0))))
+   (distribution (line-distribution (x1 -50)  (y1 0) (x2 50) (y2 0))))
 )
 
 ;; EOF ;;

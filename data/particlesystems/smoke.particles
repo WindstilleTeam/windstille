@@ -1,0 +1,31 @@
+;; -*- scheme -*-
+
+(particle-systems
+ (particle-system
+  (pos 0 32)
+  (lifetime 18)
+  (count 40)
+  (z-pos -200)
+  (drawer (surface-drawer (image "images/particles/smoke2.png")
+                          (blendfunc-src "src_alpha")
+                          (blendfunc-dst "one_minus_src_alpha")))
+  (velocity 40 50)
+  (cone 0 10)
+  (gravity 0 0)
+  (size 3.0 5.0)
+  (distribution (line-distribution (x1 -50) (y1 0) (x2 400) (y2 0))))
+
+ (particle-system
+  (pos 0 32)
+  (lifetime 18)
+  (count 40)
+  (z-pos -200)
+  (drawer (surface-drawer (image "images/particles/smoke2.png")
+                          (blendfunc-src "src_alpha")
+                          (blendfunc-dst "one_minus_src_alpha")))
+  (velocity 40 50)
+  (cone 170 180)
+  (gravity 0 0)
+  (size 3.0 5.0)
+  (distribution (line-distribution (x1 -400) (y1 0) (x2 50) (y2 0))))
+ )
