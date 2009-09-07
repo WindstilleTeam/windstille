@@ -71,6 +71,10 @@ public:
     return data != 0;
   }
 
+  bool operator==(const PointerHandle<Data>& rhs) const {
+    return data == rhs.data;
+  }
+
   bool operator<(const PointerHandle<Data>& other) const {
     return this->data < other.data;
   }
