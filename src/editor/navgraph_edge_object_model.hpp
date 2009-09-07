@@ -21,6 +21,7 @@
 
 #include <boost/weak_ptr.hpp>
 
+#include "navigation/navigation_graph.hpp"
 #include "editor/object_model.hpp"
 
 class NavGraphNodeObjectModel;
@@ -32,13 +33,21 @@ private:
   boost::weak_ptr<NavGraphNodeObjectModel> m_lhs;
   boost::weak_ptr<NavGraphNodeObjectModel> m_rhs;
   boost::shared_ptr<VertexArrayDrawable> m_drawable;
-  
+  EdgeHandle m_edge;
+
 public:
   NavGraphEdgeObjectModel(boost::weak_ptr<NavGraphNodeObjectModel> lhs,
-                          boost::weak_ptr<NavGraphNodeObjectModel> rhs);
+                          boost::weak_ptr<NavGraphNodeObjectModel> rhs,
+                          SectorModel& sector);
 
   void add_to_scenegraph(SceneGraph& sg);
   void update(float delta);
+
+  Rectf get_bounding_box() const;
+  ObjectModelHandle clone() const;
+  void write(FileWriter& writer) const;
+
+  EdgeHandle get_edge() const { return m_edge; }
 
 private:
   NavGraphEdgeObjectModel(const NavGraphEdgeObjectModel&);

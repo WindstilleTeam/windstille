@@ -25,6 +25,7 @@
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/navgraph_node_object_model.hpp"
+#include "editor/navgraph_edge_object_model.hpp"
 #include "editor/object_commands.hpp"
 
 NavgraphInsertTool::NavgraphInsertTool()
@@ -48,51 +49,60 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
   EdgeHandle edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
   switch(mode)
+  {
+    case EDGE_MODE:
     {
-      case EDGE_MODE:
-        {
-          if (node)
-            { // connect last node with existing node
-              navgraph.add_edge(last_node, node);
-              last_node = NodeHandle();
-              connection_node = NodeHandle();
-            }
-          else
-            { // connect last node with newly created node
-              NavGraphNodeObjectModel* obj = new NavGraphNodeObjectModel(mouse_pos, *sector);
-              node = obj->get_node();
-              wst.execute(CommandHandle(new ObjectAddCommand(wst.get_current_layer(), ObjectModelHandle(obj))));
+      if (node)
+      { // connect last node with existing node
+        NavGraphEdgeObjectModel* edge_obj = new NavGraphEdgeObjectModel(sector->find_navgraph_node(last_node),
+                                                                        sector->find_navgraph_node(node),
+                                                                        *sector);
+        wst.execute(CommandHandle(new ObjectAddCommand(wst.get_current_layer(), ObjectModelHandle(edge_obj))));
 
-              navgraph.add_edge(last_node, node);
-              last_node = NodeHandle();
-            }
-          mode = NO_MODE;        
-        }
-        break;
+        last_node = NodeHandle();
+        connection_node = NodeHandle();
+      }
+      else
+      { // connect last node with newly created node
+        // FIXME: Make this a GroupCommand
+        NavGraphNodeObjectModel* obj = new NavGraphNodeObjectModel(mouse_pos, *sector);
+        node = obj->get_node();
+        wst.execute(CommandHandle(new ObjectAddCommand(wst.get_current_layer(), ObjectModelHandle(obj))));
 
-      case NO_MODE:
-        {
-          if (node)
-            {
-              last_node = node;
-              mode = EDGE_MODE;
-            }
-          else if (edge)
-            {
-              navgraph.remove_edge(edge);
-              mode = NO_MODE;
-            }
-          else
-            {
-              NavGraphNodeObjectModel* obj = new NavGraphNodeObjectModel(mouse_pos, *sector);
-              last_node = obj->get_node();
-              wst.execute(CommandHandle(new ObjectAddCommand(wst.get_current_layer(), ObjectModelHandle(obj))));
-              
-              mode = EDGE_MODE;
-            }
-        }
-        break;
+        NavGraphEdgeObjectModel* edge_obj = new NavGraphEdgeObjectModel(sector->find_navgraph_node(last_node),
+                                                                        sector->find_navgraph_node(node), 
+                                                                        *sector);
+        wst.execute(CommandHandle(new ObjectAddCommand(wst.get_current_layer(), ObjectModelHandle(edge_obj))));
+
+        last_node = NodeHandle();
+      }
+      mode = NO_MODE;
     }
+    break;
+
+    case NO_MODE:
+    {
+      if (node)
+      {
+        last_node = node;
+        mode = EDGE_MODE;
+      }
+      else if (edge)
+      {
+        navgraph.remove_edge(edge);
+        mode = NO_MODE;
+      }
+      else
+      {
+        NavGraphNodeObjectModel* obj = new NavGraphNodeObjectModel(mouse_pos, *sector);
+        last_node = obj->get_node();
+        wst.execute(CommandHandle(new ObjectAddCommand(wst.get_current_layer(), ObjectModelHandle(obj))));
+              
+        mode = EDGE_MODE;
+      }
+    }
+    break;
+  }
 
   wst.queue_draw();
 }

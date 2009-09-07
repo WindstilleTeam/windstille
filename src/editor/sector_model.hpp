@@ -27,11 +27,14 @@
 
 #include "display/color.hpp"
 #include "editor/layer.hpp"
-#include "editor/selection.hpp"
 #include "editor/object_model.hpp"
+#include "editor/selection.hpp"
 #include "math/vector2f.hpp"
+#include "navigation/navigation_graph.hpp"
 
 class NavigationGraph;
+class NavGraphNodeObjectModel;
+class NavGraphEdgeObjectModel;
 class SceneGraph;
 class SceneContext;
 class LayerManagerColumns;
@@ -134,6 +137,9 @@ public:
 
   NavigationGraph* get_nav_graph() const { return nav_graph.get(); }
   SceneGraph*      get_scene_graph() const { return scene_graph.get(); }
+
+  boost::shared_ptr<NavGraphNodeObjectModel> find_navgraph_node(NodeHandle node) const;
+  boost::shared_ptr<NavGraphEdgeObjectModel> find_navgraph_edge(EdgeHandle edge) const;
 
   void queue_draw();
 

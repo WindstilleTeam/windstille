@@ -28,6 +28,8 @@
 #include "navigation/node.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/windstille_widget.hpp"
+#include "editor/navgraph_node_object_model.hpp"
+#include "editor/navgraph_edge_object_model.hpp"
 #include "util/file_reader.hpp"
 #include "display/scene_context.hpp"
 #include "display/surface.hpp"
@@ -612,6 +614,56 @@ SectorModel::on_rows_reordered(const Gtk::TreeModel::Path& /*path*/, const Gtk::
 {
   std::cout << "LayerManager:on_row_reordered" << std::endl;
   rebuild_scene_graph();
+}
+
+boost::shared_ptr<NavGraphNodeObjectModel>
+SectorModel::find_navgraph_node(NodeHandle node) const
+{
+  const Layers& layers = get_layers();
+  for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
+  {
+    if (*layer)
+    {
+      for(Layer::const_iterator obj = (*layer)->begin(); obj != (*layer)->end(); ++obj)
+      {
+        boost::shared_ptr<NavGraphNodeObjectModel> test_node = boost::dynamic_pointer_cast<NavGraphNodeObjectModel>(*obj);
+        if (test_node)
+        {
+          if (test_node->get_node() == node)
+          {
+            return test_node;
+          }
+        }
+      }
+    } 
+  }
+  
+  return boost::shared_ptr<NavGraphNodeObjectModel>();
+}
+
+boost::shared_ptr<NavGraphEdgeObjectModel>
+SectorModel::find_navgraph_edge(EdgeHandle edge) const
+{
+  const Layers& layers = get_layers();
+  for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
+  {
+    if (*layer)
+    {
+      for(Layer::const_iterator obj = (*layer)->begin(); obj != (*layer)->end(); ++obj)
+      {
+        boost::shared_ptr<NavGraphEdgeObjectModel> test_edge = boost::dynamic_pointer_cast<NavGraphEdgeObjectModel>(*obj);
+        if (test_edge)
+        {
+          if (test_edge->get_edge() == edge)
+          {
+            return test_edge;
+          }
+        }
+      }
+    } 
+  }
+  
+  return boost::shared_ptr<NavGraphEdgeObjectModel>(); 
 }
 
 /* EOF */
