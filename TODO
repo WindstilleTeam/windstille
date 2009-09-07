@@ -10,19 +10,35 @@ on this list and always think about how useful a new feature would be
 in the context of the whole game or if a potential performance
 enhanchment, actually enhanchmes anything at all.
 
+Editor Restructuring
+====================
+
+* NavigationGraph gets removed (maybe just temporarly, since it could
+  be needed for 'NavGraph snapping')
+
+* NavigationGraph is replaced with normal ObjectModel objects
+  (NavGraphNodeObjectModel, NavGraphEdgeObjectModel)
+
+* NavGraphEdgeObjectModel can be moved around across layers (this is
+  why it needs to be selectable)
+
+* NavGraphNodeObjectModel are somewhat special in that they show up
+  when their connected Edges shows up
+
+* NavGraphInsertTool needs to be rewritten
+
+* NavGraphSelectTool would become obsolote
+
 Overview
 ========
 
-* use control layer for NavGraph draving and other debug stuff
+* do demo sector with burning barrels, snow and steam, to get the
+  feeling of cold, could extend the trainstation to that
 
-* use SceneGraph in objects that already use VertexArray
-  (BackgroundGradient, Swarm)
+* Doll can get stuck in infinitive rolls (Sprite3D::switched_actions()
+  doesn't trigger properly or is missed)
 
-* need multiple render path:
-
-  * MatrixG450: seems a lost cause, way to slow and only 16bit
-  * Geforce2MX: doesn't have Framebuffer object and shader
-  * Geforce???: has Framebuffer object and shader
+* use SceneGraph in objects that already use VertexArray (Swarm)
 
 * use SceneGraph in the editor 
 
@@ -53,16 +69,19 @@ Animation
   * jogging: 10 km/h
   * run:     20 km/h (1500m run)
   * run:     30 km/h (100m sprint)
+
+* current run animation, jump width, etc. should be meassured in a test level
 
 Pathname/PhysFS
 ===============
-
-* Pathname needs a way to browse directories (wrapper boost::filesystem)
 
 * Sound stuff still uses PhysFS, should be switched to std::ifstream
 
 SceneGraph
 ==========
+
+* Drawable::update(float delta): Do we need it? What exactly should it
+  do? Or should we do it via GameObject::update(float delta) { m_drawable->update(delta); }?
 
 * change the editor to use the SceneGraph instead of the SceneContext API
 
@@ -71,6 +90,12 @@ SceneGraph
   doing the final conversion
 
 * might have some advantage to place stuff in a QuadTree, when you have a complex level
+
+* SceneGraph could be used to promte certain states to children such
+  as: color, alpha, visibility (would be mainly useful for the editor
+  to hide layers or highlight them)
+
+* SceneGraph could be used to promote rotation and scaling to children
 
 Navigation Graph
 ================
@@ -78,6 +103,14 @@ Navigation Graph
 * NavigationGraph needs hooks into scripting, so that things can be
   triggered when a character passes over a specific trigger node or
   things like that.
+
+* NavigationGraph Edge Types:
+
+  * ground    - usual stuff, you run on it
+  * wall      - vertical stuff
+  * ladder    - stuff you can climb (maybe different version for climbing: left, right, front)
+  * stairs    - 45 degree, must follow special step spacing
+  * smallwall - boxen and stuff you can jump over or climb on
 
 Display
 =======
@@ -87,8 +120,6 @@ Display
 * OpenGLState class is really slow (rewrite it to not use std::map, also remove the impl allocation)
 
 * Display::push/pop_cliprect() doesn't handle different aspect-ratios properly
-
-* lightmap is broken with non-standard aspect-ratio
 
 * implement aspect-ration switching at runtime (menu entry is there,
   just no code) and change default screen ration to that seen in the
@@ -117,6 +148,30 @@ Logging
   * log when a sector is changed
 
   * include a timestemp in the log
+
+* Editor Logging:
+
+  * print Gtk events
+
+Particle System
+===============
+
+* ParticleSystem could be hooked up to scripting
+
+* particle system doesn't take delta into proper account, breaks when
+  doing set_game_speed(0.1) (might be issue with game_speed, not the ParticleSystem)
+
+* add a alpha ease-in to the particle system
+
+* add a switch to turn of blending in the SurfaceDrawer (i.e.
+  currently stuff fades out, but for some things that isn't a good
+  idea)
+
+* add arial particles for effects like snow
+
+* maybe do snow as fullscreen effect by just shifting the UV
+  coordinates (wouldn't work for smoke/fog)
+
 
 Scripting
 =========
@@ -125,8 +180,6 @@ Scripting
 * http://www.modwiki.net/wiki/Scripting
 * http://developer.valvesoftware.com/wiki/Scripted_sequence
 * http://developer.valvesoftware.com/wiki/Faceposer
-
-* ParticleSystem could be hooked up to scripting
 
 * add a way to bind keys to script functions for use in debugging
 
@@ -245,6 +298,9 @@ Scripting
 
 Input Handling
 ==============
+
+* pressing left and right at the same time and then releasing one of
+  them causes the input to get stuck in the wrong direction
 
 * input in Navigation Graph test uses deadzone, but shouldn't
 
@@ -438,6 +494,9 @@ else {
 printf("OpenGL 2.0 not supported\n");
 exit(1);
 }
+
+* Check if http://developer.nvidia.com/object/np2_mipmapping.html can
+  be used to improve visual quality
 
 Profiling
 =========
@@ -931,24 +990,6 @@ Build System
 ============
 
 * write a script that builds cross compile environment with mingw on Ubuntu
-
-* optimize SConscript, currently takes 10.5sec to run, which is
-  ridiculously slow
-  
-  * using variant_dir increases the build time from 9.5 to 10.5 seconds
-
-  * Decider() has no noticable impact on build times
-
-  * Cachedir() has no noticable negative impact on build times
-
-  * reading the SConscript itself takes around 1.5 seconds, can be cut
-    down to 0.8 seconds by removing the browsing of data files
-
-  * build_windstille_editor() takes 7 seconds 
-
-  * build_windstille() takes 3 seconds 
-
-  * building just the external libraries takes just 0.7sec in total
 
 Code Cleanup
 ============
@@ -962,10 +1003,6 @@ Code Cleanup
   - Dialog/Conversation
 
 * Screens might fit better into app/ then screen/
-
-* unify copyright header and #ifdef guards
-
- for i in */*.hpp; do echo $i; NAME=$(echo $i | sed "s/[\/\.]/_/g;s/^/HEADER_WINDSTILLE_/" | tr [a-z] [A-Z]);  sed  -i "s/^\(#[a-z]*\) *HEADER_WINDSTILLE_.*/\1 $NAME/" $i; done
 
 * find a astyle/bcpp/whatever configuration that matches the current
   coding style, maybe a little script that uses Emacs would do
