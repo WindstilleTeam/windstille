@@ -1,6 +1,21 @@
 Windstille Compilation
 ======================
 
+Hardware Requirements
+=====================
+
+Minimal requirements are:
+
+ * Geforce2MX
+ * 1GHZ Athlon
+
+The game will not work with a MatroxG450 and hasn't been tested with
+ATI cards.
+
+
+Compilation
+===========
+
 To compile Windstille you need:
 
  * OpenAL
