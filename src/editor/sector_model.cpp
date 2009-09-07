@@ -544,7 +544,7 @@ SectorModel::rebuild_scene_graph()
   scene_graph->clear();
 
   const Layers& layers = get_layers();
-  for(Layers::const_iterator layer = layers.begin(); layer != layers.end(); ++layer)
+  for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
   {
     if (*layer)
     {

@@ -255,11 +255,15 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
 void
 DecalObjectModel::add_to_scenegraph(SceneGraph& sg)
 {
-  m_drawable.reset(new SurfaceQuadDrawable(surface, Vector2f(), Quad(get_bounding_box()),
-                                           DrawingParameters(), 0.0f,
-                                           Matrix::identity()));
+  if (!m_drawable)
+  {
+    m_drawable.reset(new SurfaceQuadDrawable(surface, Vector2f(), Quad(get_bounding_box()),
+                                             DrawingParameters(), 0.0f,
+                                             Matrix::identity()));
+    sync();
+  }
+
   sg.add_drawable(m_drawable);
-  //std::cout << "DecalObjectModel::add_to_scenegraph(SectorModel& sector)" << std::endl;
 }
 
 void
