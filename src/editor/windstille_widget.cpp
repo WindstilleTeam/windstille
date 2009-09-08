@@ -37,7 +37,7 @@
 #include "editor/group_command.hpp"
 #include "editor/object_commands.hpp"
 #include "editor/functor_command.hpp"
-
+#include "editor/document.hpp"
 #include "editor/sprite_object_model.hpp"
 #include "editor/windstille_widget.hpp"
 
@@ -47,19 +47,18 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
                                    const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list)
   : editor(editor_),
-    undo_manager(new UndoManager()),
+    document(new Document),
     filename(),
-    sector_model(new SectorModel()),
     control_points(),
     state(),
     compositor(),
     sc(),
-    scroll_tool(new ScrollTool()),
+    scroll_tool(new ScrollTool),
     selection(),
     map_type(DecalObjectModel::COLORMAP),
     background_pattern(),
-    draw_background_pattern(true),
     select_mask(1),
+    draw_background_pattern(true),
     draw_only_active_layers(true),
     grid_enabled(false)
 {
@@ -130,9 +129,9 @@ WindstilleWidget::~WindstilleWidget()
 void
 WindstilleWidget::execute(CommandHandle cmd)
 {
-  undo_manager->execute(cmd);
+  document->get_undo_manager().execute(cmd);
   EditorWindow::current()->update_undo_state();
-  sector_model->rebuild_scene_graph();
+  document->get_sector_model().rebuild_scene_graph();
 }
 
 bool
@@ -257,7 +256,7 @@ void
 WindstilleWidget::update(float delta)
 {
   std::cout << this << " WindstilleWidget::update(" << delta << ")" << std::endl;
-  sector_model->update(delta);
+  document->get_sector_model().update(delta);
   queue_draw();
 }
 
@@ -268,7 +267,7 @@ WindstilleWidget::draw()
     {
       state.push(*sc);
       
-      sc->light().fill_screen(sector_model->get_ambient_color());
+      sc->light().fill_screen(document->get_sector_model().get_ambient_color());
 
       if (draw_background_pattern)
         {
@@ -281,9 +280,9 @@ WindstilleWidget::draw()
         }
 
       if (draw_only_active_layers)
-        sector_model->draw(*sc, SelectMask(), editor.get_draw_navgraph());
+        document->get_sector_model().draw(*sc, SelectMask());
       else
-        sector_model->draw(*sc, select_mask, editor.get_draw_navgraph());
+        document->get_sector_model().draw(*sc, select_mask);
 
       if (!selection->empty())
         {
@@ -306,7 +305,7 @@ WindstilleWidget::draw()
           EditorWindow::current()->get_current_tool()->draw(*sc);
         }
 
-      compositor->render(*sc, sector_model->get_scene_graph(), state);
+      compositor->render(*sc, document->get_sector_model().get_scene_graph(), state);
 
       state.pop(*sc);
 
@@ -321,13 +320,13 @@ WindstilleWidget::draw()
 void
 WindstilleWidget::undo()
 {
-  undo_manager->undo();
+  document->get_undo_manager().undo();
 }
 
 void
 WindstilleWidget::redo()
 {
-  undo_manager->redo();
+  document->get_undo_manager().redo();
 }
 
 void
@@ -335,7 +334,7 @@ WindstilleWidget::selection_raise()
 {
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
-      sector_model->raise(*i);
+      document->get_sector_model().raise(*i);
     }
   queue_draw();
 }
@@ -345,7 +344,7 @@ WindstilleWidget::selection_lower()
 {
   for(Selection::reverse_iterator i = selection->rbegin(); i != selection->rend(); ++i)
     {
-      sector_model->lower(*i);
+      document->get_sector_model().lower(*i);
     }
   queue_draw();
 }
@@ -355,7 +354,7 @@ WindstilleWidget::selection_raise_to_top()
 {
   for(Selection::reverse_iterator i = selection->rbegin(); i != selection->rend(); ++i)
     {
-      sector_model->raise_to_top(*i);
+      document->get_sector_model().raise_to_top(*i);
     }
   queue_draw();
 }
@@ -365,7 +364,7 @@ WindstilleWidget::selection_lower_to_bottom()
 {
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
-      sector_model->lower_to_bottom(*i);
+      document->get_sector_model().lower_to_bottom(*i);
     }
   queue_draw();
 }
@@ -482,7 +481,7 @@ WindstilleWidget::selection_duplicate()
   SelectionHandle new_selection = Selection::create();
   for(Selection::reverse_iterator i = selection->rbegin(); i != selection->rend(); ++i)
     {
-      LayerHandle layer = sector_model->get_layer(*i);
+      LayerHandle layer = document->get_sector_model().get_layer(*i);
       ObjectModelHandle obj = (*i)->clone();
 
       parent_map[*i] = obj;
@@ -578,7 +577,7 @@ WindstilleWidget::selection_delete()
   boost::shared_ptr<GroupCommand> group_cmd(new GroupCommand());
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
-      group_cmd->add(CommandHandle(new ObjectRemoveCommand(*sector_model, *i)));
+      group_cmd->add(CommandHandle(new ObjectRemoveCommand(document->get_sector_model(), *i)));
     }
 
   execute(group_cmd);
@@ -587,13 +586,13 @@ WindstilleWidget::selection_delete()
 }
 
 bool
-WindstilleWidget::scroll(GdkEventScroll* event_)
+WindstilleWidget::scroll(GdkEventScroll* ev)
 {
-  if (event_->direction == GDK_SCROLL_UP)
+  if (ev->direction == GDK_SCROLL_UP)
     {
       //viewer->get_state().zoom(1.1f, Vector2i(event->x, event->y));
     }
-  else if (event_->direction == GDK_SCROLL_DOWN)
+  else if (ev->direction == GDK_SCROLL_DOWN)
     {
       //viewer->get_state().zoom(1.0f/1.1f, Vector2i(event->x, event->y));
     }
@@ -601,25 +600,25 @@ WindstilleWidget::scroll(GdkEventScroll* event_)
 }
 
 bool
-WindstilleWidget::mouse_down(GdkEventButton* event_)
+WindstilleWidget::mouse_down(GdkEventButton* ev)
 {
   grab_focus();
 
-  //std::cout << "Button Press: " << event_->x << ", " << event_->y << " - " << event_->button << std::endl;
+  //std::cout << "Button Press: " << ev->x << ", " << ev->y << " - " << ev->button << std::endl;
 
-  if (event_->button == 1)
+  if (ev->button == 1)
     { // Tool
-      EditorWindow::current()->get_current_tool()->mouse_down(event_, *this);
+      EditorWindow::current()->get_current_tool()->mouse_down(ev, *this);
       return true;
     }
-  else if (event_->button == 2)
+  else if (ev->button == 2)
     { // Scroll
-      scroll_tool->mouse_down(event_, *this);
+      scroll_tool->mouse_down(ev, *this);
       return true;
     }
-  else if (event_->button == 3)
+  else if (ev->button == 3)
     { // Context Menu
-      EditorWindow::current()->get_current_tool()->mouse_right_down(event_, *this);
+      EditorWindow::current()->get_current_tool()->mouse_right_down(ev, *this);
       return true;
     }
   else
@@ -629,29 +628,29 @@ WindstilleWidget::mouse_down(GdkEventButton* event_)
 }
 
 bool
-WindstilleWidget::mouse_move(GdkEventMotion* event_)
+WindstilleWidget::mouse_move(GdkEventMotion* ev)
 {
-  //std::cout << "Motion: " << event_->x << ", " << event_->y << std::endl;
+  //std::cout << "Motion: " << ev->x << ", " << ev->y << std::endl;
   
-  EditorWindow::current()->get_current_tool()->mouse_move(event_, *this);
-  scroll_tool->mouse_move(event_, *this);
+  EditorWindow::current()->get_current_tool()->mouse_move(ev, *this);
+  scroll_tool->mouse_move(ev, *this);
   
   return true;
 }
 
 bool
-WindstilleWidget::mouse_up(GdkEventButton* event_)
+WindstilleWidget::mouse_up(GdkEventButton* ev)
 {
-  //std::cout << "Button Release: " << event_->x << ", " << event_->y << " - " << event_->button << std::endl;
-  //viewer->on_mouse_button_up(Vector2i(event_->x, event_->y), event_->button);
-  if (event_->button == 1)
+  //std::cout << "Button Release: " << ev->x << ", " << ev->y << " - " << ev->button << std::endl;
+  //viewer->on_mouse_button_up(Vector2i(ev->x, ev->y), ev->button);
+  if (ev->button == 1)
     {
-      EditorWindow::current()->get_current_tool()->mouse_up(event_, *this);
+      EditorWindow::current()->get_current_tool()->mouse_up(ev, *this);
       queue_draw();
     }
-  else if (event_->button == 2)
+  else if (ev->button == 2)
     {
-      scroll_tool->mouse_up(event_, *this);
+      scroll_tool->mouse_up(ev, *this);
       queue_draw();
     }
 
@@ -659,11 +658,11 @@ WindstilleWidget::mouse_up(GdkEventButton* event_)
 }
 
 bool
-WindstilleWidget::key_press(GdkEventKey* event_)
+WindstilleWidget::key_press(GdkEventKey* ev)
 {
-  //std::cout << event_->keyval << " keypress " << state.get_pos() << std::endl;
+  //std::cout << ev->keyval << " keypress " << state.get_pos() << std::endl;
 
-  switch(event_->keyval)
+  switch(ev->keyval)
     {
       case GDK_1:
         map_type = DecalObjectModel::COLORMAP;
@@ -720,9 +719,9 @@ WindstilleWidget::key_press(GdkEventKey* event_)
 }
 
 bool
-WindstilleWidget::key_release(GdkEventKey* /*event_*/)
+WindstilleWidget::key_release(GdkEventKey* ev)
 { // /usr/include/gtk-2.0/gdk/gdkkeysyms.h
-  //std::cout << "KeyRelease: " << (int)event_->keyval << std::endl;
+  //std::cout << "KeyRelease: " << (int)ev->keyval << std::endl;
   return true;
 }
 
@@ -764,7 +763,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*
     }
   else
     {
-      execute(CommandHandle(new ObjectAddCommand(sector_model->get_layer(path_), object)));
+      execute(CommandHandle(new ObjectAddCommand(document->get_sector_model().get_layer(path_), object)));
     }
 }
 
@@ -825,7 +824,7 @@ WindstilleWidget::get_current_layer()
     }
   else
     {
-      return sector_model->get_layer(path_);  
+      return document->get_sector_model().get_layer(path_);  
     }
 }
 
@@ -897,17 +896,11 @@ WindstilleWidget::save_screenshot(const std::string& filename_)
     }
 }
 
-SectorModel*
-WindstilleWidget::get_sector_model()
-{
-  return sector_model.get();
-}
-
 void
 WindstilleWidget::load_file(const std::string& filename_)
 {
   filename = filename_;
-  sector_model->load(filename);
+  document->get_sector_model().load(filename);
   queue_draw();
 }
 

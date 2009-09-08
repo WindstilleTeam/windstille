@@ -66,6 +66,7 @@ public:
 
   void add(const ObjectModelHandle& object);
   void remove(const ObjectModelHandle& object);
+  iterator erase(iterator it);
 
   void draw(SceneContext& sc, const SelectMask& layers);
   void update(float delta);

@@ -38,8 +38,6 @@ public:
   void add_to_scenegraph(SceneGraph& sg);
   void set_rel_pos(const Vector2f& rel_pos_);
   void sync_drawable();
-
-  void on_remove();
   
   NodeHandle get_node() const { return m_node; }
 

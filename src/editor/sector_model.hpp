@@ -88,7 +88,7 @@ public:
   SectorModel();
   ~SectorModel();
 
-  void draw(SceneContext& sc, const SelectMask& layers, bool draw_navgraph);
+  void draw(SceneContext& sc, const SelectMask& layers);
 
   void update(float delta);
 
@@ -140,6 +140,7 @@ public:
 
   boost::shared_ptr<NavGraphNodeObjectModel> find_navgraph_node(NodeHandle node) const;
   boost::shared_ptr<NavGraphEdgeObjectModel> find_navgraph_edge(EdgeHandle edge) const;
+  void delete_navgraph_edges(NavGraphNodeObjectModel& node);
 
   void queue_draw();
 

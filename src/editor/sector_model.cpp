@@ -217,7 +217,7 @@ SectorModel::get_layer(const ObjectModelHandle& object) const
 }
 
 void
-SectorModel::draw(SceneContext& sc, const SelectMask& layermask, bool draw_navgraph)
+SectorModel::draw(SceneContext& sc, const SelectMask& layermask)
 {
   // Draw Layers
   const Layers& layers = get_layers();
@@ -226,23 +226,6 @@ SectorModel::draw(SceneContext& sc, const SelectMask& layermask, bool draw_navgr
     {
       if ((*i)->is_visible())
         (*i)->draw(sc, layermask);
-    }
-
-  // Draw Navgraph
-  if (draw_navgraph)
-    {
-      for(NavigationGraph::Edges::iterator i = nav_graph->get_edges().begin(); i != nav_graph->get_edges().end(); ++i)
-        {
-          sc.control().draw_line(Line((*i)->get_node1()->get_pos(),
-                                      (*i)->get_node2()->get_pos()),
-                                 Color(1.0f, 0.0f, 0.0f));
-        }
-
-      for(NavigationGraph::Nodes::iterator i = nav_graph->get_nodes().begin(); i != nav_graph->get_nodes().end(); ++i)
-        {
-          sc.control().fill_rect(Rectf((*i)->get_pos() - Vector2f(4,4), Sizef(9, 9)),
-                                 Color(1.0f, 1.0f, 0.0f));
-        }
     }
 }
 
@@ -433,7 +416,7 @@ SectorModel::load(const std::string& filename)
       nav_graph->load(navigation_section);
 
       FileReader layers_section;
-      reader.get("objects", layers_section);
+      reader.get("layers", layers_section);
 
       const std::vector<FileReader>& sections = layers_section.get_sections();
       for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
@@ -480,7 +463,7 @@ SectorModel::write(FileWriter& writer) const
   nav_graph->write(writer);
   writer.end_section();
 
-  writer.start_section("objects");
+  writer.start_section("layers");
   for(Gtk::ListStore::Children::iterator i = layer_tree->children().begin(); i != layer_tree->children().end(); ++i)
     {
       const Gtk::TreeRow& row = *i;
@@ -619,6 +602,8 @@ SectorModel::on_rows_reordered(const Gtk::TreeModel::Path& /*path*/, const Gtk::
 boost::shared_ptr<NavGraphNodeObjectModel>
 SectorModel::find_navgraph_node(NodeHandle node) const
 {
+  // FIXME: Could solve this better by either a map/unsorted_set or by having
+  // a userdata ptr in NavGraph
   const Layers& layers = get_layers();
   for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
   {
@@ -644,6 +629,8 @@ SectorModel::find_navgraph_node(NodeHandle node) const
 boost::shared_ptr<NavGraphEdgeObjectModel>
 SectorModel::find_navgraph_edge(EdgeHandle edge) const
 {
+  // FIXME: Could solve this better by either a map/unsorted_set or by having
+  // a userdata ptr in NavGraph
   const Layers& layers = get_layers();
   for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
   {
@@ -664,6 +651,33 @@ SectorModel::find_navgraph_edge(EdgeHandle edge) const
   }
   
   return boost::shared_ptr<NavGraphEdgeObjectModel>(); 
+}
+
+void
+SectorModel::delete_navgraph_edges(NavGraphNodeObjectModel& node)
+{
+  // FIXME: Kind of ugly, higher level template might help
+  const Layers& layers = get_layers();
+  for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
+  {
+    if (*layer)
+    {
+      for(Layer::const_iterator obj = (*layer)->begin(); obj != (*layer)->end(); ++obj)
+      {
+        boost::shared_ptr<NavGraphEdgeObjectModel> edge = boost::dynamic_pointer_cast<NavGraphEdgeObjectModel>(*obj);
+        if (edge)
+        {
+          /*
+          if (edge.get_lhs().get() == &node ||
+              edge.get_rhs().get() == &node)
+          {
+
+          }
+          */
+        }
+      }
+    }
+  }  
 }
 
 /* EOF */

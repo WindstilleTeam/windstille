@@ -40,6 +40,9 @@
 #include "editor/select_mask.hpp"
 #include "editor/layer.hpp"
 #include "editor/command.hpp"
+#include "editor/sector_model.hpp"
+#include "editor/undo_manager.hpp"
+#include "editor/document.hpp"
 
 class Tool;
 class UndoManager;
@@ -56,10 +59,9 @@ class WindstilleWidget
 private:
   EditorWindow& editor;
 
-  boost::scoped_ptr<UndoManager> undo_manager;
+  boost::scoped_ptr<Document> document;
 
   std::string filename;
-  boost::scoped_ptr<SectorModel> sector_model;
   std::vector<ControlPointHandle> control_points;
 
   GraphicContextState   state;
@@ -69,14 +71,14 @@ private:
   SelectionHandle selection;
   DecalObjectModel::MapType map_type;
   Texture background_pattern;
-  bool draw_background_pattern;
   SelectMask select_mask;
+  bool draw_background_pattern;
   bool draw_only_active_layers;
   bool grid_enabled;
   
 public:
   WindstilleWidget(EditorWindow& editor,
-                   const Glib::RefPtr<const Gdk::GL::Config>& glconfig,
+                   const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
                    const Glib::RefPtr<const Gdk::GL::Context>& share_list);
   virtual ~WindstilleWidget();
 
@@ -133,8 +135,8 @@ public:
 
   void selection_object_properties();
 
-  SectorModel* get_sector_model();
-  UndoManager* get_undo_manager() const { return undo_manager.get(); }
+  SectorModel* get_sector_model() const { return &(document->get_sector_model()); }
+  UndoManager* get_undo_manager() const { return &(document->get_undo_manager()); }
   void set_selection(const SelectionHandle& selection);
   SelectionHandle get_selection() const;
 

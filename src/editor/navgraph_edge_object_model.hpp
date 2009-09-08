@@ -30,14 +30,14 @@ class VertexArrayDrawable;
 class NavGraphEdgeObjectModel : public ObjectModel
 {
 private:
-  boost::weak_ptr<NavGraphNodeObjectModel> m_lhs;
-  boost::weak_ptr<NavGraphNodeObjectModel> m_rhs;
+  boost::shared_ptr<NavGraphNodeObjectModel> m_lhs;
+  boost::shared_ptr<NavGraphNodeObjectModel> m_rhs;
   boost::shared_ptr<VertexArrayDrawable> m_drawable;
   EdgeHandle m_edge;
 
 public:
-  NavGraphEdgeObjectModel(boost::weak_ptr<NavGraphNodeObjectModel> lhs,
-                          boost::weak_ptr<NavGraphNodeObjectModel> rhs,
+  NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeObjectModel> lhs,
+                          boost::shared_ptr<NavGraphNodeObjectModel> rhs,
                           SectorModel& sector);
 
   void add_to_scenegraph(SceneGraph& sg);
@@ -48,6 +48,9 @@ public:
   void write(FileWriter& writer) const;
 
   EdgeHandle get_edge() const { return m_edge; }
+
+  boost::shared_ptr<NavGraphNodeObjectModel> get_lhs() const { return m_lhs; }
+  boost::shared_ptr<NavGraphNodeObjectModel> get_rhs() const { return m_rhs; }
 
 private:
   NavGraphEdgeObjectModel(const NavGraphEdgeObjectModel&);

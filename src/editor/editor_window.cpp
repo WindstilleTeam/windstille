@@ -795,15 +795,6 @@ EditorWindow::get_windstille_widget()
     }
 }
 
-bool
-EditorWindow::get_draw_navgraph() const
-{
-  if (current_tool == navgraph_insert_tool.get())
-    return true;
-  else
-    return false;
-}
-
 void
 EditorWindow::on_switch_page(GtkNotebookPage* /*page*/, guint /*page_num*/)
 {

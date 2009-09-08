@@ -53,6 +53,14 @@ Layer::remove(const ObjectModelHandle& object)
   m_sector.rebuild_scene_graph();
 }
 
+Layer::iterator
+Layer::erase(iterator it)
+{
+  it = objects.erase(it);
+  m_sector.rebuild_scene_graph();
+  return it;
+}
+
 void
 Layer::draw(SceneContext& sc, const SelectMask& select_mask)
 {

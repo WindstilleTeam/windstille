@@ -23,8 +23,8 @@
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
 
-NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(boost::weak_ptr<NavGraphNodeObjectModel> lhs,
-                                                 boost::weak_ptr<NavGraphNodeObjectModel> rhs,
+NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeObjectModel> lhs,
+                                                 boost::shared_ptr<NavGraphNodeObjectModel> rhs,
                                                  SectorModel& sector)
   : ObjectModel("NavGraphEdgeObjectModel", Vector2f()),
     m_lhs(lhs),
@@ -33,8 +33,8 @@ NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(boost::weak_ptr<NavGraphNodeObj
     m_edge()
 {
   std::cout << "Adding edge" << std::endl;
-  m_edge = sector.get_nav_graph()->add_edge(lhs.lock()->get_node(),
-                                            rhs.lock()->get_node());
+  m_edge = sector.get_nav_graph()->add_edge(m_lhs->get_node(),
+                                            m_rhs->get_node());
 }
 
 void
@@ -42,19 +42,14 @@ NavGraphEdgeObjectModel::update(float delta)
 {
   if (m_drawable)
   {
-    boost::shared_ptr<NavGraphNodeObjectModel> lhs = m_lhs.lock();
-    boost::shared_ptr<NavGraphNodeObjectModel> rhs = m_rhs.lock();
-
-    if (lhs && rhs)
-    {
       m_drawable->clear();
       m_drawable->set_mode(GL_LINES);
-      m_drawable->color(Color(0.0f, 1.0f, 1.0f));
-      m_drawable->vertex(lhs->get_world_pos());
 
       m_drawable->color(Color(0.0f, 1.0f, 1.0f));
-      m_drawable->vertex(rhs->get_world_pos());
-    }
+      m_drawable->vertex(m_lhs->get_world_pos());
+
+      m_drawable->color(Color(0.0f, 1.0f, 1.0f));
+      m_drawable->vertex(m_rhs->get_world_pos());
   }
 }
 
@@ -69,11 +64,8 @@ NavGraphEdgeObjectModel::add_to_scenegraph(SceneGraph& sg)
 Rectf
 NavGraphEdgeObjectModel::get_bounding_box() const
 {
-  boost::shared_ptr<NavGraphNodeObjectModel> lhs = m_lhs.lock();
-  boost::shared_ptr<NavGraphNodeObjectModel> rhs = m_rhs.lock();
-
-  Rectf rect(lhs->get_world_pos(),
-             rhs->get_world_pos());
+  Rectf rect(m_lhs->get_world_pos(),
+             m_rhs->get_world_pos());
   rect.normalize();
   return rect;
 }
@@ -87,6 +79,11 @@ NavGraphEdgeObjectModel::clone() const
 void
 NavGraphEdgeObjectModel::write(FileWriter& writer) const
 {
+  writer.start_section("navgraph-edge");
+  ObjectModel::write_member(writer);
+  writer.write("lhs-node", m_lhs->get_id());
+  writer.write("rhs-node", m_rhs->get_id());
+  writer.end_section();
 }
 
 /* EOF */

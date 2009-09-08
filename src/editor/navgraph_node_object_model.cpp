@@ -69,12 +69,6 @@ NavGraphNodeObjectModel::set_rel_pos(const Vector2f& rel_pos_)
   m_node->set_pos(get_world_pos());
 }
 
-void
-NavGraphNodeObjectModel::on_remove()
-{
-  // remove connected edges
-}
-
 Rectf
 NavGraphNodeObjectModel::get_bounding_box() const
 {
@@ -91,6 +85,10 @@ NavGraphNodeObjectModel::clone() const
 void
 NavGraphNodeObjectModel::write(FileWriter& writer) const
 {
+  writer.start_section("navgraph-node");
+  ObjectModel::write_member(writer);
+  //writer.write("vflip",   vflip);
+  writer.end_section();
 }
 
 /* EOF */
