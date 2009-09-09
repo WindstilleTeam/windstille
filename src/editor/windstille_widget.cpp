@@ -128,7 +128,7 @@ WindstilleWidget::~WindstilleWidget()
 void
 WindstilleWidget::execute(CommandHandle cmd)
 {
-  m_document->get_undo_manager().execute(cmd);
+  m_document->execute(cmd);
   EditorWindow::current()->update_undo_state();
   m_document->get_sector_model().rebuild_scene_graph();
 }

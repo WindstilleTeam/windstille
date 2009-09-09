@@ -113,8 +113,7 @@ public:
 
   Document&    get_document() const { return *m_document; }
   SectorModel* get_sector_model() const { return &(m_document->get_sector_model()); }
-  UndoManager* get_undo_manager() const { return &(m_document->get_undo_manager()); }
-
+  
   SelectMask& get_select_mask() { return select_mask; }
 
   SceneContext* get_sc() const { return sc.get(); }

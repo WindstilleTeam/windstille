@@ -49,7 +49,6 @@ public:
   Document();
   ~Document();
 
-  UndoManager& get_undo_manager() const { return *m_undo_manager; }
   SectorModel& get_sector_model() const { return *m_sector_model; }
   SelectionHandle get_selection() const { return m_selection; }
 
@@ -57,6 +56,8 @@ public:
    * @{*/  
   void undo();
   void redo();
+  bool has_undo() const;
+  bool has_redo() const;
   void execute(CommandHandle cmd);
   /** @} */
 

@@ -57,6 +57,18 @@ Document::redo()
   m_undo_manager->redo();
 }
 
+bool
+Document::has_undo() const
+{
+  return m_undo_manager->can_undo();
+}
+
+bool
+Document::has_redo() const
+{
+  return m_undo_manager->can_redo();
+}
+
 void
 Document::execute(CommandHandle cmd)
 {

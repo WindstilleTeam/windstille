@@ -686,8 +686,8 @@ EditorWindow::update_undo_state()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      action_group->get_action("Undo")->set_sensitive(wst->get_undo_manager()->can_undo());
-      action_group->get_action("Redo")->set_sensitive(wst->get_undo_manager()->can_redo());
+      action_group->get_action("Undo")->set_sensitive(wst->get_document().has_undo());
+      action_group->get_action("Redo")->set_sensitive(wst->get_document().has_redo());
     }
 }
 
