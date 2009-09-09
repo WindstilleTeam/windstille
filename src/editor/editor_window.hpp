@@ -34,6 +34,7 @@
 #include "editor/minimap_widget.hpp"
 #include "editor/object_selector.hpp"
 #include "editor/layer_manager.hpp"
+#include "editor/document.hpp"
 
 class Tool;
 class WindstilleWidget;
@@ -148,7 +149,7 @@ public:
   /** Queue a file to be loaded once the editor is full realized */
   void queue_for_load(const std::string& filename);
 
-  void call_with_windstille_widget(void (WindstilleWidget::*func)());
+  void call_with_document(void (Document::*func)());
 
   void on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_action);
   

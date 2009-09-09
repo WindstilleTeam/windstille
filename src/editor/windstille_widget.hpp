@@ -59,7 +59,7 @@ class WindstilleWidget
 private:
   EditorWindow& editor;
 
-  boost::scoped_ptr<Document> document;
+  boost::scoped_ptr<Document> m_document;
 
   std::string filename;
   std::vector<ControlPointHandle> control_points;
@@ -68,7 +68,6 @@ private:
   boost::scoped_ptr<Compositor> compositor;
   boost::scoped_ptr<SceneContext> sc;
   boost::scoped_ptr<ScrollTool> scroll_tool;
-  SelectionHandle selection;
   DecalObjectModel::MapType map_type;
   Texture background_pattern;
   SelectMask select_mask;
@@ -112,33 +111,9 @@ public:
   void draw();
   void update(float delta);
 
-  void undo();
-  void redo();
-
-  void selection_raise();
-  void selection_lower();
-
-  void selection_raise_to_top();
-  void selection_lower_to_bottom();
-
-  void selection_vflip();
-  void selection_hflip();
-
-  void selection_connect_parent();
-  void selection_clear_parent();
-  
-  void selection_duplicate();
-  void selection_delete();
-
-  void selection_reset_rotation();
-  void selection_reset_scale();
-
-  void selection_object_properties();
-
-  SectorModel* get_sector_model() const { return &(document->get_sector_model()); }
-  UndoManager* get_undo_manager() const { return &(document->get_undo_manager()); }
-  void set_selection(const SelectionHandle& selection);
-  SelectionHandle get_selection() const;
+  Document&    get_document() const { return *m_document; }
+  SectorModel* get_sector_model() const { return &(m_document->get_sector_model()); }
+  UndoManager* get_undo_manager() const { return &(m_document->get_undo_manager()); }
 
   SelectMask& get_select_mask() { return select_mask; }
 
@@ -160,12 +135,8 @@ public:
   std::string get_filename() const { return filename; }
   void set_filename(const std::string& filename_) { filename = filename_; }
 
-  ControlPointHandle get_control_point(const Vector2f& pos) const;
-
-  void clear_control_points();
-  void create_control_points();
-
   void on_selection_change();
+  void on_document_change();
 
   void save_screenshot(const std::string& filename);
 

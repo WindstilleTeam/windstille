@@ -44,6 +44,7 @@
 #include "editor/navgraph_insert_tool.hpp"
 #include "editor/sector_model.hpp"
 #include "editor/layer_widget.hpp"
+#include "editor/document.hpp"
 
 #include "editor/editor_window.hpp"
 
@@ -276,38 +277,38 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::mem_fun(*this, &EditorWindow::on_select_all));
 
   action_group->add(Gtk::Action::create("Delete",      Gtk::Stock::DELETE),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_delete));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_delete));
   action_group->add(Gtk::Action::create_with_icon_name("Duplicate", "duplicate", "Duplicate Object", "Duplicate Object"),
                     Gtk::AccelKey(GDK_d, Gdk::CONTROL_MASK),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_duplicate));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_duplicate));
 
   action_group->add(Gtk::Action::create("MenuObject",    "_Object"));
   action_group->add(Gtk::Action::create_with_icon_name("RaiseObjectToTop", "object_raise_to_top", "Raise To Top", "Raise Object to Top"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_raise_to_top));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_raise_to_top));
   action_group->add(Gtk::Action::create_with_icon_name("RaiseObject", "object_raise", "Raise", "Raise Object"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_raise));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_raise));
   action_group->add(Gtk::Action::create_with_icon_name("LowerObject", "object_lower", "Lower", "Lower Object"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_lower));                    
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_lower));                    
   action_group->add(Gtk::Action::create_with_icon_name("LowerObjectToBottom", "object_lower_to_bottom", "Lower To Bottom", "Lower Object to Bottom"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_lower_to_bottom));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_lower_to_bottom));
 
   action_group->add(Gtk::Action::create_with_icon_name("ConnectParent", "connect_parent", "Connect Parent", "Connect Parent"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_connect_parent));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_connect_parent));
   action_group->add(Gtk::Action::create_with_icon_name("ClearParent", "clear_parent", "Clear Parent", "Clear Parent"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_clear_parent));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_clear_parent));
 
   action_group->add(Gtk::Action::create_with_icon_name("ResetRotation", "reload", "Reset Rotation", "Reset Rotation"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_reset_rotation));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_reset_rotation));
   action_group->add(Gtk::Action::create_with_icon_name("ResetScale", "reload", "Reset Scale", "Reset Scale"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_reset_scale));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_reset_scale));
 
   action_group->add(Gtk::Action::create_with_icon_name("ObjectProperties", "properties", "Object Properties", "Object Properties"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_object_properties));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_object_properties));
 
   action_group->add(Gtk::Action::create_with_icon_name("HFlipObject", "object_hflip", "Horizontal Flip", "Horizontal Flip"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_hflip));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_hflip));
   action_group->add(Gtk::Action::create_with_icon_name("VFlipObject", "object_vflip", "Vertical Flip", "Vertical Flip"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_windstille_widget), &WindstilleWidget::selection_vflip));
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_vflip));
 
   action_group->add(Gtk::Action::create("MenuView",    "_View"));
   action_group->add(Gtk::Action::create("Zoom100",     Gtk::Stock::ZOOM_100),
@@ -695,7 +696,7 @@ EditorWindow::on_undo()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      wst->undo();
+      wst->get_document().undo();
       update_undo_state();
       queue_draw();
     }
@@ -706,7 +707,7 @@ EditorWindow::on_redo()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      wst->redo();
+      wst->get_document().redo();
       update_undo_state();
       queue_draw();
     }
@@ -823,12 +824,12 @@ EditorWindow::on_switch_page(GtkNotebookPage* /*page*/, guint /*page_num*/)
 }
 
 void
-EditorWindow::call_with_windstille_widget(void (WindstilleWidget::*func)())
+EditorWindow::call_with_document(void (Document::*func)())
 {
   WindstilleWidget* wst = get_windstille_widget();
   if (wst)
     {
-      (wst->*func)();
+      (wst->get_document().*func)();
     }
 }
 
@@ -876,8 +877,8 @@ EditorWindow::on_cut()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      clipboard = wst->get_selection()->clone();
-      wst->selection_delete();
+      clipboard = wst->get_document().get_selection()->clone();
+      wst->get_document().selection_delete();
       queue_draw();
     }
 }
@@ -887,7 +888,7 @@ EditorWindow::on_copy()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      clipboard = wst->get_selection()->clone();
+      clipboard = wst->get_document().get_selection()->clone();
     }
 }
 
@@ -942,7 +943,7 @@ EditorWindow::on_paste()
               layer->add(*i);
             }
 
-          wst->set_selection(clipboard);
+          wst->get_document().set_selection(clipboard);
           clipboard = clipboard->clone();
           queue_draw();
         }
@@ -958,7 +959,7 @@ EditorWindow::on_select_all()
       LayerHandle layer = wst->get_current_layer();
       SelectionHandle selection = Selection::create();
       selection->add(layer->begin(), layer->end());
-      wst->set_selection(selection);
+      wst->get_document().set_selection(selection);
     }
 }
 

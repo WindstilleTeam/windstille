@@ -21,14 +21,28 @@
 
 #include <boost/scoped_ptr.hpp>
 
+#include "editor/selection.hpp"
+#include "editor/command.hpp"
+
 class UndoManager;
 class SectorModel;
 
+/**
+ *  Document wraps SectorModel with undo/redo functionality and
+ *  provides data and functions for editing that are not part of the
+ *  central data, such as selections.
+ */
 class Document // FIXME: name is not so great
 {
 private:
   boost::scoped_ptr<UndoManager> m_undo_manager;
   boost::scoped_ptr<SectorModel> m_sector_model;
+
+  SelectionHandle m_selection;
+
+  std::vector<ControlPointHandle> m_control_points;
+
+  sigc::signal<void> m_sig_on_change;
 
 public:
   Document();
@@ -36,9 +50,42 @@ public:
 
   UndoManager& get_undo_manager() const { return *m_undo_manager; }
   SectorModel& get_sector_model() const { return *m_sector_model; }
+  SelectionHandle get_selection() const { return m_selection; }
 
   void undo();
   void redo();
+  void execute(CommandHandle cmd);
+  
+  void selection_raise();
+  void selection_lower();
+
+  void selection_raise_to_top();
+  void selection_lower_to_bottom();
+
+  void selection_vflip();
+  void selection_hflip();
+
+  void selection_connect_parent();
+  void selection_clear_parent();
+  
+  void selection_duplicate();
+  void selection_delete();
+
+  void selection_reset_rotation();
+  void selection_reset_scale();
+
+  void selection_object_properties();
+
+  void set_selection(const SelectionHandle& selection);
+
+  void on_selection_change();
+
+  ControlPointHandle get_control_point(const Vector2f& pos) const;
+
+  void clear_control_points();
+  void create_control_points();
+
+  sigc::signal<void>& signal_on_change() { return m_sig_on_change; }
 
 private:
   Document(const Document&);
