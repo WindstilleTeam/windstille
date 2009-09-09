@@ -41,6 +41,16 @@ Document::Document()
 {
 }
 
+Document::Document(const std::string& filename)
+  : m_undo_manager(new UndoManager()),
+    m_sector_model(new SectorModel()),
+    m_selection(Selection::create()),
+    m_control_points(),
+    m_sig_on_change()
+{
+  m_sector_model->load(filename);
+}
+
 Document::~Document()
 {
 }
@@ -55,6 +65,16 @@ void
 Document::redo()
 {
   m_undo_manager->redo();
+}
+
+void
+Document::undo_group_begin()
+{
+}
+
+void
+Document::undo_group_end()
+{
 }
 
 bool
@@ -77,6 +97,13 @@ Document::execute(CommandHandle cmd)
   EditorWindow::current()->update_undo_state();
   m_sector_model->rebuild_scene_graph();
   m_sig_on_change();
+}
+
+void
+Document::execute(const boost::function<void ()>& undo_callback,
+                  const boost::function<void ()>& redo_callback)
+{
+  execute(CommandHandle(new FunctorCommand(undo_callback, redo_callback)));
 }
 
 void
@@ -411,5 +438,4 @@ Document::create_control_points()
   m_selection->add_control_points(m_control_points);
 }
 
-
 /* EOF */

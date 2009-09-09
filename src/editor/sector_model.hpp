@@ -79,7 +79,7 @@ class SectorModel
 private:
   boost::scoped_ptr<NavigationGraph> nav_graph;
   boost::scoped_ptr<SceneGraph>      scene_graph;
-  Glib::RefPtr<Gtk::ListStore> layer_tree;
+  Glib::RefPtr<Gtk::ListStore>       layer_tree;
   Color ambient_color;
   
 public:
@@ -135,8 +135,8 @@ public:
                   std::map<ObjectModelHandle, std::string>& parent_table);
   void write(FileWriter& writer) const;
 
-  NavigationGraph* get_nav_graph() const { return nav_graph.get(); }
-  SceneGraph*      get_scene_graph() const { return scene_graph.get(); }
+  NavigationGraph& get_nav_graph()   const { return *nav_graph; }
+  SceneGraph&      get_scene_graph() const { return *scene_graph; }
 
   boost::shared_ptr<NavGraphNodeObjectModel> find_navgraph_node(NodeHandle node) const;
   boost::shared_ptr<NavGraphEdgeObjectModel> find_navgraph_edge(EdgeHandle edge) const;

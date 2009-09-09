@@ -28,7 +28,7 @@ NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos, SectorMode
     m_drawable(),
     m_node()
 {
-  m_node = sector.get_nav_graph()->add_node(pos);
+  m_node = sector.get_nav_graph().add_node(pos);
 }
 
 void

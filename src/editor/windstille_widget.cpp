@@ -33,9 +33,7 @@
 #include "editor/editor_window.hpp"
 #include "editor/scroll_tool.hpp"
 #include "editor/sector_model.hpp"
-#include "editor/undo_manager.hpp"
 #include "editor/group_command.hpp"
-#include "editor/object_commands.hpp"
 #include "editor/functor_command.hpp"
 #include "editor/document.hpp"
 #include "editor/sprite_object_model.hpp"
@@ -123,14 +121,6 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
 
 WindstilleWidget::~WindstilleWidget()
 {
-}
-
-void
-WindstilleWidget::execute(CommandHandle cmd)
-{
-  m_document->execute(cmd);
-  EditorWindow::current()->update_undo_state();
-  m_document->get_sector_model().rebuild_scene_graph();
 }
 
 bool
@@ -304,7 +294,7 @@ WindstilleWidget::draw()
           EditorWindow::current()->get_current_tool()->draw(*sc);
         }
 
-      compositor->render(*sc, m_document->get_sector_model().get_scene_graph(), state);
+      compositor->render(*sc, &m_document->get_sector_model().get_scene_graph(), state);
 
       state.pop(*sc);
 
@@ -494,7 +484,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*
     }
   else
     {
-      execute(CommandHandle(new ObjectAddCommand(m_document->get_sector_model().get_layer(path_), object)));
+      get_document().object_add(m_document->get_sector_model().get_layer(path_), object);
     }
 }
 
@@ -553,19 +543,20 @@ WindstilleWidget::get_current_layer_path()
   EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path_, focus_column);
 
   if (!path_.gobj())
-    {
-      std::cout << "WindstilleWidget::get_current_layer_path(): Error: Couldn't get path" << std::endl;
-      return Gtk::TreeModel::Path();
-    }
+  {
+    std::cout << "WindstilleWidget::get_current_layer_path(): Error: Couldn't get path" << std::endl;
+    return Gtk::TreeModel::Path();
+  }
   else
-    {
-      return path_;
-     }
+  {
+    return path_;
+  }
 }
 
 void
 WindstilleWidget::on_document_change()
 {
+  EditorWindow::current()->update_undo_state();
   m_document->get_sector_model().rebuild_scene_graph();
   queue_draw();
 }
@@ -586,8 +577,7 @@ void
 WindstilleWidget::load_file(const std::string& filename_)
 {
   filename = filename_;
-  m_document->get_sector_model().load(filename);
-  queue_draw();
+  m_document.reset(new Document(filename));
 }
 
 /* EOF */

@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_DOCUMENT_HPP
 
 #include <boost/scoped_ptr.hpp>
+#include <boost/function.hpp>
 
 #include "editor/selection.hpp"
 #include "editor/command.hpp"
@@ -47,17 +48,24 @@ private:
 
 public:
   Document();
+  Document(const std::string& filename);
   ~Document();
 
   SectorModel& get_sector_model() const { return *m_sector_model; }
-  SelectionHandle get_selection() const { return m_selection; }
 
   /* Undo/Redo Handling
    * @{*/  
   void undo();
   void redo();
+
+  void undo_group_begin();
+  void undo_group_end();
+
   bool has_undo() const;
   bool has_redo() const;
+
+  void execute(const boost::function<void ()>& undo_callback,
+               const boost::function<void ()>& redo_callback);
   void execute(CommandHandle cmd);
   /** @} */
 
@@ -97,6 +105,7 @@ public:
   void selection_object_properties();
 
   void set_selection(const SelectionHandle& selection);
+  SelectionHandle get_selection() const { return m_selection; }
   /** @} */
 
   /* Control Point Stuff

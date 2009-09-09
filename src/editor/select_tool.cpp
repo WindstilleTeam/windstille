@@ -52,7 +52,7 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
     }
   else
     {  
-      ObjectModelHandle object = wst.get_sector_model()->get_object_at(click_pos, wst.get_select_mask());
+      ObjectModelHandle object = wst.get_document().get_sector_model().get_object_at(click_pos, wst.get_select_mask());
       if (object.get())
         {
           if (wst.get_document().get_selection()->has_object(object))
@@ -118,7 +118,7 @@ SelectTool::process_snap(WindstilleWidget& wst)
 
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
     {
-      SnapData snap = wst.get_sector_model()->snap_object((*i)->get_bounding_box(), ignore_objects);
+      SnapData snap = wst.get_document().get_sector_model().snap_object((*i)->get_bounding_box(), ignore_objects);
       best_snap.merge(snap);
     }
               
@@ -204,12 +204,12 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
       rect.normalize();
       if (event->state & GDK_SHIFT_MASK)
         {
-          SelectionHandle new_selection = wst.get_sector_model()->get_selection(rect, wst.get_select_mask());
+          SelectionHandle new_selection = wst.get_document().get_sector_model().get_selection(rect, wst.get_select_mask());
           wst.get_document().get_selection()->add(new_selection->begin(), new_selection->end());
         }
       else
         {
-          wst.get_document().set_selection(wst.get_sector_model()->get_selection(rect, wst.get_select_mask()));
+          wst.get_document().set_selection(wst.get_document().get_sector_model().get_selection(rect, wst.get_select_mask()));
         }
       wst.queue_draw();
     }

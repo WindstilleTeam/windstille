@@ -33,8 +33,6 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/separatortoolitem.h>
 
-#include "editor/layer_commands.hpp"
-#include "editor/undo_manager.hpp"
 #include "display/scene_context.hpp"
 #include "editor/windstille_widget.hpp"
 #include "editor/about_window.hpp"
@@ -446,8 +444,6 @@ EditorWindow::on_quit()
 void
 EditorWindow::on_new()
 {
-  //std::cout << "on_new" << std::endl;
-
   // FIXME: We abuse the minimap as our root GLContext
   WindstilleWidget* wst = Gtk::manage(new WindstilleWidget(*this, glconfig, minimap_widget.get_gl_context()));
 
@@ -456,7 +452,7 @@ EditorWindow::on_new()
   wst->show();
   notebook.set_current_page(new_page);
 
-  layer_manager.set_model(wst->get_sector_model());
+  layer_manager.set_model(&wst->get_document().get_sector_model());
   layer_widget->update(wst->get_select_mask());
 }
 
@@ -527,7 +523,7 @@ EditorWindow::on_save()
         {
           std::ofstream out(wst->get_filename().c_str());
           FileWriter writer(out);
-          wst->get_sector_model()->write(writer);
+          wst->get_document().get_sector_model().write(writer);
           print("Wrote: " + wst->get_filename());
         }
     }
@@ -570,7 +566,7 @@ EditorWindow::on_save_as()
               std::ofstream out(filename.c_str());
               FileWriter writer(out);
 
-              wst->get_sector_model()->write(writer);
+              wst->get_document().get_sector_model().write(writer);
               wst->set_filename(filename);
 
               notebook.set_tab_label_text(*notebook.get_nth_page(page), Glib::path_get_basename(filename));
@@ -803,7 +799,7 @@ EditorWindow::on_switch_page(GtkNotebookPage* /*page*/, guint /*page_num*/)
 
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      layer_manager.set_model(wst->get_sector_model());
+      layer_manager.set_model(&wst->get_document().get_sector_model());
       layer_widget->update(wst->get_select_mask());
 
       toggle_color_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::COLORMAP);
@@ -897,11 +893,7 @@ EditorWindow::on_delete_layer()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      //std::cout << "Deleting layer: " << wst << std::endl;
-      //wst->get_sector_model()->delete_layer(wst->get_current_layer_path());
-
-      CommandHandle cmd(new LayerDeleteCommand(*wst->get_sector_model(), wst->get_current_layer_path()));
-      wst->execute(cmd);
+      wst->get_document().layer_remove(wst->get_current_layer_path());
       queue_draw();
     }
 }
@@ -911,7 +903,7 @@ EditorWindow::on_reverse_layers()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      wst->get_sector_model()->reverse_layers();
+      wst->get_document().get_sector_model().reverse_layers();
     }
 }
 
@@ -920,12 +912,7 @@ EditorWindow::on_new_layer()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      //std::cout << "Adding layer" << std::endl;
-      //wst->get_sector_model()->add_layer("New Layer", wst->get_current_layer_path());
-
-      CommandHandle cmd(new LayerAddCommand(*wst->get_sector_model(), wst->get_current_layer_path()));
-      wst->execute(cmd);
-
+      wst->get_document().layer_add(wst->get_current_layer_path());
       layer_manager.get_treeview().expand_all();
     }
 }
@@ -968,7 +955,7 @@ EditorWindow::on_show_all(bool v)
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      wst->get_sector_model()->set_all_visible(v);
+      wst->get_document().get_sector_model().set_all_visible(v);
       wst->queue_draw();
     }
 }
@@ -978,7 +965,7 @@ EditorWindow::on_lock_all(bool v)
 {
   if (WindstilleWidget* wst = get_windstille_widget())
     {
-      wst->get_sector_model()->set_all_locked(v);
+      wst->get_document().get_sector_model().set_all_locked(v);
       wst->queue_draw();
     }
 }

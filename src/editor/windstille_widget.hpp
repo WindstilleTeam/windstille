@@ -41,11 +41,9 @@
 #include "editor/layer.hpp"
 #include "editor/command.hpp"
 #include "editor/sector_model.hpp"
-#include "editor/undo_manager.hpp"
 #include "editor/document.hpp"
 
 class Tool;
-class UndoManager;
 class ScrollTool;
 class SectorModel;
 class EditorWindow;
@@ -83,8 +81,6 @@ public:
 
   GraphicContextState& get_state() { return state; }
 
-  void execute(CommandHandle cmd);
-
   virtual void on_realize();
   virtual bool on_timeout();
   virtual bool on_configure_event(GdkEventConfigure* event);
@@ -112,7 +108,6 @@ public:
   void update(float delta);
 
   Document&    get_document() const { return *m_document; }
-  SectorModel* get_sector_model() const { return &(m_document->get_sector_model()); }
   
   SelectMask& get_select_mask() { return select_mask; }
 
@@ -137,7 +132,6 @@ public:
   void save_screenshot(const std::string& filename);
 
 private:
-  void on_selection_change();
   void on_document_change();
 
 private:

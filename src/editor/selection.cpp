@@ -19,9 +19,6 @@
 #include <iostream>
 #include <boost/bind.hpp>
 
-#include "editor/undo_manager.hpp"
-#include "editor/group_command.hpp"
-#include "editor/functor_command.hpp"
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/selection.hpp"
@@ -140,22 +137,18 @@ Selection::on_move_end(WindstilleWidget& wst, const Vector2f& offset)
 {
   moving = false;
 
-  boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
-
+  wst.get_document().undo_group_begin();
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
+  {
+    if (non_moveable_objects.find(*i) == non_moveable_objects.end())
     {
-      if (non_moveable_objects.find(*i) == non_moveable_objects.end())
-        {
-          //(*i)->on_move_end(offset);
-          //(*i)->set_rel_pos(object_orig_poss[i - objects.begin()]);
-
-          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_poss[i - objects.begin()]),
-                                                              boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_poss[i - objects.begin()] + offset))));
-        }
+      wst.get_document().execute(boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_poss[i - objects.begin()]),
+                                 boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_poss[i - objects.begin()] + offset));
     }
+  }
+  wst.get_document().undo_group_end();
 
   non_moveable_objects.clear();
-  wst.execute(group_command);
   signal_changed();
 }
 
