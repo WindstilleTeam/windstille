@@ -86,6 +86,7 @@ public:
   typedef std::vector<LayerHandle> Layers;
 
   SectorModel();
+  SectorModel(const std::string& filename);
   ~SectorModel();
 
   void draw(SceneContext& sc, const SelectMask& layers);
@@ -129,10 +130,6 @@ public:
 
   SnapData snap_object(const Rectf& object, const std::set<ObjectModelHandle>& ignore_objects) const;
 
-  void load(const std::string& filename);
-  void load_layer(const FileReader& filename, 
-                  std::map<std::string, ObjectModelHandle>& id_table,
-                  std::map<ObjectModelHandle, std::string>& parent_table);
   void write(FileWriter& writer) const;
 
   NavigationGraph& get_nav_graph()   const { return *nav_graph; }
@@ -145,6 +142,12 @@ public:
   void queue_draw();
 
   void rebuild_scene_graph();
+
+private:
+  void load(const std::string& filename);
+  void load_layer(const FileReader& filename, 
+                  std::map<std::string, ObjectModelHandle>& id_table,
+                  std::map<ObjectModelHandle, std::string>& parent_table); 
 
 private:
   SectorModel(const SectorModel&);

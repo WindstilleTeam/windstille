@@ -38,6 +38,16 @@
 
 LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
+
+SectorModel::SectorModel(const std::string& filename)
+  : nav_graph(new NavigationGraph()),
+    scene_graph(new SceneGraph()),
+    layer_tree(),
+    ambient_color()
+{
+  load(filename);
+}
+
 SectorModel::SectorModel()
   : nav_graph(new NavigationGraph()),
     scene_graph(new SceneGraph()),

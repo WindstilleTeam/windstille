@@ -35,20 +35,21 @@
 Document::Document()
   : m_undo_manager(new UndoManager()),
     m_sector_model(new SectorModel()),
+    m_group_command(),
     m_selection(Selection::create()),
     m_control_points(),
-    m_sig_on_change()
+    m_sig_on_change()    
 {
 }
 
 Document::Document(const std::string& filename)
   : m_undo_manager(new UndoManager()),
-    m_sector_model(new SectorModel()),
+    m_sector_model(new SectorModel(filename)),
+    m_group_command(),
     m_selection(Selection::create()),
     m_control_points(),
     m_sig_on_change()
 {
-  m_sector_model->load(filename);
 }
 
 Document::~Document()
@@ -70,11 +71,15 @@ Document::redo()
 void
 Document::undo_group_begin()
 {
+  assert(!m_group_command);
+  m_group_command.reset(new GroupCommand());
 }
 
 void
 Document::undo_group_end()
 {
+  execute(m_group_command);
+  m_group_command.reset();
 }
 
 bool
@@ -92,11 +97,17 @@ Document::has_redo() const
 void
 Document::execute(CommandHandle cmd)
 {
-  // FIXME: All stuff should be routed through this
-  m_undo_manager->execute(cmd);
-  EditorWindow::current()->update_undo_state();
-  m_sector_model->rebuild_scene_graph();
-  m_sig_on_change();
+  if (m_group_command)
+  {
+    m_group_command->add(cmd);
+  }
+  else
+  {
+    m_undo_manager->execute(cmd);
+    EditorWindow::current()->update_undo_state();
+    m_sector_model->rebuild_scene_graph();
+    m_sig_on_change();
+  }
 }
 
 void

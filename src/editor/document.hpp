@@ -22,6 +22,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/function.hpp>
 
+#include "editor/group_command.hpp"
 #include "editor/selection.hpp"
 #include "editor/command.hpp"
 #include "editor/layer.hpp"
@@ -40,6 +41,7 @@ private:
   boost::scoped_ptr<UndoManager> m_undo_manager;
   boost::scoped_ptr<SectorModel> m_sector_model;
 
+  boost::shared_ptr<GroupCommand> m_group_command;
   SelectionHandle m_selection;
 
   std::vector<ControlPointHandle> m_control_points;
