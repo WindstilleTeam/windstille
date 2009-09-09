@@ -78,8 +78,9 @@ Document::undo_group_begin()
 void
 Document::undo_group_end()
 {
-  execute(m_group_command);
+  CommandHandle tmp = m_group_command;
   m_group_command.reset();
+  execute(tmp);
 }
 
 bool

@@ -60,7 +60,6 @@ private:
   boost::scoped_ptr<Document> m_document;
 
   std::string filename;
-  std::vector<ControlPointHandle> control_points;
 
   GraphicContextState   state;
   boost::scoped_ptr<Compositor> compositor;

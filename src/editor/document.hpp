@@ -115,6 +115,7 @@ public:
   ControlPointHandle get_control_point(const Vector2f& pos) const;
   void clear_control_points();
   void create_control_points();
+  const std::vector<ControlPointHandle>& get_control_points() const { return m_control_points; }
   /** @} */
 
   sigc::signal<void>& signal_on_change() { return m_sig_on_change; }

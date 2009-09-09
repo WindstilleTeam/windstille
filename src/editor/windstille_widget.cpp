@@ -47,7 +47,6 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
   : editor(editor_),
     m_document(new Document),
     filename(),
-    control_points(),
     state(),
     compositor(),
     sc(),
@@ -283,8 +282,8 @@ WindstilleWidget::draw()
           //sc->control().draw_rect(selection->get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));
         }
 
-      for(std::vector<ControlPointHandle>::iterator i = control_points.begin();
-          i != control_points.end(); ++i)
+      for(std::vector<ControlPointHandle>::const_iterator i = m_document->get_control_points().begin();
+          i != m_document->get_control_points().end(); ++i)
         {
           (*i)->draw(*sc);
         }

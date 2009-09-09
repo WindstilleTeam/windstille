@@ -39,6 +39,7 @@ public:
   NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeObjectModel> lhs,
                           boost::shared_ptr<NavGraphNodeObjectModel> rhs,
                           SectorModel& sector);
+  virtual ~NavGraphEdgeObjectModel();
 
   void add_to_scenegraph(SceneGraph& sg);
   void update(float delta);

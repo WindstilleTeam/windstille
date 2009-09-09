@@ -33,8 +33,11 @@ NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeO
     m_edge()
 {
   std::cout << "Adding edge" << std::endl;
-  m_edge = sector.get_nav_graph().add_edge(m_lhs->get_node(),
-                                           m_rhs->get_node());
+  m_edge = sector.get_nav_graph().add_edge(m_lhs->get_node(), m_rhs->get_node());
+}
+
+NavGraphEdgeObjectModel::~NavGraphEdgeObjectModel()
+{
 }
 
 void
