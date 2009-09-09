@@ -135,10 +135,11 @@ public:
   std::string get_filename() const { return filename; }
   void set_filename(const std::string& filename_) { filename = filename_; }
 
+  void save_screenshot(const std::string& filename);
+
+private:
   void on_selection_change();
   void on_document_change();
-
-  void save_screenshot(const std::string& filename);
 
 private:
   WindstilleWidget (const WindstilleWidget&);

@@ -23,14 +23,15 @@
 
 #include "editor/selection.hpp"
 #include "editor/command.hpp"
+#include "editor/layer.hpp"
 
 class UndoManager;
 class SectorModel;
 
 /**
- *  Document wraps SectorModel with undo/redo functionality and
+ *  Document wraps undo/redo functionality around SectorModel and
  *  provides data and functions for editing that are not part of the
- *  central data, such as selections.
+ *  central data, such as Selections and ControlPoints.
  */
 class Document // FIXME: name is not so great
 {
@@ -52,10 +53,28 @@ public:
   SectorModel& get_sector_model() const { return *m_sector_model; }
   SelectionHandle get_selection() const { return m_selection; }
 
+  /* Undo/Redo Handling
+   * @{*/  
   void undo();
   void redo();
   void execute(CommandHandle cmd);
-  
+  /** @} */
+
+  /* Layer Commands
+   * @{*/
+  void layer_add(const Gtk::TreeModel::Path& path);
+  void layer_remove(const Gtk::TreeModel::Path& path);
+  /** @} */
+
+  /* Object Commands
+   * @{*/
+  void object_add(LayerHandle layer, ObjectModelHandle object);
+  void object_remove(ObjectModelHandle object);
+  void object_set_pos(ObjectModelHandle object, const Vector2f& new_pos);
+  /** @} */
+
+  /* Selection Commands
+   * @{*/
   void selection_raise();
   void selection_lower();
 
@@ -77,15 +96,19 @@ public:
   void selection_object_properties();
 
   void set_selection(const SelectionHandle& selection);
+  /** @} */
 
-  void on_selection_change();
-
+  /* Control Point Stuff
+   * @{*/  
   ControlPointHandle get_control_point(const Vector2f& pos) const;
-
   void clear_control_points();
   void create_control_points();
+  /** @} */
 
   sigc::signal<void>& signal_on_change() { return m_sig_on_change; }
+
+private:
+  void on_selection_change();
 
 private:
   Document(const Document&);

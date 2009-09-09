@@ -68,6 +68,36 @@ Document::execute(CommandHandle cmd)
 }
 
 void
+Document::layer_add(const Gtk::TreeModel::Path& path)
+{
+  execute(CommandHandle(new LayerAddCommand(*m_sector_model, path)));
+}
+
+void
+Document::layer_remove(const Gtk::TreeModel::Path& path)
+{
+  execute(CommandHandle(new LayerDeleteCommand(*m_sector_model, path)));
+}
+
+void
+Document::object_add(LayerHandle layer, ObjectModelHandle object)
+{
+  execute(CommandHandle(new ObjectAddCommand(layer, object)));
+}
+
+void
+Document::object_remove(ObjectModelHandle object)
+{
+  execute(CommandHandle(new ObjectRemoveCommand(*m_sector_model, object)));
+}
+
+void
+Document::object_set_pos(ObjectModelHandle object, const Vector2f& new_pos)
+{
+  execute(CommandHandle(new ObjectSetPosCommand(object, new_pos)));
+}
+
+void
 Document::selection_raise()
 {
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
