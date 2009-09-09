@@ -54,6 +54,7 @@ public:
   DecalObjectModel(const FileReader& reader);
   DecalObjectModel(const std::string& name, const Vector2f& rel_pos, 
                    const std::string& path_, MapType type_);
+  DecalObjectModel(const DecalObjectModel& rhs);
   ~DecalObjectModel();
 
   void set_scale(const Vector2f& scale);

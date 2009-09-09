@@ -79,6 +79,20 @@ DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const Vector2f& 
 {
 }
 
+DecalObjectModel::DecalObjectModel(const DecalObjectModel& rhs)
+  : ObjectModel(rhs),
+    path(rhs.path),
+    surface(rhs.surface),
+    software_surface(rhs.software_surface),
+    type(rhs.type),
+    scale(rhs.scale),
+    angle(rhs.angle),
+    hflip(rhs.hflip),
+    vflip(rhs.vflip),
+    m_drawable()
+{
+}
+
 DecalObjectModel::~DecalObjectModel()
 {
 }
