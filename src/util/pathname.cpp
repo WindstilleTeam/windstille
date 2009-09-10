@@ -65,11 +65,21 @@ void Pathname::clear_datadir_overrides()
 void Pathname::set_datadir(const std::string& datadir)
 {
   s_datadir = datadir;
+
+  if ( !s_datadir.empty() && s_datadir[s_datadir.size()-1] != '/' )
+  {
+    s_datadir += '/';
+  }
 }
 
 void Pathname::set_userdir(const std::string& userdir)
 {
   s_userdir = userdir;
+
+  if ( !s_userdir.empty() && s_userdir[s_userdir.size()-1] != '/' )
+  {
+    s_userdir += '/';
+  }
 }
 
 std::string Pathname::get_datadir()
