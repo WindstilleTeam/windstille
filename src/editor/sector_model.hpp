@@ -27,10 +27,10 @@
 
 #include "display/color.hpp"
 #include "editor/layer.hpp"
+#include "editor/navigation_graph_model.hpp"
 #include "editor/object_model.hpp"
 #include "editor/selection.hpp"
 #include "math/vector2f.hpp"
-#include "navigation/navigation_graph.hpp"
 
 class NavigationGraph;
 class NavGraphNodeObjectModel;
@@ -41,7 +41,7 @@ class SceneContext;
 class SectorModel
 {
 private:
-  boost::scoped_ptr<NavigationGraph> nav_graph;
+  boost::scoped_ptr<NavigationGraphModel> nav_graph;
   boost::scoped_ptr<SceneGraph>      scene_graph;
   Glib::RefPtr<Gtk::ListStore>       layer_tree;
   LayerHandle navgraph_layer;
@@ -98,11 +98,9 @@ public:
 
   void write(FileWriter& writer) const;
 
-  NavigationGraph& get_nav_graph()   const { return *nav_graph; }
+  NavigationGraphModel& get_nav_graph()   const { return *nav_graph; }
   SceneGraph&      get_scene_graph() const { return *scene_graph; }
 
-  boost::shared_ptr<NavGraphNodeObjectModel> find_navgraph_node(NodeHandle node) const;
-  boost::shared_ptr<NavGraphEdgeObjectModel> find_navgraph_edge(EdgeHandle edge) const;
   void delete_navgraph_edges(NavGraphNodeObjectModel& node);
 
   void queue_draw();

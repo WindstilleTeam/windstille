@@ -20,10 +20,14 @@
 #define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_INSERT_TOOL_HPP
 
 #include <set>
+#include <boost/shared_ptr.hpp>
 
 #include "math/rect.hpp"
 #include "editor/tool.hpp"
 #include "navigation/navigation_graph.hpp"
+
+class NavGraphNodeObjectModel;
+class NavGraphEdgeObjectModel;
 
 class NavgraphInsertTool : public Tool
 {
@@ -35,11 +39,11 @@ private:
     NO_MODE      // mode is determined by next click
   } mode;
 
-  NodeHandle last_node;
-  NodeHandle connection_node;
+  boost::shared_ptr<NavGraphNodeObjectModel> last_node;
+  boost::shared_ptr<NavGraphNodeObjectModel> connection_node;
 
-  NodeHandle mouse_over_node;
-  EdgeHandle mouse_over_edge;
+  boost::shared_ptr<NavGraphNodeObjectModel> mouse_over_node;
+  boost::shared_ptr<NavGraphEdgeObjectModel> mouse_over_edge;
 
 public:
   NavgraphInsertTool();

@@ -31,8 +31,7 @@
 #include "editor/object_model_factory.hpp"
 #include "editor/sector_model.hpp"
 #include "editor/windstille_widget.hpp"
-#include "navigation/edge.hpp"
-#include "navigation/navigation_graph.hpp"
+#include "editor/navigation_graph_model.hpp"
 #include "navigation/node.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "util/file_reader.hpp"
@@ -41,7 +40,7 @@ LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
 
 SectorModel::SectorModel(const std::string& filename)
-  : nav_graph(new NavigationGraph()),
+  : nav_graph(new NavigationGraphModel()),
     scene_graph(new SceneGraph()),
     layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
     navgraph_layer(new Layer(*this)),
@@ -52,7 +51,7 @@ SectorModel::SectorModel(const std::string& filename)
 }
 
 SectorModel::SectorModel()
-  : nav_graph(new NavigationGraph()),
+  : nav_graph(new NavigationGraphModel),
     scene_graph(new SceneGraph()),
     layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
     navgraph_layer(new Layer(*this)),
@@ -439,9 +438,9 @@ SectorModel::load(const std::string& filename)
       ambient_color = Color(0,0,0,1);
       reader.get("ambient-color", ambient_color);
 
-      FileReader navigation_section;
-      reader.get("navigation", navigation_section);
-      nav_graph->load(navigation_section);
+      //FileReader navigation_section;
+      //reader.get("navigation", navigation_section);
+      //nav_graph->load(navigation_section);
 
       FileReader layers_section;
       reader.get("layers", layers_section);
@@ -487,9 +486,9 @@ SectorModel::write(FileWriter& writer) const
   writer.write("ambient-color", ambient_color);
   writer.write("init-script", "init.nut");
 
-  writer.start_section("navigation");
-  nav_graph->write(writer);
-  writer.end_section();
+  //writer.start_section("navigation");
+  //nav_graph->write(writer);
+  //writer.end_section();
 
   writer.start_section("layers");
   for(Gtk::ListStore::Children::iterator i = layer_tree->children().begin(); i != layer_tree->children().end(); ++i)
@@ -632,53 +631,6 @@ SectorModel::on_rows_reordered(const Gtk::TreeModel::Path& /*path*/, const Gtk::
   rebuild_scene_graph();
 }
 
-boost::shared_ptr<NavGraphNodeObjectModel>
-SectorModel::find_navgraph_node(NodeHandle node) const
-{
-  // FIXME: Could solve this better by either a map/unsorted_set or by having
-  // a userdata ptr in NavGraph
-  for(Layer::const_iterator obj = navgraph_layer->begin(); obj != navgraph_layer->end(); ++obj)
-  {
-    boost::shared_ptr<NavGraphNodeObjectModel> test_node = boost::dynamic_pointer_cast<NavGraphNodeObjectModel>(*obj);
-    if (test_node)
-    {
-      if (test_node->get_node() == node)
-      {
-        return test_node;
-      }
-    }
-  }
-  
-  return boost::shared_ptr<NavGraphNodeObjectModel>();
-}
-
-boost::shared_ptr<NavGraphEdgeObjectModel>
-SectorModel::find_navgraph_edge(EdgeHandle edge) const
-{
-  // FIXME: Could solve this better by either a map/unsorted_set or by having
-  // a userdata ptr in NavGraph
-  const Layers& layers = get_layers();
-  for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
-  {
-    if (*layer)
-    {
-      for(Layer::const_iterator obj = (*layer)->begin(); obj != (*layer)->end(); ++obj)
-      {
-        boost::shared_ptr<NavGraphEdgeObjectModel> test_edge = boost::dynamic_pointer_cast<NavGraphEdgeObjectModel>(*obj);
-        if (test_edge)
-        {
-          if (test_edge->get_edge() == edge)
-          {
-            return test_edge;
-          }
-        }
-      }
-    } 
-  }
-  
-  return boost::shared_ptr<NavGraphEdgeObjectModel>(); 
-}
-
 void
 SectorModel::delete_navgraph_edges(NavGraphNodeObjectModel& node)
 {
