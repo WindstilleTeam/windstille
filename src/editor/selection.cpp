@@ -173,12 +173,12 @@ Selection::clone() const
           
       if (it == parent_map.end())
       {
-	// When the parent wasn't part of the selection, leave
-	// the parent untouched
+        // When the parent wasn't part of the selection, leave
+        // the parent untouched
       }
       else
       {
-	(*i)->set_parent(it->second);
+        (*i)->set_parent(it->second);
       }
     }
   }

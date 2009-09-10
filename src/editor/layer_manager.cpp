@@ -147,9 +147,9 @@ LayerManager::on_cursor_changed()
       Gtk::TreeModel::iterator it = treeview.get_model()->get_iter(path_);
       if (it)
       {
-	EditorWindow::current()->on_lock_all(true);
-	(*it)[LayerManagerColumns::instance().locked] = false;
-	((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->sync(*it);
+        EditorWindow::current()->on_lock_all(true);
+        (*it)[LayerManagerColumns::instance().locked] = false;
+        ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->sync(*it);
       }
     }
   }

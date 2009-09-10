@@ -540,7 +540,7 @@ EditorWindow::on_save_as()
   else
   {
     Gtk::FileChooserDialog dialog("Save File",
-				  Gtk::FILE_CHOOSER_ACTION_SAVE);
+                                  Gtk::FILE_CHOOSER_ACTION_SAVE);
     dialog.set_transient_for(*this);
     dialog.set_do_overwrite_confirmation(true);
 
@@ -558,27 +558,27 @@ EditorWindow::on_save_as()
     {
       case(Gtk::RESPONSE_OK):
       {
-	//std::cout << "Select clicked." << std::endl;
-	//std::cout << "Folder selected: " << dialog.get_filename()
-	//          << std::endl;
+        //std::cout << "Select clicked." << std::endl;
+        //std::cout << "Folder selected: " << dialog.get_filename()
+        //          << std::endl;
 
-	std::string filename = dialog.get_filename();
-	std::ofstream out(filename.c_str());
-	FileWriter writer(out);
+        std::string filename = dialog.get_filename();
+        std::ofstream out(filename.c_str());
+        FileWriter writer(out);
 
-	wst->get_document().get_sector_model().write(writer);
-	wst->set_filename(filename);
+        wst->get_document().get_sector_model().write(writer);
+        wst->set_filename(filename);
 
-	notebook.set_tab_label_text(*notebook.get_nth_page(page), Glib::path_get_basename(filename));
-	add_recent_file(filename);
-	print("Wrote: " + filename);
-	break;
+        notebook.set_tab_label_text(*notebook.get_nth_page(page), Glib::path_get_basename(filename));
+        add_recent_file(filename);
+        print("Wrote: " + filename);
+        break;
       }
 
       case(Gtk::RESPONSE_CANCEL):
       {
-	//std::cout << "Cancel clicked." << std::endl;
-	break;
+        //std::cout << "Cancel clicked." << std::endl;
+        break;
       }
     }
   }
@@ -597,7 +597,7 @@ EditorWindow::on_save_screenshot()
     if (WindstilleWidget* wst = static_cast<WindstilleWidget*>(notebook.get_nth_page(page)))
     {
       Gtk::FileChooserDialog dialog("Save Screenshot",
-				    Gtk::FILE_CHOOSER_ACTION_SAVE);
+                                    Gtk::FILE_CHOOSER_ACTION_SAVE);
       dialog.set_transient_for(*this);
       dialog.set_do_overwrite_confirmation(true);
 
@@ -609,19 +609,19 @@ EditorWindow::on_save_screenshot()
 
       switch(dialog.run())
       {
-	case(Gtk::RESPONSE_OK):
-	{
-	  std::string filename = dialog.get_filename();
-	  std::cout << "unimplemented screenshot: " << filename << std::endl;
-	  wst->save_screenshot(filename);
-	  break;
-	}
+        case(Gtk::RESPONSE_OK):
+        {
+          std::string filename = dialog.get_filename();
+          std::cout << "unimplemented screenshot: " << filename << std::endl;
+          wst->save_screenshot(filename);
+          break;
+        }
 
-	case(Gtk::RESPONSE_CANCEL):
-	{
-	  //std::cout << "Cancel clicked." << std::endl;
-	  break;
-	}
+        case(Gtk::RESPONSE_CANCEL):
+        {
+          //std::cout << "Cancel clicked." << std::endl;
+          break;
+        }
       }
     }
   }
@@ -858,8 +858,8 @@ EditorWindow::on_play()
   {
     //std::cout << "Play" << std::endl;
     timeout_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &EditorWindow::on_timeout),
-							50,
-							Glib::PRIORITY_DEFAULT);
+                                                        50,
+                                                        Glib::PRIORITY_DEFAULT);
   }
   else
   {
@@ -927,7 +927,7 @@ EditorWindow::on_paste()
       LayerHandle layer = wst->get_current_layer();
       for(Selection::reverse_iterator i = clipboard->rbegin(); i != clipboard->rend(); ++i)
       {
-	layer->add(*i);
+        layer->add(*i);
       }
 
       wst->get_document().set_selection(clipboard);

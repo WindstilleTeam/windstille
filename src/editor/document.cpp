@@ -229,13 +229,13 @@ Document::selection_vflip()
       const Vector2f& center = m_selection->get_bounding_box().get_center();
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
       {
-	Vector2f pos = (*i)->get_world_pos();
+        Vector2f pos = (*i)->get_world_pos();
           
-	pos.y = center.y + (center.y - pos.y);
+        pos.y = center.y + (center.y - pos.y);
           
-	//(*i)->set_world_pos(pos);
-	group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
-							    boost::bind(&ObjectModel::set_world_pos, *i, pos))));
+        //(*i)->set_world_pos(pos);
+        group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
+                                                            boost::bind(&ObjectModel::set_world_pos, *i, pos))));
       }
     }
 
@@ -243,7 +243,7 @@ Document::selection_vflip()
     {
       //(*i)->set_vflip(!(*i)->get_vflip());
       group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_vflip, *i,  (*i)->get_vflip()),
-							  boost::bind(&ObjectModel::set_vflip, *i, !(*i)->get_vflip()))));
+                                                          boost::bind(&ObjectModel::set_vflip, *i, !(*i)->get_vflip()))));
     }
 
     execute(group_command);
@@ -262,13 +262,13 @@ Document::selection_hflip()
       const Vector2f& center = m_selection->get_bounding_box().get_center();
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
       {
-	Vector2f pos = (*i)->get_world_pos();
+        Vector2f pos = (*i)->get_world_pos();
           
-	pos.x = center.x + (center.x - pos.x);
+        pos.x = center.x + (center.x - pos.x);
           
-	//(*i)->set_world_pos(pos);
-	group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
-							    boost::bind(&ObjectModel::set_world_pos, *i, pos))));
+        //(*i)->set_world_pos(pos);
+        group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
+                                                            boost::bind(&ObjectModel::set_world_pos, *i, pos))));
       }
     }
 
@@ -276,7 +276,7 @@ Document::selection_hflip()
     {
       //(*i)->set_hflip(!(*i)->get_hflip());
       group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_hflip, *i,  (*i)->get_hflip()),
-							  boost::bind(&ObjectModel::set_hflip, *i, !(*i)->get_hflip()))));
+                                                          boost::bind(&ObjectModel::set_hflip, *i, !(*i)->get_hflip()))));
     }
 
     execute(group_command);
@@ -298,7 +298,7 @@ Document::selection_connect_parent()
     {
       //(*i)->set_parent(parent);
       group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
-							  boost::bind(&ObjectModel::set_parent, *i, parent, true))));
+                                                          boost::bind(&ObjectModel::set_parent, *i, parent, true))));
     }
 
     execute(group_command);
@@ -314,7 +314,7 @@ Document::selection_clear_parent()
   {
     //(*i)->set_parent(ObjectModelHandle());
     group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
-							boost::bind(&ObjectModel::set_parent, *i, ObjectModelHandle(), true))));
+                                                        boost::bind(&ObjectModel::set_parent, *i, ObjectModelHandle(), true))));
   }
 
   execute(group_command);
@@ -358,12 +358,12 @@ Document::selection_duplicate()
           
       if (it == parent_map.end())
       {
-	// When the parent wasn't part of the selection, leave
-	// the parent untouched
+        // When the parent wasn't part of the selection, leave
+        // the parent untouched
       }
       else
       {
-	(*i)->set_parent(it->second);
+        (*i)->set_parent(it->second);
       }
     }
   }
@@ -385,7 +385,7 @@ Document::selection_reset_rotation()
     {
       //decal->set_angle(0.0f);
       group_command->add(CommandHandle(new FunctorCommand(boost::bind(&DecalObjectModel::set_angle, decal, decal->get_angle()),
-							  boost::bind(&DecalObjectModel::set_angle, decal, 0.0f))));
+                                                          boost::bind(&DecalObjectModel::set_angle, decal, 0.0f))));
     }
   }
 
@@ -411,7 +411,7 @@ Document::selection_reset_scale()
     {
       //decal->set_scale(Vector2f(1.0f, 1.0f));
       group_command->add(CommandHandle(new FunctorCommand(boost::bind(&DecalObjectModel::set_scale, decal, decal->get_scale()),
-							  boost::bind(&DecalObjectModel::set_scale, decal, Vector2f(1.0f, 1.0f)))));
+                                                          boost::bind(&DecalObjectModel::set_scale, decal, Vector2f(1.0f, 1.0f)))));
     }
   }
 

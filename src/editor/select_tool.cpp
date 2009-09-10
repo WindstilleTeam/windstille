@@ -57,29 +57,29 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
     {
       if (wst.get_document().get_selection()->has_object(object))
       {
-	selection = wst.get_document().get_selection();
-	if (event->state & GDK_SHIFT_MASK)
-	{
-	  selection->remove(object);
-	}
-	else
-	{
-	  selection = wst.get_document().get_selection();
-	}
+        selection = wst.get_document().get_selection();
+        if (event->state & GDK_SHIFT_MASK)
+        {
+          selection->remove(object);
+        }
+        else
+        {
+          selection = wst.get_document().get_selection();
+        }
       }
       else
       {
-	if (event->state & GDK_SHIFT_MASK)
-	{
-	  selection = wst.get_document().get_selection();
-	  selection->add(object);
-	}
-	else
-	{
-	  selection = Selection::create();
-	  selection->add(object);
-	  wst.get_document().set_selection(selection);
-	}
+        if (event->state & GDK_SHIFT_MASK)
+        {
+          selection = wst.get_document().get_selection();
+          selection->add(object);
+        }
+        else
+        {
+          selection = Selection::create();
+          selection->add(object);
+          wst.get_document().set_selection(selection);
+        }
       }
       
       mode = OBJECT_DRAG_MODE;
@@ -110,7 +110,7 @@ SelectTool::process_snap(WindstilleWidget& wst)
     for(Layer::iterator i = wst.get_current_layer()->begin(); i != wst.get_current_layer()->end(); ++i)
     { // FIXME: Should iterate over all objects, not just objects in the current layer
       if (!wst.get_select_mask().match((*i)->get_select_mask()))
-	ignore_objects.insert(*i);
+        ignore_objects.insert(*i);
     }
   }
 
@@ -140,16 +140,16 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     Vector2f offset = pos - click_pos;
           
     if ((event->time - start_time) > MOVE_TIMEOUT ||
-	offset.length() > MOVE_THRESHOLD)
+        offset.length() > MOVE_THRESHOLD)
     {
       if (!selection->is_moving())
-	selection->on_move_start();
+        selection->on_move_start();
 
       selection->on_move_update(offset);
       
       if (event->state & GDK_CONTROL_MASK)
       {
-	selection->on_move_update(offset + process_snap(wst));
+        selection->on_move_update(offset + process_snap(wst));
       }
 
       wst.queue_draw();
@@ -183,17 +183,17 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     Vector2f offset = pos - click_pos;
 
     if (event->time - start_time > MOVE_TIMEOUT ||
-	offset.length() > MOVE_THRESHOLD)
+        offset.length() > MOVE_THRESHOLD)
     {
       selection->on_move_update(offset);
       
       if (event->state & GDK_CONTROL_MASK)
       {
-	selection->on_move_end(wst, offset + process_snap(wst));
+        selection->on_move_end(wst, offset + process_snap(wst));
       }
       else
       {
-	selection->on_move_end(wst, offset);
+        selection->on_move_end(wst, offset);
       }
       wst.queue_draw();
     }

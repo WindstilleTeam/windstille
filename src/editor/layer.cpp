@@ -95,7 +95,7 @@ Layer::get_object_at(const Vector2f& pos, const SelectMask& select_mask) const
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
   {
     if (select_mask.match((*i)->get_select_mask()) &&
-	(*i)->is_at(pos))
+        (*i)->is_at(pos))
     {
       return *i;
     }
@@ -111,7 +111,7 @@ Layer::get_selection(const Rectf& rect, const SelectMask& select_mask) const
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
   {
     if (select_mask.match((*i)->get_select_mask()) &&
-	rect.contains((*i)->get_bounding_box()))
+        rect.contains((*i)->get_bounding_box()))
     {
       selection->add(*i);
     }
@@ -209,7 +209,7 @@ Layer::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ignore_
   {
     // object is not in the list of objects to ignore
     if ((*i)->is_snappable() &&
-	ignore_objects.find(*i) == ignore_objects.end())
+        ignore_objects.find(*i) == ignore_objects.end())
     {
       SnapData snap = (*i)->snap_object(rect);
       best_snap.merge(snap);

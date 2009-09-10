@@ -150,9 +150,9 @@ WindstilleWidget::on_realize()
       lib_init = true;
       GLenum err = glewInit();
       if(err != GLEW_OK) {
-	std::ostringstream msg;
-	msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
-	throw std::runtime_error(msg.str());
+        std::ostringstream msg;
+        msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
+        throw std::runtime_error(msg.str());
       }
 
       OpenGLState::init();
@@ -162,7 +162,7 @@ WindstilleWidget::on_realize()
     {
       sc.reset(new SceneContext());
       compositor.reset(new Compositor(Size(get_width(), get_height()),
-				      Size(get_width(), get_height())));
+                                      Size(get_width(), get_height())));
       sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
     }
       
@@ -198,7 +198,7 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
     if (compositor.get())
     {
       compositor.reset(new Compositor(Size(ev->width, ev->height),
-				      Size(ev->width, ev->height)));
+                                      Size(ev->width, ev->height)));
     }
 
     glViewport(0, 0, get_width(), get_height());
@@ -260,7 +260,7 @@ WindstilleWidget::draw()
     if (draw_background_pattern)
     {
       sc->color().fill_pattern(background_pattern, 
-			       state.get_offset() * state.get_zoom());
+                               state.get_offset() * state.get_zoom());
     }
     else
     {
@@ -276,14 +276,14 @@ WindstilleWidget::draw()
     {
       for(Selection::iterator i = m_document->get_selection()->begin(); i != m_document->get_selection()->end(); ++i)
       {
-	(*i)->draw_select(*sc, i == m_document->get_selection()->begin());
+        (*i)->draw_select(*sc, i == m_document->get_selection()->begin());
       }
 
       //sc->control().draw_rect(selection->get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));
     }
 
     for(std::vector<ControlPointHandle>::const_iterator i = m_document->get_control_points().begin();
-	i != m_document->get_control_points().end(); ++i)
+        i != m_document->get_control_points().end(); ++i)
     {
       (*i)->draw(*sc);
     }
@@ -300,7 +300,7 @@ WindstilleWidget::draw()
     if (grid_enabled)
     {
       Display::draw_grid(state.get_offset() * state.get_zoom(),
-			 Sizef(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.5f));
+                         Sizef(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.5f));
     }
   }
 }

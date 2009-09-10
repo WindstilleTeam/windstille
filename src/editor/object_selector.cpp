@@ -215,13 +215,13 @@ ObjectSelector::add_decals_from_directory(const std::string& pathname, unsigned 
 
       if (1)
       {
-	icon = Gdk::Pixbuf::create_from_file("data/editor/icon_bg.png");
-	size = std::max(icon->get_width(), icon->get_height());
+        icon = Gdk::Pixbuf::create_from_file("data/editor/icon_bg.png");
+        size = std::max(icon->get_width(), icon->get_height());
       }
       else
       {
-	icon = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, size, size);
-	icon->fill(0x444444ff);
+        icon = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, size, size);
+        icon->fill(0x444444ff);
       }
 
       // Scale pixbuf to icon size while keeping aspect ratio intact
@@ -229,31 +229,31 @@ ObjectSelector::add_decals_from_directory(const std::string& pathname, unsigned 
       double y_scale = (double)size / pixbuf->get_height();
 
       if (x_scale * pixbuf->get_width() < min_size)
-	x_scale = min_size / pixbuf->get_width();
+        x_scale = min_size / pixbuf->get_width();
 
       if (y_scale * pixbuf->get_height() < min_size)
-	y_scale = min_size / pixbuf->get_height();
+        y_scale = min_size / pixbuf->get_height();
 
       if (pixbuf->get_width() > pixbuf->get_height())              
-	y_scale = x_scale;
+        y_scale = x_scale;
       else
-	x_scale = y_scale;
+        x_scale = y_scale;
 
       int r_w = int(pixbuf->get_width() * x_scale);
       int r_h = int(pixbuf->get_height() * y_scale);
 
       pixbuf->composite(icon, 
-			(size - r_w)/2, (size - r_h)/2,
-			r_w, r_h,
-			(size - r_w)/2, (size - r_h)/2,
-			x_scale, y_scale,
-			Gdk::INTERP_TILES, 
-			255);
+                        (size - r_w)/2, (size - r_h)/2,
+                        r_w, r_h,
+                        (size - r_w)/2, (size - r_h)/2,
+                        x_scale, y_scale,
+                        Gdk::INTERP_TILES, 
+                        255);
     }
 
     add_decal(icon, *i, 
-	      "file:///home/ingo/projects/windstille/trunk/windstille/" + *i, 
-	      filter_);
+              "file:///home/ingo/projects/windstille/trunk/windstille/" + *i, 
+              filter_);
   }
 }
 
@@ -307,8 +307,8 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
     if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
     {
       pixbuf = pixbuf->scale_simple(std::max(4, int(static_cast<float>(pixbuf->get_width())  * wst->get_state().get_zoom())),
-				    std::max(4, int(static_cast<float>(pixbuf->get_height()) * wst->get_state().get_zoom())),
-				    Gdk::INTERP_TILES);
+                                    std::max(4, int(static_cast<float>(pixbuf->get_height()) * wst->get_state().get_zoom())),
+                                    Gdk::INTERP_TILES);
     }
     context->set_icon(pixbuf, pixbuf->get_width()/2, pixbuf->get_height()/2);
   }

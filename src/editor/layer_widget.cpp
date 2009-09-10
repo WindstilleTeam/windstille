@@ -34,24 +34,24 @@ LayerWidget::LayerWidget()
     {
       if ((x+1) % 5)
       {
-	Gtk::ToggleButton* button = Gtk::manage(new Gtk::ToggleButton());
-	button->set_size_request(16, 16);
-	table.attach(*button, x, x+1, y, y+1);
+        Gtk::ToggleButton* button = Gtk::manage(new Gtk::ToggleButton());
+        button->set_size_request(16, 16);
+        table.attach(*button, x, x+1, y, y+1);
 
-	button->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &LayerWidget::on_layer_toggle), 
-						    button, layer_number));
-	buttons.push_back(button);
-	layer_number += 1;
+        button->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &LayerWidget::on_layer_toggle), 
+                                                    button, layer_number));
+        buttons.push_back(button);
+        layer_number += 1;
       }
       else
       {
-	if (y == 0)
-	{
-	  Gtk::VSeparator* separator = Gtk::manage(new Gtk::VSeparator());
-	  //Gtk::Widget* separator = Gtk::manage(new Gtk::Widget());
-	  separator->set_size_request(12, -1);
-	  table.attach(*separator, x, x+1, 0, 2);
-	}
+        if (y == 0)
+        {
+          Gtk::VSeparator* separator = Gtk::manage(new Gtk::VSeparator());
+          //Gtk::Widget* separator = Gtk::manage(new Gtk::Widget());
+          separator->set_size_request(12, -1);
+          table.attach(*separator, x, x+1, 0, 2);
+        }
       }
     }
 

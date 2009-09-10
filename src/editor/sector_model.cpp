@@ -646,11 +646,11 @@ SectorModel::delete_navgraph_edges(NavGraphNodeObjectModel& node)
         if (edge)
         {
           /*
-	    if (edge.get_lhs().get() == &node ||
-	    edge.get_rhs().get() == &node)
-	    {
+            if (edge.get_lhs().get() == &node ||
+            edge.get_rhs().get() == &node)
+            {
 
-	    }
+            }
           */
         }
       }

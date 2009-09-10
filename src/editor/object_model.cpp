@@ -212,33 +212,33 @@ ObjectModel::snap_object(const Rectf& in) const
 
       if (fabs(rect.top - in.top) < snap_threshold)
       {
-	y_snap = rect.top - in.top;
-	snap.y_set = true;
+        y_snap = rect.top - in.top;
+        snap.y_set = true;
       }
 
       if (fabs(rect.bottom - in.bottom) < snap_threshold)
       {
-	y_snap = rect.bottom - in.bottom;
-	snap.y_set = true;
+        y_snap = rect.bottom - in.bottom;
+        snap.y_set = true;
       }
 
       if (left_dist < right_dist)
       { // snap to left edge
-	if (left_dist < snap_threshold)
-	{
-	  snap.offset.x = rect.left - in.right;
-	  snap.offset.y = y_snap;
-	  snap.x_set = true;
-	}
+        if (left_dist < snap_threshold)
+        {
+          snap.offset.x = rect.left - in.right;
+          snap.offset.y = y_snap;
+          snap.x_set = true;
+        }
       }
       else
       { // snap to right edge
-	if (right_dist < snap_threshold)
-	{
-	  snap.offset.x = rect.right - in.left;
-	  snap.offset.y = y_snap;
-	  snap.x_set = true;
-	}
+        if (right_dist < snap_threshold)
+        {
+          snap.offset.x = rect.right - in.left;
+          snap.offset.y = y_snap;
+          snap.x_set = true;
+        }
       }
     }
   }
@@ -250,33 +250,33 @@ ObjectModel::snap_object(const Rectf& in) const
 
       if (fabs(rect.left - in.left) < snap_threshold)
       {
-	x_snap = rect.left - in.left;
-	snap.x_set = true;
+        x_snap = rect.left - in.left;
+        snap.x_set = true;
       }
 
       if (fabs(rect.right - in.right) < snap_threshold)
       {
-	x_snap = rect.right - in.right;
-	snap.x_set = true;
+        x_snap = rect.right - in.right;
+        snap.x_set = true;
       }
 
       if (top_dist < bottom_dist)
       { // snap to top edge
-	if (top_dist < snap_threshold)
-	{
-	  snap.offset.x = x_snap;
-	  snap.offset.y = rect.top - in.bottom;
-	  snap.y_set = true;
-	}
+        if (top_dist < snap_threshold)
+        {
+          snap.offset.x = x_snap;
+          snap.offset.y = rect.top - in.bottom;
+          snap.y_set = true;
+        }
       }
       else
       { // snap to bottom edge
-	if (bottom_dist < snap_threshold)
-	{
-	  snap.offset.x = x_snap;
-	  snap.offset.y = rect.bottom - in.top;
-	  snap.y_set = true;
-	}
+        if (bottom_dist < snap_threshold)
+        {
+          snap.offset.x = x_snap;
+          snap.offset.y = rect.bottom - in.top;
+          snap.y_set = true;
+        }
       }
     }      
   }

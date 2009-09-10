@@ -210,7 +210,7 @@ NavgraphInsertTool::draw(SceneContext& sc)
   else if (mouse_over_edge)
   {
     sc.control().draw_line(mouse_over_edge->get_lhs()->get_world_pos(), 
-			   mouse_over_edge->get_rhs()->get_world_pos(), Color(1,1,1));
+                           mouse_over_edge->get_rhs()->get_world_pos(), Color(1,1,1));
   }
 }
   
