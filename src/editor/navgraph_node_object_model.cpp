@@ -25,10 +25,8 @@
 
 NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos)//, SectorModel& sector)
   : ObjectModel("NavGraphNodeObjectModel", pos),
-    m_drawable(),
-    m_node()
+    m_drawable()
 {
-  //m_node = sector.get_nav_graph().add_node(pos);
 }
 
 NavGraphNodeObjectModel::~NavGraphNodeObjectModel()
@@ -70,7 +68,6 @@ void
 NavGraphNodeObjectModel::set_rel_pos(const Vector2f& rel_pos_)
 {
   ObjectModel::set_rel_pos(rel_pos_);
-  m_node->set_pos(get_world_pos());
 }
 
 Rectf

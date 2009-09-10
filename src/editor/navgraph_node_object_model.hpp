@@ -30,7 +30,6 @@ class NavGraphNodeObjectModel : public ObjectModel
 {
 private:
   boost::shared_ptr<VertexArrayDrawable> m_drawable;
-  NodeHandle m_node;
 
 public:
   NavGraphNodeObjectModel(const Vector2f& pos);//, SectorModel& sector);
@@ -40,8 +39,6 @@ public:
   void set_rel_pos(const Vector2f& rel_pos_);
   void sync_drawable();
   
-  NodeHandle get_node() const { return m_node; }
-
   Rectf get_bounding_box() const;
   ObjectModelHandle clone() const;
   void write(FileWriter& writer) const;

@@ -135,13 +135,13 @@ Document::layer_remove(const Gtk::TreeModel::Path& path)
 void
 Document::navgraph_node_add(boost::shared_ptr<NavGraphNodeObjectModel> node)
 {
-  execute(CommandHandle(new NavGraphNodeAddCommand(node)));
+  execute(CommandHandle(new NavGraphNodeAddCommand(*m_sector_model, node)));
 }
 
 void
 Document::navgraph_node_remove(boost::shared_ptr<NavGraphNodeObjectModel> node)
 {
-  execute(CommandHandle(new NavGraphNodeRemoveCommand(node)));
+  execute(CommandHandle(new NavGraphNodeRemoveCommand(*m_sector_model, node)));
 }
 
 void
@@ -149,13 +149,14 @@ Document::navgraph_edge_add(LayerHandle layer,
                             boost::shared_ptr<NavGraphNodeObjectModel> lhs,
                             boost::shared_ptr<NavGraphNodeObjectModel> rhs)
 {
-  execute(CommandHandle(new NavGraphEdgeAddCommand(layer, lhs, rhs)));
+  boost::shared_ptr<NavGraphEdgeObjectModel> edge(new NavGraphEdgeObjectModel(lhs, rhs));
+  execute(CommandHandle(new NavGraphEdgeAddCommand(*m_sector_model, layer, edge)));
 }
 
 void
 Document::navgraph_edge_remove(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
 {
-  execute(CommandHandle(new NavGraphEdgeRemoveCommand(edge)));
+  execute(CommandHandle(new NavGraphEdgeRemoveCommand(*m_sector_model, edge)));
 }
 
 void

@@ -25,12 +25,10 @@
 
 NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeObjectModel> lhs,
                                                  boost::shared_ptr<NavGraphNodeObjectModel> rhs)
-  //SectorModel& sector)
   : ObjectModel("NavGraphEdgeObjectModel", Vector2f()),
     m_lhs(lhs),
     m_rhs(rhs),
-    m_drawable(),
-    m_edge()
+    m_drawable()
 {
   //m_edge = sector.get_nav_graph().add_edge(m_lhs->get_node(), m_rhs->get_node());
 }

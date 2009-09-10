@@ -38,11 +38,15 @@ public:
   {}
   
   void redo() {
-    layer->remove(object);
+    if (layer)
+      layer->remove(object);
+    else
+      std::cout << "ObjectRemoveCommand: null layer" << std::endl;
   }
 
   void undo() {
-    layer->add(object);
+    if (layer)
+      layer->add(object);
   }
 
 };
@@ -60,11 +64,15 @@ public:
   {}
   
   void redo() {
-    layer->add(object);
+    if (layer)
+      layer->add(object);
+    else
+      std::cout << "ObjectRemoveCommand: null layer" << std::endl;
   }
 
   void undo() {
-    layer->remove(object);
+    if (layer)
+      layer->remove(object);
   }
 };
 

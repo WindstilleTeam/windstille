@@ -19,87 +19,122 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_NAVGRAPH_COMMANDS_HPP
 #define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_COMMANDS_HPP
 
+#include <iostream>
+
 #include "editor/command.hpp"
+#include "editor/navigation_graph_model.hpp"
 
 class NavGraphNodeAddCommand : public Command
 {
 private:
+  SectorModel& m_sector;
   boost::shared_ptr<NavGraphNodeObjectModel> m_node;
 
 public:
-  NavGraphNodeAddCommand(boost::shared_ptr<NavGraphNodeObjectModel> node)
-    : m_node(node)
+  NavGraphNodeAddCommand(SectorModel& sector, 
+                         boost::shared_ptr<NavGraphNodeObjectModel> node)
+    : m_sector(sector),
+      m_node(node)
   {}
 
   void redo() 
   {
+    m_sector.get_nav_graph().add_node(m_node);
   }
 
   void undo() 
   {
+    m_sector.get_nav_graph().remove_node(m_node);
   }
 };
 
 class NavGraphNodeRemoveCommand : public Command
 {
 private:
+  SectorModel& m_sector;
   boost::shared_ptr<NavGraphNodeObjectModel> m_node;
 
 public:
-  NavGraphNodeRemoveCommand(boost::shared_ptr<NavGraphNodeObjectModel> node)
-    : m_node(node)
+  NavGraphNodeRemoveCommand(SectorModel& sector, 
+                            boost::shared_ptr<NavGraphNodeObjectModel> node)
+    : m_sector(sector),
+      m_node(node)
   {}
 
   void redo() 
   {
+    m_sector.get_nav_graph().remove_node(m_node);
   }
 
   void undo() 
   {
+    m_sector.get_nav_graph().add_node(m_node);
   }
 };
 
 class NavGraphEdgeAddCommand : public Command
 {
 private:
+  SectorModel& m_sector;
   LayerHandle m_layer;
-  boost::shared_ptr<NavGraphNodeObjectModel> m_lhs;
-  boost::shared_ptr<NavGraphNodeObjectModel> m_rhs;
+  boost::shared_ptr<NavGraphEdgeObjectModel> m_edge;
 
 public:
-  NavGraphEdgeAddCommand(LayerHandle layer, 
-                         boost::shared_ptr<NavGraphNodeObjectModel> lhs,
-                         boost::shared_ptr<NavGraphNodeObjectModel> rhs)
-    : m_layer(layer),
-      m_lhs(lhs),
-      m_rhs(rhs)
+  NavGraphEdgeAddCommand(SectorModel& sector, 
+                         LayerHandle layer, 
+                         boost::shared_ptr<NavGraphEdgeObjectModel> edge)
+    : m_sector(sector),
+      m_layer(layer),
+      m_edge(edge)
   {}
 
   void redo() 
   {
+    if (m_layer)
+      m_layer->add(m_edge);
+    else
+      std::cout << "NavGraphEdgeAddCommand: null layer" << std::endl;
+
+    m_sector.get_nav_graph().add_edge(m_edge);
   }
 
   void undo() 
   {
+    m_sector.get_nav_graph().remove_edge(m_edge);
+    m_layer->remove(m_edge);
   }
 };
 
 class NavGraphEdgeRemoveCommand : public Command
 {
 private:
+  SectorModel& m_sector;
+  LayerHandle m_layer;
   boost::shared_ptr<NavGraphEdgeObjectModel> m_edge;
 
 public:
-  NavGraphEdgeRemoveCommand(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
-    : m_edge(edge)
+  NavGraphEdgeRemoveCommand(SectorModel& sector, 
+                            boost::shared_ptr<NavGraphEdgeObjectModel> edge)
+    : m_sector(sector),
+      m_layer(sector.get_layer(edge)),
+      m_edge(edge)
   {}
 
   void redo() 
   {
+    if (m_layer)
+      m_layer->remove(m_edge);
+    else
+      std::cout << "NavGraphEdgeRemoveCommand: null layer" << std::endl;
+
+    m_sector.get_nav_graph().remove_edge(m_edge);
   }
 
   void undo() 
   {
+    m_sector.get_nav_graph().add_edge(m_edge);
+    if (m_layer) 
+      m_layer->add(m_edge);
   }
 };
 

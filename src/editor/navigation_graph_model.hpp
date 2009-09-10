@@ -23,23 +23,29 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#include "editor/selection.hpp"
+
 class Vector2f;
 class NavigationGraph;
 class NavGraphEdgeObjectModel;
 class NavGraphNodeObjectModel;
+class SelectMask;
 
 class NavigationGraphModel
 {
-private:
+public:
   typedef std::vector<boost::shared_ptr<NavGraphNodeObjectModel> > Nodes; 
   typedef std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> > Edges;
 
-  Nodes nodes;
-  Edges edges;
+private:
+  Nodes m_nodes;
+  Edges m_edges;
 
 public:
   NavigationGraphModel();
   ~NavigationGraphModel();
+
+  const Nodes& get_nodes() const { return m_nodes; }
   
   boost::shared_ptr<NavGraphNodeObjectModel> create_node(const Vector2f& pos);
   boost::shared_ptr<NavGraphEdgeObjectModel> create_edge(boost::shared_ptr<NavGraphNodeObjectModel> lhs, 
@@ -53,6 +59,9 @@ public:
 
   boost::shared_ptr<NavGraphNodeObjectModel> find_closest_node(const Vector2f& pos, float radius) const;
   boost::shared_ptr<NavGraphEdgeObjectModel> find_closest_edge(const Vector2f& pos, float radius) const;
+
+  boost::shared_ptr<NavGraphNodeObjectModel> get_object_at(const Vector2f& pos, const SelectMask& layers) const;
+  SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
 
 private:
   NavigationGraphModel(const NavigationGraphModel&);

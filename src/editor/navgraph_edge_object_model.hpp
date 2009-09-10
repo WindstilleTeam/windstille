@@ -31,7 +31,6 @@ private:
   boost::shared_ptr<NavGraphNodeObjectModel> m_lhs;
   boost::shared_ptr<NavGraphNodeObjectModel> m_rhs;
   boost::shared_ptr<VertexArrayDrawable> m_drawable;
-  EdgeHandle m_edge;
 
 public:
   NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeObjectModel> lhs,
@@ -44,8 +43,6 @@ public:
   Rectf get_bounding_box() const;
   ObjectModelHandle clone() const;
   void write(FileWriter& writer) const;
-
-  EdgeHandle get_edge() const { return m_edge; }
 
   boost::shared_ptr<NavGraphNodeObjectModel> get_lhs() const { return m_lhs; }
   boost::shared_ptr<NavGraphNodeObjectModel> get_rhs() const { return m_rhs; }

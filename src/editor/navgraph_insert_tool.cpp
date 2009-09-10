@@ -24,6 +24,7 @@
 #include "navigation/edge.hpp"
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
+#include "editor/navigation_graph_model.hpp"
 #include "editor/navgraph_node_object_model.hpp"
 #include "editor/navgraph_edge_object_model.hpp"
 
@@ -43,7 +44,8 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
   mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
   NavigationGraphModel& navgraph = wst.get_document().get_sector_model().get_nav_graph();
 
-  boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
+  // FIXME: Radius should scale with zoom
+  boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f); 
   boost::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
   switch(mode)
@@ -59,16 +61,15 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       }
       else
       { // connect last node with newly created node
-        // FIXME: Make this a GroupCommand
-        boost::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos)); //, sector));
+        std::cout << "Node Group" << std::endl;
+        boost::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos));
         
         wst.get_document().undo_group_begin();
-        wst.get_document().object_add(wst.get_document().get_sector_model().get_navgraph_layer(), node_obj);
+        wst.get_document().navgraph_node_add(node_obj);
         wst.get_document().navgraph_edge_add(wst.get_current_layer(), last_node, node_obj);
         wst.get_document().undo_group_end();
 
         node = node_obj;
-
         last_node.reset();
       }
       mode = NO_MODE;
@@ -85,14 +86,17 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       else if (edge)
       {
         wst.get_document().navgraph_edge_remove(edge);
-
+        
+        edge.reset();
         mode = NO_MODE;
       }
       else
       {
         boost::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos));//, sector));
+
+        wst.get_document().navgraph_node_add(node_obj);
+
         last_node = node_obj;
-        wst.get_document().object_add(wst.get_document().get_sector_model().get_navgraph_layer(), node_obj);
         mode = EDGE_MODE;
       }
     }

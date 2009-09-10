@@ -27,12 +27,11 @@
 
 #include "display/color.hpp"
 #include "editor/layer.hpp"
-#include "editor/navigation_graph_model.hpp"
 #include "editor/object_model.hpp"
 #include "editor/selection.hpp"
 #include "math/vector2f.hpp"
 
-class NavigationGraph;
+class NavigationGraphModel;
 class NavGraphNodeObjectModel;
 class NavGraphEdgeObjectModel;
 class SceneGraph;
@@ -44,7 +43,6 @@ private:
   boost::scoped_ptr<NavigationGraphModel> nav_graph;
   boost::scoped_ptr<SceneGraph>      scene_graph;
   Glib::RefPtr<Gtk::ListStore>       layer_tree;
-  LayerHandle navgraph_layer;
   Color ambient_color;
   
 public:
@@ -69,7 +67,6 @@ public:
   void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
   void remove(const ObjectModelHandle& object);
   LayerHandle get_layer(const ObjectModelHandle& object) const;
-  LayerHandle get_navgraph_layer() const { return navgraph_layer; }
 
   void  set_ambient_color(const Color& color) { ambient_color = color; }
   Color get_ambient_color() const { return ambient_color; }
@@ -98,7 +95,7 @@ public:
 
   void write(FileWriter& writer) const;
 
-  NavigationGraphModel& get_nav_graph()   const { return *nav_graph; }
+  NavigationGraphModel& get_nav_graph() const { return *nav_graph; }
   SceneGraph&      get_scene_graph() const { return *scene_graph; }
 
   void delete_navgraph_edges(NavGraphNodeObjectModel& node);

@@ -43,7 +43,6 @@ SectorModel::SectorModel(const std::string& filename)
   : nav_graph(new NavigationGraphModel()),
     scene_graph(new SceneGraph()),
     layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
-    navgraph_layer(new Layer(*this)),
     ambient_color()
 {
   register_callbacks();
@@ -54,7 +53,6 @@ SectorModel::SectorModel()
   : nav_graph(new NavigationGraphModel),
     scene_graph(new SceneGraph()),
     layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
-    navgraph_layer(new Layer(*this)),
     ambient_color()
 {
   register_callbacks();
@@ -263,12 +261,12 @@ SectorModel::get_object_at(const Vector2f& pos, const SelectMask& layermask) con
 {
   const Layers& layers = get_layers();
   SelectionHandle selection = Selection::create();
-
-  if (ObjectModelHandle object = navgraph_layer->get_object_at(pos, layermask))
-  {
-    return object;
-  }
   
+  if (ObjectModelHandle obj = nav_graph->get_object_at(pos, layermask))
+  {
+    return obj;
+  }
+
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
   {
     if ((*i)->is_visible() && !(*i)->is_locked())
@@ -290,7 +288,7 @@ SectorModel::get_selection(const Rectf& rect, const SelectMask& layermask) const
   SelectionHandle selection = Selection::create();
 
   {
-    SelectionHandle new_sel = navgraph_layer->get_selection(rect, layermask);
+    SelectionHandle new_sel = nav_graph->get_selection(rect, layermask);
     selection->add(new_sel->begin(), new_sel->end());
   }
 
@@ -570,7 +568,7 @@ SectorModel::rebuild_scene_graph()
     }
   }
 
-  for(Layer::const_iterator obj = navgraph_layer->begin(); obj != navgraph_layer->end(); ++obj)
+  for(NavigationGraphModel::Nodes::const_iterator obj = nav_graph->get_nodes().begin(); obj != nav_graph->get_nodes().end(); ++obj)
   {
     (*obj)->add_to_scenegraph(*scene_graph);
   }
