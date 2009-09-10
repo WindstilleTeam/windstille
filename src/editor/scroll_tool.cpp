@@ -40,23 +40,23 @@ void
 ScrollTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   if (mode == SCROLLING)
-    {
-      Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
-      wst.get_state().set_pos(orig_state.get_pos() + offset);
-      wst.queue_draw();
-    }
+  {
+    Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+    wst.get_state().set_pos(orig_state.get_pos() + offset);
+    wst.queue_draw();
+  }
 }
 
 void
 ScrollTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   if (mode == SCROLLING)
-    {
-      Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
-      wst.get_state().set_pos(orig_state.get_pos() + offset);
-      mode = NO_MODE;
-      wst.queue_draw();
-    }
+  {
+    Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+    wst.get_state().set_pos(orig_state.get_pos() + offset);
+    mode = NO_MODE;
+    wst.queue_draw();
+  }
 }
 
 /* EOF */

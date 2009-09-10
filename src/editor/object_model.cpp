@@ -84,31 +84,31 @@ ObjectModel::set_parent(const ObjectModelHandle& parent_, bool recalc_pos)
   { // Remove the old parent
     ObjectModelHandle parent = parent_ptr.lock();
     if (parent)
-      { 
-        rel_pos += parent->get_world_pos();
-        parent_ptr = ObjectModelPtr();
-      }
+    { 
+      rel_pos += parent->get_world_pos();
+      parent_ptr = ObjectModelPtr();
+    }
   }
 
   // Check that we don't create a loop to 'this' by parenting
   ObjectModelHandle pptr = parent_;
   while(pptr.get())
+  {
+    if (pptr.get() == this)
     {
-      if (pptr.get() == this)
-        {
-          EditorWindow::current()->print("Error: Trying to create parent loop");
+      EditorWindow::current()->print("Error: Trying to create parent loop");
 
-          parent_ptr = ObjectModelPtr();
-          return;
-        }
-      pptr = pptr->get_parent();
+      parent_ptr = ObjectModelPtr();
+      return;
     }
+    pptr = pptr->get_parent();
+  }
 
   // Set new parent
   if (parent_.get() && recalc_pos)
-    {
-      rel_pos -= parent_->get_world_pos();
-    }
+  {
+    rel_pos -= parent_->get_world_pos();
+  }
 
   parent_ptr = parent_;
 }
@@ -118,13 +118,13 @@ ObjectModel::get_world_pos() const
 {
   ObjectModelHandle parent = parent_ptr.lock();
   if (parent.get())
-    {
-      return rel_pos + parent->get_world_pos();
-    }
+  {
+    return rel_pos + parent->get_world_pos();
+  }
   else
-    {
-      return rel_pos;
-    }
+  {
+    return rel_pos;
+  }
 }
 
 void
@@ -159,9 +159,9 @@ ObjectModel::draw(SceneContext& sc)
   Vector2f wo_pos = get_world_pos();
 
   if (ObjectModelHandle parent = parent_ptr.lock())
-    {
-      sc.control().draw_line(wo_pos, parent->get_world_pos(), Color(0,0,1, 0.5f));
-    }
+  {
+    sc.control().draw_line(wo_pos, parent->get_world_pos(), Color(0,0,1, 0.5f));
+  }
 
   //sc.control().fill_rect(Rectf(wo_pos - Vector2f(8, 8), Sizef(16, 16)), Color(1,0,0));
 }
@@ -205,81 +205,81 @@ ObjectModel::snap_object(const Rectf& in) const
   float y_dist = std::min(top_dist, bottom_dist);
 
   if (x_dist < y_dist)
-    { // closer on the X axis
-      if (overlap(rect.top, rect.bottom,  in.top, in.bottom))
-        {
-          float y_snap = 0.0f;
+  { // closer on the X axis
+    if (overlap(rect.top, rect.bottom,  in.top, in.bottom))
+    {
+      float y_snap = 0.0f;
 
-          if (fabs(rect.top - in.top) < snap_threshold)
-            {
-              y_snap = rect.top - in.top;
-              snap.y_set = true;
-            }
+      if (fabs(rect.top - in.top) < snap_threshold)
+      {
+	y_snap = rect.top - in.top;
+	snap.y_set = true;
+      }
 
-          if (fabs(rect.bottom - in.bottom) < snap_threshold)
-            {
-              y_snap = rect.bottom - in.bottom;
-              snap.y_set = true;
-            }
+      if (fabs(rect.bottom - in.bottom) < snap_threshold)
+      {
+	y_snap = rect.bottom - in.bottom;
+	snap.y_set = true;
+      }
 
-          if (left_dist < right_dist)
-            { // snap to left edge
-              if (left_dist < snap_threshold)
-                {
-                  snap.offset.x = rect.left - in.right;
-                  snap.offset.y = y_snap;
-                  snap.x_set = true;
-                }
-            }
-          else
-            { // snap to right edge
-              if (right_dist < snap_threshold)
-                {
-                  snap.offset.x = rect.right - in.left;
-                  snap.offset.y = y_snap;
-                  snap.x_set = true;
-                }
-            }
-        }
+      if (left_dist < right_dist)
+      { // snap to left edge
+	if (left_dist < snap_threshold)
+	{
+	  snap.offset.x = rect.left - in.right;
+	  snap.offset.y = y_snap;
+	  snap.x_set = true;
+	}
+      }
+      else
+      { // snap to right edge
+	if (right_dist < snap_threshold)
+	{
+	  snap.offset.x = rect.right - in.left;
+	  snap.offset.y = y_snap;
+	  snap.x_set = true;
+	}
+      }
     }
+  }
   else
-    { // closer on the Y axis
-      if (overlap(rect.left, rect.right,  in.left, in.right))
-        {
-          float x_snap = 0.0f;
+  { // closer on the Y axis
+    if (overlap(rect.left, rect.right,  in.left, in.right))
+    {
+      float x_snap = 0.0f;
 
-          if (fabs(rect.left - in.left) < snap_threshold)
-            {
-              x_snap = rect.left - in.left;
-              snap.x_set = true;
-            }
+      if (fabs(rect.left - in.left) < snap_threshold)
+      {
+	x_snap = rect.left - in.left;
+	snap.x_set = true;
+      }
 
-          if (fabs(rect.right - in.right) < snap_threshold)
-            {
-              x_snap = rect.right - in.right;
-              snap.x_set = true;
-            }
+      if (fabs(rect.right - in.right) < snap_threshold)
+      {
+	x_snap = rect.right - in.right;
+	snap.x_set = true;
+      }
 
-          if (top_dist < bottom_dist)
-            { // snap to top edge
-              if (top_dist < snap_threshold)
-                {
-                  snap.offset.x = x_snap;
-                  snap.offset.y = rect.top - in.bottom;
-                  snap.y_set = true;
-                }
-            }
-          else
-            { // snap to bottom edge
-              if (bottom_dist < snap_threshold)
-                {
-                  snap.offset.x = x_snap;
-                  snap.offset.y = rect.bottom - in.top;
-                  snap.y_set = true;
-                }
-            }
-        }      
-    }
+      if (top_dist < bottom_dist)
+      { // snap to top edge
+	if (top_dist < snap_threshold)
+	{
+	  snap.offset.x = x_snap;
+	  snap.offset.y = rect.top - in.bottom;
+	  snap.y_set = true;
+	}
+      }
+      else
+      { // snap to bottom edge
+	if (bottom_dist < snap_threshold)
+	{
+	  snap.offset.x = x_snap;
+	  snap.offset.y = rect.bottom - in.top;
+	  snap.y_set = true;
+	}
+      }
+    }      
+  }
 
   return snap;
 }

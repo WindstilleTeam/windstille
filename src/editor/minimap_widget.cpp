@@ -54,17 +54,17 @@ MinimapWidget::on_expose_event(GdkEventExpose* /*event*/)
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (!glwindow->gl_begin(get_gl_context()))
-    {
-      return false;
-    }
+  {
+    return false;
+  }
   else
-    {
-      //glClear(GL_COLOR_BUFFER_BIT);
-      //glwindow->swap_buffers();
-      glwindow->gl_end();
+  {
+    //glClear(GL_COLOR_BUFFER_BIT);
+    //glwindow->swap_buffers();
+    glwindow->gl_end();
 
-      return true;
-    }
+    return true;
+  }
 }
 
 /* EOF */

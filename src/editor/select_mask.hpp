@@ -41,13 +41,13 @@ public:
   void set(unsigned int layer, bool enable)
   {
     if (enable)
-      {
-        mask = mask | (1u<<layer);
-      }
+    {
+      mask = mask | (1u<<layer);
+    }
     else
-      {
-        mask = mask & (~(1u<<layer));
-      }
+    {
+      mask = mask & (~(1u<<layer));
+    }
   }
 
   int size() const 

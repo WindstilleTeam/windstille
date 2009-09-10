@@ -39,24 +39,24 @@ void
 UndoManager::undo()
 {
   if (!undo_stack.empty())
-    {
-      CommandHandle cmd = undo_stack.back();
-      undo_stack.pop_back();
-      cmd->undo();
-      redo_stack.push_back(cmd);
-    }
+  {
+    CommandHandle cmd = undo_stack.back();
+    undo_stack.pop_back();
+    cmd->undo();
+    redo_stack.push_back(cmd);
+  }
 }
 
 void
 UndoManager::redo()
 {
   if (!redo_stack.empty())
-    {
-      CommandHandle cmd = redo_stack.back();
-      redo_stack.pop_back();
-      cmd->redo();
-      undo_stack.push_back(cmd);
-    }
+  {
+    CommandHandle cmd = redo_stack.back();
+    redo_stack.pop_back();
+    cmd->redo();
+    undo_stack.push_back(cmd);
+  }
 }
 
 /* EOF */

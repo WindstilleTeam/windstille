@@ -66,10 +66,10 @@ void
 Layer::draw(SceneContext& sc, const SelectMask& select_mask)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      if (select_mask.match((*i)->get_select_mask()))
-        (*i)->draw(sc);
-    }
+  {
+    if (select_mask.match((*i)->get_select_mask()))
+      (*i)->draw(sc);
+  }
 }
 
 void
@@ -84,38 +84,38 @@ void
 Layer::update(float delta)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      (*i)->update(delta);
-    }
+  {
+    (*i)->update(delta);
+  }
 }
 
 ObjectModelHandle
 Layer::get_object_at(const Vector2f& pos, const SelectMask& select_mask) const
 {
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
+  {
+    if (select_mask.match((*i)->get_select_mask()) &&
+	(*i)->is_at(pos))
     {
-      if (select_mask.match((*i)->get_select_mask()) &&
-          (*i)->is_at(pos))
-        {
-          return *i;
-        }
+      return *i;
     }
+  }
   return ObjectModelHandle();
 }
 
 SelectionHandle
 Layer::get_selection(const Rectf& rect, const SelectMask& select_mask) const
 {
- SelectionHandle selection = Selection::create();
+  SelectionHandle selection = Selection::create();
 
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
+  {
+    if (select_mask.match((*i)->get_select_mask()) &&
+	rect.contains((*i)->get_bounding_box()))
     {
-      if (select_mask.match((*i)->get_select_mask()) &&
-          rect.contains((*i)->get_bounding_box()))
-        {
-          selection->add(*i);
-        }
+      selection->add(*i);
     }
+  }
 
   return selection;
 }
@@ -159,16 +159,16 @@ Layer::raise(ObjectModelHandle object)
   j = std::find_if(j, objects.end(), OverlapsWith(object->get_bounding_box()));
 
   if (j == objects.end())
-    {
-      // object overlaps with no other object, no point in raising it
-    }
+  {
+    // object overlaps with no other object, no point in raising it
+  }
   else
-    {
-      objects.erase(i);
-      objects.insert(++j, object);
+  {
+    objects.erase(i);
+    objects.insert(++j, object);
       
-      m_sector.rebuild_scene_graph();
-    }
+    m_sector.rebuild_scene_graph();
+  }
 }
 
 void
@@ -182,19 +182,19 @@ Layer::lower(ObjectModelHandle object)
   j = std::find_if(j, objects.rend(), OverlapsWith(object->get_bounding_box()));
 
   if (j == objects.rend())
-    {
-      // object overlaps with no other object, no point in lowering it
-    }
+  {
+    // object overlaps with no other object, no point in lowering it
+  }
   else
-    {
-      // the base() of base in one further then where the reverse
-      // iterator was, so we have to move back to get the same
-      // position
-      objects.erase(--(i.base()));
-      objects.insert(--(j.base()), object);
+  {
+    // the base() of base in one further then where the reverse
+    // iterator was, so we have to move back to get the same
+    // position
+    objects.erase(--(i.base()));
+    objects.insert(--(j.base()), object);
 
-      m_sector.rebuild_scene_graph();
-    }
+    m_sector.rebuild_scene_graph();
+  }
 }
 
 SnapData
@@ -206,15 +206,15 @@ Layer::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ignore_
 
   // Find the smallest snap offset
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
+  {
+    // object is not in the list of objects to ignore
+    if ((*i)->is_snappable() &&
+	ignore_objects.find(*i) == ignore_objects.end())
     {
-      // object is not in the list of objects to ignore
-      if ((*i)->is_snappable() &&
-          ignore_objects.find(*i) == ignore_objects.end())
-        {
-          SnapData snap = (*i)->snap_object(rect);
-          best_snap.merge(snap);
-        }
+      SnapData snap = (*i)->snap_object(rect);
+      best_snap.merge(snap);
     }
+  }
 
   return best_snap;
 }
@@ -223,9 +223,9 @@ void
 Layer::write(FileWriter& writer) const
 {
   for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      (*i)->write(writer);
-    }
+  {
+    (*i)->write(writer);
+  }
 }
 
 /* EOF */

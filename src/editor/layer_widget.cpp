@@ -31,29 +31,29 @@ LayerWidget::LayerWidget()
   int layer_number = 0;
   for(int y = 0; y < 2; ++y)
     for(int x = 0; x < 9; ++x)
+    {
+      if ((x+1) % 5)
       {
-        if ((x+1) % 5)
-          {
-            Gtk::ToggleButton* button = Gtk::manage(new Gtk::ToggleButton());
-            button->set_size_request(16, 16);
-            table.attach(*button, x, x+1, y, y+1);
+	Gtk::ToggleButton* button = Gtk::manage(new Gtk::ToggleButton());
+	button->set_size_request(16, 16);
+	table.attach(*button, x, x+1, y, y+1);
 
-            button->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &LayerWidget::on_layer_toggle), 
-                                                        button, layer_number));
-            buttons.push_back(button);
-            layer_number += 1;
-          }
-        else
-          {
-            if (y == 0)
-              {
-                Gtk::VSeparator* separator = Gtk::manage(new Gtk::VSeparator());
-                //Gtk::Widget* separator = Gtk::manage(new Gtk::Widget());
-                separator->set_size_request(12, -1);
-                table.attach(*separator, x, x+1, 0, 2);
-              }
-          }
+	button->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &LayerWidget::on_layer_toggle), 
+						    button, layer_number));
+	buttons.push_back(button);
+	layer_number += 1;
       }
+      else
+      {
+	if (y == 0)
+	{
+	  Gtk::VSeparator* separator = Gtk::manage(new Gtk::VSeparator());
+	  //Gtk::Widget* separator = Gtk::manage(new Gtk::Widget());
+	  separator->set_size_request(12, -1);
+	  table.attach(*separator, x, x+1, 0, 2);
+	}
+      }
+    }
 
   add(table);
 }
@@ -72,9 +72,9 @@ void
 LayerWidget::update(const SelectMask& layers)
 {
   for(int i = 0; i < layers.size(); ++i)
-    {
-      buttons[i]->set_active(layers.get(i));
-    }
+  {
+    buttons[i]->set_active(layers.get(i));
+  }
 }
 
 SelectMask
@@ -82,9 +82,9 @@ LayerWidget::get_select_mask() const
 {
   SelectMask select_mask;
   for(int i = 0; i < select_mask.size(); ++i)
-    {
-      select_mask.set(i, buttons[i]->get_active());
-    }
+  {
+    select_mask.set(i, buttons[i]->get_active());
+  }
   return select_mask;
 }
 

@@ -215,20 +215,20 @@ DecalObjectModel::is_at(const Vector2f& pos) const
 
   if (fabsf(p.x) < surface.get_width()/2 &&
       fabsf(p.y) < surface.get_height()/2)
-    {
-      if (hflip)
-        p.x = -p.x;
+  {
+    if (hflip)
+      p.x = -p.x;
 
-      if (vflip)
-        p.y = -p.y;
+    if (vflip)
+      p.y = -p.y;
 
-      return software_surface.is_at(static_cast<int>(p.x + surface.get_width()/2),
-                                    static_cast<int>(p.y + surface.get_height()/2));
-    }
+    return software_surface.is_at(static_cast<int>(p.x + surface.get_width()/2),
+				  static_cast<int>(p.y + surface.get_height()/2));
+  }
   else
-    {
-      return false;
-    }
+  {
+    return false;
+  }
 }
 
 void

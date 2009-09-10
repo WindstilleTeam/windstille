@@ -23,17 +23,17 @@ PropertyDialog::PropertyDialog(Properties& /*properties*/)
 #if 0
   std::vector<std::string> props = properties.get_properties();
   for(std::vector<std::string>::iterator i = props.begin(); i != props.end(); ++i)
+  {
+    Property& prop = properties.get_property(*i);
+    if (prop.get_type() == "int")
     {
-      Property& prop = properties.get_property(*i);
-      if (prop.get_type() == "int")
-        {
-          new Gtk::Label(*i);
-          new Gtk::TextEntry();
-        }
-      else if (prop.get_type() == "float")
-        {
-        }
+      new Gtk::Label(*i);
+      new Gtk::TextEntry();
     }
+    else if (prop.get_type() == "float")
+    {
+    }
+  }
 #endif 
 }
 

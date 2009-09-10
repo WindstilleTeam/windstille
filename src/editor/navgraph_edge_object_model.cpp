@@ -25,7 +25,7 @@
 
 NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeObjectModel> lhs,
                                                  boost::shared_ptr<NavGraphNodeObjectModel> rhs)
-                                                 //SectorModel& sector)
+  //SectorModel& sector)
   : ObjectModel("NavGraphEdgeObjectModel", Vector2f()),
     m_lhs(lhs),
     m_rhs(rhs),
@@ -44,14 +44,14 @@ NavGraphEdgeObjectModel::update(float delta)
 {
   if (m_drawable)
   {
-      m_drawable->clear();
-      m_drawable->set_mode(GL_LINES);
+    m_drawable->clear();
+    m_drawable->set_mode(GL_LINES);
 
-      m_drawable->color(Color(0.0f, 1.0f, 1.0f));
-      m_drawable->vertex(m_lhs->get_world_pos());
+    m_drawable->color(Color(0.0f, 1.0f, 1.0f));
+    m_drawable->vertex(m_lhs->get_world_pos());
 
-      m_drawable->color(Color(0.0f, 1.0f, 1.0f));
-      m_drawable->vertex(m_rhs->get_world_pos());
+    m_drawable->color(Color(0.0f, 1.0f, 1.0f));
+    m_drawable->vertex(m_rhs->get_world_pos());
   }
 }
 

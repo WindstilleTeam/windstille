@@ -33,38 +33,38 @@ void
 ZoomTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 {
   if (mode == NO_MODE)
-    {
-      mouse_pos = click_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+  {
+    mouse_pos = click_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
 
-      mode = RECT_MODE;
+    mode = RECT_MODE;
 
-      wst.queue_draw();
-    }
+    wst.queue_draw();
+  }
 }
 
 void
 ZoomTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   if (mode == RECT_MODE)
-    {
-      mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
-      wst.queue_draw();
-    }
+  {
+    mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+    wst.queue_draw();
+  }
 }
 
 void
 ZoomTool::mouse_up(GdkEventButton* /*event*/, WindstilleWidget& wst)
 {
   if (mode == RECT_MODE)
-    {
-      Rectf rect(click_pos, mouse_pos);
-      rect.normalize();
-      wst.get_state().zoom_to(rect);
+  {
+    Rectf rect(click_pos, mouse_pos);
+    rect.normalize();
+    wst.get_state().zoom_to(rect);
 
-      mode = NO_MODE;
+    mode = NO_MODE;
 
-      wst.queue_draw();
-    }
+    wst.queue_draw();
+  }
 }
 
 void
@@ -77,13 +77,13 @@ void
 ZoomTool::draw(SceneContext& sc)
 {
   if (mode == RECT_MODE)
-    {
-      Rectf rect(click_pos, mouse_pos);
-      rect.normalize();
+  {
+    Rectf rect(click_pos, mouse_pos);
+    rect.normalize();
 
-      sc.control().fill_rect(rect, Color(1.0f, 1.0f, 0.0f, 0.25));
-      sc.control().draw_rect(rect, Color(1.0f, 1.0f, 0.0f)); 
-    }
+    sc.control().fill_rect(rect, Color(1.0f, 1.0f, 0.0f, 0.25));
+    sc.control().draw_rect(rect, Color(1.0f, 1.0f, 0.0f)); 
+  }
 }
 
 /* EOF */

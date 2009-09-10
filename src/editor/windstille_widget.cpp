@@ -144,41 +144,41 @@ WindstilleWidget::on_realize()
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (glwindow->gl_begin(get_gl_context()))
+  {
+    if (!lib_init)
     {
-      if (!lib_init)
-        {
-          lib_init = true;
-          GLenum err = glewInit();
-          if(err != GLEW_OK) {
-            std::ostringstream msg;
-            msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
-            throw std::runtime_error(msg.str());
-          }
+      lib_init = true;
+      GLenum err = glewInit();
+      if(err != GLEW_OK) {
+	std::ostringstream msg;
+	msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
+	throw std::runtime_error(msg.str());
+      }
 
-          OpenGLState::init();
-        }
-      
-      if (!sc.get())
-        {
-          sc.reset(new SceneContext());
-          compositor.reset(new Compositor(Size(get_width(), get_height()),
-                                          Size(get_width(), get_height())));
-          sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
-        }
-      
-      background_pattern = Texture(Pathname("editor/background_layer.png"));
-      background_pattern.set_wrap(GL_REPEAT);
-
-      glViewport(0, 0, get_width(), get_height());
-      glMatrixMode(GL_PROJECTION);
-      glLoadIdentity();
-      glOrtho(0.0, get_width(), get_height(), 0.0, 1000.0, -1000.0);
-
-      glMatrixMode(GL_MODELVIEW);
-      glLoadIdentity();
-  
-      glwindow->gl_end();
+      OpenGLState::init();
     }
+      
+    if (!sc.get())
+    {
+      sc.reset(new SceneContext());
+      compositor.reset(new Compositor(Size(get_width(), get_height()),
+				      Size(get_width(), get_height())));
+      sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
+    }
+      
+    background_pattern = Texture(Pathname("editor/background_layer.png"));
+    background_pattern.set_wrap(GL_REPEAT);
+
+    glViewport(0, 0, get_width(), get_height());
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0, get_width(), get_height(), 0.0, 1000.0, -1000.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+  
+    glwindow->gl_end();
+  }
 }
 
 bool
@@ -190,29 +190,29 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (!glwindow->gl_begin(get_gl_context()))
-    {
-      return false;
-    }
+  {
+    return false;
+  }
   else
+  {
+    if (compositor.get())
     {
-      if (compositor.get())
-      {
-        compositor.reset(new Compositor(Size(ev->width, ev->height),
-                                        Size(ev->width, ev->height)));
-      }
-
-      glViewport(0, 0, get_width(), get_height());
-      glMatrixMode(GL_PROJECTION);
-      glLoadIdentity();
-      glOrtho(0.0, get_width(), get_height(), 0.0, 1000.0, -1000.0);
-
-      glMatrixMode(GL_MODELVIEW);
-      glLoadIdentity();
-  
-      glwindow->gl_end();
-
-      return true;
+      compositor.reset(new Compositor(Size(ev->width, ev->height),
+				      Size(ev->width, ev->height)));
     }
+
+    glViewport(0, 0, get_width(), get_height());
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0, get_width(), get_height(), 0.0, 1000.0, -1000.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+  
+    glwindow->gl_end();
+
+    return true;
+  }
 }
 
 bool
@@ -221,23 +221,23 @@ WindstilleWidget::on_expose_event(GdkEventExpose* /*event*/)
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (!glwindow->gl_begin(get_gl_context()))
-    {
-      return false;
-    }
+  {
+    return false;
+  }
   else
-    {
-      draw();
+  {
+    draw();
 
-      // Swap buffers.
-      if (glwindow->is_double_buffered())
-        glwindow->swap_buffers();
-      else
-        glFlush();
+    // Swap buffers.
+    if (glwindow->is_double_buffered())
+      glwindow->swap_buffers();
+    else
+      glFlush();
 
-      glwindow->gl_end();
+    glwindow->gl_end();
 
-      return true;
-    }
+    return true;
+  }
 }
 
 void
@@ -252,70 +252,70 @@ void
 WindstilleWidget::draw()
 {
   if (sc.get())
-    {
-      state.push(*sc);
+  {
+    state.push(*sc);
       
-      sc->light().fill_screen(m_document->get_sector_model().get_ambient_color());
+    sc->light().fill_screen(m_document->get_sector_model().get_ambient_color());
 
-      if (draw_background_pattern)
-        {
-          sc->color().fill_pattern(background_pattern, 
-                                   state.get_offset() * state.get_zoom());
-        }
-      else
-        {
-          sc->color().fill_screen(Color());
-        }
-
-      if (draw_only_active_layers)
-        m_document->get_sector_model().draw(*sc, SelectMask());
-      else
-        m_document->get_sector_model().draw(*sc, select_mask);
-
-      if (!m_document->get_selection()->empty())
-        {
-          for(Selection::iterator i = m_document->get_selection()->begin(); i != m_document->get_selection()->end(); ++i)
-            {
-              (*i)->draw_select(*sc, i == m_document->get_selection()->begin());
-            }
-
-          //sc->control().draw_rect(selection->get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));
-        }
-
-      for(std::vector<ControlPointHandle>::const_iterator i = m_document->get_control_points().begin();
-          i != m_document->get_control_points().end(); ++i)
-        {
-          (*i)->draw(*sc);
-        }
-
-      if (EditorWindow::current()->get_current_tool())
-        {
-          EditorWindow::current()->get_current_tool()->draw(*sc);
-        }
-
-      compositor->render(*sc, &m_document->get_sector_model().get_scene_graph(), state);
-
-      state.pop(*sc);
-
-      if (grid_enabled)
-        {
-          Display::draw_grid(state.get_offset() * state.get_zoom(),
-                             Sizef(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.5f));
-        }
+    if (draw_background_pattern)
+    {
+      sc->color().fill_pattern(background_pattern, 
+			       state.get_offset() * state.get_zoom());
     }
+    else
+    {
+      sc->color().fill_screen(Color());
+    }
+
+    if (draw_only_active_layers)
+      m_document->get_sector_model().draw(*sc, SelectMask());
+    else
+      m_document->get_sector_model().draw(*sc, select_mask);
+
+    if (!m_document->get_selection()->empty())
+    {
+      for(Selection::iterator i = m_document->get_selection()->begin(); i != m_document->get_selection()->end(); ++i)
+      {
+	(*i)->draw_select(*sc, i == m_document->get_selection()->begin());
+      }
+
+      //sc->control().draw_rect(selection->get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+    }
+
+    for(std::vector<ControlPointHandle>::const_iterator i = m_document->get_control_points().begin();
+	i != m_document->get_control_points().end(); ++i)
+    {
+      (*i)->draw(*sc);
+    }
+
+    if (EditorWindow::current()->get_current_tool())
+    {
+      EditorWindow::current()->get_current_tool()->draw(*sc);
+    }
+
+    compositor->render(*sc, &m_document->get_sector_model().get_scene_graph(), state);
+
+    state.pop(*sc);
+
+    if (grid_enabled)
+    {
+      Display::draw_grid(state.get_offset() * state.get_zoom(),
+			 Sizef(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.5f));
+    }
+  }
 }
 
 bool
 WindstilleWidget::scroll(GdkEventScroll* ev)
 {
   if (ev->direction == GDK_SCROLL_UP)
-    {
-      //viewer->get_state().zoom(1.1f, Vector2i(event->x, event->y));
-    }
+  {
+    //viewer->get_state().zoom(1.1f, Vector2i(event->x, event->y));
+  }
   else if (ev->direction == GDK_SCROLL_DOWN)
-    {
-      //viewer->get_state().zoom(1.0f/1.1f, Vector2i(event->x, event->y));
-    }
+  {
+    //viewer->get_state().zoom(1.0f/1.1f, Vector2i(event->x, event->y));
+  }
   return false;
 }
 
@@ -327,24 +327,24 @@ WindstilleWidget::mouse_down(GdkEventButton* ev)
   //std::cout << "Button Press: " << ev->x << ", " << ev->y << " - " << ev->button << std::endl;
 
   if (ev->button == 1)
-    { // Tool
-      EditorWindow::current()->get_current_tool()->mouse_down(ev, *this);
-      return true;
-    }
+  { // Tool
+    EditorWindow::current()->get_current_tool()->mouse_down(ev, *this);
+    return true;
+  }
   else if (ev->button == 2)
-    { // Scroll
-      scroll_tool->mouse_down(ev, *this);
-      return true;
-    }
+  { // Scroll
+    scroll_tool->mouse_down(ev, *this);
+    return true;
+  }
   else if (ev->button == 3)
-    { // Context Menu
-      EditorWindow::current()->get_current_tool()->mouse_right_down(ev, *this);
-      return true;
-    }
+  { // Context Menu
+    EditorWindow::current()->get_current_tool()->mouse_right_down(ev, *this);
+    return true;
+  }
   else
-    {
-      return false;
-    }
+  {
+    return false;
+  }
 }
 
 bool
@@ -364,15 +364,15 @@ WindstilleWidget::mouse_up(GdkEventButton* ev)
   //std::cout << "Button Release: " << ev->x << ", " << ev->y << " - " << ev->button << std::endl;
   //viewer->on_mouse_button_up(Vector2i(ev->x, ev->y), ev->button);
   if (ev->button == 1)
-    {
-      EditorWindow::current()->get_current_tool()->mouse_up(ev, *this);
-      queue_draw();
-    }
+  {
+    EditorWindow::current()->get_current_tool()->mouse_up(ev, *this);
+    queue_draw();
+  }
   else if (ev->button == 2)
-    {
-      scroll_tool->mouse_up(ev, *this);
-      queue_draw();
-    }
+  {
+    scroll_tool->mouse_up(ev, *this);
+    queue_draw();
+  }
 
   return false;
 }
@@ -383,57 +383,57 @@ WindstilleWidget::key_press(GdkEventKey* ev)
   //std::cout << ev->keyval << " keypress " << state.get_pos() << std::endl;
 
   switch(ev->keyval)
-    {
-      case GDK_1:
-        map_type = DecalObjectModel::COLORMAP;
-        EditorWindow::current()->print("COLORMAP");
-        break;
+  {
+    case GDK_1:
+      map_type = DecalObjectModel::COLORMAP;
+      EditorWindow::current()->print("COLORMAP");
+      break;
 
-      case GDK_2:
-        map_type = DecalObjectModel::LIGHTMAP;
-        EditorWindow::current()->print("LIGHTMAP");
-        break;
+    case GDK_2:
+      map_type = DecalObjectModel::LIGHTMAP;
+      EditorWindow::current()->print("LIGHTMAP");
+      break;
 
-      case GDK_3:
-        map_type = DecalObjectModel::HIGHLIGHTMAP;
-        EditorWindow::current()->print("HIGHLIGHT");
-        break;
+    case GDK_3:
+      map_type = DecalObjectModel::HIGHLIGHTMAP;
+      EditorWindow::current()->print("HIGHLIGHT");
+      break;
 
-      case GDK_a:
-        EditorWindow::current()->on_select_all();
-        break;
+    case GDK_a:
+      EditorWindow::current()->on_select_all();
+      break;
 
-      case GDK_d:
-        m_document->selection_duplicate();
-        break;
+    case GDK_d:
+      m_document->selection_duplicate();
+      break;
 
-      case GDK_s:
-        SurfaceManager::current()->save_all_as_png();
-        break;
+    case GDK_s:
+      SurfaceManager::current()->save_all_as_png();
+      break;
 
-      case GDK_Delete:
-        m_document->selection_delete();
-        break;
+    case GDK_Delete:
+      m_document->selection_delete();
+      break;
 
-      case GDK_Left:
-        state.set_pos(state.get_pos() + Vector2f(-100.0f, 0.0f));
-        break;
+    case GDK_Left:
+      state.set_pos(state.get_pos() + Vector2f(-100.0f, 0.0f));
+      break;
 
-      case GDK_Right:
-        state.set_pos(state.get_pos() + Vector2f(100.0f, 0.0f));
-        queue_draw();
-        break;
+    case GDK_Right:
+      state.set_pos(state.get_pos() + Vector2f(100.0f, 0.0f));
+      queue_draw();
+      break;
 
-      case GDK_Up:
-        state.set_pos(state.get_pos() + Vector2f(0.0f, -100.0f));
-        queue_draw();
-        break;
+    case GDK_Up:
+      state.set_pos(state.get_pos() + Vector2f(0.0f, -100.0f));
+      queue_draw();
+      break;
 
-      case GDK_Down:
-        state.set_pos(state.get_pos() + Vector2f(0.0f, 100.0f));
-        queue_draw();
-        break;
-    }
+    case GDK_Down:
+      state.set_pos(state.get_pos() + Vector2f(0.0f, 100.0f));
+      queue_draw();
+      break;
+  }
 
   return true;
 }
@@ -478,13 +478,13 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*
   EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path_, focus_column);
 
   if (!path_.gobj())
-    {
-      std::cout << "WindstilleWidget::on_drag_data_received(): Error: Couldn't get path" << std::endl;
-    }
+  {
+    std::cout << "WindstilleWidget::on_drag_data_received(): Error: Couldn't get path" << std::endl;
+  }
   else
-    {
-      get_document().object_add(m_document->get_sector_model().get_layer(path_), object);
-    }
+  {
+    get_document().object_add(m_document->get_sector_model().get_layer(path_), object);
+  }
 }
 
 void
@@ -524,14 +524,14 @@ WindstilleWidget::get_current_layer()
   EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path_, focus_column);
 
   if (!path_.gobj())
-    {
-      std::cout << "WindstilleWidget::get_current_layer(): Error: Couldn't get path" << std::endl;
-      return LayerHandle();
-    }
+  {
+    std::cout << "WindstilleWidget::get_current_layer(): Error: Couldn't get path" << std::endl;
+    return LayerHandle();
+  }
   else
-    {
-      return m_document->get_sector_model().get_layer(path_);  
-    }
+  {
+    return m_document->get_sector_model().get_layer(path_);  
+  }
 }
 
 Gtk::TreeModel::Path
@@ -566,10 +566,10 @@ WindstilleWidget::save_screenshot(const std::string& filename_)
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (glwindow->gl_begin(get_gl_context()))
-    {
-      Display::save_screenshot(Pathname(filename_, Pathname::kSysPath));
-      glwindow->gl_end();
-    }
+  {
+    Display::save_screenshot(Pathname(filename_, Pathname::kSysPath));
+    glwindow->gl_end();
+  }
 }
 
 void

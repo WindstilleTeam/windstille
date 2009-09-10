@@ -48,14 +48,14 @@ Selection::remove(const ObjectModelHandle& object)
 {
   Objects::iterator it = std::find(objects.begin(), objects.end(), object);
   if (it != objects.end())
-    {
-      objects.erase(it);
-      signal_changed();
-    }
+  {
+    objects.erase(it);
+    signal_changed();
+  }
   else
-    {
-      EditorWindow::current()->print("Selection:remove(): object not in selection");
-    }
+  {
+    EditorWindow::current()->print("Selection:remove(): object not in selection");
+  }
 }
 
 bool
@@ -83,12 +83,12 @@ Selection::contains_parent(ObjectModelHandle object)
 {
   ObjectModelHandle parent = object->get_parent();
   while (parent)
-    {
-      if (has_object(parent))
-        return true;
+  {
+    if (has_object(parent))
+      return true;
 
-      parent = parent->get_parent();
-    }
+    parent = parent->get_parent();
+  }
 
   return false;
 }
@@ -99,23 +99,23 @@ Selection::on_move_start()
   moving = true;
 
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
+  {
+    if (contains_parent(*i))
     {
-      if (contains_parent(*i))
-        {
-          non_moveable_objects.insert(*i);
-        }
+      non_moveable_objects.insert(*i);
     }
+  }
 
   object_orig_poss.clear();
 
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
+  {
+    if (non_moveable_objects.find(*i) == non_moveable_objects.end())
     {
-      if (non_moveable_objects.find(*i) == non_moveable_objects.end())
-        {
-          //(*i)->on_move_start();
-          object_orig_poss.push_back((*i)->get_rel_pos());
-        }
+      //(*i)->on_move_start();
+      object_orig_poss.push_back((*i)->get_rel_pos());
     }
+  }
 
   signal_changed();
 }
@@ -124,12 +124,12 @@ void
 Selection::on_move_update(const Vector2f& offset)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
+  {
+    if (non_moveable_objects.find(*i) == non_moveable_objects.end())
     {
-      if (non_moveable_objects.find(*i) == non_moveable_objects.end())
-        {
-          (*i)->set_rel_pos(object_orig_poss[i - objects.begin()] + offset);
-        }
+      (*i)->set_rel_pos(object_orig_poss[i - objects.begin()] + offset);
     }
+  }
 }
 
 void
@@ -158,30 +158,30 @@ Selection::clone() const
   SelectionHandle selection = Selection::create();
   std::map<ObjectModelHandle, ObjectModelHandle> parent_map;
   for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      ObjectModelHandle obj = (*i)->clone();
-      parent_map[*i] = obj;
-      selection->add(obj);
-    }
+  {
+    ObjectModelHandle obj = (*i)->clone();
+    parent_map[*i] = obj;
+    selection->add(obj);
+  }
 
   // Second pass to set the parents to the cloned objects
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+  {
+    if ((*i)->get_parent())
     {
-      if ((*i)->get_parent())
-        {
-          std::map<ObjectModelHandle, ObjectModelHandle>::iterator it = parent_map.find((*i)->get_parent());
+      std::map<ObjectModelHandle, ObjectModelHandle>::iterator it = parent_map.find((*i)->get_parent());
           
-          if (it == parent_map.end())
-            {
-              // When the parent wasn't part of the selection, leave
-              // the parent untouched
-            }
-          else
-            {
-              (*i)->set_parent(it->second);
-            }
-        }
+      if (it == parent_map.end())
+      {
+	// When the parent wasn't part of the selection, leave
+	// the parent untouched
+      }
+      else
+      {
+	(*i)->set_parent(it->second);
+      }
     }
+  }
 
   return selection;
 }
@@ -190,47 +190,47 @@ Rectf
 Selection::get_bounding_box() const
 {
   if (empty())
-    {
-      return Rectf();
-    }
+  {
+    return Rectf();
+  }
   else
+  {
+    Rectf rect = objects.front()->get_bounding_box();
+    for(Objects::const_iterator i = objects.begin()+1; i != objects.end(); ++i)
     {
-      Rectf rect = objects.front()->get_bounding_box();
-      for(Objects::const_iterator i = objects.begin()+1; i != objects.end(); ++i)
-        {
-          rect = rect.grow((*i)->get_bounding_box());
-        }
-      return rect;
+      rect = rect.grow((*i)->get_bounding_box());
     }
+    return rect;
+  }
 }
 
 void
 Selection::reset()
 {
   for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      (*i)->reset();
-    }
+  {
+    (*i)->reset();
+  }
 }
 
 void
 Selection::add_control_points(std::vector<ControlPointHandle>& control_points)
 {
   if (!empty())
+  {
+    if (size() == 1)
     {
-      if (size() == 1)
-        {
-          objects[0]->add_control_points(control_points);
-        }
-      else
-        {
-          const Rectf& rect = get_bounding_box();
-          control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.top)));
-          control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.top)));
-          control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.bottom)));
-          control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.bottom)));
-        }
+      objects[0]->add_control_points(control_points);
     }
+    else
+    {
+      const Rectf& rect = get_bounding_box();
+      control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.top)));
+      control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.top)));
+      control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.bottom)));
+      control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.bottom)));
+    }
+  }
 }
 
 /* EOF */

@@ -26,14 +26,14 @@ ObjectModelHandle
 ObjectModelFactory::create(const FileReader& reader)
 {
   if (reader.get_name() == "decal")
-    {
-      return ObjectModelHandle(new DecalObjectModel(reader));
-    }
+  {
+    return ObjectModelHandle(new DecalObjectModel(reader));
+  }
   else
-    {
-      throw std::runtime_error("Unknown object type '" + reader.get_name() + "'");
-      return ObjectModelHandle();
-    }
+  {
+    throw std::runtime_error("Unknown object type '" + reader.get_name() + "'");
+    return ObjectModelHandle();
+  }
 }
 
 /* EOF */

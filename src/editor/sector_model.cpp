@@ -87,7 +87,7 @@ SectorModel::register_callbacks()
 void
 SectorModel::add_layer(LayerHandle layer, const Gtk::TreeModel::Path& path)
 {
- Gtk::ListStore::iterator it;
+  Gtk::ListStore::iterator it;
 
   if (path.empty())
     it = layer_tree->append();
@@ -124,13 +124,13 @@ void
 SectorModel::delete_layer(const Gtk::TreeModel::Path& path)
 {
   if (path.empty())
-    {
-      EditorWindow::current()->print("SectorModel::delete_layer(): invalid empty path");
-    }
+  {
+    EditorWindow::current()->print("SectorModel::delete_layer(): invalid empty path");
+  }
   else
-    {
-      layer_tree->erase(layer_tree->get_iter(path));
-    }
+  {
+    layer_tree->erase(layer_tree->get_iter(path));
+  }
 }
 
 void
@@ -149,15 +149,15 @@ void
 SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path)
 {
   if (path.empty())
-    {
-      EditorWindow::current()->print("SectorModel::add(): invalid empty path");
-    }
+  {
+    EditorWindow::current()->print("SectorModel::add(): invalid empty path");
+  }
   else
-    { 
-      Gtk::ListStore::iterator it = layer_tree->get_iter(path);
-      ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->add(object);
-      rebuild_scene_graph();
-    }
+  { 
+    Gtk::ListStore::iterator it = layer_tree->get_iter(path);
+    ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->add(object);
+    rebuild_scene_graph();
+  }
 }
 
 void
@@ -166,9 +166,9 @@ SectorModel::remove(const ObjectModelHandle& object)
   const Layers& layers = get_layers();
  
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
-    {
-      (*i)->remove(object);
-    }
+  {
+    (*i)->remove(object);
+  }
   rebuild_scene_graph();
 }
 
@@ -200,21 +200,21 @@ LayerHandle
 SectorModel::get_layer(const Gtk::TreeModel::Path& path) const
 {
   if (!path.empty())
+  {
+    Gtk::TreeModel::iterator it = layer_tree->get_iter(path);
+    if (it)
     {
-      Gtk::TreeModel::iterator it = layer_tree->get_iter(path);
-      if (it)
-        {
-          return (*it)[LayerManagerColumns::instance().layer];
-        }
-      else
-        {
-          return LayerHandle();
-        }
+      return (*it)[LayerManagerColumns::instance().layer];
     }
-  else
+    else
     {
       return LayerHandle();
     }
+  }
+  else
+  {
+    return LayerHandle();
+  }
 }
 
 LayerHandle
@@ -223,12 +223,12 @@ SectorModel::get_layer(const ObjectModelHandle& object) const
   const Layers& layers = get_layers();
  
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
+  {
+    if ((*i)->has_object(object))
     {
-      if ((*i)->has_object(object))
-        {
-          return *i;
-        }
-    }  
+      return *i;
+    }
+  }  
   
   return LayerHandle();
 }
@@ -240,10 +240,10 @@ SectorModel::draw(SceneContext& sc, const SelectMask& layermask)
   const Layers& layers = get_layers();
  
   for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
-    {
-      if ((*i)->is_visible())
-        (*i)->draw(sc, layermask);
-    }
+  {
+    if ((*i)->is_visible())
+      (*i)->draw(sc, layermask);
+  }
 }
 
 void
@@ -252,10 +252,10 @@ SectorModel::update(float delta)
   const Layers& layers = get_layers();
 
   for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
-    {
-      if ((*i)->is_visible())
-        (*i)->update(delta);
-    }
+  {
+    if ((*i)->is_visible())
+      (*i)->update(delta);
+  }
 }
 
 ObjectModelHandle
@@ -311,10 +311,10 @@ SectorModel::get_layer(ObjectModelHandle object)
 {
   const Layers& layers = get_layers();
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
-    {
-      if ((*i)->has_object(object))
-        return *i;
-    }
+  {
+    if ((*i)->has_object(object))
+      return *i;
+  }
   return LayerHandle();
 }
 
@@ -349,12 +349,12 @@ SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& i
 
   SnapData snap_data;
   for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
+  {
+    if ((*i)->is_visible())
     {
-      if ((*i)->is_visible())
-        {
-          snap_data.merge((*i)->snap_object(rect, ignore_objects));
-        }
+      snap_data.merge((*i)->snap_object(rect, ignore_objects));
     }
+  }
   return snap_data;
 }
 
@@ -492,20 +492,20 @@ SectorModel::write(FileWriter& writer) const
 
   writer.start_section("layers");
   for(Gtk::ListStore::Children::iterator i = layer_tree->children().begin(); i != layer_tree->children().end(); ++i)
-    {
-      const Gtk::TreeRow& row = *i;
+  {
+    const Gtk::TreeRow& row = *i;
 
-      writer.start_section("layer");
-      writer.write("name",    (Glib::ustring)(row[LayerManagerColumns::instance().name]));
-      writer.write("visible", (bool)row[LayerManagerColumns::instance().visible]);
-      writer.write("locked",  (bool)row[LayerManagerColumns::instance().locked]);
+    writer.start_section("layer");
+    writer.write("name",    (Glib::ustring)(row[LayerManagerColumns::instance().name]));
+    writer.write("visible", (bool)row[LayerManagerColumns::instance().visible]);
+    writer.write("locked",  (bool)row[LayerManagerColumns::instance().locked]);
 
-      writer.start_section("objects");
-      ((LayerHandle)row[LayerManagerColumns::instance().layer])->write(writer);
-      writer.end_section();
+    writer.start_section("objects");
+    ((LayerHandle)row[LayerManagerColumns::instance().layer])->write(writer);
+    writer.end_section();
 
-      writer.end_section();
-    }
+    writer.end_section();
+  }
   writer.end_section();
 
   writer.end_section();
@@ -582,9 +582,9 @@ void
 SectorModel::queue_draw()
 {
   if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
-    {
-      wst->queue_draw();
-    }
+  {
+    wst->queue_draw();
+  }
 }
 
 void
@@ -593,14 +593,14 @@ SectorModel::on_row_changed(const Gtk::TreeModel::Path& /*path*/, const Gtk::Tre
   //std::cout << "LayerManager:on_row_changed" << std::endl;
 
   if (iter)
+  {
+    // Update the Layer object with data from the tree
+    LayerHandle layer = (*iter)[LayerManagerColumns::instance().layer];
+    if (layer)
     {
-      // Update the Layer object with data from the tree
-      LayerHandle layer = (*iter)[LayerManagerColumns::instance().layer];
-      if (layer)
-        {
-          layer->sync(*iter);
-        }
+      layer->sync(*iter);
     }
+  }
   rebuild_scene_graph();
 }
 
@@ -646,11 +646,11 @@ SectorModel::delete_navgraph_edges(NavGraphNodeObjectModel& node)
         if (edge)
         {
           /*
-          if (edge.get_lhs().get() == &node ||
-              edge.get_rhs().get() == &node)
-          {
+	    if (edge.get_lhs().get() == &node ||
+	    edge.get_rhs().get() == &node)
+	    {
 
-          }
+	    }
           */
         }
       }

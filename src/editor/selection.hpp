@@ -57,9 +57,9 @@ public:
   template<class Iter>
   void add(Iter begin_, Iter end_) {
     for(Iter i = begin_; i != end_; ++i)
-      {
-        add(*i);
-      }
+    {
+      add(*i);
+    }
     signal_changed();
   }
 

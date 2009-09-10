@@ -112,24 +112,24 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 
     if (new_mouse_over_node != mouse_over_node ||
         new_mouse_over_edge != mouse_over_edge)
-      {
-        mouse_over_node = new_mouse_over_node; 
-        mouse_over_edge = new_mouse_over_edge; 
+    {
+      mouse_over_node = new_mouse_over_node; 
+      mouse_over_edge = new_mouse_over_edge; 
 
-        wst.queue_draw();
-      }
+      wst.queue_draw();
+    }
   }
 
   switch(mode)
-    {
-      case EDGE_MODE:
-        connection_node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
-        wst.queue_draw();
-        break;
+  {
+    case EDGE_MODE:
+      connection_node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
+      wst.queue_draw();
+      break;
 
-      case NO_MODE:
-        break;
-    }
+    case NO_MODE:
+      break;
+  }
 }
 
 void
@@ -139,15 +139,15 @@ NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
   //NavigationGraphModel& navgraph = *wst.get_sector_model().get_nav_graph();
 
   switch(mode)
-    {
-      case EDGE_MODE:
-        connection_node = boost::shared_ptr<NavGraphNodeObjectModel>();
-        wst.queue_draw();
-        break;
+  {
+    case EDGE_MODE:
+      connection_node = boost::shared_ptr<NavGraphNodeObjectModel>();
+      wst.queue_draw();
+      break;
 
-      case NO_MODE:
-        break;
-    }
+    case NO_MODE:
+      break;
+  }
 }
 
 void
@@ -160,58 +160,58 @@ NavgraphInsertTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget
   boost::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
   if (node)
-    {
-      //navgraph.remove_node(node);
-      wst.get_document().object_remove(node);
+  {
+    //navgraph.remove_node(node);
+    wst.get_document().object_remove(node);
 
-      mouse_over_edge = boost::shared_ptr<NavGraphEdgeObjectModel>();
-      mouse_over_node = boost::shared_ptr<NavGraphNodeObjectModel>();
+    mouse_over_edge = boost::shared_ptr<NavGraphEdgeObjectModel>();
+    mouse_over_node = boost::shared_ptr<NavGraphNodeObjectModel>();
 
-      wst.queue_draw();
-    }
+    wst.queue_draw();
+  }
   else if (edge)
-    {
-      //navgraph.remove_edge(edge);
-      wst.get_document().object_remove(edge);
+  {
+    //navgraph.remove_edge(edge);
+    wst.get_document().object_remove(edge);
 
-      mouse_over_edge = boost::shared_ptr<NavGraphEdgeObjectModel>();
-      mouse_over_node = boost::shared_ptr<NavGraphNodeObjectModel>();
+    mouse_over_edge = boost::shared_ptr<NavGraphEdgeObjectModel>();
+    mouse_over_node = boost::shared_ptr<NavGraphNodeObjectModel>();
 
-      wst.queue_draw();
-    }
+    wst.queue_draw();
+  }
   else
-    {
+  {
       
-    }
+  }
 }
   
 void
 NavgraphInsertTool::draw(SceneContext& sc)
 {
   if (last_node)
+  {
+    if (connection_node)
     {
-      if (connection_node)
-        {
-          sc.control().draw_line(last_node->get_world_pos(), connection_node->get_world_pos(), Color(1,1,1));
-          sc.control().draw_rect(Rectf(connection_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
-        }
-      else
-        {
-          sc.control().draw_line(last_node->get_world_pos(), mouse_pos, Color(1,1,1));
-        }
-
-      sc.control().draw_rect(Rectf(last_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
+      sc.control().draw_line(last_node->get_world_pos(), connection_node->get_world_pos(), Color(1,1,1));
+      sc.control().draw_rect(Rectf(connection_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
     }
+    else
+    {
+      sc.control().draw_line(last_node->get_world_pos(), mouse_pos, Color(1,1,1));
+    }
+
+    sc.control().draw_rect(Rectf(last_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
+  }
 
   if (mouse_over_node)
-    {
-      sc.control().draw_rect(Rectf(mouse_over_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));      
-    }
+  {
+    sc.control().draw_rect(Rectf(mouse_over_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));      
+  }
   else if (mouse_over_edge)
-    {
-      sc.control().draw_line(mouse_over_edge->get_lhs()->get_world_pos(), 
-                             mouse_over_edge->get_rhs()->get_world_pos(), Color(1,1,1));
-    }
+  {
+    sc.control().draw_line(mouse_over_edge->get_lhs()->get_world_pos(), 
+			   mouse_over_edge->get_rhs()->get_world_pos(), Color(1,1,1));
+  }
 }
   
 /* EOF */

@@ -460,21 +460,21 @@ void
 EditorWindow::load_file(const std::string& filename)
 {
   try 
-    {
-      on_new();
-      WindstilleWidget* wst = get_windstille_widget();
-      wst->load_file(filename);
-      wst->set_filename(filename);
-      notebook.set_tab_label_text(*notebook.get_nth_page(notebook.get_current_page()), Glib::path_get_basename(filename));
+  {
+    on_new();
+    WindstilleWidget* wst = get_windstille_widget();
+    wst->load_file(filename);
+    wst->set_filename(filename);
+    notebook.set_tab_label_text(*notebook.get_nth_page(notebook.get_current_page()), Glib::path_get_basename(filename));
 
-      print("Loaded: " + filename);
-    }
+    print("Loaded: " + filename);
+  }
   catch(std::exception& err)
-    {
-      std::ostringstream str;
-      str << "EditorWindow::load_file: " << err.what();
-      print(str.str());
-    }
+  {
+    std::ostringstream str;
+    str << "EditorWindow::load_file: " << err.what();
+    print(str.str());
+  }
 }
 
 void
@@ -489,44 +489,44 @@ EditorWindow::on_open()
   dialog.set_current_folder("data/sectors/");
 
   switch(dialog.run())
+  {
+    case(Gtk::RESPONSE_OK):
     {
-      case(Gtk::RESPONSE_OK):
-        {
-          //std::cout << "Select clicked." << std::endl;
-          //std::cout << "Folder selected: " << dialog.get_filename()
-          //          << std::endl;
+      //std::cout << "Select clicked." << std::endl;
+      //std::cout << "Folder selected: " << dialog.get_filename()
+      //          << std::endl;
           
-          add_recent_file(dialog.get_filename());
+      add_recent_file(dialog.get_filename());
 
-          load_file(dialog.get_filename());
-          break;
-        }
-
-      case(Gtk::RESPONSE_CANCEL):
-        {
-          //std::cout << "Cancel clicked." << std::endl;
-          break;
-        }
+      load_file(dialog.get_filename());
+      break;
     }
+
+    case(Gtk::RESPONSE_CANCEL):
+    {
+      //std::cout << "Cancel clicked." << std::endl;
+      break;
+    }
+  }
 }
 
 void
 EditorWindow::on_save()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
+  {
+    if (wst->get_filename().empty())
     {
-      if (wst->get_filename().empty())
-        {
-          on_save_as();
-        }
-      else
-        {
-          std::ofstream out(wst->get_filename().c_str());
-          FileWriter writer(out);
-          wst->get_document().get_sector_model().write(writer);
-          print("Wrote: " + wst->get_filename());
-        }
+      on_save_as();
     }
+    else
+    {
+      std::ofstream out(wst->get_filename().c_str());
+      FileWriter writer(out);
+      wst->get_document().get_sector_model().write(writer);
+      print("Wrote: " + wst->get_filename());
+    }
+  }
 }
 
 void
@@ -534,54 +534,54 @@ EditorWindow::on_save_as()
 {
   int page = notebook.get_current_page();
   if (page == -1)
-    {
-      // do nothing;
-    }
+  {
+    // do nothing;
+  }
   else
-    {
-      Gtk::FileChooserDialog dialog("Save File",
-                                    Gtk::FILE_CHOOSER_ACTION_SAVE);
-      dialog.set_transient_for(*this);
-      dialog.set_do_overwrite_confirmation(true);
+  {
+    Gtk::FileChooserDialog dialog("Save File",
+				  Gtk::FILE_CHOOSER_ACTION_SAVE);
+    dialog.set_transient_for(*this);
+    dialog.set_do_overwrite_confirmation(true);
 
-      dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-      dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
 
-      WindstilleWidget* wst = static_cast<WindstilleWidget*>(notebook.get_nth_page(page));
+    WindstilleWidget* wst = static_cast<WindstilleWidget*>(notebook.get_nth_page(page));
  
-      if (wst->get_filename().empty())
-        dialog.set_current_folder("data/sectors/");
-      else
-        dialog.set_current_folder(Glib::path_get_dirname(wst->get_filename()));
+    if (wst->get_filename().empty())
+      dialog.set_current_folder("data/sectors/");
+    else
+      dialog.set_current_folder(Glib::path_get_dirname(wst->get_filename()));
 
-      switch(dialog.run())
-        {
-          case(Gtk::RESPONSE_OK):
-            {
-              //std::cout << "Select clicked." << std::endl;
-              //std::cout << "Folder selected: " << dialog.get_filename()
-              //          << std::endl;
+    switch(dialog.run())
+    {
+      case(Gtk::RESPONSE_OK):
+      {
+	//std::cout << "Select clicked." << std::endl;
+	//std::cout << "Folder selected: " << dialog.get_filename()
+	//          << std::endl;
 
-              std::string filename = dialog.get_filename();
-              std::ofstream out(filename.c_str());
-              FileWriter writer(out);
+	std::string filename = dialog.get_filename();
+	std::ofstream out(filename.c_str());
+	FileWriter writer(out);
 
-              wst->get_document().get_sector_model().write(writer);
-              wst->set_filename(filename);
+	wst->get_document().get_sector_model().write(writer);
+	wst->set_filename(filename);
 
-              notebook.set_tab_label_text(*notebook.get_nth_page(page), Glib::path_get_basename(filename));
-              add_recent_file(filename);
-              print("Wrote: " + filename);
-              break;
-            }
+	notebook.set_tab_label_text(*notebook.get_nth_page(page), Glib::path_get_basename(filename));
+	add_recent_file(filename);
+	print("Wrote: " + filename);
+	break;
+      }
 
-          case(Gtk::RESPONSE_CANCEL):
-            {
-              //std::cout << "Cancel clicked." << std::endl;
-              break;
-            }
-        }
+      case(Gtk::RESPONSE_CANCEL):
+      {
+	//std::cout << "Cancel clicked." << std::endl;
+	break;
+      }
     }
+  }
 }
 
 void
@@ -589,42 +589,42 @@ EditorWindow::on_save_screenshot()
 {
   int page = notebook.get_current_page();
   if (page == -1)
-    {
-      // do nothing;
-    }
+  {
+    // do nothing;
+  }
   else
+  {
+    if (WindstilleWidget* wst = static_cast<WindstilleWidget*>(notebook.get_nth_page(page)))
     {
-      if (WindstilleWidget* wst = static_cast<WindstilleWidget*>(notebook.get_nth_page(page)))
-        {
-          Gtk::FileChooserDialog dialog("Save Screenshot",
-                                        Gtk::FILE_CHOOSER_ACTION_SAVE);
-          dialog.set_transient_for(*this);
-          dialog.set_do_overwrite_confirmation(true);
+      Gtk::FileChooserDialog dialog("Save Screenshot",
+				    Gtk::FILE_CHOOSER_ACTION_SAVE);
+      dialog.set_transient_for(*this);
+      dialog.set_do_overwrite_confirmation(true);
 
-          dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-          dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
+      dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+      dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
 
  
-          dialog.set_current_folder("/tmp/");
+      dialog.set_current_folder("/tmp/");
 
-          switch(dialog.run())
-            {
-              case(Gtk::RESPONSE_OK):
-                {
-                  std::string filename = dialog.get_filename();
-                  std::cout << "unimplemented screenshot: " << filename << std::endl;
-                  wst->save_screenshot(filename);
-                  break;
-                }
+      switch(dialog.run())
+      {
+	case(Gtk::RESPONSE_OK):
+	{
+	  std::string filename = dialog.get_filename();
+	  std::cout << "unimplemented screenshot: " << filename << std::endl;
+	  wst->save_screenshot(filename);
+	  break;
+	}
 
-              case(Gtk::RESPONSE_CANCEL):
-                {
-                  //std::cout << "Cancel clicked." << std::endl;
-                  break;
-                }
-            }
-        }
+	case(Gtk::RESPONSE_CANCEL):
+	{
+	  //std::cout << "Cancel clicked." << std::endl;
+	  break;
+	}
+      }
     }
+  }
 }
 
 void
@@ -632,25 +632,25 @@ EditorWindow::on_close()
 {
   int page = notebook.get_current_page();
   if (page != -1)
-    {
-      notebook.remove_page(page);
+  {
+    notebook.remove_page(page);
 
-      if (!get_windstille_widget())
-        layer_manager.set_model(0);
-    }
+    if (!get_windstille_widget())
+      layer_manager.set_model(0);
+  }
 }
 
 void
 EditorWindow::show_minimap(bool v)
 {
   if (v)
-    {
-      minimap_widget.show();
-    }
+  {
+    minimap_widget.show();
+  }
   else
-    {
-      minimap_widget.hide();
-    }
+  {
+    minimap_widget.hide();
+  }
 }
 
 void
@@ -681,32 +681,32 @@ void
 EditorWindow::update_undo_state()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      action_group->get_action("Undo")->set_sensitive(wst->get_document().has_undo());
-      action_group->get_action("Redo")->set_sensitive(wst->get_document().has_redo());
-    }
+  {
+    action_group->get_action("Undo")->set_sensitive(wst->get_document().has_undo());
+    action_group->get_action("Redo")->set_sensitive(wst->get_document().has_redo());
+  }
 }
 
 void
 EditorWindow::on_undo()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->get_document().undo();
-      update_undo_state();
-      queue_draw();
-    }
+  {
+    wst->get_document().undo();
+    update_undo_state();
+    queue_draw();
+  }
 }
 
 void
 EditorWindow::on_redo()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->get_document().redo();
-      update_undo_state();
-      queue_draw();
-    }
+  {
+    wst->get_document().redo();
+    update_undo_state();
+    queue_draw();
+  }
 }
 
 void
@@ -714,62 +714,62 @@ EditorWindow::on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool* tool)
 {
   //std::cout << "on_tool_select()" << action->get_active() << std::endl;
   if (action->get_active())
-    {
-      current_tool = tool;
-      if (WindstilleWidget* wst = get_windstille_widget())
-        wst->queue_draw();
-    }
+  {
+    current_tool = tool;
+    if (WindstilleWidget* wst = get_windstille_widget())
+      wst->queue_draw();
+  }
 }
 
 void
 EditorWindow::toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, unsigned int mask)
 {
   if (WindstilleWidget* wst = get_windstille_widget())
+  {
+    SceneContext& sc = *wst->get_sc();
+
+    if (action->get_active())
     {
-      SceneContext& sc = *wst->get_sc();
-
-      if (action->get_active())
-        {
-          sc.set_render_mask(sc.get_render_mask() | mask);
-        }
-      else
-        {
-          sc.set_render_mask(sc.get_render_mask() & (~mask));
-        }
-
-      //std::cout << "mask: " << sc.get_render_mask() << std::endl;
-      wst->queue_draw();
+      sc.set_render_mask(sc.get_render_mask() | mask);
     }
+    else
+    {
+      sc.set_render_mask(sc.get_render_mask() & (~mask));
+    }
+
+    //std::cout << "mask: " << sc.get_render_mask() << std::endl;
+    wst->queue_draw();
+  }
 }
 
 void
 EditorWindow::toggle_draw_only_active_layer(Glib::RefPtr<Gtk::ToggleAction> action)
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->set_draw_only_active_layer(action->get_active());
-      wst->queue_draw();
-    }
+  {
+    wst->set_draw_only_active_layer(action->get_active());
+    wst->queue_draw();
+  }
 }
 
 void
 EditorWindow::toggle_background_layer(Glib::RefPtr<Gtk::ToggleAction> action)
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->set_draw_background_pattern(action->get_active());
-      wst->queue_draw();
-    }
+  {
+    wst->set_draw_background_pattern(action->get_active());
+    wst->queue_draw();
+  }
 }
 
 void
 EditorWindow::toggle_grid_layer(Glib::RefPtr<Gtk::ToggleAction> action)
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->enable_grid(action->get_active());
-      wst->queue_draw();
-    }
+  {
+    wst->enable_grid(action->get_active());
+    wst->queue_draw();
+  }
 }
 
 Tool*
@@ -783,13 +783,13 @@ EditorWindow::get_windstille_widget()
 {
   int page = notebook.get_current_page();
   if (page == -1)
-    {
-      return 0;
-    }
+  {
+    return 0;
+  }
   else
-    {
-      return static_cast<WindstilleWidget*>(notebook.get_nth_page(page));
-    }
+  {
+    return static_cast<WindstilleWidget*>(notebook.get_nth_page(page));
+  }
 }
 
 void
@@ -798,25 +798,25 @@ EditorWindow::on_switch_page(GtkNotebookPage* /*page*/, guint /*page_num*/)
   //std::cout << "on_switch_page(" << page << ", " << page_num << ")" << std::endl;
 
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      layer_manager.set_model(&wst->get_document().get_sector_model());
-      layer_widget->update(wst->get_select_mask());
+  {
+    layer_manager.set_model(&wst->get_document().get_sector_model());
+    layer_widget->update(wst->get_select_mask());
 
-      toggle_color_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::COLORMAP);
-      toggle_light_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::LIGHTMAP);
-      toggle_highlight_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::HIGHLIGHTMAP);
-      toggle_control_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::CONTROLMAP);
+    toggle_color_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::COLORMAP);
+    toggle_light_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::LIGHTMAP);
+    toggle_highlight_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::HIGHLIGHTMAP);
+    toggle_control_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::CONTROLMAP);
 
-      background_layer->set_active(wst->get_draw_background_pattern());
-      visible_layer->set_active(wst->get_draw_only_active_layer());
-      grid_layer->set_active(wst->get_enable_grid());
+    background_layer->set_active(wst->get_draw_background_pattern());
+    visible_layer->set_active(wst->get_draw_only_active_layer());
+    grid_layer->set_active(wst->get_enable_grid());
 
-      update_undo_state();
-    }
+    update_undo_state();
+  }
   else
-    {
-      layer_manager.set_model(0);
-    }
+  {
+    layer_manager.set_model(0);
+  }
 }
 
 void
@@ -824,18 +824,18 @@ EditorWindow::call_with_document(void (Document::*func)())
 {
   WindstilleWidget* wst = get_windstille_widget();
   if (wst)
-    {
-      (wst->get_document().*func)();
-    }
+  {
+    (wst->get_document().*func)();
+  }
 }
 
 bool
 EditorWindow::on_timeout()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->update(0.050f);
-    }
+  {
+    wst->update(0.050f);
+  }
   return true;
 }
 
@@ -845,96 +845,96 @@ EditorWindow::on_layer_toggle(int layer, bool status_)
   //std::cout << "EditorWindow::on_layer_toggle(" << layer << ", " << status << ")" << std::endl;
 
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->get_select_mask().set(layer, status_);
-      wst->queue_draw();
-    }
+  {
+    wst->get_select_mask().set(layer, status_);
+    wst->queue_draw();
+  }
 }
 
 void
 EditorWindow::on_play()
 {
   if (play_action->get_active())
-    {
-      //std::cout << "Play" << std::endl;
-      timeout_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &EditorWindow::on_timeout),
-                                                          50,
-                                                          Glib::PRIORITY_DEFAULT);
-    }
+  {
+    //std::cout << "Play" << std::endl;
+    timeout_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &EditorWindow::on_timeout),
+							50,
+							Glib::PRIORITY_DEFAULT);
+  }
   else
-    {
-      //std::cout << "Stop" << std::endl;
-      timeout_connection.disconnect();
-    }
+  {
+    //std::cout << "Stop" << std::endl;
+    timeout_connection.disconnect();
+  }
 }
 
 void
 EditorWindow::on_cut()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      clipboard = wst->get_document().get_selection()->clone();
-      wst->get_document().selection_delete();
-      queue_draw();
-    }
+  {
+    clipboard = wst->get_document().get_selection()->clone();
+    wst->get_document().selection_delete();
+    queue_draw();
+  }
 }
 
 void
 EditorWindow::on_copy()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      clipboard = wst->get_document().get_selection()->clone();
-    }
+  {
+    clipboard = wst->get_document().get_selection()->clone();
+  }
 }
 
 void
 EditorWindow::on_delete_layer()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->get_document().layer_remove(wst->get_current_layer_path());
-      queue_draw();
-    }
+  {
+    wst->get_document().layer_remove(wst->get_current_layer_path());
+    queue_draw();
+  }
 }
 
 void
 EditorWindow::on_reverse_layers()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->get_document().get_sector_model().reverse_layers();
-    }
+  {
+    wst->get_document().get_sector_model().reverse_layers();
+  }
 }
 
 void
 EditorWindow::on_new_layer()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->get_document().layer_add(wst->get_current_layer_path());
-      layer_manager.get_treeview().expand_all();
-    }
+  {
+    wst->get_document().layer_add(wst->get_current_layer_path());
+    layer_manager.get_treeview().expand_all();
+  }
 }
 
 void
 EditorWindow::on_paste()
 {
   if (clipboard.get())
+  {
+    if (WindstilleWidget* wst = get_windstille_widget())
     {
-      if (WindstilleWidget* wst = get_windstille_widget())
-        {
-          LayerHandle layer = wst->get_current_layer();
-          for(Selection::reverse_iterator i = clipboard->rbegin(); i != clipboard->rend(); ++i)
-            {
-              layer->add(*i);
-            }
+      LayerHandle layer = wst->get_current_layer();
+      for(Selection::reverse_iterator i = clipboard->rbegin(); i != clipboard->rend(); ++i)
+      {
+	layer->add(*i);
+      }
 
-          wst->get_document().set_selection(clipboard);
-          clipboard = clipboard->clone();
-          queue_draw();
-        }
+      wst->get_document().set_selection(clipboard);
+      clipboard = clipboard->clone();
+      queue_draw();
     }
+  }
 }
 
 void
@@ -942,32 +942,32 @@ EditorWindow::on_select_all()
 {
   // Select all on current layer
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      LayerHandle layer = wst->get_current_layer();
-      SelectionHandle selection = Selection::create();
-      selection->add(layer->begin(), layer->end());
-      wst->get_document().set_selection(selection);
-    }
+  {
+    LayerHandle layer = wst->get_current_layer();
+    SelectionHandle selection = Selection::create();
+    selection->add(layer->begin(), layer->end());
+    wst->get_document().set_selection(selection);
+  }
 }
 
 void
 EditorWindow::on_show_all(bool v)
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->get_document().get_sector_model().set_all_visible(v);
-      wst->queue_draw();
-    }
+  {
+    wst->get_document().get_sector_model().set_all_visible(v);
+    wst->queue_draw();
+  }
 }
 
 void
 EditorWindow::on_lock_all(bool v)
 {
   if (WindstilleWidget* wst = get_windstille_widget())
-    {
-      wst->get_document().get_sector_model().set_all_locked(v);
-      wst->queue_draw();
-    }
+  {
+    wst->get_document().get_sector_model().set_all_locked(v);
+    wst->queue_draw();
+  }
 }
 
 void

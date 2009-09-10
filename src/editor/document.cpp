@@ -177,9 +177,9 @@ void
 Document::selection_raise()
 {
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
-    {
-      m_sector_model->raise(*i);
-    }
+  {
+    m_sector_model->raise(*i);
+  }
 
   m_sig_on_change();
 }
@@ -188,9 +188,9 @@ void
 Document::selection_lower()
 {
   for(Selection::reverse_iterator i = m_selection->rbegin(); i != m_selection->rend(); ++i)
-    {
-      m_sector_model->lower(*i);
-    }
+  {
+    m_sector_model->lower(*i);
+  }
 
   m_sig_on_change();
 }
@@ -199,9 +199,9 @@ void
 Document::selection_raise_to_top()
 {
   for(Selection::reverse_iterator i = m_selection->rbegin(); i != m_selection->rend(); ++i)
-    {
-      m_sector_model->raise_to_top(*i);
-    }
+  {
+    m_sector_model->raise_to_top(*i);
+  }
 
   m_sig_on_change();
 }
@@ -210,9 +210,9 @@ void
 Document::selection_lower_to_bottom()
 {
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
-    {
-      m_sector_model->lower_to_bottom(*i);
-    }
+  {
+    m_sector_model->lower_to_bottom(*i);
+  }
 
   m_sig_on_change();
 }
@@ -221,88 +221,88 @@ void
 Document::selection_vflip()
 {
   if (!m_selection->empty())
+  {
+    boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+
+    if (m_selection->size() > 1)
     {
-      boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
-
-      if (m_selection->size() > 1)
-        {
-          const Vector2f& center = m_selection->get_bounding_box().get_center();
-          for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
-            {
-              Vector2f pos = (*i)->get_world_pos();
-          
-              pos.y = center.y + (center.y - pos.y);
-          
-              //(*i)->set_world_pos(pos);
-              group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
-                                                                  boost::bind(&ObjectModel::set_world_pos, *i, pos))));
-            }
-        }
-
+      const Vector2f& center = m_selection->get_bounding_box().get_center();
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
-        {
-          //(*i)->set_vflip(!(*i)->get_vflip());
-          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_vflip, *i,  (*i)->get_vflip()),
-                                                              boost::bind(&ObjectModel::set_vflip, *i, !(*i)->get_vflip()))));
-        }
-
-      execute(group_command);
+      {
+	Vector2f pos = (*i)->get_world_pos();
+          
+	pos.y = center.y + (center.y - pos.y);
+          
+	//(*i)->set_world_pos(pos);
+	group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
+							    boost::bind(&ObjectModel::set_world_pos, *i, pos))));
+      }
     }
+
+    for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
+    {
+      //(*i)->set_vflip(!(*i)->get_vflip());
+      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_vflip, *i,  (*i)->get_vflip()),
+							  boost::bind(&ObjectModel::set_vflip, *i, !(*i)->get_vflip()))));
+    }
+
+    execute(group_command);
+  }
 }
 
 void
 Document::selection_hflip()
 {
   if (!m_selection->empty())
+  {
+    boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+
+    if (m_selection->size() > 1)
     {
-      boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
-
-      if (m_selection->size() > 1)
-        {
-          const Vector2f& center = m_selection->get_bounding_box().get_center();
-          for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
-            {
-              Vector2f pos = (*i)->get_world_pos();
-          
-              pos.x = center.x + (center.x - pos.x);
-          
-              //(*i)->set_world_pos(pos);
-              group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
-                                                                  boost::bind(&ObjectModel::set_world_pos, *i, pos))));
-            }
-        }
-
+      const Vector2f& center = m_selection->get_bounding_box().get_center();
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
-        {
-          //(*i)->set_hflip(!(*i)->get_hflip());
-          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_hflip, *i,  (*i)->get_hflip()),
-                                                              boost::bind(&ObjectModel::set_hflip, *i, !(*i)->get_hflip()))));
-        }
-
-      execute(group_command);
+      {
+	Vector2f pos = (*i)->get_world_pos();
+          
+	pos.x = center.x + (center.x - pos.x);
+          
+	//(*i)->set_world_pos(pos);
+	group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
+							    boost::bind(&ObjectModel::set_world_pos, *i, pos))));
+      }
     }
+
+    for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
+    {
+      //(*i)->set_hflip(!(*i)->get_hflip());
+      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_hflip, *i,  (*i)->get_hflip()),
+							  boost::bind(&ObjectModel::set_hflip, *i, !(*i)->get_hflip()))));
+    }
+
+    execute(group_command);
+  }
 }
 
 void
 Document::selection_connect_parent()
 {
   if (m_selection->size() >= 2)
+  {
+    boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+
+    ObjectModelHandle parent = *m_selection->begin();
+
+    Selection::iterator i = m_selection->begin();
+    ++i;
+    for(; i != m_selection->end(); ++i)
     {
-      boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
-
-      ObjectModelHandle parent = *m_selection->begin();
-
-      Selection::iterator i = m_selection->begin();
-      ++i;
-      for(; i != m_selection->end(); ++i)
-        {
-          //(*i)->set_parent(parent);
-          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
-                                                              boost::bind(&ObjectModel::set_parent, *i, parent, true))));
-        }
-
-      execute(group_command);
+      //(*i)->set_parent(parent);
+      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
+							  boost::bind(&ObjectModel::set_parent, *i, parent, true))));
     }
+
+    execute(group_command);
+  }
 }
 
 void
@@ -311,11 +311,11 @@ Document::selection_clear_parent()
   boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
 
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
-    {
-      //(*i)->set_parent(ObjectModelHandle());
-      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
-                                                          boost::bind(&ObjectModel::set_parent, *i, ObjectModelHandle(), true))));
-    }
+  {
+    //(*i)->set_parent(ObjectModelHandle());
+    group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
+							boost::bind(&ObjectModel::set_parent, *i, ObjectModelHandle(), true))));
+  }
 
   execute(group_command);
 }
@@ -328,45 +328,45 @@ Document::selection_duplicate()
 
   SelectionHandle new_selection = Selection::create();
   for(Selection::reverse_iterator i = m_selection->rbegin(); i != m_selection->rend(); ++i)
+  {
+    LayerHandle layer = m_sector_model->get_layer(*i);
+    ObjectModelHandle obj = (*i)->clone();
+
+    parent_map[*i] = obj;
+
+    if (!layer)
     {
-      LayerHandle layer = m_sector_model->get_layer(*i);
-      ObjectModelHandle obj = (*i)->clone();
-
-      parent_map[*i] = obj;
-
-      if (!layer)
-        {
-          EditorWindow::current()->print("Couldn't find parent layer while duplicating");
-        }
-      else
-        {
-          // Move clone a litte to make it more obvious that something happened
-          obj->set_rel_pos(obj->get_rel_pos() + Vector2f(32.0f, 32.0f));
-          new_selection->add(obj);
-
-          //layer->add(obj);
-          group_command->add(CommandHandle(new ObjectAddCommand(layer, obj)));
-        }
+      EditorWindow::current()->print("Couldn't find parent layer while duplicating");
     }
+    else
+    {
+      // Move clone a litte to make it more obvious that something happened
+      obj->set_rel_pos(obj->get_rel_pos() + Vector2f(32.0f, 32.0f));
+      new_selection->add(obj);
+
+      //layer->add(obj);
+      group_command->add(CommandHandle(new ObjectAddCommand(layer, obj)));
+    }
+  }
 
   // Second pass to set the parents to the cloned objects
   for(Selection::iterator i = new_selection->begin(); i != new_selection->end(); ++i)
+  {
+    if ((*i)->get_parent())
     {
-      if ((*i)->get_parent())
-        {
-          std::map<ObjectModelHandle, ObjectModelHandle>::iterator it = parent_map.find((*i)->get_parent());
+      std::map<ObjectModelHandle, ObjectModelHandle>::iterator it = parent_map.find((*i)->get_parent());
           
-          if (it == parent_map.end())
-            {
-              // When the parent wasn't part of the selection, leave
-              // the parent untouched
-            }
-          else
-            {
-              (*i)->set_parent(it->second);
-            }
-        }
+      if (it == parent_map.end())
+      {
+	// When the parent wasn't part of the selection, leave
+	// the parent untouched
+      }
+      else
+      {
+	(*i)->set_parent(it->second);
+      }
     }
+  }
 
   execute(group_command);
   set_selection(new_selection);
@@ -378,16 +378,16 @@ Document::selection_reset_rotation()
   boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
 
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
-    {
-      DecalObjectModel* decal = dynamic_cast<DecalObjectModel*>(i->get());
+  {
+    DecalObjectModel* decal = dynamic_cast<DecalObjectModel*>(i->get());
 
-      if (decal)
-        {
-          //decal->set_angle(0.0f);
-          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&DecalObjectModel::set_angle, decal, decal->get_angle()),
-                                                              boost::bind(&DecalObjectModel::set_angle, decal, 0.0f))));
-        }
+    if (decal)
+    {
+      //decal->set_angle(0.0f);
+      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&DecalObjectModel::set_angle, decal, decal->get_angle()),
+							  boost::bind(&DecalObjectModel::set_angle, decal, 0.0f))));
     }
+  }
 
   on_selection_change();
   execute(group_command);
@@ -404,19 +404,19 @@ Document::selection_reset_scale()
 {
   boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
 
- for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
+  for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
+  {
+    DecalObjectModel* decal = dynamic_cast<DecalObjectModel*>(i->get());
+    if (decal)
     {
-      DecalObjectModel* decal = dynamic_cast<DecalObjectModel*>(i->get());
-      if (decal)
-        {
-          //decal->set_scale(Vector2f(1.0f, 1.0f));
-          group_command->add(CommandHandle(new FunctorCommand(boost::bind(&DecalObjectModel::set_scale, decal, decal->get_scale()),
-                                                              boost::bind(&DecalObjectModel::set_scale, decal, Vector2f(1.0f, 1.0f)))));
-        }
+      //decal->set_scale(Vector2f(1.0f, 1.0f));
+      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&DecalObjectModel::set_scale, decal, decal->get_scale()),
+							  boost::bind(&DecalObjectModel::set_scale, decal, Vector2f(1.0f, 1.0f)))));
     }
+  }
 
- on_selection_change();
- execute(group_command);
+  on_selection_change();
+  execute(group_command);
 }
 
 void
@@ -424,9 +424,9 @@ Document::selection_delete()
 {
   boost::shared_ptr<GroupCommand> group_cmd(new GroupCommand());
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
-    {
-      group_cmd->add(CommandHandle(new ObjectRemoveCommand(*m_sector_model, *i)));
-    }
+  {
+    group_cmd->add(CommandHandle(new ObjectRemoveCommand(*m_sector_model, *i)));
+  }
   execute(group_cmd);
   m_selection->clear();
 }
@@ -445,9 +445,9 @@ Document::on_selection_change()
   m_control_points.clear();
 
   if (!m_selection->is_moving())
-    {
-      m_selection->add_control_points(m_control_points);
-    }
+  {
+    m_selection->add_control_points(m_control_points);
+  }
 }
 
 ControlPointHandle
@@ -455,10 +455,10 @@ Document::get_control_point(const Vector2f& pos) const
 {
   for(std::vector<ControlPointHandle>::const_iterator i = m_control_points.begin();  
       i != m_control_points.end(); ++i)
-    {
-      if ((*i)->get_bounding_box().is_inside(pos))
-        return *i;
-    }
+  {
+    if ((*i)->get_bounding_box().is_inside(pos))
+      return *i;
+  }
   return ControlPointHandle();
 }
 

@@ -192,69 +192,69 @@ ObjectSelector::add_decals_from_directory(const std::string& pathname, unsigned 
 
   Glib::Dir dir(pathname);
   for(Glib::Dir::iterator i = dir.begin(); i != dir.end(); ++i)
+  {
+    if (has_suffix(*i, ".png"))
     {
-      if (has_suffix(*i, ".png"))
-        {
-          Glib::ustring path_ = pathname;
-          path_ += *i;
-          images.push_back(path_);
-        }
+      Glib::ustring path_ = pathname;
+      path_ += *i;
+      images.push_back(path_);
     }
+  }
 
   std::sort(images.begin(), images.end());
 
   for(std::vector<Glib::ustring>::iterator i = images.begin(); i != images.end(); ++i)    
-    {
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(*i);
-      Glib::RefPtr<Gdk::Pixbuf> icon;
+  {
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(*i);
+    Glib::RefPtr<Gdk::Pixbuf> icon;
 
-      { // Create an icon, by scaling it down, keeping aspect
-        // intact and adding a background (important to make drag&drop easier)
-        int size     = 48; // size of the icon
-        int min_size = 16; // minimum width/height of the icon after scaling
+    { // Create an icon, by scaling it down, keeping aspect
+      // intact and adding a background (important to make drag&drop easier)
+      int size     = 48; // size of the icon
+      int min_size = 16; // minimum width/height of the icon after scaling
 
-        if (1)
-          {
-            icon = Gdk::Pixbuf::create_from_file("data/editor/icon_bg.png");
-            size = std::max(icon->get_width(), icon->get_height());
-          }
-        else
-          {
-            icon = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, size, size);
-            icon->fill(0x444444ff);
-          }
-
-        // Scale pixbuf to icon size while keeping aspect ratio intact
-        double x_scale = (double)size / pixbuf->get_width();
-        double y_scale = (double)size / pixbuf->get_height();
-
-        if (x_scale * pixbuf->get_width() < min_size)
-          x_scale = min_size / pixbuf->get_width();
-
-        if (y_scale * pixbuf->get_height() < min_size)
-          y_scale = min_size / pixbuf->get_height();
-
-        if (pixbuf->get_width() > pixbuf->get_height())              
-          y_scale = x_scale;
-        else
-          x_scale = y_scale;
-
-        int r_w = int(pixbuf->get_width() * x_scale);
-        int r_h = int(pixbuf->get_height() * y_scale);
-
-        pixbuf->composite(icon, 
-                          (size - r_w)/2, (size - r_h)/2,
-                          r_w, r_h,
-                          (size - r_w)/2, (size - r_h)/2,
-                          x_scale, y_scale,
-                          Gdk::INTERP_TILES, 
-                          255);
+      if (1)
+      {
+	icon = Gdk::Pixbuf::create_from_file("data/editor/icon_bg.png");
+	size = std::max(icon->get_width(), icon->get_height());
+      }
+      else
+      {
+	icon = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, size, size);
+	icon->fill(0x444444ff);
       }
 
-      add_decal(icon, *i, 
-                "file:///home/ingo/projects/windstille/trunk/windstille/" + *i, 
-                filter_);
+      // Scale pixbuf to icon size while keeping aspect ratio intact
+      double x_scale = (double)size / pixbuf->get_width();
+      double y_scale = (double)size / pixbuf->get_height();
+
+      if (x_scale * pixbuf->get_width() < min_size)
+	x_scale = min_size / pixbuf->get_width();
+
+      if (y_scale * pixbuf->get_height() < min_size)
+	y_scale = min_size / pixbuf->get_height();
+
+      if (pixbuf->get_width() > pixbuf->get_height())              
+	y_scale = x_scale;
+      else
+	x_scale = y_scale;
+
+      int r_w = int(pixbuf->get_width() * x_scale);
+      int r_h = int(pixbuf->get_height() * y_scale);
+
+      pixbuf->composite(icon, 
+			(size - r_w)/2, (size - r_h)/2,
+			r_w, r_h,
+			(size - r_w)/2, (size - r_h)/2,
+			x_scale, y_scale,
+			Gdk::INTERP_TILES, 
+			255);
     }
+
+    add_decal(icon, *i, 
+	      "file:///home/ingo/projects/windstille/trunk/windstille/" + *i, 
+	      filter_);
+  }
 }
 
 void
@@ -290,28 +290,28 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
   for(Gtk::IconView::ArrayHandle_TreePaths::iterator i = selection.begin();
       i != selection.end();
       ++i)
-    {
-      Gtk::TreeModel::Path path_ = list_filter->convert_path_to_child_path(*i);
-      Gtk::ListStore::iterator it = list_store->get_iter(path_);
+  {
+    Gtk::TreeModel::Path path_ = list_filter->convert_path_to_child_path(*i);
+    Gtk::ListStore::iterator it = list_store->get_iter(path_);
 
-      iconpath = (*it)[Columns::instance().pathname];
-    }
+    iconpath = (*it)[Columns::instance().pathname];
+  }
 
   if (iconpath.empty())
-    {
-      // refuse drag: how?
-    }
+  {
+    // refuse drag: how?
+  }
   else
+  {
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath);
+    if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
     {
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath);
-      if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
-        {
-          pixbuf = pixbuf->scale_simple(std::max(4, int(static_cast<float>(pixbuf->get_width())  * wst->get_state().get_zoom())),
-                                        std::max(4, int(static_cast<float>(pixbuf->get_height()) * wst->get_state().get_zoom())),
-                                        Gdk::INTERP_TILES);
-        }
-      context->set_icon(pixbuf, pixbuf->get_width()/2, pixbuf->get_height()/2);
+      pixbuf = pixbuf->scale_simple(std::max(4, int(static_cast<float>(pixbuf->get_width())  * wst->get_state().get_zoom())),
+				    std::max(4, int(static_cast<float>(pixbuf->get_height()) * wst->get_state().get_zoom())),
+				    Gdk::INTERP_TILES);
     }
+    context->set_icon(pixbuf, pixbuf->get_width()/2, pixbuf->get_height()/2);
+  }
 }
 
 void
@@ -326,21 +326,21 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& /*context
   for(Gtk::IconView::ArrayHandle_TreePaths::const_iterator i = selection.begin();
       i != selection.end();
       ++i)
-    {
-      Gtk::TreeModel::Path path_ = list_filter->convert_path_to_child_path(*i);
-      Gtk::ListStore::iterator it = list_store->get_iter(path_);
+  {
+    Gtk::TreeModel::Path path_ = list_filter->convert_path_to_child_path(*i);
+    Gtk::ListStore::iterator it = list_store->get_iter(path_);
 
-      if (selection_data.get_target() == "application/x-windstille-decal")
-        {
-          const std::string& str = (*it)[Columns::instance().pathname];
-          selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), str.length());
-        }
-      else
-        {
-          const std::string& str = (*it)[Columns::instance().url];
-          selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), str.length());
-        }
+    if (selection_data.get_target() == "application/x-windstille-decal")
+    {
+      const std::string& str = (*it)[Columns::instance().pathname];
+      selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), str.length());
     }
+    else
+    {
+      const std::string& str = (*it)[Columns::instance().url];
+      selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), str.length());
+    }
+  }
 }
 
 /* EOF */

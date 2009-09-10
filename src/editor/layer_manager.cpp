@@ -65,7 +65,7 @@ LayerManager::LayerManager(EditorWindow& editor_)
   auto_lock = Gtk::ToggleAction::create_with_icon_name("AutoLockLayer", "auto_lock", "Auto Lock All", "All layers except the current ones are treated as locked");
   action_group->add(auto_lock,
                     sigc::bind(sigc::mem_fun(*this, &LayerManager::on_auto_lock), auto_lock));
-                    //sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_auto_lock), auto_lock));
+  //sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_auto_lock), auto_lock));
 
   ui_manager->insert_action_group(action_group);
 
@@ -108,51 +108,51 @@ void
 LayerManager::set_model(SectorModel* model)
 {
   if (model)
-    {
-      treeview.set_model(model->get_layer_tree());
+  {
+    treeview.set_model(model->get_layer_tree());
 
-      // Recreate all the columns, since if we don't do that, we lose
-      // editability for some reason
-      treeview.remove_all_columns();
-      treeview.append_column("Type", LayerManagerColumns::instance().type_icon);
-      treeview.append_column_editable("Name", LayerManagerColumns::instance().name);
-      treeview.append_column_editable("Visible", LayerManagerColumns::instance().visible);
-      treeview.append_column_editable("Locked", LayerManagerColumns::instance().locked);
-
-      treeview.expand_all();
-      treeview.set_cursor(Gtk::TreeModel::Path("0"));
-    }
+    // Recreate all the columns, since if we don't do that, we lose
+    // editability for some reason
+    treeview.remove_all_columns();
+    treeview.append_column("Type", LayerManagerColumns::instance().type_icon);
+    treeview.append_column_editable("Name", LayerManagerColumns::instance().name);
+    treeview.append_column_editable("Visible", LayerManagerColumns::instance().visible);
+    treeview.append_column_editable("Locked", LayerManagerColumns::instance().locked);
+    
+    treeview.expand_all();
+    treeview.set_cursor(Gtk::TreeModel::Path("0"));
+  }
   else
-    {
-      treeview.set_model(Glib::RefPtr<Gtk::ListStore>());
-    }
+  {
+    treeview.set_model(Glib::RefPtr<Gtk::ListStore>());
+  }
 }
 
 void
 LayerManager::on_cursor_changed()
 {
   if (auto_lock->get_active())
-    {
-      Gtk::TreeModel::Path path_;
-      Gtk::TreeViewColumn* focus_column;
-      treeview.get_cursor(path_, focus_column);
+  {
+    Gtk::TreeModel::Path path_;
+    Gtk::TreeViewColumn* focus_column;
+    treeview.get_cursor(path_, focus_column);
       
-      if (!path_.gobj())
-        {
-          std::cout << "LayerManager::on_cursor_changed(): Error: Couldn't get path" << std::endl;
-        }
-      else
-        {
-          //std::cout << "on_cursor_changed: " << path.to_string() << std::endl;
-          Gtk::TreeModel::iterator it = treeview.get_model()->get_iter(path_);
-          if (it)
-            {
-              EditorWindow::current()->on_lock_all(true);
-              (*it)[LayerManagerColumns::instance().locked] = false;
-              ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->sync(*it);
-            }
-        }
+    if (!path_.gobj())
+    {
+      std::cout << "LayerManager::on_cursor_changed(): Error: Couldn't get path" << std::endl;
     }
+    else
+    {
+      //std::cout << "on_cursor_changed: " << path.to_string() << std::endl;
+      Gtk::TreeModel::iterator it = treeview.get_model()->get_iter(path_);
+      if (it)
+      {
+	EditorWindow::current()->on_lock_all(true);
+	(*it)[LayerManagerColumns::instance().locked] = false;
+	((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->sync(*it);
+      }
+    }
+  }
 }
 
 void

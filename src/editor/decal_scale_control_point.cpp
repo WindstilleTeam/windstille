@@ -48,16 +48,16 @@ DecalScaleControlPoint::on_move_update(GdkEventMotion* /*event*/, const Vector2f
   Vector2f new_scale = orig_scale;
 
   if (x_scale)
-    {
-      new_scale.x = current.x / start.x;
-      new_scale.x *= orig_scale.x;
-    }
+  {
+    new_scale.x = current.x / start.x;
+    new_scale.x *= orig_scale.x;
+  }
 
   if (y_scale)
-    {
-      new_scale.y = current.y / start.y;
-      new_scale.y *= orig_scale.y;
-    }
+  {
+    new_scale.y = current.y / start.y;
+    new_scale.y *= orig_scale.y;
+  }
 
   object->set_scale(new_scale);
 }
