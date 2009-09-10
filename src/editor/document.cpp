@@ -26,6 +26,7 @@
 #include "editor/editor_window.hpp"
 #include "editor/object_model.hpp"
 #include "editor/decal_object_model.hpp"
+#include "editor/navgraph_edge_object_model.hpp"
 
 #include "editor/group_command.hpp"
 #include "editor/object_commands.hpp"
@@ -128,6 +129,30 @@ void
 Document::layer_remove(const Gtk::TreeModel::Path& path)
 {
   execute(CommandHandle(new LayerDeleteCommand(*m_sector_model, path)));
+}
+
+void
+Document::navgraph_node_add(boost::shared_ptr<NavGraphNodeObjectModel> node)
+{
+}
+
+void
+Document::navgraph_node_remove(boost::shared_ptr<NavGraphNodeObjectModel> node)
+{
+}
+
+void
+Document::navgraph_edge_add(LayerHandle layer, 
+                            boost::shared_ptr<NavGraphNodeObjectModel> lhs,
+                            boost::shared_ptr<NavGraphNodeObjectModel> rhs)
+{
+  boost::shared_ptr<NavGraphEdgeObjectModel> edge_obj(new NavGraphEdgeObjectModel(lhs, rhs)); //, *m_sector_model));
+  object_add(layer, edge_obj);
+}
+
+void
+Document::navgraph_edge_remove(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
+{
 }
 
 void

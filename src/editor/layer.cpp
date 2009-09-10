@@ -18,6 +18,7 @@
 
 #include "editor/layer.hpp"
 
+#include "editor/layer_manager_columns.hpp"
 #include "editor/sector_model.hpp"
 
 Layer::Layer(SectorModel& sector)

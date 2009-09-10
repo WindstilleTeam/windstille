@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "editor/layer_manager.hpp"
+
 #include <iostream>
 #include <gtkmm/stock.h>
 #include <gtkmm/toolbar.h>
@@ -26,7 +28,7 @@
 
 #include "editor/editor_window.hpp"
 #include "editor/sector_model.hpp"
-#include "editor/layer_manager.hpp"
+#include "editor/layer_manager_columns.hpp"
 
 LayerManager::LayerManager(EditorWindow& editor_)
   : editor(editor_),

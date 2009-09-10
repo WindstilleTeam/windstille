@@ -22,19 +22,20 @@
 #include <iostream>
 #include <gdkmm/pixbuf.h>
 
-#include "navigation/navigation_graph.hpp"
-#include "scenegraph/scene_graph.hpp"
-#include "navigation/edge.hpp"
-#include "navigation/node.hpp"
-#include "editor/editor_window.hpp"
-#include "editor/windstille_widget.hpp"
-#include "editor/navgraph_node_object_model.hpp"
-#include "editor/navgraph_edge_object_model.hpp"
-#include "util/file_reader.hpp"
 #include "display/scene_context.hpp"
 #include "display/surface.hpp"
+#include "editor/editor_window.hpp"
+#include "editor/layer_manager_columns.hpp"
+#include "editor/navgraph_edge_object_model.hpp"
+#include "editor/navgraph_node_object_model.hpp"
 #include "editor/object_model_factory.hpp"
 #include "editor/sector_model.hpp"
+#include "editor/windstille_widget.hpp"
+#include "navigation/edge.hpp"
+#include "navigation/navigation_graph.hpp"
+#include "navigation/node.hpp"
+#include "scenegraph/scene_graph.hpp"
+#include "util/file_reader.hpp"
 
 LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
@@ -42,19 +43,22 @@ LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 SectorModel::SectorModel(const std::string& filename)
   : nav_graph(new NavigationGraph()),
     scene_graph(new SceneGraph()),
-    layer_tree(),
+    layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
+    navgraph_layer(new Layer(*this)),
     ambient_color()
 {
+  register_callbacks();
   load(filename);
 }
 
 SectorModel::SectorModel()
   : nav_graph(new NavigationGraph()),
     scene_graph(new SceneGraph()),
-    layer_tree(),
+    layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
+    navgraph_layer(new Layer(*this)),
     ambient_color()
 {
-  layer_tree = Gtk::ListStore::create(LayerManagerColumns::instance());
+  register_callbacks();
 
   Gtk::ListStore::iterator it = layer_tree->append();
 
@@ -65,16 +69,20 @@ SectorModel::SectorModel()
   (*it)[LayerManagerColumns::instance().locked]    = false;
   (*it)[LayerManagerColumns::instance().layer]     = layer;
   layer->sync(*it);
+}
 
+SectorModel::~SectorModel()
+{
+}
+
+void
+SectorModel::register_callbacks()
+{  
   layer_tree->signal_row_changed().connect(sigc::mem_fun(*this, &SectorModel::on_row_changed));
   layer_tree->signal_row_deleted().connect(sigc::mem_fun(*this, &SectorModel::on_row_deleted));
   layer_tree->signal_row_has_child_toggled().connect(sigc::mem_fun(*this, &SectorModel::on_row_has_child_toggled));
   layer_tree->signal_row_inserted().connect(sigc::mem_fun(*this, &SectorModel::on_row_inserted));
   layer_tree->signal_rows_reordered().connect(sigc::mem_fun(*this, &SectorModel::on_rows_reordered));
-}
-
-SectorModel::~SectorModel()
-{
 }
 
 void
@@ -257,17 +265,22 @@ SectorModel::get_object_at(const Vector2f& pos, const SelectMask& layermask) con
   const Layers& layers = get_layers();
   SelectionHandle selection = Selection::create();
 
+  if (ObjectModelHandle object = navgraph_layer->get_object_at(pos, layermask))
+  {
+    return object;
+  }
+  
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
+  {
+    if ((*i)->is_visible() && !(*i)->is_locked())
     {
-      if ((*i)->is_visible() && !(*i)->is_locked())
-        {
-          ObjectModelHandle object = (*i)->get_object_at(pos, layermask);
+      ObjectModelHandle object = (*i)->get_object_at(pos, layermask);
           
-          if (object.get())
-            return object;
-        }
+      if (object)
+        return object;
     }
-
+  }
+  
   return ObjectModelHandle();
 }
 
@@ -277,14 +290,19 @@ SectorModel::get_selection(const Rectf& rect, const SelectMask& layermask) const
   const Layers& layers = get_layers();
   SelectionHandle selection = Selection::create();
 
+  {
+    SelectionHandle new_sel = navgraph_layer->get_selection(rect, layermask);
+    selection->add(new_sel->begin(), new_sel->end());
+  }
+
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
+  {
+    if ((*i)->is_visible() && !(*i)->is_locked())
     {
-      if ((*i)->is_visible() && !(*i)->is_locked())
-        {
-          SelectionHandle new_sel = (*i)->get_selection(rect, layermask);
-          selection->add(new_sel->begin(), new_sel->end());
-        }
+      SelectionHandle new_sel = (*i)->get_selection(rect, layermask);
+      selection->add(new_sel->begin(), new_sel->end());
     }
+  }
 
   return selection;
 }
@@ -537,7 +555,7 @@ SectorModel::rebuild_scene_graph()
 {
   // FIXME: should make a queue_rebuild_scene_graph() to limit the number of rebuilds per frame to 1
   scene_graph->clear();
-
+  
   const Layers& layers = get_layers();
   for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
   {
@@ -551,6 +569,11 @@ SectorModel::rebuild_scene_graph()
         }
       }
     }
+  }
+
+  for(Layer::const_iterator obj = navgraph_layer->begin(); obj != navgraph_layer->end(); ++obj)
+  {
+    (*obj)->add_to_scenegraph(*scene_graph);
   }
 
   queue_draw();
@@ -614,23 +637,16 @@ SectorModel::find_navgraph_node(NodeHandle node) const
 {
   // FIXME: Could solve this better by either a map/unsorted_set or by having
   // a userdata ptr in NavGraph
-  const Layers& layers = get_layers();
-  for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
+  for(Layer::const_iterator obj = navgraph_layer->begin(); obj != navgraph_layer->end(); ++obj)
   {
-    if (*layer)
+    boost::shared_ptr<NavGraphNodeObjectModel> test_node = boost::dynamic_pointer_cast<NavGraphNodeObjectModel>(*obj);
+    if (test_node)
     {
-      for(Layer::const_iterator obj = (*layer)->begin(); obj != (*layer)->end(); ++obj)
+      if (test_node->get_node() == node)
       {
-        boost::shared_ptr<NavGraphNodeObjectModel> test_node = boost::dynamic_pointer_cast<NavGraphNodeObjectModel>(*obj);
-        if (test_node)
-        {
-          if (test_node->get_node() == node)
-          {
-            return test_node;
-          }
-        }
+        return test_node;
       }
-    } 
+    }
   }
   
   return boost::shared_ptr<NavGraphNodeObjectModel>();

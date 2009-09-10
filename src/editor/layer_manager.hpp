@@ -19,11 +19,16 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_LAYER_MANAGER_HPP
 #define HEADER_WINDSTILLE_EDITOR_LAYER_MANAGER_HPP
 
+#include <gtkmm/box.h>
+#include <gtkmm/label.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/toggleaction.h>
+#include <gtkmm/treeview.h>
 #include <gtkmm/uimanager.h>
-
+
 class SectorModel;
 class EditorWindow;
-
+
 class LayerManager : public Gtk::VBox
 {
 private:
@@ -51,7 +56,7 @@ private:
   LayerManager(const LayerManager&);
   LayerManager& operator=(const LayerManager&);
 };
-
+
 #endif
 
 /* EOF */

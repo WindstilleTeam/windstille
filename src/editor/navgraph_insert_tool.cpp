@@ -53,29 +53,23 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
     {
       if (node)
       { // connect last node with existing node
-        NavGraphEdgeObjectModel* edge_obj = new NavGraphEdgeObjectModel(sector.find_navgraph_node(last_node),
-                                                                        sector.find_navgraph_node(node),
-                                                                        sector);
-        wst.get_document().object_add(wst.get_current_layer(), ObjectModelHandle(edge_obj));
-
+        wst.get_document().navgraph_edge_add(wst.get_current_layer(),
+                                             sector.find_navgraph_node(last_node),
+                                             sector.find_navgraph_node(node));
         last_node = NodeHandle();
         connection_node = NodeHandle();
       }
       else
       { // connect last node with newly created node
         // FIXME: Make this a GroupCommand
-        NavGraphNodeObjectModel* obj = new NavGraphNodeObjectModel(mouse_pos, sector);
-        node = obj->get_node();
+        boost::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos)); //, sector));
         
-        NavGraphEdgeObjectModel* edge_obj = new NavGraphEdgeObjectModel(sector.find_navgraph_node(last_node),
-                                                                        sector.find_navgraph_node(node), 
-                                                                        sector);
-
         wst.get_document().undo_group_begin();
-        wst.get_document().object_add(wst.get_current_layer(), ObjectModelHandle(obj));
-        wst.get_document().object_add(wst.get_current_layer(), ObjectModelHandle(edge_obj));
+        wst.get_document().object_add(wst.get_document().get_sector_model().get_navgraph_layer(), node_obj);
+        wst.get_document().navgraph_edge_add(wst.get_current_layer(), sector.find_navgraph_node(last_node), node_obj);
         wst.get_document().undo_group_end();
 
+        node = node_obj->get_node();       
         last_node = NodeHandle();
       }
       mode = NO_MODE;
@@ -96,10 +90,9 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       }
       else
       {
-        NavGraphNodeObjectModel* obj = new NavGraphNodeObjectModel(mouse_pos, sector);
-        last_node = obj->get_node();
-        wst.get_document().object_add(wst.get_current_layer(), ObjectModelHandle(obj));
-              
+        boost::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos));//, sector));
+        last_node = node_obj->get_node();
+        wst.get_document().object_add(wst.get_document().get_sector_model().get_navgraph_layer(), node_obj);
         mode = EDGE_MODE;
       }
     }
@@ -163,13 +156,15 @@ void
 NavgraphInsertTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget& wst)
 {
   NavigationGraph& navgraph = wst.get_document().get_sector_model().get_nav_graph();
+  SectorModel& sector = wst.get_document().get_sector_model();
 
   NodeHandle node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
   EdgeHandle edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
   if (node)
     {
-      navgraph.remove_node(node);
+      //navgraph.remove_node(node);
+      wst.get_document().object_remove(sector.find_navgraph_node(node));
 
       mouse_over_edge = EdgeHandle();
       mouse_over_node = NodeHandle();
@@ -178,7 +173,8 @@ NavgraphInsertTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget
     }
   else if (edge)
     {
-      navgraph.remove_edge(edge);
+      //navgraph.remove_edge(edge);
+      wst.get_document().object_remove(sector.find_navgraph_edge(edge));
 
       mouse_over_edge = EdgeHandle();
       mouse_over_node = NodeHandle();
@@ -189,7 +185,7 @@ NavgraphInsertTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget
     {
       
     }
-}  
+}
   
 void
 NavgraphInsertTool::draw(SceneContext& sc)

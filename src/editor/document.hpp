@@ -29,6 +29,8 @@
 
 class UndoManager;
 class SectorModel;
+class NavGraphNodeObjectModel;
+class NavGraphEdgeObjectModel;
 
 /**
  *  Document wraps undo/redo functionality around SectorModel and
@@ -75,6 +77,17 @@ public:
    * @{*/
   void layer_add(const Gtk::TreeModel::Path& path);
   void layer_remove(const Gtk::TreeModel::Path& path);
+  /** @} */
+
+  /* NavGraph Commands
+   * @{*/
+  void navgraph_node_add(boost::shared_ptr<NavGraphNodeObjectModel> node);
+  void navgraph_node_remove(boost::shared_ptr<NavGraphNodeObjectModel> node);
+
+  void navgraph_edge_add(LayerHandle layer, 
+                         boost::shared_ptr<NavGraphNodeObjectModel> lhs,
+                         boost::shared_ptr<NavGraphNodeObjectModel> rhs);
+  void navgraph_edge_remove(boost::shared_ptr<NavGraphEdgeObjectModel> edge);
   /** @} */
 
   /* Object Commands

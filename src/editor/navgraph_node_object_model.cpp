@@ -23,12 +23,16 @@
 #include "scenegraph/scene_graph.hpp"
 #include "navigation/node.hpp"
 
-NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos, SectorModel& sector)
+NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos)//, SectorModel& sector)
   : ObjectModel("NavGraphNodeObjectModel", pos),
     m_drawable(),
     m_node()
 {
-  m_node = sector.get_nav_graph().add_node(pos);
+  //m_node = sector.get_nav_graph().add_node(pos);
+}
+
+NavGraphNodeObjectModel::~NavGraphNodeObjectModel()
+{
 }
 
 void

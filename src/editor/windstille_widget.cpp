@@ -577,6 +577,7 @@ WindstilleWidget::load_file(const std::string& filename_)
 {
   filename = filename_;
   m_document.reset(new Document(filename));
+  on_document_change();
 }
 
 /* EOF */

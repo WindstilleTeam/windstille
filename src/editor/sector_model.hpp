@@ -37,42 +37,6 @@ class NavGraphNodeObjectModel;
 class NavGraphEdgeObjectModel;
 class SceneGraph;
 class SceneContext;
-class LayerManagerColumns;
-
-class LayerManagerColumns : public Gtk::TreeModel::ColumnRecord
-{
-private:
-  static LayerManagerColumns* instance_;
-
-public:
-  static LayerManagerColumns& instance() {
-    if (instance_)
-      return *instance_;
-    else
-      return *(instance_ = new LayerManagerColumns());
-  }
-
-  Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > type_icon;
-  Gtk::TreeModelColumn<Glib::ustring>              name;
-  Gtk::TreeModelColumn<bool>                       visible;
-  Gtk::TreeModelColumn<bool>                       locked;
-  Gtk::TreeModelColumn<LayerHandle>                layer;
-
-private:
-  LayerManagerColumns()
-    : type_icon(),
-      name(),
-      visible(),
-      locked(),
-      layer()
-  {
-    add(type_icon); 
-    add(name); 
-    add(visible); 
-    add(locked);
-    add(layer);
-  }
-};
 
 class SectorModel
 {
@@ -80,6 +44,7 @@ private:
   boost::scoped_ptr<NavigationGraph> nav_graph;
   boost::scoped_ptr<SceneGraph>      scene_graph;
   Glib::RefPtr<Gtk::ListStore>       layer_tree;
+  LayerHandle navgraph_layer;
   Color ambient_color;
   
 public:
@@ -104,6 +69,7 @@ public:
   void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
   void remove(const ObjectModelHandle& object);
   LayerHandle get_layer(const ObjectModelHandle& object) const;
+  LayerHandle get_navgraph_layer() const { return navgraph_layer; }
 
   void  set_ambient_color(const Color& color) { ambient_color = color; }
   Color get_ambient_color() const { return ambient_color; }
@@ -148,6 +114,7 @@ private:
   void load_layer(const FileReader& filename, 
                   std::map<std::string, ObjectModelHandle>& id_table,
                   std::map<ObjectModelHandle, std::string>& parent_table); 
+  void register_callbacks();
 
 private:
   SectorModel(const SectorModel&);

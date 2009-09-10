@@ -33,7 +33,8 @@ private:
   NodeHandle m_node;
 
 public:
-  NavGraphNodeObjectModel(const Vector2f& pos, SectorModel& sector);
+  NavGraphNodeObjectModel(const Vector2f& pos);//, SectorModel& sector);
+  ~NavGraphNodeObjectModel();
 
   void add_to_scenegraph(SceneGraph& sg);
   void set_rel_pos(const Vector2f& rel_pos_);

@@ -19,8 +19,6 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_NAVGRAPH_EDGE_OBJECT_MODEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_EDGE_OBJECT_MODEL_HPP
 
-#include <boost/weak_ptr.hpp>
-
 #include "navigation/navigation_graph.hpp"
 #include "editor/object_model.hpp"
 
@@ -37,8 +35,7 @@ private:
 
 public:
   NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeObjectModel> lhs,
-                          boost::shared_ptr<NavGraphNodeObjectModel> rhs,
-                          SectorModel& sector);
+                          boost::shared_ptr<NavGraphNodeObjectModel> rhs);
   virtual ~NavGraphEdgeObjectModel();
 
   void add_to_scenegraph(SceneGraph& sg);

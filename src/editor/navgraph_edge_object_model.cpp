@@ -24,16 +24,15 @@
 #include "scenegraph/vertex_array_drawable.hpp"
 
 NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeObjectModel> lhs,
-                                                 boost::shared_ptr<NavGraphNodeObjectModel> rhs,
-                                                 SectorModel& sector)
+                                                 boost::shared_ptr<NavGraphNodeObjectModel> rhs)
+                                                 //SectorModel& sector)
   : ObjectModel("NavGraphEdgeObjectModel", Vector2f()),
     m_lhs(lhs),
     m_rhs(rhs),
     m_drawable(),
     m_edge()
 {
-  std::cout << "Adding edge" << std::endl;
-  m_edge = sector.get_nav_graph().add_edge(m_lhs->get_node(), m_rhs->get_node());
+  //m_edge = sector.get_nav_graph().add_edge(m_lhs->get_node(), m_rhs->get_node());
 }
 
 NavGraphEdgeObjectModel::~NavGraphEdgeObjectModel()
