@@ -42,7 +42,6 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
   NavigationGraphModel& navgraph = wst.get_document().get_sector_model().get_nav_graph();
-  //SectorModel& sector = wst.get_document().get_sector_model();
 
   boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
   boost::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
@@ -54,8 +53,9 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       if (node)
       { // connect last node with existing node
         wst.get_document().navgraph_edge_add(wst.get_current_layer(), last_node, node);
-        last_node = boost::shared_ptr<NavGraphNodeObjectModel>();
-        connection_node = boost::shared_ptr<NavGraphNodeObjectModel>();
+
+        last_node.reset();
+        connection_node.reset();
       }
       else
       { // connect last node with newly created node
@@ -68,7 +68,8 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
         wst.get_document().undo_group_end();
 
         node = node_obj;
-        last_node = boost::shared_ptr<NavGraphNodeObjectModel>();
+
+        last_node.reset();
       }
       mode = NO_MODE;
     }
@@ -83,7 +84,8 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       }
       else if (edge)
       {
-        navgraph.remove_edge(edge);
+        wst.get_document().navgraph_edge_remove(edge);
+
         mode = NO_MODE;
       }
       else
@@ -107,7 +109,8 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
   mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
 
   {
-    boost::shared_ptr<NavGraphNodeObjectModel> new_mouse_over_node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
+    // FIXME: Radius should scale with zoom
+    boost::shared_ptr<NavGraphNodeObjectModel> new_mouse_over_node = navgraph.find_closest_node(mouse_pos, 16.0f);
     boost::shared_ptr<NavGraphEdgeObjectModel> new_mouse_over_edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
     if (new_mouse_over_node != mouse_over_node ||
@@ -136,7 +139,6 @@ void
 NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
-  //NavigationGraphModel& navgraph = *wst.get_sector_model().get_nav_graph();
 
   switch(mode)
   {
@@ -154,28 +156,25 @@ void
 NavgraphInsertTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget& wst)
 {
   NavigationGraphModel& navgraph = wst.get_document().get_sector_model().get_nav_graph();
-  //SectorModel& sector = wst.get_document().get_sector_model();
 
   boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
   boost::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
   if (node)
   {
-    //navgraph.remove_node(node);
-    wst.get_document().object_remove(node);
+    wst.get_document().navgraph_node_remove(node);
 
-    mouse_over_edge = boost::shared_ptr<NavGraphEdgeObjectModel>();
-    mouse_over_node = boost::shared_ptr<NavGraphNodeObjectModel>();
+    mouse_over_edge.reset();
+    mouse_over_node.reset();
 
     wst.queue_draw();
   }
   else if (edge)
   {
-    //navgraph.remove_edge(edge);
-    wst.get_document().object_remove(edge);
+    wst.get_document().navgraph_edge_remove(edge);
 
-    mouse_over_edge = boost::shared_ptr<NavGraphEdgeObjectModel>();
-    mouse_over_node = boost::shared_ptr<NavGraphNodeObjectModel>();
+    mouse_over_edge.reset();
+    mouse_over_node.reset();
 
     wst.queue_draw();
   }

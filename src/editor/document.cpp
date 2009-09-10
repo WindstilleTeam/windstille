@@ -28,10 +28,11 @@
 #include "editor/decal_object_model.hpp"
 #include "editor/navgraph_edge_object_model.hpp"
 
-#include "editor/group_command.hpp"
-#include "editor/object_commands.hpp"
 #include "editor/functor_command.hpp"
+#include "editor/group_command.hpp"
 #include "editor/layer_commands.hpp"
+#include "editor/navgraph_commands.hpp"
+#include "editor/object_commands.hpp"
 
 Document::Document()
   : m_undo_manager(new UndoManager()),
@@ -134,11 +135,13 @@ Document::layer_remove(const Gtk::TreeModel::Path& path)
 void
 Document::navgraph_node_add(boost::shared_ptr<NavGraphNodeObjectModel> node)
 {
+  execute(CommandHandle(new NavGraphNodeAddCommand(node)));
 }
 
 void
 Document::navgraph_node_remove(boost::shared_ptr<NavGraphNodeObjectModel> node)
 {
+  execute(CommandHandle(new NavGraphNodeRemoveCommand(node)));
 }
 
 void
@@ -146,13 +149,13 @@ Document::navgraph_edge_add(LayerHandle layer,
                             boost::shared_ptr<NavGraphNodeObjectModel> lhs,
                             boost::shared_ptr<NavGraphNodeObjectModel> rhs)
 {
-  boost::shared_ptr<NavGraphEdgeObjectModel> edge_obj(new NavGraphEdgeObjectModel(lhs, rhs)); //, *m_sector_model));
-  object_add(layer, edge_obj);
+  execute(CommandHandle(new NavGraphEdgeAddCommand(layer, lhs, rhs)));
 }
 
 void
 Document::navgraph_edge_remove(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
 {
+  execute(CommandHandle(new NavGraphEdgeRemoveCommand(edge)));
 }
 
 void

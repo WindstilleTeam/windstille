@@ -50,6 +50,17 @@ NavigationGraphModel::create_edge(boost::shared_ptr<NavGraphNodeObjectModel> lhs
   return edge;
 }
 
+void
+NavigationGraphModel::add_node(boost::shared_ptr<NavGraphNodeObjectModel> node)
+{
+  nodes.push_back(node);
+}
+
+void
+NavigationGraphModel::add_edge(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
+{
+  edges.push_back(edge);
+}
   
 void
 NavigationGraphModel::remove_node(boost::shared_ptr<NavGraphNodeObjectModel> node)
@@ -76,6 +87,8 @@ NavigationGraphModel::find_closest_node(const Vector2f& pos, float radius) const
       node = *i;
     }
   }
+
+  std::cout << "find_closest_node: " << nodes.size() << " " << node.get() << std::endl;
 
   return node;
 }

@@ -44,6 +44,9 @@ public:
   boost::shared_ptr<NavGraphNodeObjectModel> create_node(const Vector2f& pos);
   boost::shared_ptr<NavGraphEdgeObjectModel> create_edge(boost::shared_ptr<NavGraphNodeObjectModel> lhs, 
                                                          boost::shared_ptr<NavGraphNodeObjectModel> rhs);
+
+  void add_node(boost::shared_ptr<NavGraphNodeObjectModel> node);
+  void add_edge(boost::shared_ptr<NavGraphEdgeObjectModel> edge);
   
   void remove_node(boost::shared_ptr<NavGraphNodeObjectModel> node);
   void remove_edge(boost::shared_ptr<NavGraphEdgeObjectModel> edge);
