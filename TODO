@@ -28,6 +28,22 @@ Editor Restructuring
 * NavGraphInsertTool needs to be rewritten
 
 * NavGraphSelectTool would become obsolote
+
+* SceneGraph needs to be updated while drag&drop is in progress
+
+* deleting a NavGraphNodeObjectModel must remove all the connected
+  NavGraphEdgeObjectModel
+
+* Move scroll_tool to EditorWindow, away from WindstilleWidget
+
+* NavGraphEdgeObjectModel modifies the Navgraph by bypassing the undo system, that is wrong
+
+* delete/remove/erase naming is a bit mixed up in a few places
+
+* NavGraph object creating and deletion must be routed through undo
+  system, also the raw navgraph must be updated properly
+
+* write NavigationGraphModel (!!!)
 
 Overview
 ========
