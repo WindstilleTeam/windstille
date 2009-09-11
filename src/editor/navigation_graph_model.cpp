@@ -22,6 +22,7 @@
 #include "editor/navgraph_node_object_model.hpp"
 #include "math/line.hpp"
 #include "navigation/navigation_graph.hpp"
+#include "util/file_reader.hpp"
 
 NavigationGraphModel::NavigationGraphModel(SectorModel& sector)
   : m_sector(sector),
@@ -195,6 +196,91 @@ NavigationGraphModel::write(FileWriter& writer) const
     (*i)->write_real(writer);
   }
   writer.end_section();
+}
+
+void
+NavigationGraphModel::load(const FileReader& reader, std::map<std::string, ObjectModelHandle>& all_id_table)
+{
+  std::cout << "NavigationGraphModel::load" << std::endl;
+  std::map<std::string, boost::shared_ptr<NavGraphNodeObjectModel> > id_table;
+
+  FileReader nodes_section;
+  if (reader.get("nodes", nodes_section))
+  {
+    const std::vector<FileReader>& sections = nodes_section.get_sections();
+    for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
+    {
+      if (i->get_name() == "navgraph-node")
+      {
+        boost::shared_ptr<NavGraphNodeObjectModel> node(new NavGraphNodeObjectModel(*i));
+
+        std::string id_str;
+        if (i->get("id", id_str))
+        {
+          id_table[id_str] = node;
+        }
+
+        m_nodes.push_back(node);
+      }
+      else
+      {
+        std::cout << "NavigationGraphModel:load: unknown tag " << i->get_name() << std::endl;
+      }
+    }
+  }
+  else
+  {
+    std::cout << "NavigationGraphModel: nodes missing" << std::endl;
+  }
+
+  FileReader edges_section;
+  if (reader.get("edges", edges_section))
+  {
+    const std::vector<FileReader>& sections = edges_section.get_sections();
+    for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
+    {
+      if (i->get_name() == "navgraph-edge")
+      {
+        std::string lhs;
+        std::string rhs;
+
+        if (i->get("lhs-node", lhs) && i->get("rhs-node", rhs))
+        {
+          boost::shared_ptr<NavGraphNodeObjectModel> lhs_node = id_table[lhs];
+          boost::shared_ptr<NavGraphNodeObjectModel> rhs_node = id_table[rhs];
+
+          if (lhs_node && rhs_node)
+          {
+            boost::shared_ptr<NavGraphEdgeObjectModel> edge(new NavGraphEdgeObjectModel(lhs_node, rhs_node));
+
+            std::string id_str;
+            if (i->get("id", id_str))
+            {
+              all_id_table[id_str] = edge;
+            }
+
+            m_edges.push_back(edge);
+          }
+          else
+          {
+            std::cout << "Error: NavigationGraphModel::load: couldn't resolve edge: " << lhs_node << " " << rhs_node << std::endl;
+          }
+        }
+        else
+        {
+          std::cout << "Error: NavigationGraphModel::load: invalid edge" << std::endl;
+        }
+      }
+      else
+      {
+        std::cout << "NavigationGraphModel:load: unknown tag " << i->get_name() << std::endl;
+      }
+    }
+  }
+  else
+  {
+    std::cout << "NavigationGraphModel: edges missing" << std::endl;
+  }
 }
 
 /* EOF */

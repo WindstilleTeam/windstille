@@ -23,6 +23,12 @@
 #include "scenegraph/scene_graph.hpp"
 #include "navigation/node.hpp"
 
+NavGraphNodeObjectModel::NavGraphNodeObjectModel(const FileReader& reader)
+  : ObjectModel(reader),
+    m_drawable()
+{
+}
+
 NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos)//, SectorModel& sector)
   : ObjectModel("NavGraphNodeObjectModel", pos),
     m_drawable()

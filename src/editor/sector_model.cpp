@@ -380,21 +380,32 @@ SectorModel::load_layer(const FileReader& reader,
   {
     try 
     {
-      ObjectModelHandle obj = ObjectModelFactory::create(*j);
-
-      layer->add(obj);
-
-      std::string id_str;
-      if (j->read("id", id_str))
+      if (j->get_name() == "navgraph-edge-ref")
       {
-        id_table[id_str] = obj;
+        std::string id_str;
+        if (j->get("edge", id_str))
+        {
+          layer->add(id_table[id_str]);
+        }
       }
-
-      std::string parent_str;
-      if (j->read("parent", parent_str))
+      else
       {
-        if (!parent_str.empty())
-          parent_table[obj] = parent_str;
+        ObjectModelHandle obj = ObjectModelFactory::create(*j);
+
+        layer->add(obj);
+
+        std::string id_str;
+        if (j->read("id", id_str))
+        {
+          id_table[id_str] = obj;
+        }
+
+        std::string parent_str;
+        if (j->read("parent", parent_str))
+        {
+          if (!parent_str.empty())
+            parent_table[obj] = parent_str;
+        }
       }
     }
     catch(std::exception& err)
@@ -436,9 +447,9 @@ SectorModel::load(const std::string& filename)
       ambient_color = Color(0,0,0,1);
       reader.get("ambient-color", ambient_color);
 
-      //FileReader navigation_section;
-      //reader.get("navigation", navigation_section);
-      //nav_graph->load(navigation_section);
+      FileReader navigation_section;
+      reader.get("navigation", navigation_section);
+      nav_graph->load(navigation_section, id_table);
 
       FileReader layers_section;
       reader.get("layers", layers_section);

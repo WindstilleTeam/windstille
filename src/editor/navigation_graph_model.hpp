@@ -67,6 +67,7 @@ public:
   SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
 
   void write(FileWriter& writer) const;
+  void load(const FileReader& reader, std::map<std::string, ObjectModelHandle>& id_table);
 
 private:
   NavigationGraphModel(const NavigationGraphModel&);

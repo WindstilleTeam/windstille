@@ -25,6 +25,7 @@
 #include "navigation/navigation_graph.hpp"
 
 class VertexArrayDrawable;
+class FileReader;
 
 class NavGraphNodeObjectModel : public ObjectModel
 {
@@ -32,7 +33,8 @@ private:
   boost::shared_ptr<VertexArrayDrawable> m_drawable;
 
 public:
-  NavGraphNodeObjectModel(const Vector2f& pos);//, SectorModel& sector);
+  NavGraphNodeObjectModel(const FileReader& reader);
+  NavGraphNodeObjectModel(const Vector2f& pos);
   ~NavGraphNodeObjectModel();
 
   void add_to_scenegraph(SceneGraph& sg);
