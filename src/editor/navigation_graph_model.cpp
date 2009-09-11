@@ -179,4 +179,22 @@ NavigationGraphModel::get_selection(const Rectf& rect, const SelectMask& select_
   return selection;
 }
 
+void
+NavigationGraphModel::write(FileWriter& writer) const
+{
+  writer.start_section("nodes");
+  for(Nodes::const_reverse_iterator i = m_nodes.rbegin(); i != m_nodes.rend(); ++i)
+  {
+    (*i)->write(writer);
+  }
+  writer.end_section();
+
+  writer.start_section("edges");
+  for(Edges::const_reverse_iterator i = m_edges.rbegin(); i != m_edges.rend(); ++i)
+  {
+    (*i)->write_real(writer);
+  }
+  writer.end_section();
+}
+
 /* EOF */

@@ -66,6 +66,8 @@ public:
   boost::shared_ptr<NavGraphNodeObjectModel> get_object_at(const Vector2f& pos, const SelectMask& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
 
+  void write(FileWriter& writer) const;
+
 private:
   NavigationGraphModel(const NavigationGraphModel&);
   NavigationGraphModel& operator=(const NavigationGraphModel&);

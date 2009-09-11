@@ -79,6 +79,14 @@ NavGraphEdgeObjectModel::clone() const
 void
 NavGraphEdgeObjectModel::write(FileWriter& writer) const
 {
+  writer.start_section("navgraph-edge-ref");
+  writer.write("edge", get_id());
+  writer.end_section();
+}
+
+void
+NavGraphEdgeObjectModel::write_real(FileWriter& writer) const
+{
   writer.start_section("navgraph-edge");
   ObjectModel::write_member(writer);
   writer.write("lhs-node", m_lhs->get_id());

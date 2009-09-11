@@ -88,7 +88,6 @@ NavGraphNodeObjectModel::write(FileWriter& writer) const
 {
   writer.start_section("navgraph-node");
   ObjectModel::write_member(writer);
-  //writer.write("vflip",   vflip);
   writer.end_section();
 }
 

@@ -43,6 +43,7 @@ public:
   Rectf get_bounding_box() const;
   ObjectModelHandle clone() const;
   void write(FileWriter& writer) const;
+  void write_real(FileWriter& writer) const;
 
   boost::shared_ptr<NavGraphNodeObjectModel> get_lhs() const { return m_lhs; }
   boost::shared_ptr<NavGraphNodeObjectModel> get_rhs() const { return m_rhs; }

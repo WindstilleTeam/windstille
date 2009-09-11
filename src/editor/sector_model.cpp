@@ -484,9 +484,9 @@ SectorModel::write(FileWriter& writer) const
   writer.write("ambient-color", ambient_color);
   writer.write("init-script", "init.nut");
 
-  //writer.start_section("navigation");
-  //nav_graph->write(writer);
-  //writer.end_section();
+  writer.start_section("navigation");
+  nav_graph->write(writer);
+  writer.end_section();
 
   writer.start_section("layers");
   for(Gtk::ListStore::Children::iterator i = layer_tree->children().begin(); i != layer_tree->children().end(); ++i)
