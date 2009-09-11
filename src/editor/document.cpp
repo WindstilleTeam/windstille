@@ -27,6 +27,7 @@
 #include "editor/object_model.hpp"
 #include "editor/decal_object_model.hpp"
 #include "editor/navgraph_edge_object_model.hpp"
+#include "editor/navgraph_node_object_model.hpp"
 
 #include "editor/functor_command.hpp"
 #include "editor/group_command.hpp"
@@ -80,6 +81,7 @@ Document::undo_group_begin()
 void
 Document::undo_group_end()
 {
+  assert(m_group_command);
   CommandHandle tmp = m_group_command;
   m_group_command.reset();
   execute(tmp);
@@ -141,7 +143,15 @@ Document::navgraph_node_add(boost::shared_ptr<NavGraphNodeObjectModel> node)
 void
 Document::navgraph_node_remove(boost::shared_ptr<NavGraphNodeObjectModel> node)
 {
+  const std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> >& edges = m_sector_model->get_nav_graph().find_edges(node);
+
+  undo_group_begin();
+  for(std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> >::const_iterator i = edges.begin(); i != edges.end(); ++i)
+  {
+    execute(CommandHandle(new ObjectRemoveCommand(*m_sector_model, *i)));
+  }
   execute(CommandHandle(new NavGraphNodeRemoveCommand(*m_sector_model, node)));
+  undo_group_end();
 }
 
 void
@@ -156,7 +166,10 @@ Document::navgraph_edge_add(LayerHandle layer,
 void
 Document::navgraph_edge_remove(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
 {
+  undo_group_begin();
   execute(CommandHandle(new NavGraphEdgeRemoveCommand(*m_sector_model, edge)));
+  execute(CommandHandle(new ObjectRemoveCommand(*m_sector_model, edge)));
+  undo_group_end();
 }
 
 void
@@ -168,7 +181,18 @@ Document::object_add(LayerHandle layer, ObjectModelHandle object)
 void
 Document::object_remove(ObjectModelHandle object)
 {
-  execute(CommandHandle(new ObjectRemoveCommand(*m_sector_model, object)));
+  if (boost::shared_ptr<NavGraphNodeObjectModel> node = boost::dynamic_pointer_cast<NavGraphNodeObjectModel>(object))
+  {
+    navgraph_node_remove(node);
+  }
+  else if (boost::shared_ptr<NavGraphEdgeObjectModel> edge = boost::dynamic_pointer_cast<NavGraphEdgeObjectModel>(object))
+  {
+    navgraph_edge_remove(edge);
+  }
+  else
+  {
+    execute(CommandHandle(new ObjectRemoveCommand(*m_sector_model, object)));
+  }
 }
 
 void

@@ -61,7 +61,6 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       }
       else
       { // connect last node with newly created node
-        std::cout << "Node Group" << std::endl;
         boost::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos));
         
         wst.get_document().undo_group_begin();

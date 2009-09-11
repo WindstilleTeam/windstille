@@ -23,8 +23,9 @@
 #include "math/line.hpp"
 #include "navigation/navigation_graph.hpp"
 
-NavigationGraphModel::NavigationGraphModel()
-  : m_nodes(),
+NavigationGraphModel::NavigationGraphModel(SectorModel& sector)
+  : m_sector(sector),
+    m_nodes(),
     m_edges()   
 {
 }
@@ -81,14 +82,14 @@ struct EdgeHasNode
 void
 NavigationGraphModel::remove_node(boost::shared_ptr<NavGraphNodeObjectModel> node)
 {
-  m_nodes.erase(std::remove(m_nodes.begin(), m_nodes.end(), node));
-  m_edges.erase(std::remove_if(m_edges.begin(), m_edges.end(), EdgeHasNode(node)));
+  m_nodes.erase(std::remove(m_nodes.begin(), m_nodes.end(), node), m_nodes.end());
+  m_edges.erase(std::remove_if(m_edges.begin(), m_edges.end(), EdgeHasNode(node)), m_edges.end());
 }
 
 void
 NavigationGraphModel::remove_edge(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
 {
-  m_edges.erase(std::remove(m_edges.begin(), m_edges.end(), edge));
+  m_edges.erase(std::remove(m_edges.begin(), m_edges.end(), edge), m_edges.end());
 }
 
 boost::shared_ptr<NavGraphNodeObjectModel>
@@ -128,6 +129,22 @@ NavigationGraphModel::find_closest_edge(const Vector2f& pos, float radius) const
   }
 
   return edge;
+}
+
+std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> >
+NavigationGraphModel::find_edges(boost::shared_ptr<NavGraphNodeObjectModel> node) const
+{
+  std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> > edges;
+  
+  for(Edges::const_iterator i = m_edges.begin(); i != m_edges.end(); ++i)
+  {
+    if ((*i)->get_lhs() == node || (*i)->get_rhs() == node)
+    {
+      edges.push_back(*i);
+    }
+  }
+
+  return edges;
 }
 
 boost::shared_ptr<NavGraphNodeObjectModel>

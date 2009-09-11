@@ -40,7 +40,7 @@ LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
 
 SectorModel::SectorModel(const std::string& filename)
-  : nav_graph(new NavigationGraphModel()),
+  : nav_graph(new NavigationGraphModel(*this)),
     scene_graph(new SceneGraph()),
     layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
     ambient_color()
@@ -50,7 +50,7 @@ SectorModel::SectorModel(const std::string& filename)
 }
 
 SectorModel::SectorModel()
-  : nav_graph(new NavigationGraphModel),
+  : nav_graph(new NavigationGraphModel(*this)),
     scene_graph(new SceneGraph()),
     layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
     ambient_color()

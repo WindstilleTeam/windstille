@@ -38,11 +38,12 @@ public:
   typedef std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> > Edges;
 
 private:
+  SectorModel& m_sector;
   Nodes m_nodes;
   Edges m_edges;
 
 public:
-  NavigationGraphModel();
+  NavigationGraphModel(SectorModel& sector);
   ~NavigationGraphModel();
 
   const Nodes& get_nodes() const { return m_nodes; }
@@ -59,6 +60,8 @@ public:
 
   boost::shared_ptr<NavGraphNodeObjectModel> find_closest_node(const Vector2f& pos, float radius) const;
   boost::shared_ptr<NavGraphEdgeObjectModel> find_closest_edge(const Vector2f& pos, float radius) const;
+
+  std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> > find_edges(boost::shared_ptr<NavGraphNodeObjectModel> node) const;
 
   boost::shared_ptr<NavGraphNodeObjectModel> get_object_at(const Vector2f& pos, const SelectMask& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
