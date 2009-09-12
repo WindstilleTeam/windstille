@@ -68,6 +68,24 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       }
       else
       { // connect last node with newly created node
+        if (event->state & GDK_SHIFT_MASK && 
+            last_node)
+        {
+          float angle = atan2f(mouse_pos.y - last_node->get_world_pos().y,
+                               mouse_pos.x - last_node->get_world_pos().x);
+
+          std::cout << angle << std::endl;
+          if (fabsf(angle) > 1.0f/4.0f * math::pi &&
+              fabsf(angle) < 3.0f/4.0f * math::pi)
+          {
+            mouse_pos.x = last_node->get_world_pos().x;
+          }
+          else 
+          {
+            mouse_pos.y = last_node->get_world_pos().y;
+          }
+        }
+
         boost::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos));
         
         wst.get_document().undo_group_begin();
@@ -143,6 +161,24 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     case NO_MODE:
       break;
   }
+
+  if (event->state & GDK_SHIFT_MASK && 
+      last_node)
+  {
+    float angle = atan2f(mouse_pos.y - last_node->get_world_pos().y,
+                         mouse_pos.x - last_node->get_world_pos().x);
+
+    std::cout << angle << std::endl;
+    if (fabsf(angle) > 1.0f/4.0f * math::pi &&
+        fabsf(angle) < 3.0f/4.0f * math::pi)
+    {
+      mouse_pos.x = last_node->get_world_pos().x;
+    }
+    else 
+    {
+      mouse_pos.y = last_node->get_world_pos().y;
+    }
+  }
 }
 
 void
@@ -200,7 +236,7 @@ NavgraphInsertTool::draw(SceneContext& sc)
   if (last_node)
   {
     if (connection_node)
-    {
+    {        
       sc.control().draw_line(last_node->get_world_pos(), connection_node->get_world_pos(), Color(1,1,1));
       sc.control().draw_rect(Rectf(connection_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
     }
