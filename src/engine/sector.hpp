@@ -41,7 +41,6 @@ class TileMap;
 class SceneGraph;
 class Doll;
 
-/** */
 class Sector : public Currenton<Sector>
 { 
 private:
