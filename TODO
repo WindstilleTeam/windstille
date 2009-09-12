@@ -13,37 +13,30 @@ enhanchment, actually enhanchmes anything at all.
 Editor Restructuring
 ====================
 
-* NavigationGraph gets removed (maybe just temporarly, since it could
-  be needed for 'NavGraph snapping')
-
-* NavigationGraph is replaced with normal ObjectModel objects
-  (NavGraphNodeObjectModel, NavGraphEdgeObjectModel)
-
-* NavGraphEdgeObjectModel can be moved around across layers (this is
-  why it needs to be selectable)
-
-* NavGraphNodeObjectModel are somewhat special in that they show up
-  when their connected Edges shows up
-
-* NavGraphInsertTool needs to be rewritten
-
-* NavGraphSelectTool would become obsolote
-
 * SceneGraph needs to be updated while drag&drop is in progress
-
-* deleting a NavGraphNodeObjectModel must remove all the connected
-  NavGraphEdgeObjectModel
 
 * Move scroll_tool to EditorWindow, away from WindstilleWidget
 
-* NavGraphEdgeObjectModel modifies the Navgraph by bypassing the undo system, that is wrong
-
 * delete/remove/erase naming is a bit mixed up in a few places
 
-* NavGraph object creating and deletion must be routed through undo
-  system, also the raw navgraph must be updated properly
+* ZoomTool seems broken
 
-* write NavigationGraphModel (!!!)
+
+* being able to directly mark Edges still feels wonky, need to rethink the thing again
+
+* copy&paste works only very limited with edges, i.e. copying from one
+  sector to another causes crazy stuff to happen as the nodes it links
+  to are on another sector
+
+* add grid snapping to navgraph
+
+* add horizontal/vertical snapping
+
+* draw NavGraph lines thicker (glLineWidth())
+
+* color code them by layer
+
+* implement navgraph loading in the game engine
 
 Overview
 ========
