@@ -27,8 +27,9 @@
 #include "display/color.hpp"
 #include "engine/game_object.hpp"
 #include "engine/sector.hpp"
-#include "util/file_reader.hpp"
+#include "navigation/navigation_graph.hpp"
 #include "tile/tile_map.hpp"
+#include "util/file_reader.hpp"
 
 #include "objects/background_gradient.hpp"
 #include "objects/box.hpp"
@@ -276,21 +277,68 @@ SectorBuilder::parse_object(const FileReader& reader)
 void
 SectorBuilder::parse_navgraph(const FileReader& reader)
 {
+  std::map<std::string, NodeHandle> id_to_node;
+
   FileReader navgraph_reader;
   if (!reader.get("navigation", navgraph_reader))
   {
-    //throw std::runtime_error("SectorBuilder: 'navigation' section missing");
+    throw std::runtime_error("SectorBuilder: 'navigation' section missing");
   }
   else
   {
     FileReader nodes_reader;
     if (navgraph_reader.get("nodes", nodes_reader))
     {
+      const std::vector<FileReader>& nodes_readers = nodes_reader.get_sections();
+      for(std::vector<FileReader>::const_iterator i = nodes_readers.begin(); i != nodes_readers.end(); ++i)
+      {
+        if (i->get_name() != "navgraph-node")
+        {
+          std::cout << "SectorBuilder::parse_navgraph(): Unknown nodes tag: " << i->get_name() << std::endl;
+        }
+        else
+        {
+          Vector2f pos;
+          if (i->get("pos", pos))
+          {
+            NodeHandle node = m_sector.get_navigation_graph().add_node(pos);
+            std::string id;
+            if (i->get("id", id))
+            {
+              id_to_node[id] = node;
+            }
+          }
+        }
+      }
     }
 
     FileReader edges_reader;
     if (navgraph_reader.get("edges", edges_reader))
     {
+      const std::vector<FileReader>& edges_readers = edges_reader.get_sections();
+      for(std::vector<FileReader>::const_iterator i = edges_readers.begin(); i != edges_readers.end(); ++i)
+      {
+        if (i->get_name() != "navgraph-edge")
+        {
+          std::cout << "SectorBuilder::parse_navgraph(): Unknown edges tag: " << i->get_name() << std::endl;
+        }
+        else
+        {
+          std::string lhs_node;
+          std::string rhs_node;
+          if (i->get("lhs-node", lhs_node) &&
+              i->get("rhs-node", rhs_node))
+          {
+            std::map<std::string, NodeHandle>::iterator lhs = id_to_node.find(lhs_node);
+            std::map<std::string, NodeHandle>::iterator rhs = id_to_node.find(rhs_node);
+            if (lhs != id_to_node.end() &&
+                rhs != id_to_node.end())
+            {
+              EdgeHandle edge = m_sector.get_navigation_graph().add_edge(lhs->second, rhs->second);
+            }
+          }
+        }
+      }
     }
   }
 }
