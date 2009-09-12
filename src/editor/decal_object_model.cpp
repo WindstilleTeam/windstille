@@ -271,9 +271,28 @@ DecalObjectModel::add_to_scenegraph(SceneGraph& sg)
 {
   if (!m_drawable)
   {
+    // FIXME: Could recycle the drawable, instead of allocating a new one each time
     m_drawable.reset(new SurfaceQuadDrawable(surface, Vector2f(), Quad(get_bounding_box()),
                                              DrawingParameters(), 0.0f,
                                              Matrix::identity()));
+    
+    switch(type)
+    {
+      case COLORMAP:     
+        m_drawable->set_render_mask(SceneContext::COLORMAP);
+        break;
+
+      case LIGHTMAP:
+        m_drawable->set_render_mask(SceneContext::LIGHTMAP);
+        m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE); 
+        break;
+
+      case HIGHLIGHTMAP: 
+        m_drawable->set_render_mask(SceneContext::HIGHLIGHTMAP);
+        m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE); 
+        break;
+    }
+
     sync();
   }
 

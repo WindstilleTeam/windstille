@@ -42,6 +42,8 @@ public:
   {
   }
 
+  DrawingParameters& get_params() { return m_params; }
+
   void draw() 
   {
     OpenGLState state;
