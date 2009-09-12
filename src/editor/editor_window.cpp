@@ -921,11 +921,13 @@ EditorWindow::on_paste()
   {
     if (WindstilleWidget* wst = get_windstille_widget())
     {
+      wst->get_document().undo_group_begin();
       LayerHandle layer = wst->get_current_layer();
       for(Selection::reverse_iterator i = clipboard->rbegin(); i != clipboard->rend(); ++i)
       {
-        layer->add(*i);
+        wst->get_document().object_add(layer, *i);
       }
+      wst->get_document().undo_group_end();
 
       wst->get_document().set_selection(clipboard);
       clipboard = clipboard->clone();
