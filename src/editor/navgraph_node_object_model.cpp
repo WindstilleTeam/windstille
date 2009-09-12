@@ -29,7 +29,7 @@ NavGraphNodeObjectModel::NavGraphNodeObjectModel(const FileReader& reader)
 {
 }
 
-NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos)//, SectorModel& sector)
+NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos)
   : ObjectModel("NavGraphNodeObjectModel", pos),
     m_drawable()
 {
@@ -86,7 +86,7 @@ NavGraphNodeObjectModel::get_bounding_box() const
 ObjectModelHandle 
 NavGraphNodeObjectModel::clone() const
 {
-  return ObjectModelHandle();
+  return ObjectModelHandle(new NavGraphNodeObjectModel(get_world_pos()));
 }
 
 void

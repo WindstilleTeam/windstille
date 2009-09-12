@@ -81,7 +81,9 @@ NavGraphEdgeObjectModel::get_bounding_box() const
 ObjectModelHandle
 NavGraphEdgeObjectModel::clone() const
 {
-  return ObjectModelHandle();
+  // FIXME: This is incorrect for copy paste, as there we need to
+  // connect to the cloned nodes, not the old ones
+  return ObjectModelHandle(new NavGraphEdgeObjectModel(m_lhs, m_rhs));
 }
 
 void

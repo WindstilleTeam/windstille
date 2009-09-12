@@ -138,6 +138,12 @@ private:
   void on_selection_change();
   void on_change();
 
+  void on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
+  void on_row_deleted(const Gtk::TreeModel::Path& path);
+  void on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
+  void on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
+  void on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order);
+
 private:
   Document(const Document&);
   Document& operator=(const Document&);

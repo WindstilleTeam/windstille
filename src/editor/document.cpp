@@ -44,6 +44,11 @@ Document::Document()
     m_control_points(),
     m_sig_on_change()    
 {
+  m_sector_model->get_layer_tree()->signal_row_changed().connect(sigc::mem_fun(*this, &Document::on_row_changed));
+  m_sector_model->get_layer_tree()->signal_row_deleted().connect(sigc::mem_fun(*this, &Document::on_row_deleted));
+  m_sector_model->get_layer_tree()->signal_row_has_child_toggled().connect(sigc::mem_fun(*this, &Document::on_row_has_child_toggled));
+  m_sector_model->get_layer_tree()->signal_row_inserted().connect(sigc::mem_fun(*this, &Document::on_row_inserted));
+  m_sector_model->get_layer_tree()->signal_rows_reordered().connect(sigc::mem_fun(*this, &Document::on_rows_reordered));
 }
 
 Document::Document(const std::string& filename)
@@ -55,6 +60,11 @@ Document::Document(const std::string& filename)
     m_control_points(),
     m_sig_on_change()
 {
+  m_sector_model->get_layer_tree()->signal_row_changed().connect(sigc::mem_fun(*this, &Document::on_row_changed));
+  m_sector_model->get_layer_tree()->signal_row_deleted().connect(sigc::mem_fun(*this, &Document::on_row_deleted));
+  m_sector_model->get_layer_tree()->signal_row_has_child_toggled().connect(sigc::mem_fun(*this, &Document::on_row_has_child_toggled));
+  m_sector_model->get_layer_tree()->signal_row_inserted().connect(sigc::mem_fun(*this, &Document::on_row_inserted));
+  m_sector_model->get_layer_tree()->signal_rows_reordered().connect(sigc::mem_fun(*this, &Document::on_rows_reordered));
 }
 
 Document::~Document()
@@ -533,6 +543,36 @@ Document::create_control_points()
 {
   m_control_points.clear();
   m_selection->add_control_points(m_control_points);
+}
+
+void
+Document::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+{
+  m_sig_on_change();
+}
+
+void
+Document::on_row_deleted(const Gtk::TreeModel::Path& path)
+{
+  m_sig_on_change();
+}
+
+void
+Document::on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+{
+  m_sig_on_change();
+}
+
+void
+Document::on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+{
+  m_sig_on_change();
+}
+
+void
+Document::on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order)
+{
+  m_sig_on_change();
 }
 
 /* EOF */

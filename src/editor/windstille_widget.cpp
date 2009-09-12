@@ -420,6 +420,11 @@ WindstilleWidget::key_press(GdkEventKey* ev)
       SurfaceManager::current()->save_all_as_png();
       break;
 
+    case GDK_F5: // force a rebuild of the scenegraph
+      m_rebuild_scene_graph = true;
+      queue_draw();
+      break;
+
     case GDK_Delete:
       m_document->selection_delete();
       break;

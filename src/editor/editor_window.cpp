@@ -16,9 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// /usr/include/gtkmm-2.4/gtkmm/recentmanager.h causes warning, so we have to disable -Weffc++
-#pragma GCC diagnostic ignored "-Weffc++"
-
 #include <fstream>
 #include <iostream>
 #include <gdkmm/pixbuf.h>
