@@ -134,15 +134,8 @@ WindstilleWidget::on_timeout()
 void
 WindstilleWidget::on_realize()
 {
+  std::cout << "WindstilleWidget::on_realize()" << std::endl;
   Gtk::DrawingArea::on_realize();
-
-  std::cout << "on_realize: " << get_width() << "x" << get_height() << std::endl;
-
-  state.set_size(get_width(), get_height());
-  Display::aspect_size.width  = get_width();
-  Display::aspect_size.height = get_height();
-
-  std::cout << Display::aspect_size << std::endl;
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
@@ -189,6 +182,9 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 {
   Display::aspect_size.width  = ev->width;
   Display::aspect_size.height = ev->height;
+
+  state.set_size(Display::aspect_size.width,
+                 Display::aspect_size.height);
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 

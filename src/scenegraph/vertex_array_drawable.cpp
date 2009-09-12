@@ -20,7 +20,7 @@
 #include "scenegraph/vertex_array_drawable.hpp"
 
 VertexArrayDrawable::VertexArrayDrawable(const Vector2f& pos_, float z_pos_, 
-                                                     const Matrix& modelview_)
+                                         const Matrix& modelview_)
   : Drawable(pos_, z_pos_, modelview_),
     mode(GL_QUADS),
     blend_sfactor(GL_SRC_ALPHA),
@@ -67,30 +67,30 @@ VertexArrayDrawable::draw(int start, int end)
   state.set_blend_func(blend_sfactor, blend_dfactor);
   
   if (texture)
-    {
-      state.bind_texture(texture);
-    }
+  {
+    state.bind_texture(texture);
+  }
 
   if (!colors.empty())
-    {
-      state.enable_client_state(GL_COLOR_ARRAY);
-      glColorPointer(4, GL_UNSIGNED_BYTE, 0, &*colors.begin());
-    }
+  {
+    state.enable_client_state(GL_COLOR_ARRAY);
+    glColorPointer(4, GL_UNSIGNED_BYTE, 0, &*colors.begin());
+  }
   else
-    {
-      state.disable_client_state(GL_COLOR_ARRAY);
-      state.color(Color(1.0f, 1.0f, 1.0f));
-    }
+  {
+    state.disable_client_state(GL_COLOR_ARRAY);
+    state.color(Color(1.0f, 1.0f, 1.0f));
+  }
 
   if (!texcoords.empty())
-    {
-      state.enable_client_state(GL_TEXTURE_COORD_ARRAY);
-      glTexCoordPointer(2, GL_FLOAT, 0, &*texcoords.begin());
-    }
+  {
+    state.enable_client_state(GL_TEXTURE_COORD_ARRAY);
+    glTexCoordPointer(2, GL_FLOAT, 0, &*texcoords.begin());
+  }
   else
-    {
-      state.disable_client_state(GL_TEXTURE_COORD_ARRAY);
-    }
+  {
+    state.disable_client_state(GL_TEXTURE_COORD_ARRAY);
+  }
 
   // FIXME: Might be worth to not use VertexArrays when we have a pretty small number of vertices
   state.disable_client_state(GL_NORMAL_ARRAY);
@@ -103,7 +103,18 @@ VertexArrayDrawable::draw(int start, int end)
   glPushMatrix();
   glMultMatrixf(modelview.matrix);
 
-  glDrawArrays(mode, start, end);
+  if (mode == GL_LINES ||
+      mode == GL_LINE_LOOP)
+  {
+    // FIXME: Hack: make this configurable
+    glLineWidth(2.0f);
+    glDrawArrays(mode, start, end);
+    glLineWidth(1.0f);
+  }
+  else
+  {
+    glDrawArrays(mode, start, end);
+  }
 
   glPopMatrix();
 }

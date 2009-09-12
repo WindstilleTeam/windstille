@@ -575,7 +575,7 @@ SectorModel::rebuild_scene_graph(SceneGraph& sg)
     }
   }
 
-  std::cout << "rebuild_scene_graph: " << nav_graph->get_nodes().size() << std::endl;
+  //std::cout << "rebuild_scene_graph: " << nav_graph->get_nodes().size() << std::endl;
   for(NavigationGraphModel::Nodes::const_iterator i = nav_graph->get_nodes().begin(); i != nav_graph->get_nodes().end(); ++i)
   {
     (*i)->add_to_scenegraph(sg);

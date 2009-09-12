@@ -30,8 +30,8 @@ private:
 
 public:
   SurfaceDrawable(Surface surface_, const SurfaceDrawingParameters& params_,
-                        float z_pos_,
-                        const Matrix& modelview_)
+                  float z_pos_,
+                  const Matrix& modelview_)
     : Drawable(pos, z_pos_, modelview_), 
       surface(surface_), 
       params(params_)
