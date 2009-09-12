@@ -33,24 +33,7 @@ NavigationGraphModel::NavigationGraphModel(SectorModel& sector)
 
 NavigationGraphModel::~NavigationGraphModel()
 {
-}
-  
-boost::shared_ptr<NavGraphNodeObjectModel>
-NavigationGraphModel::create_node(const Vector2f& pos)
-{
-  boost::shared_ptr<NavGraphNodeObjectModel> node(new NavGraphNodeObjectModel(pos));
-  m_nodes.push_back(node);
-  return node;
-}
-
-boost::shared_ptr<NavGraphEdgeObjectModel>
-NavigationGraphModel::create_edge(boost::shared_ptr<NavGraphNodeObjectModel> lhs, 
-                                  boost::shared_ptr<NavGraphNodeObjectModel> rhs)
-{
-  boost::shared_ptr<NavGraphEdgeObjectModel> edge(new NavGraphEdgeObjectModel(lhs, rhs));
-  m_edges.push_back(edge);
-  return edge;
-}
+} 
 
 void
 NavigationGraphModel::add_node(boost::shared_ptr<NavGraphNodeObjectModel> node)
@@ -83,8 +66,10 @@ struct EdgeHasNode
 void
 NavigationGraphModel::remove_node(boost::shared_ptr<NavGraphNodeObjectModel> node)
 {
+  std::cout << "remove_node: " << m_nodes.size() << std::endl;
   m_nodes.erase(std::remove(m_nodes.begin(), m_nodes.end(), node), m_nodes.end());
   m_edges.erase(std::remove_if(m_edges.begin(), m_edges.end(), EdgeHasNode(node)), m_edges.end());
+  std::cout << "remove_node: after: " << m_nodes.size() << std::endl;
 }
 
 void
@@ -178,6 +163,24 @@ NavigationGraphModel::get_selection(const Rectf& rect, const SelectMask& select_
   }
 
   return selection;
+}
+
+bool
+NavigationGraphModel::has_edge(boost::shared_ptr<NavGraphNodeObjectModel> lhs, boost::shared_ptr<NavGraphNodeObjectModel> rhs) const
+{
+  // We enforce order so that we can easier compare
+  // NavGraphEdgeObjectModel's with one another
+  if (!(lhs < rhs))
+    std::swap(lhs, rhs);
+
+  for(Edges::const_reverse_iterator i = m_edges.rbegin(); i != m_edges.rend(); ++i)
+  {
+    if ((*i)->get_lhs() == lhs &&
+        (*i)->get_rhs() == rhs)
+      return true;
+  }
+
+  return false;
 }
 
 void

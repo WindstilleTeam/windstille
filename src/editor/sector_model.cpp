@@ -579,9 +579,10 @@ SectorModel::rebuild_scene_graph()
     }
   }
 
-  for(NavigationGraphModel::Nodes::const_iterator obj = nav_graph->get_nodes().begin(); obj != nav_graph->get_nodes().end(); ++obj)
+  std::cout << "rebuild_scene_graph: " << nav_graph->get_nodes().size() << std::endl;
+  for(NavigationGraphModel::Nodes::const_iterator i = nav_graph->get_nodes().begin(); i != nav_graph->get_nodes().end(); ++i)
   {
-    (*obj)->add_to_scenegraph(*scene_graph);
+    (*i)->add_to_scenegraph(*scene_graph);
   }
 
   queue_draw();

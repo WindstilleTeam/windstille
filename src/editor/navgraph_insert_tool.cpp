@@ -52,7 +52,14 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
   {
     case EDGE_MODE:
     {
-      if (node)
+      if (node == last_node)
+      {
+        std::cout << "NavgraphInsertTool: Trying to connect node to itself, ignoring" << std::endl;
+
+        last_node.reset();
+        connection_node.reset();
+      }
+      else if (node)
       { // connect last node with existing node
         wst.get_document().navgraph_edge_add(wst.get_current_layer(), last_node, node);
 

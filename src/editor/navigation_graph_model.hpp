@@ -48,10 +48,6 @@ public:
 
   const Nodes& get_nodes() const { return m_nodes; }
   
-  boost::shared_ptr<NavGraphNodeObjectModel> create_node(const Vector2f& pos);
-  boost::shared_ptr<NavGraphEdgeObjectModel> create_edge(boost::shared_ptr<NavGraphNodeObjectModel> lhs, 
-                                                         boost::shared_ptr<NavGraphNodeObjectModel> rhs);
-
   void add_node(boost::shared_ptr<NavGraphNodeObjectModel> node);
   void add_edge(boost::shared_ptr<NavGraphEdgeObjectModel> edge);
   
@@ -65,6 +61,8 @@ public:
 
   boost::shared_ptr<NavGraphNodeObjectModel> get_object_at(const Vector2f& pos, const SelectMask& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
+
+  bool has_edge(boost::shared_ptr<NavGraphNodeObjectModel> lhs, boost::shared_ptr<NavGraphNodeObjectModel> rhs) const;
 
   void write(FileWriter& writer) const;
   void load(const FileReader& reader, std::map<std::string, ObjectModelHandle>& id_table);

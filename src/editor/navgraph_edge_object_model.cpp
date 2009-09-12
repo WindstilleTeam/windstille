@@ -30,7 +30,15 @@ NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeO
     m_rhs(rhs),
     m_drawable()
 {
-  //m_edge = sector.get_nav_graph().add_edge(m_lhs->get_node(), m_rhs->get_node());
+  if (m_lhs == m_rhs)
+  {
+    throw std::runtime_error("NavGraphEdgeObjectModel: lhs and rhs must not be the same");
+  }
+
+  // We enforce order so that we can easier compare
+  // NavGraphEdgeObjectModel's with one another
+  if (!(m_lhs < m_rhs))
+    std::swap(m_lhs, m_rhs);
 }
 
 NavGraphEdgeObjectModel::~NavGraphEdgeObjectModel()

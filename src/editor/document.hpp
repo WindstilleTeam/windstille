@@ -135,6 +135,7 @@ public:
 
 private:
   void on_selection_change();
+  void on_change();
 
 private:
   Document(const Document&);

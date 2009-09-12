@@ -36,6 +36,7 @@ public:
   {}
 
   void redo() {
+    // FIXME: We should recycle the actual layer object instead of creating a new one
     sector.add_layer("New Layer", path);
   }
 

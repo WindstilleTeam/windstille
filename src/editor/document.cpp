@@ -60,15 +60,27 @@ Document::~Document()
 }
 
 void
+Document::on_change()
+{
+  EditorWindow::current()->update_undo_state();
+  m_sector_model->rebuild_scene_graph();
+  m_sig_on_change();
+}
+
+void
 Document::undo()
 {
+  std::cout << "UNDO" << std::endl;
   m_undo_manager->undo();
+  std::cout << "on_change" << std::endl;
+  on_change();
 }
 
 void
 Document::redo()
 {
   m_undo_manager->redo();
+  on_change();
 }
 
 void
@@ -82,6 +94,8 @@ void
 Document::undo_group_end()
 {
   assert(m_group_command);
+
+  // reseting m_group_command is needed for execute to evaluate the command
   CommandHandle tmp = m_group_command;
   m_group_command.reset();
   execute(tmp);
@@ -104,14 +118,13 @@ Document::execute(CommandHandle cmd)
 {
   if (m_group_command)
   {
+    std::cout << "Group Command" << std::endl;
     m_group_command->add(cmd);
   }
   else
   {
     m_undo_manager->execute(cmd);
-    EditorWindow::current()->update_undo_state();
-    m_sector_model->rebuild_scene_graph();
-    m_sig_on_change();
+    on_change();  
   }
 }
 
@@ -159,8 +172,15 @@ Document::navgraph_edge_add(LayerHandle layer,
                             boost::shared_ptr<NavGraphNodeObjectModel> lhs,
                             boost::shared_ptr<NavGraphNodeObjectModel> rhs)
 {
-  boost::shared_ptr<NavGraphEdgeObjectModel> edge(new NavGraphEdgeObjectModel(lhs, rhs));
-  execute(CommandHandle(new NavGraphEdgeAddCommand(*m_sector_model, layer, edge)));
+  if (m_sector_model->get_nav_graph().has_edge(lhs, rhs))
+  {
+    std::cout << "Document::navgraph_edge_add: edge already exists, ignoring" << std::endl;
+  }
+  else
+  {
+    boost::shared_ptr<NavGraphEdgeObjectModel> edge(new NavGraphEdgeObjectModel(lhs, rhs));
+    execute(CommandHandle(new NavGraphEdgeAddCommand(*m_sector_model, layer, edge)));
+  }
 }
 
 void
