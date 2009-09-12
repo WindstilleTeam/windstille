@@ -29,7 +29,7 @@ private:
   boost::shared_ptr<GradientDrawable> drawable;
 
 public:
-  BackgroundGradient(FileReader& props);
+  BackgroundGradient(const FileReader& props);
   ~BackgroundGradient();
     
 private:

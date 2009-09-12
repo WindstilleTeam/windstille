@@ -28,7 +28,7 @@
 #include "screen/view.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
 
-TileMap::TileMap(FileReader& props)
+TileMap::TileMap(const FileReader& props)
   : field(),
     z_pos(),
     total_time()

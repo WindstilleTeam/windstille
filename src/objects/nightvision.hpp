@@ -31,7 +31,7 @@ private:
   Texture noise;
 
 public:
-  Nightvision(FileReader& props);
+  Nightvision(const FileReader& props);
   ~Nightvision();
 
   void draw(SceneContext& sc);

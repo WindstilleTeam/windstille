@@ -22,7 +22,7 @@
 
 #include "collision/collision_engine.hpp"
 
-Box::Box(FileReader& props)
+Box::Box(const FileReader& props)
   : sprite(),
     colobj(0),
     gravity()

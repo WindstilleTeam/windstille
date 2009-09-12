@@ -33,7 +33,7 @@ private:
   float gravity;
 
 public:
-  Box(FileReader& props);
+  Box(const FileReader& props);
   virtual ~Box();
 
   void collision(const CollisionData& data); 

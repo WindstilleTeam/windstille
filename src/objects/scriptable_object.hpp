@@ -58,7 +58,7 @@ protected:
   void flash();
 
 public:
-  ScriptableObject(FileReader& reader);
+  ScriptableObject(const FileReader& reader);
   virtual ~ScriptableObject();
 
   void draw (SceneContext& sc);

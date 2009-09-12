@@ -37,7 +37,7 @@ private:
   float total_time;
 
 public:
-  TileMap(FileReader& props);
+  TileMap(const FileReader& props);
   virtual ~TileMap();
 
   void update (float delta);

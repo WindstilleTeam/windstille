@@ -27,6 +27,7 @@ Layer::Layer(const FileReader& reader)
   : objects(),
     new_objects()
 {
+#if 0
   FileReader objects_reader;
   if(reader.get("objects", objects_reader) == false)
   {
@@ -40,6 +41,7 @@ Layer::Layer(const FileReader& reader)
       Sector::current()->add_object(*i);
     }
   }
+#endif
 }
 
 Layer::~Layer()

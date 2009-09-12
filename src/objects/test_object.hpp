@@ -28,7 +28,7 @@
 class TestObject : public GameObject
 {
 public:
-  TestObject(FileReader& reader);
+  TestObject(const FileReader& reader);
   virtual ~TestObject();
 
   void draw(SceneContext& context);

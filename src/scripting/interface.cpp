@@ -368,8 +368,9 @@ SQInteger spawn_object(HSQUIRRELVM v)
 
     try 
     {
-      SExprFileReader reader(new lisp::Lisp(entries), true);
-      Sector::current()->add_object(reader);
+      assert(!"spawn_object is broken");
+      //SExprFileReader reader(new lisp::Lisp(entries), true);
+      //Sector::current()->add_object(reader);
     }
     catch (std::exception& e) 
     {

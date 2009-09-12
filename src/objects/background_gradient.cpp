@@ -23,7 +23,7 @@
 #include "scenegraph/vertex_array_drawable.hpp"
 #include "scenegraph/gradient_drawable.hpp"
 
-BackgroundGradient::BackgroundGradient(FileReader& props)
+BackgroundGradient::BackgroundGradient(const FileReader& props)
   : drawable()
 {
   std::vector<float> colors;

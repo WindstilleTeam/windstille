@@ -22,7 +22,7 @@
 #include "display/shader_object.hpp"
 #include "scenegraph/shockwave_drawable.hpp"
 
-Shockwave::Shockwave(FileReader& props)
+Shockwave::Shockwave(const FileReader& props)
   : pos(),
     noise(Pathname("images/noise3.png")),
     shader_program(),

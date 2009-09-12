@@ -34,7 +34,7 @@ private:
   float jump_time;
 
 public:
-  VRDummy(FileReader& props);
+  VRDummy(const FileReader& props);
   ~VRDummy();
 
   void draw(SceneContext& gc);

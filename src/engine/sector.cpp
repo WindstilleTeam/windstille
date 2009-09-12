@@ -22,6 +22,7 @@
 
 #include "collision/collision_engine.hpp"
 #include "engine/squirrel_thread.hpp"
+#include "engine/sector_builder.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "scenegraph/navigation_graph_drawable.hpp"
 #include "scenegraph/scene_graph.hpp"
@@ -63,16 +64,12 @@ Sector::Sector(const Pathname& arg_filename)
     ambient_light(),
     interactive_tilemap(0),
     interactivebackground_tilemap(0),
-    player(0),
-    id_table(),
-    parent_table()
+    player(0)
 {
   if (debug) std::cout << "Creating new Sector" << std::endl;
   
-  interactive_tilemap = 0;
-  interactivebackground_tilemap = 0;
+  SectorBuilder(arg_filename, *this);
 
-  parse_file(filename);
   if (interactive_tilemap)
   {
     // add interactive to collision engine
@@ -94,187 +91,6 @@ Sector::Sector(const Pathname& arg_filename)
 
 Sector::~Sector()
 {
-}
-
-void
-Sector::parse_file(const Pathname& filename_)
-{
-  if (debug) std::cout << "Sector:parse_file '" << filename_ << "'" << std::endl;
-  
-  FileReader reader = FileReader::parse(filename_);
-  if(reader.get_name() != "windstille-sector") 
-  {
-    std::ostringstream msg;
-    msg << "'" << filename_ << "' is not a windstille-sector file";
-    throw std::runtime_error(msg.str());
-  }
-  else
-  {
-    int version = 1;
-    if (!reader.get("version", version))
-      std::cerr << "Warning no version specified in levelformat.\n";
-
-    if (version > 3)
-      std::cerr << "Warning: format version is newer than game.\n";
-
-    reader.get("name",          name);
-    reader.get("music",         music);
-    reader.get("init-script",   init_script);
-    reader.get("ambient-color", ambient_light);
-  
-    FileReader objects_reader;
-    if (!reader.get("objects", objects_reader))
-    {
-      throw std::runtime_error("No objects specified");
-    }
-
-    std::vector<FileReader> objects_readers = objects_reader.get_sections();
-    for(std::vector<FileReader>::iterator i = objects_readers.begin(); i != objects_readers.end(); ++i)
-    {
-      add_object(*i);
-    }
-
-    // Set the parents properly
-    for(std::map<GameObject*, std::string>::iterator i = parent_table.begin(); i != parent_table.end(); ++i)
-    {
-      std::map<std::string, GameObject*>::iterator j = id_table.find(i->second);
-      if (j == id_table.end())
-      {
-        std::cout << "Error: Couldn't resolve 'id': " << i->second << std::endl;
-      }
-      else
-      {
-        i->first->set_parent(j->second);
-      }
-    }
-
-    FileReader navgraph_reader;
-    if (reader.get("navigation", navgraph_reader))
-    {
-      navigation_graph->load(navgraph_reader);
-    }
-
-    if (debug) std::cout << "Finished parsing" << std::endl;
-  }
-}
-
-void
-Sector::add_object(FileReader& reader)
-{
-  GameObject* obj = 0;
-  if(reader.get_name() == "tilemap") 
-  {
-    std::auto_ptr<TileMap> tilemap(new TileMap(reader));
-
-    if (tilemap->get_name() == "interactive")
-      interactive_tilemap = tilemap.get();
-    else if (tilemap->get_name() == "interactivebackground")
-      interactivebackground_tilemap = tilemap.get();
-
-    obj = tilemap.release();
-  }
-  else if(reader.get_name() == "background")
-  {
-    // TODO
-  }
-  else if (reader.get_name() == "background-gradient")
-  {
-    obj = new BackgroundGradient(reader);
-  }
-  else if(reader.get_name() == "trigger")
-  {
-    obj = new Trigger(reader);
-  }
-  else if(reader.get_name() == "box")
-  {
-    obj = new Box(reader);
-  }
-  else if(reader.get_name() == "shockwave")
-  {
-    obj = new Shockwave(reader);
-  }
-  else if(reader.get_name() == "elevator")
-  {
-    obj = new Elevator(reader);
-  }
-  else if(reader.get_name() == "character")
-  {    
-    obj = new Character(reader);
-  }
-  else if(reader.get_name() == "spider-mine")
-  {
-    obj = new SpiderMine(reader);
-  }
-  else if(reader.get_name() == "hedgehog")
-  {
-    obj = new Hedgehog(reader);
-  }
-  else if(reader.get_name() == "test-object")
-  {
-    obj = new TestObject(reader);
-  }
-  else if (reader.get_name() == "nightvision")
-  {
-    obj = new Nightvision(reader);
-  }
-  else if (reader.get_name() == "particle-system")
-  {
-    // FIXME: disabled due to work on the editor: obj = new ParticleSystem(reader);
-  }
-  else if(reader.get_name() == "scriptable-object")
-  {    
-    obj = new ScriptableObject(reader);
-  }
-  else if(reader.get_name() == "decal")
-  {    
-    obj = new Decal(reader);
-  }
-  else if(reader.get_name() == "layer")
-  {    
-    obj = new Layer(reader);
-  }
-  else if (reader.get_name() == "vrdummy")
-  {
-    obj = new VRDummy(reader);
-  }
-  else if (reader.get_name() == "swarm")
-  {
-    obj = new Swarm(reader);
-  }
-  else if (reader.get_name() == "laserpointer")
-  {
-    obj = new LaserPointer();
-  }
-  else if (reader.get_name() == "liquid")
-  {
-    obj = new Liquid(reader);
-  }
-  else if (reader.get_name() == "particle-systems")
-  {
-    obj = new ParticleSystems(reader);
-  }
-  else 
-  {
-    std::cout << "Skipping unknown Object: " << reader.get_name() << "\n";
-  }
-
-  if (obj)
-  {
-    std::string id_str;
-    if (reader.read("id", id_str))
-    {
-      id_table[id_str] = obj;
-    }
-
-    std::string parent_str;
-    if (reader.read("parent", parent_str))
-    {
-      if (!parent_str.empty())
-        parent_table[obj] = parent_str;
-    }
-
-    add(obj);
-  }
 }
 
 void

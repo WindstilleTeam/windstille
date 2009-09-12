@@ -19,7 +19,7 @@
 #include "objects/player.hpp"
 #include "objects/hedgehog.hpp"
 
-Hedgehog::Hedgehog(FileReader& props)
+Hedgehog::Hedgehog(const FileReader& props)
   : sprite(Pathname("images/hedgehog.sprite")),
     die_sprite(Pathname("images/hedgehog_die1.sprite")),
     light(Pathname("images/hedgehog_light.sprite")),

@@ -19,7 +19,7 @@
 #include "math/random.hpp"
 #include "objects/vrdummy.hpp"
 
-VRDummy::VRDummy(FileReader& props)
+VRDummy::VRDummy(const FileReader& props)
   : sprite(),
     highlight(),
     rotation(),

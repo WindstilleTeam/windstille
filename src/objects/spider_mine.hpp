@@ -38,7 +38,7 @@ protected:
   void search_for_player(float delta);
 
 public:
-  SpiderMine(FileReader& props);
+  SpiderMine(const FileReader& props);
   ~SpiderMine();
   
   void update(float delta);

@@ -28,6 +28,28 @@
 #include "engine/game_object.hpp"
 #include "engine/sector.hpp"
 #include "util/file_reader.hpp"
+#include "tile/tile_map.hpp"
+
+#include "objects/background_gradient.hpp"
+#include "objects/box.hpp"
+#include "objects/character.hpp"
+#include "objects/decal.hpp"
+#include "objects/doll.hpp"
+#include "objects/elevator.hpp"
+#include "objects/hedgehog.hpp"
+#include "objects/laser_pointer.hpp"
+#include "objects/layer.hpp"
+#include "objects/liquid.hpp"
+#include "objects/nightvision.hpp"
+#include "objects/particle_systems.hpp"
+#include "objects/player.hpp"
+#include "objects/scriptable_object.hpp"
+#include "objects/shockwave.hpp"
+#include "objects/spider_mine.hpp"
+#include "objects/swarm.hpp"
+#include "objects/test_object.hpp"
+#include "objects/trigger.hpp"
+#include "objects/vrdummy.hpp"
 
 SectorBuilder::SectorBuilder(const Pathname& filename, Sector& sector)
   : m_filename(filename),
@@ -79,9 +101,10 @@ SectorBuilder::parse_body(const FileReader& reader)
 }
 
 void
-SectorBuilder::parse_objects(const FileReader& reader)
+SectorBuilder::parse_layer(const FileReader& reader)
 {
   FileReader objects_reader;
+
   if (!reader.get("objects", objects_reader))
   {
     throw std::runtime_error("No objects specified");
@@ -91,7 +114,28 @@ SectorBuilder::parse_objects(const FileReader& reader)
     std::vector<FileReader> objects_readers = objects_reader.get_sections();
     for(std::vector<FileReader>::iterator i = objects_readers.begin(); i != objects_readers.end(); ++i)
     {
-      m_sector.add_object(*i);
+      parse_object(*i);
+    }
+  }
+}
+
+void
+SectorBuilder::parse_objects(const FileReader& reader)
+{
+  FileReader objects_reader;
+
+  // FIXME: try both for backward compatibility
+  if (!reader.get("objects", objects_reader) &&
+      !reader.get("layers", objects_reader))
+  {
+    throw std::runtime_error("No objects specified");
+  }
+  else
+  {
+    std::vector<FileReader> objects_readers = objects_reader.get_sections();
+    for(std::vector<FileReader>::iterator i = objects_readers.begin(); i != objects_readers.end(); ++i)
+    {
+      parse_object(*i);
     }
 
     // Set the parents properly
@@ -111,12 +155,131 @@ SectorBuilder::parse_objects(const FileReader& reader)
 }
 
 void
+SectorBuilder::parse_object(const FileReader& reader)
+{
+  GameObject* obj = 0;
+  if(reader.get_name() == "tilemap") 
+  {
+    std::auto_ptr<TileMap> tilemap(new TileMap(reader));
+
+    if (tilemap->get_name() == "interactive")
+      m_sector.interactive_tilemap = tilemap.get();
+    else if (tilemap->get_name() == "interactivebackground")
+      m_sector.interactivebackground_tilemap = tilemap.get();
+
+    obj = tilemap.release();
+  }
+  else if(reader.get_name() == "background")
+  {
+    // TODO
+  }
+  else if (reader.get_name() == "background-gradient")
+  {
+    obj = new BackgroundGradient(reader);
+  }
+  else if(reader.get_name() == "trigger")
+  {
+    obj = new Trigger(reader);
+  }
+  else if(reader.get_name() == "box")
+  {
+    obj = new Box(reader);
+  }
+  else if(reader.get_name() == "shockwave")
+  {
+    obj = new Shockwave(reader);
+  }
+  else if(reader.get_name() == "elevator")
+  {
+    obj = new Elevator(reader);
+  }
+  else if(reader.get_name() == "character")
+  {    
+    obj = new Character(reader);
+  }
+  else if(reader.get_name() == "spider-mine")
+  {
+    obj = new SpiderMine(reader);
+  }
+  else if(reader.get_name() == "hedgehog")
+  {
+    obj = new Hedgehog(reader);
+  }
+  else if(reader.get_name() == "test-object")
+  {
+    obj = new TestObject(reader);
+  }
+  else if (reader.get_name() == "nightvision")
+  {
+    obj = new Nightvision(reader);
+  }
+  else if (reader.get_name() == "particle-system")
+  {
+    // FIXME: disabled due to work on the editor: obj = new ParticleSystem(reader);
+  }
+  else if(reader.get_name() == "scriptable-object")
+  {    
+    obj = new ScriptableObject(reader);
+  }
+  else if(reader.get_name() == "decal")
+  {    
+    obj = new Decal(reader);
+  }
+  else if(reader.get_name() == "layer")
+  {    
+    parse_layer(reader);
+  }
+  else if (reader.get_name() == "vrdummy")
+  {
+    obj = new VRDummy(reader);
+  }
+  else if (reader.get_name() == "swarm")
+  {
+    obj = new Swarm(reader);
+  }
+  else if (reader.get_name() == "laserpointer")
+  {
+    obj = new LaserPointer();
+  }
+  else if (reader.get_name() == "liquid")
+  {
+    obj = new Liquid(reader);
+  }
+  else if (reader.get_name() == "particle-systems")
+  {
+    obj = new ParticleSystems(reader);
+  }
+  else 
+  {
+    std::cout << "Skipping unknown Object: " << reader.get_name() << "\n";
+  }
+
+  if (obj)
+  {
+    std::string id_str;
+    if (reader.read("id", id_str))
+    {
+      id_table[id_str] = obj;
+    }
+
+    std::string parent_str;
+    if (reader.read("parent", parent_str))
+    {
+      if (!parent_str.empty())
+        parent_table[obj] = parent_str;
+    }
+
+    m_sector.add(obj);
+  }
+}
+
+void
 SectorBuilder::parse_navgraph(const FileReader& reader)
 {
   FileReader navgraph_reader;
   if (!reader.get("navigation", navgraph_reader))
   {
-    throw std::runtime_error("SectorBuilder: 'navigation' section missing");
+    //throw std::runtime_error("SectorBuilder: 'navigation' section missing");
   }
   else
   {

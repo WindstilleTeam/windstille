@@ -63,15 +63,14 @@ private:
 
   Color ambient_light;
 
+public:
   /** The TileMap with which the player interacts */
   TileMap* interactive_tilemap;
   TileMap* interactivebackground_tilemap;
 
+private:
   Player* player;
   Doll*   doll;
-
-  std::map<std::string, GameObject*> id_table;
-  std::map<GameObject*, std::string> parent_table;
 
 private:
   void parse_file(const Pathname& filename);
@@ -105,7 +104,6 @@ public:
   Color get_ambient_light() const;
 
   void add(GameObject*);
-  void add_object(FileReader& reader);
 
   CollisionEngine* get_collision_engine() const { return collision_engine.get(); }
   SceneGraph& get_scene_graph() const { return *scene_graph; }

@@ -29,7 +29,7 @@ private:
   float z_pos;
     
 public:
-  Character(FileReader& props);
+  Character(const FileReader& props);
   ~Character();
   
   void update(float delta);

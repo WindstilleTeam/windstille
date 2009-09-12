@@ -20,7 +20,7 @@
 
 #include "objects/test_object.hpp"
 
-TestObject::TestObject(FileReader& props)
+TestObject::TestObject(const FileReader& props)
   : sprite(),
     attached_sprites(),
     pos()

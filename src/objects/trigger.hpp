@@ -36,7 +36,7 @@ private:
   bool one_time_trigger;
   
 public:
-  Trigger(FileReader& props);
+  Trigger(const FileReader& props);
   virtual ~Trigger();
 
   void draw (SceneContext& gc);

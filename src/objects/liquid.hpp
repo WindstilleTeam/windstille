@@ -41,7 +41,7 @@ private:
   boost::shared_ptr<VertexArrayDrawable> m_water_body;
 
 public:
-  Liquid(FileReader& props);
+  Liquid(const FileReader& props);
   ~Liquid();
 
   void update(float delta);

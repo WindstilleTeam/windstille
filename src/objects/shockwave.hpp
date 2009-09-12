@@ -32,7 +32,7 @@ private:
   float radius;
 
 public:
-  Shockwave(FileReader& props);
+  Shockwave(const FileReader& props);
   ~Shockwave();
 
   void draw (SceneContext& context);

@@ -40,7 +40,9 @@ public:
   
 private:
   void parse_body(const FileReader& reader);
+  void parse_layer(const FileReader& reader);
   void parse_objects(const FileReader& reader);
+  void parse_object(const FileReader& reader);
   void parse_navgraph(const FileReader& reader);
 
 private:
