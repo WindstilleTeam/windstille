@@ -18,17 +18,16 @@
 
 #include <iostream>
 
-#include "util/file_reader.hpp"
-#include "display/surface.hpp"
 #include "display/drawing_parameters.hpp"
-#include "display/surface_drawing_parameters.hpp"
-#include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
-#include "editor/decal_scale_control_point.hpp"
+#include "display/surface.hpp"
+#include "display/surface_drawing_parameters.hpp"
 #include "editor/decal_rotate_control_point.hpp"
-#include "scenegraph/surface_quad_drawable.hpp"
-#include "scenegraph/scene_graph.hpp"
+#include "editor/decal_scale_control_point.hpp"
 #include "editor/sector_model.hpp"
+#include "scenegraph/scene_graph.hpp"
+#include "scenegraph/surface_drawable.hpp"
+#include "util/file_reader.hpp"
 
 #include "editor/decal_object_model.hpp"
 
@@ -272,10 +271,14 @@ DecalObjectModel::add_to_scenegraph(SceneGraph& sg)
   if (!m_drawable)
   {
     // FIXME: Could recycle the drawable, instead of allocating a new one each time
-    m_drawable.reset(new SurfaceQuadDrawable(surface, Vector2f(), Quad(get_bounding_box()),
-                                             DrawingParameters(), 0.0f,
-                                             Matrix::identity()));
-    
+    m_drawable.reset(new SurfaceDrawable(surface, 
+                                         SurfaceDrawingParameters()
+                                         .set_hflip(hflip)
+                                         .set_vflip(vflip)
+                                         .set_scale(scale)
+                                         .set_angle(angle),
+                                         0.0f, Matrix::identity()));
+
     switch(type)
     {
       case COLORMAP:     
@@ -304,9 +307,18 @@ DecalObjectModel::sync()
 {
   if (m_drawable)
   {
-    Quad quad(get_bounding_box());
-    quad.rotate(angle);
-    m_drawable->set_quad(quad);
+    Vector2f center_offset(-surface.get_width() /2,
+                           -surface.get_height()/2);
+
+    center_offset.x *= scale.x;
+    center_offset.y *= scale.y;
+
+    m_drawable->get_params()
+      .set_pos(get_world_pos() + center_offset)
+      .set_hflip(hflip)
+      .set_vflip(vflip)
+      .set_scale(scale)
+      .set_angle(angle);
   }
 }
 

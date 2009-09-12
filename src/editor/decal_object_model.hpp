@@ -25,7 +25,7 @@
 #include "display/software_surface.hpp"
 #include "editor/object_model.hpp"
 
-class SurfaceQuadDrawable;
+class SurfaceDrawable;
 
 class DecalObjectModel : public ObjectModel
 {
@@ -48,7 +48,7 @@ private:
   bool hflip;
   bool vflip;
 
-  boost::shared_ptr<SurfaceQuadDrawable> m_drawable;
+  boost::shared_ptr<SurfaceDrawable> m_drawable;
 
 public:
   DecalObjectModel(const FileReader& reader);
