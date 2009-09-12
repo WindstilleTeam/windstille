@@ -463,7 +463,7 @@ EditorWindow::load_file(const std::string& filename)
     wst->load_file(filename);
     wst->set_filename(filename);
     notebook.set_tab_label_text(*notebook.get_nth_page(notebook.get_current_page()), Glib::path_get_basename(filename));
-
+    layer_manager.set_model(&wst->get_document().get_sector_model());
     print("Loaded: " + filename);
   }
   catch(std::exception& err)
@@ -790,7 +790,7 @@ EditorWindow::get_windstille_widget()
 }
 
 void
-EditorWindow::on_switch_page(GtkNotebookPage* /*page*/, guint /*page_num*/)
+EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
 {
   //std::cout << "on_switch_page(" << page << ", " << page_num << ")" << std::endl;
 

@@ -118,7 +118,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
   targets.push_back(Gtk::TargetEntry("application/x-windstille-decal"));
   drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
-  m_document->signal_on_change().connect(sigc::mem_fun(this, &WindstilleWidget::on_document_change));
+  m_document->signal_on_change().connect(sigc::mem_fun(*this, &WindstilleWidget::on_document_change));
 }
 
 WindstilleWidget::~WindstilleWidget()
@@ -254,7 +254,7 @@ WindstilleWidget::update(float delta)
 void
 WindstilleWidget::draw()
 {
-  if (m_rebuild_scene_graph)
+  if (true || m_rebuild_scene_graph) // FIXME: always rebuild for now, optimize later
   {
     m_rebuild_scene_graph = false;
     m_document->get_sector_model().rebuild_scene_graph(*m_scene_graph);
@@ -592,6 +592,7 @@ WindstilleWidget::load_file(const std::string& filename_)
 {
   filename = filename_;
   m_document.reset(new Document(filename));
+  m_document->signal_on_change().connect(sigc::mem_fun(*this, &WindstilleWidget::on_document_change));
   on_document_change();
 }
 

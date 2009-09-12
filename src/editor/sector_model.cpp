@@ -585,7 +585,7 @@ SectorModel::rebuild_scene_graph(SceneGraph& sg)
 void
 SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
-  //std::cout << "LayerManager:on_row_changed" << std::endl;
+  std::cout << "LayerManager:on_row_changed" << std::endl;
 
   if (iter)
   {
@@ -605,19 +605,19 @@ SectorModel::on_row_deleted(const Gtk::TreeModel::Path& path)
 }
 
 void
-SectorModel::on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& /*iter*/)
+SectorModel::on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
   //std::cout << "LayerManager:on_row_has_child_toggled" << std::endl;
 }
 
 void
-SectorModel::on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& /*iter*/)
+SectorModel::on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
   std::cout << "LayerManager:on_row_inserted" << std::endl;
 }
 
 void
-SectorModel::on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& /*iter*/, int* /*new_order*/)
+SectorModel::on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order)
 {
   std::cout << "LayerManager:on_row_reordered" << std::endl;
 }
