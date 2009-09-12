@@ -22,22 +22,23 @@
 #include <gtkmm.h>
 #include <boost/bind.hpp>
 
-#include "sprite2d/sprite.hpp"
-#include "display/display.hpp"
 #include "display/compositor.hpp"
-#include "display/texture_manager.hpp"
-#include "display/surface_manager.hpp"
+#include "display/display.hpp"
 #include "display/opengl_state.hpp"
 #include "display/surface.hpp"
-#include "util/pathname.hpp"
+#include "display/surface_manager.hpp"
+#include "display/texture_manager.hpp"
+#include "editor/document.hpp"
 #include "editor/editor_window.hpp"
+#include "editor/functor_command.hpp"
+#include "editor/group_command.hpp"
 #include "editor/scroll_tool.hpp"
 #include "editor/sector_model.hpp"
-#include "editor/group_command.hpp"
-#include "editor/functor_command.hpp"
-#include "editor/document.hpp"
 #include "editor/sprite_object_model.hpp"
 #include "editor/windstille_widget.hpp"
+#include "scenegraph/scene_graph.hpp"
+#include "sprite2d/sprite.hpp"
+#include "util/pathname.hpp"
 
 bool lib_init = false;
 
@@ -46,6 +47,8 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list)
   : editor(editor_),
     m_document(new Document),
+    m_scene_graph(new SceneGraph()),
+    m_rebuild_scene_graph(true),
     filename(),
     state(),
     compositor(),
@@ -251,6 +254,12 @@ WindstilleWidget::update(float delta)
 void
 WindstilleWidget::draw()
 {
+  if (m_rebuild_scene_graph)
+  {
+    m_rebuild_scene_graph = false;
+    m_document->get_sector_model().rebuild_scene_graph(*m_scene_graph);
+  }
+
   if (sc.get())
   {
     state.push(*sc);
@@ -293,7 +302,7 @@ WindstilleWidget::draw()
       EditorWindow::current()->get_current_tool()->draw(*sc);
     }
 
-    compositor->render(*sc, &m_document->get_sector_model().get_scene_graph(), state);
+    compositor->render(*sc, m_scene_graph.get(), state);
 
     state.pop(*sc);
 
@@ -555,8 +564,9 @@ WindstilleWidget::get_current_layer_path()
 void
 WindstilleWidget::on_document_change()
 {
+  std::cout << "WindstilleWidget::on_document_change" << std::endl;
+  m_rebuild_scene_graph = true;
   EditorWindow::current()->update_undo_state();
-  m_document->get_sector_model().rebuild_scene_graph();
   queue_draw();
 }
 

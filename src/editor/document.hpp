@@ -44,6 +44,7 @@ private:
   boost::scoped_ptr<SectorModel> m_sector_model;
 
   boost::shared_ptr<GroupCommand> m_group_command;
+  int m_group_command_count;
   SelectionHandle m_selection;
 
   std::vector<ControlPointHandle> m_control_points;

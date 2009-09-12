@@ -57,7 +57,9 @@ class WindstilleWidget
 private:
   EditorWindow& editor;
 
-  boost::scoped_ptr<Document> m_document;
+  boost::scoped_ptr<Document>   m_document;
+  boost::scoped_ptr<SceneGraph> m_scene_graph;
+  bool m_rebuild_scene_graph;
 
   std::string filename;
 

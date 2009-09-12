@@ -39,6 +39,7 @@ Document::Document()
   : m_undo_manager(new UndoManager()),
     m_sector_model(new SectorModel()),
     m_group_command(),
+    m_group_command_count(0),
     m_selection(Selection::create()),
     m_control_points(),
     m_sig_on_change()    
@@ -49,6 +50,7 @@ Document::Document(const std::string& filename)
   : m_undo_manager(new UndoManager()),
     m_sector_model(new SectorModel(filename)),
     m_group_command(),
+    m_group_command_count(0),
     m_selection(Selection::create()),
     m_control_points(),
     m_sig_on_change()
@@ -63,7 +65,6 @@ void
 Document::on_change()
 {
   EditorWindow::current()->update_undo_state();
-  m_sector_model->rebuild_scene_graph();
   m_sig_on_change();
 }
 
@@ -86,19 +87,29 @@ Document::redo()
 void
 Document::undo_group_begin()
 {
-  assert(!m_group_command);
-  m_group_command.reset(new GroupCommand());
+  if (m_group_command)
+  {
+    m_group_command_count += 1;
+  }
+  else
+  {
+    m_group_command.reset(new GroupCommand());
+    m_group_command_count = 1;
+  }
 }
 
 void
 Document::undo_group_end()
 {
-  assert(m_group_command);
+  m_group_command_count -= 1;
 
-  // reseting m_group_command is needed for execute to evaluate the command
-  CommandHandle tmp = m_group_command;
-  m_group_command.reset();
-  execute(tmp);
+  if (m_group_command_count == 0)
+  {
+    // reseting m_group_command is needed for execute to evaluate the command
+    CommandHandle tmp = m_group_command;
+    m_group_command.reset();
+    execute(tmp);
+  }
 }
 
 bool
@@ -470,12 +481,13 @@ Document::selection_reset_scale()
 void
 Document::selection_delete()
 {
-  boost::shared_ptr<GroupCommand> group_cmd(new GroupCommand());
+  undo_group_begin();
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
   {
-    group_cmd->add(CommandHandle(new ObjectRemoveCommand(*m_sector_model, *i)));
+    object_remove(*i);
   }
-  execute(group_cmd);
+  undo_group_end();
+
   m_selection->clear();
 }
 

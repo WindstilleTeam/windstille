@@ -41,7 +41,6 @@ LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
 SectorModel::SectorModel(const std::string& filename)
   : nav_graph(new NavigationGraphModel(*this)),
-    scene_graph(new SceneGraph()),
     layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
     ambient_color()
 {
@@ -51,7 +50,6 @@ SectorModel::SectorModel(const std::string& filename)
 
 SectorModel::SectorModel()
   : nav_graph(new NavigationGraphModel(*this)),
-    scene_graph(new SceneGraph()),
     layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
     ambient_color()
 {
@@ -154,7 +152,6 @@ SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& pa
   { 
     Gtk::ListStore::iterator it = layer_tree->get_iter(path);
     ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->add(object);
-    rebuild_scene_graph();
   }
 }
 
@@ -167,7 +164,6 @@ SectorModel::remove(const ObjectModelHandle& object)
   {
     (*i)->remove(object);
   }
-  rebuild_scene_graph();
 }
 
 struct GetLayersFunctor
@@ -559,10 +555,10 @@ SectorModel::set_all_locked(bool v)
 }
 
 void
-SectorModel::rebuild_scene_graph()
+SectorModel::rebuild_scene_graph(SceneGraph& sg)
 {
   // FIXME: should make a queue_rebuild_scene_graph() to limit the number of rebuilds per frame to 1
-  scene_graph->clear();
+  sg.clear();
   
   const Layers& layers = get_layers();
   for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
@@ -573,7 +569,7 @@ SectorModel::rebuild_scene_graph()
       {
         if ((*layer)->is_visible())
         {
-          (*obj)->add_to_scenegraph(*scene_graph);
+          (*obj)->add_to_scenegraph(sg);
         }
       }
     }
@@ -582,21 +578,10 @@ SectorModel::rebuild_scene_graph()
   std::cout << "rebuild_scene_graph: " << nav_graph->get_nodes().size() << std::endl;
   for(NavigationGraphModel::Nodes::const_iterator i = nav_graph->get_nodes().begin(); i != nav_graph->get_nodes().end(); ++i)
   {
-    (*i)->add_to_scenegraph(*scene_graph);
+    (*i)->add_to_scenegraph(sg);
   }
-
-  queue_draw();
 }
 
-void
-SectorModel::queue_draw()
-{
-  if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
-  {
-    wst->queue_draw();
-  }
-}
-
 void
 SectorModel::on_row_changed(const Gtk::TreeModel::Path& /*path*/, const Gtk::TreeModel::iterator& iter)
 {
@@ -611,14 +596,12 @@ SectorModel::on_row_changed(const Gtk::TreeModel::Path& /*path*/, const Gtk::Tre
       layer->sync(*iter);
     }
   }
-  rebuild_scene_graph();
 }
 
 void
 SectorModel::on_row_deleted(const Gtk::TreeModel::Path& /*path*/)
 {
   std::cout << "LayerManager:on_row_deleted" << std::endl;
-  rebuild_scene_graph();
 }
 
 void
@@ -631,14 +614,12 @@ void
 SectorModel::on_row_inserted(const Gtk::TreeModel::Path& /*path*/, const Gtk::TreeModel::iterator& /*iter*/)
 {
   std::cout << "LayerManager:on_row_inserted" << std::endl;
-  rebuild_scene_graph();
 }
 
 void
 SectorModel::on_rows_reordered(const Gtk::TreeModel::Path& /*path*/, const Gtk::TreeModel::iterator& /*iter*/, int* /*new_order*/)
 {
   std::cout << "LayerManager:on_row_reordered" << std::endl;
-  rebuild_scene_graph();
 }
 
 void

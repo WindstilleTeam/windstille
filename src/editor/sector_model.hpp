@@ -41,7 +41,6 @@ class SectorModel
 {
 private:
   boost::scoped_ptr<NavigationGraphModel> nav_graph;
-  boost::scoped_ptr<SceneGraph>      scene_graph;
   Glib::RefPtr<Gtk::ListStore>       layer_tree;
   Color ambient_color;
   
@@ -96,13 +95,10 @@ public:
   void write(FileWriter& writer) const;
 
   NavigationGraphModel& get_nav_graph() const { return *nav_graph; }
-  SceneGraph&      get_scene_graph() const { return *scene_graph; }
 
   void delete_navgraph_edges(NavGraphNodeObjectModel& node);
 
-  void queue_draw();
-
-  void rebuild_scene_graph();
+  void rebuild_scene_graph(SceneGraph& sg);
 
 private:
   void load(const std::string& filename);
