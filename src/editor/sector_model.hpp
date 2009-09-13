@@ -101,10 +101,6 @@ public:
   void rebuild_scene_graph(SceneGraph& sg);
 
 private:
-  void load(const std::string& filename);
-  void load_layer(const FileReader& filename, 
-                  std::map<std::string, ObjectModelHandle>& id_table,
-                  std::map<ObjectModelHandle, std::string>& parent_table); 
   void register_callbacks();
 
 private:

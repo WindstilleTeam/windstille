@@ -19,6 +19,10 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_LAYER_MANAGER_COLUMNS_HPP
 #define HEADER_WINDSTILLE_EDITOR_LAYER_MANAGER_COLUMNS_HPP
 
+#include <gtkmm/treemodelcolumn.h>
+
+#include "layer.hpp"
+
 class LayerManagerColumns : public Gtk::TreeModel::ColumnRecord
 {
 private:
