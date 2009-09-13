@@ -170,6 +170,10 @@ SectorBuilder::parse_object(const FileReader& reader)
 
     obj = tilemap.release();
   }
+  else if (reader.get_name() == "navgraph-edge-ref")
+  {
+    // FIXME: Implement me
+  }
   else if(reader.get_name() == "background")
   {
     // TODO
@@ -282,7 +286,8 @@ SectorBuilder::parse_navgraph(const FileReader& reader)
   FileReader navgraph_reader;
   if (!reader.get("navigation", navgraph_reader))
   {
-    throw std::runtime_error("SectorBuilder: 'navigation' section missing");
+    // throw std::runtime_error("SectorBuilder: 'navigation' section missing");
+    std::cout << "SectorBuilder: 'navigation' section missing" << std::endl;
   }
   else
   {

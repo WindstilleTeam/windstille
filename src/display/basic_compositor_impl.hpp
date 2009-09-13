@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_BASIC_COMPOSITOR_IMPL_HPP
-#define HEADER_BASIC_COMPOSITOR_IMPL_HPP
+#ifndef HEADER_WINDSTILLE_DISPLAY_BASIC_COMPOSITOR_IMPL_HPP
+#define HEADER_WINDSTILLE_DISPLAY_BASIC_COMPOSITOR_IMPL_HPP
 
 #include "display/compositor_impl.hpp"
 #include "display/surface.hpp"

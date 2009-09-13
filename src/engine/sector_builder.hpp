@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDITOR_SECTOR_BUILDER_HPP
-#define HEADER_WINDSTILLE_EDITOR_SECTOR_BUILDER_HPP
+#ifndef HEADER_WINDSTILLE_ENGINE_SECTOR_BUILDER_HPP
+#define HEADER_WINDSTILLE_ENGINE_SECTOR_BUILDER_HPP
 
 #include <map>
 #include <string>

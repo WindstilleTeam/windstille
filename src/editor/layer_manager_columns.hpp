@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EDTIOR_LAYER_MANAGER_COLUMNS_HPP
-#define HEADER_WINDSTILLE_EDTIOR_LAYER_MANAGER_COLUMNS_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_LAYER_MANAGER_COLUMNS_HPP
+#define HEADER_WINDSTILLE_EDITOR_LAYER_MANAGER_COLUMNS_HPP
 
 class LayerManagerColumns : public Gtk::TreeModel::ColumnRecord
 {

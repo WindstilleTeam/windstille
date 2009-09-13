@@ -29,7 +29,7 @@ DecalRotateControlPoint::DecalRotateControlPoint(DecalObjectModel* object_, floa
 }
 
 void
-DecalRotateControlPoint::on_move_start(GdkEventMotion* /*event*/) 
+DecalRotateControlPoint::on_move_start(GdkEventMotion* event) 
 {
 }
 
