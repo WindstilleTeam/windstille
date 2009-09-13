@@ -41,7 +41,7 @@ class SectorModel
 {
 private:
   boost::scoped_ptr<NavigationGraphModel> nav_graph;
-  Glib::RefPtr<Gtk::ListStore>       layer_tree;
+  Glib::RefPtr<Gtk::ListStore> layer_tree;
   Color ambient_color;
   
 public:

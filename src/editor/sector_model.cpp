@@ -20,6 +20,7 @@
 #include <limits>
 #include <assert.h>
 #include <iostream>
+#include <algorithm>
 #include <gdkmm/pixbuf.h>
 
 #include "display/scene_context.hpp"
@@ -166,27 +167,23 @@ SectorModel::remove(const ObjectModelHandle& object)
   }
 }
 
-struct GetLayersFunctor
-{
-  SectorModel::Layers& objects;
-
-  GetLayersFunctor(SectorModel::Layers& objects_) 
-    : objects(objects_)
-  {}
-
-  bool get_layers(const Gtk::TreeModel::iterator& it)
-  {
-    objects.push_back((*it)[LayerManagerColumns::instance().layer]);
-    return false;
-  }
-};
-
 SectorModel::Layers
 SectorModel::get_layers() const
 {
   Layers lst;
-  GetLayersFunctor func(lst);
-  layer_tree->foreach_iter(sigc::mem_fun(func, &GetLayersFunctor::get_layers));
+ 
+  // LayerTree holds the layers in reverse order, so we reverse them here
+  Gtk::TreeModel::Children childs = layer_tree->children(); 
+  for(Gtk::TreeModel::Children::const_iterator it = childs.begin();
+      it != childs.end(); ++it)
+  {
+    lst.push_back((*it)[LayerManagerColumns::instance().layer]);
+  }
+
+  // FIXME: for some reason reverse iterators don't work with
+  // Gtk::TreeModel::Children, so we do it manually
+  std::reverse(lst.begin(), lst.end());
+
   return lst;
 }
 
@@ -381,7 +378,15 @@ SectorModel::load_layer(const FileReader& reader,
         std::string id_str;
         if (j->get("edge", id_str))
         {
-          layer->add(id_table[id_str]);
+          std::map<std::string, ObjectModelHandle>::iterator it = id_table.find(id_str);
+          if (it == id_table.end())
+          {
+            std::cout << "SectorModel::load_layer: couldn't resource navgraph-edge-ref: " << id_str << std::endl;
+          }
+          else
+          {
+            layer->add(it->second);
+          }
         }
       }
       else
@@ -451,7 +456,8 @@ SectorModel::load(const std::string& filename)
       reader.get("layers", layers_section);
 
       const std::vector<FileReader>& sections = layers_section.get_sections();
-      for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
+      // Load layer in reversed order, as ListStore is in reverse
+      for(std::vector<FileReader>::const_reverse_iterator i = sections.rbegin(); i != sections.rend(); ++i)
       {
         if (i->get_name() == "layer")
         {
@@ -496,17 +502,16 @@ SectorModel::write(FileWriter& writer) const
   writer.end_section();
 
   writer.start_section("layers");
-  for(Gtk::ListStore::Children::iterator i = layer_tree->children().begin(); i != layer_tree->children().end(); ++i)
+  const Layers& layers = get_layers();
+  for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
   {
-    const Gtk::TreeRow& row = *i;
-
     writer.start_section("layer");
-    writer.write("name",    (Glib::ustring)(row[LayerManagerColumns::instance().name]));
-    writer.write("visible", (bool)row[LayerManagerColumns::instance().visible]);
-    writer.write("locked",  (bool)row[LayerManagerColumns::instance().locked]);
+    writer.write("name",    (*i)->get_name());
+    writer.write("visible", (*i)->is_visible());
+    writer.write("locked",  (*i)->is_locked());
 
     writer.start_section("objects");
-    ((LayerHandle)row[LayerManagerColumns::instance().layer])->write(writer);
+    (*i)->write(writer);
     writer.end_section();
 
     writer.end_section();
@@ -561,7 +566,7 @@ SectorModel::rebuild_scene_graph(SceneGraph& sg)
   sg.clear();
   
   const Layers& layers = get_layers();
-  for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
+  for(Layers::const_iterator layer = layers.begin(); layer != layers.end(); ++layer)
   {
     if (*layer)
     {
@@ -585,7 +590,7 @@ SectorModel::rebuild_scene_graph(SceneGraph& sg)
 void
 SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
-  std::cout << "LayerManager:on_row_changed" << std::endl;
+  //std::cout << "LayerManager:on_row_changed" << std::endl;
 
   if (iter)
   {
@@ -613,13 +618,13 @@ SectorModel::on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gt
 void
 SectorModel::on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
 {
-  std::cout << "LayerManager:on_row_inserted" << std::endl;
+  //std::cout << "LayerManager:on_row_inserted" << std::endl;
 }
 
 void
 SectorModel::on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order)
 {
-  std::cout << "LayerManager:on_row_reordered" << std::endl;
+  //std::cout << "LayerManager:on_row_reordered" << std::endl;
 }
 
 void
