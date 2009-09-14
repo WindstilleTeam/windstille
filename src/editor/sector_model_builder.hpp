@@ -31,15 +31,15 @@ class SectorModelBuilder
 {
 private:
   SectorModel& m_sector;
-  
+  std::map<std::string, ObjectModelHandle> m_id_table;
+  std::map<ObjectModelHandle, std::string> m_parent_table;
+
 public:
   SectorModelBuilder(const std::string& filename, SectorModel& sector);
 
 private:
   void load(const std::string& filename);
-  void load_layer(const FileReader& filename, 
-                  std::map<std::string, ObjectModelHandle>& id_table,
-                  std::map<ObjectModelHandle, std::string>& parent_table); 
+  void load_layer(const FileReader& filename);
 
 private:
   SectorModelBuilder(const SectorModelBuilder&);

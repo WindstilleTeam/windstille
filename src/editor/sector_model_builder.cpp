@@ -29,7 +29,9 @@
 #include "util/file_reader.hpp"
 
 SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel& sector)
-  : m_sector(sector)
+  : m_sector(sector),
+    m_id_table(),
+    m_parent_table()
 {
   m_sector.get_layer_tree()->clear();
 
@@ -40,9 +42,6 @@ SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel&
   }
   else
   {
-    std::map<std::string, ObjectModelHandle> id_table;
-    std::map<ObjectModelHandle, std::string> parent_table;
-
     FileReader reader = FileReader::parse(stream, filename);
     if (reader.get_name() == "windstille-sector")
     {
@@ -54,7 +53,7 @@ SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel&
 
       FileReader navigation_section;
       reader.get("navigation", navigation_section);
-      m_sector.get_nav_graph().load(navigation_section, id_table);
+      m_sector.get_nav_graph().load(navigation_section, m_id_table);
 
       FileReader layers_section;
       reader.get("layers", layers_section);
@@ -65,7 +64,7 @@ SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel&
       {
         if (i->get_name() == "layer")
         {
-          load_layer(*i, id_table, parent_table);
+          load_layer(*i);
         }
         else
         {
@@ -74,10 +73,10 @@ SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel&
       }
           
       // Set the parents properly
-      for(std::map<ObjectModelHandle, std::string>::iterator i = parent_table.begin(); i != parent_table.end(); ++i)
+      for(std::map<ObjectModelHandle, std::string>::iterator i = m_parent_table.begin(); i != m_parent_table.end(); ++i)
       {
-        std::map<std::string, ObjectModelHandle>::iterator j = id_table.find(i->second);
-        if (j == id_table.end())
+        std::map<std::string, ObjectModelHandle>::iterator j = m_id_table.find(i->second);
+        if (j == m_id_table.end())
         {
           std::cout << "Error: Couldn't resolve 'id': " << i->second << std::endl;
         }
@@ -91,9 +90,7 @@ SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel&
 }
 
 void
-SectorModelBuilder::load_layer(const FileReader& reader, 
-                               std::map<std::string, ObjectModelHandle>& id_table,
-                               std::map<ObjectModelHandle, std::string>& parent_table)
+SectorModelBuilder::load_layer(const FileReader& reader)
 {
   FileReader objects_reader;
   FileReader layers_reader;
@@ -119,8 +116,8 @@ SectorModelBuilder::load_layer(const FileReader& reader,
         std::string id_str;
         if (j->get("edge", id_str))
         {
-          std::map<std::string, ObjectModelHandle>::iterator it = id_table.find(id_str);
-          if (it == id_table.end())
+          std::map<std::string, ObjectModelHandle>::iterator it = m_id_table.find(id_str);
+          if (it == m_id_table.end())
           {
             std::cout << "SectorModel::load_layer: couldn't resource navgraph-edge-ref: " << id_str << std::endl;
           }
@@ -139,14 +136,14 @@ SectorModelBuilder::load_layer(const FileReader& reader,
         std::string id_str;
         if (j->read("id", id_str))
         {
-          id_table[id_str] = obj;
+          m_id_table[id_str] = obj;
         }
 
         std::string parent_str;
         if (j->read("parent", parent_str))
         {
           if (!parent_str.empty())
-            parent_table[obj] = parent_str;
+            m_parent_table[obj] = parent_str;
         }
       }
     }
