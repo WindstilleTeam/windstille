@@ -25,7 +25,6 @@
 
 #include "navigation/edge_position.hpp"
 
-/** */
 class Node
 {
 private:

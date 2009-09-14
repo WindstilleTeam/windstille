@@ -25,7 +25,6 @@
 
 class Node;
 
-/** */
 class Edge
 {
 private:

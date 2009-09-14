@@ -16,10 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "navigation/edge.hpp"
+
 #include <assert.h>
 
 #include "navigation/node.hpp"
-#include "navigation/edge.hpp"
 
 Edge::Edge(Node* node1_, Node* node2_, Properties props_)
   : node1(node1_), 
