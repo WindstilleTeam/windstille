@@ -40,6 +40,7 @@ class Tool;
 class WindstilleWidget;
 class SelectTool;
 class ZoomTool;
+class ScrollTool;
 class LayerWidget;
 class NavgraphInsertTool;
 
@@ -84,6 +85,7 @@ private:
   boost::scoped_ptr<SelectTool>   select_tool;
   boost::scoped_ptr<NavgraphInsertTool> navgraph_insert_tool;
   boost::scoped_ptr<ZoomTool>     zoom_tool;
+  boost::scoped_ptr<ScrollTool>   scroll_tool;
   Tool* current_tool;
   LayerWidget* layer_widget;
 
@@ -140,6 +142,7 @@ public:
   void on_reverse_layers();
 
   Tool* get_current_tool() const;
+  ScrollTool* get_scroll_tool() const;
 
   LayerManager& get_layer_manager() { return layer_manager; }
   WindstilleWidget* get_windstille_widget();

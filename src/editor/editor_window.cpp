@@ -35,6 +35,7 @@
 #include "editor/about_window.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/zoom_tool.hpp"
+#include "editor/scroll_tool.hpp"
 #include "editor/select_tool.hpp"
 #include "editor/navgraph_insert_tool.hpp"
 #include "editor/sector_model.hpp"
@@ -74,6 +75,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     select_tool(new SelectTool()),
     navgraph_insert_tool(new NavgraphInsertTool()),
     zoom_tool(new ZoomTool()),
+    scroll_tool(new ScrollTool()),
     current_tool(select_tool.get()),
     layer_widget(),
     timeout_connection(),
@@ -773,6 +775,12 @@ Tool*
 EditorWindow::get_current_tool() const
 {
   return current_tool;
+}
+
+ScrollTool*
+EditorWindow::get_scroll_tool() const
+{
+  return scroll_tool.get();
 }
 
 WindstilleWidget*

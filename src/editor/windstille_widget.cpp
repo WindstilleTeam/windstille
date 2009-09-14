@@ -53,7 +53,6 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
     state(),
     compositor(),
     sc(),
-    scroll_tool(new ScrollTool),
     map_type(DecalObjectModel::COLORMAP),
     background_pattern(),
     select_mask(1),
@@ -338,7 +337,7 @@ WindstilleWidget::mouse_down(GdkEventButton* ev)
   }
   else if (ev->button == 2)
   { // Scroll
-    scroll_tool->mouse_down(ev, *this);
+    EditorWindow::current()->get_scroll_tool()->mouse_down(ev, *this);
     return true;
   }
   else if (ev->button == 3)
@@ -358,7 +357,7 @@ WindstilleWidget::mouse_move(GdkEventMotion* ev)
   //std::cout << "Motion: " << ev->x << ", " << ev->y << std::endl;
   
   EditorWindow::current()->get_current_tool()->mouse_move(ev, *this);
-  scroll_tool->mouse_move(ev, *this);
+  EditorWindow::current()->get_scroll_tool()->mouse_move(ev, *this);
   
   return true;
 }
@@ -375,7 +374,7 @@ WindstilleWidget::mouse_up(GdkEventButton* ev)
   }
   else if (ev->button == 2)
   {
-    scroll_tool->mouse_up(ev, *this);
+    EditorWindow::current()->get_scroll_tool()->mouse_up(ev, *this);
     queue_draw();
   }
 

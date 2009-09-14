@@ -15,8 +15,6 @@ Editor Restructuring
 
 * SceneGraph needs to be updated while drag&drop is in progress
 
-* Move scroll_tool to EditorWindow, away from WindstilleWidget
-
 * delete/remove/erase naming is a bit mixed up in a few places
 
 * being able to directly mark Edges still feels wonky, need to rethink the thing again
@@ -25,13 +23,16 @@ Editor Restructuring
   sector to another causes crazy stuff to happen as the nodes it links
   to are on another sector
 
-* add grid snapping to navgraph
-
-* draw NavGraph lines thicker (glLineWidth())
+* draw NavGraph lines thicker (i.e. glLineWidth())
 
 * color code them by layer
 
 * add special drawing for different edge types (i.e. draw stairs for stair type edges)
+
+* add grid snapping to navgraph
+
+* moving a NavGraphNodeModel snaps the bounding box to the grid, while
+  it should snap the center point
 
 SceneGraph/Compositor
 =====================

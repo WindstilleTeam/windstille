@@ -66,7 +66,6 @@ private:
   GraphicContextState   state;
   boost::scoped_ptr<Compositor> compositor;
   boost::scoped_ptr<SceneContext> sc;
-  boost::scoped_ptr<ScrollTool> scroll_tool;
   DecalObjectModel::MapType map_type;
   Texture background_pattern;
   SelectMask select_mask;
