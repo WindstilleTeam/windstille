@@ -40,6 +40,7 @@ private:
   } mode;
 
   Vector2f process_snap(WindstilleWidget& wst);
+  Vector2f process_grid_snap(WindstilleWidget& wst);
 
 public:
   SelectTool();

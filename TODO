@@ -19,9 +19,6 @@ Editor Restructuring
 
 * delete/remove/erase naming is a bit mixed up in a few places
 
-* ZoomTool seems broken
-
-
 * being able to directly mark Edges still feels wonky, need to rethink the thing again
 
 * copy&paste works only very limited with edges, i.e. copying from one
@@ -30,13 +27,23 @@ Editor Restructuring
 
 * add grid snapping to navgraph
 
-* add horizontal/vertical snapping
-
 * draw NavGraph lines thicker (glLineWidth())
 
 * color code them by layer
 
-* implement navgraph loading in the game engine
+* add special drawing for different edge types (i.e. draw stairs for stair type edges)
+
+SceneGraph/Compositor
+=====================
+
+* could make use of occlusion query, to hide highlight sources when
+  they are covered:
+
+  * http://www.opengl.org/registry/specs/ARB/occlusion_query.txt
+  * http://developer.download.nvidia.com/SDK/9.5/Samples/DEMOS/OpenGL/occlusion_query.zip
+
+* add support for multipass rendering with shader scripts (to simulate
+  glass and things like that)
 
 Overview
 ========
@@ -54,8 +61,6 @@ Overview
 * add z/layer ordering to NavGraph
 
 * add trigger to NavGraph
-
-* add Grid snapping to the Editor
 
 * build a more complete scenario
 

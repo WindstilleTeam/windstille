@@ -305,7 +305,7 @@ WindstilleWidget::draw()
     if (grid_enabled)
     {
       Display::draw_grid(state.get_offset() * state.get_zoom(),
-                         Sizef(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.5f));
+                         Sizef(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.75f));
     }
   }
 }

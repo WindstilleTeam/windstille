@@ -347,6 +347,7 @@ SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& i
       snap_data.merge((*i)->snap_object(rect, ignore_objects));
     }
   }
+
   return snap_data;
 }
 
