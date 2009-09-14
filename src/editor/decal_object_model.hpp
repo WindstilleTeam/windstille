@@ -75,8 +75,8 @@ public:
   bool get_hflip() const { return hflip; }
   bool get_vflip() const { return vflip; }
 
-  void set_hflip(bool t) { hflip = t; }
-  void set_vflip(bool t) { vflip = t; }
+  void set_hflip(bool t) { hflip = t; sync(); }
+  void set_vflip(bool t) { vflip = t; sync(); }
 
   bool is_at(const Vector2f& pos) const;
 
