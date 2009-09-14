@@ -120,6 +120,8 @@ public:
 
   void selection_object_properties();
 
+  void select_all();
+
   void set_selection(const SelectionHandle& selection);
   SelectionHandle get_selection() const { return m_selection; }
   /** @} */

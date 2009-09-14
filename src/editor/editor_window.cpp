@@ -942,10 +942,7 @@ EditorWindow::on_select_all()
   // Select all on current layer
   if (WindstilleWidget* wst = get_windstille_widget())
   {
-    LayerHandle layer = wst->get_current_layer();
-    SelectionHandle selection = Selection::create();
-    selection->add(layer->begin(), layer->end());
-    wst->get_document().set_selection(selection);
+    wst->get_document().select_all();
   }
 }
 

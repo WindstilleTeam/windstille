@@ -502,6 +502,21 @@ Document::selection_delete()
 }
 
 void
+Document::select_all()
+{
+  SelectionHandle selection = Selection::create();
+  SectorModel::Layers layers = m_sector_model->get_layers();
+
+  for(SectorModel::Layers::iterator i = layers.begin(); i != layers.end(); ++i)
+  {
+    if (!(*i)->is_locked())
+      selection->add((*i)->begin(), (*i)->end());
+  }
+  
+  set_selection(selection);
+}
+
+void
 Document::set_selection(const SelectionHandle& selection)
 {
   m_selection = selection;
@@ -518,6 +533,7 @@ Document::on_selection_change()
   {
     m_selection->add_control_points(m_control_points);
   }
+  m_sig_on_change();
 }
 
 ControlPointHandle
