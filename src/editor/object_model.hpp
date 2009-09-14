@@ -64,8 +64,8 @@ public:
   virtual SelectMask get_select_mask() const { return select_mask; }
   virtual void   set_select_mask(const SelectMask& select_mask_) { select_mask = select_mask_; }
 
-  SnapData snap_object(const Rectf& rect) const;
-  SnapData snap_to_grid(float grid_size) const;
+  virtual SnapData snap_object(const Rectf& rect) const;
+  virtual SnapData snap_to_grid(float grid_size) const;
 
   virtual bool get_hflip() const { return false; }
   virtual bool get_vflip() const { return false; }

@@ -45,6 +45,8 @@ public:
   ObjectModelHandle clone() const;
   void write(FileWriter& writer) const;
 
+  SnapData snap_to_grid(float grid_size) const;
+
 private:
   NavGraphNodeObjectModel(const NavGraphNodeObjectModel&);
   NavGraphNodeObjectModel& operator=(const NavGraphNodeObjectModel&);

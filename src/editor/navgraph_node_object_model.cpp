@@ -83,6 +83,36 @@ NavGraphNodeObjectModel::get_bounding_box() const
                Sizef(20.0f, 20.0f));
 }
 
+static float float_snap_to_grid(float v, float grid)
+{ 
+  return (roundf(v / grid) * grid) - v;
+}
+
+SnapData
+NavGraphNodeObjectModel::snap_to_grid(float grid_size) const
+{
+  const float snap_threshold = 16.0f;
+
+  float snap_x = float_snap_to_grid(get_world_pos().x, grid_size);
+  float snap_y = float_snap_to_grid(get_world_pos().y, grid_size);
+
+  SnapData snap;
+
+  if (fabs(snap_x) < snap_threshold)
+    {
+      snap.x_set = true;
+      snap.offset.x = snap_x;
+    }
+
+  if (fabs(snap_y) < snap_threshold)
+    {
+      snap.y_set = true;
+      snap.offset.y = snap_y;
+    }
+
+  return snap;
+}
+
 ObjectModelHandle 
 NavGraphNodeObjectModel::clone() const
 {
