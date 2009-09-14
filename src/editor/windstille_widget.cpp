@@ -565,7 +565,6 @@ WindstilleWidget::get_current_layer_path()
 void
 WindstilleWidget::on_document_change()
 {
-  std::cout << "WindstilleWidget::on_document_change" << std::endl;
   m_rebuild_scene_graph = true;
   EditorWindow::current()->update_undo_state();
   queue_draw();

@@ -139,7 +139,6 @@ Document::execute(CommandHandle cmd)
 {
   if (m_group_command)
   {
-    std::cout << "Group Command" << std::endl;
     m_group_command->add(cmd);
   }
   else
