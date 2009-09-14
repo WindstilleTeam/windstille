@@ -98,75 +98,14 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
   wst.queue_draw();
 }
 
-static float snap_to_grid(float v, int grid)
-{
-    int v_i = static_cast<int>(v);
-    int rounded = v_i / grid * grid;
-    int left  = rounded;
-    int right = rounded + ((v >= 0) ? grid : -grid);
-
-    if (abs(left - v_i) < abs(right - v_i))
-    {
-      return static_cast<float>(left) - v;
-    }
-    else
-    {
-      return static_cast<float>(right) - v;
-    }
-}
-
 Vector2f
 SelectTool::process_grid_snap(WindstilleWidget& wst)
 {
-  const int grid_width = 128;
-  const float snap_distance = 16.0f;
   SnapData best_snap;
 
-  // Snap to the 64x64 grid
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
   {
-    const Rectf& r = (*i)->get_bounding_box();
-
-    Rectf snap_rect(snap_to_grid(r.left,   grid_width),
-                    snap_to_grid(r.top,    grid_width),
-                    snap_to_grid(r.right,  grid_width),
-                    snap_to_grid(r.bottom, grid_width));
-
-    {
-      SnapData snap;
-
-      if (fabs(snap_rect.left) < snap_distance)
-      {
-        snap.x_set = true;
-        snap.offset.x = snap_rect.left;
-      }
-
-      if (fabs(snap_rect.top) < snap_distance)
-      {
-        snap.y_set = true;
-        snap.offset.y = snap_rect.top;
-      }
-      
-      best_snap.merge(snap);
-    }
-
-    {
-      SnapData snap;
-
-      if (fabs(snap_rect.right) < snap_distance)
-      {
-        snap.x_set = true;
-        snap.offset.x = snap_rect.right;
-      }
-
-      if (fabs(snap_rect.bottom) < snap_distance)
-      {
-        snap.y_set = true;
-        snap.offset.y = snap_rect.bottom;
-      }
-      
-      best_snap.merge(snap);
-    }
+    best_snap.merge((*i)->snap_to_grid(128));
   }
    
   return best_snap.offset;

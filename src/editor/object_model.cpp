@@ -188,6 +188,64 @@ static bool overlap(float l1, float r1,
     return true;
 }
 
+static float float_snap_to_grid(float v, float grid)
+{
+  return (roundf(v / grid) * grid) - v;
+}
+
+SnapData
+ObjectModel::snap_to_grid(float grid_size) const
+{
+  const float snap_threshold = 16.0f;
+
+  const Rectf& r = get_bounding_box();
+
+  Rectf snap_rect(float_snap_to_grid(r.left,   grid_size),
+                  float_snap_to_grid(r.top,    grid_size),
+                  float_snap_to_grid(r.right,  grid_size),
+                  float_snap_to_grid(r.bottom, grid_size));
+
+  SnapData best_snap;
+
+  {
+    SnapData snap;
+
+    if (fabs(snap_rect.left) < snap_threshold)
+    {
+      snap.x_set = true;
+      snap.offset.x = snap_rect.left;
+    }
+
+    if (fabs(snap_rect.top) < snap_threshold)
+    {
+      snap.y_set = true;
+      snap.offset.y = snap_rect.top;
+    }
+      
+    best_snap.merge(snap);
+  }
+
+  {
+    SnapData snap;
+
+    if (fabs(snap_rect.right) < snap_threshold)
+    {
+      snap.x_set = true;
+      snap.offset.x = snap_rect.right;
+    }
+
+    if (fabs(snap_rect.bottom) < snap_threshold)
+    {
+      snap.y_set = true;
+      snap.offset.y = snap_rect.bottom;
+    }
+      
+    best_snap.merge(snap);
+  }
+
+  return best_snap;
+}
+
 SnapData
 ObjectModel::snap_object(const Rectf& in) const
 {
