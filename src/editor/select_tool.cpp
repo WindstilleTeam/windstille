@@ -131,7 +131,7 @@ SelectTool::process_snap(WindstilleWidget& wst)
 
   for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
   {
-    SnapData snap = wst.get_document().get_sector_model().snap_object((*i)->get_bounding_box(), ignore_objects);
+    SnapData snap = wst.get_document().get_sector_model().snap_object(*i, ignore_objects);
     best_snap.merge(snap);
   }
  

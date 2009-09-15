@@ -45,6 +45,8 @@ public:
   void write(FileWriter& writer) const;
   void write_real(FileWriter& writer) const;
 
+  bool is_snappable() const { return false; }
+
   boost::shared_ptr<NavGraphNodeObjectModel> get_lhs() const { return m_lhs; }
   boost::shared_ptr<NavGraphNodeObjectModel> get_rhs() const { return m_rhs; }
 

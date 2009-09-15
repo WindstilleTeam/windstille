@@ -16,14 +16,16 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "editor/object_model.hpp"
+
 #include <iostream>
 #include <sstream>
 
+#include "display/scene_context.hpp"
+#include "display/surface_drawing_parameters.hpp"
+#include "editor/constants.hpp"
 #include "editor/editor_window.hpp"
 #include "util/file_reader.hpp"
-#include "display/surface_drawing_parameters.hpp"
-#include "display/scene_context.hpp"
-#include "editor/object_model.hpp"
 
 ObjectModel::ObjectModel(const std::string& name_, const Vector2f& rel_pos_)
   : name(name_),
@@ -196,8 +198,6 @@ static float float_snap_to_grid(float v, float grid)
 SnapData
 ObjectModel::snap_to_grid(float grid_size) const
 {
-  const float snap_threshold = 16.0f;
-
   const Rectf& r = get_bounding_box();
 
   Rectf snap_rect(float_snap_to_grid(r.left,   grid_size),
@@ -210,13 +210,13 @@ ObjectModel::snap_to_grid(float grid_size) const
   {
     SnapData snap;
 
-    if (fabs(snap_rect.left) < snap_threshold)
+    if (fabs(snap_rect.left) < g_snap_threshold)
     {
       snap.x_set = true;
       snap.offset.x = snap_rect.left;
     }
 
-    if (fabs(snap_rect.top) < snap_threshold)
+    if (fabs(snap_rect.top) < g_snap_threshold)
     {
       snap.y_set = true;
       snap.offset.y = snap_rect.top;
@@ -228,13 +228,13 @@ ObjectModel::snap_to_grid(float grid_size) const
   {
     SnapData snap;
 
-    if (fabs(snap_rect.right) < snap_threshold)
+    if (fabs(snap_rect.right) < g_snap_threshold)
     {
       snap.x_set = true;
       snap.offset.x = snap_rect.right;
     }
 
-    if (fabs(snap_rect.bottom) < snap_threshold)
+    if (fabs(snap_rect.bottom) < g_snap_threshold)
     {
       snap.y_set = true;
       snap.offset.y = snap_rect.bottom;
@@ -247,17 +247,15 @@ ObjectModel::snap_to_grid(float grid_size) const
 }
 
 SnapData
-ObjectModel::snap_object(const Rectf& in) const
+ObjectModel::snap_to_object(const Rectf& in) const
 {
   const Rectf& rect = get_bounding_box();
-  float snap_threshold = 16.0f;
   
-  // Reset offset to zero, since it might not be
   SnapData snap;
 
-  float left_dist   = fabsf(rect.left - in.right);
-  float right_dist  = fabsf(rect.right - in.left);
-  float top_dist    = fabsf(rect.top - in.bottom);
+  float left_dist   = fabsf(rect.left   - in.right);
+  float right_dist  = fabsf(rect.right  - in.left);
+  float top_dist    = fabsf(rect.top    - in.bottom);
   float bottom_dist = fabsf(rect.bottom - in.top);
   float x_dist = std::min(left_dist, right_dist);
   float y_dist = std::min(top_dist, bottom_dist);
@@ -268,13 +266,13 @@ ObjectModel::snap_object(const Rectf& in) const
     {
       float y_snap = 0.0f;
 
-      if (fabs(rect.top - in.top) < snap_threshold)
+      if (fabs(rect.top - in.top) < g_snap_threshold)
       {
         y_snap = rect.top - in.top;
         snap.y_set = true;
       }
 
-      if (fabs(rect.bottom - in.bottom) < snap_threshold)
+      if (fabs(rect.bottom - in.bottom) < g_snap_threshold)
       {
         y_snap = rect.bottom - in.bottom;
         snap.y_set = true;
@@ -282,7 +280,7 @@ ObjectModel::snap_object(const Rectf& in) const
 
       if (left_dist < right_dist)
       { // snap to left edge
-        if (left_dist < snap_threshold)
+        if (left_dist < g_snap_threshold)
         {
           snap.offset.x = rect.left - in.right;
           snap.offset.y = y_snap;
@@ -291,7 +289,7 @@ ObjectModel::snap_object(const Rectf& in) const
       }
       else
       { // snap to right edge
-        if (right_dist < snap_threshold)
+        if (right_dist < g_snap_threshold)
         {
           snap.offset.x = rect.right - in.left;
           snap.offset.y = y_snap;
@@ -306,13 +304,13 @@ ObjectModel::snap_object(const Rectf& in) const
     {
       float x_snap = 0.0f;
 
-      if (fabs(rect.left - in.left) < snap_threshold)
+      if (fabs(rect.left - in.left) < g_snap_threshold)
       {
         x_snap = rect.left - in.left;
         snap.x_set = true;
       }
 
-      if (fabs(rect.right - in.right) < snap_threshold)
+      if (fabs(rect.right - in.right) < g_snap_threshold)
       {
         x_snap = rect.right - in.right;
         snap.x_set = true;
@@ -320,7 +318,7 @@ ObjectModel::snap_object(const Rectf& in) const
 
       if (top_dist < bottom_dist)
       { // snap to top edge
-        if (top_dist < snap_threshold)
+        if (top_dist < g_snap_threshold)
         {
           snap.offset.x = x_snap;
           snap.offset.y = rect.top - in.bottom;
@@ -329,7 +327,7 @@ ObjectModel::snap_object(const Rectf& in) const
       }
       else
       { // snap to bottom edge
-        if (bottom_dist < snap_threshold)
+        if (bottom_dist < g_snap_threshold)
         {
           snap.offset.x = x_snap;
           snap.offset.y = rect.bottom - in.top;
@@ -338,6 +336,8 @@ ObjectModel::snap_object(const Rectf& in) const
       }
     }      
   }
+
+  snap.offset = -snap.offset;
 
   return snap;
 }

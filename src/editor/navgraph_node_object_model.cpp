@@ -22,6 +22,7 @@
 #include "scenegraph/vertex_array_drawable.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "navigation/node.hpp"
+#include "editor/constants.hpp"
 
 NavGraphNodeObjectModel::NavGraphNodeObjectModel(const FileReader& reader)
   : ObjectModel(reader),
@@ -91,24 +92,65 @@ static float float_snap_to_grid(float v, float grid)
 SnapData
 NavGraphNodeObjectModel::snap_to_grid(float grid_size) const
 {
-  const float snap_threshold = 16.0f;
+  std::cout << "NavGraphNodeObjectModel:grid" << std::endl;
 
   float snap_x = float_snap_to_grid(get_world_pos().x, grid_size);
   float snap_y = float_snap_to_grid(get_world_pos().y, grid_size);
 
   SnapData snap;
 
-  if (fabs(snap_x) < snap_threshold)
+  if (fabs(snap_x) < g_snap_threshold)
     {
       snap.x_set = true;
       snap.offset.x = snap_x;
     }
 
-  if (fabs(snap_y) < snap_threshold)
+  if (fabs(snap_y) < g_snap_threshold)
     {
       snap.y_set = true;
       snap.offset.y = snap_y;
     }
+
+  return snap;
+}
+
+SnapData
+NavGraphNodeObjectModel::snap_to_object(const Rectf& in) const
+{
+  const Vector2f& pos = get_world_pos();
+
+  SnapData snap;
+
+  Rectf dist(in.left   - pos.x,
+             in.top    - pos.y,
+             in.right  - pos.x,
+             in.bottom - pos.y);
+
+  if (fabsf(dist.left) <= fabsf(dist.right) && 
+      fabsf(dist.left) < g_snap_threshold)
+  {
+    snap.x_set    = true;
+    snap.offset.x = dist.left;    
+  }
+  else if (fabsf(dist.left) > fabsf(dist.right) && 
+           fabsf(dist.right) < g_snap_threshold)
+  {
+    snap.x_set    = true;
+    snap.offset.x = dist.right;
+  }
+
+  if (fabsf(dist.top) <= fabsf(dist.bottom) && 
+      fabsf(dist.top) < g_snap_threshold)
+  {
+    snap.y_set    = true;
+    snap.offset.y = dist.top;    
+  }
+  else if (fabsf(dist.top) > fabsf(dist.bottom) && 
+           fabsf(dist.bottom) < g_snap_threshold)
+  {
+    snap.y_set    = true;
+    snap.offset.y = dist.bottom;
+  }
 
   return snap;
 }

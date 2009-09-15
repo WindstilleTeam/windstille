@@ -45,6 +45,7 @@ public:
   ObjectModelHandle clone() const;
   void write(FileWriter& writer) const;
 
+  SnapData snap_to_object(const Rectf& rect) const;
   SnapData snap_to_grid(float grid_size) const;
 
 private:

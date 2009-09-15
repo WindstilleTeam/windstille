@@ -189,10 +189,8 @@ Layer::lower(ObjectModelHandle object)
 }
 
 SnapData
-Layer::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ignore_objects) const
+Layer::snap_object(ObjectModelHandle object, const std::set<ObjectModelHandle>& ignore_objects) const
 {
-  //float min_x_offset = std::numeric_limits<float>::max();
-  //float min_y_offset = std::numeric_limits<float>::max();
   SnapData best_snap;
 
   // Find the smallest snap offset
@@ -202,7 +200,7 @@ Layer::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ignore_
     if ((*i)->is_snappable() &&
         ignore_objects.find(*i) == ignore_objects.end())
     {
-      SnapData snap = (*i)->snap_object(rect);
+      SnapData snap = object->snap_to_object((*i)->get_bounding_box());
       best_snap.merge(snap);
     }
   }

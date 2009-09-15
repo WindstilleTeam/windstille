@@ -80,7 +80,7 @@ public:
   void raise(ObjectModelHandle object);
   void lower(ObjectModelHandle object);
 
-  SnapData snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ignore_objects) const;
+  SnapData snap_object(ObjectModelHandle object, const std::set<ObjectModelHandle>& ignore_objects) const;
 
   void write(FileWriter& writer) const;
 

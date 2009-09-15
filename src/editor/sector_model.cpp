@@ -335,7 +335,7 @@ SectorModel::lower_to_bottom(ObjectModelHandle object)
 }
 
 SnapData
-SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& ignore_objects) const
+SectorModel::snap_object(ObjectModelHandle object, const std::set<ObjectModelHandle>& ignore_objects) const
 {
   const Layers& layers = get_layers();
 
@@ -344,7 +344,7 @@ SectorModel::snap_object(const Rectf& rect, const std::set<ObjectModelHandle>& i
   {
     if ((*i)->is_visible())
     {
-      snap_data.merge((*i)->snap_object(rect, ignore_objects));
+      snap_data.merge((*i)->snap_object(object, ignore_objects));
     }
   }
 
