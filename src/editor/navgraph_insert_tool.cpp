@@ -168,7 +168,7 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     float angle = atan2f(mouse_pos.y - last_node->get_world_pos().y,
                          mouse_pos.x - last_node->get_world_pos().x);
 
-    std::cout << angle << std::endl;
+    //std::cout << angle << std::endl;
     if (fabsf(angle) > 1.0f/4.0f * math::pi &&
         fabsf(angle) < 3.0f/4.0f * math::pi)
     {
@@ -203,30 +203,46 @@ NavgraphInsertTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget
 {
   NavigationGraphModel& navgraph = wst.get_document().get_sector_model().get_nav_graph();
 
-  boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f); // FIXME: Radius should scale with zoom
-  boost::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
-
-  if (node)
+  switch(mode)
   {
-    wst.get_document().navgraph_node_remove(node);
+    case EDGE_MODE:
+    {
+      mode = NO_MODE;
+      last_node.reset();
+      wst.queue_draw();
+      break;
+    }
 
-    mouse_over_edge.reset();
-    mouse_over_node.reset();
+    case NO_MODE:
+    {
+      // FIXME: Radius should scale with zoom
+      boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f); 
+      boost::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
-    wst.queue_draw();
-  }
-  else if (edge)
-  {
-    wst.get_document().navgraph_edge_remove(edge);
+      if (node)
+      {
+        wst.get_document().navgraph_node_remove(node);
 
-    mouse_over_edge.reset();
-    mouse_over_node.reset();
+        mouse_over_edge.reset();
+        mouse_over_node.reset();
 
-    wst.queue_draw();
-  }
-  else
-  {
+        wst.queue_draw();
+      }
+      else if (edge)
+      {
+        wst.get_document().navgraph_edge_remove(edge);
+
+        mouse_over_edge.reset();
+        mouse_over_node.reset();
+
+        wst.queue_draw();
+      }
+      else
+      {
       
+      }
+      break;
+    }
   }
 }
   
