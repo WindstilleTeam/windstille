@@ -19,19 +19,38 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_SNAP_DATA_HPP
 #define HEADER_WINDSTILLE_EDITOR_SNAP_DATA_HPP
 
+/**
+ *  SnapData contains the offset that an object has to be moved by to
+ *  'snap' to a neighbouring object or the grid. SnapData can be
+ *  merged with other SnapData objects so that only the closest 'snap'
+ *  propogates.
+ */
 class SnapData
 {
 public:
   Vector2f offset;
   bool x_set;
   bool y_set;
-  
+
+public:  
   SnapData() 
     : offset(0, 0),
       x_set(false),
       y_set(false)
   {}
   
+  void set_x(float x)
+  {
+    x_set    = true;
+    offset.x = x;
+  }
+
+  void set_y(float y)
+  {
+    y_set    = true;
+    offset.y = y;
+  }
+
   void merge(const SnapData& rhs) 
   {
     if (((x_set && rhs.x_set) && (rhs.offset.x < offset.x)) ||

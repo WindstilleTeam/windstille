@@ -212,14 +212,12 @@ ObjectModel::snap_to_grid(float grid_size) const
 
     if (fabs(snap_rect.left) < g_snap_threshold)
     {
-      snap.x_set = true;
-      snap.offset.x = snap_rect.left;
+      snap.set_x(snap_rect.left);
     }
 
     if (fabs(snap_rect.top) < g_snap_threshold)
     {
-      snap.y_set = true;
-      snap.offset.y = snap_rect.top;
+      snap.set_y(snap_rect.top);
     }
       
     best_snap.merge(snap);
@@ -230,14 +228,12 @@ ObjectModel::snap_to_grid(float grid_size) const
 
     if (fabs(snap_rect.right) < g_snap_threshold)
     {
-      snap.x_set = true;
-      snap.offset.x = snap_rect.right;
+      snap.set_x(snap_rect.right);
     }
 
     if (fabs(snap_rect.bottom) < g_snap_threshold)
     {
-      snap.y_set = true;
-      snap.offset.y = snap_rect.bottom;
+      snap.set_y(snap_rect.bottom);
     }
       
     best_snap.merge(snap);
@@ -266,13 +262,13 @@ ObjectModel::snap_to_object(const Rectf& in) const
     {
       float y_snap = 0.0f;
 
-      if (fabs(rect.top - in.top) < g_snap_threshold)
+      if (fabsf(rect.top - in.top) < g_snap_threshold)
       {
         y_snap = rect.top - in.top;
         snap.y_set = true;
       }
 
-      if (fabs(rect.bottom - in.bottom) < g_snap_threshold)
+      if (fabsf(rect.bottom - in.bottom) < g_snap_threshold)
       {
         y_snap = rect.bottom - in.bottom;
         snap.y_set = true;
@@ -282,18 +278,16 @@ ObjectModel::snap_to_object(const Rectf& in) const
       { // snap to left edge
         if (left_dist < g_snap_threshold)
         {
-          snap.offset.x = rect.left - in.right;
+          snap.set_x(rect.left - in.right);
           snap.offset.y = y_snap;
-          snap.x_set = true;
         }
       }
       else
       { // snap to right edge
         if (right_dist < g_snap_threshold)
         {
-          snap.offset.x = rect.right - in.left;
+          snap.set_x(rect.right - in.left);
           snap.offset.y = y_snap;
-          snap.x_set = true;
         }
       }
     }
@@ -304,13 +298,13 @@ ObjectModel::snap_to_object(const Rectf& in) const
     {
       float x_snap = 0.0f;
 
-      if (fabs(rect.left - in.left) < g_snap_threshold)
+      if (fabsf(rect.left - in.left) < g_snap_threshold)
       {
         x_snap = rect.left - in.left;
         snap.x_set = true;
       }
 
-      if (fabs(rect.right - in.right) < g_snap_threshold)
+      if (fabsf(rect.right - in.right) < g_snap_threshold)
       {
         x_snap = rect.right - in.right;
         snap.x_set = true;
@@ -321,8 +315,8 @@ ObjectModel::snap_to_object(const Rectf& in) const
         if (top_dist < g_snap_threshold)
         {
           snap.offset.x = x_snap;
-          snap.offset.y = rect.top - in.bottom;
-          snap.y_set = true;
+          
+          snap.set_y(rect.top - in.bottom);
         }
       }
       else
@@ -330,8 +324,7 @@ ObjectModel::snap_to_object(const Rectf& in) const
         if (bottom_dist < g_snap_threshold)
         {
           snap.offset.x = x_snap;
-          snap.offset.y = rect.bottom - in.top;
-          snap.y_set = true;
+          snap.set_y(rect.bottom - in.top);
         }
       }
     }      

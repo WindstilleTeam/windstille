@@ -92,8 +92,6 @@ static float float_snap_to_grid(float v, float grid)
 SnapData
 NavGraphNodeObjectModel::snap_to_grid(float grid_size) const
 {
-  std::cout << "NavGraphNodeObjectModel:grid" << std::endl;
-
   float snap_x = float_snap_to_grid(get_world_pos().x, grid_size);
   float snap_y = float_snap_to_grid(get_world_pos().y, grid_size);
 
@@ -101,14 +99,12 @@ NavGraphNodeObjectModel::snap_to_grid(float grid_size) const
 
   if (fabs(snap_x) < g_snap_threshold)
     {
-      snap.x_set = true;
-      snap.offset.x = snap_x;
+      snap.set_x(snap_x);
     }
 
   if (fabs(snap_y) < g_snap_threshold)
     {
-      snap.y_set = true;
-      snap.offset.y = snap_y;
+      snap.set_y(snap_y);
     }
 
   return snap;
@@ -129,27 +125,23 @@ NavGraphNodeObjectModel::snap_to_object(const Rectf& in) const
   if (fabsf(dist.left) <= fabsf(dist.right) && 
       fabsf(dist.left) < g_snap_threshold)
   {
-    snap.x_set    = true;
-    snap.offset.x = dist.left;    
+    snap.set_x(dist.left);
   }
   else if (fabsf(dist.left) > fabsf(dist.right) && 
            fabsf(dist.right) < g_snap_threshold)
   {
-    snap.x_set    = true;
-    snap.offset.x = dist.right;
+    snap.set_x(dist.right);
   }
 
   if (fabsf(dist.top) <= fabsf(dist.bottom) && 
       fabsf(dist.top) < g_snap_threshold)
   {
-    snap.y_set    = true;
-    snap.offset.y = dist.top;    
+    snap.set_y(dist.top);
   }
   else if (fabsf(dist.top) > fabsf(dist.bottom) && 
            fabsf(dist.bottom) < g_snap_threshold)
   {
-    snap.y_set    = true;
-    snap.offset.y = dist.bottom;
+    snap.set_y(dist.bottom);
   }
 
   return snap;
