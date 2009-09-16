@@ -53,6 +53,8 @@ private:
   Gtk::HBox   hbox;
   Gtk::HPaned hpaned;
   Gtk::VPaned vpaned;
+  Gtk::HBox      status_hbox;
+  Gtk::Label     status_label;
   Gtk::Statusbar status;
 
   Glib::RefPtr<Gtk::UIManager>   ui_manager;
@@ -163,6 +165,8 @@ public:
 
   void print(const std::string& text);
   bool remove_message(guint id);
+
+  void print_coordinates(const std::string& text);
 
   Glib::RefPtr<Gtk::UIManager>   get_ui_manager() const { return ui_manager; }
   Glib::RefPtr<Gtk::ActionGroup> get_action_group() const { return action_group; }

@@ -179,6 +179,11 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     rect.right  = pos.x;
     rect.bottom = pos.y;
 
+    std::ostringstream str;
+    str << "  (" << static_cast<int>(rect.left) << ", " << static_cast<int>(rect.top) << ")  " 
+        << abs(static_cast<int>(rect.get_width())) << " x " << abs(static_cast<int>(rect.get_height())) << "  ";
+    EditorWindow::current()->print_coordinates(str.str());
+
     wst.queue_draw();
   }
 }
@@ -235,6 +240,7 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     wst.queue_draw();
   }
 
+  EditorWindow::current()->print_coordinates(std::string());
   mode = NO_MODE;
 }
 

@@ -50,6 +50,8 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     hbox(),
     hpaned(),
     vpaned(),
+    status_hbox(),
+    status_label(),
     status(),
     ui_manager(Gtk::UIManager::create()),
     action_group(Gtk::ActionGroup::create()),
@@ -394,7 +396,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   vbox.pack_start(*ui_manager->get_widget("/MenuBar"), Gtk::PACK_SHRINK);
   vbox.pack_start(*ui_manager->get_widget("/ToolBar"), Gtk::PACK_SHRINK);
   vbox.add(hbox);
-  vbox.pack_end(status, Gtk::PACK_SHRINK);
+
+  status_hbox.pack_start(status_label, Gtk::PACK_SHRINK);
+  status_hbox.pack_start(status, Gtk::PACK_EXPAND_WIDGET);
+  vbox.pack_end(status_hbox, Gtk::PACK_SHRINK);
 
   // Hbox
   hbox.pack_start(*ui_manager->get_widget("/ToolBox"), Gtk::PACK_SHRINK);
@@ -1011,6 +1016,12 @@ EditorWindow::print(const std::string& text)
   guint id = status.push(text);
   std::cout << "[LOG] " << text << std::endl;
   Glib::signal_timeout().connect(sigc::bind(sigc::mem_fun(*this, &EditorWindow::remove_message), id), 6000);
+}
+
+void
+EditorWindow::print_coordinates(const std::string& text)
+{
+  status_label.set_text(text);
 }
 
 /* EOF */
