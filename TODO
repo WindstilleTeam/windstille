@@ -25,7 +25,7 @@ Editor Restructuring
 
 * draw NavGraph lines thicker (i.e. glLineWidth())
 
-* color code them by layer
+* color code them by layer (how to figure out the color?)
 
 * add special drawing for different edge types (i.e. draw stairs for stair type edges)
 
@@ -33,6 +33,30 @@ Editor Restructuring
 
 * moving a NavGraphNodeModel snaps the bounding box to the grid, while
   it should snap the center point
+
+* horizontal/vertical navgraph edges are near impossible to select
+  (bounding box is just 1px height)
+
+* objects can't snap to NavGraphNode's as they are not part of the
+  normal layer structure, would also need inverse point-snapping to
+  work properly, as they shouldn't snap to the bounding_box of the node
+
+* implement a stop-watch HUD element
+
+* it takes 25sec to run through every corner of the worker.wst map (75 meter + stairs in size)
+
+* add auto-visible button similar to auto-lock button
+
+#0  0x081115a7 in Vector2f::operator+ (this=0x0, other=@0xbff04558) at src/math/vector2f.hpp:56
+#1  0x0816e342 in Selection::on_move_update (this=0x92043b8, offset=@0xbff04558) at src/editor/selection.cpp:130
+#2  0x0816c80f in SelectTool::mouse_up (this=0x8999dd0, event=0x8f878a0, wst=@0x8f8e5a0) at src/editor/select_tool.cpp:205
+#3  0x08174a22 in WindstilleWidget::mouse_up (this=0x8f8e5a0, ev=0x8f878a0) at src/editor/windstille_widget.cpp:372
+#4  0x08177788 in sigc::bound_mem_functor1<bool, WindstilleWidget, _GdkEventButton*>::operator() (this=0x902fc34, _A_a1=@0xbff04664) at /usr/include/sigc++-2.0/sigc++/functors/mem_fun.h:1851
+#5  0x081772bf in sigc::adaptor_functor<sigc::bound_mem_functor1<bool, WindstilleWidget, _GdkEventButton*> >::operator()<_GdkEventButton* const&> (this=0x902fc30, _A_arg1=@0xbff04664)
+
+* add a GenericObjectModel to the editor that just stores all the
+  information in the FileReader and writes it out again, use it for
+  all objects whose type isn't known by the editor
 
 SceneGraph/Compositor
 =====================
@@ -43,8 +67,24 @@ SceneGraph/Compositor
   * http://www.opengl.org/registry/specs/ARB/occlusion_query.txt
   * http://developer.download.nvidia.com/SDK/9.5/Samples/DEMOS/OpenGL/occlusion_query.zip
 
+  Have to figure if this would work with alpha textures:
+
+  * void glAlphaFunc(GLenum func, GLclampf ref);
+
 * add support for multipass rendering with shader scripts (to simulate
   glass and things like that)
+
+* play around with post-processing effects:
+
+  * bloom
+
+  * vignetting
+
+  * motion blur
+
+  * film grain
+
+  * lense flare
 
 Overview
 ========
@@ -72,6 +112,11 @@ Overview
   * calculate an arc from the current pos to the next ledge or landing spot
 
   * let character travel that arc
+
+* implement a grid display in the game engine
+
+* implement debugging information that shows the screen and world
+  coordinates of the mouse position in the game and in the editor
 
 Animation
 =========
@@ -109,6 +154,18 @@ SceneGraph
 * SceneGraph could be used to promte certain states to children such
   as: color, alpha, visibility (would be mainly useful for the editor
   to hide layers or highlight them)
+
+  * requires Nodes with state
+
+  * requires a pointer to the parent (boost::weak_ref)
+
+  * parent nodes should be a different type 'GroupNode' or something
+    like that
+
+  * draw() { set_color(color * parent->get_color()); }
+
+  * all nodes have a parent (the SceneGraph becomes one or gets a root
+    node)
 
 * SceneGraph could be used to promote rotation and scaling to children
 
@@ -171,12 +228,15 @@ Logging
 Particle System
 ===============
 
+* add collision detection or bounding boxes to particle systems so
+  that smoke doesn't escape through walls
+
 * ParticleSystem could be hooked up to scripting
 
 * particle system doesn't take delta into proper account, breaks when
   doing set_game_speed(0.1) (might be issue with game_speed, not the ParticleSystem)
 
-* add a alpha ease-in to the particle system
+* add a alpha ease-in to the particle system to make better fire system
 
 * add a switch to turn of blending in the SurfaceDrawer (i.e.
   currently stuff fades out, but for some things that isn't a good
@@ -186,6 +246,9 @@ Particle System
 
 * maybe do snow as fullscreen effect by just shifting the UV
   coordinates (wouldn't work for smoke/fog)
+
+* the particle system doesn't init correctly, causes particles to be
+  in the wrong spot on startup
 
 
 Scripting
@@ -267,8 +330,6 @@ Scripting
 * ScriptableObject is a bad name, since all objects should be
   scriptable in one form or another
 
-* implement more advanced tab-completion for console
-
 * miniswig does not support __suspend with a return value, should be
   fixed, since Squirrel can handle it. Trouble is that the return
   value is created by the sq_wakeupvm() call, not by the
@@ -308,8 +369,6 @@ Scripting
 * conversations really should be data with hooks for scripts, not pure
   scripts (FIXME: not clear if there is enough benefit and flexibilty
   to try that)
-
-* print and println behave different on console (?)
 
 Input Handling
 ==============
@@ -423,10 +482,6 @@ Miscellaneous
         yada yada yada yada yada yada yada yada yada yada
         yada yada yada"
 
-* add Ctrl-a, Ctrl-k shortcuts to console
-
-* save command history of the console between runs
-
 * cleanup the parenting code
 
 * why does src/navigation/node.hpp use SegmentPosition? Doesn't seem
@@ -464,12 +519,6 @@ Miscellaneous
   shrink horizontal width if text needs a scrollbar
 
 * scrap inventory and redesign it
-
-* console doesn't adopt to screen size
-
-* create a UTF32 string class for use in console, basically
-  basic_string<uint32_t> and a convert function to UTF-8 should be
-  enough
 
 * join Player and Character somewhat or derive one from the other, so
   that one can have scripted people running and jumping around
@@ -663,6 +712,24 @@ Graphics
 
 * setting glLineWidth() leads to some interesting artefacts on the
   menus which might be a cool effect
+
+Console
+=======
+
+* add Ctrl-a, Ctrl-k shortcuts to console
+
+* save command history of the console between runs
+
+* console doesn't adopt to screen size (make it not fullscreen
+  covering)
+
+* create a UTF32 string class for use in console, basically
+  basic_string<uint32_t> and a convert function to UTF-8 should be
+  enough
+
+* implement more advanced tab-completion for console
+
+* print and println behave different on console (?)
 
 Editor
 ======
@@ -1025,7 +1092,12 @@ Code Cleanup
 Sound Effects
 =============
 
-* sound of a large power switch being toggled
+* sound of a large power switch being toggled to start a generator
+
+* sound of a metalic locker being opened
+
+* sound of a lightswitch being toggled
+
 
 http://orange.blender.org/blog/the-amazing-incredible-monkey-brush#more-49
 Hypatia
