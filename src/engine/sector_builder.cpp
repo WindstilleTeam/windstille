@@ -26,31 +26,11 @@
 #include "app/globals.hpp"
 #include "display/color.hpp"
 #include "engine/game_object.hpp"
+#include "engine/object_factory.hpp"
 #include "engine/sector.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "tile/tile_map.hpp"
 #include "util/file_reader.hpp"
-
-#include "objects/background_gradient.hpp"
-#include "objects/box.hpp"
-#include "objects/character.hpp"
-#include "objects/decal.hpp"
-#include "objects/doll.hpp"
-#include "objects/elevator.hpp"
-#include "objects/hedgehog.hpp"
-#include "objects/laser_pointer.hpp"
-#include "objects/layer.hpp"
-#include "objects/liquid.hpp"
-#include "objects/nightvision.hpp"
-#include "objects/particle_systems.hpp"
-#include "objects/player.hpp"
-#include "objects/scriptable_object.hpp"
-#include "objects/shockwave.hpp"
-#include "objects/spider_mine.hpp"
-#include "objects/swarm.hpp"
-#include "objects/test_object.hpp"
-#include "objects/trigger.hpp"
-#include "objects/vrdummy.hpp"
 
 SectorBuilder::SectorBuilder(const Pathname& filename, Sector& sector)
   : m_filename(filename),
@@ -140,9 +120,9 @@ SectorBuilder::parse_objects(const FileReader& reader)
     }
 
     // Set the parents properly
-    for(std::map<GameObject*, std::string>::iterator i = parent_table.begin(); i != parent_table.end(); ++i)
+    for(std::map<GameObjectHandle, std::string>::iterator i = parent_table.begin(); i != parent_table.end(); ++i)
     {
-      std::map<std::string, GameObject*>::iterator j = id_table.find(i->second);
+      std::map<std::string, GameObjectHandle>::iterator j = id_table.find(i->second);
       if (j == id_table.end())
       {
         std::cout << "Error: Couldn't resolve 'id': " << i->second << std::endl;
@@ -158,8 +138,9 @@ SectorBuilder::parse_objects(const FileReader& reader)
 void
 SectorBuilder::parse_object(const FileReader& reader)
 {
-  GameObject* obj = 0;
-  if(reader.get_name() == "tilemap") 
+  GameObjectHandle obj;
+
+  if(reader.get_name() == "tilemap")
   {
     std::auto_ptr<TileMap> tilemap(new TileMap(reader));
 
@@ -168,7 +149,7 @@ SectorBuilder::parse_object(const FileReader& reader)
     else if (tilemap->get_name() == "interactivebackground")
       m_sector.interactivebackground_tilemap = tilemap.get();
 
-    obj = tilemap.release();
+    obj.reset(tilemap.release());
   }
   else if (reader.get_name() == "navgraph-edge-ref")
   {
@@ -178,85 +159,17 @@ SectorBuilder::parse_object(const FileReader& reader)
   {
     // TODO
   }
-  else if (reader.get_name() == "background-gradient")
-  {
-    obj = new BackgroundGradient(reader);
-  }
-  else if(reader.get_name() == "trigger")
-  {
-    obj = new Trigger(reader);
-  }
-  else if(reader.get_name() == "box")
-  {
-    obj = new Box(reader);
-  }
-  else if(reader.get_name() == "shockwave")
-  {
-    obj = new Shockwave(reader);
-  }
-  else if(reader.get_name() == "elevator")
-  {
-    obj = new Elevator(reader);
-  }
-  else if(reader.get_name() == "character")
-  {    
-    obj = new Character(reader);
-  }
-  else if(reader.get_name() == "spider-mine")
-  {
-    obj = new SpiderMine(reader);
-  }
-  else if(reader.get_name() == "hedgehog")
-  {
-    obj = new Hedgehog(reader);
-  }
-  else if(reader.get_name() == "test-object")
-  {
-    obj = new TestObject(reader);
-  }
-  else if (reader.get_name() == "nightvision")
-  {
-    obj = new Nightvision(reader);
-  }
-  else if (reader.get_name() == "particle-system")
-  {
-    // FIXME: disabled due to work on the editor: obj = new ParticleSystem(reader);
-  }
-  else if(reader.get_name() == "scriptable-object")
-  {    
-    obj = new ScriptableObject(reader);
-  }
-  else if(reader.get_name() == "decal")
-  {    
-    obj = new Decal(reader);
-  }
   else if(reader.get_name() == "layer")
   {    
     parse_layer(reader);
   }
-  else if (reader.get_name() == "vrdummy")
-  {
-    obj = new VRDummy(reader);
-  }
-  else if (reader.get_name() == "swarm")
-  {
-    obj = new Swarm(reader);
-  }
-  else if (reader.get_name() == "laserpointer")
-  {
-    obj = new LaserPointer();
-  }
-  else if (reader.get_name() == "liquid")
-  {
-    obj = new Liquid(reader);
-  }
-  else if (reader.get_name() == "particle-systems")
-  {
-    obj = new ParticleSystems(reader);
-  }
   else 
   {
-    std::cout << "Skipping unknown Object: " << reader.get_name() << "\n";
+    obj = ObjectFactory::create(reader);
+    if (!obj)
+    {
+      std::cout << "Skipping unknown Object: " << reader.get_name() << "\n";
+    }
   }
 
   if (obj)

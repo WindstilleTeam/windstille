@@ -16,40 +16,22 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_ENGINE_SECTOR_BUILDER_HPP
-#define HEADER_WINDSTILLE_ENGINE_SECTOR_BUILDER_HPP
-
-#include <map>
-#include <string>
+#ifndef HEADER_WINDSTILLE_ENGINE_OBJECT_FACTORY_HPP
+#define HEADER_WINDSTILLE_ENGINE_OBJECT_FACTORY_HPP
 
 #include "engine/game_object_handle.hpp"
 
 class FileReader;
-class GameObject;
-class Pathname;
-class Sector;
 
-class SectorBuilder
+class ObjectFactory
 {
 private:
-  const Pathname& m_filename;
-  Sector&  m_sector;
-  std::map<std::string, GameObjectHandle> id_table;
-  std::map<GameObjectHandle, std::string> parent_table;
-
 public:
-  SectorBuilder(const Pathname& filename, Sector& sector);
-  
-private:
-  void parse_body(const FileReader& reader);
-  void parse_layer(const FileReader& reader);
-  void parse_objects(const FileReader& reader);
-  void parse_object(const FileReader& reader);
-  void parse_navgraph(const FileReader& reader);
+  static GameObjectHandle create(const FileReader& reader);
 
 private:
-  SectorBuilder(const SectorBuilder&);
-  SectorBuilder& operator=(const SectorBuilder&);
+  ObjectFactory(const ObjectFactory&);
+  ObjectFactory& operator=(const ObjectFactory&);
 };
 
 #endif

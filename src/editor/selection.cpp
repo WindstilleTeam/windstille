@@ -39,8 +39,15 @@ Selection::~Selection()
 void
 Selection::add(const ObjectModelHandle& object)
 {
-  objects.push_back(object);
-  signal_changed();
+  if (!object)
+  {
+    std::cout << "Error: Selection:add(): trying to add NULL pointer" << std::endl;
+  }
+  else
+  {
+    objects.push_back(object);
+    signal_changed();
+  }
 }
 
 void

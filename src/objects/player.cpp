@@ -384,7 +384,7 @@ Player::update_stand(const Controller& controller)
       if (0)
         {
           // TODO remove me later, just here for testing
-          Grenade* grenade = new Grenade();
+          boost::shared_ptr<Grenade> grenade(new Grenade());
           grenade->set_pos(get_pos() + Vector2f(50, -300));
           grenade->set_velocity(Vector2f(20, -10));
           Sector::current()->add(grenade);

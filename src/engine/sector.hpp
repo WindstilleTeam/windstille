@@ -24,9 +24,10 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 
-#include "util/pathname.hpp"
-#include "util/currenton.hpp"
 #include "display/color.hpp"
+#include "engine/game_object_handle.hpp"
+#include "util/currenton.hpp"
+#include "util/pathname.hpp"
 
 class CollisionEngine;
 class Entity;
@@ -69,8 +70,8 @@ public:
   TileMap* interactivebackground_tilemap;
 
 private:
-  Player* player;
-  Doll*   doll;
+  boost::shared_ptr<Player> player;
+  boost::shared_ptr<Doll>   doll;
 
 private:
   void parse_file(const Pathname& filename);
@@ -103,7 +104,7 @@ public:
   void  set_ambient_light(const Color& color);
   Color get_ambient_light() const;
 
-  void add(GameObject*);
+  void add(GameObjectHandle object);
 
   CollisionEngine* get_collision_engine() const { return collision_engine.get(); }
   SceneGraph& get_scene_graph() const { return *scene_graph; }

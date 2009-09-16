@@ -21,34 +21,15 @@
 #include <sstream>
 
 #include "collision/collision_engine.hpp"
-#include "engine/squirrel_thread.hpp"
 #include "engine/sector_builder.hpp"
+#include "engine/squirrel_thread.hpp"
 #include "navigation/navigation_graph.hpp"
+#include "objects/doll.hpp"
+#include "objects/player.hpp"
 #include "scenegraph/navigation_graph_drawable.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "sound/sound_manager.hpp"
 #include "tile/tile_map.hpp"
-
-#include "objects/background_gradient.hpp"
-#include "objects/box.hpp"
-#include "objects/character.hpp"
-#include "objects/decal.hpp"
-#include "objects/doll.hpp"
-#include "objects/elevator.hpp"
-#include "objects/hedgehog.hpp"
-#include "objects/laser_pointer.hpp"
-#include "objects/layer.hpp"
-#include "objects/liquid.hpp"
-#include "objects/nightvision.hpp"
-#include "objects/particle_systems.hpp"
-#include "objects/player.hpp"
-#include "objects/scriptable_object.hpp"
-#include "objects/shockwave.hpp"
-#include "objects/spider_mine.hpp"
-#include "objects/swarm.hpp"
-#include "objects/test_object.hpp"
-#include "objects/trigger.hpp"
-#include "objects/vrdummy.hpp"
 
 Sector::Sector(const Pathname& arg_filename)
   : collision_engine(new CollisionEngine()),
@@ -64,7 +45,7 @@ Sector::Sector(const Pathname& arg_filename)
     ambient_light(),
     interactive_tilemap(0),
     interactivebackground_tilemap(0),
-    player(0)
+    player()
 {
   if (debug) std::cout << "Creating new Sector" << std::endl;
   
@@ -76,13 +57,13 @@ Sector::Sector(const Pathname& arg_filename)
     collision_engine->add(new CollisionObject(interactive_tilemap));
 
     // Spawn the Player
-    player = new Player();
+    player.reset(new Player());
     player->set_pos(Vector2f(300,200));
     add(player);
   }
   else
   {
-    doll = new Doll();
+    doll.reset(new Doll());
     add(doll);
   }
 
@@ -172,9 +153,9 @@ Sector::commit_removes()
 }
 
 void
-Sector::add(GameObject* obj)
+Sector::add(GameObjectHandle obj)
 {
-  new_objects.push_back(boost::shared_ptr<GameObject>(obj));
+  new_objects.push_back(obj);
 
   if(obj->get_name() != "") 
     {

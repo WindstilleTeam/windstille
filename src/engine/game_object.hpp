@@ -21,8 +21,9 @@
 
 #include <string>
 
-#include "util/file_reader.hpp"
 #include "display/scene_context.hpp"
+#include "engine/game_object_handle.hpp"
+#include "util/file_reader.hpp"
 
 class Sector;
 
@@ -104,7 +105,7 @@ public:
    */
   virtual void update (float delta) {}
     
-  virtual void set_parent(GameObject* parent) {}
+  virtual void set_parent(GameObjectHandle parent) {}
 
 private:
   GameObject (const GameObject&);
