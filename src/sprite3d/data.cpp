@@ -20,7 +20,6 @@
 
 #include <boost/scoped_array.hpp>
 #include <fstream>
-#include <physfs.h>
 #include <string.h>
 #include <errno.h>
 #include <stdexcept>

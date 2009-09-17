@@ -20,8 +20,9 @@
 #define HEADER_WINDSTILLE_SCREEN_SPRITE2DVIEW_HPP
 
 #include "display/scene_context.hpp"
-#include "sprite2d/sprite.hpp"
 #include "screen/screen.hpp"
+#include "sprite2d/sprite.hpp"
+#include "util/pathname.hpp"
 
 /**
  * A simple class to view 3d sprites and their different actions,
@@ -31,8 +32,8 @@ class Sprite2DView : public Screen
 {
 private:
   SceneContext sc;
-  std::vector<std::string> directory;
-  std::vector<std::string> shuffle_directory;
+  std::vector<Pathname> directory;
+  std::vector<Pathname> shuffle_directory;
 
   enum Mode { SLIDESHOW, MANUAL } mode;
   
@@ -65,7 +66,7 @@ public:
   Sprite2DView();
   ~Sprite2DView();
   
-  void adddir(const std::string& dir);
+  void adddir(const Pathname& dir);
 
   void draw();
   void update(float delta, const Controller& controller);

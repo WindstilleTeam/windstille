@@ -17,12 +17,13 @@
 */
 
 #include <GL/glew.h>
-#include <physfs.h>
+#include <boost/filesystem.hpp>
 
-#include "input/controller.hpp"
-#include "screen/screen_manager.hpp"
 #include "armature/pose.hpp"
+#include "input/controller.hpp"
 #include "screen/armature_test.hpp"
+#include "screen/screen_manager.hpp"
+#include "util/directory.hpp"
 
 ArmatureTest::ArmatureTest()
   : model(),
@@ -40,18 +41,18 @@ ArmatureTest::ArmatureTest()
   FileReader armature_reader = FileReader::parse(Pathname("armature/armature.arm"));
   armature.reset(new Armature(armature_reader));
 
-  std::vector<std::string> file_lst;
   {
-    char** dirlist = PHYSFS_enumerateFiles("armature/pose/");
-    for (char **i = dirlist; *i != NULL; ++i)
-      if (!PHYSFS_isDirectory((std::string("armature/pose/") + *i).c_str())) {
+    Directory::List file_lst = Directory::read(Pathname("armature/pose/"));
+
+    for(Directory::List::iterator i = file_lst.begin(); i != file_lst.end(); ++i)
+    {
+      if (!boost::filesystem::is_directory(i->get_sys_path()))
+      {
         std::cout << "PoseFile: " << *i << std::endl;
-        Pathname path("armature/pose/");
-        path.append_path(*i);
-        FileReader pose_reader = FileReader::parse(path);
+        FileReader pose_reader = FileReader::parse(*i);
         poses.push_back(new Pose(pose_reader));       
       }
-    PHYSFS_freeList(dirlist);
+    }
   }
 
   pose_idx = 0;

@@ -16,12 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <physfs.h>
+#include "screen/sprite2dview.hpp"
+
+#include <boost/filesystem.hpp>
 
 #include "app/console.hpp"
-#include "input/controller.hpp"
 #include "display/surface_manager.hpp"
-#include "sprite2dview.hpp"
+#include "input/controller.hpp"
+#include "util/directory.hpp"
 
 extern std::vector<std::string> arg_files;
 
@@ -55,13 +57,13 @@ Sprite2DView::Sprite2DView()
 
   for(std::vector<std::string>::iterator i = arg_files.begin(); i != arg_files.end(); ++i)
   {
-    if (PHYSFS_isDirectory(i->c_str()))
+    if (boost::filesystem::is_directory(i->c_str()))
     { 
-      adddir(i->c_str());
+      adddir(Pathname(*i, Pathname::kSysPath));
     }
     else
     {
-      directory.push_back(*i);
+      directory.push_back(Pathname(*i, Pathname::kSysPath));
     }
   }
   
@@ -90,22 +92,21 @@ Sprite2DView::Sprite2DView()
 }
 
 void
-Sprite2DView::adddir(const std::string& dirname)
+Sprite2DView::adddir(const Pathname& dirname)
 {
-  char** dirlist = PHYSFS_enumerateFiles(dirname.c_str());
-  for (char **i = dirlist; *i != NULL; ++i)
+  Directory::List lst = Directory::read(dirname);
+
+  for (Directory::List::iterator i = lst.begin(); i != lst.end(); ++i)
+  {
+    if (boost::filesystem::is_directory(i->get_sys_path()))
     {
-      //std::cout << dirname + "/" + *i << std::endl;
-      if (PHYSFS_isDirectory((dirname + "/" + *i).c_str()))
-        {
-          adddir(dirname + "/" + *i);
-        }
-      else
-        {
-          directory.push_back((dirname + "/" + *i).c_str());
-        }
+      adddir(*i);
     }
-  PHYSFS_freeList(dirlist);
+    else
+    {
+      directory.push_back(*i);
+    }
+  }
 }
 
 Sprite2DView::~Sprite2DView()
@@ -241,46 +242,51 @@ void
 Sprite2DView::next_image(int i)
 {
   if (directory.size() > 1)
+  {
+    if (new_sprite)
     {
-      if (new_sprite)
-        {
-          sprite = new_sprite;
-          sprite.set_alpha(1.0f);
-          new_sprite = Sprite();
-          offset = 0;
-          display_time = 0;
-        }
-
-      index = (unsigned int)(index + i) % directory.size();
-
-      std::vector<std::string> dir;
-
-      if (shuffle)
-        dir = shuffle_directory;
-      else
-        dir = directory;
-      
-      bool retry = false;
-
-      do {
-        try {
-          new_sprite = Sprite(Pathname(dir[index]));
-          retry = false;
-        } catch(std::exception& e) {
-          // FIXME: won't work in combination with shuffle
-          std::cout << "Error: " << e.what() << std::endl;
-          std::cout << "Removing '" << directory[index] << "' from the list" << std::endl;
-          directory.erase(directory.begin() + index);
-          index = (unsigned int)(index) % directory.size();
-          retry = true;
-        }
-      } while (retry);
-
-      ignore_delta = true;
-      fadein = 0.0f;
-      prepare_sprite(new_sprite);
-      ConsoleLog << index << ": " << directory[index] << std::endl;
+      sprite = new_sprite;
+      sprite.set_alpha(1.0f);
+      new_sprite = Sprite();
+      offset = 0;
+      display_time = 0;
     }
+
+    index = (unsigned int)(index + i) % directory.size();
+
+    std::vector<Pathname> dir;
+
+    if (shuffle)
+      dir = shuffle_directory;
+    else
+      dir = directory;
+      
+    bool retry = false;
+
+    do 
+    {
+      try 
+      {
+        new_sprite = Sprite(dir[index]);
+        retry = false;
+      } 
+      catch(std::exception& e) 
+      {
+        // FIXME: won't work in combination with shuffle
+        std::cout << "Error: " << e.what() << std::endl;
+        std::cout << "Removing '" << directory[index] << "' from the list" << std::endl;
+        directory.erase(directory.begin() + index);
+        index = (unsigned int)(index) % directory.size();
+        retry = true;
+      }
+    } 
+    while (retry);
+
+    ignore_delta = true;
+    fadein = 0.0f;
+    prepare_sprite(new_sprite);
+    ConsoleLog << index << ": " << directory[index] << std::endl;
+  }
 
   SpriteManager::current()->cleanup();
   SurfaceManager::current()->cleanup();
@@ -348,8 +354,8 @@ Sprite2DView::update(float delta, const Controller& controller)
     {
       if (shuffle)
         {
-          std::vector<std::string>::iterator i = std::find(directory.begin(), directory.end(),
-                                                           shuffle_directory[index]);
+          std::vector<Pathname>::iterator i = std::find(directory.begin(), directory.end(),
+                                                        shuffle_directory[index]);
           if (i != directory.end())
             {
               index = i - directory.begin() ;
@@ -357,7 +363,7 @@ Sprite2DView::update(float delta, const Controller& controller)
         }
       else
         {
-          std::vector<std::string>::iterator i = std::find(shuffle_directory.begin(), shuffle_directory.end(),
+          std::vector<Pathname>::iterator i = std::find(shuffle_directory.begin(), shuffle_directory.end(),
                                                            directory[index]);
           if (i != shuffle_directory.end())
             {
