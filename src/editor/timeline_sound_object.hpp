@@ -16,27 +16,33 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_TIMELINE_OBJECT_HPP
-#define HEADER_WINDSTILLE_TIMELINE_OBJECT_HPP
+#ifndef HEADER_WINDSTILLE_TIMELINE_SOUND_OBJECT_HPP
+#define HEADER_WINDSTILLE_TIMELINE_SOUND_OBJECT_HPP
 
-#include <boost/shared_ptr.hpp>
+#include "editor/timeline_object.hpp"
 
-class TimelineObject
+class TimelineSoundObject : public TimelineObject
 {
 private:
-public:
-  TimelineObject() {}
-  virtual ~TimelineObject() {}
+  float m_pos;
+  float m_width;
+  std::string m_name;
 
-  virtual float get_pos() const =0;
-  virtual float get_width() const =0;
+public:
+  TimelineSoundObject(float pos, float width, const std::string& name) :
+    m_pos(pos),
+    m_width(width),
+    m_name(name)
+  {}
+
+  float get_pos()   const { return m_pos; }
+  float get_width() const { return m_width; }
+  std::string get_name() const { return m_name; }
 
 private:
-  TimelineObject(const TimelineObject&);
-  TimelineObject& operator=(const TimelineObject&);
+  TimelineSoundObject(const TimelineSoundObject&);
+  TimelineSoundObject& operator=(const TimelineSoundObject&);
 };
-
-typedef boost::shared_ptr<TimelineObject> TimelineObjectHandle;
 
 #endif
 

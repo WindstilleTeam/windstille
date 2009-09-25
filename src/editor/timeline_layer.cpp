@@ -27,6 +27,7 @@ TimelineLayer::TimelineLayer(const std::string& name)
 void
 TimelineLayer::add_object(TimelineObjectHandle object)
 {
+  m_objects.push_back(object);
 }
 
 TimelineObjectHandle

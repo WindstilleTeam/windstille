@@ -27,18 +27,27 @@
 
 class TimelineLayer
 {
+public:
+  typedef std::vector<TimelineObjectHandle> Objects;
+  typedef std::vector<TimelineObjectHandle>::iterator iterator;
+  typedef std::vector<TimelineObjectHandle>::const_iterator const_iterator;
+
 private:
   std::string m_name;
-  std::vector<TimelineObjectHandle> m_objects;
+  Objects m_objects;
 
 public:
   TimelineLayer(const std::string& name);
 
+  iterator begin() { return m_objects.begin(); }
+  iterator end()   { return m_objects.end();   }
+
+  const_iterator begin() const { return m_objects.begin(); }
+  const_iterator end()   const { return m_objects.end();   }
+
   void add_object(TimelineObjectHandle object);
 
   TimelineObjectHandle get_object(float pos) const;
-
-  void draw();
 
 private:
   TimelineLayer(const TimelineLayer&);

@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "editor/editor_window.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <gdkmm/pixbuf.h>
@@ -42,7 +44,12 @@
 #include "editor/layer_widget.hpp"
 #include "editor/document.hpp"
 
-#include "editor/editor_window.hpp"
+#include "editor/timeline.hpp"
+#include "editor/timeline_widget.hpp"
+#include "editor/timeline_object.hpp"
+#include "editor/timeline_anim_object.hpp"
+#include "editor/timeline_sound_object.hpp"
+#include "editor/timeline_keyframe_object.hpp"
 
 EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   : vbox(),
@@ -450,6 +457,37 @@ EditorWindow::on_new()
 {
   // FIXME: We abuse the minimap as our root GLContext
   WindstilleWidget* wst = Gtk::manage(new WindstilleWidget(*this, glconfig, minimap_widget.get_gl_context()));
+  if (0)
+  {
+    Gtk::VBox* n_vbox = Gtk::manage(new Gtk::VBox);
+    n_vbox->add(*wst);
+    {
+      boost::shared_ptr<Timeline> timeline(new Timeline);
+
+      TimelineLayerHandle layer1 = timeline->add_layer("Layer1");
+      TimelineLayerHandle layer2 = timeline->add_layer("Layer2");
+      TimelineLayerHandle layer3 = timeline->add_layer("Layer3");
+      TimelineLayerHandle layer4 = timeline->add_layer("Layer4");
+
+      layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(20.0f, 30.0f, "anim1.anim")));
+      layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(60.0f, 30.0f, "anim2.anim")));
+
+      layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(8.0f)));
+      layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(10.0f)));
+      layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(11.0f)));
+      layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(15.0f)));
+      layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(20.0f)));
+      layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(35.0f)));
+      layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(40.0f)));
+
+      layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(10.0f, 10.0f, "sound1.wav")));
+      layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(30.0f, 40.0f, "sound.wav")));
+
+      TimelineWidget* timeline_widget = Gtk::manage(new TimelineWidget());
+      timeline_widget->set_timeline(timeline);
+      n_vbox->add(*timeline_widget);
+    }
+  }
 
   Glib::ustring title = Glib::ustring::compose("Unsaved Sector %1", notebook.get_n_pages()+1);
   int new_page = notebook.append_page(*wst, title);
@@ -798,7 +836,7 @@ EditorWindow::get_windstille_widget()
   }
   else
   {
-    return static_cast<WindstilleWidget*>(notebook.get_nth_page(page));
+    return dynamic_cast<WindstilleWidget*>(notebook.get_nth_page(page));
   }
 }
 

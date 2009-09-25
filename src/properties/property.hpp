@@ -31,8 +31,8 @@ public:
   {}
   virtual ~Property() {}
 
-  virtual bool&   get_bool(void* obj) const = 0;
-  virtual int&   get_int(void* obj) const = 0;
+  virtual bool&  get_bool(void* obj)  const = 0;
+  virtual int&   get_int(void* obj)   const = 0;
   virtual float& get_float(void* obj) const = 0;
 
 private:

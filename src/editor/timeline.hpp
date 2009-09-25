@@ -26,11 +26,24 @@ class Vector2f;
 
 class Timeline
 {
+public:
+  typedef std::vector<TimelineLayerHandle> Layers;
+  typedef Layers::iterator iterator;
+  typedef Layers::const_iterator const_iterator;
+
 private:
-  std::vector<TimelineLayerHandle> m_layers;
+  Layers m_layers;
 
 public:
   Timeline();
+
+  iterator begin() { return m_layers.begin(); }
+  iterator end()   { return m_layers.end();   }
+
+  const_iterator begin() const { return m_layers.begin(); }
+  const_iterator end()   const { return m_layers.end();   }
+
+  int size() const { return static_cast<int>(m_layers.size()); }
 
   TimelineObjectHandle get_object(const Vector2f& pos) const;
   TimelineLayerHandle  get_layer(const Vector2f& pos) const;

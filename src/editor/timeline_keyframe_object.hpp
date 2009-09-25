@@ -16,27 +16,28 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_TIMELINE_OBJECT_HPP
-#define HEADER_WINDSTILLE_TIMELINE_OBJECT_HPP
+#ifndef HEADER_WINDSTILLE_TIMELINE_KEYFRAME_OBJECT_HPP
+#define HEADER_WINDSTILLE_TIMELINE_KEYFRAME_OBJECT_HPP
 
-#include <boost/shared_ptr.hpp>
+#include "editor/timeline_object.hpp"
 
-class TimelineObject
+class TimelineKeyframeObject : public TimelineObject
 {
 private:
-public:
-  TimelineObject() {}
-  virtual ~TimelineObject() {}
+  float m_pos; 
 
-  virtual float get_pos() const =0;
-  virtual float get_width() const =0;
+public:
+  TimelineKeyframeObject(float pos) :
+    m_pos(pos)
+  {}
+
+  float get_pos()   const { return m_pos; }
+  float get_width() const { return 1.0f; }
 
 private:
-  TimelineObject(const TimelineObject&);
-  TimelineObject& operator=(const TimelineObject&);
+  TimelineKeyframeObject(const TimelineKeyframeObject&);
+  TimelineKeyframeObject& operator=(const TimelineKeyframeObject&);
 };
-
-typedef boost::shared_ptr<TimelineObject> TimelineObjectHandle;
 
 #endif
 

@@ -16,27 +16,39 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_TIMELINE_OBJECT_HPP
-#define HEADER_WINDSTILLE_TIMELINE_OBJECT_HPP
+#ifndef HEADER_WINDSTILLE_ANIMATION_WIDGET_HPP
+#define HEADER_WINDSTILLE_ANIMATION_WIDGET_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <gtkmm/adjustment.h>
+#include <gtkmm/box.h>
+#include <gtkmm/box.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/main.h>
+#include <gtkmm/ruler.h>
+#include <gtkmm/scrollbar.h>
+#include <gtkmm/table.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/window.h>
 
-class TimelineObject
+class AnimationWidget : public Gtk::VBox
 {
 private:
-public:
-  TimelineObject() {}
-  virtual ~TimelineObject() {}
+  Gtk::Adjustment hadjustment;
+  Gtk::Adjustment vadjustment;
 
-  virtual float get_pos() const =0;
-  virtual float get_width() const =0;
+  Gtk::HRuler     hruler;
+  Gtk::TreeView   treeview;
+  Gtk::Table      table;
+  Gtk::VScrollbar vscroll;
+  Gtk::HScrollbar hscroll;
+
+public:
+  AnimationWidget();
 
 private:
-  TimelineObject(const TimelineObject&);
-  TimelineObject& operator=(const TimelineObject&);
+  AnimationWidget(const AnimationWidget&);
+  AnimationWidget& operator=(const AnimationWidget&);
 };
-
-typedef boost::shared_ptr<TimelineObject> TimelineObjectHandle;
 
 #endif
 

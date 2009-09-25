@@ -19,11 +19,19 @@
 #include "editor/timeline_widget.hpp"
 
 #include <iostream>
+#include <sstream>
 
+#include "math/rect.hpp"
 #include "editor/timeline.hpp"
+#include "editor/timeline_object.hpp"
+#include "editor/timeline_anim_object.hpp"
+#include "editor/timeline_sound_object.hpp"
+#include "editor/timeline_keyframe_object.hpp"
 
 TimelineWidget::TimelineWidget() :
   m_timeline(),
+  m_selection(),
+  is_mouse_down(false),
   down_pos(),
   move_pos()
 {
@@ -43,23 +51,35 @@ TimelineWidget::~TimelineWidget()
 bool
 TimelineWidget::mouse_down(GdkEventButton* ev)
 {
-  down_pos.x = static_cast<float>(ev->x);
-  down_pos.y = static_cast<float>(ev->y);
+  if (ev->button == 1)
+  {
+    is_mouse_down = true;
+    down_pos.x = static_cast<float>(ev->x);
+    down_pos.y = static_cast<float>(ev->y);
+  }
   return false;
 }
 
 bool
 TimelineWidget::mouse_up(GdkEventButton* ev)
 {
+  if (ev->button == 1)
+  {
+    is_mouse_down = false;
+    queue_draw();
+  }
   return false;
 }
 
 bool
 TimelineWidget::mouse_move(GdkEventMotion* ev)
 {
-  move_pos.x = static_cast<float>(ev->x);
-  move_pos.y = static_cast<float>(ev->y);
-  queue_draw();
+  if (is_mouse_down)
+  {
+    move_pos.x = static_cast<float>(ev->x);
+    move_pos.y = static_cast<float>(ev->y);
+    queue_draw();
+  }
   return false;
 }
 
@@ -72,7 +92,7 @@ TimelineWidget::on_expose_event(GdkEventExpose* ev)
 
     Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
 
-    std::cout << "on_expose_event: " << allocation.get_width() << "x" << allocation.get_height() << std::endl;
+    //std::cout << "on_expose_event: " << allocation.get_width() << "x" << allocation.get_height() << std::endl;
 
     if (1) // pixel perfect drawing
       cr->translate(0.5, 0.5);
@@ -83,122 +103,201 @@ TimelineWidget::on_expose_event(GdkEventExpose* ev)
                   ev->area.width, ev->area.height);
     cr->clip();
 
-    cr->set_source_rgb(1,1,1);
-    cr->rectangle(0, 0, allocation.get_width(), 32*4);
-    cr->fill();
+    draw_timeline(cr);
 
     cr->set_line_width(0.5);
     cr->set_source_rgb(0,0,0);
-    // draw grid
-    for(int y = 0; y < allocation.get_height(); y += 32)
-    {
-      cr->move_to(0, y);
-      cr->line_to(allocation.get_width(), y);
-
-      if (0)
-        for(int x = 0; x < allocation.get_width(); x += 8)
-        {
-          cr->move_to(x, y - 3);
-          cr->line_to(x, y + 3);
-        }
-    }
-    cr->stroke();
-
-    cr->set_source_rgba(0,0,0, 0.25);
-    for(int x = 0; x < allocation.get_width(); x += 8)
-    {
-      if (x % 80)
-      {
-        cr->move_to(x, 0);
-        cr->line_to(x, allocation.get_height());
-      }
-    }
-    cr->stroke();
-
-    cr->set_source_rgba(0,0,0, 0.75);
-    for(int x = 0; x < allocation.get_width(); x += 8)
-    {
-      if (!(x % 80))
-      {
-        cr->move_to(x, 0);
-        cr->line_to(x, allocation.get_height());
-      }
-    }
-    cr->stroke();
 
     cr->set_line_width(1.0);
 
-    // draw keyframe
-    for(int x = 32; x < 128; x += 16)
+    draw_select_rectangle(cr);
+  }
+
+  return true;
+}
+
+void
+TimelineWidget::draw_select_rectangle(Cairo::RefPtr<Cairo::Context> cr)
+{
+  // Select rectangle
+  if (is_mouse_down)
+  {
+    //Rectf rect(down_pos, move_pos - down_pos);
+    //rect.normalize();
+
+    cr->set_source_rgba(0,0,1,0.25);
+    cr->rectangle(down_pos.x, down_pos.y,
+                  move_pos.x - down_pos.x,
+                  move_pos.y - down_pos.y);
+    cr->fill();
+
+    cr->set_source_rgb(0,0,1);
+    cr->rectangle(down_pos.x, down_pos.y,
+                  move_pos.x - down_pos.x,
+                  move_pos.y - down_pos.y);
+    cr->stroke();
+  }
+}
+
+void
+TimelineWidget::draw_grid(Cairo::RefPtr<Cairo::Context> cr)
+{
+  Gtk::Allocation allocation = get_allocation();
+
+  cr->save();
+  
+  int height = m_timeline->size() * 32;
+
+  // draw vertical lines
+  cr->set_source_rgb(0.875, 0.875, 0.875);
+  for(int x = 0; x < allocation.get_width(); x += 8)
+  {
+    if (x % 80 == 0)
     {
-      cr->set_source_rgb(0.0, 0.5, 0.75);
-      cr->rectangle(x, 32+4, 8, 24);
+      cr->rectangle(x, 0, 8, height);
+    }
+  }
+  cr->fill();
+
+  cr->set_line_width(1.0);
+
+  // draw horizontal lines
+  cr->set_source_rgb(0.5, 0.5, 0.5);
+  for(int y = 0; y <= height; y += 32)
+  {
+    cr->move_to(0, y);
+    cr->line_to(allocation.get_width(), y);
+  }
+  cr->stroke();
+
+  // draw vertical lines
+  cr->set_source_rgb(0.75, 0.75, 0.75);
+  for(int x = 0; x < allocation.get_width(); x += 8)
+  {
+      cr->move_to(x, 0);
+      cr->line_to(x, height);
+  }
+  cr->stroke();
+
+  cr->restore();
+}
+
+void
+TimelineWidget::draw_timeline(Cairo::RefPtr<Cairo::Context> cr)
+{
+  Gtk::Allocation allocation = get_allocation();
+
+  cr->save();
+
+  cr->set_source_rgb(1,1,1);
+  cr->rectangle(0, 0, allocation.get_width(), 32 * m_timeline->size());
+  cr->fill();
+  
+  draw_grid(cr);
+
+  cr->save();
+  for(Timeline::iterator i = m_timeline->begin(); i != m_timeline->end(); ++i)
+  {
+    draw_timeline_layer(cr, *i);
+    cr->translate(0, 32);
+  }
+  cr->restore();
+
+  cr->restore();
+}
+
+void
+TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
+                                    TimelineLayerHandle layer)
+{
+  cr->save();
+
+  cr->set_line_width(1.0);
+
+  for(TimelineLayer::iterator i = layer->begin(); i != layer->end(); ++i)
+  {
+    if (boost::shared_ptr<TimelineKeyframeObject> keyframe =
+        boost::dynamic_pointer_cast<TimelineKeyframeObject>(*i))
+    {
+      cr->set_source_rgb(0.5, 0.75, 0.0);
+      cr->rectangle(keyframe->get_pos()*8, 4, 8, 24);
       cr->fill();
 
       cr->set_source_rgb(0, 0, 0);
-      cr->rectangle(x, 32+4, 8, 24);
-      cr->stroke();
+      cr->rectangle(keyframe->get_pos()*8, 4, 8, 24);
+      cr->stroke();     
     }
-
-    // print some text
+    else if (boost::shared_ptr<TimelineAnimObject> anim =
+             boost::dynamic_pointer_cast<TimelineAnimObject>(*i))
     {
-      std::string text = "snd:Hello World!";
       Cairo::TextExtents extents;
 
       cr->select_font_face ("Sans", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
       cr->set_font_size(12);
 
-      cr->get_text_extents(text, extents);
+      cr->get_text_extents(anim->get_name(), extents);
 
-      std::cout << extents.x_bearing << " "
-                << extents.y_bearing << " "
-                << extents.width << " "
-                << extents.height << " "
-                << extents.x_advance << " "
-                << extents.y_advance << " "
-                << std::endl;
+      if (0)
+        std::cout << extents.x_bearing << " "
+                  << extents.y_bearing << " "
+                  << extents.width << " "
+                  << extents.height << " "
+                  << extents.x_advance << " "
+                  << extents.y_advance << " "
+                  << std::endl;
 
-      double x_border = 16.0f;
-      double y_border = 4.0f;
       cr->set_source_rgb(0.0, 0.5, 0.75);
-      cr->rectangle(20  + extents.x_bearing - x_border, 
-                    118 + extents.y_bearing - y_border,
-                    extents.width  + 2*x_border,
-                    extents.height + 2*y_border);
+      cr->rectangle(anim->get_pos()*8,  4,
+                    anim->get_width()*8, 24);
       cr->fill();
 
       cr->set_source_rgb(0, 0, 0);
-      cr->rectangle(20  + extents.x_bearing - x_border, 
-                    118 + extents.y_bearing - y_border,
-                    extents.width  + 2*x_border,
-                    extents.height + 2*y_border);
+      cr->rectangle(anim->get_pos()*8, 4,
+                    anim->get_width()*8, 24);
       cr->stroke();
 
       cr->set_source_rgb(1,1,1);
-      cr->move_to(20,118);
-      cr->show_text(text);
+      cr->move_to((anim->get_pos() + anim->get_width()/2)*8 - extents.width/2, 
+                  20);
+      cr->show_text(anim->get_name());
     }
-
-  std::cout << "down: " << down_pos << std::endl;
-  std::cout << "move: " << move_pos << std::endl;
-
-    // Select rectangle
+    else if (boost::shared_ptr<TimelineSoundObject> sound =
+             boost::dynamic_pointer_cast<TimelineSoundObject>(*i))
     {
-      cr->set_source_rgba(0,0,1,0.25);
-      cr->rectangle(down_pos.x, down_pos.y,
-                    move_pos.x - down_pos.x,
-                    move_pos.y - down_pos.y);
+      Cairo::TextExtents extents;
+
+      cr->select_font_face ("Sans", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
+      cr->set_font_size(12);
+
+      cr->get_text_extents(sound->get_name(), extents);
+
+      if (0)
+        std::cout << extents.x_bearing << " "
+                  << extents.y_bearing << " "
+                  << extents.width << " "
+                  << extents.height << " "
+                  << extents.x_advance << " "
+                  << extents.y_advance << " "
+                  << std::endl;
+
+      cr->set_source_rgb(0.75, 0.0, 0.5);
+      cr->rectangle(sound->get_pos()*8,  4,
+                    sound->get_width()*8, 24);
       cr->fill();
 
-      cr->set_source_rgb(0,0,1);
-      cr->rectangle(down_pos.x, down_pos.y,
-                    move_pos.x - down_pos.x,
-                    move_pos.y - down_pos.y);
+      cr->set_source_rgb(0, 0, 0);
+      cr->rectangle(sound->get_pos()*8, 4,
+                    sound->get_width()*8, 24);
       cr->stroke();
+
+      cr->set_source_rgb(1,1,1);
+      cr->move_to((sound->get_pos() + sound->get_width()/2)*8 - extents.width/2, 
+                  20);
+      cr->show_text(sound->get_name());
     }
   }
-
-  return true;
+  
+  cr->restore();
 }
 
 void
@@ -275,8 +374,24 @@ int main(int argc, char** argv)
    
   boost::shared_ptr<Timeline> timeline(new Timeline());
 
-  timeline->add_layer("Layer1");
-  timeline->add_layer("Layer2");
+  TimelineLayerHandle layer1 = timeline->add_layer("Layer1");
+  TimelineLayerHandle layer2 = timeline->add_layer("Layer2");
+  TimelineLayerHandle layer3 = timeline->add_layer("Layer3");
+  TimelineLayerHandle layer4 = timeline->add_layer("Layer4");
+
+  layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(20.0f, 30.0f, "anim1.anim")));
+  layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(60.0f, 30.0f, "anim2.anim")));
+
+  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(8.0f)));
+  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(10.0f)));
+  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(11.0f)));
+  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(15.0f)));
+  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(20.0f)));
+  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(35.0f)));
+  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(40.0f)));
+
+  layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(10.0f, 10.0f, "sound1.wav")));
+  layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(30.0f, 40.0f, "sound.wav")));
 
   TimelineWidget timeline_widget;
   timeline_widget.set_timeline(timeline);

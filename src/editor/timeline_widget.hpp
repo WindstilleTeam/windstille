@@ -21,7 +21,9 @@
 
 #include <gtkmm/drawingarea.h>
 #include <boost/shared_ptr.hpp>
+#include <set>
 
+#include "editor/timeline_layer.hpp"
 #include "math/vector2f.hpp"
 
 class Timeline;
@@ -30,7 +32,9 @@ class TimelineWidget : public Gtk::DrawingArea
 {
 private:
   boost::shared_ptr<Timeline> m_timeline;
+  std::set<TimelineObjectHandle> m_selection;
 
+  bool     is_mouse_down;
   Vector2f down_pos;
   Vector2f move_pos;
 
@@ -47,6 +51,13 @@ public:
 protected:
   //Override default signal handler:
   virtual bool on_expose_event(GdkEventExpose* event);
+
+private:
+  void draw_select_rectangle(Cairo::RefPtr<Cairo::Context> cr);
+  void draw_grid(Cairo::RefPtr<Cairo::Context> cr);
+  void draw_timeline(Cairo::RefPtr<Cairo::Context> cr);
+  void draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
+                           TimelineLayerHandle layer);
 
 private:
   TimelineWidget(const TimelineWidget&);
