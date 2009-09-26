@@ -31,7 +31,7 @@
 TimelineWidget::TimelineWidget() :
   m_timeline(),
   m_selection(),
-  is_mouse_down(false),
+  m_mode(kNoMode),
   down_pos(),
   move_pos()
 {
@@ -53,9 +53,41 @@ TimelineWidget::mouse_down(GdkEventButton* ev)
 {
   if (ev->button == 1)
   {
-    is_mouse_down = true;
     down_pos.x = static_cast<float>(ev->x);
     down_pos.y = static_cast<float>(ev->y);
+    move_pos.x = static_cast<float>(ev->x);
+    move_pos.y = static_cast<float>(ev->y);
+
+    TimelineLayerHandle layer = m_timeline->get_layer(static_cast<int>(ev->y / 32));
+    if (layer)
+    {
+      TimelineObjectHandle obj = layer->get_object(static_cast<float>(ev->x / 8));
+      if (obj)
+      {
+        m_mode = kDragMode;
+
+        if (m_selection.find(obj) == m_selection.end())
+        {
+          if (!(ev->state & GDK_SHIFT_MASK))
+            m_selection.clear();
+
+          m_selection.insert(obj);
+        }
+        else
+        {
+          if (ev->state & GDK_SHIFT_MASK)
+          {
+            m_selection.erase(m_selection.find(obj));
+          }
+        }
+      }
+      else
+        m_mode = kSelectMode;
+    }
+    else
+    {
+      m_mode = kSelectMode;
+    }
   }
   return false;
 }
@@ -65,7 +97,28 @@ TimelineWidget::mouse_up(GdkEventButton* ev)
 {
   if (ev->button == 1)
   {
-    is_mouse_down = false;
+    if (m_mode == kSelectMode)
+    {
+      m_mode = kNoMode;
+
+      Rectf selection(down_pos, Vector2f(static_cast<float>(ev->x), static_cast<float>(ev->y)));
+      selection.normalize();
+
+      if (!(ev->state & GDK_SHIFT_MASK))
+        m_selection.clear();
+
+      add_to_selection(selection);
+    }
+    else if (m_mode == kDragMode)
+    {
+      m_mode = kNoMode;
+      for (std::set<TimelineObjectHandle>::iterator i = m_selection.begin(); 
+           i != m_selection.end(); ++i)
+      {
+        (*i)->set_pos((*i)->get_pos() + (move_pos.x - down_pos.x)/8);
+      }
+    }
+
     queue_draw();
   }
   return false;
@@ -74,13 +127,33 @@ TimelineWidget::mouse_up(GdkEventButton* ev)
 bool
 TimelineWidget::mouse_move(GdkEventMotion* ev)
 {
-  if (is_mouse_down)
+  if (m_mode == kSelectMode)
   {
     move_pos.x = static_cast<float>(ev->x);
     move_pos.y = static_cast<float>(ev->y);
     queue_draw();
   }
+  else if (m_mode == kDragMode)
+  {
+    move_pos.x = static_cast<float>(ev->x);
+    move_pos.y = static_cast<float>(ev->y);
+
+    queue_draw();
+  }
   return false;
+}
+
+void
+TimelineWidget::add_to_selection(const Rectf& selection)
+{
+  Timeline::iterator start = m_timeline->begin() + std::max(0, std::min(m_timeline->size(), static_cast<int>((selection.top+16)    / 32)));
+  Timeline::iterator end   = m_timeline->begin() + std::max(0, std::min(m_timeline->size(), static_cast<int>((selection.bottom+16) / 32)));
+
+  for(Timeline::iterator i = start; i != end; ++i)
+  {
+    const TimelineLayer::Objects& objects = (*i)->get_objects(selection.left / 8.0f, selection.right / 8.0f);
+    m_selection.insert(objects.begin(), objects.end());
+  }
 }
 
 bool
@@ -92,16 +165,14 @@ TimelineWidget::on_expose_event(GdkEventExpose* ev)
 
     Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
 
-    //std::cout << "on_expose_event: " << allocation.get_width() << "x" << allocation.get_height() << std::endl;
-
-    if (1) // pixel perfect drawing
-      cr->translate(0.5, 0.5);
-
     // clip to the area indicated by the expose event so that we only redraw
     // the portion of the window that needs to be redrawn
     cr->rectangle(ev->area.x,     ev->area.y,
                   ev->area.width, ev->area.height);
     cr->clip();
+
+    if (1) // pixel perfect drawing
+      cr->translate(0.5, 0.5);
 
     draw_timeline(cr);
 
@@ -120,7 +191,7 @@ void
 TimelineWidget::draw_select_rectangle(Cairo::RefPtr<Cairo::Context> cr)
 {
   // Select rectangle
-  if (is_mouse_down)
+  if (m_mode == kSelectMode)
   {
     //Rectf rect(down_pos, move_pos - down_pos);
     //rect.normalize();
@@ -216,20 +287,42 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
 
   for(TimelineLayer::iterator i = layer->begin(); i != layer->end(); ++i)
   {
+    bool in_selection = m_selection.find(*i) != m_selection.end();
+
     if (boost::shared_ptr<TimelineKeyframeObject> keyframe =
         boost::dynamic_pointer_cast<TimelineKeyframeObject>(*i))
     {
-      cr->set_source_rgb(0.5, 0.75, 0.0);
+      cr->save();
+        
+      if (in_selection)
+      {
+        cr->set_source_rgb(0.75, 1.0, 0.0);
+        if (m_mode == kDragMode)
+          cr->translate(move_pos.x - down_pos.x, 0.0);
+      }
+      else
+      {
+        cr->set_source_rgb(0.5, 0.75, 0.0);
+      }
+      
       cr->rectangle(keyframe->get_pos()*8, 4, 8, 24);
       cr->fill();
 
-      cr->set_source_rgb(0, 0, 0);
+      if (in_selection)
+        cr->set_source_rgb(0.25, 0.25, 0.25);
+      else
+        cr->set_source_rgb(0, 0, 0);
+
       cr->rectangle(keyframe->get_pos()*8, 4, 8, 24);
-      cr->stroke();     
+      cr->stroke();  
+      
+      cr->restore();
     }
     else if (boost::shared_ptr<TimelineAnimObject> anim =
              boost::dynamic_pointer_cast<TimelineAnimObject>(*i))
     {
+      cr->save();
+
       Cairo::TextExtents extents;
 
       cr->select_font_face ("Sans", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
@@ -246,12 +339,30 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
                   << extents.y_advance << " "
                   << std::endl;
 
-      cr->set_source_rgb(0.0, 0.5, 0.75);
+      if (in_selection)
+      {
+        cr->set_source_rgb(0.0, 0.75, 1.0);
+        if (m_mode == kDragMode)
+          cr->translate(move_pos.x - down_pos.x, 0.0);
+      }
+      else
+      {
+        cr->set_source_rgb(0.0, 0.5, 0.75);
+      }
+
       cr->rectangle(anim->get_pos()*8,  4,
                     anim->get_width()*8, 24);
       cr->fill();
 
-      cr->set_source_rgb(0, 0, 0);
+      if (in_selection)
+      {
+        cr->set_source_rgb(0.25, 0.25, 0.25);
+      }
+      else
+      {
+        cr->set_source_rgb(0, 0, 0);
+      }
+
       cr->rectangle(anim->get_pos()*8, 4,
                     anim->get_width()*8, 24);
       cr->stroke();
@@ -260,13 +371,17 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
       cr->move_to((anim->get_pos() + anim->get_width()/2)*8 - extents.width/2, 
                   20);
       cr->show_text(anim->get_name());
+
+      cr->restore();
     }
     else if (boost::shared_ptr<TimelineSoundObject> sound =
              boost::dynamic_pointer_cast<TimelineSoundObject>(*i))
     {
+      cr->save();
+
       Cairo::TextExtents extents;
 
-      cr->select_font_face ("Sans", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
+      cr->select_font_face("Sans", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
       cr->set_font_size(12);
 
       cr->get_text_extents(sound->get_name(), extents);
@@ -280,7 +395,17 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
                   << extents.y_advance << " "
                   << std::endl;
 
-      cr->set_source_rgb(0.75, 0.0, 0.5);
+      if (in_selection)
+      {
+        if (m_mode == kDragMode)
+          cr->translate(move_pos.x - down_pos.x, 0.0);
+        cr->set_source_rgb(1.0, 0.0, 0.75);
+      }
+      else
+      {
+        cr->set_source_rgb(0.75, 0.0, 0.5);
+      }
+
       cr->rectangle(sound->get_pos()*8,  4,
                     sound->get_width()*8, 24);
       cr->fill();
@@ -294,6 +419,8 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
       cr->move_to((sound->get_pos() + sound->get_width()/2)*8 - extents.width/2, 
                   20);
       cr->show_text(sound->get_name());
+
+      cr->restore();
     }
   }
   
@@ -305,115 +432,5 @@ TimelineWidget::set_timeline(boost::shared_ptr<Timeline> timeline)
 {
   m_timeline = timeline;
 }
-
-#ifdef __TEST__
-
-#include <gtkmm/main.h>
-#include <gtkmm/window.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/box.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/table.h>
-#include <gtkmm/ruler.h>
-#include <gtkmm/scrollbar.h>
-
-class TimelineLayerColumns : public Gtk::TreeModel::ColumnRecord
-{
-public:
-  Gtk::TreeModelColumn<Glib::ustring> m_name;
-
-public:
-  TimelineLayerColumns() :
-    m_name()
-  {
-    add(m_name);
-  }
-};
-
-int main(int argc, char** argv)
-{
-  Gtk::Main kit(argc, argv);
-
-  Gtk::Window win;
-  win.set_title("Timeline Test");
-  win.set_default_size(800, 400);
-
-  TimelineLayerColumns columns;
-  Gtk::HRuler hruler;
-  Gtk::TreeView treeview;
-  treeview.set_headers_visible(false);
-  //treeview.set_fixed_height_mode(true);
-  treeview.set_grid_lines(Gtk::TREE_VIEW_GRID_LINES_BOTH);
-  treeview.remove_all_columns();
-  treeview.append_column_editable("Name", columns.m_name);
-
-  Glib::RefPtr<Gtk::ListStore> liststore = Gtk::ListStore::create(columns);
-
-  for(int i = 0; i < 5; ++i)
-  {
-    Gtk::ListStore::iterator it = liststore->append();
-    std::ostringstream str;
-    str << "Hello World: " << i;
-    (*it)[columns.m_name] = str.str();
-  }
-
-  treeview.set_model(liststore);
-  treeview.set_size_request(200, -1);
-  treeview.set_reorderable();
-
-  Gtk::Table table;
-
-  //table.set_size_request(800, 400);
-
-  Gtk::Adjustment hadjustment(50, 0, 100);
-  Gtk::Adjustment vadjustment(50, 0, 100);
-
-  Gtk::VScrollbar vscroll(vadjustment);
-  Gtk::HScrollbar hscroll(hadjustment);
-   
-  boost::shared_ptr<Timeline> timeline(new Timeline());
-
-  TimelineLayerHandle layer1 = timeline->add_layer("Layer1");
-  TimelineLayerHandle layer2 = timeline->add_layer("Layer2");
-  TimelineLayerHandle layer3 = timeline->add_layer("Layer3");
-  TimelineLayerHandle layer4 = timeline->add_layer("Layer4");
-
-  layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(20.0f, 30.0f, "anim1.anim")));
-  layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(60.0f, 30.0f, "anim2.anim")));
-
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(8.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(10.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(11.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(15.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(20.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(35.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(40.0f)));
-
-  layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(10.0f, 10.0f, "sound1.wav")));
-  layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(30.0f, 40.0f, "sound.wav")));
-
-  TimelineWidget timeline_widget;
-  timeline_widget.set_timeline(timeline);
-
-  hruler.set_range(0, 100, 50, 100);
-
-  table.attach(hruler, 1, 2, 0, 1, Gtk::FILL, Gtk::FILL);
-
-  table.attach(treeview, 0, 1, 1, 2, Gtk::FILL, Gtk::FILL);
-  table.attach(timeline_widget, 1, 2, 1, 2, Gtk::FILL|Gtk::EXPAND, Gtk::FILL|Gtk::EXPAND);
-  table.attach(hscroll, 1, 2, 2, 3, Gtk::FILL, Gtk::FILL);
-  table.attach(vscroll, 2, 3, 1, 2, Gtk::FILL, Gtk::FILL);
-  timeline_widget.show();
-
-  win.add(table);
-  win.show_all();
-
-  Gtk::Main::run(win);
-
-  return 0;
-}
-
-#endif
 
 /* EOF */

@@ -47,7 +47,10 @@ public:
 
   void add_object(TimelineObjectHandle object);
 
+  Objects get_objects(float start, float end) const;
   TimelineObjectHandle get_object(float pos) const;
+
+  std::string get_name() const { return m_name; }
 
 private:
   TimelineLayer(const TimelineLayer&);

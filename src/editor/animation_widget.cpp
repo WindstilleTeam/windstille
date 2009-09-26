@@ -21,61 +21,72 @@
 #include <boost/shared_ptr.hpp>
 
 #include "editor/timeline_widget.hpp"
-#include "editor/timeline.hpp"
 #include "editor/timeline_object.hpp"
 #include "editor/timeline_anim_object.hpp"
 #include "editor/timeline_sound_object.hpp"
 #include "editor/timeline_keyframe_object.hpp"
 
-class TimelineLayerColumns : public Gtk::TreeModel::ColumnRecord
-{
-public:
-  Gtk::TreeModelColumn<Glib::ustring> m_name;
-
-public:
-  TimelineLayerColumns() :
-    m_name()
-  {
-    add(m_name);
-  }
-};
-
 AnimationWidget::AnimationWidget() :
   hadjustment(50, 0, 100),
   vadjustment(50, 0, 100),
   hruler(),
+  scrolled(),
   treeview(),
   table(),
   vscroll(vadjustment),
-  hscroll(hadjustment)
+  hscroll(hadjustment),
+  m_timeline_widget(),
+  m_timeline_layer_widget(),
+  m_timeline()
 {
-  TimelineLayerColumns columns;
-  treeview.set_headers_visible(false);
-  //treeview.set_fixed_height_mode(true);
-  treeview.set_grid_lines(Gtk::TREE_VIEW_GRID_LINES_BOTH);
-  treeview.remove_all_columns();
-  treeview.append_column_editable("Name", columns.m_name);
+  hruler.set_range(0, 100, 50, 100);
 
-  Glib::RefPtr<Gtk::ListStore> liststore = Gtk::ListStore::create(columns);
+  table.attach(hruler, 1, 2, 0, 1, Gtk::FILL, Gtk::FILL);
 
-  for(int i = 0; i < 5; ++i)
-  {
-    Gtk::ListStore::iterator it = liststore->append();
-    std::ostringstream str;
-    str << "Hello World: " << i;
-    (*it)[columns.m_name] = str.str();
-  }
+  scrolled.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_NEVER);
+  scrolled.add(treeview);
 
-  treeview.set_model(liststore);
-  treeview.set_size_request(200, -1);
-  treeview.set_reorderable();
-   
+  m_timeline_layer_widget.set_size_request(140, -1);
+
+  table.attach(m_timeline_layer_widget, 0, 1, 1, 2, Gtk::FILL, Gtk::FILL);
+  table.attach(m_timeline_widget, 1, 2, 1, 2, Gtk::FILL|Gtk::EXPAND, Gtk::FILL|Gtk::EXPAND);
+  table.attach(hscroll, 1, 2, 2, 3, Gtk::FILL, Gtk::FILL);
+  table.attach(vscroll, 2, 3, 1, 2, Gtk::FILL, Gtk::FILL);
+
+  add(table);
+}
+
+void
+AnimationWidget::set_timeline(TimelineHandle timeline)
+{
+  m_timeline = timeline;
+  m_timeline_widget.set_timeline(timeline);
+  m_timeline_layer_widget.set_timeline(timeline);
+}
+
+#ifdef __TEST__
+
+#include <gtkmm/main.h>
+#include <gtkmm/window.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/box.h>
+#include <gtkmm/adjustment.h>
+#include <gtkmm/table.h>
+#include <gtkmm/ruler.h>
+#include <gtkmm/scrollbar.h>
+
+int main(int argc, char** argv)
+{
+  Gtk::Main kit(argc, argv);
+
+  // create test timeline  
   boost::shared_ptr<Timeline> timeline(new Timeline());
 
-  TimelineLayerHandle layer1 = timeline->add_layer("Layer1");
-  TimelineLayerHandle layer2 = timeline->add_layer("Layer2");
-  TimelineLayerHandle layer3 = timeline->add_layer("Layer3");
-  TimelineLayerHandle layer4 = timeline->add_layer("Layer4");
+  TimelineLayerHandle layer1 = timeline->add_layer("DoorLeft:pos");
+  TimelineLayerHandle layer2 = timeline->add_layer("DoorRight:pos");
+  TimelineLayerHandle layer3 = timeline->add_layer("AnimaitonLayer1");
+  TimelineLayerHandle layer4 = timeline->add_layer("SoundLayer2");
 
   layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(20.0f, 30.0f, "anim1.anim")));
   layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(60.0f, 30.0f, "anim2.anim")));
@@ -91,20 +102,21 @@ AnimationWidget::AnimationWidget() :
   layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(10.0f, 10.0f, "sound1.wav")));
   layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(30.0f, 40.0f, "sound.wav")));
 
-  TimelineWidget timeline_widget;
-  timeline_widget.set_timeline(timeline);
+  // create the window
+  Gtk::Window win;
+  win.set_title("Timeline Test");
+  win.set_default_size(800, 400);
 
-  hruler.set_range(0, 100, 50, 100);
+  AnimationWidget animation_widget;
+  animation_widget.set_timeline(timeline);
+  win.add(animation_widget);
+  win.show_all();
 
-  table.attach(hruler, 1, 2, 0, 1, Gtk::FILL, Gtk::FILL);
+  Gtk::Main::run(win);
 
-  table.attach(treeview, 0, 1, 1, 2, Gtk::FILL, Gtk::FILL);
-  table.attach(timeline_widget, 1, 2, 1, 2, Gtk::FILL|Gtk::EXPAND, Gtk::FILL|Gtk::EXPAND);
-  table.attach(hscroll, 1, 2, 2, 3, Gtk::FILL, Gtk::FILL);
-  table.attach(vscroll, 2, 3, 1, 2, Gtk::FILL, Gtk::FILL);
-  timeline_widget.show();
-
-  add(table);
+  return 0;
 }
+
+#endif
 
 /* EOF */

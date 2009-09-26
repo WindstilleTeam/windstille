@@ -26,6 +26,20 @@ Timeline::Timeline()
 }
 
 TimelineLayerHandle
+Timeline::get_layer(int n) const
+{
+  if (!m_layers.empty() &&
+      n >= 0 && n < static_cast<int>(m_layers.size()))
+  {
+    return m_layers[n];
+  }
+  else
+  {
+    return TimelineLayerHandle();
+  }
+}
+
+TimelineLayerHandle
 Timeline::add_layer(const std::string& name)
 {
   m_layers.push_back(TimelineLayerHandle(new TimelineLayer(name)));

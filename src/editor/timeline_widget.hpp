@@ -23,10 +23,12 @@
 #include <boost/shared_ptr.hpp>
 #include <set>
 
+#include "editor/timeline.hpp"
 #include "editor/timeline_layer.hpp"
 #include "math/vector2f.hpp"
 
 class Timeline;
+class Rectf;
 
 class TimelineWidget : public Gtk::DrawingArea
 {
@@ -34,7 +36,7 @@ private:
   boost::shared_ptr<Timeline> m_timeline;
   std::set<TimelineObjectHandle> m_selection;
 
-  bool     is_mouse_down;
+  enum { kNoMode, kSelectMode, kDragMode } m_mode;
   Vector2f down_pos;
   Vector2f move_pos;
 
@@ -42,7 +44,7 @@ public:
   TimelineWidget();
   ~TimelineWidget();
 
-  void set_timeline(boost::shared_ptr<Timeline> timeline);
+  void set_timeline(TimelineHandle timeline);
 
   bool mouse_down(GdkEventButton* ev);
   bool mouse_up(GdkEventButton* ev);
@@ -58,6 +60,7 @@ private:
   void draw_timeline(Cairo::RefPtr<Cairo::Context> cr);
   void draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
                            TimelineLayerHandle layer);
+  void add_to_selection(const Rectf& selection);
 
 private:
   TimelineWidget(const TimelineWidget&);

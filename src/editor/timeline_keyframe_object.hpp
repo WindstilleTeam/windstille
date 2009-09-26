@@ -31,6 +31,7 @@ public:
     m_pos(pos)
   {}
 
+  void  set_pos(float pos) { m_pos = pos; }
   float get_pos()   const { return m_pos; }
   float get_width() const { return 1.0f; }
 

@@ -36,6 +36,7 @@ public:
   {}
 
   float get_pos()   const { return m_pos; }
+  void  set_pos(float pos) { m_pos = pos; }
   float get_width() const { return m_width; }
   std::string get_name() const { return m_name; }
 

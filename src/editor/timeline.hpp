@@ -44,16 +44,16 @@ public:
   const_iterator end()   const { return m_layers.end();   }
 
   int size() const { return static_cast<int>(m_layers.size()); }
-
-  TimelineObjectHandle get_object(const Vector2f& pos) const;
-  TimelineLayerHandle  get_layer(const Vector2f& pos) const;
-
+  
+  TimelineLayerHandle get_layer(int n) const;
   TimelineLayerHandle add_layer(const std::string& name);
 
 private:
   Timeline(const Timeline&);
   Timeline& operator=(const Timeline&);
 };
+
+typedef boost::shared_ptr<Timeline> TimelineHandle;
 
 #endif
 

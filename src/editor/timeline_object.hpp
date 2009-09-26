@@ -30,6 +30,7 @@ public:
 
   virtual float get_pos() const =0;
   virtual float get_width() const =0;
+  virtual void  set_pos(float pos) =0;
 
 private:
   TimelineObject(const TimelineObject&);

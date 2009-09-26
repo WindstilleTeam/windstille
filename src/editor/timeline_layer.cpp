@@ -16,7 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "timeline_layer.hpp"
+#include "editor/timeline_layer.hpp"
+
+#include <assert.h>
 
 TimelineLayer::TimelineLayer(const std::string& name)
   : m_name(name),
@@ -33,7 +35,35 @@ TimelineLayer::add_object(TimelineObjectHandle object)
 TimelineObjectHandle
 TimelineLayer::get_object(float pos) const
 {
+  for(const_iterator i = begin(); i != end(); ++i)
+  {
+    if (pos >= (*i)->get_pos() &&
+        pos <  (*i)->get_pos() + (*i)->get_width())
+    {
+      return *i;
+    }
+  }
+
   return TimelineObjectHandle();
+}
+
+TimelineLayer::Objects
+TimelineLayer::get_objects(float selection_start, float selection_end) const
+{
+  assert(selection_start <= selection_end);
+
+  Objects objects;
+
+  for(const_iterator i = begin(); i != end(); ++i)
+  {
+    if (selection_start <= (*i)->get_pos() &&
+        selection_end   >  (*i)->get_pos() + (*i)->get_width())
+    {
+      objects.push_back(*i);
+    }
+  }
+
+  return objects;
 }
 
 /* EOF */
