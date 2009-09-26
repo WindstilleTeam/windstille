@@ -1,0 +1,78 @@
+/*
+**  Windstille - A Sci-Fi Action-Adventure Game
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>
+**
+**  This program is free software: you can redistribute it and/or modify
+**  it under the terms of the GNU General Public License as published by
+**  the Free Software Foundation, either version 3 of the License, or
+**  (at your option) any later version.
+**  
+**  This program is distributed in the hope that it will be useful,
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**  GNU General Public License for more details.
+**  
+**  You should have received a copy of the GNU General Public License
+**  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include "timeline_layer_widget.hpp"
+
+TimelineLayerWidget::TimelineLayerWidget() :
+  m_timeline()
+{
+}
+
+bool
+TimelineLayerWidget::on_expose_event(GdkEventExpose* ev)
+{
+  if (!m_timeline)
+    return false;
+
+  if (Glib::RefPtr<Gdk::Window> window = get_window())
+  {
+    Gtk::Allocation allocation = get_allocation();
+
+    Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
+
+    // clip to the area indicated by the expose event so that we only redraw
+    // the portion of the window that needs to be redrawn
+    cr->rectangle(ev->area.x,     ev->area.y,
+                  ev->area.width, ev->area.height);
+    cr->clip();
+
+    if (1) // pixel perfect drawing
+      cr->translate(0.5, 0.5);
+
+    cr->select_font_face ("Sans", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
+    cr->set_font_size(12);
+
+    cr->set_line_width(1.0);
+
+    Cairo::TextExtents extents;
+    for(Timeline::iterator i = m_timeline->begin(); i != m_timeline->end(); ++i)
+    {
+      cr->get_text_extents((*i)->get_name(), extents);
+
+      cr->set_source_rgb(1,1,1);
+      cr->rectangle(0, 32 * (i - m_timeline->begin()),
+                    allocation.get_width(), 32);
+      cr->fill();
+
+      // draw text
+      cr->set_source_rgb(0,0,0);
+      cr->move_to(8, 10 + 32 * (i - m_timeline->begin()) - extents.y_bearing);
+      cr->show_text((*i)->get_name());
+
+      // draw line
+      cr->set_source_rgb(0,0,0);
+      cr->move_to(0, 32 + 32 * (i - m_timeline->begin()));
+      cr->line_to(allocation.get_width(), 32+ 32 * (i - m_timeline->begin()));
+      cr->stroke();
+    }
+  }
+
+  return false;
+}
+
+/* EOF */
