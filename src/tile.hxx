@@ -21,6 +21,7 @@
 #define HEADER_TILE_HXX
 
 #include <ClanLib/Display/sprite.h>
+#include <assert.h>
 
 /** A Tile is a surface or sprite together with information for
  *  collision detection (aka colmap). The collision map is at a

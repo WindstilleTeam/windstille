@@ -1,0 +1,7 @@
+<resources>
+  <section name="tiles">
+    <sprite name="level1">
+      <image file="images/tiles/*.png" />
+    </sprite>
+  </section>
+</resources>

@@ -100,7 +100,7 @@ WindstilleGame::display ()
       float delta = delta_manager.getset ();
       CL_System::sleep (1);
       
-      Display::begin_gl();
+      Display_::begin_gl();
       {
         glBlendFunc(GL_ONE, GL_ZERO);
 
@@ -124,7 +124,7 @@ WindstilleGame::display ()
      
         glEnd();
       }
-      Display::end_gl();
+      Display_::end_gl();
 
       view.draw ();
       view.update (delta);
@@ -133,7 +133,7 @@ WindstilleGame::display ()
 
       if (0) // Water
         {
-          Display::begin_gl();
+          Display_::begin_gl();
           {
             glEnable (GL_BLEND);
             glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
@@ -157,12 +157,12 @@ WindstilleGame::display ()
             }
             glEnd();
           }
-          Display::end_gl();
+          Display_::end_gl();
         }
 
       if (0) // Laser
         {
-          Display::begin_gl();
+          Display_::begin_gl();
           
           glBlendFunc( GL_SRC_ALPHA, GL_ONE );
 
@@ -178,7 +178,7 @@ WindstilleGame::display ()
           }
           glEnd();
 
-          Display::end_gl();
+          Display_::end_gl();
         }
       
       {
@@ -188,7 +188,7 @@ WindstilleGame::display ()
         float bottom = 350;
         float alpha  = .2f;
 
-        Display::begin_gl();
+        Display_::begin_gl();
         glEnable (GL_BLEND);
         glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
         glBegin(GL_QUADS);
@@ -224,7 +224,7 @@ WindstilleGame::display ()
         glVertex2f(right, bottom);
 
         glEnd();
-        Display::end_gl();
+        Display_::end_gl();
       }
 
       if (1)

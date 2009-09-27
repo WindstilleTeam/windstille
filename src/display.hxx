@@ -21,7 +21,7 @@
 #define HEADER_DISPLAY_HXX
 
 /** */
-class Display
+class Display_ // renamed from Display, due to conflict with X11 headers 
 {
 private:
 public:

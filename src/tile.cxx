@@ -17,6 +17,7 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+#include <string.h>
 #include "tile.hxx"
 
 Tile::Tile(CL_Sprite arg_sur, unsigned char arg_colmap[])

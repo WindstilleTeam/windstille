@@ -34,10 +34,11 @@ PlayerView::draw ()
 {
   //glPushMatrix ();
   //glTranslatef (-pos.x + CL_Display::get_width ()/2, -pos.y + CL_Display::get_height ()/2, 0.0);
-  CL_Display::push_translate_offset(int(-pos.x + CL_Display::get_width ()/2),
-                                    int(-pos.y + CL_Display::get_height ()/2));
+  CL_Display::push_modelview();
+  CL_Display::add_translate(int(-pos.x + CL_Display::get_width ()/2),
+                            int(-pos.y + CL_Display::get_height ()/2));
   world->draw ();
-  CL_Display::pop_translate_offset();
+  CL_Display::pop_modelview();
   //glPopMatrix ();
 }
 

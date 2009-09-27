@@ -22,21 +22,22 @@
 #include "display.hxx"
 
 void
-Display::begin_gl()
+Display_::begin_gl()
 {
   int viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
 
-  CL_Display::begin_3d();
+  //CL_Display::begin_3d();
+  CL_Display::flush();
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   gluOrtho2D (0, viewport[2], viewport[3], 0);
 }
 
 void
-Display::end_gl()
+Display_::end_gl()
 {
-  CL_Display::end_3d();
+  //CL_Display::end_3d();
 }
 
 /* EOF */
