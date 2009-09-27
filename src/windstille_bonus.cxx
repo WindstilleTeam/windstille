@@ -32,7 +32,7 @@
 
 WindstilleBonus::WindstilleBonus()
 {
-  std::list<std::string> llst = resources->get_all_resources("bonus");
+  std::vector<std::string> llst = resources->get_all_resources("bonus");
   std::copy(llst.begin(), llst.end(), std::back_inserter(lst));
   std::random_shuffle(lst.begin(), lst.end());
 

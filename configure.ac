@@ -14,7 +14,7 @@ AC_CHECK_LIB(qthreads, main)
 AC_CHECK_LIB(guile, scm_boot_guile)
 AC_CHECK_HEADER(guile/gh.h)
 
-REQUIRED_CLANLIB_VERSION="0.7.7"
+REQUIRED_CLANLIB_VERSION="0.8.0"
 
 CXXFLAGS="$CXXFLAGS -I\${top_srcdir}/src/"
 
@@ -43,16 +43,16 @@ fi
 
 PKG_CHECK_MODULES(WINDSTILLE,
  [
-  clanCore-0.7           >= $REQUIRED_CLANLIB_VERSION
-  clanApp-0.7            >= $REQUIRED_CLANLIB_VERSION
-  clanDisplay-0.7        >= $REQUIRED_CLANLIB_VERSION
-  clanGL-0.7             >= $REQUIRED_CLANLIB_VERSION
-  clanGUI-0.7            >= $REQUIRED_CLANLIB_VERSION
-  clanGUIStyleSilver-0.7 >= $REQUIRED_CLANLIB_VERSION
+  clanCore-0.8           >= $REQUIRED_CLANLIB_VERSION
+  clanApp-0.8            >= $REQUIRED_CLANLIB_VERSION
+  clanDisplay-0.8        >= $REQUIRED_CLANLIB_VERSION
+  clanGL-0.8             >= $REQUIRED_CLANLIB_VERSION
+  clanGUI-0.8            >= $REQUIRED_CLANLIB_VERSION
+  clanGUIStyleSilver-0.8 >= $REQUIRED_CLANLIB_VERSION
 dnl clanSound   >= $REQUIRED_CLANLIB_VERSION
 dnl clanMikMod  >= $REQUIRED_CLANLIB_VERSION
-  clanSound-0.7  >= $REQUIRED_CLANLIB_VERSION
-  clanVorbis-0.7  >= $REQUIRED_CLANLIB_VERSION
+  clanSound-0.8  >= $REQUIRED_CLANLIB_VERSION
+  clanVorbis-0.8  >= $REQUIRED_CLANLIB_VERSION
   ],
  [])
 

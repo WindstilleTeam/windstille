@@ -28,7 +28,7 @@
 void
 Screenshot::write_screenshot_pnm(const std::string& filename)
 {
-  CL_PixelBuffer* buf = take_screen_shot();
+  CL_PixelBuffer buf = take_screen_shot();
 
   FILE* out = fopen(filename.c_str(), "wb");
   
@@ -39,10 +39,10 @@ Screenshot::write_screenshot_pnm(const std::string& filename)
       return;
     }
 
-  buf->lock();
-  int width  = buf->get_width();
-  int pitch  = buf->get_width()*3;
-  int height = buf->get_height();
+  buf.lock();
+  int width  = buf.get_width();
+  int pitch  = buf.get_width()*3;
+  int height = buf.get_height();
 
   fprintf(out,
 	  "P6\n"
@@ -52,7 +52,7 @@ Screenshot::write_screenshot_pnm(const std::string& filename)
 	  width,
 	  height);
 
-  unsigned char* data = static_cast<unsigned char*>(buf->get_data());
+  unsigned char* data = static_cast<unsigned char*>(buf.get_data());
   
   for(int i = height-1; i >= 0; --i)
     {
@@ -62,13 +62,11 @@ Screenshot::write_screenshot_pnm(const std::string& filename)
              out);
     }
 
-  buf->unlock();
+  buf.unlock();
   fclose(out);
-  
-  delete buf;
 }
 
-CL_PixelBuffer*
+CL_PixelBuffer
 Screenshot::take_screen_shot()
 {
   CL_PixelBuffer back_buffer = CL_Display::get_current_window()->get_back_buffer();
@@ -76,7 +74,7 @@ Screenshot::take_screen_shot()
   unsigned short width = back_buffer.get_width();
   unsigned short height = back_buffer.get_height();
 		
-  CL_PixelBuffer *pbuf = new CL_PixelBuffer(width, height, width*3, CL_PixelFormat::bgr888);
+  CL_PixelBuffer pbuf(width, height, width*3, CL_PixelFormat::bgr888);
   back_buffer.convert(pbuf);
   
   return pbuf;

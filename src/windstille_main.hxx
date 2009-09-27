@@ -44,7 +44,7 @@ public:
   WindstilleMain();
   ~WindstilleMain();
 
-  virtual char* get_title() { return "Windstille"; }
+  virtual const char* get_title() { return "Windstille"; }
   virtual int main(int argc, char** argv);
 
 private:

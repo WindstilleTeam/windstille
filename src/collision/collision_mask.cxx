@@ -57,7 +57,7 @@ CollisionMask::CollisionMask(int arg_width, int arg_height)
   memset(data, ~0, sizeof(cm_uint32) * len);
 }
 
-CollisionMask::CollisionMask(CL_PixelBuffer* provider)
+CollisionMask::CollisionMask(const CL_PixelBuffer& provider)
 {
   create_from(provider);
 }
@@ -74,18 +74,18 @@ CollisionMask::CollisionMask(int arg_width, int arg_height, cm_uint32* arg_data)
 
 CollisionMask::CollisionMask(const std::string filename)
 {
-  CL_PixelBuffer* provider = CL_ProviderFactory::load(filename);
+  CL_PixelBuffer provider = CL_ProviderFactory::load(filename);
   create_from(provider);
-  delete provider;
 }
 
 void
-CollisionMask::create_from(CL_PixelBuffer* provider)
+CollisionMask::create_from(const CL_PixelBuffer& provider_)
 {  
-  provider->lock();
+  CL_PixelBuffer& provider = const_cast<CL_PixelBuffer&>(provider_);
+  provider.lock();
 
-  width  = provider->get_width();
-  height = provider->get_height();
+  width  = provider.get_width();
+  height = provider.get_height();
   pitch  = (width/int_width + (width%int_width == 0 ? 0 : 1));
 
   int len = height * pitch;
@@ -95,13 +95,13 @@ CollisionMask::create_from(CL_PixelBuffer* provider)
   for (int y = 0; y < height; ++y)
     for (int x = 0; x < width; ++x)
       {
-        if (static_cast<unsigned char*>(provider->get_data())[(y * width + x) * 4] > 50)
+        if (static_cast<unsigned char*>(provider.get_data())[(y * width + x) * 4] > 50)
           put_pixel(x, y, true);
       }
 
   std::cout << width << "x" << height << std::endl;
 
-  provider->unlock(); 
+  provider.unlock(); 
 }
 
 CollisionMask::~CollisionMask()

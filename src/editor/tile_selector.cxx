@@ -96,7 +96,8 @@ TileSelector::mouse_move(const CL_InputEvent& event)
 void 
 TileSelector::draw()
 {
-  CL_Display::push_translate_offset(0, -offset);
+  CL_Display::push_modelview();
+  CL_Display::add_translate(0, -offset);
   for(int y = 0; y < /*height FIXME*/ 40; ++y)
     for(int x = 0; x < width; ++x)
       {
@@ -125,7 +126,7 @@ TileSelector::draw()
                                   CL_Color(0,0,255, 20));
           }
       }
-  CL_Display::pop_translate_offset();
+  CL_Display::pop_modelview();
 }
 
 /* EOF */

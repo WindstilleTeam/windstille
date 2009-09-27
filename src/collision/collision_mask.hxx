@@ -47,7 +47,7 @@ public:
   /** Generate a collision mask from a given bitmap */
   CollisionMask(int width, int height, cm_uint32* data);
 
-  CollisionMask(CL_PixelBuffer* provider);
+  CollisionMask(const CL_PixelBuffer& provider);
   
   /** Creates a collision mask from a file */
   CollisionMask(const std::string filename);
@@ -93,7 +93,7 @@ public:
   bool slow_pixel_collides_with(const CollisionMask& mask, int x_of, int y_of) const;
 
 private:
-  void create_from(CL_PixelBuffer* provider);
+  void create_from(const CL_PixelBuffer& provider);
 
   /** Checks pixel precisly if the two collision masks collide */
   bool pixel_collides_with(const CollisionMask& mask, int x_of, int y_of) const;

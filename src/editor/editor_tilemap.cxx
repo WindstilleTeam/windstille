@@ -186,7 +186,8 @@ EditorTileMap::draw ()
   //glScalef(get_zoom(), get_zoom(), 1.0f);
   //glTranslatef(trans_offset.x, trans_offset.y, 0.0f);
 
-  CL_Display::push_translate_offset(int(trans_offset.x), int(trans_offset.y));
+  CL_Display::push_modelview();
+  CL_Display::add_translate(int(trans_offset.x), int(trans_offset.y));
 
   CL_Display::clear(CL_Color(100, 0, 100));
 
@@ -221,7 +222,7 @@ EditorTileMap::draw ()
           }
     }
 
-  CL_Display::pop_translate_offset();
+  CL_Display::pop_modelview();
   // glPopMatrix();
 }
 

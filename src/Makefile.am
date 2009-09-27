@@ -107,7 +107,7 @@ windstille_LDADD = \
   editor/libwindstille_editor.a \
   collision/libwindstille_collision.a \
   guistyle/libwindstille_guistyle.a \
-  input/libfeuerkraft_input.a \
+  input/libwindstille_input.a \
   @WINDSTILLE_LIBS@
 
 windstille_CPPFLAGS = \
