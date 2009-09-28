@@ -407,6 +407,16 @@ WindstilleWidget::key_press(GdkEventKey* ev)
       EditorWindow::current()->on_select_all();
       break;
 
+    case GDK_i:
+    {
+      SelectionHandle selection = m_document->get_selection();
+      for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+      {
+        m_document->timeline_add_keyframe(*i, kPosition, 0.5f);
+      }
+      break;
+    }
+
     case GDK_d:
       m_document->selection_duplicate();
       break;

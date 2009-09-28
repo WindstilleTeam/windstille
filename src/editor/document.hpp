@@ -26,6 +26,7 @@
 #include "editor/selection.hpp"
 #include "editor/command.hpp"
 #include "editor/layer.hpp"
+#include "editor/timeline_properties.hpp"
 
 class UndoManager;
 class SectorModel;
@@ -37,7 +38,7 @@ class NavGraphEdgeObjectModel;
  *  provides data and functions for editing that are not part of the
  *  central data, such as Selections and ControlPoints.
  */
-class Document // FIXME: name is not so great
+class Document
 {
 private:
   boost::scoped_ptr<UndoManager> m_undo_manager;
@@ -96,6 +97,11 @@ public:
   void object_add(LayerHandle layer, ObjectModelHandle object);
   void object_remove(ObjectModelHandle object);
   void object_set_pos(ObjectModelHandle object, const Vector2f& new_pos);
+  /** @} */
+
+  /* Timeline Commands
+   * @{*/
+  void timeline_add_keyframe(ObjectModelHandle object, TimelineProperty property, float pos);
   /** @} */
 
   /* Selection Commands

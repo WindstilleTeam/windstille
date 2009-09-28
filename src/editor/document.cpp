@@ -34,6 +34,7 @@
 #include "editor/layer_commands.hpp"
 #include "editor/navgraph_commands.hpp"
 #include "editor/object_commands.hpp"
+#include "editor/timeline_commands.hpp"
 
 Document::Document()
   : m_undo_manager(new UndoManager()),
@@ -239,6 +240,13 @@ void
 Document::object_set_pos(ObjectModelHandle object, const Vector2f& new_pos)
 {
   execute(CommandHandle(new ObjectSetPosCommand(object, new_pos)));
+}
+
+void
+Document::timeline_add_keyframe(ObjectModelHandle object, TimelineProperty property, float pos)
+{
+  std::cout << object << " " << property << " " << pos << std::endl;
+  execute(CommandHandle(new TimelineAddKeyframeCommand(*m_sector_model, object, property, pos)));
 }
 
 void

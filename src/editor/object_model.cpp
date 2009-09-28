@@ -341,12 +341,13 @@ ObjectModel::get_property(TimelineProperty property, float& value_out) const
 }
 
 void
-ObjectModel::get_property(TimelineProperty property, const Vector2f& value_out) const
+ObjectModel::get_property(TimelineProperty property, Vector2f& value_out) const
 {
   switch(property)
   {
     case kPosition:
-      return rel_pos;
+      value_out = rel_pos;
+      break;
   }
 }
 

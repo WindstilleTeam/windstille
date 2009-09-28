@@ -32,13 +32,19 @@ TimelineLayer::add_object(TimelineObjectHandle object)
   m_objects.push_back(object);
 }
 
+void
+TimelineLayer::remove_object(TimelineObjectHandle object)
+{
+  m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
+}
+
 TimelineObjectHandle
 TimelineLayer::get_object(float pos) const
 {
   for(const_iterator i = begin(); i != end(); ++i)
   {
     if (pos >= (*i)->get_pos() &&
-        pos <  (*i)->get_pos() + (*i)->get_width())
+        pos <  (*i)->get_pos() + ((*i)->get_width() == 0 ? 1 : (*i)->get_width()))
     {
       return *i;
     }

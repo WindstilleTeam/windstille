@@ -96,7 +96,7 @@ public:
   virtual void add_control_points(std::vector<ControlPointHandle>& control_points) {}
   
   virtual void get_property(TimelineProperty property, float& value_out) const;
-  virtual void get_property(TimelineProperty property, const Vector2f& value_out) const;
+  virtual void get_property(TimelineProperty property, Vector2f& value_out) const;
 
   virtual void set_property(TimelineProperty property, float value);
   virtual void set_property(TimelineProperty property, const Vector2f& value);

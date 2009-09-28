@@ -23,7 +23,7 @@
 
 class TimelineKeyframeObject : public TimelineObject
 {
-private:
+protected:
   float m_pos; 
 
 public:
@@ -33,7 +33,7 @@ public:
 
   void  set_pos(float pos) { m_pos = pos; }
   float get_pos()   const { return m_pos; }
-  float get_width() const { return 1.0f; }
+  float get_width() const { return 0.0f; }
 
 private:
   TimelineKeyframeObject(const TimelineKeyframeObject&);
@@ -41,14 +41,14 @@ private:
 };
 
 template<typename C>
-class TimelineKeyframeDataObject : public TimelineObject
+class TimelineKeyframeDataObject : public TimelineKeyframeObject
 {
 private:
   C m_data;
 
 public:
   TimelineKeyframeDataObject(float pos, const C& data)
-    : TimelineKeyframeDataObject(pos),
+    : TimelineKeyframeObject(pos),
       m_data(data)
   {}
 

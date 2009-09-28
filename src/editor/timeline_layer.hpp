@@ -46,7 +46,10 @@ public:
   const_iterator begin() const { return m_objects.begin(); }
   const_iterator end()   const { return m_objects.end();   }
 
+  bool empty() const { return m_objects.empty(); }
+
   void add_object(TimelineObjectHandle object);
+  void remove_object(TimelineObjectHandle object);
 
   Objects get_objects(float start, float end) const;
   TimelineObjectHandle get_object(float pos) const;

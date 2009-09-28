@@ -467,7 +467,7 @@ EditorWindow::on_new()
   paned->set_position(600);
 
   { // FIXME: some random data for testing
-    boost::shared_ptr<Timeline> timeline(new Timeline);
+    boost::shared_ptr<Timeline> timeline = wst->get_document().get_sector_model().get_timeline();   
 
     TimelineLayerHandle layer1 = timeline->add_layer("Layer1");
     TimelineLayerHandle layer2 = timeline->add_layer("Layer2");

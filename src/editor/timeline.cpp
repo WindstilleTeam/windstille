@@ -48,10 +48,29 @@ Timeline::add_layer(const std::string& name)
   return m_layers.back();
 }
 
-TimelineLayerHandle
-Timeline::add_object_layer(ObjectModelHandle object, TimelineProperty property)
+TimelineObjectLayerHandle 
+Timeline::create_object_layer(ObjectModelHandle object, TimelineProperty property)
 {
-  return TimelineLayerHandle(new TimelineObjectLayer(object, property));
+  switch(property)
+  {
+    case kPosition:
+      return TimelineObjectLayerHandle(new TimelineObjectDataLayer<Vector2f>(object, property));
+      
+    default:
+      throw std::runtime_error("Timeline::create_object_layer: unknown property given");
+  }
+}
+
+void
+Timeline::add_layer(TimelineLayerHandle layer)
+{
+  m_layers.push_back(layer);
+}
+
+void
+Timeline::remove_layer(TimelineLayerHandle layer)
+{
+  m_layers.erase(std::remove(m_layers.begin(), m_layers.end(), layer), m_layers.end());
 }
 
 /* EOF */

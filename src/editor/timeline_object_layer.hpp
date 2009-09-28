@@ -19,17 +19,22 @@
 #ifndef HEADER_WINDSTILLE_TIMELINE_OBJECT_LAYER_HPP
 #define HEADER_WINDSTILLE_TIMELINE_OBJECT_LAYER_HPP
 
+#include <boost/shared_ptr.hpp>
+
 #include "editor/timeline_layer.hpp"
+#include "editor/timeline_keyframe_object.hpp"
 #include "editor/object_model.hpp"
 
 class TimelineObjectLayer : public TimelineLayer
 {
-private:
+protected:
   ObjectModelHandle m_object;
   TimelineProperty  m_property;
 
 public:
   TimelineObjectLayer(ObjectModelHandle object, TimelineProperty property);
+
+  virtual TimelineObjectHandle create_keyframe(float pos) =0;
 
 private:
   TimelineObjectLayer(const TimelineObjectLayer&);
@@ -44,11 +49,25 @@ public:
     : TimelineObjectLayer(object, property)
   {}
 
+  C get_value(float pos)
+  {
+    return C();
+  }
+
   void apply(float pos)
   {
-    //object->set_property(property, value);
+    m_object->set_property(m_property, get_value(pos));
+  }
+
+  TimelineObjectHandle create_keyframe(float pos)
+  {
+    C data;
+    m_object->get_property(m_property, data);
+    return TimelineObjectHandle(new TimelineKeyframeDataObject<C>(pos, data));
   }
 };
+
+typedef boost::shared_ptr<TimelineObjectLayer> TimelineObjectLayerHandle;
 
 #endif
 

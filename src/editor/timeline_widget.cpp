@@ -290,7 +290,7 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
     bool in_selection = m_selection.find(*i) != m_selection.end();
 
     if (boost::shared_ptr<TimelineKeyframeObject> keyframe =
-        boost::dynamic_pointer_cast<TimelineKeyframeObject>(*i)) //FIXME:
+        boost::dynamic_pointer_cast<TimelineKeyframeObject>(*i))
     {
       cr->save();
         
