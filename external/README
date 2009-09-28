@@ -9,7 +9,9 @@ SQUIRREL2/ - http://squirrel-lang.org
 
 miniswig/ - Squirrel Wrapper Generator
 --------------------------------------
-    uses svn:externals should update automatically
+  Created by doing:
+  
+  svn export http://supertux.lethargik.org/svn/supertux/trunk/supertux/tools/miniswig
 
 
 binreloc-2.0/
