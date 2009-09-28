@@ -16,42 +16,17 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "editor/timeline.hpp"
+#ifndef HEADER_WINDSTILLE_TIMELINE_PROPERTIES_HPP
+#define HEADER_WINDSTILLE_TIMELINE_PROPERTIES_HPP
 
-#include "editor/timeline_object_layer.hpp"
-#include "editor/timeline_layer.hpp"
-
-Timeline::Timeline()
-  : m_layers()
+enum TimelineProperty
 {
-}
+  kPosition,
+  kColor,
+  kRotation,
+  kScale
+};
 
-TimelineLayerHandle
-Timeline::get_layer(int n) const
-{
-  if (!m_layers.empty() &&
-      n >= 0 && n < static_cast<int>(m_layers.size()))
-  {
-    return m_layers[n];
-  }
-  else
-  {
-    return TimelineLayerHandle();
-  }
-}
-
-TimelineLayerHandle
-Timeline::add_layer(const std::string& name)
-{
-  m_layers.push_back(TimelineLayerHandle(new TimelineLayer(name)));
-
-  return m_layers.back();
-}
-
-TimelineLayerHandle
-Timeline::add_object_layer(ObjectModelHandle object, TimelineProperty property)
-{
-  return TimelineLayerHandle(new TimelineObjectLayer(object, property));
-}
+#endif
 
 /* EOF */

@@ -16,42 +16,40 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "editor/timeline.hpp"
+#ifndef HEADER_WINDSTILLE_TIMELINE_OBJECT_LAYER_HPP
+#define HEADER_WINDSTILLE_TIMELINE_OBJECT_LAYER_HPP
 
-#include "editor/timeline_object_layer.hpp"
 #include "editor/timeline_layer.hpp"
+#include "editor/object_model.hpp"
 
-Timeline::Timeline()
-  : m_layers()
+class TimelineObjectLayer : public TimelineLayer
 {
-}
+private:
+  ObjectModelHandle m_object;
+  TimelineProperty  m_property;
 
-TimelineLayerHandle
-Timeline::get_layer(int n) const
+public:
+  TimelineObjectLayer(ObjectModelHandle object, TimelineProperty property);
+
+private:
+  TimelineObjectLayer(const TimelineObjectLayer&);
+  TimelineObjectLayer& operator=(const TimelineObjectLayer&);
+};
+
+template<typename C>
+class TimelineObjectDataLayer : public TimelineObjectLayer
 {
-  if (!m_layers.empty() &&
-      n >= 0 && n < static_cast<int>(m_layers.size()))
+public:
+  TimelineObjectDataLayer(ObjectModelHandle object, TimelineProperty property)
+    : TimelineObjectLayer(object, property)
+  {}
+
+  void apply(float pos)
   {
-    return m_layers[n];
+    //object->set_property(property, value);
   }
-  else
-  {
-    return TimelineLayerHandle();
-  }
-}
+};
 
-TimelineLayerHandle
-Timeline::add_layer(const std::string& name)
-{
-  m_layers.push_back(TimelineLayerHandle(new TimelineLayer(name)));
-
-  return m_layers.back();
-}
-
-TimelineLayerHandle
-Timeline::add_object_layer(ObjectModelHandle object, TimelineProperty property)
-{
-  return TimelineLayerHandle(new TimelineObjectLayer(object, property));
-}
+#endif
 
 /* EOF */

@@ -16,7 +16,10 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "editor/decal_object_model.hpp"
+
 #include <iostream>
+#include <boost/bind.hpp>
 
 #include "display/drawing_parameters.hpp"
 #include "display/scene_context.hpp"
@@ -28,8 +31,6 @@
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/surface_drawable.hpp"
 #include "util/file_reader.hpp"
-
-#include "editor/decal_object_model.hpp"
 
 ObjectModelHandle
 DecalObjectModel::create(const std::string& name, const Vector2f& pos,

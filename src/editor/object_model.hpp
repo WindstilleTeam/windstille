@@ -20,17 +20,20 @@
 #define HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_HPP
 
 #include <boost/weak_ptr.hpp>
+#include <boost/function.hpp>
 
 #include "editor/select_mask.hpp"
 #include "util/file_writer.hpp"
 #include "editor/control_point.hpp"
 #include "editor/snap_data.hpp"
+#include "editor/timeline_properties.hpp"
 
 class ObjectModel;
 class FileReader;
 class SceneContext;
 class SectorModel;
 class SceneGraph;
+class Vector2f;
 
 typedef boost::shared_ptr<ObjectModel> ObjectModelHandle;
 typedef boost::weak_ptr<ObjectModel>   ObjectModelPtr;
@@ -92,6 +95,12 @@ public:
 
   virtual void add_control_points(std::vector<ControlPointHandle>& control_points) {}
   
+  virtual void get_property(TimelineProperty property, float& value_out) const;
+  virtual void get_property(TimelineProperty property, const Vector2f& value_out) const;
+
+  virtual void set_property(TimelineProperty property, float value);
+  virtual void set_property(TimelineProperty property, const Vector2f& value);
+
   /** This lets the object add things to the SceneGraph or do other
       things needed to make it properly visible in the SectorModel */
   virtual void add_to_scenegraph(SceneGraph& sg) =0;

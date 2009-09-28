@@ -21,6 +21,8 @@
 
 #include "editor/timeline_object.hpp"
 #include "editor/timeline_layer.hpp"
+#include "editor/timeline_properties.hpp"
+#include "editor/object_model.hpp"
 
 class Vector2f;
 
@@ -47,6 +49,7 @@ public:
   
   TimelineLayerHandle get_layer(int n) const;
   TimelineLayerHandle add_layer(const std::string& name);
+  TimelineLayerHandle add_object_layer(ObjectModelHandle object, TimelineProperty property);
 
 private:
   Timeline(const Timeline&);

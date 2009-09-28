@@ -38,6 +38,7 @@ private:
 
 public:
   TimelineLayer(const std::string& name);
+  virtual ~TimelineLayer() {}
 
   iterator begin() { return m_objects.begin(); }
   iterator end()   { return m_objects.end();   }

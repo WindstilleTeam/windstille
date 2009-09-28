@@ -29,6 +29,7 @@
 #include "editor/layer.hpp"
 #include "editor/object_model.hpp"
 #include "editor/selection.hpp"
+#include "editor/timeline.hpp"
 #include "math/vector2f.hpp"
 
 class NavigationGraphModel;
@@ -42,6 +43,7 @@ class SectorModel
 private:
   boost::scoped_ptr<NavigationGraphModel> nav_graph;
   Glib::RefPtr<Gtk::ListStore> layer_tree;
+  TimelineHandle m_timeline;
   Color ambient_color;
   
 public:
@@ -95,6 +97,7 @@ public:
   void write(FileWriter& writer) const;
 
   NavigationGraphModel& get_nav_graph() const { return *nav_graph; }
+  TimelineHandle get_timeline() const { return m_timeline; }
 
   void delete_navgraph_edges(NavGraphNodeObjectModel& node);
 

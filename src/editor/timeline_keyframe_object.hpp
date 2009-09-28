@@ -40,6 +40,26 @@ private:
   TimelineKeyframeObject& operator=(const TimelineKeyframeObject&);
 };
 
+template<typename C>
+class TimelineKeyframeDataObject : public TimelineObject
+{
+private:
+  C m_data;
+
+public:
+  TimelineKeyframeDataObject(float pos, const C& data)
+    : TimelineKeyframeDataObject(pos),
+      m_data(data)
+  {}
+
+  const C& get_data() const { return m_data; }
+  void     set_data(const C& data) { m_data = data; }
+
+private:
+  TimelineKeyframeDataObject(const TimelineKeyframeDataObject&);
+  TimelineKeyframeDataObject& operator=(const TimelineKeyframeDataObject&);
+};
+
 #endif
 
 /* EOF */

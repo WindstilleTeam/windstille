@@ -334,5 +334,39 @@ ObjectModel::snap_to_object(const Rectf& in) const
 
   return snap;
 }
+
+void
+ObjectModel::get_property(TimelineProperty property, float& value_out) const
+{
+}
+
+void
+ObjectModel::get_property(TimelineProperty property, const Vector2f& value_out) const
+{
+  switch(property)
+  {
+    case kPosition:
+      return rel_pos;
+  }
+}
+
+void
+ObjectModel::set_property(TimelineProperty property, float value)
+{
+}
+
+void
+ObjectModel::set_property(TimelineProperty property, const Vector2f& value)
+{
+  switch(property)
+  {
+    case kPosition:
+      rel_pos = value;
+      break;
+
+    default:
+      break;
+  }
+}
 
 /* EOF */
