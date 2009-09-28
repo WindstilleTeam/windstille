@@ -6,7 +6,7 @@
 #include <string.h>
 #include <iostream>
 #include "tree.hpp"
-#include "parser.hpp"
+#include "parser.cc.hpp"
 #include "globals.hpp"
 
 // there seems to be a bug in flex that adds some ECHO directives
