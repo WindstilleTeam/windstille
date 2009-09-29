@@ -6,7 +6,7 @@ with the build files and supporting scripts is covered under the
 "GPLv3 or (at your option) any later version", as indicated at the top
 of the files. You can find the full license text of the GPLv3 at:
 
- * http://www.gnu.org/copyleft/gpl.html
+ * http://www.gnu.org/licenses/gpl.html
 
 Graphics, story, levels and other data files in Windstille are
 dual-licensed and covered under both the "GPLv3 or (at your option) any
@@ -44,7 +44,7 @@ Extra Notes:
 
  * While not required under the "Creative Commons Attribution-
    ShareAlike 3.0", you should include "source code" (.blend, .xcf,
-   ...)  for the graphics and other datafiles whenever possible.
+   ...) for the graphics and other datafiles whenever possible.
 
  * The source files (.xcf, .blend) for data are located in the media/
    subdirectory of the SVN repository, however not every data file has
