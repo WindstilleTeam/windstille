@@ -18,15 +18,20 @@
 
 #include "editor/animation_widget.hpp"
 
+#include <gtkmm/toolbar.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/label.h>
+#include <gtkmm/uimanager.h>
 #include <boost/shared_ptr.hpp>
 
+#include "editor/editor_window.hpp"
 #include "editor/timeline_widget.hpp"
 #include "editor/timeline_object.hpp"
 #include "editor/timeline_anim_object.hpp"
 #include "editor/timeline_sound_object.hpp"
 #include "editor/timeline_keyframe_object.hpp"
 
-AnimationWidget::AnimationWidget() :
+AnimationWidget::AnimationWidget(EditorWindow& editor) :
   hadjustment(50, 0, 100),
   vadjustment(50, 0, 100),
   hruler(),
@@ -39,6 +44,43 @@ AnimationWidget::AnimationWidget() :
   m_timeline_layer_widget(),
   m_timeline()
 {
+  Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
+  Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
+
+  action_group->add(Gtk::Action::create("MenuAnimation",   "_Animation"));
+  action_group->add(Gtk::Action::create("NewAnimation", Gtk::Stock::NEW),
+                    sigc::mem_fun(editor, &EditorWindow::on_animation_new));
+  action_group->add(Gtk::Action::create("ExportAnimation", Gtk::Stock::SAVE_AS),
+                    sigc::mem_fun(editor, &EditorWindow::on_animation_export));
+  action_group->add(Gtk::Action::create("DeleteAnimation", Gtk::Stock::DELETE),
+                    sigc::mem_fun(editor, &EditorWindow::on_animation_delete));
+
+  action_group->add(Gtk::Action::create("NewLayerAnimation", Gtk::Stock::NEW),
+                    sigc::mem_fun(editor, &EditorWindow::on_animation_layer_new));
+
+  action_group->add(Gtk::Action::create("FrameForwardAnimation", Gtk::Stock::GO_FORWARD),
+                    sigc::mem_fun(editor, &EditorWindow::on_animation_frame_forward));
+  action_group->add(Gtk::Action::create("FrameBackwardAnimation", Gtk::Stock::GO_BACK),
+                    sigc::mem_fun(editor, &EditorWindow::on_animation_frame_backward));
+
+  ui_manager->insert_action_group(action_group);
+
+  ui_manager->add_ui_from_string("<ui>"
+                                 "  <toolbar  name='AnimationToolBar'>"
+                                 "    <toolitem action='NewAnimation'/>"
+                                 "    <toolitem action='ExportAnimation'/>"
+                                 "    <toolitem action='DeleteAnimation'/>"
+                                 "    <separator />"
+                                 "    <toolitem action='NewLayerAnimation'/>"
+                                 "    <separator />"
+                                 "    <toolitem action='FrameBackwardAnimation'/>"
+                                 "    <toolitem action='FrameForwardAnimation'/>"
+                                 "    <separator />"
+                                 "  </toolbar>"
+                                 "</ui>");
+  
+  Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/AnimationToolBar"));
+  
   hruler.set_range(0, 100, 50, 100);
 
   table.attach(hruler, 1, 2, 0, 1, Gtk::FILL, Gtk::FILL);
@@ -53,7 +95,13 @@ AnimationWidget::AnimationWidget() :
   table.attach(hscroll, 1, 2, 2, 3, Gtk::FILL, Gtk::FILL);
   table.attach(vscroll, 2, 3, 1, 2, Gtk::FILL, Gtk::FILL);
 
-  add(table);
+  m_hbox.pack_start(toolbar, Gtk::PACK_EXPAND_WIDGET);
+
+  //toolbar.set_icon_size(Gtk::ICON_SIZE_MENU);
+  pack_start(m_hbox, Gtk::PACK_SHRINK);
+  pack_start(table, Gtk::PACK_EXPAND_WIDGET);
+
+  show_all();
 }
 
 void
@@ -107,7 +155,7 @@ int main(int argc, char** argv)
   win.set_title("Timeline Test");
   win.set_default_size(800, 400);
 
-  AnimationWidget animation_widget;
+  AnimationWidget animation_widget();
   animation_widget.set_timeline(timeline);
   win.add(animation_widget);
   win.show_all();

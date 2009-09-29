@@ -16,26 +16,20 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_TIMELINE_OBJECT_HPP
-#define HEADER_WINDSTILLE_TIMELINE_OBJECT_HPP
+#ifndef HEADER_WINDSTILLE_TIMELINE_HANDLES_HPP
+#define HEADER_WINDSTILLE_TIMELINE_HANDLES_HPP
 
 #include <boost/shared_ptr.hpp>
 
-class TimelineObject
-{
-private:
-public:
-  TimelineObject() {}
-  virtual ~TimelineObject() {}
+class Timeline;
+class TimelineLayer;
+class TimelineObject;
+class TimelineObjectLayer;
 
-  virtual float get_pos() const =0;
-  virtual float get_width() const =0;
-  virtual void  set_pos(float pos) =0;
-
-private:
-  TimelineObject(const TimelineObject&);
-  TimelineObject& operator=(const TimelineObject&);
-};
+typedef boost::shared_ptr<Timeline>            TimelineHandle;
+typedef boost::shared_ptr<TimelineLayer>       TimelineLayerHandle;
+typedef boost::shared_ptr<TimelineObject>      TimelineObjectHandle;
+typedef boost::shared_ptr<TimelineObjectLayer> TimelineObjectLayerHandle;
 
 #endif
 

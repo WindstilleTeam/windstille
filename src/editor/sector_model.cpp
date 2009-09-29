@@ -33,6 +33,7 @@
 #include "editor/object_model_factory.hpp"
 #include "editor/sector_model.hpp"
 #include "editor/sector_model_builder.hpp"
+#include "editor/timeline.hpp"
 #include "editor/windstille_widget.hpp"
 #include "navigation/node.hpp"
 #include "scenegraph/scene_graph.hpp"

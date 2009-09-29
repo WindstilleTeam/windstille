@@ -18,6 +18,8 @@
 
 #include "timeline_layer_widget.hpp"
 
+#include "timeline_layer.hpp"
+
 TimelineLayerWidget::TimelineLayerWidget() :
   m_timeline()
 {

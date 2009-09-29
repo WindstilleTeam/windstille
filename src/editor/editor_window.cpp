@@ -45,13 +45,14 @@
 #include "editor/layer_widget.hpp"
 #include "editor/document.hpp"
 
-#include "editor/timeline.hpp"
 #include "editor/animation_widget.hpp"
-#include "editor/timeline_widget.hpp"
-#include "editor/timeline_object.hpp"
+#include "editor/timeline.hpp"
 #include "editor/timeline_anim_object.hpp"
-#include "editor/timeline_sound_object.hpp"
 #include "editor/timeline_keyframe_object.hpp"
+#include "editor/timeline_layer.hpp"
+#include "editor/timeline_object.hpp"
+#include "editor/timeline_sound_object.hpp"
+#include "editor/timeline_widget.hpp"
 
 EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   : vbox(),
@@ -460,7 +461,7 @@ EditorWindow::on_new()
   // FIXME: We abuse the minimap as our root GLContext
   Gtk::VPaned* paned = Gtk::manage(new Gtk::VPaned);
   WindstilleWidget* wst = Gtk::manage(new WindstilleWidget(*this, glconfig, minimap_widget.get_gl_context()));
-  AnimationWidget* animation_widget = Gtk::manage(new AnimationWidget());
+  AnimationWidget* animation_widget = Gtk::manage(new AnimationWidget(*this));
 
   paned->pack1(*wst, Gtk::FILL|Gtk::EXPAND);
   paned->pack2(*animation_widget, Gtk::FILL|Gtk::EXPAND);
@@ -470,23 +471,10 @@ EditorWindow::on_new()
     boost::shared_ptr<Timeline> timeline = wst->get_document().get_sector_model().get_timeline();   
 
     TimelineLayerHandle layer1 = timeline->add_layer("Layer1");
-    TimelineLayerHandle layer2 = timeline->add_layer("Layer2");
-    TimelineLayerHandle layer3 = timeline->add_layer("Layer3");
-    TimelineLayerHandle layer4 = timeline->add_layer("Layer4");
 
-    layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(20.0f, 30.0f, "anim1.anim")));
-    layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(60.0f, 30.0f, "anim2.anim")));
-
-    layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(8.0f)));
-    layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(10.0f)));
-    layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(11.0f)));
-    layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(15.0f)));
-    layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(20.0f)));
-    layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(35.0f)));
-    layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(40.0f)));
-
-    layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(10.0f, 10.0f, "sound1.wav")));
-    layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(30.0f, 40.0f, "sound.wav")));
+    layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(10.0f, 15.0f, "anim1.anim")));
+    layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(60.0f, 12.0f, "anim2.anim")));
+    layer1->add_object(TimelineObjectHandle(new TimelineSoundObject(30.0f, 15.0f, "sound.wav")));
 
     animation_widget->set_timeline(timeline);
   }
@@ -766,6 +754,60 @@ EditorWindow::on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool* tool)
 }
 
 void
+EditorWindow::on_animation_new()
+{
+}
+
+void
+EditorWindow::on_animation_export()
+{
+}
+void
+EditorWindow::on_animation_delete()
+{
+}
+
+void
+EditorWindow::on_animation_frame_forward()
+{
+}
+
+void 
+EditorWindow::on_animation_frame_backward()
+{
+}
+
+void
+EditorWindow::on_animation_layer_new()
+{
+  if (Document* document = get_document())
+  {
+    document->timeline_add_layer("AnimLayer");
+    queue_draw();
+  }
+}
+
+void
+EditorWindow::on_animation_add_keyframe()
+{
+  std::cout << "EditorWindow::on_animation_add_keyframe()" << std::endl;
+  if (Document* document = get_document())
+  {
+    std::cout << "Document" << std::endl;
+    if (TimelineWidget* timeline_widget = get_timeline_widget())
+    {
+      std::cout << "EditorWindow::on_animation_add_keyframe(): doing" << std::endl;
+      SelectionHandle selection = document->get_selection();
+      for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
+      {
+        document->timeline_add_keyframe(*i, kPosition, timeline_widget->get_cursor_pos());
+      }
+      queue_draw();
+    }
+  }
+}
+
+void
 EditorWindow::toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, unsigned int mask)
 {
   if (WindstilleWidget* wst = get_windstille_widget())
@@ -826,6 +868,47 @@ ScrollTool*
 EditorWindow::get_scroll_tool() const
 {
   return scroll_tool.get();
+}
+
+TimelineWidget*
+EditorWindow::get_timeline_widget()
+{
+  int page = notebook.get_current_page();
+  if (page == -1)
+  {
+    return 0;
+  }
+  else
+  {
+    if (Gtk::VPaned* paned = dynamic_cast<Gtk::VPaned*>(notebook.get_nth_page(page)))
+    {
+      if (AnimationWidget* animation_widget = dynamic_cast<AnimationWidget*>(paned->get_child2()))
+      {
+        return &animation_widget->get_timeline_widget();
+      }
+      else
+      {
+        return 0;
+      }
+    }
+    else
+    {
+      return 0;
+    }
+  }
+}
+
+Document*
+EditorWindow::get_document()
+{
+  if (WindstilleWidget* wst = get_windstille_widget())
+  {
+    return &wst->get_document();
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 WindstilleWidget*

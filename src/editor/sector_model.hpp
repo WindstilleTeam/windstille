@@ -29,7 +29,7 @@
 #include "editor/layer.hpp"
 #include "editor/object_model.hpp"
 #include "editor/selection.hpp"
-#include "editor/timeline.hpp"
+#include "editor/timeline_handles.hpp"
 #include "math/vector2f.hpp"
 
 class NavigationGraphModel;

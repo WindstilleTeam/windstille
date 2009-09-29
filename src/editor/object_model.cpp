@@ -363,6 +363,7 @@ ObjectModel::set_property(TimelineProperty property, const Vector2f& value)
   {
     case kPosition:
       rel_pos = value;
+      sync();
       break;
 
     default:

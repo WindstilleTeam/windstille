@@ -23,7 +23,7 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-#include "timeline_object.hpp"
+#include "timeline_handles.hpp"
 
 class TimelineLayer
 {
@@ -46,6 +46,8 @@ public:
   const_iterator begin() const { return m_objects.begin(); }
   const_iterator end()   const { return m_objects.end();   }
 
+  int size() const { return static_cast<int>(m_objects.size()); }
+
   bool empty() const { return m_objects.empty(); }
 
   void add_object(TimelineObjectHandle object);
@@ -55,13 +57,12 @@ public:
   TimelineObjectHandle get_object(float pos) const;
 
   std::string get_name() const { return m_name; }
+  virtual void apply(float pos) {}
 
 private:
   TimelineLayer(const TimelineLayer&);
   TimelineLayer& operator=(const TimelineLayer&);
 };
-
-typedef boost::shared_ptr<TimelineLayer> TimelineLayerHandle;
 
 #endif
 

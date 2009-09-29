@@ -102,6 +102,7 @@ public:
   /* Timeline Commands
    * @{*/
   void timeline_add_keyframe(ObjectModelHandle object, TimelineProperty property, float pos);
+  void timeline_add_layer(const std::string& name);
   /** @} */
 
   /* Selection Commands

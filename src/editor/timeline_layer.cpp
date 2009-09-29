@@ -20,6 +20,8 @@
 
 #include <assert.h>
 
+#include "editor/timeline_object.hpp"
+
 TimelineLayer::TimelineLayer(const std::string& name)
   : m_name(name),
     m_objects()

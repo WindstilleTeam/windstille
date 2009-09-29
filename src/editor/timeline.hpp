@@ -19,9 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_TIMELINE_HPP
 #define HEADER_WINDSTILLE_EDITOR_TIMELINE_HPP
 
-#include "editor/timeline_object.hpp"
-#include "editor/timeline_layer.hpp"
-#include "editor/timeline_object_layer.hpp"
+#include "editor/timeline_handles.hpp"
 #include "editor/timeline_properties.hpp"
 #include "editor/object_model.hpp"
 
@@ -51,18 +49,19 @@ public:
   TimelineLayerHandle get_layer(int n) const;
 
   TimelineLayerHandle add_layer(const std::string& name);
+  TimelineLayerHandle create_layer(const std::string& name);
   TimelineObjectLayerHandle create_object_layer(ObjectModelHandle object, TimelineProperty property);
   TimelineObjectLayerHandle get_object_layer(ObjectModelHandle object, TimelineProperty property);
 
   void add_layer(TimelineLayerHandle layer);
   void remove_layer(TimelineLayerHandle layer);
 
+  void apply(float pos);
+
 private:
   Timeline(const Timeline&);
   Timeline& operator=(const Timeline&);
 };
-
-typedef boost::shared_ptr<Timeline> TimelineHandle;
 
 #endif
 

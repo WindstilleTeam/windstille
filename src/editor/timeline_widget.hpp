@@ -23,8 +23,7 @@
 #include <boost/shared_ptr.hpp>
 #include <set>
 
-#include "editor/timeline.hpp"
-#include "editor/timeline_layer.hpp"
+#include "editor/timeline_handles.hpp"
 #include "math/vector2f.hpp"
 
 class Timeline;
@@ -33,12 +32,20 @@ class Rectf;
 class TimelineWidget : public Gtk::DrawingArea
 {
 private:
-  boost::shared_ptr<Timeline> m_timeline;
+  boost::shared_ptr<Timeline>    m_timeline;
   std::set<TimelineObjectHandle> m_selection;
 
-  enum { kNoMode, kSelectMode, kDragMode } m_mode;
+  enum {
+    kNoMode, 
+    kSelectMode, 
+    kDragMode,
+    kCursorSetMode
+  } m_mode;
+
   Vector2f down_pos;
   Vector2f move_pos;
+
+  float m_cursor_pos;
 
 public:
   TimelineWidget();
@@ -49,6 +56,11 @@ public:
   bool mouse_down(GdkEventButton* ev);
   bool mouse_up(GdkEventButton* ev);
   bool mouse_move(GdkEventMotion* ev);
+
+  void  set_cursor_pos(float p);
+  float get_cursor_pos() const;
+
+  void delete_selection();
 
 protected:
   //Override default signal handler:

@@ -31,9 +31,11 @@
 #include <gtkmm/window.h>
 #include <gtkmm/scrolledwindow.h>
 
-#include "editor/timeline.hpp"
+#include "editor/timeline_handles.hpp"
 #include "editor/timeline_widget.hpp"
 #include "editor/timeline_layer_widget.hpp"
+
+class EditorWindow;
 
 class AnimationWidget : public Gtk::VBox
 {
@@ -41,6 +43,7 @@ private:
   Gtk::Adjustment hadjustment;
   Gtk::Adjustment vadjustment;
 
+  Gtk::HBox       m_hbox;
   Gtk::HRuler     hruler;
   Gtk::ScrolledWindow scrolled;
   Gtk::TreeView   treeview;
@@ -53,9 +56,10 @@ private:
   TimelineHandle m_timeline;
 
 public:
-  AnimationWidget();
+  AnimationWidget(EditorWindow& editor);
 
   void set_timeline(TimelineHandle timeline);
+  TimelineWidget& get_timeline_widget() { return m_timeline_widget; }
 
 private:
   AnimationWidget(const AnimationWidget&);

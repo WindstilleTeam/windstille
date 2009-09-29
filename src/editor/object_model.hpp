@@ -76,6 +76,8 @@ public:
   virtual void set_hflip(bool) { }
   virtual void set_vflip(bool) { }
 
+  virtual void sync() {}
+
   /** Reset scale and rotation to default values */
   virtual void reset();
 

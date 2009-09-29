@@ -36,13 +36,15 @@
 #include "editor/layer_manager.hpp"
 #include "editor/document.hpp"
 
-class Tool;
-class WindstilleWidget;
-class SelectTool;
-class ZoomTool;
-class ScrollTool;
+class Document;
 class LayerWidget;
 class NavgraphInsertTool;
+class ScrollTool;
+class SelectTool;
+class TimelineWidget;
+class Tool;
+class WindstilleWidget;
+class ZoomTool;
 
 class EditorWindow : public Gtk::Window,
                      public Currenton<EditorWindow>
@@ -126,13 +128,27 @@ public:
   void on_cut();
   void on_copy();
   void on_paste();
-  
+
   void on_layer_toggle(int layer, bool status);
 
   void on_switch_page(GtkNotebookPage* page, guint page_num);
   void on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool*);
 
   void on_select_all();
+  
+  /** Animation Callbacks
+   * @{*/  
+  void on_animation_new();
+  void on_animation_export();
+  void on_animation_delete();
+
+  void on_animation_frame_forward();
+  void on_animation_frame_backward();
+
+  void on_animation_layer_new();
+
+  void on_animation_add_keyframe();
+  /** @} */
 
   void toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, unsigned int mask);
   void toggle_background_layer(Glib::RefPtr<Gtk::ToggleAction> action);
@@ -148,6 +164,8 @@ public:
 
   LayerManager& get_layer_manager() { return layer_manager; }
   WindstilleWidget* get_windstille_widget();
+  TimelineWidget*   get_timeline_widget();
+  Document* get_document();
   
   void load_file(const std::string& filename);
 

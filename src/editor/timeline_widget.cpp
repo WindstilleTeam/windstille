@@ -22,7 +22,9 @@
 #include <sstream>
 
 #include "math/rect.hpp"
+#include "editor/editor_window.hpp"
 #include "editor/timeline.hpp"
+#include "editor/timeline_layer.hpp"
 #include "editor/timeline_object.hpp"
 #include "editor/timeline_anim_object.hpp"
 #include "editor/timeline_sound_object.hpp"
@@ -33,7 +35,8 @@ TimelineWidget::TimelineWidget() :
   m_selection(),
   m_mode(kNoMode),
   down_pos(),
-  move_pos()
+  move_pos(),
+  m_cursor_pos(0.0f)
 {
   signal_button_release_event().connect(sigc::mem_fun(this, &TimelineWidget::mouse_up));
   signal_button_press_event().connect(sigc::mem_fun(this, &TimelineWidget::mouse_down));
@@ -89,6 +92,16 @@ TimelineWidget::mouse_down(GdkEventButton* ev)
       m_mode = kSelectMode;
     }
   }
+  else if (ev->button == 2)
+  { // scroll
+    
+  }
+  else if (ev->button == 3)
+  { // set cursor
+    set_cursor_pos(floorf(static_cast<float>(ev->x / 8)));
+    m_mode = kCursorSetMode;
+    queue_draw();
+  }
   return false;
 }
 
@@ -118,9 +131,13 @@ TimelineWidget::mouse_up(GdkEventButton* ev)
         (*i)->set_pos((*i)->get_pos() + (move_pos.x - down_pos.x)/8);
       }
     }
-
     queue_draw();
   }
+  else if (ev->button == 3)
+  {
+    m_mode = kNoMode;
+  }
+
   return false;
 }
 
@@ -140,6 +157,12 @@ TimelineWidget::mouse_move(GdkEventMotion* ev)
 
     queue_draw();
   }
+  else if (m_mode == kCursorSetMode)
+  {
+    set_cursor_pos(floorf(static_cast<float>(ev->x / 8)));
+    queue_draw();
+  }
+
   return false;
 }
 
@@ -245,8 +268,8 @@ TimelineWidget::draw_grid(Cairo::RefPtr<Cairo::Context> cr)
   cr->set_source_rgb(0.75, 0.75, 0.75);
   for(int x = 0; x < allocation.get_width(); x += 8)
   {
-      cr->move_to(x, 0);
-      cr->line_to(x, height);
+    cr->move_to(x, 0);
+    cr->line_to(x, height);
   }
   cr->stroke();
 
@@ -273,6 +296,14 @@ TimelineWidget::draw_timeline(Cairo::RefPtr<Cairo::Context> cr)
     cr->translate(0, 32);
   }
   cr->restore();
+
+  cr->rectangle(m_cursor_pos * 8, 0,
+                8, m_timeline->size() * 32);
+  cr->set_source_rgba(1,1,0,0.5);
+  cr->fill_preserve();
+  cr->set_line_width(1.0f);
+  cr->set_source_rgb(0,0,0);
+  cr->stroke();
 
   cr->restore();
 }
@@ -428,9 +459,29 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
 }
 
 void
+TimelineWidget::delete_selection()
+{
+  
+}
+
+void
 TimelineWidget::set_timeline(boost::shared_ptr<Timeline> timeline)
 {
   m_timeline = timeline;
+}
+
+void
+TimelineWidget::set_cursor_pos(float p) 
+{
+  m_cursor_pos = p; 
+  m_timeline->apply(p);
+  EditorWindow::current()->queue_draw();
+}
+
+float
+TimelineWidget::get_cursor_pos() const 
+{ 
+  return m_cursor_pos; 
 }
 
 /* EOF */

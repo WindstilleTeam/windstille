@@ -306,6 +306,8 @@ DecalObjectModel::add_to_scenegraph(SceneGraph& sg)
 void
 DecalObjectModel::sync()
 {
+  ObjectModel::sync();
+
   if (m_drawable)
   {
     Vector2f center_offset(-surface.get_width() /2,

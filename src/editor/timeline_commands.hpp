@@ -24,8 +24,10 @@
 #include "editor/layer.hpp"
 #include "editor/object_model.hpp"
 #include "editor/command.hpp"
+#include "editor/timeline.hpp"
+#include "editor/timeline_object_layer.hpp"
 #include "editor/timeline_properties.hpp"
-
+
 class TimelineAddKeyframeCommand : public Command
 {
 private:
@@ -73,7 +75,31 @@ public:
     }
   }
 };
+
+class TimelineAddLayerCommand : public Command
+{
+private:
+  SectorModel&        m_sector;
+  TimelineLayerHandle m_layer;
 
+public:
+  TimelineAddLayerCommand(SectorModel& sector, const std::string& name)
+    : m_sector(sector)
+  {
+    m_layer = m_sector.get_timeline()->create_layer(name);
+  }
+
+  void redo() 
+  {
+    m_sector.get_timeline()->add_layer(m_layer);
+  }
+
+  void undo() 
+  { 
+    m_sector.get_timeline()->remove_layer(m_layer);
+  }
+};
+
 #endif
 
 /* EOF */

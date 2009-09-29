@@ -41,6 +41,12 @@ Timeline::get_layer(int n) const
 }
 
 TimelineLayerHandle
+Timeline::create_layer(const std::string& name)
+{
+  return TimelineLayerHandle(new TimelineLayer(name));
+}
+
+TimelineLayerHandle
 Timeline::add_layer(const std::string& name)
 {
   m_layers.push_back(TimelineLayerHandle(new TimelineLayer(name)));
@@ -88,6 +94,15 @@ Timeline::get_object_layer(ObjectModelHandle object, TimelineProperty property)
     }
   }
   return TimelineObjectLayerHandle();
+}
+
+void
+Timeline::apply(float pos)
+{
+  for(iterator i = begin(); i != end(); ++i)
+  {
+    (*i)->apply(pos);
+  }  
 }
 
 /* EOF */

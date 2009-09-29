@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_TIMELINE_OBJECT_LAYER_HPP
 
 #include <boost/shared_ptr.hpp>
+#include <iostream>
 
 #include "editor/timeline_layer.hpp"
 #include "editor/timeline_keyframe_object.hpp"
@@ -43,7 +44,7 @@ private:
   TimelineObjectLayer(const TimelineObjectLayer&);
   TimelineObjectLayer& operator=(const TimelineObjectLayer&);
 };
-
+
 template<typename C>
 class TimelineObjectDataLayer : public TimelineObjectLayer
 {
@@ -54,11 +55,110 @@ public:
 
   C get_value(float pos)
   {
-    return C();
+    if (empty())
+    {
+      return C();
+    }
+    else if (size() == 1)
+    {
+      boost::shared_ptr<TimelineKeyframeDataObject<C> > keyframe = 
+        boost::dynamic_pointer_cast<TimelineKeyframeDataObject<C> >(*begin());
+      return keyframe->get_data();
+    }
+    else
+    {
+      boost::shared_ptr<TimelineKeyframeDataObject<C> > lhs; 
+      boost::shared_ptr<TimelineKeyframeDataObject<C> > rhs;
+
+      for(iterator i = begin(); i != end(); ++i)
+      {
+        //std::cout << size() << " - " << (i - begin()) << std::endl;
+
+        boost::shared_ptr<TimelineKeyframeDataObject<C> > keyframe = 
+          boost::dynamic_pointer_cast<TimelineKeyframeDataObject<C> >(*i);
+        
+        assert(keyframe);
+
+        //std::cout << "keyframe: " << keyframe.get() << std::endl;
+
+        if (!lhs && keyframe->get_pos() <= pos)
+        {
+          //std::cout << "crash1" << std::endl;
+          lhs = keyframe;
+        }
+        else if (lhs)
+        {
+          //std::cout << "lhs: " << lhs->get_pos() << " " << keyframe->get_pos() << std::endl;
+          
+          if (keyframe->get_pos() >= lhs->get_pos() &&
+              keyframe->get_pos() <= pos)
+          {
+            lhs = keyframe;
+          }
+        }
+
+        //std::cout << "snip: " << lhs.get() << " " << rhs.get() << " " << keyframe.get() << std::endl;
+        
+        if (!rhs && keyframe->get_pos() >= pos)
+        {
+          //std::cout << "crash2" << std::endl;
+          rhs = keyframe;
+        }
+        else if (rhs)
+        {
+          //std::cout << "rhs: " << rhs->get_pos() << " " << keyframe->get_pos() << std::endl;
+
+          if (keyframe->get_pos() <= rhs->get_pos() &&
+              keyframe->get_pos() >= pos)
+          {
+            rhs = keyframe;
+          }
+        }
+
+        //std::cout << "Loop exit: " << lhs.get() << " " << rhs.get() << std::endl;
+      }
+
+      //std::cout << "PTR: " << lhs.get() << " " << rhs.get() << std::endl;
+
+      if (rhs && lhs)
+      {
+        if (lhs == rhs)
+        {
+          return lhs->get_data();
+        }
+        else
+        {
+          //std::cout << "POS: " << pos << " " << lhs->get_pos() << " " << rhs->get_pos() << std::endl;
+          //std::cout << size() << " " << lhs->get_data() << " " << rhs->get_data() << std::endl;
+
+          float rel_pos = pos - lhs->get_pos();
+          float range   = rhs->get_pos() - lhs->get_pos();
+          float alpha   = rel_pos / range;
+
+          //std::cout << range << " " << rel_pos << " " << alpha <<   std::endl;
+
+          return ((1.0f - alpha) * lhs->get_data()) + (alpha * rhs->get_data());
+        }
+      }
+      else if (rhs)
+      {
+        return rhs->get_data();
+      }
+      else if (lhs)
+      {
+        return lhs->get_data();
+      }
+      else
+      {
+        std::cout << "Error: TimelineObjectDataLayer" << std::endl;
+        return C();
+      }
+    }
   }
 
   void apply(float pos)
   {
+    //std::cout << "apply: " << pos << " " << get_value(pos) << std::endl;
     m_object->set_property(m_property, get_value(pos));
   }
 

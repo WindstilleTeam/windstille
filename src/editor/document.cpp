@@ -245,8 +245,13 @@ Document::object_set_pos(ObjectModelHandle object, const Vector2f& new_pos)
 void
 Document::timeline_add_keyframe(ObjectModelHandle object, TimelineProperty property, float pos)
 {
-  std::cout << object << " " << property << " " << pos << std::endl;
   execute(CommandHandle(new TimelineAddKeyframeCommand(*m_sector_model, object, property, pos)));
+}
+
+void
+Document::timeline_add_layer(const std::string& name)
+{
+  execute(CommandHandle(new TimelineAddLayerCommand(*m_sector_model, name)));
 }
 
 void
