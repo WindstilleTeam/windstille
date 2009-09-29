@@ -39,6 +39,8 @@ Naming
 
 * g_ prefix for global variables
 
+* m_ prefix for member variables
+
 * class names are CamelCase
 
 * variables are lower_case
