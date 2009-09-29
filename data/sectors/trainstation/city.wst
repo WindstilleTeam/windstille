@@ -21,7 +21,7 @@
         (node1 2)
         (node2 3)
         (properties 0))))
-  (objects
+  (layers
     (layer
       (name "Background")
       (visible #t)
