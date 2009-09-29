@@ -36,6 +36,9 @@ public:
 
   virtual TimelineObjectHandle create_keyframe(float pos) =0;
 
+  TimelineProperty  get_property() const { return m_property; }
+  ObjectModelHandle get_object()   const { return m_object; }
+
 private:
   TimelineObjectLayer(const TimelineObjectLayer&);
   TimelineObjectLayer& operator=(const TimelineObjectLayer&);

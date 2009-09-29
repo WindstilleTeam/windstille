@@ -34,27 +34,38 @@ private:
   ObjectModelHandle    m_object;
   TimelineProperty     m_property;
   TimelineObjectHandle m_keyframe;
+  bool m_add_layer;
 
 public:
   TimelineAddKeyframeCommand(SectorModel& sector, ObjectModelHandle object, TimelineProperty property, float pos) :
     m_sector(sector),
     m_layer(),
     m_object(object),
-    m_property(property)
+    m_property(property),
+    m_add_layer(false)
   {
-    m_layer    = m_sector.get_timeline()->create_object_layer(m_object, m_property);
+    m_layer = m_sector.get_timeline()->get_object_layer(m_object, m_property);
+    if (!m_layer)
+    {
+      m_layer = m_sector.get_timeline()->create_object_layer(m_object, m_property);
+      m_add_layer = true;
+    }
+
     m_keyframe = m_layer->create_keyframe(pos);
   }
   
   void redo() 
   {
-    m_sector.get_timeline()->add_layer(m_layer);
+    if (m_add_layer)
+      m_sector.get_timeline()->add_layer(m_layer);
+
     m_layer->add_object(m_keyframe);
   }
 
   void undo() 
-  {
-    m_layer->remove_object(m_keyframe);
+  {    
+    if (m_add_layer)
+      m_layer->remove_object(m_keyframe);
 
     if (m_layer->empty())
     {

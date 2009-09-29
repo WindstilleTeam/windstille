@@ -73,4 +73,21 @@ Timeline::remove_layer(TimelineLayerHandle layer)
   m_layers.erase(std::remove(m_layers.begin(), m_layers.end(), layer), m_layers.end());
 }
 
+TimelineObjectLayerHandle
+Timeline::get_object_layer(ObjectModelHandle object, TimelineProperty property)
+{
+  for(iterator i = begin(); i != end(); ++i)
+  {
+    TimelineObjectLayerHandle layer = boost::dynamic_pointer_cast<TimelineObjectLayer>(*i);
+
+    if (layer && 
+        layer->get_property() == property &&
+        layer->get_object()   == object)
+    {
+      return layer;
+    }
+  }
+  return TimelineObjectLayerHandle();
+}
+
 /* EOF */

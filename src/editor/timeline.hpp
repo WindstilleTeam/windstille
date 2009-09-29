@@ -52,6 +52,7 @@ public:
 
   TimelineLayerHandle add_layer(const std::string& name);
   TimelineObjectLayerHandle create_object_layer(ObjectModelHandle object, TimelineProperty property);
+  TimelineObjectLayerHandle get_object_layer(ObjectModelHandle object, TimelineProperty property);
 
   void add_layer(TimelineLayerHandle layer);
   void remove_layer(TimelineLayerHandle layer);
