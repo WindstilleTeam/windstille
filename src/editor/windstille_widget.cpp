@@ -408,7 +408,18 @@ WindstilleWidget::key_press(GdkEventKey* ev)
       break;
 
     case GDK_i:
-      EditorWindow::current()->on_animation_add_keyframe();
+      std::cout << "Position Keyframe" << std::endl;
+      EditorWindow::current()->on_animation_add_keyframe(kPosition);
+      break;
+
+    case GDK_k:
+      std::cout << "Position Scale" << std::endl;
+      EditorWindow::current()->on_animation_add_keyframe(kScale);
+      break;
+
+    case GDK_u:
+      std::cout << "Position Rotation" << std::endl;
+      EditorWindow::current()->on_animation_add_keyframe(kRotation);
       break;
       
     case GDK_d:

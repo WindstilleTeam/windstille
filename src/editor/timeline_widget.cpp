@@ -36,7 +36,9 @@ TimelineWidget::TimelineWidget() :
   m_mode(kNoMode),
   down_pos(),
   move_pos(),
-  m_cursor_pos(0.0f)
+  m_cursor_pos(0.0f),
+  m_column_width(8),
+  m_column_height(32)
 {
   signal_button_release_event().connect(sigc::mem_fun(this, &TimelineWidget::mouse_up));
   signal_button_press_event().connect(sigc::mem_fun(this, &TimelineWidget::mouse_down));
@@ -61,10 +63,10 @@ TimelineWidget::mouse_down(GdkEventButton* ev)
     move_pos.x = static_cast<float>(ev->x);
     move_pos.y = static_cast<float>(ev->y);
 
-    TimelineLayerHandle layer = m_timeline->get_layer(static_cast<int>(ev->y / 32));
+    TimelineLayerHandle layer = m_timeline->get_layer(static_cast<int>(ev->y / m_column_height));
     if (layer)
     {
-      TimelineObjectHandle obj = layer->get_object(static_cast<float>(ev->x / 8));
+      TimelineObjectHandle obj = layer->get_object(static_cast<float>(ev->x / m_column_width));
       if (obj)
       {
         m_mode = kDragMode;
@@ -98,7 +100,7 @@ TimelineWidget::mouse_down(GdkEventButton* ev)
   }
   else if (ev->button == 3)
   { // set cursor
-    set_cursor_pos(floorf(static_cast<float>(ev->x / 8)));
+    set_cursor_pos(floorf(static_cast<float>(ev->x / m_column_width)));
     m_mode = kCursorSetMode;
     queue_draw();
   }
@@ -128,7 +130,7 @@ TimelineWidget::mouse_up(GdkEventButton* ev)
       for (std::set<TimelineObjectHandle>::iterator i = m_selection.begin(); 
            i != m_selection.end(); ++i)
       {
-        (*i)->set_pos((*i)->get_pos() + (move_pos.x - down_pos.x)/8);
+        (*i)->set_pos((*i)->get_pos() + (move_pos.x - down_pos.x)/m_column_width);
       }
     }
     queue_draw();
@@ -159,7 +161,7 @@ TimelineWidget::mouse_move(GdkEventMotion* ev)
   }
   else if (m_mode == kCursorSetMode)
   {
-    set_cursor_pos(floorf(static_cast<float>(ev->x / 8)));
+    set_cursor_pos(floorf(static_cast<float>(ev->x / m_column_width)));
     queue_draw();
   }
 
@@ -169,12 +171,14 @@ TimelineWidget::mouse_move(GdkEventMotion* ev)
 void
 TimelineWidget::add_to_selection(const Rectf& selection)
 {
-  Timeline::iterator start = m_timeline->begin() + std::max(0, std::min(m_timeline->size(), static_cast<int>((selection.top+16)    / 32)));
-  Timeline::iterator end   = m_timeline->begin() + std::max(0, std::min(m_timeline->size(), static_cast<int>((selection.bottom+16) / 32)));
+  Timeline::iterator start = m_timeline->begin() + 
+    std::max(0, std::min(m_timeline->size(), static_cast<int>((selection.top + m_column_height/2)    / m_column_height)));
+  Timeline::iterator end   = m_timeline->begin() + 
+    std::max(0, std::min(m_timeline->size(), static_cast<int>((selection.bottom + m_column_height/2) / m_column_height)));
 
   for(Timeline::iterator i = start; i != end; ++i)
   {
-    const TimelineLayer::Objects& objects = (*i)->get_objects(selection.left / 8.0f, selection.right / 8.0f);
+    const TimelineLayer::Objects& objects = (*i)->get_objects(selection.left / m_column_width, selection.right / m_column_width);
     m_selection.insert(objects.begin(), objects.end());
   }
 }
@@ -240,15 +244,15 @@ TimelineWidget::draw_grid(Cairo::RefPtr<Cairo::Context> cr)
 
   cr->save();
   
-  int height = m_timeline->size() * 32;
+  int height = m_timeline->size() * m_column_height;
 
   // draw vertical lines
   cr->set_source_rgb(0.875, 0.875, 0.875);
-  for(int x = 0; x < allocation.get_width(); x += 8)
+  for(int x = 0; x < allocation.get_width(); x += m_column_width)
   {
-    if (x % 80 == 0)
+    if (x % (m_column_width * 10) == 0)
     {
-      cr->rectangle(x, 0, 8, height);
+      cr->rectangle(x, 0, m_column_width, height);
     }
   }
   cr->fill();
@@ -257,7 +261,7 @@ TimelineWidget::draw_grid(Cairo::RefPtr<Cairo::Context> cr)
 
   // draw horizontal lines
   cr->set_source_rgb(0.5, 0.5, 0.5);
-  for(int y = 0; y <= height; y += 32)
+  for(int y = 0; y <= height; y += m_column_height)
   {
     cr->move_to(0, y);
     cr->line_to(allocation.get_width(), y);
@@ -266,7 +270,7 @@ TimelineWidget::draw_grid(Cairo::RefPtr<Cairo::Context> cr)
 
   // draw vertical lines
   cr->set_source_rgb(0.75, 0.75, 0.75);
-  for(int x = 0; x < allocation.get_width(); x += 8)
+  for(int x = 0; x < allocation.get_width(); x += m_column_width)
   {
     cr->move_to(x, 0);
     cr->line_to(x, height);
@@ -284,7 +288,7 @@ TimelineWidget::draw_timeline(Cairo::RefPtr<Cairo::Context> cr)
   cr->save();
 
   cr->set_source_rgb(1,1,1);
-  cr->rectangle(0, 0, allocation.get_width(), 32 * m_timeline->size());
+  cr->rectangle(0, 0, allocation.get_width(), m_column_height * m_timeline->size());
   cr->fill();
   
   draw_grid(cr);
@@ -293,12 +297,12 @@ TimelineWidget::draw_timeline(Cairo::RefPtr<Cairo::Context> cr)
   for(Timeline::iterator i = m_timeline->begin(); i != m_timeline->end(); ++i)
   {
     draw_timeline_layer(cr, *i);
-    cr->translate(0, 32);
+    cr->translate(0, m_column_height);
   }
   cr->restore();
 
-  cr->rectangle(m_cursor_pos * 8, 0,
-                8, m_timeline->size() * 32);
+  cr->rectangle(m_cursor_pos * m_column_width, 0,
+                m_column_width, m_timeline->size() * m_column_height);
   cr->set_source_rgba(1,1,0,0.5);
   cr->fill_preserve();
   cr->set_line_width(1.0f);
@@ -336,7 +340,7 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
         cr->set_source_rgb(0.5, 0.75, 0.0);
       }
       
-      cr->rectangle(keyframe->get_pos()*8, 4, 8, 24);
+      cr->rectangle(keyframe->get_pos() * m_column_width, 4, m_column_width, m_column_height - 8);
       cr->fill();
 
       if (in_selection)
@@ -344,7 +348,7 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
       else
         cr->set_source_rgb(0, 0, 0);
 
-      cr->rectangle(keyframe->get_pos()*8, 4, 8, 24);
+      cr->rectangle(keyframe->get_pos() * m_column_width, 4, m_column_width, m_column_height - 8);
       cr->stroke();  
       
       cr->restore();
@@ -381,8 +385,8 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
         cr->set_source_rgb(0.0, 0.5, 0.75);
       }
 
-      cr->rectangle(anim->get_pos()*8,  4,
-                    anim->get_width()*8, 24);
+      cr->rectangle(anim->get_pos()   * m_column_width,  4,
+                    anim->get_width() * m_column_width, m_column_height - 8);
       cr->fill();
 
       if (in_selection)
@@ -394,13 +398,13 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
         cr->set_source_rgb(0, 0, 0);
       }
 
-      cr->rectangle(anim->get_pos()*8, 4,
-                    anim->get_width()*8, 24);
+      cr->rectangle(anim->get_pos()   * m_column_width, 4,
+                    anim->get_width() * m_column_width, m_column_height - 8);
       cr->stroke();
 
       cr->set_source_rgb(1,1,1);
-      cr->move_to((anim->get_pos() + anim->get_width()/2)*8 - extents.width/2, 
-                  20);
+      cr->move_to((anim->get_pos() + anim->get_width()/2) * m_column_width - extents.width/2, 
+                  m_column_height / 2 + 4);
       cr->show_text(anim->get_name());
 
       cr->restore();
@@ -430,6 +434,7 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
       {
         if (m_mode == kDragMode)
           cr->translate(move_pos.x - down_pos.x, 0.0);
+
         cr->set_source_rgb(1.0, 0.0, 0.75);
       }
       else
@@ -437,18 +442,18 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
         cr->set_source_rgb(0.75, 0.0, 0.5);
       }
 
-      cr->rectangle(sound->get_pos()*8,  4,
-                    sound->get_width()*8, 24);
+      cr->rectangle(sound->get_pos()   * m_column_width,  4,
+                    sound->get_width() * m_column_width, m_column_height - 8);
       cr->fill();
 
       cr->set_source_rgb(0, 0, 0);
-      cr->rectangle(sound->get_pos()*8, 4,
-                    sound->get_width()*8, 24);
+      cr->rectangle(sound->get_pos()   * m_column_width, 4,
+                    sound->get_width() * m_column_width, m_column_height - 8);
       cr->stroke();
 
-      cr->set_source_rgb(1,1,1);
-      cr->move_to((sound->get_pos() + sound->get_width()/2)*8 - extents.width/2, 
-                  20);
+      cr->set_source_rgb(1,1,0);
+      cr->move_to((sound->get_pos() + sound->get_width()/2) * m_column_width - extents.width/2, 
+                  m_column_height / 2 + 4);
       cr->show_text(sound->get_name());
 
       cr->restore();
@@ -462,6 +467,23 @@ void
 TimelineWidget::delete_selection()
 {
   
+}
+
+void
+TimelineWidget::zoom_in()
+{
+  m_column_width += 1;
+  queue_draw();
+}
+
+void
+TimelineWidget::zoom_out()
+{
+  if (m_column_width > 2)
+  {
+    m_column_width -= 1;
+    queue_draw();
+  }
 }
 
 void

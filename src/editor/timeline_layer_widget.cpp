@@ -21,7 +21,8 @@
 #include "timeline_layer.hpp"
 
 TimelineLayerWidget::TimelineLayerWidget() :
-  m_timeline()
+  m_timeline(),
+  m_column_height(32)
 {
 }
 
@@ -57,19 +58,19 @@ TimelineLayerWidget::on_expose_event(GdkEventExpose* ev)
       cr->get_text_extents((*i)->get_name(), extents);
 
       cr->set_source_rgb(1,1,1);
-      cr->rectangle(0, 32 * (i - m_timeline->begin()),
-                    allocation.get_width(), 32);
+      cr->rectangle(0, m_column_height * (i - m_timeline->begin()),
+                    allocation.get_width(), m_column_height);
       cr->fill();
 
       // draw text
       cr->set_source_rgb(0,0,0);
-      cr->move_to(8, 10 + 32 * (i - m_timeline->begin()) - extents.y_bearing);
+      cr->move_to(8, 10 + m_column_height * (i - m_timeline->begin()) - extents.y_bearing);
       cr->show_text((*i)->get_name());
 
       // draw line
       cr->set_source_rgb(0,0,0);
-      cr->move_to(0, 32 + 32 * (i - m_timeline->begin()));
-      cr->line_to(allocation.get_width(), 32+ 32 * (i - m_timeline->begin()));
+      cr->move_to(0, m_column_height + m_column_height * (i - m_timeline->begin()));
+      cr->line_to(allocation.get_width(), m_column_height+ m_column_height * (i - m_timeline->begin()));
       cr->stroke();
     }
   }

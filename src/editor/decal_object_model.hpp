@@ -90,6 +90,12 @@ public:
   void set_world_pos(const Vector2f& p);
   void set_rel_pos(const Vector2f& rel_pos_);
   void set_select_mask(const SelectMask& select_mask_);
+
+  void get_property(TimelineProperty property, float& value_out) const;
+  void get_property(TimelineProperty property, Vector2f& value_out) const;
+  
+  void set_property(TimelineProperty property, float value);
+  void set_property(TimelineProperty property, const Vector2f& value);
 };
 
 #endif

@@ -21,10 +21,10 @@
 
 enum TimelineProperty
 {
-  kPosition,
-  kColor,
-  kRotation,
-  kScale
+  kPosition, // Vector2f
+  kColor,    // Color
+  kRotation, // float
+  kScale     // Vector2f
 };
 
 #endif

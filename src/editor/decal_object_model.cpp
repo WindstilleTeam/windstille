@@ -326,6 +326,66 @@ DecalObjectModel::sync()
 }
 
 void
+DecalObjectModel::get_property(TimelineProperty property, float& value_out) const
+{
+  switch(property)
+  {
+    case kRotation:
+      value_out = get_angle();
+      break;
+
+    default:
+      ObjectModel::get_property(property, value_out);
+      break;
+  }
+}
+
+void
+DecalObjectModel::get_property(TimelineProperty property, Vector2f& value_out) const
+{
+  switch(property)
+  {
+    case kScale:
+      value_out = get_scale();
+      break;
+
+    default:
+      ObjectModel::get_property(property, value_out);
+      break;
+  }
+}
+
+void
+DecalObjectModel::set_property(TimelineProperty property, float value)
+{
+  switch(property)
+  {
+    case kRotation:
+      set_angle(value);
+      break;
+
+    default:
+      ObjectModel::set_property(property, value);
+      break;
+  }
+}
+
+void
+DecalObjectModel::set_property(TimelineProperty property, const Vector2f& value)
+{
+  switch(property)
+  {
+    case kScale:
+      set_scale(value);
+      break;
+
+    default:
+      ObjectModel::set_property(property, value);
+      break;
+  }
+}
+
+void
 DecalObjectModel::set_world_pos(const Vector2f& p)
 {
   ObjectModel::set_world_pos(p);

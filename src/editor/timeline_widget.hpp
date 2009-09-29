@@ -46,7 +46,9 @@ private:
   Vector2f move_pos;
 
   float m_cursor_pos;
-
+  int m_column_width;
+  int m_column_height;
+  
 public:
   TimelineWidget();
   ~TimelineWidget();
@@ -61,6 +63,9 @@ public:
   float get_cursor_pos() const;
 
   void delete_selection();
+
+  void zoom_in();
+  void zoom_out();
 
 protected:
   //Override default signal handler:

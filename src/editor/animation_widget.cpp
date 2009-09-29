@@ -42,7 +42,10 @@ AnimationWidget::AnimationWidget(EditorWindow& editor) :
   hscroll(hadjustment),
   m_timeline_widget(),
   m_timeline_layer_widget(),
-  m_timeline()
+  m_timeline(),
+  m_timeout_connection(),
+  m_playing(false),
+  m_anim_pos(0.0f)
 {
   Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
   Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
@@ -63,6 +66,18 @@ AnimationWidget::AnimationWidget(EditorWindow& editor) :
   action_group->add(Gtk::Action::create("FrameBackwardAnimation", Gtk::Stock::GO_BACK),
                     sigc::mem_fun(editor, &EditorWindow::on_animation_frame_backward));
 
+  action_group->add(Gtk::Action::create("AnimationZoomIn",  Gtk::Stock::ZOOM_IN),
+                    sigc::mem_fun(m_timeline_widget, &TimelineWidget::zoom_in));
+  action_group->add(Gtk::Action::create("AnimationZoomOut", Gtk::Stock::ZOOM_OUT),
+                    sigc::mem_fun(m_timeline_widget, &TimelineWidget::zoom_out));
+
+  action_group->add(Gtk::Action::create("AnimationForward", Gtk::Stock::MEDIA_FORWARD));
+  action_group->add(Gtk::Action::create("AnimationNext", Gtk::Stock::MEDIA_NEXT));
+  action_group->add(Gtk::Action::create("AnimationPrevious", Gtk::Stock::MEDIA_PREVIOUS));
+  action_group->add(Gtk::Action::create("AnimationRewind", Gtk::Stock::MEDIA_REWIND));
+  action_group->add(Gtk::Action::create("AnimationPlay", Gtk::Stock::MEDIA_PLAY),
+                    sigc::mem_fun(*this, &AnimationWidget::on_play));
+
   ui_manager->insert_action_group(action_group);
 
   ui_manager->add_ui_from_string("<ui>"
@@ -73,9 +88,19 @@ AnimationWidget::AnimationWidget(EditorWindow& editor) :
                                  "    <separator />"
                                  "    <toolitem action='NewLayerAnimation'/>"
                                  "    <separator />"
+                                 "    <toolitem action='AnimationZoomIn'/>"
+                                 "    <toolitem action='AnimationZoomOut'/>"
+                                 "    <separator />"
                                  "    <toolitem action='FrameBackwardAnimation'/>"
                                  "    <toolitem action='FrameForwardAnimation'/>"
                                  "    <separator />"
+                                 "    <toolitem action='AnimationPlay'/>"
+                                 "    <separator />"
+                                 "    <toolitem action='AnimationPrevious'/>"
+                                 "    <toolitem action='AnimationNext'/>"
+                                 "    <separator />"
+                                 "    <toolitem action='AnimationRewind'/>"
+                                 "    <toolitem action='AnimationForward'/>"
                                  "  </toolbar>"
                                  "</ui>");
   
@@ -105,66 +130,40 @@ AnimationWidget::AnimationWidget(EditorWindow& editor) :
 }
 
 void
+AnimationWidget::on_play()
+{
+  if (!m_playing)
+  {
+    std::cout << "Play" << std::endl;
+    m_playing = true;
+    m_anim_pos = 0.0f;
+    m_timeout_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &AnimationWidget::on_timeout),
+                                                          50,
+                                                          Glib::PRIORITY_DEFAULT);
+  }
+  else
+  {
+    std::cout << "Stop" << std::endl;
+    m_playing = false;
+    m_timeout_connection.disconnect();
+  }
+}
+
+bool
+AnimationWidget::on_timeout()
+{
+  m_anim_pos += 0.5f;
+  m_timeline->apply(m_anim_pos);
+  EditorWindow::current()->queue_draw();
+  return true;
+}
+
+void
 AnimationWidget::set_timeline(TimelineHandle timeline)
 {
   m_timeline = timeline;
   m_timeline_widget.set_timeline(timeline);
   m_timeline_layer_widget.set_timeline(timeline);
 }
-
-#ifdef __TEST__
-
-#include <gtkmm/main.h>
-#include <gtkmm/window.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/box.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/table.h>
-#include <gtkmm/ruler.h>
-#include <gtkmm/scrollbar.h>
-
-int main(int argc, char** argv)
-{
-  Gtk::Main kit(argc, argv);
-
-  // create test timeline  
-  boost::shared_ptr<Timeline> timeline(new Timeline());
-
-  TimelineLayerHandle layer1 = timeline->add_layer("DoorLeft:pos");
-  TimelineLayerHandle layer2 = timeline->add_layer("DoorRight:pos");
-  TimelineLayerHandle layer3 = timeline->add_layer("AnimaitonLayer1");
-  TimelineLayerHandle layer4 = timeline->add_layer("SoundLayer2");
-
-  layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(20.0f, 30.0f, "anim1.anim")));
-  layer1->add_object(TimelineObjectHandle(new TimelineAnimObject(60.0f, 30.0f, "anim2.anim")));
-
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(8.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(10.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(11.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(15.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(20.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(35.0f)));
-  layer2->add_object(TimelineObjectHandle(new TimelineKeyframeObject(40.0f)));
-
-  layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(10.0f, 10.0f, "sound1.wav")));
-  layer3->add_object(TimelineObjectHandle(new TimelineSoundObject(30.0f, 40.0f, "sound.wav")));
-
-  // create the window
-  Gtk::Window win;
-  win.set_title("Timeline Test");
-  win.set_default_size(800, 400);
-
-  AnimationWidget animation_widget();
-  animation_widget.set_timeline(timeline);
-  win.add(animation_widget);
-  win.show_all();
-
-  Gtk::Main::run(win);
-
-  return 0;
-}
-
-#endif
 
 /* EOF */

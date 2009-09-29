@@ -495,10 +495,13 @@ EditorWindow::load_file(const std::string& filename)
   {
     on_new();
     WindstilleWidget* wst = get_windstille_widget();
+    AnimationWidget*  animation_widget = get_animation_widget();
+      
     wst->load_file(filename);
     wst->set_filename(filename);
     notebook.set_tab_label_text(*notebook.get_nth_page(notebook.get_current_page()), Glib::path_get_basename(filename));
     layer_manager.set_model(&wst->get_document().get_sector_model());
+    animation_widget->set_timeline(wst->get_document().get_sector_model().get_timeline());
     print("Loaded: " + filename);
   }
   catch(std::exception& err)
@@ -564,12 +567,7 @@ EditorWindow::on_save()
 void
 EditorWindow::on_save_as()
 {
-  int page = notebook.get_current_page();
-  if (page == -1)
-  {
-    // do nothing;
-  }
-  else
+  if (WindstilleWidget* wst = get_windstille_widget())
   {
     Gtk::FileChooserDialog dialog("Save File",
                                   Gtk::FILE_CHOOSER_ACTION_SAVE);
@@ -579,8 +577,6 @@ EditorWindow::on_save_as()
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
 
-    WindstilleWidget* wst = static_cast<WindstilleWidget*>(notebook.get_nth_page(page));
- 
     if (wst->get_filename().empty())
       dialog.set_current_folder("data/sectors/");
     else
@@ -601,6 +597,7 @@ EditorWindow::on_save_as()
         wst->get_document().get_sector_model().write(writer);
         wst->set_filename(filename);
 
+        int page = notebook.get_current_page();
         notebook.set_tab_label_text(*notebook.get_nth_page(page), Glib::path_get_basename(filename));
         add_recent_file(filename);
         print("Wrote: " + filename);
@@ -788,7 +785,7 @@ EditorWindow::on_animation_layer_new()
 }
 
 void
-EditorWindow::on_animation_add_keyframe()
+EditorWindow::on_animation_add_keyframe(TimelineProperty property)
 {
   std::cout << "EditorWindow::on_animation_add_keyframe()" << std::endl;
   if (Document* document = get_document())
@@ -800,7 +797,7 @@ EditorWindow::on_animation_add_keyframe()
       SelectionHandle selection = document->get_selection();
       for(Selection::iterator i = selection->begin(); i != selection->end(); ++i)
       {
-        document->timeline_add_keyframe(*i, kPosition, timeline_widget->get_cursor_pos());
+        document->timeline_add_keyframe(*i, property, timeline_widget->get_cursor_pos());
       }
       queue_draw();
     }
@@ -890,6 +887,27 @@ EditorWindow::get_timeline_widget()
       {
         return 0;
       }
+    }
+    else
+    {
+      return 0;
+    }
+  }
+}
+
+AnimationWidget*
+EditorWindow::get_animation_widget()
+{
+  int page = notebook.get_current_page();
+  if (page == -1)
+  {
+    return 0;
+  }
+  else
+  {
+    if (Gtk::VPaned* paned = dynamic_cast<Gtk::VPaned*>(notebook.get_nth_page(page)))
+    {
+      return dynamic_cast<AnimationWidget*>(paned->get_child2());
     }
     else
     {

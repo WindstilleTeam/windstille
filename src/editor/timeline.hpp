@@ -24,6 +24,7 @@
 #include "editor/object_model.hpp"
 
 class Vector2f;
+class FileWriter;
 
 class Timeline
 {
@@ -57,6 +58,8 @@ public:
   void remove_layer(TimelineLayerHandle layer);
 
   void apply(float pos);
+
+  void write(FileWriter& writer) const;
 
 private:
   Timeline(const Timeline&);

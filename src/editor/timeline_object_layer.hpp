@@ -40,6 +40,20 @@ public:
   TimelineProperty  get_property() const { return m_property; }
   ObjectModelHandle get_object()   const { return m_object; }
 
+  virtual void write(FileWriter& writer) const
+  {
+    writer.start_section("object-layer");
+    writer.write("object",   m_object->get_id());
+    writer.write("property", m_property); // FIXME: convert property to string
+    writer.start_section("objects");
+    for(const_iterator i = begin(); i != end(); ++i)
+    {
+      (*i)->write(writer);
+    }
+    writer.end_section();
+    writer.end_section();
+  }
+
 private:
   TimelineObjectLayer(const TimelineObjectLayer&);
   TimelineObjectLayer& operator=(const TimelineObjectLayer&);

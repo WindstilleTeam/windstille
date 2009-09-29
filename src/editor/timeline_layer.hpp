@@ -25,6 +25,8 @@
 
 #include "timeline_handles.hpp"
 
+class FileWriter;
+
 class TimelineLayer
 {
 public:
@@ -58,6 +60,8 @@ public:
 
   std::string get_name() const { return m_name; }
   virtual void apply(float pos) {}
+
+  virtual void write(FileWriter& writer) const;
 
 private:
   TimelineLayer(const TimelineLayer&);

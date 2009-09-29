@@ -40,6 +40,14 @@ public:
   float get_width() const { return m_width; }
   std::string get_name() const { return m_name; }
 
+  void write(FileWriter& writer) const 
+  {
+    writer.start_section("sound");
+    writer.write("pos",  m_pos);
+    writer.write("name", m_name);
+    writer.end_section();
+  }
+
 private:
   TimelineSoundObject(const TimelineSoundObject&);
   TimelineSoundObject& operator=(const TimelineSoundObject&);

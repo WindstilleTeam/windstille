@@ -36,6 +36,7 @@
 #include "editor/layer_manager.hpp"
 #include "editor/document.hpp"
 
+class AnimationWidget;
 class Document;
 class LayerWidget;
 class NavgraphInsertTool;
@@ -147,7 +148,7 @@ public:
 
   void on_animation_layer_new();
 
-  void on_animation_add_keyframe();
+  void on_animation_add_keyframe(TimelineProperty property);
   /** @} */
 
   void toggle_render_layer(Glib::RefPtr<Gtk::ToggleAction> action, unsigned int mask);
@@ -165,6 +166,7 @@ public:
   LayerManager& get_layer_manager() { return layer_manager; }
   WindstilleWidget* get_windstille_widget();
   TimelineWidget*   get_timeline_widget();
+  AnimationWidget*   get_animation_widget();
   Document* get_document();
   
   void load_file(const std::string& filename);

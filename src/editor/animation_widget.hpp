@@ -54,12 +54,17 @@ private:
   TimelineLayerWidget  m_timeline_layer_widget;
 
   TimelineHandle m_timeline;
+  sigc::connection m_timeout_connection;
+  bool m_playing;
+  float m_anim_pos;
 
 public:
   AnimationWidget(EditorWindow& editor);
 
   void set_timeline(TimelineHandle timeline);
   TimelineWidget& get_timeline_widget() { return m_timeline_widget; }
+  void on_play();
+  bool on_timeout();
 
 private:
   AnimationWidget(const AnimationWidget&);

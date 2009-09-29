@@ -21,6 +21,8 @@
 
 #include "editor/timeline_object.hpp"
 
+#include "util/file_writer.hpp"
+
 class TimelineKeyframeObject : public TimelineObject
 {
 protected:
@@ -54,6 +56,13 @@ public:
 
   const C& get_data() const { return m_data; }
   void     set_data(const C& data) { m_data = data; }
+  void write(FileWriter& writer) const 
+  {
+    writer.start_section("keyframe");
+    writer.write("pos",  m_pos);
+    writer.write("data", m_data);
+    writer.end_section();
+  }
 
 private:
   TimelineKeyframeDataObject(const TimelineKeyframeDataObject&);

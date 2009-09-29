@@ -20,6 +20,7 @@
 
 #include <assert.h>
 
+#include "util/file_writer.hpp"
 #include "editor/timeline_object.hpp"
 
 TimelineLayer::TimelineLayer(const std::string& name)
@@ -72,6 +73,19 @@ TimelineLayer::get_objects(float selection_start, float selection_end) const
   }
 
   return objects;
+}
+
+void
+TimelineLayer::write(FileWriter& writer) const
+{
+  writer.start_section("layer");
+  writer.start_section("objects");
+  for(const_iterator i = begin(); i != end(); ++i)
+  {
+    (*i)->write(writer);
+  }
+  writer.end_section();
+  writer.end_section();
 }
 
 /* EOF */

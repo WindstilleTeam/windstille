@@ -62,6 +62,12 @@ Timeline::create_object_layer(ObjectModelHandle object, TimelineProperty propert
     case kPosition:
       return TimelineObjectLayerHandle(new TimelineObjectDataLayer<Vector2f>(object, property));
       
+    case kRotation:
+      return TimelineObjectLayerHandle(new TimelineObjectDataLayer<float>(object, property));
+
+    case kScale:
+      return TimelineObjectLayerHandle(new TimelineObjectDataLayer<Vector2f>(object, property));
+      
     default:
       throw std::runtime_error("Timeline::create_object_layer: unknown property given");
   }
@@ -103,6 +109,17 @@ Timeline::apply(float pos)
   {
     (*i)->apply(pos);
   }  
+}
+
+void
+Timeline::write(FileWriter& writer) const
+{
+  writer.start_section("layers");
+  for(const_iterator i = begin(); i != end(); ++i)
+  {
+    (*i)->write(writer);
+  }  
+  writer.end_section();
 }
 
 /* EOF */

@@ -41,6 +41,13 @@ public:
   void  set_pos(float pos) { m_pos = pos; }
   float get_width() const { return m_width; }
   std::string get_name() const { return m_name; }
+  void write(FileWriter& writer) const 
+  {
+    writer.start_section("animation");
+    writer.write("pos",  m_pos);
+    writer.write("name", m_name);
+    writer.end_section();
+  }
 
 private:
   TimelineAnimObject(const TimelineAnimObject&);

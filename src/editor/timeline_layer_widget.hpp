@@ -27,6 +27,7 @@ class TimelineLayerWidget : public Gtk::DrawingArea
 {
 private:
   TimelineHandle m_timeline;
+  int m_column_height;
 
 public:
   TimelineLayerWidget();
