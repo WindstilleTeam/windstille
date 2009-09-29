@@ -326,6 +326,12 @@ class Project:
 
         editor_env.Program('windstille-editor', Glob('src/editor/*.cpp'))
 
+        # FIXME: temporary dirty hack
+        # test_editor_env = editor_env.Clone(OBJPREFIX="test_")
+        # test_editor_env.Append(CPPDEFINES=["__TEST__"])
+        # test_editor_env.Program('test_animation_widget',
+        #                        [f for f in Glob('src/editor/*.cpp') if f.get_path() != "src/editor/main.cpp"])
+
     def build_testapps(self):
         env = self.env.Clone()
         env.Append(OBJPREFIX="test__",
