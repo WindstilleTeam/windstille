@@ -36,7 +36,7 @@
 #include "editor/timeline.hpp"
 #include "editor/windstille_widget.hpp"
 #include "navigation/node.hpp"
-#include "scenegraph/scene_graph.hpp"
+#include "scenegraph/drawable_group.hpp"
 #include "util/file_reader.hpp"
 
 LayerManagerColumns* LayerManagerColumns::instance_ = 0;
@@ -431,7 +431,7 @@ SectorModel::set_all_locked(bool v)
 }
 
 void
-SectorModel::rebuild_scene_graph(SceneGraph& sg)
+SectorModel::rebuild_scene_graph(DrawableGroup& sg)
 {
   // FIXME: should make a queue_rebuild_scene_graph() to limit the number of rebuilds per frame to 1
   sg.clear();

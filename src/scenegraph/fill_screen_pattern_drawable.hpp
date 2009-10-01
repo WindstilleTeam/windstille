@@ -42,7 +42,7 @@ public:
     m_offset = offset;
   }
 
-  void draw() 
+  void render(unsigned int mask) 
   {
     OpenGLState state;
     state.enable(GL_BLEND);

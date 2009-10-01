@@ -84,7 +84,7 @@ public:
 
   void add_control_points(std::vector<ControlPointHandle>& control_points);
 
-  void add_to_scenegraph(SceneGraph& sg);
+  void add_to_scenegraph(DrawableGroup& sg);
   void sync();
 
   void set_world_pos(const Vector2f& p);

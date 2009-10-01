@@ -101,7 +101,7 @@ public:
 
   void delete_navgraph_edges(NavGraphNodeObjectModel& node);
 
-  void rebuild_scene_graph(SceneGraph& sg);
+  void rebuild_scene_graph(DrawableGroup& sg);
 
 private:
   void register_callbacks();

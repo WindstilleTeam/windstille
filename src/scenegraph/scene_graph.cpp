@@ -19,40 +19,35 @@
 #include "scenegraph/scene_graph.hpp"
 
 #include "scenegraph/drawable.hpp"
+#include "scenegraph/drawable_group.hpp"
 
 SceneGraph::SceneGraph()
-  : m_drawables()
+  : m_drawables(new DrawableGroup())
 {
 }
 
 void
 SceneGraph::add_drawable(boost::shared_ptr<Drawable> drawable)
 {
-  m_drawables.push_back(drawable);
+  m_drawables->add_drawable(drawable);
 }
 
 void
 SceneGraph::remove_drawable(boost::shared_ptr<Drawable> drawable)
 {
-  Drawables::iterator i = std::find(m_drawables.begin(), m_drawables.end(), drawable);
-  if (i != m_drawables.end())
-    m_drawables.erase(i);
+  m_drawables->remove_drawable(drawable);
+}
+
+void
+SceneGraph::render(unsigned int mask)
+{
+  m_drawables->render(mask); 
 }
 
 void
 SceneGraph::clear()
 {
-  m_drawables.clear();
-}
-
-void
-SceneGraph::draw(unsigned int mask)
-{
-  for(Drawables::iterator i = m_drawables.begin(); i != m_drawables.end(); ++i)
-  {
-    if ((*i)->get_render_mask() & mask)
-      (*i)->draw();
-  }
+  m_drawables->clear();
 }
 
 /* EOF */

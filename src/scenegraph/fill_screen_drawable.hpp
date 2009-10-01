@@ -31,7 +31,7 @@ public:
   }
   virtual ~FillScreenDrawable() {}
 
-  void draw()
+  void render(unsigned int mask)
   {
     glClearColor(color.r, color.g, color.b, color.a);
     glClear(GL_COLOR_BUFFER_BIT);

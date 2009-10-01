@@ -66,7 +66,7 @@ DrawingContext::render()
   
   for(Drawables::iterator i = drawingrequests.begin(); i != drawingrequests.end(); ++i)
     {
-      (*i)->draw();
+      (*i)->render(~0u);
     }
 }
 

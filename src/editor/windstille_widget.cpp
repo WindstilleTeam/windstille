@@ -252,7 +252,7 @@ WindstilleWidget::draw()
   if (true || m_rebuild_scene_graph) // FIXME: always rebuild for now, optimize later
   {
     m_rebuild_scene_graph = false;
-    m_document->get_sector_model().rebuild_scene_graph(*m_scene_graph);
+    m_document->get_sector_model().rebuild_scene_graph(*m_scene_graph->get_root());
   }
 
   if (sc.get())

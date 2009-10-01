@@ -37,7 +37,7 @@ public:
   NavGraphNodeObjectModel(const Vector2f& pos);
   ~NavGraphNodeObjectModel();
 
-  void add_to_scenegraph(SceneGraph& sg);
+  void add_to_scenegraph(DrawableGroup& sg);
   void set_rel_pos(const Vector2f& rel_pos_);
   void sync_drawable();
   

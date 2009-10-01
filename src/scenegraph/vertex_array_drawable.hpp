@@ -24,7 +24,6 @@
 #include "display/color.hpp"
 #include "scenegraph/drawable.hpp"
 
-/** */
 class VertexArrayDrawable : public Drawable
 {
 private:
@@ -41,8 +40,8 @@ private:
 public:
   VertexArrayDrawable(const Vector2f& pos_, float z_pos_, const Matrix& modelview_);
 
-  void draw();
-  void draw(int start, int end);
+  void render(unsigned int mask);
+  void render(int start, int end);
 
   void vertex(float x, float y, float z = 0.0f);
   void vertex(const Vector2f& vec, float z = 0.0f);

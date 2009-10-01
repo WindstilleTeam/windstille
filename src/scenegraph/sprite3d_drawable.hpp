@@ -36,7 +36,7 @@ public:
       m_scale(1.0f)
   {}
 
-  void draw()
+  void render(unsigned int mask)
   {
     Matrix matrix = modelview;
     matrix = matrix.translate(pos.x, pos.y, z_pos);

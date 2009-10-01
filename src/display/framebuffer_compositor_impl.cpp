@@ -82,7 +82,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
     {
       glPushMatrix();
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(SceneContext::LIGHTMAP);
+      sg->render(SceneContext::LIGHTMAP);
       glPopMatrix();
     }
 
@@ -106,7 +106,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
       {
         glPushMatrix();
         glMultMatrixf(gc_state.get_matrix().matrix);
-        sg->draw(SceneContext::COLORMAP);
+        sg->render(SceneContext::COLORMAP);
         glPopMatrix();
       }
     }
@@ -124,7 +124,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
       {
         glPushMatrix();
         glMultMatrixf(gc_state.get_matrix().matrix);
-        sg->draw(SceneContext::HIGHLIGHTMAP);
+        sg->render(SceneContext::HIGHLIGHTMAP);
         glPopMatrix();
       }
     }
@@ -137,7 +137,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
       {
         glPushMatrix();
         glMultMatrixf(gc_state.get_matrix().matrix);
-        sg->draw(SceneContext::CONTROLMAP);
+        sg->render(SceneContext::CONTROLMAP);
         glPopMatrix();
       }
     }

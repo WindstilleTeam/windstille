@@ -56,12 +56,22 @@ public:
 
   const C& get_data() const { return m_data; }
   void     set_data(const C& data) { m_data = data; }
+
   void write(FileWriter& writer) const 
   {
     writer.start_section("keyframe");
     writer.write("pos",  m_pos);
     writer.write("data", m_data);
     writer.end_section();
+  }
+
+  C blend(const TimelineKeyframeDataObject<C>& rhs, float pos)
+  {
+    float rel_pos = pos - get_pos();
+    float range   = rhs.get_pos() - m_pos;
+    float alpha   = rel_pos / range;
+
+    return ((1.0f - alpha) * get_data()) + (alpha * rhs.get_data());
   }
 
 private:

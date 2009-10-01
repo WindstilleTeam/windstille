@@ -31,7 +31,7 @@ private:
 public:
   ParticleSystemDrawable(const ParticleSystem& particle_system);
 
-  void draw();
+  void render(unsigned int mask);
 
 private:
   ParticleSystemDrawable(const ParticleSystemDrawable&);

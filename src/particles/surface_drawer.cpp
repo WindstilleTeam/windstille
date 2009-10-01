@@ -160,7 +160,7 @@ SurfaceDrawer::draw(const ParticleSystem& psys) const
         }
     }
 
-  buffer->draw();
+  buffer->render(~0u);
 }
 
 /* EOF */

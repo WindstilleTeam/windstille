@@ -41,7 +41,7 @@ public:
 
   void write(FileWriter& writer) const;
 
-  void add_to_scenegraph(SceneGraph& sg) {}
+  void add_to_scenegraph(DrawableGroup& sg) {}
 
 private:
   ParticleSystemObjectModel(const ParticleSystemObjectModel&);

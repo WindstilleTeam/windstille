@@ -28,7 +28,7 @@
 #include "editor/decal_rotate_control_point.hpp"
 #include "editor/decal_scale_control_point.hpp"
 #include "editor/sector_model.hpp"
-#include "scenegraph/scene_graph.hpp"
+#include "scenegraph/drawable_group.hpp"
 #include "scenegraph/surface_drawable.hpp"
 #include "util/file_reader.hpp"
 
@@ -267,7 +267,7 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
 }
 
 void
-DecalObjectModel::add_to_scenegraph(SceneGraph& sg)
+DecalObjectModel::add_to_scenegraph(DrawableGroup& sg)
 {
   if (!m_drawable)
   {

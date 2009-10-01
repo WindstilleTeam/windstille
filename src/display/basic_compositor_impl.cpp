@@ -61,7 +61,7 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
       glPushMatrix();
       glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(SceneContext::LIGHTMAP);
+      sg->render(SceneContext::LIGHTMAP);
       glPopMatrix();
     }
 
@@ -93,7 +93,7 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
     {
       glPushMatrix();
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(SceneContext::COLORMAP);
+      sg->render(SceneContext::COLORMAP);
       glPopMatrix();
     }
   }
@@ -133,7 +133,7 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
     {
       glPushMatrix();
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(SceneContext::HIGHLIGHTMAP);
+      sg->render(SceneContext::HIGHLIGHTMAP);
       glPopMatrix();
     }
   }
@@ -146,7 +146,7 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
     {
       glPushMatrix();
       glMultMatrixf(gc_state.get_matrix().matrix);
-      sg->draw(SceneContext::CONTROLMAP);
+      sg->render(SceneContext::CONTROLMAP);
       glPopMatrix();
     }
   }

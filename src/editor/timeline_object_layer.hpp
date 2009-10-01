@@ -144,14 +144,7 @@ public:
         {
           //std::cout << "POS: " << pos << " " << lhs->get_pos() << " " << rhs->get_pos() << std::endl;
           //std::cout << size() << " " << lhs->get_data() << " " << rhs->get_data() << std::endl;
-
-          float rel_pos = pos - lhs->get_pos();
-          float range   = rhs->get_pos() - lhs->get_pos();
-          float alpha   = rel_pos / range;
-
-          //std::cout << range << " " << rel_pos << " " << alpha <<   std::endl;
-
-          return ((1.0f - alpha) * lhs->get_data()) + (alpha * rhs->get_data());
+          return lhs->blend(*rhs, pos);
         }
       }
       else if (rhs)

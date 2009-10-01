@@ -64,8 +64,9 @@ public:
   void set_timeline(TimelineHandle timeline);
   TimelineWidget& get_timeline_widget() { return m_timeline_widget; }
   void on_play();
+  void on_export();
   bool on_timeout();
-
+  
 private:
   AnimationWidget(const AnimationWidget&);
   AnimationWidget& operator=(const AnimationWidget&);

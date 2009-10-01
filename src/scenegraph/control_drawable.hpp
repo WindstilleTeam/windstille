@@ -35,7 +35,7 @@ public:
 
   virtual ~ControlDrawable() {}
 
-  void draw()
+  void render(unsigned int mask)
   {
     glPushMatrix();
 

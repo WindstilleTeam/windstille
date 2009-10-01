@@ -47,13 +47,13 @@ VertexArrayDrawable::clear()
 }
 
 void
-VertexArrayDrawable::draw()
+VertexArrayDrawable::render(unsigned int mask)
 {
-  draw(0, num_vertices());
+  render(0, num_vertices());
 }
 
 void
-VertexArrayDrawable::draw(int start, int end)
+VertexArrayDrawable::render(int start, int end)
 {
   assert(!vertices.empty());
   assert(texcoords.empty() || int(texcoords.size()/2) == num_vertices());

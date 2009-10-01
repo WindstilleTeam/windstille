@@ -20,7 +20,7 @@
 
 #include "editor/sector_model.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
-#include "scenegraph/scene_graph.hpp"
+#include "scenegraph/drawable_group.hpp"
 #include "navigation/node.hpp"
 #include "editor/constants.hpp"
 
@@ -41,7 +41,7 @@ NavGraphNodeObjectModel::~NavGraphNodeObjectModel()
 }
 
 void
-NavGraphNodeObjectModel::add_to_scenegraph(SceneGraph& sg)
+NavGraphNodeObjectModel::add_to_scenegraph(DrawableGroup& sg)
 {
   if (!m_drawable)
     m_drawable.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix::identity()));

@@ -25,6 +25,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "editor/editor_window.hpp"
+#include "editor/windstille_widget.hpp"
 #include "editor/timeline_widget.hpp"
 #include "editor/timeline_object.hpp"
 #include "editor/timeline_anim_object.hpp"
@@ -154,7 +155,8 @@ AnimationWidget::on_timeout()
 {
   m_anim_pos += 0.5f;
   m_timeline->apply(m_anim_pos);
-  EditorWindow::current()->queue_draw();
+  if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
+    wst->queue_draw();
   return true;
 }
 
@@ -164,6 +166,12 @@ AnimationWidget::set_timeline(TimelineHandle timeline)
   m_timeline = timeline;
   m_timeline_widget.set_timeline(timeline);
   m_timeline_layer_widget.set_timeline(timeline);
+}
+
+void
+AnimationWidget::on_export()
+{
+  
 }
 
 /* EOF */

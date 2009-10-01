@@ -32,7 +32,7 @@ private:
 public:
   GradientDrawable(const std::vector<float>& colors);
   
-  void draw();
+  void render(unsigned int mask);
 
 private:
   GradientDrawable(const GradientDrawable&);

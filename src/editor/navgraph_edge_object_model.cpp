@@ -21,6 +21,7 @@
 #include "editor/navgraph_node_object_model.hpp"
 #include "editor/sector_model.hpp"
 #include "scenegraph/scene_graph.hpp"
+#include "scenegraph/drawable_group.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
 
 NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeObjectModel> lhs,
@@ -62,7 +63,7 @@ NavGraphEdgeObjectModel::update(float delta)
 }
 
 void
-NavGraphEdgeObjectModel::add_to_scenegraph(SceneGraph& sg)
+NavGraphEdgeObjectModel::add_to_scenegraph(DrawableGroup& sg)
 {
   m_drawable.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix::identity()));
   update(0.0f);

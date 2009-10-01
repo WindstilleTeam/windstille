@@ -43,7 +43,7 @@ public:
   Surface get_surface() const { return surface; }
   SurfaceDrawingParameters& get_params() { return params; }
 
-  void draw()
+  void render(unsigned int mask)
   {
     glPushMatrix();
     glMultMatrixf(modelview.matrix);

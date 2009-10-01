@@ -23,6 +23,7 @@
 
 #include "math/rect.hpp"
 #include "editor/editor_window.hpp"
+#include "editor/windstille_widget.hpp"
 #include "editor/timeline.hpp"
 #include "editor/timeline_layer.hpp"
 #include "editor/timeline_object.hpp"
@@ -497,7 +498,8 @@ TimelineWidget::set_cursor_pos(float p)
 {
   m_cursor_pos = p; 
   m_timeline->apply(p);
-  EditorWindow::current()->queue_draw();
+  if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
+    wst->queue_draw();
 }
 
 float

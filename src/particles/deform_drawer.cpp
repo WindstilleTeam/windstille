@@ -43,7 +43,7 @@ public:
   
   virtual ~DeformDrawerRequest() {}
   
-  void draw()
+  void render(unsigned int mask)
   {
 #if 0
     Display::push_framebuffer(framebuffer);

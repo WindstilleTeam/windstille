@@ -16,38 +16,41 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
-#define HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
+#include "scenegraph/drawable_group.hpp"
 
-#include <boost/shared_ptr.hpp>
-#include <vector>
+#include "scenegraph/drawable.hpp"
 
-class Drawable;
-class DrawableGroup;
-class Texture;
-
-class SceneGraph
+DrawableGroup::DrawableGroup()
+  : m_drawables()
 {
-private:
-  boost::shared_ptr<DrawableGroup> m_drawables;
+}
 
-public:
-  SceneGraph();
+void
+DrawableGroup::add_drawable(boost::shared_ptr<Drawable> drawable)
+{
+  m_drawables.push_back(drawable);
+}
 
-  boost::shared_ptr<DrawableGroup> get_root() { return m_drawables; }
+void
+DrawableGroup::remove_drawable(boost::shared_ptr<Drawable> drawable)
+{
+  m_drawables.erase(std::remove(m_drawables.begin(), m_drawables.end(), drawable), m_drawables.end());
+}
+  
+void
+DrawableGroup::clear()
+{
+  m_drawables.clear();
+}
 
-  void add_drawable(boost::shared_ptr<Drawable> drawable);
-  void remove_drawable(boost::shared_ptr<Drawable> drawable);
-
-  void render(unsigned int mask);
-
-  void clear();
-
-private:
-  SceneGraph(const SceneGraph&);
-  SceneGraph& operator=(const SceneGraph&);
-};
-
-#endif
+void
+DrawableGroup::render(unsigned int mask)
+{
+  for(Drawables::iterator i = m_drawables.begin(); i != m_drawables.end(); ++i)
+  {
+    if ((*i)->get_render_mask() & mask)
+      (*i)->render(mask);
+  }
+}
 
 /* EOF */

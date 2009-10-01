@@ -121,7 +121,7 @@ public:
   }
 #endif
 
-  void draw()
+  void render(unsigned int mask)
   {
 #if 0
     glPushMatrix();

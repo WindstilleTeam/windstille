@@ -32,7 +32,7 @@ class ObjectModel;
 class FileReader;
 class SceneContext;
 class SectorModel;
-class SceneGraph;
+class DrawableGroup;
 class Vector2f;
 
 typedef boost::shared_ptr<ObjectModel> ObjectModelHandle;
@@ -105,7 +105,7 @@ public:
 
   /** This lets the object add things to the SceneGraph or do other
       things needed to make it properly visible in the SectorModel */
-  virtual void add_to_scenegraph(SceneGraph& sg) =0;
+  virtual void add_to_scenegraph(DrawableGroup& sg) =0;
 };
 
 #endif

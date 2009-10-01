@@ -16,36 +16,34 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
-#define HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
+#ifndef HEADER_WINDSTILLE_DRAWABLE_GROUP_HPP
+#define HEADER_WINDSTILLE_DRAWABLE_GROUP_HPP
 
 #include <boost/shared_ptr.hpp>
 #include <vector>
 
 class Drawable;
-class DrawableGroup;
 class Texture;
 
-class SceneGraph
+class DrawableGroup
 {
 private:
-  boost::shared_ptr<DrawableGroup> m_drawables;
+  typedef std::vector<boost::shared_ptr<Drawable> > Drawables;
+  Drawables m_drawables;
 
 public:
-  SceneGraph();
-
-  boost::shared_ptr<DrawableGroup> get_root() { return m_drawables; }
+  DrawableGroup();
 
   void add_drawable(boost::shared_ptr<Drawable> drawable);
   void remove_drawable(boost::shared_ptr<Drawable> drawable);
+  
+  void clear();
 
   void render(unsigned int mask);
 
-  void clear();
-
 private:
-  SceneGraph(const SceneGraph&);
-  SceneGraph& operator=(const SceneGraph&);
+  DrawableGroup(const DrawableGroup&);
+  DrawableGroup& operator=(const DrawableGroup&);
 };
 
 #endif

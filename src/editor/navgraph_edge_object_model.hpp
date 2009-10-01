@@ -37,7 +37,7 @@ public:
                           boost::shared_ptr<NavGraphNodeObjectModel> rhs);
   virtual ~NavGraphEdgeObjectModel();
 
-  void add_to_scenegraph(SceneGraph& sg);
+  void add_to_scenegraph(DrawableGroup& sg);
   void update(float delta);
 
   Rectf get_bounding_box() const;

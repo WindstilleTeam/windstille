@@ -28,7 +28,7 @@ ParticleSystemDrawable::ParticleSystemDrawable(const ParticleSystem& particle_sy
 }
 
 void
-ParticleSystemDrawable::draw()
+ParticleSystemDrawable::render(unsigned int mask)
 {
   m_particle_system.draw();
 }

@@ -38,7 +38,7 @@ public:
     set_render_mask(SceneContext::CONTROLMAP);
   }
 
-  void draw()
+  void render(unsigned int mask)
   {
     glLineWidth(4.0f);
     m_navgraph->draw();
