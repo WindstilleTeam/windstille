@@ -10,8 +10,131 @@ on this list and always think about how useful a new feature would be
 in the context of the whole game or if a potential performance
 enhanchment, actually enhanchmes anything at all.
 
+Timeline
+========
+
+* turn play button into a toggle button
+
+* animation export:
+ 
+  - exported animation doesn't need layers, but layers could still be
+    useful for later editing
+
+  - might not need a navgraph
+
+  - needs all objects
+
+  - what happens with the animation before the start and after the
+    end? does it persist or disappear?
+
+  - exported animation must be almost complete SectorModels
+
+  - recursive animation is needed, i.e. animation that contains other
+    animations
+
+  - exported animation basically is a full SectorModel, there is no
+    easy way around that
+
+  - could share a SectorModel shared_ptr between two tabs, thus
+    editing animation in one, previewing in another, would need a way
+    to handle change events
+
+* need a way to edit keyframes instead of just inserting new ones
+
+* implement load of timeline
+
+* using UI manager doesn't work when toolbar is  on the Notepad
+
+* add ability to scale selections
+
+* add ability to set FPS
+
+* some timelines, such as Vector2f stuff could be visualized by graphics in the scene
+
+* add snappping to frame borders (i.e. no float, but just well defined int positions)
+
+* make snapping optional, add a button for it
+
+* add scrolling (middle button and scrollbars)
+
+* add overlap-avoidance
+
+Animation Subsystem
+===================
+
+* animation objects bundle the pointers to objects along with
+  curves that describe changes to those objects
+
+* curves can manipulate all kinds of properties of an object, such as:
+
+  - rotation
+  - position
+  - color
+  - ...
+
+* curves can also used to start or stop an object, for example a curve
+  for a movie-object might have actions such as:
+
+  - start
+  - stop
+  - reset
+  - set_pos()
+
+  That can be placed on a curve
+
+* there is no global timeline, timelines are local to an animation object
+
+* animation objects can be recursive, i.e. an animation object might
+  start other animation objects
+
+* there are two core types of animation objects:
+
+  - prefab animations that are saved to their own files and only
+    linked into the scene, they provide their own objects
+
+  - plain animations that are part of the main scene, they can
+    manipulate any object in the scene
+
+* two animation objects can access the same objects for animation, but
+  not at the same time as that would cause glitching (i.e. you might
+  have a door-open.anim and a door-close.anim)
+
+* ignore tweens for now and implement the basics first
+
+* implement load/save for timeline
+
+* make timeline proper part of Document and SectorModel
+
+High Priority
+=============
+
+* add a GenericObjectModel to the editor that just stores all the
+  information in the FileReader and writes it out again, use it for
+  all objects whose type isn't known by the editor
+
+  * implement a way to clone a FileReader, keep it and pass it to FileWriter
+  
+  * simply implement a way to serialize a FileReader to string and
+    write that out with FileWriter
+
+* enhance the ObjectSelector to allow different object types (particle
+  systems, highlight, light, etc)
+
+* implement objects properties in a generic fashion:
+
+  GenericDialogBox::add_int(const std::string& name, const boost::function<void (int)>& callback);
+  GenericDialogBox::add_enum(const std::string& name, const boost::function<void (int)>& callback);
+  GenericDialogBox::add_string(const std::string& name, const boost::function<void (int)>& callback);
+
+  * apply changes instantly
+  * use the Undo/Redo system
+
 Editor Restructuring
 ====================
+
+* 'delete layer' should set the layer selection to something valid
+
+* add a toggleable safe-area overlay that shows how much fits on a screen
 
 * SceneGraph needs to be updated while drag&drop is in progress
 
@@ -29,10 +152,8 @@ Editor Restructuring
 
 * add special drawing for different edge types (i.e. draw stairs for stair type edges)
 
-* add grid snapping to navgraph
-
-* moving a NavGraphNodeModel snaps the bounding box to the grid, while
-  it should snap the center point
+* snapping for navgraph is limited to moving the object, should also
+  work when creating the nodes in the first place
 
 * horizontal/vertical navgraph edges are near impossible to select
   (bounding box is just 1px height)
@@ -53,38 +174,6 @@ Editor Restructuring
 #3  0x08174a22 in WindstilleWidget::mouse_up (this=0x8f8e5a0, ev=0x8f878a0) at src/editor/windstille_widget.cpp:372
 #4  0x08177788 in sigc::bound_mem_functor1<bool, WindstilleWidget, _GdkEventButton*>::operator() (this=0x902fc34, _A_a1=@0xbff04664) at /usr/include/sigc++-2.0/sigc++/functors/mem_fun.h:1851
 #5  0x081772bf in sigc::adaptor_functor<sigc::bound_mem_functor1<bool, WindstilleWidget, _GdkEventButton*> >::operator()<_GdkEventButton* const&> (this=0x902fc30, _A_arg1=@0xbff04664)
-
-* add a GenericObjectModel to the editor that just stores all the
-  information in the FileReader and writes it out again, use it for
-  all objects whose type isn't known by the editor
-
-SceneGraph/Compositor
-=====================
-
-* could make use of occlusion query, to hide highlight sources when
-  they are covered:
-
-  * http://www.opengl.org/registry/specs/ARB/occlusion_query.txt
-  * http://developer.download.nvidia.com/SDK/9.5/Samples/DEMOS/OpenGL/occlusion_query.zip
-
-  Have to figure if this would work with alpha textures:
-
-  * void glAlphaFunc(GLenum func, GLclampf ref);
-
-* add support for multipass rendering with shader scripts (to simulate
-  glass and things like that)
-
-* play around with post-processing effects:
-
-  * bloom
-
-  * vignetting
-
-  * motion blur
-
-  * film grain
-
-  * lense flare
 
 Overview
 ========
@@ -137,6 +226,40 @@ Pathname/PhysFS
 
 * Sound stuff still uses PhysFS, should be switched to std::ifstream
 
+SceneGraph/Compositor
+=====================
+
+* could make use of occlusion query, to hide highlight sources when
+  they are covered:
+
+  * http://www.opengl.org/registry/specs/ARB/occlusion_query.txt
+  * http://developer.download.nvidia.com/SDK/9.5/Samples/DEMOS/OpenGL/occlusion_query.zip
+
+  Have to figure if this would work with alpha textures:
+
+  * void glAlphaFunc(GLenum func, GLclampf ref);
+
+* add support for multipass rendering with shader scripts (to simulate
+  glass and things like that)
+
+* play around with post-processing effects:
+
+  * bloom
+
+  * vignetting
+
+  * motion blur
+
+  * film grain
+
+  * lense flare
+
+* add a glScissor()/Display::push/pop_cliprect() Node
+
+* add a stencil node:
+
+  * StencilDrawable(DrawableHandle stencil, DrawableHandle child);
+
 SceneGraph
 ==========
 
@@ -149,7 +272,8 @@ SceneGraph
   (128px = 1meter instead of 64px), figure out which to use before
   doing the final conversion
 
-* might have some advantage to place stuff in a QuadTree, when you have a complex level
+* might have some advantage to place stuff in a QuadTree, when you
+  have a complex level
 
 * SceneGraph could be used to promte certain states to children such
   as: color, alpha, visibility (would be mainly useful for the editor
@@ -171,6 +295,8 @@ SceneGraph
 
 Navigation Graph
 ================
+
+* add raycasting
 
 * NavigationGraph needs hooks into scripting, so that things can be
   triggered when a character passes over a specific trigger node or
@@ -441,6 +567,16 @@ Miscellaneous
 
 * replace lisp::Writer with custom FileWriter (used in config)
 
+* add (maybe) a LispWriter::start_section(name, bool compact) to create:
+
+  (object (name "aeu") (...))
+
+  instead of
+
+  (object
+    (name "aeu")
+    (...))
+
 * make FileReader work more like lisp::Writer, i.e. less
   const/functional, keeping the current cursor position. Main issue
   with the current FileReader is the way sections are handled, which
@@ -521,7 +657,7 @@ Miscellaneous
 * scrap inventory and redesign it
 
 * join Player and Character somewhat or derive one from the other, so
-  that one can have scripted people running and jumping around
+  that one can have scripted people running and jumping around (see Doll)
 
 * add support for empty sectors (sectors without a player character,
   for use in intro.wst and similar cutscenes)
@@ -734,25 +870,24 @@ Console
 Editor
 ======
 
+* add a NextLayer, PrevLayer keyboard shortcuts
+
+* add AutoVisible button to Layer dialog
+
+* make the game runnable from within the editor (reusing image cache and other stuff)
+
 * Fix screenshot support (very crashy/buggy on different screensizes and stuff (padding error?))
 
-* unify delete/remove/erase a bit
+* unify delete/remove/erase naming a bit
+
+  * STL convention: erase for iterators, remove for value, delete isn't used
 
 * figure out a way to rename image files without breaking the levels
+  (use uuid? md5sums? alias files?)
 
 * new boost1.37 seems to be missing boost_signals, instead it has
   boost_signals-mt, do we want to get funcky with configure checks or
   ignore and stay boost1.35 or so?
-
-* add (maybe) a LispWriter::start_section(name, bool compact) to create:
-
-  (object (name "aeu") (...))
-
-  instead of
-
-  (object
-    (name "aeu")
-    (...))
 
 * add special blocker objects, i.e. black boxes that have a
   configurable fadeout
@@ -772,10 +907,7 @@ Editor
   on edge
 
 * add keyboard shortcuts to flatten (set same x or y value for all)
-  current NodeSelection, also add snapping to grid and stuff
-
-* add a way to delete navgraph nodes (need to move Selection out of
-  tool, generalize it or just use right button)
+  current NodeSelection
 
 * NavgraphTool (see Construo):
  
@@ -808,9 +940,6 @@ Editor
 
 * turn the Selection into a kind-of ControlPoint, this would allow to
   keep the move/offset logic out of the ObjectModel
-
-* maybe have different RGB and RGBA Textures in the TexturePacker to
-  save a bit of space
 
 * share SoftwareSurface via Manager class, generalize Manager classes
   -> template
@@ -993,11 +1122,11 @@ Editor
 
   * CommandGroupCommand  [done]
 
-  * NodeAddCommand
-  * NodeRemoveCommand
-  * EdgeAddCommand
-  * EdgeRemoveCommand
-  * NodeSetPosCommand
+  * NodeAddCommand       [done]
+  * NodeRemoveCommand    [done]
+  * EdgeAddCommand       [done]
+  * EdgeRemoveCommand    [done]
+  * NodeSetPosCommand    [done via ObjectSetPosCommand]
 
   * UndoCopy
   * UndoPaste
@@ -1015,7 +1144,7 @@ Editor
 
   * LayerAddCommand     [done, except proper order]
   * LayerRemovedCommand [done, except proper order]
-  * LayerReorderCommand
+  * LayerReorderCommand 
 
   * FunctorCommand(boost::functor<void ()>& undo,
                    boost::functor<void ()>& redo); [done]
@@ -1097,6 +1226,12 @@ Sound Effects
 * sound of a metalic locker being opened
 
 * sound of a lightswitch being toggled
+
+Obsolete
+========
+
+* maybe have different RGB and RGBA Textures in the TexturePacker to
+  save a bit of space
 
 
 http://orange.blender.org/blog/the-amazing-incredible-monkey-brush#more-49
