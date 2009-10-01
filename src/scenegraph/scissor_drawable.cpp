@@ -16,31 +16,21 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_STENCIL_DRAWABLE_HPP
-#define HEADER_WINDSTILLE_STENCIL_DRAWABLE_HPP
+#include "scenegraph/scissor_drawable.hpp"
+#include "display/display.hpp"
 
-#include "scenegraph/drawable.hpp"
-#include "scenegraph/drawable_group.hpp"
-
-class StencilDrawable : public Drawable
+ScissorDrawable::ScissorDrawable(const Rect& cliprect) :
+  m_cliprect(cliprect),
+  m_drawable_group()
 {
-private:
-  DrawableGroup m_stencil_group;
-  DrawableGroup m_drawable_group;
+}
 
-public:
-  StencilDrawable();
-
-  void render(unsigned int mask);
-
-  DrawableGroup& get_stencil_group()  { return m_stencil_group; }
-  DrawableGroup& get_drawable_group() { return m_drawable_group; }
-
-private:
-  StencilDrawable(const StencilDrawable&);
-  StencilDrawable& operator=(const StencilDrawable&);
-};
-
-#endif
+void
+ScissorDrawable::render(unsigned int mask)
+{
+  Display::push_cliprect(m_cliprect);
+  m_drawable_group.render(mask);
+  Display::pop_cliprect();
+}
 
 /* EOF */
