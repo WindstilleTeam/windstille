@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_ANIMATION_WIDGET_HPP
-#define HEADER_WINDSTILLE_ANIMATION_WIDGET_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_ANIMATION_WIDGET_HPP
+#define HEADER_WINDSTILLE_EDITOR_ANIMATION_WIDGET_HPP
 
 #include <gtkmm/adjustment.h>
 #include <gtkmm/box.h>

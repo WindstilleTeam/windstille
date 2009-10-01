@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_TIMELINE_OBJECT_LAYER_HPP
-#define HEADER_WINDSTILLE_TIMELINE_OBJECT_LAYER_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_TIMELINE_OBJECT_LAYER_HPP
+#define HEADER_WINDSTILLE_EDITOR_TIMELINE_OBJECT_LAYER_HPP
 
 #include <boost/shared_ptr.hpp>
 #include <iostream>

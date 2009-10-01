@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_TIMELINE_HANDLES_HPP
-#define HEADER_WINDSTILLE_TIMELINE_HANDLES_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_TIMELINE_HANDLES_HPP
+#define HEADER_WINDSTILLE_EDITOR_TIMELINE_HANDLES_HPP
 
 #include <boost/shared_ptr.hpp>
 
