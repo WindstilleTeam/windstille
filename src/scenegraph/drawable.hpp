@@ -33,6 +33,12 @@ protected:
   unsigned int render_mask;
 
 public:
+  Drawable()
+    : pos(0.0f, 0.0f),
+      z_pos(0.0f),
+      modelview(Matrix::identity())
+  {}
+
   Drawable(const Vector2f& pos_, float z_pos_ = 0,  const Matrix& modelview_ = Matrix::identity())
     : pos(pos_), 
       z_pos(z_pos_), 
