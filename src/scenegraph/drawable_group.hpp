@@ -22,10 +22,11 @@
 #include <boost/shared_ptr.hpp>
 #include <vector>
 
-class Drawable;
+#include "scenegraph/drawable.hpp"
+
 class Texture;
 
-class DrawableGroup
+class DrawableGroup : public Drawable
 {
 private:
   typedef std::vector<boost::shared_ptr<Drawable> > Drawables;

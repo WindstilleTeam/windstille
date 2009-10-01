@@ -441,13 +441,17 @@ SectorModel::rebuild_scene_graph(DrawableGroup& sg)
   {
     if (*layer)
     {
+      boost::shared_ptr<DrawableGroup> group(new DrawableGroup);
+
       for(Layer::const_iterator obj = (*layer)->begin(); obj != (*layer)->end(); ++obj)
       {
         if ((*layer)->is_visible())
         {
-          (*obj)->add_to_scenegraph(sg);
+          (*obj)->add_to_scenegraph(*group);
         }
       }
+
+      sg.add_drawable(group);
     }
   }
 
