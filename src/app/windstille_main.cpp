@@ -66,7 +66,9 @@ WindstilleMain::main(int argc, char** argv)
     config.parse_args(argc, argv);
 
     {
-      OpenGLWindow      window;
+      OpenGLWindow      window(Size(config.get_int("screen-width"), config.get_int("screen-height")),
+                               Size(config.get_int("aspect-width"), config.get_int("aspect-height")),
+                               config.get_bool("fullscreen"), config.get_int("anti-aliasing"));
       TTFFontManager    ttffont_manager;
       Fonts             fonts;
       Console           console;

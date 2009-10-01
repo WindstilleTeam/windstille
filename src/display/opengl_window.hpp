@@ -19,26 +19,29 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_OPENGL_WINDOW_HPP
 #define HEADER_WINDSTILLE_DISPLAY_OPENGL_WINDOW_HPP
 
-#include <SDL.h>
+#include <boost/scoped_ptr.hpp>
 
 #include "util/currenton.hpp"
 #include "math/size.hpp"
 
+class OpenGLWindowImpl;
+
 class OpenGLWindow : public Currenton<OpenGLWindow>
 {
-private:
-  SDL_Surface* m_window;
-
 public:
-  OpenGLWindow();
+  OpenGLWindow(const Size& size, const Size& aspect, 
+               bool fullscreen = false, int anti_aliasing = 0);
   ~OpenGLWindow();
 
-  int  get_width()  const { return m_window->w; }
-  int  get_height() const { return m_window->h; }
-  Size get_size()   const { return Size(m_window->w, m_window->h); }
+  int  get_width()  const;
+  int  get_height() const;
+  Size get_size()   const;
 
   void set_fullscreen(bool fullscreen);
   void set_gamma(float r, float g, float b);
+
+private:
+  boost::scoped_ptr<OpenGLWindowImpl> m_impl;
 
 private:
   OpenGLWindow(const OpenGLWindow&);

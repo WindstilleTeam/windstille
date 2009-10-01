@@ -76,8 +76,6 @@ public:
   static Framebuffer get_framebuffer();
 
   static void save_screenshot(const Pathname& filename);
-
-  static void init();
 };
 
 #endif

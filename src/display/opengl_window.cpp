@@ -19,6 +19,7 @@
 #include "display/opengl_window.hpp"
 
 #include <GL/glew.h>
+#include <SDL.h>
 #include <SDL/SDL_image.h>
 
 #include "util/util.hpp" 
@@ -26,28 +27,43 @@
 #include "display/display.hpp"
 #include "app/config.hpp"
 
-OpenGLWindow::OpenGLWindow()
-  : m_window(0)
+class OpenGLWindowImpl
 {
+public:
+  SDL_Surface* m_window;
+  Size         m_size;
+
+  OpenGLWindowImpl() :
+    m_window(0),
+    m_size()
+  {}
+};
+
+OpenGLWindow::OpenGLWindow(const Size& size, const Size& aspect, bool fullscreen, int anti_aliasing)
+  : m_impl(new OpenGLWindowImpl)
+{
+  m_impl->m_size = size;
+
   SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1); // vsync
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
-  SDL_GL_SetAttribute(SDL_GL_RED_SIZE,   5);
-  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
-  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,  5);
+  SDL_GL_SetAttribute(SDL_GL_RED_SIZE,     5);
+  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,   5);
+  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,    5);
+  SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-  if (config.get_int("anti-aliasing"))
+  if (anti_aliasing)
   {
     SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 ); // boolean value, either it's enabled or not
-    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, config.get_int("anti-aliasing") ); // 0, 2, or 4 for number of samples
+    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, anti_aliasing ); // 0, 2, or 4 for number of samples
   }
   
   SDL_WM_SetCaption("Windstille", "Windstille");
   SDL_WM_SetIcon(IMG_Load(Pathname("icon.png").get_sys_path().c_str()), NULL);
 
-  m_window = SDL_SetVideoMode(config.get_int("screen-width"), config.get_int("screen-height"),
-                              0, SDL_OPENGL | (config.get_bool("fullscreen") ? SDL_FULLSCREEN : 0));
+  m_impl->m_window = SDL_SetVideoMode(size.width, size.height,
+                                      0, SDL_OPENGL | (fullscreen ? SDL_FULLSCREEN : 0));
 
-  if (!m_window)
+  if (!m_impl->m_window)
   {
     throw std::runtime_error("Display:: Couldn't create window");
   }
@@ -64,12 +80,11 @@ OpenGLWindow::OpenGLWindow()
     {
       std::cout << "glewInit() successfull" << std::endl;
 
-      glViewport(0, 0, m_window->w, m_window->h);
+      glViewport(0, 0, m_impl->m_window->w, m_impl->m_window->h);
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
 
-      Display::aspect_size = Size(config.get_int("aspect-width"), 
-                                  config.get_int("aspect-height"));
+      Display::aspect_size = aspect;
 
       glOrtho(0.0, Display::get_width(), Display::get_height(),
               0.0, 1000.0, -1000.0);
@@ -82,7 +97,7 @@ OpenGLWindow::OpenGLWindow()
         glTranslated(0.375f, 0.375f, 0.0);
       }
 
-      if (config.get_int("anti-aliasing"))
+      if (anti_aliasing)
         glEnable(GL_MULTISAMPLE_ARB); 
 
       assert_gl("setup projection");
@@ -94,9 +109,27 @@ OpenGLWindow::OpenGLWindow()
 
 OpenGLWindow::~OpenGLWindow()
 {
-  // must not free m_window, see:
+  // must not free m_impl->m_window, see:
   // http://sdl.beuc.net/sdl.wiki/SDL_SetVideoMode
 } 
+
+int  
+OpenGLWindow::get_width()  const
+{
+  return m_impl->m_window->w; 
+}
+
+int 
+OpenGLWindow::get_height() const 
+{
+  return m_impl->m_window->h; 
+}
+
+Size 
+OpenGLWindow::get_size() const
+{
+  return Size(m_impl->m_window->w, m_impl->m_window->h); 
+}
 
 void
 OpenGLWindow::set_fullscreen(bool fullscreen)
@@ -106,9 +139,9 @@ OpenGLWindow::set_fullscreen(bool fullscreen)
   if (fullscreen)
     flags |= SDL_FULLSCREEN;
 
-  m_window = SDL_SetVideoMode(config.get_int("screen-width"), config.get_int("screen-height"), 0, flags);
+  m_impl->m_window = SDL_SetVideoMode(m_impl->m_size.width, m_impl->m_size.height, 0, flags);
 
-  if (!m_window)
+  if (!m_impl->m_window)
     {
       throw std::runtime_error("OpenGLWindow: Couldn't create window");
     }

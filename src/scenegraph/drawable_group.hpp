@@ -37,6 +37,7 @@ public:
 
   void add_drawable(boost::shared_ptr<Drawable> drawable);
   void remove_drawable(boost::shared_ptr<Drawable> drawable);
+  int  size() const { return static_cast<int>(m_drawables.size()); }
   
   void clear();
 

@@ -344,6 +344,18 @@ class Project:
         env.Program("test_directory", ["src/util/directory.cpp"], LIBS=['boost_filesystem-mt', self.util_lib])
         env.Program("test_easing", ["src/math/easing.cpp"])
 
+        # FIXME: Little dirty, need to clean up the testcase stuff
+        sdl_env = env.Clone()
+        sdl_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
+                        
+        sdl_env.Program("test_scissor_drawable",
+                        ["test/scissor_drawable/scissor_drawable.cpp"],
+                        CPPPATH=sdl_env["CPPPATH"],
+                        CPPDEFINES=sdl_env["CPPDEFINES"],
+                        CXXFLAGS=sdl_env["CXXFLAGS"] + ['-g3', "-O0"],
+                        LIBS=[self.display_lib, self.math_lib, self.util_lib, self.binreloc_lib,
+                              'png', 'GL', 'GLEW', 'SDL_image', 'boost_filesystem-mt'] + sdl_env["LIBS"])
+
     def build_windstille_data(self):
         data_env = self.env.Clone()
 

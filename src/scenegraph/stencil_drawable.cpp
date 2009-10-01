@@ -38,10 +38,11 @@ StencilDrawable::render(unsigned int mask)
     http://www.opengl.org/documentation/specs/man_pages/hardcopy/GL/html/gl/stencilfunc.html
     http://www.opengl.org/documentation/specs/man_pages/hardcopy/GL/html/gl/stencilop.html
   */
+  glEnable(GL_STENCIL_TEST);
 
   // enable stencil and clear it
-  glEnable(GL_STENCIL_TEST);
   glClearStencil(0);
+  glClear(GL_STENCIL_BUFFER_BIT);
 
   // glStencilFunc: set when the test passes or fails 
   // glStencilOp: set what is done when the test passes/fails
@@ -49,18 +50,24 @@ StencilDrawable::render(unsigned int mask)
   // render stencil buffer content
   glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
   glStencilFunc(GL_ALWAYS, 1, 1);
-  glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+  glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+
+  glEnable(GL_ALPHA_TEST);
+  glAlphaFunc(GL_GREATER, 0.5f);
   m_stencil_group.render(~0u);
-  
+  glDisable(GL_ALPHA_TEST);
+
   // render framebuffer content
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
   glStencilFunc(GL_EQUAL, 1, 1);
   glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
   m_drawable_group.render(~0u);
 
   // disable stencil and reset op and func
   glStencilFunc(GL_ALWAYS, 0, 1);
   glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
   glDisable(GL_STENCIL_TEST);
 }
 

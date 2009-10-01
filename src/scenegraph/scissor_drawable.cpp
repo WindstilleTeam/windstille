@@ -28,6 +28,7 @@ ScissorDrawable::ScissorDrawable(const Rect& cliprect) :
 void
 ScissorDrawable::render(unsigned int mask)
 {
+  std::cout << "Render" << std::endl;
   Display::push_cliprect(m_cliprect);
   m_drawable_group.render(mask);
   Display::pop_cliprect();

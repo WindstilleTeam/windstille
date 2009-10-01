@@ -36,7 +36,8 @@ public:
   Drawable()
     : pos(0.0f, 0.0f),
       z_pos(0.0f),
-      modelview(Matrix::identity())
+      modelview(Matrix::identity()),
+      render_mask(1) // FIXME: Evil hardcoded constant
   {}
 
   Drawable(const Vector2f& pos_, float z_pos_ = 0,  const Matrix& modelview_ = Matrix::identity())
