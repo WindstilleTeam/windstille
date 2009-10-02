@@ -20,7 +20,7 @@
 #include "display/display.hpp"
 
 ScissorDrawable::ScissorDrawable(const Rect& cliprect) :
-  m_cliprect(cliprect),
+  m_cliprect(cliprect), // FIXME: should we keep cliprect in world space instead of screen space?
   m_drawable_group()
 {
 }

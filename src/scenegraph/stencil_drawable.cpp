@@ -18,6 +18,8 @@
 
 #include "stencil_drawable.hpp"
 
+int g_stencil_enabled = 0;
+
 StencilDrawable::StencilDrawable() :
   m_stencil_group(),
   m_drawable_group()
@@ -27,22 +29,20 @@ StencilDrawable::StencilDrawable() :
 void
 StencilDrawable::render(unsigned int mask)
 {
-  // FIXME: untested code
+  if (g_stencil_enabled == 0)
+  {
+    g_stencil_enabled = 1;
 
-  // FIXME: this wouldn't work with recursive stencils, maybe solvable
-  // by doing some cleverer stuff with glStencilFunc and glStencilOp
-  // (i.e. increment on each recursion and then test on the recursion
-  // depth count)
+    glEnable(GL_STENCIL_TEST);
 
-  /*
-    http://www.opengl.org/documentation/specs/man_pages/hardcopy/GL/html/gl/stencilfunc.html
-    http://www.opengl.org/documentation/specs/man_pages/hardcopy/GL/html/gl/stencilop.html
-  */
-  glEnable(GL_STENCIL_TEST);
-
-  // enable stencil and clear it
-  glClearStencil(0);
-  glClear(GL_STENCIL_BUFFER_BIT);
+    // enable stencil and clear it
+    glClearStencil(0);
+    glClear(GL_STENCIL_BUFFER_BIT);
+  }
+  else
+  {
+    g_stencil_enabled += 1;
+  }
 
   // glStencilFunc: set when the test passes or fails 
   // glStencilOp: set what is done when the test passes/fails
@@ -50,7 +50,7 @@ StencilDrawable::render(unsigned int mask)
   // render stencil buffer content
   glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
   glStencilFunc(GL_ALWAYS, 1, 1);
-  glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+  glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
 
   glEnable(GL_ALPHA_TEST);
   glAlphaFunc(GL_GREATER, 0.5f);
@@ -59,16 +59,21 @@ StencilDrawable::render(unsigned int mask)
 
   // render framebuffer content
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-  glStencilFunc(GL_EQUAL, 1, 1);
+  glStencilFunc(GL_EQUAL, g_stencil_enabled, g_stencil_enabled);
   glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
   m_drawable_group.render(~0u);
 
-  // disable stencil and reset op and func
-  glStencilFunc(GL_ALWAYS, 0, 1);
-  glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+  g_stencil_enabled -= 1;
 
-  glDisable(GL_STENCIL_TEST);
+  if (g_stencil_enabled == 0)
+  {
+    // disable stencil and reset op and func
+    glStencilFunc(GL_ALWAYS, 0, 1);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+    glDisable(GL_STENCIL_TEST);
+  }
 }
 
 /* EOF */
