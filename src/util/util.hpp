@@ -39,22 +39,6 @@ std::string to_string(const T& data)
   return os.str();
 }
 
-static inline void assert_gl(const char* message)
-{
-#ifdef DEBUG
-  GLenum error = glGetError();
-  if(error != GL_NO_ERROR) {
-    std::ostringstream msg;
-    msg << "OpenGLError while '" << message << "': "
-        << gluErrorString(error);
-    throw std::runtime_error(msg.str());
-  }
-#else
-  // Stop compiler from issueing 'unused parameter'
-  do { (void)(message); } while (0);
-#endif
-}
-
 #endif
 
 /* EOF */
