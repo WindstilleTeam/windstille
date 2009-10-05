@@ -10,6 +10,15 @@ on this list and always think about how useful a new feature would be
 in the context of the whole game or if a potential performance
 enhanchment, actually enhanchmes anything at all.
 
+Testing
+=======
+
+* write testcases (can be manual) for the SceneGraph
+
+* how to implemented stencil in the editor?
+
+* create some better graphics for stencil testing
+
 Timeline
 ========
 
@@ -43,7 +52,7 @@ Timeline
 
 * implement load of timeline
 
-* using UI manager doesn't work when toolbar is  on the Notepad
+* using UI manager doesn't work when toolbar is on the Notepad
 
 * add ability to scale selections
 
@@ -129,54 +138,10 @@ High Priority
   * apply changes instantly
   * use the Undo/Redo system
 
-Editor Restructuring
-====================
-
-* 'delete layer' should set the layer selection to something valid
-
-* add a toggleable safe-area overlay that shows how much fits on a screen
-
-* SceneGraph needs to be updated while drag&drop is in progress
-
-* delete/remove/erase naming is a bit mixed up in a few places
-
-* being able to directly mark Edges still feels wonky, need to rethink the thing again
-
-* copy&paste works only very limited with edges, i.e. copying from one
-  sector to another causes crazy stuff to happen as the nodes it links
-  to are on another sector
-
-* draw NavGraph lines thicker (i.e. glLineWidth())
-
-* color code them by layer (how to figure out the color?)
-
-* add special drawing for different edge types (i.e. draw stairs for stair type edges)
-
-* snapping for navgraph is limited to moving the object, should also
-  work when creating the nodes in the first place
-
-* horizontal/vertical navgraph edges are near impossible to select
-  (bounding box is just 1px height)
-
-* objects can't snap to NavGraphNode's as they are not part of the
-  normal layer structure, would also need inverse point-snapping to
-  work properly, as they shouldn't snap to the bounding_box of the node
-
-* implement a stop-watch HUD element
-
-* it takes 25sec to run through every corner of the worker.wst map (75 meter + stairs in size)
-
-* add auto-visible button similar to auto-lock button
-
-#0  0x081115a7 in Vector2f::operator+ (this=0x0, other=@0xbff04558) at src/math/vector2f.hpp:56
-#1  0x0816e342 in Selection::on_move_update (this=0x92043b8, offset=@0xbff04558) at src/editor/selection.cpp:130
-#2  0x0816c80f in SelectTool::mouse_up (this=0x8999dd0, event=0x8f878a0, wst=@0x8f8e5a0) at src/editor/select_tool.cpp:205
-#3  0x08174a22 in WindstilleWidget::mouse_up (this=0x8f8e5a0, ev=0x8f878a0) at src/editor/windstille_widget.cpp:372
-#4  0x08177788 in sigc::bound_mem_functor1<bool, WindstilleWidget, _GdkEventButton*>::operator() (this=0x902fc34, _A_a1=@0xbff04664) at /usr/include/sigc++-2.0/sigc++/functors/mem_fun.h:1851
-#5  0x081772bf in sigc::adaptor_functor<sigc::bound_mem_functor1<bool, WindstilleWidget, _GdkEventButton*> >::operator()<_GdkEventButton* const&> (this=0x902fc30, _A_arg1=@0xbff04664)
-
 Overview
 ========
+
+* add a way to force render path (i.e. which Compositor to use)
 
 * do demo sector with burning barrels, snow and steam, to get the
   feeling of cold, could extend the trainstation to that
@@ -253,12 +218,6 @@ SceneGraph/Compositor
   * film grain
 
   * lense flare
-
-* add a glScissor()/Display::push/pop_cliprect() Node
-
-* add a stencil node:
-
-  * StencilDrawable(DrawableHandle stencil, DrawableHandle child);
 
 SceneGraph
 ==========
@@ -292,6 +251,7 @@ SceneGraph
     node)
 
 * SceneGraph could be used to promote rotation and scaling to children
+  (i.e. ModelviewMatrixDrawable)
 
 Navigation Graph
 ================
@@ -313,7 +273,21 @@ Navigation Graph
 Display
 =======
 
-* Display::aspect_size is ugly, turning it into a Display::set_size() wouldn't help much
+* image-grid in Sprite seems broken
+
+* SurfaceManager::load_grid() bypasses TexturePacker, doesn't do
+  border pixel duplication
+
+* maybe add special support for opaque textures, i.e. Textures with
+  1-bit alpha, which could be used to bucket sort drawing requests and
+  reduce texture switches (in case those ever start posing a problem)
+
+* figure out how to enable mipmapping into the tile and surface packer
+  (no longer needed as both tile and surface packer are considered obsolete)
+
+* Display::aspect_size is ugly, turning it into a Display::set_size()
+  wouldn't help much, should be part of some GraphicContext object
+  that is passed around to Drawable::render()
 
 * OpenGLState class is really slow (rewrite it to not use std::map, also remove the impl allocation)
 
@@ -547,23 +521,12 @@ Sound Handling
 ==============
 
 * split music, voice and sound fx into seperate context or allow to
-  change their volume by other means
+  change their volume independently by other means
 
 Miscellaneous
 =============
 
-* figure out how to enable mipmapping into the tile and surface packer
-
 * View class could be done away, as it doesn't have any clear purpose
-
-* SurfaceManager::load_grid() bypasses TexturePacker, doesn't do
-  border pixel duplication
-
-* replace power_of_two function with one not based on a slow while() loop
-
-* maybe add special support for opaque textures, i.e. Textures with
-  1-bit alpha, which could be used to bucket sort drawing requests and
-  reduce texture switches (in case those ever start posing a problem)
 
 * replace lisp::Writer with custom FileWriter (used in config)
 
@@ -582,35 +545,6 @@ Miscellaneous
   with the current FileReader is the way sections are handled, which
   isn't pretty
 
-* image-grid in Sprite seems broken
-
-* remove GameObject::get_world(), use Sector::current() instead
-  (difference might matter on sector change)
-
-* move has_suffix, has_prefix and stuff into StringUtil class
-
-* get rid of global debug
-
-* work on Object introspection, see: ~/projects/lang/c++/introspection.cpp
-
-  class GameObject {
-    PropertiesClass property_class() {
-      static PropertyClass* this_class = 0;
-      if (!this_class) {
-                 
-      } else {
-
-      }
-    }
-    Properties properties() {
-       static PropertiesClass this_class;
-       if (!PropertiesClass 
-    }
-  }
-
-* remove DEBUG macro or give it a clearer defined purpose, currently
-  used only in a few tiny places
-
 * add way to TextArea to layout text with a fixed indent after a
   linebreak (for use in the PDA):
 
@@ -620,13 +554,8 @@ Miscellaneous
 
 * cleanup the parenting code
 
-* why does src/navigation/node.hpp use SegmentPosition? Doesn't seem
-  right
-
 * set dynamic maximum size for auto resizing Menus depending on
   resolution
-
-* add way to jump without running
 
 * animation must be less strongly coupled to movement
 
@@ -634,7 +563,7 @@ Miscellaneous
 
 * raycasting in laserpointer is broken, doesn't work if angle is 0
   (maybe not worth to fix since it will be replaced with
-  NavigationMesh)
+  NavigationMesh) [obsolete]
 
 * get rid of global game_time variable
 
@@ -681,7 +610,8 @@ OpenGL
 ======
 
 * OpenGL 2.0 supports non-power-of-two textures with mipmaps, that
-  should be used instead of the texture packer
+  should be used instead of the texture packer [mostly done, except
+  for backward compability stuff]
 
 * mipmapping needs to be enabled
 
@@ -696,7 +626,7 @@ exit(1);
 }
 
 * Check if http://developer.nvidia.com/object/np2_mipmapping.html can
-  be used to improve visual quality
+  be used to improve visual quality or if GLU is already using that
 
 Profiling
 =========
@@ -715,8 +645,8 @@ Profiling
 Bugs
 ====
 
-* drawing is broken after loading a level, only get fixed when
-  toggling Light layer, (bug in OpenGLState maybe?)
+* drawing in the editor is broken after loading a level, only gets
+  fixed when toggling Light layer, (bug in OpenGLState maybe?)
 
 * quickly tapping forward-back-hold down forward makes your character
   play the walking animation without actually moving anywhere
@@ -727,7 +657,7 @@ Bugs
   std::exception: No marker with name 'RightFoot' defined in action 'Stand'
 
   in general the game shouldn't crash when stuff isn't found, but
-  instead fallback to placeholders and give a error message on the console
+  instead fallback to placeholders and give a warning message on the console
 
 * miniswig causes bison++ to crash
 
@@ -825,9 +755,9 @@ Random Things
 Graphics
 ========
 
-* do not make light larger then 256, maybe even smaller is ok (large
-  light is a waste of space, as you don't see much pixelation in
-  gradients)
+* do not make light sprites larger then 256, maybe even smaller is ok
+  (large light is a waste of space, as you don't see much pixelation
+  in gradients)
 
 * do *NOT* use power of two textures, use multiple of 64/128 instead
   (128 is easy to snap, power of two doesn't help, since textures are
@@ -869,6 +799,51 @@ Console
 
 Editor
 ======
+
+* mark the zero-spot in the editor (i.e. thicker lines for zero)
+
+* 'delete layer' should set the layer selection to something valid
+
+* add a toggleable safe-area overlay that shows how much fits on a screen
+
+* SceneGraph needs to be updated while drag&drop is in progress
+
+* delete/remove/erase naming is a bit mixed up in a few places
+
+* being able to directly mark Edges still feels wonky, need to rethink the thing again
+
+* copy&paste works only very limited with edges, i.e. copying from one
+  sector to another causes crazy stuff to happen as the nodes it links
+  to are on another sector
+
+* draw NavGraph lines thicker (i.e. glLineWidth())
+
+* color code them by layer (how to figure out the color?)
+
+* add special drawing for different edge types (i.e. draw stairs for stair type edges)
+
+* snapping for navgraph is limited to moving the object, should also
+  work when creating the nodes in the first place
+
+* horizontal/vertical navgraph edges are near impossible to select
+  (bounding box is just 1px height)
+
+* objects can't snap to NavGraphNode's as they are not part of the
+  normal layer structure, would also need inverse point-snapping to
+  work properly, as they shouldn't snap to the bounding_box of the node
+
+* implement a stop-watch HUD element
+
+* it takes 25sec to run through every corner of the worker.wst map (75 meter + stairs in size)
+
+* add auto-visible button similar to auto-lock button
+
+#0  0x081115a7 in Vector2f::operator+ (this=0x0, other=@0xbff04558) at src/math/vector2f.hpp:56
+#1  0x0816e342 in Selection::on_move_update (this=0x92043b8, offset=@0xbff04558) at src/editor/selection.cpp:130
+#2  0x0816c80f in SelectTool::mouse_up (this=0x8999dd0, event=0x8f878a0, wst=@0x8f8e5a0) at src/editor/select_tool.cpp:205
+#3  0x08174a22 in WindstilleWidget::mouse_up (this=0x8f8e5a0, ev=0x8f878a0) at src/editor/windstille_widget.cpp:372
+#4  0x08177788 in sigc::bound_mem_functor1<bool, WindstilleWidget, _GdkEventButton*>::operator() (this=0x902fc34, _A_a1=@0xbff04664) at /usr/include/sigc++-2.0/sigc++/functors/mem_fun.h:1851
+#5  0x081772bf in sigc::adaptor_functor<sigc::bound_mem_functor1<bool, WindstilleWidget, _GdkEventButton*> >::operator()<_GdkEventButton* const&> (this=0x902fc30, _A_arg1=@0xbff04664)
 
 * add a NextLayer, PrevLayer keyboard shortcuts
 
