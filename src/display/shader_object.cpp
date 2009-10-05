@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "util/util.hpp"
+#include "display/assert_gl.hpp"
 
 /** Read a file, user must free() the returned pointer */
 static GLchar* load_file(const char* filename)
@@ -54,16 +54,16 @@ static GLchar* load_file(const char* filename)
 class ShaderObjectImpl
 {
 public:
-  GLhandleARB handle;
+  GLuint handle;
 
   ShaderObjectImpl(GLenum type)
-    : handle(glCreateShaderObjectARB(type))
+    : handle(glCreateShader(type))
   {
   }
 
   ~ShaderObjectImpl()
   {
-    glDeleteObjectARB(handle);
+    glDeleteShader(handle);
   }
 };
 
@@ -83,14 +83,14 @@ void
 ShaderObject::load(const std::string& filename)
 {
   GLchar* buf = load_file(filename.c_str());
-  glShaderSourceARB(impl->handle, 1, const_cast<const GLchar**>(&buf), NULL);
+  glShaderSource(impl->handle, 1, const_cast<const GLchar**>(&buf), NULL);
   assert_gl("load_source");
 
   std::cout << "Source:\n" << buf << std::endl;
   free(buf);
 }
 
-GLhandleARB 
+GLuint 
 ShaderObject::get_handle() const
 {
   return impl->handle;
@@ -99,7 +99,7 @@ ShaderObject::get_handle() const
 void
 ShaderObject::compile()
 {
-  glCompileShaderARB(impl->handle);
+  glCompileShader(impl->handle);
 }
 
 void
@@ -107,23 +107,21 @@ ShaderObject::print_log()
 {
   int infologLength = 0;
   int charsWritten  = 0;
-  GLcharARB *infoLog;
+  GLchar* infoLog;
 
   assert_gl("print_log1");
-
-  glGetObjectParameterivARB(impl->handle, GL_OBJECT_INFO_LOG_LENGTH_ARB,
-                            &infologLength);
+  glGetShaderiv(impl->handle, GL_INFO_LOG_LENGTH, &infologLength);
   assert_gl("print_log2");
 
   if (infologLength > 0)
     {
-      infoLog = (GLcharARB*)malloc(infologLength);
+      infoLog = (GLchar*)malloc(infologLength);
       if (infoLog == NULL)
         {
           printf("ERROR: Could not allocate InfoLog buffer\n");
           exit(1);
         }
-      glGetInfoLogARB(impl->handle, infologLength, &charsWritten, infoLog);
+      glGetShaderInfoLog(impl->handle, infologLength, &charsWritten, infoLog);
       printf("InfoLog:\n%s\n\n", infoLog);
       free(infoLog);
     }

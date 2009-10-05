@@ -26,7 +26,7 @@
 #include "display/software_surface.hpp"
 #include "display/opengl_state.hpp"
 #include "display/texture_manager.hpp"
-#include "util/util.hpp"
+#include "display/assert_gl.hpp"
 
 class TextureImpl
 {

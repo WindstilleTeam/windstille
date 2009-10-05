@@ -22,6 +22,8 @@
 #include <png.h>
 #include <errno.h>
 #include <fstream>
+#include <GL/glew.h>
+#include <GL/glext.h>
 
 #include "display/color.hpp"
 #include "math/quad.hpp"

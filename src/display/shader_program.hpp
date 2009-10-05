@@ -38,10 +38,10 @@ public:
   void link();
 
   GLint get_uniform_location(const char* name);
-  GLhandleARB get_handle() const;
+  GLuint get_handle() const;
 
   // FIXME: All these only work when you call
-  // glUseProgramObjectARB(shader_program.get_handle()); before them
+  // glUseProgram(shader_program.get_handle()); before them
   void set_uniform1f(const char* name, GLfloat v0);
   void set_uniform2f(const char* name, GLfloat v0, GLfloat v1);
   void set_uniform3f(const char* name, GLfloat v0, GLfloat v1, GLfloat v2);

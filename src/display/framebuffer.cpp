@@ -21,33 +21,35 @@
 #include "util/util.hpp"
 #include "display/render_buffer.hpp"
 #include "display/framebuffer.hpp"
+#include "display/assert_gl.hpp"
 
 class FramebufferImpl
 {
 public:
   GLuint  handle;
   Texture texture;
-  RenderBuffer render_buffer;
-  
+  RenderBuffer m_depth_stencil_buffer;
+  //RenderBuffer m_stencil_buffer;
+
   FramebufferImpl(GLenum target, int width, int height)
     : handle(0),
       texture(target, width, height),
-      render_buffer(GL_DEPTH_COMPONENT24, width, height)
+      m_depth_stencil_buffer(GL_DEPTH24_STENCIL8_EXT, width, height)
   {
     glGenFramebuffersEXT(1, &handle);
-    assert_gl("Framebuffer1");
+    assert_gl("FramebufferImpl::FramebufferImpl()");
 
     // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, handle);
-    assert_gl("Framebuffer2");
-    glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, 
-                              GL_COLOR_ATTACHMENT0_EXT, texture.get_target(), texture.get_handle(), 0);
-    assert_gl("Framebuffer3");
-    
-    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, 
-                                 GL_DEPTH_ATTACHMENT_EXT, // FIXME: must not hardcode this
-                                 GL_RENDERBUFFER_EXT, render_buffer.get_handle());
 
+    // bind texture and renderbuffers to the framebuffer
+    glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
+                              texture.get_target(), texture.get_handle(), 0);  
+    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, 
+                                 GL_RENDERBUFFER_EXT, m_depth_stencil_buffer.get_handle());
+    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, 
+                                 GL_RENDERBUFFER_EXT, m_depth_stencil_buffer.get_handle());
+    assert_gl("FramebufferImpl::FramebufferImpl() - binding");
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
   }
 

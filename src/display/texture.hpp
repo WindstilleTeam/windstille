@@ -77,8 +77,7 @@ public:
   GLuint get_handle() const;
   
   /**
-   * Return the target used by this texture, ie. GL_TEXTURE_2D or
-   * GL_TEXTURE_RECTANGLE_ARB
+   * Return the target used by this texture, ie. GL_TEXTURE_2D
    */ 
   GLenum get_target() const;
 

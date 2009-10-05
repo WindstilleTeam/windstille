@@ -22,7 +22,7 @@
 
 #include "display/texture.hpp"
 #include "display/color.hpp"
-#include "util/util.hpp"
+#include "display/assert_gl.hpp"
 
 #define MAX_TEXTURE_UNITS 4
 
@@ -283,21 +283,10 @@ OpenGLState::activate()
               global_state->impl->texture[i] = impl->texture[i];
 
               switch (impl->texture[i].get_target())
-                {
-                case GL_TEXTURE_RECTANGLE_ARB:
-                  glBindTexture(GL_TEXTURE_RECTANGLE_ARB, impl->texture[i].get_handle());
-                  glEnable(GL_TEXTURE_RECTANGLE_ARB);
-
-                  //glBindTexture(GL_TEXTURE_2D, 0);
-                  //glDisable(GL_TEXTURE_2D);                  
-                  break;
-                  
+                {                 
                 case GL_TEXTURE_2D:
                   glBindTexture(GL_TEXTURE_2D, impl->texture[i].get_handle());
                   glEnable(GL_TEXTURE_2D);
-
-                  glBindTexture(GL_TEXTURE_RECTANGLE_ARB, 0);
-                  glDisable(GL_TEXTURE_RECTANGLE_ARB);
                   break;
                   
                 default:
@@ -309,9 +298,6 @@ OpenGLState::activate()
             {
               // FIXME: Hacky, should disable only the right target
               glBindTexture(GL_TEXTURE_2D, 0);
-              glBindTexture(GL_TEXTURE_RECTANGLE_ARB, 0);
-
-              glDisable(GL_TEXTURE_RECTANGLE_ARB);
               glDisable(GL_TEXTURE_2D);
 
               global_state->impl->texture[i] = impl->texture[i];

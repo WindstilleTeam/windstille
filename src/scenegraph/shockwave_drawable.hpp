@@ -160,12 +160,12 @@ public:
         state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         state.activate();
 
-        glUseProgramObjectARB(shader_program.get_handle());    
+        glUseProgram(shader_program.get_handle());    
         shader_program.set_uniform1f("radius",   radius/512.0f*2.0f);
         shader_program.set_uniform1i("background_tex", 0);
         shader_program.set_uniform1i("noise_tex",   1);
         draw_disc(int(radius));
-        glUseProgramObjectARB(0);
+        glUseProgram(0);
       }
     glPopMatrix();
 #endif

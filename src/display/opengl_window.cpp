@@ -25,6 +25,7 @@
 #include "util/util.hpp" 
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
+#include "display/assert_gl.hpp"
 #include "app/config.hpp"
 
 class OpenGLWindowImpl
@@ -98,7 +99,7 @@ OpenGLWindow::OpenGLWindow(const Size& size, const Size& aspect, bool fullscreen
       }
 
       if (anti_aliasing)
-        glEnable(GL_MULTISAMPLE_ARB); 
+        glEnable(GL_MULTISAMPLE); 
 
       assert_gl("setup projection");
 
