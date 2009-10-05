@@ -287,16 +287,6 @@ SQInteger print_stack(HSQUIRRELVM v) __custom("")
   return 0;
 }
 
-void set_debug(bool t)
-{
-  debug = t;
-}
-
-bool get_debug()
-{
-  return debug;
-}
-
 void set_console_font(const std::string& font, int size)
 {
   try 

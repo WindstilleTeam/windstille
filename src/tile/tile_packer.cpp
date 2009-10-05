@@ -21,7 +21,7 @@
 
 #include "app/globals.hpp"
 #include "tile/tile_packer.hpp"
-#include "util/util.hpp"
+#include "display/assert_gl.hpp"
 #include "display/blitter.hpp"
 #include "display/software_surface.hpp"
 

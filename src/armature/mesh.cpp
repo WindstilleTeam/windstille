@@ -20,10 +20,11 @@
 
 #include <stdexcept>
 
-#include "util/util.hpp"
+#include "armature/armature.hpp"
+#include "display/assert_gl.hpp"
 #include "display/opengl_state.hpp"
 #include "display/texture_manager.hpp"
-#include "armature/armature.hpp"
+#include "util/util.hpp"
 
 Mesh::Mesh(FileReader& reader, const std::string& path)
   : name(),

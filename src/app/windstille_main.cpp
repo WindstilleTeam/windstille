@@ -111,9 +111,6 @@ WindstilleMain::run()
   {
     Pathname filename(config.get_string("levelfile"), Pathname::kSysPath);
 
-    if (debug) 
-      std::cout << "Starting file: " << filename << std::endl;
-
     const std::string file_type = filename.get_extension();
 
     if (file_type == "wsprite")
@@ -176,12 +173,7 @@ WindstilleMain::init_modules()
 void
 WindstilleMain::init_sdl()
 {
-#ifdef DEBUG
-  // I wanna have usefull backtraces in debug mode
-  Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE;
-#else
   Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
-#endif
 
   if (SDL_Init(flags) < 0)
   {
@@ -217,7 +209,7 @@ WindstilleMain::init_physfs(const char* argv0)
     // allow symbolic links
     PHYSFS_permitSymbolicLinks(1);
 
-    if (debug)
+    if (0)
     { //show search Path
       std::cout << "userdir: " << Pathname::get_userdir() << std::endl;
       std::cout << "datadir: " << Pathname::get_datadir() << std::endl;

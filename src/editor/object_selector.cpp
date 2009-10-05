@@ -25,6 +25,7 @@
 #include <gtkmm/toolbar.h>
 #include <gtkmm/treemodelcolumn.h>
 
+#include "util/util.hpp"
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/object_selector.hpp"
@@ -169,14 +170,6 @@ ObjectSelector::add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
   (*it)[Columns::instance().url]         = url;
   (*it)[Columns::instance().icon]        = icon;
   (*it)[Columns::instance().filter_mask] = filter_;
-}
-
-static bool has_suffix(const std::string& str, const std::string& suffix)
-{
-  if (str.length() >= suffix.length())
-    return str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0;
-  else
-    return false;
 }
 
 bool

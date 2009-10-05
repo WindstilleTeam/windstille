@@ -20,7 +20,7 @@
 
 #include <boost/scoped_array.hpp>
 
-#include "util/util.hpp"
+#include "display/assert_gl.hpp"
 #include "display/opengl_state.hpp"
 #include "sprite3d/manager.hpp"
 #include "scenegraph/sprite3d_drawable.hpp"

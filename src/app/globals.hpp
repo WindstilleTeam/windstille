@@ -32,7 +32,6 @@ extern float game_time;
 
 extern float game_speed;
 
-extern bool debug;
 extern bool collision_debug;
 
 #endif

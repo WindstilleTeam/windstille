@@ -54,7 +54,7 @@ public:
     if (1) {
       OpenGLState state;
 
-      glUseProgramObjectARB(shader_program.get_handle());    
+      glUseProgram(shader_program.get_handle());    
       shader_program.set_uniform1i("screen",      0);
       shader_program.set_uniform1i("particles",   1);
             
@@ -77,7 +77,7 @@ public:
       glVertex2f(0,600);
       glEnd();
 
-      glUseProgramObjectARB(0);
+      glUseProgram(0);
     }
 #endif
   }
@@ -165,11 +165,11 @@ public:
 };
 
 DeformDrawer::DeformDrawer(FileReader& /*props*/)
-  : framebuffer(GL_TEXTURE_RECTANGLE_ARB, 800, 600),
+  : framebuffer(GL_TEXTURE_2D, 800, 600),
     surface(Pathname("images/particles/deform2.png")),
     shader_program()
 {
-  shader_program.attach(ShaderObject(GL_FRAGMENT_SHADER_ARB, "data/shader/particledeform.frag"));
+  shader_program.attach(ShaderObject(GL_FRAGMENT_SHADER, "data/shader/particledeform.frag"));
   shader_program.link();
 }
 

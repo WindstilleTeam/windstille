@@ -38,8 +38,6 @@ SectorBuilder::SectorBuilder(const Pathname& filename, Sector& sector)
     id_table(),
     parent_table()
 {
-  if (debug) std::cout << "Sector:parse_file '" << m_filename << "'" << std::endl;
-  
   FileReader reader = FileReader::parse(m_filename);
   if(reader.get_name() != "windstille-sector") 
   {
@@ -77,8 +75,6 @@ SectorBuilder::parse_body(const FileReader& reader)
     
   parse_objects(reader);
   parse_navgraph(reader);
-
-  if (debug) std::cout << "Finished parsing" << std::endl;
 }
 
 void

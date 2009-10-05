@@ -130,8 +130,6 @@ GameSession::GameSession(const Pathname& arg_filename)
 {
   impl->filename = arg_filename;
 
-  if (debug) std::cout << "Creating new GameSession" << std::endl;
-
   impl->pause = false;
   
   set_sector(impl->filename);
@@ -352,9 +350,6 @@ GameSession::set_sector(const Pathname& /* FIXME: huh? */)
   impl->sector.reset(new Sector(impl->filename));
   
   impl->sector->activate();
-  
-  if (debug) 
-    std::cout << "Finished changing sector" << std::endl;
 }
 
 void
@@ -394,10 +389,8 @@ GameSessionImpl::handle_event(const SDL_Event& event)
                   break;
 
                 case SDLK_c:
-                  if (debug) {
-                    collision_debug = !collision_debug;
-                    ConsoleLog << "Collision Debugging " << (collision_debug ? "enabled" : "disabled") << std::endl;
-                  }
+                  collision_debug = !collision_debug;
+                  ConsoleLog << "Collision Debugging " << (collision_debug ? "enabled" : "disabled") << std::endl;
                   break;
 
                 case SDLK_F2:

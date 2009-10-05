@@ -44,9 +44,6 @@ TileDescription::TileDescription(FileReader& props)
 void
 TileDescription::load(TileFactory* factory)
 {  
-  if (debug)
-    std::cout << "Loading tiles: " << filename << std::endl;
-
   // FIXM: SoftwareSurface image(Pathname(filename)); doesn't work, as its handled as function declaration!?
   SoftwareSurface image = SoftwareSurface(Pathname(filename));
 

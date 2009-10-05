@@ -23,6 +23,7 @@
 #include "math/math.hpp"
 #include "app/config.hpp"
 #include "util/file_reader.hpp"
+#include "util/util.hpp"
 #include "input_manager_sdl.hpp"
 #ifdef HAVE_CWIID
 #  include "wiimote.hpp"
@@ -95,14 +96,6 @@ InputManagerSDL::ensure_open_joystick(int device)
         }
     }
   
-}
-
-static bool has_suffix(const std::string& str, const std::string& suffix)
-{
-  if (str.length() >= suffix.length())
-    return str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0;
-  else
-    return false;
 }
 
 void

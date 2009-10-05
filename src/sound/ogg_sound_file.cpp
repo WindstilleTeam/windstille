@@ -84,7 +84,8 @@ OggSoundFile::cb_seek(void* source, ogg_int64_t offset, int whence)
 {
   PHYSFS_file* file = reinterpret_cast<PHYSFS_file*> (source);
 
-  switch(whence) {
+  switch(whence) 
+  {
     case SEEK_SET:
       if(PHYSFS_seek(file, static_cast<PHYSFS_uint64> (offset)) == 0)
         return -1;
@@ -98,11 +99,7 @@ OggSoundFile::cb_seek(void* source, ogg_int64_t offset, int whence)
         return -1;
       break;
     default:
-#ifdef DEBUG
-      assert(false);
-#else
       return -1;
-#endif
   }
   return 0;
 }

@@ -138,8 +138,6 @@ Config::parse_args(int argc, char** argv)
 
   CommandLine argp;
 
-  const int debug_flag        = 256;
-  const int nodebug_flag      = 257;
   const int secondary_controller_file = 261;
     
   argp.set_help_indent(24);
@@ -166,8 +164,6 @@ Config::parse_args(int argc, char** argv)
 
   argp.add_group("Misc Options:");
   argp.add_option('d', "datadir",    "DIR", "Fetch game data from DIR");
-  argp.add_option(debug_flag, "debug",      "", "Turn on debug output");
-  argp.add_option(nodebug_flag, "nodebug",      "", "Turn off debug output");
   argp.add_option('v', "version",       "", "Print Windstille Version");
   argp.add_option('h', "help",       "", "Print this help");
 
@@ -212,14 +208,6 @@ Config::parse_args(int argc, char** argv)
 
         case 'd':
           Pathname::set_datadir(argp.get_argument());
-          break;
-
-        case debug_flag:
-          debug = true;
-          break;
-
-        case nodebug_flag:
-          debug = false;
           break;
 
         case 'f':
