@@ -252,7 +252,7 @@ Sprite2DView::next_image(int i)
       display_time = 0;
     }
 
-    index = (unsigned int)(index + i) % directory.size();
+    index = static_cast<unsigned int>(index + i) % directory.size();
 
     std::vector<Pathname> dir;
 
@@ -276,7 +276,7 @@ Sprite2DView::next_image(int i)
         std::cout << "Error: " << e.what() << std::endl;
         std::cout << "Removing '" << directory[index] << "' from the list" << std::endl;
         directory.erase(directory.begin() + index);
-        index = (unsigned int)(index) % directory.size();
+        index = static_cast<unsigned int>(index) % directory.size();
         retry = true;
       }
     } 

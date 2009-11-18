@@ -41,11 +41,11 @@
 
 LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
-SectorModel::SectorModel(const std::string& filename)
-  : nav_graph(new NavigationGraphModel(*this)),
-    layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
-    m_timeline(new Timeline()),
-    ambient_color()
+SectorModel::SectorModel(const std::string& filename) :
+  nav_graph(new NavigationGraphModel(*this)),
+  layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
+  m_timeline(new Timeline()),
+  ambient_color()
 {
   register_callbacks();
   SectorModelBuilder(filename, *this);
@@ -155,7 +155,7 @@ SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& pa
   else
   { 
     Gtk::ListStore::iterator it = layer_tree->get_iter(path);
-    ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->add(object);
+    static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->add(object);
   }
 }
 
@@ -397,21 +397,21 @@ struct PropSetFunctor
 {
   bool v;
 
-  PropSetFunctor(bool v_)
-    : v(v_)
+  PropSetFunctor(bool v_) :
+    v(v_)
   {}
 
   bool set_visible(const Gtk::TreeModel::iterator& it)
   {
     (*it)[LayerManagerColumns::instance().visible] = v;
-    ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->sync(*it);
+    static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->sync(*it);
     return false;
   }
   
   bool set_locked(const Gtk::TreeModel::iterator& it)
   {
     (*it)[LayerManagerColumns::instance().locked] = v;
-    ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->sync(*it);
+    static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->sync(*it);
     return false;
   }
 };

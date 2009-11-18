@@ -83,7 +83,7 @@ NavigationGraph::remove_node(NodeHandle node)
         }
     }
 
-  Edges::iterator new_end = std::remove(edges.begin(), edges.end(), (Edge*)0);
+  Edges::iterator new_end = std::remove(edges.begin(), edges.end(), static_cast<Edge*>(0));
   if (new_end != edges.end())
     { 
       edges.erase(new_end, edges.end());
@@ -392,7 +392,7 @@ NavigationGraph::write(FileWriter& writer)
       writer.start_section("edge");
       writer.write("node1", ptr2id[(*i)->get_node1()]);
       writer.write("node2", ptr2id[(*i)->get_node2()]);
-      writer.write("properties", (int)(*i)->get_properties());
+      writer.write("properties", static_cast<int>((*i)->get_properties()));
       writer.end_section();
     }
   writer.end_section();

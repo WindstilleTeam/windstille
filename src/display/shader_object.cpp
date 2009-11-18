@@ -29,7 +29,7 @@ static GLchar* load_file(const char* filename)
   size_t block_size = 4096;
   size_t size = block_size;
   size_t true_size = 0;
-  GLchar* str = (char*)(malloc(size));
+  GLchar* str = static_cast<char*>(malloc(size));
   FILE* f = fopen(filename, "r");
   if (!f)
     {
@@ -41,9 +41,9 @@ static GLchar* load_file(const char* filename)
       while ((true_size += fread(str, sizeof(GLchar), 4096, f)) == 4096)
         {
           size += block_size;
-          str = (GLchar*)realloc(str, size);
+          str = static_cast<GLchar*>(realloc(str, size));
         }
-      str = (GLchar*)realloc(str, true_size+1);
+      str = static_cast<GLchar*>(realloc(str, true_size+1));
       str[true_size] = '\0';
     }
 
@@ -115,7 +115,7 @@ ShaderObject::print_log()
 
   if (infologLength > 0)
     {
-      infoLog = (GLchar*)malloc(infologLength);
+      infoLog = static_cast<GLchar*>(malloc(infologLength));
       if (infoLog == NULL)
         {
           printf("ERROR: Could not allocate InfoLog buffer\n");

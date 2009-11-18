@@ -135,7 +135,7 @@ SpeechManager::update(float delta)
         }
     }
 
-  speeches.erase(std::remove(speeches.begin(), speeches.end(), (Speech*)0),
+  speeches.erase(std::remove(speeches.begin(), speeches.end(), static_cast<Speech*>(0)),
                  speeches.end());
 }
 

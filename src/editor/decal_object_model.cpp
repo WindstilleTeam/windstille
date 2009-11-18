@@ -54,7 +54,7 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader)
   int map_type = 0;
   reader.get("path", path);
   reader.get("type", map_type);
-  type = (MapType)map_type;
+  type = static_cast<MapType>(map_type);
 
   reader.get("scale", scale);
   reader.get("angle", angle);

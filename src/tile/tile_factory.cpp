@@ -156,7 +156,7 @@ TileFactory::pack(int id, int colmap, const SoftwareSurface& image, const Rect& 
 Tile*
 TileFactory::create(int id)
 {
-  if(id < 0 || id >= (int) tiles.size())
+  if(id < 0 || id >= static_cast<int>(tiles.size()))
     {
       return 0;
     }

@@ -149,7 +149,7 @@ LayerManager::on_cursor_changed()
       {
         EditorWindow::current()->on_lock_all(true);
         (*it)[LayerManagerColumns::instance().locked] = false;
-        ((LayerHandle)(*it)[LayerManagerColumns::instance().layer])->sync(*it);
+        static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->sync(*it);
       }
     }
   }

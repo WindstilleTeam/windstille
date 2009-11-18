@@ -77,13 +77,13 @@ public:
 
   T& operator() (int x, int y) 
   {
-    assert (x >= 0 || x < (int) width || y >= 0 || y < (int) height);
+    assert (x >= 0 || x < width || y >= 0 || y < height);
     return vec [width*y + x];
   }
 
   const T& operator() (int x, int y) const
   {
-    assert (x >= 0 || x < (int) width || y >= 0 || y < (int) height);
+    assert (x >= 0 || x < width || y >= 0 || y < height);
     return vec [width*y + x];
   }
   

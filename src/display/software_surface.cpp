@@ -158,7 +158,7 @@ SoftwareSurface::is_at(int x, int y) const
     {
       if (get_bits_per_pixel() == 32)
         {
-          uint8_t* pixels = (uint8_t*)impl->surface->pixels;
+          uint8_t* pixels = static_cast<uint8_t*>(impl->surface->pixels);
           
           return pixels[y * impl->surface->pitch + x*4 + 3] > 128;
         }

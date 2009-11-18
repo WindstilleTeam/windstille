@@ -131,7 +131,7 @@ Vector2f unstuck_direction(const Rectf &a, const Rectf &b, float delta, float un
 
 int c_roundup(float f)
 {
-  int i=(int)f;
+  int i= static_cast<int>(f);
   if(f>i)
     i++;
   return i;
@@ -511,11 +511,11 @@ int get_next_integer(float f, float direction)
 
 int get_integer(float f, float direction)
 {
-  int result=(int)f;
+  int result=static_cast<int>(f);
 
   if(direction < 0)
     {
-      result = int (f);
+      result = static_cast<int>(f);
       if (result > f)
 	--result;
     }

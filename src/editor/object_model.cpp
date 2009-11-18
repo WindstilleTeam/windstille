@@ -348,6 +348,11 @@ ObjectModel::get_property(TimelineProperty property, Vector2f& value_out) const
     case kPosition:
       value_out = rel_pos;
       break;
+
+    case kColor:
+    case kRotation:
+    case kScale:
+      assert(!"Not implemented");
   }
 }
 

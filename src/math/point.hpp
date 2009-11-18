@@ -86,15 +86,17 @@ public:
 
     // Because MSVC sucks ass wrt standards compliance, it gets it own special function calls
 #ifdef _MSC_VER
-    const float c = (float) sqrt((float)r.x*(float)r.x + (float)r.y*(float)r.y);
-    const float nw = (float)(atan2((float)r.y, (float)r.x) + ((angle + 180) * math::pi / 180));
+    const float c = static_cast<float>sqrt(static_cast<float>(r.x)*static_cast<float>(r.x) + 
+                                 static_cast<float>(r.y)*static_cast<float>(r.y));
+    const float nw = static_cast<float>(atan2(static_cast<float>(r.y), static_cast<float>(r.x)) + ((angle + 180) * math::pi / 180));
     r.x = (int)((sin(1.5 * M_PI - nw) * c) + 0.5) + hotspot.x;
     r.y = -(int)((sin(nw) * c) + 0.5) + hotspot.y;
 #else
-    const float c = (float) std::sqrt((float)r.x*(float)r.x + (float)r.y*(float)r.y);
-    const float nw = (float)(std::atan2((float)r.y, (float)r.x) + ((angle + 180) * M_PI / 180));
-    r.x = (int)((std::sin(1.5 * M_PI - nw) * c) + 0.5) + hotspot.x;
-    r.y = -(int)((std::sin(nw) * c) + 0.5) + hotspot.y;
+    const float c = static_cast<float>(std::sqrt(static_cast<float>(r.x)*static_cast<float>(r.x) + 
+                                                 static_cast<float>(r.y)*static_cast<float>(r.y)));
+    const float nw = static_cast<float>(std::atan2(static_cast<float>(r.y), static_cast<float>(r.x)) + ((angle + 180) * M_PI / 180));
+    r.x = static_cast<int>((std::sin(1.5 * M_PI - nw) * c) + 0.5) + hotspot.x;
+    r.y = -static_cast<int>((std::sin(nw) * c) + 0.5) + hotspot.y;
 #endif
 
     return r;

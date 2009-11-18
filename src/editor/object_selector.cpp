@@ -218,8 +218,8 @@ ObjectSelector::add_decals_from_directory(const std::string& pathname, unsigned 
       }
 
       // Scale pixbuf to icon size while keeping aspect ratio intact
-      double x_scale = (double)size / pixbuf->get_width();
-      double y_scale = (double)size / pixbuf->get_height();
+      double x_scale = static_cast<double>(size) / pixbuf->get_width();
+      double y_scale = static_cast<double>(size) / pixbuf->get_height();
 
       if (x_scale * pixbuf->get_width() < min_size)
         x_scale = min_size / pixbuf->get_width();

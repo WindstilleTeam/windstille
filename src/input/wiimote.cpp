@@ -135,20 +135,20 @@ Wiimote::connect()
           }
 
         std::cout << "Wiimote Calibration: "
-                  << (int)wiimote_zero.x << ", "
-                  << (int)wiimote_zero.x << ", "
-                  << (int)wiimote_zero.x << " - "
-                  << (int)wiimote_one.x << ", "
-                  << (int)wiimote_one.x << ", "
-                  << (int)wiimote_one.x << std::endl;
+                  << static_cast<int>(wiimote_zero.x) << ", "
+                  << static_cast<int>(wiimote_zero.x) << ", "
+                  << static_cast<int>(wiimote_zero.x) << " - "
+                  << static_cast<int>(wiimote_one.x) << ", "
+                  << static_cast<int>(wiimote_one.x) << ", "
+                  << static_cast<int>(wiimote_one.x) << std::endl;
 
         std::cout << "Nunchuk Calibration: "
-                  << (int)nunchuk_zero.x << ", "
-                  << (int)nunchuk_zero.x << ", "
-                  << (int)nunchuk_zero.x << " - "
-                  << (int)nunchuk_one.x << ", "
-                  << (int)nunchuk_one.x << ", "
-                  << (int)nunchuk_one.x << std::endl;
+                  << static_cast<int>(nunchuk_zero.x) << ", "
+                  << static_cast<int>(nunchuk_zero.x) << ", "
+                  << static_cast<int>(nunchuk_zero.x) << " - "
+                  << static_cast<int>(nunchuk_one.x) << ", "
+                  << static_cast<int>(nunchuk_one.x) << ", "
+                  << static_cast<int>(nunchuk_one.x) << std::endl;
           
       }
     }
@@ -169,7 +169,7 @@ Wiimote::set_led(unsigned char led_state)
 {
   if (m_led_state != led_state)
     {
-      //std::cout << "Wiimote: " << (int)m_led_state << std::endl;
+      //std::cout << "Wiimote: " << static_cast<int>(m_led_state) << std::endl;
       m_led_state = led_state;
 
       if (cwiid_command(m_wiimote, CWIID_CMD_LED, m_led_state)) {

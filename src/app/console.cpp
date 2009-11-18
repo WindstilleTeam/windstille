@@ -215,12 +215,12 @@ ConsoleImpl::update(float delta)
                 {
                   if (cursor_pos == int(command_line.size()))
                     {
-                      command_line += (char)(*i).keyboard.code;
+                      command_line += static_cast<char>((*i).keyboard.code);
                       cursor_pos += 1;
                     }
                   else
                     {
-                      command_line.insert(cursor_pos, std::string(1, (char)(*i).keyboard.code));
+                      command_line.insert(cursor_pos, std::string(1, static_cast<char>((*i).keyboard.code)));
                       cursor_pos += 1;
                     }
                 }

@@ -66,7 +66,7 @@ void sq_to_lisp(HSQUIRRELVM v, std::vector<lisp::Lisp*>& entries)
       case OT_BOOL: {
         SQBool boolean;
         sq_getbool(v, -1, &boolean);
-        entries.push_back(new lisp::Lisp((bool) boolean));
+        entries.push_back(new lisp::Lisp(static_cast<bool>(boolean)));
         break;
       }
       case OT_ARRAY:

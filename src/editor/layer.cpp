@@ -72,7 +72,7 @@ Layer::draw(SceneContext& sc, const SelectMask& select_mask)
 void
 Layer::sync(const Gtk::TreeModel::Row& row)
 {
-  name    = ((Glib::ustring)row[LayerManagerColumns::instance().name]).raw();
+  name    = static_cast<Glib::ustring>(row[LayerManagerColumns::instance().name]).raw();
   visible = row[LayerManagerColumns::instance().visible];
   locked  = row[LayerManagerColumns::instance().locked];
 }

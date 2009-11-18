@@ -31,20 +31,21 @@
 #include "sound/sound_manager.hpp"
 
 
-ScreenManager::ScreenManager()
-  : screens(),
-    screen_action(NONE),
-    screen_screen(),
-    overlay_screens(),
-    overlay_screen_action(NONE),
-    overlay_screen_screen(),
-    ticks(0),
-    time_counter(0),
-    frame_counter(0),
-    last_fps(0),
-    overlap_delta(0),
-    do_quit(false),
-    show_controller_help_window(false)
+ScreenManager::ScreenManager() :
+  screens(),
+  screen_action(NONE),
+  screen_screen(),
+  overlay_screens(),
+  overlay_screen_action(NONE),
+  overlay_screen_screen(),
+  ticks(0),
+  time_counter(0),
+  frame_counter(0),
+  last_fps(0),
+  overlap_delta(0),
+  do_quit(false),
+  show_controller_help_window(false),
+  controller_help_window()
 {
 }
 

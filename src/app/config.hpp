@@ -67,15 +67,16 @@ private:
   T    data;
 
 public:
-  ConfigValue(const std::string& name_, const std::string& docstring_, bool do_save_, const T& data_)
-    : ConfigValueBase(name_, docstring_, do_save_),
-      data(data_)
+  ConfigValue(const std::string& name_, const std::string& docstring_, bool do_save_, const T& data_) :
+    ConfigValueBase(name_, docstring_, do_save_),
+    data(data_)
   {
     has_been_set = true;
   }
 
-  ConfigValue(const std::string& name_, const std::string& docstring_, bool do_save_)
-    : ConfigValueBase(name_, docstring_, do_save_)
+  ConfigValue(const std::string& name_, const std::string& docstring_, bool do_save_) :
+    ConfigValueBase(name_, docstring_, do_save_),
+    data()
   {    
     has_been_set = false;
   }

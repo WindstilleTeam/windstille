@@ -35,6 +35,7 @@
 AnimationWidget::AnimationWidget(EditorWindow& editor) :
   hadjustment(50, 0, 100),
   vadjustment(50, 0, 100),
+  m_hbox(),
   hruler(),
   scrolled(),
   treeview(),
