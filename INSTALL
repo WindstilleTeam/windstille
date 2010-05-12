@@ -32,13 +32,15 @@ To compile Windstille you need:
  * gtkmm (for the editor only)
  * gtkglextmm (for the editor only)
 
-In most cases these will come with your distribution. In Ubuntu you
-can install them with:
+In most cases these will come with your distribution. In Ubuntu 10.04
+you can install them with:
 
  % sudo apt-get install \
+     scons \
      bison \
      flex \
      libboost-dev \
+     libboost-filesystem-dev \
      libboost-signals-dev \
      libboost-thread-dev \
      libfreetype6-dev \
