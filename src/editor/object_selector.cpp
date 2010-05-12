@@ -26,6 +26,7 @@
 #include <gtkmm/treemodelcolumn.h>
 
 #include "util/util.hpp"
+#include "util/directory.hpp"
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/object_selector.hpp"
@@ -34,7 +35,7 @@ class ObjectSelector::Columns : public Gtk::TreeModel::ColumnRecord
 {
 public:
   Gtk::TreeModelColumn<std::string> url;
-  Gtk::TreeModelColumn<std::string> pathname;
+  Gtk::TreeModelColumn<Pathname> pathname;
   Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > icon;
   Gtk::TreeModelColumn<unsigned int>    filter_mask;
   
@@ -160,7 +161,7 @@ ObjectSelector::~ObjectSelector()
 
 void
 ObjectSelector::add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
-                          const std::string& pathname,
+                          const Pathname& pathname,
                           const std::string& url,
                           unsigned int filter_)
 {
@@ -179,26 +180,15 @@ ObjectSelector::filter(const Gtk::TreeModel::const_iterator& it)
 }
 
 void
-ObjectSelector::add_decals_from_directory(const std::string& pathname, unsigned int filter_)
+ObjectSelector::add_decals_from_directory(const Pathname& pathname, unsigned int filter_)
 {
-  std::vector<Glib::ustring> images;
-
-  Glib::Dir dir(pathname);
-  for(Glib::Dir::iterator i = dir.begin(); i != dir.end(); ++i)
-  {
-    if (has_suffix(*i, ".png"))
-    {
-      Glib::ustring path_ = pathname;
-      path_ += *i;
-      images.push_back(path_);
-    }
-  }
+  Directory::List images = Directory::read(pathname, ".png");
 
   std::sort(images.begin(), images.end());
 
-  for(std::vector<Glib::ustring>::iterator i = images.begin(); i != images.end(); ++i)    
+  for(Directory::List::iterator i = images.begin(); i != images.end(); ++i)
   {
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(*i);
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(i->get_sys_path());
     Glib::RefPtr<Gdk::Pixbuf> icon;
 
     { // Create an icon, by scaling it down, keeping aspect
@@ -208,7 +198,7 @@ ObjectSelector::add_decals_from_directory(const std::string& pathname, unsigned 
 
       if (1)
       {
-        icon = Gdk::Pixbuf::create_from_file("data/editor/icon_bg.png");
+        icon = Gdk::Pixbuf::create_from_file(Pathname("editor/icon_bg.png", Pathname::kDataPath).get_sys_path());
         size = std::max(icon->get_width(), icon->get_height());
       }
       else
@@ -244,21 +234,17 @@ ObjectSelector::add_decals_from_directory(const std::string& pathname, unsigned 
                         255);
     }
 
-    add_decal(icon, *i, 
-              "file:///home/ingo/projects/windstille/trunk/windstille/" + *i, 
-              filter_);
+    add_decal(icon, *i, "file://" + i->get_sys_path(), filter_);
   }
 }
 
 void
 ObjectSelector::populate()
 {
-  add_decals_from_directory("data/images/decal/", OBJECT_GROUP_DECAL);
-  add_decals_from_directory("data/images/objects/bar/", OBJECT_GROUP_DECAL | OBJECT_GROUP_OBJECT | OBJECT_GROUP_DECOR);
-  add_decals_from_directory("data/images/objects/", OBJECT_GROUP_DECAL | OBJECT_GROUP_OBJECT | OBJECT_GROUP_DECOR);
-  add_decals_from_directory("data/images/", OBJECT_GROUP_LIGHT);
-  //("data/images/inventory/");
-  //("data/images/portraits/");
+  add_decals_from_directory(Pathname("images/decal/", Pathname::kDataPath), OBJECT_GROUP_DECAL);
+  add_decals_from_directory(Pathname("images/objects/bar/", Pathname::kDataPath), OBJECT_GROUP_DECAL | OBJECT_GROUP_OBJECT | OBJECT_GROUP_DECOR);
+  add_decals_from_directory(Pathname("images/objects/", Pathname::kDataPath), OBJECT_GROUP_DECAL | OBJECT_GROUP_OBJECT | OBJECT_GROUP_DECOR);
+  add_decals_from_directory(Pathname("images/", Pathname::kDataPath), OBJECT_GROUP_LIGHT);
 }
 void
 ObjectSelector::refresh()
@@ -277,7 +263,7 @@ ObjectSelector::on_filter_changed()
 void
 ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 {
-  std::string iconpath;
+  Pathname iconpath;
 
   Gtk::IconView::ArrayHandle_TreePaths selection = iconview.get_selected_items();
   for(Gtk::IconView::ArrayHandle_TreePaths::iterator i = selection.begin();
@@ -296,7 +282,7 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
   }
   else
   {
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath);
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath.get_sys_path());
     if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
     {
       pixbuf = pixbuf->scale_simple(std::max(4, int(static_cast<float>(pixbuf->get_width())  * wst->get_state().get_zoom())),
@@ -325,7 +311,7 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& /*context
 
     if (selection_data.get_target() == "application/x-windstille-decal")
     {
-      const std::string& str = (*it)[Columns::instance().pathname];
+      std::string str = static_cast<Pathname>((*it)[Columns::instance().pathname]).get_physfs_path();
       selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), str.length());
     }
     else

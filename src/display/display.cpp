@@ -475,7 +475,7 @@ Display::save_screenshot(const Pathname& filename)
   int len = size.width * size.height * 3;
   
   boost::scoped_array<GLbyte> pixels(new GLbyte[len]);
-
+  glPixelStorei(GL_PACK_ALIGNMENT, 1);
   glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, pixels.get());
 
   if (0)

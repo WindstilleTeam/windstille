@@ -521,7 +521,7 @@ EditorWindow::on_open()
 
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(Gtk::Stock::OPEN,   Gtk::RESPONSE_OK);
-  dialog.set_current_folder("data/sectors/");
+  dialog.set_current_folder(Pathname("sectors/", Pathname::kDataPath).get_sys_path());
 
   switch(dialog.run())
   {
@@ -578,7 +578,7 @@ EditorWindow::on_save_as()
     dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
 
     if (wst->get_filename().empty())
-      dialog.set_current_folder("data/sectors/");
+      dialog.set_current_folder(Pathname("sectors", Pathname::kDataPath).get_sys_path());
     else
       dialog.set_current_folder(Glib::path_get_dirname(wst->get_filename()));
 

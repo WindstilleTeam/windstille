@@ -156,7 +156,7 @@ SectorModelBuilder::load_layer(const FileReader& reader)
   // Append the layer to the tree
   Gtk::ListStore::iterator it = m_sector.get_layer_tree()->append();
 
-  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
+  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file(Pathname("editor/type.png", Pathname::kDataPath).get_sys_path());
   (*it)[LayerManagerColumns::instance().name]      = name;
   (*it)[LayerManagerColumns::instance().visible]   = visible; 
   (*it)[LayerManagerColumns::instance().locked]    = locked; 

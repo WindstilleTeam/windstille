@@ -481,12 +481,15 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*
                                         int x, int y, const Gtk::SelectionData& data,
                                         guint /*info*/, guint /*time*/)
 {
-  //std::cout << "WindstilleWidget: on_drag_data_received: "
-  //          << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
-  
+  if (false)
+  {
+    std::cout << "WindstilleWidget: on_drag_data_received: "
+              << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
+  }
+
   ObjectModelHandle object = DecalObjectModel::create(data.get_data_as_string(),
                                                       state.screen_to_world(Vector2f(static_cast<float>(x), static_cast<float>(y))),
-                                                      data.get_data_as_string().substr(5), 
+                                                      data.get_data_as_string(),
                                                       map_type);
 
   // if layer mask is 0, set it to all layers instead, so that the

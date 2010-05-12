@@ -38,6 +38,7 @@
 #include "navigation/node.hpp"
 #include "scenegraph/drawable_group.hpp"
 #include "util/file_reader.hpp"
+#include "util/pathname.hpp"
 
 LayerManagerColumns* LayerManagerColumns::instance_ = 0;
 
@@ -62,7 +63,7 @@ SectorModel::SectorModel()
   Gtk::ListStore::iterator it = layer_tree->append();
 
   LayerHandle layer(new Layer(*this));
-  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
+  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file(Pathname("editor/type.png", Pathname::kDataPath).get_sys_path());
   (*it)[LayerManagerColumns::instance().name]      = Glib::ustring("Scene");
   (*it)[LayerManagerColumns::instance().visible]   = true;
   (*it)[LayerManagerColumns::instance().locked]    = false;
@@ -94,7 +95,7 @@ SectorModel::add_layer(LayerHandle layer, const Gtk::TreeModel::Path& path)
   else
     it = layer_tree->insert(layer_tree->get_iter(path));
   
-  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
+  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file(Pathname("editor/type.png", Pathname::kDataPath).get_sys_path());
   (*it)[LayerManagerColumns::instance().name]      = layer->get_name();
   (*it)[LayerManagerColumns::instance().visible]   = layer->is_visible();
   (*it)[LayerManagerColumns::instance().locked]    = layer->is_locked();
@@ -112,7 +113,7 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
     it = layer_tree->insert(layer_tree->get_iter(path));
 
   LayerHandle layer(new Layer(*this));
-  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file("data/editor/type.png");
+  (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file(Pathname("/editor/type.png", Pathname::kDataPath).get_sys_path());
   (*it)[LayerManagerColumns::instance().name]      = name;
   (*it)[LayerManagerColumns::instance().visible]   = true; 
   (*it)[LayerManagerColumns::instance().locked]    = false; 

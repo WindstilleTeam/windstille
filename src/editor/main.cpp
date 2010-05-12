@@ -100,7 +100,7 @@ WindstilleEditor::main(int argc, char** argv)
     SpriteManager  sprite2d_manager;
 
     Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
-    icon_theme->append_search_path("data/editor/");
+    icon_theme->append_search_path(Pathname("editor", Pathname::kDataPath).get_sys_path());
       
     EditorWindow window(glconfig);
     window.show_all();

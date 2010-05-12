@@ -86,11 +86,11 @@ public:
   virtual ~ObjectSelector();
 
   void add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
-                 const std::string& pathname,
+                 const Pathname& pathname,
                  const std::string& url,
                  unsigned int filter);
 
-  void add_decals_from_directory(const std::string& pathname, unsigned int filter);
+  void add_decals_from_directory(const Pathname& pathname, unsigned int filter);
 
   void populate();
   void refresh();

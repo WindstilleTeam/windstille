@@ -49,12 +49,10 @@ Directory::read(const Pathname& pathname, const std::string& suffix)
        it != boost::filesystem::directory_iterator();
        ++it)
   {
-    // FIXME: Would make sense to try to keep the Pathname::type
-    // intact, instead of converting everything to system path
     const std::string& filename = it->path().string();
     if (has_suffix(filename, suffix))
     {
-      entries.push_back(Pathname(filename, Pathname::kSysPath));
+      entries.push_back(Pathname(pathname.get_raw_path() + it->leaf(), pathname.get_type()));
     }
   }
 
