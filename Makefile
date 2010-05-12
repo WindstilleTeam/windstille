@@ -24,12 +24,23 @@ build/windstille:
 
 clean:
 	scons -c
+	rm -rf .sconf_temp/
+	rm -f .sconsign.dblite
 
-install: build/windstille
+install: install-exec install-data
+
+install-exec: build/windstille
 	install -d "${DESTDIR}${BINDIR}"
-	echo "#!/bin/sh\nexec \"${BINDIR}/windstille.bin\" --datadir \"${DATADIR}/\"" > "${DESTDIR}${BINDIR}/windstille"
-	chmod 755 "${DESTDIR}${BINDIR}/windstille"
+
 	install -D build/windstille "${DESTDIR}${BINDIR}/windstille.bin"
+	echo "#!/bin/sh\nexec \"${BINDIR}/windstille.bin\" --datadir \"${DATADIR}\"" > "${DESTDIR}${BINDIR}/windstille"
+	chmod 755 "${DESTDIR}${BINDIR}/windstille"
+
+	install -D build/windstille-editor "${DESTDIR}${BINDIR}/windstille-editor.bin"
+	echo "#!/bin/sh\nexec \"${BINDIR}/windstille-editor.bin\" --datadir \"${DATADIR}/\"" > "${DESTDIR}${BINDIR}/windstille-editor"
+	chmod 755 "${DESTDIR}${BINDIR}/windstille-editor"
+
+install-data:
 	cd data/; \
 	find -type f \( \
 	-name "*.arm" -o \
@@ -53,6 +64,6 @@ install: build/windstille
 	-name "*.xcf" \) \
 	-exec install -D {} ${DESTDIR}${DATADIR}/{} \;
 
-.PHONY : clean install
+.PHONY : clean install install-exec install-data
 
 # EOF #
