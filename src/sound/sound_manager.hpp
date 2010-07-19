@@ -64,10 +64,11 @@ public:
 
   void update();
 
-private:
-  friend class SoundSource;
-  friend class StreamSoundSource;
+public:
+  static void check_al_error(const char* message);
+  static ALenum get_sample_format(SoundFile* file);
 
+private:
   /**
    * Creates a new sound source object which plays the specified soundfile.
    * You are responsible for deleting the sound source later (this will stop the
@@ -78,11 +79,9 @@ private:
   std::auto_ptr<SoundSource> create_sound_source(const std::string& filename);
 
   static ALuint load_file_into_buffer(const std::string& filename);
-  static ALenum get_sample_format(SoundFile* file);
 
   void print_openal_version();
   void check_alc_error(const char* message);
-  static void check_al_error(const char* message);
 
   ALCdevice*  device;
   ALCcontext* context;

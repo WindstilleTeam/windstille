@@ -40,9 +40,9 @@ public:
   void set_velocity(const Vector2f& position);
   void set_reference_distance(float distance);
 
-protected:
-  friend class SoundManager;
+  ALuint get_id() const { return source; }
   
+protected:
   ALuint source;
 };
 

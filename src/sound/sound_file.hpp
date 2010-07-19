@@ -25,17 +25,23 @@
 class SoundFile
 {
 public:
-  SoundFile() 
-    : channels(),
-      rate(),
-      bits_per_sample(),
-      size()
+  SoundFile() :
+    channels(),
+    rate(),
+    bits_per_sample(),
+    size()
   {}
   virtual ~SoundFile() {}
 
   virtual size_t read(void* buffer, size_t buffer_size) = 0;
   virtual void reset() = 0;
 
+  int    get_bits_per_sample() const { return bits_per_sample; }
+  size_t get_size() const { return size; }
+  int    get_rate() const { return rate; }
+  int    get_channels() const { return channels; }
+  
+protected:
   int channels;
   int rate;
   int bits_per_sample;

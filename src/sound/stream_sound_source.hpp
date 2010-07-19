@@ -31,6 +31,17 @@ class StreamSoundSource : public SoundSource
 public:
   enum FadeState { NoFading, FadingOn, FadingOff };
 
+public:
+  StreamSoundSource(std::auto_ptr<SoundFile> file);
+  virtual ~StreamSoundSource();
+
+  void setFading(FadeState state, float fadetime);
+  FadeState getFadeState() const { return fade_state; }
+  void update();
+  
+private:
+  void fillBufferAndQueue(ALuint buffer);
+
 private:
   static const size_t STREAMBUFFERSIZE   = 1024 * 500;
   static const size_t STREAMFRAGMENTS    = 5;
@@ -43,17 +54,6 @@ private:
   FadeState fade_state;
   unsigned int fade_start_ticks;
   float fade_time;
-
-public:
-  StreamSoundSource(std::auto_ptr<SoundFile> file);
-  virtual ~StreamSoundSource();
-
-  void setFading(FadeState state, float fadetime);
-  FadeState getFadeState() const { return fade_state; }
-  void update();
-  
-private:
-  void fillBufferAndQueue(ALuint buffer);
 };
 
 #endif

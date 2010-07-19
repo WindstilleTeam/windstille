@@ -109,15 +109,15 @@ SoundManager::load_file_into_buffer(const std::string& filename)
   alGenBuffers(1, &buffer);
   check_al_error("Couldn't create audio buffer: ");
 
-  boost::scoped_array<char> samples(new char[file->size]);
+  boost::scoped_array<char> samples(new char[file->get_size()]);
 
   try 
     {
-      file->read(samples.get(), file->size);
+      file->read(samples.get(), file->get_size());
 
       alBufferData(buffer, format, samples.get(),
-                   static_cast<ALsizei> (file->size),
-                   static_cast<ALsizei> (file->rate));
+                   static_cast<ALsizei> (file->get_size()),
+                   static_cast<ALsizei> (file->get_rate()));
 
       check_al_error("Couldn't fill audio buffer: ");
     }
@@ -154,7 +154,7 @@ SoundManager::create_sound_source(const std::string& filename)
   
       std::auto_ptr<SoundSource> source(new SoundSource());
 
-      alSourcei(source->source, AL_BUFFER, buffer);
+      alSourcei(source->get_id(), AL_BUFFER, buffer);
 
       return source;
     }
@@ -171,8 +171,8 @@ SoundManager::play(const std::string& filename, const Vector2f& pos)
         {
           if (pos == Vector2f(-1, -1)) 
             {
-              alSourcef(source->source, AL_ROLLOFF_FACTOR, 0);
-            } 
+              alSourcef(source->get_id(), AL_ROLLOFF_FACTOR, 0);
+            }
           else
             {
               source->set_position(pos);
@@ -248,7 +248,7 @@ SoundManager::play_music(const std::string& filename, bool fade)
             {
               std::auto_ptr<StreamSoundSource> newmusic(new StreamSoundSource(SoundFile::load(filename)));
 
-              alSourcef(newmusic->source, AL_ROLLOFF_FACTOR, 0);
+              alSourcef(newmusic->get_id(), AL_ROLLOFF_FACTOR, 0);
  
               if (fade) 
                 {
@@ -351,13 +351,13 @@ SoundManager::update()
 ALenum
 SoundManager::get_sample_format(SoundFile* file)
 {
-  if (file->channels == 2) 
+  if (file->get_channels() == 2) 
     {
-      if (file->bits_per_sample == 16) 
+      if (file->get_bits_per_sample() == 16) 
         {
           return AL_FORMAT_STEREO16;
         } 
-      else if (file->bits_per_sample == 8) 
+      else if (file->get_bits_per_sample() == 8) 
         {
           return AL_FORMAT_STEREO8;
         }
@@ -366,13 +366,13 @@ SoundManager::get_sample_format(SoundFile* file)
           throw std::runtime_error("Only 16 and 8 bit samples supported");
         }
     } 
-  else if (file->channels == 1) 
+  else if (file->get_channels() == 1) 
     {
-      if (file->bits_per_sample == 16) 
+      if (file->get_bits_per_sample() == 16) 
         {
           return AL_FORMAT_MONO16;
         }
-      else if (file->bits_per_sample == 8) 
+      else if (file->get_bits_per_sample() == 8) 
         {
           return AL_FORMAT_MONO8;
         }

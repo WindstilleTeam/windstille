@@ -145,7 +145,7 @@ StreamSoundSource::fillBufferAndQueue(ALuint buffer)
     } 
   while(bytesread < STREAMFRAGMENTSIZE);
   
-  alBufferData(buffer, format, bufferdata.get(), STREAMFRAGMENTSIZE, file->rate);
+  alBufferData(buffer, format, bufferdata.get(), STREAMFRAGMENTSIZE, file->get_rate());
 
   SoundManager::check_al_error("Couldn't refill audio buffer: ");
 
