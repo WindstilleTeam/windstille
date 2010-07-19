@@ -74,7 +74,7 @@ WavSoundFile::WavSoundFile(PHYSFS_file* file_)
       break;
 
     if(strncmp(chunkmagic, "fact", 4) == 0
-        || strncmp(chunkmagic, "LIST", 4) == 0) {
+       || strncmp(chunkmagic, "LIST", 4) == 0) {
       // skip chunk
       if(PHYSFS_seek(file, PHYSFS_tell(file) + chunklen) == 0)
         throw std::runtime_error("EOF while searching fmt chunk");

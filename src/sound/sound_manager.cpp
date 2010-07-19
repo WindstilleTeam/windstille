@@ -39,39 +39,39 @@ SoundManager::SoundManager()
     current_music()
 {
   try 
+  {
+    device = alcOpenDevice(0);
+
+    if (!device)
     {
-      device = alcOpenDevice(0);
-
-      if (!device)
-        {
-          print_openal_version();
-          throw std::runtime_error("Couldn't open audio device.");
-        }
-      else
-        {
-          int attributes[] = { 0 };
-
-          context = alcCreateContext(device, attributes);
-          check_alc_error("Couldn't create audio context: ");
-
-          alcMakeContextCurrent(context);
-          check_alc_error("Couldn't select audio context: ");
-
-          check_al_error("Audio error after init: ");
-          sound_enabled = true;
-        }
-    } 
-  catch(std::exception& e) 
-    { // disable sound
-      device  = 0;
-      context = 0;
-      sound_enabled = false;
-
-      std::cerr << "Couldn't initialize audio device:" << e.what() << "\n";
       print_openal_version();
-      
-      std::cout << "Disabling sound\n";
+      throw std::runtime_error("Couldn't open audio device.");
     }
+    else
+    {
+      int attributes[] = { 0 };
+
+      context = alcCreateContext(device, attributes);
+      check_alc_error("Couldn't create audio context: ");
+
+      alcMakeContextCurrent(context);
+      check_alc_error("Couldn't select audio context: ");
+
+      check_al_error("Audio error after init: ");
+      sound_enabled = true;
+    }
+  } 
+  catch(std::exception& e) 
+  { // disable sound
+    device  = 0;
+    context = 0;
+    sound_enabled = false;
+
+    std::cerr << "Couldn't initialize audio device:" << e.what() << "\n";
+    print_openal_version();
+      
+    std::cout << "Disabling sound\n";
+  }
 }
 
 SoundManager::~SoundManager()
@@ -82,20 +82,20 @@ SoundManager::~SoundManager()
   sources.clear();
 
   for(SoundBuffers::iterator i = buffers.begin(); i != buffers.end(); ++i) 
-    {
-      ALuint buffer = i->second;
-      alDeleteBuffers(1, &buffer);
-    }
+  {
+    ALuint buffer = i->second;
+    alDeleteBuffers(1, &buffer);
+  }
 
   if (context != 0) 
-    {
-      alcDestroyContext(context);
-    }
+  {
+    alcDestroyContext(context);
+  }
 
   if (device != 0)
-    {
-      alcCloseDevice(device);
-    }
+  {
+    alcCloseDevice(device);
+  }
 }
 
 ALuint
@@ -112,19 +112,19 @@ SoundManager::load_file_into_buffer(const std::string& filename)
   boost::scoped_array<char> samples(new char[file->get_size()]);
 
   try 
-    {
-      file->read(samples.get(), file->get_size());
+  {
+    file->read(samples.get(), file->get_size());
 
-      alBufferData(buffer, format, samples.get(),
-                   static_cast<ALsizei> (file->get_size()),
-                   static_cast<ALsizei> (file->get_rate()));
+    alBufferData(buffer, format, samples.get(),
+                 static_cast<ALsizei> (file->get_size()),
+                 static_cast<ALsizei> (file->get_rate()));
 
-      check_al_error("Couldn't fill audio buffer: ");
-    }
+    check_al_error("Couldn't fill audio buffer: ");
+  }
   catch(...) 
-    {
-      throw;
-    }
+  {
+    throw;
+  }
 
   return buffer;
 }
@@ -133,147 +133,147 @@ std::auto_ptr<SoundSource>
 SoundManager::create_sound_source(const std::string& filename)
 {
   if (!sound_enabled)
-    {
-      return std::auto_ptr<SoundSource>();
-    }
+  {
+    return std::auto_ptr<SoundSource>();
+  }
   else
+  {
+    ALuint buffer;
+  
+    // reuse an existing static sound buffer            
+    SoundBuffers::iterator i = buffers.find(filename);
+    if (i != buffers.end()) 
     {
-      ALuint buffer;
-  
-      // reuse an existing static sound buffer            
-      SoundBuffers::iterator i = buffers.find(filename);
-      if (i != buffers.end()) 
-        {
-          buffer = i->second;
-        } 
-      else 
-        {
-          buffer = load_file_into_buffer(filename);
-          buffers.insert(std::make_pair(filename, buffer));
-        }
-  
-      std::auto_ptr<SoundSource> source(new SoundSource());
-
-      alSourcei(source->get_id(), AL_BUFFER, buffer);
-
-      return source;
+      buffer = i->second;
+    } 
+    else 
+    {
+      buffer = load_file_into_buffer(filename);
+      buffers.insert(std::make_pair(filename, buffer));
     }
+  
+    std::auto_ptr<SoundSource> source(new SoundSource());
+
+    alSourcei(source->get_id(), AL_BUFFER, buffer);
+
+    return source;
+  }
 }
 
 void
 SoundManager::play(const std::string& filename, const Vector2f& pos)
 {
   try
+  {
+    std::auto_ptr<SoundSource> source = create_sound_source(filename);
+
+    if (source.get())
     {
-      std::auto_ptr<SoundSource> source = create_sound_source(filename);
+      if (pos == Vector2f(-1, -1)) 
+      {
+        alSourcef(source->get_id(), AL_ROLLOFF_FACTOR, 0);
+      }
+      else
+      {
+        source->set_position(pos);
+      }
 
-      if (source.get())
-        {
-          if (pos == Vector2f(-1, -1)) 
-            {
-              alSourcef(source->get_id(), AL_ROLLOFF_FACTOR, 0);
-            }
-          else
-            {
-              source->set_position(pos);
-            }
-
-          source->play();
-          sources.push_back(boost::shared_ptr<SoundSource>(source.release()));
-        }
+      source->play();
+      sources.push_back(boost::shared_ptr<SoundSource>(source.release()));
     }
+  }
   catch(std::exception& e) 
-    {
-      std::cout << "Couldn't play sound " << filename << ": " << e.what() << "\n";
-    }
+  {
+    std::cout << "Couldn't play sound " << filename << ": " << e.what() << "\n";
+  }
 }
 
 void
 SoundManager::enable_sound(bool enable)
 {
   if (device)
-    {
-      sound_enabled = enable;
-    }
+  {
+    sound_enabled = enable;
+  }
 }
 
 void
 SoundManager::enable_music(bool enable)
 {
   if (device)
-    {
-      music_enabled = enable;
+  {
+    music_enabled = enable;
 
-      if (music_enabled) 
-        {
-          play_music(current_music);
-        } 
-      else 
-        {
-          if (music_source.get())
-            {
-              music_source.reset();
-            }
-        }
+    if (music_enabled) 
+    {
+      play_music(current_music);
+    } 
+    else 
+    {
+      if (music_source.get())
+      {
+        music_source.reset();
+      }
     }
+  }
 }
 
 void
 SoundManager::stop_music(bool fade)
 {
   if (fade) 
+  {
+    if (music_source.get() &&
+        music_source->getFadeState() != StreamSoundSource::FadingOff)
     {
-      if (music_source.get() &&
-          music_source->getFadeState() != StreamSoundSource::FadingOff)
-        {
-          music_source->setFading(StreamSoundSource::FadingOff, .7f);
-        }
-    } 
-  else 
-    {
-      music_source.reset();
+      music_source->setFading(StreamSoundSource::FadingOff, .7f);
     }
+  } 
+  else 
+  {
+    music_source.reset();
+  }
 }
 
 void
 SoundManager::play_music(const std::string& filename, bool fade)
 {
   if (filename != current_music)
+  {
+    current_music = filename;
+
+    if (music_enabled)
     {
-      current_music = filename;
+      try 
+      {
+        std::auto_ptr<StreamSoundSource> newmusic(new StreamSoundSource(SoundFile::load(filename)));
 
-      if (music_enabled)
-        {
-          try 
-            {
-              std::auto_ptr<StreamSoundSource> newmusic(new StreamSoundSource(SoundFile::load(filename)));
-
-              alSourcef(newmusic->get_id(), AL_ROLLOFF_FACTOR, 0);
+        alSourcef(newmusic->get_id(), AL_ROLLOFF_FACTOR, 0);
  
-              if (fade) 
-                {
-                  if (music_source.get() &&
-                      music_source->getFadeState() != StreamSoundSource::FadingOff)
-                    {
-                      music_source->setFading(StreamSoundSource::FadingOff, .7f);
-                    }
+        if (fade) 
+        {
+          if (music_source.get() &&
+              music_source->getFadeState() != StreamSoundSource::FadingOff)
+          {
+            music_source->setFading(StreamSoundSource::FadingOff, .7f);
+          }
 
-                  next_music_source = newmusic;
-                } 
-              else 
-                {
-                  music_source = newmusic;
-                  music_source->play();
-                  next_music_source.reset();
-                }
-            }
-          catch(std::exception& e) 
-            {
-              std::cerr << "Couldn't play music file '" << filename << "': "
-                        << e.what() << "\n";
-            }
+          next_music_source = newmusic;
+        } 
+        else 
+        {
+          music_source = newmusic;
+          music_source->play();
+          next_music_source.reset();
         }
+      }
+      catch(std::exception& e) 
+      {
+        std::cerr << "Couldn't play music file '" << filename << "': "
+                  << e.what() << "\n";
+      }
     }
+  }
 }
 
 void
@@ -316,75 +316,75 @@ void
 SoundManager::update()
 {
   if (sound_enabled)
+  {
+    // check for finished sound sources
+    for(SoundSources::iterator i = sources.begin(); i != sources.end(); ) 
     {
-      // check for finished sound sources
-      for(SoundSources::iterator i = sources.begin(); i != sources.end(); ) 
-        {
-          if (!(*i)->playing())
-            {
-              i = sources.erase(i);
-            } 
-          else 
-            {
-              ++i;
-            }
-        }
-
-      // check streaming sounds
-      if (music_source.get()) 
-        {
-          music_source->update();
-        }
-  
-      if (next_music_source.get() && (!music_source.get() || !music_source->playing())) 
-        {
-          music_source = next_music_source;
-          //music_source->setFading(StreamSoundSource::FadingOn, 1.0f);
-          music_source->play();
-        }
-  
-      alcProcessContext(context);
-      check_alc_error("Error while processing audio context: ");
+      if (!(*i)->playing())
+      {
+        i = sources.erase(i);
+      } 
+      else 
+      {
+        ++i;
+      }
     }
+
+    // check streaming sounds
+    if (music_source.get()) 
+    {
+      music_source->update();
+    }
+  
+    if (next_music_source.get() && (!music_source.get() || !music_source->playing())) 
+    {
+      music_source = next_music_source;
+      //music_source->setFading(StreamSoundSource::FadingOn, 1.0f);
+      music_source->play();
+    }
+  
+    alcProcessContext(context);
+    check_alc_error("Error while processing audio context: ");
+  }
 }
 
 ALenum
 SoundManager::get_sample_format(SoundFile* file)
 {
   if (file->get_channels() == 2) 
+  {
+    if (file->get_bits_per_sample() == 16) 
     {
-      if (file->get_bits_per_sample() == 16) 
-        {
-          return AL_FORMAT_STEREO16;
-        } 
-      else if (file->get_bits_per_sample() == 8) 
-        {
-          return AL_FORMAT_STEREO8;
-        }
-      else 
-        {
-          throw std::runtime_error("Only 16 and 8 bit samples supported");
-        }
+      return AL_FORMAT_STEREO16;
     } 
+    else if (file->get_bits_per_sample() == 8) 
+    {
+      return AL_FORMAT_STEREO8;
+    }
+    else 
+    {
+      throw std::runtime_error("Only 16 and 8 bit samples supported");
+    }
+  } 
   else if (file->get_channels() == 1) 
+  {
+    if (file->get_bits_per_sample() == 16) 
     {
-      if (file->get_bits_per_sample() == 16) 
-        {
-          return AL_FORMAT_MONO16;
-        }
-      else if (file->get_bits_per_sample() == 8) 
-        {
-          return AL_FORMAT_MONO8;
-        }
-      else 
-        {
-          throw std::runtime_error("Only 16 and 8 bit samples supported");
-        }
+      return AL_FORMAT_MONO16;
     }
+    else if (file->get_bits_per_sample() == 8) 
+    {
+      return AL_FORMAT_MONO8;
+    }
+    else 
+    {
+      throw std::runtime_error("Only 16 and 8 bit samples supported");
+    }
+  }
   else 
-    {
-      throw std::runtime_error("Only 1 and 2 channel samples supported");
-    }
+  {
+    throw std::runtime_error("Only 1 and 2 channel samples supported");
+  }
 }
 
 void
@@ -402,11 +402,11 @@ SoundManager::check_alc_error(const char* message)
   int err = alcGetError(device);
 
   if (err != ALC_NO_ERROR) 
-    {
-      std::stringstream msg;
-      msg << message << alcGetString(device, err);
-      throw std::runtime_error(msg.str());
-    }                
+  {
+    std::stringstream msg;
+    msg << message << alcGetString(device, err);
+    throw std::runtime_error(msg.str());
+  }                
 }
 
 void
@@ -415,11 +415,11 @@ SoundManager::check_al_error(const char* message)
   int err = alGetError();
 
   if (err != AL_NO_ERROR) 
-    {
-      std::stringstream msg;
-      msg << message << alGetString(err);
-      throw std::runtime_error(msg.str());
-    }  
+  {
+    std::stringstream msg;
+    msg << message << alGetString(err);
+    throw std::runtime_error(msg.str());
+  }  
 }
 
 /* EOF */

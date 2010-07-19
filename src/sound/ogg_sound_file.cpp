@@ -47,7 +47,7 @@ OggSoundFile::read(void* _buffer, size_t buffer_size)
   while(buffer_size>0){
     long bytesRead 
       = ov_read(&vorbis_file, buffer, static_cast<int> (buffer_size), 0, 2, 1,
-          &section);
+                &section);
     if(bytesRead==0){
       break;
     }
@@ -72,7 +72,7 @@ OggSoundFile::cb_read(void* ptr, size_t size, size_t nmemb, void* source)
   
   PHYSFS_sint64 res 
     = PHYSFS_read(file, ptr, static_cast<PHYSFS_uint32> (size),
-        static_cast<PHYSFS_uint32> (nmemb));
+                  static_cast<PHYSFS_uint32> (nmemb));
   if(res <= 0)
     return 0;
 
