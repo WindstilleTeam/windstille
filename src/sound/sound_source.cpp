@@ -19,7 +19,8 @@
 #include "sound/sound_source.hpp"
 #include "sound/sound_manager.hpp"
 
-SoundSource::SoundSource() :
+SoundSource::SoundSource(SoundChannel& channel) :
+  m_channel(channel),
   m_source()
 {
   alGenSources(1, &m_source);
@@ -77,7 +78,15 @@ SoundSource::set_velocity(const Vector2f& velocity)
 void
 SoundSource::set_gain(float gain)
 {
-  alSourcef(m_source, AL_GAIN, gain);
+  alSourcef(m_source, AL_GAIN, m_channel.get_volume() * gain);
+}
+
+float
+SoundSource::get_gain() const
+{
+  float gain = 0.0f;
+  alGetSourcef(m_source, AL_GAIN, &gain);
+  return gain;
 }
 
 void
@@ -87,9 +96,15 @@ SoundSource::set_reference_distance(float distance)
 }
 
 void
+SoundSource::set_rolloff_factor(float factor)
+{
+  alSourcef(m_source, AL_ROLLOFF_FACTOR, factor);
+}
+
+void
 SoundSource::update_volume() const
 {
-  // FIXME: alSourcef(m_source, AL_GAIN, m_channel->get_volume() * m_gain); 
+  alSourcef(m_source, AL_GAIN, m_channel.get_volume() * get_gain());
 }
 
 /* EOF */

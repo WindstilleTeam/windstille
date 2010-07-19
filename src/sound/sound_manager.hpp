@@ -53,7 +53,7 @@ public:
 
   void set_master_volume(float volume);
   void set_voice_volume(float volume);
-  void set_sfx_volume(float volume);
+  void set_sound_volume(float volume);
   void set_music_volume(float volume);
 
   /**
@@ -64,7 +64,7 @@ public:
   void play_music(const std::string& filename, bool fade = true);
   void stop_music(bool fade = true);
 
-  void update();
+  void update(float delta);
 
 public:
   static void check_al_error(const char* message);
@@ -89,7 +89,9 @@ private:
   ALCcontext* m_context;
   bool m_sound_enabled;
 
-  SoundChannel m_channel;
+  SoundChannel m_voice_channel;
+  SoundChannel m_sound_channel;
+  SoundChannel m_music_channel;
 
   typedef std::map<std::string, ALuint> SoundBuffers;
   SoundBuffers m_buffers;

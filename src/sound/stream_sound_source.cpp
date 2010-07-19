@@ -18,19 +18,20 @@
 
 #include "sound/stream_sound_source.hpp"
 
-#include <SDL.h>
 #include <iostream>
 #include <boost/scoped_array.hpp>
 
 #include "sound/sound_manager.hpp"
 #include "sound/sound_file.hpp"
 
-StreamSoundSource::StreamSoundSource(std::auto_ptr<SoundFile> file_) :
+StreamSoundSource::StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundFile> file_) :
+  SoundSource(channel),
   file(file_),
   format(),
   fade_state(),
   fade_start_ticks(),
-  fade_time()
+  fade_time(),
+  m_total_time(0.0f)
 {
   alGenBuffers(STREAMFRAGMENTS, buffers);
   SoundManager::check_al_error("Couldn't allocate audio buffers: ");
@@ -60,8 +61,10 @@ StreamSoundSource::~StreamSoundSource()
 }
 
 void
-StreamSoundSource::update()
+StreamSoundSource::update(float delta)
 {
+  m_total_time += delta;
+
   if (playing())
   {
     ALint processed = 0;
@@ -88,8 +91,7 @@ StreamSoundSource::update()
 
     if (fade_state == FadingOn) 
     {
-      unsigned int ticks = SDL_GetTicks();
-      float time = static_cast<float>(ticks - fade_start_ticks) / 1000.0f;
+      float time = fade_start_ticks - m_total_time;
       if (time >= fade_time)
       {
         set_gain(1.0);
@@ -102,8 +104,7 @@ StreamSoundSource::update()
     } 
     else if (fade_state == FadingOff) 
     {
-      unsigned int ticks = SDL_GetTicks();
-      float time = static_cast<float>(ticks - fade_start_ticks) / 1000.0f;
+      float time = fade_start_ticks - m_total_time;
 
       if (time >= fade_time) 
       {
@@ -123,7 +124,7 @@ StreamSoundSource::setFading(FadeState state_, float fade_time_)
 {
   fade_state       = state_;
   fade_time        = fade_time_;
-  fade_start_ticks = SDL_GetTicks();
+  fade_start_ticks = m_total_time;
 }
 
 void

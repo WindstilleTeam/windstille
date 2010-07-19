@@ -45,8 +45,7 @@ protected:
   int channels;
   int rate;
   int bits_per_sample;
-  /// size in bytes
-  size_t size;
+  size_t size; /// size in bytes
 
 public:
   static std::auto_ptr<SoundFile> load(const std::string& filename);

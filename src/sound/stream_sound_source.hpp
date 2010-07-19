@@ -25,6 +25,7 @@
 #include "sound/sound_source.hpp"
 
 class SoundFile;
+class SoundChannel;
 
 class StreamSoundSource : public SoundSource
 {
@@ -32,12 +33,12 @@ public:
   enum FadeState { NoFading, FadingOn, FadingOff };
 
 public:
-  StreamSoundSource(std::auto_ptr<SoundFile> file);
+  StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundFile> file);
   virtual ~StreamSoundSource();
 
   void setFading(FadeState state, float fadetime);
   FadeState getFadeState() const { return fade_state; }
-  void update();
+  void update(float delta);
   
 private:
   void fillBufferAndQueue(ALuint buffer);
@@ -54,6 +55,9 @@ private:
   FadeState fade_state;
   unsigned int fade_start_ticks;
   float fade_time;
+
+  // FIXME: simple time counter that summarizes all deltas, could be done better
+  float m_total_time;
 };
 
 #endif

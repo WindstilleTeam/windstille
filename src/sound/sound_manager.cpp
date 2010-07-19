@@ -31,7 +31,9 @@ SoundManager::SoundManager() :
   m_device(0), 
   m_context(0), 
   m_sound_enabled(false), 
-  m_channel(*this),
+  m_voice_channel(*this),
+  m_sound_channel(*this),
+  m_music_channel(*this),
   m_buffers(),
   m_sources(),
   m_music_source(),
@@ -151,7 +153,7 @@ SoundManager::create_sound_source(const std::string& filename)
       m_buffers.insert(std::make_pair(filename, buffer));
     }
   
-    std::auto_ptr<SoundSource> source(new SoundSource());
+    std::auto_ptr<SoundSource> source(new SoundSource(m_sound_channel));
 
     alSourcei(source->get_id(), AL_BUFFER, buffer);
 
@@ -168,14 +170,7 @@ SoundManager::play(const std::string& filename, const Vector2f& pos)
 
     if (source.get())
     {
-      if (pos == Vector2f(-1, -1)) 
-      {
-        alSourcef(source->get_id(), AL_ROLLOFF_FACTOR, 0);
-      }
-      else
-      {
-        source->set_position(pos);
-      }
+      source->set_position(pos);
 
       source->play();
       m_sources.push_back(boost::shared_ptr<SoundSource>(source.release()));
@@ -245,7 +240,7 @@ SoundManager::play_music(const std::string& filename, bool fade)
     {
       try 
       {
-        std::auto_ptr<StreamSoundSource> newmusic(new StreamSoundSource(SoundFile::load(filename)));
+        std::auto_ptr<StreamSoundSource> newmusic(new StreamSoundSource(m_music_channel, SoundFile::load(filename)));
 
         alSourcef(newmusic->get_id(), AL_ROLLOFF_FACTOR, 0);
  
@@ -296,23 +291,23 @@ SoundManager::set_master_volume(float volume)
 void
 SoundManager::set_voice_volume(float volume)
 {
-  std::cout << "SoundManager::set_voice_volume(" << volume << "): unimplemented" << std::endl;
+  m_voice_channel.set_volume(volume);
 }
 
 void
-SoundManager::set_sfx_volume(float volume)
+SoundManager::set_sound_volume(float volume)
 {
-  std::cout << "SoundManager::set_sfx_volume(" << volume << "): unimplemented" << std::endl;
+  m_sound_channel.set_volume(volume);
 }
 
 void
 SoundManager::set_music_volume(float volume)
 {
-  std::cout << "SoundManager::set_music_volume(" << volume << "): unimplemented" << std::endl;
+  m_music_channel.set_volume(volume);
 }
 
 void
-SoundManager::update()
+SoundManager::update(float delta)
 {
   if (m_sound_enabled)
   {
@@ -332,7 +327,7 @@ SoundManager::update()
     // check streaming sounds
     if (m_music_source.get()) 
     {
-      m_music_source->update();
+      m_music_source->update(delta);
     }
   
     if (m_next_music_source.get() && (!m_music_source.get() || !m_music_source->playing())) 

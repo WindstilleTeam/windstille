@@ -23,10 +23,12 @@
 
 #include "math/vector2f.hpp"
 
+class SoundChannel;
+
 class SoundSource
 {
 public:
-  SoundSource();
+  SoundSource(SoundChannel& channel);
   virtual ~SoundSource();
 
   void play();
@@ -34,11 +36,15 @@ public:
   bool playing();
 
   void set_looping(bool looping);
+
   /// Set volume (0.0 is silent, 1.0 is normal)
-  void set_gain(float gain);
+  void  set_gain(float gain);
+  float get_gain() const;
+
   void set_position(const Vector2f& position);
   void set_velocity(const Vector2f& position);
   void set_reference_distance(float distance);
+  void set_rolloff_factor(float factor);
 
   /** Needs to be called whenever the SoundChannels volume changes */
   void update_volume() const;
@@ -46,7 +52,12 @@ public:
   ALuint get_id() const { return m_source; }
   
 protected:
+  SoundChannel& m_channel;
   ALuint m_source;
+  
+private:
+  SoundSource(const SoundSource&);
+  SoundSource& operator=(const SoundSource&);
 };
 
 #endif
