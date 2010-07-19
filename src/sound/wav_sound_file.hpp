@@ -33,9 +33,20 @@ public:
   void reset();
 
 private:
-  PHYSFS_file* file;
-  
+  PHYSFS_file* file; 
   PHYSFS_sint64 datastart;
+
+public:
+  int    get_bits_per_sample() const { return bits_per_sample; }
+  size_t get_size() const { return size; }
+  int    get_rate() const { return rate; }
+  int    get_channels() const { return channels; }
+  
+protected:
+  int channels;
+  int rate;
+  int bits_per_sample;
+  size_t size; /// size in bytes
 
 private:
   WavSoundFile(const WavSoundFile&);

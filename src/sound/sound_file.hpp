@@ -22,31 +22,22 @@
 #include <memory>
 #include <string>
 
+class Pathname;
+
 class SoundFile
 {
 public:
-  SoundFile() :
-    channels(),
-    rate(),
-    bits_per_sample(),
-    size()
-  {}
+  SoundFile() {}
   virtual ~SoundFile() {}
 
   virtual size_t read(void* buffer, size_t buffer_size) = 0;
   virtual void reset() = 0;
 
-  int    get_bits_per_sample() const { return bits_per_sample; }
-  size_t get_size() const { return size; }
-  int    get_rate() const { return rate; }
-  int    get_channels() const { return channels; }
+  virtual int    get_bits_per_sample() const = 0;
+  virtual size_t get_size() const = 0;
+  virtual int    get_rate() const = 0;
+  virtual int    get_channels() const = 0;
   
-protected:
-  int channels;
-  int rate;
-  int bits_per_sample;
-  size_t size; /// size in bytes
-
 public:
   static std::auto_ptr<SoundFile> load(const std::string& filename);
 };

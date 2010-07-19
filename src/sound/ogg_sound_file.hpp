@@ -33,14 +33,25 @@ public:
   size_t read(void* buffer, size_t buffer_size);
   void reset();
 
+  int    get_bits_per_sample() const { return bits_per_sample; }
+  size_t get_size() const { return size; }
+  int    get_rate() const { return rate; }
+  int    get_channels() const { return channels; }
+  
 private:
+  // I/O functions for ogg
   static size_t cb_read(void* ptr, size_t size, size_t nmemb, void* source);
-  static int cb_seek(void* source, ogg_int64_t offset, int whence);
-  static int cb_close(void* source);
-  static long cb_tell(void* source);
+  static int    cb_seek(void* source, ogg_int64_t offset, int whence);
+  static int    cb_close(void* source);
+  static long   cb_tell(void* source);
   
   PHYSFS_file* file;
   OggVorbis_File vorbis_file;
+
+  int channels;
+  int rate;
+  int bits_per_sample;
+  size_t size; /// size in bytes
 
 private:
   OggSoundFile(const OggSoundFile&);
