@@ -19,10 +19,10 @@
 #include "sound/sound_source.hpp"
 #include "sound/sound_manager.hpp"
 
-SoundSource::SoundSource()
-  : source()
+SoundSource::SoundSource() :
+  m_source()
 {
-  alGenSources(1, &source);
+  alGenSources(1, &m_source);
   SoundManager::check_al_error("Couldn't create audio source: ");
   set_reference_distance(128);
 }
@@ -30,21 +30,21 @@ SoundSource::SoundSource()
 SoundSource::~SoundSource()
 {
   stop();
-  alDeleteSources(1, &source);
+  alDeleteSources(1, &m_source);
 }
 
 void
 SoundSource::stop()
 {
-  alSourceStop(source);
-  alSourcei(source, AL_BUFFER, AL_NONE);
+  alSourceStop(m_source);
+  alSourcei(m_source, AL_BUFFER, AL_NONE);
   SoundManager::check_al_error("Problem stopping audio source: ");
 }
 
 void
 SoundSource::play()
 {
-  alSourcePlay(source);
+  alSourcePlay(m_source);
   SoundManager::check_al_error("Couldn't start audio source: ");
 }
 
@@ -52,38 +52,44 @@ bool
 SoundSource::playing()
 {
   ALint state = AL_PLAYING;
-  alGetSourcei(source, AL_SOURCE_STATE, &state);
+  alGetSourcei(m_source, AL_SOURCE_STATE, &state);
   return state != AL_STOPPED;
 }
 
 void
 SoundSource::set_looping(bool looping)
 {
-  alSourcei(source, AL_LOOPING, looping ? AL_TRUE : AL_FALSE);
+  alSourcei(m_source, AL_LOOPING, looping ? AL_TRUE : AL_FALSE);
 }
 
 void
 SoundSource::set_position(const Vector2f& position)
 {
-  alSource3f(source, AL_POSITION, position.x, position.y, 0);
+  alSource3f(m_source, AL_POSITION, position.x, position.y, 0);
 }
 
 void
 SoundSource::set_velocity(const Vector2f& velocity)
 {
-  alSource3f(source, AL_VELOCITY, velocity.x, velocity.y, 0);
+  alSource3f(m_source, AL_VELOCITY, velocity.x, velocity.y, 0);
 }
 
 void
 SoundSource::set_gain(float gain)
 {
-  alSourcef(source, AL_GAIN, gain);
+  alSourcef(m_source, AL_GAIN, gain);
 }
 
 void
 SoundSource::set_reference_distance(float distance)
 {
-  alSourcef(source, AL_REFERENCE_DISTANCE, distance);
+  alSourcef(m_source, AL_REFERENCE_DISTANCE, distance);
+}
+
+void
+SoundSource::update_volume() const
+{
+  // FIXME: alSourcef(m_source, AL_GAIN, m_channel->get_volume() * m_gain); 
 }
 
 /* EOF */

@@ -31,6 +31,8 @@
 #include "math/vector2f.hpp"
 #include "util/currenton.hpp"
 
+#include "sound/sound_channel.hpp"
+
 typedef void* SoundHandle;
 
 class SoundFile;
@@ -68,7 +70,6 @@ public:
   static void check_al_error(const char* message);
   static ALenum get_sample_format(SoundFile* file);
 
-private:
   /**
    * Creates a new sound source object which plays the specified soundfile.
    * You are responsible for deleting the sound source later (this will stop the
@@ -78,25 +79,28 @@ private:
    */
   std::auto_ptr<SoundSource> create_sound_source(const std::string& filename);
 
+private:
   static ALuint load_file_into_buffer(const std::string& filename);
 
   void print_openal_version();
   void check_alc_error(const char* message);
 
-  ALCdevice*  device;
-  ALCcontext* context;
-  bool sound_enabled;
+  ALCdevice*  m_device;
+  ALCcontext* m_context;
+  bool m_sound_enabled;
+
+  SoundChannel m_channel;
 
   typedef std::map<std::string, ALuint> SoundBuffers;
-  SoundBuffers buffers;
+  SoundBuffers m_buffers;
   typedef std::vector<boost::shared_ptr<SoundSource> > SoundSources;
-  SoundSources sources;
+  SoundSources m_sources;
 
-  std::auto_ptr<StreamSoundSource> music_source;
-  std::auto_ptr<StreamSoundSource> next_music_source;
+  std::auto_ptr<StreamSoundSource> m_music_source;
+  std::auto_ptr<StreamSoundSource> m_next_music_source;
 
-  bool music_enabled;
-  std::string current_music;
+  bool m_music_enabled;
+  std::string m_current_music;
 
 private:
   SoundManager(const SoundManager&);

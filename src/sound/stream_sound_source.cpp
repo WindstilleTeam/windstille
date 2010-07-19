@@ -25,12 +25,12 @@
 #include "sound/sound_manager.hpp"
 #include "sound/sound_file.hpp"
 
-StreamSoundSource::StreamSoundSource(std::auto_ptr<SoundFile> file_)
-  : file(file_),
-    format(),
-    fade_state(),
-    fade_start_ticks(),
-    fade_time()
+StreamSoundSource::StreamSoundSource(std::auto_ptr<SoundFile> file_) :
+  file(file_),
+  format(),
+  fade_state(),
+  fade_start_ticks(),
+  fade_time()
 {
   alGenBuffers(STREAMFRAGMENTS, buffers);
   SoundManager::check_al_error("Couldn't allocate audio buffers: ");
@@ -65,14 +65,14 @@ StreamSoundSource::update()
   if (playing())
   {
     ALint processed = 0;
-    alGetSourcei(source, AL_BUFFERS_PROCESSED, &processed);
+    alGetSourcei(m_source, AL_BUFFERS_PROCESSED, &processed);
 
     while (processed > 0) 
     {
       processed--;
 
       ALuint buffer;
-      alSourceUnqueueBuffers(source, 1, &buffer);
+      alSourceUnqueueBuffers(m_source, 1, &buffer);
       SoundManager::check_al_error("Couldn't unqueu audio buffer: ");
 
       fillBufferAndQueue(buffer);
@@ -82,7 +82,7 @@ StreamSoundSource::update()
     if (!playing()) 
     {
       std::cerr << "Restarting audio source because of buffer underrun.\n";
-      alSourcePlay(source);
+      alSourcePlay(m_source);
       SoundManager::check_al_error("Couldn't restart audio source: ");
     }
 
@@ -149,7 +149,7 @@ StreamSoundSource::fillBufferAndQueue(ALuint buffer)
 
   SoundManager::check_al_error("Couldn't refill audio buffer: ");
 
-  alSourceQueueBuffers(source, 1, &buffer);
+  alSourceQueueBuffers(m_source, 1, &buffer);
   SoundManager::check_al_error("Couldn't queue audio buffer: ");
 }
 

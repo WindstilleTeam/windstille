@@ -40,10 +40,13 @@ public:
   void set_velocity(const Vector2f& position);
   void set_reference_distance(float distance);
 
-  ALuint get_id() const { return source; }
+  /** Needs to be called whenever the SoundChannels volume changes */
+  void update_volume() const;
+
+  ALuint get_id() const { return m_source; }
   
 protected:
-  ALuint source;
+  ALuint m_source;
 };
 
 #endif
