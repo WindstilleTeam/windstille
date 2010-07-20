@@ -52,7 +52,10 @@ public:
   void set_listener_position(const Vector2f& position);
   void set_listener_velocity(const Vector2f& velocity);
 
+  // master volume is not clamped
   void set_master_volume(float volume);
+
+  // volume is clamped to [0,1]
   void set_voice_volume(float volume);
   void set_sound_volume(float volume);
   void set_music_volume(float volume);
@@ -82,7 +85,7 @@ public:
    * This function might throw exceptions. It returns 0 if no audio device is
    * available.
    */
-  SoundSourcePtr create_sound_source(const Pathname& filename);
+  SoundSourcePtr create_sound_source(const Pathname& filename, SoundChannel& channel);
 
 private:
   static ALuint load_file_into_buffer(const Pathname& filename);

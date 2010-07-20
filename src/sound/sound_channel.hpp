@@ -39,6 +39,7 @@ public:
 
   void update(float delta);
 
+  // volume is clamped to [0,1]
   void  set_volume(float volume);
   float get_volume() const;
 

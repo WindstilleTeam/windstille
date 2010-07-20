@@ -58,6 +58,7 @@ public:
 protected:
   SoundChannel& m_channel;
   ALuint m_source;
+  float m_gain;
   
 private:
   SoundSource(const SoundSource&);

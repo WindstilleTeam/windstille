@@ -131,7 +131,7 @@ SoundManager::load_file_into_buffer(const Pathname& filename)
 }
 
 SoundSourcePtr
-SoundManager::create_sound_source(const Pathname& filename)
+SoundManager::create_sound_source(const Pathname& filename, SoundChannel& channel)
 {
   if (!m_sound_enabled)
   {
@@ -153,7 +153,7 @@ SoundManager::create_sound_source(const Pathname& filename)
       m_buffers.insert(std::make_pair(filename, buffer));
     }
   
-    SoundSourcePtr source(new SoundSource(m_sound_channel));
+    SoundSourcePtr source(new SoundSource(channel));
 
     alSourcei(source->get_id(), AL_BUFFER, buffer);
 
@@ -166,7 +166,7 @@ SoundManager::play(const Pathname& filename, const Vector2f& pos)
 {
   try
   {
-    SoundSourcePtr source = create_sound_source(filename);
+    SoundSourcePtr source = create_sound_source(filename, m_sound_channel);
 
     if (source.get())
     {

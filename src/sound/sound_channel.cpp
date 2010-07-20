@@ -46,8 +46,8 @@ SoundChannel::prepare(const Pathname& filename)
 {
   try
   {
-    SoundSourcePtr source = m_sound_manager.create_sound_source(filename);
-    source->play();
+    SoundSourcePtr source = m_sound_manager.create_sound_source(filename, *this);
+    source->update_volume();
     m_sound_sources.push_back(SoundSourcePtr(source));
     return source;
   }

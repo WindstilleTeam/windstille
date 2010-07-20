@@ -19,12 +19,14 @@
 #include "sound/sound_source.hpp"
 
 #include <assert.h>
+#include <iostream>
 
 #include "sound/sound_manager.hpp"
 
 SoundSource::SoundSource(SoundChannel& channel) :
   m_channel(channel),
-  m_source()
+  m_source(),
+  m_gain(1.0f)
 {
   alGenSources(1, &m_source);
   SoundManager::check_al_error("Couldn't create audio source: ");
@@ -95,15 +97,14 @@ SoundSource::set_velocity(const Vector2f& velocity)
 void
 SoundSource::set_gain(float gain)
 {
-  alSourcef(m_source, AL_GAIN, m_channel.get_volume() * gain);
+  m_gain = gain;
+  alSourcef(m_source, AL_GAIN, m_channel.get_volume() * m_gain);
 }
 
 float
 SoundSource::get_gain() const
 {
-  float gain = 0.0f;
-  alGetSourcef(m_source, AL_GAIN, &gain);
-  return gain;
+  return m_gain;
 }
 
 void
