@@ -23,128 +23,129 @@
 
 #include "sound/wav_sound_file.hpp"
 #include "util/pathname.hpp"
-
-static inline uint32_t read32LE(PHYSFS_file* file)
-{
-  uint32_t result;
-  if(PHYSFS_readULE32(file, &result) == 0)
-    throw std::runtime_error("file too short");
-
-  return result;
-}
-
-static inline uint16_t read16LE(PHYSFS_file* file)
-{
-  uint16_t result;
-  if(PHYSFS_readULE16(file, &result) == 0)
-    throw std::runtime_error("file too short");
-
-  return result;
-}
+#include "util/util.hpp"
 
 WavSoundFile::WavSoundFile(const Pathname& filename) :
-  file(PHYSFS_openRead(filename.get_physfs_path().c_str())),
+  file(filename.get_sys_path().c_str(), std::ios::binary),
   datastart()
-{
-  char magic[4];
-  if(PHYSFS_read(file, magic, sizeof(magic), 1) != 1)
-    throw std::runtime_error("Couldn't read file magic (not a wave file)");
-  if(strncmp(magic, "RIFF", 4) != 0) {
-    printf("MAGIC: %4s.\n", magic);
-    throw std::runtime_error("file is not a RIFF wav file");
-  }
-
-  uint32_t wavelen = read32LE(file);
-  (void) wavelen;
-  
-  if(PHYSFS_read(file, magic, sizeof(magic), 1) != 1)
-    throw std::runtime_error("Couldn't read chunk header (not a wav file?)");
-  if(strncmp(magic, "WAVE", 4) != 0)
-    throw std::runtime_error("file is not a valid RIFF/WAVE file");
-
-  char chunkmagic[4];
-  uint32_t chunklen;
-
-  // search audio data format chunk
-  do {
-    if(PHYSFS_read(file, chunkmagic, sizeof(chunkmagic), 1) != 1)
-      throw std::runtime_error("EOF while searching format chunk");    
-    chunklen = read32LE(file);
-    
-    if(strncmp(chunkmagic, "fmt ", 4) == 0)
-      break;
-
-    if(strncmp(chunkmagic, "fact", 4) == 0
-       || strncmp(chunkmagic, "LIST", 4) == 0) {
-      // skip chunk
-      if(PHYSFS_seek(file, PHYSFS_tell(file) + chunklen) == 0)
-        throw std::runtime_error("EOF while searching fmt chunk");
-    } else {
-      throw std::runtime_error("complex WAVE files not supported");
+  {
+    char magic[4];
+    if (!file.read(magic, sizeof(magic)))
+    {
+      throw std::runtime_error("Couldn't read file magic (not a wave file)");
     }
-  } while(true); 
 
-  if(chunklen < 16)
-    throw std::runtime_error("Format chunk too short");
+    if(strncmp(magic, "RIFF", 4) != 0) 
+    {
+      printf("MAGIC: %4s.\n", magic);
+      throw std::runtime_error("file is not a RIFF wav file");
+    }
+
+    uint32_t wavelen = read_uint32_t(file);
+  
+    if (!file.read( magic, sizeof(magic)))
+    {
+      throw std::runtime_error("Couldn't read chunk header (not a wav file?)");
+    }
+
+    if(strncmp(magic, "WAVE", 4) != 0)
+    {
+      throw std::runtime_error("file is not a valid RIFF/WAVE file");
+    }
+
+    char chunkmagic[4];
+    uint32_t chunklen;
+
+    // search audio data format chunk
+    do {
+      if (!file.read(chunkmagic, sizeof(chunkmagic)))
+      {
+        throw std::runtime_error("EOF while searching format chunk");    
+      }
+      chunklen = read_uint16_t(file);
+    
+      if (strncmp(chunkmagic, "fmt ", 4) == 0)
+        break;
+
+      if (strncmp(chunkmagic, "fact", 4) == 0 ||
+          strncmp(chunkmagic, "LIST", 4) == 0) 
+      {
+        // skip chunk
+
+        if (!file.seekg(chunklen, std::ios::cur))
+        {
+          throw std::runtime_error("EOF while searching fmt chunk");
+        }
+      } 
+      else 
+      {
+        throw std::runtime_error("complex WAVE files not supported");
+      }
+    } while(true); 
+
+    if(chunklen < 16)
+      throw std::runtime_error("Format chunk too short");
  
-  // parse format
-  uint16_t encoding = read16LE(file);
-  if(encoding != 1)
-    throw std::runtime_error("only PCM encoding supported");
-  channels = read16LE(file);
-  rate = read32LE(file);
-  uint32_t byterate = read32LE(file);
-  (void) byterate;
-  uint16_t blockalign = read16LE(file);
-  (void) blockalign;
-  bits_per_sample = read16LE(file);
+    // parse format
+    uint16_t encoding = read_uint16_t(file);
+    if(encoding != 1)
+      throw std::runtime_error("only PCM encoding supported");
+    channels = read_uint16_t(file);
+    rate = read_uint32_t(file);
+    uint32_t byterate = read_uint32_t(file);
+    uint16_t blockalign = read_uint16_t(file);
+    bits_per_sample = read_uint16_t(file);
 
-  if(chunklen > 16) {
-    if(PHYSFS_seek(file, PHYSFS_tell(file) + (chunklen-16)) == 0)
-      throw std::runtime_error("EOF while reading reast of format chunk");
+    if(chunklen > 16) 
+    {
+      if(file.seekg(chunklen-16, std::ios::cur) == 0)
+        throw std::runtime_error("EOF while reading reast of format chunk");
+    }
+
+    // set file offset to DATA chunk data
+    do {
+      if (!file.read(chunkmagic, sizeof(chunkmagic)))
+        throw std::runtime_error("EOF while searching data chunk");    
+      chunklen = read_uint32_t(file);
+
+      if(strncmp(chunkmagic, "data", 4) == 0)
+        break;
+
+      // skip chunk
+      if(file.seekg(chunklen, std::ios::cur) == 0)
+        throw std::runtime_error("EOF while searching fmt chunk");
+    } while(true);
+
+    datastart = file.tellg();
+    size = static_cast<size_t> (chunklen);
   }
-
-  // set file offset to DATA chunk data
-  do {
-    if(PHYSFS_read(file, chunkmagic, sizeof(chunkmagic), 1) != 1)
-      throw std::runtime_error("EOF while searching data chunk");    
-    chunklen = read32LE(file);
-
-    if(strncmp(chunkmagic, "data", 4) == 0)
-      break;
-
-    // skip chunk
-    if(PHYSFS_seek(file, PHYSFS_tell(file) + chunklen) == 0)
-      throw std::runtime_error("EOF while searching fmt chunk");
-  } while(true);
-
-  datastart = PHYSFS_tell(file);
-  size = static_cast<size_t> (chunklen);
-}
 
 WavSoundFile::~WavSoundFile()
 {
-  PHYSFS_close(file);
 }
 
 void
 WavSoundFile::reset()
 {
-  if(PHYSFS_seek(file, datastart) == 0)
+  if (!file.seekg(datastart))
     throw std::runtime_error("Couldn't seek to data start");
 }
 
 size_t
 WavSoundFile::read(void* buffer, size_t buffer_size)
 {
-  PHYSFS_sint64 end = datastart + size;
-  PHYSFS_sint64 cur = PHYSFS_tell(file);
-  if(cur >= end)
+  size_t end = datastart + size;
+  size_t cur = file.tellg();
+
+  if (cur >= end)
     return 0;
   
   size_t readsize = std::min(static_cast<size_t> (end - cur), buffer_size);
-  if(PHYSFS_read(file, buffer, readsize, 1) != 1)
+
+  if (!file.read(static_cast<char*>(buffer), readsize))
+  {
     throw std::runtime_error("read error while reading samples");
+  }
 
   return readsize;
 }

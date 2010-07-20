@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_UTIL_UTIL_HPP
 
 #include <sstream>
+#include <stdint.h>
 
 std::string dirname(const std::string& filename);
 std::string basename(const std::string& filename);
@@ -38,6 +39,11 @@ std::string to_string(const T& data)
   os << data;
   return os.str();
 }
+
+float       read_float(std::istream& in);
+uint16_t    read_uint16_t(std::istream& in);
+uint32_t    read_uint32_t(std::istream& in);
+std::string read_string(std::istream& in, size_t size);
 
 #endif
 

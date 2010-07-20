@@ -18,14 +18,64 @@
 
 #include "sound/ogg_sound_file.hpp"
 
+#include <stdexcept>
+#include <sstream>
+
 #include "util/pathname.hpp"
 
 OggSoundFile::OggSoundFile(const Pathname& filename) :
   m_in(filename.get_sys_path().c_str(), std::ios::binary),
   vorbis_file()
 {
+  if (!m_in)
+  {
+    std::ostringstream str;
+    str << "OggSoundFile: Couldn't open: " << filename;
+    throw std::runtime_error(str.str());
+  }
+
+  // get the file size
+  m_in.seekg(0, std::ios::end);
+  m_file_size = m_in.tellg();
+  m_in.seekg(0, std::ios::beg);
+
   ov_callbacks callbacks = { cb_read, cb_seek, cb_close, cb_tell };
-  ov_open_callbacks(&m_in, &vorbis_file, 0, 0, callbacks);
+
+  int ret = ov_open_callbacks(this, &vorbis_file, 0, 0, callbacks);
+
+  if (ret != 0)
+  {
+    std::ostringstream str;
+
+    switch(ret)
+    {
+      case OV_EREAD:
+        str << "OV_EREAD error while opening ogg";
+        break;
+
+      case OV_ENOTVORBIS:
+        str << "OV_ENOTVORBIS error while opening ogg";
+        break;
+
+      case OV_EVERSION:
+        str << "OV_EVERSION error while opening ogg";
+        break;
+
+      case OV_EBADHEADER:
+        str << "OV_EBADHEADER error while opening ogg";
+        break;
+
+      case OV_EFAULT:
+        str << "OV_EFAULT error while opening ogg";
+        break;
+
+      default:
+        str << "Unknown error while opening ogg: " << ret;
+        break;
+    }
+
+    throw std::runtime_error(str.str());
+  }
 
   vorbis_info* vi = ov_info(&vorbis_file, -1);
   channels = vi->channels;
@@ -68,36 +118,43 @@ OggSoundFile::reset()
 }
 
 size_t
-OggSoundFile::cb_read(void* ptr, size_t size, size_t nmemb, void* source)
+OggSoundFile::cb_read(void* ptr, size_t size, size_t nmemb, void* userdata)
 {
-  std::ifstream& in = *reinterpret_cast<std::ifstream*>(source);
-  if (!in.read(static_cast<char*>(ptr), size * nmemb))
-  {
-    return -1;
-  }
-  else
-  {
-    return in.gcount();
-  }
+  //std::cout << "OggSoundFile::cb_read: " << size * nmemb << std::endl;
+  OggSoundFile& ogg = *reinterpret_cast<OggSoundFile*>(userdata);
+
+  size_t read_len = size * nmemb;
+
+  // prevent std::istream from hitting eof(), needed as tellg() will
+  // return -1 in that case instead of the from cb_tell expected filesize
+  read_len = std::min(read_len, static_cast<size_t>(ogg.m_file_size - ogg.m_in.tellg()));
+
+  size_t len = ogg.m_in.read(static_cast<char*>(ptr), read_len).gcount();
+  return len;
 }
 
 int
-OggSoundFile::cb_seek(void* source, ogg_int64_t offset, int whence)
+OggSoundFile::cb_seek(void* userdata, ogg_int64_t offset, int whence)
 {
+  OggSoundFile& ogg = *reinterpret_cast<OggSoundFile*>(userdata);
+
   switch(whence) 
   {
     case SEEK_SET:
-      if (!reinterpret_cast<std::ifstream*>(source)->seekg(offset, std::ios::beg))
+      //std::cout << "OggSoundFile::cb_seek: " << offset << " BEG" << std::endl; 
+      if (!ogg.m_in.seekg(offset, std::ios::beg))
         return -1;
       break;
 
     case SEEK_CUR:
-      if (!reinterpret_cast<std::ifstream*>(source)->seekg(offset, std::ios::cur))
+      //std::cout << "OggSoundFile::cb_seek: " << offset << " CUR" << std::endl; 
+      if (!ogg.m_in.seekg(offset, std::ios::cur))
         return -1;
       break;
 
     case SEEK_END:
-      if (!reinterpret_cast<std::ifstream*>(source)->seekg(offset, std::ios::end))
+      //std::cout << "OggSoundFile::cb_seek: " << offset << " END" << std::endl; 
+      if (!ogg.m_in.seekg(offset, std::ios::end))
         return -1;
       break;
 
@@ -108,16 +165,21 @@ OggSoundFile::cb_seek(void* source, ogg_int64_t offset, int whence)
 }
   
 int
-OggSoundFile::cb_close(void* source)
+OggSoundFile::cb_close(void* userdata)
 {
-  reinterpret_cast<std::ifstream*>(source)->close();
+  //std::cout << "OggSoundFile::cb_close" << std::endl;
+  OggSoundFile& ogg = *reinterpret_cast<OggSoundFile*>(userdata);
+
+  ogg.m_in.close();
   return 0;
 }
 
 long
-OggSoundFile::cb_tell(void* source)
+OggSoundFile::cb_tell(void* userdata)
 {
-  return reinterpret_cast<std::ifstream*>(source)->tellg();
+  //std::cout << "OggSoundFile::cb_tell" << std::endl;
+  OggSoundFile& ogg = *reinterpret_cast<OggSoundFile*>(userdata);
+  return ogg.m_in.tellg();
 }
 
 /* EOF */

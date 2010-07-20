@@ -47,6 +47,7 @@ private:
   static long   cb_tell(void* source);
   
   std::ifstream  m_in;
+  size_t m_file_size;
   OggVorbis_File vorbis_file;
 
   int channels;

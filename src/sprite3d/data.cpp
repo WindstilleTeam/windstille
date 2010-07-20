@@ -31,58 +31,10 @@ namespace sprite3d {
 
 static const int FORMAT_VERSION = 2;
 
-static inline float read_float(std::istream& in)
-{
-  float result;
-  
-  if (!in.read(reinterpret_cast<char*>(&result), sizeof(result)))
-  {
-    std::ostringstream msg;
-    msg << "Problem reading float value: " << strerror(errno);
-    throw std::runtime_error(msg.str());
-  }
-  else
-  {
-    return result;
-  }
-}
-
-static inline uint16_t read_uint16_t(std::istream& in)
-{
-  uint16_t result;
-
-  if (!in.read(reinterpret_cast<char*>(&result), sizeof(result)))
-  {
-    std::ostringstream msg;
-    msg << "Problem reading uint16 value: " << strerror(errno);
-    throw std::runtime_error(msg.str());
-  }
-  {
-    return result;
-  }
-}
-
-static inline std::string read_string(std::istream& in, size_t size)
-{
-  boost::scoped_array<char> buffer(new char[size+1]);
-
-  if (!in.read(reinterpret_cast<char*>(buffer.get()), size))
-  {
-    std::ostringstream msg;
-    msg << "Problem reading string value: " << strerror(errno);
-    throw std::runtime_error(msg.str());
-  }
-  else
-  {
-    buffer[size] = '\0';
-    return std::string(buffer.get());
-  }
-}
-
-Data::Data(const Pathname& filename)
-  : meshs(),
-    attachment_points(),
-    actions()
+Data::Data(const Pathname& filename) :
+  meshs(),
+  attachment_points(),
+  actions()
 {
   std::ifstream in(filename.get_sys_path().c_str(), std::ios::binary);
 

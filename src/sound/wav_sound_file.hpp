@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SOUND_WAV_SOUND_FILE_HPP
 #define HEADER_WINDSTILLE_SOUND_WAV_SOUND_FILE_HPP
 
-#include <physfs.h>
+#include <fstream>
 
 #include "sound/sound_file.hpp"
 
@@ -33,8 +33,8 @@ public:
   void reset();
 
 private:
-  PHYSFS_file* file; 
-  PHYSFS_sint64 datastart;
+  std::ifstream file; 
+  size_t datastart;
 
 public:
   int    get_bits_per_sample() const { return bits_per_sample; }
