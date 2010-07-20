@@ -21,11 +21,11 @@
 #include "util/pathname.hpp"
 
 OggSoundFile::OggSoundFile(const Pathname& filename) :
-  file(PHYSFS_openRead(filename.get_physfs_path().c_str())),
+  m_in(filename.get_sys_path().c_str(), std::ios::binary),
   vorbis_file()
 {
   ov_callbacks callbacks = { cb_read, cb_seek, cb_close, cb_tell };
-  ov_open_callbacks(file, &vorbis_file, 0, 0, callbacks);
+  ov_open_callbacks(&m_in, &vorbis_file, 0, 0, callbacks);
 
   vorbis_info* vi = ov_info(&vorbis_file, -1);
   channels = vi->channels;
@@ -70,36 +70,37 @@ OggSoundFile::reset()
 size_t
 OggSoundFile::cb_read(void* ptr, size_t size, size_t nmemb, void* source)
 {
-  PHYSFS_file* file = reinterpret_cast<PHYSFS_file*> (source);
-  
-  PHYSFS_sint64 res 
-    = PHYSFS_read(file, ptr, static_cast<PHYSFS_uint32> (size),
-                  static_cast<PHYSFS_uint32> (nmemb));
-  if(res <= 0)
-    return 0;
-
-  return static_cast<size_t> (res);
+  std::ifstream& in = *reinterpret_cast<std::ifstream*>(source);
+  if (!in.read(static_cast<char*>(ptr), size * nmemb))
+  {
+    return -1;
+  }
+  else
+  {
+    return in.gcount();
+  }
 }
 
 int
 OggSoundFile::cb_seek(void* source, ogg_int64_t offset, int whence)
 {
-  PHYSFS_file* file = reinterpret_cast<PHYSFS_file*> (source);
-
   switch(whence) 
   {
     case SEEK_SET:
-      if(PHYSFS_seek(file, static_cast<PHYSFS_uint64> (offset)) == 0)
+      if (!reinterpret_cast<std::ifstream*>(source)->seekg(offset, std::ios::beg))
         return -1;
       break;
+
     case SEEK_CUR:
-      if(PHYSFS_seek(file, PHYSFS_tell(file) + offset) == 0)
+      if (!reinterpret_cast<std::ifstream*>(source)->seekg(offset, std::ios::cur))
         return -1;
       break;
+
     case SEEK_END:
-      if(PHYSFS_seek(file, PHYSFS_fileLength(file) + offset) == 0)
+      if (!reinterpret_cast<std::ifstream*>(source)->seekg(offset, std::ios::end))
         return -1;
       break;
+
     default:
       return -1;
   }
@@ -109,16 +110,14 @@ OggSoundFile::cb_seek(void* source, ogg_int64_t offset, int whence)
 int
 OggSoundFile::cb_close(void* source)
 {
-  PHYSFS_file* file = reinterpret_cast<PHYSFS_file*> (source);
-  PHYSFS_close(file);
+  reinterpret_cast<std::ifstream*>(source)->close();
   return 0;
 }
 
 long
 OggSoundFile::cb_tell(void* source)
 {
-  PHYSFS_file* file = reinterpret_cast<PHYSFS_file*> (source);
-  return static_cast<long> (PHYSFS_tell(file));
+  return reinterpret_cast<std::ifstream*>(source)->tellg();
 }
 
 /* EOF */

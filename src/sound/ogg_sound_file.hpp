@@ -21,6 +21,7 @@
 
 #include <vorbis/vorbisfile.h>
 #include <physfs.h>
+#include <fstream>
 
 #include "sound/sound_file.hpp"
 
@@ -45,7 +46,7 @@ private:
   static int    cb_close(void* source);
   static long   cb_tell(void* source);
   
-  PHYSFS_file* file;
+  std::ifstream  m_in;
   OggVorbis_File vorbis_file;
 
   int channels;
