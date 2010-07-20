@@ -33,7 +33,7 @@ public:
 
   void play();
   void stop();
-  bool playing();
+  bool is_playing() const;
 
   void set_looping(bool looping);
 

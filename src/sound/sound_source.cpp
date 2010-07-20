@@ -50,7 +50,7 @@ SoundSource::play()
 }
 
 bool
-SoundSource::playing()
+SoundSource::is_playing() const
 {
   ALint state = AL_PLAYING;
   alGetSourcei(m_source, AL_SOURCE_STATE, &state);

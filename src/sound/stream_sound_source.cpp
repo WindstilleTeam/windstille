@@ -65,7 +65,7 @@ StreamSoundSource::update(float delta)
 {
   m_total_time += delta;
 
-  if (playing())
+  if (is_playing())
   {
     ALint processed = 0;
     alGetSourcei(m_source, AL_BUFFERS_PROCESSED, &processed);
@@ -82,7 +82,7 @@ StreamSoundSource::update(float delta)
     }
   
     // we might have to restart the source if we had a buffer underrun
-    if (!playing()) 
+    if (!is_playing()) 
     {
       std::cerr << "Restarting audio source because of buffer underrun.\n";
       alSourcePlay(m_source);

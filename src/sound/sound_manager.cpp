@@ -161,7 +161,7 @@ SoundManager::create_sound_source(const Pathname& filename)
   }
 }
 
-void
+SoundSourcePtr
 SoundManager::play(const Pathname& filename, const Vector2f& pos)
 {
   try
@@ -173,7 +173,9 @@ SoundManager::play(const Pathname& filename, const Vector2f& pos)
       source->set_position(pos);
 
       source->play();
-      m_sources.push_back(boost::shared_ptr<SoundSource>(source.release()));
+      SoundSourcePtr source_ptr(source.release());
+      m_sources.push_back(source_ptr);
+      return source_ptr;
     }
   }
   catch(std::exception& e) 
@@ -314,7 +316,7 @@ SoundManager::update(float delta)
     // check for finished sound sources
     for(SoundSources::iterator i = m_sources.begin(); i != m_sources.end(); ) 
     {
-      if (!(*i)->playing())
+      if (!(*i)->is_playing())
       {
         i = m_sources.erase(i);
       } 
@@ -330,7 +332,7 @@ SoundManager::update(float delta)
       m_music_source->update(delta);
     }
   
-    if (m_next_music_source.get() && (!m_music_source.get() || !m_music_source->playing())) 
+    if (m_next_music_source.get() && (!m_music_source.get() || !m_music_source->is_playing())) 
     {
       m_music_source = m_next_music_source;
       //music_source->setFading(StreamSoundSource::FadingOn, 1.0f);

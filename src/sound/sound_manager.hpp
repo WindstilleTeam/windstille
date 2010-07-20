@@ -60,7 +60,7 @@ public:
   /**
    * Convenience function to simply play a sound at a given position.
    */
-  void play(const Pathname& name, const Vector2f& pos = Vector2f(-1, -1));
+  SoundSourcePtr play(const Pathname& name, const Vector2f& pos = Vector2f(-1, -1));
 
   void play_music(const Pathname& filename, bool fade = true);
   void stop_music(bool fade = true);
