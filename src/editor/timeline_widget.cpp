@@ -131,7 +131,7 @@ TimelineWidget::mouse_up(GdkEventButton* ev)
       for (std::set<TimelineObjectHandle>::iterator i = m_selection.begin(); 
            i != m_selection.end(); ++i)
       {
-        (*i)->set_pos((*i)->get_pos() + (move_pos.x - down_pos.x)/m_column_width);
+        (*i)->set_pos((*i)->get_pos() + (move_pos.x - down_pos.x) / static_cast<float>(m_column_width));
       }
     }
     queue_draw();
@@ -173,13 +173,16 @@ void
 TimelineWidget::add_to_selection(const Rectf& selection)
 {
   Timeline::iterator start = m_timeline->begin() + 
-    std::max(0, std::min(m_timeline->size(), static_cast<int>((selection.top + m_column_height/2)    / m_column_height)));
+    std::max(0, std::min(m_timeline->size(),
+                         static_cast<int>((selection.top + static_cast<float>(m_column_height)/2) / static_cast<float>(m_column_height))));
   Timeline::iterator end   = m_timeline->begin() + 
-    std::max(0, std::min(m_timeline->size(), static_cast<int>((selection.bottom + m_column_height/2) / m_column_height)));
+    std::max(0, std::min(m_timeline->size(), 
+                         static_cast<int>((selection.bottom + static_cast<float>(m_column_height)/2) / static_cast<float>(m_column_height))));
 
   for(Timeline::iterator i = start; i != end; ++i)
   {
-    const TimelineLayer::Objects& objects = (*i)->get_objects(selection.left / m_column_width, selection.right / m_column_width);
+    const TimelineLayer::Objects& objects 
+      = (*i)->get_objects(selection.left / static_cast<float>(m_column_width), selection.right / static_cast<float>(m_column_width));
     m_selection.insert(objects.begin(), objects.end());
   }
 }
@@ -253,7 +256,7 @@ TimelineWidget::draw_grid(Cairo::RefPtr<Cairo::Context> cr)
   {
     if (x % (m_column_width * 10) == 0)
     {
-      cr->rectangle(x, 0, m_column_width, height);
+      cr->rectangle(x, 0, static_cast<float>(m_column_width), height);
     }
   }
   cr->fill();
@@ -289,7 +292,7 @@ TimelineWidget::draw_timeline(Cairo::RefPtr<Cairo::Context> cr)
   cr->save();
 
   cr->set_source_rgb(1,1,1);
-  cr->rectangle(0, 0, allocation.get_width(), m_column_height * m_timeline->size());
+  cr->rectangle(0, 0, allocation.get_width(), static_cast<float>(m_column_height) * static_cast<float>(m_timeline->size()));
   cr->fill();
   
   draw_grid(cr);
@@ -298,12 +301,12 @@ TimelineWidget::draw_timeline(Cairo::RefPtr<Cairo::Context> cr)
   for(Timeline::iterator i = m_timeline->begin(); i != m_timeline->end(); ++i)
   {
     draw_timeline_layer(cr, *i);
-    cr->translate(0, m_column_height);
+    cr->translate(0, static_cast<float>(m_column_height));
   }
   cr->restore();
 
-  cr->rectangle(m_cursor_pos * m_column_width, 0,
-                m_column_width, m_timeline->size() * m_column_height);
+  cr->rectangle(m_cursor_pos * static_cast<float>(m_column_width), 0,
+                static_cast<float>(m_column_width), static_cast<float>(m_timeline->size()) * static_cast<float>(m_column_height));
   cr->set_source_rgba(1,1,0,0.5);
   cr->fill_preserve();
   cr->set_line_width(1.0f);
@@ -341,7 +344,8 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
         cr->set_source_rgb(0.5, 0.75, 0.0);
       }
       
-      cr->rectangle(keyframe->get_pos() * m_column_width, 4, m_column_width, m_column_height - 8);
+      cr->rectangle(keyframe->get_pos() * static_cast<float>(m_column_width), 
+                    4.0f, static_cast<float>(m_column_width), static_cast<float>(m_column_height) - 8.0f);
       cr->fill();
 
       if (in_selection)
@@ -349,7 +353,8 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
       else
         cr->set_source_rgb(0, 0, 0);
 
-      cr->rectangle(keyframe->get_pos() * m_column_width, 4, m_column_width, m_column_height - 8);
+      cr->rectangle(keyframe->get_pos() * static_cast<float>(m_column_width), 4.0f, 
+                    static_cast<float>(m_column_width), static_cast<float>(m_column_height) - 8.0f);
       cr->stroke();  
       
       cr->restore();
@@ -386,8 +391,8 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
         cr->set_source_rgb(0.0, 0.5, 0.75);
       }
 
-      cr->rectangle(anim->get_pos()   * m_column_width,  4,
-                    anim->get_width() * m_column_width, m_column_height - 8);
+      cr->rectangle(anim->get_pos()   * static_cast<float>(m_column_width),  4,
+                    anim->get_width() * static_cast<float>(m_column_width), static_cast<float>(m_column_height) - 8);
       cr->fill();
 
       if (in_selection)
@@ -399,13 +404,13 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
         cr->set_source_rgb(0, 0, 0);
       }
 
-      cr->rectangle(anim->get_pos()   * m_column_width, 4,
-                    anim->get_width() * m_column_width, m_column_height - 8);
+      cr->rectangle(anim->get_pos()   * static_cast<float>(m_column_width), 4,
+                    anim->get_width() * static_cast<float>(m_column_width), static_cast<float>(m_column_height) - 8);
       cr->stroke();
 
       cr->set_source_rgb(1,1,1);
-      cr->move_to((anim->get_pos() + anim->get_width()/2) * m_column_width - extents.width/2, 
-                  m_column_height / 2 + 4);
+      cr->move_to((anim->get_pos() + anim->get_width()/2) * static_cast<float>(m_column_width) - extents.width/2, 
+                  static_cast<float>(m_column_height) / 2 + 4);
       cr->show_text(anim->get_name());
 
       cr->restore();
@@ -443,18 +448,18 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
         cr->set_source_rgb(0.75, 0.0, 0.5);
       }
 
-      cr->rectangle(sound->get_pos()   * m_column_width,  4,
-                    sound->get_width() * m_column_width, m_column_height - 8);
+      cr->rectangle(sound->get_pos()   * static_cast<float>(m_column_width),  4,
+                    sound->get_width() * static_cast<float>(m_column_width), static_cast<float>(m_column_height) - 8);
       cr->fill();
 
       cr->set_source_rgb(0, 0, 0);
-      cr->rectangle(sound->get_pos()   * m_column_width, 4,
-                    sound->get_width() * m_column_width, m_column_height - 8);
+      cr->rectangle(sound->get_pos()   * static_cast<float>(m_column_width), 4,
+                    sound->get_width() * static_cast<float>(m_column_width), static_cast<float>(m_column_height) - 8);
       cr->stroke();
 
       cr->set_source_rgb(1,1,0);
-      cr->move_to((sound->get_pos() + sound->get_width()/2) * m_column_width - extents.width/2, 
-                  m_column_height / 2 + 4);
+      cr->move_to((sound->get_pos() + sound->get_width()/2) * static_cast<float>(m_column_width) - extents.width / 2.0f, 
+                  static_cast<float>(m_column_height) / 2 + 4);
       cr->show_text(sound->get_name());
 
       cr->restore();

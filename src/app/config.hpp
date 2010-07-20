@@ -95,8 +95,9 @@ public:
     return data;
   }
   
-  T& operator=(const T& data_) {
-    return set(data_);
+  ConfigValue<T>& operator=(const T& data_) {
+    set(data_);
+    return *this;
   }
 
   void write(lisp::Writer& writer);

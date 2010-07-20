@@ -130,12 +130,12 @@ SoundManager::load_file_into_buffer(const Pathname& filename)
   return buffer;
 }
 
-std::auto_ptr<SoundSource>
+SoundSourcePtr
 SoundManager::create_sound_source(const Pathname& filename)
 {
   if (!m_sound_enabled)
   {
-    return std::auto_ptr<SoundSource>();
+    return SoundSourcePtr();
   }
   else
   {
@@ -153,7 +153,7 @@ SoundManager::create_sound_source(const Pathname& filename)
       m_buffers.insert(std::make_pair(filename, buffer));
     }
   
-    std::auto_ptr<SoundSource> source(new SoundSource(m_sound_channel));
+    SoundSourcePtr source(new SoundSource(m_sound_channel));
 
     alSourcei(source->get_id(), AL_BUFFER, buffer);
 
@@ -166,21 +166,21 @@ SoundManager::play(const Pathname& filename, const Vector2f& pos)
 {
   try
   {
-    std::auto_ptr<SoundSource> source = create_sound_source(filename);
+    SoundSourcePtr source = create_sound_source(filename);
 
     if (source.get())
     {
       source->set_position(pos);
-
       source->play();
-      SoundSourcePtr source_ptr(source.release());
-      m_sources.push_back(source_ptr);
-      return source_ptr;
+      m_sources.push_back(source);
     }
+
+    return source;
   }
   catch(std::exception& e) 
   {
     std::cout << "Couldn't play sound " << filename << ": " << e.what() << "\n";
+    return SoundSourcePtr(); // FIXME: not the best idea, should return dummy object
   }
 }
 

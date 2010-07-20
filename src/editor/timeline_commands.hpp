@@ -84,8 +84,9 @@ private:
   TimelineLayerHandle m_layer;
 
 public:
-  TimelineAddLayerCommand(SectorModel& sector, const std::string& name)
-    : m_sector(sector)
+  TimelineAddLayerCommand(SectorModel& sector, const std::string& name) :
+    m_sector(sector),
+    m_layer()
   {
     m_layer = m_sector.get_timeline()->create_layer(name);
   }

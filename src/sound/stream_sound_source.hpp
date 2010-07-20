@@ -53,7 +53,7 @@ private:
   ALenum format;
 
   FadeState fade_state;
-  unsigned int fade_start_ticks;
+  float fade_start_ticks;
   float fade_time;
 
   // FIXME: simple time counter that summarizes all deltas, could be done better

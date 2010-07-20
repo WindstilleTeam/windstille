@@ -57,6 +57,10 @@ public:
   void set_sound_volume(float volume);
   void set_music_volume(float volume);
 
+  SoundChannel& voice() { return m_voice_channel; }
+  SoundChannel& sound() { return m_sound_channel; }
+  SoundChannel& music() { return m_music_channel; }
+
   /**
    * Convenience function to simply play a sound at a given position.
    */
@@ -78,7 +82,7 @@ public:
    * This function might throw exceptions. It returns 0 if no audio device is
    * available.
    */
-  std::auto_ptr<SoundSource> create_sound_source(const Pathname& filename);
+  SoundSourcePtr create_sound_source(const Pathname& filename);
 
 private:
   static ALuint load_file_into_buffer(const Pathname& filename);
@@ -96,7 +100,7 @@ private:
 
   typedef std::map<Pathname, ALuint> SoundBuffers;
   SoundBuffers m_buffers;
-  typedef std::vector<boost::shared_ptr<SoundSource> > SoundSources;
+  typedef std::vector<SoundSourcePtr> SoundSources;
   SoundSources m_sources;
 
   std::auto_ptr<StreamSoundSource> m_music_source;

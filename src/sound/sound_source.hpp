@@ -35,11 +35,15 @@ public:
   void stop();
   bool is_playing() const;
 
+  float get_length() const;
+
   void set_looping(bool looping);
 
   /// Set volume (0.0 is silent, 1.0 is normal)
   void  set_gain(float gain);
   float get_gain() const;
+
+  void seek_to(float sec);
 
   void set_position(const Vector2f& position);
   void set_velocity(const Vector2f& position);

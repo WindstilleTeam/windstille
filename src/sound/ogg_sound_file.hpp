@@ -34,10 +34,10 @@ public:
   size_t read(void* buffer, size_t buffer_size);
   void reset();
 
-  int    get_bits_per_sample() const { return bits_per_sample; }
-  size_t get_size() const { return size; }
-  int    get_rate() const { return rate; }
-  int    get_channels() const { return channels; }
+  int    get_bits_per_sample() const { return m_bits_per_sample; }
+  size_t get_size() const { return m_size; }
+  int    get_rate() const { return m_rate; }
+  int    get_channels() const { return m_channels; }
   
 private:
   // I/O functions for ogg
@@ -48,12 +48,12 @@ private:
   
   std::ifstream  m_in;
   size_t m_file_size;
-  OggVorbis_File vorbis_file;
+  OggVorbis_File m_vorbis_file;
 
-  int channels;
-  int rate;
-  int bits_per_sample;
-  size_t size; /// size in bytes
+  int m_channels;
+  int m_rate;
+  int m_bits_per_sample;
+  size_t m_size; /// size in bytes
 
 private:
   OggSoundFile(const OggSoundFile&);

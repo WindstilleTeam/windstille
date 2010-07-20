@@ -17,6 +17,9 @@
 */
 
 #include "sound/sound_source.hpp"
+
+#include <assert.h>
+
 #include "sound/sound_manager.hpp"
 
 SoundSource::SoundSource(SoundChannel& channel) :
@@ -47,6 +50,20 @@ SoundSource::play()
 {
   alSourcePlay(m_source);
   SoundManager::check_al_error("Couldn't start audio source: ");
+}
+
+float
+SoundSource::get_length() const
+{
+  assert(!"implement me");
+  return 0.0f;
+}
+
+void
+SoundSource::seek_to(float sec)
+{
+  // FIXME: Need to be adopted for streaming sound
+  alSourcef(m_source, AL_SEC_OFFSET, sec);
 }
 
 bool

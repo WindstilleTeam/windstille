@@ -35,19 +35,17 @@ public:
 private:
   std::ifstream file; 
   size_t datastart;
+  int m_channels;
+  int m_rate;
+  int m_bits_per_sample;
+  size_t m_size; /// size in bytes
 
 public:
-  int    get_bits_per_sample() const { return bits_per_sample; }
-  size_t get_size() const { return size; }
-  int    get_rate() const { return rate; }
-  int    get_channels() const { return channels; }
+  int    get_bits_per_sample() const { return m_bits_per_sample; }
+  size_t get_size() const { return m_size; }
+  int    get_rate() const { return m_rate; }
+  int    get_channels() const { return m_channels; }
   
-protected:
-  int channels;
-  int rate;
-  int bits_per_sample;
-  size_t size; /// size in bytes
-
 private:
   WavSoundFile(const WavSoundFile&);
   WavSoundFile& operator=(const WavSoundFile&);

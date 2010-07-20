@@ -32,8 +32,10 @@ class SoundChannel
 public:
   SoundChannel(SoundManager& sound_manager);
 
-  SoundSourcePtr play(const SoundFile& sound_file);
+  // shortcut for prepare()->play()
   SoundSourcePtr play(const Pathname& filename);
+  
+  SoundSourcePtr prepare(const Pathname& filename);
 
   void update(float delta);
 

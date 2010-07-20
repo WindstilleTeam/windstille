@@ -34,27 +34,27 @@ SoundChannel::SoundChannel(SoundManager& sound_manager) :
 }
 
 SoundSourcePtr
-SoundChannel::play(const SoundFile& sound_file)
-{ 
-  
+SoundChannel::play(const Pathname& filename)
+{  
+  SoundSourcePtr source = prepare(filename);
+  source->play();
+  return source;
 }
 
 SoundSourcePtr
-SoundChannel::play(const Pathname& filename)
-{  
+SoundChannel::prepare(const Pathname& filename)
+{
   try
   {
-    std::auto_ptr<SoundSource> source = m_sound_manager.create_sound_source(filename);
-
-    if (source.get())
-    {
-      source->play();
-      m_sound_sources.push_back(SoundSourcePtr(source.release()));
-    }
+    SoundSourcePtr source = m_sound_manager.create_sound_source(filename);
+    source->play();
+    m_sound_sources.push_back(SoundSourcePtr(source));
+    return source;
   }
-  catch(std::exception& e) 
+  catch(const std::exception& e) 
   {
-    std::cout << "SoundChannel::play(): Couldn't play sound " << filename << ": " << e.what() << "\n";
+    std::cout << "SoundChannel::prepare(): Couldn't play sound " << filename << ": " << e.what() << "\n";
+    return SoundSourcePtr(); // FIXME: not good, should return dummy SoundSource
   }
 }
 

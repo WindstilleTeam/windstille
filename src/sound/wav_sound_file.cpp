@@ -27,7 +27,11 @@
 
 WavSoundFile::WavSoundFile(const Pathname& filename) :
   file(),
-  datastart()
+  datastart(),
+  m_channels(),
+  m_rate(),
+  m_bits_per_sample(),
+  m_size()
 {
   file.open(filename.get_sys_path().c_str(), std::ios::binary);
   if (!file)
@@ -49,7 +53,7 @@ WavSoundFile::WavSoundFile(const Pathname& filename) :
     throw std::runtime_error("file is not a RIFF wav file");
   }
 
-  uint32_t wavelen = read_uint32_t(file);
+  /*uint32_t wavelen =*/ read_uint32_t(file);
   
   if (!file.read( magic, sizeof(magic)))
   {
@@ -103,11 +107,11 @@ WavSoundFile::WavSoundFile(const Pathname& filename) :
     str << "WavSoundFile(): only PCM encoding supported, got " << encoding;
     throw std::runtime_error(str.str());
   }
-  channels = read_uint16_t(file);
-  rate = read_uint32_t(file);
-  uint32_t byterate = read_uint32_t(file);
-  uint16_t blockalign = read_uint16_t(file);
-  bits_per_sample = read_uint16_t(file);
+  m_channels = read_uint16_t(file);
+  m_rate = read_uint32_t(file);
+  /*uint32_t byterate =*/ read_uint32_t(file);
+  /*uint16_t blockalign =*/ read_uint16_t(file);
+  m_bits_per_sample = read_uint16_t(file);
 
   if(chunklen > 16) 
   {
@@ -129,8 +133,8 @@ WavSoundFile::WavSoundFile(const Pathname& filename) :
       throw std::runtime_error("EOF while searching fmt chunk");
   } while(true);
 
-  datastart = file.tellg();
-  size = static_cast<size_t> (chunklen);
+  datastart = static_cast<size_t>(file.tellg());
+  m_size = static_cast<size_t>(chunklen);
 }
 
 WavSoundFile::~WavSoundFile()
@@ -147,8 +151,8 @@ WavSoundFile::reset()
 size_t
 WavSoundFile::read(void* buffer, size_t buffer_size)
 {
-  size_t end = datastart + size;
-  size_t cur = file.tellg();
+  size_t end = datastart + m_size;
+  size_t cur = static_cast<size_t>(file.tellg());
 
   if (cur >= end)
     return 0;

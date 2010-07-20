@@ -24,9 +24,15 @@
 #include "util/pathname.hpp"
 
 OggSoundFile::OggSoundFile(const Pathname& filename) :
-  m_in(filename.get_sys_path().c_str(), std::ios::binary),
-  vorbis_file()
+  m_in(),
+  m_file_size(),
+  m_vorbis_file(),
+  m_channels(),
+  m_rate(),
+  m_bits_per_sample(),
+  m_size()
 {
+  m_in.open(filename.get_sys_path().c_str(), std::ios::binary);
   if (!m_in)
   {
     std::ostringstream str;
@@ -36,12 +42,12 @@ OggSoundFile::OggSoundFile(const Pathname& filename) :
 
   // get the file size
   m_in.seekg(0, std::ios::end);
-  m_file_size = m_in.tellg();
+  m_file_size = static_cast<size_t>(m_in.tellg());
   m_in.seekg(0, std::ios::beg);
 
   ov_callbacks callbacks = { cb_read, cb_seek, cb_close, cb_tell };
 
-  int ret = ov_open_callbacks(this, &vorbis_file, 0, 0, callbacks);
+  int ret = ov_open_callbacks(this, &m_vorbis_file, 0, 0, callbacks);
 
   if (ret != 0)
   {
@@ -77,16 +83,16 @@ OggSoundFile::OggSoundFile(const Pathname& filename) :
     throw std::runtime_error(str.str());
   }
 
-  vorbis_info* vi = ov_info(&vorbis_file, -1);
-  channels = vi->channels;
-  rate = vi->rate;
-  bits_per_sample = 16;
-  size = static_cast<size_t> (ov_pcm_total(&vorbis_file, -1) * 2);
+  vorbis_info* vi = ov_info(&m_vorbis_file, -1);
+  m_channels = vi->channels;
+  m_rate = vi->rate;
+  m_bits_per_sample = 16;
+  m_size = static_cast<size_t> (ov_pcm_total(&m_vorbis_file, -1) * 2);
 }
 
 OggSoundFile::~OggSoundFile()
 {
-  ov_clear(&vorbis_file);
+  ov_clear(&m_vorbis_file);
 }
 
 size_t
@@ -98,7 +104,7 @@ OggSoundFile::read(void* _buffer, size_t buffer_size)
 
   while(buffer_size>0){
     long bytesRead 
-      = ov_read(&vorbis_file, buffer, static_cast<int> (buffer_size), 0, 2, 1,
+      = ov_read(&m_vorbis_file, buffer, static_cast<int> (buffer_size), 0, 2, 1,
                 &section);
     if(bytesRead==0){
       break;
@@ -114,7 +120,7 @@ OggSoundFile::read(void* _buffer, size_t buffer_size)
 void
 OggSoundFile::reset()
 {
-  ov_raw_seek(&vorbis_file, 0);
+  ov_raw_seek(&m_vorbis_file, 0);
 }
 
 size_t
@@ -179,7 +185,7 @@ OggSoundFile::cb_tell(void* userdata)
 {
   //std::cout << "OggSoundFile::cb_tell" << std::endl;
   OggSoundFile& ogg = *reinterpret_cast<OggSoundFile*>(userdata);
-  return ogg.m_in.tellg();
+  return static_cast<long>(ogg.m_in.tellg());
 }
 
 /* EOF */
