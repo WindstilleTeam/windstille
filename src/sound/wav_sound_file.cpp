@@ -26,99 +26,112 @@
 #include "util/util.hpp"
 
 WavSoundFile::WavSoundFile(const Pathname& filename) :
-  file(filename.get_sys_path().c_str(), std::ios::binary),
+  file(),
   datastart()
+{
+  file.open(filename.get_sys_path().c_str(), std::ios::binary);
+  if (!file)
   {
-    char magic[4];
-    if (!file.read(magic, sizeof(magic)))
-    {
-      throw std::runtime_error("Couldn't read file magic (not a wave file)");
-    }
-
-    if(strncmp(magic, "RIFF", 4) != 0) 
-    {
-      printf("MAGIC: %4s.\n", magic);
-      throw std::runtime_error("file is not a RIFF wav file");
-    }
-
-    uint32_t wavelen = read_uint32_t(file);
-  
-    if (!file.read( magic, sizeof(magic)))
-    {
-      throw std::runtime_error("Couldn't read chunk header (not a wav file?)");
-    }
-
-    if(strncmp(magic, "WAVE", 4) != 0)
-    {
-      throw std::runtime_error("file is not a valid RIFF/WAVE file");
-    }
-
-    char chunkmagic[4];
-    uint32_t chunklen;
-
-    // search audio data format chunk
-    do {
-      if (!file.read(chunkmagic, sizeof(chunkmagic)))
-      {
-        throw std::runtime_error("EOF while searching format chunk");    
-      }
-      chunklen = read_uint16_t(file);
-    
-      if (strncmp(chunkmagic, "fmt ", 4) == 0)
-        break;
-
-      if (strncmp(chunkmagic, "fact", 4) == 0 ||
-          strncmp(chunkmagic, "LIST", 4) == 0) 
-      {
-        // skip chunk
-
-        if (!file.seekg(chunklen, std::ios::cur))
-        {
-          throw std::runtime_error("EOF while searching fmt chunk");
-        }
-      } 
-      else 
-      {
-        throw std::runtime_error("complex WAVE files not supported");
-      }
-    } while(true); 
-
-    if(chunklen < 16)
-      throw std::runtime_error("Format chunk too short");
- 
-    // parse format
-    uint16_t encoding = read_uint16_t(file);
-    if(encoding != 1)
-      throw std::runtime_error("only PCM encoding supported");
-    channels = read_uint16_t(file);
-    rate = read_uint32_t(file);
-    uint32_t byterate = read_uint32_t(file);
-    uint16_t blockalign = read_uint16_t(file);
-    bits_per_sample = read_uint16_t(file);
-
-    if(chunklen > 16) 
-    {
-      if(file.seekg(chunklen-16, std::ios::cur) == 0)
-        throw std::runtime_error("EOF while reading reast of format chunk");
-    }
-
-    // set file offset to DATA chunk data
-    do {
-      if (!file.read(chunkmagic, sizeof(chunkmagic)))
-        throw std::runtime_error("EOF while searching data chunk");    
-      chunklen = read_uint32_t(file);
-
-      if(strncmp(chunkmagic, "data", 4) == 0)
-        break;
-
-      // skip chunk
-      if(file.seekg(chunklen, std::ios::cur) == 0)
-        throw std::runtime_error("EOF while searching fmt chunk");
-    } while(true);
-
-    datastart = file.tellg();
-    size = static_cast<size_t> (chunklen);
+    std::ostringstream str;
+    str << "WavSoundFile(): Couldn't open " << filename;
+    throw std::runtime_error(str.str());
   }
+
+  char magic[4];
+  if (!file.read(magic, sizeof(magic)))
+  {
+    throw std::runtime_error("Couldn't read file magic (not a wave file)");
+  }
+
+  if(strncmp(magic, "RIFF", 4) != 0) 
+  {
+    printf("MAGIC: %4s.\n", magic);
+    throw std::runtime_error("file is not a RIFF wav file");
+  }
+
+  uint32_t wavelen = read_uint32_t(file);
+  
+  if (!file.read( magic, sizeof(magic)))
+  {
+    throw std::runtime_error("Couldn't read chunk header (not a wav file?)");
+  }
+
+  if(strncmp(magic, "WAVE", 4) != 0)
+  {
+    throw std::runtime_error("file is not a valid RIFF/WAVE file");
+  }
+
+  char chunkmagic[4];
+  uint32_t chunklen;
+
+  // search audio data format chunk
+  do {
+    if (!file.read(chunkmagic, sizeof(chunkmagic)))
+    {
+      throw std::runtime_error("EOF while searching format chunk");    
+    }
+    chunklen = read_uint32_t(file);
+    
+    if (strncmp(chunkmagic, "fmt ", 4) == 0)
+    {
+      break;
+    }
+    else if (strncmp(chunkmagic, "fact", 4) == 0 ||
+             strncmp(chunkmagic, "LIST", 4) == 0)
+    {
+      // skip chunk
+
+      if (!file.seekg(chunklen, std::ios::cur))
+      {
+        throw std::runtime_error("EOF while searching fmt chunk");
+      }
+    }
+    else 
+    {
+      throw std::runtime_error("complex WAVE files not supported");
+    }
+  } while(true); 
+
+  if (chunklen < 16)
+    throw std::runtime_error("Format chunk too short");
+ 
+  // parse format
+  uint16_t encoding = read_uint16_t(file);
+  if (encoding != 1)
+  {
+    std::ostringstream str;
+    str << "WavSoundFile(): only PCM encoding supported, got " << encoding;
+    throw std::runtime_error(str.str());
+  }
+  channels = read_uint16_t(file);
+  rate = read_uint32_t(file);
+  uint32_t byterate = read_uint32_t(file);
+  uint16_t blockalign = read_uint16_t(file);
+  bits_per_sample = read_uint16_t(file);
+
+  if(chunklen > 16) 
+  {
+    if(file.seekg(chunklen-16, std::ios::cur) == 0)
+      throw std::runtime_error("EOF while reading reast of format chunk");
+  }
+
+  // set file offset to DATA chunk data
+  do {
+    if (!file.read(chunkmagic, sizeof(chunkmagic)))
+      throw std::runtime_error("EOF while searching data chunk");    
+    chunklen = read_uint32_t(file);
+
+    if(strncmp(chunkmagic, "data", 4) == 0)
+      break;
+
+    // skip chunk
+    if(file.seekg(chunklen, std::ios::cur) == 0)
+      throw std::runtime_error("EOF while searching fmt chunk");
+  } while(true);
+
+  datastart = file.tellg();
+  size = static_cast<size_t> (chunklen);
+}
 
 WavSoundFile::~WavSoundFile()
 {
