@@ -97,7 +97,7 @@ EnumMenuItem::add_pair(int value_, const std::string& label_)
 void
 EnumMenuItem::incr()
 {
-  SoundManager::current()->play("sounds/menu_click.wav");           
+  SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
 
   index -= 1;
   if (index < 0)
@@ -108,7 +108,7 @@ EnumMenuItem::incr()
 void
 EnumMenuItem::decr()
 {
-  SoundManager::current()->play("sounds/menu_click.wav");
+  SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
 
   index += 1;
   if (index >= static_cast<int>(labels.size()))
@@ -152,7 +152,7 @@ SliderMenuItem::SliderMenuItem(MenuComponent* parent_,
 void
 SliderMenuItem::decr()
 {
-  SoundManager::current()->play("sounds/menu_click.wav");
+  SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
 
   value += step;
   if (value > max_value)
@@ -163,7 +163,7 @@ SliderMenuItem::decr()
 void
 SliderMenuItem::incr()
 {
-  SoundManager::current()->play("sounds/menu_click.wav");
+  SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
 
   value -= step;
   if (value < min_value)
@@ -208,7 +208,7 @@ ButtonMenuItem::ButtonMenuItem(MenuComponent* parent_, const std::string& label_
 void
 ButtonMenuItem::click()
 {
-  SoundManager::current()->play("sounds/menu_click.wav");
+  SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
 
   on_click();
 }

@@ -39,7 +39,7 @@ protected:
   virtual ~Currenton() { s_current = 0; }
   
 public:
-  static C* current() { return s_current; }
+  static C* current() { /*assert(s_current);*/ return s_current; }
 };
 
 template<class C> C* Currenton<C>::s_current = 0;

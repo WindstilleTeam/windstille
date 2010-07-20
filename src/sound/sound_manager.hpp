@@ -29,16 +29,17 @@
 #include <AL/al.h>
 
 #include "math/vector2f.hpp"
-#include "util/currenton.hpp"
-
 #include "sound/sound_channel.hpp"
+#include "util/currenton.hpp"
+#include "util/pathname.hpp"
 
 typedef void* SoundHandle;
 
+class Pathname;
 class SoundFile;
 class SoundSource;
 class StreamSoundSource;
-
+
 class SoundManager : public Currenton<SoundManager>
 {
 public:
@@ -59,9 +60,9 @@ public:
   /**
    * Convenience function to simply play a sound at a given position.
    */
-  void play(const std::string& name, const Vector2f& pos = Vector2f(-1, -1));
+  void play(const Pathname& name, const Vector2f& pos = Vector2f(-1, -1));
 
-  void play_music(const std::string& filename, bool fade = true);
+  void play_music(const Pathname& filename, bool fade = true);
   void stop_music(bool fade = true);
 
   void update(float delta);
@@ -77,10 +78,10 @@ public:
    * This function might throw exceptions. It returns 0 if no audio device is
    * available.
    */
-  std::auto_ptr<SoundSource> create_sound_source(const std::string& filename);
+  std::auto_ptr<SoundSource> create_sound_source(const Pathname& filename);
 
 private:
-  static ALuint load_file_into_buffer(const std::string& filename);
+  static ALuint load_file_into_buffer(const Pathname& filename);
 
   void print_openal_version();
   void check_alc_error(const char* message);
@@ -93,7 +94,7 @@ private:
   SoundChannel m_sound_channel;
   SoundChannel m_music_channel;
 
-  typedef std::map<std::string, ALuint> SoundBuffers;
+  typedef std::map<Pathname, ALuint> SoundBuffers;
   SoundBuffers m_buffers;
   typedef std::vector<boost::shared_ptr<SoundSource> > SoundSources;
   SoundSources m_sources;
@@ -102,13 +103,13 @@ private:
   std::auto_ptr<StreamSoundSource> m_next_music_source;
 
   bool m_music_enabled;
-  std::string m_current_music;
+  Pathname m_current_music;
 
 private:
   SoundManager(const SoundManager&);
   SoundManager& operator=(const SoundManager&);
 };
-
+
 #endif
 
 /* EOF */

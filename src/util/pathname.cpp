@@ -262,6 +262,14 @@ Pathname::operator==(const Pathname& rhs) const
     m_type == rhs.m_type;
 }
 
+bool
+Pathname::operator!=(const Pathname& rhs) const
+{
+  return
+    m_path != rhs.m_path ||
+    m_type != rhs.m_type;
+}
+
 std::ostream& operator<<(std::ostream& s, const Pathname& path)
 {
   switch(path.get_type())

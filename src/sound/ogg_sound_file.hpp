@@ -27,7 +27,7 @@
 class OggSoundFile : public SoundFile
 {
 public:
-  OggSoundFile(PHYSFS_file* file);
+  OggSoundFile(const Pathname& filename);
   ~OggSoundFile();
 
   size_t read(void* buffer, size_t buffer_size);

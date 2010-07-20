@@ -62,7 +62,7 @@ private:
 
   static void menu_master_volume(int i);
   static void menu_voice_volume(int i);
-  static void menu_sfx_volume(int i);
+  static void menu_sound_volume(int i);
   static void menu_music_volume(int i);
 
   static void menu_ambient_light(int i, int component);

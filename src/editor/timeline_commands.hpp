@@ -44,6 +44,7 @@ public:
     m_layer(),
     m_object(object),
     m_property(property),
+    m_keyframe(),
     m_add_layer(false)
   {
     m_layer = m_sector.get_timeline()->get_object_layer(m_object, m_property);

@@ -39,7 +39,7 @@ public:
   virtual int    get_channels() const = 0;
   
 public:
-  static std::auto_ptr<SoundFile> load(const std::string& filename);
+  static std::auto_ptr<SoundFile> load(const Pathname& filename);
 };
 
 #endif

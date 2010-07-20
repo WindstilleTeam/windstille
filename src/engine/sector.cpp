@@ -78,7 +78,7 @@ Sector::activate()
   commit_adds();
   commit_removes();
 
-  SoundManager::current()->play_music(music);
+  SoundManager::current()->play_music(Pathname(music, Pathname::kDataPath));
 
   if (!init_script.empty())
   {

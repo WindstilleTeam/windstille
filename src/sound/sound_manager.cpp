@@ -23,8 +23,8 @@
 
 #include "sound/sound_file.hpp"
 #include "sound/stream_sound_source.hpp"
-
 #include "sound/sound_manager.hpp"
+#include "util/pathname.hpp"
 
 
 SoundManager::SoundManager() :
@@ -100,7 +100,7 @@ SoundManager::~SoundManager()
 }
 
 ALuint
-SoundManager::load_file_into_buffer(const std::string& filename)
+SoundManager::load_file_into_buffer(const Pathname& filename)
 {
   // open sound file
   std::auto_ptr<SoundFile> file(SoundFile::load(filename));
@@ -131,7 +131,7 @@ SoundManager::load_file_into_buffer(const std::string& filename)
 }
 
 std::auto_ptr<SoundSource>
-SoundManager::create_sound_source(const std::string& filename)
+SoundManager::create_sound_source(const Pathname& filename)
 {
   if (!m_sound_enabled)
   {
@@ -162,7 +162,7 @@ SoundManager::create_sound_source(const std::string& filename)
 }
 
 void
-SoundManager::play(const std::string& filename, const Vector2f& pos)
+SoundManager::play(const Pathname& filename, const Vector2f& pos)
 {
   try
   {
@@ -230,7 +230,7 @@ SoundManager::stop_music(bool fade)
 }
 
 void
-SoundManager::play_music(const std::string& filename, bool fade)
+SoundManager::play_music(const Pathname& filename, bool fade)
 {
   if (filename != m_current_music)
   {

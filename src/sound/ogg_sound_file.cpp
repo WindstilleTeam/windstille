@@ -18,8 +18,10 @@
 
 #include "sound/ogg_sound_file.hpp"
 
-OggSoundFile::OggSoundFile(PHYSFS_file* file_) :
-  file(file_),
+#include "util/pathname.hpp"
+
+OggSoundFile::OggSoundFile(const Pathname& filename) :
+  file(PHYSFS_openRead(filename.get_physfs_path().c_str())),
   vorbis_file()
 {
   ov_callbacks callbacks = { cb_read, cb_seek, cb_close, cb_tell };

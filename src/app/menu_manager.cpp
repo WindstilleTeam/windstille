@@ -55,8 +55,8 @@ MenuManager::display_option_menu()
   menu.add_slider("Music Volume", config.get_int("music-volume"), 0, 100, 10,
                   boost::bind(&MenuManager::menu_music_volume, _1));
 
-  menu.add_slider("SFX Volume", config.get_int("sfx-volume"), 0, 100, 10, 
-                  boost::bind(&MenuManager::menu_sfx_volume, _1));
+  menu.add_slider("Sound Volume", config.get_int("sound-volume"), 0, 100, 10, 
+                  boost::bind(&MenuManager::menu_sound_volume, _1));
 
   menu.add_slider("Voice Volume", config.get_int("voice-volume"), 0, 100, 10, 
                   boost::bind(&MenuManager::menu_voice_volume, _1));
@@ -550,10 +550,10 @@ MenuManager::menu_voice_volume(int i)
 }
 
 void
-MenuManager::menu_sfx_volume(int i)
+MenuManager::menu_sound_volume(int i)
 {
-  config.set_int("sfx-volume", i);
-  SoundManager::current()->set_sfx_volume(static_cast<float>(i)/100.0f);
+  config.set_int("sound-volume", i);
+  SoundManager::current()->set_sound_volume(static_cast<float>(i)/100.0f);
 }
 
 /* EOF */

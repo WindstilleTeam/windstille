@@ -22,6 +22,7 @@
 #include <stdint.h>
 
 #include "sound/wav_sound_file.hpp"
+#include "util/pathname.hpp"
 
 static inline uint32_t read32LE(PHYSFS_file* file)
 {
@@ -41,9 +42,9 @@ static inline uint16_t read16LE(PHYSFS_file* file)
   return result;
 }
 
-WavSoundFile::WavSoundFile(PHYSFS_file* file_)
-  : file(file_),
-    datastart()
+WavSoundFile::WavSoundFile(const Pathname& filename) :
+  file(PHYSFS_openRead(filename.get_physfs_path().c_str())),
+  datastart()
 {
   char magic[4];
   if(PHYSFS_read(file, magic, sizeof(magic), 1) != 1)

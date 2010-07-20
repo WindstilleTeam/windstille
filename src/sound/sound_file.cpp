@@ -21,19 +21,21 @@
 #include <string.h>
 #include <stdexcept>
 #include <sstream>
+#include <fstream>
 
 #include "sound/ogg_sound_file.hpp"
 #include "sound/wav_sound_file.hpp"
+#include "util/pathname.hpp"
 
 std::auto_ptr<SoundFile>
-SoundFile::load(const std::string& filename)
+SoundFile::load(const Pathname& filename)
 {
-  PHYSFS_file* file = PHYSFS_openRead(filename.c_str());
+  std::ifstream in(filename.get_sys_path().c_str(), std::ios::binary);
 
-  if (!file) 
+  if (!in) 
   {
     std::stringstream msg;
-    msg << "Couldn't open '" << filename << "': " << PHYSFS_getLastError();
+    msg << "Couldn't open '" << filename << "'";
     throw std::runtime_error(msg.str());
   }
   else
@@ -42,21 +44,19 @@ SoundFile::load(const std::string& filename)
     {
       char magic[4];
 
-      if (PHYSFS_read(file, magic, sizeof(magic), 1) != 1)
+      if (!in.read(magic, sizeof(magic)))
       {
         throw std::runtime_error("Couldn't read magic, file too short");
       }
       else
       {
-        PHYSFS_seek(file, 0);
-
         if (strncmp(magic, "RIFF", 4) == 0)
         {
-          return std::auto_ptr<SoundFile>(new WavSoundFile(file));
+          return std::auto_ptr<SoundFile>(new WavSoundFile(filename));
         }
         else if (strncmp(magic, "OggS", 4) == 0)
         {
-          return std::auto_ptr<SoundFile>(new OggSoundFile(file));
+          return std::auto_ptr<SoundFile>(new OggSoundFile(filename));
         }
         else
         {

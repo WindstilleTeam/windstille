@@ -26,7 +26,7 @@
 class WavSoundFile : public SoundFile
 {
 public:
-  WavSoundFile(PHYSFS_file* file);
+  WavSoundFile(const Pathname& filename);
   ~WavSoundFile();
 
   size_t read(void* buffer, size_t buffer_size);

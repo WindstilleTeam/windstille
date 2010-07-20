@@ -127,6 +127,7 @@ public:
   bool operator<(const Pathname& rhs) const;
 
   bool operator==(const Pathname& rhs) const;
+  bool operator!=(const Pathname& rhs) const;
 
 private:
   std::string m_path;

@@ -22,6 +22,7 @@
 #include <iostream>
 
 #include "math/vector2f.hpp"
+#include "util/pathname.hpp"
 #include "sound/sound_manager.hpp"
 #include "sound/sound_source.hpp"
 
@@ -39,7 +40,7 @@ SoundChannel::play(const SoundFile& sound_file)
 }
 
 SoundSourcePtr
-SoundChannel::play(const std::string& filename)
+SoundChannel::play(const Pathname& filename)
 {  
   try
   {

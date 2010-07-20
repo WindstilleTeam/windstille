@@ -23,6 +23,7 @@
 
 #include "sound/sound_source_ptr.hpp"
 
+class Pathname;
 class SoundFile;
 class SoundManager;
 
@@ -32,7 +33,7 @@ public:
   SoundChannel(SoundManager& sound_manager);
 
   SoundSourcePtr play(const SoundFile& sound_file);
-  SoundSourcePtr play(const std::string& filename);
+  SoundSourcePtr play(const Pathname& filename);
 
   void update(float delta);
 
