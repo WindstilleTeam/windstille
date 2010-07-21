@@ -27,6 +27,7 @@ StreamSoundSource::StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundF
   OpenALSoundSource(channel),
   m_sound_file(sound_file),
   m_format(SoundManager::get_sample_format(m_sound_file.get())),
+  m_looping(false),
   m_fade_state(),
   m_fade_start_ticks(),
   m_fade_time(),
@@ -58,6 +59,14 @@ StreamSoundSource::~StreamSoundSource()
 }
 
 void
+StreamSoundSource::set_looping(bool looping)
+{
+  // native OpenAL looping will result in the queue being looped, not
+  // the whole song as provided by the SoundFile, so we do it manually
+  m_looping = looping;
+}
+
+void
 StreamSoundSource::seek_to(float sec)
 {
   m_sound_file->seek_to(sec);
@@ -70,18 +79,22 @@ StreamSoundSource::update(float delta)
 
   if (is_playing())
   {
-    ALint processed = 0;
-    alGetSourcei(m_source, AL_BUFFERS_PROCESSED, &processed);
-
-    while (processed > 0) 
+    // fill the buffer queue with new data
+    if (m_looping || !m_sound_file->eof())
     {
-      processed--;
+      ALint processed = 0;
+      alGetSourcei(m_source, AL_BUFFERS_PROCESSED, &processed);
 
-      ALuint buffer;
-      alSourceUnqueueBuffers(m_source, 1, &buffer);
-      SoundManager::check_al_error("Couldn't unqueue audio buffer: ");
+      while (processed > 0) 
+      {
+        processed--;
 
-      fill_buffer_and_queue(buffer);
+        ALuint buffer;
+        alSourceUnqueueBuffers(m_source, 1, &buffer);
+        SoundManager::check_al_error("Couldn't unqueue audio buffer: ");
+
+        fill_buffer_and_queue(buffer);
+      }
     }
   
     // we might have to restart the source if we had a buffer underrun
@@ -92,6 +105,7 @@ StreamSoundSource::update(float delta)
       SoundManager::check_al_error("Couldn't restart audio source: ");
     }
 
+    // handle fade-in/out
     if (m_fade_state == kFadingOn) 
     {
       float time = m_fade_start_ticks - m_total_time;
@@ -141,21 +155,31 @@ StreamSoundSource::fill_buffer_and_queue(ALuint buffer)
     bytesread += m_sound_file->read(bufferdata + bytesread,
                                     STREAMFRAGMENTSIZE - bytesread);
 
-    // if the end is reached, start from the beginning, thus loop
+    // the end of the SoundFile is reached
     if (bytesread < STREAMFRAGMENTSIZE) 
     {
-      m_sound_file->reset();
+      if (m_looping)
+      { // loop
+        m_sound_file->reset();
+      }
+      else
+      { // or end
+        break;
+      }
     }
   }
   while(bytesread < STREAMFRAGMENTSIZE);
   
-  // upload data to the OpenAL buffer
-  alBufferData(buffer, m_format, bufferdata, STREAMFRAGMENTSIZE, m_sound_file->get_rate());
-  SoundManager::check_al_error("Couldn't refill audio buffer: ");
+  if (bytesread > 0)
+  {
+    // upload data to the OpenAL buffer
+    alBufferData(buffer, m_format, bufferdata, bytesread, m_sound_file->get_rate());
+    SoundManager::check_al_error("Couldn't refill audio buffer: ");
 
-  // add buffer to the queue of this source
-  alSourceQueueBuffers(m_source, 1, &buffer);
-  SoundManager::check_al_error("Couldn't queue audio buffer: ");
+    // add buffer to the queue of this source
+    alSourceQueueBuffers(m_source, 1, &buffer);
+    SoundManager::check_al_error("Couldn't queue audio buffer: ");
+  }
 }
 
 /* EOF */

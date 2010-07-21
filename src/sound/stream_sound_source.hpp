@@ -36,12 +36,12 @@ public:
   StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundFile> sound_file);
   virtual ~StreamSoundSource();
 
+  void update(float delta);
+  void seek_to(float sec);
+  void set_looping(bool looping);
+
   void set_fading(FadeState state, float fadetime);
   FadeState get_fade_state() const { return m_fade_state; }
-
-  void update(float delta);
-  
-  virtual void seek_to(float sec);
 
 private:
   void fill_buffer_and_queue(ALuint buffer);
@@ -53,6 +53,8 @@ private:
   std::auto_ptr<SoundFile> m_sound_file;
   ALuint m_buffers[STREAMFRAGMENTS];
   ALenum m_format;
+
+  bool m_looping;
 
   FadeState m_fade_state;
   float m_fade_start_ticks;

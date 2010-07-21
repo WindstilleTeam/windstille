@@ -32,40 +32,37 @@ public:
   OpenALSoundSource(SoundChannel& channel);
   virtual ~OpenALSoundSource();
 
-  void play();
-  void stop();
-  bool is_playing() const;
+  virtual void play();
+  virtual void stop();
+  virtual bool is_playing() const;
 
-  float get_length() const;
+  virtual float get_length() const;
 
-  void set_looping(bool looping);
+  virtual void set_looping(bool looping);
 
   /// Set volume (0.0 is silent, 1.0 is normal)
-  void  set_gain(float gain);
-  float get_gain() const;
+  virtual void  set_gain(float gain);
+  virtual float get_gain() const;
 
-  void  seek_to(float sec);
+  virtual void  seek_to(float sec);
 
   /** Return the current position in seconds */
-  float get_pos() const;
+  virtual float get_pos() const;
 
-  void set_position(const Vector2f& position);
-  void set_velocity(const Vector2f& position);
+  virtual void set_position(const Vector2f& position);
+  virtual void set_velocity(const Vector2f& position);
 
   /** Distances closer then reference distance will increase the gain
       (or keep it at 1.0f), while distances further away will lower it */
-  void set_reference_distance(float distance);
+  virtual void set_reference_distance(float distance);
 
   /** Higher factor will mean the sound gain lowers quicker with
       distance, while lower factor will reduce the lowering of gain,
       0.0f disables distance based reduction completly */
-  void set_rolloff_factor(float factor);
+  virtual void set_rolloff_factor(float factor);
   
-  /** Attaches the gives buffer to this sample */
-  void set_buffer(ALuint buffer);
-
   /** Needs to be called whenever the SoundChannels gain changes */
-  void update_gain() const;
+  virtual void update_gain() const;
 
   virtual void update(float delta) {}
 
