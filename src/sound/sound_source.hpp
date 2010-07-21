@@ -43,18 +43,27 @@ public:
   void  set_gain(float gain);
   float get_gain() const;
 
-  void seek_to(float sec);
+  void  seek_to(float sec);
+
+  /** Return the current position in seconds */
+  float get_pos() const;
 
   void set_position(const Vector2f& position);
   void set_velocity(const Vector2f& position);
+
+  /** Distances closer then reference distance will increase the gain
+      (or keep it at 1.0f), while distances further away will lower it */
   void set_reference_distance(float distance);
+
+  /** Higher factor will mean the sound gain lowers quicker with
+      distance, while lower factor will reduce the lowering of gain */
   void set_rolloff_factor(float factor);
+
+  void set_buffer(ALuint buffer);
 
   /** Needs to be called whenever the SoundChannels volume changes */
   void update_volume() const;
 
-  ALuint get_id() const { return m_source; }
-  
 protected:
   SoundChannel& m_channel;
   ALuint m_source;

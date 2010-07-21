@@ -37,6 +37,7 @@ SoundSource::~SoundSource()
 {
   stop();
   alDeleteSources(1, &m_source);
+  SoundManager::check_al_error("Couldn't delete source: ");
 }
 
 void
@@ -66,6 +67,16 @@ SoundSource::seek_to(float sec)
 {
   // FIXME: Need to be adopted for streaming sound
   alSourcef(m_source, AL_SEC_OFFSET, sec);
+  SoundManager::check_al_error("SoundSource::seek_to: ");
+}
+
+float
+SoundSource::get_pos() const
+{
+  float sec = 0.0f;
+  alGetSourcef(m_source, AL_SEC_OFFSET, &sec);
+  SoundManager::check_al_error("SoundSource::get_pos: ");
+  return sec;
 }
 
 bool
@@ -80,18 +91,21 @@ void
 SoundSource::set_looping(bool looping)
 {
   alSourcei(m_source, AL_LOOPING, looping ? AL_TRUE : AL_FALSE);
+  SoundManager::check_al_error("SoundSource::set_looping: ");
 }
 
 void
 SoundSource::set_position(const Vector2f& position)
 {
   alSource3f(m_source, AL_POSITION, position.x, position.y, 0);
+  SoundManager::check_al_error("SoundSource::set_position: ");
 }
 
 void
 SoundSource::set_velocity(const Vector2f& velocity)
 {
   alSource3f(m_source, AL_VELOCITY, velocity.x, velocity.y, 0);
+  SoundManager::check_al_error("SoundSource::set_velocity: ");
 }
 
 void
@@ -99,6 +113,7 @@ SoundSource::set_gain(float gain)
 {
   m_gain = gain;
   alSourcef(m_source, AL_GAIN, m_channel.get_volume() * m_gain);
+  SoundManager::check_al_error("SoundSource::set_gain: ");
 }
 
 float
@@ -111,18 +126,28 @@ void
 SoundSource::set_reference_distance(float distance)
 {
   alSourcef(m_source, AL_REFERENCE_DISTANCE, distance);
+  SoundManager::check_al_error("SoundSource::set_reference_distance: ");
 }
 
 void
 SoundSource::set_rolloff_factor(float factor)
 {
   alSourcef(m_source, AL_ROLLOFF_FACTOR, factor);
+  SoundManager::check_al_error("SoundSource::set_rolloff_factor: ");
 }
 
 void
 SoundSource::update_volume() const
 {
   alSourcef(m_source, AL_GAIN, m_channel.get_volume() * get_gain());
+  SoundManager::check_al_error("SoundSource::update_volume: ");
+}
+
+void
+SoundSource::set_buffer(ALuint buffer)
+{
+  alSourcei(m_source, AL_BUFFER, buffer);
+  SoundManager::check_al_error("SoundSource::set_buffer: ");
 }
 
 /* EOF */

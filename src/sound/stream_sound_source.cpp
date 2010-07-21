@@ -76,7 +76,7 @@ StreamSoundSource::update(float delta)
 
       ALuint buffer;
       alSourceUnqueueBuffers(m_source, 1, &buffer);
-      SoundManager::check_al_error("Couldn't unqueu audio buffer: ");
+      SoundManager::check_al_error("Couldn't unqueue audio buffer: ");
 
       fillBufferAndQueue(buffer);
     }
@@ -143,7 +143,7 @@ StreamSoundSource::fillBufferAndQueue(ALuint buffer)
     {
       file->reset();
     }
-  } 
+  }
   while(bytesread < STREAMFRAGMENTSIZE);
   
   alBufferData(buffer, format, bufferdata.get(), STREAMFRAGMENTSIZE, file->get_rate());

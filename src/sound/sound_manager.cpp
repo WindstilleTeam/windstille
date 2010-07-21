@@ -154,9 +154,7 @@ SoundManager::create_sound_source(const Pathname& filename, SoundChannel& channe
     }
   
     SoundSourcePtr source(new SoundSource(channel));
-
-    alSourcei(source->get_id(), AL_BUFFER, buffer);
-
+    source->set_buffer(buffer);
     return source;
   }
 }
@@ -244,8 +242,6 @@ SoundManager::play_music(const Pathname& filename, bool fade)
       {
         std::auto_ptr<StreamSoundSource> newmusic(new StreamSoundSource(m_music_channel, SoundFile::load(filename)));
 
-        alSourcef(newmusic->get_id(), AL_ROLLOFF_FACTOR, 0);
- 
         if (fade) 
         {
           if (m_music_source.get() &&
