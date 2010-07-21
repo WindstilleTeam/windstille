@@ -29,12 +29,14 @@ public:
   WavSoundFile(const Pathname& filename);
   ~WavSoundFile();
 
+  bool eof() const;
   size_t read(void* buffer, size_t buffer_size);
   void reset();
   void seek_to(float sec);
 
 private:
   std::ifstream file; 
+  bool m_eof;
   size_t datastart;
   int m_channels;
   int m_rate;

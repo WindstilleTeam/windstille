@@ -27,6 +27,7 @@
 
 WavSoundFile::WavSoundFile(const Pathname& filename) :
   file(),
+  m_eof(false),
   datastart(),
   m_channels(),
   m_rate(),
@@ -141,9 +142,17 @@ WavSoundFile::~WavSoundFile()
 {
 }
 
+bool
+WavSoundFile::eof() const
+{
+  return m_eof;
+}
+
 void
 WavSoundFile::reset()
 {
+  m_eof = false;
+
   if (!file.seekg(datastart))
     throw std::runtime_error("Couldn't seek to data start");
 }
@@ -151,6 +160,8 @@ WavSoundFile::reset()
 void
 WavSoundFile::seek_to(float sec)
 {
+  m_eof = false;
+
   size_t byte_pos = static_cast<size_t>(sec * static_cast<float>(m_rate * m_bits_per_sample/8 * m_channels));
 
   if (!file.seekg(datastart + byte_pos))
@@ -164,7 +175,10 @@ WavSoundFile::read(void* buffer, size_t buffer_size)
   size_t cur = static_cast<size_t>(file.tellg());
 
   if (cur >= end)
+  {
+    m_eof = true;
     return 0;
+  }
   
   size_t readsize = std::min(static_cast<size_t> (end - cur), buffer_size);
 

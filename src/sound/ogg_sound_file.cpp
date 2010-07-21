@@ -25,6 +25,7 @@
 
 OggSoundFile::OggSoundFile(const Pathname& filename) :
   m_in(),
+  m_eof(false),
   m_file_size(),
   m_vorbis_file(),
   m_channels(),
@@ -33,6 +34,7 @@ OggSoundFile::OggSoundFile(const Pathname& filename) :
   m_size()
 {
   m_in.open(filename.get_sys_path().c_str(), std::ios::binary);
+
   if (!m_in)
   {
     std::ostringstream str;
@@ -102,13 +104,18 @@ OggSoundFile::read(void* _buffer, size_t buffer_size)
   int section = 0;
   size_t totalBytesRead= 0;
 
-  while(buffer_size>0){
+  while(buffer_size>0)
+  {
     long bytesRead 
-      = ov_read(&m_vorbis_file, buffer, static_cast<int> (buffer_size), 0, 2, 1,
+      = ov_read(&m_vorbis_file, buffer, static_cast<int>(buffer_size), 0, 2, 1,
                 &section);
-    if(bytesRead==0){
+
+    if (bytesRead == 0)
+    {
+      m_eof = true;
       break;
     }
+
     buffer_size -= bytesRead;
     buffer += bytesRead;
     totalBytesRead += bytesRead;
@@ -120,15 +127,25 @@ OggSoundFile::read(void* _buffer, size_t buffer_size)
 void
 OggSoundFile::reset()
 {
+  m_eof = false;
   ov_raw_seek(&m_vorbis_file, 0);
+}
+
+bool
+OggSoundFile::eof() const
+{
+  return m_eof;
 }
 
 void
 OggSoundFile::seek_to(float sec)
 {
-  ov_time_seek(&m_vorbis_file, sec);
-}
+  m_eof = false;
 
+  // the version 'lap' will do crosslapsing to remove clicking when seeking
+  ov_time_seek_lap(&m_vorbis_file, sec);
+}
+
 size_t
 OggSoundFile::cb_read(void* ptr, size_t size, size_t nmemb, void* userdata)
 {

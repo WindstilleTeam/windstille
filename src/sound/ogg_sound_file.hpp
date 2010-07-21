@@ -33,6 +33,7 @@ public:
 
   size_t read(void* buffer, size_t buffer_size);
   void reset();
+  bool eof() const;
 
   int    get_bits_per_sample() const { return m_bits_per_sample; }
   size_t get_size() const { return m_size; }
@@ -49,6 +50,7 @@ private:
   static long   cb_tell(void* source);
   
   std::ifstream  m_in;
+  bool m_eof;
   size_t m_file_size;
   OggVorbis_File m_vorbis_file;
 
