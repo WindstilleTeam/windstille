@@ -43,7 +43,8 @@ SoundChannel::play(const Pathname& filename)
 }
 
 SoundSourcePtr
-SoundChannel::prepare(std::auto_ptr<SoundFile> sound_file)
+SoundChannel::prepare(std::auto_ptr<SoundFile> sound_file, 
+                      OpenALSoundSourceType type)
 {
   // FIXME: implement me
   assert(!"implement me");
@@ -51,11 +52,14 @@ SoundChannel::prepare(std::auto_ptr<SoundFile> sound_file)
 }
 
 SoundSourcePtr
-SoundChannel::prepare(const Pathname& filename)
+SoundChannel::prepare(const Pathname& filename, 
+                      OpenALSoundSourceType type)
 {
-  SoundSourcePtr source = m_sound_manager.create_sound_source(filename, *this);
+  SoundSourcePtr source = m_sound_manager.create_sound_source(filename, *this, 
+                                                              kStaticSoundSource);
   if (!source)
   {
+    std::cout << "SourceChannel::prepare: Couldn't load " << filename << std::endl;
     return SoundSourcePtr(new DummySoundSource());
   }
   else

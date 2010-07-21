@@ -132,29 +132,47 @@ SoundManager::load_file_into_buffer(const Pathname& filename)
 }
 
 SoundSourcePtr
-SoundManager::create_sound_source(const Pathname& filename, SoundChannel& channel)
+SoundManager::create_sound_source(const Pathname& filename, SoundChannel& channel, OpenALSoundSourceType type)
 {
   if (!m_sound_enabled)
   {
     return SoundSourcePtr();
   }
   else
-  {
-    ALuint buffer;
+  { 
+    switch(type)
+    {
+      case kStaticSoundSource:
+        {
+          ALuint buffer;
   
-    // reuse an existing static sound buffer            
-    SoundBuffers::iterator i = m_buffers.find(filename);
-    if (i != m_buffers.end()) 
-    {
-      buffer = i->second;
-    } 
-    else 
-    {
-      buffer = load_file_into_buffer(filename);
-      m_buffers.insert(std::make_pair(filename, buffer));
+          // reuse an existing static sound buffer            
+          SoundBuffers::iterator i = m_buffers.find(filename);
+          if (i != m_buffers.end()) 
+          {
+            buffer = i->second;
+          } 
+          else 
+          {
+            buffer = load_file_into_buffer(filename);
+            m_buffers.insert(std::make_pair(filename, buffer));
+          }
+
+          return SoundSourcePtr(new StaticSoundSource(channel, buffer));
+        }
+        break;
+
+      case kStreamSoundSource:
+        {
+          std::auto_ptr<SoundFile> sound_file = SoundFile::load(filename);
+          return SoundSourcePtr(new StreamSoundSource(channel, sound_file));
+        }
+        break;
+
+      default:
+        assert(!"never reached");
+        return SoundSourcePtr();
     }
-  
-    return SoundSourcePtr(new StaticSoundSource(channel, buffer));
   }
 }
 
@@ -163,7 +181,7 @@ SoundManager::play(const Pathname& filename, const Vector2f& pos)
 {
   try
   {
-    SoundSourcePtr source = create_sound_source(filename, m_sound_channel);
+    SoundSourcePtr source = create_sound_source(filename, m_sound_channel, kStaticSoundSource);
 
     if (source.get())
     {

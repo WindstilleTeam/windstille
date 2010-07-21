@@ -21,6 +21,7 @@
 
 #include <vector>
 
+#include "sound/openal_sound_source_type.hpp"
 #include "sound/sound_source_ptr.hpp"
 
 class Pathname;
@@ -35,8 +36,10 @@ public:
   // shortcut for prepare()->play()
   SoundSourcePtr play(const Pathname& filename);
 
-  SoundSourcePtr prepare(std::auto_ptr<SoundFile> sound_file);
-  SoundSourcePtr prepare(const Pathname& filename);
+  SoundSourcePtr prepare(std::auto_ptr<SoundFile> sound_file, 
+                         OpenALSoundSourceType type = kStaticSoundSource);
+  SoundSourcePtr prepare(const Pathname& filename,
+                         OpenALSoundSourceType type = kStaticSoundSource);
 
   void update(float delta);
 

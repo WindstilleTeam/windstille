@@ -108,12 +108,11 @@ StreamSoundSource::update(float delta)
     else if (m_fade_state == kFadingOff) 
     {
       float time = m_fade_start_ticks - m_total_time;
-
       if (time >= m_fade_time) 
       {
         stop();
         m_fade_state = kNoFading;
-      } 
+      }
       else 
       {
         set_gain( (m_fade_time - time) / m_fade_time);

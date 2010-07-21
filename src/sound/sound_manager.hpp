@@ -76,7 +76,9 @@ public:
    * This function might throw exceptions. It returns 0 if no audio device is
    * available.
    */
-  SoundSourcePtr create_sound_source(const Pathname& filename, SoundChannel& channel);
+  SoundSourcePtr create_sound_source(const Pathname& filename, 
+                                     SoundChannel& channel, 
+                                     OpenALSoundSourceType type);
 
 public:
   static void check_al_error(const char* message);
