@@ -34,19 +34,20 @@ public:
 
   // shortcut for prepare()->play()
   SoundSourcePtr play(const Pathname& filename);
-  
+
+  SoundSourcePtr prepare(std::auto_ptr<SoundFile> sound_file);
   SoundSourcePtr prepare(const Pathname& filename);
 
   void update(float delta);
 
   // volume is clamped to [0,1]
-  void  set_volume(float volume);
-  float get_volume() const;
+  void  set_gain(float gain);
+  float get_gain() const;
 
 private:
   SoundManager& m_sound_manager;
   std::vector<SoundSourcePtr> m_sound_sources;
-  float m_volume;
+  float m_gain;
 
 private:
   SoundChannel(const SoundChannel&);

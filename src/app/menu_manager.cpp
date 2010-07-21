@@ -532,28 +532,28 @@ void
 MenuManager::menu_master_volume(int i)
 {
   config.set_int("master-volume", i);
-  SoundManager::current()->set_master_volume(static_cast<float>(i)/100.0f);
+  SoundManager::current()->set_gain(static_cast<float>(i)/100.0f);
 }
 
 void
 MenuManager::menu_music_volume(int i)
 {
   config.set_int("music-volume", i);
-  SoundManager::current()->set_music_volume(static_cast<float>(i)/100.0f);
+  SoundManager::current()->music().set_gain(static_cast<float>(i)/100.0f);
 }
 
 void
 MenuManager::menu_voice_volume(int i)
 {
   config.set_int("voice-volume", i);
-  SoundManager::current()->set_voice_volume(static_cast<float>(i)/100.0f);
+  SoundManager::current()->voice().set_gain(static_cast<float>(i)/100.0f);
 }
 
 void
 MenuManager::menu_sound_volume(int i)
 {
   config.set_int("sound-volume", i);
-  SoundManager::current()->set_sound_volume(static_cast<float>(i)/100.0f);
+  SoundManager::current()->sound().set_gain(static_cast<float>(i)/100.0f);
 }
 
 /* EOF */

@@ -31,6 +31,7 @@ public:
 
   size_t read(void* buffer, size_t buffer_size);
   void reset();
+  void seek_to(float sec);
 
 private:
   std::ifstream file; 

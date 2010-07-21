@@ -148,6 +148,15 @@ WavSoundFile::reset()
     throw std::runtime_error("Couldn't seek to data start");
 }
 
+void
+WavSoundFile::seek_to(float sec)
+{
+  size_t byte_pos = static_cast<size_t>(sec * static_cast<float>(m_rate * m_bits_per_sample/8 * m_channels));
+
+  if (!file.seekg(datastart + byte_pos))
+    throw std::runtime_error("Couldn't seek to data start");
+}
+
 size_t
 WavSoundFile::read(void* buffer, size_t buffer_size)
 {

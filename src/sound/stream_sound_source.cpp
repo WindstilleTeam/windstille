@@ -19,35 +19,32 @@
 #include "sound/stream_sound_source.hpp"
 
 #include <iostream>
-#include <boost/scoped_array.hpp>
 
 #include "sound/sound_manager.hpp"
 #include "sound/sound_file.hpp"
 
-StreamSoundSource::StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundFile> file_) :
+StreamSoundSource::StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundFile> sound_file) :
   SoundSource(channel),
-  file(file_),
-  format(),
-  fade_state(),
-  fade_start_ticks(),
-  fade_time(),
+  m_sound_file(sound_file),
+  m_format(SoundManager::get_sample_format(m_sound_file.get())),
+  m_fade_state(),
+  m_fade_start_ticks(),
+  m_fade_time(),
   m_total_time(0.0f)
 {
-  alGenBuffers(STREAMFRAGMENTS, buffers);
+  alGenBuffers(STREAMFRAGMENTS, m_buffers);
   SoundManager::check_al_error("Couldn't allocate audio buffers: ");
-
-  format = SoundManager::get_sample_format(file.get());
 
   try 
   {
     for(size_t i = 0; i < STREAMFRAGMENTS; ++i) 
     {
-      fillBufferAndQueue(buffers[i]);
+      fill_buffer_and_queue(m_buffers[i]);
     }
   }
   catch(...) 
   {
-    alDeleteBuffers(STREAMFRAGMENTS, buffers);
+    alDeleteBuffers(STREAMFRAGMENTS, m_buffers);
     throw;
   }
 }
@@ -56,8 +53,14 @@ StreamSoundSource::~StreamSoundSource()
 {
   stop();
 
-  alDeleteBuffers(STREAMFRAGMENTS, buffers);
+  alDeleteBuffers(STREAMFRAGMENTS, m_buffers);
   SoundManager::check_al_error("Couldn't delete audio buffers: ");
+}
+
+void
+StreamSoundSource::seek_to(float sec)
+{
+  m_sound_file->seek_to(sec);
 }
 
 void
@@ -78,7 +81,7 @@ StreamSoundSource::update(float delta)
       alSourceUnqueueBuffers(m_source, 1, &buffer);
       SoundManager::check_al_error("Couldn't unqueue audio buffer: ");
 
-      fillBufferAndQueue(buffer);
+      fill_buffer_and_queue(buffer);
     }
   
     // we might have to restart the source if we had a buffer underrun
@@ -89,67 +92,69 @@ StreamSoundSource::update(float delta)
       SoundManager::check_al_error("Couldn't restart audio source: ");
     }
 
-    if (fade_state == FadingOn) 
+    if (m_fade_state == kFadingOn) 
     {
-      float time = fade_start_ticks - m_total_time;
-      if (time >= fade_time)
+      float time = m_fade_start_ticks - m_total_time;
+      if (time >= m_fade_time)
       {
         set_gain(1.0);
-        fade_state = NoFading;
+        m_fade_state = kNoFading;
       } 
       else 
       {
-        set_gain(time / fade_time);
+        set_gain(time / m_fade_time);
       }
     } 
-    else if (fade_state == FadingOff) 
+    else if (m_fade_state == kFadingOff) 
     {
-      float time = fade_start_ticks - m_total_time;
+      float time = m_fade_start_ticks - m_total_time;
 
-      if (time >= fade_time) 
+      if (time >= m_fade_time) 
       {
         stop();
-        fade_state = NoFading;
+        m_fade_state = kNoFading;
       } 
       else 
       {
-        set_gain( (fade_time-time) / fade_time);
+        set_gain( (m_fade_time - time) / m_fade_time);
       }
     }
   }
 }
 
 void
-StreamSoundSource::setFading(FadeState state_, float fade_time_)
+StreamSoundSource::set_fading(FadeState fade_state, float fade_time)
 {
-  fade_state       = state_;
-  fade_time        = fade_time_;
-  fade_start_ticks = m_total_time;
+  m_fade_state       = fade_state;
+  m_fade_time        = fade_time;
+  m_fade_start_ticks = m_total_time;
 }
 
 void
-StreamSoundSource::fillBufferAndQueue(ALuint buffer)
+StreamSoundSource::fill_buffer_and_queue(ALuint buffer)
 {
-  // fill buffer
-  boost::scoped_array<char> bufferdata(new char[STREAMFRAGMENTSIZE]);
+  char bufferdata[STREAMFRAGMENTSIZE];
   size_t bytesread = 0;
 
+  // fill buffer with data from m_sound_file
   do 
   {
-    bytesread += file->read(bufferdata.get() + bytesread,
-                            STREAMFRAGMENTSIZE - bytesread);
-      
+    bytesread += m_sound_file->read(bufferdata + bytesread,
+                                    STREAMFRAGMENTSIZE - bytesread);
+
+    // if the end is reached, start from the beginning, thus loop
     if (bytesread < STREAMFRAGMENTSIZE) 
     {
-      file->reset();
+      m_sound_file->reset();
     }
   }
   while(bytesread < STREAMFRAGMENTSIZE);
   
-  alBufferData(buffer, format, bufferdata.get(), STREAMFRAGMENTSIZE, file->get_rate());
-
+  // upload data to the OpenAL buffer
+  alBufferData(buffer, m_format, bufferdata, STREAMFRAGMENTSIZE, m_sound_file->get_rate());
   SoundManager::check_al_error("Couldn't refill audio buffer: ");
 
+  // add buffer to the queue of this source
   alSourceQueueBuffers(m_source, 1, &buffer);
   SoundManager::check_al_error("Couldn't queue audio buffer: ");
 }

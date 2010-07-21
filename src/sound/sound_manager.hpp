@@ -53,12 +53,7 @@ public:
   void set_listener_velocity(const Vector2f& velocity);
 
   // master volume is not clamped
-  void set_master_volume(float volume);
-
-  // volume is clamped to [0,1]
-  void set_voice_volume(float volume);
-  void set_sound_volume(float volume);
-  void set_music_volume(float volume);
+  void set_gain(float gain);
 
   SoundChannel& voice() { return m_voice_channel; }
   SoundChannel& sound() { return m_sound_channel; }
@@ -74,10 +69,6 @@ public:
 
   void update(float delta);
 
-public:
-  static void check_al_error(const char* message);
-  static ALenum get_sample_format(SoundFile* file);
-
   /**
    * Creates a new sound source object which plays the specified soundfile.
    * You are responsible for deleting the sound source later (this will stop the
@@ -86,6 +77,10 @@ public:
    * available.
    */
   SoundSourcePtr create_sound_source(const Pathname& filename, SoundChannel& channel);
+
+public:
+  static void check_al_error(const char* message);
+  static ALenum get_sample_format(SoundFile* file);
 
 private:
   static ALuint load_file_into_buffer(const Pathname& filename);

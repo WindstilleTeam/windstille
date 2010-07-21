@@ -37,7 +37,12 @@ public:
   virtual size_t get_size() const = 0;
   virtual int    get_rate() const = 0;
   virtual int    get_channels() const = 0;
+
+  virtual void   seek_to(float sec) = 0;
   
+  /** Returns the length of the file in seconds */
+  virtual float  get_length() const;
+
 public:
   static std::auto_ptr<SoundFile> load(const Pathname& filename);
 };

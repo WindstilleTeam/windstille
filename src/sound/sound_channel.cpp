@@ -29,7 +29,7 @@
 SoundChannel::SoundChannel(SoundManager& sound_manager) :
   m_sound_manager(sound_manager),
   m_sound_sources(),
-  m_volume(1.0f)
+  m_gain(1.0f)
 {
 }
 
@@ -42,12 +42,20 @@ SoundChannel::play(const Pathname& filename)
 }
 
 SoundSourcePtr
+SoundChannel::prepare(std::auto_ptr<SoundFile> sound_file)
+{
+  // FIXME: implement me
+  assert(!"implement me");
+  return SoundSourcePtr();
+}
+
+SoundSourcePtr
 SoundChannel::prepare(const Pathname& filename)
 {
   try
   {
     SoundSourcePtr source = m_sound_manager.create_sound_source(filename, *this);
-    source->update_volume();
+    source->update_gain();
     m_sound_sources.push_back(SoundSourcePtr(source));
     return source;
   }
@@ -59,20 +67,20 @@ SoundChannel::prepare(const Pathname& filename)
 }
 
 void
-SoundChannel::set_volume(float volume)
+SoundChannel::set_gain(float gain)
 {
-  m_volume = volume;
+  m_gain = gain;
 
   for(std::vector<SoundSourcePtr>::iterator i = m_sound_sources.begin(); i != m_sound_sources.end(); ++i)
   {
-    (*i)->update_volume();
+    (*i)->update_gain();
   }
 }
 
 float
-SoundChannel::get_volume() const
+SoundChannel::get_gain() const
 {
-  return m_volume;
+  return m_gain;
 }
 
 void
@@ -80,8 +88,7 @@ SoundChannel::update(float delta)
 {
   for(std::vector<SoundSourcePtr>::iterator i = m_sound_sources.begin(); i != m_sound_sources.end(); ++i)
   {
-    // only needed for streamed sound sources
-    //FIXME: (*i)->update(delta);
+    (*i)->update(delta);
   }
 }
 

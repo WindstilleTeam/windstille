@@ -218,9 +218,9 @@ SoundManager::stop_music(bool fade)
   if (fade) 
   {
     if (m_music_source.get() &&
-        m_music_source->getFadeState() != StreamSoundSource::FadingOff)
+        m_music_source->get_fade_state() != StreamSoundSource::kFadingOff)
     {
-      m_music_source->setFading(StreamSoundSource::FadingOff, .7f);
+      m_music_source->set_fading(StreamSoundSource::kFadingOff, .7f);
     }
   } 
   else 
@@ -245,14 +245,14 @@ SoundManager::play_music(const Pathname& filename, bool fade)
         if (fade) 
         {
           if (m_music_source.get() &&
-              m_music_source->getFadeState() != StreamSoundSource::FadingOff)
+              m_music_source->get_fade_state() != StreamSoundSource::kFadingOff)
           {
-            m_music_source->setFading(StreamSoundSource::FadingOff, .7f);
+            m_music_source->set_fading(StreamSoundSource::kFadingOff, .7f);
           }
 
           m_next_music_source = newmusic;
-        } 
-        else 
+        }
+        else
         {
           m_music_source = newmusic;
           m_music_source->play();
@@ -281,27 +281,9 @@ SoundManager::set_listener_velocity(const Vector2f& vel)
 }
 
 void
-SoundManager::set_master_volume(float volume)
+SoundManager::set_gain(float gain)
 {
-  alListenerf(AL_GAIN, volume);
-}
-
-void
-SoundManager::set_voice_volume(float volume)
-{
-  m_voice_channel.set_volume(volume);
-}
-
-void
-SoundManager::set_sound_volume(float volume)
-{
-  m_sound_channel.set_volume(volume);
-}
-
-void
-SoundManager::set_music_volume(float volume)
-{
-  m_music_channel.set_volume(volume);
+  alListenerf(AL_GAIN, gain);
 }
 
 void

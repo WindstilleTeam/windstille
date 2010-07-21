@@ -38,6 +38,8 @@ public:
   size_t get_size() const { return m_size; }
   int    get_rate() const { return m_rate; }
   int    get_channels() const { return m_channels; }
+
+  void seek_to(float sec);
   
 private:
   // I/O functions for ogg

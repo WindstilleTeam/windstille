@@ -56,13 +56,17 @@ public:
   void set_reference_distance(float distance);
 
   /** Higher factor will mean the sound gain lowers quicker with
-      distance, while lower factor will reduce the lowering of gain */
+      distance, while lower factor will reduce the lowering of gain,
+      0.0f disables distance based reduction completly */
   void set_rolloff_factor(float factor);
-
+  
+  /** Attaches the gives buffer to this sample */
   void set_buffer(ALuint buffer);
 
-  /** Needs to be called whenever the SoundChannels volume changes */
-  void update_volume() const;
+  /** Needs to be called whenever the SoundChannels gain changes */
+  void update_gain() const;
+
+  virtual void update(float delta) {}
 
 protected:
   SoundChannel& m_channel;

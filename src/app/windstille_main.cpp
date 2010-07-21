@@ -151,7 +151,7 @@ WindstilleMain::run()
 void
 WindstilleMain::init_modules()
 {
-  SoundManager::current()->set_master_volume(static_cast<float>(config.get_int("master-volume"))/100.0f);
+  SoundManager::current()->set_gain(static_cast<float>(config.get_int("master-volume"))/100.0f);
   SoundManager::current()->enable_sound(config.get_bool("sound"));
   SoundManager::current()->enable_music(config.get_bool("music"));
 

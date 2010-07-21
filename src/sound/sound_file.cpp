@@ -73,4 +73,13 @@ SoundFile::load(const Pathname& filename)
   }
 }
 
+float
+SoundFile::get_length() const
+{
+  return static_cast<float>(get_size()) 
+    / static_cast<float>(get_rate())
+    / static_cast<float>(get_channels())
+    / (static_cast<float>(get_bits_per_sample())/8.0f);
+}
+
 /* EOF */

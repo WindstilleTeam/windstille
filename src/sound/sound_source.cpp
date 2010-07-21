@@ -112,7 +112,7 @@ void
 SoundSource::set_gain(float gain)
 {
   m_gain = gain;
-  alSourcef(m_source, AL_GAIN, m_channel.get_volume() * m_gain);
+  alSourcef(m_source, AL_GAIN, m_channel.get_gain() * m_gain);
   SoundManager::check_al_error("SoundSource::set_gain: ");
 }
 
@@ -137,10 +137,10 @@ SoundSource::set_rolloff_factor(float factor)
 }
 
 void
-SoundSource::update_volume() const
+SoundSource::update_gain() const
 {
-  alSourcef(m_source, AL_GAIN, m_channel.get_volume() * get_gain());
-  SoundManager::check_al_error("SoundSource::update_volume: ");
+  alSourcef(m_source, AL_GAIN, m_channel.get_gain() * get_gain());
+  SoundManager::check_al_error("SoundSource::update_gain: ");
 }
 
 void

@@ -123,6 +123,12 @@ OggSoundFile::reset()
   ov_raw_seek(&m_vorbis_file, 0);
 }
 
+void
+OggSoundFile::seek_to(float sec)
+{
+  ov_time_seek(&m_vorbis_file, sec);
+}
+
 size_t
 OggSoundFile::cb_read(void* ptr, size_t size, size_t nmemb, void* userdata)
 {

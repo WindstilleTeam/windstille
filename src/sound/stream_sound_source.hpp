@@ -30,31 +30,33 @@ class SoundChannel;
 class StreamSoundSource : public SoundSource
 {
 public:
-  enum FadeState { NoFading, FadingOn, FadingOff };
+  enum FadeState { kNoFading, kFadingOn, kFadingOff };
 
 public:
-  StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundFile> file);
+  StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundFile> sound_file);
   virtual ~StreamSoundSource();
 
-  void setFading(FadeState state, float fadetime);
-  FadeState getFadeState() const { return fade_state; }
+  void set_fading(FadeState state, float fadetime);
+  FadeState get_fade_state() const { return m_fade_state; }
+
   void update(float delta);
   
-private:
-  void fillBufferAndQueue(ALuint buffer);
+  void seek_to(float sec);
 
 private:
-  static const size_t STREAMBUFFERSIZE   = 1024 * 500;
-  static const size_t STREAMFRAGMENTS    = 5;
-  static const size_t STREAMFRAGMENTSIZE = STREAMBUFFERSIZE / STREAMFRAGMENTS;
+  void fill_buffer_and_queue(ALuint buffer);
 
-  std::auto_ptr<SoundFile> file;
-  ALuint buffers[STREAMFRAGMENTS];
-  ALenum format;
+private:
+  static const size_t STREAMFRAGMENTS    = 4;
+  static const size_t STREAMFRAGMENTSIZE = 65536;
 
-  FadeState fade_state;
-  float fade_start_ticks;
-  float fade_time;
+  std::auto_ptr<SoundFile> m_sound_file;
+  ALuint m_buffers[STREAMFRAGMENTS];
+  ALenum m_format;
+
+  FadeState m_fade_state;
+  float m_fade_start_ticks;
+  float m_fade_time;
 
   // FIXME: simple time counter that summarizes all deltas, could be done better
   float m_total_time;
