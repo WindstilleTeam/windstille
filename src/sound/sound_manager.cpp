@@ -23,6 +23,7 @@
 
 #include "sound/sound_file.hpp"
 #include "sound/stream_sound_source.hpp"
+#include "sound/static_sound_source.hpp"
 #include "sound/sound_manager.hpp"
 #include "util/pathname.hpp"
 
@@ -153,9 +154,7 @@ SoundManager::create_sound_source(const Pathname& filename, SoundChannel& channe
       m_buffers.insert(std::make_pair(filename, buffer));
     }
   
-    SoundSourcePtr source(new SoundSource(channel));
-    source->set_buffer(buffer);
-    return source;
+    return SoundSourcePtr(new StaticSoundSource(channel, buffer));
   }
 }
 

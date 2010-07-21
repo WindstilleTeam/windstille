@@ -22,12 +22,12 @@
 #include <memory>
 #include <stdio.h>
 
-#include "sound/sound_source.hpp"
+#include "sound/openal_sound_source.hpp"
 
 class SoundFile;
 class SoundChannel;
 
-class StreamSoundSource : public SoundSource
+class StreamSoundSource : public OpenALSoundSource
 {
 public:
   enum FadeState { kNoFading, kFadingOn, kFadingOff };
@@ -41,7 +41,7 @@ public:
 
   void update(float delta);
   
-  void seek_to(float sec);
+  virtual void seek_to(float sec);
 
 private:
   void fill_buffer_and_queue(ALuint buffer);

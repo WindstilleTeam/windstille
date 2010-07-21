@@ -24,7 +24,7 @@
 #include "sound/sound_file.hpp"
 
 StreamSoundSource::StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundFile> sound_file) :
-  SoundSource(channel),
+  OpenALSoundSource(channel),
   m_sound_file(sound_file),
   m_format(SoundManager::get_sample_format(m_sound_file.get())),
   m_fade_state(),

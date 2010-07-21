@@ -16,20 +16,21 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_SOUND_SOUND_SOURCE_HPP
-#define HEADER_WINDSTILLE_SOUND_SOUND_SOURCE_HPP
+#ifndef HEADER_WINDSTILLE_SOUND_OPENAL_SOUND_SOURCE_HPP
+#define HEADER_WINDSTILLE_SOUND_OPENAL_SOUND_SOURCE_HPP
 
 #include <AL/al.h>
 
 #include "math/vector2f.hpp"
+#include "sound/sound_source.hpp"
 
 class SoundChannel;
 
-class SoundSource
+class OpenALSoundSource : public SoundSource
 {
 public:
-  SoundSource(SoundChannel& channel);
-  virtual ~SoundSource();
+  OpenALSoundSource(SoundChannel& channel);
+  virtual ~OpenALSoundSource();
 
   void play();
   void stop();
@@ -74,8 +75,8 @@ protected:
   float m_gain;
   
 private:
-  SoundSource(const SoundSource&);
-  SoundSource& operator=(const SoundSource&);
+  OpenALSoundSource(const OpenALSoundSource&);
+  OpenALSoundSource& operator=(const OpenALSoundSource&);
 };
 
 #endif

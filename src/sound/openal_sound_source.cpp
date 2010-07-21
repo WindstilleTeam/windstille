@@ -16,14 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "sound/sound_source.hpp"
+#include "sound/openal_sound_source.hpp"
 
 #include <assert.h>
 #include <iostream>
 
 #include "sound/sound_manager.hpp"
 
-SoundSource::SoundSource(SoundChannel& channel) :
+OpenALSoundSource::OpenALSoundSource(SoundChannel& channel) :
   m_channel(channel),
   m_source(),
   m_gain(1.0f)
@@ -33,7 +33,7 @@ SoundSource::SoundSource(SoundChannel& channel) :
   set_reference_distance(128);
 }
 
-SoundSource::~SoundSource()
+OpenALSoundSource::~OpenALSoundSource()
 {
   stop();
   alDeleteSources(1, &m_source);
@@ -41,7 +41,7 @@ SoundSource::~SoundSource()
 }
 
 void
-SoundSource::stop()
+OpenALSoundSource::stop()
 {
   alSourceStop(m_source);
   alSourcei(m_source, AL_BUFFER, AL_NONE);
@@ -49,38 +49,38 @@ SoundSource::stop()
 }
 
 void
-SoundSource::play()
+OpenALSoundSource::play()
 {
   alSourcePlay(m_source);
   SoundManager::check_al_error("Couldn't start audio source: ");
 }
 
 float
-SoundSource::get_length() const
+OpenALSoundSource::get_length() const
 {
   assert(!"implement me");
   return 0.0f;
 }
 
 void
-SoundSource::seek_to(float sec)
+OpenALSoundSource::seek_to(float sec)
 {
   // FIXME: Need to be adopted for streaming sound
   alSourcef(m_source, AL_SEC_OFFSET, sec);
-  SoundManager::check_al_error("SoundSource::seek_to: ");
+  SoundManager::check_al_error("OpenALSoundSource::seek_to: ");
 }
 
 float
-SoundSource::get_pos() const
+OpenALSoundSource::get_pos() const
 {
   float sec = 0.0f;
   alGetSourcef(m_source, AL_SEC_OFFSET, &sec);
-  SoundManager::check_al_error("SoundSource::get_pos: ");
+  SoundManager::check_al_error("OpenALSoundSource::get_pos: ");
   return sec;
 }
 
 bool
-SoundSource::is_playing() const
+OpenALSoundSource::is_playing() const
 {
   ALint state = AL_PLAYING;
   alGetSourcei(m_source, AL_SOURCE_STATE, &state);
@@ -88,66 +88,59 @@ SoundSource::is_playing() const
 }
 
 void
-SoundSource::set_looping(bool looping)
+OpenALSoundSource::set_looping(bool looping)
 {
   alSourcei(m_source, AL_LOOPING, looping ? AL_TRUE : AL_FALSE);
-  SoundManager::check_al_error("SoundSource::set_looping: ");
+  SoundManager::check_al_error("OpenALSoundSource::set_looping: ");
 }
 
 void
-SoundSource::set_position(const Vector2f& position)
+OpenALSoundSource::set_position(const Vector2f& position)
 {
   alSource3f(m_source, AL_POSITION, position.x, position.y, 0);
-  SoundManager::check_al_error("SoundSource::set_position: ");
+  SoundManager::check_al_error("OpenALSoundSource::set_position: ");
 }
 
 void
-SoundSource::set_velocity(const Vector2f& velocity)
+OpenALSoundSource::set_velocity(const Vector2f& velocity)
 {
   alSource3f(m_source, AL_VELOCITY, velocity.x, velocity.y, 0);
-  SoundManager::check_al_error("SoundSource::set_velocity: ");
+  SoundManager::check_al_error("OpenALSoundSource::set_velocity: ");
 }
 
 void
-SoundSource::set_gain(float gain)
+OpenALSoundSource::set_gain(float gain)
 {
   m_gain = gain;
   alSourcef(m_source, AL_GAIN, m_channel.get_gain() * m_gain);
-  SoundManager::check_al_error("SoundSource::set_gain: ");
+  SoundManager::check_al_error("OpenALSoundSource::set_gain: ");
 }
 
 float
-SoundSource::get_gain() const
+OpenALSoundSource::get_gain() const
 {
   return m_gain;
 }
 
 void
-SoundSource::set_reference_distance(float distance)
+OpenALSoundSource::set_reference_distance(float distance)
 {
   alSourcef(m_source, AL_REFERENCE_DISTANCE, distance);
-  SoundManager::check_al_error("SoundSource::set_reference_distance: ");
+  SoundManager::check_al_error("OpenALSoundSource::set_reference_distance: ");
 }
 
 void
-SoundSource::set_rolloff_factor(float factor)
+OpenALSoundSource::set_rolloff_factor(float factor)
 {
   alSourcef(m_source, AL_ROLLOFF_FACTOR, factor);
-  SoundManager::check_al_error("SoundSource::set_rolloff_factor: ");
+  SoundManager::check_al_error("OpenALSoundSource::set_rolloff_factor: ");
 }
 
 void
-SoundSource::update_gain() const
+OpenALSoundSource::update_gain() const
 {
   alSourcef(m_source, AL_GAIN, m_channel.get_gain() * get_gain());
-  SoundManager::check_al_error("SoundSource::update_gain: ");
-}
-
-void
-SoundSource::set_buffer(ALuint buffer)
-{
-  alSourcei(m_source, AL_BUFFER, buffer);
-  SoundManager::check_al_error("SoundSource::set_buffer: ");
+  SoundManager::check_al_error("OpenALSoundSource::update_gain: ");
 }
 
 /* EOF */

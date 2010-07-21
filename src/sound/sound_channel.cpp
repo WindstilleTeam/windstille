@@ -25,6 +25,7 @@
 #include "util/pathname.hpp"
 #include "sound/sound_manager.hpp"
 #include "sound/sound_source.hpp"
+#include "sound/dummy_sound_source.hpp"
 
 SoundChannel::SoundChannel(SoundManager& sound_manager) :
   m_sound_manager(sound_manager),
@@ -46,23 +47,22 @@ SoundChannel::prepare(std::auto_ptr<SoundFile> sound_file)
 {
   // FIXME: implement me
   assert(!"implement me");
-  return SoundSourcePtr();
+  return SoundSourcePtr(new DummySoundSource());
 }
 
 SoundSourcePtr
 SoundChannel::prepare(const Pathname& filename)
 {
-  try
+  SoundSourcePtr source = m_sound_manager.create_sound_source(filename, *this);
+  if (!source)
   {
-    SoundSourcePtr source = m_sound_manager.create_sound_source(filename, *this);
+    return SoundSourcePtr(new DummySoundSource());
+  }
+  else
+  {
     source->update_gain();
     m_sound_sources.push_back(SoundSourcePtr(source));
     return source;
-  }
-  catch(const std::exception& e) 
-  {
-    std::cout << "SoundChannel::prepare(): Couldn't play sound " << filename << ": " << e.what() << "\n";
-    return SoundSourcePtr(); // FIXME: not good, should return dummy SoundSource
   }
 }
 
