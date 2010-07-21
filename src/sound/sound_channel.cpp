@@ -55,8 +55,7 @@ SoundSourcePtr
 SoundChannel::prepare(const Pathname& filename, 
                       OpenALSoundSourceType type)
 {
-  SoundSourcePtr source = m_sound_manager.create_sound_source(filename, *this, 
-                                                              kStaticSoundSource);
+  SoundSourcePtr source = m_sound_manager.create_sound_source(filename, *this, type);
   if (!source)
   {
     std::cout << "SourceChannel::prepare: Couldn't load " << filename << std::endl;
