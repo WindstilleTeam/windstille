@@ -306,6 +306,10 @@ SoundManager::set_gain(float gain)
 void
 SoundManager::update(float delta)
 {
+  m_voice_channel.update(delta);
+  m_sound_channel.update(delta);
+  m_music_channel.update(delta);
+
   if (m_sound_enabled)
   {
     // check for finished sound sources
