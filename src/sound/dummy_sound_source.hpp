@@ -45,6 +45,8 @@ public:
   /** Return the current position in seconds */
   float get_pos() const { return 0.0f; }
 
+  int get_sample_pos() const { return 0; }
+
   void set_position(const Vector2f& position) {}
   void set_velocity(const Vector2f& position) {}
 

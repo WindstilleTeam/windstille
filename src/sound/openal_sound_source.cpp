@@ -79,6 +79,15 @@ OpenALSoundSource::get_pos() const
   return sec;
 }
 
+int
+OpenALSoundSource::get_sample_pos() const
+{
+  ALint sample_pos;
+  alGetSourcei(m_source, AL_SAMPLE_OFFSET, &sample_pos); 
+  SoundManager::check_al_error("OpenALSoundSource::get_sample_pos: ");
+  return sample_pos;
+}
+
 bool
 OpenALSoundSource::is_playing() const
 {

@@ -28,6 +28,7 @@ StreamSoundSource::StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundF
   m_sound_file(sound_file),
   m_format(SoundManager::get_sample_format(m_sound_file.get())),
   m_looping(false),
+  m_total_buffers_processed(0),
   m_fade_state(),
   m_fade_start_ticks(),
   m_fade_time(),
@@ -69,7 +70,29 @@ StreamSoundSource::set_looping(bool looping)
 void
 StreamSoundSource::seek_to(float sec)
 {
+  // FIXME: should empty the queue and refill it
   m_sound_file->seek_to(sec);
+}
+
+float
+StreamSoundSource::get_pos() const
+{
+  return static_cast<float>(get_sample_pos()) / static_cast<float>(m_sound_file->get_rate());
+}
+
+int
+StreamSoundSource::get_sample_pos() const
+{
+  int samples_total = m_total_buffers_processed * (STREAMFRAGMENTSIZE
+                                                   / m_sound_file->get_channels() 
+                                                   / (m_sound_file->get_bits_per_sample()/8));
+
+  ALint sample_pos;
+  alGetSourcei(m_source, AL_SAMPLE_OFFSET, &sample_pos); 
+
+  return (samples_total + sample_pos) % (m_sound_file->get_size()
+                                         / m_sound_file->get_channels() 
+                                         / (m_sound_file->get_bits_per_sample()/8));
 }
 
 void
@@ -89,6 +112,8 @@ StreamSoundSource::update(float delta)
       {
         processed--;
 
+        m_total_buffers_processed += 1;
+    
         ALuint buffer;
         alSourceUnqueueBuffers(m_source, 1, &buffer);
         SoundManager::check_al_error("Couldn't unqueue audio buffer: ");
@@ -171,7 +196,7 @@ StreamSoundSource::fill_buffer_and_queue(ALuint buffer)
   while(bytesread < STREAMFRAGMENTSIZE);
   
   if (bytesread > 0)
-  {
+  {  
     // upload data to the OpenAL buffer
     alBufferData(buffer, m_format, bufferdata, bytesread, m_sound_file->get_rate());
     SoundManager::check_al_error("Couldn't refill audio buffer: ");

@@ -40,6 +40,9 @@ public:
   void seek_to(float sec);
   void set_looping(bool looping);
 
+  float get_pos() const;
+  int   get_sample_pos() const;
+
   void set_fading(FadeState state, float fadetime);
   FadeState get_fade_state() const { return m_fade_state; }
 
@@ -55,6 +58,7 @@ private:
   ALenum m_format;
 
   bool m_looping;
+  int  m_total_buffers_processed;
 
   FadeState m_fade_state;
   float m_fade_start_ticks;

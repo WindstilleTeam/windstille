@@ -49,6 +49,8 @@ public:
   /** Return the current position in seconds */
   virtual float get_pos() const;
 
+  virtual int get_sample_pos() const;
+
   virtual void set_position(const Vector2f& position);
   virtual void set_velocity(const Vector2f& position);
 
