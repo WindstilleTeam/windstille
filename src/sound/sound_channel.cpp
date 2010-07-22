@@ -25,6 +25,7 @@
 #include "util/pathname.hpp"
 #include "sound/sound_manager.hpp"
 #include "sound/sound_source.hpp"
+#include "sound/stream_sound_source.hpp"
 #include "sound/dummy_sound_source.hpp"
 
 SoundChannel::SoundChannel(SoundManager& sound_manager) :
@@ -46,9 +47,25 @@ SoundSourcePtr
 SoundChannel::prepare(std::auto_ptr<SoundFile> sound_file, 
                       OpenALSoundSourceType type)
 {
-  // FIXME: implement me
-  assert(!"implement me");
-  return SoundSourcePtr(new DummySoundSource());
+  switch(type)
+  {
+    case kStreamSoundSource:
+      {
+        SoundSourcePtr source(new StreamSoundSource(*this, sound_file));
+        source->update_gain();
+        m_sound_sources.push_back(SoundSourcePtr(source));
+        return source;
+      }
+      break;
+
+    case kStaticSoundSource:
+      // FIXME: not implemented
+      assert(!"not implemented");
+      break;
+
+    default:
+      assert(!"never reached");
+  }
 }
 
 SoundSourcePtr
