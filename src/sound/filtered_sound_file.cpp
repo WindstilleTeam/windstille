@@ -21,6 +21,7 @@
 #include <iostream>
 #include <stdint.h>
 #include <string.h>
+#include <stdlib.h>
 
 FilteredSoundFile::FilteredSoundFile(std::auto_ptr<SoundFile> sound_file) :
   m_sound_file(sound_file)
@@ -37,18 +38,11 @@ FilteredSoundFile::read(void* buffer, size_t buffer_size)
   size_t len = m_sound_file->read(buffer, buffer_size);
 
   // apply filter here
-  // FIXME: random junk for proof of concept
+  // FIXME: add a bit of noise as proof of concept
   int16_t* p = static_cast<int16_t*>(buffer);
-  for(size_t i = 0; i < len/2; i += 32)
+  for(size_t i = 0; i < len/2; i += 1)
   {
-    // reduce bits per sample
-    p[i] = static_cast<int16_t>(p[i] / 5000 * 5000);
-
-    // reduce sample rate
-    for(size_t j = i+1; j < i + 32; ++j)
-    {
-      p[j] = p[i];
-    }
+    p[i] = static_cast<int16_t>(p[i] + rand() % 8192 - 4096);
   }
 
   return len;
