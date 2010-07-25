@@ -49,6 +49,7 @@ public:
   /** Return the current position in seconds */
   virtual float get_pos() const;
 
+  /** Seems to be limited to an accuracy of 1024 samples */
   virtual int get_sample_pos() const;
 
   virtual void set_position(const Vector2f& position);

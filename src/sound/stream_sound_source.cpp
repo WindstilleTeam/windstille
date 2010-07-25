@@ -70,8 +70,19 @@ StreamSoundSource::set_looping(bool looping)
 void
 StreamSoundSource::seek_to(float sec)
 {
-  // FIXME: should empty the queue and refill it
   m_sound_file->seek_to(sec);
+
+  if (false)
+  { // FIXME: clear the buffer or not on seek? see ov_time_seek_lap()
+    // in OggSoundFile for possible reason why jumping might not be a good idea
+    alSourceUnqueueBuffers(m_source, STREAMFRAGMENTS, m_buffers);
+    SoundManager::check_al_error("Couldn't unqueue audio buffers: ");
+
+    for(size_t i = 0; i < STREAMFRAGMENTS; ++i) 
+    {
+      fill_buffer_and_queue(m_buffers[i]);
+    }
+  }
 }
 
 float
