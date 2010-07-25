@@ -48,21 +48,21 @@ FileReader::parse(std::istream& stream, const std::string& filename)
 {
   lisp::Lisp* root = lisp::Parser::parse(stream, filename);
   if (!root)
-    {
-      std::ostringstream msg;
-      msg << "'" << filename << "': file not found";
-      throw std::runtime_error(msg.str());
-    }
+  {
+    std::ostringstream msg;
+    msg << "'" << filename << "': file not found";
+    throw std::runtime_error(msg.str());
+  }
   else if (root && root->get_type() == lisp::Lisp::TYPE_LIST && root->get_list_size() >= 1)
-    {
-      return SExprFileReader(root, root->get_list_elem(0));
-    }
+  {
+    return SExprFileReader(root, root->get_list_elem(0));
+  }
   else
-    {
-      std::ostringstream msg;
-      msg << "'" << filename << "': not a valid sexpr file";
-      throw std::runtime_error(msg.str());
-    }  
+  {
+    std::ostringstream msg;
+    msg << "'" << filename << "': not a valid sexpr file";
+    throw std::runtime_error(msg.str());
+  }  
 }
 
 FileReader::FileReader(boost::shared_ptr<FileReaderImpl> impl_)

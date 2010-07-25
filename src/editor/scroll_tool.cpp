@@ -20,10 +20,10 @@
 #include "editor/windstille_widget.hpp"
 #include "editor/scroll_tool.hpp"
 
-ScrollTool::ScrollTool()
-  : orig_state(),
-    orig_click(),
-    mode(NO_MODE)
+ScrollTool::ScrollTool() :
+  orig_state(),
+  orig_click(),
+  mode(NO_MODE)
 {
 }
 

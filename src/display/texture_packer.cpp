@@ -47,36 +47,36 @@ public:
   {
     if (size.width  <= rect.get_width() &&
         size.height <= rect.get_height())
+    {
+      if (!used)
       {
-        if (!used)
-          {
-            used = true;
-            out_rect = Rect(Point(rect.left, rect.top), size);
+        used = true;
+        out_rect = Rect(Point(rect.left, rect.top), size);
 
-            // FIXME: Make this alterate between horizontal and
-            // vertical splitting or chose whichever split options
-            // leads to less 'ugly' rectangle (how much different does
-            // this make in terms of packing density?)
-            left.reset(new TextureSpace(Rect(out_rect.left,  out_rect.bottom,
-                                             out_rect.right, rect.bottom)));
+        // FIXME: Make this alterate between horizontal and
+        // vertical splitting or chose whichever split options
+        // leads to less 'ugly' rectangle (how much different does
+        // this make in terms of packing density?)
+        left.reset(new TextureSpace(Rect(out_rect.left,  out_rect.bottom,
+                                         out_rect.right, rect.bottom)));
 
-            right.reset(new TextureSpace(Rect(out_rect.right, out_rect.top, 
-                                              rect.right, rect.bottom)));
+        right.reset(new TextureSpace(Rect(out_rect.right, out_rect.top, 
+                                          rect.right, rect.bottom)));
 
-            return true;
-          }
-        else
-          {
-            return
-              left->allocate(size, out_rect) ||
-              right->allocate(size, out_rect);
-          }
+        return true;
       }
+      else
+      {
+        return
+          left->allocate(size, out_rect) ||
+          right->allocate(size, out_rect);
+      }
+    }
     else
-      {
-        // Size doesn't fit here
-        return false;
-      }
+    {
+      // Size doesn't fit here
+      return false;
+    }
   }
 
 private:
@@ -105,14 +105,14 @@ public:
   bool allocate(const Size& size, Rect& out_rect, Texture& out_texture)
   {
     if (space.allocate(size, out_rect))
-      {
-        out_texture = texture;
-        return true;
-      }
+    {
+      out_texture = texture;
+      return true;
+    }
     else
-      {
-        return false;
-      }
+    {
+      return false;
+    }
   }
 
 private:
@@ -120,9 +120,9 @@ private:
   TexturePackerTexture& operator=(const TexturePackerTexture&);
 };
 
-TexturePacker::TexturePacker(const Size& texture_size_)
-  : texture_size(texture_size_),
-    textures()
+TexturePacker::TexturePacker(const Size& texture_size_) :
+  texture_size(texture_size_),
+  textures()
 {
 }
 
@@ -137,12 +137,12 @@ bool
 TexturePacker::allocate(const Size& size, Rect& rect, Texture& texture)
 {
   for(Textures::iterator i = textures.begin(); i != textures.end(); ++i)
+  {
+    if ((*i)->allocate(size, rect, texture))
     {
-      if ((*i)->allocate(size, rect, texture))
-        {
-          return true;
-        }
+      return true;
     }
+  }
 
   textures.push_back(new TexturePackerTexture(texture_size));
   return textures.back()->allocate(size, rect, texture);
@@ -159,61 +159,61 @@ TexturePacker::upload(const SoftwareSurface& surface)
   Texture texture;
 
   if (!allocate(size, rect, texture))
-    {
-      throw std::runtime_error("TexturePacker::upload: texture space allocation failed");
-    }
+  {
+    throw std::runtime_error("TexturePacker::upload: texture space allocation failed");
+  }
   else
-    {
-      // duplicate border pixel
+  {
+    // duplicate border pixel
 
-      // top
-      texture.put(surface, Rect(Point(0, 0), Size(surface.get_width(), 1)), 
-                  rect.left+1, rect.top);
-      // bottom
-      texture.put(surface, Rect(Point(0, surface.get_height()-1), Size(surface.get_width(), 1)), 
-                  rect.left+1, rect.bottom-1);
-      // left
-      texture.put(surface, Rect(Point(0, 0), Size(1, surface.get_height())), 
-                  rect.left, rect.top+1);
-      // right
-      texture.put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, surface.get_height())),
-                  rect.right-1, rect.top+1);
+    // top
+    texture.put(surface, Rect(Point(0, 0), Size(surface.get_width(), 1)), 
+                rect.left+1, rect.top);
+    // bottom
+    texture.put(surface, Rect(Point(0, surface.get_height()-1), Size(surface.get_width(), 1)), 
+                rect.left+1, rect.bottom-1);
+    // left
+    texture.put(surface, Rect(Point(0, 0), Size(1, surface.get_height())), 
+                rect.left, rect.top+1);
+    // right
+    texture.put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, surface.get_height())),
+                rect.right-1, rect.top+1);
 
-      // duplicate corner pixels
-      texture.put(surface, Rect(Point(0, 0), Size(1, 1)), 
-                  rect.left, rect.top);     
-      texture.put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, 1)), 
-                  rect.right-1, rect.top);
-      texture.put(surface, Rect(Point(surface.get_width()-1, surface.get_height()-1), Size(1, 1)), 
-                  rect.right-1, rect.bottom-1);
-      texture.put(surface, Rect(Point(0, surface.get_height()-1), Size(1, 1)),
-                  rect.left, rect.bottom-1);
+    // duplicate corner pixels
+    texture.put(surface, Rect(Point(0, 0), Size(1, 1)), 
+                rect.left, rect.top);     
+    texture.put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, 1)), 
+                rect.right-1, rect.top);
+    texture.put(surface, Rect(Point(surface.get_width()-1, surface.get_height()-1), Size(1, 1)), 
+                rect.right-1, rect.bottom-1);
+    texture.put(surface, Rect(Point(0, surface.get_height()-1), Size(1, 1)),
+                rect.left, rect.bottom-1);
 
-      // draw the main surface
-      texture.put(surface, rect.left+1, rect.top+1);
+    // draw the main surface
+    texture.put(surface, rect.left+1, rect.top+1);
 
-      return Surface(texture,
-                     Rectf(static_cast<float>(rect.left+1)   / static_cast<float>(texture.get_width()),
-                           static_cast<float>(rect.top+1)    / static_cast<float>(texture.get_height()),
-                           static_cast<float>(rect.right-1)  / static_cast<float>(texture.get_width()), 
-                           static_cast<float>(rect.bottom-1) / static_cast<float>(texture.get_height())),
-                     Sizef(static_cast<float>(surface.get_width()), static_cast<float>(surface.get_height())));
-    }
+    return Surface(texture,
+                   Rectf(static_cast<float>(rect.left+1)   / static_cast<float>(texture.get_width()),
+                         static_cast<float>(rect.top+1)    / static_cast<float>(texture.get_height()),
+                         static_cast<float>(rect.right-1)  / static_cast<float>(texture.get_width()), 
+                         static_cast<float>(rect.bottom-1) / static_cast<float>(texture.get_height())),
+                   Sizef(static_cast<float>(surface.get_width()), static_cast<float>(surface.get_height())));
+  }
 }
 
 void
 TexturePacker::save_all_as_png() const
 {
   for(Textures::const_iterator i = textures.begin(); i != textures.end(); ++i)
-    {
-      Texture texture = (*i)->get_texture();
-      SoftwareSurface surface = texture.get_software_surface();
+  {
+    Texture texture = (*i)->get_texture();
+    SoftwareSurface surface = texture.get_software_surface();
 
-      char filename[1024];
-      sprintf(filename, "/tmp/texture_packer%04d.png", int(i - textures.begin()));
-      std::cout << "Saving: " << filename << std::endl;
-      surface.save_png(filename);
-    }
+    char filename[1024];
+    sprintf(filename, "/tmp/texture_packer%04d.png", int(i - textures.begin()));
+    std::cout << "Saving: " << filename << std::endl;
+    surface.save_png(filename);
+  }
 }
 
 /* EOF */

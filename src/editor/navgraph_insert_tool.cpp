@@ -28,13 +28,13 @@
 #include "editor/navgraph_node_object_model.hpp"
 #include "editor/navgraph_edge_object_model.hpp"
 
-NavgraphInsertTool::NavgraphInsertTool()
-  : mouse_pos(),
-    mode(NO_MODE),
-    last_node(),
-    connection_node(),
-    mouse_over_node(),
-    mouse_over_edge()
+NavgraphInsertTool::NavgraphInsertTool() :
+  mouse_pos(),
+  mode(NO_MODE),
+  last_node(),
+  connection_node(),
+  mouse_over_node(),
+  mouse_over_edge()
 {
 }
 

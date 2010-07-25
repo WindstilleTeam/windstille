@@ -23,10 +23,10 @@
 #include "editor/select_mask.hpp"
 #include "editor/layer_widget.hpp"
 
-LayerWidget::LayerWidget()
-  : table(2, 9, false),
-    buttons(),
-    signal_layer_toggle()
+LayerWidget::LayerWidget() :
+  table(2, 9, false),
+  buttons(),
+  signal_layer_toggle()
 {
   int layer_number = 0;
   for(int y = 0; y < 2; ++y)

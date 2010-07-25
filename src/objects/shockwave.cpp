@@ -22,11 +22,11 @@
 #include "display/shader_object.hpp"
 #include "scenegraph/shockwave_drawable.hpp"
 
-Shockwave::Shockwave(const FileReader& props)
-  : pos(),
-    noise(Pathname("images/noise3.png")),
-    shader_program(),
-    radius()
+Shockwave::Shockwave(const FileReader& props) :
+  pos(),
+  noise(Pathname("images/noise3.png")),
+  shader_program(),
+  radius()
 {
   props.get("pos", pos);
   
@@ -47,10 +47,10 @@ void
 Shockwave::draw (SceneContext& sc)
 {
   sc.highlight().draw(new ShockwaveDrawable(pos,
-                                                   noise,
-                                                   shader_program,
-                                                   radius,
-                                                   sc.color().get_modelview()));
+                                            noise,
+                                            shader_program,
+                                            radius,
+                                            sc.color().get_modelview()));
 }
 
 void

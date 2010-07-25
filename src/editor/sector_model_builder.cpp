@@ -28,10 +28,10 @@
 #include "editor/sector_model.hpp"
 #include "util/file_reader.hpp"
 
-SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel& sector)
-  : m_sector(sector),
-    m_id_table(),
-    m_parent_table()
+SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel& sector) :
+  m_sector(sector),
+  m_id_table(),
+  m_parent_table()
 {
   m_sector.get_layer_tree()->clear();
 

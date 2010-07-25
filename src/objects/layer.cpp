@@ -23,9 +23,9 @@
 #include "engine/sector.hpp"
 #include "engine/script_manager.hpp"
 
-Layer::Layer(const FileReader& reader)
-  : objects(),
-    new_objects()
+Layer::Layer(const FileReader& reader) :
+  objects(),
+  new_objects()
 {
 #if 0
   FileReader objects_reader;
@@ -96,10 +96,10 @@ Layer::update (float delta)
   commit_adds();
 
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i) 
-    {
-      if ((*i)->is_active())
-        (*i)->update(delta);
-    }
+  {
+    if ((*i)->is_active())
+      (*i)->update(delta);
+  }
 
   commit_removes();
 }

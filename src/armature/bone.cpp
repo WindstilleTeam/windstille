@@ -18,18 +18,18 @@
 
 #include "armature/bone.hpp"
 
-Bone::Bone()
-  : name(),
-    children_names(),
-    parent_name(),
-    children(),
-    parent(0),
-    length(),
-    quat(),
-    offset(),
-    render_matrix(),
-    render_head(),
-    render_tail()
+Bone::Bone() :
+  name(),
+  children_names(),
+  parent_name(),
+  children(),
+  parent(0),
+  length(),
+  quat(),
+  offset(),
+  render_matrix(),
+  render_head(),
+  render_tail()
 {
 }
 

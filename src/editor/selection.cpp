@@ -23,12 +23,12 @@
 #include "editor/editor_window.hpp"
 #include "editor/selection.hpp"
 
-Selection::Selection()
-  : objects(),
-    object_orig_poss(),
-    non_moveable_objects(),
-    moving(false),
-    signal_changed()
+Selection::Selection() :
+  objects(),
+  object_orig_poss(),
+  non_moveable_objects(),
+  moving(false),
+  signal_changed()
 {
 }
 

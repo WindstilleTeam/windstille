@@ -22,10 +22,10 @@
 #include "display/color.hpp"
 #include "editor/windstille_widget.hpp"
 
-ZoomTool::ZoomTool()
-  : click_pos(),
-    mouse_pos(),
-    mode(NO_MODE)
+ZoomTool::ZoomTool() :
+  click_pos(),
+  mouse_pos(),
+  mode(NO_MODE)
 {
 }
 

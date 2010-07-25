@@ -46,8 +46,8 @@ public:
   {}
 };
 
-TilePacker::TilePacker(int width, int height)
-  : impl(new TilePackerImpl())
+TilePacker::TilePacker(int width, int height) :
+  impl(new TilePackerImpl())
 {
   impl->x_pos = 0;
   impl->y_pos = 0;
@@ -103,10 +103,10 @@ TilePacker::pack(const SoftwareSurface& image, int x, int y, int w, int h)
   // when blending
   impl->x_pos += TILE_RESOLUTION + 2; 
   if (impl->x_pos + TILE_RESOLUTION > impl->width)
-    {
-      impl->x_pos = 0;
-      impl->y_pos += TILE_RESOLUTION + 2;
-    }
+  {
+    impl->x_pos = 0;
+    impl->y_pos += TILE_RESOLUTION + 2;
+  }
 
   return rect;
 }

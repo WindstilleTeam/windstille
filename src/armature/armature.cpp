@@ -26,10 +26,10 @@
 #include "display/color.hpp"
 #include "armature/pose.hpp"
 
-Armature::Armature(FileReader& reader)
-  : name(),
-    bones(),
-    root_bone(0)
+Armature::Armature(FileReader& reader) :
+  name(),
+  bones(),
+  root_bone(0)
 {
   parse(reader);
 }
@@ -45,66 +45,66 @@ void
 Armature::parse(FileReader& reader)
 {
   if (reader.get_name() != "armature")
-    {
-      throw std::runtime_error("Not an armature file: " + reader.get_name());
-    }
+  {
+    throw std::runtime_error("Not an armature file: " + reader.get_name());
+  }
   else
-    {
-      reader.get("name", name);
+  {
+    reader.get("name", name);
       
-      FileReader bones_section;
-      reader.get("bones", bones_section);
+    FileReader bones_section;
+    reader.get("bones", bones_section);
 
-      std::vector<FileReader> bone_sections = bones_section.get_sections();
-      for(std::vector<FileReader>::iterator i = bone_sections.begin(); i != bone_sections.end(); ++i)
+    std::vector<FileReader> bone_sections = bones_section.get_sections();
+    for(std::vector<FileReader>::iterator i = bone_sections.begin(); i != bone_sections.end(); ++i)
+    {
+      if (i->get_name() == "bone")
+      {
+        std::auto_ptr<Bone> bone(new Bone());
+        if (!(i->get("name",     bone->name) &&
+              i->get("children", bone->children_names) &&
+              i->get("parent",   bone->parent_name) &&
+              i->get("length",   bone->length) &&
+              i->get("quat",     bone->quat) &&
+              i->get("head",     bone->offset)))
         {
-          if (i->get_name() == "bone")
-            {
-              std::auto_ptr<Bone> bone(new Bone());
-              if (!(i->get("name",     bone->name) &&
-                    i->get("children", bone->children_names) &&
-                    i->get("parent",   bone->parent_name) &&
-                    i->get("length",   bone->length) &&
-                    i->get("quat",     bone->quat) &&
-                    i->get("head",     bone->offset)))
-                {
-                  std::cout << "Error: some Bone attribute missing" << std::endl;
-                }
-              else
-                {
-                  bone->render_matrix = bone->quat.to_matrix();
-                  bones.push_back(bone.release());
-                }
-            }
-          else
-            {
-              std::cout << "Armature: unknown tag: " << i->get_name() << std::endl;
-            }
+          std::cout << "Error: some Bone attribute missing" << std::endl;
         }
+        else
+        {
+          bone->render_matrix = bone->quat.to_matrix();
+          bones.push_back(bone.release());
+        }
+      }
+      else
+      {
+        std::cout << "Armature: unknown tag: " << i->get_name() << std::endl;
+      }
     }
+  }
   
   // insert code here to connet parent bones
   for(Bones::iterator i = bones.begin(); i != bones.end(); ++i)
+  {
+    Bone& bone = **i;
+    for(std::vector<std::string>::iterator j = bone.children_names.begin(); j != bone.children_names.end(); ++j)
     {
-      Bone& bone = **i;
-      for(std::vector<std::string>::iterator j = bone.children_names.begin(); j != bone.children_names.end(); ++j)
-        {
-          Bone* child = get_bone(*j);
-          if (child)
-            bone.children.push_back(child);
-        }
-
-      if (bone.parent_name.empty())
-        {
-          root_bone = &bone;
-        }
-      else
-        {
-          Bone* parent = get_bone(bone.parent_name);
-          if (parent)
-            bone.parent = parent;
-        }
+      Bone* child = get_bone(*j);
+      if (child)
+        bone.children.push_back(child);
     }
+
+    if (bone.parent_name.empty())
+    {
+      root_bone = &bone;
+    }
+    else
+    {
+      Bone* parent = get_bone(bone.parent_name);
+      if (parent)
+        bone.parent = parent;
+    }
+  }
 
   if (!root_bone)
     std::cout << "Root Bone Missing!" << std::endl;
@@ -114,10 +114,10 @@ Bone*
 Armature::get_bone(const std::string& name_)
 {
   for(Bones::iterator i = bones.begin(); i != bones.end(); ++i)
-    {
-      if ((*i)->name == name_)
-        return *i;
-    }
+  {
+    if ((*i)->name == name_)
+      return *i;
+  }
   std::cout << "Error: Bone: '" << name_ << "' not found" << std::endl;
   return 0;
 }
@@ -171,34 +171,34 @@ void
 Armature::apply(const Pose& pose)
 {
   if (pose.get_name() != name)
-    {
-      std::cout << "Can't apply pose '" << pose.get_name() << "' to armature '" << name << "'" << std::endl;
-    }
+  {
+    std::cout << "Can't apply pose '" << pose.get_name() << "' to armature '" << name << "'" << std::endl;
+  }
   else
-    {                                           
-      for(std::vector<PoseBone>::const_iterator pbone = pose.bones.begin(); pbone != pose.bones.end(); ++pbone)
-        {
-          Bone* bone = get_bone(pbone->name);
-          if (!bone)
-            {
-              std::cout << "Error: Couldn't find bone: " << pbone->name << std::endl;
-            }
-          else
-            {
-              bone->render_matrix = bone->quat.to_matrix().multiply(pbone->quat.to_matrix());
-            }
-        }
+  {                                           
+    for(std::vector<PoseBone>::const_iterator pbone = pose.bones.begin(); pbone != pose.bones.end(); ++pbone)
+    {
+      Bone* bone = get_bone(pbone->name);
+      if (!bone)
+      {
+        std::cout << "Error: Couldn't find bone: " << pbone->name << std::endl;
+      }
+      else
+      {
+        bone->render_matrix = bone->quat.to_matrix().multiply(pbone->quat.to_matrix());
+      }
     }
+  }
 }
 
 void
 Armature::reset()
 {
   for(Bones::iterator i = bones.begin(); i != bones.end(); ++i)
-    {
-      Bone* bone = *i;
-      bone->render_matrix = bone->quat.to_matrix();
-    }
+  {
+    Bone* bone = *i;
+    bone->render_matrix = bone->quat.to_matrix();
+  }
 }
 
 /* EOF */

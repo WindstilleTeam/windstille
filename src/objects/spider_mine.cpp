@@ -19,15 +19,15 @@
 #include "objects/spider_mine.hpp"
 #include "objects/player.hpp"
 
-SpiderMine::SpiderMine(const FileReader& props)
-  : sprite(),
-    explode(Pathname("images/explosion.sprite")),
-    explode_light(Pathname("images/explolight.sprite")),
-    initial_position(),
-    walk_speed(160),
-    jump_time(0.0),
-    state(WAIT),
-    exploded(false)
+SpiderMine::SpiderMine(const FileReader& props) :
+  sprite(),
+  explode(Pathname("images/explosion.sprite")),
+  explode_light(Pathname("images/explolight.sprite")),
+  initial_position(),
+  walk_speed(160),
+  jump_time(0.0),
+  state(WAIT),
+  exploded(false)
 {
   props.get("name", name);
   props.get("pos",  pos);
@@ -108,15 +108,15 @@ SpiderMine::search_for_player(float delta)
     velocity.y = 0;
     // if close enough to the player hit them
     if ((fabs(player_pos.x - pos.x) < 15) &&
-      ((pos.y - 32 - 15 < player_pos.y) &&
-      (pos.y > player_pos.y - 135 + 15))) {
-        player->hit(1);
+        ((pos.y - 32 - 15 < player_pos.y) &&
+         (pos.y > player_pos.y - 135 + 15))) {
+      player->hit(1);
     }
   }
   // check to see if we should jump
   else if (state != JUMP && (fabs(player_pos.x - pos.x) <= 45)
-            && ((pos.y - 32 < player_pos.y) && (pos.y > player_pos.y - 135))
-            && on_ground()) {
+           && ((pos.y - 32 < player_pos.y) && (pos.y > player_pos.y - 135))
+           && on_ground()) {
     state = JUMP;
     velocity.y = -400;
     jump_time = 0.0;
@@ -135,8 +135,8 @@ SpiderMine::search_for_player(float delta)
   }
   // check to see if we should go back to starting position (ignores y)
   else if (state != JUMP &&
-       fabs(player_pos.x - pos.x) >= 200
-       && fabs(pos.x - initial_position.x) > 15) {
+           fabs(player_pos.x - pos.x) >= 200
+           && fabs(pos.x - initial_position.x) > 15) {
     state = RETURN;
     if (on_ground()) {
       if (initial_position.x < pos.x)
@@ -144,7 +144,7 @@ SpiderMine::search_for_player(float delta)
       else
         velocity.x = walk_speed;
     }
-  // else wait
+    // else wait
   } else if (state != JUMP) {
     state = WAIT;
     velocity.x = 0;

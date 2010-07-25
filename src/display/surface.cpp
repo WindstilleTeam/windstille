@@ -48,20 +48,20 @@ public:
   {}
 };
 
-Surface::Surface()
-  : impl()
+Surface::Surface() :
+  impl()
 {
 }
 
-Surface::Surface(const Pathname& filename)
-  : impl()
+Surface::Surface(const Pathname& filename) :
+  impl()
 {
   // FIXME: a bit ugly, should move some of the surface_manager code over here
   *this = SurfaceManager::current()->get(filename);
 }
 
-Surface::Surface(int width, int height)
-  : impl(new SurfaceImpl())
+Surface::Surface(int width, int height) :
+  impl(new SurfaceImpl())
 {
   impl->size  = Size(width, height);
 
@@ -71,8 +71,8 @@ Surface::Surface(int width, int height)
                         impl->size.height / static_cast<float>(impl->texture.get_height()));
 }
 
-Surface::Surface(Texture texture, const Rectf& uv, const Sizef& size)
-  : impl(new SurfaceImpl())
+Surface::Surface(Texture texture, const Rectf& uv, const Sizef& size) :
+  impl(new SurfaceImpl())
 {
   impl->texture = texture;
   impl->uv      = uv;

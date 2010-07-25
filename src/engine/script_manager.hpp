@@ -47,17 +47,17 @@ class ScriptManager : public Currenton<ScriptManager>
 {
 public:
   enum WakeupEvent 
-    {
-      NO_EVENT,
-      TIME,
-      DIALOG_CLOSED,
-      CONVERSATION_CLOSED,
-      SPEECH_DONE,
-      FADE_DONE,
-      CAMERA_DONE,
-      GAMEOBJECT_DONE,
-      MAX_WAKEUP_EVENT_COUNT
-    };
+  {
+    NO_EVENT,
+    TIME,
+    DIALOG_CLOSED,
+    CONVERSATION_CLOSED,
+    SPEECH_DONE,
+    FADE_DONE,
+    CAMERA_DONE,
+    GAMEOBJECT_DONE,
+    MAX_WAKEUP_EVENT_COUNT
+  };
 
   struct WakeupData 
   {

@@ -90,21 +90,21 @@ Sprite3DView::draw()
   int line_height = Fonts::current()->vera12->get_height()+5;
 
   for(int i = 0; i < int(actions.size()); ++i)
-    {
-      if (i == current_action)
-        Fonts::current()->vera12->draw(Vector2f(x, y),
-                            actions[i], Color(1.0f, 1.0f, 1.0f));
-      else
-        Fonts::current()->vera12->draw(Vector2f(x, y),
-                            actions[i], Color(0.7f, 0.7f, 0.7f));
+  {
+    if (i == current_action)
+      Fonts::current()->vera12->draw(Vector2f(x, y),
+                                     actions[i], Color(1.0f, 1.0f, 1.0f));
+    else
+      Fonts::current()->vera12->draw(Vector2f(x, y),
+                                     actions[i], Color(0.7f, 0.7f, 0.7f));
 
-      y += static_cast<float>(line_height);
-      if (y > 580.0f)
-        {
-          x += 200.0f;
-          y =  static_cast<float>(Fonts::current()->vera12->get_height()) + 5.0f;
-        }
+    y += static_cast<float>(line_height);
+    if (y > 580.0f)
+    {
+      x += 200.0f;
+      y =  static_cast<float>(Fonts::current()->vera12->get_height()) + 5.0f;
     }
+  }
 }
 
 void
@@ -115,33 +115,33 @@ Sprite3DView::update(float delta, const Controller& controller)
 
   int last_action = current_action;
   if (controller.button_was_pressed(MENU_DOWN_BUTTON))
-    {
-      if (current_action == int(actions.size())-1)
-        current_action = 0;
-      else
-        current_action += 1;
-    }
+  {
+    if (current_action == int(actions.size())-1)
+      current_action = 0;
+    else
+      current_action += 1;
+  }
   else if (controller.button_was_pressed(MENU_UP_BUTTON))
-    {
-      if (current_action == 0)
-        current_action = actions.size()-1;
-      else
-        current_action -= 1;
-    }
+  {
+    if (current_action == 0)
+      current_action = actions.size()-1;
+    else
+      current_action -= 1;
+  }
 
   if (controller.get_button_state(RIGHT_SHOULDER_BUTTON))
-    {
-      scale *= 1.0f + 0.6f * delta;
-    }
+  {
+    scale *= 1.0f + 0.6f * delta;
+  }
   else if (controller.get_button_state(LEFT_SHOULDER_BUTTON))
-    {
-      scale /= 1.0f + 0.6f * delta;
-    }
+  {
+    scale /= 1.0f + 0.6f * delta;
+  }
   
   if (last_action != current_action && !actions.empty())
-    {
-      sprite.set_action(actions[current_action]);
-    }
+  {
+    sprite.set_action(actions[current_action]);
+  }
 
   rotation = Quaternion(Vector3(0.0f, 1.0f, 0.0f),
                         -controller.get_axis_state(X2_AXIS) * delta * 4.0f) * rotation;
@@ -151,15 +151,15 @@ Sprite3DView::update(float delta, const Controller& controller)
                         controller.get_axis_state(X_AXIS) * delta * 4.0f) * rotation;
 
   if (controller.get_button_state(VIEW_CENTER_BUTTON))
-    {
-      rotation = Quaternion::identity();
-    }
+  {
+    rotation = Quaternion::identity();
+  }
 
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))
-    {
-      MenuManager::display_pause_menu();
-    }
+  {
+    MenuManager::display_pause_menu();
+  }
 }
 
 void

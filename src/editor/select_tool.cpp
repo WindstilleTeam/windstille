@@ -27,13 +27,13 @@
 static const guint32 MOVE_TIMEOUT = 100;
 static const int MOVE_THRESHOLD = 16;
 
-SelectTool::SelectTool()
-  : click_pos(),
-    rect(),
-    selection(),
-    ctrl_point(),
-    start_time(),
-    mode(NO_MODE)    
+SelectTool::SelectTool() :
+  click_pos(),
+  rect(),
+  selection(),
+  ctrl_point(),
+  start_time(),
+  mode(NO_MODE)    
 {
 }
 

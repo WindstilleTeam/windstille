@@ -120,7 +120,7 @@ ScreenManager::draw()
     overlay_screens.back()->draw();
 
   if (show_controller_help_window)
-     controller_help_window->draw();
+    controller_help_window->draw();
 
   Console::current()->draw();
 
@@ -192,141 +192,141 @@ ScreenManager::poll_events()
 {
   SDL_Event event;
   while(SDL_PollEvent(&event))
+  {
+    switch(event.type)
     {
-      switch(event.type)
-        {
-          case SDL_QUIT:
-            // FIXME: This should be a bit more gentle, but will do for now
-            std::cout << "Ctrl-c or Window-close pressed, game is going to quit" << std::endl;
-            quit();
-            break;
+      case SDL_QUIT:
+        // FIXME: This should be a bit more gentle, but will do for now
+        std::cout << "Ctrl-c or Window-close pressed, game is going to quit" << std::endl;
+        quit();
+        break;
           
-          case SDL_ACTIVEEVENT:
-            // event.active
-            break;
+      case SDL_ACTIVEEVENT:
+        // event.active
+        break;
           
-          case SDL_VIDEORESIZE:
-            // event.resize
-            break;
+      case SDL_VIDEORESIZE:
+        // event.resize
+        break;
               
-          case SDL_VIDEOEXPOSE:
-            // event.expose
-            break;
+      case SDL_VIDEOEXPOSE:
+        // event.expose
+        break;
                 
-          case SDL_USEREVENT:
-            // event.user
-            break;
+      case SDL_USEREVENT:
+        // event.user
+        break;
                     
-          case SDL_SYSWMEVENT:
-            // event.syswm
-            break;
+      case SDL_SYSWMEVENT:
+        // event.syswm
+        break;
 
-          case SDL_KEYDOWN:
-          case SDL_KEYUP:
-            if (event.key.state)
-              {    
-                switch (event.key.keysym.sym)
-                  {
-                    case SDLK_F6:
-                      SDL_ShowCursor(SDL_ENABLE);   // SDL_ENABLE to show the mouse cursor (default)
-                      SDL_WM_GrabInput(SDL_GRAB_OFF); // SDL_GRAB_OFF to not grab input (default)
-                      break;
+      case SDL_KEYDOWN:
+      case SDL_KEYUP:
+        if (event.key.state)
+        {    
+          switch (event.key.keysym.sym)
+          {
+            case SDLK_F6:
+              SDL_ShowCursor(SDL_ENABLE);   // SDL_ENABLE to show the mouse cursor (default)
+              SDL_WM_GrabInput(SDL_GRAB_OFF); // SDL_GRAB_OFF to not grab input (default)
+              break;
 
-                    case SDLK_F7:
-                      SDL_ShowCursor(SDL_DISABLE);   // SDL_ENABLE to show the mouse cursor (default)
-                      SDL_WM_GrabInput(SDL_GRAB_ON); // SDL_GRAB_OFF to not grab input (default)
-                      break;
+            case SDLK_F7:
+              SDL_ShowCursor(SDL_DISABLE);   // SDL_ENABLE to show the mouse cursor (default)
+              SDL_WM_GrabInput(SDL_GRAB_ON); // SDL_GRAB_OFF to not grab input (default)
+              break;
                   
-                    case SDLK_F8:
-                      show_controller_help_window = !show_controller_help_window;
-                      break;
+            case SDLK_F8:
+              show_controller_help_window = !show_controller_help_window;
+              break;
 
-                    case SDLK_F9:
-                      push_overlay(new InputConfigurator());
-                      break;
+            case SDLK_F9:
+              push_overlay(new InputConfigurator());
+              break;
 
-                    case SDLK_F10:
-                      config.set_bool("show-fps", !config.get_bool("show-fps"));
-                      break;
+            case SDLK_F10:
+              config.set_bool("show-fps", !config.get_bool("show-fps"));
+              break;
               
-                    case SDLK_F11:
-                      config.set_bool("fullscreen", !config.get_bool("fullscreen"));
-                      OpenGLWindow::current()->set_fullscreen(config.get_bool("fullscreen"));
-                      break;
+            case SDLK_F11:
+              config.set_bool("fullscreen", !config.get_bool("fullscreen"));
+              OpenGLWindow::current()->set_fullscreen(config.get_bool("fullscreen"));
+              break;
               
-                    case SDLK_F12:
-                      {
-                        // FIXME: Replace this with Physfs stuff
-                        int count = 0;
-                        Pathname filename;
-                        do {
-                          filename = Pathname((boost::format("screenshots/windstille%04d.png") % count).str(), Pathname::kUserPath);
-                          count += 1;
-                        } while(filename.exists());
+            case SDLK_F12:
+            {
+              // FIXME: Replace this with Physfs stuff
+              int count = 0;
+              Pathname filename;
+              do {
+                filename = Pathname((boost::format("screenshots/windstille%04d.png") % count).str(), Pathname::kUserPath);
+                count += 1;
+              } while(filename.exists());
 
-                        Display::save_screenshot(filename);
-                        ConsoleLog << "Writing screenshot to: '" << filename << "'" << std::endl;
-                      }
-                      break;
+              Display::save_screenshot(filename);
+              ConsoleLog << "Writing screenshot to: '" << filename << "'" << std::endl;
+            }
+            break;
               
-                    default:
-                      if (!Console::current()->is_active())
-                        {
-                          if (!overlay_screens.empty())
-                            overlay_screens.back()->handle_event(event);
-                          else if (!screens.empty())
-                            screens.back()->handle_event(event);
-                        }
-                      break;
-                  }
-              }
-              
-            if (!Console::current()->is_active() && event.key.state && event.key.keysym.sym == SDLK_F1)
+            default:
+              if (!Console::current()->is_active())
               {
-                Console::current()->activate();
+                if (!overlay_screens.empty())
+                  overlay_screens.back()->handle_event(event);
+                else if (!screens.empty())
+                  screens.back()->handle_event(event);
               }
-            else
-              {
-                if (InputManagerSDL::current())
-                  InputManagerSDL::current()->on_event(event);
-              }
-            break;
-
-          case SDL_MOUSEBUTTONUP:
-          case SDL_MOUSEBUTTONDOWN:
-          case SDL_MOUSEMOTION:
-          case SDL_JOYAXISMOTION:
-          case SDL_JOYBALLMOTION:
-          case SDL_JOYHATMOTION:
-          case SDL_JOYBUTTONUP:
-          case SDL_JOYBUTTONDOWN:
-            if (InputManagerSDL::current())
-              InputManagerSDL::current()->on_event(event);
-
-            if (!overlay_screens.empty())
-              overlay_screens.back()->handle_event(event);
-            break;
-        
-          default:
-            if (!overlay_screens.empty())
-              overlay_screens.back()->handle_event(event);
-            else if (!screens.empty())
-              screens.back()->handle_event(event);
-            break;
+              break;
+          }
         }
+              
+        if (!Console::current()->is_active() && event.key.state && event.key.keysym.sym == SDLK_F1)
+        {
+          Console::current()->activate();
+        }
+        else
+        {
+          if (InputManagerSDL::current())
+            InputManagerSDL::current()->on_event(event);
+        }
+        break;
+
+      case SDL_MOUSEBUTTONUP:
+      case SDL_MOUSEBUTTONDOWN:
+      case SDL_MOUSEMOTION:
+      case SDL_JOYAXISMOTION:
+      case SDL_JOYBALLMOTION:
+      case SDL_JOYHATMOTION:
+      case SDL_JOYBUTTONUP:
+      case SDL_JOYBUTTONDOWN:
+        if (InputManagerSDL::current())
+          InputManagerSDL::current()->on_event(event);
+
+        if (!overlay_screens.empty())
+          overlay_screens.back()->handle_event(event);
+        break;
+        
+      default:
+        if (!overlay_screens.empty())
+          overlay_screens.back()->handle_event(event);
+        else if (!screens.empty())
+          screens.back()->handle_event(event);
+        break;
     }
+  }
 }
 
 void 
 ScreenManager::draw_fps()
 {
   if(time_counter > 1) 
-    {
-      last_fps = int(static_cast<float>(frame_counter) / time_counter);
+  {
+    last_fps = int(static_cast<float>(frame_counter) / time_counter);
 
-      time_counter  = fmodf(static_cast<float>(time_counter), 1.0f);
-      frame_counter = 0;
-    }
+    time_counter  = fmodf(static_cast<float>(time_counter), 1.0f);
+    frame_counter = 0;
+  }
   
   std::ostringstream out;
   out << "FPS: " << last_fps;

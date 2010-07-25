@@ -18,10 +18,10 @@
 
 #include "navigation/node.hpp"
 
-Node::Node(const Vector2f& pos_)
-  : pos(pos_),
-    edges()
-    // FIXME: Do something with id
+Node::Node(const Vector2f& pos_) :
+  pos(pos_),
+  edges()
+  // FIXME: Do something with id
 {
 }
 
@@ -39,13 +39,13 @@ void
 Node::remove_edge(Edge* edge)
 {
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
+  {
+    if (i->edge == edge)
     {
-      if (i->edge == edge)
-        {
-          edges.erase(i);
-          return;
-        }
+      edges.erase(i);
+      return;
     }
+  }
 }
 
 /* EOF */

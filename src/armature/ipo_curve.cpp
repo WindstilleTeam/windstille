@@ -18,8 +18,8 @@
 
 #include "armature/ipo_curve.hpp"
 
-IpoCurve::IpoCurve()
-  : points()
+IpoCurve::IpoCurve() :
+  points()
 {
 }
 
@@ -48,11 +48,11 @@ void
 IpoCurve::add_point(const BezierPoint& /*p*/)
 {
   /*
-  assert(points.empty() ||
-         points.back().point.x < p.x &&
-         p.handle_left.x < p.x &&
-         p.x < p.handle_right.x);
-  points.push_back(p);
+    assert(points.empty() ||
+    points.back().point.x < p.x &&
+    p.handle_left.x < p.x &&
+    p.x < p.handle_right.x);
+    points.push_back(p);
   */
 }
 

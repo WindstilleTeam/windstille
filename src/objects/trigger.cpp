@@ -21,12 +21,12 @@
 #include "engine/sector.hpp"
 #include "objects/player.hpp"
 
-Trigger::Trigger(const FileReader& props)
-  : area(),
-    callback(),
-    triggered(false), 
-    last_trigger(),
-    one_time_trigger(false)
+Trigger::Trigger(const FileReader& props) :
+  area(),
+  callback(),
+  triggered(false), 
+  last_trigger(),
+  one_time_trigger(false)
 {
   float x = -1;
   float y = -1;
@@ -64,26 +64,26 @@ Trigger::update(float /*delta*/)
   //FIXME use proper collision detection
   Player* player = Player::current();
   if(!area.is_inside(player->get_pos())) 
-    {
-      last_trigger = false;
-      return;
-    }
+  {
+    last_trigger = false;
+    return;
+  }
   
   if(triggered && one_time_trigger)
     return;
 
   if(last_trigger == false) 
+  {
+    triggered = true;
+    try 
     {
-      triggered = true;
-      try 
-        {
-          Sector::current()->call_script_function(callback);
-        }
-      catch(std::exception& e) 
-        {
-          std::cerr << "Couldn't run trigger-script: " << e.what() << "\n";
-        }
+      Sector::current()->call_script_function(callback);
     }
+    catch(std::exception& e) 
+    {
+      std::cerr << "Couldn't run trigger-script: " << e.what() << "\n";
+    }
+  }
   last_trigger = true;
 }
 

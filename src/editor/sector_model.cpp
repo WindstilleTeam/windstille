@@ -52,11 +52,11 @@ SectorModel::SectorModel(const std::string& filename) :
   SectorModelBuilder(filename, *this);
 }
 
-SectorModel::SectorModel()
-  : nav_graph(new NavigationGraphModel(*this)),
-    layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
-    m_timeline(new Timeline()),
-    ambient_color()
+SectorModel::SectorModel() :
+  nav_graph(new NavigationGraphModel(*this)),
+  layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
+  m_timeline(new Timeline()),
+  ambient_color()
 {
   register_callbacks();
 

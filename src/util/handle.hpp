@@ -34,8 +34,8 @@ private:
 
 public:
   Handle(HandleManager<Data>* manager_, 
-             unsigned int index_,
-             unsigned int magic_)
+         unsigned int index_,
+         unsigned int magic_)
     : manager(manager_),
       index(index_),
       magic(magic_)
@@ -77,37 +77,37 @@ public:
   Handle<Data> aquire(const Data& data)
   {
     if (free_list.empty()) 
-      {
-        data_lst.push_back(data);
-        magic_lst.push_back(next_magic);
+    {
+      data_lst.push_back(data);
+      magic_lst.push_back(next_magic);
 
-        return Handle<Data>(this, next_magic++);
-      }
+      return Handle<Data>(this, next_magic++);
+    }
     else
-      {
-        unsigned int index = free_list.back();
-        free_list.pop_back();
+    {
+      unsigned int index = free_list.back();
+      free_list.pop_back();
 
-        data_lst[index]  = data;
-        magic_lst[index] = next_magic;
+      data_lst[index]  = data;
+      magic_lst[index] = next_magic;
 
-        return Handle<Data>(this, next_magic++);
-      }
+      return Handle<Data>(this, next_magic++);
+    }
   }
 
   void release(const Handle<Data>& handle)
   {
     if (valid(handle))
-      {
-        delete data_lst[handle.index];
-        data_lst[handle.index] = 0;
+    {
+      delete data_lst[handle.index];
+      data_lst[handle.index] = 0;
 
-        free_list.push_back(handle.index);
-      }
+      free_list.push_back(handle.index);
+    }
     else
-      {
-        // invalid handle
-      }
+    {
+      // invalid handle
+    }
   }
   
   bool valid(const Handle<Data>& handle)
@@ -119,13 +119,13 @@ public:
   Data& dereference(const Handle<Data>& handle)
   {
     if (valid)
-      {
-        return data_lst[handle.index];
-      }
+    {
+      return data_lst[handle.index];
+    }
     else
-      {
-        // invalid handle
-      }
+    {
+      // invalid handle
+    }
   }
 };
 

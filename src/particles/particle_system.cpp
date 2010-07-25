@@ -93,93 +93,93 @@ ParticleSystem::ParticleSystem(FileReader& props)
   {
     std::string layer_str;
     if (props.get("layer", layer_str))
-      {
-        if (layer_str == "highlight")
-          layer = SceneContext::HIGHLIGHTMAP;
-        else if (layer_str == "light")
-          layer = SceneContext::LIGHTMAP;
-        else if (layer_str == "color")
-          layer = SceneContext::COLORMAP;
-        else
-          std::cout << "ParticleSystem: Unknown layer type: '" << layer_str << "'" << std::endl;
-      }
+    {
+      if (layer_str == "highlight")
+        layer = SceneContext::HIGHLIGHTMAP;
+      else if (layer_str == "light")
+        layer = SceneContext::LIGHTMAP;
+      else if (layer_str == "color")
+        layer = SceneContext::COLORMAP;
+      else
+        std::cout << "ParticleSystem: Unknown layer type: '" << layer_str << "'" << std::endl;
+    }
   }
 
   {
     FileReader drawer_reader;
     if (props.get("drawer", drawer_reader))
-      {
-        std::vector<FileReader> sections = drawer_reader.get_sections();
+    {
+      std::vector<FileReader> sections = drawer_reader.get_sections();
 
-        if (sections.size() > 1)
-          std::cout << "ParticleSystem: Only one drawer allowed" << std::endl;
+      if (sections.size() > 1)
+        std::cout << "ParticleSystem: Only one drawer allowed" << std::endl;
         
-        if (sections.size() == 0)
-          std::cout << "ParticleSystem: You must specify a drawer" << std::endl;
+      if (sections.size() == 0)
+        std::cout << "ParticleSystem: You must specify a drawer" << std::endl;
 
-        if (sections.size() >= 1)
-          {
-            FileReader& reader  = sections.front();
-            if (reader.get_name() == "surface-drawer") 
-              {
-                set_drawer(new SurfaceDrawer(reader));
-              } 
-            else if (reader.get_name() == "spark-drawer") 
-              {
-                set_drawer(new SparkDrawer(reader));
-              } 
-            else if (reader.get_name() == "deform-drawer")
-              {
-                set_drawer(new DeformDrawer(reader));
-              }
-            else 
-              {
-                std::cout << "Unknown drawer: " << reader.get_name() << std::endl;
-              }
-          }
+      if (sections.size() >= 1)
+      {
+        FileReader& reader  = sections.front();
+        if (reader.get_name() == "surface-drawer") 
+        {
+          set_drawer(new SurfaceDrawer(reader));
+        } 
+        else if (reader.get_name() == "spark-drawer") 
+        {
+          set_drawer(new SparkDrawer(reader));
+        } 
+        else if (reader.get_name() == "deform-drawer")
+        {
+          set_drawer(new DeformDrawer(reader));
+        }
+        else 
+        {
+          std::cout << "Unknown drawer: " << reader.get_name() << std::endl;
+        }
       }
+    }
   }
 
   {
     FileReader distribution_reader;
     if (props.get("distribution", distribution_reader))
-      {
-        std::vector<FileReader> sections = distribution_reader.get_sections();
+    {
+      std::vector<FileReader> sections = distribution_reader.get_sections();
 
-        if (sections.size() > 1)
-          std::cout << "ParticleSystem: Only one distribution allowed" << std::endl;
+      if (sections.size() > 1)
+        std::cout << "ParticleSystem: Only one distribution allowed" << std::endl;
         
-        if (sections.size() == 0)
-          std::cout << "ParticleSystem: You must specify a distribution" << std::endl;
+      if (sections.size() == 0)
+        std::cout << "ParticleSystem: You must specify a distribution" << std::endl;
 
-        if (sections.size() >= 1)
-          {
-            FileReader& reader  = sections.front();
+      if (sections.size() >= 1)
+      {
+        FileReader& reader  = sections.front();
 
-            if (reader.get_name() == "point-distribution") {
-              set_point_distribution();
-            } else if (reader.get_name() == "line-distribution") {
-              float x1, y1, x2, y2;
-              reader.get("x1", x1);
-              reader.get("y1", y1);
-              reader.get("x2", x2);
-              reader.get("y2", y2);
+        if (reader.get_name() == "point-distribution") {
+          set_point_distribution();
+        } else if (reader.get_name() == "line-distribution") {
+          float x1, y1, x2, y2;
+          reader.get("x1", x1);
+          reader.get("y1", y1);
+          reader.get("x2", x2);
+          reader.get("y2", y2);
           
-              set_line_distribution(x1, y1, x2, y2);
-            } else if (reader.get_name() == "rect-distribution") {
-              Rectf rect;
-              reader.get("x1", rect.left);
-              reader.get("y1", rect.top);
-              reader.get("x2", rect.right);
-              reader.get("y2", rect.bottom);
+          set_line_distribution(x1, y1, x2, y2);
+        } else if (reader.get_name() == "rect-distribution") {
+          Rectf rect;
+          reader.get("x1", rect.left);
+          reader.get("y1", rect.top);
+          reader.get("x2", rect.right);
+          reader.get("y2", rect.bottom);
           
-              set_rect_distribution(rect);
+          set_rect_distribution(rect);
 
-            } else {
-              std::cout << "Unknown distribution: " << reader.get_name() << std::endl;
-            }
-          }
+        } else {
+          std::cout << "Unknown distribution: " << reader.get_name() << std::endl;
+        }
       }
+    }
   }
   
   int p_count = 70;
@@ -232,13 +232,13 @@ void
 ParticleSystem::draw() const
 {
   if (drawer.get())
-    {
-      drawer->draw(*this);
-    }
+  {
+    drawer->draw(*this);
+  }
   else
-    {
-      std::cout << "ParticleSystem: No drawer set" << std::endl;
-    } 
+  {
+    std::cout << "ParticleSystem: No drawer set" << std::endl;
+  } 
 }
 
 void
@@ -266,22 +266,22 @@ void
 ParticleSystem::update(float delta)
 {
   for(Particles::iterator i = particles.begin(); i != particles.end(); ++i)
+  {
+    if (i->t > life_time)
     {
-      if (i->t > life_time)
-        {
-          spawn(*i);
-        }
-      else
-        {
-          i->t += delta;
-          
-          i->x += i->v_x * delta;
-          i->y += i->v_y * delta;
-
-          i->v_x += gravity_x;
-          i->v_y += gravity_y;
-        }
+      spawn(*i);
     }
+    else
+    {
+      i->t += delta;
+          
+      i->x += i->v_x * delta;
+      i->y += i->v_y * delta;
+
+      i->v_x += gravity_x;
+      i->v_y += gravity_y;
+    }
+  }
 }
 
 int
@@ -295,15 +295,15 @@ ParticleSystem::set_count(int num)
 {
   int old_size = particles.size();
   if (old_size != num)
-    {
-      particles.resize(num);
+  {
+    particles.resize(num);
 
-      for(Particles::size_type i = old_size; i < particles.size(); ++i)
-        {
-          spawn(particles[i]);
-          particles[i].t = life_time * bunching * static_cast<float>(i) / static_cast<float>(particles.size());
-        }
+    for(Particles::size_type i = old_size; i < particles.size(); ++i)
+    {
+      spawn(particles[i]);
+      particles[i].t = life_time * bunching * static_cast<float>(i) / static_cast<float>(particles.size());
     }
+  }
 }
   
 void

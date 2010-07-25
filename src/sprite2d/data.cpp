@@ -23,8 +23,8 @@
 
 #include "display/surface_manager.hpp"
 
-SpriteData::SpriteData(const Pathname& pathname)
-  : actions()
+SpriteData::SpriteData(const Pathname& pathname) :
+  actions()
 {
   if (pathname.exists())
   {
@@ -123,43 +123,43 @@ SpriteData::parse_action(const Pathname& dir, FileReader& reader)
   FileReader grid_reader;
   std::vector<std::string> image_files;
   if(reader.get("images", image_files))
-    {
-      //parse_images(action.get(), dir, images);
+  {
+    //parse_images(action.get(), dir, images);
 
-      for(std::vector<std::string>::iterator file = image_files.begin(); file != image_files.end(); ++file)
-        {
-          Pathname path = dir;
-          path.append_path(*file);
-          action->surfaces.push_back(SurfaceManager::current()->get(path));
-        }
-    }
-  else if(reader.get("image-grid", grid_reader)) 
+    for(std::vector<std::string>::iterator file = image_files.begin(); file != image_files.end(); ++file)
     {
-      std::string filename;
-      int x_size = -1;
-      int y_size = -1;
-      
-      grid_reader.get("file", filename);
-      grid_reader.get("x-size", x_size);
-      grid_reader.get("y-size", y_size);
-
-      if(filename.empty() || x_size <= 0 || y_size <= 0)
-        throw std::runtime_error("Invalid or too few data in image-grid");
-      
       Pathname path = dir;
-      path.append_path(filename);
-      SurfaceManager::current()->load_grid(path, action->surfaces, x_size, y_size);
+      path.append_path(*file);
+      action->surfaces.push_back(SurfaceManager::current()->get(path));
     }
+  }
+  else if(reader.get("image-grid", grid_reader)) 
+  {
+    std::string filename;
+    int x_size = -1;
+    int y_size = -1;
+      
+    grid_reader.get("file", filename);
+    grid_reader.get("x-size", x_size);
+    grid_reader.get("y-size", y_size);
+
+    if(filename.empty() || x_size <= 0 || y_size <= 0)
+      throw std::runtime_error("Invalid or too few data in image-grid");
+      
+    Pathname path = dir;
+    path.append_path(filename);
+    SurfaceManager::current()->load_grid(path, action->surfaces, x_size, y_size);
+  }
     
   if(action->name == "")
     throw std::runtime_error("No Name defined for action");
 
   if(action->surfaces.size() == 0) 
-    {
-      std::ostringstream msg;
-      msg << "Action '" << action->name << "' contains no images";
-      throw std::runtime_error(msg.str());
-    }
+  {
+    std::ostringstream msg;
+    msg << "Action '" << action->name << "' contains no images";
+    throw std::runtime_error(msg.str());
+  }
   return action.release();
 }
  

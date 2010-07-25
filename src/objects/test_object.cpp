@@ -20,10 +20,10 @@
 
 #include "objects/test_object.hpp"
 
-TestObject::TestObject(const FileReader& props)
-  : sprite(),
-    attached_sprites(),
-    pos()
+TestObject::TestObject(const FileReader& props) :
+  sprite(),
+  attached_sprites(),
+  pos()
 {
   pos = Vector2f(0, 0);
   std::string spritename;

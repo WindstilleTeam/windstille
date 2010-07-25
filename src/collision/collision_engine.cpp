@@ -37,7 +37,7 @@ CollisionEngine::CollisionEngine()
 CollisionEngine::~CollisionEngine()
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-      delete *i;
+    delete *i;
   objects.clear();
 }
 
@@ -45,51 +45,51 @@ void
 CollisionEngine::draw(DrawingContext& dc)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      (*i)->draw(dc);
-    }
+  {
+    (*i)->draw(dc);
+  }
 }
 
 void
 CollisionEngine::collision(const CollisionData &result)
 {
   if (result.object2->get_is_domains() & result.object1->get_check_domains())
-    {
-      result.object1->sig_collision()(result);
-    }
+  {
+    result.object1->sig_collision()(result);
+  }
   else
-    {
-      std::cout << (result.object2->get_is_domains() & result.object1->get_check_domains()) << std::endl;
-    }
+  {
+    std::cout << (result.object2->get_is_domains() & result.object1->get_check_domains()) << std::endl;
+  }
   
   unsigned int res1 = result.object1->get_is_domains() & result.object2->get_check_domains();
 
   if (res1)
-    {
-      result.object2->sig_collision()(result.invert());
-    }
+  {
+    result.object2->sig_collision()(result.invert());
+  }
   else
-    {
-      std::cout << "obj1: " << result.object1->get_is_domains() << std::endl;
-      std::cout << "obj2: " << result.object2->get_check_domains() << std::endl;
-    }
+  {
+    std::cout << "obj1: " << result.object1->get_is_domains() << std::endl;
+    std::cout << "obj2: " << result.object2->get_check_domains() << std::endl;
+  }
 }
 
 void
 CollisionEngine::unstuck(CollisionObject& a, CollisionObject& b, float delta)
 {
   if (a.get_type() == CollisionObject::RECTANGLE && b.get_type() == CollisionObject::RECTANGLE)
-    {
-      unstuck_rect_rect (a, b, delta);
-    }
+  {
+    unstuck_rect_rect (a, b, delta);
+  }
   else
-    {
-      if (a.get_type() == CollisionObject::RECTANGLE)
-	unstuck_tilemap (b, a, delta);
-      else
-	unstuck_tilemap (a, b, delta);
+  {
+    if (a.get_type() == CollisionObject::RECTANGLE)
+      unstuck_tilemap (b, a, delta);
+    else
+      unstuck_tilemap (a, b, delta);
 
-    }
+  }
 }
 
 Vector2f unstuck_direction(const Rectf &a, const Rectf &b, float delta, float unstuck_velocity)
@@ -111,21 +111,21 @@ Vector2f unstuck_direction(const Rectf &a, const Rectf &b, float delta, float un
   Vector2f dir;
 
   if (left < right && left < top && left < bottom)
-    {
-      dir = Vector2f(std::min(left/2 + grace, add), 0);
-    }
+  {
+    dir = Vector2f(std::min(left/2 + grace, add), 0);
+  }
   else if (right < left && right < top && right < bottom)
-    {
-      dir = Vector2f(-std::min(right/2 + grace, add), 0);
-    }
+  {
+    dir = Vector2f(-std::min(right/2 + grace, add), 0);
+  }
   else if (top < left && top < right && top < bottom)
-    {
-      dir = Vector2f( 0, std::min(top/2 + grace, add));
-    }
+  {
+    dir = Vector2f( 0, std::min(top/2 + grace, add));
+  }
   else // (bottom < left && bottom < right && bottom < top)
-    {
-      dir = Vector2f( 0, -std::min(bottom/2 + grace, add));
-    }
+  {
+    dir = Vector2f( 0, -std::min(bottom/2 + grace, add));
+  }
   return dir;
 }
 
@@ -141,12 +141,12 @@ int c_round(float f)
 {
   int i = static_cast<int>(f);
   if(fabsf(f-static_cast<float>(i)) > 0.5f)
-    {
-      if(i>0)
-	i++;
-      else
-	i--;
-    }
+  {
+    if(i>0)
+      i++;
+    else
+      i--;
+  }
   return i;
 }
 
@@ -155,10 +155,10 @@ bool is_rect_free(TileMap *tilemap, int l, int t, int w,int h)
   int x,y;
   for (x=l; x<=l+w; x++)
     for (y=t; y<=t+h; y++)
-      {
-	if (tilemap->is_ground(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE)))
-	  return false;
-      }
+    {
+      if (tilemap->is_ground(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE)))
+        return false;
+    }
   return true;
 }
 
@@ -178,22 +178,22 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
   // find first set of free rectangle
   // simply iterate the rectangles around current position
   for(int d=1; d<20; d++) // not more than 20 steps
+  {
+    for(int i=-d; i<=d; i++)
     {
-      for(int i=-d; i<=d; i++)
-	{
-	  if (is_rect_free(tilemap, i + rx, -d + ry, rw, rh))
-	    rects.push_back( Rect(i + rx, -d + ry, rw, rh));
-	  if (is_rect_free(tilemap, i + rx, d + ry, rw, rh))
-	    rects.push_back( Rect(i + rx, d + ry, rw, rh));
+      if (is_rect_free(tilemap, i + rx, -d + ry, rw, rh))
+        rects.push_back( Rect(i + rx, -d + ry, rw, rh));
+      if (is_rect_free(tilemap, i + rx, d + ry, rw, rh))
+        rects.push_back( Rect(i + rx, d + ry, rw, rh));
 
-	  if (is_rect_free(tilemap, -d + rx, i + ry, rw, rh))
-	    rects.push_back( Rect(-d + rx, i + ry, rw, rh));
-	  if (is_rect_free(tilemap,  d + rx, i + ry, rw, rh))
-	    rects.push_back( Rect(d  + rx, i + ry, rw, rh));
-	}
-      if (rects.size())
-	break;
+      if (is_rect_free(tilemap, -d + rx, i + ry, rw, rh))
+        rects.push_back( Rect(-d + rx, i + ry, rw, rh));
+      if (is_rect_free(tilemap,  d + rx, i + ry, rw, rh))
+        rects.push_back( Rect(d  + rx, i + ry, rw, rh));
     }
+    if (rects.size())
+      break;
+  }
   assert(rects.size());
 
   // find nearest rectangle in this set
@@ -201,16 +201,16 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
   float dx,dy,d;
   Rectf nr;
   for (std::vector<Rectf>::iterator i = rects.begin(); i != rects.end(); ++i)
+  {
+    dx = i->left - r.left / static_cast<float>(TILE_SIZE);
+    dy = i->top  - r.top  / static_cast<float>(TILE_SIZE);
+    d = sqrtf( dx * dx + dy * dy );
+    if (d < distance)
     {
-      dx = i->left - r.left / static_cast<float>(TILE_SIZE);
-      dy = i->top  - r.top  / static_cast<float>(TILE_SIZE);
-      d = sqrtf( dx * dx + dy * dy );
-      if (d < distance)
-	{
-	  distance=d;
-	  nr=*i;
-	}
+      distance=d;
+      nr=*i;
     }
+  }
 
   nr.right += nr.left; 
   nr.bottom += nr.top; 
@@ -239,18 +239,18 @@ CollisionEngine::unstuck_tilemap(CollisionObject& a, CollisionObject& b, float d
   // align to grid, if coming from right or bottom
 
   if(target.top < rb.top)
-    {
-      float v = static_cast<float>(c_roundup(target.bottom / static_cast<float>(TILE_SIZE)))
-        * static_cast<float>(TILE_SIZE) - target.bottom;
-      target.top    += v;
-      target.bottom += v;
-    }
+  {
+    float v = static_cast<float>(c_roundup(target.bottom / static_cast<float>(TILE_SIZE)))
+      * static_cast<float>(TILE_SIZE) - target.bottom;
+    target.top    += v;
+    target.bottom += v;
+  }
   if(target.left < rb.left)
-    {
-      float v = static_cast<float>(c_roundup(target.right / static_cast<float>(TILE_SIZE))) * static_cast<float>(TILE_SIZE) - target.right;
-      target.left  += v;
-      target.right += v;
-    }
+  {
+    float v = static_cast<float>(c_roundup(target.right / static_cast<float>(TILE_SIZE))) * static_cast<float>(TILE_SIZE) - target.right;
+    target.left  += v;
+    target.right += v;
+  }
 
   b.pos = Vector2f(target.left-b.primitive.left, target.top-b.primitive.top);
 }
@@ -293,56 +293,56 @@ CollisionEngine::update(float delta)
   int max_tries=200;
 
   do
-    {
-      min_time=frame;
+  {
+    min_time=frame;
       
+    for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
+    {
+      for(Objects::iterator j = i + 1; j != objects.end(); ++j)
+      {
+        if (i != j && (((*i)->get_is_domains() & (*j)->get_check_domains()) ||
+                       ((*j)->get_is_domains() & (*i)->get_check_domains())))
+        {
+          CollisionData r = collide(**i, **j, frame);
+          if(r.state!=CollisionData::NONE)
+          {
+            if (min_time > r.col_time && r.col_time>=0)
+            {
+              r.object1 = *i;
+              r.object2 = *j;
+              col_data = r;
+              min_time = r.col_time;
+              if (min_time > 0.0005f)
+                min_time -= 0.0005f;
+            }
+          }
+        }
+      }
+    }
+
+    // move till first collision (or till end, when no collision occured)
+    if(min_time>0)
+    {
       for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-	{
-	  for(Objects::iterator j = i + 1; j != objects.end(); ++j)
-	    {
-	      if (i != j && (((*i)->get_is_domains() & (*j)->get_check_domains()) ||
-                             ((*j)->get_is_domains() & (*i)->get_check_domains())))
-		{
-		  CollisionData r = collide(**i, **j, frame);
-		  if(r.state!=CollisionData::NONE)
-		    {
-		      if (min_time > r.col_time && r.col_time>=0)
-			{
-			  r.object1 = *i;
-			  r.object2 = *j;
-			  col_data = r;
-			  min_time = r.col_time;
-			  if (min_time > 0.0005f)
-			    min_time -= 0.0005f;
-			}
-		    }
-		}
-	    }
-	}
+      {
+        update(**i,min_time);
+      }
+    }
+    // report collision
+    if (min_time < frame)
+    {
+      collision (col_data);
+    }
 
-      // move till first collision (or till end, when no collision occured)
-      if(min_time>0)
-	{
-	  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-	    {
-	      update(**i,min_time);
-	    }
-	}
-      // report collision
-      if (min_time < frame)
-	{
-	  collision (col_data);
-	}
+    frame-=min_time;
+    min_time=0;
 
-      frame-=min_time;
-      min_time=0;
+    // check tries
+    --max_tries;
+    if (max_tries == 0)
+      std::cerr<<"Too much tries in collision detection"<<std::endl;
 
-      // check tries
-      --max_tries;
-      if (max_tries == 0)
-	std::cerr<<"Too much tries in collision detection"<<std::endl;
-
-    }while (min_time < frame  && max_tries>0);
+  }while (min_time < frame  && max_tries>0);
 
   //return; // uncomment, if you want no unstucking
 
@@ -350,34 +350,34 @@ CollisionEngine::update(float delta)
   bool penetration = true;
   int maxtries=15;
   while(penetration)
+  {
+    penetration=false;
+    // FIXME: support this by some spatial container
+    for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
-      penetration=false;
-      // FIXME: support this by some spatial container
-      for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-	{
-	  if(!(*i)->unstuck())
-	    continue;
-	  
-          for(Objects::iterator j = i+1; j != objects.end(); ++j)
-	    {
-	      if(!(*j)->unstuck())
-		continue;
-	      
-	      if (i != j && ((*i)->unstuck_movable() || ((*j)->unstuck_movable())))
-		{
-		  CollisionData r = collide(**i, **j, 0);
-		  if(r.state!=CollisionData::NONE)
-		    {
-		      penetration=true;
-		      unstuck(**i, **j, delta/3.0f);
-		    }
-		}
-	    }
-	}
-      maxtries--;
-      if(maxtries==0)
-	break;
+      if(!(*i)->unstuck())
+        continue;
+          
+      for(Objects::iterator j = i+1; j != objects.end(); ++j)
+      {
+        if(!(*j)->unstuck())
+          continue;
+              
+        if (i != j && ((*i)->unstuck_movable() || ((*j)->unstuck_movable())))
+        {
+          CollisionData r = collide(**i, **j, 0);
+          if(r.state!=CollisionData::NONE)
+          {
+            penetration=true;
+            unstuck(**i, **j, delta/3.0f);
+          }
+        }
+      }
     }
+    maxtries--;
+    if(maxtries==0)
+      break;
+  }
 }
 
 void
@@ -411,51 +411,51 @@ CollisionEngine::collide(const Rectf& b1, const Rectf& b2,
                          float delta)
 {
   SweepResult result0 = simple_sweep_1d(b1.left, b1.get_width(),  b1_v.x,
-					b2.left, b2.get_width(),  b2_v.x);
+                                        b2.left, b2.get_width(),  b2_v.x);
   SweepResult result1 = simple_sweep_1d(b1.top,  b1.get_height(), b1_v.y,
-					b2.top,  b2.get_height(), b2_v.y);
+                                        b2.top,  b2.get_height(), b2_v.y);
 
   CollisionData result;
   result.delta = delta;
 
   if(result0.collision(delta) && result1.collision(delta))
+  {
+    if(result0.always() && result1.always())
+      result.state = CollisionData::STUCK;
+    else
     {
-      if(result0.always() && result1.always())
-	result.state = CollisionData::STUCK;
+      if(result0.begin(delta)<result1.begin(delta))
+      {
+        // x direction prior
+        if(b1.left < b2.left)
+        {
+          result.state=CollisionData::COLLISION;
+          result.direction=Vector2f(-1, 0);
+        }
+        else
+        {
+          result.state=CollisionData::COLLISION;
+          result.direction=Vector2f(1, 0);
+        }
+        result.col_time=result0.t0;
+      }
       else
-	{
-	  if(result0.begin(delta)<result1.begin(delta))
-	    {
-	      // x direction prior
-	      if(b1.left < b2.left)
-		{
-		  result.state=CollisionData::COLLISION;
-		  result.direction=Vector2f(-1, 0);
-		}
-	      else
-		{
-		  result.state=CollisionData::COLLISION;
-		  result.direction=Vector2f(1, 0);
-		}
-	      result.col_time=result0.t0;
-	    }
-	  else
-	    {
-	      // x direction prior
-	      if(b1.top < b2.top)
-		{
-		  result.state=CollisionData::COLLISION;
-		  result.direction=Vector2f(0, -1);
-		}
-	      else
-		{
-		  result.state=CollisionData::COLLISION;
-		  result.direction=Vector2f(0, 1);
-		}
-	      result.col_time=result1.t0;
-	    }
-	}
+      {
+        // x direction prior
+        if(b1.top < b2.top)
+        {
+          result.state=CollisionData::COLLISION;
+          result.direction=Vector2f(0, -1);
+        }
+        else
+        {
+          result.state=CollisionData::COLLISION;
+          result.direction=Vector2f(0, 1);
+        }
+        result.col_time=result1.t0;
+      }
     }
+  }
   return result;
 }
 
@@ -463,31 +463,31 @@ CollisionData
 CollisionEngine::collide(CollisionObject& a, CollisionObject& b, float delta)
 {
   if (a.get_type() == CollisionObject::RECTANGLE && b.get_type() == CollisionObject::RECTANGLE)
-    {
-      Rectf ra = a.primitive;
-      Rectf rb = b.primitive;
+  {
+    Rectf ra = a.primitive;
+    Rectf rb = b.primitive;
       
-      ra.left   += a.get_pos().x;
-      ra.right  += a.get_pos().x;
-      ra.top    += a.get_pos().y;
-      ra.bottom += a.get_pos().y;
+    ra.left   += a.get_pos().x;
+    ra.right  += a.get_pos().x;
+    ra.top    += a.get_pos().y;
+    ra.bottom += a.get_pos().y;
       
-      rb.left   += b.get_pos().x;
-      rb.right  += b.get_pos().x;
-      rb.top    += b.get_pos().y;
-      rb.bottom += b.get_pos().y;
+    rb.left   += b.get_pos().x;
+    rb.right  += b.get_pos().x;
+    rb.top    += b.get_pos().y;
+    rb.bottom += b.get_pos().y;
       
-      return collide(ra, rb,
-		     a.get_velocity(), b.get_velocity(),
-		     delta);
-    }
+    return collide(ra, rb,
+                   a.get_velocity(), b.get_velocity(),
+                   delta);
+  }
   else
-    {
-      if (a.get_type() == CollisionObject::RECTANGLE)
-	return collide_tilemap (b, a, delta).invert();
-      else
-	return collide_tilemap (a, b, delta);
-    }
+  {
+    if (a.get_type() == CollisionObject::RECTANGLE)
+      return collide_tilemap (b, a, delta).invert();
+    else
+      return collide_tilemap (a, b, delta);
+  }
 }
 
 int get_next_integer(float f, float direction)
@@ -495,17 +495,17 @@ int get_next_integer(float f, float direction)
   int result;
 
   if(direction < 0)
-    {
-      result = int (f);
-      if (result >= f)
-	--result;
-    }
+  {
+    result = int (f);
+    if (result >= f)
+      --result;
+  }
   else
-    {
-      result = int (f);
-      if (result <= f)
-	++result;
-    }
+  {
+    result = int (f);
+    if (result <= f)
+      ++result;
+  }
   return result;
 }
 
@@ -514,11 +514,11 @@ int get_integer(float f, float direction)
   int result=static_cast<int>(f);
 
   if(direction < 0)
-    {
-      result = static_cast<int>(f);
-      if (result > f)
-	--result;
-    }
+  {
+    result = static_cast<int>(f);
+    if (result > f)
+      --result;
+  }
   return result;
 }
 
@@ -538,12 +538,12 @@ bool tilemap_collision(TileMap *tilemap, const Rectf &r)
 
   for (y = std::max (0, miny); y <= std::min (maxy, tilemap->get_height() - 1); ++y)
     for (x = std::max (0, minx); x <= std::min (maxx, tilemap->get_width() - 1); ++x)
+    {
+      if(tilemap->is_ground (static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE) ))
       {
-	if(tilemap->is_ground (static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE) ))
-	  {
-	    return true;
-	  }
+        return true;
       }
+    }
   return false;
 }
 
@@ -561,15 +561,15 @@ std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r,bool 
 
   for (y = std::max (0, miny); y <= std::min (maxy, tilemap->get_height() - 1); ++y)
     for (x = std::max (0, minx); x <= std::min (maxx, tilemap->get_width() - 1); ++x)
+    {
+      if(tilemap->is_ground (static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE) ) == is_ground)
       {
-	if(tilemap->is_ground (static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE) ) == is_ground)
-	  {
-	    rect_list.push_back (Rectf (static_cast<float>(x * TILE_SIZE), 
-                                        static_cast<float>(y * TILE_SIZE), 
-                                        static_cast<float>(TILE_SIZE), 
-                                        static_cast<float>(TILE_SIZE)));
-	  }
+        rect_list.push_back (Rectf (static_cast<float>(x * TILE_SIZE), 
+                                    static_cast<float>(y * TILE_SIZE), 
+                                    static_cast<float>(TILE_SIZE), 
+                                    static_cast<float>(TILE_SIZE)));
       }
+    }
   return rect_list;
 }
 
@@ -602,12 +602,12 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
 
   // check, if stuck
   if (tilemap_collision (a.tilemap, r))
-    {
-      result.state=CollisionData::STUCK;
-      result.col_time = 0;
+  {
+    result.state=CollisionData::STUCK;
+    result.col_time = 0;
       
-      return result;
-    }
+    return result;
+  }
 
   float time=0.0f;
   
@@ -634,100 +634,100 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
   int maxtries=20; // prevent loops
 
   while (time < delta && ct >= 0.0f && maxtries>0)
+  {
+    ct = -1.0f;
+
+    if(first_time)
     {
-      ct = -1.0f;
-
-      if(first_time)
-	{
-	  next_x = get_integer(static_cast<float>(*x) / static_cast<float>(TILE_SIZE), vel.x) * TILE_SIZE;
-	  next_y = get_integer(static_cast<float>(*y) / static_cast<float>(TILE_SIZE), vel.y) * TILE_SIZE;
-	  first_time = false;
-	}
-      else
-	{
-	  next_x = get_next_integer ((static_cast<float>(*x) / static_cast<float>(TILE_SIZE)), vel.x) * TILE_SIZE;
-          next_y = get_next_integer ((static_cast<float>(*y) / static_cast<float>(TILE_SIZE)), vel.y) * TILE_SIZE;
-
-	 
-	  assert ( static_cast<float>(next_x) * static_cast<float>(c_sign(vel.x)) > *x * static_cast<float>(c_sign(vel.x)) || vel.x == 0.0f);
-          assert ( static_cast<float>(next_y) * static_cast<float>(c_sign(vel.y)) > *y * static_cast<float>(c_sign(vel.y)) || vel.y == 0.0f);
-	}
-
-      if (vel.x != 0.0f)
-	tx = (static_cast<float>(next_x) - *x) / vel.x;
-      else
-	tx = 10000.0f;
-
-      if (vel.y != 0.0f)
-	ty = (static_cast<float>(next_y) - *y) / vel.y;
-      else
-	ty = 10000.0f;
-
-      if(tx<0)
-	tx=0;
-      if(ty<0)
-	ty=0;
-
-      if (tx < ty)
-	{
-	  if (time + tx < delta)
-	    ct = tx;
-	}
-      else
-	{
-	  if (time + ty < delta)
-	    ct = ty;
-	}
-      
-      if (ct >= 0.0f)
-	{
-	  // move to next position
-	  float dx, dy;
-
-	  dx = ct * vel.x;
-	  dy = ct * vel.y;
-
-	  r.left   += dx;
-	  r.right  += dx;
-	  r.top    += dy;
-	  r.bottom += dy;
-
-	  if(last_zero && ct==0.0f)
-	    time += 0.0005f;
-	  else
-	    time += ct;
-	  last_zero=(ct==0.0f);
-
-	  // now shift one more pixel and check for collision with tilemap
-	  Rectf tmp(r);
-	  
-	  if (tx < ty)
-	    {
-	      tmp.left  += static_cast<float>(c_sign(vel.x));
-              tmp.right += static_cast<float>(c_sign(vel.x));
-	    }
-	  else
-	    {
-	      tmp.top    += static_cast<float>(c_sign(vel.y));
-	      tmp.bottom += static_cast<float>(c_sign(vel.y));
-	    }
-
-	  // check collision with tilemap
-
-	  if (tilemap_collision (a.tilemap, tmp))
-	    {
-	      result.state=CollisionData::COLLISION;
-	      result.col_time = time;
-	      
-	      if (tx < ty)
-		result.direction = Vector2f(static_cast<float>(c_sign(vel.x)), 0.0f);
-	      else
-		result.direction = Vector2f(0, static_cast<float>(c_sign(vel.y)));
-	      return result;
-	    }
-	}
-      maxtries--;
+      next_x = get_integer(static_cast<float>(*x) / static_cast<float>(TILE_SIZE), vel.x) * TILE_SIZE;
+      next_y = get_integer(static_cast<float>(*y) / static_cast<float>(TILE_SIZE), vel.y) * TILE_SIZE;
+      first_time = false;
     }
+    else
+    {
+      next_x = get_next_integer ((static_cast<float>(*x) / static_cast<float>(TILE_SIZE)), vel.x) * TILE_SIZE;
+      next_y = get_next_integer ((static_cast<float>(*y) / static_cast<float>(TILE_SIZE)), vel.y) * TILE_SIZE;
+
+         
+      assert ( static_cast<float>(next_x) * static_cast<float>(c_sign(vel.x)) > *x * static_cast<float>(c_sign(vel.x)) || vel.x == 0.0f);
+      assert ( static_cast<float>(next_y) * static_cast<float>(c_sign(vel.y)) > *y * static_cast<float>(c_sign(vel.y)) || vel.y == 0.0f);
+    }
+
+    if (vel.x != 0.0f)
+      tx = (static_cast<float>(next_x) - *x) / vel.x;
+    else
+      tx = 10000.0f;
+
+    if (vel.y != 0.0f)
+      ty = (static_cast<float>(next_y) - *y) / vel.y;
+    else
+      ty = 10000.0f;
+
+    if(tx<0)
+      tx=0;
+    if(ty<0)
+      ty=0;
+
+    if (tx < ty)
+    {
+      if (time + tx < delta)
+        ct = tx;
+    }
+    else
+    {
+      if (time + ty < delta)
+        ct = ty;
+    }
+      
+    if (ct >= 0.0f)
+    {
+      // move to next position
+      float dx, dy;
+
+      dx = ct * vel.x;
+      dy = ct * vel.y;
+
+      r.left   += dx;
+      r.right  += dx;
+      r.top    += dy;
+      r.bottom += dy;
+
+      if(last_zero && ct==0.0f)
+        time += 0.0005f;
+      else
+        time += ct;
+      last_zero=(ct==0.0f);
+
+      // now shift one more pixel and check for collision with tilemap
+      Rectf tmp(r);
+          
+      if (tx < ty)
+      {
+        tmp.left  += static_cast<float>(c_sign(vel.x));
+        tmp.right += static_cast<float>(c_sign(vel.x));
+      }
+      else
+      {
+        tmp.top    += static_cast<float>(c_sign(vel.y));
+        tmp.bottom += static_cast<float>(c_sign(vel.y));
+      }
+
+      // check collision with tilemap
+
+      if (tilemap_collision (a.tilemap, tmp))
+      {
+        result.state=CollisionData::COLLISION;
+        result.col_time = time;
+              
+        if (tx < ty)
+          result.direction = Vector2f(static_cast<float>(c_sign(vel.x)), 0.0f);
+        else
+          result.direction = Vector2f(0, static_cast<float>(c_sign(vel.y)));
+        return result;
+      }
+    }
+    maxtries--;
+  }
   if(maxtries==0)
     std::cerr<<"MAXTRIES reached"<<std::endl;
 
@@ -738,12 +738,12 @@ Vector2f
 CollisionEngine::raycast(const Vector2f& pos, float angle)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
+  {
+    if ((*i)->get_type() == CollisionObject::TILEMAP)
     {
-      if ((*i)->get_type() == CollisionObject::TILEMAP)
-        {
-          return (*i)->tilemap->raycast(pos, angle);
-        }
+      return (*i)->tilemap->raycast(pos, angle);
     }
+  }
 
   return Vector2f(0, 0);
 }

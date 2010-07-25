@@ -64,16 +64,16 @@ private:
 
 ObjectSelector::Columns* ObjectSelector::Columns::instance_ = 0;
 
-ObjectSelector::ObjectSelector(EditorWindow& editor_)
-  : editor(editor_),
-    label("Object Selector", Gtk::ALIGN_LEFT),
-    scrolled(),
-    iconview(),
-    list_store(),
-    list_filter(),
-    filter_box(),
-    filter_entries(),
-    filter_mask(OBJECT_GROUP_ALL)
+ObjectSelector::ObjectSelector(EditorWindow& editor_) :
+  editor(editor_),
+  label("Object Selector", Gtk::ALIGN_LEFT),
+  scrolled(),
+  iconview(),
+  list_store(),
+  list_filter(),
+  filter_box(),
+  filter_entries(),
+  filter_mask(OBJECT_GROUP_ALL)
 {
 #if 0
   Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();

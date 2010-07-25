@@ -23,9 +23,9 @@
 #include "util/file_writer.hpp"
 #include "editor/timeline_object.hpp"
 
-TimelineLayer::TimelineLayer(const std::string& name)
-  : m_name(name),
-    m_objects()
+TimelineLayer::TimelineLayer(const std::string& name) :
+  m_name(name),
+  m_objects()
 {
 }
 

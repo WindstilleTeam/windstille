@@ -85,47 +85,47 @@ PDA::update(float delta, const Controller& controller)
   const InputEventLst& events = controller.get_events();
 
   for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i) 
+  {
+    if (i->type == BUTTON_EVENT)
     {
-      if (i->type == BUTTON_EVENT)
-        {
-          if (i->axis.name == MENU_LEFT_BUTTON && i->button.down) 
-            {
-              state = static_cast<PDAState>(state + 1);
-              if (state > PDA_DIALOGS)
-                state = PDA_OBJECTIVES;
-            }
-          else if (i->axis.name == MENU_RIGHT_BUTTON && i->button.down) 
-            {
-              state = static_cast<PDAState>(state - 1);
-              if (state < PDA_OBJECTIVES)
-                state = PDA_DIALOGS;
-            }
-        }
+      if (i->axis.name == MENU_LEFT_BUTTON && i->button.down) 
+      {
+        state = static_cast<PDAState>(state + 1);
+        if (state > PDA_DIALOGS)
+          state = PDA_OBJECTIVES;
+      }
+      else if (i->axis.name == MENU_RIGHT_BUTTON && i->button.down) 
+      {
+        state = static_cast<PDAState>(state - 1);
+        if (state < PDA_OBJECTIVES)
+          state = PDA_DIALOGS;
+      }
     }
+  }
   
   if (text_area.get())
-    {
-      text_area->set_scroll_offset(text_area->get_scroll_offset() + 500.0f * controller.get_axis_state(Y2_AXIS) * delta);
-    }
+  {
+    text_area->set_scroll_offset(text_area->get_scroll_offset() + 500.0f * controller.get_axis_state(Y2_AXIS) * delta);
+  }
     
   if (old_state != state) 
+  {
+    old_state = state;
+
+    switch (state) 
     {
-      old_state = state;
+      case PDA_NONE:
+        break;
 
-      switch (state) 
-        {
-          case PDA_NONE:
-            break;
+      case PDA_OBJECTIVES:
+        generate_objectives();
+        break;
 
-          case PDA_OBJECTIVES:
-            generate_objectives();
-            break;
-
-          case PDA_DIALOGS:
-            generate_dialogs();
-            break;
-        }
+      case PDA_DIALOGS:
+        generate_dialogs();
+        break;
     }
+  }
   
   text_area->update(delta);
 }
@@ -156,21 +156,21 @@ PDA::objective_complete(const std::string& name)
   force_regeneration();
 
   for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i) 
-    {
-      if (i->name == name)
-        i->complete = true;
-      return;
-    }
+  {
+    if (i->name == name)
+      i->complete = true;
+    return;
+  }
 }
 
 bool
 PDA::is_objective_given(const std::string& name)
 {
   for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i) 
-    {
-      if (i->name == name)
-        return true;
-    }
+  {
+    if (i->name == name)
+      return true;
+  }
   
   return false;
 }
@@ -179,10 +179,10 @@ bool
 PDA::is_objective_complete(const std::string& name)
 {
   for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i) 
-    {
-      if (i->name == name && i->complete)
-        return true;
-    }
+  {
+    if (i->name == name && i->complete)
+      return true;
+  }
   
   return false;
 }
@@ -195,16 +195,16 @@ PDA::generate_objectives()
   
   std::ostringstream out;
   for (std::vector<ObjectiveEntry>::reverse_iterator i = objectives.rbegin(); i != objectives.rend(); ++i) 
-    {
-      out << i->name << ": ";
+  {
+    out << i->name << ": ";
 
-      if (i->complete)
-        out << "complete\n";
-      else
-        out << "incomplete\n";
+    if (i->complete)
+      out << "complete\n";
+    else
+      out << "incomplete\n";
 
-      out << i->text + "\n\n";
-    }
+    out << i->text + "\n\n";
+  }
 
   text_area->set_text(out.str());
 }
@@ -217,12 +217,12 @@ PDA::generate_dialogs()
   
   std::ostringstream out;
   for (std::vector<DialogEntry>::reverse_iterator i = dialogs.rbegin(); i != dialogs.rend(); ++i) 
-    {
-      if (i->character == "Jane")
-        out << "<i>" << i->character << ":</i> " << i->text << '\n';
-      else
-        out << "<b>" << i->character << ":</b> " << i->text << '\n';
-    }
+  {
+    if (i->character == "Jane")
+      out << "<i>" << i->character << ":</i> " << i->text << '\n';
+    else
+      out << "<b>" << i->character << ":</b> " << i->text << '\n';
+  }
   text_area->set_text(out.str());
 }
 

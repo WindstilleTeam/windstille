@@ -40,7 +40,7 @@ MenuComponent::MenuComponent(const Rectf& rect_, bool allow_cancel_, Component* 
 MenuComponent::~MenuComponent()
 {
   for(Items::iterator i = items.begin(); i != items.end(); ++i)
-      delete *i;
+    delete *i;
   items.clear();
 }
 
@@ -50,11 +50,11 @@ MenuComponent::add_item(MenuItem* item)
   items.push_back(item);
   
   if (calc_height() >= rect.get_height())
-    {
-      scroll_mode   = true;
-      scroll_offset = 0;
-      num_displayable_items = static_cast<int>(rect.get_height() / item_height());
-    }
+  {
+    scroll_mode   = true;
+    scroll_offset = 0;
+    num_displayable_items = static_cast<int>(rect.get_height() / item_height());
+  }
 }
 
 void
@@ -63,117 +63,117 @@ MenuComponent::draw()
   float step = item_height();
 
   if (scroll_mode)
-    { // we can only display a subset of items and have to scroll
-      for(int i = 0; i < num_displayable_items; ++i)
-        {
-          items[i+scroll_offset]->draw(Rectf(rect.left, rect.top + static_cast<float>(i) * step + 2.0f, 
-                                             rect.right - 32.0f, rect.top + static_cast<float>(i+1) * step - 2.0f), 
-                                       is_active() && (int(i+scroll_offset) == current_item));
-        }
+  { // we can only display a subset of items and have to scroll
+    for(int i = 0; i < num_displayable_items; ++i)
+    {
+      items[i+scroll_offset]->draw(Rectf(rect.left, rect.top + static_cast<float>(i) * step + 2.0f, 
+                                         rect.right - 32.0f, rect.top + static_cast<float>(i+1) * step - 2.0f), 
+                                   is_active() && (int(i+scroll_offset) == current_item));
+    }
       
-      // draw scrollbar
-      float scrollbar_height = (rect.get_height() - 4.0f) * static_cast<float>(num_displayable_items) / static_cast<float>(items.size());
-      float scrollbar_incr   = (rect.get_height() - 4.0f) * static_cast<float>(scroll_offset) / static_cast<float>(items.size());
+    // draw scrollbar
+    float scrollbar_height = (rect.get_height() - 4.0f) * static_cast<float>(num_displayable_items) / static_cast<float>(items.size());
+    float scrollbar_incr   = (rect.get_height() - 4.0f) * static_cast<float>(scroll_offset) / static_cast<float>(items.size());
 
-      Display::fill_rounded_rect(Rectf(rect.right - 24, rect.top + 2.0f + scrollbar_incr,
-                                       rect.right - 2,  rect.top + 2.0f + scrollbar_incr + scrollbar_height),
-                                 5.0f,
-                                 Color(0.5f, 0.5f, 0.5f, 0.75f));
+    Display::fill_rounded_rect(Rectf(rect.right - 24, rect.top + 2.0f + scrollbar_incr,
+                                     rect.right - 2,  rect.top + 2.0f + scrollbar_incr + scrollbar_height),
+                               5.0f,
+                               Color(0.5f, 0.5f, 0.5f, 0.75f));
       
-      Display::draw_rounded_rect(Rectf(rect.right - 24, rect.top + 2.0f,
-                                       rect.right - 2,  rect.bottom - 2.0f),
-                                 5.0f,
-                                 Color(1.0f, 1.0f, 1.0f, 1.0f));
-    }
+    Display::draw_rounded_rect(Rectf(rect.right - 24, rect.top + 2.0f,
+                                     rect.right - 2,  rect.bottom - 2.0f),
+                               5.0f,
+                               Color(1.0f, 1.0f, 1.0f, 1.0f));
+  }
   else
-    { // all items fit on the screen
-      for(Items::size_type i = 0; i < items.size(); ++i)
-        {
-          items[i]->draw(Rectf(rect.left, rect.top + static_cast<float>(i) * step + 2.0f, 
-                               rect.right, rect.top + static_cast<float>(i+1) * step - 2.0f), 
-                         is_active() && (int(i) == current_item));
-        }
+  { // all items fit on the screen
+    for(Items::size_type i = 0; i < items.size(); ++i)
+    {
+      items[i]->draw(Rectf(rect.left, rect.top + static_cast<float>(i) * step + 2.0f, 
+                           rect.right, rect.top + static_cast<float>(i+1) * step - 2.0f), 
+                     is_active() && (int(i) == current_item));
     }
+  }
 }
 
 void
 MenuComponent::update(float delta, const Controller& controller)
 {
   for(Items::size_type i = 0; i < items.size(); ++i)
-    {
-      items[i]->update(delta);
-    }
+  {
+    items[i]->update(delta);
+  }
 
   for(InputEventLst::const_iterator i = controller.get_events().begin(); 
       i != controller.get_events().end(); 
       ++i)
+  {
+    if (i->type == BUTTON_EVENT && i->button.down)
     {
-      if (i->type == BUTTON_EVENT && i->button.down)
+      if (i->button.name == OK_BUTTON || i->button.name == ENTER_BUTTON)
+      {
+        items[current_item]->click();
+      }
+      else if (i->button.name == CANCEL_BUTTON || 
+               i->button.name == ESCAPE_BUTTON ||
+               i->button.name == PAUSE_BUTTON)
+      {
+        if (allow_cancel) // FIXME: Could use a signal instead
         {
-          if (i->button.name == OK_BUTTON || i->button.name == ENTER_BUTTON)
-            {
-              items[current_item]->click();
-            }
-          else if (i->button.name == CANCEL_BUTTON || 
-                   i->button.name == ESCAPE_BUTTON ||
-                   i->button.name == PAUSE_BUTTON)
-            {
-              if (allow_cancel) // FIXME: Could use a signal instead
-                {
-                  SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
-                  set_active(false);
-                }
-            }
-          else if (i->button.name == MENU_LEFT_BUTTON)
-            {
-              items[current_item]->incr();              
-            }
-          else if (i->button.name == MENU_RIGHT_BUTTON)
-            {
-              items[current_item]->decr();              
-            }          
-          else if (i->button.name == MENU_UP_BUTTON)
-            {
-              SoundManager::current()->play(Pathname("sounds/menu_change.wav", Pathname::kDataPath));
-              
-              current_item = current_item - 1;
-              if (current_item < 0)
-                {
-                  if (dynamic_cast<TabComponent*>(parent))
-                    {
-                      current_item = 0;
-                      set_active(false);
-                    }
-                  else
-                    { 
-                      current_item = static_cast<int>(items.size())-1; 
-                    }
-                }
-                  
-              adjust_scroll_offset();
-            }
-          else if (i->button.name == MENU_DOWN_BUTTON)
-            {
-              SoundManager::current()->play(Pathname("sounds/menu_change.wav", Pathname::kDataPath));
-
-              if (dynamic_cast<TabComponent*>(parent))
-                {
-                  current_item = math::mid(0, current_item + 1, static_cast<int>(items.size()-1)); 
-                }
-              else
-                {
-                  current_item += 1;
-                  if (current_item >= static_cast<int>(items.size()))
-                    {
-                      current_item = 0;
-                    }
-
-                }
-
-              adjust_scroll_offset();
-            }
+          SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
+          set_active(false);
         }
+      }
+      else if (i->button.name == MENU_LEFT_BUTTON)
+      {
+        items[current_item]->incr();              
+      }
+      else if (i->button.name == MENU_RIGHT_BUTTON)
+      {
+        items[current_item]->decr();              
+      }          
+      else if (i->button.name == MENU_UP_BUTTON)
+      {
+        SoundManager::current()->play(Pathname("sounds/menu_change.wav", Pathname::kDataPath));
+              
+        current_item = current_item - 1;
+        if (current_item < 0)
+        {
+          if (dynamic_cast<TabComponent*>(parent))
+          {
+            current_item = 0;
+            set_active(false);
+          }
+          else
+          { 
+            current_item = static_cast<int>(items.size())-1; 
+          }
+        }
+                  
+        adjust_scroll_offset();
+      }
+      else if (i->button.name == MENU_DOWN_BUTTON)
+      {
+        SoundManager::current()->play(Pathname("sounds/menu_change.wav", Pathname::kDataPath));
+
+        if (dynamic_cast<TabComponent*>(parent))
+        {
+          current_item = math::mid(0, current_item + 1, static_cast<int>(items.size()-1)); 
+        }
+        else
+        {
+          current_item += 1;
+          if (current_item >= static_cast<int>(items.size()))
+          {
+            current_item = 0;
+          }
+
+        }
+
+        adjust_scroll_offset();
+      }
     }
+  }
 }
 
 void
@@ -223,16 +223,16 @@ void
 MenuComponent::adjust_scroll_offset()
 {
   if (scroll_mode)
-    {
-      if (current_item - scroll_offset >= num_displayable_items)
-        { // scrolling down
-          scroll_offset = current_item - (num_displayable_items-1);
-        }
-      else if (current_item < scroll_offset)
-        { // scrolling up
-          scroll_offset = current_item;
-        }
-    }  
+  {
+    if (current_item - scroll_offset >= num_displayable_items)
+    { // scrolling down
+      scroll_offset = current_item - (num_displayable_items-1);
+    }
+    else if (current_item < scroll_offset)
+    { // scrolling up
+      scroll_offset = current_item;
+    }
+  }  
 }
 
 void
@@ -241,15 +241,15 @@ MenuComponent::set_screen_rect(const Rectf& rect_)
   num_displayable_items = static_cast<int>(rect_.get_height() / item_height());  
 
   if (num_displayable_items < int(items.size()))
-    {
-      scroll_mode   = true;
-      scroll_offset = 0;
-    }
+  {
+    scroll_mode   = true;
+    scroll_offset = 0;
+  }
   else
-    {
-      scroll_mode   = false;
-      scroll_offset = 0;
-    }
+  {
+    scroll_mode   = false;
+    scroll_offset = 0;
+  }
 
   
   Component::set_screen_rect(rect_);

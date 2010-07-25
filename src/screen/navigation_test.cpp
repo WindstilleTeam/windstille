@@ -71,16 +71,16 @@ NavigationTest::draw()
 
   std::vector<NodeHandle> nodes = graph->find_nodes(cursor, 128.0f);
   for(std::vector<NodeHandle>::iterator i = nodes.begin(); i != nodes.end(); ++i)
-    {
-      Display::draw_circle((*i)->get_pos(), 12.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
-    }
+  {
+    Display::draw_circle((*i)->get_pos(), 12.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  }
 
   if (node_to_connect)
-    {
-      Display::fill_rect(Rectf(node_to_connect->get_pos() - Vector2f(2,2), Sizef(5,5)),  
-                         Color(1.0f, 1.0f, 1.0f));
-      Display::draw_line(node_to_connect->get_pos(), cursor, Color(1.0f, 1.0f, 1.0f, 0.5f));
-    }
+  {
+    Display::fill_rect(Rectf(node_to_connect->get_pos() - Vector2f(2,2), Sizef(5,5)),  
+                       Color(1.0f, 1.0f, 1.0f));
+    Display::draw_line(node_to_connect->get_pos(), cursor, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  }
 
   if (selected_node)
     Display::draw_circle(selected_node->get_pos(), 12.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
@@ -91,13 +91,13 @@ NavigationTest::draw()
   Display::fill_circle(player, 12.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
 
   if (connection.get())
-    {
-      Display::fill_circle(connection->get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f, 0.5f));
-      Display::fill_circle(connection->get_pos(), 8.0f, Color(0.0f, 1.0f, 1.0f));
+  {
+    Display::fill_circle(connection->get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f, 0.5f));
+    Display::fill_circle(connection->get_pos(), 8.0f, Color(0.0f, 1.0f, 1.0f));
      
-      Display::draw_line(connection->get_pos(), connection->get_pos() + 100.0f*stick,
-                         Color(1.0f, 1.0f, 1.0f, 1.0f));
-    }
+    Display::draw_line(connection->get_pos(), connection->get_pos() + 100.0f*stick,
+                       Color(1.0f, 1.0f, 1.0f, 1.0f));
+  }
 }
 
 void
@@ -105,9 +105,9 @@ NavigationTest::update(float delta, const Controller& controller)
 {
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))
-    {
-      MenuManager::display_pause_menu();
-    }
+  {
+    MenuManager::display_pause_menu();
+  }
 
   cursor += Vector2f(controller.get_axis_state(X_AXIS) * 500.0f * delta,
                      controller.get_axis_state(Y_AXIS) * 500.0f * delta);
@@ -116,137 +116,137 @@ NavigationTest::update(float delta, const Controller& controller)
                    controller.get_axis_state(Y2_AXIS));
 
   if (controller.button_was_pressed(PRIMARY_BUTTON))
+  {
+    if (node_to_connect)
     {
-      if (node_to_connect)
-        {
-          if (selected_node)
-            graph->add_edge(node_to_connect, selected_node);
+      if (selected_node)
+        graph->add_edge(node_to_connect, selected_node);
           
-          node_to_connect = 0;
-        }
-      else if (selected_node)
-        {
-          node_to_connect = selected_node;
-        }
-      else if (selected_edge)
-        {
-          graph->split_edge(selected_edge);
-          selected_edge = 0;
-        }
-      else
-        {
-          graph->add_node(cursor);
-        }
+      node_to_connect = 0;
     }
+    else if (selected_node)
+    {
+      node_to_connect = selected_node;
+    }
+    else if (selected_edge)
+    {
+      graph->split_edge(selected_edge);
+      selected_edge = 0;
+    }
+    else
+    {
+      graph->add_node(cursor);
+    }
+  }
 
   if (controller.get_button_state(TERTIARY_BUTTON))
-    { // Move node
-      if (selected_node)
-        {
-          selected_node->set_pos(cursor);
-        }
+  { // Move node
+    if (selected_node)
+    {
+      selected_node->set_pos(cursor);
     }
+  }
 
   if (controller.button_was_pressed(SECONDARY_BUTTON))
-    { // Set player
-      player = old_player = cursor;
-    }
+  { // Set player
+    player = old_player = cursor;
+  }
 
   if (connection.get())
-    { 
-      // Handle the movement of the connection
-      Node* next_node;
-      //float advance = 512.0f * controller.get_axis_state(X2_AXIS) * delta;
+  { 
+    // Handle the movement of the connection
+    Node* next_node;
+    //float advance = 512.0f * controller.get_axis_state(X2_AXIS) * delta;
       
-      Vector2f advance = delta * 512.0f * stick;
-      connection->advance(advance, next_node);
+    Vector2f advance = delta * 512.0f * stick;
+    connection->advance(advance, next_node);
 
-      player = connection->get_pos();
+    player = connection->get_pos();
       
-      if (!advance.is_null())
-        { // Not all advancement got used up, which means we have hit
-          // the end of a edge
+    if (!advance.is_null())
+    { // Not all advancement got used up, which means we have hit
+      // the end of a edge
 
-          // FIXME: This should be a while loop, currently we are just
-          // discarding the rest movement
+      // FIXME: This should be a while loop, currently we are just
+      // discarding the rest movement
 
-          EdgePosition next_edge;
-          float length = 0;
-          for(Node::Edges::iterator i = next_node->edges.begin(); i != next_node->edges.end(); ++i)
-            {
-              if (connection->get_edge() != i->edge)
-                { // Find out into the direction of which edge the stick is pointing
-                  Vector2f proj = stick.project(i->edge->get_vector());
+      EdgePosition next_edge;
+      float length = 0;
+      for(Node::Edges::iterator i = next_node->edges.begin(); i != next_node->edges.end(); ++i)
+      {
+        if (connection->get_edge() != i->edge)
+        { // Find out into the direction of which edge the stick is pointing
+          Vector2f proj = stick.project(i->edge->get_vector());
                   
-                  if (proj.length() > length)
-                    {
-                      next_edge = *i;
-                      length       = proj.length();
-                    }
-                }
-            }
+          if (proj.length() > length)
+          {
+            next_edge = *i;
+            length       = proj.length();
+          }
+        }
+      }
               
-          if (!next_edge.edge)
-            {
-              std::cout << "Dead End" << std::endl;
-              connection.reset();
+      if (!next_edge.edge)
+      {
+        std::cout << "Dead End" << std::endl;
+        connection.reset();
 
-              // FIXME: Voodoo to fix connection/deadend cicles
-              player += stick;
-              old_player = player;
-            }
-          else
-            {
-              std::cout << "transition" << std::endl;
-              *connection = next_edge;
-            }
-        }
-
-      if (controller.get_button_state(AIM_BUTTON))
-        {         
-          connection.reset();
-
-          // FIXME: Voodoo to fix connection/dedaend cicles
-          player += stick;
-          old_player = player;
-        }
+        // FIXME: Voodoo to fix connection/deadend cicles
+        player += stick;
+        old_player = player;
+      }
+      else
+      {
+        std::cout << "transition" << std::endl;
+        *connection = next_edge;
+      }
     }
+
+    if (controller.get_button_state(AIM_BUTTON))
+    {         
+      connection.reset();
+
+      // FIXME: Voodoo to fix connection/dedaend cicles
+      player += stick;
+      old_player = player;
+    }
+  }
   else
-    { // handle non connection based movement
-      player += Vector2f(0.0f, 100.0f) * delta;
+  { // handle non connection based movement
+    player += Vector2f(0.0f, 100.0f) * delta;
       
-      player.x += 512.0f * stick.x * delta;
+    player.x += 512.0f * stick.x * delta;
 
-      if (controller.get_button_state(AIM_BUTTON))
-        {
-          player.y -= 0.5f * 512.0f * delta;
-        }
-
-      std::vector<EdgePosition> positions = graph->find_intersections(Line(old_player, player));
-      if (!positions.empty()) 
-        {
-          std::cout << "Doing connection" << std::endl;
-          connection.reset(new EdgePosition(positions.front()));
-        }
+    if (controller.get_button_state(AIM_BUTTON))
+    {
+      player.y -= 0.5f * 512.0f * delta;
     }
+
+    std::vector<EdgePosition> positions = graph->find_intersections(Line(old_player, player));
+    if (!positions.empty()) 
+    {
+      std::cout << "Doing connection" << std::endl;
+      connection.reset(new EdgePosition(positions.front()));
+    }
+  }
   
   if (controller.button_was_pressed(SELECT_BUTTON))
-    {
-      graph->save(std::cout);
-    }
+  {
+    graph->save(std::cout);
+  }
 
   if (controller.button_was_pressed(QUATERNARY_BUTTON))
-    {
-      if (selected_node) {
-        graph->remove_node(selected_node);
-        selected_node = 0;
-      } 
+  {
+    if (selected_node) {
+      graph->remove_node(selected_node);
+      selected_node = 0;
+    } 
       
-      if (selected_edge) {
-        graph->remove_edge(selected_edge);
-        selected_edge = 0;
-      }      
-    }
+    if (selected_edge) {
+      graph->remove_edge(selected_edge);
+      selected_edge = 0;
+    }      
+  }
 
   selected_node = graph->find_closest_node(cursor, 32.0f);
   if (!selected_node)
@@ -255,9 +255,9 @@ NavigationTest::update(float delta, const Controller& controller)
     selected_edge = 0;
 
   if (connection.get() && !graph->valid(connection->get_edge()))
-    {
-      connection.reset();
-    }
+  {
+    connection.reset();
+  }
 
   old_player = player;
 }

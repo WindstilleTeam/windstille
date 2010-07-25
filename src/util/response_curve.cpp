@@ -36,22 +36,22 @@ float
 ResponseCurve::get(float v)
 {
   if (samples.size() == 1)
-    {
-      return samples[0];
-    }
+  {
+    return samples[0];
+  }
   else
-    {
-      v = math::mid(i_min, v, i_max);
+  {
+    v = math::mid(i_min, v, i_max);
 
-      int   bucket_count = samples.size() - 1;
-      float bucket_size  = (i_max - i_min) / static_cast<float>(bucket_count);
+    int   bucket_count = samples.size() - 1;
+    float bucket_size  = (i_max - i_min) / static_cast<float>(bucket_count);
       
-      int bucket_index = int((v - i_min) / bucket_size);
+    int bucket_index = int((v - i_min) / bucket_size);
 
-      float t = ((v - i_min) - (static_cast<float>(bucket_index) * bucket_size)) / bucket_size;
+    float t = ((v - i_min) - (static_cast<float>(bucket_index) * bucket_size)) / bucket_size;
       
-      return ((1.0f - t) * samples[bucket_index]) + (t * samples[bucket_index + 1]);
-    }
+    return ((1.0f - t) * samples[bucket_index]) + (t * samples[bucket_index + 1]);
+  }
 }
 
 #ifdef __TEST__
@@ -61,20 +61,20 @@ ResponseCurve::get(float v)
 int main(int argc, char** argv)
 {
   if (argc != 2)
-    {
-      std::cout << "Usage: " << argv[0] << " FLOAT" << std::endl;
-    }
+  {
+    std::cout << "Usage: " << argv[0] << " FLOAT" << std::endl;
+  }
   else
-    {
-      float samples[] = { 0.0f, 0.25f, 0.75f, 1.0f };
-      std::vector<float> samples_vec(samples, samples+4);
+  {
+    float samples[] = { 0.0f, 0.25f, 0.75f, 1.0f };
+    std::vector<float> samples_vec(samples, samples+4);
 
-      std::cout << "Samples: " << samples_vec.size() << std::endl;
+    std::cout << "Samples: " << samples_vec.size() << std::endl;
 
-      ResponseCurve curve(0.0f, 1.0f, samples_vec);
+    ResponseCurve curve(0.0f, 1.0f, samples_vec);
 
-      std::cout << curve.get(static_cast<float>(atof(argv[1]))) << std::endl;
-    }
+    std::cout << curve.get(static_cast<float>(atof(argv[1]))) << std::endl;
+  }
   return 0;
 }
 #endif

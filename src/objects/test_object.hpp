@@ -39,7 +39,7 @@ public:
   void set_vflip(bool vflip);
   void set_pos(const Vector2f& pos);
   void attach(const std::string& spritename,
-		      const std::string& attachement_point);
+              const std::string& attachement_point);
 
 private:
   Sprite3D sprite;

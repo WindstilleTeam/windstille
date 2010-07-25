@@ -21,12 +21,12 @@
 #include "editor/layer_manager_columns.hpp"
 #include "editor/sector_model.hpp"
 
-Layer::Layer(SectorModel& sector)
-  : m_sector(sector),
-    objects(),
-    name(),
-    visible(true),
-    locked(false)
+Layer::Layer(SectorModel& sector) :
+  m_sector(sector),
+  objects(),
+  name(),
+  visible(true),
+  locked(false)
 {
 }
 

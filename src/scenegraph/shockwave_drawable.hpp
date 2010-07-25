@@ -29,10 +29,10 @@ public:
   float radius;
 
   ShockwaveDrawable(const Vector2f& pos_, 
-                          const Texture&       noise_,
-                          const ShaderProgram& shader_program_,
-                          float r,
-                          const Matrix& modelview_) 
+                    const Texture&       noise_,
+                    const ShaderProgram& shader_program_,
+                    float r,
+                    const Matrix& modelview_) 
     : Drawable(pos_, 500.0f, modelview_),
       noise(noise_),
       shader_program(shader_program_),
@@ -85,32 +85,32 @@ public:
   
     glBegin(GL_QUADS);
     for (int i = 0; i < segments; ++i)
-      {
-        float angel = 2.0f * math::pi / static_cast<float>(segments);
+    {
+      float angel = 2.0f * math::pi / static_cast<float>(segments);
 
-        float x1 =  sinf(angel*static_cast<float>(i))*rad;
-        float y1 = -cosf(angel*static_cast<float>(i))*rad;
+      float x1 =  sinf(angel*static_cast<float>(i))*rad;
+      float y1 = -cosf(angel*static_cast<float>(i))*rad;
 
-        float x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
-        float y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
+      float x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
+      float y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
 
-        glTexCoord2f(x1+256, (y1+256));
-        glVertex3f(x1+256, y1+256, 0);
+      glTexCoord2f(x1+256, (y1+256));
+      glVertex3f(x1+256, y1+256, 0);
 
-        glTexCoord2f(x2+256, (y2+256));
-        glVertex3f(x2+256, y2+256, 0);
+      glTexCoord2f(x2+256, (y2+256));
+      glVertex3f(x2+256, y2+256, 0);
 
-        float x3 =  sinf(angel*static_cast<float>(i))*minradius;
-        float y3 = -cosf(angel*static_cast<float>(i))*minradius;
+      float x3 =  sinf(angel*static_cast<float>(i))*minradius;
+      float y3 = -cosf(angel*static_cast<float>(i))*minradius;
 
-        float x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
-        float y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
+      float x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
+      float y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
 
-        glTexCoord2f(x4+256, (y4+256));
-        glVertex3f(x4+256, y4+256, 0);
-        glTexCoord2f(x3+256, (y3+256));
-        glVertex3f(x3+256, y3+256, 0);
-      }
+      glTexCoord2f(x4+256, (y4+256));
+      glVertex3f(x4+256, y4+256, 0);
+      glTexCoord2f(x3+256, (y3+256));
+      glVertex3f(x3+256, y3+256, 0);
+    }
     glEnd();
 
     glMatrixMode(GL_TEXTURE);
@@ -128,45 +128,45 @@ public:
     glMultMatrixf(modelview.matrix);
     glTranslatef(pos.x, pos.y, 0);
     if (0)
-      {
-        Rectf rect(0, 0, 800, 600);
-        // Render the screen framebuffer to the actual screen 
-        OpenGLState state;
-        state.bind_texture(tmp_texture, 0);
-        state.activate();
+    {
+      Rectf rect(0, 0, 800, 600);
+      // Render the screen framebuffer to the actual screen 
+      OpenGLState state;
+      state.bind_texture(tmp_texture, 0);
+      state.activate();
 
-        glBegin(GL_QUADS);
+      glBegin(GL_QUADS);
     
-        glTexCoord2f(rect.left, rect.bottom);
-        glVertex2f(rect.left/2.0f, rect.bottom/2.0f);
+      glTexCoord2f(rect.left, rect.bottom);
+      glVertex2f(rect.left/2.0f, rect.bottom/2.0f);
 
-        glTexCoord2f(rect.right, rect.bottom);
-        glVertex2f(rect.right/2.0f, rect.bottom/2.0f);
+      glTexCoord2f(rect.right, rect.bottom);
+      glVertex2f(rect.right/2.0f, rect.bottom/2.0f);
 
-        glTexCoord2f(rect.right, rect.top);
-        glVertex2f(rect.right/2.0f, rect.top/2.0f);
+      glTexCoord2f(rect.right, rect.top);
+      glVertex2f(rect.right/2.0f, rect.top/2.0f);
 
-        glTexCoord2f(rect.left, rect.top);
-        glVertex2f(rect.left/2.0f, rect.top/2.0f);
+      glTexCoord2f(rect.left, rect.top);
+      glVertex2f(rect.left/2.0f, rect.top/2.0f);
     
-        glEnd();
-      }
+      glEnd();
+    }
     else
-      {
-        OpenGLState state;
-        state.bind_texture(tmp_texture, 0);
-        state.bind_texture(noise, 1);
-        state.enable(GL_BLEND);
-        state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        state.activate();
+    {
+      OpenGLState state;
+      state.bind_texture(tmp_texture, 0);
+      state.bind_texture(noise, 1);
+      state.enable(GL_BLEND);
+      state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      state.activate();
 
-        glUseProgram(shader_program.get_handle());    
-        shader_program.set_uniform1f("radius",   radius/512.0f*2.0f);
-        shader_program.set_uniform1i("background_tex", 0);
-        shader_program.set_uniform1i("noise_tex",   1);
-        draw_disc(int(radius));
-        glUseProgram(0);
-      }
+      glUseProgram(shader_program.get_handle());    
+      shader_program.set_uniform1f("radius",   radius/512.0f*2.0f);
+      shader_program.set_uniform1i("background_tex", 0);
+      shader_program.set_uniform1i("noise_tex",   1);
+      draw_disc(int(radius));
+      glUseProgram(0);
+    }
     glPopMatrix();
 #endif
   }
@@ -182,34 +182,34 @@ public:
   
     glBegin(GL_QUADS);
     for (int i = 0; i < segments; ++i)
-      {
-        float angel = 2.0f * math::pi / static_cast<float>(segments);
+    {
+      float angel = 2.0f * math::pi / static_cast<float>(segments);
 
-        float x1 =  sinf(angel*static_cast<float>(i))*rad;
-        float y1 = -cosf(angel*static_cast<float>(i))*rad;
+      float x1 =  sinf(angel*static_cast<float>(i))*rad;
+      float y1 = -cosf(angel*static_cast<float>(i))*rad;
 
-        float x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
-        float y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
+      float x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
+      float y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
 
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        glTexCoord2f(x1/512.0f+0.5f, y1/512.0f+0.5f);
-        glVertex3f(x1+256, y1+256, 0);
+      glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+      glTexCoord2f(x1/512.0f+0.5f, y1/512.0f+0.5f);
+      glVertex3f(x1+256, y1+256, 0);
 
-        glTexCoord2f(x2/512.0f+0.5f, y2/512.0f+0.5f);
-        glVertex3f(x2+256, y2+256, 0);
+      glTexCoord2f(x2/512.0f+0.5f, y2/512.0f+0.5f);
+      glVertex3f(x2+256, y2+256, 0);
 
-        float x3 =  sinf(angel*static_cast<float>(i))*minradius;
-        float y3 = -cosf(angel*static_cast<float>(i))*minradius;
+      float x3 =  sinf(angel*static_cast<float>(i))*minradius;
+      float y3 = -cosf(angel*static_cast<float>(i))*minradius;
 
-        float x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
-        float y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
+      float x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
+      float y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
 
-        glColor4f(1.0f, 1.0f, 1.0f, 0.0f);
-        glTexCoord2f(x4/512.0f+0.5f, y4/512.0f+0.5f);
-        glVertex3f(x4+256, y4+256, 0);
-        glTexCoord2f(x3/512.0f+0.5f, y3/512.0f+0.5f);
-        glVertex3f(x3+256, y3+256, 0);
-      }
+      glColor4f(1.0f, 1.0f, 1.0f, 0.0f);
+      glTexCoord2f(x4/512.0f+0.5f, y4/512.0f+0.5f);
+      glVertex3f(x4+256, y4+256, 0);
+      glTexCoord2f(x3/512.0f+0.5f, y3/512.0f+0.5f);
+      glVertex3f(x3+256, y3+256, 0);
+    }
     glEnd();
   }
 };

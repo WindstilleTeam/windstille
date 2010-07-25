@@ -21,35 +21,35 @@
 #include <assert.h>
 
 SweepResult simple_sweep_1d(float a, float aw, float av,
-			    float b, float bw, float bv)
+                            float b, float bw, float bv)
 {
   SweepResult res;
   // Normalize the calculation so that only A moves and B stands still
   float v = av - bv;
 
   if (v > 0)
-    {
-      res.t0 = (b - (a + aw)) / v;
-      res.t1 = (b + bw - a) / v;
-      res.state = SweepResult::COL_AT;
+  {
+    res.t0 = (b - (a + aw)) / v;
+    res.t1 = (b + bw - a) / v;
+    res.state = SweepResult::COL_AT;
 
-      assert(res.t0 <= res.t1);
-    }
+    assert(res.t0 <= res.t1);
+  }
   else if (v < 0)
-    {
-      res.t0 = (b + bw - a) / v;
-      res.t1 = (b - (a + aw)) / v;
-      res.state = SweepResult::COL_AT;
+  {
+    res.t0 = (b + bw - a) / v;
+    res.t1 = (b - (a + aw)) / v;
+    res.state = SweepResult::COL_AT;
 
-      assert(res.t0 <= res.t1);
-    }
+    assert(res.t0 <= res.t1);
+  }
   else // (v == 0)
-    {
-      if ((a + aw) < b || (a > b + bw))
-        res.state = SweepResult::COL_NEVER;
-      else
-        res.state = SweepResult::COL_ALWAYS;
-    }
+  {
+    if ((a + aw) < b || (a > b + bw))
+      res.state = SweepResult::COL_NEVER;
+    else
+      res.state = SweepResult::COL_ALWAYS;
+  }
   return res;
 }
 

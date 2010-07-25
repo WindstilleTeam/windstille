@@ -65,16 +65,16 @@ View::update (float delta)
   const Controller& controller = InputManagerSDL::current()->get_controller();
 
   if (controller.get_button_state(DEBUG_BUTTON))
+  {
+    if (controller.get_button_state(VIEW_CENTER_BUTTON)) 
     {
-      if (controller.get_button_state(VIEW_CENTER_BUTTON)) 
-        {
-          m_debug_transform = Vector2f(0, 0);
-          m_debug_zoom = 1.0;
-        }
-
-      m_debug_transform.x += 1000.0f * controller.get_axis_state(X2_AXIS) * delta / m_debug_zoom;
-      m_debug_transform.y += 1000.0f * controller.get_axis_state(Y2_AXIS) * delta / m_debug_zoom;
+      m_debug_transform = Vector2f(0, 0);
+      m_debug_zoom = 1.0;
     }
+
+    m_debug_transform.x += 1000.0f * controller.get_axis_state(X2_AXIS) * delta / m_debug_zoom;
+    m_debug_transform.y += 1000.0f * controller.get_axis_state(Y2_AXIS) * delta / m_debug_zoom;
+  }
 }
 
 Rectf

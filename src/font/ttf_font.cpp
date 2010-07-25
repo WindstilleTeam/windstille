@@ -31,10 +31,10 @@
 
 TTFCharacter::TTFCharacter(const Rect& pos_,
                            const Rectf& uv_, 
-                           int advance_)
-  : pos(pos_),
-    uv(uv_), 
-    advance(advance_)
+                           int advance_) :
+  pos(pos_),
+  uv(uv_), 
+  advance(advance_)
 {
 }
 
@@ -63,8 +63,8 @@ public:
 
 FT_Library TTFFontImpl::library;
 
-TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect)
-  : impl(new TTFFontImpl())
+TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect) :
+  impl(new TTFFontImpl())
 {
   assert(size_ > 0);
 
@@ -78,11 +78,11 @@ TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect)
   if (FT_New_Memory_Face(TTFFontImpl::library, 
                          reinterpret_cast<FT_Byte*>(&*buffer.begin()), buffer.size(), 
                          0, &face))
-    {
-      std::ostringstream str;
-      str << "Couldn't load font: " << filename;
-      throw std::runtime_error(str.str());
-    }
+  {
+    std::ostringstream str;
+    str << "Couldn't load font: " << filename;
+    throw std::runtime_error(str.str());
+  }
   
   FT_Set_Pixel_Sizes(face, impl->size, impl->size);
 
@@ -108,45 +108,45 @@ TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect)
 
   // We limit ourself to 256 characters for the momemnt
   for(std::vector<uint32_t>::iterator i = characters.begin(); i != characters.end(); ++i)
+  {
+    if (FT_Load_Char( face,  *i, FT_LOAD_RENDER))
     {
-      if (FT_Load_Char( face,  *i, FT_LOAD_RENDER))
-        {
-          // FIXME: What happens when character is not in font, should be handled more gentle
-          throw std::runtime_error("couldn't load char");
-        }
-      else
-        {      
-          effect.blit(pixelbuffer, face->glyph->bitmap, x_pos, y_pos);
-
-          int glyph_width  = effect.get_glyph_width(face->glyph->bitmap.width);
-          int glyph_height = effect.get_glyph_height(face->glyph->bitmap.rows);
-
-          generate_border(pixelbuffer, x_pos, y_pos, glyph_width, glyph_height);
-
-          Rect pos(Point(effect.get_x_offset(face->glyph->bitmap_left),
-                         effect.get_y_offset(-face->glyph->bitmap_top)),
-                   Size(glyph_width, glyph_height));
-
-          Rectf uv(static_cast<float>(x_pos) / static_cast<float>(pixelbuffer.get_width()),
-                   static_cast<float>(y_pos) / static_cast<float>(pixelbuffer.get_height()),
-                   static_cast<float>(x_pos + glyph_width)/static_cast<float>(pixelbuffer.get_width()),
-                   static_cast<float>(y_pos + glyph_height)/static_cast<float>(pixelbuffer.get_height()));
-      
-          impl->characters.push_back(TTFCharacter(pos, uv,
-                                                  face->glyph->advance.x >> 6));
-
-          // we leave a one pixel border around the letters which we fill with generate_border
-          x_pos += glyph_width + 2;
-          if (x_pos + max_glyph_height + 2 > pixelbuffer.get_width()) // FIXME: should use glyph_width of the next glyph instead of max_glyph_height
-            {
-              y_pos += max_glyph_height + 2;
-              x_pos = 1;
-            }
-
-          if (y_pos + max_glyph_height + 2 > pixelbuffer.get_height())
-            throw std::runtime_error("Font Texture to small");
-        }
+      // FIXME: What happens when character is not in font, should be handled more gentle
+      throw std::runtime_error("couldn't load char");
     }
+    else
+    {      
+      effect.blit(pixelbuffer, face->glyph->bitmap, x_pos, y_pos);
+
+      int glyph_width  = effect.get_glyph_width(face->glyph->bitmap.width);
+      int glyph_height = effect.get_glyph_height(face->glyph->bitmap.rows);
+
+      generate_border(pixelbuffer, x_pos, y_pos, glyph_width, glyph_height);
+
+      Rect pos(Point(effect.get_x_offset(face->glyph->bitmap_left),
+                     effect.get_y_offset(-face->glyph->bitmap_top)),
+               Size(glyph_width, glyph_height));
+
+      Rectf uv(static_cast<float>(x_pos) / static_cast<float>(pixelbuffer.get_width()),
+               static_cast<float>(y_pos) / static_cast<float>(pixelbuffer.get_height()),
+               static_cast<float>(x_pos + glyph_width)/static_cast<float>(pixelbuffer.get_width()),
+               static_cast<float>(y_pos + glyph_height)/static_cast<float>(pixelbuffer.get_height()));
+      
+      impl->characters.push_back(TTFCharacter(pos, uv,
+                                              face->glyph->advance.x >> 6));
+
+      // we leave a one pixel border around the letters which we fill with generate_border
+      x_pos += glyph_width + 2;
+      if (x_pos + max_glyph_height + 2 > pixelbuffer.get_width()) // FIXME: should use glyph_width of the next glyph instead of max_glyph_height
+      {
+        y_pos += max_glyph_height + 2;
+        x_pos = 1;
+      }
+
+      if (y_pos + max_glyph_height + 2 > pixelbuffer.get_height())
+        throw std::runtime_error("Font Texture to small");
+    }
+  }
   FT_Done_Face(face);
 
   impl->texture = Texture(pixelbuffer);
@@ -186,27 +186,27 @@ TTFFont::draw(const Vector2f& pos_, const std::string& str, const Color& color)
 
   glBegin(GL_QUADS);
   for(std::string::const_iterator i = str.begin(); i != str.end(); ++i)
-    {
-      const TTFCharacter& character = impl->characters[*i];
+  {
+    const TTFCharacter& character = impl->characters[*i];
       
-      glTexCoord2f(character.uv.left, character.uv.top);
-      glVertex2f(pos.x + static_cast<float>(character.pos.left),
-                 pos.y + static_cast<float>(character.pos.top));
+    glTexCoord2f(character.uv.left, character.uv.top);
+    glVertex2f(pos.x + static_cast<float>(character.pos.left),
+               pos.y + static_cast<float>(character.pos.top));
 
-      glTexCoord2f(character.uv.right, character.uv.top);
-      glVertex2f(pos.x + static_cast<float>(character.pos.right),
-                 pos.y + static_cast<float>(character.pos.top));
+    glTexCoord2f(character.uv.right, character.uv.top);
+    glVertex2f(pos.x + static_cast<float>(character.pos.right),
+               pos.y + static_cast<float>(character.pos.top));
 
-      glTexCoord2f(character.uv.right, character.uv.bottom);
-      glVertex2f(pos.x + static_cast<float>(character.pos.right),
-                 pos.y + static_cast<float>(character.pos.bottom));
+    glTexCoord2f(character.uv.right, character.uv.bottom);
+    glVertex2f(pos.x + static_cast<float>(character.pos.right),
+               pos.y + static_cast<float>(character.pos.bottom));
 
-      glTexCoord2f(character.uv.left, character.uv.bottom);
-      glVertex2f(pos.x + static_cast<float>(character.pos.left),
-                 pos.y + static_cast<float>(character.pos.bottom));
+    glTexCoord2f(character.uv.left, character.uv.bottom);
+    glVertex2f(pos.x + static_cast<float>(character.pos.left),
+               pos.y + static_cast<float>(character.pos.bottom));
 
-      pos.x += static_cast<float>(character.advance);
-    }
+    pos.x += static_cast<float>(character.advance);
+  }
   glEnd();
 }
 

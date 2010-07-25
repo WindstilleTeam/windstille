@@ -30,15 +30,15 @@ void
 ControllerHelpWindow::draw_button(const Vector2f& pos, bool pressed)
 {  
   if (pressed)
-    {
-      Display::fill_circle(pos, 12.0f, Color(0.8f, 0.0f, 0.0f));
-      //Display::draw_circle(pos, 12.0f, Color(1.0f, 0.0f, 0.0f));
-    }
+  {
+    Display::fill_circle(pos, 12.0f, Color(0.8f, 0.0f, 0.0f));
+    //Display::draw_circle(pos, 12.0f, Color(1.0f, 0.0f, 0.0f));
+  }
   else
-    {
-      Display::fill_circle(pos, 12.0f, Color(1.0f, 1.0f, 1.0f, 0.2f));
-      //Display::draw_circle(pos, 12.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
-    }
+  {
+    Display::fill_circle(pos, 12.0f, Color(1.0f, 1.0f, 1.0f, 0.2f));
+    //Display::draw_circle(pos, 12.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  }
 }
 
 void
@@ -71,8 +71,8 @@ ControllerHelpWindow::draw_trigger(const Vector2f& pos, float value)
   
   if (value > 0.0f)
     Display::fill_rect(Rectf(Vector2f(rect.left, rect.top),
-                                     Sizef(rect.get_width() * value,
-                                           rect.get_height())),
+                             Sizef(rect.get_width() * value,
+                                   rect.get_height())),
                        Color(1.0f, 0.0f, 0.0f));
 
   //Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));

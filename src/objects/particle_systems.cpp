@@ -26,9 +26,9 @@
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/particle_system_drawable.hpp"
 
-ParticleSystems::ParticleSystems(const FileReader& reader)
-  : m_systems(),
-    m_drawables()
+ParticleSystems::ParticleSystems(const FileReader& reader) :
+  m_systems(),
+  m_drawables()
 {
   std::string filename;
   Vector2f    pos;

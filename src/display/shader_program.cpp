@@ -36,8 +36,8 @@ public:
   }
 };
 
-ShaderProgram::ShaderProgram()
-  : impl(new ShaderProgramImpl())
+ShaderProgram::ShaderProgram() :
+  impl(new ShaderProgramImpl())
 {
 }
 

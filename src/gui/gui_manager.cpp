@@ -23,7 +23,7 @@
 namespace gui {
 
 GUIManager::GUIManager()
- : root(new RootComponent(Rectf(0,0,800,600)))
+  : root(new RootComponent(Rectf(0,0,800,600)))
 {
 }
 
@@ -43,10 +43,10 @@ GUIManager::update(float delta, const Controller& controller)
   root->update(delta, controller);
 
   if (!root->is_active())
-    {
-      //FIXME: This doesn't work when GUI isn't an overlay
-      ScreenManager::current()->pop_overlay();
-    }
+  {
+    //FIXME: This doesn't work when GUI isn't an overlay
+    ScreenManager::current()->pop_overlay();
+  }
 }
 
 RootComponent*

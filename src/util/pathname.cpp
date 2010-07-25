@@ -32,7 +32,7 @@ Pathname::set_datadir_overrides(const Overrides& overrides)
 }
 
 static void add_overrides(const boost::filesystem::path& path, const boost::filesystem::path& base, 
-                         Pathname::Overrides* overrides)
+                          Pathname::Overrides* overrides)
 {
   boost::filesystem::directory_iterator end_i; // default construction yields past-the-end
 

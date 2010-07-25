@@ -71,9 +71,9 @@ Config::Config()
 Config::~Config()
 {
   for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
-    {
-      delete i->second;
-    }
+  {
+    delete i->second;
+  }
   config_values.clear();
 }
 
@@ -175,119 +175,119 @@ Config::parse_args(int argc, char** argv)
   argp.parse_args(argc, argv);
 
   while (argp.next())
+  {
+    switch (argp.get_key())
     {
-      switch (argp.get_key())
+      case 'A':
+        int anti_aliasing;
+        if (sscanf(argp.get_argument().c_str(), "%d", &anti_aliasing) != 1)
         {
-        case 'A':
-          int anti_aliasing;
-          if (sscanf(argp.get_argument().c_str(), "%d", &anti_aliasing) != 1)
-            {
-              throw std::runtime_error("Anti-Aliasing option '-a' requires argument of type {NUM}");
-            }
-          else
-            {
-              get<int>("anti-aliasing") = anti_aliasing;
-            }
-          break;
-
-        case 'r':
-          get<std::string>("recorder-file") = argp.get_argument();
-          break;
-
-        case 'x':
-          get<std::string>("screenshot-dir") = argp.get_argument();
-          break;
-
-        case 'p':
-          get<std::string>("playback-file") = argp.get_argument();
-          break;
-
-        case 'w':
-          get<bool>("wiimote") = true;
-          break;
-
-        case 'd':
-          Pathname::set_datadir(argp.get_argument());
-          break;
-
-        case 'f':
-          set_bool("fullscreen", true);
-          break;
-
-        case 'g':
-          {
-            int screen_width  = 800;
-            int screen_height = 600;
-            if (sscanf(argp.get_argument().c_str(), "%dx%d",
-                       &screen_width, &screen_height) == 2)
-              {
-                get<int>("screen-width")  = screen_width;
-                get<int>("screen-height") = screen_height;
-              
-                // FIXME: Why does this get printed twice?!
-                // Is the argument parser buggy?
-                std::cout << "Geometry: " << screen_width << "x" << screen_height << std::endl;
-              }
-            else
-              {
-                throw std::runtime_error("Geometry option '-g' requires argument of type {WIDTH}x{HEIGHT}");
-              }
-          }
-          break;
-
-        case 'a':
-          {
-            int aspect_width  = 800;
-            int aspect_height = 600;
-            if (sscanf(argp.get_argument().c_str(), "%dx%d",
-                       &aspect_width, &aspect_height) == 2)
-              {
-                get<int>("aspect-width")  = aspect_width;
-                get<int>("aspect-height") = aspect_height;
-              
-                // FIXME: Why does this get printed twice?!
-                // Is the argument parser buggy?
-                std::cout << "Geometry: " << aspect_width << "x" << aspect_height << std::endl;
-              }
-            else
-              {
-                throw std::runtime_error("Geometry option '-a' requires argument of type {WIDTH}x{HEIGHT}");
-              }
-          }
-          break;
-        
-        case 's':
-          set_bool("sound", false);
-          break;
-
-        case 'S':
-          set_bool("sound", true);
-          break;  
-
-        case 'c':
-          get<std::string>("primary-controller-file") = argp.get_argument();
-          break;
-
-        case secondary_controller_file:
-          get<std::string>("secondary-controller-file") = argp.get_argument();
-          break;
-
-        case 'v':
-          std::cout << "Windstille " << WINDSTILLE_VERSION << std::endl;
-          exit(EXIT_SUCCESS);
-          break;
-
-        case 'h':
-          argp.print_help();
-          exit(EXIT_SUCCESS);
-          break;
-
-        case CommandLine::REST_ARG:
-          set_string("levelfile", argp.get_argument());
-          arg_files.push_back(argp.get_argument());
-          break;
+          throw std::runtime_error("Anti-Aliasing option '-a' requires argument of type {NUM}");
         }
+        else
+        {
+          get<int>("anti-aliasing") = anti_aliasing;
+        }
+        break;
+
+      case 'r':
+        get<std::string>("recorder-file") = argp.get_argument();
+        break;
+
+      case 'x':
+        get<std::string>("screenshot-dir") = argp.get_argument();
+        break;
+
+      case 'p':
+        get<std::string>("playback-file") = argp.get_argument();
+        break;
+
+      case 'w':
+        get<bool>("wiimote") = true;
+        break;
+
+      case 'd':
+        Pathname::set_datadir(argp.get_argument());
+        break;
+
+      case 'f':
+        set_bool("fullscreen", true);
+        break;
+
+      case 'g':
+      {
+        int screen_width  = 800;
+        int screen_height = 600;
+        if (sscanf(argp.get_argument().c_str(), "%dx%d",
+                   &screen_width, &screen_height) == 2)
+        {
+          get<int>("screen-width")  = screen_width;
+          get<int>("screen-height") = screen_height;
+              
+          // FIXME: Why does this get printed twice?!
+          // Is the argument parser buggy?
+          std::cout << "Geometry: " << screen_width << "x" << screen_height << std::endl;
+        }
+        else
+        {
+          throw std::runtime_error("Geometry option '-g' requires argument of type {WIDTH}x{HEIGHT}");
+        }
+      }
+      break;
+
+      case 'a':
+      {
+        int aspect_width  = 800;
+        int aspect_height = 600;
+        if (sscanf(argp.get_argument().c_str(), "%dx%d",
+                   &aspect_width, &aspect_height) == 2)
+        {
+          get<int>("aspect-width")  = aspect_width;
+          get<int>("aspect-height") = aspect_height;
+              
+          // FIXME: Why does this get printed twice?!
+          // Is the argument parser buggy?
+          std::cout << "Geometry: " << aspect_width << "x" << aspect_height << std::endl;
+        }
+        else
+        {
+          throw std::runtime_error("Geometry option '-a' requires argument of type {WIDTH}x{HEIGHT}");
+        }
+      }
+      break;
+        
+      case 's':
+        set_bool("sound", false);
+        break;
+
+      case 'S':
+        set_bool("sound", true);
+        break;  
+
+      case 'c':
+        get<std::string>("primary-controller-file") = argp.get_argument();
+        break;
+
+      case secondary_controller_file:
+        get<std::string>("secondary-controller-file") = argp.get_argument();
+        break;
+
+      case 'v':
+        std::cout << "Windstille " << WINDSTILLE_VERSION << std::endl;
+        exit(EXIT_SUCCESS);
+        break;
+
+      case 'h':
+        argp.print_help();
+        exit(EXIT_SUCCESS);
+        break;
+
+      case CommandLine::REST_ARG:
+        set_string("levelfile", argp.get_argument());
+        arg_files.push_back(argp.get_argument());
+        break;
     }
+  }
 }
 
 bool
@@ -302,67 +302,67 @@ Config::is_set(const std::string& name)
 {
   ConfigValues::iterator i = config_values.find(name);
   if (i == config_values.end())
-    {
-      throw std::runtime_error("Error: unknown Config value: '" + name + "'");        
-    }    
+  {
+    throw std::runtime_error("Error: unknown Config value: '" + name + "'");        
+  }    
   else
-    {
-      return i->second->is_set();
-    }
+  {
+    return i->second->is_set();
+  }
 }
 
 void
 Config::load()
 {
   try 
+  {
+    FileReader reader = FileReader::parse(Pathname("config", Pathname::kUserPath));
+    if(reader.get_name() != "windstille-config") 
     {
-      FileReader reader = FileReader::parse(Pathname("config", Pathname::kUserPath));
-      if(reader.get_name() != "windstille-config") 
-        {
-          std::cerr << "Warning: Config file is not a windstille-config file.\n";
-          return;
-        }
-    
-      for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
-        { // FIXME: all this dynamic_casting is overcomplicated crap
-          if (dynamic_cast<ConfigValue<int>*>(i->second))
-            {
-              int v;
-              if (reader.get(i->first.c_str(), v))
-                set_int(i->first, v);
-            }
-          else if (dynamic_cast<ConfigValue<bool>*>(i->second))
-            {
-              bool v;
-              if (reader.get(i->first.c_str(), v))
-                set_bool(i->first, v);
-            }
-          else if (dynamic_cast<ConfigValue<float>*>(i->second))
-            {
-              float v;
-              if (reader.get(i->first.c_str(), v))
-                set_float(i->first, v);
-            }
-          else if (dynamic_cast<ConfigValue<std::string>*>(i->second))
-            {
-              std::string v;
-              if (reader.get(i->first.c_str(), v))
-                set_string(i->first, v);
-            }
-          else 
-            {
-              std::cout << "Config: Unknown type for: " << i->first << std::endl;
-            }
-        }
-    
-      // TODO read controller config
-    } 
-  catch(std::exception& e) 
-    {
-      std::cerr << "Couldn't open config file: " << e.what() << "\n"
-                << "This is normal on first startup!\n";
+      std::cerr << "Warning: Config file is not a windstille-config file.\n";
       return;
     }
+    
+    for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
+    { // FIXME: all this dynamic_casting is overcomplicated crap
+      if (dynamic_cast<ConfigValue<int>*>(i->second))
+      {
+        int v;
+        if (reader.get(i->first.c_str(), v))
+          set_int(i->first, v);
+      }
+      else if (dynamic_cast<ConfigValue<bool>*>(i->second))
+      {
+        bool v;
+        if (reader.get(i->first.c_str(), v))
+          set_bool(i->first, v);
+      }
+      else if (dynamic_cast<ConfigValue<float>*>(i->second))
+      {
+        float v;
+        if (reader.get(i->first.c_str(), v))
+          set_float(i->first, v);
+      }
+      else if (dynamic_cast<ConfigValue<std::string>*>(i->second))
+      {
+        std::string v;
+        if (reader.get(i->first.c_str(), v))
+          set_string(i->first, v);
+      }
+      else 
+      {
+        std::cout << "Config: Unknown type for: " << i->first << std::endl;
+      }
+    }
+    
+    // TODO read controller config
+  } 
+  catch(std::exception& e) 
+  {
+    std::cerr << "Couldn't open config file: " << e.what() << "\n"
+              << "This is normal on first startup!\n";
+    return;
+  }
 }
 
 void
@@ -376,14 +376,14 @@ Config::save()
     writer.start_list("windstille-config");
 
     for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
+    {
+      if (i->second->should_be_saved() && i->second->is_set())
       {
-        if (i->second->should_be_saved() && i->second->is_set())
-          {
-            writer.write_comment("  ;; " + i->second->get_docstring()); 
-            i->second->write(writer);
-            writer.write_comment("");
-          }
+        writer.write_comment("  ;; " + i->second->get_docstring()); 
+        i->second->write(writer);
+        writer.write_comment("");
       }
+    }
     // TODO write controller config
     
     writer.end_list("windstille-config");
@@ -398,14 +398,14 @@ Config::debug_print(std::ostream& out)
 {
   out << "Config " << this << ":" << std::endl;
   for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
-    {
-      out << boost::format("  %|1$20| = %|2$-20| (%|3$|)")
-        % i->second->get_name()
-        % (boost::format("'%|1s|'") % (*i->second))
-        % (i->second->is_set() ? "set" : "default")
-          << std::endl;
+  {
+    out << boost::format("  %|1$20| = %|2$-20| (%|3$|)")
+      % i->second->get_name()
+      % (boost::format("'%|1s|'") % (*i->second))
+      % (i->second->is_set() ? "set" : "default")
+        << std::endl;
       
-    }
+  }
 }
 
 template<>

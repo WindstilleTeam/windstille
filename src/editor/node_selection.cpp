@@ -18,8 +18,8 @@
 
 #include "editor/node_selection.hpp"
 
-NodeSelection::NodeSelection()
-  : nodes()
+NodeSelection::NodeSelection() :
+  nodes()
 {
 }
 

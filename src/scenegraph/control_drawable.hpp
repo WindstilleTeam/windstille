@@ -27,7 +27,7 @@ private:
 
 public:
   ControlDrawable(Surface surface_, const Vector2f& pos_, float angle_, float z_pos_,
-                        const Matrix& modelview_)
+                  const Matrix& modelview_)
     : Drawable(pos_, z_pos_, modelview_), 
       surface(surface_), 
       angle(angle_)

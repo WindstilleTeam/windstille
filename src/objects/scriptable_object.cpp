@@ -22,11 +22,11 @@
 #include "app/globals.hpp"
 #include "objects/scriptable_object.hpp"
 
-ScriptableObject::ScriptableObject(const FileReader& props)
-  : z_pos(50),
-    target_speed(0),
-    acceleration(0),
-    flash_speed(0)
+ScriptableObject::ScriptableObject(const FileReader& props) :
+  z_pos(50),
+  target_speed(0),
+  acceleration(0),
+  flash_speed(0)
 { 
   std::string spritename;
   std::string highlightname;
@@ -50,16 +50,16 @@ ScriptableObject::ScriptableObject(const FileReader& props)
     sprite = Sprite(Pathname(spritename));
   
   if (highlightname != "")
-    {
-      highlight = Sprite(Pathname(highlightname));
-      highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-    }
+  {
+    highlight = Sprite(Pathname(highlightname));
+    highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
+  }
 
   if (lightname != "")
-    {
-      light = Sprite(Pathname(lightname));
-      light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-    }
+  {
+    light = Sprite(Pathname(lightname));
+    light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
+  }
     
   flash_delta = game_time;
   target_x = pos.x;
@@ -88,9 +88,9 @@ ScriptableObject::draw(SceneContext& sc)
     sc.highlight().draw(highlight, tmp_pos, z_pos);
 
   if (light) 
-    {
-      sc.light().draw(light, tmp_pos, z_pos);
-    }
+  {
+    sc.light().draw(light, tmp_pos, z_pos);
+  }
 }
 
 void
@@ -113,18 +113,18 @@ void
 ScriptableObject::use()
 {
   if (!script_file.empty())
+  {
+    try 
     {
-      try 
-        {
-          Pathname path = Sector::current()->get_directory();
-          path.append_path(name).append_text(".nut");
-          ScriptManager::current()->run_script_file(path);
-        }
-      catch (std::exception& e) 
-        {
-          ConsoleLog << e.what() << std::endl;
-        }
+      Pathname path = Sector::current()->get_directory();
+      path.append_path(name).append_text(".nut");
+      ScriptManager::current()->run_script_file(path);
     }
+    catch (std::exception& e) 
+    {
+      ConsoleLog << e.what() << std::endl;
+    }
+  }
 }
 
 void

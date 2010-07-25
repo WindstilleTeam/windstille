@@ -51,12 +51,12 @@ void
 GameObject::set_parent(const std::string& name)
 {
   if (::Entity* entity = dynamic_cast<Entity*>(object.lock().get()))
+  {
+    if (::GameObject* obj = Sector::current()->get_object(name))
     {
-      if (::GameObject* obj = Sector::current()->get_object(name))
-        {
-          entity->set_parent(dynamic_cast<Entity*>(obj));
-        }
+      entity->set_parent(dynamic_cast<Entity*>(obj));
     }
+  }
 }
 
 void
@@ -85,7 +85,7 @@ TestObject::set_vflip(bool vflip)
 
 void
 TestObject::attach(const std::string& spritename,
-		           const std::string& attachement_point)
+                   const std::string& attachement_point)
 {
   obj()->attach(spritename, attachement_point);
 }

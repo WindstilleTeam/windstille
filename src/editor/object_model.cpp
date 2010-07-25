@@ -27,19 +27,19 @@
 #include "editor/editor_window.hpp"
 #include "util/file_reader.hpp"
 
-ObjectModel::ObjectModel(const std::string& name_, const Vector2f& rel_pos_)
-  : name(name_),
-    rel_pos(rel_pos_),
-    select_mask(),
-    parent_ptr()
+ObjectModel::ObjectModel(const std::string& name_, const Vector2f& rel_pos_) :
+  name(name_),
+  rel_pos(rel_pos_),
+  select_mask(),
+  parent_ptr()
 {
 }
 
-ObjectModel::ObjectModel(const FileReader& reader)
-  : name(),
-    rel_pos(),
-    select_mask(),
-    parent_ptr()
+ObjectModel::ObjectModel(const FileReader& reader) :
+  name(),
+  rel_pos(),
+  select_mask(),
+  parent_ptr()
 {
   reader.get("name", name);
   reader.get("pos",  rel_pos);

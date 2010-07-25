@@ -39,17 +39,17 @@ DecalObjectModel::create(const std::string& name, const Vector2f& pos,
   return ObjectModelHandle(new DecalObjectModel(name, pos, path, type));
 }
 
-DecalObjectModel::DecalObjectModel(const FileReader& reader)
-  : ObjectModel(reader),
-    path(),
-    surface(),
-    software_surface(),
-    type(),
-    scale(1.0f, 1.0f),
-    angle(0.0f),
-    hflip(false),
-    vflip(false),
-    m_drawable()
+DecalObjectModel::DecalObjectModel(const FileReader& reader) :
+  ObjectModel(reader),
+  path(),
+  surface(),
+  software_surface(),
+  type(),
+  scale(1.0f, 1.0f),
+  angle(0.0f),
+  hflip(false),
+  vflip(false),
+  m_drawable()
 {
   int map_type = 0;
   reader.get("path", path);
@@ -65,31 +65,31 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader)
 }
 
 DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const Vector2f& rel_pos_, 
-                                   const std::string& path_, MapType type_)
-  : ObjectModel("DecalObjectModel", rel_pos_),
-    path(path_),
-    surface(Pathname(path_)),
-    software_surface(Pathname(path_)),
-    type(type_),
-    scale(1.0f, 1.0f),
-    angle(0.0f),
-    hflip(false),
-    vflip(false),
-    m_drawable()
+                                   const std::string& path_, MapType type_) :
+  ObjectModel("DecalObjectModel", rel_pos_),
+  path(path_),
+  surface(Pathname(path_)),
+  software_surface(Pathname(path_)),
+  type(type_),
+  scale(1.0f, 1.0f),
+  angle(0.0f),
+  hflip(false),
+  vflip(false),
+  m_drawable()
 {
 }
 
-DecalObjectModel::DecalObjectModel(const DecalObjectModel& rhs)
-  : ObjectModel(rhs),
-    path(rhs.path),
-    surface(rhs.surface),
-    software_surface(rhs.software_surface),
-    type(rhs.type),
-    scale(rhs.scale),
-    angle(rhs.angle),
-    hflip(rhs.hflip),
-    vflip(rhs.vflip),
-    m_drawable()
+DecalObjectModel::DecalObjectModel(const DecalObjectModel& rhs) :
+  ObjectModel(rhs),
+  path(rhs.path),
+  surface(rhs.surface),
+  software_surface(rhs.software_surface),
+  type(rhs.type),
+  scale(rhs.scale),
+  angle(rhs.angle),
+  hflip(rhs.hflip),
+  vflip(rhs.vflip),
+  m_drawable()
 {
 }
 

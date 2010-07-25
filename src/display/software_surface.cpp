@@ -32,27 +32,27 @@ public:
   SDL_Surface* surface;
 };
 
-SoftwareSurface::SoftwareSurface(const Pathname& filename)
-  : impl(new SoftwareSurfaceImpl())
+SoftwareSurface::SoftwareSurface(const Pathname& filename) :
+  impl(new SoftwareSurfaceImpl())
 {
   impl->surface = IMG_Load(filename.get_sys_path().c_str());
 
   if (!impl->surface)
-    {
-      std::ostringstream str;
-      str << "SoftwareSurface: Couldn't load: " << filename << std::endl;
-      throw std::runtime_error(str.str());
-    }
+  {
+    std::ostringstream str;
+    str << "SoftwareSurface: Couldn't load: " << filename << std::endl;
+    throw std::runtime_error(str.str());
+  }
   else
-    {
-      SDL_SetAlpha(impl->surface, 0, 0);
+  {
+    SDL_SetAlpha(impl->surface, 0, 0);
 
-      assert(!SDL_MUSTLOCK(impl->surface));
-    }
+    assert(!SDL_MUSTLOCK(impl->surface));
+  }
 }
 
-SoftwareSurface::SoftwareSurface(int width, int height, Format format)
-  : impl(new SoftwareSurfaceImpl())
+SoftwareSurface::SoftwareSurface(int width, int height, Format format) :
+  impl(new SoftwareSurfaceImpl())
 {
   assert(format == RGBA);
 
@@ -155,22 +155,22 @@ SoftwareSurface::is_at(int x, int y) const
 {
   if (x >= 0 && x < impl->surface->w &&
       y >= 0 && y < impl->surface->h)
+  {
+    if (get_bits_per_pixel() == 32)
     {
-      if (get_bits_per_pixel() == 32)
-        {
-          uint8_t* pixels = static_cast<uint8_t*>(impl->surface->pixels);
+      uint8_t* pixels = static_cast<uint8_t*>(impl->surface->pixels);
           
-          return pixels[y * impl->surface->pitch + x*4 + 3] > 128;
-        }
-      else
-        {
-          return true;
-        }
+      return pixels[y * impl->surface->pitch + x*4 + 3] > 128;
     }
-  else
+    else
     {
-      return false;
+      return true;
     }
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void
@@ -180,52 +180,52 @@ SoftwareSurface::save_png(const std::string& filename) const
 
   if (get_bytes_per_pixel() != 4 &&
       get_bytes_per_pixel() != 3)
-    {
-      std::cout << "SoftwareSurface::save_png(): Unsupported pixel format" << std::endl;
-      return;
-    }
+  {
+    std::cout << "SoftwareSurface::save_png(): Unsupported pixel format" << std::endl;
+    return;
+  }
 
   FILE* fp = fopen(filename.c_str(), "w");
 
   if (!fp)
-    {
-      std::cout << "Error: Couldn't save screenshot: " << strerror(errno) << std::endl;
-      return;
-    }
+  {
+    std::cout << "Error: Couldn't save screenshot: " << strerror(errno) << std::endl;
+    return;
+  }
   else
-    {
-      int pitch   = get_pitch();
-      png_structp png_ptr;
-      png_infop   info_ptr;
-      png_byte* pixels = static_cast<png_byte*>(get_pixels());
+  {
+    int pitch   = get_pitch();
+    png_structp png_ptr;
+    png_infop   info_ptr;
+    png_byte* pixels = static_cast<png_byte*>(get_pixels());
 
-      png_ptr  = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-      info_ptr = png_create_info_struct(png_ptr);
+    png_ptr  = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    info_ptr = png_create_info_struct(png_ptr);
 
-      png_init_io(png_ptr, fp);
+    png_init_io(png_ptr, fp);
 
-      png_set_IHDR(png_ptr, info_ptr, 
-                   get_width(), get_height(), 8 /* bitdepth */,
-                   (get_bytes_per_pixel() == 32) ? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_RGB,
-                   PNG_INTERLACE_NONE, 
-                   PNG_COMPRESSION_TYPE_BASE, 
-                   PNG_FILTER_TYPE_BASE);
+    png_set_IHDR(png_ptr, info_ptr, 
+                 get_width(), get_height(), 8 /* bitdepth */,
+                 (get_bytes_per_pixel() == 32) ? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_RGB,
+                 PNG_INTERLACE_NONE, 
+                 PNG_COMPRESSION_TYPE_BASE, 
+                 PNG_FILTER_TYPE_BASE);
       
-      png_set_compression_level(png_ptr, 6);
-      png_write_info(png_ptr, info_ptr);
+    png_set_compression_level(png_ptr, 6);
+    png_write_info(png_ptr, info_ptr);
 
-      boost::scoped_array<png_bytep> row_pointers(new png_bytep[get_height()]);
+    boost::scoped_array<png_bytep> row_pointers(new png_bytep[get_height()]);
    
-      // generate row pointers
-      for (int k = 0; k < get_height(); k++)
-        row_pointers[k] = reinterpret_cast<png_byte*>(pixels + ((get_height() - k - 1) * pitch));
+    // generate row pointers
+    for (int k = 0; k < get_height(); k++)
+      row_pointers[k] = reinterpret_cast<png_byte*>(pixels + ((get_height() - k - 1) * pitch));
 
-      png_write_image(png_ptr, row_pointers.get());
+    png_write_image(png_ptr, row_pointers.get());
 
-      png_write_end(png_ptr, info_ptr);
+    png_write_end(png_ptr, info_ptr);
 
-      fclose(fp);
-    }
+    fclose(fp);
+  }
 }
 
 /* EOF */

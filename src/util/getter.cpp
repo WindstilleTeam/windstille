@@ -92,25 +92,25 @@ bool get(const FileReader& reader, const char* name, Color& value)
   std::vector<float> floats;
   if (reader.get(name, floats)) {
     if (floats.size() == 3)
-      {
-        value.r = floats[0];
-        value.g = floats[1];
-        value.b = floats[2];
-        value.a = 1.0f;
-        return true;
-      }
+    {
+      value.r = floats[0];
+      value.g = floats[1];
+      value.b = floats[2];
+      value.a = 1.0f;
+      return true;
+    }
     else if (floats.size() == 4)
-      {
-        value.r = floats[0];
-        value.g = floats[1];
-        value.b = floats[2];
-        value.a = floats[3];
-        return true;
-      }
+    {
+      value.r = floats[0];
+      value.g = floats[1];
+      value.b = floats[2];
+      value.a = floats[3];
+      return true;
+    }
     else
-      {
-        return false;
-      }
+    {
+      return false;
+    }
   } else {
     return false;
   } 

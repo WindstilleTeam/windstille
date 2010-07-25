@@ -107,38 +107,38 @@ ArmatureTest::update(float delta, const Controller& controller)
 
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))
-    {
-      ScreenManager::current()->pop_screen();
-    }
+  {
+    ScreenManager::current()->pop_screen();
+  }
 
   if (controller.button_was_pressed(PRIMARY_BUTTON))
-    {
-      xrot = 90;
-      yrot = 0;
-      zrot = 0;
-    }
+  {
+    xrot = 90;
+    yrot = 0;
+    zrot = 0;
+  }
   else if (controller.button_was_pressed(SECONDARY_BUTTON))
-      {
-      xrot = 0;
-      yrot = 90;
-      zrot = 0;
-      }
+  {
+    xrot = 0;
+    yrot = 90;
+    zrot = 0;
+  }
   else if (controller.button_was_pressed(TERTIARY_BUTTON))
-    {
-      xrot = 0;
-      yrot = 0;
-      zrot = 90;
-    }
+  {
+    xrot = 0;
+    yrot = 0;
+    zrot = 90;
+  }
   else
-    { 
-      yrot += controller.get_axis_state(X_AXIS) * 90 * delta;
-      xrot += controller.get_axis_state(Y_AXIS) * 90 * delta;
-      zrot += controller.get_axis_state(X2_AXIS) * 90 * delta;
-    }
+  { 
+    yrot += controller.get_axis_state(X_AXIS) * 90 * delta;
+    xrot += controller.get_axis_state(Y_AXIS) * 90 * delta;
+    zrot += controller.get_axis_state(X2_AXIS) * 90 * delta;
+  }
 
   if (controller.button_was_pressed(AIM_BUTTON))
-    {
-    }
+  {
+  }
 }
 
 /* EOF */

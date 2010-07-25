@@ -22,13 +22,13 @@
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
 
-Entity::Entity()
-  : done(),
-    pos(),
-    velocity(0, 0),
-    useable(false),
-    use_verb(),
-    parent(0)
+Entity::Entity() :
+  done(),
+  pos(),
+  velocity(0, 0),
+  useable(false),
+  use_verb(),
+  parent(0)
 {
 }
 
@@ -58,9 +58,9 @@ void
 Entity::set_parent(Entity* parent_)
 {
   if (parent_ != this)
-    {
-      parent = parent_;
-    }
+  {
+    parent = parent_;
+  }
 }
 
 Properties
@@ -68,10 +68,10 @@ Entity::get_properties()
 {
   static PropertySet* type = 0;
   if (!type) 
-    {
-      type = new PropertySet("Entity");
-      type->add_bool("usable", &Entity::useable);
-    }
+  {
+    type = new PropertySet("Entity");
+    type->add_bool("usable", &Entity::useable);
+  }
 
   return Properties(type, this);
 }

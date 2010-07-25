@@ -23,8 +23,8 @@
 #include "scenegraph/vertex_array_drawable.hpp"
 #include "scenegraph/gradient_drawable.hpp"
 
-BackgroundGradient::BackgroundGradient(const FileReader& props)
-  : drawable()
+BackgroundGradient::BackgroundGradient(const FileReader& props) :
+  drawable()
 {
   std::vector<float> colors;
 
@@ -32,21 +32,21 @@ BackgroundGradient::BackgroundGradient(const FileReader& props)
   props.get("colors", colors);
 
   if (colors.size() % (3 + 4 + 4 + 2) != 0)
-    {
-      std::cout << "BackgroundGradient: specified color gradient is invalid" << std::endl;
-      /** Color gradients are in the format:
+  {
+    std::cout << "BackgroundGradient: specified color gradient is invalid" << std::endl;
+    /** Color gradients are in the format:
           
-      (colors start midpoint end R1 G1 B1 A1 R2 G2 B2 A2 I I
-              start midpoint end R1 G1 B1 A1 R2 G2 B2 A2 I I
-              ...)
+        (colors start midpoint end R1 G1 B1 A1 R2 G2 B2 A2 I I
+        start midpoint end R1 G1 B1 A1 R2 G2 B2 A2 I I
+        ...)
 
-              I is ignored
+        I is ignored
 
-          all specified in float, this is similar to Gimps gradients
-          so you can easily copy&paste
-       */
-      colors.clear();
-    }
+        all specified in float, this is similar to Gimps gradients
+        so you can easily copy&paste
+    */
+    colors.clear();
+  }
 
   drawable.reset(new GradientDrawable(colors));
   Sector::current()->get_scene_graph().add_drawable(drawable);

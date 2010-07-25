@@ -42,8 +42,8 @@ public:
   }
 };
 
-RenderBuffer::RenderBuffer(GLenum format, int width, int height)
-  : impl(new RenderBufferImpl(format, width, height))
+RenderBuffer::RenderBuffer(GLenum format, int width, int height) :
+  impl(new RenderBufferImpl(format, width, height))
 {
 }
 

@@ -27,10 +27,10 @@ ControlPoint::create(const Vector2f& pos)
   return ControlPointHandle(new ControlPoint(Surface(Pathname("editor/handle.png")), pos));
 }
 
-ControlPoint::ControlPoint(const Surface& surface_, const Vector2f& pos_)
-  : surface(surface_),
-    pos(pos_),
-    offset()
+ControlPoint::ControlPoint(const Surface& surface_, const Vector2f& pos_) :
+  surface(surface_),
+  pos(pos_),
+  offset()
 {
 }
 

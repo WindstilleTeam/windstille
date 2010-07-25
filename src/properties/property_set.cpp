@@ -21,19 +21,19 @@
 
 #include "properties/property_set.hpp"
 
-PropertySet::PropertySet(const std::string& name_, PropertySet* parent_)
-  : parent(parent_),
-    name(name_),
-    properties()
+PropertySet::PropertySet(const std::string& name_, PropertySet* parent_) :
+  parent(parent_),
+  name(name_),
+  properties()
 {  
 }
 
 PropertySet::~PropertySet()
 {
   for(std::map<std::string, Property*>::iterator i = properties.begin(); i != properties.end(); ++i)
-    {
-      delete i->second;
-    }
+  {
+    delete i->second;
+  }
 }
   
 void
@@ -41,15 +41,15 @@ PropertySet::add(const std::string& name_, Property* property)
 {
   Property*& i = properties[name_];
   if (i)
-    {
-      std::ostringstream str;
-      str << "PropertySet::add: Name conflict: '" << name_ << "' already used";
-      throw std::runtime_error(str.str());
-    }
+  {
+    std::ostringstream str;
+    str << "PropertySet::add: Name conflict: '" << name_ << "' already used";
+    throw std::runtime_error(str.str());
+  }
   else
-    {
-      i = property;
-    }
+  {
+    i = property;
+  }
 }
 
 Property*
@@ -57,16 +57,16 @@ PropertySet::get(const std::string& name_) const
 {
   std::map<std::string, Property*>::const_iterator i = properties.find(name_);
   if (i == properties.end())
-    {
-      if (parent)
-        return parent->get(name_);
-      else
-        return 0;
-    }
+  {
+    if (parent)
+      return parent->get(name_);
+    else
+      return 0;
+  }
   else
-    {
-      return i->second;
-    }
+  {
+    return i->second;
+  }
 }
 
 void
@@ -76,9 +76,9 @@ PropertySet::get_properties(std::vector<std::string>& lst) const
     parent->get_properties(lst);
   
   for(std::map<std::string, Property*>::const_iterator i = properties.begin(); i != properties.end(); ++i)
-    {
-      lst.push_back(i->first);
-    }
+  {
+    lst.push_back(i->first);
+  }
 }
 
 /* EOF */

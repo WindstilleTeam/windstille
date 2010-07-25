@@ -58,18 +58,18 @@ Button::update(float , const Controller& controller)
   set_active(false);
 
   for(InputEventLst::const_iterator i = controller.get_events().begin(); i != controller.get_events().end(); ++i) 
+  {
+    if (i->type == BUTTON_EVENT && i->button.down)
     {
-      if (i->type == BUTTON_EVENT && i->button.down)
-        {
-          if (i->button.name == OK_BUTTON)
-            {
-            }
-          else if (i->button.name == CANCEL_BUTTON || i->button.name == ESCAPE_BUTTON)
-            {            
-              set_active(false);
-            }
-        }
-    }  
+      if (i->button.name == OK_BUTTON)
+      {
+      }
+      else if (i->button.name == CANCEL_BUTTON || i->button.name == ESCAPE_BUTTON)
+      {            
+        set_active(false);
+      }
+    }
+  }  
 }
 
 } // namespace gui

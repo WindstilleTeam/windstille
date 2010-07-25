@@ -25,9 +25,9 @@
 #include "display/texture_packer.hpp"
 
 
-SurfaceManager::SurfaceManager()
-  : texture_packer(0), // (new TexturePacker(Size(2048, 2048))),
-    surfaces()
+SurfaceManager::SurfaceManager() :
+  texture_packer(0), // (new TexturePacker(Size(2048, 2048))),
+  surfaces()
 {
 }
 
@@ -35,13 +35,13 @@ SurfaceManager::~SurfaceManager()
 {
 #if 0 
   if (debug)
+  {
+    for(Surfaces::iterator i = surfaces.begin(); i != surfaces.end(); ++i)
     {
-      for(Surfaces::iterator i = surfaces.begin(); i != surfaces.end(); ++i)
-        {
-          //      if (i->second.use_count() > 1)
-          std::cerr << "Warning: Surface '" << i->first << "' not released.\n";
-        }
+      //      if (i->second.use_count() > 1)
+      std::cerr << "Warning: Surface '" << i->first << "' not released.\n";
     }
+  }
 #endif
 }
 
@@ -101,31 +101,31 @@ SurfaceManager::load_grid(const Pathname& filename,
   Texture texture;
 
   try
-    {                                                                       
-      texture = create_texture(image, &maxu, &maxv);
-    }
+  {                                                                       
+    texture = create_texture(image, &maxu, &maxv);
+  }
   catch(std::exception& e)
-    {
-      std::ostringstream msg;
-      msg << "Couldn't create texture for '" << filename << "': " << e.what();
-      throw std::runtime_error(msg.str());                                      
-    }
+  {
+    std::ostringstream msg;
+    msg << "Couldn't create texture for '" << filename << "': " << e.what();
+    throw std::runtime_error(msg.str());                                      
+  }
 
   for(int y = 0; y <= image.get_height() - height + 1; y += height)
+  {
+    for(int x = 0; x <= image.get_width() - width + 1; x += width)
     {
-      for(int x = 0; x <= image.get_width() - width + 1; x += width)
-        {
-          float s_min_u = maxu * static_cast<float>(x) / static_cast<float>(image.get_width());
-          float s_min_v = maxv * static_cast<float>(x) / static_cast<float>(image.get_height());
-          float s_max_u = (maxu * (static_cast<float>(x + width)))  / static_cast<float>(image.get_width());
-          float s_max_v = (maxv * (static_cast<float>(x + height))) / static_cast<float>(image.get_height());
+      float s_min_u = maxu * static_cast<float>(x) / static_cast<float>(image.get_width());
+      float s_min_v = maxv * static_cast<float>(x) / static_cast<float>(image.get_height());
+      float s_max_u = (maxu * (static_cast<float>(x + width)))  / static_cast<float>(image.get_width());
+      float s_max_v = (maxv * (static_cast<float>(x + height))) / static_cast<float>(image.get_height());
 
-          out_surfaces.push_back(Surface(texture, 
-                                         Rectf(s_min_u, s_min_v, s_max_u, s_max_v), 
-                                         Sizef(static_cast<float>(width),
-                                               static_cast<float>(height))));
-        }
+      out_surfaces.push_back(Surface(texture, 
+                                     Rectf(s_min_u, s_min_v, s_max_u, s_max_v), 
+                                     Sizef(static_cast<float>(width),
+                                           static_cast<float>(height))));
     }
+  }
 }
 
 Texture
@@ -152,12 +152,12 @@ void
 SurfaceManager::cleanup()
 {
   for(Surfaces::iterator i = surfaces.begin(); i != surfaces.end(); ++i)
+  {
+    if (i->second.use_count() == 1)
     {
-      if (i->second.use_count() == 1)
-        {
-          surfaces.erase(i);
-        }
+      surfaces.erase(i);
     }
+  }
 }
 
 void

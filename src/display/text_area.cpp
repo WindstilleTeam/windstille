@@ -66,8 +66,8 @@ private:
   TextAreaImpl& operator=(const TextAreaImpl&);
 };
 
-TextArea::TextArea(const Rectf& rect, bool letter_by_letter)
-  : impl(new TextAreaImpl)
+TextArea::TextArea(const Rectf& rect, bool letter_by_letter) :
+  impl(new TextAreaImpl)
 {
   impl->font = Fonts::current()->vera20.get();
   impl->rect    = rect;
@@ -101,45 +101,45 @@ TextArea::set_text(const std::string& str)
   BabyXML xml(str);
 
   for(BabyXML::iterator i = xml.begin(); i != xml.end(); ++i)
+  {
+    if (i->type == BabyXML::Node::START_TAG)
     {
-      if (i->type == BabyXML::Node::START_TAG)
-        {
-          impl->commands.push_back(TextAreaCommand(TextAreaCommand::START, i->content));
-        }
-      else if (i->type == BabyXML::Node::END_TAG)
-        {
-          impl->commands.push_back(TextAreaCommand(TextAreaCommand::END, i->content));
-        }
-      else if (i->type == BabyXML::Node::TEXT)
-        {      
-          // Seperate the given str into words, words are seperated by either
-          // ' ' or '\n', space is threaded as a word of its own
-          // "Hello  World \n" => ("Hello", " ", " ", "World", " ", "\n")
-          std::string word;
-          for(std::string::const_iterator j = i->content.begin(); j != i->content.end(); ++j)
-            {
-              if (*j == ' ' || *j == '\n')
-                {
-                  if (word.empty())
-                    {
-                      impl->commands.push_back(TextAreaCommand(TextAreaCommand::WORD, std::string(1, *j)));
-                    }
-                  else
-                    {
-                      impl->commands.push_back(TextAreaCommand(TextAreaCommand::WORD, word));
-                      impl->commands.push_back(TextAreaCommand(TextAreaCommand::WORD, std::string(1, *j)));
-                      word = "";
-                    }
-                }
-              else
-                {
-                  word += *j;
-                }
-            }
-          if (!word.empty())
-            impl->commands.push_back(TextAreaCommand(TextAreaCommand::WORD, word));
-        }
+      impl->commands.push_back(TextAreaCommand(TextAreaCommand::START, i->content));
     }
+    else if (i->type == BabyXML::Node::END_TAG)
+    {
+      impl->commands.push_back(TextAreaCommand(TextAreaCommand::END, i->content));
+    }
+    else if (i->type == BabyXML::Node::TEXT)
+    {      
+      // Seperate the given str into words, words are seperated by either
+      // ' ' or '\n', space is threaded as a word of its own
+      // "Hello  World \n" => ("Hello", " ", " ", "World", " ", "\n")
+      std::string word;
+      for(std::string::const_iterator j = i->content.begin(); j != i->content.end(); ++j)
+      {
+        if (*j == ' ' || *j == '\n')
+        {
+          if (word.empty())
+          {
+            impl->commands.push_back(TextAreaCommand(TextAreaCommand::WORD, std::string(1, *j)));
+          }
+          else
+          {
+            impl->commands.push_back(TextAreaCommand(TextAreaCommand::WORD, word));
+            impl->commands.push_back(TextAreaCommand(TextAreaCommand::WORD, std::string(1, *j)));
+            word = "";
+          }
+        }
+        else
+        {
+          word += *j;
+        }
+      }
+      if (!word.empty())
+        impl->commands.push_back(TextAreaCommand(TextAreaCommand::WORD, word));
+    }
+  }
 }
 
 void
@@ -165,14 +165,14 @@ TextArea::draw()
 {
   assert(impl->font);
   if (impl->max_scroll_offset > 0.0f)
-    {
-      float height = impl->max_scroll_offset + impl->rect.get_height();
+  {
+    float height = impl->max_scroll_offset + impl->rect.get_height();
 
-      Display::fill_rounded_rect(Rectf(Vector2f(impl->rect.right + 4,
-                                                impl->rect.top + impl->scroll_offset*impl->rect.get_height()/height), 
-                                       Sizef(8, impl->rect.get_height()*impl->rect.get_height()/height)),
-                                 4.0f, Color(1.0f, 1.0f, 1.0f, 0.25f));
-    }
+    Display::fill_rounded_rect(Rectf(Vector2f(impl->rect.right + 4,
+                                              impl->rect.top + impl->scroll_offset*impl->rect.get_height()/height), 
+                                     Sizef(8, impl->rect.get_height()*impl->rect.get_height()/height)),
+                               4.0f, Color(1.0f, 1.0f, 1.0f, 0.25f));
+  }
   OpenGLState state;
   
   state.bind_texture(impl->font->get_texture());
@@ -201,201 +201,201 @@ TextArea::draw()
 
   std::vector<TextAreaCommand>::const_iterator i = impl->commands.begin();
   for(; i != impl->commands.end(); ++i)
-    {
-      if (break_writing)
-        break;
+  {
+    if (break_writing)
+      break;
         
-      switch (i->type)
+    switch (i->type)
+    {
+      case TextAreaCommand::START:
+        if (i->content == "b")
         {
-          case TextAreaCommand::START:
-            if (i->content == "b")
-              {
-                top_color    = Color(1.0f, 0.0f, 0.0f);
-                bottom_color = Color(0.8f, 0.0f, 0.0f);
-              }
-            else if (i->content == "i")
-              {
-                top_color    = Color(0.65f, 0.7f, 1.0f);
-                bottom_color = Color(0.65f, 0.7f, 1.0f);
-              }
-            else if (i->content == "small")
-              {
-                is_small = true;
-              }
-            else if (i->content == "large")
-              {
-                is_large = true;
-              }
-            else if (i->content == "sleep")
-              {
-                eat_time -= 1.0f;
-              }
-            else if (i->content == "sin")
-              {
-                sinus = true;
-              }
-            break;
-
-          case TextAreaCommand::END:
-            if (i->content == "b" || i->content == "i")
-              {
-                top_color    = Color(1.0f, 1.0f, 1.0f);
-                bottom_color = Color(1.0f, 1.0f, 1.0f);
-              }
-            else if (i->content == "small")
-              {
-                is_small = false;
-              }
-            else if (i->content == "large")
-              {
-                is_large = false;
-              }
-            else if (i->content == "sin")
-              {
-                sinus = false;
-              }
-            break;
-          
-          case TextAreaCommand::WORD:
-            retry:
-            int word_width;
-
-            if (is_small)
-              word_width = static_cast<int>(static_cast<float>(impl->font->get_width(i->content)) * 0.6f);
-            else if (is_large)
-              word_width = static_cast<int>(static_cast<float>(impl->font->get_width(i->content)) * 2.0f);
-            else
-              word_width = impl->font->get_width(i->content);
-          
-            if (i->content == "\n")
-              {
-                x_pos = 0;
-                y_pos += impl->font->get_height() + impl->v_space;
-              }
-            else if (x_pos + word_width > impl->rect.get_width() && word_width <= impl->rect.get_width())
-              {
-                x_pos = 0;
-                y_pos += impl->font->get_height() + impl->v_space;
-                goto retry;
-              }
-            else
-              {
-                if (x_pos == 0 && i->content == " ")
-                  {
-                    // ignore space at the beginning of a line
-                  }
-                else
-                  {
-                    for(std::string::const_iterator j = i->content.begin(); j != i->content.end(); ++j)
-                      {
-                        if (impl->letter_by_letter && eat_time <= 0)
-                          {
-                            break_writing = true;
-                            break;
-                          }
-                        
-                        float x = static_cast<float>(x_pos);
-                        float y = static_cast<float>(y_pos);
-                        
-                        if (sinus) // FIXME: this could actually work per vertex
-                          y += sinf(impl->passed_time * 10.0f + static_cast<float>(x_pos) / 15.0f) * 5.0f;
-
-                        if (*j == '.' || *j == '\n')
-                          eat_time -= 0.50f;
-                        else
-                          eat_time -= 0.05f;
-
-                        const TTFCharacter& character = impl->font->get_character(*j);
-                      
-                        bool draw_it = (y_pos >= impl->scroll_offset && 
-                                        y_pos < impl->scroll_offset + impl->rect.get_height() - static_cast<float>(impl->font->get_height()));
-                        if (is_small)
-                          {
-                            float scale = 0.6f;
-                            if (draw_it)
-                              {
-                                glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
-                                glTexCoord2f(character.uv.left, character.uv.top);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.left),
-                                           y + scale * static_cast<float>(character.pos.top));
-
-                                glTexCoord2f(character.uv.right, character.uv.top);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.right), 
-                                           y + scale * static_cast<float>(character.pos.top));
-
-                                glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
-                                glTexCoord2f(character.uv.right, character.uv.bottom);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.right), 
-                                           y + scale * static_cast<float>(character.pos.bottom));
-
-                                glTexCoord2f(character.uv.left, character.uv.bottom);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.left), 
-                                           y + scale * static_cast<float>(character.pos.bottom));
-                              }
-                            x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
-                          }
-                        else if (is_large)
-                          {
-                            float scale = 2.0f;
-                            if (draw_it)
-                              {
-                                glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
-                                glTexCoord2f(character.uv.left, character.uv.top);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.left),
-                                           y + static_cast<float>(character.pos.top));
-
-                                glTexCoord2f(character.uv.right, character.uv.top);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.right), 
-                                           y + static_cast<float>(character.pos.top));
-
-                                glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
-                                glTexCoord2f(character.uv.right, character.uv.bottom);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.right), 
-                                           y + static_cast<float>(character.pos.bottom));
-
-                                glTexCoord2f(character.uv.left, character.uv.bottom);
-                                glVertex2f(x + scale * static_cast<float>(character.pos.left), 
-                                           y + static_cast<float>(character.pos.bottom));
-                              }
-                            x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
-                          }
-                        else   
-                          {
-                            if (draw_it)
-                              {
-                                glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
-                                glTexCoord2f(character.uv.left, character.uv.top);
-                                glVertex2f(x + static_cast<float>(character.pos.left),
-                                           y + static_cast<float>(character.pos.top));
-
-                                glTexCoord2f(character.uv.right, character.uv.top);
-                                glVertex2f(x + static_cast<float>(character.pos.right), 
-                                           y + static_cast<float>(character.pos.top));
-
-                                glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
-                                glTexCoord2f(character.uv.right, character.uv.bottom);
-                                glVertex2f(x + static_cast<float>(character.pos.right), 
-                                           y + static_cast<float>(character.pos.bottom));
-
-                                glTexCoord2f(character.uv.left, character.uv.bottom);
-                                glVertex2f(x + static_cast<float>(character.pos.left), 
-                                           y + static_cast<float>(character.pos.bottom));
-                              }
-                            x_pos += character.advance;
-                          }
-                      }
-                  }
-              }
-            break;
+          top_color    = Color(1.0f, 0.0f, 0.0f);
+          bottom_color = Color(0.8f, 0.0f, 0.0f);
         }
+        else if (i->content == "i")
+        {
+          top_color    = Color(0.65f, 0.7f, 1.0f);
+          bottom_color = Color(0.65f, 0.7f, 1.0f);
+        }
+        else if (i->content == "small")
+        {
+          is_small = true;
+        }
+        else if (i->content == "large")
+        {
+          is_large = true;
+        }
+        else if (i->content == "sleep")
+        {
+          eat_time -= 1.0f;
+        }
+        else if (i->content == "sin")
+        {
+          sinus = true;
+        }
+        break;
+
+      case TextAreaCommand::END:
+        if (i->content == "b" || i->content == "i")
+        {
+          top_color    = Color(1.0f, 1.0f, 1.0f);
+          bottom_color = Color(1.0f, 1.0f, 1.0f);
+        }
+        else if (i->content == "small")
+        {
+          is_small = false;
+        }
+        else if (i->content == "large")
+        {
+          is_large = false;
+        }
+        else if (i->content == "sin")
+        {
+          sinus = false;
+        }
+        break;
+          
+      case TextAreaCommand::WORD:
+        retry:
+        int word_width;
+
+        if (is_small)
+          word_width = static_cast<int>(static_cast<float>(impl->font->get_width(i->content)) * 0.6f);
+        else if (is_large)
+          word_width = static_cast<int>(static_cast<float>(impl->font->get_width(i->content)) * 2.0f);
+        else
+          word_width = impl->font->get_width(i->content);
+          
+        if (i->content == "\n")
+        {
+          x_pos = 0;
+          y_pos += impl->font->get_height() + impl->v_space;
+        }
+        else if (x_pos + word_width > impl->rect.get_width() && word_width <= impl->rect.get_width())
+        {
+          x_pos = 0;
+          y_pos += impl->font->get_height() + impl->v_space;
+          goto retry;
+        }
+        else
+        {
+          if (x_pos == 0 && i->content == " ")
+          {
+            // ignore space at the beginning of a line
+          }
+          else
+          {
+            for(std::string::const_iterator j = i->content.begin(); j != i->content.end(); ++j)
+            {
+              if (impl->letter_by_letter && eat_time <= 0)
+              {
+                break_writing = true;
+                break;
+              }
+                        
+              float x = static_cast<float>(x_pos);
+              float y = static_cast<float>(y_pos);
+                        
+              if (sinus) // FIXME: this could actually work per vertex
+                y += sinf(impl->passed_time * 10.0f + static_cast<float>(x_pos) / 15.0f) * 5.0f;
+
+              if (*j == '.' || *j == '\n')
+                eat_time -= 0.50f;
+              else
+                eat_time -= 0.05f;
+
+              const TTFCharacter& character = impl->font->get_character(*j);
+                      
+              bool draw_it = (y_pos >= impl->scroll_offset && 
+                              y_pos < impl->scroll_offset + impl->rect.get_height() - static_cast<float>(impl->font->get_height()));
+              if (is_small)
+              {
+                float scale = 0.6f;
+                if (draw_it)
+                {
+                  glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
+                  glTexCoord2f(character.uv.left, character.uv.top);
+                  glVertex2f(x + scale * static_cast<float>(character.pos.left),
+                             y + scale * static_cast<float>(character.pos.top));
+
+                  glTexCoord2f(character.uv.right, character.uv.top);
+                  glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                             y + scale * static_cast<float>(character.pos.top));
+
+                  glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
+                  glTexCoord2f(character.uv.right, character.uv.bottom);
+                  glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                             y + scale * static_cast<float>(character.pos.bottom));
+
+                  glTexCoord2f(character.uv.left, character.uv.bottom);
+                  glVertex2f(x + scale * static_cast<float>(character.pos.left), 
+                             y + scale * static_cast<float>(character.pos.bottom));
+                }
+                x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
+              }
+              else if (is_large)
+              {
+                float scale = 2.0f;
+                if (draw_it)
+                {
+                  glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
+                  glTexCoord2f(character.uv.left, character.uv.top);
+                  glVertex2f(x + scale * static_cast<float>(character.pos.left),
+                             y + static_cast<float>(character.pos.top));
+
+                  glTexCoord2f(character.uv.right, character.uv.top);
+                  glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                             y + static_cast<float>(character.pos.top));
+
+                  glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
+                  glTexCoord2f(character.uv.right, character.uv.bottom);
+                  glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                             y + static_cast<float>(character.pos.bottom));
+
+                  glTexCoord2f(character.uv.left, character.uv.bottom);
+                  glVertex2f(x + scale * static_cast<float>(character.pos.left), 
+                             y + static_cast<float>(character.pos.bottom));
+                }
+                x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
+              }
+              else   
+              {
+                if (draw_it)
+                {
+                  glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
+                  glTexCoord2f(character.uv.left, character.uv.top);
+                  glVertex2f(x + static_cast<float>(character.pos.left),
+                             y + static_cast<float>(character.pos.top));
+
+                  glTexCoord2f(character.uv.right, character.uv.top);
+                  glVertex2f(x + static_cast<float>(character.pos.right), 
+                             y + static_cast<float>(character.pos.top));
+
+                  glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
+                  glTexCoord2f(character.uv.right, character.uv.bottom);
+                  glVertex2f(x + static_cast<float>(character.pos.right), 
+                             y + static_cast<float>(character.pos.bottom));
+
+                  glTexCoord2f(character.uv.left, character.uv.bottom);
+                  glVertex2f(x + static_cast<float>(character.pos.left), 
+                             y + static_cast<float>(character.pos.bottom));
+                }
+                x_pos += character.advance;
+              }
+            }
+          }
+        }
+        break;
     }
+  }
 
   if (impl->max_scroll_offset == -1.0f)
-    {
-      impl->max_scroll_offset = static_cast<float>(y_pos) - impl->rect.get_height();
-      if (impl->max_scroll_offset < 0)
-        impl->max_scroll_offset = 0;
-    }
+  {
+    impl->max_scroll_offset = static_cast<float>(y_pos) - impl->rect.get_height();
+    if (impl->max_scroll_offset < 0)
+      impl->max_scroll_offset = 0;
+  }
 
   // FIXME: This is not correct, since the last command itself might
   // not be completly excecuted

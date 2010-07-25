@@ -64,51 +64,51 @@ ScriptManager::ScriptManager()
 {
   vm = sq_open(1024);
   if(vm == 0)
-    {
-      throw std::runtime_error("Couldn't initialize squirrel vm");
-    }
+  {
+    throw std::runtime_error("Couldn't initialize squirrel vm");
+  }
   else
-    {
-      // register default error handlers
-      sqstd_seterrorhandlers(vm);
+  {
+    // register default error handlers
+    sqstd_seterrorhandlers(vm);
 
-      { // register squirrel libs in the root table
+    { // register squirrel libs in the root table
         
-        sq_pushroottable(vm);
-      
-        /* FIXME: None of these should be needed for scripts
-
-           if(SQ_FAILED(sqstd_register_bloblib(v)))
-           throw SquirrelError(v, "Couldn't register blob lib");
-
-           if(SQ_FAILED(sqstd_register_iolib(v)))
-           throw SquirrelError(v, "Couldn't register io lib");
-
-           if(SQ_FAILED(sqstd_register_systemlib(v)))
-           throw SquirrelError(v, "Couldn't register system lib");
-        */
-
-        if(SQ_FAILED(sqstd_register_mathlib(vm)))
-          throw SquirrelError(vm, "Couldn't register math lib");
-
-        if(SQ_FAILED(sqstd_register_stringlib(vm)))
-          throw SquirrelError(vm, "Couldn't register string lib");
-
-        // register print function
-        sq_setprintfunc(vm, printfunc);
-  
-        // register windstille API
-        Scripting::register_windstille_wrapper(vm);
-        sq_pop(vm, 1);
-      }
-
-      // Create the empty "objects" table
       sq_pushroottable(vm);
-      sq_pushstring(vm, OBJECTS_TABLE, -1);
-      sq_newtable(vm);
-      sq_newslot(vm, -3, SQFalse);
+      
+      /* FIXME: None of these should be needed for scripts
+
+         if(SQ_FAILED(sqstd_register_bloblib(v)))
+         throw SquirrelError(v, "Couldn't register blob lib");
+
+         if(SQ_FAILED(sqstd_register_iolib(v)))
+         throw SquirrelError(v, "Couldn't register io lib");
+
+         if(SQ_FAILED(sqstd_register_systemlib(v)))
+         throw SquirrelError(v, "Couldn't register system lib");
+      */
+
+      if(SQ_FAILED(sqstd_register_mathlib(vm)))
+        throw SquirrelError(vm, "Couldn't register math lib");
+
+      if(SQ_FAILED(sqstd_register_stringlib(vm)))
+        throw SquirrelError(vm, "Couldn't register string lib");
+
+      // register print function
+      sq_setprintfunc(vm, printfunc);
+  
+      // register windstille API
+      Scripting::register_windstille_wrapper(vm);
       sq_pop(vm, 1);
     }
+
+    // Create the empty "objects" table
+    sq_pushroottable(vm);
+    sq_pushstring(vm, OBJECTS_TABLE, -1);
+    sq_newtable(vm);
+    sq_newslot(vm, -3, SQFalse);
+    sq_pop(vm, 1);
+  }
 }
 
 ScriptManager::~ScriptManager()
@@ -134,94 +134,94 @@ ScriptManager::run_script_file(const Pathname& filename, bool global)
   std::ifstream in(filename.get_sys_path().c_str());
 
   if (global)
+  {
+    // Scripts run in the global namespace must not suspend
+
+    // Compile the script and push it on the stack
+    if (sq_compile(vm, squirrel_read_char, &in, filename.get_sys_path().c_str(), true) < 0)
+      throw SquirrelError(vm, "Couldn't parse script");
+
+    // Set 'this' environment
+    sq_pushroottable(vm);
+
+    // Execute the script
+    if (SQ_FAILED(sq_call(vm, 1, false, true)))
     {
-      // Scripts run in the global namespace must not suspend
-
-      // Compile the script and push it on the stack
-      if (sq_compile(vm, squirrel_read_char, &in, filename.get_sys_path().c_str(), true) < 0)
-        throw SquirrelError(vm, "Couldn't parse script");
-
-      // Set 'this' environment
-      sq_pushroottable(vm);
-
-      // Execute the script
-      if (SQ_FAILED(sq_call(vm, 1, false, true)))
-        {
-          std::ostringstream str;
-          str << "SquirrelThread::run(): " << filename << ": Couldn't start script";
-          throw SquirrelError(vm, str.str());
-        }
-      else
-        {
-          sq_pop(vm, 1);
-
-          if (sq_getvmstate(vm) != SQ_VMSTATE_IDLE)
-            {
-              std::ostringstream str;
-              str << "ScriptManager::run_script(): '" << filename << "': global scripts must not suspend";
-              throw std::runtime_error(str.str());
-            }
-
-          return boost::shared_ptr<SquirrelThread>();
-        }
+      std::ostringstream str;
+      str << "SquirrelThread::run(): " << filename << ": Couldn't start script";
+      throw SquirrelError(vm, str.str());
     }
+    else
+    {
+      sq_pop(vm, 1);
+
+      if (sq_getvmstate(vm) != SQ_VMSTATE_IDLE)
+      {
+        std::ostringstream str;
+        str << "ScriptManager::run_script(): '" << filename << "': global scripts must not suspend";
+        throw std::runtime_error(str.str());
+      }
+
+      return boost::shared_ptr<SquirrelThread>();
+    }
+  }
   else
-    {
-      SquirrelThreads::iterator it = squirrel_vms.end();
+  {
+    SquirrelThreads::iterator it = squirrel_vms.end();
 
-      // Look if the VM is associated with the source file
-      for(SquirrelThreads::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
-        {
-          if ((*i)->get_filename() == filename)
-            {
-              it = i;
-              break;
-            }
-        }
-      
-      if (it != squirrel_vms.end())
-        {
-          // Call the run method
-          if ((*it)->is_idle())
-            {
-              (*it)->call("run");
-              return *it;
-            }
-          else
-            {
-              std::ostringstream str;
-              str << filename << ": ScriptManager::run_script(): Script must be idle to be 'run()'";
-              throw std::runtime_error(str.str());
-            }
-        }
-      else
-        { // Add VM to the list of VMs
-          squirrel_vms.push_back(boost::shared_ptr<SquirrelThread>(new SquirrelThread(vm, true)));
-          squirrel_vms.back()->load(in, filename);
-          squirrel_vms.back()->call("init");
-          squirrel_vms.back()->call("run");
-          return squirrel_vms.back();
-        }
+    // Look if the VM is associated with the source file
+    for(SquirrelThreads::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
+    {
+      if ((*i)->get_filename() == filename)
+      {
+        it = i;
+        break;
+      }
     }
+      
+    if (it != squirrel_vms.end())
+    {
+      // Call the run method
+      if ((*it)->is_idle())
+      {
+        (*it)->call("run");
+        return *it;
+      }
+      else
+      {
+        std::ostringstream str;
+        str << filename << ": ScriptManager::run_script(): Script must be idle to be 'run()'";
+        throw std::runtime_error(str.str());
+      }
+    }
+    else
+    { // Add VM to the list of VMs
+      squirrel_vms.push_back(boost::shared_ptr<SquirrelThread>(new SquirrelThread(vm, true)));
+      squirrel_vms.back()->load(in, filename);
+      squirrel_vms.back()->call("init");
+      squirrel_vms.back()->call("run");
+      return squirrel_vms.back();
+    }
+  }
 }
 
 void
 ScriptManager::update()
 {
   for(SquirrelThreads::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
-    {
-      (*i)->update();
-    }
+  {
+    (*i)->update();
+  }
 }
 
 boost::shared_ptr<SquirrelThread>
 ScriptManager::get_thread(HSQUIRRELVM v) const
 {
   for(SquirrelThreads::const_iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
-    {
-      if ((*i)->get_thread() == v)
-        return *i;
-    }
+  {
+    if ((*i)->get_thread() == v)
+      return *i;
+  }
 
   return boost::shared_ptr<SquirrelThread>();
 }
@@ -232,9 +232,9 @@ ScriptManager::fire_wakeup_event(WakeupData event)
   assert(event.type >= 0 && event.type < MAX_WAKEUP_EVENT_COUNT);
 
   for(SquirrelThreads::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
-    {
-      (*i)->fire_wakeup_event(event);
-    }
+  {
+    (*i)->fire_wakeup_event(event);
+  }
 }
 
 void
@@ -251,11 +251,11 @@ ScriptManager::remove_object_from_squirrel(boost::shared_ptr<GameObject> object)
   sq_pushroottable(v);
   sq_pushstring(v, OBJECTS_TABLE, -1);
   if(SQ_FAILED(sq_get(v, -2)))
-    {
-      std::ostringstream msg;
-      msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
-      throw SquirrelError(v, msg.str());
-    }
+  {
+    std::ostringstream msg;
+    msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
+    throw SquirrelError(v, msg.str());
+  }
 
   // remove object from table
   sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
@@ -275,23 +275,23 @@ ScriptManager::remove_object_from_squirrel(boost::shared_ptr<GameObject> object)
 static inline void create_squirrel_instance(HSQUIRRELVM v, boost::shared_ptr<GameObject> object)
 {
   if (dynamic_cast<ScriptableObject*>(object.get()))
-    {
-      create_squirrel_instance(v, new Scripting::ScriptableObject(object),
-                               true);
-      return;
-    }
+  {
+    create_squirrel_instance(v, new Scripting::ScriptableObject(object),
+                             true);
+    return;
+  }
   
   if (dynamic_cast<TestObject*>(object.get()))
-    {
-      create_squirrel_instance(v, new Scripting::TestObject(object), true);
-      return;
-    }                                                                             
+  {
+    create_squirrel_instance(v, new Scripting::TestObject(object), true);
+    return;
+  }                                                                             
 
   if (dynamic_cast<Player*>(object.get()))
-    {
-      create_squirrel_instance(v, new Scripting::Player(object), true);
-      return;
-    }
+  {
+    create_squirrel_instance(v, new Scripting::Player(object), true);
+    return;
+  }
 
   create_squirrel_instance(v, new Scripting::GameObject(object), true);
 }
@@ -304,21 +304,21 @@ ScriptManager::expose_object_to_squirrel(boost::shared_ptr<GameObject> object)
   sq_pushroottable(v);
   sq_pushstring(v, OBJECTS_TABLE, -1);
   if(SQ_FAILED(sq_get(v, -2)))
-    {
-      std::ostringstream msg;
-      msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
-      throw SquirrelError(v, msg.str());
-    }
+  {
+    std::ostringstream msg;
+    msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
+    throw SquirrelError(v, msg.str());
+  }
   
   // create squirrel instance and register in table
   sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
   create_squirrel_instance(v, object);
   if(SQ_FAILED(sq_createslot(v, -3)))
-    {
-      std::ostringstream msg;
-      msg << "Couldn't register object in objects taböe";
-      throw SquirrelError(v, msg.str());
-    }
+  {
+    std::ostringstream msg;
+    msg << "Couldn't register object in objects taböe";
+    throw SquirrelError(v, msg.str());
+  }
 
   // pop roottable and objects table
   sq_pop(v, 2);

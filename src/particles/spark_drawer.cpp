@@ -40,47 +40,47 @@ SparkDrawer::draw(const ParticleSystem& psys) const
   buffer->set_pos(Vector2f(psys.get_x_pos(), psys.get_y_pos()));
 
   if (width == 1.0f)
+  {
+    buffer->set_mode(GL_LINES);
+    buffer->set_blend_func(GL_SRC_ALPHA, GL_ONE);
+    for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
     {
-      buffer->set_mode(GL_LINES);
-      buffer->set_blend_func(GL_SRC_ALPHA, GL_ONE);
-      for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
-        {
-          buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
-          buffer->vertex(i->x + i->v_x/10.0f, i->y + i->v_y/10.0f); 
+      buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+      buffer->vertex(i->x + i->v_x/10.0f, i->y + i->v_y/10.0f); 
 
-          buffer->color(Color(0, 0, 0, 0));
-          buffer->vertex(i->x, i->y);
-        }
+      buffer->color(Color(0, 0, 0, 0));
+      buffer->vertex(i->x, i->y);
     }
+  }
   else
+  {
+    buffer->set_mode(GL_QUADS);
+    buffer->set_blend_func(GL_SRC_ALPHA, GL_ONE);
+    for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
     {
-      buffer->set_mode(GL_QUADS);
-      buffer->set_blend_func(GL_SRC_ALPHA, GL_ONE);
-      for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
-        {
-          const float len = sqrtf(i->v_x * i->v_x  +  i->v_y * i->v_y);
+      const float len = sqrtf(i->v_x * i->v_x  +  i->v_y * i->v_y);
 
-          const float o_x = i->v_y/len * width;
-          const float o_y = i->v_x/len * width;
+      const float o_x = i->v_y/len * width;
+      const float o_y = i->v_x/len * width;
 
-          const float x1 = i->x;
-          const float y1 = i->y;
-          const float x2 = i->x + i->v_x/10.0f;
-          const float y2 = i->y + i->v_y/10.0f;
+      const float x1 = i->x;
+      const float y1 = i->y;
+      const float x2 = i->x + i->v_x/10.0f;
+      const float y2 = i->y + i->v_y/10.0f;
 
-          buffer->color(Color(0, 0, 0, 0));
-          buffer->vertex(x1 + o_x, y1 - o_y);
+      buffer->color(Color(0, 0, 0, 0));
+      buffer->vertex(x1 + o_x, y1 - o_y);
 
-          buffer->color(Color(0, 0, 0, 0));
-          buffer->vertex(x1 - o_x, y1 + o_y);
+      buffer->color(Color(0, 0, 0, 0));
+      buffer->vertex(x1 - o_x, y1 + o_y);
 
-          buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
-          buffer->vertex(x2 - o_x, y2 + o_y); 
+      buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+      buffer->vertex(x2 - o_x, y2 + o_y); 
 
-          buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
-          buffer->vertex(x2 + o_x, y2 - o_y); 
-        }
+      buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+      buffer->vertex(x2 + o_x, y2 - o_y); 
     }
+  }
 
   buffer->render(~0u);
 }

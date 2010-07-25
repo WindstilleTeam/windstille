@@ -19,9 +19,9 @@
 #include "objects/laser_pointer.hpp"
 #include "objects/pistol.hpp"
 
-Pistol::Pistol()
-  : sprite(Pathname("models/objects/pistol/pistol.wsprite")),
-    laser_pointer(new LaserPointer())
+Pistol::Pistol() :
+  sprite(Pathname("models/objects/pistol/pistol.wsprite")),
+  laser_pointer(new LaserPointer())
 {
 }
 

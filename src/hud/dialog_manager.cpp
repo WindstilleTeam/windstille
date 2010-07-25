@@ -99,12 +99,12 @@ DialogManager::draw()
   text_area->draw();
 
   if (text_area->is_progress_complete())
-    {
-      const Vector2f& pos_ = text_area->get_cursor_pos();
-      Rectf cursor(pos_.x + 8, pos_.y + 8, pos_.x + 24, pos_.y + 24);
-      Display::fill_rect(cursor, Color(1.0, 1.0, 1.0, 
-                                       fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * math::pi * 3.0f))));
-    }
+  {
+    const Vector2f& pos_ = text_area->get_cursor_pos();
+    Rectf cursor(pos_.x + 8, pos_.y + 8, pos_.x + 24, pos_.y + 24);
+    Display::fill_rect(cursor, Color(1.0, 1.0, 1.0, 
+                                     fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * math::pi * 3.0f))));
+  }
 }
 
 void
@@ -115,23 +115,23 @@ DialogManager::update(float delta, const Controller& controller)
   delay += delta;
 
   InputEventLst events = controller.get_events();
-	
+        
   for (InputEventLst::iterator i = events.begin(); i != events.end(); ++i)
+  {
+    if ((*i).type == BUTTON_EVENT)
     {
-      if ((*i).type == BUTTON_EVENT)
+      if ((*i).button.name == OK_BUTTON && (*i).button.down == true)
+      {
+        if (text_area->is_progress_complete())
         {
-          if ((*i).button.name == OK_BUTTON && (*i).button.down == true)
-            {
-              if (text_area->is_progress_complete())
-                {
-                  GameSession::current()->set_control_state(GameSession::GAME);
-                  ScriptManager::current()->fire_wakeup_event(ScriptManager::DIALOG_CLOSED);
-                }
-              else if (delay > 0.2)
-                text_area->set_progress_complete();
-            } 
+          GameSession::current()->set_control_state(GameSession::GAME);
+          ScriptManager::current()->fire_wakeup_event(ScriptManager::DIALOG_CLOSED);
         }
+        else if (delay > 0.2)
+          text_area->set_progress_complete();
+      } 
     }
+  }
 }
 
 void

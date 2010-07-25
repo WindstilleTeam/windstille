@@ -23,8 +23,8 @@
 #include "display/framebuffer_compositor_impl.hpp"
 #include "display/basic_compositor_impl.hpp"
 
-Compositor::Compositor(const Size& window, const Size& viewport)
-  : impl()
+Compositor::Compositor(const Size& window, const Size& viewport) :
+  impl()
 {
   if (glewIsSupported("GL_EXT_framebuffer_object")) //(GLEW_EXT_framebuffer_object)
   {

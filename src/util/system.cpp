@@ -79,9 +79,9 @@ std::string System::find_default_userdir()
   char* xdg_config_home = getenv("XDG_CONFIG_HOME");
   if (xdg_config_home)
   {
-      std::ostringstream out;
-      out << xdg_config_home << "/windstille/";
-      return out.str();   
+    std::ostringstream out;
+    out << xdg_config_home << "/windstille/";
+    return out.str();   
   }
   else
   {

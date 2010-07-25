@@ -106,34 +106,34 @@ void
 SpeechManager::draw()
 {
   for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
-    {
-      if (*i)
-        (*i)->draw();
-    }  
+  {
+    if (*i)
+      (*i)->draw();
+  }  
 }
 
 void
 SpeechManager::update(float delta)
 {
   for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
-    {
-      if (*i)
-        (*i)->update(delta);
-    }
+  {
+    if (*i)
+      (*i)->update(delta);
+  }
 
   for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
-    {  
-      if ((*i)->is_done())
-        {
-          ScriptManager::WakeupData event;
-          event.type = ScriptManager::SPEECH_DONE;
-          event.id   = (*i)->id;
-          ScriptManager::current()->fire_wakeup_event(event);
+  {  
+    if ((*i)->is_done())
+    {
+      ScriptManager::WakeupData event;
+      event.type = ScriptManager::SPEECH_DONE;
+      event.id   = (*i)->id;
+      ScriptManager::current()->fire_wakeup_event(event);
 
-          delete *i;
-          *i = 0;
-        }
+      delete *i;
+      *i = 0;
     }
+  }
 
   speeches.erase(std::remove(speeches.begin(), speeches.end(), static_cast<Speech*>(0)),
                  speeches.end());

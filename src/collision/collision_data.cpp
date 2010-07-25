@@ -22,14 +22,14 @@ CollisionData
 CollisionData::merge(const CollisionData &r)
 {
   if (state==COLLISION)
-    {
-      if (( r.state==COLLISION && r.col_time<col_time ) || r.state==STUCK )
-	*this=r;
-    }
-  else if (state == NONE)
-    {
+  {
+    if (( r.state==COLLISION && r.col_time<col_time ) || r.state==STUCK )
       *this=r;
-    }
+  }
+  else if (state == NONE)
+  {
+    *this=r;
+  }
 
   return *this;
 }

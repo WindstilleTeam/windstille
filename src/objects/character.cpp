@@ -22,9 +22,9 @@
 #include "engine/script_manager.hpp"
 #include "app/console.hpp"
 
-Character::Character(const FileReader& props)
-  : sprite(),
-    z_pos(100.0f)
+Character::Character(const FileReader& props) :
+  sprite(),
+  z_pos(100.0f)
 {
   set_useable(true);
   use_verb = "Talk";

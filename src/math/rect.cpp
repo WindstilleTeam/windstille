@@ -34,27 +34,27 @@
 
 Rect Rect::get_rot_bounds(const Point &hotspot, float angle) const
 {
-	//Find the rotated positions of each corner
-	Rect retVal(*this);
-	Point ul = Point(retVal.left, retVal.top).rotate(hotspot, angle);
-	Point ur = Point(retVal.right, retVal.top).rotate(hotspot, angle);
-	Point ll = Point(retVal.left, retVal.bottom).rotate(hotspot, angle);
-	Point lr = Point(retVal.right, retVal.bottom).rotate(hotspot, angle);
-	
-	//Use the sidemost corners as the bounds of the new rectangle
-	retVal.left = cl_min(cl_min(ul.x, ur.x), cl_min(ll.x, lr.x));
-	retVal.right = cl_max(cl_max(ul.x, ur.x), cl_max(ll.x, lr.x));
-	retVal.top = cl_min(cl_min(ul.y, ur.y), cl_min(ll.y, lr.y));
-	retVal.bottom = cl_max(cl_max(ul.y, ur.y), cl_max(ll.y, lr.y));
-	
-	return retVal;
+  //Find the rotated positions of each corner
+  Rect retVal(*this);
+  Point ul = Point(retVal.left, retVal.top).rotate(hotspot, angle);
+  Point ur = Point(retVal.right, retVal.top).rotate(hotspot, angle);
+  Point ll = Point(retVal.left, retVal.bottom).rotate(hotspot, angle);
+  Point lr = Point(retVal.right, retVal.bottom).rotate(hotspot, angle);
+        
+  //Use the sidemost corners as the bounds of the new rectangle
+  retVal.left = cl_min(cl_min(ul.x, ur.x), cl_min(ll.x, lr.x));
+  retVal.right = cl_max(cl_max(ul.x, ur.x), cl_max(ll.x, lr.x));
+  retVal.top = cl_min(cl_min(ul.y, ur.y), cl_min(ll.y, lr.y));
+  retVal.bottom = cl_max(cl_max(ul.y, ur.y), cl_max(ll.y, lr.y));
+        
+  return retVal;
 }
 
 Rect Rect::get_rot_bounds(Origin origin, int x, int y, float angle) const
 {
-	return get_rot_bounds(
-		Point(left, top) + calc_origin(origin, get_size()) + Point(x, y),
-		angle);
+  return get_rot_bounds(
+    Point(left, top) + calc_origin(origin, get_size()) + Point(x, y),
+    angle);
 }
 
 std::ostream& operator<<(std::ostream& s, const Rect& rect)

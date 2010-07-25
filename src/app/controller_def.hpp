@@ -22,46 +22,46 @@
 #include "input/controller_description.hpp"
 
 enum InputEventName
-  { 
-    MOUSE_MOTION_X, 
-    MOUSE_MOTION_Y, 
+{ 
+  MOUSE_MOTION_X, 
+  MOUSE_MOTION_Y, 
 
-    X_AXIS,
-    Y_AXIS,
+  X_AXIS,
+  Y_AXIS,
 
-    X2_AXIS,
-    Y2_AXIS, 
+  X2_AXIS,
+  Y2_AXIS, 
 
-    LEFT_STICK_BUTTON,    
-    RIGHT_STICK_BUTTON,
+  LEFT_STICK_BUTTON,    
+  RIGHT_STICK_BUTTON,
 
-    PRIMARY_BUTTON,
-    SECONDARY_BUTTON,
-    TERTIARY_BUTTON,
-    QUATERNARY_BUTTON,
+  PRIMARY_BUTTON,
+  SECONDARY_BUTTON,
+  TERTIARY_BUTTON,
+  QUATERNARY_BUTTON,
 
-    LEFT_SHOULDER_BUTTON,
-    RIGHT_SHOULDER_BUTTON,
+  LEFT_SHOULDER_BUTTON,
+  RIGHT_SHOULDER_BUTTON,
 
-    LEFT_TRIGGER_AXIS,
-    RIGHT_TRIGGER_AXIS,
+  LEFT_TRIGGER_AXIS,
+  RIGHT_TRIGGER_AXIS,
 
-    SELECT_BUTTON,
-    START_BUTTON,
-    DEBUG_BUTTON,
+  SELECT_BUTTON,
+  START_BUTTON,
+  DEBUG_BUTTON,
     
-    // Keys for menu navigation, they come with hardcoded defaults for
-    // the keyboard, a joystick might emmit them as well
-    ESCAPE_BUTTON,
-    ENTER_BUTTON,
+  // Keys for menu navigation, they come with hardcoded defaults for
+  // the keyboard, a joystick might emmit them as well
+  ESCAPE_BUTTON,
+  ENTER_BUTTON,
 
-    MENU_UP_BUTTON,  
-    MENU_DOWN_BUTTON,
-    MENU_LEFT_BUTTON,
-    MENU_RIGHT_BUTTON,
+  MENU_UP_BUTTON,  
+  MENU_DOWN_BUTTON,
+  MENU_LEFT_BUTTON,
+  MENU_RIGHT_BUTTON,
 
-    LAST_EVENT
-  };
+  LAST_EVENT
+};
 
 // Map the physical buttons to logical names
 #define JUMP_BUTTON   PRIMARY_BUTTON

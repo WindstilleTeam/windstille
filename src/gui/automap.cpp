@@ -49,22 +49,22 @@ Automap::Automap(const Rectf& rect_, Component* parent_)
 
   for(int y = 0; y < image.get_height(); ++y)
     for(int x = 0; x < image.get_width(); ++x)
+    {
+      if (tilemap->get_pixel(x, y))
       {
-        if (tilemap->get_pixel(x, y))
-          {
-            buffer[image.get_pitch() * y + 4*x + 0] = 255;
-            buffer[image.get_pitch() * y + 4*x + 1] = 255;
-            buffer[image.get_pitch() * y + 4*x + 2] = 255;
-            buffer[image.get_pitch() * y + 4*x + 3] = 255;
-          }
-        else
-          {
-            buffer[image.get_pitch() * y + 4*x + 0] = 0;
-            buffer[image.get_pitch() * y + 4*x + 1] = 0;
-            buffer[image.get_pitch() * y + 4*x + 2] = 0;
-            buffer[image.get_pitch() * y + 4*x + 3] = 255;
-          }
+        buffer[image.get_pitch() * y + 4*x + 0] = 255;
+        buffer[image.get_pitch() * y + 4*x + 1] = 255;
+        buffer[image.get_pitch() * y + 4*x + 2] = 255;
+        buffer[image.get_pitch() * y + 4*x + 3] = 255;
       }
+      else
+      {
+        buffer[image.get_pitch() * y + 4*x + 0] = 0;
+        buffer[image.get_pitch() * y + 4*x + 1] = 0;
+        buffer[image.get_pitch() * y + 4*x + 2] = 0;
+        buffer[image.get_pitch() * y + 4*x + 3] = 255;
+      }
+    }
 
   surface = Surface(tilemap->get_width(), tilemap->get_height());
   surface.get_texture().set_filter(GL_NEAREST);
@@ -90,31 +90,31 @@ void
 Automap::update(float delta, const Controller& controller)
 {
   if (controller.get_button_state(AIM_BUTTON))
-    {
-      if (controller.get_axis_state(Y_AXIS) < 0)
-        zoom /= 1.0f + (0.5f * fabsf(controller.get_axis_state(Y_AXIS))) * delta;
-      else if (controller.get_axis_state(Y_AXIS) > 0)
-        zoom *= 1.0f + (0.5f * controller.get_axis_state(Y_AXIS)) * delta;
-    }
+  {
+    if (controller.get_axis_state(Y_AXIS) < 0)
+      zoom /= 1.0f + (0.5f * fabsf(controller.get_axis_state(Y_AXIS))) * delta;
+    else if (controller.get_axis_state(Y_AXIS) > 0)
+      zoom *= 1.0f + (0.5f * controller.get_axis_state(Y_AXIS)) * delta;
+  }
   else
-    {
-      pos.x += controller.get_axis_state(X_AXIS) * delta * 100.0f;
-      pos.y += controller.get_axis_state(Y_AXIS) * delta * 100.0f;
-    }
+  {
+    pos.x += controller.get_axis_state(X_AXIS) * delta * 100.0f;
+    pos.y += controller.get_axis_state(Y_AXIS) * delta * 100.0f;
+  }
 
   for(InputEventLst::const_iterator i = controller.get_events().begin(); i != controller.get_events().end(); ++i) 
+  {
+    if (i->type == BUTTON_EVENT && i->button.down)
     {
-      if (i->type == BUTTON_EVENT && i->button.down)
-        {
-          if (i->button.name == OK_BUTTON)
-            {
-            }
-          else if (i->button.name == CANCEL_BUTTON)
-            {
-              set_active(false);
-            }
-        }
+      if (i->button.name == OK_BUTTON)
+      {
+      }
+      else if (i->button.name == CANCEL_BUTTON)
+      {
+        set_active(false);
+      }
     }
+  }
 }
 
 } // namespace gui

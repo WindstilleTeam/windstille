@@ -20,10 +20,10 @@
 #include "engine/sector.hpp"
 #include "collision/collision_engine.hpp"
 
-Elevator::Elevator(const FileReader& props)
-  : size(),
-    colobject(),
-    sprite()
+Elevator::Elevator(const FileReader& props) :
+  size(),
+  colobject(),
+  sprite()
 {
   std::string spritename;
 

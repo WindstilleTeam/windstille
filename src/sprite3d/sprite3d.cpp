@@ -27,31 +27,31 @@
 
 using namespace sprite3d;
 
-Sprite3D::Sprite3D()
-  : data(0), 
-    actions_switched(false),
-    frame1(),
-    frame2(),
-    blend_time(0.0f),
-    next_frame(),
-    next_action(),
-    abort_at_frame(),
-    blend_sfactor(GL_ONE),
-    blend_dfactor(GL_ZERO)
+Sprite3D::Sprite3D() :
+  data(0), 
+  actions_switched(false),
+  frame1(),
+  frame2(),
+  blend_time(0.0f),
+  next_frame(),
+  next_action(),
+  abort_at_frame(),
+  blend_sfactor(GL_ONE),
+  blend_dfactor(GL_ZERO)
 {
 }
 
-Sprite3D::Sprite3D(const Pathname& filename)
-  : data(sprite3d::Manager::current()->create_data(filename)),
-    actions_switched(false),
-    frame1(),
-    frame2(),
-    blend_time(0.0f),
-    next_frame(),
-    next_action(),
-    abort_at_frame(),
-    blend_sfactor(GL_ONE),
-    blend_dfactor(GL_ZERO)
+Sprite3D::Sprite3D(const Pathname& filename) :
+  data(sprite3d::Manager::current()->create_data(filename)),
+  actions_switched(false),
+  frame1(),
+  frame2(),
+  blend_time(0.0f),
+  next_frame(),
+  next_action(),
+  abort_at_frame(),
+  blend_sfactor(GL_ONE),
+  blend_dfactor(GL_ZERO)
 {
   frame1.action         = &data->actions[0];
   frame1.frame          = 0;
@@ -63,17 +63,17 @@ Sprite3D::Sprite3D(const Pathname& filename)
   next_action.action    = 0;
 }
 
-Sprite3D::Sprite3D(const Sprite3D& rhs)
-  : data(rhs.data),
-    actions_switched(rhs.actions_switched),
-    frame1(rhs.frame1),
-    frame2(rhs.frame2),
-    blend_time(rhs.blend_time),
-    next_frame(rhs.next_frame),
-    next_action(rhs.next_action),
-    abort_at_frame(rhs.abort_at_frame),
-    blend_sfactor(rhs.blend_sfactor),
-    blend_dfactor(rhs.blend_dfactor)
+Sprite3D::Sprite3D(const Sprite3D& rhs) :
+  data(rhs.data),
+  actions_switched(rhs.actions_switched),
+  frame1(rhs.frame1),
+  frame2(rhs.frame2),
+  blend_time(rhs.blend_time),
+  next_frame(rhs.next_frame),
+  next_action(rhs.next_action),
+  abort_at_frame(rhs.abort_at_frame),
+  blend_sfactor(rhs.blend_sfactor),
+  blend_dfactor(rhs.blend_dfactor)
 {
 }
 
@@ -134,9 +134,9 @@ Sprite3D::get_actions() const
   for(std::vector<Action>::const_iterator i = data->actions.begin(); 
       i != data->actions.end(); 
       ++i)
-    {
-      actions.push_back(i->name);
-    }
+  {
+    actions.push_back(i->name);
+  }
   return actions;
 }
 
@@ -207,10 +207,10 @@ Sprite3D::set_speed(float speed)
 {
   if ((speed <  0.0f && frame1.speed >= 0.0f) ||
       (speed >= 0.0f && frame1.speed <  0.0f)) 
-    {
-      blend_time = 1.0f - blend_time;
-      std::swap(frame1, frame2);
-    }
+  {
+    blend_time = 1.0f - blend_time;
+    std::swap(frame1, frame2);
+  }
 
   frame1.speed = speed;
   frame2.speed = speed;
@@ -247,9 +247,9 @@ Matrix
 Sprite3D::get_attachment_point_matrix(PointID id) const
 {
   const AttachmentPointPosition& point1 
-	  = frame1.action->frames[frame1.frame].attachment_points[id];
+    = frame1.action->frames[frame1.frame].attachment_points[id];
   const AttachmentPointPosition& point2 
-	  = frame2.action->frames[frame2.frame].attachment_points[id];
+    = frame2.action->frames[frame2.frame].attachment_points[id];
 
   Quaternion rotquat = Quaternion(0, 0, 1, 0);
   Quaternion quat1 = point1.quat;

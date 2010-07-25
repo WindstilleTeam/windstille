@@ -73,7 +73,7 @@ public:
   void set_pos(float x, float y);
   void set_vflip(bool vflip);
   void attach(const std::string& spritename,
-		      const std::string& attachement_point);
+              const std::string& attachement_point);
 };
 
 class Player : public GameObject

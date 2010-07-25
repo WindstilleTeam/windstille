@@ -31,21 +31,21 @@
 #include "sound/sound_manager.hpp"
 #include "tile/tile_map.hpp"
 
-Sector::Sector(const Pathname& arg_filename)
-  : collision_engine(new CollisionEngine()),
-    navigation_graph(new NavigationGraph()),
-    scene_graph(new SceneGraph()),
-    filename(arg_filename),
-    name(),
-    music(),
-    init_script(),
-    vm(),
-    objects(),
-    new_objects(),
-    ambient_light(),
-    interactive_tilemap(0),
-    interactivebackground_tilemap(0),
-    player()
+Sector::Sector(const Pathname& arg_filename) :
+  collision_engine(new CollisionEngine()),
+  navigation_graph(new NavigationGraph()),
+  scene_graph(new SceneGraph()),
+  filename(arg_filename),
+  name(),
+  music(),
+  init_script(),
+  vm(),
+  objects(),
+  new_objects(),
+  ambient_light(),
+  interactive_tilemap(0),
+  interactivebackground_tilemap(0),
+  player()
 {
   SectorBuilder(arg_filename, *this);
 
@@ -94,10 +94,10 @@ Sector::draw(SceneContext& sc)
   sc.light().fill_screen(ambient_light);
 
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      if ((*i)->is_active())
-        (*i)->draw(sc);
-    }
+  {
+    if ((*i)->is_active())
+      (*i)->draw(sc);
+  }
 }
 
 void Sector::commit_adds()
@@ -119,10 +119,10 @@ void Sector::update(float delta)
   collision_engine->update(delta);
 
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i) 
-    {
-      if ((*i)->is_active())
-        (*i)->update(delta);
-    }
+  {
+    if ((*i)->is_active())
+      (*i)->update(delta);
+  }
 
   commit_removes();
 }
@@ -132,22 +132,22 @@ Sector::commit_removes()
 {
   // remove objects
   for(Objects::iterator i = objects.begin(); i != objects.end(); ) 
+  {
+    boost::shared_ptr<GameObject>& object = *i;
+
+    if(object->is_removable()) 
     {
-      boost::shared_ptr<GameObject>& object = *i;
+      if(object->get_name() != "") 
+      {
+        ScriptManager::current()->remove_object_from_squirrel(object);
+      }
 
-      if(object->is_removable()) 
-        {
-          if(object->get_name() != "") 
-            {
-              ScriptManager::current()->remove_object_from_squirrel(object);
-            }
-
-          i = objects.erase(i);
-          continue;
-        }
-
-      ++i;
+      i = objects.erase(i);
+      continue;
     }
+
+    ++i;
+  }
 }
 
 void
@@ -156,21 +156,21 @@ Sector::add(GameObjectHandle obj)
   new_objects.push_back(obj);
 
   if(obj->get_name() != "") 
-    {
-      ScriptManager::current()->expose_object_to_squirrel(new_objects.back());
-    }
+  {
+    ScriptManager::current()->expose_object_to_squirrel(new_objects.back());
+  }
 }
 
 GameObject*
 Sector::get_object(const std::string& name_) const
 {
   for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i) 
+  {
+    if ((*i)->get_name() == name_)
     {
-      if ((*i)->get_name() == name_)
-        {
-          return i->get();
-        }
+      return i->get();
     }
+  }
 
   return 0;
 }
@@ -227,20 +227,20 @@ void
 Sector::call_script_function(const std::string& name_)
 {
   if (!vm.get())
-    {
-      throw std::runtime_error("Sector::call_script_function(): Can't call function '" + name_ + "' without a init script");
-    }
+  {
+    throw std::runtime_error("Sector::call_script_function(): Can't call function '" + name_ + "' without a init script");
+  }
   else
+  {
+    if (!vm->is_idle())
     {
-      if (!vm->is_idle())
-        {
-          throw std::runtime_error("Sector::call_script_function(): VM must be idle to call  '" + name_ + "'");
-        }
-      else
-        {
-          vm->call(name_);
-        }
+      throw std::runtime_error("Sector::call_script_function(): VM must be idle to call  '" + name_ + "'");
     }
+    else
+    {
+      vm->call(name_);
+    }
+  }
 }
 
 /* EOF */

@@ -24,15 +24,15 @@
 
 #define SAMPLES 5
 
-Liquid::Liquid(const FileReader& props)
-  : texture(),
-    t(),
-    heightfield_store1(),
-    heightfield_store2(),
-    heightfield1(),
-    heightfield2(),
-    m_water_top(),
-    m_water_body()
+Liquid::Liquid(const FileReader& props) :
+  texture(),
+  t(),
+  heightfield_store1(),
+  heightfield_store2(),
+  heightfield1(),
+  heightfield2(),
+  m_water_top(),
+  m_water_body()
 {
   int width = 10;
   t = 0;
@@ -47,11 +47,11 @@ Liquid::Liquid(const FileReader& props)
   heightfield2->resize(width * SAMPLES, 0);
   
   for(std::vector<float>::size_type i = 2; i < heightfield1->size()-2; ++i)
-    {
-      (*heightfield1)[i] = sinf(static_cast<float>(i) / static_cast<float>(heightfield1->size()) * 10.0f) * 0.5f
-        + sinf(static_cast<float>(i) / static_cast<float>(heightfield1->size()) * 5.0f) * .5f;
-      (*heightfield2)[i] = (*heightfield1)[i];
-    }
+  {
+    (*heightfield1)[i] = sinf(static_cast<float>(i) / static_cast<float>(heightfield1->size()) * 10.0f) * 0.5f
+      + sinf(static_cast<float>(i) / static_cast<float>(heightfield1->size()) * 5.0f) * .5f;
+    (*heightfield2)[i] = (*heightfield1)[i];
+  }
 
   for(int i = 50; i < 70 && i < int(heightfield1->size()); ++i)
     (*heightfield1)[i] += 0.0025f;

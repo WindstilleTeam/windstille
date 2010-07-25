@@ -19,9 +19,9 @@
 #include "particles/particle_system.hpp"
 #include "editor/particle_system_object_model.hpp"
 
-ParticleSystemObjectModel::ParticleSystemObjectModel(const Vector2f& pos)
-  : ObjectModel("ParticleSystem", pos),
-    systems()
+ParticleSystemObjectModel::ParticleSystemObjectModel(const Vector2f& pos) :
+  ObjectModel("ParticleSystem", pos),
+  systems()
 {
 }
 

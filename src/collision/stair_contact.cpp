@@ -53,14 +53,14 @@ StairContact::advance(float s)
 
   // advancement must happen tile by tile  
   while ((fabs(s) > fabs(step)) && is_active())
-    {
-      advancement += step;
-      s -= step;
+  {
+    advancement += step;
+    s -= step;
 
-      // increment tile position, based on tile direction
-      // can be up/down, left/rigth
-      advance_or_not();
-    }
+    // increment tile position, based on tile direction
+    // can be up/down, left/rigth
+    advance_or_not();
+  }
 
   advancement += s;
   advance_or_not();
@@ -70,35 +70,35 @@ void
 StairContact::advance_or_not()
 {
   if (tile_type & TILE_LEFT)
+  {
+    if (advancement < -0.5f)
     {
-      if (advancement < -0.5f)
-        {
-          pos.x -= 1;
-          pos.y += 1;
-          advancement += 1.0f;
-        }
-      else if (advancement > 0.5f)
-        {
-          pos.x += 1;
-          pos.y -= 1;
-          advancement -= 1.0f;
-        }
+      pos.x -= 1;
+      pos.y += 1;
+      advancement += 1.0f;
     }
+    else if (advancement > 0.5f)
+    {
+      pos.x += 1;
+      pos.y -= 1;
+      advancement -= 1.0f;
+    }
+  }
   else if (tile_type & TILE_RIGHT)
+  {
+    if (advancement < -0.5f)
     {
-      if (advancement < -0.5f)
-        {
-          pos.x += 1;
-          pos.y -= 1;
-          advancement += 1.0f;
-        }
-      else if (advancement > 0.5f)
-        {
-          pos.x -= 1;
-          pos.y += 1;
-          advancement -= 1.0f;
-        }
+      pos.x += 1;
+      pos.y -= 1;
+      advancement += 1.0f;
     }
+    else if (advancement > 0.5f)
+    {
+      pos.x -= 1;
+      pos.y += 1;
+      advancement -= 1.0f;
+    }
+  }
 }
 
 Vector2f

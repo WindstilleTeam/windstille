@@ -18,10 +18,10 @@
 
 #include "timeline_object_layer.hpp"
 
-TimelineObjectLayer::TimelineObjectLayer(ObjectModelHandle object, TimelineProperty property)
-  : TimelineLayer("TimelineObjectLayer"),
-    m_object(object),
-    m_property(property)
+TimelineObjectLayer::TimelineObjectLayer(ObjectModelHandle object, TimelineProperty property) :
+  TimelineLayer("TimelineObjectLayer"),
+  m_object(object),
+  m_property(property)
 {
 }
 

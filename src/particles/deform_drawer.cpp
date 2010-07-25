@@ -96,45 +96,45 @@ public:
 
     glBegin(GL_QUADS);
     for(ParticleSystem::Particles::iterator i = psys.begin(); i != psys.end(); ++i)
+    {
+      if (i->t != -1.0f)
       {
-        if (i->t != -1.0f)
-          {
-            float p = 1.0f - psys.get_progress(i->t);
-            Color color(psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
-                        psys.get_color_start().g * p + psys.get_color_stop().g * (1.0f - p),
-                        psys.get_color_start().b * p + psys.get_color_stop().b * (1.0f - p),
-                        psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));
+        float p = 1.0f - psys.get_progress(i->t);
+        Color color(psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
+                    psys.get_color_start().g * p + psys.get_color_stop().g * (1.0f - p),
+                    psys.get_color_start().b * p + psys.get_color_stop().b * (1.0f - p),
+                    psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));
 
-            // scale
-            float scale  = psys.get_size_start() + 
-              psys.get_progress(i->t) * (psys.get_size_stop() - psys.get_size_start());
+        // scale
+        float scale  = psys.get_size_start() + 
+          psys.get_progress(i->t) * (psys.get_size_stop() - psys.get_size_start());
           
-            float width  = surface.get_width()  * scale;
-            float height = surface.get_height() * scale;
+        float width  = surface.get_width()  * scale;
+        float height = surface.get_height() * scale;
               
-            // rotate
-            float x_rot = width/2;
-            float y_rot = height/2; 
+        // rotate
+        float x_rot = width/2;
+        float y_rot = height/2; 
 
-            if (i->angle != 0)
-              {
-                float s = sinf(math::pi * i->angle/180.0f);
-                float c = cosf(math::pi * i->angle/180.0f);
-                x_rot = (width/2) * c - (height/2) * s;
-                y_rot = (width/2) * s + (height/2) * c;
-              }
+        if (i->angle != 0)
+        {
+          float s = sinf(math::pi * i->angle/180.0f);
+          float c = cosf(math::pi * i->angle/180.0f);
+          x_rot = (width/2) * c - (height/2) * s;
+          y_rot = (width/2) * s + (height/2) * c;
+        }
 
-            glColor4f(color.r, color.g, color.b, color.a);
-            glTexCoord2f(0, 0);
-            glVertex2f(i->x - x_rot, i->y - y_rot);
-            glTexCoord2f(1, 0);
-            glVertex2f(i->x + y_rot, i->y - x_rot);
-            glTexCoord2f(1, 1);
-            glVertex2f(i->x + x_rot, i->y + y_rot);
-            glTexCoord2f(0, 1);
-            glVertex2f(i->x - y_rot, i->y + x_rot);
-          }
+        glColor4f(color.r, color.g, color.b, color.a);
+        glTexCoord2f(0, 0);
+        glVertex2f(i->x - x_rot, i->y - y_rot);
+        glTexCoord2f(1, 0);
+        glVertex2f(i->x + y_rot, i->y - x_rot);
+        glTexCoord2f(1, 1);
+        glVertex2f(i->x + x_rot, i->y + y_rot);
+        glTexCoord2f(0, 1);
+        glVertex2f(i->x - y_rot, i->y + x_rot);
       }
+    }
     glEnd();
 
     glPopMatrix();

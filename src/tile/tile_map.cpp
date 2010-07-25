@@ -28,10 +28,10 @@
 #include "screen/view.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
 
-TileMap::TileMap(const FileReader& props)
-  : field(),
-    z_pos(),
-    total_time()
+TileMap::TileMap(const FileReader& props) :
+  field(),
+  z_pos(),
+  total_time()
 {
   int width = -1;
   int height = -1;
@@ -44,16 +44,16 @@ TileMap::TileMap(const FileReader& props)
   props.get("height", height);
 
   if(width <= 0 || height <= 0) 
-    {
-      throw std::runtime_error("Invalid width or height defined or "
-                               "data defined before width and height");  
-    }
+  {
+    throw std::runtime_error("Invalid width or height defined or "
+                             "data defined before width and height");  
+  }
  
   if(width <= 0 || height <= 0) 
-    {
-      throw std::runtime_error("Invalid width or height defined or "
-                               "data defined before width and height");
-    }
+  {
+    throw std::runtime_error("Invalid width or height defined or "
+                             "data defined before width and height");
+  }
 
   Field<int> tmpfield(width, height);
   
@@ -95,45 +95,45 @@ TileMap::draw (SceneContext& sc)
   std::vector<VertexArrayDrawable*> requests;
   for (int y = rect.top;   y < rect.bottom; ++y)
     for (int x = rect.left; x < rect.right; ++x)
+    {
+      Tile* tile = field(x, y);
+
+      if (!(tile == 0 || tile->packer < 0))
       {
-        Tile* tile = field(x, y);
+        int packer = tile->packer; 
 
-        if (!(tile == 0 || tile->packer < 0))
-          {
-            int packer = tile->packer; 
+        if(packer >= int(requests.size()))
+          requests.resize(packer+1);
 
-            if(packer >= int(requests.size()))
-              requests.resize(packer+1);
-
-            VertexArrayDrawable*& request = requests[packer];
-            if (!request)
-              {
-                request = new VertexArrayDrawable(Vector2f(0, 0), z_pos,
-                                                        sc.color().get_modelview());
-                request->set_mode(GL_QUADS);
-                request->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                request->set_texture(tile->texture);
-              }
+        VertexArrayDrawable*& request = requests[packer];
+        if (!request)
+        {
+          request = new VertexArrayDrawable(Vector2f(0, 0), z_pos,
+                                            sc.color().get_modelview());
+          request->set_mode(GL_QUADS);
+          request->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+          request->set_texture(tile->texture);
+        }
             
-            request->texcoord(tile->uv.left, tile->uv.top);
-            request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE));
+        request->texcoord(tile->uv.left, tile->uv.top);
+        request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE));
 
-            request->texcoord(tile->uv.right, tile->uv.top);
-            request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE));
+        request->texcoord(tile->uv.right, tile->uv.top);
+        request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE));
             
-            request->texcoord(tile->uv.right, tile->uv.bottom);
-            request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
+        request->texcoord(tile->uv.right, tile->uv.bottom);
+        request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
             
-            request->texcoord(tile->uv.left, tile->uv.bottom);
-            request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE)); 
-          }
+        request->texcoord(tile->uv.left, tile->uv.bottom);
+        request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE)); 
       }
+    }
 
   for(std::vector<VertexArrayDrawable*>::iterator i = requests.begin(); i != requests.end(); ++i)
-    {
-      if (*i)
-        sc.color().draw(*i);
-    }
+  {
+    if (*i)
+      sc.color().draw(*i);
+  }
 }
 
 unsigned int
@@ -142,19 +142,19 @@ TileMap::get_pixel(int x, int y)
   if (x < 0 || y < 0 
       || x >= int(field.get_width())
       || y >= int(field.get_height()))
-    {
-      //std::cout << "Out of bounce: " << x << ", " << y << std::endl;
-      return 0;
-    }
+  {
+    //std::cout << "Out of bounce: " << x << ", " << y << std::endl;
+    return 0;
+  }
   else
-    {
-      Tile* tile = field(x, y);
+  {
+    Tile* tile = field(x, y);
       
-      if (tile)
-        return tile->get_colmap();
-      else
-        return 0;     
-    }
+    if (tile)
+      return tile->get_colmap();
+    else
+      return 0;     
+  }
 }
 
 bool
@@ -164,14 +164,14 @@ TileMap::is_ground (float x, float y)
   int y_pos = int(y) / TILE_SIZE;
 
   if (x < 0 || x_pos >= field.get_width())
-    {
-      //std::cout << "TileMap::is_ground (): Out of range: " << x_pos << " " << y_pos << std::endl;
-      return 1;
-    }
+  {
+    //std::cout << "TileMap::is_ground (): Out of range: " << x_pos << " " << y_pos << std::endl;
+    return 1;
+  }
   else if (y < 0 || y_pos >= field.get_height())
-    {
-      return 0;
-    }
+  {
+    return 0;
+  }
 
   if (field(x_pos, y_pos))
     return field(x_pos, y_pos)->get_colmap() != 0;
@@ -222,27 +222,27 @@ TileMap::raycast(const Vector2f& pos, float angle)
 
   while(x >= 0 && x < get_width() &&
         y >= 0 && y < get_height())
+  {
+    Tile* tile = field(x, y);  
+    if (tile && tile->colmap)
     {
-      Tile* tile = field(x, y);  
-      if (tile && tile->colmap)
-        {
-          return pos + Vector2f(t * direction.x, t * direction.y);
-        }
-
-      // move one tile
-      if (tMaxX < tMaxY)
-        {
-          t = tMaxX;
-          tMaxX += tDeltaX;
-          x = x + step_x;
-        }
-      else 
-        {
-          t = tMaxY;
-          tMaxY += tDeltaY;
-          y = y + step_y;
-        }
+      return pos + Vector2f(t * direction.x, t * direction.y);
     }
+
+    // move one tile
+    if (tMaxX < tMaxY)
+    {
+      t = tMaxX;
+      tMaxX += tDeltaX;
+      x = x + step_x;
+    }
+    else 
+    {
+      t = tMaxY;
+      tMaxY += tDeltaY;
+      y = y + step_y;
+    }
+  }
 
   // Ray got out of the map
   return pos + Vector2f(t * direction.x, t * direction.y);

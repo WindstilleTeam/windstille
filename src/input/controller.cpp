@@ -33,17 +33,17 @@ Controller::get_trigger_state(int name) const
 {
   float value = get_axis_state(name)/2.0f + 0.5f;
   if (value < 0.001f)
-    {
-      return 0;
-    }
+  {
+    return 0;
+  }
   else if (value > 0.999f)
-    {
-      return 1.0f;
-    }
+  {
+    return 1.0f;
+  }
   else
-    {
-      return value;
-    }
+  {
+    return value;
+  }
 }
 
 float
@@ -52,16 +52,16 @@ Controller::get_axis_state(int id, bool use_deadzone) const
   assert(id < int(states.size()));
 
   if (use_deadzone)
-    {
-      if (fabsf(states[id].axis) > 0.25f) // FIXME: Hardcoded Deadzone
-        return states[id].axis;
-      else
-        return 0.0f;
-    }
-  else
-    {
+  {
+    if (fabsf(states[id].axis) > 0.25f) // FIXME: Hardcoded Deadzone
       return states[id].axis;
-    }
+    else
+      return 0.0f;
+  }
+  else
+  {
+    return states[id].axis;
+  }
 }      
 
 bool
@@ -125,12 +125,12 @@ bool
 Controller::button_was_pressed(int name) const
 {
   for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i)
+  {
+    if (i->type == BUTTON_EVENT && i->button.name == name && i->button.down)
     {
-      if (i->type == BUTTON_EVENT && i->button.name == name && i->button.down)
-        {
-          return true;
-        }
+      return true;
     }
+  }
   return false;
 }
 
@@ -138,12 +138,12 @@ bool
 Controller::axis_was_pressed_up(int name) const
 {
   for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i)
+  {
+    if (i->type == AXIS_EVENT && i->axis.name == name && i->axis.pos > 0.5f)
     {
-      if (i->type == AXIS_EVENT && i->axis.name == name && i->axis.pos > 0.5f)
-        {
-          return true;
-        }
+      return true;
     }
+  }
   return false;  
 }
 
@@ -151,12 +151,12 @@ bool
 Controller::axis_was_pressed_down(int name) const
 {
   for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i)
+  {
+    if (i->type == AXIS_EVENT && i->axis.name == name && i->axis.pos < -0.5f)
     {
-      if (i->type == AXIS_EVENT && i->axis.name == name && i->axis.pos < -0.5f)
-        {
-          return true;
-        }
+      return true;
     }
+  }
   return false;
 }
 

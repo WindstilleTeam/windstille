@@ -68,7 +68,7 @@ inline std::ostream &operator<<(std::ostream &o, const SweepResult &r)
 }
 
 SweepResult simple_sweep_1d(float a, float aw, float av,
-			    float b, float bw, float bv);
+                            float b, float bw, float bv);
 
 #endif
 

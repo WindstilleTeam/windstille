@@ -45,26 +45,26 @@ Camera::PathPoint interpolate_path(const std::vector<Camera::PathPoint>& path, f
 {
   float length_so_far = 0.0f;
   for(std::vector<Camera::PathPoint>::size_type i = 0; i < path.size()-1; ++i)
-    {
-      float  segment_length = distance(path[i], path[i+1]);
+  {
+    float  segment_length = distance(path[i], path[i+1]);
 
-      if (length_so_far + segment_length > length)
-        {
-          float factor = (length - length_so_far) / segment_length;
-          return Camera::PathPoint((path[i+1].pos * factor) + (path[i].pos * (1.0f - factor)),
-                                   (factor * path[i+1].zoom) + ((1.0f - factor) * path[i].zoom));
-        }
-      length_so_far += segment_length;
+    if (length_so_far + segment_length > length)
+    {
+      float factor = (length - length_so_far) / segment_length;
+      return Camera::PathPoint((path[i+1].pos * factor) + (path[i].pos * (1.0f - factor)),
+                               (factor * path[i+1].zoom) + ((1.0f - factor) * path[i].zoom));
     }
+    length_so_far += segment_length;
+  }
 
   return path.back();
 }
 
-Camera::Camera()
-  : mode(CAMERA_FOLLOW_PLAYER),
-    pos(0, 0), 
-    zoom(1.0f),
-    path_pos(0)
+Camera::Camera() :
+  mode(CAMERA_FOLLOW_PLAYER),
+  pos(0, 0), 
+  zoom(1.0f),
+  path_pos(0)
 {  
 }
 
@@ -72,54 +72,54 @@ void
 Camera::update(float delta)
 {
   switch (mode)
-    {
+  {
     case CAMERA_INACTIVE:
       // do nothing
       break;
 
     case CAMERA_FOLLOW_PLAYER:
-      {
-        float hscroll_threshold = 100.0f;
-        float vscroll_threshold  = 150.0f;
+    {
+      float hscroll_threshold = 100.0f;
+      float vscroll_threshold  = 150.0f;
 
-        Vector2f tpos;
-        if (Player::current())
-          tpos = Player::current()->get_pos();
-        else if (Doll::current())
-          tpos = Doll::current()->get_pos();
+      Vector2f tpos;
+      if (Player::current())
+        tpos = Player::current()->get_pos();
+      else if (Doll::current())
+        tpos = Doll::current()->get_pos();
 
-        float dist = tpos.x - pos.x;
-        if (dist > hscroll_threshold)
-          pos.x = tpos.x - hscroll_threshold;
-        else if (dist < - hscroll_threshold)
-          pos.x = tpos.x + hscroll_threshold;
+      float dist = tpos.x - pos.x;
+      if (dist > hscroll_threshold)
+        pos.x = tpos.x - hscroll_threshold;
+      else if (dist < - hscroll_threshold)
+        pos.x = tpos.x + hscroll_threshold;
 
-        dist = tpos.y - pos.y;
-        if (dist > vscroll_threshold)
-          pos.y = tpos.y - vscroll_threshold;
-        else if (dist < -vscroll_threshold)
-          pos.y = tpos.y + vscroll_threshold;
-      }
-      break;
+      dist = tpos.y - pos.y;
+      if (dist > vscroll_threshold)
+        pos.y = tpos.y - vscroll_threshold;
+      else if (dist < -vscroll_threshold)
+        pos.y = tpos.y + vscroll_threshold;
+    }
+    break;
 
     case CAMERA_FOLLOW_PATH:
+    {
+      assert(!path.empty());
+      path_pos += delta * 50.0f;
+
+      PathPoint p = interpolate_path(path, path_pos);
+
+      set_pos(p.pos.x, p.pos.y);
+      set_zoom(p.zoom);
+
+      if (p == path.back())
       {
-        assert(!path.empty());
-        path_pos += delta * 50.0f;
-
-        PathPoint p = interpolate_path(path, path_pos);
-
-        set_pos(p.pos.x, p.pos.y);
-        set_zoom(p.zoom);
-
-        if (p == path.back())
-          {
-            ScriptManager::current()->fire_wakeup_event(ScriptManager::CAMERA_DONE);
-            set_mode(CAMERA_INACTIVE);
-          }
+        ScriptManager::current()->fire_wakeup_event(ScriptManager::CAMERA_DONE);
+        set_mode(CAMERA_INACTIVE);
       }
-      break;
     }
+    break;
+  }
 }
 
 void

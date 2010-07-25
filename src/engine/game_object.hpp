@@ -49,9 +49,9 @@ protected:
 
 public:
   GameObject() 
-  : remove_flag(false), 
-    name(),
-    active(true)
+    : remove_flag(false), 
+      name(),
+      active(true)
   {}
   virtual ~GameObject() {}
 

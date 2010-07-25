@@ -22,9 +22,9 @@
 #include "scenegraph/vertex_array_drawable.hpp"
 #include "math/random.hpp"
 
-Nightvision::Nightvision(const FileReader& props)
-  : nightvision(Pathname("images/nightvision.sprite")),
-    noise(Pathname("images/noise.png"))
+Nightvision::Nightvision(const FileReader& props) :
+  nightvision(Pathname("images/nightvision.sprite")),
+  noise(Pathname("images/noise.png"))
 {
   name = "nightvision";
   noise.set_wrap(GL_REPEAT);
@@ -44,81 +44,81 @@ Nightvision::draw(SceneContext& sc)
 
   // try to stay above everything else with large z value
   if (1)
-    {
-      nightvision.set_alpha(1.0f);
-      nightvision.set_blend_func(GL_ONE, GL_ZERO);
-      sc.light().draw(nightvision, Vector2f(0, 0), 10000);
-    }
+  {
+    nightvision.set_alpha(1.0f);
+    nightvision.set_blend_func(GL_ONE, GL_ZERO);
+    sc.light().draw(nightvision, Vector2f(0, 0), 10000);
+  }
 
   if (1)
-    {
-      VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), 10000,
-                                                                       sc.light().get_modelview());
-      array->set_mode(GL_QUADS);
-      array->set_texture(noise);
-      array->set_blend_func(GL_DST_COLOR, GL_ZERO);
+  {
+    VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), 10000,
+                                                         sc.light().get_modelview());
+    array->set_mode(GL_QUADS);
+    array->set_texture(noise);
+    array->set_blend_func(GL_DST_COLOR, GL_ZERO);
 
-      float u = rnd.frand() / 0.5f;
-      float v = rnd.frand() / 0.5f;
-      float w = 4.0f / 6.0f;
-      float h = 3.0f / 6.0f;
+    float u = rnd.frand() / 0.5f;
+    float v = rnd.frand() / 0.5f;
+    float w = 4.0f / 6.0f;
+    float h = 3.0f / 6.0f;
+
+    array->texcoord(u, v);
+    array->vertex(0, 0);
+
+    array->texcoord(u + w, v);
+    array->vertex(static_cast<float>(Display::get_width()), 0);
+
+    array->texcoord(u + w, v + h);
+    array->vertex(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()));
+
+    array->texcoord(u, v + h);
+    array->vertex(0, static_cast<float>(Display::get_height()));
+      
+    if (0) // second noise level
+    {
+      u = rnd.frand();
+      v = rnd.frand();
+      float size = 4.0f;
 
       array->texcoord(u, v);
-      array->vertex(0, 0);
+      array->vertex(0, 0, 1.0f);
 
-      array->texcoord(u + w, v);
-      array->vertex(static_cast<float>(Display::get_width()), 0);
+      array->texcoord(u + size, v);
+      array->vertex(static_cast<float>(Display::get_width()), 0.0f, 1.0f);
 
-      array->texcoord(u + w, v + h);
-      array->vertex(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()));
+      array->texcoord(u + size, v + size);
+      array->vertex(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()), 1.0f);
 
-      array->texcoord(u, v + h);
-      array->vertex(0, static_cast<float>(Display::get_height()));
-      
-      if (0) // second noise level
-        {
-          u = rnd.frand();
-          v = rnd.frand();
-          float size = 4.0f;
-
-          array->texcoord(u, v);
-          array->vertex(0, 0, 1.0f);
-
-          array->texcoord(u + size, v);
-          array->vertex(static_cast<float>(Display::get_width()), 0.0f, 1.0f);
-
-          array->texcoord(u + size, v + size);
-          array->vertex(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()), 1.0f);
-
-          array->texcoord(u, v + size);
-          array->vertex(0.0f, static_cast<float>(Display::get_height()), 1.0f);
-        }
-
-      sc.light().draw(array);
+      array->texcoord(u, v + size);
+      array->vertex(0.0f, static_cast<float>(Display::get_height()), 1.0f);
     }
+
+    sc.light().draw(array);
+  }
   sc.light().pop_modelview();
 
   if (1)
-    {
-      // FIXME: might be better to copy the highlight over to the
-      // color layer, however that would require some changes to the
-      // DrawingContext structure
-      sc.highlight().clear();
+  {
+    // FIXME: might be better to copy the highlight over to the
+    // color layer, however that would require some changes to the
+    // DrawingContext structure
+    sc.highlight().clear();
 
-      sc.highlight().push_modelview();
-      sc.highlight().set_modelview(Matrix::identity());
+    sc.highlight().push_modelview();
+    sc.highlight().set_modelview(Matrix::identity());
 
-      nightvision.set_alpha(0.5f);
-      nightvision.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-      nightvision.set_scale(std::max(float(Display::get_width())  / nightvision.get_width(),
-                                     float(Display::get_height()) / nightvision.get_height()));
+    nightvision.set_alpha(0.5f);
+    nightvision.set_blend_func(GL_SRC_ALPHA, GL_ONE);
+    nightvision.set_scale(std::max(float(Display::get_width())  / nightvision.get_width(),
+                                   float(Display::get_height()) / nightvision.get_height()));
 
-      sc.highlight().draw(nightvision, 
-                          Vector2f(static_cast<float>(Display::get_width()) / 2.0f - (nightvision.get_width()  * nightvision.get_scale() / 2.0f),
-                                   static_cast<float>(Display::get_height())/ 2.0f - (nightvision.get_height() * nightvision.get_scale() / 2.0f)),
-                          10000);
-      sc.highlight().pop_modelview();
-    }
+    sc.highlight().draw(nightvision, 
+                        Vector2f(static_cast<float>(Display::get_width()) / 2.0f - (nightvision.get_width()  * nightvision.get_scale() / 2.0f),
+                                 static_cast<float>(Display::get_height())/ 2.0f - (nightvision.get_height() * nightvision.get_scale() / 2.0f)),
+                        10000);
+    sc.highlight().pop_modelview();
+  }
 }
 
 void

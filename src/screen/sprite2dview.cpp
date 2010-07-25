@@ -120,122 +120,122 @@ Sprite2DView::draw()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   switch(mode)
-    {
+  {
     case SLIDESHOW:
       if (aspect > 4.0/3.0)
-        {
-          sprite.draw(Vector2f(-offset, 0));
-        }
+      {
+        sprite.draw(Vector2f(-offset, 0));
+      }
       else
-        {
-          sprite.draw(Vector2f(0, -offset));
-        }
+      {
+        sprite.draw(Vector2f(0, -offset));
+      }
 
       if (new_sprite)
-        {
-          new_sprite.draw(Vector2f(0,0));
-        }
+      {
+        new_sprite.draw(Vector2f(0,0));
+      }
 
       if (show_thumbnail)
+      {
+        Sprite small = sprite;
+        small.set_alpha(1.0f);
+        float w  = small.get_width();
+        float h = small.get_height();
+        float s;
+        if (w > h)
         {
-          Sprite small = sprite;
-          small.set_alpha(1.0f);
-          float w  = small.get_width();
-          float h = small.get_height();
-          float s;
-          if (w > h)
-            {
-              s = 125.0f / w;
+          s = 125.0f / w;
 
-              w  *= s;
-              h *= s;
-              small.set_scale(s);
+          w  *= s;
+          h *= s;
+          small.set_scale(s);
 
-              small.draw(Vector2f(DISPLAY_W - w,
-                                  DISPLAY_H - h));
-            }
-          else
-            {
-              s = 125.0f / h;
+          small.draw(Vector2f(DISPLAY_W - w,
+                              DISPLAY_H - h));
+        }
+        else
+        {
+          s = 125.0f / h;
 
-              w  *= s;
-              h *= s;
-              small.set_scale(s);
+          w  *= s;
+          h *= s;
+          small.set_scale(s);
 
-              small.draw(Vector2f(DISPLAY_W - w,
-                                DISPLAY_H - h));
-            }
-        }        
+          small.draw(Vector2f(DISPLAY_W - w,
+                              DISPLAY_H - h));
+        }
+      }        
       break;
       
     case MANUAL:
       sprite.set_scale(zoom);
       sprite.draw(pos);
       break;
-    }
+  }
 }
 
 void
 Sprite2DView::update_slideshow(float delta, const Controller& controller)
 {
   if (!new_sprite)
-    {
-      width  = sprite.get_width();
-      height = sprite.get_height();
-      aspect = width/height;
+  {
+    width  = sprite.get_width();
+    height = sprite.get_height();
+    aspect = width/height;
 
-      if (aspect > 4.0/3.0)
-        { // expand vertical
-          float s = DISPLAY_H/height;
-          width  *= s;
-          height *= s;
-          sprite.set_scale(s);
+    if (aspect > 4.0/3.0)
+    { // expand vertical
+      float s = DISPLAY_H/height;
+      width  *= s;
+      height *= s;
+      sprite.set_scale(s);
 
-          if (offset - (width - DISPLAY_W) > 0)
-            {
-              offset = (width - DISPLAY_W);
+      if (offset - (width - DISPLAY_W) > 0)
+      {
+        offset = (width - DISPLAY_W);
 
-              if (auto_scroll && display_time > 3.0f)
-                next_image();
-            }
-          else
-            {
-              offset += delta * 50.0f + controller.get_axis_state(X_AXIS) * 200.0f * delta;
-            }
-
-          offset +=  controller.get_ball_state(MOUSE_MOTION_Y);
-        }
+        if (auto_scroll && display_time > 3.0f)
+          next_image();
+      }
       else
-        { // expand horizontal
-          float s = 800.0f/width;
-          width  *= s;
-          height *= s;
-          sprite.set_scale(s);
+      {
+        offset += delta * 50.0f + controller.get_axis_state(X_AXIS) * 200.0f * delta;
+      }
 
-          if (offset - (height - DISPLAY_H) > 0)
-            {
-              offset = (width - DISPLAY_H);
-
-              if (auto_scroll && display_time > 3.0f)
-                next_image();
-            }
-          else
-            {
-              offset += delta * 50.0f +   controller.get_axis_state(X_AXIS) * 200.0f * delta;
-            }
-
-          offset += controller.get_ball_state(MOUSE_MOTION_Y);
-        }
+      offset +=  controller.get_ball_state(MOUSE_MOTION_Y);
     }
+    else
+    { // expand horizontal
+      float s = 800.0f/width;
+      width  *= s;
+      height *= s;
+      sprite.set_scale(s);
+
+      if (offset - (height - DISPLAY_H) > 0)
+      {
+        offset = (width - DISPLAY_H);
+
+        if (auto_scroll && display_time > 3.0f)
+          next_image();
+      }
+      else
+      {
+        offset += delta * 50.0f +   controller.get_axis_state(X_AXIS) * 200.0f * delta;
+      }
+
+      offset += controller.get_ball_state(MOUSE_MOTION_Y);
+    }
+  }
 
   if (controller.button_was_pressed(PRIMARY_BUTTON))
-    {
-      next_image();
-    }
+  {
+    next_image();
+  }
   else if (controller.button_was_pressed(SECONDARY_BUTTON))
-    {
-      prev_image();
-    }
+  {
+    prev_image();
+  }
 }
 
 void
@@ -300,19 +300,19 @@ Sprite2DView::prepare_sprite(Sprite& sprite_)
   float a = w/h;
 
   if (a > 4.0/3.0)
-    { // expand vertical
-      float s = DISPLAY_H/h;
-      w *= s;
-      h *= s;
-      sprite_.set_scale(s);
-    }
+  { // expand vertical
+    float s = DISPLAY_H/h;
+    w *= s;
+    h *= s;
+    sprite_.set_scale(s);
+  }
   else
-    { // expand horizontal
-      float s = DISPLAY_W/w;
-      w *= s;
-      h *= s;
-      sprite_.set_scale(s);
-    }  
+  { // expand horizontal
+    float s = DISPLAY_W/w;
+    w *= s;
+    h *= s;
+    sprite_.set_scale(s);
+  }  
 }
 
 void
@@ -334,47 +334,47 @@ void
 Sprite2DView::update(float delta, const Controller& controller)
 {  
   if (ignore_delta)
-    {
-      ignore_delta = false;
-      delta = 0.0f;
-    }
+  {
+    ignore_delta = false;
+    delta = 0.0f;
+  }
   
   display_time += delta * 0.5f;
 
   switch(mode) {
-  case SLIDESHOW:
-    update_slideshow(delta, controller);
-    break;
-  case MANUAL:
-    update_manual(delta, controller);
-    break;
+    case SLIDESHOW:
+      update_slideshow(delta, controller);
+      break;
+    case MANUAL:
+      update_manual(delta, controller);
+      break;
   }
 
   if (controller.button_was_pressed(PDA_BUTTON))
+  {
+    if (shuffle)
     {
-      if (shuffle)
-        {
-          std::vector<Pathname>::iterator i = std::find(directory.begin(), directory.end(),
-                                                        shuffle_directory[index]);
-          if (i != directory.end())
-            {
-              index = i - directory.begin() ;
-            }
-        }
-      else
-        {
-          std::vector<Pathname>::iterator i = std::find(shuffle_directory.begin(), shuffle_directory.end(),
-                                                           directory[index]);
-          if (i != shuffle_directory.end())
-            {
-              index = i - shuffle_directory.begin();
-            }
-        }
-
-      shuffle = !shuffle;
-
-      std::cout << shuffle << " " << index << std::endl;
+      std::vector<Pathname>::iterator i = std::find(directory.begin(), directory.end(),
+                                                    shuffle_directory[index]);
+      if (i != directory.end())
+      {
+        index = i - directory.begin() ;
+      }
     }
+    else
+    {
+      std::vector<Pathname>::iterator i = std::find(shuffle_directory.begin(), shuffle_directory.end(),
+                                                    directory[index]);
+      if (i != shuffle_directory.end())
+      {
+        index = i - shuffle_directory.begin();
+      }
+    }
+
+    shuffle = !shuffle;
+
+    std::cout << shuffle << " " << index << std::endl;
+  }
 
   //  if (controller.button_was_pressed(INVENTORY_BUTTON))
   //std::random_shuffle(shuffle_directory.begin(), shuffle_directory.end());
@@ -383,28 +383,28 @@ Sprite2DView::update(float delta, const Controller& controller)
     show_thumbnail = !show_thumbnail;
 
   if (controller.button_was_pressed(AIM_BUTTON))
-    {
-      if (mode == SLIDESHOW) mode = MANUAL; 
-      else if (mode == MANUAL) mode = SLIDESHOW; 
-    }
+  {
+    if (mode == SLIDESHOW) mode = MANUAL; 
+    else if (mode == MANUAL) mode = SLIDESHOW; 
+  }
 
   if (new_sprite)
-    {
-      fadein += delta;
+  {
+    fadein += delta;
 
-      if (fadein > 1.0f)
-        {
-          sprite = new_sprite;
-          sprite.set_alpha(1.0f);
-          new_sprite = Sprite();
-          offset = 0;
-          display_time = 0;
-        }
-      else
-        {
-          new_sprite.set_alpha(fadein);
-        }
+    if (fadein > 1.0f)
+    {
+      sprite = new_sprite;
+      sprite.set_alpha(1.0f);
+      new_sprite = Sprite();
+      offset = 0;
+      display_time = 0;
     }
+    else
+    {
+      new_sprite.set_alpha(fadein);
+    }
+  }
 }
 
 void

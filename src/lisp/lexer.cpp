@@ -28,8 +28,8 @@ class EOFException
 {
 };
 
-Lexer::Lexer(std::istream& newstream)
-  : stream(newstream), eof(false), linenumber(0), bufend(0), c(0), token_length(0)
+Lexer::Lexer(std::istream& newstream) :
+  stream(newstream), eof(false), linenumber(0), bufend(0), c(0), token_length(0)
 {
   try {
     // trigger a refill of the buffer
@@ -125,7 +125,7 @@ Lexer::getNextToken()
         } catch(EOFException& ) {
           std::stringstream msg;
           msg << "Parse error in line " << startline << ": "
-            << "EOF while parsing string.";
+              << "EOF while parsing string.";
           throw std::runtime_error(msg.str());
         }
         nextChar();
@@ -144,7 +144,7 @@ Lexer::getNextToken()
         } catch(EOFException& ) {
           std::stringstream msg;
           msg << "Parse Error in line " << linenumber << ": "
-            << "EOF while parsing constant.";
+              << "EOF while parsing constant.";
           throw std::runtime_error(msg.str());
         }
 
@@ -158,7 +158,7 @@ Lexer::getNextToken()
         {
           std::stringstream msg;
           msg << "Parse Error in line " << linenumber << ": "
-            << "Unknown constant '" << token_string << "'.";
+              << "Unknown constant '" << token_string << "'.";
           throw std::runtime_error(msg.str());
         }
 

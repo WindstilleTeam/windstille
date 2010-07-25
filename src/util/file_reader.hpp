@@ -58,10 +58,10 @@ public:
   {
     std::string str;
     if (get(name, str))
-      {
-        value = enum2string(str);
-        return true;
-      }
+    {
+      value = enum2string(str);
+      return true;
+    }
 
     return false;
   }

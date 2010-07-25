@@ -30,12 +30,12 @@
 #include "editor/sector_model.hpp"
 #include "editor/layer_manager_columns.hpp"
 
-LayerManager::LayerManager(EditorWindow& editor_)
-  : editor(editor_),
-    label("Layer Manager", Gtk::ALIGN_LEFT),
-    scrolled(),
-    treeview(),
-    auto_lock()
+LayerManager::LayerManager(EditorWindow& editor_) :
+  editor(editor_),
+  label("Layer Manager", Gtk::ALIGN_LEFT),
+  scrolled(),
+  treeview(),
+  auto_lock()
 {
   treeview.set_headers_clickable();
   treeview.set_headers_visible(true);

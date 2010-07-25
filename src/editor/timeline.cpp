@@ -21,8 +21,8 @@
 #include "editor/timeline_object_layer.hpp"
 #include "editor/timeline_layer.hpp"
 
-Timeline::Timeline()
-  : m_layers()
+Timeline::Timeline() :
+  m_layers()
 {
 }
 

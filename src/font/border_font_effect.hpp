@@ -33,7 +33,7 @@ public:
       
       @param size     Size of the border in pixel
       @param outline  If true add the border as an outline to the font, else add it to the font itself
-   */
+  */
   BorderFontEffect(int size, bool outline);
   ~BorderFontEffect();
   
@@ -48,9 +48,9 @@ public:
   void blit(const SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const;
 
   /* disabled for g++-4.2 compatibilty
-  private:
-    BorderFontEffect (const BorderFontEffect&);
-    BorderFontEffect& operator= (const BorderFontEffect&);
+     private:
+     BorderFontEffect (const BorderFontEffect&);
+     BorderFontEffect& operator= (const BorderFontEffect&);
   */
 };
 

@@ -145,10 +145,10 @@ MenuManager::display_pause_menu()
 
   menu.add_button("Resume",  boost::bind(&MenuManager::menu_continue));
   if (Sector::current())
-    {
-      menu.add_button("Debug", boost::bind(&MenuManager::display_debug_menu));
-      //menu.add_button("Select Scenario", boost::bind(&MenuManager::display_scenario_menu));
-    }
+  {
+    menu.add_button("Debug", boost::bind(&MenuManager::display_debug_menu));
+    //menu.add_button("Select Scenario", boost::bind(&MenuManager::display_scenario_menu));
+  }
   menu.add_button("Options", boost::bind(&MenuManager::display_option_menu));
   menu.add_button("Credits", boost::bind(&MenuManager::display_credits));
   menu.add_button("Help", boost::bind(&MenuManager::display_help));
@@ -177,9 +177,9 @@ MenuManager::display_models_menu()
   models.push_back(Pathname("models/vehicles/train/train.wsprite")); 
 
   for(std::vector<Pathname>::const_iterator i = models.begin(); i != models.end(); ++i)
-    {
-      menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_show_model, *i));
-    }
+  {
+    menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_show_model, *i));
+  }
   
   menu.show();
 }
@@ -216,9 +216,9 @@ MenuManager::display_scenario_menu()
   scenarios.push_back(Pathname("sectors/virtualreality/virtualreality.wst"));
   
   for(std::vector<Pathname>::const_iterator i = scenarios.begin(); i != scenarios.end(); ++i)
-    {
-      menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_start_scenario, *i));
-    }
+  {
+    menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_start_scenario, *i));
+  }
 
   menu.show();
 }
@@ -301,7 +301,7 @@ MenuManager::display_help()
                  "distribute binaries, see the file COPYING for details.\n"
                  "\n"
                  "# EOF #\n"
-                 );
+    );
   text->set_active(true);
   
   group->pack(text.release());
@@ -463,18 +463,18 @@ void
 MenuManager::menu_ambient_light(int i, int component)
 {
   if (Sector::current())
-    {
-      Color amb = Sector::current()->get_ambient_light();
+  {
+    Color amb = Sector::current()->get_ambient_light();
 
-      if (component == 0)
-        amb.r = static_cast<float>(i) / 100.0f;
-      else if (component == 1)
-        amb.g = static_cast<float>(i) / 100.0f;
-      else if (component == 2)
-        amb.b = static_cast<float>(i) / 100.0f;
+    if (component == 0)
+      amb.r = static_cast<float>(i) / 100.0f;
+    else if (component == 1)
+      amb.g = static_cast<float>(i) / 100.0f;
+    else if (component == 2)
+      amb.b = static_cast<float>(i) / 100.0f;
 
-      Sector::current()->set_ambient_light(amb);
-    }
+    Sector::current()->set_ambient_light(amb);
+  }
 }
 
 void
@@ -510,21 +510,21 @@ MenuManager::menu_wiimote()
 {
 #ifdef HAVE_CWIID
   if (wiimote && !wiimote->is_connected())
-    {
-      // FIXME: This never appears on screen due to timeout
-      ConsoleLog << "Trying to connect Wiimote: Press buttons 1 and 2 to connect" << std::endl;
+  {
+    // FIXME: This never appears on screen due to timeout
+    ConsoleLog << "Trying to connect Wiimote: Press buttons 1 and 2 to connect" << std::endl;
 
-      wiimote->connect();
+    wiimote->connect();
 
-      if (wiimote->is_connected())
-        ConsoleLog << "Wiimote connected" << std::endl;
-      else
-        ConsoleLog << "Wiimote connection failed" << std::endl;
-    }
+    if (wiimote->is_connected())
+      ConsoleLog << "Wiimote connected" << std::endl;
+    else
+      ConsoleLog << "Wiimote connection failed" << std::endl;
+  }
   else
-    {
-      ConsoleLog << "Wiimote already is connected" << std::endl;
-    }
+  {
+    ConsoleLog << "Wiimote already is connected" << std::endl;
+  }
 #endif
 }
 

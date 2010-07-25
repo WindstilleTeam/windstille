@@ -82,100 +82,100 @@ Wiimote::connect()
   printf("Put Wiimote in discoverable mode now (press 1+2)...\n");
 
   if (!(m_wiimote = cwiid_connect(&bdaddr, CWIID_FLAG_MESG_IFC))) 
-    {
-      fprintf(stderr, "Unable to connect to wiimote\n");
-    }
+  {
+    fprintf(stderr, "Unable to connect to wiimote\n");
+  }
   else 
-    {
-      std::cout << "Wiimote connected: " << m_wiimote << std::endl;
-      if (cwiid_set_mesg_callback(m_wiimote, &Wiimote::mesg_callback)) {
-        std::cerr << "Unable to set message callback" << std::endl;
-      }
-
-      if (cwiid_command(m_wiimote, CWIID_CMD_RPT_MODE, 
-                        CWIID_RPT_STATUS  |
-                        CWIID_RPT_NUNCHUK |
-                        CWIID_RPT_ACC     |
-                        CWIID_RPT_BTN))
-        {
-          std::cerr << "Wiimote: Error setting report mode" << std::endl;
-        }
-
-      { // read calibration data
-	uint8_t buf[7];
-
-        if (cwiid_read(m_wiimote, CWIID_RW_EEPROM, 0x16, 7, buf))
-          {
-            std::cout << "Wiimote: Unable to retrieve accelerometer calibration" << std::endl;
-          }
-        else
-          {
-            wiimote_zero.x = buf[0];
-            wiimote_zero.y = buf[1];
-            wiimote_zero.z = buf[2];
-
-            wiimote_one.x  = buf[4];
-            wiimote_one.y  = buf[5];
-            wiimote_one.z  = buf[6];
-          }
-
-        if (cwiid_read(m_wiimote, CWIID_RW_REG | CWIID_RW_DECODE, 0xA40020, 7, buf))
-          {
-            std::cout << "Wiimote: Unable to retrieve wiimote accelerometer calibration" << std::endl;
-          }
-        else
-          {
-            nunchuk_zero.x = buf[0];
-            nunchuk_zero.y = buf[1];
-            nunchuk_zero.z = buf[2];
-            
-            nunchuk_one.x  = buf[4];
-            nunchuk_one.y  = buf[5];
-            nunchuk_one.z  = buf[6];
-          }
-
-        std::cout << "Wiimote Calibration: "
-                  << static_cast<int>(wiimote_zero.x) << ", "
-                  << static_cast<int>(wiimote_zero.x) << ", "
-                  << static_cast<int>(wiimote_zero.x) << " - "
-                  << static_cast<int>(wiimote_one.x) << ", "
-                  << static_cast<int>(wiimote_one.x) << ", "
-                  << static_cast<int>(wiimote_one.x) << std::endl;
-
-        std::cout << "Nunchuk Calibration: "
-                  << static_cast<int>(nunchuk_zero.x) << ", "
-                  << static_cast<int>(nunchuk_zero.x) << ", "
-                  << static_cast<int>(nunchuk_zero.x) << " - "
-                  << static_cast<int>(nunchuk_one.x) << ", "
-                  << static_cast<int>(nunchuk_one.x) << ", "
-                  << static_cast<int>(nunchuk_one.x) << std::endl;
-          
-      }
+  {
+    std::cout << "Wiimote connected: " << m_wiimote << std::endl;
+    if (cwiid_set_mesg_callback(m_wiimote, &Wiimote::mesg_callback)) {
+      std::cerr << "Unable to set message callback" << std::endl;
     }
+
+    if (cwiid_command(m_wiimote, CWIID_CMD_RPT_MODE, 
+                      CWIID_RPT_STATUS  |
+                      CWIID_RPT_NUNCHUK |
+                      CWIID_RPT_ACC     |
+                      CWIID_RPT_BTN))
+    {
+      std::cerr << "Wiimote: Error setting report mode" << std::endl;
+    }
+
+    { // read calibration data
+      uint8_t buf[7];
+
+      if (cwiid_read(m_wiimote, CWIID_RW_EEPROM, 0x16, 7, buf))
+      {
+        std::cout << "Wiimote: Unable to retrieve accelerometer calibration" << std::endl;
+      }
+      else
+      {
+        wiimote_zero.x = buf[0];
+        wiimote_zero.y = buf[1];
+        wiimote_zero.z = buf[2];
+
+        wiimote_one.x  = buf[4];
+        wiimote_one.y  = buf[5];
+        wiimote_one.z  = buf[6];
+      }
+
+      if (cwiid_read(m_wiimote, CWIID_RW_REG | CWIID_RW_DECODE, 0xA40020, 7, buf))
+      {
+        std::cout << "Wiimote: Unable to retrieve wiimote accelerometer calibration" << std::endl;
+      }
+      else
+      {
+        nunchuk_zero.x = buf[0];
+        nunchuk_zero.y = buf[1];
+        nunchuk_zero.z = buf[2];
+            
+        nunchuk_one.x  = buf[4];
+        nunchuk_one.y  = buf[5];
+        nunchuk_one.z  = buf[6];
+      }
+
+      std::cout << "Wiimote Calibration: "
+                << static_cast<int>(wiimote_zero.x) << ", "
+                << static_cast<int>(wiimote_zero.x) << ", "
+                << static_cast<int>(wiimote_zero.x) << " - "
+                << static_cast<int>(wiimote_one.x) << ", "
+                << static_cast<int>(wiimote_one.x) << ", "
+                << static_cast<int>(wiimote_one.x) << std::endl;
+
+      std::cout << "Nunchuk Calibration: "
+                << static_cast<int>(nunchuk_zero.x) << ", "
+                << static_cast<int>(nunchuk_zero.x) << ", "
+                << static_cast<int>(nunchuk_zero.x) << " - "
+                << static_cast<int>(nunchuk_one.x) << ", "
+                << static_cast<int>(nunchuk_one.x) << ", "
+                << static_cast<int>(nunchuk_one.x) << std::endl;
+          
+    }
+  }
 }
 
 void
 Wiimote::disconnect()
 {
   if (m_wiimote)
-    {
-      cwiid_disconnect(m_wiimote);
-      m_wiimote = 0;
-    }
+  {
+    cwiid_disconnect(m_wiimote);
+    m_wiimote = 0;
+  }
 }
 
 void
 Wiimote::set_led(unsigned char led_state)
 {
   if (m_led_state != led_state)
-    {
-      //std::cout << "Wiimote: " << static_cast<int>(m_led_state) << std::endl;
-      m_led_state = led_state;
+  {
+    //std::cout << "Wiimote: " << static_cast<int>(m_led_state) << std::endl;
+    m_led_state = led_state;
 
-      if (cwiid_command(m_wiimote, CWIID_CMD_LED, m_led_state)) {
-        fprintf(stderr, "Error setting LEDs \n");
-      }
+    if (cwiid_command(m_wiimote, CWIID_CMD_LED, m_led_state)) {
+      fprintf(stderr, "Error setting LEDs \n");
     }
+  }
 }
 
 void
@@ -196,13 +196,13 @@ void
 Wiimote::set_rumble(bool r)
 {
   if (r != m_rumble)
-    {
-      m_rumble = r;
+  {
+    m_rumble = r;
 
-      if (cwiid_command(m_wiimote, CWIID_CMD_RUMBLE, m_rumble)) {
-        std::cerr << "Error setting rumble" << std::endl;
-      }
+    if (cwiid_command(m_wiimote, CWIID_CMD_RUMBLE, m_rumble)) {
+      std::cerr << "Error setting rumble" << std::endl;
     }
+  }
 }
 
 void
@@ -255,7 +255,7 @@ Wiimote::on_status(const cwiid_status_mesg& msg)
 {
   printf("Status Report: battery=%d extension=", msg.battery);
   switch (msg.ext_type)
-    {
+  {
     case CWIID_EXT_NONE:
       printf("none");
       break;
@@ -271,7 +271,7 @@ Wiimote::on_status(const cwiid_status_mesg& msg)
     default:
       printf("Unknown Extension");
       break;
-    }
+  }
   printf("\n");
 }
 
@@ -281,13 +281,13 @@ Wiimote::on_error(const cwiid_error_mesg& /*msg*/)
   std::cout << "On Error" << std::endl;
 
   if (m_wiimote)
+  {
+    if (cwiid_disconnect(m_wiimote)) 
     {
-      if (cwiid_disconnect(m_wiimote)) 
-        {
-          fprintf(stderr, "Error on wiimote disconnect\n");
-          m_wiimote = 0;
-        }
+      fprintf(stderr, "Error on wiimote disconnect\n");
+      m_wiimote = 0;
     }
+  }
 }
 
 void
@@ -330,11 +330,11 @@ Wiimote::on_ir(const cwiid_ir_mesg& msg)
 {
   printf("IR Report: ");
   for (int i = 0; i < CWIID_IR_SRC_COUNT; ++i)
-    {
-      if (msg.src[i].valid) {
-        printf("(%d,%d) ", msg.src[i].pos[0], msg.src[i].pos[1]);
-      }
+  {
+    if (msg.src[i].valid) {
+      printf("(%d,%d) ", msg.src[i].pos[0], msg.src[i].pos[1]);
     }
+  }
 }
 
 /** Convert value to float while taking calibration data, left/center/right into account */
@@ -344,17 +344,17 @@ inline float to_float(uint8_t min,
                       uint8_t value)
 {
   if (value < center)
-    {
-      return math::mid(-1.0f, -static_cast<float>(center - value) / static_cast<float>(center - min), 1.0f);
-    }
+  {
+    return math::mid(-1.0f, -static_cast<float>(center - value) / static_cast<float>(center - min), 1.0f);
+  }
   else if (value > center)
-    {
-      return math::mid(-1.0f, static_cast<float>(value - center) / static_cast<float>(max - center), 1.0f);
-    }
+  {
+    return math::mid(-1.0f, static_cast<float>(value - center) / static_cast<float>(max - center), 1.0f);
+  }
   else 
-    {
-      return 0.0f;
-    }
+  {
+    return 0.0f;
+  }
 }
 
 void
@@ -374,16 +374,16 @@ Wiimote::on_nunchuck(const cwiid_nunchuk_mesg& msg)
   float nunchuk_stick_y = -to_float(22, 119, 213, msg.stick[1]);
 
   if (m_nunchuk_stick_x != nunchuk_stick_x)
-    {
-      m_nunchuk_stick_x = nunchuk_stick_x;
-      add_axis_event(0, 0, m_nunchuk_stick_x);
-    } 
+  {
+    m_nunchuk_stick_x = nunchuk_stick_x;
+    add_axis_event(0, 0, m_nunchuk_stick_x);
+  } 
 
   if (m_nunchuk_stick_y != nunchuk_stick_y)
-    {
-      m_nunchuk_stick_y = nunchuk_stick_y;
-      add_axis_event(0, 1, m_nunchuk_stick_y);
-    }
+  {
+    m_nunchuk_stick_y = nunchuk_stick_y;
+    add_axis_event(0, 1, m_nunchuk_stick_y);
+  }
 
   add_acc_event(0, 1, 
                 static_cast<float>(msg.acc[0] - nunchuk_zero.x) / static_cast<float>(nunchuk_one.x - nunchuk_zero.x),
@@ -442,42 +442,42 @@ Wiimote::mesg(cwiid_wiimote_t* /*w*/, int mesg_count, union cwiid_mesg msg[])
 
   //std::cout << "StatusCallback: " << w << " " << mesg_count << std::endl;
   for (int i=0; i < mesg_count; i++)
+  {
+    switch (msg[i].type) 
     {
-      switch (msg[i].type) 
-        {
-        case CWIID_MESG_STATUS:
-          wiimote->on_status(msg[i].status_mesg);
-          break;
+      case CWIID_MESG_STATUS:
+        wiimote->on_status(msg[i].status_mesg);
+        break;
 
-        case CWIID_MESG_BTN:
-          wiimote->on_button(msg[i].btn_mesg);
-          break;
+      case CWIID_MESG_BTN:
+        wiimote->on_button(msg[i].btn_mesg);
+        break;
 
-        case CWIID_MESG_ACC:
-          wiimote->on_acc(msg[i].acc_mesg);
-          break;
+      case CWIID_MESG_ACC:
+        wiimote->on_acc(msg[i].acc_mesg);
+        break;
 
-        case CWIID_MESG_IR:
-          wiimote->on_ir(msg[i].ir_mesg);
-          break;
+      case CWIID_MESG_IR:
+        wiimote->on_ir(msg[i].ir_mesg);
+        break;
 
-        case CWIID_MESG_NUNCHUK:
-          wiimote->on_nunchuck(msg[i].nunchuk_mesg);
-          break;
+      case CWIID_MESG_NUNCHUK:
+        wiimote->on_nunchuck(msg[i].nunchuk_mesg);
+        break;
 
-        case CWIID_MESG_CLASSIC:
-          wiimote->on_classic(msg[i].classic_mesg);
-          break;
+      case CWIID_MESG_CLASSIC:
+        wiimote->on_classic(msg[i].classic_mesg);
+        break;
 
-        case CWIID_MESG_ERROR:
-          wiimote->on_error(msg[i].error_mesg);
-          break;
+      case CWIID_MESG_ERROR:
+        wiimote->on_error(msg[i].error_mesg);
+        break;
 
-        default:
-          printf("Wiimote: Unknown Report");
-          break;
-        }
+      default:
+        printf("Wiimote: Unknown Report");
+        break;
     }
+  }
 
   pthread_mutex_unlock(&mutex);
 }

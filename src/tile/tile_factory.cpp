@@ -33,21 +33,21 @@ bool surface_empty(const SoftwareSurface& image, int sx, int sy, int w, int h)
   
   for(int y = sy; y < sy + h; ++y)
     for(int x = sx; x < sx + w; ++x)
-      {
-        if (data[y * image.get_pitch() + 4*x + 3] != 0)
-          { 
-            return false;
-          }
+    {
+      if (data[y * image.get_pitch() + 4*x + 3] != 0)
+      { 
+        return false;
       }
+    }
 
   return true;
 }
 
-TileFactory::TileFactory(const Pathname& filename)
-  : tiles(),
-    packers(),
-    color_packer(),
-    descriptions()
+TileFactory::TileFactory(const Pathname& filename) :
+  tiles(),
+  packers(),
+  color_packer(),
+  descriptions()
 {
   packers.push_back(new TilePacker(1024, 1024));
   packers.push_back(new TilePacker(1024, 1024));
@@ -55,21 +55,21 @@ TileFactory::TileFactory(const Pathname& filename)
 
   FileReader reader = FileReader::parse(filename);
   if(reader.get_name() != "windstille-tiles")
-    {
-      std::ostringstream msg;
-      msg << "'" << filename << "' is not a windstille tiles file";
-      throw std::runtime_error(msg.str());
-    }
+  {
+    std::ostringstream msg;
+    msg << "'" << filename << "' is not a windstille tiles file";
+    throw std::runtime_error(msg.str());
+  }
   
   std::vector<FileReader> sections = reader.get_sections();
   for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
-    {
-      if (i->get_name() == "tiles") {
-        parse_tiles(*i);
-      } else if (i->get_name() == "tilegroup") {
-        // ignore
-      }
+  {
+    if (i->get_name() == "tiles") {
+      parse_tiles(*i);
+    } else if (i->get_name() == "tilegroup") {
+      // ignore
     }
+  }
 }
 
 TileFactory::~TileFactory()
@@ -95,25 +95,25 @@ TileFactory::parse_tiles(FileReader& reader)
   TileDescription& desc = *descriptions.back();
   
   if (0)
-    { // Load all on startup
-      desc.load(this);
-    }
+  { // Load all on startup
+    desc.load(this);
+  }
   else
-    { // Load on demand
-      for(std::vector<int>::size_type i = 0; i < desc.ids.size(); ++i)
-        { 
-          int& id = desc.ids[i];
-          if (id != 0)
-            {
-              if (id >= int(tiles.size()))
-                tiles.resize(id + 1, 0);
+  { // Load on demand
+    for(std::vector<int>::size_type i = 0; i < desc.ids.size(); ++i)
+    { 
+      int& id = desc.ids[i];
+      if (id != 0)
+      {
+        if (id >= int(tiles.size()))
+          tiles.resize(id + 1, 0);
     
-              delete tiles[id];
-              tiles[id] = new Tile(desc.colmap[i]);
-              tiles[id]->desc = &desc;
-            }
-        }
+        delete tiles[id];
+        tiles[id] = new Tile(desc.colmap[i]);
+        tiles[id]->desc = &desc;
+      }
     }
+  }
 }
 
 void
@@ -122,51 +122,51 @@ TileFactory::pack(int id, int colmap, const SoftwareSurface& image, const Rect& 
   if(id < int(tiles.size())
      && tiles[id] != 0
      && tiles[id]->desc == 0)
-    {
-      std::cout << "Warning: Duplicate tile id '" << id << "' ignoring" << std::endl;
-    }
+  {
+    std::cout << "Warning: Duplicate tile id '" << id << "' ignoring" << std::endl;
+  }
   else
-    {      
-      if (id >= int(tiles.size()))
-        tiles.resize(id + 1, 0);
+  {      
+    if (id >= int(tiles.size()))
+      tiles.resize(id + 1, 0);
 
-      delete tiles[id];
-      tiles[id]  = new Tile(colmap);
-      tiles[id]->desc  = 0;
-      tiles[id]->id    = id;
+    delete tiles[id];
+    tiles[id]  = new Tile(colmap);
+    tiles[id]->desc  = 0;
+    tiles[id]->id    = id;
 
-      if (!surface_empty(image, rect.left, rect.top, rect.get_width(), rect.get_height()))
-        {
-          if(packers[color_packer]->is_full())
-            {
-              packers.push_back(new TilePacker(1024, 1024));
-              color_packer = packers.size() - 1;
-            }
+    if (!surface_empty(image, rect.left, rect.top, rect.get_width(), rect.get_height()))
+    {
+      if(packers[color_packer]->is_full())
+      {
+        packers.push_back(new TilePacker(1024, 1024));
+        color_packer = packers.size() - 1;
+      }
           
-          Rectf uv = packers[color_packer]->pack(image, 
-                                                 rect.left, rect.top,
-                                                 rect.get_width(), rect.get_height());
-          tiles[id]->uv      = uv;
-          tiles[id]->packer  = color_packer;
-          tiles[id]->texture = packers[color_packer]->get_texture();
-        }
+      Rectf uv = packers[color_packer]->pack(image, 
+                                             rect.left, rect.top,
+                                             rect.get_width(), rect.get_height());
+      tiles[id]->uv      = uv;
+      tiles[id]->packer  = color_packer;
+      tiles[id]->texture = packers[color_packer]->get_texture();
     }
+  }
 }
 
 Tile*
 TileFactory::create(int id)
 {
   if(id < 0 || id >= static_cast<int>(tiles.size()))
-    {
-      return 0;
-    }
+  {
+    return 0;
+  }
   else
-    {
-      if (tiles[id] && tiles[id]->desc)
-        tiles[id]->desc->load(this);
+  {
+    if (tiles[id] && tiles[id]->desc)
+      tiles[id]->desc->load(this);
 
-      return tiles[id];
-    }
+    return tiles[id];
+  }
 }
 
 /* EOF */

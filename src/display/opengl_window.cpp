@@ -40,8 +40,8 @@ public:
   {}
 };
 
-OpenGLWindow::OpenGLWindow(const Size& size, const Size& aspect, bool fullscreen, int anti_aliasing)
-  : m_impl(new OpenGLWindowImpl)
+OpenGLWindow::OpenGLWindow(const Size& size, const Size& aspect, bool fullscreen, int anti_aliasing) :
+  m_impl(new OpenGLWindowImpl)
 {
   m_impl->m_size = size;
 
@@ -143,18 +143,18 @@ OpenGLWindow::set_fullscreen(bool fullscreen)
   m_impl->m_window = SDL_SetVideoMode(m_impl->m_size.width, m_impl->m_size.height, 0, flags);
 
   if (!m_impl->m_window)
-    {
-      throw std::runtime_error("OpenGLWindow: Couldn't create window");
-    }
+  {
+    throw std::runtime_error("OpenGLWindow: Couldn't create window");
+  }
 }
 
 void
 OpenGLWindow::set_gamma(float r, float g, float b)
 {
   if (SDL_SetGamma(r, g, b) == -1)
-    {
-      // Couldn't set gamma
-    }
+  {
+    // Couldn't set gamma
+  }
 }
 
 /* EOF */

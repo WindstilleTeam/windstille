@@ -22,12 +22,12 @@
 #include "tile/tile_map.hpp"
 #include "objects/laser_pointer.hpp"
 
-LaserPointer::LaserPointer()
- : noise(),
-   laserpointer(),
-   laserpointer_light(),
-   progress(),
-   angle()
+LaserPointer::LaserPointer() :
+  noise(),
+  laserpointer(),
+  laserpointer_light(),
+  progress(),
+  angle()
 {
   noise = Texture(Pathname("images/noise2.png"));
   laserpointer = Sprite(Pathname("images/laserpointer.sprite"));
@@ -47,17 +47,17 @@ LaserPointer::~LaserPointer()
 static float find_max(float pos, float v)
 {
   if (v == 0)
-    { 
-      return 0;
-    }
+  { 
+    return 0;
+  }
   else if (v < 0)
-    {
-      return fmodf(fmodf(pos, static_cast<float>(TILE_SIZE)) + static_cast<float>(TILE_SIZE), static_cast<float>(TILE_SIZE))/fabsf(v);
-    }
+  {
+    return fmodf(fmodf(pos, static_cast<float>(TILE_SIZE)) + static_cast<float>(TILE_SIZE), static_cast<float>(TILE_SIZE))/fabsf(v);
+  }
   else // if (v > 0)
-    {
-      return fmodf(fmodf(-pos, static_cast<float>(TILE_SIZE)) + static_cast<float>(TILE_SIZE), static_cast<float>(TILE_SIZE))/v;
-    }
+  {
+    return fmodf(fmodf(-pos, static_cast<float>(TILE_SIZE)) + static_cast<float>(TILE_SIZE), static_cast<float>(TILE_SIZE))/v;
+  }
 }
 
 void
@@ -120,7 +120,7 @@ LaserPointer::draw(SceneContext& sc)
     Vector2f ray = target - pos;
 
     VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0,0), 10000,
-                                                                     sc.highlight().get_modelview());
+                                                         sc.highlight().get_modelview());
     array->set_mode(GL_LINES);
     array->set_texture(noise);
     array->set_blend_func(GL_SRC_ALPHA, GL_ONE);

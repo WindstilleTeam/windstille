@@ -28,13 +28,13 @@
 
 #include "objects/doll.hpp"
 
-Doll::Doll()
-  : m_drawable(),
-    m_velocity(),
-    m_pos(200, 600),
-    m_last_pos(m_pos),
-    m_edge_position(),
-    m_state(kNoState)
+Doll::Doll() :
+  m_drawable(),
+  m_velocity(),
+  m_pos(200, 600),
+  m_last_pos(m_pos),
+  m_edge_position(),
+  m_state(kNoState)
 {
   Sprite3D sprite(Pathname("models/characters/jane/jane.wsprite"));
   m_drawable.reset(new Sprite3DDrawable(sprite, m_pos, 100.0f, Matrix::identity()));

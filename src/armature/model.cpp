@@ -22,9 +22,9 @@
 #include "armature/mesh.hpp"
 #include "armature/model.hpp"
 
-Model::Model(FileReader& reader, const std::string& path)
-  : name(),
-    meshes()
+Model::Model(FileReader& reader, const std::string& path) :
+  name(),
+  meshes()
 {
   if (reader.get_name() != "windstille-model")
     throw std::runtime_error("Not a 'windstille-model' file, its '" + reader.get_name() + "'");
@@ -33,17 +33,17 @@ Model::Model(FileReader& reader, const std::string& path)
 
   std::vector<FileReader> sections = reader.get_sections();
   for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+  {
+    if (i->get_name() == "mesh")
     {
-      if (i->get_name() == "mesh")
-        {
-          Mesh* mesh = new Mesh(*i, path);
-          meshes.push_back(mesh);
-        }
-      else
-        {
-          std::cout << "Ignoring unhandled tag: " << i->get_name() << std::endl;
-        }
+      Mesh* mesh = new Mesh(*i, path);
+      meshes.push_back(mesh);
     }
+    else
+    {
+      std::cout << "Ignoring unhandled tag: " << i->get_name() << std::endl;
+    }
+  }
 
   reset();
 }
@@ -58,27 +58,27 @@ void
 Model::draw()
 {
   for(Meshes::iterator i = meshes.begin(); i != meshes.end(); ++i)
-    {
-      (*i)->draw();
-    }
+  {
+    (*i)->draw();
+  }
 }
 
 void
 Model::reset()
 {
   for(Meshes::iterator i = meshes.begin(); i != meshes.end(); ++i)
-    {
-      (*i)->reset();
-    }  
+  {
+    (*i)->reset();
+  }  
 }
 
 void
 Model::apply(Armature* armature)
 {
   for(Meshes::iterator i = meshes.begin(); i != meshes.end(); ++i)
-    {
-      (*i)->apply(armature);
-    }    
+  {
+    (*i)->apply(armature);
+  }    
 }
 
 /* EOF */

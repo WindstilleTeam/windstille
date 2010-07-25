@@ -22,9 +22,9 @@
 #include "properties/property_set.hpp"
 #include "properties/properties.hpp"
 
-Properties::Properties(PropertySet* pset_, void* object_)
-  : pset(pset_),
-    object(object_)
+Properties::Properties(PropertySet* pset_, void* object_) :
+  pset(pset_),
+  object(object_)
 {
 }
 
@@ -33,15 +33,15 @@ Properties::get(const std::string& name) const
 {
   Property* prop = pset->get(name);
   if (!prop)
-    {
-      std::ostringstream str;
-      str << "Properties: " << pset->get_name() << ": property " << name << " not found";
-      throw std::runtime_error(str.str());
-    }
+  {
+    std::ostringstream str;
+    str << "Properties: " << pset->get_name() << ": property " << name << " not found";
+    throw std::runtime_error(str.str());
+  }
   else
-    {
-      return *prop;
-    }
+  {
+    return *prop;
+  }
 }
 
 int

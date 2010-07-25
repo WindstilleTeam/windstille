@@ -59,13 +59,13 @@ public:
   }
 };
 
-Framebuffer::Framebuffer()
-  : impl()
+Framebuffer::Framebuffer() :
+  impl()
 {
 }
 
-Framebuffer::Framebuffer(GLenum target, int width, int height)
-  : impl(new FramebufferImpl(target, width, height))
+Framebuffer::Framebuffer(GLenum target, int width, int height) :
+  impl(new FramebufferImpl(target, width, height))
 {  
 }
 

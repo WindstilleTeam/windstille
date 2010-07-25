@@ -24,12 +24,12 @@
 #include "math/rect.hpp"
 #include "tile/tile_factory.hpp"
 
-TileDescription::TileDescription(FileReader& props)
- : ids(),
-   colmap(),
-   filename(),
-   width(0), 
-   height(0)
+TileDescription::TileDescription(FileReader& props) :
+  ids(),
+  colmap(),
+  filename(),
+  width(0), 
+  height(0)
 {
   props.get("ids",    ids);
   props.get("image",  filename);
@@ -49,35 +49,35 @@ TileDescription::load(TileFactory* factory)
 
   int num_tiles = width * height; //(image->w/TILE_RESOLUTION) * (image->h/TILE_RESOLUTION);
   if (int(colmap.size()) != num_tiles)
-    {
-      std::ostringstream str;
-      str << "'colmap' information and num_tiles mismatch (" 
-          << colmap.size() << " != " << num_tiles << ") for image '" << filename << "'";
-      throw std::runtime_error(str.str());
-    }
+  {
+    std::ostringstream str;
+    str << "'colmap' information and num_tiles mismatch (" 
+        << colmap.size() << " != " << num_tiles << ") for image '" << filename << "'";
+    throw std::runtime_error(str.str());
+  }
 
   if (int(ids.size()) != num_tiles)
-    {
-      std::ostringstream str;
-      str << "'ids' information and num_tiles mismatch (" 
-          << ids.size() << " != " << num_tiles << ") for image '" << filename << "'";
-      throw std::runtime_error(str.str());
-    }
+  {
+    std::ostringstream str;
+    str << "'ids' information and num_tiles mismatch (" 
+        << ids.size() << " != " << num_tiles << ") for image '" << filename << "'";
+    throw std::runtime_error(str.str());
+  }
     
   int i = 0;
   for (int y = 0; y < height*TILE_RESOLUTION; y += TILE_RESOLUTION)
+  {
+    for (int x = 0; x < width*TILE_RESOLUTION; x += TILE_RESOLUTION)
     {
-      for (int x = 0; x < width*TILE_RESOLUTION; x += TILE_RESOLUTION)
-        {
-          if(ids[i] != -1)
-            {
-              factory->pack(ids[i], colmap[i], image,
-                            Rect(x, y, x+TILE_RESOLUTION, y+TILE_RESOLUTION));
-            }
+      if(ids[i] != -1)
+      {
+        factory->pack(ids[i], colmap[i], image,
+                      Rect(x, y, x+TILE_RESOLUTION, y+TILE_RESOLUTION));
+      }
 
-          i += 1; 
-        }
+      i += 1; 
     }
+  }
 }
 
 /* EOF */

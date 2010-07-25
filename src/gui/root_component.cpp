@@ -43,21 +43,21 @@ void
 RootComponent::draw()
 {
   for(Children::iterator i = children.begin(); i != children.end(); ++i)
-    {
-      (*i)->draw();
-    }
+  {
+    (*i)->draw();
+  }
 }
 
 void
 RootComponent::update(float delta, const Controller& controller)
 {
   for(Children::iterator i = children.begin(); i != children.end(); ++i)
-    {
-      if (*i == focus)
-        (*i)->update(delta, controller);
-      else
-        (*i)->update(delta, Controller());
-    }
+  {
+    if (*i == focus)
+      (*i)->update(delta, controller);
+    else
+      (*i)->update(delta, Controller());
+  }
 }
 
 bool
@@ -81,14 +81,14 @@ RootComponent::set_focus(Component* child_)
 {
   Children::iterator i = std::find(children.begin(), children.end(), child_);
   if (i != children.end())
-    {
-      focus = child_;
-      focus->set_active(true);
-    }
+  {
+    focus = child_;
+    focus->set_active(true);
+  }
   else
-    {
-      ConsoleLog << "Error: Need to add_child() first befor calling set_focus()" << std::endl;
-    }
+  {
+    ConsoleLog << "Error: Need to add_child() first befor calling set_focus()" << std::endl;
+  }
 }
 
 } // namespace gui

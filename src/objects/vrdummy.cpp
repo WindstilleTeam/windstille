@@ -19,11 +19,11 @@
 #include "math/random.hpp"
 #include "objects/vrdummy.hpp"
 
-VRDummy::VRDummy(const FileReader& props)
-  : sprite(),
-    highlight(),
-    rotation(),
-    jump_time()
+VRDummy::VRDummy(const FileReader& props) :
+  sprite(),
+  highlight(),
+  rotation(),
+  jump_time()
 {
   props.get("name", name);
   props.get("pos",  pos);
@@ -62,17 +62,17 @@ VRDummy::update(float delta)
   jump_time += delta;
   
   if (jump_time >= 1.0f && velocity == Vector2f(0, 0)) 
-    {
-      velocity = Vector2f(rnd.frand(-300.0f, 300.0f),
-                          rnd.frand(-300.0f, 300.0f));
-    }
+  {
+    velocity = Vector2f(rnd.frand(-300.0f, 300.0f),
+                        rnd.frand(-300.0f, 300.0f));
+  }
 
   if (jump_time >= 1.5f)
-    {
-      jump_time = 0.0f;
+  {
+    jump_time = 0.0f;
       
-      velocity = Vector2f(0, 0);
-    }
+    velocity = Vector2f(0, 0);
+  }
 
   pos += velocity * delta;
 }

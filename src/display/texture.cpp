@@ -52,19 +52,19 @@ public:
   }
 };
 
-Texture::Texture()
-  : impl()
+Texture::Texture() :
+  impl()
 {
 }
 
-Texture::Texture(const Pathname& filename)
-  : impl()
+Texture::Texture(const Pathname& filename) :
+  impl()
 {
   *this = TextureManager::current()->get(filename);
 }
 
-Texture::Texture(GLenum target, int width, int height, GLint format)
-  : impl(new TextureImpl())
+Texture::Texture(GLenum target, int width, int height, GLint format) :
+  impl(new TextureImpl())
 {
   impl->target = target;
   impl->width  = width;
@@ -89,8 +89,8 @@ static inline bool is_power_of_2(int v)
   return (v & (v-1)) == 0;
 }
 
-Texture::Texture(const SoftwareSurface& image, GLint glformat)
-  : impl(new TextureImpl())
+Texture::Texture(const SoftwareSurface& image, GLint glformat) :
+  impl(new TextureImpl())
 {
   impl->target = GL_TEXTURE_2D;
   impl->width  = image.get_width();
@@ -107,68 +107,68 @@ Texture::Texture(const SoftwareSurface& image, GLint glformat)
   // SDL_ConvertSurface(bmp, screen->format, SDL_SWSURFACE);
   
   try 
+  {
+    GLint maxt;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxt);
+
+    if(image.get_width() > maxt || image.get_height() > maxt)
     {
-      GLint maxt;
-      glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxt);
-
-      if(image.get_width() > maxt || image.get_height() > maxt)
-        {
-          throw std::runtime_error("Texture size not supported");
-        }
-
-      GLint sdl_format;
-
-      if (image.get_bytes_per_pixel() == 3)
-        {
-          sdl_format = GL_RGB;
-        }
-      else if (image.get_bytes_per_pixel() == 4)
-        {
-          sdl_format = GL_RGBA;
-        }
-      else
-        {
-          throw std::runtime_error("Texture: Image format not supported");
-        }
-
-      OpenGLState state;
-      state.bind_texture(*this);
-      state.activate();
-
-      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-      glPixelStorei(GL_UNPACK_ROW_LENGTH, image.get_pitch() / image.get_bytes_per_pixel());
-
-      if (0)
-      { // no mipmapping
-        glTexImage2D(impl->target, 0, glformat,
-                     image.get_width(), image.get_height(), 0, sdl_format,
-                     GL_UNSIGNED_BYTE, image.get_pixels());
-        
-        glTexParameteri(impl->target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(impl->target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      }
-      else
-      { // use mipmapping
-        gluBuild2DMipmaps(impl->target, glformat,
-                          image.get_width(), image.get_height(), sdl_format,
-                          GL_UNSIGNED_BYTE, image.get_pixels());
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      }
-
-      assert_gl("creating texture");
-
-      glTexParameteri(impl->target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-      glTexParameteri(impl->target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-      glTexParameteri(impl->target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-      assert_gl("setting texture parameters");
-    } 
-  catch(...)
-    {
-      throw;
+      throw std::runtime_error("Texture size not supported");
     }
+
+    GLint sdl_format;
+
+    if (image.get_bytes_per_pixel() == 3)
+    {
+      sdl_format = GL_RGB;
+    }
+    else if (image.get_bytes_per_pixel() == 4)
+    {
+      sdl_format = GL_RGBA;
+    }
+    else
+    {
+      throw std::runtime_error("Texture: Image format not supported");
+    }
+
+    OpenGLState state;
+    state.bind_texture(*this);
+    state.activate();
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, image.get_pitch() / image.get_bytes_per_pixel());
+
+    if (0)
+    { // no mipmapping
+      glTexImage2D(impl->target, 0, glformat,
+                   image.get_width(), image.get_height(), 0, sdl_format,
+                   GL_UNSIGNED_BYTE, image.get_pixels());
+        
+      glTexParameteri(impl->target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTexParameteri(impl->target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+    else
+    { // use mipmapping
+      gluBuild2DMipmaps(impl->target, glformat,
+                        image.get_width(), image.get_height(), sdl_format,
+                        GL_UNSIGNED_BYTE, image.get_pixels());
+        
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+
+    assert_gl("creating texture");
+
+    glTexParameteri(impl->target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(impl->target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(impl->target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    assert_gl("setting texture parameters");
+  } 
+  catch(...)
+  {
+    throw;
+  }
 }
 
 Texture::~Texture()
@@ -199,17 +199,17 @@ Texture::put(const SoftwareSurface& image, const Rect& srcrect, int x, int y)
   GLint sdl_format;
 
   if (image.get_bytes_per_pixel() == 3)
-    {
-      sdl_format = GL_RGB;
-    }
+  {
+    sdl_format = GL_RGB;
+  }
   else if (image.get_bytes_per_pixel() == 4)
-    {
-      sdl_format = GL_RGBA;
-    }
+  {
+    sdl_format = GL_RGBA;
+  }
   else
-    {
-      throw std::runtime_error("Texture: Image format not supported");
-    }
+  {
+    throw std::runtime_error("Texture: Image format not supported");
+  }
 
   OpenGLState state;
   state.bind_texture(*this);

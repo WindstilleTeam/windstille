@@ -26,17 +26,17 @@
 #include "display/texture_manager.hpp"
 #include "util/util.hpp"
 
-Mesh::Mesh(FileReader& reader, const std::string& path)
-  : name(),
-    vertices(),
-    normals(),
-    texcoords(),
-    triangles(),
-    groups(),
-    vertices_(),
-    texture(),
-    blend_sfactor(GL_ONE),
-    blend_dfactor(GL_ZERO)
+Mesh::Mesh(FileReader& reader, const std::string& path) :
+  name(),
+  vertices(),
+  normals(),
+  texcoords(),
+  triangles(),
+  groups(),
+  vertices_(),
+  texture(),
+  blend_sfactor(GL_ONE),
+  blend_dfactor(GL_ZERO)
 {
   if (reader.get_name() != "mesh")
     throw std::runtime_error("Not a 'mesh' type, its '" + reader.get_name() + "'");
@@ -52,31 +52,31 @@ Mesh::Mesh(FileReader& reader, const std::string& path)
 
   FileReader groups_reader;
   if (reader.get("groups", groups_reader))
+  {
+    std::vector<FileReader> sections = groups_reader.get_sections();
+    for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
     {
-      std::vector<FileReader> sections = groups_reader.get_sections();
-      for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+      if ((*i).get_name() == "group")
+      {
+        VertexGroup group;
+        if ((*i).get("bone",     group.bone_name) &&
+            (*i).get("weight",   group.weight) && 
+            (*i).get("vertices", group.vertices))
         {
-          if ((*i).get_name() == "group")
-            {
-              VertexGroup group;
-              if ((*i).get("bone",     group.bone_name) &&
-                  (*i).get("weight",   group.weight) && 
-                  (*i).get("vertices", group.vertices))
-                {
-                  if (group.weight != 0.0f) // ignore useless bones
-                    groups.push_back(group);
-                }
-              else
-                {
-                std::cout << "Mesh::VertexGroup: Element missing" << std::endl;
-                }
-            }
-          else
-            {
-              std::cout << "Unknown tag: " << (*i).get_name() << std::endl;
-            }
+          if (group.weight != 0.0f) // ignore useless bones
+            groups.push_back(group);
         }
+        else
+        {
+          std::cout << "Mesh::VertexGroup: Element missing" << std::endl;
+        }
+      }
+      else
+      {
+        std::cout << "Unknown tag: " << (*i).get_name() << std::endl;
+      }
     }
+  }
 
   // Check that all vectors have the same right modulo
   assert(vertices.size()  % 3 == 0);
@@ -86,83 +86,83 @@ Mesh::Mesh(FileReader& reader, const std::string& path)
   // Convert the data to something we can use together with Armatures
   // and Bones
   for(std::vector<float>::size_type i = 0; i < vertices.size()/3; ++i)
-    {
-      Vertex vertex;
+  {
+    Vertex vertex;
 
-      vertex.pos.x = vertices[3*i+0];
-      vertex.pos.y = vertices[3*i+1];
-      vertex.pos.z = vertices[3*i+2];
+    vertex.pos.x = vertices[3*i+0];
+    vertex.pos.y = vertices[3*i+1];
+    vertex.pos.z = vertices[3*i+2];
 
-      vertex.normal.x = normals[3*i+0];
-      vertex.normal.y = normals[3*i+1];
-      vertex.normal.z = normals[3*i+2];
+    vertex.normal.x = normals[3*i+0];
+    vertex.normal.y = normals[3*i+1];
+    vertex.normal.z = normals[3*i+2];
 
-      vertex.texcoord.x = texcoords[2*i+0];
-      vertex.texcoord.y = texcoords[2*i+1];
+    vertex.texcoord.x = texcoords[2*i+0];
+    vertex.texcoord.y = texcoords[2*i+1];
 
-      vertices_.push_back(vertex);
-    }
+    vertices_.push_back(vertex);
+  }
   
   // Add bone and weight to the individual vertices
   for(Groups::iterator i = groups.begin(); i != groups.end(); ++i)
+  {
+    VertexGroup& group = *i;
+    for(std::vector<int>::iterator j = group.vertices.begin(); j != group.vertices.end(); ++j)
     {
-      VertexGroup& group = *i;
-      for(std::vector<int>::iterator j = group.vertices.begin(); j != group.vertices.end(); ++j)
-        {
-          vertices_[*j].bone_names.push_back(group.bone_name);
-          vertices_[*j].weights.push_back(group.weight);
-        }
+      vertices_[*j].bone_names.push_back(group.bone_name);
+      vertices_[*j].weights.push_back(group.weight);
     }
+  }
   
   // Normalize Weight to 1.0f
   for(Vertices::iterator i = vertices_.begin(); i != vertices_.end(); ++i)
-    {
-      if (i->weights.empty())
-        std::cout << "Vertex doesn't have weight: " << i - vertices_.begin() << std::endl;
+  {
+    if (i->weights.empty())
+      std::cout << "Vertex doesn't have weight: " << i - vertices_.begin() << std::endl;
 
-      float total_weight = 0.0f;
-      for(std::vector<float>::iterator w = i->weights.begin(); w != i->weights.end(); ++w)
-        total_weight += *w;
+    float total_weight = 0.0f;
+    for(std::vector<float>::iterator w = i->weights.begin(); w != i->weights.end(); ++w)
+      total_weight += *w;
      
-      for(std::vector<float>::iterator w = i->weights.begin(); w != i->weights.end(); ++w)
-        *w /= total_weight;
-    }
+    for(std::vector<float>::iterator w = i->weights.begin(); w != i->weights.end(); ++w)
+      *w /= total_weight;
+  }
 
 #if 0 
   // FIXME: Broken by design
   FileReader influences_reader;
   if (reader.get("influences", influences_reader))
+  {
+    std::vector<FileReader> sections = influences_reader.get_sections();
+    for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
     {
-      std::vector<FileReader> sections = influences_reader.get_sections();
-      for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
-        {
-          if ((*i).get_name() == "vertex")
-            {
-              FileReader influences_sub_reader;
+      if ((*i).get_name() == "vertex")
+      {
+        FileReader influences_sub_reader;
 
-              (*i).get("index", index);
-              if ((*i).get("influences", influences_sub_reader))
-                {
-                  std::vector<FileReader> sub_sections = influences_sub_reader.get_sections();
-                  for(std::vector<FileReader>::iterator j = sub_sections.begin(); j != sub_sections.end(); ++j)
-                    {
-                      if ((*j).get_name() == "influences")
-                        {
-                          float weight;
-                          std::string bone_name;
-                      
-                          (*j).get("weight", weight);
-                          (*j).get("bone",   bone_name);                         
-                        }
-                    }
-                }
-            }
-          else
+        (*i).get("index", index);
+        if ((*i).get("influences", influences_sub_reader))
+        {
+          std::vector<FileReader> sub_sections = influences_sub_reader.get_sections();
+          for(std::vector<FileReader>::iterator j = sub_sections.begin(); j != sub_sections.end(); ++j)
+          {
+            if ((*j).get_name() == "influences")
             {
-              std::cout << "Unknown tag: " << (*i).get_name() << std::endl;
+              float weight;
+              std::string bone_name;
+                      
+              (*j).get("weight", weight);
+              (*j).get("bone",   bone_name);                         
             }
+          }
         }
+      }
+      else
+      {
+        std::cout << "Unknown tag: " << (*i).get_name() << std::endl;
+      }
     }
+  }
 #endif
 
   texture_filename = path + basename(texture_filename);
@@ -191,14 +191,14 @@ Mesh::draw()
   OpenGLState state;
 
   if (blend_sfactor != GL_ONE || blend_dfactor != GL_ZERO)
-    {
-      state.enable(GL_BLEND);
-      state.set_blend_func(blend_sfactor, blend_dfactor);
-    }
+  {
+    state.enable(GL_BLEND);
+    state.set_blend_func(blend_sfactor, blend_dfactor);
+  }
   else
-    {
-      state.enable(GL_DEPTH_TEST);
-    }
+  {
+    state.enable(GL_DEPTH_TEST);
+  }
 
   state.bind_texture(texture);
 
@@ -212,11 +212,11 @@ Mesh::draw()
   assert_gl("gl init before sprite");
 
   for(Vertices::size_type i = 0; i < vertices_.size(); ++i)
-    { // evil messing around with vertices, need more order
-      vertices[3*i + 0] = vertices_[i].render_pos.x;
-      vertices[3*i + 1] = vertices_[i].render_pos.y;
-      vertices[3*i + 2] = vertices_[i].render_pos.z;
-    }
+  { // evil messing around with vertices, need more order
+    vertices[3*i + 0] = vertices_[i].render_pos.x;
+    vertices[3*i + 1] = vertices_[i].render_pos.y;
+    vertices[3*i + 2] = vertices_[i].render_pos.z;
+  }
 
   glVertexPointer(3, GL_FLOAT, 0, &*vertices.begin());
 
@@ -229,48 +229,48 @@ void
 Mesh::apply(Armature* armature)
 {
   for(Vertices::iterator i = vertices_.begin(); i != vertices_.end(); ++i)
+  {
+    if (i->bone_names.empty())
     {
-      if (i->bone_names.empty())
-        {
-          // This shouldn't be reached for full mehes
-          i->render_pos = i->pos;
-        }
-      else
-        {
-          if (i->bones.empty())
-            {
-              for(unsigned int j = 0; j < i->bone_names.size(); ++j)
-                i->bones.push_back(armature->get_bone(i->bone_names[j]));
-            }
-
-          i->render_pos = Vector3(0.0f, 0.0f, 0.0f);
-          for(unsigned int j = 0; j < i->bone_names.size(); ++j)
-            {
-              Bone* bone   = i->bones[j];
-              float weight = i->weights[j];
-
-              //std::cout << "apply: " << i->bone_names[j] << " " << bone << " " << weight << std::endl;
-
-              if (bone)
-                { // FIXME: Need to calculate the offset from the bone and rotate that, not the pos
-                  i->render_pos += (bone->render_matrix.multiply(i->pos)) * weight;
-                }
-              else
-                {
-                  std::cout << "Couldn't find bone: " << i->bone_names[j] << std::endl;
-                }
-            }
-        }
+      // This shouldn't be reached for full mehes
+      i->render_pos = i->pos;
     }
+    else
+    {
+      if (i->bones.empty())
+      {
+        for(unsigned int j = 0; j < i->bone_names.size(); ++j)
+          i->bones.push_back(armature->get_bone(i->bone_names[j]));
+      }
+
+      i->render_pos = Vector3(0.0f, 0.0f, 0.0f);
+      for(unsigned int j = 0; j < i->bone_names.size(); ++j)
+      {
+        Bone* bone   = i->bones[j];
+        float weight = i->weights[j];
+
+        //std::cout << "apply: " << i->bone_names[j] << " " << bone << " " << weight << std::endl;
+
+        if (bone)
+        { // FIXME: Need to calculate the offset from the bone and rotate that, not the pos
+          i->render_pos += (bone->render_matrix.multiply(i->pos)) * weight;
+        }
+        else
+        {
+          std::cout << "Couldn't find bone: " << i->bone_names[j] << std::endl;
+        }
+      }
+    }
+  }
 }
 
 void
 Mesh::reset()
 {
   for(Vertices::iterator i = vertices_.begin(); i != vertices_.end(); ++i)
-    {
-      i->render_pos = i->pos;
-    }
+  {
+    i->render_pos = i->pos;
+  }
 }
 
 /* EOF */

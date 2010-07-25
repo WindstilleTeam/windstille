@@ -28,10 +28,10 @@
 
 static const int LIGHTMAP_DIV = 4;
 
-BasicCompositorImpl::BasicCompositorImpl(const Size& window, const Size& viewport)
-  : CompositorImpl(window, viewport),
-    m_lightmap(m_window.width  / LIGHTMAP_DIV,
-               m_window.height / LIGHTMAP_DIV)
+BasicCompositorImpl::BasicCompositorImpl(const Size& window, const Size& viewport) :
+  CompositorImpl(window, viewport),
+  m_lightmap(m_window.width  / LIGHTMAP_DIV,
+             m_window.height / LIGHTMAP_DIV)
 {
 }
 

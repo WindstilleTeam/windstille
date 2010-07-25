@@ -40,29 +40,29 @@ public:
     std::string content;
     
     while(!eof())
+    {
+      char c = look_ahead();
+      switch(c)
       {
-        char c = look_ahead();
-        switch(c)
+        case '<':
+          if (!content.empty())
           {
-          case '<':
-            if (!content.empty())
-              {
-                xml->add_node(BabyXML::Node(BabyXML::Node::TEXT, content));
-                content = "";
-              }
-            read_element();
-            break;
-
-          case '&':
-            content += read_entity();
-            break;
-
-          default:
-            content += c;
-            incr_cursor();
-            break;
+            xml->add_node(BabyXML::Node(BabyXML::Node::TEXT, content));
+            content = "";
           }
+          read_element();
+          break;
+
+        case '&':
+          content += read_entity();
+          break;
+
+        default:
+          content += c;
+          incr_cursor();
+          break;
       }
+    }
 
     if (!content.empty())
       xml->add_node(BabyXML::Node(BabyXML::Node::TEXT, content));
@@ -71,30 +71,30 @@ public:
   void skip_space()
   {
     while(true) 
-      {
-        char c = look_ahead();
-        if (c != ' ' && c != '\t') {
-          break;
-        } else {
-          incr_cursor();
-        }
+    {
+      char c = look_ahead();
+      if (c != ' ' && c != '\t') {
+        break;
+      } else {
+        incr_cursor();
       }
+    }
   }
 
   void read_char(char expect)
   {
     char c = look_ahead();
     if (c != expect)
-      {
-        std::ostringstream str;
-        str << "Syntax Error:" << line_no << ":" << column_no 
-            << ": Syntax error: read_char(): expected '" << expect << "' got '" << c << "'";
-        throw std::runtime_error(str.str());
-      }
+    {
+      std::ostringstream str;
+      str << "Syntax Error:" << line_no << ":" << column_no 
+          << ": Syntax error: read_char(): expected '" << expect << "' got '" << c << "'";
+      throw std::runtime_error(str.str());
+    }
     else
-      {
-        incr_cursor();
-      }
+    {
+      incr_cursor();
+    }
   }
 
   void read_element()
@@ -103,17 +103,17 @@ public:
 
     read_char('<');
     if (look_ahead() == '/') 
-      {
-        node.type = BabyXML::Node::END_TAG;
-        incr_cursor();
-        node.content = read_identifer();
-      }
+    {
+      node.type = BabyXML::Node::END_TAG;
+      incr_cursor();
+      node.content = read_identifer();
+    }
     else
-      {
-        node.type = BabyXML::Node::START_TAG;
-        node.content    = read_identifer();
-        node.attributes = read_attributes();
-      }
+    {
+      node.type = BabyXML::Node::START_TAG;
+      node.content    = read_identifer();
+      node.attributes = read_attributes();
+    }
     
     skip_space();
     read_char('>');
@@ -126,40 +126,40 @@ public:
   {
     char start = look_ahead();
     if (start != '\'' && start != '"')
-      {
-        std::ostringstream str;
-        str << "Syntax Error:" << line_no << ":" << column_no 
-            << ": Syntax error: read_string(): expected ' or \" got '" << start << "'";
-        throw std::runtime_error(str.str());
-      }
+    {
+      std::ostringstream str;
+      str << "Syntax Error:" << line_no << ":" << column_no 
+          << ": Syntax error: read_string(): expected ' or \" got '" << start << "'";
+      throw std::runtime_error(str.str());
+    }
     incr_cursor();
     
     std::string content;
     while(true)
+    {
+      char c = look_ahead();
+      if (c == '"' || c == '\'') 
       {
-        char c = look_ahead();
-        if (c == '"' || c == '\'') 
-          {
-            if (c != start)
-              {
-                std::ostringstream str;
-                str << "Syntax Error:" << line_no << ":" << column_no 
-                    << ": Syntax error: read_string(): quote mismatch";
-                throw std::runtime_error(str.str());
-              }
-            incr_cursor();
-            break;
-          } 
-        else if (c == '&') 
-          {
-            content += read_entity();
-          }
-        else 
-          {
-            incr_cursor();
-            content += c;
-          }
+        if (c != start)
+        {
+          std::ostringstream str;
+          str << "Syntax Error:" << line_no << ":" << column_no 
+              << ": Syntax error: read_string(): quote mismatch";
+          throw std::runtime_error(str.str());
+        }
+        incr_cursor();
+        break;
+      } 
+      else if (c == '&') 
+      {
+        content += read_entity();
       }
+      else 
+      {
+        incr_cursor();
+        content += c;
+      }
+    }
     return content;
   }
 
@@ -176,32 +176,32 @@ public:
     else if (identifer == "lt")
       return '<';
     else
-      {
-        std::ostringstream str;
-        str << "Syntax Error:" << line_no << ":" << column_no << ": Unknown entity: '&" + identifer + ";'";
-        throw std::runtime_error(str.str());
-      }
+    {
+      std::ostringstream str;
+      str << "Syntax Error:" << line_no << ":" << column_no << ": Unknown entity: '&" + identifer + ";'";
+      throw std::runtime_error(str.str());
+    }
   }
   
   std::vector<BabyXML::Attribute> read_attributes()
   {
     std::vector<BabyXML::Attribute> attributes;
     while(true) 
+    {
+      skip_space();
+
+      char c = look_ahead();
+      if (c == '>' || c == '&' || c == '<' || c == ';')
       {
-        skip_space();
-
-        char c = look_ahead();
-        if (c == '>' || c == '&' || c == '<' || c == ';')
-          {
-            break;
-          }
-
-        attributes.push_back(BabyXML::Attribute());
-
-        attributes.back().name = read_identifer();
-        read_char('=');
-        attributes.back().value = read_string();
+        break;
       }
+
+      attributes.push_back(BabyXML::Attribute());
+
+      attributes.back().name = read_identifer();
+      read_char('=');
+      attributes.back().value = read_string();
+    }
     return attributes;
   }
 
@@ -209,22 +209,22 @@ public:
   {
     std::string identifer;
     while(true) 
-      {
-        char c = look_ahead();
-        if (c == '<' || c == '>' || c == '&' || c == ';' || c == ' ' || c == '\t' || c == '=') {
-          break;
-        } else {
-          identifer += c;
-          incr_cursor();
-        }
+    {
+      char c = look_ahead();
+      if (c == '<' || c == '>' || c == '&' || c == ';' || c == ' ' || c == '\t' || c == '=') {
+        break;
+      } else {
+        identifer += c;
+        incr_cursor();
       }
+    }
 
     if (identifer.empty())
-      {
-        std::ostringstream str;
-        str << "Syntax Error:" << line_no << ":" << column_no << ": Identifer is empty";
-        throw std::runtime_error(str.str());
-      }
+    {
+      std::ostringstream str;
+      str << "Syntax Error:" << line_no << ":" << column_no << ": Identifer is empty";
+      throw std::runtime_error(str.str());
+    }
 
     return identifer;
   }
@@ -237,11 +237,11 @@ public:
   char look_ahead()
   {
     if (cursor >= int(text.size()))
-      {
-        std::ostringstream str;
-        str << "Syntax Error:" << line_no << ":" << column_no << ": Premature end of text";
-        throw std::runtime_error(str.str());
-      }
+    {
+      std::ostringstream str;
+      str << "Syntax Error:" << line_no << ":" << column_no << ": Premature end of text";
+      throw std::runtime_error(str.str());
+    }
 
     return text[cursor];
   }
@@ -250,14 +250,14 @@ public:
   {
     cursor += 1;
     if (text[cursor] == '\n')
-      {
-        line_no += 1;
-        column_no = 0;
-      }
+    {
+      line_no += 1;
+      column_no = 0;
+    }
     else
-      {
-        column_no += 1;
-      }
+    {
+      column_no += 1;
+    }
   }
 
 private:
@@ -288,33 +288,33 @@ BabyXML::add_node(const Node& node)
 int main(int argc, char** argv)
 {
   if (argc != 2)
-    {
-      std::cout << "Usage: " << argv[0] << " STRING" << std::endl;
-    }
+  {
+    std::cout << "Usage: " << argv[0] << " STRING" << std::endl;
+  }
   else
+  {
+    // BabyXML xml("<strong size='10'>Hello &lt; World&gt; <b>&quot;blabla&quot;</b> Blablub</strong>");
+    BabyXML xml(argv[1]);
+
+    for(BabyXML::iterator i = xml.begin(); i != xml.end(); ++i)
     {
-      // BabyXML xml("<strong size='10'>Hello &lt; World&gt; <b>&quot;blabla&quot;</b> Blablub</strong>");
-      BabyXML xml(argv[1]);
+      if (i->type == BabyXML::Node::START_TAG)
+        std::cout << "STARTTAG: ";
+      else if (i->type == BabyXML::Node::END_TAG)
+        std::cout << "ENDTAG: ";
+      else if (i->type == BabyXML::Node::TEXT)
+        std::cout << "TEXT: ";
 
-      for(BabyXML::iterator i = xml.begin(); i != xml.end(); ++i)
-        {
-          if (i->type == BabyXML::Node::START_TAG)
-            std::cout << "STARTTAG: ";
-          else if (i->type == BabyXML::Node::END_TAG)
-            std::cout << "ENDTAG: ";
-          else if (i->type == BabyXML::Node::TEXT)
-            std::cout << "TEXT: ";
+      std::cout << "'" << i->content << "'";
 
-          std::cout << "'" << i->content << "'";
+      for(std::vector<BabyXML::Attribute>::iterator j = i->attributes.begin(); j != i->attributes.end(); ++j)
+      {
+        std::cout << " " << j->name << "='" << j->value << "'";
+      }
 
-          for(std::vector<BabyXML::Attribute>::iterator j = i->attributes.begin(); j != i->attributes.end(); ++j)
-            {
-              std::cout << " " << j->name << "='" << j->value << "'";
-            }
-
-          std::cout << std::endl;
-        }
+      std::cout << std::endl;
     }
+  }
 }
 #endif
 

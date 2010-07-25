@@ -24,15 +24,15 @@
 #include "navigation/node.hpp"
 #include "editor/constants.hpp"
 
-NavGraphNodeObjectModel::NavGraphNodeObjectModel(const FileReader& reader)
-  : ObjectModel(reader),
-    m_drawable()
+NavGraphNodeObjectModel::NavGraphNodeObjectModel(const FileReader& reader) :
+  ObjectModel(reader),
+  m_drawable()
 {
 }
 
-NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos)
-  : ObjectModel("NavGraphNodeObjectModel", pos),
-    m_drawable()
+NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos) :
+  ObjectModel("NavGraphNodeObjectModel", pos),
+  m_drawable()
 {
 }
 
@@ -98,14 +98,14 @@ NavGraphNodeObjectModel::snap_to_grid(float grid_size) const
   SnapData snap;
 
   if (fabs(snap_x) < g_snap_threshold)
-    {
-      snap.set_x(snap_x);
-    }
+  {
+    snap.set_x(snap_x);
+  }
 
   if (fabs(snap_y) < g_snap_threshold)
-    {
-      snap.set_y(snap_y);
-    }
+  {
+    snap.set_y(snap_y);
+  }
 
   return snap;
 }

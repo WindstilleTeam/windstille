@@ -70,10 +70,10 @@ public:
   {
     lisp::Lisp* item = get_subsection_item(name);
     if (item && item->get_type() == lisp::Lisp::TYPE_INT)
-      {
-        v = item->get_int();
-        return true;
-      }
+    {
+      v = item->get_int();
+      return true;
+    }
     return false;
   }
 
@@ -81,11 +81,11 @@ public:
   {
     lisp::Lisp* item = get_subsection_item(name);
     if (item && item->get_type() == lisp::Lisp::TYPE_INT)
-      {
-        // FIXME: Not good: overflow
-        v = item->get_int();
-        return true;
-      }
+    {
+      // FIXME: Not good: overflow
+      v = item->get_int();
+      return true;
+    }
     return false;
   }
 
@@ -93,22 +93,22 @@ public:
   {
     lisp::Lisp* item = get_subsection_item(name);
     if (item)
+    {
+      if (item->get_type() == lisp::Lisp::TYPE_FLOAT)
       {
-        if (item->get_type() == lisp::Lisp::TYPE_FLOAT)
-          {
-            v = item->get_float();
-            return true;
-          }
-        else if (item->get_type() == lisp::Lisp::TYPE_INT)
-          {
-            v = static_cast<float>(item->get_int());
-            return true;
-          }
-        else
-          {
-            return false;
-          }
+        v = item->get_float();
+        return true;
       }
+      else if (item->get_type() == lisp::Lisp::TYPE_INT)
+      {
+        v = static_cast<float>(item->get_int());
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
     return false;
   }
 
@@ -116,10 +116,10 @@ public:
   {
     lisp::Lisp* item = get_subsection_item(name);
     if (item && item->get_type() == lisp::Lisp::TYPE_BOOL)
-      {
-        v = item->get_bool();
-        return true;
-      }
+    {
+      v = item->get_bool();
+      return true;
+    }
     return false;
   }
 
@@ -127,22 +127,22 @@ public:
   {
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
+    {
+      v = "";
+      for(size_t i = 1; i < sub->get_list_size(); ++i)
       {
-        v = "";
-        for(size_t i = 1; i < sub->get_list_size(); ++i)
-          {
-            lisp::Lisp* item = sub->get_list_elem(i);
-            if (item->get_type() == lisp::Lisp::TYPE_STRING)
-              {
-                v += item->get_string();
-              }
-            else if (item->get_type() == lisp::Lisp::TYPE_SYMBOL)
-              {
-                v += item->get_symbol();
-              }
-          }
-        return true;
+        lisp::Lisp* item = sub->get_list_elem(i);
+        if (item->get_type() == lisp::Lisp::TYPE_STRING)
+        {
+          v += item->get_string();
+        }
+        else if (item->get_type() == lisp::Lisp::TYPE_SYMBOL)
+        {
+          v += item->get_symbol();
+        }
       }
+      return true;
+    }
     return false;
   }
 
@@ -186,10 +186,10 @@ public:
   {
     lisp::Lisp* cur = get_subsection(name);
     if (cur)
-      {
-        v = SExprFileReader(cur);
-        return true;
-      }
+    {
+      v = SExprFileReader(cur);
+      return true;
+    }
     return false;
   }
 
@@ -197,9 +197,9 @@ public:
   {
     std::vector<FileReader> lst;
     for(size_t i = 1; i < sexpr->get_list_size(); ++i)
-      { // iterate over subsections
-        lst.push_back(SExprFileReader(sexpr->get_list_elem(i)));
-      }
+    { // iterate over subsections
+      lst.push_back(SExprFileReader(sexpr->get_list_elem(i)));
+    }
     return lst;
   }
 
@@ -208,10 +208,10 @@ public:
     std::vector<std::string> lst;
 
     for(size_t i = 1; i < sexpr->get_list_size(); ++i)
-      { // iterate over subsections
-        lisp::Lisp* sub = sexpr->get_list_elem(i);
-        lst.push_back(sub->get_list_elem(0)->get_symbol());
-      }
+    { // iterate over subsections
+      lisp::Lisp* sub = sexpr->get_list_elem(i);
+      lst.push_back(sub->get_list_elem(0)->get_symbol());
+    }
 
     return lst;
   }
@@ -221,20 +221,20 @@ private:
   {
     lisp::Lisp* sub = get_subsection(name);
     if (sub && sub->get_list_size() == 2)
-      {
-        return sub->get_list_elem(1);
-      }
+    {
+      return sub->get_list_elem(1);
+    }
     return 0;
   }
 
   lisp::Lisp* get_subsection(const char* name) const
   {
     for(size_t i = 1; i < sexpr->get_list_size(); ++i)
-      { // iterate over subsections
-        lisp::Lisp* sub = sexpr->get_list_elem(i);
-        if (strcmp(sub->get_list_elem(0)->get_symbol(), name) == 0)
-          return sub;
-      }
+    { // iterate over subsections
+      lisp::Lisp* sub = sexpr->get_list_elem(i);
+      if (strcmp(sub->get_list_elem(0)->get_symbol(), name) == 0)
+        return sub;
+    }
     return 0;
   } 
 

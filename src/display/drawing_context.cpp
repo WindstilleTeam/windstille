@@ -47,9 +47,9 @@ struct DrawablesSorter
   }
 };
 
-DrawingContext::DrawingContext()
-  : drawingrequests(),
-    modelview_stack()
+DrawingContext::DrawingContext() :
+  drawingrequests(),
+  modelview_stack()
 {
   modelview_stack.push_back(Matrix::identity());
 }
@@ -65,18 +65,18 @@ DrawingContext::render()
   std::stable_sort(drawingrequests.begin(), drawingrequests.end(), DrawablesSorter());
   
   for(Drawables::iterator i = drawingrequests.begin(); i != drawingrequests.end(); ++i)
-    {
-      (*i)->render(~0u);
-    }
+  {
+    (*i)->render(~0u);
+  }
 }
 
 void
 DrawingContext::clear()
 {
   for(Drawables::iterator i = drawingrequests.begin(); i != drawingrequests.end(); ++i)
-    {
-      delete *i;
-    }
+  {
+    delete *i;
+  }
   drawingrequests.clear();
 }
 
@@ -123,8 +123,8 @@ void
 DrawingContext::draw(Surface surface, float x, float y, float z, float )
 {
   draw(new SurfaceDrawable(surface,
-                                 SurfaceDrawingParameters().set_pos(Vector2f(x, y)),
-                                 z, modelview_stack.back()));
+                           SurfaceDrawingParameters().set_pos(Vector2f(x, y)),
+                           z, modelview_stack.back()));
 }
 
 void
@@ -156,12 +156,12 @@ DrawingContext::rotate(float angle, float x, float y, float z)
 {
   float len2 = x*x+y*y+z*z;
   if (len2 != 1.0)
-    {
-      float len = sqrtf(len2);
-      x /= len;
-      y /= len;
-      z /= len;
-    }
+  {
+    float len = sqrtf(len2);
+    x /= len;
+    y /= len;
+    z /= len;
+  }
 
   float c = cosf(angle*3.14159265f/180.0f);
   float s = sinf(angle*3.14159265f/180.0f);

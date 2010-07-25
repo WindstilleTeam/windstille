@@ -21,8 +21,8 @@
 
 #include "sprite2d/data.hpp"
 
-SpriteManager::SpriteManager()
-  : datas()
+SpriteManager::SpriteManager() :
+  datas()
 {
 }
 
@@ -35,27 +35,27 @@ SpriteManager::create_data(const Pathname& filename)
 {
   Datas::iterator i = datas.find(filename);
   if(i != datas.end())
-    {
-      return i->second;
-    }
+  {
+    return i->second;
+  }
   else
-    {  
-      SpriteDataPtr data(new SpriteData(filename));
-      datas.insert(std::make_pair(filename, data));
-      return data;
-    }
+  {  
+    SpriteDataPtr data(new SpriteData(filename));
+    datas.insert(std::make_pair(filename, data));
+    return data;
+  }
 }
 
 void
 SpriteManager::cleanup()
 {
   for(Datas::iterator i = datas.begin(); i != datas.end(); ++i)
+  {
+    if (i->second.use_count() == 1)
     {
-      if (i->second.use_count() == 1)
-        {
-          datas.erase(i);
-        }
+      datas.erase(i);
     }
+  }
 }
 
 /* EOF */

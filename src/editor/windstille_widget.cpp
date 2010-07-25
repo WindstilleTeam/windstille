@@ -44,21 +44,21 @@ bool lib_init = false;
 
 WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
                                    const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
-                                   const Glib::RefPtr<const Gdk::GL::Context>& share_list)
-  : editor(editor_),
-    m_document(new Document),
-    m_scene_graph(new SceneGraph()),
-    m_rebuild_scene_graph(true),
-    filename(),
-    state(),
-    compositor(),
-    sc(),
-    map_type(DecalObjectModel::COLORMAP),
-    background_pattern(),
-    select_mask(1),
-    draw_background_pattern(true),
-    draw_only_active_layers(true),
-    grid_enabled(false)
+                                   const Glib::RefPtr<const Gdk::GL::Context>& share_list) :
+  editor(editor_),
+  m_document(new Document),
+  m_scene_graph(new SceneGraph()),
+  m_rebuild_scene_graph(true),
+  filename(),
+  state(),
+  compositor(),
+  sc(),
+  map_type(DecalObjectModel::COLORMAP),
+  background_pattern(),
+  select_mask(1),
+  draw_background_pattern(true),
+  draw_only_active_layers(true),
+  grid_enabled(false)
 {
   set_gl_capability(glconfig, share_list);
 

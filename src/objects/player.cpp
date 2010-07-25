@@ -36,20 +36,20 @@ static const int MAX_ENERGY = 16;
 static const float WALK_SPEED = 100.0;
 static const float RUN_SPEED = 256.0;
 
-Player::Player () 
-  : m_drawable(),
-    jumping(),
-    bomb_placed(),
-    hit_count(),
-    energy(),
-    c_object(),
-    laser_pointer(),
-    contact(),
-    weapon(),
-    state(STAND),
-    jump_foot(),
-    reload_time(),
-    z_pos()
+Player::Player () :
+  m_drawable(),
+  jumping(),
+  bomb_placed(),
+  hit_count(),
+  energy(),
+  c_object(),
+  laser_pointer(),
+  contact(),
+  weapon(),
+  state(STAND),
+  jump_foot(),
+  reload_time(),
+  z_pos()
 {
   Sprite3D sprite(Pathname("models/characters/jane/jane.wsprite"));
   pos.x = 320;
@@ -90,21 +90,21 @@ void
 Player::draw (SceneContext& sc)
 {
   if (1)
-    { // draw the 'stand-on' tile
-      sc.highlight().fill_rect(Rect(Point(int(pos.x)/32 * 32, (int(pos.y)/32 + 1) * 32),
-                                    Size(32, 32)),
-                               Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
-    }
+  { // draw the 'stand-on' tile
+    sc.highlight().fill_rect(Rect(Point(int(pos.x)/32 * 32, (int(pos.y)/32 + 1) * 32),
+                                  Size(32, 32)),
+                             Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
+  }
 
   //m_drawable->get_sprite().draw(sc.color(), pos + Vector2f(0.0f, 1.0f), z_pos);
 
   Entity* obj = find_useable_entity();
   if (obj)
-    {
-      // FIXME: Highlight layer is the wrong place for this
-      std::string use_str = "[" + obj->get_use_verb() + "]";
-      sc.highlight().draw(use_str, obj->get_pos().x, obj->get_pos().y - 150, 1000);
-    }
+  {
+    // FIXME: Highlight layer is the wrong place for this
+    std::string use_str = "[" + obj->get_use_verb() + "]";
+    sc.highlight().draw(use_str, obj->get_pos().x, obj->get_pos().y - 150, 1000);
+  }
   
   // Draw weapon at the 'Weapon' attachment point
   Sprite3D::PointID id = m_drawable->get_sprite().get_attachment_point_id("Weapon");
@@ -115,12 +115,12 @@ Player::draw (SceneContext& sc)
   sc.pop_modelview();
 
   if (laser_pointer->is_active())
-    {
-      sc.push_modelview();
-      sc.translate(pos.x, pos.y - 80);
-      laser_pointer->draw(sc);
-      sc.pop_modelview();
-    }
+  {
+    sc.push_modelview();
+    sc.translate(pos.x, pos.y - 80);
+    laser_pointer->draw(sc);
+    sc.pop_modelview();
+  }
 }
 
 void
@@ -259,55 +259,55 @@ void
 Player::update_walk_stand(const Controller& controller)
 {
   if (controller.get_axis_state(Y_AXIS) > 0.5f)
+  {
+    TileMap* tilemap = Sector::current()->get_tilemap2();
+    if (tilemap)
     {
-      TileMap* tilemap = Sector::current()->get_tilemap2();
-      if (tilemap)
-        {
-          Point p(int(pos.x)/32, (int(pos.y)/32 + 1));
-          unsigned int col = tilemap->get_pixel(p.x, p.y);
+      Point p(int(pos.x)/32, (int(pos.y)/32 + 1));
+      unsigned int col = tilemap->get_pixel(p.x, p.y);
 
-          if ((col & TILE_STAIRS) && ((get_direction() == WEST && (col & TILE_LEFT)) ||
-                                      (get_direction() == EAST && (col & TILE_RIGHT))))
-            {
-              delete contact;
-              contact = new StairContact(tilemap, p);
+      if ((col & TILE_STAIRS) && ((get_direction() == WEST && (col & TILE_LEFT)) ||
+                                  (get_direction() == EAST && (col & TILE_RIGHT))))
+      {
+        delete contact;
+        contact = new StairContact(tilemap, p);
 
-              std::cout << "Stair mode" << std::endl;
-              state = STAIRS_DOWN;
-              //c_object->get_check_domains() & (~CollisionObject::DOMAIN_TILEMAP));
-              Sector::current()->get_collision_engine()->remove(c_object);
-              z_pos = -10.0f;
-              return;
-            }
-          else
-            {
-              set_ducking();
-              return;
-            }
-        }
+        std::cout << "Stair mode" << std::endl;
+        state = STAIRS_DOWN;
+        //c_object->get_check_domains() & (~CollisionObject::DOMAIN_TILEMAP));
+        Sector::current()->get_collision_engine()->remove(c_object);
+        z_pos = -10.0f;
+        return;
+      }
+      else
+      {
+        set_ducking();
+        return;
+      }
     }
+  }
   else if (controller.get_axis_state(Y_AXIS) < -0.5f)
+  {
+    TileMap* tilemap = Sector::current()->get_tilemap2();
+    if (tilemap)
     {
-      TileMap* tilemap = Sector::current()->get_tilemap2();
-      if (tilemap)
-        {
-          Point p(int(pos.x)/32 + ((get_direction() == WEST) ? -1 : +1), (int(pos.y)/32));
-          unsigned int col = tilemap->get_pixel(p.x, p.y);
+      Point p(int(pos.x)/32 + ((get_direction() == WEST) ? -1 : +1), (int(pos.y)/32));
+      unsigned int col = tilemap->get_pixel(p.x, p.y);
 
-          if ((col & TILE_STAIRS) && ((get_direction() == EAST && (col & TILE_LEFT)) ||
-                                      (get_direction() == WEST && (col & TILE_RIGHT))))
-            {
-              delete contact;
-              contact = new StairContact(tilemap, p);
+      if ((col & TILE_STAIRS) && ((get_direction() == EAST && (col & TILE_LEFT)) ||
+                                  (get_direction() == WEST && (col & TILE_RIGHT))))
+      {
+        delete contact;
+        contact = new StairContact(tilemap, p);
 
-              state = STAIRS_UP;
-              //c_object->get_check_domains() & (~CollisionObject::DOMAIN_TILEMAP));
-              Sector::current()->get_collision_engine()->remove(c_object);
-              z_pos = -10.0f;
-              return;
-            }
-        }    
-    }
+        state = STAIRS_UP;
+        //c_object->get_check_domains() & (~CollisionObject::DOMAIN_TILEMAP));
+        Sector::current()->get_collision_engine()->remove(c_object);
+        z_pos = -10.0f;
+        return;
+      }
+    }    
+  }
 
   if (state == STAND)
     update_stand(controller);
@@ -322,23 +322,23 @@ Player::update_stairs(const Controller& controller, float delta)
 
   if (controller.get_axis_state(X_AXIS) < -0.5f ||
       controller.get_axis_state(Y_AXIS) > 0.5f)
-    {
-      contact->advance(-WALK_SPEED * delta * 0.7f);
-    }
+  {
+    contact->advance(-WALK_SPEED * delta * 0.7f);
+  }
   else if (controller.get_axis_state(X_AXIS) > 0.5f ||
            controller.get_axis_state(Y_AXIS) < -0.5f)
-    {
-      contact->advance(WALK_SPEED * delta * 0.7f);
-    }
+  {
+    contact->advance(WALK_SPEED * delta * 0.7f);
+  }
 
   velocity = Vector2f(0, 0);
   c_object->set_pos(contact->get_pos());
 
   if (!contact->is_active())
-    {
-      Sector::current()->get_collision_engine()->add(c_object);
-      state = STAND;
-    }
+  {
+    Sector::current()->get_collision_engine()->add(c_object);
+    state = STAND;
+  }
 }
 
 Entity*
@@ -347,19 +347,19 @@ Player::find_useable_entity()
   const std::vector<boost::shared_ptr<GameObject> >& objects = Sector::current()->get_objects();
 
   for (std::vector<boost::shared_ptr<GameObject> >::const_iterator i = objects.begin(); i != objects.end(); ++i)
-    {
-      Entity* object = dynamic_cast<Entity*>(i->get());
+  {
+    Entity* object = dynamic_cast<Entity*>(i->get());
 
-      if (object && object != this && object->is_useable())
-        {
-          //FIXME use proper collision detection
-          if (object->get_pos().x > pos.x - 32 && object->get_pos().x < pos.x + 32 &&
-              object->get_pos().y > pos.y - 256 && object->get_pos().y < pos.y + 256)
-            {
-              return object;
-            }
-        }
+    if (object && object != this && object->is_useable())
+    {
+      //FIXME use proper collision detection
+      if (object->get_pos().x > pos.x - 32 && object->get_pos().x < pos.x + 32 &&
+          object->get_pos().y > pos.y - 256 && object->get_pos().y < pos.y + 256)
+      {
+        return object;
+      }
     }
+  }
   return 0;  
 }
 
@@ -367,48 +367,48 @@ void
 Player::update_stand(const Controller& controller)
 { 
   if (controller.button_was_pressed(USE_BUTTON))
-    {
-      Entity* obj = find_useable_entity();
-      if (obj)
-        obj->use();
-      return;
-    }
+  {
+    Entity* obj = find_useable_entity();
+    if (obj)
+      obj->use();
+    return;
+  }
     
   if (controller.button_was_pressed(JUMP_BUTTON)
       && controller.get_axis_state(Y_AXIS) > 0.5f) 
-    {
-      set_jump_up_begin();
-    } 
+  {
+    set_jump_up_begin();
+  } 
   else if (controller.button_was_pressed(AIM_BUTTON))
+  {
+    if (0)
     {
-      if (0)
-        {
-          // TODO remove me later, just here for testing
-          boost::shared_ptr<Grenade> grenade(new Grenade());
-          grenade->set_pos(get_pos() + Vector2f(50, -300));
-          grenade->set_velocity(Vector2f(20, -10));
-          Sector::current()->add(grenade);
-        }
-      else
-        {
-          m_drawable->get_sprite().set_action("PullGun");
-          state = PULL_GUN;
-        }
+      // TODO remove me later, just here for testing
+      boost::shared_ptr<Grenade> grenade(new Grenade());
+      grenade->set_pos(get_pos() + Vector2f(50, -300));
+      grenade->set_velocity(Vector2f(20, -10));
+      Sector::current()->add(grenade);
     }
+    else
+    {
+      m_drawable->get_sprite().set_action("PullGun");
+      state = PULL_GUN;
+    }
+  }
   else if (controller.get_axis_state(X_AXIS) < -0.5f) 
-    {
-      if (get_direction() == WEST)
-        set_walk(WEST);
-      else
-        set_turnaround();
-    }
+  {
+    if (get_direction() == WEST)
+      set_walk(WEST);
+    else
+      set_turnaround();
+  }
   else if (controller.get_axis_state(X_AXIS) > 0.5f) 
-    {
-      if (get_direction() == EAST)
-        set_walk(EAST);
-      else
-        set_turnaround();
-    }
+  {
+    if (get_direction() == EAST)
+      set_walk(EAST);
+    else
+      set_turnaround();
+  }
 }
 
 void
@@ -432,26 +432,26 @@ void
 Player::update_walk(const Controller& controller)
 {
   if (fabsf(controller.get_axis_state(X_AXIS)) < 0.5f) // Hardcoded DEAD_ZONE, somewhat evil 
-    {
-      leave_walk();
-      set_stand();
-      return;
-    }
+  {
+    leave_walk();
+    set_stand();
+    return;
+  }
 
   if ((get_direction() == WEST && controller.get_axis_state(X_AXIS) > 0.5f) ||
       (get_direction() == EAST && controller.get_axis_state(X_AXIS) < -0.5f))
-    {
-      leave_walk();
-      set_turnaround();
-      return;
-    }
+  {
+    leave_walk();
+    set_turnaround();
+    return;
+  }
   
   if (controller.get_button_state(RUN_BUTTON))
-    {
-      leave_walk();
-      set_run();
-      return;
-    }
+  {
+    leave_walk();
+    set_run();
+    return;
+  }
 }
 
 void
@@ -475,25 +475,25 @@ Player::update_ducking(const Controller& controller)
 {
   // ducking
   if (m_drawable->get_sprite().switched_actions()) 
-    {
-      if (m_drawable->get_sprite().get_action() == "Ducking")
-        set_ducked();
-      else
-        set_stand();
-      return;
-    }
+  {
+    if (m_drawable->get_sprite().get_action() == "Ducking")
+      set_ducked();
+    else
+      set_stand();
+    return;
+  }
   
   if (!(controller.get_axis_state(Y_AXIS) > 0.5f) && m_drawable->get_sprite().get_speed() > 0) 
-    {
-      m_drawable->get_sprite().set_speed(-1.0);
-      m_drawable->get_sprite().set_next_action("Stand");
-      state = STAND;
-    } 
+  {
+    m_drawable->get_sprite().set_speed(-1.0);
+    m_drawable->get_sprite().set_next_action("Stand");
+    state = STAND;
+  } 
   else if (controller.get_axis_state(Y_AXIS) > 0.5f && m_drawable->get_sprite().get_speed() < 0) 
-    {
-      m_drawable->get_sprite().set_speed(1.0);
-      m_drawable->get_sprite().set_next_action("Ducking");
-    }
+  {
+    m_drawable->get_sprite().set_speed(1.0);
+    m_drawable->get_sprite().set_next_action("Ducking");
+  }
 }
 
 void
@@ -507,11 +507,11 @@ void
 Player::update_ducked(const Controller& controller)
 {
   if (!(controller.get_axis_state(Y_AXIS) > 0.5f))
-    {
-      state = DUCKING;
-      m_drawable->get_sprite().set_action("StandToDuck", -1.0);
-      m_drawable->get_sprite().set_next_action("Stand");
-    }  
+  {
+    state = DUCKING;
+    m_drawable->get_sprite().set_action("StandToDuck", -1.0);
+    m_drawable->get_sprite().set_next_action("Stand");
+  }  
 }
 
 void
@@ -528,22 +528,22 @@ void
 Player::update_turnaround(const Controller& controller)
 {
   if (m_drawable->get_sprite().switched_actions()) 
+  {
+    if (m_drawable->get_sprite().get_rot())
     {
-      if (m_drawable->get_sprite().get_rot())
-        {
-          set_walk(EAST);
-        }
-      else {
-        set_walk(WEST);
-      }
-    } 
+      set_walk(EAST);
+    }
+    else {
+      set_walk(WEST);
+    }
+  } 
   if ((m_drawable->get_sprite().get_rot() && controller.get_axis_state(X_AXIS) > 0.5f) ||
       (!m_drawable->get_sprite().get_rot() && controller.get_axis_state(X_AXIS) < -0.5f)) 
-    {
-      m_drawable->get_sprite().set_speed(-1.0);
-      m_drawable->get_sprite().set_next_action("Walk");
-      state = WALK;
-    }
+  {
+    m_drawable->get_sprite().set_speed(-1.0);
+    m_drawable->get_sprite().set_next_action("Walk");
+    state = WALK;
+  }
 }
 
 void
@@ -551,14 +551,14 @@ Player::set_stand_to_listen(bool backwards)
 {
   try_set_action("StandtoListen", backwards ? -1.0f : 1.0f);
   if (!backwards) 
-    {
-      m_drawable->get_sprite().set_next_action("Listen");
-      velocity = Vector2f(0, 0);
-    } 
+  {
+    m_drawable->get_sprite().set_next_action("Listen");
+    velocity = Vector2f(0, 0);
+  } 
   else
-    {
-      m_drawable->get_sprite().set_next_action("Stand");
-    }
+  {
+    m_drawable->get_sprite().set_next_action("Stand");
+  }
   state = STAND_TO_LISTEN;
 }
 
@@ -566,12 +566,12 @@ void
 Player::update_stand_to_listen(const Controller& /*controller*/)
 {
   if (m_drawable->get_sprite().switched_actions()) 
-    {
-      if (m_drawable->get_sprite().get_action() == "Stand")
-        set_stand();
-      else
-        set_listen();
-    }
+  {
+    if (m_drawable->get_sprite().get_action() == "Stand")
+      set_stand();
+    else
+      set_listen();
+  }
 }
 
 void
@@ -607,17 +607,17 @@ void
 Player::update_run(const Controller& controller)
 {
   if (!controller.get_button_state(RUN_BUTTON)) 
-    {
-      leave_run();
-      set_walk(get_direction());
-      return;
-    }
+  {
+    leave_run();
+    set_walk(get_direction());
+    return;
+  }
   if (controller.get_button_state(JUMP_BUTTON)) 
-    {
-      leave_run();
-      set_jump_begin();
-      return;
-    }
+  {
+    leave_run();
+    set_jump_begin();
+    return;
+  }
 }
 
 void
@@ -630,23 +630,23 @@ void
 Player::set_jump_begin()
 {
   if (m_drawable->get_sprite().before_marker("RightFoot")) 
-    {
-      m_drawable->get_sprite().set_next_action("JumpRightFoot");
-      m_drawable->get_sprite().abort_at_marker("RightFoot");
-      jump_foot = LEFT_FOOT;
-    } 
+  {
+    m_drawable->get_sprite().set_next_action("JumpRightFoot");
+    m_drawable->get_sprite().abort_at_marker("RightFoot");
+    jump_foot = LEFT_FOOT;
+  } 
   else if (m_drawable->get_sprite().before_marker("LeftFoot")) 
-    {
-      m_drawable->get_sprite().set_next_action("JumpLeftFoot");
-      m_drawable->get_sprite().abort_at_marker("LeftFoot");
-      jump_foot = RIGHT_FOOT;
-    } 
+  {
+    m_drawable->get_sprite().set_next_action("JumpLeftFoot");
+    m_drawable->get_sprite().abort_at_marker("LeftFoot");
+    jump_foot = RIGHT_FOOT;
+  } 
   else 
-    {
-      m_drawable->get_sprite().set_next_action("JumpRightFoot");
-      m_drawable->get_sprite().abort_at_marker("RightFoot");
-      jump_foot = LEFT_FOOT;
-    }
+  {
+    m_drawable->get_sprite().set_next_action("JumpRightFoot");
+    m_drawable->get_sprite().abort_at_marker("RightFoot");
+    jump_foot = LEFT_FOOT;
+  }
   state = JUMP_BEGIN;
 }
 
@@ -654,21 +654,21 @@ void
 Player::update_jump_begin(const Controller& /*controller*/)
 {
   if (m_drawable->get_sprite().switched_actions()) 
+  {
+    if (m_drawable->get_sprite().get_action() == "JumpLeftFoot") 
     {
-      if (m_drawable->get_sprite().get_action() == "JumpLeftFoot") 
-        {
-          m_drawable->get_sprite().set_next_action("JumpLeftFootAir");
-        } 
-      else if (m_drawable->get_sprite().get_action() == "JumpRightFoot") 
-        {
-          m_drawable->get_sprite().set_next_action("JumpRightFootAir");
-        } 
-      else
-        {
-          set_jump_air();
-          return;
-        }
+      m_drawable->get_sprite().set_next_action("JumpLeftFootAir");
+    } 
+    else if (m_drawable->get_sprite().get_action() == "JumpRightFoot") 
+    {
+      m_drawable->get_sprite().set_next_action("JumpRightFootAir");
+    } 
+    else
+    {
+      set_jump_air();
+      return;
     }
+  }
 }
 
 void
@@ -683,10 +683,10 @@ void
 Player::update_jump_air(const Controller& /*controller*/)
 {
   if (m_drawable->get_sprite().switched_actions()) 
-    {
-      set_jump_land();
-      return;
-    }
+  {
+    set_jump_land();
+    return;
+  }
 }
 
 void
@@ -700,10 +700,10 @@ void
 Player::update_jump_land(const Controller& /*controller*/)
 {
   if (m_drawable->get_sprite().switched_actions()) 
-    {
-      set_run();
-      return;
-    }
+  {
+    set_run();
+    return;
+  }
 }
 
 void
@@ -717,10 +717,10 @@ void
 Player::update_jump_up_begin(const Controller& /*controller*/)
 {
   if (m_drawable->get_sprite().switched_actions()) 
-    {
-      set_jump_up_air();
-      return;
-    }
+  {
+    set_jump_up_air();
+    return;
+  }
 }
 
 void
@@ -735,10 +735,10 @@ void
 Player::update_jump_up_air(const Controller& /*controller*/)
 {
   if (m_drawable->get_sprite().switched_actions()) 
-    {
-      set_jump_up_land();
-      return;
-    }
+  {
+    set_jump_up_land();
+    return;
+  }
 }
 
 void
@@ -752,20 +752,20 @@ void
 Player::update_jump_up_land(const Controller& /*controller*/)
 {
   if (m_drawable->get_sprite().switched_actions()) 
-    {
-      set_stand();
-      return;
-    }
+  {
+    set_stand();
+    return;
+  }
 }
 
 void
 Player::update_pull_gun(const Controller& controller)
 {
   if (!controller.get_button_state(AIM_BUTTON))
-    {
-      m_drawable->get_sprite().set_next_action("Stand");      
-      state = STAND;
-    }
+  {
+    m_drawable->get_sprite().set_next_action("Stand");      
+    state = STAND;
+  }
 }
 
 Player::Direction
@@ -797,16 +797,16 @@ void
 Player::hit(int points)
 {
   if (energy > 0 && hit_count <= 0)
-    {
-      energy -= points;
-      //hit_count = 1.0f;
+  {
+    energy -= points;
+    //hit_count = 1.0f;
 
-      if (energy <= 0)
-        {
-          //switch_movement_state(KILLED);
-          hit_count = 0;
-        }
+    if (energy <= 0)
+    {
+      //switch_movement_state(KILLED);
+      hit_count = 0;
     }
+  }
 }
 
 void
@@ -816,15 +816,15 @@ Player::collision(const CollisionData& data)
   // cur_vel is the velocity in the current delta-frame
   Vector2f cur_vel = c_object->get_velocity(); 
   if (data.direction.y != 0)
-    {
-      cur_vel.y = 0;
-      velocity.y = 0; // also reset vertical velocity
-    }
+  {
+    cur_vel.y = 0;
+    velocity.y = 0; // also reset vertical velocity
+  }
   else
-    {
-      // do not reset horizontal velocity, as it's only set, when starting to go/run
-      cur_vel.x = 0;
-    }
+  {
+    // do not reset horizontal velocity, as it's only set, when starting to go/run
+    cur_vel.x = 0;
+  }
   c_object->set_velocity (cur_vel);
 }
 

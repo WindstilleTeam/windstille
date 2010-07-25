@@ -24,33 +24,33 @@
 #include "sprite2d/data.hpp"
 #include "display/surface_drawing_parameters.hpp"
 
-Sprite::Sprite()
-  : data(),
-    current_action(0),
-    frame(0),
-    speed(0),
-    pingpong(),
-    reverse(),
-    vflip(),
-    blend_sfactor(),
-    blend_dfactor(),
-    scale(),
-    color()
+Sprite::Sprite() :
+  data(),
+  current_action(0),
+  frame(0),
+  speed(0),
+  pingpong(),
+  reverse(),
+  vflip(),
+  blend_sfactor(),
+  blend_dfactor(),
+  scale(),
+  color()
 {
 }
 
-Sprite::Sprite(const Pathname& filename)
-  : data(),
-    current_action(0),
-    frame(0),
-    speed(0),
-    pingpong(),
-    reverse(),
-    vflip(),
-    blend_sfactor(),
-    blend_dfactor(),
-    scale(),
-    color()
+Sprite::Sprite(const Pathname& filename) :
+  data(),
+  current_action(0),
+  frame(0),
+  speed(0),
+  pingpong(),
+  reverse(),
+  vflip(),
+  blend_sfactor(),
+  blend_dfactor(),
+  scale(),
+  color()
 {
   data = SpriteManager::current()->create_data(filename);
 
@@ -66,18 +66,18 @@ Sprite::Sprite(const Pathname& filename)
   blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
 }
 
-Sprite::Sprite(const SpriteDataPtr data_)
-  : data(data_),
-    current_action(0),
-    frame(0),
-    speed(0),
-    pingpong(),
-    reverse(),
-    vflip(),
-    blend_sfactor(),
-    blend_dfactor(),
-    scale(),
-    color()
+Sprite::Sprite(const SpriteDataPtr data_) :
+  data(data_),
+  current_action(0),
+  frame(0),
+  speed(0),
+  pingpong(),
+  reverse(),
+  vflip(),
+  blend_sfactor(),
+  blend_dfactor(),
+  scale(),
+  color()
 {
   current_action = data->actions[0];
   vflip = false;
@@ -91,18 +91,18 @@ Sprite::Sprite(const SpriteDataPtr data_)
   blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
 }
 
-Sprite::Sprite(const Sprite& rhs)
-  : data(rhs.data),
-    current_action(rhs.current_action),
-    frame(rhs.frame),
-    speed(rhs.speed),
-    pingpong(rhs.pingpong),
-    reverse(rhs.reverse),
-    vflip(rhs.vflip),
-    blend_sfactor(rhs.blend_sfactor),
-    blend_dfactor(rhs.blend_dfactor),
-    scale(rhs.scale),
-    color(rhs.color)
+Sprite::Sprite(const Sprite& rhs) :
+  data(rhs.data),
+  current_action(rhs.current_action),
+  frame(rhs.frame),
+  speed(rhs.speed),
+  pingpong(rhs.pingpong),
+  reverse(rhs.reverse),
+  vflip(rhs.vflip),
+  blend_sfactor(rhs.blend_sfactor),
+  blend_dfactor(rhs.blend_dfactor),
+  scale(rhs.scale),
+  color(rhs.color)
 {
 }
 
@@ -146,24 +146,24 @@ Sprite::set_action(const std::string& name)
 {
   for(SpriteData::Actions::const_iterator i = data->actions.begin();
       i != data->actions.end(); ++i) 
+  {
+    const SpriteAction* action = *i;
+    if(action->name == name) 
     {
-      const SpriteAction* action = *i;
-      if(action->name == name) 
-        {
-          // FIXME: This should be per-action and not get reset, shouldn't they?
-          current_action = action;
-          pingpong = false;
-          reverse  = false;
-          speed    = 1.0;
-          frame    = 0;
-          vflip    = false;
-          scale    = current_action->scale;
-          color    = Color(1.0f, 1.0f, 1.0f);
-          blend_sfactor = GL_SRC_ALPHA;
-          blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
-          return;
-        }
+      // FIXME: This should be per-action and not get reset, shouldn't they?
+      current_action = action;
+      pingpong = false;
+      reverse  = false;
+      speed    = 1.0;
+      frame    = 0;
+      vflip    = false;
+      scale    = current_action->scale;
+      color    = Color(1.0f, 1.0f, 1.0f);
+      blend_sfactor = GL_SRC_ALPHA;
+      blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
+      return;
     }
+  }
 
   std::ostringstream msg;
   msg << "No action '" << name << "' defined";

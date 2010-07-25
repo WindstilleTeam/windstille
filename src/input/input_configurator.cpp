@@ -97,22 +97,22 @@ void
 InputConfigurator::print_item()
 {
   if (!items.empty())
-    {
-      const ConfigureItem& item = items.back();
+  {
+    const ConfigureItem& item = items.back();
       
-      if (item.mode == ConfigureItem::CONFIGURE_AXIS)
-        {
-          out << "Configuring " 
-              << InputManagerSDL::current()->get_controller_description().get_definition(item.event_id).name
-              << ": " << std::endl;
-        }
-      else if (item.mode == ConfigureItem::CONFIGURE_BUTTON)
-        {
-          out << "Configuring " 
-              << InputManagerSDL::current()->get_controller_description().get_definition(item.event_id).name 
-              << ": " << std::endl;
-        }
+    if (item.mode == ConfigureItem::CONFIGURE_AXIS)
+    {
+      out << "Configuring " 
+          << InputManagerSDL::current()->get_controller_description().get_definition(item.event_id).name
+          << ": " << std::endl;
     }
+    else if (item.mode == ConfigureItem::CONFIGURE_BUTTON)
+    {
+      out << "Configuring " 
+          << InputManagerSDL::current()->get_controller_description().get_definition(item.event_id).name 
+          << ": " << std::endl;
+    }
+  }
 
   area.set_text(out.str());
 }
@@ -124,9 +124,9 @@ InputConfigurator::next_item()
   items.pop_back();
 
   if (items.empty())
-    {
-      out << "Controller configuration is done, pressy any key to continue" << std::endl;
-    }
+  {
+    out << "Controller configuration is done, pressy any key to continue" << std::endl;
+  }
 
   print_item();
 
@@ -137,29 +137,29 @@ void
 InputConfigurator::handle_event(const SDL_Event& event)
 {
   if (items.empty())
-    {
-      std::cout << "InputConfigurator: done" << std::endl;
-      ScreenManager::current()->pop_overlay();
-      return; 
-    }
+  {
+    std::cout << "InputConfigurator: done" << std::endl;
+    ScreenManager::current()->pop_overlay();
+    return; 
+  }
   
 
   switch(event.type)
-    {        
+  {        
     case SDL_MOUSEMOTION:
       // event.motion:      
       break;
 
     case SDL_MOUSEBUTTONDOWN:
       if (items.back().mode == ConfigureItem::CONFIGURE_BUTTON)
-        {
-          InputManagerSDL::current()->bind_mouse_button(items.back().event_id,
-                                                        0, // SDL only supports one mouse
-                                                        event.button.button);
-          out << "(mouse-button (device " << 0 << ")\n"
-              << "              (button " << int(event.button.button) << "))" << std::endl;
-          next_item();
-        }
+      {
+        InputManagerSDL::current()->bind_mouse_button(items.back().event_id,
+                                                      0, // SDL only supports one mouse
+                                                      event.button.button);
+        out << "(mouse-button (device " << 0 << ")\n"
+            << "              (button " << int(event.button.button) << "))" << std::endl;
+        next_item();
+      }
       break;
 
     case SDL_MOUSEBUTTONUP:
@@ -168,15 +168,15 @@ InputConfigurator::handle_event(const SDL_Event& event)
 
     case SDL_JOYAXISMOTION:
       if (items.back().mode == ConfigureItem::CONFIGURE_AXIS && (event.jaxis.value > 16384 || event.jaxis.value < -16384))
-        { // FIXME: This doesn't work well with analog Axis!
-          InputManagerSDL::current()->bind_joystick_axis(items.back().event_id, event.jaxis.which, event.jaxis.axis, false);
-          out << "(joystick-axis (device " << int(event.jaxis.which) << ")\n"
-              << "               (axis   " << int(event.jaxis.axis) << "))" << std::endl;
-          next_item();
-        }
+      { // FIXME: This doesn't work well with analog Axis!
+        InputManagerSDL::current()->bind_joystick_axis(items.back().event_id, event.jaxis.which, event.jaxis.axis, false);
+        out << "(joystick-axis (device " << int(event.jaxis.which) << ")\n"
+            << "               (axis   " << int(event.jaxis.axis) << "))" << std::endl;
+        next_item();
+      }
       else
-        {
-        }
+      {
+      }
       break;
 
     case SDL_JOYBALLMOTION:
@@ -192,31 +192,31 @@ InputConfigurator::handle_event(const SDL_Event& event)
 
     case SDL_JOYBUTTONDOWN:
       if (items.back().mode == ConfigureItem::CONFIGURE_BUTTON)
-        {
-          InputManagerSDL::current()->bind_joystick_button(items.back().event_id, event.jbutton.which, event.jbutton.button);
-          out << "(joystick-button (device " << int(event.jbutton.which) << ")\n"
-              << "                 (button " << int(event.jbutton.button) << "))" << std::endl;
-          next_item();
-        }
+      {
+        InputManagerSDL::current()->bind_joystick_button(items.back().event_id, event.jbutton.which, event.jbutton.button);
+        out << "(joystick-button (device " << int(event.jbutton.which) << ")\n"
+            << "                 (button " << int(event.jbutton.button) << "))" << std::endl;
+        next_item();
+      }
       else if (items.back().mode == ConfigureItem::CONFIGURE_AXIS)
+      {
+        if (wait_for_plus && minus.type == SDL_JOYBUTTONDOWN)
         {
-          if (wait_for_plus && minus.type == SDL_JOYBUTTONDOWN)
-            {
-              out << "(joystick-axis-button (minus " << InputManagerSDL::current()->keyid_to_string(minus.key.keysym.sym) << ") "
-                  << "(plus  " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.sym) << "))" << std::endl;
-              InputManagerSDL::current()->bind_joystick_button_axis(items.back().event_id, event.jbutton.which, 
-                                                                    minus.jbutton.button, event.jbutton.button);
-              next_item();
-              wait_for_plus = false;
-            }
-          else if (!wait_for_plus)
-            {
-              out << "Press key for other direction" << std::endl;
-              area.set_text(out.str());
-              minus = event;
-              wait_for_plus = true;
-            }
+          out << "(joystick-axis-button (minus " << InputManagerSDL::current()->keyid_to_string(minus.key.keysym.sym) << ") "
+              << "(plus  " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.sym) << "))" << std::endl;
+          InputManagerSDL::current()->bind_joystick_button_axis(items.back().event_id, event.jbutton.which, 
+                                                                minus.jbutton.button, event.jbutton.button);
+          next_item();
+          wait_for_plus = false;
         }
+        else if (!wait_for_plus)
+        {
+          out << "Press key for other direction" << std::endl;
+          area.set_text(out.str());
+          minus = event;
+          wait_for_plus = true;
+        }
+      }
       break;
 
     case SDL_KEYUP:
@@ -224,44 +224,44 @@ InputConfigurator::handle_event(const SDL_Event& event)
 
     case SDL_KEYDOWN:
       if (event.key.keysym.sym == SDLK_ESCAPE)
-        {
-          std::cout << "InputConfigurator: abort" << std::endl;
-          ScreenManager::current()->pop_overlay();
-          //next_item();
-        }
+      {
+        std::cout << "InputConfigurator: abort" << std::endl;
+        ScreenManager::current()->pop_overlay();
+        //next_item();
+      }
       else if (event.key.keysym.sym == SDLK_RETURN)
-        {
-          std::cout << "Binding the enter key is not allowed" << std::endl;
-        }
+      {
+        std::cout << "Binding the enter key is not allowed" << std::endl;
+      }
       else
+      {
+        if (items.back().mode == ConfigureItem::CONFIGURE_BUTTON)
         {
-          if (items.back().mode == ConfigureItem::CONFIGURE_BUTTON)
-            {
-              InputManagerSDL::current()->bind_keyboard_button(items.back().event_id, event.key.keysym.sym);
-              out << "(keyboard-button (key " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.sym) << "))" << std::endl;
-              next_item();
-            }
-          else if (items.back().mode == ConfigureItem::CONFIGURE_AXIS)
-            {
-              if (wait_for_plus && minus.type == SDL_KEYDOWN)
-                {
-                  out << "(keyboard-axis (minus " << InputManagerSDL::current()->keyid_to_string(minus.key.keysym.sym) << ") "
-                      << "(plus  " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.sym) << "))" << std::endl;
-                  InputManagerSDL::current()->bind_keyboard_axis(items.back().event_id, minus.key.keysym.sym, event.key.keysym.sym);
-                  next_item();
-                  wait_for_plus = false;
-                }
-              else if (!wait_for_plus)
-                {
-                  out << "Print key for other direction" << std::endl;
-                  area.set_text(out.str());
-                  minus = event;
-                  wait_for_plus = true;
-                }
-            }
+          InputManagerSDL::current()->bind_keyboard_button(items.back().event_id, event.key.keysym.sym);
+          out << "(keyboard-button (key " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.sym) << "))" << std::endl;
+          next_item();
         }
+        else if (items.back().mode == ConfigureItem::CONFIGURE_AXIS)
+        {
+          if (wait_for_plus && minus.type == SDL_KEYDOWN)
+          {
+            out << "(keyboard-axis (minus " << InputManagerSDL::current()->keyid_to_string(minus.key.keysym.sym) << ") "
+                << "(plus  " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.sym) << "))" << std::endl;
+            InputManagerSDL::current()->bind_keyboard_axis(items.back().event_id, minus.key.keysym.sym, event.key.keysym.sym);
+            next_item();
+            wait_for_plus = false;
+          }
+          else if (!wait_for_plus)
+          {
+            out << "Print key for other direction" << std::endl;
+            area.set_text(out.str());
+            minus = event;
+            wait_for_plus = true;
+          }
+        }
+      }
       break;
-    }
+  }
 }
 
 /* EOF */

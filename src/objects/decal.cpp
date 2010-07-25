@@ -24,9 +24,9 @@
 #include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
 
-Decal::Decal(const FileReader& reader)
-  : drawable(),
-    pos()
+Decal::Decal(const FileReader& reader) :
+  drawable(),
+  pos()
 {
   std::string path;
   Vector2f scale(1.0f, 1.0f);
@@ -64,14 +64,14 @@ Decal::Decal(const FileReader& reader)
   center_offset.y *= scale.y;
 
   drawable.reset(new SurfaceDrawable(surface,
-                                           params
-                                           .set_pos(pos + center_offset)
-                                           .set_angle(angle)
-                                           .set_hflip(hflip)
-                                           .set_vflip(vflip)
-                                           .set_scale(scale),
-                                           0, 
-                                           Matrix::identity()));
+                                     params
+                                     .set_pos(pos + center_offset)
+                                     .set_angle(angle)
+                                     .set_hflip(hflip)
+                                     .set_vflip(vflip)
+                                     .set_scale(scale),
+                                     0, 
+                                     Matrix::identity()));
 
   switch(map_type)
   {

@@ -116,9 +116,9 @@ ParticleViewer::update(float delta, const Controller& controller)
 
   if (controller.button_was_pressed(PAUSE_BUTTON) ||
       controller.button_was_pressed(ESCAPE_BUTTON))
-    {
-      MenuManager::display_pause_menu();
-    }
+  {
+    MenuManager::display_pause_menu();
+  }
 }
 
 /* EOF */

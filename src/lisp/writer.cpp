@@ -25,22 +25,22 @@
 namespace lisp
 {
 
-Writer::Writer(const Pathname& filename)
-  : out(),
-    out_owned(),
-    indent_depth(),
-    lists()
+Writer::Writer(const Pathname& filename) :
+  out(),
+  out_owned(),
+  indent_depth(),
+  lists()
 {
   out = new std::ofstream(filename.get_sys_path().c_str());
   out_owned = true;
   indent_depth = 0;
 }
   
-Writer::Writer(std::ostream* newout)
-  : out(),
-    out_owned(),
-    indent_depth(),
-    lists()
+Writer::Writer(std::ostream* newout) :
+  out(),
+  out_owned(),
+  indent_depth(),
+  lists()
 {
   out = newout;
   out_owned = false;
@@ -108,7 +108,7 @@ Writer::write_float(const std::string& name, float value)
 
 void
 Writer::write_string(const std::string& name, const std::string& value,
-    bool translatable)
+                     bool translatable)
 {
   indent();
   *out << '(' << name;
@@ -128,7 +128,7 @@ Writer::write_bool(const std::string& name, bool value)
 
 void
 Writer::write_int_vector(const std::string& name,
-    const std::vector<int>& value)
+                         const std::vector<int>& value)
 {
   indent();
   *out << '(' << name;
@@ -139,7 +139,7 @@ Writer::write_int_vector(const std::string& name,
 
 void
 Writer::write_int_vector(const std::string& name,
-    const std::vector<unsigned int>& value)
+                         const std::vector<unsigned int>& value)
 {
   indent();
   *out << '(' << name;

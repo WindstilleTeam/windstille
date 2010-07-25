@@ -34,15 +34,15 @@ NoFontEffect::blit(const SoftwareSurface& target, const FT_Bitmap& brush, int x_
 
   for (int y = start_y; y < end_y; ++y)
     for (int x = start_x; x < end_x; ++x)
-      {
-        int target_pos = (y + y_pos) * target_pitch + 4*(x + x_pos);
-        int brush_pos  = y * brush.pitch + x;
+    {
+      int target_pos = (y + y_pos) * target_pitch + 4*(x + x_pos);
+      int brush_pos  = y * brush.pitch + x;
             
-        target_buf[target_pos + 0] = 255;
-        target_buf[target_pos + 1] = 255;
-        target_buf[target_pos + 2] = 255;
-        target_buf[target_pos + 3] = brush.buffer[brush_pos];
-      }
+      target_buf[target_pos + 0] = 255;
+      target_buf[target_pos + 1] = 255;
+      target_buf[target_pos + 2] = 255;
+      target_buf[target_pos + 3] = brush.buffer[brush_pos];
+    }
 }
 
 /* EOF */

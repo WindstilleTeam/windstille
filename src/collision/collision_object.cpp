@@ -27,32 +27,32 @@
  ***********************************************************************/
 
 CollisionObject::CollisionObject(GameObject* game_object_, const Rectf& rect_)
- : object_type(RECTANGLE),
-   pos(0,0),
-   velocity(0,0),
-   game_object(game_object_),
-   collision(),
-   primitive(rect_),
-   tilemap(),
-   is_unstuckable(true),
-   is_unstuck_movable(true),
-   is_domains(DOMAIN_PLAYER  | DOMAIN_ENEMY),
-   check_domains(DOMAIN_TILEMAP | DOMAIN_PLAYER | DOMAIN_ENEMY)
+  : object_type(RECTANGLE),
+    pos(0,0),
+    velocity(0,0),
+    game_object(game_object_),
+    collision(),
+    primitive(rect_),
+    tilemap(),
+    is_unstuckable(true),
+    is_unstuck_movable(true),
+    is_domains(DOMAIN_PLAYER  | DOMAIN_ENEMY),
+    check_domains(DOMAIN_TILEMAP | DOMAIN_PLAYER | DOMAIN_ENEMY)
 {
 }
 
 CollisionObject::CollisionObject(TileMap* tilemap_)
- : object_type(),
-   pos(),
-   velocity(),
-   game_object(),
-   collision(),
-   primitive(),
-   tilemap(tilemap_),
-   is_unstuckable(),
-   is_unstuck_movable(),
-   is_domains(),
-   check_domains() 
+  : object_type(),
+    pos(),
+    velocity(),
+    game_object(),
+    collision(),
+    primitive(),
+    tilemap(tilemap_),
+    is_unstuckable(),
+    is_unstuck_movable(),
+    is_domains(),
+    check_domains() 
 {
   object_type        = TILEMAP;
   is_unstuckable     = true;
@@ -82,9 +82,9 @@ CollisionObject::draw(DrawingContext& dc)
   dc.draw_rect(r, Color(0.6f, 0.6f, 0.6f), 100.0f);
   
   dc.draw_line(Vector2f(r.left + r.get_width ()/2,
-                      r.top  + r.get_height ()/2),
+                        r.top  + r.get_height ()/2),
                Vector2f(r.left + r.get_width ()/2  + get_velocity ().x,
-                      r.top  + r.get_height ()/2 + get_velocity ().y),
+                        r.top  + r.get_height ()/2 + get_velocity ().y),
                Color(1.0f, 0, 1.0f), 100.0f);
 }
 

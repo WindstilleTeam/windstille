@@ -28,9 +28,9 @@
 
 #include "navigation/navigation_graph.hpp"
 
-NavigationGraph::NavigationGraph()
-  : nodes(),
-    edges()
+NavigationGraph::NavigationGraph() :
+  nodes(),
+  edges()
 {  
 }
 
@@ -59,10 +59,10 @@ NavigationGraph::remove_edge(EdgeHandle edge)
   // FIXME: Slow
   Edges::iterator i = std::find(edges.begin(), edges.end(), edge.get());
   if (i != edges.end())
-    {
-      edges.erase(i);
-      delete edge.get();
-    }
+  {
+    edges.erase(i);
+    delete edge.get();
+  }
 
   // FIXME: Throw exception here
 }
@@ -74,43 +74,43 @@ NavigationGraph::remove_node(NodeHandle node)
 
   // Remove all edges that would get invalid by removing the node
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
+  {
+    if ((*i)->get_node1() == node.get() ||
+        (*i)->get_node2() == node.get())
     {
-      if ((*i)->get_node1() == node.get() ||
-          (*i)->get_node2() == node.get())
-        {
-          delete *i;
-          *i = 0;
-        }
+      delete *i;
+      *i = 0;
     }
+  }
 
   Edges::iterator new_end = std::remove(edges.begin(), edges.end(), static_cast<Edge*>(0));
   if (new_end != edges.end())
-    { 
-      edges.erase(new_end, edges.end());
-    }
+  { 
+    edges.erase(new_end, edges.end());
+  }
   
   // Remove the node itself 
   Nodes::iterator j = std::find(nodes.begin(), nodes.end(), node.get());
   if (j != nodes.end())
-    {
-      nodes.erase(j);
-      delete node.get();
-    }  
+  {
+    nodes.erase(j);
+    delete node.get();
+  }  
 }
 
 EdgeHandle
 NavigationGraph::add_edge(NodeHandle node1, NodeHandle node2)
 {
   if (node1.get() != node2.get()) // node links to themself are forbidden
-    { // FIXME: Find a way to figure out if the given edge already exists
-      Edge* edge = new Edge(node1.get(), node2.get());
-      edges.push_back(edge);
-      return EdgeHandle(edge);
-    }
+  { // FIXME: Find a way to figure out if the given edge already exists
+    Edge* edge = new Edge(node1.get(), node2.get());
+    edges.push_back(edge);
+    return EdgeHandle(edge);
+  }
   else
-    {
-      return EdgeHandle();
-    }
+  {
+    return EdgeHandle();
+  }
 }
 
 void
@@ -133,16 +133,16 @@ NavigationGraph::find_intersections(const Line& line)
   std::vector<EdgePosition> ret;
  
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
-    {
-      Line seg_line((*i)->get_node1()->get_pos(),
-                    (*i)->get_node2()->get_pos());
+  {
+    Line seg_line((*i)->get_node1()->get_pos(),
+                  (*i)->get_node2()->get_pos());
       
-      float ua, ub;
-      if (line.intersect(seg_line, ua, ub))
-        {
-          ret.push_back(EdgePosition(*i, ub));
-        }
+    float ua, ub;
+    if (line.intersect(seg_line, ua, ub))
+    {
+      ret.push_back(EdgePosition(*i, ub));
     }
+  }
 
   return ret;
 }
@@ -154,13 +154,13 @@ NavigationGraph::find_nodes(const Vector2f& pos, float radius)
   std::vector<NodeHandle> ret;
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
+  {
+    float distance = (pos - (*i)->get_pos()).length();
+    if (distance < radius)
     {
-      float distance = (pos - (*i)->get_pos()).length();
-      if (distance < radius)
-        {
-          ret.push_back(NodeHandle(*i));
-        }
+      ret.push_back(NodeHandle(*i));
     }
+  }
   
   return ret;
 }
@@ -171,12 +171,12 @@ NavigationGraph::find_nodes(const Rectf& rect)
   std::vector<NodeHandle> ret;
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
-    {  
-      if (rect.is_inside((*i)->get_pos()))
-        {
-          ret.push_back(NodeHandle(*i));
-        }
+  {  
+    if (rect.is_inside((*i)->get_pos()))
+    {
+      ret.push_back(NodeHandle(*i));
     }
+  }
 
   return ret;
 }
@@ -187,14 +187,14 @@ NavigationGraph::find_edges(const Vector2f& pos, float radius)
   std::vector<EdgeHandle> ret;
  
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
+  {
+    float distance = Line((*i)->get_node1()->get_pos(),
+                          (*i)->get_node2()->get_pos()).distance(pos);
+    if (distance < radius)
     {
-      float distance = Line((*i)->get_node1()->get_pos(),
-                            (*i)->get_node2()->get_pos()).distance(pos);
-      if (distance < radius)
-        {
-          ret.push_back(EdgeHandle(*i));
-        }
+      ret.push_back(EdgeHandle(*i));
     }
+  }
 
   return ret;
 }
@@ -207,14 +207,14 @@ NavigationGraph::find_closest_node(const Vector2f& pos, float radius)
   float min_distance = radius;
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
+  {
+    float current_distance = (pos - (*i)->get_pos()).length();
+    if (current_distance < min_distance)
     {
-      float current_distance = (pos - (*i)->get_pos()).length();
-      if (current_distance < min_distance)
-        {
-          min_distance = current_distance;
-          node = *i;
-        }
+      min_distance = current_distance;
+      node = *i;
     }
+  }
   
   return NodeHandle(node);
 }
@@ -226,15 +226,15 @@ NavigationGraph::find_closest_edge(const Vector2f& pos, float radius)
   float min_distance = radius;
 
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
+  {
+    float current_distance = Line((*i)->get_node1()->get_pos(),
+                                  (*i)->get_node2()->get_pos()).distance(pos);
+    if (current_distance < min_distance)
     {
-      float current_distance = Line((*i)->get_node1()->get_pos(),
-                                    (*i)->get_node2()->get_pos()).distance(pos);
-      if (current_distance < min_distance)
-        {
-          min_distance = current_distance;
-          edge = *i;
-        }
+      min_distance = current_distance;
+      edge = *i;
     }
+  }
 
   return EdgeHandle(edge);
 }
@@ -243,17 +243,17 @@ void
 NavigationGraph::draw()
 {
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
-    {
-      Display::draw_line_with_normal(Line((*i)->get_node1()->get_pos(),
-                                          (*i)->get_node2()->get_pos()),
-                                     Color(1.0f, 0.0f, 0.0f));
-    }
+  {
+    Display::draw_line_with_normal(Line((*i)->get_node1()->get_pos(),
+                                        (*i)->get_node2()->get_pos()),
+                                   Color(1.0f, 0.0f, 0.0f));
+  }
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
-    {
-      Display::fill_rect(Rectf((*i)->get_pos() - Vector2f(4,4), Sizef(9, 9)),
-                         Color(1.0f, 1.0f, 0.0f));
-    }
+  {
+    Display::fill_rect(Rectf((*i)->get_pos() - Vector2f(4,4), Sizef(9, 9)),
+                       Color(1.0f, 1.0f, 0.0f));
+  }
 }
 
 void
@@ -267,72 +267,72 @@ NavigationGraph::load(FileReader& reader)
 
   FileReader nodes_group_reader;
   if (reader.get("nodes", nodes_group_reader))
+  {
+    std::vector<FileReader> nodes_reader = nodes_group_reader.get_sections();
+    for(std::vector<FileReader>::iterator i = nodes_reader.begin(); i != nodes_reader.end(); ++i)
     {
-      std::vector<FileReader> nodes_reader = nodes_group_reader.get_sections();
-      for(std::vector<FileReader>::iterator i = nodes_reader.begin(); i != nodes_reader.end(); ++i)
+      if (i->get_name() == "node")
+      {
+        Vector2f pos;
+        if (i->get("pos", pos))
         {
-          if (i->get_name() == "node")
-            {
-              Vector2f pos;
-              if (i->get("pos", pos))
-                {
-                  Node* node = new Node(pos);
-                  id2ptr[id_count++] = node;
-                  nodes.push_back(node);
-                }
-              else
-                {
-                  std::cout << "NavigationGraph:load: nodes: node: Couldn't read pos attribute" << std::endl;
-                }
-            }
-          else
-            {
-              std::cout << "NavigationGraph:load: nodes: Unknown tag: " << i->get_name() << std::endl;
-            }
+          Node* node = new Node(pos);
+          id2ptr[id_count++] = node;
+          nodes.push_back(node);
         }
+        else
+        {
+          std::cout << "NavigationGraph:load: nodes: node: Couldn't read pos attribute" << std::endl;
+        }
+      }
+      else
+      {
+        std::cout << "NavigationGraph:load: nodes: Unknown tag: " << i->get_name() << std::endl;
+      }
     }
+  }
   
   FileReader edges_group_reader;
   if (reader.get("edges", edges_group_reader))
+  {
+    std::vector<FileReader> edges_reader = edges_group_reader.get_sections();
+    for(std::vector<FileReader>::iterator i = edges_reader.begin(); i != edges_reader.end(); ++i)
     {
-      std::vector<FileReader> edges_reader = edges_group_reader.get_sections();
-      for(std::vector<FileReader>::iterator i = edges_reader.begin(); i != edges_reader.end(); ++i)
+      if (i->get_name() == "edge")
+      {
+        int node_left;
+        int node_right;
+        int properties;
+
+        if (i->get("node1", node_left) &&
+            i->get("node2", node_right) &&
+            i->get("properties", properties)) // FIXME: we might want to read a unsigned int instead
         {
-          if (i->get_name() == "edge")
-            {
-              int node_left;
-              int node_right;
-              int properties;
+          std::map<int, Node*>::iterator node_left_ptr  = id2ptr.find(node_left);
+          std::map<int, Node*>::iterator node_right_ptr = id2ptr.find(node_right);
 
-              if (i->get("node1", node_left) &&
-                  i->get("node2", node_right) &&
-                  i->get("properties", properties)) // FIXME: we might want to read a unsigned int instead
-                {
-                  std::map<int, Node*>::iterator node_left_ptr  = id2ptr.find(node_left);
-                  std::map<int, Node*>::iterator node_right_ptr = id2ptr.find(node_right);
-
-                  if (node_left_ptr != id2ptr.end() && node_right_ptr != id2ptr.end())
-                    {
-                      Edge* edge = new Edge(node_left_ptr->second, node_right_ptr->second, properties);
-                      edges.push_back(edge);
-                    }
-                  else
-                    {
-                      std::cout << "NavigationGraph: edge: Couldn't lookup ids: "
-                                << node_left << " " << node_right << std::endl;
-                    }
-                }
-              else
-                {
-                  std::cout << "NavigationGraph:load: edges: edge: parse error" << std::endl;
-                }
-            }
+          if (node_left_ptr != id2ptr.end() && node_right_ptr != id2ptr.end())
+          {
+            Edge* edge = new Edge(node_left_ptr->second, node_right_ptr->second, properties);
+            edges.push_back(edge);
+          }
           else
-            {
-              std::cout << "NavigationGraph:load: edges: Unknown tag: " << i->get_name() << std::endl;
-            }
-        }      
-    }
+          {
+            std::cout << "NavigationGraph: edge: Couldn't lookup ids: "
+                      << node_left << " " << node_right << std::endl;
+          }
+        }
+        else
+        {
+          std::cout << "NavigationGraph:load: edges: edge: parse error" << std::endl;
+        }
+      }
+      else
+      {
+        std::cout << "NavigationGraph:load: edges: Unknown tag: " << i->get_name() << std::endl;
+      }
+    }      
+  }
 }
 
 void
@@ -378,23 +378,23 @@ NavigationGraph::write(FileWriter& writer)
 
   writer.start_section("nodes");
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
-    {
-      writer.start_section("node");
-      writer.write("id", ptr2id[*i]);
-      writer.write("pos", (*i)->get_pos());
-      writer.end_section();
-    }
+  {
+    writer.start_section("node");
+    writer.write("id", ptr2id[*i]);
+    writer.write("pos", (*i)->get_pos());
+    writer.end_section();
+  }
   writer.end_section();
 
   writer.start_section("edges");
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)  
-    {
-      writer.start_section("edge");
-      writer.write("node1", ptr2id[(*i)->get_node1()]);
-      writer.write("node2", ptr2id[(*i)->get_node2()]);
-      writer.write("properties", static_cast<int>((*i)->get_properties()));
-      writer.end_section();
-    }
+  {
+    writer.start_section("edge");
+    writer.write("node1", ptr2id[(*i)->get_node1()]);
+    writer.write("node2", ptr2id[(*i)->get_node2()]);
+    writer.write("properties", static_cast<int>((*i)->get_properties()));
+    writer.end_section();
+  }
   writer.end_section();
 }
 

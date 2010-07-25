@@ -21,10 +21,10 @@
 #include "editor/sprite_object_model.hpp"
 
 SpriteObjectModel::SpriteObjectModel(const std::string& name_, const Vector2f& rel_pos_,
-                                     const std::string& path_)
-  : ObjectModel(name_, rel_pos_),
-    path(path_),
-    sprite(Pathname(path_))
+                                     const std::string& path_) :
+  ObjectModel(name_, rel_pos_),
+  path(path_),
+  sprite(Pathname(path_))
 {
 }
 

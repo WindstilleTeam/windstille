@@ -73,51 +73,51 @@ Slider::draw()
                              rect.top + 2.0f),
                     Sizef(width, rect.get_height() - 4.0f));
   if (is_active())
-    {
-      Display::fill_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
-      Display::draw_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 1.0f));
-    }
+  {
+    Display::fill_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+    Display::draw_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 1.0f));
+  }
   else
-    {
-      Display::draw_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
-    }
+  {
+    Display::draw_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  }
 }
 
 void
 Slider::update(float /*delta*/, const Controller& controller)
 {
   for(InputEventLst::const_iterator i = controller.get_events().begin(); i != controller.get_events().end(); ++i) 
+  {
+    if (i->type == BUTTON_EVENT && i->button.down)
     {
-      if (i->type == BUTTON_EVENT && i->button.down)
-        {
-          if (i->button.name == OK_BUTTON || i->button.name == ENTER_BUTTON)
-            {
+      if (i->button.name == OK_BUTTON || i->button.name == ENTER_BUTTON)
+      {
               
-            }
-          else if (i->button.name == CANCEL_BUTTON || i->button.name == ESCAPE_BUTTON)
-            {
-              set_active(false);
-            }
-        }
-      else if (i->type == AXIS_EVENT)
-        {
-          if (i->axis.name == X_AXIS)
-            {
-              if (i->axis.pos < 0)
-                {
-                  pos -= step;
-                  if (pos < min) 
-                    pos = min;
-                }
-              else if (i->axis.pos > 0)
-                {
-                  pos += step;
-                  if (pos > max) 
-                    pos = max;
-                }
-            }
-        }
+      }
+      else if (i->button.name == CANCEL_BUTTON || i->button.name == ESCAPE_BUTTON)
+      {
+        set_active(false);
+      }
     }
+    else if (i->type == AXIS_EVENT)
+    {
+      if (i->axis.name == X_AXIS)
+      {
+        if (i->axis.pos < 0)
+        {
+          pos -= step;
+          if (pos < min) 
+            pos = min;
+        }
+        else if (i->axis.pos > 0)
+        {
+          pos += step;
+          if (pos > max) 
+            pos = max;
+        }
+      }
+    }
+  }
 }
 
 int

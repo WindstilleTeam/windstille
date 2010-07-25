@@ -32,11 +32,11 @@
 #include "tile/tile_map.hpp"
 #include "util/file_reader.hpp"
 
-SectorBuilder::SectorBuilder(const Pathname& filename, Sector& sector)
-  : m_filename(filename),
-    m_sector(sector),
-    id_table(),
-    parent_table()
+SectorBuilder::SectorBuilder(const Pathname& filename, Sector& sector) :
+  m_filename(filename),
+  m_sector(sector),
+  id_table(),
+  parent_table()
 {
   FileReader reader = FileReader::parse(m_filename);
   if(reader.get_name() != "windstille-sector") 

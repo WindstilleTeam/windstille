@@ -41,16 +41,16 @@ GroupComponent::draw()
   Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   if (!title.empty())
-    {
-      TTFFont* font = Fonts::current()->vera20.get();
-      font->draw_center(Vector2f(rect.left + static_cast<float>(rect.get_width()) / 2.0f,
-                                 rect.top  + static_cast<float>(font->get_height()) + 5.0f),
-                        title, Color(1.0f, 1.0f, 1.0f));
+  {
+    TTFFont* font = Fonts::current()->vera20.get();
+    font->draw_center(Vector2f(rect.left + static_cast<float>(rect.get_width()) / 2.0f,
+                               rect.top  + static_cast<float>(font->get_height()) + 5.0f),
+                      title, Color(1.0f, 1.0f, 1.0f));
 
-      Display::fill_rect(Rectf(rect.left  + 8.0f, rect.top + static_cast<float>(font->get_height()) + 16.0f,
-                               rect.right - 8.0f, rect.top + static_cast<float>(font->get_height()) + 18.0f),
-                         Color(1.0f, 1.0f, 1.0f, 0.5f));
-    }
+    Display::fill_rect(Rectf(rect.left  + 8.0f, rect.top + static_cast<float>(font->get_height()) + 16.0f,
+                             rect.right - 8.0f, rect.top + static_cast<float>(font->get_height()) + 18.0f),
+                       Color(1.0f, 1.0f, 1.0f, 0.5f));
+  }
 
   if (child.get())
     child->draw();

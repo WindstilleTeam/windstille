@@ -40,13 +40,13 @@ public:
   {}
 };
 
-GraphicContextState::GraphicContextState()
-  : impl(new GraphicContextStateImpl())
+GraphicContextState::GraphicContextState() :
+  impl(new GraphicContextStateImpl())
 {
 }
 
-GraphicContextState::GraphicContextState(int w, int h)
-  : impl(new GraphicContextStateImpl())
+GraphicContextState::GraphicContextState(int w, int h) :
+  impl(new GraphicContextStateImpl())
 {  
   impl->width  = w;
   impl->height = h;
@@ -68,12 +68,12 @@ GraphicContextState::get_matrix() const
   Matrix matrix = Matrix::identity();
 
   matrix = matrix.translate(static_cast<float>(impl->width)  / 2.0f, 
-                   static_cast<float>(impl->height) / 2.0f,
-                   0.0f);
+                            static_cast<float>(impl->height) / 2.0f,
+                            0.0f);
   matrix = matrix.rotate(impl->rotation, 0.0f, 0.0f, 1.0f);
   matrix = matrix.translate(static_cast<float>(-impl->width)  / 2.0f,
-               static_cast<float>(-impl->height) / 2.0f, 
-               0.0f);
+                            static_cast<float>(-impl->height) / 2.0f, 
+                            0.0f);
 
   matrix = matrix.scale(get_zoom(), get_zoom(), 1.0f);
   
@@ -107,7 +107,7 @@ Rectf
 GraphicContextState::get_clip_rect()
 {
   return Rectf(Vector2f(-impl->offset.x,
-                         -impl->offset.y),
+                        -impl->offset.y),
                Sizef(static_cast<float>(get_width())  / impl->zoom,
                      static_cast<float>(get_height()) / impl->zoom));
 }
@@ -166,13 +166,13 @@ GraphicContextState::zoom_to (const Rectf& rect)
   
   //std::cout << "Screen: " << screen_relation << " Zoom: " << rect_relation << std::endl;
   if (rect_relation < screen_relation) // take width, ignore height
-    {
-      impl->zoom = static_cast<float>(get_width()) / width; 
-    }
+  {
+    impl->zoom = static_cast<float>(get_width()) / width; 
+  }
   else // take height, ignore width
-    {
-      impl->zoom = static_cast<float>(get_height()) / height;
-    }
+  {
+    impl->zoom = static_cast<float>(get_height()) / height;
+  }
 
   impl->offset.x = (static_cast<float>(get_width())  / (2.0f * impl->zoom)) - center_x;
   impl->offset.y = (static_cast<float>(get_height()) / (2.0f * impl->zoom)) - center_y;

@@ -20,10 +20,10 @@
 #include "collision/collision_engine.hpp"
 #include "objects/grenade.hpp"
 
-Grenade::Grenade()
-  : sprite(Pathname("models/objects/grenade/grenade.wsprite")), 
-    physics(this),
-    c_object(new CollisionObject(this, Rectf(0, 0, 32, 32)))
+Grenade::Grenade() :
+  sprite(Pathname("models/objects/grenade/grenade.wsprite")), 
+  physics(this),
+  c_object(new CollisionObject(this, Rectf(0, 0, 32, 32)))
 {
   physics.register_collobj(*c_object);
 

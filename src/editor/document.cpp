@@ -36,14 +36,14 @@
 #include "editor/object_commands.hpp"
 #include "editor/timeline_commands.hpp"
 
-Document::Document()
-  : m_undo_manager(new UndoManager()),
-    m_sector_model(new SectorModel()),
-    m_group_command(),
-    m_group_command_count(0),
-    m_selection(Selection::create()),
-    m_control_points(),
-    m_sig_on_change()    
+Document::Document() :
+  m_undo_manager(new UndoManager()),
+  m_sector_model(new SectorModel()),
+  m_group_command(),
+  m_group_command_count(0),
+  m_selection(Selection::create()),
+  m_control_points(),
+  m_sig_on_change()    
 {
   m_sector_model->get_layer_tree()->signal_row_changed().connect(sigc::mem_fun(*this, &Document::on_row_changed));
   m_sector_model->get_layer_tree()->signal_row_deleted().connect(sigc::mem_fun(*this, &Document::on_row_deleted));
@@ -52,14 +52,14 @@ Document::Document()
   m_sector_model->get_layer_tree()->signal_rows_reordered().connect(sigc::mem_fun(*this, &Document::on_rows_reordered));
 }
 
-Document::Document(const std::string& filename)
-  : m_undo_manager(new UndoManager()),
-    m_sector_model(new SectorModel(filename)),
-    m_group_command(),
-    m_group_command_count(0),
-    m_selection(Selection::create()),
-    m_control_points(),
-    m_sig_on_change()
+Document::Document(const std::string& filename) :
+  m_undo_manager(new UndoManager()),
+  m_sector_model(new SectorModel(filename)),
+  m_group_command(),
+  m_group_command_count(0),
+  m_selection(Selection::create()),
+  m_control_points(),
+  m_sig_on_change()
 {
   m_sector_model->get_layer_tree()->signal_row_changed().connect(sigc::mem_fun(*this, &Document::on_row_changed));
   m_sector_model->get_layer_tree()->signal_row_deleted().connect(sigc::mem_fun(*this, &Document::on_row_deleted));

@@ -25,11 +25,11 @@
 #include "scenegraph/vertex_array_drawable.hpp"
 
 NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeObjectModel> lhs,
-                                                 boost::shared_ptr<NavGraphNodeObjectModel> rhs)
-  : ObjectModel("NavGraphEdgeObjectModel", Vector2f()),
-    m_lhs(lhs),
-    m_rhs(rhs),
-    m_drawable()
+                                                 boost::shared_ptr<NavGraphNodeObjectModel> rhs) :
+  ObjectModel("NavGraphEdgeObjectModel", Vector2f()),
+  m_lhs(lhs),
+  m_rhs(rhs),
+  m_drawable()
 {
   if (m_lhs == m_rhs)
   {

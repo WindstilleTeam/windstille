@@ -18,13 +18,13 @@
 
 #include "tile/tile.hpp"
 
-Tile::Tile(unsigned int arg_colmap)
-  : id(),
-    packer(-1),
-    uv(),
-    texture(),
-    colmap(arg_colmap),
-    desc(0)
+Tile::Tile(unsigned int arg_colmap) :
+  id(),
+  packer(-1),
+  uv(),
+  texture(),
+  colmap(arg_colmap),
+  desc(0)
 {
 }
 

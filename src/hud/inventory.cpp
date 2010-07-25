@@ -101,22 +101,22 @@ InventoryImpl::draw()
   float step_angle = (2.0f * math::pi) / static_cast<float>(num_items);
 
   for(int i = 0; i < int(items.size()); ++i)
+  {
+    const InventoryItem& item = items[(i+current_item) % items.size()];
+    Vector2f draw_pos = pos + Vector2f(128.0f, 0.0f).rotate(step_angle * static_cast<float>(i) - math::pi/2.0f + add_angle);
+
+    if (i == 0 && moving == 0)
     {
-      const InventoryItem& item = items[(i+current_item) % items.size()];
-      Vector2f draw_pos = pos + Vector2f(128.0f, 0.0f).rotate(step_angle * static_cast<float>(i) - math::pi/2.0f + add_angle);
-
-      if (i == 0 && moving == 0)
-        {
-          slothighlight.draw(draw_pos);
-          Fonts::current()->vera20->draw_center(Vector2f(draw_pos.x, draw_pos.y - 64), item.name);
-        }
-      else
-        {
-          slot.draw(draw_pos);
-        }
-
-      item.sprite.draw(draw_pos - Vector2f(32,32));
+      slothighlight.draw(draw_pos);
+      Fonts::current()->vera20->draw_center(Vector2f(draw_pos.x, draw_pos.y - 64), item.name);
     }
+    else
+    {
+      slot.draw(draw_pos);
+    }
+
+    item.sprite.draw(draw_pos - Vector2f(32,32));
+  }
 }
 
 void
@@ -136,55 +136,55 @@ InventoryImpl::update(float delta, const Controller& controller)
 {
   float step_angle = (2.0f * math::pi) / static_cast<float>(items.size());
   if (fabsf(add_angle) > step_angle)
-    {
-      if (moving == 1)
-        decr_current_item();
-      else if (moving == -1)
-        incr_current_item();
+  {
+    if (moving == 1)
+      decr_current_item();
+    else if (moving == -1)
+      incr_current_item();
 
-      moving = 0;
-      add_angle = 0;
-    }
+    moving = 0;
+    add_angle = 0;
+  }
 
   if (controller.get_axis_state(X_AXIS) < -0.5f)
+  {
+    if (moving == 1)
     {
-      if (moving == 1)
-        {
-          add_angle = -step_angle + add_angle;
-          decr_current_item();
-        }
-
-      moving = -1;
+      add_angle = -step_angle + add_angle;
+      decr_current_item();
     }
+
+    moving = -1;
+  }
   else if (controller.get_axis_state(X_AXIS) > 0.5f)
+  {
+    if (moving == -1)
     {
-      if (moving == -1)
-        {
-          add_angle = step_angle + add_angle;
-          incr_current_item();
-        }
-
-      moving =  1;
+      add_angle = step_angle + add_angle;
+      incr_current_item();
     }
+
+    moving =  1;
+  }
 
   if (moving == -1)
-    {
-      add_angle -= 3 * delta;
-    }
+  {
+    add_angle -= 3 * delta;
+  }
   else if (moving == 1)
-    {
-      add_angle += 3 * delta;
-    }
+  {
+    add_angle += 3 * delta;
+  }
 
   if (moving == 0)
+  {
+    if (controller.button_was_pressed(OK_BUTTON) ||
+        controller.button_was_pressed(CANCEL_BUTTON) ||
+        controller.button_was_pressed(INVENTORY_BUTTON))
     {
-      if (controller.button_was_pressed(OK_BUTTON) ||
-          controller.button_was_pressed(CANCEL_BUTTON) ||
-          controller.button_was_pressed(INVENTORY_BUTTON))
-        {
-          GameSession::current()->set_control_state(GameSession::GAME);
-        }
+      GameSession::current()->set_control_state(GameSession::GAME);
     }
+  }
 }
 
 /* EOF */

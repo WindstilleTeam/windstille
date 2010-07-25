@@ -24,15 +24,15 @@
 #include "navigation/node.hpp"
 #include "display/display.hpp"
 
-EdgePosition::EdgePosition()
-  : edge(0),
-    pos(0.0f)
+EdgePosition::EdgePosition() :
+  edge(0),
+  pos(0.0f)
 {
 }
 
-EdgePosition::EdgePosition(Edge* edge_, float pos_)
-  : edge(edge_),
-    pos(pos_)
+EdgePosition::EdgePosition(Edge* edge_, float pos_) :
+  edge(edge_),
+  pos(pos_)
 {  
 }
 
@@ -55,27 +55,27 @@ EdgePosition::advance(float& adv, Node*& next_node)
   float adv_01 = adv / length;
 
   if (adv_01 > 0)
-    {
-      pos += adv_01;
-      if (pos > 1.0f) {
-        adv = (pos - 1.0f) * length;
-        pos = 1.0f;
-        next_node = edge->get_node2();
-      } else {
-        adv = 0;
-      }
+  {
+    pos += adv_01;
+    if (pos > 1.0f) {
+      adv = (pos - 1.0f) * length;
+      pos = 1.0f;
+      next_node = edge->get_node2();
+    } else {
+      adv = 0;
     }
+  }
   else
-    {
-      pos += adv_01;
-      if (pos < 0.0f) {
-        adv = pos * length;
-        pos = 0;
-        next_node = edge->get_node1();
-      } else {
-        adv = 0;
-      }
+  {
+    pos += adv_01;
+    if (pos < 0.0f) {
+      adv = pos * length;
+      pos = 0;
+      next_node = edge->get_node1();
+    } else {
+      adv = 0;
     }
+  }
 }
 
 void

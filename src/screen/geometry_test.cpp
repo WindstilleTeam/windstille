@@ -72,9 +72,9 @@ GeometryTest::update(float delta, const Controller& controller)
 {
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))
-    {
-      MenuManager::display_pause_menu();
-    }
+  {
+    MenuManager::display_pause_menu();
+  }
 
   cursor.x += controller.get_axis_state(X_AXIS) * 500.0f * delta;
   cursor.y += controller.get_axis_state(Y_AXIS) * 500.0f * delta;
@@ -83,44 +83,44 @@ GeometryTest::update(float delta, const Controller& controller)
   cursor2.y += controller.get_axis_state(Y2_AXIS) * 500.0f * delta;
 
   if (controller.button_was_pressed(PRIMARY_BUTTON))
-    {
-      if (point_count == 0) {
-        cursor  = line2.p1;
-        cursor2 = line2.p2;
-      } else {
-        cursor  = line1.p1;
-        cursor2 = line1.p2;
-      }
-
-      point_count += 1;
-      if (point_count > 1)
-        point_count = 0;
+  {
+    if (point_count == 0) {
+      cursor  = line2.p1;
+      cursor2 = line2.p2;
+    } else {
+      cursor  = line1.p1;
+      cursor2 = line1.p2;
     }
+
+    point_count += 1;
+    if (point_count > 1)
+      point_count = 0;
+  }
 
   if (point_count == 0)
-    {
-      line1.p1 = cursor;
-      line1.p2 = cursor2;
-    }
+  {
+    line1.p1 = cursor;
+    line1.p2 = cursor2;
+  }
   else if (point_count == 1)
-    {
-      line2.p1 = cursor;
-      line2.p2 = cursor2;
-    }
+  {
+    line2.p1 = cursor;
+    line2.p2 = cursor2;
+  }
 
   if (line1.intersect(line2, collision_point))
-    {
-      if (!had_prev_collision)
-        ConsoleLog << "Collision" << std::endl;
-      had_prev_collision = true;
-    }
+  {
+    if (!had_prev_collision)
+      ConsoleLog << "Collision" << std::endl;
+    had_prev_collision = true;
+  }
   else
-    {
-      if (had_prev_collision)
-        ConsoleLog << "No Collision" << std::endl;
-      had_prev_collision = false;
-      collision_point = Vector2f(32, 32);
-    }
+  {
+    if (had_prev_collision)
+      ConsoleLog << "No Collision" << std::endl;
+    had_prev_collision = false;
+    collision_point = Vector2f(32, 32);
+  }
 }
 
 /* EOF */

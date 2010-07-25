@@ -50,13 +50,13 @@ SoundChannel::prepare(std::auto_ptr<SoundFile> sound_file,
   switch(type)
   {
     case kStreamSoundSource:
-      {
-        SoundSourcePtr source(new StreamSoundSource(*this, sound_file));
-        source->update_gain();
-        m_sound_sources.push_back(SoundSourcePtr(source));
-        return source;
-      }
-      break;
+    {
+      SoundSourcePtr source(new StreamSoundSource(*this, sound_file));
+      source->update_gain();
+      m_sound_sources.push_back(SoundSourcePtr(source));
+      return source;
+    }
+    break;
 
     case kStaticSoundSource:
       // FIXME: not implemented

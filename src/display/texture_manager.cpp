@@ -21,8 +21,8 @@
 #include "display/texture.hpp"
 #include "display/software_surface.hpp"
 
-TextureManager::TextureManager()
-  : textures()
+TextureManager::TextureManager() :
+  textures()
 {
 }
 
@@ -43,26 +43,26 @@ TextureManager::get(const Pathname& filename)
 {
   Textures::iterator i = textures.find(filename);
   if(i != textures.end())
-    {
-      return i->second;
-    }
+  {
+    return i->second;
+  }
   else
+  {
+    try 
     {
-      try 
-        {
-          SoftwareSurface image(filename);
-          Texture texture(image);
+      SoftwareSurface image(filename);
+      Texture texture(image);
 
-          textures.insert(std::make_pair(filename, texture));
+      textures.insert(std::make_pair(filename, texture));
 
-          return texture;
-        } 
-      catch(std::exception& e) 
-        {
-          std::cerr << e.what() << std::endl;
-          return get(Pathname("images/404.png"));
-        }
+      return texture;
+    } 
+    catch(std::exception& e) 
+    {
+      std::cerr << e.what() << std::endl;
+      return get(Pathname("images/404.png"));
     }
+  }
 }
 
 /* EOF */

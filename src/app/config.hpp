@@ -139,17 +139,17 @@ public:
   ConfigValue<T>& get(const std::string& name) const {
     ConfigValues::const_iterator i = config_values.find(name);
     if (i == config_values.end())
-      {
-        throw std::runtime_error("Error: unknown Config value: '" + name + "'");
-      }
+    {
+      throw std::runtime_error("Error: unknown Config value: '" + name + "'");
+    }
     else
-      {
-        ConfigValue<T>* ptr = dynamic_cast<ConfigValue<T>*>(i->second);
-        if (ptr)
-          return *ptr;
-        else
-          throw std::runtime_error("Error: Config value: '" + name + "' as wrong type");
-      }
+    {
+      ConfigValue<T>* ptr = dynamic_cast<ConfigValue<T>*>(i->second);
+      if (ptr)
+        return *ptr;
+      else
+        throw std::runtime_error("Error: Config value: '" + name + "' as wrong type");
+    }
   }
 
   std::string get_string(const std::string& name) const;

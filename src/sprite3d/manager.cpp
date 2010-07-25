@@ -22,8 +22,8 @@
 
 namespace sprite3d {
 
-Manager::Manager()
-  : datas()
+Manager::Manager() :
+  datas()
 {
 }
 

@@ -24,10 +24,10 @@
 #include "navigation/navigation_graph.hpp"
 #include "util/file_reader.hpp"
 
-NavigationGraphModel::NavigationGraphModel(SectorModel& sector)
-  : m_sector(sector),
-    m_nodes(),
-    m_edges()   
+NavigationGraphModel::NavigationGraphModel(SectorModel& sector) :
+  m_sector(sector),
+  m_nodes(),
+  m_edges()   
 {
 }
 

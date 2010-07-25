@@ -19,13 +19,13 @@
 #include "objects/player.hpp"
 #include "objects/hedgehog.hpp"
 
-Hedgehog::Hedgehog(const FileReader& props)
-  : sprite(Pathname("images/hedgehog.sprite")),
-    die_sprite(Pathname("images/hedgehog_die1.sprite")),
-    light(Pathname("images/hedgehog_light.sprite")),
-    highlight(Pathname("images/hedgehog_highlight.sprite")),
-    direction_left(false),
-    state(WALKING)
+Hedgehog::Hedgehog(const FileReader& props) :
+  sprite(Pathname("images/hedgehog.sprite")),
+  die_sprite(Pathname("images/hedgehog_die1.sprite")),
+  light(Pathname("images/hedgehog_light.sprite")),
+  highlight(Pathname("images/hedgehog_highlight.sprite")),
+  direction_left(false),
+  state(WALKING)
 {
   props.get("name", name);
   props.get("pos",  pos);
@@ -63,51 +63,51 @@ void
 Hedgehog::update(float delta)
 {      
   if (state == DYING)
-    {
-      if (die_sprite.is_finished())
-        remove();
-      die_sprite.update(delta);
-    }
+  {
+    if (die_sprite.is_finished())
+      remove();
+    die_sprite.update(delta);
+  }
   else
+  {
+    sprite.update(delta);
+    bool was_on_ground = false;
+      
+    if (on_ground())
     {
-      sprite.update(delta);
-      bool was_on_ground = false;
-      
-      if (on_ground())
-        {
-          was_on_ground = true;
-          if (velocity.y > 0.0f)
-            {
-              velocity.y = 0.0f;
-              pos.y = truncf(pos.y / static_cast<float>(TILE_SIZE)) * static_cast<float>(TILE_SIZE) + static_cast<float>(TILE_SIZE) - 1.0f;
-            }
-          if (direction_left)
-            velocity.x = -32.0f;
-          else
-            velocity.x = 32.0f;
-        }
+      was_on_ground = true;
+      if (velocity.y > 0.0f)
+      {
+        velocity.y = 0.0f;
+        pos.y = truncf(pos.y / static_cast<float>(TILE_SIZE)) * static_cast<float>(TILE_SIZE) + static_cast<float>(TILE_SIZE) - 1.0f;
+      }
+      if (direction_left)
+        velocity.x = -32.0f;
       else
-        {
-          velocity.y += GRAVITY * delta;
-        }
-      
-      Vector2f old_pos = pos;
-      pos += velocity * delta;
-      
-      if ((was_on_ground && !on_ground()) || in_wall())
-        {
-          direction_left = !direction_left;
-          pos = old_pos;
-        }
+        velocity.x = 32.0f;
     }
+    else
+    {
+      velocity.y += GRAVITY * delta;
+    }
+      
+    Vector2f old_pos = pos;
+    pos += velocity * delta;
+      
+    if ((was_on_ground && !on_ground()) || in_wall())
+    {
+      direction_left = !direction_left;
+      pos = old_pos;
+    }
+  }
     
   // Check if the player got hit
   // FIXME: Insert pixel perfect collision detection here
   Vector2f player_pos = Player::current()->get_pos();
   if (pos.x - 20 < player_pos.x
-        && pos.x + 20 > player_pos.x
-        && pos.y - 20 < player_pos.y
-        && pos.y + 5  > player_pos.y)
+      && pos.x + 20 > player_pos.x
+      && pos.y - 20 < player_pos.y
+      && pos.y + 5  > player_pos.y)
     Player::current()->hit(5);
 }
 

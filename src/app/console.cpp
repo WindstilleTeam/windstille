@@ -167,152 +167,152 @@ ConsoleImpl::draw()
                        Color(0, 0, 0, 0.5f));
 
   for(int i = buffer.size()-1 - scroll_offset; i >= 0 && i > int(buffer.size()) - num_lines - scroll_offset; --i)
+  {
+    if (buffer[i].display_time < 5.0f || console.is_active())
     {
-      if (buffer[i].display_time < 5.0f || console.is_active())
-        {
-          float alpha = 1.0f;
-          if (buffer[i].display_time > 4.0f && !console.is_active())
-            alpha = 1.0f - (buffer[i].display_time - 4.0f);
+      float alpha = 1.0f;
+      if (buffer[i].display_time > 4.0f && !console.is_active())
+        alpha = 1.0f - (buffer[i].display_time - 4.0f);
 
-          Fonts::current()->ttffont->draw(Vector2f(x_pos, static_cast<float>(y)), buffer[i].message, 
-                                          Color(0.88f, 0.88f, 1.0f, alpha));
-        }
-      y -= Fonts::current()->ttffont->get_height() + 2;
+      Fonts::current()->ttffont->draw(Vector2f(x_pos, static_cast<float>(y)), buffer[i].message, 
+                                      Color(0.88f, 0.88f, 1.0f, alpha));
     }
+    y -= Fonts::current()->ttffont->get_height() + 2;
+  }
 
   if (active)
+  {
+    std::string str = command_line;
+    if (SDL_GetTicks() % 300 > 150)
     {
-      std::string str = command_line;
-      if (SDL_GetTicks() % 300 > 150)
-        {
-          if (cursor_pos < int(str.size()))
-            str[cursor_pos] = '_';
-          else
-            str += "_";
-        }
-
-      Fonts::current()->ttffont->draw(Vector2f(x_pos, y_pos), "> " + str, Color(1.0f, 1.0f, 1.0f));
+      if (cursor_pos < int(str.size()))
+        str[cursor_pos] = '_';
+      else
+        str += "_";
     }
+
+    Fonts::current()->ttffont->draw(Vector2f(x_pos, y_pos), "> " + str, Color(1.0f, 1.0f, 1.0f));
+  }
 }
 
 void
 ConsoleImpl::update(float delta)
 {
   for(Buffer::iterator i = buffer.begin(); i != buffer.end(); ++i)
-    {
-      i->display_time += delta;
-    }  
+  {
+    i->display_time += delta;
+  }  
 
   if (active)
-    {
-      InputEventLst events = InputManagerSDL::current()->get_controller().get_events();
+  {
+    InputEventLst events = InputManagerSDL::current()->get_controller().get_events();
   
-      for (InputEventLst::iterator i = events.begin(); i != events.end(); ++i)
+    for (InputEventLst::iterator i = events.begin(); i != events.end(); ++i)
+    {
+      if ((*i).type == KEYBOARD_EVENT)
+      {
+        if ((*i).keyboard.key_type == KeyboardEvent::LETTER)
         {
-          if ((*i).type == KEYBOARD_EVENT)
-            {
-              if ((*i).keyboard.key_type == KeyboardEvent::LETTER)
-                {
-                  if (cursor_pos == int(command_line.size()))
-                    {
-                      command_line += static_cast<char>((*i).keyboard.code);
-                      cursor_pos += 1;
-                    }
-                  else
-                    {
-                      command_line.insert(cursor_pos, std::string(1, static_cast<char>((*i).keyboard.code)));
-                      cursor_pos += 1;
-                    }
-                }
-              else if ((*i).keyboard.key_type == KeyboardEvent::SPECIAL)
-                {
-                  //console << "special: " << i->keyboard.code << std::endl;
-
-                  switch (i->keyboard.code)
-                    {
-                    case SDLK_BACKSPACE:
-                      if (!command_line.empty() && cursor_pos > 0)
-                        {
-                          command_line.erase(cursor_pos - 1, 1);
-                          cursor_pos -= 1;
-                        }
-                      break;
-
-                    case SDLK_DELETE:
-                      if (!command_line.empty())
-                        {
-                          command_line.erase(cursor_pos, 1);
-                        }
-                      break;
-
-                    case SDLK_DOWN:
-                      if (!history.empty())
-                        {
-                          history_position += 1;
-                          if (history_position > int(history.size())-1)
-                            history_position = int(history.size())-1;
-                          command_line = history[history_position];
-                          cursor_pos = command_line.size();
-                        }
-                      break;
-
-                    case SDLK_HOME:
-                      cursor_pos = 0;
-                      break;
-                      
-                    case SDLK_END:
-                      cursor_pos = command_line.size();
-                      break;
-                        
-                    case SDLK_PAGEUP:
-                      console.scroll(10);
-                      break;
-
-                    case SDLK_PAGEDOWN:
-                      console.scroll(-10);
-                      break;
-
-                    case SDLK_TAB:
-                      tab_complete();
-                      break;
-
-                    case SDLK_UP:
-                      if (!history.empty())
-                        {
-                          history_position -= 1;
-                          if (history_position < 0)
-                            history_position = 0;
-
-                          command_line = history[history_position];
-                          cursor_pos = command_line.size();
-                        }
-                      break;
-
-                    case SDLK_LEFT:
-                      cursor_pos -= 1;
-                      if (cursor_pos < 0)
-                        cursor_pos = 0;
-                      break;
-
-                    case SDLK_RIGHT:
-                      cursor_pos += 1;
-                      if (cursor_pos > int(command_line.size()))
-                        cursor_pos = command_line.size();
-                      break;
-
-                    case SDLK_RETURN:
-                      eval_command_line();
-                      break;
-
-                    case SDLK_ESCAPE:
-                    case SDLK_F1:
-                      console.deactive();
-                      break;
-                    }
-                }
-            }
+          if (cursor_pos == int(command_line.size()))
+          {
+            command_line += static_cast<char>((*i).keyboard.code);
+            cursor_pos += 1;
+          }
+          else
+          {
+            command_line.insert(cursor_pos, std::string(1, static_cast<char>((*i).keyboard.code)));
+            cursor_pos += 1;
+          }
         }
+        else if ((*i).keyboard.key_type == KeyboardEvent::SPECIAL)
+        {
+          //console << "special: " << i->keyboard.code << std::endl;
+
+          switch (i->keyboard.code)
+          {
+            case SDLK_BACKSPACE:
+              if (!command_line.empty() && cursor_pos > 0)
+              {
+                command_line.erase(cursor_pos - 1, 1);
+                cursor_pos -= 1;
+              }
+              break;
+
+            case SDLK_DELETE:
+              if (!command_line.empty())
+              {
+                command_line.erase(cursor_pos, 1);
+              }
+              break;
+
+            case SDLK_DOWN:
+              if (!history.empty())
+              {
+                history_position += 1;
+                if (history_position > int(history.size())-1)
+                  history_position = int(history.size())-1;
+                command_line = history[history_position];
+                cursor_pos = command_line.size();
+              }
+              break;
+
+            case SDLK_HOME:
+              cursor_pos = 0;
+              break;
+                      
+            case SDLK_END:
+              cursor_pos = command_line.size();
+              break;
+                        
+            case SDLK_PAGEUP:
+              console.scroll(10);
+              break;
+
+            case SDLK_PAGEDOWN:
+              console.scroll(-10);
+              break;
+
+            case SDLK_TAB:
+              tab_complete();
+              break;
+
+            case SDLK_UP:
+              if (!history.empty())
+              {
+                history_position -= 1;
+                if (history_position < 0)
+                  history_position = 0;
+
+                command_line = history[history_position];
+                cursor_pos = command_line.size();
+              }
+              break;
+
+            case SDLK_LEFT:
+              cursor_pos -= 1;
+              if (cursor_pos < 0)
+                cursor_pos = 0;
+              break;
+
+            case SDLK_RIGHT:
+              cursor_pos += 1;
+              if (cursor_pos > int(command_line.size()))
+                cursor_pos = command_line.size();
+              break;
+
+            case SDLK_RETURN:
+              eval_command_line();
+              break;
+
+            case SDLK_ESCAPE:
+            case SDLK_F1:
+              console.deactive();
+              break;
+          }
+        }
+      }
     }
+  }
 }
 
 void
@@ -320,9 +320,9 @@ ConsoleImpl::maybe_newline()
 {
   ConsoleLog << std::flush;
   if (!current_entry.message.empty())
-    {
-      ConsoleLog << std::endl;
-    }
+  {
+    ConsoleLog << std::endl;
+  }
 }
 
 std::vector<std::string>
@@ -336,20 +336,20 @@ ConsoleImpl::get_roottable()
   //push your table/array here
   sq_pushnull(v);  //null iterator
   while(SQ_SUCCEEDED(sq_next(v,-2)))
+  {
+    // here -1 is the value and -2 is the key
+    const SQChar *s;
+    if (SQ_SUCCEEDED(sq_getstring(v,-2, &s)))
     {
-      // here -1 is the value and -2 is the key
-      const SQChar *s;
-      if (SQ_SUCCEEDED(sq_getstring(v,-2, &s)))
-        {
-          roottable.push_back(static_cast<const char*>(s)); // FIXME: likely not going to work on 64bit
-        }
-      else
-        {
-          ConsoleLog << "Unknown key type for element" << std::endl;
-        }
-                              
-      sq_pop(v,2); //pops key and val before the nex iteration
+      roottable.push_back(static_cast<const char*>(s)); // FIXME: likely not going to work on 64bit
     }
+    else
+    {
+      ConsoleLog << "Unknown key type for element" << std::endl;
+    }
+                              
+    sq_pop(v,2); //pops key and val before the nex iteration
+  }
                           
   sq_pop(v, 1);
   
@@ -374,21 +374,21 @@ static std::string longest_prefix(const std::string& lhs, const std::string rhs)
 static std::string find_longest_prefix(const std::vector<std::string>& lst)
 {
   if (lst.empty())
-    {
-      return "";
-    }
+  {
+    return "";
+  }
   else
+  {
+    std::string prefix = lst.front();
+
+    for(std::vector<std::string>::const_iterator i = lst.begin() + 1; 
+        i != lst.end(); ++i)
     {
-      std::string prefix = lst.front();
-
-      for(std::vector<std::string>::const_iterator i = lst.begin() + 1; 
-          i != lst.end(); ++i)
-        {
-          prefix = longest_prefix(prefix, *i);
-        }
-
-      return prefix;
+      prefix = longest_prefix(prefix, *i);
     }
+
+    return prefix;
+  }
 }
 
 void
@@ -400,94 +400,94 @@ ConsoleImpl::tab_complete()
   for(std::vector<std::string>::const_iterator i = roottable.begin();
       i != roottable.end();
       ++i)
+  {
+    if (has_prefix(*i, command_line))
     {
-      if (has_prefix(*i, command_line))
-        {
-          completions.push_back(*i);
-        }
+      completions.push_back(*i);
     }
+  }
 
   if (completions.empty())
-    {
-      // console << "No completions" << std::endl;
-    }
+  {
+    // console << "No completions" << std::endl;
+  }
   else if (completions.size() == 1)
-    {
-      command_line = completions.front();
-      cursor_pos = command_line.size();
-    }
+  {
+    command_line = completions.front();
+    cursor_pos = command_line.size();
+  }
   else 
+  {
+    ConsoleLog << "> " << command_line << std::endl;
+    for(std::vector<std::string>::iterator i = completions.begin(); i != completions.end(); ++i)
     {
-      ConsoleLog << "> " << command_line << std::endl;
-      for(std::vector<std::string>::iterator i = completions.begin(); i != completions.end(); ++i)
-        {
-          ConsoleLog << *i << " ";
-        }
-      ConsoleLog << std::endl;
-
-      command_line = find_longest_prefix(completions);
-      cursor_pos = command_line.size();
+      ConsoleLog << *i << " ";
     }
+    ConsoleLog << std::endl;
+
+    command_line = find_longest_prefix(completions);
+    cursor_pos = command_line.size();
+  }
 }
 
 void
 ConsoleImpl::eval_command_line()
 {
   if (!command_line.empty() && (history.empty() || history.back() != command_line))
-    {
-      history.push_back(command_line);
-      history_position = history.size();
-    }
+  {
+    history.push_back(command_line);
+    history_position = history.size();
+  }
                       
   ConsoleLog << "> " << command_line << std::endl;
 
   if (command_line == "quit" || command_line == "exit")
-    {
-      console.deactive();
-    }
+  {
+    console.deactive();
+  }
   else if (command_line == "help")
-    {
-      ConsoleLog << "This is a script console, can enter stuff in here that will then be evaluated.\n"
-              << "Type 'quit' to exit the console." << std::endl;
-    }
+  {
+    ConsoleLog << "This is a script console, can enter stuff in here that will then be evaluated.\n"
+               << "Type 'quit' to exit the console." << std::endl;
+  }
   else if (command_line == "reset")
-    {
-      GameSession::current()->set_sector(Pathname("levels/newformat2.wst"));
-    }
+  {
+    GameSession::current()->set_sector(Pathname("levels/newformat2.wst"));
+  }
   else if (command_line == "show")
+  {
+    HSQUIRRELVM v = ScriptManager::current()->get_vm();
+
+    int size = sq_getsize(v, -1);
+    ConsoleLog << size << " elements on the root table" << std::endl;
+
+    sq_pushroottable(v);
+
+    //push your table/array here
+    sq_pushnull(v);  //null iterator
+    while(SQ_SUCCEEDED(sq_next(v,-2)))
     {
-      HSQUIRRELVM v = ScriptManager::current()->get_vm();
-
-      int size = sq_getsize(v, -1);
-      ConsoleLog << size << " elements on the root table" << std::endl;
-
-      sq_pushroottable(v);
-
-      //push your table/array here
-      sq_pushnull(v);  //null iterator
-      while(SQ_SUCCEEDED(sq_next(v,-2)))
-        {
-          //here -1 is the value and -2 is the key
-          const SQChar *s;
-          if (SQ_SUCCEEDED(sq_getstring(v,-2, &s)))
-            {
-              ConsoleLog << s << " -> " << Scripting::squirrel2string(v, -1) << std::endl;
-            }
-          else
-            {
-              ConsoleLog << "Unknown key type for element" << std::endl;
-            }
+      //here -1 is the value and -2 is the key
+      const SQChar *s;
+      if (SQ_SUCCEEDED(sq_getstring(v,-2, &s)))
+      {
+        ConsoleLog << s << " -> " << Scripting::squirrel2string(v, -1) << std::endl;
+      }
+      else
+      {
+        ConsoleLog << "Unknown key type for element" << std::endl;
+      }
                               
-          sq_pop(v,2); //pops key and val before the nex iteration
-        }
+      sq_pop(v,2); //pops key and val before the nex iteration
+    }
                           
-      sq_pop(v, 1);
-    }
+    sq_pop(v, 1);
+  }
   else
-    {
-      execute(command_line);
-      maybe_newline();
-    }
+  {
+    execute(command_line);
+    maybe_newline();
+  }
   command_line = "";
   cursor_pos = 0;
 }
@@ -505,25 +505,25 @@ ConsoleImpl::execute(const std::string& str_)
   int oldtop = sq_gettop(vm); 
 
   try 
+  {
+    if(SQ_SUCCEEDED(sq_compilebuffer(vm, str.c_str(), i, _SC("interactive console"), SQTrue)))
     {
-      if(SQ_SUCCEEDED(sq_compilebuffer(vm, str.c_str(), i, _SC("interactive console"), SQTrue)))
-        {
-          sq_pushroottable(vm);
-          if(SQ_SUCCEEDED(sq_call(vm, 1, 1/*retval*/, true))) 
-            {
-              // FIXME: This does only work when somebody is doing a 'return', i.e. almost never
-              if (sq_gettype(vm, -1) != OT_NULL)
-                ConsoleLog << Scripting::squirrel2string(vm, -1) << std::endl;
-              // else
-              //   console << "(null)" << std::endl;
-            }
-        }
-    } 
-  catch(std::exception& e) 
-    {
-      std::cerr << "Couldn't execute command '" << str_ << "': "
-                << e.what() << "\n";
+      sq_pushroottable(vm);
+      if(SQ_SUCCEEDED(sq_call(vm, 1, 1/*retval*/, true))) 
+      {
+        // FIXME: This does only work when somebody is doing a 'return', i.e. almost never
+        if (sq_gettype(vm, -1) != OT_NULL)
+          ConsoleLog << Scripting::squirrel2string(vm, -1) << std::endl;
+        // else
+        //   console << "(null)" << std::endl;
+      }
     }
+  } 
+  catch(std::exception& e) 
+  {
+    std::cerr << "Couldn't execute command '" << str_ << "': "
+              << e.what() << "\n";
+  }
 
   // Reset to old stack position
   sq_settop(vm, oldtop);
@@ -531,8 +531,8 @@ ConsoleImpl::execute(const std::string& str_)
 
 //-------------------------------------------------------------------------------
 
-Console::Console()
-  : impl(new ConsoleImpl(*this))
+Console::Console() :
+  impl(new ConsoleImpl(*this))
 {
 }
 

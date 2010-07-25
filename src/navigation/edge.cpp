@@ -22,10 +22,10 @@
 
 #include "navigation/node.hpp"
 
-Edge::Edge(Node* node1_, Node* node2_, Properties props_)
-  : node1(node1_), 
-    node2(node2_),
-    properties(props_)
+Edge::Edge(Node* node1_, Node* node2_, Properties props_) :
+  node1(node1_), 
+  node2(node2_),
+  properties(props_)
 {
   node1->add_edge(EdgePosition(this, 0.0f));
   node2->add_edge(EdgePosition(this, 1.0f));

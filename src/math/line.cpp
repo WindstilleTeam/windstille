@@ -55,17 +55,17 @@ Line::intersect(const Line& line, float& ua, float& ub) const
   float quotient = ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
 
   if (quotient == 0.0f)
-    {
-      return false; // FIXME
-    }
+  {
+    return false; // FIXME
+  }
   else
-    {
-      ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / quotient;
-      ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / quotient;
+  {
+    ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / quotient;
+    ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / quotient;
 
-      return (ua >= 0.0f && ua <= 1.0f &&
-              ub >= 0.0f && ub <= 1.0f);
-    }
+    return (ua >= 0.0f && ua <= 1.0f &&
+            ub >= 0.0f && ub <= 1.0f);
+  }
 }
 
 bool
@@ -73,14 +73,14 @@ Line::intersect(const Line& line, Vector2f& colpos) const
 {
   float ua, ub;
   if (intersect(line, ua, ub))
-    {
-      colpos = p1 + ((p2 - p1) * ua);
-      return true;
-    }
+  {
+    colpos = p1 + ((p2 - p1) * ua);
+    return true;
+  }
   else
-    {
-      return false;
-    }
+  {
+    return false;
+  }
 }
 
 float
@@ -100,20 +100,20 @@ Line::distance(const Vector2f& p3) const
     (length() * length());
   
   if (u < 0.0f)
-    {
-      return (p1 - p3).length();
-    }
+  {
+    return (p1 - p3).length();
+  }
   else if (u > 1.0f)
-    {
-      return (p2 - p3).length();
-    }
+  {
+    return (p2 - p3).length();
+  }
   else // (u >= 0.0f && u <= 1.0f)
-    {
-      Vector2f p4(x1 + u * (x2 - x1),
+  {
+    Vector2f p4(x1 + u * (x2 - x1),
                 y1 + u * (y2 - y1));
 
-      return (p4 - p3).length();
-    }
+    return (p4 - p3).length();
+  }
 }
 
 /* EOF */

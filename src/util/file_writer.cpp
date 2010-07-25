@@ -93,14 +93,14 @@ std::string escape_string(const std::string& in)
 {
   std::ostringstream str;
   for(std::string::const_iterator i = in.begin(); i != in.end(); ++i)
-    {
-      if (*i == '"')
-        str << "\\\"";
-      else if (*i == '\\')
-        str << "\\\\";
-      else
-        str << *i;
-    }
+  {
+    if (*i == '"')
+      str << "\\\"";
+    else if (*i == '\\')
+      str << "\\\\";
+    else
+      str << *i;
+  }
   return str.str();
 }
 

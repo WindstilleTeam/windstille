@@ -32,20 +32,20 @@ static GLchar* load_file(const char* filename)
   GLchar* str = static_cast<char*>(malloc(size));
   FILE* f = fopen(filename, "r");
   if (!f)
-    {
-      perror(filename);
-      exit(EXIT_FAILURE);
-    }
+  {
+    perror(filename);
+    exit(EXIT_FAILURE);
+  }
   else
+  {
+    while ((true_size += fread(str, sizeof(GLchar), 4096, f)) == 4096)
     {
-      while ((true_size += fread(str, sizeof(GLchar), 4096, f)) == 4096)
-        {
-          size += block_size;
-          str = static_cast<GLchar*>(realloc(str, size));
-        }
-      str = static_cast<GLchar*>(realloc(str, true_size+1));
-      str[true_size] = '\0';
+      size += block_size;
+      str = static_cast<GLchar*>(realloc(str, size));
     }
+    str = static_cast<GLchar*>(realloc(str, true_size+1));
+    str[true_size] = '\0';
+  }
 
   fclose(f);
   return str;
@@ -67,8 +67,8 @@ public:
   }
 };
 
-ShaderObject::ShaderObject(GLenum type, const std::string& filename)
-  : impl(new ShaderObjectImpl(type))
+ShaderObject::ShaderObject(GLenum type, const std::string& filename) :
+  impl(new ShaderObjectImpl(type))
 {
   load(filename);
   compile();
@@ -114,17 +114,17 @@ ShaderObject::print_log()
   assert_gl("print_log2");
 
   if (infologLength > 0)
+  {
+    infoLog = static_cast<GLchar*>(malloc(infologLength));
+    if (infoLog == NULL)
     {
-      infoLog = static_cast<GLchar*>(malloc(infologLength));
-      if (infoLog == NULL)
-        {
-          printf("ERROR: Could not allocate InfoLog buffer\n");
-          exit(1);
-        }
-      glGetShaderInfoLog(impl->handle, infologLength, &charsWritten, infoLog);
-      printf("InfoLog:\n%s\n\n", infoLog);
-      free(infoLog);
+      printf("ERROR: Could not allocate InfoLog buffer\n");
+      exit(1);
     }
+    glGetShaderInfoLog(impl->handle, infologLength, &charsWritten, infoLog);
+    printf("InfoLog:\n%s\n\n", infoLog);
+    free(infoLog);
+  }
   assert_gl("print_log3");
 }
 

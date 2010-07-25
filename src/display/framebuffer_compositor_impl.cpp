@@ -26,10 +26,10 @@
 
 static const int LIGHTMAP_DIV = 4;
 
-FramebufferCompositorImpl::FramebufferCompositorImpl(const Size& window, const Size& viewport)
-  : CompositorImpl(window, viewport),
-    m_screen  (GL_TEXTURE_2D, window.width, window.height),
-    m_lightmap(GL_TEXTURE_2D, window.width / LIGHTMAP_DIV, window.height / LIGHTMAP_DIV)
+FramebufferCompositorImpl::FramebufferCompositorImpl(const Size& window, const Size& viewport) :
+  CompositorImpl(window, viewport),
+  m_screen  (GL_TEXTURE_2D, window.width, window.height),
+  m_lightmap(GL_TEXTURE_2D, window.width / LIGHTMAP_DIV, window.height / LIGHTMAP_DIV)
 {
 }
 

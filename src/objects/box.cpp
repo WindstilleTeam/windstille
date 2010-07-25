@@ -22,10 +22,10 @@
 
 #include "collision/collision_engine.hpp"
 
-Box::Box(const FileReader& props)
-  : sprite(),
-    colobj(0),
-    gravity()
+Box::Box(const FileReader& props) :
+  sprite(),
+  colobj(0),
+  gravity()
 {
   gravity = 0.0f;
   float width  = 64.0f;
@@ -66,22 +66,22 @@ Box::collision(const CollisionData& data)
   //std::cout << this << ": Collision Event" << std::endl;
   if ((data.direction.x > 0 && colobj->get_velocity().x < 0) ||
       (data.direction.x < 0 && colobj->get_velocity().x > 0))
-    {
-      colobj->set_velocity(Vector2f(-colobj->get_velocity().x, colobj->get_velocity().y));
-    }
+  {
+    colobj->set_velocity(Vector2f(-colobj->get_velocity().x, colobj->get_velocity().y));
+  }
   
   if ((data.direction.y > 0 && colobj->get_velocity().y < 0) ||
       (data.direction.y < 0 && colobj->get_velocity().y > 0))
-    {
-      colobj->set_velocity(Vector2f(colobj->get_velocity().x, -colobj->get_velocity().y));
-    }
+  {
+    colobj->set_velocity(Vector2f(colobj->get_velocity().x, -colobj->get_velocity().y));
+  }
 }
 
 void 
 Box::update(float delta)
 {
   colobj->set_velocity(Vector2f(colobj->get_velocity().x, 
-                              colobj->get_velocity().y + gravity * delta));
+                                colobj->get_velocity().y + gravity * delta));
 
   sprite.update(delta);
   pos = colobj->get_pos();

@@ -37,7 +37,7 @@ public:
   {
     std::ostringstream msg;
     msg << "Parse error in file '" << parser->filename << "' line "
-      << parser->lexer->getLineNumber() << ": " << message;
+        << parser->lexer->getLineNumber() << ": " << message;
     string = msg.str();
   }
   ~ParseError() throw()
@@ -52,10 +52,10 @@ private:
   std::string string;
 };
 
-Parser::Parser()
-  : filename(),
-    lexer(0),
-    token()
+Parser::Parser() :
+  filename(),
+  lexer(0),
+  token()
 {
 }
 
@@ -112,7 +112,7 @@ Parser::parse()
         
           // Handle (_ "blup") strings that need to be translated
           if(token == Lexer::TOKEN_SYMBOL
-              && strcmp(lexer->getString(), "_") == 0) {
+             && strcmp(lexer->getString(), "_") == 0) {
             token = lexer->getNextToken();
             if(token != Lexer::TOKEN_STRING)
               throw ParseError(this, "Expected string after '(_' sequence");

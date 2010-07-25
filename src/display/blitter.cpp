@@ -44,12 +44,12 @@ void generate_border(const SoftwareSurface& surface,
 
   // duplicate left and right borders
   for(int y = y_pos-1; y < y_pos + height+1; ++y)
-    {
-      uint32_t* p = reinterpret_cast<uint32_t*> (data + (y*pitch + 4*(x_pos-1)));
-      *p = *(p+1);
-      p = reinterpret_cast<uint32_t*> (data + (y*pitch + 4*(x_pos + width)));
-      *p = *(p-1);
-    }
+  {
+    uint32_t* p = reinterpret_cast<uint32_t*> (data + (y*pitch + 4*(x_pos-1)));
+    *p = *(p+1);
+    p = reinterpret_cast<uint32_t*> (data + (y*pitch + 4*(x_pos + width)));
+    *p = *(p-1);
+  }
 }
 
 /* EOF */
