@@ -20,10 +20,13 @@
 
 #include <boost/scoped_array.hpp>
 #include <png.h>
+#include <jpeglib.h>
 #include <errno.h>
 #include <fstream>
 #include <GL/glew.h>
 #include <GL/glext.h>
+#include <sstream>
+#include <stdexcept>
 
 #include "display/color.hpp"
 #include "math/quad.hpp"
@@ -478,7 +481,7 @@ Display::save_screenshot(const Pathname& filename)
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
   glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, pixels.get());
 
-  if (0)
+  if (false)
   { // PPM saving
     int pitch = size.width * 3;
 
@@ -493,6 +496,60 @@ Display::save_screenshot(const Pathname& filename)
       out.write(reinterpret_cast<const char*>(pixels.get() + y*pitch), pitch);
 
     out.close();
+  }
+  else if (true)
+  {
+    FILE* m_out = fopen(filename.get_sys_path().c_str(), "wb");
+
+    if (!m_out)
+    {
+      std::ostringstream out;
+      out << "FileJPEGCompressor(): Error: " << filename << ": " << strerror(errno);
+      throw std::runtime_error(out.str());
+    }
+    else
+    {
+      int pitch = size.width * 3;
+      struct jpeg_compress_struct m_cinfo;
+      struct jpeg_error_mgr m_jerr;
+
+      jpeg_std_error(&m_jerr);
+      m_cinfo.err = &m_jerr;
+
+      jpeg_create_compress(&m_cinfo);
+
+      jpeg_stdio_dest(&m_cinfo, m_out);
+
+      m_cinfo.image_width  = size.width;
+      m_cinfo.image_height = size.height;
+
+      m_cinfo.input_components = 3;         /* # of color components per pixel */
+      m_cinfo.in_color_space   = JCS_RGB;   /* colorspace of input image */
+
+      jpeg_set_defaults(&m_cinfo);
+      //jpeg_set_quality(&m_cinfo, quality, TRUE /* limit to baseline-JPEG values */);
+ 
+      jpeg_start_compress(&m_cinfo, TRUE);
+
+      boost::scoped_array<JSAMPROW> row_pointer(new JSAMPROW[size.height]);
+  
+      for(int y = 0; y < size.height; ++y)
+      {
+        row_pointer[size.height - y - 1] = reinterpret_cast<JSAMPLE*>(pixels.get() + y*pitch);
+      }
+
+      while(m_cinfo.next_scanline < m_cinfo.image_height)
+      {
+        jpeg_write_scanlines(&m_cinfo, &row_pointer[m_cinfo.next_scanline], 
+                             size.height - m_cinfo.next_scanline);
+      }
+
+      jpeg_finish_compress(&m_cinfo);  
+
+      jpeg_destroy_compress(&m_cinfo);
+    
+      fclose(m_out);
+    }
   }
   else 
   { // PNG saving
@@ -521,7 +578,7 @@ Display::save_screenshot(const Pathname& filename)
                    PNG_COMPRESSION_TYPE_BASE, 
                    PNG_FILTER_TYPE_BASE);
       
-      png_set_compression_level(png_ptr, 3);
+      png_set_compression_level(png_ptr, 0);
       png_write_info(png_ptr, info_ptr);
 
       boost::scoped_array<png_bytep> row_pointers(new png_bytep[size.height]);
