@@ -16,38 +16,33 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_EXTRA_SLIDESHOW_SLIDE_SHOW_HPP
-#define HEADER_WINDSTILLE_EXTRA_SLIDESHOW_SLIDE_SHOW_HPP
+#ifndef HEADER_WINDSTILLE_EXTRA_SLIDESHOW_SLIDESHOW_HPP
+#define HEADER_WINDSTILLE_EXTRA_SLIDESHOW_SLIDESHOW_HPP
 
 #include <vector>
 
-#include "slideshow/slide_object.hpp"
+#include "math/size.hpp"
 
-class SlideShow
+class App
 {
 private:
-  std::vector<SlideObjectPtr> m_objects;
-  float m_time;
-  float m_length;
-  
+  Size m_aspect_ratio;
+  Size m_window_size;
+  bool m_fullscreen;
+  std::vector<std::string> m_files;
+  std::string m_output_dir;
+  float m_fps;
+
 public:
-  SlideShow();
+  App();
 
-  void update(float delta);
-  void draw();
-
-  bool done() const;
-
-  int size() const;
-
-  void add(SlideObjectPtr object);
-  void clear();
-
-  void load(const std::string& filename, const Sizef& aspect);
+  void init_sdl();
+  int main(int argc, char** argv);
+  void parse_args(int argc, char** argv);
 
 private:
-  SlideShow(const SlideShow&);
-  SlideShow& operator=(const SlideShow&);
+  App(const App&);
+  App& operator=(const App&);
 };
 
 #endif

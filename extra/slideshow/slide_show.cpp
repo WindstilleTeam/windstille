@@ -18,6 +18,8 @@
 
 #include "slideshow/slide_show.hpp"
 
+#include "slideshow/slide_builder.hpp"
+
 SlideShow::SlideShow() :
   m_objects(),
   m_time(0.0f),
@@ -68,6 +70,21 @@ int
 SlideShow::size() const
 {
   return m_objects.size();
+}
+
+void
+SlideShow::clear()
+{
+  m_objects.clear();
+  //FIXMEm_time = 0.0f;
+  m_length = 0.0f;
+}
+
+void
+SlideShow::load(const std::string& filename, const Sizef& aspect)
+{
+  SlideBuilder slide_builder(*this, aspect);
+  slide_builder.load_from_file(filename);
 }
 
 /* EOF */

@@ -69,6 +69,7 @@ private:
   void handle_fade(const std::vector<std::string>& args);
   void handle_end(const std::vector<std::string>& args);
   void handle_breakpoint(const std::vector<std::string>& args);
+  void handle_include(const std::vector<std::string>& args);
 
   void add_node();
 

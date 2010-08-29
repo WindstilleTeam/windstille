@@ -134,6 +134,10 @@ SlideBuilder::load_from_stream(std::istream& stream)
         {
           handle_breakpoint(args);
         }
+        else if (args[0] == "include")
+        {
+          handle_include(args);
+        }
         else
         {
           error("unknown tag '" + args[0] + "'");
@@ -145,6 +149,8 @@ SlideBuilder::load_from_stream(std::istream& stream)
     {
       error("not in global scope at end of file");
     }
+
+    std::cout << "Total time: " << m_time << std::endl;
   }
   catch(std::exception& err)
   {
@@ -171,7 +177,10 @@ SlideBuilder::handle_image(const std::vector<std::string>& args)
     m_image = SlideObjectPtr(new SlideObject(Pathname(args[1], Pathname::kSysPath)));
 
     if (m_slideshow.size() != 0)
-      m_image->set_begin(m_time - m_fade);
+    {
+      m_time -= m_fade;
+      m_image->set_begin(m_time);
+    }
 
     m_image->set_fade_in(m_fade);
     m_fade = 0.0f;
@@ -267,6 +276,11 @@ SlideBuilder::handle_zoom(const std::vector<std::string>& args)
     if (args[1] == "fit")
     {
       m_path_node.zoom = std::min(m_screen_size.width / m_image->get_width(),
+                                  m_screen_size.height / m_image->get_height());
+    }
+    else if (args[1] == "fill")
+    {
+      m_path_node.zoom = std::max(m_screen_size.width / m_image->get_width(),
                                   m_screen_size.height / m_image->get_height());
     }
     else if (args[1] == "width")
@@ -391,6 +405,12 @@ void
 SlideBuilder::handle_breakpoint(const std::vector<std::string>& args)
 {
   std::cout << "breakpoint not implemented" << std::endl;
+}
+
+void
+SlideBuilder::handle_include(const std::vector<std::string>& args)
+{
+  
 }
 
 /* EOF */

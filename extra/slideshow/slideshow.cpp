@@ -16,23 +16,38 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "slideshow/slideshow.hpp"
+
 #include <SDL.h>
 
 #include <sstream>
 #include <stdexcept>
 
+#include "util/command_line.hpp"
 #include "display/opengl_window.hpp"
+#include "display/framebuffer.hpp"
 #include "display/surface_manager.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/surface.hpp"
+#include "display/display.hpp"
 #include "display/texture_manager.hpp"
 #include "util/system.hpp"
 
 #include "slideshow/slide_show.hpp"
 #include "slideshow/slide_builder.hpp"
 
+App::App() :
+  m_aspect_ratio(1280, 800),
+  m_window_size(1280, 800),
+  m_fullscreen(false),
+  m_files(),
+  m_output_dir(),
+  m_fps(25.0f)
+{
+}
+
 void
-init_sdl()
+App::init_sdl()
 {
   Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
 
@@ -49,109 +64,218 @@ init_sdl()
   }
 }
 
+void
+App::parse_args(int argc, char** argv)
+{
+  CommandLine argp;
+  argp.add_usage("[OPTIONS] FILE...");
+  argp.add_doc("A script driven slideshow viewer");
+
+  argp.add_group("Options:");
+  argp.add_option('f', "fullscreen", "", "Use fullscreen mode");
+  argp.add_option('g', "geometry", "WxH", "Use given geometry");
+  argp.add_option('a', "aspect", "WxH", "Use given aspect ratio");
+  argp.add_option('b', "breakpoint", "POINT", "Start at POINT");
+  argp.add_option('F', "fps", "FPS", "Generate FPS frames per seconds");
+  argp.add_option('o', "output", "DIR", "Write screenshots to DIR");
+  argp.add_option('h', "help", "", "Print help");
+
+  argp.parse_args(argc, argv);
+
+  while (argp.next())
+  {
+    switch (argp.get_key())
+    {
+      case 'f':
+        m_fullscreen = true;
+        break;
+
+      case 'g':
+        if (sscanf(argp.get_argument().c_str(), "%dx%d", &m_window_size.width, &m_window_size.height) != 2)
+        {
+          throw std::runtime_error("--geometry argument wrong");
+        }
+        break;
+
+      case 'a':
+        if (sscanf(argp.get_argument().c_str(), "%dx%d", &m_aspect_ratio.width, &m_aspect_ratio.height) != 2)
+        {
+          throw std::runtime_error("--aspect argument wrong");
+        }
+        break;
+
+      case 'b':
+        break;
+
+      case 'o':
+        m_output_dir = argp.get_argument();
+        break;
+
+      case 'h':
+        argp.print_help();
+        exit(0);
+        break;
+
+      case CommandLine::REST_ARG:
+        m_files.push_back(argp.get_argument());
+        break;
+
+      default:
+        throw std::runtime_error("unhandled argument");
+    }
+  }
+
+  if (m_files.empty())
+  {
+    argp.print_help();
+    exit(0);
+  }
+}
+
+int
+App::main(int argc, char** argv)
+{
+  parse_args(argc, argv);
+    
+  init_sdl();
+      
+  //std::cout << "OpenGLWindow" << std::endl;
+  OpenGLWindow window(m_window_size, // window size
+                      m_aspect_ratio, // aspect ratio
+                      m_fullscreen, // fullscreen
+                      4); // anti-alias
+
+  TextureManager    texture_manager;
+  SurfaceManager    surface_manager;
+
+  SlideShow slide_show;
+      
+  for(std::vector<std::string>::iterator i = m_files.begin(); i != m_files.end(); ++i)
+  {
+    slide_show.load(*i, m_aspect_ratio);
+  }
+ 
+  Framebuffer framebuffer(GL_TEXTURE_2D, m_window_size.width, m_window_size.height);
+
+  bool loop = true;
+  bool pause = false;
+
+  int frame_number = 0;
+  Uint32 last_ticks = SDL_GetTicks();
+  while(loop && !slide_show.done())
+  {
+    SDL_Event event;
+    while(SDL_PollEvent(&event))
+    {
+      switch(event.type)
+      {
+        case SDL_QUIT:
+          loop = false;
+          break;
+
+        case SDL_KEYDOWN:
+        case SDL_KEYUP:
+          if (event.key.state)
+          {    
+            switch (event.key.keysym.sym)
+            {
+              case SDLK_ESCAPE:
+                loop = false;
+                break;
+
+              case SDLK_F5:
+                slide_show.clear();
+                for(int i = 1; i < argc; ++i)
+                {
+                  slide_show.load(argv[i], m_aspect_ratio);
+                }
+                break;
+
+              case SDLK_F10:
+                Display::save_screenshot(Pathname("/tmp/out.png", Pathname::kSysPath));
+                break;
+
+              case SDLK_LEFT:
+                slide_show.update(-1.0f);
+                break;
+
+              case SDLK_RIGHT:
+                slide_show.update(1.0f);
+                break;
+
+
+              case SDLK_UP:
+                slide_show.update(10.0f);
+                break;
+
+              case SDLK_DOWN:
+                slide_show.update(-10.0f);
+                break;
+
+              case SDLK_SPACE:
+                pause = !pause;
+                break;
+
+              default:
+                break;
+            }
+          }
+      }
+    }
+
+    if (m_output_dir.empty())
+    {
+      // realtime rendering
+      Uint32 ticks = SDL_GetTicks();
+
+      if (!pause)
+        slide_show.update(static_cast<float>(ticks - last_ticks) / 1000.0f);
+      last_ticks = ticks;
+
+      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+      slide_show.draw();
+
+      SDL_GL_SwapBuffers();
+
+      SDL_Delay(10);
+    }
+    else
+    {
+      slide_show.update(1.0f/m_fps);
+
+      // rendering to output dir
+      Display::push_framebuffer(framebuffer);
+      glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      slide_show.draw();
+
+      char out[1024];
+      sprintf(out, "%s/%08d.jpg", m_output_dir.c_str(), frame_number);
+      Display::save_screenshot(Pathname(out, Pathname::kSysPath));
+      std::cout << "Wrote: " << out << std::endl;
+      frame_number += 1;
+      Display::pop_framebuffer();
+    }
+  }
+  return 0;
+}
+
 int main(int argc, char** argv)
 {
-  if (argc < 1)
+  try 
   {
-    std::cerr << "Usage: " << argv[0] << " FILE..." << std::endl;
-    return 0;
+    App app;
+    app.main(argc, argv);
   }
-  else
+  catch(std::exception& err)
   {
-    try 
-    {
-      init_sdl();
-      
-      Size aspect(640, 480);
-      //std::cout << "OpenGLWindow" << std::endl;
-      OpenGLWindow window(Size(640, 480), // window size
-                          aspect, // aspect ratio
-                          false, // fullscreen
-                          4); // anti-alias
-
-      TextureManager    texture_manager;
-      SurfaceManager    surface_manager;
-
-      SlideShow slide_show;
-      
-      { // read from file
-        SlideBuilder slide_builder(slide_show, aspect);
-        for(int i = 1; i < argc; ++i)
-        {
-          //std::cout << "Reading " << argv[i] << std::endl;
-          slide_builder.load_from_file(argv[i]);
-        }
-      }
-
-      // Surface surface1(Pathname(argv[1], Pathname::kSysPath));
-      // Surface surface2(Pathname(argv[2], Pathname::kSysPath));
-  
-      bool loop = true;
-      //float progress = 0.0f;
-
-      Uint32 last_ticks = SDL_GetTicks();
-      while(loop && !slide_show.done())
-      {
-        SDL_Event event;
-        while(SDL_PollEvent(&event))
-        {
-          switch(event.type)
-          {
-            case SDL_QUIT:
-              loop = false;
-              break;
-
-            case SDL_KEYDOWN:
-            case SDL_KEYUP:
-              if (event.key.state)
-              {    
-                switch (event.key.keysym.sym)
-                {
-                  case SDLK_F6:
-                    break;
-
-                  default:
-                    break;
-                }
-              }
-                     
-              return 0;
-          }
-        }
-
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        Uint32 ticks = SDL_GetTicks();
-        slide_show.update(static_cast<float>(ticks - last_ticks) / 1000.0f);
-        last_ticks = ticks;
-        slide_show.draw();
-
-        // surface1.draw(SurfaceDrawingParameters()
-        //               .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-        //               .set_color(Color(1.0f, 1.0f, 1.0f, 1.0f - progress))
-        //               .set_scale(1.0f)
-        //               .set_pos(Vector2f(0.0f, 0.0f)));
-    
-        // surface2.draw(SurfaceDrawingParameters()
-        //               .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-        //               .set_color(Color(1.0f, 1.0f, 1.0f, progress))
-        //               .set_scale(1.0f + progress)
-        //               .set_pos(Vector2f(0.0f - (100.0f * progress),
-        //                                 0.0f)));
-
-        SDL_GL_SwapBuffers();
-
-        SDL_Delay(10);
-      }
-    }
-    catch(std::exception& err)
-    {
-      std::cout << err.what() << std::endl;
-      return 1;
-    }
-    return 0;
+    std::cout << err.what() << std::endl;
+    return 1;
   }
+
+  return 0;
 }
 
 /* EOF */
