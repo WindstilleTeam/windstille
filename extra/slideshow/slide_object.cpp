@@ -64,6 +64,7 @@ SlideObject::draw(float relative_time)
   // zoom needs to grow exponentially to be linear
   float scale = node.zoom;
 
+  // recalc pos so that we are draw the image centered
   pos.x -= m_surface.get_width() /2.0f * scale;
   pos.y -= m_surface.get_height()/2.0f * scale;
 

@@ -2,22 +2,43 @@
 
 fade 1.0
 
+image portrait.jpg
+  zoom 0.1
+  pos center center
+
+  duration 4
+
+  zoom 1.5
+  pos center center
+end
+
+fade 1.0
+
 image landscape.jpg
   zoom 0.1
   pos center center
 
-  duration 20
+  duration 3
 
-  zoom 5.0
-  pos 320 240
-
-  duration 2
-
-  zoom 0.75
-  pos 320 240
+  zoom 3.0
+  pos center center
 end
 
-fade 2.0
+fade 1.0
+
+image landscape.jpg
+  zoom 0.1
+  pos center center
+
+  duration 3
+
+  zoom 3.0
+  pos center center
+end
+
+fade 1.0
+
+breakpoint "Foobar"
 
 image two.jpg
   zoom 1.0

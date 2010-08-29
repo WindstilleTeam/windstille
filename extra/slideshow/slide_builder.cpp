@@ -130,6 +130,10 @@ SlideBuilder::load_from_stream(std::istream& stream)
         {
           handle_end(args);
         }
+        else if (args[0] == "breakpoint")
+        {
+          handle_breakpoint(args);
+        }
         else
         {
           error("unknown tag '" + args[0] + "'");
@@ -189,42 +193,54 @@ SlideBuilder::handle_pos(const std::vector<std::string>& args)
   {
     error("pos already given");
   }
+  else if (!m_node_has_zoom)
+  {
+    error("zoom must come before pos");
+  }
   else
   {
     m_node_has_pos = true;
 
+    float img_w = m_image->get_width()  * m_path_node.zoom;
+    float img_h = m_image->get_height() * m_path_node.zoom;
+
+    float scr_w = m_screen_size.width;
+    float scr_h = m_screen_size.height;
+
     if (args[1] == "left")
     {
-      m_path_node.pos.x = m_screen_size.width/2.0f;
+      m_path_node.pos.x = img_w/2.0f - scr_w/2.0f + scr_w/2.0f;
     }
     else if (args[1] == "right")
     {
-      m_path_node.pos.x = m_image->get_width() - m_screen_size.width/2.0f;
+      m_path_node.pos.x = -img_w/2.0f + scr_w/2.0f + scr_w/2.0f;
     }
     else if (args[1] == "center")
     {
-      m_path_node.pos.x = m_screen_size.width/2.0f;
+      m_path_node.pos.x = scr_w/2;
     }
     else
     {
-      m_path_node.pos.x = boost::lexical_cast<float>(args[1]);
+      float x = boost::lexical_cast<float>(args[1]) * m_path_node.zoom;
+      m_path_node.pos.x = img_w/2.0f - x + scr_w/2.0f;
     }
 
     if (args[2] == "top")
     {
-      m_path_node.pos.y = 0.0f;
+      m_path_node.pos.y = img_h/2.0f - scr_h/2.0f + scr_h/2.0f;
     }
     else if (args[2] == "bottom")
     {
-      m_path_node.pos.y = m_image->get_height() - m_screen_size.height/2.0f;
+      m_path_node.pos.y = -img_h/2.0f + scr_h/2.0f + scr_h/2.0f;
     }
     else if (args[2] == "center")
     {
-      m_path_node.pos.y = m_screen_size.height/2.0f;
+      m_path_node.pos.y = scr_h/2;
     }
     else
     {
-      m_path_node.pos.y = boost::lexical_cast<float>(args[2]);
+      float y = boost::lexical_cast<float>(args[2]) * m_path_node.zoom;
+      m_path_node.pos.y = img_h/2.0f - y + scr_h/2.0f;
     }
 
     std::cout << "  (pos " << m_path_node.pos.x << " " << m_path_node.pos.y << ")" << std::endl;
@@ -261,9 +277,19 @@ SlideBuilder::handle_zoom(const std::vector<std::string>& args)
     {
       m_path_node.zoom = m_screen_size.height / m_image->get_height();
     }
+    else if (args[1] == "original")
+    {
+      m_path_node.zoom = 1.0f;
+    }
     else
     {
       m_path_node.zoom = boost::lexical_cast<float>(args[1]);
+      
+      // 1.0f means "fit", so recalculate values relative to that
+      float fit = std::min(m_screen_size.width / m_image->get_width(),
+                           m_screen_size.height / m_image->get_height());
+      m_path_node.zoom = fit * m_path_node.zoom;
+
       std::cout << "  (zoom " << m_path_node.zoom << ")" << std::endl;
     }
 
@@ -359,6 +385,12 @@ SlideBuilder::handle_end(const std::vector<std::string>& args)
     m_last_image = m_image;
     std::cout << "(end)" << std::endl;
   }
+}
+
+void
+SlideBuilder::handle_breakpoint(const std::vector<std::string>& args)
+{
+  std::cout << "breakpoint not implemented" << std::endl;
 }
 
 /* EOF */
