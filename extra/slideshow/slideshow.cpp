@@ -169,6 +169,7 @@ App::main(int argc, char** argv)
   int frame_number = 0;
   Uint32 last_ticks = SDL_GetTicks();
   float time = 0.0f;
+  bool fast_forward = false;
   while(loop && !slide_show.done(time))
   {
     SDL_Event event;
@@ -180,8 +181,10 @@ App::main(int argc, char** argv)
           loop = false;
           break;
 
-        case SDL_KEYDOWN:
         case SDL_KEYUP:
+          break;
+
+        case SDL_KEYDOWN:
           if (event.key.state)
           {    
             switch (event.key.keysym.sym)
@@ -210,6 +213,10 @@ App::main(int argc, char** argv)
                 time += 1.0f;
                 break;
 
+              case SDLK_f:
+                fast_forward = !fast_forward;
+                std::cout << fast_forward << std::endl;
+                break;
 
               case SDLK_UP:
                 time += 10.0f;
@@ -237,7 +244,14 @@ App::main(int argc, char** argv)
 
       if (!pause)
       {
-        time += static_cast<float>(ticks - last_ticks) / 1000.0f;
+        if (fast_forward)
+        {
+          time += (static_cast<float>(ticks - last_ticks) / 1000.0f) * 25.0f;
+        }
+        else
+        {
+          time += static_cast<float>(ticks - last_ticks) / 1000.0f;
+        }
       }
       last_ticks = ticks;
 
@@ -253,7 +267,7 @@ App::main(int argc, char** argv)
     else
     {
       time += 1.0f/m_fps;
-
+      
       // rendering to output dir
       Display::push_framebuffer(framebuffer);
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
