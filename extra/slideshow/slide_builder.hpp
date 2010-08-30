@@ -21,6 +21,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include "math/size.hpp"
 #include "slideshow/slide_object.hpp"
@@ -157,6 +158,9 @@ private:
   //SlidePathNode m_path_node;
   Node m_node;
 
+  typedef std::map<std::string, std::string> Variables;
+  Variables m_variables;
+
 public:
   SlideBuilder(SlideShow& slideshow, const Sizef& screen_size);
 
@@ -174,6 +178,7 @@ private:
   void handle_end(const std::vector<std::string>& args);
   void handle_breakpoint(const std::vector<std::string>& args);
   void handle_include(const std::vector<std::string>& args);
+  void handle_set(const std::vector<std::string>& args);
 
   void add_node();
 

@@ -124,7 +124,8 @@ SlideBuilder::SlideBuilder(SlideShow& slideshow, const Sizef& screen_size) :
   m_node_has_pos(false),
   m_node_has_zoom(false),
   //m_path_node(),
-  m_node()
+  m_node(),
+  m_variables()
 {
 }
 
@@ -189,9 +190,30 @@ SlideBuilder::load_from_stream(std::istream& stream)
           std::cout << std::endl;
         }
 
+        // handle variable replacement
+        for(std::vector<std::string>::iterator i = args.begin(); i != args.end(); ++i)
+        {
+          if ((*i)[0] == '$')
+          {
+            Variables::iterator it = m_variables.find(i->substr(1));
+            if (it == m_variables.end())
+            {
+              error("unknown variable: " + *i);
+            }
+            else
+            {
+              *i = it->second;
+            }
+          }
+        }
+
         if (args[0] == "image")
         {
           handle_image(args);
+        }
+        else if (args[0] == "set")
+        {
+          handle_set(args);
         }
         else if (args[0] == "zoom")
         {
@@ -520,7 +542,20 @@ SlideBuilder::handle_breakpoint(const std::vector<std::string>& args)
 void
 SlideBuilder::handle_include(const std::vector<std::string>& args)
 {
-  
+  std::cout << "include not implemented" << std::endl;
+}
+
+void
+SlideBuilder::handle_set(const std::vector<std::string>& args)
+{
+  if (args.size() != 3)
+  {
+    error("set requires exactly one argument");
+  }
+  else
+  {
+    m_variables[args[1]] = args[2];
+  }
 }
 
 /* EOF */
