@@ -27,16 +27,14 @@ class SlideShow
 {
 private:
   std::vector<SlideObjectPtr> m_objects;
-  float m_time;
   float m_length;
   
 public:
   SlideShow();
 
-  void update(float delta);
-  void draw();
+  void draw(float time);
 
-  bool done() const;
+  bool done(float time) const;
 
   int size() const;
 

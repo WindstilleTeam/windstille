@@ -30,7 +30,7 @@
 #include "slideshow/slide_show.hpp"
 
 float
-NodePosX::get(const Sizef& scr, const Sizef& img) const
+NodePosX::get(const Sizef& scr, const Sizef& img, float zoom) const
 {
   switch(m_type)
   {
@@ -44,14 +44,17 @@ NodePosX::get(const Sizef& scr, const Sizef& img) const
       return scr.width/2;
 
     case kNodePosXFloat:
-      return m_value;
+      {
+        float x = m_value * zoom;
+        return img.width/2.0f - x + scr.width/2.0f;
+      }
   }
 
   assert(!"never reached");
 }
 
 float
-NodePosY::get(const Sizef& scr, const Sizef& img) const
+NodePosY::get(const Sizef& scr, const Sizef& img, float zoom) const
 {
   switch(m_type)
   {
@@ -65,7 +68,10 @@ NodePosY::get(const Sizef& scr, const Sizef& img) const
       return scr.height/2;
       
     case kNodePosYFloat:
-      return m_value;
+      {
+        float y = m_value * zoom;
+        return img.height/2.0f - y + scr.height/2.0f;
+      }
   }
 
   assert(!"never reached");
@@ -95,10 +101,10 @@ NodeZoom::get(const Sizef& scr, const Sizef& img) const
 
     case kNodeZoomFloat:
       {
-      // 1.0f means "fit", so recalculate values relative to that
-      float fit = std::min(scr.width / img.width,
-                           scr.height / img.height);
-      return fit * m_value;
+        // 1.0f means "fit", so recalculate values relative to that
+        float fit = std::min(scr.width / img.width,
+                             scr.height / img.height);
+        return fit * m_value;
       }
   }
 
@@ -117,7 +123,7 @@ SlideBuilder::SlideBuilder(SlideShow& slideshow, const Sizef& screen_size) :
   m_last_image(),
   m_node_has_pos(false),
   m_node_has_zoom(false),
-  m_path_node(),
+  //m_path_node(),
   m_node()
 {
 }
@@ -249,6 +255,10 @@ SlideBuilder::handle_image(const std::vector<std::string>& args)
   else
   {
     m_state = kImage;
+
+    // reset pan/zoom pos
+    m_node = Node();
+
     std::cout << ";; time = " << m_time << std::endl;
     std::cout << "(image \"" << args[1] << "\")" << std::endl;
     m_image = SlideObjectPtr(new SlideObject(Pathname(args[1], Pathname::kSysPath)));
@@ -279,57 +289,70 @@ SlideBuilder::handle_pos(const std::vector<std::string>& args)
   {
     error("pos already given");
   }
-  else if (!m_node_has_zoom)
-  {
-    error("zoom must come before pos");
-  }
   else
   {
     m_node_has_pos = true;
 
-    float img_w = m_image->get_width()  * m_path_node.zoom;
-    float img_h = m_image->get_height() * m_path_node.zoom;
+    //float img_w = m_image->get_width()  * m_path_node.zoom;
+    //float img_h = m_image->get_height() * m_path_node.zoom;
 
-    float scr_w = m_screen_size.width;
-    float scr_h = m_screen_size.height;
+    //float scr_w = m_screen_size.width;
+    //float scr_h = m_screen_size.height;
 
     if (args[1] == "left")
     {
-      m_path_node.pos.x = img_w/2.0f - scr_w/2.0f + scr_w/2.0f;
+      //m_path_node.pos.x = img_w/2.0f - scr_w/2.0f + scr_w/2.0f;
+      m_node.pos_x = NodePosX(NodePosX::kNodePosXLeft);
     }
     else if (args[1] == "right")
     {
-      m_path_node.pos.x = -img_w/2.0f + scr_w/2.0f + scr_w/2.0f;
+      //m_path_node.pos.x = -img_w/2.0f + scr_w/2.0f + scr_w/2.0f;
+      m_node.pos_x = NodePosX(NodePosX::kNodePosXRight);
     }
     else if (args[1] == "center")
     {
-      m_path_node.pos.x = scr_w/2;
+      //m_path_node.pos.x = scr_w/2;
+      m_node.pos_x = NodePosX(NodePosX::kNodePosXCenter);
+    }
+    else if (args[1] == "prev")
+    {
+      // reuse previous value      
     }
     else
     {
-      float x = boost::lexical_cast<float>(args[1]) * m_path_node.zoom;
-      m_path_node.pos.x = img_w/2.0f - x + scr_w/2.0f;
+      //float x = boost::lexical_cast<float>(args[1]) * m_path_node.zoom;
+      //m_path_node.pos.x = img_w/2.0f - x + scr_w/2.0f;
+
+      m_node.pos_x = NodePosX(NodePosX::kNodePosXFloat, boost::lexical_cast<float>(args[1]));
     }
 
     if (args[2] == "top")
     {
-      m_path_node.pos.y = img_h/2.0f - scr_h/2.0f + scr_h/2.0f;
+      //m_path_node.pos.y = img_h/2.0f - scr_h/2.0f + scr_h/2.0f;
+      m_node.pos_y = NodePosY(NodePosY::kNodePosYTop);
     }
     else if (args[2] == "bottom")
     {
-      m_path_node.pos.y = -img_h/2.0f + scr_h/2.0f + scr_h/2.0f;
+      //m_path_node.pos.y = -img_h/2.0f + scr_h/2.0f + scr_h/2.0f;
+      m_node.pos_y = NodePosY(NodePosY::kNodePosYBottom);
     }
     else if (args[2] == "center")
     {
-      m_path_node.pos.y = scr_h/2;
+      //m_path_node.pos.y = scr_h/2;
+      m_node.pos_y = NodePosY(NodePosY::kNodePosYCenter);
+    }
+    else if (args[2] == "prev")
+    {
+      // reuse previous value
     }
     else
     {
-      float y = boost::lexical_cast<float>(args[2]) * m_path_node.zoom;
-      m_path_node.pos.y = img_h/2.0f - y + scr_h/2.0f;
+      //float y = boost::lexical_cast<float>(args[2]) * m_path_node.zoom;
+      //m_path_node.pos.y = img_h/2.0f - y + scr_h/2.0f;
+      m_node.pos_y = NodePosY(NodePosY::kNodePosYFloat, boost::lexical_cast<float>(args[2]));
     }
 
-    std::cout << "  (pos " << m_path_node.pos.x << " " << m_path_node.pos.y << ")" << std::endl;
+    //std::cout << "  (pos " << m_path_node.pos.x << " " << m_path_node.pos.y << ")" << std::endl;
   }
 }
 
@@ -352,28 +375,38 @@ SlideBuilder::handle_zoom(const std::vector<std::string>& args)
   {
     if (args[1] == "fit")
     {
-      m_path_node.zoom = std::min(m_screen_size.width / m_image->get_width(),
-                                  m_screen_size.height / m_image->get_height());
+      //m_path_node.zoom = std::min(m_screen_size.width / m_image->get_width(),
+      //                            m_screen_size.height / m_image->get_height());
+      m_node.zoom = NodeZoom(NodeZoom::kNodeZoomFit);
     }
     else if (args[1] == "fill")
     {
-      m_path_node.zoom = std::max(m_screen_size.width / m_image->get_width(),
-                                  m_screen_size.height / m_image->get_height());
+      //m_path_node.zoom = std::max(m_screen_size.width / m_image->get_width(),
+      //m_screen_size.height / m_image->get_height());
+      m_node.zoom = NodeZoom(NodeZoom::kNodeZoomFill);
     }
     else if (args[1] == "width")
     {
-      m_path_node.zoom = m_screen_size.width / m_image->get_width();
+      //m_path_node.zoom = m_screen_size.width / m_image->get_width();
+      m_node.zoom = NodeZoom(NodeZoom::kNodeZoomWidth);
     }
     else if (args[1] == "height")
     {
-      m_path_node.zoom = m_screen_size.height / m_image->get_height();
+      //m_path_node.zoom = m_screen_size.height / m_image->get_height();
+      m_node.zoom = NodeZoom(NodeZoom::kNodeZoomHeight);
     }
     else if (args[1] == "original")
     {
-      m_path_node.zoom = 1.0f;
+      //m_path_node.zoom = 1.0f;
+      m_node.zoom = NodeZoom(NodeZoom::kNodeZoomOriginal);
+    }
+    else if (args[1] == "prev")
+    {
+      // reuse previous value      
     }
     else
     {
+      /*
       m_path_node.zoom = boost::lexical_cast<float>(args[1]);
       
       // 1.0f means "fit", so recalculate values relative to that
@@ -382,6 +415,8 @@ SlideBuilder::handle_zoom(const std::vector<std::string>& args)
       m_path_node.zoom = fit * m_path_node.zoom;
 
       std::cout << "  (zoom " << m_path_node.zoom << ")" << std::endl;
+      */
+      m_node.zoom = NodeZoom(NodeZoom::kNodeZoomFloat, boost::lexical_cast<float>(args[1]));
     }
 
     m_node_has_zoom = true;
@@ -413,23 +448,15 @@ SlideBuilder::handle_duration(const std::vector<std::string>& args)
 void
 SlideBuilder::add_node()
 {
-  if (!m_node_has_pos)
-  {
-    error("getting default pos not implemented");
-  }
-
-  if (!m_node_has_zoom)
-  {
-    error("getting default zoom not implemented");
-  }
-
-  Sizef m_image_size(m_image->get_width(),
-                     m_image->get_height());
-
-  m_image->get_path().add_node(m_path_node.pos, m_path_node.zoom);
-  //m_image->get_path().add_node(Vector2f(m_node.pos_x.get(m_screen_size, m_image_size),
-  //                                     m_node.pos_y.get(m_screen_size, m_image_size)),
-  //                           m_node.zoom.get(m_screen_size, m_image_size));
+  Sizef image_size(m_image->get_width(), m_image->get_height());
+  float zoom = m_node.zoom.get(m_screen_size, image_size);
+  Sizef image_size_zoom(zoom * m_image->get_width(), 
+                        zoom * m_image->get_height());
+  
+  //m_image->get_path().add_node(m_path_node.pos, m_path_node.zoom);
+  m_image->get_path().add_node(Vector2f(m_node.pos_x.get(m_screen_size, image_size_zoom, zoom),
+                                        m_node.pos_y.get(m_screen_size, image_size_zoom, zoom)),
+                               zoom);
 
   m_node_has_zoom = false;
   m_node_has_pos  = false;

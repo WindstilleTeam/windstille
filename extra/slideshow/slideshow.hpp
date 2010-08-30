@@ -32,6 +32,7 @@ private:
   std::vector<std::string> m_files;
   std::string m_output_dir;
   float m_fps;
+  bool m_edit_mode;
 
 public:
   App();

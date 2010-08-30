@@ -45,12 +45,12 @@ public:
     m_value(0.0f)
   {}
 
-  NodePosX(NodePosXType type, float value) :
+  NodePosX(NodePosXType type, float value = 0.0f) :
     m_type(type),
     m_value(value)
   {}
 
-  float get(const Sizef& screen_size, const Sizef& image_size) const;
+  float get(const Sizef& screen_size, const Sizef& image_size, float zoom) const;
 
 private:
   NodePosXType m_type;  
@@ -74,12 +74,12 @@ public:
     m_value(0.0f)
   {}
 
-  NodePosY(NodePosYType type, float value) :
+  NodePosY(NodePosYType type, float value = 0.0f) :
     m_type(type),
     m_value(value)
   {}
 
-  float get(const Sizef& screen_size, const Sizef& image_size) const;
+  float get(const Sizef& screen_size, const Sizef& image_size, float zoom) const;
 
 private:
   NodePosYType m_type;
@@ -105,7 +105,7 @@ public:
     m_value(0.0f)
   {}
 
-  NodeZoom(NodeZoomType type, float value = 0.0f) :
+  NodeZoom(NodeZoomType type, float value = 1.0f) :
     m_type(type),
     m_value(value)
   {}
@@ -154,7 +154,7 @@ private:
 
   bool m_node_has_pos;
   bool m_node_has_zoom;
-  SlidePathNode m_path_node;
+  //SlidePathNode m_path_node;
   Node m_node;
 
 public:

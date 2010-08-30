@@ -22,19 +22,12 @@
 
 SlideShow::SlideShow() :
   m_objects(),
-  m_time(0.0f),
   m_length(0.0f)
 {
 }
 
 void
-SlideShow::update(float delta)
-{
-  m_time += delta;
-}
-
-void
-SlideShow::draw()
+SlideShow::draw(float time)
 {
   for(std::vector<SlideObjectPtr>::iterator i = m_objects.begin(); i != m_objects.end(); ++i)
   {
@@ -42,12 +35,12 @@ SlideShow::draw()
 
     //std::cout << obj.get() << ": " << obj->begin() << " " << obj->length() << std::endl;
 
-    if (obj->begin() <= m_time && m_time < (obj->begin() + obj->length()))
+    if (obj->begin() <= time && time < (obj->begin() + obj->length()))
     {
       //std::cout << "draw" << std::endl;
       // active object
-      float relative_time = m_time - obj->begin();
-      //std::cout << m_time << " " << relative_time << std::endl;
+      float relative_time = time - obj->begin();
+      //std::cout << time << " " << relative_time << std::endl;
       obj->draw(relative_time);
     }
   }
@@ -61,9 +54,9 @@ SlideShow::add(SlideObjectPtr object)
 }
 
 bool
-SlideShow::done() const
+SlideShow::done(float time) const
 {
-  return (m_time >= m_length);
+  return (time >= m_length);
 }
 
 int
@@ -76,7 +69,6 @@ void
 SlideShow::clear()
 {
   m_objects.clear();
-  //FIXMEm_time = 0.0f;
   m_length = 0.0f;
 }
 

@@ -42,7 +42,8 @@ App::App() :
   m_fullscreen(false),
   m_files(),
   m_output_dir(),
-  m_fps(25.0f)
+  m_fps(25.0f),
+  m_edit_mode(false)
 {
 }
 
@@ -73,6 +74,7 @@ App::parse_args(int argc, char** argv)
 
   argp.add_group("Options:");
   argp.add_option('f', "fullscreen", "", "Use fullscreen mode");
+  argp.add_option('e', "edit", "", "Edit mode");
   argp.add_option('g', "geometry", "WxH", "Use given geometry");
   argp.add_option('a', "aspect", "WxH", "Use given aspect ratio");
   argp.add_option('b', "breakpoint", "POINT", "Start at POINT");
@@ -88,6 +90,10 @@ App::parse_args(int argc, char** argv)
     {
       case 'f':
         m_fullscreen = true;
+        break;
+
+      case 'e':
+        m_edit_mode = true;
         break;
 
       case 'g':
@@ -162,7 +168,8 @@ App::main(int argc, char** argv)
 
   int frame_number = 0;
   Uint32 last_ticks = SDL_GetTicks();
-  while(loop && !slide_show.done())
+  float time = 0.0f;
+  while(loop && !slide_show.done(time))
   {
     SDL_Event event;
     while(SDL_PollEvent(&event))
@@ -196,20 +203,20 @@ App::main(int argc, char** argv)
                 break;
 
               case SDLK_LEFT:
-                slide_show.update(-1.0f);
+                time -= 1.0f;
                 break;
 
               case SDLK_RIGHT:
-                slide_show.update(1.0f);
+                time += 1.0f;
                 break;
 
 
               case SDLK_UP:
-                slide_show.update(10.0f);
+                time += 10.0f;
                 break;
 
               case SDLK_DOWN:
-                slide_show.update(-10.0f);
+                time -= 10.0f;
                 break;
 
               case SDLK_SPACE:
@@ -229,13 +236,15 @@ App::main(int argc, char** argv)
       Uint32 ticks = SDL_GetTicks();
 
       if (!pause)
-        slide_show.update(static_cast<float>(ticks - last_ticks) / 1000.0f);
+      {
+        time += static_cast<float>(ticks - last_ticks) / 1000.0f;
+      }
       last_ticks = ticks;
 
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-      slide_show.draw();
+      slide_show.draw(time);
 
       SDL_GL_SwapBuffers();
 
@@ -243,13 +252,13 @@ App::main(int argc, char** argv)
     }
     else
     {
-      slide_show.update(1.0f/m_fps);
+      time += 1.0f/m_fps;
 
       // rendering to output dir
       Display::push_framebuffer(framebuffer);
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      slide_show.draw();
+      slide_show.draw(time);
 
       char out[1024];
       sprintf(out, "%s/%08d.jpg", m_output_dir.c_str(), frame_number);
@@ -257,6 +266,11 @@ App::main(int argc, char** argv)
       std::cout << "Wrote: " << out << std::endl;
       frame_number += 1;
       Display::pop_framebuffer();
+    }
+
+    if (m_edit_mode)
+    {
+      std::cout << "Time: " << time << std::endl;
     }
   }
   return 0;
