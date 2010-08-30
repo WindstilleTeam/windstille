@@ -33,6 +33,7 @@ private:
   std::string m_output_dir;
   float m_fps;
   bool m_edit_mode;
+  float m_start_time;
 
 public:
   App();

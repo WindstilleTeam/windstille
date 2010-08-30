@@ -22,6 +22,7 @@
 
 #include <sstream>
 #include <stdexcept>
+#include <boost/lexical_cast.hpp>
 
 #include "util/command_line.hpp"
 #include "display/opengl_window.hpp"
@@ -43,7 +44,8 @@ App::App() :
   m_files(),
   m_output_dir(),
   m_fps(25.0f),
-  m_edit_mode(false)
+  m_edit_mode(false),
+  m_start_time(0.0f)
 {
 }
 
@@ -80,6 +82,7 @@ App::parse_args(int argc, char** argv)
   argp.add_option('b', "breakpoint", "POINT", "Start at POINT");
   argp.add_option('F', "fps", "FPS", "Generate FPS frames per seconds");
   argp.add_option('o', "output", "DIR", "Write screenshots to DIR");
+  argp.add_option('s', "start", "SEC", "Time where the playback should start");
   argp.add_option('h', "help", "", "Print help");
 
   argp.parse_args(argc, argv);
@@ -111,6 +114,10 @@ App::parse_args(int argc, char** argv)
         break;
 
       case 'b':
+        break;
+
+      case 's':
+        m_start_time = boost::lexical_cast<float>(argp.get_argument());
         break;
 
       case 'o':
@@ -168,7 +175,7 @@ App::main(int argc, char** argv)
 
   int frame_number = 0;
   Uint32 last_ticks = SDL_GetTicks();
-  float time = 0.0f;
+  float time = m_start_time;
   bool fast_forward = false;
   while(loop && (!slide_show.done(time) || m_edit_mode))
   {
