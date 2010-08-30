@@ -79,4 +79,49 @@ SlideShow::load(const std::string& filename, const Sizef& aspect)
   slide_builder.load_from_file(filename);
 }
 
+float
+SlideShow::find_next(float time)
+{
+  float best_time = m_length;
+  for(std::vector<SlideObjectPtr>::iterator i = m_objects.begin(); i != m_objects.end(); ++i)
+  {
+    if ((*i)->begin() > time && (*i)->begin() < best_time)
+    {
+      best_time = (*i)->begin();
+    }
+  }
+  return best_time;
+}
+
+float
+SlideShow::find_prev(float time)
+{
+  float best_time = 0.0f;
+  
+  // find the start of the current object
+  for(std::vector<SlideObjectPtr>::iterator i = m_objects.begin(); i != m_objects.end(); ++i)
+  {
+    if ((*i)->begin() < time && (*i)->begin() > best_time)
+    {
+      best_time = (*i)->begin();
+    }
+  }
+
+  if (true /* FIXME: not_last_object */ )
+  {
+    // find the start of the object before the current object
+    time = best_time;
+    best_time = 0.0f;
+    for(std::vector<SlideObjectPtr>::iterator i = m_objects.begin(); i != m_objects.end(); ++i)
+    {
+      if ((*i)->begin() < time && (*i)->begin() > best_time)
+      {
+        best_time = (*i)->begin();
+      }
+    }
+  }
+
+  return best_time;
+}
+
 /* EOF */

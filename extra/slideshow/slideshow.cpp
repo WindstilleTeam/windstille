@@ -170,7 +170,7 @@ App::main(int argc, char** argv)
   Uint32 last_ticks = SDL_GetTicks();
   float time = 0.0f;
   bool fast_forward = false;
-  while(loop && !slide_show.done(time))
+  while(loop && (!slide_show.done(time) || m_edit_mode))
   {
     SDL_Event event;
     while(SDL_PollEvent(&event))
@@ -211,6 +211,22 @@ App::main(int argc, char** argv)
 
               case SDLK_RIGHT:
                 time += 1.0f;
+                break;
+
+              case SDLK_HOME:
+                time = 0.0f;
+                break;
+
+              case SDLK_END:
+                time = slide_show.length();
+                break;
+
+              case SDLK_PAGEUP:
+                time = slide_show.find_prev(time);
+                break;
+
+              case SDLK_PAGEDOWN:
+                time = slide_show.find_next(time);
                 break;
 
               case SDLK_f:

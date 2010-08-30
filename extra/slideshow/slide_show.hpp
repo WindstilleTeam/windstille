@@ -36,12 +36,17 @@ public:
 
   bool done(float time) const;
 
+  float length() const { return m_length; }
   int size() const;
 
   void add(SlideObjectPtr object);
   void clear();
 
   void load(const std::string& filename, const Sizef& aspect);
+
+  /** search for the start time of the next SlideObject, starting from time */
+  float find_next(float time);
+  float find_prev(float time);
 
 private:
   SlideShow(const SlideShow&);
