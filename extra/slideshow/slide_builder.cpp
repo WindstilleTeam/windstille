@@ -29,6 +29,82 @@
 
 #include "slideshow/slide_show.hpp"
 
+float
+NodePosX::get(const Sizef& scr, const Sizef& img) const
+{
+  switch(m_type)
+  {
+    case kNodePosXLeft:
+      return img.width/2.0f - scr.width/2.0f + scr.width/2.0f;
+
+    case kNodePosXRight:
+      return -img.width/2.0f + scr.width/2.0f + scr.width/2.0f;
+
+    case kNodePosXCenter:
+      return scr.width/2;
+
+    case kNodePosXFloat:
+      return m_value;
+  }
+
+  assert(!"never reached");
+}
+
+float
+NodePosY::get(const Sizef& scr, const Sizef& img) const
+{
+  switch(m_type)
+  {
+    case kNodePosYTop:
+      return img.height/2.0f - scr.height/2.0f + scr.height/2.0f;
+      
+    case kNodePosYBottom:
+      return -img.height/2.0f + scr.height/2.0f + scr.height/2.0f;
+
+    case kNodePosYCenter:
+      return scr.height/2;
+      
+    case kNodePosYFloat:
+      return m_value;
+  }
+
+  assert(!"never reached");
+}
+
+float
+NodeZoom::get(const Sizef& scr, const Sizef& img) const
+{
+  switch(m_type)
+  {
+    case kNodeZoomFit:
+      return std::min(scr.width / img.width,
+                      scr.height / img.height);
+
+    case kNodeZoomFill:
+      return std::max(scr.width / img.width,
+                      scr.height / img.height);
+
+    case kNodeZoomWidth:
+      return scr.width / img.width;
+      
+    case kNodeZoomHeight:
+      return scr.height / img.height;
+      
+    case kNodeZoomOriginal:
+      return 1.0f;
+
+    case kNodeZoomFloat:
+      {
+      // 1.0f means "fit", so recalculate values relative to that
+      float fit = std::min(scr.width / img.width,
+                           scr.height / img.height);
+      return fit * m_value;
+      }
+  }
+
+  assert(!"never reached");
+}
+
 SlideBuilder::SlideBuilder(SlideShow& slideshow, const Sizef& screen_size) :
   m_slideshow(slideshow),
   m_screen_size(screen_size),
@@ -41,7 +117,8 @@ SlideBuilder::SlideBuilder(SlideShow& slideshow, const Sizef& screen_size) :
   m_last_image(),
   m_node_has_pos(false),
   m_node_has_zoom(false),
-  m_path_node()
+  m_path_node(),
+  m_node()
 {
 }
 
@@ -346,7 +423,13 @@ SlideBuilder::add_node()
     error("getting default zoom not implemented");
   }
 
+  Sizef m_image_size(m_image->get_width(),
+                     m_image->get_height());
+
   m_image->get_path().add_node(m_path_node.pos, m_path_node.zoom);
+  //m_image->get_path().add_node(Vector2f(m_node.pos_x.get(m_screen_size, m_image_size),
+  //                                     m_node.pos_y.get(m_screen_size, m_image_size)),
+  //                           m_node.zoom.get(m_screen_size, m_image_size));
 
   m_node_has_zoom = false;
   m_node_has_pos  = false;

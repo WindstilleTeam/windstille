@@ -27,6 +27,109 @@
 #include "slideshow/slide_path.hpp"
 
 class SlideShow;
+
+class NodePosX
+{
+public:
+  enum NodePosXType
+  {
+    kNodePosXLeft,
+    kNodePosXRight,
+    kNodePosXCenter,
+    kNodePosXFloat
+  };
+  
+public:
+  NodePosX() :
+    m_type(kNodePosXCenter),
+    m_value(0.0f)
+  {}
+
+  NodePosX(NodePosXType type, float value) :
+    m_type(type),
+    m_value(value)
+  {}
+
+  float get(const Sizef& screen_size, const Sizef& image_size) const;
+
+private:
+  NodePosXType m_type;  
+  float m_value;
+};
+
+class NodePosY
+{
+public:
+  enum NodePosYType
+  {
+    kNodePosYTop,
+    kNodePosYBottom,
+    kNodePosYCenter,
+    kNodePosYFloat
+  };
+  
+public:
+  NodePosY() :
+    m_type(kNodePosYCenter),
+    m_value(0.0f)
+  {}
+
+  NodePosY(NodePosYType type, float value) :
+    m_type(type),
+    m_value(value)
+  {}
+
+  float get(const Sizef& screen_size, const Sizef& image_size) const;
+
+private:
+  NodePosYType m_type;
+  float m_value;
+};
+
+class NodeZoom
+{
+public:
+  enum NodeZoomType
+  {
+    kNodeZoomOriginal,
+    kNodeZoomFit,
+    kNodeZoomFill,
+    kNodeZoomWidth,
+    kNodeZoomHeight,
+    kNodeZoomFloat
+  };
+
+public:
+  NodeZoom() :
+    m_type(kNodeZoomFit),
+    m_value(0.0f)
+  {}
+
+  NodeZoom(NodeZoomType type, float value = 0.0f) :
+    m_type(type),
+    m_value(value)
+  {}
+
+  float get(const Sizef& screen_size, const Sizef& image_size) const;
+
+private:
+  NodeZoomType m_type;
+  float m_value;
+};
+
+class Node
+{
+public:
+  NodeZoom zoom;
+  NodePosX pos_x;
+  NodePosY pos_y;
+
+  Node() :
+    zoom(),
+    pos_x(),
+    pos_y()
+  {}
+};
 
 class SlideBuilder
 {
@@ -52,6 +155,7 @@ private:
   bool m_node_has_pos;
   bool m_node_has_zoom;
   SlidePathNode m_path_node;
+  Node m_node;
 
 public:
   SlideBuilder(SlideShow& slideshow, const Sizef& screen_size);
@@ -77,7 +181,7 @@ private:
   SlideBuilder(const SlideBuilder&);
   SlideBuilder& operator=(const SlideBuilder&);
 };
-
+
 #endif
 
 /* EOF */
