@@ -32,6 +32,7 @@
 float
 NodePosX::get(const Sizef& scr, const Sizef& img, float zoom) const
 {
+  // FIXME: Warning img is already multiplied by zoom
   switch(m_type)
   {
     case kNodePosXLeft:
@@ -43,9 +44,15 @@ NodePosX::get(const Sizef& scr, const Sizef& img, float zoom) const
     case kNodePosXCenter:
       return scr.width/2;
 
-    case kNodePosXFloat:
+    case kNodePosXAbsFloat:
       {
         float x = m_value * zoom;
+        return img.width/2.0f - x + scr.width/2.0f;
+      }
+
+    case kNodePosXRelFloat:
+      {
+        float x = (m_value/100.0f) * img.width;
         return img.width/2.0f - x + scr.width/2.0f;
       }
   }
@@ -56,6 +63,7 @@ NodePosX::get(const Sizef& scr, const Sizef& img, float zoom) const
 float
 NodePosY::get(const Sizef& scr, const Sizef& img, float zoom) const
 {
+  // FIXME: Warning img is already multiplied by zoom
   switch(m_type)
   {
     case kNodePosYTop:
@@ -67,9 +75,15 @@ NodePosY::get(const Sizef& scr, const Sizef& img, float zoom) const
     case kNodePosYCenter:
       return scr.height/2;
       
-    case kNodePosYFloat:
+    case kNodePosYAbsFloat:
       {
         float y = m_value * zoom;
+        return img.height/2.0f - y + scr.height/2.0f;
+      }
+      
+    case kNodePosYRelFloat:
+      {
+        float y = (m_value/100.0f) * img.height;
         return img.height/2.0f - y + scr.height/2.0f;
       }
   }
@@ -135,7 +149,9 @@ SlideBuilder::load_from_file(const std::string& filename)
   std::ifstream in(filename.c_str());
   if (!in)
   {
-    throw std::runtime_error(strerror(errno));
+    std::ostringstream str;
+    str << filename << ": " << strerror(errno);
+    throw std::runtime_error(str.str());
   }
   else
   {
@@ -153,7 +169,7 @@ strip_comment(const std::string& line)
 }
 
 void
-SlideBuilder::error(const std::string& str)
+SlideBuilder::error(const std::string& str) const
 {
   std::ostringstream out;
   out << m_context << ':' << m_line << ": error: " << str;
@@ -171,9 +187,7 @@ SlideBuilder::load_from_stream(std::istream& stream)
       m_line += 1;
       line = strip_comment(line);
 
-      boost::char_separator<char> sep(" \t");
-      boost::tokenizer<boost::char_separator<char> > tokens(line, sep);
-      std::vector<std::string> args(tokens.begin(), tokens.end());
+      std::vector<std::string> args = tokenize(line);
 
       if (args.empty())
       {
@@ -338,14 +352,22 @@ SlideBuilder::handle_pos(const std::vector<std::string>& args)
     }
     else if (args[1] == "prev")
     {
-      // reuse previous value      
+      // reuse previous value
     }
     else
     {
       //float x = boost::lexical_cast<float>(args[1]) * m_path_node.zoom;
       //m_path_node.pos.x = img_w/2.0f - x + scr_w/2.0f;
-
-      m_node.pos_x = NodePosX(NodePosX::kNodePosXFloat, boost::lexical_cast<float>(args[1]));
+      if (args[1][args[1].length()-1] == '%')
+      {
+        m_node.pos_x = NodePosX(NodePosX::kNodePosXRelFloat, 
+                                boost::lexical_cast<float>(args[1].substr(0, args[1].length()-1)));
+      }
+      else
+      {
+        m_node.pos_x = NodePosX(NodePosX::kNodePosXAbsFloat, 
+                                boost::lexical_cast<float>(args[1]));
+      }
     }
 
     if (args[2] == "top")
@@ -371,7 +393,16 @@ SlideBuilder::handle_pos(const std::vector<std::string>& args)
     {
       //float y = boost::lexical_cast<float>(args[2]) * m_path_node.zoom;
       //m_path_node.pos.y = img_h/2.0f - y + scr_h/2.0f;
-      m_node.pos_y = NodePosY(NodePosY::kNodePosYFloat, boost::lexical_cast<float>(args[2]));
+      if (args[2][args[2].length()-1] == '%')
+      {
+        m_node.pos_y = NodePosY(NodePosY::kNodePosYRelFloat, 
+                                boost::lexical_cast<float>(args[2].substr(0, args[2].length()-1)));
+      }
+      else
+      {
+        m_node.pos_y = NodePosY(NodePosY::kNodePosYAbsFloat, 
+                                boost::lexical_cast<float>(args[2]));
+      }
     }
 
     //std::cout << "  (pos " << m_path_node.pos.x << " " << m_path_node.pos.y << ")" << std::endl;
@@ -555,6 +586,64 @@ SlideBuilder::handle_set(const std::vector<std::string>& args)
   else
   {
     m_variables[args[1]] = args[2];
+  }
+}
+
+std::vector<std::string>
+SlideBuilder::tokenize(const std::string& line) const
+{
+  if (true)
+  {
+    boost::char_separator<char> sep(" \t");
+    boost::tokenizer<boost::char_separator<char> > tokens(line, sep);
+    std::vector<std::string> lst(tokens.begin(), tokens.end());
+    return lst;
+  }
+  else
+  {
+    //enum { kWhitespace, kString } state;
+
+    std::vector<std::string> lst;  
+    std::ostringstream str;
+    std::string::const_iterator i = line.begin();
+
+    while(i != line.end())
+    {
+    
+      if (*i == ' ' || *i == '\t')
+      {
+      
+      }
+      else if (*i == '\\')
+      {
+        ++i;
+        if (i != line.end())
+        {
+          switch(*i)
+          {
+            case '\\': str << '\\'; break;
+            case '0': str << '\0'; break;
+            case 'a': str << '\a'; break;
+            case 'b': str << '\b'; break;
+            case 't': str << '\t'; break;
+            case 'r': str << '\r'; break;
+            case 'n': str << '\n'; break;
+            default: str << '\\' << *i; break;
+          }
+        }
+        else
+        {
+          error("couldn't tokenize line");
+        }
+      }
+      else
+      {
+      }
+
+      ++i;
+    }
+  
+    return lst;
   }
 }
 

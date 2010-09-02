@@ -37,7 +37,8 @@ public:
     kNodePosXLeft,
     kNodePosXRight,
     kNodePosXCenter,
-    kNodePosXFloat
+    kNodePosXAbsFloat,
+    kNodePosXRelFloat
   };
   
 public:
@@ -66,7 +67,8 @@ public:
     kNodePosYTop,
     kNodePosYBottom,
     kNodePosYCenter,
-    kNodePosYFloat
+    kNodePosYAbsFloat,
+    kNodePosYRelFloat
   };
   
 public:
@@ -168,7 +170,7 @@ public:
   void load_from_stream(std::istream& stream);
 
 private:
-  void error(const std::string& str);
+  void error(const std::string& str) const;
 
   void handle_image(const std::vector<std::string>& args);
   void handle_pos(const std::vector<std::string>& args);
@@ -181,6 +183,8 @@ private:
   void handle_set(const std::vector<std::string>& args);
 
   void add_node();
+
+  std::vector<std::string> tokenize(const std::string& str) const;
 
 private:
   SlideBuilder(const SlideBuilder&);
