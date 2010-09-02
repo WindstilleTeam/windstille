@@ -18,6 +18,8 @@
 
 #include "slideshow/slide_show.hpp"
 
+#include "display/surface_manager.hpp"
+#include "display/texture_manager.hpp"
 #include "slideshow/slide_builder.hpp"
 
 SlideShow::SlideShow() :
@@ -27,8 +29,10 @@ SlideShow::SlideShow() :
 }
 
 void
-SlideShow::draw(float time)
+SlideShow::draw(float time, bool verbose)
 {
+  bool cleanup = false;
+
   for(std::vector<SlideObjectPtr>::iterator i = m_objects.begin(); i != m_objects.end(); ++i)
   {
     SlideObjectPtr& obj = *i;
@@ -41,8 +45,26 @@ SlideShow::draw(float time)
       // active object
       float relative_time = time - obj->begin();
       //std::cout << time << " " << relative_time << std::endl;
+      if (verbose)
+      {
+        std::cout << obj->get_filename().get_sys_path() << std::endl;
+      }
+
       obj->draw(relative_time);
     }
+    else if (time < obj->begin()-60.0f || obj->end()+60.0f < time)
+    { // unload anything that 60 seconds away from the current time pos
+      if (obj->unload())
+      {
+        cleanup = true;
+      }
+    }
+  }
+
+  if (cleanup)
+  {
+    SurfaceManager::current()->cleanup();
+    TextureManager::current()->cleanup();
   }
 }
 

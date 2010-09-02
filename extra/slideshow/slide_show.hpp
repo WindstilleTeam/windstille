@@ -32,7 +32,7 @@ private:
 public:
   SlideShow();
 
-  void draw(float time);
+  void draw(float time, bool verbose);
 
   bool done(float time) const;
 

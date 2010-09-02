@@ -34,6 +34,7 @@ private:
   float m_fps;
   bool m_edit_mode;
   float m_start_time;
+  int m_start_frame;
 
 public:
   App();

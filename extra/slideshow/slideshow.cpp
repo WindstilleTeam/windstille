@@ -45,7 +45,8 @@ App::App() :
   m_output_dir(),
   m_fps(25.0f),
   m_edit_mode(false),
-  m_start_time(0.0f)
+  m_start_time(0.0f),
+  m_start_frame(-1)
 {
 }
 
@@ -83,6 +84,7 @@ App::parse_args(int argc, char** argv)
   argp.add_option('F', "fps", "FPS", "Generate FPS frames per seconds");
   argp.add_option('o', "output", "DIR", "Write screenshots to DIR");
   argp.add_option('s', "start", "SEC", "Time where the playback should start");
+  argp.add_option('S', "frame", "FRAME", "Frame at which offline rendering should start");
   argp.add_option('h', "help", "", "Print help");
 
   argp.parse_args(argc, argv);
@@ -93,6 +95,10 @@ App::parse_args(int argc, char** argv)
     {
       case 'f':
         m_fullscreen = true;
+        break;
+
+      case 'S':
+        m_start_frame = boost::lexical_cast<int>(argp.get_argument());
         break;
 
       case 'e':
@@ -173,10 +179,19 @@ App::main(int argc, char** argv)
   bool loop = true;
   bool pause = false;
 
+  int last_percent_complete = -1;
+
   int frame_number = 0;
   Uint32 last_ticks = SDL_GetTicks();
   float time = m_start_time;
   bool fast_forward = false;
+
+  if (m_start_frame != -1)
+  {
+    frame_number = m_start_frame;
+    time = static_cast<float>(frame_number) / m_fps;
+  }
+
   while(loop && (!slide_show.done(time) || m_edit_mode))
   {
     SDL_Event event;
@@ -281,7 +296,7 @@ App::main(int argc, char** argv)
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-      slide_show.draw(time);
+      slide_show.draw(time, m_edit_mode);
 
       SDL_GL_SwapBuffers();
 
@@ -295,7 +310,7 @@ App::main(int argc, char** argv)
       Display::push_framebuffer(framebuffer);
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      slide_show.draw(time);
+      slide_show.draw(time, m_edit_mode);
       //SDL_GL_SwapBuffers();
 
       char out[1024];
@@ -304,6 +319,13 @@ App::main(int argc, char** argv)
       //std::cout << "Wrote: " << out << std::endl;
       frame_number += 1;
       Display::pop_framebuffer();
+
+      int percent = static_cast<int>(time / slide_show.length() * 100.0f);
+      if (percent != last_percent_complete)
+      {
+        std::cout << "Completed: " << percent << "% - " << frame_number << std::endl;
+        last_percent_complete = percent;
+      }
     }
 
     if (m_edit_mode)
