@@ -28,6 +28,8 @@
 class SlideObject
 {
 private:
+  Pathname m_filename;
+  Sizef m_size;
   Surface m_surface;
   float m_begin;
   SlidePath m_path;
@@ -42,6 +44,8 @@ public:
 
   float length() const;
   float begin() const;
+  float end() const;
+
   void set_begin(float beg);
   void set_fade_in(float f);
   void set_fade_out(float f);
@@ -50,6 +54,10 @@ public:
 
   float get_width() const;
   float get_height() const;
+
+  Pathname get_filename() const;
+
+  bool unload();
 
 private:
   SlideObject(const SlideObject&);

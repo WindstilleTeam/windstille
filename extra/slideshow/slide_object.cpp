@@ -20,15 +20,19 @@
 
 #include <math.h>
 
+#include "plugins/jpeg.hpp"
 #include "display/surface_drawing_parameters.hpp"
 
 SlideObject::SlideObject(const Pathname& filename) :
-  m_surface(filename),
+  m_filename(filename),
+  m_size(0.0f, 0.0f),
+  m_surface(),
   m_begin(0.0f),
   m_path(),
   m_fade_in_time(0.0f),
   m_fade_out_time(0.0f)
 {  
+  m_size = JPEG::get_size(filename.get_sys_path());
 }
 
 void
@@ -46,6 +50,11 @@ SlideObject::set_fade_out(float f)
 void
 SlideObject::draw(float relative_time)
 {
+  if (!m_surface)
+  {
+    m_surface = Surface(m_filename);
+  }
+
   SlidePathNode node = m_path.get(relative_time);
 
   // FIXME: hardcoded fade hack
@@ -87,6 +96,12 @@ SlideObject::begin() const
   return m_begin;
 }
 
+float
+SlideObject::end() const
+{
+  return begin() + length();
+}
+
 void
 SlideObject::set_begin(float beg)
 {
@@ -96,13 +111,34 @@ SlideObject::set_begin(float beg)
 float
 SlideObject::get_width() const
 {
-  return m_surface.get_width();
+  return m_size.width;
 }
 
 float
 SlideObject::get_height() const
 {
-  return m_surface.get_height();
+  return m_size.height;
+}
+
+Pathname 
+SlideObject::get_filename() const
+{
+  return m_filename;
+}
+
+bool
+SlideObject::unload()
+{
+  if (m_surface)
+  {
+    m_surface = Surface();
+    std::cout << "Unloading: " << m_filename.get_sys_path() << std::endl;
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 /* EOF */
