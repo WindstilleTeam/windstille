@@ -79,7 +79,7 @@ OpenGLWindow::OpenGLWindow(const Size& size, const Size& aspect, bool fullscreen
     }
     else
     {
-      std::cout << "glewInit() successfull" << std::endl;
+      //std::cout << "glewInit() successfull" << std::endl;
 
       glViewport(0, 0, m_impl->m_window->w, m_impl->m_window->h);
       glMatrixMode(GL_PROJECTION);
