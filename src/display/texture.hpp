@@ -83,6 +83,8 @@ public:
 
   SoftwareSurface get_software_surface() const;
 
+  int use_count() const;
+
   /** true if the Texture is valid and usable, false if not */
   operator bool() const;
 

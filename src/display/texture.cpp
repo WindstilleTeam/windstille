@@ -292,5 +292,11 @@ Texture::get_target() const
 {
   return impl->target;
 }
+
+int
+Texture::use_count() const
+{
+  return impl.use_count();
+}
 
 /* EOF */

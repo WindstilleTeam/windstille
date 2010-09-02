@@ -48,6 +48,8 @@ public:
    */
   Texture get(const Pathname& filename);
 
+  void cleanup();
+
 private:
   typedef std::map<Pathname, Texture> Textures;
   Textures textures;
