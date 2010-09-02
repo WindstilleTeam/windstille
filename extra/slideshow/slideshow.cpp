@@ -202,9 +202,9 @@ App::main(int argc, char** argv)
 
               case SDLK_F5:
                 slide_show.clear();
-                for(int i = 1; i < argc; ++i)
+                for(size_t i = 0; i < m_files.size(); ++i)
                 {
-                  slide_show.load(argv[i], m_aspect_ratio);
+                  slide_show.load(m_files[i], m_aspect_ratio);
                 }
                 break;
 
@@ -296,11 +296,12 @@ App::main(int argc, char** argv)
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       slide_show.draw(time);
+      //SDL_GL_SwapBuffers();
 
       char out[1024];
       sprintf(out, "%s/%08d.jpg", m_output_dir.c_str(), frame_number);
       Display::save_screenshot(Pathname(out, Pathname::kSysPath));
-      std::cout << "Wrote: " << out << std::endl;
+      //std::cout << "Wrote: " << out << std::endl;
       frame_number += 1;
       Display::pop_framebuffer();
     }
