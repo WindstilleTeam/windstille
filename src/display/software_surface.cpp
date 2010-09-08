@@ -73,6 +73,10 @@ SoftwareSurface::SoftwareSurface(int width, int height, Format format) :
 
 SoftwareSurface::~SoftwareSurface()
 {
+  if (impl)
+  {
+    SDL_FreeSurface(impl->surface);
+  }
 }
 
 int
