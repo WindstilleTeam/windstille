@@ -25,6 +25,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "util/command_line.hpp"
+#include "display/assert_gl.hpp"
 #include "display/opengl_window.hpp"
 #include "display/framebuffer.hpp"
 #include "display/surface_manager.hpp"
@@ -174,6 +175,7 @@ App::main(int argc, char** argv)
     slide_show.load(*i, m_aspect_ratio);
   }
  
+  Framebuffer framebuffer_multisample(GL_TEXTURE_2D, m_window_size.width, m_window_size.height, 8);
   Framebuffer framebuffer(GL_TEXTURE_2D, m_window_size.width, m_window_size.height);
 
   bool loop = true;
@@ -207,7 +209,7 @@ App::main(int argc, char** argv)
           break;
 
         case SDL_KEYDOWN:
-          if (event.key.state)
+          if (event.key.state && m_output_dir.empty()) // ignore keypresses for offline rendereing
           {    
             switch (event.key.keysym.sym)
             {
@@ -307,12 +309,27 @@ App::main(int argc, char** argv)
       time += 1.0f/m_fps;
       
       // rendering to output dir
-      Display::push_framebuffer(framebuffer);
+      Display::push_framebuffer(framebuffer_multisample);
+      assert_gl("aeuthnoethuth");
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      assert_gl("clear");
       slide_show.draw(time, m_edit_mode);
+      assert_gl("draw");
       //SDL_GL_SwapBuffers();
+      Display::pop_framebuffer();
 
+      glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, framebuffer_multisample.get_handle());
+      glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, framebuffer.get_handle());
+
+      glBlitFramebufferEXT(0, 0, framebuffer_multisample.get_width(), framebuffer_multisample.get_height(), 
+                           0, 0, framebuffer.get_width(), framebuffer.get_height(),
+                           GL_COLOR_BUFFER_BIT, GL_LINEAR /*NEAREST*/);
+
+      glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, 0);
+      glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
+
+      Display::push_framebuffer(framebuffer);
       char out[1024];
       sprintf(out, "%s/%08d.jpg", m_output_dir.c_str(), frame_number);
       Display::save_screenshot(Pathname(out, Pathname::kSysPath));
