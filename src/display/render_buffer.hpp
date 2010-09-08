@@ -31,7 +31,7 @@ public:
    * @param height Height of the Renderbuffer
    * @param format GL_DEPTH_COMPONENT24, GL_STENCIL_INDEX, ...
    */
-  RenderBuffer(GLenum format, int width, int height);
+  RenderBuffer(GLenum format, int width, int height, int multisample = 0);
   
   GLuint get_handle() const;
 

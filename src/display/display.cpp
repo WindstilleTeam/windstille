@@ -32,6 +32,7 @@
 #include "math/quad.hpp"
 #include "math/line.hpp"
 #include "display/opengl_state.hpp"
+#include "display/assert_gl.hpp"
 
 Size              Display::aspect_size;
 std::vector<Rect> Display::cliprects;
@@ -480,6 +481,7 @@ Display::save_screenshot(const Pathname& filename)
   boost::scoped_array<GLbyte> pixels(new GLbyte[len]);
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
   glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, pixels.get());
+  assert_gl("Display::save_screenshot()");
 
   if (false)
   { // PPM saving
@@ -527,7 +529,7 @@ Display::save_screenshot(const Pathname& filename)
       m_cinfo.in_color_space   = JCS_RGB;   /* colorspace of input image */
 
       jpeg_set_defaults(&m_cinfo);
-      //jpeg_set_quality(&m_cinfo, quality, TRUE /* limit to baseline-JPEG values */);
+      //jpeg_set_quality(&m_cinfo, 100, TRUE /* limit to baseline-JPEG values */);
  
       jpeg_start_compress(&m_cinfo, TRUE);
 
@@ -551,7 +553,7 @@ Display::save_screenshot(const Pathname& filename)
       fclose(m_out);
     }
   }
-  else 
+  else if (false)
   { // PNG saving
     FILE* fp = fopen(filename.get_sys_path().c_str(), "w");
 

@@ -27,7 +27,7 @@ class Framebuffer
 {
 public:
   Framebuffer();
-  Framebuffer(GLenum target, int width, int height);
+  Framebuffer(GLenum target, int width, int height, int multisample = 0);
   ~Framebuffer();
   
   int get_width()  const;

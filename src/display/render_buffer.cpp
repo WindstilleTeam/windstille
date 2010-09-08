@@ -17,6 +17,7 @@
 */
 
 #include <GL/glew.h>
+#include <iostream>
 
 #include "display/render_buffer.hpp"
 
@@ -25,14 +26,23 @@ class RenderBufferImpl
 public:
   GLuint handle;
 
-  RenderBufferImpl(GLenum format, int width, int height)
-    : handle(0)
+  RenderBufferImpl(GLenum format, int width, int height, int multisample) :
+    handle(0)
   {
     glGenRenderbuffersEXT(1, &handle);
 
     glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, handle);
-    glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, format, width, height);
-    
+
+    if (multisample)
+    { 
+      // antialiasing
+      std::cout << "Antialised Renderbuffer" << std::endl;
+      glRenderbufferStorageMultisampleEXT(GL_RENDERBUFFER_EXT, multisample, format, width, height);
+    }
+    else
+    {
+      glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, format, width, height);
+    }      
     glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
   }
 
@@ -42,8 +52,8 @@ public:
   }
 };
 
-RenderBuffer::RenderBuffer(GLenum format, int width, int height) :
-  impl(new RenderBufferImpl(format, width, height))
+RenderBuffer::RenderBuffer(GLenum format, int width, int height, int multisample) :
+  impl(new RenderBufferImpl(format, width, height, multisample))
 {
 }
 
