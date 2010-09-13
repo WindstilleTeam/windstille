@@ -20,7 +20,7 @@
 
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
-#include "slideshow/slide_builder.hpp"
+#include "slideshow/slide_parser.hpp"
 
 SlideShow::SlideShow() :
   m_objects(),
@@ -97,8 +97,8 @@ SlideShow::clear()
 void
 SlideShow::load(const std::string& filename, const Sizef& aspect)
 {
-  SlideBuilder slide_builder(*this, aspect);
-  slide_builder.load_from_file(filename);
+  SlideParser slide_parser(*this, aspect);
+  slide_parser.load_from_file(filename);
 }
 
 float

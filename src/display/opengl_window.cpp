@@ -40,7 +40,8 @@ public:
   {}
 };
 
-OpenGLWindow::OpenGLWindow(const Size& size, const Size& aspect, bool fullscreen, int anti_aliasing) :
+OpenGLWindow::OpenGLWindow(const std::string& title, 
+                           const Size& size, const Size& aspect, bool fullscreen, int anti_aliasing) :
   m_impl(new OpenGLWindowImpl)
 {
   m_impl->m_size = size;
@@ -58,7 +59,7 @@ OpenGLWindow::OpenGLWindow(const Size& size, const Size& aspect, bool fullscreen
     SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, anti_aliasing ); // 0, 2, or 4 for number of samples
   }
   
-  SDL_WM_SetCaption("Windstille", "Windstille");
+  SDL_WM_SetCaption(title.c_str(), title.c_str());
   SDL_WM_SetIcon(IMG_Load(Pathname("icon.png").get_sys_path().c_str()), NULL);
 
   m_impl->m_window = SDL_SetVideoMode(size.width, size.height,

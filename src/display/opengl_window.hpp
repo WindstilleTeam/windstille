@@ -29,7 +29,8 @@ class OpenGLWindowImpl;
 class OpenGLWindow : public Currenton<OpenGLWindow>
 {
 public:
-  OpenGLWindow(const Size& size, const Size& aspect, 
+  OpenGLWindow(const std::string& title, 
+               const Size& size, const Size& aspect, 
                bool fullscreen = false, int anti_aliasing = 0);
   ~OpenGLWindow();
 

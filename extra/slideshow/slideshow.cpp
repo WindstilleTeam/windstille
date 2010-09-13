@@ -39,8 +39,8 @@
 #include "slideshow/slide_builder.hpp"
 
 App::App() :
-  m_aspect_ratio(1280, 800),
-  m_window_size(1280, 800),
+  m_aspect_ratio(768, 576),
+  m_window_size(768, 576),
   m_fullscreen(false),
   m_files(),
   m_output_dir(),
@@ -106,6 +106,10 @@ App::parse_args(int argc, char** argv)
         m_edit_mode = true;
         break;
 
+      case 'F':
+        m_fps = boost::lexical_cast<float>(argp.get_argument());
+        break;
+
       case 'g':
         if (sscanf(argp.get_argument().c_str(), "%dx%d", &m_window_size.width, &m_window_size.height) != 2)
         {
@@ -141,7 +145,7 @@ App::parse_args(int argc, char** argv)
         break;
 
       default:
-        throw std::runtime_error("unhandled argument");
+        throw std::runtime_error("unhandled argument: " + argp.get_key());
     }
   }
 
@@ -160,7 +164,8 @@ App::main(int argc, char** argv)
   init_sdl();
       
   //std::cout << "OpenGLWindow" << std::endl;
-  OpenGLWindow window(m_window_size, // window size
+  OpenGLWindow window("Slideshow",
+                      m_window_size, // window size
                       m_aspect_ratio, // aspect ratio
                       m_fullscreen, // fullscreen
                       4); // anti-alias
@@ -253,6 +258,10 @@ App::main(int argc, char** argv)
                 time = slide_show.find_next(time);
                 break;
 
+              case SDLK_e:
+                m_edit_mode = !m_edit_mode;
+                break;
+
               case SDLK_f:
                 fast_forward = !fast_forward;
                 std::cout << fast_forward << std::endl;
@@ -302,7 +311,7 @@ App::main(int argc, char** argv)
 
       SDL_GL_SwapBuffers();
 
-      SDL_Delay(10);
+      SDL_Delay(30);
     }
     else
     {
@@ -350,6 +359,16 @@ App::main(int argc, char** argv)
       std::cout << "Time: " << time << std::endl;
     }
   }
+
+  
+  if (!loop)
+    std::cout << "Playback interrupted: " << std::endl;
+  else
+    std::cout << "Playback finished: " << std::endl;
+
+  std::cout << "  frame: " << frame_number << std::endl;
+  std::cout << "  time:  " << time << std::endl;
+
   return 0;
 }
 

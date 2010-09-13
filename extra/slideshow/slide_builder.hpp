@@ -28,163 +28,13 @@
 #include "slideshow/slide_path.hpp"
 
 class SlideShow;
-
-class NodePosX
-{
-public:
-  enum NodePosXType
-  {
-    kNodePosXLeft,
-    kNodePosXRight,
-    kNodePosXCenter,
-    kNodePosXAbsFloat,
-    kNodePosXRelFloat
-  };
-  
-public:
-  NodePosX() :
-    m_type(kNodePosXCenter),
-    m_value(0.0f)
-  {}
-
-  NodePosX(NodePosXType type, float value = 0.0f) :
-    m_type(type),
-    m_value(value)
-  {}
-
-  float get(const Sizef& screen_size, const Sizef& image_size, float zoom) const;
-
-private:
-  NodePosXType m_type;  
-  float m_value;
-};
-
-class NodePosY
-{
-public:
-  enum NodePosYType
-  {
-    kNodePosYTop,
-    kNodePosYBottom,
-    kNodePosYCenter,
-    kNodePosYAbsFloat,
-    kNodePosYRelFloat
-  };
-  
-public:
-  NodePosY() :
-    m_type(kNodePosYCenter),
-    m_value(0.0f)
-  {}
-
-  NodePosY(NodePosYType type, float value = 0.0f) :
-    m_type(type),
-    m_value(value)
-  {}
-
-  float get(const Sizef& screen_size, const Sizef& image_size, float zoom) const;
-
-private:
-  NodePosYType m_type;
-  float m_value;
-};
-
-class NodeZoom
-{
-public:
-  enum NodeZoomType
-  {
-    kNodeZoomOriginal,
-    kNodeZoomFit,
-    kNodeZoomFill,
-    kNodeZoomWidth,
-    kNodeZoomHeight,
-    kNodeZoomFloat
-  };
-
-public:
-  NodeZoom() :
-    m_type(kNodeZoomFit),
-    m_value(0.0f)
-  {}
-
-  NodeZoom(NodeZoomType type, float value = 1.0f) :
-    m_type(type),
-    m_value(value)
-  {}
-
-  float get(const Sizef& screen_size, const Sizef& image_size) const;
-
-private:
-  NodeZoomType m_type;
-  float m_value;
-};
-
-class Node
-{
-public:
-  NodeZoom zoom;
-  NodePosX pos_x;
-  NodePosY pos_y;
-
-  Node() :
-    zoom(),
-    pos_x(),
-    pos_y()
-  {}
-};
 
 class SlideBuilder
 {
 private:
-  SlideShow& m_slideshow;
-  Sizef m_screen_size;
-
-  std::string m_context;
-  int m_line;
-
-  enum State {
-    kGlobal,
-    kImage
-  };
-
-  float m_fade;
-
-  State m_state;
-  float m_time;
-  SlideObjectPtr m_image;
-  SlideObjectPtr m_last_image;
-
-  bool m_node_has_pos;
-  bool m_node_has_zoom;
-  //SlidePathNode m_path_node;
-  Node m_node;
-
-  typedef std::map<std::string, std::string> Variables;
-  Variables m_variables;
 
 public:
-  SlideBuilder(SlideShow& slideshow, const Sizef& screen_size);
-
-  void load_from_file(const std::string& filename);
-  void load_from_stream(std::istream& stream);
-
-private:
-  void error(const std::string& str) const;
-
-  void handle_image(const std::vector<std::string>& args);
-  void handle_pos(const std::vector<std::string>& args);
-  void handle_zoom(const std::vector<std::string>& args);
-  void handle_duration(const std::vector<std::string>& args);
-  void handle_fade(const std::vector<std::string>& args);
-  void handle_end(const std::vector<std::string>& args);
-  void handle_breakpoint(const std::vector<std::string>& args);
-  void handle_include(const std::vector<std::string>& args);
-  void handle_set(const std::vector<std::string>& args);
-
-  void add_node();
-
-  std::vector<std::string> tokenize(const std::string& str) const;
+  SlideBuilder();
 
 private:
   SlideBuilder(const SlideBuilder&);
