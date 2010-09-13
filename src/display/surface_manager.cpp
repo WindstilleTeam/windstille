@@ -151,12 +151,12 @@ SurfaceManager::create_texture(const SoftwareSurface& image,
 void
 SurfaceManager::cleanup()
 {
-  std::cout << "SurfaceManager: size: " << surfaces.size() << std::endl;
+  //std::cout << "SurfaceManager: size: " << surfaces.size() << std::endl;
   for(Surfaces::iterator i = surfaces.begin(); i != surfaces.end(); ++i)
   {
     if (i->second.use_count() == 1)
     {
-      std::cout << "SurfaceManager: erasing a surface" << std::endl;
+      //std::cout << "SurfaceManager: erasing a surface" << std::endl;
       surfaces.erase(i);
     }
   }

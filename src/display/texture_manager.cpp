@@ -68,13 +68,13 @@ TextureManager::get(const Pathname& filename)
 void
 TextureManager::cleanup()
 {
-  std::cout << "TextureManager: size: " << textures.size() << std::endl;
+  //std::cout << "TextureManager: size: " << textures.size() << std::endl;
   for(Textures::iterator i = textures.begin(); i != textures.end(); ++i)
   {
     std::cout << "TextureManager: use count: " << i->second.use_count() << std::endl;
     if (i->second.use_count() == 1)
     {
-      std::cout << "TextureManager: erasing a texture" << std::endl;
+      //std::cout << "TextureManager: erasing a texture" << std::endl;
       textures.erase(i);
     }
   }
