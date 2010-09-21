@@ -21,29 +21,29 @@
 
 #include <boost/shared_ptr.hpp>
 
-class RenderBufferImpl;
-class RenderBuffer;
+class Renderbuffer;
+typedef boost::shared_ptr<Renderbuffer> RenderbufferPtr;
 
-typedef boost::shared_ptr<RenderBufferImpl> RenderBufferPtr;
-
-class RenderBuffer
+class Renderbuffer
 {
 public:
-  RenderBuffer()  :
-    impl()
-  {}
+  static RenderbufferPtr create(GLenum format, int width, int height, int multisample = 0);
 
+public:
+  ~Renderbuffer();
+  
+  GLuint get_handle() const;
+
+private:
   /**
    * @param width  Width of the Renderbuffer
    * @param height Height of the Renderbuffer
    * @param format GL_DEPTH_COMPONENT24, GL_STENCIL_INDEX, ...
    */
-  RenderBuffer(GLenum format, int width, int height, int multisample = 0);
-  
-  GLuint get_handle() const;
+  Renderbuffer(GLenum format, int width, int height, int multisample = 0);
 
 private:
-  boost::shared_ptr<RenderBufferImpl> impl;
+  GLuint m_handle;
 };
 
 #endif

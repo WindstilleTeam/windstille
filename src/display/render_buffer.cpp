@@ -21,46 +21,41 @@
 
 #include "display/render_buffer.hpp"
 
-class RenderBufferImpl
+RenderbufferPtr
+Renderbuffer::create(GLenum format, int width, int height, int multisample)
 {
-public:
-  GLuint handle;
+  return RenderbufferPtr(new Renderbuffer(format, width, height, multisample));
+}
 
-  RenderBufferImpl(GLenum format, int width, int height, int multisample) :
-    handle(0)
-  {
-    glGenRenderbuffersEXT(1, &handle);
-
-    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, handle);
-
-    if (multisample)
-    { 
-      // antialiasing
-      std::cout << "Antialised Renderbuffer" << std::endl;
-      glRenderbufferStorageMultisampleEXT(GL_RENDERBUFFER_EXT, multisample, format, width, height);
-    }
-    else
-    {
-      glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, format, width, height);
-    }      
-    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
-  }
-
-  ~RenderBufferImpl()
-  {
-    glDeleteRenderbuffersEXT(1, &handle);
-  }
-};
-
-RenderBuffer::RenderBuffer(GLenum format, int width, int height, int multisample) :
-  impl(new RenderBufferImpl(format, width, height, multisample))
+Renderbuffer::Renderbuffer(GLenum format, int width, int height, int multisample) :
+  m_handle(0)
 {
+  glGenRenderbuffersEXT(1, &m_handle);
+
+  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, m_handle);
+
+  if (multisample)
+  { 
+    // antialiasing
+    std::cout << "Antialised Renderbuffer" << std::endl;
+    glRenderbufferStorageMultisampleEXT(GL_RENDERBUFFER_EXT, multisample, format, width, height);
+  }
+  else
+  {
+    glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, format, width, height);
+  }      
+  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0); 
+}
+
+Renderbuffer::~Renderbuffer()
+{
+  glDeleteRenderbuffersEXT(1, &m_handle);
 }
 
 GLuint
-RenderBuffer::get_handle() const
+Renderbuffer::get_handle() const
 {
-  return impl->handle;
+  return m_handle;
 }
 
 /* EOF */

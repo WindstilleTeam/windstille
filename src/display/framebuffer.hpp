@@ -53,8 +53,8 @@ private:
   Size   m_size;
   
   Texture m_texture;
-  RenderBuffer m_color_buffer;
-  RenderBuffer m_depth_stencil_buffer;
+  RenderbufferPtr m_color_buffer;
+  RenderbufferPtr m_depth_stencil_buffer;
 };
 
 #endif
