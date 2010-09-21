@@ -25,8 +25,8 @@
 class FramebufferCompositorImpl : public CompositorImpl
 {
 private:
-  Framebuffer m_screen;
-  Framebuffer m_lightmap;   
+  FramebufferPtr m_screen;
+  FramebufferPtr m_lightmap;   
 
 public:
   FramebufferCompositorImpl(const Size& window, const Size& viewport);

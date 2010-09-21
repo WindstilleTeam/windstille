@@ -24,117 +24,129 @@
 #include "display/framebuffer.hpp"
 #include "display/assert_gl.hpp"
 
-class FramebufferImpl
+FramebufferPtr
+Framebuffer::create_with_texture(GLenum target, int width, int height, int multisample)
 {
-public:
-  GLuint  handle;
-  Size size;
-  
-  //Texture texture;
-  RenderBuffer m_color_buffer;
-  RenderBuffer m_depth_stencil_buffer;
-  //RenderBuffer m_stencil_buffer;
-
-  FramebufferImpl(GLenum target, int width, int height, int multisample) : 
-    handle(0),
-    size(width, height),
-    //texture(target, width, height),
-    m_color_buffer(GL_RGB8, width, height, multisample), // FIXME: do we need RGBA or just RGB?!
-    m_depth_stencil_buffer(GL_DEPTH24_STENCIL8_EXT, width, height, multisample)
-  {
-    glGenFramebuffersEXT(1, &handle);
-    assert_gl("FramebufferImpl::FramebufferImpl()");
-
-    // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, handle);
-
-    // bind texture and renderbuffers to the framebuffer
-    //glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, texture.get_target(), texture.get_handle(), 0);
-
-    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,  GL_RENDERBUFFER_EXT, m_color_buffer.get_handle());
-    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,   GL_RENDERBUFFER_EXT, m_depth_stencil_buffer.get_handle());
-    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, m_depth_stencil_buffer.get_handle());
-
-    assert_gl("FramebufferImpl::FramebufferImpl() - binding");
-
-
-    GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
-    switch(status)
-    {
-      case GL_FRAMEBUFFER_COMPLETE_EXT:
-        std::cout << "Framebuffer ok" << std::endl;
-        break;
-
-      default:
-        std::cout << "Framebuffer status failure: " << status << std::endl;
-        break;
-    }
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-  }
-
-  ~FramebufferImpl()
-  {
-    glDeleteFramebuffersEXT(1, &handle);
-  }
-};
-
-Framebuffer::Framebuffer() :
-  impl()
-{
+  FramebufferPtr framebuffer(new Framebuffer);
+  framebuffer->create_with_texture_internal(target, width, height, multisample);
+  return framebuffer;
 }
 
-Framebuffer::Framebuffer(GLenum target, int width, int height, int multisample) :
-  impl(new FramebufferImpl(target, width, height, multisample))
-{  
+FramebufferPtr
+Framebuffer::create(int width, int height, int multisample)
+{
+  FramebufferPtr framebuffer(new Framebuffer);
+  framebuffer->create_internal(GL_RGB8, width, height, multisample);
+  return framebuffer;
+}
+
+FramebufferPtr
+Framebuffer::create_hdr(int width, int height, int multisample)
+{
+  FramebufferPtr framebuffer(new Framebuffer);
+  framebuffer->create_internal(GL_RGBA16F, width, height, multisample);
+  return framebuffer;
+}
+
+Framebuffer::Framebuffer() :
+  m_handle(0),
+  m_size(),
+  m_texture(),
+  m_color_buffer(),
+  m_depth_stencil_buffer()
+{
+  glGenFramebuffersEXT(1, &m_handle);
+  assert_gl("Framebuffer::Framebuffer()");   
 }
 
 Framebuffer::~Framebuffer()
 {
-  
+  glDeleteFramebuffersEXT(1, &m_handle);  
 }
 
 Texture
 Framebuffer::get_texture()
 {
-  assert(!"not implemented right now - Framebuffer::get_texture()");
-  return Texture();
-  //return impl->texture;
+  assert(m_texture);
+  return m_texture;
 }
 
 int
 Framebuffer::get_width()  const
 {
-  return impl->size.width;
+  return m_size.width;
 }
 
 int
 Framebuffer::get_height() const
 {
-  return impl->size.height;
+  return m_size.height;
 }
 
 GLuint
 Framebuffer::get_handle() const
 {
-  return impl->handle;
+  return m_handle;
 
 }
 
-Framebuffer::operator bool() const
+void
+Framebuffer::create_with_texture_internal(GLenum target, int width, int height, int multisample)
 {
-  return impl.get();
+  m_size = Size(width, height);
+  m_texture = Texture(target, width, height);
+  m_depth_stencil_buffer = RenderBuffer(GL_DEPTH24_STENCIL8_EXT, width, height, multisample);
+    
+  // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_handle);
+
+  // bind texture and renderbuffers to the framebuffer
+  glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, m_texture.get_target(), m_texture.get_handle(), 0);
+  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,   GL_RENDERBUFFER_EXT, m_depth_stencil_buffer.get_handle());
+  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, m_depth_stencil_buffer.get_handle());
+
+  assert_gl("Framebuffer::Framebuffer() - binding");
+
+  check_completness();
+
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 }
 
-bool
-Framebuffer::operator==(const Framebuffer& other) const
-{
-  return impl.get() == other.impl.get();
+void
+Framebuffer::create_internal(GLenum format, int width, int height, int multisample)
+{ 
+  m_size = Size(width, height);
+  m_color_buffer = RenderBuffer(format, width, height, multisample);
+  m_depth_stencil_buffer = RenderBuffer(GL_DEPTH24_STENCIL8_EXT, width, height, multisample);
+
+  // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_handle);
+
+  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,  GL_RENDERBUFFER_EXT, m_color_buffer.get_handle());
+  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,   GL_RENDERBUFFER_EXT, m_depth_stencil_buffer.get_handle());
+  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, m_depth_stencil_buffer.get_handle());
+
+  assert_gl("Framebuffer::Framebuffer() - binding");
+
+  check_completness();
+
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);    
 }
 
-bool
-Framebuffer::operator!=(const Framebuffer& other) const
+void
+Framebuffer::check_completness()
 {
-  return impl.get() != other.impl.get();
+  GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+  switch(status)
+  {
+    case GL_FRAMEBUFFER_COMPLETE_EXT:
+      std::cout << "Framebuffer ok" << std::endl;
+      break;
+
+    default:
+      std::cout << "Framebuffer status failure: " << status << std::endl;
+      break;
+  }
 }
 
 /* EOF */

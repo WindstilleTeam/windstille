@@ -71,9 +71,9 @@ public:
   static void push_cliprect(const Rect& rect);
   static void pop_cliprect();
 
-  static void push_framebuffer(Framebuffer& framebuffer);
+  static void push_framebuffer(FramebufferPtr framebuffer);
   static void pop_framebuffer();
-  static Framebuffer get_framebuffer();
+  static FramebufferPtr get_framebuffer();
 
   static void save_screenshot(const Pathname& filename);
 };

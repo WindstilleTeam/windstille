@@ -22,10 +22,17 @@
 #include <boost/shared_ptr.hpp>
 
 class RenderBufferImpl;
+class RenderBuffer;
+
+typedef boost::shared_ptr<RenderBufferImpl> RenderBufferPtr;
 
 class RenderBuffer
 {
 public:
+  RenderBuffer()  :
+    impl()
+  {}
+
   /**
    * @param width  Width of the Renderbuffer
    * @param height Height of the Renderbuffer

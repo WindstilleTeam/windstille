@@ -28,8 +28,8 @@ static const int LIGHTMAP_DIV = 4;
 
 FramebufferCompositorImpl::FramebufferCompositorImpl(const Size& window, const Size& viewport) :
   CompositorImpl(window, viewport),
-  m_screen  (GL_TEXTURE_2D, window.width, window.height),
-  m_lightmap(GL_TEXTURE_2D, window.width / LIGHTMAP_DIV, window.height / LIGHTMAP_DIV)
+  m_screen  (Framebuffer::create_with_texture(GL_TEXTURE_2D, window.width, window.height)),
+  m_lightmap(Framebuffer::create_with_texture(GL_TEXTURE_2D, window.width / LIGHTMAP_DIV, window.height / LIGHTMAP_DIV))
 {
 }
 
@@ -38,7 +38,7 @@ FramebufferCompositorImpl::render_lightmap(SceneContext& /*sc*/, SceneGraph* /*s
 {
   OpenGLState state;
 
-  state.bind_texture(m_lightmap.get_texture());
+  state.bind_texture(m_lightmap->get_texture());
       
   state.enable(GL_BLEND);
   state.set_blend_func(GL_DST_COLOR, GL_ZERO); // multiply the lightmap with the screen
@@ -150,7 +150,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
     // Render the screen framebuffer to the actual screen 
     OpenGLState state;
 
-    state.bind_texture(m_screen.get_texture(), 0);
+    state.bind_texture(m_screen->get_texture(), 0);
 
     state.activate();
 

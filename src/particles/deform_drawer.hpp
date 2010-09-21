@@ -38,7 +38,7 @@ class ParticleSystem;
 class DeformDrawer : public Drawer
 {
 private:
-  Framebuffer    framebuffer;
+  FramebufferPtr framebuffer;
   Surface        surface;
   ShaderProgram  shader_program;
 

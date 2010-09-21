@@ -19,33 +19,42 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_FRAMEBUFFER_HPP
 #define HEADER_WINDSTILLE_DISPLAY_FRAMEBUFFER_HPP
 
+#include "math/size.hpp"
 #include "display/texture.hpp"
+#include "display/render_buffer.hpp"
 
-class FramebufferImpl;
+class Framebuffer;
+typedef boost::shared_ptr<Framebuffer> FramebufferPtr;
 
 class Framebuffer
 {
 public:
-  Framebuffer();
-  Framebuffer(GLenum target, int width, int height, int multisample = 0);
+  static FramebufferPtr create_with_texture(GLenum target, int width, int height, int multisample = 0);
+  static FramebufferPtr create(int width, int height, int multisample = 0);
+  static FramebufferPtr create_hdr(int width, int height, int multisample = 0);
+
+public:  
   ~Framebuffer();
-  
+
   int get_width()  const;
   int get_height() const;
   Texture get_texture();
 
   GLuint get_handle() const;
 
-  /** 
-   * true if the Framebuffer is valid and usable, false if not 
-   */
-  operator bool() const;
-
-  bool operator==(const Framebuffer&) const;
-  bool operator!=(const Framebuffer&) const;
+private:
+  Framebuffer();
+  void check_completness();
+  void create_internal(GLenum format, int width, int height, int multisample);
+  void create_with_texture_internal(GLenum target, int width, int height, int multisample);
 
 private:
-  boost::shared_ptr<FramebufferImpl> impl;
+  GLuint m_handle;
+  Size   m_size;
+  
+  Texture m_texture;
+  RenderBuffer m_color_buffer;
+  RenderBuffer m_depth_stencil_buffer;
 };
 
 #endif

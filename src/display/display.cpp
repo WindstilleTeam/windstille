@@ -36,7 +36,7 @@
 
 Size              Display::aspect_size;
 std::vector<Rect> Display::cliprects;
-std::vector<Framebuffer> framebuffers;
+std::vector<FramebufferPtr> framebuffers;
 
 void
 Display::draw_line(const Line& line, const Color& color)
@@ -599,10 +599,10 @@ Display::save_screenshot(const Pathname& filename)
 }
 
 void
-Display::push_framebuffer(Framebuffer& framebuffer)
+Display::push_framebuffer(FramebufferPtr framebuffer)
 {
   framebuffers.push_back(framebuffer);
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffers.back().get_handle());
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffers.back()->get_handle());
 }
 
 void
@@ -614,7 +614,7 @@ Display::pop_framebuffer()
   
   if (!framebuffers.empty())
   {
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffers.back().get_handle());
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffers.back()->get_handle());
   }
   else
   {
@@ -622,11 +622,11 @@ Display::pop_framebuffer()
   }
 }
 
-Framebuffer
+FramebufferPtr
 Display::get_framebuffer()
 {
   if (framebuffers.empty())
-    return Framebuffer();
+    return FramebufferPtr();
   else
     return framebuffers.back();
 }
