@@ -19,7 +19,7 @@
 #include <GL/glew.h>
 #include <iostream>
 
-#include "display/render_buffer.hpp"
+#include "display/renderbuffer.hpp"
 
 RenderbufferPtr
 Renderbuffer::create(GLenum format, int width, int height, int multisample)

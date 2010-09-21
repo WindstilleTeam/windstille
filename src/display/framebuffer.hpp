@@ -21,7 +21,7 @@
 
 #include "math/size.hpp"
 #include "display/texture.hpp"
-#include "display/render_buffer.hpp"
+#include "display/renderbuffer.hpp"
 
 class Framebuffer;
 typedef boost::shared_ptr<Framebuffer> FramebufferPtr;
