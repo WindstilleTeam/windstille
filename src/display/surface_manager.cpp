@@ -68,7 +68,7 @@ SurfaceManager::get(const Pathname& filename)
     {
       float maxu = 0.0f;
       float maxv = 0.0f;
-      Texture texture;
+      TexturePtr texture;
 
       try
       {
@@ -98,7 +98,7 @@ SurfaceManager::load_grid(const Pathname& filename,
   SoftwareSurface image(filename);
   float maxu, maxv;
 
-  Texture texture;
+  TexturePtr texture;
 
   try
   {                                                                       
@@ -128,7 +128,7 @@ SurfaceManager::load_grid(const Pathname& filename,
   }
 }
 
-Texture
+TexturePtr
 SurfaceManager::create_texture(const SoftwareSurface& image,
                                float* maxu, float* maxv)
 {
@@ -140,7 +140,7 @@ SurfaceManager::create_texture(const SoftwareSurface& image,
 
   image.blit(convert, 0, 0);
 
-  Texture texture = Texture(convert);
+  TexturePtr texture = Texture::create(convert);
   
   *maxu = static_cast<float>(image.get_width())  / static_cast<float>(texture_w);
   *maxv = static_cast<float>(image.get_height()) / static_cast<float>(texture_h);

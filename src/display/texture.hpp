@@ -31,31 +31,33 @@ class SoftwareSurface;
 class TextureImpl;
 class Rect;
 
+class Texture;
+typedef boost::shared_ptr<Texture> TexturePtr;
+
 class Texture
 {
 public:
-  /** Create a empty and invalid Texture object (similar to a
-      NULL-pointer) */
-  explicit Texture();
-
   /** Load a texture from file */
-  explicit Texture(const Pathname& filename);
+  static TexturePtr create(const Pathname& filename);
 
   /**
    * Upload an SoftwareSurface onto an OpenGL texture. The surface must have power
    * of 2 dimensions
    * */
-  explicit Texture(const SoftwareSurface& image, GLint format = GL_RGBA);
-
+  static TexturePtr create(const SoftwareSurface& image, GLint format = GL_RGBA);
+  
   /** 
    * Create an empty Texture with the given dimensions
    */
-  explicit Texture(GLenum target, int width, int height, GLint format = GL_RGBA);
+  static TexturePtr create(GLenum target, int width, int height, GLint format = GL_RGBA);
+  
+private:
+  Texture();
+  Texture(const SoftwareSurface& image, GLint format = GL_RGBA);
+  Texture(GLenum target, int width, int height, GLint format = GL_RGBA);
 
+public:
   ~Texture();
-
-  bool operator==(const Texture&) const;
-  bool operator!=(const Texture&) const;
 
   int get_width() const;
   int get_height() const;
@@ -83,13 +85,11 @@ public:
 
   SoftwareSurface get_software_surface() const;
 
-  int use_count() const;
-
-  /** true if the Texture is valid and usable, false if not */
-  operator bool() const;
-
 private:
-  boost::shared_ptr<TextureImpl> impl;
+  GLenum m_target;
+  GLuint m_handle;
+  int    m_width;
+  int    m_height;
 };
 
 #endif

@@ -38,7 +38,7 @@ public:
 
   int get_width()  const;
   int get_height() const;
-  Texture get_texture();
+  TexturePtr get_texture();
 
   GLuint get_handle() const;
 
@@ -52,7 +52,7 @@ private:
   GLuint m_handle;
   Size   m_size;
   
-  Texture m_texture;
+  TexturePtr m_texture;
   RenderbufferPtr m_color_buffer;
   RenderbufferPtr m_depth_stencil_buffer;
 };

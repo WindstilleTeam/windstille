@@ -27,7 +27,7 @@
 class LaserPointer : public GameObject
 {
 private:
-  Texture noise;
+  TexturePtr noise;
   Sprite  laserpointer;
   Sprite  laserpointer_light;
   float   progress;

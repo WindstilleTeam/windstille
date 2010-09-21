@@ -24,10 +24,9 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 
+#include "display/texture.hpp"
 #include "util/currenton.hpp"
 #include "util/pathname.hpp"
-
-class Texture;
 
 /**
  * This class manages a map of image files to OpenGL textures.
@@ -46,12 +45,12 @@ public:
    * SurfaceManager for images with other dimensions.
    * Note: Texture is a refcounted class, store it with Ref<Texture>
    */
-  Texture get(const Pathname& filename);
+  TexturePtr get(const Pathname& filename);
 
   void cleanup();
 
 private:
-  typedef std::map<Pathname, Texture> Textures;
+  typedef std::map<Pathname, TexturePtr> Textures;
   Textures textures;
 };
 

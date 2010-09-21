@@ -68,7 +68,7 @@ private:
  */
 struct Mesh
 {
-  Texture   texture;
+  TexturePtr   texture;
 
   uint16_t  vertex_count;
   uint16_t  triangle_count;

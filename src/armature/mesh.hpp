@@ -85,7 +85,7 @@ private:
   typedef std::vector<Vertex> Vertices;
   Vertices vertices_;
 
-  Texture texture;
+  TexturePtr texture;
 
   GLenum blend_sfactor;
   GLenum blend_dfactor;

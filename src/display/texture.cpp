@@ -28,51 +28,49 @@
 #include "display/texture_manager.hpp"
 #include "display/assert_gl.hpp"
 
-class TextureImpl
+static inline bool is_power_of_2(int v)
 {
-public:
-  GLenum target;
-  GLuint handle;
-  int    width;
-  int    height;
-
-  TextureImpl()
-    : target(0),
-      handle(0),
-      width(0),
-      height(0)
-  {
-    glGenTextures(1, &handle);
-    assert_gl("creating texture handle."); 
-  }
-
-  ~TextureImpl()
-  {
-    glDeleteTextures(1, &handle);
-  }
-};
+  return (v & (v-1)) == 0;
+}
 
-Texture::Texture() :
-  impl()
+TexturePtr
+Texture::create(const Pathname& filename)
 {
+  return TextureManager::current()->get(filename);
 }
 
-Texture::Texture(const Pathname& filename) :
-  impl()
+TexturePtr
+Texture::create(const SoftwareSurface& image, GLint format)
 {
-  *this = TextureManager::current()->get(filename);
+  return TexturePtr(new Texture(image, format));
+}
+  
+TexturePtr
+Texture::create(GLenum target, int width, int height, GLint format)
+{
+  return TexturePtr(new Texture(target, width, height, format));
+}
+
+Texture::Texture() :
+  m_target(0),
+  m_handle(0),
+  m_width(0),
+  m_height(0)
+{
+  glGenTextures(1, &m_handle);
+  assert_gl("Texture::Texture()"); 
 }
 
 Texture::Texture(GLenum target, int width, int height, GLint format) :
-  impl(new TextureImpl())
+  m_target(target),
+  m_handle(0),
+  m_width(width),
+  m_height(height)
 {
-  impl->target = target;
-  impl->width  = width;
-  impl->height = height;
+  glGenTextures(1, &m_handle);
+  assert_gl("Texture::Texture()"); 
 
-  OpenGLState state;
-  state.bind_texture(*this);
-  state.activate();
+  glBindTexture(GL_TEXTURE_2D, m_handle);
 
   glTexImage2D(target, 0, format, width, height, 0, GL_RGBA,
                GL_UNSIGNED_BYTE, 0);
@@ -84,17 +82,14 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
   glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
 
-static inline bool is_power_of_2(int v)
-{
-  return (v & (v-1)) == 0;
-}
-
 Texture::Texture(const SoftwareSurface& image, GLint glformat) :
-  impl(new TextureImpl())
+  m_target(GL_TEXTURE_2D),
+  m_handle(0),
+  m_width(image.get_width()),
+  m_height(image.get_height())
 {
-  impl->target = GL_TEXTURE_2D;
-  impl->width  = image.get_width();
-  impl->height = image.get_height();
+  glGenTextures(1, &m_handle);
+  assert_gl("Texture::Texture()"); 
 
   // Should be ok with OpenGL2.0
   //if(!is_power_of_2(image.get_width()) || !is_power_of_2(image.get_height()))
@@ -131,25 +126,23 @@ Texture::Texture(const SoftwareSurface& image, GLint glformat) :
       throw std::runtime_error("Texture: Image format not supported");
     }
 
-    OpenGLState state;
-    state.bind_texture(*this);
-    state.activate();
+    glBindTexture(GL_TEXTURE_2D, m_handle);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glPixelStorei(GL_UNPACK_ROW_LENGTH, image.get_pitch() / image.get_bytes_per_pixel());
 
     if (0)
     { // no mipmapping
-      glTexImage2D(impl->target, 0, glformat,
+      glTexImage2D(m_target, 0, glformat,
                    image.get_width(), image.get_height(), 0, sdl_format,
                    GL_UNSIGNED_BYTE, image.get_pixels());
         
-      glTexParameteri(impl->target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-      glTexParameteri(impl->target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
     else
     { // use mipmapping
-      gluBuild2DMipmaps(impl->target, glformat,
+      gluBuild2DMipmaps(m_target, glformat,
                         image.get_width(), image.get_height(), sdl_format,
                         GL_UNSIGNED_BYTE, image.get_pixels());
         
@@ -159,9 +152,9 @@ Texture::Texture(const SoftwareSurface& image, GLint glformat) :
 
     assert_gl("creating texture");
 
-    glTexParameteri(impl->target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(impl->target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(impl->target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTexParameteri(m_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(m_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(m_target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     assert_gl("setting texture parameters");
   } 
@@ -173,24 +166,25 @@ Texture::Texture(const SoftwareSurface& image, GLint glformat) :
 
 Texture::~Texture()
 {
+  glDeleteTextures(1, &m_handle);
 }
 
 int
 Texture::get_width() const
 {
-  return impl->width;
+  return m_width;
 }
 
 int
 Texture::get_height() const
 {
-  return impl->height;
+  return m_height;
 }
 
 GLuint
 Texture::get_handle() const
 {
-  return impl->handle;
+  return m_handle;
 }
 
 void
@@ -211,16 +205,14 @@ Texture::put(const SoftwareSurface& image, const Rect& srcrect, int x, int y)
     throw std::runtime_error("Texture: Image format not supported");
   }
 
-  OpenGLState state;
-  state.bind_texture(*this);
-  state.activate();
+  glBindTexture(GL_TEXTURE_2D, m_handle);
 
   // FIXME: Add some checks here to make sure image has the right format 
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // FIXME: Does SDL always use 4?
   glPixelStorei(GL_UNPACK_ROW_LENGTH,
                 image.get_pitch() / image.get_bytes_per_pixel());
 
-  glTexSubImage2D(impl->target, 0, x, y,
+  glTexSubImage2D(m_target, 0, x, y,
                   srcrect.get_width(), srcrect.get_height(), sdl_format, GL_UNSIGNED_BYTE,
                   static_cast<uint8_t*>(image.get_pixels())
                   + srcrect.top  * image.get_pitch()
@@ -236,67 +228,38 @@ Texture::put(const SoftwareSurface& image, int x, int y)
 void
 Texture::set_wrap(GLenum mode)
 {
-  OpenGLState state;
-  state.bind_texture(*this);
-  state.activate();
+  glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  glTexParameteri(impl->target, GL_TEXTURE_WRAP_S, mode);
-  glTexParameteri(impl->target, GL_TEXTURE_WRAP_T, mode);
-  glTexParameteri(impl->target, GL_TEXTURE_WRAP_R, mode); // FIXME: only good for 3d textures?!
+  glTexParameteri(m_target, GL_TEXTURE_WRAP_S, mode);
+  glTexParameteri(m_target, GL_TEXTURE_WRAP_T, mode);
+  glTexParameteri(m_target, GL_TEXTURE_WRAP_R, mode); // FIXME: only good for 3d textures?!
 }
 
 void
 Texture::set_filter(GLenum mode)
 {
-  OpenGLState state;
-  state.bind_texture(*this);
-  state.activate();
+  glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  glTexParameteri(impl->target, GL_TEXTURE_MIN_FILTER, mode);
-  glTexParameteri(impl->target, GL_TEXTURE_MAG_FILTER, mode);
+  glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, mode);
+  glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, mode);
 }
 
 SoftwareSurface
 Texture::get_software_surface() const
 {
-  OpenGLState state;
-  state.bind_texture(*this);
-  state.activate();
+  glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  SoftwareSurface surface(impl->width, impl->height);
+  SoftwareSurface surface(m_width, m_height);
 
   glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface.get_pixels());
 
   return surface;
 }
 
-Texture::operator bool() const
-{
-  return impl.get();
-}
-
-bool
-Texture::operator==(const Texture& other) const
-{
-  return impl.get() == other.impl.get();
-}
-
-bool
-Texture::operator!=(const Texture& other) const
-{
-  return impl.get() != other.impl.get();
-}
-
 GLenum
 Texture::get_target() const
 {
-  return impl->target;
-}
-
-int
-Texture::use_count() const
-{
-  return impl.use_count();
+  return m_target;
 }
 
 /* EOF */

@@ -27,7 +27,7 @@ class Shockwave : public GameObject
 {
 private:
   Vector2f        pos;
-  Texture       noise;
+  TexturePtr noise;
   ShaderProgram shader_program;
   float radius;
 

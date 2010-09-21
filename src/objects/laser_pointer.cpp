@@ -29,12 +29,12 @@ LaserPointer::LaserPointer() :
   progress(),
   angle()
 {
-  noise = Texture(Pathname("images/noise2.png"));
+  noise = Texture::create(Pathname("images/noise2.png"));
   laserpointer = Sprite(Pathname("images/laserpointer.sprite"));
   laserpointer_light = Sprite(Pathname("images/laserpointer_light.sprite"));
   laserpointer_light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-  noise.set_wrap(GL_REPEAT);
-  noise.set_filter(GL_LINEAR);
+  noise->set_wrap(GL_REPEAT);
+  noise->set_filter(GL_LINEAR);
   
   progress = 0.0f;
   angle = 0.0f;

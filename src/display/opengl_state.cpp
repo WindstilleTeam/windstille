@@ -33,7 +33,7 @@ public:
       somebody forget the final activate() call */
   bool was_activated;
 
-  Texture     texture[MAX_TEXTURE_UNITS];
+  TexturePtr texture[MAX_TEXTURE_UNITS];
 
   Color color;
 
@@ -46,13 +46,13 @@ public:
   /** glEnableClientState/glDisableClientState */
   std::map<GLenum, bool> client_state;
 
-  OpenGLStateImpl()
-    : was_activated(false),
-      color(),
-      blend_sfactor(GL_SRC_ALPHA),
-      blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
-      state(),
-      client_state()
+  OpenGLStateImpl() :
+    was_activated(false),
+    color(),
+    blend_sfactor(GL_SRC_ALPHA),
+    blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
+    state(),
+    client_state()
   {}
 };
 
@@ -115,7 +115,7 @@ OpenGLState::~OpenGLState()
 }
 
 void
-OpenGLState::bind_texture(const Texture& texture, int unit)
+OpenGLState::bind_texture(TexturePtr texture, int unit)
 {
   assert(unit >= 0 && unit < MAX_TEXTURE_UNITS);
   impl->texture[unit] = texture;
@@ -282,10 +282,10 @@ OpenGLState::activate()
       {
         global_state->impl->texture[i] = impl->texture[i];
 
-        switch (impl->texture[i].get_target())
+        switch (impl->texture[i]->get_target())
         {                 
           case GL_TEXTURE_2D:
-            glBindTexture(GL_TEXTURE_2D, impl->texture[i].get_handle());
+            glBindTexture(GL_TEXTURE_2D, impl->texture[i]->get_handle());
             glEnable(GL_TEXTURE_2D);
             break;
                   
@@ -350,9 +350,9 @@ OpenGLState::verify()
     GLint texture_handle;
     glActiveTexture(GL_TEXTURE0);
     glGetIntegerv(GL_TEXTURE_2D_BINDING_EXT, &texture_handle);
-    if (impl->texture[0] && static_cast<GLuint>(texture_handle) != impl->texture[0].get_handle())
+    if (impl->texture[0] && static_cast<GLuint>(texture_handle) != impl->texture[0]->get_handle())
     {
-      std::cout << "OpenGLState: texture handle is out of sync: " << impl->texture[0].get_handle() << std::endl;
+      std::cout << "OpenGLState: texture handle is out of sync: " << impl->texture[0]->get_handle() << std::endl;
     }
   }
   assert_gl("OpenGLState::verify");

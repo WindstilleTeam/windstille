@@ -76,8 +76,8 @@ ParticleViewer::load(const Pathname& filename)
 
   {
     // Build the SceneGraph
-    Texture pattern_texture(Pathname("images/greychess.png"));
-    pattern_texture.set_wrap(GL_REPEAT);
+    TexturePtr pattern_texture = Texture::create(Pathname("images/greychess.png"));
+    pattern_texture->set_wrap(GL_REPEAT);
 
     m_background_drawable.reset(new FillScreenPatternDrawable(pattern_texture, Vector2f()));
     m_color_fill_drawable.reset(new FillScreenDrawable(Color(0.4f, 0.4f, 0.4f)));

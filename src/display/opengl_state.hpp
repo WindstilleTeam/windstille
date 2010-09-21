@@ -22,8 +22,9 @@
 #include <GL/glew.h>
 #include <boost/scoped_ptr.hpp>
 
+#include "display/texture.hpp"
+
 class Framebuffer;
-class Texture;
 class Color;
 class OpenGLStateImpl;
 
@@ -71,7 +72,7 @@ public:
    * Binds the given \a texture to the given texture \a unit and
    * enables texturing via glEnable(GL_TEXTURE2D) for the unit.
    */
-  void bind_texture(const Texture& texture, int unit = 0);
+  void bind_texture(TexturePtr texture, int unit = 0);
 
   void set_blend_func(GLenum sfactor, GLenum dfactor);
 

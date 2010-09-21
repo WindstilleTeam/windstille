@@ -38,7 +38,7 @@ TextureManager::~TextureManager()
 #endif
 }
 
-Texture
+TexturePtr
 TextureManager::get(const Pathname& filename)
 {
   Textures::iterator i = textures.find(filename);
@@ -51,7 +51,7 @@ TextureManager::get(const Pathname& filename)
     try 
     {
       SoftwareSurface image(filename);
-      Texture texture(image);
+      TexturePtr texture = Texture::create(image);
 
       textures.insert(std::make_pair(filename, texture));
 

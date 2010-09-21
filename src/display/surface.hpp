@@ -44,14 +44,14 @@ public:
    * @param width  Width of the surface on the screen
    * @param height Height of the surface on the screen
    */
-  Surface(Texture texture, const Rectf& uv, const Sizef& size);
+  Surface(TexturePtr texture, const Rectf& uv, const Sizef& size);
   Surface(int width, int height);
   ~Surface();
   
   float get_width()  const;
   float get_height() const;
   
-  Texture get_texture() const;
+  TexturePtr get_texture() const;
 
   /** Returns texture coordinates for the Surface rectangle */
   Rectf get_uv() const;

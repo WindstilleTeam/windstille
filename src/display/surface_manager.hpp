@@ -56,8 +56,8 @@ public:
   void load_grid(const Pathname& filename,
                  std::vector<Surface>& surfaces, int width, int height);
 
-  Texture create_texture(const SoftwareSurface& image,
-                         float* maxu, float* maxv);
+  TexturePtr create_texture(const SoftwareSurface& image,
+                            float* maxu, float* maxv);
 
   /** Removes all cached Sprites that are no longer in use */
   void cleanup();

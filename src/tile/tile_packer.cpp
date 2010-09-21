@@ -32,7 +32,7 @@ public:
   int x_pos;
   int y_pos;
 
-  Texture texture;
+  TexturePtr texture;
 
   int width;
   int height;
@@ -55,7 +55,7 @@ TilePacker::TilePacker(int width, int height) :
   impl->width  = width;
   impl->height = height;
 
-  impl->texture = Texture(GL_TEXTURE_2D, width, height);
+  impl->texture = Texture::create(GL_TEXTURE_2D, width, height);
         
   assert_gl("setting TilePacker texture parameters"); 
 }
@@ -90,7 +90,7 @@ TilePacker::pack(const SoftwareSurface& image, int x, int y, int w, int h)
 
   generate_border(convert, 1, 1, TILE_RESOLUTION, TILE_RESOLUTION);
 
-  impl->texture.put(convert, impl->x_pos, impl->y_pos);
+  impl->texture->put(convert, impl->x_pos, impl->y_pos);
   
   assert_gl("updating tilepacker texture");
 
@@ -118,7 +118,7 @@ TilePacker::is_full() const
   return (impl->y_pos + TILE_RESOLUTION + 2 > impl->height);
 }
 
-Texture
+TexturePtr
 TilePacker::get_texture() const
 {
   return impl->texture;

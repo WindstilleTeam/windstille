@@ -52,12 +52,12 @@ public:
   int size;
 
   /** OpenGL Texture which holds all the characters */
-  Texture texture;
+  TexturePtr texture;
 
-  TTFFontImpl()
-    : characters(),
-      size(0),
-      texture()
+  TTFFontImpl() :
+    characters(),
+    size(0),
+    texture()
   {}
 };
 
@@ -149,7 +149,7 @@ TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect) 
   }
   FT_Done_Face(face);
 
-  impl->texture = Texture(pixelbuffer);
+  impl->texture = Texture::create(pixelbuffer);
 }
 
 TTFFont::~TTFFont()
@@ -225,7 +225,7 @@ TTFFont::get_width(const std::string& text) const
   return width;
 }
 
-Texture
+TexturePtr
 TTFFont::get_texture() const
 {
   return impl->texture;

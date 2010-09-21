@@ -29,7 +29,7 @@ public:
   /**
    * Texture on which the surface is located
    */
-  Texture texture;
+  TexturePtr texture;
 
   /** 
    * uv coordinates of the Surface in [0,1] range
@@ -41,10 +41,10 @@ public:
    */
   Sizef size;
 
-  SurfaceImpl()
-    : texture(),
-      uv(),
-      size()
+  SurfaceImpl() :
+    texture(),
+    uv(),
+    size()
   {}
 };
 
@@ -65,13 +65,13 @@ Surface::Surface(int width, int height) :
 {
   impl->size  = Size(width, height);
 
-  impl->texture = Texture(GL_TEXTURE_2D, width, height);
+  impl->texture = Texture::create(GL_TEXTURE_2D, width, height);
   impl->uv      = Rectf(0.0f, 0.0f,
-                        impl->size.width  / static_cast<float>(impl->texture.get_width()),
-                        impl->size.height / static_cast<float>(impl->texture.get_height()));
+                        impl->size.width  / static_cast<float>(impl->texture->get_width()),
+                        impl->size.height / static_cast<float>(impl->texture->get_height()));
 }
 
-Surface::Surface(Texture texture, const Rectf& uv, const Sizef& size) :
+Surface::Surface(TexturePtr texture, const Rectf& uv, const Sizef& size) :
   impl(new SurfaceImpl())
 {
   impl->texture = texture;
@@ -95,7 +95,7 @@ Surface::get_height() const
   return impl->size.height; 
 }
 
-Texture
+TexturePtr
 Surface::get_texture() const
 {
   return impl->texture;

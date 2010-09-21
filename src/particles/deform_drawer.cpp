@@ -140,7 +140,7 @@ public:
     glPopMatrix();
   }
 
-  void prepare(const Texture& screen_texture) 
+  void prepare(TexturePtr screen_texture) 
   {
     OpenGLState state;
     state.bind_texture(screen_texture);

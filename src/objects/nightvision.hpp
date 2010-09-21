@@ -28,7 +28,7 @@ class Nightvision : public GameObject
 {
 private:
   Sprite  nightvision;
-  Texture noise;
+  TexturePtr noise;
 
 public:
   Nightvision(const FileReader& props);

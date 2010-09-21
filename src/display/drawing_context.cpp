@@ -146,7 +146,7 @@ DrawingContext::fill_screen(const Color& color)
 }
 
 void
-DrawingContext::fill_pattern(const Texture& pattern, const Vector2f& offset)
+DrawingContext::fill_pattern(TexturePtr pattern, const Vector2f& offset)
 {
   draw(new FillScreenPatternDrawable(pattern, offset));
 }

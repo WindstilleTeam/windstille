@@ -20,15 +20,15 @@
 #include "scenegraph/vertex_array_drawable.hpp"
 
 VertexArrayDrawable::VertexArrayDrawable(const Vector2f& pos_, float z_pos_, 
-                                         const Matrix& modelview_)
-  : Drawable(pos_, z_pos_, modelview_),
-    mode(GL_QUADS),
-    blend_sfactor(GL_SRC_ALPHA),
-    blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
-    texture(),
-    colors(),
-    texcoords(),
-    vertices()
+                                         const Matrix& modelview_) :
+  Drawable(pos_, z_pos_, modelview_),
+  mode(GL_QUADS),
+  blend_sfactor(GL_SRC_ALPHA),
+  blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
+  texture(),
+  colors(),
+  texcoords(),
+  vertices()
 {
 }
 
@@ -173,7 +173,7 @@ VertexArrayDrawable::color(const Color& color_)
 }
 
 void
-VertexArrayDrawable::set_texture(Texture texture_)
+VertexArrayDrawable::set_texture(TexturePtr texture_)
 {
   texture = texture_;
 }

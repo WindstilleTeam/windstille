@@ -64,7 +64,7 @@ Framebuffer::~Framebuffer()
   glDeleteFramebuffersEXT(1, &m_handle);  
 }
 
-Texture
+TexturePtr
 Framebuffer::get_texture()
 {
   assert(m_texture);
@@ -94,14 +94,14 @@ void
 Framebuffer::create_with_texture_internal(GLenum target, int width, int height, int multisample)
 {
   m_size = Size(width, height);
-  m_texture = Texture(target, width, height);
+  m_texture = Texture::create(target, width, height);
   m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8_EXT, width, height, multisample);
     
   // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_handle);
 
   // bind texture and renderbuffers to the framebuffer
-  glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, m_texture.get_target(), m_texture.get_handle(), 0);
+  glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, m_texture->get_target(), m_texture->get_handle(), 0);
   glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,   GL_RENDERBUFFER_EXT, m_depth_stencil_buffer->get_handle());
   glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, m_depth_stencil_buffer->get_handle());
 

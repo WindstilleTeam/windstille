@@ -28,7 +28,7 @@ class VertexArrayDrawable;
 class Liquid : public Entity
 {
 private:
-  Texture texture;
+  TexturePtr texture;
   float t;
 
   std::vector<float> heightfield_store1;

@@ -33,11 +33,11 @@ private:
   boost::scoped_ptr<TextureSpace> right;
 
 public:
-  TextureSpace(const Rect& rect_)
-    : rect(rect_),
-      used(false),
-      left(),
-      right()
+  TextureSpace(const Rect& rect_) :
+    rect(rect_),
+    used(false),
+    left(),
+    right()
   {}
 
   ~TextureSpace()
@@ -87,12 +87,12 @@ private:
 class TexturePackerTexture
 {
 private:
-  Texture        texture;
+  TexturePtr     texture;
   TextureSpace   space;
 
 public:
   TexturePackerTexture(const Size& size)
-    : texture(GL_TEXTURE_2D, size.width, size.height),
+    : texture(Texture::create(GL_TEXTURE_2D, size.width, size.height)),
       space(Rect(Point(0, 0), size))
   {
   }
@@ -100,9 +100,9 @@ public:
   ~TexturePackerTexture()
   {}
 
-  Texture get_texture() const { return texture; }
+  TexturePtr get_texture() const { return texture; }
 
-  bool allocate(const Size& size, Rect& out_rect, Texture& out_texture)
+  bool allocate(const Size& size, Rect& out_rect, TexturePtr& out_texture)
   {
     if (space.allocate(size, out_rect))
     {
@@ -134,18 +134,18 @@ TexturePacker::~TexturePacker()
 }
   
 bool
-TexturePacker::allocate(const Size& size, Rect& rect, Texture& texture)
+TexturePacker::allocate(const Size& size, Rect& rect, TexturePtr& out_texture)
 {
   for(Textures::iterator i = textures.begin(); i != textures.end(); ++i)
   {
-    if ((*i)->allocate(size, rect, texture))
+    if ((*i)->allocate(size, rect, out_texture))
     {
       return true;
     }
   }
 
   textures.push_back(new TexturePackerTexture(texture_size));
-  return textures.back()->allocate(size, rect, texture);
+  return textures.back()->allocate(size, rect, out_texture);
 }
 
 Surface
@@ -156,7 +156,7 @@ TexturePacker::upload(const SoftwareSurface& surface)
 
   Size    size(surface.get_width()+2, surface.get_height()+2);
   Rect    rect;
-  Texture texture;
+  TexturePtr texture;
 
   if (!allocate(size, rect, texture))
   {
@@ -167,36 +167,36 @@ TexturePacker::upload(const SoftwareSurface& surface)
     // duplicate border pixel
 
     // top
-    texture.put(surface, Rect(Point(0, 0), Size(surface.get_width(), 1)), 
+    texture->put(surface, Rect(Point(0, 0), Size(surface.get_width(), 1)), 
                 rect.left+1, rect.top);
     // bottom
-    texture.put(surface, Rect(Point(0, surface.get_height()-1), Size(surface.get_width(), 1)), 
+    texture->put(surface, Rect(Point(0, surface.get_height()-1), Size(surface.get_width(), 1)), 
                 rect.left+1, rect.bottom-1);
     // left
-    texture.put(surface, Rect(Point(0, 0), Size(1, surface.get_height())), 
+    texture->put(surface, Rect(Point(0, 0), Size(1, surface.get_height())), 
                 rect.left, rect.top+1);
     // right
-    texture.put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, surface.get_height())),
+    texture->put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, surface.get_height())),
                 rect.right-1, rect.top+1);
 
     // duplicate corner pixels
-    texture.put(surface, Rect(Point(0, 0), Size(1, 1)), 
+    texture->put(surface, Rect(Point(0, 0), Size(1, 1)), 
                 rect.left, rect.top);     
-    texture.put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, 1)), 
+    texture->put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, 1)), 
                 rect.right-1, rect.top);
-    texture.put(surface, Rect(Point(surface.get_width()-1, surface.get_height()-1), Size(1, 1)), 
+    texture->put(surface, Rect(Point(surface.get_width()-1, surface.get_height()-1), Size(1, 1)), 
                 rect.right-1, rect.bottom-1);
-    texture.put(surface, Rect(Point(0, surface.get_height()-1), Size(1, 1)),
+    texture->put(surface, Rect(Point(0, surface.get_height()-1), Size(1, 1)),
                 rect.left, rect.bottom-1);
 
     // draw the main surface
-    texture.put(surface, rect.left+1, rect.top+1);
+    texture->put(surface, rect.left+1, rect.top+1);
 
     return Surface(texture,
-                   Rectf(static_cast<float>(rect.left+1)   / static_cast<float>(texture.get_width()),
-                         static_cast<float>(rect.top+1)    / static_cast<float>(texture.get_height()),
-                         static_cast<float>(rect.right-1)  / static_cast<float>(texture.get_width()), 
-                         static_cast<float>(rect.bottom-1) / static_cast<float>(texture.get_height())),
+                   Rectf(static_cast<float>(rect.left+1)   / static_cast<float>(texture->get_width()),
+                         static_cast<float>(rect.top+1)    / static_cast<float>(texture->get_height()),
+                         static_cast<float>(rect.right-1)  / static_cast<float>(texture->get_width()), 
+                         static_cast<float>(rect.bottom-1) / static_cast<float>(texture->get_height())),
                    Sizef(static_cast<float>(surface.get_width()), static_cast<float>(surface.get_height())));
   }
 }
@@ -206,8 +206,8 @@ TexturePacker::save_all_as_png() const
 {
   for(Textures::const_iterator i = textures.begin(); i != textures.end(); ++i)
   {
-    Texture texture = (*i)->get_texture();
-    SoftwareSurface surface = texture.get_software_surface();
+    TexturePtr texture = (*i)->get_texture();
+    SoftwareSurface surface = texture->get_software_surface();
 
     char filename[1024];
     sprintf(filename, "/tmp/texture_packer%04d.png", int(i - textures.begin()));

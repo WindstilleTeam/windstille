@@ -47,7 +47,7 @@ public:
   /** Return true if the PixelBuffer is full */
   bool is_full() const;
 
-  Texture get_texture() const;
+  TexturePtr get_texture() const;
 
 private:
   boost::scoped_ptr<TilePackerImpl> impl;

@@ -73,7 +73,7 @@ public:
       FontEffoct */
   int get_size() const;
 
-  Texture get_texture() const;
+  TexturePtr get_texture() const;
 
   const TTFCharacter& get_character(int c) const;
   void draw(const Vector2f& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));

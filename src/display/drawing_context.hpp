@@ -22,8 +22,8 @@
 #include <vector>
 
 #include "scenegraph/drawable.hpp"
+#include "display/texture.hpp"
 
-class Texture;
 class Surface;
 class SurfaceDrawingParameters;
 class DrawingParameters;
@@ -63,7 +63,7 @@ public:
       queue */
   void fill_screen(const Color& color);
 
-  void fill_pattern(const Texture& pattern, const Vector2f& offset);
+  void fill_pattern(TexturePtr pattern, const Vector2f& offset);
 
   void draw_line(const Line& line, const Color& color, float z_pos = 0);
   void draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color, float z_pos = 0);

@@ -52,7 +52,7 @@ public:
    */
   int     packer;
   Rectf   uv;
-  Texture texture;
+  TexturePtr texture;
 
   /** bitmap that holds the collision attributes for this tile */
   unsigned int colmap;

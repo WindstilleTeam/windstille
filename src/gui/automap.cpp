@@ -67,8 +67,8 @@ Automap::Automap(const Rectf& rect_, Component* parent_)
     }
 
   surface = Surface(tilemap->get_width(), tilemap->get_height());
-  surface.get_texture().set_filter(GL_NEAREST);
-  surface.get_texture().put(image, 0, 0);
+  surface.get_texture()->set_filter(GL_NEAREST);
+  surface.get_texture()->put(image, 0, 0);
 }
 
 Automap::~Automap()

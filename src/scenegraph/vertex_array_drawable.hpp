@@ -32,7 +32,7 @@ private:
   GLenum blend_sfactor;
   GLenum blend_dfactor;
 
-  Texture texture;
+  TexturePtr texture;
   std::vector<unsigned char> colors;
   std::vector<float> texcoords;
   std::vector<float> vertices;
@@ -61,7 +61,7 @@ public:
   void clear();
 
   void set_mode(GLenum mode_);
-  void set_texture(Texture texture);
+  void set_texture(TexturePtr texture);
   void set_blend_func(GLenum sfactor, GLenum dfactor);
 };
 
