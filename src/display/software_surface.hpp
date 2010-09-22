@@ -28,7 +28,8 @@ typedef struct SDL_Surface SDL_Surface;
 
 
 class Rect;
-class SoftwareSurfaceImpl;
+class SoftwareSurface;
+typedef boost::shared_ptr<SoftwareSurface> SoftwareSurfacePtr;
 
 class SoftwareSurface
 {
@@ -38,9 +39,15 @@ public:
     RGBA
   };
 
-  SoftwareSurface() : impl() {}
+public:
+  static SoftwareSurfacePtr create(const Pathname& filename);
+  static SoftwareSurfacePtr create(int width, int height, Format format = RGBA);
+
+private:
   explicit SoftwareSurface(const Pathname& filename);
   SoftwareSurface(int width, int height, Format format = RGBA);
+
+public:
   ~SoftwareSurface();
 
   int   get_bytes_per_pixel() const;
@@ -51,8 +58,8 @@ public:
   Size  get_size() const;
   void* get_pixels() const;
 
-  void blit(SoftwareSurface& dst, int x, int y) const;
-  void blit(const Rect& src_rect, SoftwareSurface& dst, int x, int y) const;
+  void blit(SoftwareSurfacePtr dst, int x, int y) const;
+  void blit(const Rect& src_rect, SoftwareSurfacePtr dst, int x, int y) const;
 
   void save_png(const std::string& filename) const;
 
@@ -60,10 +67,12 @@ public:
 
   bool is_at(int x, int y) const;
 
-  operator bool() { return impl; }
+private:
+  SDL_Surface* m_surface;
 
 private:
-  boost::shared_ptr<SoftwareSurfaceImpl> impl;
+  SoftwareSurface(const SoftwareSurface&);
+  SoftwareSurface& operator=(const SoftwareSurface&);
 };
 
 #endif

@@ -45,7 +45,7 @@ void
 TileDescription::load(TileFactory* factory)
 {  
   // FIXM: SoftwareSurface image(Pathname(filename)); doesn't work, as its handled as function declaration!?
-  SoftwareSurface image = SoftwareSurface(Pathname(filename));
+  SoftwareSurfacePtr image = SoftwareSurface::create(Pathname(filename));
 
   int num_tiles = width * height; //(image->w/TILE_RESOLUTION) * (image->h/TILE_RESOLUTION);
   if (int(colmap.size()) != num_tiles)

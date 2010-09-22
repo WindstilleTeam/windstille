@@ -67,12 +67,12 @@ TilePacker::~TilePacker()
 /** Pack a tile and return the position where it is placed in the
     pixel buffer */
 Rectf
-TilePacker::pack(const SoftwareSurface& image, int x, int y, int w, int h)
+TilePacker::pack(SoftwareSurfacePtr image, int x, int y, int w, int h)
 {
   assert(w == TILE_RESOLUTION && h == TILE_RESOLUTION);
   assert(!is_full());
 
-  SoftwareSurface convert(w+2, h+2);
+  SoftwareSurfacePtr convert = SoftwareSurface::create(w+2, h+2);
 
   SDL_Rect source_rect;
   source_rect.x = static_cast<Sint16>(x);
@@ -86,7 +86,7 @@ TilePacker::pack(const SoftwareSurface& image, int x, int y, int w, int h)
   dest_rect.w = static_cast<Sint16>(w);
   dest_rect.h = static_cast<Sint16>(h);
 
-  SDL_BlitSurface(image.get_surface(), &source_rect, convert.get_surface(), &dest_rect);
+  SDL_BlitSurface(image->get_surface(), &source_rect, convert->get_surface(), &dest_rect);
 
   generate_border(convert, 1, 1, TILE_RESOLUTION, TILE_RESOLUTION);
 

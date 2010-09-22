@@ -27,14 +27,14 @@
 #include "display/software_surface.hpp"
 
 /** Check if the given region of the given image is fully transparent */
-bool surface_empty(const SoftwareSurface& image, int sx, int sy, int w, int h)
+bool surface_empty(SoftwareSurfacePtr image, int sx, int sy, int w, int h)
 { 
-  unsigned char* data = static_cast<unsigned char*>(image.get_pixels());
+  unsigned char* data = static_cast<unsigned char*>(image->get_pixels());
   
   for(int y = sy; y < sy + h; ++y)
     for(int x = sx; x < sx + w; ++x)
     {
-      if (data[y * image.get_pitch() + 4*x + 3] != 0)
+      if (data[y * image->get_pitch() + 4*x + 3] != 0)
       { 
         return false;
       }
@@ -117,7 +117,7 @@ TileFactory::parse_tiles(FileReader& reader)
 }
 
 void
-TileFactory::pack(int id, int colmap, const SoftwareSurface& image, const Rect& rect)
+TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect)
 {
   if(id < int(tiles.size())
      && tiles[id] != 0

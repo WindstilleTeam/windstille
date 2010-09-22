@@ -149,12 +149,12 @@ TexturePacker::allocate(const Size& size, Rect& rect, TexturePtr& out_texture)
 }
 
 SurfacePtr
-TexturePacker::upload(const SoftwareSurface& surface)
+TexturePacker::upload(SoftwareSurfacePtr surface)
 {
   // Add a 1px border around surfaces to avoid blending artifacts
   //SoftwareSurface surface = in_surface.add_1px_border();
 
-  Size    size(surface.get_width()+2, surface.get_height()+2);
+  Size    size(surface->get_width()+2, surface->get_height()+2);
   Rect    rect;
   TexturePtr texture;
 
@@ -167,26 +167,26 @@ TexturePacker::upload(const SoftwareSurface& surface)
     // duplicate border pixel
 
     // top
-    texture->put(surface, Rect(Point(0, 0), Size(surface.get_width(), 1)), 
+    texture->put(surface, Rect(Point(0, 0), Size(surface->get_width(), 1)), 
                  rect.left+1, rect.top);
     // bottom
-    texture->put(surface, Rect(Point(0, surface.get_height()-1), Size(surface.get_width(), 1)), 
+    texture->put(surface, Rect(Point(0, surface->get_height()-1), Size(surface->get_width(), 1)), 
                  rect.left+1, rect.bottom-1);
     // left
-    texture->put(surface, Rect(Point(0, 0), Size(1, surface.get_height())), 
+    texture->put(surface, Rect(Point(0, 0), Size(1, surface->get_height())), 
                  rect.left, rect.top+1);
     // right
-    texture->put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, surface.get_height())),
+    texture->put(surface, Rect(Point(surface->get_width()-1, 0), Size(1, surface->get_height())),
                  rect.right-1, rect.top+1);
 
     // duplicate corner pixels
     texture->put(surface, Rect(Point(0, 0), Size(1, 1)), 
                  rect.left, rect.top);     
-    texture->put(surface, Rect(Point(surface.get_width()-1, 0), Size(1, 1)), 
+    texture->put(surface, Rect(Point(surface->get_width()-1, 0), Size(1, 1)), 
                  rect.right-1, rect.top);
-    texture->put(surface, Rect(Point(surface.get_width()-1, surface.get_height()-1), Size(1, 1)), 
+    texture->put(surface, Rect(Point(surface->get_width()-1, surface->get_height()-1), Size(1, 1)), 
                  rect.right-1, rect.bottom-1);
-    texture->put(surface, Rect(Point(0, surface.get_height()-1), Size(1, 1)),
+    texture->put(surface, Rect(Point(0, surface->get_height()-1), Size(1, 1)),
                  rect.left, rect.bottom-1);
 
     // draw the main surface
@@ -197,7 +197,7 @@ TexturePacker::upload(const SoftwareSurface& surface)
                                  static_cast<float>(rect.top+1)    / static_cast<float>(texture->get_height()),
                                  static_cast<float>(rect.right-1)  / static_cast<float>(texture->get_width()), 
                                  static_cast<float>(rect.bottom-1) / static_cast<float>(texture->get_height())),
-                           Sizef(static_cast<float>(surface.get_width()), static_cast<float>(surface.get_height())));
+                           Sizef(static_cast<float>(surface->get_width()), static_cast<float>(surface->get_height())));
   }
 }
 
@@ -207,12 +207,12 @@ TexturePacker::save_all_as_png() const
   for(Textures::const_iterator i = textures.begin(); i != textures.end(); ++i)
   {
     TexturePtr texture = (*i)->get_texture();
-    SoftwareSurface surface = texture->get_software_surface();
+    SoftwareSurfacePtr surface = texture->get_software_surface();
 
     char filename[1024];
     sprintf(filename, "/tmp/texture_packer%04d.png", int(i - textures.begin()));
     std::cout << "Saving: " << filename << std::endl;
-    surface.save_png(filename);
+    surface->save_png(filename);
   }
 }
 

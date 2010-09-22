@@ -22,6 +22,7 @@
 #include <map>
 #include <string>
 
+#include "display/software_surface.hpp"
 #include "tile/tile_description.hpp"
 #include "util/currenton.hpp"
 
@@ -63,7 +64,7 @@ public:
   /** 
    * Adds a surface to the TileFactory
    */
-  void pack(int id, int colmap, const SoftwareSurface& image, const Rect& rect);
+  void pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect);
 
 private:
   void parse_tiles(FileReader& reader);

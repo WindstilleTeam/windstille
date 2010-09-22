@@ -56,7 +56,7 @@ SurfaceManager::get(const Pathname& filename)
   }
   else
   {
-    SoftwareSurface software_surface(filename);
+    SoftwareSurfacePtr software_surface = SoftwareSurface::create(filename);
 
     if (texture_packer)
     {
@@ -82,8 +82,8 @@ SurfaceManager::get(const Pathname& filename)
       }
         
       SurfacePtr result = Surface::create(texture, Rectf(0.0f, 0.0f, maxu, maxv),
-                                          Sizef(static_cast<float>(software_surface.get_width()),
-                                                static_cast<float>(software_surface.get_height())));
+                                          Sizef(static_cast<float>(software_surface->get_width()),
+                                                static_cast<float>(software_surface->get_height())));
       surfaces.insert(std::make_pair(filename, result));
       return result;
     }
@@ -95,7 +95,7 @@ SurfaceManager::load_grid(const Pathname& filename,
                           std::vector<SurfacePtr>& out_surfaces,
                           int width, int height)
 {
-  SoftwareSurface image(filename);
+  SoftwareSurfacePtr image = SoftwareSurface::create(filename);
   float maxu, maxv;
 
   TexturePtr texture;
@@ -104,21 +104,21 @@ SurfaceManager::load_grid(const Pathname& filename,
   {                                                                       
     texture = create_texture(image, &maxu, &maxv);
   }
-  catch(std::exception& e)
+  catch(const std::exception& e)
   {
     std::ostringstream msg;
     msg << "Couldn't create texture for '" << filename << "': " << e.what();
     throw std::runtime_error(msg.str());                                      
   }
 
-  for(int y = 0; y <= image.get_height() - height + 1; y += height)
+  for(int y = 0; y <= image->get_height() - height + 1; y += height)
   {
-    for(int x = 0; x <= image.get_width() - width + 1; x += width)
+    for(int x = 0; x <= image->get_width() - width + 1; x += width)
     {
-      float s_min_u = maxu * static_cast<float>(x) / static_cast<float>(image.get_width());
-      float s_min_v = maxv * static_cast<float>(x) / static_cast<float>(image.get_height());
-      float s_max_u = (maxu * (static_cast<float>(x + width)))  / static_cast<float>(image.get_width());
-      float s_max_v = (maxv * (static_cast<float>(x + height))) / static_cast<float>(image.get_height());
+      float s_min_u = maxu * static_cast<float>(x) / static_cast<float>(image->get_width());
+      float s_min_v = maxv * static_cast<float>(x) / static_cast<float>(image->get_height());
+      float s_max_u = (maxu * (static_cast<float>(x + width)))  / static_cast<float>(image->get_width());
+      float s_max_v = (maxv * (static_cast<float>(x + height))) / static_cast<float>(image->get_height());
 
       out_surfaces.push_back(Surface::create(texture, 
                                              Rectf(s_min_u, s_min_v, s_max_u, s_max_v), 
@@ -129,21 +129,21 @@ SurfaceManager::load_grid(const Pathname& filename,
 }
 
 TexturePtr
-SurfaceManager::create_texture(const SoftwareSurface& image,
+SurfaceManager::create_texture(SoftwareSurfacePtr image,
                                float* maxu, float* maxv)
 {
   // OpenGL2.0 should be fine with non-power-of-two
-  int texture_w = image.get_width();  //math::round_to_power_of_two(image.get_width());
-  int texture_h = image.get_height(); //math::round_to_power_of_two(image.get_height());
+  int texture_w = image->get_width();  //math::round_to_power_of_two(image->get_width());
+  int texture_h = image->get_height(); //math::round_to_power_of_two(image->get_height());
 
-  SoftwareSurface convert(texture_w, texture_h);
+  SoftwareSurfacePtr convert = SoftwareSurface::create(texture_w, texture_h);
 
-  image.blit(convert, 0, 0);
+  image->blit(convert, 0, 0);
 
   TexturePtr texture = Texture::create(convert);
   
-  *maxu = static_cast<float>(image.get_width())  / static_cast<float>(texture_w);
-  *maxv = static_cast<float>(image.get_height()) / static_cast<float>(texture_h);
+  *maxu = static_cast<float>(image->get_width())  / static_cast<float>(texture_w);
+  *maxv = static_cast<float>(image->get_height()) / static_cast<float>(texture_h);
 
   return texture;
 }

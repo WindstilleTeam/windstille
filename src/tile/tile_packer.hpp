@@ -42,7 +42,7 @@ public:
 
   /** Pack a tile and return the position where it is placed in the
       pixel buffer */
-  Rectf pack(const SoftwareSurface& image, int x, int y, int w, int h);
+  Rectf pack(SoftwareSurfacePtr image, int x, int y, int w, int h);
 
   /** Return true if the PixelBuffer is full */
   bool is_full() const;

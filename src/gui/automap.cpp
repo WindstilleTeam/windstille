@@ -43,26 +43,26 @@ Automap::Automap(const Rectf& rect_, Component* parent_) :
 {
   TileMap* tilemap = Sector::current()->get_tilemap();
 
-  SoftwareSurface image(tilemap->get_width(), tilemap->get_height());
+  SoftwareSurfacePtr image = SoftwareSurface::create(tilemap->get_width(), tilemap->get_height());
   
-  unsigned char* buffer = static_cast<unsigned char*>(image.get_pixels());
+  unsigned char* buffer = static_cast<unsigned char*>(image->get_pixels());
 
-  for(int y = 0; y < image.get_height(); ++y)
-    for(int x = 0; x < image.get_width(); ++x)
+  for(int y = 0; y < image->get_height(); ++y)
+    for(int x = 0; x < image->get_width(); ++x)
     {
       if (tilemap->get_pixel(x, y))
       {
-        buffer[image.get_pitch() * y + 4*x + 0] = 255;
-        buffer[image.get_pitch() * y + 4*x + 1] = 255;
-        buffer[image.get_pitch() * y + 4*x + 2] = 255;
-        buffer[image.get_pitch() * y + 4*x + 3] = 255;
+        buffer[image->get_pitch() * y + 4*x + 0] = 255;
+        buffer[image->get_pitch() * y + 4*x + 1] = 255;
+        buffer[image->get_pitch() * y + 4*x + 2] = 255;
+        buffer[image->get_pitch() * y + 4*x + 3] = 255;
       }
       else
       {
-        buffer[image.get_pitch() * y + 4*x + 0] = 0;
-        buffer[image.get_pitch() * y + 4*x + 1] = 0;
-        buffer[image.get_pitch() * y + 4*x + 2] = 0;
-        buffer[image.get_pitch() * y + 4*x + 3] = 255;
+        buffer[image->get_pitch() * y + 4*x + 0] = 0;
+        buffer[image->get_pitch() * y + 4*x + 1] = 0;
+        buffer[image->get_pitch() * y + 4*x + 2] = 0;
+        buffer[image->get_pitch() * y + 4*x + 3] = 255;
       }
     }
 

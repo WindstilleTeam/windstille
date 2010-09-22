@@ -25,6 +25,7 @@
 #include <GL/gl.h>
 #include <boost/shared_ptr.hpp>
 
+#include "display/software_surface.hpp"
 #include "util/pathname.hpp"
 
 class SoftwareSurface;
@@ -44,7 +45,7 @@ public:
    * Upload an SoftwareSurface onto an OpenGL texture. The surface must have power
    * of 2 dimensions
    * */
-  static TexturePtr create(const SoftwareSurface& image, GLint format = GL_RGBA);
+  static TexturePtr create(SoftwareSurfacePtr image, GLint format = GL_RGBA);
   
   /** 
    * Create an empty Texture with the given dimensions
@@ -53,7 +54,7 @@ public:
   
 private:
   Texture();
-  Texture(const SoftwareSurface& image, GLint format = GL_RGBA);
+  Texture(SoftwareSurfacePtr image, GLint format = GL_RGBA);
   Texture(GLenum target, int width, int height, GLint format = GL_RGBA);
 
 public:
@@ -70,11 +71,11 @@ public:
   void set_filter(GLenum mode);
 
   /** Uploads the given image to the given coordinates */
-  void put(const SoftwareSurface& image, int x, int y);
+  void put(SoftwareSurfacePtr image, int x, int y);
   
   /** Uploads the given subsection \a srcrect of \a image to the given
       coordinates */
-  void put(const SoftwareSurface& image, const Rect& srcrect, int x, int y);
+  void put(SoftwareSurfacePtr image, const Rect& srcrect, int x, int y);
 
   GLuint get_handle() const;
   
@@ -83,7 +84,7 @@ public:
    */ 
   GLenum get_target() const;
 
-  SoftwareSurface get_software_surface() const;
+  SoftwareSurfacePtr get_software_surface() const;
 
 private:
   GLenum m_target;

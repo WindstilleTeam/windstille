@@ -18,7 +18,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_BLITTER_HPP
 #define HEADER_WINDSTILLE_DISPLAY_BLITTER_HPP
 
-class SoftwareSurface;
+#include "display/software_surface.hpp"
 
 /** Duplicate all the edge pixel of the given rectangle to the outside
     of the rectangle, thus creating a border around the given
@@ -30,7 +30,7 @@ class SoftwareSurface;
     X 4 5 6 X  / 4 4 5 6 6
     X X X X X    4 4 5 6 6
 */
-void generate_border(const SoftwareSurface& surface, int x_pos, int y_pos, int width, int height);
+void generate_border(SoftwareSurfacePtr surface, int x_pos, int y_pos, int width, int height);
 
 #endif
 

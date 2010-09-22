@@ -26,18 +26,24 @@
 #include "math/rect.hpp"
 #include "display/software_surface.hpp"
 
-class SoftwareSurfaceImpl
+SoftwareSurfacePtr
+SoftwareSurface::create(const Pathname& filename)
 {
-public:
-  SDL_Surface* surface;
-};
+  return SoftwareSurfacePtr(new SoftwareSurface(filename));
+}
+
+SoftwareSurfacePtr
+SoftwareSurface::create(int width, int height, Format format)
+{
+  return SoftwareSurfacePtr(new SoftwareSurface(width, height, format));
+}
 
 SoftwareSurface::SoftwareSurface(const Pathname& filename) :
-  impl(new SoftwareSurfaceImpl())
+  m_surface(0)
 {
-  impl->surface = IMG_Load(filename.get_sys_path().c_str());
+  m_surface = IMG_Load(filename.get_sys_path().c_str());
 
-  if (!impl->surface)
+  if (!m_surface)
   {
     std::ostringstream str;
     str << "SoftwareSurface: Couldn't load: " << filename << std::endl;
@@ -45,101 +51,98 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
   }
   else
   {
-    SDL_SetAlpha(impl->surface, 0, 0);
+    SDL_SetAlpha(m_surface, 0, 0);
 
-    assert(!SDL_MUSTLOCK(impl->surface));
+    assert(!SDL_MUSTLOCK(m_surface));
   }
 }
 
 SoftwareSurface::SoftwareSurface(int width, int height, Format format) :
-  impl(new SoftwareSurfaceImpl())
+  m_surface(0)
 {
   assert(format == RGBA);
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  impl->surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+  m_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
                                        width, height, 32,
                                        0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
 #else
-  impl->surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+  m_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
                                        width, height, 32,
                                        0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 #endif
 
-  SDL_SetAlpha(impl->surface, 0, 0);
+  SDL_SetAlpha(m_surface, 0, 0);
 
-  assert(!SDL_MUSTLOCK(impl->surface));
+  assert(!SDL_MUSTLOCK(m_surface));
 }
 
 SoftwareSurface::~SoftwareSurface()
 {
-  if (impl)
-  {
-    SDL_FreeSurface(impl->surface);
-  }
+  SDL_FreeSurface(m_surface);
 }
 
 int
 SoftwareSurface::get_bytes_per_pixel() const
 {
-  return impl->surface->format->BytesPerPixel;
+  return m_surface->format->BytesPerPixel;
 }
 
 int
 SoftwareSurface::get_bits_per_pixel() const
 {
-  return impl->surface->format->BitsPerPixel;
+  return m_surface->format->BitsPerPixel;
 }
 
 int
 SoftwareSurface::get_width() const
 {
-  return impl->surface->w;
+  return m_surface->w;
 }
 
 int
 SoftwareSurface::get_height() const
 {
-  return impl->surface->h;
+  return m_surface->h;
 }
 
 Size
 SoftwareSurface::get_size() const
 {
-  return Size(impl->surface->w, 
-              impl->surface->h);
+  return Size(m_surface->w, 
+              m_surface->h);
 }
 
 int
 SoftwareSurface::get_pitch() const
 {
-  return impl->surface->pitch;
+  return m_surface->pitch;
 }
 
 void*
 SoftwareSurface::get_pixels() const
 {
-  return impl->surface->pixels;
+  return m_surface->pixels;
 }
 
 SDL_Surface*
 SoftwareSurface::get_surface() const
 {
-  return impl->surface;
+  return m_surface;
 }
 
 void
-SoftwareSurface::blit(SoftwareSurface& dst, int x, int y) const
+SoftwareSurface::blit(SoftwareSurfacePtr dst, int x, int y) const
 {
   SDL_Rect dst_rect; 
   dst_rect.x = static_cast<Sint16>(x);
   dst_rect.y = static_cast<Sint16>(y);
 
-  SDL_BlitSurface(impl->surface, 0, dst.impl->surface, &dst_rect);
+  SDL_BlitSurface(m_surface, 0, dst->m_surface, &dst_rect);
 }
 
 void
-SoftwareSurface::blit(const Rect& src_rect_, SoftwareSurface& dst, int x, int y) const
+SoftwareSurface::blit(const Rect& src_rect_, SoftwareSurfacePtr dst, int x, int y) const
 {
   SDL_Rect src_rect;
   src_rect.x = static_cast<Sint16>(src_rect_.left);
@@ -151,20 +154,20 @@ SoftwareSurface::blit(const Rect& src_rect_, SoftwareSurface& dst, int x, int y)
   dst_rect.x = static_cast<Sint16>(x);
   dst_rect.y = static_cast<Sint16>(y);
   
-  SDL_BlitSurface(impl->surface, &src_rect, dst.impl->surface, &dst_rect);
+  SDL_BlitSurface(m_surface, &src_rect, dst->m_surface, &dst_rect);
 }
 
 bool
 SoftwareSurface::is_at(int x, int y) const
 {
-  if (x >= 0 && x < impl->surface->w &&
-      y >= 0 && y < impl->surface->h)
+  if (x >= 0 && x < m_surface->w &&
+      y >= 0 && y < m_surface->h)
   {
     if (get_bits_per_pixel() == 32)
     {
-      uint8_t* pixels = static_cast<uint8_t*>(impl->surface->pixels);
+      uint8_t* pixels = static_cast<uint8_t*>(m_surface->pixels);
           
-      return pixels[y * impl->surface->pitch + x*4 + 3] > 128;
+      return pixels[y * m_surface->pitch + x*4 + 3] > 128;
     }
     else
     {
