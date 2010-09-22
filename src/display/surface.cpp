@@ -23,60 +23,45 @@
 #include "display/surface_drawing_parameters.hpp"
 #include "display/surface_manager.hpp"
 
-class SurfaceImpl
+SurfacePtr
+Surface::create(const Pathname& filename)
 {
-public:
-  /**
-   * Texture on which the surface is located
-   */
-  TexturePtr texture;
+  return SurfaceManager::current()->get(filename);
+}
 
-  /** 
-   * uv coordinates of the Surface in [0,1] range
-   */
-  Rectf   uv;
+SurfacePtr
+Surface::create(TexturePtr texture, const Rectf& uv, const Sizef& size)
+{
+  return SurfacePtr(new Surface(texture, uv, size));
+}
 
-  /**
-   * The size of the Surface in pixels
-   */
-  Sizef size;
-
-  SurfaceImpl() :
-    texture(),
-    uv(),
-    size()
-  {}
-};
+SurfacePtr
+Surface::create(int width, int height)
+{
+  return SurfacePtr(new Surface(width, height));
+}
 
-Surface::Surface() :
-  impl()
-{
-}
-
-Surface::Surface(const Pathname& filename) :
-  impl()
-{
-  // FIXME: a bit ugly, should move some of the surface_manager code over here
-  *this = SurfaceManager::current()->get(filename);
-}
-
 Surface::Surface(int width, int height) :
-  impl(new SurfaceImpl())
+  m_texture(),
+  m_uv(),
+  m_size()
 {
-  impl->size  = Size(width, height);
+  m_size  = Size(width, height);
 
-  impl->texture = Texture::create(GL_TEXTURE_2D, width, height);
-  impl->uv      = Rectf(0.0f, 0.0f,
-                        impl->size.width  / static_cast<float>(impl->texture->get_width()),
-                        impl->size.height / static_cast<float>(impl->texture->get_height()));
+  m_texture = Texture::create(GL_TEXTURE_2D, width, height);
+  m_uv      = Rectf(0.0f, 0.0f,
+                    m_size.width  / static_cast<float>(m_texture->get_width()),
+                    m_size.height / static_cast<float>(m_texture->get_height()));
 }
 
 Surface::Surface(TexturePtr texture, const Rectf& uv, const Sizef& size) :
-  impl(new SurfaceImpl())
+  m_texture(),
+  m_uv(),
+  m_size()
 {
-  impl->texture = texture;
-  impl->uv      = uv;
-  impl->size    = size;
+  m_texture = texture;
+  m_uv      = uv;
+  m_size    = size;
 }
 
 Surface::~Surface()
@@ -86,30 +71,25 @@ Surface::~Surface()
 float
 Surface::get_width()  const
 {
-  return impl->size.width;
+  return m_size.width;
 }
 
 float
 Surface::get_height() const
 { 
-  return impl->size.height; 
+  return m_size.height; 
 }
 
 TexturePtr
 Surface::get_texture() const
 {
-  return impl->texture;
+  return m_texture;
 }
 
 Rectf
 Surface::get_uv() const
 {
-  return impl->uv;
-}
-
-Surface::operator bool() const
-{
-  return impl.get() != 0;
+  return m_uv;
 }
 
 void
@@ -118,22 +98,22 @@ Surface::draw(const Vector2f& pos) const
   OpenGLState state;
   state.enable(GL_BLEND);
   state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.bind_texture(impl->texture);
+  state.bind_texture(m_texture);
   state.activate();
 
   glBegin(GL_QUADS);
 
-  glTexCoord2f(impl->uv.left, impl->uv.top);
+  glTexCoord2f(m_uv.left, m_uv.top);
   glVertex2f(pos.x, pos.y);
 
-  glTexCoord2f(impl->uv.right, impl->uv.top);
-  glVertex2f(pos.x + impl->size.width, pos.y);
+  glTexCoord2f(m_uv.right, m_uv.top);
+  glVertex2f(pos.x + m_size.width, pos.y);
 
-  glTexCoord2f(impl->uv.right, impl->uv.bottom);
-  glVertex2f(pos.x + impl->size.width, pos.y + impl->size.height);
+  glTexCoord2f(m_uv.right, m_uv.bottom);
+  glVertex2f(pos.x + m_size.width, pos.y + m_size.height);
 
-  glTexCoord2f(impl->uv.left, impl->uv.bottom);
-  glVertex2f(pos.x, pos.y + impl->size.height);
+  glTexCoord2f(m_uv.left, m_uv.bottom);
+  glVertex2f(pos.x, pos.y + m_size.height);
 
   glEnd();
 }
@@ -144,13 +124,13 @@ Surface::draw(const SurfaceDrawingParameters& params) const
   OpenGLState state;
   state.enable(GL_BLEND);
   state.set_blend_func(params.blendfunc_src, params.blendfunc_dst);
-  state.bind_texture(impl->texture);
+  state.bind_texture(m_texture);
   state.color(params.color);
   state.activate();
 
   glBegin(GL_QUADS);
 
-  Rectf uv = impl->uv;
+  Rectf uv = m_uv;
 
   if (params.hflip)
     std::swap(uv.left, uv.right);
@@ -160,8 +140,8 @@ Surface::draw(const SurfaceDrawingParameters& params) const
 
   Quad quad(params.pos.x, 
             params.pos.y,
-            params.pos.x + impl->size.width  * params.scale.x, 
-            params.pos.y + impl->size.height * params.scale.y);
+            params.pos.x + m_size.width  * params.scale.x, 
+            params.pos.y + m_size.height * params.scale.y);
 
   quad.rotate(params.angle);
   

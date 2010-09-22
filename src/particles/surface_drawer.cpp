@@ -23,10 +23,10 @@
 #include "display/drawing_context.hpp"
 #include "particles/surface_drawer.hpp"
 
-SurfaceDrawer::SurfaceDrawer(Surface surface_)
-  : surface(surface_),
-    blendfunc_src(),
-    blendfunc_dest()
+SurfaceDrawer::SurfaceDrawer(SurfacePtr surface_) :
+  surface(surface_),
+  blendfunc_src(),
+  blendfunc_dest()
 {
 }
 
@@ -93,7 +93,7 @@ SurfaceDrawer::~SurfaceDrawer()
 }
   
 void
-SurfaceDrawer::set_texture(Surface surface_)
+SurfaceDrawer::set_texture(SurfacePtr surface_)
 {
   surface = surface_;
 }
@@ -112,7 +112,7 @@ SurfaceDrawer::draw(const ParticleSystem& psys) const
   buffer->set_pos(Vector2f(psys.get_x_pos(), psys.get_y_pos()));
 
   buffer->set_mode(GL_QUADS);
-  buffer->set_texture(surface.get_texture());
+  buffer->set_texture(surface->get_texture());
   buffer->set_blend_func(blendfunc_src, blendfunc_dest);
 
   for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
@@ -129,8 +129,8 @@ SurfaceDrawer::draw(const ParticleSystem& psys) const
       float scale  = psys.get_size_start() + 
         psys.get_progress(i->t) * (psys.get_size_stop() - psys.get_size_start());
           
-      float width  = surface.get_width()  * scale;
-      float height = surface.get_height() * scale;
+      float width  = surface->get_width()  * scale;
+      float height = surface->get_height() * scale;
               
       // rotate
       float x_rot = width/2;
@@ -144,7 +144,7 @@ SurfaceDrawer::draw(const ParticleSystem& psys) const
         y_rot = (width/2) * s + (height/2) * c;
       }
 
-      buffer->add_texcoords(surface.get_uv());
+      buffer->add_texcoords(surface->get_uv());
 
       buffer->color(color);
       buffer->vertex(i->x - x_rot, i->y - y_rot);

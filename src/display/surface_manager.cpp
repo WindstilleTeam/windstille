@@ -45,7 +45,7 @@ SurfaceManager::~SurfaceManager()
 #endif
 }
 
-Surface
+SurfacePtr
 SurfaceManager::get(const Pathname& filename)
 {
   Surfaces::iterator i = surfaces.find(filename);
@@ -60,7 +60,7 @@ SurfaceManager::get(const Pathname& filename)
 
     if (texture_packer)
     {
-      Surface result = texture_packer->upload(software_surface);
+      SurfacePtr result = texture_packer->upload(software_surface);
       surfaces.insert(std::make_pair(filename, result));
       return result;              
     }
@@ -81,9 +81,9 @@ SurfaceManager::get(const Pathname& filename)
         throw std::runtime_error(msg.str());
       }
         
-      Surface result(texture, Rectf(0.0f, 0.0f, maxu, maxv),
-                     Sizef(static_cast<float>(software_surface.get_width()),
-                           static_cast<float>(software_surface.get_height())));
+      SurfacePtr result = Surface::create(texture, Rectf(0.0f, 0.0f, maxu, maxv),
+                                          Sizef(static_cast<float>(software_surface.get_width()),
+                                                static_cast<float>(software_surface.get_height())));
       surfaces.insert(std::make_pair(filename, result));
       return result;
     }
@@ -92,7 +92,7 @@ SurfaceManager::get(const Pathname& filename)
 
 void
 SurfaceManager::load_grid(const Pathname& filename,
-                          std::vector<Surface>& out_surfaces,
+                          std::vector<SurfacePtr>& out_surfaces,
                           int width, int height)
 {
   SoftwareSurface image(filename);
@@ -120,10 +120,10 @@ SurfaceManager::load_grid(const Pathname& filename,
       float s_max_u = (maxu * (static_cast<float>(x + width)))  / static_cast<float>(image.get_width());
       float s_max_v = (maxv * (static_cast<float>(x + height))) / static_cast<float>(image.get_height());
 
-      out_surfaces.push_back(Surface(texture, 
-                                     Rectf(s_min_u, s_min_v, s_max_u, s_max_v), 
-                                     Sizef(static_cast<float>(width),
-                                           static_cast<float>(height))));
+      out_surfaces.push_back(Surface::create(texture, 
+                                             Rectf(s_min_u, s_min_v, s_max_u, s_max_v), 
+                                             Sizef(static_cast<float>(width),
+                                                   static_cast<float>(height))));
     }
   }
 }

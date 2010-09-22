@@ -27,17 +27,17 @@ class VertexArrayDrawable;
 class SurfaceDrawer : public Drawer
 {
 private:
-  Surface surface;
+  SurfacePtr surface;
   GLenum blendfunc_src;
   GLenum blendfunc_dest;
   boost::shared_ptr<VertexArrayDrawable> buffer;
   
 public:
   SurfaceDrawer(FileReader& props);
-  SurfaceDrawer(Surface surface);
+  SurfaceDrawer(SurfacePtr surface);
   virtual ~SurfaceDrawer();
   
-  void set_texture(Surface surface);
+  void set_texture(SurfacePtr surface);
   void set_blendfuncs(GLenum blendfunc_src, GLenum blendfunc_dst);
 
   void draw(const ParticleSystem& psys) const;

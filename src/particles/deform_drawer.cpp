@@ -29,16 +29,16 @@ class DeformDrawerRequest : public Drawable
 {
 public:
   FramebufferPtr    framebuffer;
-  Surface&          surface;
+  SurfacePtr        surface;
   ParticleSystem&   psys;
   ShaderProgram&    shader_program;
 
   DeformDrawerRequest(const Vector2f& pos_, float z_pos_,  const Matrix& modelview_,
-                      FramebufferPtr framebuffer_, Surface& surface_, ParticleSystem& psys_,
-                      ShaderProgram& shader_program_)
-    : Drawable(pos_, z_pos_, modelview_),
-      framebuffer(framebuffer_), surface(surface_), psys(psys_), 
-      shader_program(shader_program_)
+                      FramebufferPtr framebuffer_, SurfacePtr surface_, ParticleSystem& psys_,
+                      ShaderProgram& shader_program_) :
+    Drawable(pos_, z_pos_, modelview_),
+    framebuffer(framebuffer_), surface(surface_), psys(psys_), 
+    shader_program(shader_program_)
   {}
   
   virtual ~DeformDrawerRequest() {}
@@ -89,7 +89,7 @@ public:
     
     OpenGLState state;
     
-    state.bind_texture(surface.get_texture());
+    state.bind_texture(surface->get_texture());
     state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     state.enable(GL_BLEND);
     state.activate();    
@@ -109,8 +109,8 @@ public:
         float scale  = psys.get_size_start() + 
           psys.get_progress(i->t) * (psys.get_size_stop() - psys.get_size_start());
           
-        float width  = surface.get_width()  * scale;
-        float height = surface.get_height() * scale;
+        float width  = surface->get_width()  * scale;
+        float height = surface->get_height() * scale;
               
         // rotate
         float x_rot = width/2;
@@ -166,7 +166,7 @@ public:
 
 DeformDrawer::DeformDrawer(FileReader& /*props*/) :
   framebuffer(Framebuffer::create_with_texture(GL_TEXTURE_2D, 800, 600)),
-  surface(Pathname("images/particles/deform2.png")),
+  surface(Surface::create(Pathname("images/particles/deform2.png"))),
   shader_program()
 {
   shader_program.attach(ShaderObject(GL_FRAGMENT_SHADER, "data/shader/particledeform.frag"));

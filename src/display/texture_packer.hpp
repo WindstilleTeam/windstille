@@ -41,8 +41,8 @@ public:
   TexturePacker(const Size& texture_size);
   ~TexturePacker();
   
-  Surface upload(const SoftwareSurface& surface);
-  bool    allocate(const Size& size, Rect& rect, TexturePtr& out_texture);
+  SurfacePtr upload(const SoftwareSurface& surface);
+  bool allocate(const Size& size, Rect& rect, TexturePtr& out_texture);
   
   void save_all_as_png() const;
 

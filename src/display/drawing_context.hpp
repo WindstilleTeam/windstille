@@ -23,6 +23,7 @@
 
 #include "scenegraph/drawable.hpp"
 #include "display/texture.hpp"
+#include "display/surface.hpp"
 
 class Surface;
 class SurfaceDrawingParameters;
@@ -78,12 +79,12 @@ public:
   void draw(Drawable* request);
   void draw(const Sprite&   sprite,  const Vector2f& pos, float z = 0);
   void draw(const std::string& text,    float x, float y, float z = 0);
-  void draw(const Surface surface, const Vector2f& pos, float z = 0, float alpha = 0);
-  void draw(const Surface surface, float x, float y, float z = 0, float alpha = 0);
-  void draw(const Surface surface, const SurfaceDrawingParameters& params, float z_pos = 0);
-  void draw(const Surface surface, const Vector2f& pos, const Quad& quad,
+  void draw(SurfacePtr surface, const Vector2f& pos, float z = 0, float alpha = 0);
+  void draw(SurfacePtr surface, float x, float y, float z = 0, float alpha = 0);
+  void draw(SurfacePtr surface, const SurfaceDrawingParameters& params, float z_pos = 0);
+  void draw(SurfacePtr surface, const Vector2f& pos, const Quad& quad,
             const DrawingParameters& params, float z_pos = 0);
-  void draw_control(const Surface surface, const Vector2f& pos, float angle, float z_pos = 0);
+  void draw_control(SurfacePtr surface, const Vector2f& pos, float angle, float z_pos = 0);
   /*} */
   
   /** Translate the drawing context */

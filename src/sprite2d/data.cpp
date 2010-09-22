@@ -49,7 +49,7 @@ SpriteData::SpriteData(const Pathname& pathname) :
       action->speed  = 1.0;
       action->scale  = 1.0f;
       action->offset = Vector2f(0, 0);
-      action->surfaces.push_back(Surface(pathname));
+      action->surfaces.push_back(Surface::create(pathname));
       actions.push_back(action.release());
     }
     else
@@ -72,7 +72,7 @@ SpriteData::SpriteData(const Pathname& pathname) :
       action->speed  = 1.0;
       action->scale  = 1.0f;
       action->offset = Vector2f(0, 0);
-      action->surfaces.push_back(Surface(pngfile));
+      action->surfaces.push_back(Surface::create(pngfile));
       actions.push_back(action.release());
     }
     else

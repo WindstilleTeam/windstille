@@ -23,7 +23,8 @@
 #include "display/texture.hpp"
 
 class SurfaceDrawingParameters;
-class SurfaceImpl;
+class Surface;
+typedef boost::shared_ptr<Surface> SurfacePtr;
 
 /**
  * Surface class. This class basically holds a reference to an opengl texture
@@ -34,8 +35,7 @@ class SurfaceImpl;
 class Surface
 {
 public:
-  Surface();
-  explicit Surface(const Pathname& filename);
+  static SurfacePtr create(const Pathname& filename);
   
   /** 
    * Create a new Surface object from a Texture
@@ -44,10 +44,16 @@ public:
    * @param width  Width of the surface on the screen
    * @param height Height of the surface on the screen
    */
+  static SurfacePtr create(TexturePtr texture, const Rectf& uv, const Sizef& size);
+  static SurfacePtr create(int width, int height);
+
+private:
   Surface(TexturePtr texture, const Rectf& uv, const Sizef& size);
   Surface(int width, int height);
-  ~Surface();
   
+public:
+  ~Surface();
+
   float get_width()  const;
   float get_height() const;
   
@@ -59,13 +65,21 @@ public:
   void draw(const Vector2f& pos) const;
   void draw(const SurfaceDrawingParameters& params) const;
 
-  /** true if the Texture is valid and usable, false if not */
-  operator bool() const;
-
-  long use_count() const { return impl.use_count(); }
-
 private:
-  boost::shared_ptr<SurfaceImpl> impl;
+  /**
+   * Texture on which the surface is located
+   */
+  TexturePtr m_texture;
+
+  /** 
+   * uv coordinates of the Surface in [0,1] range
+   */
+  Rectf m_uv;
+
+  /**
+   * The size of the Surface in pixels
+   */
+  Sizef m_size;
 };
 
 #endif

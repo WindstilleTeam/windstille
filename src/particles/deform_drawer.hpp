@@ -39,7 +39,7 @@ class DeformDrawer : public Drawer
 {
 private:
   FramebufferPtr framebuffer;
-  Surface        surface;
+  SurfacePtr     surface;
   ShaderProgram  shader_program;
 
 public:

@@ -26,20 +26,20 @@
 
 namespace gui {
 
-Automap::Automap(Component* parent_)
-  : Component(parent_),
-    surface(),
-    pos(),
-    zoom()
+Automap::Automap(Component* parent_) :
+  Component(parent_),
+  surface(),
+  pos(),
+  zoom()
 {
   assert(0);
 }
 
-Automap::Automap(const Rectf& rect_, Component* parent_)
-  : Component(rect_, parent_),
-    surface(),
-    pos(0.0f, 0.0f),
-    zoom(6.0f)
+Automap::Automap(const Rectf& rect_, Component* parent_) :
+  Component(rect_, parent_),
+  surface(),
+  pos(0.0f, 0.0f),
+  zoom(6.0f)
 {
   TileMap* tilemap = Sector::current()->get_tilemap();
 
@@ -66,9 +66,9 @@ Automap::Automap(const Rectf& rect_, Component* parent_)
       }
     }
 
-  surface = Surface(tilemap->get_width(), tilemap->get_height());
-  surface.get_texture()->set_filter(GL_NEAREST);
-  surface.get_texture()->put(image, 0, 0);
+  surface = Surface::create(tilemap->get_width(), tilemap->get_height());
+  surface->get_texture()->set_filter(GL_NEAREST);
+  surface->get_texture()->put(image, 0, 0);
 }
 
 Automap::~Automap()
@@ -79,10 +79,10 @@ void
 Automap::draw()
 {
   Display::push_cliprect(Rect(get_screen_rect()));
-  surface.draw(SurfaceDrawingParameters()
-               .set_pos(Vector2f(rect.left, rect.top) + pos)
-               .set_color(Color(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
-               .set_scale(zoom));
+  surface->draw(SurfaceDrawingParameters()
+                .set_pos(Vector2f(rect.left, rect.top) + pos)
+                .set_color(Color(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
+                .set_scale(zoom));
   Display::pop_cliprect();
 }
 

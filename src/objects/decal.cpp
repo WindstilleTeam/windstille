@@ -45,7 +45,7 @@ Decal::Decal(const FileReader& reader) :
   reader.get("vflip", vflip);
   reader.get("hflip", hflip);
 
-  Surface surface = Surface(Pathname(path));
+  SurfacePtr surface = Surface::create(Pathname(path));
 
   SurfaceDrawingParameters params;
 
@@ -57,8 +57,8 @@ Decal::Decal(const FileReader& reader) :
     case 2: params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
   }
 
-  Vector2f center_offset(-surface.get_width() /2,
-                         -surface.get_height()/2);
+  Vector2f center_offset(-surface->get_width() /2,
+                         -surface->get_height()/2);
 
   center_offset.x *= scale.x;
   center_offset.y *= scale.y;
@@ -113,8 +113,8 @@ Decal::set_parent(GameObject* parent)
   { // FIXME: Not going to work with double parenting
     pos += decal->pos;
 
-    Vector2f center_offset(-drawable->get_surface().get_width() /2,
-                           -drawable->get_surface().get_height()/2);
+    Vector2f center_offset(-drawable->get_surface()->get_width() /2,
+                           -drawable->get_surface()->get_height()/2);
 
     center_offset.x *= drawable->get_params().scale.x;
     center_offset.y *= drawable->get_params().scale.y;

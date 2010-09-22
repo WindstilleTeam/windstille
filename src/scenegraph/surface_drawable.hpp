@@ -25,11 +25,11 @@
 class SurfaceDrawable : public Drawable
 {
 private:
-  Surface surface;
+  SurfacePtr surface;
   SurfaceDrawingParameters params;
 
 public:
-  SurfaceDrawable(Surface surface_, const SurfaceDrawingParameters& params_,
+  SurfaceDrawable(SurfacePtr surface_, const SurfaceDrawingParameters& params_,
                   float z_pos_,
                   const Matrix& modelview_)
     : Drawable(pos, z_pos_, modelview_), 
@@ -40,7 +40,7 @@ public:
   virtual ~SurfaceDrawable()
   {}
   
-  Surface get_surface() const { return surface; }
+  SurfacePtr get_surface() const { return surface; }
   SurfaceDrawingParameters& get_params() { return params; }
 
   void render(unsigned int mask)
@@ -48,7 +48,7 @@ public:
     glPushMatrix();
     glMultMatrixf(modelview.matrix);
 
-    surface.draw(params);
+    surface->draw(params);
 
     glPopMatrix();
   }

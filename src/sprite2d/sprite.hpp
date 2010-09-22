@@ -92,7 +92,7 @@ public:
   void  set_scale(float s);
   float get_scale() const;
 
-  Surface get_current_surface() const;
+  SurfacePtr get_current_surface() const;
 
   Vector2f get_offset() const;
 

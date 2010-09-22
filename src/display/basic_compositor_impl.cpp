@@ -30,8 +30,8 @@ static const int LIGHTMAP_DIV = 4;
 
 BasicCompositorImpl::BasicCompositorImpl(const Size& window, const Size& viewport) :
   CompositorImpl(window, viewport),
-  m_lightmap(m_window.width  / LIGHTMAP_DIV,
-             m_window.height / LIGHTMAP_DIV)
+  m_lightmap(Surface::create(m_window.width  / LIGHTMAP_DIV,
+                             m_window.height / LIGHTMAP_DIV))
 {
 }
 
@@ -39,10 +39,10 @@ void
 BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state)
 {
   // Resize Lightmap, only needed in the editor, FIXME: move this into a 'set_size()' call
-  if (m_lightmap.get_width()  != m_window.width /LIGHTMAP_DIV ||
-      m_lightmap.get_height() != m_window.height/LIGHTMAP_DIV)
+  if (m_lightmap->get_width()  != m_window.width /LIGHTMAP_DIV ||
+      m_lightmap->get_height() != m_window.height/LIGHTMAP_DIV)
   {
-    m_lightmap = Surface(m_window.width / LIGHTMAP_DIV, m_window.height / LIGHTMAP_DIV);
+    m_lightmap = Surface::create(m_window.width / LIGHTMAP_DIV, m_window.height / LIGHTMAP_DIV);
   }
 
   if (sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN)
@@ -68,16 +68,16 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
     { // Copy lightmap to a texture
       OpenGLState state;
         
-      state.bind_texture(m_lightmap.get_texture());
+      state.bind_texture(m_lightmap->get_texture());
       state.activate();
 
       glCopyTexSubImage2D(GL_TEXTURE_2D, 
                           0,    // mipmap level
                           0, 0, // xoffset, yoffset
                           0, // x
-                          m_window.height - static_cast<GLsizei>(m_lightmap.get_height()), // y (OpenGL is upside down)
-                          static_cast<GLsizei>(m_lightmap.get_width()), 
-                          static_cast<GLsizei>(m_lightmap.get_height()));
+                          m_window.height - static_cast<GLsizei>(m_lightmap->get_height()), // y (OpenGL is upside down)
+                          static_cast<GLsizei>(m_lightmap->get_width()), 
+                          static_cast<GLsizei>(m_lightmap->get_height()));
     }
   }
 
@@ -102,7 +102,7 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
   { // Renders the lightmap to the screen     
     OpenGLState state;
 
-    state.bind_texture(m_lightmap.get_texture());
+    state.bind_texture(m_lightmap->get_texture());
 
     state.enable(GL_BLEND);
     state.set_blend_func(GL_DST_COLOR, GL_ZERO);

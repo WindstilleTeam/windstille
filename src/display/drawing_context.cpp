@@ -99,7 +99,7 @@ DrawingContext::draw(const Sprite& sprite, const Vector2f& pos, float z_pos)
 }
 
 void
-DrawingContext::draw(const Surface surface, const Vector2f& pos, const Quad& quad,
+DrawingContext::draw(SurfacePtr surface, const Vector2f& pos, const Quad& quad,
                      const DrawingParameters& params, float z_pos)
 {
   draw(new SurfaceQuadDrawable(surface, pos, quad, params, z_pos,
@@ -107,20 +107,20 @@ DrawingContext::draw(const Surface surface, const Vector2f& pos, const Quad& qua
 }
 
 void
-DrawingContext::draw(const Surface surface, const SurfaceDrawingParameters& params, float z_pos)
+DrawingContext::draw(SurfacePtr surface, const SurfaceDrawingParameters& params, float z_pos)
 {
   draw(new SurfaceDrawable(surface, params, z_pos,
                            modelview_stack.back()));
 }
 
 void
-DrawingContext::draw(const Surface surface, const Vector2f& pos, float z, float alpha)
+DrawingContext::draw(SurfacePtr surface, const Vector2f& pos, float z, float alpha)
 {
   draw(surface, pos.x, pos.y, z, alpha);
 }
 
 void
-DrawingContext::draw(Surface surface, float x, float y, float z, float )
+DrawingContext::draw(SurfacePtr surface, float x, float y, float z, float )
 {
   draw(new SurfaceDrawable(surface,
                            SurfaceDrawingParameters().set_pos(Vector2f(x, y)),
@@ -134,7 +134,7 @@ DrawingContext::draw(const std::string& text, float x, float y, float z)
 }
 
 void
-DrawingContext::draw_control(const Surface surface, const Vector2f& pos, float angle, float z_pos)
+DrawingContext::draw_control(SurfacePtr surface, const Vector2f& pos, float angle, float z_pos)
 {
   draw(new ControlDrawable(surface, pos, angle, z_pos, modelview_stack.back()));
 }

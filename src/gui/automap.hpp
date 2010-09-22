@@ -28,7 +28,7 @@ namespace gui {
 class Automap : public Component
 {
 private:
-  Surface surface;
+  SurfacePtr surface;
   Vector2f  pos;
   float   zoom;
 

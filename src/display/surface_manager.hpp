@@ -27,8 +27,8 @@
 #include "util/pathname.hpp"
 #include "util/currenton.hpp"
 #include "display/texture.hpp"
+#include "display/surface.hpp"
 
-class Surface;
 class TexturePacker;
 
 /**
@@ -39,7 +39,7 @@ class SurfaceManager : public Currenton<SurfaceManager>
 private:
   boost::scoped_ptr<TexturePacker> texture_packer;
   
-  typedef std::map<Pathname, Surface> Surfaces;
+  typedef std::map<Pathname, SurfacePtr> Surfaces;
   Surfaces surfaces;
 
 public:
@@ -47,14 +47,14 @@ public:
   ~SurfaceManager();
 
   /** returns a surface containing the image specified with filename */
-  Surface get(const Pathname& filename);
+  SurfacePtr get(const Pathname& filename);
 
   /**
    * Loads an image and splits it into several Surfaces sized width and height.
    * The created surfaces will be added to the surfaces vector.
    */
   void load_grid(const Pathname& filename,
-                 std::vector<Surface>& surfaces, int width, int height);
+                 std::vector<SurfacePtr>& surfaces, int width, int height);
 
   TexturePtr create_texture(const SoftwareSurface& image,
                             float* maxu, float* maxv);

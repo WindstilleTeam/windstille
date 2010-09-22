@@ -27,12 +27,12 @@
 class SurfaceQuadDrawable : public Drawable
 {
 private:
-  Surface m_surface;
+  SurfacePtr m_surface;
   Quad m_quad;
   DrawingParameters m_params;
 
 public:
-  SurfaceQuadDrawable(Surface surface, const Vector2f& pos_, const Quad& quad, 
+  SurfaceQuadDrawable(SurfacePtr surface, const Vector2f& pos_, const Quad& quad, 
                       const DrawingParameters& params, float z_pos_,
                       const Matrix& modelview_)
     : Drawable(pos_, z_pos_, modelview_),
@@ -49,7 +49,7 @@ public:
     OpenGLState state;
     state.enable(GL_BLEND);
     state.set_blend_func(m_params.blendfunc_src, m_params.blendfunc_dst);
-    state.bind_texture(m_surface.get_texture());
+    state.bind_texture(m_surface->get_texture());
     state.activate();
 
     glPushMatrix();
@@ -57,16 +57,16 @@ public:
 
     glBegin(GL_QUADS);
     {
-      glTexCoord2f(m_surface.get_uv().left, m_surface.get_uv().top);
+      glTexCoord2f(m_surface->get_uv().left, m_surface->get_uv().top);
       glVertex2f(pos.x + m_quad.p1.x, pos.y + m_quad.p1.y);
     
-      glTexCoord2f(m_surface.get_uv().right, m_surface.get_uv().top);
+      glTexCoord2f(m_surface->get_uv().right, m_surface->get_uv().top);
       glVertex2f(pos.x + m_quad.p2.x, pos.y + m_quad.p2.y);
 
-      glTexCoord2f(m_surface.get_uv().right, m_surface.get_uv().bottom);
+      glTexCoord2f(m_surface->get_uv().right, m_surface->get_uv().bottom);
       glVertex2f(pos.x + m_quad.p3.x, pos.y + m_quad.p3.y);
 
-      glTexCoord2f(m_surface.get_uv().left, m_surface.get_uv().bottom);
+      glTexCoord2f(m_surface->get_uv().left, m_surface->get_uv().bottom);
       glVertex2f(pos.x + m_quad.p4.x, pos.y + m_quad.p4.y);
     }
     glEnd();

@@ -25,7 +25,7 @@
 class BasicCompositorImpl : public CompositorImpl
 {
 private:
-  Surface m_lightmap;
+  SurfacePtr m_lightmap;
 
 public:
   BasicCompositorImpl(const Size& window, const Size& viewport);

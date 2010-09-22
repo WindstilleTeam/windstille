@@ -28,7 +28,7 @@
 
 struct SpriteAction
 {
-  typedef std::vector<Surface> Surfaces;
+  typedef std::vector<SurfacePtr> Surfaces;
 
   std::string name;
   float       speed;

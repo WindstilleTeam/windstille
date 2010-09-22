@@ -225,7 +225,7 @@ Sprite::get_alpha() const
   return color.a;
 }
 
-Surface
+SurfacePtr
 Sprite::get_current_surface() const
 {
   return current_action->surfaces[ static_cast<int> (frame) ];
@@ -240,8 +240,8 @@ Sprite::get_offset() const
 void
 Sprite::draw(const Vector2f& pos) const
 {
-  Surface surface = current_action->surfaces[ static_cast<int> (frame) ];
-  surface.draw(SurfaceDrawingParameters()
+  SurfacePtr surface = current_action->surfaces[ static_cast<int> (frame) ];
+  surface->draw(SurfaceDrawingParameters()
                .set_pos(pos + (current_action->offset * scale))
                .set_blend_func(blend_sfactor, blend_dfactor)
                .set_scale(scale)
@@ -299,13 +299,13 @@ Sprite::get_blend_dfactor() const
 float
 Sprite::get_width() const
 {
-  return current_action->surfaces[ static_cast<int>(frame) ].get_width();
+  return current_action->surfaces[ static_cast<int>(frame) ]->get_width();
 }
 
 float
 Sprite::get_height() const
 {
-  return current_action->surfaces[ static_cast<int>(frame) ].get_height();
+  return current_action->surfaces[ static_cast<int>(frame) ]->get_height();
 }
 
 /* EOF */
