@@ -23,13 +23,19 @@
 #include <GL/gl.h>
 #include <string>
 #include <boost/shared_ptr.hpp>
-
-class ShaderObjectImpl;
-
+
+class ShaderObject;
+typedef boost::shared_ptr<ShaderObject> ShaderObjectPtr;
+
 class ShaderObject
 {
 public:
+  static ShaderObjectPtr create(GLenum type, const std::string& filename);
+
+private:
   ShaderObject(GLenum type, const std::string& filename);
+
+public:
   ~ShaderObject();
 
   GLuint get_handle() const;
@@ -38,9 +44,9 @@ public:
   void print_log();
 
 private:
-  boost::shared_ptr<ShaderObjectImpl> impl;
+  GLuint m_handle;
 };
-
+
 #endif
 
 /* EOF */

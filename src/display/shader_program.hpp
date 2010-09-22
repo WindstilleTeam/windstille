@@ -23,18 +23,24 @@
 #include <GL/gl.h>
 #include <boost/shared_ptr.hpp>
 
-class ShaderProgramImpl;
-class ShaderObject;
+#include "display/shader_object.hpp"
 
-/** */
+class ShaderObject;
+class ShaderProgram;
+typedef boost::shared_ptr<ShaderProgram> ShaderProgramPtr;
+
 class ShaderProgram
 {
-private:
 public:
+  static ShaderProgramPtr create(); 
+
+private:
   ShaderProgram();
+
+public:
   ~ShaderProgram();
 
-  void attach(const ShaderObject& obj);
+  void attach(ShaderObjectPtr obj);
   void link();
 
   GLint get_uniform_location(const char* name);
@@ -53,7 +59,7 @@ public:
   void set_uniform4i(const char* name, GLint v0, GLint v1, GLint v2, GLint v3);
 
 private:
-  boost::shared_ptr<ShaderProgramImpl> impl;
+  GLuint m_handle;
 };
 
 #endif

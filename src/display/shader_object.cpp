@@ -51,25 +51,17 @@ static GLchar* load_file(const char* filename)
   return str;
 }
 
-class ShaderObjectImpl
+ShaderObjectPtr
+ShaderObject::create(GLenum type, const std::string& filename)
 {
-public:
-  GLuint handle;
-
-  ShaderObjectImpl(GLenum type)
-    : handle(glCreateShader(type))
-  {
-  }
-
-  ~ShaderObjectImpl()
-  {
-    glDeleteShader(handle);
-  }
-};
+  return ShaderObjectPtr(new ShaderObject(type, filename));
+}
 
 ShaderObject::ShaderObject(GLenum type, const std::string& filename) :
-  impl(new ShaderObjectImpl(type))
+  m_handle(0)
 {
+  m_handle = glCreateShader(type);
+
   load(filename);
   compile();
   print_log();
@@ -77,13 +69,14 @@ ShaderObject::ShaderObject(GLenum type, const std::string& filename) :
 
 ShaderObject::~ShaderObject()
 {
+  glDeleteShader(m_handle);
 }
 
 void
 ShaderObject::load(const std::string& filename)
 {
   GLchar* buf = load_file(filename.c_str());
-  glShaderSource(impl->handle, 1, const_cast<const GLchar**>(&buf), NULL);
+  glShaderSource(m_handle, 1, const_cast<const GLchar**>(&buf), NULL);
   assert_gl("load_source");
 
   std::cout << "Source:\n" << buf << std::endl;
@@ -93,13 +86,13 @@ ShaderObject::load(const std::string& filename)
 GLuint 
 ShaderObject::get_handle() const
 {
-  return impl->handle;
+  return m_handle;
 }
 
 void
 ShaderObject::compile()
 {
-  glCompileShader(impl->handle);
+  glCompileShader(m_handle);
 }
 
 void
@@ -110,7 +103,7 @@ ShaderObject::print_log()
   GLchar* infoLog;
 
   assert_gl("print_log1");
-  glGetShaderiv(impl->handle, GL_INFO_LOG_LENGTH, &infologLength);
+  glGetShaderiv(m_handle, GL_INFO_LOG_LENGTH, &infologLength);
   assert_gl("print_log2");
 
   if (infologLength > 0)
@@ -121,7 +114,7 @@ ShaderObject::print_log()
       printf("ERROR: Could not allocate InfoLog buffer\n");
       exit(1);
     }
-    glGetShaderInfoLog(impl->handle, infologLength, &charsWritten, infoLog);
+    glGetShaderInfoLog(m_handle, infologLength, &charsWritten, infoLog);
     printf("InfoLog:\n%s\n\n", infoLog);
     free(infoLog);
   }
