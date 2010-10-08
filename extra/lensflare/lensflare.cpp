@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "lenseflair.hpp"
+#include "lensflare.hpp"
 
 #include "display/opengl_state.hpp"
 #include "display/opengl_window.hpp"
@@ -27,7 +27,7 @@
 #include "math/random.hpp"
 #include "system/sdl.hpp"
 
-Lenseflair::Lenseflair() :
+Lensflare::Lensflare() :
   m_aspect_ratio(1280, 800),
   m_window_size(1280, 800),
   m_fullscreen(false),
@@ -48,7 +48,7 @@ Lenseflair::Lenseflair() :
 }
 
 void
-Lenseflair::draw()
+Lensflare::draw()
 {
   Vector2f screen_center(static_cast<float>(m_aspect_ratio.width)  / 2.0f,
                          static_cast<float>(m_aspect_ratio.height) / 2.0f);
@@ -145,7 +145,7 @@ Lenseflair::draw()
 }
 
 void
-Lenseflair::process_input()
+Lensflare::process_input()
 {
   SDL_Event event;
   while(SDL_PollEvent(&event))
@@ -180,7 +180,7 @@ Lenseflair::process_input()
 }
 
 int
-Lenseflair::main()
+Lensflare::main()
 {
   SDL sdl;
   OpenGLWindow window("Shader Test",
@@ -236,7 +236,7 @@ Lenseflair::main()
 
 int main()
 {
-  Lenseflair app;
+  Lensflare app;
   app.main();
   return 0;
 }

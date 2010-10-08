@@ -44,7 +44,7 @@ struct Flair
   {}
 };
 
-class Lenseflair
+class Lensflare
 {
 private:
   Size m_aspect_ratio;
@@ -66,7 +66,7 @@ private:
   Vector2f m_mouse;
   
 public:
-  Lenseflair();
+  Lensflare();
   
   int main();
 
@@ -74,8 +74,8 @@ public:
   void draw();
 
 private:
-  Lenseflair(const Lenseflair&);
-  Lenseflair& operator=(const Lenseflair&);
+  Lensflare(const Lensflare&);
+  Lensflare& operator=(const Lensflare&);
 };
 
 #endif
