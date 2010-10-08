@@ -24,19 +24,23 @@
 #include "math/vector2f.hpp"
 #include "math/size.hpp"
 #include "display/surface.hpp"
+#include "display/color.hpp"
 
 struct Flair
 {
   SurfacePtr m_surface;
   float      m_distance;
   float      m_scale;
-
+  Color      m_color;
+  
   Flair(SurfacePtr surface,
         float      distance,
-        float      scale) :
+        float      scale,
+        Color color) :
     m_surface(surface),
     m_distance(distance),
-    m_scale(scale)
+    m_scale(scale),
+    m_color(color)
   {}
 };
 
@@ -49,6 +53,7 @@ private:
   bool m_loop;
 
   SurfacePtr m_light;
+  SurfacePtr m_lightquery;
   SurfacePtr m_superlight;
   SurfacePtr m_flair1;
   SurfacePtr m_flair2;

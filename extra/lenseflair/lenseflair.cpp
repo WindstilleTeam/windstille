@@ -34,6 +34,7 @@ Lenseflair::Lenseflair() :
   m_loop(false),
   
   m_light(),
+  m_lightquery(),
   m_superlight(),
   m_flair1(),
   m_flair2(),
@@ -49,6 +50,9 @@ Lenseflair::Lenseflair() :
 void
 Lenseflair::draw()
 {
+  GLuint query_id;
+  glGenQueries(1, &query_id);
+
   Vector2f screen_center(static_cast<float>(m_aspect_ratio.width)  / 2.0f,
                          static_cast<float>(m_aspect_ratio.height) / 2.0f);
   float dist = (m_mouse - screen_center).length();
@@ -57,20 +61,67 @@ Lenseflair::draw()
   factor *= 3.3f;
   std::cout << factor << std::endl;
 
-  m_light->draw(SurfaceDrawingParameters()
-                .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                .set_pos(Vector2f(m_mouse.x - m_light->get_width()/2,
-                                  m_mouse.y - m_light->get_height()/2)));
+  glEnable(GL_DEPTH_TEST);
 
+  glDepthMask(GL_TRUE);
+  glAlphaFunc ( GL_GREATER, 0.1f );
+  glEnable(GL_ALPHA_TEST);
   m_cover->draw(Vector2f(600, 400));
+  glDisable(GL_ALPHA_TEST);
+  glDepthMask(GL_FALSE);
+
+  glBeginQuery(GL_SAMPLES_PASSED, query_id);
+  m_lightquery->draw(SurfaceDrawingParameters()
+                     .set_blend_func(GL_SRC_ALPHA, GL_ONE)
+                     .set_pos(Vector2f(m_mouse.x - m_lightquery->get_width()/2,
+                                       m_mouse.y - m_lightquery->get_height()/2)));
+  GLint samples = 0;
+  glEndQuery(GL_SAMPLES_PASSED);
+
+
+  GLint query_counter_bits = 0;
+  glGetQueryiv(GL_SAMPLES_PASSED, GL_QUERY_COUNTER_BITS, &query_counter_bits);
+  if (query_counter_bits == 0)
+  {
+    std::cout << "Occlusion query not supported" << std::endl;
+  }
+
+  glGetQueryObjectiv(query_id, GL_QUERY_RESULT, &samples);
+  
+  std::cout << "samples: " << samples << std::endl;
+
+  glDeleteQueries(1, &query_id);
+
+  float visibility = static_cast<float>(samples) / 16384.0f;
+  factor *= visibility;
 
   m_halo->draw(SurfaceDrawingParameters()
-                 .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                 .set_scale(2.0f + factor*5.0f)
-                 .set_pos(Vector2f(m_mouse.x,
-                                   m_mouse.y)
-                          - Vector2f(m_halo->get_width()/2 * (2.0f + factor*5.0f),
-                                     m_halo->get_height()/2 * (2.0f +  factor*5.0f))));
+               .set_blend_func(GL_SRC_ALPHA, GL_ONE)
+               .set_color(Color(1,1,1,visibility))
+               .set_scale(1.0f)
+               .set_pos(Vector2f(m_mouse.x,
+                                 m_mouse.y)
+                        - Vector2f(m_halo->get_width()/2 * (1.0f),
+                                   m_halo->get_height()/2 * (1.0f))));
+
+  glDisable(GL_DEPTH_TEST);
+
+  m_light->draw(SurfaceDrawingParameters()
+                .set_blend_func(GL_SRC_ALPHA, GL_ONE)
+                .set_color(Color(1,1,1,1))
+                .set_scale(visibility)
+                .set_pos(Vector2f(m_mouse.x - m_light->get_width()/2 * visibility,
+                                  m_mouse.y - m_light->get_height()/2 * visibility)));
+
+
+  m_halo->draw(SurfaceDrawingParameters()
+               .set_blend_func(GL_SRC_ALPHA, GL_ONE)
+               .set_color(Color(1,1,1,visibility))
+               .set_scale(2.0f + factor*5.0f)
+               .set_pos(Vector2f(m_mouse.x,
+                                 m_mouse.y)
+                        - Vector2f(m_halo->get_width()/2 * (2.0f + factor*5.0f),
+                                   m_halo->get_height()/2 * (2.0f +  factor*5.0f))));
 
 
   m_superlight->draw(SurfaceDrawingParameters()
@@ -85,7 +136,7 @@ Lenseflair::draw()
     i->m_surface->draw(SurfaceDrawingParameters()
                        .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                        .set_scale(i->m_scale)
-                       .set_color(Color(1,1,1,factor))
+                       .set_color(Color(i->m_color.r, i->m_color.g, i->m_color.b, i->m_color.a * visibility))
                        .set_pos(screen_center + (m_mouse - screen_center) * i->m_distance
                                 - Vector2f(i->m_surface->get_width() /2 * i->m_scale,
                                            i->m_surface->get_height()/2 * i->m_scale)));
@@ -173,29 +224,33 @@ Lenseflair::main()
   SurfaceManager surface_manager;
 
   m_light  = Surface::create(Pathname("light.png", Pathname::kSysPath));
+  m_lightquery  = Surface::create(Pathname("lightquery.png", Pathname::kSysPath));
   m_superlight  = Surface::create(Pathname("superlight.png", Pathname::kSysPath));
   m_flair1 = Surface::create(Pathname("flair1.png", Pathname::kSysPath));
   m_flair2 = Surface::create(Pathname("flair2.png", Pathname::kSysPath));
   m_cover = Surface::create(Pathname("cover.png", Pathname::kSysPath));
   m_halo = Surface::create(Pathname("halo.png", Pathname::kSysPath));
 
-  m_flairs.push_back(Flair(m_flair1, 0.5f, 0.5f));
-  m_flairs.push_back(Flair(m_flair1, 1.5f, 0.5f));
-  m_flairs.push_back(Flair(m_flair1, -1.5f, 0.5f));
-  m_flairs.push_back(Flair(m_flair1, 1.0/2.0f, 0.5f));
-  m_flairs.push_back(Flair(m_flair1, 1.0f/8.0f, 0.25f));
-  m_flairs.push_back(Flair(m_flair2, -1.0f/2.0f, 0.5f));
-  m_flairs.push_back(Flair(m_flair1, -1.0f/3.0f, 0.25f));
-  m_flairs.push_back(Flair(m_flair2, -1.0f/4.0f, 0.25f));
-  m_flairs.push_back(Flair(m_flair1, -1.0f/5.0f, 0.75f));
-  m_flairs.push_back(Flair(m_flair2, -1.0f/5.5f, 0.75f));
+  float pos[] = { 0.1f, 0.2f, 0.4f, 0.8f, 1.6f, 3.2f };
+  
+  for(size_t i = 0; i < sizeof(pos)/sizeof(float); ++i)
+  {
+    m_flairs.push_back(Flair(m_flair2, pos[i], 1.0f * pos[i], Color(1,1,1,1)));
+    m_flairs.push_back(Flair(m_flair2, -pos[i] * 0.7f, 1.0f * pos[i] * 0.7f, Color(1,1,1,1)));
+  }
+
+  for(size_t i = 0; i < sizeof(pos)/sizeof(float); ++i)
+  {
+    m_flairs.push_back(Flair(m_flair1, pos[i]* 0.2f, 1.0f * pos[i] * 0.2f, Color(1,1,1,0.1f)));
+    m_flairs.push_back(Flair(m_flair1, -pos[i] * 0.1f, 1.0f * pos[i] * 0.1f, Color(1,1,1,0.1f)));
+  }
 
 
   m_loop = true;
   while(m_loop)
   {
     glClearColor(0,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     process_input();
     draw();
