@@ -114,32 +114,6 @@ Pathname::exists() const
 }
 
 std::string
-Pathname::get_physfs_path() const
-{
-  switch(m_type)
-  {
-    case kSysPath: 
-    {
-      std::ostringstream str;
-      str << "Can't convert " << *this << " to PhysFS path";
-      throw std::runtime_error(str.str()); 
-      return "";
-    }
-          
-    case kUserPath:
-    case kDataPath:
-      return m_path;
-
-    case kEmpty:
-      return "";
-
-    default:
-      assert(!"Never reached");
-      return std::string();
-  }
-}
-
-std::string
 Pathname::get_sys_path() const
 {
   switch(m_type)

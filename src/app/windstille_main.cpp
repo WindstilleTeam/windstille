@@ -18,7 +18,6 @@
 
 #include <sstream>
 #include <boost/filesystem.hpp>
-#include <physfs.h>
 
 #include "app/config.hpp"
 #include "app/console.hpp"
@@ -58,7 +57,6 @@ WindstilleMain::main(int argc, char** argv)
 
     config.parse_args(argc, argv);
 
-    init_physfs(argv[0]);
     init_sdl();
 
     config.load();
@@ -89,8 +87,6 @@ WindstilleMain::main(int argc, char** argv)
       run();
 
       config.save();
-    
-      PHYSFS_deinit();
     }
   }
   catch (std::exception& err)
@@ -186,41 +182,6 @@ WindstilleMain::init_sdl()
   {
     atexit(SDL_Quit);
     SDL_EnableUNICODE(1);
-  }
-}
-
-void
-WindstilleMain::init_physfs(const char* argv0)
-{
-  if (!PHYSFS_init(argv0))
-  {
-    std::stringstream msg;
-    msg << "Couldn't initialize physfs: " << PHYSFS_getLastError();
-    throw std::runtime_error(msg.str());
-  }
-  else
-  {
-    boost::filesystem::create_directory(Pathname::get_userdir());
-    boost::filesystem::create_directory(Pathname("screenshots", Pathname::kUserPath).get_sys_path());
-
-    PHYSFS_setWriteDir(Pathname::get_userdir().c_str());
-    PHYSFS_addToSearchPath(Pathname::get_userdir().c_str(), 0);
-    PHYSFS_addToSearchPath(Pathname::get_datadir().c_str(), 0);
-
-    // allow symbolic links
-    PHYSFS_permitSymbolicLinks(1);
-
-    if (0)
-    { //show search Path
-      std::cout << "userdir: " << Pathname::get_userdir() << std::endl;
-      std::cout << "datadir: " << Pathname::get_datadir() << std::endl;
-
-      std::cout << "SearchPath:" << std::endl;
-      char** search_path = PHYSFS_getSearchPath();
-      for(char** i = search_path; *i != NULL; i++)
-        std::cout << "  " << *i << std::endl;;
-      PHYSFS_freeList(search_path);
-    }
   }
 }
 

@@ -113,8 +113,6 @@ public:
    */
   std::string get_sys_path() const;
 
-  std::string get_physfs_path() const;
-
   /** Returns the relative unprocessed path */
   std::string get_raw_path() const { return m_path; }
 
