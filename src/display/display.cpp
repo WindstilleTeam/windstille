@@ -602,7 +602,7 @@ void
 Display::push_framebuffer(FramebufferPtr framebuffer)
 {
   framebuffers.push_back(framebuffer);
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffers.back()->get_handle());
+  glBindFramebuffer(GL_FRAMEBUFFER, framebuffers.back()->get_handle());
 }
 
 void
@@ -614,11 +614,11 @@ Display::pop_framebuffer()
   
   if (!framebuffers.empty())
   {
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffers.back()->get_handle());
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffers.back()->get_handle());
   }
   else
   {
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
   }
 }
 

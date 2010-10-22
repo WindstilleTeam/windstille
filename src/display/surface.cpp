@@ -80,6 +80,12 @@ Surface::get_height() const
   return m_size.height; 
 }
 
+Sizef
+Surface::get_size() const
+{
+  return m_size;
+}
+
 TexturePtr
 Surface::get_texture() const
 {
@@ -146,16 +152,16 @@ Surface::draw(const SurfaceDrawingParameters& params) const
   quad.rotate(params.angle);
   
   glTexCoord2f(uv.left, uv.top);
-  glVertex2f(quad.p1.x, quad.p1.y);
+  glVertex3f(quad.p1.x, quad.p1.y, params.z_pos);
 
   glTexCoord2f(uv.right, uv.top);
-  glVertex2f(quad.p2.x, quad.p2.y);
+  glVertex3f(quad.p2.x, quad.p2.y, params.z_pos);
 
   glTexCoord2f(uv.right, uv.bottom);
-  glVertex2f(quad.p3.x, quad.p3.y);
+  glVertex3f(quad.p3.x, quad.p3.y, params.z_pos);
 
   glTexCoord2f(uv.left, uv.bottom);
-  glVertex2f(quad.p4.x, quad.p4.y);
+  glVertex3f(quad.p4.x, quad.p4.y, params.z_pos);
 
   glEnd(); 
 }

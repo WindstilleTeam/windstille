@@ -57,6 +57,7 @@ public:
 
   float get_width()  const;
   float get_height() const;
+  Sizef get_size() const;
   
   TexturePtr get_texture() const;
 

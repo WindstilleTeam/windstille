@@ -40,7 +40,7 @@ class DeformDrawer : public Drawer
 private:
   FramebufferPtr framebuffer;
   SurfacePtr     surface;
-  ShaderProgram  shader_program;
+  ShaderProgramPtr shader_program;
 
 public:
   DeformDrawer(FileReader& props);

@@ -25,12 +25,12 @@ class ShockwaveDrawable : public Drawable
 {
 public:
   TexturePtr noise;
-  ShaderProgram shader_program;
+  ShaderProgramPtr shader_program;
   float radius;
 
   ShockwaveDrawable(const Vector2f& pos_, 
                     TexturePtr      noise_,
-                    const ShaderProgram& shader_program_,
+                    ShaderProgramPtr shader_program_,
                     float r,
                     const Matrix& modelview_) :
     Drawable(pos_, 500.0f, modelview_), 

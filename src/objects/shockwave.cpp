@@ -25,7 +25,7 @@
 Shockwave::Shockwave(const FileReader& props) :
   pos(),
   noise(Texture::create(Pathname("images/noise3.png"))),
-  shader_program(),
+  shader_program(ShaderProgram::create()),
   radius()
 {
   props.get("pos", pos);
@@ -35,8 +35,8 @@ Shockwave::Shockwave(const FileReader& props) :
   noise->set_wrap(GL_REPEAT);
   noise->set_filter(GL_LINEAR);
 
-  shader_program.attach(ShaderObject(GL_FRAGMENT_SHADER, "data/shader/shockwave2.frag"));
-  shader_program.link();
+  shader_program->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, "data/shader/shockwave2.frag"));
+  shader_program->link();
 }
 
 Shockwave::~Shockwave()

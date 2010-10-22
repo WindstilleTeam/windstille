@@ -32,7 +32,13 @@ typedef boost::shared_ptr<ShaderProgram> ShaderProgramPtr;
 class ShaderProgram
 {
 public:
-  static ShaderProgramPtr create(); 
+  static ShaderProgramPtr create();
+  // loads and links a program
+  static ShaderProgramPtr create_from_file(const std::string& frag_filename = std::string(),
+                                           const std::string& vert_filename = std::string());
+  // loads but not links
+  static ShaderProgramPtr load_from_file(const std::string& frag_filename = std::string(),
+                                         const std::string& vert_filename = std::string());
 
 private:
   ShaderProgram();
@@ -42,6 +48,9 @@ public:
 
   void attach(ShaderObjectPtr obj);
   void link();
+
+  std::string get_info_log();
+  bool get_link_status();
 
   GLint get_uniform_location(const char* name);
   GLuint get_handle() const;
@@ -57,6 +66,8 @@ public:
   void set_uniform2i(const char* name, GLint v0, GLint v1);
   void set_uniform3i(const char* name, GLint v0, GLint v1, GLint v2);
   void set_uniform4i(const char* name, GLint v0, GLint v1, GLint v2, GLint v3);
+
+  void bind_frag_data_location(GLuint color_number, const char* name);
 
 private:
   GLuint m_handle;

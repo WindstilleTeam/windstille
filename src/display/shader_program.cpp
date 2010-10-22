@@ -16,11 +16,45 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-
-#include "display/shader_object.hpp"
-#include "display/assert_gl.hpp"
 #include "display/shader_program.hpp"
+
+#include <boost/scoped_array.hpp>
+#include <iostream>
+#include <stdexcept>
+
+#include "display/assert_gl.hpp"
+#include "display/assert_gl.hpp"
+#include "display/shader_object.hpp"
+
+ShaderProgramPtr
+ShaderProgram::load_from_file(const std::string& frag_filename,
+                              const std::string& vert_filename)
+{
+  ShaderProgramPtr prog(new ShaderProgram());
+
+  if (!frag_filename.empty())
+  {
+    ShaderObjectPtr frag = ShaderObject::create_from_file(GL_FRAGMENT_SHADER, frag_filename);
+    prog->attach(frag);
+  }
+
+  if (!vert_filename.empty())
+  {
+    ShaderObjectPtr vert = ShaderObject::create_from_file(GL_VERTEX_SHADER, vert_filename);
+    prog->attach(vert);
+  }
+
+  return prog;
+}
+
+ShaderProgramPtr
+ShaderProgram::create_from_file(const std::string& frag_filename,
+                                const std::string& vert_filename)
+{
+  ShaderProgramPtr prog = load_from_file(frag_filename, vert_filename);
+  prog->link();
+  return prog;
+}
 
 ShaderProgramPtr
 ShaderProgram::create()
@@ -43,12 +77,17 @@ void
 ShaderProgram::attach(ShaderObjectPtr obj)
 {
   glAttachShader(m_handle, obj->get_handle());
+  assert_gl("ShaderProgram::attach()");
 }
 
 void
 ShaderProgram::link()
 {
   glLinkProgram(m_handle);
+  if (!get_link_status())
+  {
+    throw std::runtime_error(get_info_log());
+  }
 }
 
 GLint
@@ -150,6 +189,42 @@ ShaderProgram::set_uniform4i(const char* name, GLint v0, GLint v1, GLint v2, GLi
     std::cout << "No such uniform named \"" << name << "\"" << std::endl;
   else
     glUniform4i(location, v0, v1, v2, v3);
+}
+
+void
+ShaderProgram::bind_frag_data_location(GLuint color_number, const char* name)
+{
+  assert(glBindFragDataLocation);
+  glBindFragDataLocation(m_handle, color_number, name);
+  assert_gl("ShaderProgram::bind_frag_data_location");
+}
+
+bool
+ShaderProgram::get_link_status()
+{
+  int status;
+  glGetProgramiv(m_handle, GL_LINK_STATUS, &status);
+  return (status == GL_TRUE);
+}
+
+std::string
+ShaderProgram::get_info_log()
+{
+  int info_log_len = 0;
+  int charsWritten  = 0;
+
+  glGetProgramiv(m_handle, GL_INFO_LOG_LENGTH, &info_log_len);
+
+  if (info_log_len > 0)
+  {
+    boost::scoped_array<GLchar> info_log(new GLchar[info_log_len]);
+    glGetProgramInfoLog(m_handle, info_log_len, &charsWritten, info_log.get());
+    return info_log.get();
+  }
+  else
+  {
+    return std::string("<empty>");
+  }
 }
 
 /* EOF */

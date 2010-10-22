@@ -35,6 +35,7 @@ public:
   GLenum blendfunc_dst;
 
   Vector2f pos;
+  float    z_pos;
 
   /** Includes color and alpha settings */
   Color   color;
@@ -50,6 +51,7 @@ public:
     : blendfunc_src(GL_SRC_ALPHA),
       blendfunc_dst(GL_ONE_MINUS_SRC_ALPHA),
       pos(0, 0),
+      z_pos(0.0f),
       color(1.0f, 1.0f, 1.0f, 1.0f),
       angle(0.0f),
       scale(1.0f, 1.0f),
@@ -84,6 +86,12 @@ public:
   SurfaceDrawingParameters& set_pos(const Vector2f& p) 
   { 
     pos = p;
+    return *this;
+  }
+
+  SurfaceDrawingParameters& set_z_pos(float p)
+  { 
+    z_pos = p;
     return *this;
   }
 

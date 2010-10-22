@@ -41,6 +41,8 @@ public:
   void set_fullscreen(bool fullscreen);
   void set_gamma(float r, float g, float b);
 
+  void swap_buffers();
+
 private:
   boost::scoped_ptr<OpenGLWindowImpl> m_impl;
 

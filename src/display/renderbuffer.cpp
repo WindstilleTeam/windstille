@@ -30,26 +30,26 @@ Renderbuffer::create(GLenum format, int width, int height, int multisample)
 Renderbuffer::Renderbuffer(GLenum format, int width, int height, int multisample) :
   m_handle(0)
 {
-  glGenRenderbuffersEXT(1, &m_handle);
+  glGenRenderbuffers(1, &m_handle);
 
-  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, m_handle);
+  glBindRenderbuffer(GL_RENDERBUFFER, m_handle);
 
   if (multisample)
   { 
     // antialiasing
     std::cout << "Antialised Renderbuffer" << std::endl;
-    glRenderbufferStorageMultisampleEXT(GL_RENDERBUFFER_EXT, multisample, format, width, height);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, multisample, format, width, height);
   }
   else
   {
-    glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, format, width, height);
+    glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
   }      
-  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0); 
+  glBindRenderbuffer(GL_RENDERBUFFER, 0); 
 }
 
 Renderbuffer::~Renderbuffer()
 {
-  glDeleteRenderbuffersEXT(1, &m_handle);
+  glDeleteRenderbuffers(1, &m_handle);
 }
 
 GLuint

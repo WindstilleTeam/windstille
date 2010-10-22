@@ -20,6 +20,8 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <boost/scoped_array.hpp>
+#include <stdexcept>
 
 #include "display/assert_gl.hpp"
 
@@ -52,7 +54,7 @@ static GLchar* load_file(const char* filename)
 }
 
 ShaderObjectPtr
-ShaderObject::create(GLenum type, const std::string& filename)
+ShaderObject::create_from_file(GLenum type, const std::string& filename)
 {
   return ShaderObjectPtr(new ShaderObject(type, filename));
 }
@@ -64,7 +66,6 @@ ShaderObject::ShaderObject(GLenum type, const std::string& filename) :
 
   load(filename);
   compile();
-  print_log();
 }
 
 ShaderObject::~ShaderObject()
@@ -79,7 +80,7 @@ ShaderObject::load(const std::string& filename)
   glShaderSource(m_handle, 1, const_cast<const GLchar**>(&buf), NULL);
   assert_gl("load_source");
 
-  std::cout << "Source:\n" << buf << std::endl;
+  //std::cout << "Source:\n" << buf << std::endl;
   free(buf);
 }
 
@@ -93,6 +94,10 @@ void
 ShaderObject::compile()
 {
   glCompileShader(m_handle);
+  if (!get_compile_status())
+  {
+    throw std::runtime_error(get_info_log());
+  }
 }
 
 void
@@ -119,6 +124,35 @@ ShaderObject::print_log()
     free(infoLog);
   }
   assert_gl("print_log3");
+}
+
+
+bool
+ShaderObject::get_compile_status()
+{
+  int status;
+  glGetShaderiv(m_handle, GL_COMPILE_STATUS, &status);
+  return (status == GL_TRUE);
+}
+
+std::string
+ShaderObject::get_info_log()
+{
+  int info_log_len = 0;
+  int charsWritten  = 0;
+
+  glGetShaderiv(m_handle, GL_INFO_LOG_LENGTH, &info_log_len);
+
+  if (info_log_len > 0)
+  {
+    boost::scoped_array<GLchar> info_log(new GLchar[info_log_len]);
+    glGetShaderInfoLog(m_handle, info_log_len, &charsWritten, info_log.get());
+    return info_log.get();
+  }
+  else
+  {
+    return std::string("<empty>");
+  }
 }
 
 /* EOF */

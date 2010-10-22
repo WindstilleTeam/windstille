@@ -48,9 +48,12 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
 
   SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1); // vsync
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
-  SDL_GL_SetAttribute(SDL_GL_RED_SIZE,     5);
-  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,   5);
-  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,    5);
+
+  SDL_GL_SetAttribute(SDL_GL_RED_SIZE,     8);
+  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,   8);
+  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,    8);
+  SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
   if (anti_aliasing)
@@ -80,7 +83,10 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
     }
     else
     {
-      //std::cout << "glewInit() successfull" << std::endl;
+      std::cout << "glewInit() successfull: " << glewGetString(GLEW_VERSION) << std::endl;
+      std::cout << "OpenGL " << glGetString(GL_VERSION) << " detected" << std::endl;
+      std::cout << "OpenGL 3.2: " << GL_VERSION_3_2 << std::endl;
+      std::cout << "GL_VERSION_3_0: " << GL_VERSION_3_0 << std::endl;
 
       glViewport(0, 0, m_impl->m_window->w, m_impl->m_window->h);
       glMatrixMode(GL_PROJECTION);
@@ -156,6 +162,12 @@ OpenGLWindow::set_gamma(float r, float g, float b)
   {
     // Couldn't set gamma
   }
+}
+
+void
+OpenGLWindow::swap_buffers()
+{
+  SDL_GL_SwapBuffers();
 }
 
 /* EOF */

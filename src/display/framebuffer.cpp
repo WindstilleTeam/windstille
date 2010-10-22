@@ -55,13 +55,13 @@ Framebuffer::Framebuffer() :
   m_color_buffer(),
   m_depth_stencil_buffer()
 {
-  glGenFramebuffersEXT(1, &m_handle);
+  glGenFramebuffers(1, &m_handle);
   assert_gl("Framebuffer::Framebuffer()");   
 }
 
 Framebuffer::~Framebuffer()
 {
-  glDeleteFramebuffersEXT(1, &m_handle);  
+  glDeleteFramebuffers(1, &m_handle);  
 }
 
 TexturePtr
@@ -95,21 +95,21 @@ Framebuffer::create_with_texture_internal(GLenum target, int width, int height, 
 {
   m_size = Size(width, height);
   m_texture = Texture::create(target, width, height);
-  m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8_EXT, width, height, multisample);
+  m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, width, height, multisample);
     
   // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_handle);
+  glBindFramebuffer(GL_FRAMEBUFFER, m_handle);
 
   // bind texture and renderbuffers to the framebuffer
-  glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, m_texture->get_target(), m_texture->get_handle(), 0);
-  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,   GL_RENDERBUFFER_EXT, m_depth_stencil_buffer->get_handle());
-  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, m_depth_stencil_buffer->get_handle());
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_texture->get_target(), m_texture->get_handle(), 0);
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,   GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
 
   assert_gl("Framebuffer::Framebuffer() - binding");
 
   check_completness();
 
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void
@@ -117,29 +117,29 @@ Framebuffer::create_internal(GLenum format, int width, int height, int multisamp
 { 
   m_size = Size(width, height);
   m_color_buffer = Renderbuffer::create(format, width, height, multisample);
-  m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8_EXT, width, height, multisample);
+  m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, width, height, multisample);
 
   // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_handle);
+  glBindFramebuffer(GL_FRAMEBUFFER, m_handle);
 
-  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,  GL_RENDERBUFFER_EXT, m_color_buffer->get_handle());
-  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,   GL_RENDERBUFFER_EXT, m_depth_stencil_buffer->get_handle());
-  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, m_depth_stencil_buffer->get_handle());
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,  GL_RENDERBUFFER, m_color_buffer->get_handle());
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,   GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
 
   assert_gl("Framebuffer::Framebuffer() - binding");
 
   check_completness();
 
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);    
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);    
 }
 
 void
 Framebuffer::check_completness()
 {
-  GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+  GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
   switch(status)
   {
-    case GL_FRAMEBUFFER_COMPLETE_EXT:
+    case GL_FRAMEBUFFER_COMPLETE:
       std::cout << "Framebuffer ok" << std::endl;
       break;
 

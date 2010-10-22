@@ -81,7 +81,8 @@ public:
     LIGHTMAP       = 1<<1,
     HIGHLIGHTMAP   = 1<<2,
     CONTROLMAP     = 1<<3,
-    LIGHTMAPSCREEN = 1<<4
+    LIGHTMAPSCREEN = 1<<4,
+    GLOWMAP        = 1<<5
   };
 
   /** The render mask allows to switch of some layers and effects for

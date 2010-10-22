@@ -31,11 +31,11 @@ public:
   FramebufferPtr    framebuffer;
   SurfacePtr        surface;
   ParticleSystem&   psys;
-  ShaderProgram&    shader_program;
+  ShaderProgramPtr  shader_program;
 
   DeformDrawerRequest(const Vector2f& pos_, float z_pos_,  const Matrix& modelview_,
                       FramebufferPtr framebuffer_, SurfacePtr surface_, ParticleSystem& psys_,
-                      ShaderProgram& shader_program_) :
+                      ShaderProgramPtr shader_program_) :
     Drawable(pos_, z_pos_, modelview_),
     framebuffer(framebuffer_), surface(surface_), psys(psys_), 
     shader_program(shader_program_)
@@ -167,10 +167,10 @@ public:
 DeformDrawer::DeformDrawer(FileReader& /*props*/) :
   framebuffer(Framebuffer::create_with_texture(GL_TEXTURE_2D, 800, 600)),
   surface(Surface::create(Pathname("images/particles/deform2.png"))),
-  shader_program()
+  shader_program(ShaderProgram::create())
 {
-  shader_program.attach(ShaderObject(GL_FRAGMENT_SHADER, "data/shader/particledeform.frag"));
-  shader_program.link();
+  shader_program->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, "data/shader/particledeform.frag"));
+  shader_program->link();
 }
 
 DeformDrawer::~DeformDrawer()

@@ -30,13 +30,16 @@ typedef boost::shared_ptr<ShaderObject> ShaderObjectPtr;
 class ShaderObject
 {
 public:
-  static ShaderObjectPtr create(GLenum type, const std::string& filename);
+  static ShaderObjectPtr create_from_file(GLenum type, const std::string& filename);
 
 private:
   ShaderObject(GLenum type, const std::string& filename);
 
 public:
   ~ShaderObject();
+
+  std::string get_info_log();
+  bool get_compile_status();
 
   GLuint get_handle() const;
   void load(const std::string& filename);
