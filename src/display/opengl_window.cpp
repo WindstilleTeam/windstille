@@ -20,7 +20,7 @@
 
 #include <GL/glew.h>
 #include <SDL.h>
-#include <SDL/SDL_image.h>
+#include <SDL_image.h>
 
 #include "util/util.hpp" 
 #include "display/opengl_state.hpp"

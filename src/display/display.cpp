@@ -24,7 +24,6 @@
 #include <errno.h>
 #include <fstream>
 #include <GL/glew.h>
-#include <GL/glext.h>
 #include <sstream>
 #include <stdexcept>
 

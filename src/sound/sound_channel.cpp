@@ -18,7 +18,6 @@
 
 #include "sound/sound_channel.hpp"
 
-#include <AL/al.h>
 #include <iostream>
 
 #include "math/vector2f.hpp"

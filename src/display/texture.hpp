@@ -22,7 +22,6 @@
 
 #include <string>
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <boost/shared_ptr.hpp>
 
 #include "display/software_surface.hpp"

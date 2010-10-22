@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_FONT_TTF_FONT_HPP
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <boost/scoped_ptr.hpp>
 #include <string>
 

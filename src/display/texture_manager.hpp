@@ -22,7 +22,6 @@
 #include <string>
 #include <map>
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "display/texture.hpp"
 #include "util/currenton.hpp"

@@ -25,8 +25,13 @@
 #include <vector>
 #include <map>
 
-#include <AL/alc.h>
-#include <AL/al.h>
+#ifdef __MACOSX__
+#  include <OpenAL/alc.h>
+#  include <OpenAL/al.h>
+#else
+#  include <AL/alc.h>
+#  include <AL/al.h>
+#endif
 
 #include "math/vector2f.hpp"
 #include "sound/sound_channel.hpp"

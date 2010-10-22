@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_DISPLAY_SURFACE_DRAWING_PARAMETERS_HPP
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "math/vector2f.hpp"
 #include "display/color.hpp"

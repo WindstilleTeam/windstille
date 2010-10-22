@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_DISPLAY_SHADER_PROGRAM_HPP
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <boost/shared_ptr.hpp>
 
 #include "display/shader_object.hpp"

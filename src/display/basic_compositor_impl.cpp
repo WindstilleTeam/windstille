@@ -19,7 +19,6 @@
 #include "display/basic_compositor_impl.hpp"
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "display/graphic_context_state.hpp"
 #include "display/opengl_state.hpp"

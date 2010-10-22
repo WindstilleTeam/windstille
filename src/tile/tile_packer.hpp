@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_TILE_TILE_PACKER_HPP
 
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <boost/scoped_ptr.hpp>
 
 #include "display/texture.hpp"
