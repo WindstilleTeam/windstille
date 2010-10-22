@@ -21,11 +21,12 @@
 #include <iostream>
 
 #include "math/vector2f.hpp"
-#include "util/pathname.hpp"
+#include "sound/dummy_sound_source.hpp"
+#include "sound/sound_file.hpp"
 #include "sound/sound_manager.hpp"
 #include "sound/sound_source.hpp"
 #include "sound/stream_sound_source.hpp"
-#include "sound/dummy_sound_source.hpp"
+#include "util/pathname.hpp"
 
 SoundChannel::SoundChannel(SoundManager& sound_manager) :
   m_sound_manager(sound_manager),
