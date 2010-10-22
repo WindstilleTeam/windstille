@@ -25,7 +25,7 @@
 #include <vector>
 #include <map>
 
-#ifdef __MACOSX__
+#ifdef __APPLE__
 #  include <OpenAL/alc.h>
 #  include <OpenAL/al.h>
 #else

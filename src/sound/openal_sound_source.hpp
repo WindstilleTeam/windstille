@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SOUND_OPENAL_SOUND_SOURCE_HPP
 #define HEADER_WINDSTILLE_SOUND_OPENAL_SOUND_SOURCE_HPP
 
-#ifdef __MACOSX__
+#ifdef __APPLE__
 #  include <OpenAL/al.h>
 #else
 #  include <AL/al.h>
