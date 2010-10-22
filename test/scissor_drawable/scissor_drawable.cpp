@@ -38,7 +38,8 @@ int main()
     SDL_EnableUNICODE(1);
   }
 
-  OpenGLWindow window(Size(960, 600),
+  OpenGLWindow window("Scissor Drawable", 
+                      Size(960, 600),
                       Size(960, 600));
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
@@ -50,15 +51,15 @@ int main()
   
   boost::shared_ptr<ScissorDrawable> scissor(new ScissorDrawable(Rect(200, 200, 400, 400)));
   boost::shared_ptr<StencilDrawable> stencil(new StencilDrawable());
-  boost::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(Surface(Pathname("images/titlescreen.png")), 
+  boost::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")), 
                                                                  SurfaceDrawingParameters(), 0, Matrix::identity()));
 
-  boost::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(Surface(Pathname("images/titlescreen.png")), 
+  boost::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")), 
                                                                   SurfaceDrawingParameters().set_pos(Vector2f(-50.0f, -50.0f)), 0, Matrix::identity()));
-  boost::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface(Pathname("images/portrait.png")), 
+  boost::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")), 
                                                                   SurfaceDrawingParameters(), 0, Matrix::identity()));
 
-  boost::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface(Pathname("images/portrait.png")), 
+  boost::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")), 
                                                                   SurfaceDrawingParameters().set_pos(Vector2f(-25.0f, 25.0f)),
                                                                   0, Matrix::identity()));
   boost::shared_ptr<StencilDrawable> stencil2(new StencilDrawable());
