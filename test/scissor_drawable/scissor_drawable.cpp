@@ -57,6 +57,11 @@ int main()
                                                                   SurfaceDrawingParameters().set_pos(Vector2f(-50.0f, -50.0f)), 0, Matrix::identity()));
   boost::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface(Pathname("images/portrait.png")), 
                                                                   SurfaceDrawingParameters(), 0, Matrix::identity()));
+
+  boost::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface(Pathname("images/portrait.png")), 
+                                                                  SurfaceDrawingParameters().set_pos(Vector2f(-25.0f, 25.0f)),
+                                                                  0, Matrix::identity()));
+  boost::shared_ptr<StencilDrawable> stencil2(new StencilDrawable());
   
   if (0)
   {
@@ -71,13 +76,17 @@ int main()
     stencil->get_drawable_group().add_drawable(surface);
 
     group.add_drawable(surface2);
-    group.add_drawable(stencil);
+
+    stencil2->get_stencil_group().add_drawable(surface4);
+    stencil2->get_drawable_group().add_drawable(stencil);
+
+    group.add_drawable(stencil2);
   }
 
   for(int i = 0; i < 500; ++i)
   {
     std::cout << "." << std::flush;   
-    surface->get_params().set_pos(Vector2f(i-250, 0));
+    surface->get_params().set_pos(Vector2f(static_cast<float>(i) - 250.0f, 0.0f));
     group.render(~0u);
     SDL_GL_SwapBuffers();
   }
