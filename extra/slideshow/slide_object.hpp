@@ -30,7 +30,7 @@ class SlideObject
 private:
   Pathname m_filename;
   Sizef m_size;
-  Surface m_surface;
+  SurfacePtr m_surface;
   float m_begin;
   SlidePath m_path;
 

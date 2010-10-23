@@ -52,7 +52,7 @@ SlideObject::draw(float relative_time)
 {
   if (!m_surface)
   {
-    m_surface = Surface(m_filename);
+    m_surface = Surface::create(m_filename);
   }
 
   SlidePathNode node = m_path.get(relative_time);
@@ -74,14 +74,14 @@ SlideObject::draw(float relative_time)
   float scale = node.zoom;
 
   // recalc pos so that we are draw the image centered
-  pos.x -= m_surface.get_width() /2.0f * scale;
-  pos.y -= m_surface.get_height()/2.0f * scale;
+  pos.x -= m_surface->get_width() /2.0f * scale;
+  pos.y -= m_surface->get_height()/2.0f * scale;
 
-  m_surface.draw(SurfaceDrawingParameters()
-                 .set_color(color)
-                 .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                 .set_pos(pos)
-                 .set_scale(scale));
+  m_surface->draw(SurfaceDrawingParameters()
+                  .set_color(color)
+                  .set_blend_func(GL_SRC_ALPHA, GL_ONE)
+                  .set_pos(pos)
+                  .set_scale(scale));
 }
 
 float
@@ -131,7 +131,7 @@ SlideObject::unload()
 {
   if (m_surface)
   {
-    m_surface = Surface();
+    m_surface.reset();
     std::cout << "Unloading: " << m_filename.get_sys_path() << std::endl;
     return true;
   }

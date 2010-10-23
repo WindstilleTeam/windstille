@@ -180,8 +180,8 @@ App::main(int argc, char** argv)
     slide_show.load(*i, m_aspect_ratio);
   }
  
-  Framebuffer framebuffer_multisample(GL_TEXTURE_2D, m_window_size.width, m_window_size.height, 8);
-  Framebuffer framebuffer(GL_TEXTURE_2D, m_window_size.width, m_window_size.height);
+  FramebufferPtr framebuffer_multisample = Framebuffer::create(m_window_size.width, m_window_size.height, 8);
+  FramebufferPtr framebuffer = Framebuffer::create(m_window_size.width, m_window_size.height);
 
   bool loop = true;
   bool pause = false;
@@ -328,11 +328,11 @@ App::main(int argc, char** argv)
       //SDL_GL_SwapBuffers();
       Display::pop_framebuffer();
 
-      glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, framebuffer_multisample.get_handle());
-      glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, framebuffer.get_handle());
+      glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, framebuffer_multisample->get_handle());
+      glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, framebuffer->get_handle());
 
-      glBlitFramebufferEXT(0, 0, framebuffer_multisample.get_width(), framebuffer_multisample.get_height(), 
-                           0, 0, framebuffer.get_width(), framebuffer.get_height(),
+      glBlitFramebufferEXT(0, 0, framebuffer_multisample->get_width(), framebuffer_multisample->get_height(), 
+                           0, 0, framebuffer->get_width(), framebuffer->get_height(),
                            GL_COLOR_BUFFER_BIT, GL_LINEAR /*NEAREST*/);
 
       glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, 0);
