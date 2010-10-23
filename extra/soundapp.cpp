@@ -18,49 +18,63 @@
 
 #include <iostream>
 
+#include "math/random.hpp"
 #include "sound/sound_manager.hpp"
 #include "sound/sound_source.hpp"
+#include "sound/sound_file.hpp"
+#include "sound/filtered_sound_file.hpp"
 
 int main(int argc, char** argv)
 {
-  if (argc != 3)
+  if (argc < 2)
   {
-    std::cout << "Usage: " << argv[0] << " SOUND VOICE" << std::endl;
+    std::cout << "Usage: " << argv[0] << " SOUNDS..." << std::endl;
     return 1;
   }
   else
   {
     SoundManager sound_manager;
-  
-    Vector2f pos(0.0f, 0.0f);
-    SoundSourcePtr source = sound_manager.sound().prepare(Pathname(argv[1], Pathname::kSysPath));
-    SoundSourcePtr voice  = sound_manager.voice().prepare(Pathname(argv[2], Pathname::kSysPath));
-
-    sound_manager.set_master_volume(10.0f);
-    sound_manager.sound().set_volume(0.1f);
-    sound_manager.voice().set_volume(1.0f);
     
-    if (true)
+    sound_manager.set_gain(1.0f);
+    sound_manager.sound().set_gain(1.0f);
+    sound_manager.voice().set_gain(1.0f);
+
+    Random random(time(NULL));
+
+    std::cout << "Filter Test" << std::endl;
+
+    std::vector<SoundSourcePtr> sources;
+    for(int i = 1; i < argc; ++i)
     {
+      std::auto_ptr<SoundFile> sound_file = SoundFile::load(Pathname(argv[i], Pathname::kSysPath));
+      //std::auto_ptr<SoundFile> filtered_sound_file(new FilteredSoundFile(sound_file));
+      SoundSourcePtr source = sound_manager.sound().prepare(sound_file, kStreamSoundSource);
+
       source->set_looping(true);
+      Vector2f pos(random.frand(-500, 500), 0.0f);
       source->set_position(pos);
-      //source->set_velocity(Vector2f(5.0f, 0.0f));
-      source->play();
+      //source->set_rolloff_factor(0.0f);
+
+      std::cout << argv[i] << ": " << pos << std::endl;
+
+      sources.push_back(source);
+    }
+    
+    for(std::vector<SoundSourcePtr>::iterator i = sources.begin(); i != sources.end(); ++i)
+    {
+      (*i)->play();
     }
 
-    if (true)
+    while(true)
     {
-      voice->set_looping(true);
-      voice->set_position(pos);
-      voice->play();
-    }
+      for(std::vector<SoundSourcePtr>::iterator i = sources.begin(); i != sources.end(); ++i)
+      {
+        std::cout << "pos: " << (*i)->get_pos() << std::endl;
+      }
 
-    while(source->is_playing())
-    {
-      pos.x += 25.0f;
-      //source->set_position(pos);
-      usleep(100000);
-      std::cout << "." << std::flush;
+      usleep(10000);
+
+      sound_manager.update(100);
     }
   
     return 0;

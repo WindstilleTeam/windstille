@@ -21,7 +21,9 @@
 #include <stdexcept>
 
 #include "display/opengl_window.hpp"
+#include "display/framebuffer.hpp"
 #include "display/surface.hpp"
+#include "display/display.hpp"
 #include "display/surface_manager.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "math/size.hpp"
@@ -49,18 +51,21 @@ int main(int argc, char** argv)
     SDL_EnableUNICODE(1);
   }
 
-  Size window_size(1024, 768);
-  OpenGLWindow window(window_size, window_size);
+  Size window_size(1024, 576);
+  OpenGLWindow window("Image Blur", window_size, window_size);
 
   SDL_ShowCursor(SDL_DISABLE);
 
   SurfaceManager surface_manager;
-  Surface surface(Pathname(argv[1], Pathname::kSysPath));
 
-  Surface surface_2(Pathname(argv[2], Pathname::kSysPath));
+  FramebufferPtr framebuffer = Framebuffer::create_hdr(window_size.width, window_size.height);
+
+  SurfacePtr surface   = Surface::create(Pathname(argv[1], Pathname::kSysPath));
+  SurfacePtr surface_2 = Surface::create(Pathname(argv[2], Pathname::kSysPath));
 
   float ray_length = 3.0f;
   Vector2f pos;
+  Vector2f last_pos;
   int t = 0;
   std::vector<Vector2f> buffer(16);
   std::vector<Vector2f>::size_type buffer_pos = 0;
@@ -68,6 +73,7 @@ int main(int argc, char** argv)
   while(!quit)
   {
     SDL_Event event;
+    last_pos = pos;
     while(SDL_PollEvent(&event))
     {
       switch(event.type)
@@ -99,8 +105,9 @@ int main(int argc, char** argv)
           
         case SDL_MOUSEMOTION:
           //std::cout << event.motion.x << ", " << event.motion.y << std::endl;
+          last_pos = pos;
           pos = Vector2f(1024.0f - static_cast<float>(event.motion.x),
-                         768.0f - static_cast<float>(event.motion.y));
+                         576.0f - static_cast<float>(event.motion.y));
           break;
 
         default:
@@ -109,37 +116,55 @@ int main(int argc, char** argv)
     }
 
     t += 30;
-    ray_length = sin(t/1000.0f);
+    //ray_length = sin(t/1000.0f);
 
     buffer[buffer_pos % buffer.size()] = pos;
     buffer_pos += 1;
 
+    Display::push_framebuffer(framebuffer);
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if (false)
+    if (true)
     {
-      for(size_t i = 0; i < std::min(buffer_pos, buffer.size()); ++i)
+      if (false)
       {
-        size_t idx = (buffer_pos - buffer.size() + i) % buffer.size();
-        pos = buffer[idx];
+        for(size_t i = 0; i < std::min(buffer_pos, buffer.size()); ++i)
+        {
+          size_t idx = (buffer_pos - buffer.size() + i) % buffer.size();
+          pos = buffer[idx];
 
-        float n = static_cast<float>(buffer.size());
+          float n = static_cast<float>(buffer.size());
 
-        if (true)
-        { // after image motion blur
-          n = static_cast<float>(i) / ((n * n + n) / 2.0f);
+          if (false)
+          { // after image motion blur
+            n = static_cast<float>(i) / ((n * n + n) / 2.0f);
+          }
+          else
+          { // simple trail, doesn't fade out
+            n = 1.0f / n;
+          }
+
+          surface->draw(SurfaceDrawingParameters()
+                        .set_scale(1.0f)
+                        .set_pos(pos - Vector2f(surface->get_width()/2, surface->get_height()/2))
+                        .set_blend_func(GL_SRC_ALPHA, GL_ONE)
+                        .set_color(Color(1.0f, 1.0f, 1.0f, n)));
         }
-        else
-        { // simple trail, doesn't fade out
-          n = 1.0f / n;
+      }
+      else
+      {
+        int n = 32;
+        for(int i = 0; i < n; ++i)
+        {
+          surface->draw(SurfaceDrawingParameters()
+                        .set_scale(1.0f)
+                        .set_pos(((float)i/(float)(n-1)) * pos + ((float)(n-i-1)/(float)(n-1)) * last_pos
+                                 - Vector2f(surface->get_width()/2, surface->get_height()/2))
+                        .set_blend_func(GL_SRC_ALPHA, GL_ONE)
+                        .set_color(Color(1.0f, 1.0f, 1.0f, 1.0f / static_cast<float>(n))));
         }
-
-        surface.draw(SurfaceDrawingParameters()
-                     .set_scale(1.0f)
-                     .set_pos(pos - Vector2f(surface.get_width()/2, surface.get_height()/2))
-                     .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                     .set_color(Color(1.0f, 1.0f, 1.0f, n)));
       }
     }
     else
@@ -149,31 +174,45 @@ int main(int argc, char** argv)
       {
         float scale = 1.0f + static_cast<float>(i) / static_cast<float>(n) * ray_length;
         if (true)
-          surface.draw(SurfaceDrawingParameters()
-                       .set_scale(scale)
-                       .set_pos(Vector2f(512, 384) - Vector2f(surface.get_width()/2 * scale, 
-                                                              surface.get_height()/2 * scale)
-                                + (Vector2f(512, 384) - pos) * scale * 3.0f)
-                       .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                       .set_color(Color(1.0f, 1.0f, 1.0f, static_cast<float>(1)/static_cast<float>(n))));
+          surface->draw(SurfaceDrawingParameters()
+                        .set_scale(scale)
+                        .set_pos(Vector2f(512, 288) - Vector2f(surface->get_width()/2 * scale, 
+                                                               surface->get_height()/2 * scale)
+                                 + (Vector2f(512, 288) - pos) * scale * 3.0f)
+                        .set_blend_func(GL_SRC_ALPHA, GL_ONE)
+                        .set_color(Color(1.0f, 1.0f, 1.0f, static_cast<float>(1)/static_cast<float>(n))));
 
         if (false && i == 1)
         {
           scale = 1.0f;
           //std::cout << "Black: " << pos << std::endl;
-          surface_2.draw(SurfaceDrawingParameters()
+          surface_2->draw(SurfaceDrawingParameters()
                          .set_scale(scale)
-                         .set_pos(Vector2f(512, 384) - Vector2f(surface_2.get_width()/2 * scale, 
-                                                                surface_2.get_height()/2 * scale)
-                                  + (Vector2f(512, 384) - pos) * scale * 3.0f)
+                         .set_pos(Vector2f(512, 288) - Vector2f(surface_2->get_width()/2 * scale, 
+                                                                surface_2->get_height()/2 * scale)
+                                  + (Vector2f(512, 288) - pos) * scale * 3.0f)
                          .set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
                          .set_color(Color(1.0f, 1.0f, 1.0f, 1.0f)));
         }
       }
     }
+    Display::pop_framebuffer();
+
+    if (true)
+    {
+      glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, framebuffer->get_handle());
+      glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
+
+      glBlitFramebufferEXT(0, 0, framebuffer->get_width(), framebuffer->get_height(), 
+                           0, 0, framebuffer->get_width(), framebuffer->get_height(),
+                           GL_COLOR_BUFFER_BIT, GL_LINEAR /*NEAREST*/);
+
+      glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, 0);
+      glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
+    }
 
     SDL_GL_SwapBuffers();
-    SDL_Delay(15);
+    SDL_Delay(20);
   }
 
   return 0;
