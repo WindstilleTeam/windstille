@@ -19,42 +19,12 @@ import time
 import os
 import sys
 import scons_tests
+from scons_enhancements import *
 from pprint import pprint
 
 start_time = time.time()
 
-# CacheDir('cache')
-
-preset_cxxflags = {
-    'release':     [ "-O3", "-s"  ],
-    'profile':     [ "-O2", "-g3", "-pg" ],
-    'debug':       [ "-O0", "-g3" ],
-    'development': [ "-O2", "-g3",
-                     "-ansi",
-                     "-pedantic",
-                     "-Wall",
-                     "-Wextra",
-                     "-Wnon-virtual-dtor",
-                     "-Weffc++",
-                     "-Wconversion",
-                     # "-Wold-style-cast",
-                     "-Werror",
-                     "-Wshadow",
-                     "-Wcast-qual",
-                     "-Winit-self", # only works with >= -O1
-                     "-Wno-unused-parameter",
-                     # "-Winline",
-                     # "-Wfloat-equal",
-                     # "-Wunreachable-code",
-                     ]
-    }
-
-preset_linkflags = {
-    'release': [],
-    'profile': [ "-pg" ],
-    'debug':   [],
-    'development': []
-    }
+CacheDir('cache')
 
 def MakeEnvironment(packages, cfg):
     env = Environment(ENV=os.environ)
@@ -103,7 +73,7 @@ class Project:
             "cwiid" : False
             }
 
-        self.env = Environment(ENV=os.environ)
+        self.env = Environment()
 
     def configure(self):
         # windstille_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
@@ -132,15 +102,6 @@ class Project:
         # opts.Save('options.cache', self.env)
         Help(opts.GenerateHelpText(self.env))
 
-        if 'BUILD' in self.env:
-            print "Build Type: %s" % self.env['BUILD']
-            self.env.Append(CXXFLAGS  = preset_cxxflags[self.env['BUILD']],
-                            LINKFLAGS = preset_linkflags[self.env['BUILD']])
-        else:
-            print "Build Type: release"
-            self.env.Append(CXXFLAGS  = preset_cxxflags['release'],
-                            LINKFLAGS = preset_linkflags['release'])
-
         conf = Configure(self.env, custom_tests = { 'Check32bit' : scons_tests.Check32bit,
                                                     'CheckYacc'  : scons_tests.CheckYacc,
                                                     'CheckLex'   : scons_tests.CheckLex})
@@ -153,6 +114,37 @@ class Project:
 
         self.cfg = {}
         cfg = self.cfg
+
+        # preset compiler flags
+        cfg['release'] = { 'CCFLAGS' : [ "-O3", "-s" ] }
+        cfg['profile'] = { 'CCFLAGS' : [ "-O2", "-g3", "-pg" ],
+                           'LINKFLAGS' : [ "-pg" ] }
+        cfg['debug']   = { 'CCFLAGS' : [ "-O0", "-g3" ] }
+        cfg['development'] = { 'CCFLAGS' : [ "-O2", "-g3",
+                                             "-ansi",
+                                             "-pedantic",
+                                             "-Wall",
+                                             "-Wextra",
+                                             "-Wnon-virtual-dtor",
+                                             "-Weffc++",
+                                             "-Wconversion",
+                                             # "-Wold-style-cast",
+                                             "-Werror",
+                                             "-Wshadow",
+                                             "-Wcast-qual",
+                                             "-Winit-self", # only works with >= -O1
+                                             "-Wno-unused-parameter",
+                                             # "-Winline",
+                                             # "-Wfloat-equal",
+                                             # "-Wunreachable-code",
+                                             ] }
+
+        if 'BUILD' in self.env:
+            print "Build Type: %s" % self.env['BUILD']
+            cfg['default'] = cfg[self.env['BUILD']]
+        else:
+            print "Build Type: release"
+            cfg['default'] = cfg['release']
 
         if sys.platform == 'darwin':
             cfg['OpenAL']    = { 'LINKFLAGS' : [ '-framework', 'OpenAL' ] }
@@ -243,16 +235,16 @@ class Project:
         self.build_extra_apps()
 
     def build_squirrel(self):
-        squirrel_env = Environment()
-        squirrel_env.Append(CPPPATH  = ['external/SQUIRREL2/include'],
-                            CXXFLAGS = ["-fno-rtti", "-g", "-DDEBUG"])
+        pkg = { 'CPPPATH'  : [ 'external/SQUIRREL2/include' ],
+                'CXXFLAGS' : [ "-fno-rtti", "-g", "-DDEBUG" ] }
 
         if self.features['64bit']:
-            squirrel_env.Append(CPPDEFINES = '_SQ64')
+            pkg['CPPDEFINES'] = ['_SQ64']
 
-        self.squirrel_lib = squirrel_env.StaticLibrary('squirrel',
-                                                       Glob('external/SQUIRREL2/squirrel/*.cpp') +
-                                                       Glob('external/SQUIRREL2/sqstdlib/*.cpp'))
+        BuildStaticLibrary('squirrel',
+                           Glob('external/SQUIRREL2/squirrel/*.cpp') +
+                           Glob('external/SQUIRREL2/sqstdlib/*.cpp'),
+                           [pkg], self.cfg)
 
     def build_miniswig(self):
         miniswig_env = Environment()
@@ -284,33 +276,11 @@ class Project:
                     miniswig_bin)
 
     def build_binreloc(self):
-        self.binreloc_lib = StaticLibrary("binreloc", ["external/binreloc-2.0/binreloc.c"],
-                                          CPPDEFINES=["ENABLE_BINRELOC"])
+        BuildStaticLibrary("binreloc", ["external/binreloc-2.0/binreloc.c"],
+                           [ { 'CPPDEFINES' : ["ENABLE_BINRELOC"] } ], self.cfg)
 
     def build_wstlib(self):
-        if False:
-            wstlib_env    = self.env.Clone()
-            wstlib_env.Append(CPPPATH=['src', 'external/binreloc-2.0/', "src/scripting/"],
-                              CPPDEFINES=["HAVE_BINRELOC"])
-            self.util_lib      = wstlib_env.StaticLibrary('wst_util', Glob('src/lisp/*.cpp') + Glob('src/util/*.cpp'))
-            self.math_lib      = wstlib_env.StaticLibrary('wst_math', Glob('src/math/*.cpp'))
-            self.navgraph_lib  = wstlib_env.StaticLibrary('wst_navgraph', Glob('src/navigation/*.cpp'))
-            self.particles_lib = wstlib_env.StaticLibrary('wst_particles', Glob('src/particles/*.cpp'))
-            self.sound_lib     = wstlib_env.StaticLibrary('wst_sound', Glob('src/sound/*.cpp'))
-
-            # libdisplay
-            display_env = wstlib_env.Clone()
-            display_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
-            display_env.ParseConfig('freetype-config --libs --cflags | sed "s/-I/-isystem/g"')
-            self.display_lib = display_env.StaticLibrary('wst_display', 
-                                                         Glob('src/font/*.cpp') +
-                                                         Glob('src/display/*.cpp') +
-                                                         Glob('src/scenegraph/*.cpp') +
-                                                         Glob('src/sprite2d/*.cpp') +
-                                                         Glob('src/sprite3d/*.cpp'))
-            self.system_lib = display_env.StaticLibrary('system', Glob('src/system/*.cpp'))
-
-        pkgs = [ 'windstille', 'binreloc' ]
+        pkgs = [ 'default', 'windstille', 'binreloc' ]
         BuildStaticLibrary('wst_util',
                            Glob('src/lisp/*.cpp') +
                            Glob('src/util/*.cpp'),
@@ -329,41 +299,6 @@ class Project:
         BuildStaticLibrary('wst_system', Glob('src/system/*.cpp'), pkgs + [ 'SDL' ], self.cfg)
 
     def build_windstille(self):
-        if False:
-            windstille_env = self.env.Clone()
-            windstille_env.Append(CPPPATH=['src', '.', 'external/SQUIRREL2/include/', 'src/scripting/'],
-                                  CPPDEFINES=["HAVE_BINRELOC"],
-                                  LIBS=[self.particles_lib, self.navgraph_lib, self.display_lib, 
-                                        self.util_lib, self.math_lib, self.sound_lib,
-                                        self.squirrel_lib,
-                                        'GL', 'GLU', 'GLEW',
-                                        'SDL_image', 'openal', 'ogg', 'vorbis', 'vorbisfile', 'png',
-                                        'boost_signals', 'boost_filesystem'])
-
-            windstille_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
-            windstille_env.ParseConfig('freetype-config --libs --cflags | sed "s/-I/-isystem/g"')
-
-            if self.features['64bit']:
-                windstille_env.Append(CPPDEFINES = '_SQ64')
-
-            if self.features['cwiid']:
-                windstille_env.Append(CPPDEFINES = 'HAVE_CWIID')
-                windstille_env.Append(LIBS = 'cwiid')
-
-            windstille_env.Program('windstille',
-                                   Glob('src/app/*.cpp') +
-                                   Glob('src/armature/*.cpp') +
-                                   Glob('src/collision/*.cpp') +
-                                   Glob('src/engine/*.cpp') +
-                                   Glob('src/gui/*.cpp') +
-                                   Glob('src/hud/*.cpp') +
-                                   Glob('src/input/*.cpp') +
-                                   Glob('src/objects/*.cpp') +
-                                   Glob('src/properties/*.cpp') +
-                                   Glob('src/screen/*.cpp') +
-                                   Glob('src/scripting/*.cpp') +
-                                   Glob('src/tile/*.cpp'))
-
         BuildProgram('windstille',
                      Glob('src/app/*.cpp') +
                      Glob('src/armature/*.cpp') +
@@ -377,7 +312,7 @@ class Project:
                      Glob('src/screen/*.cpp') +
                      Glob('src/scripting/*.cpp') +
                      Glob('src/tile/*.cpp'),
-                     [ 'windstille',
+                     [ 'default', 'windstille',
                        'wst_particles', 'wst_navgraph', 'wst_display', 'wst_util', 'wst_math', 'wst_sound',
                        'OpenGL', 'GLEW',
                        'freetype',
@@ -388,28 +323,12 @@ class Project:
                      self.cfg)
 
     def build_windstille_editor(self):
-        if False:
-            editor_env = self.env.Clone()
-            editor_env.Append(CPPPATH=['src'],
-                              CPPDEFINES=["HAVE_BINRELOC"],
-                              LIBS = [self.particles_lib, self.navgraph_lib, self.display_lib,
-                                      self.util_lib, self.math_lib, self.binreloc_lib,
-                                      'GL', 'GLEW', 'SDL_image', 'boost_filesystem'])
-
-            # editor_env.ParseConfig('Magick++-config --libs --cppflags | sed "s/-I/-isystem/g"')
-            editor_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
-            editor_env.ParseConfig('pkg-config --cflags --libs libcurl | sed "s/-I/-isystem/g"')
-            editor_env.ParseConfig('pkg-config --cflags --libs libpng | sed "s/-I/-isystem/g"')
-
-            # Turn -I options into -isystem, so we don't get warnings from external libraries
-            editor_env.ParseConfig('pkg-config --cflags --libs gtkmm-2.4 | sed "s/-I/-isystem/g"')
-            editor_env.ParseConfig('pkg-config --cflags --libs gtkglextmm-1.2 | sed "s/-I/-isystem/g"')
-
-        pkgs = [ 'SDL', 'SDL_image',
-                 'boost_filesystem',
-                 'gtkglextmm-1.2' , 'gtkmm-2.4', 'SDL', 'curl', 'png', 'binreloc', 'OpenGL', 'GLEW',
+        pkgs = [ 'default',
                  'windstille',
                  'wst_particles', 'wst_navgraph', 'wst_display', 'wst_util', 'wst_math', 'wst_sound',
+                 'SDL', 'SDL_image',
+                 'boost_filesystem',
+                 'gtkglextmm-1.2' , 'gtkmm-2.4', 'SDL', 'curl', 'png', 'binreloc', 'OpenGL', 'GLEW',
                  'binreloc', 'jpeg' ]
         BuildProgram('windstille-editor', Glob('src/editor/*.cpp'), pkgs, self.cfg)
 
@@ -420,17 +339,10 @@ class Project:
         #                        [f for f in Glob('src/editor/*.cpp') if f.get_path() != "src/editor/main.cpp"])
 
     def build_extra_apps(self):
-        if False:
-            env = self.env.Clone()
-            env.Append(CPPPATH = ["src/", "extra/"])
-            env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
-            env.Append(LIBS = ["SDL_image", "GL", "GLEW", "png", "boost_filesystem",
-                               self.display_lib, self.util_lib, self.math_lib, self.sound_lib, self.util_lib, self.system_lib,
-                               'openal', 'ogg', 'vorbis', 'vorbisfile'])
-
-        pkgs = [ 'SDL', 'SDL_image', 'OpenGL', 'GLEW', 'png', 'boost_filesystem',
+        pkgs = [ 'default',
                  'windstille',
                  'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math', 'wst_sound', 'wst_system', 'wst_util',
+                 'SDL', 'SDL_image', 'OpenGL', 'GLEW', 'png', 'boost_filesystem',
                  'OpenAL', 'ogg', 'vorbis', 'vorbisfile']
 
         BuildProgram("slideshow", Glob("extra/slideshow/*.cpp") + Glob("extra/slideshow/plugins/*.cpp"),
