@@ -18,6 +18,7 @@
 
 #include "lensflare.hpp"
 
+#include "display/assert_gl.hpp"
 #include "display/opengl_state.hpp"
 #include "display/opengl_window.hpp"
 #include "display/shader_program.hpp"
@@ -29,7 +30,7 @@
 
 Lensflare::Lensflare() :
   m_aspect_ratio(1280, 800),
-  m_window_size(1280, 800),
+  m_window_size(640, 400),
   m_fullscreen(false),
   m_loop(false),
   
@@ -61,7 +62,7 @@ Lensflare::draw()
   glEnable(GL_DEPTH_TEST); 
   glDepthMask(GL_TRUE);
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-  glAlphaFunc ( GL_GREATER, 0.1f );
+  glAlphaFunc ( GL_GREATER, 0.5f );
   glEnable(GL_ALPHA_TEST);
     
   m_cover->draw(SurfaceDrawingParameters()
@@ -73,25 +74,53 @@ Lensflare::draw()
   
   if (true)
   {
-    GLuint query_id;
-    glGenQueries(1, &query_id);
 
+    GLint samples = 0;
+    GLint total_samples = 0;
+
+    GLuint query_id;
+    GLuint total_query_id;
+    glGenQueries(1, &query_id);
+    glGenQueries(1, &total_query_id);
+
+    assert_gl("Broken");
+
+    // disable all buffer writing
+    glDepthMask(GL_FALSE);
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+    // query the number of visible samples
     glBeginQuery(GL_SAMPLES_PASSED, query_id);
     m_lightquery->draw(SurfaceDrawingParameters()
-                       .set_color(Color(1,0,0,0)) // query without drawing 
-                       .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                        .set_pos(Vector2f(m_mouse.x - m_lightquery->get_width()/2,
                                          m_mouse.y - m_lightquery->get_height()/2)));
-    GLint samples = 0;
     glEndQuery(GL_SAMPLES_PASSED);
 
     glGetQueryObjectiv(query_id, GL_QUERY_RESULT, &samples);
+
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    // reference query, to get the total amount of samples
+    glDisable(GL_DEPTH_TEST);
+    glBeginQuery(GL_SAMPLES_PASSED, total_query_id);
+    m_lightquery->draw(SurfaceDrawingParameters()
+                       .set_pos(Vector2f(m_mouse.x - m_lightquery->get_width()/2,
+                                         m_mouse.y - m_lightquery->get_height()/2)));
+    glEndQuery(GL_SAMPLES_PASSED);
+    glEnable(GL_DEPTH_TEST);
+
+    glGetQueryObjectiv(total_query_id, GL_QUERY_RESULT, &total_samples);
+
+    glDepthMask(GL_TRUE);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
   
-    std::cout << "samples: " << samples << std::endl;
+    std::cout << "samples: " << samples << " -/- " << total_samples << std::endl;
 
     glDeleteQueries(1, &query_id);
+    glDeleteQueries(1, &total_query_id);
 
-    float visibility = static_cast<float>(samples) / 16384.0f;
+    float visibility = static_cast<float>(samples) / static_cast<float>(total_samples);
     factor *= visibility;
 
     glDepthMask(GL_FALSE);
@@ -157,8 +186,8 @@ Lensflare::process_input()
         break;
 
       case SDL_MOUSEMOTION:
-        m_mouse.x = event.motion.x;
-        m_mouse.y = event.motion.y;
+        m_mouse.x = static_cast<float>(m_aspect_ratio.width  * event.motion.x / m_window_size.width);
+        m_mouse.y = static_cast<float>(m_aspect_ratio.height * event.motion.y / m_window_size.height);
         break;
 
       case SDL_KEYDOWN:
