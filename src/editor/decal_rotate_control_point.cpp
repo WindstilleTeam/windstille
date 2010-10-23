@@ -20,7 +20,7 @@
 #include "editor/decal_rotate_control_point.hpp"
 
 DecalRotateControlPoint::DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_) :
-  ControlPoint(Surface(Pathname("editor/rotate_handle.png")), pos_),
+  ControlPoint(Surface::create(Pathname("editor/rotate_handle.png")), pos_),
   object(object_),
   ctrl_angle(ctrl_angle_),
   orig_angle(object->get_angle()),

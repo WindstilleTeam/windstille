@@ -60,16 +60,16 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader) :
   reader.get("angle", angle);
   reader.get("hflip", hflip);
   reader.get("vflip", vflip);
-  surface = Surface(Pathname(path));
-  software_surface = SoftwareSurface(Pathname(path));
+  surface = Surface::create(Pathname(path));
+  software_surface = SoftwareSurface::create(Pathname(path));
 }
 
 DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const Vector2f& rel_pos_, 
                                    const std::string& path_, MapType type_) :
   ObjectModel("DecalObjectModel", rel_pos_),
   path(path_),
-  surface(Pathname(path_)),
-  software_surface(Pathname(path_)),
+  surface(Surface::create(Pathname(path_))),
+  software_surface(SoftwareSurface::create(Pathname(path_))),
   type(type_),
   scale(1.0f, 1.0f),
   angle(0.0f),
@@ -136,8 +136,8 @@ DecalObjectModel::draw(SceneContext& sc)
     ObjectModel::draw(sc);
 
     Vector2f wo_pos = get_world_pos();
-    Vector2f center_offset(-surface.get_width()/2,
-                           -surface.get_height()/2);
+    Vector2f center_offset(-surface->get_width()/2,
+                           -surface->get_height()/2);
 
     DrawingContext* dc = 0; 
     SurfaceDrawingParameters params;
@@ -163,8 +163,8 @@ DecalObjectModel::draw(SceneContext& sc)
 Rectf
 DecalObjectModel::get_bounding_box() const
 {
-  Vector2f center_offset(surface.get_width()/2,
-                         surface.get_height()/2);
+  Vector2f center_offset(surface->get_width()/2,
+                         surface->get_height()/2);
 
   center_offset.x *= scale.x;
   center_offset.y *= scale.y;
@@ -213,8 +213,8 @@ DecalObjectModel::is_at(const Vector2f& pos) const
   p.x /= scale.x;
   p.y /= scale.y;
 
-  if (fabsf(p.x) < surface.get_width()/2 &&
-      fabsf(p.y) < surface.get_height()/2)
+  if (fabsf(p.x) < surface->get_width()/2 &&
+      fabsf(p.y) < surface->get_height()/2)
   {
     if (hflip)
       p.x = -p.x;
@@ -222,8 +222,8 @@ DecalObjectModel::is_at(const Vector2f& pos) const
     if (vflip)
       p.y = -p.y;
 
-    return software_surface.is_at(static_cast<int>(p.x + surface.get_width()/2),
-                                  static_cast<int>(p.y + surface.get_height()/2));
+    return software_surface->is_at(static_cast<int>(p.x + surface->get_width()/2),
+                                  static_cast<int>(p.y + surface->get_height()/2));
   }
   else
   {
@@ -234,8 +234,8 @@ DecalObjectModel::is_at(const Vector2f& pos) const
 void
 DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_points)
 {
-  float w = surface.get_width()/2  * scale.x;
-  float h = surface.get_height()/2 * scale.y;
+  float w = surface->get_width()/2  * scale.x;
+  float h = surface->get_height()/2 * scale.y;
 
   Rectf rect(-w, -h, w, h);
   Quad quad1(rect);
@@ -310,8 +310,8 @@ DecalObjectModel::sync()
 
   if (m_drawable)
   {
-    Vector2f center_offset(-surface.get_width() /2,
-                           -surface.get_height()/2);
+    Vector2f center_offset(-surface->get_width() /2,
+                           -surface->get_height()/2);
 
     center_offset.x *= scale.x;
     center_offset.y *= scale.y;

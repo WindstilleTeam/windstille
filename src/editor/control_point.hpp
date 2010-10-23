@@ -36,12 +36,12 @@ public:
   static ControlPointHandle create(const Vector2f& pos);
 
 protected:
-  Surface   surface;
+  SurfacePtr surface;
   Vector2f  pos;
   Vector2f  offset;
 
 public:
-  ControlPoint(const Surface& surface, const Vector2f& pos);
+  ControlPoint(SurfacePtr surface, const Vector2f& pos);
   virtual ~ControlPoint();
   
   virtual void draw(SceneContext& sc);

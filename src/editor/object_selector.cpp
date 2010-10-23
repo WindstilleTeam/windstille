@@ -311,7 +311,7 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& /*context
 
     if (selection_data.get_target() == "application/x-windstille-decal")
     {
-      std::string str = static_cast<Pathname>((*it)[Columns::instance().pathname]).get_physfs_path();
+      std::string str = static_cast<Pathname>((*it)[Columns::instance().pathname]).get_raw_path();
       selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), str.length());
     }
     else

@@ -24,7 +24,6 @@
 #include <gtkmm/icontheme.h>
 #include <gtkmm/main.h>
 #include <gtkglmm.h>
-#include <physfs.h>
 
 #include "util/system.hpp"
 #include "util/command_line.hpp"
@@ -75,16 +74,7 @@ WindstilleEditor::main(int argc, char** argv)
 
     Gtk::Main kit(&argc, &argv);
     Gtk::GL::init(&argc, &argv);
-
-    if (!PHYSFS_init(argv[0]))
-    {
-      std::ostringstream msg;
-      msg << "Couldn't initialize physfs: " << PHYSFS_getLastError();
-      throw std::runtime_error(msg.str());
-    }
-  
-    PHYSFS_addToSearchPath(Pathname::get_datadir().c_str(), 0);
-      
+     
     Glib::RefPtr<const Gdk::GL::Config> 
       glconfig = Gdk::GL::Config::create(/* FIXME: Using RGBA instead of RGB to make Display::save_screenshot work*/
         Gdk::GL::MODE_RGBA | 

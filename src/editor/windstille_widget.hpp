@@ -67,7 +67,7 @@ private:
   boost::scoped_ptr<Compositor> compositor;
   boost::scoped_ptr<SceneContext> sc;
   DecalObjectModel::MapType map_type;
-  Texture background_pattern;
+  TexturePtr background_pattern;
   SelectMask select_mask;
   bool draw_background_pattern;
   bool draw_only_active_layers;

@@ -161,8 +161,8 @@ WindstilleWidget::on_realize()
       sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
     }
       
-    background_pattern = Texture(Pathname("editor/background_layer.png"));
-    background_pattern.set_wrap(GL_REPEAT);
+    background_pattern = Texture::create(Pathname("editor/background_layer.png"));
+    background_pattern->set_wrap(GL_REPEAT);
 
     glViewport(0, 0, get_width(), get_height());
     glMatrixMode(GL_PROJECTION);

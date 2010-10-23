@@ -36,8 +36,8 @@ public:
 
 private:
   std::string path;
-  Surface surface;
-  SoftwareSurface software_surface;
+  SurfacePtr surface;
+  SoftwareSurfacePtr software_surface;
   MapType type;
 
   /** scale of the object, independed in x and y axis */
