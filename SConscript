@@ -55,7 +55,6 @@ preset_linkflags = {
     'debug':   [],
     'development': []
     }
-
 
 def MakeEnvironment(packages, cfg):
     env = Environment(ENV=os.environ)
