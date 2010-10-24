@@ -71,12 +71,12 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
 {
   if (!GLEW_ARB_texture_non_power_of_two)
   {
-    if (!is_power_of_2(width) || !is_power_of_2(height))
+    if (!is_power_of_2(m_width) || !is_power_of_2(m_height))
     {
-      std::cout  << "Texture::Texture(): texture dimensions have non power of two size: " << width << "x" << height;
+      std::cout  << "Texture::Texture(): texture dimensions have non power of two size: " << m_width << "x" << m_height;
 
-      width  = math::round_to_power_of_two(width);
-      height = math::round_to_power_of_two(height);
+      m_width  = math::round_to_power_of_two(m_width);
+      m_height = math::round_to_power_of_two(m_height);
     }
   }
 
@@ -85,7 +85,7 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
 
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  glTexImage2D(target, 0, format, width, height, 0, GL_RGBA,
+  glTexImage2D(target, 0, format, m_width, m_height, 0, GL_RGBA,
                GL_UNSIGNED_BYTE, 0);
 
   glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
