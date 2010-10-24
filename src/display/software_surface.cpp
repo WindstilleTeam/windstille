@@ -83,13 +83,13 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
         {
           tmp_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
                                              m_surface->w, m_surface->h, 32,
-                                             0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+                                             0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
         }
         else
         {
           tmp_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
                                              m_surface->w, m_surface->h, 32,
-                                             0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+                                             0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
         }
 
         SDL_BlitSurface(m_surface, 0, tmp_surface, 0);
@@ -126,13 +126,13 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
         {
           tmp_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
                                              m_surface->w, m_surface->h, 24,
-                                             0xff000, 0x00ff00, 0x0000ff, 0);
+                                             0x0000ff, 0x00ff00, 0xff0000, 0);
         }
         else
         {
           tmp_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
                                              m_surface->w, m_surface->h, 24,
-                                             0x0000ff, 0x00ff00, 0xff0000, 0);
+                                             0xff000, 0x00ff00, 0x0000ff, 0);
         }
 
         SDL_BlitSurface(m_surface, 0, tmp_surface, 0);
