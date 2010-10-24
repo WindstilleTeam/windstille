@@ -67,8 +67,11 @@ public:
 
   bool is_at(int x, int y) const;
 
+  Format get_format() const { return m_format; }
+
 private:
   SDL_Surface* m_surface;
+  Format m_format;
 
 private:
   SoftwareSurface(const SoftwareSurface&);

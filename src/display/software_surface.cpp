@@ -17,14 +17,16 @@
 */
 
 #include <boost/scoped_array.hpp>
+#include <boost/format.hpp>
 #include <png.h>
 #include <errno.h>
 #include <sstream>
 #include <stdexcept>
 #include <SDL_image.h>
 
-#include "math/rect.hpp"
 #include "display/software_surface.hpp"
+#include "math/rect.hpp"
+#include "util/util.hpp"
 
 SoftwareSurfacePtr
 SoftwareSurface::create(const Pathname& filename)
@@ -39,7 +41,8 @@ SoftwareSurface::create(int width, int height, Format format)
 }
 
 SoftwareSurface::SoftwareSurface(const Pathname& filename) :
-  m_surface(0)
+  m_surface(0),
+  m_format(RGBA)
 {
   m_surface = IMG_Load(filename.get_sys_path().c_str());
 
@@ -53,24 +56,114 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
   {
     SDL_SetAlpha(m_surface, 0, 0);
 
+    if (m_surface->format->BytesPerPixel == 4)
+    { // convert image into standard format
+      m_format = RGBA;
+      
+      if ((is_little_endian() && 
+           !(m_surface->format->Rmask == 0x000000ff &&
+             m_surface->format->Gmask == 0x0000ff00 &&
+             m_surface->format->Bmask == 0x00ff0000 &&
+             m_surface->format->Amask == 0xff000000)) ||
+          (is_big_endian() &&
+           !(m_surface->format->Rmask == 0xff000000 &&
+             m_surface->format->Gmask == 0x00ff0000 &&
+             m_surface->format->Bmask == 0x0000ff00 &&
+             m_surface->format->Amask == 0x000000ff)))
+      {
+        std::cout << "XXX Doing conversation RGBA: " << filename << std::endl;
+        std::cout << "    rmask: " << boost::format("%08x %08x %08x %08x") % 
+          m_surface->format->Rmask %
+          m_surface->format->Gmask %
+          m_surface->format->Bmask %
+          m_surface->format->Amask << std::endl;
+
+        SDL_Surface* tmp_surface;
+        if (is_little_endian())
+        {
+          tmp_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+                                             m_surface->w, m_surface->h, 32,
+                                             0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+        }
+        else
+        {
+          tmp_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+                                             m_surface->w, m_surface->h, 32,
+                                             0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+        }
+
+        SDL_BlitSurface(m_surface, 0, tmp_surface, 0);
+
+        std::swap(m_surface, tmp_surface);
+        SDL_FreeSurface(tmp_surface);
+      }
+    }
+    else if (m_surface->format->BytesPerPixel == 3)
+    {
+      m_format = RGB;
+      
+      if ((is_little_endian() && 
+           !(m_surface->format->Rmask == 0x0000ff &&
+             m_surface->format->Gmask == 0x00ff00 &&
+             m_surface->format->Bmask == 0xff0000 &&
+             m_surface->format->Amask == 0x000000)) ||
+          (is_big_endian() &&
+           !(m_surface->format->Rmask == 0xff0000 &&
+             m_surface->format->Gmask == 0x00ff00 &&
+             m_surface->format->Bmask == 0x0000ff &&
+             m_surface->format->Amask == 0x000000)))
+      {
+        std::cout << "XXX Doing conversation RGB: " << filename << std::endl;
+        std::cout << "    rmask: " << boost::format("%08x %08x %08x %08x") % 
+          m_surface->format->Rmask %
+          m_surface->format->Gmask %
+          m_surface->format->Bmask %
+          m_surface->format->Amask << std::endl;
+
+
+        SDL_Surface* tmp_surface;
+        if (is_little_endian())
+        {
+          tmp_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+                                             m_surface->w, m_surface->h, 24,
+                                             0xff000, 0x00ff00, 0x0000ff, 0);
+        }
+        else
+        {
+          tmp_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+                                             m_surface->w, m_surface->h, 24,
+                                             0x0000ff, 0x00ff00, 0xff0000, 0);
+        }
+
+        SDL_BlitSurface(m_surface, 0, tmp_surface, 0);
+
+        std::swap(m_surface, tmp_surface);
+        SDL_FreeSurface(tmp_surface);
+      }
+    }
+
     assert(!SDL_MUSTLOCK(m_surface));
   }
 }
 
 SoftwareSurface::SoftwareSurface(int width, int height, Format format) :
-  m_surface(0)
+  m_surface(0),
+  m_format(format)
 {
   assert(format == RGBA);
 
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  m_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                       width, height, 32,
-                                       0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-#else
-  m_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                       width, height, 32,
-                                       0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-#endif
+  if (is_big_endian())
+  {
+    m_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+                                     width, height, 32,
+                                     0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+  }
+  else
+  {
+    m_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+                                     width, height, 32,
+                                     0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+  }
 
   SDL_SetAlpha(m_surface, 0, 0);
 
