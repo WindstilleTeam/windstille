@@ -78,7 +78,7 @@ float read_float(std::istream& in)
     uint32_t raw_v;
   } result;
   
-  if (!in.read(reinterpret_cast<char*>(&result), sizeof(result)))
+  if (!in.read(reinterpret_cast<char*>(&result.raw_v), sizeof(result.raw_v)))
   {
     std::ostringstream msg;
     msg << "Problem reading float value: " << strerror(errno);
@@ -112,8 +112,7 @@ uint16_t read_uint16_t(std::istream& in)
   {
     if (is_big_endian())
     {
-      byte_swap16(result);
-      return result;
+      return byte_swap16(result);
     }
     else
     {
@@ -136,8 +135,7 @@ uint32_t read_uint32_t(std::istream& in)
   {
     if (is_big_endian())
     {
-      byte_swap32(result);
-      return result;
+      return byte_swap32(result);
     }
     else
     {
@@ -176,7 +174,14 @@ byte_swap16(uint16_t v)
 uint32_t
 byte_swap32(uint32_t v)
 {
-#ifdef __GNUC__
+#if defined(__APPLE__)
+  // FIXME: there are probably faster ways, also inline all this stuff
+  return
+    (v & 0xff000000) >> 24 |
+    (v & 0x00ff0000) >>  8 |
+    (v & 0x0000ff00) <<  8 |
+    (v & 0x000000ff) << 24;
+#elif defined(__GNUC__)
   return __builtin_bswap32(v);
 #else
   return _byteswap_ulong(v);
