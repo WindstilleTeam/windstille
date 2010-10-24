@@ -375,6 +375,7 @@ class Project:
         BuildProgram("test_pathname", ["src/util/pathname.cpp"], pkgs + [ 'boost_filesystem' ], self.cfg)
         BuildProgram("test_directory", ["src/util/directory.cpp"], pkgs + [ 'boost_filesystem', 'wst_util' ], self.cfg)
         BuildProgram("test_easing", ["src/math/easing.cpp"], pkgs, self.cfg)
+        BuildProgram("reader_test", ["test/read_test.cpp"], pkgs + [ 'wst_util', 'SDL' ], self.cfg)
 
         BuildProgram("test_scissor_drawable", ["test/scissor_drawable/scissor_drawable.cpp"],
                      pkgs + [ 'SDL', 'OpenGL', 'GLEW', 'png', 'SDL_image', 'boost_filesystem', 
