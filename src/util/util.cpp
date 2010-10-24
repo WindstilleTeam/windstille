@@ -18,6 +18,7 @@
 
 #include "util/util.hpp"
 
+#include <SDL.h>
 #include <fstream>
 #include <sstream>
 #include <errno.h>
@@ -73,7 +74,10 @@ std::string tolowercase(const std::string& str)
 
 float read_float(std::istream& in)
 {
-  float result;
+  union {
+    float    float_v;
+    uint32_t raw_v;
+  } result;
   
   if (!in.read(reinterpret_cast<char*>(&result), sizeof(result)))
   {
@@ -83,7 +87,15 @@ float read_float(std::istream& in)
   }
   else
   {
-    return result;
+    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+    {
+      SDL_Swap32(result.raw_v);
+      return result.float_v;
+    }
+    else
+    {
+      return result.float_v;
+    }
   }
 }
 
@@ -99,7 +111,14 @@ uint16_t read_uint16_t(std::istream& in)
   }
   else
   {
-    return result;
+    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+    {
+      SDL_Swap16(result);
+    }
+    else
+    {
+      return result;
+    }
   }
 }
 
@@ -115,7 +134,14 @@ uint32_t read_uint32_t(std::istream& in)
   }
   else
   {
-    return result;
+    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+    {
+      SDL_Swap32(result);
+    }
+    else
+    {
+      return result;
+    }
   }
 }
 
