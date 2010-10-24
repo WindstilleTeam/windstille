@@ -139,9 +139,16 @@ TexturePtr
 SurfaceManager::create_texture(SoftwareSurfacePtr image,
                                float* maxu, float* maxv)
 {
-  // OpenGL2.0 should be fine with non-power-of-two
-  int texture_w = image->get_width();  //math::round_to_power_of_two(image->get_width());
-  int texture_h = image->get_height(); //math::round_to_power_of_two(image->get_height());
+  int texture_w = image->get_width(); 
+  int texture_h = image->get_height(); 
+
+  // OpenGL2.0 should be fine with non-power-of-two, but some
+  // implementations aren't
+  if (!GLEW_ARB_texture_non_power_of_two)
+  {
+    texture_w = math::round_to_power_of_two(texture_w);
+    texture_h = math::round_to_power_of_two(texture_h);
+  }
 
   SoftwareSurfacePtr convert = SoftwareSurface::create(texture_w, texture_h);
 

@@ -73,9 +73,10 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
   {
     if (!is_power_of_2(width) || !is_power_of_2(height))
     {
-      std::ostringstream str;
-      str << "Texture::Texture(): texture dimensions have non power of two size: " << width << "x" << height;
-      throw std::runtime_error(str.str());
+      std::cout  << "Texture::Texture(): texture dimensions have non power of two size: " << width << "x" << height;
+
+      width  = math::round_to_power_of_two(width);
+      height = math::round_to_power_of_two(height);
     }
   }
 
@@ -117,7 +118,9 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
   }
 
   if (image->get_bits_per_pixel() != 24 && image->get_bits_per_pixel() != 32)
+  {
     throw std::runtime_error("image has not 24 or 32 bit color depth");
+  }
 
   // FIXME: User SDL_ConvertSurface to bring images in the right format
   // SDL_ConvertSurface(bmp, screen->format, SDL_SWSURFACE);
