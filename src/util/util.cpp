@@ -18,7 +18,6 @@
 
 #include "util/util.hpp"
 
-#include <SDL.h>
 #include <fstream>
 #include <sstream>
 #include <errno.h>
@@ -87,9 +86,9 @@ float read_float(std::istream& in)
   }
   else
   {
-    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+    if (is_big_endian())
     {
-      SDL_Swap32(result.raw_v);
+      result.raw_v = byte_swap32(result.raw_v);
       return result.float_v;
     }
     else
@@ -111,9 +110,9 @@ uint16_t read_uint16_t(std::istream& in)
   }
   else
   {
-    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+    if (is_big_endian())
     {
-      SDL_Swap16(result);
+      byte_swap16(result);
       return result;
     }
     else
@@ -135,9 +134,9 @@ uint32_t read_uint32_t(std::istream& in)
   }
   else
   {
-    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+    if (is_big_endian())
     {
-      SDL_Swap32(result);
+      byte_swap32(result);
       return result;
     }
     else
@@ -162,6 +161,26 @@ std::string read_string(std::istream& in, size_t size)
     buffer[size] = '\0';
     return std::string(buffer.get());
   }
+}
+
+uint16_t
+byte_swap16(uint16_t v)
+{
+#ifdef __GNUC__
+  return static_cast<uint16_t>(v >> 8 | v << 8);
+#else
+  return _byteswap_ushort(v);
+#endif
+}
+
+uint32_t
+byte_swap32(uint32_t v)
+{
+#ifdef __GNUC__
+  return __builtin_bswap32(v);
+#else
+  return _byteswap_ulong(v);
+#endif
 }
 
 /* EOF */

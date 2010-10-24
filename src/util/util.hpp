@@ -45,6 +45,19 @@ uint16_t    read_uint16_t(std::istream& in);
 uint32_t    read_uint32_t(std::istream& in);
 std::string read_string(std::istream& in, size_t size);
 
+inline int is_big_endian()
+{
+  union {
+    uint32_t i;
+    char c[4];
+  } bint = {0x01020304};
+
+  return bint.c[0] == 1; 
+}
+
+uint16_t    byte_swap16(uint16_t v);
+uint32_t    byte_swap32(uint32_t v);
+
 #endif
 
 /* EOF */

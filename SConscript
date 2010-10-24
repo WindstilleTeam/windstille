@@ -296,7 +296,7 @@ class Project:
         BuildStaticLibrary('wst_util',
                            Glob('src/lisp/*.cpp') +
                            Glob('src/util/*.cpp'),
-                           pkgs + [ 'SDL' ], self.cfg)
+                           pkgs, self.cfg)
         BuildStaticLibrary('wst_math', Glob('src/math/*.cpp'), pkgs, self.cfg)
         BuildStaticLibrary('wst_navgraph', Glob('src/navigation/*.cpp'), pkgs, self.cfg)
         BuildStaticLibrary('wst_particles', Glob('src/particles/*.cpp'), pkgs, self.cfg)
