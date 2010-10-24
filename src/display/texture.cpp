@@ -20,6 +20,7 @@
 #include "display/texture.hpp"
 
 #include <stdint.h>
+#include <sstream>
 #include <stdexcept>
 
 #include "math/rect.hpp"
@@ -27,6 +28,7 @@
 #include "display/opengl_state.hpp"
 #include "display/texture_manager.hpp"
 #include "display/assert_gl.hpp"
+#include "util/util.hpp"
 
 static inline bool is_power_of_2(int v)
 {
@@ -71,7 +73,9 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
   {
     if (!is_power_of_2(width) || !is_power_of_2(height))
     {
-      throw std::runtime_error("image has non power of two size");
+      std::ostringstream str;
+      str << "Texture::Texture(): texture dimensions have non power of two size: " << width << "x" << height;
+      throw std::runtime_error(str.str());
     }
   }
 
@@ -105,7 +109,10 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
   {
     if (!is_power_of_2(image->get_width()) || !is_power_of_2(image->get_height()))
     {
-      throw std::runtime_error("image has non power of two size");
+      std::ostringstream str;
+      str << "Texture::Texture(): image dimensions have non power of two size: " 
+          << image->get_width() << "x" << image->get_height();
+      throw std::runtime_error(str.str());
     }
   }
 
@@ -127,11 +134,11 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
 
     GLint sdl_format;
 
-    if (image->get_bytes_per_pixel() == 3)
+    if (image->get_format() == SoftwareSurface::RGB)
     {
       sdl_format = GL_RGB;
     }
-    else if (image->get_bytes_per_pixel() == 4)
+    else if (image->get_format() == SoftwareSurface::RGBA)
     {
       sdl_format = GL_RGBA;
     }
@@ -142,7 +149,7 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
 
     glBindTexture(GL_TEXTURE_2D, m_handle);
 
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
     glPixelStorei(GL_UNPACK_ROW_LENGTH, image->get_pitch() / image->get_bytes_per_pixel());
 
     if (0)
@@ -206,17 +213,17 @@ Texture::put(SoftwareSurfacePtr image, const Rect& srcrect, int x, int y)
 {
   GLint sdl_format;
 
-  if (image->get_bytes_per_pixel() == 3)
+  if (image->get_format() == SoftwareSurface::RGB)
   {
     sdl_format = GL_RGB;
   }
-  else if (image->get_bytes_per_pixel() == 4)
+  else if (image->get_format() == SoftwareSurface::RGBA)
   {
     sdl_format = GL_RGBA;
   }
   else
   {
-    throw std::runtime_error("Texture: Image format not supported");
+    throw std::runtime_error("Texture: SoftwareSurface format not supported");
   }
 
   glBindTexture(GL_TEXTURE_2D, m_handle);
