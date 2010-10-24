@@ -18,6 +18,8 @@
 
 #include "lensflare.hpp"
 
+#include <stdexcept>
+
 #include "display/assert_gl.hpp"
 #include "display/opengl_state.hpp"
 #include "display/opengl_window.hpp"
@@ -220,6 +222,11 @@ Lensflare::run()
   TextureManager texture_manager;
   SurfaceManager surface_manager;
 
+  if (!GLEW_ARB_occlusion_query)
+  {
+    throw std::runtime_error("GL_ARB_occlusion_query not supported");
+  }
+
   m_light  = Surface::create(Pathname("light.png", Pathname::kSysPath));
   m_lightquery  = Surface::create(Pathname("lightquery.png", Pathname::kSysPath));
   m_superlight  = Surface::create(Pathname("superlight.png", Pathname::kSysPath));
@@ -265,8 +272,15 @@ Lensflare::run()
 
 int main(int argc, char* argv[])
 {
-  Lensflare app;
-  app.run();
+  try
+  {
+    Lensflare app;
+    app.run();
+  }
+  catch(std::exception& err)
+  {
+    std::cout << "Error: " << err.what() << std::endl;
+  }
   return 0;
 }
 
