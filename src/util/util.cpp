@@ -114,6 +114,7 @@ uint16_t read_uint16_t(std::istream& in)
     if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
     {
       SDL_Swap16(result);
+      return result;
     }
     else
     {
@@ -137,6 +138,7 @@ uint32_t read_uint32_t(std::istream& in)
     if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
     {
       SDL_Swap32(result);
+      return result;
     }
     else
     {
