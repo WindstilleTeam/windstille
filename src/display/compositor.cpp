@@ -26,7 +26,7 @@
 Compositor::Compositor(const Size& window, const Size& viewport) :
   impl()
 {
-  if (GLEW_VERSION_3_2)
+  if (GLEW_ARB_framebuffer_object)
   {
     std::cout  << "Display:: framebuffer_object extension is supported" << std::endl;
     impl.reset(new FramebufferCompositorImpl(window, viewport));

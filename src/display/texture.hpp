@@ -40,15 +40,10 @@ public:
   /** Load a texture from file */
   static TexturePtr create(const Pathname& filename);
 
-  /**
-   * Upload an SoftwareSurface onto an OpenGL texture. The surface must have power
-   * of 2 dimensions
-   * */
+  /** Upload an SoftwareSurface onto an OpenGL texture. */
   static TexturePtr create(SoftwareSurfacePtr image, GLint format = GL_RGBA);
   
-  /** 
-   * Create an empty Texture with the given dimensions
-   */
+  /** Create an empty Texture with the given dimensions */
   static TexturePtr create(GLenum target, int width, int height, GLint format = GL_RGBA);
   
 private:

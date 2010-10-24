@@ -67,6 +67,14 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
   m_width(width),
   m_height(height)
 {
+  if (!GLEW_ARB_texture_non_power_of_two)
+  {
+    if (!is_power_of_2(width) || !is_power_of_2(height))
+    {
+      throw std::runtime_error("image has non power of two size");
+    }
+  }
+
   glGenTextures(1, &m_handle);
   assert_gl("Texture::Texture()"); 
 
@@ -80,6 +88,8 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
   glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+  assert_gl("Texture::Texture() 2"); 
 }
 
 Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
@@ -91,9 +101,13 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
   glGenTextures(1, &m_handle);
   assert_gl("Texture::Texture()"); 
 
-  // Should be ok with OpenGL2.0
-  //if(!is_power_of_2(image->get_width()) || !is_power_of_2(image->get_height()))
-  //throw std::runtime_error("image has no power of 2 size");
+  if (!GLEW_ARB_texture_non_power_of_two)
+  {
+    if (!is_power_of_2(image->get_width()) || !is_power_of_2(image->get_height()))
+    {
+      throw std::runtime_error("image has non power of two size");
+    }
+  }
 
   if (image->get_bits_per_pixel() != 24 && image->get_bits_per_pixel() != 32)
     throw std::runtime_error("image has not 24 or 32 bit color depth");

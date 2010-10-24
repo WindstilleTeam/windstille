@@ -91,9 +91,9 @@ private:
   TextureSpace   space;
 
 public:
-  TexturePackerTexture(const Size& size)
-    : texture(Texture::create(GL_TEXTURE_2D, size.width, size.height)),
-      space(Rect(Point(0, 0), size))
+  TexturePackerTexture(const Size& size) :
+    texture(Texture::create(GL_TEXTURE_2D, size.width, size.height)),
+    space(Rect(Point(0, 0), size))
   {
   }
 

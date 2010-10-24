@@ -26,9 +26,16 @@
 
 
 SurfaceManager::SurfaceManager() :
-  texture_packer(0), // (new TexturePacker(Size(2048, 2048))),
+  texture_packer(0),
   surfaces()
 {
+  // NPOV should be ok with OpenGL2.0 in theory, but in practice there
+  // is hardware that does OpenGL2.0, but not NPOV, see:
+  // http://www.opengl.org/wiki/NPOT_Texture
+  if (!GLEW_ARB_texture_non_power_of_two)
+  {
+    texture_packer.reset(new TexturePacker(Size(2048, 2048)));
+  }
 }
 
 SurfaceManager::~SurfaceManager()
