@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
-#include "SDL.h"
+#include <SDL.h>
 
 #include "display/opengl_window.hpp"
 #include "display/surface.hpp"
@@ -14,7 +14,7 @@
 #include "util/pathname.hpp"
 #include "util/system.hpp"
 
-int main()
+int main(int argc, char* argv[])
 {
   Pathname::set_datadir("data/"); //System::find_default_datadir());
   Pathname::set_userdir(System::find_default_userdir());
