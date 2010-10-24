@@ -30,11 +30,6 @@
 #include "display/assert_gl.hpp"
 #include "util/util.hpp"
 
-static inline bool is_power_of_2(int v)
-{
-  return (v & (v-1)) == 0;
-}
-
 TexturePtr
 Texture::create(const Pathname& filename)
 {
@@ -71,7 +66,7 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
 {
   if (!GLEW_ARB_texture_non_power_of_two)
   {
-    if (!is_power_of_2(m_width) || !is_power_of_2(m_height))
+    if (!math::is_power_of_two(m_width) || !math::is_power_of_two(m_height))
     {
       std::cout  << "Texture::Texture(): texture dimensions have non power of two size: " << m_width << "x" << m_height;
 
@@ -108,7 +103,7 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
 
   if (!GLEW_ARB_texture_non_power_of_two)
   {
-    if (!is_power_of_2(image->get_width()) || !is_power_of_2(image->get_height()))
+    if (!math::is_power_of_two(image->get_width()) || !math::is_power_of_two(image->get_height()))
     {
       std::ostringstream str;
       str << "Texture::Texture(): image dimensions have non power of two size: " 
