@@ -109,16 +109,16 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
 
     glBegin(GL_QUADS);
 
-    glTexCoord2i(0, 1);
+    glTexCoord2f(m_lightmap->get_uv().left, m_lightmap->get_uv().bottom);
     glVertex2i(0, 0);
 
-    glTexCoord2i(1, 1);
+    glTexCoord2f(m_lightmap->get_uv().right, m_lightmap->get_uv().bottom);
     glVertex2i(m_viewport.width, 0);
 
-    glTexCoord2i(1, 0);
+    glTexCoord2f(m_lightmap->get_uv().right, m_lightmap->get_uv().top);
     glVertex2i(m_viewport.width, m_viewport.height);
 
-    glTexCoord2i(0, 0);
+    glTexCoord2f(m_lightmap->get_uv().left, m_lightmap->get_uv().top);
     glVertex2i(0, m_viewport.height);
 
     glEnd();
