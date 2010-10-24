@@ -73,7 +73,7 @@ class Project:
             "cwiid" : False
             }
 
-        self.env = Environment()
+        self.env = Environment(ENV=os.environ)
 
     def configure(self):
         # windstille_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
@@ -150,12 +150,21 @@ class Project:
             cfg['OpenAL']    = { 'LINKFLAGS' : [ '-framework', 'OpenAL' ] }
             cfg['OpenGL']    = { 'LINKFLAGS' : [ '-framework', 'OpenGL' ] }
             cfg['GLEW']      = { 'LIBS' : [ 'GLEW' ] }
-            cfg['SDL']       = { 'LINKFLAGS' : [ '-framework', 'SDL' ] }
-            cfg['SDL_image'] = { 'LINKFLAGS' : [ '-framework', 'SDL_image' ] }
+            cfg['SDL']       = { 'LINKFLAGS' : [ '-framework', 'SDL',
+                                                 '-framework', 'Cocoa' ],
+                                 'CPPPATH' : '/Library/Frameworks/SDL.framework/Headers/',
+                                 'LIBS'    : 'src/macosx/SDLmain.m' }
+            cfg['SDL_image'] = { 'LINKFLAGS' : [ '-framework', 'SDL_image' ],
+                                 'LIBS' : [ 'jpeg' ],
+                                 'CPPPATH' : '/Library/Frameworks/SDL_image.framework/Headers/' }
             cfg['ogg']       = ParseConfig("pkg-config ogg --cflags --libs")
             cfg['vorbis']    = ParseConfig("pkg-config vorbis --cflags --libs")
+            cfg['vorbisfile']       = ParseConfig("pkg-config vorbisfile --cflags --libs")            
             cfg['boost_signals']    = { 'LIBS' : [ 'boost_signals' ] }
-            cfg['boost_filesystem'] = { 'LIBS' : [ 'boost_filesystem' ] }
+            cfg['boost_filesystem'] = { 'LIBS' : [ 'boost_filesystem', 'boost_system' ] }
+            cfg['binreloc']         = { } # not available on MacOSX
+            cfg['freetype']         = ParseConfig("freetype-config --libs --cflags | sed 's/-I/-isystem/g'")
+            cfg['png']              = ParseConfig("pkg-config --cflags --libs libpng | sed 's/-I/-isystem/g'")
 
         else:
             cfg['OpenGL']           = { 'LIBS' : [ 'GL', 'GLU' ] }
@@ -180,11 +189,12 @@ class Project:
             cfg['binreloc']         = { 'CPPDEFINES' : [ 'HAVE_BINRELOC' ],
                                         'CPPPATH' : [ 'external/binreloc-2.0/' ],
                                         'LIBS' : [ File('libbinreloc.a') ] }
-            cfg['squirrel']         = { 'CPPPATH' : [ 'external/SQUIRREL2/include/' ],
-                                        'LIBS' : [ File('libsquirrel.a') ],
-                                        'CPPDEFINES' : [] # empty, but it is needed later on
-                                        }
 
+        cfg['squirrel']         = { 'CPPPATH' : [ 'external/SQUIRREL2/include/' ],
+                                    'LIBS' : [ File('libsquirrel.a') ],
+                                    'CPPDEFINES' : [] # empty, but it is needed later on
+                                    }
+        
         cfg['windstille']    = { 'CPPPATH' : [ '.', 'src', 'src/scripting' ] }
         cfg['test']          = { 'CPPDEFINES' : [ '__TEST__' ],
                                  'OBJPREFIX'  : "test__" }
@@ -295,7 +305,7 @@ class Project:
                            Glob('src/scenegraph/*.cpp') +
                            Glob('src/sprite2d/*.cpp') +
                            Glob('src/sprite3d/*.cpp'),
-                           pkgs + [ 'freetype', 'SDL' ], self.cfg)
+                           pkgs + [ 'freetype', 'SDL', 'SDL_image' ], self.cfg)
         BuildStaticLibrary('wst_system', Glob('src/system/*.cpp'), pkgs + [ 'SDL' ], self.cfg)
 
     def build_windstille(self):
@@ -356,7 +366,7 @@ class Project:
 
     def build_test_apps(self):
         pkgs = [ 'test', 'windstille' ]
-        
+
         BuildProgram("test_babyxml", ["src/util/baby_xml.cpp"], pkgs, self.cfg)
         BuildProgram("test_response_curve", ["src/util/response_curve.cpp"], pkgs, self.cfg)
         BuildProgram("test_random", ["src/math/random.cpp"], pkgs, self.cfg)
@@ -375,7 +385,7 @@ class Project:
                               'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math', 'wst_sound', 'wst_system', 'wst_util',
                               'binreloc' ],
                      self.cfg)
-                
+
     def build_windstille_data(self):
         data_env = self.env.Clone()
 
