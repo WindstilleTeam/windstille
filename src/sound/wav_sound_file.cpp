@@ -187,6 +187,16 @@ WavSoundFile::read(void* buffer, size_t buffer_size)
     throw std::runtime_error("read error while reading samples");
   }
 
+  // handle endian swaping
+  if (is_big_endian())
+  {
+    uint16_t* p = static_cast<uint16_t*>(buffer);
+    for(size_t i = 0; i < readsize; ++i)
+    {
+      p[i] = byte_swap16(p[i]);
+    }
+  }
+
   return readsize;
 }
 
