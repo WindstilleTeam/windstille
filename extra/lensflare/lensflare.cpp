@@ -209,7 +209,7 @@ Lensflare::process_input()
 }
 
 int
-Lensflare::main()
+Lensflare::run()
 {
   SDL sdl;
   OpenGLWindow window("Shader Test",
@@ -263,10 +263,10 @@ Lensflare::main()
   return 0;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
   Lensflare app;
-  app.main();
+  app.run();
   return 0;
 }
 

@@ -76,11 +76,6 @@ class Project:
         self.env = Environment(ENV=os.environ)
 
     def configure(self):
-        # windstille_env.ParseConfig('sdl-config --cflags --libs | sed "s/-I/-isystem/g"')
-        # windstille_env.ParseConfig('freetype-config --libs --cflags | sed "s/-I/-isystem/g"')
-
-        #     }
-
         # FIXME: None of the options are used, as only self.features
         # makes it across function calls
 
@@ -153,18 +148,18 @@ class Project:
             cfg['SDL']       = { 'LINKFLAGS' : [ '-framework', 'SDL',
                                                  '-framework', 'Cocoa' ],
                                  'CPPPATH' : '/Library/Frameworks/SDL.framework/Headers/',
-                                 'LIBS'    : 'src/macosx/SDLmain.m' }
+                                 'LIBS'    : [ File('libsdlmain.a') ] }
             cfg['SDL_image'] = { 'LINKFLAGS' : [ '-framework', 'SDL_image' ],
                                  'LIBS' : [ 'jpeg' ],
                                  'CPPPATH' : '/Library/Frameworks/SDL_image.framework/Headers/' }
-            cfg['ogg']       = ParseConfig("pkg-config ogg --cflags --libs")
-            cfg['vorbis']    = ParseConfig("pkg-config vorbis --cflags --libs")
-            cfg['vorbisfile']       = ParseConfig("pkg-config vorbisfile --cflags --libs")            
+            cfg['ogg']              = ParseConfig("pkg-config ogg --cflags --libs")
+            cfg['vorbis']           = ParseConfig("pkg-config vorbis --cflags --libs")
+            cfg['vorbisfile']       = ParseConfig("pkg-config vorbisfile --cflags --libs")
             cfg['boost_signals']    = { 'LIBS' : [ 'boost_signals' ] }
             cfg['boost_filesystem'] = { 'LIBS' : [ 'boost_filesystem', 'boost_system' ] }
             cfg['binreloc']         = { } # not available on MacOSX
-            cfg['freetype']         = ParseConfig("freetype-config --libs --cflags | sed 's/-I/-isystem/g'")
-            cfg['png']              = ParseConfig("pkg-config --cflags --libs libpng | sed 's/-I/-isystem/g'")
+            cfg['freetype']         = ParseConfig("freetype-config --libs --cflags")
+            cfg['png']              = ParseConfig("pkg-config --cflags --libs libpng")
 
         else:
             cfg['OpenGL']           = { 'LIBS' : [ 'GL', 'GLU' ] }
@@ -234,9 +229,12 @@ class Project:
         self.env = conf.Finish()       
 
     def build_all(self):
+        if sys.platform == 'darwin':        
+            self.build_sdl_main()
+        
         self.build_squirrel()
         self.build_miniswig()
-        self.build_binreloc()
+        self.build_binreloc()                
         self.build_wstlib()
         self.build_windstille()
         self.build_windstille_editor()
@@ -289,6 +287,10 @@ class Project:
         BuildStaticLibrary("binreloc", ["external/binreloc-2.0/binreloc.c"],
                            [ { 'CPPDEFINES' : ["ENABLE_BINRELOC"] } ], self.cfg)
 
+    def build_sdl_main(self):
+        BuildStaticLibrary("sdlmain", ["src/macosx/SDLmain.m"], 
+                           [ 'SDL' ], self.cfg)
+                           
     def build_wstlib(self):
         pkgs = [ 'default', 'windstille', 'binreloc' ]
         BuildStaticLibrary('wst_util',
@@ -352,8 +354,8 @@ class Project:
         pkgs = [ 'default',
                  'windstille',
                  'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math', 'wst_sound', 'wst_system', 'wst_util',
-                 'SDL', 'SDL_image', 'OpenGL', 'GLEW', 'png', 'boost_filesystem',
-                 'OpenAL', 'ogg', 'vorbis', 'vorbisfile']
+                 'SDL_image', 'OpenGL', 'GLEW', 'png', 'boost_filesystem',
+                 'OpenAL', 'ogg', 'vorbis', 'vorbisfile', 'SDL']
 
         BuildProgram("slideshow", Glob("extra/slideshow/*.cpp") + Glob("extra/slideshow/plugins/*.cpp"),
                      pkgs + [ { 'CPPPATH' : 'extra/' } ], self.cfg)

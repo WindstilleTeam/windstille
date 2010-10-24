@@ -31,7 +31,7 @@
 #include "display/texture_manager.hpp"
 #include "util/system.hpp"
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
   Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
 

@@ -68,7 +68,7 @@ private:
 public:
   Lensflare();
   
-  int main();
+  int run();
 
   void process_input();
   void draw();

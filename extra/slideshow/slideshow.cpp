@@ -157,7 +157,7 @@ App::parse_args(int argc, char** argv)
 }
 
 int
-App::main(int argc, char** argv)
+App::run(int argc, char* argv[])
 {
   parse_args(argc, argv);
     
@@ -377,7 +377,7 @@ int main(int argc, char** argv)
   try 
   {
     App app;
-    app.main(argc, argv);
+    app.run(argc, argv);
   }
   catch(std::exception& err)
   {

@@ -40,7 +40,7 @@ public:
   App();
 
   void init_sdl();
-  int main(int argc, char** argv);
+  int run(int argc, char* argv[]);
   void parse_args(int argc, char** argv);
 
 private:

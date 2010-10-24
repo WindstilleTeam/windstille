@@ -34,7 +34,7 @@ App::App() :
 }
 
 int
-App::main(int argc, char** argv)
+App::run(int argc, char* argv[])
 {
   SDL sdl;
   OpenGLWindow window("Shader Test",
@@ -167,12 +167,12 @@ App::main(int argc, char** argv)
   return 0;
 }
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
   try 
   {
     App app;
-    app.main(argc, argv);
+    app.run(argc, argv);
   }
   catch(std::exception& err)
   {

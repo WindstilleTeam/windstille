@@ -33,7 +33,7 @@ private:
 public:
   App();
 
-  int main(int argc, char** argv);
+  int run(int argc, char* argv[]);
 
 private:
   App(const App&);
