@@ -26,46 +26,6 @@ start_time = time.time()
 
 CacheDir('cache')
 
-def MakeEnvironment(packages, cfg):
-    env = Environment(ENV=os.environ)
-
-    for pkg in packages:
-        if type(pkg) == str:
-            if pkg in cfg:
-                env.Append(**cfg[pkg])
-            else:
-                raise Exception("Unknown package: %s" % pkg)
-        elif type(pkg) == dict:
-            env.Append(**pkg)
-        else:
-            raise Exception("Unknown package type: %s" % pkg)
-
-    return env
-
-def BuildProgram(target, sources, packages = [], cfg = {}):
-    env = MakeEnvironment(packages, cfg)
-    return env.Program(target, sources)
-
-def BuildStaticLibrary(target, sources, packages = [], cfg = {}):
-    env = MakeEnvironment(packages, cfg)
-    return env.StaticLibrary(target, sources)
-
-def ParseConfig(cmd):
-    env = Environment()
-    env['ENV']['PATH'] = os.environ['PATH']
-    env.ParseConfig(cmd)
-
-    cfg = {}
-
-    for var in [ 'CCFLAGS', 'CPPDEFINES', 'CPPPATH', 'LIBS', 'LIBPATH' ]:
-        if var in env and env[var] != []:
-            cfg[var]  = env[var] 
-
-    # if 'CCFLAGS' in cfg:
-    #     cfg['CXXFLAGS'] = cfg['CCFLAGS']
-
-    return cfg
-
 class Project:
     def __init__(self):
         self.features = {
@@ -107,7 +67,7 @@ class Project:
             print "Error: C++ compiler missing"
             Exit(1)
 
-        self.cfg = {}
+        self.cfg = Configuration()
         cfg = self.cfg
 
         # preset compiler flags
@@ -189,7 +149,7 @@ class Project:
                                     'LIBS' : [ File('libsquirrel.a') ],
                                     'CPPDEFINES' : [] # empty, but it is needed later on
                                     }
-        
+
         cfg['windstille']    = { 'CPPPATH' : [ '.', 'src', 'src/scripting' ] }
         cfg['test']          = { 'CPPDEFINES' : [ '__TEST__' ],
                                  'OBJPREFIX'  : "test__" }
@@ -201,14 +161,6 @@ class Project:
         cfg['wst_sound']     = { 'LIBS' : [ File('libwst_sound.a') ] }
         cfg['wst_system']    = { 'LIBS' : [ File('libwst_system.a') ] }
         cfg['wst_util']      = { 'LIBS' : [ File('libwst_util.a') ] }
-
-        if False:
-            print
-            print "Current Configuration:"
-            print "======================"
-            for k, v in self.cfg.items():
-                print "cfg['%s'] = %s" % (k, v)
-            print
 
         if conf.Check32bit() == "64bit":
             # conf.env.Append(CXXFLAGS="-D_SQ64")
@@ -231,7 +183,7 @@ class Project:
     def build_all(self):
         if sys.platform == 'darwin':        
             self.build_sdl_main()
-        
+
         self.build_squirrel()
         self.build_miniswig()
         self.build_binreloc()                
@@ -249,10 +201,10 @@ class Project:
         if self.features['64bit']:
             pkg['CPPDEFINES'] = ['_SQ64']
 
-        BuildStaticLibrary('squirrel',
+        self.cfg.StaticLibrary('squirrel',
                            Glob('external/SQUIRREL2/squirrel/*.cpp') +
                            Glob('external/SQUIRREL2/sqstdlib/*.cpp'),
-                           [pkg], self.cfg)
+                           [pkg])
 
     def build_miniswig(self):
         miniswig_env = Environment()
@@ -284,34 +236,34 @@ class Project:
                     miniswig_bin)
 
     def build_binreloc(self):
-        BuildStaticLibrary("binreloc", ["external/binreloc-2.0/binreloc.c"],
-                           [ { 'CPPDEFINES' : ["ENABLE_BINRELOC"] } ], self.cfg)
+        self.cfg.StaticLibrary("binreloc", ["external/binreloc-2.0/binreloc.c"],
+                           [ { 'CPPDEFINES' : ["ENABLE_BINRELOC"] } ])
 
     def build_sdl_main(self):
-        BuildStaticLibrary("sdlmain", ["src/macosx/SDLmain.m"], 
-                           [ 'SDL' ], self.cfg)
-                           
+        self.cfg.StaticLibrary("sdlmain", ["src/macosx/SDLmain.m"], 
+                           [ 'SDL' ])
+
     def build_wstlib(self):
         pkgs = [ 'default', 'windstille', 'binreloc' ]
-        BuildStaticLibrary('wst_util',
+        self.cfg.StaticLibrary('wst_util',
                            Glob('src/lisp/*.cpp') +
                            Glob('src/util/*.cpp'),
-                           pkgs, self.cfg)
-        BuildStaticLibrary('wst_math', Glob('src/math/*.cpp'), pkgs, self.cfg)
-        BuildStaticLibrary('wst_navgraph', Glob('src/navigation/*.cpp'), pkgs, self.cfg)
-        BuildStaticLibrary('wst_particles', Glob('src/particles/*.cpp'), pkgs, self.cfg)
-        BuildStaticLibrary('wst_sound', Glob('src/sound/*.cpp'), pkgs, self.cfg)
-        BuildStaticLibrary('wst_display', 
+                           pkgs)
+        self.cfg.StaticLibrary('wst_math', Glob('src/math/*.cpp'), pkgs)
+        self.cfg.StaticLibrary('wst_navgraph', Glob('src/navigation/*.cpp'), pkgs)
+        self.cfg.StaticLibrary('wst_particles', Glob('src/particles/*.cpp'), pkgs)
+        self.cfg.StaticLibrary('wst_sound', Glob('src/sound/*.cpp'), pkgs)
+        self.cfg.StaticLibrary('wst_display', 
                            Glob('src/font/*.cpp') +
                            Glob('src/display/*.cpp') +
                            Glob('src/scenegraph/*.cpp') +
                            Glob('src/sprite2d/*.cpp') +
                            Glob('src/sprite3d/*.cpp'),
-                           pkgs + [ 'freetype', 'SDL', 'SDL_image' ], self.cfg)
-        BuildStaticLibrary('wst_system', Glob('src/system/*.cpp'), pkgs + [ 'SDL' ], self.cfg)
+                           pkgs + [ 'freetype', 'SDL', 'SDL_image' ])
+        self.cfg.StaticLibrary('wst_system', Glob('src/system/*.cpp'), pkgs + [ 'SDL' ])
 
     def build_windstille(self):
-        BuildProgram('windstille',
+        self.cfg.Program('windstille',
                      Glob('src/app/*.cpp') +
                      Glob('src/armature/*.cpp') +
                      Glob('src/collision/*.cpp') +
@@ -331,8 +283,7 @@ class Project:
                        'SDL', 'SDL_image',
                        'OpenAL', 'ogg', 'vorbis', 'vorbisfile', 
                        'squirrel', 'png', 'binreloc',
-                       'boost_signals', 'boost_filesystem' ],
-                     self.cfg)
+                       'boost_signals', 'boost_filesystem' ])
 
     def build_windstille_editor(self):
         pkgs = [ 'default',
@@ -342,7 +293,7 @@ class Project:
                  'boost_filesystem',
                  'gtkglextmm-1.2' , 'gtkmm-2.4', 'SDL', 'curl', 'png', 'binreloc', 'OpenGL', 'GLEW',
                  'binreloc', 'jpeg' ]
-        BuildProgram('windstille-editor', Glob('src/editor/*.cpp'), pkgs, self.cfg)
+        self.cfg.Program('windstille-editor', Glob('src/editor/*.cpp'), pkgs)
 
         # FIXME: temporary dirty hack
         # test_editor_env = editor_env.Clone(OBJPREFIX="test_")
@@ -357,37 +308,37 @@ class Project:
                  'SDL_image', 'OpenGL', 'GLEW', 'png', 'boost_filesystem',
                  'OpenAL', 'ogg', 'vorbis', 'vorbisfile', 'SDL']
 
-        BuildProgram("slideshow", Glob("extra/slideshow/*.cpp") + Glob("extra/slideshow/plugins/*.cpp"),
-                     pkgs + [ { 'CPPPATH' : 'extra/' } ], self.cfg)
-        BuildProgram("shadertest", Glob("extra/shadertest/*.cpp"), pkgs, self.cfg)
-        BuildProgram("lensflare", Glob("extra/lensflare/*.cpp"), pkgs, self.cfg)
-        BuildProgram("memleak", Glob("extra/memleak/*.cpp"), pkgs, self.cfg)
+        self.cfg.Program("slideshow", Glob("extra/slideshow/*.cpp") + Glob("extra/slideshow/plugins/*.cpp"),
+                     pkgs + [ { 'CPPPATH' : 'extra/' } ])
+        self.cfg.Program("shadertest", Glob("extra/shadertest/*.cpp"), pkgs)
+        self.cfg.Program("lensflare", Glob("extra/lensflare/*.cpp"), pkgs)
+        self.cfg.Program("memleak", Glob("extra/memleak/*.cpp"), pkgs)
 
         for filename in Glob("extra/*.cpp", strings=True):
-            BuildProgram(filename[:-4], filename, pkgs, self.cfg)
+            self.cfg.Program(filename[:-4], filename, pkgs)
 
     def build_test_apps(self):
         pkgs = [ 'test', 'windstille' ]
 
-        BuildProgram("test_babyxml", ["src/util/baby_xml.cpp"], pkgs, self.cfg)
-        BuildProgram("test_response_curve", ["src/util/response_curve.cpp"], pkgs, self.cfg)
-        BuildProgram("test_random", ["src/math/random.cpp"], pkgs, self.cfg)
-        BuildProgram("test_pathname", ["src/util/pathname.cpp"], pkgs + [ 'boost_filesystem' ], self.cfg)
-        BuildProgram("test_directory", ["src/util/directory.cpp"], pkgs + [ 'boost_filesystem', 'wst_util' ], self.cfg)
-        BuildProgram("test_easing", ["src/math/easing.cpp"], pkgs, self.cfg)
-        BuildProgram("reader_test", ["test/read_test.cpp"], pkgs + [ 'wst_util', 'SDL' ], self.cfg)
+        self.cfg.Program("test_babyxml", ["src/util/baby_xml.cpp"], pkgs)
+        self.cfg.Program("test_response_curve", ["src/util/response_curve.cpp"], pkgs)
+        self.cfg.Program("test_random", ["src/math/random.cpp"], pkgs)
+        self.cfg.Program("test_pathname", ["src/util/pathname.cpp"], pkgs + [ 'boost_filesystem' ])
+        self.cfg.Program("test_directory", ["src/util/directory.cpp"], pkgs + [ 'boost_filesystem', 'wst_util' ])
+        self.cfg.Program("test_easing", ["src/math/easing.cpp"], pkgs)
+        self.cfg.Program("reader_test", ["test/read_test.cpp"], pkgs + [ 'wst_util', 'SDL' ])
 
-        BuildProgram("test_scissor_drawable", ["test/scissor_drawable/scissor_drawable.cpp"],
-                     pkgs + [ 'SDL', 'OpenGL', 'GLEW', 'png', 'SDL_image', 'boost_filesystem', 
-                              'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math', 'wst_sound', 'wst_system', 'wst_util',
-                              'binreloc' ],
-                     self.cfg)
+        self.cfg.Program("test_scissor_drawable", ["test/scissor_drawable/scissor_drawable.cpp"],
+                         pkgs + [ 'SDL', 'OpenGL', 'GLEW', 'png', 'SDL_image', 'boost_filesystem', 
+                                  'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math',
+                                  'wst_sound', 'wst_system', 'wst_util',
+                                  'binreloc' ])
 
-        BuildProgram("test_shader_drawable", [ "test/shader_drawable/shader_drawable.cpp" ],
-                     pkgs + [ 'SDL', 'OpenGL', 'GLEW', 'png', 'SDL_image', 'boost_filesystem', 
-                              'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math', 'wst_sound', 'wst_system', 'wst_util',
-                              'binreloc' ],
-                     self.cfg)
+        self.cfg.Program("test_shader_drawable", [ "test/shader_drawable/shader_drawable.cpp" ],
+                         pkgs + [ 'SDL', 'OpenGL', 'GLEW', 'png', 'SDL_image', 'boost_filesystem', 
+                                  'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math',
+                                  'wst_sound', 'wst_system', 'wst_util',
+                                  'binreloc' ])
 
     def build_windstille_data(self):
         data_env = self.env.Clone()
