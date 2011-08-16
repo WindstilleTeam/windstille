@@ -30,6 +30,8 @@
 #include "math/random.hpp"
 #include "system/sdl.hpp"
 
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+
 Lensflare::Lensflare() :
   m_aspect_ratio(1280, 800),
   m_window_size(640, 400),

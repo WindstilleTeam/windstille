@@ -160,7 +160,8 @@ int main(int argc, char** argv)
         {
           surface->draw(SurfaceDrawingParameters()
                         .set_scale(1.0f)
-                        .set_pos(((float)i/(float)(n-1)) * pos + ((float)(n-i-1)/(float)(n-1)) * last_pos
+                        .set_pos((static_cast<float>(i)/static_cast<float>(n-1)) * pos 
+                                 + (static_cast<float>(n-i-1)/static_cast<float>(n-1)) * last_pos
                                  - Vector2f(surface->get_width()/2, surface->get_height()/2))
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                         .set_color(Color(1.0f, 1.0f, 1.0f, 1.0f / static_cast<float>(n))));

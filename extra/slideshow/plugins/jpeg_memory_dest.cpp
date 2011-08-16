@@ -18,6 +18,8 @@
 
 #include "jpeg_memory_dest.hpp"
 
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+
 #define OUTPUT_BUF_SIZE 4096
 
 struct jpeg_memory_destination_mgr 

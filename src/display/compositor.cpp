@@ -22,6 +22,8 @@
 
 #include "display/framebuffer_compositor_impl.hpp"
 #include "display/basic_compositor_impl.hpp"
+
+#pragma GCC diagnostic ignored "-Wold-style-cast"
 
 Compositor::Compositor(const Size& window, const Size& viewport) :
   impl()

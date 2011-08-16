@@ -24,6 +24,8 @@
 #include "display/color.hpp"
 #include "display/assert_gl.hpp"
 
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+
 #define MAX_TEXTURE_UNITS 4
 
 class OpenGLStateImpl

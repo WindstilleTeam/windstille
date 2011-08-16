@@ -21,6 +21,8 @@
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
+
+#pragma GCC diagnostic ignored "-Wold-style-cast"
 
 void
 JPEGDecompressor::fatal_error_handler(j_common_ptr cinfo)

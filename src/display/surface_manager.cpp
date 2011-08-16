@@ -24,6 +24,7 @@
 #include "display/software_surface.hpp"
 #include "display/texture_packer.hpp"
 
+#pragma GCC diagnostic ignored "-Wold-style-cast"
 
 SurfaceManager::SurfaceManager() :
   texture_packer(0),

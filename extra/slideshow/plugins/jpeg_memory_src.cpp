@@ -19,6 +19,8 @@
 #include "jpeg_memory_src.hpp"
 
 #include <jerror.h>
+
+#pragma GCC diagnostic ignored "-Wold-style-cast"
 
 struct jpeg_memory_source_mgr {
   struct jpeg_source_mgr pub;   /* public fields */
