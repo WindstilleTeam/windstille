@@ -83,7 +83,6 @@ Armature::parse(FileReader& reader)
     }
   }
   
-  // insert code here to connet parent bones
   for(Bones::iterator i = bones.begin(); i != bones.end(); ++i)
   {
     Bone& bone = **i;
