@@ -28,7 +28,7 @@ def optimize(source, target)
     # puts i
     write_file_without_lines(source, lines, [i])
 
-    ret = system("scons", target)
+    ret = system("scons", "-u", target)
     if ret then
       puts "INCUNNEEDED #{source} #{lines[i].chop}" 
       unneeded_includes << i
