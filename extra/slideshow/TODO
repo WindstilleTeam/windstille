@@ -1,0 +1,38 @@
+* load on demand !!! of images (just quick check on existance at start)
+* include directive
+* remove breakpoints
+* give some kind of status on writing to output directory
+* ignore most keyboard input for offline rendering
+* close memory leak!!!!
+* absolute time stamps
+* GL EXT framebuffer multisample - anti-aliasing
+
+-- default: 75 quality
+real	3m48.971s
+user	2m33.986s
+sys	0m13.373s
+
+-- 100 quality
+real	5m8.274s
+user	4m3.963s
+sys	0m18.321s
+
+-- 20 qualtiy
+real	3m38.023s
+user	2m21.529s
+sys	0m12.245s
+
+-- dummy run, without writing any files
+real	0m46.699s
+user	0m22.577s
+sys	0m7.300s
+
+-- dummy render to screen
+real	1m25.001s
+user	0m3.348s
+sys	0m0.652s
+
+
+100 quality JPEG: 3:13min -> 1.4GB
+
+# EOF #

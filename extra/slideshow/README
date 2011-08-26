@@ -1,0 +1,27 @@
+Windstille - Slideshow
+======================
+
+image {FILENAME}
+      pos {X} {Y}
+      zoom {ZOOM}
+      duration {DURATION}
+      pos {X} {Y}
+      zoom {ZOOM}
+      duration {DURATION}
+      [...]      
+end
+
+fade [DURATION]
+
+breakpoint
+
+image {FILENAME}
+      pos {X} {Y}
+      zoom {ZOOM}
+[...]
+
+set variable value
+
+image $variable
+
+# EOF #
