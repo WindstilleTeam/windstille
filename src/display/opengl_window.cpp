@@ -46,9 +46,11 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
 {
   m_impl->m_size = size;
 
-  SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1); // vsync
+  //SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1); // vsync
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
 
+  // FIXME: Should make this configurable, as Matrox G450 can't do it,
+  // but works 'fine' without it
   SDL_GL_SetAttribute(SDL_GL_RED_SIZE,     8);
   SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,   8);
   SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,    8);

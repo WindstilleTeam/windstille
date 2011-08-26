@@ -18,20 +18,23 @@
 
 #include "display/display.hpp"
 
+#include <GL/glew.h>
 #include <boost/scoped_array.hpp>
-#include <png.h>
-#include <jpeglib.h>
 #include <errno.h>
 #include <fstream>
-#include <GL/glew.h>
+#include <jpeglib.h>
+#include <png.h>
 #include <sstream>
 #include <stdexcept>
+#include <string.h>
 
 #include "display/color.hpp"
 #include "math/quad.hpp"
 #include "math/line.hpp"
 #include "display/opengl_state.hpp"
 #include "display/assert_gl.hpp"
+
+#pragma GCC diagnostic ignored "-Wold-style-cast"
 
 Size              Display::aspect_size;
 std::vector<Rect> Display::cliprects;

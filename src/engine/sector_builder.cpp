@@ -248,7 +248,7 @@ SectorBuilder::parse_navgraph(const FileReader& reader)
             if (lhs != id_to_node.end() &&
                 rhs != id_to_node.end())
             {
-              EdgeHandle edge = m_sector.get_navigation_graph().add_edge(lhs->second, rhs->second);
+              m_sector.get_navigation_graph().add_edge(lhs->second, rhs->second);
             }
           }
         }

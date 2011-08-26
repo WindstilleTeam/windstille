@@ -192,7 +192,7 @@ TimelineWidget::on_expose_event(GdkEventExpose* ev)
 {
   if (Glib::RefPtr<Gdk::Window> window = get_window())
   {
-    Gtk::Allocation allocation = get_allocation();
+    //Gtk::Allocation allocation = get_allocation();
 
     Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
 

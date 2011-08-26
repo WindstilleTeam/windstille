@@ -1,4 +1,3 @@
-#include <SDL_endian.h>
 #include <stdlib.h>
 #include <fstream>
 #include <iostream>
@@ -7,7 +6,7 @@
 
 int main(int argc, char* argv[])
 {
-  if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+  if (is_big_endian())
   {
     std::cout << "byte order is: big endian" << std::endl;
   }
@@ -26,9 +25,13 @@ int main(int argc, char* argv[])
     }
     else
     {
-      std::cout << "uint32: " << read_uint32_t(in) << std::endl;
-      std::cout << "uint16: " << read_uint16_t(in) << std::endl;
-      std::cout << "float:  " << read_float(in) << std::endl;
+      uint32_t v_uint32 = read_uint32_t(in);
+      uint16_t v_uint16 = read_uint16_t(in);
+      float    v_float  = read_float(in);
+       
+       std::cout << "uint32: " << std::hex << v_uint32 << " - " << std::dec << v_uint32 << std::endl;
+       std::cout << "uint16: " << std::hex << v_uint16 << " - " << std::dec << v_uint16 << std::endl;
+      std::cout << "float:  " << v_float << std::endl;
     }
   }
   return 0;
