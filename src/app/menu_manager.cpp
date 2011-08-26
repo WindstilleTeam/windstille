@@ -105,7 +105,7 @@ MenuManager::display_main_menu()
 
   menu.add_button("Select Scenario", boost::bind(&MenuManager::display_scenario_menu));
   menu.add_button("Navigation Test", boost::bind(&MenuManager::menu_show_navigation_test));
-  if (0) menu.add_button("Armature Test", boost::bind(&MenuManager::menu_show_armature_test));
+  menu.add_button("Armature Test", boost::bind(&MenuManager::menu_show_armature_test));
   menu.add_button("Geometry Test", boost::bind(&MenuManager::menu_show_geometry_test));
   menu.add_button("Model Viewer", boost::bind(&MenuManager::display_models_menu));
   menu.add_button("Particle Systems", boost::bind(&MenuManager::display_particle_menu));
