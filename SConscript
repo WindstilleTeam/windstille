@@ -29,8 +29,9 @@ CacheDir('cache')
 class Project:
     def __init__(self):
         self.features = {
-            "64bit" : False,
-            "cwiid" : False
+            'platform' : sys.platform,
+            '64bit' : False,
+            'cwiid' : False
             }
 
         self.env = Environment(ENV=os.environ)
@@ -67,32 +68,37 @@ class Project:
             print "Error: C++ compiler missing"
             Exit(1)
 
-        self.cfg = Configuration()
+        self.cfg = Configuration() # ("i586-mingw32msvc")
+        Configuration.cfg = self.cfg
         cfg = self.cfg
 
+        # PATH="/home/ingo/projects/mingw32/run/bin:$PATH"
+        # PKG_CONFIG_LIBDIR="/home/ingo/projects/mingw32/run/lib/pkgconfig:/home/ingo/projects/mingw32/run/opt/gtk/lib/pkgconfig"
+
         # preset compiler flags
-        cfg['release'] = { 'CCFLAGS' : [ "-O3", "-s" ] }
-        cfg['profile'] = { 'CCFLAGS' : [ "-O2", "-g3", "-pg" ],
-                           'LINKFLAGS' : [ "-pg" ] }
-        cfg['debug']   = { 'CCFLAGS' : [ "-O0", "-g3" ] }
-        cfg['development'] = { 'CCFLAGS' : [ "-O2", "-g3",
-                                             "-ansi",
-                                             "-pedantic",
-                                             "-Wall",
-                                             "-Wextra",
-                                             "-Wnon-virtual-dtor",
-                                             "-Weffc++",
-                                             "-Wconversion",
-                                             # "-Wold-style-cast",
-                                             "-Werror",
-                                             "-Wshadow",
-                                             "-Wcast-qual",
-                                             "-Winit-self", # only works with >= -O1
-                                             "-Wno-unused-parameter",
-                                             # "-Winline",
-                                             # "-Wfloat-equal",
-                                             # "-Wunreachable-code",
-                                             ] }
+        cfg.Package('release', CCFLAGS = [ "-O3", "-s" ])
+        cfg.Package('profile', CCFLAGS = [ "-O2", "-g3", "-pg" ], LINKFLAGS = [ "-pg" ] )
+        cfg.Package('debug',   CCFLAGS = [ "-O0", "-g3" ] )
+        cfg.Package('development',
+                    CXX=[ "g++-svn" ],
+                    CCFLAGS = [ "-O2", "-g3",
+                                "-ansi",
+                                "-pedantic",
+                                "-Wall",
+                                "-Wextra",
+                                "-Wnon-virtual-dtor",
+                                "-Weffc++",
+                                "-Wconversion",
+                                "-Wold-style-cast",
+                                "-Werror",
+                                "-Wshadow",
+                                "-Wcast-qual",
+                                "-Winit-self", # only works with >= -O1
+                                "-Wno-unused-parameter",
+                                # "-Winline",
+                                # "-Wfloat-equal",
+                                # "-Wunreachable-code",
+                                ] )
 
         if 'BUILD' in self.env:
             print "Build Type: %s" % self.env['BUILD']
@@ -101,66 +107,106 @@ class Project:
             print "Build Type: release"
             cfg['default'] = cfg['release']
 
-        if sys.platform == 'darwin':
-            cfg['OpenAL']    = { 'LINKFLAGS' : [ '-framework', 'OpenAL' ] }
-            cfg['OpenGL']    = { 'LINKFLAGS' : [ '-framework', 'OpenGL' ] }
-            cfg['GLEW']      = { 'LIBS' : [ 'GLEW' ] }
-            cfg['SDL']       = { 'LINKFLAGS' : [ '-framework', 'SDL',
-                                                 '-framework', 'Cocoa' ],
-                                 'CPPPATH' : '/Library/Frameworks/SDL.framework/Headers/',
-                                 'LIBS'    : [ File('libsdlmain.a') ] }
-            cfg['SDL_image'] = { 'LINKFLAGS' : [ '-framework', 'SDL_image' ],
-                                 'LIBS' : [ 'jpeg' ],
-                                 'CPPPATH' : '/Library/Frameworks/SDL_image.framework/Headers/' }
-            cfg['ogg']              = ParseConfig("pkg-config ogg --cflags --libs")
-            cfg['vorbis']           = ParseConfig("pkg-config vorbis --cflags --libs")
-            cfg['vorbisfile']       = ParseConfig("pkg-config vorbisfile --cflags --libs")
-            cfg['boost_signals']    = { 'LIBS' : [ 'boost_signals' ] }
-            cfg['boost_filesystem'] = { 'LIBS' : [ 'boost_filesystem', 'boost_system' ] }
-            cfg['binreloc']         = { } # not available on MacOSX
-            cfg['freetype']         = ParseConfig("freetype-config --libs --cflags")
-            cfg['png']              = ParseConfig("pkg-config --cflags --libs libpng")
+        if self.features['platform'] == 'win32':
+            cfg.Package('default',
+                        CXX     = 'i586-mingw32msvc-c++',
+                        AR      = 'i586-mingw32msvc-ar',
+                        RANLIB  =  'i586-mingw32msvc-ranlib',
+                        CPPPATH = [ '/home/ingo/projects/mingw32/run/include',
+                                    '/home/ingo/projects/mingw32/run/opt/SDL-1.2.14/include/SDL',
+                                    '/home/ingo/projects/mingw32/run/opt/SDL_image-1.2.10/include',
+                                    '/home/ingo/projects/mingw32/run/opt/openal1.1/include',
+                                    '/home/ingo/projects/mingw32/run/opt/gtk/include' ],
+                        LIBPATH = [ '/home/ingo/projects/mingw32/run/lib',
+                                    '/home/ingo/projects/mingw32/run/opt/SDL-1.2.14/lib',
+                                    '/home/ingo/projects/mingw32/run/opt/SDL_image-1.2.10/lib',
+                                    '/home/ingo/projects/mingw32/run/opt/gtk/lib' ],
+                        PROGSUFFIX = '.exe')
+
+            # gtk['ENV']['PATH'] = "/home/ingo/projects/mingw32/run/bin:" + gtk['ENV']['PATH']
+            # gtk['ENV']['PKG_CONFIG_LIBDIR'] = "/home/ingo/projects/mingw32/run/lib/pkgconfig:/home/ingo/projects/mingw32/run/opt/gtk/lib/pkgconfig"
+
+        if self.features['platform'] == 'darwin':
+            cfg.Package('OpenAL', LINKFLAGS = [ '-framework', 'OpenAL' ])
+            cfg.Package('OpenGL', LINKFLAGS = [ '-framework', 'OpenGL' ])
+            cfg.Package('GLEW',   LIBS = [ 'GLEW' ])
+            cfg.Package('SDL',
+                        LINKFLAGS = [ '-framework', 'SDL',
+                                      '-framework', 'Cocoa' ],
+                        CPPPATH   = '/Library/Frameworks/SDL.framework/Headers/',
+                        LIBS      = [ File('libsdlmain.a') ])
+            cfg.Package('SDL_image',
+                        LINKFLAGS = [ '-framework', 'SDL_image' ],
+                        LIBS = [ 'jpeg' ],
+                        CPPPATH = '/Library/Frameworks/SDL_image.framework/Headers/')
+            cfg.Package('ogg',               CMD = "pkg-config ogg --cflags --libs")
+            cfg.Package('vorbis',            CMD = "pkg-config vorbis --cflags --libs")
+            cfg.Package('vorbisfile',        CMD = "pkg-config vorbisfile --cflags --libs")
+            cfg.Package('boost_signals',     LIBS = [ 'boost_signals' ] )
+            cfg.Package('boost_filesystem',  LIBS = [ 'boost_filesystem', 'boost_system' ] )
+            cfg.Package('binreloc')           # not available on MacOSX
+            cfg.Package('freetype',          CMD = "freetype-config --libs --cflags")
+            cfg.Package('png',               CMD = "pkg-config --cflags --libs libpng")
+
+        elif self.features['platform'] == 'win32':
+            cfg.Package('OpenGL',           LIBS = [ 'opengl32', 'glu32' ])
+            cfg.Package('OpenAL',           LIBS = [ 'openal32' ] )
+            cfg.Package('GLEW',             LIBS = [ 'glew32' ] )
+            cfg.Package('SDL',              LIBS = [ 'mingw32', 'SDLmain', 'SDL' ] )
+            cfg.Package('SDL_image',        LIBS = [ 'SDL_image' ] )
+            cfg.Package('ogg',              CMD = "pkg-config ogg --cflags --libs")
+            cfg.Package('vorbis',           CMD = "pkg-config vorbis --cflags --libs")
+            cfg.Package('vorbisfile',       CMD = "pkg-config vorbisfile --cflags --libs")
+            cfg.Package('boost_signals',    LIBS = [ 'boost_signals' ] )
+            cfg.Package('boost_filesystem', LIBS = [ 'boost_filesystem', 'boost_system' ] )
+            cfg.Package('curl',             CMD = "pkg-config --cflags --libs libcurl | sed 's/-I/-isystem/g'")
+            cfg.Package('png',              CMD = "pkg-config --cflags --libs libpng | sed 's/-I/-isystem/g'")
+            cfg.Package('jpeg',             LIBS = [ 'jpeg' ] )
+            cfg.Package('gtkmm-2.4',        CMD = "pkg-config --cflags --libs gtkmm-2.4 | sed 's/-I/-isystem/g'")
+            cfg.Package('gtkglextmm-1.2',   CMD = "pkg-config --cflags --libs gtkglextmm-1.2 | sed 's/-I/-isystem/g'")
+            cfg.Package('freetype',         CMD = "freetype-config --libs --cflags | sed 's/-I/-isystem/g'")
+            cfg.Package('binreloc')         # not available on Win32
 
         else:
-            cfg['OpenGL']           = { 'LIBS' : [ 'GL', 'GLU' ] }
-            cfg['OpenAL']           = { 'LIBS' : [ 'openal' ] }
-            cfg['GLEW']             = { 'LIBS' : [ 'GLEW' ] }
-            cfg['SDL']              = ParseConfig("sdl-config --cflags --libs")
-            cfg['SDL_image']        = { 'LIBS' : [ 'SDL_image' ] }
-            cfg['ogg']              = ParseConfig("pkg-config ogg --cflags --libs")
-            cfg['vorbis']           = ParseConfig("pkg-config vorbis --cflags --libs")
-            cfg['vorbisfile']       = ParseConfig("pkg-config vorbisfile --cflags --libs")
+            cfg.Package('OpenGL',           LIBS = [ 'GL', 'GLU' ] )
+            cfg.Package('OpenAL',           LIBS = [ 'openal' ] )
+            cfg.Package('GLEW',             LIBS = [ 'GLEW' ] )
+            cfg.Package('SDL',              CMD = "sdl-config --cflags --libs")
+            cfg.Package('SDL_image',        LIBS = [ 'SDL_image' ], DEPENDS = [ 'SDL' ])
+            cfg.Package('ogg',              CMD = "pkg-config ogg --cflags --libs")
+            cfg.Package('vorbis',           CMD = "pkg-config vorbis --cflags --libs")
+            cfg.Package('vorbisfile',       CMD = "pkg-config vorbisfile --cflags --libs")
 
             # FIXME: Add configure checks for exact boost library name (can be with or without -mt
-            cfg['boost_signals']    = { 'LIBS' : [ 'boost_signals' ] }
-            cfg['boost_filesystem'] = { 'LIBS' : [ 'boost_filesystem' ] }
+            cfg.Package('boost_signals',    LIBS = [ 'boost_signals' ])
+            cfg.Package('boost_filesystem', LIBS = [ 'boost_filesystem' ])
 
-            cfg['curl']             = ParseConfig("pkg-config --cflags --libs libcurl | sed 's/-I/-isystem/g'")
-            cfg['png']              = ParseConfig("pkg-config --cflags --libs libpng | sed 's/-I/-isystem/g'")
-            cfg['jpeg']             = { 'LIBS' : [ 'jpeg' ] }
-            cfg['gtkmm-2.4']        = ParseConfig("pkg-config --cflags --libs gtkmm-2.4 | sed 's/-I/-isystem/g'")
-            cfg['gtkglextmm-1.2']   = ParseConfig("pkg-config --cflags --libs gtkglextmm-1.2 | sed 's/-I/-isystem/g'")
-            cfg['freetype']         = ParseConfig("freetype-config --libs --cflags | sed 's/-I/-isystem/g'")
-            cfg['binreloc']         = { 'CPPDEFINES' : [ 'HAVE_BINRELOC' ],
-                                        'CPPPATH' : [ 'external/binreloc-2.0/' ],
-                                        'LIBS' : [ File('libbinreloc.a') ] }
+            cfg.Package('curl', CMD = "pkg-config --cflags --libs libcurl | sed 's/-I/-isystem/g'")
+            cfg.Package('png',  CMD = "pkg-config --cflags --libs libpng | sed 's/-I/-isystem/g'")
+            cfg.Package('jpeg',  LIBS = [ 'jpeg' ])
+            cfg.Package('gtkmm-2.4',      CMD = "pkg-config --cflags --libs gtkmm-2.4 | sed 's/-I/-isystem/g'")
+            cfg.Package('gtkglextmm-1.2', CMD = "pkg-config --cflags --libs gtkglextmm-1.2 | sed 's/-I/-isystem/g'")
+            cfg.Package('freetype',   CMD = "freetype-config --libs --cflags | sed 's/-I/-isystem/g'")
+            cfg.Package('binreloc',
+                        CPPDEFINES = [ 'HAVE_BINRELOC' ],
+                        CPPPATH    = [ 'external/binreloc-2.0/' ],
+                        LIBS       = [ File('libbinreloc.a') ])
 
-        cfg['squirrel']         = { 'CPPPATH' : [ 'external/SQUIRREL2/include/' ],
-                                    'LIBS' : [ File('libsquirrel.a') ],
-                                    'CPPDEFINES' : [] # empty, but it is needed later on
-                                    }
+        cfg.Package('squirrel',
+                    CPPPATH = [ 'external/SQUIRREL2/include/' ],
+                    LIBS = [ File('libsquirrel.a') ],
+                    CPPDEFINES = []) # empty, but it is needed later on
 
-        cfg['windstille']    = { 'CPPPATH' : [ '.', 'src', 'src/scripting' ] }
-        cfg['test']          = { 'CPPDEFINES' : [ '__TEST__' ],
-                                 'OBJPREFIX'  : "test__" }
+        cfg.Package('windstille', CPPPATH = [ '.', 'src', 'src/scripting' ])
+        cfg.Package('test',  CPPDEFINES = [ '__TEST__' ],  OBJPREFIX = "test__" )
 
-        cfg['wst_display']   = { 'LIBS' : [ File('libwst_display.a') ] }
-        cfg['wst_math']      = { 'LIBS' : [ File('libwst_math.a') ] }
-        cfg['wst_navgraph']  = { 'LIBS' : [ File('libwst_navgraph.a') ] }
-        cfg['wst_particles'] = { 'LIBS' : [ File('libwst_particles.a') ] }
-        cfg['wst_sound']     = { 'LIBS' : [ File('libwst_sound.a') ] }
-        cfg['wst_system']    = { 'LIBS' : [ File('libwst_system.a') ] }
-        cfg['wst_util']      = { 'LIBS' : [ File('libwst_util.a') ] }
+        cfg.Package('wst_display',   LIBS = [ File('libwst_display.a') ] )
+        cfg.Package('wst_math',      LIBS = [ File('libwst_math.a') ] )
+        cfg.Package('wst_navgraph',  LIBS = [ File('libwst_navgraph.a') ] )
+        cfg.Package('wst_particles', LIBS = [ File('libwst_particles.a') ] )
+        cfg.Package('wst_sound',     LIBS = [ File('libwst_sound.a') ] )
+        cfg.Package('wst_system',    LIBS = [ File('libwst_system.a') ] )
+        cfg.Package('wst_util',      LIBS = [ File('libwst_util.a') ] )
 
         if conf.Check32bit() == "64bit":
             # conf.env.Append(CXXFLAGS="-D_SQ64")
@@ -181,15 +227,18 @@ class Project:
         self.env = conf.Finish()       
 
     def build_all(self):
-        if sys.platform == 'darwin':        
+        if self.features['platform'] == 'darwin':        
             self.build_sdl_main()
+        elif self.features['platform'] == 'linux2':
+            self.build_binreloc()  
 
         self.build_squirrel()
         self.build_miniswig()
-        self.build_binreloc()                
         self.build_wstlib()
         self.build_windstille()
+
         self.build_windstille_editor()
+
         self.build_windstille_data()
         self.build_test_apps()
         self.build_extra_apps()
@@ -201,7 +250,7 @@ class Project:
         if self.features['64bit']:
             pkg['CPPDEFINES'] = ['_SQ64']
 
-        self.cfg.StaticLibrary('squirrel',
+        BuildStaticLibrary('squirrel',
                            Glob('external/SQUIRREL2/squirrel/*.cpp') +
                            Glob('external/SQUIRREL2/sqstdlib/*.cpp'),
                            [pkg])
@@ -236,34 +285,33 @@ class Project:
                     miniswig_bin)
 
     def build_binreloc(self):
-        self.cfg.StaticLibrary("binreloc", ["external/binreloc-2.0/binreloc.c"],
+        BuildStaticLibrary("binreloc", ["external/binreloc-2.0/binreloc.c"],
                            [ { 'CPPDEFINES' : ["ENABLE_BINRELOC"] } ])
 
     def build_sdl_main(self):
-        self.cfg.StaticLibrary("sdlmain", ["src/macosx/SDLmain.m"], 
-                           [ 'SDL' ])
+        BuildStaticLibrary("sdlmain", ["src/macosx/SDLmain.m"], [ 'SDL' ])
 
     def build_wstlib(self):
         pkgs = [ 'default', 'windstille', 'binreloc' ]
-        self.cfg.StaticLibrary('wst_util',
+        BuildStaticLibrary('wst_util',
                            Glob('src/lisp/*.cpp') +
                            Glob('src/util/*.cpp'),
                            pkgs)
-        self.cfg.StaticLibrary('wst_math', Glob('src/math/*.cpp'), pkgs)
-        self.cfg.StaticLibrary('wst_navgraph', Glob('src/navigation/*.cpp'), pkgs)
-        self.cfg.StaticLibrary('wst_particles', Glob('src/particles/*.cpp'), pkgs)
-        self.cfg.StaticLibrary('wst_sound', Glob('src/sound/*.cpp'), pkgs)
-        self.cfg.StaticLibrary('wst_display', 
+        BuildStaticLibrary('wst_math', Glob('src/math/*.cpp'), pkgs)
+        BuildStaticLibrary('wst_navgraph', Glob('src/navigation/*.cpp'), pkgs)
+        BuildStaticLibrary('wst_particles', Glob('src/particles/*.cpp'), pkgs)
+        BuildStaticLibrary('wst_sound', Glob('src/sound/*.cpp'), pkgs)
+        BuildStaticLibrary('wst_display', 
                            Glob('src/font/*.cpp') +
                            Glob('src/display/*.cpp') +
                            Glob('src/scenegraph/*.cpp') +
                            Glob('src/sprite2d/*.cpp') +
                            Glob('src/sprite3d/*.cpp'),
                            pkgs + [ 'freetype', 'SDL', 'SDL_image' ])
-        self.cfg.StaticLibrary('wst_system', Glob('src/system/*.cpp'), pkgs + [ 'SDL' ])
+        BuildStaticLibrary('wst_system', Glob('src/system/*.cpp'), pkgs + [ 'SDL' ])
 
     def build_windstille(self):
-        self.cfg.Program('windstille',
+        BuildProgram('windstille',
                      Glob('src/app/*.cpp') +
                      Glob('src/armature/*.cpp') +
                      Glob('src/collision/*.cpp') +
@@ -278,11 +326,11 @@ class Project:
                      Glob('src/tile/*.cpp'),
                      [ 'default', 'windstille',
                        'wst_particles', 'wst_navgraph', 'wst_display', 'wst_util', 'wst_math', 'wst_sound',
-                       'OpenGL', 'GLEW',
                        'freetype',
                        'SDL', 'SDL_image',
                        'OpenAL', 'ogg', 'vorbis', 'vorbisfile', 
-                       'squirrel', 'png', 'binreloc',
+                       'squirrel', 'png', 'jpeg', 'binreloc',
+                       'OpenGL', 'GLEW',
                        'boost_signals', 'boost_filesystem' ])
 
     def build_windstille_editor(self):
@@ -291,9 +339,10 @@ class Project:
                  'wst_particles', 'wst_navgraph', 'wst_display', 'wst_util', 'wst_math', 'wst_sound',
                  'SDL', 'SDL_image',
                  'boost_filesystem',
+                 'freetype',
                  'gtkglextmm-1.2' , 'gtkmm-2.4', 'SDL', 'curl', 'png', 'binreloc', 'OpenGL', 'GLEW',
                  'binreloc', 'jpeg' ]
-        self.cfg.Program('windstille-editor', Glob('src/editor/*.cpp'), pkgs)
+        BuildProgram('windstille-editor', Glob('src/editor/*.cpp'), pkgs)
 
         # FIXME: temporary dirty hack
         # test_editor_env = editor_env.Clone(OBJPREFIX="test_")
@@ -305,40 +354,40 @@ class Project:
         pkgs = [ 'default',
                  'windstille',
                  'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math', 'wst_sound', 'wst_system', 'wst_util',
-                 'SDL_image', 'OpenGL', 'GLEW', 'png', 'boost_filesystem',
+                 'SDL_image', 'OpenGL', 'GLEW', 'png', 'jpeg', 'boost_filesystem',
                  'OpenAL', 'ogg', 'vorbis', 'vorbisfile', 'SDL']
 
-        self.cfg.Program("slideshow", Glob("extra/slideshow/*.cpp") + Glob("extra/slideshow/plugins/*.cpp"),
+        BuildProgram("slideshow", Glob("extra/slideshow/*.cpp") + Glob("extra/slideshow/plugins/*.cpp"),
                      pkgs + [ { 'CPPPATH' : 'extra/' } ])
-        self.cfg.Program("shadertest", Glob("extra/shadertest/*.cpp"), pkgs)
-        self.cfg.Program("lensflare", Glob("extra/lensflare/*.cpp"), pkgs)
-        self.cfg.Program("memleak", Glob("extra/memleak/*.cpp"), pkgs)
+        BuildProgram("shadertest", Glob("extra/shadertest/*.cpp"), pkgs)
+        BuildProgram("lensflare", Glob("extra/lensflare/*.cpp"), pkgs)
+        BuildProgram("memleak", Glob("extra/memleak/*.cpp"), pkgs)
 
         for filename in Glob("extra/*.cpp", strings=True):
-            self.cfg.Program(filename[:-4], filename, pkgs)
+            BuildProgram(filename[:-4], filename, pkgs)
 
     def build_test_apps(self):
-        pkgs = [ 'test', 'windstille' ]
+        pkgs = [ 'default', 'test', 'windstille' ]
 
-        self.cfg.Program("test_babyxml", ["src/util/baby_xml.cpp"], pkgs)
-        self.cfg.Program("test_response_curve", ["src/util/response_curve.cpp"], pkgs)
-        self.cfg.Program("test_random", ["src/math/random.cpp"], pkgs)
-        self.cfg.Program("test_pathname", ["src/util/pathname.cpp"], pkgs + [ 'boost_filesystem' ])
-        self.cfg.Program("test_directory", ["src/util/directory.cpp"], pkgs + [ 'boost_filesystem', 'wst_util' ])
-        self.cfg.Program("test_easing", ["src/math/easing.cpp"], pkgs)
-        self.cfg.Program("reader_test", ["test/read_test.cpp"], pkgs + [ 'wst_util', 'SDL' ])
+        BuildProgram("test_babyxml", ["src/util/baby_xml.cpp"], pkgs)
+        BuildProgram("test_response_curve", ["src/util/response_curve.cpp"], pkgs)
+        BuildProgram("test_random", ["src/math/random.cpp"], pkgs)
+        BuildProgram("test_pathname", ["src/util/pathname.cpp"], pkgs + [ 'boost_filesystem' ])
+        BuildProgram("test_directory", ["src/util/directory.cpp"], pkgs + [ 'wst_util', 'boost_filesystem' ])
+        BuildProgram("test_easing", ["src/math/easing.cpp"], pkgs)
+        BuildProgram("reader_test", ["test/read_test.cpp"], pkgs + [ 'wst_util', 'SDL' ])
 
-        self.cfg.Program("test_scissor_drawable", ["test/scissor_drawable/scissor_drawable.cpp"],
-                         pkgs + [ 'SDL', 'OpenGL', 'GLEW', 'png', 'SDL_image', 'boost_filesystem', 
-                                  'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math',
-                                  'wst_sound', 'wst_system', 'wst_util',
-                                  'binreloc' ])
+        BuildProgram("test_scissor_drawable", ["test/scissor_drawable/scissor_drawable.cpp"],
+                     pkgs + [ 'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math',
+                              'wst_sound', 'wst_system', 'wst_util',
+                              'SDL', 'OpenGL', 'GLEW', 'png', 'SDL_image', 'boost_filesystem', 'jpeg', 
+                              'binreloc' ])
 
-        self.cfg.Program("test_shader_drawable", [ "test/shader_drawable/shader_drawable.cpp" ],
-                         pkgs + [ 'SDL', 'OpenGL', 'GLEW', 'png', 'SDL_image', 'boost_filesystem', 
-                                  'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math',
-                                  'wst_sound', 'wst_system', 'wst_util',
-                                  'binreloc' ])
+        BuildProgram("test_shader_drawable", [ "test/shader_drawable/shader_drawable.cpp" ],
+                     pkgs + [ 'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math',
+                              'wst_sound', 'wst_system', 'wst_util',
+                              'SDL', 'OpenGL', 'GLEW', 'png', 'SDL_image', 'boost_filesystem', 'jpeg',
+                              'binreloc' ])
 
     def build_windstille_data(self):
         data_env = self.env.Clone()

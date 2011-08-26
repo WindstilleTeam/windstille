@@ -16,6 +16,7 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # SConscript('SConscript')
+# SConscript('SConscript', variant_dir='build-win32', duplicate=0)
 SConscript('SConscript', variant_dir='build', duplicate=0)
 
 # EOF #
