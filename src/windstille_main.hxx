@@ -28,7 +28,7 @@ class WindstilleMain : public CL_ClanApplication
 private:
 
 public:
-  virtual char* get_title() { return "Windstille"; }
+  virtual const char* get_title() { return "Windstille"; }
   virtual int main(int argc, char** argv);
   virtual int inner_main(void* closure, int argc, char** argv);
 } main_app;

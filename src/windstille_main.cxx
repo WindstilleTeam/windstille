@@ -62,7 +62,9 @@ WindstilleMain::inner_main(void* closure, int argc, char** argv)
 
   //CL_OpenGL::begin_2d();
   try {
-    resources =  new CL_ResourceManager ("../data/windstille.xml", false);
+    resources =  new CL_ResourceManager();
+    resources->add_resources(CL_ResourceManager("../data/tiles.xml", false));
+    resources->add_resources(CL_ResourceManager("../data/windstille.xml", false));
     
     std::cout << "Loading Guile Code..." << std::endl;
 
