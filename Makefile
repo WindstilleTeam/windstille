@@ -15,9 +15,9 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 DESTDIR = 
-PREFIX  = "/usr/local"
-DATADIR = "${PREFIX}/share/windstille"
-BINDIR  = "${PREFIX}/bin"
+PREFIX  = /usr/local
+DATADIR = $(PREFIX)/share/windstille
+BINDIR  = $(PREFIX)/bin
 
 build/windstille:
 	scons
@@ -30,15 +30,15 @@ clean:
 install: install-exec install-data
 
 install-exec: build/windstille
-	install -d "${DESTDIR}${BINDIR}"
+	install -d "$(DESTDIR)$(BINDIR)"
 
-	install -D build/windstille "${DESTDIR}${BINDIR}/windstille.bin"
-	echo "#!/bin/sh\nexec \"${BINDIR}/windstille.bin\" --datadir \"${DATADIR}\"" > "${DESTDIR}${BINDIR}/windstille"
-	chmod 755 "${DESTDIR}${BINDIR}/windstille"
+	install -D build/windstille "$(DESTDIR)$(BINDIR)/windstille.bin"
+	echo "#!/bin/sh\nexec \"$(BINDIR)/windstille.bin\" --datadir \"$(DATADIR)\"" > "$(DESTDIR)$(BINDIR)/windstille"
+	chmod 755 "$(DESTDIR)$(BINDIR)/windstille"
 
-	install -D build/windstille-editor "${DESTDIR}${BINDIR}/windstille-editor.bin"
-	echo "#!/bin/sh\nexec \"${BINDIR}/windstille-editor.bin\" --datadir \"${DATADIR}/\"" > "${DESTDIR}${BINDIR}/windstille-editor"
-	chmod 755 "${DESTDIR}${BINDIR}/windstille-editor"
+	install -D build/windstille-editor "$(DESTDIR)$(BINDIR)/windstille-editor.bin"
+	echo "#!/bin/sh\nexec \"$(BINDIR)/windstille-editor.bin\" --datadir \"$(DATADIR)/\"" > "$(DESTDIR)$(BINDIR)/windstille-editor"
+	chmod 755 "$(DESTDIR)$(BINDIR)/windstille-editor"
 
 install-data:
 	cd data/; \
@@ -62,7 +62,7 @@ install-data:
 	-name "*.wsprite" -o \
 	-name "*.wst" -o \
 	-name "*.xcf" \) \
-	-exec install -D {} ${DESTDIR}${DATADIR}/{} \;
+	-exec install -D {} $(DESTDIR)$(DATADIR)/{} \;
 
 .PHONY : clean install install-exec install-data
 
