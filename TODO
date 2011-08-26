@@ -526,6 +526,8 @@ Sound Handling
 Miscellaneous
 =============
 
+* should filenames in the config file be absolute or relative to something?
+
 * View class could be done away, as it doesn't have any clear purpose
 
 * replace lisp::Writer with custom FileWriter (used in config)
@@ -608,6 +610,11 @@ Miscellaneous
 
 OpenGL
 ======
+
+Test for:
+
+GL_ARB_texture_non_power_of_two:                               MISSING 
+GL_ARB_texture_rectangle:                                      OK 
 
 * OpenGL 2.0 supports non-power-of-two textures with mipmaps, that
   should be used instead of the texture packer [mostly done, except
