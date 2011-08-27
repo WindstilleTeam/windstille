@@ -1,6 +1,6 @@
 ##  -*- python -*-
 ##  Windstille - A Sci-Fi Action-Adventure Game
-##  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmx.de>
+##  Copyright (C) 2000,2005,2011 Ingo Ruhnke <grumbel@gmx.de>
 ##
 ##  This program is free software: you can redistribute it and/or modify
 ##  it under the terms of the GNU General Public License as published by
@@ -413,13 +413,8 @@ class Project:
 Alias('configure')
 
 project = Project()
-
-if 'configure' in COMMAND_LINE_TARGETS or \
-   not (File('config.py').exists() and not GetOption('clean')):
-    project.configure()
-    project.build_all()
-else:
-    project.build_all()
+project.configure()
+project.build_all()
 
 print "Time reading SConscript: %.2fsec" % (time.time() - start_time)
 
