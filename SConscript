@@ -362,6 +362,7 @@ class Project:
         BuildProgram("shadertest", Glob("extra/shadertest/*.cpp"), pkgs)
         BuildProgram("lensflare", Glob("extra/lensflare/*.cpp"), pkgs)
         BuildProgram("memleak", Glob("extra/memleak/*.cpp"), pkgs)
+        BuildProgram("2dshadow", Glob("extra/2dshadow/*.cpp"), pkgs)
 
         for filename in Glob("extra/*.cpp", strings=True):
             BuildProgram(filename[:-4], filename, pkgs)
