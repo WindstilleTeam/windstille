@@ -16,7 +16,7 @@ int main()
   SDL sdl;
 
   Size window_size(854, 480);
-  OpenGLWindow window("Image Blur", window_size, window_size);
+  OpenGLWindow window("2D Shadow", window_size, window_size);
   
   SurfaceManager surface_manager;
 
@@ -63,12 +63,12 @@ int main()
     int samples = 64;
     for(int i = 0; i < samples; ++i)
     {
-      float scale = 1.0f + (static_cast<float>(i) / samples) * 2.0f;
-      float alpha = static_cast<float>(samples-i)/samples;
+      float scale = 1.0f + (static_cast<float>(i) / static_cast<float>(samples)) * 2.0f;
+      float alpha = static_cast<float>(samples-i) / static_cast<float>(samples);
       alpha = alpha * alpha * alpha * alpha * alpha * alpha;
 
-      float width  = shadow->get_width() * scale;
-      float height = shadow->get_height() * scale;
+      //float width  = shadow->get_width() * scale;
+      //float height = shadow->get_height() * scale;
 
       Vector2f rel_pos = mouse_pos - object_pos;
 
