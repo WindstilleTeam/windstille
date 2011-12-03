@@ -207,19 +207,22 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     if (event->time - start_time > MOVE_TIMEOUT ||
         offset.length() > MOVE_THRESHOLD)
     {
-      selection->on_move_update(offset);
+      if (selection->is_moving())
+      {
+        selection->on_move_update(offset);
       
-      if (event->state & GDK_CONTROL_MASK)
-      {
-        selection->on_move_end(wst, offset + process_snap(wst));
-      }
-      else if (event->state & GDK_SHIFT_MASK)
-      {
-        selection->on_move_end(wst, offset + process_grid_snap(wst));
-      }
-      else
-      {
-        selection->on_move_end(wst, offset);
+        if (event->state & GDK_CONTROL_MASK)
+        {
+          selection->on_move_end(wst, offset + process_snap(wst));
+        }
+        else if (event->state & GDK_SHIFT_MASK)
+        {
+          selection->on_move_end(wst, offset + process_grid_snap(wst));
+        }
+        else
+        {
+          selection->on_move_end(wst, offset);
+        }
       }
       wst.queue_draw();
     }
