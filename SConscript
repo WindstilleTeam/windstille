@@ -80,7 +80,6 @@ class Project:
         cfg.Package('profile', CCFLAGS = [ "-O2", "-g3", "-pg" ], LINKFLAGS = [ "-pg" ] )
         cfg.Package('debug',   CCFLAGS = [ "-O0", "-g3" ] )
         cfg.Package('development',
-                    CXX=[ "g++-svn" ],
                     CCFLAGS = [ "-O2", "-g3",
                                 "-ansi",
                                 "-pedantic",
