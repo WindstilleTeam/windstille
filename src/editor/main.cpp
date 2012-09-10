@@ -32,6 +32,7 @@
 #include "display/surface_manager.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/main.hpp"
+#include "util/log.hpp"
 
 int
 WindstilleEditor::main(int argc, char** argv)
@@ -47,6 +48,7 @@ WindstilleEditor::main(int argc, char** argv)
     argp.add_doc   ("Windstille Level Editor");
     argp.add_option('h', "help",       "", "Print this help");
     argp.add_option('d', "datadir", "DIR", "Fetch game data from DIR");
+    argp.add_option('D', "debug", "", "Print debug level messages");
     
     argp.parse_args(argc, argv);
 
@@ -54,6 +56,10 @@ WindstilleEditor::main(int argc, char** argv)
     {
       switch (argp.get_key())
       {
+        case 'D':
+          g_logger.set_log_level(Logger::kTemp);
+          break;
+
         case 'd':
           datadir = argp.get_argument();
           break;
