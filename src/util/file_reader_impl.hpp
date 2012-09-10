@@ -24,8 +24,6 @@
 
 class Size;
 class Color;
-class Vector2f;
-class Vector3;
 
 class FileReader;
 class ResDescriptor;

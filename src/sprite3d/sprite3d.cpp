@@ -269,7 +269,8 @@ Sprite3D::get_attachment_point_matrix(PointID id) const
 
   Vector3 pos = pos1 + (pos2 - pos1) * blend_time;
   Quaternion quat = quat1.slerp(quat2, blend_time);
-  Matrix result = pos.to_matrix();
+  Matrix result = Matrix::identity();
+  result.translate(pos.x, pos.y, pos.z);
   result = result.multiply(quat.to_matrix());
 
   return result;

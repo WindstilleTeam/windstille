@@ -19,13 +19,13 @@
 #ifndef HEADER_WINDSTILLE_UTIL_GETTER_HPP
 #define HEADER_WINDSTILLE_UTIL_GETTER_HPP
 
+#include "math/vector3.hpp"
 #include "util/file_reader.hpp"
 
 class FileReader;
 class Quaternion;
 class Color;
 class Vector2f;
-class Vector3;
 class Matrix;
 
 bool get(const FileReader& reader, const char* name, Matrix& value);

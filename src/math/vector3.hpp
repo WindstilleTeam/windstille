@@ -20,9 +20,13 @@
 #define __VECTOR3_HPP__
 
 #include <iostream>
+#include <glm/glm.hpp>
+
+typedef glm::vec3 Vector3;
 
 #include "math/matrix.hpp"
 
+#if 0
 /**
  * A 3-dimensional vector
  */
@@ -108,6 +112,6 @@ public:
 inline std::ostream& operator<<(std::ostream& s, const Vector3& v) {
   return (s << "[" << v.x << ", " << v.y << ", " << v.z << "]");
 }
-
 #endif
 
+#endif

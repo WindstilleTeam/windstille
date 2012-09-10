@@ -30,7 +30,7 @@
 #ifndef HEADER_WINDSTILLE_MATH_MATRIX_HPP
 #define HEADER_WINDSTILLE_MATH_MATRIX_HPP
 
-class Vector3;
+#include "math/vector3.hpp"
 
 //: 4x4 Matrix.
 class Matrix
