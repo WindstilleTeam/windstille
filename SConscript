@@ -179,7 +179,7 @@ class Project:
 
             # FIXME: Add configure checks for exact boost library name (can be with or without -mt
             cfg.Package('boost_signals',    LIBS = [ 'boost_signals' ])
-            cfg.Package('boost_filesystem', LIBS = [ 'boost_filesystem' ])
+            cfg.Package('boost_filesystem', LIBS = [ 'boost_filesystem', 'boost_system' ])
 
             cfg.Package('curl', CMD = "pkg-config --cflags --libs libcurl | sed 's/-I/-isystem/g'")
             cfg.Package('png',  CMD = "pkg-config --cflags --libs libpng | sed 's/-I/-isystem/g'")
