@@ -42,8 +42,8 @@ DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& of
   Vector2f start   = pos - object->get_world_pos();
   Vector2f current = (pos + offset) - object->get_world_pos();
 
-  start    = start.rotate(-object->get_angle());
-  current = current.rotate(-object->get_angle());
+  start   = glm::rotate(start, -object->get_angle());
+  current = glm::rotate(current, -object->get_angle());
     
   Vector2f new_scale = orig_scale;
 

@@ -27,7 +27,7 @@ Line::Line(const Vector2f& p1_,
 float
 Line::length() const
 {
-  return (p2 - p1).length();
+  return glm::length(p2 - p1);
 }
 
 bool
@@ -101,18 +101,18 @@ Line::distance(const Vector2f& p3) const
   
   if (u < 0.0f)
   {
-    return (p1 - p3).length();
+    return glm::length(p1 - p3);
   }
   else if (u > 1.0f)
   {
-    return (p2 - p3).length();
+    return glm::length(p2 - p3);
   }
   else // (u >= 0.0f && u <= 1.0f)
   {
     Vector2f p4(x1 + u * (x2 - x1),
                 y1 + u * (y2 - y1));
 
-    return (p4 - p3).length();
+    return glm::length(p4 - p3);
   }
 }
 

@@ -155,7 +155,7 @@ NavigationGraph::find_nodes(const Vector2f& pos, float radius)
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
   {
-    float distance = (pos - (*i)->get_pos()).length();
+    float distance = glm::length(pos - (*i)->get_pos());
     if (distance < radius)
     {
       ret.push_back(NodeHandle(*i));
@@ -208,7 +208,7 @@ NavigationGraph::find_closest_node(const Vector2f& pos, float radius)
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
   {
-    float current_distance = (pos - (*i)->get_pos()).length();
+    float current_distance = glm::length(pos - (*i)->get_pos());
     if (current_distance < min_distance)
     {
       min_distance = current_distance;

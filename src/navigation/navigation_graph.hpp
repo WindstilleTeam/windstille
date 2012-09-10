@@ -22,8 +22,10 @@
 #include <iosfwd>
 #include <vector>
 
+#include <glm/glm.hpp>
+
+#include "math/vector2f.hpp"
 
-class Vector2f;
 class Edge;
 class EdgePosition;
 class FileReader;

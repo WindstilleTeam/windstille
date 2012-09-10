@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SOUND_SOUND_SOURCE_HPP
 #define HEADER_WINDSTILLE_SOUND_SOUND_SOURCE_HPP
 
-class Vector2f;
+#include "math/vector2f.hpp"
 
 class SoundSource
 {

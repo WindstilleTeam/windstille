@@ -209,7 +209,7 @@ DecalObjectModel::is_at(const Vector2f& pos) const
 
   // Transform mouse coordinates into coordinates relative to the
   // center of the unscaled and unrotated image
-  p = p.rotate(-angle);
+  p = glm::rotate(p, -angle);
   p.x /= scale.x;
   p.y /= scale.y;
 

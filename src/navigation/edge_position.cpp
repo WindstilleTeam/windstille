@@ -19,6 +19,8 @@
 #include "navigation/edge_position.hpp"
 
 #include <math.h>
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
 
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
@@ -49,7 +51,7 @@ EdgePosition::advance(float& adv, Node*& next_node)
   Vector2f p1 = edge->get_node1()->get_pos();
   Vector2f p2 = edge->get_node2()->get_pos();
   
-  float length = (p2 - p1).length();
+  float length = glm::length(p2 - p1);
   
   // convert from world co to [0,1] range
   float adv_01 = adv / length;
@@ -87,16 +89,16 @@ EdgePosition::advance(Vector2f& adv, Node*& next_node)
   
   Vector2f edge_v = p2 - p1;
 
-  Vector2f proj = adv.project(edge_v);
+  Vector2f proj = glm::proj(adv, edge_v);
 
   float angle = atan2f(edge_v.y, edge_v.x) - atan2f(proj.y, proj.x);
 
   // Check if we are going forward or backward
   float advf;
   if (angle > M_PI/2 || angle < -M_PI/2)
-    advf = -proj.length();
+    advf = glm::length(-proj);
   else
-    advf = proj.length();
+    advf = glm::length(proj);
 
   // Move forward
   advance(advf, next_node);
@@ -106,7 +108,7 @@ EdgePosition::advance(Vector2f& adv, Node*& next_node)
   if (advf == 0.0f)
     adv = Vector2f(0,0);
   else
-    adv -= (proj * ((proj.length() - advf)/proj.length()));
+    adv -= (proj * ((glm::length(proj) - advf)/glm::length(proj)));
 }
 
 Vector2f

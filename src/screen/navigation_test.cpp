@@ -163,7 +163,7 @@ NavigationTest::update(float delta, const Controller& controller)
 
     player = connection->get_pos();
       
-    if (!advance.is_null())
+    if (!(advance.x == 0.0f && advance.y == 0.0f))
     { // Not all advancement got used up, which means we have hit
       // the end of a edge
 
@@ -176,12 +176,12 @@ NavigationTest::update(float delta, const Controller& controller)
       {
         if (connection->get_edge() != i->edge)
         { // Find out into the direction of which edge the stick is pointing
-          Vector2f proj = stick.project(i->edge->get_vector());
+          Vector2f proj = glm::proj(stick, i->edge->get_vector());
                   
-          if (proj.length() > length)
+          if (glm::length(proj) > length)
           {
             next_edge = *i;
-            length       = proj.length();
+            length       = glm::length(proj);
           }
         }
       }

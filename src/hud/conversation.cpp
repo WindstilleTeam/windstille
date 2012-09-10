@@ -16,6 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
+
 #include "input/controller.hpp"
 #include "font/fonts.hpp"
 #include "engine/script_manager.hpp"
@@ -67,7 +70,7 @@ Conversation::draw()
   for(int i = 0; i < static_cast<int>(choices.size()); ++i)
   { // FIXME:
     Vector2f offset(0.0f, 1.0f);
-    offset = offset.rotate(math::deg2rad(segment * static_cast<float>(i)) - math::pi/2.0f);
+    offset = glm::rotate(offset, math::deg2rad(segment * static_cast<float>(i)) - math::pi/2.0f);
 
     float start = -segment / 2.0f - 90.0f + segment * static_cast<float>(i);
     float end   = -segment / 2.0f - 90.0f + segment * static_cast<float>(i+1);

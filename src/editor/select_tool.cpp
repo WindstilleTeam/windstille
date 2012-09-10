@@ -153,7 +153,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     Vector2f offset = pos - click_pos;
           
     if ((event->time - start_time) > MOVE_TIMEOUT ||
-        offset.length() > MOVE_THRESHOLD)
+        glm::length(offset) > MOVE_THRESHOLD)
     {
       if (!selection->is_moving())
         selection->on_move_start();
@@ -205,7 +205,7 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     Vector2f offset = pos - click_pos;
 
     if (event->time - start_time > MOVE_TIMEOUT ||
-        offset.length() > MOVE_THRESHOLD)
+        glm::length(offset) > MOVE_THRESHOLD)
     {
       if (selection->is_moving())
       {

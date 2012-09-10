@@ -21,12 +21,12 @@
 
 #include "math/matrix.hpp"
 #include "math/vector3.hpp"
+#include "math/vector2f.hpp"
 #include "math/quaternion.hpp"
 #include "util/file_reader.hpp"
 
 class FileReader;
 class Color;
-class Vector2f;
 
 bool get(const FileReader& reader, const char* name, Matrix& value);
 bool get(const FileReader& reader, const char* name, Quaternion& value);

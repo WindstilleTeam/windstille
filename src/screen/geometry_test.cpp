@@ -19,6 +19,8 @@
 #include "screen/geometry_test.hpp"
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
 
 #include "app/console.hpp"
 #include "app/menu_manager.hpp"
@@ -56,7 +58,7 @@ GeometryTest::draw()
   // Try vector projection
   Vector2f a(line1.p2 - line1.p1);
   Vector2f b(line2.p2 - line2.p1);
-  Vector2f c(a.project(b));
+  Vector2f c(glm::proj(a, b));
   
   Display::draw_line(line1.p1, line1.p1 + c, Color(1.0f, 1.0f, 1.0f, 0.5f));
 

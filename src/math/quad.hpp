@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_MATH_QUAD_HPP
 
 #include <math.h>
+#include <glm/ext.hpp>
 
 #include "math/math.hpp"
 #include "vector2f.hpp"
@@ -79,10 +80,10 @@ public:
     Vector2f center((p1.x + p2.x + p3.x + p4.x) / 4.0f,
                     (p1.y + p2.y + p3.y + p4.y) / 4.0f);
 
-    p1 = center + (p1 - center).rotate(angle);
-    p2 = center + (p2 - center).rotate(angle);
-    p3 = center + (p3 - center).rotate(angle);
-    p4 = center + (p4 - center).rotate(angle);
+    p1 = center + glm::rotate(p1 - center, angle);
+    p2 = center + glm::rotate(p2 - center, angle);
+    p3 = center + glm::rotate(p3 - center, angle);
+    p4 = center + glm::rotate(p4 - center, angle);
   }
 };
 

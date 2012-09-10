@@ -130,7 +130,7 @@ LaserPointer::draw(SceneContext& sc)
     array->vertex(0, 0);
 
     array->color(Color(1.0f, 0.0f, 0.0f, 1.0f));
-    array->texcoord((target - pos).magnitude()/256.0f, progress);
+    array->texcoord(glm::length(target - pos)/256.0f, progress);
     array->vertex(ray.x, ray.y);
 
     sc.highlight().draw(array);

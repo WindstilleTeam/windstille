@@ -24,8 +24,8 @@
 #include <boost/scoped_ptr.hpp>
 
 #include "editor/selection.hpp"
+#include "math/vector2f.hpp"
 
-class Vector2f;
 class NavigationGraph;
 class NavGraphEdgeObjectModel;
 class NavGraphNodeObjectModel;

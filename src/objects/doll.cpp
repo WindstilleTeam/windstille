@@ -339,7 +339,7 @@ Doll::walk(const Vector2f& adv_)
     Vector2f adv(adv_);
     m_edge_position->advance(adv, next_node);
 
-    if (!adv.is_null())
+    if (!(adv.x == 0.0f && adv.y == 0.0f))
     { // Not all advancement got used up, which means we have hit
       // the end of a edge
 
@@ -352,12 +352,12 @@ Doll::walk(const Vector2f& adv_)
       {
         if (m_edge_position->get_edge() != i->edge)
         { // Find out into the direction of which edge the stick is pointing
-          Vector2f proj = adv_.project(i->edge->get_vector());
+          Vector2f proj = glm::proj(adv_, i->edge->get_vector());
                   
-          if (proj.length() > length)
+          if (glm::length(proj) > length)
           {
             next_edge = *i;
-            length    = proj.length();
+            length    = glm::length(proj);
           }
         }
       }

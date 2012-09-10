@@ -52,7 +52,7 @@ Display::draw_line_with_normal(const Line& line, const Color& color)
   Vector2f normal = (line.p2 - line.p1);
 
   normal = Vector2f(-normal.y, normal.x);
-  normal.normalize();
+  normal = glm::normalize(normal);
   normal *= -32.0f;
   
   Vector2f p3 = line.p1 + 0.5f * (line.p2 - line.p1);

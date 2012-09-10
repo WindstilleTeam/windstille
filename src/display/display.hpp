@@ -22,12 +22,12 @@
 #include <vector>
 
 #include "math/size.hpp"
+#include "math/vector2f.hpp"
 #include "display/framebuffer.hpp"
 
 class Pathname;
 class Color;
 class Quad;
-class Vector2f;
 class Rectf;
 class Line;
 

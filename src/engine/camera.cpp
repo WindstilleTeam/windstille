@@ -32,7 +32,7 @@ float distance(const Camera::PathPoint& a, const Camera::PathPoint& b)
 {
   // "100.0f *" is there to balance out the speed between zoom and
   // positional movement
-  return (b.pos - a.pos).length() 
+  return glm::length(b.pos - a.pos) 
     + 100.0f * fabsf(b.zoom - a.zoom)
     + fabsf(b.rotation - a.rotation);
 }

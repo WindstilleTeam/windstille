@@ -86,7 +86,7 @@ NavigationGraphModel::find_closest_node(const Vector2f& pos, float radius) const
 
   for(Nodes::const_iterator i = m_nodes.begin(); i != m_nodes.end(); ++i)
   {
-    float current_distance = (pos - (*i)->get_world_pos()).length();
+    float current_distance = glm::length(pos - (*i)->get_world_pos());
     if (current_distance < min_distance)
     {
       min_distance = current_distance;

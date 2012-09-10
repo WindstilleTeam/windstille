@@ -22,6 +22,7 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/function.hpp>
 
+#include "math/vector2f.hpp"
 #include "editor/select_mask.hpp"
 #include "util/file_writer.hpp"
 #include "editor/control_point.hpp"
@@ -33,7 +34,6 @@ class FileReader;
 class SceneContext;
 class SectorModel;
 class DrawableGroup;
-class Vector2f;
 
 typedef boost::shared_ptr<ObjectModel> ObjectModelHandle;
 typedef boost::weak_ptr<ObjectModel>   ObjectModelPtr;

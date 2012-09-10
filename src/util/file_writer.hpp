@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_UTIL_FILE_WRITER_HPP
 
 class Color;
-class Vector2f;
+#include "math/vector2f.hpp"
 
 class FileWriter
 {

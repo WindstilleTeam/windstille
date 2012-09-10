@@ -20,6 +20,7 @@
 
 #include "math/vector2f.hpp"
 
+#if 0
 void
 Vector2f::normalize()
 {
@@ -66,15 +67,17 @@ Vector2f::is_null() const
   return (x == 0.0f && y == 0.0f);
 }
 
+Vector2f operator*(float s, const Vector2f& v)
+{
+  return Vector2f(v.x * s, v.y * s);
+}
+
+#endif
+
 std::ostream& operator<<(std::ostream& s, const Vector2f& v)
 {
   s << "(" << v.x << ", " << v.y << ")";
   return s;
-}
-
-Vector2f operator*(float s, const Vector2f& v)
-{
-  return Vector2f(v.x * s, v.y * s);
 }
 
 /* EOF */

@@ -22,8 +22,8 @@
 #include "editor/timeline_handles.hpp"
 #include "editor/timeline_properties.hpp"
 #include "editor/object_model.hpp"
+#include "math/vector2f.hpp"
 
-class Vector2f;
 class FileWriter;
 
 class Timeline

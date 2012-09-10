@@ -18,6 +18,9 @@
 
 #include "hud/inventory.hpp"
 
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
+
 #include "font/fonts.hpp"
 #include "input/controller.hpp"
 #include "screen/game_session.hpp"
@@ -103,7 +106,7 @@ InventoryImpl::draw()
   for(int i = 0; i < int(items.size()); ++i)
   {
     const InventoryItem& item = items[(i+current_item) % items.size()];
-    Vector2f draw_pos = pos + Vector2f(128.0f, 0.0f).rotate(step_angle * static_cast<float>(i) - math::pi/2.0f + add_angle);
+    Vector2f draw_pos = pos + glm::rotate(Vector2f(128.0f, 0.0f), step_angle * static_cast<float>(i) - math::pi/2.0f + add_angle);
 
     if (i == 0 && moving == 0)
     {

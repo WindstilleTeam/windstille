@@ -41,8 +41,6 @@
 
 #include "vector2f.hpp"
 
-class Vector2f;
-
 //: 2D (x,y) point structure.
 //- !group=Core/Math!
 //- !header=core.h!

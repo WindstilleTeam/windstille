@@ -57,7 +57,7 @@ Lensflare::draw()
 {
   Vector2f screen_center(static_cast<float>(m_aspect_ratio.width)  / 2.0f,
                          static_cast<float>(m_aspect_ratio.height) / 2.0f);
-  float dist = (m_mouse - screen_center).length();
+  float dist = glm::length(m_mouse - screen_center);
 
   float factor = 0.3f - (dist / static_cast<float>(m_aspect_ratio.width + m_aspect_ratio.height));
   factor *= 3.3f;
