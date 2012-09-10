@@ -52,16 +52,16 @@ int main(int argc, char* argv[])
   boost::shared_ptr<ScissorDrawable> scissor(new ScissorDrawable(Rect(200, 200, 400, 400)));
   boost::shared_ptr<StencilDrawable> stencil(new StencilDrawable());
   boost::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")), 
-                                                                 SurfaceDrawingParameters(), 0, Matrix::identity()));
+                                                                 SurfaceDrawingParameters(), 0, Matrix(1.0f)));
 
   boost::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")), 
-                                                                  SurfaceDrawingParameters().set_pos(Vector2f(-50.0f, -50.0f)), 0, Matrix::identity()));
+                                                                  SurfaceDrawingParameters().set_pos(Vector2f(-50.0f, -50.0f)), 0, Matrix(1.0f)));
   boost::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")), 
-                                                                  SurfaceDrawingParameters(), 0, Matrix::identity()));
+                                                                  SurfaceDrawingParameters(), 0, Matrix(1.0f)));
 
   boost::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")), 
                                                                   SurfaceDrawingParameters().set_pos(Vector2f(-25.0f, 25.0f)),
-                                                                  0, Matrix::identity()));
+                                                                  0, Matrix(1.0f)));
   boost::shared_ptr<StencilDrawable> stencil2(new StencilDrawable());
   
   if (0)

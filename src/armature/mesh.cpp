@@ -253,7 +253,7 @@ Mesh::apply(Armature* armature)
 
         if (bone)
         { // FIXME: Need to calculate the offset from the bone and rotate that, not the pos
-          i->render_pos += (bone->render_matrix.multiply(i->pos)) * weight;
+          i->render_pos += glm::vec3((bone->render_matrix * glm::vec4(i->pos, 1.0f)) * weight);
         }
         else
         {

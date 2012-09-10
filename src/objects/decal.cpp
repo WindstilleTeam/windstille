@@ -71,7 +71,7 @@ Decal::Decal(const FileReader& reader) :
                                      .set_vflip(vflip)
                                      .set_scale(scale),
                                      0, 
-                                     Matrix::identity()));
+                                     Matrix(1.0f)));
 
   switch(map_type)
   {

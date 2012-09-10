@@ -19,6 +19,7 @@
 #include "particles/deform_drawer.hpp"
 
 #include <GL/glew.h>
+#include <glm/ext.hpp>
 
 #include "display/display.hpp"
 #include "display/shader_object.hpp"
@@ -85,7 +86,7 @@ public:
   void draw_particles()
   {
     glPushMatrix();
-    glMultMatrixf(get_modelview().matrix);
+    glMultMatrixf(glm::value_ptr(get_modelview()));
     
     OpenGLState state;
     

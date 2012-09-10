@@ -20,6 +20,9 @@
 #define HEADER_WINDSTILLE_SCENEGRAPH_SURFACE_DRAWABLE_HPP
 
 #include "scenegraph/surface_drawable.hpp"
+
+#include <glm/gtc/type_ptr.hpp>
+
 #include "display/surface_drawing_parameters.hpp"
 
 class SurfaceDrawable : public Drawable
@@ -46,7 +49,7 @@ public:
   void render(unsigned int mask)
   {
     glPushMatrix();
-    glMultMatrixf(modelview.matrix);
+    glMultMatrixf(glm::value_ptr(modelview));
 
     surface->draw(params);
 

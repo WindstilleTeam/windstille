@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_SPRITE3D_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_SPRITE3D_DRAWABLE_HPP
 
+#include <glm/gtc/matrix_transform.hpp> 
+
 #include "sprite3d/sprite3d.hpp"
 #include "scenegraph/drawable.hpp"
 
@@ -39,8 +41,8 @@ public:
   void render(unsigned int mask)
   {
     Matrix matrix = modelview;
-    matrix = matrix.translate(pos.x, pos.y, z_pos);
-    matrix = matrix.scale(m_scale, m_scale, m_scale);
+    matrix = glm::translate(matrix, glm::vec3(pos.x, pos.y, z_pos));
+    matrix = glm::scale(matrix, glm::vec3(m_scale, m_scale, m_scale));
     m_sprite.draw(Vector2f(0.0f, 0.0f), matrix);
   }
 

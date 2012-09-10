@@ -18,6 +18,8 @@
 
 #include "display/framebuffer_compositor_impl.hpp"
 
+#include <glm/ext.hpp>
+
 #include "display/display.hpp"
 #include "display/graphic_context_state.hpp"
 #include "display/opengl_state.hpp"
@@ -81,7 +83,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
     if (sg)
     {
       glPushMatrix();
-      glMultMatrixf(gc_state.get_matrix().matrix);
+      glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
       sg->render(SceneContext::LIGHTMAP);
       glPopMatrix();
     }
@@ -105,7 +107,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
       if (sg)
       {
         glPushMatrix();
-        glMultMatrixf(gc_state.get_matrix().matrix);
+        glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
         sg->render(SceneContext::COLORMAP);
         glPopMatrix();
       }
@@ -123,7 +125,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
       if (sg)
       {
         glPushMatrix();
-        glMultMatrixf(gc_state.get_matrix().matrix);
+        glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
         sg->render(SceneContext::HIGHLIGHTMAP);
         glPopMatrix();
       }
@@ -136,7 +138,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
       if (sg)
       {
         glPushMatrix();
-        glMultMatrixf(gc_state.get_matrix().matrix);
+        glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
         sg->render(SceneContext::CONTROLMAP);
         glPopMatrix();
       }

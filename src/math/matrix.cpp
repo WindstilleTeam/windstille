@@ -36,7 +36,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // Matrix construction:
-
+#if 0
 Matrix::Matrix()
 {
   memset(matrix, 0, sizeof(float[16]));
@@ -329,5 +329,6 @@ std::ostream& operator<<(std::ostream& s, const Matrix& m)
   s.flags(oldflags);
   return s;
 }
+#endif
 
 /* EOF */

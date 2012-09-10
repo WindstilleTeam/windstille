@@ -19,6 +19,7 @@
 #include "display/drawing_context.hpp"
 
 #include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "display/compositor.hpp"
 #include "display/display.hpp"
@@ -51,7 +52,7 @@ DrawingContext::DrawingContext() :
   drawingrequests(),
   modelview_stack()
 {
-  modelview_stack.push_back(Matrix::identity());
+  modelview_stack.push_back(Matrix(1.0f));
 }
 
 DrawingContext::~DrawingContext()
@@ -166,48 +167,47 @@ DrawingContext::rotate(float angle, float x, float y, float z)
   float c = cosf(angle*3.14159265f/180.0f);
   float s = sinf(angle*3.14159265f/180.0f);
 
-  Matrix matrix = Matrix::identity();
-  matrix[0]  = x*x*(1-c)+c;
-  matrix[1]  = y*x*(1-c)+z*s;
-  matrix[2]  = x*z*(1-c)-y*s;
+  Matrix matrix(1.0f);
+  float* mp = glm::value_ptr(matrix);
+  mp[0]  = x*x*(1-c)+c;
+  mp[1]  = y*x*(1-c)+z*s;
+  mp[2]  = x*z*(1-c)-y*s;
 
-  matrix[4]  = x*y*(1-c)-z*s;
-  matrix[5]  = y*y*(1-c)+c;
-  matrix[6]  = y*z*(1-c)+x*s;
+  mp[4]  = x*y*(1-c)-z*s;
+  mp[5]  = y*y*(1-c)+c;
+  mp[6]  = y*z*(1-c)+x*s;
 
-  matrix[8]  = x*z*(1-c)+y*s;
-  matrix[9]  = y*z*(1-c)-x*s;
-  matrix[10] = z*z*(1-c)+c;
+  mp[8]  = x*z*(1-c)+y*s;
+  mp[9]  = y*z*(1-c)-x*s;
+  mp[10] = z*z*(1-c)+c;
 
-  modelview_stack.back() = modelview_stack.back().multiply(matrix);
+  modelview_stack.back() = modelview_stack.back() * matrix;
 }
 
 void
 DrawingContext::scale(float x, float y, float z)
 {
-  Matrix matrix = Matrix::identity();
-  matrix[0]  = x;
-  matrix[5]  = y;
-  matrix[10] = z;
-
-  modelview_stack.back() = modelview_stack.back().multiply(matrix);
+  Matrix matrix(1.0f);
+  glm::value_ptr(matrix)[0]  = x;
+  glm::value_ptr(matrix)[5]  = y;
+  glm::value_ptr(matrix)[10] = z;
+  modelview_stack.back() = modelview_stack.back() * matrix;
 }
 
 void
 DrawingContext::translate(float x, float y, float z)
 {
-  Matrix matrix = Matrix::identity();
-  matrix[12] = x;
-  matrix[13] = y;
-  matrix[14] = z;
-
-  modelview_stack.back() = modelview_stack.back().multiply(matrix);
+  Matrix matrix = Matrix(1.0f);
+  glm::value_ptr(matrix)[12] = x;
+  glm::value_ptr(matrix)[13] = y;
+  glm::value_ptr(matrix)[14] = z;
+  modelview_stack.back() = modelview_stack.back() * matrix;
 }
 
 void
 DrawingContext::mult(const Matrix& matrix)
 {
-  modelview_stack.back() = modelview_stack.back().multiply(matrix);
+  modelview_stack.back() = modelview_stack.back() * matrix;
 }
 
 void
@@ -233,15 +233,15 @@ void
 DrawingContext::reset_modelview()
 {
   modelview_stack.clear();
-  modelview_stack.push_back(Matrix::identity());
+  modelview_stack.push_back(Matrix(1.0f));
 }
 
 Rectf
 DrawingContext::get_clip_rect()
 {
   // FIXME: Need to check the modelview matrix
-  return Rectf(Vector2f(modelview_stack.back()[12],
-                        modelview_stack.back()[13]),
+  return Rectf(Vector2f(glm::value_ptr(modelview_stack.back())[12],
+                        glm::value_ptr(modelview_stack.back())[13]),
                Sizef(800, 600));
 }
 

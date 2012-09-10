@@ -16,8 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/opengl_state.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
+
+#include <glm/gtc/type_ptr.hpp>
+
+#include "display/opengl_state.hpp"
+
 
 VertexArrayDrawable::VertexArrayDrawable(const Vector2f& pos_, float z_pos_, 
                                          const Matrix& modelview_) :
@@ -101,7 +105,7 @@ VertexArrayDrawable::render(int start, int end)
   state.activate();
 
   glPushMatrix();
-  glMultMatrixf(modelview.matrix);
+  glMultMatrixf(glm::value_ptr(modelview));
 
   if (mode == GL_LINES ||
       mode == GL_LINE_LOOP)

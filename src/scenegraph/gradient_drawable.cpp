@@ -24,7 +24,7 @@
 
 GradientDrawable::GradientDrawable(const std::vector<float>& colors)
   : Drawable(Vector2f(0, 0), -1000),
-    array(new VertexArrayDrawable(Vector2f(0, 0), -1000, Matrix::identity()))
+    array(new VertexArrayDrawable(Vector2f(0, 0), -1000, glm::mat4(1.0)))
 {
   if (!colors.empty())
   {

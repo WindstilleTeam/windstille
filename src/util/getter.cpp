@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include "math/vector2f.hpp"
 #include "math/quaternion.hpp"
 #include "display/color.hpp"
@@ -64,22 +66,23 @@ bool get(const FileReader& reader, const char* name, Matrix& m)
 {
   std::vector<float> floats;
   if (reader.get(name, floats) && floats.size() == 16) {  
-    m[ 0] = floats[0];
-    m[ 4] = floats[1];
-    m[ 8] = floats[2];
-    m[12] = floats[3];
-    m[ 1] = floats[4];
-    m[ 5] = floats[5];
-    m[ 9] = floats[6];
-    m[13] = floats[7];
-    m[ 2] = floats[8];
-    m[ 6] = floats[9];
-    m[10] = floats[10];
-    m[14] = floats[11];
-    m[ 3] = floats[12];
-    m[ 7] = floats[13];
-    m[11] = floats[14];
-    m[15] = floats[15];
+    float* mp = glm::value_ptr(m);
+    mp[ 0] = floats[0];
+    mp[ 4] = floats[1];
+    mp[ 8] = floats[2];
+    mp[12] = floats[3];
+    mp[ 1] = floats[4];
+    mp[ 5] = floats[5];
+    mp[ 9] = floats[6];
+    mp[13] = floats[7];
+    mp[ 2] = floats[8];
+    mp[ 6] = floats[9];
+    mp[10] = floats[10];
+    mp[14] = floats[11];
+    mp[ 3] = floats[12];
+    mp[ 7] = floats[13];
+    mp[11] = floats[14];
+    mp[15] = floats[15];
     return true;
     // FIXME: Could add code to handel 3x3 matrixes
   } else {

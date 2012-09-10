@@ -18,6 +18,8 @@
 
 #include "math/quaternion.hpp"
 
+#include <glm/gtc/type_ptr.hpp>
+
 float
 Quaternion::magnitude() const
 {
@@ -38,25 +40,26 @@ Matrix
 Quaternion::to_matrix() const
 {
   Matrix r;
-  r.matrix[0]  = 1.0f - 2.0f * (y*y + z*z);
-  r.matrix[4]  =        2.0f * (x*y - z*w);
-  r.matrix[8]  =        2.0f * (x*z + y*w);
-  r.matrix[12] = 0.0f;
+  float* m = glm::value_ptr(r);
+  m[0]  = 1.0f - 2.0f * (y*y + z*z);
+  m[4]  =        2.0f * (x*y - z*w);
+  m[8]  =        2.0f * (x*z + y*w);
+  m[12] = 0.0f;
 
-  r.matrix[1]  =        2.0f * (x*y + z*w);
-  r.matrix[5]  = 1.0f - 2.0f * (x*x + z*z);
-  r.matrix[9]  =        2.0f * (y*z - x*w);
-  r.matrix[13] = 0.0f;
+  m[1]  =        2.0f * (x*y + z*w);
+  m[5]  = 1.0f - 2.0f * (x*x + z*z);
+  m[9]  =        2.0f * (y*z - x*w);
+  m[13] = 0.0f;
   
-  r.matrix[2]  =        2.0f * (x*z - y*w);
-  r.matrix[6]  =        2.0f * (y*z + x*w);
-  r.matrix[10] = 1.0f - 2.0f * (x*x + y*y);
-  r.matrix[14] = 0.0f;
+  m[2]  =        2.0f * (x*z - y*w);
+  m[6]  =        2.0f * (y*z + x*w);
+  m[10] = 1.0f - 2.0f * (x*x + y*y);
+  m[14] = 0.0f;
 
-  r.matrix[3]  = 0.0f;
-  r.matrix[7]  = 0.0f;
-  r.matrix[11] = 0.0f;
-  r.matrix[15] = 1.0f;
+  m[3]  = 0.0f;
+  m[7]  = 0.0f;
+  m[11] = 0.0f;
+  m[15] = 1.0f;
 
   return r;
 }

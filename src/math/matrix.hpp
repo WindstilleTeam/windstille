@@ -30,7 +30,13 @@
 #ifndef HEADER_WINDSTILLE_MATH_MATRIX_HPP
 #define HEADER_WINDSTILLE_MATH_MATRIX_HPP
 
+#include <glm/glm.hpp>
+
 #include "math/vector3.hpp"
+
+typedef glm::mat4 Matrix;
+
+#if 0
 
 //: 4x4 Matrix.
 class Matrix
@@ -120,6 +126,8 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& s, const Matrix& m);
+
+#endif
 
 #endif
 

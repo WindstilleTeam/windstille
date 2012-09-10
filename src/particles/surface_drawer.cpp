@@ -85,7 +85,7 @@ SurfaceDrawer::SurfaceDrawer(FileReader& props)
 
   // FIXME: Bad idea, as the psys isn't fully loaded as this point 
   buffer.reset(new VertexArrayDrawable(Vector2f(), 0.0f,
-                                       Matrix::identity()));
+                                       Matrix(1.0f)));
 }
 
 SurfaceDrawer::~SurfaceDrawer() 

@@ -21,7 +21,7 @@
 #include "scenegraph/drawable.hpp"
 
 DrawableGroup::DrawableGroup()
-  : Drawable(Vector2f(), 0.0f, Matrix::identity()),
+  : Drawable(Vector2f(), 0.0f, glm::mat4(1.0)),
     m_drawables()
 {
 }

@@ -30,7 +30,7 @@ SparkDrawer::SparkDrawer(FileReader& props)
   props.get("color", color);
   props.get("width", width);
 
-  buffer.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix::identity())); 
+  buffer.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix(1.0f))); 
 }
 
 void

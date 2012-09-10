@@ -19,6 +19,9 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_CONTROL_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_CONTROL_DRAWABLE_HPP
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp> 
+
 class ControlDrawable : public Drawable
 {
 private:
@@ -40,11 +43,11 @@ public:
     glPushMatrix();
 
     // FIXME: This looks badly broken, should modelview.multiply() be enough?
-    glTranslatef(modelview.matrix[12],
-                 modelview.matrix[13],
-                 modelview.matrix[14]);
+    glTranslatef(glm::value_ptr(modelview)[12],
+                 glm::value_ptr(modelview)[13],
+                 glm::value_ptr(modelview)[14]);
 
-    Vector3 p = modelview.multiply(Vector3(pos.x, pos.y, 0.0f));
+    Vector3 p = glm::vec3(modelview * glm::vec4(pos.x, pos.y, 0.0f, 1.0f));
 
     surface->draw(SurfaceDrawingParameters()
                  .set_angle(angle)

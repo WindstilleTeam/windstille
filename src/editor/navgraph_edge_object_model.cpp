@@ -65,7 +65,7 @@ NavGraphEdgeObjectModel::update(float delta)
 void
 NavGraphEdgeObjectModel::add_to_scenegraph(DrawableGroup& sg)
 {
-  m_drawable.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix::identity()));
+  m_drawable.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix(1.0f)));
   update(0.0f);
   sg.add_drawable(m_drawable);
 }

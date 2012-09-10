@@ -19,6 +19,7 @@
 #include "sprite3d/sprite3d.hpp"
 
 #include <boost/scoped_array.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "display/assert_gl.hpp"
 #include "display/opengl_state.hpp"
@@ -269,9 +270,9 @@ Sprite3D::get_attachment_point_matrix(PointID id) const
 
   Vector3 pos = pos1 + (pos2 - pos1) * blend_time;
   Quaternion quat = quat1.slerp(quat2, blend_time);
-  Matrix result = Matrix::identity();
-  result.translate(pos.x, pos.y, pos.z);
-  result = result.multiply(quat.to_matrix());
+  Matrix result(1.0f);
+  result = glm::translate(result, pos);
+  result = result * quat.to_matrix();
 
   return result;
 }
@@ -349,7 +350,7 @@ Sprite3D::draw(const Vector2f& pos, const Matrix& modelview)
 {
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix(); 
-  glMultMatrixf(modelview.matrix);
+  glMultMatrixf(glm::value_ptr(modelview));
   glTranslatef(pos.x, pos.y, 0);
   if(frame1.rot) {
     glRotatef(180, 0, 1.0, 0);

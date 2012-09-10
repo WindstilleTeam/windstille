@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_SURFACE_QUAD_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_SURFACE_QUAD_DRAWABLE_HPP
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include "math/vector2f.hpp"
 #include "math/quad.hpp"
 #include "display/opengl_state.hpp"
@@ -53,7 +55,7 @@ public:
     state.activate();
 
     glPushMatrix();
-    glMultMatrixf(modelview.matrix);
+    glMultMatrixf(glm::value_ptr(modelview));
 
     glBegin(GL_QUADS);
     {

@@ -133,19 +133,19 @@ Armature::draw()
   glLineWidth(6.0f);
   //std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-" << std::endl;
   glBegin(GL_LINES);
-  draw_bone(root_bone, Vector3(0,0, 0), Matrix::identity());
+  draw_bone(root_bone, Vector3(0,0, 0), Matrix(1.0f));
   glEnd();
 }
 
 void
 Armature::draw_bone(Bone* bone, Vector3 p, Matrix m)
 {
-  Matrix  m_  = m.multiply(bone->render_matrix);
-  Vector3 p_  = p + m.multiply(bone->offset);
+  Matrix  m_  = m * bone->render_matrix;
+  Vector3 p_  = glm::vec3(glm::vec4(p, 1.0f) + m * glm::vec4(bone->offset, 1.0f));
 
   // FIXME: In theory we should be using length in the Z component, but only
   // Y seems to work?! -> Blenders matrix are weird
-  Vector3 p__ = p_ + m_.multiply(Vector3(0.0f, bone->length, 0.0f));
+  Vector3 p__ = glm::vec3(glm::vec4(p_, 1.0f) + m_ * glm::vec4(0.0f, bone->length, 0.0f, 1.0f));
 
   // p to p+offset
   glColor4f(0.0f, 0.5f, 0.0f, 0.5f);
@@ -184,7 +184,7 @@ Armature::apply(const Pose& pose)
       }
       else
       {
-        bone->render_matrix = bone->quat.to_matrix().multiply(pbone->quat.to_matrix());
+        bone->render_matrix = bone->quat.to_matrix() * pbone->quat.to_matrix();
       }
     }
   }

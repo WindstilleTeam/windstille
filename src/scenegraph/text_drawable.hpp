@@ -32,7 +32,7 @@ public:
 
   void render(unsigned int mask) {
     glPushMatrix();
-    glMultMatrixf(modelview.matrix);
+    glMultMatrixf(glm::value_ptr(modelview));
     Fonts::current()->ttffont->draw(pos, text);
     glPopMatrix();
   }

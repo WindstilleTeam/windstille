@@ -18,6 +18,8 @@
 #include "display/graphic_context_state.hpp"
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp> 
 
 #include "display/scene_context.hpp"
 
@@ -65,19 +67,21 @@ GraphicContextState::set_size(int w, int h)
 Matrix
 GraphicContextState::get_matrix() const
 {
-  Matrix matrix = Matrix::identity();
+  Matrix matrix = Matrix(1.0f);
 
-  matrix = matrix.translate(static_cast<float>(impl->width)  / 2.0f, 
-                            static_cast<float>(impl->height) / 2.0f,
-                            0.0f);
-  matrix = matrix.rotate(impl->rotation, 0.0f, 0.0f, 1.0f);
-  matrix = matrix.translate(static_cast<float>(-impl->width)  / 2.0f,
-                            static_cast<float>(-impl->height) / 2.0f, 
-                            0.0f);
+  matrix = glm::translate(matrix,
+                          glm::vec3(static_cast<float>(impl->width)  / 2.0f, 
+                                    static_cast<float>(impl->height) / 2.0f,
+                                    0.0f));
+  matrix = glm::rotate(matrix, impl->rotation, glm::vec3(0.0f, 0.0f, 1.0f));
+  matrix = glm::translate(matrix, 
+                          glm::vec3(static_cast<float>(-impl->width)  / 2.0f,
+                                    static_cast<float>(-impl->height) / 2.0f, 
+                                    0.0f));
 
-  matrix = matrix.scale(get_zoom(), get_zoom(), 1.0f);
+  matrix = glm::scale(matrix, glm::vec3(get_zoom(), get_zoom(), 1.0f));
   
-  matrix = matrix.translate(impl->offset.x, impl->offset.y, 0.0f); 
+  matrix = glm::translate(matrix, glm::vec3(impl->offset.x, impl->offset.y, 0.0f)); 
 
   return matrix;
 }
