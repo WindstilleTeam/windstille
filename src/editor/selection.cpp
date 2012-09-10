@@ -22,10 +22,11 @@
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/selection.hpp"
+#include "util/log.hpp"
 
 Selection::Selection() :
   objects(),
-  object_orig_poss(),
+  object_orig_pos(),
   non_moveable_objects(),
   moving(false),
   signal_changed()
@@ -103,6 +104,8 @@ Selection::contains_parent(ObjectModelHandle object)
 void
 Selection::on_move_start()
 {
+  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size());
+
   moving = true;
 
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
@@ -113,14 +116,14 @@ Selection::on_move_start()
     }
   }
 
-  object_orig_poss.clear();
+  object_orig_pos.clear();
 
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
   {
     if (non_moveable_objects.find(*i) == non_moveable_objects.end())
     {
       //(*i)->on_move_start();
-      object_orig_poss.push_back((*i)->get_rel_pos());
+      object_orig_pos.push_back((*i)->get_rel_pos());
     }
   }
 
@@ -130,11 +133,16 @@ Selection::on_move_start()
 void
 Selection::on_move_update(const Vector2f& offset)
 {
-  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
+  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size());
+
+  if (!object_orig_pos.empty())
   {
-    if (non_moveable_objects.find(*i) == non_moveable_objects.end())
+    for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
-      (*i)->set_rel_pos(object_orig_poss[i - objects.begin()] + offset);
+      if (non_moveable_objects.find(*i) == non_moveable_objects.end())
+      {
+        (*i)->set_rel_pos(object_orig_pos[i - objects.begin()] + offset);
+      }
     }
   }
 }
@@ -142,6 +150,8 @@ Selection::on_move_update(const Vector2f& offset)
 void
 Selection::on_move_end(WindstilleWidget& wst, const Vector2f& offset)
 {
+  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size());
+
   moving = false;
 
   wst.get_document().undo_group_begin();
@@ -149,8 +159,8 @@ Selection::on_move_end(WindstilleWidget& wst, const Vector2f& offset)
   {
     if (non_moveable_objects.find(*i) == non_moveable_objects.end())
     {
-      wst.get_document().execute(boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_poss[i - objects.begin()]),
-                                 boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_poss[i - objects.begin()] + offset));
+      wst.get_document().execute(boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_pos[i - objects.begin()]),
+                                 boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_pos[i - objects.begin()] + offset));
     }
   }
   wst.get_document().undo_group_end();

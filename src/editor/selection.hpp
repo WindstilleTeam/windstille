@@ -36,7 +36,7 @@ private:
   typedef std::vector<ObjectModelHandle> Objects;
   Objects objects;
 
-  std::vector<Vector2f> object_orig_poss;
+  std::vector<Vector2f> object_orig_pos;
 
   std::set<ObjectModelHandle> non_moveable_objects;
 
