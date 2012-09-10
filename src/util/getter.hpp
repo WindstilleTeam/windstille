@@ -21,10 +21,10 @@
 
 #include "math/matrix.hpp"
 #include "math/vector3.hpp"
+#include "math/quaternion.hpp"
 #include "util/file_reader.hpp"
 
 class FileReader;
-class Quaternion;
 class Color;
 class Vector2f;
 

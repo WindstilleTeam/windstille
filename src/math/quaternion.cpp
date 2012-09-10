@@ -20,6 +20,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#if 0
+
 float
 Quaternion::magnitude() const
 {
@@ -101,5 +103,7 @@ Quaternion::slerp(const Quaternion& o, float t) const
 
   return (*this * cosf(theta)) + (v2 * sinf(theta));
 }
+
+#endif
 
 /* EOF */

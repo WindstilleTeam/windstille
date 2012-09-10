@@ -269,10 +269,10 @@ Sprite3D::get_attachment_point_matrix(PointID id) const
   }
 
   Vector3 pos = pos1 + (pos2 - pos1) * blend_time;
-  Quaternion quat = quat1.slerp(quat2, blend_time);
+  Quaternion quat = glm::mix(quat1, quat2, blend_time);
   Matrix result(1.0f);
   result = glm::translate(result, pos);
-  result = result * quat.to_matrix();
+  result = result * glm::toMat4(quat);
 
   return result;
 }

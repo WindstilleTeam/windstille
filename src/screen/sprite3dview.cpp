@@ -41,7 +41,7 @@ Sprite3DView::Sprite3DView()
 
   sprite.set_action(actions[current_action]);
   
-  rotation = Quaternion::identity();
+  rotation = Quaternion();
 
   scale = 2.0f;
 }
@@ -71,7 +71,7 @@ Sprite3DView::draw()
   sc.scale(scale, scale);
 
   // Rotate
-  sc.mult_modelview(rotation.to_matrix());  
+  sc.mult_modelview(glm::mat4_cast(rotation));
   sc.translate(0, 64.0f); // FIXME: use object height/2 instead of 64
   sprite.draw(sc.color(), Vector2f(0,0), 0); 
   sc.pop_modelview();
@@ -143,16 +143,16 @@ Sprite3DView::update(float delta, const Controller& controller)
     sprite.set_action(actions[current_action]);
   }
 
-  rotation = Quaternion(Vector3(0.0f, 1.0f, 0.0f),
-                        -controller.get_axis_state(X2_AXIS) * delta * 4.0f) * rotation;
-  rotation = Quaternion(Vector3(1.0f, 0.0f, 0.0f),
-                        controller.get_axis_state(Y2_AXIS) * delta * 4.0f) * rotation;
-  rotation = Quaternion(Vector3(0.0f, 0.0f, 1.0f),
-                        controller.get_axis_state(X_AXIS) * delta * 4.0f) * rotation;
+  rotation = Quaternion(-controller.get_axis_state(X2_AXIS) * delta * 4.0f,
+                        Vector3(0.0f, 1.0f, 0.0f)) * rotation;
+  rotation = Quaternion(controller.get_axis_state(Y2_AXIS) * delta * 4.0f, 
+                        Vector3(1.0f, 0.0f, 0.0f)) * rotation;
+  rotation = Quaternion(controller.get_axis_state(X_AXIS) * delta * 4.0f,
+                        Vector3(0.0f, 0.0f, 1.0f)) * rotation;
 
   if (controller.get_button_state(VIEW_CENTER_BUTTON))
   {
-    rotation = Quaternion::identity();
+    rotation = Quaternion();
   }
 
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||

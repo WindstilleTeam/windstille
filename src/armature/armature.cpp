@@ -72,7 +72,7 @@ Armature::parse(FileReader& reader)
         }
         else
         {
-          bone->render_matrix = bone->quat.to_matrix();
+          bone->render_matrix = glm::toMat4(bone->quat);
           bones.push_back(bone.release());
         }
       }
@@ -184,7 +184,7 @@ Armature::apply(const Pose& pose)
       }
       else
       {
-        bone->render_matrix = bone->quat.to_matrix() * pbone->quat.to_matrix();
+        bone->render_matrix = glm::mat4_cast(bone->quat) * glm::mat4_cast(pbone->quat);
       }
     }
   }
@@ -196,7 +196,7 @@ Armature::reset()
   for(Bones::iterator i = bones.begin(); i != bones.end(); ++i)
   {
     Bone* bone = *i;
-    bone->render_matrix = bone->quat.to_matrix();
+    bone->render_matrix = glm::mat4_cast(bone->quat);
   }
 }
 

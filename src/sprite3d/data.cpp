@@ -156,7 +156,7 @@ Data::Data(const Pathname& filename) :
           point.quat.x =  read_float(in);
           point.quat.y =  read_float(in);
           point.quat.z =  read_float(in);
-          point.quat.normalize();
+          point.quat = glm::normalize(point.quat);
         }
       }
     }

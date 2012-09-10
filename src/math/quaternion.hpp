@@ -20,9 +20,13 @@
 #define __QUATERNION_HPP__
 
 #include <math.h>
+#include <glm/ext.hpp>
 
 #include "vector3.hpp"
 
+typedef glm::quat Quaternion;
+
+#if 0
 class Quaternion
 {
 public:
@@ -105,6 +109,7 @@ public:
    */
   Quaternion slerp(const Quaternion& o, float t) const;
 };
+#endif
 
 #endif
 
