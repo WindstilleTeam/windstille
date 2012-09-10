@@ -40,12 +40,12 @@ static void add_overrides(const boost::filesystem::path& path, const boost::file
   {
     if (boost::filesystem::is_directory(i->status()))
     {
-      add_overrides(i->path(), base / i->leaf(), overrides);
+      add_overrides(i->path(), base / i->path().filename(), overrides);
     }
     else
     {
-      std::string from_path   = (base / i->leaf()).string();
-      std::string to_path    = i->path().native_file_string();
+      std::string from_path   = (base / i->path().filename()).string();
+      std::string to_path     = i->path().string();
       (*overrides)[from_path] = to_path;
     }
   }
