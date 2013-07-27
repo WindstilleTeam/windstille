@@ -33,11 +33,13 @@ install-exec: build/windstille
 	install -d "$(DESTDIR)$(BINDIR)"
 
 	install -D build/windstille "$(DESTDIR)$(BINDIR)/windstille.bin"
-	echo "#!/bin/sh\nexec \"$(BINDIR)/windstille.bin\" --datadir \"$(DATADIR)\"" > "$(DESTDIR)$(BINDIR)/windstille"
+	echo "#!/bin/sh" > "$(DESTDIR)$(BINDIR)/windstille"
+	echo "exec \"$(BINDIR)/windstille.bin\" --datadir \"$(DATADIR)\" \"\$$@\"" >> "$(DESTDIR)$(BINDIR)/windstille"
 	chmod 755 "$(DESTDIR)$(BINDIR)/windstille"
 
 	install -D build/windstille-editor "$(DESTDIR)$(BINDIR)/windstille-editor.bin"
-	echo "#!/bin/sh\nexec \"$(BINDIR)/windstille-editor.bin\" --datadir \"$(DATADIR)/\"" > "$(DESTDIR)$(BINDIR)/windstille-editor"
+	echo "#!/bin/sh" > "$(DESTDIR)$(BINDIR)/windstille-editor"
+	echo "exec \"$(BINDIR)/windstille-editor.bin\" --datadir \"$(DATADIR)/\" \"\$$@\"" >> "$(DESTDIR)$(BINDIR)/windstille-editor"
 	chmod 755 "$(DESTDIR)$(BINDIR)/windstille-editor"
 
 install-data:
