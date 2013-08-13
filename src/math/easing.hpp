@@ -43,6 +43,13 @@
 
 #include "math/math.hpp"
 
+/*
+ * t: progress, 0-1
+ * b: start position
+ * c: change in position (finish - b)
+ * d: duration
+ */
+
 namespace math {
 namespace easing {
 
