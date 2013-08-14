@@ -272,55 +272,55 @@ SoftwareSurface::is_at(int x, int y) const
 void
 SoftwareSurface::save_png(const std::string& filename) const
 {
-  // FIXME: This is upside down  
-
   if (get_bytes_per_pixel() != 4 &&
       get_bytes_per_pixel() != 3)
   {
     std::cout << "SoftwareSurface::save_png(): Unsupported pixel format" << std::endl;
-    return;
-  }
-
-  FILE* fp = fopen(filename.c_str(), "w");
-
-  if (!fp)
-  {
-    std::cout << "Error: Couldn't save screenshot: " << strerror(errno) << std::endl;
-    return;
   }
   else
   {
-    int pitch   = get_pitch();
-    png_structp png_ptr;
-    png_infop   info_ptr;
-    png_byte* pixels = static_cast<png_byte*>(get_pixels());
+    FILE* fp = fopen(filename.c_str(), "w");
 
-    png_ptr  = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    info_ptr = png_create_info_struct(png_ptr);
+    if (!fp)
+    {
+      std::cout << "SoftwareSurface::save_png(): error: couldn't save SoftwareSurface: " << strerror(errno) << std::endl;
+      return;
+    }
+    else
+    {
+      int pitch   = get_pitch();
+      png_structp png_ptr;
+      png_infop   info_ptr;
+      png_byte* pixels = static_cast<png_byte*>(get_pixels());
 
-    png_init_io(png_ptr, fp);
+      png_ptr  = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+      info_ptr = png_create_info_struct(png_ptr);
 
-    png_set_IHDR(png_ptr, info_ptr, 
-                 get_width(), get_height(), 8 /* bitdepth */,
-                 (get_bytes_per_pixel() == 32) ? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_RGB,
-                 PNG_INTERLACE_NONE, 
-                 PNG_COMPRESSION_TYPE_BASE, 
-                 PNG_FILTER_TYPE_BASE);
+      png_init_io(png_ptr, fp);
+
+      png_set_IHDR(png_ptr, info_ptr, 
+                   get_width(), get_height(), 8 /* bitdepth */,
+                   (get_bytes_per_pixel() == 4) ? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_RGB,
+                   PNG_INTERLACE_NONE, 
+                   PNG_COMPRESSION_TYPE_BASE, 
+                   PNG_FILTER_TYPE_BASE);
       
-    png_set_compression_level(png_ptr, 6);
-    png_write_info(png_ptr, info_ptr);
+      png_set_compression_level(png_ptr, 6);
+      png_write_info(png_ptr, info_ptr);
 
-    boost::scoped_array<png_bytep> row_pointers(new png_bytep[get_height()]);
+      boost::scoped_array<png_bytep> row_pointers(new png_bytep[get_height()]);
    
-    // generate row pointers
-    for (int k = 0; k < get_height(); k++)
-      row_pointers[k] = reinterpret_cast<png_byte*>(pixels + ((get_height() - k - 1) * pitch));
+      for (int y = 0; y < get_height(); ++y)
+      {
+        row_pointers[y] = (pixels + (y * pitch));
+      }
 
-    png_write_image(png_ptr, row_pointers.get());
+      png_write_image(png_ptr, row_pointers.get());
 
-    png_write_end(png_ptr, info_ptr);
+      png_write_end(png_ptr, info_ptr);
 
-    fclose(fp);
+      fclose(fp);
+    }
   }
 }
 
