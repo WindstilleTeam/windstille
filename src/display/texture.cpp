@@ -163,7 +163,7 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
     }
     else
     { // use mipmapping
-      gluBuild2DMipmaps(m_target, GL_RGB, // BUG: should be glformat, but GL_RGBA doesn't work for some reason
+      gluBuild2DMipmaps(m_target, glformat,
                         image->get_width(), image->get_height(), sdl_format,
                         GL_UNSIGNED_BYTE, image->get_pixels());
         

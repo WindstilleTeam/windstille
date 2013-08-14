@@ -54,6 +54,8 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
   }
   else
   {
+    SDL_SetSurfaceBlendMode(m_surface, SDL_BLENDMODE_NONE);
+
     if (m_surface->format->BytesPerPixel == 4)
     { // convert image into standard format
       m_format = RGBA;
