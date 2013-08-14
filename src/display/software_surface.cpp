@@ -54,8 +54,6 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
   }
   else
   {
-    SDL_SetAlpha(m_surface, 0, 0);
-
     if (m_surface->format->BytesPerPixel == 4)
     { // convert image into standard format
       m_format = RGBA;
@@ -164,8 +162,6 @@ SoftwareSurface::SoftwareSurface(int width, int height, Format format) :
                                      width, height, 32,
                                      0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
   }
-
-  SDL_SetAlpha(m_surface, 0, 0);
 
   assert(!SDL_MUSTLOCK(m_surface));
 }

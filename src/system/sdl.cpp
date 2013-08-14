@@ -34,7 +34,6 @@ SDL::SDL()
   else
   {
     atexit(SDL_Quit);
-    SDL_EnableUNICODE(1);
   }
 }
 

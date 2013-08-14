@@ -502,7 +502,7 @@ void
 MenuManager::menu_gamma(int i)
 {
   float gamma = static_cast<float>(i) / 100.0f;
-  SDL_SetGamma(gamma, gamma, gamma);
+  OpenGLWindow::current()->set_gamma(gamma, gamma, gamma);
 }
 
 void

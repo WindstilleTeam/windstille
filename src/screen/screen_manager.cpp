@@ -127,7 +127,7 @@ ScreenManager::draw()
   if (config.get_bool("show-fps"))
     draw_fps();
 
-  SDL_GL_SwapBuffers();
+  OpenGLWindow::current()->swap_buffers();
 }
 
 void
@@ -200,26 +200,6 @@ ScreenManager::poll_events()
         std::cout << "Ctrl-c or Window-close pressed, game is going to quit" << std::endl;
         quit();
         break;
-          
-      case SDL_ACTIVEEVENT:
-        // event.active
-        break;
-          
-      case SDL_VIDEORESIZE:
-        // event.resize
-        break;
-              
-      case SDL_VIDEOEXPOSE:
-        // event.expose
-        break;
-                
-      case SDL_USEREVENT:
-        // event.user
-        break;
-                    
-      case SDL_SYSWMEVENT:
-        // event.syswm
-        break;
 
       case SDL_KEYDOWN:
       case SDL_KEYUP:
@@ -228,13 +208,11 @@ ScreenManager::poll_events()
           switch (event.key.keysym.sym)
           {
             case SDLK_F6:
-              SDL_ShowCursor(SDL_ENABLE);   // SDL_ENABLE to show the mouse cursor (default)
-              SDL_WM_GrabInput(SDL_GRAB_OFF); // SDL_GRAB_OFF to not grab input (default)
+              SDL_SetRelativeMouseMode(SDL_FALSE);
               break;
 
             case SDLK_F7:
-              SDL_ShowCursor(SDL_DISABLE);   // SDL_ENABLE to show the mouse cursor (default)
-              SDL_WM_GrabInput(SDL_GRAB_ON); // SDL_GRAB_OFF to not grab input (default)
+              SDL_SetRelativeMouseMode(SDL_TRUE);
               break;
                   
             case SDLK_F8:

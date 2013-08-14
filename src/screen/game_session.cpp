@@ -195,16 +195,16 @@ GameSessionImpl::update_cutscene(float delta)
 void
 GameSessionImpl::update_input(float delta)
 {
-  Uint8 *keystate = SDL_GetKeyState(NULL);
+  Uint8 *keystate = SDL_GetKeyboardState(NULL);
   
   // Hacks to play around with the game speed
-  if(keystate[SDLK_KP1])
+  if(keystate[SDL_SCANCODE_KP_1])
     game_speed *= 1.0f - delta;
 
-  if(keystate[SDLK_KP3])
+  if(keystate[SDL_SCANCODE_KP_3])
     game_speed *= 1.0f + delta;
 
-  if(keystate[SDLK_KP5])
+  if(keystate[SDL_SCANCODE_KP_5])
     game_speed = 1.0f;
 }
 

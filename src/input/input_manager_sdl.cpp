@@ -49,7 +49,7 @@ public:
 
   std::vector<SDL_Joystick*> joysticks;
 
-  std::map<std::string, SDLKey> keyidmapping;
+  std::map<std::string, SDL_Scancode> keyidmapping;
 
   InputManagerSDLImpl()
     : joystick_button_bindings(),
@@ -67,12 +67,12 @@ public:
 };
 
 std::string
-InputManagerSDL::keyid_to_string(SDLKey id)
+InputManagerSDL::keyid_to_string(SDL_Scancode id)
 {
   return SDL_GetKeyName(id);
 }
 
-SDLKey
+SDL_Scancode
 InputManagerSDL::string_to_keyid(const std::string& str)
 {
   return impl->keyidmapping[str];
@@ -230,9 +230,9 @@ InputManagerSDL::InputManagerSDL(const ControllerDescription& controller_descrip
   : InputManager(controller_description_),
     impl(new InputManagerSDLImpl)
 {
-  for (int i = 0; i < SDLK_LAST; ++i) {
-    char* key_name = SDL_GetKeyName(static_cast<SDLKey>(i));
-    impl->keyidmapping[key_name] = static_cast<SDLKey>(i);
+  for (int i = 0; i < SDL_NUM_SCANCODES; ++i) {
+    const char* key_name = SDL_GetScancodeName(static_cast<SDL_Scancode>(i));
+    impl->keyidmapping[key_name] = static_cast<SDL_Scancode>(i);
     // FIXME: Make the keynames somewhere user visible so that users can use them
     // std::cout << key_name << std::endl;
   }
@@ -294,7 +294,7 @@ InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
     }
   }
 
-  Uint8* keystate = SDL_GetKeyState(0);
+  Uint8* keystate = SDL_GetKeyboardState(0);
 
   for (std::vector<KeyboardAxisBinding>::const_iterator i = impl->keyboard_axis_bindings.begin();
        i != impl->keyboard_axis_bindings.end();
@@ -441,8 +441,8 @@ InputManagerSDL::on_event(const SDL_Event& event)
       // event.motion
       // FIXME: Hardcodes 0,1 values are not a good idea, need to bind the stuff like the rest
       if (0) std::cout << "mouse: " << event.motion.xrel << " " << event.motion.yrel << std::endl;
-      add_ball_event(0, event.motion.xrel);
-      add_ball_event(1, event.motion.yrel);
+      add_ball_event(0, static_cast<float>(event.motion.xrel));
+      add_ball_event(1, static_cast<float>(event.motion.yrel));
       break;
 
     case SDL_MOUSEBUTTONDOWN:
@@ -629,7 +629,7 @@ InputManagerSDL::bind_joystick_axis_button(int event, int device, int axis, bool
 }
 
 void
-InputManagerSDL::bind_keyboard_button(int event, SDLKey key)
+InputManagerSDL::bind_keyboard_button(int event, SDL_Scancode key)
 {
   KeyboardButtonBinding binding;
   
@@ -640,7 +640,7 @@ InputManagerSDL::bind_keyboard_button(int event, SDLKey key)
 }
 
 void
-InputManagerSDL::bind_keyboard_axis(int event, SDLKey minus, SDLKey plus)
+InputManagerSDL::bind_keyboard_axis(int event, SDL_Scancode minus, SDL_Scancode plus)
 {
   KeyboardAxisBinding binding;
   

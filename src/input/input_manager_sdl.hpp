@@ -70,14 +70,14 @@ struct MouseButtonBinding
 struct KeyboardButtonBinding
 {
   int event;
-  SDLKey key;
+  SDL_Scancode key;
 };
 
 struct KeyboardAxisBinding
 {
   int    event;
-  SDLKey minus;
-  SDLKey plus;
+  SDL_Scancode minus;
+  SDL_Scancode plus;
 };
 
 struct WiimoteButtonBinding
@@ -113,8 +113,8 @@ public:
   void bind_joystick_button(int event, int device, int button);
   void bind_joystick_axis_button(int event, int device, int axis, bool up);
 
-  void bind_keyboard_button(int event, SDLKey key);
-  void bind_keyboard_axis(int event, SDLKey minus, SDLKey plus);
+  void bind_keyboard_button(int event, SDL_Scancode key);
+  void bind_keyboard_axis(int event, SDL_Scancode minus, SDL_Scancode plus);
 
   void bind_mouse_button(int event, int device, int button);
 
@@ -123,8 +123,8 @@ public:
   
   void clear_bindings();
 
-  std::string keyid_to_string(SDLKey id);
-  SDLKey      string_to_keyid(const std::string& str);
+  std::string keyid_to_string(SDL_Scancode id);
+  SDL_Scancode string_to_keyid(const std::string& str);
 
   void on_event(const SDL_Event& event);
 

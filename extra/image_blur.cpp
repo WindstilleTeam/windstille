@@ -48,7 +48,6 @@ int main(int argc, char** argv)
   else
   {
     atexit(SDL_Quit);
-    SDL_EnableUNICODE(1);
   }
 
   Size window_size(1024, 576);
@@ -212,7 +211,7 @@ int main(int argc, char** argv)
       glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
     }
 
-    SDL_GL_SwapBuffers();
+    window.swap_buffers();
     SDL_Delay(20);
   }
 

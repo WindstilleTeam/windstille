@@ -54,12 +54,12 @@ View::update (float delta)
 {
   camera.update(delta);
 
-  Uint8 *keystate = SDL_GetKeyState(NULL);
+  Uint8 *keystate = SDL_GetKeyboardState(NULL);
 
-  if (keystate[SDLK_KP_PLUS])
+  if (keystate[SDL_SCANCODE_KP_PLUS])
     m_debug_zoom *= 1.0f + delta;
 
-  if (keystate[SDLK_KP_MINUS])
+  if (keystate[SDL_SCANCODE_KP_MINUS])
     m_debug_zoom *= 1.0f - delta;
 
   const Controller& controller = InputManagerSDL::current()->get_controller();

@@ -35,7 +35,6 @@ int main(int argc, char* argv[])
   else
   {
     atexit(SDL_Quit);
-    SDL_EnableUNICODE(1);
   }
 
   OpenGLWindow window("Scissor Drawable", 
@@ -89,7 +88,7 @@ int main(int argc, char* argv[])
     std::cout << "." << std::flush;   
     surface->get_params().set_pos(Vector2f(static_cast<float>(i) - 250.0f, 0.0f));
     group.render(~0u);
-    SDL_GL_SwapBuffers();
+    window.swap_buffers();
   }
 
   return 0;

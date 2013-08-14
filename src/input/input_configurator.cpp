@@ -202,8 +202,8 @@ InputConfigurator::handle_event(const SDL_Event& event)
       {
         if (wait_for_plus && minus.type == SDL_JOYBUTTONDOWN)
         {
-          out << "(joystick-axis-button (minus " << InputManagerSDL::current()->keyid_to_string(minus.key.keysym.sym) << ") "
-              << "(plus  " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.sym) << "))" << std::endl;
+          out << "(joystick-axis-button (minus " << InputManagerSDL::current()->keyid_to_string(minus.key.keysym.scancode) << ") "
+              << "(plus  " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.scancode) << "))" << std::endl;
           InputManagerSDL::current()->bind_joystick_button_axis(items.back().event_id, event.jbutton.which, 
                                                                 minus.jbutton.button, event.jbutton.button);
           next_item();
@@ -237,17 +237,17 @@ InputConfigurator::handle_event(const SDL_Event& event)
       {
         if (items.back().mode == ConfigureItem::CONFIGURE_BUTTON)
         {
-          InputManagerSDL::current()->bind_keyboard_button(items.back().event_id, event.key.keysym.sym);
-          out << "(keyboard-button (key " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.sym) << "))" << std::endl;
+          InputManagerSDL::current()->bind_keyboard_button(items.back().event_id, event.key.keysym.scancode);
+          out << "(keyboard-button (key " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.scancode) << "))" << std::endl;
           next_item();
         }
         else if (items.back().mode == ConfigureItem::CONFIGURE_AXIS)
         {
           if (wait_for_plus && minus.type == SDL_KEYDOWN)
           {
-            out << "(keyboard-axis (minus " << InputManagerSDL::current()->keyid_to_string(minus.key.keysym.sym) << ") "
-                << "(plus  " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.sym) << "))" << std::endl;
-            InputManagerSDL::current()->bind_keyboard_axis(items.back().event_id, minus.key.keysym.sym, event.key.keysym.sym);
+            out << "(keyboard-axis (minus " << InputManagerSDL::current()->keyid_to_string(minus.key.keysym.scancode) << ") "
+                << "(plus  " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.scancode) << "))" << std::endl;
+            InputManagerSDL::current()->bind_keyboard_axis(items.back().event_id, minus.key.keysym.scancode, event.key.keysym.scancode);
             next_item();
             wait_for_plus = false;
           }

@@ -31,11 +31,13 @@
 class OpenGLWindowImpl
 {
 public:
-  SDL_Surface* m_window;
-  Size         m_size;
+  SDL_Window*   m_window;
+  SDL_GLContext m_gl_context;
+  Size          m_size;
 
   OpenGLWindowImpl() :
     m_window(0),
+    m_gl_context(0),
     m_size()
   {}
 };
@@ -64,18 +66,24 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
     SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, anti_aliasing ); // 0, 2, or 4 for number of samples
   }
   
-  SDL_WM_SetCaption(title.c_str(), title.c_str());
-  SDL_WM_SetIcon(IMG_Load(Pathname("icon.png").get_sys_path().c_str()), NULL);
-
-  m_impl->m_window = SDL_SetVideoMode(size.width, size.height,
-                                      0, SDL_OPENGL | (fullscreen ? SDL_FULLSCREEN : 0));
-
+  m_impl->m_window = SDL_CreateWindow(title.c_str(),
+                                      SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                      size.width, size.height,
+                                      SDL_WINDOW_OPENGL | (fullscreen ? SDL_WINDOW_FULLSCREEN : 0));
   if (!m_impl->m_window)
   {
     throw std::runtime_error("Display:: Couldn't create window");
   }
   else
   {
+    SDL_SetWindowIcon(m_impl->m_window,  IMG_Load(Pathname("icon.png").get_sys_path().c_str()));
+
+    m_impl->m_gl_context = SDL_GL_CreateContext(m_impl->m_window);
+    if (!m_impl->m_gl_context)
+    {
+      throw std::runtime_error("Display:: failed to create GLContext");
+    }
+
     GLenum err = glewInit();
     if (err != GLEW_OK) 
     {
@@ -90,7 +98,7 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
       std::cout << "OpenGL 3.2: " << GL_VERSION_3_2 << std::endl;
       std::cout << "GL_VERSION_3_0: " << GL_VERSION_3_0 << std::endl;
 
-      glViewport(0, 0, m_impl->m_window->w, m_impl->m_window->h);
+      glViewport(0, 0, m_impl->m_size.width, m_impl->m_size.height);
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
 
@@ -126,41 +134,38 @@ OpenGLWindow::~OpenGLWindow()
 int  
 OpenGLWindow::get_width()  const
 {
-  return m_impl->m_window->w; 
+  return m_impl->m_size.width; 
 }
 
 int 
 OpenGLWindow::get_height() const 
 {
-  return m_impl->m_window->h; 
+  return m_impl->m_size.height;
 }
 
 Size 
 OpenGLWindow::get_size() const
 {
-  return Size(m_impl->m_window->w, m_impl->m_window->h); 
+  return m_impl->m_size;
 }
 
 void
 OpenGLWindow::set_fullscreen(bool fullscreen)
 {
-  Uint32 flags = SDL_OPENGL;
-
   if (fullscreen)
-    flags |= SDL_FULLSCREEN;
-
-  m_impl->m_window = SDL_SetVideoMode(m_impl->m_size.width, m_impl->m_size.height, 0, flags);
-
-  if (!m_impl->m_window)
   {
-    throw std::runtime_error("OpenGLWindow: Couldn't create window");
+    SDL_SetWindowFullscreen(m_impl->m_window, SDL_WINDOW_FULLSCREEN);
+  }
+  else
+  {
+    SDL_SetWindowFullscreen(m_impl->m_window, 0);
   }
 }
 
 void
 OpenGLWindow::set_gamma(float r, float g, float b)
 {
-  if (SDL_SetGamma(r, g, b) == -1)
+  if (SDL_SetWindowBrightness(m_impl->m_window, (r+g+b)/3.0f) == -1)
   {
     // Couldn't set gamma
   }
@@ -169,7 +174,7 @@ OpenGLWindow::set_gamma(float r, float g, float b)
 void
 OpenGLWindow::swap_buffers()
 {
-  SDL_GL_SwapBuffers();
+  SDL_GL_SwapWindow(m_impl->m_window);
 }
 
 /* EOF */

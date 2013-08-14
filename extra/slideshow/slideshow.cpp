@@ -65,7 +65,6 @@ App::init_sdl()
   else
   {
     atexit(SDL_Quit);
-    SDL_EnableUNICODE(1);
   }
 }
 
@@ -309,7 +308,7 @@ App::run(int argc, char* argv[])
 
       slide_show.draw(time, m_edit_mode);
 
-      SDL_GL_SwapBuffers();
+      window.swap_buffers();
 
       SDL_Delay(30);
     }

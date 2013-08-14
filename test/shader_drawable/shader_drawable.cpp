@@ -37,7 +37,6 @@ int main(int argc, char* argv[])
   else
   {
     atexit(SDL_Quit);
-    SDL_EnableUNICODE(1);
   }
 
   OpenGLWindow window("Shader Drawable",
@@ -88,7 +87,7 @@ int main(int argc, char* argv[])
     std::cout << "." << std::flush;   
     surface3->get_params().set_pos(Vector2f(static_cast<float>(i), 50.0f));
     group.render(~0u);
-    SDL_GL_SwapBuffers();
+    window.swap_buffers();
   }
 
   return 0;

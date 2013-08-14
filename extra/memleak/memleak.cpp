@@ -44,7 +44,6 @@ int main(int argc, char* argv[])
   else
   {
     atexit(SDL_Quit);
-    SDL_EnableUNICODE(1);
   }
 
 
@@ -92,7 +91,7 @@ int main(int argc, char* argv[])
     surface = Surface::create(Pathname(argv[1], Pathname::kSysPath));
 
     surface->draw(Vector2f(0.0f, 0.0f));
-    SDL_GL_SwapBuffers();
+    window.swap_buffers();
     SDL_Delay(10);
     
     surface.reset();

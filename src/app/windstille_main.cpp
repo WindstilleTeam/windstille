@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <SDL_image.h>
 #include <sstream>
 #include <boost/filesystem.hpp>
 
@@ -181,9 +182,11 @@ WindstilleMain::init_sdl()
   else
   {
     atexit(SDL_Quit);
-    SDL_EnableUNICODE(1);
   }
+
+  IMG_Init( IMG_INIT_JPG | IMG_INIT_PNG );
 }
+
 
 int main(int argc, char** argv)
 {
