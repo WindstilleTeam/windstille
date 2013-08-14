@@ -59,6 +59,17 @@ static void printfunc(HSQUIRRELVM, const char* str, ...)
   puts(buf);
   va_end(arglist); 
 }
+
+static void errorfunc(HSQUIRRELVM, const char* str, ...)
+{
+  char buf[4096];
+  va_list arglist;
+  va_start(arglist, str);
+  vsprintf(buf, str, arglist);
+  ConsoleLog << static_cast<char*>(buf);
+  puts(buf);
+  va_end(arglist);
+}
 
 ScriptManager::ScriptManager()
 {
@@ -95,7 +106,7 @@ ScriptManager::ScriptManager()
         throw SquirrelError(vm, "Couldn't register string lib");
 
       // register print function
-      sq_setprintfunc(vm, printfunc);
+      sq_setprintfunc(vm, printfunc, errorfunc);
   
       // register windstille API
       Scripting::register_windstille_wrapper(vm);

@@ -240,7 +240,7 @@ SquirrelThread::update()
         try 
         {
           // Try to return a value
-          if (sq_wakeupvm(thread, SQFalse, SQFalse, SQTrue) < 0)
+          if (sq_wakeupvm(thread, SQFalse, SQFalse, SQTrue, SQFalse) < 0)
           {
             throw SquirrelError(thread, filename, "Couldn't resume script");
           }

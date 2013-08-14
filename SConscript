@@ -192,7 +192,7 @@ class Project:
                         LIBS       = [ File('libbinreloc.a') ])
 
         cfg.Package('squirrel',
-                    CPPPATH = [ 'external/SQUIRREL2/include/' ],
+                    CPPPATH = [ 'external/SQUIRREL3/include/' ],
                     LIBS = [ File('libsquirrel.a') ],
                     CPPDEFINES = []) # empty, but it is needed later on
 
@@ -243,15 +243,15 @@ class Project:
         self.build_extra_apps()
 
     def build_squirrel(self):
-        pkg = { 'CPPPATH'  : [ 'external/SQUIRREL2/include' ],
+        pkg = { 'CPPPATH'  : [ 'external/SQUIRREL3/include' ],
                 'CXXFLAGS' : [ "-fno-rtti", "-g", "-DDEBUG" ] }
 
         if self.features['64bit']:
             pkg['CPPDEFINES'] = ['_SQ64']
 
         BuildStaticLibrary('squirrel',
-                           Glob('external/SQUIRREL2/squirrel/*.cpp') +
-                           Glob('external/SQUIRREL2/sqstdlib/*.cpp'),
+                           Glob('external/SQUIRREL3/squirrel/*.cpp') +
+                           Glob('external/SQUIRREL3/sqstdlib/*.cpp'),
                            [pkg])
 
     def build_miniswig(self):
