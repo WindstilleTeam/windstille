@@ -140,27 +140,30 @@ TexturePtr
 SurfaceManager::create_texture(SoftwareSurfacePtr image,
                                float* maxu, float* maxv)
 {
-  int texture_w = image->get_width(); 
-  int texture_h = image->get_height(); 
-
   // OpenGL2.0 should be fine with non-power-of-two, but some
   // implementations aren't
-  if (!GLEW_ARB_texture_non_power_of_two)
+  if (GLEW_ARB_texture_non_power_of_two)
   {
-    texture_w = math::round_to_power_of_two(texture_w);
-    texture_h = math::round_to_power_of_two(texture_h);
+    *maxu = 1.0f;
+    *maxv = 1.0f;
+    return Texture::create(image);
   }
+  else
+  {
+    int texture_w = math::round_to_power_of_two(image->get_width());
+    int texture_h = math::round_to_power_of_two(image->get_height());
 
-  SoftwareSurfacePtr convert = SoftwareSurface::create(texture_w, texture_h);
+    SoftwareSurfacePtr convert = SoftwareSurface::create(texture_w, texture_h);
 
-  image->blit(convert, 0, 0);
+    image->blit(convert, 0, 0);
 
-  TexturePtr texture = Texture::create(convert);
+    TexturePtr texture = Texture::create(convert);
   
-  *maxu = static_cast<float>(image->get_width())  / static_cast<float>(texture_w);
-  *maxv = static_cast<float>(image->get_height()) / static_cast<float>(texture_h);
+    *maxu = static_cast<float>(image->get_width())  / static_cast<float>(texture_w);
+    *maxv = static_cast<float>(image->get_height()) / static_cast<float>(texture_h);
 
-  return texture;
+    return texture;
+  }
 }
 
 void
