@@ -141,6 +141,12 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
         SDL_FreeSurface(tmp_surface);
       }
     }
+    else
+    {
+      std::ostringstream str;
+      str << "SoftwareSurface: unknown bytesPerPixel: " << m_surface->format->BytesPerPixel << std::endl;
+      throw std::runtime_error(str.str());      
+    }
 
     assert(!SDL_MUSTLOCK(m_surface));
   }
