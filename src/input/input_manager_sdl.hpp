@@ -123,8 +123,8 @@ public:
   
   void clear_bindings();
 
-  std::string keyid_to_string(SDL_Scancode id);
-  SDL_Scancode string_to_keyid(const std::string& str);
+  std::string keyid_to_string(SDL_Scancode id) const;
+  SDL_Scancode string_to_keyid(const std::string& str) const;
 
   void on_event(const SDL_Event& event);
 

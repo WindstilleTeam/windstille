@@ -1,27 +1,27 @@
 ;; -*- scheme -*-
 (windstille-controller
- (x-axis   (keyboard-axis (minus "left") (plus "right")))
- (y-axis   (keyboard-axis (minus "up") (plus "down")))
+ (x-axis   (keyboard-axis (minus "Left") (plus "Right")))
+ (y-axis   (keyboard-axis (minus "Up") (plus "Down")))
   
- (x2-axis  (keyboard-axis (minus "[4]") (plus "[6]"))) 
- (y2-axis  (keyboard-axis (minus "[8]") (plus "[2]")))
+ (x2-axis  (keyboard-axis (minus "Keypad 4") (plus "Keypad 6")))
+ (y2-axis  (keyboard-axis (minus "Keypad 8") (plus "Keypad 2")))
 
  (left-trigger-axis)
  (right-trigger-axis)
 
- (left-stick-button  (keyboard-button (key "x")))
- (right-stick-button (keyboard-button (key "[5]")))
+ (left-stick-button  (keyboard-button (key "X")))
+ (right-stick-button (keyboard-button (key "Keypad 5")))
 
- (primary-button    (keyboard-button (key "s")))
- (secondary-button  (keyboard-button (key "d")))
- (tertiary-button   (keyboard-button (key "a")))
- (quaternary-button (keyboard-button (key "w")))
+ (primary-button    (keyboard-button (key "S")))
+ (secondary-button  (keyboard-button (key "D")))
+ (tertiary-button   (keyboard-button (key "A")))
+ (quaternary-button (keyboard-button (key "W")))
 
- (left-shoulder-button   (keyboard-button (key "q")))
- (right-shoulder-button  (keyboard-button (key "e")))
+ (left-shoulder-button   (keyboard-button (key "Q")))
+ (right-shoulder-button  (keyboard-button (key "E")))
 
- (select-button     (keyboard-button (key "r")))
- (start-button      (keyboard-button (key "f")))
+ (select-button     (keyboard-button (key "R")))
+ (start-button      (keyboard-button (key "F")))
 
  ;; don't bind those, since they only make sense on analog gamepads
  ;; with an additional dpad, on digital devices x-axs and y-axis

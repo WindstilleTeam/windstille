@@ -67,15 +67,25 @@ public:
 };
 
 std::string
-InputManagerSDL::keyid_to_string(SDL_Scancode id)
+InputManagerSDL::keyid_to_string(SDL_Scancode id) const
 {
   return SDL_GetKeyName(id);
 }
 
 SDL_Scancode
-InputManagerSDL::string_to_keyid(const std::string& str)
+InputManagerSDL::string_to_keyid(const std::string& str) const
 {
-  return impl->keyidmapping[str];
+  std::map<std::string, SDL_Scancode>::iterator it = impl->keyidmapping.find(str);
+  if (it == impl->keyidmapping.end())
+  {
+    std::ostringstream msg;
+    msg << "key lookup failure for '" << str << "'";
+    throw std::runtime_error(msg.str());    
+  }  
+  else
+  {
+    return it->second;
+  }
 }
 
 void
@@ -234,7 +244,7 @@ InputManagerSDL::InputManagerSDL(const ControllerDescription& controller_descrip
     const char* key_name = SDL_GetScancodeName(static_cast<SDL_Scancode>(i));
     impl->keyidmapping[key_name] = static_cast<SDL_Scancode>(i);
     // FIXME: Make the keynames somewhere user visible so that users can use them
-    // std::cout << key_name << std::endl;
+    std::cout << "'" << key_name << "'" << std::endl;
   }
   
 #ifdef HAVE_CWIID
@@ -258,27 +268,27 @@ void
 InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
 {
   // Hardcoded defaults
-  if (event.keysym.sym == SDLK_RETURN)
+  if (event.keysym.scancode == SDL_SCANCODE_RETURN)
   {
     add_button_event(ENTER_BUTTON, event.state);
   }
-  else if (event.keysym.sym == SDLK_ESCAPE)
+  else if (event.keysym.scancode == SDL_SCANCODE_ESCAPE)
   {
     add_button_event(ESCAPE_BUTTON, event.state);
   }
-  else if (event.keysym.sym == SDLK_LEFT)
+  else if (event.keysym.scancode == SDL_SCANCODE_LEFT)
   {
     add_button_event(MENU_LEFT_BUTTON, event.state);
   }
-  else if (event.keysym.sym == SDLK_RIGHT)
+  else if (event.keysym.scancode == SDL_SCANCODE_RIGHT)
   {
     add_button_event(MENU_RIGHT_BUTTON, event.state);
   }
-  else if (event.keysym.sym == SDLK_UP)
+  else if (event.keysym.scancode == SDL_SCANCODE_UP)
   {
     add_button_event(MENU_UP_BUTTON, event.state);
   }
-  else if (event.keysym.sym == SDLK_DOWN)
+  else if (event.keysym.scancode == SDL_SCANCODE_DOWN)
   {
     add_button_event(MENU_DOWN_BUTTON, event.state);
   }
@@ -288,7 +298,7 @@ InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
        i != impl->keyboard_button_bindings.end();
        ++i)
   {
-    if (event.keysym.sym == i->key)
+    if (event.keysym.scancode == i->key)
     {
       add_button_event(i->event, event.state);
     }
@@ -300,14 +310,14 @@ InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
        i != impl->keyboard_axis_bindings.end();
        ++i)
   {
-    if (event.keysym.sym == i->minus)
+    if (event.keysym.scancode == i->minus)
     {
       if (event.state)
         add_axis_event(i->event, -1.0f);
       else if (!keystate[i->plus])
         add_axis_event(i->event, 0.0f);
     }
-    else if (event.keysym.sym == i->plus)
+    else if (event.keysym.scancode == i->plus)
     {
       if (event.state)
       {
@@ -418,24 +428,24 @@ InputManagerSDL::on_event(const SDL_Event& event)
 {
   switch(event.type)
   {        
+    case SDL_TEXTINPUT:
+#if 0
+      if ((event.key.keysym.unicode > 0 && event.key.keysym.unicode < 128)
+          && (isgraph(event.key.keysym.unicode) || event.key.keysym.unicode == ' '))
+      {
+        add_keyboard_event(0, KeyboardEvent::LETTER, event.key.keysym.unicode);
+      }
+      else
+      {
+        add_keyboard_event(0, KeyboardEvent::SPECIAL, event.key.keysym.sym);
+      }
+#endif
+      break;
+
     case SDL_KEYUP:
     case SDL_KEYDOWN:
-    {
-      if (event.key.state)
-      {
-        if ((event.key.keysym.unicode > 0 && event.key.keysym.unicode < 128)
-            && (isgraph(event.key.keysym.unicode) || event.key.keysym.unicode == ' '))
-        {
-          add_keyboard_event(0, KeyboardEvent::LETTER, event.key.keysym.unicode);
-        }
-        else
-        {
-          add_keyboard_event(0, KeyboardEvent::SPECIAL, event.key.keysym.sym);
-        }
-      }
-    }
-    on_key_event(event.key);
-    break;
+      on_key_event(event.key);
+      break;
 
     case SDL_MOUSEMOTION:
       // event.motion
