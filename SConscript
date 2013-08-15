@@ -24,7 +24,7 @@ from pprint import pprint
 
 start_time = time.time()
 
-CacheDir('cache')
+# CacheDir('cache')
 
 class Project:
     def __init__(self):
