@@ -376,6 +376,7 @@ class Project:
         BuildProgram("test_directory", ["src/util/directory.cpp"], pkgs + [ 'wst_util', 'boost_filesystem' ])
         BuildProgram("test_easing", ["src/math/easing.cpp"], pkgs)
         BuildProgram("reader_test", ["test/read_test.cpp"], pkgs + [ 'wst_util', 'SDL' ])
+        BuildProgram("software_surface_test", ["test/software_surface_test.cpp"], pkgs + [ 'wst_util', 'boost_filesystem', 'wst_display', 'SDL', 'SDL_image', 'png' ])
 
         BuildProgram("test_scissor_drawable", ["test/scissor_drawable/scissor_drawable.cpp"],
                      pkgs + [ 'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math',
