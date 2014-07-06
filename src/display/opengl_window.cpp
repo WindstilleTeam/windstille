@@ -127,8 +127,8 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
 
 OpenGLWindow::~OpenGLWindow()
 {
-  // must not free m_impl->m_window, see:
-  // http://sdl.beuc.net/sdl.wiki/SDL_SetVideoMode
+  SDL_GL_DeleteContext(m_impl->m_gl_context);
+  SDL_DestroyWindow(m_impl->m_window);
 } 
 
 int  
