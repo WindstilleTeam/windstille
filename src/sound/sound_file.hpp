@@ -45,7 +45,7 @@ public:
   virtual float  get_length() const;
 
 public:
-  static std::auto_ptr<SoundFile> load(const Pathname& filename);
+  static std::unique_ptr<SoundFile> load(const Pathname& filename);
 };
 
 #endif

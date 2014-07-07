@@ -23,8 +23,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-FilteredSoundFile::FilteredSoundFile(std::auto_ptr<SoundFile> sound_file) :
-  m_sound_file(sound_file)
+FilteredSoundFile::FilteredSoundFile(std::unique_ptr<SoundFile> sound_file) :
+  m_sound_file(std::move(sound_file))
 {
 }
 

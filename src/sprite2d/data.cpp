@@ -19,6 +19,7 @@
 
 #include "sprite2d/data.hpp"
 
+#include <memory>
 #include <stdexcept>
 
 #include "display/surface_manager.hpp"
@@ -44,7 +45,7 @@ SpriteData::SpriteData(const Pathname& pathname) :
     }
     else if (ext == "png" || ext == "jpg")
     {
-      std::auto_ptr<SpriteAction> action(new SpriteAction());
+      std::unique_ptr<SpriteAction> action(new SpriteAction());
       action->name   = "default";
       action->speed  = 1.0;
       action->scale  = 1.0f;
@@ -67,7 +68,7 @@ SpriteData::SpriteData(const Pathname& pathname) :
 
     if (pngfile.exists())
     {
-      std::auto_ptr<SpriteAction> action(new SpriteAction);
+      std::unique_ptr<SpriteAction> action(new SpriteAction);
       action->name   = "default";
       action->speed  = 1.0;
       action->scale  = 1.0f;
@@ -110,7 +111,7 @@ SpriteData::parse(const Pathname& dir, FileReader& reader)
 SpriteAction*
 SpriteData::parse_action(const Pathname& dir, FileReader& reader)
 {
-  std::auto_ptr<SpriteAction> action (new SpriteAction);
+  std::unique_ptr<SpriteAction> action (new SpriteAction);
   action->speed = 1.0;
   action->scale = 1.0f;
   action->offset = Vector2f(0, 0);

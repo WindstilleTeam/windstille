@@ -44,14 +44,14 @@ SoundChannel::play(const Pathname& filename)
 }
 
 SoundSourcePtr
-SoundChannel::prepare(std::auto_ptr<SoundFile> sound_file, 
+SoundChannel::prepare(std::unique_ptr<SoundFile> sound_file,
                       OpenALSoundSourceType type)
 {
   switch(type)
   {
     case kStreamSoundSource:
     {
-      SoundSourcePtr source(new StreamSoundSource(*this, sound_file));
+      SoundSourcePtr source(new StreamSoundSource(*this, std::move(sound_file)));
       source->update_gain();
       m_sound_sources.push_back(SoundSourcePtr(source));
       return source;

@@ -104,7 +104,7 @@ ALuint
 SoundManager::load_file_into_buffer(const Pathname& filename)
 {
   // open sound file
-  std::auto_ptr<SoundFile> file(SoundFile::load(filename));
+  std::unique_ptr<SoundFile> file(SoundFile::load(filename));
   
   ALenum format = get_sample_format(file.get());
   ALuint buffer;
@@ -164,8 +164,8 @@ SoundManager::create_sound_source(const Pathname& filename, SoundChannel& channe
 
       case kStreamSoundSource:
       {
-        std::auto_ptr<SoundFile> sound_file = SoundFile::load(filename);
-        return SoundSourcePtr(new StreamSoundSource(channel, sound_file));
+        std::unique_ptr<SoundFile> sound_file = SoundFile::load(filename);
+        return SoundSourcePtr(new StreamSoundSource(channel, std::move(sound_file)));
       }
       break;
 
@@ -257,7 +257,7 @@ SoundManager::play_music(const Pathname& filename, bool fade)
     {
       try 
       {
-        std::auto_ptr<StreamSoundSource> newmusic(new StreamSoundSource(m_music_channel, SoundFile::load(filename)));
+        std::unique_ptr<StreamSoundSource> newmusic(new StreamSoundSource(m_music_channel, SoundFile::load(filename)));
 
         if (fade) 
         {
@@ -267,11 +267,11 @@ SoundManager::play_music(const Pathname& filename, bool fade)
             m_music_source->set_fading(StreamSoundSource::kFadingOff, .7f);
           }
 
-          m_next_music_source = newmusic;
+          m_next_music_source = std::move(newmusic);
         }
         else
         {
-          m_music_source = newmusic;
+          m_music_source = std::move(newmusic);
           m_music_source->play();
           m_next_music_source.reset();
         }
@@ -333,7 +333,7 @@ SoundManager::update(float delta)
   
     if (m_next_music_source.get() && (!m_music_source.get() || !m_music_source->is_playing())) 
     {
-      m_music_source = m_next_music_source;
+      m_music_source = std::move(m_next_music_source);
       //music_source->setFading(StreamSoundSource::FadingOn, 1.0f);
       m_music_source->play();
     }

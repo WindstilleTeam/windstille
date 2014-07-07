@@ -138,7 +138,7 @@ SectorBuilder::parse_object(const FileReader& reader)
 
   if(reader.get_name() == "tilemap")
   {
-    std::auto_ptr<TileMap> tilemap(new TileMap(reader));
+    std::unique_ptr<TileMap> tilemap(new TileMap(reader));
 
     if (tilemap->get_name() == "interactive")
       m_sector.interactive_tilemap = tilemap.get();

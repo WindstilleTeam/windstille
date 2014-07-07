@@ -27,7 +27,7 @@
 #include "sound/wav_sound_file.hpp"
 #include "util/pathname.hpp"
 
-std::auto_ptr<SoundFile>
+std::unique_ptr<SoundFile>
 SoundFile::load(const Pathname& filename)
 {
   std::ifstream in(filename.get_sys_path().c_str(), std::ios::binary);
@@ -52,11 +52,11 @@ SoundFile::load(const Pathname& filename)
       {
         if (strncmp(magic, "RIFF", 4) == 0)
         {
-          return std::auto_ptr<SoundFile>(new WavSoundFile(filename));
+          return std::unique_ptr<SoundFile>(new WavSoundFile(filename));
         }
         else if (strncmp(magic, "OggS", 4) == 0)
         {
-          return std::auto_ptr<SoundFile>(new OggSoundFile(filename));
+          return std::unique_ptr<SoundFile>(new OggSoundFile(filename));
         }
         else
         {

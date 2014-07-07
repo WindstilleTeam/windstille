@@ -113,13 +113,13 @@ WindstilleMain::run()
 
     if (file_type == "wsprite")
     {
-      std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
+      std::unique_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
       sprite3dview->set_model(filename);
       ScreenManager::current()->push_screen(sprite3dview.release());
     }
     else if (file_type == "sprite" || file_type == "png" || file_type == "jpg")
     {
-      std::auto_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
+      std::unique_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
       sprite2dview->set_sprite(filename);
       ScreenManager::current()->push_screen(sprite2dview.release());
     }

@@ -115,7 +115,7 @@ MenuManager::display_main_menu()
   menu.add_button("Quit", boost::bind(&MenuManager::menu_quit));
     
   { // Construct Copyright box
-    std::auto_ptr<gui::GroupComponent> text_group
+    std::unique_ptr<gui::GroupComponent> text_group
       (new gui::GroupComponent(Rectf(Vector2f(static_cast<float>(Display::get_width())/2.0f - 390.0f,
                                               static_cast<float>(Display::get_height())     - 100.0f),
                                      Sizef(800.0f - 20.0f, 
@@ -123,7 +123,7 @@ MenuManager::display_main_menu()
                                "",
                                menu.get_root()));
 
-    std::auto_ptr<gui::TextView> text(new gui::TextView(text_group->get_child_rect(), text_group.get()));
+    std::unique_ptr<gui::TextView> text(new gui::TextView(text_group->get_child_rect(), text_group.get()));
     text->set_font(Fonts::current()->vera12.get());
     text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
                    "\n"
@@ -246,13 +246,13 @@ void
 MenuManager::display_help()
 {
   using namespace gui;
-  std::auto_ptr<GUIManager> manager(new GUIManager());
+  std::unique_ptr<GUIManager> manager(new GUIManager());
 
-  std::auto_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400), 
+  std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400), 
                                                          "Help",
                                                          manager->get_root()));
 
-  std::auto_ptr<TextView> text(new TextView(group->get_child_rect(), 
+  std::unique_ptr<TextView> text(new TextView(group->get_child_rect(), 
                                             group.get()));
 
   text->set_font(Fonts::current()->vera12.get());
@@ -313,13 +313,13 @@ void
 MenuManager::display_credits()
 {
   using namespace gui;
-  std::auto_ptr<GUIManager> manager(new GUIManager());
+  std::unique_ptr<GUIManager> manager(new GUIManager());
 
-  std::auto_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400), 
+  std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400), 
                                                          "Credits",
                                                          manager->get_root()));
 
-  std::auto_ptr<TextView> text(new TextView(group->get_child_rect(), group.get()));
+  std::unique_ptr<TextView> text(new TextView(group->get_child_rect(), group.get()));
 
   text->set_font(Fonts::current()->vera12.get());
   text->set_text("Programming\n"
@@ -384,7 +384,7 @@ MenuManager::create_centered_rect(float w, float h)
 void
 MenuManager::menu_show_model(const Pathname& filename)
 {
-  std::auto_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
+  std::unique_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
 
   sprite3dview->set_model(filename);
 
@@ -396,7 +396,7 @@ MenuManager::menu_show_model(const Pathname& filename)
 void
 MenuManager::menu_show_particle_system(const Pathname& filename)
 {
-  std::auto_ptr<ParticleViewer> particle_viewer(new ParticleViewer());
+  std::unique_ptr<ParticleViewer> particle_viewer(new ParticleViewer());
   particle_viewer->load(filename);
 
   ScreenManager::current()->push_screen(particle_viewer.release());

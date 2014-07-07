@@ -23,9 +23,9 @@
 #include "sound/sound_manager.hpp"
 #include "sound/sound_file.hpp"
 
-StreamSoundSource::StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundFile> sound_file) :
+StreamSoundSource::StreamSoundSource(SoundChannel& channel, std::unique_ptr<SoundFile> sound_file) :
   OpenALSoundSource(channel),
-  m_sound_file(sound_file),
+  m_sound_file(std::move(sound_file)),
   m_format(SoundManager::get_sample_format(m_sound_file.get())),
   m_looping(false),
   m_total_buffers_processed(0),

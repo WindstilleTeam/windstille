@@ -32,7 +32,7 @@ int main(int argc, char** argv)
   {
     for(int i = 1; i < argc; ++i)
     {
-      std::auto_ptr<SoundFile> sound_file = SoundFile::load(Pathname(argv[i], Pathname::kSysPath));
+      std::unique_ptr<SoundFile> sound_file = SoundFile::load(Pathname(argv[i], Pathname::kSysPath));
       std::cout << "Filename: " << argv[i] << std::endl;
       std::cout << "Length:   " << sound_file->get_length() << "sec" << std::endl;
       std::cout << "Size:     " << sound_file->get_size() << "B" << std::endl;

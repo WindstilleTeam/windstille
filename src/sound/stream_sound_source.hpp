@@ -33,7 +33,7 @@ public:
   enum FadeState { kNoFading, kFadingOn, kFadingOff };
 
 public:
-  StreamSoundSource(SoundChannel& channel, std::auto_ptr<SoundFile> sound_file);
+  StreamSoundSource(SoundChannel& channel, std::unique_ptr<SoundFile> sound_file);
   virtual ~StreamSoundSource();
 
   void update(float delta);
@@ -53,7 +53,7 @@ private:
   static const size_t STREAMFRAGMENTS    = 4;
   static const size_t STREAMFRAGMENTSIZE = 65536;
 
-  std::auto_ptr<SoundFile> m_sound_file;
+  std::unique_ptr<SoundFile> m_sound_file;
   ALuint m_buffers[STREAMFRAGMENTS];
   ALenum m_format;
 

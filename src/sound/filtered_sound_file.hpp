@@ -27,7 +27,7 @@
 class FilteredSoundFile : public SoundFile
 {
 public:
-  FilteredSoundFile(std::auto_ptr<SoundFile> sound_file);
+  FilteredSoundFile(std::unique_ptr<SoundFile> sound_file);
   virtual ~FilteredSoundFile();
 
   virtual size_t read(void* buffer, size_t buffer_size);
@@ -45,7 +45,7 @@ public:
   virtual float  get_length() const;
 
 private:
-  std::auto_ptr<SoundFile> m_sound_file;
+  std::unique_ptr<SoundFile> m_sound_file;
 
 private:
   FilteredSoundFile(const FilteredSoundFile&);

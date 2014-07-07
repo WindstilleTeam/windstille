@@ -42,7 +42,7 @@ class Player : public Entity,
 {
 private:
   boost::shared_ptr<Sprite3DDrawable> m_drawable;
-  //std::auto_ptr<SoundSource> sound_source;
+  //std::unique_ptr<SoundSource> sound_source;
 
   bool jumping;
   bool bomb_placed;

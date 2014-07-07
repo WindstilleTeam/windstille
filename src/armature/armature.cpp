@@ -60,7 +60,7 @@ Armature::parse(FileReader& reader)
     {
       if (i->get_name() == "bone")
       {
-        std::auto_ptr<Bone> bone(new Bone());
+        std::unique_ptr<Bone> bone(new Bone());
         if (!(i->get("name",     bone->name) &&
               i->get("children", bone->children_names) &&
               i->get("parent",   bone->parent_name) &&

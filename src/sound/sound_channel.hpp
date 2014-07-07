@@ -36,7 +36,7 @@ public:
   // shortcut for prepare()->play()
   SoundSourcePtr play(const Pathname& filename);
 
-  SoundSourcePtr prepare(std::auto_ptr<SoundFile> sound_file, 
+  SoundSourcePtr prepare(std::unique_ptr<SoundFile> sound_file,
                          OpenALSoundSourceType type = kStaticSoundSource);
   SoundSourcePtr prepare(const Pathname& filename,
                          OpenALSoundSourceType type = kStaticSoundSource);

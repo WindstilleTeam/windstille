@@ -80,7 +80,7 @@ Parser::parse(const std::string& filename)
 Lisp*
 Parser::parse(std::istream& stream, const std::string& filename)
 {
-  std::auto_ptr<Parser> parser (new Parser());
+  std::unique_ptr<Parser> parser (new Parser());
 
   parser->filename = filename;
   parser->lexer = new Lexer(stream);
@@ -89,7 +89,7 @@ Parser::parse(std::istream& stream, const std::string& filename)
   if(parser->token != Lexer::TOKEN_OPEN_PAREN)
     throw ParseError(parser.get(), "file doesn't start with '('");
 
-  std::auto_ptr<Lisp> result (parser->parse());
+  std::unique_ptr<Lisp> result (parser->parse());
   if(parser->token != Lexer::TOKEN_EOF) {
     if(parser->token == Lexer::TOKEN_CLOSE_PAREN)
       throw ParseError(parser.get(), "too many ')'");

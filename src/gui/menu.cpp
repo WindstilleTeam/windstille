@@ -50,7 +50,7 @@ EnumMenuItem&
 Menu::add_enum(const std::string& name, int index,
                const boost::function<void (int)>& callback)
 {
-  std::auto_ptr<EnumMenuItem> enum_item(new EnumMenuItem(menu.get(), name, index));
+  std::unique_ptr<EnumMenuItem> enum_item(new EnumMenuItem(menu.get(), name, index));
 
   if (callback)
     enum_item->sig_change().connect(callback);
@@ -65,7 +65,7 @@ Menu::add_slider(const std::string& name,
                  int value, int min_value, int max_value, int step,
                  const boost::function<void (int)>& callback)
 {
-  std::auto_ptr<SliderMenuItem> slider(new SliderMenuItem(menu.get(), name, value, min_value, max_value, step));
+  std::unique_ptr<SliderMenuItem> slider(new SliderMenuItem(menu.get(), name, value, min_value, max_value, step));
   if (callback)
     slider->sig_change().connect(callback);
   menu->add_item(slider.release());
@@ -75,7 +75,7 @@ void
 Menu::add_button(const std::string& name,
                  const boost::function<void ()>& callback)
 {
-  std::auto_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu.get(), name));
+  std::unique_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu.get(), name));
   if (callback)
     scenario_button->sig_click().connect(callback);
   menu->add_item(scenario_button.release());
