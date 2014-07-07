@@ -29,7 +29,7 @@ GUIManager* GUIManager::current_ = 0;
 GUIManager::GUIManager()
 {
   slot_container = new CL_SlotContainer();
-  resources = new CL_ResourceManager(datadir + "gui/gui.xml", false);
+  resources = new CL_ResourceManager(datadir + "gui/gui.xml");
   style     = new StyleManager_Windstille(resources);
   manager   = new CL_GUIManager(style);
 

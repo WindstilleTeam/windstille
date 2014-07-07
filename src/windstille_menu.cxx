@@ -17,7 +17,6 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-#include <config.h>
 #include <iostream>
 #include <ClanLib/Display/display.h>
 #include <ClanLib/Display/display_window.h>
@@ -210,7 +209,7 @@ WindstilleMenu::draw()
 
   Fonts::copyright.set_alignment(origin_bottom_left);
   Fonts::copyright.draw(15, CL_Display::get_height() - 10,
-                        PACKAGE_STRING "\n"
+                        "Windstille" "\n"
                         "Copyright (c) 2003 Ingo Ruhnke <grumbel@gmx.de>\n"
                         "This game comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome\n"
                         "to redistribute it under certain conditions; see the file COPYING for details.\n");

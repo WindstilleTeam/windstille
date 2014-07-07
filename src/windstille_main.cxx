@@ -17,7 +17,6 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-#include <config.h>
 //#include <ClanLib/gl.h>
 #include <ClanLib/core.h>
 #include <ClanLib/vorbis.h>
@@ -273,7 +272,7 @@ WindstilleMain::init_modules()
 
   gh_define("*windstille-levelfile*",      gh_str02scm(levelfile.c_str()));
   gh_define("*windstille-datadir*",        gh_str02scm(datadir.c_str()));
-  gh_define("*windstille-package-string*", gh_str02scm(PACKAGE_STRING));
+  gh_define("*windstille-package-string*", gh_str02scm("Windstille"));
 
   std::cout << "done" << std::endl;
 
@@ -288,7 +287,7 @@ WindstilleMain::init_modules()
       CL_SetupVorbis::init();
     }
 
-  window = new CL_DisplayWindow(PACKAGE_STRING,
+  window = new CL_DisplayWindow("Windstille",
                                 screen_width, screen_height, fullscreen, allow_resize);
   CL_Display::clear();
   CL_Display::flip();
@@ -297,8 +296,8 @@ WindstilleMain::init_modules()
     sound = new CL_SoundOutput(44100);
 
   resources =  new CL_ResourceManager();
-  resources->add_resources(CL_ResourceManager(datadir + "tiles.xml", false));
-  resources->add_resources(CL_ResourceManager(datadir + "windstille.xml", false));
+  resources->add_resources(CL_ResourceManager(datadir + "tiles.xml"));
+  resources->add_resources(CL_ResourceManager(datadir + "windstille.xml"));
 
   Fonts::init(); 
   MusicManager::init();

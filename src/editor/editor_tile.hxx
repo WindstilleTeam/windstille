@@ -34,7 +34,7 @@ public:
   EditorTile ();
 
   void set_tile (int id);
-  void draw (int x, int y, float alpha);
+  void draw (int x, int y, float alpha=1.0f);
   int  get_id () const { return id; } 
 };
 

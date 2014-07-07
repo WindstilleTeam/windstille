@@ -1,0 +1,241 @@
+<resources>
+  <section name="tiles">
+    <sprite name="air_air_air_brwn_1">
+      <image file="images/tiles/air_air_air_brwn_1.png" />
+    </sprite>
+    <sprite name="air_air_brwn_air_1">
+      <image file="images/tiles/air_air_brwn_air_1.png" />
+    </sprite>
+    <sprite name="air_air_brwn_brwn_1">
+      <image file="images/tiles/air_air_brwn_brwn_1.png" />
+    </sprite>
+    <sprite name="air_brwn_air_air_1">
+      <image file="images/tiles/air_brwn_air_air_1.png" />
+    </sprite>
+    <sprite name="air_brwn_air_air_2">
+      <image file="images/tiles/air_brwn_air_air_2.png" />
+    </sprite>
+    <sprite name="air_brwn_brwn_air_1">
+      <image file="images/tiles/air_brwn_brwn_air_1.png" />
+    </sprite>
+    <sprite name="air_brwn_brwn_air_2">
+      <image file="images/tiles/air_brwn_brwn_air_2.png" />
+    </sprite>
+    <sprite name="air_brwn_brwn_brwn_1">
+      <image file="images/tiles/air_brwn_brwn_brwn_1.png" />
+    </sprite>
+    <sprite name="air_dbrw_dbrw_air_1">
+      <image file="images/tiles/air_dbrw_dbrw_air_1.png" />
+    </sprite>
+    <sprite name="brwn_air_air_air_1">
+      <image file="images/tiles/brwn_air_air_air_1.png" />
+    </sprite>
+    <sprite name="brwn_air_air_air_2">
+      <image file="images/tiles/brwn_air_air_air_2.png" />
+    </sprite>
+    <sprite name="brwn_air_air_brwn_1">
+      <image file="images/tiles/brwn_air_air_brwn_1.png" />
+    </sprite>
+    <sprite name="brwn_air_brwn_brwn_1">
+      <image file="images/tiles/brwn_air_brwn_brwn_1.png" />
+    </sprite>
+    <sprite name="brwn_brwn_air_air_1">
+      <image file="images/tiles/brwn_brwn_air_air_1.png" />
+    </sprite>
+    <sprite name="brwn_brwn_air_brwn_1">
+      <image file="images/tiles/brwn_brwn_air_brwn_1.png" />
+    </sprite>
+    <sprite name="brwn_brwn_air_brwn_2">
+      <image file="images/tiles/brwn_brwn_air_brwn_2.png" />
+    </sprite>
+    <sprite name="brwn_brwn_brwn_air_1">
+      <image file="images/tiles/brwn_brwn_brwn_air_1.png" />
+    </sprite>
+    <sprite name="brwn_brwn_brwn_dbrw_1">
+      <image file="images/tiles/brwn_brwn_brwn_dbrw_1.png" />
+    </sprite>
+    <sprite name="brwn_brwn_dbrw_brwn_1">
+      <image file="images/tiles/brwn_brwn_dbrw_brwn_1.png" />
+    </sprite>
+    <sprite name="brwn_brwn_dbrw_dbrw_1">
+      <image file="images/tiles/brwn_brwn_dbrw_dbrw_1.png" />
+    </sprite>
+    <sprite name="brwn_dbrw_brwn_brwn_1">
+      <image file="images/tiles/brwn_dbrw_brwn_brwn_1.png" />
+    </sprite>
+    <sprite name="brwn_dbrw_brwn_dbrw_1">
+      <image file="images/tiles/brwn_dbrw_brwn_dbrw_1.png" />
+    </sprite>
+    <sprite name="brwn_dbrw_dbrw_brwn_1">
+      <image file="images/tiles/brwn_dbrw_dbrw_brwn_1.png" />
+    </sprite>
+    <sprite name="brwn_dbrw_dbrw_dbrw_1">
+      <image file="images/tiles/brwn_dbrw_dbrw_dbrw_1.png" />
+    </sprite>
+    <sprite name="dbrw_air_air_dbrw_1">
+      <image file="images/tiles/dbrw_air_air_dbrw_1.png" />
+    </sprite>
+    <sprite name="dbrw_brwn_brwn_brwn_1">
+      <image file="images/tiles/dbrw_brwn_brwn_brwn_1.png" />
+    </sprite>
+    <sprite name="dbrw_brwn_brwn_dbrw_1">
+      <image file="images/tiles/dbrw_brwn_brwn_dbrw_1.png" />
+    </sprite>
+    <sprite name="dbrw_brwn_dbrw_brwn_1">
+      <image file="images/tiles/dbrw_brwn_dbrw_brwn_1.png" />
+    </sprite>
+    <sprite name="dbrw_brwn_dbrw_dbrw_1">
+      <image file="images/tiles/dbrw_brwn_dbrw_dbrw_1.png" />
+    </sprite>
+    <sprite name="dbrw_dbrw_brwn_brwn_1">
+      <image file="images/tiles/dbrw_dbrw_brwn_brwn_1.png" />
+    </sprite>
+    <sprite name="dbrw_dbrw_brwn_dbrw_1">
+      <image file="images/tiles/dbrw_dbrw_brwn_dbrw_1.png" />
+    </sprite>
+    <sprite name="dbrw_dbrw_dbrw_brwn_1">
+      <image file="images/tiles/dbrw_dbrw_dbrw_brwn_1.png" />
+    </sprite>
+    <sprite name="notile">
+      <image file="images/tiles/notile.png" />
+    </sprite>
+    <sprite name="tile1">
+      <image file="images/tiles/tile1.png" />
+    </sprite>
+    <sprite name="tile10">
+      <image file="images/tiles/tile10.png" />
+    </sprite>
+    <sprite name="tile11">
+      <image file="images/tiles/tile11.png" />
+    </sprite>
+    <sprite name="tile12">
+      <image file="images/tiles/tile12.png" />
+    </sprite>
+    <sprite name="tile13">
+      <image file="images/tiles/tile13.png" />
+    </sprite>
+    <sprite name="tile14">
+      <image file="images/tiles/tile14.png" />
+    </sprite>
+    <sprite name="tile15">
+      <image file="images/tiles/tile15.png" />
+    </sprite>
+    <sprite name="tile16">
+      <image file="images/tiles/tile16.png" />
+    </sprite>
+    <sprite name="tile17">
+      <image file="images/tiles/tile17.png" />
+    </sprite>
+    <sprite name="tile18">
+      <image file="images/tiles/tile18.png" />
+    </sprite>
+    <sprite name="tile19">
+      <image file="images/tiles/tile19.png" />
+    </sprite>
+    <sprite name="tile2">
+      <image file="images/tiles/tile2.png" />
+    </sprite>
+    <sprite name="tile20">
+      <image file="images/tiles/tile20.png" />
+    </sprite>
+    <sprite name="tile21">
+      <image file="images/tiles/tile21.png" />
+    </sprite>
+    <sprite name="tile22">
+      <image file="images/tiles/tile22.png" />
+    </sprite>
+    <sprite name="tile23">
+      <image file="images/tiles/tile23.png" />
+    </sprite>
+    <sprite name="tile24">
+      <image file="images/tiles/tile24.png" />
+    </sprite>
+    <sprite name="tile25">
+      <image file="images/tiles/tile25.png" />
+    </sprite>
+    <sprite name="tile26">
+      <image file="images/tiles/tile26.png" />
+    </sprite>
+    <sprite name="tile27">
+      <image file="images/tiles/tile27.png" />
+    </sprite>
+    <sprite name="tile28">
+      <image file="images/tiles/tile28.png" />
+    </sprite>
+    <sprite name="tile29">
+      <image file="images/tiles/tile29.png" />
+    </sprite>
+    <sprite name="tile3">
+      <image file="images/tiles/tile3.png" />
+    </sprite>
+    <sprite name="tile30">
+      <image file="images/tiles/tile30.png" />
+    </sprite>
+    <sprite name="tile31">
+      <image file="images/tiles/tile31.png" />
+    </sprite>
+    <sprite name="tile32">
+      <image file="images/tiles/tile32.png" />
+    </sprite>
+    <sprite name="tile33">
+      <image file="images/tiles/tile33.png" />
+    </sprite>
+    <sprite name="tile34">
+      <image file="images/tiles/tile34.png" />
+    </sprite>
+    <sprite name="tile35">
+      <image file="images/tiles/tile35.png" />
+    </sprite>
+    <sprite name="tile36">
+      <image file="images/tiles/tile36.png" />
+    </sprite>
+    <sprite name="tile37">
+      <image file="images/tiles/tile37.png" />
+    </sprite>
+    <sprite name="tile38">
+      <image file="images/tiles/tile38.png" />
+    </sprite>
+    <sprite name="tile4">
+      <image file="images/tiles/tile4.png" />
+    </sprite>
+    <sprite name="tile40">
+      <image file="images/tiles/tile40.png" />
+    </sprite>
+    <sprite name="tile41">
+      <image file="images/tiles/tile41.png" />
+    </sprite>
+    <sprite name="tile42">
+      <image file="images/tiles/tile42.png" />
+    </sprite>
+    <sprite name="tile43">
+      <image file="images/tiles/tile43.png" />
+    </sprite>
+    <sprite name="tile44">
+      <image file="images/tiles/tile44.png" />
+    </sprite>
+    <sprite name="tile45">
+      <image file="images/tiles/tile45.png" />
+    </sprite>
+    <sprite name="tile46">
+      <image file="images/tiles/tile46.png" />
+    </sprite>
+    <sprite name="tile5">
+      <image file="images/tiles/tile5.png" />
+    </sprite>
+    <sprite name="tile6">
+      <image file="images/tiles/tile6.png" />
+    </sprite>
+    <sprite name="tile7">
+      <image file="images/tiles/tile7.png" />
+    </sprite>
+    <sprite name="tile8">
+      <image file="images/tiles/tile8.png" />
+    </sprite>
+    <sprite name="tile9">
+      <image file="images/tiles/tile9.png" />
+    </sprite>
+    <sprite name="tree1">
+      <image file="images/tiles/tree1.png" />
+    </sprite>
+  </section>
+</resources>

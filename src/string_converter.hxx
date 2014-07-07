@@ -20,7 +20,6 @@
 #ifndef STRINGCONVERTER_HXX
 #define STRINGCONVERTER_HXX
 
-#include <config.h>
 #include <stdexcept>
 #include <sstream>
 
