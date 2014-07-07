@@ -94,14 +94,14 @@ StreamSoundSource::get_pos() const
 int
 StreamSoundSource::get_sample_pos() const
 {
-  int samples_total = m_total_buffers_processed * (STREAMFRAGMENTSIZE
+  int samples_total = m_total_buffers_processed * (static_cast<int>(STREAMFRAGMENTSIZE)
                                                    / m_sound_file->get_channels() 
                                                    / (m_sound_file->get_bits_per_sample()/8));
 
   ALint sample_pos;
   alGetSourcei(m_source, AL_SAMPLE_OFFSET, &sample_pos); 
 
-  return (samples_total + sample_pos) % (m_sound_file->get_size()
+  return (samples_total + sample_pos) % (static_cast<int>(m_sound_file->get_size())
                                          / m_sound_file->get_channels() 
                                          / (m_sound_file->get_bits_per_sample()/8));
 }
@@ -209,7 +209,7 @@ StreamSoundSource::fill_buffer_and_queue(ALuint buffer)
   if (bytesread > 0)
   {  
     // upload data to the OpenAL buffer
-    alBufferData(buffer, m_format, bufferdata, bytesread, m_sound_file->get_rate());
+    alBufferData(buffer, m_format, bufferdata, static_cast<ALsizei>(bytesread), m_sound_file->get_rate());
     SoundManager::check_al_error("Couldn't refill audio buffer: ");
 
     // add buffer to the queue of this source

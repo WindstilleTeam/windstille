@@ -140,7 +140,7 @@ TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect
       if(packers[color_packer]->is_full())
       {
         packers.push_back(new TilePacker(1024, 1024));
-        color_packer = packers.size() - 1;
+        color_packer = static_cast<int>(packers.size()) - 1;
       }
           
       Rectf uv = packers[color_packer]->pack(image, 

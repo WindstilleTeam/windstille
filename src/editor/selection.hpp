@@ -66,7 +66,7 @@ public:
   void add(const ObjectModelHandle& object);
   void remove(const ObjectModelHandle& object);
   
-  int size() const { return objects.size(); }
+  int size() const { return static_cast<int>(objects.size()); }
 
   Selection::iterator begin() { return objects.begin(); }
   Selection::iterator end()   { return objects.end(); }

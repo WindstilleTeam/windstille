@@ -222,7 +222,7 @@ Mesh::draw()
 
   glNormalPointer(GL_FLOAT, 0, &*normals.begin());
   glTexCoordPointer(2, GL_FLOAT, 0, &*texcoords.begin());
-  glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_INT, &*triangles.begin());
+  glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(triangles.size()), GL_UNSIGNED_INT, &*triangles.begin());
 }
 
 void

@@ -106,7 +106,7 @@ TabComponent::update(float delta, const Controller& controller)
           if (i->axis.pos < 0)
           {
             if (current_tab == 0)
-              current_tab = tabs.size() - 1;
+              current_tab = static_cast<int>(tabs.size()) - 1;
             else
               current_tab -= 1;
           }

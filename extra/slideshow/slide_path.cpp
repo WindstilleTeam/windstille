@@ -64,7 +64,7 @@ SlidePath::get(float relative_time)
       passed += m_edges[i].duration;
       if (passed > relative_time)
       {
-        idx = i;
+        idx = static_cast<int>(i);
         break;
       }
     }

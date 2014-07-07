@@ -40,11 +40,11 @@ void print_squirrel_stack(HSQUIRRELVM v, const std::string& context = std::strin
 
 
 // serialisation
-void save_squirrel_table(HSQUIRRELVM v, int table_idx, lisp::Writer& writer);
-void load_squirrel_table(HSQUIRRELVM v, int table_idx, const lisp::Lisp* lisp);
+void save_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, lisp::Writer& writer);
+void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const lisp::Lisp* lisp);
 
-void save_squirrel_table(HSQUIRRELVM v, int table_idx, const std::string& file);
-void load_squirrel_table(HSQUIRRELVM v, int table_idx, const std::string& file);
+void save_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const std::string& file);
+void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const std::string& file);
 
 } // namespace Scripting
 

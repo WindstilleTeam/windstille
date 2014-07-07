@@ -20,6 +20,7 @@
 #define __QUATERNION_HPP__
 
 #include <math.h>
+#define GLM_FORCE_RADIANS
 #include <glm/ext.hpp>
 
 #include "vector3.hpp"

@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_MATH_QUAD_HPP
 
 #include <math.h>
+#define GLM_FORCE_RADIANS
 #include <glm/ext.hpp>
 
 #include "math/math.hpp"
@@ -75,15 +76,15 @@ public:
                  math::max(math::max(math::max(p1.y, p2.y), p3.y), p4.y));
   }
 
-  void rotate(float angle)
+  void rotate(float rad)
   {
     Vector2f center((p1.x + p2.x + p3.x + p4.x) / 4.0f,
                     (p1.y + p2.y + p3.y + p4.y) / 4.0f);
 
-    p1 = center + glm::rotate(p1 - center, angle);
-    p2 = center + glm::rotate(p2 - center, angle);
-    p3 = center + glm::rotate(p3 - center, angle);
-    p4 = center + glm::rotate(p4 - center, angle);
+    p1 = center + glm::rotate(p1 - center, rad);
+    p2 = center + glm::rotate(p2 - center, rad);
+    p3 = center + glm::rotate(p3 - center, rad);
+    p4 = center + glm::rotate(p4 - center, rad);
   }
 };
 

@@ -18,6 +18,7 @@
 
 #include "hud/inventory.hpp"
 
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
@@ -69,7 +70,7 @@ public:
 
   void decr_current_item() { 
     if (current_item == 0)
-      current_item = items.size() - 1;
+      current_item = static_cast<int>(items.size()) - 1;
     else
       current_item -= 1;
   }
@@ -100,7 +101,7 @@ InventoryImpl::draw()
 {
   Vector2f pos = Vector2f(400, 300);
 
-  int num_items = items.size();
+  int num_items = static_cast<int>(items.size());
   float step_angle = (2.0f * math::pi) / static_cast<float>(num_items);
 
   for(int i = 0; i < int(items.size()); ++i)

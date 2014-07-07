@@ -47,7 +47,7 @@ protected:
       return 0;
 
     size_t size = pptr() - pbase();
-    console->add(pbase(), size);
+    console->add(pbase(), static_cast<int>(size));
       
     if(c != traits_type::eof()) {
       char str[1];
@@ -166,7 +166,7 @@ ConsoleImpl::draw()
     Display::fill_rect(Rect(0,0, Display::get_width(), 600),
                        Color(0, 0, 0, 0.5f));
 
-  for(int i = buffer.size()-1 - scroll_offset; i >= 0 && i > int(buffer.size()) - num_lines - scroll_offset; --i)
+  for(int i = static_cast<int>(buffer.size())-1 - scroll_offset; i >= 0 && i > int(buffer.size()) - num_lines - scroll_offset; --i)
   {
     if (buffer[i].display_time < 5.0f || console.is_active())
     {
@@ -252,7 +252,7 @@ ConsoleImpl::update(float delta)
                 if (history_position > int(history.size())-1)
                   history_position = int(history.size())-1;
                 command_line = history[history_position];
-                cursor_pos = command_line.size();
+                cursor_pos = static_cast<int>(command_line.size());
               }
               break;
 
@@ -261,7 +261,7 @@ ConsoleImpl::update(float delta)
               break;
                       
             case SDLK_END:
-              cursor_pos = command_line.size();
+              cursor_pos = static_cast<int>(command_line.size());
               break;
                         
             case SDLK_PAGEUP:
@@ -284,7 +284,7 @@ ConsoleImpl::update(float delta)
                   history_position = 0;
 
                 command_line = history[history_position];
-                cursor_pos = command_line.size();
+                cursor_pos = static_cast<int>(command_line.size());
               }
               break;
 
@@ -297,7 +297,7 @@ ConsoleImpl::update(float delta)
             case SDLK_RIGHT:
               cursor_pos += 1;
               if (cursor_pos > int(command_line.size()))
-                cursor_pos = command_line.size();
+                cursor_pos = static_cast<int>(command_line.size());
               break;
 
             case SDLK_RETURN:
@@ -414,7 +414,7 @@ ConsoleImpl::tab_complete()
   else if (completions.size() == 1)
   {
     command_line = completions.front();
-    cursor_pos = command_line.size();
+    cursor_pos = static_cast<int>(command_line.size());
   }
   else 
   {
@@ -426,7 +426,7 @@ ConsoleImpl::tab_complete()
     ConsoleLog << std::endl;
 
     command_line = find_longest_prefix(completions);
-    cursor_pos = command_line.size();
+    cursor_pos = static_cast<int>(command_line.size());
   }
 }
 
@@ -436,7 +436,7 @@ ConsoleImpl::eval_command_line()
   if (!command_line.empty() && (history.empty() || history.back() != command_line))
   {
     history.push_back(command_line);
-    history_position = history.size();
+    history_position = static_cast<int>(history.size());
   }
                       
   ConsoleLog << "> " << command_line << std::endl;
@@ -458,7 +458,7 @@ ConsoleImpl::eval_command_line()
   {
     HSQUIRRELVM v = ScriptManager::current()->get_vm();
 
-    int size = sq_getsize(v, -1);
+    SQInteger size = sq_getsize(v, -1);
     ConsoleLog << size << " elements on the root table" << std::endl;
 
     sq_pushroottable(v);
@@ -497,12 +497,12 @@ ConsoleImpl::execute(const std::string& str_)
 {
   std::string str = str_; //"return (" + str_ + ")";
 
-  int i = str.length();
+  int i = static_cast<int>(str.length());
 
   HSQUIRRELVM vm = ScriptManager::current()->get_vm();
 
   // Remember old stack position
-  int oldtop = sq_gettop(vm); 
+  SQInteger oldtop = sq_gettop(vm); 
 
   try 
   {
@@ -596,7 +596,7 @@ Console::scroll(int lines)
   if (impl->scroll_offset < 0)
     impl->scroll_offset = 0;
   else if (impl->scroll_offset >= int(impl->buffer.size()))
-    impl->scroll_offset = impl->buffer.size()-1;
+    impl->scroll_offset = static_cast<int>(impl->buffer.size()) - 1;
 }
 
 void

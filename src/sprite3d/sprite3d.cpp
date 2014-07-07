@@ -110,7 +110,7 @@ Sprite3D::set_action(const std::string& actionname, float speed)
   if(speed >= 0) {
     next_frame.frame = 0;
   } else {
-    next_frame.frame = next_frame.action->frames.size() - 1;
+    next_frame.frame = static_cast<int>(next_frame.action->frames.size()) - 1;
   }
   next_frame.speed = speed;
   next_frame.rot = frame2.rot;
@@ -154,7 +154,7 @@ Sprite3D::set_next_action(const std::string& name, float speed)
   if(speed >= 0) {
     next_action.frame = 0;
   } else {
-    next_action.frame = next_action.action->frames.size() - 1;
+    next_action.frame = static_cast<int>(next_action.action->frames.size()) - 1;
   }
   next_action.speed = speed;
   next_action.rot = frame2.rot;
@@ -165,7 +165,7 @@ Sprite3D::set_next_action(const std::string& name, float speed)
   abort_at_frame.speed = frame->speed;
   abort_at_frame.rot = frame->rot;
   if(frame->speed >= 0) {
-    abort_at_frame.frame = frame->action->frames.size() - 1;
+    abort_at_frame.frame = static_cast<int>(frame->action->frames.size()) - 1;
   } else {
     abort_at_frame.frame = 0;
   }
@@ -299,10 +299,10 @@ Sprite3D::set_next_frame()
 
   frame2.action = frame1.action;
   if(frame1.speed < 0) {
-    frame2.frame = (frame1.frame + frame1.action->frames.size() - 1)
-      % frame2.action->frames.size();
+    frame2.frame = (frame1.frame + static_cast<int>(frame1.action->frames.size()) - 1)
+      % static_cast<int>(frame2.action->frames.size());
   } else {
-    frame2.frame = (frame1.frame + 1) % frame1.action->frames.size();
+    frame2.frame = (frame1.frame + 1) % static_cast<int>(frame1.action->frames.size());
   }
   frame2.speed = frame1.speed;
   frame2.rot = frame1.rot;

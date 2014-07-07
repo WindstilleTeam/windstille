@@ -101,7 +101,7 @@ ArmatureTest::update(float delta, const Controller& controller)
 {
   time += delta;
 
-  pose_idx = int(time * 5.0f) % poses.size();
+  pose_idx = int(time * 5.0f) % static_cast<int>(poses.size());
   armature->apply(*poses[pose_idx]);
   model->apply(armature.get());
 

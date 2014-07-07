@@ -139,8 +139,8 @@ SectorModel::reverse_layers()
 {
   std::vector<int> reverse_order;
 
-  size_t size = layer_tree->children().size();
-  for(int i = size-1; i >= 0; --i)
+  auto size = layer_tree->children().size();
+  for(int i = static_cast<int>(size) - 1; i >= 0; --i)
     reverse_order.push_back(i);
 
   layer_tree->reorder(reverse_order);

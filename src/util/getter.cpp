@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
 
 #include "math/vector2f.hpp"

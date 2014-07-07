@@ -133,7 +133,7 @@ TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect) 
                static_cast<float>(y_pos + glyph_height)/static_cast<float>(pixelbuffer->get_height()));
       
       impl->characters.push_back(TTFCharacter(pos, uv,
-                                              face->glyph->advance.x >> 6));
+                                              static_cast<int>(face->glyph->advance.x >> 6)));
 
       // we leave a one pixel border around the letters which we fill with generate_border
       x_pos += glyph_width + 2;

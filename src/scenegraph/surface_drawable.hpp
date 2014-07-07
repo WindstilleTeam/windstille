@@ -21,6 +21,7 @@
 
 #include "scenegraph/surface_drawable.hpp"
 
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
 
 #include "display/surface_drawing_parameters.hpp"

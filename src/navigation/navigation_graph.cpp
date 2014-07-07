@@ -373,7 +373,7 @@ NavigationGraph::write(FileWriter& writer)
 
   {
     for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
-      ptr2id[*i] = i - nodes.begin() + 1;
+      ptr2id[*i] = static_cast<int>(i - nodes.begin() + 1);
   }
 
   writer.start_section("nodes");

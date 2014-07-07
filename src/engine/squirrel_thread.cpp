@@ -228,7 +228,7 @@ SquirrelThread::fire_wakeup_event(const ScriptManager::WakeupData& event)
 void
 SquirrelThread::update()
 {
-  int thread_state = sq_getvmstate(thread);
+  SQInteger thread_state = sq_getvmstate(thread);
     
   switch(thread_state)
   {
@@ -273,14 +273,14 @@ SquirrelThread::update()
 bool
 SquirrelThread::is_suspended() const
 {
-  int thread_state = sq_getvmstate(thread);
+  SQInteger thread_state = sq_getvmstate(thread);
   return thread_state == SQ_VMSTATE_SUSPENDED;
 }
 
 bool
 SquirrelThread::is_idle() const
 {
-  int thread_state = sq_getvmstate(thread);
+  SQInteger thread_state = sq_getvmstate(thread);
   return thread_state == SQ_VMSTATE_IDLE;
 }
 

@@ -252,7 +252,7 @@ Sprite2DView::next_image(int i)
       display_time = 0;
     }
 
-    index = static_cast<unsigned int>(index + i) % directory.size();
+    index = static_cast<unsigned int>(index + i) % static_cast<int>(directory.size());
 
     std::vector<Pathname> dir;
 
@@ -276,7 +276,7 @@ Sprite2DView::next_image(int i)
         std::cout << "Error: " << e.what() << std::endl;
         std::cout << "Removing '" << directory[index] << "' from the list" << std::endl;
         directory.erase(directory.begin() + index);
-        index = static_cast<unsigned int>(index) % directory.size();
+        index = static_cast<unsigned int>(index) % static_cast<int>(directory.size());
         retry = true;
       }
     } 
@@ -358,7 +358,7 @@ Sprite2DView::update(float delta, const Controller& controller)
                                                     shuffle_directory[index]);
       if (i != directory.end())
       {
-        index = i - directory.begin() ;
+        index = static_cast<int>(i - directory.begin());
       }
     }
     else
@@ -367,7 +367,7 @@ Sprite2DView::update(float delta, const Controller& controller)
                                                     directory[index]);
       if (i != shuffle_directory.end())
       {
-        index = i - shuffle_directory.begin();
+        index = static_cast<int>(i - shuffle_directory.begin());
       }
     }
 

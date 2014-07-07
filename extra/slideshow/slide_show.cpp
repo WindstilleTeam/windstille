@@ -84,7 +84,7 @@ SlideShow::done(float time) const
 int
 SlideShow::size() const
 {
-  return m_objects.size();
+  return static_cast<int>(m_objects.size());
 }
 
 void

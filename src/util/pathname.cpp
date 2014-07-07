@@ -154,7 +154,7 @@ Pathname::get_sys_path() const
 std::string
 Pathname::get_extension() const
 {
-  for(int i = m_path.size()-1; i >= 0; --i)
+  for(int i = static_cast<int>(m_path.size()) - 1; i >= 0; --i)
   {
     if (m_path[i] == '.')
     {

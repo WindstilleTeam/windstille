@@ -106,7 +106,7 @@ ListView::update(float , const Controller& controller)
         else if (i->axis.pos < 0)
         {
           if (current_item == 0)
-            current_item = items.size() - 1;
+            current_item = static_cast<int>(items.size()) - 1;
           else
             current_item -= 1;
         }

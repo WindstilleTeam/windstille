@@ -18,6 +18,7 @@
 
 #include "display/framebuffer_compositor_impl.hpp"
 
+#define GLM_FORCE_RADIANS
 #include <glm/ext.hpp>
 
 #include "display/display.hpp"

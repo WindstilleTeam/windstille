@@ -304,7 +304,7 @@ InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
     }
   }
 
-  Uint8* keystate = SDL_GetKeyboardState(0);
+  const Uint8* keystate = SDL_GetKeyboardState(0);
 
   for (std::vector<KeyboardAxisBinding>::const_iterator i = impl->keyboard_axis_bindings.begin();
        i != impl->keyboard_axis_bindings.end();

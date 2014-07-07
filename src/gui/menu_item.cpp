@@ -101,7 +101,7 @@ EnumMenuItem::incr()
 
   index -= 1;
   if (index < 0)
-    index = labels.size()-1;
+    index = static_cast<int>(labels.size()) - 1;
   on_change(labels[index].value);
 }
 

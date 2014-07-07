@@ -19,6 +19,7 @@
 #include "display/drawing_context.hpp"
 
 #include <GL/glew.h>
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
 
 #include "display/compositor.hpp"

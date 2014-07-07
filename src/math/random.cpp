@@ -103,7 +103,7 @@ Random::drand(double start, double end)
 double
 Random::drand()
 {
-  return rand()*(1.0/4294967295.0);
+  return static_cast<double>(rand()) * (1.0/4294967295.0);
   /* divided by 2^32-1 */
 }
 

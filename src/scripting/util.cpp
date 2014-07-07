@@ -247,7 +247,7 @@ void print_squirrel_stack(HSQUIRRELVM v, const std::string& context)
   else
     printf(",-------------[ %s ]---------------------------------------\n", context.c_str());
 
-  int count = sq_gettop(v);
+  SQInteger count = sq_gettop(v);
   for(int i = 1; i <= count; ++i) 
   {
     printf("| %d: ",i);
@@ -313,7 +313,7 @@ void print_squirrel_stack(HSQUIRRELVM v, const std::string& context)
   printf("'-------------------------------------------------------------\n");
 }
 
-void load_squirrel_table(HSQUIRRELVM v, int table_idx, const lisp::Lisp* lisp)
+void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const lisp::Lisp* lisp)
 {
   using namespace lisp;
   
@@ -357,10 +357,10 @@ void load_squirrel_table(HSQUIRRELVM v, int table_idx, const lisp::Lisp* lisp)
   }
 }
 
-void load_squirrel_table(HSQUIRRELVM v, int table_idx, const std::string& file)
+void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const std::string& file)
 {
   using namespace lisp;
-  std::auto_ptr<Lisp> root (Parser::parse(file));
+  std::unique_ptr<Lisp> root (Parser::parse(file));
 
   Properties rootp(root.get());
   const lisp::Lisp* table = 0;
@@ -370,7 +370,7 @@ void load_squirrel_table(HSQUIRRELVM v, int table_idx, const std::string& file)
   load_squirrel_table(v, table_idx, table);
 }
 
-void save_squirrel_table(HSQUIRRELVM v, int table_idx, lisp::Writer& writer)
+void save_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, lisp::Writer& writer)
 {
   // offset because of sq_pushnull
   if (table_idx < 0)
@@ -393,7 +393,7 @@ void save_squirrel_table(HSQUIRRELVM v, int table_idx, lisp::Writer& writer)
       case OT_INTEGER: {
         SQInteger val;
         sq_getinteger(v, -1, &val);
-        writer.write_int(key, val);
+        writer.write_int(key, static_cast<int>(val));
         break;
       }
       case OT_FLOAT: {
@@ -433,7 +433,7 @@ void save_squirrel_table(HSQUIRRELVM v, int table_idx, lisp::Writer& writer)
   sq_pop(v, 1);
 }
 
-void save_squirrel_table(HSQUIRRELVM v, int table_idx, const std::string& file)
+void save_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const std::string& file)
 {
   lisp::Writer writer(Pathname(file, Pathname::kUserPath));
 

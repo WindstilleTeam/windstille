@@ -287,13 +287,13 @@ ParticleSystem::update(float delta)
 int
 ParticleSystem::get_count() const
 {
-  return particles.size();
+  return static_cast<int>(particles.size());
 }
 
 void
 ParticleSystem::set_count(int num)
 {
-  int old_size = particles.size();
+  int old_size = static_cast<int>(particles.size());
   if (old_size != num)
   {
     particles.resize(num);

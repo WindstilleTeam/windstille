@@ -124,7 +124,7 @@ Sprite3DView::update(float delta, const Controller& controller)
   else if (controller.button_was_pressed(MENU_UP_BUTTON))
   {
     if (current_action == 0)
-      current_action = actions.size()-1;
+      current_action = static_cast<int>(actions.size()) - 1;
     else
       current_action -= 1;
   }

@@ -18,6 +18,7 @@
 
 #include "scenegraph/vertex_array_drawable.hpp"
 
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
 
 #include "display/opengl_state.hpp"
@@ -39,7 +40,7 @@ VertexArrayDrawable::VertexArrayDrawable(const Vector2f& pos_, float z_pos_,
 int
 VertexArrayDrawable::num_vertices() const
 {
-  return vertices.size()/3;
+  return static_cast<int>(vertices.size())/3;
 }
 
 void
