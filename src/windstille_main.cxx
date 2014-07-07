@@ -99,7 +99,7 @@ WindstilleMain::inner_main(void* closure, int argc, char** argv)
     if (!launch_editor)
       {
 	if (filename.empty ())
-	  filename = "../data/levels/level2.scm";
+	  filename = "data/levels/level2.scm";
 
         TileFactory::init();
 	WindstilleGame game (filename);
