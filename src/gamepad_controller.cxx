@@ -19,8 +19,11 @@
 
 #include "gamepad_controller.hxx"
 
+#include <iostream>
+
 GamepadController::GamepadController (unsigned int joy_num)
 {
+#if 0
   if (CL_Input::joysticks.size () > joy_num)
     {
       std::cout << "Joystick found" << std::endl;
@@ -37,56 +40,89 @@ GamepadController::GamepadController (unsigned int joy_num)
       std::cout << "No Joystick found" << std::endl;
       exit (1);
     }
+#endif
 }
 
 // Directional Pad
 bool 
 GamepadController::is_right ()
 {
+#if 0
   return (x_axis->get_pos () > 0.5);
+#else
+  return false;
+#endif
 }
 
 bool
 GamepadController::is_left ()
 {
+#if 0
   return (x_axis->get_pos () < -0.5);
+#else
+  return false;
+#endif
 }
 
 bool
 GamepadController::is_up ()
 {
+#if 0
   return (y_axis->get_pos () < -0.5);
+#else
+  return false;
+#endif
 }
 
 bool 
 GamepadController::is_down ()
 {
+#if 0
   return (y_axis->get_pos () > 0.5);
+#else
+  return false;
+#endif
 }
 
 // Buttons
-bool 
+bool
 GamepadController::fire_pressed ()
 {
+#if 0
   return fire_button->is_pressed ();
+#else
+  return false;
+#endif
 }
 
 bool 
 GamepadController::jump_pressed ()
 {
+#if 0
   return jump_button->is_pressed ();
+#else
+  return false;
+#endif
 }
 
 bool 
 GamepadController::surround_pressed ()
 {
+#if 0
   return surround_button->is_pressed ();
+#else
+  return false;
+#endif
 }
 
 bool 
 GamepadController::smartbomb_pressed ()
 {
+#if 0
   return smartbomb_button->is_pressed ();
+#else
+  return false;
+#endif
 }
 
 /* EOF */

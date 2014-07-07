@@ -26,13 +26,14 @@
 class GamepadController : public Controller
 {
 private:
-  CL_InputAxis* x_axis;
-  CL_InputAxis* y_axis;
+  // CL_InputAxis* x_axis;
+  // CL_InputAxis* y_axis;
 
-  CL_InputButton* fire_button;
-  CL_InputButton* jump_button;
-  CL_InputButton* surround_button;
-  CL_InputButton* smartbomb_button;
+  // CL_InputButton* fire_button;
+  // CL_InputButton* jump_button;
+  // CL_InputButton* surround_button;
+  // CL_InputButton* smartbomb_button;
+
 public:
   GamepadController (unsigned int joy_num);
 

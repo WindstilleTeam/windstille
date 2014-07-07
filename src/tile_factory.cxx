@@ -159,7 +159,7 @@ void
 TileFactory::init()
 {
   assert(current_ == 0);
-  current_ = new TileFactory("../data/tiles.scm");
+  current_ = new TileFactory("data/tiles.scm");
 }
 
 /** Destroy the default TileFactor*/

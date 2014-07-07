@@ -17,7 +17,6 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-#include <config.h>
 //#include <ClanLib/gl.h>
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
@@ -57,14 +56,14 @@ WindstilleMain::inner_main(void* closure, int argc, char** argv)
   CL_SetupGL::init();
   CL_SetupDisplay::init();
 
-  CL_DisplayWindow window (PACKAGE_STRING,
+  CL_DisplayWindow window ("Windstille",
                            screen_width, screen_height, fullscreen, allow_resize);
 
   //CL_OpenGL::begin_2d();
   try {
     resources =  new CL_ResourceManager();
-    resources->add_resources(CL_ResourceManager("../data/tiles.xml", false));
-    resources->add_resources(CL_ResourceManager("../data/windstille.xml", false));
+    resources->add_resources(CL_ResourceManager("data/tiles.xml"));
+    resources->add_resources(CL_ResourceManager("data/windstille.xml"));
     
     std::cout << "Loading Guile Code..." << std::endl;
 
@@ -79,7 +78,6 @@ WindstilleMain::inner_main(void* closure, int argc, char** argv)
     GameWorldSmob::register_guile_bindings ();    
     TileMapSmob::register_guile_bindings ();    
     GuileGameObjFactory::register_guile_bindings ();    
-    gh_load ("guile/windstille.scm");
     std::cout << "Loading Guile Code... done" << std::endl;
 
     bool launch_editor = false;
