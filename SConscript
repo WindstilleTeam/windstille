@@ -76,12 +76,12 @@ class Project:
         # PKG_CONFIG_LIBDIR="/home/ingo/projects/mingw32/run/lib/pkgconfig:/home/ingo/projects/mingw32/run/opt/gtk/lib/pkgconfig"
 
         # preset compiler flags
-        cfg.Package('release', CCFLAGS = [ "-O3", "-s" ])
-        cfg.Package('profile', CCFLAGS = [ "-O2", "-g3", "-pg" ], LINKFLAGS = [ "-pg" ] )
-        cfg.Package('debug',   CCFLAGS = [ "-O0", "-g3" ] )
+        cfg.Package('release', CCFLAGS = [ "-O3", "-s", "-std=c++1y" ])
+        cfg.Package('profile', CCFLAGS = [ "-O2", "-g3", "-pg", "-std=c++1y" ], LINKFLAGS = [ "-pg" ] )
+        cfg.Package('debug',   CCFLAGS = [ "-O0", "-g3", "-std=c++1y"  ] )
         cfg.Package('development',
-                    CCFLAGS = [ "-O2", "-g3",
-                                "-ansi",
+                    CCFLAGS = [ "-O2", "-g3", "-std=c++1y",
+                                #"-ansi",
                                 "-pedantic",
                                 "-Wall",
                                 "-Wextra",
@@ -94,6 +94,7 @@ class Project:
                                 "-Wcast-qual",
                                 "-Winit-self", # only works with >= -O1
                                 "-Wno-unused-parameter",
+                                "-Wno-error=long-long",
                                 # "-Winline",
                                 # "-Wfloat-equal",
                                 # "-Wunreachable-code",
@@ -244,7 +245,7 @@ class Project:
 
     def build_squirrel(self):
         pkg = { 'CPPPATH'  : [ 'external/SQUIRREL3/include' ],
-                'CXXFLAGS' : [ "-fno-rtti", "-g", "-DDEBUG" ] }
+                'CXXFLAGS' : [ "-fno-rtti", "-g", "-DDEBUG", "-std=c++1y", "-Wno-error=long-long" ] }
 
         if self.features['64bit']:
             pkg['CPPDEFINES'] = ['_SQ64']
