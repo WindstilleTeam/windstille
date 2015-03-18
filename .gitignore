@@ -5,3 +5,5 @@
 /*.pyc
 /config.log
 *~
+/.lock-waf_linux2_build
+/.waf-*
