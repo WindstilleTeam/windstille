@@ -25,5 +25,3 @@ Keymapping
 
 * 1, 2, 3 toggle between the type of decal
 
-
-# EOF #

@@ -2,7 +2,7 @@ Windstille Compilation
 ======================
 
 Hardware Requirements
-=====================
+---------------------
 
 Minimal requirements at which the game will run, albeit not very
 smoothly:
@@ -14,16 +14,16 @@ The game will not work with a MatroxG450 and hasn't been tested with
 ATI cards.
 
 
-Preparations
-============
+Requirements
+------------
 
 To compile Windstille you need:
 
  * OpenAL
  * OpenGL
- * SDL
- * SDL_image
- * freetype
+ * SDL2
+ * SDL2_image
+ * freetype2
  * libpng
  * physfs
  * boost
@@ -33,50 +33,51 @@ To compile Windstille you need:
  * gtkmm (for the editor only)
  * gtkglextmm (for the editor only)
 
-== Linux ==
 
-In most cases these will come with your distribution. In Ubuntu 10.10
+### Linux
+
+In most cases these will come with your distribution. In Ubuntu 15.04
 you can install them with:
 
- % sudo apt-get install \
-     scons \
-     bison \
-     flex \
-     libboost-dev \
-     libboost-filesystem-dev \
-     libboost-signals-dev \
-     libboost-thread-dev \
-     libfreetype6-dev \
-     libphysfs-dev \
-     libsdl-image1.2-dev \
-     libsdl1.2-dev \
-     scons \
-     libpng12-dev \
-     libopenal-dev \
-     libgtkmm-2.4-dev \
-     libgtkglextmm-x11-1.2-dev \
-     libmagick++-dev \
-     libcurl4-gnutls-dev \
-     xcftools \
-     libglew1.5-dev \
-     libogg-dev \
-     libvorbis-dev
+    $ sudo apt-get install \
+        bison \
+        flex \
+        libboost-dev \
+        libboost-filesystem-dev \
+        libboost-signals-dev \
+        libboost-thread-dev \
+        libfreetype6-dev \
+        libphysfs-dev \
+        libsdl2-image-dev \
+        libsdl2-dev \
+        scons \
+        libpng-dev \
+        libopenal-dev \
+        libgtkmm-2.4-dev \
+        libgtkglextmm-x11-1.2-dev \
+        libmagick++-dev \
+        libcurl4-gnutls-dev \
+        xcftools \
+        libglew1.5-dev \
+        libogg-dev \
+        libvorbis-dev
 
-== Mac OS X ==
+
+### Mac OS X
 
 On Mac OS X it is easiest to install most of the required software
 with MacPorts http://www.macports.org/:
 
- % sudo port install \
-     boost \
-     jpeg \
-     png \
-     freetype \
-     libpng \
-     libogg \
-     libvorbis \
-     pkgconfig \
-     scons
+    $ sudo port install \
+        boost \
+        jpeg \
+        png \
+        freetype \
+        libpng \
+        libogg \
+        libvorbis \
+        pkgconfig \
+        scons
 
 SDL and SDL_image should be installed from the official .dmg images:
 
@@ -93,15 +94,16 @@ The GCC compiler can be obtained by installing Xcode:
 
 
 Compilation
-===========
+-----------
 
 For compilation type:
 
- % scons
+    $ ./waf configure
+    $ ./waf
 
 
 Running
-========
+-------
 
 To run it from inside its source directory use:
 
@@ -109,9 +111,7 @@ To run it from inside its source directory use:
 
 
 Installation
-============
+------------
 
 Installation isn't currently supported, run the executables directly from the source tree.
 
-
-# EOF #

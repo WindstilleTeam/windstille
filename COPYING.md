@@ -1,5 +1,5 @@
 Windstille License
-===================
+==================
 
 Windstille is Free Software. The main source code of Windstille, along
 with the build files and supporting scripts is covered under the
@@ -17,8 +17,8 @@ Attribution-ShareAlike 3.0" at:
  * http://creativecommons.org/licenses/by-sa/3.0/
 
 
-Short Summary:
---------------
+Short Summary
+-------------
 
  * You are allowed to modify Windstille.
 
@@ -30,11 +30,11 @@ Short Summary:
    3.0" for graphics and other data)
 
 
-Extra Notes:
-------------
+Extra Notes
+-----------
 
  * The GPL does not apply to external libraries, found in the
-   external/ directory, those libraries come under their own GPL
+   `external/` directory, those libraries come under their own GPL
    compatible licenses, see the respective directories for details.
 
  * You are not allowed to reuse Windstille assets in a project that
@@ -46,17 +46,16 @@ Extra Notes:
    ShareAlike 3.0", you should include "source code" (.blend, .xcf,
    ...) for the graphics and other datafiles whenever possible.
 
- * The source files (.xcf, .blend) for data are located in the media/
-   subdirectory of the SVN repository, however not every data file has
-   a source file associated with it, in those cases the data file is
-   itself the source.
+ * The source files (.xcf, .blend) for data are located in a separate
+   `media` repository found at the Windstille webpage, however not
+   every data file has a source file associated with it, in those
+   cases the data file is itself the source.
 
 
-Exceptions:
------------
- 
-  * music files in data/music/ and sounds in data/sounds/ are covered
-    under the GPL only, not "Creative Commons Attribution-ShareAlike"
+Exceptions
+----------
 
+  * music files in `data/music/` and sounds in `data/sounds/` are
+    covered under the GPL only, not "Creative Commons
+    Attribution-ShareAlike"
 
-# EOF #

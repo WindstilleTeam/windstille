@@ -1,10 +1,10 @@
 Windstille 0.4.0
-=================
+----------------
  - new Gtkmm based level editor
 
 
 Windstille 0.3.1
-================
+----------------
  - fixed crash when sound is disabled
  - more solid input configuration support (xbox360, wiimote, dvorak
    settings provided)
@@ -19,7 +19,7 @@ Windstille 0.3.1
 
 
 Windstille 0.3.0
-================
+----------------
  - near complete rewrite of the engine
  - 3D sprites
  - light effects
@@ -30,7 +30,7 @@ Windstille 0.3.0
 
 
 Windstille 0.2.0
-================
+----------------
  - one new level (quite large)
  - one new enemy
  - support for laying bombs
@@ -43,9 +43,8 @@ Windstille 0.2.0
 
 
 Windstille 0.1.0
-================
+----------------
  - first release
  - very simple test level
  - basic jump'n run elements
 
-# EOF #

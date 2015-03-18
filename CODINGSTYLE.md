@@ -1,13 +1,13 @@
-Windstille Coding Style
-=======================
+Windstille Style Guide
+======================
 
-[ Note: Not all current code follows these rules, but that might be
-  fixed in the future. Also don't follow these rules blindly, use your
-  brain in situation where divergence might provide an advantage. ]
+**Note:** Not all current code follows these rules, but that might be
+fixed in the future. Also don't follow these rules blindly, use your
+brain in situation where divergence might provide an advantage.
 
 
 Indention
-=========
+---------
 
 * indent with two spaces
 
@@ -16,24 +16,24 @@ Indention
 * the used indention style can be reproduced with (might vary in
   details):
 
-   astyle --style=ansi -s2 -S 
+   astyle --style=ansi -s2 -S
 
 * always have a new line before an opening braked, i.e. write:
 
-  if (foobar)
-  {
-   ...
-  }
+    if (foobar)
+    {
+     ...
+    }
 
   not:
 
-  if (foobar) {
-   ...
-  }
+    if (foobar) {
+      ...
+    }
 
 
 Naming
-======
+------
 
 * s_ prefix for static variables
 
@@ -49,7 +49,7 @@ Naming
 
 
 Includes
-========
+--------
 
 * all #include directives are written relative to "src/", so write:
 
@@ -63,7 +63,7 @@ Includes
 
 
 Exceptions
-==========
+----------
 
 * we use exceptions
 
@@ -82,12 +82,12 @@ Exceptions
 
 
 Pointer and Memory Allocation
-=============================
+-----------------------------
 
-* use boost::scoped_ptr, boost::scoped_array, std::auto_ptr,
-  boost::shared_ptr, never manually delete or delete[]
+* use `std::unique_ptr<>` and `std::make_unique()`, never manually
+  `delete` or `delete[]`
 
-* prefer boost::scoped_ptr over std::auto_ptr
+* prefer `std::unique_ptr<>` over `std::shared_ptr<>` when possible
 
 * use RAII whenever possible
 
@@ -95,20 +95,20 @@ Pointer and Memory Allocation
   copy constructor private (maybe we should write our own class for
   that or use boost::noncopyable):
 
-  private:
-    YourClass (const YourClass&);
-    YourClass& operator= (const YourClass&);
+    private:
+      YourClass (const YourClass&);
+      YourClass& operator= (const YourClass&);
 
 
 Warnings
-========
+--------
 
 * all code must be at least -ansi -pedantic -Wall clean, we use
   -Werror for development
 
 
 Other Stuff
-===========
+-----------
 
 * we do not use macros in places where a template or inline function would do
 
@@ -117,24 +117,22 @@ Other Stuff
 * always use C++ style casts, never use C style casts
 
 * never write:
-  
-  int x, y;
-  
+
+    int x, y;
+
   always use:
 
-  int x;
-  int y;
+    int x;
+    int y;
 
-* end all files with an /* EOF */ comment (use comment style
+* end all files with an `/* EOF */` comment (use comment style
   appropriate to your language)
 
-* "svn commit" early and often, do not wait till your changes have
-  turned into a huge unverifiable mess, do not keep your work private
+* commit early and often, do not wait till your changes have turned
+  into a huge unverifiable mess, do not keep your work private
 
 * the Google C++ Style Guide provides a good reference for style
   decisions not covered in this document:
 
   http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml
 
-
-# EOF #
