@@ -70,8 +70,8 @@ BorderFontEffect::blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_
   int start_x = std::max(0, -x_pos);
   int start_y = std::max(0, -y_pos);
   
-  int end_x = std::min(brush.width, target->get_width()  - x_pos);
-  int end_y = std::min(brush.rows,  target->get_height() - y_pos);
+  int end_x = std::min(static_cast<int>(brush.width), target->get_width()  - x_pos);
+  int end_y = std::min(static_cast<int>(brush.rows), target->get_height() - y_pos);
 
   unsigned char* target_buf = static_cast<unsigned char*>(target->get_pixels());
 
