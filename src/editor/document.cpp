@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -43,7 +43,7 @@ Document::Document() :
   m_group_command_count(0),
   m_selection(Selection::create()),
   m_control_points(),
-  m_sig_on_change()    
+  m_sig_on_change()
 {
   m_sector_model->get_layer_tree()->signal_row_changed().connect(sigc::mem_fun(*this, &Document::on_row_changed));
   m_sector_model->get_layer_tree()->signal_row_deleted().connect(sigc::mem_fun(*this, &Document::on_row_deleted));
@@ -145,7 +145,7 @@ Document::execute(CommandHandle cmd)
   else
   {
     m_undo_manager->execute(cmd);
-    on_change();  
+    on_change();
   }
 }
 
@@ -189,7 +189,7 @@ Document::navgraph_node_remove(boost::shared_ptr<NavGraphNodeObjectModel> node)
 }
 
 void
-Document::navgraph_edge_add(LayerHandle layer, 
+Document::navgraph_edge_add(LayerHandle layer,
                             boost::shared_ptr<NavGraphNodeObjectModel> lhs,
                             boost::shared_ptr<NavGraphNodeObjectModel> rhs)
 {
@@ -311,9 +311,9 @@ Document::selection_vflip()
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
       {
         Vector2f pos = (*i)->get_world_pos();
-          
+
         pos.y = center.y + (center.y - pos.y);
-          
+
         //(*i)->set_world_pos(pos);
         group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
                                                             boost::bind(&ObjectModel::set_world_pos, *i, pos))));
@@ -344,9 +344,9 @@ Document::selection_hflip()
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
       {
         Vector2f pos = (*i)->get_world_pos();
-          
+
         pos.x = center.x + (center.x - pos.x);
-          
+
         //(*i)->set_world_pos(pos);
         group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
                                                             boost::bind(&ObjectModel::set_world_pos, *i, pos))));
@@ -436,7 +436,7 @@ Document::selection_duplicate()
     if ((*i)->get_parent())
     {
       std::map<ObjectModelHandle, ObjectModelHandle>::iterator it = parent_map.find((*i)->get_parent());
-          
+
       if (it == parent_map.end())
       {
         // When the parent wasn't part of the selection, leave
@@ -524,7 +524,7 @@ Document::select_all()
     if (!(*i)->is_locked())
       selection->add((*i)->begin(), (*i)->end());
   }
-  
+
   set_selection(selection);
 }
 
@@ -551,7 +551,7 @@ Document::on_selection_change()
 ControlPointHandle
 Document::get_control_point(const Vector2f& pos) const
 {
-  for(std::vector<ControlPointHandle>::const_iterator i = m_control_points.begin();  
+  for(std::vector<ControlPointHandle>::const_iterator i = m_control_points.begin();
       i != m_control_points.end(); ++i)
   {
     if ((*i)->get_bounding_box().is_inside(pos))

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -85,7 +85,7 @@ NavGraphNodeObjectModel::get_bounding_box() const
 }
 
 static float float_snap_to_grid(float v, float grid)
-{ 
+{
   return (roundf(v / grid) * grid) - v;
 }
 
@@ -125,12 +125,12 @@ NavGraphNodeObjectModel::snap_to_object(const Rectf& in) const
   if (pos.y > in.top - g_snap_threshold &&
       pos.y < in.bottom + g_snap_threshold)
   {
-    if (fabsf(dist.left) <= fabsf(dist.right) && 
+    if (fabsf(dist.left) <= fabsf(dist.right) &&
         fabsf(dist.left) < g_snap_threshold)
     {
       snap.set_x(dist.left);
     }
-    else if (fabsf(dist.left) > fabsf(dist.right) && 
+    else if (fabsf(dist.left) > fabsf(dist.right) &&
              fabsf(dist.right) < g_snap_threshold)
     {
       snap.set_x(dist.right);
@@ -140,12 +140,12 @@ NavGraphNodeObjectModel::snap_to_object(const Rectf& in) const
   if (pos.x > in.left  - g_snap_threshold &&
       pos.x < in.right + g_snap_threshold)
   {
-    if (fabsf(dist.top) <= fabsf(dist.bottom) && 
+    if (fabsf(dist.top) <= fabsf(dist.bottom) &&
         fabsf(dist.top) < g_snap_threshold)
     {
       snap.set_y(dist.top);
     }
-    else if (fabsf(dist.top) > fabsf(dist.bottom) && 
+    else if (fabsf(dist.top) > fabsf(dist.bottom) &&
              fabsf(dist.bottom) < g_snap_threshold)
     {
       snap.set_y(dist.bottom);
@@ -155,7 +155,7 @@ NavGraphNodeObjectModel::snap_to_object(const Rectf& in) const
   return snap;
 }
 
-ObjectModelHandle 
+ObjectModelHandle
 NavGraphNodeObjectModel::clone() const
 {
   return ObjectModelHandle(new NavGraphNodeObjectModel(get_world_pos()));

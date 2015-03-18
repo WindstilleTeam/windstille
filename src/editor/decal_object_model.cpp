@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -64,7 +64,7 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader) :
   software_surface = SoftwareSurface::create(Pathname(path));
 }
 
-DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const Vector2f& rel_pos_, 
+DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const Vector2f& rel_pos_,
                                    const std::string& path_, MapType type_) :
   ObjectModel("DecalObjectModel", rel_pos_),
   path(path_),
@@ -119,7 +119,7 @@ void
 DecalObjectModel::draw_select(SceneContext& sc, bool highlight)
 {
   Quad quad(get_bounding_box());
-  
+
   quad.rotate(angle);
 
   if (highlight)
@@ -139,7 +139,7 @@ DecalObjectModel::draw(SceneContext& sc)
     Vector2f center_offset(-surface->get_width()/2,
                            -surface->get_height()/2);
 
-    DrawingContext* dc = 0; 
+    DrawingContext* dc = 0;
     SurfaceDrawingParameters params;
     switch(type)
     {
@@ -272,7 +272,7 @@ DecalObjectModel::add_to_scenegraph(DrawableGroup& sg)
   if (!m_drawable)
   {
     // FIXME: Could recycle the drawable, instead of allocating a new one each time
-    m_drawable.reset(new SurfaceDrawable(surface, 
+    m_drawable.reset(new SurfaceDrawable(surface,
                                          SurfaceDrawingParameters()
                                          .set_hflip(hflip)
                                          .set_vflip(vflip)
@@ -282,18 +282,18 @@ DecalObjectModel::add_to_scenegraph(DrawableGroup& sg)
 
     switch(type)
     {
-      case COLORMAP:     
+      case COLORMAP:
         m_drawable->set_render_mask(SceneContext::COLORMAP);
         break;
 
       case LIGHTMAP:
         m_drawable->set_render_mask(SceneContext::LIGHTMAP);
-        m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE); 
+        m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE);
         break;
 
-      case HIGHLIGHTMAP: 
+      case HIGHLIGHTMAP:
         m_drawable->set_render_mask(SceneContext::HIGHLIGHTMAP);
-        m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE); 
+        m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE);
         break;
     }
 

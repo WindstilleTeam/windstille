@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -28,22 +28,22 @@ namespace gui {
 class GridComponent : public Component
 {
 private:
-  struct ComponentBox 
+  struct ComponentBox
   {
     Component* component;
     Size  span;
     Point parent;
 
     ComponentBox() :
-      component(0), 
-      span(1, 1), 
-      parent(-1, -1) 
+      component(0),
+      span(1, 1),
+      parent(-1, -1)
     {}
 
     ComponentBox(Component* c, const Size& s, const Point& parent_ = Point(-1, -1)) :
       component(c),
       span(s),
-      parent(parent_) 
+      parent(parent_)
     {}
 
     bool is_simple()  const { return (span.width == 1 && span.height == 1); }
@@ -60,7 +60,7 @@ public:
   GridComponent(Component* parent);
   GridComponent(const Rectf& rect, int weight, int height, Component* parent);
   virtual ~GridComponent();
-  
+
   void draw();
   void update(float delta, const Controller& controller);
 
@@ -75,7 +75,7 @@ public:
   void on_activation();
 
   void set_padding(float p);
-  
+
 private:
   GridComponent (const GridComponent&);
   GridComponent& operator= (const GridComponent&);

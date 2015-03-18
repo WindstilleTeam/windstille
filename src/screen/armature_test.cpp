@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -50,7 +50,7 @@ ArmatureTest::ArmatureTest()
       {
         std::cout << "PoseFile: " << *i << std::endl;
         FileReader pose_reader = FileReader::parse(*i);
-        poses.push_back(new Pose(pose_reader));       
+        poses.push_back(new Pose(pose_reader));
       }
     }
   }
@@ -62,7 +62,7 @@ ArmatureTest::ArmatureTest()
   xrot = 0;
   yrot = 0;
   zrot = 0;
-  
+
   time = 0.0f;
 }
 
@@ -83,7 +83,7 @@ ArmatureTest::draw()
 
   glTranslatef(400.0f, 300.0f, 0.0f);
   glScalef(64.0f, 64.0f, 64.0f);
- 
+
   glRotatef(xrot, 1.0f, 0.0f, 0.0f);
   glRotatef(yrot, 0.0f, 1.0f, 0.0f);
   glRotatef(zrot, 0.0f, 0.0f, 1.0f);
@@ -130,7 +130,7 @@ ArmatureTest::update(float delta, const Controller& controller)
     zrot = 90;
   }
   else
-  { 
+  {
     yrot += controller.get_axis_state(X_AXIS) * 90 * delta;
     xrot += controller.get_axis_state(Y_AXIS) * 90 * delta;
     zrot += controller.get_axis_state(X2_AXIS) * 90 * delta;

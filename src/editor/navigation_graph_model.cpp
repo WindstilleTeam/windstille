@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -27,13 +27,13 @@
 NavigationGraphModel::NavigationGraphModel(SectorModel& sector) :
   m_sector(sector),
   m_nodes(),
-  m_edges()   
+  m_edges()
 {
 }
 
 NavigationGraphModel::~NavigationGraphModel()
 {
-} 
+}
 
 void
 NavigationGraphModel::add_node(boost::shared_ptr<NavGraphNodeObjectModel> node)
@@ -46,7 +46,7 @@ NavigationGraphModel::add_edge(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
 {
   m_edges.push_back(edge);
 }
- 
+
 struct EdgeHasNode
 {
   boost::shared_ptr<NavGraphNodeObjectModel> m_node;
@@ -57,12 +57,12 @@ struct EdgeHasNode
 
   bool operator()(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
   {
-    return 
+    return
       edge->get_lhs() == m_node ||
       edge->get_rhs() == m_node;
   }
 };
- 
+
 void
 NavigationGraphModel::remove_node(boost::shared_ptr<NavGraphNodeObjectModel> node)
 {
@@ -121,7 +121,7 @@ std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> >
 NavigationGraphModel::find_edges(boost::shared_ptr<NavGraphNodeObjectModel> node) const
 {
   std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> > edges;
-  
+
   for(Edges::const_iterator i = m_edges.begin(); i != m_edges.end(); ++i)
   {
     if ((*i)->get_lhs() == node || (*i)->get_rhs() == node)

@@ -22,10 +22,10 @@
 
 namespace lisp
 {
-    
+
 Lisp::Lisp(int val) :
   v(),
-  type(TYPE_INT)    
+  type(TYPE_INT)
 {
   v.int_ = val;
 }
@@ -76,7 +76,7 @@ Lisp::print(std::ostream& out, int indent) const
 {
   for(int i = 0; i < indent; ++i)
     out << ' ';
- 
+
   switch(type) {
     case TYPE_LIST:
       out << "(";

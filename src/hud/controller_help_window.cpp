@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -28,7 +28,7 @@ ControllerHelpWindow::ControllerHelpWindow()
 
 void
 ControllerHelpWindow::draw_button(const Vector2f& pos, bool pressed)
-{  
+{
   if (pressed)
   {
     Display::fill_circle(pos, 12.0f, Color(0.8f, 0.0f, 0.0f));
@@ -58,7 +58,7 @@ ControllerHelpWindow::draw_stick(const Vector2f& pos, bool pressed, float x, flo
   else
     Display::fill_circle(stick_pos, 10.0f, Color(1.0f, 0, 0, 0.25f));
 
-  Display::draw_circle(stick_pos, 10.0f, Color(1.0f, 0, 0)); 
+  Display::draw_circle(stick_pos, 10.0f, Color(1.0f, 0, 0));
 }
 
 void
@@ -68,7 +68,7 @@ ControllerHelpWindow::draw_trigger(const Vector2f& pos, float value)
   Rectf rect(pos - Vector2f(size.width/2, size.height/2), size);
 
   Display::fill_rect(rect,  Color(1.0f, 1.0f, 1.0f, 0.2f));
-  
+
   if (value > 0.0f)
     Display::fill_rect(Rectf(Vector2f(rect.left, rect.top),
                              Sizef(rect.get_width() * value,
@@ -83,7 +83,7 @@ ControllerHelpWindow::draw()
 {
   const Controller& controller = InputManagerSDL::current()->get_controller();
 
-  Vector2f pos(static_cast<float>(Display::get_width())  - 350.0f - 16.0f, 
+  Vector2f pos(static_cast<float>(Display::get_width())  - 350.0f - 16.0f,
                static_cast<float>(Display::get_height()) - 200.0f - 16.0f);
 
   Display::fill_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(0.0f, 0.0f, 0.25f, 0.9f));

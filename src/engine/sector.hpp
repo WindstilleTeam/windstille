@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -43,7 +43,7 @@ class SceneGraph;
 class Doll;
 
 class Sector : public Currenton<Sector>
-{ 
+{
 private:
   boost::scoped_ptr<CollisionEngine> collision_engine;
   boost::scoped_ptr<NavigationGraph> navigation_graph;
@@ -53,7 +53,7 @@ private:
   std::string name;
   std::string music;
   std::string init_script;
-  
+
   boost::shared_ptr<SquirrelThread> vm;
 
   typedef std::vector<boost::shared_ptr<GameObject> > Objects;
@@ -93,7 +93,7 @@ public:
    * activates the sector. (Runs init script, changes music)
    */
   void activate();
-  
+
   int get_width() const;
   int get_height() const;
 
@@ -118,7 +118,7 @@ public:
   void     set_tilemap(TileMap* t);
 
   void call_script_function(const std::string& name);
-  
+
 private:
   Sector (const Sector&);
   Sector& operator= (const Sector&);

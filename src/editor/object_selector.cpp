@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -38,7 +38,7 @@ public:
   Gtk::TreeModelColumn<Pathname> pathname;
   Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > icon;
   Gtk::TreeModelColumn<unsigned int>    filter_mask;
-  
+
   static ObjectSelector::Columns& instance() {
     if (instance_)
       return *instance_;
@@ -49,13 +49,13 @@ public:
 private:
   static ObjectSelector::Columns* instance_;
 
-  Columns() 
+  Columns()
     : url(),
       pathname(),
       icon(),
       filter_mask()
   {
-    add(pathname); 
+    add(pathname);
     add(url);
     add(icon);
     add(filter_mask);
@@ -117,7 +117,7 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_) :
   list_filter = Gtk::TreeModelFilter::create(list_store);
   list_filter->set_visible_func(sigc::mem_fun(*this, &ObjectSelector::filter));
   iconview.set_model(list_filter);
-  
+
   // Change background color
   // iconview.modify_base(Gtk::STATE_NORMAL, Gdk::Color("#444444"));
 
@@ -149,7 +149,7 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_) :
   hbox.pack_start(refresh_button,   Gtk::PACK_SHRINK);
   hbox.pack_start(filter_box, Gtk::PACK_SHRINK);
   pack_start(hbox, Gtk::PACK_SHRINK);
-  
+
   add(scrolled);
   //show_all();
 }
@@ -217,7 +217,7 @@ ObjectSelector::add_decals_from_directory(const Pathname& pathname, unsigned int
       if (y_scale * pixbuf->get_height() < min_size)
         y_scale = min_size / pixbuf->get_height();
 
-      if (pixbuf->get_width() > pixbuf->get_height())              
+      if (pixbuf->get_width() > pixbuf->get_height())
         y_scale = x_scale;
       else
         x_scale = y_scale;
@@ -225,12 +225,12 @@ ObjectSelector::add_decals_from_directory(const Pathname& pathname, unsigned int
       int r_w = int(pixbuf->get_width() * x_scale);
       int r_h = int(pixbuf->get_height() * y_scale);
 
-      pixbuf->composite(icon, 
+      pixbuf->composite(icon,
                         (size - r_w)/2, (size - r_h)/2,
                         r_w, r_h,
                         (size - r_w)/2, (size - r_h)/2,
                         x_scale, y_scale,
-                        Gdk::INTERP_TILES, 
+                        Gdk::INTERP_TILES,
                         255);
     }
 
@@ -259,7 +259,7 @@ ObjectSelector::on_filter_changed()
   filter_mask = filter_entries[filter_box.get_active_row_number()].filter_mask;
   list_filter->refilter();
 }
-                    
+
 void
 ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 {
@@ -295,7 +295,7 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 
 void
 ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& /*context*/,
-                                 Gtk::SelectionData& selection_data, 
+                                 Gtk::SelectionData& selection_data,
                                  guint /*info*/, guint /*time*/)
 {
   //std::cout << "ObjectSelector: on_drag_data_get" << std::endl;

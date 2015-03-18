@@ -46,10 +46,10 @@ public:
   Lisp(int val);
   Lisp(float val);
   Lisp(bool val);
-  ~Lisp();                                             
+  ~Lisp();
 
   LispType get_type() const
-  { return type; } 
+  { return type; }
 
   size_t get_list_size() const
   {

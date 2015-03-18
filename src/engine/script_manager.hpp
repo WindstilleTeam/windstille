@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -46,7 +46,7 @@ class Pathname;
 class ScriptManager : public Currenton<ScriptManager>
 {
 public:
-  enum WakeupEvent 
+  enum WakeupEvent
   {
     NO_EVENT,
     TIME,
@@ -59,13 +59,13 @@ public:
     MAX_WAKEUP_EVENT_COUNT
   };
 
-  struct WakeupData 
+  struct WakeupData
   {
     explicit WakeupData() : type(NO_EVENT) {}
     explicit WakeupData(WakeupEvent type_) : type(type_) {}
 
     WakeupEvent type;
-    
+
     union {
       // GAMEOBJECT_DONE
       GameObject* game_object;
@@ -73,7 +73,7 @@ public:
     };
   };
 
-private:  
+private:
   typedef std::list<boost::shared_ptr<SquirrelThread> > SquirrelThreads;
   SquirrelThreads squirrel_vms;
 
@@ -95,7 +95,7 @@ public:
 
   void fire_wakeup_event(WakeupEvent event);
   void fire_wakeup_event(WakeupData  event);
-  
+
   void expose_object_to_squirrel(boost::shared_ptr<GameObject> object);
   void remove_object_from_squirrel(boost::shared_ptr<GameObject> object);
 

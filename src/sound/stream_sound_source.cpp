@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -37,14 +37,14 @@ StreamSoundSource::StreamSoundSource(SoundChannel& channel, std::unique_ptr<Soun
   alGenBuffers(STREAMFRAGMENTS, m_buffers);
   SoundManager::check_al_error("Couldn't allocate audio buffers: ");
 
-  try 
+  try
   {
-    for(size_t i = 0; i < STREAMFRAGMENTS; ++i) 
+    for(size_t i = 0; i < STREAMFRAGMENTS; ++i)
     {
       fill_buffer_and_queue(m_buffers[i]);
     }
   }
-  catch(...) 
+  catch(...)
   {
     alDeleteBuffers(STREAMFRAGMENTS, m_buffers);
     throw;
@@ -78,7 +78,7 @@ StreamSoundSource::seek_to(float sec)
     alSourceUnqueueBuffers(m_source, STREAMFRAGMENTS, m_buffers);
     SoundManager::check_al_error("Couldn't unqueue audio buffers: ");
 
-    for(size_t i = 0; i < STREAMFRAGMENTS; ++i) 
+    for(size_t i = 0; i < STREAMFRAGMENTS; ++i)
     {
       fill_buffer_and_queue(m_buffers[i]);
     }
@@ -95,14 +95,14 @@ int
 StreamSoundSource::get_sample_pos() const
 {
   int samples_total = m_total_buffers_processed * (static_cast<int>(STREAMFRAGMENTSIZE)
-                                                   / m_sound_file->get_channels() 
+                                                   / m_sound_file->get_channels()
                                                    / (m_sound_file->get_bits_per_sample()/8));
 
   ALint sample_pos;
-  alGetSourcei(m_source, AL_SAMPLE_OFFSET, &sample_pos); 
+  alGetSourcei(m_source, AL_SAMPLE_OFFSET, &sample_pos);
 
   return (samples_total + sample_pos) % (static_cast<int>(m_sound_file->get_size())
-                                         / m_sound_file->get_channels() 
+                                         / m_sound_file->get_channels()
                                          / (m_sound_file->get_bits_per_sample()/8));
 }
 
@@ -119,12 +119,12 @@ StreamSoundSource::update(float delta)
       ALint processed = 0;
       alGetSourcei(m_source, AL_BUFFERS_PROCESSED, &processed);
 
-      while (processed > 0) 
+      while (processed > 0)
       {
         processed--;
 
         m_total_buffers_processed += 1;
-    
+
         ALuint buffer;
         alSourceUnqueueBuffers(m_source, 1, &buffer);
         SoundManager::check_al_error("Couldn't unqueue audio buffer: ");
@@ -132,9 +132,9 @@ StreamSoundSource::update(float delta)
         fill_buffer_and_queue(buffer);
       }
     }
-  
+
     // we might have to restart the source if we had a buffer underrun
-    if (!is_playing()) 
+    if (!is_playing())
     {
       std::cerr << "Restarting audio source because of buffer underrun.\n";
       alSourcePlay(m_source);
@@ -142,28 +142,28 @@ StreamSoundSource::update(float delta)
     }
 
     // handle fade-in/out
-    if (m_fade_state == kFadingOn) 
+    if (m_fade_state == kFadingOn)
     {
       float time = m_fade_start_ticks - m_total_time;
       if (time >= m_fade_time)
       {
         set_gain(1.0);
         m_fade_state = kNoFading;
-      } 
-      else 
+      }
+      else
       {
         set_gain(time / m_fade_time);
       }
-    } 
-    else if (m_fade_state == kFadingOff) 
+    }
+    else if (m_fade_state == kFadingOff)
     {
       float time = m_fade_start_ticks - m_total_time;
-      if (time >= m_fade_time) 
+      if (time >= m_fade_time)
       {
         stop();
         m_fade_state = kNoFading;
       }
-      else 
+      else
       {
         set_gain( (m_fade_time - time) / m_fade_time);
       }
@@ -186,13 +186,13 @@ StreamSoundSource::fill_buffer_and_queue(ALuint buffer)
   size_t bytesread = 0;
 
   // fill buffer with data from m_sound_file
-  do 
+  do
   {
     bytesread += m_sound_file->read(bufferdata + bytesread,
                                     STREAMFRAGMENTSIZE - bytesread);
 
     // the end of the SoundFile is reached
-    if (bytesread < STREAMFRAGMENTSIZE) 
+    if (bytesread < STREAMFRAGMENTSIZE)
     {
       if (m_looping)
       { // loop
@@ -205,9 +205,9 @@ StreamSoundSource::fill_buffer_and_queue(ALuint buffer)
     }
   }
   while(bytesread < STREAMFRAGMENTSIZE);
-  
+
   if (bytesread > 0)
-  {  
+  {
     // upload data to the OpenAL buffer
     alBufferData(buffer, m_format, bufferdata, static_cast<ALsizei>(bytesread), m_sound_file->get_rate());
     SoundManager::check_al_error("Couldn't refill audio buffer: ");

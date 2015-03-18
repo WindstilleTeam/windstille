@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -28,12 +28,12 @@ public:
   ShaderProgramPtr shader_program;
   float radius;
 
-  ShockwaveDrawable(const Vector2f& pos_, 
+  ShockwaveDrawable(const Vector2f& pos_,
                     TexturePtr      noise_,
                     ShaderProgramPtr shader_program_,
                     float r,
                     const Matrix& modelview_) :
-    Drawable(pos_, 500.0f, modelview_), 
+    Drawable(pos_, 500.0f, modelview_),
     noise(noise_),
     shader_program(shader_program_),
     radius(r)
@@ -74,7 +74,7 @@ public:
     state.bind_texture(screen_texture, 0);
     state.activate();
 
-    float rad = static_cast<float>(count)*2.0f + 20.0f; // enlarge radius by 20.0f to handle texture displacement 
+    float rad = static_cast<float>(count)*2.0f + 20.0f; // enlarge radius by 20.0f to handle texture displacement
     float minradius = 2.0f * static_cast<float>(count) - 164.0f;
     if (minradius < 0)
       minradius = 0;
@@ -82,7 +82,7 @@ public:
     int segments = 64;
 
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-  
+
     glBegin(GL_QUADS);
     for (int i = 0; i < segments; ++i)
     {
@@ -130,13 +130,13 @@ public:
     if (0)
     {
       Rectf rect(0, 0, 800, 600);
-      // Render the screen framebuffer to the actual screen 
+      // Render the screen framebuffer to the actual screen
       OpenGLState state;
       state.bind_texture(tmp_texture, 0);
       state.activate();
 
       glBegin(GL_QUADS);
-    
+
       glTexCoord2f(rect.left, rect.bottom);
       glVertex2f(rect.left/2.0f, rect.bottom/2.0f);
 
@@ -148,7 +148,7 @@ public:
 
       glTexCoord2f(rect.left, rect.top);
       glVertex2f(rect.left/2.0f, rect.top/2.0f);
-    
+
       glEnd();
     }
     else
@@ -160,7 +160,7 @@ public:
       state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       state.activate();
 
-      glUseProgram(shader_program.get_handle());    
+      glUseProgram(shader_program.get_handle());
       shader_program.set_uniform1f("radius",   radius/512.0f*2.0f);
       shader_program.set_uniform1i("background_tex", 0);
       shader_program.set_uniform1i("noise_tex",   1);
@@ -179,7 +179,7 @@ public:
       minradius = 0;
 
     int segments = 64;
-  
+
     glBegin(GL_QUADS);
     for (int i = 0; i < segments; ++i)
     {

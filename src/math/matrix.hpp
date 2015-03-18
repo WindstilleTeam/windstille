@@ -51,8 +51,8 @@ public:
   Matrix(const float *matrix);
 
   Matrix(float m00, float m01, float m02, float m03,
-         float m10, float m11, float m12, float m13, 
-         float m20, float m21, float m22, float m23, 
+         float m10, float m11, float m12, float m13,
+         float m20, float m21, float m22, float m23,
          float m30, float m31, float m32, float m33);
 
   /** Returns identity matrix */
@@ -112,7 +112,7 @@ public:
 
   //: Multiply a vector with this matrix
   Vector3 multiply(const Vector3& vector) const;
-  
+
   //: Transpose this matrix and return the result
   Matrix transpose() const;
 

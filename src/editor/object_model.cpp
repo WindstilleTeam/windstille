@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -43,7 +43,7 @@ ObjectModel::ObjectModel(const FileReader& reader) :
 {
   reader.get("name", name);
   reader.get("pos",  rel_pos);
-  
+
   int mask = 1;
   reader.get("select-mask", mask);
   select_mask = SelectMask(static_cast<unsigned int>(mask));
@@ -86,7 +86,7 @@ ObjectModel::set_parent(const ObjectModelHandle& parent_, bool recalc_pos)
   { // Remove the old parent
     ObjectModelHandle parent = parent_ptr.lock();
     if (parent)
-    { 
+    {
       rel_pos += parent->get_world_pos();
       parent_ptr = ObjectModelPtr();
     }
@@ -219,7 +219,7 @@ ObjectModel::snap_to_grid(float grid_size) const
     {
       snap.set_y(snap_rect.top);
     }
-      
+
     best_snap.merge(snap);
   }
 
@@ -235,7 +235,7 @@ ObjectModel::snap_to_grid(float grid_size) const
     {
       snap.set_y(snap_rect.bottom);
     }
-      
+
     best_snap.merge(snap);
   }
 
@@ -246,7 +246,7 @@ SnapData
 ObjectModel::snap_to_object(const Rectf& in) const
 {
   const Rectf& rect = get_bounding_box();
-  
+
   SnapData snap;
 
   float left_dist   = fabsf(rect.left   - in.right);
@@ -315,7 +315,7 @@ ObjectModel::snap_to_object(const Rectf& in) const
         if (top_dist < g_snap_threshold)
         {
           snap.offset.x = x_snap;
-          
+
           snap.set_y(rect.top - in.bottom);
         }
       }
@@ -327,7 +327,7 @@ ObjectModel::snap_to_object(const Rectf& in) const
           snap.set_y(rect.bottom - in.top);
         }
       }
-    }      
+    }
   }
 
   snap.offset = -snap.offset;

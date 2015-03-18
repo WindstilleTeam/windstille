@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -47,7 +47,7 @@ private:
     std::string name;
     unsigned int filter_mask;
 
-    ComboBoxEntry(const std::string& name_, 
+    ComboBoxEntry(const std::string& name_,
                   unsigned int filter_mask_)
       : name(name_),
         filter_mask(filter_mask_)
@@ -99,9 +99,9 @@ public:
 protected:
   void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context);
   void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context,
-                        Gtk::SelectionData& selection_data, 
+                        Gtk::SelectionData& selection_data,
                         guint info, guint time);
-  
+
   void on_filter_changed();
 
 private:

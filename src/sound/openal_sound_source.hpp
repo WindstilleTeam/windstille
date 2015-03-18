@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -67,7 +67,7 @@ public:
       distance, while lower factor will reduce the lowering of gain,
       0.0f disables distance based reduction completly */
   virtual void set_rolloff_factor(float factor);
-  
+
   /** Needs to be called whenever the SoundChannels gain changes */
   virtual void update_gain() const;
 
@@ -77,7 +77,7 @@ protected:
   SoundChannel& m_channel;
   ALuint m_source;
   float m_gain;
-  
+
 private:
   OpenALSoundSource(const OpenALSoundSource&);
   OpenALSoundSource& operator=(const OpenALSoundSource&);

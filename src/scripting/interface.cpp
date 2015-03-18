@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -215,7 +215,7 @@ void save_state(HSQUIRRELVM v, const std::string& filename)
 void list_objects()
 {
   const std::vector<boost::shared_ptr< ::GameObject > >& objects = Sector::current()->get_objects();
-  
+
   for(std::vector<boost::shared_ptr< ::GameObject > >::const_iterator i = objects.begin(); i != objects.end(); ++i)
   {
     if (!(*i)->get_name().empty())
@@ -289,11 +289,11 @@ SQInteger print_stack(HSQUIRRELVM v) __custom("")
 
 void set_console_font(const std::string& font, int size)
 {
-  try 
+  try
   {
     Fonts::current()->ttffont.reset(new TTFFont(Pathname("fonts/" + font), size));
   }
-  catch(std::exception& err) 
+  catch(std::exception& err)
   {
     ConsoleLog << err.what() << std::endl;
   }
@@ -356,13 +356,13 @@ SQInteger spawn_object(HSQUIRRELVM v)
     entries.push_back(new lisp::Lisp(lisp::Lisp::TYPE_SYMBOL, objname));
     table_to_lisp(v, -1, entries);
 
-    try 
+    try
     {
       assert(!"spawn_object is broken");
       //SExprFileReader reader(new lisp::Lisp(entries), true);
       //Sector::current()->add_object(reader);
     }
-    catch (std::exception& e) 
+    catch (std::exception& e)
     {
       std::cerr << "Error parsing object in spawn_object: " << e.what()
                 << "\n";
@@ -392,7 +392,7 @@ SQInteger spawn_function(HSQUIRRELVM v)
   return 0;
 }
 
-SQInteger lisp2string(HSQUIRRELVM v) 
+SQInteger lisp2string(HSQUIRRELVM v)
 {
   std::vector<lisp::Lisp*> entries;
 
@@ -406,7 +406,7 @@ SQInteger lisp2string(HSQUIRRELVM v)
     ConsoleLog << str.str();
     ConsoleLog << std::endl;
   }
-   
+
   return 0;
 }
 

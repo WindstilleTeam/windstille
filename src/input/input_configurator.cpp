@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -32,13 +32,13 @@ InputConfigurator::InputConfigurator()
     area(Rectf(120.0f,
                100.0f,
                static_cast<float>(Display::get_width())  - 120.0f,
-               static_cast<float>(Display::get_height()) - 100.0f), 
+               static_cast<float>(Display::get_height()) - 100.0f),
          false)
 {
   out << "Input Configurator\n"
       << "------------------\n"
       << "Press Escape to ignore a setting\n"
-      << std::endl; 
+      << std::endl;
 
   area.set_text(out.str());
 
@@ -67,30 +67,30 @@ void
 InputConfigurator::add_configure_item(ConfigureItem::Mode mode, int event_id)
 {
   ConfigureItem item;
-  
+
   item.mode     = mode;
   item.event_id = event_id;
 
   items.push_back(item);
 
 }
-  
+
 void
 InputConfigurator::draw()
 {
   Rectf rect(100.0f, 75.0f,
-             static_cast<float>(Display::get_width())  - 100.0f, 
+             static_cast<float>(Display::get_width())  - 100.0f,
              static_cast<float>(Display::get_height()) - 75.0f);
 
   Display::fill_rounded_rect(rect, 16.0f, Color(0.3f, 0.3f, 0.5f, 0.5f));
-  Display::draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f)); 
+  Display::draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
   area.draw();
 }
 
 void
 InputConfigurator::update(float , const Controller& )
 {
-  
+
 }
 
 void
@@ -99,17 +99,17 @@ InputConfigurator::print_item()
   if (!items.empty())
   {
     const ConfigureItem& item = items.back();
-      
+
     if (item.mode == ConfigureItem::CONFIGURE_AXIS)
     {
-      out << "Configuring " 
+      out << "Configuring "
           << InputManagerSDL::current()->get_controller_description().get_definition(item.event_id).name
           << ": " << std::endl;
     }
     else if (item.mode == ConfigureItem::CONFIGURE_BUTTON)
     {
-      out << "Configuring " 
-          << InputManagerSDL::current()->get_controller_description().get_definition(item.event_id).name 
+      out << "Configuring "
+          << InputManagerSDL::current()->get_controller_description().get_definition(item.event_id).name
           << ": " << std::endl;
     }
   }
@@ -140,14 +140,14 @@ InputConfigurator::handle_event(const SDL_Event& event)
   {
     std::cout << "InputConfigurator: done" << std::endl;
     ScreenManager::current()->pop_overlay();
-    return; 
+    return;
   }
-  
+
 
   switch(event.type)
-  {        
+  {
     case SDL_MOUSEMOTION:
-      // event.motion:      
+      // event.motion:
       break;
 
     case SDL_MOUSEBUTTONDOWN:
@@ -182,11 +182,11 @@ InputConfigurator::handle_event(const SDL_Event& event)
     case SDL_JOYBALLMOTION:
       // event.jball
       break;
-          
+
     case SDL_JOYHATMOTION:
       // event.jhat
       break;
-          
+
     case SDL_JOYBUTTONUP:
       break;
 
@@ -204,7 +204,7 @@ InputConfigurator::handle_event(const SDL_Event& event)
         {
           out << "(joystick-axis-button (minus " << InputManagerSDL::current()->keyid_to_string(minus.key.keysym.scancode) << ") "
               << "(plus  " << InputManagerSDL::current()->keyid_to_string(event.key.keysym.scancode) << "))" << std::endl;
-          InputManagerSDL::current()->bind_joystick_button_axis(items.back().event_id, event.jbutton.which, 
+          InputManagerSDL::current()->bind_joystick_button_axis(items.back().event_id, event.jbutton.which,
                                                                 minus.jbutton.button, event.jbutton.button);
           next_item();
           wait_for_plus = false;

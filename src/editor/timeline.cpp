@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -54,20 +54,20 @@ Timeline::add_layer(const std::string& name)
   return m_layers.back();
 }
 
-TimelineObjectLayerHandle 
+TimelineObjectLayerHandle
 Timeline::create_object_layer(ObjectModelHandle object, TimelineProperty property)
 {
   switch(property)
   {
     case kPosition:
       return TimelineObjectLayerHandle(new TimelineObjectDataLayer<Vector2f>(object, property));
-      
+
     case kRotation:
       return TimelineObjectLayerHandle(new TimelineObjectDataLayer<float>(object, property));
 
     case kScale:
       return TimelineObjectLayerHandle(new TimelineObjectDataLayer<Vector2f>(object, property));
-      
+
     default:
       throw std::runtime_error("Timeline::create_object_layer: unknown property given");
   }
@@ -92,7 +92,7 @@ Timeline::get_object_layer(ObjectModelHandle object, TimelineProperty property)
   {
     TimelineObjectLayerHandle layer = boost::dynamic_pointer_cast<TimelineObjectLayer>(*i);
 
-    if (layer && 
+    if (layer &&
         layer->get_property() == property &&
         layer->get_object()   == object)
     {
@@ -108,7 +108,7 @@ Timeline::apply(float pos)
   for(iterator i = begin(); i != end(); ++i)
   {
     (*i)->apply(pos);
-  }  
+  }
 }
 
 void
@@ -118,7 +118,7 @@ Timeline::write(FileWriter& writer) const
   for(const_iterator i = begin(); i != end(); ++i)
   {
     (*i)->write(writer);
-  }  
+  }
   writer.end_section();
 }
 

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -83,7 +83,7 @@ LayerManager::LayerManager(EditorWindow& editor_) :
                                  "    <toolitem action='AutoLockLayer'/>"
                                  "  </toolbar>"
                                  "</ui>");
-  
+
   Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/LayerManagerToolBar"));
 
   treeview.signal_cursor_changed().connect(sigc::mem_fun(*this, &LayerManager::on_cursor_changed));
@@ -118,7 +118,7 @@ LayerManager::set_model(SectorModel* model)
     treeview.append_column_editable("Name", LayerManagerColumns::instance().name);
     treeview.append_column_editable("Visible", LayerManagerColumns::instance().visible);
     treeview.append_column_editable("Locked", LayerManagerColumns::instance().locked);
-    
+
     treeview.expand_all();
     treeview.set_cursor(Gtk::TreeModel::Path("0"));
   }
@@ -136,7 +136,7 @@ LayerManager::on_cursor_changed()
     Gtk::TreeModel::Path path_;
     Gtk::TreeViewColumn* focus_column;
     treeview.get_cursor(path_, focus_column);
-      
+
     if (!path_.gobj())
     {
       std::cout << "LayerManager::on_cursor_changed(): Error: Couldn't get path" << std::endl;

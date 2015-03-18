@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -37,7 +37,7 @@ ParticleSystems::ParticleSystems(const FileReader& reader) :
 
   { // Load the ParticleSystems
     FileReader root_reader = FileReader::parse(Pathname(filename));
-    if(root_reader.get_name() != "particle-systems") 
+    if(root_reader.get_name() != "particle-systems")
     {
       std::ostringstream msg;
       msg << "'" << filename << "' is not a particle-system file";
@@ -46,7 +46,7 @@ ParticleSystems::ParticleSystems(const FileReader& reader) :
 
     std::vector<FileReader> sections = root_reader.get_sections();
     for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
-    { 
+    {
       if (i->get_name() == "particle-system")
       {
         boost::shared_ptr<ParticleSystem> particle_system(new ParticleSystem(*i));

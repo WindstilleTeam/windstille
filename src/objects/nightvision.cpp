@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -74,7 +74,7 @@ Nightvision::draw(SceneContext& sc)
 
     array->texcoord(u, v + h);
     array->vertex(0, static_cast<float>(Display::get_height()));
-      
+
     if (0) // second noise level
     {
       u = rnd.frand();
@@ -113,7 +113,7 @@ Nightvision::draw(SceneContext& sc)
     nightvision.set_scale(std::max(float(Display::get_width())  / nightvision.get_width(),
                                    float(Display::get_height()) / nightvision.get_height()));
 
-    sc.highlight().draw(nightvision, 
+    sc.highlight().draw(nightvision,
                         Vector2f(static_cast<float>(Display::get_width()) / 2.0f - (nightvision.get_width()  * nightvision.get_scale() / 2.0f),
                                  static_cast<float>(Display::get_height())/ 2.0f - (nightvision.get_height() * nightvision.get_scale() / 2.0f)),
                         10000);

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -54,9 +54,9 @@ ParticleViewer::load(const Pathname& filename)
 
   // Cleanup
   systems.clear();
-  
+
   FileReader root_reader = FileReader::parse(filename);
-  if(root_reader.get_name() != "particle-systems") 
+  if(root_reader.get_name() != "particle-systems")
   {
     std::ostringstream msg;
     msg << "'" << filename << "' is not a particle-system file";
@@ -65,7 +65,7 @@ ParticleViewer::load(const Pathname& filename)
 
   std::vector<FileReader> sections = root_reader.get_sections();
   for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
-  { 
+  {
     if (i->get_name() == "particle-system")
     {
       systems.push_back(boost::shared_ptr<ParticleSystem>(new ParticleSystem(*i)));
@@ -81,7 +81,7 @@ ParticleViewer::load(const Pathname& filename)
 
     m_background_drawable.reset(new FillScreenPatternDrawable(pattern_texture, Vector2f()));
     m_color_fill_drawable.reset(new FillScreenDrawable(Color(0.4f, 0.4f, 0.4f)));
-                                                            
+
     m_background_drawable->set_render_mask(SceneContext::COLORMAP);
     m_color_fill_drawable->set_render_mask(SceneContext::LIGHTMAP);
 
@@ -94,7 +94,7 @@ ParticleViewer::load(const Pathname& filename)
     }
   }
 }
-  
+
 void
 ParticleViewer::draw()
 {

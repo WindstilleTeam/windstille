@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -48,14 +48,14 @@ WavSoundFile::WavSoundFile(const Pathname& filename) :
     throw std::runtime_error("Couldn't read file magic (not a wave file)");
   }
 
-  if(strncmp(magic, "RIFF", 4) != 0) 
+  if(strncmp(magic, "RIFF", 4) != 0)
   {
     printf("MAGIC: %4s.\n", magic);
     throw std::runtime_error("file is not a RIFF wav file");
   }
 
   /*uint32_t wavelen =*/ read_uint32_t(file);
-  
+
   if (!file.read( magic, sizeof(magic)))
   {
     throw std::runtime_error("Couldn't read chunk header (not a wav file?)");
@@ -73,10 +73,10 @@ WavSoundFile::WavSoundFile(const Pathname& filename) :
   do {
     if (!file.read(chunkmagic, sizeof(chunkmagic)))
     {
-      throw std::runtime_error("EOF while searching format chunk");    
+      throw std::runtime_error("EOF while searching format chunk");
     }
     chunklen = read_uint32_t(file);
-    
+
     if (strncmp(chunkmagic, "fmt ", 4) == 0)
     {
       break;
@@ -91,15 +91,15 @@ WavSoundFile::WavSoundFile(const Pathname& filename) :
         throw std::runtime_error("EOF while searching fmt chunk");
       }
     }
-    else 
+    else
     {
       throw std::runtime_error("complex WAVE files not supported");
     }
-  } while(true); 
+  } while(true);
 
   if (chunklen < 16)
     throw std::runtime_error("Format chunk too short");
- 
+
   // parse format
   uint16_t encoding = read_uint16_t(file);
   if (encoding != 1)
@@ -114,7 +114,7 @@ WavSoundFile::WavSoundFile(const Pathname& filename) :
   /*uint16_t blockalign =*/ read_uint16_t(file);
   m_bits_per_sample = read_uint16_t(file);
 
-  if(chunklen > 16) 
+  if(chunklen > 16)
   {
     if(file.seekg(chunklen-16, std::ios::cur) == 0)
       throw std::runtime_error("EOF while reading reast of format chunk");
@@ -123,7 +123,7 @@ WavSoundFile::WavSoundFile(const Pathname& filename) :
   // set file offset to DATA chunk data
   do {
     if (!file.read(chunkmagic, sizeof(chunkmagic)))
-      throw std::runtime_error("EOF while searching data chunk");    
+      throw std::runtime_error("EOF while searching data chunk");
     chunklen = read_uint32_t(file);
 
     if(strncmp(chunkmagic, "data", 4) == 0)
@@ -179,7 +179,7 @@ WavSoundFile::read(void* buffer, size_t buffer_size)
     m_eof = true;
     return 0;
   }
-  
+
   size_t readsize = std::min(static_cast<size_t> (end - cur), buffer_size);
 
   if (!file.read(static_cast<char*>(buffer), readsize))

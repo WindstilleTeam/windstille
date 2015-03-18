@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -21,7 +21,7 @@
 #include "font/fonts.hpp"
 #include "hud/speech_manager.hpp"
 
-class Speech 
+class Speech
 {
 public:
   int id;
@@ -30,9 +30,9 @@ public:
   Color       color;
   float       seconds_passed;
   float       seconds_till_done;
-  
+
   Speech(int id, const std::string& text, const Vector2f& pos, const Color& color);
-    
+
   void draw();
   void update(float delta);
   bool is_done() const;
@@ -53,7 +53,7 @@ Speech::Speech(int id_, const std::string& text_, const Vector2f& pos_, const Co
   seconds_till_done = words / words_per_second;
 }
 
-void 
+void
 Speech::draw()
 {
   // Do not display any text for 0.1 seconds before we are doen, so
@@ -109,7 +109,7 @@ SpeechManager::draw()
   {
     if (*i)
       (*i)->draw();
-  }  
+  }
 }
 
 void
@@ -122,7 +122,7 @@ SpeechManager::update(float delta)
   }
 
   for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
-  {  
+  {
     if ((*i)->is_done())
     {
       ScriptManager::WakeupData event;

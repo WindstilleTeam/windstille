@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -39,20 +39,20 @@ private:
   Sprite light;
   Sprite highlight;
   float z_pos;
-  
+
   //useable stuff
   std::string script_file;
-  
+
   //movement stuff
   float target_x;
   float target_y;
   float target_speed;
   float acceleration;
-  
+
   //flashing stuff
   float flash_speed;
   float flash_delta;
-  
+
 protected:
   void move(float delta);
   void flash();

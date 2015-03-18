@@ -35,7 +35,7 @@ Writer::Writer(const Pathname& filename) :
   out_owned = true;
   indent_depth = 0;
 }
-  
+
 Writer::Writer(std::ostream* newout) :
   out(),
   out_owned(),
@@ -76,17 +76,17 @@ void
 Writer::end_list(const std::string& listname)
 {
   if(lists.size() == 0) {
-    std::cerr << "Trying to close list '" << listname 
+    std::cerr << "Trying to close list '" << listname
               << "', which is not open.\n";
     return;
   }
   if(lists.back() != listname) {
-    std::cerr << "Warning: trying to close list '" << listname 
+    std::cerr << "Warning: trying to close list '" << listname
               << "' while list '" << lists.back() << "' is open.\n";
     return;
   }
   lists.pop_back();
-  
+
   indent_depth -= 2;
   indent();
   *out << ")\n";

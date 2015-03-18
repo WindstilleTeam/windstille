@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -31,7 +31,7 @@ SpiderMine::SpiderMine(const FileReader& props) :
 {
   props.get("name", name);
   props.get("pos",  pos);
-    
+
   sprite = Sprite(Pathname("images/spider_mine.sprite"));
   //sprite.set_scale(.5, .5);
   initial_position = pos;
@@ -43,17 +43,17 @@ SpiderMine::~SpiderMine()
 
 void
 SpiderMine::update(float delta)
-{   
-  if (state == EXPLODE) 
+{
+  if (state == EXPLODE)
   {
     explode.update(delta);
     if (explode.is_finished())
       remove();
-  } 
-  else 
+  }
+  else
   {
     search_for_player(delta);
-    
+
     if (on_ground()) {
       if (velocity.y > 0) {
         velocity.y = 0;
@@ -63,10 +63,10 @@ SpiderMine::update(float delta)
     } else {
       velocity.y += GRAVITY * delta;
     }
-  
+
     pos += velocity * delta;
   }
-  
+
   sprite.update(delta);
 }
 
@@ -100,7 +100,7 @@ SpiderMine::search_for_player(float delta)
 
   // !line72 - I should be using the real collision stuff for this
   Vector2f player_pos = player->get_pos();
-  
+
   // check for explosion
   if (state == JUMP && jump_time > 0.3) {
     state = EXPLODE;

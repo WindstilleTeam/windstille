@@ -159,9 +159,9 @@ int
 App::run(int argc, char* argv[])
 {
   parse_args(argc, argv);
-    
+
   init_sdl();
-      
+
   //std::cout << "OpenGLWindow" << std::endl;
   OpenGLWindow window("Slideshow",
                       m_window_size, // window size
@@ -173,12 +173,12 @@ App::run(int argc, char* argv[])
   SurfaceManager    surface_manager;
 
   SlideShow slide_show;
-      
+
   for(std::vector<std::string>::iterator i = m_files.begin(); i != m_files.end(); ++i)
   {
     slide_show.load(*i, m_aspect_ratio);
   }
- 
+
   FramebufferPtr framebuffer_multisample = Framebuffer::create(m_window_size.width, m_window_size.height, 8);
   FramebufferPtr framebuffer = Framebuffer::create(m_window_size.width, m_window_size.height);
 
@@ -214,7 +214,7 @@ App::run(int argc, char* argv[])
 
         case SDL_KEYDOWN:
           if (event.key.state && m_output_dir.empty()) // ignore keypresses for offline rendereing
-          {    
+          {
             switch (event.key.keysym.sym)
             {
               case SDLK_ESCAPE:
@@ -315,7 +315,7 @@ App::run(int argc, char* argv[])
     else
     {
       time += 1.0f/m_fps;
-      
+
       // rendering to output dir
       Display::push_framebuffer(framebuffer_multisample);
       assert_gl("aeuthnoethuth");
@@ -330,7 +330,7 @@ App::run(int argc, char* argv[])
       glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, framebuffer_multisample->get_handle());
       glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, framebuffer->get_handle());
 
-      glBlitFramebufferEXT(0, 0, framebuffer_multisample->get_width(), framebuffer_multisample->get_height(), 
+      glBlitFramebufferEXT(0, 0, framebuffer_multisample->get_width(), framebuffer_multisample->get_height(),
                            0, 0, framebuffer->get_width(), framebuffer->get_height(),
                            GL_COLOR_BUFFER_BIT, GL_LINEAR /*NEAREST*/);
 
@@ -359,7 +359,7 @@ App::run(int argc, char* argv[])
     }
   }
 
-  
+
   if (!loop)
     std::cout << "Playback interrupted: " << std::endl;
   else
@@ -373,7 +373,7 @@ App::run(int argc, char* argv[])
 
 int main(int argc, char** argv)
 {
-  try 
+  try
   {
     App app;
     app.run(argc, argv);

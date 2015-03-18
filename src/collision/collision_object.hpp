@@ -7,12 +7,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -69,7 +69,7 @@ public:
       against other enemies, but only against the player */
   enum Domains {
     DOMAIN_TILEMAP = (1 << 0),
-    DOMAIN_PLAYER  = (1 << 1), 
+    DOMAIN_PLAYER  = (1 << 1),
     DOMAIN_ENEMY   = (1 << 2)
   };
 
@@ -92,7 +92,7 @@ public:
   /** Sets the CollisionObject to the given pos, it should only be
       called to set the initial position and *not* to update the
       position each update(), see \a set_velocity()
-      
+
       FIXME: unstucking is currently not handled special here, but
       simply in the next run of the collision engine, this should
       probally be changed so that the object is unstuck here without
@@ -114,7 +114,7 @@ public:
   bool unstuck() const { return is_unstuckable; }
   // is this object movable within unstucking ?
   bool unstuck_movable() const { return is_unstuck_movable; }
-  
+
   void set_unstuck(bool s) { is_unstuckable = s; }
   void set_unstuck_movable(bool s) { is_unstuck_movable = s; }
 

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -29,7 +29,7 @@ struct WiimoteButtonEvent
 {
   int  device;
   int  button;
-  bool down; 
+  bool down;
 };
 
 struct WiimoteAxisEvent
@@ -100,7 +100,7 @@ private:
 public:
   Wiimote();
   ~Wiimote();
-  
+
   void connect();
   void disconnect();
 
@@ -123,7 +123,7 @@ public:
   void on_ir      (const cwiid_ir_mesg& msg);
   void on_nunchuck(const cwiid_nunchuk_mesg& msg);
   void on_classic (const cwiid_classic_mesg& msg);
-  
+
   void mesg(cwiid_wiimote_t*, int mesg_count, union cwiid_mesg mesg[]);
   void err(cwiid_wiimote_t*, const char *s, va_list ap);
 

@@ -52,12 +52,12 @@ public:
   //param width: Initial width of size structure.
   //param height: Initial height of size structure.
   //param size: Size structure to construct this one from.
-  Size() 
+  Size()
     : width(0), height(0)
   {}
 
   Size(int width_, int height_)
-    : width(width_), height(height_) 
+    : width(width_), height(height_)
   {}
 
   Size(const Size &s)
@@ -84,7 +84,7 @@ public:
   //: Size -= Size operator.
   Size &operator-=(const Size &s)
   { width -= s.width; height -= s.height; return *this; }
-        
+
   //: Size + Size operator.
   Size operator+(const Size &s) const
   { return Size(width + s.width, height + s.height); }
@@ -111,19 +111,19 @@ public:
   //param width: Initial width of size structure.
   //param height: Initial height of size structure.
   //param size: Size structure to construct this one from.
-  Sizef() 
+  Sizef()
     : width(0.0f),
       height(0.0f)
   {}
 
-  Sizef(const Size& s) 
+  Sizef(const Size& s)
     : width(static_cast<float>(s.width)),
       height(static_cast<float>(s.height))
   {}
 
   Sizef(float width_, float height_)
-    : width(width_), 
-      height(height_) 
+    : width(width_),
+      height(height_)
   {}
 
   Sizef(const Sizef &s)
@@ -148,7 +148,7 @@ public:
   //: Size -= Size operator.
   Sizef &operator-=(const Sizef &s)
   { width -= s.width; height -= s.height; return *this; }
-        
+
   //: Size + Size operator.
   Sizef operator+(const Sizef &s) const
   { return Sizef(width + s.width, height + s.height); }
@@ -171,7 +171,7 @@ inline Size::Size(const Sizef& s)
     height(static_cast<int>(s.height))
 {}
 
-inline std::ostream& operator<<(std::ostream& s, const Size& size) 
+inline std::ostream& operator<<(std::ostream& s, const Size& size)
 {
   return s << "Size(" << size.width << ", " << size.height << ")";
 }

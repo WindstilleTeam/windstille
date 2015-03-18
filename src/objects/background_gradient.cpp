@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -35,7 +35,7 @@ BackgroundGradient::BackgroundGradient(const FileReader& props) :
   {
     std::cout << "BackgroundGradient: specified color gradient is invalid" << std::endl;
     /** Color gradients are in the format:
-          
+
         (colors start midpoint end R1 G1 B1 A1 R2 G2 B2 A2 I I
         start midpoint end R1 G1 B1 A1 R2 G2 B2 A2 I I
         ...)
@@ -53,7 +53,7 @@ BackgroundGradient::BackgroundGradient(const FileReader& props) :
 }
 
 BackgroundGradient::~BackgroundGradient()
-{  
+{
 }
 
 /* EOF */

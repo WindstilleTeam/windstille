@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -63,7 +63,7 @@ Conversation::draw()
 {
   if (!active)
     return;
-  
+
   Display::fill_circle(pos, 42.0f, Color(0.5f, 0.5f, 0.5f, 0.75f), 24);
 
   float segment = 360.0f / static_cast<float>(choices.size());
@@ -75,7 +75,7 @@ Conversation::draw()
 
     float start = -segment / 2.0f - 90.0f + segment * static_cast<float>(i);
     float end   = -segment / 2.0f - 90.0f + segment * static_cast<float>(i+1);
-      
+
     float distance = 160.0f;
 
     Vector2f textpos = pos + Vector2f(0, 16.0f);
@@ -87,14 +87,14 @@ Conversation::draw()
     if (i == selection)
     {
       rect = rect.grow(grow);
-          
+
       Display::fill_arc(pos, 42.0f, start, end, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
       Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
 
       Fonts::current()->vera20->draw_center(Vector2f(textpos.x + distance * offset.x,
-                                                     textpos.y + distance * offset.y), 
+                                                     textpos.y + distance * offset.y),
                                             choices[i].topic, Color(1.0f, 1.0f, 0.0f));
-          
+
       Fonts::current()->vera20->draw_center(Vector2f(400.0f, static_cast<float>(Display::get_height()) - 32.0f),
                                             choices[i].text, Color(1.0f, 1.0f, 1.0f));
       Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 0.0f));
@@ -152,7 +152,7 @@ Conversation::update(float delta, const Controller& controller)
   {
     selection = -1;
   }
-  
+
   if (controller.button_was_pressed(OK_BUTTON) && selection != -1)
   {
     active = false;

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -32,7 +32,7 @@ SoundFile::load(const Pathname& filename)
 {
   std::ifstream in(filename.get_sys_path().c_str(), std::ios::binary);
 
-  if (!in) 
+  if (!in)
   {
     std::stringstream msg;
     msg << "Couldn't open '" << filename << "'";
@@ -40,7 +40,7 @@ SoundFile::load(const Pathname& filename)
   }
   else
   {
-    try 
+    try
     {
       char magic[4];
 
@@ -63,8 +63,8 @@ SoundFile::load(const Pathname& filename)
           throw std::runtime_error("Unknown file format");
         }
       }
-    } 
-    catch(std::exception& e) 
+    }
+    catch(std::exception& e)
     {
       std::stringstream msg;
       msg << "Couldn't read '" << filename << "': " << e.what();
@@ -76,7 +76,7 @@ SoundFile::load(const Pathname& filename)
 float
 SoundFile::get_length() const
 {
-  return static_cast<float>(get_size()) 
+  return static_cast<float>(get_size())
     / static_cast<float>(get_rate())
     / static_cast<float>(get_channels())
     / (static_cast<float>(get_bits_per_sample())/8.0f);

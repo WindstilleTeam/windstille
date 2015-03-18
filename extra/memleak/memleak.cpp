@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 
 
   //std::cout << "OpenGLWindow" << std::endl;
-  OpenGLWindow window("Memleak", 
+  OpenGLWindow window("Memleak",
                       Size(800, 600), // window size
                       Size(800, 600),
                       false,
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
     surface->draw(Vector2f(0.0f, 0.0f));
     window.swap_buffers();
     SDL_Delay(10);
-    
+
     surface.reset();
     SurfaceManager::current()->cleanup();
     TextureManager::current()->cleanup();

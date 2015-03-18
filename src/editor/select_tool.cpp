@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -33,7 +33,7 @@ SelectTool::SelectTool() :
   selection(),
   ctrl_point(),
   start_time(),
-  mode(NO_MODE)    
+  mode(NO_MODE)
 {
 }
 
@@ -51,7 +51,7 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
     ctrl_point->on_move_start(event);
   }
   else
-  {  
+  {
     ObjectModelHandle object = wst.get_document().get_sector_model().get_object_at(click_pos, wst.get_select_mask());
     if (object.get())
     {
@@ -81,7 +81,7 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
           wst.get_document().set_selection(selection);
         }
       }
-      
+
       mode = OBJECT_DRAG_MODE;
     }
     else
@@ -90,7 +90,7 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       rect.top    = click_pos.y;
       rect.right  = click_pos.x;
       rect.bottom = click_pos.y;
-      
+
       mode = SELECT_MODE;
     }
   }
@@ -107,7 +107,7 @@ SelectTool::process_grid_snap(WindstilleWidget& wst)
   {
     best_snap.merge((*i)->snap_to_grid(128));
   }
-   
+
   return best_snap.offset;
 }
 
@@ -134,7 +134,7 @@ SelectTool::process_snap(WindstilleWidget& wst)
     SnapData snap = wst.get_document().get_sector_model().snap_object(*i, ignore_objects);
     best_snap.merge(snap);
   }
- 
+
   return best_snap.offset;
 }
 
@@ -151,7 +151,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
   else if (mode == OBJECT_DRAG_MODE)
   {
     Vector2f offset = pos - click_pos;
-          
+
     if ((event->time - start_time) > MOVE_TIMEOUT ||
         glm::length(offset) > MOVE_THRESHOLD)
     {
@@ -180,7 +180,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     rect.bottom = pos.y;
 
     std::ostringstream str;
-    str << "  (" << static_cast<int>(rect.left) << ", " << static_cast<int>(rect.top) << ")  " 
+    str << "  (" << static_cast<int>(rect.left) << ", " << static_cast<int>(rect.top) << ")  "
         << abs(static_cast<int>(rect.get_width())) << " x " << abs(static_cast<int>(rect.get_height())) << "  ";
     EditorWindow::current()->print_coordinates(str.str());
 
@@ -210,7 +210,7 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
       if (selection->is_moving())
       {
         selection->on_move_update(offset);
-      
+
         if (event->state & GDK_CONTROL_MASK)
         {
           selection->on_move_end(wst, offset + process_snap(wst));
@@ -260,7 +260,7 @@ SelectTool::draw(SceneContext& sc)
   if (mode == SELECT_MODE)
   {
     sc.control().fill_rect(rect, Color(0.5f, 0.5f, 1.0f, 0.25));
-    sc.control().draw_rect(rect, Color(0.5f, 0.5f, 1.0f)); 
+    sc.control().draw_rect(rect, Color(0.5f, 0.5f, 1.0f));
   }
 }
 

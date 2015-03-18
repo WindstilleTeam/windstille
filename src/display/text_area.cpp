@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -22,11 +22,11 @@
 #include "font/fonts.hpp"
 #include "display/display.hpp"
 
-struct TextAreaCommand 
+struct TextAreaCommand
 {
   enum Type { WORD, START, END } type;
   std::string content;
-    
+
   TextAreaCommand(Type type_, const std::string& content_)
     : type(type_),
       content(content_)
@@ -111,7 +111,7 @@ TextArea::set_text(const std::string& str)
       impl->commands.push_back(TextAreaCommand(TextAreaCommand::END, i->content));
     }
     else if (i->type == BabyXML::Node::TEXT)
-    {      
+    {
       // Seperate the given str into words, words are seperated by either
       // ' ' or '\n', space is threaded as a word of its own
       // "Hello  World \n" => ("Hello", " ", " ", "World", " ", "\n")
@@ -169,12 +169,12 @@ TextArea::draw()
     float height = impl->max_scroll_offset + impl->rect.get_height();
 
     Display::fill_rounded_rect(Rectf(Vector2f(impl->rect.right + 4,
-                                              impl->rect.top + impl->scroll_offset*impl->rect.get_height()/height), 
+                                              impl->rect.top + impl->scroll_offset*impl->rect.get_height()/height),
                                      Sizef(8, impl->rect.get_height()*impl->rect.get_height()/height)),
                                4.0f, Color(1.0f, 1.0f, 1.0f, 0.25f));
   }
   OpenGLState state;
-  
+
   state.bind_texture(impl->font->get_texture());
 
   state.enable(GL_BLEND);
@@ -182,8 +182,8 @@ TextArea::draw()
   state.activate();
 
   glPushMatrix();
-  glTranslatef(impl->rect.left, 
-               impl->rect.top + static_cast<float>(impl->font->get_height()) - impl->scroll_offset, 
+  glTranslatef(impl->rect.left,
+               impl->rect.top + static_cast<float>(impl->font->get_height()) - impl->scroll_offset,
                0.0f);
 
   glBegin(GL_QUADS);
@@ -204,7 +204,7 @@ TextArea::draw()
   {
     if (break_writing)
       break;
-        
+
     switch (i->type)
     {
       case TextAreaCommand::START:
@@ -255,7 +255,7 @@ TextArea::draw()
           sinus = false;
         }
         break;
-          
+
       case TextAreaCommand::WORD:
         retry:
         int word_width;
@@ -266,7 +266,7 @@ TextArea::draw()
           word_width = static_cast<int>(static_cast<float>(impl->font->get_width(i->content)) * 2.0f);
         else
           word_width = impl->font->get_width(i->content);
-          
+
         if (i->content == "\n")
         {
           x_pos = 0;
@@ -293,10 +293,10 @@ TextArea::draw()
                 break_writing = true;
                 break;
               }
-                        
+
               float x = static_cast<float>(x_pos);
               float y = static_cast<float>(y_pos);
-                        
+
               if (sinus) // FIXME: this could actually work per vertex
                 y += sinf(impl->passed_time * 10.0f + static_cast<float>(x_pos) / 15.0f) * 5.0f;
 
@@ -306,8 +306,8 @@ TextArea::draw()
                 eat_time -= 0.05f;
 
               const TTFCharacter& character = impl->font->get_character(*j);
-                      
-              bool draw_it = (y_pos >= impl->scroll_offset && 
+
+              bool draw_it = (y_pos >= impl->scroll_offset &&
                               y_pos < impl->scroll_offset + impl->rect.get_height() - static_cast<float>(impl->font->get_height()));
               if (is_small)
               {
@@ -320,16 +320,16 @@ TextArea::draw()
                              y + scale * static_cast<float>(character.pos.top));
 
                   glTexCoord2f(character.uv.right, character.uv.top);
-                  glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                  glVertex2f(x + scale * static_cast<float>(character.pos.right),
                              y + scale * static_cast<float>(character.pos.top));
 
                   glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
                   glTexCoord2f(character.uv.right, character.uv.bottom);
-                  glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                  glVertex2f(x + scale * static_cast<float>(character.pos.right),
                              y + scale * static_cast<float>(character.pos.bottom));
 
                   glTexCoord2f(character.uv.left, character.uv.bottom);
-                  glVertex2f(x + scale * static_cast<float>(character.pos.left), 
+                  glVertex2f(x + scale * static_cast<float>(character.pos.left),
                              y + scale * static_cast<float>(character.pos.bottom));
                 }
                 x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
@@ -345,21 +345,21 @@ TextArea::draw()
                              y + static_cast<float>(character.pos.top));
 
                   glTexCoord2f(character.uv.right, character.uv.top);
-                  glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                  glVertex2f(x + scale * static_cast<float>(character.pos.right),
                              y + static_cast<float>(character.pos.top));
 
                   glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
                   glTexCoord2f(character.uv.right, character.uv.bottom);
-                  glVertex2f(x + scale * static_cast<float>(character.pos.right), 
+                  glVertex2f(x + scale * static_cast<float>(character.pos.right),
                              y + static_cast<float>(character.pos.bottom));
 
                   glTexCoord2f(character.uv.left, character.uv.bottom);
-                  glVertex2f(x + scale * static_cast<float>(character.pos.left), 
+                  glVertex2f(x + scale * static_cast<float>(character.pos.left),
                              y + static_cast<float>(character.pos.bottom));
                 }
                 x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
               }
-              else   
+              else
               {
                 if (draw_it)
                 {
@@ -369,16 +369,16 @@ TextArea::draw()
                              y + static_cast<float>(character.pos.top));
 
                   glTexCoord2f(character.uv.right, character.uv.top);
-                  glVertex2f(x + static_cast<float>(character.pos.right), 
+                  glVertex2f(x + static_cast<float>(character.pos.right),
                              y + static_cast<float>(character.pos.top));
 
                   glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
                   glTexCoord2f(character.uv.right, character.uv.bottom);
-                  glVertex2f(x + static_cast<float>(character.pos.right), 
+                  glVertex2f(x + static_cast<float>(character.pos.right),
                              y + static_cast<float>(character.pos.bottom));
 
                   glTexCoord2f(character.uv.left, character.uv.bottom);
-                  glVertex2f(x + static_cast<float>(character.pos.left), 
+                  glVertex2f(x + static_cast<float>(character.pos.left),
                              y + static_cast<float>(character.pos.bottom));
                 }
                 x_pos += character.advance;
@@ -401,11 +401,11 @@ TextArea::draw()
   // not be completly excecuted
   if (i == impl->commands.end())
     impl->progress_complete = true;
-    
+
   glEnd();
   glPopMatrix();
 
-  impl->cursor_pos = Vector2f(static_cast<float>(x_pos) + impl->rect.left, 
+  impl->cursor_pos = Vector2f(static_cast<float>(x_pos) + impl->rect.left,
                               static_cast<float>(y_pos) + impl->rect.top);
 }
 

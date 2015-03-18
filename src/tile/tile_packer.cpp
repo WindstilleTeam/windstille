@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -56,8 +56,8 @@ TilePacker::TilePacker(int width, int height) :
   impl->height = height;
 
   impl->texture = Texture::create(GL_TEXTURE_2D, width, height);
-        
-  assert_gl("setting TilePacker texture parameters"); 
+
+  assert_gl("setting TilePacker texture parameters");
 }
 
 TilePacker::~TilePacker()
@@ -91,17 +91,17 @@ TilePacker::pack(SoftwareSurfacePtr image, int x, int y, int w, int h)
   generate_border(convert, 1, 1, TILE_RESOLUTION, TILE_RESOLUTION);
 
   impl->texture->put(convert, impl->x_pos, impl->y_pos);
-  
+
   assert_gl("updating tilepacker texture");
 
-  Rectf rect(Vector2f(static_cast<float>(impl->x_pos + 1) / static_cast<float>(impl->width), 
-                      static_cast<float>(impl->y_pos + 1) / static_cast<float>(impl->height)), 
-             Sizef(static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->width), 
+  Rectf rect(Vector2f(static_cast<float>(impl->x_pos + 1) / static_cast<float>(impl->width),
+                      static_cast<float>(impl->y_pos + 1) / static_cast<float>(impl->height)),
+             Sizef(static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->width),
                    static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->height)));
 
   // we move by TILE_RESOLUTION+1 to avoid tiles bleeding into each other
   // when blending
-  impl->x_pos += TILE_RESOLUTION + 2; 
+  impl->x_pos += TILE_RESOLUTION + 2;
   if (impl->x_pos + TILE_RESOLUTION > impl->width)
   {
     impl->x_pos = 0;

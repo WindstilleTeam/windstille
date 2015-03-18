@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -32,7 +32,7 @@ float distance(const Camera::PathPoint& a, const Camera::PathPoint& b)
 {
   // "100.0f *" is there to balance out the speed between zoom and
   // positional movement
-  return glm::length(b.pos - a.pos) 
+  return glm::length(b.pos - a.pos)
     + 100.0f * fabsf(b.zoom - a.zoom)
     + fabsf(b.rotation - a.rotation);
 }
@@ -62,10 +62,10 @@ Camera::PathPoint interpolate_path(const std::vector<Camera::PathPoint>& path, f
 
 Camera::Camera() :
   mode(CAMERA_FOLLOW_PLAYER),
-  pos(0, 0), 
+  pos(0, 0),
   zoom(1.0f),
   path_pos(0)
-{  
+{
 }
 
 void
@@ -148,7 +148,7 @@ Camera::set_path(const std::vector<PathPoint>& path_, bool cont)
   if (cont)
     path.push_back(PathPoint(pos, zoom));
 
-  std::copy(path_.begin(), path_.end(), std::back_inserter(path)); 
+  std::copy(path_.begin(), path_.end(), std::back_inserter(path));
 
   path_pos = 0;
   mode     = CAMERA_FOLLOW_PATH;

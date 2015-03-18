@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -120,7 +120,7 @@ public:
 
   void bind_wiimote_button(int event, int device, int button);
   void bind_wiimote_axis(int event, int device, int axis);
-  
+
   void clear_bindings();
 
   std::string keyid_to_string(SDL_Scancode id) const;
@@ -135,7 +135,7 @@ private:
   void on_mouse_button_event(const SDL_MouseButtonEvent& button);
   void on_joy_button_event(const SDL_JoyButtonEvent& button);
   void on_joy_axis_event(const SDL_JoyAxisEvent& button);
-  
+
   /** Ensure that the joystick device \a device is open */
   void ensure_open_joystick(int device);
 

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -104,10 +104,10 @@ OpenGLState::OpenGLState() :
   impl->client_state[GL_COLOR_ARRAY]         = false;
   impl->client_state[GL_TEXTURE_COORD_ARRAY] = false;
   impl->client_state[GL_NORMAL_ARRAY]        = false;
-  
+
   impl->blend_sfactor      = GL_SRC_ALPHA;
   impl->blend_dfactor      = GL_ONE_MINUS_SRC_ALPHA;
-  
+
   impl->color              = Color(1.0f, 1.0f, 1.0f);
 }
 
@@ -145,7 +145,7 @@ OpenGLState::get_state(GLenum cap) const
   }
 }
 
-void 
+void
 OpenGLState::set_state(GLenum cap, bool value)
 {
   std::map<GLenum, bool>::iterator i = impl->state.find(cap);
@@ -156,7 +156,7 @@ OpenGLState::set_state(GLenum cap, bool value)
   else
   {
     i->second = value;
-  } 
+  }
 }
 
 void
@@ -170,7 +170,7 @@ OpenGLState::enable(GLenum cap)
 
 void
 OpenGLState::disable(GLenum cap)
-{  
+{
   // Texturing is enabled automatically when a texture is bind
   assert(cap != GL_TEXTURE_2D);
 
@@ -205,7 +205,7 @@ OpenGLState::set_client_state(GLenum array, bool value)
     i->second = value;
   }
 }
-  
+
 void
 OpenGLState::enable_client_state(GLenum array)
 {
@@ -276,7 +276,7 @@ OpenGLState::activate()
   for(int i = 0; i < MAX_TEXTURE_UNITS; ++i)
   {
     if (impl->texture[i] != global_state->impl->texture[i])
-    { 
+    {
       if (GLEW_ARB_multitexture)
       {
         // Matrox G450 can't do multitexturing
@@ -288,12 +288,12 @@ OpenGLState::activate()
         global_state->impl->texture[i] = impl->texture[i];
 
         switch (impl->texture[i]->get_target())
-        {                 
+        {
           case GL_TEXTURE_2D:
             glBindTexture(GL_TEXTURE_2D, impl->texture[i]->get_handle());
             glEnable(GL_TEXTURE_2D);
             break;
-                  
+
           default:
             assert(!"Unknown texture target");
             break;
@@ -326,7 +326,7 @@ OpenGLState::verify()
     {
       std::cout << "OpenGLState: client_state " << i->first << " is out of sync" << std::endl;
     }
-  }  
+  }
 
   for(std::map<GLenum, bool>::iterator i = impl->state.begin();
       i != impl->state.end(); ++i)

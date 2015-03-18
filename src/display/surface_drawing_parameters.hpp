@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -58,38 +58,38 @@ public:
       vflip(false)
   {}
 
-  SurfaceDrawingParameters& set_scale(float s) 
-  { 
-    scale    = Vector2f(s, s); 
-    return *this; 
+  SurfaceDrawingParameters& set_scale(float s)
+  {
+    scale    = Vector2f(s, s);
+    return *this;
   }
 
   SurfaceDrawingParameters& set_color(const Color& c)
-  { 
+  {
     color = c;
-    return *this; 
+    return *this;
   }
 
-  SurfaceDrawingParameters& set_angle(float r) 
-  { 
+  SurfaceDrawingParameters& set_angle(float r)
+  {
     angle = r;
-    return *this; 
+    return *this;
   }
 
-  SurfaceDrawingParameters& set_scale(const Vector2f& s) 
-  { 
+  SurfaceDrawingParameters& set_scale(const Vector2f& s)
+  {
     scale = s;
-    return *this; 
+    return *this;
   }
 
-  SurfaceDrawingParameters& set_pos(const Vector2f& p) 
-  { 
+  SurfaceDrawingParameters& set_pos(const Vector2f& p)
+  {
     pos = p;
     return *this;
   }
 
   SurfaceDrawingParameters& set_z_pos(float p)
-  { 
+  {
     z_pos = p;
     return *this;
   }
@@ -105,13 +105,13 @@ public:
     vflip = v;
     return *this;
   }
-  
-  SurfaceDrawingParameters& set_blend_func(GLenum src, GLenum dst) 
-  { 
+
+  SurfaceDrawingParameters& set_blend_func(GLenum src, GLenum dst)
+  {
     blendfunc_src = src;
     blendfunc_dst = dst;
-    return *this; 
-  }  
+    return *this;
+  }
 };
 
 #endif

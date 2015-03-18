@@ -39,7 +39,7 @@ private:
 
 public:
   SlideObject(const Pathname& filename);
-  
+
   void draw(float relative_time);
 
   float length() const;

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -76,8 +76,8 @@ Surface::get_width()  const
 
 float
 Surface::get_height() const
-{ 
-  return m_size.height; 
+{
+  return m_size.height;
 }
 
 Sizef
@@ -144,13 +144,13 @@ Surface::draw(const SurfaceDrawingParameters& params) const
   if (params.vflip)
     std::swap(uv.top, uv.bottom);
 
-  Quad quad(params.pos.x, 
+  Quad quad(params.pos.x,
             params.pos.y,
-            params.pos.x + m_size.width  * params.scale.x, 
+            params.pos.x + m_size.width  * params.scale.x,
             params.pos.y + m_size.height * params.scale.y);
 
   quad.rotate(params.angle);
-  
+
   glTexCoord2f(uv.left, uv.top);
   glVertex3f(quad.p1.x, quad.p1.y, params.z_pos);
 
@@ -163,7 +163,7 @@ Surface::draw(const SurfaceDrawingParameters& params) const
   glTexCoord2f(uv.left, uv.bottom);
   glVertex3f(quad.p4.x, quad.p4.y, params.z_pos);
 
-  glEnd(); 
+  glEnd();
 }
 
 /* EOF */

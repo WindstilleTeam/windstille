@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -28,14 +28,14 @@
 
 /** Check if the given region of the given image is fully transparent */
 bool surface_empty(SoftwareSurfacePtr image, int sx, int sy, int w, int h)
-{ 
+{
   unsigned char* data = static_cast<unsigned char*>(image->get_pixels());
-  
+
   for(int y = sy; y < sy + h; ++y)
     for(int x = sx; x < sx + w; ++x)
     {
       if (data[y * image->get_pitch() + 4*x + 3] != 0)
-      { 
+      {
         return false;
       }
     }
@@ -60,7 +60,7 @@ TileFactory::TileFactory(const Pathname& filename) :
     msg << "'" << filename << "' is not a windstille tiles file";
     throw std::runtime_error(msg.str());
   }
-  
+
   std::vector<FileReader> sections = reader.get_sections();
   for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
   {
@@ -93,7 +93,7 @@ TileFactory::parse_tiles(FileReader& reader)
   descriptions.push_back(new TileDescription(reader));
 
   TileDescription& desc = *descriptions.back();
-  
+
   if (0)
   { // Load all on startup
     desc.load(this);
@@ -101,13 +101,13 @@ TileFactory::parse_tiles(FileReader& reader)
   else
   { // Load on demand
     for(std::vector<int>::size_type i = 0; i < desc.ids.size(); ++i)
-    { 
+    {
       int& id = desc.ids[i];
       if (id != 0)
       {
         if (id >= int(tiles.size()))
           tiles.resize(id + 1, 0);
-    
+
         delete tiles[id];
         tiles[id] = new Tile(desc.colmap[i]);
         tiles[id]->desc = &desc;
@@ -126,7 +126,7 @@ TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect
     std::cout << "Warning: Duplicate tile id '" << id << "' ignoring" << std::endl;
   }
   else
-  {      
+  {
     if (id >= int(tiles.size()))
       tiles.resize(id + 1, 0);
 
@@ -142,8 +142,8 @@ TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect
         packers.push_back(new TilePacker(1024, 1024));
         color_packer = static_cast<int>(packers.size()) - 1;
       }
-          
-      Rectf uv = packers[color_packer]->pack(image, 
+
+      Rectf uv = packers[color_packer]->pack(image,
                                              rect.left, rect.top,
                                              rect.get_width(), rect.get_height());
       tiles[id]->uv      = uv;

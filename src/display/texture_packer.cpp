@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -60,7 +60,7 @@ public:
         left.reset(new TextureSpace(Rect(out_rect.left,  out_rect.bottom,
                                          out_rect.right, rect.bottom)));
 
-        right.reset(new TextureSpace(Rect(out_rect.right, out_rect.top, 
+        right.reset(new TextureSpace(Rect(out_rect.right, out_rect.top,
                                           rect.right, rect.bottom)));
 
         return true;
@@ -132,7 +132,7 @@ TexturePacker::~TexturePacker()
     delete *i;
   textures.clear();
 }
-  
+
 bool
 TexturePacker::allocate(const Size& size, Rect& rect, TexturePtr& out_texture)
 {
@@ -167,24 +167,24 @@ TexturePacker::upload(SoftwareSurfacePtr surface)
     // duplicate border pixel
 
     // top
-    texture->put(surface, Rect(Point(0, 0), Size(surface->get_width(), 1)), 
+    texture->put(surface, Rect(Point(0, 0), Size(surface->get_width(), 1)),
                  rect.left+1, rect.top);
     // bottom
-    texture->put(surface, Rect(Point(0, surface->get_height()-1), Size(surface->get_width(), 1)), 
+    texture->put(surface, Rect(Point(0, surface->get_height()-1), Size(surface->get_width(), 1)),
                  rect.left+1, rect.bottom-1);
     // left
-    texture->put(surface, Rect(Point(0, 0), Size(1, surface->get_height())), 
+    texture->put(surface, Rect(Point(0, 0), Size(1, surface->get_height())),
                  rect.left, rect.top+1);
     // right
     texture->put(surface, Rect(Point(surface->get_width()-1, 0), Size(1, surface->get_height())),
                  rect.right-1, rect.top+1);
 
     // duplicate corner pixels
-    texture->put(surface, Rect(Point(0, 0), Size(1, 1)), 
-                 rect.left, rect.top);     
-    texture->put(surface, Rect(Point(surface->get_width()-1, 0), Size(1, 1)), 
+    texture->put(surface, Rect(Point(0, 0), Size(1, 1)),
+                 rect.left, rect.top);
+    texture->put(surface, Rect(Point(surface->get_width()-1, 0), Size(1, 1)),
                  rect.right-1, rect.top);
-    texture->put(surface, Rect(Point(surface->get_width()-1, surface->get_height()-1), Size(1, 1)), 
+    texture->put(surface, Rect(Point(surface->get_width()-1, surface->get_height()-1), Size(1, 1)),
                  rect.right-1, rect.bottom-1);
     texture->put(surface, Rect(Point(0, surface->get_height()-1), Size(1, 1)),
                  rect.left, rect.bottom-1);
@@ -195,7 +195,7 @@ TexturePacker::upload(SoftwareSurfacePtr surface)
     return Surface::create(texture,
                            Rectf(static_cast<float>(rect.left+1)   / static_cast<float>(texture->get_width()),
                                  static_cast<float>(rect.top+1)    / static_cast<float>(texture->get_height()),
-                                 static_cast<float>(rect.right-1)  / static_cast<float>(texture->get_width()), 
+                                 static_cast<float>(rect.right-1)  / static_cast<float>(texture->get_width()),
                                  static_cast<float>(rect.bottom-1) / static_cast<float>(texture->get_height())),
                            Sizef(static_cast<float>(surface->get_width()), static_cast<float>(surface->get_height())));
   }

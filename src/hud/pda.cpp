@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -46,10 +46,10 @@ PDA::PDA()
     objectives(),
     state(PDA_OBJECTIVES),
     old_state(PDA_NONE)
-{ 
+{
   background = Sprite(Pathname("images/pda/pda.sprite"));
 
-  ui_area.reset(new TextArea(Rectf(pos + Vector2f(40.0f, 50.0f), 
+  ui_area.reset(new TextArea(Rectf(pos + Vector2f(40.0f, 50.0f),
                                    Sizef(315.0f, 435.0f)).grow(-12.0f), false));
   text_area.reset(new TextArea(Rectf(pos + Vector2f(40.0f, 50.0f) + Vector2f(0.0f, 56.0f),
                                      Sizef(315.0f, 380.0f)).grow(-12.0f), false));
@@ -71,7 +71,7 @@ PDA::draw()
   background.draw(pos);
 
   Rectf rect = text_area->get_rect().grow(8.0f);
-  
+
   Display::fill_rounded_rect(rect, 16.0f, Color(0.1f, 0.1f, 0.2f, 0.8f));
   //Display::draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
@@ -84,17 +84,17 @@ PDA::update(float delta, const Controller& controller)
 {
   const InputEventLst& events = controller.get_events();
 
-  for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i) 
+  for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i)
   {
     if (i->type == BUTTON_EVENT)
     {
-      if (i->axis.name == MENU_LEFT_BUTTON && i->button.down) 
+      if (i->axis.name == MENU_LEFT_BUTTON && i->button.down)
       {
         state = static_cast<PDAState>(state + 1);
         if (state > PDA_DIALOGS)
           state = PDA_OBJECTIVES;
       }
-      else if (i->axis.name == MENU_RIGHT_BUTTON && i->button.down) 
+      else if (i->axis.name == MENU_RIGHT_BUTTON && i->button.down)
       {
         state = static_cast<PDAState>(state - 1);
         if (state < PDA_OBJECTIVES)
@@ -102,17 +102,17 @@ PDA::update(float delta, const Controller& controller)
       }
     }
   }
-  
+
   if (text_area.get())
   {
     text_area->set_scroll_offset(text_area->get_scroll_offset() + 500.0f * controller.get_axis_state(Y2_AXIS) * delta);
   }
-    
-  if (old_state != state) 
+
+  if (old_state != state)
   {
     old_state = state;
 
-    switch (state) 
+    switch (state)
     {
       case PDA_NONE:
         break;
@@ -126,7 +126,7 @@ PDA::update(float delta, const Controller& controller)
         break;
     }
   }
-  
+
   text_area->update(delta);
 }
 
@@ -152,10 +152,10 @@ PDA::add_objective(const std::string& name, const std::string& text)
 
 void
 PDA::objective_complete(const std::string& name)
-{  
+{
   force_regeneration();
 
-  for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i) 
+  for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i)
   {
     if (i->name == name)
       i->complete = true;
@@ -166,24 +166,24 @@ PDA::objective_complete(const std::string& name)
 bool
 PDA::is_objective_given(const std::string& name)
 {
-  for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i) 
+  for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i)
   {
     if (i->name == name)
       return true;
   }
-  
+
   return false;
 }
 
 bool
 PDA::is_objective_complete(const std::string& name)
 {
-  for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i) 
+  for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i)
   {
     if (i->name == name && i->complete)
       return true;
   }
-  
+
   return false;
 }
 
@@ -192,9 +192,9 @@ PDA::generate_objectives()
 {
   ui_area->set_text("<large>Personal Digital Assistant</large>\n"
                     "<b>objectives</b> - dialogs");
-  
+
   std::ostringstream out;
-  for (std::vector<ObjectiveEntry>::reverse_iterator i = objectives.rbegin(); i != objectives.rend(); ++i) 
+  for (std::vector<ObjectiveEntry>::reverse_iterator i = objectives.rbegin(); i != objectives.rend(); ++i)
   {
     out << i->name << ": ";
 
@@ -214,9 +214,9 @@ PDA::generate_dialogs()
 {
   ui_area->set_text("<large>Personal Digital Assistant</large>\n"
                     "objectives - <b>dialogs</b>");
-  
+
   std::ostringstream out;
-  for (std::vector<DialogEntry>::reverse_iterator i = dialogs.rbegin(); i != dialogs.rend(); ++i) 
+  for (std::vector<DialogEntry>::reverse_iterator i = dialogs.rbegin(); i != dialogs.rend(); ++i)
   {
     if (i->character == "Jane")
       out << "<i>" << i->character << ":</i> " << i->text << '\n';

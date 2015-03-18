@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -58,7 +58,7 @@ Sprite2DView::Sprite2DView()
   for(std::vector<std::string>::iterator i = arg_files.begin(); i != arg_files.end(); ++i)
   {
     if (boost::filesystem::is_directory(i->c_str()))
-    { 
+    {
       adddir(Pathname(*i, Pathname::kSysPath));
     }
     else
@@ -66,7 +66,7 @@ Sprite2DView::Sprite2DView()
       directory.push_back(Pathname(*i, Pathname::kSysPath));
     }
   }
-  
+
   shuffle_directory = directory;
   shuffle = false;
 
@@ -78,7 +78,7 @@ Sprite2DView::Sprite2DView()
   if (directory.size() > 1)
     mode = SLIDESHOW;
   else
-    mode = SLIDESHOW; 
+    mode = SLIDESHOW;
 
   zoom = 1.0f;
   pos  = Vector2f(0,0);
@@ -111,12 +111,12 @@ Sprite2DView::adddir(const Pathname& dirname)
 
 Sprite2DView::~Sprite2DView()
 {
-  
+
 }
 
 void
 Sprite2DView::draw()
-{ 
+{
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   switch(mode)
@@ -165,9 +165,9 @@ Sprite2DView::draw()
           small.draw(Vector2f(DISPLAY_W - w,
                               DISPLAY_H - h));
         }
-      }        
+      }
       break;
-      
+
     case MANUAL:
       sprite.set_scale(zoom);
       sprite.draw(pos);
@@ -260,17 +260,17 @@ Sprite2DView::next_image(int i)
       dir = shuffle_directory;
     else
       dir = directory;
-      
+
     bool retry = false;
 
-    do 
+    do
     {
-      try 
+      try
       {
         new_sprite = Sprite(dir[index]);
         retry = false;
-      } 
-      catch(std::exception& e) 
+      }
+      catch(std::exception& e)
       {
         // FIXME: won't work in combination with shuffle
         std::cout << "Error: " << e.what() << std::endl;
@@ -279,7 +279,7 @@ Sprite2DView::next_image(int i)
         index = static_cast<unsigned int>(index) % static_cast<int>(directory.size());
         retry = true;
       }
-    } 
+    }
     while (retry);
 
     ignore_delta = true;
@@ -312,7 +312,7 @@ Sprite2DView::prepare_sprite(Sprite& sprite_)
     w *= s;
     h *= s;
     sprite_.set_scale(s);
-  }  
+  }
 }
 
 void
@@ -320,7 +320,7 @@ Sprite2DView::update_manual(float delta, const Controller& controller)
 {
   pos.x += controller.get_axis_state(X_AXIS) * 100.0f * delta + controller.get_ball_state(MOUSE_MOTION_X);
   pos.y += controller.get_axis_state(Y_AXIS) * 100.0f * delta + controller.get_ball_state(MOUSE_MOTION_Y);
-  
+
   if (controller.get_button_state(PRIMARY_BUTTON))
     zoom *= 1.0f + 0.3f * delta;
 
@@ -332,13 +332,13 @@ Sprite2DView::update_manual(float delta, const Controller& controller)
 
 void
 Sprite2DView::update(float delta, const Controller& controller)
-{  
+{
   if (ignore_delta)
   {
     ignore_delta = false;
     delta = 0.0f;
   }
-  
+
   display_time += delta * 0.5f;
 
   switch(mode) {
@@ -378,14 +378,14 @@ Sprite2DView::update(float delta, const Controller& controller)
 
   //  if (controller.button_was_pressed(INVENTORY_BUTTON))
   //std::random_shuffle(shuffle_directory.begin(), shuffle_directory.end());
-   
+
   if (controller.button_was_pressed(TERTIARY_BUTTON))
     show_thumbnail = !show_thumbnail;
 
   if (controller.button_was_pressed(AIM_BUTTON))
   {
-    if (mode == SLIDESHOW) mode = MANUAL; 
-    else if (mode == MANUAL) mode = SLIDESHOW; 
+    if (mode == SLIDESHOW) mode = MANUAL;
+    else if (mode == MANUAL) mode = SLIDESHOW;
   }
 
   if (new_sprite)

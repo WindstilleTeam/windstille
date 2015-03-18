@@ -7,12 +7,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -43,7 +43,7 @@ Texture::create(SoftwareSurfacePtr image, GLint format)
 {
   return TexturePtr(new Texture(image, format));
 }
-  
+
 TexturePtr
 Texture::create(GLenum target, int width, int height, GLint format)
 {
@@ -57,7 +57,7 @@ Texture::Texture() :
   m_height(0)
 {
   glGenTextures(1, &m_handle);
-  assert_gl("Texture::Texture()"); 
+  assert_gl("Texture::Texture()");
 }
 
 Texture::Texture(GLenum target, int width, int height, GLint format) :
@@ -78,7 +78,7 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
   }
 
   glGenTextures(1, &m_handle);
-  assert_gl("Texture::Texture()"); 
+  assert_gl("Texture::Texture()");
 
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
@@ -91,7 +91,7 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
   glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-  assert_gl("Texture::Texture() 2"); 
+  assert_gl("Texture::Texture() 2");
 }
 
 Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
@@ -101,14 +101,14 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
   m_height(image->get_height())
 {
   glGenTextures(1, &m_handle);
-  assert_gl("Texture::Texture()"); 
+  assert_gl("Texture::Texture()");
 
   if (!GLEW_ARB_texture_non_power_of_two)
   {
     if (!math::is_power_of_two(image->get_width()) || !math::is_power_of_two(image->get_height()))
     {
       std::ostringstream str;
-      str << "Texture::Texture(): image dimensions have non power of two size: " 
+      str << "Texture::Texture(): image dimensions have non power of two size: "
           << image->get_width() << "x" << image->get_height();
       throw std::runtime_error(str.str());
     }
@@ -121,8 +121,8 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
 
   // FIXME: User SDL_ConvertSurface to bring images in the right format
   // SDL_ConvertSurface(bmp, screen->format, SDL_SWSURFACE);
-  
-  try 
+
+  try
   {
     GLint maxt;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxt);
@@ -157,7 +157,7 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
       glTexImage2D(m_target, 0, glformat,
                    image->get_width(), image->get_height(), 0, sdl_format,
                    GL_UNSIGNED_BYTE, image->get_pixels());
-        
+
       glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
@@ -166,7 +166,7 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
       gluBuild2DMipmaps(m_target, glformat,
                         image->get_width(), image->get_height(), sdl_format,
                         GL_UNSIGNED_BYTE, image->get_pixels());
-        
+
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
@@ -178,7 +178,7 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
     glTexParameteri(m_target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     assert_gl("setting texture parameters");
-  } 
+  }
   catch(...)
   {
     throw;
@@ -228,7 +228,7 @@ Texture::put(SoftwareSurfacePtr image, const Rect& srcrect, int x, int y)
 
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  // FIXME: Add some checks here to make sure image has the right format 
+  // FIXME: Add some checks here to make sure image has the right format
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // FIXME: Does SDL always use 4?
   glPixelStorei(GL_UNPACK_ROW_LENGTH,
                 image->get_pitch() / image->get_bytes_per_pixel());

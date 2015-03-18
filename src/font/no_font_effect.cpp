@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -24,7 +24,7 @@ NoFontEffect::blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_pos,
 {
   int start_x = std::max(0, -x_pos);
   int start_y = std::max(0, -y_pos);
-  
+
   int end_x = std::min(static_cast<int>(brush.width), target->get_width()  - x_pos);
   int end_y = std::min(static_cast<int>(brush.rows), target->get_height() - y_pos);
 
@@ -37,7 +37,7 @@ NoFontEffect::blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_pos,
     {
       int target_pos = (y + y_pos) * target_pitch + 4*(x + x_pos);
       int brush_pos  = y * brush.pitch + x;
-            
+
       target_buf[target_pos + 0] = 255;
       target_buf[target_pos + 1] = 255;
       target_buf[target_pos + 2] = 255;

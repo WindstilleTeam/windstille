@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -44,7 +44,7 @@ Automap::Automap(const Rectf& rect_, Component* parent_) :
   TileMap* tilemap = Sector::current()->get_tilemap();
 
   SoftwareSurfacePtr image = SoftwareSurface::create(tilemap->get_width(), tilemap->get_height());
-  
+
   unsigned char* buffer = static_cast<unsigned char*>(image->get_pixels());
 
   for(int y = 0; y < image->get_height(); ++y)
@@ -102,7 +102,7 @@ Automap::update(float delta, const Controller& controller)
     pos.y += controller.get_axis_state(Y_AXIS) * delta * 100.0f;
   }
 
-  for(InputEventLst::const_iterator i = controller.get_events().begin(); i != controller.get_events().end(); ++i) 
+  for(InputEventLst::const_iterator i = controller.get_events().begin(); i != controller.get_events().end(); ++i)
   {
     if (i->type == BUTTON_EVENT && i->button.down)
     {

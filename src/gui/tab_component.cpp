@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -65,7 +65,7 @@ TabComponent::draw()
                                                    rect.top + static_cast<float>(Fonts::current()->vera20->get_height())),
                                           tabs[i].label,
                                           tabs[current_tab].component->is_active()
-                                          ? Color(1.0f, 1.0f, 1.0f, 0.5f) 
+                                          ? Color(1.0f, 1.0f, 1.0f, 0.5f)
                                           : Color(1.0f, 1.0f, 1.0f, 1.0f));
   }
 
@@ -85,7 +85,7 @@ TabComponent::update(float delta, const Controller& controller)
   {
     tabs[current_tab].component->update(delta, Controller());
 
-    for(InputEventLst::const_iterator i = controller.get_events().begin(); i != controller.get_events().end(); ++i) 
+    for(InputEventLst::const_iterator i = controller.get_events().begin(); i != controller.get_events().end(); ++i)
     {
       if (i->type == BUTTON_EVENT && i->button.down)
       {
@@ -125,7 +125,7 @@ TabComponent::update(float delta, const Controller& controller)
           }
           else if (i->axis.pos > 0)
           {
-            tabs[current_tab].component->set_active(true); 
+            tabs[current_tab].component->set_active(true);
           }
         }
       }

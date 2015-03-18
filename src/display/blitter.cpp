@@ -28,18 +28,18 @@ void generate_border(SoftwareSurfacePtr surface,
                      int x_pos, int y_pos, int width, int height)
 {
   assert(surface->get_bits_per_pixel() == 32);
- 
+
   uint8_t* data = static_cast<uint8_t*>(surface->get_pixels());
   int pitch = surface->get_pitch();
 
   // duplicate the top line
-  memcpy(data + (y_pos-1)*pitch + 4*x_pos, 
+  memcpy(data + (y_pos-1)*pitch + 4*x_pos,
          data + (y_pos)*pitch + 4*x_pos,
          4*width);
 
   // duplicate the bottom line
-  memcpy(data + (y_pos+height)*pitch + 4*x_pos, 
-         data + (y_pos+height-1)*pitch + 4*x_pos,  
+  memcpy(data + (y_pos+height)*pitch + 4*x_pos,
+         data + (y_pos+height-1)*pitch + 4*x_pos,
          4*width);
 
   // duplicate left and right borders

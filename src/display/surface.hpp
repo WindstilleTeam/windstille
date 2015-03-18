@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -37,8 +37,8 @@ class Surface
 {
 public:
   static SurfacePtr create(const Pathname& filename);
-  
-  /** 
+
+  /**
    * Create a new Surface object from a Texture
    * @param texture The Texture to use
    * @param uv The rectangle of the texture to use in (0-1) notation
@@ -51,14 +51,14 @@ public:
 private:
   Surface(TexturePtr texture, const Rectf& uv, const Sizef& size);
   Surface(int width, int height);
-  
+
 public:
   ~Surface();
 
   float get_width()  const;
   float get_height() const;
   Sizef get_size() const;
-  
+
   TexturePtr get_texture() const;
 
   /** Returns texture coordinates for the Surface rectangle */
@@ -73,7 +73,7 @@ private:
    */
   TexturePtr m_texture;
 
-  /** 
+  /**
    * uv coordinates of the Surface in [0,1] range
    */
   Rectf m_uv;

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -39,12 +39,12 @@ NavigationTest::NavigationTest()
     selected_node(),
     node_to_connect()
 {
-  try 
+  try
   {
     FileReader reader = FileReader::parse(Pathname("navigation.nav"));
     graph->load(reader);
   }
-  catch(std::exception& err) 
+  catch(std::exception& err)
   {
     std::cout << "NavigationTest: " << err.what() << std::endl;
   }
@@ -77,7 +77,7 @@ NavigationTest::draw()
 
   if (node_to_connect)
   {
-    Display::fill_rect(Rectf(node_to_connect->get_pos() - Vector2f(2,2), Sizef(5,5)),  
+    Display::fill_rect(Rectf(node_to_connect->get_pos() - Vector2f(2,2), Sizef(5,5)),
                        Color(1.0f, 1.0f, 1.0f));
     Display::draw_line(node_to_connect->get_pos(), cursor, Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
@@ -94,7 +94,7 @@ NavigationTest::draw()
   {
     Display::fill_circle(connection->get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f, 0.5f));
     Display::fill_circle(connection->get_pos(), 8.0f, Color(0.0f, 1.0f, 1.0f));
-     
+
     Display::draw_line(connection->get_pos(), connection->get_pos() + 100.0f*stick,
                        Color(1.0f, 1.0f, 1.0f, 1.0f));
   }
@@ -121,7 +121,7 @@ NavigationTest::update(float delta, const Controller& controller)
     {
       if (selected_node)
         graph->add_edge(node_to_connect, selected_node);
-          
+
       node_to_connect = 0;
     }
     else if (selected_node)
@@ -153,16 +153,16 @@ NavigationTest::update(float delta, const Controller& controller)
   }
 
   if (connection.get())
-  { 
+  {
     // Handle the movement of the connection
     Node* next_node;
     //float advance = 512.0f * controller.get_axis_state(X2_AXIS) * delta;
-      
+
     Vector2f advance = delta * 512.0f * stick;
     connection->advance(advance, next_node);
 
     player = connection->get_pos();
-      
+
     if (!(advance.x == 0.0f && advance.y == 0.0f))
     { // Not all advancement got used up, which means we have hit
       // the end of a edge
@@ -177,7 +177,7 @@ NavigationTest::update(float delta, const Controller& controller)
         if (connection->get_edge() != i->edge)
         { // Find out into the direction of which edge the stick is pointing
           Vector2f proj = glm::proj(stick, i->edge->get_vector());
-                  
+
           if (glm::length(proj) > length)
           {
             next_edge = *i;
@@ -185,7 +185,7 @@ NavigationTest::update(float delta, const Controller& controller)
           }
         }
       }
-              
+
       if (!next_edge.edge)
       {
         std::cout << "Dead End" << std::endl;
@@ -203,7 +203,7 @@ NavigationTest::update(float delta, const Controller& controller)
     }
 
     if (controller.get_button_state(AIM_BUTTON))
-    {         
+    {
       connection.reset();
 
       // FIXME: Voodoo to fix connection/dedaend cicles
@@ -214,7 +214,7 @@ NavigationTest::update(float delta, const Controller& controller)
   else
   { // handle non connection based movement
     player += Vector2f(0.0f, 100.0f) * delta;
-      
+
     player.x += 512.0f * stick.x * delta;
 
     if (controller.get_button_state(AIM_BUTTON))
@@ -223,13 +223,13 @@ NavigationTest::update(float delta, const Controller& controller)
     }
 
     std::vector<EdgePosition> positions = graph->find_intersections(Line(old_player, player));
-    if (!positions.empty()) 
+    if (!positions.empty())
     {
       std::cout << "Doing connection" << std::endl;
       connection.reset(new EdgePosition(positions.front()));
     }
   }
-  
+
   if (controller.button_was_pressed(SELECT_BUTTON))
   {
     graph->save(std::cout);
@@ -240,12 +240,12 @@ NavigationTest::update(float delta, const Controller& controller)
     if (selected_node) {
       graph->remove_node(selected_node);
       selected_node = 0;
-    } 
-      
+    }
+
     if (selected_edge) {
       graph->remove_edge(selected_edge);
       selected_edge = 0;
-    }      
+    }
   }
 
   selected_node = graph->find_closest_node(cursor, 32.0f);

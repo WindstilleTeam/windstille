@@ -31,7 +31,7 @@ SlideObject::SlideObject(const Pathname& filename) :
   m_path(),
   m_fade_in_time(0.0f),
   m_fade_out_time(0.0f)
-{  
+{
   m_size = JPEG::get_size(filename.get_sys_path());
 }
 
@@ -120,7 +120,7 @@ SlideObject::get_height() const
   return m_size.height;
 }
 
-Pathname 
+Pathname
 SlideObject::get_filename() const
 {
   return m_filename;

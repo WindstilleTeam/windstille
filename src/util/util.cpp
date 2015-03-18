@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -31,7 +31,7 @@ std::string dirname(const std::string& filename)
   if(p == std::string::npos)
     return "";
 
-  return filename.substr(0, p+1);        
+  return filename.substr(0, p+1);
 }
 
 std::string basename(const std::string& filename)
@@ -77,7 +77,7 @@ float read_float(std::istream& in)
     float    float_v;
     uint32_t raw_v;
   } result;
-  
+
   if (!in.read(reinterpret_cast<char*>(&result.raw_v), sizeof(result.raw_v)))
   {
     std::ostringstream msg;

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -68,16 +68,16 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
 
     { // Copy lightmap to a texture
       OpenGLState state;
-        
+
       state.bind_texture(m_lightmap->get_texture());
       state.activate();
 
-      glCopyTexSubImage2D(GL_TEXTURE_2D, 
+      glCopyTexSubImage2D(GL_TEXTURE_2D,
                           0,    // mipmap level
                           0, 0, // xoffset, yoffset
                           0, // x
                           m_window.height - static_cast<GLsizei>(m_lightmap->get_height()), // y (OpenGL is upside down)
-                          static_cast<GLsizei>(m_lightmap->get_width()), 
+                          static_cast<GLsizei>(m_lightmap->get_width()),
                           static_cast<GLsizei>(m_lightmap->get_height()));
     }
   }
@@ -100,7 +100,7 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
   }
 
   if (sc.get_render_mask() & SceneContext::LIGHTMAP)
-  { // Renders the lightmap to the screen     
+  { // Renders the lightmap to the screen
     OpenGLState state;
 
     state.bind_texture(m_lightmap->get_texture());
@@ -151,12 +151,12 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
       glPopMatrix();
     }
   }
-  
+
   // Clear all DrawingContexts
   sc.color().clear();
   sc.light().clear();
   sc.highlight().clear();
-  sc.control().clear(); 
+  sc.control().clear();
 }
 
 /* EOF */

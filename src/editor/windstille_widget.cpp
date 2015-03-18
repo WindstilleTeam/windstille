@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -65,8 +65,8 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
   {
     Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
     Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
-   
-    action_group->add(Gtk::Action::create("PopupMenu",   "_PopupMenu")); 
+
+    action_group->add(Gtk::Action::create("PopupMenu",   "_PopupMenu"));
     //action_group->add(Gtk::Action::create("ObjectReset", Gtk::Stock::REFRESH));
 
     ui_manager->insert_action_group(action_group);
@@ -92,12 +92,12 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
   }
 
   add_events(Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-             Gdk::KEY_PRESS_MASK      | Gdk::KEY_RELEASE_MASK | 
+             Gdk::KEY_PRESS_MASK      | Gdk::KEY_RELEASE_MASK |
              Gdk::ENTER_NOTIFY_MASK   | Gdk::LEAVE_NOTIFY_MASK);
 
   // Gdk::POINTER_MOTION_HINT_MASK |
   // Gdk::BUTTON_MOTION_MASK | Gdk::BUTTON1_MOTION_MASK | Gdk::BUTTON2_MOTION_MASK |
-  // Gdk::BUTTON3_MOTION_MASK | 
+  // Gdk::BUTTON3_MOTION_MASK |
 
   set_flags(get_flags()|Gtk::CAN_FOCUS);
 
@@ -152,7 +152,7 @@ WindstilleWidget::on_realize()
 
       OpenGLState::init();
     }
-      
+
     if (!sc.get())
     {
       sc.reset(new SceneContext());
@@ -160,7 +160,7 @@ WindstilleWidget::on_realize()
                                       Size(get_width(), get_height())));
       sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
     }
-      
+
     background_pattern = Texture::create(Pathname("editor/background_layer.png"));
     background_pattern->set_wrap(GL_REPEAT);
 
@@ -171,7 +171,7 @@ WindstilleWidget::on_realize()
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-  
+
     glwindow->gl_end();
   }
 }
@@ -206,7 +206,7 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-  
+
     glwindow->gl_end();
 
     return true;
@@ -258,12 +258,12 @@ WindstilleWidget::draw()
   if (sc.get())
   {
     state.push(*sc);
-      
+
     sc->light().fill_screen(m_document->get_sector_model().get_ambient_color());
 
     if (draw_background_pattern)
     {
-      sc->color().fill_pattern(background_pattern, 
+      sc->color().fill_pattern(background_pattern,
                                state.get_offset() * state.get_zoom());
     }
     else
@@ -355,10 +355,10 @@ bool
 WindstilleWidget::mouse_move(GdkEventMotion* ev)
 {
   //std::cout << "Motion: " << ev->x << ", " << ev->y << std::endl;
-  
+
   EditorWindow::current()->get_current_tool()->mouse_move(ev, *this);
   EditorWindow::current()->get_scroll_tool()->mouse_move(ev, *this);
-  
+
   return true;
 }
 
@@ -421,7 +421,7 @@ WindstilleWidget::key_press(GdkEventKey* ev)
       std::cout << "Position Rotation" << std::endl;
       EditorWindow::current()->on_animation_add_keyframe(kRotation);
       break;
-      
+
     case GDK_d:
       m_document->selection_duplicate();
       break;
@@ -537,7 +537,7 @@ WindstilleWidget::on_zoom_out()
 void
 WindstilleWidget::on_zoom_100()
 {
-  state.set_zoom(Vector2f(static_cast<float>(get_width())  / 2.0f, 
+  state.set_zoom(Vector2f(static_cast<float>(get_width())  / 2.0f,
                           static_cast<float>(get_height()) / 2.0f),
                  1.0f);
   queue_draw();
@@ -557,7 +557,7 @@ WindstilleWidget::get_current_layer()
   }
   else
   {
-    return m_document->get_sector_model().get_layer(path_);  
+    return m_document->get_sector_model().get_layer(path_);
   }
 }
 

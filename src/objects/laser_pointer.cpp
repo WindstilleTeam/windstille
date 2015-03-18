@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -35,7 +35,7 @@ LaserPointer::LaserPointer() :
   laserpointer_light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
   noise->set_wrap(GL_REPEAT);
   noise->set_filter(GL_LINEAR);
-  
+
   progress = 0.0f;
   angle = 0.0f;
 }
@@ -47,7 +47,7 @@ LaserPointer::~LaserPointer()
 static float find_max(float pos, float v)
 {
   if (v == 0)
-  { 
+  {
     return 0;
   }
   else if (v < 0)
@@ -90,7 +90,7 @@ LaserPointer::draw(SceneContext& sc)
     while(x >= 0 && x < tilemap->get_width() &&
           y >= 0 && y < tilemap->get_height())
     {
-      //sc.color().fill_rect(Rectf(Vector2f(x * TILE_SIZE, y * TILE_SIZE), Size(TILE_SIZE, TILE_SIZE)), 
+      //sc.color().fill_rect(Rectf(Vector2f(x * TILE_SIZE, y * TILE_SIZE), Size(TILE_SIZE, TILE_SIZE)),
       //                     Color(1.0, 1.0, 1.0, 0.5), 500);
 
       if (tilemap->get_pixel(x, y))
@@ -106,17 +106,17 @@ LaserPointer::draw(SceneContext& sc)
         tMaxX += tDeltaX;
         x = x + step_x;
       }
-      else 
+      else
       {
         t = tMaxY;
         tMaxY += tDeltaY;
         y = y + step_y;
       }
     }
-  
+
   done:
     target = pos + Vector2f(t * direction.x, t * direction.y);
-  
+
     Vector2f ray = target - pos;
 
     VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0,0), 10000,

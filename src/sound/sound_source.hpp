@@ -62,7 +62,7 @@ public:
 
   /** Needs to be called whenever the SoundChannels gain changes */
   virtual void update_gain() const = 0;
-  
+
   virtual void update(float delta) =0;
 
 private:

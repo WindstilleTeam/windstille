@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -33,7 +33,7 @@ bool get(const FileReader& reader, const char* name, Vector2f&  value)
     return true;
   } else {
     return false;
-  }  
+  }
 }
 
 bool get(const FileReader& reader, const char* name, Vector3& value)
@@ -66,7 +66,7 @@ bool get(const FileReader& reader, const char* name, Quaternion& value)
 bool get(const FileReader& reader, const char* name, Matrix& m)
 {
   std::vector<float> floats;
-  if (reader.get(name, floats) && floats.size() == 16) {  
+  if (reader.get(name, floats) && floats.size() == 16) {
     float* mp = glm::value_ptr(m);
     mp[ 0] = floats[0];
     mp[ 4] = floats[1];
@@ -117,7 +117,7 @@ bool get(const FileReader& reader, const char* name, Color& value)
     }
   } else {
     return false;
-  } 
+  }
 }
 
 // Getters for primitive types

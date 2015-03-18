@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -32,32 +32,32 @@ SurfaceDrawer::SurfaceDrawer(SurfacePtr surface_) :
 
 static GLenum string2blendfunc(const std::string& str)
 {
-  if (str == "src_alpha") 
+  if (str == "src_alpha")
   {
     return GL_SRC_ALPHA;
   }
-  else if (str == "one_minus_src_alpha") 
+  else if (str == "one_minus_src_alpha")
   {
     return GL_ONE_MINUS_SRC_ALPHA;
   }
-  else if (str == "dst_alpha") 
+  else if (str == "dst_alpha")
   {
     return GL_DST_ALPHA;
   }
-  else if (str == "one_minus_dst_alpha") 
+  else if (str == "one_minus_dst_alpha")
   {
     return GL_ONE_MINUS_SRC_ALPHA;
   }
-  else if (str == "one") 
+  else if (str == "one")
   {
     return GL_ONE;
   }
-  else if (str == "zero") 
+  else if (str == "zero")
   {
     return GL_ZERO;
   }
   // FIXME: Implement the rest blendfunc here
-  else 
+  else
   {
     std::cout << "string2blendfunc: Unknown blendfunc: '" << str << "'" << std::endl;
     return GL_ONE;
@@ -77,21 +77,21 @@ SurfaceDrawer::SurfaceDrawer(FileReader& props)
   props.get("image", surface_file);
   props.get("blendfunc-src", blendfunc_src_str);
   props.get("blendfunc-dst", blendfunc_dst_str);
-    
+
   surface = SurfaceManager::current()->get(Pathname(surface_file));
 
   blendfunc_src  = string2blendfunc(blendfunc_src_str);
   blendfunc_dest = string2blendfunc(blendfunc_dst_str);
 
-  // FIXME: Bad idea, as the psys isn't fully loaded as this point 
+  // FIXME: Bad idea, as the psys isn't fully loaded as this point
   buffer.reset(new VertexArrayDrawable(Vector2f(), 0.0f,
                                        Matrix(1.0f)));
 }
 
-SurfaceDrawer::~SurfaceDrawer() 
+SurfaceDrawer::~SurfaceDrawer()
 {
 }
-  
+
 void
 SurfaceDrawer::set_texture(SurfacePtr surface_)
 {
@@ -126,15 +126,15 @@ SurfaceDrawer::draw(const ParticleSystem& psys) const
                   psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));
 
       // scale
-      float scale  = psys.get_size_start() + 
+      float scale  = psys.get_size_start() +
         psys.get_progress(i->t) * (psys.get_size_stop() - psys.get_size_start());
-          
+
       float width  = surface->get_width()  * scale;
       float height = surface->get_height() * scale;
-              
+
       // rotate
       float x_rot = width/2;
-      float y_rot = height/2; 
+      float y_rot = height/2;
 
       if (i->angle != 0)
       {

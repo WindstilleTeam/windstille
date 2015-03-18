@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -29,9 +29,9 @@
  * http://windstille.berlios.de/
  *
  * The latest development version can be obtained by:
- * 
+ *
  * $ svn co svn://svn.berlios.de/windstille/trunk/windstille
- * 
+ *
  * Windstille is covered under the GNU GPL, which means that you can copy
  * and even modify it pretty much as you like, as long as you keep the
  * copyright headers in place and distribute the source too if you
@@ -48,7 +48,7 @@
 #define HEADER_WINDSTILLE_APP_WINDSTILLE_MAIN_HPP
 
 class WindstilleMain
-{ 
+{
 public:
   WindstilleMain();
   ~WindstilleMain();

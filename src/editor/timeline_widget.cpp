@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -46,7 +46,7 @@ TimelineWidget::TimelineWidget() :
   signal_motion_notify_event().connect(sigc::mem_fun(this, &TimelineWidget::mouse_move));
 
   add_events(Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-             Gdk::KEY_PRESS_MASK      | Gdk::KEY_RELEASE_MASK | 
+             Gdk::KEY_PRESS_MASK      | Gdk::KEY_RELEASE_MASK |
              Gdk::ENTER_NOTIFY_MASK   | Gdk::LEAVE_NOTIFY_MASK);
 }
 
@@ -97,7 +97,7 @@ TimelineWidget::mouse_down(GdkEventButton* ev)
   }
   else if (ev->button == 2)
   { // scroll
-    
+
   }
   else if (ev->button == 3)
   { // set cursor
@@ -128,7 +128,7 @@ TimelineWidget::mouse_up(GdkEventButton* ev)
     else if (m_mode == kDragMode)
     {
       m_mode = kNoMode;
-      for (std::set<TimelineObjectHandle>::iterator i = m_selection.begin(); 
+      for (std::set<TimelineObjectHandle>::iterator i = m_selection.begin();
            i != m_selection.end(); ++i)
       {
         (*i)->set_pos((*i)->get_pos() + (move_pos.x - down_pos.x) / static_cast<float>(m_column_width));
@@ -172,16 +172,16 @@ TimelineWidget::mouse_move(GdkEventMotion* ev)
 void
 TimelineWidget::add_to_selection(const Rectf& selection)
 {
-  Timeline::iterator start = m_timeline->begin() + 
+  Timeline::iterator start = m_timeline->begin() +
     std::max(0, std::min(m_timeline->size(),
                          static_cast<int>((selection.top + static_cast<float>(m_column_height)/2) / static_cast<float>(m_column_height))));
-  Timeline::iterator end   = m_timeline->begin() + 
-    std::max(0, std::min(m_timeline->size(), 
+  Timeline::iterator end   = m_timeline->begin() +
+    std::max(0, std::min(m_timeline->size(),
                          static_cast<int>((selection.bottom + static_cast<float>(m_column_height)/2) / static_cast<float>(m_column_height))));
 
   for(Timeline::iterator i = start; i != end; ++i)
   {
-    const TimelineLayer::Objects& objects 
+    const TimelineLayer::Objects& objects
       = (*i)->get_objects(selection.left / static_cast<float>(m_column_width), selection.right / static_cast<float>(m_column_width));
     m_selection.insert(objects.begin(), objects.end());
   }
@@ -247,7 +247,7 @@ TimelineWidget::draw_grid(Cairo::RefPtr<Cairo::Context> cr)
   Gtk::Allocation allocation = get_allocation();
 
   cr->save();
-  
+
   int height = m_timeline->size() * m_column_height;
 
   // draw vertical lines
@@ -294,7 +294,7 @@ TimelineWidget::draw_timeline(Cairo::RefPtr<Cairo::Context> cr)
   cr->set_source_rgb(1,1,1);
   cr->rectangle(0, 0, allocation.get_width(), static_cast<float>(m_column_height) * static_cast<float>(m_timeline->size()));
   cr->fill();
-  
+
   draw_grid(cr);
 
   cr->save();
@@ -332,7 +332,7 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
         boost::dynamic_pointer_cast<TimelineKeyframeObject>(*i))
     {
       cr->save();
-        
+
       if (in_selection)
       {
         cr->set_source_rgb(0.75, 1.0, 0.0);
@@ -343,8 +343,8 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
       {
         cr->set_source_rgb(0.5, 0.75, 0.0);
       }
-      
-      cr->rectangle(keyframe->get_pos() * static_cast<float>(m_column_width), 
+
+      cr->rectangle(keyframe->get_pos() * static_cast<float>(m_column_width),
                     4.0f, static_cast<float>(m_column_width), static_cast<float>(m_column_height) - 8.0f);
       cr->fill();
 
@@ -353,10 +353,10 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
       else
         cr->set_source_rgb(0, 0, 0);
 
-      cr->rectangle(keyframe->get_pos() * static_cast<float>(m_column_width), 4.0f, 
+      cr->rectangle(keyframe->get_pos() * static_cast<float>(m_column_width), 4.0f,
                     static_cast<float>(m_column_width), static_cast<float>(m_column_height) - 8.0f);
-      cr->stroke();  
-      
+      cr->stroke();
+
       cr->restore();
     }
     else if (boost::shared_ptr<TimelineAnimObject> anim =
@@ -409,7 +409,7 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
       cr->stroke();
 
       cr->set_source_rgb(1,1,1);
-      cr->move_to((anim->get_pos() + anim->get_width()/2) * static_cast<float>(m_column_width) - extents.width/2, 
+      cr->move_to((anim->get_pos() + anim->get_width()/2) * static_cast<float>(m_column_width) - extents.width/2,
                   static_cast<float>(m_column_height) / 2 + 4);
       cr->show_text(anim->get_name());
 
@@ -458,21 +458,21 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
       cr->stroke();
 
       cr->set_source_rgb(1,1,0);
-      cr->move_to((sound->get_pos() + sound->get_width()/2) * static_cast<float>(m_column_width) - extents.width / 2.0f, 
+      cr->move_to((sound->get_pos() + sound->get_width()/2) * static_cast<float>(m_column_width) - extents.width / 2.0f,
                   static_cast<float>(m_column_height) / 2 + 4);
       cr->show_text(sound->get_name());
 
       cr->restore();
     }
   }
-  
+
   cr->restore();
 }
 
 void
 TimelineWidget::delete_selection()
 {
-  
+
 }
 
 void
@@ -499,18 +499,18 @@ TimelineWidget::set_timeline(boost::shared_ptr<Timeline> timeline)
 }
 
 void
-TimelineWidget::set_cursor_pos(float p) 
+TimelineWidget::set_cursor_pos(float p)
 {
-  m_cursor_pos = p; 
+  m_cursor_pos = p;
   m_timeline->apply(p);
   if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
     wst->queue_draw();
 }
 
 float
-TimelineWidget::get_cursor_pos() const 
-{ 
-  return m_cursor_pos; 
+TimelineWidget::get_cursor_pos() const
+{
+  return m_cursor_pos;
 }
 
 /* EOF */

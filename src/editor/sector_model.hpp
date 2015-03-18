@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -45,7 +45,7 @@ private:
   Glib::RefPtr<Gtk::ListStore> layer_tree;
   TimelineHandle m_timeline;
   Color ambient_color;
-  
+
 public:
   typedef std::vector<LayerHandle> Layers;
 
@@ -64,7 +64,7 @@ public:
   void add_layer(LayerHandle layer, const Gtk::TreeModel::Path& path = Gtk::TreeModel::Path());
   void delete_layer(const Gtk::TreeModel::Path& path);
   void reverse_layers();
-  
+
   void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
   void remove(const ObjectModelHandle& object);
   LayerHandle get_layer(const ObjectModelHandle& object) const;
@@ -75,7 +75,7 @@ public:
   LayerHandle get_layer(const Gtk::TreeModel::Path& path) const;
   Layers get_layers() const;
   LayerHandle get_layer(ObjectModelHandle object);
-  
+
   Glib::RefPtr<Gtk::ListStore> get_layer_tree() { return layer_tree; }
 
   void on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
@@ -86,7 +86,7 @@ public:
 
   ObjectModelHandle get_object_at(const Vector2f& pos, const SelectMask& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
-  
+
   void raise_to_top(ObjectModelHandle object);
   void lower_to_bottom(ObjectModelHandle object);
   void raise(ObjectModelHandle object);

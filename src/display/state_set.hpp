@@ -34,7 +34,7 @@ private:
 public:
   StateSet();
 
-  /** 
+  /**
    * Binds the given \a texture to the given texture \a unit and
    * enables texturing via glEnable(GL_TEXTURE2D) for the unit.
    */

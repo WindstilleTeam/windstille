@@ -7,12 +7,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -52,7 +52,7 @@ CollisionObject::CollisionObject(TileMap* tilemap_)
     is_unstuckable(),
     is_unstuck_movable(),
     is_domains(),
-    check_domains() 
+    check_domains()
 {
   object_type        = TILEMAP;
   is_unstuckable     = true;
@@ -78,9 +78,9 @@ CollisionObject::draw(DrawingContext& dc)
   r += v;
 
   dc.fill_rect(r, Color(1.0f, 1.0f, 1.0f), 100.0f);
-  
+
   dc.draw_rect(r, Color(0.6f, 0.6f, 0.6f), 100.0f);
-  
+
   dc.draw_line(Vector2f(r.left + r.get_width ()/2,
                         r.top  + r.get_height ()/2),
                Vector2f(r.left + r.get_width ()/2  + get_velocity ().x,
@@ -93,7 +93,7 @@ void CollisionObject::update(float delta)
   pos += velocity * delta;
 }
 
-void 
+void
 CollisionObject::set_velocity(const Vector2f &m)
 {
   velocity=m;

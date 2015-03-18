@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -30,7 +30,7 @@ GridComponent::GridComponent(Component* parent_)
     child_active(),
     padding()
 {
-  assert(0);  
+  assert(0);
 }
 
 GridComponent::GridComponent(const Rectf& rect_, int weight, int height, Component* parent_)
@@ -62,7 +62,7 @@ GridComponent::draw()
       {
         if (x == pos.x && y == pos.y)
           Display::fill_rect(grid(x, y).component->get_screen_rect(), Color(1.0f, 1.0f, 1.0f, 0.5f));
-            
+
         grid(x, y).component->draw();
       }
     }
@@ -77,8 +77,8 @@ GridComponent::update(float delta, const Controller& controller)
   }
   else if (!child_active)
   {
-    for(InputEventLst::const_iterator i = controller.get_events().begin(); 
-        i != controller.get_events().end(); 
+    for(InputEventLst::const_iterator i = controller.get_events().begin();
+        i != controller.get_events().end();
         ++i)
     {
       if (i->type == BUTTON_EVENT && i->button.down)
@@ -172,7 +172,7 @@ GridComponent::move_left()
 
   pos.x -= 1;
   if (pos.x < 0)
-    pos.x = grid.get_width()-1;  
+    pos.x = grid.get_width()-1;
 
   if (grid(pos.x, pos.y).has_parent())
     pos = grid(pos.x, pos.y).parent;

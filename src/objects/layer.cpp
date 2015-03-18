@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -65,13 +65,13 @@ void
 Layer::commit_removes()
 {
   // remove objects
-  for(Objects::iterator i = objects.begin(); i != objects.end(); ) 
+  for(Objects::iterator i = objects.begin(); i != objects.end(); )
   {
     boost::shared_ptr<GameObject>& object = *i;
 
-    if(object->is_removable()) 
+    if(object->is_removable())
     {
-      if(object->get_name() != "") 
+      if(object->get_name() != "")
       {
         ScriptManager::current()->remove_object_from_squirrel(object);
       }
@@ -95,7 +95,7 @@ Layer::update (float delta)
 {
   commit_adds();
 
-  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i) 
+  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
   {
     if ((*i)->is_active())
       (*i)->update(delta);

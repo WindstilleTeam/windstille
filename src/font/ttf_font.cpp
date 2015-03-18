@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -30,10 +30,10 @@
 #include "font/ttf_font.hpp"
 
 TTFCharacter::TTFCharacter(const Rect& pos_,
-                           const Rectf& uv_, 
+                           const Rectf& uv_,
                            int advance_) :
   pos(pos_),
-  uv(uv_), 
+  uv(uv_),
   advance(advance_)
 {
 }
@@ -72,31 +72,31 @@ TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect) 
 
   std::ifstream fin(filename.get_sys_path().c_str(), std::ios::binary);
   std::istreambuf_iterator<char> first(fin), last;
-  std::vector<char> buffer(first, last); 
+  std::vector<char> buffer(first, last);
 
   FT_Face face;
-  if (FT_New_Memory_Face(TTFFontImpl::library, 
-                         reinterpret_cast<FT_Byte*>(&*buffer.begin()), buffer.size(), 
+  if (FT_New_Memory_Face(TTFFontImpl::library,
+                         reinterpret_cast<FT_Byte*>(&*buffer.begin()), buffer.size(),
                          0, &face))
   {
     std::ostringstream str;
     str << "Couldn't load font: " << filename;
     throw std::runtime_error(str.str());
   }
-  
+
   FT_Set_Pixel_Sizes(face, impl->size, impl->size);
 
   FT_Select_Charmap(face,  FT_ENCODING_UNICODE);
 
   // FIXME: should calculate texture size, based on font size
   SoftwareSurfacePtr pixelbuffer = SoftwareSurface::create(1024, 1024);
-  
+
   int x_pos = 1;
   int y_pos = 1;
-  
+
   // FIXME: Not really needed, instead we should sort the characters
   // after glyph_height before rendering and then use the max_glyph_height for each row
-  int max_glyph_height = effect.get_height(impl->size); 
+  int max_glyph_height = effect.get_height(impl->size);
 
   // List of characters we want in the final font
   std::vector<uint32_t> characters;
@@ -115,7 +115,7 @@ TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect) 
       throw std::runtime_error("couldn't load char");
     }
     else
-    {      
+    {
       effect.blit(pixelbuffer, face->glyph->bitmap, x_pos, y_pos);
 
       int glyph_width  = effect.get_glyph_width(face->glyph->bitmap.width);
@@ -131,7 +131,7 @@ TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect) 
                static_cast<float>(y_pos) / static_cast<float>(pixelbuffer->get_height()),
                static_cast<float>(x_pos + glyph_width)/static_cast<float>(pixelbuffer->get_width()),
                static_cast<float>(y_pos + glyph_height)/static_cast<float>(pixelbuffer->get_height()));
-      
+
       impl->characters.push_back(TTFCharacter(pos, uv,
                                               static_cast<int>(face->glyph->advance.x >> 6)));
 
@@ -188,7 +188,7 @@ TTFFont::draw(const Vector2f& pos_, const std::string& str, const Color& color)
   for(std::string::const_iterator i = str.begin(); i != str.end(); ++i)
   {
     const TTFCharacter& character = impl->characters[*i];
-      
+
     glTexCoord2f(character.uv.left, character.uv.top);
     glVertex2f(pos.x + static_cast<float>(character.pos.left),
                pos.y + static_cast<float>(character.pos.top));
@@ -235,7 +235,7 @@ void
 TTFFont::init()
 {
   FT_Error  error;
-  
+
   error = FT_Init_FreeType( &TTFFontImpl::library );
   if ( error )
     throw std::runtime_error( "could not initialize FreeType" );

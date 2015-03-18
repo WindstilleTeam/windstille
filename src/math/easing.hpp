@@ -1,14 +1,14 @@
 /*
 **  Copyright © 2001 Robert Penner
 **  All rights reserved.
-**  
+**
 **  Redistribution and use in source and binary forms, with or without
 **  modification, are permitted provided that the following conditions
 **  are met:
-**  
+**
 **  * Redistributions of source code must retain the above copyright
 **    notice, this list of conditions and the following disclaimer.
-**  
+**
 **  * Redistributions in binary form must reproduce the above
 **    copyright notice, this list of conditions and the following
 **    disclaimer in the documentation and/or other materials provided
@@ -89,38 +89,38 @@ inline float ease_in_out(float t, float b, float c, float d, float s = 1.70158f)
 
 namespace bounce {
 
-inline float ease_out(float t, float b, float c, float d) 
+inline float ease_out(float t, float b, float c, float d)
 {
   t  /=  d;
-  if (t < (1/2.75f)) 
+  if (t < (1/2.75f))
   {
     return c*(7.5625f*t*t) + b;
   }
-  else if (t < (2/2.75f)) 
+  else if (t < (2/2.75f))
   {
     t-=1.5f/2.75f;
     return c*(7.5625f*t*t + .75f) + b;
   }
-  else if (t < (2.5f/2.75f)) 
+  else if (t < (2.5f/2.75f))
   {
     t-=(2.25f/2.75f);
     return c*(7.5625f*t*t + .9375f) + b;
-  } 
-  else 
+  }
+  else
   {
     t-=(2.625f/2.75f);
     return c*(7.5625f*t*t + .984375f) + b;
   }
 }
 
-inline float ease_in(float t, float b, float c, float d) 
+inline float ease_in(float t, float b, float c, float d)
 {
   return c - ease_out(d-t, 0, c, d) + b;
 }
 
-inline float ease_in_out(float t, float b, float c, float d) 
+inline float ease_in_out(float t, float b, float c, float d)
 {
-  if (t < d/2) 
+  if (t < d/2)
   {
     return ease_in(t*2, 0, c, d) * .5f + b;
   }
@@ -134,22 +134,22 @@ inline float ease_in_out(float t, float b, float c, float d)
 
 namespace circ {
 
-inline float ease_in(float t, float b, float c, float d) 
+inline float ease_in(float t, float b, float c, float d)
 {
   t  /=  d;
   return -c * (sqrtf(1 - t*t) - 1) + b;
 }
 
-inline float ease_out(float t, float b, float c, float d) 
+inline float ease_out(float t, float b, float c, float d)
 {
   t = t / d - 1;
   return c * sqrtf(1 - t*t) + b;
 }
 
-inline float ease_in_out(float t, float b, float c, float d) 
+inline float ease_in_out(float t, float b, float c, float d)
 {
   t /= d/2;
-  if (t < 1) 
+  if (t < 1)
   {
     return -c/2 * (sqrtf(1 - t*t) - 1) + b;
   }
@@ -164,22 +164,22 @@ inline float ease_in_out(float t, float b, float c, float d)
 
 namespace cubic {
 
-inline float ease_in(float t, float b, float c, float d) 
+inline float ease_in(float t, float b, float c, float d)
 {
   t /= d;
   return c*t*t*t + b;
 }
 
-inline float ease_out(float t, float b, float c, float d) 
+inline float ease_out(float t, float b, float c, float d)
 {
   t=t/d-1;
   return c*(t*t*t + 1) + b;
 }
 
-inline float ease_in_out(float t, float b, float c, float d) 
+inline float ease_in_out(float t, float b, float c, float d)
 {
   t /= d/2;
-  if (t < 1) 
+  if (t < 1)
   {
     return c/2*t*t*t + b;
   }
@@ -194,11 +194,11 @@ inline float ease_in_out(float t, float b, float c, float d)
 
 namespace elastic {
 
-inline float ease_in(float t, float b, float c, float d, float a, float p) 
+inline float ease_in(float t, float b, float c, float d, float a, float p)
 {
-  if (t==0) 
+  if (t==0)
   {
-    return b; 
+    return b;
   }
   else
   {
@@ -210,16 +210,16 @@ inline float ease_in(float t, float b, float c, float d, float a, float p)
     }
     else
     {
-      if (!p) 
+      if (!p)
         p = d * 0.3f;
 
       float s;
 
       if (!a || a < fabsf(c))
       {
-        a=c; s=p/4; 
+        a=c; s=p/4;
       }
-      else 
+      else
       {
         s = p/(2*math::pi) * asinf (c/a);
       }
@@ -231,18 +231,18 @@ inline float ease_in(float t, float b, float c, float d, float a, float p)
   }
 }
 
-inline float ease_out(float t, float b, float c, float d, float a, float p) 
+inline float ease_out(float t, float b, float c, float d, float a, float p)
 {
-  if (t==0) 
+  if (t==0)
   {
-    return b;  
+    return b;
   }
   else
-  {   
+  {
     t /= d;
     if (t==1)
     {
-      return b+c; 
+      return b+c;
     }
     else
     {
@@ -250,31 +250,31 @@ inline float ease_out(float t, float b, float c, float d, float a, float p)
         p=d*.3f;
 
       float s;
-      if (!a || a < fabsf(c)) 
+      if (!a || a < fabsf(c))
       {
-        a=c; 
-        s=p/4; 
+        a=c;
+        s=p/4;
       }
-      else 
+      else
       {
         s = p/(2*math::pi) * asinf (c/a);
       }
-    
+
       return (a*powf(2,-10*t) * sinf( (t*d-s)*(2*math::pi)/p ) + c + b);
     }
   }
 }
 
-inline float ease_in_out(float t, float b, float c, float d, float a, float p) 
+inline float ease_in_out(float t, float b, float c, float d, float a, float p)
 {
   t/=d/2;
-  if (t==0) 
+  if (t==0)
   {
-    return b;  
+    return b;
   }
-  else if (t==2) 
+  else if (t==2)
   {
-    return b+c;  
+    return b+c;
   }
   else
   {
@@ -282,9 +282,9 @@ inline float ease_in_out(float t, float b, float c, float d, float a, float p)
       p = d * (0.3f * 1.5f);
 
     float s;
-    if (!a || a < fabsf(c)) 
+    if (!a || a < fabsf(c))
     {
-      a=c; s=p/4; 
+      a=c; s=p/4;
     }
     else
     {
@@ -293,7 +293,7 @@ inline float ease_in_out(float t, float b, float c, float d, float a, float p)
 
     t-=1;
 
-    if (t < 1) 
+    if (t < 1)
     {
       return -.5f*(a*powf(2,10*t) * sinf( (t*d-s)*(2*math::pi)/p )) + b;
     }
@@ -308,10 +308,10 @@ inline float ease_in_out(float t, float b, float c, float d, float a, float p)
 } // namespace elastic
 
 namespace expo {
- 
+
 inline float ease_in(float t, float b, float c, float d)
 {
-  if (t == 0) 
+  if (t == 0)
   {
     return b;
   }
@@ -339,14 +339,14 @@ inline float ease_in_out(float t, float b, float c, float d)
   {
     return b;
   }
-  else if (t == d) 
+  else if (t == d)
   {
     return b+c;
   }
   else
   {
     t /= d/2;
-    if (t < 1) 
+    if (t < 1)
     {
       return c/2 * powf(2, 10 * (t - 1)) + b;
     }
@@ -362,22 +362,22 @@ inline float ease_in_out(float t, float b, float c, float d)
 
 namespace linear {
 
-inline float easeNone (float t, float b, float c, float d) 
+inline float easeNone (float t, float b, float c, float d)
 {
   return c*t/d + b;
 }
 
-inline float ease_in(float t, float b, float c, float d) 
+inline float ease_in(float t, float b, float c, float d)
 {
   return c*t/d + b;
 }
 
-inline float ease_out(float t, float b, float c, float d) 
+inline float ease_out(float t, float b, float c, float d)
 {
   return c*t/d + b;
 }
 
-inline float ease_in_out(float t, float b, float c, float d) 
+inline float ease_in_out(float t, float b, float c, float d)
 {
   return c*t/d + b;
 }
@@ -386,19 +386,19 @@ inline float ease_in_out(float t, float b, float c, float d)
 
 namespace quad {
 
-inline float ease_in(float t, float b, float c, float d) 
+inline float ease_in(float t, float b, float c, float d)
 {
   t /= d;
   return c*t*t + b;
 }
 
-inline float ease_out(float t, float b, float c, float d) 
+inline float ease_out(float t, float b, float c, float d)
 {
   t /= d;
   return -c *t*(t-2) + b;
 }
 
-inline float ease_in_out(float t, float b, float c, float d) 
+inline float ease_in_out(float t, float b, float c, float d)
 {
   t = t / d / 2;
   if (t < 1)
@@ -416,13 +416,13 @@ inline float ease_in_out(float t, float b, float c, float d)
 
 namespace quart {
 
-inline float ease_in(float t, float b, float c, float d) 
+inline float ease_in(float t, float b, float c, float d)
 {
   t /= d;
   return c*t*t*t*t + b;
 }
 
-inline float ease_out(float t, float b, float c, float d) 
+inline float ease_out(float t, float b, float c, float d)
 {
   t = t/d-1;
   return -c * (t*t*t*t - 1) + b;
@@ -431,7 +431,7 @@ inline float ease_out(float t, float b, float c, float d)
 inline float ease_in_out(float t, float b, float c, float d)
 {
   t /= d/2;
-  if (t < 1) 
+  if (t < 1)
   {
     return c/2*t*t*t*t + b;
   }
@@ -461,7 +461,7 @@ inline float ease_out(float t, float b, float c, float d)
 inline float ease_in_out(float t, float b, float c, float d)
 {
   t /= d/2;
-  if (t < 1) 
+  if (t < 1)
   {
     return c/2*t*t*t*t*t + b;
   }
@@ -476,17 +476,17 @@ inline float ease_in_out(float t, float b, float c, float d)
 
 namespace sine {
 
-inline float ease_in(float t, float b, float c, float d) 
+inline float ease_in(float t, float b, float c, float d)
 {
   return -c * cosf(t/d * (math::pi/2)) + c + b;
 }
 
-inline float ease_out(float t, float b, float c, float d) 
+inline float ease_out(float t, float b, float c, float d)
 {
   return c * sinf(t/d * (math::pi/2)) + b;
 }
 
-inline float ease_in_out(float t, float b, float c, float d) 
+inline float ease_in_out(float t, float b, float c, float d)
 {
   return -c/2 * (cosf(math::pi*t/d) - 1) + b;
 }

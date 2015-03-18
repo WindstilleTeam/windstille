@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -31,7 +31,7 @@ TestObject::TestObject(const FileReader& props) :
   props.get("sprite", spritename);
   props.get("pos", pos);
   props.get("name", name);
-  
+
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in TestObject");
   sprite = Sprite3D(Pathname(spritename));
@@ -50,10 +50,10 @@ TestObject::draw(SceneContext& sc)
     sc.push_modelview();
     sc.translate(pos.x, pos.y);
     sc.mult_modelview(sprite.get_attachment_point_matrix(i->attachpoint));
-    
+
     i->sprite.draw(sc.color(), Vector2f(0, 0), 100);
     sc.pop_modelview();
-  }                                                                        
+  }
 }
 
 void
@@ -72,7 +72,7 @@ TestObject::set_sprite(const std::string& filename)
   try {
     sprite = Sprite3D(Pathname(filename));
   } catch(std::exception& e) {
-    std::cerr << "Couldn't change sprite to '" << filename << "': " 
+    std::cerr << "Couldn't change sprite to '" << filename << "': "
               << e.what() << "\n";
   }
 }

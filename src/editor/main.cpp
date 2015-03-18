@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -37,11 +37,11 @@
 int
 WindstilleEditor::main(int argc, char** argv)
 {
-  try 
+  try
   {
     std::string datadir;
     std::vector<std::string> rest_args;
-    
+
     CommandLine argp;
     argp.set_help_indent(24);
     argp.add_usage ("[LEVELFILE]");
@@ -49,7 +49,7 @@ WindstilleEditor::main(int argc, char** argv)
     argp.add_option('h', "help",       "", "Print this help");
     argp.add_option('d', "datadir", "DIR", "Fetch game data from DIR");
     argp.add_option('D', "debug", "", "Print debug level messages");
-    
+
     argp.parse_args(argc, argv);
 
     while (argp.next())
@@ -74,16 +74,16 @@ WindstilleEditor::main(int argc, char** argv)
           break;
       }
     }
-    
+
     Pathname::set_datadir(datadir.empty() ? System::find_default_datadir() : datadir);
     Pathname::set_userdir(System::find_default_userdir());
 
     Gtk::Main kit(&argc, &argv);
     Gtk::GL::init(&argc, &argv);
-     
-    Glib::RefPtr<const Gdk::GL::Config> 
+
+    Glib::RefPtr<const Gdk::GL::Config>
       glconfig = Gdk::GL::Config::create(/* FIXME: Using RGBA instead of RGB to make Display::save_screenshot work*/
-        Gdk::GL::MODE_RGBA | 
+        Gdk::GL::MODE_RGBA |
         //Gdk::GL::MODE_DEPTH);
         Gdk::GL::MODE_DOUBLE);
     if (!glconfig)
@@ -97,7 +97,7 @@ WindstilleEditor::main(int argc, char** argv)
 
     Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
     icon_theme->append_search_path(Pathname("editor", Pathname::kDataPath).get_sys_path());
-      
+
     EditorWindow window(glconfig);
     window.show_all();
     window.show_minimap(false);
@@ -113,7 +113,7 @@ WindstilleEditor::main(int argc, char** argv)
         window.load_file(*i);
       }
     }
-      
+
     Gtk::Main::run(window);
   }
   catch(Glib::Exception& err)

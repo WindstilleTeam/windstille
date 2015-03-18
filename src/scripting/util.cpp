@@ -1,18 +1,18 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2007 Matthias Braun <matze@braunis.de>, 
+**  Copyright (C) 2007 Matthias Braun <matze@braunis.de>,
 **                     Ingo Ruhnke <grumbel@gmx.de>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -37,7 +37,7 @@ std::string sq_to_lisp_string(std::string sq_str)
     if (sq_str[i] == '_')
       sq_str[i] = '-';
   }
-  
+
   return sq_str;
 }
 
@@ -59,10 +59,10 @@ void sq_to_lisp(HSQUIRRELVM v, std::vector<lisp::Lisp*>& entries)
     }
     case OT_STRING: {
       const char* str;
-      sq_getstring(v, -1, &str);      
+      sq_getstring(v, -1, &str);
       entries.push_back(new lisp::Lisp(lisp::Lisp::TYPE_STRING, str));
       break;
-    }                                                    
+    }
     case OT_BOOL: {
       SQBool boolean;
       sq_getbool(v, -1, &boolean);
@@ -120,7 +120,7 @@ void table_to_lisp(HSQUIRRELVM v, int idx, std::vector<lisp::Lisp*>& entries)
           entries.push_back(new lisp::Lisp(childs));
         }
       }
-    
+
       // pop key and value
       sq_pop(v, 2);
     }
@@ -136,12 +136,12 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
   switch(sq_gettype(v, i))
   {
     case OT_NULL:
-      os << "<null>";        
+      os << "<null>";
       break;
     case OT_BOOL: {
       SQBool p;
       sq_getbool(v, i, &p);
-      if (p) 
+      if (p)
         os << "true";
       else
         os << "false";
@@ -163,7 +163,7 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
       const char* val;
       sq_getstring(v, i, &val);
       os << "\"" << val << "\"";
-      break;    
+      break;
     }
     case OT_TABLE: {
       bool first = true;
@@ -178,9 +178,9 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
         first = false;
 
         //here -1 is the value and -2 is the key
-        os << squirrel2string(v, -2) << " => " 
+        os << squirrel2string(v, -2) << " => "
            << squirrel2string(v, -1);
-                              
+
         sq_pop(v,2); //pops key and val before the nex iteration
       }
       sq_pop(v, 1);
@@ -202,7 +202,7 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
         //here -1 is the value and -2 is the key
         // we ignore the key, since that is just the index in an array
         os << squirrel2string(v, -1);
-                              
+
         sq_pop(v,2); //pops key and val before the nex iteration
       }
       sq_pop(v, 1);
@@ -212,7 +212,7 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
     case OT_USERDATA:
       os << "<userdata>";
       break;
-    case OT_CLOSURE:        
+    case OT_CLOSURE:
       os << "<closure (function)>";
       break;
     case OT_NATIVECLOSURE:
@@ -248,13 +248,13 @@ void print_squirrel_stack(HSQUIRRELVM v, const std::string& context)
     printf(",-------------[ %s ]---------------------------------------\n", context.c_str());
 
   SQInteger count = sq_gettop(v);
-  for(int i = 1; i <= count; ++i) 
+  for(int i = 1; i <= count; ++i)
   {
     printf("| %d: ",i);
     switch(sq_gettype(v, i))
     {
       case OT_NULL:
-        printf("null");        
+        printf("null");
         break;
       case OT_INTEGER: {
         SQInteger val;
@@ -272,7 +272,7 @@ void print_squirrel_stack(HSQUIRRELVM v, const std::string& context)
         const char* val;
         sq_getstring(v, i, &val);
         printf("string (%s)", val);
-        break;    
+        break;
       }
       case OT_TABLE:
         printf("table");
@@ -283,8 +283,8 @@ void print_squirrel_stack(HSQUIRRELVM v, const std::string& context)
       case OT_USERDATA:
         printf("userdata");
         break;
-      case OT_CLOSURE:        
-        printf("closure(function)");    
+      case OT_CLOSURE:
+        printf("closure(function)");
         break;
       case OT_NATIVECLOSURE:
         printf("native closure(C function)");
@@ -316,7 +316,7 @@ void print_squirrel_stack(HSQUIRRELVM v, const std::string& context)
 void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const lisp::Lisp* lisp)
 {
   using namespace lisp;
-  
+
   Properties props(lisp);
   PropertyIterator<const lisp::Lisp*> iter = props.get_iter();
   while(iter.next())
@@ -375,7 +375,7 @@ void save_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, lisp::Writer& write
   // offset because of sq_pushnull
   if (table_idx < 0)
     table_idx--;
-  
+
   //iterator table
   sq_pushnull(v);
   while(SQ_SUCCEEDED(sq_next(v, table_idx)))

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -44,24 +44,24 @@ private:
   friend class TileDescription;
 
   std::vector<TileDescription*> descriptions;
-  
+
 public:
   typedef Tiles::iterator iterator;
-  
+
   iterator begin() { return tiles.begin(); }
   iterator end()   { return tiles.end(); }
 
   /** Create a TileFactory from a given tile definition file */
   TileFactory(const Pathname& filename);
   ~TileFactory();
-  
+
   /**
    * Create a new tile, or loads&create it if it is not already
    * available
    */
   Tile* create(int tile_id);
 
-  /** 
+  /**
    * Adds a surface to the TileFactory
    */
   void pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect);

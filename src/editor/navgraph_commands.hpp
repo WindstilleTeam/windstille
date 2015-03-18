@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -31,18 +31,18 @@ private:
   boost::shared_ptr<NavGraphNodeObjectModel> m_node;
 
 public:
-  NavGraphNodeAddCommand(SectorModel& sector, 
+  NavGraphNodeAddCommand(SectorModel& sector,
                          boost::shared_ptr<NavGraphNodeObjectModel> node)
     : m_sector(sector),
       m_node(node)
   {}
 
-  void redo() 
+  void redo()
   {
     m_sector.get_nav_graph().add_node(m_node);
   }
 
-  void undo() 
+  void undo()
   {
     m_sector.get_nav_graph().remove_node(m_node);
   }
@@ -55,18 +55,18 @@ private:
   boost::shared_ptr<NavGraphNodeObjectModel> m_node;
 
 public:
-  NavGraphNodeRemoveCommand(SectorModel& sector, 
+  NavGraphNodeRemoveCommand(SectorModel& sector,
                             boost::shared_ptr<NavGraphNodeObjectModel> node)
     : m_sector(sector),
       m_node(node)
   {}
 
-  void redo() 
+  void redo()
   {
     m_sector.get_nav_graph().remove_node(m_node);
   }
 
-  void undo() 
+  void undo()
   {
     m_sector.get_nav_graph().add_node(m_node);
   }
@@ -80,15 +80,15 @@ private:
   boost::shared_ptr<NavGraphEdgeObjectModel> m_edge;
 
 public:
-  NavGraphEdgeAddCommand(SectorModel& sector, 
-                         LayerHandle layer, 
+  NavGraphEdgeAddCommand(SectorModel& sector,
+                         LayerHandle layer,
                          boost::shared_ptr<NavGraphEdgeObjectModel> edge)
     : m_sector(sector),
       m_layer(layer),
       m_edge(edge)
   {}
 
-  void redo() 
+  void redo()
   {
     if (m_layer)
       m_layer->add(m_edge);
@@ -98,7 +98,7 @@ public:
     m_sector.get_nav_graph().add_edge(m_edge);
   }
 
-  void undo() 
+  void undo()
   {
     m_sector.get_nav_graph().remove_edge(m_edge);
     m_layer->remove(m_edge);
@@ -113,14 +113,14 @@ private:
   boost::shared_ptr<NavGraphEdgeObjectModel> m_edge;
 
 public:
-  NavGraphEdgeRemoveCommand(SectorModel& sector, 
+  NavGraphEdgeRemoveCommand(SectorModel& sector,
                             boost::shared_ptr<NavGraphEdgeObjectModel> edge)
     : m_sector(sector),
       m_layer(sector.get_layer(edge)),
       m_edge(edge)
   {}
 
-  void redo() 
+  void redo()
   {
     if (m_layer)
       m_layer->remove(m_edge);
@@ -130,10 +130,10 @@ public:
     m_sector.get_nav_graph().remove_edge(m_edge);
   }
 
-  void undo() 
+  void undo()
   {
     m_sector.get_nav_graph().add_edge(m_edge);
-    if (m_layer) 
+    if (m_layer)
       m_layer->add(m_edge);
   }
 };

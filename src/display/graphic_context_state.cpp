@@ -20,7 +20,7 @@
 #include <GL/glew.h>
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp> 
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "display/scene_context.hpp"
 
@@ -29,7 +29,7 @@ class GraphicContextStateImpl
 public:
   int width;
   int height;
-  
+
   Vector2f offset;
   float zoom;
   float rotation;
@@ -50,10 +50,10 @@ GraphicContextState::GraphicContextState() :
 
 GraphicContextState::GraphicContextState(int w, int h) :
   impl(new GraphicContextStateImpl())
-{  
+{
   impl->width  = w;
   impl->height = h;
-  impl->offset = Vector2f(0,0); 
+  impl->offset = Vector2f(0,0);
   impl->zoom   = 1.0f;
   impl->rotation = 0;
 }
@@ -71,18 +71,18 @@ GraphicContextState::get_matrix() const
   Matrix matrix = Matrix(1.0f);
 
   matrix = glm::translate(matrix,
-                          glm::vec3(static_cast<float>(impl->width)  / 2.0f, 
+                          glm::vec3(static_cast<float>(impl->width)  / 2.0f,
                                     static_cast<float>(impl->height) / 2.0f,
                                     0.0f));
   matrix = glm::rotate(matrix, impl->rotation, glm::vec3(0.0f, 0.0f, 1.0f));
-  matrix = glm::translate(matrix, 
+  matrix = glm::translate(matrix,
                           glm::vec3(static_cast<float>(-impl->width)  / 2.0f,
-                                    static_cast<float>(-impl->height) / 2.0f, 
+                                    static_cast<float>(-impl->height) / 2.0f,
                                     0.0f));
 
   matrix = glm::scale(matrix, glm::vec3(get_zoom(), get_zoom(), 1.0f));
-  
-  matrix = glm::translate(matrix, glm::vec3(impl->offset.x, impl->offset.y, 0.0f)); 
+
+  matrix = glm::translate(matrix, glm::vec3(impl->offset.x, impl->offset.y, 0.0f));
 
   return matrix;
 }
@@ -92,7 +92,7 @@ GraphicContextState::push(SceneContext& sc) const
 {
   sc.push_modelview();
 
-  sc.translate(static_cast<float>(impl->width)  / 2.0f, 
+  sc.translate(static_cast<float>(impl->width)  / 2.0f,
                static_cast<float>(impl->height) / 2.0f);
   sc.rotate(impl->rotation);
   sc.translate(static_cast<float>(-impl->width)  / 2.0f,
@@ -116,7 +116,7 @@ GraphicContextState::get_clip_rect()
                Sizef(static_cast<float>(get_width())  / impl->zoom,
                      static_cast<float>(get_height()) / impl->zoom));
 }
-    
+
 void
 GraphicContextState::set_pos(const Vector2f& pos)
 {
@@ -167,12 +167,12 @@ GraphicContextState::zoom_to (const Rectf& rect)
   float width  = rect.right - rect.left;
   float height = rect.bottom - rect.top;
   float screen_relation = float(get_height())/float(get_width ());
-  float rect_relation   = height/width; 
-  
+  float rect_relation   = height/width;
+
   //std::cout << "Screen: " << screen_relation << " Zoom: " << rect_relation << std::endl;
   if (rect_relation < screen_relation) // take width, ignore height
   {
-    impl->zoom = static_cast<float>(get_width()) / width; 
+    impl->zoom = static_cast<float>(get_width()) / width;
   }
   else // take height, ignore width
   {
@@ -196,9 +196,9 @@ GraphicContextState::screen_to_world(const Vector2f& pos_)
   pos.x = static_cast<float>(impl->width)  / 2.0f + (ca * dx - sa * dy);
   pos.y = static_cast<float>(impl->height) / 2.0f + (sa * dx + ca * dy);
 
-  Vector2f p((static_cast<float>(pos.x) / impl->zoom) - impl->offset.x, 
+  Vector2f p((static_cast<float>(pos.x) / impl->zoom) - impl->offset.x,
              (static_cast<float>(pos.y) / impl->zoom) - impl->offset.y);
-  
+
   return p;
 }
 
@@ -215,15 +215,15 @@ GraphicContextState::get_rotation()
 }
 
 int
-GraphicContextState::get_width()  const 
+GraphicContextState::get_width()  const
 {
-  return impl->width; 
+  return impl->width;
 }
 
 int
-GraphicContextState::get_height() const 
-{ 
-  return impl->height; 
+GraphicContextState::get_height() const
+{
+  return impl->height;
 }
 
 GraphicContextState

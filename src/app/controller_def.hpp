@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -22,17 +22,17 @@
 #include "input/controller_description.hpp"
 
 enum InputEventName
-{ 
-  MOUSE_MOTION_X, 
-  MOUSE_MOTION_Y, 
+{
+  MOUSE_MOTION_X,
+  MOUSE_MOTION_Y,
 
   X_AXIS,
   Y_AXIS,
 
   X2_AXIS,
-  Y2_AXIS, 
+  Y2_AXIS,
 
-  LEFT_STICK_BUTTON,    
+  LEFT_STICK_BUTTON,
   RIGHT_STICK_BUTTON,
 
   PRIMARY_BUTTON,
@@ -49,13 +49,13 @@ enum InputEventName
   SELECT_BUTTON,
   START_BUTTON,
   DEBUG_BUTTON,
-    
+
   // Keys for menu navigation, they come with hardcoded defaults for
   // the keyboard, a joystick might emmit them as well
   ESCAPE_BUTTON,
   ENTER_BUTTON,
 
-  MENU_UP_BUTTON,  
+  MENU_UP_BUTTON,
   MENU_DOWN_BUTTON,
   MENU_LEFT_BUTTON,
   MENU_RIGHT_BUTTON,

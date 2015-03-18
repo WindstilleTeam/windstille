@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -40,12 +40,12 @@ Box::Box(const FileReader& props) :
   props.get("vel", vel);
   props.get("name", name);
   props.get("gravity", gravity);
-  
+
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in Box");
-  
+
   sprite = Sprite(Pathname(spritename));
-  
+
   colobj = new CollisionObject(this, Rectf(0, 0, width, height));
   colobj->set_velocity(vel);
   colobj->set_pos(Vector2f(pos.x, pos.y));
@@ -60,7 +60,7 @@ Box::~Box()
   Sector::current()->get_collision_engine()->remove(colobj);
 }
 
-void 
+void
 Box::collision(const CollisionData& data)
 {
   //std::cout << this << ": Collision Event" << std::endl;
@@ -69,7 +69,7 @@ Box::collision(const CollisionData& data)
   {
     colobj->set_velocity(Vector2f(-colobj->get_velocity().x, colobj->get_velocity().y));
   }
-  
+
   if ((data.direction.y > 0 && colobj->get_velocity().y < 0) ||
       (data.direction.y < 0 && colobj->get_velocity().y > 0))
   {
@@ -77,17 +77,17 @@ Box::collision(const CollisionData& data)
   }
 }
 
-void 
+void
 Box::update(float delta)
 {
-  colobj->set_velocity(Vector2f(colobj->get_velocity().x, 
+  colobj->set_velocity(Vector2f(colobj->get_velocity().x,
                                 colobj->get_velocity().y + gravity * delta));
 
   sprite.update(delta);
   pos = colobj->get_pos();
 }
 
-void 
+void
 Box::draw(SceneContext& sc)
 {
   sc.color().draw(sprite, pos, 10.0f);

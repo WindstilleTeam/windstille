@@ -40,7 +40,7 @@ public:
     kNodePosXAbsFloat,
     kNodePosXRelFloat
   };
-  
+
 public:
   NodePosX() :
     m_type(kNodePosXCenter),
@@ -55,7 +55,7 @@ public:
   float get(const Sizef& screen_size, const Sizef& image_size, float zoom) const;
 
 private:
-  NodePosXType m_type;  
+  NodePosXType m_type;
   float m_value;
 };
 
@@ -70,7 +70,7 @@ public:
     kNodePosYAbsFloat,
     kNodePosYRelFloat
   };
-  
+
 public:
   NodePosY() :
     m_type(kNodePosYCenter),

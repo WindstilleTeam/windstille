@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -34,7 +34,7 @@ class GameObject
 #ifndef SCRIPTING_API
 protected:
   boost::weak_ptr< ::GameObject> object;
-  
+
 public:
   GameObject(boost::shared_ptr< ::GameObject > _object)
     : object(_object)
@@ -42,7 +42,7 @@ public:
   virtual ~GameObject()
   {}
 #endif
-  
+
 public:
   const std::string& get_name() const;
   void remove();
@@ -85,7 +85,7 @@ public:
   {}
   virtual ~Player()
   {}
-  
+
   ::Player* obj() const
   {
     return reinterpret_cast< ::Player*> (object.lock().get());
@@ -117,7 +117,7 @@ public:
   void move_to(float x, float y, float target_speed, float acceleration);
   void start_flash(float speed);
 };
- 
+
 } // namespace Scripting
 
 #endif

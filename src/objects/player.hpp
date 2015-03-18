@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -87,7 +87,7 @@ private:
     LEFT_FOOT, RIGHT_FOOT
   };
   Foot jump_foot;
-  
+
   enum Direction { WEST, EAST };
 
   double reload_time;
@@ -105,11 +105,11 @@ public:
 
   void start_listening();
   void stop_listening();
-  
+
   int get_energy() const;
   int get_max_energy() const;
   void hit(int points);
-  
+
   void collision(const CollisionData& data);
 
   Entity* find_useable_entity();
@@ -154,11 +154,11 @@ private:
   void set_stand_to_listen(bool backwards);
   void set_turnaround();
   void set_walk(Direction direction);
-  
+
   void set_jump_air();
   void set_jump_begin();
   void set_jump_land();
-  
+
   void set_jump_up_air();
   void set_jump_up_begin();
   void set_jump_up_land();

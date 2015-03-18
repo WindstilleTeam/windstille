@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -24,7 +24,7 @@
 #include "math/vector2f.hpp"
 #include "util/currenton.hpp"
 
-/** 
+/**
  * This class manages the virtual camera movement, it follows the
  * player, allows the player to watch around, might zoom out if
  * interesting stuff happens out of the screen and such
@@ -50,16 +50,16 @@ public:
 
 private:
   Mode mode;
-  
+
   /**
    * Position of the camera, ie. where the center of the screen should
    * be located
    */
   Vector2f pos;
-  
+
   /**
    * Zoom of the Camera, 1.0 means no zoom, 2.0 means everything will
-   * be twice as large 
+   * be twice as large
    */
   float  zoom;
 

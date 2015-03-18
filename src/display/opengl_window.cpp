@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -22,7 +22,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include "util/util.hpp" 
+#include "util/util.hpp"
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
 #include "display/assert_gl.hpp"
@@ -42,14 +42,14 @@ public:
   {}
 };
 
-OpenGLWindow::OpenGLWindow(const std::string& title, 
+OpenGLWindow::OpenGLWindow(const std::string& title,
                            const Size& size, const Size& aspect, bool fullscreen, int anti_aliasing) :
   m_impl(new OpenGLWindowImpl)
 {
   m_impl->m_size = size;
 
   //SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1); // vsync
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
   // FIXME: Should make this configurable, as Matrox G450 can't do it,
   // but works 'fine' without it
@@ -65,7 +65,7 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
     SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 ); // boolean value, either it's enabled or not
     SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, anti_aliasing ); // 0, 2, or 4 for number of samples
   }
-  
+
   m_impl->m_window = SDL_CreateWindow(title.c_str(),
                                       SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                       size.width, size.height,
@@ -85,7 +85,7 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
     }
 
     GLenum err = glewInit();
-    if (err != GLEW_OK) 
+    if (err != GLEW_OK)
     {
       std::ostringstream msg;
       msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
@@ -111,12 +111,12 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
 
       if (0) // disabled for the moment, as it seems to do more harm then good
       { // Magic pixel center constant, without that textures drawn in
-        // pixel coordinates might end up blurry       
+        // pixel coordinates might end up blurry
         glTranslated(0.375f, 0.375f, 0.0);
       }
 
       if (anti_aliasing)
-        glEnable(GL_MULTISAMPLE); 
+        glEnable(GL_MULTISAMPLE);
 
       assert_gl("setup projection");
 
@@ -129,21 +129,21 @@ OpenGLWindow::~OpenGLWindow()
 {
   SDL_GL_DeleteContext(m_impl->m_gl_context);
   SDL_DestroyWindow(m_impl->m_window);
-} 
-
-int  
-OpenGLWindow::get_width()  const
-{
-  return m_impl->m_size.width; 
 }
 
-int 
-OpenGLWindow::get_height() const 
+int
+OpenGLWindow::get_width()  const
+{
+  return m_impl->m_size.width;
+}
+
+int
+OpenGLWindow::get_height() const
 {
   return m_impl->m_size.height;
 }
 
-Size 
+Size
 OpenGLWindow::get_size() const
 {
   return m_impl->m_size;

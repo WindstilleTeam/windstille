@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -29,7 +29,7 @@ Hedgehog::Hedgehog(const FileReader& props) :
 {
   props.get("name", name);
   props.get("pos",  pos);
-    
+
   light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
   highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
 }
@@ -61,7 +61,7 @@ Hedgehog::draw(SceneContext& gc)
 
 void
 Hedgehog::update(float delta)
-{      
+{
   if (state == DYING)
   {
     if (die_sprite.is_finished())
@@ -72,7 +72,7 @@ Hedgehog::update(float delta)
   {
     sprite.update(delta);
     bool was_on_ground = false;
-      
+
     if (on_ground())
     {
       was_on_ground = true;
@@ -90,17 +90,17 @@ Hedgehog::update(float delta)
     {
       velocity.y += GRAVITY * delta;
     }
-      
+
     Vector2f old_pos = pos;
     pos += velocity * delta;
-      
+
     if ((was_on_ground && !on_ground()) || in_wall())
     {
       direction_left = !direction_left;
       pos = old_pos;
     }
   }
-    
+
   // Check if the player got hit
   // FIXME: Insert pixel perfect collision detection here
   Vector2f player_pos = Player::current()->get_pos();

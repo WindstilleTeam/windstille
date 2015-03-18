@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -25,7 +25,7 @@ PropertySet::PropertySet(const std::string& name_, PropertySet* parent_) :
   parent(parent_),
   name(name_),
   properties()
-{  
+{
 }
 
 PropertySet::~PropertySet()
@@ -35,7 +35,7 @@ PropertySet::~PropertySet()
     delete i->second;
   }
 }
-  
+
 void
 PropertySet::add(const std::string& name_, Property* property)
 {
@@ -74,7 +74,7 @@ PropertySet::get_properties(std::vector<std::string>& lst) const
 {
   if (parent)
     parent->get_properties(lst);
-  
+
   for(std::map<std::string, Property*>::const_iterator i = properties.begin(); i != properties.end(); ++i)
   {
     lst.push_back(i->first);

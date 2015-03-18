@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -48,7 +48,7 @@ protected:
 
     size_t size = pptr() - pbase();
     console->add(pbase(), static_cast<int>(size));
-      
+
     if(c != traits_type::eof()) {
       char str[1];
       str[0] = static_cast<char>(c);
@@ -174,7 +174,7 @@ ConsoleImpl::draw()
       if (buffer[i].display_time > 4.0f && !console.is_active())
         alpha = 1.0f - (buffer[i].display_time - 4.0f);
 
-      Fonts::current()->ttffont->draw(Vector2f(x_pos, static_cast<float>(y)), buffer[i].message, 
+      Fonts::current()->ttffont->draw(Vector2f(x_pos, static_cast<float>(y)), buffer[i].message,
                                       Color(0.88f, 0.88f, 1.0f, alpha));
     }
     y -= Fonts::current()->ttffont->get_height() + 2;
@@ -201,12 +201,12 @@ ConsoleImpl::update(float delta)
   for(Buffer::iterator i = buffer.begin(); i != buffer.end(); ++i)
   {
     i->display_time += delta;
-  }  
+  }
 
   if (active)
   {
     InputEventLst events = InputManagerSDL::current()->get_controller().get_events();
-  
+
     for (InputEventLst::iterator i = events.begin(); i != events.end(); ++i)
     {
       if ((*i).type == KEYBOARD_EVENT)
@@ -259,11 +259,11 @@ ConsoleImpl::update(float delta)
             case SDLK_HOME:
               cursor_pos = 0;
               break;
-                      
+
             case SDLK_END:
               cursor_pos = static_cast<int>(command_line.size());
               break;
-                        
+
             case SDLK_PAGEUP:
               console.scroll(10);
               break;
@@ -347,12 +347,12 @@ ConsoleImpl::get_roottable()
     {
       ConsoleLog << "Unknown key type for element" << std::endl;
     }
-                              
+
     sq_pop(v,2); //pops key and val before the nex iteration
   }
-                          
+
   sq_pop(v, 1);
-  
+
   return roottable;
 }
 
@@ -381,7 +381,7 @@ static std::string find_longest_prefix(const std::vector<std::string>& lst)
   {
     std::string prefix = lst.front();
 
-    for(std::vector<std::string>::const_iterator i = lst.begin() + 1; 
+    for(std::vector<std::string>::const_iterator i = lst.begin() + 1;
         i != lst.end(); ++i)
     {
       prefix = longest_prefix(prefix, *i);
@@ -416,7 +416,7 @@ ConsoleImpl::tab_complete()
     command_line = completions.front();
     cursor_pos = static_cast<int>(command_line.size());
   }
-  else 
+  else
   {
     ConsoleLog << "> " << command_line << std::endl;
     for(std::vector<std::string>::iterator i = completions.begin(); i != completions.end(); ++i)
@@ -438,7 +438,7 @@ ConsoleImpl::eval_command_line()
     history.push_back(command_line);
     history_position = static_cast<int>(history.size());
   }
-                      
+
   ConsoleLog << "> " << command_line << std::endl;
 
   if (command_line == "quit" || command_line == "exit")
@@ -477,10 +477,10 @@ ConsoleImpl::eval_command_line()
       {
         ConsoleLog << "Unknown key type for element" << std::endl;
       }
-                              
+
       sq_pop(v,2); //pops key and val before the nex iteration
     }
-                          
+
     sq_pop(v, 1);
   }
   else
@@ -502,14 +502,14 @@ ConsoleImpl::execute(const std::string& str_)
   HSQUIRRELVM vm = ScriptManager::current()->get_vm();
 
   // Remember old stack position
-  SQInteger oldtop = sq_gettop(vm); 
+  SQInteger oldtop = sq_gettop(vm);
 
-  try 
+  try
   {
     if(SQ_SUCCEEDED(sq_compilebuffer(vm, str.c_str(), i, _SC("interactive console"), SQTrue)))
     {
       sq_pushroottable(vm);
-      if(SQ_SUCCEEDED(sq_call(vm, 1, 1/*retval*/, true))) 
+      if(SQ_SUCCEEDED(sq_call(vm, 1, 1/*retval*/, true)))
       {
         // FIXME: This does only work when somebody is doing a 'return', i.e. almost never
         if (sq_gettype(vm, -1) != OT_NULL)
@@ -518,8 +518,8 @@ ConsoleImpl::execute(const std::string& str_)
         //   console << "(null)" << std::endl;
       }
     }
-  } 
-  catch(std::exception& e) 
+  }
+  catch(std::exception& e)
   {
     std::cerr << "Couldn't execute command '" << str_ << "': "
               << e.what() << "\n";
@@ -592,7 +592,7 @@ void
 Console::scroll(int lines)
 {
   impl->scroll_offset += lines;
-  
+
   if (impl->scroll_offset < 0)
     impl->scroll_offset = 0;
   else if (impl->scroll_offset >= int(impl->buffer.size()))

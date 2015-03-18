@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -28,7 +28,7 @@ TileDescription::TileDescription(FileReader& props) :
   ids(),
   colmap(),
   filename(),
-  width(0), 
+  width(0),
   height(0)
 {
   props.get("ids",    ids);
@@ -36,14 +36,14 @@ TileDescription::TileDescription(FileReader& props) :
   props.get("colmap", colmap);
   props.get("width",  width);
   props.get("height", height);
-  
+
   if(filename == "")
     throw std::runtime_error("Missing color-image");
 }
 
 void
 TileDescription::load(TileFactory* factory)
-{  
+{
   // FIXM: SoftwareSurface image(Pathname(filename)); doesn't work, as its handled as function declaration!?
   SoftwareSurfacePtr image = SoftwareSurface::create(Pathname(filename));
 
@@ -51,7 +51,7 @@ TileDescription::load(TileFactory* factory)
   if (int(colmap.size()) != num_tiles)
   {
     std::ostringstream str;
-    str << "'colmap' information and num_tiles mismatch (" 
+    str << "'colmap' information and num_tiles mismatch ("
         << colmap.size() << " != " << num_tiles << ") for image '" << filename << "'";
     throw std::runtime_error(str.str());
   }
@@ -59,11 +59,11 @@ TileDescription::load(TileFactory* factory)
   if (int(ids.size()) != num_tiles)
   {
     std::ostringstream str;
-    str << "'ids' information and num_tiles mismatch (" 
+    str << "'ids' information and num_tiles mismatch ("
         << ids.size() << " != " << num_tiles << ") for image '" << filename << "'";
     throw std::runtime_error(str.str());
   }
-    
+
   int i = 0;
   for (int y = 0; y < height*TILE_RESOLUTION; y += TILE_RESOLUTION)
   {
@@ -75,7 +75,7 @@ TileDescription::load(TileFactory* factory)
                       Rect(x, y, x+TILE_RESOLUTION, y+TILE_RESOLUTION));
       }
 
-      i += 1; 
+      i += 1;
     }
   }
 }

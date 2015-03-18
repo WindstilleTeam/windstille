@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -55,24 +55,24 @@ MenuManager::display_option_menu()
   menu.add_slider("Music Volume", config.get_int("music-volume"), 0, 100, 10,
                   boost::bind(&MenuManager::menu_music_volume, _1));
 
-  menu.add_slider("Sound Volume", config.get_int("sound-volume"), 0, 100, 10, 
+  menu.add_slider("Sound Volume", config.get_int("sound-volume"), 0, 100, 10,
                   boost::bind(&MenuManager::menu_sound_volume, _1));
 
-  menu.add_slider("Voice Volume", config.get_int("voice-volume"), 0, 100, 10, 
+  menu.add_slider("Voice Volume", config.get_int("voice-volume"), 0, 100, 10,
                   boost::bind(&MenuManager::menu_voice_volume, _1));
-  
+
   menu.add_enum("Aspect Ratio", 0)
     .add_pair(0, "4:3")
     .add_pair(1, "5:4")
     .add_pair(2, "16:9")
     .add_pair(3, "16:10")
     .add_pair(4, "letterbox");
-  
-  menu.add_enum("Show FPS", config.get_bool("show-fps"), 
+
+  menu.add_enum("Show FPS", config.get_bool("show-fps"),
                 boost::bind(&MenuManager::menu_show_fps, _1))
     .add_pair(0, "off")
     .add_pair(1, "on");
-  
+
   menu.add_enum("Fullscreen", config.get_bool("fullscreen"),
                 boost::bind(&MenuManager::menu_fullscreen, _1))
     .add_pair(0, "off")
@@ -113,12 +113,12 @@ MenuManager::display_main_menu()
   menu.add_button("Credits", boost::bind(&MenuManager::display_credits));
   menu.add_button("Help", boost::bind(&MenuManager::display_help));
   menu.add_button("Quit", boost::bind(&MenuManager::menu_quit));
-    
+
   { // Construct Copyright box
     std::unique_ptr<gui::GroupComponent> text_group
       (new gui::GroupComponent(Rectf(Vector2f(static_cast<float>(Display::get_width())/2.0f - 390.0f,
                                               static_cast<float>(Display::get_height())     - 100.0f),
-                                     Sizef(800.0f - 20.0f, 
+                                     Sizef(800.0f - 20.0f,
                                            100.0f - 10.0f)),
                                "",
                                menu.get_root()));
@@ -153,7 +153,7 @@ MenuManager::display_pause_menu()
   menu.add_button("Credits", boost::bind(&MenuManager::display_credits));
   menu.add_button("Help", boost::bind(&MenuManager::display_help));
   menu.add_button("Return to Title Screen", boost::bind(&MenuManager::menu_exit));
-  
+
   menu.show();
 }
 
@@ -161,7 +161,7 @@ void
 MenuManager::display_models_menu()
 {
   gui::Menu menu("Select Model", create_centered_rect(550, 376));
-  
+
   std::vector<Pathname> models;
   models.push_back(Pathname("models/characters/bob/bob.wsprite"));
   models.push_back(Pathname("models/characters/jane/jane.wsprite"));
@@ -174,13 +174,13 @@ MenuManager::display_models_menu()
   models.push_back(Pathname("models/objects/grenade/grenade.wsprite"));
   models.push_back(Pathname("models/objects/pistol/pistol.wsprite"));
   models.push_back(Pathname("models/vehicles/shuttle/shuttle.wsprite"));
-  models.push_back(Pathname("models/vehicles/train/train.wsprite")); 
+  models.push_back(Pathname("models/vehicles/train/train.wsprite"));
 
   for(std::vector<Pathname>::const_iterator i = models.begin(); i != models.end(); ++i)
   {
     menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_show_model, *i));
   }
-  
+
   menu.show();
 }
 
@@ -192,7 +192,7 @@ MenuManager::display_particle_menu()
   std::vector<Pathname> scenarios;
   scenarios.push_back(Pathname("particlesystems/fire.particles"));
   scenarios.push_back(Pathname("particlesystems/water.particles"));
-  
+
   for(std::vector<Pathname>::const_iterator i = scenarios.begin(); i != scenarios.end(); ++i)
   {
     menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_show_particle_system, *i));
@@ -214,7 +214,7 @@ MenuManager::display_scenario_menu()
   scenarios.push_back(Pathname("sectors/intro/intro.wst"));
   scenarios.push_back(Pathname("sectors/newformat2/newformat2.wst"));
   scenarios.push_back(Pathname("sectors/virtualreality/virtualreality.wst"));
-  
+
   for(std::vector<Pathname>::const_iterator i = scenarios.begin(); i != scenarios.end(); ++i)
   {
     menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_start_scenario, *i));
@@ -230,13 +230,13 @@ MenuManager::display_debug_menu()
 
   Color amb = Sector::current()->get_ambient_light();
 
-  menu.add_slider("Ambient Light (Red)", int(amb.r*100), 0, 100, 10, 
+  menu.add_slider("Ambient Light (Red)", int(amb.r*100), 0, 100, 10,
                   boost::bind(&MenuManager::menu_ambient_light, _1, 0));
 
-  menu.add_slider("Ambient Light (Green)", int(amb.g*100), 0, 100, 10, 
+  menu.add_slider("Ambient Light (Green)", int(amb.g*100), 0, 100, 10,
                   boost::bind(&MenuManager::menu_ambient_light, _1, 1));
 
-  menu.add_slider("Ambient Light (Blue)", int(amb.b*100), 0, 100, 10, 
+  menu.add_slider("Ambient Light (Blue)", int(amb.b*100), 0, 100, 10,
                   boost::bind(&MenuManager::menu_ambient_light, _1, 2));
 
   menu.show();
@@ -248,11 +248,11 @@ MenuManager::display_help()
   using namespace gui;
   std::unique_ptr<GUIManager> manager(new GUIManager());
 
-  std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400), 
+  std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400),
                                                          "Help",
                                                          manager->get_root()));
 
-  std::unique_ptr<TextView> text(new TextView(group->get_child_rect(), 
+  std::unique_ptr<TextView> text(new TextView(group->get_child_rect(),
                                             group.get()));
 
   text->set_font(Fonts::current()->vera12.get());
@@ -303,7 +303,7 @@ MenuManager::display_help()
                  "# EOF #\n"
     );
   text->set_active(true);
-  
+
   group->pack(text.release());
   manager->get_root()->add_child(group.release());
   ScreenManager::current()->push_overlay(manager.release());
@@ -315,7 +315,7 @@ MenuManager::display_credits()
   using namespace gui;
   std::unique_ptr<GUIManager> manager(new GUIManager());
 
-  std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400), 
+  std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400),
                                                          "Credits",
                                                          manager->get_root()));
 
@@ -378,7 +378,7 @@ MenuManager::create_centered_rect(float w, float h)
                         (static_cast<float>(Display::get_height()) - h)/2.0f),
                Sizef(w, h));
 }
-  
+
 // Callbacks
 
 void
@@ -456,7 +456,7 @@ MenuManager::menu_exit()
 {
   // FIXME: Make this return to the title screen
   ScreenManager::current()->pop_overlay();
-  ScreenManager::current()->pop_screen(); 
+  ScreenManager::current()->pop_screen();
 }
 
 void
@@ -481,21 +481,21 @@ void
 MenuManager::menu_show_geometry_test()
 {
   ScreenManager::current()->push_screen(new GeometryTest());
-  ScreenManager::current()->clear_overlay();  
+  ScreenManager::current()->clear_overlay();
 }
 
 void
 MenuManager::menu_show_armature_test()
 {
   ScreenManager::current()->push_screen(new ArmatureTest());
-  ScreenManager::current()->clear_overlay();  
+  ScreenManager::current()->clear_overlay();
 }
 
 void
 MenuManager::menu_show_navigation_test()
 {
   ScreenManager::current()->push_screen(new NavigationTest());
-  ScreenManager::current()->clear_overlay();  
+  ScreenManager::current()->clear_overlay();
 }
 
 void

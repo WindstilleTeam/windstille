@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -28,7 +28,7 @@ class DialogEntry
 {
 public:
   DialogEntry(const std::string& arg_character, const std::string& arg_text);
-  
+
   std::string character;
   std::string text;
 };
@@ -37,7 +37,7 @@ class ObjectiveEntry
 {
 public:
   ObjectiveEntry(const std::string& arg_name, const std::string& arg_text);
-  
+
   std::string name;
   std::string text;
   bool complete;
@@ -54,8 +54,8 @@ private:
   boost::scoped_ptr<TextArea>  text_area;
 
   std::vector<DialogEntry> dialogs;
-  std::vector<ObjectiveEntry> objectives;   
-  
+  std::vector<ObjectiveEntry> objectives;
+
   enum PDAState { PDA_NONE, PDA_OBJECTIVES, PDA_DIALOGS };
   PDAState state;
   PDAState old_state;
@@ -71,7 +71,7 @@ public:
   void draw();
   void update(float delta, const Controller& controller);
   void add_dialog(const std::string& character, const std::string& text);
-  
+
   void add_objective(const std::string& name, const std::string& text);
   void objective_complete(const std::string& name);
   bool is_objective_given(const std::string& name);

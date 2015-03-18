@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -65,7 +65,7 @@ void
 DrawingContext::render()
 {
   std::stable_sort(drawingrequests.begin(), drawingrequests.end(), DrawablesSorter());
-  
+
   for(Drawables::iterator i = drawingrequests.begin(); i != drawingrequests.end(); ++i)
   {
     (*i)->render(~0u);
@@ -131,7 +131,7 @@ DrawingContext::draw(SurfacePtr surface, float x, float y, float z, float )
 
 void
 DrawingContext::draw(const std::string& text, float x, float y, float z)
-{ 
+{
   draw(new TextDrawable(text, Vector2f(x, y), z, modelview_stack.back()));
 }
 
@@ -288,7 +288,7 @@ DrawingContext::draw_quad(const Quad& quad, const Color& color, float z_pos)
 
   array->color(color);
   array->vertex(quad.p4.x, quad.p4.y);
-  
+
   draw(array);
 }
 
@@ -312,7 +312,7 @@ DrawingContext::fill_quad(const Quad& quad, const Color& color, float z_pos)
   array->color(color);
   array->vertex(quad.p4.x, quad.p4.y);
 
-  draw(array); 
+  draw(array);
 }
 
 void
@@ -327,14 +327,14 @@ DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
   array->vertex(rect.left, rect.top);
 
   array->color(color);
-  array->vertex(rect.right, rect.top);  
+  array->vertex(rect.right, rect.top);
 
   array->color(color);
-  array->vertex(rect.right, rect.bottom);  
+  array->vertex(rect.right, rect.bottom);
 
   array->color(color);
-  array->vertex(rect.left, rect.bottom);  
-  
+  array->vertex(rect.left, rect.bottom);
+
   draw(array);
 }
 

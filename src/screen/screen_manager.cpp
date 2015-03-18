@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -90,10 +90,10 @@ ScreenManager::run()
           screens.back()->update(step, InputManagerSDL::current()->get_controller());
       }
       InputManagerSDL::current()->clear();
-  
+
       delta -= step;
     }
-      
+
     overlap_delta = delta;
 
     SoundManager::current()->update(delta);
@@ -204,7 +204,7 @@ ScreenManager::poll_events()
       case SDL_KEYDOWN:
       case SDL_KEYUP:
         if (event.key.state)
-        {    
+        {
           switch (event.key.keysym.sym)
           {
             case SDLK_F6:
@@ -214,7 +214,7 @@ ScreenManager::poll_events()
             case SDLK_F7:
               SDL_SetRelativeMouseMode(SDL_TRUE);
               break;
-                  
+
             case SDLK_F8:
               show_controller_help_window = !show_controller_help_window;
               break;
@@ -226,12 +226,12 @@ ScreenManager::poll_events()
             case SDLK_F10:
               config.set_bool("show-fps", !config.get_bool("show-fps"));
               break;
-              
+
             case SDLK_F11:
               config.set_bool("fullscreen", !config.get_bool("fullscreen"));
               OpenGLWindow::current()->set_fullscreen(config.get_bool("fullscreen"));
               break;
-              
+
             case SDLK_F12:
             {
               // FIXME: Replace this with Physfs stuff
@@ -246,7 +246,7 @@ ScreenManager::poll_events()
               ConsoleLog << "Writing screenshot to: '" << filename << "'" << std::endl;
             }
             break;
-              
+
             default:
               if (!Console::current()->is_active())
               {
@@ -258,7 +258,7 @@ ScreenManager::poll_events()
               break;
           }
         }
-              
+
         if (!Console::current()->is_active() && event.key.state && event.key.keysym.sym == SDLK_F1)
         {
           Console::current()->activate();
@@ -284,7 +284,7 @@ ScreenManager::poll_events()
         if (!overlay_screens.empty())
           overlay_screens.back()->handle_event(event);
         break;
-        
+
       default:
         if (!overlay_screens.empty())
           overlay_screens.back()->handle_event(event);
@@ -295,17 +295,17 @@ ScreenManager::poll_events()
   }
 }
 
-void 
+void
 ScreenManager::draw_fps()
 {
-  if(time_counter > 1) 
+  if(time_counter > 1)
   {
     last_fps = int(static_cast<float>(frame_counter) / time_counter);
 
     time_counter  = fmodf(static_cast<float>(time_counter), 1.0f);
     frame_counter = 0;
   }
-  
+
   std::ostringstream out;
   out << "FPS: " << last_fps;
   Fonts::current()->ttffont->draw(Vector2f(static_cast<float>(Display::get_width()) - 100.0f, 30.0f), out.str());

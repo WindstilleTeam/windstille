@@ -79,7 +79,7 @@ SlidePath::get(float relative_time)
     {
       SlidePathNode lhs = m_nodes[idx];
       SlidePathNode rhs = m_nodes[idx+1];
-      
+
       float t = relative_time - (passed - m_edges[idx].duration);
 
       float factor = t / m_edges[idx].duration;

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -30,7 +30,7 @@ SparkDrawer::SparkDrawer(FileReader& props)
   props.get("color", color);
   props.get("width", width);
 
-  buffer.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix(1.0f))); 
+  buffer.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix(1.0f)));
 }
 
 void
@@ -46,7 +46,7 @@ SparkDrawer::draw(const ParticleSystem& psys) const
     for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
     {
       buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
-      buffer->vertex(i->x + i->v_x/10.0f, i->y + i->v_y/10.0f); 
+      buffer->vertex(i->x + i->v_x/10.0f, i->y + i->v_y/10.0f);
 
       buffer->color(Color(0, 0, 0, 0));
       buffer->vertex(i->x, i->y);
@@ -75,10 +75,10 @@ SparkDrawer::draw(const ParticleSystem& psys) const
       buffer->vertex(x1 - o_x, y1 + o_y);
 
       buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
-      buffer->vertex(x2 - o_x, y2 + o_y); 
+      buffer->vertex(x2 - o_x, y2 + o_y);
 
       buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
-      buffer->vertex(x2 + o_x, y2 - o_y); 
+      buffer->vertex(x2 + o_x, y2 - o_y);
     }
   }
 

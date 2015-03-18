@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -25,7 +25,7 @@
 
 #include "display/software_surface.hpp"
 
-/** 
+/**
  *  The FontEffect class manages the blitting from a glyph bitmap to
  *  the SDL_Surface, it allows to apply different kinds of effects to
  *  a font, such as adding a border around it.
@@ -36,7 +36,7 @@ private:
 public:
   FontEffect() {}
   virtual ~FontEffect() {}
-  
+
   /** Returns the new height of the font after its transformation */
   virtual int get_height(int orig_font_size) const =0;
 
@@ -45,7 +45,7 @@ public:
 
   virtual int get_x_offset(int orig_glyph_offset) const =0;
   virtual int get_y_offset(int orig_glyph_offset) const =0;
-  
+
   virtual void blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_pos, int y_pos) const =0;
 
   /* disabled for g++-4.2 compatibilty

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -37,7 +37,7 @@ Character::Character(const FileReader& props) :
   props.get("z-pos", z_pos);
   props.get("sprite3d", sprite3d_filename);
   props.get("action", action_name);
-  
+
   sprite = Sprite3D(Pathname(sprite3d_filename));
 
   if (!action_name.empty())
@@ -50,7 +50,7 @@ Character::~Character()
 
 void
 Character::update(float delta)
-{   
+{
   sprite.update(delta);
 }
 
@@ -63,7 +63,7 @@ Character::draw (SceneContext& sc)
 void
 Character::use()
 {
-  try 
+  try
   {
     Pathname path = Sector::current()->get_directory();
     path.append_path(name);
@@ -71,7 +71,7 @@ Character::use()
 
     ScriptManager::current()->run_script_file(path);
   }
-  catch (std::exception& e) 
+  catch (std::exception& e)
   {
     ConsoleLog << e.what() << std::endl;
   }

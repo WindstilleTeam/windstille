@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -118,7 +118,7 @@ void Sector::update(float delta)
 
   collision_engine->update(delta);
 
-  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i) 
+  for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
   {
     if ((*i)->is_active())
       (*i)->update(delta);
@@ -131,13 +131,13 @@ void
 Sector::commit_removes()
 {
   // remove objects
-  for(Objects::iterator i = objects.begin(); i != objects.end(); ) 
+  for(Objects::iterator i = objects.begin(); i != objects.end(); )
   {
     boost::shared_ptr<GameObject>& object = *i;
 
-    if(object->is_removable()) 
+    if(object->is_removable())
     {
-      if(object->get_name() != "") 
+      if(object->get_name() != "")
       {
         ScriptManager::current()->remove_object_from_squirrel(object);
       }
@@ -155,7 +155,7 @@ Sector::add(GameObjectHandle obj)
 {
   new_objects.push_back(obj);
 
-  if(obj->get_name() != "") 
+  if(obj->get_name() != "")
   {
     ScriptManager::current()->expose_object_to_squirrel(new_objects.back());
   }
@@ -164,7 +164,7 @@ Sector::add(GameObjectHandle obj)
 GameObject*
 Sector::get_object(const std::string& name_) const
 {
-  for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i) 
+  for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
   {
     if ((*i)->get_name() == name_)
     {

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -21,7 +21,7 @@
 
 #include "math/random.hpp"
 
-class Randomizer 
+class Randomizer
 {
 public:
   virtual ~Randomizer() {}
@@ -42,7 +42,7 @@ public:
 
   RectRandomizer(const Rectf& rect_)
     : rect(rect_) {}
- 
+
   void set_pos(Particle& p) {
     p.x = rnd.frand(rect.left, rect.right);
     p.y = rnd.frand(rect.top,  rect.bottom);
@@ -53,7 +53,7 @@ class CircleRandomizer : public Randomizer  {
 public:
   float radius;
 
-  CircleRandomizer(float radius_) 
+  CircleRandomizer(float radius_)
     : radius(radius_) {}
 
   void set_pos(Particle& p) {
@@ -68,7 +68,7 @@ public:
   float x1, y1;
   float x2, y2;
 
-  LineRandomizer(float x1_, float y1_, float x2_, float y2_) 
+  LineRandomizer(float x1_, float y1_, float x2_, float y2_)
     : x1(x1_), y1(y1_), x2(x2_), y2(y2_)
   {}
 

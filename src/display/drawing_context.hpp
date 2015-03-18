@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -86,7 +86,7 @@ public:
             const DrawingParameters& params, float z_pos = 0);
   void draw_control(SurfacePtr surface, const Vector2f& pos, float angle, float z_pos = 0);
   /*} */
-  
+
   /** Translate the drawing context */
   void translate(float x, float y, float z = 0.0f);
 
@@ -102,7 +102,7 @@ public:
   void push_modelview();
   void pop_modelview();
   void reset_modelview();
-  void set_modelview(const Matrix& matrix); 
+  void set_modelview(const Matrix& matrix);
   Matrix get_modelview() const { return modelview_stack.back(); }
 
   /** Return the area of the screen that will be visible*/

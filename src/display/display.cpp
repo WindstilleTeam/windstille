@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -54,7 +54,7 @@ Display::draw_line_with_normal(const Line& line, const Color& color)
   normal = Vector2f(-normal.y, normal.x);
   normal = glm::normalize(normal);
   normal *= -32.0f;
-  
+
   Vector2f p3 = line.p1 + 0.5f * (line.p2 - line.p1);
 
   draw_line(line,   color);
@@ -75,7 +75,7 @@ Display::draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& colo
   glBegin(GL_LINES);
   glVertex2f(pos1.x, pos1.y);
   glVertex2f(pos2.x, pos2.y);
-  glEnd(); 
+  glEnd();
 }
 
 void
@@ -92,7 +92,7 @@ Display::fill_quad(const Quad& quad, const Color& color)
   glVertex2f(quad.p2.x, quad.p2.y);
   glVertex2f(quad.p3.x, quad.p3.y);
   glVertex2f(quad.p4.x, quad.p4.y);
-  glEnd();  
+  glEnd();
 }
 
 void
@@ -239,7 +239,7 @@ Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
   {
     float x = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
     float y = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
-        
+
     glVertex2f(irect.right + x, irect.top - y);
   }
   // go back to start
@@ -280,7 +280,7 @@ Display::draw_circle(const Vector2f& pos, float radius, const Color& color, int 
   {
     float x = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
     float y = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
-      
+
     glVertex2f(x + pos.x, y + pos.y);
   }
   glVertex2f(radius + pos.x, pos.y);
@@ -307,7 +307,7 @@ Display::fill_circle(const Vector2f& pos, float radius, const Color& color, int 
   {
     float x = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
     float y = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
-      
+
     glVertex2f(x + pos.x, y + pos.y);
   }
   glVertex2f(radius + pos.x, pos.y);
@@ -327,7 +327,7 @@ Display::draw_arc(const Vector2f& pos, float radius, float start, float end, con
   {
     float step  = (2.0f * math::pi) / static_cast<float>(segments);
 
-    if (start > end) 
+    if (start > end)
       std::swap(start, end);
 
     OpenGLState state;
@@ -367,7 +367,7 @@ Display::fill_arc(const Vector2f& pos, float radius, float start, float end, con
   {
     float step  = (2.0f * math::pi) / static_cast<float>(segments);
 
-    if (start > end) 
+    if (start > end)
       std::swap(start, end);
 
     OpenGLState state;
@@ -403,7 +403,7 @@ Display::draw_grid(const Vector2f& offset, const Sizef& size, const Color& rgba)
   state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   state.color(rgba);
   state.activate();
- 
+
   glBegin(GL_LINES);
   //glColor4ub(rgba.r, rgba.g, rgba.b, rgba.a);
 
@@ -422,7 +422,7 @@ Display::draw_grid(const Vector2f& offset, const Sizef& size, const Color& rgba)
     glVertex2f(static_cast<float>(Display::get_width()), y);
   }
 
-  glEnd();  
+  glEnd();
 }
 
 void
@@ -479,7 +479,7 @@ Display::save_screenshot(const Pathname& filename)
   size.width *= 4;
 
   int len = size.width * size.height * 3;
-  
+
   boost::scoped_array<GLbyte> pixels(new GLbyte[len]);
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
   glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, pixels.get());
@@ -495,7 +495,7 @@ Display::save_screenshot(const Pathname& filename)
         << "# Windstille Screenshot\n"
         << size.width << " " << size.height << "\n"
         << "255\n";
-      
+
     for(int y = size.height-1; y >= 0; --y)
       out.write(reinterpret_cast<const char*>(pixels.get() + y*pitch), pitch);
 
@@ -532,11 +532,11 @@ Display::save_screenshot(const Pathname& filename)
 
       jpeg_set_defaults(&m_cinfo);
       //jpeg_set_quality(&m_cinfo, 100, TRUE /* limit to baseline-JPEG values */);
- 
+
       jpeg_start_compress(&m_cinfo, TRUE);
 
       boost::scoped_array<JSAMPROW> row_pointer(new JSAMPROW[size.height]);
-  
+
       for(int y = 0; y < size.height; ++y)
       {
         row_pointer[size.height - y - 1] = reinterpret_cast<JSAMPLE*>(pixels.get() + y*pitch);
@@ -544,14 +544,14 @@ Display::save_screenshot(const Pathname& filename)
 
       while(m_cinfo.next_scanline < m_cinfo.image_height)
       {
-        jpeg_write_scanlines(&m_cinfo, &row_pointer[m_cinfo.next_scanline], 
+        jpeg_write_scanlines(&m_cinfo, &row_pointer[m_cinfo.next_scanline],
                              size.height - m_cinfo.next_scanline);
       }
 
-      jpeg_finish_compress(&m_cinfo);  
+      jpeg_finish_compress(&m_cinfo);
 
       jpeg_destroy_compress(&m_cinfo);
-    
+
       fclose(m_out);
     }
   }
@@ -575,18 +575,18 @@ Display::save_screenshot(const Pathname& filename)
 
       png_init_io(png_ptr, fp);
 
-      png_set_IHDR(png_ptr, info_ptr, 
+      png_set_IHDR(png_ptr, info_ptr,
                    size.width, size.height, 8 /* bitdepth */,
                    PNG_COLOR_TYPE_RGB,
-                   PNG_INTERLACE_NONE, 
-                   PNG_COMPRESSION_TYPE_BASE, 
+                   PNG_INTERLACE_NONE,
+                   PNG_COMPRESSION_TYPE_BASE,
                    PNG_FILTER_TYPE_BASE);
-      
+
       png_set_compression_level(png_ptr, 0);
       png_write_info(png_ptr, info_ptr);
 
       boost::scoped_array<png_bytep> row_pointers(new png_bytep[size.height]);
-   
+
       // generate row pointers
       for (int k = 0; k < size.height; k++)
         row_pointers[k] = reinterpret_cast<png_byte*>(pixels.get() + ((size.height - k - 1) * pitch));
@@ -613,7 +613,7 @@ Display::pop_framebuffer()
   assert(!framebuffers.empty());
 
   framebuffers.pop_back();
-  
+
   if (!framebuffers.empty())
   {
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffers.back()->get_handle());

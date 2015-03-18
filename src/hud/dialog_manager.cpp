@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -35,14 +35,14 @@ DialogManager::~DialogManager()
 
 void
 DialogManager::add_dialog(int alignment_, const std::string& portrait_, const std::string& text_)
-{ 
+{
   delay     = 0.0;
   alignment = alignment_;
   portrait  = Sprite(Pathname(portrait_));
   portrait.set_scale(0.65f);
   text      = text_;
   caption = false;
-  
+
   create_text();
 }
 
@@ -53,7 +53,7 @@ DialogManager::add_caption(int alignment_, const std::string& text_)
   alignment = alignment_;
   text      = text_;
   caption = true;
-  
+
   create_text();
 }
 
@@ -86,23 +86,23 @@ DialogManager::draw()
                pos.y,
                pos.x + dialog_width,
                pos.y + 200.0f);
-    
+
     Display::fill_rounded_rect(rect, 16.0f,
                                Color(0, 0, 0.3f, 0.5f));
     Display::draw_rounded_rect(rect, 16.0f,
                                Color(0.6f, 1.0f, 1.0f, 0.8f));
-  
+
     portrait.draw(Vector2f(pos.x + portrait_border_x,
                            pos.y + portrait_border_y));
   }
-  
+
   text_area->draw();
 
   if (text_area->is_progress_complete())
   {
     const Vector2f& pos_ = text_area->get_cursor_pos();
     Rectf cursor(pos_.x + 8, pos_.y + 8, pos_.x + 24, pos_.y + 24);
-    Display::fill_rect(cursor, Color(1.0, 1.0, 1.0, 
+    Display::fill_rect(cursor, Color(1.0, 1.0, 1.0,
                                      fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * math::pi * 3.0f))));
   }
 }
@@ -115,7 +115,7 @@ DialogManager::update(float delta, const Controller& controller)
   delay += delta;
 
   InputEventLst events = controller.get_events();
-        
+
   for (InputEventLst::iterator i = events.begin(); i != events.end(); ++i)
   {
     if ((*i).type == BUTTON_EVENT)
@@ -129,7 +129,7 @@ DialogManager::update(float delta, const Controller& controller)
         }
         else if (delay > 0.2)
           text_area->set_progress_complete();
-      } 
+      }
     }
   }
 }
@@ -141,7 +141,7 @@ DialogManager::create_text()
     outer_border_y = 0;
   else
     outer_border_y = 20;
-    
+
   Point pos(0,0);
   if(alignment & LEFT) {
     pos.x = outer_border_x;
@@ -150,12 +150,12 @@ DialogManager::create_text()
   } else {
     pos.x = (Display::get_width() - dialog_width) / 2;
   }
-      
+
   int text_width
     = dialog_width - portrait_height - portrait_border_x*2 - text_border_x;
   Rect text_rect = Rect(Point(pos.x + portrait_width + portrait_border_x*2, 0),
                         Size(500, 200)); // FIXME: use real bounding box calc
-  
+
   text_rect.bottom = text_rect.top + text_rect.get_height();
   text_rect.top    = pos.y + text_border_y;
 

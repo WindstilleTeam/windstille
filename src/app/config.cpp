@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -42,7 +42,7 @@ Config::Config()
 
   add(new ConfigValue<bool>("music",          _("Enable Music"), true, true));
   add(new ConfigValue<bool>("sound",          _("Enable Sound"), true, true));
-  
+
   add(new ConfigValue<int>("aspect-width",    _("Aspect Width"),   true, 1280));
   add(new ConfigValue<int>("aspect-height",   _("Aspect Height"),  true,  800));
 
@@ -77,32 +77,32 @@ Config::~Config()
   config_values.clear();
 }
 
-void 
+void
 Config::add(ConfigValueBase* value)
 {
   config_values[value->get_name()] = value;
 }
 
 std::string
-Config::get_string(const std::string& name) const 
+Config::get_string(const std::string& name) const
 {
   return get<std::string>(name).get();
 }
 
 bool
-Config::get_bool(const std::string& name) const 
+Config::get_bool(const std::string& name) const
 {
   return get<bool>(name).get();
 }
 
 int
-Config::get_int(const std::string& name) const 
+Config::get_int(const std::string& name) const
 {
   return get<int>(name).get();
 }
 
 float
-Config::get_float(const std::string& name) const 
+Config::get_float(const std::string& name) const
 {
   return get<float>(name).get();
 }
@@ -139,7 +139,7 @@ Config::parse_args(int argc, char** argv)
   CommandLine argp;
 
   const int secondary_controller_file = 261;
-    
+
   argp.set_help_indent(24);
   argp.add_usage ("[LEVELFILE]");
   argp.add_doc   ("Windstille is a classic Jump'n Run game.");
@@ -223,7 +223,7 @@ Config::parse_args(int argc, char** argv)
         {
           get<int>("screen-width")  = screen_width;
           get<int>("screen-height") = screen_height;
-              
+
           // FIXME: Why does this get printed twice?!
           // Is the argument parser buggy?
           std::cout << "Geometry: " << screen_width << "x" << screen_height << std::endl;
@@ -244,7 +244,7 @@ Config::parse_args(int argc, char** argv)
         {
           get<int>("aspect-width")  = aspect_width;
           get<int>("aspect-height") = aspect_height;
-              
+
           // FIXME: Why does this get printed twice?!
           // Is the argument parser buggy?
           std::cout << "Geometry: " << aspect_width << "x" << aspect_height << std::endl;
@@ -255,14 +255,14 @@ Config::parse_args(int argc, char** argv)
         }
       }
       break;
-        
+
       case 's':
         set_bool("sound", false);
         break;
 
       case 'S':
         set_bool("sound", true);
-        break;  
+        break;
 
       case 'c':
         get<std::string>("primary-controller-file") = argp.get_argument();
@@ -303,8 +303,8 @@ Config::is_set(const std::string& name)
   ConfigValues::iterator i = config_values.find(name);
   if (i == config_values.end())
   {
-    throw std::runtime_error("Error: unknown Config value: '" + name + "'");        
-  }    
+    throw std::runtime_error("Error: unknown Config value: '" + name + "'");
+  }
   else
   {
     return i->second->is_set();
@@ -314,15 +314,15 @@ Config::is_set(const std::string& name)
 void
 Config::load()
 {
-  try 
+  try
   {
     FileReader reader = FileReader::parse(Pathname("config", Pathname::kUserPath));
-    if(reader.get_name() != "windstille-config") 
+    if(reader.get_name() != "windstille-config")
     {
       std::cerr << "Warning: Config file is not a windstille-config file.\n";
       return;
     }
-    
+
     for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
     { // FIXME: all this dynamic_casting is overcomplicated crap
       if (dynamic_cast<ConfigValue<int>*>(i->second))
@@ -349,15 +349,15 @@ Config::load()
         if (reader.get(i->first.c_str(), v))
           set_string(i->first, v);
       }
-      else 
+      else
       {
         std::cout << "Config: Unknown type for: " << i->first << std::endl;
       }
     }
-    
+
     // TODO read controller config
-  } 
-  catch(std::exception& e) 
+  }
+  catch(std::exception& e)
   {
     std::cerr << "Couldn't open config file: " << e.what() << "\n"
               << "This is normal on first startup!\n";
@@ -379,13 +379,13 @@ Config::save()
     {
       if (i->second->should_be_saved() && i->second->is_set())
       {
-        writer.write_comment("  ;; " + i->second->get_docstring()); 
+        writer.write_comment("  ;; " + i->second->get_docstring());
         i->second->write(writer);
         writer.write_comment("");
       }
     }
     // TODO write controller config
-    
+
     writer.end_list("windstille-config");
     writer.write_comment(";; EOF ;;");
   } catch(std::exception& e) {
@@ -404,7 +404,7 @@ Config::debug_print(std::ostream& out)
       % (boost::format("'%|1s|'") % (*i->second))
       % (i->second->is_set() ? "set" : "default")
         << std::endl;
-      
+
   }
 }
 

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -29,24 +29,24 @@
 class Entity : public GameObject
 {
 private:
-  boost::signals2::signal<void ()> done; 
+  boost::signals2::signal<void ()> done;
 
 protected:
   friend class Physics;
   bool on_ground() const;
   bool in_wall() const;
-  
+
   Vector2f pos;
   Vector2f velocity;
   bool useable;
   std::string use_verb;
-  
+
   Entity* parent;
 
 public:
   Entity();
   virtual ~Entity();
-   
+
   virtual Vector2f get_pos() const
   { return pos; }
 
@@ -67,7 +67,7 @@ public:
   boost::signals2::signal<void ()>& sig_done() { return done; }
 
   virtual Properties get_properties();
- 
+
 private:
   Entity (const Entity&);
   Entity& operator= (const Entity&);

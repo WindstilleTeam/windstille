@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -50,7 +50,7 @@ class EditorWindow;
 
 /** OpenGL drawing area into which the Windstille game will be
     embedded */
-class WindstilleWidget 
+class WindstilleWidget
   : public Gtk::DrawingArea,
     public Gtk::GL::Widget<WindstilleWidget>
 {
@@ -72,7 +72,7 @@ private:
   bool draw_background_pattern;
   bool draw_only_active_layers;
   bool grid_enabled;
-  
+
 public:
   WindstilleWidget(EditorWindow& editor,
                    const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
@@ -103,12 +103,12 @@ public:
   void on_zoom_in();
   void on_zoom_out();
   void on_zoom_100();
-  
+
   void draw();
   void update(float delta);
 
   Document&    get_document() const { return *m_document; }
-  
+
   SelectMask& get_select_mask() { return select_mask; }
 
   SceneContext* get_sc() const { return sc.get(); }

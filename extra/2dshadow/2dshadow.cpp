@@ -17,7 +17,7 @@ int main()
 
   Size window_size(854, 480);
   OpenGLWindow window("2D Shadow", window_size, window_size);
-  
+
   SurfaceManager surface_manager;
 
   SurfacePtr darkness = Surface::create(Pathname("darkness.png", Pathname::kSysPath));
@@ -32,7 +32,7 @@ int main()
   while(!quit)
   {
     SDL_Event event;
-    
+
     while(SDL_PollEvent(&event))
     {
       switch(event.type)
@@ -99,4 +99,4 @@ int main()
 
 /* EOF */
 
-  
+

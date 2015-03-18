@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -29,20 +29,20 @@ class SceneContextImpl
 public:
   DrawingContext color;
   DrawingContext light;
-  DrawingContext highlight; 
-  DrawingContext control; 
+  DrawingContext highlight;
+  DrawingContext control;
 
   unsigned int   render_mask;
 
-  SceneContextImpl() 
+  SceneContextImpl()
     : color(),
       light(),
       highlight(),
       control(),
       render_mask(SceneContext::COLORMAP |
-                  SceneContext::LIGHTMAP | 
-                  SceneContext::HIGHLIGHTMAP | 
-                  SceneContext::CONTROLMAP | 
+                  SceneContext::LIGHTMAP |
+                  SceneContext::HIGHLIGHTMAP |
+                  SceneContext::CONTROLMAP |
                   SceneContext::LIGHTMAPSCREEN)
   {
   }
@@ -64,19 +64,19 @@ SceneContext::~SceneContext()
 DrawingContext&
 SceneContext::color()
 {
-  return impl->color; 
+  return impl->color;
 }
 
 DrawingContext&
 SceneContext::light()
-{ 
-  return impl->light; 
+{
+  return impl->light;
 }
 
 DrawingContext&
 SceneContext::highlight()
-{ 
-  return impl->highlight; 
+{
+  return impl->highlight;
 }
 
 DrawingContext&
@@ -160,7 +160,7 @@ void draw_disc(int count)
   glClear(GL_DEPTH_BUFFER_BIT);
 
   int segments = 64;
-  
+
   glBegin(GL_QUADS);
   for (int i = 0; i < segments; ++i)
   {

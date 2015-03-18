@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -29,8 +29,8 @@ public:
   int cursor;
   int line_no;
   int column_no;
-  
-  BabyXMLReader(const std::string& text_, BabyXML* xml_) 
+
+  BabyXMLReader(const std::string& text_, BabyXML* xml_)
     : xml(xml_),
       text(text_),
       cursor(0),
@@ -38,7 +38,7 @@ public:
       column_no(0)
   {
     std::string content;
-    
+
     while(!eof())
     {
       char c = look_ahead();
@@ -70,7 +70,7 @@ public:
 
   void skip_space()
   {
-    while(true) 
+    while(true)
     {
       char c = look_ahead();
       if (c != ' ' && c != '\t') {
@@ -87,7 +87,7 @@ public:
     if (c != expect)
     {
       std::ostringstream str;
-      str << "Syntax Error:" << line_no << ":" << column_no 
+      str << "Syntax Error:" << line_no << ":" << column_no
           << ": Syntax error: read_char(): expected '" << expect << "' got '" << c << "'";
       throw std::runtime_error(str.str());
     }
@@ -102,7 +102,7 @@ public:
     BabyXML::Node node;
 
     read_char('<');
-    if (look_ahead() == '/') 
+    if (look_ahead() == '/')
     {
       node.type = BabyXML::Node::END_TAG;
       incr_cursor();
@@ -114,7 +114,7 @@ public:
       node.content    = read_identifer();
       node.attributes = read_attributes();
     }
-    
+
     skip_space();
     read_char('>');
 
@@ -128,33 +128,33 @@ public:
     if (start != '\'' && start != '"')
     {
       std::ostringstream str;
-      str << "Syntax Error:" << line_no << ":" << column_no 
+      str << "Syntax Error:" << line_no << ":" << column_no
           << ": Syntax error: read_string(): expected ' or \" got '" << start << "'";
       throw std::runtime_error(str.str());
     }
     incr_cursor();
-    
+
     std::string content;
     while(true)
     {
       char c = look_ahead();
-      if (c == '"' || c == '\'') 
+      if (c == '"' || c == '\'')
       {
         if (c != start)
         {
           std::ostringstream str;
-          str << "Syntax Error:" << line_no << ":" << column_no 
+          str << "Syntax Error:" << line_no << ":" << column_no
               << ": Syntax error: read_string(): quote mismatch";
           throw std::runtime_error(str.str());
         }
         incr_cursor();
         break;
-      } 
-      else if (c == '&') 
+      }
+      else if (c == '&')
       {
         content += read_entity();
       }
-      else 
+      else
       {
         incr_cursor();
         content += c;
@@ -182,11 +182,11 @@ public:
       throw std::runtime_error(str.str());
     }
   }
-  
+
   std::vector<BabyXML::Attribute> read_attributes()
   {
     std::vector<BabyXML::Attribute> attributes;
-    while(true) 
+    while(true)
     {
       skip_space();
 
@@ -208,7 +208,7 @@ public:
   std::string read_identifer()
   {
     std::string identifer;
-    while(true) 
+    while(true)
     {
       char c = look_ahead();
       if (c == '<' || c == '>' || c == '&' || c == ';' || c == ' ' || c == '\t' || c == '=') {
@@ -273,7 +273,7 @@ BabyXML::BabyXML(const std::string& text)
 
 BabyXML::~BabyXML()
 {
-  
+
 }
 
 void

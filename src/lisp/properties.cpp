@@ -18,7 +18,7 @@ Properties::Properties(const Lisp* lisp)
       if(child->get_type() != Lisp::TYPE_LIST)
         throw std::runtime_error("child of properties lisp is not a list");
       if(child->get_list_size() > 1)
-      {    
+      {
         const Lisp* name = child->get_list_elem(0);
         if(name->get_type() != Lisp::TYPE_SYMBOL)
           throw std::runtime_error("property has no symbol as name");

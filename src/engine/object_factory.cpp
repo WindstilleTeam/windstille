@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -62,7 +62,7 @@ ObjectFactory::create(const FileReader& reader)
     return GameObjectHandle(new Elevator(reader));
   }
   else if(reader.get_name() == "character")
-  {    
+  {
     return GameObjectHandle(new Character(reader));
   }
   else if(reader.get_name() == "spider-mine")
@@ -87,11 +87,11 @@ ObjectFactory::create(const FileReader& reader)
     return GameObjectHandle();
   }
   else if(reader.get_name() == "scriptable-object")
-  {    
+  {
     return GameObjectHandle(new ScriptableObject(reader));
   }
   else if(reader.get_name() == "decal")
-  {    
+  {
     return GameObjectHandle(new Decal(reader));
   }
   else if (reader.get_name() == "vrdummy")

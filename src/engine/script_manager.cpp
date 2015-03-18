@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -52,12 +52,12 @@ static SQInteger squirrel_read_char(SQUserPointer file)
 static void printfunc(HSQUIRRELVM, const char* str, ...)
 {
   char buf[4096];
-  va_list arglist; 
-  va_start(arglist, str); 
+  va_list arglist;
+  va_start(arglist, str);
   vsprintf(buf, str, arglist);
   ConsoleLog << static_cast<char*>(buf);
   puts(buf);
-  va_end(arglist); 
+  va_end(arglist);
 }
 
 static void errorfunc(HSQUIRRELVM, const char* str, ...)
@@ -84,9 +84,9 @@ ScriptManager::ScriptManager()
     sqstd_seterrorhandlers(vm);
 
     { // register squirrel libs in the root table
-        
+
       sq_pushroottable(vm);
-      
+
       /* FIXME: None of these should be needed for scripts
 
          if(SQ_FAILED(sqstd_register_bloblib(v)))
@@ -107,7 +107,7 @@ ScriptManager::ScriptManager()
 
       // register print function
       sq_setprintfunc(vm, printfunc, errorfunc);
-  
+
       // register windstille API
       Scripting::register_windstille_wrapper(vm);
       sq_pop(vm, 1);
@@ -189,7 +189,7 @@ ScriptManager::run_script_file(const Pathname& filename, bool global)
         break;
       }
     }
-      
+
     if (it != squirrel_vms.end())
     {
       // Call the run method
@@ -228,7 +228,7 @@ ScriptManager::update()
 boost::shared_ptr<SquirrelThread>
 ScriptManager::get_thread(HSQUIRRELVM v) const
 {
-  for(SquirrelThreads::const_iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
+  for(SquirrelThreads::const_iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
   {
     if ((*i)->get_thread() == v)
       return *i;
@@ -242,7 +242,7 @@ ScriptManager::fire_wakeup_event(WakeupData event)
 {
   assert(event.type >= 0 && event.type < MAX_WAKEUP_EVENT_COUNT);
 
-  for(SquirrelThreads::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i) 
+  for(SquirrelThreads::iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
   {
     (*i)->fire_wakeup_event(event);
   }
@@ -276,7 +276,7 @@ ScriptManager::remove_object_from_squirrel(boost::shared_ptr<GameObject> object)
         << "'";
     throw SquirrelError(v, msg.str());
   }
-  
+
   // pop objects and root table
   sq_pop(v, 2);
 }
@@ -291,12 +291,12 @@ static inline void create_squirrel_instance(HSQUIRRELVM v, boost::shared_ptr<Gam
                              true);
     return;
   }
-  
+
   if (dynamic_cast<TestObject*>(object.get()))
   {
     create_squirrel_instance(v, new Scripting::TestObject(object), true);
     return;
-  }                                                                             
+  }
 
   if (dynamic_cast<Player*>(object.get()))
   {
@@ -320,7 +320,7 @@ ScriptManager::expose_object_to_squirrel(boost::shared_ptr<GameObject> object)
     msg << "Couldn't get objects table '" << OBJECTS_TABLE << "'";
     throw SquirrelError(v, msg.str());
   }
-  
+
   // create squirrel instance and register in table
   sq_pushstring(v, object->get_name().c_str(), object->get_name().size());
   create_squirrel_instance(v, object);

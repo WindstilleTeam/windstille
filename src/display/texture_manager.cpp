@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -48,7 +48,7 @@ TextureManager::get(const Pathname& filename)
   }
   else
   {
-    try 
+    try
     {
       SoftwareSurfacePtr image = SoftwareSurface::create(filename);
       TexturePtr texture = Texture::create(image);
@@ -56,8 +56,8 @@ TextureManager::get(const Pathname& filename)
       textures.insert(std::make_pair(filename, texture));
 
       return texture;
-    } 
-    catch(std::exception& e) 
+    }
+    catch(std::exception& e)
     {
       std::cerr << e.what() << std::endl;
       return get(Pathname("images/404.png"));

@@ -7,12 +7,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -61,7 +61,7 @@ CollisionEngine::collision(const CollisionData &result)
   {
     std::cout << (result.object2->get_is_domains() & result.object1->get_check_domains()) << std::endl;
   }
-  
+
   unsigned int res1 = result.object1->get_is_domains() & result.object2->get_check_domains();
 
   if (res1)
@@ -166,10 +166,10 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
 {
   int rx = c_round(r.left / static_cast<float>(TILE_SIZE));
   int ry = c_round(std::min (r.top, r.bottom)  / static_cast<float>(TILE_SIZE));
-  
+
   float fw = r.right - r.left;
   float fh = fabsf(r.bottom   - r.top);
-  
+
   int rw = c_roundup (fw / static_cast<float>(TILE_SIZE));
   int rh = c_roundup (fh / static_cast<float>(TILE_SIZE));
 
@@ -212,8 +212,8 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
     }
   }
 
-  nr.right += nr.left; 
-  nr.bottom += nr.top; 
+  nr.right += nr.left;
+  nr.bottom += nr.top;
 
   return nr;
 }
@@ -230,7 +230,7 @@ CollisionEngine::unstuck_tilemap(CollisionObject& a, CollisionObject& b, float d
   rb.bottom += b.get_pos().y;
 
   Rectf target = get_next_free_rect(a.tilemap, rb);
-  
+
   target.left   *= static_cast<float>(TILE_SIZE);
   target.top    *= static_cast<float>(TILE_SIZE);
   target.right  = target.left + (rb.right - rb.left);
@@ -276,7 +276,7 @@ CollisionEngine::unstuck_rect_rect(CollisionObject& a, CollisionObject& b, float
 
   if (a.unstuck_movable())
     a.pos -= dir;
-      
+
   if (b.unstuck_movable())
     b.pos += dir;
 }
@@ -285,7 +285,7 @@ void
 CollisionEngine::update(float delta)
 {
   if (objects.empty())
-    return; 
+    return;
 
   CollisionData col_data;
   float frame=delta;
@@ -295,7 +295,7 @@ CollisionEngine::update(float delta)
   do
   {
     min_time=frame;
-      
+
     for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
     {
       for(Objects::iterator j = i + 1; j != objects.end(); ++j)
@@ -357,12 +357,12 @@ CollisionEngine::update(float delta)
     {
       if(!(*i)->unstuck())
         continue;
-          
+
       for(Objects::iterator j = i+1; j != objects.end(); ++j)
       {
         if(!(*j)->unstuck())
           continue;
-              
+
         if (i != j && ((*i)->unstuck_movable() || ((*j)->unstuck_movable())))
         {
           CollisionData r = collide(**i, **j, 0);
@@ -395,7 +395,7 @@ CollisionEngine::add(CollisionObject *obj)
   return objects.back();
 }
 
-void 
+void
 CollisionEngine::remove(CollisionObject *obj)
 {
   // FIXME: This might need commit_add/commit_remove stuff like in sector
@@ -466,17 +466,17 @@ CollisionEngine::collide(CollisionObject& a, CollisionObject& b, float delta)
   {
     Rectf ra = a.primitive;
     Rectf rb = b.primitive;
-      
+
     ra.left   += a.get_pos().x;
     ra.right  += a.get_pos().x;
     ra.top    += a.get_pos().y;
     ra.bottom += a.get_pos().y;
-      
+
     rb.left   += b.get_pos().x;
     rb.right  += b.get_pos().x;
     rb.top    += b.get_pos().y;
     rb.bottom += b.get_pos().y;
-      
+
     return collide(ra, rb,
                    a.get_velocity(), b.get_velocity(),
                    delta);
@@ -564,9 +564,9 @@ std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r,bool 
     {
       if(tilemap->is_ground (static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE) ) == is_ground)
       {
-        rect_list.push_back (Rectf (static_cast<float>(x * TILE_SIZE), 
-                                    static_cast<float>(y * TILE_SIZE), 
-                                    static_cast<float>(TILE_SIZE), 
+        rect_list.push_back (Rectf (static_cast<float>(x * TILE_SIZE),
+                                    static_cast<float>(y * TILE_SIZE),
+                                    static_cast<float>(TILE_SIZE),
                                     static_cast<float>(TILE_SIZE)));
       }
     }
@@ -605,12 +605,12 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
   {
     result.state=CollisionData::STUCK;
     result.col_time = 0;
-      
+
     return result;
   }
 
   float time=0.0f;
-  
+
   float *x, *y;         // current position
   int next_x, next_y;   // next grid position
   float tx, ty;         // next time, when grid is hit
@@ -648,7 +648,7 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
       next_x = get_next_integer ((static_cast<float>(*x) / static_cast<float>(TILE_SIZE)), vel.x) * TILE_SIZE;
       next_y = get_next_integer ((static_cast<float>(*y) / static_cast<float>(TILE_SIZE)), vel.y) * TILE_SIZE;
 
-         
+
       assert ( static_cast<float>(next_x) * static_cast<float>(c_sign(vel.x)) > *x * static_cast<float>(c_sign(vel.x)) || vel.x == 0.0f);
       assert ( static_cast<float>(next_y) * static_cast<float>(c_sign(vel.y)) > *y * static_cast<float>(c_sign(vel.y)) || vel.y == 0.0f);
     }
@@ -678,7 +678,7 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
       if (time + ty < delta)
         ct = ty;
     }
-      
+
     if (ct >= 0.0f)
     {
       // move to next position
@@ -700,7 +700,7 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
 
       // now shift one more pixel and check for collision with tilemap
       Rectf tmp(r);
-          
+
       if (tx < ty)
       {
         tmp.left  += static_cast<float>(c_sign(vel.x));
@@ -718,7 +718,7 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
       {
         result.state=CollisionData::COLLISION;
         result.col_time = time;
-              
+
         if (tx < ty)
           result.direction = Vector2f(static_cast<float>(c_sign(vel.x)), 0.0f);
         else

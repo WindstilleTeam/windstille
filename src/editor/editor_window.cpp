@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -266,7 +266,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
     recent_action->set_filter(*filter);
 
     recent_action->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_recent_file), recent_action));
-    action_group->add(recent_action, 
+    action_group->add(recent_action,
                       sigc::mem_fun(*this, &EditorWindow::on_open));
   }
 
@@ -297,7 +297,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create_with_icon_name("RaiseObject", "object_raise", "Raise", "Raise Object"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_raise));
   action_group->add(Gtk::Action::create_with_icon_name("LowerObject", "object_lower", "Lower", "Lower Object"),
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_lower));                    
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_lower));
   action_group->add(Gtk::Action::create_with_icon_name("LowerObjectToBottom", "object_lower_to_bottom", "Lower To Bottom", "Lower Object to Bottom"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_lower_to_bottom));
 
@@ -328,7 +328,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("ZoomOut",     Gtk::Stock::ZOOM_OUT),
                     Gtk::AccelKey(GDK_minus, Gdk::CONTROL_MASK),
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_out));
-  action_group->add(play_action = Gtk::ToggleAction::create("Play", Gtk::Stock::MEDIA_PLAY), 
+  action_group->add(play_action = Gtk::ToggleAction::create("Play", Gtk::Stock::MEDIA_PLAY),
                     sigc::mem_fun(*this, &EditorWindow::on_play));
 
   action_group->add(Gtk::Action::create("MenuHelp",    "_Help"));
@@ -343,7 +343,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   background_layer = Gtk::ToggleAction::create_with_icon_name("ToggleBackgroundLayer", "background_layer", "Toggle Background Layer", "Toggle Background Layer");
   visible_layer    = Gtk::ToggleAction::create_with_icon_name("ToggleVisibleLayer", "draw_visible_layer", "Toggle Only Active Layer", "Toggle Only Active Layer");
   grid_layer       = Gtk::ToggleAction::create_with_icon_name("ToggleGridLayer", "grid", "Toggle Grid Layer", "Toggle Grid Layer");
-  
+
   toggle_color_layer->set_active(true);
   toggle_light_layer->set_active(false);
   toggle_highlight_layer->set_active(true);
@@ -370,7 +370,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   // Tools
   action_group->add(Gtk::Action::create("MenuTools",  "_Tools"));
   Gtk::RadioButtonGroup tool_group;
-  
+
   select_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "SelectTool", "select_tool", "Select Tool", "Select Tool");
   navgraph_insert_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "NavgraphInsertTool", "navgraph_insert_tool",   "Navgraph Insert Tool", "Navgraph Insert Tool");
   zoom_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "ZoomTool", "zoom_tool",   "Zoom Tool", "Zoom Tool");
@@ -419,13 +419,13 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   // vpaned.set_size_request(250, -1);
   //object_selector.set_size_request(250, 300);
   //layer_manager.set_size_request(250, 300);
-  
+
   hpaned.pack1(notebook,     Gtk::EXPAND);
   hpaned.pack2(sidebar_vbox, Gtk::SHRINK);
- 
+
   sidebar_vbox.pack_start(vpaned, Gtk::PACK_EXPAND_WIDGET);
   sidebar_vbox.pack_start(minimap_widget, Gtk::PACK_SHRINK);
-  
+
   vpaned.pack1(object_selector, Gtk::EXPAND);
   vpaned.pack2(layer_manager,     Gtk::SHRINK);
 
@@ -468,7 +468,7 @@ EditorWindow::on_new()
   paned->set_position(600);
 
   { // FIXME: some random data for testing
-    boost::shared_ptr<Timeline> timeline = wst->get_document().get_sector_model().get_timeline();   
+    boost::shared_ptr<Timeline> timeline = wst->get_document().get_sector_model().get_timeline();
 
     TimelineLayerHandle layer1 = timeline->add_layer("Layer1");
 
@@ -491,12 +491,12 @@ EditorWindow::on_new()
 void
 EditorWindow::load_file(const std::string& filename)
 {
-  try 
+  try
   {
     on_new();
     WindstilleWidget* wst = get_windstille_widget();
     AnimationWidget*  animation_widget = get_animation_widget();
-      
+
     wst->load_file(filename);
     wst->set_filename(filename);
     notebook.set_tab_label_text(*notebook.get_nth_page(notebook.get_current_page()), Glib::path_get_basename(filename));
@@ -530,7 +530,7 @@ EditorWindow::on_open()
       //std::cout << "Select clicked." << std::endl;
       //std::cout << "Folder selected: " << dialog.get_filename()
       //          << std::endl;
-          
+
       add_recent_file(dialog.get_filename());
 
       load_file(dialog.get_filename());
@@ -633,7 +633,7 @@ EditorWindow::on_save_screenshot()
       dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
       dialog.add_button(Gtk::Stock::SAVE,   Gtk::RESPONSE_OK);
 
- 
+
       dialog.set_current_folder("/tmp/");
 
       switch(dialog.run())
@@ -769,7 +769,7 @@ EditorWindow::on_animation_frame_forward()
 {
 }
 
-void 
+void
 EditorWindow::on_animation_frame_backward()
 {
 }

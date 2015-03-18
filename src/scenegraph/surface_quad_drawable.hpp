@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -34,7 +34,7 @@ private:
   DrawingParameters m_params;
 
 public:
-  SurfaceQuadDrawable(SurfacePtr surface, const Vector2f& pos_, const Quad& quad, 
+  SurfaceQuadDrawable(SurfacePtr surface, const Vector2f& pos_, const Quad& quad,
                       const DrawingParameters& params, float z_pos_,
                       const Matrix& modelview_)
     : Drawable(pos_, z_pos_, modelview_),
@@ -46,7 +46,7 @@ public:
 
   DrawingParameters& get_params() { return m_params; }
 
-  void render(unsigned int mask) 
+  void render(unsigned int mask)
   {
     OpenGLState state;
     state.enable(GL_BLEND);
@@ -61,7 +61,7 @@ public:
     {
       glTexCoord2f(m_surface->get_uv().left, m_surface->get_uv().top);
       glVertex2f(pos.x + m_quad.p1.x, pos.y + m_quad.p1.y);
-    
+
       glTexCoord2f(m_surface->get_uv().right, m_surface->get_uv().top);
       glVertex2f(pos.x + m_quad.p2.x, pos.y + m_quad.p2.y);
 
@@ -73,7 +73,7 @@ public:
     }
     glEnd();
 
-    glPopMatrix();    
+    glPopMatrix();
   }
 
   void set_quad(const Quad& quad) { m_quad = quad; }

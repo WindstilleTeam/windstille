@@ -28,7 +28,7 @@ class SlideShow
 private:
   std::vector<SlideObjectPtr> m_objects;
   float m_length;
-  
+
 public:
   SlideShow();
 

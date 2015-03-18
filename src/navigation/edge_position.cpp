@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -36,7 +36,7 @@ EdgePosition::EdgePosition() :
 EdgePosition::EdgePosition(Edge* edge_, float pos_) :
   edge(edge_),
   pos(pos_)
-{  
+{
 }
 
 void
@@ -51,9 +51,9 @@ EdgePosition::advance(float& adv, Node*& next_node)
 {
   Vector2f p1 = edge->get_node1()->get_pos();
   Vector2f p2 = edge->get_node2()->get_pos();
-  
+
   float length = glm::length(p2 - p1);
-  
+
   // convert from world co to [0,1] range
   float adv_01 = adv / length;
 
@@ -87,7 +87,7 @@ EdgePosition::advance(Vector2f& adv, Node*& next_node)
   // FIXME: This might be optimizable
   Vector2f p1 = edge->get_node1()->get_pos();
   Vector2f p2 = edge->get_node2()->get_pos();
-  
+
   Vector2f edge_v = p2 - p1;
 
   Vector2f proj = glm::proj(adv, edge_v);
@@ -103,7 +103,7 @@ EdgePosition::advance(Vector2f& adv, Node*& next_node)
 
   // Move forward
   advance(advf, next_node);
-  
+
   // Calculate the rest Vector2f
   // Calculate the rest Vector2f
   if (advf == 0.0f)

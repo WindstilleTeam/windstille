@@ -60,7 +60,7 @@ private:
   Writer (const Writer&);
   Writer& operator= (const Writer&);
 };
-  
+
 } //namespace lisp
 
 #endif //SUPERTUX_LISPWRITER_H

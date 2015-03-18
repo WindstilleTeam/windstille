@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -19,7 +19,7 @@
 #include "display/scene_context.hpp"
 #include "editor/decal_scale_control_point.hpp"
 
-DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_, 
+DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_,
                                                bool x_scale_, bool y_scale_) :
   ControlPoint(Surface::create(Pathname("editor/scale_handle.png")), pos_),
   object(object_),
@@ -31,20 +31,20 @@ DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float 
 
 void
 DecalScaleControlPoint::on_move_start(GdkEventButton* event)
-{ 
+{
 }
 
 void
-DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& offset_) 
+DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& offset_)
 {
-  offset = offset_; 
+  offset = offset_;
 
   Vector2f start   = pos - object->get_world_pos();
   Vector2f current = (pos + offset) - object->get_world_pos();
 
   start   = glm::rotate(start, -object->get_angle());
   current = glm::rotate(current, -object->get_angle());
-    
+
   Vector2f new_scale = orig_scale;
 
   if (x_scale)
@@ -61,7 +61,7 @@ DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& of
 
   object->set_scale(new_scale);
 }
-  
+
 void
 DecalScaleControlPoint::on_move_end(GdkEventButton* /*event*/, const Vector2f& offset_)
 {

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -35,23 +35,23 @@ MenuItem::draw(const Rectf& rect, bool is_active)
 {
   Color font_color;
   TTFFont* font = parent->get_font();
-  
-  if (is_active) 
+
+  if (is_active)
   {
     Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
     Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
     font_color = Color(1.0f, 1.0f, 1.0f);
     fade_timer = 2.0f;
-  } 
-  else 
+  }
+  else
   {
     if (fade_timer != 0.0f)
     {
       //Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f * fade_timer));
       //Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f * fade_timer));
-      font_color = Color(0.75f + 0.25f * fade_timer, 
-                         0.75f + 0.25f * fade_timer, 
-                         0.75f + 0.25f * fade_timer, 
+      font_color = Color(0.75f + 0.25f * fade_timer,
+                         0.75f + 0.25f * fade_timer,
+                         0.75f + 0.25f * fade_timer,
                          1.0f);
     }
     else
@@ -74,7 +74,7 @@ MenuItem::update(float delta)
     fade_timer = 0.0f;
 }
 
-EnumMenuItem::EnumMenuItem(MenuComponent* parent_, 
+EnumMenuItem::EnumMenuItem(MenuComponent* parent_,
                            const std::string& label_, int index_)
   : MenuItem(parent_, label_),
     index(index_),
@@ -116,7 +116,7 @@ EnumMenuItem::decr()
   on_change(labels[index].value);
 }
 
-void 
+void
 EnumMenuItem::draw(const Rectf& rect, bool is_active)
 {
   MenuItem::draw(rect, is_active);
@@ -137,16 +137,16 @@ EnumMenuItem::draw(const Rectf& rect, bool is_active)
              font_color);
 }
 
-SliderMenuItem::SliderMenuItem(MenuComponent* parent_, 
+SliderMenuItem::SliderMenuItem(MenuComponent* parent_,
                                const std::string& label_,
-                               int value_, int min_value_, int max_value_, int step_) 
+                               int value_, int min_value_, int max_value_, int step_)
   : MenuItem(parent_, label_),
     value(value_),
     min_value(min_value_),
     max_value(max_value_),
     step(step_),
     on_change()
-{  
+{
 }
 
 void
@@ -177,7 +177,7 @@ SliderMenuItem::draw(const Rectf& rect, bool is_active)
   MenuItem::draw(rect, is_active);
   float total_width = 200.0f;
   float width = total_width * static_cast<float>(value) / static_cast<float>(max_value - min_value);
-  
+
   Color color;
   if (is_active)
   {
@@ -189,12 +189,12 @@ SliderMenuItem::draw(const Rectf& rect, bool is_active)
   }
 
   Display::fill_rounded_rect(Rectf(Vector2f(rect.right - 4.0f - total_width, rect.top + 4.0f),
-                                   Sizef(width, rect.get_height() - 8)), 
+                                   Sizef(width, rect.get_height() - 8)),
                              5.0f,
                              Color(0.75f*color.r, 0.75f*color.g, 0.75f*color.b, color.a));
 
   Display::draw_rounded_rect(Rectf(Vector2f(rect.right - 4.0f - total_width, rect.top + 4.0f),
-                                   Sizef(total_width, rect.get_height() - 8)), 
+                                   Sizef(total_width, rect.get_height() - 8)),
                              5.0f,
                              color);
 }

@@ -11,7 +11,7 @@ struct ListEntry {
   ListEntry(const lisp::Lisp* lisp_)
     : lisp(lisp_), used(false)
   {}
-  
+
   const Lisp* lisp;
   bool used;
 };
@@ -51,12 +51,12 @@ public:
         return true;
     } while(true);
   }
-  
+
   const std::string& item() const
   {
     return current_item;
   }
-  
+
 private:
   friend class Properties;
 
@@ -64,7 +64,7 @@ private:
     : i(begin_), end(end_)
   {
   }
-    
+
   PropertyMap::iterator i;
   PropertyMap::iterator end;
   std::string current_item;

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -193,7 +193,7 @@ Doll::set_state_climbing()
 void
 Doll::set_state_jump()
 {
-    
+
 }
 
 void
@@ -246,7 +246,7 @@ void
 Doll::update_walking(const Controller& controller, float delta)
 {
   Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
-                 controller.get_axis_state(Y_AXIS) * delta * 200.0f);  
+                 controller.get_axis_state(Y_AXIS) * delta * 200.0f);
   walk(stick);
 
   if (controller.get_axis_state(Y_AXIS) > 0)
@@ -293,7 +293,7 @@ Doll::update_running(const Controller& controller, float delta)
 
 void
 Doll::update_ducking(const Controller& controller, float /*delta*/)
-{ 
+{
   if (controller.get_axis_state(Y_AXIS) < 0)
   {
     set_state_standing();
@@ -353,7 +353,7 @@ Doll::walk(const Vector2f& adv_)
         if (m_edge_position->get_edge() != i->edge)
         { // Find out into the direction of which edge the stick is pointing
           Vector2f proj = glm::proj(adv_, i->edge->get_vector());
-                  
+
           if (glm::length(proj) > length)
           {
             next_edge = *i;
@@ -361,7 +361,7 @@ Doll::walk(const Vector2f& adv_)
           }
         }
       }
-              
+
       if (!next_edge.edge)
       {
         /*
@@ -398,7 +398,7 @@ Doll::update_rolling(const Controller& controller, float delta)
     if (controller.get_axis_state(X_AXIS) > 0 ||
         controller.get_axis_state(X_AXIS) < 0)
     {
-      if (controller.get_button_state(RUN_BUTTON))   
+      if (controller.get_button_state(RUN_BUTTON))
       {
         set_state_running();
       }

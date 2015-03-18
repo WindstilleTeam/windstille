@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -77,7 +77,7 @@ SectorModel::~SectorModel()
 
 void
 SectorModel::register_callbacks()
-{  
+{
   layer_tree->signal_row_changed().connect(sigc::mem_fun(*this, &SectorModel::on_row_changed));
   layer_tree->signal_row_deleted().connect(sigc::mem_fun(*this, &SectorModel::on_row_deleted));
   layer_tree->signal_row_has_child_toggled().connect(sigc::mem_fun(*this, &SectorModel::on_row_has_child_toggled));
@@ -94,7 +94,7 @@ SectorModel::add_layer(LayerHandle layer, const Gtk::TreeModel::Path& path)
     it = layer_tree->append();
   else
     it = layer_tree->insert(layer_tree->get_iter(path));
-  
+
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file(Pathname("editor/type.png", Pathname::kDataPath).get_sys_path());
   (*it)[LayerManagerColumns::instance().name]      = layer->get_name();
   (*it)[LayerManagerColumns::instance().visible]   = layer->is_visible();
@@ -115,8 +115,8 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
   LayerHandle layer(new Layer(*this));
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file(Pathname("/editor/type.png", Pathname::kDataPath).get_sys_path());
   (*it)[LayerManagerColumns::instance().name]      = name;
-  (*it)[LayerManagerColumns::instance().visible]   = true; 
-  (*it)[LayerManagerColumns::instance().locked]    = false; 
+  (*it)[LayerManagerColumns::instance().visible]   = true;
+  (*it)[LayerManagerColumns::instance().locked]    = false;
   (*it)[LayerManagerColumns::instance().layer]     = layer;
   layer->sync(*it);
 }
@@ -154,7 +154,7 @@ SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& pa
     EditorWindow::current()->print("SectorModel::add(): invalid empty path");
   }
   else
-  { 
+  {
     Gtk::ListStore::iterator it = layer_tree->get_iter(path);
     static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->add(object);
   }
@@ -164,7 +164,7 @@ void
 SectorModel::remove(const ObjectModelHandle& object)
 {
   const Layers& layers = get_layers();
- 
+
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
   {
     (*i)->remove(object);
@@ -175,9 +175,9 @@ SectorModel::Layers
 SectorModel::get_layers() const
 {
   Layers lst;
- 
+
   // LayerTree holds the layers in reverse order, so we reverse them here
-  Gtk::TreeModel::Children childs = layer_tree->children(); 
+  Gtk::TreeModel::Children childs = layer_tree->children();
   for(Gtk::TreeModel::Children::const_iterator it = childs.begin();
       it != childs.end(); ++it)
   {
@@ -216,15 +216,15 @@ LayerHandle
 SectorModel::get_layer(const ObjectModelHandle& object) const
 {
   const Layers& layers = get_layers();
- 
+
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
   {
     if ((*i)->has_object(object))
     {
       return *i;
     }
-  }  
-  
+  }
+
   return LayerHandle();
 }
 
@@ -233,7 +233,7 @@ SectorModel::draw(SceneContext& sc, const SelectMask& layermask)
 {
   // Draw Layers
   const Layers& layers = get_layers();
- 
+
   for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
   {
     if ((*i)->is_visible())
@@ -258,7 +258,7 @@ SectorModel::get_object_at(const Vector2f& pos, const SelectMask& layermask) con
 {
   const Layers& layers = get_layers();
   SelectionHandle selection = Selection::create();
-  
+
   if (ObjectModelHandle obj = nav_graph->get_object_at(pos, layermask))
   {
     return obj;
@@ -269,12 +269,12 @@ SectorModel::get_object_at(const Vector2f& pos, const SelectMask& layermask) con
     if ((*i)->is_visible() && !(*i)->is_locked())
     {
       ObjectModelHandle object = (*i)->get_object_at(pos, layermask);
-          
+
       if (object)
         return object;
     }
   }
-  
+
   return ObjectModelHandle();
 }
 
@@ -408,7 +408,7 @@ struct PropSetFunctor
     static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->sync(*it);
     return false;
   }
-  
+
   bool set_locked(const Gtk::TreeModel::iterator& it)
   {
     (*it)[LayerManagerColumns::instance().locked] = v;
@@ -436,7 +436,7 @@ SectorModel::rebuild_scene_graph(DrawableGroup& sg)
 {
   // FIXME: should make a queue_rebuild_scene_graph() to limit the number of rebuilds per frame to 1
   sg.clear();
-  
+
   const Layers& layers = get_layers();
   for(Layers::const_iterator layer = layers.begin(); layer != layers.end(); ++layer)
   {
@@ -527,7 +527,7 @@ SectorModel::delete_navgraph_edges(NavGraphNodeObjectModel& node)
         }
       }
     }
-  }  
+  }
 }
 
 /* EOF */

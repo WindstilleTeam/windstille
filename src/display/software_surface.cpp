@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -59,8 +59,8 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
     if (m_surface->format->BytesPerPixel == 4)
     { // convert image into standard format
       m_format = RGBA;
-      
-      if ((is_little_endian() && 
+
+      if ((is_little_endian() &&
            !(m_surface->format->Rmask == 0x000000ff &&
              m_surface->format->Gmask == 0x0000ff00 &&
              m_surface->format->Bmask == 0x00ff0000 &&
@@ -72,7 +72,7 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
              m_surface->format->Amask == 0x000000ff)))
       {
         std::cout << "XXX Doing conversation RGBA: " << filename << std::endl;
-        std::cout << "    rmask: " << boost::format("%08x %08x %08x %08x") % 
+        std::cout << "    rmask: " << boost::format("%08x %08x %08x %08x") %
           m_surface->format->Rmask %
           m_surface->format->Gmask %
           m_surface->format->Bmask %
@@ -101,8 +101,8 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
     else if (m_surface->format->BytesPerPixel == 3)
     {
       m_format = RGB;
-      
-      if ((is_little_endian() && 
+
+      if ((is_little_endian() &&
            !(m_surface->format->Rmask == 0x0000ff &&
              m_surface->format->Gmask == 0x00ff00 &&
              m_surface->format->Bmask == 0xff0000 &&
@@ -114,7 +114,7 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
              m_surface->format->Amask == 0x000000)))
       {
         std::cout << "XXX Doing conversation RGB: " << filename << std::endl;
-        std::cout << "    rmask: " << boost::format("%08x %08x %08x %08x") % 
+        std::cout << "    rmask: " << boost::format("%08x %08x %08x %08x") %
           m_surface->format->Rmask %
           m_surface->format->Gmask %
           m_surface->format->Bmask %
@@ -145,7 +145,7 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
     {
       std::ostringstream str;
       str << "SoftwareSurface: unknown bytesPerPixel: " << m_surface->format->BytesPerPixel << std::endl;
-      throw std::runtime_error(str.str());      
+      throw std::runtime_error(str.str());
     }
 
     assert(!SDL_MUSTLOCK(m_surface));
@@ -206,7 +206,7 @@ SoftwareSurface::get_height() const
 Size
 SoftwareSurface::get_size() const
 {
-  return Size(m_surface->w, 
+  return Size(m_surface->w,
               m_surface->h);
 }
 
@@ -231,7 +231,7 @@ SoftwareSurface::get_surface() const
 void
 SoftwareSurface::blit(SoftwareSurfacePtr dst, int x, int y) const
 {
-  SDL_Rect dst_rect; 
+  SDL_Rect dst_rect;
   dst_rect.x = static_cast<Sint16>(x);
   dst_rect.y = static_cast<Sint16>(y);
 
@@ -250,7 +250,7 @@ SoftwareSurface::blit(const Rect& src_rect_, SoftwareSurfacePtr dst, int x, int 
   SDL_Rect dst_rect;
   dst_rect.x = static_cast<Sint16>(x);
   dst_rect.y = static_cast<Sint16>(y);
-  
+
   SDL_BlitSurface(m_surface, &src_rect, dst->m_surface, &dst_rect);
 }
 
@@ -263,7 +263,7 @@ SoftwareSurface::is_at(int x, int y) const
     if (get_bits_per_pixel() == 32)
     {
       uint8_t* pixels = static_cast<uint8_t*>(m_surface->pixels);
-          
+
       return pixels[y * m_surface->pitch + x*4 + 3] > 128;
     }
     else
@@ -306,18 +306,18 @@ SoftwareSurface::save_png(const std::string& filename) const
 
       png_init_io(png_ptr, fp);
 
-      png_set_IHDR(png_ptr, info_ptr, 
+      png_set_IHDR(png_ptr, info_ptr,
                    get_width(), get_height(), 8 /* bitdepth */,
                    (get_bytes_per_pixel() == 4) ? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_RGB,
-                   PNG_INTERLACE_NONE, 
-                   PNG_COMPRESSION_TYPE_BASE, 
+                   PNG_INTERLACE_NONE,
+                   PNG_COMPRESSION_TYPE_BASE,
                    PNG_FILTER_TYPE_BASE);
-      
+
       png_set_compression_level(png_ptr, 6);
       png_write_info(png_ptr, info_ptr);
 
       boost::scoped_array<png_bytep> row_pointers(new png_bytep[get_height()]);
-   
+
       for (int y = 0; y < get_height(); ++y)
       {
         row_pointers[y] = (pixels + (y * pitch));

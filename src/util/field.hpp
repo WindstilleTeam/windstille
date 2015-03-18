@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -35,19 +35,19 @@ public:
 
   Field()
     : width(0),
-      height(0), 
+      height(0),
       vec()
   {
   }
 
-  Field (int w, int h) 
-    : width(w), 
-      height(h), 
+  Field (int w, int h)
+    : width(w),
+      height(h),
       vec(width * height)
   {
   }
 
-  /** Creates a new field out of a subsection from an already excisting one 
+  /** Creates a new field out of a subsection from an already excisting one
    *  @param arg_field The field thet gets copied
    *  @param w         width of the new field
    *  @param h         height of the new field
@@ -75,7 +75,7 @@ public:
     return vec[i];
   }
 
-  T& operator() (int x, int y) 
+  T& operator() (int x, int y)
   {
     assert (x >= 0 || x < width || y >= 0 || y < height);
     return vec [width*y + x];
@@ -86,7 +86,7 @@ public:
     assert (x >= 0 || x < width || y >= 0 || y < height);
     return vec [width*y + x];
   }
-  
+
   inline const T& at (int x, int y) const {
     return (*this) (x, y);
   }
@@ -101,7 +101,7 @@ public:
    *  @param pos_x The position of the old field in the new resized one
    *  @param pos_y The position of the old field in the new resized one
    **/
-  void resize(int w, int h, int pos_x = 0, int pos_y = 0) 
+  void resize(int w, int h, int pos_x = 0, int pos_y = 0)
   {
     *this = Field<T>(*this, w, h, pos_x, pos_y);
   }

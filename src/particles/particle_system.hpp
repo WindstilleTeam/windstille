@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -75,7 +75,7 @@ private:
 
   float gravity_x;
   float gravity_y;
-  
+
   float cone_start;
   float cone_stop;
 
@@ -108,12 +108,12 @@ public:
 
   /** Update the particle system \a delta seconds */
   void update(float delta);
-  
+
   /** Set how many particles will be used */
   void set_count(int num);
 
   int get_count() const;
-  
+
   /** \a factor == 1 means a constant stream of particles, a value of
       0 means all particles will be released at once */
   void set_bunching(float factor);
@@ -133,7 +133,7 @@ public:
       coordinates, this is relative to the position you can set via
       set_pos() */
   void set_spawn_point(float x, float y);
-  
+
   /** Causes all particles to spawn from a single point */
   void set_point_distribution();
 
@@ -186,8 +186,8 @@ public:
   const Color& get_color_stop()  const { return color_stop;  }
 
   float get_x_pos() const { return x_pos; }
-  float get_y_pos() const { return y_pos; } 
-  float get_z_pos() const { return z_pos; } 
+  float get_y_pos() const { return y_pos; }
+  float get_z_pos() const { return z_pos; }
 
   /** Returns the how much a particle has progressed, this is
       particle.life_time with fade_in/fade_out applied  */

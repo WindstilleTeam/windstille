@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -43,7 +43,7 @@ public:
       p4()
   {}
 
-  Quad(const Rectf& rect) 
+  Quad(const Rectf& rect)
     : p1(rect.left, rect.top),
       p2(rect.right, rect.top),
       p3(rect.right, rect.bottom),
@@ -67,7 +67,7 @@ public:
       p3(p3_),
       p4(p4_)
   {}
- 
+
   Rectf get_bounding_box() const
   {
     return Rectf(math::min(math::min(math::min(p1.x, p2.x), p3.x), p4.x),

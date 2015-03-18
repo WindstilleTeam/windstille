@@ -37,7 +37,7 @@ Lensflare::Lensflare() :
   m_window_size(640, 400),
   m_fullscreen(false),
   m_loop(false),
-  
+
   m_light(),
   m_lightquery(),
   m_superlight(),
@@ -63,19 +63,19 @@ Lensflare::draw()
   factor *= 3.3f;
   std::cout << factor << std::endl;
 
-  glEnable(GL_DEPTH_TEST); 
+  glEnable(GL_DEPTH_TEST);
   glDepthMask(GL_TRUE);
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
   glAlphaFunc ( GL_GREATER, 0.5f );
   glEnable(GL_ALPHA_TEST);
-    
+
   m_cover->draw(SurfaceDrawingParameters()
                 .set_pos(Vector2f(600, 400))
                 .set_color(Color(0.15f, 0.15f, 0.15f, 1.0f))
     );
-  
+
   glDisable(GL_ALPHA_TEST);
-  
+
   if (true)
   {
 
@@ -118,7 +118,7 @@ Lensflare::draw()
     glDepthMask(GL_TRUE);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-  
+
     std::cout << "samples: " << samples << " -/- " << total_samples << std::endl;
 
     glDeleteQueries(1, &query_id);
@@ -238,7 +238,7 @@ Lensflare::run()
   m_halo = Surface::create(Pathname("halo.png", Pathname::kSysPath));
 
   float pos[] = { 0.1f, 0.2f, 0.4f, 0.8f, 1.6f, 3.2f };
-  
+
   for(size_t i = 0; i < sizeof(pos)/sizeof(float); ++i)
   {
     m_flairs.push_back(Flair(m_flair2, pos[i], 1.0f * pos[i], Color(1,1,1,1)));

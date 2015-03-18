@@ -31,7 +31,7 @@ public:
     return true;
   }
 
-  /** 
+  /**
    * Ignore a property so that it doesn't give a warning, usefull for
    * example if some tags are only used by the editor but not by the
    * game.
@@ -55,7 +55,7 @@ public:
       return false;
     }
     PropertyMap::iterator end = properties.upper_bound(name);
-        
+
     iter = PropertyIterator<T>(beg, end);
     return true;
   }

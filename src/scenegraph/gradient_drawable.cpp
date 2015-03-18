@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -28,8 +28,8 @@ GradientDrawable::GradientDrawable(const std::vector<float>& colors)
 {
   if (!colors.empty())
   {
-    Rectf rect(0.0f, 0.0f, 
-               static_cast<float>(Display::get_width()), 
+    Rectf rect(0.0f, 0.0f,
+               static_cast<float>(Display::get_width()),
                static_cast<float>(Display::get_height()));
 
     array->set_mode(GL_QUAD_STRIP);
@@ -63,7 +63,7 @@ GradientDrawable::GradientDrawable(const std::vector<float>& colors)
       array->vertex(rect.left, rect.top + end * rect.get_height());
 
       array->color(color2);
-      array->vertex(rect.right, rect.top + end * rect.get_height());  
+      array->vertex(rect.right, rect.top + end * rect.get_height());
     }
   }
 }

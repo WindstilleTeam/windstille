@@ -7,12 +7,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -121,7 +121,7 @@ Sprite::operator=(const Sprite& rhs)
     blend_sfactor  = rhs.blend_sfactor;
     blend_dfactor  = rhs.blend_dfactor;
     scale          = rhs.scale;
-    color          = rhs.color; 
+    color          = rhs.color;
   }
   return *this;
 }
@@ -145,10 +145,10 @@ void
 Sprite::set_action(const std::string& name)
 {
   for(SpriteData::Actions::const_iterator i = data->actions.begin();
-      i != data->actions.end(); ++i) 
+      i != data->actions.end(); ++i)
   {
     const SpriteAction* action = *i;
-    if(action->name == name) 
+    if(action->name == name)
     {
       // FIXME: This should be per-action and not get reset, shouldn't they?
       current_action = action;

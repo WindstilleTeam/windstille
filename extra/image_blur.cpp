@@ -31,7 +31,7 @@
 
 int main(int argc, char** argv)
 {
-  if (argc != 3) 
+  if (argc != 3)
   {
     std::cout << "Usage: " << argv[0] << " FILENAME" << std::endl;
     return -1;
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
           }
           std::cout << ray_length << std::endl;
           break;
-          
+
         case SDL_MOUSEMOTION:
           //std::cout << event.motion.x << ", " << event.motion.y << std::endl;
           last_pos = pos;
@@ -159,7 +159,7 @@ int main(int argc, char** argv)
         {
           surface->draw(SurfaceDrawingParameters()
                         .set_scale(1.0f)
-                        .set_pos((static_cast<float>(i)/static_cast<float>(n-1)) * pos 
+                        .set_pos((static_cast<float>(i)/static_cast<float>(n-1)) * pos
                                  + (static_cast<float>(n-i-1)/static_cast<float>(n-1)) * last_pos
                                  - Vector2f(surface->get_width()/2, surface->get_height()/2))
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
@@ -176,7 +176,7 @@ int main(int argc, char** argv)
         if (true)
           surface->draw(SurfaceDrawingParameters()
                         .set_scale(scale)
-                        .set_pos(Vector2f(512, 288) - Vector2f(surface->get_width()/2 * scale, 
+                        .set_pos(Vector2f(512, 288) - Vector2f(surface->get_width()/2 * scale,
                                                                surface->get_height()/2 * scale)
                                  + (Vector2f(512, 288) - pos) * scale * 3.0f)
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
@@ -188,7 +188,7 @@ int main(int argc, char** argv)
           //std::cout << "Black: " << pos << std::endl;
           surface_2->draw(SurfaceDrawingParameters()
                          .set_scale(scale)
-                         .set_pos(Vector2f(512, 288) - Vector2f(surface_2->get_width()/2 * scale, 
+                         .set_pos(Vector2f(512, 288) - Vector2f(surface_2->get_width()/2 * scale,
                                                                 surface_2->get_height()/2 * scale)
                                   + (Vector2f(512, 288) - pos) * scale * 3.0f)
                          .set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -203,7 +203,7 @@ int main(int argc, char** argv)
       glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, framebuffer->get_handle());
       glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
 
-      glBlitFramebufferEXT(0, 0, framebuffer->get_width(), framebuffer->get_height(), 
+      glBlitFramebufferEXT(0, 0, framebuffer->get_width(), framebuffer->get_height(),
                            0, 0, framebuffer->get_width(), framebuffer->get_height(),
                            GL_COLOR_BUFFER_BIT, GL_LINEAR /*NEAREST*/);
 

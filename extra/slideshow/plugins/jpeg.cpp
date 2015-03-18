@@ -43,5 +43,5 @@ JPEG::get_size(const std::string& filename)
   Size size = loader.read_size();
   return size;
 }
-  
+
 /* EOF */

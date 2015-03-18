@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -52,11 +52,11 @@ private:
 
 public:
   /**
-   * Init the global OpenGLState, must be called exactly once 
+   * Init the global OpenGLState, must be called exactly once
    */
   static void init();
 
-  /** 
+  /**
    * Creates a new OpenGLState with default settings, which are:
    *
    * - no texture is set
@@ -68,7 +68,7 @@ public:
   OpenGLState();
   ~OpenGLState();
 
-  /** 
+  /**
    * Binds the given \a texture to the given texture \a unit and
    * enables texturing via glEnable(GL_TEXTURE2D) for the unit.
    */
@@ -81,7 +81,7 @@ public:
 
   void set_state(GLenum array, bool value);
   bool get_state(GLenum array) const;
-  
+
   void enable_client_state(GLenum array);
   void disable_client_state(GLenum array);
 
@@ -94,10 +94,10 @@ public:
 
   /**
    * Activates the given state, you *must* call this before you issue
-   * gl commands that depend on the given state 
+   * gl commands that depend on the given state
    */
   void activate();
-  
+
   /**
    * Verify that all states got set as planed, for debugging purpose only
    */

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -39,13 +39,13 @@ Liquid::Liquid(const FileReader& props) :
 
   props.get("pos",    pos);
   props.get("width",  width);
-  
+
   heightfield1 = &heightfield_store1;
   heightfield2 = &heightfield_store2;
 
   heightfield1->resize(width * SAMPLES, 0);
   heightfield2->resize(width * SAMPLES, 0);
-  
+
   for(std::vector<float>::size_type i = 2; i < heightfield1->size()-2; ++i)
   {
     (*heightfield1)[i] = sinf(static_cast<float>(i) / static_cast<float>(heightfield1->size()) * 10.0f) * 0.5f
@@ -58,7 +58,7 @@ Liquid::Liquid(const FileReader& props) :
 
   texture = Texture::create(Pathname("images/textures/water.png"));
   texture->set_wrap(GL_REPEAT);
-  
+
   m_water_top.reset(new VertexArrayDrawable(Vector2f(pos.x, pos.y), 10000,
                                             Matrix(1.0f))); //sc.light().get_modelview()));
 
@@ -85,15 +85,15 @@ Liquid::update(float delta)
     {
       for(std::vector<float>::size_type i = 2; i < heightfield1->size()-2; ++i)
       {
-        float value = 
+        float value =
           factor * ((*heightfield1)[i-2] +
                     (*heightfield1)[i-1] +
                     (*heightfield1)[i+1] +
-                    (*heightfield1)[i+2])                      
+                    (*heightfield1)[i+2])
           - (factor * 4 * (*heightfield1)[i])
           + (2*(*heightfield1)[i])
           - (*heightfield2)[i];
-      
+
         (*heightfield2)[i] = value * 0.99999f;
       }
       std::swap(heightfield2, heightfield1);

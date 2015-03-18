@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -51,7 +51,7 @@ public:
   ObjectModel(const FileReader& reader);
   ObjectModel(const std::string& name, const Vector2f& pos);
   virtual ~ObjectModel();
-  
+
   void set_parent(const ObjectModelHandle& parent_, bool recalc_pos = true);
   ObjectModelHandle get_parent() const;
 
@@ -63,7 +63,7 @@ public:
 
   virtual Vector2f get_rel_pos() const { return rel_pos; }
   virtual void     set_rel_pos(const Vector2f& rel_pos_);
-  
+
   virtual SelectMask get_select_mask() const { return select_mask; }
   virtual void   set_select_mask(const SelectMask& select_mask_) { select_mask = select_mask_; }
 
@@ -96,7 +96,7 @@ public:
   virtual FileWriter& write_member(FileWriter& writer) const;
 
   virtual void add_control_points(std::vector<ControlPointHandle>& control_points) {}
-  
+
   virtual void get_property(TimelineProperty property, float& value_out) const;
   virtual void get_property(TimelineProperty property, Vector2f& value_out) const;
 

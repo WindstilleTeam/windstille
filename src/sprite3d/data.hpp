@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -113,7 +113,7 @@ struct MeshVertices
  * A Marker is a named-frame, so that you can refer to a frame number
  * by its purpose, ie. 'RightFoot', to refer to the frame where the
  * right foot is on the ground. This is used to ensure that the
- * transitions from one animation to the next are smooth. 
+ * transitions from one animation to the next are smooth.
  */
 struct Marker
 {
@@ -126,7 +126,7 @@ struct Marker
   {}
 };
 
-/** 
+/**
  * A ActionFrame holds the vertex positions for the mesh and the
  * position of the attachment points
  */
@@ -141,14 +141,14 @@ struct ActionFrame
 };
 
 /**
- *  
+ *
  */
 struct Action
 {
   Action()
     : name(),
       speed(),
-      markers(0), 
+      markers(0),
       frames(0)
   { }
   std::string  name;

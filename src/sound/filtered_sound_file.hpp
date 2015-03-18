@@ -40,7 +40,7 @@ public:
   virtual int    get_channels() const;
 
   virtual void   seek_to(float sec);
-  
+
   /** Returns the length of the file in seconds */
   virtual float  get_length() const;
 

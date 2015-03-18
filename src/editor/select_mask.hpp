@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -30,7 +30,7 @@ public:
 
   unsigned int get_mask() const
   {
-    return mask; 
+    return mask;
   }
 
   bool match(const SelectMask& rhs) const
@@ -50,12 +50,12 @@ public:
     }
   }
 
-  int size() const 
+  int size() const
   {
-    return 16; 
+    return 16;
   }
 
-  bool get(unsigned int layer) const 
+  bool get(unsigned int layer) const
   {
     return mask & (1<<layer);
   }

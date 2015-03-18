@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -75,22 +75,22 @@ public:
     }
     else if (size() == 1)
     {
-      boost::shared_ptr<TimelineKeyframeDataObject<C> > keyframe = 
+      boost::shared_ptr<TimelineKeyframeDataObject<C> > keyframe =
         boost::dynamic_pointer_cast<TimelineKeyframeDataObject<C> >(*begin());
       return keyframe->get_data();
     }
     else
     {
-      boost::shared_ptr<TimelineKeyframeDataObject<C> > lhs; 
+      boost::shared_ptr<TimelineKeyframeDataObject<C> > lhs;
       boost::shared_ptr<TimelineKeyframeDataObject<C> > rhs;
 
       for(iterator i = begin(); i != end(); ++i)
       {
         //std::cout << size() << " - " << (i - begin()) << std::endl;
 
-        boost::shared_ptr<TimelineKeyframeDataObject<C> > keyframe = 
+        boost::shared_ptr<TimelineKeyframeDataObject<C> > keyframe =
           boost::dynamic_pointer_cast<TimelineKeyframeDataObject<C> >(*i);
-        
+
         assert(keyframe);
 
         //std::cout << "keyframe: " << keyframe.get() << std::endl;
@@ -103,7 +103,7 @@ public:
         else if (lhs)
         {
           //std::cout << "lhs: " << lhs->get_pos() << " " << keyframe->get_pos() << std::endl;
-          
+
           if (keyframe->get_pos() >= lhs->get_pos() &&
               keyframe->get_pos() <= pos)
           {
@@ -112,7 +112,7 @@ public:
         }
 
         //std::cout << "snip: " << lhs.get() << " " << rhs.get() << " " << keyframe.get() << std::endl;
-        
+
         if (!rhs && keyframe->get_pos() >= pos)
         {
           //std::cout << "crash2" << std::endl;

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -21,8 +21,8 @@
 #include "collision/stair_contact.hpp"
 
 StairContact::StairContact(TileMap* tilemap_, const Point& pos_)
-  : tilemap(tilemap_), 
-    pos(pos_), 
+  : tilemap(tilemap_),
+    pos(pos_),
     advancement(0.0f),
     tile_type()
 {
@@ -48,10 +48,10 @@ StairContact::advance(float s)
   s /= 32.0f;
 
   //std::cout << "Advance: (" << pos.x << ", " << pos.y << ") " << advancement << " " << s << std::endl;
-  
+
   float step = (s > 0.0f) ? 1.0f : -1.0f;
 
-  // advancement must happen tile by tile  
+  // advancement must happen tile by tile
   while ((fabs(s) > fabs(step)) && is_active())
   {
     advancement += step;

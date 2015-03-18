@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -40,7 +40,7 @@ Mesh::Mesh(FileReader& reader, const std::string& path) :
 {
   if (reader.get_name() != "mesh")
     throw std::runtime_error("Not a 'mesh' type, its '" + reader.get_name() + "'");
-  
+
   std::string texture_filename;
 
   reader.get("name",      name);
@@ -60,7 +60,7 @@ Mesh::Mesh(FileReader& reader, const std::string& path) :
       {
         VertexGroup group;
         if ((*i).get("bone",     group.bone_name) &&
-            (*i).get("weight",   group.weight) && 
+            (*i).get("weight",   group.weight) &&
             (*i).get("vertices", group.vertices))
         {
           if (group.weight != 0.0f) // ignore useless bones
@@ -102,7 +102,7 @@ Mesh::Mesh(FileReader& reader, const std::string& path) :
 
     vertices_.push_back(vertex);
   }
-  
+
   // Add bone and weight to the individual vertices
   for(Groups::iterator i = groups.begin(); i != groups.end(); ++i)
   {
@@ -113,7 +113,7 @@ Mesh::Mesh(FileReader& reader, const std::string& path) :
       vertices_[*j].weights.push_back(group.weight);
     }
   }
-  
+
   // Normalize Weight to 1.0f
   for(Vertices::iterator i = vertices_.begin(); i != vertices_.end(); ++i)
   {
@@ -123,12 +123,12 @@ Mesh::Mesh(FileReader& reader, const std::string& path) :
     float total_weight = 0.0f;
     for(std::vector<float>::iterator w = i->weights.begin(); w != i->weights.end(); ++w)
       total_weight += *w;
-     
+
     for(std::vector<float>::iterator w = i->weights.begin(); w != i->weights.end(); ++w)
       *w /= total_weight;
   }
 
-#if 0 
+#if 0
   // FIXME: Broken by design
   FileReader influences_reader;
   if (reader.get("influences", influences_reader))
@@ -150,9 +150,9 @@ Mesh::Mesh(FileReader& reader, const std::string& path) :
             {
               float weight;
               std::string bone_name;
-                      
+
               (*j).get("weight", weight);
-              (*j).get("bone",   bone_name);                         
+              (*j).get("bone",   bone_name);
             }
           }
         }
@@ -181,7 +181,7 @@ Mesh::Mesh(FileReader& reader, const std::string& path) :
 
 Mesh::~Mesh()
 {
-  
+
 }
 
 void
@@ -206,7 +206,7 @@ Mesh::draw()
   glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
   state.enable_client_state(GL_VERTEX_ARRAY);
   state.enable_client_state(GL_NORMAL_ARRAY);
-  state.enable_client_state(GL_TEXTURE_COORD_ARRAY);  
+  state.enable_client_state(GL_TEXTURE_COORD_ARRAY);
   state.activate();
 
   assert_gl("gl init before sprite");

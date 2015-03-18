@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -50,7 +50,7 @@ public:
   Pathname filename;
 
   bool pause;
-  
+
   /** Amount of how far the cutscene bars are visible, 0.0 means not
       visible, 1.0 fully visible. */
   float cutscene_value;
@@ -59,7 +59,7 @@ public:
   bool  cutscene_mode;
 
   enum { NO_ACTION, QUIT_ACTION, CHANGE_SECTOR_ACTION } next_action;
-  
+
   enum { FADEIN, RUNNING, FADEOUT } fade_state;
 
   Color fade_color;
@@ -76,7 +76,7 @@ public:
       dialog_manager. Receives input and gets drawn to the screen */
   Screen* current_gui;
 
-  GameSessionImpl() 
+  GameSessionImpl()
     : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),
       sc(),
       fadeout_value(),
@@ -106,7 +106,7 @@ public:
     fade_time      = 1.0f;
   }
 
-  ~GameSessionImpl() 
+  ~GameSessionImpl()
   {
   }
 
@@ -117,7 +117,7 @@ public:
   void update_controller(float delta, const Controller& controller);
   void update_game(float delta);
   void update(float delta, const Controller& controller);
-  
+
   void handle_event(const SDL_Event& event);
 
 private:
@@ -131,7 +131,7 @@ GameSession::GameSession(const Pathname& arg_filename)
   impl->filename = arg_filename;
 
   impl->pause = false;
-  
+
   set_sector(impl->filename);
 }
 
@@ -143,16 +143,16 @@ void
 GameSessionImpl::draw()
 {
   view.draw(sc, *sector);
-  
+
   // Render the scene to the screen
   compositor.render(sc, &sector->get_scene_graph(), view.get_gc_state());
 
   if (cutscene_mode || cutscene_value > 0.0f)
   {
     int border_size = static_cast<int>(75 * cutscene_value);
-    Display::fill_rect(Rect(Point(0, 0), Size(Display::get_width(), border_size)), 
+    Display::fill_rect(Rect(Point(0, 0), Size(Display::get_width(), border_size)),
                        Color(0.0f, 0.0f, 0.0f, cutscene_value));
-    Display::fill_rect(Rect(Point(0, Display::get_height() - border_size), Size(Display::get_width(), border_size)), 
+    Display::fill_rect(Rect(Point(0, Display::get_height() - border_size), Size(Display::get_width(), border_size)),
                        Color(0.0f, 0.0f, 0.0f, cutscene_value));
   }
 
@@ -161,7 +161,7 @@ GameSessionImpl::draw()
 
   if (fade_state == FADEOUT || fade_state == FADEIN)
   {
-    Display::fill_rect(Rect(0, 0, 
+    Display::fill_rect(Rect(0, 0,
                             Display::get_width(), Display::get_height()),
                        Color(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
   }
@@ -172,7 +172,7 @@ GameSessionImpl::draw()
   {
     if ((SDL_GetTicks() / 1000) % 2)
       Fonts::current()->vera20->draw(Vector2f(static_cast<float>(Display::get_width())  / 2.0f,
-                                              static_cast<float>(Display::get_height()) / 2.0f), 
+                                              static_cast<float>(Display::get_height()) / 2.0f),
                                      "Pause");
   }
 }
@@ -189,14 +189,14 @@ GameSessionImpl::update_cutscene(float delta)
   if (cutscene_value > 1.0f)
     cutscene_value = 1.0f;
   else if (cutscene_value < 0.0f)
-    cutscene_value = 0.0f;  
+    cutscene_value = 0.0f;
 }
 
 void
 GameSessionImpl::update_input(float delta)
 {
   const Uint8* keystate = SDL_GetKeyboardState(NULL);
-  
+
   // Hacks to play around with the game speed
   if(keystate[SDL_SCANCODE_KP_1])
     game_speed *= 1.0f - delta;
@@ -213,12 +213,12 @@ GameSessionImpl::update_game(float delta)
 {
   game_time += delta;
   ScriptManager::current()->update();
-      
+
   view.update(delta);
   sector->update(delta);
-      
+
   speech_manager.update(delta);
-  
+
   switch (fade_state)
   {
     case FADEIN:
@@ -236,7 +236,7 @@ GameSessionImpl::update_game(float delta)
 
     case FADEOUT:
       if (fadeout_value >= 1.0f)
-      { 
+      {
         fadeout_value = 1.0f;
         ScriptManager::current()->fire_wakeup_event(ScriptManager::FADE_DONE);
 
@@ -267,7 +267,7 @@ GameSessionImpl::update_game(float delta)
 
 void
 GameSessionImpl::update_controller(float delta, const Controller& controller)
-{ 
+{
   // Handle key presses
   if (controller.button_was_pressed(PDA_BUTTON))
   {
@@ -311,7 +311,7 @@ GameSessionImpl::update_controller(float delta, const Controller& controller)
 
 void
 GameSessionImpl::update(float delta, const Controller& controller)
-{  
+{
   update_cutscene(delta);
 
   delta *= game_speed;
@@ -321,7 +321,7 @@ GameSessionImpl::update(float delta, const Controller& controller)
   {
     update_game(delta);
   }
-  
+
   update_controller(delta, controller);
 }
 
@@ -329,7 +329,7 @@ void
 GameSession::change_sector(const Pathname& arg_filename)
 {
   impl->filename = arg_filename;
- 
+
   SoundManager::current()->stop_music();
 
   if (impl->fade_state == GameSessionImpl::FADEOUT)
@@ -348,7 +348,7 @@ void
 GameSession::set_sector(const Pathname& /* FIXME: huh? */)
 {
   impl->sector.reset(new Sector(impl->filename));
-  
+
   impl->sector->activate();
 }
 
@@ -360,7 +360,7 @@ GameSessionImpl::handle_event(const SDL_Event& event)
     case SDL_KEYDOWN:
     case SDL_KEYUP:
       if (event.key.state)
-      {    
+      {
         switch (event.key.keysym.sym)
         {
           case SDLK_1:
@@ -372,17 +372,17 @@ GameSessionImpl::handle_event(const SDL_Event& event)
             sc.set_render_mask(sc.get_render_mask() ^ SceneContext::LIGHTMAP);
             ConsoleLog << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & SceneContext::LIGHTMAP) > 0) << std::endl;
             break;
-      
+
           case SDLK_3:
             sc.set_render_mask(sc.get_render_mask() ^ SceneContext::HIGHLIGHTMAP);
             ConsoleLog << "Toggled HIGHLIGHTMAP: " << ((sc.get_render_mask() & SceneContext::HIGHLIGHTMAP) > 0) << std::endl;
-            break;      
+            break;
 
           case SDLK_4:
             sc.set_render_mask(sc.get_render_mask() ^ SceneContext::CONTROLMAP);
             ConsoleLog << "Toggled CONTROLMAP: " << ((sc.get_render_mask() & SceneContext::CONTROLMAP) > 0) << std::endl;
             break;
-  
+
           case SDLK_5:
             sc.set_render_mask(sc.get_render_mask() ^ SceneContext::LIGHTMAPSCREEN);
             ConsoleLog << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN) > 0) << std::endl;
@@ -396,13 +396,13 @@ GameSessionImpl::handle_event(const SDL_Event& event)
           case SDLK_F2:
             MenuManager::display_debug_menu();
             break;
-        
+
           default:
             break;
         }
       }
       break;
-        
+
     case SDL_MOUSEBUTTONDOWN:
     {
       Vector2f real_pos = view.screen_to_world(Vector2f(event.button.x, event.button.y));
@@ -449,13 +449,13 @@ GameSession::handle_event(const SDL_Event& event)
 }
 
 View*
-GameSession::get_view() 
+GameSession::get_view()
 {
-  return &impl->view; 
+  return &impl->view;
 }
 
 void
-GameSession::set_control_state(ControlState state) 
+GameSession::set_control_state(ControlState state)
 {
   switch(state)
   {

@@ -29,7 +29,7 @@ private:
   Size m_aspect_ratio;
   Size m_window_size;
   bool m_fullscreen;
-  
+
 public:
   App();
 

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -40,7 +40,7 @@ Sprite3DView::Sprite3DView()
   actions = sprite.get_actions();
 
   sprite.set_action(actions[current_action]);
-  
+
   rotation = Quaternion();
 
   scale = 2.0f;
@@ -63,7 +63,7 @@ Sprite3DView::draw()
   sc.reset_modelview();
   //sc.translate(-config->screen_width/2, -config->screen_height/2);
   //sc.scale(2.0f, 2.0f);
-  
+
   sc.color().fill_screen(Color(0.5, 0.0, 0.5));
 
   sc.push_modelview();
@@ -73,7 +73,7 @@ Sprite3DView::draw()
   // Rotate
   sc.mult_modelview(glm::mat4_cast(rotation));
   sc.translate(0, 64.0f); // FIXME: use object height/2 instead of 64
-  sprite.draw(sc.color(), Vector2f(0,0), 0); 
+  sprite.draw(sc.color(), Vector2f(0,0), 0);
   sc.pop_modelview();
 
   //Matrix matrix = sc.color().get_modelview();
@@ -84,7 +84,7 @@ Sprite3DView::draw()
   //sc.color().draw("Hello World", 100, 100);
   compositor.render(sc, 0, GraphicContextState(Display::get_width(),
                                                Display::get_height()));
-  
+
   float x = 10.0f;
   float y =  static_cast<float>(Fonts::current()->vera12->get_height()) + 5.0f;
   int line_height = Fonts::current()->vera12->get_height()+5;
@@ -137,7 +137,7 @@ Sprite3DView::update(float delta, const Controller& controller)
   {
     scale /= 1.0f + 0.6f * delta;
   }
-  
+
   if (last_action != current_action && !actions.empty())
   {
     sprite.set_action(actions[current_action]);
@@ -145,7 +145,7 @@ Sprite3DView::update(float delta, const Controller& controller)
 
   rotation = Quaternion(-controller.get_axis_state(X2_AXIS) * delta * 4.0f,
                         Vector3(0.0f, 1.0f, 0.0f)) * rotation;
-  rotation = Quaternion(controller.get_axis_state(Y2_AXIS) * delta * 4.0f, 
+  rotation = Quaternion(controller.get_axis_state(Y2_AXIS) * delta * 4.0f,
                         Vector3(1.0f, 0.0f, 0.0f)) * rotation;
   rotation = Quaternion(controller.get_axis_state(X_AXIS) * delta * 4.0f,
                         Vector3(0.0f, 0.0f, 1.0f)) * rotation;
@@ -165,7 +165,7 @@ Sprite3DView::update(float delta, const Controller& controller)
 void
 Sprite3DView::handle_event(const SDL_Event& )
 {
-  
+
 }
 
 /* EOF */

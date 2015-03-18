@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -45,7 +45,7 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
   NavigationGraphModel& navgraph = wst.get_document().get_sector_model().get_nav_graph();
 
   // FIXME: Radius should scale with zoom
-  boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f); 
+  boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f);
   boost::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
   switch(mode)
@@ -68,7 +68,7 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       }
       else
       { // connect last node with newly created node
-        if (event->state & GDK_SHIFT_MASK && 
+        if (event->state & GDK_SHIFT_MASK &&
             last_node)
         {
           float angle = atan2f(mouse_pos.y - last_node->get_world_pos().y,
@@ -80,14 +80,14 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
           {
             mouse_pos.x = last_node->get_world_pos().x;
           }
-          else 
+          else
           {
             mouse_pos.y = last_node->get_world_pos().y;
           }
         }
 
         boost::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos));
-        
+
         wst.get_document().undo_group_begin();
         wst.get_document().navgraph_node_add(node_obj);
         wst.get_document().navgraph_edge_add(wst.get_current_layer(), last_node, node_obj);
@@ -110,7 +110,7 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       else if (edge)
       {
         wst.get_document().navgraph_edge_remove(edge);
-        
+
         edge.reset();
         mode = NO_MODE;
       }
@@ -144,8 +144,8 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     if (new_mouse_over_node != mouse_over_node ||
         new_mouse_over_edge != mouse_over_edge)
     {
-      mouse_over_node = new_mouse_over_node; 
-      mouse_over_edge = new_mouse_over_edge; 
+      mouse_over_node = new_mouse_over_node;
+      mouse_over_edge = new_mouse_over_edge;
 
       wst.queue_draw();
     }
@@ -162,7 +162,7 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
       break;
   }
 
-  if (event->state & GDK_SHIFT_MASK && 
+  if (event->state & GDK_SHIFT_MASK &&
       last_node)
   {
     float angle = atan2f(mouse_pos.y - last_node->get_world_pos().y,
@@ -174,7 +174,7 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     {
       mouse_pos.x = last_node->get_world_pos().x;
     }
-    else 
+    else
     {
       mouse_pos.y = last_node->get_world_pos().y;
     }
@@ -216,7 +216,7 @@ NavgraphInsertTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget
     case NO_MODE:
     {
       // FIXME: Radius should scale with zoom
-      boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f); 
+      boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f);
       boost::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
       if (node)
@@ -239,20 +239,20 @@ NavgraphInsertTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget
       }
       else
       {
-      
+
       }
       break;
     }
   }
 }
-  
+
 void
 NavgraphInsertTool::draw(SceneContext& sc)
 {
   if (last_node)
   {
     if (connection_node)
-    {        
+    {
       sc.control().draw_line(last_node->get_world_pos(), connection_node->get_world_pos(), Color(1,1,1));
       sc.control().draw_rect(Rectf(connection_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
     }
@@ -266,13 +266,13 @@ NavgraphInsertTool::draw(SceneContext& sc)
 
   if (mouse_over_node)
   {
-    sc.control().draw_rect(Rectf(mouse_over_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));      
+    sc.control().draw_rect(Rectf(mouse_over_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
   }
   else if (mouse_over_edge)
   {
-    sc.control().draw_line(mouse_over_edge->get_lhs()->get_world_pos(), 
+    sc.control().draw_line(mouse_over_edge->get_lhs()->get_world_pos(),
                            mouse_over_edge->get_rhs()->get_world_pos(), Color(1,1,1));
   }
 }
-  
+
 /* EOF */

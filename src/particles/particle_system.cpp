@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -47,12 +47,12 @@ ParticleSystem::ParticleSystem(FileReader& props)
     color_start(1.0f, 1.0f, 1.0f, 1.0f),
     color_stop(   0,    0,    0,    0)
 {
-  float p_bunching = 1.0; 
+  float p_bunching = 1.0;
   props.get("bunching", p_bunching);
   set_bunching(p_bunching);
 
   //FIXME: commented since it causes trouble for the editor: props.get("name", name);
-    
+
   float p_lifetime;
   if (props.get("lifetime", p_lifetime))
     set_lifetime(p_lifetime);
@@ -74,7 +74,7 @@ ParticleSystem::ParticleSystem(FileReader& props)
   Vector2f p_pos;
   if (props.get("pos", p_pos))
     set_pos(p_pos.x, p_pos.y);
-  
+
   Vector2f p_cone;
   if (props.get("cone", p_cone))
     set_cone(p_cone.x, p_cone.y);
@@ -85,7 +85,7 @@ ParticleSystem::ParticleSystem(FileReader& props)
 
   props.get("color-begin", color_start);
   props.get("color-end",   color_stop);
-  
+
   Vector2f p_speed;
   if (props.get("velocity", p_speed))
     set_velocity(p_speed.x, p_speed.y);
@@ -113,26 +113,26 @@ ParticleSystem::ParticleSystem(FileReader& props)
 
       if (sections.size() > 1)
         std::cout << "ParticleSystem: Only one drawer allowed" << std::endl;
-        
+
       if (sections.size() == 0)
         std::cout << "ParticleSystem: You must specify a drawer" << std::endl;
 
       if (sections.size() >= 1)
       {
         FileReader& reader  = sections.front();
-        if (reader.get_name() == "surface-drawer") 
+        if (reader.get_name() == "surface-drawer")
         {
           set_drawer(new SurfaceDrawer(reader));
-        } 
-        else if (reader.get_name() == "spark-drawer") 
+        }
+        else if (reader.get_name() == "spark-drawer")
         {
           set_drawer(new SparkDrawer(reader));
-        } 
+        }
         else if (reader.get_name() == "deform-drawer")
         {
           set_drawer(new DeformDrawer(reader));
         }
-        else 
+        else
         {
           std::cout << "Unknown drawer: " << reader.get_name() << std::endl;
         }
@@ -148,7 +148,7 @@ ParticleSystem::ParticleSystem(FileReader& props)
 
       if (sections.size() > 1)
         std::cout << "ParticleSystem: Only one distribution allowed" << std::endl;
-        
+
       if (sections.size() == 0)
         std::cout << "ParticleSystem: You must specify a distribution" << std::endl;
 
@@ -164,7 +164,7 @@ ParticleSystem::ParticleSystem(FileReader& props)
           reader.get("y1", y1);
           reader.get("x2", x2);
           reader.get("y2", y2);
-          
+
           set_line_distribution(x1, y1, x2, y2);
         } else if (reader.get_name() == "rect-distribution") {
           Rectf rect;
@@ -172,7 +172,7 @@ ParticleSystem::ParticleSystem(FileReader& props)
           reader.get("y1", rect.top);
           reader.get("x2", rect.right);
           reader.get("y2", rect.bottom);
-          
+
           set_rect_distribution(rect);
 
         } else {
@@ -181,7 +181,7 @@ ParticleSystem::ParticleSystem(FileReader& props)
       }
     }
   }
-  
+
   int p_count = 70;
   props.get("count", p_count);
   set_count(p_count);
@@ -226,7 +226,7 @@ void
 ParticleSystem::set_drawer(Drawer* drawer_)
 {
   drawer.reset(drawer_);
-} 
+}
 
 void
 ParticleSystem::draw() const
@@ -238,7 +238,7 @@ ParticleSystem::draw() const
   else
   {
     std::cout << "ParticleSystem: No drawer set" << std::endl;
-  } 
+  }
 }
 
 void
@@ -274,7 +274,7 @@ ParticleSystem::update(float delta)
     else
     {
       i->t += delta;
-          
+
       i->x += i->v_x * delta;
       i->y += i->v_y * delta;
 
@@ -305,7 +305,7 @@ ParticleSystem::set_count(int num)
     }
   }
 }
-  
+
 void
 ParticleSystem::set_bunching(float factor)
 {
@@ -322,7 +322,7 @@ void
 ParticleSystem::set_pos(const Vector2f& pos)
 {
   x_pos = pos.x;
-  y_pos = pos.y; 
+  y_pos = pos.y;
 }
 
 void

@@ -45,11 +45,11 @@ class SlidePath
 {
 private:
   typedef std::vector<SlidePathNode> Nodes;
-  typedef std::vector<SlidePathEdge> Edges; 
+  typedef std::vector<SlidePathEdge> Edges;
 
   Nodes m_nodes;
   Edges m_edges;
-  
+
 public:
   SlidePath();
 

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -33,7 +33,7 @@ public:
   static FramebufferPtr create(int width, int height, int multisample = 0);
   static FramebufferPtr create_hdr(int width, int height, int multisample = 0);
 
-public:  
+public:
   ~Framebuffer();
 
   int get_width()  const;
@@ -51,7 +51,7 @@ private:
 private:
   GLuint m_handle;
   Size   m_size;
-  
+
   TexturePtr m_texture;
   RenderbufferPtr m_color_buffer;
   RenderbufferPtr m_depth_stencil_buffer;

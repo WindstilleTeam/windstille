@@ -61,7 +61,7 @@ public:
 
   /** Needs to be called whenever the SoundChannels gain changes */
   void update_gain() const {}
-  
+
   void update(float delta) {}
 
 private:

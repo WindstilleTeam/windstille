@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -39,7 +39,7 @@ SectorBuilder::SectorBuilder(const Pathname& filename, Sector& sector) :
   parent_table()
 {
   FileReader reader = FileReader::parse(m_filename);
-  if(reader.get_name() != "windstille-sector") 
+  if(reader.get_name() != "windstille-sector")
   {
     std::ostringstream msg;
     msg << "'" << m_filename << "' is not a windstille-sector file";
@@ -72,7 +72,7 @@ SectorBuilder::parse_body(const FileReader& reader)
   {
     m_sector.set_ambient_light(ambient_light);
   }
-    
+
   parse_objects(reader);
   parse_navgraph(reader);
 }
@@ -156,10 +156,10 @@ SectorBuilder::parse_object(const FileReader& reader)
     // TODO
   }
   else if(reader.get_name() == "layer")
-  {    
+  {
     parse_layer(reader);
   }
-  else 
+  else
   {
     obj = ObjectFactory::create(reader);
     if (!obj)

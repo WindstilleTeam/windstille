@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -63,7 +63,7 @@ private:
   Glib::RefPtr<Gtk::UIManager>   ui_manager;
   Glib::RefPtr<Gtk::ActionGroup> action_group;
   Glib::RefPtr<Gdk::GL::Context> share_list;
-  Glib::RefPtr<const Gdk::GL::Config> glconfig; 
+  Glib::RefPtr<const Gdk::GL::Config> glconfig;
 
   Gtk::Notebook  notebook;
   ObjectSelector object_selector;
@@ -102,7 +102,7 @@ public:
   virtual ~EditorWindow();
 
   void show_minimap(bool v);
-  
+
 public:
   void on_new();
   void on_open();
@@ -136,9 +136,9 @@ public:
   void on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool*);
 
   void on_select_all();
-  
+
   /** Animation Callbacks
-   * @{*/  
+   * @{*/
   void on_animation_new();
   void on_animation_export();
   void on_animation_delete();
@@ -168,7 +168,7 @@ public:
   TimelineWidget*   get_timeline_widget();
   AnimationWidget*   get_animation_widget();
   Document* get_document();
-  
+
   void load_file(const std::string& filename);
 
   /** Queue a file to be loaded once the editor is full realized */
@@ -177,7 +177,7 @@ public:
   void call_with_document(void (Document::*func)());
 
   void on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_action);
-  
+
   void on_show_all(bool v);
   void on_lock_all(bool v);
 
@@ -190,7 +190,7 @@ public:
 
   Glib::RefPtr<Gtk::UIManager>   get_ui_manager() const { return ui_manager; }
   Glib::RefPtr<Gtk::ActionGroup> get_action_group() const { return action_group; }
-  
+
 private:
   EditorWindow(const EditorWindow&);
   EditorWindow& operator=(const EditorWindow&);

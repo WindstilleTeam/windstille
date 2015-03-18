@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -33,7 +33,7 @@ class TileMap : public GameObject
 private:
   Field<Tile*> field;
   typedef Field<Tile*>::iterator FieldIter;
-  float z_pos; 
+  float z_pos;
   float total_time;
 
 public:
@@ -42,13 +42,13 @@ public:
 
   void update (float delta);
   void draw (SceneContext& gc);
-  
+
   /** @return the type of ground at the given world coordinates */
   bool is_ground(float x, float y);
 
   /** @return the type of ground at the given subtile coordinates */
   unsigned int get_pixel(int x, int y);
-  
+
   int get_width () const { return field.get_width(); }
   int get_height () const { return field.get_height (); }
 

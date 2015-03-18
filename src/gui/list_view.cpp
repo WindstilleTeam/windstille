@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -61,15 +61,15 @@ ListView::draw()
 
     if (j == current_item)
       Display::fill_rect(Rectf(x, y,
-                               rect.right, y + static_cast<float>(font->get_height())), 
+                               rect.right, y + static_cast<float>(font->get_height())),
                          is_active() ? Color(0.5f, 0.5f, 1.0f, 0.8f) : Color(0.5f, 0.5f, 1.0f, 0.3f));
 
     y += static_cast<float>(font->get_height());
-          
+
     for(int i = 0; i < int(items[j].columns.size()) && i < int(columns.size()); ++i)
     {
       font->draw(Vector2f(x + padding, y), items[j].columns[i]);
-            
+
       x += columns[i].width;
     }
   }
@@ -78,8 +78,8 @@ ListView::draw()
 void
 ListView::update(float , const Controller& controller)
 {
-  for(InputEventLst::const_iterator i = controller.get_events().begin(); 
-      i != controller.get_events().end(); ++i) 
+  for(InputEventLst::const_iterator i = controller.get_events().begin();
+      i != controller.get_events().end(); ++i)
   {
     if (i->type == BUTTON_EVENT && i->button.down)
     {

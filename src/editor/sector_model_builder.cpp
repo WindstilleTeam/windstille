@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -71,7 +71,7 @@ SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel&
           std::cout << "SectorModel::load: ignoring unknown type '" << i->get_name() << "'" << std::endl;
         }
       }
-          
+
       // Set the parents properly
       for(std::map<ObjectModelHandle, std::string>::iterator i = m_parent_table.begin(); i != m_parent_table.end(); ++i)
       {
@@ -109,7 +109,7 @@ SectorModelBuilder::load_layer(const FileReader& reader)
   const std::vector<FileReader>& objects_sections = objects_reader.get_sections();
   for(std::vector<FileReader>::const_iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
   {
-    try 
+    try
     {
       if (j->get_name() == "navgraph-edge-ref")
       {
@@ -158,8 +158,8 @@ SectorModelBuilder::load_layer(const FileReader& reader)
 
   (*it)[LayerManagerColumns::instance().type_icon] = Gdk::Pixbuf::create_from_file(Pathname("editor/type.png", Pathname::kDataPath).get_sys_path());
   (*it)[LayerManagerColumns::instance().name]      = name;
-  (*it)[LayerManagerColumns::instance().visible]   = visible; 
-  (*it)[LayerManagerColumns::instance().locked]    = locked; 
+  (*it)[LayerManagerColumns::instance().visible]   = visible;
+  (*it)[LayerManagerColumns::instance().locked]    = locked;
   (*it)[LayerManagerColumns::instance().layer]     = layer;
 
   layer->sync(*it);

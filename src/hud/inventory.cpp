@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -31,7 +31,7 @@ class InventoryItem
 public:
   std::string name;
   Sprite sprite;
-  
+
   InventoryItem(const std::string& name_, const std::string& filename_)
     : name(name_), sprite(Pathname(filename_))
   {
@@ -60,15 +60,15 @@ public:
 
   void update(float delta, const Controller& controller);
   void draw();
-  
-  void incr_current_item() { 
+
+  void incr_current_item() {
     if (current_item == int(items.size()) - 1)
       current_item = 0;
     else
       current_item += 1;
   }
 
-  void decr_current_item() { 
+  void decr_current_item() {
     if (current_item == 0)
       current_item = static_cast<int>(items.size()) - 1;
     else

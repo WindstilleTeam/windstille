@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -41,7 +41,7 @@ SurfaceManager::SurfaceManager() :
 
 SurfaceManager::~SurfaceManager()
 {
-#if 0 
+#if 0
   if (debug)
   {
     for(Surfaces::iterator i = surfaces.begin(); i != surfaces.end(); ++i)
@@ -70,7 +70,7 @@ SurfaceManager::get(const Pathname& filename)
     {
       SurfacePtr result = texture_packer->upload(software_surface);
       surfaces.insert(std::make_pair(filename, result));
-      return result;              
+      return result;
     }
     else
     {
@@ -88,7 +88,7 @@ SurfaceManager::get(const Pathname& filename)
         msg << "Couldn't create texture for '" << filename << "': " << e.what();
         throw std::runtime_error(msg.str());
       }
-        
+
       SurfacePtr result = Surface::create(texture, Rectf(0.0f, 0.0f, maxu, maxv),
                                           Sizef(static_cast<float>(software_surface->get_width()),
                                                 static_cast<float>(software_surface->get_height())));
@@ -109,14 +109,14 @@ SurfaceManager::load_grid(const Pathname& filename,
   TexturePtr texture;
 
   try
-  {                                                                       
+  {
     texture = create_texture(image, &maxu, &maxv);
   }
   catch(const std::exception& e)
   {
     std::ostringstream msg;
     msg << "Couldn't create texture for '" << filename << "': " << e.what();
-    throw std::runtime_error(msg.str());                                      
+    throw std::runtime_error(msg.str());
   }
 
   for(int y = 0; y <= image->get_height() - height + 1; y += height)
@@ -128,8 +128,8 @@ SurfaceManager::load_grid(const Pathname& filename,
       float s_max_u = (maxu * (static_cast<float>(x + width)))  / static_cast<float>(image->get_width());
       float s_max_v = (maxv * (static_cast<float>(x + height))) / static_cast<float>(image->get_height());
 
-      out_surfaces.push_back(Surface::create(texture, 
-                                             Rectf(s_min_u, s_min_v, s_max_u, s_max_v), 
+      out_surfaces.push_back(Surface::create(texture,
+                                             Rectf(s_min_u, s_min_v, s_max_u, s_max_v),
                                              Sizef(static_cast<float>(width),
                                                    static_cast<float>(height))));
     }
@@ -158,7 +158,7 @@ SurfaceManager::create_texture(SoftwareSurfacePtr image,
     image->blit(convert, 0, 0);
 
     TexturePtr texture = Texture::create(convert);
-  
+
     *maxu = static_cast<float>(image->get_width())  / static_cast<float>(texture_w);
     *maxv = static_cast<float>(image->get_height()) / static_cast<float>(texture_h);
 

@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -106,7 +106,7 @@ OggSoundFile::read(void* _buffer, size_t buffer_size)
 
   while(buffer_size>0)
   {
-    long bytesRead 
+    long bytesRead
       = ov_read(&m_vorbis_file, buffer, static_cast<int>(buffer_size), 0, 2, 1,
                 &section);
 
@@ -120,7 +120,7 @@ OggSoundFile::read(void* _buffer, size_t buffer_size)
     buffer += bytesRead;
     totalBytesRead += bytesRead;
   }
-  
+
   return totalBytesRead;
 }
 
@@ -167,22 +167,22 @@ OggSoundFile::cb_seek(void* userdata, ogg_int64_t offset, int whence)
 {
   OggSoundFile& ogg = *reinterpret_cast<OggSoundFile*>(userdata);
 
-  switch(whence) 
+  switch(whence)
   {
     case SEEK_SET:
-      //std::cout << "OggSoundFile::cb_seek: " << offset << " BEG" << std::endl; 
+      //std::cout << "OggSoundFile::cb_seek: " << offset << " BEG" << std::endl;
       if (!ogg.m_in.seekg(offset, std::ios::beg))
         return -1;
       break;
 
     case SEEK_CUR:
-      //std::cout << "OggSoundFile::cb_seek: " << offset << " CUR" << std::endl; 
+      //std::cout << "OggSoundFile::cb_seek: " << offset << " CUR" << std::endl;
       if (!ogg.m_in.seekg(offset, std::ios::cur))
         return -1;
       break;
 
     case SEEK_END:
-      //std::cout << "OggSoundFile::cb_seek: " << offset << " END" << std::endl; 
+      //std::cout << "OggSoundFile::cb_seek: " << offset << " END" << std::endl;
       if (!ogg.m_in.seekg(offset, std::ios::end))
         return -1;
       break;
@@ -192,7 +192,7 @@ OggSoundFile::cb_seek(void* userdata, ogg_int64_t offset, int whence)
   }
   return 0;
 }
-  
+
 int
 OggSoundFile::cb_close(void* userdata)
 {

@@ -37,32 +37,32 @@ int main(int argc, char* argv[])
     atexit(SDL_Quit);
   }
 
-  OpenGLWindow window("Scissor Drawable", 
+  OpenGLWindow window("Scissor Drawable",
                       Size(960, 600),
                       Size(960, 600));
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
   DrawableGroup group;
-  
+
   int have_stencil = 0xdeadbeaf;
   SDL_GL_GetAttribute(SDL_GL_STENCIL_SIZE, &have_stencil);
   std::cout << "STENCIL: " << have_stencil << std::endl;
-  
+
   boost::shared_ptr<ScissorDrawable> scissor(new ScissorDrawable(Rect(200, 200, 400, 400)));
   boost::shared_ptr<StencilDrawable> stencil(new StencilDrawable());
-  boost::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")), 
+  boost::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")),
                                                                  SurfaceDrawingParameters(), 0, Matrix(1.0f)));
 
-  boost::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")), 
+  boost::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")),
                                                                   SurfaceDrawingParameters().set_pos(Vector2f(-50.0f, -50.0f)), 0, Matrix(1.0f)));
-  boost::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")), 
+  boost::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
                                                                   SurfaceDrawingParameters(), 0, Matrix(1.0f)));
 
-  boost::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")), 
+  boost::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
                                                                   SurfaceDrawingParameters().set_pos(Vector2f(-25.0f, 25.0f)),
                                                                   0, Matrix(1.0f)));
   boost::shared_ptr<StencilDrawable> stencil2(new StencilDrawable());
-  
+
   if (0)
   {
     scissor->get_drawable_group().add_drawable(surface);
@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
 
   for(int i = 0; i < 500; ++i)
   {
-    std::cout << "." << std::flush;   
+    std::cout << "." << std::flush;
     surface->get_params().set_pos(Vector2f(static_cast<float>(i) - 250.0f, 0.0f));
     group.render(~0u);
     window.swap_buffers();

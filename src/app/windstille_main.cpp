@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -48,10 +48,10 @@ WindstilleMain::~WindstilleMain()
 {
 }
 
-int 
+int
 WindstilleMain::main(int argc, char** argv)
 {
-  try 
+  try
   {
     Pathname::set_datadir(System::find_default_datadir());
     Pathname::set_userdir(System::find_default_userdir());
@@ -61,7 +61,7 @@ WindstilleMain::main(int argc, char** argv)
     init_sdl();
 
     config.load();
-    
+
     config.parse_args(argc, argv);
 
     {
@@ -84,7 +84,7 @@ WindstilleMain::main(int argc, char** argv)
       TileFactory       tile_factory = TileFactory(Pathname("tiles.scm"));
 
       init_modules();
-    
+
       run();
 
       config.save();
@@ -104,7 +104,7 @@ WindstilleMain::main(int argc, char** argv)
 
 void
 WindstilleMain::run()
-{  
+{
   if (config.get<std::string>("levelfile").is_set())
   {
     Pathname filename(config.get_string("levelfile"), Pathname::kSysPath);
@@ -142,7 +142,7 @@ WindstilleMain::run()
   {
     ScreenManager::current()->push_screen(new TitleScreen());
   }
-  
+
   ScreenManager::current()->run();
 }
 
@@ -154,10 +154,10 @@ WindstilleMain::init_modules()
   SoundManager::current()->enable_music(config.get_bool("music"));
 
   ScriptManager::current()->run_script_file(Pathname("scripts/windstille.nut"), true);
-    
-  {     
+
+  {
     if (config.get<std::string>("primary-controller-file").is_set())
-      InputManagerSDL::current()->load(Pathname(config.get<std::string>("primary-controller-file").get(), 
+      InputManagerSDL::current()->load(Pathname(config.get<std::string>("primary-controller-file").get(),
                                                 Pathname::kSysPath));
     else
       InputManagerSDL::current()->load(Pathname("controller/keyboard.scm"));

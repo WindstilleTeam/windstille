@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -86,15 +86,15 @@ SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm_, bool isolated_) :
     sq_newtable(thread);
 
     // store the object in env
-    if(sq_getstackobj(thread, -1, &env) < 0) 
+    if(sq_getstackobj(thread, -1, &env) < 0)
     {
       throw SquirrelError(parent_vm, filename, "couldn't get table from stack");
     }
     else
     {
-      sq_addref(thread, &env); 
+      sq_addref(thread, &env);
       sq_pop(thread, 1); // remove env from stack
-    
+
       // set old roottable as delegate on env
       sq_pushobject(thread, env); // push env
       sq_pushroottable(thread);   // [env, root]
@@ -186,11 +186,11 @@ SquirrelThread::set_wakeup_event(const ScriptManager::WakeupData& event, float t
 {
   waiting_for_events = event;
 
-  if (timeout < 0) 
+  if (timeout < 0)
   {
     wakeup_time = -1;
-  } 
-  else 
+  }
+  else
   {
     wakeup_time = game_time + timeout;
   }
@@ -198,8 +198,8 @@ SquirrelThread::set_wakeup_event(const ScriptManager::WakeupData& event, float t
 
 void
 SquirrelThread::fire_wakeup_event(const ScriptManager::WakeupData& event)
-{ 
-  if (waiting_for_events.type == event.type && 
+{
+  if (waiting_for_events.type == event.type &&
       waiting_for_events.type != ScriptManager::NO_EVENT)
   {
     switch (event.type)
@@ -229,7 +229,7 @@ void
 SquirrelThread::update()
 {
   SQInteger thread_state = sq_getvmstate(thread);
-    
+
   switch(thread_state)
   {
     case SQ_VMSTATE_SUSPENDED:
@@ -237,7 +237,7 @@ SquirrelThread::update()
       {
         waiting_for_events = ScriptManager::WakeupData(ScriptManager::NO_EVENT);
 
-        try 
+        try
         {
           // Try to return a value
           if (sq_wakeupvm(thread, SQFalse, SQFalse, SQTrue, SQFalse) < 0)
@@ -246,13 +246,13 @@ SquirrelThread::update()
           }
           else
           {
-            if(sq_getvmstate(thread) == SQ_VMSTATE_IDLE) 
+            if(sq_getvmstate(thread) == SQ_VMSTATE_IDLE)
             { // Cleanup stack
               sq_settop(thread, oldtop);
             }
           }
         }
-        catch(std::exception& e) 
+        catch(std::exception& e)
         {
           std::cerr << "Problem executing script: " << e.what() << "\n";
         }
@@ -265,7 +265,7 @@ SquirrelThread::update()
     case SQ_VMSTATE_RUNNING: // FIXME: Can this happen without multithreading?
       break;
 
-    default: 
+    default:
       assert(!"never reached");
   }
 }
@@ -316,7 +316,7 @@ SquirrelThread::call(const std::string& function)
     }
     else
     {
-      if(sq_getvmstate(thread) != SQ_VMSTATE_SUSPENDED) 
+      if(sq_getvmstate(thread) != SQ_VMSTATE_SUSPENDED)
       {
         sq_settop(thread, oldtop);
       }

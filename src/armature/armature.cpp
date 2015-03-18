@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -51,7 +51,7 @@ Armature::parse(FileReader& reader)
   else
   {
     reader.get("name", name);
-      
+
     FileReader bones_section;
     reader.get("bones", bones_section);
 
@@ -82,7 +82,7 @@ Armature::parse(FileReader& reader)
       }
     }
   }
-  
+
   for(Bones::iterator i = bones.begin(); i != bones.end(); ++i)
   {
     Bone& bone = **i;
@@ -151,7 +151,7 @@ Armature::draw_bone(Bone* bone, Vector3 p, Matrix m)
   glColor4f(0.0f, 0.5f, 0.0f, 0.5f);
   glVertex3f(  p.x, p.y, p.z);
   glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
-  glVertex3f( p_.x, p_.y, p_.z);  
+  glVertex3f( p_.x, p_.y, p_.z);
 
   // p+offset to new endpoint
   glColor3f(0.0f, 0.0f, 1.0f);
@@ -162,7 +162,7 @@ Armature::draw_bone(Bone* bone, Vector3 p, Matrix m)
   bone->render_head = p_;
   bone->render_tail = p__;
 
-  for(std::vector<Bone*>::iterator i = bone->children.begin(); i != bone->children.end(); ++i)  
+  for(std::vector<Bone*>::iterator i = bone->children.begin(); i != bone->children.end(); ++i)
     draw_bone(*i, p__, m_);
 }
 
@@ -174,7 +174,7 @@ Armature::apply(const Pose& pose)
     std::cout << "Can't apply pose '" << pose.get_name() << "' to armature '" << name << "'" << std::endl;
   }
   else
-  {                                           
+  {
     for(std::vector<PoseBone>::const_iterator pbone = pose.bones.begin(); pbone != pose.bones.end(); ++pbone)
     {
       Bone* bone = get_bone(pbone->name);

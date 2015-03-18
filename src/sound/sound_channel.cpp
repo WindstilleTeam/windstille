@@ -37,7 +37,7 @@ SoundChannel::SoundChannel(SoundManager& sound_manager) :
 
 SoundSourcePtr
 SoundChannel::play(const Pathname& filename)
-{  
+{
   SoundSourcePtr source = prepare(filename);
   source->play();
   return source;
@@ -69,7 +69,7 @@ SoundChannel::prepare(std::unique_ptr<SoundFile> sound_file,
 }
 
 SoundSourcePtr
-SoundChannel::prepare(const Pathname& filename, 
+SoundChannel::prepare(const Pathname& filename,
                       OpenALSoundSourceType type)
 {
   SoundSourcePtr source = m_sound_manager.create_sound_source(filename, *this, type);

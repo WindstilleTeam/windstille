@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -23,13 +23,13 @@
 
 class Pathname;
 
-/** 
+/**
  *  The MenuManager creates and displays the metagame menus (main,
  *  pause, options, ...) in Windstille. All the input redirection and
  *  displaying is handled in ScreenManager, so MenuManager itself is
  *  completly stateless.
  */
-class MenuManager 
+class MenuManager
 {
 public:
   static void display_option_menu();
@@ -41,7 +41,7 @@ public:
   static void display_models_menu();
   static void display_credits();
   static void display_help();
-  
+
 private:
   /** Position a menu with the given size \a w, \a h at the center of
       the screen */

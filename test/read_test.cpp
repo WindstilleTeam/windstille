@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
       uint32_t v_uint32 = read_uint32_t(in);
       uint16_t v_uint16 = read_uint16_t(in);
       float    v_float  = read_float(in);
-       
+
        std::cout << "uint32: " << std::hex << v_uint32 << " - " << std::dec << v_uint32 << std::endl;
        std::cout << "uint16: " << std::hex << v_uint16 << " - " << std::dec << v_uint16 << std::endl;
       std::cout << "float:  " << v_float << std::endl;

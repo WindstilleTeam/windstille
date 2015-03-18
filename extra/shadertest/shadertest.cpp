@@ -30,7 +30,7 @@ App::App() :
   m_aspect_ratio(1280, 800),
   m_window_size(1280, 800),
   m_fullscreen(false)
-{  
+{
 }
 
 int
@@ -48,7 +48,7 @@ App::run(int argc, char* argv[])
   SurfacePtr surface1 = Surface::create(Pathname(argv[1], Pathname::kSysPath));
   SurfacePtr surface2 = Surface::create(Pathname(argv[2], Pathname::kSysPath));
   SurfacePtr surface3 = Surface::create(Pathname(argv[3], Pathname::kSysPath));
-  
+
   ShaderProgramPtr prog = ShaderProgram::create();
 
   prog->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, argv[4]));
@@ -111,7 +111,7 @@ App::run(int argc, char* argv[])
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
     }
 
-    if (false)  
+    if (false)
     {
       glUseProgram(prog->get_handle());
 
@@ -134,10 +134,10 @@ App::run(int argc, char* argv[])
     state.activate();
 
     //surface1->draw(Vector2f(0, 0));
-    
+
     glClearColor(0.5f,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
-    
+
     glAlphaFunc(GL_GREATER, 0.2f);
     glEnable(GL_ALPHA_TEST);
 
@@ -169,7 +169,7 @@ App::run(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-  try 
+  try
   {
     App app;
     app.run(argc, argv);

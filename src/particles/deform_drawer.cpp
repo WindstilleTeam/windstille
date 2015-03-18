@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -39,12 +39,12 @@ public:
                       FramebufferPtr framebuffer_, SurfacePtr surface_, ParticleSystem& psys_,
                       ShaderProgramPtr shader_program_) :
     Drawable(pos_, z_pos_, modelview_),
-    framebuffer(framebuffer_), surface(surface_), psys(psys_), 
+    framebuffer(framebuffer_), surface(surface_), psys(psys_),
     shader_program(shader_program_)
   {}
-  
+
   virtual ~DeformDrawerRequest() {}
-  
+
   void render(unsigned int mask)
   {
 #if 0
@@ -56,10 +56,10 @@ public:
     if (1) {
       OpenGLState state;
 
-      glUseProgram(shader_program.get_handle());    
+      glUseProgram(shader_program.get_handle());
       shader_program.set_uniform1i("screen",      0);
       shader_program.set_uniform1i("particles",   1);
-            
+
       state.bind_texture(tmp_texture, 0);
       state.bind_texture(framebuffer.get_texture(), 1);
       state.color(Color(1.0f, 1.0f, 1.0f, 1.0f));
@@ -88,13 +88,13 @@ public:
   {
     glPushMatrix();
     glMultMatrixf(glm::value_ptr(get_modelview()));
-    
+
     OpenGLState state;
-    
+
     state.bind_texture(surface->get_texture());
     state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     state.enable(GL_BLEND);
-    state.activate();    
+    state.activate();
 
     glBegin(GL_QUADS);
     for(ParticleSystem::Particles::iterator i = psys.begin(); i != psys.end(); ++i)
@@ -108,15 +108,15 @@ public:
                     psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));
 
         // scale
-        float scale  = psys.get_size_start() + 
+        float scale  = psys.get_size_start() +
           psys.get_progress(i->t) * (psys.get_size_stop() - psys.get_size_start());
-          
+
         float width  = surface->get_width()  * scale;
         float height = surface->get_height() * scale;
-              
+
         // rotate
         float x_rot = width/2;
-        float y_rot = height/2; 
+        float y_rot = height/2;
 
         if (i->angle != 0)
         {
@@ -142,7 +142,7 @@ public:
     glPopMatrix();
   }
 
-  void prepare(TexturePtr screen_texture) 
+  void prepare(TexturePtr screen_texture)
   {
     OpenGLState state;
     state.bind_texture(screen_texture);
@@ -182,7 +182,7 @@ DeformDrawer::~DeformDrawer()
 void
 DeformDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
 {
-  dc.draw(new DeformDrawerRequest(Vector2f(400, 300), 1200, dc.get_modelview(), 
+  dc.draw(new DeformDrawerRequest(Vector2f(400, 300), 1200, dc.get_modelview(),
                                   framebuffer, surface, psys, shader_program));
 }
 

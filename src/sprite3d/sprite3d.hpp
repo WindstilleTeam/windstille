@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -59,18 +59,18 @@ public:
   void update(float delta);
   void draw(DrawingContext& sc, const Vector2f& pos, float z_pos);
   void draw(DrawingContext& sc, const Matrix& matrix, float z_pos);
-  
+
   /**
    * Changes action (after the currently shown animation frame)
    */
   void set_action(const std::string& name, float speed = 1.0);
-  
+
   /**
    * Return the name of the currently active action
    */
   const std::string& get_action() const;
 
-  /** 
+  /**
    * Return a list of all available actions
    */
   std::vector<std::string> get_actions() const;
@@ -123,11 +123,11 @@ public:
   bool is_valid() const;
 
   void set_blend_func(GLenum sfactor, GLenum dfactor);
-  
-private:  
+
+private:
   friend class Sprite3DDrawable;
   void draw(const Vector2f& pos, const Matrix& modelview);
-  
+
   struct Frame {
     const sprite3d::Action* action;
     int   frame;
@@ -150,7 +150,7 @@ private:
   Frame frame1;
   Frame frame2;
   float blend_time;
- 
+
   Frame next_frame;
   Frame next_action;
   Frame abort_at_frame;

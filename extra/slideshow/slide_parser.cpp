@@ -68,19 +68,19 @@ NodePosY::get(const Sizef& scr, const Sizef& img, float zoom) const
   {
     case kNodePosYTop:
       return img.height/2.0f - scr.height/2.0f + scr.height/2.0f;
-      
+
     case kNodePosYBottom:
       return -img.height/2.0f + scr.height/2.0f + scr.height/2.0f;
 
     case kNodePosYCenter:
       return scr.height/2;
-      
+
     case kNodePosYAbsFloat:
       {
         float y = m_value * zoom;
         return img.height/2.0f - y + scr.height/2.0f;
       }
-      
+
     case kNodePosYRelFloat:
       {
         float y = (m_value/100.0f) * img.height;
@@ -106,10 +106,10 @@ NodeZoom::get(const Sizef& scr, const Sizef& img) const
 
     case kNodeZoomWidth:
       return scr.width / img.width;
-      
+
     case kNodeZoomHeight:
       return scr.height / img.height;
-      
+
     case kNodeZoomOriginal:
       return 1.0f;
 
@@ -179,7 +179,7 @@ SlideParser::error(const std::string& str) const
 void
 SlideParser::load_from_stream(std::istream& stream)
 {
-  try 
+  try
   {
     std::string line;
     while(std::getline(stream, line))
@@ -360,12 +360,12 @@ SlideParser::handle_pos(const std::vector<std::string>& args)
       //m_path_node.pos.x = img_w/2.0f - x + scr_w/2.0f;
       if (args[1][args[1].length()-1] == '%')
       {
-        m_node.pos_x = NodePosX(NodePosX::kNodePosXRelFloat, 
+        m_node.pos_x = NodePosX(NodePosX::kNodePosXRelFloat,
                                 boost::lexical_cast<float>(args[1].substr(0, args[1].length()-1)));
       }
       else
       {
-        m_node.pos_x = NodePosX(NodePosX::kNodePosXAbsFloat, 
+        m_node.pos_x = NodePosX(NodePosX::kNodePosXAbsFloat,
                                 boost::lexical_cast<float>(args[1]));
       }
     }
@@ -395,12 +395,12 @@ SlideParser::handle_pos(const std::vector<std::string>& args)
       //m_path_node.pos.y = img_h/2.0f - y + scr_h/2.0f;
       if (args[2][args[2].length()-1] == '%')
       {
-        m_node.pos_y = NodePosY(NodePosY::kNodePosYRelFloat, 
+        m_node.pos_y = NodePosY(NodePosY::kNodePosYRelFloat,
                                 boost::lexical_cast<float>(args[2].substr(0, args[2].length()-1)));
       }
       else
       {
-        m_node.pos_y = NodePosY(NodePosY::kNodePosYAbsFloat, 
+        m_node.pos_y = NodePosY(NodePosY::kNodePosYAbsFloat,
                                 boost::lexical_cast<float>(args[2]));
       }
     }
@@ -455,13 +455,13 @@ SlideParser::handle_zoom(const std::vector<std::string>& args)
     }
     else if (args[1] == "prev")
     {
-      // reuse previous value      
+      // reuse previous value
     }
     else
     {
       /*
       m_path_node.zoom = boost::lexical_cast<float>(args[1]);
-      
+
       // 1.0f means "fit", so recalculate values relative to that
       float fit = std::min(m_screen_size.width / m_image->get_width(),
                            m_screen_size.height / m_image->get_height());
@@ -475,7 +475,7 @@ SlideParser::handle_zoom(const std::vector<std::string>& args)
     m_node_has_zoom = true;
   }
 }
- 
+
 void
 SlideParser::handle_duration(const std::vector<std::string>& args)
 {
@@ -503,9 +503,9 @@ SlideParser::add_node()
 {
   Sizef image_size(m_image->get_width(), m_image->get_height());
   float zoom = m_node.zoom.get(m_screen_size, image_size);
-  Sizef image_size_zoom(zoom * m_image->get_width(), 
+  Sizef image_size_zoom(zoom * m_image->get_width(),
                         zoom * m_image->get_height());
-  
+
   //m_image->get_path().add_node(m_path_node.pos, m_path_node.zoom);
   m_image->get_path().add_node(Vector2f(m_node.pos_x.get(m_screen_size, image_size_zoom, zoom),
                                         m_node.pos_y.get(m_screen_size, image_size_zoom, zoom)),
@@ -552,7 +552,7 @@ SlideParser::handle_end(const std::vector<std::string>& args)
   else
   {
     m_state = kGlobal;
-    
+
     assert(m_image);
     add_node();
     m_image->get_path().finish();
@@ -603,16 +603,16 @@ SlideParser::tokenize(const std::string& line) const
   {
     //enum { kWhitespace, kString } state;
 
-    std::vector<std::string> lst;  
+    std::vector<std::string> lst;
     std::ostringstream str;
     std::string::const_iterator i = line.begin();
 
     while(i != line.end())
     {
-    
+
       if (*i == ' ' || *i == '\t')
       {
-      
+
       }
       else if (*i == '\\')
       {
@@ -642,7 +642,7 @@ SlideParser::tokenize(const std::string& line) const
 
       ++i;
     }
-  
+
     return lst;
   }
 }

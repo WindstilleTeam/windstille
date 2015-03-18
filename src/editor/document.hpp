@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -60,7 +60,7 @@ public:
   SectorModel& get_sector_model() const { return *m_sector_model; }
 
   /* Undo/Redo Handling
-   * @{*/  
+   * @{*/
   void undo();
   void redo();
 
@@ -86,7 +86,7 @@ public:
   void navgraph_node_add(boost::shared_ptr<NavGraphNodeObjectModel> node);
   void navgraph_node_remove(boost::shared_ptr<NavGraphNodeObjectModel> node);
 
-  void navgraph_edge_add(LayerHandle layer, 
+  void navgraph_edge_add(LayerHandle layer,
                          boost::shared_ptr<NavGraphNodeObjectModel> lhs,
                          boost::shared_ptr<NavGraphNodeObjectModel> rhs);
   void navgraph_edge_remove(boost::shared_ptr<NavGraphEdgeObjectModel> edge);
@@ -118,7 +118,7 @@ public:
 
   void selection_connect_parent();
   void selection_clear_parent();
-  
+
   void selection_duplicate();
   void selection_delete();
 
@@ -134,7 +134,7 @@ public:
   /** @} */
 
   /* Control Point Stuff
-   * @{*/  
+   * @{*/
   ControlPointHandle get_control_point(const Vector2f& pos) const;
   void clear_control_points();
   void create_control_points();

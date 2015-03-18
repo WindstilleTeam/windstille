@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -56,12 +56,12 @@ Framebuffer::Framebuffer() :
   m_depth_stencil_buffer()
 {
   glGenFramebuffers(1, &m_handle);
-  assert_gl("Framebuffer::Framebuffer()");   
+  assert_gl("Framebuffer::Framebuffer()");
 }
 
 Framebuffer::~Framebuffer()
 {
-  glDeleteFramebuffers(1, &m_handle);  
+  glDeleteFramebuffers(1, &m_handle);
 }
 
 TexturePtr
@@ -96,7 +96,7 @@ Framebuffer::create_with_texture_internal(GLenum target, int width, int height, 
   m_size = Size(width, height);
   m_texture = Texture::create(target, width, height);
   m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, width, height, multisample);
-    
+
   // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
   glBindFramebuffer(GL_FRAMEBUFFER, m_handle);
 
@@ -114,7 +114,7 @@ Framebuffer::create_with_texture_internal(GLenum target, int width, int height, 
 
 void
 Framebuffer::create_internal(GLenum format, int width, int height, int multisample)
-{ 
+{
   m_size = Size(width, height);
   m_color_buffer = Renderbuffer::create(format, width, height, multisample);
   m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, width, height, multisample);
@@ -130,7 +130,7 @@ Framebuffer::create_internal(GLenum format, int width, int height, int multisamp
 
   check_completness();
 
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);    
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void

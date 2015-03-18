@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -35,7 +35,7 @@ Menu::Menu(const std::string& name, const Rectf& rect, bool allow_cancel, Compon
   {
     manager.reset(new GUIManager());
     parent = manager->get_root();
-  }  
+  }
 
   group.reset(new GroupComponent(rect, name, parent));
   menu.reset(new MenuComponent(group->get_child_rect(), allow_cancel, group.get()));
@@ -61,7 +61,7 @@ Menu::add_enum(const std::string& name, int index,
 }
 
 void
-Menu::add_slider(const std::string& name, 
+Menu::add_slider(const std::string& name,
                  int value, int min_value, int max_value, int step,
                  const boost::function<void (int)>& callback)
 {
@@ -92,14 +92,14 @@ void
 Menu::show()
 {
   assert(manager.get());
-  
+
   {
     Rectf rect = group->get_screen_rect();
 
     Vector2f center((rect.left + rect.right) / 2.0f,
                     (rect.top + rect.bottom) / 2.0f);
 
-    Sizef size(menu->get_prefered_width(), 
+    Sizef size(menu->get_prefered_width(),
                menu->get_prefered_height() + (group->has_title() ? static_cast<float>(Fonts::current()->vera20->get_height()) + 18.0f : 0.0f));
 
     group->set_screen_rect(Rectf(Vector2f(center.x - size.width/2.0f,

@@ -119,7 +119,7 @@ float
 SlideShow::find_prev(float time)
 {
   float best_time = 0.0f;
-  
+
   // find the start of the current object
   for(std::vector<SlideObjectPtr>::iterator i = m_objects.begin(); i != m_objects.end(); ++i)
   {

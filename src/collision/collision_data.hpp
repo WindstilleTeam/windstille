@@ -7,12 +7,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -36,9 +36,9 @@ struct CollisionData
    * points away from the object we collided with.
    */
   Vector2f direction;
-  
+
   // size of time frame
-  float delta; 
+  float delta;
 
   // time of collision
   float col_time;
@@ -53,7 +53,7 @@ struct CollisionData
       col_time(0.0f),
       object1(0),
       object2(0)
-  {  
+  {
   }
 
   CollisionData merge(const CollisionData &r);
@@ -66,7 +66,7 @@ struct CollisionData
     r.object2 = object1;
 
     return r;
-  } 
+  }
 };
 
 inline std::ostream &operator<<(std::ostream &o, const CollisionData &r)

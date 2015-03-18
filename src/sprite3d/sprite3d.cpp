@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -29,7 +29,7 @@
 using namespace sprite3d;
 
 Sprite3D::Sprite3D() :
-  data(0), 
+  data(0),
   actions_switched(false),
   frame1(),
   frame2(),
@@ -124,7 +124,7 @@ Sprite3D::get_action() const
 {
   if(next_frame.action != 0)
     return next_frame.action->name;
-  
+
   return frame2.action->name;
 }
 
@@ -132,8 +132,8 @@ std::vector<std::string>
 Sprite3D::get_actions() const
 {
   std::vector<std::string> actions;
-  for(std::vector<Action>::const_iterator i = data->actions.begin(); 
-      i != data->actions.end(); 
+  for(std::vector<Action>::const_iterator i = data->actions.begin();
+      i != data->actions.end();
       ++i)
   {
     actions.push_back(i->name);
@@ -188,7 +188,7 @@ Sprite3D::abort_at_marker(const std::string& name)
 bool
 Sprite3D::before_marker(const std::string& name) const
 {
-  const Marker& marker = data->get_marker(frame1.action, name);  
+  const Marker& marker = data->get_marker(frame1.action, name);
   return frame1.frame < marker.frame;
 }
 
@@ -207,7 +207,7 @@ void
 Sprite3D::set_speed(float speed)
 {
   if ((speed <  0.0f && frame1.speed >= 0.0f) ||
-      (speed >= 0.0f && frame1.speed <  0.0f)) 
+      (speed >= 0.0f && frame1.speed <  0.0f))
   {
     blend_time = 1.0f - blend_time;
     std::swap(frame1, frame2);
@@ -234,22 +234,22 @@ Sprite3D::get_rot() const
 {
   if(next_frame.action != 0)
     return next_frame.rot;
-  
+
   return frame1.rot;
 }
 
 Sprite3D::PointID
 Sprite3D::get_attachment_point_id(const std::string& name) const
 {
-  return data->get_attachment_point_id(name); 
+  return data->get_attachment_point_id(name);
 }
 
 Matrix
 Sprite3D::get_attachment_point_matrix(PointID id) const
 {
-  const AttachmentPointPosition& point1 
+  const AttachmentPointPosition& point1
     = frame1.action->frames[frame1.frame].attachment_points[id];
-  const AttachmentPointPosition& point2 
+  const AttachmentPointPosition& point2
     = frame2.action->frames[frame2.frame].attachment_points[id];
 
   Quaternion rotquat = Quaternion(0, 0, 1, 0);
@@ -283,7 +283,7 @@ Sprite3D::set_next_frame()
   if(frame2.action != frame1.action && abort_at_frame.action == 0) {
     actions_switched = true;
   }
-  
+
   frame1 = frame2;
   if(next_frame.action != 0) {
     frame2 = next_frame;
@@ -310,11 +310,11 @@ Sprite3D::set_next_frame()
 
 void
 Sprite3D::update(float delta)
-{   
+{
   float time_delta = delta * frame1.action->speed * frame1.speed;
   if(frame1.speed < 0)
     time_delta = -time_delta;
-  
+
   while(blend_time + time_delta >= 1.0f)
   {
     delta -= (1.0f - blend_time) / (frame1.action->speed * frame1.speed);
@@ -349,12 +349,12 @@ void
 Sprite3D::draw(const Vector2f& pos, const Matrix& modelview)
 {
   glMatrixMode(GL_MODELVIEW);
-  glPushMatrix(); 
+  glPushMatrix();
   glMultMatrixf(glm::value_ptr(modelview));
   glTranslatef(pos.x, pos.y, 0);
   if(frame1.rot) {
     glRotatef(180, 0, 1.0, 0);
-  } 
+  }
 
   OpenGLState state;
 
@@ -370,14 +370,14 @@ Sprite3D::draw(const Vector2f& pos, const Matrix& modelview)
 
   state.enable_client_state(GL_VERTEX_ARRAY);
   state.enable_client_state(GL_NORMAL_ARRAY);
-  state.enable_client_state(GL_TEXTURE_COORD_ARRAY);  
+  state.enable_client_state(GL_TEXTURE_COORD_ARRAY);
 
   assert_gl("gl init before sprite");
 
   const ActionFrame& aframe1 = frame1.action->frames[frame1.frame];
   const ActionFrame& aframe2 = frame2.action->frames[frame2.frame];
-  
-  for(uint16_t m = 0; m < data->meshs.size(); ++m) 
+
+  for(uint16_t m = 0; m < data->meshs.size(); ++m)
   {
     const Mesh& mesh = data->meshs[m];
     const MeshVertices& vertices1 = aframe1.meshs[m];
@@ -388,20 +388,20 @@ Sprite3D::draw(const Vector2f& pos, const Matrix& modelview)
 
     // blend between frame1 + frame2
     boost::scoped_array<float> verts(new float[mesh.vertex_count * 3]);
-    if(frame1.rot == frame2.rot) 
+    if(frame1.rot == frame2.rot)
     {
-      for(uint16_t v = 0; v < mesh.vertex_count*3; ++v) 
+      for(uint16_t v = 0; v < mesh.vertex_count*3; ++v)
       {
         float v1 = vertices1.vertices[v];
         float v2 = vertices2.vertices[v];
         verts[v] = interpolate(v1, v2, blend_time);
       }
-    } 
-    else 
+    }
+    else
     {
       // need to manually rotate 180 degree here because frames have different
       // rot values (=> x=-x, y=y, z=-z)
-      for(uint16_t v = 0; v < mesh.vertex_count*3; ) 
+      for(uint16_t v = 0; v < mesh.vertex_count*3; )
       {
         // X coord
         float v1 = vertices1.vertices[v];
@@ -413,8 +413,8 @@ Sprite3D::draw(const Vector2f& pos, const Matrix& modelview)
         verts[v++] = interpolate(v1, v2, blend_time);
         // Z coord
         v1 = vertices1.vertices[v];
-        v2 = -vertices2.vertices[v];                            
-        verts[v++] = interpolate(v1, v2, blend_time);          
+        v2 = -vertices2.vertices[v];
+        verts[v++] = interpolate(v1, v2, blend_time);
       }
     }
 
@@ -428,7 +428,7 @@ Sprite3D::draw(const Vector2f& pos, const Matrix& modelview)
                    &*mesh.vertex_indices.begin());
   }
 
-  assert_gl("rendering 3d sprite");      
+  assert_gl("rendering 3d sprite");
 
   glPopMatrix();
 }

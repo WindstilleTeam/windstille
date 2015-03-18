@@ -32,7 +32,7 @@ struct Flair
   float      m_distance;
   float      m_scale;
   Color      m_color;
-  
+
   Flair(SurfacePtr surface,
         float      distance,
         float      scale,
@@ -64,10 +64,10 @@ private:
   Flairs m_flairs;
 
   Vector2f m_mouse;
-  
+
 public:
   Lensflare();
-  
+
   int run();
 
   void process_input();

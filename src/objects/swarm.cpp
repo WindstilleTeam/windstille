@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -35,7 +35,7 @@ Swarm::Swarm(const FileReader& props) :
   props.get("pos",   pos);
   props.get("count", count);
   props.get("turn-speed", turn_speed);
-  
+
   agents.resize(count);
 
   for(Agents::iterator i = agents.begin(); i != agents.end(); ++i)
@@ -57,7 +57,7 @@ Swarm::Swarm(const FileReader& props) :
 void
 Swarm::draw(SceneContext& sc)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), 
+  VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0),
                                                        1000.0f, sc.highlight().get_modelview());
 
   array->set_mode(GL_QUADS);
@@ -89,7 +89,7 @@ Swarm::update(float delta)
 {
   int x, y;
   SDL_GetMouseState(&x, &y);
-  
+
   target = GameSession::current()->get_view()->screen_to_world(Vector2f(static_cast<float>(x), static_cast<float>(y)));
 
   for(Agents::iterator i = agents.begin(); i != agents.end(); ++i)
@@ -101,13 +101,13 @@ Swarm::update(float delta)
 
     float target_angle   = atan2f(dy, dx);
     float relative_angle = math::normalize_angle(target_angle - i->angle);
-      
+
     if (sqrt(dx*dx + (dy*dy)*2.0f) > 50.0f) // swarm range
     {
       if (fabs(relative_angle) < 0.3f)
       {
         //i->angle += rnd.frand(-1.0f, 1.0f) * delta;
-        if (i->speed < i->max_speed) 
+        if (i->speed < i->max_speed)
           i->speed += 100.0f * delta;
       }
       else

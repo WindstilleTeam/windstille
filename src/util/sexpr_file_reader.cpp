@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -34,20 +34,20 @@ public:
 
   SExprFileReaderImpl(const lisp::Lisp* root_, const lisp::Lisp* sexpr_)
     : root(root_),
-      sexpr(sexpr_), 
+      sexpr(sexpr_),
       delete_sexpr(false)
   {
-    assert(sexpr && 
+    assert(sexpr &&
            sexpr->get_type() == lisp::Lisp::TYPE_LIST &&
            sexpr->get_list_size() >= 1);
   }
 
-  SExprFileReaderImpl(const lisp::Lisp* sexpr_, bool delete_sexpr_) 
+  SExprFileReaderImpl(const lisp::Lisp* sexpr_, bool delete_sexpr_)
     : root(0),
-      sexpr(sexpr_), 
+      sexpr(sexpr_),
       delete_sexpr(delete_sexpr_)
   {
-    assert(sexpr && 
+    assert(sexpr &&
            sexpr->get_type() == lisp::Lisp::TYPE_LIST &&
            sexpr->get_list_size() >= 1);
   }
@@ -61,12 +61,12 @@ public:
       delete sexpr;
   }
 
-  std::string get_name() const 
+  std::string get_name() const
   {
     return sexpr->get_list_elem(0)->get_symbol();
   }
 
-  bool read_int(const char* name, int& v) const 
+  bool read_int(const char* name, int& v) const
   {
     lisp::Lisp* item = get_subsection_item(name);
     if (item && item->get_type() == lisp::Lisp::TYPE_INT)
@@ -77,7 +77,7 @@ public:
     return false;
   }
 
-  bool read_uint32(const char* name, uint32_t& v) const 
+  bool read_uint32(const char* name, uint32_t& v) const
   {
     lisp::Lisp* item = get_subsection_item(name);
     if (item && item->get_type() == lisp::Lisp::TYPE_INT)
@@ -89,7 +89,7 @@ public:
     return false;
   }
 
-  bool read_float(const char* name, float& v) const 
+  bool read_float(const char* name, float& v) const
   {
     lisp::Lisp* item = get_subsection_item(name);
     if (item)
@@ -112,7 +112,7 @@ public:
     return false;
   }
 
-  bool read_bool  (const char* name, bool& v) const 
+  bool read_bool  (const char* name, bool& v) const
   {
     lisp::Lisp* item = get_subsection_item(name);
     if (item && item->get_type() == lisp::Lisp::TYPE_BOOL)
@@ -123,7 +123,7 @@ public:
     return false;
   }
 
-  bool read_string(const char* name, std::string& v) const 
+  bool read_string(const char* name, std::string& v) const
   {
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
@@ -151,7 +151,7 @@ public:
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
       return property_get(sub, v);
-    else 
+    else
       return false;
   }
 
@@ -160,7 +160,7 @@ public:
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
       return property_get(sub, v);
-    else 
+    else
       return false;
   }
 
@@ -169,7 +169,7 @@ public:
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
       return property_get(sub, v);
-    else 
+    else
       return false;
   }
 
@@ -178,11 +178,11 @@ public:
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
       return property_get(sub, v);
-    else 
+    else
       return false;
   }
 
-  bool read_section(const char* name, FileReader& v) const 
+  bool read_section(const char* name, FileReader& v) const
   {
     lisp::Lisp* cur = get_subsection(name);
     if (cur)
@@ -193,7 +193,7 @@ public:
     return false;
   }
 
-  std::vector<FileReader> get_sections() const 
+  std::vector<FileReader> get_sections() const
   {
     std::vector<FileReader> lst;
     for(size_t i = 1; i < sexpr->get_list_size(); ++i)
@@ -203,7 +203,7 @@ public:
     return lst;
   }
 
-  std::vector<std::string> get_section_names() const 
+  std::vector<std::string> get_section_names() const
   {
     std::vector<std::string> lst;
 
@@ -236,7 +236,7 @@ private:
         return sub;
     }
     return 0;
-  } 
+  }
 
 private:
   SExprFileReaderImpl(const SExprFileReaderImpl&);

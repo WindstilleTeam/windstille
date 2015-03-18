@@ -50,7 +50,7 @@ public:
   //param point: Initial top-left position of rectangle.
   //param size: Initial size of rectangle.
   //param rect: Initial rectangle position and size.
-  Rect() 
+  Rect()
     : left(0),
       top(0),
       right(0),
@@ -70,7 +70,7 @@ public:
     : left(p.x),
       top(p.y),
       right(left + size.width),
-      bottom(top + size.height) 
+      bottom(top + size.height)
   {}
 
   Rect(const Rect &rect)
@@ -87,7 +87,7 @@ public:
   //: Rect -= Rect operator.
   Rect &operator-=(const Rect &r)
   { left -= r.left; top -= r.top; right -= r.right; bottom -= r.bottom; return *this; }
-        
+
   //: Rect += Point operator.
   Rect &operator+=(const Point &p)
   { left += p.x; top += p.y; right += p.x; bottom += p.y; return *this; }
@@ -124,34 +124,34 @@ public:
 public:
   //: X1-coordinate.
   int left;
-        
+
   //: Y1-coordinate.
   int top;
-        
+
   //: X2-coordinate.
   int right;
-        
+
   //: Y2-coordinate.
   int bottom;
-        
+
   //: Returns the width of the rectangle.
   int get_width() const { return right - left; }
-        
+
   //: Returns the height of the rectangle.
   int get_height() const { return bottom - top; }
 
   //: Returns the size of the rectangle.
   Size get_size() const { return Size(right - left, bottom - top); }
-        
+
   //: Returns true if point is inside the rectangle.
   bool is_inside(const Point &p) const { return (p.x >= left && p.y >= top && p.x <= right && p.y <= bottom); }
 
   //: Returns true if rectangle passed is overlapping or inside this rectangle.
-  bool is_overlapped(const Rect &r) const 
+  bool is_overlapped(const Rect &r) const
   {
     return (r.left < right && r.right > left && r.top < bottom && r.bottom > top);
   }
-        
+
   //: Returns another Rect containing a rotated version of this one.
   //param hotspot: Point to rotate around.
   //param origin: Determines the hotspot point within the rectangle
@@ -159,7 +159,7 @@ public:
   //param angle: Angle to rotate in degrees.
   Rect get_rot_bounds(const Point &hotspot, float angle) const;
   Rect get_rot_bounds(Origin origin, int x, int y, float angle) const;
-        
+
   //! Operations:
 public:
   //: Sets the size of the rectangle, maintaining top/left position.
@@ -197,7 +197,7 @@ public:
       top = temp;
     }
   }
-        
+
   //: Applies an origin and offset pair to this rectangle
   //param origin: The new origin to adjust to from default upper-left position
   //param x, y: Offsets applied negatively to each corner of the rectangle
@@ -206,7 +206,7 @@ public:
     Point offset = calc_origin(origin, get_size());
     offset.x -= x;
     offset.y -= y;
-                
+
     left += offset.x;
     top += offset.y;
     right += offset.x;
@@ -235,9 +235,9 @@ public:
   {}
 
   Rectf(const Rect& rect)
-    : left(static_cast<float>(rect.left)), 
-      top(static_cast<float>(rect.top)), 
-      right(static_cast<float>(rect.right)), 
+    : left(static_cast<float>(rect.left)),
+      top(static_cast<float>(rect.top)),
+      right(static_cast<float>(rect.right)),
       bottom(static_cast<float>(rect.bottom))
   {}
 
@@ -276,7 +276,7 @@ public:
   //: Rect -= Rect operator.
   Rectf &operator-=(const Rectf &r)
   { left -= r.left; top -= r.top; right -= r.right; bottom -= r.bottom; return *this; }
-        
+
   //: Rect += Point operator.
   Rectf &operator+=(const Vector2f &p)
   { left += p.x; top += p.y; right += p.x; bottom += p.y; return *this; }
@@ -313,30 +313,30 @@ public:
 public:
   //: X1-coordinate.
   float left;
-        
+
   //: Y1-coordinate.
   float top;
-        
+
   //: X2-coordinate.
   float right;
-        
+
   //: Y2-coordinate.
   float bottom;
-        
+
   //: Returns the width of the rectangle.
   float get_width() const { return right - left; }
-        
+
   //: Returns the height of the rectangle.
   float get_height() const { return bottom - top; }
 
   //: Returns the size of the rectangle.
   Sizef get_size() const { return Sizef(right - left, bottom - top); }
-        
+
   //: Returns true if point is inside the rectangle.
   bool is_inside(const Vector2f &p) const { return (p.x >= left && p.y >= top && p.x <= right && p.y <= bottom); }
-        
+
   //: Returns true if rectangle passed is overlapping or inside this rectangle.
-  bool is_overlapped(const Rectf &r) const 
+  bool is_overlapped(const Rectf &r) const
   {
     return (r.left < right && r.right > left && r.top < bottom && r.bottom > top);
   }
@@ -346,7 +346,7 @@ public:
     return rect.left >= left && rect.right <= right &&
       rect.top >= top && rect.bottom <= bottom;
   }
-        
+
   //! Operations:
 public:
   //: Sets the size of the rectangle, maintaining top/left position.
@@ -384,7 +384,7 @@ public:
       top = temp;
     }
   }
-        
+
   //: Applies an origin and offset pair to this rectangle
   //param origin: The new origin to adjust to from default upper-left position
   //param x, y: Offsets applied negatively to each corner of the rectangle
@@ -393,7 +393,7 @@ public:
     Vector2f offset = calc_origin(origin, get_size());
     offset.x -= x;
     offset.y -= y;
-                
+
     left += offset.x;
     top += offset.y;
     right += offset.x;
@@ -407,19 +407,19 @@ public:
 
   // Moves each edge f away from the center, thus width = old_width + 2*f
   Rectf grow(float f) const {
-    return Rectf(left   - f, 
+    return Rectf(left   - f,
                  top    - f,
                  right  + f,
                  bottom + f);
   }
 
   Rectf grow(float x, float y) const {
-    return Rectf(left   - x, 
+    return Rectf(left   - x,
                  top    - y,
                  right  + x,
                  bottom + y);
   }
-  
+
   // Construct a rectangle large enough
   Rectf grow(const Rectf& rect) const {
     return Rectf(math::min(left, rect.left),
@@ -430,9 +430,9 @@ public:
 };
 
 inline Rect::Rect(const Rectf& rect)
-  : left(static_cast<int>(rect.left)), 
-    top(static_cast<int>(rect.top)), 
-    right(static_cast<int>(rect.right)), 
+  : left(static_cast<int>(rect.left)),
+    top(static_cast<int>(rect.top)),
+    right(static_cast<int>(rect.right)),
     bottom(static_cast<int>(rect.bottom))
 {}
 

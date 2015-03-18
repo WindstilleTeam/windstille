@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -41,20 +41,20 @@ private:
 public:
   SpeechManager();
   ~SpeechManager();
-  
+
   /** Add a speech bubble or a series of speech bubbles to the scene,
    *  lines seperated by newline are displayed in a series of speech
    *  bubbles.
-   * 
+   *
    *  @param text  The content of the speech bubble
    *  @param pos   The position of the speech bubble in screen coordinates
    *  @param color The color of the speech bubble
    */
-  int add(const std::string& text, 
-          const Vector2f& pos, 
+  int add(const std::string& text,
+          const Vector2f& pos,
           const Color& color = Color(1.0f, 1.0f, 1.0f));
-  
-  int add(const std::string& text, 
+
+  int add(const std::string& text,
           const Entity& entity,
           const Color& color = Color(1.0f, 1.0f, 1.0f));
 

@@ -34,7 +34,7 @@ int main(int argc, char** argv)
   else
   {
     SoundManager sound_manager;
-    
+
     sound_manager.set_gain(1.0f);
     sound_manager.sound().set_gain(1.0f);
     sound_manager.voice().set_gain(1.0f);
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 
       sources.push_back(source);
     }
-    
+
     for(std::vector<SoundSourcePtr>::iterator i = sources.begin(); i != sources.end(); ++i)
     {
       (*i)->play();
@@ -76,7 +76,7 @@ int main(int argc, char** argv)
 
       sound_manager.update(100);
     }
-  
+
     return 0;
   }
 }

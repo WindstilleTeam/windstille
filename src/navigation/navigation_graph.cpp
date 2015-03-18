@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -31,7 +31,7 @@
 NavigationGraph::NavigationGraph() :
   nodes(),
   edges()
-{  
+{
 }
 
 NavigationGraph::~NavigationGraph()
@@ -85,17 +85,17 @@ NavigationGraph::remove_node(NodeHandle node)
 
   Edges::iterator new_end = std::remove(edges.begin(), edges.end(), static_cast<Edge*>(0));
   if (new_end != edges.end())
-  { 
+  {
     edges.erase(new_end, edges.end());
   }
-  
-  // Remove the node itself 
+
+  // Remove the node itself
   Nodes::iterator j = std::find(nodes.begin(), nodes.end(), node.get());
   if (j != nodes.end())
   {
     nodes.erase(j);
     delete node.get();
-  }  
+  }
 }
 
 EdgeHandle
@@ -121,8 +121,8 @@ NavigationGraph::split_edge(EdgeHandle edge)
   NodeHandle node2 = add_node(0.5f * (node1->get_pos() + node3->get_pos()));
 
   remove_edge(edge);
-  add_edge(node1, node2);  
-  add_edge(node2, node3);  
+  add_edge(node1, node2);
+  add_edge(node2, node3);
 }
 
 std::vector<EdgePosition>
@@ -131,12 +131,12 @@ NavigationGraph::find_intersections(const Line& line)
   // FIXME: we might want to only return the first intersection, not
   // all of them or alternativly return ua
   std::vector<EdgePosition> ret;
- 
+
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
     Line seg_line((*i)->get_node1()->get_pos(),
                   (*i)->get_node2()->get_pos());
-      
+
     float ua, ub;
     if (line.intersect(seg_line, ua, ub))
     {
@@ -161,7 +161,7 @@ NavigationGraph::find_nodes(const Vector2f& pos, float radius)
       ret.push_back(NodeHandle(*i));
     }
   }
-  
+
   return ret;
 }
 
@@ -171,7 +171,7 @@ NavigationGraph::find_nodes(const Rectf& rect)
   std::vector<NodeHandle> ret;
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
-  {  
+  {
     if (rect.is_inside((*i)->get_pos()))
     {
       ret.push_back(NodeHandle(*i));
@@ -185,7 +185,7 @@ std::vector<EdgeHandle>
 NavigationGraph::find_edges(const Vector2f& pos, float radius)
 {
   std::vector<EdgeHandle> ret;
- 
+
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
     float distance = Line((*i)->get_node1()->get_pos(),
@@ -215,7 +215,7 @@ NavigationGraph::find_closest_node(const Vector2f& pos, float radius)
       node = *i;
     }
   }
-  
+
   return NodeHandle(node);
 }
 
@@ -291,7 +291,7 @@ NavigationGraph::load(FileReader& reader)
       }
     }
   }
-  
+
   FileReader edges_group_reader;
   if (reader.get("edges", edges_group_reader))
   {
@@ -331,7 +331,7 @@ NavigationGraph::load(FileReader& reader)
       {
         std::cout << "NavigationGraph:load: edges: Unknown tag: " << i->get_name() << std::endl;
       }
-    }      
+    }
   }
 }
 
@@ -347,20 +347,20 @@ NavigationGraph::save(std::ostream& out)
   std::ios_base::fmtflags old_flags = out.flags(); // save flags
 
   out << "(navigation\n";
-  out << "  (nodes\n"; 
+  out << "  (nodes\n";
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
-    out << "    (node (id " << std::setw(3) << ptr2id[*i] << ") (pos " 
+    out << "    (node (id " << std::setw(3) << ptr2id[*i] << ") (pos "
         << std::setw(3) << (*i)->get_pos().x << " " << (*i)->get_pos().y << "))\n";
   out << " )\n";
 
   out << "  (edges\n";
-  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)  
+  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
     out << "    (edge "
         << "(node1 " << std::setw(3) << ptr2id[(*i)->get_node1()] << ") "
         << "(node2 " << std::setw(3) << ptr2id[(*i)->get_node2()] << ") "
         << "(properties " << (*i)->get_properties() << "))\n";
   out << " )\n";
-      
+
   out << ")\n";
 
   out.flags(old_flags); // restore flags
@@ -387,7 +387,7 @@ NavigationGraph::write(FileWriter& writer)
   writer.end_section();
 
   writer.start_section("edges");
-  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)  
+  for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
     writer.start_section("edge");
     writer.write("node1", ptr2id[(*i)->get_node1()]);

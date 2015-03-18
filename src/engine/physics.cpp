@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -67,16 +67,16 @@ Physics::elastic_collision(const CollisionData& data, const Physics& other)
   // we could calculate this cheaper if we'd do it once for both objects and not
   // each object on it's own...
 
-  Vector2f other_collision_vel 
+  Vector2f other_collision_vel
     = data.direction * (other.velocity() * data.direction);
   Vector2f collision_vel
     = data.direction * (velocity() * data.direction);
-  
+
   Vector2f new_v = collision_vel * (mass - other.mass);
   new_v += other_collision_vel * (2 * other.mass);
   new_v /= mass + other.mass;
 
-  velocity() += new_v - collision_vel;  
+  velocity() += new_v - collision_vel;
   //force += (new_v - collision_vel) * mass / data.delta;
 
   // TODO apply friction here?
@@ -101,7 +101,7 @@ Physics::update(float delta)
   force += Vector2f(0, 9.81f * mass);
 
   //force -= velocity() * air_friction;
-  
+
   Vector2f acceleration = force / mass;
   velocity() += acceleration * delta;
   pos() += velocity() * delta;

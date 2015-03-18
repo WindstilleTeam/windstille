@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -31,7 +31,7 @@ Pathname::set_datadir_overrides(const Overrides& overrides)
   s_datadir_overrides = overrides;
 }
 
-static void add_overrides(const boost::filesystem::path& path, const boost::filesystem::path& base, 
+static void add_overrides(const boost::filesystem::path& path, const boost::filesystem::path& base,
                           Pathname::Overrides* overrides)
 {
   boost::filesystem::directory_iterator end_i; // default construction yields past-the-end
@@ -97,7 +97,7 @@ std::string Pathname::get_userdir()
 Pathname::Pathname(const std::string& path, PathType type)
   : m_path(path),
     m_type(type)
-{  
+{
 }
 
 bool
@@ -172,7 +172,7 @@ Pathname::get_extension() const
 bool
 Pathname::operator<(const Pathname& rhs) const
 {
-  return 
+  return
     m_path < rhs.m_path ||
     m_type < rhs.m_type;
 }
@@ -232,7 +232,7 @@ bool
 Pathname::operator==(const Pathname& rhs) const
 {
   return
-    m_path == rhs.m_path && 
+    m_path == rhs.m_path &&
     m_type == rhs.m_type;
 }
 
@@ -273,7 +273,7 @@ int main(int argc, char** argv)
 {
   if (argc == 1)
   {
-    
+
   }
   else
   {

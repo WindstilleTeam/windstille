@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -37,46 +37,46 @@ TileMap::TileMap(const FileReader& props) :
   int height = -1;
   z_pos = 0;
   total_time = 0;
-  
+
   props.get("name", name);
   props.get("z-pos", z_pos);
   props.get("width", width);
   props.get("height", height);
 
-  if(width <= 0 || height <= 0) 
+  if(width <= 0 || height <= 0)
   {
     throw std::runtime_error("Invalid width or height defined or "
-                             "data defined before width and height");  
+                             "data defined before width and height");
   }
- 
-  if(width <= 0 || height <= 0) 
+
+  if(width <= 0 || height <= 0)
   {
     throw std::runtime_error("Invalid width or height defined or "
                              "data defined before width and height");
   }
 
   Field<int> tmpfield(width, height);
-  
+
   props.get("data", tmpfield.get_vector());
-  
+
   field = Field<Tile*>(width, height);
-  for (int y = 0; y < field.get_height (); ++y) 
+  for (int y = 0; y < field.get_height (); ++y)
   {
     for (int x = 0; x < field.get_width (); ++x)
     {
       field(x, y) = TileFactory::current()->create(tmpfield(x, y));
     }
   }
-  
+
   if (field.size() == 0)
-    throw std::runtime_error("No tiles defined in tilemap");  
+    throw std::runtime_error("No tiles defined in tilemap");
 }
 
 TileMap::~TileMap()
 {
 }
 
-void 
+void
 TileMap::update (float delta)
 {
   total_time += delta;
@@ -91,7 +91,7 @@ TileMap::draw (SceneContext& sc)
             std::max(0, clip_rect.top/TILE_SIZE),
             std::min(field.get_width(),  clip_rect.right/TILE_SIZE + 1),
             std::min(field.get_height(), clip_rect.bottom/TILE_SIZE + 1));
-  
+
   std::vector<VertexArrayDrawable*> requests;
   for (int y = rect.top;   y < rect.bottom; ++y)
     for (int x = rect.left; x < rect.right; ++x)
@@ -100,7 +100,7 @@ TileMap::draw (SceneContext& sc)
 
       if (!(tile == 0 || tile->packer < 0))
       {
-        int packer = tile->packer; 
+        int packer = tile->packer;
 
         if(packer >= int(requests.size()))
           requests.resize(packer+1);
@@ -114,18 +114,18 @@ TileMap::draw (SceneContext& sc)
           request->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
           request->set_texture(tile->texture);
         }
-            
+
         request->texcoord(tile->uv.left, tile->uv.top);
         request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE));
 
         request->texcoord(tile->uv.right, tile->uv.top);
         request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE));
-            
+
         request->texcoord(tile->uv.right, tile->uv.bottom);
         request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
-            
+
         request->texcoord(tile->uv.left, tile->uv.bottom);
-        request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE)); 
+        request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
       }
     }
 
@@ -139,7 +139,7 @@ TileMap::draw (SceneContext& sc)
 unsigned int
 TileMap::get_pixel(int x, int y)
 {
-  if (x < 0 || y < 0 
+  if (x < 0 || y < 0
       || x >= int(field.get_width())
       || y >= int(field.get_height()))
   {
@@ -149,11 +149,11 @@ TileMap::get_pixel(int x, int y)
   else
   {
     Tile* tile = field(x, y);
-      
+
     if (tile)
       return tile->get_colmap();
     else
-      return 0;     
+      return 0;
   }
 }
 
@@ -181,7 +181,7 @@ TileMap::is_ground (float x, float y)
 
 static float find_max(float pos, float v)
 {
-  if (v == 0) 
+  if (v == 0)
   {
     return 0;
   }
@@ -202,7 +202,7 @@ TileMap::raycast(const Vector2f& pos, float angle)
   ////////////////////////////////////////////
   // FIXME: This code is buggy, use code from LaserPointer instead
   ///////////////////////////////////////////////
-  
+
   // Ray position in Tile units
   int x = static_cast<int>(pos.x / static_cast<float>(TILE_SIZE));
   int y = static_cast<int>(pos.y / static_cast<float>(TILE_SIZE));
@@ -223,7 +223,7 @@ TileMap::raycast(const Vector2f& pos, float angle)
   while(x >= 0 && x < get_width() &&
         y >= 0 && y < get_height())
   {
-    Tile* tile = field(x, y);  
+    Tile* tile = field(x, y);
     if (tile && tile->colmap)
     {
       return pos + Vector2f(t * direction.x, t * direction.y);
@@ -236,7 +236,7 @@ TileMap::raycast(const Vector2f& pos, float angle)
       tMaxX += tDeltaX;
       x = x + step_x;
     }
-    else 
+    else
     {
       t = tMaxY;
       tMaxY += tDeltaY;

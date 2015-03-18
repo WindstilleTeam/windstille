@@ -6,12 +6,12 @@
 **  it under the terms of the GNU General Public License as published by
 **  the Free Software Foundation, either version 3 of the License, or
 **  (at your option) any later version.
-**  
+**
 **  This program is distributed in the hope that it will be useful,
 **  but WITHOUT ANY WARRANTY; without even the implied warranty of
 **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 **  GNU General Public License for more details.
-**  
+**
 **  You should have received a copy of the GNU General Public License
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -30,13 +30,13 @@ BorderFontEffect::BorderFontEffect(int size_, bool outline_) :
 BorderFontEffect::~BorderFontEffect()
 {
 }
-  
+
 int
 BorderFontEffect::get_height(int orig_font_size) const
 {
   return orig_font_size + 2*size;
 }
-  
+
 int
 BorderFontEffect::get_glyph_width(int orig_glyph_width) const
 {
@@ -48,7 +48,7 @@ BorderFontEffect::get_glyph_height(int orig_glyph_height) const
 {
   return orig_glyph_height + 2*size;
 }
-  
+
 int
 BorderFontEffect::get_x_offset(int orig_glyph_offset) const
 {
@@ -69,7 +69,7 @@ BorderFontEffect::blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_
 
   int start_x = std::max(0, -x_pos);
   int start_y = std::max(0, -y_pos);
-  
+
   int end_x = std::min(static_cast<int>(brush.width), target->get_width()  - x_pos);
   int end_y = std::min(static_cast<int>(brush.rows), target->get_height() - y_pos);
 
@@ -95,7 +95,7 @@ BorderFontEffect::blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_
         {
           int target_pos = (y + y_pos + by) * target_pitch + 4*(x + x_pos + bx);
           int brush_pos  = y * brush.pitch + x;
-            
+
           target_buf[target_pos + 0] = red;
           target_buf[target_pos + 1] = blue;
           target_buf[target_pos + 2] = green;
@@ -111,7 +111,7 @@ BorderFontEffect::blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_
       {
         int target_pos = (y + y_pos) * target_pitch + 4*(x + x_pos);
         int brush_pos  = y * brush.pitch + x;
-        
+
         int alpha = brush.buffer[brush_pos];
 
         target_buf[target_pos + 0] = static_cast<uint8_t>(std::min((target_buf[target_pos + 0] * (255 - alpha) + alpha * 255)/255, 255));
@@ -120,6 +120,6 @@ BorderFontEffect::blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_
         target_buf[target_pos + 3] = static_cast<uint8_t>(std::min(target_buf[target_pos + 3] + brush.buffer[brush_pos], 255));
       }
   }
-}  
+}
 
 /* EOF */
