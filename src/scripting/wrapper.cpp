@@ -3,6 +3,15 @@
  *  'src/scripting/wrapper.interface.hpp'
  * DO NOT CHANGE
  */
+#include <config.h>
+
+#include <new>
+#include <assert.h>
+#include <string>
+#include <sstream>
+#include <squirrel.h>
+#include "squirrel_error.hpp"
+#include "wrapper.interface.hpp"
 
 namespace Scripting
 {
@@ -1209,48 +1218,6 @@ static SQInteger list_objects_wrapper(HSQUIRRELVM vm)
 
 }
 
-static SQInteger set_debug_wrapper(HSQUIRRELVM vm)
-{
-  SQBool arg0;
-  if(SQ_FAILED(sq_getbool(vm, 2, &arg0))) {
-    sq_throwerror(vm, _SC("Argument 1 not a bool"));
-    return SQ_ERROR;
-  }
-
-  try {
-    Scripting::set_debug(arg0 == SQTrue);
-
-    return 0;
-
-  } catch(std::exception& e) {
-    sq_throwerror(vm, e.what());
-    return SQ_ERROR;
-  } catch(...) {
-    sq_throwerror(vm, _SC("Unexpected exception while executing function 'set_debug'"));
-    return SQ_ERROR;
-  }
-
-}
-
-static SQInteger get_debug_wrapper(HSQUIRRELVM vm)
-{
-
-  try {
-    bool return_value = Scripting::get_debug();
-
-    sq_pushbool(vm, return_value);
-    return 1;
-
-  } catch(std::exception& e) {
-    sq_throwerror(vm, e.what());
-    return SQ_ERROR;
-  } catch(...) {
-    sq_throwerror(vm, _SC("Unexpected exception while executing function 'get_debug'"));
-    return SQ_ERROR;
-  }
-
-}
-
 static SQInteger get_game_speed_wrapper(HSQUIRRELVM vm)
 {
 
@@ -1981,20 +1948,6 @@ void register_windstille_wrapper(HSQUIRRELVM v)
   sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t");
   if(SQ_FAILED(sq_createslot(v, -3))) {
     throw SquirrelError(v, "Couldn't register function 'list_objects'");
-  }
-
-  sq_pushstring(v, "set_debug", -1);
-  sq_newclosure(v, &set_debug_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|tb");
-  if(SQ_FAILED(sq_createslot(v, -3))) {
-    throw SquirrelError(v, "Couldn't register function 'set_debug'");
-  }
-
-  sq_pushstring(v, "get_debug", -1);
-  sq_newclosure(v, &get_debug_wrapper, 0);
-  sq_setparamscheck(v, SQ_MATCHTYPEMASKSTRING, "x|t");
-  if(SQ_FAILED(sq_createslot(v, -3))) {
-    throw SquirrelError(v, "Couldn't register function 'get_debug'");
   }
 
   sq_pushstring(v, "get_game_speed", -1);
