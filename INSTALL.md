@@ -27,7 +27,7 @@ To compile Windstille you need:
  * libpng
  * physfs
  * boost
- * scons
+ * cmake
  * bison (bison++ will not work)
  * flex
  * gtkmm (for the editor only)
@@ -50,7 +50,7 @@ you can install them with:
         libphysfs-dev \
         libsdl2-image-dev \
         libsdl2-dev \
-        scons \
+        cmake \
         libpng-dev \
         libopenal-dev \
         libgtkmm-2.4-dev \
@@ -77,7 +77,7 @@ with MacPorts http://www.macports.org/:
         libogg \
         libvorbis \
         pkgconfig \
-        scons
+        cmake
 
 SDL and SDL_image should be installed from the official .dmg images:
 
@@ -98,8 +98,15 @@ Compilation
 
 For compilation type:
 
-    $ ./waf configure
-    $ ./waf
+    mkdir build
+    cd build
+    cmake ..
+    make
+
+Building the editor can be enabled via the `cmake` flag
+`-DBUILD_EDITOR=1`. Tests and extras can be build with
+`-DBUILD_TESTS=1` and `-DBUILD_EXTRA=1`. Extra verbose warnings are
+enabled with `-DWARNINGS=1`.
 
 
 Running
@@ -107,11 +114,14 @@ Running
 
 To run it from inside its source directory use:
 
- % build/windstille -d data/
+ % build/windstille -d build/data/
 
 
 Installation
 ------------
 
-Installation isn't currently supported, run the executables directly from the source tree.
+    make install
 
+Configuration of install location is available via the `cmake` flag
+`-DCMAKE_INSTALL_PREFIX:PATH=...` and by passing `DESTDIR=...` to
+`make`.
