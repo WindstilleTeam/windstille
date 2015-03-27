@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
-#include "SDL.h"
+#include <SDL.h>
 
 #include "display/opengl_window.hpp"
 #include "display/surface.hpp"
