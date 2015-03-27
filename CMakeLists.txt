@@ -17,6 +17,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(windstille VERSION 0.3.0)
 
+set(BUILD_EDITOR 1 CACHE BOOL "Build Windstille editor")
 set(BUILD_TESTS 1 CACHE BOOL "Build tests")
 set(BUILD_EXTRA 1 CACHE BOOL "Build extra apps")
 set(WARNINGS 0 CACHE BOOL "Switch on extra warnings")
@@ -27,9 +28,6 @@ set(WINDSTILLE_DATADIR "${CMAKE_INSTALL_PREFIX}/share/windstille" CACHE PATH "In
 message(STATUS "INSTALL PREFIX: ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "WINDSTILLE_BINDIR: ${WINDSTILLE_BINDIR}")
 message(STATUS "WINDSTILLE_DATADIR: ${WINDSTILLE_DATADIR}")
-
-# TODO:
-# * Windows/Mac stuff
 
 if(WARNINGS)
   set(WARNINGS_CXX_FLAGS
@@ -211,17 +209,15 @@ target_link_libraries(wstlib PUBLIC
 
 # compile galapix.sdl
 if(BUILD_EDITOR)
-  file(WINDSTILLE_EDITOR_SOURCES GLOB RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  file(GLOB WINDSTILLE_EDITOR_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     src/editor/*.cpp)
 
   add_executable(windstille-editor ${WINDSTILLE_EDITOR_SOURCES})
-  target_compile_options(windstille-editor PRIVATE ${WARNINGS_CXX_FLAGS})
-  target_include_directories(galapix.gtk SYSTEM PRIVATE
-    ${WINDSTILLE_DEPS_INCLUDE_DIRS}
+  target_compile_options(windstille-editor PUBLIC ${WARNINGS_CXX_FLAGS})
+  target_include_directories(windstille-editor SYSTEM PUBLIC
     ${WINDSTILLE_EDITOR_DEPS_INCLUDE_DIRS})
   target_link_libraries(windstille-editor
     wstlib
-    ${WINDSTILLE_DEPS_LIBRARIES}
     ${WINDSTILLE_EDITOR_DEPS_LIBRARIES})
 
   install(TARGETS windstille-editor RUNTIME DESTINATION ${WINDSTILLE_BINDIR})
@@ -242,12 +238,9 @@ file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/tile/*.cpp)
 add_executable(windstille ${WINDSTILLE_SOURCES})
 target_compile_options(windstille PRIVATE ${WARNINGS_CXX_FLAGS})
-target_include_directories(windstille SYSTEM PRIVATE
-  ${WINDSTILLE_DEPS_INCLUDE_DIRS})
 target_link_libraries(windstille
   wstlib
-  ${CWIID_LIBRARY}
-  ${WINDSTILLE_DEPS_LIBRARIES})
+  ${CWIID_LIBRARY})
 
 if(CWIID_LIBRARY)
   target_compile_options(windstille PUBLIC -DHAVE_CWIID)
