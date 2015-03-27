@@ -17,17 +17,14 @@
 cmake_minimum_required(VERSION 3.0)
 project(galapix VERSION 0.3.0)
 
-set(BUILD_TESTS 0 CACHE BOOL "Build tests")
-set(BUILD_EXTRA 0 CACHE BOOL "Build extra apps")
+set(BUILD_TESTS 1 CACHE BOOL "Build tests")
+set(BUILD_EXTRA 1 CACHE BOOL "Build extra apps")
 set(WARNINGS 0 CACHE BOOL "Switch on extra warnings")
 
 # TODO:
 # * install
 # * build data
-# * build tests
-# * build extra
 # * Windows/Mac stuff
-# * bison gets file ending wrong
 
 if(WARNINGS)
   set(WARNINGS_CXX_FLAGS
@@ -64,29 +61,6 @@ pkg_search_module(OGG REQUIRED ogg)
 pkg_search_module(VORBIS REQUIRED vorbis)
 pkg_search_module(VORBISFILE REQUIRED vorbisfile)
 
-if(BUILD_EDITOR)
-  pkg_search_module(GTKMM REQUIRED gtkmm-2.4)
-  pkg_search_module(GLADEMM REQUIRED libglademm-2.4)
-  pkg_search_module(GTKGLEXTMM REQUIRED gtkglextmm-1.2)
-
-  set(WINDSTILLE_EDITOR_DEPS_INCLUDE_DIRS
-    ${GTKMM_INCLUDE_DIRS}
-    ${GLADEMM_INCLUDE_DIRS}
-    ${GTKGLEXTMM_INCLUDE_DIRS})
-  set(WINDSTILLE_EDITOR_DEPS_LIBRARIES
-    ${GTKMM_LIBRARIES}
-    ${GLADEMM_LIBRARIES}
-    ${GTKGLEXTMM_LIBRARIES})
-endif()
-
-include_directories(.)
-include_directories(src/)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/src/)
-include_directories(SYSTEM external/SQUIRREL3/include)
-include_directories(SYSTEM external/miniswig)
-# include_directories(SYSTEM external/glm-0.9.6.1/)
-# include_directories(SYSTEM external/googletest/include/)
-
 set(WINDSTILLE_DEPS_INCLUDE_DIRS
   ${SDL2_INCLUDE_DIRS}
   ${SDL2_IMAGE_INCLUDE_DIRS}
@@ -120,6 +94,29 @@ set(WINDSTILLE_DEPS_LIBRARIES
   ${Boost_FILESYSTEM_LIBRARY}
   ${Boost_SIGNALS_LIBRARY}
   ${CMAKE_THREAD_LIBS_INIT})
+
+if(BUILD_EDITOR)
+  pkg_search_module(GTKMM REQUIRED gtkmm-2.4)
+  pkg_search_module(GLADEMM REQUIRED libglademm-2.4)
+  pkg_search_module(GTKGLEXTMM REQUIRED gtkglextmm-1.2)
+
+  set(WINDSTILLE_EDITOR_DEPS_INCLUDE_DIRS
+    ${GTKMM_INCLUDE_DIRS}
+    ${GLADEMM_INCLUDE_DIRS}
+    ${GTKGLEXTMM_INCLUDE_DIRS})
+  set(WINDSTILLE_EDITOR_DEPS_LIBRARIES
+    ${GTKMM_LIBRARIES}
+    ${GLADEMM_LIBRARIES}
+    ${GTKGLEXTMM_LIBRARIES})
+endif()
+
+include_directories(.)
+include_directories(src/)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/src/)
+include_directories(SYSTEM external/SQUIRREL3/include)
+include_directories(SYSTEM external/miniswig)
+# include_directories(SYSTEM external/glm-0.9.6.1/)
+# include_directories(SYSTEM external/googletest/include/)
 
 bison_target(parser
   ${CMAKE_CURRENT_SOURCE_DIR}/external/miniswig/parser.yy
@@ -197,10 +194,10 @@ file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/system/*.cpp
   src/util/*.cpp)
 add_library(wstlib STATIC ${WSTLIB_SOURCES})
-target_compile_options(wstlib PRIVATE ${WARNINGS_CXX_FLAGS})
-target_include_directories(wstlib SYSTEM PRIVATE
+target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
+target_include_directories(wstlib SYSTEM PUBLIC
   ${WINDSTILLE_DEPS_INCLUDE_DIRS})
-target_link_libraries(wstlib
+target_link_libraries(wstlib PUBLIC
   ${WINDSTILLE_DEPS_LIBRARIES})
 
 # compile galapix.sdl
@@ -234,12 +231,57 @@ file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/tile/*.cpp)
 add_executable(windstille ${WINDSTILLE_SOURCES})
 target_compile_options(windstille PRIVATE ${WARNINGS_CXX_FLAGS})
-target_link_libraries(windstille
-  ${WINDSTILLE_DEPS_LIBRARIES})
 target_include_directories(windstille SYSTEM PRIVATE
   ${WINDSTILLE_DEPS_INCLUDE_DIRS})
 target_link_libraries(windstille
   wstlib
   ${WINDSTILLE_DEPS_LIBRARIES})
+
+if(BUILD_TESTS)
+  file(GLOB TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    test/*_test.cpp)
+  foreach(SRC ${TEST_SOURCES})
+    get_filename_component(SRC_BASENAME ${SRC} NAME_WE)
+    add_executable(${SRC_BASENAME} ${SRC})
+    target_link_libraries(${SRC_BASENAME} wstlib)
+  endforeach(SRC)
+endif()
+
+if(BUILD_EXTRA)
+  file(GLOB SLIDESHOW_SOURCE RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    extra/slideshow/*.cpp
+    extra/slideshow/plugins/*.cpp)
+  add_executable(slideshow ${SLIDESHOW_SOURCE})
+  target_link_libraries(slideshow wstlib)
+  target_include_directories(slideshow PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/extra/)
+
+  file(GLOB SHADERTEST_SOURCE RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    extra/shadertest/*.cpp)
+  add_executable(shadertest ${SHADERTEST_SOURCE})
+  target_link_libraries(shadertest wstlib)
+
+  file(GLOB LENSFLARE_SOURCE RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    extra/lensflare/*.cpp)
+  add_executable(lensflare ${LENSFLARE_SOURCE})
+  target_link_libraries(lensflare wstlib)
+
+  file(GLOB MEMLEAK_SOURCE RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    extra/memleak/*.cpp)
+  add_executable(memleak ${MEMLEAK_SOURCE})
+  target_link_libraries(memleak wstlib)
+
+  file(GLOB 2DSHADOW_SOURCE RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    extra/2dshadow/*.cpp)
+  add_executable(2dshadow ${2DSHADOW_SOURCE})
+  target_link_libraries(2dshadow wstlib)
+
+  file(GLOB EXTRA_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    extra/*.cpp)
+  foreach(SRC ${EXTRA_SOURCES})
+    get_filename_component(SRC_BASENAME ${SRC} NAME_WE)
+    add_executable(${SRC_BASENAME} ${SRC})
+    target_link_libraries(${SRC_BASENAME} wstlib)
+  endforeach(SRC)
+endif()
 
 # EOF #
