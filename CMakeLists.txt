@@ -15,14 +15,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.0)
-project(galapix VERSION 0.3.0)
+project(windstille VERSION 0.3.0)
 
 set(BUILD_TESTS 1 CACHE BOOL "Build tests")
 set(BUILD_EXTRA 1 CACHE BOOL "Build extra apps")
 set(WARNINGS 0 CACHE BOOL "Switch on extra warnings")
 
+set(WINDSTILLE_BINDIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Install location for binaries")
+set(WINDSTILLE_DATADIR "${CMAKE_INSTALL_PREFIX}/share/windstille" CACHE PATH "Install location for datafiles")
+
+message(STATUS "INSTALL PREFIX: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "WINDSTILLE_BINDIR: ${WINDSTILLE_BINDIR}")
+message(STATUS "WINDSTILLE_DATADIR: ${WINDSTILLE_DATADIR}")
+
 # TODO:
-# * install
 # * Windows/Mac stuff
 
 if(WARNINGS)
@@ -215,6 +221,8 @@ if(BUILD_EDITOR)
     wstlib
     ${WINDSTILLE_DEPS_LIBRARIES}
     ${WINDSTILLE_EDITOR_DEPS_LIBRARIES})
+
+  install(TARGETS windstille-editor RUNTIME DESTINATION ${WINDSTILLE_BINDIR})
 endif()
 
 file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -237,6 +245,8 @@ target_include_directories(windstille SYSTEM PRIVATE
 target_link_libraries(windstille
   wstlib
   ${WINDSTILLE_DEPS_LIBRARIES})
+
+install(TARGETS windstille RUNTIME DESTINATION ${WINDSTILLE_BINDIR})
 
 # build and install data
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data/images/decal/)
@@ -282,9 +292,9 @@ foreach(SOURCE ${WINDSTILLE_DATA_FILES})
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${DIR})
 endforeach(SOURCE)
 
-# FIXME: install data
-# install(FILES ${WINDSTILLE_DATA_FILES}
-#               File(filename)
+# install windstille data
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data/
+  DESTINATION ${WINDSTILLE_DATADIR})
 
 if(BUILD_TESTS)
   file(GLOB TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
