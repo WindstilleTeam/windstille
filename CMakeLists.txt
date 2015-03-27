@@ -56,6 +56,8 @@ find_package(OpenAL REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 
+find_library(CWIID_LIBRARY cwiid)
+
 find_package(PkgConfig REQUIRED)
 
 set(PROFILE_CXXFLAGS "-std=c++1y -O2 -g3 -pg")
@@ -244,7 +246,12 @@ target_include_directories(windstille SYSTEM PRIVATE
   ${WINDSTILLE_DEPS_INCLUDE_DIRS})
 target_link_libraries(windstille
   wstlib
+  ${CWIID_LIBRARY}
   ${WINDSTILLE_DEPS_LIBRARIES})
+
+if(CWIID_LIBRARY)
+  target_compile_options(windstille PUBLIC -DHAVE_CWIID)
+endif()
 
 install(TARGETS windstille RUNTIME DESTINATION ${WINDSTILLE_BINDIR})
 
