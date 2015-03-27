@@ -6,12 +6,12 @@
 ##  it under the terms of the GNU General Public License as published by
 ##  the Free Software Foundation, either version 3 of the License, or
 ##  (at your option) any later version.
-##  
+##
 ##  This program is distributed in the hope that it will be useful,
 ##  but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##  GNU General Public License for more details.
-##  
+##
 ##  You should have received a copy of the GNU General Public License
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -224,13 +224,13 @@ class Project:
             print "yacc or bison not found, aborting."
             Exit(1)
 
-        self.env = conf.Finish()       
+        self.env = conf.Finish()
 
     def build_all(self):
-        if self.features['platform'] == 'darwin':        
+        if self.features['platform'] == 'darwin':
             self.build_sdl_main()
         elif self.features['platform'] == 'linux2':
-            self.build_binreloc()  
+            self.build_binreloc()
 
         self.build_squirrel()
         self.build_miniswig()
@@ -301,7 +301,7 @@ class Project:
         BuildStaticLibrary('wst_navgraph', Glob('src/navigation/*.cpp'), pkgs)
         BuildStaticLibrary('wst_particles', Glob('src/particles/*.cpp'), pkgs)
         BuildStaticLibrary('wst_sound', Glob('src/sound/*.cpp'), pkgs)
-        BuildStaticLibrary('wst_display', 
+        BuildStaticLibrary('wst_display',
                            Glob('src/font/*.cpp') +
                            Glob('src/display/*.cpp') +
                            Glob('src/scenegraph/*.cpp') +
@@ -328,7 +328,7 @@ class Project:
                        'wst_particles', 'wst_navgraph', 'wst_display', 'wst_util', 'wst_math', 'wst_sound',
                        'freetype',
                        'SDL', 'SDL_image',
-                       'OpenAL', 'ogg', 'vorbis', 'vorbisfile', 
+                       'OpenAL', 'ogg', 'vorbis', 'vorbisfile',
                        'squirrel', 'png', 'jpeg', 'binreloc',
                        'OpenGL', 'GLEW',
                        'boost_signals', 'boost_filesystem' ])
@@ -382,7 +382,7 @@ class Project:
         BuildProgram("test_scissor_drawable", ["test/scissor_drawable/scissor_drawable.cpp"],
                      pkgs + [ 'wst_particles', 'wst_navgraph', 'wst_display', 'wst_math',
                               'wst_sound', 'wst_system', 'wst_util',
-                              'SDL', 'OpenGL', 'GLEW', 'png', 'SDL_image', 'boost_filesystem', 'jpeg', 
+                              'SDL', 'OpenGL', 'GLEW', 'png', 'SDL_image', 'boost_filesystem', 'jpeg',
                               'binreloc' ])
 
         BuildProgram("test_shader_drawable", [ "test/shader_drawable/shader_drawable.cpp" ],
