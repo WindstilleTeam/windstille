@@ -22,12 +22,12 @@ set(BUILD_EXTRA 0 CACHE BOOL "Build extra apps")
 set(WARNINGS 0 CACHE BOOL "Switch on extra warnings")
 
 # TODO:
+# * install
 # * build data
 # * build tests
 # * build extra
 # * Windows/Mac stuff
 # * bison gets file ending wrong
-# * ogg/openal/...
 
 if(WARNINGS)
   set(WARNINGS_CXX_FLAGS
@@ -58,6 +58,11 @@ set(PROFILE_CXXFLAGS "-std=c++1y -O2 -g3 -pg")
 set(PROFILE_LINKFLAGS "-pg")
 
 pkg_search_module(SDL2 REQUIRED sdl2)
+pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
+
+pkg_search_module(OGG REQUIRED ogg)
+pkg_search_module(VORBIS REQUIRED vorbis)
+pkg_search_module(VORBISFILE REQUIRED vorbisfile)
 
 if(BUILD_EDITOR)
   pkg_search_module(GTKMM REQUIRED gtkmm-2.4)
@@ -84,31 +89,42 @@ include_directories(SYSTEM external/miniswig)
 
 set(WINDSTILLE_DEPS_INCLUDE_DIRS
   ${SDL2_INCLUDE_DIRS}
+  ${SDL2_IMAGE_INCLUDE_DIRS}
   ${FREETYPE_INCLUDE_DIRS}
   ${OPENGL_INCLUDE_DIRS}
   ${GLEW_INCLUDE_DIRS}
   ${PNG_INCLUDE_DIRS}
   ${JPEG_INCLUDE_DIRS}
+  ${OPENAL_INCLUDE_DIR}
+  ${OGG_INCLUDE_DIRS}
+  ${VORBIS_INCLUDE_DIRS}
+  ${VORBISFILE_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
   ${Boost_SIGNALS_INCLUDE_DIR}
   ${CMAKE_THREAD_LIBS_INIT})
 
 set(WINDSTILLE_DEPS_LIBRARIES
+  squirrel
   ${SDL2_LIBRARIES}
+  ${SDL2_IMAGE_LIBRARIES}
   ${FREETYPE_LIBRARIES}
   ${OPENGL_LIBRARIES}
   ${GLEW_LIBRARIES}
   ${PNG_LIBRARIES}
   ${JPEG_LIBRARIES}
+  ${OPENAL_LIBRARY}
+  ${OGG_LIBRARIES}
+  ${VORBIS_LIBRARIES}
+  ${VORBISFILE_LIBRARIES}
   ${Boost_SYSTEM_LIBRARY}
   ${Boost_FILESYSTEM_LIBRARY}
   ${Boost_SIGNALS_LIBRARY}
   ${CMAKE_THREAD_LIBS_INIT})
 
 bison_target(parser
-   ${CMAKE_CURRENT_SOURCE_DIR}/external/miniswig/parser.yy
-   ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp
-   --no-lines -d)
+  ${CMAKE_CURRENT_SOURCE_DIR}/external/miniswig/parser.yy
+  ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp
+  --no-lines -d)
 flex_target(MyScanner
   ${CMAKE_CURRENT_SOURCE_DIR}/external/miniswig/lexer.ll
   ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
@@ -129,16 +145,42 @@ list(APPEND MINISWIG_SOURCES
   ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp)
 add_executable(miniswig ${MINISWIG_SOURCES})
 
-# env.Depends(env.Command('src/scripting/miniswig.tmp', 'src/scripting/wrapper.interface.hpp',
-#                         ["$CXX -E -Isrc/ -x c -CC $SOURCE -o $TARGET -DSCRIPTING_API"]),
-#             ['src/scripting/interface.hpp',
-#              'src/scripting/game_objects.hpp'])
+# compile scripting stuff
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/)
+set(SCRIPTING_SOURCE
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/scripting/interface.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/scripting/game_objects.hpp)
+set(TARGET ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/miniswig.tmp)
+set(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/scripting/wrapper.interface.hpp)
+add_custom_command(
+  OUTPUT ${TARGET}
+  COMMAND ${CMAKE_CXX_COMPILER}
+  ARGS
+  -E
+  -I${CMAKE_CURRENT_SOURCE_DIR}/src
+  -I${CMAKE_CURRENT_BINARY_DIR}/src
+  -x c
+  -CC ${SOURCE}
+  -o ${TARGET}
+  -DSCRIPTING_API
+  DEPENDS
+  ${SCRIPTING_SOURCE}
+  ${SOURCE})
 
-# env.Depends(env.Command(['src/scripting/wrapper.cpp', 'src/scripting/wrapper.hpp'],
-#                         'src/scripting/miniswig.tmp',
-#                         ["$MINISWIG --input $SOURCE --output-cpp ${TARGETS[0]} --output-hpp ${TARGETS[1]} "+
-#                          "--module windstille --select-namespace Scripting"]),
-#                        miniswig_bin)
+set(TARGET_CPP ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/wrapper.cpp)
+set(TARGET_HPP ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/wrapper.hpp)
+set(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/miniswig.tmp)
+add_custom_command(
+  OUTPUT ${TARGET_CPP} ${TARGET_HPP}
+  COMMAND ${CMAKE_CURRENT_BINARY_DIR}/miniswig
+  --input ${SOURCE}
+  --output-cpp ${TARGET_CPP}
+  --output-hpp ${TARGET_HPP}
+  --module windstille
+  --select-namespace "Scripting"
+  DEPENDS
+  ${CMAKE_CURRENT_BINARY_DIR}/miniswig
+  ${SOURCE})
 
 # compile libgalapix
 file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
