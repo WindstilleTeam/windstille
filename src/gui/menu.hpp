@@ -33,9 +33,9 @@ class EnumMenuItem;
 class Menu
 {
 private:
-  std::auto_ptr<GUIManager>     manager;
-  std::auto_ptr<GroupComponent> group;
-  std::auto_ptr<MenuComponent>  menu;
+  std::unique_ptr<GUIManager>     manager;
+  std::unique_ptr<GroupComponent> group;
+  std::unique_ptr<MenuComponent>  menu;
 
 public:
   /**
