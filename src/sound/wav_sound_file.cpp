@@ -116,7 +116,7 @@ WavSoundFile::WavSoundFile(const Pathname& filename) :
 
   if(chunklen > 16)
   {
-    if(file.seekg(chunklen-16, std::ios::cur) == 0)
+    if(file.seekg(chunklen-16, std::ios::cur).fail())
       throw std::runtime_error("EOF while reading reast of format chunk");
   }
 
@@ -130,7 +130,7 @@ WavSoundFile::WavSoundFile(const Pathname& filename) :
       break;
 
     // skip chunk
-    if(file.seekg(chunklen, std::ios::cur) == 0)
+    if(file.seekg(chunklen, std::ios::cur).fail())
       throw std::runtime_error("EOF while searching fmt chunk");
   } while(true);
 
