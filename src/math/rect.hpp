@@ -114,7 +114,7 @@ public:
 
   //: Rect == Rect operator.
   bool operator==(const Rect &r) const
-  { return (left == r.left && top == r.top && right == r.right && bottom && r.bottom); }
+  { return (left == r.left && top == r.top && right == r.right && bottom == r.bottom); }
 
   //: Rect != Rect operator.
   bool operator!=(const Rect &r) const
@@ -303,10 +303,10 @@ public:
 
   //: Rect == Rect operator.
   bool operator==(const Rectf &r) const
-  { return (left == r.left && top == r.top && right == r.right && bottom && r.bottom); }
+  { return (left == r.left && top == r.top && right == r.right && bottom == r.bottom); }
 
   //: Rect != Rect operator.
-  bool operator!=(const Rect &r) const
+  bool operator!=(const Rectf &r) const
   { return (left != r.left || top != r.top || right != r.right || bottom != r.bottom); }
 
   //! Attributes:
