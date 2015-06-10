@@ -241,12 +241,11 @@ file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/tile/*.cpp)
 add_executable(windstille ${WINDSTILLE_SOURCES})
 target_compile_options(windstille PRIVATE ${WARNINGS_CXX_FLAGS})
-target_link_libraries(windstille
-  wstlib
-  ${CWIID_LIBRARY})
+target_link_libraries(windstille wstlib)
 
 if(CWIID_LIBRARY)
   target_compile_options(windstille PUBLIC -DHAVE_CWIID)
+  target_link_libraries(windstille ${CWIID_LIBRARY})
 endif()
 
 install(TARGETS windstille RUNTIME DESTINATION ${WINDSTILLE_BINDIR})
