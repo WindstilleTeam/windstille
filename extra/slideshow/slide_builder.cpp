@@ -19,7 +19,6 @@
 #include "slideshow/slide_builder.hpp"
 
 #include <boost/tokenizer.hpp>
-#include <boost/lexical_cast.hpp>
 #include <string.h>
 #include <errno.h>
 #include <fstream>

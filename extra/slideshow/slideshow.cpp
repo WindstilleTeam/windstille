@@ -22,7 +22,6 @@
 
 #include <sstream>
 #include <stdexcept>
-#include <boost/lexical_cast.hpp>
 
 #include "util/command_line.hpp"
 #include "display/assert_gl.hpp"
@@ -98,7 +97,7 @@ App::parse_args(int argc, char** argv)
         break;
 
       case 'S':
-        m_start_frame = boost::lexical_cast<int>(argp.get_argument());
+        m_start_frame = std::stoi(argp.get_argument());
         break;
 
       case 'e':
@@ -106,7 +105,7 @@ App::parse_args(int argc, char** argv)
         break;
 
       case 'F':
-        m_fps = boost::lexical_cast<float>(argp.get_argument());
+        m_fps = std::stof(argp.get_argument());
         break;
 
       case 'g':
@@ -127,7 +126,7 @@ App::parse_args(int argc, char** argv)
         break;
 
       case 's':
-        m_start_time = boost::lexical_cast<float>(argp.get_argument());
+        m_start_time = std::stof(argp.get_argument());
         break;
 
       case 'o':

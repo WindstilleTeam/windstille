@@ -19,7 +19,6 @@
 #include "slideshow/slide_parser.hpp"
 
 #include <boost/tokenizer.hpp>
-#include <boost/lexical_cast.hpp>
 #include <string.h>
 #include <errno.h>
 #include <fstream>
@@ -356,17 +355,17 @@ SlideParser::handle_pos(const std::vector<std::string>& args)
     }
     else
     {
-      //float x = boost::lexical_cast<float>(args[1]) * m_path_node.zoom;
+      //float x = std::stof(args[1]) * m_path_node.zoom;
       //m_path_node.pos.x = img_w/2.0f - x + scr_w/2.0f;
       if (args[1][args[1].length()-1] == '%')
       {
         m_node.pos_x = NodePosX(NodePosX::kNodePosXRelFloat,
-                                boost::lexical_cast<float>(args[1].substr(0, args[1].length()-1)));
+                                std::stof(args[1].substr(0, args[1].length()-1)));
       }
       else
       {
         m_node.pos_x = NodePosX(NodePosX::kNodePosXAbsFloat,
-                                boost::lexical_cast<float>(args[1]));
+                                std::stof(args[1]));
       }
     }
 
@@ -391,17 +390,17 @@ SlideParser::handle_pos(const std::vector<std::string>& args)
     }
     else
     {
-      //float y = boost::lexical_cast<float>(args[2]) * m_path_node.zoom;
+      //float y = std::stof(args[2]) * m_path_node.zoom;
       //m_path_node.pos.y = img_h/2.0f - y + scr_h/2.0f;
       if (args[2][args[2].length()-1] == '%')
       {
         m_node.pos_y = NodePosY(NodePosY::kNodePosYRelFloat,
-                                boost::lexical_cast<float>(args[2].substr(0, args[2].length()-1)));
+                                std::stof(args[2].substr(0, args[2].length()-1)));
       }
       else
       {
         m_node.pos_y = NodePosY(NodePosY::kNodePosYAbsFloat,
-                                boost::lexical_cast<float>(args[2]));
+                                std::stof(args[2]));
       }
     }
 
@@ -460,7 +459,7 @@ SlideParser::handle_zoom(const std::vector<std::string>& args)
     else
     {
       /*
-      m_path_node.zoom = boost::lexical_cast<float>(args[1]);
+      m_path_node.zoom = std::stof(args[1]);
 
       // 1.0f means "fit", so recalculate values relative to that
       float fit = std::min(m_screen_size.width / m_image->get_width(),
@@ -469,7 +468,7 @@ SlideParser::handle_zoom(const std::vector<std::string>& args)
 
       std::cout << "  (zoom " << m_path_node.zoom << ")" << std::endl;
       */
-      m_node.zoom = NodeZoom(NodeZoom::kNodeZoomFloat, boost::lexical_cast<float>(args[1]));
+      m_node.zoom = NodeZoom(NodeZoom::kNodeZoomFloat, std::stof(args[1]));
     }
 
     m_node_has_zoom = true;
@@ -489,7 +488,7 @@ SlideParser::handle_duration(const std::vector<std::string>& args)
   }
   else
   {
-    float duration = boost::lexical_cast<float>(args[1]);
+    float duration = std::stof(args[1]);
 
     assert(m_image);
     add_node();
@@ -528,7 +527,7 @@ SlideParser::handle_fade(const std::vector<std::string>& args)
   }
   else
   {
-    m_fade = boost::lexical_cast<float>(args[1]);
+    m_fade = std::stof(args[1]);
     std::cout << "(fade " << m_fade << ")" << std::endl;
 
     if (m_last_image)
