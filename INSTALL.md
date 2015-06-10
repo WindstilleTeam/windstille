@@ -32,7 +32,7 @@ To compile Windstille you need:
  * flex
  * gtkmm (for the editor only)
  * gtkglextmm (for the editor only)
-
+ * glm
 
 ### Linux
 
@@ -60,8 +60,8 @@ you can install them with:
         xcftools \
         libglew1.5-dev \
         libogg-dev \
-        libvorbis-dev
-
+        libvorbis-dev \
+        libglm-dev
 
 ### Mac OS X
 
