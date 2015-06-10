@@ -21,6 +21,7 @@ set(BUILD_EDITOR 1 CACHE BOOL "Build Windstille editor")
 set(BUILD_TESTS 1 CACHE BOOL "Build tests")
 set(BUILD_EXTRA 1 CACHE BOOL "Build extra apps")
 set(WARNINGS 0 CACHE BOOL "Switch on extra warnings")
+set(WERROR 0 CACHE BOOL "Turn warnings into errors")
 
 set(WINDSTILLE_BINDIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Install location for binaries")
 set(WINDSTILLE_DATADIR "${CMAKE_INSTALL_PREFIX}/share/windstille" CACHE PATH "Install location for datafiles")
@@ -30,10 +31,15 @@ message(STATUS "WINDSTILLE_BINDIR: ${WINDSTILLE_BINDIR}")
 message(STATUS "WINDSTILLE_DATADIR: ${WINDSTILLE_DATADIR}")
 
 if(WARNINGS)
-  set(WARNINGS_CXX_FLAGS
+  set(WARNINGS_CXX_FLAGS ${WARNINGS_CXX_FLAGS}
     -pedantic -Wall -Wextra -Wno-c++0x-compat -Wnon-virtual-dtor -Weffc++
-    -Wconversion -Werror -Wshadow -Wcast-qual -Winit-self -Wno-unused-parameter)
+    -Wconversion -Wshadow -Wcast-qual -Winit-self -Wno-unused-parameter)
   # -Winline -Wfloat-equal -Wunreachable-code
+endif()
+
+if(WERROR)
+  set(WARNINGS_CXX_FLAGS  ${WARNINGS_CXX_FLAGS}
+    -Werror)
 endif()
 
 add_compile_options(-std=c++1y)
