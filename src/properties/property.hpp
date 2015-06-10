@@ -22,7 +22,7 @@
 
 class Property
 {
-private:
+protected:
   enum Type { INT_TYPE, FLOAT_TYPE, BOOL_TYPE } type;
 
 public:
