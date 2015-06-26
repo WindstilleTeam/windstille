@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2009 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ AboutWindow::AboutWindow()
 {
   //set_logo(0);
   set_license("Windstille - A Sci-Fi Action-Adventure Game\n"
-              "Copyright (C) 2009 Ingo Ruhnke <grumbel@gmx.de>\n"
+              "Copyright (C) 2009 Ingo Ruhnke <grumbel@gmail.com>\n"
               "\n"
               "This program is free software: you can redistribute it and/or modify\n"
               "it under the terms of the GNU General Public License as published by\n"
@@ -43,7 +43,7 @@ AboutWindow::AboutWindow()
   set_comments("An Editor for Windstille");
 
   std::vector<Glib::ustring> authors;
-  authors.push_back("Ingo Ruhnke <grumbel@gmx.de>");
+  authors.push_back("Ingo Ruhnke <grumbel@gmail.com>");
   set_authors(authors);
 }
 

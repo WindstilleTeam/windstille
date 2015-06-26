@@ -34,7 +34,7 @@
 */
 
 //  Based on http://www.robertpenner.com/easing/
-//  Ported to C++ by Ingo Ruhnke <grumbel@gmx.de>
+//  Ported to C++ by Ingo Ruhnke <grumbel@gmail.com>
 
 #ifndef HEADER_WINDSTILLE_MATH_EASING_HPP
 #define HEADER_WINDSTILLE_MATH_EASING_HPP

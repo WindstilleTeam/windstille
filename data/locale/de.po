@@ -44,7 +44,7 @@ msgstr "Beenden"
 
 #: src/windstille_menu.cxx:204
 msgid ""
-"Copyright (c) 2003 Ingo Ruhnke <grumbel@gmx.de>\n"
+"Copyright (c) 2003 Ingo Ruhnke <grumbel@gmail.com>\n"
 "This game comes with ABSOLUTELY NO WARRANTY.This is free software, and you "
 "are welcome\n"
 "to redistribute it under certain conditions;see the file COPYING for "

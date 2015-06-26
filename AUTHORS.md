@@ -4,7 +4,7 @@ Windstille Authors
 Programming
 -----------
 
-* Ingo Ruhnke - Grumbel - <grumbel@gmx.de>
+* Ingo Ruhnke - Grumbel - <grumbel@gmail.com>
 * Matthias Braun - MatzeB - matze@braunis.de
 * James Gregory
 * David Kamphausen - Godrin - <david.kamphausen@web.de>
@@ -13,7 +13,7 @@ Programming
 
 Graphics
 --------
-* Ingo Ruhnke - Grumbel - <grumbel@gmx.de>
+* Ingo Ruhnke - Grumbel - <grumbel@gmail.com>
 * Ken Hirsch - quickflash - <khirsch11414@yahoo.com>
 
 

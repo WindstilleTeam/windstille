@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmx.de>
+**  Copyright (C) 2005 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -125,7 +125,7 @@ MenuManager::display_main_menu()
 
     std::unique_ptr<gui::TextView> text(new gui::TextView(text_group->get_child_rect(), text_group.get()));
     text->set_font(Fonts::current()->vera12.get());
-    text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmx.de&gt;\n"
+    text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmail.com&gt;\n"
                    "\n"
                    "This program is free software: you can redistribute it and/or modify "
                    "it under the terms of the GNU General Public License as published by "
@@ -325,7 +325,7 @@ MenuManager::display_credits()
   text->set_text("Programming\n"
                  "===========\n"
                  "\n"
-                 "  Ingo Ruhnke - Grumbel - &lt;grumbel@gmx.de&gt;\n"
+                 "  Ingo Ruhnke - Grumbel - &lt;grumbel@gmail.com&gt;\n"
                  "  Matthias Braun - MatzeB - matze@braunis.de\n"
                  "  James Gregory -\n"
                  "  David Kamphausen - Godrin - &lt;david.kamphausen@web.de&gt;\n"
@@ -333,7 +333,7 @@ MenuManager::display_credits()
                  "\n"
                  "Graphics\n"
                  "========\n"
-                 "  Ingo Ruhnke - Grumbel - &lt;grumbel@gmx.de&gt;\n"
+                 "  Ingo Ruhnke - Grumbel - &lt;grumbel@gmail.com&gt;\n"
                  "  Ken Hirsch - quickflash - &lt;khirsch11414@yahoo.com&gt;\n"
                  "\n"
                  "0.2.0 Win32 Build\n"
