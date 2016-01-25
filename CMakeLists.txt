@@ -47,6 +47,9 @@ add_compile_options(-std=c++1y)
 include(CheckIncludeFile)
 
 find_program(XCF2PNG xcf2png)
+if(NOT XCF2PNG)
+  message(FATAL_ERROR "xcf2png not found")
+endif()
 
 find_package(Threads REQUIRED)
 find_package(Boost COMPONENTS system filesystem signals REQUIRED)
