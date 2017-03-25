@@ -93,7 +93,7 @@ include_directories(SYSTEM external/miniswig)
 bison_target(parser
   ${CMAKE_CURRENT_SOURCE_DIR}/external/miniswig/parser.yy
   ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp
-  --no-lines -d)
+  COMPILE_FLAGS "--no-lines -d")
 flex_target(MyScanner
   ${CMAKE_CURRENT_SOURCE_DIR}/external/miniswig/lexer.ll
   ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
