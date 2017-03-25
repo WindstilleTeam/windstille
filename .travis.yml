@@ -43,8 +43,8 @@ env:
     - BUILD_TYPE="Release"
 
 before_install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
-  - if [ "$CXX" == "clang++" ]; then export CXX="clang++-4.0"; fi
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
+  - if [ "$CXX" == "clang++" ]; then export CXX="clang++-5.0"; fi
 
 script:
   # Clean from previous Travis build
@@ -63,10 +63,10 @@ addons:
     packages:
     - bison
     - build-essential
-    - clang-4.0
+    - clang-5.0
     - cmake libpng-dev
     - flex
-    - g++-4.9
+    - g++-6
     - libboost-filesystem-dev
     - libboost-signals-dev
     - libboost-system-dev
