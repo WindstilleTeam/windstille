@@ -57,8 +57,8 @@ pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image IMPORTED_TARGET)
 pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
 
 if(BUILD_EDITOR)
-  pkg_search_module(GTKMM REQUIRED gtkmm-2.4 IMPORTED_TARGET)
-  pkg_search_module(GTKGLEXTMM REQUIRED gtkglextmm-1.2 IMPORTED_TARGET)
+  pkg_search_module(GTKMM REQUIRED gtkmm-3.0)
+  pkg_search_module(SIGCPP REQUIRED sigc++-2.0)
 endif()
 
 # Build dependencies
@@ -166,8 +166,7 @@ if(BUILD_EDITOR)
   target_compile_options(windstille-editor PUBLIC ${WARNINGS_CXX_FLAGS})
   target_link_libraries(windstille-editor
     wstlib
-    PkgConfig::GTKMM
-    PkgConfig::GTKGLEXTMM)
+    PkgConfig::GTKMM)
 
   install_with_wrapper(TARGETS windstille-editor)
 
