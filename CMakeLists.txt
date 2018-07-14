@@ -230,6 +230,14 @@ if(BUILD_EDITOR)
     ${GTKGLEXTMM_LIBRARIES})
 
   install(TARGETS windstille-editor RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+  install(FILES
+    windstille-editor.svg
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
+
+  install(FILES
+    windstille-editor.desktop
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 endif()
 
 file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -350,6 +358,14 @@ if(BUILD_EXTRA)
     target_link_libraries(${SRC_BASENAME} wstlib)
   endforeach(SRC)
 endif()
+
+install(FILES
+  windstille.svg
+  DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
+
+install(FILES
+  windstille.desktop
+  DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 
 configure_file(windstille.appdata.xml.in ${CMAKE_CURRENT_BINARY_DIR}/windstille.appdata.xml)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/windstille.appdata.xml
