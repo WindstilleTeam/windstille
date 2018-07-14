@@ -30,7 +30,7 @@ private:
   std::string label;
 
 public:
-  Label(const std::string& label);
+  Label(const std::string& label, Component* parent);
   ~Label();
 
   void draw();
