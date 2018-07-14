@@ -26,8 +26,9 @@
 
 class CollisionObject;
 
-struct CollisionData
+class CollisionData
 {
+public:
   enum State { NONE, STUCK, COLLISION } state;
 
   /**

@@ -26,8 +26,7 @@ SpiderMine::SpiderMine(const FileReader& props) :
   initial_position(),
   walk_speed(160),
   jump_time(0.0),
-  state(WAIT),
-  exploded(false)
+  state(WAIT)
 {
   props.get("name", name);
   props.get("pos",  pos);

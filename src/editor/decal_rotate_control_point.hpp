@@ -22,7 +22,7 @@
 #include "editor/decal_object_model.hpp"
 #include "editor/control_point.hpp"
 
-class DecalRotateControlPoint : public ControlPoint
+class DecalRotateControlPoint final : public ControlPoint
 {
 private:
   DecalObjectModel* object;
@@ -33,11 +33,11 @@ private:
 public:
   DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_);
 
-  void on_move_start(GdkEventMotion* event);
-  void on_move_update(GdkEventMotion* event, const Vector2f& offset_);
-  void on_move_end(GdkEventMotion* event, const Vector2f& offset_);
+  virtual void on_move_start(GdkEventButton* event) override;
+  virtual void on_move_update(GdkEventMotion* event, const Vector2f& offset_) override;
+  virtual void on_move_end(GdkEventButton* event, const Vector2f& offset_) override;
 
-  void draw(SceneContext& sc);
+  virtual void draw(SceneContext& sc) override;
 
 private:
   DecalRotateControlPoint (const DecalRotateControlPoint&);

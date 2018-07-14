@@ -125,7 +125,7 @@ SectorBuilder::parse_objects(const FileReader& reader)
       }
       else
       {
-        i->first->set_parent(j->second);
+        i->first->set_gameobj_parent(j->second);
       }
     }
   }

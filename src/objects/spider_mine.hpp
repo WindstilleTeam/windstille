@@ -32,7 +32,6 @@ private:
   float walk_speed;
   float jump_time;
   enum { WAIT, ATTACK, RETURN, JUMP, EXPLODE } state;
-  bool exploded;
 
 protected:
   void search_for_player(float delta);

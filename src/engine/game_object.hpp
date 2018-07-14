@@ -105,7 +105,7 @@ public:
    */
   virtual void update (float delta) {}
 
-  virtual void set_parent(GameObjectHandle parent) {}
+  virtual void set_gameobj_parent(GameObjectHandle parent) {}
 
 private:
   GameObject (const GameObject&);
