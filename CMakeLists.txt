@@ -38,6 +38,10 @@ if(WERROR)
     -Werror)
 endif()
 
+if (BUILD_TESTS)
+  # add 'make test' target, use 'make test ARGS="-V"' or 'ctest -V' for verbose
+  enable_testing()
+endif(BUILD_TESTS)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -330,5 +334,15 @@ if(BUILD_EXTRA)
     target_link_libraries(${SRC_BASENAME} wstlib)
   endforeach(SRC)
 endif()
+
+configure_file(windstille.appdata.xml.in ${CMAKE_CURRENT_BINARY_DIR}/windstille.appdata.xml)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/windstille.appdata.xml
+  DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
+
+if (BUILD_TESTS)
+  add_test(NAME windstille.appdata.xml
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND appstream-util validate-relax ${CMAKE_CURRENT_BINARY_DIR}/windstille.appdata.xml)
+endif(BUILD_TESTS)
 
 # EOF #
