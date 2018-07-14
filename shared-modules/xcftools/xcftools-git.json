@@ -1,0 +1,10 @@
+{
+    "name": "xcftools",
+    "sources": [
+        {
+            "type": "git",
+            "url": "https://github.com/j-jorge/xcftools/",
+            "commit": "196f51790bbaff594525935adeab1247bb798946"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "name": "glm",
+    "buildsystem": "cmake-ninja",
+    "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release"
+    ],
+    "sources": [
+        {
+            "type": "git",
+            "url": "https://github.com/g-truc/glm.git",
+            "tag": "0.9.9.0"
+        }
+    ]
+}
