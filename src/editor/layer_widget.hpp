@@ -21,8 +21,8 @@
 
 #include <gtkmm/toolitem.h>
 #include <gtkmm/table.h>
+#include <gtkmm/togglebutton.h>
 
-
 class LayerWidget : public Gtk::ToolItem
 {
 private:
@@ -44,7 +44,7 @@ private:
   LayerWidget(const LayerWidget&);
   LayerWidget& operator=(const LayerWidget&);
 };
-
+
 #endif
 
 /* EOF */

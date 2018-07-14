@@ -18,9 +18,8 @@
 
 #include "editor/minimap_widget.hpp"
 
-MinimapWidget::MinimapWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig)
+MinimapWidget::MinimapWidget()
 {
-  set_gl_capability(glconfig);
   set_size_request(0, 64);
 }
 
@@ -51,6 +50,7 @@ MinimapWidget::scroll(GdkEventScroll* /*event*/)
 bool
 MinimapWidget::on_expose_event(GdkEventExpose* /*event*/)
 {
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (!glwindow->gl_begin(get_gl_context()))
@@ -65,6 +65,9 @@ MinimapWidget::on_expose_event(GdkEventExpose* /*event*/)
 
     return true;
   }
+#else
+  return true;
+#endif
 }
 
 /* EOF */

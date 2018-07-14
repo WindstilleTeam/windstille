@@ -18,6 +18,7 @@
 
 #include "editor/animation_widget.hpp"
 
+#include <glibmm/main.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/label.h>
@@ -33,15 +34,15 @@
 #include "editor/timeline_keyframe_object.hpp"
 
 AnimationWidget::AnimationWidget(EditorWindow& editor) :
-  hadjustment(50, 0, 100),
-  vadjustment(50, 0, 100),
+  hadjustment(Gtk::Adjustment::create(50, 0, 100)),
+  vadjustment(Gtk::Adjustment::create(50, 0, 100)),
   m_hbox(),
   //hruler(),
   scrolled(),
   treeview(),
   table(),
-  vscroll(vadjustment),
-  hscroll(hadjustment),
+  vscroll(),
+  hscroll(),
   m_timeline_widget(),
   m_timeline_layer_widget(),
   m_timeline(),
@@ -49,6 +50,9 @@ AnimationWidget::AnimationWidget(EditorWindow& editor) :
   m_playing(false),
   m_anim_pos(0.0f)
 {
+  vscroll.set_adjustment(vadjustment);
+  hscroll.set_adjustment(hadjustment);
+
   Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
   Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
 

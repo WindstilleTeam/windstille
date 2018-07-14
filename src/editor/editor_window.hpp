@@ -28,6 +28,8 @@
 #include <gtkmm/window.h>
 #include <gtkmm/recentaction.h>
 #include <gtkmm/notebook.h>
+#include <gtkmm/radioaction.h>
+#include <gdkmm/glcontext.h>
 
 #include "util/currenton.hpp"
 #include "editor/selection.hpp"
@@ -62,8 +64,7 @@ private:
 
   Glib::RefPtr<Gtk::UIManager>   ui_manager;
   Glib::RefPtr<Gtk::ActionGroup> action_group;
-  Glib::RefPtr<Gdk::GL::Context> share_list;
-  Glib::RefPtr<const Gdk::GL::Config> glconfig;
+  Glib::RefPtr<Gdk::GLContext> share_list;
 
   Gtk::Notebook  notebook;
   ObjectSelector object_selector;
@@ -98,8 +99,8 @@ private:
   SelectionHandle   clipboard;
 
 public:
-  EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig);
-  ~EditorWindow() override;
+  EditorWindow();
+  virtual ~EditorWindow();
 
   void show_minimap(bool v);
 
@@ -132,7 +133,7 @@ public:
 
   void on_layer_toggle(int layer, bool status);
 
-  void on_switch_page(GtkNotebookPage* page, guint page_num);
+  void on_switch_page(Gtk::Widget* page, guint page_num);
   void on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool*);
 
   void on_select_all();

@@ -65,7 +65,7 @@ ObjectSelector::Columns* ObjectSelector::Columns::instance_ = nullptr;
 
 ObjectSelector::ObjectSelector(EditorWindow& editor_) :
   editor(editor_),
-  label("Object Selector", Gtk::ALIGN_LEFT),
+  label("Object Selector", Gtk::ALIGN_START),
   scrolled(),
   iconview(),
   list_store(),
@@ -106,7 +106,7 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_) :
 
   for(std::vector<ComboBoxEntry>::const_iterator i = filter_entries.begin(); i != filter_entries.end(); ++i)
   {
-    filter_box.append_text(i->name);
+    filter_box.append(i->name);
   }
 
   filter_box.set_active(0);
@@ -264,12 +264,9 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 {
   Pathname iconpath;
 
-  Gtk::IconView::ArrayHandle_TreePaths selection = iconview.get_selected_items();
-  for(Gtk::IconView::ArrayHandle_TreePaths::iterator i = selection.begin();
-      i != selection.end();
-      ++i)
+  for(auto const& item : iconview.get_selected_items())
   {
-    Gtk::TreeModel::Path path_ = list_filter->convert_path_to_child_path(*i);
+    Gtk::TreeModel::Path path_ = list_filter->convert_path_to_child_path(item);
     Gtk::ListStore::iterator it = list_store->get_iter(path_);
 
     iconpath = (*it)[Columns::instance().pathname];
@@ -299,11 +296,9 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& /*context
 {
   //std::cout << "ObjectSelector: on_drag_data_get" << std::endl;
 
-  const Gtk::IconView::ArrayHandle_TreePaths& selection = iconview.get_selected_items();
+  auto selection = iconview.get_selected_items();
 
-  for(Gtk::IconView::ArrayHandle_TreePaths::const_iterator i = selection.begin();
-      i != selection.end();
-      ++i)
+  for(auto i = selection.begin(); i != selection.end(); ++i)
   {
     Gtk::TreeModel::Path path_ = list_filter->convert_path_to_child_path(*i);
     Gtk::ListStore::iterator it = list_store->get_iter(path_);

@@ -32,7 +32,7 @@
 
 LayerManager::LayerManager(EditorWindow& editor_) :
   editor(editor_),
-  label("Layer Manager", Gtk::ALIGN_LEFT),
+  label("Layer Manager", Gtk::ALIGN_START),
   scrolled(),
   treeview(),
   auto_lock()

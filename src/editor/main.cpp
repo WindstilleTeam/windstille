@@ -23,7 +23,6 @@
 #include <sstream>
 #include <gtkmm/icontheme.h>
 #include <gtkmm/main.h>
-#include <gtkglmm.h>
 #include <argparser.hpp>
 
 #include "display/surface_manager.hpp"
@@ -80,8 +79,8 @@ WindstilleEditor::main(int argc, char** argv)
     Pathname::set_userdir(System::find_default_userdir());
 
     Gtk::Main kit(&argc, &argv);
-    Gtk::GL::init(&argc, &argv);
 
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
     Glib::RefPtr<const Gdk::GL::Config>
       glconfig = Gdk::GL::Config::create(/* FIXME: Using RGBA instead of RGB to make Display::save_screenshot work*/
         Gdk::GL::MODE_RGBA |
@@ -91,6 +90,7 @@ WindstilleEditor::main(int argc, char** argv)
     {
       throw std::runtime_error("*** Cannot find any OpenGL-capable visual.");
     }
+#endif
 
     TextureManager texture_manager;
     SurfaceManager surface_manager;
@@ -105,7 +105,7 @@ WindstilleEditor::main(int argc, char** argv)
     Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
     icon_theme->append_search_path(Pathname("editor", Pathname::kDataPath).get_sys_path());
 
-    EditorWindow window(glconfig);
+    EditorWindow window;
     window.show_all();
     window.show_minimap(false);
 

@@ -19,17 +19,15 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_MINIMAP_WIDGET_HPP
 #define HEADER_WINDSTILLE_EDITOR_MINIMAP_WIDGET_HPP
 
-#include <gtkglmm.h>
+#include <gtkmm/glarea.h>
 
 /** Minimap Widget,
  */
-class MinimapWidget
-  : public Gtk::DrawingArea,
-    public Gtk::GL::Widget<MinimapWidget>
+class MinimapWidget : public Gtk::GLArea
 {
 private:
 public:
-  MinimapWidget(const Glib::RefPtr<const Gdk::GL::Config>& glconfig);
+  MinimapWidget();
 
   bool mouse_move(GdkEventMotion* event);
   bool mouse_down (GdkEventButton* event);

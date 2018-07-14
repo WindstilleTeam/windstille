@@ -25,12 +25,12 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
+#include <vector>
+#include <iostream>
 
-#include <gdkmm/dragcontext.h>
-#include <gtkglmm.h>
-#include <gtkmm/gl/widget.h>
 #include <gtkmm/treemodel.h>
-
+#include <gtkmm/glarea.h>
+#include <gdkmm/dragcontext.h>
 #include <glm/glm.hpp>
 
 #include "display/graphic_context_state.hpp"
@@ -53,9 +53,7 @@ class EditorWindow;
 
 /** OpenGL drawing area into which the Windstille game will be
     embedded */
-class WindstilleWidget
-  : public Gtk::DrawingArea,
-    public Gtk::GL::Widget<WindstilleWidget>
+class WindstilleWidget : public Gtk::GLArea
 {
 private:
   EditorWindow& editor;
@@ -78,10 +76,8 @@ private:
   bool grid_enabled;
 
 public:
-  WindstilleWidget(EditorWindow& editor,
-                   const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
-                   const Glib::RefPtr<const Gdk::GL::Context>& share_list);
-  ~WindstilleWidget() override;
+  WindstilleWidget(EditorWindow& editor);
+  virtual ~WindstilleWidget();
 
   GraphicContextState& get_state() { return state; }
 

@@ -48,9 +48,7 @@ bool lib_init = false;
 } // namespace
 
 
-WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
-                                   const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
-                                   const Glib::RefPtr<const Gdk::GL::Context>& share_list) :
+WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
   editor(editor_),
   m_gc(),
   m_document(new Document),
@@ -67,8 +65,6 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
   draw_only_active_layers(true),
   grid_enabled(false)
 {
-  set_gl_capability(glconfig, share_list);
-
   {
     Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
     Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
@@ -106,7 +102,9 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
   // Gdk::BUTTON_MOTION_MASK | Gdk::BUTTON1_MOTION_MASK | Gdk::BUTTON2_MOTION_MASK |
   // Gdk::BUTTON3_MOTION_MASK |
 
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
   set_flags(get_flags()|Gtk::CAN_FOCUS);
+#endif
 
   signal_button_release_event().connect(sigc::mem_fun(this, &WindstilleWidget::mouse_up));
   signal_button_press_event().connect(sigc::mem_fun(this, &WindstilleWidget::mouse_down));
@@ -140,6 +138,7 @@ WindstilleWidget::on_timeout()
 void
 WindstilleWidget::on_realize()
 {
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
   std::cout << "WindstilleWidget::on_realize()" << std::endl;
   Gtk::DrawingArea::on_realize();
 
@@ -183,12 +182,21 @@ WindstilleWidget::on_realize()
     }
     glwindow->gl_end();
   }
+#endif
 }
 
 bool
 WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 {
   std::cout << "WindstilleWidget::on_configure_event()" << std::endl;
+
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
+  Display::aspect_size.width  = ev->width;
+  Display::aspect_size.height = ev->height;
+
+  state.set_size(Display::aspect_size.width,
+                 Display::aspect_size.height);
+
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (!glwindow->gl_begin(get_gl_context())) {
@@ -223,11 +231,15 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 
     return true;
   }
+#else
+  return true;
+#endif
 }
 
 bool
 WindstilleWidget::on_expose_event(GdkEventExpose* /*event*/)
 {
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (!glwindow->gl_begin(get_gl_context()))
@@ -248,6 +260,9 @@ WindstilleWidget::on_expose_event(GdkEventExpose* /*event*/)
 
     return true;
   }
+#else
+  return true;
+#endif
 }
 
 void
@@ -400,72 +415,72 @@ WindstilleWidget::key_press(GdkEventKey* ev)
 
   switch(ev->keyval)
   {
-    case GDK_1:
+    case GDK_KEY_1:
       map_type = DecalObjectModel::COLORMAP;
       EditorWindow::current()->print("COLORMAP");
       break;
 
-    case GDK_2:
+    case GDK_KEY_2:
       map_type = DecalObjectModel::LIGHTMAP;
       EditorWindow::current()->print("LIGHTMAP");
       break;
 
-    case GDK_3:
+    case GDK_KEY_3:
       map_type = DecalObjectModel::HIGHLIGHTMAP;
       EditorWindow::current()->print("HIGHLIGHT");
       break;
 
-    case GDK_a:
+    case GDK_KEY_a:
       EditorWindow::current()->on_select_all();
       break;
 
-    case GDK_i:
+    case GDK_KEY_i:
       std::cout << "Position Keyframe" << std::endl;
       EditorWindow::current()->on_animation_add_keyframe(kPosition);
       break;
 
-    case GDK_k:
+    case GDK_KEY_k:
       std::cout << "Position Scale" << std::endl;
       EditorWindow::current()->on_animation_add_keyframe(kScale);
       break;
 
-    case GDK_u:
+    case GDK_KEY_u:
       std::cout << "Position Rotation" << std::endl;
       EditorWindow::current()->on_animation_add_keyframe(kRotation);
       break;
 
-    case GDK_d:
+    case GDK_KEY_d:
       m_document->selection_duplicate();
       break;
 
-    case GDK_s:
+    case GDK_KEY_s:
       g_app.surface().save_all_as_png();
       break;
 
-    case GDK_F5: // force a rebuild of the scenegraph
+    case GDK_KEY_F5: // force a rebuild of the scenegraph
       m_rebuild_scene_graph = true;
       queue_draw();
       break;
 
-    case GDK_Delete:
+    case GDK_KEY_Delete:
       m_document->selection_delete();
       break;
 
-    case GDK_Left:
+    case GDK_KEY_Left:
       state.set_pos(state.get_pos() + glm::vec2(-100.0f, 0.0f));
       break;
 
-    case GDK_Right:
+    case GDK_KEY_Right:
       state.set_pos(state.get_pos() + glm::vec2(100.0f, 0.0f));
       queue_draw();
       break;
 
-    case GDK_Up:
+    case GDK_KEY_Up:
       state.set_pos(state.get_pos() + glm::vec2(0.0f, -100.0f));
       queue_draw();
       break;
 
-    case GDK_Down:
+    case GDK_KEY_Down:
       state.set_pos(state.get_pos() + glm::vec2(0.0f, 100.0f));
       queue_draw();
       break;
@@ -602,6 +617,7 @@ WindstilleWidget::on_document_change()
 void
 WindstilleWidget::save_screenshot(const std::string& filename_)
 {
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (glwindow->gl_begin(get_gl_context()))
@@ -609,6 +625,7 @@ WindstilleWidget::save_screenshot(const std::string& filename_)
     save_screenshot(filename_);
     glwindow->gl_end();
   }
+#endif
 }
 
 void

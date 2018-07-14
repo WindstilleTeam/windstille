@@ -20,6 +20,9 @@
 
 #include <fstream>
 #include <iostream>
+
+#include <glibmm/main.h>
+#include <glibmm/convert.h>
 #include <gdkmm/pixbuf.h>
 #include <glibmm/miscutils.h>
 #include <gtkmm/filechooserdialog.h>
@@ -54,7 +57,7 @@
 #include "editor/timeline_sound_object.hpp"
 #include "editor/timeline_widget.hpp"
 
-EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_) :
+EditorWindow::EditorWindow() :
   vbox(),
   sidebar_vbox(),
   hbox(),
@@ -66,11 +69,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   ui_manager(Gtk::UIManager::create()),
   action_group(Gtk::ActionGroup::create()),
   share_list(),
-  glconfig(glconfig_),
   notebook(),
   object_selector(*this),
   layer_manager(*this),
-  minimap_widget(glconfig_),
+  minimap_widget(),
   select_tool_action(),
   navgraph_insert_tool_action(),
   navgraph_select_tool_action(),
@@ -245,7 +247,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
                     sigc::mem_fun(*this, &EditorWindow::on_quit));
 
   action_group->add(Gtk::Action::create_with_icon_name("SaveScreenshot", "saveas", "Save Screenshot", "Save Screenshot"),
-                    Gtk::AccelKey(GDK_F12, Gdk::CONTROL_MASK),
+                    Gtk::AccelKey(GDK_KEY_F12, Gdk::CONTROL_MASK),
                     sigc::mem_fun(*this, &EditorWindow::on_save_screenshot));
 
   {
@@ -259,11 +261,13 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
 
     recent_action->set_limit(25);
 
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
     Gtk::RecentFilter* filter= Gtk::manage(new Gtk::RecentFilter);
     filter->add_mime_type("application/windstille");
     //filter->add_application("Windstille Editor");
     //filter->add_pattern("*.wst");
     recent_action->set_filter(*filter);
+#endif
 
     recent_action->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_recent_file), recent_action));
     action_group->add(recent_action,
@@ -288,7 +292,7 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("Delete",      Gtk::Stock::DELETE),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_delete));
   action_group->add(Gtk::Action::create_with_icon_name("Duplicate", "duplicate", "Duplicate Object", "Duplicate Object"),
-                    Gtk::AccelKey(GDK_d, Gdk::CONTROL_MASK),
+                    Gtk::AccelKey(GDK_KEY_d, Gdk::CONTROL_MASK),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_duplicate));
 
   action_group->add(Gtk::Action::create("MenuObject",    "_Object"));
@@ -323,10 +327,10 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
   action_group->add(Gtk::Action::create("Zoom100",     Gtk::Stock::ZOOM_100),
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_100));
   action_group->add(Gtk::Action::create("ZoomIn",      Gtk::Stock::ZOOM_IN),
-                    Gtk::AccelKey(GDK_plus, Gdk::CONTROL_MASK),
+                    Gtk::AccelKey(GDK_KEY_plus, Gdk::CONTROL_MASK),
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_in));
   action_group->add(Gtk::Action::create("ZoomOut",     Gtk::Stock::ZOOM_OUT),
-                    Gtk::AccelKey(GDK_minus, Gdk::CONTROL_MASK),
+                    Gtk::AccelKey(GDK_KEY_minus, Gdk::CONTROL_MASK),
                     sigc::mem_fun(*this, &EditorWindow::on_zoom_out));
   action_group->add(play_action = Gtk::ToggleAction::create("Play", Gtk::Stock::MEDIA_PLAY),
                     sigc::mem_fun(*this, &EditorWindow::on_play));
@@ -413,7 +417,9 @@ EditorWindow::EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig_)
 
   // Hbox
   hbox.pack_start(*ui_manager->get_widget("/ToolBox"), Gtk::PACK_SHRINK);
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
   dynamic_cast<Gtk::Toolbar*>(ui_manager->get_widget("/ToolBox"))->set_orientation(Gtk::ORIENTATION_VERTICAL);
+#endif
   hbox.add(hpaned);
 
   // vpaned.set_size_request(250, -1);
@@ -460,7 +466,7 @@ EditorWindow::on_new()
 {
   // FIXME: We abuse the minimap as our root GLContext
   Gtk::VPaned* paned = Gtk::manage(new Gtk::VPaned);
-  WindstilleWidget* wst = Gtk::manage(new WindstilleWidget(*this, glconfig, minimap_widget.get_gl_context()));
+  WindstilleWidget* wst = Gtk::manage(new WindstilleWidget(*this));
   AnimationWidget* animation_widget = Gtk::manage(new AnimationWidget(*this));
 
   paned->pack1(*wst, Gtk::FILL|Gtk::EXPAND);
@@ -951,7 +957,7 @@ EditorWindow::get_windstille_widget()
 }
 
 void
-EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
+EditorWindow::on_switch_page(Gtk::Widget* page, guint page_num)
 {
   //std::cout << "on_switch_page(" << page << ", " << page_num << ")" << std::endl;
 
