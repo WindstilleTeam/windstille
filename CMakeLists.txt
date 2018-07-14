@@ -43,7 +43,9 @@ if(WERROR)
     -Werror)
 endif()
 
-add_compile_options(-std=c++1y)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(CheckIncludeFile)
 
@@ -67,7 +69,7 @@ find_library(CWIID_LIBRARY cwiid)
 
 find_package(PkgConfig REQUIRED)
 
-set(PROFILE_CXXFLAGS "-std=c++1y -O2 -g3 -pg")
+set(PROFILE_CXXFLAGS "-O2 -g3 -pg")
 set(PROFILE_LINKFLAGS "-pg")
 
 pkg_search_module(SDL2 REQUIRED sdl2)
