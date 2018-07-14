@@ -24,7 +24,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/main.h>
-#include <gtkmm/ruler.h>
+//#include <gtkmm/ruler.h>
 #include <gtkmm/scrollbar.h>
 #include <gtkmm/table.h>
 #include <gtkmm/treeview.h>
@@ -44,7 +44,7 @@ private:
   Gtk::Adjustment vadjustment;
 
   Gtk::HBox       m_hbox;
-  Gtk::HRuler     hruler;
+  //Gtk::HRuler     hruler;
   Gtk::ScrolledWindow scrolled;
   Gtk::TreeView   treeview;
   Gtk::Table      table;

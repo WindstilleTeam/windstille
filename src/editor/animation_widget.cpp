@@ -36,7 +36,7 @@ AnimationWidget::AnimationWidget(EditorWindow& editor) :
   hadjustment(50, 0, 100),
   vadjustment(50, 0, 100),
   m_hbox(),
-  hruler(),
+  //hruler(),
   scrolled(),
   treeview(),
   table(),
@@ -108,9 +108,9 @@ AnimationWidget::AnimationWidget(EditorWindow& editor) :
 
   Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/AnimationToolBar"));
 
-  hruler.set_range(0, 100, 50, 100);
+  //hruler.set_range(0, 100, 50, 100);
 
-  table.attach(hruler, 1, 2, 0, 1, Gtk::FILL, Gtk::FILL);
+  //table.attach(hruler, 1, 2, 0, 1, Gtk::FILL, Gtk::FILL);
 
   scrolled.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_NEVER);
   scrolled.add(treeview);
