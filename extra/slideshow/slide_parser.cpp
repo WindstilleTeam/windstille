@@ -54,9 +54,11 @@ NodePosX::get(const Sizef& scr, const Sizef& img, float zoom) const
         float x = (m_value/100.0f) * img.width;
         return img.width/2.0f - x + scr.width/2.0f;
       }
-  }
 
-  assert(!"never reached");
+    default:
+      assert(!"never reached");
+      return 0.0f;
+  }
 }
 
 float
@@ -85,9 +87,11 @@ NodePosY::get(const Sizef& scr, const Sizef& img, float zoom) const
         float y = (m_value/100.0f) * img.height;
         return img.height/2.0f - y + scr.height/2.0f;
       }
-  }
 
-  assert(!"never reached");
+    default:
+      assert(!"never reached");
+      return 0.0f;
+  }
 }
 
 float
@@ -119,9 +123,11 @@ NodeZoom::get(const Sizef& scr, const Sizef& img) const
                              scr.height / img.height);
         return fit * m_value;
       }
-  }
 
-  assert(!"never reached");
+    default:
+      assert(!"never reached");
+      return 0.0f;
+  }
 }
 
 SlideParser::SlideParser(SlideShow& slideshow, const Sizef& screen_size) :
