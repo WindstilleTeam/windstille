@@ -33,7 +33,8 @@ message(STATUS "WINDSTILLE_DATADIR: ${WINDSTILLE_DATADIR}")
 if(WARNINGS)
   set(WARNINGS_CXX_FLAGS ${WARNINGS_CXX_FLAGS}
     -pedantic -Wall -Wextra -Wno-c++0x-compat -Wnon-virtual-dtor -Weffc++
-    -Wconversion -Wshadow -Wcast-qual -Winit-self -Wno-unused-parameter)
+    -Wshadow -Wcast-qual -Winit-self -Wno-unused-parameter)
+  # -Wconversion
   # -Winline -Wfloat-equal -Wunreachable-code
 endif()
 
