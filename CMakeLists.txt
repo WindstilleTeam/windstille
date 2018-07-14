@@ -17,18 +17,13 @@
 cmake_minimum_required(VERSION 3.0)
 project(windstille VERSION 0.3.0)
 
-set(BUILD_EDITOR 1 CACHE BOOL "Build Windstille editor")
-set(BUILD_TESTS 1 CACHE BOOL "Build tests")
-set(BUILD_EXTRA 1 CACHE BOOL "Build extra apps")
-set(WARNINGS 0 CACHE BOOL "Switch on extra warnings")
-set(WERROR 0 CACHE BOOL "Turn warnings into errors")
+option(BUILD_EDITOR "Build Windstille editor" ON)
+option(BUILD_TESTS "Build test cases" OFF)
+option(BUILD_EXTRA "Build extra stuff" OFF)
+option(WARNINGS "Switch on extra warnings" OFF)
+option(WERROR "Turn warnings into errors" OFF)
 
-set(WINDSTILLE_BINDIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Install location for binaries")
-set(WINDSTILLE_DATADIR "${CMAKE_INSTALL_PREFIX}/share/windstille" CACHE PATH "Install location for datafiles")
-
-message(STATUS "INSTALL PREFIX: ${CMAKE_INSTALL_PREFIX}")
-message(STATUS "WINDSTILLE_BINDIR: ${WINDSTILLE_BINDIR}")
-message(STATUS "WINDSTILLE_DATADIR: ${WINDSTILLE_DATADIR}")
+include(GNUInstallDirs)
 
 if(WARNINGS)
   set(WARNINGS_CXX_FLAGS ${WARNINGS_CXX_FLAGS}
@@ -214,7 +209,7 @@ if(BUILD_EDITOR)
     ${GTKMM_LIBRARIES}
     ${GTKGLEXTMM_LIBRARIES})
 
-  install(TARGETS windstille-editor RUNTIME DESTINATION ${WINDSTILLE_BINDIR})
+  install(TARGETS windstille-editor RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
 file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -239,7 +234,7 @@ if(CWIID_LIBRARY)
   target_link_libraries(windstille ${CWIID_LIBRARY})
 endif()
 
-install(TARGETS windstille RUNTIME DESTINATION ${WINDSTILLE_BINDIR})
+install(TARGETS windstille RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # build and install data
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data/images/decal/)
@@ -287,7 +282,7 @@ endforeach(SOURCE)
 
 # install windstille data
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data/
-  DESTINATION ${WINDSTILLE_DATADIR})
+  DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME})
 
 if(BUILD_TESTS)
   file(GLOB TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
