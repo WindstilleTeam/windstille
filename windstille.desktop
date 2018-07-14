@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Windstille
+Comment=A cinematic sci-fi 2D platformer
+Icon=windstille
+Terminal=false
+Exec=windstille %f
+Type=Application
+Categories=Game;ActionGame;AdventureGame;Simulation;
+StartupNotify=false
+MimeType=application/x-windstille
+

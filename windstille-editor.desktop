@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Windstille Editor
+Comment=A level editor for Windstille
+Icon=windstille-editor
+Terminal=false
+Exec=windstille-editor %f
+Type=Application
+Categories=Game;ActionGame;AdventureGame;Simulation;
+StartupNotify=false
+MimeType=application/x-windstille
+
