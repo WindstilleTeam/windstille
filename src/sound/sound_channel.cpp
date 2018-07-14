@@ -56,15 +56,15 @@ SoundChannel::prepare(std::unique_ptr<SoundFile> sound_file,
       m_sound_sources.push_back(SoundSourcePtr(source));
       return source;
     }
-    break;
 
     case kStaticSoundSource:
       // FIXME: not implemented
       assert(!"not implemented");
-      break;
+      return {};
 
     default:
       assert(!"never reached");
+      return {};
   }
 }
 
