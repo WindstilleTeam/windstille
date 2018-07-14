@@ -95,7 +95,7 @@ build:flatpak:
     - apt-get -qq update
     - apt-get -qq -y install flatpak flatpak-builder
     - flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    - flatpak install -y flathub org.freedesktop.Platform org.freedesktop.Sdk
+    - flatpak install -y flathub org.gnome.Sdk//3.28 org.gnome.Platform//3.28
     - flatpak-builder --repo=build-flatpak-repo/ build-flatpak/ io.gitlab.windstille.Windstille.json
     - flatpak build-bundle build-flatpak-repo/ windstille.flatpak io.gitlab.windstille.Windstille
   artifacts:
