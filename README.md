@@ -80,7 +80,6 @@ you can install them with:
         libgtkmm-2.4-dev \
         libgtkglextmm-x11-1.2-dev \
         libmagick++-dev \
-        libcurl4-gnutls-dev \
         xcftools \
         libglew1.5-dev \
         libogg-dev \
