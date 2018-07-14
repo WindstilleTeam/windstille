@@ -19,7 +19,10 @@
 #include "sprite3d/sprite3d.hpp"
 
 #include <boost/scoped_array.hpp>
+
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include "display/assert_gl.hpp"
 #include "display/opengl_state.hpp"

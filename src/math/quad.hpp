@@ -20,8 +20,11 @@
 #define HEADER_WINDSTILLE_MATH_QUAD_HPP
 
 #include <math.h>
+
 #define GLM_FORCE_RADIANS
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/ext.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 #include "math/math.hpp"
 #include "vector2f.hpp"

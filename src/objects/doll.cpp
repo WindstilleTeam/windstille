@@ -16,6 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "objects/doll.hpp"
+
+#define GLM_FORCE_RADIANS
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
+#include <glm/gtx/projection.hpp>
+
 #include "scenegraph/sprite3d_drawable.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "engine/sector.hpp"
@@ -25,8 +33,6 @@
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
 #include "navigation/navigation_graph.hpp"
-
-#include "objects/doll.hpp"
 
 Doll::Doll() :
   m_drawable(),

@@ -20,6 +20,11 @@
 
 #include <GL/glew.h>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
+
 #include "app/menu_manager.hpp"
 #include "display/color.hpp"
 #include "display/display.hpp"
