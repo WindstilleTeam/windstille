@@ -19,11 +19,9 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_MINIMAP_WIDGET_HPP
 #define HEADER_WINDSTILLE_EDITOR_MINIMAP_WIDGET_HPP
 
-#include <gtkmm/glarea.h>
+#include <gtkmm/widget.h>
 
-/** Minimap Widget,
- */
-class MinimapWidget : public Gtk::GLArea
+class MinimapWidget : public Gtk::Widget
 {
 private:
 public:
@@ -33,8 +31,6 @@ public:
   bool mouse_down (GdkEventButton* event);
   bool mouse_up(GdkEventButton* event);
   bool scroll(GdkEventScroll* event);
-
-  bool on_expose_event(GdkEventExpose* event) override;
 
 private:
   MinimapWidget(const MinimapWidget&);

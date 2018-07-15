@@ -47,27 +47,4 @@ MinimapWidget::scroll(GdkEventScroll* /*event*/)
   return false;
 }
 
-bool
-MinimapWidget::on_expose_event(GdkEventExpose* /*event*/)
-{
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
-  Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
-
-  if (!glwindow->gl_begin(get_gl_context()))
-  {
-    return false;
-  }
-  else
-  {
-    //glClear(GL_COLOR_BUFFER_BIT);
-    //glwindow->swap_buffers();
-    glwindow->gl_end();
-
-    return true;
-  }
-#else
-  return true;
-#endif
-}
-
 /* EOF */

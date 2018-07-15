@@ -75,6 +75,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
   set_has_depth_buffer();
   set_has_stencil_buffer();
   set_has_alpha();
+  set_use_es (true);
 
   {
     Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
@@ -113,9 +114,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
   // Gdk::BUTTON_MOTION_MASK | Gdk::BUTTON1_MOTION_MASK | Gdk::BUTTON2_MOTION_MASK |
   // Gdk::BUTTON3_MOTION_MASK |
 
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
-  set_flags(get_flags()|Gtk::CAN_FOCUS);
-#endif
+  set_can_focus();
 
   signal_button_release_event().connect(sigc::mem_fun(this, &WindstilleWidget::mouse_up));
   signal_button_press_event().connect(sigc::mem_fun(this, &WindstilleWidget::mouse_down));
@@ -144,8 +143,8 @@ WindstilleWidget::on_create_context()
 {
   std::cout << "WindstilleWidget::on_create_context():" << std::endl;
   auto ctx = Gtk::GLArea::on_create_context();
-  ctx->make_current();
   ctx->set_debug_enabled();
+  ctx->make_current();
 
   int major, minor;
   ctx->get_version(major, minor);
@@ -163,6 +162,7 @@ WindstilleWidget::on_realize()
   try
   {
     make_current();
+    attach_buffers();
     throw_if_error();
 
     {
@@ -277,6 +277,8 @@ WindstilleWidget::on_render(const Glib::RefPtr<Gdk::GLContext>& context)
 
   throw_if_error();
 
+  glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
   draw();
 
   glFlush();
