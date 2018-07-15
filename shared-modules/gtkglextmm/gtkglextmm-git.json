@@ -1,0 +1,19 @@
+{
+    "name": "gtkglextmm",
+    "sources": [
+        {
+            "type": "git",
+            "url": "https://github.com/GNOME/gtkglextmm.git",
+            "commit": "a65460dc2b3456b3daf305ef44d5a42c12722b1d"
+        }
+    ],
+    "config-opts": [
+        "--disable-documentation"
+    ],
+    "cleanup": [
+        "*.a",
+        "*.la",
+        "/include",
+        "/lib/pkgconfig"
+    ]
+}

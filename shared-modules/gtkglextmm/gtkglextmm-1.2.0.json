@@ -1,0 +1,19 @@
+{
+    "name": "gtkglextmm",
+    "sources": [
+        {
+            "type": "archive",
+            "url": "http://archive.ubuntu.com/ubuntu/pool/universe/g/gtkglextmm/gtkglextmm_1.2.0.orig.tar.gz",
+            "sha256": "8f499c1f95678c56cce908c10bf2c1d0f2267b87e0c480385fa4b128c75bdf7b"
+        }
+    ],
+    "config-opts": [
+        "--disable-documentation"
+    ],
+    "cleanup": [
+        "*.a",
+        "*.la",
+        "/include",
+        "/lib/pkgconfig"
+    ]
+}
