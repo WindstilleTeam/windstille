@@ -102,6 +102,9 @@ build:flatpak:
     paths:
       - windstille.flatpak
       - build-flatpak-repo
+  cache:
+    paths:
+      - .flatpak-builder/
 
 # pages:
 #   stage: deploy
