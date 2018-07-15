@@ -42,8 +42,8 @@ before_script:
     libglew-dev
     libglm-dev
     libgtkglextmm-x11-1.2-dev
-    libgtkmm-2.4-dev
     libjsoncpp-dev
+    libgtkmm-3.0-dev
     libmagick++-dev
     libogg-dev
     libopenal-dev
