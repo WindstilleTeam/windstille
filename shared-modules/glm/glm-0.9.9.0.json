@@ -10,5 +10,10 @@
             "url": "https://github.com/g-truc/glm.git",
             "tag": "0.9.9.0"
         }
+    ],
+    "cleanup": [
+        "/include",
+        "/lib64/pkgconfig",
+        "/lib64/cmake"
     ]
 }

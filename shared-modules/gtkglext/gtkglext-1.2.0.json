@@ -22,6 +22,8 @@
         "*.a",
         "*.la",
         "/include",
-        "/lib/pkgconfig"
+        "/lib/pkgconfig",
+        "/share/aclocal",
+        "/share/gtk-doc"
     ]
 }
