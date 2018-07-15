@@ -5,8 +5,15 @@
             "type": "archive",
             "url": "http://archive.ubuntu.com/ubuntu/pool/universe/g/gtkglextmm/gtkglextmm_1.2.0.orig.tar.gz",
             "sha256": "8f499c1f95678c56cce908c10bf2c1d0f2267b87e0c480385fa4b128c75bdf7b"
+        },
+        {
+            "type": "patch",
+            "path": "gtkglextmm-1.2.0-gdkspanfunc.patch"
         }
     ],
+    "build-options": {
+        "cxxflags": "-DGLIBMM_DISABLE_DEPRECATED"
+    },
     "config-opts": [
         "--disable-documentation"
     ],
