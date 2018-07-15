@@ -36,7 +36,9 @@
             "name": "windstille",
             "buildsystem": "cmake-ninja",
             "config-opts": [
-                "-DCMAKE_BUILD_TYPE=Release"
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DCMAKE_INSTALL_PREFIX:PATH=/app",
+                "-DBUILD_EDITOR=ON"
             ],
             "sources": [
                 {
