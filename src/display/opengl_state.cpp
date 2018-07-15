@@ -71,8 +71,11 @@ OpenGLState::init()
 
 #if 0
   glDisableClientState(GL_COLOR_ARRAY);
+  assert_gl("OpenGLState::init():2.1");
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  assert_gl("OpenGLState::init():2.2");
   glDisableClientState(GL_VERTEX_ARRAY);
+  assert_gl("OpenGLState::init():2.3");
   glDisableClientState(GL_NORMAL_ARRAY);
 
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);

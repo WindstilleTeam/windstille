@@ -20,8 +20,10 @@
 
 #include <glm/ext.hpp>
 
-#include "display/graphics_context.hpp"
+#include "display/assert_gl.hpp"
+#include "display/display.hpp"
 #include "display/graphic_context_state.hpp"
+#include "display/graphics_context.hpp"
 #include "display/scene_context.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
@@ -33,6 +35,7 @@ FramebufferCompositorImpl::FramebufferCompositorImpl(const geom::isize& window, 
   m_screen  (Framebuffer::create_with_texture(GL_TEXTURE_2D, window.width(), window.height())),
   m_lightmap(Framebuffer::create_with_texture(GL_TEXTURE_2D, window.width() / LIGHTMAP_DIV, window.height() / LIGHTMAP_DIV))
 {
+  assert_gl("FramebufferCompositorImpl");
 }
 
 void

@@ -53,7 +53,7 @@ class EditorWindow;
 
 /** OpenGL drawing area into which the Windstille game will be
     embedded */
-class WindstilleWidget : public Gtk::GLArea
+class WindstilleWidget final : public Gtk::GLArea
 {
 private:
   EditorWindow& editor;
@@ -80,25 +80,27 @@ public:
   virtual ~WindstilleWidget();
 
   GraphicContextState& get_state() { return state; }
+  virtual Glib::RefPtr<Gdk::GLContext> on_create_context() override;
+  virtual void on_realize() override;
+  virtual void on_unrealize() override;
+  virtual bool on_render(const Glib::RefPtr<Gdk::GLContext>& context) override;
 
-  void on_realize() override;
-  virtual bool on_timeout();
-  bool on_configure_event(GdkEventConfigure* event) override;
-  bool on_expose_event(GdkEventExpose* event) override;
+  virtual bool on_configure_event(GdkEventConfigure* event) override;
+  //virtual bool on_expose_event(GdkEventExpose* event) override;
 
-  virtual bool mouse_move(GdkEventMotion* event);
-  virtual bool mouse_down (GdkEventButton* event);
-  virtual bool mouse_up(GdkEventButton* event);
-  virtual bool scroll(GdkEventScroll* event);
+  bool mouse_move(GdkEventMotion* event);
+  bool mouse_down (GdkEventButton* event);
+  bool mouse_up(GdkEventButton* event);
+  bool scroll(GdkEventScroll* event);
 
-  virtual bool key_press(GdkEventKey* event);
-  virtual bool key_release(GdkEventKey* event);
+  bool key_press(GdkEventKey* event);
+  bool key_release(GdkEventKey* event);
 
   // Drag&Drop
-  virtual void on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context);
+  void on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context);
   void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>&, int x, int y,
-                                     const Gtk::SelectionData& data, guint info, guint time) override;
-  bool on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time) override;
+                             const Gtk::SelectionData& data, guint info, guint time);
+  bool on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time);
 
   void on_zoom_in();
   void on_zoom_out();

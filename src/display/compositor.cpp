@@ -21,14 +21,17 @@
 #include <iostream>
 #include <GL/glew.h>
 
+#include "display/assert_gl.hpp"
 #include "display/framebuffer_compositor_impl.hpp"
 #include "display/basic_compositor_impl.hpp"
 
 Compositor::Compositor(const geom::isize& window, const geom::isize& viewport) :
   impl()
 {
+  assert_gl("precheck: Compositor::Compositor");
   if (GLEW_ARB_framebuffer_object)
   {
+    assert_gl("Compositor::Compositor");
     std::cout  << "Display:: framebuffer_object extension is supported" << std::endl;
     impl.reset(new FramebufferCompositorImpl(window, viewport));
   }

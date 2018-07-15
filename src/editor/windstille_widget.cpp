@@ -21,6 +21,8 @@
 #include <GL/glu.h>
 #include <gtkmm.h>
 
+
+#include "display/assert_gl.hpp"
 #include "display/compositor.hpp"
 #include "display/graphics_context.hpp"
 #include "display/opengl_state.hpp"
@@ -65,6 +67,15 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
   draw_only_active_layers(true),
   grid_enabled(false)
 {
+  // OpenGL setup
+  //get_context().set_debug_enabled(true);
+  set_auto_render(true);
+  //set_forward_compatible(true);
+  set_required_version(3, 3);
+  set_has_depth_buffer();
+  set_has_stencil_buffer();
+  set_has_alpha();
+
   {
     Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
     Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create("WindstilleWidget");
@@ -117,7 +128,6 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
   //signal_drag_data_received().connect(sigc::mem_fun(this, &WindstilleWidget::on_drag_data_received));
   //signal_drag_finish().connect(sigc::mem_fun(this, &WindstilleWidget::on_drag_finish));
 
-  // Glib::signal_timeout().connect(sigc::mem_fun(this, &WindstilleWidget::on_timeout), 33);
   std::vector<Gtk::TargetEntry> targets;
   targets.push_back(Gtk::TargetEntry("application/x-windstille-decal"));
   drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
@@ -129,24 +139,40 @@ WindstilleWidget::~WindstilleWidget()
 {
 }
 
-bool
-WindstilleWidget::on_timeout()
+Glib::RefPtr<Gdk::GLContext>
+WindstilleWidget::on_create_context()
 {
-  return true;
+  std::cout << "WindstilleWidget::on_create_context():" << std::endl;
+  auto ctx = Gtk::GLArea::on_create_context();
+  ctx->make_current();
+  ctx->set_debug_enabled();
+
+  int major, minor;
+  ctx->get_version(major, minor);
+  std::cout << major << "." << minor << std::endl;
+  std::cout << "ES:" << ctx->get_use_es() << std::endl;
+  return ctx;
 }
 
 void
 WindstilleWidget::on_realize()
 {
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
+  Gtk::GLArea::on_realize();
+
   std::cout << "WindstilleWidget::on_realize()" << std::endl;
-  Gtk::DrawingArea::on_realize();
+  try
+  {
+    make_current();
+    throw_if_error();
 
-  Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
+    {
+      auto ctx = Gdk::GLContext::get_current();
+      int major, minor;
+      ctx->get_version(major, minor);
+      std::cout << major << "." << minor << std::endl;
+      std::cout << "ES:" << ctx->get_use_es() << std::endl;
+    }
 
-  if (!glwindow->gl_begin(get_gl_context())) {
-    std::cout << "WindstilleWidget::on_realize() - no gl context" << std::endl;
-  } else {
     if (!lib_init)
     {
       lib_init = true;
@@ -156,19 +182,28 @@ WindstilleWidget::on_realize()
         msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
         throw std::runtime_error(msg.str());
       }
-
+      assert_gl("precheck0: WindstilleWidget");
       OpenGLState::init();
       m_gc = std::make_unique<GraphicsContext>();
 
-      if (!sc) {
+      if (!sc.get())
+      {
+        assert_gl("precheck1: WindstilleWidget");
         sc.reset(new SceneContext());
-        compositor.reset(new Compositor(geom::isize(get_width(), get_height()),
-                                        geom::isize(get_width(), get_height())));
+        GLArea::throw_if_error();
+        assert_gl("precheck2: WindstilleWidget");
+        compositor.reset(new Compositor(Size(get_width(), get_height()),
+                                        Size(get_width(), get_height())));
         sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
       }
 
+      background_pattern = Texture::create(Pathname("editor/background_layer.png"));
+      background_pattern->set_wrap(GL_REPEAT);
+
       background_pattern = g_app.texture().get(Pathname("editor/background_layer.png"));
       background_pattern->set_wrap(GL_REPEAT);
+
+      GLArea::throw_if_error();
 
       glViewport(0, 0, get_width(), get_height());
 
@@ -180,17 +215,20 @@ WindstilleWidget::on_realize()
                    1000.0f,
                    -1000.0f));
     }
-    glwindow->gl_end();
   }
-#endif
+  catch(const Gdk::GLError& gle)
+  {
+    std::cerr << "An error occured making the context current during realize:" << std::endl;
+    std::cerr << gle.domain() << "-" << gle.code() << "-" << gle.what() << std::endl;
+  }
 }
 
-bool
-WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
+void
+WindstilleWidget::on_unrealize()
 {
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
   std::cout << "WindstilleWidget::on_configure_event()" << std::endl;
 
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
   Display::aspect_size.width  = ev->width;
   Display::aspect_size.height = ev->height;
 
@@ -226,43 +264,58 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
                  0.0f,
                  1000.0f,
                  -1000.0f));
+  Gtk::GLArea::on_unrealize();
+  throw_if_error();
+  std::cout << "WindstilleWidget::on_unrealize" << std::endl;
+}
 
-    glwindow->gl_end();
+bool
+WindstilleWidget::on_render(const Glib::RefPtr<Gdk::GLContext>& context)
+{
+  Gtk::GLArea::on_render(context);
+  std::cout << "WindstilleWidget::on_render" << std::endl;
 
-    return true;
-  }
-#else
+  throw_if_error();
+
+  draw();
+
+  glFlush();
+
   return true;
 #endif
 }
 
 bool
-WindstilleWidget::on_expose_event(GdkEventExpose* /*event*/)
+WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 {
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
-  Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
+  Display::aspect_size.width  = ev->width;
+  Display::aspect_size.height = ev->height;
 
-  if (!glwindow->gl_begin(get_gl_context()))
+  state.set_size(Display::aspect_size.width,
+                 Display::aspect_size.height);
+
+  make_current();
+
+  if (compositor.get())
   {
-    return false;
+    compositor.reset(new Compositor(Size(ev->width, ev->height),
+                                    Size(ev->width, ev->height)));
   }
-  else
-  {
-    draw(*m_gc);
+  //else
+    //{
+  //draw(*m_gc);
 
-    // Swap buffers.
-    if (glwindow->is_double_buffered())
-      glwindow->swap_buffers();
-    else
-      glFlush();
+#ifdef FIXME_DISABLED_FOR_GTKMM3_PORT
+  glViewport(0, 0, get_width(), get_height());
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glOrtho(0.0, get_width(), get_height(), 0.0, 1000.0, -1000.0);
 
-    glwindow->gl_end();
-
-    return true;
-  }
-#else
-  return true;
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
 #endif
+
+  return true;
 }
 
 void
