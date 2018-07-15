@@ -54,7 +54,7 @@ AnimationWidget::AnimationWidget(EditorWindow& editor) :
   hscroll.set_adjustment(hadjustment);
 
   Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
-  Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
+  Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create("AnimationWidget");
 
   action_group->add(Gtk::Action::create("MenuAnimation",   "_Animation"));
   action_group->add(Gtk::Action::create("NewAnimation", Gtk::Stock::NEW),

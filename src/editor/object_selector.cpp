@@ -76,7 +76,7 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_) :
 {
 #if 0
   Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
-  Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
+  Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create("ObjectSelector");
 
   action_group->add(Gtk::Action::create("ObjectSelectorRefresh", Gtk::Stock::REFRESH),
                     sigc::mem_fun(*this, &ObjectSelector::refresh));

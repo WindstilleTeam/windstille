@@ -67,7 +67,7 @@ EditorWindow::EditorWindow() :
   status_label(),
   status(),
   ui_manager(Gtk::UIManager::create()),
-  action_group(Gtk::ActionGroup::create()),
+  action_group(Gtk::ActionGroup::create("EditorWindow")),
   share_list(),
   notebook(),
   object_selector(*this),

@@ -43,7 +43,7 @@ LayerManager::LayerManager(EditorWindow& editor_) :
   treeview.set_reorderable();
 
   Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
-  Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create();
+  Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create("LayerManager");
 
   action_group->add(Gtk::Action::create("MenuLayer",   "_Layer"));
   action_group->add(Gtk::Action::create("NewLayer", Gtk::Stock::NEW),
