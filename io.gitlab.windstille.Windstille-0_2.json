@@ -3,6 +3,10 @@
     "runtime": "org.freedesktop.Platform",
     "runtime-version": "1.6",
     "sdk": "org.freedesktop.Sdk",
+    "command": "windstille-0.2",
+    "rename-icon": "windstille-0.2",
+    "rename-desktop-file": "windstille-0.2.desktop",
+    "rename-appdata-file": "windstille-0.2.appdata.xml",
     "finish-args": [
         "--device=all",
         "--share=ipc",
@@ -22,8 +26,14 @@
             "buildsystem": "simple",
             "build-commands": [
                 "scons -u",
-                "cp -v windstille /app/bin/windstille",
-                "cp -vR data /app/share/windstille"
+                "cp -v windstille /app/bin/windstille-0.2",
+                "cp -vR data /app/share/windstille-0.2",
+                "mkdir -p /app/share/metainfo",
+                "cp -vR windstille-0.2.appdata.xml /app/share/metainfo",
+                "mkdir -p /app/share/icons/hicolor/scalable/apps",
+                "cp -vR windstille-0.2.svg /app/share/icons/hicolor/scalable/apps",
+                "mkdir -p /app/share/applications",
+                "cp -vR windstille-0.2.desktop /app/share/applications"
             ],
             "sources": [
                 {

@@ -7,7 +7,7 @@ index 7f6b5208..3080c936 100644
  
    if (datadir.empty())
 -    datadir = bindir + "../data/";
-+    datadir = bindir + "../share/windstille/";
++    datadir = bindir + "../share/windstille-0.2/";
  
  #ifndef WIN32
    char* home_c = getenv("HOME");
