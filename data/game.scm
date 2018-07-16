@@ -40,29 +40,29 @@
   #f)
 
 (define (*mouse-down-handler* x y)
-  (display (inexact->exact x))
+  (display (inexact->exact (floor x)))
   (display " ")
-  (display (inexact->exact y))
+  (display (inexact->exact (floor y)))
   (newline)
 
   (cond (#t
          (player-set-pos x y))
         (else
          (display "(game-add-igel ")
-         (display (inexact->exact x))
+         (display (inexact->exact (floor x)))
          (display " ")
-         (display (inexact->exact y))
+         (display (inexact->exact (floor y)))
          (display ")")
          
-         (game-add-igel (inexact->exact x)
-                        (inexact->exact y))
+         (game-add-igel (inexact->exact (floor x))
+                        (inexact->exact (floor y)))
          (newline))))
 
 (define (toggle-pause)
   (game-set-pause (not (game-get-pause))))
 
 (define (game-get-time-str)
-  (let* ((t (inexact->exact (game-get-time)))
+  (let* ((t (floor (game-get-time)))
          (minutes (quotient  t 60))
          (seconds (remainder t 60)))
     (string-append (number->string minutes) 
@@ -80,8 +80,8 @@
 
   (gui-push-component (gui-window-get-client-area window))
   (gui-create-button-func 10 10 100 25 "Save Position"
-                          (lambda () (save-player-position (inexact->exact (player-get-pos-x))
-                                                           (inexact->exact (player-get-pos-y)))))
+                          (lambda () (save-player-position (inexact->exact (floor (player-get-pos-x)))
+                                                           (inexact->exact (floor (player-get-pos-y))))))
   (gui-create-button-func 115 10 100 25 "Clear"
                           (lambda () 
                             (for-each gui-remove-component buttons)
