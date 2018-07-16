@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2018 Ingo Ruhnke <grumbel@gmail.com> -->
+<component type="desktop-application">
+  <id>io.gitlab.windstille.Windstille-0_2</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0+</project_license>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-realistic">mild</content_attribute>
+    <content_attribute id="violence-bloodshed">moderate</content_attribute>
+  </content_rating>
+  <name>Windstille 0.2</name>
+  <summary>A cinematic sci-fi 2D platformer</summary>
+  <description>
+    <p>
+      Windstille is a cinematic platformer in which the player will be
+      placed in a foreign alien world and has to find its way back
+      into safety.
+    </p>
+    <p>
+      This edition is a short, but fully playable, early version of
+      the game.
+    </p>
+  </description>
+  <developer_name>Ingo Ruhnke</developer_name>
+  <update_contact>grumbel@gmail.com</update_contact>
+  <url type="homepage">https://windstille.gitlab.io</url>
+  <url type="bugtracker">https://gitlab.com/windstille/windstille/issues</url>
+  <categories>
+    <category>Game</category>
+    <category>ActionGame</category>
+    <category>AdventureGame</category>
+  </categories>
+  <screenshots>
+    <screenshot type="default">http://windstille.gitlab.io/images/screenshot5.jpg</screenshot>
+  </screenshots>
+  <releases>
+    <release version="0.2.1" date="2018-07-16" />
+  </releases>
+</component>
