@@ -31,7 +31,11 @@
     <category>AdventureGame</category>
   </categories>
   <screenshots>
-    <screenshot type="default">http://windstille.gitlab.io/images/screenshot5.jpg</screenshot>
+    <screenshot type="default">https://gitlab.com/Windstille/windstille/raw/windstille-0.2.x/screenshots/screenshot1.png</screenshot>
+    <screenshot>https://gitlab.com/Windstille/windstille/raw/windstille-0.2.x/screenshots/screenshot2.png</screenshot>
+    <screenshot>https://gitlab.com/Windstille/windstille/raw/windstille-0.2.x/screenshots/screenshot3.png</screenshot>
+    <screenshot>https://gitlab.com/Windstille/windstille/raw/windstille-0.2.x/screenshots/screenshot4.png</screenshot>
+    <screenshot>https://gitlab.com/Windstille/windstille/raw/windstille-0.2.x/screenshots/screenshot5.png</screenshot>
   </screenshots>
   <releases>
     <release version="0.2.1" date="2018-07-16" />
