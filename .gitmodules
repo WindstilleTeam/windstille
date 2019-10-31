@@ -1,3 +1,6 @@
 [submodule "shared-modules"]
 	path = shared-modules
 	url = https://github.com/Grumbel/shared-modules.git
+[submodule "external/clanlib-1.0"]
+	path = external/clanlib-1.0
+	url = https://gitlab.com/grumbel/clanlib-1.0.git
