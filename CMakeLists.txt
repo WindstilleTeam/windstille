@@ -69,7 +69,7 @@ if(NOT XCF2PNG)
 endif()
 
 find_package(Threads REQUIRED)
-find_package(Boost COMPONENTS system filesystem signals REQUIRED)
+find_package(Boost COMPONENTS system filesystem REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(PNG REQUIRED)
 find_package(Freetype REQUIRED)
