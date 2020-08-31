@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_TIMELINE_WIDGET_HPP
 
 #include <gtkmm/drawingarea.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <set>
 
 #include "editor/timeline_handles.hpp"
@@ -32,7 +32,7 @@ class Rectf;
 class TimelineWidget : public Gtk::DrawingArea
 {
 private:
-  boost::shared_ptr<Timeline>    m_timeline;
+  std::shared_ptr<Timeline>    m_timeline;
   std::set<TimelineObjectHandle> m_selection;
 
   enum {

@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_DRAWABLE_GROUP_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_DRAWABLE_GROUP_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <vector>
 
 #include "scenegraph/drawable.hpp"
@@ -29,14 +29,14 @@ class Texture;
 class DrawableGroup : public Drawable
 {
 private:
-  typedef std::vector<boost::shared_ptr<Drawable> > Drawables;
+  typedef std::vector<std::shared_ptr<Drawable> > Drawables;
   Drawables m_drawables;
 
 public:
   DrawableGroup();
 
-  void add_drawable(boost::shared_ptr<Drawable> drawable);
-  void remove_drawable(boost::shared_ptr<Drawable> drawable);
+  void add_drawable(std::shared_ptr<Drawable> drawable);
+  void remove_drawable(std::shared_ptr<Drawable> drawable);
   int  size() const { return static_cast<int>(m_drawables.size()); }
 
   void clear();

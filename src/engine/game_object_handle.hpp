@@ -19,11 +19,11 @@
 #ifndef HEADER_WINDSTILLE_ENGINE_GAME_OBJECT_HANDLE_HPP
 #define HEADER_WINDSTILLE_ENGINE_GAME_OBJECT_HANDLE_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class GameObject;
 
-typedef boost::shared_ptr<GameObject> GameObjectHandle;
+typedef std::shared_ptr<GameObject> GameObjectHandle;
 
 #endif
 

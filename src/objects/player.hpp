@@ -41,7 +41,7 @@ class Player : public Entity,
                public Currenton<Player>
 {
 private:
-  boost::shared_ptr<Sprite3DDrawable> m_drawable;
+  std::shared_ptr<Sprite3DDrawable> m_drawable;
   //std::unique_ptr<SoundSource> sound_source;
 
   bool jumping;

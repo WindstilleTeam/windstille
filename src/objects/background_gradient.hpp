@@ -26,7 +26,7 @@ class GradientDrawable;
 class BackgroundGradient : public GameObject
 {
 private:
-  boost::shared_ptr<GradientDrawable> drawable;
+  std::shared_ptr<GradientDrawable> drawable;
 
 public:
   BackgroundGradient(const FileReader& props);

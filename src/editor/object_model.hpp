@@ -35,8 +35,8 @@ class SceneContext;
 class SectorModel;
 class DrawableGroup;
 
-typedef boost::shared_ptr<ObjectModel> ObjectModelHandle;
-typedef boost::weak_ptr<ObjectModel>   ObjectModelPtr;
+typedef std::shared_ptr<ObjectModel> ObjectModelHandle;
+typedef std::weak_ptr<ObjectModel>   ObjectModelPtr;
 
 class ObjectModel
 {

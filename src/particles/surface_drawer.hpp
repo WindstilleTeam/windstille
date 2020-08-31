@@ -30,7 +30,7 @@ private:
   SurfacePtr surface;
   GLenum blendfunc_src;
   GLenum blendfunc_dest;
-  boost::shared_ptr<VertexArrayDrawable> buffer;
+  std::shared_ptr<VertexArrayDrawable> buffer;
 
 public:
   SurfaceDrawer(FileReader& props);

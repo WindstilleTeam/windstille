@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_SCREEN_PARTICLE_VIEWER_HPP
 
 #include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "display/compositor.hpp"
 #include "display/scene_context.hpp"
@@ -47,14 +47,14 @@ private:
   Compositor compositor;
   SceneContext sc;
   SceneGraph   sg;
-  typedef std::vector<boost::shared_ptr<ParticleSystem> > Systems;
+  typedef std::vector<std::shared_ptr<ParticleSystem> > Systems;
   Systems systems;
   Sprite background;
 
   Vector2f pos;
 
-  boost::shared_ptr<FillScreenPatternDrawable> m_background_drawable;
-  boost::shared_ptr<FillScreenDrawable>        m_color_fill_drawable;
+  std::shared_ptr<FillScreenPatternDrawable> m_background_drawable;
+  std::shared_ptr<FillScreenDrawable>        m_color_fill_drawable;
 
 public:
   ParticleViewer();

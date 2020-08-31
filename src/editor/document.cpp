@@ -169,18 +169,18 @@ Document::layer_remove(const Gtk::TreeModel::Path& path)
 }
 
 void
-Document::navgraph_node_add(boost::shared_ptr<NavGraphNodeObjectModel> node)
+Document::navgraph_node_add(std::shared_ptr<NavGraphNodeObjectModel> node)
 {
   execute(CommandHandle(new NavGraphNodeAddCommand(*m_sector_model, node)));
 }
 
 void
-Document::navgraph_node_remove(boost::shared_ptr<NavGraphNodeObjectModel> node)
+Document::navgraph_node_remove(std::shared_ptr<NavGraphNodeObjectModel> node)
 {
-  const std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> >& edges = m_sector_model->get_nav_graph().find_edges(node);
+  const std::vector<std::shared_ptr<NavGraphEdgeObjectModel> >& edges = m_sector_model->get_nav_graph().find_edges(node);
 
   undo_group_begin();
-  for(std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> >::const_iterator i = edges.begin(); i != edges.end(); ++i)
+  for(std::vector<std::shared_ptr<NavGraphEdgeObjectModel> >::const_iterator i = edges.begin(); i != edges.end(); ++i)
   {
     execute(CommandHandle(new ObjectRemoveCommand(*m_sector_model, *i)));
   }
@@ -190,8 +190,8 @@ Document::navgraph_node_remove(boost::shared_ptr<NavGraphNodeObjectModel> node)
 
 void
 Document::navgraph_edge_add(LayerHandle layer,
-                            boost::shared_ptr<NavGraphNodeObjectModel> lhs,
-                            boost::shared_ptr<NavGraphNodeObjectModel> rhs)
+                            std::shared_ptr<NavGraphNodeObjectModel> lhs,
+                            std::shared_ptr<NavGraphNodeObjectModel> rhs)
 {
   if (m_sector_model->get_nav_graph().has_edge(lhs, rhs))
   {
@@ -199,13 +199,13 @@ Document::navgraph_edge_add(LayerHandle layer,
   }
   else
   {
-    boost::shared_ptr<NavGraphEdgeObjectModel> edge(new NavGraphEdgeObjectModel(lhs, rhs));
+    std::shared_ptr<NavGraphEdgeObjectModel> edge(new NavGraphEdgeObjectModel(lhs, rhs));
     execute(CommandHandle(new NavGraphEdgeAddCommand(*m_sector_model, layer, edge)));
   }
 }
 
 void
-Document::navgraph_edge_remove(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
+Document::navgraph_edge_remove(std::shared_ptr<NavGraphEdgeObjectModel> edge)
 {
   undo_group_begin();
   execute(CommandHandle(new NavGraphEdgeRemoveCommand(*m_sector_model, edge)));
@@ -222,11 +222,11 @@ Document::object_add(LayerHandle layer, ObjectModelHandle object)
 void
 Document::object_remove(ObjectModelHandle object)
 {
-  if (boost::shared_ptr<NavGraphNodeObjectModel> node = boost::dynamic_pointer_cast<NavGraphNodeObjectModel>(object))
+  if (std::shared_ptr<NavGraphNodeObjectModel> node = std::dynamic_pointer_cast<NavGraphNodeObjectModel>(object))
   {
     navgraph_node_remove(node);
   }
-  else if (boost::shared_ptr<NavGraphEdgeObjectModel> edge = boost::dynamic_pointer_cast<NavGraphEdgeObjectModel>(object))
+  else if (std::shared_ptr<NavGraphEdgeObjectModel> edge = std::dynamic_pointer_cast<NavGraphEdgeObjectModel>(object))
   {
     navgraph_edge_remove(edge);
   }
@@ -303,7 +303,7 @@ Document::selection_vflip()
 {
   if (!m_selection->empty())
   {
-    boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+    std::shared_ptr<GroupCommand> group_command(new GroupCommand());
 
     if (m_selection->size() > 1)
     {
@@ -336,7 +336,7 @@ Document::selection_hflip()
 {
   if (!m_selection->empty())
   {
-    boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+    std::shared_ptr<GroupCommand> group_command(new GroupCommand());
 
     if (m_selection->size() > 1)
     {
@@ -369,7 +369,7 @@ Document::selection_connect_parent()
 {
   if (m_selection->size() >= 2)
   {
-    boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+    std::shared_ptr<GroupCommand> group_command(new GroupCommand());
 
     ObjectModelHandle parent = *m_selection->begin();
 
@@ -389,7 +389,7 @@ Document::selection_connect_parent()
 void
 Document::selection_clear_parent()
 {
-  boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+  std::shared_ptr<GroupCommand> group_command(new GroupCommand());
 
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
   {
@@ -404,7 +404,7 @@ Document::selection_clear_parent()
 void
 Document::selection_duplicate()
 {
-  boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+  std::shared_ptr<GroupCommand> group_command(new GroupCommand());
   std::map<ObjectModelHandle, ObjectModelHandle> parent_map;
 
   SelectionHandle new_selection = Selection::create();
@@ -456,7 +456,7 @@ Document::selection_duplicate()
 void
 Document::selection_reset_rotation()
 {
-  boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+  std::shared_ptr<GroupCommand> group_command(new GroupCommand());
 
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
   {
@@ -483,7 +483,7 @@ Document::selection_object_properties()
 void
 Document::selection_reset_scale()
 {
-  boost::shared_ptr<GroupCommand> group_command(new GroupCommand());
+  std::shared_ptr<GroupCommand> group_command(new GroupCommand());
 
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
   {

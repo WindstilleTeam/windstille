@@ -21,7 +21,7 @@
 
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "util/pathname.hpp"
 #include "util/getter.hpp"
@@ -36,7 +36,7 @@ public:
   static FileReader parse(const Pathname& filename);
   static FileReader parse(std::istream& stream, const std::string& filename);
 
-  FileReader(boost::shared_ptr<FileReaderImpl> impl_);
+  FileReader(std::shared_ptr<FileReaderImpl> impl_);
   FileReader();
   virtual ~FileReader() {}
 
@@ -81,7 +81,7 @@ public:
   bool read(const char* name, std::vector<std::string>& v) const;
 
 private:
-  boost::shared_ptr<FileReaderImpl> impl;
+  std::shared_ptr<FileReaderImpl> impl;
 };
 
 #endif

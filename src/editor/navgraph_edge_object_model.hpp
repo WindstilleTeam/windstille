@@ -28,13 +28,13 @@ class VertexArrayDrawable;
 class NavGraphEdgeObjectModel : public ObjectModel
 {
 private:
-  boost::shared_ptr<NavGraphNodeObjectModel> m_lhs;
-  boost::shared_ptr<NavGraphNodeObjectModel> m_rhs;
-  boost::shared_ptr<VertexArrayDrawable> m_drawable;
+  std::shared_ptr<NavGraphNodeObjectModel> m_lhs;
+  std::shared_ptr<NavGraphNodeObjectModel> m_rhs;
+  std::shared_ptr<VertexArrayDrawable> m_drawable;
 
 public:
-  NavGraphEdgeObjectModel(boost::shared_ptr<NavGraphNodeObjectModel> lhs,
-                          boost::shared_ptr<NavGraphNodeObjectModel> rhs);
+  NavGraphEdgeObjectModel(std::shared_ptr<NavGraphNodeObjectModel> lhs,
+                          std::shared_ptr<NavGraphNodeObjectModel> rhs);
   virtual ~NavGraphEdgeObjectModel();
 
   void add_to_scenegraph(DrawableGroup& sg);
@@ -47,8 +47,8 @@ public:
 
   bool is_snappable() const { return false; }
 
-  boost::shared_ptr<NavGraphNodeObjectModel> get_lhs() const { return m_lhs; }
-  boost::shared_ptr<NavGraphNodeObjectModel> get_rhs() const { return m_rhs; }
+  std::shared_ptr<NavGraphNodeObjectModel> get_lhs() const { return m_lhs; }
+  std::shared_ptr<NavGraphNodeObjectModel> get_rhs() const { return m_rhs; }
 
 private:
   NavGraphEdgeObjectModel(const NavGraphEdgeObjectModel&);

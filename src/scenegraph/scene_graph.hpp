@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_SCENE_GRAPH_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <vector>
 
 class Drawable;
@@ -29,15 +29,15 @@ class Texture;
 class SceneGraph
 {
 private:
-  boost::shared_ptr<DrawableGroup> m_drawables;
+  std::shared_ptr<DrawableGroup> m_drawables;
 
 public:
   SceneGraph();
 
-  boost::shared_ptr<DrawableGroup> get_root() { return m_drawables; }
+  std::shared_ptr<DrawableGroup> get_root() { return m_drawables; }
 
-  void add_drawable(boost::shared_ptr<Drawable> drawable);
-  void remove_drawable(boost::shared_ptr<Drawable> drawable);
+  void add_drawable(std::shared_ptr<Drawable> drawable);
+  void remove_drawable(std::shared_ptr<Drawable> drawable);
 
   void render(unsigned int mask);
 

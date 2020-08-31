@@ -68,7 +68,7 @@ ParticleViewer::load(const Pathname& filename)
   {
     if (i->get_name() == "particle-system")
     {
-      systems.push_back(boost::shared_ptr<ParticleSystem>(new ParticleSystem(*i)));
+      systems.push_back(std::shared_ptr<ParticleSystem>(new ParticleSystem(*i)));
     }
   }
 
@@ -90,7 +90,7 @@ ParticleViewer::load(const Pathname& filename)
 
     for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
     {
-      sg.add_drawable(boost::shared_ptr<Drawable>(new ParticleSystemDrawable(**i)));
+      sg.add_drawable(std::shared_ptr<Drawable>(new ParticleSystemDrawable(**i)));
     }
   }
 }

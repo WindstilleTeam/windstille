@@ -22,7 +22,7 @@
 
 #include <string>
 #include <GL/glew.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "display/software_surface.hpp"
 #include "util/pathname.hpp"
@@ -32,7 +32,7 @@ class TextureImpl;
 class Rect;
 
 class Texture;
-typedef boost::shared_ptr<Texture> TexturePtr;
+typedef std::shared_ptr<Texture> TexturePtr;
 
 class Texture
 {

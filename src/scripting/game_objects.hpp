@@ -33,10 +33,10 @@ class GameObject
 {
 #ifndef SCRIPTING_API
 protected:
-  boost::weak_ptr< ::GameObject> object;
+  std::weak_ptr< ::GameObject> object;
 
 public:
-  GameObject(boost::shared_ptr< ::GameObject > _object)
+  GameObject(std::shared_ptr< ::GameObject > _object)
     : object(_object)
   {}
   virtual ~GameObject()
@@ -55,7 +55,7 @@ class TestObject : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  TestObject(boost::shared_ptr< ::GameObject > _object)
+  TestObject(std::shared_ptr< ::GameObject > _object)
     : GameObject(_object)
   {}
   virtual ~TestObject()
@@ -80,7 +80,7 @@ class Player : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  Player(boost::shared_ptr< ::GameObject > _player)
+  Player(std::shared_ptr< ::GameObject > _player)
     : GameObject(_player)
   {}
   virtual ~Player()
@@ -101,7 +101,7 @@ class ScriptableObject : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  ScriptableObject(boost::shared_ptr< ::GameObject > _object)
+  ScriptableObject(std::shared_ptr< ::GameObject > _object)
     : GameObject(_object)
   {}
   virtual ~ScriptableObject()

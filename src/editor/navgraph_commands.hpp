@@ -28,11 +28,11 @@ class NavGraphNodeAddCommand : public Command
 {
 private:
   SectorModel& m_sector;
-  boost::shared_ptr<NavGraphNodeObjectModel> m_node;
+  std::shared_ptr<NavGraphNodeObjectModel> m_node;
 
 public:
   NavGraphNodeAddCommand(SectorModel& sector,
-                         boost::shared_ptr<NavGraphNodeObjectModel> node)
+                         std::shared_ptr<NavGraphNodeObjectModel> node)
     : m_sector(sector),
       m_node(node)
   {}
@@ -52,11 +52,11 @@ class NavGraphNodeRemoveCommand : public Command
 {
 private:
   SectorModel& m_sector;
-  boost::shared_ptr<NavGraphNodeObjectModel> m_node;
+  std::shared_ptr<NavGraphNodeObjectModel> m_node;
 
 public:
   NavGraphNodeRemoveCommand(SectorModel& sector,
-                            boost::shared_ptr<NavGraphNodeObjectModel> node)
+                            std::shared_ptr<NavGraphNodeObjectModel> node)
     : m_sector(sector),
       m_node(node)
   {}
@@ -77,12 +77,12 @@ class NavGraphEdgeAddCommand : public Command
 private:
   SectorModel& m_sector;
   LayerHandle m_layer;
-  boost::shared_ptr<NavGraphEdgeObjectModel> m_edge;
+  std::shared_ptr<NavGraphEdgeObjectModel> m_edge;
 
 public:
   NavGraphEdgeAddCommand(SectorModel& sector,
                          LayerHandle layer,
-                         boost::shared_ptr<NavGraphEdgeObjectModel> edge)
+                         std::shared_ptr<NavGraphEdgeObjectModel> edge)
     : m_sector(sector),
       m_layer(layer),
       m_edge(edge)
@@ -110,11 +110,11 @@ class NavGraphEdgeRemoveCommand : public Command
 private:
   SectorModel& m_sector;
   LayerHandle m_layer;
-  boost::shared_ptr<NavGraphEdgeObjectModel> m_edge;
+  std::shared_ptr<NavGraphEdgeObjectModel> m_edge;
 
 public:
   NavGraphEdgeRemoveCommand(SectorModel& sector,
-                            boost::shared_ptr<NavGraphEdgeObjectModel> edge)
+                            std::shared_ptr<NavGraphEdgeObjectModel> edge)
     : m_sector(sector),
       m_layer(sector.get_layer(edge)),
       m_edge(edge)

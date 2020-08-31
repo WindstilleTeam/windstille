@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SOFTWARE_SURFACE_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SOFTWARE_SURFACE_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "util/pathname.hpp"
 #include "math/size.hpp"
@@ -29,7 +29,7 @@ typedef struct SDL_Surface SDL_Surface;
 
 class Rect;
 class SoftwareSurface;
-typedef boost::shared_ptr<SoftwareSurface> SoftwareSurfacePtr;
+typedef std::shared_ptr<SoftwareSurface> SoftwareSurfacePtr;
 
 class SoftwareSurface
 {

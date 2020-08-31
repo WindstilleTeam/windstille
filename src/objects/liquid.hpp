@@ -37,8 +37,8 @@ private:
   std::vector<float>* heightfield1;
   std::vector<float>* heightfield2;
 
-  boost::shared_ptr<VertexArrayDrawable> m_water_top;
-  boost::shared_ptr<VertexArrayDrawable> m_water_body;
+  std::shared_ptr<VertexArrayDrawable> m_water_top;
+  std::shared_ptr<VertexArrayDrawable> m_water_body;
 
 public:
   Liquid(const FileReader& props);

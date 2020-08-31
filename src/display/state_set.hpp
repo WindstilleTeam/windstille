@@ -19,14 +19,14 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_STATE_SET_HPP
 #define HEADER_WINDSTILLE_DISPLAY_STATE_SET_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <GL/glew.h>
 
 #include "display/texture.hpp"
 #include "display/shader_program.hpp"
 
 class StateSet;
-typedef boost::shared_ptr<StateSet> StateSetPtr;
+typedef std::shared_ptr<StateSet> StateSetPtr;
 
 class StateSet
 {

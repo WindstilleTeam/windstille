@@ -328,8 +328,8 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
   {
     bool in_selection = m_selection.find(*i) != m_selection.end();
 
-    if (boost::shared_ptr<TimelineKeyframeObject> keyframe =
-        boost::dynamic_pointer_cast<TimelineKeyframeObject>(*i))
+    if (std::shared_ptr<TimelineKeyframeObject> keyframe =
+        std::dynamic_pointer_cast<TimelineKeyframeObject>(*i))
     {
       cr->save();
 
@@ -359,8 +359,8 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
 
       cr->restore();
     }
-    else if (boost::shared_ptr<TimelineAnimObject> anim =
-             boost::dynamic_pointer_cast<TimelineAnimObject>(*i))
+    else if (std::shared_ptr<TimelineAnimObject> anim =
+             std::dynamic_pointer_cast<TimelineAnimObject>(*i))
     {
       cr->save();
 
@@ -415,8 +415,8 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
 
       cr->restore();
     }
-    else if (boost::shared_ptr<TimelineSoundObject> sound =
-             boost::dynamic_pointer_cast<TimelineSoundObject>(*i))
+    else if (std::shared_ptr<TimelineSoundObject> sound =
+             std::dynamic_pointer_cast<TimelineSoundObject>(*i))
     {
       cr->save();
 
@@ -493,7 +493,7 @@ TimelineWidget::zoom_out()
 }
 
 void
-TimelineWidget::set_timeline(boost::shared_ptr<Timeline> timeline)
+TimelineWidget::set_timeline(std::shared_ptr<Timeline> timeline)
 {
   m_timeline = timeline;
 }

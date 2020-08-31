@@ -24,7 +24,7 @@
 class Layer : public GameObject
 {
 private:
-  typedef std::vector<boost::shared_ptr<GameObject> > Objects;
+  typedef std::vector<std::shared_ptr<GameObject> > Objects;
 
   Objects objects;
 

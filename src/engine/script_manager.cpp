@@ -124,22 +124,22 @@ ScriptManager::ScriptManager()
 
 ScriptManager::~ScriptManager()
 {
-  // Manually clear it so that the boost::shared_ptr get deleted
+  // Manually clear it so that the std::shared_ptr get deleted
   // before we close the vm
   squirrel_vms.clear();
 
   sq_close(vm);
 }
 
-boost::shared_ptr<SquirrelThread>
+std::shared_ptr<SquirrelThread>
 ScriptManager::create_script(HSQUIRRELVM parent_vm, bool isolated)
 {
   // Add VM to the list of VMs
-  squirrel_vms.push_back(boost::shared_ptr<SquirrelThread>(new SquirrelThread(parent_vm, isolated)));
+  squirrel_vms.push_back(std::shared_ptr<SquirrelThread>(new SquirrelThread(parent_vm, isolated)));
   return squirrel_vms.back();
 }
 
-boost::shared_ptr<SquirrelThread>
+std::shared_ptr<SquirrelThread>
 ScriptManager::run_script_file(const Pathname& filename, bool global)
 {
   std::ifstream in(filename.get_sys_path().c_str());
@@ -173,7 +173,7 @@ ScriptManager::run_script_file(const Pathname& filename, bool global)
         throw std::runtime_error(str.str());
       }
 
-      return boost::shared_ptr<SquirrelThread>();
+      return std::shared_ptr<SquirrelThread>();
     }
   }
   else
@@ -207,7 +207,7 @@ ScriptManager::run_script_file(const Pathname& filename, bool global)
     }
     else
     { // Add VM to the list of VMs
-      squirrel_vms.push_back(boost::shared_ptr<SquirrelThread>(new SquirrelThread(vm, true)));
+      squirrel_vms.push_back(std::shared_ptr<SquirrelThread>(new SquirrelThread(vm, true)));
       squirrel_vms.back()->load(in, filename);
       squirrel_vms.back()->call("init");
       squirrel_vms.back()->call("run");
@@ -225,7 +225,7 @@ ScriptManager::update()
   }
 }
 
-boost::shared_ptr<SquirrelThread>
+std::shared_ptr<SquirrelThread>
 ScriptManager::get_thread(HSQUIRRELVM v) const
 {
   for(SquirrelThreads::const_iterator i = squirrel_vms.begin(); i != squirrel_vms.end(); ++i)
@@ -234,7 +234,7 @@ ScriptManager::get_thread(HSQUIRRELVM v) const
       return *i;
   }
 
-  return boost::shared_ptr<SquirrelThread>();
+  return std::shared_ptr<SquirrelThread>();
 }
 
 void
@@ -255,7 +255,7 @@ ScriptManager::fire_wakeup_event(WakeupEvent event)
 }
 
 void
-ScriptManager::remove_object_from_squirrel(boost::shared_ptr<GameObject> object)
+ScriptManager::remove_object_from_squirrel(std::shared_ptr<GameObject> object)
 {
   // get objects table
   HSQUIRRELVM v = ScriptManager::current()->get_vm();
@@ -283,7 +283,7 @@ ScriptManager::remove_object_from_squirrel(boost::shared_ptr<GameObject> object)
 
 // tries to find out the "real" class of an gameobject by some dynamic casting
 // and creates a matching squirrel instance for that object
-static inline void create_squirrel_instance(HSQUIRRELVM v, boost::shared_ptr<GameObject> object)
+static inline void create_squirrel_instance(HSQUIRRELVM v, std::shared_ptr<GameObject> object)
 {
   if (dynamic_cast<ScriptableObject*>(object.get()))
   {
@@ -308,7 +308,7 @@ static inline void create_squirrel_instance(HSQUIRRELVM v, boost::shared_ptr<Gam
 }
 
 void
-ScriptManager::expose_object_to_squirrel(boost::shared_ptr<GameObject> object)
+ScriptManager::expose_object_to_squirrel(std::shared_ptr<GameObject> object)
 {
   // get objects table
   HSQUIRRELVM v = ScriptManager::current()->get_vm();

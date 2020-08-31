@@ -49,7 +49,7 @@ ParticleSystems::ParticleSystems(const FileReader& reader) :
     {
       if (i->get_name() == "particle-system")
       {
-        boost::shared_ptr<ParticleSystem> particle_system(new ParticleSystem(*i));
+        std::shared_ptr<ParticleSystem> particle_system(new ParticleSystem(*i));
         particle_system->set_pos(pos);
         m_systems.push_back(particle_system);
       }
@@ -58,7 +58,7 @@ ParticleSystems::ParticleSystems(const FileReader& reader) :
 
   for(Systems::iterator i = m_systems.begin(); i != m_systems.end(); ++i)
   {
-    boost::shared_ptr<ParticleSystemDrawable> drawable(new ParticleSystemDrawable(**i));
+    std::shared_ptr<ParticleSystemDrawable> drawable(new ParticleSystemDrawable(**i));
 
     m_drawables.push_back(drawable);
     Sector::current()->get_scene_graph().add_drawable(drawable);

@@ -50,16 +50,16 @@ int main(int argc, char* argv[])
   SDL_GL_GetAttribute(SDL_GL_STENCIL_SIZE, &have_stencil);
   std::cout << "STENCIL: " << have_stencil << std::endl;
 
-  boost::shared_ptr<ShaderDrawable>  shader(new ShaderDrawable());
-  boost::shared_ptr<ShaderDrawable>  shader2(new ShaderDrawable());
-  boost::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")),
+  std::shared_ptr<ShaderDrawable>  shader(new ShaderDrawable());
+  std::shared_ptr<ShaderDrawable>  shader2(new ShaderDrawable());
+  std::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")),
                                                                  SurfaceDrawingParameters(), 0, Matrix(1.0f)));
-  boost::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(Surface::create(Pathname("images/menu_background.jpg")),
+  std::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(Surface::create(Pathname("images/menu_background.jpg")),
                                                                   SurfaceDrawingParameters().set_pos(Vector2f(-50.0f, -50.0f)),
                                                                   0, Matrix(1.0f)));
-  boost::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
+  std::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
                                                                   SurfaceDrawingParameters(), 0, Matrix(1.0f)));
-  boost::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
+  std::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
                                                                   SurfaceDrawingParameters().set_pos(Vector2f(-25.0f, 25.0f)),
                                                                   0, Matrix(1.0f)));
 

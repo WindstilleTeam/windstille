@@ -120,7 +120,7 @@ void camera_set_active(bool active)
 
 void wait(HSQUIRRELVM vm, float time)
 {
-  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
+  std::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
   {
@@ -130,7 +130,7 @@ void wait(HSQUIRRELVM vm, float time)
 
 void wait_for_dialog(HSQUIRRELVM vm)
 {
-  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
+  std::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
   {
@@ -140,7 +140,7 @@ void wait_for_dialog(HSQUIRRELVM vm)
 
 void wait_for_camera(HSQUIRRELVM vm)
 {
-  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
+  std::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
   {
@@ -150,7 +150,7 @@ void wait_for_camera(HSQUIRRELVM vm)
 
 void wait_for_fade(HSQUIRRELVM vm)
 {
-  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
+  std::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
   {
@@ -214,9 +214,9 @@ void save_state(HSQUIRRELVM v, const std::string& filename)
 
 void list_objects()
 {
-  const std::vector<boost::shared_ptr< ::GameObject > >& objects = Sector::current()->get_objects();
+  const std::vector<std::shared_ptr< ::GameObject > >& objects = Sector::current()->get_objects();
 
-  for(std::vector<boost::shared_ptr< ::GameObject > >::const_iterator i = objects.begin(); i != objects.end(); ++i)
+  for(std::vector<std::shared_ptr< ::GameObject > >::const_iterator i = objects.begin(); i != objects.end(); ++i)
   {
     if (!(*i)->get_name().empty())
       ConsoleLog << (*i)->get_name() << std::endl;
@@ -256,7 +256,7 @@ int  conversation_get_selection()
 
 void wait_for_conversation(HSQUIRRELVM vm)
 {
-  boost::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
+  std::shared_ptr<SquirrelThread> ptr = ScriptManager::current()->get_thread(vm);
 
   if (ptr.get())
   {
@@ -385,7 +385,7 @@ SQInteger spawn_function(HSQUIRRELVM v)
 {
   if (ScriptManager::current())
   {
-    boost::shared_ptr<SquirrelThread> thread = ScriptManager::current()->create_script(v, false);
+    std::shared_ptr<SquirrelThread> thread = ScriptManager::current()->create_script(v, false);
     thread->load(v, -1);
     sq_pop(v, 1);
   }

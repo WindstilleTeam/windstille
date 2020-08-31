@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_COMMAND_HPP
 #define HEADER_WINDSTILLE_EDITOR_COMMAND_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class Command
 {
@@ -36,7 +36,7 @@ private:
   Command& operator=(const Command&);
 };
 
-typedef boost::shared_ptr<Command> CommandHandle;
+typedef std::shared_ptr<Command> CommandHandle;
 
 #endif
 

@@ -21,10 +21,10 @@
 
 #include <GL/glew.h>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class ShaderObject;
-typedef boost::shared_ptr<ShaderObject> ShaderObjectPtr;
+typedef std::shared_ptr<ShaderObject> ShaderObjectPtr;
 
 class ShaderObject
 {

@@ -30,7 +30,7 @@ class SparkDrawer : public Drawer
 private:
   Color color;
   float width;
-  boost::shared_ptr<VertexArrayDrawable> buffer;
+  std::shared_ptr<VertexArrayDrawable> buffer;
 
 public:
   SparkDrawer(FileReader& props);

@@ -442,7 +442,7 @@ SectorModel::rebuild_scene_graph(DrawableGroup& sg)
   {
     if (*layer)
     {
-      boost::shared_ptr<DrawableGroup> group(new DrawableGroup);
+      std::shared_ptr<DrawableGroup> group(new DrawableGroup);
 
       for(Layer::const_iterator obj = (*layer)->begin(); obj != (*layer)->end(); ++obj)
       {
@@ -514,7 +514,7 @@ SectorModel::delete_navgraph_edges(NavGraphNodeObjectModel& node)
     {
       for(Layer::const_iterator obj = (*layer)->begin(); obj != (*layer)->end(); ++obj)
       {
-        boost::shared_ptr<NavGraphEdgeObjectModel> edge = boost::dynamic_pointer_cast<NavGraphEdgeObjectModel>(*obj);
+        std::shared_ptr<NavGraphEdgeObjectModel> edge = std::dynamic_pointer_cast<NavGraphEdgeObjectModel>(*obj);
         if (edge)
         {
           /*

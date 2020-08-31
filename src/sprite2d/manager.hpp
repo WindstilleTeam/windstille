@@ -21,14 +21,14 @@
 #define HEADER_WINDSTILLE_SPRITE2D_MANAGER_HPP
 
 #include <map>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "util/currenton.hpp"
 
 class Pathname;
 class SpriteData;
 
-typedef boost::shared_ptr<SpriteData> SpriteDataPtr;
+typedef std::shared_ptr<SpriteData> SpriteDataPtr;
 
 class SpriteManager : public Currenton<SpriteManager>
 {

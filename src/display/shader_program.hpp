@@ -20,13 +20,13 @@
 #define HEADER_WINDSTILLE_DISPLAY_SHADER_PROGRAM_HPP
 
 #include <GL/glew.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "display/shader_object.hpp"
 
 class ShaderObject;
 class ShaderProgram;
-typedef boost::shared_ptr<ShaderProgram> ShaderProgramPtr;
+typedef std::shared_ptr<ShaderProgram> ShaderProgramPtr;
 
 class ShaderProgram
 {

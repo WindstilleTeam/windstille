@@ -36,26 +36,26 @@ NavigationGraphModel::~NavigationGraphModel()
 }
 
 void
-NavigationGraphModel::add_node(boost::shared_ptr<NavGraphNodeObjectModel> node)
+NavigationGraphModel::add_node(std::shared_ptr<NavGraphNodeObjectModel> node)
 {
   m_nodes.push_back(node);
 }
 
 void
-NavigationGraphModel::add_edge(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
+NavigationGraphModel::add_edge(std::shared_ptr<NavGraphEdgeObjectModel> edge)
 {
   m_edges.push_back(edge);
 }
 
 struct EdgeHasNode
 {
-  boost::shared_ptr<NavGraphNodeObjectModel> m_node;
+  std::shared_ptr<NavGraphNodeObjectModel> m_node;
 
-  EdgeHasNode(boost::shared_ptr<NavGraphNodeObjectModel> node)
+  EdgeHasNode(std::shared_ptr<NavGraphNodeObjectModel> node)
     : m_node(node)
   {}
 
-  bool operator()(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
+  bool operator()(std::shared_ptr<NavGraphEdgeObjectModel> edge)
   {
     return
       edge->get_lhs() == m_node ||
@@ -64,7 +64,7 @@ struct EdgeHasNode
 };
 
 void
-NavigationGraphModel::remove_node(boost::shared_ptr<NavGraphNodeObjectModel> node)
+NavigationGraphModel::remove_node(std::shared_ptr<NavGraphNodeObjectModel> node)
 {
   std::cout << "remove_node: " << m_nodes.size() << std::endl;
   m_nodes.erase(std::remove(m_nodes.begin(), m_nodes.end(), node), m_nodes.end());
@@ -73,15 +73,15 @@ NavigationGraphModel::remove_node(boost::shared_ptr<NavGraphNodeObjectModel> nod
 }
 
 void
-NavigationGraphModel::remove_edge(boost::shared_ptr<NavGraphEdgeObjectModel> edge)
+NavigationGraphModel::remove_edge(std::shared_ptr<NavGraphEdgeObjectModel> edge)
 {
   m_edges.erase(std::remove(m_edges.begin(), m_edges.end(), edge), m_edges.end());
 }
 
-boost::shared_ptr<NavGraphNodeObjectModel>
+std::shared_ptr<NavGraphNodeObjectModel>
 NavigationGraphModel::find_closest_node(const Vector2f& pos, float radius) const
 {
-  boost::shared_ptr<NavGraphNodeObjectModel> node;
+  std::shared_ptr<NavGraphNodeObjectModel> node;
   float min_distance = radius;
 
   for(Nodes::const_iterator i = m_nodes.begin(); i != m_nodes.end(); ++i)
@@ -97,10 +97,10 @@ NavigationGraphModel::find_closest_node(const Vector2f& pos, float radius) const
   return node;
 }
 
-boost::shared_ptr<NavGraphEdgeObjectModel>
+std::shared_ptr<NavGraphEdgeObjectModel>
 NavigationGraphModel::find_closest_edge(const Vector2f& pos, float radius) const
 {
-  boost::shared_ptr<NavGraphEdgeObjectModel> edge;
+  std::shared_ptr<NavGraphEdgeObjectModel> edge;
   float min_distance = radius;
 
   for(Edges::const_iterator i = m_edges.begin(); i != m_edges.end(); ++i)
@@ -117,10 +117,10 @@ NavigationGraphModel::find_closest_edge(const Vector2f& pos, float radius) const
   return edge;
 }
 
-std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> >
-NavigationGraphModel::find_edges(boost::shared_ptr<NavGraphNodeObjectModel> node) const
+std::vector<std::shared_ptr<NavGraphEdgeObjectModel> >
+NavigationGraphModel::find_edges(std::shared_ptr<NavGraphNodeObjectModel> node) const
 {
-  std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> > edges;
+  std::vector<std::shared_ptr<NavGraphEdgeObjectModel> > edges;
 
   for(Edges::const_iterator i = m_edges.begin(); i != m_edges.end(); ++i)
   {
@@ -133,7 +133,7 @@ NavigationGraphModel::find_edges(boost::shared_ptr<NavGraphNodeObjectModel> node
   return edges;
 }
 
-boost::shared_ptr<NavGraphNodeObjectModel>
+std::shared_ptr<NavGraphNodeObjectModel>
 NavigationGraphModel::get_object_at(const Vector2f& pos, const SelectMask& select_mask) const
 {
   for(Nodes::const_reverse_iterator i = m_nodes.rbegin(); i != m_nodes.rend(); ++i)
@@ -145,7 +145,7 @@ NavigationGraphModel::get_object_at(const Vector2f& pos, const SelectMask& selec
     }
   }
 
-  return boost::shared_ptr<NavGraphNodeObjectModel>();
+  return std::shared_ptr<NavGraphNodeObjectModel>();
 }
 
 SelectionHandle
@@ -166,7 +166,7 @@ NavigationGraphModel::get_selection(const Rectf& rect, const SelectMask& select_
 }
 
 bool
-NavigationGraphModel::has_edge(boost::shared_ptr<NavGraphNodeObjectModel> lhs, boost::shared_ptr<NavGraphNodeObjectModel> rhs) const
+NavigationGraphModel::has_edge(std::shared_ptr<NavGraphNodeObjectModel> lhs, std::shared_ptr<NavGraphNodeObjectModel> rhs) const
 {
   // We enforce order so that we can easier compare
   // NavGraphEdgeObjectModel's with one another
@@ -205,7 +205,7 @@ void
 NavigationGraphModel::load(const FileReader& reader, std::map<std::string, ObjectModelHandle>& all_id_table)
 {
   std::cout << "NavigationGraphModel::load" << std::endl;
-  std::map<std::string, boost::shared_ptr<NavGraphNodeObjectModel> > id_table;
+  std::map<std::string, std::shared_ptr<NavGraphNodeObjectModel> > id_table;
 
   FileReader nodes_section;
   if (reader.get("nodes", nodes_section))
@@ -215,7 +215,7 @@ NavigationGraphModel::load(const FileReader& reader, std::map<std::string, Objec
     {
       if (i->get_name() == "navgraph-node")
       {
-        boost::shared_ptr<NavGraphNodeObjectModel> node(new NavGraphNodeObjectModel(*i));
+        std::shared_ptr<NavGraphNodeObjectModel> node(new NavGraphNodeObjectModel(*i));
 
         std::string id_str;
         if (i->get("id", id_str))
@@ -249,12 +249,12 @@ NavigationGraphModel::load(const FileReader& reader, std::map<std::string, Objec
 
         if (i->get("lhs-node", lhs) && i->get("rhs-node", rhs))
         {
-          boost::shared_ptr<NavGraphNodeObjectModel> lhs_node = id_table[lhs];
-          boost::shared_ptr<NavGraphNodeObjectModel> rhs_node = id_table[rhs];
+          std::shared_ptr<NavGraphNodeObjectModel> lhs_node = id_table[lhs];
+          std::shared_ptr<NavGraphNodeObjectModel> rhs_node = id_table[rhs];
 
           if (lhs_node && rhs_node)
           {
-            boost::shared_ptr<NavGraphEdgeObjectModel> edge(new NavGraphEdgeObjectModel(lhs_node, rhs_node));
+            std::shared_ptr<NavGraphEdgeObjectModel> edge(new NavGraphEdgeObjectModel(lhs_node, rhs_node));
 
             std::string id_str;
             if (i->get("id", id_str))

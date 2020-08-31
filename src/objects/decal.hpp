@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_DECAL_HPP
 #define HEADER_WINDSTILLE_OBJECTS_DECAL_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "display/surface.hpp"
 #include "engine/game_object.hpp"
@@ -29,7 +29,7 @@ class SurfaceDrawable;
 class Decal : public GameObject
 {
 private:
-  boost::shared_ptr<SurfaceDrawable> drawable;
+  std::shared_ptr<SurfaceDrawable> drawable;
   Vector2f pos;
 
 public:

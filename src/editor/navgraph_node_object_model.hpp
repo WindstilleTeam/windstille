@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_NAVGRAPH_NODE_OBJECT_MODEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_NODE_OBJECT_MODEL_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "editor/object_model.hpp"
 #include "navigation/navigation_graph.hpp"
@@ -30,7 +30,7 @@ class FileReader;
 class NavGraphNodeObjectModel : public ObjectModel
 {
 private:
-  boost::shared_ptr<VertexArrayDrawable> m_drawable;
+  std::shared_ptr<VertexArrayDrawable> m_drawable;
 
 public:
   NavGraphNodeObjectModel(const FileReader& reader);

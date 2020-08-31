@@ -27,13 +27,13 @@ DrawableGroup::DrawableGroup()
 }
 
 void
-DrawableGroup::add_drawable(boost::shared_ptr<Drawable> drawable)
+DrawableGroup::add_drawable(std::shared_ptr<Drawable> drawable)
 {
   m_drawables.push_back(drawable);
 }
 
 void
-DrawableGroup::remove_drawable(boost::shared_ptr<Drawable> drawable)
+DrawableGroup::remove_drawable(std::shared_ptr<Drawable> drawable)
 {
   m_drawables.erase(std::remove(m_drawables.begin(), m_drawables.end(), drawable), m_drawables.end());
 }

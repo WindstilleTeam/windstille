@@ -344,9 +344,9 @@ Player::update_stairs(const Controller& controller, float delta)
 Entity*
 Player::find_useable_entity()
 {
-  const std::vector<boost::shared_ptr<GameObject> >& objects = Sector::current()->get_objects();
+  const std::vector<std::shared_ptr<GameObject> >& objects = Sector::current()->get_objects();
 
-  for (std::vector<boost::shared_ptr<GameObject> >::const_iterator i = objects.begin(); i != objects.end(); ++i)
+  for (std::vector<std::shared_ptr<GameObject> >::const_iterator i = objects.begin(); i != objects.end(); ++i)
   {
     Entity* object = dynamic_cast<Entity*>(i->get());
 
@@ -384,7 +384,7 @@ Player::update_stand(const Controller& controller)
     if (0)
     {
       // TODO remove me later, just here for testing
-      boost::shared_ptr<Grenade> grenade(new Grenade());
+      std::shared_ptr<Grenade> grenade(new Grenade());
       grenade->set_pos(get_pos() + Vector2f(50, -300));
       grenade->set_velocity(Vector2f(20, -10));
       Sector::current()->add(grenade);

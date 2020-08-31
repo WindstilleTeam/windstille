@@ -44,7 +44,7 @@ private:
   boost::scoped_ptr<UndoManager> m_undo_manager;
   boost::scoped_ptr<SectorModel> m_sector_model;
 
-  boost::shared_ptr<GroupCommand> m_group_command;
+  std::shared_ptr<GroupCommand> m_group_command;
   int m_group_command_count;
   SelectionHandle m_selection;
 
@@ -83,13 +83,13 @@ public:
 
   /* NavGraph Commands
    * @{*/
-  void navgraph_node_add(boost::shared_ptr<NavGraphNodeObjectModel> node);
-  void navgraph_node_remove(boost::shared_ptr<NavGraphNodeObjectModel> node);
+  void navgraph_node_add(std::shared_ptr<NavGraphNodeObjectModel> node);
+  void navgraph_node_remove(std::shared_ptr<NavGraphNodeObjectModel> node);
 
   void navgraph_edge_add(LayerHandle layer,
-                         boost::shared_ptr<NavGraphNodeObjectModel> lhs,
-                         boost::shared_ptr<NavGraphNodeObjectModel> rhs);
-  void navgraph_edge_remove(boost::shared_ptr<NavGraphEdgeObjectModel> edge);
+                         std::shared_ptr<NavGraphNodeObjectModel> lhs,
+                         std::shared_ptr<NavGraphNodeObjectModel> rhs);
+  void navgraph_edge_remove(std::shared_ptr<NavGraphEdgeObjectModel> edge);
   /** @} */
 
   /* Object Commands

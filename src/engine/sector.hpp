@@ -21,7 +21,7 @@
 
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/scoped_ptr.hpp>
 
 #include "display/color.hpp"
@@ -54,9 +54,9 @@ private:
   std::string music;
   std::string init_script;
 
-  boost::shared_ptr<SquirrelThread> vm;
+  std::shared_ptr<SquirrelThread> vm;
 
-  typedef std::vector<boost::shared_ptr<GameObject> > Objects;
+  typedef std::vector<std::shared_ptr<GameObject> > Objects;
   Objects objects;
   /** container for newly created GameObjects (they'll be added once per frame
    * in the update function */
@@ -70,8 +70,8 @@ public:
   TileMap* interactivebackground_tilemap;
 
 private:
-  boost::shared_ptr<Player> player;
-  boost::shared_ptr<Doll>   doll;
+  std::shared_ptr<Player> player;
+  std::shared_ptr<Doll>   doll;
 
 private:
   void parse_file(const Pathname& filename);
@@ -112,7 +112,7 @@ public:
 
   GameObject* get_object(const std::string& name) const;
 
-  const std::vector<boost::shared_ptr<GameObject> >& get_objects() { return objects; }
+  const std::vector<std::shared_ptr<GameObject> >& get_objects() { return objects; }
   TileMap* get_tilemap() const { return interactive_tilemap; }
   TileMap* get_tilemap2() const { return interactivebackground_tilemap; }
   void     set_tilemap(TileMap* t);

@@ -21,14 +21,14 @@
 
 #include <vector>
 #include <set>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "editor/control_point.hpp"
 #include "editor/object_model.hpp"
 
 class Selection;
 class WindstilleWidget;
-typedef boost::shared_ptr<Selection> SelectionHandle;
+typedef std::shared_ptr<Selection> SelectionHandle;
 
 class Selection
 {

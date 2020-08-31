@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_OBJECTS_PARTICLE_SYSTEMS_HPP
 
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "engine/game_object.hpp"
 
@@ -31,8 +31,8 @@ class FileReader;
 class ParticleSystems : public GameObject
 {
 private:
-  typedef std::vector<boost::shared_ptr<ParticleSystem> > Systems;
-  typedef std::vector<boost::shared_ptr<ParticleSystemDrawable> > Drawables;
+  typedef std::vector<std::shared_ptr<ParticleSystem> > Systems;
+  typedef std::vector<std::shared_ptr<ParticleSystemDrawable> > Drawables;
 
   Systems   m_systems;
   Drawables m_drawables;

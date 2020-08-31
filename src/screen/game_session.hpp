@@ -85,7 +85,7 @@ public:
   SceneContext* get_scene_context();
 
 private:
-  boost::shared_ptr<GameSessionImpl> impl;
+  std::shared_ptr<GameSessionImpl> impl;
 };
 
 #endif

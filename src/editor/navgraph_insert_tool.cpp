@@ -45,8 +45,8 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
   NavigationGraphModel& navgraph = wst.get_document().get_sector_model().get_nav_graph();
 
   // FIXME: Radius should scale with zoom
-  boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f);
-  boost::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
+  std::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f);
+  std::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
   switch(mode)
   {
@@ -86,7 +86,7 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
           }
         }
 
-        boost::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos));
+        std::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos));
 
         wst.get_document().undo_group_begin();
         wst.get_document().navgraph_node_add(node_obj);
@@ -116,7 +116,7 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
       }
       else
       {
-        boost::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos));//, sector));
+        std::shared_ptr<NavGraphNodeObjectModel> node_obj(new NavGraphNodeObjectModel(mouse_pos));//, sector));
 
         wst.get_document().navgraph_node_add(node_obj);
 
@@ -138,8 +138,8 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 
   {
     // FIXME: Radius should scale with zoom
-    boost::shared_ptr<NavGraphNodeObjectModel> new_mouse_over_node = navgraph.find_closest_node(mouse_pos, 16.0f);
-    boost::shared_ptr<NavGraphEdgeObjectModel> new_mouse_over_edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
+    std::shared_ptr<NavGraphNodeObjectModel> new_mouse_over_node = navgraph.find_closest_node(mouse_pos, 16.0f);
+    std::shared_ptr<NavGraphEdgeObjectModel> new_mouse_over_edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
     if (new_mouse_over_node != mouse_over_node ||
         new_mouse_over_edge != mouse_over_edge)
@@ -189,7 +189,7 @@ NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
   switch(mode)
   {
     case EDGE_MODE:
-      connection_node = boost::shared_ptr<NavGraphNodeObjectModel>();
+      connection_node = std::shared_ptr<NavGraphNodeObjectModel>();
       wst.queue_draw();
       break;
 
@@ -216,8 +216,8 @@ NavgraphInsertTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget
     case NO_MODE:
     {
       // FIXME: Radius should scale with zoom
-      boost::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f);
-      boost::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
+      std::shared_ptr<NavGraphNodeObjectModel> node = navgraph.find_closest_node(mouse_pos, 16.0f);
+      std::shared_ptr<NavGraphEdgeObjectModel> edge = navgraph.find_closest_edge(mouse_pos, 16.0f);
 
       if (node)
       {

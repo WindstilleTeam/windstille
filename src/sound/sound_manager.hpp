@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SOUND_SOUND_MANAGER_HPP
 #define HEADER_WINDSTILLE_SOUND_SOUND_MANAGER_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <memory>
 #include <string>
 #include <vector>

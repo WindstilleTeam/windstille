@@ -48,7 +48,7 @@ private:
   bool hflip;
   bool vflip;
 
-  boost::shared_ptr<SurfaceDrawable> m_drawable;
+  std::shared_ptr<SurfaceDrawable> m_drawable;
 
 public:
   DecalObjectModel(const FileReader& reader);

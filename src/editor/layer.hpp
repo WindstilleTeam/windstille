@@ -24,7 +24,7 @@
 #include "editor/selection.hpp"
 
 class Layer;
-typedef boost::shared_ptr<Layer> LayerHandle;
+typedef std::shared_ptr<Layer> LayerHandle;
 
 class Layer
 {

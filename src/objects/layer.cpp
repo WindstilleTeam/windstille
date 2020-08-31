@@ -67,7 +67,7 @@ Layer::commit_removes()
   // remove objects
   for(Objects::iterator i = objects.begin(); i != objects.end(); )
   {
-    boost::shared_ptr<GameObject>& object = *i;
+    std::shared_ptr<GameObject>& object = *i;
 
     if(object->is_removable())
     {

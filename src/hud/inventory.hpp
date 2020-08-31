@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_HUD_INVENTORY_HPP
 
 #include "screen/screen.hpp"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class InventoryImpl;
 
@@ -36,7 +36,7 @@ public:
   void update(float delta, const Controller& controller);
 
 private:
-  boost::shared_ptr<InventoryImpl> impl;
+  std::shared_ptr<InventoryImpl> impl;
 };
 
 #endif

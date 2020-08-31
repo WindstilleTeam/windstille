@@ -19,17 +19,17 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_TIMELINE_HANDLES_HPP
 #define HEADER_WINDSTILLE_EDITOR_TIMELINE_HANDLES_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class Timeline;
 class TimelineLayer;
 class TimelineObject;
 class TimelineObjectLayer;
 
-typedef boost::shared_ptr<Timeline>            TimelineHandle;
-typedef boost::shared_ptr<TimelineLayer>       TimelineLayerHandle;
-typedef boost::shared_ptr<TimelineObject>      TimelineObjectHandle;
-typedef boost::shared_ptr<TimelineObjectLayer> TimelineObjectLayerHandle;
+typedef std::shared_ptr<Timeline>            TimelineHandle;
+typedef std::shared_ptr<TimelineLayer>       TimelineLayerHandle;
+typedef std::shared_ptr<TimelineObject>      TimelineObjectHandle;
+typedef std::shared_ptr<TimelineObjectLayer> TimelineObjectLayerHandle;
 
 #endif
 

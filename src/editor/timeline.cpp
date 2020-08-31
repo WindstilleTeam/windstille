@@ -90,7 +90,7 @@ Timeline::get_object_layer(ObjectModelHandle object, TimelineProperty property)
 {
   for(iterator i = begin(); i != end(); ++i)
   {
-    TimelineObjectLayerHandle layer = boost::dynamic_pointer_cast<TimelineObjectLayer>(*i);
+    TimelineObjectLayerHandle layer = std::dynamic_pointer_cast<TimelineObjectLayer>(*i);
 
     if (layer &&
         layer->get_property() == property &&

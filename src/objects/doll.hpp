@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_DOLL_HPP
 #define HEADER_WINDSTILLE_OBJECTS_DOLL_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "math/vector2f.hpp"
 #include "engine/game_object.hpp"
@@ -48,7 +48,7 @@ private:
     kJumpUp
   };
 
-  boost::shared_ptr<Sprite3DDrawable> m_drawable;
+  std::shared_ptr<Sprite3DDrawable> m_drawable;
   Vector2f m_velocity;
   Vector2f m_pos;
   Vector2f m_last_pos;

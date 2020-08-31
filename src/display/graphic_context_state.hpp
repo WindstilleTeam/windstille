@@ -18,7 +18,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_GRAPHIC_CONTEXT_STATE_HPP
 #define HEADER_WINDSTILLE_DISPLAY_GRAPHIC_CONTEXT_STATE_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "math/rect.hpp"
 #include "math/vector2f.hpp"
@@ -77,7 +77,7 @@ public:
   GraphicContextState clone() const;
 
 private:
-  boost::shared_ptr<GraphicContextStateImpl> impl;
+  std::shared_ptr<GraphicContextStateImpl> impl;
 };
 
 #endif

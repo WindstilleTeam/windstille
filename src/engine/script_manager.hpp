@@ -27,7 +27,7 @@
 #include <map>
 #include <squirrel.h>
 #include <iostream>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "util/currenton.hpp"
 #include "scripting/wrapper.hpp"
@@ -74,7 +74,7 @@ public:
   };
 
 private:
-  typedef std::list<boost::shared_ptr<SquirrelThread> > SquirrelThreads;
+  typedef std::list<std::shared_ptr<SquirrelThread> > SquirrelThreads;
   SquirrelThreads squirrel_vms;
 
   HSQUIRRELVM vm;
@@ -86,18 +86,18 @@ public:
   void update();
 
   /** Load script from \a filename and runs it */
-  boost::shared_ptr<SquirrelThread> run_script_file(const Pathname& filename, bool global = false);
-  boost::shared_ptr<SquirrelThread> create_script(HSQUIRRELVM parent_vm, bool isolated);
+  std::shared_ptr<SquirrelThread> run_script_file(const Pathname& filename, bool global = false);
+  std::shared_ptr<SquirrelThread> create_script(HSQUIRRELVM parent_vm, bool isolated);
 
   HSQUIRRELVM get_vm() const { return vm; }
 
-  boost::shared_ptr<SquirrelThread> get_thread(HSQUIRRELVM v) const;
+  std::shared_ptr<SquirrelThread> get_thread(HSQUIRRELVM v) const;
 
   void fire_wakeup_event(WakeupEvent event);
   void fire_wakeup_event(WakeupData  event);
 
-  void expose_object_to_squirrel(boost::shared_ptr<GameObject> object);
-  void remove_object_from_squirrel(boost::shared_ptr<GameObject> object);
+  void expose_object_to_squirrel(std::shared_ptr<GameObject> object);
+  void remove_object_from_squirrel(std::shared_ptr<GameObject> object);
 
 private:
   ScriptManager(const ScriptManager&);

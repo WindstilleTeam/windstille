@@ -21,7 +21,7 @@
 
 #include <vector>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "timeline_handles.hpp"
 

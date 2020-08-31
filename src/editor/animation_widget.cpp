@@ -22,7 +22,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/label.h>
 #include <gtkmm/uimanager.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "editor/editor_window.hpp"
 #include "editor/windstille_widget.hpp"

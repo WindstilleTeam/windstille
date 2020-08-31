@@ -27,13 +27,13 @@ SceneGraph::SceneGraph()
 }
 
 void
-SceneGraph::add_drawable(boost::shared_ptr<Drawable> drawable)
+SceneGraph::add_drawable(std::shared_ptr<Drawable> drawable)
 {
   m_drawables->add_drawable(drawable);
 }
 
 void
-SceneGraph::remove_drawable(boost::shared_ptr<Drawable> drawable)
+SceneGraph::remove_drawable(std::shared_ptr<Drawable> drawable)
 {
   m_drawables->remove_drawable(drawable);
 }

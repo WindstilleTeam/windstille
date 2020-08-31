@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_NAVIGATION_GRAPH_MODEL_HPP
 
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/scoped_ptr.hpp>
 
 #include "editor/selection.hpp"
@@ -34,8 +34,8 @@ class SelectMask;
 class NavigationGraphModel
 {
 public:
-  typedef std::vector<boost::shared_ptr<NavGraphNodeObjectModel> > Nodes;
-  typedef std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> > Edges;
+  typedef std::vector<std::shared_ptr<NavGraphNodeObjectModel> > Nodes;
+  typedef std::vector<std::shared_ptr<NavGraphEdgeObjectModel> > Edges;
 
 private:
   SectorModel& m_sector;
@@ -48,21 +48,21 @@ public:
 
   const Nodes& get_nodes() const { return m_nodes; }
 
-  void add_node(boost::shared_ptr<NavGraphNodeObjectModel> node);
-  void add_edge(boost::shared_ptr<NavGraphEdgeObjectModel> edge);
+  void add_node(std::shared_ptr<NavGraphNodeObjectModel> node);
+  void add_edge(std::shared_ptr<NavGraphEdgeObjectModel> edge);
 
-  void remove_node(boost::shared_ptr<NavGraphNodeObjectModel> node);
-  void remove_edge(boost::shared_ptr<NavGraphEdgeObjectModel> edge);
+  void remove_node(std::shared_ptr<NavGraphNodeObjectModel> node);
+  void remove_edge(std::shared_ptr<NavGraphEdgeObjectModel> edge);
 
-  boost::shared_ptr<NavGraphNodeObjectModel> find_closest_node(const Vector2f& pos, float radius) const;
-  boost::shared_ptr<NavGraphEdgeObjectModel> find_closest_edge(const Vector2f& pos, float radius) const;
+  std::shared_ptr<NavGraphNodeObjectModel> find_closest_node(const Vector2f& pos, float radius) const;
+  std::shared_ptr<NavGraphEdgeObjectModel> find_closest_edge(const Vector2f& pos, float radius) const;
 
-  std::vector<boost::shared_ptr<NavGraphEdgeObjectModel> > find_edges(boost::shared_ptr<NavGraphNodeObjectModel> node) const;
+  std::vector<std::shared_ptr<NavGraphEdgeObjectModel> > find_edges(std::shared_ptr<NavGraphNodeObjectModel> node) const;
 
-  boost::shared_ptr<NavGraphNodeObjectModel> get_object_at(const Vector2f& pos, const SelectMask& layers) const;
+  std::shared_ptr<NavGraphNodeObjectModel> get_object_at(const Vector2f& pos, const SelectMask& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
 
-  bool has_edge(boost::shared_ptr<NavGraphNodeObjectModel> lhs, boost::shared_ptr<NavGraphNodeObjectModel> rhs) const;
+  bool has_edge(std::shared_ptr<NavGraphNodeObjectModel> lhs, std::shared_ptr<NavGraphNodeObjectModel> rhs) const;
 
   void write(FileWriter& writer) const;
   void load(const FileReader& reader, std::map<std::string, ObjectModelHandle>& id_table);

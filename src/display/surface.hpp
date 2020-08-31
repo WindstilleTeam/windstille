@@ -25,7 +25,7 @@
 
 class SurfaceDrawingParameters;
 class Surface;
-typedef boost::shared_ptr<Surface> SurfacePtr;
+typedef std::shared_ptr<Surface> SurfacePtr;
 
 /**
  * Surface class. This class basically holds a reference to an opengl texture

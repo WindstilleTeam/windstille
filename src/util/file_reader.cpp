@@ -65,7 +65,7 @@ FileReader::parse(std::istream& stream, const std::string& filename)
   }
 }
 
-FileReader::FileReader(boost::shared_ptr<FileReaderImpl> impl_)
+FileReader::FileReader(std::shared_ptr<FileReaderImpl> impl_)
   : impl(impl_)
 {
 }

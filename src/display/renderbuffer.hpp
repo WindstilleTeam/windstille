@@ -19,10 +19,10 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_RENDER_BUFFER_HPP
 #define HEADER_WINDSTILLE_DISPLAY_RENDER_BUFFER_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class Renderbuffer;
-typedef boost::shared_ptr<Renderbuffer> RenderbufferPtr;
+typedef std::shared_ptr<Renderbuffer> RenderbufferPtr;
 
 class Renderbuffer
 {

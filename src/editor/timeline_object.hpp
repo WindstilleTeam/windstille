@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_TIMELINE_OBJECT_HPP
 #define HEADER_WINDSTILLE_EDITOR_TIMELINE_OBJECT_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class TimelineObject
 {

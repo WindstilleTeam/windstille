@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_TIMELINE_OBJECT_LAYER_HPP
 #define HEADER_WINDSTILLE_EDITOR_TIMELINE_OBJECT_LAYER_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <iostream>
 
 #include "editor/timeline_layer.hpp"
@@ -75,21 +75,21 @@ public:
     }
     else if (size() == 1)
     {
-      boost::shared_ptr<TimelineKeyframeDataObject<C> > keyframe =
-        boost::dynamic_pointer_cast<TimelineKeyframeDataObject<C> >(*begin());
+      std::shared_ptr<TimelineKeyframeDataObject<C> > keyframe =
+        std::dynamic_pointer_cast<TimelineKeyframeDataObject<C> >(*begin());
       return keyframe->get_data();
     }
     else
     {
-      boost::shared_ptr<TimelineKeyframeDataObject<C> > lhs;
-      boost::shared_ptr<TimelineKeyframeDataObject<C> > rhs;
+      std::shared_ptr<TimelineKeyframeDataObject<C> > lhs;
+      std::shared_ptr<TimelineKeyframeDataObject<C> > rhs;
 
       for(iterator i = begin(); i != end(); ++i)
       {
         //std::cout << size() << " - " << (i - begin()) << std::endl;
 
-        boost::shared_ptr<TimelineKeyframeDataObject<C> > keyframe =
-          boost::dynamic_pointer_cast<TimelineKeyframeDataObject<C> >(*i);
+        std::shared_ptr<TimelineKeyframeDataObject<C> > keyframe =
+          std::dynamic_pointer_cast<TimelineKeyframeDataObject<C> >(*i);
 
         assert(keyframe);
 
@@ -177,7 +177,7 @@ public:
   }
 };
 
-typedef boost::shared_ptr<TimelineObjectLayer> TimelineObjectLayerHandle;
+typedef std::shared_ptr<TimelineObjectLayer> TimelineObjectLayerHandle;
 
 #endif
 

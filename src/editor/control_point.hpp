@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_CONTROL_POINT_HPP
 #define HEADER_WINDSTILLE_EDITOR_CONTROL_POINT_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <gdkmm/event.h>
 
 #include "display/surface.hpp"
@@ -28,7 +28,7 @@
 
 class SceneContext;
 class ControlPoint;
-typedef boost::shared_ptr<ControlPoint> ControlPointHandle;
+typedef std::shared_ptr<ControlPoint> ControlPointHandle;
 
 class ControlPoint
 {
