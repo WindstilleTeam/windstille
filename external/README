@@ -1,13 +1,7 @@
-SQUIRREL3/ - http://squirrel-lang.org
--------------------------------------
-    SQUIRREL3/ is a verbatim copy of the squirrel tarball, to update
-    it, just remove SQUIRREL3 and extract a new tarball. 
-
-
 miniswig/ - Squirrel Wrapper Generator
 --------------------------------------
   Created by doing:
-  
+
   svn export http://supertux.lethargik.org/svn/supertux/trunk/supertux/tools/miniswig
 
 
