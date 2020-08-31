@@ -18,7 +18,7 @@
 
 #include <SDL_image.h>
 #include <sstream>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include "app/config.hpp"
 #include "app/console.hpp"

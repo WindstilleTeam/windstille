@@ -17,7 +17,7 @@
 */
 
 #include <GL/glew.h>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include "armature/pose.hpp"
 #include "input/controller.hpp"
@@ -46,7 +46,7 @@ ArmatureTest::ArmatureTest()
 
     for(Directory::List::iterator i = file_lst.begin(); i != file_lst.end(); ++i)
     {
-      if (!boost::filesystem::is_directory(i->get_sys_path()))
+      if (!std::filesystem::is_directory(i->get_sys_path()))
       {
         std::cout << "PoseFile: " << *i << std::endl;
         FileReader pose_reader = FileReader::parse(*i);

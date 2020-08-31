@@ -18,8 +18,9 @@
 
 #include "util/pathname.hpp"
 
+#include <assert.h>
 #include <sstream>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 std::string Pathname::s_datadir;
 std::string Pathname::s_userdir;
@@ -31,14 +32,14 @@ Pathname::set_datadir_overrides(const Overrides& overrides)
   s_datadir_overrides = overrides;
 }
 
-static void add_overrides(const boost::filesystem::path& path, const boost::filesystem::path& base,
+static void add_overrides(const std::filesystem::path& path, const std::filesystem::path& base,
                           Pathname::Overrides* overrides)
 {
-  boost::filesystem::directory_iterator end_i; // default construction yields past-the-end
+  std::filesystem::directory_iterator end_i; // default construction yields past-the-end
 
-  for(boost::filesystem::directory_iterator i(path); i != end_i; ++i)
+  for(std::filesystem::directory_iterator i(path); i != end_i; ++i)
   {
-    if (boost::filesystem::is_directory(i->status()))
+    if (std::filesystem::is_directory(i->status()))
     {
       add_overrides(i->path(), base / i->path().filename(), overrides);
     }
@@ -109,7 +110,7 @@ Pathname::exists() const
       return false;
 
     default:
-      return boost::filesystem::exists(get_sys_path());
+      return std::filesystem::exists(get_sys_path());
   }
 }
 

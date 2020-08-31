@@ -18,7 +18,7 @@
 
 #include "screen/sprite2dview.hpp"
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include "app/console.hpp"
 #include "display/surface_manager.hpp"
@@ -57,7 +57,7 @@ Sprite2DView::Sprite2DView()
 
   for(std::vector<std::string>::iterator i = arg_files.begin(); i != arg_files.end(); ++i)
   {
-    if (boost::filesystem::is_directory(i->c_str()))
+    if (std::filesystem::is_directory(i->c_str()))
     {
       adddir(Pathname(*i, Pathname::kSysPath));
     }
@@ -98,7 +98,7 @@ Sprite2DView::adddir(const Pathname& dirname)
 
   for (Directory::List::iterator i = lst.begin(); i != lst.end(); ++i)
   {
-    if (boost::filesystem::is_directory(i->get_sys_path()))
+    if (std::filesystem::is_directory(i->get_sys_path()))
     {
       adddir(*i);
     }

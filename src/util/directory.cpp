@@ -18,7 +18,7 @@
 
 #include "util/directory.hpp"
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include "util/util.hpp"
 #include "util/pathname.hpp"
@@ -28,8 +28,8 @@ Directory::read(const Pathname& pathname)
 {
   std::vector<Pathname> entries;
 
-  for (boost::filesystem::directory_iterator it(pathname.get_sys_path());
-       it != boost::filesystem::directory_iterator();
+  for (std::filesystem::directory_iterator it(pathname.get_sys_path());
+       it != std::filesystem::directory_iterator();
        ++it)
   {
     // FIXME: Would make sense to try to keep the Pathname::type
@@ -45,8 +45,8 @@ Directory::read(const Pathname& pathname, const std::string& suffix)
 {
   std::vector<Pathname> entries;
 
-  for (boost::filesystem::directory_iterator it(pathname.get_sys_path());
-       it != boost::filesystem::directory_iterator();
+  for (std::filesystem::directory_iterator it(pathname.get_sys_path());
+       it != std::filesystem::directory_iterator();
        ++it)
   {
     const std::string& filename = it->path().string();
