@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_FUNCTOR_COMMAND_HPP
 #define HEADER_WINDSTILLE_EDITOR_FUNCTOR_COMMAND_HPP
 
-#include <functional.hpp>
+#include <functional>
 
 #include "editor/command.hpp"
 

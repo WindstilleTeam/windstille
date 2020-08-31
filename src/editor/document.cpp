@@ -18,7 +18,7 @@
 
 #include "editor/document.hpp"
 
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "editor/selection.hpp"
 #include "editor/undo_manager.hpp"
@@ -35,6 +35,8 @@
 #include "editor/navgraph_commands.hpp"
 #include "editor/object_commands.hpp"
 #include "editor/timeline_commands.hpp"
+
+using namespace std::placeholders;
 
 Document::Document() :
   m_undo_manager(new UndoManager()),
@@ -315,16 +317,16 @@ Document::selection_vflip()
         pos.y = center.y + (center.y - pos.y);
 
         //(*i)->set_world_pos(pos);
-        group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
-                                                            boost::bind(&ObjectModel::set_world_pos, *i, pos))));
+        group_command->add(CommandHandle(new FunctorCommand(std::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
+                                                            std::bind(&ObjectModel::set_world_pos, *i, pos))));
       }
     }
 
     for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
     {
       //(*i)->set_vflip(!(*i)->get_vflip());
-      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_vflip, *i,  (*i)->get_vflip()),
-                                                          boost::bind(&ObjectModel::set_vflip, *i, !(*i)->get_vflip()))));
+      group_command->add(CommandHandle(new FunctorCommand(std::bind(&ObjectModel::set_vflip, *i,  (*i)->get_vflip()),
+                                                          std::bind(&ObjectModel::set_vflip, *i, !(*i)->get_vflip()))));
     }
 
     execute(group_command);
@@ -348,16 +350,16 @@ Document::selection_hflip()
         pos.x = center.x + (center.x - pos.x);
 
         //(*i)->set_world_pos(pos);
-        group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
-                                                            boost::bind(&ObjectModel::set_world_pos, *i, pos))));
+        group_command->add(CommandHandle(new FunctorCommand(std::bind(&ObjectModel::set_world_pos, *i, (*i)->get_world_pos()),
+                                                            std::bind(&ObjectModel::set_world_pos, *i, pos))));
       }
     }
 
     for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
     {
       //(*i)->set_hflip(!(*i)->get_hflip());
-      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_hflip, *i,  (*i)->get_hflip()),
-                                                          boost::bind(&ObjectModel::set_hflip, *i, !(*i)->get_hflip()))));
+      group_command->add(CommandHandle(new FunctorCommand(std::bind(&ObjectModel::set_hflip, *i,  (*i)->get_hflip()),
+                                                          std::bind(&ObjectModel::set_hflip, *i, !(*i)->get_hflip()))));
     }
 
     execute(group_command);
@@ -378,8 +380,8 @@ Document::selection_connect_parent()
     for(; i != m_selection->end(); ++i)
     {
       //(*i)->set_parent(parent);
-      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
-                                                          boost::bind(&ObjectModel::set_parent, *i, parent, true))));
+      group_command->add(CommandHandle(new FunctorCommand(std::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
+                                                          std::bind(&ObjectModel::set_parent, *i, parent, true))));
     }
 
     execute(group_command);
@@ -394,8 +396,8 @@ Document::selection_clear_parent()
   for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
   {
     //(*i)->set_parent(ObjectModelHandle());
-    group_command->add(CommandHandle(new FunctorCommand(boost::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
-                                                        boost::bind(&ObjectModel::set_parent, *i, ObjectModelHandle(), true))));
+    group_command->add(CommandHandle(new FunctorCommand(std::bind(&ObjectModel::set_parent, *i, (*i)->get_parent(), true),
+                                                        std::bind(&ObjectModel::set_parent, *i, ObjectModelHandle(), true))));
   }
 
   execute(group_command);
@@ -465,8 +467,8 @@ Document::selection_reset_rotation()
     if (decal)
     {
       //decal->set_angle(0.0f);
-      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&DecalObjectModel::set_angle, decal, decal->get_angle()),
-                                                          boost::bind(&DecalObjectModel::set_angle, decal, 0.0f))));
+      group_command->add(CommandHandle(new FunctorCommand(std::bind(&DecalObjectModel::set_angle, decal, decal->get_angle()),
+                                                          std::bind(&DecalObjectModel::set_angle, decal, 0.0f))));
     }
   }
 
@@ -491,8 +493,8 @@ Document::selection_reset_scale()
     if (decal)
     {
       //decal->set_scale(Vector2f(1.0f, 1.0f));
-      group_command->add(CommandHandle(new FunctorCommand(boost::bind(&DecalObjectModel::set_scale, decal, decal->get_scale()),
-                                                          boost::bind(&DecalObjectModel::set_scale, decal, Vector2f(1.0f, 1.0f)))));
+      group_command->add(CommandHandle(new FunctorCommand(std::bind(&DecalObjectModel::set_scale, decal, decal->get_scale()),
+                                                          std::bind(&DecalObjectModel::set_scale, decal, Vector2f(1.0f, 1.0f)))));
     }
   }
 

@@ -18,7 +18,7 @@
 
 #include "app/menu_manager.hpp"
 
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "app/config.hpp"
 #include "display/display.hpp"
@@ -44,22 +44,24 @@
 #include "app/windstille.hpp"
 #include "gui/menu.hpp"
 
+using namespace std::placeholders;
+
 void
 MenuManager::display_option_menu()
 {
   gui::Menu menu("Options", create_centered_rect(500, 340));
 
   menu.add_slider("Master Volume",  config.get_int("master-volume"), 0, 100, 10,
-                  boost::bind(&MenuManager::menu_master_volume, _1));
+                  std::bind(&MenuManager::menu_master_volume, _1));
 
   menu.add_slider("Music Volume", config.get_int("music-volume"), 0, 100, 10,
-                  boost::bind(&MenuManager::menu_music_volume, _1));
+                  std::bind(&MenuManager::menu_music_volume, _1));
 
   menu.add_slider("Sound Volume", config.get_int("sound-volume"), 0, 100, 10,
-                  boost::bind(&MenuManager::menu_sound_volume, _1));
+                  std::bind(&MenuManager::menu_sound_volume, _1));
 
   menu.add_slider("Voice Volume", config.get_int("voice-volume"), 0, 100, 10,
-                  boost::bind(&MenuManager::menu_voice_volume, _1));
+                  std::bind(&MenuManager::menu_voice_volume, _1));
 
   menu.add_enum("Aspect Ratio", 0)
     .add_pair(0, "4:3")
@@ -69,17 +71,17 @@ MenuManager::display_option_menu()
     .add_pair(4, "letterbox");
 
   menu.add_enum("Show FPS", config.get_bool("show-fps"),
-                boost::bind(&MenuManager::menu_show_fps, _1))
+                std::bind(&MenuManager::menu_show_fps, _1))
     .add_pair(0, "off")
     .add_pair(1, "on");
 
   menu.add_enum("Fullscreen", config.get_bool("fullscreen"),
-                boost::bind(&MenuManager::menu_fullscreen, _1))
+                std::bind(&MenuManager::menu_fullscreen, _1))
     .add_pair(0, "off")
     .add_pair(1, "on");
 
   menu.add_enum("Controller Debug", ScreenManager::current()->get_show_controller_debug(),
-                boost::bind(&MenuManager::menu_controller_debug, _1))
+                std::bind(&MenuManager::menu_controller_debug, _1))
     .add_pair(0, "off")
     .add_pair(1, "on");
 
@@ -88,11 +90,11 @@ MenuManager::display_option_menu()
     .add_pair(1, "medium")
     .add_pair(2, "hard");
 
-  menu.add_slider("Gamma",  100, 10, 200, 10, boost::bind(&MenuManager::menu_gamma, _1));
+  menu.add_slider("Gamma",  100, 10, 200, 10, std::bind(&MenuManager::menu_gamma, _1));
 
 #ifdef HAVE_CWIID
   if (wiimote)
-    menu.add_button("Try to Connect Wiimote", boost::bind(&MenuManager::menu_wiimote));
+    menu.add_button("Try to Connect Wiimote", std::bind(&MenuManager::menu_wiimote));
 #endif
 
   menu.show();
@@ -103,16 +105,16 @@ MenuManager::display_main_menu()
 {
   gui::Menu menu("", create_positioned_rect(Vector2f(400-20, 200), Sizef(250, 254)), false);
 
-  menu.add_button("Select Scenario", boost::bind(&MenuManager::display_scenario_menu));
-  menu.add_button("Navigation Test", boost::bind(&MenuManager::menu_show_navigation_test));
-  menu.add_button("Armature Test", boost::bind(&MenuManager::menu_show_armature_test));
-  menu.add_button("Geometry Test", boost::bind(&MenuManager::menu_show_geometry_test));
-  menu.add_button("Model Viewer", boost::bind(&MenuManager::display_models_menu));
-  menu.add_button("Particle Systems", boost::bind(&MenuManager::display_particle_menu));
-  menu.add_button("Options", boost::bind(&MenuManager::display_option_menu));
-  menu.add_button("Credits", boost::bind(&MenuManager::display_credits));
-  menu.add_button("Help", boost::bind(&MenuManager::display_help));
-  menu.add_button("Quit", boost::bind(&MenuManager::menu_quit));
+  menu.add_button("Select Scenario", std::bind(&MenuManager::display_scenario_menu));
+  menu.add_button("Navigation Test", std::bind(&MenuManager::menu_show_navigation_test));
+  menu.add_button("Armature Test", std::bind(&MenuManager::menu_show_armature_test));
+  menu.add_button("Geometry Test", std::bind(&MenuManager::menu_show_geometry_test));
+  menu.add_button("Model Viewer", std::bind(&MenuManager::display_models_menu));
+  menu.add_button("Particle Systems", std::bind(&MenuManager::display_particle_menu));
+  menu.add_button("Options", std::bind(&MenuManager::display_option_menu));
+  menu.add_button("Credits", std::bind(&MenuManager::display_credits));
+  menu.add_button("Help", std::bind(&MenuManager::display_help));
+  menu.add_button("Quit", std::bind(&MenuManager::menu_quit));
 
   { // Construct Copyright box
     std::unique_ptr<gui::GroupComponent> text_group
@@ -143,16 +145,16 @@ MenuManager::display_pause_menu()
 {
   gui::Menu menu("Pause Menu", create_centered_rect(400, 300));
 
-  menu.add_button("Resume",  boost::bind(&MenuManager::menu_continue));
+  menu.add_button("Resume",  std::bind(&MenuManager::menu_continue));
   if (Sector::current())
   {
-    menu.add_button("Debug", boost::bind(&MenuManager::display_debug_menu));
-    //menu.add_button("Select Scenario", boost::bind(&MenuManager::display_scenario_menu));
+    menu.add_button("Debug", std::bind(&MenuManager::display_debug_menu));
+    //menu.add_button("Select Scenario", std::bind(&MenuManager::display_scenario_menu));
   }
-  menu.add_button("Options", boost::bind(&MenuManager::display_option_menu));
-  menu.add_button("Credits", boost::bind(&MenuManager::display_credits));
-  menu.add_button("Help", boost::bind(&MenuManager::display_help));
-  menu.add_button("Return to Title Screen", boost::bind(&MenuManager::menu_exit));
+  menu.add_button("Options", std::bind(&MenuManager::display_option_menu));
+  menu.add_button("Credits", std::bind(&MenuManager::display_credits));
+  menu.add_button("Help", std::bind(&MenuManager::display_help));
+  menu.add_button("Return to Title Screen", std::bind(&MenuManager::menu_exit));
 
   menu.show();
 }
@@ -178,7 +180,7 @@ MenuManager::display_models_menu()
 
   for(std::vector<Pathname>::const_iterator i = models.begin(); i != models.end(); ++i)
   {
-    menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_show_model, *i));
+    menu.add_button(i->get_raw_path(), std::bind(&MenuManager::menu_show_model, *i));
   }
 
   menu.show();
@@ -195,7 +197,7 @@ MenuManager::display_particle_menu()
 
   for(std::vector<Pathname>::const_iterator i = scenarios.begin(); i != scenarios.end(); ++i)
   {
-    menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_show_particle_system, *i));
+    menu.add_button(i->get_raw_path(), std::bind(&MenuManager::menu_show_particle_system, *i));
   }
 
   menu.show();
@@ -217,7 +219,7 @@ MenuManager::display_scenario_menu()
 
   for(std::vector<Pathname>::const_iterator i = scenarios.begin(); i != scenarios.end(); ++i)
   {
-    menu.add_button(i->get_raw_path(), boost::bind(&MenuManager::menu_start_scenario, *i));
+    menu.add_button(i->get_raw_path(), std::bind(&MenuManager::menu_start_scenario, *i));
   }
 
   menu.show();
@@ -231,13 +233,13 @@ MenuManager::display_debug_menu()
   Color amb = Sector::current()->get_ambient_light();
 
   menu.add_slider("Ambient Light (Red)", int(amb.r*100), 0, 100, 10,
-                  boost::bind(&MenuManager::menu_ambient_light, _1, 0));
+                  std::bind(&MenuManager::menu_ambient_light, _1, 0));
 
   menu.add_slider("Ambient Light (Green)", int(amb.g*100), 0, 100, 10,
-                  boost::bind(&MenuManager::menu_ambient_light, _1, 1));
+                  std::bind(&MenuManager::menu_ambient_light, _1, 1));
 
   menu.add_slider("Ambient Light (Blue)", int(amb.b*100), 0, 100, 10,
-                  boost::bind(&MenuManager::menu_ambient_light, _1, 2));
+                  std::bind(&MenuManager::menu_ambient_light, _1, 2));
 
   menu.show();
 }

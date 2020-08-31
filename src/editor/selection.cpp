@@ -159,8 +159,8 @@ Selection::on_move_end(WindstilleWidget& wst, const Vector2f& offset)
   {
     if (non_moveable_objects.find(*i) == non_moveable_objects.end())
     {
-      wst.get_document().execute(boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_pos[i - objects.begin()]),
-                                 boost::bind(&ObjectModel::set_rel_pos, *i, object_orig_pos[i - objects.begin()] + offset));
+      wst.get_document().execute(std::bind(&ObjectModel::set_rel_pos, *i, object_orig_pos[i - objects.begin()]),
+                                 std::bind(&ObjectModel::set_rel_pos, *i, object_orig_pos[i - objects.begin()] + offset));
     }
   }
   wst.get_document().undo_group_end();

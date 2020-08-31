@@ -18,7 +18,7 @@
 
 #include "objects/box.hpp"
 
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "collision/collision_engine.hpp"
 
@@ -52,7 +52,7 @@ Box::Box(const FileReader& props) :
 
   Sector::current()->get_collision_engine()->add(colobj);
 
-  colobj->sig_collision().connect(boost::bind(&Box::collision, this, _1));
+  colobj->sig_collision().connect(std::bind(&Box::collision, this, std::placeholders::_1));
 }
 
 Box::~Box()

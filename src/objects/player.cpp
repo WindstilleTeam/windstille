@@ -18,7 +18,7 @@
 
 #include "objects/player.hpp"
 
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "collision/collision_engine.hpp"
 #include "collision/stair_contact.hpp"
@@ -68,7 +68,7 @@ Player::Player () :
   c_object->set_pos(pos);
   c_object->set_velocity(velocity);
 
-  c_object->sig_collision().connect(boost::bind(&Player::collision, this, _1));
+  c_object->sig_collision().connect(std::bind(&Player::collision, this, std::placeholders::_1));
 
   Sector::current()->get_collision_engine()->add(c_object);
 

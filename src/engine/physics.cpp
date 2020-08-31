@@ -18,7 +18,7 @@
 
 #include "engine/physics.hpp"
 
-#include <boost/bind.hpp>
+#include <functional>
 
 #include "collision/collision_object.hpp"
 
@@ -39,7 +39,7 @@ Physics::~Physics()
 void
 Physics::register_collobj(CollisionObject& object)
 {
-  object.sig_collision().connect(boost::bind(&Physics::collision, this, _1));
+  object.sig_collision().connect(std::bind(&Physics::collision, this, std::placeholders::_1));
 }
 
 void
