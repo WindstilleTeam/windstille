@@ -20,7 +20,7 @@
 #ifndef HEADER_WINDSTILLE_COLLISION_COLLISION_OBJECT_HPP
 #define HEADER_WINDSTILLE_COLLISION_COLLISION_OBJECT_HPP
 
-#include <boost/signals2.hpp>
+#include <sigc++/signal.h>
 
 #include "math/rect.hpp"
 #include "collision/collision_data.hpp"
@@ -52,7 +52,7 @@ private:
 
   GameObject* game_object;
 
-  boost::signals2::signal<void (const CollisionData &)> collision;
+  sigc::signal<void (const CollisionData &)> collision;
 
   Rectf primitive;
   TileMap* tilemap;
@@ -126,7 +126,7 @@ public:
   unsigned int get_check_domains() const;
   void         set_check_domains(unsigned int d);
 
-  boost::signals2::signal<void (const CollisionData &)>& sig_collision() { return collision; }
+  sigc::signal<void (const CollisionData &)>& sig_collision() { return collision; }
 
   friend class CollisionEngine;
 

@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_ENGINE_ENTITY_HPP
 #define HEADER_WINDSTILLE_ENGINE_ENTITY_HPP
 
-#include <boost/signals2.hpp>
+#include <sigc++/signal.h>
 
 #include "properties/properties.hpp"
 #include "engine/game_object.hpp"
@@ -29,7 +29,7 @@
 class Entity : public GameObject
 {
 private:
-  boost::signals2::signal<void ()> done;
+  sigc::signal<void ()> done;
 
 protected:
   friend class Physics;
@@ -64,7 +64,7 @@ public:
 
   void set_parent(Entity* parent_);
 
-  boost::signals2::signal<void ()>& sig_done() { return done; }
+  sigc::signal<void ()>& sig_done() { return done; }
 
   virtual Properties get_properties();
 

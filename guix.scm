@@ -71,6 +71,7 @@
       ("boost" ,boost)
       ("freetype" ,freetype)
       ("squirrel" ,squirrel)
+      ("libsigc++" ,libsigc++)
       ("bison" ,bison)
       ("flex" ,flex)
       ("glm" ,glm)

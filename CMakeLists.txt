@@ -185,6 +185,7 @@ file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 add_library(wstlib STATIC ${WSTLIB_SOURCES})
 target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
 target_include_directories(wstlib SYSTEM PUBLIC
+  ${SIGCXX_INCLUDE_DIRS}
   ${SDL2_INCLUDE_DIRS}
   ${SDL2_IMAGE_INCLUDE_DIRS}
   ${FREETYPE_INCLUDE_DIRS}
@@ -199,6 +200,7 @@ target_include_directories(wstlib SYSTEM PUBLIC
   ${Boost_INCLUDE_DIRS}
   ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(wstlib PUBLIC
+  ${SIGCXX_LIBRARIES}
   fmt::fmt
   ${SQUIRREL_LIBRARY}
   ${SQSTDLIB_LIBRARY}
