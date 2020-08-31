@@ -21,6 +21,7 @@
 
 #include <map>
 #include <stdexcept>
+#include <sstream>
 
 #include "lisp/writer.hpp"
 
@@ -56,6 +57,11 @@ public:
   }
 
   virtual std::ostream& print(std::ostream& os) const =0;
+  std::string str() {
+    std::ostringstream os;
+    print(os);
+    return os.str();
+  }
 
   virtual void write(lisp::Writer& writer) =0;
 };

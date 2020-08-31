@@ -79,6 +79,7 @@ find_package(OpenAL REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glm REQUIRED)
+find_package(fmt REQUIRED)
 
 find_library(CWIID_LIBRARY cwiid)
 
@@ -200,6 +201,7 @@ target_include_directories(wstlib SYSTEM PUBLIC
   ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(wstlib PUBLIC
   squirrel
+  fmt::fmt
   ${SDL2_LIBRARIES}
   ${SDL2_IMAGE_LIBRARIES}
   ${FREETYPE_LIBRARIES}

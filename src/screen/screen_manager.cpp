@@ -18,7 +18,7 @@
 
 #include "screen/screen_manager.hpp"
 
-#include <boost/format.hpp>
+#include <fmt/format.h>
 
 #include "app/config.hpp"
 #include "display/display.hpp"
@@ -238,7 +238,7 @@ ScreenManager::poll_events()
               int count = 0;
               Pathname filename;
               do {
-                filename = Pathname((boost::format("screenshots/windstille%04d.png") % count).str(), Pathname::kUserPath);
+                filename = Pathname(fmt::format("screenshots/windstille{:04d}.png", count), Pathname::kUserPath);
                 count += 1;
               } while(filename.exists());
 

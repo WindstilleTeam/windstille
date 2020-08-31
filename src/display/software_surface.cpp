@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <fmt/format.h>
 #include <boost/scoped_array.hpp>
-#include <boost/format.hpp>
 #include <png.h>
 #include <errno.h>
 #include <sstream>
@@ -72,11 +72,11 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
              m_surface->format->Amask == 0x000000ff)))
       {
         std::cout << "XXX Doing conversation RGBA: " << filename << std::endl;
-        std::cout << "    rmask: " << boost::format("%08x %08x %08x %08x") %
-          m_surface->format->Rmask %
-          m_surface->format->Gmask %
-          m_surface->format->Bmask %
-          m_surface->format->Amask << std::endl;
+        std::cout << "    rmask: " << fmt::format("{:08x} {:08x} {:08x} {:08x}",
+                                                  m_surface->format->Rmask,
+                                                  m_surface->format->Gmask,
+                                                  m_surface->format->Bmask,
+                                                  m_surface->format->Amask) << std::endl;
 
         SDL_Surface* tmp_surface;
         if (is_little_endian())
@@ -114,11 +114,11 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
              m_surface->format->Amask == 0x000000)))
       {
         std::cout << "XXX Doing conversation RGB: " << filename << std::endl;
-        std::cout << "    rmask: " << boost::format("%08x %08x %08x %08x") %
-          m_surface->format->Rmask %
-          m_surface->format->Gmask %
-          m_surface->format->Bmask %
-          m_surface->format->Amask << std::endl;
+        std::cout << "    rmask: " << fmt::format("{:08x} {:08x} {:08x} {:08x}",
+                                                  m_surface->format->Rmask,
+                                                  m_surface->format->Gmask,
+                                                  m_surface->format->Bmask,
+                                                  m_surface->format->Amask) << std::endl;
 
 
         SDL_Surface* tmp_surface;

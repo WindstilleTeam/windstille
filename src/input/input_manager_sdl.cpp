@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <boost/format.hpp>
 #include <iostream>
 #include <sstream>
 
@@ -549,7 +548,7 @@ InputManagerSDL::update(float /*delta*/)
           add_axis_event(X2_AXIS, math::mid(-1.0f, -float(pitch / M_PI), 1.0f));
           add_axis_event(Y2_AXIS, math::mid(-1.0f, -float(roll  / M_PI), 1.0f));
 
-          std::cout << boost::format("%|6.3f| %|6.3f|") % pitch % roll << std::endl;
+          std::cout << fmt::format("{:6.3f} {:6.3f}", pitch, roll) << std::endl;
         }
       }
       else
