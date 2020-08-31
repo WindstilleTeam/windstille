@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_HUD_DIALOG_MANAGER_HPP
 #define HEADER_WINDSTILLE_HUD_DIALOG_MANAGER_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <vector>
 
 #include "screen/screen.hpp"
@@ -37,7 +37,7 @@ private:
   Sprite portrait;
   std::string text;
   float delay;
-  boost::scoped_ptr<TextArea> text_area;
+  std::unique_ptr<TextArea> text_area;
 
   enum Alignment {
     VCENTER = 0x00,

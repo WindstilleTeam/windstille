@@ -35,7 +35,7 @@ public:
 private:
   Sprite3D sprite;
   Physics physics;
-  boost::scoped_ptr<CollisionObject> c_object;
+  std::unique_ptr<CollisionObject> c_object;
 };
 
 #endif

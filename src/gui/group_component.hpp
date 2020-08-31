@@ -28,7 +28,7 @@ class GroupComponent : public Component
 {
 private:
   std::string title;
-  boost::scoped_ptr<Component> child;
+  std::unique_ptr<Component> child;
 
 public:
   GroupComponent(const Rectf& rect, const std::string& title_, Component* parent);

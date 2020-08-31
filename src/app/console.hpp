@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_APP_CONSOLE_HPP
 #define HEADER_WINDSTILLE_APP_CONSOLE_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <iosfwd>
 
 #include "util/currenton.hpp"
@@ -49,7 +49,7 @@ public:
   void execute(const std::string& str);
 
 private:
-  boost::scoped_ptr<ConsoleImpl> impl;
+  std::unique_ptr<ConsoleImpl> impl;
 
 private:
   Console (const Console&);

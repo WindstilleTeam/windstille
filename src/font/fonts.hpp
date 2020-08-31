@@ -25,9 +25,9 @@
 class Fonts : public Currenton<Fonts>
 {
 public:
-  boost::scoped_ptr<TTFFont> ttffont;
-  boost::scoped_ptr<TTFFont> vera12;
-  boost::scoped_ptr<TTFFont> vera20;
+  std::unique_ptr<TTFFont> ttffont;
+  std::unique_ptr<TTFFont> vera12;
+  std::unique_ptr<TTFFont> vera20;
 
 public:
   Fonts();

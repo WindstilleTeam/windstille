@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_OPENGL_WINDOW_HPP
 #define HEADER_WINDSTILLE_DISPLAY_OPENGL_WINDOW_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "util/currenton.hpp"
 #include "math/size.hpp"
@@ -44,7 +44,7 @@ public:
   void swap_buffers();
 
 private:
-  boost::scoped_ptr<OpenGLWindowImpl> m_impl;
+  std::unique_ptr<OpenGLWindowImpl> m_impl;
 
 private:
   OpenGLWindow(const OpenGLWindow&);

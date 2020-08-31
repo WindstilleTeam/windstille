@@ -53,7 +53,7 @@ private:
 
   LaserPointer* laser_pointer;
   Contact* contact;
-  boost::scoped_ptr<Weapon> weapon;
+  std::unique_ptr<Weapon> weapon;
 
 public:
   enum State

@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "display/color.hpp"
 #include "engine/game_object_handle.hpp"
@@ -45,9 +45,9 @@ class Doll;
 class Sector : public Currenton<Sector>
 {
 private:
-  boost::scoped_ptr<CollisionEngine> collision_engine;
-  boost::scoped_ptr<NavigationGraph> navigation_graph;
-  boost::scoped_ptr<SceneGraph>      scene_graph;
+  std::unique_ptr<CollisionEngine> collision_engine;
+  std::unique_ptr<NavigationGraph> navigation_graph;
+  std::unique_ptr<SceneGraph>      scene_graph;
 
   Pathname filename;
   std::string name;

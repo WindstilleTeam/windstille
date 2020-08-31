@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_TILE_TILE_PACKER_HPP
 
 #include <GL/glew.h>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "display/texture.hpp"
 #include "math/rect.hpp"
@@ -49,7 +49,7 @@ public:
   TexturePtr get_texture() const;
 
 private:
-  boost::scoped_ptr<TilePackerImpl> impl;
+  std::unique_ptr<TilePackerImpl> impl;
 
 private:
   TilePacker(const TilePacker&);

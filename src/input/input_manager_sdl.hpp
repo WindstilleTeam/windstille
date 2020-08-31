@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_SDL_HPP
 
 #include <SDL.h>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "input/input_manager.hpp"
 #include "util/currenton.hpp"
@@ -141,7 +141,7 @@ private:
 
   void parse_config(FileReader& reader);
 
-  boost::scoped_ptr<InputManagerSDLImpl> impl;
+  std::unique_ptr<InputManagerSDLImpl> impl;
 
 private:
   InputManagerSDL (const InputManagerSDL&);

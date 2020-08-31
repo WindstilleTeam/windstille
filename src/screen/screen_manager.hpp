@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_SCREEN_SCREEN_MANAGER_HPP
 
 #include <memory>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <vector>
 
 #include "util/currenton.hpp"
@@ -54,7 +54,7 @@ private:
   float overlap_delta;
   bool  do_quit;
   bool  show_controller_help_window;
-  boost::scoped_ptr<ControllerHelpWindow> controller_help_window;
+  std::unique_ptr<ControllerHelpWindow> controller_help_window;
 
   void apply_pending_actions();
   void draw();

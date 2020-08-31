@@ -27,7 +27,7 @@
 #pragma GCC diagnostic ignored "-Wold-style-cast"
 
 SurfaceManager::SurfaceManager() :
-  texture_packer(0),
+  texture_packer(),
   surfaces()
 {
   // NPOV should be ok with OpenGL2.0 in theory, but in practice there

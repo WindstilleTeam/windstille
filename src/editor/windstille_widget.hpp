@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 #define HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <GL/glew.h>
 #include <GL/gl.h>
 
@@ -57,15 +57,15 @@ class WindstilleWidget
 private:
   EditorWindow& editor;
 
-  boost::scoped_ptr<Document>   m_document;
-  boost::scoped_ptr<SceneGraph> m_scene_graph;
+  std::unique_ptr<Document>   m_document;
+  std::unique_ptr<SceneGraph> m_scene_graph;
   bool m_rebuild_scene_graph;
 
   std::string filename;
 
   GraphicContextState   state;
-  boost::scoped_ptr<Compositor> compositor;
-  boost::scoped_ptr<SceneContext> sc;
+  std::unique_ptr<Compositor> compositor;
+  std::unique_ptr<SceneContext> sc;
   DecalObjectModel::MapType map_type;
   TexturePtr background_pattern;
   SelectMask select_mask;

@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_ARMATURE_TEST_HPP
 #define HEADER_WINDSTILLE_SCREEN_ARMATURE_TEST_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "armature/armature.hpp"
 #include "armature/model.hpp"
@@ -29,8 +29,8 @@
 class ArmatureTest : public Screen
 {
 private:
-  boost::scoped_ptr<Model>    model;
-  boost::scoped_ptr<Armature> armature;
+  std::unique_ptr<Model>    model;
+  std::unique_ptr<Armature> armature;
   std::vector<Pose*> poses;
 
   int pose_idx;

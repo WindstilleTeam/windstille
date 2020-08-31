@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_PARTICLE_VIEWER_HPP
 #define HEADER_WINDSTILLE_SCREEN_PARTICLE_VIEWER_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <memory>
 
 #include "display/compositor.hpp"

@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_EDITOR_WINDOW_HPP
 #define HEADER_WINDSTILLE_EDITOR_EDITOR_WINDOW_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <gtkmm/box.h>
 #include <gtkmm/statusbar.h>
 #include <gtkmm/textview.h>
@@ -87,10 +87,10 @@ private:
   Glib::RefPtr<Gtk::ToggleAction> play_action;
   Glib::RefPtr<Gtk::ToggleAction> snap_action;
 
-  boost::scoped_ptr<SelectTool>   select_tool;
-  boost::scoped_ptr<NavgraphInsertTool> navgraph_insert_tool;
-  boost::scoped_ptr<ZoomTool>     zoom_tool;
-  boost::scoped_ptr<ScrollTool>   scroll_tool;
+  std::unique_ptr<SelectTool>   select_tool;
+  std::unique_ptr<NavgraphInsertTool> navgraph_insert_tool;
+  std::unique_ptr<ZoomTool>     zoom_tool;
+  std::unique_ptr<ScrollTool>   scroll_tool;
   Tool* current_tool;
   LayerWidget* layer_widget;
 

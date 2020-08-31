@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_PARTICLE_SYSTEM_HPP
 #define HEADER_WINDSTILLE_PARTICLES_PARTICLE_SYSTEM_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <vector>
 
 #include "math/rect.hpp"
@@ -63,8 +63,8 @@ private:
   float life_time;
 
   /** Places the particle in its initial position */
-  boost::scoped_ptr<Randomizer> randomizer;
-  boost::scoped_ptr<Drawer>     drawer;
+  std::unique_ptr<Randomizer> randomizer;
+  std::unique_ptr<Drawer>     drawer;
 
   float spawn_x;
   float spawn_y;

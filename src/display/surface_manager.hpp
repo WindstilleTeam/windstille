@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SURFACE_MANAGER_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SURFACE_MANAGER_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <string>
 #include <vector>
 #include <map>
@@ -37,7 +37,7 @@ class TexturePacker;
 class SurfaceManager : public Currenton<SurfaceManager>
 {
 private:
-  boost::scoped_ptr<TexturePacker> texture_packer;
+  std::unique_ptr<TexturePacker> texture_packer;
 
   typedef std::map<Pathname, SurfacePtr> Surfaces;
   Surfaces surfaces;

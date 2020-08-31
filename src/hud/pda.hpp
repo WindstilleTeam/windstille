@@ -50,8 +50,8 @@ private:
   Vector2f  pos;
   Sprite    background;
 
-  boost::scoped_ptr<TextArea>  ui_area;
-  boost::scoped_ptr<TextArea>  text_area;
+  std::unique_ptr<TextArea>  ui_area;
+  std::unique_ptr<TextArea>  text_area;
 
   std::vector<DialogEntry> dialogs;
   std::vector<ObjectiveEntry> objectives;

@@ -21,7 +21,7 @@
 
 #include <vector>
 #include <memory>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "editor/selection.hpp"
 #include "math/vector2f.hpp"

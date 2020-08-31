@@ -44,7 +44,7 @@ public:
 
   float fadeout_value;
   float fade_time;
-  boost::scoped_ptr<Sector> sector;
+  std::unique_ptr<Sector> sector;
   View    view;
 
   Pathname filename;

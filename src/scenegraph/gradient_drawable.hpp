@@ -20,14 +20,14 @@
 #define HEADER_WINDSTILLE_SCENEGRAPH_GRADIENT_DRAWABLE_HPP
 
 #include <vector>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "scenegraph/vertex_array_drawable.hpp"
 
 class GradientDrawable : public Drawable
 {
 private:
-  boost::scoped_ptr<VertexArrayDrawable> array;
+  std::unique_ptr<VertexArrayDrawable> array;
 
 public:
   GradientDrawable(const std::vector<float>& colors);

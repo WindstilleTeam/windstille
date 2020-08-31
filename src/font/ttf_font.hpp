@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_FONT_TTF_FONT_HPP
 
 #include <GL/glew.h>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <string>
 
 #include "display/color.hpp"
@@ -79,7 +79,7 @@ public:
   void draw_center(const Vector2f& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
 
 private:
-  boost::scoped_ptr<TTFFontImpl> impl;
+  std::unique_ptr<TTFFontImpl> impl;
 };
 
 /**

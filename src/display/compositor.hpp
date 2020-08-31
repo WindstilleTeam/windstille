@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_COMPOSITOR_HPP
 #define HEADER_WINDSTILLE_DISPLAY_COMPOSITOR_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 class CompositorImpl;
 class GraphicContextState;
@@ -36,7 +36,7 @@ public:
   void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);
 
 private:
-  boost::scoped_ptr<CompositorImpl> impl;
+  std::unique_ptr<CompositorImpl> impl;
 };
 
 #endif

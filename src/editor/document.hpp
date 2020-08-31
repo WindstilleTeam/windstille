@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_DOCUMENT_HPP
 #define HEADER_WINDSTILLE_EDITOR_DOCUMENT_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <boost/function.hpp>
 
 #include "editor/group_command.hpp"
@@ -41,8 +41,8 @@ class NavGraphEdgeObjectModel;
 class Document
 {
 private:
-  boost::scoped_ptr<UndoManager> m_undo_manager;
-  boost::scoped_ptr<SectorModel> m_sector_model;
+  std::unique_ptr<UndoManager> m_undo_manager;
+  std::unique_ptr<SectorModel> m_sector_model;
 
   std::shared_ptr<GroupCommand> m_group_command;
   int m_group_command_count;

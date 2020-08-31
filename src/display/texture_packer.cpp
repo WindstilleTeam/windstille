@@ -18,7 +18,7 @@
 
 #include <stdexcept>
 #include <stdio.h>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "display/software_surface.hpp"
 
@@ -29,8 +29,8 @@ class TextureSpace
 private:
   Rect          rect;
   bool          used;
-  boost::scoped_ptr<TextureSpace> left;
-  boost::scoped_ptr<TextureSpace> right;
+  std::unique_ptr<TextureSpace> left;
+  std::unique_ptr<TextureSpace> right;
 
 public:
   TextureSpace(const Rect& rect_) :

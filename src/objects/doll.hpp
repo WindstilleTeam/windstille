@@ -52,7 +52,7 @@ private:
   Vector2f m_velocity;
   Vector2f m_pos;
   Vector2f m_last_pos;
-  boost::scoped_ptr<EdgePosition> m_edge_position;
+  std::unique_ptr<EdgePosition> m_edge_position;
   State m_state;
 
 public:

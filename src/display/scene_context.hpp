@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SCENE_CONTEXT_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SCENE_CONTEXT_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "display/drawing_context.hpp"
 
@@ -91,7 +91,7 @@ public:
   unsigned int get_render_mask();
 
 private:
-  boost::scoped_ptr<SceneContextImpl> impl;
+  std::unique_ptr<SceneContextImpl> impl;
 
   SceneContext (const SceneContext&);
   SceneContext& operator= (const SceneContext&);

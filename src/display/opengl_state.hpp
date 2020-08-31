@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_DISPLAY_OPENGL_STATE_HPP
 
 #include <GL/glew.h>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "display/texture.hpp"
 
@@ -103,7 +103,7 @@ public:
    */
   void verify();
 private:
-  boost::scoped_ptr<OpenGLStateImpl> impl;
+  std::unique_ptr<OpenGLStateImpl> impl;
 
   OpenGLState (const OpenGLState&);
   OpenGLState& operator= (const OpenGLState&);

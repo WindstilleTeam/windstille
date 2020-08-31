@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_NAVIGATION_TEST_HPP
 #define HEADER_WINDSTILLE_SCREEN_NAVIGATION_TEST_HPP
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include "math/vector2f.hpp"
 #include "navigation/navigation_graph.hpp"
@@ -39,8 +39,8 @@ private:
   Vector2f player;
   Vector2f old_player;
 
-  boost::scoped_ptr<NavigationGraph> graph;
-  boost::scoped_ptr<EdgePosition> connection;
+  std::unique_ptr<NavigationGraph> graph;
+  std::unique_ptr<EdgePosition> connection;
 
   EdgeHandle selected_edge;
   NodeHandle selected_node;
