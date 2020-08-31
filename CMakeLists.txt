@@ -69,7 +69,6 @@ if(NOT XCF2PNG)
 endif()
 
 find_package(Threads REQUIRED)
-find_package(Boost COMPONENTS system filesystem REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(PNG REQUIRED)
 find_package(Freetype REQUIRED)
@@ -197,7 +196,6 @@ target_include_directories(wstlib SYSTEM PUBLIC
   ${OGG_INCLUDE_DIRS}
   ${VORBIS_INCLUDE_DIRS}
   ${VORBISFILE_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIRS}
   ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(wstlib PUBLIC
   ${SIGCXX_LIBRARIES}
@@ -215,7 +213,6 @@ target_link_libraries(wstlib PUBLIC
   ${OGG_LIBRARIES}
   ${VORBIS_LIBRARIES}
   ${VORBISFILE_LIBRARIES}
-  ${Boost_LIBRARIES}
   ${CMAKE_THREAD_LIBS_INIT})
 
 # compile galapix.sdl
