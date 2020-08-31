@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EXTRA_SLIDESHOW_SLIDE_OBJECT_HPP
 #define HEADER_WINDSTILLE_EXTRA_SLIDESHOW_SLIDE_OBJECT_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "display/surface.hpp"
 
@@ -64,7 +64,7 @@ private:
   SlideObject& operator=(const SlideObject&);
 };
 
-typedef boost::shared_ptr<SlideObject> SlideObjectPtr;
+typedef std::shared_ptr<SlideObject> SlideObjectPtr;
 
 #endif
 

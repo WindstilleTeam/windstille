@@ -18,7 +18,6 @@
 
 #include "slideshow/slide_parser.hpp"
 
-#include <boost/tokenizer.hpp>
 #include <string.h>
 #include <errno.h>
 #include <fstream>
@@ -27,6 +26,33 @@
 #include <sstream>
 
 #include "slideshow/slide_show.hpp"
+
+namespace {
+
+std::vector<std::string> string_tokenize(std::string_view text, std::string_view delimiter)
+{
+  auto is_delimiter = [delimiter](char c) -> bool {
+    return std::find(delimiter.begin(), delimiter.end(), c) != delimiter.end();
+  };
+
+  std::vector<std::string> result;
+
+  for(std::string::size_type i = 0; i != text.size();)
+  {
+    while(is_delimiter(text[i]) && i != text.size()) { ++i; };
+    const std::string::size_type start = i;
+    while(!is_delimiter(text[i]) && i != text.size()) { ++i; };
+    const std::string::size_type end = i;
+    if (start != end) {
+      result.emplace_back(text.substr(start, end - start));
+    }
+  }
+
+  return result;
+}
+
+
+} // namespace
 
 float
 NodePosX::get(const Sizef& scr, const Sizef& img, float zoom) const
@@ -599,10 +625,7 @@ SlideParser::tokenize(const std::string& line) const
 {
   if (true)
   {
-    boost::char_separator<char> sep(" \t");
-    boost::tokenizer<boost::char_separator<char> > tokens(line, sep);
-    std::vector<std::string> lst(tokens.begin(), tokens.end());
-    return lst;
+    return string_tokenize(line, " \t");
   }
   else
   {
