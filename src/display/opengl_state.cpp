@@ -18,6 +18,7 @@
 
 #include "display/opengl_state.hpp"
 
+#include <assert.h>
 #include <iostream>
 
 #include "display/texture.hpp"
