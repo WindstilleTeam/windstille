@@ -230,7 +230,15 @@ if(BUILD_EDITOR)
     ${GTKMM_LIBRARIES}
     ${GTKGLEXTMM_LIBRARIES})
 
-  install(TARGETS windstille-editor RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/windstille-editor.sh.in
+    ${CMAKE_BINARY_DIR}/windstille-editor.sh)
+  install(TARGETS windstille-editor RUNTIME DESTINATION ${CMAKE_INSTALL_LIBEXECDIR})
+  install(FILES
+    ${CMAKE_BINARY_DIR}/windstille-editor.sh
+    RENAME windstille-editor
+    PERMISSIONS OWNER_EXECUTE OWNER_READ OWNER_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+    DESTINATION ${CMAKE_INSTALL_BINDIR})
 
   install(FILES
     windstille-editor.svg
@@ -263,7 +271,15 @@ if(CWIID_LIBRARY)
   target_link_libraries(windstille ${CWIID_LIBRARY})
 endif()
 
-install(TARGETS windstille RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/windstille.sh.in
+  ${CMAKE_BINARY_DIR}/windstille.sh)
+install(TARGETS windstille RUNTIME DESTINATION ${CMAKE_INSTALL_LIBEXECDIR})
+install(FILES
+  ${CMAKE_BINARY_DIR}/windstille.sh
+  RENAME windstille
+  PERMISSIONS OWNER_EXECUTE OWNER_READ OWNER_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+  DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # build and install data
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data/images/decal/)
