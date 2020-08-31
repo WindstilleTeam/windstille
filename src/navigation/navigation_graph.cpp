@@ -17,6 +17,7 @@
 */
 
 #include <iomanip>
+#include <algorithm>
 
 #include "display/display.hpp"
 #include "display/color.hpp"

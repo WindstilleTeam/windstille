@@ -20,6 +20,8 @@
 #ifndef HEADER_WINDSTILLE_COLLISION_COLLISION_ENGINE_HPP
 #define HEADER_WINDSTILLE_COLLISION_COLLISION_ENGINE_HPP
 
+#include <vector>
+
 #include "collision/collision_object.hpp"
 
 class DrawingContext;
