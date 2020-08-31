@@ -21,39 +21,10 @@
 #include <stdexcept>
 #include <sstream>
 #include <stdlib.h>
-#ifdef HAVE_BINRELOC
-#  include <binreloc.h>
-#endif
 
 std::string System::find_default_datadir()
 {
-#ifdef HAVE_BINRELOC
-  std::string datadir = "data/";
-
-  BrInitError error;
-  if (!br_init(&error))
-  {
-    std::ostringstream out;
-    out << "Error: Couldn't init binreloc: " << error;
-    throw std::runtime_error(out.str());
-  }
-  else
-  {
-    char* c_prefix = br_find_exe_dir(NULL);
-    if (!c_prefix)
-    {
-      throw std::runtime_error("Error: Couldn't find prefix");
-    }
-    else
-    {
-      datadir = c_prefix;
-      free(c_prefix);
-      datadir += "/data/";
-
-      return datadir;
-    }
-  }
-#elif _WIN32
+#if _WIN32
   // TODO: do something with GetModuleFileName()
   return "data/";
 #else
