@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_GUI_MENU_HPP
 #define HEADER_WINDSTILLE_GUI_MENU_HPP
 
+#include <functional>
+
 namespace gui {
 
 class GUIManager;
@@ -48,14 +50,14 @@ public:
 
   EnumMenuItem& add_enum(const std::string& name,
                          int index,
-                         const boost::function<void (int)>& callback = boost::function<void (int)>());
+                         const std::function<void (int)>& callback = std::function<void (int)>());
 
   void  add_slider(const std::string& name,
                    int value, int mix_value, int max_value, int step,
-                   const boost::function<void (int)>& callback = boost::function<void (int)>());
+                   const std::function<void (int)>& callback = std::function<void (int)>());
 
   void  add_button(const std::string& name,
-                   const boost::function<void ()>& callback = boost::function<void ()>());
+                   const std::function<void ()>& callback = std::function<void ()>());
 
   RootComponent*  get_root() const;
 

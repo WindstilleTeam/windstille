@@ -70,8 +70,8 @@ public:
   bool has_undo() const;
   bool has_redo() const;
 
-  void execute(const boost::function<void ()>& undo_callback,
-               const boost::function<void ()>& redo_callback);
+  void execute(const std::function<void ()>& undo_callback,
+               const std::function<void ()>& redo_callback);
   void execute(CommandHandle cmd);
   /** @} */
 

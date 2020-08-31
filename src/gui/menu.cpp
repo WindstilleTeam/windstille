@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <functional>
+
 #include "gui/root_component.hpp"
 #include "gui/gui_manager.hpp"
 #include "gui/menu_item.hpp"
@@ -48,7 +50,7 @@ Menu::~Menu()
 
 EnumMenuItem&
 Menu::add_enum(const std::string& name, int index,
-               const boost::function<void (int)>& callback)
+               const std::function<void (int)>& callback)
 {
   std::unique_ptr<EnumMenuItem> enum_item(new EnumMenuItem(menu.get(), name, index));
 
@@ -63,7 +65,7 @@ Menu::add_enum(const std::string& name, int index,
 void
 Menu::add_slider(const std::string& name,
                  int value, int min_value, int max_value, int step,
-                 const boost::function<void (int)>& callback)
+                 const std::function<void (int)>& callback)
 {
   std::unique_ptr<SliderMenuItem> slider(new SliderMenuItem(menu.get(), name, value, min_value, max_value, step));
   if (callback)
@@ -73,7 +75,7 @@ Menu::add_slider(const std::string& name,
 
 void
 Menu::add_button(const std::string& name,
-                 const boost::function<void ()>& callback)
+                 const std::function<void ()>& callback)
 {
   std::unique_ptr<ButtonMenuItem> scenario_button(new ButtonMenuItem(menu.get(), name));
   if (callback)

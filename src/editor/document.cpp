@@ -150,8 +150,8 @@ Document::execute(CommandHandle cmd)
 }
 
 void
-Document::execute(const boost::function<void ()>& undo_callback,
-                  const boost::function<void ()>& redo_callback)
+Document::execute(const std::function<void ()>& undo_callback,
+                  const std::function<void ()>& redo_callback)
 {
   execute(CommandHandle(new FunctorCommand(undo_callback, redo_callback)));
 }

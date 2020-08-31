@@ -19,19 +19,19 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_FUNCTOR_COMMAND_HPP
 #define HEADER_WINDSTILLE_EDITOR_FUNCTOR_COMMAND_HPP
 
-#include <boost/function.hpp>
+#include <functional.hpp>
 
 #include "editor/command.hpp"
 
 class FunctorCommand : public Command
 {
 private:
-  boost::function<void ()> undo_callback;
-  boost::function<void ()> redo_callback;
+  std::function<void ()> undo_callback;
+  std::function<void ()> redo_callback;
 
 public:
-  FunctorCommand(const boost::function<void ()>& undo_callback_,
-                 const boost::function<void ()>& redo_callback_)
+  FunctorCommand(const std::function<void ()>& undo_callback_,
+                 const std::function<void ()>& redo_callback_)
     : undo_callback(undo_callback_),
       redo_callback(redo_callback_)
   {}
