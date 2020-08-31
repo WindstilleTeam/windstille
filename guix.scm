@@ -15,7 +15,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (set! %load-path
-  (cons* "/ipfs/QmetP3eCAM9q3VPCj9BvjFdWkTA7voycebnXjyfc2zacFE/guix-cocfree_v0.0.0-45-g0fe3c86"
+  (cons* "/ipfs/QmX6nVomBirTsHRVDiuQQgPsRWoS7HxcgFeAgwJWdGQ332/guix-cocfree_0.0.0-62-g3b27118"
          %load-path))
 
 (use-modules (guix build-system cmake)
@@ -28,10 +28,12 @@
              (gnu packages flex)
              (gnu packages fontutils)
              (gnu packages game-development)
+             (gnu packages gcc)
              (gnu packages gettext)
              (gnu packages gl)
              (gnu packages glib)
              (gnu packages gtk)
+             (gnu packages gnome)
              (gnu packages image)
              (gnu packages maths)
              (gnu packages netpbm)
@@ -56,7 +58,8 @@
     `(#:tests? #f))
    (build-system cmake-build-system)
    (native-inputs
-    `(("pkg-config" ,pkg-config)))
+    `(("pkg-config" ,pkg-config)
+      ("gcc" ,gcc-10)))
    (inputs
     `(("sdl2" ,sdl2)
       ("sdl2-image" ,sdl2-image)
@@ -77,6 +80,7 @@
       ("glm" ,glm)
       ("fmt" ,fmt)
       ("gtkmm-2" ,gtkmm-2)
+      ("gtkglext" ,gtkglext)
       ("gtkglextmm" ,gtkglextmm)
       ("xcftools-jjorge" ,xcftools-jjorge)))
    (synopsis (synopsis-from-source %source-dir))
