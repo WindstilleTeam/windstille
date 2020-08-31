@@ -80,6 +80,8 @@ public:
       bottom(rect.bottom)
   {}
 
+  constexpr Rect& operator=(const Rect&) = default;
+
   //: Rect += Rect operator.
   Rect &operator+=(const Rect &r)
   { left += r.left; top += r.top; right += r.right; bottom += r.bottom; return *this; }
@@ -268,6 +270,8 @@ public:
       right(rect.right),
       bottom(rect.bottom)
   {}
+
+  constexpr Rectf& operator=(const Rectf&) = default;
 
   //: Rect += Rect operator.
   Rectf &operator+=(const Rectf &r)

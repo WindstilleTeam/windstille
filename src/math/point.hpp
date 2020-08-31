@@ -61,15 +61,13 @@ public:
       y(y_)
   {}
 
-  Point(const Point &p)
-    : x(p.x),
-      y(p.y)
-  {}
-
+  constexpr Point(const Point &p) = default;
   explicit Point(const Vector2f& p);
 
   // Operations:
 public:
+  constexpr Point& operator=(Point const& p) = default;
+
   //: Return a rotated version of this point.
   //param hotspot: The point around which to rotate.
   //param angle: The amount of degrees to rotate by, clockwise.
