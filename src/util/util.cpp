@@ -23,7 +23,7 @@
 #include <errno.h>
 #include <string.h>
 #include <stdexcept>
-#include <boost/scoped_array.hpp>
+#include <vector>
 
 std::string dirname(const std::string& filename)
 {
@@ -146,9 +146,9 @@ uint32_t read_uint32_t(std::istream& in)
 
 std::string read_string(std::istream& in, size_t size)
 {
-  boost::scoped_array<char> buffer(new char[size+1]);
+  std::vector<char> buffer(size + 1);
 
-  if (!in.read(reinterpret_cast<char*>(buffer.get()), size))
+  if (!in.read(buffer.data(), size))
   {
     std::ostringstream msg;
     msg << "Problem reading string value: " << strerror(errno);
@@ -157,7 +157,7 @@ std::string read_string(std::istream& in, size_t size)
   else
   {
     buffer[size] = '\0';
-    return std::string(buffer.get());
+    return std::string(buffer.data());
   }
 }
 

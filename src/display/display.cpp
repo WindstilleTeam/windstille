@@ -19,7 +19,6 @@
 #include "display/display.hpp"
 
 #include <GL/glew.h>
-#include <boost/scoped_array.hpp>
 #include <errno.h>
 #include <fstream>
 #include <jpeglib.h>
@@ -480,9 +479,9 @@ Display::save_screenshot(const Pathname& filename)
 
   int len = size.width * size.height * 3;
 
-  boost::scoped_array<GLbyte> pixels(new GLbyte[len]);
+  std::vector<GLbyte> pixels(len);
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
-  glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, pixels.get());
+  glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
   assert_gl("Display::save_screenshot()");
 
   if (false)
@@ -497,7 +496,7 @@ Display::save_screenshot(const Pathname& filename)
         << "255\n";
 
     for(int y = size.height-1; y >= 0; --y)
-      out.write(reinterpret_cast<const char*>(pixels.get() + y*pitch), pitch);
+      out.write(reinterpret_cast<const char*>(pixels.data() + y*pitch), pitch);
 
     out.close();
   }
@@ -535,11 +534,11 @@ Display::save_screenshot(const Pathname& filename)
 
       jpeg_start_compress(&m_cinfo, TRUE);
 
-      boost::scoped_array<JSAMPROW> row_pointer(new JSAMPROW[size.height]);
+      std::vector<JSAMPROW> row_pointer(size.height);
 
       for(int y = 0; y < size.height; ++y)
       {
-        row_pointer[size.height - y - 1] = reinterpret_cast<JSAMPLE*>(pixels.get() + y*pitch);
+        row_pointer[size.height - y - 1] = reinterpret_cast<JSAMPLE*>(pixels.data() + y*pitch);
       }
 
       while(m_cinfo.next_scanline < m_cinfo.image_height)
@@ -585,13 +584,13 @@ Display::save_screenshot(const Pathname& filename)
       png_set_compression_level(png_ptr, 0);
       png_write_info(png_ptr, info_ptr);
 
-      boost::scoped_array<png_bytep> row_pointers(new png_bytep[size.height]);
+      std::vector<png_bytep> row_pointers(size.height);
 
       // generate row pointers
       for (int k = 0; k < size.height; k++)
-        row_pointers[k] = reinterpret_cast<png_byte*>(pixels.get() + ((size.height - k - 1) * pitch));
+        row_pointers[k] = reinterpret_cast<png_byte*>(pixels.data() + ((size.height - k - 1) * pitch));
 
-      png_write_image(png_ptr, row_pointers.get());
+      png_write_image(png_ptr, row_pointers.data());
 
       png_write_end(png_ptr, info_ptr);
 

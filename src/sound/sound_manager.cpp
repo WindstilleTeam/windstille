@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <boost/scoped_array.hpp>
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
@@ -113,11 +112,11 @@ SoundManager::load_file_into_buffer(const Pathname& filename)
 
   try
   {
-    boost::scoped_array<char> samples(new char[file->get_size()]);
+    std::vector<char> samples(file->get_size());
 
-    file->read(samples.get(), file->get_size());
+    file->read(samples.data(), file->get_size());
 
-    alBufferData(buffer, format, samples.get(),
+    alBufferData(buffer, format, samples.data(),
                  static_cast<ALsizei> (file->get_size()),
                  static_cast<ALsizei> (file->get_rate()));
 

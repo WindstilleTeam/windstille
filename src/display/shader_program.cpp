@@ -18,9 +18,10 @@
 
 #include "display/shader_program.hpp"
 
-#include <boost/scoped_array.hpp>
+#include <assert.h>
 #include <iostream>
 #include <stdexcept>
+#include <vector>
 
 #include "display/assert_gl.hpp"
 #include "display/assert_gl.hpp"
@@ -217,9 +218,9 @@ ShaderProgram::get_info_log()
 
   if (info_log_len > 0)
   {
-    boost::scoped_array<GLchar> info_log(new GLchar[info_log_len]);
-    glGetProgramInfoLog(m_handle, info_log_len, &charsWritten, info_log.get());
-    return info_log.get();
+    std::vector<GLchar> info_log(info_log_len);
+    glGetProgramInfoLog(m_handle, info_log_len, &charsWritten, info_log.data());
+    return info_log.data();
   }
   else
   {

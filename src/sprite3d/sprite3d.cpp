@@ -18,8 +18,6 @@
 
 #include "sprite3d/sprite3d.hpp"
 
-#include <boost/scoped_array.hpp>
-
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/quaternion.hpp>
@@ -390,7 +388,7 @@ Sprite3D::draw(const Vector2f& pos, const Matrix& modelview)
     state.bind_texture(mesh.texture);
 
     // blend between frame1 + frame2
-    boost::scoped_array<float> verts(new float[mesh.vertex_count * 3]);
+    std::vector<float> verts(mesh.vertex_count * 3);
     if(frame1.rot == frame2.rot)
     {
       for(uint16_t v = 0; v < mesh.vertex_count*3; ++v)
@@ -424,7 +422,7 @@ Sprite3D::draw(const Vector2f& pos, const Matrix& modelview)
     state.activate();
 
     // draw mesh
-    glVertexPointer(3, GL_FLOAT, 0, verts.get());
+    glVertexPointer(3, GL_FLOAT, 0, verts.data());
     glNormalPointer(GL_FLOAT, 0, &*mesh.normals.begin());
     glTexCoordPointer(2, GL_FLOAT, 0, &*mesh.tex_coords.begin());
     glDrawElements(GL_TRIANGLES, mesh.triangle_count * 3, GL_UNSIGNED_SHORT,

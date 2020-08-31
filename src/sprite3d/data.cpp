@@ -18,7 +18,6 @@
 
 #include "sprite3d/data.hpp"
 
-#include <boost/scoped_array.hpp>
 #include <fstream>
 #include <string.h>
 #include <errno.h>

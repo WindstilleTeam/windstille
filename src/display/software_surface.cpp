@@ -17,7 +17,6 @@
 */
 
 #include <fmt/format.h>
-#include <boost/scoped_array.hpp>
 #include <png.h>
 #include <errno.h>
 #include <sstream>
@@ -316,14 +315,14 @@ SoftwareSurface::save_png(const std::string& filename) const
       png_set_compression_level(png_ptr, 6);
       png_write_info(png_ptr, info_ptr);
 
-      boost::scoped_array<png_bytep> row_pointers(new png_bytep[get_height()]);
+      std::vector<png_bytep> row_pointers(get_height());
 
       for (int y = 0; y < get_height(); ++y)
       {
         row_pointers[y] = (pixels + (y * pitch));
       }
 
-      png_write_image(png_ptr, row_pointers.get());
+      png_write_image(png_ptr, row_pointers.data());
 
       png_write_end(png_ptr, info_ptr);
 
