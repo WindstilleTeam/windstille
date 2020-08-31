@@ -17,7 +17,6 @@
 */
 
 #include <iostream>
-#include <boost/bind.hpp>
 
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"

@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_EDITOR_DOCUMENT_HPP
 
 #include <memory>
-#include <boost/function.hpp>
 
 #include "editor/group_command.hpp"
 #include "editor/selection.hpp"

@@ -19,9 +19,6 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_HPP
 
-#include <boost/weak_ptr.hpp>
-#include <boost/function.hpp>
-
 #include "math/vector2f.hpp"
 #include "editor/select_mask.hpp"
 #include "util/file_writer.hpp"

@@ -19,7 +19,6 @@
 #include "editor/decal_object_model.hpp"
 
 #include <iostream>
-#include <boost/bind.hpp>
 
 #include "display/drawing_parameters.hpp"
 #include "display/scene_context.hpp"

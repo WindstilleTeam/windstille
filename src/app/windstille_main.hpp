@@ -41,7 +41,7 @@
  *
  * To compile Windstille you need:
  *
- * OpenAL, OpenGL, SDL, SDL_image, freetype, libpng, physfs, boost, scons, bison, flex
+ * OpenAL, OpenGL, SDL, SDL_image, freetype, libpng, physfs, scons, bison, flex
  */
 
 #ifndef HEADER_WINDSTILLE_APP_WINDSTILLE_MAIN_HPP

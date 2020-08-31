@@ -17,7 +17,6 @@
 */
 
 #include <iostream>
-#include <boost/function.hpp>
 #include <gtkmm/treeselection.h>
 #include <gtkmm/separatortoolitem.h>
 #include <gtkmm/stock.h>

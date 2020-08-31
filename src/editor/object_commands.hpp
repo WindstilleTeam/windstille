@@ -19,8 +19,6 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_OBJECT_COMMANDS_HPP
 #define HEADER_WINDSTILLE_EDITOR_OBJECT_COMMANDS_HPP
 
-#include <boost/function.hpp>
-
 #include "editor/layer.hpp"
 #include "editor/object_model.hpp"
 #include "editor/command.hpp"

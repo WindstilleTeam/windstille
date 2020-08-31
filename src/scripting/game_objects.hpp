@@ -20,7 +20,6 @@
 #define HEADER_WINDSTILLE_SCRIPTING_GAME_OBJECTS_HPP
 
 #ifndef SCRIPTING_API
-#  include <boost/weak_ptr.hpp>
 #  include "engine/game_object.hpp"
 #  include "objects/test_object.hpp"
 #  include "objects/player.hpp"

@@ -20,7 +20,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <gtkmm.h>
-#include <boost/bind.hpp>
 
 #include "display/compositor.hpp"
 #include "display/display.hpp"
