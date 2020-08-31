@@ -95,6 +95,11 @@ pkg_search_module(OGG REQUIRED ogg)
 pkg_search_module(VORBIS REQUIRED vorbis)
 pkg_search_module(VORBISFILE REQUIRED vorbisfile)
 
+pkg_search_module(SIGCXX REQUIRED sigc++-2.0)
+
+find_library(SQUIRREL_LIBRARY squirrel REQUIRED)
+find_library(SQSTDLIB_LIBRARY sqstdlib REQUIRED)
+
 if(BUILD_EDITOR)
   pkg_search_module(GTKMM REQUIRED gtkmm-2.4)
   pkg_search_module(GTKGLEXTMM REQUIRED gtkglextmm-1.2)
@@ -103,7 +108,6 @@ endif()
 include_directories(.)
 include_directories(src/)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/src/)
-include_directories(SYSTEM external/SQUIRREL3/include)
 include_directories(SYSTEM external/miniswig)
 # include_directories(SYSTEM external/glm-0.9.6.1/)
 # include_directories(SYSTEM external/googletest/include/)
@@ -115,11 +119,6 @@ bison_target(parser
 flex_target(MyScanner
   ${CMAKE_CURRENT_SOURCE_DIR}/external/miniswig/lexer.ll
   ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
-
-file(GLOB SQUIRREL_SOURCES
-  external/SQUIRREL3/squirrel/*.cpp
-  external/SQUIRREL3/sqstdlib/*.cpp)
-add_library(squirrel ${SQUIRREL_SOURCES})
 
 file(GLOB MINISWIG_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   external/miniswig/create_docu.cpp
@@ -200,8 +199,9 @@ target_include_directories(wstlib SYSTEM PUBLIC
   ${Boost_INCLUDE_DIRS}
   ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(wstlib PUBLIC
-  squirrel
   fmt::fmt
+  ${SQUIRREL_LIBRARY}
+  ${SQSTDLIB_LIBRARY}
   ${SDL2_LIBRARIES}
   ${SDL2_IMAGE_LIBRARIES}
   ${FREETYPE_LIBRARIES}

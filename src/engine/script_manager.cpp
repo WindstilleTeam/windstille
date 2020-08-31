@@ -20,9 +20,9 @@
 
 #include <stdarg.h>
 #include <stdio.h>
-#include <sqstdaux.h>
-#include <sqstdmath.h>
-#include <sqstdstring.h>
+#include <squirrel/sqstdaux.h>
+#include <squirrel/sqstdmath.h>
+#include <squirrel/sqstdstring.h>
 #include <fstream>
 #include <sstream>
 

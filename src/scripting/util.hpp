@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_SCRIPTING_UTIL_HPP
 
 #include <vector>
-#include <squirrel.h>
+#include <squirrel/squirrel.h>
 #include <string>
 
 namespace lisp {

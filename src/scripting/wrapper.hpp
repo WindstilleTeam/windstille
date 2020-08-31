@@ -6,7 +6,7 @@
 #ifndef __windstille_WRAPPER_H__
 #define __windstille_WRAPPER_H__
 
-#include <squirrel.h>
+#include <squirrel/squirrel.h>
 
 namespace Scripting
 {
