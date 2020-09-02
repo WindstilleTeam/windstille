@@ -17,6 +17,7 @@
 */
 
 #include <iostream>
+#include <unistd.h>
 
 #include "math/random.hpp"
 #include "sound/sound_manager.hpp"
