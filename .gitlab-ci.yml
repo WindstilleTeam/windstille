@@ -20,29 +20,24 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 before_script:
+  - export DEBIAN_FRONTEND=noninteractive
   - apt-get -qq update
   - apt-get -qq -y install lsb-release
   - lsb_release -a
   - apt-get -qq -y install
-    clang-6.0
-    g++-8
+    clang-10
+    g++-10
     cmake
     build-essential
     software-properties-common
     desktop-file-utils
     appstream-util
-    libc++-dev
-    libboost-dev
-    libboost-filesystem-dev
-    libboost-system-dev
-    libboost-signals-dev
-    libsdl2-dev
-    libsdl2-image-dev
-    libsdl2-mixer-dev
-    libpng-dev
-    flex
     bison
+    flex
+    xcftools
+    libc++-dev
     libcurl4-gnutls-dev
+    libfmt-dev
     libfreetype6-dev
     libglew-dev
     libglm-dev
@@ -52,8 +47,15 @@ before_script:
     libogg-dev
     libopenal-dev
     libphysfs-dev
+    libpng-dev
+    libsdl2-dev
+    libsdl2-image-dev
+    libsdl2-mixer-dev
+    libsigc++-2.0-dev
+    libsquirrel-dev
     libvorbis-dev
-    xcftools
+    flatpak
+    flatpak-builder
 
 .build_windstille_template: &build_windstille
   stage: build
@@ -67,35 +69,32 @@ before_script:
 build:gcc:release:
   <<: *build_windstille
   variables:
-    CXX: g++-8
-    BUILD_TYPE: Release
+    CXX: "g++-10"
+    BUILD_TYPE: "Release"
 
 build:clang:release:
   <<: *build_windstille
   variables:
-    CXX: clang++-6.0
-    BUILD_TYPE: Release
+    CXX: "clang++-10"
+    BUILD_TYPE: "Release"
 
 build:gcc:debug:
   <<: *build_windstille
   variables:
-    CXX: g++-8
-    BUILD_TYPE: Debug
+    CXX: "g++-10"
+    BUILD_TYPE: "Debug"
 
 build:clang:debug:
   <<: *build_windstille
   variables:
-    CXX: clang++-6.0
-    BUILD_TYPE: Debug
+    CXX: "clang++-10"
+    BUILD_TYPE: "Debug"
 
 build:flatpak:
   stage: build
   script:
-    - add-apt-repository -y ppa:alexlarsson/flatpak
-    - apt-get -qq update
-    - apt-get -qq -y install flatpak flatpak-builder
     - flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    - flatpak install -y flathub org.gnome.Sdk//3.28 org.gnome.Platform//3.28
+    - flatpak install -y flathub org.freedesktop.Platform//20.08 org.freedesktop.Sdk//20.08
     - flatpak-builder --repo=build-flatpak-repo/ build-flatpak/ io.gitlab.windstille.Windstille.json
     - flatpak build-bundle build-flatpak-repo/ windstille.flatpak io.gitlab.windstille.Windstille
   artifacts:
