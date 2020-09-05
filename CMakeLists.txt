@@ -14,16 +14,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.15)
 project(windstille VERSION 0.3.0)
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/mk/cmake)
+
+include(GetProjectVersion)
+include(GNUInstallDirs)
+include(CheckIncludeFile)
 
 option(BUILD_EDITOR "Build Windstille editor" ON)
 option(BUILD_TESTS "Build test cases" OFF)
 option(BUILD_EXTRA "Build extra stuff" OFF)
 option(WARNINGS "Switch on extra warnings" OFF)
 option(WERROR "Turn warnings into errors" OFF)
-
-include(GNUInstallDirs)
 
 if(WARNINGS)
   set(WARNINGS_CXX_FLAGS ${WARNINGS_CXX_FLAGS}
@@ -43,25 +47,9 @@ if (BUILD_TESTS)
   enable_testing()
 endif(BUILD_TESTS)
 
-find_package(Git)
-if(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
-  execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always HEAD
-    OUTPUT_VARIABLE GIT_REPO_VERSION
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-  execute_process(COMMAND ${GIT_EXECUTABLE} log -n 1 --pretty=%cd --date=format:%Y-%m-%d ${GIT_REPO_VERSION}
-    OUTPUT_VARIABLE GIT_REPO_DATE
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
-else()
-  set(GIT_REPO_VERSION "${PROJECT_VERSION}")
-  string(TIMESTAMP GIT_REPO_DATE "%Y-%m-%d")
-endif()
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
-include(CheckIncludeFile)
 
 find_program(XCF2PNG xcf2png)
 if(NOT XCF2PNG)
@@ -108,8 +96,6 @@ include_directories(.)
 include_directories(src/)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/src/)
 include_directories(SYSTEM external/miniswig)
-# include_directories(SYSTEM external/glm-0.9.6.1/)
-# include_directories(SYSTEM external/googletest/include/)
 
 bison_target(parser
   ${CMAKE_CURRENT_SOURCE_DIR}/external/miniswig/parser.yy
@@ -195,8 +181,7 @@ target_include_directories(wstlib SYSTEM PUBLIC
   ${OPENAL_INCLUDE_DIR}
   ${OGG_INCLUDE_DIRS}
   ${VORBIS_INCLUDE_DIRS}
-  ${VORBISFILE_INCLUDE_DIRS}
-  ${CMAKE_THREAD_LIBS_INIT})
+  ${VORBISFILE_INCLUDE_DIRS})
 target_link_libraries(wstlib PUBLIC
   ${SIGCXX_LIBRARIES}
   fmt::fmt
