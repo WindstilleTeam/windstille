@@ -3,7 +3,7 @@
     "sources": [
         {
             "type": "git",
-            "url": "https://github.com/GNOME/pangox-compat.git",
+            "url": "https://gitlab.gnome.org/Archive/pangox-compat.git",
             "commit": "2de398390cf95911ef3b7d1a1f1ae98db33c48b7"
         }
     ],

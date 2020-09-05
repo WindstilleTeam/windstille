@@ -28,28 +28,89 @@
         "shared-modules/gtkglextmm/gtkglextmm-1.2.0.json",
         "shared-modules/xcftools/xcftools-git.json",
         {
-            "name": "boost",
-            "buildsystem": "simple",
-            "build-commands": [
-                "./bootstrap.sh --prefix=/app --with-libraries=system,filesystem,signals",
-                "./b2 install"
+            "name": "fmt",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://github.com/fmtlib/fmt/archive/6.1.2.tar.gz",
+                    "sha256": "1cafc80701b746085dddf41bd9193e6d35089e1c6ec1940e037fcb9c98f62365"
+                }
+            ],
+            "buildsystem": "cmake-ninja",
+            "builddir": "true",
+            "config-opts": [
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DFMT_TEST=OFF"
+            ],
+            "cleanup": [
+                "*.a",
+                "/bin",
+                "/include",
+                "/lib/cmake",
+                "/share"
+            ]
+        },
+        {
+            "name": "sigc++",
+            "config-opts": [ "--disable-documentation" ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.9/libsigc++-2.9.3.tar.xz",
+                    "sha256": "0bf9b301ad6198c550986c51150a646df198e8d1d235270c16486b0dda30097f"
+                }
+            ]
+        },
+        {
+            "name": "squirrel",
+            "buildsystem": "cmake-ninja",
+            "builddir": "true",
+            "config-opts": [
+                "-DCMAKE_BUILD_TYPE=Release"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/albertodemichelis/squirrel.git",
+                    "commit": "a21721642e9774692557da6ce9b7b9443a56330d"
+                }
+            ]
+        },
+        {
+            "name": "cmake",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://github.com/Kitware/CMake/releases/download/v3.18.2/cmake-3.18.2.tar.gz",
+                    "sha256": "5d4e40fc775d3d828c72e5c45906b4d9b59003c9433ff1b36a1cb552bbd51d7e"
+                }
+            ]
+        },
+        {
+            "name": "gcc",
+            "config-opts": [
+                "--disable-multilib",
+                "--enable-languages=c,c++"
             ],
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2",
-                    "sha256": "5721818253e6a0989583192f96782c4a98eb6204965316df9f5ad75819225ca9"
+                    "url": "https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz",
+                    "sha256": "b8dd4368bb9c7f0b98188317ee0254dd8cc99d1e3a18d0ff146c855fe16c1d8c"
                 }
-            ],
-            "cleanup": [
-                "/include",
-                "/lib/*.a"
             ]
         },
         {
             "name": "windstille",
-            "buildsystem": "cmake-ninja",
+            "buildsystem": "cmake",
+            "env": {
+                "CC": "/app/bin/gcc",
+                "CXX": "/app/bin/g++"
+            },
             "config-opts": [
+                "-DCMAKE_C_COMPILER=/app/bin/gcc",
+                "-DCMAKE_CXX_COMPILER=/app/bin/g++",
+                "-DCMAKE_BUILD_TYPE=Release",
                 "-DCMAKE_BUILD_TYPE=Release",
                 "-DCMAKE_INSTALL_PREFIX:PATH=/app",
                 "-DBUILD_EDITOR=ON"
