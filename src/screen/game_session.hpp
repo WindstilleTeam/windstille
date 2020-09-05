@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_SCREEN_GAME_SESSION_HPP
 
 #include <string>
-#include <squirrel/squirrel.h>
+#include <squirrel.h>
 
 #include "app/console.hpp"
 #include "app/globals.hpp"

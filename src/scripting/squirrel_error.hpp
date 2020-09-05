@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCRIPTING_SQUIRREL_ERROR_HPP
 #define HEADER_WINDSTILLE_SCRIPTING_SQUIRREL_ERROR_HPP
 
-#include <squirrel/squirrel.h>
+#include <squirrel.h>
 #include <stdexcept>
 
 class Pathname;

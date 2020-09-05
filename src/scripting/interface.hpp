@@ -21,7 +21,7 @@
 
 #ifndef SCRIPTING_API
 #include <string>
-#include <squirrel/squirrel.h>
+#include <squirrel.h>
 #endif
 
 /*

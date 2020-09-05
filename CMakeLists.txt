@@ -77,11 +77,19 @@ pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image IMPORTED_TARGET)
 pkg_search_module(OGG REQUIRED ogg IMPORTED_TARGET)
 pkg_search_module(VORBIS REQUIRED vorbis IMPORTED_TARGET)
 pkg_search_module(VORBISFILE REQUIRED vorbisfile IMPORTED_TARGET)
-
 pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
 
-find_library(SQUIRREL_LIBRARY squirrel REQUIRED)
-find_library(SQSTDLIB_LIBRARY sqstdlib REQUIRED)
+# pkg_search_module(SQUIRREL squirrel3 IMPORTED_TARGET)
+if(NOT SQUIRREL_FOUND)
+  find_library(SQUIRREL_LIBRARY NAMES squirrel squirrel3 REQUIRED)
+  find_library(SQSTDLIB_LIBRARY NAMES sqstdlib sqstdlib3 REQUIRED)
+  find_path(SQUIRREL_INCLUDE_DIRS NAMES squirrel.h PATH_SUFFIXES squirrel squirrel3)
+
+  add_library(PkgConfig::SQUIRREL INTERFACE IMPORTED)
+  target_link_libraries(PkgConfig::SQUIRREL INTERFACE ${SQUIRREL_LIBRARY} ${SQSTDLIB_LIBRARY})
+  target_include_directories(PkgConfig::SQUIRREL INTERFACE ${SQUIRREL_INCLUDE_DIRS})
+  message(STATUS "Found Squirrel: ${SQUIRREL_LIBRARY} ${SQSTDLIB_LIBRARY} ${SQUIRREL_INCLUDE_DIRS}")
+endif()
 
 if(BUILD_EDITOR)
   pkg_search_module(GTKMM REQUIRED gtkmm-2.4 IMPORTED_TARGET)
@@ -169,8 +177,7 @@ target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
    ${OPENAL_INCLUDE_DIR})
 target_link_libraries(wstlib PUBLIC
   ${OPENAL_LIBRARY}
-  ${SQSTDLIB_LIBRARY}
-  ${SQUIRREL_LIBRARY}
+  PkgConfig::SQUIRREL
   Freetype::Freetype
   GLEW::GLEW
   JPEG::JPEG

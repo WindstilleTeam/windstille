@@ -25,7 +25,7 @@
 #include <vector>
 #include <list>
 #include <map>
-#include <squirrel/squirrel.h>
+#include <squirrel.h>
 #include <iostream>
 #include <memory>
 
