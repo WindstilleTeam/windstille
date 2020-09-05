@@ -9,7 +9,7 @@
 
 %}
 
-%pure-parser
+%define api.pure
 %union {
     char*       str;
     int         ival;
