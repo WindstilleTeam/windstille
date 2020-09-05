@@ -77,7 +77,7 @@ public:
 
   //! Operations:
 public:
-  constexpr Size& operator=(const Size&) = default;
+  Size& operator=(const Size&) = default;
 
   //: Size += Size operator.
   Size &operator+=(const Size &s)
@@ -143,7 +143,7 @@ public:
 
   //! Operations:
 public:
-  constexpr Sizef& operator=(const Sizef&) = default;
+  Sizef& operator=(const Sizef&) = default;
 
   //: Size += Size operator.
   Sizef &operator+=(const Sizef &s)

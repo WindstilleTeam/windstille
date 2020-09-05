@@ -43,7 +43,7 @@ public:
     PathPoint(const Vector2f& pos_, float zoom_, float rotation_ = 0.0f)
       : pos(pos_), zoom(zoom_), rotation(rotation_) {}
 
-    bool operator==(const PathPoint& p) {
+    bool operator==(const PathPoint& p) const {
       return p.pos == pos && p.zoom == zoom;
     }
   };

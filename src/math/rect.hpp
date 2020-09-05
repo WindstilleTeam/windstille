@@ -80,7 +80,7 @@ public:
       bottom(rect.bottom)
   {}
 
-  constexpr Rect& operator=(const Rect&) = default;
+  Rect& operator=(const Rect&) = default;
 
   //: Rect += Rect operator.
   Rect &operator+=(const Rect &r)
@@ -271,7 +271,7 @@ public:
       bottom(rect.bottom)
   {}
 
-  constexpr Rectf& operator=(const Rectf&) = default;
+  Rectf& operator=(const Rectf&) = default;
 
   //: Rect += Rect operator.
   Rectf &operator+=(const Rectf &r)

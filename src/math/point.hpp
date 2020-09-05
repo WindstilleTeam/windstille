@@ -66,7 +66,7 @@ public:
 
   // Operations:
 public:
-  constexpr Point& operator=(Point const& p) = default;
+  Point& operator=(Point const& p) = default;
 
   //: Return a rotated version of this point.
   //param hotspot: The point around which to rotate.
