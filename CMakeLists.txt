@@ -67,35 +67,30 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glm REQUIRED)
 find_package(fmt REQUIRED)
+find_package(PkgConfig REQUIRED)
 
 find_library(CWIID_LIBRARY cwiid)
 
-find_package(PkgConfig REQUIRED)
+pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
+pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image IMPORTED_TARGET)
 
-set(PROFILE_CXXFLAGS "-O2 -g3 -pg")
-set(PROFILE_LINKFLAGS "-pg")
+pkg_search_module(OGG REQUIRED ogg IMPORTED_TARGET)
+pkg_search_module(VORBIS REQUIRED vorbis IMPORTED_TARGET)
+pkg_search_module(VORBISFILE REQUIRED vorbisfile IMPORTED_TARGET)
 
-pkg_search_module(SDL2 REQUIRED sdl2)
-pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
-
-pkg_search_module(OGG REQUIRED ogg)
-pkg_search_module(VORBIS REQUIRED vorbis)
-pkg_search_module(VORBISFILE REQUIRED vorbisfile)
-
-pkg_search_module(SIGCXX REQUIRED sigc++-2.0)
+pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
 
 find_library(SQUIRREL_LIBRARY squirrel REQUIRED)
 find_library(SQSTDLIB_LIBRARY sqstdlib REQUIRED)
 
 if(BUILD_EDITOR)
-  pkg_search_module(GTKMM REQUIRED gtkmm-2.4)
-  pkg_search_module(GTKGLEXTMM REQUIRED gtkglextmm-1.2)
+  pkg_search_module(GTKMM REQUIRED gtkmm-2.4 IMPORTED_TARGET)
+  pkg_search_module(GTKGLEXTMM REQUIRED gtkglextmm-1.2 IMPORTED_TARGET)
 endif()
 
 include_directories(.)
 include_directories(src/)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/src/)
-include_directories(SYSTEM external/miniswig)
 
 bison_target(parser
   ${CMAKE_CURRENT_SOURCE_DIR}/external/miniswig/parser.yy
@@ -115,6 +110,7 @@ list(APPEND MINISWIG_SOURCES
   ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp)
 add_executable(miniswig ${MINISWIG_SOURCES})
+target_include_directories(miniswig SYSTEM PRIVATE external/miniswig/)
 
 # compile scripting stuff
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/)
@@ -169,36 +165,26 @@ file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/util/*.cpp)
 add_library(wstlib STATIC ${WSTLIB_SOURCES})
 target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
-target_include_directories(wstlib SYSTEM PUBLIC
-  ${SIGCXX_INCLUDE_DIRS}
-  ${SDL2_INCLUDE_DIRS}
-  ${SDL2_IMAGE_INCLUDE_DIRS}
-  ${FREETYPE_INCLUDE_DIRS}
-  ${OPENGL_INCLUDE_DIRS}
-  ${GLEW_INCLUDE_DIRS}
-  ${PNG_INCLUDE_DIRS}
-  ${JPEG_INCLUDE_DIRS}
-  ${OPENAL_INCLUDE_DIR}
-  ${OGG_INCLUDE_DIRS}
-  ${VORBIS_INCLUDE_DIRS}
-  ${VORBISFILE_INCLUDE_DIRS})
+ target_include_directories(wstlib SYSTEM PUBLIC
+   ${OPENAL_INCLUDE_DIR})
 target_link_libraries(wstlib PUBLIC
-  ${SIGCXX_LIBRARIES}
-  fmt::fmt
-  ${SQUIRREL_LIBRARY}
-  ${SQSTDLIB_LIBRARY}
-  ${SDL2_LIBRARIES}
-  ${SDL2_IMAGE_LIBRARIES}
-  ${FREETYPE_LIBRARIES}
-  ${OPENGL_LIBRARIES}
-  ${GLEW_LIBRARIES}
-  ${PNG_LIBRARIES}
-  ${JPEG_LIBRARIES}
   ${OPENAL_LIBRARY}
-  ${OGG_LIBRARIES}
-  ${VORBIS_LIBRARIES}
-  ${VORBISFILE_LIBRARIES}
-  ${CMAKE_THREAD_LIBS_INIT})
+  ${SQSTDLIB_LIBRARY}
+  ${SQUIRREL_LIBRARY}
+  Freetype::Freetype
+  GLEW::GLEW
+  JPEG::JPEG
+  OpenGL::GL
+  OpenGL::GLU
+  PNG::PNG
+  PkgConfig::OGG
+  PkgConfig::SDL2
+  PkgConfig::SDL2_IMAGE
+  PkgConfig::SIGCXX
+  PkgConfig::VORBIS
+  PkgConfig::VORBISFILE
+  Threads::Threads
+  fmt::fmt)
 
 # compile galapix.sdl
 if(BUILD_EDITOR)
@@ -207,13 +193,10 @@ if(BUILD_EDITOR)
 
   add_executable(windstille-editor ${WINDSTILLE_EDITOR_SOURCES})
   target_compile_options(windstille-editor PUBLIC ${WARNINGS_CXX_FLAGS})
-  target_include_directories(windstille-editor SYSTEM PUBLIC
-    ${GTKMM_INCLUDE_DIRS}
-    ${GTKGLEXTMM_INCLUDE_DIRS})
   target_link_libraries(windstille-editor
     wstlib
-    ${GTKMM_LIBRARIES}
-    ${GTKGLEXTMM_LIBRARIES})
+    PkgConfig::GTKMM
+    PkgConfig::GTKGLEXTMM)
 
   configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/windstille-editor.sh.in
