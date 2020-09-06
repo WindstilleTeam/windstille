@@ -1,0 +1,24 @@
+{
+    "name": "fmt",
+    "sources": [
+        {
+            "type": "archive",
+            "url": "https://github.com/fmtlib/fmt/archive/6.1.2.tar.gz",
+            "sha256": "1cafc80701b746085dddf41bd9193e6d35089e1c6ec1940e037fcb9c98f62365"
+        }
+    ],
+    "buildsystem": "cmake-ninja",
+    "builddir": "true",
+    "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DFMT_TEST=OFF"
+    ],
+    "cleanup": [
+        "*.a",
+        "/bin",
+        "/include",
+        "/lib/cmake",
+        "/lib/pkgconfig",
+        "/share"
+    ]
+}

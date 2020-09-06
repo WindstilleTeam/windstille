@@ -1,8 +1,8 @@
 {
     "app-id": "io.gitlab.windstille.Windstille",
-    "runtime": "org.gnome.Platform",
-    "runtime-version": "3.28",
-    "sdk": "org.gnome.Sdk",
+    "runtime": "org.freedesktop.Platform",
+    "runtime-version": "20.08",
+    "sdk": "org.freedesktop.Sdk",
     "rename-icon": "windstille",
     "rename-desktop-file": "windstille.desktop",
     "rename-appdata-file": "windstille.appdata.xml",
@@ -14,92 +14,24 @@
         "--socket=wayland"
     ],
     "modules": [
-        "shared-modules/glu/glu-9.0.0.json",
+        "shared-modules/glu/glu-9.0.1.json",
         "shared-modules/glm/glm-0.9.9.0.json",
         "shared-modules/glew/glew.json",
         "shared-modules/gtkmm/libsigc++-2.10.0.json",
         "shared-modules/gtkmm/glibmm-2.56.0.json",
         "shared-modules/gtkmm/cairomm-1.12.0.json",
+        "shared-modules/pango/pango-1.42.4.json",
         "shared-modules/pangox/pangox-git.json",
+        "shared-modules/gtk2/gtk2.json",
         "shared-modules/gtkmm/pangomm-2.40.1.json",
         "shared-modules/gtkmm/atkmm-2.24.2.json",
         "shared-modules/gtkmm/gtkmm-2.24.5.json",
         "shared-modules/gtkglext/gtkglext-1.2.0.json",
         "shared-modules/gtkglextmm/gtkglextmm-1.2.0.json",
         "shared-modules/xcftools/xcftools-git.json",
-        {
-            "name": "fmt",
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://github.com/fmtlib/fmt/archive/6.1.2.tar.gz",
-                    "sha256": "1cafc80701b746085dddf41bd9193e6d35089e1c6ec1940e037fcb9c98f62365"
-                }
-            ],
-            "buildsystem": "cmake-ninja",
-            "builddir": "true",
-            "config-opts": [
-                "-DCMAKE_BUILD_TYPE=Release",
-                "-DFMT_TEST=OFF"
-            ],
-            "cleanup": [
-                "*.a",
-                "/bin",
-                "/include",
-                "/lib/cmake",
-                "/share"
-            ]
-        },
-        {
-            "name": "sigc++",
-            "config-opts": [ "--disable-documentation" ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.9/libsigc++-2.9.3.tar.xz",
-                    "sha256": "0bf9b301ad6198c550986c51150a646df198e8d1d235270c16486b0dda30097f"
-                }
-            ]
-        },
-        {
-            "name": "squirrel",
-            "buildsystem": "cmake-ninja",
-            "builddir": "true",
-            "config-opts": [
-                "-DCMAKE_BUILD_TYPE=Release"
-            ],
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://github.com/albertodemichelis/squirrel.git",
-                    "commit": "a21721642e9774692557da6ce9b7b9443a56330d"
-                }
-            ]
-        },
-        {
-            "name": "cmake",
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://github.com/Kitware/CMake/releases/download/v3.18.2/cmake-3.18.2.tar.gz",
-                    "sha256": "5d4e40fc775d3d828c72e5c45906b4d9b59003c9433ff1b36a1cb552bbd51d7e"
-                }
-            ]
-        },
-        {
-            "name": "gcc",
-            "config-opts": [
-                "--disable-multilib",
-                "--enable-languages=c,c++"
-            ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz",
-                    "sha256": "b8dd4368bb9c7f0b98188317ee0254dd8cc99d1e3a18d0ff146c855fe16c1d8c"
-                }
-            ]
-        },
+        "shared-modules/sigc++/sigc++-2.9.3.json",
+        "shared-modules/fmt/fmt-6.1.2.json",
+        "shared-modules/squirrel/squirrel.json",
         {
             "name": "windstille",
             "buildsystem": "cmake",
@@ -108,9 +40,6 @@
                 "CXX": "/app/bin/g++"
             },
             "config-opts": [
-                "-DCMAKE_C_COMPILER=/app/bin/gcc",
-                "-DCMAKE_CXX_COMPILER=/app/bin/g++",
-                "-DCMAKE_BUILD_TYPE=Release",
                 "-DCMAKE_BUILD_TYPE=Release",
                 "-DCMAKE_INSTALL_PREFIX:PATH=/app",
                 "-DBUILD_EDITOR=ON"
