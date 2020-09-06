@@ -83,7 +83,7 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
   glTexImage2D(target, 0, format, m_width, m_height, 0, GL_RGBA,
-               GL_UNSIGNED_BYTE, 0);
+               GL_UNSIGNED_BYTE, nullptr);
 
   glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

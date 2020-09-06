@@ -28,7 +28,7 @@ Entity::Entity() :
   velocity(0, 0),
   useable(false),
   use_verb(),
-  parent(0)
+  parent(nullptr)
 {
 }
 
@@ -66,7 +66,7 @@ Entity::set_parent(Entity* parent_)
 Properties
 Entity::get_properties()
 {
-  static PropertySet* type = 0;
+  static PropertySet* type = nullptr;
   if (!type)
   {
     type = new PropertySet("Entity");

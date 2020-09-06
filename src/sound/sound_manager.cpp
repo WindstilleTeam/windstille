@@ -28,8 +28,8 @@
 
 
 SoundManager::SoundManager() :
-  m_device(0),
-  m_context(0),
+  m_device(nullptr),
+  m_context(nullptr),
   m_sound_enabled(false),
   m_voice_channel(*this),
   m_sound_channel(*this),
@@ -43,7 +43,7 @@ SoundManager::SoundManager() :
 {
   try
   {
-    m_device = alcOpenDevice(NULL);
+    m_device = alcOpenDevice(nullptr);
 
     if (!m_device)
     {
@@ -52,7 +52,7 @@ SoundManager::SoundManager() :
     }
     else
     {
-      m_context = alcCreateContext(m_device, NULL);
+      m_context = alcCreateContext(m_device, nullptr);
       check_alc_error("Couldn't create audio context: ");
 
       alcMakeContextCurrent(m_context);
@@ -64,8 +64,8 @@ SoundManager::SoundManager() :
   }
   catch(std::exception& e)
   { // disable sound
-    m_device  = 0;
-    m_context = 0;
+    m_device  = nullptr;
+    m_context = nullptr;
     m_sound_enabled = false;
 
     std::cerr << "Couldn't initialize audio device:" << e.what() << "\n";

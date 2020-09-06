@@ -43,7 +43,7 @@ private:
 
 public:
   PointerHandle()
-    : data(0)
+    : data(nullptr)
   {}
 
   PointerHandle(Data* data_)

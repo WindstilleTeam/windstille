@@ -36,8 +36,8 @@ public:
   Size          m_size;
 
   OpenGLWindowImpl() :
-    m_window(0),
-    m_gl_context(0),
+    m_window(nullptr),
+    m_gl_context(nullptr),
     m_size()
   {}
 };

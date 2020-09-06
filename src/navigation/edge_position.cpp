@@ -31,7 +31,7 @@
 #include "display/display.hpp"
 
 EdgePosition::EdgePosition() :
-  edge(0),
+  edge(nullptr),
   pos(0.0f)
 {
 }

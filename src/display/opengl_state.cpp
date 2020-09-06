@@ -59,12 +59,12 @@ public:
   {}
 };
 
-OpenGLState* OpenGLState::global_ = 0;
+OpenGLState* OpenGLState::global_ = nullptr;
 
 void
 OpenGLState::init()
 {
-  assert(global_ == 0);
+  assert(global_ == nullptr);
 
   // Init the default settings
   glDisable(GL_DEPTH_TEST);

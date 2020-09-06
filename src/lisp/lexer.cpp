@@ -29,12 +29,12 @@ class EOFException
 };
 
 Lexer::Lexer(std::istream& newstream) :
-  stream(newstream), eof(false), linenumber(0), bufend(0), c(0), token_length(0)
+  stream(newstream), eof(false), linenumber(0), bufend(nullptr), c(nullptr), token_length(0)
 {
   try {
     // trigger a refill of the buffer
-    c = 0;
-    bufend = 0;
+    c = nullptr;
+    bufend = nullptr;
     nextChar();
   } catch(EOFException& e) {
   }

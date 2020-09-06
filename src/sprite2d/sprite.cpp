@@ -26,7 +26,7 @@
 
 Sprite::Sprite() :
   data(),
-  current_action(0),
+  current_action(nullptr),
   frame(0),
   speed(0),
   pingpong(),
@@ -41,7 +41,7 @@ Sprite::Sprite() :
 
 Sprite::Sprite(const Pathname& filename) :
   data(),
-  current_action(0),
+  current_action(nullptr),
   frame(0),
   speed(0),
   pingpong(),
@@ -68,7 +68,7 @@ Sprite::Sprite(const Pathname& filename) :
 
 Sprite::Sprite(const SpriteDataPtr data_) :
   data(data_),
-  current_action(0),
+  current_action(nullptr),
   frame(0),
   speed(0),
   pingpong(),
@@ -281,7 +281,7 @@ Sprite::get_color() const
 
 Sprite::operator bool() const
 {
-  return data != 0;
+  return data != nullptr;
 }
 
 GLenum

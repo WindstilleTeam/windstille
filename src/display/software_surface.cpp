@@ -40,7 +40,7 @@ SoftwareSurface::create(int width, int height, Format format)
 }
 
 SoftwareSurface::SoftwareSurface(const Pathname& filename) :
-  m_surface(0),
+  m_surface(nullptr),
   m_format(RGBA)
 {
   m_surface = IMG_Load(filename.get_sys_path().c_str());
@@ -91,7 +91,7 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
                                              0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
         }
 
-        SDL_BlitSurface(m_surface, 0, tmp_surface, 0);
+        SDL_BlitSurface(m_surface, nullptr, tmp_surface, nullptr);
 
         std::swap(m_surface, tmp_surface);
         SDL_FreeSurface(tmp_surface);
@@ -134,7 +134,7 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
                                              0xff000, 0x00ff00, 0x0000ff, 0);
         }
 
-        SDL_BlitSurface(m_surface, 0, tmp_surface, 0);
+        SDL_BlitSurface(m_surface, nullptr, tmp_surface, nullptr);
 
         std::swap(m_surface, tmp_surface);
         SDL_FreeSurface(tmp_surface);
@@ -152,7 +152,7 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
 }
 
 SoftwareSurface::SoftwareSurface(int width, int height, Format format) :
-  m_surface(0),
+  m_surface(nullptr),
   m_format(format)
 {
   assert(format == RGBA);
@@ -234,7 +234,7 @@ SoftwareSurface::blit(SoftwareSurfacePtr dst, int x, int y) const
   dst_rect.x = static_cast<Sint16>(x);
   dst_rect.y = static_cast<Sint16>(y);
 
-  SDL_BlitSurface(m_surface, 0, dst->m_surface, &dst_rect);
+  SDL_BlitSurface(m_surface, nullptr, dst->m_surface, &dst_rect);
 }
 
 void
@@ -300,7 +300,7 @@ SoftwareSurface::save_png(const std::string& filename) const
       png_infop   info_ptr;
       png_byte* pixels = static_cast<png_byte*>(get_pixels());
 
-      png_ptr  = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+      png_ptr  = png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
       info_ptr = png_create_info_struct(png_ptr);
 
       png_init_io(png_ptr, fp);

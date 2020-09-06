@@ -84,7 +84,7 @@ NavigationGraph::remove_node(NodeHandle node)
     }
   }
 
-  Edges::iterator new_end = std::remove(edges.begin(), edges.end(), static_cast<Edge*>(0));
+  Edges::iterator new_end = std::remove(edges.begin(), edges.end(), static_cast<Edge*>(nullptr));
   if (new_end != edges.end())
   {
     edges.erase(new_end, edges.end());
@@ -204,7 +204,7 @@ NodeHandle
 NavigationGraph::find_closest_node(const Vector2f& pos, float radius)
 {
   // FIXME: Optimize this with spatial tree thingy
-  Node* node = 0;
+  Node* node = nullptr;
   float min_distance = radius;
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
@@ -223,7 +223,7 @@ NavigationGraph::find_closest_node(const Vector2f& pos, float radius)
 EdgeHandle
 NavigationGraph::find_closest_edge(const Vector2f& pos, float radius)
 {
-  Edge* edge   = 0;
+  Edge* edge   = nullptr;
   float min_distance = radius;
 
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)

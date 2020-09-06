@@ -77,7 +77,7 @@ void
 ShaderObject::load(const std::string& filename)
 {
   GLchar* buf = load_file(filename.c_str());
-  glShaderSource(m_handle, 1, const_cast<const GLchar**>(&buf), NULL);
+  glShaderSource(m_handle, 1, const_cast<const GLchar**>(&buf), nullptr);
   assert_gl("load_source");
 
   //std::cout << "Source:\n" << buf << std::endl;
@@ -114,7 +114,7 @@ ShaderObject::print_log()
   if (infologLength > 0)
   {
     infoLog = static_cast<GLchar*>(malloc(infologLength));
-    if (infoLog == NULL)
+    if (infoLog == nullptr)
     {
       printf("ERROR: Could not allocate InfoLog buffer\n");
       exit(1);

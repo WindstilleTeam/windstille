@@ -52,8 +52,8 @@ public:
       direction(),
       delta(0.0f),
       col_time(0.0f),
-      object1(0),
-      object2(0)
+      object1(nullptr),
+      object2(nullptr)
   {
   }
 

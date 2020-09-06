@@ -30,7 +30,7 @@
 using namespace sprite3d;
 
 Sprite3D::Sprite3D() :
-  data(0),
+  data(nullptr),
   actions_switched(false),
   frame1(),
   frame2(),
@@ -60,9 +60,9 @@ Sprite3D::Sprite3D(const Pathname& filename) :
   frame1.rot            = false;
   frame1.speed          = 1.0;
   frame2                = frame1;
-  abort_at_frame.action = 0;
-  next_frame.action     = 0;
-  next_action.action    = 0;
+  abort_at_frame.action = nullptr;
+  next_frame.action     = nullptr;
+  next_action.action    = nullptr;
 }
 
 Sprite3D::Sprite3D(const Sprite3D& rhs) :
@@ -116,14 +116,14 @@ Sprite3D::set_action(const std::string& actionname, float speed)
   next_frame.speed = speed;
   next_frame.rot = frame2.rot;
 
-  next_action.action = 0;
+  next_action.action = nullptr;
   actions_switched = false;
 }
 
 const std::string&
 Sprite3D::get_action() const
 {
-  if(next_frame.action != 0)
+  if(next_frame.action != nullptr)
     return next_frame.action->name;
 
   return frame2.action->name;
@@ -161,7 +161,7 @@ Sprite3D::set_next_action(const std::string& name, float speed)
   next_action.rot = frame2.rot;
   actions_switched = false;
 
-  const Frame* frame = next_frame.action != 0 ? &next_frame : &frame2;
+  const Frame* frame = next_frame.action != nullptr ? &next_frame : &frame2;
   abort_at_frame.action = frame->action;
   abort_at_frame.speed = frame->speed;
   abort_at_frame.rot = frame->rot;
@@ -233,7 +233,7 @@ Sprite3D::set_rot(bool rot)
 bool
 Sprite3D::get_rot() const
 {
-  if(next_frame.action != 0)
+  if(next_frame.action != nullptr)
     return next_frame.rot;
 
   return frame1.rot;
@@ -281,20 +281,20 @@ Sprite3D::get_attachment_point_matrix(PointID id) const
 void
 Sprite3D::set_next_frame()
 {
-  if(frame2.action != frame1.action && abort_at_frame.action == 0) {
+  if(frame2.action != frame1.action && abort_at_frame.action == nullptr) {
     actions_switched = true;
   }
 
   frame1 = frame2;
-  if(next_frame.action != 0) {
+  if(next_frame.action != nullptr) {
     frame2 = next_frame;
-    next_frame.action = 0;
+    next_frame.action = nullptr;
     return;
   }
-  if(frame2 == abort_at_frame && next_action.action != 0) {
+  if(frame2 == abort_at_frame && next_action.action != nullptr) {
     frame2 = next_action;
-    abort_at_frame.action = 0;
-    next_action.action = 0;
+    abort_at_frame.action = nullptr;
+    next_action.action = nullptr;
     return;
   }
 
@@ -437,7 +437,7 @@ Sprite3D::draw(const Vector2f& pos, const Matrix& modelview)
 bool
 Sprite3D::is_valid() const
 {
-  return data != 0;
+  return data != nullptr;
 }
 
 void

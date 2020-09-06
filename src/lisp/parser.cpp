@@ -54,7 +54,7 @@ private:
 
 Parser::Parser() :
   filename(),
-  lexer(0),
+  lexer(nullptr),
   token()
 {
 }

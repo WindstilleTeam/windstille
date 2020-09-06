@@ -43,7 +43,7 @@ public:
   }
 
   SExprFileReaderImpl(const lisp::Lisp* sexpr_, bool delete_sexpr_)
-    : root(0),
+    : root(nullptr),
       sexpr(sexpr_),
       delete_sexpr(delete_sexpr_)
   {
@@ -224,7 +224,7 @@ private:
     {
       return sub->get_list_elem(1);
     }
-    return 0;
+    return nullptr;
   }
 
   lisp::Lisp* get_subsection(const char* name) const
@@ -235,7 +235,7 @@ private:
       if (strcmp(sub->get_list_elem(0)->get_symbol(), name) == 0)
         return sub;
     }
-    return 0;
+    return nullptr;
   }
 
 private:

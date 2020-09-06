@@ -49,7 +49,7 @@ OggSoundFile::OggSoundFile(const Pathname& filename) :
 
   ov_callbacks callbacks = { cb_read, cb_seek, cb_close, cb_tell };
 
-  int ret = ov_open_callbacks(this, &m_vorbis_file, 0, 0, callbacks);
+  int ret = ov_open_callbacks(this, &m_vorbis_file, nullptr, 0, callbacks);
 
   if (ret != 0)
   {
