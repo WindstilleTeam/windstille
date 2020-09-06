@@ -74,7 +74,7 @@ Player::Player () :
 
   z_pos = 100.0f;
 
-  contact = 0;
+  contact = nullptr;
   weapon.reset(new Pistol());
   laser_pointer = (static_cast<Pistol*>(weapon.get()))->laser_pointer;
 
@@ -360,7 +360,7 @@ Player::find_useable_entity()
       }
     }
   }
-  return 0;
+  return nullptr;
 }
 
 void

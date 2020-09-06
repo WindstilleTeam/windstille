@@ -71,7 +71,7 @@ public:
   }
 
   operator bool() {
-    return data != 0;
+    return data != nullptr;
   }
 
   bool operator==(const PointerHandle<Data>& rhs) const {

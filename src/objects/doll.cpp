@@ -339,9 +339,9 @@ Doll::walk(const Vector2f& adv_)
     m_drawable->get_sprite().set_rot(false);
   }
 
-  if (m_edge_position.get())
+  if (m_edge_position)
   {
-    Node* next_node = 0;
+    Node* next_node = nullptr;
     Vector2f adv(adv_);
     m_edge_position->advance(adv, next_node);
 

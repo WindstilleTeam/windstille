@@ -61,7 +61,7 @@ PropertySet::get(const std::string& name_) const
     if (parent)
       return parent->get(name_);
     else
-      return 0;
+      return nullptr;
   }
   else
   {

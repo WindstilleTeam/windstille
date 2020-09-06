@@ -40,7 +40,7 @@
 #include "util/file_reader.hpp"
 #include "util/pathname.hpp"
 
-LayerManagerColumns* LayerManagerColumns::instance_ = 0;
+LayerManagerColumns* LayerManagerColumns::instance_ = nullptr;
 
 SectorModel::SectorModel(const std::string& filename) :
   nav_graph(new NavigationGraphModel(*this)),

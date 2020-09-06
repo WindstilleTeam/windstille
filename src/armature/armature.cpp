@@ -33,7 +33,7 @@
 Armature::Armature(FileReader& reader) :
   name(),
   bones(),
-  root_bone(0)
+  root_bone(nullptr)
 {
   parse(reader);
 }
@@ -122,7 +122,7 @@ Armature::get_bone(const std::string& name_)
       return *i;
   }
   std::cout << "Error: Bone: '" << name_ << "' not found" << std::endl;
-  return 0;
+  return nullptr;
 }
 
 void

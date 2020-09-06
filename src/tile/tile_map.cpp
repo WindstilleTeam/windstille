@@ -98,7 +98,7 @@ TileMap::draw (SceneContext& sc)
     {
       Tile* tile = field(x, y);
 
-      if (!(tile == 0 || tile->packer < 0))
+      if (!(tile == nullptr || tile->packer < 0))
       {
         int packer = tile->packer;
 

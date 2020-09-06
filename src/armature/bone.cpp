@@ -23,7 +23,7 @@ Bone::Bone() :
   children_names(),
   parent_name(),
   children(),
-  parent(0),
+  parent(nullptr),
   length(),
   quat(),
   offset(),

@@ -61,7 +61,7 @@ private:
   }
 };
 
-ObjectSelector::Columns* ObjectSelector::Columns::instance_ = 0;
+ObjectSelector::Columns* ObjectSelector::Columns::instance_ = nullptr;
 
 ObjectSelector::ObjectSelector(EditorWindow& editor_) :
   editor(editor_),

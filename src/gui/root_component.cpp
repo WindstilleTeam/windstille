@@ -25,8 +25,8 @@
 namespace gui {
 
 RootComponent::RootComponent(const Rectf& rect_)
-  : Component(rect_, 0),
-    focus(0),
+  : Component(rect_, nullptr),
+    focus(nullptr),
     children()
 {
   set_active(true);

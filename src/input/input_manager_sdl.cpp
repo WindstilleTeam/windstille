@@ -91,7 +91,7 @@ void
 InputManagerSDL::ensure_open_joystick(int device)
 {
   if (device >= int(impl->joysticks.size()))
-    impl->joysticks.resize(device + 1, 0);
+    impl->joysticks.resize(device + 1, nullptr);
 
   if (!impl->joysticks[device])
   {
@@ -303,7 +303,7 @@ InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
     }
   }
 
-  const Uint8* keystate = SDL_GetKeyboardState(0);
+  const Uint8* keystate = SDL_GetKeyboardState(nullptr);
 
   for (std::vector<KeyboardAxisBinding>::const_iterator i = impl->keyboard_axis_bindings.begin();
        i != impl->keyboard_axis_bindings.end();

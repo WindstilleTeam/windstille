@@ -24,7 +24,7 @@ Tile::Tile(unsigned int arg_colmap) :
   uv(),
   texture(),
   colmap(arg_colmap),
-  desc(0)
+  desc(nullptr)
 {
 }
 

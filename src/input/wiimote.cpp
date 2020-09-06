@@ -22,7 +22,7 @@
 
 #include "math/math.hpp"
 
-Wiimote* wiimote = 0;
+Wiimote* wiimote = nullptr;
 
 #ifdef HAVE_CWIID
 

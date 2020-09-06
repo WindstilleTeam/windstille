@@ -34,7 +34,7 @@ private:
 
     Tab()
       : label(),
-        component(0)
+        component(nullptr)
     {}
 
     Tab(const std::string& label_, Component* c)

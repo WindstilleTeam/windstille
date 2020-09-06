@@ -314,7 +314,7 @@ ScreenManager::draw_fps()
 void
 ScreenManager::push_screen(Screen* s)
 {
-  assert(screen_screen == 0);
+  assert(screen_screen == nullptr);
 
   screen_action = PUSH_SCREEN;
   screen_screen = std::shared_ptr<Screen>(s);

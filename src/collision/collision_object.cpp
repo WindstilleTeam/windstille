@@ -59,7 +59,7 @@ CollisionObject::CollisionObject(TileMap* tilemap_)
   is_unstuck_movable = false;
   velocity           = Vector2f(0,0);
   pos                = Vector2f(0,0);
-  game_object        = 0;
+  game_object        = nullptr;
 
   is_domains    = DOMAIN_TILEMAP;
   check_domains = DOMAIN_PLAYER | DOMAIN_ENEMY;

@@ -35,7 +35,7 @@ private:
     Point parent;
 
     ComponentBox() :
-      component(0),
+      component(nullptr),
       span(1, 1),
       parent(-1, -1)
     {}

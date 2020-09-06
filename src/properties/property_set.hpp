@@ -32,7 +32,7 @@ private:
   std::map<std::string, Property*> properties;
 
 public:
-  PropertySet(const std::string& name, PropertySet* parent = 0);
+  PropertySet(const std::string& name, PropertySet* parent = nullptr);
   ~PropertySet();
 
   std::string get_name() const { return name; }

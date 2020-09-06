@@ -665,7 +665,7 @@ EditorWindow::on_close()
     notebook.remove_page(page);
 
     if (!get_windstille_widget())
-      layer_manager.set_model(0);
+      layer_manager.set_model(nullptr);
   }
 }
 
@@ -873,7 +873,7 @@ EditorWindow::get_timeline_widget()
   int page = notebook.get_current_page();
   if (page == -1)
   {
-    return 0;
+    return nullptr;
   }
   else
   {
@@ -885,12 +885,12 @@ EditorWindow::get_timeline_widget()
       }
       else
       {
-        return 0;
+        return nullptr;
       }
     }
     else
     {
-      return 0;
+      return nullptr;
     }
   }
 }
@@ -901,7 +901,7 @@ EditorWindow::get_animation_widget()
   int page = notebook.get_current_page();
   if (page == -1)
   {
-    return 0;
+    return nullptr;
   }
   else
   {
@@ -911,7 +911,7 @@ EditorWindow::get_animation_widget()
     }
     else
     {
-      return 0;
+      return nullptr;
     }
   }
 }
@@ -925,7 +925,7 @@ EditorWindow::get_document()
   }
   else
   {
-    return 0;
+    return nullptr;
   }
 }
 
@@ -935,7 +935,7 @@ EditorWindow::get_windstille_widget()
   int page = notebook.get_current_page();
   if (page == -1)
   {
-    return 0;
+    return nullptr;
   }
   else
   {
@@ -945,7 +945,7 @@ EditorWindow::get_windstille_widget()
     }
     else
     {
-      return 0;
+      return nullptr;
     }
   }
 }
@@ -973,7 +973,7 @@ EditorWindow::on_switch_page(GtkNotebookPage* page, guint page_num)
   }
   else
   {
-    layer_manager.set_model(0);
+    layer_manager.set_model(nullptr);
   }
 }
 

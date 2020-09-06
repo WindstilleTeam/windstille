@@ -106,7 +106,7 @@ TileFactory::parse_tiles(FileReader& reader)
       if (id != 0)
       {
         if (id >= int(tiles.size()))
-          tiles.resize(id + 1, 0);
+          tiles.resize(id + 1, nullptr);
 
         delete tiles[id];
         tiles[id] = new Tile(desc.colmap[i]);
@@ -120,19 +120,19 @@ void
 TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect)
 {
   if(id < int(tiles.size())
-     && tiles[id] != 0
-     && tiles[id]->desc == 0)
+     && tiles[id] != nullptr
+     && tiles[id]->desc == nullptr)
   {
     std::cout << "Warning: Duplicate tile id '" << id << "' ignoring" << std::endl;
   }
   else
   {
     if (id >= int(tiles.size()))
-      tiles.resize(id + 1, 0);
+      tiles.resize(id + 1, nullptr);
 
     delete tiles[id];
     tiles[id]  = new Tile(colmap);
-    tiles[id]->desc  = 0;
+    tiles[id]->desc  = nullptr;
     tiles[id]->id    = id;
 
     if (!surface_empty(image, rect.left, rect.top, rect.get_width(), rect.get_height()))
@@ -158,7 +158,7 @@ TileFactory::create(int id)
 {
   if(id < 0 || id >= static_cast<int>(tiles.size()))
   {
-    return 0;
+    return nullptr;
   }
   else
   {

@@ -43,8 +43,8 @@ Sector::Sector(const Pathname& arg_filename) :
   objects(),
   new_objects(),
   ambient_light(),
-  interactive_tilemap(0),
-  interactivebackground_tilemap(0),
+  interactive_tilemap(nullptr),
+  interactivebackground_tilemap(nullptr),
   player()
 {
   SectorBuilder(arg_filename, *this);
@@ -172,7 +172,7 @@ Sector::get_object(const std::string& name_) const
     }
   }
 
-  return 0;
+  return nullptr;
 }
 
 int

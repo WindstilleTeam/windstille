@@ -24,7 +24,7 @@
 
 Box::Box(const FileReader& props) :
   sprite(),
-  colobj(0),
+  colobj(nullptr),
   gravity()
 {
   gravity = 0.0f;

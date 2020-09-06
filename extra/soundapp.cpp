@@ -40,7 +40,7 @@ int main(int argc, char** argv)
     sound_manager.sound().set_gain(1.0f);
     sound_manager.voice().set_gain(1.0f);
 
-    Random random(time(NULL));
+    Random random(time(nullptr));
 
     std::cout << "Filter Test" << std::endl;
 

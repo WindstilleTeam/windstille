@@ -127,7 +127,7 @@ NavigationTest::update(float delta, const Controller& controller)
       if (selected_node)
         graph->add_edge(node_to_connect, selected_node);
 
-      node_to_connect = 0;
+      node_to_connect = nullptr;
     }
     else if (selected_node)
     {
@@ -136,7 +136,7 @@ NavigationTest::update(float delta, const Controller& controller)
     else if (selected_edge)
     {
       graph->split_edge(selected_edge);
-      selected_edge = 0;
+      selected_edge = nullptr;
     }
     else
     {
@@ -244,12 +244,12 @@ NavigationTest::update(float delta, const Controller& controller)
   {
     if (selected_node) {
       graph->remove_node(selected_node);
-      selected_node = 0;
+      selected_node = nullptr;
     }
 
     if (selected_edge) {
       graph->remove_edge(selected_edge);
-      selected_edge = 0;
+      selected_edge = nullptr;
     }
   }
 
@@ -257,7 +257,7 @@ NavigationTest::update(float delta, const Controller& controller)
   if (!selected_node)
     selected_edge = graph->find_closest_edge(cursor, 32.0f);
   else
-    selected_edge = 0;
+    selected_edge = nullptr;
 
   if (connection.get() && !graph->valid(connection->get_edge()))
   {

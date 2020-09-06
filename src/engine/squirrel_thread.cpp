@@ -44,7 +44,7 @@ SquirrelThread::create_thread()
 
   thread = sq_newthread(parent_vm, 1024);  // create thread and store it on the stack
 
-  if (thread == 0)
+  if (thread == nullptr)
   {
     throw SquirrelError(thread, filename, "Couldn't create new THREAD");
   }
@@ -69,7 +69,7 @@ SquirrelThread::create_thread()
 SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm_, bool isolated_) :
   parent_vm(parent_vm_),
   isolated(isolated_),
-  thread(0),
+  thread(nullptr),
   filename("<unset>"),
   oldtop(-1),
   waiting_for_events(ScriptManager::NO_EVENT),

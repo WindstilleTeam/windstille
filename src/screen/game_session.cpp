@@ -97,7 +97,7 @@ public:
       pda(),
       current_gui()
   {
-    current_gui    = 0;
+    current_gui    = nullptr;
     cutscene_mode  = false;
     cutscene_value = 0.0f;
     fade_color     = Color(0.0f, 0.0f, 0.0f, 1.0f);
@@ -195,7 +195,7 @@ GameSessionImpl::update_cutscene(float delta)
 void
 GameSessionImpl::update_input(float delta)
 {
-  const Uint8* keystate = SDL_GetKeyboardState(NULL);
+  const Uint8* keystate = SDL_GetKeyboardState(nullptr);
 
   // Hacks to play around with the game speed
   if(keystate[SDL_SCANCODE_KP_1])
@@ -272,14 +272,14 @@ GameSessionImpl::update_controller(float delta, const Controller& controller)
   if (controller.button_was_pressed(PDA_BUTTON))
   {
     if (current_gui == &pda)
-      current_gui = 0;
+      current_gui = nullptr;
     else
       current_gui = &pda;
   }
   else if (controller.button_was_pressed(INVENTORY_BUTTON))
   {
     if (current_gui == &inventory)
-      current_gui = 0;
+      current_gui = nullptr;
     else
       current_gui = &inventory;
   }
@@ -468,7 +468,7 @@ GameSession::set_control_state(ControlState state)
       break;
 
     case GAME:
-      impl->current_gui = 0;
+      impl->current_gui = nullptr;
       break;
   }
 }
@@ -476,7 +476,7 @@ GameSession::set_control_state(ControlState state)
 bool
 GameSession::is_active() const
 {
-  return (impl->current_gui == 0);
+  return (impl->current_gui == nullptr);
 }
 
 void

@@ -110,7 +110,7 @@ void table_to_lisp(HSQUIRRELVM v, int idx, std::vector<lisp::Lisp*>& entries)
         }
         else
         {
-          const char* key = 0;
+          const char* key = nullptr;
           sq_getstring(v, -2, &key);
           std::string lisp_key = sq_to_lisp_string(key);
 
@@ -363,8 +363,8 @@ void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const std::string& 
   std::unique_ptr<Lisp> root (Parser::parse(file));
 
   Properties rootp(root.get());
-  const lisp::Lisp* table = 0;
-  if (rootp.get("squirrel-state", table) == false)
+  const lisp::Lisp* table = nullptr;
+  if (!rootp.get("squirrel-state", table))
     throw std::runtime_error("Not a squirrel-state file");
 
   load_squirrel_table(v, table_idx, table);

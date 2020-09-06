@@ -74,7 +74,7 @@ static void errorfunc(HSQUIRRELVM, const char* str, ...)
 ScriptManager::ScriptManager()
 {
   vm = sq_open(1024);
-  if(vm == 0)
+  if(vm == nullptr)
   {
     throw std::runtime_error("Couldn't initialize squirrel vm");
   }

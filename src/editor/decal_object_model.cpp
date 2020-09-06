@@ -138,7 +138,7 @@ DecalObjectModel::draw(SceneContext& sc)
     Vector2f center_offset(-surface->get_width()/2,
                            -surface->get_height()/2);
 
-    DrawingContext* dc = 0;
+    DrawingContext* dc = nullptr;
     SurfaceDrawingParameters params;
     switch(type)
     {

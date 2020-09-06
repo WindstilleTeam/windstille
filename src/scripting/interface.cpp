@@ -348,7 +348,7 @@ SQInteger spawn_object(HSQUIRRELVM v)
 {
   if (Sector::current())
   {
-    const char* objname = 0;
+    const char* objname = nullptr;
     sq_getstring(v, -2, &objname);
 
     // Newly created objects are deleted in ~SExprFileReader() and ~Lisp()

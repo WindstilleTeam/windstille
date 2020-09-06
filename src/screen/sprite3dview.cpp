@@ -82,7 +82,7 @@ Sprite3DView::draw()
 
   sc.light().fill_screen(Color(1.0, 1.0, 1.0));
   //sc.color().draw("Hello World", 100, 100);
-  compositor.render(sc, 0, GraphicContextState(Display::get_width(),
+  compositor.render(sc, nullptr, GraphicContextState(Display::get_width(),
                                                Display::get_height()));
 
   float x = 10.0f;
