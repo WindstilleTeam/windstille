@@ -72,7 +72,7 @@ StreamSoundSource::seek_to(float sec)
 {
   m_sound_file->seek_to(sec);
 
-  if (false)
+  if ((false))
   { // FIXME: clear the buffer or not on seek? see ov_time_seek_lap()
     // in OggSoundFile for possible reason why jumping might not be a good idea
     alSourceUnqueueBuffers(m_source, STREAMFRAGMENTS, m_buffers);

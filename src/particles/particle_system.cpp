@@ -231,7 +231,7 @@ ParticleSystem::set_drawer(Drawer* drawer_)
 void
 ParticleSystem::draw() const
 {
-  if (drawer.get())
+  if (drawer)
   {
     drawer->draw(*this);
   }

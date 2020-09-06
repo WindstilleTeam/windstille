@@ -318,7 +318,7 @@ Display::draw_arc(const Vector2f& pos, float radius, float start, float end, con
 {
   assert(segments >= 0);
 
-  if (fabs(end - start) >= 360.0f)
+  if (fabsf(end - start) >= 360.0f)
   {
     draw_circle(pos, radius, color, segments);
   }
@@ -358,7 +358,7 @@ Display::fill_arc(const Vector2f& pos, float radius, float start, float end, con
 {
   assert(segments >= 0);
 
-  if (fabs(end - start) >= 360.0f)
+  if (fabsf(end - start) >= 360.0f)
   {
     fill_circle(pos, radius, color, segments);
   }
@@ -409,13 +409,13 @@ Display::draw_grid(const Vector2f& offset, const Sizef& size, const Color& rgba)
   float start_x = fmodf(offset.x, size.width);
   float start_y = fmodf(offset.y, size.height);
 
-  for(float x = start_x; x < Display::get_width(); x += size.width)
+  for(float x = start_x; x < static_cast<float>(Display::get_width()); x += size.width)
   {
     glVertex2f(x, 0);
     glVertex2f(x, static_cast<float>(Display::get_height()));
   }
 
-  for(float y = start_y; y < Display::get_height(); y += size.height)
+  for(float y = start_y; y < static_cast<float>(Display::get_height()); y += size.height)
   {
     glVertex2f(0, y);
     glVertex2f(static_cast<float>(Display::get_width()), y);
@@ -448,7 +448,7 @@ Display::push_cliprect(const Rect& rect_)
 void
 Display::pop_cliprect()
 {
-  assert(cliprects.size() >= 1);
+  assert(!cliprects.empty());
 
   cliprects.pop_back();
 
@@ -484,7 +484,7 @@ Display::save_screenshot(const Pathname& filename)
   glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
   assert_gl("Display::save_screenshot()");
 
-  if (false)
+  if ((false))
   { // PPM saving
     int pitch = size.width * 3;
 
@@ -500,7 +500,7 @@ Display::save_screenshot(const Pathname& filename)
 
     out.close();
   }
-  else if (true)
+  else if ((true))
   {
     FILE* m_out = fopen(filename.get_sys_path().c_str(), "wb");
 
@@ -554,7 +554,7 @@ Display::save_screenshot(const Pathname& filename)
       fclose(m_out);
     }
   }
-  else if (false)
+  else if ((false))
   { // PNG saving
     FILE* fp = fopen(filename.get_sys_path().c_str(), "w");
 
@@ -569,7 +569,7 @@ Display::save_screenshot(const Pathname& filename)
       png_structp png_ptr;
       png_infop   info_ptr;
 
-      png_ptr  = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+      png_ptr  = png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
       info_ptr = png_create_info_struct(png_ptr);
 
       png_init_io(png_ptr, fp);

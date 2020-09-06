@@ -72,7 +72,7 @@ Trigger::update(float /*delta*/)
   if(triggered && one_time_trigger)
     return;
 
-  if(last_trigger == false)
+  if (!last_trigger)
   {
     triggered = true;
     try

@@ -220,7 +220,7 @@ SoundManager::enable_music(bool enable)
     }
     else
     {
-      if (m_music_source.get())
+      if (m_music_source)
       {
         m_music_source.reset();
       }
@@ -325,12 +325,12 @@ SoundManager::update(float delta)
     }
 
     // check streaming sounds
-    if (m_music_source.get())
+    if (m_music_source)
     {
       m_music_source->update(delta);
     }
 
-    if (m_next_music_source.get() && (!m_music_source.get() || !m_music_source->is_playing()))
+    if (m_next_music_source && (!m_music_source || !m_music_source->is_playing()))
     {
       m_music_source = std::move(m_next_music_source);
       //music_source->setFading(StreamSoundSource::FadingOn, 1.0f);

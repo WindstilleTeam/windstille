@@ -76,7 +76,7 @@ Lensflare::draw()
 
   glDisable(GL_ALPHA_TEST);
 
-  if (true)
+  if ((true))
   {
 
     GLint samples = 0;

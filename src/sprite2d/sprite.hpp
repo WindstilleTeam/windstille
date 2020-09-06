@@ -57,7 +57,7 @@ public:
       search for a .png with the same name and use that as a simple
       one-file sprite */
   explicit Sprite(const Pathname& filename);
-  explicit Sprite(const SpriteDataPtr data);
+  explicit Sprite(SpriteDataPtr data);
   Sprite(const Sprite&);
   Sprite& operator=(const Sprite&);
   ~Sprite();

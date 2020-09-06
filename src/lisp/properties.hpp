@@ -25,7 +25,7 @@ public:
     PropertyMap::iterator i = properties.find(name);
     if(i == properties.end())
       return false;
-    if(property_get(i->second.lisp, val) == false)
+    if(!property_get(i->second.lisp, val))
       return false;
     i->second.used = true;
     return true;

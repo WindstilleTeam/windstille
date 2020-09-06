@@ -152,7 +152,7 @@ WindstilleWidget::on_realize()
       OpenGLState::init();
     }
 
-    if (!sc.get())
+    if (!sc)
     {
       sc.reset(new SceneContext());
       compositor.reset(new Compositor(Size(get_width(), get_height()),
@@ -192,7 +192,7 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
   }
   else
   {
-    if (compositor.get())
+    if (compositor)
     {
       compositor.reset(new Compositor(Size(ev->width, ev->height),
                                       Size(ev->width, ev->height)));
@@ -254,7 +254,7 @@ WindstilleWidget::draw()
     m_document->get_sector_model().rebuild_scene_graph(*m_scene_graph->get_root());
   }
 
-  if (sc.get())
+  if (sc)
   {
     state.push(*sc);
 
@@ -480,7 +480,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*
                                         int x, int y, const Gtk::SelectionData& data,
                                         guint /*info*/, guint /*time*/)
 {
-  if (false)
+  if ((false))
   {
     std::cout << "WindstilleWidget: on_drag_data_received: "
               << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;

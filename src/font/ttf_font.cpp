@@ -118,8 +118,8 @@ TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect) 
     {
       effect.blit(pixelbuffer, face->glyph->bitmap, x_pos, y_pos);
 
-      int glyph_width  = effect.get_glyph_width(face->glyph->bitmap.width);
-      int glyph_height = effect.get_glyph_height(face->glyph->bitmap.rows);
+      int glyph_width  = effect.get_glyph_width(static_cast<int>(face->glyph->bitmap.width));
+      int glyph_height = effect.get_glyph_height(static_cast<int>(face->glyph->bitmap.rows));
 
       generate_border(pixelbuffer, x_pos, y_pos, glyph_width, glyph_height);
 

@@ -52,21 +52,21 @@ GroupComponent::draw()
                        Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 
-  if (child.get())
+  if (child)
     child->draw();
 }
 
 void
 GroupComponent::update(float delta, const Controller& controller)
 {
-  if (child.get())
+  if (child)
     child->update(delta, controller);
 }
 
 void
 GroupComponent::pack(Component* component)
 {
-  assert(child.get() == 0);
+  assert(child);
   child.reset(component);
 
   child->set_screen_rect(get_child_rect());
@@ -87,7 +87,7 @@ GroupComponent::get_child_rect() const
 bool
 GroupComponent::is_active() const
 {
-  if (child.get())
+  if (child)
     return child->is_active();
   else
     return false;

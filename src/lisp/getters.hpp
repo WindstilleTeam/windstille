@@ -45,7 +45,7 @@ static inline bool property_get(const Lisp* lisp, std::vector<T>& list)
   list.clear();
   for(size_t n = 1; n < lisp->get_list_size(); ++n) {
     T val;
-    if(get(lisp->get_list_elem(n), val) == false) {
+    if(!get(lisp->get_list_elem(n), val)) {
       list.clear();
       return false;
     }

@@ -103,7 +103,7 @@ PDA::update(float delta, const Controller& controller)
     }
   }
 
-  if (text_area.get())
+  if (text_area)
   {
     text_area->set_scroll_offset(text_area->get_scroll_offset() + 500.0f * controller.get_axis_state(Y2_AXIS) * delta);
   }

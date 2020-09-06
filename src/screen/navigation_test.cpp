@@ -95,7 +95,7 @@ NavigationTest::draw()
 
   Display::fill_circle(player, 12.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
 
-  if (connection.get())
+  if (connection)
   {
     Display::fill_circle(connection->get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f, 0.5f));
     Display::fill_circle(connection->get_pos(), 8.0f, Color(0.0f, 1.0f, 1.0f));
@@ -157,7 +157,7 @@ NavigationTest::update(float delta, const Controller& controller)
     player = old_player = cursor;
   }
 
-  if (connection.get())
+  if (connection)
   {
     // Handle the movement of the connection
     Node* next_node;

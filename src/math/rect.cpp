@@ -29,8 +29,7 @@
 
 #include "math/rect.hpp"
 
-#define cl_min(a,b) ((a < b) ? a : b)
-#define cl_max(a,b) ((a > b) ? a : b)
+#include <algorithm>
 
 Rect Rect::get_rot_bounds(const Point &hotspot, float angle) const
 {
@@ -42,10 +41,10 @@ Rect Rect::get_rot_bounds(const Point &hotspot, float angle) const
   Point lr = Point(retVal.right, retVal.bottom).rotate(hotspot, angle);
 
   //Use the sidemost corners as the bounds of the new rectangle
-  retVal.left = cl_min(cl_min(ul.x, ur.x), cl_min(ll.x, lr.x));
-  retVal.right = cl_max(cl_max(ul.x, ur.x), cl_max(ll.x, lr.x));
-  retVal.top = cl_min(cl_min(ul.y, ur.y), cl_min(ll.y, lr.y));
-  retVal.bottom = cl_max(cl_max(ul.y, ur.y), cl_max(ll.y, lr.y));
+  retVal.left = std::min(std::min(ul.x, ur.x), std::min(ll.x, lr.x));
+  retVal.right = std::max(std::max(ul.x, ur.x), std::max(ll.x, lr.x));
+  retVal.top = std::min(std::min(ul.y, ur.y), std::min(ll.y, lr.y));
+  retVal.bottom = std::max(std::max(ul.y, ur.y), std::max(ll.y, lr.y));
 
   return retVal;
 }
