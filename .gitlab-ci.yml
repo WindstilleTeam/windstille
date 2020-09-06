@@ -90,6 +90,13 @@ build:clang:debug:
     CXX: "clang++-10"
     BUILD_TYPE: "Debug"
 
+build:clang-tidy:
+  <<: *build_windstille
+  variables:
+    CXX: "clang++-10"
+    BUILD_TYPE: "Debug"
+    CLANG_TIDY: "ON"
+
 build:flatpak:
   stage: build
   script:
