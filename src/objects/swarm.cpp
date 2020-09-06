@@ -102,9 +102,9 @@ Swarm::update(float delta)
     float target_angle   = atan2f(dy, dx);
     float relative_angle = math::normalize_angle(target_angle - i->angle);
 
-    if (sqrt(dx*dx + (dy*dy)*2.0f) > 50.0f) // swarm range
+    if (sqrtf(dx*dx + (dy*dy)*2.0f) > 50.0f) // swarm range
     {
-      if (fabs(relative_angle) < 0.3f)
+      if (fabsf(relative_angle) < 0.3f)
       {
         //i->angle += rnd.frand(-1.0f, 1.0f) * delta;
         if (i->speed < i->max_speed)

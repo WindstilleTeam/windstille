@@ -52,7 +52,7 @@ StairContact::advance(float s)
   float step = (s > 0.0f) ? 1.0f : -1.0f;
 
   // advancement must happen tile by tile
-  while ((fabs(s) > fabs(step)) && is_active())
+  while ((fabsf(s) > fabsf(step)) && is_active())
   {
     advancement += step;
     s -= step;

@@ -97,12 +97,12 @@ NavGraphNodeObjectModel::snap_to_grid(float grid_size) const
 
   SnapData snap;
 
-  if (fabs(snap_x) < g_snap_threshold)
+  if (fabsf(snap_x) < g_snap_threshold)
   {
     snap.set_x(snap_x);
   }
 
-  if (fabs(snap_y) < g_snap_threshold)
+  if (fabsf(snap_y) < g_snap_threshold)
   {
     snap.set_y(snap_y);
   }

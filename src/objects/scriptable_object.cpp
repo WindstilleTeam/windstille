@@ -197,9 +197,9 @@ ScriptableObject::move(float delta)
   float distx = velocity.x * delta;
   float disty = velocity.y * delta;
 
-  if (adx - fabs(distx) < 0)
+  if (adx - fabsf(distx) < 0)
     distx = dx;
-  if (ady - fabs(disty) < 0)
+  if (ady - fabsf(disty) < 0)
     disty = dy;
 
   pos.x += distx;

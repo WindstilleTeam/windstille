@@ -133,8 +133,8 @@ Conversation::update(float delta, const Controller& controller)
   direction = Vector2f(controller.get_axis_state(X_AXIS),
                        controller.get_axis_state(Y_AXIS));
 
-  if (fabs(controller.get_axis_state(X_AXIS)) > 0.3f ||
-      fabs(controller.get_axis_state(Y_AXIS)) > 0.3f)
+  if (fabsf(controller.get_axis_state(X_AXIS)) > 0.3f ||
+      fabsf(controller.get_axis_state(Y_AXIS)) > 0.3f)
   {
     float segment = 360.0f / static_cast<float>(choices.size());
     float angle = math::rad2deg(math::normalize_angle(atan2f(direction.y, direction.x) + math::pi/2.0f + math::deg2rad(segment/2.0f)));

@@ -106,14 +106,14 @@ SpiderMine::search_for_player(float delta)
     velocity.x = 0;
     velocity.y = 0;
     // if close enough to the player hit them
-    if ((fabs(player_pos.x - pos.x) < 15) &&
+    if ((fabsf(player_pos.x - pos.x) < 15) &&
         ((pos.y - 32 - 15 < player_pos.y) &&
          (pos.y > player_pos.y - 135 + 15))) {
       player->hit(1);
     }
   }
   // check to see if we should jump
-  else if (state != JUMP && (fabs(player_pos.x - pos.x) <= 45)
+  else if (state != JUMP && (fabsf(player_pos.x - pos.x) <= 45)
            && ((pos.y - 32 < player_pos.y) && (pos.y > player_pos.y - 135))
            && on_ground()) {
     state = JUMP;
@@ -122,8 +122,8 @@ SpiderMine::search_for_player(float delta)
   }
   // check to see if we should attack the player
   else if (state != JUMP
-           && fabs(player_pos.x - pos.x) < 200
-           && fabs(player_pos.x - pos.x) > 45) {
+           && fabsf(player_pos.x - pos.x) < 200
+           && fabsf(player_pos.x - pos.x) > 45) {
     state = ATTACK;
     if (on_ground()) {
       if (player_pos.x < get_pos().x)
@@ -134,8 +134,8 @@ SpiderMine::search_for_player(float delta)
   }
   // check to see if we should go back to starting position (ignores y)
   else if (state != JUMP &&
-           fabs(player_pos.x - pos.x) >= 200
-           && fabs(pos.x - initial_position.x) > 15) {
+           fabsf(player_pos.x - pos.x) >= 200
+           && fabsf(pos.x - initial_position.x) > 15) {
     state = RETURN;
     if (on_ground()) {
       if (initial_position.x < pos.x)

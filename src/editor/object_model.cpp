@@ -210,12 +210,12 @@ ObjectModel::snap_to_grid(float grid_size) const
   {
     SnapData snap;
 
-    if (fabs(snap_rect.left) < g_snap_threshold)
+    if (fabsf(snap_rect.left) < g_snap_threshold)
     {
       snap.set_x(snap_rect.left);
     }
 
-    if (fabs(snap_rect.top) < g_snap_threshold)
+    if (fabsf(snap_rect.top) < g_snap_threshold)
     {
       snap.set_y(snap_rect.top);
     }
@@ -226,12 +226,12 @@ ObjectModel::snap_to_grid(float grid_size) const
   {
     SnapData snap;
 
-    if (fabs(snap_rect.right) < g_snap_threshold)
+    if (fabsf(snap_rect.right) < g_snap_threshold)
     {
       snap.set_x(snap_rect.right);
     }
 
-    if (fabs(snap_rect.bottom) < g_snap_threshold)
+    if (fabsf(snap_rect.bottom) < g_snap_threshold)
     {
       snap.set_y(snap_rect.bottom);
     }
