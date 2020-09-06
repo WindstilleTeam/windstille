@@ -378,7 +378,7 @@ Sprite3D::draw(const Vector2f& pos, const Matrix& modelview)
   const ActionFrame& aframe1 = frame1.action->frames[frame1.frame];
   const ActionFrame& aframe2 = frame2.action->frames[frame2.frame];
 
-  for(uint16_t m = 0; m < data->meshs.size(); ++m)
+  for(size_t m = 0; m < data->meshs.size(); ++m)
   {
     const Mesh& mesh = data->meshs[m];
     const MeshVertices& vertices1 = aframe1.meshs[m];

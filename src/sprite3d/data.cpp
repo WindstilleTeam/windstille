@@ -117,7 +117,7 @@ Data::Data(const Pathname& filename) :
 
       // read markers
       action.markers.resize(marker_count);
-      for(uint16_t m = 0; m < action.markers.size(); ++m)
+      for(size_t m = 0; m < action.markers.size(); ++m)
       {
         Marker& marker = action.markers[m];
         marker.name  = read_string(in, 64);
@@ -126,7 +126,7 @@ Data::Data(const Pathname& filename) :
 
       // read frames
       action.frames.resize(frame_count);
-      for(uint16_t f = 0; f < action.frames.size(); ++f)
+      for(size_t f = 0; f < action.frames.size(); ++f)
       {
         ActionFrame& frame = action.frames[f];
 
@@ -196,7 +196,7 @@ Data::get_action(const std::string& name) const
 const Marker&
 Data::get_marker(const Action* action, const std::string& name) const
 {
-  for(uint16_t m = 0; m < action->markers.size(); ++m) {
+  for(size_t m = 0; m < action->markers.size(); ++m) {
     if(action->markers[m].name == name)
       return action->markers[m];
   }
@@ -209,7 +209,7 @@ Data::get_marker(const Action* action, const std::string& name) const
 uint16_t
 Data::get_attachment_point_id(const std::string& name) const
 {
-  for(uint16_t a = 0; a < attachment_points.size(); ++a) {
+  for(size_t a = 0; a < attachment_points.size(); ++a) {
     if(attachment_points[a] == name)
       return a;
   }
