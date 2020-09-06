@@ -99,6 +99,12 @@ if(BUILD_EDITOR)
   pkg_search_module(GTKGLEXTMM REQUIRED gtkglextmm-1.2 IMPORTED_TARGET)
 endif()
 
+file(GLOB LOGMICH_SOURCES_CXX RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  external/logmich/src/*.cpp)
+add_library(logmich STATIC ${LOGMICH_SOURCES_CXX})
+target_include_directories(logmich SYSTEM PUBLIC external/logmich/include/)
+set_target_properties(logmich PROPERTIES CXX_CLANG_TIDY "")
+
 include_directories(.)
 include_directories(src/)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/src/)
@@ -176,9 +182,10 @@ file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/util/*.cpp)
 add_library(wstlib STATIC ${WSTLIB_SOURCES})
 target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
- target_include_directories(wstlib SYSTEM PUBLIC
-   ${OPENAL_INCLUDE_DIR})
+target_include_directories(wstlib SYSTEM PUBLIC
+  ${OPENAL_INCLUDE_DIR})
 target_link_libraries(wstlib PUBLIC
+  logmich
   ${OPENAL_LIBRARY}
   PkgConfig::SQUIRREL
   Freetype::Freetype
