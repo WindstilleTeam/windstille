@@ -14,7 +14,7 @@
         "--socket=wayland"
     ],
     "modules": [
-        "shared-modules/glu/glu-9.0.1.json",
+        "shared-modules/glu/glu-9.json",
         "shared-modules/glm/glm-0.9.9.0.json",
         "shared-modules/glew/glew.json",
         "shared-modules/gtkmm/libsigc++-2.10.0.json",
