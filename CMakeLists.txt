@@ -22,6 +22,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/mk/cmake)
 include(GetProjectVersion)
 include(GNUInstallDirs)
 include(CheckIncludeFile)
+include(ClangTidy)
 
 option(BUILD_EDITOR "Build Windstille editor" ON)
 option(BUILD_TESTS "Build test cases" OFF)
@@ -128,6 +129,7 @@ list(APPEND MINISWIG_SOURCES
   ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp)
 add_executable(miniswig ${MINISWIG_SOURCES})
 target_include_directories(miniswig SYSTEM PRIVATE external/miniswig/)
+set_target_properties(miniswig PROPERTIES CXX_CLANG_TIDY "")
 
 # compile scripting stuff
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/)
