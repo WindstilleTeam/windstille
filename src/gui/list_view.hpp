@@ -61,10 +61,10 @@ private:
 
 public:
   ListView(const Rectf& rect, Component* parent);
-  ~ListView();
+  ~ListView() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
   /** if width is -1 it will be automatically spaced */
   void add_column(const std::string& name, float width = -1);

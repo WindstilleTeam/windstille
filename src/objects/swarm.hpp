@@ -55,8 +55,8 @@ private:
 public:
   Swarm(const FileReader& reader);
 
-  void draw(SceneContext& sc);
-  void update(float delta);
+  void draw(SceneContext& sc) override;
+  void update(float delta) override;
 
 private:
   Swarm (const Swarm&);

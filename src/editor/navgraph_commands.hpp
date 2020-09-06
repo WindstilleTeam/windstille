@@ -37,12 +37,12 @@ public:
       m_node(node)
   {}
 
-  void redo()
+  void redo() override
   {
     m_sector.get_nav_graph().add_node(m_node);
   }
 
-  void undo()
+  void undo() override
   {
     m_sector.get_nav_graph().remove_node(m_node);
   }
@@ -61,12 +61,12 @@ public:
       m_node(node)
   {}
 
-  void redo()
+  void redo() override
   {
     m_sector.get_nav_graph().remove_node(m_node);
   }
 
-  void undo()
+  void undo() override
   {
     m_sector.get_nav_graph().add_node(m_node);
   }
@@ -88,7 +88,7 @@ public:
       m_edge(edge)
   {}
 
-  void redo()
+  void redo() override
   {
     if (m_layer)
       m_layer->add(m_edge);
@@ -98,7 +98,7 @@ public:
     m_sector.get_nav_graph().add_edge(m_edge);
   }
 
-  void undo()
+  void undo() override
   {
     m_sector.get_nav_graph().remove_edge(m_edge);
     m_layer->remove(m_edge);
@@ -120,7 +120,7 @@ public:
       m_edge(edge)
   {}
 
-  void redo()
+  void redo() override
   {
     if (m_layer)
       m_layer->remove(m_edge);
@@ -130,7 +130,7 @@ public:
     m_sector.get_nav_graph().remove_edge(m_edge);
   }
 
-  void undo()
+  void undo() override
   {
     m_sector.get_nav_graph().add_edge(m_edge);
     if (m_layer)

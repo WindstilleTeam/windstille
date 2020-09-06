@@ -30,7 +30,7 @@ class Console : public Currenton<Console>
 {
 public:
   Console();
-  ~Console();
+  ~Console() override;
 
   std::ostream& get_ostream() const;
 

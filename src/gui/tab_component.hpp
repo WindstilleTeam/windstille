@@ -66,10 +66,10 @@ private:
 public:
   TabComponent(Component* parent);
   TabComponent(const Rectf& rect, Component* parent);
-  ~TabComponent();
+  ~TabComponent() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
   void pack(const std::string& name, Component* component);
 

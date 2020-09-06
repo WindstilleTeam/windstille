@@ -36,10 +36,10 @@ private:
 
 public:
   RootComponent(const Rectf& rect);
-  ~RootComponent();
+  ~RootComponent() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
   /** Set the chidren that shall recieve input */
   void set_focus(Component* child);
@@ -48,7 +48,7 @@ public:
 
   Component* get_focus() const { return focus; }
 
-  bool is_active() const;
+  bool is_active() const override;
 private:
   RootComponent (const RootComponent&);
   RootComponent& operator= (const RootComponent&);

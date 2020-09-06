@@ -31,10 +31,10 @@ private:
 
 public:
   Label(const std::string& label, Component* parent);
-  ~Label();
+  ~Label() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
 private:
   Label (const Label&);

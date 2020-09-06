@@ -51,7 +51,7 @@ private:
 
 public:
   TimelineWidget();
-  ~TimelineWidget();
+  ~TimelineWidget() override;
 
   void set_timeline(TimelineHandle timeline);
 
@@ -69,7 +69,7 @@ public:
 
 protected:
   //Override default signal handler:
-  virtual bool on_expose_event(GdkEventExpose* event);
+  bool on_expose_event(GdkEventExpose* event) override;
 
 private:
   void draw_select_rectangle(Cairo::RefPtr<Cairo::Context> cr);

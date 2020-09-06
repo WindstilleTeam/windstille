@@ -30,10 +30,10 @@ class Inventory : public Screen
 private:
 public:
   Inventory();
-  ~Inventory();
+  ~Inventory() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
 private:
   std::shared_ptr<InventoryImpl> impl;

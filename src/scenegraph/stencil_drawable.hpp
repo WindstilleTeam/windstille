@@ -31,7 +31,7 @@ private:
 public:
   StencilDrawable();
 
-  void render(unsigned int mask);
+  void render(unsigned int mask) override;
 
   DrawableGroup& get_stencil_group()  { return m_stencil_group; }
   DrawableGroup& get_drawable_group() { return m_drawable_group; }

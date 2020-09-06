@@ -35,17 +35,17 @@ private:
 public:
   NavGraphEdgeObjectModel(std::shared_ptr<NavGraphNodeObjectModel> lhs,
                           std::shared_ptr<NavGraphNodeObjectModel> rhs);
-  virtual ~NavGraphEdgeObjectModel();
+  ~NavGraphEdgeObjectModel() override;
 
-  void add_to_scenegraph(DrawableGroup& sg);
-  void update(float delta);
+  void add_to_scenegraph(DrawableGroup& sg) override;
+  void update(float delta) override;
 
-  Rectf get_bounding_box() const;
-  ObjectModelHandle clone() const;
-  void write(FileWriter& writer) const;
+  Rectf get_bounding_box() const override;
+  ObjectModelHandle clone() const override;
+  void write(FileWriter& writer) const override;
   void write_real(FileWriter& writer) const;
 
-  bool is_snappable() const { return false; }
+  bool is_snappable() const override { return false; }
 
   std::shared_ptr<NavGraphNodeObjectModel> get_lhs() const { return m_lhs; }
   std::shared_ptr<NavGraphNodeObjectModel> get_rhs() const { return m_rhs; }

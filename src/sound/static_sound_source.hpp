@@ -26,7 +26,7 @@ class StaticSoundSource : public OpenALSoundSource
 private:
 public:
   StaticSoundSource(SoundChannel& channel, ALuint buffer);
-  virtual ~StaticSoundSource() {}
+  ~StaticSoundSource() override {}
 
 private:
   StaticSoundSource(const StaticSoundSource&);

@@ -38,10 +38,10 @@ private:
 
 public:
   Layer(const FileReader& reader);
-  ~Layer();
+  ~Layer() override;
 
-  void draw (SceneContext& context);
-  void update (float delta);
+  void draw (SceneContext& context) override;
+  void update (float delta) override;
 
 
 private:

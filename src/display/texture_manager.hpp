@@ -34,7 +34,7 @@ class TextureManager : public Currenton<TextureManager>
 {
 public:
   TextureManager();
-  ~TextureManager();
+  ~TextureManager() override;
 
   /**
    * returns a texture containing the image specified with filename

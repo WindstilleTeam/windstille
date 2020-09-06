@@ -35,14 +35,14 @@ public:
       object(object_)
   {}
 
-  void redo() {
+  void redo() override {
     if (layer)
       layer->remove(object);
     else
       std::cout << "ObjectRemoveCommand: null layer" << std::endl;
   }
 
-  void undo() {
+  void undo() override {
     if (layer)
       layer->add(object);
   }
@@ -61,14 +61,14 @@ public:
       object(object_)
   {}
 
-  void redo() {
+  void redo() override {
     if (layer)
       layer->add(object);
     else
       std::cout << "ObjectRemoveCommand: null layer" << std::endl;
   }
 
-  void undo() {
+  void undo() override {
     if (layer)
       layer->remove(object);
   }
@@ -88,11 +88,11 @@ public:
       new_pos(new_pos_)
   {}
 
-  void redo() {
+  void redo() override {
     object->set_rel_pos(new_pos);
   }
 
-  void undo() {
+  void undo() override {
     object->set_rel_pos(orig_pos);
   }
 };

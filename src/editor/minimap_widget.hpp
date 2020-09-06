@@ -36,7 +36,7 @@ public:
   bool mouse_up(GdkEventButton* event);
   bool scroll(GdkEventScroll* event);
 
-  bool on_expose_event(GdkEventExpose* event);
+  bool on_expose_event(GdkEventExpose* event) override;
 
 private:
   MinimapWidget(const MinimapWidget&);

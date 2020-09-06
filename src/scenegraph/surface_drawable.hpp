@@ -41,13 +41,13 @@ public:
       params(params_)
   {}
 
-  virtual ~SurfaceDrawable()
+  ~SurfaceDrawable() override
   {}
 
   SurfacePtr get_surface() const { return surface; }
   SurfaceDrawingParameters& get_params() { return params; }
 
-  void render(unsigned int mask)
+  void render(unsigned int mask) override
   {
     glPushMatrix();
     glMultMatrixf(glm::value_ptr(modelview));

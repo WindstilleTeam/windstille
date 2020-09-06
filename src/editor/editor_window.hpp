@@ -99,7 +99,7 @@ private:
 
 public:
   EditorWindow(const Glib::RefPtr<const Gdk::GL::Config>& glconfig);
-  virtual ~EditorWindow();
+  ~EditorWindow() override;
 
   void show_minimap(bool v);
 

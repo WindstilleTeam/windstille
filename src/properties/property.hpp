@@ -70,17 +70,17 @@ public:
     return prop;
   }
 
-  virtual bool& get_bool(void* obj) const
+  bool& get_bool(void* obj) const override
   {
     return static_cast<C*>(obj)->*(value.bool_value);
   }
 
-  virtual int& get_int(void* obj) const
+  int& get_int(void* obj) const override
   {
     return static_cast<C*>(obj)->*(value.int_value);
   }
 
-  virtual float& get_float(void* obj) const
+  float& get_float(void* obj) const override
   {
     return static_cast<C*>(obj)->*(value.float_value);
   }

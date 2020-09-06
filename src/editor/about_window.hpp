@@ -27,7 +27,7 @@ private:
 
 public:
   AboutWindow();
-  virtual ~AboutWindow();
+  ~AboutWindow() override;
 
 private:
   AboutWindow(const AboutWindow&);

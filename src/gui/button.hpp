@@ -32,10 +32,10 @@ private:
 public:
   Button(Component* parent);
   Button(const std::string& label, Component* parent);
-  ~Button();
+  ~Button() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
 private:
   Button (const Button&);

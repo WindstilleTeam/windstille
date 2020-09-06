@@ -30,14 +30,14 @@ private:
 
 public:
   TitleScreen();
-  ~TitleScreen();
+  ~TitleScreen() override;
 
-  void on_startup();
+  void on_startup() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
-  void handle_event(const SDL_Event& );
+  void handle_event(const SDL_Event& ) override;
 
 private:
   TitleScreen (const TitleScreen&);

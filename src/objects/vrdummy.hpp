@@ -35,10 +35,10 @@ private:
 
 public:
   VRDummy(const FileReader& props);
-  ~VRDummy();
+  ~VRDummy() override;
 
-  void draw(SceneContext& gc);
-  void update(float delta);
+  void draw(SceneContext& gc) override;
+  void update(float delta) override;
 };
 
 #endif

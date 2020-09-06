@@ -31,7 +31,7 @@ public:
 
 public:
   Fonts();
-  ~Fonts();
+  ~Fonts() override;
 };
 
 #endif

@@ -40,10 +40,10 @@ public:
         << parser->lexer->getLineNumber() << ": " << message;
     string = msg.str();
   }
-  ~ParseError() throw()
+  ~ParseError() throw() override
   {}
 
-  const char* what() const throw()
+  const char* what() const throw() override
   {
     return string.c_str();
   }

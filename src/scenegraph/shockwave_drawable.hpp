@@ -40,7 +40,7 @@ public:
   {
   }
 
-  ~ShockwaveDrawable()
+  ~ShockwaveDrawable() override
   {
   }
 
@@ -121,7 +121,7 @@ public:
   }
 #endif
 
-  void render(unsigned int mask)
+  void render(unsigned int mask) override
   {
 #if 0
     glPushMatrix();

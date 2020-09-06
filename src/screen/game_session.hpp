@@ -49,7 +49,7 @@ public:
   enum ControlState { DIALOG, GAME, CONVERSATION };
 
   GameSession(const Pathname& arg_filename);
-  virtual ~GameSession();
+  ~GameSession() override;
 
   View* get_view();
 
@@ -74,9 +74,9 @@ public:
   void fadeout(float time, const Color& color);
   void fadein(float time);
 
-  void draw();
-  void update(float delta, const Controller& controller);
-  void handle_event(const SDL_Event& event);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
+  void handle_event(const SDL_Event& event) override;
 
   PDA& get_pda();
 

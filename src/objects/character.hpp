@@ -30,11 +30,11 @@ private:
 
 public:
   Character(const FileReader& props);
-  ~Character();
+  ~Character() override;
 
-  void update(float delta);
-  void draw (SceneContext& gc);
-  void use();
+  void update(float delta) override;
+  void draw (SceneContext& gc) override;
+  void use() override;
 };
 
 #endif

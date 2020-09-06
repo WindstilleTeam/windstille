@@ -35,7 +35,7 @@ private:
 
 public:
   Slider(Component* parent);
-  ~Slider();
+  ~Slider() override;
 
   int  get_pos() const;
 
@@ -45,8 +45,8 @@ public:
   void set_range(int min, int max);
   void set_step(int step);
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
 private:
   Slider (const Slider&);

@@ -41,7 +41,7 @@ private:
 
 public:
   LayerManager(EditorWindow& editor);
-  virtual ~LayerManager();
+  ~LayerManager() override;
 
   void set_model(SectorModel* model);
 

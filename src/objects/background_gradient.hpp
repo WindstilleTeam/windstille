@@ -30,7 +30,7 @@ private:
 
 public:
   BackgroundGradient(const FileReader& props);
-  ~BackgroundGradient();
+  ~BackgroundGradient() override;
 
 private:
   BackgroundGradient (const BackgroundGradient&);

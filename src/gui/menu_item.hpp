@@ -71,10 +71,10 @@ public:
 
   EnumMenuItem& add_pair(int value, const std::string& label);
 
-  void incr();
-  void decr();
-  void click() {}
-  void draw(const Rectf& rect, bool is_active);
+  void incr() override;
+  void decr() override;
+  void click() override {}
+  void draw(const Rectf& rect, bool is_active) override;
   sigc::signal<void (int)>& sig_change() { return on_change; }
 };
 
@@ -91,10 +91,10 @@ public:
 public:
   SliderMenuItem(MenuComponent* parent_,
                  const std::string& label_, int value_, int mix_value_ = 0, int max_value_ = 100, int step = 10);
-  void incr();
-  void decr();
-  void click() {}
-  void draw(const Rectf& rect, bool is_active);
+  void incr() override;
+  void decr() override;
+  void click() override {}
+  void draw(const Rectf& rect, bool is_active) override;
   sigc::signal<void (int)>& sig_change() { return on_change; }
 };
 
@@ -105,10 +105,10 @@ public:
 
 public:
   ButtonMenuItem(MenuComponent* parent_, const std::string& label_);
-  void incr() {}
-  void decr() {}
-  void click();
-  void draw(const Rectf& rect, bool is_active);
+  void incr() override {}
+  void decr() override {}
+  void click() override;
+  void draw(const Rectf& rect, bool is_active) override;
   sigc::signal<void ()>& sig_click() { return on_click; }
 };
 

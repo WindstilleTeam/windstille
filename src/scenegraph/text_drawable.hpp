@@ -28,9 +28,9 @@ public:
     : Drawable(pos_, z_pos_, modelview_),
       text(text_)
   {}
-  virtual ~TextDrawable() {}
+  ~TextDrawable() override {}
 
-  void render(unsigned int mask) {
+  void render(unsigned int mask) override {
     glPushMatrix();
     glMultMatrixf(glm::value_ptr(modelview));
     Fonts::current()->ttffont->draw(pos, text);

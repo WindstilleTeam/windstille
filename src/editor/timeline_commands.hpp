@@ -55,7 +55,7 @@ public:
     m_keyframe = m_layer->create_keyframe(pos);
   }
 
-  void redo()
+  void redo() override
   {
     if (m_add_layer)
       m_sector.get_timeline()->add_layer(m_layer);
@@ -63,7 +63,7 @@ public:
     m_layer->add_object(m_keyframe);
   }
 
-  void undo()
+  void undo() override
   {
     if (m_add_layer)
       m_layer->remove_object(m_keyframe);
@@ -89,12 +89,12 @@ public:
     m_layer = m_sector.get_timeline()->create_layer(name);
   }
 
-  void redo()
+  void redo() override
   {
     m_sector.get_timeline()->add_layer(m_layer);
   }
 
-  void undo()
+  void undo() override
   {
     m_sector.get_timeline()->remove_layer(m_layer);
   }

@@ -64,12 +64,12 @@ private:
 
 public:
   Sprite2DView();
-  ~Sprite2DView();
+  ~Sprite2DView() override;
 
   void adddir(const Pathname& dir);
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
   void update_slideshow(float delta, const Controller& controller);
   void update_manual(float delta, const Controller& controller);

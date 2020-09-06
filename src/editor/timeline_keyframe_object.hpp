@@ -33,9 +33,9 @@ public:
     m_pos(pos)
   {}
 
-  void  set_pos(float pos) { m_pos = pos; }
-  float get_pos()   const { return m_pos; }
-  float get_width() const { return 0.0f; }
+  void  set_pos(float pos) override { m_pos = pos; }
+  float get_pos()   const override { return m_pos; }
+  float get_width() const override { return 0.0f; }
 
 private:
   TimelineKeyframeObject(const TimelineKeyframeObject&);
@@ -57,7 +57,7 @@ public:
   const C& get_data() const { return m_data; }
   void     set_data(const C& data) { m_data = data; }
 
-  void write(FileWriter& writer) const
+  void write(FileWriter& writer) const override
   {
     writer.start_section("keyframe");
     writer.write("pos",  m_pos);

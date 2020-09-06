@@ -43,9 +43,9 @@ public:
     shader_program(shader_program_)
   {}
 
-  virtual ~DeformDrawerRequest() {}
+  ~DeformDrawerRequest() override {}
 
-  void render(unsigned int mask)
+  void render(unsigned int mask) override
   {
 #if 0
     Display::push_framebuffer(framebuffer);

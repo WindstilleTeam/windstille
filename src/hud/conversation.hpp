@@ -50,8 +50,8 @@ private:
 public:
   Conversation();
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
   void add(const std::string& text);
   void add(const std::string& topic, const std::string& text);

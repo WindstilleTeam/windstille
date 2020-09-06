@@ -81,7 +81,7 @@ private:
 
 public:
   ScriptManager();
-  ~ScriptManager();
+  ~ScriptManager() override;
 
   void update();
 

@@ -66,10 +66,10 @@ private:
 
 public:
   PDA();
-  virtual ~PDA();
+  ~PDA() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
   void add_dialog(const std::string& character, const std::string& text);
 
   void add_objective(const std::string& name, const std::string& text);

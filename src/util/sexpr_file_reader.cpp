@@ -52,7 +52,7 @@ public:
            sexpr->get_list_size() >= 1);
   }
 
-  ~SExprFileReaderImpl()
+  ~SExprFileReaderImpl() override
   {
     if (root)
       delete root;
@@ -61,12 +61,12 @@ public:
       delete sexpr;
   }
 
-  std::string get_name() const
+  std::string get_name() const override
   {
     return sexpr->get_list_elem(0)->get_symbol();
   }
 
-  bool read_int(const char* name, int& v) const
+  bool read_int(const char* name, int& v) const override
   {
     lisp::Lisp* item = get_subsection_item(name);
     if (item && item->get_type() == lisp::Lisp::TYPE_INT)
@@ -89,7 +89,7 @@ public:
     return false;
   }
 
-  bool read_float(const char* name, float& v) const
+  bool read_float(const char* name, float& v) const override
   {
     lisp::Lisp* item = get_subsection_item(name);
     if (item)
@@ -112,7 +112,7 @@ public:
     return false;
   }
 
-  bool read_bool  (const char* name, bool& v) const
+  bool read_bool  (const char* name, bool& v) const override
   {
     lisp::Lisp* item = get_subsection_item(name);
     if (item && item->get_type() == lisp::Lisp::TYPE_BOOL)
@@ -123,7 +123,7 @@ public:
     return false;
   }
 
-  bool read_string(const char* name, std::string& v) const
+  bool read_string(const char* name, std::string& v) const override
   {
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
@@ -146,7 +146,7 @@ public:
     return false;
   }
 
-  bool get(const char* name, std::vector<int>&   v) const
+  bool get(const char* name, std::vector<int>&   v) const override
   {
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
@@ -155,7 +155,7 @@ public:
       return false;
   }
 
-  bool get(const char* name, std::vector<bool>&   v) const
+  bool get(const char* name, std::vector<bool>&   v) const override
   {
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
@@ -164,7 +164,7 @@ public:
       return false;
   }
 
-  bool get(const char* name, std::vector<std::string>&   v) const
+  bool get(const char* name, std::vector<std::string>&   v) const override
   {
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
@@ -173,7 +173,7 @@ public:
       return false;
   }
 
-  bool get(const char* name, std::vector<float>& v) const
+  bool get(const char* name, std::vector<float>& v) const override
   {
     lisp::Lisp* sub = get_subsection(name);
     if (sub)
@@ -182,7 +182,7 @@ public:
       return false;
   }
 
-  bool read_section(const char* name, FileReader& v) const
+  bool read_section(const char* name, FileReader& v) const override
   {
     lisp::Lisp* cur = get_subsection(name);
     if (cur)
@@ -193,7 +193,7 @@ public:
     return false;
   }
 
-  std::vector<FileReader> get_sections() const
+  std::vector<FileReader> get_sections() const override
   {
     std::vector<FileReader> lst;
     for(size_t i = 1; i < sexpr->get_list_size(); ++i)
@@ -203,7 +203,7 @@ public:
     return lst;
   }
 
-  std::vector<std::string> get_section_names() const
+  std::vector<std::string> get_section_names() const override
   {
     std::vector<std::string> lst;
 

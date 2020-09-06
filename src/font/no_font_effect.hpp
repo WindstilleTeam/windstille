@@ -26,17 +26,17 @@ class NoFontEffect : public FontEffect
 private:
 public:
   NoFontEffect() {}
-  ~NoFontEffect() {}
+  ~NoFontEffect() override {}
 
-  int get_height(int orig_font_size) const { return orig_font_size; }
+  int get_height(int orig_font_size) const override { return orig_font_size; }
 
-  int get_glyph_width(int orig_glyph_width) const   { return orig_glyph_width; }
-  int get_glyph_height(int orig_glyph_height) const { return orig_glyph_height; }
+  int get_glyph_width(int orig_glyph_width) const override   { return orig_glyph_width; }
+  int get_glyph_height(int orig_glyph_height) const override { return orig_glyph_height; }
 
-  int get_x_offset(int orig_glyph_offset) const { return orig_glyph_offset; }
-  int get_y_offset(int orig_glyph_offset) const { return orig_glyph_offset; }
+  int get_x_offset(int orig_glyph_offset) const override { return orig_glyph_offset; }
+  int get_y_offset(int orig_glyph_offset) const override { return orig_glyph_offset; }
 
-  void blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_pos, int y_pos) const;
+  void blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_pos, int y_pos) const override;
 
   /* disabled for g++-4.2 compatibilty
      private:

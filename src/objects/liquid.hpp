@@ -42,9 +42,9 @@ private:
 
 public:
   Liquid(const FileReader& props);
-  ~Liquid();
+  ~Liquid() override;
 
-  void update(float delta);
+  void update(float delta) override;
 
 private:
   void update_scene_graph();

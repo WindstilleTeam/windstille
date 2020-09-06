@@ -29,9 +29,9 @@ public:
     : Drawable(Vector2f(0, 0), -1000.0f), color(color_)
   {
   }
-  virtual ~FillScreenDrawable() {}
+  ~FillScreenDrawable() override {}
 
-  void render(unsigned int mask)
+  void render(unsigned int mask) override
   {
     glClearColor(color.r, color.g, color.b, color.a);
     glClear(GL_COLOR_BUFFER_BIT);

@@ -40,7 +40,7 @@ public:
   TimelineProperty  get_property() const { return m_property; }
   ObjectModelHandle get_object()   const { return m_object; }
 
-  virtual void write(FileWriter& writer) const
+  void write(FileWriter& writer) const override
   {
     writer.start_section("object-layer");
     writer.write("object",   m_object->get_id());
@@ -163,13 +163,13 @@ public:
     }
   }
 
-  void apply(float pos)
+  void apply(float pos) override
   {
     //std::cout << "apply: " << pos << " " << get_value(pos) << std::endl;
     m_object->set_property(m_property, get_value(pos));
   }
 
-  TimelineObjectHandle create_keyframe(float pos)
+  TimelineObjectHandle create_keyframe(float pos) override
   {
     C data;
     m_object->get_property(m_property, data);

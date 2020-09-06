@@ -31,17 +31,17 @@ private:
 
 public:
   ParticleSystemObjectModel(const Vector2f& pos);
-  ~ParticleSystemObjectModel();
+  ~ParticleSystemObjectModel() override;
 
-  void draw(SceneContext& sc);
-  void update(float delta);
+  void draw(SceneContext& sc) override;
+  void update(float delta) override;
 
-  Rectf get_bounding_box() const;
-  ObjectModelHandle clone() const;
+  Rectf get_bounding_box() const override;
+  ObjectModelHandle clone() const override;
 
-  void write(FileWriter& writer) const;
+  void write(FileWriter& writer) const override;
 
-  void add_to_scenegraph(DrawableGroup& sg) {}
+  void add_to_scenegraph(DrawableGroup& sg) override {}
 
 private:
   ParticleSystemObjectModel(const ParticleSystemObjectModel&);

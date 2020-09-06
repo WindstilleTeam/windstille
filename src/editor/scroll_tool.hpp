@@ -33,9 +33,9 @@ private:
 public:
   ScrollTool();
 
-  virtual void mouse_down(GdkEventButton* event, WindstilleWidget& wst);
-  virtual void mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
-  virtual void mouse_up(GdkEventButton* event, WindstilleWidget& wst);
+  void mouse_down(GdkEventButton* event, WindstilleWidget& wst) override;
+  void mouse_move(GdkEventMotion* event, WindstilleWidget& wst) override;
+  void mouse_up(GdkEventButton* event, WindstilleWidget& wst) override;
 
 private:
   ScrollTool(const ScrollTool&);

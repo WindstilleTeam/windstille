@@ -28,21 +28,21 @@ class FilteredSoundFile : public SoundFile
 {
 public:
   FilteredSoundFile(std::unique_ptr<SoundFile> sound_file);
-  virtual ~FilteredSoundFile();
+  ~FilteredSoundFile() override;
 
-  virtual size_t read(void* buffer, size_t buffer_size);
-  virtual void reset();
-  virtual bool eof() const;
+  size_t read(void* buffer, size_t buffer_size) override;
+  void reset() override;
+  bool eof() const override;
 
-  virtual int    get_bits_per_sample() const;
-  virtual size_t get_size() const;
-  virtual int    get_rate() const;
-  virtual int    get_channels() const;
+  int    get_bits_per_sample() const override;
+  size_t get_size() const override;
+  int    get_rate() const override;
+  int    get_channels() const override;
 
-  virtual void   seek_to(float sec);
+  void   seek_to(float sec) override;
 
   /** Returns the length of the file in seconds */
-  virtual float  get_length() const;
+  float  get_length() const override;
 
 private:
   std::unique_ptr<SoundFile> m_sound_file;

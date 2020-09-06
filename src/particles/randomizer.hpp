@@ -30,7 +30,7 @@ public:
 
 class PointRandomizer : public Randomizer {
 public:
-  void set_pos(Particle& particle) {
+  void set_pos(Particle& particle) override {
     particle.x = 0;
     particle.y = 0;
   }
@@ -43,7 +43,7 @@ public:
   RectRandomizer(const Rectf& rect_)
     : rect(rect_) {}
 
-  void set_pos(Particle& p) {
+  void set_pos(Particle& p) override {
     p.x = rnd.frand(rect.left, rect.right);
     p.y = rnd.frand(rect.top,  rect.bottom);
   }
@@ -56,7 +56,7 @@ public:
   CircleRandomizer(float radius_)
     : radius(radius_) {}
 
-  void set_pos(Particle& p) {
+  void set_pos(Particle& p) override {
     // FIXME: BROKEN!!!!!
     p.x = rnd.frand(-radius, radius);
     p.y = sqrtf((radius*radius) - (p.x*p.x)) * rnd.frand(-1.0f, 1.0f);
@@ -72,7 +72,7 @@ public:
     : x1(x1_), y1(y1_), x2(x2_), y2(y2_)
   {}
 
-  void set_pos(Particle& p) {
+  void set_pos(Particle& p) override {
     float l = rnd.frand();
     p.x = x1 + (x2-x1) * l;
     p.y = y1 + (y2-y1) * l;

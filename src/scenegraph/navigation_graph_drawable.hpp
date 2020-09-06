@@ -38,7 +38,7 @@ public:
     set_render_mask(SceneContext::CONTROLMAP);
   }
 
-  void render(unsigned int mask)
+  void render(unsigned int mask) override
   {
     glLineWidth(4.0f);
     m_navgraph->draw();

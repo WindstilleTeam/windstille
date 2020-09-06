@@ -35,18 +35,18 @@ private:
 public:
   NavGraphNodeObjectModel(const FileReader& reader);
   NavGraphNodeObjectModel(const Vector2f& pos);
-  ~NavGraphNodeObjectModel();
+  ~NavGraphNodeObjectModel() override;
 
-  void add_to_scenegraph(DrawableGroup& sg);
-  void set_rel_pos(const Vector2f& rel_pos_);
+  void add_to_scenegraph(DrawableGroup& sg) override;
+  void set_rel_pos(const Vector2f& rel_pos_) override;
   void sync_drawable();
 
-  Rectf get_bounding_box() const;
-  ObjectModelHandle clone() const;
-  void write(FileWriter& writer) const;
+  Rectf get_bounding_box() const override;
+  ObjectModelHandle clone() const override;
+  void write(FileWriter& writer) const override;
 
-  SnapData snap_to_object(const Rectf& rect) const;
-  SnapData snap_to_grid(float grid_size) const;
+  SnapData snap_to_object(const Rectf& rect) const override;
+  SnapData snap_to_grid(float grid_size) const override;
 
 private:
   NavGraphNodeObjectModel(const NavGraphNodeObjectModel&);

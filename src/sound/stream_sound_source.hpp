@@ -34,14 +34,14 @@ public:
 
 public:
   StreamSoundSource(SoundChannel& channel, std::unique_ptr<SoundFile> sound_file);
-  virtual ~StreamSoundSource();
+  ~StreamSoundSource() override;
 
-  void update(float delta);
-  void seek_to(float sec);
-  void set_looping(bool looping);
+  void update(float delta) override;
+  void seek_to(float sec) override;
+  void set_looping(bool looping) override;
 
-  float get_pos() const;
-  int   get_sample_pos() const;
+  float get_pos() const override;
+  int   get_sample_pos() const override;
 
   void set_fading(FadeState state, float fadetime);
   FadeState get_fade_state() const { return m_fade_state; }

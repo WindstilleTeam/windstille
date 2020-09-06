@@ -59,10 +59,10 @@ private:
 public:
   GridComponent(Component* parent);
   GridComponent(const Rectf& rect, int weight, int height, Component* parent);
-  virtual ~GridComponent();
+  ~GridComponent() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
   void pack(Component* component, int x, int y, int colspan = 1, int rowspan = 1);
 
@@ -72,7 +72,7 @@ public:
   void move_left();
   void move_right();
 
-  void on_activation();
+  void on_activation() override;
 
   void set_padding(float p);
 

@@ -57,7 +57,7 @@ public:
   TestObject(std::shared_ptr< ::GameObject > _object)
     : GameObject(_object)
   {}
-  virtual ~TestObject()
+  ~TestObject() override
   {}
 
   ::TestObject* obj() const
@@ -82,7 +82,7 @@ public:
   Player(std::shared_ptr< ::GameObject > _player)
     : GameObject(_player)
   {}
-  virtual ~Player()
+  ~Player() override
   {}
 
   ::Player* obj() const
@@ -103,7 +103,7 @@ public:
   ScriptableObject(std::shared_ptr< ::GameObject > _object)
     : GameObject(_object)
   {}
-  virtual ~ScriptableObject()
+  ~ScriptableObject() override
   {}
 
   ::ScriptableObject* obj() const

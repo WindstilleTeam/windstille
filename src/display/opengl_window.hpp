@@ -32,7 +32,7 @@ public:
   OpenGLWindow(const std::string& title,
                const Size& size, const Size& aspect,
                bool fullscreen = false, int anti_aliasing = 0);
-  ~OpenGLWindow();
+  ~OpenGLWindow() override;
 
   int  get_width()  const;
   int  get_height() const;

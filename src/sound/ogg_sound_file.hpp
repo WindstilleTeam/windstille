@@ -28,18 +28,18 @@ class OggSoundFile : public SoundFile
 {
 public:
   OggSoundFile(const Pathname& filename);
-  ~OggSoundFile();
+  ~OggSoundFile() override;
 
-  size_t read(void* buffer, size_t buffer_size);
-  void reset();
-  bool eof() const;
+  size_t read(void* buffer, size_t buffer_size) override;
+  void reset() override;
+  bool eof() const override;
 
-  int    get_bits_per_sample() const { return m_bits_per_sample; }
-  size_t get_size() const { return m_size; }
-  int    get_rate() const { return m_rate; }
-  int    get_channels() const { return m_channels; }
+  int    get_bits_per_sample() const override { return m_bits_per_sample; }
+  size_t get_size() const override { return m_size; }
+  int    get_rate() const override { return m_rate; }
+  int    get_channels() const override { return m_channels; }
 
-  void seek_to(float sec);
+  void seek_to(float sec) override;
 
 private:
   // I/O functions for ogg

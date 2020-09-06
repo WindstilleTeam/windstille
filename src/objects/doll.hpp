@@ -57,10 +57,10 @@ private:
 
 public:
   Doll();
-  ~Doll();
+  ~Doll() override;
 
-  void draw (SceneContext& ) {}
-  void update (float delta);
+  void draw (SceneContext& ) override {}
+  void update (float delta) override;
   void update(const Controller& controller, float delta);
 
   Vector2f get_pos() const { return m_pos; }

@@ -37,8 +37,8 @@ private:
 public:
   ControllerHelpWindow();
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 };
 
 #endif

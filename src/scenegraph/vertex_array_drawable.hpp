@@ -40,7 +40,7 @@ private:
 public:
   VertexArrayDrawable(const Vector2f& pos_, float z_pos_, const Matrix& modelview_);
 
-  void render(unsigned int mask);
+  void render(unsigned int mask) override;
   void render(int start, int end);
 
   void vertex(float x, float y, float z = 0.0f);

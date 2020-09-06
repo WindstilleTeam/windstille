@@ -61,7 +61,7 @@ private:
 
 public:
   ScreenManager();
-  ~ScreenManager();
+  ~ScreenManager() override;
 
   /** Displays the previously set screen in until quit() is called */
   void run();

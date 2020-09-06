@@ -36,9 +36,9 @@ public:
       angle(angle_)
   {}
 
-  virtual ~ControlDrawable() {}
+  ~ControlDrawable() override {}
 
-  void render(unsigned int mask)
+  void render(unsigned int mask) override
   {
     glPushMatrix();
 

@@ -45,13 +45,13 @@ private:
 public:
   SelectTool();
 
-  void mouse_down (GdkEventButton* event, WindstilleWidget& wst);
-  void mouse_up(GdkEventButton* event, WindstilleWidget& wst);
-  void mouse_move(GdkEventMotion* event, WindstilleWidget& wst);
+  void mouse_down (GdkEventButton* event, WindstilleWidget& wst) override;
+  void mouse_up(GdkEventButton* event, WindstilleWidget& wst) override;
+  void mouse_move(GdkEventMotion* event, WindstilleWidget& wst) override;
 
-  void mouse_right_down(GdkEventButton* event, WindstilleWidget& wst);
+  void mouse_right_down(GdkEventButton* event, WindstilleWidget& wst) override;
 
-  void draw(SceneContext& sc);
+  void draw(SceneContext& sc) override;
 
 private:
   SelectTool(const SelectTool&);

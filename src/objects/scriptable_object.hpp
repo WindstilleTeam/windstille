@@ -59,11 +59,11 @@ protected:
 
 public:
   ScriptableObject(const FileReader& reader);
-  virtual ~ScriptableObject();
+  ~ScriptableObject() override;
 
-  void draw (SceneContext& sc);
-  void update (float delta);
-  void use();
+  void draw (SceneContext& sc) override;
+  void update (float delta) override;
+  void use() override;
   void move_to(float x, float y, float arg_target_speed, float arg_acceleration);
   void start_flash(float speed);
 };

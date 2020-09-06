@@ -35,13 +35,13 @@ public:
     setp(buf, buf+sizeof(buf));
   }
 
-  ~ConsoleStreambuf()
+  ~ConsoleStreambuf() override
   {
     sync();
   }
 
 protected:
-  virtual int overflow(int c)
+  int overflow(int c) override
   {
     if(pbase() == pptr())
       return 0;
@@ -60,7 +60,7 @@ protected:
     return 0;
   }
 
-  virtual int sync()
+  int sync() override
   {
     return overflow(traits_type::eof());
   }

@@ -30,7 +30,7 @@ class Manager : public Currenton<Manager>
 {
 public:
   Manager();
-  ~Manager();
+  ~Manager() override;
 
   Data* create_data(const Pathname& filename);
 

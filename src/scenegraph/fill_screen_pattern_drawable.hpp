@@ -36,14 +36,14 @@ public:
     m_offset(offset)
   {}
 
-  virtual ~FillScreenPatternDrawable() {}
+  ~FillScreenPatternDrawable() override {}
 
   void set_offset(const Vector2f& offset)
   {
     m_offset = offset;
   }
 
-  void render(unsigned int mask)
+  void render(unsigned int mask) override
   {
     OpenGLState state;
     state.enable(GL_BLEND);

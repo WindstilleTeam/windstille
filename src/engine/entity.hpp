@@ -45,7 +45,7 @@ protected:
 
 public:
   Entity();
-  virtual ~Entity();
+  ~Entity() override;
 
   virtual Vector2f get_pos() const
   { return pos; }

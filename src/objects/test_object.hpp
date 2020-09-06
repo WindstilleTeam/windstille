@@ -29,10 +29,10 @@ class TestObject : public GameObject
 {
 public:
   TestObject(const FileReader& reader);
-  virtual ~TestObject();
+  ~TestObject() override;
 
-  void draw(SceneContext& context);
-  void update(float delta);
+  void draw(SceneContext& context) override;
+  void update(float delta) override;
 
   void set_sprite(const std::string& filename);
   void set_action(const std::string& action);

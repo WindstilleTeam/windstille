@@ -33,10 +33,10 @@ private:
   enum { WALKING, FALLING, DYING } state;
 public:
   Hedgehog(const FileReader& props);
-  ~Hedgehog();
+  ~Hedgehog() override;
 
-  void draw(SceneContext& gc);
-  void update(float delta);
+  void draw(SceneContext& gc) override;
+  void update(float delta) override;
   void die();
 };
 

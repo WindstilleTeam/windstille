@@ -35,10 +35,10 @@ private:
 
 public:
   LaserPointer();
-  ~LaserPointer();
+  ~LaserPointer() override;
 
-  void draw(SceneContext& sc);
-  void update(float delta);
+  void draw(SceneContext& sc) override;
+  void update(float delta) override;
 
   float get_angle() const;
   void  set_angle(float angle);

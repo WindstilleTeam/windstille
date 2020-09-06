@@ -44,11 +44,11 @@ private:
 
 public:
   InputConfigurator();
-  ~InputConfigurator();
+  ~InputConfigurator() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
-  void handle_event(const SDL_Event& event);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
+  void handle_event(const SDL_Event& event) override;
   void add_configure_item(ConfigureItem::Mode mode, int event_id);
   void next_item();
   void print_item();

@@ -55,7 +55,7 @@ public:
   DecalObjectModel(const std::string& name, const Vector2f& rel_pos,
                    const std::string& path_, MapType type_);
   DecalObjectModel(const DecalObjectModel& rhs);
-  ~DecalObjectModel();
+  ~DecalObjectModel() override;
 
   void set_scale(const Vector2f& scale);
   Vector2f get_scale() const { return scale; }
@@ -63,39 +63,39 @@ public:
   void set_angle(float angle);
   float get_angle() const { return angle; }
 
-  bool is_snappable() const { return type == COLORMAP; }
+  bool is_snappable() const override { return type == COLORMAP; }
 
-  void draw_select(SceneContext& sc, bool highlight);
-  void draw(SceneContext& sc);
+  void draw_select(SceneContext& sc, bool highlight) override;
+  void draw(SceneContext& sc) override;
 
-  Rectf get_bounding_box() const;
-  ObjectModelHandle clone() const;
-  void write(FileWriter& writer) const;
+  Rectf get_bounding_box() const override;
+  ObjectModelHandle clone() const override;
+  void write(FileWriter& writer) const override;
 
-  bool get_hflip() const { return hflip; }
-  bool get_vflip() const { return vflip; }
+  bool get_hflip() const override { return hflip; }
+  bool get_vflip() const override { return vflip; }
 
-  void set_hflip(bool t) { hflip = t; sync(); }
-  void set_vflip(bool t) { vflip = t; sync(); }
+  void set_hflip(bool t) override { hflip = t; sync(); }
+  void set_vflip(bool t) override { vflip = t; sync(); }
 
-  bool is_at(const Vector2f& pos) const;
+  bool is_at(const Vector2f& pos) const override;
 
-  void reset();
+  void reset() override;
 
-  void add_control_points(std::vector<ControlPointHandle>& control_points);
+  void add_control_points(std::vector<ControlPointHandle>& control_points) override;
 
-  void add_to_scenegraph(DrawableGroup& sg);
-  void sync();
+  void add_to_scenegraph(DrawableGroup& sg) override;
+  void sync() override;
 
-  void set_world_pos(const Vector2f& p);
-  void set_rel_pos(const Vector2f& rel_pos_);
-  void set_select_mask(const SelectMask& select_mask_);
+  void set_world_pos(const Vector2f& p) override;
+  void set_rel_pos(const Vector2f& rel_pos_) override;
+  void set_select_mask(const SelectMask& select_mask_) override;
 
-  void get_property(TimelineProperty property, float& value_out) const;
-  void get_property(TimelineProperty property, Vector2f& value_out) const;
+  void get_property(TimelineProperty property, float& value_out) const override;
+  void get_property(TimelineProperty property, Vector2f& value_out) const override;
 
-  void set_property(TimelineProperty property, float value);
-  void set_property(TimelineProperty property, const Vector2f& value);
+  void set_property(TimelineProperty property, float value) override;
+  void set_property(TimelineProperty property, const Vector2f& value) override;
 };
 
 #endif

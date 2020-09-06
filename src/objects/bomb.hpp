@@ -39,10 +39,10 @@ private:
 
 public:
   Bomb(int x, int y);
-  virtual ~Bomb();
+  ~Bomb() override;
 
-  void update(float delta);
-  void draw(SceneContext& gc);
+  void update(float delta) override;
+  void draw(SceneContext& gc) override;
 private:
   void explode();
   Bomb (const Bomb&);

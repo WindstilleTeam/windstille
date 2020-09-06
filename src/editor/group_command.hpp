@@ -36,12 +36,12 @@ public:
     cmds.push_back(cmd);
   }
 
-  void redo() {
+  void redo() override {
     for(Commands::const_iterator i = cmds.begin(); i != cmds.end(); ++i)
       (*i)->redo();
   }
 
-  void undo() {
+  void undo() override {
     for(Commands::const_reverse_iterator i = cmds.rbegin(); i != cmds.rend(); ++i)
       (*i)->undo();
   }

@@ -34,12 +34,12 @@ public:
   LaserPointer* laser_pointer;
 
   Pistol();
-  virtual ~Pistol();
+  ~Pistol() override;
 
-  void draw(SceneContext& context);
-  void update(float delta);
+  void draw(SceneContext& context) override;
+  void update(float delta) override;
 
-  void fire(bool enable);
+  void fire(bool enable) override;
 
 private:
   Pistol(const Pistol&);

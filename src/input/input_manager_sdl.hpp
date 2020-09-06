@@ -100,7 +100,7 @@ class InputManagerSDL : public InputManager,
 {
 public:
   InputManagerSDL(const ControllerDescription& controller_description);
-  virtual ~InputManagerSDL();
+  ~InputManagerSDL() override;
 
   void load(const Pathname& filename);
 
@@ -128,7 +128,7 @@ public:
 
   void on_event(const SDL_Event& event);
 
-  void add_axis_event(int name, float pos);
+  void add_axis_event(int name, float pos) override;
 
 private:
   void on_key_event(const SDL_KeyboardEvent& key);

@@ -44,10 +44,10 @@ private:
 
 public:
   DeformDrawer(FileReader& props);
-  ~DeformDrawer();
+  ~DeformDrawer() override;
 
   void draw(DrawingContext& sc, ParticleSystem& psys);
-  void draw(const ParticleSystem& /*psys*/) const {}
+  void draw(const ParticleSystem& /*psys*/) const override {}
 private:
   DeformDrawer (const DeformDrawer&);
   DeformDrawer& operator= (const DeformDrawer&);

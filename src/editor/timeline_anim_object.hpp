@@ -37,11 +37,11 @@ public:
     m_name(name)
   {}
 
-  float get_pos()   const { return m_pos; }
-  void  set_pos(float pos) { m_pos = pos; }
-  float get_width() const { return m_width; }
+  float get_pos()   const override { return m_pos; }
+  void  set_pos(float pos) override { m_pos = pos; }
+  float get_width() const override { return m_width; }
   std::string get_name() const { return m_name; }
-  void write(FileWriter& writer) const
+  void write(FileWriter& writer) const override
   {
     writer.start_section("animation");
     writer.write("pos",  m_pos);

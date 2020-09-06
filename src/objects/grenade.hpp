@@ -26,10 +26,10 @@ class Grenade : public Entity
 {
 public:
   Grenade();
-  virtual ~Grenade();
+  ~Grenade() override;
 
-  void draw(SceneContext& sc);
-  void update(float delta);
+  void draw(SceneContext& sc) override;
+  void update(float delta) override;
   void set_velocity(const Vector2f& vel);
 
 private:

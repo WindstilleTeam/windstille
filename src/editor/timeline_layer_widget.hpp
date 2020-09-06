@@ -32,7 +32,7 @@ private:
 public:
   TimelineLayerWidget();
 
-  virtual bool on_expose_event(GdkEventExpose* event);
+  bool on_expose_event(GdkEventExpose* event) override;
   void set_timeline(TimelineHandle timeline) { m_timeline = timeline; }
 
 private:

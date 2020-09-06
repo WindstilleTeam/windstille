@@ -81,7 +81,7 @@ private:
 
 public:
   Sector(const Pathname& filename);
-  ~Sector();
+  ~Sector() override;
 
   Pathname get_filename() const;
   Pathname get_directory() const;

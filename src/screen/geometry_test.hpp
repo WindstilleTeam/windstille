@@ -41,8 +41,8 @@ private:
 public:
   GeometryTest();
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
 private:
   GeometryTest (const GeometryTest&);

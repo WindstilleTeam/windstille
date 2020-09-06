@@ -33,11 +33,11 @@ private:
 public:
   DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_);
 
-  virtual void on_move_start(GdkEventButton* event) override;
-  virtual void on_move_update(GdkEventMotion* event, const Vector2f& offset_) override;
-  virtual void on_move_end(GdkEventButton* event, const Vector2f& offset_) override;
+  void on_move_start(GdkEventButton* event) override;
+  void on_move_update(GdkEventMotion* event, const Vector2f& offset_) override;
+  void on_move_end(GdkEventButton* event, const Vector2f& offset_) override;
 
-  virtual void draw(SceneContext& sc) override;
+  void draw(SceneContext& sc) override;
 
 private:
   DecalRotateControlPoint (const DecalRotateControlPoint&);

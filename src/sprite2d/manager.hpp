@@ -34,7 +34,7 @@ class SpriteManager : public Currenton<SpriteManager>
 {
 public:
   SpriteManager();
-  ~SpriteManager();
+  ~SpriteManager() override;
 
   SpriteDataPtr create_data(const Pathname& filename);
 

@@ -33,10 +33,10 @@ private:
 
 public:
   Shockwave(const FileReader& props);
-  ~Shockwave();
+  ~Shockwave() override;
 
-  void draw (SceneContext& context);
-  void update (float delta);
+  void draw (SceneContext& context) override;
+  void update (float delta) override;
 
 private:
   Shockwave (const Shockwave&);

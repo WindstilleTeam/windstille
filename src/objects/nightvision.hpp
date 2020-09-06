@@ -32,10 +32,10 @@ private:
 
 public:
   Nightvision(const FileReader& props);
-  ~Nightvision();
+  ~Nightvision() override;
 
-  void draw(SceneContext& sc);
-  void update(float delta);
+  void draw(SceneContext& sc) override;
+  void update(float delta) override;
 
 private:
   Nightvision (const Nightvision&);

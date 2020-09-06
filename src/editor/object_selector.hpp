@@ -83,7 +83,7 @@ private:
 
 public:
   ObjectSelector(EditorWindow& editor);
-  virtual ~ObjectSelector();
+  ~ObjectSelector() override;
 
   void add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
                  const Pathname& pathname,
@@ -97,10 +97,10 @@ public:
   bool filter(const Gtk::TreeModel::const_iterator& it);
 
 protected:
-  void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context);
+  void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context) override;
   void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context,
                         Gtk::SelectionData& selection_data,
-                        guint info, guint time);
+                        guint info, guint time) override;
 
   void on_filter_changed();
 

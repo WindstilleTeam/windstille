@@ -32,14 +32,14 @@ private:
 
 public:
   GroupComponent(const Rectf& rect, const std::string& title_, Component* parent);
-  virtual ~GroupComponent();
+  ~GroupComponent() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
   void pack(Component* component);
 
-  bool is_active() const;
+  bool is_active() const override;
 
   Rectf get_child_rect() const;
 

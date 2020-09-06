@@ -35,10 +35,10 @@ private:
 public:
   Automap(Component* parent);
   Automap(const Rectf& rect, Component* parent);
-  ~Automap();
+  ~Automap() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
 private:
   Automap (const Automap&);

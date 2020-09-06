@@ -28,7 +28,7 @@ class PropertyDialog : public Gtk::Dialog
 private:
 public:
   PropertyDialog(Properties& properties);
-  ~PropertyDialog();
+  ~PropertyDialog() override;
 
 private:
   PropertyDialog(const PropertyDialog&);

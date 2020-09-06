@@ -95,12 +95,12 @@ private:
 
 public:
   Player ();
-  virtual ~Player ();
+  ~Player () override;
 
   int get_movement_state() { return state; }
 
-  void draw(SceneContext& gc);
-  void update(float delta);
+  void draw(SceneContext& gc) override;
+  void update(float delta) override;
   void update(const Controller& controller, float delta);
 
   void start_listening();
@@ -114,7 +114,7 @@ public:
 
   Entity* find_useable_entity();
 
-  virtual void set_pos(Vector2f pos);
+  void set_pos(Vector2f pos) override;
 
 private:
   /*

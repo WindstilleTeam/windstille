@@ -38,10 +38,10 @@ private:
 
 public:
   TileMap(const FileReader& props);
-  virtual ~TileMap();
+  ~TileMap() override;
 
-  void update (float delta);
-  void draw (SceneContext& gc);
+  void update (float delta) override;
+  void draw (SceneContext& gc) override;
 
   /** @return the type of ground at the given world coordinates */
   bool is_ground(float x, float y);

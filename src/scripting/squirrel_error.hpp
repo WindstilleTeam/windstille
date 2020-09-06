@@ -37,9 +37,9 @@ public:
   SquirrelError(HSQUIRRELVM v, const Pathname& path, const std::string& message) throw();
   SquirrelError(HSQUIRRELVM v, const std::string& context, const std::string& message) throw();
   SquirrelError(HSQUIRRELVM v, const std::string& message) throw();
-  virtual ~SquirrelError() throw();
+  ~SquirrelError() throw() override;
 
-  const char* what() const throw();
+  const char* what() const throw() override;
 
 private:
   std::string message;

@@ -34,44 +34,44 @@ class OpenALSoundSource : public SoundSource
 {
 public:
   OpenALSoundSource(SoundChannel& channel);
-  virtual ~OpenALSoundSource();
+  ~OpenALSoundSource() override;
 
-  virtual void play();
-  virtual void stop();
-  virtual bool is_playing() const;
+  void play() override;
+  void stop() override;
+  bool is_playing() const override;
 
-  virtual float get_length() const;
+  float get_length() const override;
 
-  virtual void set_looping(bool looping);
+  void set_looping(bool looping) override;
 
   /// Set volume (0.0 is silent, 1.0 is normal)
-  virtual void  set_gain(float gain);
-  virtual float get_gain() const;
+  void  set_gain(float gain) override;
+  float get_gain() const override;
 
-  virtual void  seek_to(float sec);
+  void  seek_to(float sec) override;
 
   /** Return the current position in seconds */
-  virtual float get_pos() const;
+  float get_pos() const override;
 
   /** Seems to be limited to an accuracy of 1024 samples */
-  virtual int get_sample_pos() const;
+  int get_sample_pos() const override;
 
-  virtual void set_position(const Vector2f& position);
-  virtual void set_velocity(const Vector2f& position);
+  void set_position(const Vector2f& position) override;
+  void set_velocity(const Vector2f& position) override;
 
   /** Distances closer then reference distance will increase the gain
       (or keep it at 1.0f), while distances further away will lower it */
-  virtual void set_reference_distance(float distance);
+  void set_reference_distance(float distance) override;
 
   /** Higher factor will mean the sound gain lowers quicker with
       distance, while lower factor will reduce the lowering of gain,
       0.0f disables distance based reduction completly */
-  virtual void set_rolloff_factor(float factor);
+  void set_rolloff_factor(float factor) override;
 
   /** Needs to be called whenever the SoundChannels gain changes */
-  virtual void update_gain() const;
+  void update_gain() const override;
 
-  virtual void update(float delta) {}
+  void update(float delta) override {}
 
 protected:
   SoundChannel& m_channel;

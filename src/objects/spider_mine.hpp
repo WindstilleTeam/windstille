@@ -38,10 +38,10 @@ protected:
 
 public:
   SpiderMine(const FileReader& props);
-  ~SpiderMine();
+  ~SpiderMine() override;
 
-  void update(float delta);
-  void draw (SceneContext& sc);
+  void update(float delta) override;
+  void draw (SceneContext& sc) override;
   void die();
 };
 

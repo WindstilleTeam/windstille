@@ -30,7 +30,7 @@ private:
 public:
   BasicCompositorImpl(const Size& window, const Size& viewport);
 
-  void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state);
+  void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state) override;
 
 private:
   BasicCompositorImpl(const BasicCompositorImpl&);

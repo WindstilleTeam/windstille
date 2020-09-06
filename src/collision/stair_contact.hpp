@@ -44,16 +44,16 @@ private:
 public:
   StairContact(TileMap* tilemap, const Point& p);
 
-  void update(float delta);
+  void update(float delta) override;
 
   /** Move the contact forward or backward across the stairs */
-  void advance(float s);
+  void advance(float s) override;
 
   /** Get the current position in world coordinates */
-  Vector2f get_pos() const;
+  Vector2f get_pos() const override;
 
   /** Return false when the given contact has left the stairs */
-  bool is_active() const;
+  bool is_active() const override;
 
 private:
   void advance_or_not();

@@ -40,7 +40,7 @@ private:
 public:
   ParticleSystems(const FileReader& reader);
 
-  void update (float delta);
+  void update (float delta) override;
 
 private:
   ParticleSystems(const ParticleSystems&);

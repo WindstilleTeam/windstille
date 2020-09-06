@@ -49,7 +49,7 @@ class SoundManager : public Currenton<SoundManager>
 {
 public:
   SoundManager();
-  virtual ~SoundManager();
+  ~SoundManager() override;
 
   void enable_sound(bool sound_enabled);
   void enable_music(bool music_enabled);

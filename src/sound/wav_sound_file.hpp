@@ -27,12 +27,12 @@ class WavSoundFile : public SoundFile
 {
 public:
   WavSoundFile(const Pathname& filename);
-  ~WavSoundFile();
+  ~WavSoundFile() override;
 
-  bool eof() const;
-  size_t read(void* buffer, size_t buffer_size);
-  void reset();
-  void seek_to(float sec);
+  bool eof() const override;
+  size_t read(void* buffer, size_t buffer_size) override;
+  void reset() override;
+  void seek_to(float sec) override;
 
 private:
   std::ifstream file;
@@ -44,10 +44,10 @@ private:
   size_t m_size; /// size in bytes
 
 public:
-  int    get_bits_per_sample() const { return m_bits_per_sample; }
-  size_t get_size() const { return m_size; }
-  int    get_rate() const { return m_rate; }
-  int    get_channels() const { return m_channels; }
+  int    get_bits_per_sample() const override { return m_bits_per_sample; }
+  size_t get_size() const override { return m_size; }
+  int    get_rate() const override { return m_rate; }
+  int    get_channels() const override { return m_channels; }
 
 private:
   WavSoundFile(const WavSoundFile&);

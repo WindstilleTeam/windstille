@@ -37,10 +37,10 @@ private:
 
 public:
   Trigger(const FileReader& props);
-  virtual ~Trigger();
+  ~Trigger() override;
 
-  void draw (SceneContext& gc);
-  void update (float delta);
+  void draw (SceneContext& gc) override;
+  void update (float delta) override;
 };
 
 #endif

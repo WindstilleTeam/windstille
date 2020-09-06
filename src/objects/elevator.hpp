@@ -33,10 +33,10 @@ private:
 
 public:
   Elevator(const FileReader& props);
-  ~Elevator();
+  ~Elevator() override;
 
-  void draw(SceneContext& sc);
-  void update(float delta);
+  void draw(SceneContext& sc) override;
+  void update(float delta) override;
 
 private:
   Elevator(const Elevator&);

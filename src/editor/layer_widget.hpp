@@ -31,7 +31,7 @@ private:
 
 public:
   LayerWidget();
-  ~LayerWidget();
+  ~LayerWidget() override;
 
   void on_layer_toggle(Gtk::ToggleButton* button, int layer);
   void update(const SelectMask& layers);

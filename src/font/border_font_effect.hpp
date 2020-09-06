@@ -35,17 +35,17 @@ public:
       @param outline  If true add the border as an outline to the font, else add it to the font itself
   */
   BorderFontEffect(int size, bool outline);
-  ~BorderFontEffect();
+  ~BorderFontEffect() override;
 
-  int get_height(int orig_font_size) const;
+  int get_height(int orig_font_size) const override;
 
-  int get_glyph_width(int orig_glyph_width) const;
-  int get_glyph_height(int orig_glyph_height) const;
+  int get_glyph_width(int orig_glyph_width) const override;
+  int get_glyph_height(int orig_glyph_height) const override;
 
-  int get_x_offset(int orig_glyph_offset) const;
-  int get_y_offset(int orig_glyph_offset) const;
+  int get_x_offset(int orig_glyph_offset) const override;
+  int get_y_offset(int orig_glyph_offset) const override;
 
-  void blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_pos, int y_pos) const;
+  void blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_pos, int y_pos) const override;
 
   /* disabled for g++-4.2 compatibilty
      private:

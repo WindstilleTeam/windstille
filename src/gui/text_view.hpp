@@ -32,12 +32,12 @@ private:
 
 public:
   TextView(const Rectf& rect, Component* component);
-  ~TextView();
+  ~TextView() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
-  void set_screen_rect(const Rectf& rect);
+  void set_screen_rect(const Rectf& rect) override;
   void set_text(const std::string& text);
   void set_font(TTFFont* font);
 

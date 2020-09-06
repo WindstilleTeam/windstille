@@ -35,7 +35,7 @@ private:
 public:
   SparkDrawer(FileReader& props);
 
-  void draw(const ParticleSystem& psys) const;
+  void draw(const ParticleSystem& psys) const override;
 };
 
 #endif

@@ -53,19 +53,19 @@ private:
 
 public:
   MenuComponent(const Rectf& rect, bool allow_cancel_, Component* parent);
-  virtual ~MenuComponent();
+  ~MenuComponent() override;
 
   void add_item(MenuItem* item);
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
-  float get_prefered_width() const;
-  float get_prefered_height() const;
+  float get_prefered_width() const override;
+  float get_prefered_height() const override;
 
   void     set_font(TTFFont* font_);
   TTFFont* get_font();
 
-  virtual void set_screen_rect(const Rectf& rect);
+  void set_screen_rect(const Rectf& rect) override;
 
 private:
   MenuComponent (const MenuComponent&);

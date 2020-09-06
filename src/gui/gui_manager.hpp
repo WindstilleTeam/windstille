@@ -35,10 +35,10 @@ private:
 
 public:
   GUIManager();
-  ~GUIManager();
+  ~GUIManager() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
   RootComponent* get_root() const;
 private:

@@ -34,13 +34,13 @@ private:
 
 public:
   Box(const FileReader& props);
-  virtual ~Box();
+  ~Box() override;
 
   void collision(const CollisionData& data);
 
-  void update(float delta);
+  void update(float delta) override;
 
-  void draw(SceneContext& gc);
+  void draw(SceneContext& gc) override;
 
 private:
   Box(const Box&);

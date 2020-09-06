@@ -77,14 +77,14 @@ public:
   WindstilleWidget(EditorWindow& editor,
                    const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
                    const Glib::RefPtr<const Gdk::GL::Context>& share_list);
-  virtual ~WindstilleWidget();
+  ~WindstilleWidget() override;
 
   GraphicContextState& get_state() { return state; }
 
-  virtual void on_realize();
+  void on_realize() override;
   virtual bool on_timeout();
-  virtual bool on_configure_event(GdkEventConfigure* event);
-  virtual bool on_expose_event(GdkEventExpose* event);
+  bool on_configure_event(GdkEventConfigure* event) override;
+  bool on_expose_event(GdkEventExpose* event) override;
 
   virtual bool mouse_move(GdkEventMotion* event);
   virtual bool mouse_down (GdkEventButton* event);
@@ -96,9 +96,9 @@ public:
 
   // Drag&Drop
   virtual void on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context);
-  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>&, int x, int y,
-                                     const Gtk::SelectionData& data, guint info, guint time);
-  virtual bool on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time);
+  void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>&, int x, int y,
+                                     const Gtk::SelectionData& data, guint info, guint time) override;
+  bool on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time) override;
 
   void on_zoom_in();
   void on_zoom_out();

@@ -36,11 +36,11 @@ public:
   DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_, bool
                          x_scale_ = true, bool y_scale_ = true);
 
-  void on_move_start(GdkEventButton* event);
-  void on_move_update(GdkEventMotion* event, const Vector2f& offset_);
-  void on_move_end(GdkEventButton* event, const Vector2f& offset_);
+  void on_move_start(GdkEventButton* event) override;
+  void on_move_update(GdkEventMotion* event, const Vector2f& offset_) override;
+  void on_move_end(GdkEventButton* event, const Vector2f& offset_) override;
 
-  void draw(SceneContext& sc);
+  void draw(SceneContext& sc) override;
 
 private:
   DecalScaleControlPoint (const DecalScaleControlPoint&);

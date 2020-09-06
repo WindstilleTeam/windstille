@@ -40,7 +40,7 @@ private:
 
 public:
   SpeechManager();
-  ~SpeechManager();
+  ~SpeechManager() override;
 
   /** Add a speech bubble or a series of speech bubbles to the scene,
    *  lines seperated by newline are displayed in a series of speech

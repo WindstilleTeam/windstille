@@ -34,10 +34,10 @@ private:
 
 public:
   Decal(const FileReader& reader);
-  ~Decal();
+  ~Decal() override;
 
-  void draw (SceneContext& context);
-  void update (float delta);
+  void draw (SceneContext& context) override;
+  void update (float delta) override;
 
   void set_parent(GameObject* parent);
 

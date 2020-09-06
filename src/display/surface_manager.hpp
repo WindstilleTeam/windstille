@@ -44,7 +44,7 @@ private:
 
 public:
   SurfaceManager();
-  ~SurfaceManager();
+  ~SurfaceManager() override;
 
   /** returns a surface containing the image specified with filename */
   SurfacePtr get(const Pathname& filename);

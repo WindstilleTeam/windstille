@@ -58,10 +58,10 @@ private:
 
 public:
   ParticleViewer();
-  ~ParticleViewer();
+  ~ParticleViewer() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
   void load(const Pathname& filename);
 
 private:

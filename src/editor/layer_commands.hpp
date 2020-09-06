@@ -35,12 +35,12 @@ public:
       path(path_)
   {}
 
-  void redo() {
+  void redo() override {
     // FIXME: We should recycle the actual layer object instead of creating a new one
     sector.add_layer("New Layer", path);
   }
 
-  void undo() {
+  void undo() override {
     sector.delete_layer(path);
   }
 
@@ -63,11 +63,11 @@ public:
       layer(sector.get_layer(path))
   {}
 
-  void redo() {
+  void redo() override {
     sector.delete_layer(path);
   }
 
-  void undo() {
+  void undo() override {
     sector.add_layer(layer/*, path*/);
   }
 

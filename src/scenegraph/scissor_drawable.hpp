@@ -32,7 +32,7 @@ private:
 public:
   ScissorDrawable(const Rect& cliprect);
 
-  void render(unsigned int mask);
+  void render(unsigned int mask) override;
 
   DrawableGroup& get_drawable_group() { return m_drawable_group; }
 

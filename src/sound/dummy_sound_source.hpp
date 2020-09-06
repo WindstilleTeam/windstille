@@ -26,43 +26,43 @@ class DummySoundSource : public SoundSource
 private:
 public:
   DummySoundSource() {}
-  virtual ~DummySoundSource() {}
+  ~DummySoundSource() override {}
 
-  void play() {}
-  void stop() {}
-  bool is_playing() const { return false; }
+  void play() override {}
+  void stop() override {}
+  bool is_playing() const override { return false; }
 
-  float get_length() const { return 0.0f; }
+  float get_length() const override { return 0.0f; }
 
-  void set_looping(bool looping) {}
+  void set_looping(bool looping) override {}
 
   /// Set volume (0.0 is silent, 1.0 is normal)
-  void  set_gain(float gain) {}
-  float get_gain() const { return 1.0f; }
+  void  set_gain(float gain) override {}
+  float get_gain() const override { return 1.0f; }
 
-  void  seek_to(float sec) {}
+  void  seek_to(float sec) override {}
 
   /** Return the current position in seconds */
-  float get_pos() const { return 0.0f; }
+  float get_pos() const override { return 0.0f; }
 
-  int get_sample_pos() const { return 0; }
+  int get_sample_pos() const override { return 0; }
 
-  void set_position(const Vector2f& position) {}
-  void set_velocity(const Vector2f& position) {}
+  void set_position(const Vector2f& position) override {}
+  void set_velocity(const Vector2f& position) override {}
 
   /** Distances closer then reference distance will increase the gain
       (or keep it at 1.0f), while distances further away will lower it */
-  void set_reference_distance(float distance) {}
+  void set_reference_distance(float distance) override {}
 
   /** Higher factor will mean the sound gain lowers quicker with
       distance, while lower factor will reduce the lowering of gain,
       0.0f disables distance based reduction completly */
-  void set_rolloff_factor(float factor) {}
+  void set_rolloff_factor(float factor) override {}
 
   /** Needs to be called whenever the SoundChannels gain changes */
-  void update_gain() const {}
+  void update_gain() const override {}
 
-  void update(float delta) {}
+  void update(float delta) override {}
 
 private:
   DummySoundSource(const DummySoundSource&);

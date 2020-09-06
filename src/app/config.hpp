@@ -106,9 +106,9 @@ public:
     return *this;
   }
 
-  void write(lisp::Writer& writer);
+  void write(lisp::Writer& writer) override;
 
-  std::ostream& print(std::ostream& os) const {
+  std::ostream& print(std::ostream& os) const override {
     return (os << data);
   }
 };

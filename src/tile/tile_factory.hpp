@@ -53,7 +53,7 @@ public:
 
   /** Create a TileFactory from a given tile definition file */
   TileFactory(const Pathname& filename);
-  ~TileFactory();
+  ~TileFactory() override;
 
   /**
    * Create a new tile, or loads&create it if it is not already

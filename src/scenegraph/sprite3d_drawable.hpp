@@ -39,7 +39,7 @@ public:
       m_scale(1.0f)
   {}
 
-  void render(unsigned int mask)
+  void render(unsigned int mask) override
   {
     Matrix matrix = modelview;
     matrix = glm::translate(matrix, glm::vec3(pos.x, pos.y, z_pos));

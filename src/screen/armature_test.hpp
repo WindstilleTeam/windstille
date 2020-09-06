@@ -42,10 +42,10 @@ private:
 
 public:
   ArmatureTest();
-  ~ArmatureTest();
+  ~ArmatureTest() override;
 
-  void draw();
-  void update(float delta, const Controller& controller);
+  void draw() override;
+  void update(float delta, const Controller& controller) override;
 
 private:
   ArmatureTest (const ArmatureTest&);

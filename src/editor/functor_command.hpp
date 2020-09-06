@@ -36,11 +36,11 @@ public:
       redo_callback(redo_callback_)
   {}
 
-  void redo() {
+  void redo() override {
     redo_callback();
   }
 
-  void undo() {
+  void undo() override {
     undo_callback();
   }
 
