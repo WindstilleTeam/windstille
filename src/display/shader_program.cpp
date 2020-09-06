@@ -92,7 +92,7 @@ ShaderProgram::link()
 }
 
 GLint
-ShaderProgram::get_uniform_location(const char* name)
+ShaderProgram::get_uniform_location(const char* name) const
 {
   GLint loc;
 
@@ -201,7 +201,7 @@ ShaderProgram::bind_frag_data_location(GLuint color_number, const char* name)
 }
 
 bool
-ShaderProgram::get_link_status()
+ShaderProgram::get_link_status() const
 {
   int status;
   glGetProgramiv(m_handle, GL_LINK_STATUS, &status);
@@ -209,7 +209,7 @@ ShaderProgram::get_link_status()
 }
 
 std::string
-ShaderProgram::get_info_log()
+ShaderProgram::get_info_log() const
 {
   int info_log_len = 0;
   int charsWritten  = 0;

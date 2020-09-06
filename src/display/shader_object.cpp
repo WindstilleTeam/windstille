@@ -101,7 +101,7 @@ ShaderObject::compile()
 }
 
 void
-ShaderObject::print_log()
+ShaderObject::print_log() const
 {
   int infologLength = 0;
   int charsWritten  = 0;
@@ -128,7 +128,7 @@ ShaderObject::print_log()
 
 
 bool
-ShaderObject::get_compile_status()
+ShaderObject::get_compile_status() const
 {
   int status;
   glGetShaderiv(m_handle, GL_COMPILE_STATUS, &status);
@@ -136,7 +136,7 @@ ShaderObject::get_compile_status()
 }
 
 std::string
-ShaderObject::get_info_log()
+ShaderObject::get_info_log() const
 {
   int info_log_len = 0;
   int charsWritten  = 0;

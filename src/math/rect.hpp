@@ -172,7 +172,7 @@ public:
   }
 
   //: Calculates and returns the union of two rectangles.
-  Rect calc_union(const Rect &rect)
+  Rect calc_union(const Rect &rect) const
   {
     Rect result;
     if (left   > rect.left)   result.left   = left;   else result.left   = rect.left;
@@ -361,7 +361,7 @@ public:
   }
 
   //: Calculates and returns the union of two rectangles.
-  Rectf calc_union(const Rectf &rect)
+  Rectf calc_union(const Rectf &rect) const
   {
     Rectf result;
     if (left   > rect.left)   result.left   = left;   else result.left   = rect.left;

@@ -37,13 +37,13 @@ private:
 public:
   ~ShaderObject();
 
-  std::string get_info_log();
-  bool get_compile_status();
+  std::string get_info_log() const;
+  bool get_compile_status() const;
 
   GLuint get_handle() const;
   void load(const std::string& filename);
   void compile();
-  void print_log();
+  void print_log() const;
 
 private:
   GLuint m_handle;

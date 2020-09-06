@@ -48,10 +48,10 @@ public:
   void attach(ShaderObjectPtr obj);
   void link();
 
-  std::string get_info_log();
-  bool get_link_status();
+  std::string get_info_log() const;
+  bool get_link_status() const;
 
-  GLint get_uniform_location(const char* name);
+  GLint get_uniform_location(const char* name) const;
   GLuint get_handle() const;
 
   // FIXME: All these only work when you call

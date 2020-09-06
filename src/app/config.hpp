@@ -48,16 +48,16 @@ public:
   const std::string& get_name() { return name; }
   const std::string& get_docstring() { return docstring; }
 
-  bool is_set() {
+  bool is_set() const {
     return has_been_set;
   }
 
-  bool should_be_saved() {
+  bool should_be_saved() const {
     return do_save;
   }
 
   virtual std::ostream& print(std::ostream& os) const =0;
-  std::string str() {
+  std::string str() const {
     std::ostringstream os;
     print(os);
     return os.str();

@@ -229,7 +229,7 @@ public:
     return identifer;
   }
 
-  bool eof()
+  bool eof() const
   {
     return cursor >= int(text.size());
   }
