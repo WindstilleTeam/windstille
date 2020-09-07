@@ -78,7 +78,7 @@ Lexer::getNextToken()
       if(*c == '\n')
         ++linenumber;
       nextChar();
-    };
+    }
 
     token_length = 0;
 

@@ -16,6 +16,8 @@
 #include "util/pathname.hpp"
 #include "util/system.hpp"
 
+namespace {
+
 int shader_main(int argc, char* argv[])
 {
   Pathname::set_datadir("data/"); //System::find_default_datadir());
@@ -92,6 +94,8 @@ int shader_main(int argc, char* argv[])
 
   return 0;
 }
+
+} // namespace
 
 int main(int argc, char** argv)
 {

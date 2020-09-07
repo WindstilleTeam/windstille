@@ -29,6 +29,8 @@
 #include "math/size.hpp"
 #include "math/vector2f.hpp"
 
+namespace {
+
 int app_main(int argc, char** argv)
 {
   if (argc != 3)
@@ -217,6 +219,8 @@ int app_main(int argc, char** argv)
 
   return 0;
 }
+
+} // namespace
 
 int main(int argc, char** argv)
 {

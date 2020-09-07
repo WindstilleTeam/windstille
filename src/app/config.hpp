@@ -24,7 +24,9 @@
 #include <sstream>
 
 #include "lisp/writer.hpp"
-
+
+extern std::vector<std::string> arg_files;
+
 class ConfigValueBase
 {
 private:
@@ -170,7 +172,7 @@ public:
 
   void debug_print(std::ostream& out);
 };
-
+
 extern Config config;
 
 #endif

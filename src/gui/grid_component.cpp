@@ -16,10 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/display.hpp"
 #include "display/color.hpp"
-#include "input/controller.hpp"
+#include "display/display.hpp"
 #include "gui/grid_component.hpp"
+#include "input/controller.hpp"
+#include "util/log.hpp"
 
 namespace gui {
 
@@ -30,7 +31,7 @@ GridComponent::GridComponent(Component* parent_)
     child_active(),
     padding()
 {
-  assert(0);
+  log_error("not implemented");
 }
 
 GridComponent::GridComponent(const Rectf& rect_, int weight, int height, Component* parent_)

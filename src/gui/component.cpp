@@ -67,14 +67,14 @@ Component::set_screen_rect(const Rectf& r)
 float
 Component::get_prefered_width() const
 {
-  assert(!"Implement me");
+  assert(false && "Implement me");
   return 100.0f;
 }
 
 float
 Component::get_prefered_height() const
 {
-  assert(!"Implement me");
+  assert(false && "Implement me");
   return 100.0f;
 }
 

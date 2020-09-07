@@ -84,8 +84,12 @@ void camera_set_zoom(float z)
   Camera::current()->set_zoom(z);
 }
 
+namespace {
+
 bool camera_path_continue;
 std::vector<Camera::PathPoint> camera_path;
+
+} // namespace
 
 void camera_continue_path()
 {
@@ -358,7 +362,7 @@ SQInteger spawn_object(HSQUIRRELVM v)
 
     try
     {
-      assert(!"spawn_object is broken");
+      assert(false && "spawn_object is broken");
       //SExprFileReader reader(new lisp::Lisp(entries), true);
       //Sector::current()->add_object(reader);
     }

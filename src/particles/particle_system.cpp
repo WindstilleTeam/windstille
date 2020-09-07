@@ -17,12 +17,14 @@
 */
 
 #include "particles/particle_system.hpp"
+
 #include "display/scene_context.hpp"
-#include "util/file_reader.hpp"
-#include "particles/spark_drawer.hpp"
 #include "particles/deform_drawer.hpp"
-#include "particles/surface_drawer.hpp"
 #include "particles/randomizer.hpp"
+#include "particles/spark_drawer.hpp"
+#include "particles/surface_drawer.hpp"
+#include "util/file_reader.hpp"
+#include "util/log.hpp"
 
 ParticleSystem::ParticleSystem(FileReader& props)
   : particles(),
@@ -315,7 +317,7 @@ ParticleSystem::set_bunching(float factor)
 void
 ParticleSystem::set_cycles(float /*num*/)
 {
-  assert(!"Implement me");
+  log_debug("Implement me");
 }
 
 void

@@ -21,7 +21,6 @@
 #include <GL/glew.h>
 #include <stdexcept>
 
-#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 

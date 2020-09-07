@@ -18,7 +18,9 @@
 
 #include "stencil_drawable.hpp"
 
+namespace {
 int g_stencil_enabled = 0;
+} // namespace
 
 StencilDrawable::StencilDrawable() :
   m_stencil_group(),

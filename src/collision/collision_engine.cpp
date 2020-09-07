@@ -97,6 +97,8 @@ CollisionEngine::unstuck(CollisionObject& a, CollisionObject& b, float delta)
   }
 }
 
+namespace {
+
 Vector2f unstuck_direction(const Rectf &a, const Rectf &b, float delta, float unstuck_velocity)
 {
   // The distance A needs to unstuck from B in the given direction
@@ -221,6 +223,8 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
 
   return nr;
 }
+
+} // namespace
 
 void
 CollisionEngine::unstuck_tilemap(CollisionObject& a, CollisionObject& b, float delta)
@@ -494,6 +498,8 @@ CollisionEngine::collide(CollisionObject& a, CollisionObject& b, float delta)
   }
 }
 
+namespace {
+
 int get_next_integer(float f, float direction)
 {
   int result;
@@ -551,6 +557,7 @@ bool tilemap_collision(TileMap *tilemap, const Rectf &r)
   return false;
 }
 
+#if 0
 std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r,bool is_ground)
 {
   std::vector<Rectf> rect_list;
@@ -576,6 +583,9 @@ std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r,bool 
     }
   return rect_list;
 }
+#endif
+
+} // namespace
 
 #define c_sign(x) ((x)<0?-1:((x)>0?1:0))
 

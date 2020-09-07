@@ -170,6 +170,7 @@ public:
   void load_from_stream(std::istream& stream);
 
 private:
+  [[noreturn]]
   void error(const std::string& str) const;
 
   void handle_image(const std::vector<std::string>& args);

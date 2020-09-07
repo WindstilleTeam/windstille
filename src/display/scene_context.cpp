@@ -151,6 +151,8 @@ SceneContext::reset_modelview()
   impl->control.reset_modelview();
 }
 
+#if 0
+
 void draw_disc(int count)
 {
   float radius = static_cast<float>(count) * 2.0f;
@@ -193,6 +195,8 @@ void draw_disc(int count)
   }
   glEnd();
 }
+
+#endif
 
 void
 SceneContext::set_render_mask(unsigned int mask)

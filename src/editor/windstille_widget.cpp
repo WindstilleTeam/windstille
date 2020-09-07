@@ -39,7 +39,12 @@
 #include "sprite2d/sprite.hpp"
 #include "util/pathname.hpp"
 
+namespace {
+
 bool lib_init = false;
+
+} // namespace
+
 
 WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
                                    const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,

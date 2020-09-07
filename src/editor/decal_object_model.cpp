@@ -32,10 +32,10 @@
 #include "util/file_reader.hpp"
 
 ObjectModelHandle
-DecalObjectModel::create(const std::string& name, const Vector2f& pos,
+DecalObjectModel::create(const std::string& name_, const Vector2f& pos,
                          const std::string& path, MapType type)
 {
-  return ObjectModelHandle(new DecalObjectModel(name, pos, path, type));
+  return ObjectModelHandle(new DecalObjectModel(name_, pos, path, type));
 }
 
 DecalObjectModel::DecalObjectModel(const FileReader& reader) :

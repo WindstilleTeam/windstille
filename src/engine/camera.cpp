@@ -23,6 +23,8 @@
 #include "engine/script_manager.hpp"
 #include "display/display.hpp"
 
+namespace {
+
 /**
  * Calculate the distance between two camera PathPoints, distance here
  * means not only the distance between the points itself, but also
@@ -59,6 +61,8 @@ Camera::PathPoint interpolate_path(const std::vector<Camera::PathPoint>& path, f
 
   return path.back();
 }
+
+} // namespace
 
 Camera::Camera() :
   mode(CAMERA_FOLLOW_PLAYER),

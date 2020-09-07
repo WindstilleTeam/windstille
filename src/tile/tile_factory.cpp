@@ -26,6 +26,8 @@
 #include "util/sexpr_file_reader.hpp"
 #include "display/software_surface.hpp"
 
+namespace {
+
 /** Check if the given region of the given image is fully transparent */
 bool surface_empty(SoftwareSurfacePtr image, int sx, int sy, int w, int h)
 {
@@ -42,6 +44,8 @@ bool surface_empty(SoftwareSurfacePtr image, int sx, int sy, int w, int h)
 
   return true;
 }
+
+} // namespace
 
 TileFactory::TileFactory(const Pathname& filename) :
   tiles(),

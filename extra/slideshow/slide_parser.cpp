@@ -39,9 +39,9 @@ std::vector<std::string> string_tokenize(std::string_view text, std::string_view
 
   for(std::string::size_type i = 0; i != text.size();)
   {
-    while(is_delimiter(text[i]) && i != text.size()) { ++i; };
+    while(is_delimiter(text[i]) && i != text.size()) { ++i; }
     const std::string::size_type start = i;
-    while(!is_delimiter(text[i]) && i != text.size()) { ++i; };
+    while(!is_delimiter(text[i]) && i != text.size()) { ++i; }
     const std::string::size_type end = i;
     if (start != end) {
       result.emplace_back(text.substr(start, end - start));
@@ -82,7 +82,7 @@ NodePosX::get(const Sizef& scr, const Sizef& img, float zoom) const
       }
 
     default:
-      assert(!"never reached");
+      assert(false && "never reached");
       return 0.0f;
   }
 }
@@ -115,7 +115,7 @@ NodePosY::get(const Sizef& scr, const Sizef& img, float zoom) const
       }
 
     default:
-      assert(!"never reached");
+      assert(false && "never reached");
       return 0.0f;
   }
 }
@@ -151,7 +151,7 @@ NodeZoom::get(const Sizef& scr, const Sizef& img) const
       }
 
     default:
-      assert(!"never reached");
+      assert(false && "never reached");
       return 0.0f;
   }
 }
@@ -192,12 +192,16 @@ SlideParser::load_from_file(const std::string& filename)
   }
 }
 
+namespace {
+
 std::string
 strip_comment(const std::string& line)
 {
   std::string::size_type p = line.find('#');
   return line.substr(0, p);
 }
+
+} // namespace
 
 void
 SlideParser::error(const std::string& str) const

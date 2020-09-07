@@ -296,7 +296,7 @@ OpenGLState::activate()
             break;
 
           default:
-            assert(!"Unknown texture target");
+            assert(false && "Unknown texture target");
             break;
         }
       }

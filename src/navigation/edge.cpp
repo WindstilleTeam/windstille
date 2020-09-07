@@ -40,7 +40,7 @@ Edge::~Edge()
 float
 Edge::angle(Edge* /*seg*/)
 {
-  assert(!"Implement me");
+  assert(false && "Implement me");
   return 0.0f;
 }
 

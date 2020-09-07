@@ -16,6 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/globals.hpp"
+
 float game_time = 0.0f;
 
 float game_speed = 1.0f;

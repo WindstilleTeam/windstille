@@ -37,7 +37,10 @@
 
 Size              Display::aspect_size;
 std::vector<Rect> Display::cliprects;
+
+namespace {
 std::vector<FramebufferPtr> framebuffers;
+} // namespace
 
 void
 Display::draw_line(const Line& line, const Color& color)

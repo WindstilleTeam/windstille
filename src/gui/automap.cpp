@@ -16,13 +16,15 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/surface_drawing_parameters.hpp"
-#include "input/controller.hpp"
-#include "engine/sector.hpp"
-#include "tile/tile_map.hpp"
+#include "gui/automap.hpp"
+
 #include "display/display.hpp"
 #include "display/software_surface.hpp"
-#include "gui/automap.hpp"
+#include "display/surface_drawing_parameters.hpp"
+#include "engine/sector.hpp"
+#include "input/controller.hpp"
+#include "tile/tile_map.hpp"
+#include "util/log.hpp"
 
 namespace gui {
 
@@ -32,7 +34,7 @@ Automap::Automap(Component* parent_) :
   pos(),
   zoom()
 {
-  assert(0);
+  log_error("implement me");
 }
 
 Automap::Automap(const Rectf& rect_, Component* parent_) :

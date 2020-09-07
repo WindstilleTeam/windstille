@@ -210,12 +210,12 @@ inline float ease_in(float t, float b, float c, float d, float a, float p)
     }
     else
     {
-      if (!p)
+      if (p == 0.0f)
         p = d * 0.3f;
 
       float s;
 
-      if (!a || a < fabsf(c))
+      if (a == 0.0f || a < fabsf(c))
       {
         a=c; s=p/4;
       }
@@ -246,11 +246,11 @@ inline float ease_out(float t, float b, float c, float d, float a, float p)
     }
     else
     {
-      if (!p)
+      if (p == 0.0f)
         p=d*.3f;
 
       float s;
-      if (!a || a < fabsf(c))
+      if (a == 0.0f || a < fabsf(c))
       {
         a=c;
         s=p/4;
@@ -278,11 +278,11 @@ inline float ease_in_out(float t, float b, float c, float d, float a, float p)
   }
   else
   {
-    if (!p)
+    if (p == 0.0f)
       p = d * (0.3f * 1.5f);
 
     float s;
-    if (!a || a < fabsf(c))
+    if (a == 0.0f || a < fabsf(c))
     {
       a=c; s=p/4;
     }

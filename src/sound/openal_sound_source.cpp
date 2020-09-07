@@ -58,7 +58,7 @@ OpenALSoundSource::play()
 float
 OpenALSoundSource::get_length() const
 {
-  assert(!"implement me");
+  assert(false && "implement me");
   return 0.0f;
 }
 

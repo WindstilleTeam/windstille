@@ -18,11 +18,9 @@
 
 #include "scenegraph/vertex_array_drawable.hpp"
 
-#define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
 
 #include "display/opengl_state.hpp"
-
 
 VertexArrayDrawable::VertexArrayDrawable(const Vector2f& pos_, float z_pos_,
                                          const Matrix& modelview_) :

@@ -266,7 +266,7 @@ SquirrelThread::update()
       break;
 
     default:
-      assert(!"never reached");
+      assert(false && "never reached");
   }
 }
 

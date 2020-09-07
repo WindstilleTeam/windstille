@@ -32,7 +32,6 @@ ObjectModelFactory::create(const FileReader& reader)
   else
   {
     throw std::runtime_error("Unknown object type '" + reader.get_name() + "'");
-    return ObjectModelHandle();
   }
 }
 

@@ -31,6 +31,10 @@
 #include "scripting/game_objects.hpp"
 #include "scripting/squirrel_error.hpp"
 
+#ifndef __clang__
+#pragma GCC diagnostic ignored "-Wsuggest-attribute=format"
+#endif
+
 using Scripting::SquirrelError;
 
 // The table (works like a namespace here) where the game objects will appear
@@ -48,10 +52,9 @@ static SQInteger squirrel_read_char(SQUserPointer file)
   else
     return c;
 }
-
+
 namespace {
 
-void printfunc(HSQUIRRELVM, const char* str, ...) __attribute__((format(printf, 2, 3)));
 void printfunc(HSQUIRRELVM, const char* str, ...)
 {
   char buf[4096];
@@ -63,7 +66,6 @@ void printfunc(HSQUIRRELVM, const char* str, ...)
   va_end(arglist);
 }
 
-void errorfunc(HSQUIRRELVM, const char* str, ...) __attribute__((format(printf, 2, 3)));
 void errorfunc(HSQUIRRELVM, const char* str, ...)
 {
   char buf[4096];
@@ -111,11 +113,8 @@ ScriptManager::ScriptManager()
       if(SQ_FAILED(sqstd_register_stringlib(vm)))
         throw SquirrelError(vm, "Couldn't register string lib");
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-attribute=format"
       // register print function
       sq_setprintfunc(vm, &printfunc, &errorfunc);
-#pragma GCC diagnostic pop
 
       // register windstille API
       Scripting::register_windstille_wrapper(vm);

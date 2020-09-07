@@ -19,7 +19,6 @@
 #include "particles/deform_drawer.hpp"
 
 #include <GL/glew.h>
-#define GLM_FORCE_RADIANS
 #include <glm/ext.hpp>
 
 #include "display/display.hpp"

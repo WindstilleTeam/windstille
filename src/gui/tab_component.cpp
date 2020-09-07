@@ -16,10 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "input/controller.hpp"
-#include "font/fonts.hpp"
 #include "display/display.hpp"
+#include "font/fonts.hpp"
 #include "gui/tab_component.hpp"
+#include "input/controller.hpp"
+#include "util/log.hpp"
 
 namespace gui {
 
@@ -28,7 +29,7 @@ TabComponent::TabComponent(Component* parent_)
     tabs(),
     current_tab(0)
 {
-  assert(0);
+  log_error("not implemented");
 }
 
 TabComponent::TabComponent(const Rectf& rect_, Component* parent_)

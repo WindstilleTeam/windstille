@@ -31,6 +31,8 @@
 #include "display/texture_manager.hpp"
 #include "util/system.hpp"
 
+namespace {
+
 int memleak_main(int argc, char* argv[])
 {
   Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
@@ -101,6 +103,8 @@ int memleak_main(int argc, char* argv[])
 
   return 0;
 }
+
+} // namespace
 
 int main(int argc, char** argv)
 {

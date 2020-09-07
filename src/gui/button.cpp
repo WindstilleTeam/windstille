@@ -18,8 +18,9 @@
 
 #include "display/display.hpp"
 #include "font/fonts.hpp"
-#include "input/controller.hpp"
 #include "gui/button.hpp"
+#include "input/controller.hpp"
+#include "util/log.hpp"
 
 namespace gui {
 
@@ -27,7 +28,7 @@ Button::Button(Component* parent_)
   : Component(parent_),
     label()
 {
-  assert(0);
+  log_error("implement me");
 }
 
 Button::Button(const std::string& label_, Component* parent_)

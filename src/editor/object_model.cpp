@@ -352,7 +352,7 @@ ObjectModel::get_property(TimelineProperty property, Vector2f& value_out) const
     case kColor:
     case kRotation:
     case kScale:
-      assert(!"Not implemented");
+      assert(false && "Not implemented");
   }
 }
 

@@ -96,7 +96,7 @@ SectorModelBuilder::load_layer(const FileReader& reader)
   FileReader layers_reader;
 
   std::string name = "New Layer";
-  bool visible = true;;
+  bool visible = true;
   bool locked  = false;
 
   reader.get("name",    name);

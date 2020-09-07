@@ -169,7 +169,7 @@ SoundManager::create_sound_source(const Pathname& filename, SoundChannel& channe
       break;
 
       default:
-        assert(!"never reached");
+        assert(false && "never reached");
         return SoundSourcePtr();
     }
   }

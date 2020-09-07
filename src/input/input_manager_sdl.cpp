@@ -23,6 +23,7 @@
 #include "app/config.hpp"
 #include "util/file_reader.hpp"
 #include "util/util.hpp"
+#include "util/log.hpp"
 #include "input_manager_sdl.hpp"
 #ifdef HAVE_CWIID
 #  include "wiimote.hpp"
@@ -575,7 +576,7 @@ InputManagerSDL::bind_mouse_button(int event, int device, int button)
 void
 InputManagerSDL::bind_joystick_hat_axis(int /*event*/, int /*device*/, int /*axis*/)
 {
-  assert(!"Implement me");
+  log_error("implement me");
 }
 
 void

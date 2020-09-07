@@ -47,6 +47,7 @@ public:
   Size read_size();
 
 private:
+  [[noreturn]]
   static void fatal_error_handler(j_common_ptr cinfo);
 
 private:

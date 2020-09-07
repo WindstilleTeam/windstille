@@ -150,7 +150,8 @@ ScriptableObject::move(float delta)
   float dx = target_x - pos.x;
   float dy = target_y - pos.y;
 
-  if (!dx && !dy) {
+  // FIXME: looks fishy
+  if (dx == 0.0f && dy == 0.0f) {
     target_speed = 0;
     return;
   }
