@@ -409,7 +409,7 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
       cr->stroke();
 
       cr->set_source_rgb(1,1,1);
-      cr->move_to((anim->get_pos() + anim->get_width()/2) * static_cast<float>(m_column_width) - extents.width/2,
+      cr->move_to((anim->get_pos() + anim->get_width()/2) * static_cast<float>(m_column_width) - static_cast<float>(extents.width) / 2,
                   static_cast<float>(m_column_height) / 2 + 4);
       cr->show_text(anim->get_name());
 
@@ -458,7 +458,7 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
       cr->stroke();
 
       cr->set_source_rgb(1,1,0);
-      cr->move_to((sound->get_pos() + sound->get_width()/2) * static_cast<float>(m_column_width) - extents.width / 2.0f,
+      cr->move_to((sound->get_pos() + sound->get_width()/2) * static_cast<float>(m_column_width) - static_cast<float>(extents.width) / 2.0f,
                   static_cast<float>(m_column_height) / 2 + 4);
       cr->show_text(sound->get_name());
 

@@ -26,9 +26,10 @@
 #include <glm/ext.hpp>
 #include <glm/gtx/projection.hpp>
 
+#include "display/display.hpp"
+#include "math/math.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
-#include "display/display.hpp"
 
 EdgePosition::EdgePosition() :
   edge(nullptr),
@@ -99,7 +100,7 @@ EdgePosition::advance(Vector2f& adv, Node*& next_node)
 
   // Check if we are going forward or backward
   float advf;
-  if (angle > M_PI/2 || angle < -M_PI/2)
+  if (angle > math::pi/2.0f || angle < -math::pi/2.0f)
     advf = -glm::length(proj);
   else
     advf = glm::length(proj);

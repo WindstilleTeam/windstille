@@ -49,7 +49,10 @@ static SQInteger squirrel_read_char(SQUserPointer file)
     return c;
 }
 
-static void printfunc(HSQUIRRELVM, const char* str, ...)
+namespace {
+
+void printfunc(HSQUIRRELVM, const char* str, ...) __attribute__((format(printf, 2, 3)));
+void printfunc(HSQUIRRELVM, const char* str, ...)
 {
   char buf[4096];
   va_list arglist;
@@ -60,7 +63,8 @@ static void printfunc(HSQUIRRELVM, const char* str, ...)
   va_end(arglist);
 }
 
-static void errorfunc(HSQUIRRELVM, const char* str, ...)
+void errorfunc(HSQUIRRELVM, const char* str, ...) __attribute__((format(printf, 2, 3)));
+void errorfunc(HSQUIRRELVM, const char* str, ...)
 {
   char buf[4096];
   va_list arglist;
@@ -70,6 +74,8 @@ static void errorfunc(HSQUIRRELVM, const char* str, ...)
   puts(buf);
   va_end(arglist);
 }
+
+} // namespace
 
 ScriptManager::ScriptManager()
 {
@@ -105,8 +111,11 @@ ScriptManager::ScriptManager()
       if(SQ_FAILED(sqstd_register_stringlib(vm)))
         throw SquirrelError(vm, "Couldn't register string lib");
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsuggest-attribute=format"
       // register print function
-      sq_setprintfunc(vm, printfunc, errorfunc);
+      sq_setprintfunc(vm, &printfunc, &errorfunc);
+#pragma GCC diagnostic pop
 
       // register windstille API
       Scripting::register_windstille_wrapper(vm);

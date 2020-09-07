@@ -53,7 +53,7 @@ SoundChannel::prepare(std::unique_ptr<SoundFile> sound_file,
     {
       SoundSourcePtr source(new StreamSoundSource(*this, std::move(sound_file)));
       source->update_gain();
-      m_sound_sources.push_back(SoundSourcePtr(source));
+      m_sound_sources.push_back(source);
       return source;
     }
 
@@ -81,7 +81,7 @@ SoundChannel::prepare(const Pathname& filename,
   else
   {
     source->update_gain();
-    m_sound_sources.push_back(SoundSourcePtr(source));
+    m_sound_sources.push_back(source);
     return source;
   }
 }

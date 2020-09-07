@@ -140,8 +140,8 @@ unsigned int
 TileMap::get_pixel(int x, int y)
 {
   if (x < 0 || y < 0
-      || x >= int(field.get_width())
-      || y >= int(field.get_height()))
+      || x >= field.get_width()
+      || y >= field.get_height())
   {
     //std::cout << "Out of bounce: " << x << ", " << y << std::endl;
     return 0;

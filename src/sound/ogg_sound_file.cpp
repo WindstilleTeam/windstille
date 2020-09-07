@@ -156,7 +156,7 @@ OggSoundFile::cb_read(void* ptr, size_t size, size_t nmemb, void* userdata)
 
   // prevent std::istream from hitting eof(), needed as tellg() will
   // return -1 in that case instead of the from cb_tell expected filesize
-  read_len = std::min(read_len, static_cast<size_t>(ogg.m_file_size - ogg.m_in.tellg()));
+  read_len = std::min(read_len, ogg.m_file_size - ogg.m_in.tellg());
 
   size_t len = ogg.m_in.read(static_cast<char*>(ptr), read_len).gcount();
   return len;

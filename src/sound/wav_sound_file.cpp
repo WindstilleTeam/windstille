@@ -180,7 +180,7 @@ WavSoundFile::read(void* buffer, size_t buffer_size)
     return 0;
   }
 
-  size_t readsize = std::min(static_cast<size_t> (end - cur), buffer_size);
+  size_t readsize = std::min(end - cur, buffer_size);
 
   if (!file.read(static_cast<char*>(buffer), readsize))
   {

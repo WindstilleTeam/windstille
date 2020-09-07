@@ -117,8 +117,8 @@ SoundManager::load_file_into_buffer(const Pathname& filename)
     file->read(samples.data(), file->get_size());
 
     alBufferData(buffer, format, samples.data(),
-                 static_cast<ALsizei> (file->get_size()),
-                 static_cast<ALsizei> (file->get_rate()));
+                 static_cast<ALsizei>(file->get_size()),
+                 file->get_rate());
 
     check_al_error("Couldn't fill audio buffer: ");
   }

@@ -131,7 +131,7 @@ SpeechManager::update(float delta)
       ScriptManager::current()->fire_wakeup_event(event);
 
       delete *i;
-      *i = 0;
+      *i = nullptr;
     }
   }
 

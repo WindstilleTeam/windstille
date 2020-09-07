@@ -277,8 +277,8 @@ Display::draw_circle(const Vector2f& pos, float radius, const Color& color, int 
   glVertex2f(radius + pos.x, pos.y);
   for(int i = 1; i < segments; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
-    float y = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
+    float x = cosf(static_cast<float>(i) * (math::pi / 2.0f) / n) * radius;
+    float y = sinf(static_cast<float>(i) * (math::pi / 2.0f) / n) * radius;
 
     glVertex2f(x + pos.x, y + pos.y);
   }
@@ -304,8 +304,8 @@ Display::fill_circle(const Vector2f& pos, float radius, const Color& color, int 
   glVertex2f(radius + pos.x, pos.y);
   for(int i = 1; i < segments; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
-    float y = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
+    float x = cosf(static_cast<float>(i) * (math::pi/2) / n) * radius;
+    float y = sinf(static_cast<float>(i) * (math::pi/2) / n) * radius;
 
     glVertex2f(x + pos.x, y + pos.y);
   }

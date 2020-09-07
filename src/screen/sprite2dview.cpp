@@ -122,7 +122,7 @@ Sprite2DView::draw()
   switch(mode)
   {
     case SLIDESHOW:
-      if (aspect > 4.0/3.0)
+      if (aspect > 4.0f / 3.0f)
       {
         sprite.draw(Vector2f(-offset, 0));
       }
@@ -184,7 +184,7 @@ Sprite2DView::update_slideshow(float delta, const Controller& controller)
     height = sprite.get_height();
     aspect = width/height;
 
-    if (aspect > 4.0/3.0)
+    if (aspect > 4.0f / 3.0f)
     { // expand vertical
       float s = DISPLAY_H/height;
       width  *= s;
@@ -299,7 +299,7 @@ Sprite2DView::prepare_sprite(Sprite& sprite_)
   float const h = sprite_.get_height();
   float const a = w/h;
 
-  if (a > 4.0/3.0)
+  if (a > 4.0f / 3.0f)
   { // expand vertical
     float s = DISPLAY_H/h;
     //w *= s;

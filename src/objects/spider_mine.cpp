@@ -101,7 +101,7 @@ SpiderMine::search_for_player(float delta)
   Vector2f player_pos = player->get_pos();
 
   // check for explosion
-  if (state == JUMP && jump_time > 0.3) {
+  if (state == JUMP && jump_time > 0.3f) {
     state = EXPLODE;
     velocity.x = 0;
     velocity.y = 0;

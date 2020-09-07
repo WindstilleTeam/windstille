@@ -265,7 +265,7 @@ void print_squirrel_stack(HSQUIRRELVM v, const std::string& context)
       case OT_FLOAT: {
         float val;
         sq_getfloat(v, i, &val);
-        printf("float (%f)", val);
+        printf("float (%f)", static_cast<double>(val));
         break;
       }
       case OT_STRING: {

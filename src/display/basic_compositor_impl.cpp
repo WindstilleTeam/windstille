@@ -40,8 +40,8 @@ void
 BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state)
 {
   // Resize Lightmap, only needed in the editor, FIXME: move this into a 'set_size()' call
-  if (m_lightmap->get_width()  != m_window.width /LIGHTMAP_DIV ||
-      m_lightmap->get_height() != m_window.height/LIGHTMAP_DIV)
+  if (m_lightmap->get_width()  != static_cast<float>(m_window.width  / LIGHTMAP_DIV) ||
+      m_lightmap->get_height() != static_cast<float>(m_window.height / LIGHTMAP_DIV))
   {
     m_lightmap = Surface::create(m_window.width / LIGHTMAP_DIV, m_window.height / LIGHTMAP_DIV);
   }

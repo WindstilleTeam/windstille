@@ -196,8 +196,8 @@ GraphicContextState::screen_to_world(const Vector2f& pos_)
   pos.x = static_cast<float>(impl->width)  / 2.0f + (ca * dx - sa * dy);
   pos.y = static_cast<float>(impl->height) / 2.0f + (sa * dx + ca * dy);
 
-  Vector2f p((static_cast<float>(pos.x) / impl->zoom) - impl->offset.x,
-             (static_cast<float>(pos.y) / impl->zoom) - impl->offset.y);
+  Vector2f p((pos.x / impl->zoom) - impl->offset.x,
+             (pos.y / impl->zoom) - impl->offset.y);
 
   return p;
 }

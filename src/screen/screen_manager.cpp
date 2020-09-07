@@ -302,7 +302,7 @@ ScreenManager::draw_fps()
   {
     last_fps = int(static_cast<float>(frame_counter) / time_counter);
 
-    time_counter  = fmodf(static_cast<float>(time_counter), 1.0f);
+    time_counter  = fmodf(time_counter, 1.0f);
     frame_counter = 0;
   }
 

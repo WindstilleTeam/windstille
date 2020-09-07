@@ -132,7 +132,7 @@ EnumMenuItem::draw(const Rectf& rect, bool is_active)
   }
 
   font->draw(Vector2f(rect.right - static_cast<float>(font->get_height())      - static_cast<float>(font->get_width(labels[index].label)),
-                      rect.top   + static_cast<float>(font->get_height())/2.0f + static_cast<float>(rect.get_height())/2.0f - 2.0f),
+                      rect.top   + static_cast<float>(font->get_height())/2.0f + rect.get_height() / 2.0f - 2.0f),
              labels[index].label,
              font_color);
 }

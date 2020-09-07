@@ -112,7 +112,7 @@ Swarm::update(float delta)
       }
       else
       {
-        if (relative_angle <= M_PI)
+        if (relative_angle <= math::pi)
           i->angle += i->turn_speed * delta;
         else
           i->angle -= i->turn_speed * delta;

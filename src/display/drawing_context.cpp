@@ -157,7 +157,7 @@ void
 DrawingContext::rotate(float angle, float x, float y, float z)
 {
   float len2 = x*x+y*y+z*z;
-  if (len2 != 1.0)
+  if (len2 != 1.0f)
   {
     float len = sqrtf(len2);
     x /= len;

@@ -272,7 +272,7 @@ TextArea::draw()
           x_pos = 0;
           y_pos += impl->font->get_height() + impl->v_space;
         }
-        else if (x_pos + word_width > impl->rect.get_width() && word_width <= impl->rect.get_width())
+        else if (static_cast<float>(x_pos + word_width) > impl->rect.get_width() && static_cast<float>(word_width) <= impl->rect.get_width())
         {
           x_pos = 0;
           y_pos += impl->font->get_height() + impl->v_space;
@@ -307,8 +307,8 @@ TextArea::draw()
 
               const TTFCharacter& character = impl->font->get_character(*j);
 
-              bool draw_it = (y_pos >= impl->scroll_offset &&
-                              y_pos < impl->scroll_offset + impl->rect.get_height() - static_cast<float>(impl->font->get_height()));
+              bool draw_it = (static_cast<float>(y_pos) >= impl->scroll_offset &&
+                              static_cast<float>(y_pos) < impl->scroll_offset + impl->rect.get_height() - static_cast<float>(impl->font->get_height()));
               if (is_small)
               {
                 float scale = 0.6f;

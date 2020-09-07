@@ -127,7 +127,7 @@ DialogManager::update(float delta, const Controller& controller)
           GameSession::current()->set_control_state(GameSession::GAME);
           ScriptManager::current()->fire_wakeup_event(ScriptManager::DIALOG_CLOSED);
         }
-        else if (delay > 0.2)
+        else if (delay > 0.2f)
           text_area->set_progress_complete();
       }
     }

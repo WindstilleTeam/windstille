@@ -33,7 +33,7 @@
 #ifndef HEADER_WINDSTILLE_MATH_POINT_HPP
 #define HEADER_WINDSTILLE_MATH_POINT_HPP
 
-#include <cmath>
+#include <math.h>
 
 #include "vector2f.hpp"
 
@@ -74,14 +74,11 @@ public:
     //Move the hotspot to 0,0
     Point r(x - hotspot.x, y - hotspot.y);
 
-    //Do some Grumbel voodoo.
-
-    // Because MSVC sucks ass wrt standards compliance, it gets it own special function calls
-    const float c = static_cast<float>(std::sqrt(static_cast<float>(r.x)*static_cast<float>(r.x) +
-                                                 static_cast<float>(r.y)*static_cast<float>(r.y)));
-    const float nw = static_cast<float>(std::atan2(static_cast<float>(r.y), static_cast<float>(r.x)) + ((angle + 180) * M_PI / 180));
-    r.x = static_cast<int>((std::sin(1.5 * M_PI - nw) * c) + 0.5) + hotspot.x;
-    r.y = -static_cast<int>((std::sin(nw) * c) + 0.5) + hotspot.y;
+    const float c = sqrtf(static_cast<float>(r.x)*static_cast<float>(r.x) +
+                               static_cast<float>(r.y)*static_cast<float>(r.y));
+    const float nw = atan2f(static_cast<float>(r.y), static_cast<float>(r.x)) + ((angle + 180.0f) * static_cast<float>(M_PI) / 180.0f);
+    r.x = static_cast<int>((sinf(1.5f * static_cast<float>(M_PI) - nw) * c) + 0.5f) + hotspot.x;
+    r.y = -static_cast<int>((sinf(nw) * c) + 0.5f) + hotspot.y;
 
     return r;
   }
@@ -90,7 +87,7 @@ public:
   //param Point &p: The other point.
   int distance( const Point &p ) const
   {
-    return int(std::sqrt(double((x-p.x)*(x-p.x) + (y-p.y)*(y-p.y))) + 0.5f);
+    return int(sqrtf(static_cast<float>((x-p.x)*(x-p.x) + (y-p.y)*(y-p.y))) + 0.5f);
   }
 
   //: Translate point.

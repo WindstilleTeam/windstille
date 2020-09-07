@@ -375,7 +375,7 @@ WrapperCreator::create_function_wrapper(Class* _class, Function* function)
             if(param.type.atomic_type == &BasicType::INT)
                 out << "static_cast<int> (arg" << i << ")";
             else if(param.type.atomic_type == &BasicType::FLOAT)
-                out << "static_cast<float> (arg" << i << ")";
+                out << "arg" << i << "";
             else if(param.type.atomic_type == &BasicType::BOOL)
                 out << "arg" << i << " == SQTrue";
             else

@@ -491,7 +491,7 @@ GameSession::set_cutscene_mode(bool t)
 void
 GameSession::fadeout(float time, const Color& color)
 {
-  if (time == 0.0)
+  if (time == 0.0f)
   { // directly go to a state of solid color, no fading
     impl->fadeout_value  = 1.0f;
     impl->fade_color  = color;

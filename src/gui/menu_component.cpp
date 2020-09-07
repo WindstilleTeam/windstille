@@ -68,7 +68,7 @@ MenuComponent::draw()
     {
       items[i+scroll_offset]->draw(Rectf(rect.left, rect.top + static_cast<float>(i) * step + 2.0f,
                                          rect.right - 32.0f, rect.top + static_cast<float>(i+1) * step - 2.0f),
-                                   is_active() && (int(i+scroll_offset) == current_item));
+                                   is_active() && (i + scroll_offset == current_item));
     }
 
     // draw scrollbar

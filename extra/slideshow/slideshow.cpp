@@ -143,7 +143,7 @@ App::parse_args(int argc, char** argv)
         break;
 
       default:
-        throw std::runtime_error("unhandled argument: " + std::string(1, argp.get_key()));
+        throw std::runtime_error("unhandled argument: " + std::string(1, static_cast<char>(argp.get_key())));
     }
   }
 

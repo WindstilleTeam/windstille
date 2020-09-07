@@ -63,7 +63,7 @@ struct SweepResult
 
 inline std::ostream &operator<<(std::ostream &o, const SweepResult &r)
 {
-  o << "(" << r.state << ", " << r.t0 << ", " << r.t1 << ")";
+  o << "(" << static_cast<int>(r.state) << ", " << r.t0 << ", " << r.t1 << ")";
   return o;
 }
 

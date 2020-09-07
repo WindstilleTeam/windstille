@@ -173,6 +173,7 @@ Pathname::get_extension() const
 bool
 Pathname::operator<(const Pathname& rhs) const
 {
+#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
   return
     m_path < rhs.m_path ||
     m_type < rhs.m_type;

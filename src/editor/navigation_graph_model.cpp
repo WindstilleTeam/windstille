@@ -168,6 +168,7 @@ NavigationGraphModel::get_selection(const Rectf& rect, const SelectMask& select_
 bool
 NavigationGraphModel::has_edge(std::shared_ptr<NavGraphNodeObjectModel> lhs, std::shared_ptr<NavGraphNodeObjectModel> rhs) const
 {
+#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
   // We enforce order so that we can easier compare
   // NavGraphEdgeObjectModel's with one another
   if (!(lhs < rhs))

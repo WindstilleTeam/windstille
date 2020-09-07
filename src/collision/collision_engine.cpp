@@ -135,8 +135,8 @@ Vector2f unstuck_direction(const Rectf &a, const Rectf &b, float delta, float un
 
 int c_roundup(float f)
 {
-  int i= static_cast<int>(f);
-  if(f>i)
+  int i = static_cast<int>(f);
+  if(f > static_cast<float>(i))
     i++;
   return i;
 }
@@ -501,13 +501,13 @@ int get_next_integer(float f, float direction)
   if(direction < 0)
   {
     result = int (f);
-    if (result >= f)
+    if (static_cast<float>(result) >= f)
       --result;
   }
   else
   {
     result = int (f);
-    if (result <= f)
+    if (static_cast<float>(result) <= f)
       ++result;
   }
   return result;
@@ -520,7 +520,7 @@ int get_integer(float f, float direction)
   if(direction < 0)
   {
     result = static_cast<int>(f);
-    if (result > f)
+    if (static_cast<float>(result) > f)
       --result;
   }
   return result;
@@ -643,14 +643,14 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
 
     if(first_time)
     {
-      next_x = get_integer(static_cast<float>(*x) / static_cast<float>(TILE_SIZE), vel.x) * TILE_SIZE;
-      next_y = get_integer(static_cast<float>(*y) / static_cast<float>(TILE_SIZE), vel.y) * TILE_SIZE;
+      next_x = get_integer(*x / static_cast<float>(TILE_SIZE), vel.x) * TILE_SIZE;
+      next_y = get_integer(*y / static_cast<float>(TILE_SIZE), vel.y) * TILE_SIZE;
       first_time = false;
     }
     else
     {
-      next_x = get_next_integer ((static_cast<float>(*x) / static_cast<float>(TILE_SIZE)), vel.x) * TILE_SIZE;
-      next_y = get_next_integer ((static_cast<float>(*y) / static_cast<float>(TILE_SIZE)), vel.y) * TILE_SIZE;
+      next_x = get_next_integer ((*x / static_cast<float>(TILE_SIZE)), vel.x) * TILE_SIZE;
+      next_y = get_next_integer ((*y / static_cast<float>(TILE_SIZE)), vel.y) * TILE_SIZE;
 
 
       assert ( static_cast<float>(next_x) * static_cast<float>(c_sign(vel.x)) > *x * static_cast<float>(c_sign(vel.x)) || vel.x == 0.0f);
