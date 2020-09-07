@@ -55,7 +55,9 @@ public:
   ~SExprFileReaderImpl() override
   {
     delete root;
-    delete sexpr;
+    if (delete_sexpr) {
+      delete sexpr;
+    }
   }
 
   std::string get_name() const override

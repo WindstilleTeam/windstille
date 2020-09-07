@@ -66,7 +66,7 @@ GroupComponent::update(float delta, const Controller& controller)
 void
 GroupComponent::pack(Component* component)
 {
-  assert(child);
+  assert(!child);
   child.reset(component);
 
   child->set_screen_rect(get_child_rect());
