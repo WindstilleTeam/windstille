@@ -129,7 +129,7 @@ SlideShow::find_prev(float time)
     }
   }
 
-  if (true /* FIXME: not_last_object */ )
+  if ((true) /* FIXME: not_last_object */ )
   {
     // find the start of the object before the current object
     time = best_time;

@@ -47,7 +47,8 @@ Sector::Sector(const Pathname& arg_filename) :
   interactivebackground_tilemap(nullptr),
   player()
 {
-  SectorBuilder(arg_filename, *this);
+  SectorBuilder builder(arg_filename, *this);
+  builder.build();
 
   if (interactive_tilemap)
   {

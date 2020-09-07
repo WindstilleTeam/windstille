@@ -55,7 +55,7 @@ App::run(int argc, char* argv[])
   prog->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, argv[5]));
   prog->link();
 
-  Vector2f offset;
+  Vector2f offset{};
   float displacement = 0.0f;
 
   bool loop = true;
@@ -87,7 +87,7 @@ App::run(int argc, char* argv[])
       }
     }
 
-    if (false)
+    if ((false))
     {
       glBindTexture(GL_TEXTURE_2D, surface1->get_texture()->get_handle());
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -111,7 +111,7 @@ App::run(int argc, char* argv[])
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
     }
 
-    if (false)
+    if ((false))
     {
       glUseProgram(prog->get_handle());
 

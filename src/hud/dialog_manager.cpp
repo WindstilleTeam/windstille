@@ -120,7 +120,7 @@ DialogManager::update(float delta, const Controller& controller)
   {
     if ((*i).type == BUTTON_EVENT)
     {
-      if ((*i).button.name == OK_BUTTON && (*i).button.down == true)
+      if ((*i).button.name == OK_BUTTON && (*i).button.down)
       {
         if (text_area->is_progress_complete())
         {

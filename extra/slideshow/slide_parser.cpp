@@ -226,7 +226,7 @@ SlideParser::load_from_stream(std::istream& stream)
       }
       else
       {
-        if (false)
+        if ((false))
         { // debug output
           for(std::vector<std::string>::iterator i = args.begin(); i != args.end(); ++i)
           {
@@ -623,7 +623,7 @@ SlideParser::handle_set(const std::vector<std::string>& args)
 std::vector<std::string>
 SlideParser::tokenize(const std::string& line) const
 {
-  if (true)
+  if ((true))
   {
     return string_tokenize(line, " \t");
   }

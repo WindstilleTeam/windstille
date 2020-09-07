@@ -65,7 +65,7 @@ DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& of
 void
 DecalScaleControlPoint::on_move_end(GdkEventButton* /*event*/, const Vector2f& offset_)
 {
-  on_move_update(0/*event*/, offset_);
+  on_move_update(nullptr/*event*/, offset_);
 }
 
 void

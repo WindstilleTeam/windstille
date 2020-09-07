@@ -295,22 +295,22 @@ Sprite2DView::next_image(int i)
 void
 Sprite2DView::prepare_sprite(Sprite& sprite_)
 {
-  float w = sprite_.get_width();
-  float h = sprite_.get_height();
-  float a = w/h;
+  float const w = sprite_.get_width();
+  float const h = sprite_.get_height();
+  float const a = w/h;
 
   if (a > 4.0/3.0)
   { // expand vertical
     float s = DISPLAY_H/h;
-    w *= s;
-    h *= s;
+    //w *= s;
+    //h *= s;
     sprite_.set_scale(s);
   }
   else
   { // expand horizontal
     float s = DISPLAY_W/w;
-    w *= s;
-    h *= s;
+    //w *= s;
+    //h *= s;
     sprite_.set_scale(s);
   }
 }

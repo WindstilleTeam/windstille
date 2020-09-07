@@ -63,8 +63,8 @@ int app_main(int argc, char** argv)
   SurfacePtr surface_2 = Surface::create(Pathname(argv[2], Pathname::kSysPath));
 
   float ray_length = 3.0f;
-  Vector2f pos;
-  Vector2f last_pos;
+  Vector2f pos{};
+  Vector2f last_pos{};
   int t = 0;
   std::vector<Vector2f> buffer(16);
   std::vector<Vector2f>::size_type buffer_pos = 0;
@@ -125,9 +125,9 @@ int app_main(int argc, char** argv)
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if (true)
+    if ((true))
     {
-      if (false)
+      if ((false))
       {
         for(size_t i = 0; i < std::min(buffer_pos, buffer.size()); ++i)
         {
@@ -136,7 +136,7 @@ int app_main(int argc, char** argv)
 
           float n = static_cast<float>(buffer.size());
 
-          if (false)
+          if ((false))
           { // after image motion blur
             n = static_cast<float>(i) / ((n * n + n) / 2.0f);
           }
@@ -173,7 +173,7 @@ int app_main(int argc, char** argv)
       for(int i = 0; i < n; ++i)
       {
         float scale = 1.0f + static_cast<float>(i) / static_cast<float>(n) * ray_length;
-        if (true)
+        if ((true))
           surface->draw(SurfaceDrawingParameters()
                         .set_scale(scale)
                         .set_pos(Vector2f(512, 288) - Vector2f(surface->get_width()/2 * scale,
@@ -182,7 +182,7 @@ int app_main(int argc, char** argv)
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                         .set_color(Color(1.0f, 1.0f, 1.0f, static_cast<float>(1)/static_cast<float>(n))));
 
-        if (false && i == 1)
+        if ((false) && i == 1) // NOLINT
         {
           scale = 1.0f;
           //std::cout << "Black: " << pos << std::endl;
@@ -198,7 +198,7 @@ int app_main(int argc, char** argv)
     }
     Display::pop_framebuffer();
 
-    if (true)
+    if ((true))
     {
       glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, framebuffer->get_handle());
       glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);

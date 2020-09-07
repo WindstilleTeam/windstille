@@ -103,7 +103,7 @@ Selection::contains_parent(ObjectModelHandle object)
 void
 Selection::on_move_start()
 {
-  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size());
+  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size()); // NOLINT
 
   moving = true;
 
@@ -132,7 +132,7 @@ Selection::on_move_start()
 void
 Selection::on_move_update(const Vector2f& offset)
 {
-  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size());
+  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size()); // NOLINT
 
   if (!object_orig_pos.empty())
   {
@@ -149,7 +149,7 @@ Selection::on_move_update(const Vector2f& offset)
 void
 Selection::on_move_end(WindstilleWidget& wst, const Vector2f& offset)
 {
-  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size());
+  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size()); // NOLINT
 
   moving = false;
 

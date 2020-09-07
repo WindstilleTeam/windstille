@@ -38,6 +38,11 @@ SectorBuilder::SectorBuilder(const Pathname& filename, Sector& sector) :
   id_table(),
   parent_table()
 {
+}
+
+void
+SectorBuilder::build()
+{
   FileReader reader = FileReader::parse(m_filename);
   if(reader.get_name() != "windstille-sector")
   {

@@ -27,7 +27,7 @@ int main()
 
   bool quit = false;
   Vector2f object_pos(100, 0);
-  Vector2f mouse_pos;
+  Vector2f mouse_pos{};
 
   while(!quit)
   {

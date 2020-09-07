@@ -40,6 +40,8 @@ private:
 public:
   SectorBuilder(const Pathname& filename, Sector& sector);
 
+  void build();
+
 private:
   void parse_body(const FileReader& reader);
   void parse_layer(const FileReader& reader);

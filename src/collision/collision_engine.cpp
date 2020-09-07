@@ -17,8 +17,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "collision/collision_test.hpp"
 #include "collision/collision_engine.hpp"
+
+#include <assert.h>
+
+#include "collision/collision_test.hpp"
 #include "tile/tile_map.hpp"
 
 std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r, bool is_ground);
@@ -53,6 +56,8 @@ CollisionEngine::draw(DrawingContext& dc)
 void
 CollisionEngine::collision(const CollisionData &result)
 {
+  assert(result.object1 && result.object2);
+
   if (result.object2->get_is_domains() & result.object1->get_check_domains())
   {
     result.object1->sig_collision()(result);
@@ -102,10 +107,9 @@ Vector2f unstuck_direction(const Rectf &a, const Rectf &b, float delta, float un
 
   float grace =  0.05f;
 
-  float add = unstuck_velocity * delta;
-
-  add = 0.5;
-  add = 50;
+  //float add = unstuck_velocity * delta;
+  //float add = 0.5f;
+  float add = 50.0f;
   //  grace=0;
 
   Vector2f dir;
@@ -289,7 +293,7 @@ CollisionEngine::update(float delta)
 
   CollisionData col_data;
   float frame=delta;
-  float min_time=frame;
+  float min_time;
   int max_tries=200;
 
   do

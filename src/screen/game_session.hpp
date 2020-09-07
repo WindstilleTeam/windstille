@@ -34,7 +34,6 @@ class PDA;
 class EnergyBar;
 class View;
 class Sector;
-class Player;
 class DialogManager;
 class Conversation;
 class Inventory;

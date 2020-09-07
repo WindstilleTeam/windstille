@@ -65,7 +65,7 @@ public:
   if (g_logger.get_log_level() >= Logger::kDebug) \
   { \
     std::ostringstream x6ac1c382;             \
-    x6ac1c382 << log_pretty_print(__PRETTY_FUNCTION__) << ": " << text; \
+    x6ac1c382 << log_pretty_print(__PRETTY_FUNCTION__) << ": " << text;  /* NOLINT */ \
     g_logger.append_unchecked(Logger::kDebug, x6ac1c382.str()); \
   } \
 } while(false)
@@ -74,7 +74,7 @@ public:
   if (g_logger.get_log_level() >= Logger::kInfo) \
   { \
     std::ostringstream x6ac1c382;             \
-    x6ac1c382 << log_pretty_print(__PRETTY_FUNCTION__) << ": " << text; \
+    x6ac1c382 << log_pretty_print(__PRETTY_FUNCTION__) << ": " << text; /* NOLINT */ \
     g_logger.append_unchecked(Logger::kInfo, x6ac1c382.str()); \
   } \
 } while(false)
@@ -83,7 +83,7 @@ public:
   if (g_logger.get_log_level() >= Logger::kWarning) \
   { \
     std::ostringstream x6ac1c382;             \
-    x6ac1c382 << log_pretty_print(__PRETTY_FUNCTION__) << ": " << text; \
+    x6ac1c382 << log_pretty_print(__PRETTY_FUNCTION__) << ": " << text; /* NOLINT */ \
     g_logger.append_unchecked(Logger::kWarning, x6ac1c382.str()); \
   } \
 } while(false)
@@ -92,7 +92,7 @@ public:
   if (g_logger.get_log_level() >= Logger::kError) \
   { \
     std::ostringstream x6ac1c382;             \
-    x6ac1c382 << log_pretty_print(__PRETTY_FUNCTION__) << ": " << text; \
+    x6ac1c382 << log_pretty_print(__PRETTY_FUNCTION__) << ": " << text; /* NOLINT */ \
     g_logger.append_unchecked(Logger::kError, x6ac1c382.str()); \
   } \
 } while(false)
@@ -112,7 +112,7 @@ public:
     release. */
 #define log_tmp(text) do { \
     std::ostringstream x6ac1c382; \
-    x6ac1c382 << log_pretty_print(__PRETTY_FUNCTION__) << ": " << text; \
+    x6ac1c382 << log_pretty_print(__PRETTY_FUNCTION__) << ": " << text; /* NOLINT */  \
     g_logger.append_unchecked(Logger::kTemp, x6ac1c382.str()); \
 } while(false)
 

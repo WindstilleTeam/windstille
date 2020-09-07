@@ -495,7 +495,7 @@ ConsoleImpl::eval_command_line()
 void
 ConsoleImpl::execute(const std::string& str_)
 {
-  std::string str = str_; //"return (" + str_ + ")";
+  const std::string& str = str_; //"return (" + str_ + ")";
 
   int i = static_cast<int>(str.length());
 
