@@ -33,10 +33,6 @@
 #ifndef HEADER_WINDSTILLE_MATH_POINT_HPP
 #define HEADER_WINDSTILLE_MATH_POINT_HPP
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include <cmath>
 
 #include "vector2f.hpp"
@@ -81,19 +77,11 @@ public:
     //Do some Grumbel voodoo.
 
     // Because MSVC sucks ass wrt standards compliance, it gets it own special function calls
-#ifdef _MSC_VER
-    const float c = static_cast<float>sqrt(static_cast<float>(r.x)*static_cast<float>(r.x) +
-                                           static_cast<float>(r.y)*static_cast<float>(r.y));
-    const float nw = static_cast<float>(atan2(static_cast<float>(r.y), static_cast<float>(r.x)) + ((angle + 180) * math::pi / 180));
-    r.x = (int)((sin(1.5 * M_PI - nw) * c) + 0.5) + hotspot.x;
-    r.y = -(int)((sin(nw) * c) + 0.5) + hotspot.y;
-#else
     const float c = static_cast<float>(std::sqrt(static_cast<float>(r.x)*static_cast<float>(r.x) +
                                                  static_cast<float>(r.y)*static_cast<float>(r.y)));
     const float nw = static_cast<float>(std::atan2(static_cast<float>(r.y), static_cast<float>(r.x)) + ((angle + 180) * M_PI / 180));
     r.x = static_cast<int>((std::sin(1.5 * M_PI - nw) * c) + 0.5) + hotspot.x;
     r.y = -static_cast<int>((std::sin(nw) * c) + 0.5) + hotspot.y;
-#endif
 
     return r;
   }
@@ -102,11 +90,7 @@ public:
   //param Point &p: The other point.
   int distance( const Point &p ) const
   {
-#ifdef _MSC_VER
-    return int(sqrt(double((x-p.x)*(x-p.x) + (y-p.y)*(y-p.y))) + 0.5f);
-#else
     return int(std::sqrt(double((x-p.x)*(x-p.x) + (y-p.y)*(y-p.y))) + 0.5f);
-#endif
   }
 
   //: Translate point.

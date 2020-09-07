@@ -24,7 +24,7 @@
 
 std::string System::find_default_datadir()
 {
-#if _WIN32
+#ifdef _WIN32
   // TODO: do something with GetModuleFileName()
   return "data/";
 #else

@@ -33,10 +33,6 @@
 #ifndef HEADER_WINDSTILLE_MATH_SIZE_HPP
 #define HEADER_WINDSTILLE_MATH_SIZE_HPP
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include <iostream>
 
 class Sizef;
