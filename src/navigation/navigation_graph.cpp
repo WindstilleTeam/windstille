@@ -80,7 +80,7 @@ NavigationGraph::remove_node(NodeHandle node)
         (*i)->get_node2() == node.get())
     {
       delete *i;
-      *i = 0;
+      *i = nullptr;
     }
   }
 

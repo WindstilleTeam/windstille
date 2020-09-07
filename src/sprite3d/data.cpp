@@ -211,7 +211,7 @@ Data::get_attachment_point_id(const std::string& name) const
 {
   for(size_t a = 0; a < attachment_points.size(); ++a) {
     if(attachment_points[a] == name)
-      return a;
+      return static_cast<uint16_t>{a};
   }
 
   std::ostringstream msg;

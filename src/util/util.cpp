@@ -148,7 +148,7 @@ std::string read_string(std::istream& in, size_t size)
 {
   std::vector<char> buffer(size + 1);
 
-  if (!in.read(buffer.data(), size))
+  if (!in.read(buffer.data(), static_cast<std::streamsize>(size)))
   {
     std::ostringstream msg;
     msg << "Problem reading string value: " << strerror(errno);

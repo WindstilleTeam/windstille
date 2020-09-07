@@ -80,7 +80,7 @@ public:
     if (item && item->get_type() == lisp::Lisp::TYPE_INT)
     {
       // FIXME: Not good: overflow
-      v = item->get_int();
+      v = static_cast<uint32_t>(item->get_int());
       return true;
     }
     return false;

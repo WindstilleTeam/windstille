@@ -147,7 +147,7 @@ Pathname::get_sys_path() const
       return "";
 
     default:
-      assert(!"Never reached");
+      assert(false && "Never reached");
       return std::string();
   }
 }
@@ -262,7 +262,7 @@ std::ostream& operator<<(std::ostream& s, const Pathname& path)
       return s << "empty";
 
     default:
-      assert(!"never reached");
+      assert(false && "never reached");
       return s;
   }
 }
