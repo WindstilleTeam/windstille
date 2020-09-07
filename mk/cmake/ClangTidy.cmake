@@ -20,7 +20,7 @@ option(CLANG_TIDY "Enable clang-tidy" OFF)
 option(CLANG_TIDY_FIX "Apply clang-tidy fixes to source code" OFF)
 
 if(CMAKE_VERSION VERSION_GREATER 3.6)
-  if (CLANG_TIDY)
+  if(CLANG_TIDY)
     find_program(
       CLANG_TIDY_EXE
       NAMES "clang-tidy"
