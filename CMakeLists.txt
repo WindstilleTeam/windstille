@@ -23,26 +23,14 @@ include(GetProjectVersion)
 include(GNUInstallDirs)
 include(CheckIncludeFile)
 include(ClangTidy)
+include(MaximumWarnings)
 include(InstallWithWrapper)
 
 option(BUILD_EDITOR "Build Windstille editor" ON)
 option(BUILD_TESTS "Build test cases" OFF)
 option(BUILD_EXTRA "Build extra stuff" OFF)
-option(WARNINGS "Switch on extra warnings" OFF)
-option(WERROR "Turn warnings into errors" OFF)
 
-if(WARNINGS)
-  set(WARNINGS_CXX_FLAGS ${WARNINGS_CXX_FLAGS}
-    -pedantic -Wall -Wextra -Wno-c++0x-compat -Wnon-virtual-dtor -Weffc++
-    -Wshadow -Wcast-qual -Winit-self -Wno-unused-parameter)
-  # -Wconversion
-  # -Winline -Wfloat-equal -Wunreachable-code
-endif()
-
-if(WERROR)
-  set(WARNINGS_CXX_FLAGS  ${WARNINGS_CXX_FLAGS}
-    -Werror)
-endif()
+# list(REMOVE_ITEM WARNINGS_CXX_FLAGS )
 
 if (BUILD_TESTS)
   # add 'make test' target, use 'make test ARGS="-V"' or 'ctest -V' for verbose
