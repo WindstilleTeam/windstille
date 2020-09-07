@@ -23,6 +23,7 @@ include(GetProjectVersion)
 include(GNUInstallDirs)
 include(CheckIncludeFile)
 include(ClangTidy)
+include(InstallWithWrapper)
 
 option(BUILD_EDITOR "Build Windstille editor" ON)
 option(BUILD_TESTS "Build test cases" OFF)
@@ -217,15 +218,7 @@ if(BUILD_EDITOR)
     PkgConfig::GTKMM
     PkgConfig::GTKGLEXTMM)
 
-  configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/windstille-editor.sh.in
-    ${CMAKE_BINARY_DIR}/windstille-editor.sh)
-  install(TARGETS windstille-editor RUNTIME DESTINATION ${CMAKE_INSTALL_LIBEXECDIR})
-  install(FILES
-    ${CMAKE_BINARY_DIR}/windstille-editor.sh
-    RENAME windstille-editor
-    PERMISSIONS OWNER_EXECUTE OWNER_READ OWNER_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
-    DESTINATION ${CMAKE_INSTALL_BINDIR})
+  install_with_wrapper(TARGETS windstille-editor)
 
   install(FILES
     windstille-editor.svg
@@ -258,15 +251,7 @@ if(CWIID_LIBRARY)
   target_link_libraries(windstille ${CWIID_LIBRARY})
 endif()
 
-configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/windstille.sh.in
-  ${CMAKE_BINARY_DIR}/windstille.sh)
-install(TARGETS windstille RUNTIME DESTINATION ${CMAKE_INSTALL_LIBEXECDIR})
-install(FILES
-  ${CMAKE_BINARY_DIR}/windstille.sh
-  RENAME windstille
-  PERMISSIONS OWNER_EXECUTE OWNER_READ OWNER_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
-  DESTINATION ${CMAKE_INSTALL_BINDIR})
+install_with_wrapper(TARGETS windstille)
 
 # build and install data
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data/images/decal/)
