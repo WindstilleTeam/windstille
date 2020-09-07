@@ -14,7 +14,7 @@
 #include "util/pathname.hpp"
 #include "util/system.hpp"
 
-int main(int argc, char* argv[])
+int app_main(int argc, char* argv[])
 {
   Pathname::set_datadir("data/"); //System::find_default_datadir());
   Pathname::set_userdir(System::find_default_userdir());
@@ -92,6 +92,17 @@ int main(int argc, char* argv[])
   }
 
   return 0;
+}
+
+int main(int argc, char** argv)
+{
+  try {
+    return app_main(argc, argv);
+  } catch(std::exception const& err) {
+    std::cerr << "exception: " << err.what() << std::endl;
+  } catch(...) {
+    std::cerr << "unknown exception" << std::endl;
+  }
 }
 
 /* EOF */

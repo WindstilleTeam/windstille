@@ -29,7 +29,7 @@
 #include "math/size.hpp"
 #include "math/vector2f.hpp"
 
-int main(int argc, char** argv)
+int app_main(int argc, char** argv)
 {
   if (argc != 3)
   {
@@ -216,6 +216,17 @@ int main(int argc, char** argv)
   }
 
   return 0;
+}
+
+int main(int argc, char** argv)
+{
+  try {
+    return app_main(argc, argv);
+  } catch(std::exception const& err) {
+    std::cerr << "exception: " << err.what() << std::endl;
+  } catch(...) {
+    std::cerr << "unknown exception" << std::endl;
+  }
 }
 
 /* EOF */

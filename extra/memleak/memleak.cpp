@@ -31,7 +31,7 @@
 #include "display/texture_manager.hpp"
 #include "util/system.hpp"
 
-int main(int argc, char* argv[])
+int memleak_main(int argc, char* argv[])
 {
   Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
 
@@ -100,6 +100,17 @@ int main(int argc, char* argv[])
   }
 
   return 0;
+}
+
+int main(int argc, char** argv)
+{
+  try {
+    return memleak_main(argc, argv);
+  } catch(std::exception const& err) {
+    std::cerr << "exception: " << err.what() << std::endl;
+  } catch(...) {
+    std::cerr << "unknown exception" << std::endl;
+  }
 }
 
 /* EOF */
