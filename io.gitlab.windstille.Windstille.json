@@ -15,7 +15,6 @@
     ],
     "modules": [
         "shared-modules/glu/glu-9.json",
-        "shared-modules/glm/glm-0.9.9.0.json",
         "shared-modules/glew/glew.json",
         "shared-modules/gtkmm/libsigc++-2.10.0.json",
         "shared-modules/gtkmm/glibmm-2.56.0.json",
@@ -32,6 +31,7 @@
         "shared-modules/sigc++/sigc++-2.9.3.json",
         "shared-modules/fmt/fmt-6.1.2.json",
         "shared-modules/squirrel/squirrel.json",
+        "shared-modules/glm/glm-0.9.9.8.json",
         {
             "name": "windstille",
             "buildsystem": "cmake",
