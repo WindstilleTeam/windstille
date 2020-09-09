@@ -89,6 +89,8 @@ if(BUILD_EDITOR)
   pkg_search_module(GTKGLEXTMM REQUIRED gtkglextmm-1.2 IMPORTED_TARGET)
 endif()
 
+add_subdirectory(external/argparser/)
+
 file(GLOB LOGMICH_SOURCES_CXX RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   external/logmich/src/*.cpp)
 add_library(logmich STATIC ${LOGMICH_SOURCES_CXX})
@@ -176,6 +178,7 @@ target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
 target_include_directories(wstlib SYSTEM PUBLIC
   ${OPENAL_INCLUDE_DIR})
 target_link_libraries(wstlib PUBLIC
+  argparser
   logmich
   ${OPENAL_LIBRARY}
   PkgConfig::SQUIRREL

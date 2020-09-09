@@ -4,3 +4,6 @@
 [submodule "external/logmich"]
 	path = external/logmich
 	url = https://gitlab.com/logmich/logmich.git
+[submodule "external/argparser"]
+	path = external/argparser
+	url = https://gitlab.com/argparser/argparser.git
