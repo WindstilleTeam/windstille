@@ -23,7 +23,8 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "util/command_line.hpp"
+#include <argparser.hpp>
+
 #include "display/assert_gl.hpp"
 #include "display/opengl_window.hpp"
 #include "display/framebuffer.hpp"
@@ -70,34 +71,32 @@ App::init_sdl()
 void
 App::parse_args(int argc, char** argv)
 {
-  CommandLine argp;
-  argp.add_usage("[OPTIONS] FILE...");
-  argp.add_doc("A script driven slideshow viewer");
+  argparser::ArgParser argp;
+  argp.add_usage(argv[0], "[OPTIONS] FILE...")
+    .add_text("A script driven slideshow viewer");
 
-  argp.add_group("Options:");
-  argp.add_option('f', "fullscreen", "", "Use fullscreen mode");
-  argp.add_option('e', "edit", "", "Edit mode");
-  argp.add_option('g', "geometry", "WxH", "Use given geometry");
-  argp.add_option('a', "aspect", "WxH", "Use given aspect ratio");
-  argp.add_option('b', "breakpoint", "POINT", "Start at POINT");
-  argp.add_option('F', "fps", "FPS", "Generate FPS frames per seconds");
-  argp.add_option('o', "output", "DIR", "Write screenshots to DIR");
-  argp.add_option('s', "start", "SEC", "Time where the playback should start");
-  argp.add_option('S', "frame", "FRAME", "Frame at which offline rendering should start");
-  argp.add_option('h', "help", "", "Print help");
+  argp.add_group("Options:")
+    .add_option('f', "fullscreen", "", "Use fulscreen mode")
+    .add_option('e', "edit", "", "Edit mode")
+    .add_option('g', "geometry", "WxH", "Use given geometry")
+    .add_option('a', "aspect", "WxH", "Use given aspect ratio")
+    .add_option('b', "breakpoint", "POINT", "Start at POINT")
+    .add_option('F', "fps", "FPS", "Generate FPS frames per seconds")
+    .add_option('o', "output", "DIR", "Write screenshots to DIR")
+    .add_option('s', "start", "SEC", "Time where the playback should start")
+    .add_option('S', "frame", "FRAME", "Frame at which offline rendering should start")
+    .add_option('h', "help", "", "Print help");
 
-  argp.parse_args(argc, argv);
-
-  while (argp.next())
+  for(auto const& opt : argp.parse_args(argc, argv))
   {
-    switch (argp.get_key())
+    switch (opt.key)
     {
       case 'f':
         m_fullscreen = true;
         break;
 
       case 'S':
-        m_start_frame = std::stoi(argp.get_argument());
+        m_start_frame = std::stoi(opt.argument);
         break;
 
       case 'e':
@@ -105,18 +104,18 @@ App::parse_args(int argc, char** argv)
         break;
 
       case 'F':
-        m_fps = std::stof(argp.get_argument());
+        m_fps = std::stof(opt.argument);
         break;
 
       case 'g':
-        if (sscanf(argp.get_argument().c_str(), "%dx%d", &m_window_size.width, &m_window_size.height) != 2)
+        if (sscanf(opt.argument.c_str(), "%dx%d", &m_window_size.width, &m_window_size.height) != 2)
         {
           throw std::runtime_error("--geometry argument wrong");
         }
         break;
 
       case 'a':
-        if (sscanf(argp.get_argument().c_str(), "%dx%d", &m_aspect_ratio.width, &m_aspect_ratio.height) != 2)
+        if (sscanf(opt.argument.c_str(), "%dx%d", &m_aspect_ratio.width, &m_aspect_ratio.height) != 2)
         {
           throw std::runtime_error("--aspect argument wrong");
         }
@@ -126,11 +125,11 @@ App::parse_args(int argc, char** argv)
         break;
 
       case 's':
-        m_start_time = std::stof(argp.get_argument());
+        m_start_time = std::stof(opt.argument);
         break;
 
       case 'o':
-        m_output_dir = argp.get_argument();
+        m_output_dir = opt.argument;
         break;
 
       case 'h':
@@ -138,12 +137,12 @@ App::parse_args(int argc, char** argv)
         exit(0);
         break;
 
-      case CommandLine::REST_ARG:
-        m_files.push_back(argp.get_argument());
+      case argparser::ArgumentType::REST:
+        m_files.push_back(opt.argument);
         break;
 
       default:
-        throw std::runtime_error("unhandled argument: " + std::string(1, static_cast<char>(argp.get_key())));
+        throw std::runtime_error("unhandled argument: " + opt.option);
     }
   }
 

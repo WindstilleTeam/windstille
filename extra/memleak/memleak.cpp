@@ -20,7 +20,8 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "util/command_line.hpp"
+#include <argparser.hpp>
+
 #include "display/assert_gl.hpp"
 #include "display/opengl_window.hpp"
 #include "display/framebuffer.hpp"

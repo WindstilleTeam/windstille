@@ -24,9 +24,9 @@
 #include <gtkmm/icontheme.h>
 #include <gtkmm/main.h>
 #include <gtkglmm.h>
+#include <argparser.hpp>
 
 #include "util/system.hpp"
-#include "util/command_line.hpp"
 #include "sprite2d/manager.hpp"
 #include "display/texture_manager.hpp"
 #include "display/surface_manager.hpp"
@@ -42,26 +42,25 @@ WindstilleEditor::main(int argc, char** argv)
     std::string datadir;
     std::vector<std::string> rest_args;
 
-    CommandLine argp;
-    argp.set_help_indent(24);
-    argp.add_usage ("[LEVELFILE]");
-    argp.add_doc   ("Windstille Level Editor");
-    argp.add_option('h', "help",       "", "Print this help");
-    argp.add_option('d', "datadir", "DIR", "Fetch game data from DIR");
-    argp.add_option('D', "debug", "", "Print debug level messages");
+    argparser::ArgParser argp;
+    argp.add_usage(argv[0], "[LEVELFILE]")
+      .add_text("Windstille Level Editor");
 
-    argp.parse_args(argc, argv);
+    argp.add_group()
+      .add_option('h', "help", "", "Print this help")
+      .add_option('d', "datadir", "DIR", "Fetch game data from DIR")
+      .add_option('D', "debug", "", "Print debug level messages");
 
-    while (argp.next())
+    for(auto const& opt : argp.parse_args(argc, argv))
     {
-      switch (argp.get_key())
+      switch (opt.key)
       {
         case 'D':
           g_logger.set_log_level(Logger::kTemp);
           break;
 
         case 'd':
-          datadir = argp.get_argument();
+          datadir = opt.argument;
           break;
 
         case 'h':
@@ -69,8 +68,8 @@ WindstilleEditor::main(int argc, char** argv)
           exit(EXIT_SUCCESS);
           break;
 
-        case CommandLine::REST_ARG:
-          rest_args.push_back(argp.get_argument());
+        case argparser::ArgumentType::REST:
+          rest_args.push_back(opt.argument);
           break;
       }
     }

@@ -22,9 +22,10 @@
 #include <fmt/format.h>
 #include <stdio.h>
 
+#include <argparser.hpp>
+
 #include "app/windstille.hpp"
 #include "util/sexpr_file_reader.hpp"
-#include "util/command_line.hpp"
 #include "app/globals.hpp"
 
 #define _(A) A
@@ -135,52 +136,50 @@ void
 Config::parse_args(int argc, char** argv)
 {
   arg_files.clear();
-
-  CommandLine argp;
-
   const int secondary_controller_file = 261;
 
-  argp.set_help_indent(24);
-  argp.add_usage ("[LEVELFILE]");
-  argp.add_doc   ("Windstille is a classic Jump'n Run game.");
+  argparser::ArgParser argp;
+  argp.add_usage(argv[0], "[LEVELFILE]")
+    .add_text("Windstille is a classic Jump'n Run game.");
 
-  argp.add_group("Display Options:");
-  argp.add_option('g', "geometry",   "WxH", "Change window size to WIDTH and HEIGHT");
-  argp.add_option('a', "aspect",   "WxH", "Change aspect size to WIDTH and HEIGHT");
-  argp.add_option('f', "fullscreen", "", "Launch the game in fullscreen");
-  argp.add_option('A', "anti-aliasing", "NUM", "Enable NUMx Anti-Aliasing");
+  argp.add_group("Display Options:")
+    .add_option('g', "geometry",   "WxH", "Change window size to WIDTH and HEIGHT")
+    .add_option('a', "aspect",   "WxH", "Change aspect size to WIDTH and HEIGHT")
+    .add_option('f', "fullscreen", "", "Launch the game in fullscreen")
+    .add_option('A', "anti-aliasing", "NUM", "Enable NUMx Anti-Aliasing");
 
-  argp.add_group("Sound Options:");
-  argp.add_option('s', "disable-sound", "", "Disable sound");
-  argp.add_option('S', "enable-sound", "", "Enable sound");
+  argp.add_group("Sound Options:")
+    .add_option('s', "disable-sound", "", "Disable sound")
+    .add_option('S', "enable-sound", "", "Enable sound");
 
-  argp.add_group("Controlls Options:");
-  argp.add_option('c', "controller", "FILE", "Use controller as defined in FILE");
-  argp.add_option(secondary_controller_file, "secondary-controller", "FILE",
-                  "Use controller as defined in FILE");
+  argp.add_group("Controlls Options:")
+    .add_option('c', "controller", "FILE", "Use controller as defined in FILE")
+    .add_option(secondary_controller_file, '\0', "secondary-controller", "FILE",
+                "Use controller as defined in FILE")
 #ifdef HAVE_CWIID
-  argp.add_option('w', "wiimote", "", "Connect to Wiimote on startup");
+    .add_option('w', "wiimote", "", "Connect to Wiimote on startup")
 #endif
+    ;
 
-  argp.add_group("Misc Options:");
-  argp.add_option('d', "datadir",    "DIR", "Fetch game data from DIR");
-  argp.add_option('v', "version",       "", "Print Windstille Version");
-  argp.add_option('h', "help",       "", "Print this help");
+  argp.add_group("Misc Options:")
+    .add_option('d', "datadir",    "DIR", "Fetch game data from DIR")
+    .add_option('v', "version",       "", "Print Windstille Version")
+    .add_option('h', "help",       "", "Print this help");
 
-  argp.add_group("Demo Recording/Playback Options:");
-  argp.add_option('r', "record",      "FILE", "Record input events to FILE");
-  //argp.add_option('x', "record-video","DIR",  "Record a gameplay video to DIR");
-  argp.add_option('p', "play",        "FILE", "Playback input events from FILE");
+  argp.add_group("Demo Recording/Playback Options:")
+    .add_option('r', "record",      "FILE", "Record input events to FILE")
+    //.add_option('x', "record-video","DIR",  "Record a gameplay video to DIR")
+    .add_option('p', "play",        "FILE", "Playback input events from FILE");
 
   argp.parse_args(argc, argv);
 
-  while (argp.next())
+  for(auto const& opt : argp.parse_args(argc, argv))
   {
-    switch (argp.get_key())
+    switch (opt.key)
     {
       case 'A':
         int anti_aliasing;
-        if (sscanf(argp.get_argument().c_str(), "%d", &anti_aliasing) != 1)
+        if (sscanf(opt.argument.c_str(), "%d", &anti_aliasing) != 1)
         {
           throw std::runtime_error("Anti-Aliasing option '-a' requires argument of type {NUM}");
         }
@@ -191,15 +190,15 @@ Config::parse_args(int argc, char** argv)
         break;
 
       case 'r':
-        get<std::string>("recorder-file") = argp.get_argument();
+        get<std::string>("recorder-file") = opt.argument;
         break;
 
       case 'x':
-        get<std::string>("screenshot-dir") = argp.get_argument();
+        get<std::string>("screenshot-dir") = opt.argument;
         break;
 
       case 'p':
-        get<std::string>("playback-file") = argp.get_argument();
+        get<std::string>("playback-file") = opt.argument;
         break;
 
       case 'w':
@@ -207,7 +206,7 @@ Config::parse_args(int argc, char** argv)
         break;
 
       case 'd':
-        Pathname::set_datadir(argp.get_argument());
+        Pathname::set_datadir(opt.argument);
         break;
 
       case 'f':
@@ -215,46 +214,46 @@ Config::parse_args(int argc, char** argv)
         break;
 
       case 'g':
-      {
-        int screen_width  = 800;
-        int screen_height = 600;
-        if (sscanf(argp.get_argument().c_str(), "%dx%d",
-                   &screen_width, &screen_height) == 2)
         {
-          get<int>("screen-width")  = screen_width;
-          get<int>("screen-height") = screen_height;
+          int screen_width  = 800;
+          int screen_height = 600;
+          if (sscanf(opt.argument.c_str(), "%dx%d",
+                     &screen_width, &screen_height) == 2)
+          {
+            get<int>("screen-width")  = screen_width;
+            get<int>("screen-height") = screen_height;
 
-          // FIXME: Why does this get printed twice?!
-          // Is the argument parser buggy?
-          std::cout << "Geometry: " << screen_width << "x" << screen_height << std::endl;
+            // FIXME: Why does this get printed twice?!
+            // Is the argument parser buggy?
+            std::cout << "Geometry: " << screen_width << "x" << screen_height << std::endl;
+          }
+          else
+          {
+            throw std::runtime_error("Geometry option '-g' requires argument of type {WIDTH}x{HEIGHT}");
+          }
         }
-        else
-        {
-          throw std::runtime_error("Geometry option '-g' requires argument of type {WIDTH}x{HEIGHT}");
-        }
-      }
-      break;
+        break;
 
       case 'a':
-      {
-        int aspect_width  = 800;
-        int aspect_height = 600;
-        if (sscanf(argp.get_argument().c_str(), "%dx%d",
-                   &aspect_width, &aspect_height) == 2)
         {
-          get<int>("aspect-width")  = aspect_width;
-          get<int>("aspect-height") = aspect_height;
+          int aspect_width  = 800;
+          int aspect_height = 600;
+          if (sscanf(opt.argument.c_str(), "%dx%d",
+                     &aspect_width, &aspect_height) == 2)
+          {
+            get<int>("aspect-width")  = aspect_width;
+            get<int>("aspect-height") = aspect_height;
 
-          // FIXME: Why does this get printed twice?!
-          // Is the argument parser buggy?
-          std::cout << "Geometry: " << aspect_width << "x" << aspect_height << std::endl;
+            // FIXME: Why does this get printed twice?!
+            // Is the argument parser buggy?
+            std::cout << "Geometry: " << aspect_width << "x" << aspect_height << std::endl;
+          }
+          else
+          {
+            throw std::runtime_error("Geometry option '-a' requires argument of type {WIDTH}x{HEIGHT}");
+          }
         }
-        else
-        {
-          throw std::runtime_error("Geometry option '-a' requires argument of type {WIDTH}x{HEIGHT}");
-        }
-      }
-      break;
+        break;
 
       case 's':
         set_bool("sound", false);
@@ -265,11 +264,11 @@ Config::parse_args(int argc, char** argv)
         break;
 
       case 'c':
-        get<std::string>("primary-controller-file") = argp.get_argument();
+        get<std::string>("primary-controller-file") = opt.argument;
         break;
 
       case secondary_controller_file:
-        get<std::string>("secondary-controller-file") = argp.get_argument();
+        get<std::string>("secondary-controller-file") = opt.argument;
         break;
 
       case 'v':
@@ -282,9 +281,9 @@ Config::parse_args(int argc, char** argv)
         exit(EXIT_SUCCESS);
         break;
 
-      case CommandLine::REST_ARG:
-        set_string("levelfile", argp.get_argument());
-        arg_files.push_back(argp.get_argument());
+      case argparser::ArgumentType::REST:
+        set_string("levelfile", opt.argument);
+        arg_files.push_back(opt.argument);
         break;
     }
   }
