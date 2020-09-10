@@ -22,8 +22,9 @@
 #include <fstream>
 #include <stdexcept>
 
-#include "lisp/lisp.hpp"
-#include "lisp/parser.hpp"
+#include <sexp/value.hpp>
+#include <sexp/parser.hpp>
+
 #include "util/file_reader_impl.hpp"
 #include "util/sexpr_file_reader.hpp"
 
@@ -46,16 +47,10 @@ FileReader::parse(const Pathname& filename)
 FileReader
 FileReader::parse(std::istream& stream, const std::string& filename)
 {
-  lisp::Lisp* root = lisp::Parser::parse(stream, filename);
-  if (!root)
+  sexp::Value const& root = sexp::Parser::from_stream(stream, /*filename,*/ sexp::Parser::USE_ARRAYS);
+  if (root.is_array() && root.as_array().size() >= 1)
   {
-    std::ostringstream msg;
-    msg << "'" << filename << "': file not found";
-    throw std::runtime_error(msg.str());
-  }
-  else if (root && root->get_type() == lisp::Lisp::TYPE_LIST && root->get_list_size() >= 1)
-  {
-    return SExprFileReader(root, root->get_list_elem(0));
+    return SExprFileReader(root);
   }
   else
   {

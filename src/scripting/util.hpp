@@ -23,16 +23,19 @@
 #include <squirrel.h>
 #include <string>
 
+namespace sexp {
+class Value;
+} // namespace sexp
+
 namespace lisp {
 class Writer;
-class Lisp;
 } // namespace lisp
 
 namespace Scripting {
 
 // Squirrel to Lisp
-void        table_to_lisp(HSQUIRRELVM v, int table_idx, std::vector<lisp::Lisp*>& entries);
-void        sq_to_lisp(HSQUIRRELVM v, std::vector<lisp::Lisp*>& entries);
+void        table_to_lisp(HSQUIRRELVM v, int table_idx, std::vector<sexp::Value>& entries);
+void        sq_to_lisp(HSQUIRRELVM v, std::vector<sexp::Value>& entries);
 std::string sq_to_lisp_string(std::string sq_str);
 std::string squirrel2string(HSQUIRRELVM v, int i);
 
@@ -41,7 +44,7 @@ void print_squirrel_stack(HSQUIRRELVM v, const std::string& context = std::strin
 
 // serialisation
 void save_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, lisp::Writer& writer);
-void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const lisp::Lisp* lisp);
+void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, sexp::Value const& lisp);
 
 void save_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const std::string& file);
 void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const std::string& file);

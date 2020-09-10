@@ -20,7 +20,9 @@
 
 #include <sstream>
 
-#include "lisp/lisp.hpp"
+#include <sexp/value.hpp>
+#include <sexp/io.hpp>
+
 #include "app/config.hpp"
 #include "display/opengl_window.hpp"
 #include "engine/camera.hpp"
@@ -356,14 +358,14 @@ SQInteger spawn_object(HSQUIRRELVM v)
     sq_getstring(v, -2, &objname);
 
     // Newly created objects are deleted in ~SExprFileReader() and ~Lisp()
-    std::vector<lisp::Lisp*> entries;
-    entries.push_back(new lisp::Lisp(lisp::Lisp::TYPE_SYMBOL, objname));
+    std::vector<sexp::Value> entries;
+    entries.push_back(sexp::Value::symbol(objname));
     table_to_lisp(v, -1, entries);
 
     try
     {
       assert(false && "spawn_object is broken");
-      //SExprFileReader reader(new lisp::Lisp(entries), true);
+      //SExprFileReader reader(new sexp::Value::array(entries));
       //Sector::current()->add_object(reader);
     }
     catch (std::exception& e)
@@ -398,16 +400,14 @@ SQInteger spawn_function(HSQUIRRELVM v)
 
 SQInteger lisp2string(HSQUIRRELVM v)
 {
-  std::vector<lisp::Lisp*> entries;
+  std::vector<sexp::Value> entries;
 
   table_to_lisp(v, -1, entries);
 
-  for(std::vector<lisp::Lisp*>::iterator i = entries.begin(); i != entries.end(); ++i)
+  for(std::vector<sexp::Value>::iterator i = entries.begin(); i != entries.end(); ++i)
   {
     ConsoleLog << (i - entries.begin()) << ": ";
-    std::ostringstream str;
-    (*i)->print(str);
-    ConsoleLog << str.str();
+    ConsoleLog << *i;
     ConsoleLog << std::endl;
   }
 

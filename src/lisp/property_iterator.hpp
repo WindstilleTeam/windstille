@@ -4,15 +4,16 @@
 #include <map>
 #include <string>
 
-namespace lisp
-{
+#include <sexp/value.hpp>
+
+namespace lisp {
 
 struct ListEntry {
-  ListEntry(const lisp::Lisp* lisp_)
+  ListEntry(sexp::Value const& lisp_)
     : lisp(lisp_), used(false)
   {}
 
-  const Lisp* lisp;
+  sexp::Value const& lisp;
   bool used;
 };
 typedef std::multimap<std::string, ListEntry> PropertyMap;
@@ -26,9 +27,9 @@ public:
     end = i;
   }
 
-  T* operator ->() const
+  T& operator ->() const
   {
-    return &currentval;
+    return currentval;
   }
 
   T operator*() const
@@ -61,7 +62,7 @@ private:
   friend class Properties;
 
   PropertyIterator(PropertyMap::iterator begin_, PropertyMap::iterator end_)
-    : i(begin_), end(end_)
+    : i(begin_), end(end_), current_item(), currentval()
   {
   }
 
@@ -71,6 +72,6 @@ private:
   T currentval;
 };
 
-}
+} // namespace lisp
 
 #endif

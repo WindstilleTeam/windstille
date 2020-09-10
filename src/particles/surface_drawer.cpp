@@ -26,7 +26,8 @@
 SurfaceDrawer::SurfaceDrawer(SurfacePtr surface_) :
   surface(surface_),
   blendfunc_src(),
-  blendfunc_dest()
+  blendfunc_dest(),
+  buffer()
 {
 }
 

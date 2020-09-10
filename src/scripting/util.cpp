@@ -17,16 +17,21 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <fstream>
+#include <iostream>
 #include <memory>
 #include <sstream>
 #include <stdio.h>
 
-#include "lisp/parser.hpp"
+#include <sexp/parser.hpp>
+
 #include "lisp/properties.hpp"
 #include "lisp/writer.hpp"
 #include "util/pathname.hpp"
 
 #include "scripting/util.hpp"
+
+using namespace lisp;
 
 namespace Scripting {
 
@@ -41,32 +46,32 @@ std::string sq_to_lisp_string(std::string sq_str)
   return sq_str;
 }
 
-void sq_to_lisp(HSQUIRRELVM v, std::vector<lisp::Lisp*>& entries)
+void sq_to_lisp(HSQUIRRELVM v, std::vector<sexp::Value>& entries)
 {
   switch(sq_gettype(v, -1))
   {
     case OT_INTEGER: {
       SQInteger val;
       sq_getinteger(v, -1, &val);
-      entries.push_back(new lisp::Lisp(static_cast<int>(val)));
+      entries.push_back(sexp::Value::integer(static_cast<int>(val)));
       break;
     }
     case OT_FLOAT: {
       float val;
       sq_getfloat(v, -1, &val);
-      entries.push_back(new lisp::Lisp(val));
+      entries.push_back(sexp::Value::real(val));
       break;
     }
     case OT_STRING: {
       const char* str;
       sq_getstring(v, -1, &str);
-      entries.push_back(new lisp::Lisp(lisp::Lisp::TYPE_STRING, str));
+      entries.push_back(sexp::Value::string(str));
       break;
     }
     case OT_BOOL: {
       SQBool boolean;
       sq_getbool(v, -1, &boolean);
-      entries.push_back(new lisp::Lisp(static_cast<bool>(boolean)));
+      entries.push_back(sexp::Value::boolean(static_cast<bool>(boolean)));
       break;
     }
     case OT_ARRAY:
@@ -80,7 +85,7 @@ void sq_to_lisp(HSQUIRRELVM v, std::vector<lisp::Lisp*>& entries)
   }
 }
 
-void table_to_lisp(HSQUIRRELVM v, int idx, std::vector<lisp::Lisp*>& entries)
+void table_to_lisp(HSQUIRRELVM v, int idx, std::vector<sexp::Value>& entries)
 {
   SQObjectType type = sq_gettype(v, idx);
 
@@ -114,10 +119,10 @@ void table_to_lisp(HSQUIRRELVM v, int idx, std::vector<lisp::Lisp*>& entries)
           sq_getstring(v, -2, &key);
           std::string lisp_key = sq_to_lisp_string(key);
 
-          std::vector<lisp::Lisp*> childs;
-          childs.push_back(new lisp::Lisp(lisp::Lisp::TYPE_SYMBOL, lisp_key));
+          std::vector<sexp::Value> childs;
+          childs.push_back(sexp::Value::symbol(lisp_key));
           sq_to_lisp(v, childs);
-          entries.push_back(new lisp::Lisp(childs));
+          entries.push_back(sexp::Value::array(std::move(childs)));
         }
       }
 
@@ -313,41 +318,46 @@ void print_squirrel_stack(HSQUIRRELVM v, const std::string& context)
   printf("'-------------------------------------------------------------\n");
 }
 
-void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const lisp::Lisp* lisp)
+void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const sexp::Value& lisp)
 {
   using namespace lisp;
 
   Properties props(lisp);
-  PropertyIterator<const lisp::Lisp*> iter = props.get_iter();
+  PropertyIterator<sexp::Value> iter = props.get_iter();
   while(iter.next())
   {
     sq_pushstring(v, iter.item().c_str(), iter.item().size());
-    switch((*iter)->get_type())
+    if ((*iter).is_array())
     {
-      case lisp::Lisp::TYPE_LIST:
-        sq_newtable(v);
-        load_squirrel_table(v, sq_gettop(v), *iter);
-        break;
-      case lisp::Lisp::TYPE_INT:
-        sq_pushinteger(v, (*iter)->get_int());
-        break;
-      case lisp::Lisp::TYPE_FLOAT:
-        sq_pushfloat(v, (*iter)->get_float());
-        break;
-      case lisp::Lisp::TYPE_STRING:
-        sq_pushstring(v, (*iter)->get_string(), -1);
-        break;
-      case lisp::Lisp::TYPE_BOOL:
-        sq_pushbool(v, (*iter)->get_bool());
-        break;
-      case lisp::Lisp::TYPE_SYMBOL:
-        std::cerr << "Unexpected symbol in lisp file...";
-        sq_pushnull(v);
-        break;
-      default:
-        assert(false);
-        break;
+      sq_newtable(v);
+      load_squirrel_table(v, sq_gettop(v), *iter);
     }
+    else if ((*iter).is_integer())
+    {
+      sq_pushinteger(v, (*iter).as_int());
+    }
+    else if ((*iter).is_real())
+    {
+      sq_pushfloat(v, (*iter).as_float());
+    }
+    else if ((*iter).is_string())
+    {
+      sq_pushstring(v, (*iter).as_string().c_str(), -1);
+    }
+    else if ((*iter).is_boolean())
+    {
+      sq_pushbool(v, (*iter).as_bool());
+    }
+    else if ((*iter).is_symbol())
+    {
+      std::cerr << "Unexpected symbol in lisp file...";
+      sq_pushnull(v);
+    }
+    else
+    {
+      assert(false);
+    }
+
     if (table_idx < 0)
     {
       sq_createslot(v, table_idx - 2);
@@ -359,11 +369,12 @@ void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const lisp::Lisp* l
 
 void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const std::string& file)
 {
-  using namespace lisp;
-  std::unique_ptr<Lisp> root (Parser::parse(file));
+  std::ifstream fin(file);
+  assert(!fin);
+  sexp::Value root = sexp::Parser::from_stream(fin, sexp::Parser::USE_ARRAYS);
 
-  Properties rootp(root.get());
-  const lisp::Lisp* table = nullptr;
+  Properties rootp(root);
+  sexp::Value table;
   if (!rootp.get("squirrel-state", table))
     throw std::runtime_error("Not a squirrel-state file");
 

@@ -10,7 +10,7 @@ namespace lisp
 class Properties
 {
 public:
-  Properties(const lisp::Lisp* lisp);
+  Properties(sexp::Value const& lisp);
   ~Properties();
 
   /**
@@ -63,9 +63,9 @@ public:
   /**
    * returns an iterator over all properties
    */
-  PropertyIterator<const Lisp*> get_iter()
+  PropertyIterator<sexp::Value> get_iter()
   {
-    return PropertyIterator<const Lisp*>(properties.begin(), properties.end());
+    return PropertyIterator<sexp::Value>(properties.begin(), properties.end());
   }
 
   /**

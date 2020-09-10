@@ -1,29 +1,34 @@
+#include <iostream>
 
 #include "lisp/properties.hpp"
 
 namespace lisp
 {
 
-Properties::Properties(const Lisp* lisp)
+Properties::Properties(sexp::Value const& lisp) :
+  properties()
 {
   if (lisp)
   {
-    if(lisp->get_type() != Lisp::TYPE_LIST)
+    if (!lisp.is_array())
       throw std::runtime_error("Lisp is not a list");
 
-    for(size_t i = 0; i < lisp->get_list_size(); ++i) {
-      const Lisp* child = lisp->get_list_elem(i);
-      if(i == 0 && child->get_type() == Lisp::TYPE_SYMBOL)
+    for (size_t i = 0; i < lisp.as_array().size(); ++i)
+    {
+      sexp::Value const& child = lisp.as_array()[i];
+      if (i == 0 && child.is_symbol())
         continue;
-      if(child->get_type() != Lisp::TYPE_LIST)
+
+      if (!child.is_array())
         throw std::runtime_error("child of properties lisp is not a list");
-      if(child->get_list_size() > 1)
+
+      if (child.as_array().size() > 1)
       {
-        const Lisp* name = child->get_list_elem(0);
-        if(name->get_type() != Lisp::TYPE_SYMBOL)
+        sexp::Value const& name = child.as_array()[0];
+        if (!name.is_symbol())
           throw std::runtime_error("property has no symbol as name");
-        properties.insert(std::make_pair(
-                            std::string(name->get_symbol()), ListEntry(child)));
+
+        properties.insert(std::make_pair(std::string(name.as_string()), ListEntry(child)));
       }
     }
   }

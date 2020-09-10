@@ -12,40 +12,43 @@
 #ifndef __GETTERS_HPP__
 #define __GETTERS_HPP__
 
-#include "lisp/lisp.hpp"
+#include <assert.h>
+#include <sexp/value.hpp>
 
-namespace lisp
-{
+namespace lisp {
 
-bool get(const Lisp* lisp, bool& val);
-bool get(const Lisp* lisp, float& val);
-bool get(const Lisp* lisp, int& val);
-bool get(const Lisp* lisp, std::string& val);
-bool get(const Lisp* lisp, const Lisp*& val);
+bool get(sexp::Value const&, bool& val);
+bool get(sexp::Value const&, float& val);
+bool get(sexp::Value const&, int& val);
+bool get(sexp::Value const&, std::string& val);
+bool get(sexp::Value const&, sexp::Value& val);
 
 template<typename T>
-static inline bool property_get(const Lisp* lisp, T& val)
+static inline bool property_get(sexp::Value const& sx, T& val)
 {
-  if(lisp->get_list_size() != 2)
+  assert(sx.is_array());
+
+  if (sx.as_array().size() != 2)
     return false;
 
-  const Lisp* el = lisp->get_list_elem(1);
-  return get(el, val);
+  return get(sx.as_array()[1], val);
 }
 
-static inline bool property_get(const Lisp* lisp, const Lisp*& val)
+static inline bool property_get(sexp::Value const& sx, sexp::Value& val)
 {
-  val = lisp;
+  val = sx;
   return true;
 }
 
 template<typename T>
-static inline bool property_get(const Lisp* lisp, std::vector<T>& list)
+static inline bool property_get(sexp::Value const& sx, std::vector<T>& list)
 {
+  assert(sx.is_array());
+
   list.clear();
-  for(size_t n = 1; n < lisp->get_list_size(); ++n) {
+  for(size_t n = 1; n < sx.as_array().size(); ++n) {
     T val;
-    if(!get(lisp->get_list_elem(n), val)) {
+    if(!get(sx.as_array()[n], val)) {
       list.clear();
       return false;
     }
@@ -54,7 +57,7 @@ static inline bool property_get(const Lisp* lisp, std::vector<T>& list)
   return true;
 }
 
-}
+} // namespace lisp
 
 #endif
 
