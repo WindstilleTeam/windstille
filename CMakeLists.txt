@@ -89,7 +89,7 @@ if(BUILD_EDITOR)
   pkg_search_module(GTKGLEXTMM REQUIRED gtkglextmm-1.2 IMPORTED_TARGET)
 endif()
 
-add_subdirectory(external/argparser/)
+add_subdirectory(external/argparser/ EXCLUDE_FROM_ALL)
 add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
 
 file(GLOB LOGMICH_SOURCES_CXX RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
