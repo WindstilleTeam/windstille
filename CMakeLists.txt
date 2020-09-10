@@ -90,6 +90,7 @@ if(BUILD_EDITOR)
 endif()
 
 add_subdirectory(external/argparser/)
+add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
 
 file(GLOB LOGMICH_SOURCES_CXX RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   external/logmich/src/*.cpp)
@@ -180,6 +181,7 @@ target_include_directories(wstlib SYSTEM PUBLIC
 target_link_libraries(wstlib PUBLIC
   argparser
   logmich
+  sexp
   ${OPENAL_LIBRARY}
   PkgConfig::SQUIRREL
   Freetype::Freetype
