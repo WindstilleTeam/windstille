@@ -90,6 +90,7 @@ if(BUILD_EDITOR)
 endif()
 
 add_subdirectory(external/argparser/ EXCLUDE_FROM_ALL)
+add_subdirectory(external/babyxml/ EXCLUDE_FROM_ALL)
 add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
 
 file(GLOB LOGMICH_SOURCES_CXX RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -180,6 +181,7 @@ target_include_directories(wstlib SYSTEM PUBLIC
   ${OPENAL_INCLUDE_DIR})
 target_link_libraries(wstlib PUBLIC
   argparser
+  babyxml
   logmich
   sexp
   ${OPENAL_LIBRARY}

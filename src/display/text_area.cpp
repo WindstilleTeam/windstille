@@ -16,9 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/opengl_state.hpp"
 #include "display/text_area.hpp"
-#include "util/baby_xml.hpp"
+
+#include <babyxml.hpp>
+
+#include "display/opengl_state.hpp"
 #include "font/fonts.hpp"
 #include "display/display.hpp"
 
@@ -98,25 +100,23 @@ TextArea::set_text(const std::string& str)
 
   impl->commands.clear();
 
-  BabyXML xml(str);
-
-  for(BabyXML::iterator i = xml.begin(); i != xml.end(); ++i)
+  for(auto const& node : babyxml::parse(str))
   {
-    if (i->type == BabyXML::Node::START_TAG)
+    if (node.type == babyxml::NodeType::START_TAG)
     {
-      impl->commands.push_back(TextAreaCommand(TextAreaCommand::START, i->content));
+      impl->commands.push_back(TextAreaCommand(TextAreaCommand::START, node.content));
     }
-    else if (i->type == BabyXML::Node::END_TAG)
+    else if (node.type == babyxml::NodeType::END_TAG)
     {
-      impl->commands.push_back(TextAreaCommand(TextAreaCommand::END, i->content));
+      impl->commands.push_back(TextAreaCommand(TextAreaCommand::END, node.content));
     }
-    else if (i->type == BabyXML::Node::TEXT)
+    else if (node.type == babyxml::NodeType::TEXT)
     {
       // Seperate the given str into words, words are seperated by either
       // ' ' or '\n', space is threaded as a word of its own
       // "Hello  World \n" => ("Hello", " ", " ", "World", " ", "\n")
       std::string word;
-      for(std::string::const_iterator j = i->content.begin(); j != i->content.end(); ++j)
+      for(std::string::const_iterator j = node.content.begin(); j != node.content.end(); ++j)
       {
         if (*j == ' ' || *j == '\n')
         {
