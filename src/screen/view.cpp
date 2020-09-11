@@ -21,10 +21,10 @@
 #include "collision/collision_engine.hpp"
 #include "display/display.hpp"
 #include "engine/sector.hpp"
-#include "input/input_manager_sdl.hpp"
+#include "input/input_manager.hpp"
 #include "objects/player.hpp"
 #include "screen/view.hpp"
-
+
 View::View()
   : state(Display::get_width(), Display::get_height()),
     camera(),
@@ -88,5 +88,5 @@ View::screen_to_world(const Vector2f& point)
 {
   return state.screen_to_world(point);
 }
-
+
 /* EOF */

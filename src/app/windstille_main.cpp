@@ -22,12 +22,13 @@
 
 #include "app/config.hpp"
 #include "app/console.hpp"
+#include "app/windstille_main.hpp"
 #include "display/opengl_window.hpp"
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
-#include "input/input_manager_sdl.hpp"
+#include "input/input_manager.hpp"
 #include "screen/game_session.hpp"
 #include "screen/particle_viewer.hpp"
 #include "screen/screen_manager.hpp"
@@ -38,7 +39,6 @@
 #include "sprite3d/manager.hpp"
 #include "tile/tile_factory.hpp"
 #include "util/system.hpp"
-#include "app/windstille_main.hpp"
 
 WindstilleMain::WindstilleMain()
 {

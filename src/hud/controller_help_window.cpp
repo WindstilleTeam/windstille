@@ -16,11 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "input/input_manager_sdl.hpp"
-#include "math/rect.hpp"
-#include "display/display.hpp"
 #include "display/color.hpp"
+#include "display/display.hpp"
 #include "hud/controller_help_window.hpp"
+#include "input/input_manager.hpp"
+#include "math/rect.hpp"
 
 ControllerHelpWindow::ControllerHelpWindow()
 {

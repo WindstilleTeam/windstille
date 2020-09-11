@@ -25,11 +25,10 @@
 #include "display/opengl_window.hpp"
 #include "font/fonts.hpp"
 #include "input/input_configurator.hpp"
-#include "input/input_manager_sdl.hpp"
+#include "input/input_manager.hpp"
 #include "screen/game_session.hpp"
 #include "sound/sound_manager.hpp"
 
-
 ScreenManager::ScreenManager() :
   screens(),
   screen_action(NONE),
@@ -364,5 +363,4 @@ ScreenManager::get_show_controller_debug() const
   return show_controller_help_window;
 }
 
-
 /* EOF */

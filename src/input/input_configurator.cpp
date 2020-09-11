@@ -20,8 +20,8 @@
 
 #include "display/display.hpp"
 #include "font/fonts.hpp"
+#include "input/input_manager.hpp"
 #include "screen/screen_manager.hpp"
-#include "input/input_manager_sdl.hpp"
 
 InputConfigurator::InputConfigurator()
   : items(),

@@ -24,47 +24,51 @@
 #include "util/file_reader.hpp"
 #include "util/util.hpp"
 #include "util/log.hpp"
-#include "input_manager_sdl.hpp"
+#include "input_manager.hpp"
 #ifdef HAVE_CWIID
 #  include "wiimote.hpp"
 #endif
 
 const int dead_zone = 0;
 
-class InputManagerSDLImpl
+InputManagerSDL::InputManagerSDL(const ControllerDescription& controller_description)
+  : m_controller_description(controller_description),
+    m_controller(),
+    m_joystick_button_bindings(),
+    m_joystick_button_axis_bindings(),
+    m_joystick_axis_bindings(),
+    m_joystick_axis_button_bindings(),
+    m_keyboard_button_bindings(),
+    m_keyboard_axis_bindings(),
+    m_mouse_button_bindings(),
+    m_wiimote_button_bindings(),
+    m_wiimote_axis_bindings(),
+    m_joysticks(),
+    m_keyidmapping()
 {
-public:
-  std::vector<JoystickButtonBinding>     joystick_button_bindings;
-  std::vector<JoystickButtonAxisBinding> joystick_button_axis_bindings;
-  std::vector<JoystickAxisBinding>       joystick_axis_bindings;
-  std::vector<JoystickAxisButtonBinding> joystick_axis_button_bindings;
+  for (int i = 0; i < SDL_NUM_SCANCODES; ++i) {
+    const char* key_name = SDL_GetScancodeName(static_cast<SDL_Scancode>(i));
+    m_keyidmapping[key_name] = static_cast<SDL_Scancode>(i);
+    // FIXME: Make the keynames somewhere user visible so that users can use them
+    std::cout << "'" << key_name << "'" << std::endl;
+  }
 
-  std::vector<KeyboardButtonBinding> keyboard_button_bindings;
-  std::vector<KeyboardAxisBinding>   keyboard_axis_bindings;
+#ifdef HAVE_CWIID
+  // FIXME: doesn't really belong here
+  Wiimote::init();
 
-  std::vector<MouseButtonBinding>   mouse_button_bindings;
+  if (wiimote && config.get<bool>("wiimote").get())
+    wiimote->connect();
 
-  std::vector<WiimoteButtonBinding> wiimote_button_bindings;
-  std::vector<WiimoteAxisBinding>   wiimote_axis_bindings;
+#endif // HAVE_CWIID
+}
 
-  std::vector<SDL_Joystick*> joysticks;
-
-  std::map<std::string, SDL_Scancode> keyidmapping;
-
-  InputManagerSDLImpl()
-    : joystick_button_bindings(),
-      joystick_button_axis_bindings(),
-      joystick_axis_bindings(),
-      joystick_axis_button_bindings(),
-      keyboard_button_bindings(),
-      keyboard_axis_bindings(),
-      mouse_button_bindings(),
-      wiimote_button_bindings(),
-      wiimote_axis_bindings(),
-      joysticks(),
-      keyidmapping()
-  {}
-};
+InputManagerSDL::~InputManagerSDL()
+{
+#ifdef HAVE_CWIID
+  Wiimote::deinit();
+#endif
+}
 
 std::string
 InputManagerSDL::keyid_to_string(SDL_Scancode id) const
@@ -75,8 +79,8 @@ InputManagerSDL::keyid_to_string(SDL_Scancode id) const
 SDL_Scancode
 InputManagerSDL::string_to_keyid(const std::string& str) const
 {
-  std::map<std::string, SDL_Scancode>::iterator it = impl->keyidmapping.find(str);
-  if (it == impl->keyidmapping.end())
+  auto const it = m_keyidmapping.find(str);
+  if (it == m_keyidmapping.end())
   {
     std::ostringstream msg;
     msg << "key lookup failure for '" << str << "'";
@@ -91,14 +95,14 @@ InputManagerSDL::string_to_keyid(const std::string& str) const
 void
 InputManagerSDL::ensure_open_joystick(int device)
 {
-  if (device >= int(impl->joysticks.size()))
-    impl->joysticks.resize(device + 1, nullptr);
+  if (device >= int(m_joysticks.size()))
+    m_joysticks.resize(device + 1, nullptr);
 
-  if (!impl->joysticks[device])
+  if (!m_joysticks[device])
   {
     if (SDL_Joystick* joystick = SDL_JoystickOpen(device))
     {
-      impl->joysticks[device] = joystick;
+      m_joysticks[device] = joystick;
     }
     else
     {
@@ -236,35 +240,6 @@ InputManagerSDL::parse_config(FileReader& reader)
   }
 }
 
-InputManagerSDL::InputManagerSDL(const ControllerDescription& controller_description)
-  : m_controller_description(controller_description),
-    m_controller(),
-    impl(new InputManagerSDLImpl)
-{
-  for (int i = 0; i < SDL_NUM_SCANCODES; ++i) {
-    const char* key_name = SDL_GetScancodeName(static_cast<SDL_Scancode>(i));
-    impl->keyidmapping[key_name] = static_cast<SDL_Scancode>(i);
-    // FIXME: Make the keynames somewhere user visible so that users can use them
-    std::cout << "'" << key_name << "'" << std::endl;
-  }
-
-#ifdef HAVE_CWIID
-  // FIXME: doesn't really belong here
-  Wiimote::init();
-
-  if (wiimote && config.get<bool>("wiimote").get())
-    wiimote->connect();
-
-#endif // HAVE_CWIID
-}
-
-InputManagerSDL::~InputManagerSDL()
-{
-#ifdef HAVE_CWIID
-  Wiimote::deinit();
-#endif
-}
-
 void
 InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
 {
@@ -295,8 +270,8 @@ InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
   }
 
   // Dynamic bindings
-  for (std::vector<KeyboardButtonBinding>::const_iterator i = impl->keyboard_button_bindings.begin();
-       i != impl->keyboard_button_bindings.end();
+  for (std::vector<KeyboardButtonBinding>::const_iterator i = m_keyboard_button_bindings.begin();
+       i != m_keyboard_button_bindings.end();
        ++i)
   {
     if (event.keysym.scancode == i->key)
@@ -307,8 +282,8 @@ InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
 
   const Uint8* keystate = SDL_GetKeyboardState(nullptr);
 
-  for (std::vector<KeyboardAxisBinding>::const_iterator i = impl->keyboard_axis_bindings.begin();
-       i != impl->keyboard_axis_bindings.end();
+  for (std::vector<KeyboardAxisBinding>::const_iterator i = m_keyboard_axis_bindings.begin();
+       i != m_keyboard_axis_bindings.end();
        ++i)
   {
     if (event.keysym.scancode == i->minus)
@@ -335,8 +310,8 @@ InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
 void
 InputManagerSDL::on_mouse_button_event(const SDL_MouseButtonEvent& button)
 {
-  for (std::vector<MouseButtonBinding>::const_iterator i = impl->mouse_button_bindings.begin();
-       i != impl->mouse_button_bindings.end();
+  for (std::vector<MouseButtonBinding>::const_iterator i = m_mouse_button_bindings.begin();
+       i != m_mouse_button_bindings.end();
        ++i)
   {
     if (button.button == i->button)
@@ -349,8 +324,8 @@ InputManagerSDL::on_mouse_button_event(const SDL_MouseButtonEvent& button)
 void
 InputManagerSDL::on_joy_button_event(const SDL_JoyButtonEvent& button)
 {
-  for (std::vector<JoystickButtonBinding>::const_iterator i = impl->joystick_button_bindings.begin();
-       i != impl->joystick_button_bindings.end();
+  for (std::vector<JoystickButtonBinding>::const_iterator i = m_joystick_button_bindings.begin();
+       i != m_joystick_button_bindings.end();
        ++i)
   {
     if (button.which  == i->device &&
@@ -360,8 +335,8 @@ InputManagerSDL::on_joy_button_event(const SDL_JoyButtonEvent& button)
     }
   }
 
-  for (std::vector<JoystickButtonAxisBinding>::const_iterator i = impl->joystick_button_axis_bindings.begin();
-       i != impl->joystick_button_axis_bindings.end();
+  for (std::vector<JoystickButtonAxisBinding>::const_iterator i = m_joystick_button_axis_bindings.begin();
+       i != m_joystick_button_axis_bindings.end();
        ++i)
   {
     if (button.which  == i->device)
@@ -381,8 +356,8 @@ InputManagerSDL::on_joy_button_event(const SDL_JoyButtonEvent& button)
 void
 InputManagerSDL::on_joy_axis_event(const SDL_JoyAxisEvent& event)
 {
-  for (std::vector<JoystickAxisBinding>::const_iterator i = impl->joystick_axis_bindings.begin();
-       i != impl->joystick_axis_bindings.end();
+  for (std::vector<JoystickAxisBinding>::const_iterator i = m_joystick_axis_bindings.begin();
+       i != m_joystick_axis_bindings.end();
        ++i)
   {
     if (event.which  == i->device &&
@@ -399,8 +374,8 @@ InputManagerSDL::on_joy_axis_event(const SDL_JoyAxisEvent& event)
     }
   }
 
-  for(std::vector<JoystickAxisButtonBinding>::const_iterator i = impl->joystick_axis_button_bindings.begin();
-      i != impl->joystick_axis_button_bindings.end();
+  for(std::vector<JoystickAxisButtonBinding>::const_iterator i = m_joystick_axis_button_bindings.begin();
+      i != m_joystick_axis_button_bindings.end();
       ++i)
   {
     if (event.which == i->device &&
@@ -502,8 +477,8 @@ InputManagerSDL::update(float /*delta*/)
       {
         //std::cout << "WiimoteButton: " << event.button.button << " " << event.button.down << std::endl;
 
-        for (std::vector<WiimoteButtonBinding>::const_iterator j = impl->wiimote_button_bindings.begin();
-             j != impl->wiimote_button_bindings.end();
+        for (std::vector<WiimoteButtonBinding>::const_iterator j = m_wiimote_button_bindings.begin();
+             j != m_wiimote_button_bindings.end();
              ++j)
         {
           if (event.button.device == j->device &&
@@ -517,8 +492,8 @@ InputManagerSDL::update(float /*delta*/)
       {
         //std::cout << "WiimoteAxis: " << event.axis.axis << " " << event.axis.pos << std::endl;
 
-        for (std::vector<WiimoteAxisBinding>::const_iterator j = impl->wiimote_axis_bindings.begin();
-             j != impl->wiimote_axis_bindings.end();
+        for (std::vector<WiimoteAxisBinding>::const_iterator j = m_wiimote_axis_bindings.begin();
+             j != m_wiimote_axis_bindings.end();
              ++j)
         {
           if (event.axis.device == j->device &&
@@ -571,7 +546,7 @@ InputManagerSDL::bind_mouse_button(int event, int device, int button)
   binding.device = device;
   binding.button = button;
 
-  impl->mouse_button_bindings.push_back(binding);
+  m_mouse_button_bindings.push_back(binding);
 }
 
 void
@@ -592,7 +567,7 @@ InputManagerSDL::bind_joystick_button_axis(int event, int device, int minus, int
   binding.minus  = minus;
   binding.plus   = plus;
 
-  impl->joystick_button_axis_bindings.push_back(binding);
+  m_joystick_button_axis_bindings.push_back(binding);
 }
 
 void
@@ -607,7 +582,7 @@ InputManagerSDL::bind_joystick_axis(int event, int device, int axis, bool invert
   binding.axis   = axis;
   binding.invert = invert;
 
-  impl->joystick_axis_bindings.push_back(binding);
+  m_joystick_axis_bindings.push_back(binding);
 }
 
 void
@@ -621,7 +596,7 @@ InputManagerSDL::bind_joystick_button(int event, int device, int button)
   binding.device = device;
   binding.button = button;
 
-  impl->joystick_button_bindings.push_back(binding);
+  m_joystick_button_bindings.push_back(binding);
 }
 
 void
@@ -636,7 +611,7 @@ InputManagerSDL::bind_joystick_axis_button(int event, int device, int axis, bool
   binding.axis   = axis;
   binding.up   = up;
 
-  impl->joystick_axis_button_bindings.push_back(binding);
+  m_joystick_axis_button_bindings.push_back(binding);
 }
 
 void
@@ -647,7 +622,7 @@ InputManagerSDL::bind_keyboard_button(int event, SDL_Scancode key)
   binding.event = event;
   binding.key   = key;
 
-  impl->keyboard_button_bindings.push_back(binding);
+  m_keyboard_button_bindings.push_back(binding);
 }
 
 void
@@ -659,7 +634,7 @@ InputManagerSDL::bind_keyboard_axis(int event, SDL_Scancode minus, SDL_Scancode 
   binding.minus = minus;
   binding.plus  = plus;
 
-  impl->keyboard_axis_bindings.push_back(binding);
+  m_keyboard_axis_bindings.push_back(binding);
 }
 
 void
@@ -671,7 +646,7 @@ InputManagerSDL::bind_wiimote_button(int event, int device, int button)
   binding.device = device;
   binding.button = button;
 
-  impl->wiimote_button_bindings.push_back(binding);
+  m_wiimote_button_bindings.push_back(binding);
 }
 
 void
@@ -683,24 +658,24 @@ InputManagerSDL::bind_wiimote_axis(int event, int device, int axis)
   binding.device = device;
   binding.axis   = axis;
 
-  impl->wiimote_axis_bindings.push_back(binding);
+  m_wiimote_axis_bindings.push_back(binding);
 }
 
 void
 InputManagerSDL::clear_bindings()
 {
-  impl->joystick_button_bindings.clear();
-  impl->joystick_axis_bindings.clear();
-  impl->joystick_button_axis_bindings.clear();
-  impl->joystick_axis_button_bindings.clear();
+  m_joystick_button_bindings.clear();
+  m_joystick_axis_bindings.clear();
+  m_joystick_button_axis_bindings.clear();
+  m_joystick_axis_button_bindings.clear();
 
-  impl->keyboard_button_bindings.clear();
-  impl->keyboard_axis_bindings.clear();
+  m_keyboard_button_bindings.clear();
+  m_keyboard_axis_bindings.clear();
 
-  impl->mouse_button_bindings.clear();
+  m_mouse_button_bindings.clear();
 
-  impl->wiimote_button_bindings.clear();
-  impl->wiimote_axis_bindings.clear();
+  m_wiimote_button_bindings.clear();
+  m_wiimote_axis_bindings.clear();
 }
 
 void

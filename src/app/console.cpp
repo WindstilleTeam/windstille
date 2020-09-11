@@ -23,7 +23,7 @@
 #include "display/display.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
-#include "input/input_manager_sdl.hpp"
+#include "input/input_manager.hpp"
 #include "screen/game_session.hpp"
 
 class ConsoleStreambuf : public std::streambuf

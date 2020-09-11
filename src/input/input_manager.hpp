@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_SDL_HPP
-#define HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_SDL_HPP
+#ifndef HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_HPP
+#define HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_HPP
 
 #include <SDL.h>
 #include <memory>
@@ -152,7 +152,23 @@ private:
 private:
   ControllerDescription m_controller_description;
   Controller m_controller;
-  std::unique_ptr<InputManagerSDLImpl> impl;
+
+  std::vector<JoystickButtonBinding>     m_joystick_button_bindings;
+  std::vector<JoystickButtonAxisBinding> m_joystick_button_axis_bindings;
+  std::vector<JoystickAxisBinding>       m_joystick_axis_bindings;
+  std::vector<JoystickAxisButtonBinding> m_joystick_axis_button_bindings;
+
+  std::vector<KeyboardButtonBinding> m_keyboard_button_bindings;
+  std::vector<KeyboardAxisBinding>   m_keyboard_axis_bindings;
+
+  std::vector<MouseButtonBinding>   m_mouse_button_bindings;
+
+  std::vector<WiimoteButtonBinding> m_wiimote_button_bindings;
+  std::vector<WiimoteAxisBinding>   m_wiimote_axis_bindings;
+
+  std::vector<SDL_Joystick*> m_joysticks;
+
+  std::map<std::string, SDL_Scancode> m_keyidmapping;
 
 private:
   InputManagerSDL (const InputManagerSDL&);
