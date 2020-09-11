@@ -22,9 +22,9 @@
 #include <math.h>
 #include <assert.h>
 
-Controller::Controller()
-  : states(LAST_EVENT),
-    events()// FIXME: need to mark states with type
+Controller::Controller() :
+  m_states(LAST_EVENT),
+  m_events() // FIXME: need to mark states with type
 {
 }
 
@@ -49,40 +49,40 @@ Controller::get_trigger_state(int name) const
 float
 Controller::get_axis_state(int id, bool use_deadzone) const
 {
-  assert(id < int(states.size()));
+  assert(id < int(m_states.size()));
 
   if (use_deadzone)
   {
-    if (fabsf(states[id].axis) > 0.25f) // FIXME: Hardcoded Deadzone
-      return states[id].axis;
+    if (fabsf(m_states[id].axis) > 0.25f) // FIXME: Hardcoded Deadzone
+      return m_states[id].axis;
     else
       return 0.0f;
   }
   else
   {
-    return states[id].axis;
+    return m_states[id].axis;
   }
 }
 
 bool
 Controller::get_button_state(int id) const
 {
-  assert(id < int(states.size()));
-  return states[id].button;
+  assert(id < int(m_states.size()));
+  return m_states[id].button;
 }
 
 void
 Controller::set_axis_state(int id, float pos)
 {
-  assert(id < static_cast<int>(states.size()));
-  states[id].axis = pos;
+  assert(id < static_cast<int>(m_states.size()));
+  m_states[id].axis = pos;
 }
 
 void
 Controller::set_button_state(int name, bool down)
 {
-  assert(name < static_cast<int>(states.size()));
-  states[name].button = down;
+  assert(name < static_cast<int>(m_states.size()));
+  m_states[name].button = down;
 }
 
 void
@@ -94,7 +94,7 @@ Controller::add_axis_event(int name, float pos)
   event.axis.name = name;
   event.axis.pos  = pos;
 
-  events.push_back(event);
+  m_events.push_back(event);
 }
 
 void
@@ -106,25 +106,25 @@ Controller::add_button_event(int name, bool down)
   event.button.name = name;
   event.button.down = down;
 
-  events.push_back(event);
+  m_events.push_back(event);
 }
 
 const InputEventLst&
 Controller::get_events() const
 {
-  return events;
+  return m_events;
 }
 
 void
 Controller::set_events(const InputEventLst& lst)
 {
-  events = lst;
+  m_events = lst;
 }
 
 bool
 Controller::button_was_pressed(int name) const
 {
-  for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i)
+  for(InputEventLst::const_iterator i = m_events.begin(); i != m_events.end(); ++i)
   {
     if (i->type == BUTTON_EVENT && i->button.name == name && i->button.down)
     {
@@ -137,7 +137,7 @@ Controller::button_was_pressed(int name) const
 bool
 Controller::axis_was_pressed_up(int name) const
 {
-  for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i)
+  for(InputEventLst::const_iterator i = m_events.begin(); i != m_events.end(); ++i)
   {
     if (i->type == AXIS_EVENT && i->axis.name == name && i->axis.pos > 0.5f)
     {
@@ -150,7 +150,7 @@ Controller::axis_was_pressed_up(int name) const
 bool
 Controller::axis_was_pressed_down(int name) const
 {
-  for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i)
+  for(InputEventLst::const_iterator i = m_events.begin(); i != m_events.end(); ++i)
   {
     if (i->type == AXIS_EVENT && i->axis.name == name && i->axis.pos < -0.5f)
     {
@@ -163,30 +163,30 @@ Controller::axis_was_pressed_down(int name) const
 void
 Controller::clear()
 {
-  events.clear();
+  m_events.clear();
   // FIXME: EVIL HARDCODE
-  states[0].ball = 0;
-  states[1].ball = 0;
+  m_states[0].ball = 0;
+  m_states[1].ball = 0;
 }
 
 void
 Controller::add_event(const InputEvent& event)
 {
-  events.push_back(event);
+  m_events.push_back(event);
 }
 
 float
 Controller::get_ball_state(int id) const
 {
-  assert(id < int(states.size()));
-  return states[id].ball;
+  assert(id < int(m_states.size()));
+  return m_states[id].ball;
 }
 
 void
 Controller::set_ball_state(int id, float pos)
 {
-  assert(id < static_cast<int>(states.size()));
-  states[id].ball = pos;
+  assert(id < static_cast<int>(m_states.size()));
+  m_states[id].ball = pos;
 }
 
 void
@@ -198,7 +198,7 @@ Controller::add_ball_event(int name, float pos)
   event.ball.name = name;
   event.ball.pos  = pos;
 
-  events.push_back(event);
+  m_events.push_back(event);
 }
 
 /* EOF */

@@ -27,7 +27,7 @@
 /** The Controller class presents the current state of the controller
     and the input events that occurred on the controller since the
     last update */
-class Controller
+class Controller final
 {
 private:
   union State {
@@ -36,9 +36,6 @@ private:
     float axis;
     float ball;
   };
-
-  std::vector<State> states;
-  InputEventLst events;
 
 public:
   Controller();
@@ -74,6 +71,14 @@ public:
   void clear();
 
   void add_event(const InputEvent& event);
+
+private:
+  std::vector<State> m_states;
+  InputEventLst m_events;
+
+public:
+  Controller(const Controller&) = delete;
+  Controller& operator=(const Controller&) = delete;
 };
 
 #endif
