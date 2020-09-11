@@ -18,11 +18,12 @@
 
 #include <sstream>
 
-#include "input/input_manager.hpp"
 #include "display/display.hpp"
 #include "display/text_area.hpp"
 #include "font/fonts.hpp"
 #include "hud/pda.hpp"
+#include "input/controller.hpp"
+#include "input/input_event.hpp"
 
 DialogEntry::DialogEntry(const std::string& arg_character, const std::string& arg_text)
   : character(arg_character),

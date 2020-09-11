@@ -22,8 +22,9 @@
 #include <SDL.h>
 #include <memory>
 
-#include "input/input_manager.hpp"
 #include "util/currenton.hpp"
+#include "input/controller.hpp"
+#include "input/controller_description.hpp"
 
 class FileReader;
 class InputManagerSDLImpl;
@@ -95,8 +96,7 @@ struct WiimoteAxisBinding
 };
 
 /** */
-class InputManagerSDL : public InputManager,
-                        public Currenton<InputManagerSDL>
+class InputManagerSDL : public Currenton<InputManagerSDL>
 {
 public:
   InputManagerSDL(const ControllerDescription& controller_description);
@@ -123,12 +123,20 @@ public:
 
   void clear_bindings();
 
+  void clear();
+
   std::string keyid_to_string(SDL_Scancode id) const;
   SDL_Scancode string_to_keyid(const std::string& str) const;
 
   void on_event(const SDL_Event& event);
 
-  void add_axis_event(int name, float pos) override;
+  void add_axis_event  (int name, float pos);
+  void add_ball_event  (int name, float pos);
+  void add_button_event(int name, bool down);
+  void add_keyboard_event(int name, KeyboardEvent::KeyType key_type, int code);
+
+  const ControllerDescription& get_controller_description() const { return m_controller_description; }
+  const Controller& get_controller() const { return m_controller; }
 
 private:
   void on_key_event(const SDL_KeyboardEvent& key);
@@ -141,6 +149,9 @@ private:
 
   void parse_config(FileReader& reader);
 
+private:
+  ControllerDescription m_controller_description;
+  Controller m_controller;
   std::unique_ptr<InputManagerSDLImpl> impl;
 
 private:

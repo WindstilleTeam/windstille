@@ -144,7 +144,7 @@ InputManagerSDL::parse_config(FileReader& reader)
           j->get("device", device);
           j->get("button", button);
 
-          bind_joystick_button(controller_description.get_definition(i->get_name()).id,
+          bind_joystick_button(m_controller_description.get_definition(i->get_name()).id,
                                device, button);
         }
         else if (j->get_name() == "joystick-axis-button")
@@ -157,7 +157,7 @@ InputManagerSDL::parse_config(FileReader& reader)
           j->get("axis", axis);
           j->get("up", up);
 
-          bind_joystick_axis_button(controller_description.get_definition(i->get_name()).id,
+          bind_joystick_axis_button(m_controller_description.get_definition(i->get_name()).id,
                                     device, axis, up);
         }
         else if (j->get_name() == "wiimote-button")
@@ -168,7 +168,7 @@ InputManagerSDL::parse_config(FileReader& reader)
           j->get("device", device);
           j->get("button", button);
 
-          bind_wiimote_button(controller_description.get_definition(i->get_name()).id,
+          bind_wiimote_button(m_controller_description.get_definition(i->get_name()).id,
                               device, button);
         }
         else if (j->get_name() == "keyboard-button")
@@ -177,7 +177,7 @@ InputManagerSDL::parse_config(FileReader& reader)
 
           j->get("key", key);
 
-          bind_keyboard_button(controller_description.get_definition(i->get_name()).id,
+          bind_keyboard_button(m_controller_description.get_definition(i->get_name()).id,
                                string_to_keyid(key));
         }
         else
@@ -201,7 +201,7 @@ InputManagerSDL::parse_config(FileReader& reader)
           j->get("axis",   axis);
           j->get("invert", invert);
 
-          bind_joystick_axis(controller_description.get_definition(i->get_name()).id,
+          bind_joystick_axis(m_controller_description.get_definition(i->get_name()).id,
                              device, axis, invert);
         }
         else if (j->get_name() == "keyboard-axis")
@@ -212,7 +212,7 @@ InputManagerSDL::parse_config(FileReader& reader)
           j->get("minus", minus);
           j->get("plus",  plus);
 
-          bind_keyboard_axis(controller_description.get_definition(i->get_name()).id,
+          bind_keyboard_axis(m_controller_description.get_definition(i->get_name()).id,
                              string_to_keyid(minus), string_to_keyid(plus));
         }
         else if (j->get_name() == "wiimote-axis")
@@ -223,7 +223,7 @@ InputManagerSDL::parse_config(FileReader& reader)
           j->get("device", device);
           j->get("axis",   axis);
 
-          bind_wiimote_axis(controller_description.get_definition(i->get_name()).id,
+          bind_wiimote_axis(m_controller_description.get_definition(i->get_name()).id,
                             device, axis);
         }
         else
@@ -236,8 +236,9 @@ InputManagerSDL::parse_config(FileReader& reader)
   }
 }
 
-InputManagerSDL::InputManagerSDL(const ControllerDescription& controller_description_)
-  : InputManager(controller_description_),
+InputManagerSDL::InputManagerSDL(const ControllerDescription& controller_description)
+  : m_controller_description(controller_description),
+    m_controller(),
     impl(new InputManagerSDLImpl)
 {
   for (int i = 0; i < SDL_NUM_SCANCODES; ++i) {
@@ -703,6 +704,44 @@ InputManagerSDL::clear_bindings()
 }
 
 void
+InputManagerSDL::add_ball_event(int name, float pos)
+{
+  InputEvent event;
+
+  event.type = BALL_EVENT;
+  event.axis.name = name;
+  event.axis.pos  = pos;
+
+  m_controller.add_event(event);
+  m_controller.set_ball_state(name, pos);
+}
+
+void
+InputManagerSDL::add_button_event(int name, bool down)
+{
+  InputEvent event;
+
+  event.type = BUTTON_EVENT;
+  event.button.name = name;
+  event.button.down = down;
+
+  m_controller.add_event(event);
+  m_controller.set_button_state(name, down);
+}
+
+void
+InputManagerSDL::add_keyboard_event(int , KeyboardEvent::KeyType key_type, int code)
+{
+  InputEvent event;
+
+  event.type = KEYBOARD_EVENT;
+  event.keyboard.key_type = key_type;
+  event.keyboard.code     = code;
+
+  m_controller.add_event(event);
+}
+
+void
 InputManagerSDL::add_axis_event(int name, float pos)
 {
   // Convert analog axis events into digital menu movements
@@ -711,26 +750,26 @@ InputManagerSDL::add_axis_event(int name, float pos)
   float release_threshold = 0.3f;
 
   // FIXME: need state info
-  float old_pos = controller.get_axis_state(name);
+  float old_pos = m_controller.get_axis_state(name);
   if (name == X_AXIS)
   {
-    if (controller.get_button_state(MENU_LEFT_BUTTON) == 0 &&
+    if (m_controller.get_button_state(MENU_LEFT_BUTTON) == 0 &&
         pos < -click_threshold && old_pos > -click_threshold)
     {
       add_button_event(MENU_LEFT_BUTTON, 1);
     }
-    else if (controller.get_button_state(MENU_LEFT_BUTTON) == 1 &&
+    else if (m_controller.get_button_state(MENU_LEFT_BUTTON) == 1 &&
              old_pos < -release_threshold && pos > -release_threshold)
     {
       add_button_event(MENU_LEFT_BUTTON, 0);
     }
 
-    else if (controller.get_button_state(MENU_RIGHT_BUTTON) == 0 &&
+    else if (m_controller.get_button_state(MENU_RIGHT_BUTTON) == 0 &&
              pos > click_threshold && old_pos < click_threshold)
     {
       add_button_event(MENU_RIGHT_BUTTON, 1);
     }
-    else  if (controller.get_button_state(MENU_RIGHT_BUTTON) == 1 &&
+    else  if (m_controller.get_button_state(MENU_RIGHT_BUTTON) == 1 &&
               old_pos > release_threshold && pos < release_threshold)
     {
       add_button_event(MENU_RIGHT_BUTTON, 0);
@@ -738,30 +777,43 @@ InputManagerSDL::add_axis_event(int name, float pos)
   }
   else if (name == Y_AXIS)
   {
-    if (controller.get_button_state(MENU_UP_BUTTON) == 0 &&
+    if (m_controller.get_button_state(MENU_UP_BUTTON) == 0 &&
         pos < -click_threshold && old_pos > -click_threshold)
     {
       add_button_event(MENU_UP_BUTTON, 1);
     }
-    else if (controller.get_button_state(MENU_UP_BUTTON) == 1 &&
+    else if (m_controller.get_button_state(MENU_UP_BUTTON) == 1 &&
              old_pos < -release_threshold && pos > -release_threshold)
     {
       add_button_event(MENU_UP_BUTTON, 0);
     }
 
-    else  if (controller.get_button_state(MENU_DOWN_BUTTON) == 0 &&
+    else  if (m_controller.get_button_state(MENU_DOWN_BUTTON) == 0 &&
               pos > click_threshold && old_pos < click_threshold)
     {
       add_button_event(MENU_DOWN_BUTTON, 1);
     }
-    else  if (controller.get_button_state(MENU_DOWN_BUTTON) == 1 &&
+    else  if (m_controller.get_button_state(MENU_DOWN_BUTTON) == 1 &&
               old_pos > release_threshold && pos < release_threshold)
     {
       add_button_event(MENU_DOWN_BUTTON, 0);
     }
   }
 
-  InputManager::add_axis_event(name, pos);
+  InputEvent event;
+
+  event.type = AXIS_EVENT;
+  event.axis.name = name;
+  event.axis.pos  = pos;
+
+  m_controller.add_event(event);
+  m_controller.set_axis_state(name, pos);
+}
+
+void
+InputManagerSDL::clear()
+{
+  m_controller.clear();
 }
 
 /* EOF */

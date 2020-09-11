@@ -22,7 +22,6 @@
 #include "font/fonts.hpp"
 #include "screen/screen_manager.hpp"
 #include "input/input_manager_sdl.hpp"
-#include "input/input_manager.hpp"
 
 InputConfigurator::InputConfigurator()
   : items(),
