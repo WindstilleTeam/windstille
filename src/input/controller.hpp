@@ -49,12 +49,7 @@ public:
   void  set_button_state(int name, bool down);
   void  set_ball_state  (int name, float delta);
 
-  void add_axis_event  (int name, float pos);
-  void add_button_event(int name, bool down);
-  void add_ball_event  (int name, float pos);
-
   const InputEventLst& get_events() const;
-  void set_events(const InputEventLst& lst);
 
   /** Convenience function that searches for a button down event for
       the given button */

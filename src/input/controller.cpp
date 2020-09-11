@@ -85,40 +85,10 @@ Controller::set_button_state(int name, bool down)
   m_states[name].button = down;
 }
 
-void
-Controller::add_axis_event(int name, float pos)
-{
-  InputEvent event;
-
-  event.type = AXIS_EVENT;
-  event.axis.name = name;
-  event.axis.pos  = pos;
-
-  m_events.push_back(event);
-}
-
-void
-Controller::add_button_event(int name, bool down)
-{
-  InputEvent event;
-
-  event.type = BUTTON_EVENT;
-  event.button.name = name;
-  event.button.down = down;
-
-  m_events.push_back(event);
-}
-
 const InputEventLst&
 Controller::get_events() const
 {
   return m_events;
-}
-
-void
-Controller::set_events(const InputEventLst& lst)
-{
-  m_events = lst;
 }
 
 bool
@@ -187,18 +157,6 @@ Controller::set_ball_state(int id, float pos)
 {
   assert(id < static_cast<int>(m_states.size()));
   m_states[id].ball = pos;
-}
-
-void
-Controller::add_ball_event(int name, float pos)
-{
-  InputEvent event;
-
-  event.type = BALL_EVENT;
-  event.ball.name = name;
-  event.ball.pos  = pos;
-
-  m_events.push_back(event);
 }
 
 /* EOF */
