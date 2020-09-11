@@ -79,11 +79,7 @@ enum InputEventName
 #define INVENTORY_BUTTON   LEFT_SHOULDER_BUTTON
 #define AIM_BUTTON         RIGHT_SHOULDER_BUTTON
 
-class WindstilleControllerDescription : public ControllerDescription
-{
-public:
-  WindstilleControllerDescription();
-};
+ControllerDescription get_windstille_controller_description();
 
 #endif
 

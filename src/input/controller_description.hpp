@@ -26,24 +26,13 @@
 
 struct InputEventDefinition
 {
-  InputEventType type;
-  int            id;
-  std::string    name;
-
-  InputEventDefinition()
-    : type(),
-      id(),
-      name()
-  {}
+  InputEventType type = {};
+  int            id = {};
+  std::string    name = {};
 };
 
-/** */
-class ControllerDescription
+class ControllerDescription final
 {
-private:
-  std::map<std::string, InputEventDefinition> str_to_event;
-  std::map<int,         InputEventDefinition> id_to_event;
-
 public:
   ControllerDescription();
   virtual ~ControllerDescription();
@@ -54,6 +43,10 @@ public:
 
   const InputEventDefinition& get_definition(int id) const;
   const InputEventDefinition& get_definition(const std::string& name) const;
+
+private:
+  std::map<std::string, InputEventDefinition> str_to_event;
+  std::map<int,         InputEventDefinition> id_to_event;
 };
 
 #endif

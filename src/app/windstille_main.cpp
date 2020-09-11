@@ -78,7 +78,7 @@ WindstilleMain::main(int argc, char** argv)
       SpriteManager     sprite_manager;
       sprite3d::Manager sprite3d_manager;
       ScriptManager     script_manager;
-      WindstilleControllerDescription controller_description;
+      ControllerDescription controller_description = get_windstille_controller_description();
       InputManagerSDL   input_manager(controller_description);
       ScreenManager     screen_manager;
       TileFactory       tile_factory = TileFactory(Pathname("tiles.scm"));
