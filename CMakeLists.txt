@@ -17,7 +17,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(windstille VERSION 0.3.0)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/mk/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/external/cmake-modules/)
 
 include(GetProjectVersion)
 include(GNUInstallDirs)
