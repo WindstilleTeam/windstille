@@ -30,8 +30,6 @@ option(BUILD_EDITOR "Build Windstille editor" ON)
 option(BUILD_TESTS "Build test cases" OFF)
 option(BUILD_EXTRA "Build extra stuff" OFF)
 
-# list(REMOVE_ITEM WARNINGS_CXX_FLAGS )
-
 if (BUILD_TESTS)
   # add 'make test' target, use 'make test ARGS="-V"' or 'ctest -V' for verbose
   enable_testing()
@@ -58,6 +56,7 @@ find_package(GLEW REQUIRED)
 find_package(glm REQUIRED)
 find_package(fmt REQUIRED)
 find_package(PkgConfig REQUIRED)
+find_package(Squirrel REQUIRED)
 
 find_library(CWIID_LIBRARY cwiid)
 
@@ -68,21 +67,6 @@ pkg_search_module(OGG REQUIRED ogg IMPORTED_TARGET)
 pkg_search_module(VORBIS REQUIRED vorbis IMPORTED_TARGET)
 pkg_search_module(VORBISFILE REQUIRED vorbisfile IMPORTED_TARGET)
 pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
-
-pkg_search_module(SQUIRREL squirrel3 IMPORTED_TARGET)
-if(NOT SQUIRREL_FOUND)
-  find_library(SQUIRREL_LIBRARY NAMES "squirrel" "squirrel3" REQUIRED)
-  find_library(SQSTDLIB_LIBRARY NAMES "sqstdlib" "sqstdlib3" REQUIRED)
-  find_path(SQUIRREL_INCLUDE_DIRS NAMES "squirrel.h" PATH_SUFFIXES "/" "squirrel/" "squirrel3/")
-  if (NOT SQUIRREL_INCLUDE_DIRS)
-    message(FATAL_ERROR "squirrel not found")
-  endif()
-
-  add_library(PkgConfig::SQUIRREL INTERFACE IMPORTED)
-  target_link_libraries(PkgConfig::SQUIRREL INTERFACE ${SQUIRREL_LIBRARY} ${SQSTDLIB_LIBRARY})
-  target_include_directories(PkgConfig::SQUIRREL INTERFACE ${SQUIRREL_INCLUDE_DIRS})
-  message(STATUS "Found Squirrel: ${SQUIRREL_LIBRARY} ${SQSTDLIB_LIBRARY} ${SQUIRREL_INCLUDE_DIRS}")
-endif()
 
 if(BUILD_EDITOR)
   pkg_search_module(GTKMM REQUIRED gtkmm-2.4 IMPORTED_TARGET)
