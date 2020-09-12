@@ -39,11 +39,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_program(XCF2PNG xcf2png)
-if(NOT XCF2PNG)
-  message(FATAL_ERROR "xcf2png not found")
-endif()
-
+find_program(XCF2PNG xcf2png REQUIRED)
 find_package(Threads REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(PNG REQUIRED)
