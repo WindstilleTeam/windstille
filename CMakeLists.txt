@@ -69,15 +69,16 @@ if(BUILD_EDITOR)
   pkg_search_module(GTKGLEXTMM REQUIRED gtkglextmm-1.2 IMPORTED_TARGET)
 endif()
 
-add_subdirectory(external/argparser/ EXCLUDE_FROM_ALL)
-add_subdirectory(external/babyxml/ EXCLUDE_FROM_ALL)
-add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
-
-file(GLOB LOGMICH_SOURCES_CXX RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  external/logmich/src/*.cpp)
-add_library(logmich STATIC ${LOGMICH_SOURCES_CXX})
-target_include_directories(logmich SYSTEM PUBLIC external/logmich/include/)
-set_target_properties(logmich PROPERTIES CXX_CLANG_TIDY "")
+# Build dependencies
+function(build_dependencies)
+  set(BUILD_TESTS OFF)
+  add_subdirectory(external/argparser/ EXCLUDE_FROM_ALL)
+  add_subdirectory(external/babyxml/ EXCLUDE_FROM_ALL)
+  add_subdirectory(external/geomcpp/ EXCLUDE_FROM_ALL)
+  add_subdirectory(external/logmich/ EXCLUDE_FROM_ALL)
+  add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
+endfunction()
+build_dependencies()
 
 include_directories(.)
 include_directories(src/)
@@ -162,6 +163,7 @@ target_include_directories(wstlib SYSTEM PUBLIC
 target_link_libraries(wstlib PUBLIC
   argparser
   babyxml
+  geomcpp
   logmich
   sexp
   ${OPENAL_LIBRARY}
