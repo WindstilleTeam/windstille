@@ -98,7 +98,7 @@ TileFactory::parse_tiles(FileReader& reader)
 
   TileDescription& desc = *descriptions.back();
 
-  if (0)
+  if ((false))
   { // Load all on startup
     desc.load(this);
   }

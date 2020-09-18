@@ -426,7 +426,7 @@ InputManagerSDL::on_event(const SDL_Event& event)
     case SDL_MOUSEMOTION:
       // event.motion
       // FIXME: Hardcodes 0,1 values are not a good idea, need to bind the stuff like the rest
-      if (0) std::cout << "mouse: " << event.motion.xrel << " " << event.motion.yrel << std::endl;
+      if ((false)) std::cout << "mouse: " << event.motion.xrel << " " << event.motion.yrel << std::endl;
       add_ball_event(0, static_cast<float>(event.motion.xrel));
       add_ball_event(1, static_cast<float>(event.motion.yrel));
       break;

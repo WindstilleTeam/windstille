@@ -110,7 +110,7 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
 
-      if (0) // disabled for the moment, as it seems to do more harm then good
+      if ((false)) // disabled for the moment, as it seems to do more harm then good
       { // Magic pixel center constant, without that textures drawn in
         // pixel coordinates might end up blurry
         glTranslated(0.375f, 0.375f, 0.0);

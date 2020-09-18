@@ -130,7 +130,7 @@ DecalObjectModel::draw_select(SceneContext& sc, bool highlight)
 void
 DecalObjectModel::draw(SceneContext& sc)
 {
-  if (0)
+  if ((false))
   {
     ObjectModel::draw(sc);
 

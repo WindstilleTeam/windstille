@@ -371,7 +371,7 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
 
       cr->get_text_extents(anim->get_name(), extents);
 
-      if (0)
+      if ((false))
         std::cout << extents.x_bearing << " "
                   << extents.y_bearing << " "
                   << extents.width << " "
@@ -427,7 +427,7 @@ TimelineWidget::draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
 
       cr->get_text_extents(sound->get_name(), extents);
 
-      if (0)
+      if ((false))
         std::cout << extents.x_bearing << " "
                   << extents.y_bearing << " "
                   << extents.width << " "

@@ -158,9 +158,10 @@ PDA::objective_complete(const std::string& name)
 
   for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i)
   {
-    if (i->name == name)
+    if (i->name == name) {
       i->complete = true;
-    return;
+      return;
+    }
   }
 }
 

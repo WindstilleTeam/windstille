@@ -23,7 +23,9 @@
 
 #include "display/scene_context.hpp"
 
-#pragma GCC diagnostic ignored "-Wuseless-cast"
+#ifndef __clang__
+#  pragma GCC diagnostic ignored "-Wuseless-cast"
+#endif
 
 class GraphicContextStateImpl
 {

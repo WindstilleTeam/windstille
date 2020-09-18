@@ -153,7 +153,7 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
     glPixelStorei(GL_UNPACK_ROW_LENGTH, image->get_pitch() / image->get_bytes_per_pixel());
 
-    if (0)
+    if ((false))
     { // no mipmapping
       glTexImage2D(m_target, 0, glformat,
                    image->get_width(), image->get_height(), 0, sdl_format,

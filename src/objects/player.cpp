@@ -381,7 +381,7 @@ Player::update_stand(const Controller& controller)
   }
   else if (controller.button_was_pressed(AIM_BUTTON))
   {
-    if (0)
+    if ((false))
     {
       // TODO remove me later, just here for testing
       std::shared_ptr<Grenade> grenade(new Grenade());

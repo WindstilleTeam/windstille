@@ -75,7 +75,7 @@ Nightvision::draw(SceneContext& sc)
     array->texcoord(u, v + h);
     array->vertex(0, static_cast<float>(Display::get_height()));
 
-    if (0) // second noise level
+    if ((false)) // second noise level
     {
       u = rnd.frand();
       v = rnd.frand();

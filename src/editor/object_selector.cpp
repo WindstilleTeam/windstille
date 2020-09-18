@@ -195,7 +195,7 @@ ObjectSelector::add_decals_from_directory(const Pathname& pathname, unsigned int
       int size     = 48; // size of the icon
       int min_size = 16; // minimum width/height of the icon after scaling
 
-      if (1)
+      if ((true))
       {
         icon = Gdk::Pixbuf::create_from_file(Pathname("editor/icon_bg.png", Pathname::kDataPath).get_sys_path());
         size = std::max(icon->get_width(), icon->get_height());

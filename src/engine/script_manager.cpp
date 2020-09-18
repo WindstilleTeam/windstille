@@ -32,7 +32,9 @@
 #include "scripting/squirrel_error.hpp"
 
 #ifndef __clang__
-#pragma GCC diagnostic ignored "-Wsuggest-attribute=format"
+#  pragma GCC diagnostic ignored "-Wsuggest-attribute=format"
+#else
+#  pragma GCC diagnostic ignored "-Wformat-nonliteral"
 #endif
 
 using Scripting::SquirrelError;

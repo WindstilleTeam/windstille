@@ -65,7 +65,7 @@ int app_main(int argc, char* argv[])
                                                                   0, Matrix(1.0f)));
   std::shared_ptr<StencilDrawable> stencil2(new StencilDrawable());
 
-  if (0)
+  if ((false))
   {
     scissor->get_drawable_group().add_drawable(surface);
     surface2->set_pos(Vector2f(300.0f, 300.0f));

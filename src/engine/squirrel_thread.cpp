@@ -287,7 +287,7 @@ SquirrelThread::is_idle() const
 void
 SquirrelThread::call(const std::string& function)
 {
-  if (0)
+  if ((false))
   { // Debug stuff that prints the current roottable and its delegate
     sq_pushroottable(thread);
     std::cout << ".------------------------------------------" << std::endl;
@@ -326,7 +326,7 @@ SquirrelThread::call(const std::string& function)
   {
     sq_settop(thread, oldtop);
 
-    if (0)
+    if ((false))
       std::cout << filename << ": Function '" << function << "' not found in roottable" << std::endl;
   }
 }
