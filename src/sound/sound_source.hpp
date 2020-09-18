@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SOUND_SOUND_SOURCE_HPP
 #define HEADER_WINDSTILLE_SOUND_SOUND_SOURCE_HPP
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 class SoundSource
 {
@@ -48,8 +48,8 @@ public:
   /** Return the current position in pcm samples */
   virtual int get_sample_pos() const = 0;
 
-  virtual void set_position(const Vector2f& position) = 0;
-  virtual void set_velocity(const Vector2f& position) = 0;
+  virtual void set_position(const glm::vec2& position) = 0;
+  virtual void set_velocity(const glm::vec2& position) = 0;
 
   /** Distances closer then reference distance will increase the gain
       (or keep it at 1.0f), while distances further away will lower it */

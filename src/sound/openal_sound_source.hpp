@@ -56,8 +56,8 @@ public:
   /** Seems to be limited to an accuracy of 1024 samples */
   int get_sample_pos() const override;
 
-  void set_position(const Vector2f& position) override;
-  void set_velocity(const Vector2f& position) override;
+  void set_position(const glm::vec2& position) override;
+  void set_velocity(const glm::vec2& position) override;
 
   /** Distances closer then reference distance will increase the gain
       (or keep it at 1.0f), while distances further away will lower it */

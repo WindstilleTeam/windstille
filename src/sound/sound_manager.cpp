@@ -176,7 +176,7 @@ SoundManager::create_sound_source(std::filesystem::path const& filename, SoundCh
 }
 
 SoundSourcePtr
-SoundManager::play(std::filesystem::path const& filename, const Vector2f& pos)
+SoundManager::play(std::filesystem::path const& filename, const glm::vec2& pos)
 {
   try
   {
@@ -285,13 +285,13 @@ SoundManager::play_music(std::filesystem::path const& filename, bool fade)
 }
 
 void
-SoundManager::set_listener_position(const Vector2f& pos)
+SoundManager::set_listener_position(const glm::vec2& pos)
 {
   alListener3f(AL_POSITION, pos.x, pos.y, 0);
 }
 
 void
-SoundManager::set_listener_velocity(const Vector2f& vel)
+SoundManager::set_listener_velocity(const glm::vec2& vel)
 {
   alListener3f(AL_VELOCITY, vel.x, vel.y, 0);
 }

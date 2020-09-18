@@ -51,8 +51,8 @@ public:
   void enable_sound(bool sound_enabled);
   void enable_music(bool music_enabled);
 
-  void set_listener_position(const Vector2f& position);
-  void set_listener_velocity(const Vector2f& velocity);
+  void set_listener_position(const glm::vec2& position);
+  void set_listener_velocity(const glm::vec2& velocity);
 
   // master volume is not clamped
   void set_gain(float gain);
@@ -64,7 +64,7 @@ public:
   /**
    * Convenience function to simply play a sound at a given position.
    */
-  SoundSourcePtr play(std::filesystem::path const& filename, const Vector2f& pos = Vector2f(-1, -1));
+  SoundSourcePtr play(std::filesystem::path const& filename, const glm::vec2& pos = glm::vec2(-1, -1));
 
   void play_music(std::filesystem::path const& filename, bool fade = true);
   void stop_music(bool fade = true);
