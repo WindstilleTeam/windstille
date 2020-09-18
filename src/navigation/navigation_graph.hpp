@@ -25,6 +25,7 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 
+#include "math/rect.hpp"
 #include "math/vector2f.hpp"
 
 class Edge;
@@ -33,7 +34,6 @@ class FileReader;
 class FileWriter;
 class Line;
 class Node;
-class Rectf;
 
 template<typename Data>
 class PointerHandle

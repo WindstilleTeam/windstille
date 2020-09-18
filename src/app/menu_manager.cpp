@@ -359,16 +359,16 @@ MenuManager::create_positioned_rect(const Vector2f& pos_, const Sizef& size)
   Vector2f pos = pos_;
 
   // move pos to center of rect
-  pos.x += size.width  / 2.0f;
-  pos.y += size.height / 2.0f;
+  pos.x += size.width()  / 2.0f;
+  pos.y += size.height() / 2.0f;
 
   // scale the coordinates
   pos.x = pos.x * static_cast<float>(Display::get_width())  / 800.0f;
   pos.y = pos.y * static_cast<float>(Display::get_height()) / 600.0f;
 
   // move pos back to top/left
-  pos.x -= size.width  / 2.0f;
-  pos.y -= size.height / 2.0f;
+  pos.x -= size.width()  / 2.0f;
+  pos.y -= size.height() / 2.0f;
 
   return Rectf(pos, size);
 }

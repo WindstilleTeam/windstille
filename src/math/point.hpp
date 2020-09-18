@@ -33,6 +33,16 @@
 #ifndef HEADER_WINDSTILLE_MATH_POINT_HPP
 #define HEADER_WINDSTILLE_MATH_POINT_HPP
 
+#include <iosfwd>
+#include <sstream>
+#include <fmt/format.h>
+#include <geom/size.hpp>
+#include <geom/io.hpp>
+
+using Pointf = geom::fpoint;
+using Point = geom::ipoint;
+
+#if 0
 #include <math.h>
 
 #include "vector2f.hpp"
@@ -127,5 +137,6 @@ inline Point::Point(const Vector2f& p)
   : x(static_cast<int>(p.x)),
     y(static_cast<int>(p.y))
 {}
+#endif
 
 #endif

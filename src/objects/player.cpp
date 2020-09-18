@@ -91,8 +91,8 @@ Player::draw (SceneContext& sc)
 {
   if (1)
   { // draw the 'stand-on' tile
-    sc.highlight().fill_rect(Rect(Point(int(pos.x)/32 * 32, (int(pos.y)/32 + 1) * 32),
-                                  Size(32, 32)),
+    sc.highlight().fill_rect(Rectf(Rect(Point(int(pos.x)/32 * 32, (int(pos.y)/32 + 1) * 32),
+                                        Size(32, 32))),
                              Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
   }
 
@@ -264,7 +264,7 @@ Player::update_walk_stand(const Controller& controller)
     if (tilemap)
     {
       Point p(int(pos.x)/32, (int(pos.y)/32 + 1));
-      unsigned int col = tilemap->get_pixel(p.x, p.y);
+      unsigned int col = tilemap->get_pixel(p.x(), p.y());
 
       if ((col & TILE_STAIRS) && ((get_direction() == WEST && (col & TILE_LEFT)) ||
                                   (get_direction() == EAST && (col & TILE_RIGHT))))
@@ -292,7 +292,7 @@ Player::update_walk_stand(const Controller& controller)
     if (tilemap)
     {
       Point p(int(pos.x)/32 + ((get_direction() == WEST) ? -1 : +1), (int(pos.y)/32));
-      unsigned int col = tilemap->get_pixel(p.x, p.y);
+      unsigned int col = tilemap->get_pixel(p.x(), p.y());
 
       if ((col & TILE_STAIRS) && ((get_direction() == EAST && (col & TILE_LEFT)) ||
                                   (get_direction() == WEST && (col & TILE_RIGHT))))

@@ -72,7 +72,7 @@ CollisionObject::~CollisionObject()
 void
 CollisionObject::draw(DrawingContext& dc)
 {
-  Vector2f v = get_pos ();
+  Vector2f v = get_pos();
   Rectf  r = primitive;
 
   r += v;
@@ -81,10 +81,10 @@ CollisionObject::draw(DrawingContext& dc)
 
   dc.draw_rect(r, Color(0.6f, 0.6f, 0.6f), 100.0f);
 
-  dc.draw_line(Vector2f(r.left + r.get_width ()/2,
-                        r.top  + r.get_height ()/2),
-               Vector2f(r.left + r.get_width ()/2  + get_velocity ().x,
-                        r.top  + r.get_height ()/2 + get_velocity ().y),
+  dc.draw_line(Vector2f(r.left() + r.width()/2,
+                        r.top()  + r.height()/2),
+               Vector2f(r.left() + r.width()/2  + get_velocity().x,
+                        r.top()  + r.height()/2 + get_velocity().y),
                Color(1.0f, 0, 1.0f), 100.0f);
 }
 

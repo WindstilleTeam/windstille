@@ -323,16 +323,16 @@ DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   array->color(color);
-  array->vertex(rect.left, rect.top);
+  array->vertex(rect.left(), rect.top());
 
   array->color(color);
-  array->vertex(rect.right, rect.top);
+  array->vertex(rect.right(), rect.top());
 
   array->color(color);
-  array->vertex(rect.right, rect.bottom);
+  array->vertex(rect.right(), rect.bottom());
 
   array->color(color);
-  array->vertex(rect.left, rect.bottom);
+  array->vertex(rect.left(), rect.bottom());
 
   draw(array);
 }
@@ -346,16 +346,16 @@ DrawingContext::fill_rect(const Rectf& rect, const Color& color, float z_pos)
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   array->color(color);
-  array->vertex(rect.left, rect.top);
+  array->vertex(rect.left(), rect.top());
 
   array->color(color);
-  array->vertex(rect.right, rect.top);
+  array->vertex(rect.right(), rect.top());
 
   array->color(color);
-  array->vertex(rect.right, rect.bottom);
+  array->vertex(rect.right(), rect.bottom());
 
   array->color(color);
-  array->vertex(rect.left, rect.bottom);
+  array->vertex(rect.left(), rect.bottom());
 
   draw(array);
 }

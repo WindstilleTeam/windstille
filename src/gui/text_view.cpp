@@ -65,7 +65,7 @@ void
 TextView::set_screen_rect(const Rectf& rect_)
 {
   Component::set_screen_rect(rect_);
-  text_area.set_rect(rect_.grow(-16.0f, -4.0f));
+  text_area.set_rect(geom::grow(rect_, -16.0f, -4.0f));
 }
 
 void

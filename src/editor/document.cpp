@@ -309,7 +309,7 @@ Document::selection_vflip()
 
     if (m_selection->size() > 1)
     {
-      const Vector2f& center = m_selection->get_bounding_box().get_center();
+      const Vector2f& center = geom::center(m_selection->get_bounding_box()).as_vec();
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
       {
         Vector2f pos = (*i)->get_world_pos();
@@ -342,7 +342,7 @@ Document::selection_hflip()
 
     if (m_selection->size() > 1)
     {
-      const Vector2f& center = m_selection->get_bounding_box().get_center();
+      const Vector2f& center = geom::center(m_selection->get_bounding_box()).as_vec();
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
       {
         Vector2f pos = (*i)->get_world_pos();
@@ -556,7 +556,7 @@ Document::get_control_point(const Vector2f& pos) const
   for(std::vector<ControlPointHandle>::const_iterator i = m_control_points.begin();
       i != m_control_points.end(); ++i)
   {
-    if ((*i)->get_bounding_box().is_inside(pos))
+    if (geom::contains((*i)->get_bounding_box(), geom::fpoint(pos)))
       return *i;
   }
   return ControlPointHandle();

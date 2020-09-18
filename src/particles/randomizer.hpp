@@ -44,8 +44,8 @@ public:
     : rect(rect_) {}
 
   void set_pos(Particle& p) override {
-    p.x = rnd.frand(rect.left, rect.right);
-    p.y = rnd.frand(rect.top,  rect.bottom);
+    p.x = rnd.frand(rect.left(), rect.right());
+    p.y = rnd.frand(rect.top(),  rect.bottom());
   }
 };
 

@@ -45,13 +45,13 @@ void
 ControllerHelpWindow::draw_stick(const Vector2f& pos, bool pressed, float x, float y)
 {
   Size size(75, 75);
-  Rectf rect(pos - Vector2f(static_cast<float>(size.width), static_cast<float>(size.height)) / 2.0f, size);
+  Rectf rect(pos - glm::vec2(static_cast<float>(size.width()), static_cast<float>(size.height())) / 2.0f, geom::fsize(size));
 
   Display::fill_rounded_rect(rect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.2f));
   //Display::draw_rounded_rect(rect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-  Vector2f stick_pos(rect.left + rect.get_width()/2  + x * (rect.get_width()-16.0f)/2,
-                     rect.top  + rect.get_height()/2 + y * (rect.get_width()-16.0f)/2);
+  Vector2f stick_pos(rect.left() + rect.width()/2  + x * (rect.width()-16.0f)/2,
+                     rect.top()  + rect.height()/2 + y * (rect.width()-16.0f)/2);
 
   if (pressed)
     Display::fill_circle(stick_pos, 10.0f, Color(0.8f, 0, 0));
@@ -65,14 +65,14 @@ void
 ControllerHelpWindow::draw_trigger(const Vector2f& pos, float value)
 {
   Sizef size(60, 20);
-  Rectf rect(pos - Vector2f(size.width/2, size.height/2), size);
+  Rectf rect(pos - Vector2f(size.width() / 2, size.height() / 2), size);
 
   Display::fill_rect(rect,  Color(1.0f, 1.0f, 1.0f, 0.2f));
 
   if (value > 0.0f)
-    Display::fill_rect(Rectf(Vector2f(rect.left, rect.top),
-                             Sizef(rect.get_width() * value,
-                                   rect.get_height())),
+    Display::fill_rect(Rectf(Vector2f(rect.left(), rect.top()),
+                             Sizef(rect.width() * value,
+                                   rect.height())),
                        Color(1.0f, 0.0f, 0.0f));
 
   //Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));

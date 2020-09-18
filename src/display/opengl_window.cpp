@@ -18,6 +18,7 @@
 
 #include "display/opengl_window.hpp"
 
+#include <iostream>
 #include <GL/glew.h>
 #include <SDL.h>
 #include <SDL_image.h>
@@ -68,7 +69,7 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
 
   m_impl->m_window = SDL_CreateWindow(title.c_str(),
                                       SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                      size.width, size.height,
+                                      size.width(), size.height(),
                                       SDL_WINDOW_OPENGL | (fullscreen ? SDL_WINDOW_FULLSCREEN : 0));
   if (!m_impl->m_window)
   {
@@ -98,7 +99,7 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
       std::cout << "OpenGL 3.2: " << GL_VERSION_3_2 << std::endl;
       std::cout << "GL_VERSION_3_0: " << GL_VERSION_3_0 << std::endl;
 
-      glViewport(0, 0, m_impl->m_size.width, m_impl->m_size.height);
+      glViewport(0, 0, m_impl->m_size.width(), m_impl->m_size.height());
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
 
@@ -134,13 +135,13 @@ OpenGLWindow::~OpenGLWindow()
 int
 OpenGLWindow::get_width()  const
 {
-  return m_impl->m_size.width;
+  return m_impl->m_size.width();
 }
 
 int
 OpenGLWindow::get_height() const
 {
-  return m_impl->m_size.height;
+  return m_impl->m_size.height();
 }
 
 Size

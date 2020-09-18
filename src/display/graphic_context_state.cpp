@@ -23,6 +23,8 @@
 
 #include "display/scene_context.hpp"
 
+#pragma GCC diagnostic ignored "-Wuseless-cast"
+
 class GraphicContextStateImpl
 {
 public:
@@ -160,13 +162,13 @@ GraphicContextState::get_zoom() const
 void
 GraphicContextState::zoom_to (const Rectf& rect)
 {
-  float center_x = (rect.left + rect.right) / 2.0f;
-  float center_y = (rect.top + rect.bottom) / 2.0f;
+  float center_x = (rect.left() + rect.right()) / 2.0f;
+  float center_y = (rect.top() + rect.bottom()) / 2.0f;
 
-  float width  = rect.right - rect.left;
-  float height = rect.bottom - rect.top;
+  float width  = rect.right() - rect.left();
+  float height = rect.bottom() - rect.top();
   float screen_relation = float(get_height())/float(get_width ());
-  float rect_relation   = height/width;
+  float rect_relation   = height / width;
 
   //std::cout << "Screen: " << screen_relation << " Zoom: " << rect_relation << std::endl;
   if (rect_relation < screen_relation) // take width, ignore height

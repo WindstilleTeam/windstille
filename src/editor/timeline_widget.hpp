@@ -25,9 +25,9 @@
 
 #include "editor/timeline_handles.hpp"
 #include "math/vector2f.hpp"
+#include "math/rect.hpp"
 
 class Timeline;
-class Rectf;
 
 class TimelineWidget : public Gtk::DrawingArea
 {

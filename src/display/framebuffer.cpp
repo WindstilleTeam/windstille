@@ -18,6 +18,7 @@
 
 #include <GL/glew.h>
 #include <assert.h>
+#include <iostream>
 
 #include "math/size.hpp"
 #include "util/util.hpp"
@@ -75,13 +76,13 @@ Framebuffer::get_texture()
 int
 Framebuffer::get_width()  const
 {
-  return m_size.width;
+  return m_size.width();
 }
 
 int
 Framebuffer::get_height() const
 {
-  return m_size.height;
+  return m_size.height();
 }
 
 GLuint

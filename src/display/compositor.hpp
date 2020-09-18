@@ -21,11 +21,12 @@
 
 #include <memory>
 
+#include "math/size.hpp"
+
 class CompositorImpl;
 class GraphicContextState;
 class SceneContext;
 class SceneGraph;
-class Size;
 
 class Compositor
 {

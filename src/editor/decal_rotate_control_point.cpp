@@ -67,7 +67,7 @@ void
 DecalRotateControlPoint::draw(SceneContext& sc)
 {
   Rectf rect = get_bounding_box();
-  rect += offset;
+  rect += geom::foffset(offset);
   sc.control().draw_control(surface, pos, ctrl_angle);
 }
 

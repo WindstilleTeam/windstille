@@ -139,7 +139,7 @@ TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect
     tiles[id]->desc  = nullptr;
     tiles[id]->id    = id;
 
-    if (!surface_empty(image, rect.left, rect.top, rect.get_width(), rect.get_height()))
+    if (!surface_empty(image, rect.left(), rect.top(), rect.width(), rect.height()))
     {
       if(packers[color_packer]->is_full())
       {
@@ -148,8 +148,8 @@ TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect
       }
 
       Rectf uv = packers[color_packer]->pack(image,
-                                             rect.left, rect.top,
-                                             rect.get_width(), rect.get_height());
+                                             rect.left(), rect.top(),
+                                             rect.width(), rect.height());
       tiles[id]->uv      = uv;
       tiles[id]->packer  = color_packer;
       tiles[id]->texture = packers[color_packer]->get_texture();

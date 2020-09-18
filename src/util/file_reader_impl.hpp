@@ -22,7 +22,8 @@
 #include <vector>
 #include <string>
 
-class Size;
+#include "math/size.hpp"
+
 class Color;
 
 class FileReader;

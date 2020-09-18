@@ -87,14 +87,14 @@ TileMap::draw (SceneContext& sc)
 {
   Rect clip_rect = Rect(View::current()->get_clip_rect());
 
-  Rect rect(std::max(0, clip_rect.left/TILE_SIZE),
-            std::max(0, clip_rect.top/TILE_SIZE),
-            std::min(field.get_width(),  clip_rect.right/TILE_SIZE + 1),
-            std::min(field.get_height(), clip_rect.bottom/TILE_SIZE + 1));
+  Rect rect(std::max(0, clip_rect.left() / TILE_SIZE),
+            std::max(0, clip_rect.top() / TILE_SIZE),
+            std::min(field.get_width(),  clip_rect.right()/TILE_SIZE + 1),
+            std::min(field.get_height(), clip_rect.bottom()/TILE_SIZE + 1));
 
   std::vector<VertexArrayDrawable*> requests;
-  for (int y = rect.top;   y < rect.bottom; ++y)
-    for (int x = rect.left; x < rect.right; ++x)
+  for (int y = rect.top();   y < rect.bottom(); ++y)
+    for (int x = rect.left(); x < rect.right(); ++x)
     {
       Tile* tile = field(x, y);
 
@@ -115,16 +115,16 @@ TileMap::draw (SceneContext& sc)
           request->set_texture(tile->texture);
         }
 
-        request->texcoord(tile->uv.left, tile->uv.top);
+        request->texcoord(tile->uv.left(), tile->uv.top());
         request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE));
 
-        request->texcoord(tile->uv.right, tile->uv.top);
+        request->texcoord(tile->uv.right(), tile->uv.top());
         request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE));
 
-        request->texcoord(tile->uv.right, tile->uv.bottom);
+        request->texcoord(tile->uv.right(), tile->uv.bottom());
         request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
 
-        request->texcoord(tile->uv.left, tile->uv.bottom);
+        request->texcoord(tile->uv.left(), tile->uv.bottom());
         request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
       }
     }

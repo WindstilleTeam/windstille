@@ -26,7 +26,7 @@ StairContact::StairContact(TileMap* tilemap_, const Point& pos_)
     advancement(0.0f),
     tile_type()
 {
-  unsigned int col = tilemap->get_pixel(pos.x, pos.y);
+  unsigned int col = tilemap->get_pixel(pos.x(), pos.y());
   if (!(col & TILE_STAIRS))
     std::cout << "Warning: StairContact: Given tile is no stair tile" << std::endl;
 
@@ -73,14 +73,12 @@ StairContact::advance_or_not()
   {
     if (advancement < -0.5f)
     {
-      pos.x -= 1;
-      pos.y += 1;
+      pos += geom::ioffset(-1, 1);
       advancement += 1.0f;
     }
     else if (advancement > 0.5f)
     {
-      pos.x += 1;
-      pos.y -= 1;
+      pos += geom::ioffset(1, -1);
       advancement -= 1.0f;
     }
   }
@@ -88,14 +86,12 @@ StairContact::advance_or_not()
   {
     if (advancement < -0.5f)
     {
-      pos.x += 1;
-      pos.y -= 1;
+      pos += geom::ioffset(1, -1);
       advancement += 1.0f;
     }
     else if (advancement > 0.5f)
     {
-      pos.x -= 1;
-      pos.y += 1;
+      pos += geom::ioffset(-1, 1);
       advancement -= 1.0f;
     }
   }
@@ -106,20 +102,20 @@ StairContact::get_pos() const
 {
   if (tile_type & TILE_RIGHT)
   {
-    return Vector2f(static_cast<float>(pos.x) * 32.0f + 16.0f + 32.0f * advancement,
-                    static_cast<float>(pos.y) * 32.0f + 16.0f + 32.0f * advancement);
+    return Vector2f(static_cast<float>(pos.x()) * 32.0f + 16.0f + 32.0f * advancement,
+                    static_cast<float>(pos.y()) * 32.0f + 16.0f + 32.0f * advancement);
   }
   else // (tile_type & TILE_LEFT)
   {
-    return Vector2f(static_cast<float>(pos.x) * 32.0f + 16.0f + 32.0f * advancement,
-                    static_cast<float>(pos.y) * 32.0f + 16.0f - 32.0f * advancement);
+    return Vector2f(static_cast<float>(pos.x()) * 32.0f + 16.0f + 32.0f * advancement,
+                    static_cast<float>(pos.y()) * 32.0f + 16.0f - 32.0f * advancement);
   }
 }
 
 bool
 StairContact::is_active() const
 {
-  return (tilemap->get_pixel(pos.x, pos.y) & TILE_STAIRS);
+  return (tilemap->get_pixel(pos.x(), pos.y()) & TILE_STAIRS);
 }
 
 /* EOF */

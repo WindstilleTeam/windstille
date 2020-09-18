@@ -46,12 +46,12 @@ Surface::Surface(int width, int height) :
   m_uv(),
   m_size()
 {
-  m_size  = Size(width, height);
+  m_size  = Sizef(Size(width, height));
 
   m_texture = Texture::create(GL_TEXTURE_2D, width, height);
   m_uv      = Rectf(0.0f, 0.0f,
-                    m_size.width  / static_cast<float>(m_texture->get_width()),
-                    m_size.height / static_cast<float>(m_texture->get_height()));
+                    m_size.width()  / static_cast<float>(m_texture->get_width()),
+                    m_size.height() / static_cast<float>(m_texture->get_height()));
 }
 
 Surface::Surface(TexturePtr texture, const Rectf& uv, const Sizef& size) :
@@ -71,13 +71,13 @@ Surface::~Surface()
 float
 Surface::get_width()  const
 {
-  return m_size.width;
+  return m_size.width();
 }
 
 float
 Surface::get_height() const
 {
-  return m_size.height;
+  return m_size.height();
 }
 
 Sizef
@@ -109,17 +109,17 @@ Surface::draw(const Vector2f& pos) const
 
   glBegin(GL_QUADS);
 
-  glTexCoord2f(m_uv.left, m_uv.top);
+  glTexCoord2f(m_uv.left(), m_uv.top());
   glVertex2f(pos.x, pos.y);
 
-  glTexCoord2f(m_uv.right, m_uv.top);
-  glVertex2f(pos.x + m_size.width, pos.y);
+  glTexCoord2f(m_uv.right(), m_uv.top());
+  glVertex2f(pos.x + m_size.width(), pos.y);
 
-  glTexCoord2f(m_uv.right, m_uv.bottom);
-  glVertex2f(pos.x + m_size.width, pos.y + m_size.height);
+  glTexCoord2f(m_uv.right(), m_uv.bottom());
+  glVertex2f(pos.x + m_size.width(), pos.y + m_size.height());
 
-  glTexCoord2f(m_uv.left, m_uv.bottom);
-  glVertex2f(pos.x, pos.y + m_size.height);
+  glTexCoord2f(m_uv.left(), m_uv.bottom());
+  glVertex2f(pos.x, pos.y + m_size.height());
 
   glEnd();
 }
@@ -136,31 +136,36 @@ Surface::draw(const SurfaceDrawingParameters& params) const
 
   glBegin(GL_QUADS);
 
-  Rectf uv = m_uv;
+  float uv_left = m_uv.left();
+  float uv_top = m_uv.top();
+  float uv_right = m_uv.right();
+  float uv_bottom = m_uv.bottom();
 
-  if (params.hflip)
-    std::swap(uv.left, uv.right);
+  if (params.hflip) {
+    std::swap(uv_left, uv_right);
+  }
 
-  if (params.vflip)
-    std::swap(uv.top, uv.bottom);
+  if (params.vflip) {
+    std::swap(uv_top, uv_bottom);
+  }
 
   Quad quad(params.pos.x,
             params.pos.y,
-            params.pos.x + m_size.width  * params.scale.x,
-            params.pos.y + m_size.height * params.scale.y);
+            params.pos.x + m_size.width()  * params.scale.x,
+            params.pos.y + m_size.height() * params.scale.y);
 
   quad.rotate(params.angle);
 
-  glTexCoord2f(uv.left, uv.top);
+  glTexCoord2f(uv_left, uv_top);
   glVertex3f(quad.p1.x, quad.p1.y, params.z_pos);
 
-  glTexCoord2f(uv.right, uv.top);
+  glTexCoord2f(uv_right, uv_top);
   glVertex3f(quad.p2.x, quad.p2.y, params.z_pos);
 
-  glTexCoord2f(uv.right, uv.bottom);
+  glTexCoord2f(uv_right, uv_bottom);
   glVertex3f(quad.p3.x, quad.p3.y, params.z_pos);
 
-  glTexCoord2f(uv.left, uv.bottom);
+  glTexCoord2f(uv_left, uv_bottom);
   glVertex3f(quad.p4.x, quad.p4.y, params.z_pos);
 
   glEnd();

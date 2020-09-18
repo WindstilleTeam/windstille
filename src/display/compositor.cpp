@@ -18,6 +18,7 @@
 
 #include "display/compositor.hpp"
 
+#include <iostream>
 #include <GL/glew.h>
 
 #include "display/framebuffer_compositor_impl.hpp"

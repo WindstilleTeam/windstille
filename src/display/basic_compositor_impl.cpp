@@ -30,8 +30,8 @@ static const int LIGHTMAP_DIV = 4;
 
 BasicCompositorImpl::BasicCompositorImpl(const Size& window, const Size& viewport) :
   CompositorImpl(window, viewport),
-  m_lightmap(Surface::create(m_window.width  / LIGHTMAP_DIV,
-                             m_window.height / LIGHTMAP_DIV))
+  m_lightmap(Surface::create(m_window.width()  / LIGHTMAP_DIV,
+                             m_window.height() / LIGHTMAP_DIV))
 {
 }
 
@@ -39,10 +39,10 @@ void
 BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state)
 {
   // Resize Lightmap, only needed in the editor, FIXME: move this into a 'set_size()' call
-  if (m_lightmap->get_width()  != static_cast<float>(m_window.width  / LIGHTMAP_DIV) ||
-      m_lightmap->get_height() != static_cast<float>(m_window.height / LIGHTMAP_DIV))
+  if (m_lightmap->get_width()  != static_cast<float>(m_window.width()  / LIGHTMAP_DIV) ||
+      m_lightmap->get_height() != static_cast<float>(m_window.height() / LIGHTMAP_DIV))
   {
-    m_lightmap = Surface::create(m_window.width / LIGHTMAP_DIV, m_window.height / LIGHTMAP_DIV);
+    m_lightmap = Surface::create(m_window.width() / LIGHTMAP_DIV, m_window.height() / LIGHTMAP_DIV);
   }
 
   if (sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN)
@@ -75,7 +75,7 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
                           0,    // mipmap level
                           0, 0, // xoffset, yoffset
                           0, // x
-                          m_window.height - static_cast<GLsizei>(m_lightmap->get_height()), // y (OpenGL is upside down)
+                          m_window.height() - static_cast<GLsizei>(m_lightmap->get_height()), // y (OpenGL is upside down)
                           static_cast<GLsizei>(m_lightmap->get_width()),
                           static_cast<GLsizei>(m_lightmap->get_height()));
     }
@@ -110,17 +110,17 @@ BasicCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicConte
 
     glBegin(GL_QUADS);
 
-    glTexCoord2f(m_lightmap->get_uv().left, m_lightmap->get_uv().bottom);
+    glTexCoord2f(m_lightmap->get_uv().left(), m_lightmap->get_uv().bottom());
     glVertex2i(0, 0);
 
-    glTexCoord2f(m_lightmap->get_uv().right, m_lightmap->get_uv().bottom);
-    glVertex2i(m_viewport.width, 0);
+    glTexCoord2f(m_lightmap->get_uv().right(), m_lightmap->get_uv().bottom());
+    glVertex2i(m_viewport.width(), 0);
 
-    glTexCoord2f(m_lightmap->get_uv().right, m_lightmap->get_uv().top);
-    glVertex2i(m_viewport.width, m_viewport.height);
+    glTexCoord2f(m_lightmap->get_uv().right(), m_lightmap->get_uv().top());
+    glVertex2i(m_viewport.width(), m_viewport.height());
 
-    glTexCoord2f(m_lightmap->get_uv().left, m_lightmap->get_uv().top);
-    glVertex2i(0, m_viewport.height);
+    glTexCoord2f(m_lightmap->get_uv().left(), m_lightmap->get_uv().top());
+    glVertex2i(0, m_viewport.height());
 
     glEnd();
   }

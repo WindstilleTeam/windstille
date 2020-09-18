@@ -25,11 +25,11 @@
 #include "display/software_surface.hpp"
 #include "tile/tile_description.hpp"
 #include "util/currenton.hpp"
+#include "math/rect.hpp"
 
 class Tile;
 class TilePacker;
 class SoftwareSurface;
-class Rect;
 
 /** */
 class TileFactory : public Currenton<TileFactory>

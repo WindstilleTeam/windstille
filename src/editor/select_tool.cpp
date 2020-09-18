@@ -86,10 +86,7 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
     }
     else
     {
-      rect.left   = click_pos.x;
-      rect.top    = click_pos.y;
-      rect.right  = click_pos.x;
-      rect.bottom = click_pos.y;
+      rect = Rectf(click_pos, click_pos);
 
       mode = SELECT_MODE;
     }
@@ -174,14 +171,11 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
   }
   else if (mode == SELECT_MODE)
   {
-    rect.left   = click_pos.x;
-    rect.top    = click_pos.y;
-    rect.right  = pos.x;
-    rect.bottom = pos.y;
+    rect = Rectf(click_pos, pos);
 
     std::ostringstream str;
-    str << "  (" << static_cast<int>(rect.left) << ", " << static_cast<int>(rect.top) << ")  "
-        << abs(static_cast<int>(rect.get_width())) << " x " << abs(static_cast<int>(rect.get_height())) << "  ";
+    str << "  (" << static_cast<int>(rect.left()) << ", " << static_cast<int>(rect.top()) << ")  "
+        << abs(static_cast<int>(rect.width())) << " x " << abs(static_cast<int>(rect.height())) << "  ";
     EditorWindow::current()->print_coordinates(str.str());
 
     wst.queue_draw();
@@ -230,7 +224,8 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
   else if (mode == SELECT_MODE)
   {
     mode = NO_MODE;
-    rect.normalize();
+    rect = geom::normalize(rect);
+
     if (event->state & GDK_SHIFT_MASK)
     {
       SelectionHandle new_selection = wst.get_document().get_sector_model().get_selection(rect, wst.get_select_mask());

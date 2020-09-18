@@ -18,6 +18,8 @@
 
 #include "hud/dialog_manager.hpp"
 
+#include <glm/glm.hpp>
+
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
 #include "input/controller.hpp"
@@ -61,7 +63,7 @@ void
 DialogManager::draw()
 {
   int dialog_height = std::max(portrait_height + portrait_border_y*2,
-                               int(text_area->get_rect().get_height()
+                               int(text_area->get_rect().height()
                                    + text_border_y * 2.0f));
 
   Vector2f pos(0.0f, 0.0f);
@@ -142,7 +144,7 @@ DialogManager::create_text()
   else
     outer_border_y = 20;
 
-  Point pos(0,0);
+  glm::ivec2 pos(0,0);
   if(alignment & LEFT) {
     pos.x = outer_border_x;
   } else if(alignment & RIGHT) {
@@ -153,14 +155,22 @@ DialogManager::create_text()
 
   int text_width
     = dialog_width - portrait_height - portrait_border_x*2 - text_border_x;
+
   Rect text_rect = Rect(Point(pos.x + portrait_width + portrait_border_x*2, 0),
                         Size(500, 200)); // FIXME: use real bounding box calc
 
-  text_rect.bottom = text_rect.top + text_rect.get_height();
-  text_rect.top    = pos.y + text_border_y;
+  text_rect = Rect(text_rect.left(),
+                   text_rect.top(),
+                   text_rect.right(),
+                   text_rect.top() + text_rect.height());
+
+  text_rect = Rect(text_rect.left(),
+                   pos.y + text_border_y,
+                   text_rect.right(),
+                   text_rect.bottom());
 
   int dialog_height = std::max(portrait_height + portrait_border_y*2,
-                               text_rect.get_height() + text_border_y*2);
+                               text_rect.height() + text_border_y*2);
 
   if(alignment & TOP) {
     pos.y = outer_border_y;
@@ -170,13 +180,20 @@ DialogManager::create_text()
     pos.y = (Display::get_height() - dialog_height) / 2;
   }
 
-  text_rect.bottom = text_rect.top + text_rect.get_height();
-  text_rect.top = pos.y + text_border_y;
+  text_rect = Rect(text_rect.left(),
+                   text_rect.top(),
+                   text_rect.right(),
+                   text_rect.top() + text_rect.height());
+
+  text_rect = Rect(text_rect.left(),
+                   pos.y + text_border_y,
+                   text_rect.right(),
+                   text_rect.bottom());
 
   Size dialog_size(dialog_width, dialog_height);
 
-  text_area.reset(new TextArea(Rect(Point(text_rect.left, text_rect.top + Fonts::current()->vera20->get_height()),
-                                    Size(text_width, 200)), true));
+  text_area.reset(new TextArea(Rectf(Rect(Point(text_rect.left(), text_rect.top() + Fonts::current()->vera20->get_height()),
+                                          Size(text_width, 200))), true));
   text_area->set_font(Fonts::current()->vera20.get());
   text_area->set_text(text);
 }

@@ -27,6 +27,7 @@
 **    (if your name is missing here, please add it)
 */
 
+#if 0
 #include "math/rect.hpp"
 
 #include <algorithm>
@@ -66,3 +67,4 @@ std::ostream& operator<<(std::ostream& s, const Rectf& rect)
   return s << "Rectf(" << rect.left << ", " << rect.top << ", " << rect.right << ", " << rect.bottom << ")";
 }
 
+#endif

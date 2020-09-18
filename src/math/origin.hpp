@@ -36,6 +36,12 @@
 #include "math/size.hpp"
 #include "math/point.hpp"
 
+#include <geom/origin.hpp>
+#include "math/vector2f.hpp"
+
+using Origin = geom::origin;
+
+#if 0
 namespace origin {
 
 //: Alignment origins.
@@ -63,5 +69,6 @@ typedef origin::Origin Origin;
 //- !header=display.h!
 Point  calc_origin(Origin origin, const Size &size);
 Vector2f calc_origin(Origin origin, const Sizef &size);
+#endif
 
 #endif

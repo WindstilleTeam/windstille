@@ -23,11 +23,11 @@
 
 #include "util/pathname.hpp"
 #include "math/size.hpp"
+#include "math/rect.hpp"
 
 typedef struct SDL_Surface SDL_Surface;
 
 
-class Rect;
 class SoftwareSurface;
 typedef std::shared_ptr<SoftwareSurface> SoftwareSurfacePtr;
 

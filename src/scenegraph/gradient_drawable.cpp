@@ -48,22 +48,22 @@ GradientDrawable::GradientDrawable(const std::vector<float>& colors)
                            (color1.a + color2.a)/2);
 
       array->color(color1);
-      array->vertex(rect.left, rect.top + start * rect.get_height());
+      array->vertex(rect.left(), rect.top() + start * rect.height());
 
       array->color(color1);
-      array->vertex(rect.right, rect.top + start * rect.get_height());
+      array->vertex(rect.right(), rect.top() + start * rect.height());
 
       array->color(midcolor);
-      array->vertex(rect.left, rect.top + midpoint * rect.get_height());
+      array->vertex(rect.left(), rect.top() + midpoint * rect.height());
 
       array->color(midcolor);
-      array->vertex(rect.right, rect.top + midpoint * rect.get_height());
+      array->vertex(rect.right(), rect.top() + midpoint * rect.height());
 
       array->color(color2);
-      array->vertex(rect.left, rect.top + end * rect.get_height());
+      array->vertex(rect.left(), rect.top() + end * rect.height());
 
       array->color(color2);
-      array->vertex(rect.right, rect.top + end * rect.get_height());
+      array->vertex(rect.right(), rect.top() + end * rect.height());
     }
   }
 }

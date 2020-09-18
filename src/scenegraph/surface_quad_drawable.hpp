@@ -59,16 +59,16 @@ public:
 
     glBegin(GL_QUADS);
     {
-      glTexCoord2f(m_surface->get_uv().left, m_surface->get_uv().top);
+      glTexCoord2f(m_surface->get_uv().left(), m_surface->get_uv().top());
       glVertex2f(pos.x + m_quad.p1.x, pos.y + m_quad.p1.y);
 
-      glTexCoord2f(m_surface->get_uv().right, m_surface->get_uv().top);
+      glTexCoord2f(m_surface->get_uv().right(), m_surface->get_uv().top());
       glVertex2f(pos.x + m_quad.p2.x, pos.y + m_quad.p2.y);
 
-      glTexCoord2f(m_surface->get_uv().right, m_surface->get_uv().bottom);
+      glTexCoord2f(m_surface->get_uv().right(), m_surface->get_uv().bottom());
       glVertex2f(pos.x + m_quad.p3.x, pos.y + m_quad.p3.y);
 
-      glTexCoord2f(m_surface->get_uv().left, m_surface->get_uv().bottom);
+      glTexCoord2f(m_surface->get_uv().left(), m_surface->get_uv().bottom());
       glVertex2f(pos.x + m_quad.p4.x, pos.y + m_quad.p4.y);
     }
     glEnd();

@@ -18,6 +18,8 @@
 
 #include "input/input_configurator.hpp"
 
+#include <iostream>
+
 #include "display/display.hpp"
 #include "font/fonts.hpp"
 #include "input/input_manager.hpp"

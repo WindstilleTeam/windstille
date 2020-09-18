@@ -30,8 +30,8 @@ static const int LIGHTMAP_DIV = 4;
 
 FramebufferCompositorImpl::FramebufferCompositorImpl(const Size& window, const Size& viewport) :
   CompositorImpl(window, viewport),
-  m_screen  (Framebuffer::create_with_texture(GL_TEXTURE_2D, window.width, window.height)),
-  m_lightmap(Framebuffer::create_with_texture(GL_TEXTURE_2D, window.width / LIGHTMAP_DIV, window.height / LIGHTMAP_DIV))
+  m_screen  (Framebuffer::create_with_texture(GL_TEXTURE_2D, window.width(), window.height())),
+  m_lightmap(Framebuffer::create_with_texture(GL_TEXTURE_2D, window.width() / LIGHTMAP_DIV, window.height() / LIGHTMAP_DIV))
 {
 }
 
@@ -52,13 +52,13 @@ FramebufferCompositorImpl::render_lightmap(SceneContext& /*sc*/, SceneGraph* /*s
     glVertex2i(0, 0);
 
     glTexCoord2i(1, 1);
-    glVertex2i(m_viewport.width, 0);
+    glVertex2i(m_viewport.width(), 0);
 
     glTexCoord2i(1, 0);
-    glVertex2i(m_viewport.width, m_viewport.height);
+    glVertex2i(m_viewport.width(), m_viewport.height());
 
     glTexCoord2i(0, 0);
-    glVertex2i(0, m_viewport.height);
+    glVertex2i(0, m_viewport.height());
   }
   glEnd();
 }
@@ -75,7 +75,7 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix();
-    glTranslatef(0.0f, static_cast<float>(m_viewport.height - (m_viewport.height / LIGHTMAP_DIV)), 0.0f);
+    glTranslatef(0.0f, static_cast<float>(m_viewport.height() - (m_viewport.height() / LIGHTMAP_DIV)), 0.0f);
     glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV);
 
     sc.light().render();
@@ -162,13 +162,13 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
       glVertex2i(0, 0);
 
       glTexCoord2i(1, 1);
-      glVertex2i(m_viewport.width, 0);
+      glVertex2i(m_viewport.width(), 0);
 
       glTexCoord2i(1, 0);
-      glVertex2i(m_viewport.width, m_viewport.height);
+      glVertex2i(m_viewport.width(), m_viewport.height());
 
       glTexCoord2i(0, 0);
-      glVertex2i(0.0f, m_viewport.height);
+      glVertex2i(0.0f, m_viewport.height());
     }
     glEnd();
   }

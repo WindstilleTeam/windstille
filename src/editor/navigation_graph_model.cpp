@@ -156,7 +156,7 @@ NavigationGraphModel::get_selection(const Rectf& rect, const SelectMask& select_
   for(Nodes::const_reverse_iterator i = m_nodes.rbegin(); i != m_nodes.rend(); ++i)
   {
     if (select_mask.match((*i)->get_select_mask()) &&
-        rect.contains((*i)->get_bounding_box()))
+        geom::contains(rect, (*i)->get_bounding_box()))
     {
       selection->add(*i);
     }

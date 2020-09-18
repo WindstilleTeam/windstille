@@ -176,7 +176,7 @@ ObjectModel::reset()
 bool
 ObjectModel::is_at(const Vector2f& pos) const
 {
-  return get_bounding_box().is_inside(pos);
+  return geom::contains(get_bounding_box(), geom::fpoint(pos));
 }
 
 static bool overlap(float l1, float r1,
@@ -200,24 +200,24 @@ ObjectModel::snap_to_grid(float grid_size) const
 {
   const Rectf& r = get_bounding_box();
 
-  Rectf snap_rect(float_snap_to_grid(r.left,   grid_size),
-                  float_snap_to_grid(r.top,    grid_size),
-                  float_snap_to_grid(r.right,  grid_size),
-                  float_snap_to_grid(r.bottom, grid_size));
+  Rectf snap_rect(float_snap_to_grid(r.left(),   grid_size),
+                  float_snap_to_grid(r.top(),    grid_size),
+                  float_snap_to_grid(r.right(),  grid_size),
+                  float_snap_to_grid(r.bottom(), grid_size));
 
   SnapData best_snap;
 
   {
     SnapData snap;
 
-    if (fabsf(snap_rect.left) < g_snap_threshold)
+    if (fabsf(snap_rect.left()) < g_snap_threshold)
     {
-      snap.set_x(snap_rect.left);
+      snap.set_x(snap_rect.left());
     }
 
-    if (fabsf(snap_rect.top) < g_snap_threshold)
+    if (fabsf(snap_rect.top()) < g_snap_threshold)
     {
-      snap.set_y(snap_rect.top);
+      snap.set_y(snap_rect.top());
     }
 
     best_snap.merge(snap);
@@ -226,14 +226,14 @@ ObjectModel::snap_to_grid(float grid_size) const
   {
     SnapData snap;
 
-    if (fabsf(snap_rect.right) < g_snap_threshold)
+    if (fabsf(snap_rect.right()) < g_snap_threshold)
     {
-      snap.set_x(snap_rect.right);
+      snap.set_x(snap_rect.right());
     }
 
-    if (fabsf(snap_rect.bottom) < g_snap_threshold)
+    if (fabsf(snap_rect.bottom()) < g_snap_threshold)
     {
-      snap.set_y(snap_rect.bottom);
+      snap.set_y(snap_rect.bottom());
     }
 
     best_snap.merge(snap);
@@ -249,28 +249,28 @@ ObjectModel::snap_to_object(const Rectf& in) const
 
   SnapData snap;
 
-  float left_dist   = fabsf(rect.left   - in.right);
-  float right_dist  = fabsf(rect.right  - in.left);
-  float top_dist    = fabsf(rect.top    - in.bottom);
-  float bottom_dist = fabsf(rect.bottom - in.top);
+  float left_dist   = fabsf(rect.left()   - in.right());
+  float right_dist  = fabsf(rect.right()  - in.left());
+  float top_dist    = fabsf(rect.top()    - in.bottom());
+  float bottom_dist = fabsf(rect.bottom() - in.top());
   float x_dist = std::min(left_dist, right_dist);
   float y_dist = std::min(top_dist, bottom_dist);
 
   if (x_dist < y_dist)
   { // closer on the X axis
-    if (overlap(rect.top, rect.bottom,  in.top, in.bottom))
+    if (overlap(rect.top(), rect.bottom(),  in.top(), in.bottom()))
     {
       float y_snap = 0.0f;
 
-      if (fabsf(rect.top - in.top) < g_snap_threshold)
+      if (fabsf(rect.top() - in.top()) < g_snap_threshold)
       {
-        y_snap = rect.top - in.top;
+        y_snap = rect.top() - in.top();
         snap.y_set = true;
       }
 
-      if (fabsf(rect.bottom - in.bottom) < g_snap_threshold)
+      if (fabsf(rect.bottom() - in.bottom()) < g_snap_threshold)
       {
-        y_snap = rect.bottom - in.bottom;
+        y_snap = rect.bottom() - in.bottom();
         snap.y_set = true;
       }
 
@@ -278,7 +278,7 @@ ObjectModel::snap_to_object(const Rectf& in) const
       { // snap to left edge
         if (left_dist < g_snap_threshold)
         {
-          snap.set_x(rect.left - in.right);
+          snap.set_x(rect.left() - in.right());
           snap.offset.y = y_snap;
         }
       }
@@ -286,7 +286,7 @@ ObjectModel::snap_to_object(const Rectf& in) const
       { // snap to right edge
         if (right_dist < g_snap_threshold)
         {
-          snap.set_x(rect.right - in.left);
+          snap.set_x(rect.right() - in.left());
           snap.offset.y = y_snap;
         }
       }
@@ -294,19 +294,19 @@ ObjectModel::snap_to_object(const Rectf& in) const
   }
   else
   { // closer on the Y axis
-    if (overlap(rect.left, rect.right,  in.left, in.right))
+    if (overlap(rect.left(), rect.right(),  in.left(), in.right()))
     {
       float x_snap = 0.0f;
 
-      if (fabsf(rect.left - in.left) < g_snap_threshold)
+      if (fabsf(rect.left() - in.left()) < g_snap_threshold)
       {
-        x_snap = rect.left - in.left;
+        x_snap = rect.left() - in.left();
         snap.x_set = true;
       }
 
-      if (fabsf(rect.right - in.right) < g_snap_threshold)
+      if (fabsf(rect.right() - in.right()) < g_snap_threshold)
       {
-        x_snap = rect.right - in.right;
+        x_snap = rect.right() - in.right();
         snap.x_set = true;
       }
 
@@ -316,7 +316,7 @@ ObjectModel::snap_to_object(const Rectf& in) const
         {
           snap.offset.x = x_snap;
 
-          snap.set_y(rect.top - in.bottom);
+          snap.set_y(rect.top() - in.bottom());
         }
       }
       else
@@ -324,7 +324,7 @@ ObjectModel::snap_to_object(const Rectf& in) const
         if (bottom_dist < g_snap_threshold)
         {
           snap.offset.x = x_snap;
-          snap.set_y(rect.bottom - in.top);
+          snap.set_y(rect.bottom() - in.top());
         }
       }
     }

@@ -25,11 +25,11 @@
 #include <memory>
 
 #include "display/software_surface.hpp"
+#include "math/rect.hpp"
 #include "util/pathname.hpp"
 
 class SoftwareSurface;
 class TextureImpl;
-class Rect;
 
 class Texture;
 typedef std::shared_ptr<Texture> TexturePtr;

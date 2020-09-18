@@ -169,13 +169,16 @@ ParticleSystem::ParticleSystem(FileReader& props)
 
           set_line_distribution(x1, y1, x2, y2);
         } else if (reader.get_name() == "rect-distribution") {
-          Rectf rect;
-          reader.get("x1", rect.left);
-          reader.get("y1", rect.top);
-          reader.get("x2", rect.right);
-          reader.get("y2", rect.bottom);
+          float x1 = 0.0f;
+          float y1 = 0.0f;
+          float x2 = 0.0f;
+          float y2 = 0.0f;
+          reader.get("x1", x1);
+          reader.get("y1", y1);
+          reader.get("x2", x2);
+          reader.get("y2", y2);
 
-          set_rect_distribution(rect);
+          set_rect_distribution(Rectf(x1, y1, x2, y2));
 
         } else {
           std::cout << "Unknown distribution: " << reader.get_name() << std::endl;

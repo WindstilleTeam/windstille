@@ -118,7 +118,7 @@ TimelineWidget::mouse_up(GdkEventButton* ev)
       m_mode = kNoMode;
 
       Rectf selection(down_pos, Vector2f(static_cast<float>(ev->x), static_cast<float>(ev->y)));
-      selection.normalize();
+      selection = geom::normalize(selection);
 
       if (!(ev->state & GDK_SHIFT_MASK))
         m_selection.clear();
@@ -174,15 +174,15 @@ TimelineWidget::add_to_selection(const Rectf& selection)
 {
   Timeline::iterator start = m_timeline->begin() +
     std::max(0, std::min(m_timeline->size(),
-                         static_cast<int>((selection.top + static_cast<float>(m_column_height)/2) / static_cast<float>(m_column_height))));
+                         static_cast<int>((selection.top() + static_cast<float>(m_column_height)/2) / static_cast<float>(m_column_height))));
   Timeline::iterator end   = m_timeline->begin() +
     std::max(0, std::min(m_timeline->size(),
-                         static_cast<int>((selection.bottom + static_cast<float>(m_column_height)/2) / static_cast<float>(m_column_height))));
+                         static_cast<int>((selection.bottom() + static_cast<float>(m_column_height)/2) / static_cast<float>(m_column_height))));
 
   for(Timeline::iterator i = start; i != end; ++i)
   {
     const TimelineLayer::Objects& objects
-      = (*i)->get_objects(selection.left / static_cast<float>(m_column_width), selection.right / static_cast<float>(m_column_width));
+      = (*i)->get_objects(selection.left() / static_cast<float>(m_column_width), selection.right() / static_cast<float>(m_column_width));
     m_selection.insert(objects.begin(), objects.end());
   }
 }

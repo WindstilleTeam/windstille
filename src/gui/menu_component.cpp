@@ -49,11 +49,11 @@ MenuComponent::add_item(MenuItem* item)
 {
   items.push_back(item);
 
-  if (calc_height() >= rect.get_height())
+  if (calc_height() >= rect.height())
   {
     scroll_mode   = true;
     scroll_offset = 0;
-    num_displayable_items = static_cast<int>(rect.get_height() / item_height());
+    num_displayable_items = static_cast<int>(rect.height() / item_height());
   }
 }
 
@@ -66,22 +66,22 @@ MenuComponent::draw()
   { // we can only display a subset of items and have to scroll
     for(int i = 0; i < num_displayable_items; ++i)
     {
-      items[i+scroll_offset]->draw(Rectf(rect.left, rect.top + static_cast<float>(i) * step + 2.0f,
-                                         rect.right - 32.0f, rect.top + static_cast<float>(i+1) * step - 2.0f),
+      items[i+scroll_offset]->draw(Rectf(rect.left(), rect.top() + static_cast<float>(i) * step + 2.0f,
+                                         rect.right() - 32.0f, rect.top() + static_cast<float>(i+1) * step - 2.0f),
                                    is_active() && (i + scroll_offset == current_item));
     }
 
     // draw scrollbar
-    float scrollbar_height = (rect.get_height() - 4.0f) * static_cast<float>(num_displayable_items) / static_cast<float>(items.size());
-    float scrollbar_incr   = (rect.get_height() - 4.0f) * static_cast<float>(scroll_offset) / static_cast<float>(items.size());
+    float scrollbar_height = (rect.height() - 4.0f) * static_cast<float>(num_displayable_items) / static_cast<float>(items.size());
+    float scrollbar_incr   = (rect.height() - 4.0f) * static_cast<float>(scroll_offset) / static_cast<float>(items.size());
 
-    Display::fill_rounded_rect(Rectf(rect.right - 24, rect.top + 2.0f + scrollbar_incr,
-                                     rect.right - 2,  rect.top + 2.0f + scrollbar_incr + scrollbar_height),
+    Display::fill_rounded_rect(Rectf(rect.right() - 24, rect.top() + 2.0f + scrollbar_incr,
+                                     rect.right() - 2,  rect.top() + 2.0f + scrollbar_incr + scrollbar_height),
                                5.0f,
                                Color(0.5f, 0.5f, 0.5f, 0.75f));
 
-    Display::draw_rounded_rect(Rectf(rect.right - 24, rect.top + 2.0f,
-                                     rect.right - 2,  rect.bottom - 2.0f),
+    Display::draw_rounded_rect(Rectf(rect.right() - 24, rect.top() + 2.0f,
+                                     rect.right() - 2,  rect.bottom() - 2.0f),
                                5.0f,
                                Color(1.0f, 1.0f, 1.0f, 1.0f));
   }
@@ -89,8 +89,8 @@ MenuComponent::draw()
   { // all items fit on the screen
     for(Items::size_type i = 0; i < items.size(); ++i)
     {
-      items[i]->draw(Rectf(rect.left, rect.top + static_cast<float>(i) * step + 2.0f,
-                           rect.right, rect.top + static_cast<float>(i+1) * step - 2.0f),
+      items[i]->draw(Rectf(rect.left(), rect.top() + static_cast<float>(i) * step + 2.0f,
+                           rect.right(), rect.top() + static_cast<float>(i+1) * step - 2.0f),
                      is_active() && (int(i) == current_item));
     }
   }
@@ -197,7 +197,7 @@ MenuComponent::get_prefered_width() const
     {
     width = std::max(get_width())
     }  */
-  return rect.get_width();
+  return rect.width();
 }
 
 float
@@ -238,7 +238,7 @@ MenuComponent::adjust_scroll_offset()
 void
 MenuComponent::set_screen_rect(const Rectf& rect_)
 {
-  num_displayable_items = static_cast<int>(rect_.get_height() / item_height());
+  num_displayable_items = static_cast<int>(rect_.height() / item_height());
 
   if (num_displayable_items < int(items.size()))
   {

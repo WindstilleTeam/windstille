@@ -183,11 +183,10 @@ WindstilleWidget::on_realize()
 bool
 WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 {
-  Display::aspect_size.width  = ev->width;
-  Display::aspect_size.height = ev->height;
+  Display::aspect_size = Size(ev->width, ev->height);
 
-  state.set_size(Display::aspect_size.width,
-                 Display::aspect_size.height);
+  state.set_size(Display::aspect_size.width(),
+                 Display::aspect_size.height());
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 

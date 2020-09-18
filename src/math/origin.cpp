@@ -27,6 +27,7 @@
 **    (if your name is missing here, please add it)
 */
 
+#if 0
 #include "math/origin.hpp"
 
 Point calc_origin(Origin origin, const Size &size)
@@ -98,5 +99,6 @@ Vector2f calc_origin(Origin origin, const Sizef &size)
       break;
   }
 }
+#endif
 
 /* EOF */

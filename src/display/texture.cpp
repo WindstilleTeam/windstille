@@ -19,6 +19,7 @@
 
 #include "display/texture.hpp"
 
+#include <iostream>
 #include <stdint.h>
 #include <sstream>
 #include <stdexcept>
@@ -234,10 +235,10 @@ Texture::put(SoftwareSurfacePtr image, const Rect& srcrect, int x, int y)
                 image->get_pitch() / image->get_bytes_per_pixel());
 
   glTexSubImage2D(m_target, 0, x, y,
-                  srcrect.get_width(), srcrect.get_height(), sdl_format, GL_UNSIGNED_BYTE,
+                  srcrect.width(), srcrect.height(), sdl_format, GL_UNSIGNED_BYTE,
                   static_cast<uint8_t*>(image->get_pixels())
-                  + srcrect.top  * image->get_pitch()
-                  + srcrect.left * image->get_bytes_per_pixel());
+                  + srcrect.top()  * image->get_pitch()
+                  + srcrect.left() * image->get_bytes_per_pixel());
 }
 
 void

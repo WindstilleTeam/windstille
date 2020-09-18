@@ -163,7 +163,7 @@ ConsoleImpl::draw()
   int num_lines = 600 / (Fonts::current()->ttffont->get_height() + 2);
 
   if (console.is_active())
-    Display::fill_rect(Rect(0,0, Display::get_width(), 600),
+    Display::fill_rect(Rectf(Rect(0,0, Display::get_width(), 600)),
                        Color(0, 0, 0, 0.5f));
 
   for(int i = static_cast<int>(buffer.size())-1 - scroll_offset; i >= 0 && i > int(buffer.size()) - num_lines - scroll_offset; --i)

@@ -16,9 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "gui/grid_component.hpp"
+
+#include <iostream>
+
 #include "display/color.hpp"
 #include "display/display.hpp"
-#include "gui/grid_component.hpp"
 #include "input/controller.hpp"
 #include "util/log.hpp"
 
@@ -27,7 +30,7 @@ namespace gui {
 GridComponent::GridComponent(Component* parent_)
   : Component(parent_),
     grid(),
-    pos(),
+    pos(0, 0),
     child_active(),
     padding()
 {
@@ -141,12 +144,12 @@ GridComponent::move_up()
 {
   //grid(pos.x, pos.y).component->set_active(false);
 
-  pos.y += grid(pos.x, pos.y).span.height;
+  pos.y += grid(pos.x, pos.y).span.height();
   if (pos.y >= grid.get_height())
     pos.y = 0;
 
   if (grid(pos.x, pos.y).has_parent())
-    pos = grid(pos.x, pos.y).parent;
+    pos = grid(pos.x, pos.y).parent.as_vec();
 
   //grid(pos.x, pos.y).component->set_active(true);
 }
@@ -161,7 +164,7 @@ GridComponent::move_down()
     pos.y = grid.get_height()-1;
 
   if (grid(pos.x, pos.y).has_parent())
-    pos = grid(pos.x, pos.y).parent;
+    pos = grid(pos.x, pos.y).parent.as_vec();
 
   //grid(pos.x, pos.y).component->set_active(true);
 }
@@ -176,7 +179,7 @@ GridComponent::move_left()
     pos.x = grid.get_width()-1;
 
   if (grid(pos.x, pos.y).has_parent())
-    pos = grid(pos.x, pos.y).parent;
+    pos = grid(pos.x, pos.y).parent.as_vec();
 
   //grid(pos.x, pos.y).component->set_active(true);
 }
@@ -186,12 +189,12 @@ GridComponent::move_right()
 {
   //grid(pos.x, pos.y).component->set_active(false);
 
-  pos.x += grid(pos.x, pos.y).span.width;
+  pos.x += grid(pos.x, pos.y).span.width();
   if (pos.x >= grid.get_width())
     pos.x = 0;
 
   if (grid(pos.x, pos.y).has_parent())
-    pos = grid(pos.x, pos.y).parent;
+    pos = grid(pos.x, pos.y).parent.as_vec();
 
   //grid(pos.x, pos.y).component->set_active(true);
 }
@@ -227,10 +230,10 @@ GridComponent::pack(Component* component, int x, int y, int colspan, int rowspan
       grid(x, y) = ComponentBox(component, Size(colspan, rowspan));
     }
 
-    component->set_screen_rect(Rectf(Vector2f(rect_.left + static_cast<float>(x) * (rect_.get_width()  / static_cast<float>(grid.get_width()))  + padding,
-                                              rect_.top  + static_cast<float>(y) * (rect_.get_height() / static_cast<float>(grid.get_height())) + padding),
-                                     Sizef((rect_.get_width()  / static_cast<float>(grid.get_width()))  * static_cast<float>(colspan) - 2.0f * padding,
-                                           (rect_.get_height() / static_cast<float>(grid.get_height())) * static_cast<float>(rowspan) - 2.0f * padding)));
+    component->set_screen_rect(Rectf(Vector2f(rect_.left() + static_cast<float>(x) * (rect_.width()  / static_cast<float>(grid.get_width()))  + padding,
+                                              rect_.top()  + static_cast<float>(y) * (rect_.height() / static_cast<float>(grid.get_height())) + padding),
+                                     Sizef((rect_.width()  / static_cast<float>(grid.get_width()))  * static_cast<float>(colspan) - 2.0f * padding,
+                                           (rect_.height() / static_cast<float>(grid.get_height())) * static_cast<float>(rowspan) - 2.0f * padding)));
   }
 }
 

@@ -189,21 +189,21 @@ TTFFont::draw(const Vector2f& pos_, const std::string& str, const Color& color)
   {
     const TTFCharacter& character = impl->characters[*i];
 
-    glTexCoord2f(character.uv.left, character.uv.top);
-    glVertex2f(pos.x + static_cast<float>(character.pos.left),
-               pos.y + static_cast<float>(character.pos.top));
+    glTexCoord2f(character.uv.left(), character.uv.top());
+    glVertex2f(pos.x + static_cast<float>(character.pos.left()),
+               pos.y + static_cast<float>(character.pos.top()));
 
-    glTexCoord2f(character.uv.right, character.uv.top);
-    glVertex2f(pos.x + static_cast<float>(character.pos.right),
-               pos.y + static_cast<float>(character.pos.top));
+    glTexCoord2f(character.uv.right(), character.uv.top());
+    glVertex2f(pos.x + static_cast<float>(character.pos.right()),
+               pos.y + static_cast<float>(character.pos.top()));
 
-    glTexCoord2f(character.uv.right, character.uv.bottom);
-    glVertex2f(pos.x + static_cast<float>(character.pos.right),
-               pos.y + static_cast<float>(character.pos.bottom));
+    glTexCoord2f(character.uv.right(), character.uv.bottom());
+    glVertex2f(pos.x + static_cast<float>(character.pos.right()),
+               pos.y + static_cast<float>(character.pos.bottom()));
 
-    glTexCoord2f(character.uv.left, character.uv.bottom);
-    glVertex2f(pos.x + static_cast<float>(character.pos.left),
-               pos.y + static_cast<float>(character.pos.bottom));
+    glTexCoord2f(character.uv.left(), character.uv.bottom());
+    glVertex2f(pos.x + static_cast<float>(character.pos.left()),
+               pos.y + static_cast<float>(character.pos.bottom()));
 
     pos.x += static_cast<float>(character.advance);
   }

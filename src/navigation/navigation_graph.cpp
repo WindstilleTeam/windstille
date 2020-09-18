@@ -173,7 +173,7 @@ NavigationGraph::find_nodes(const Rectf& rect)
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
   {
-    if (rect.is_inside((*i)->get_pos()))
+    if (geom::contains(rect, geom::fpoint((*i)->get_pos())))
     {
       ret.push_back(NodeHandle(*i));
     }

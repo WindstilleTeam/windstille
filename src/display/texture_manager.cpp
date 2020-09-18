@@ -18,6 +18,8 @@
 
 #include "display/texture_manager.hpp"
 
+#include <iostream>
+
 #include "display/texture.hpp"
 #include "display/software_surface.hpp"
 

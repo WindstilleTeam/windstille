@@ -43,10 +43,9 @@ Trigger::Trigger(const FileReader& props) :
   if(x < 0 || y < 0 || width < 0 || height < 0)
     throw std::runtime_error("Invalid or missing area in Trigger object");
 
-  area.left = x;
-  area.top = y;
-  area.right = area.left + width;
-  area.bottom = area.top + height;
+  area = Rectf(x, y,
+               area.left() + width,
+               area.top() + height);
 }
 
 Trigger::~Trigger()
@@ -63,7 +62,7 @@ Trigger::update(float /*delta*/)
 {
   //FIXME use proper collision detection
   Player* player = Player::current();
-  if(!area.is_inside(player->get_pos()))
+  if (!geom::contains(area, geom::fpoint(player->get_pos())))
   {
     last_trigger = false;
     return;

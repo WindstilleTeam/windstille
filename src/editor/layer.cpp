@@ -108,7 +108,7 @@ Layer::get_selection(const Rectf& rect, const SelectMask& select_mask) const
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
   {
     if (select_mask.match((*i)->get_select_mask()) &&
-        rect.contains((*i)->get_bounding_box()))
+        geom::contains(rect, (*i)->get_bounding_box()))
     {
       selection->add(*i);
     }
@@ -140,7 +140,7 @@ struct OverlapsWith
   {}
 
   bool operator()(const ObjectModelHandle& object) {
-    return rect.is_overlapped(object->get_bounding_box());
+    return geom::intersects(rect, object->get_bounding_box());
   }
 };
 

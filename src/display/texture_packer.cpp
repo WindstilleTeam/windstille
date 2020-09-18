@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <stdexcept>
 #include <stdio.h>
 #include <memory>
@@ -45,23 +46,23 @@ public:
 
   bool allocate(const Size& size, Rect& out_rect)
   {
-    if (size.width  <= rect.get_width() &&
-        size.height <= rect.get_height())
+    if (size.width()  <= rect.width() &&
+        size.height() <= rect.height())
     {
       if (!used)
       {
         used = true;
-        out_rect = Rect(Point(rect.left, rect.top), size);
+        out_rect = Rect(Point(rect.left(), rect.top()), size);
 
         // FIXME: Make this alterate between horizontal and
         // vertical splitting or chose whichever split options
         // leads to less 'ugly' rectangle (how much different does
         // this make in terms of packing density?)
-        left.reset(new TextureSpace(Rect(out_rect.left,  out_rect.bottom,
-                                         out_rect.right, rect.bottom)));
+        left.reset(new TextureSpace(Rect(out_rect.left(),  out_rect.bottom(),
+                                         out_rect.right(), rect.bottom())));
 
-        right.reset(new TextureSpace(Rect(out_rect.right, out_rect.top,
-                                          rect.right, rect.bottom)));
+        right.reset(new TextureSpace(Rect(out_rect.right(), out_rect.top(),
+                                          rect.right(), rect.bottom())));
 
         return true;
       }
@@ -92,7 +93,7 @@ private:
 
 public:
   TexturePackerTexture(const Size& size) :
-    texture(Texture::create(GL_TEXTURE_2D, size.width, size.height)),
+    texture(Texture::create(GL_TEXTURE_2D, size.width(), size.height())),
     space(Rect(Point(0, 0), size))
   {
   }
@@ -168,35 +169,35 @@ TexturePacker::upload(SoftwareSurfacePtr surface)
 
     // top
     texture->put(surface, Rect(Point(0, 0), Size(surface->get_width(), 1)),
-                 rect.left+1, rect.top);
+                 rect.left()+1, rect.top());
     // bottom
     texture->put(surface, Rect(Point(0, surface->get_height()-1), Size(surface->get_width(), 1)),
-                 rect.left+1, rect.bottom-1);
+                 rect.left()+1, rect.bottom()-1);
     // left
     texture->put(surface, Rect(Point(0, 0), Size(1, surface->get_height())),
-                 rect.left, rect.top+1);
+                 rect.left(), rect.top()+1);
     // right
     texture->put(surface, Rect(Point(surface->get_width()-1, 0), Size(1, surface->get_height())),
-                 rect.right-1, rect.top+1);
+                 rect.right()-1, rect.top()+1);
 
     // duplicate corner pixels
     texture->put(surface, Rect(Point(0, 0), Size(1, 1)),
-                 rect.left, rect.top);
+                 rect.left(), rect.top());
     texture->put(surface, Rect(Point(surface->get_width()-1, 0), Size(1, 1)),
-                 rect.right-1, rect.top);
+                 rect.right()-1, rect.top());
     texture->put(surface, Rect(Point(surface->get_width()-1, surface->get_height()-1), Size(1, 1)),
-                 rect.right-1, rect.bottom-1);
+                 rect.right()-1, rect.bottom()-1);
     texture->put(surface, Rect(Point(0, surface->get_height()-1), Size(1, 1)),
-                 rect.left, rect.bottom-1);
+                 rect.left(), rect.bottom()-1);
 
     // draw the main surface
-    texture->put(surface, rect.left+1, rect.top+1);
+    texture->put(surface, rect.left()+1, rect.top()+1);
 
     return Surface::create(texture,
-                           Rectf(static_cast<float>(rect.left+1)   / static_cast<float>(texture->get_width()),
-                                 static_cast<float>(rect.top+1)    / static_cast<float>(texture->get_height()),
-                                 static_cast<float>(rect.right-1)  / static_cast<float>(texture->get_width()),
-                                 static_cast<float>(rect.bottom-1) / static_cast<float>(texture->get_height())),
+                           Rectf(static_cast<float>(rect.left()+1)   / static_cast<float>(texture->get_width()),
+                                 static_cast<float>(rect.top()+1)    / static_cast<float>(texture->get_height()),
+                                 static_cast<float>(rect.right()-1)  / static_cast<float>(texture->get_width()),
+                                 static_cast<float>(rect.bottom()-1) / static_cast<float>(texture->get_height())),
                            Sizef(static_cast<float>(surface->get_width()), static_cast<float>(surface->get_height())));
   }
 }

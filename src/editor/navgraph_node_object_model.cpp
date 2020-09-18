@@ -117,38 +117,38 @@ NavGraphNodeObjectModel::snap_to_object(const Rectf& in) const
 
   SnapData snap;
 
-  Rectf dist(in.left   - pos.x,
-             in.top    - pos.y,
-             in.right  - pos.x,
-             in.bottom - pos.y);
+  Rectf dist(in.left()   - pos.x,
+             in.top()    - pos.y,
+             in.right()  - pos.x,
+             in.bottom() - pos.y);
 
-  if (pos.y > in.top - g_snap_threshold &&
-      pos.y < in.bottom + g_snap_threshold)
+  if (pos.y > in.top() - g_snap_threshold &&
+      pos.y < in.bottom() + g_snap_threshold)
   {
-    if (fabsf(dist.left) <= fabsf(dist.right) &&
-        fabsf(dist.left) < g_snap_threshold)
+    if (fabsf(dist.left()) <= fabsf(dist.right()) &&
+        fabsf(dist.left()) < g_snap_threshold)
     {
-      snap.set_x(dist.left);
+      snap.set_x(dist.left());
     }
-    else if (fabsf(dist.left) > fabsf(dist.right) &&
-             fabsf(dist.right) < g_snap_threshold)
+    else if (fabsf(dist.left()) > fabsf(dist.right()) &&
+             fabsf(dist.right()) < g_snap_threshold)
     {
-      snap.set_x(dist.right);
+      snap.set_x(dist.right());
     }
   }
 
-  if (pos.x > in.left  - g_snap_threshold &&
-      pos.x < in.right + g_snap_threshold)
+  if (pos.x > in.left()  - g_snap_threshold &&
+      pos.x < in.right() + g_snap_threshold)
   {
-    if (fabsf(dist.top) <= fabsf(dist.bottom) &&
-        fabsf(dist.top) < g_snap_threshold)
+    if (fabsf(dist.top()) <= fabsf(dist.bottom()) &&
+        fabsf(dist.top()) < g_snap_threshold)
     {
-      snap.set_y(dist.top);
+      snap.set_y(dist.top());
     }
-    else if (fabsf(dist.top) > fabsf(dist.bottom) &&
-             fabsf(dist.bottom) < g_snap_threshold)
+    else if (fabsf(dist.top()) > fabsf(dist.bottom()) &&
+             fabsf(dist.bottom()) < g_snap_threshold)
     {
-      snap.set_y(dist.bottom);
+      snap.set_y(dist.bottom());
     }
   }
 

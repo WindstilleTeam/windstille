@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <fmt/format.h>
 #include <png.h>
 #include <errno.h>
@@ -241,10 +242,10 @@ void
 SoftwareSurface::blit(const Rect& src_rect_, SoftwareSurfacePtr dst, int x, int y) const
 {
   SDL_Rect src_rect;
-  src_rect.x = static_cast<Sint16>(src_rect_.left);
-  src_rect.y = static_cast<Sint16>(src_rect_.top);
-  src_rect.w = static_cast<Sint16>(src_rect_.get_width());
-  src_rect.h = static_cast<Sint16>(src_rect_.get_height());
+  src_rect.x = static_cast<Sint16>(src_rect_.left());
+  src_rect.y = static_cast<Sint16>(src_rect_.top());
+  src_rect.w = static_cast<Sint16>(src_rect_.width());
+  src_rect.h = static_cast<Sint16>(src_rect_.height());
 
   SDL_Rect dst_rect;
   dst_rect.x = static_cast<Sint16>(x);

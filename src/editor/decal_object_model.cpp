@@ -170,7 +170,7 @@ DecalObjectModel::get_bounding_box() const
 
   Rectf r(get_world_pos() - center_offset,
           get_world_pos() + center_offset);
-  r.normalize();
+  r = geom::normalize(r);
   return r;
 }
 
@@ -240,7 +240,7 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
   Quad quad1(rect);
   quad1.rotate(angle);
 
-  Quad quad2(rect.grow(32));
+  Quad quad2(geom::grow(rect, 32.0f));
   quad2.rotate(angle);
 
   Quad quad3(Vector2f( 0, -h),

@@ -21,14 +21,14 @@
 
 #include <vector>
 
+#include "display/framebuffer.hpp"
+#include "math/rect.hpp"
 #include "math/size.hpp"
 #include "math/vector2f.hpp"
-#include "display/framebuffer.hpp"
 
 class Pathname;
 class Color;
 class Quad;
-class Rectf;
 class Line;
 
 class Display

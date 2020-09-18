@@ -214,7 +214,7 @@ Selection::get_bounding_box() const
     Rectf rect = objects.front()->get_bounding_box();
     for(Objects::const_iterator i = objects.begin()+1; i != objects.end(); ++i)
     {
-      rect = rect.grow((*i)->get_bounding_box());
+      rect = geom::unite(rect, (*i)->get_bounding_box());
     }
     return rect;
   }
@@ -241,10 +241,10 @@ Selection::add_control_points(std::vector<ControlPointHandle>& control_points)
     else
     {
       const Rectf& rect = get_bounding_box();
-      control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.top)));
-      control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.top)));
-      control_points.push_back(ControlPoint::create(Vector2f(rect.left, rect.bottom)));
-      control_points.push_back(ControlPoint::create(Vector2f(rect.right, rect.bottom)));
+      control_points.push_back(ControlPoint::create(Vector2f(rect.left(), rect.top())));
+      control_points.push_back(ControlPoint::create(Vector2f(rect.right(), rect.top())));
+      control_points.push_back(ControlPoint::create(Vector2f(rect.left(), rect.bottom())));
+      control_points.push_back(ControlPoint::create(Vector2f(rect.right(), rect.bottom())));
     }
   }
 }

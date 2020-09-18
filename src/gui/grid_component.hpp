@@ -46,13 +46,13 @@ private:
       parent(parent_)
     {}
 
-    bool is_simple()  const { return (span.width == 1 && span.height == 1); }
-    bool has_parent() const { return (parent.x != -1 || parent.y != -1); }
+    bool is_simple()  const { return (span.width() == 1 && span.height() == 1); }
+    bool has_parent() const { return (parent.x() != -1 || parent.y() != -1); }
   };
 
   typedef Field<ComponentBox> Grid;
   Grid  grid;
-  Point pos;
+  glm::ivec2 pos;
   bool  child_active;
   float padding;
 

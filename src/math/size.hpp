@@ -33,6 +33,16 @@
 #ifndef HEADER_WINDSTILLE_MATH_SIZE_HPP
 #define HEADER_WINDSTILLE_MATH_SIZE_HPP
 
+#include <iosfwd>
+#include <sstream>
+#include <fmt/format.h>
+#include <geom/size.hpp>
+#include <geom/io.hpp>
+
+using Sizef = geom::fsize;
+using Size = geom::isize;
+
+#if 0
 #include <iostream>
 
 class Sizef;
@@ -175,5 +185,6 @@ inline std::ostream& operator<<(std::ostream& s, const Size& size)
 {
   return s << "Size(" << size.width << ", " << size.height << ")";
 }
+#endif
 
 #endif

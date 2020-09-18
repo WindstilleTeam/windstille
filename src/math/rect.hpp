@@ -33,6 +33,16 @@
 #include "math/origin.hpp"
 #include "math/math.hpp"
 
+#include <geom/geom.hpp>
+#include "math/origin.hpp"
+#include "math/size.hpp"
+#include "math/math.hpp"
+#include "math/vector2f.hpp"
+
+using Rectf = geom::frect;
+using Rect = geom::irect;
+
+#if 0
 class Rectf;
 
 //: 2D (left,top,right,bottom) rectangle structure.
@@ -442,6 +452,7 @@ inline Rect::Rect(const Rectf& rect)
 
 std::ostream& operator<<(std::ostream& s, const Rect& rect);
 std::ostream& operator<<(std::ostream& s, const Rectf& rect);
+#endif
 
 #endif
 

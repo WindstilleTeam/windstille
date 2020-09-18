@@ -82,11 +82,11 @@ Conversation::draw()
     // FIXME: Doesn't handle multi line text
     Sizef size(static_cast<float>(Fonts::current()->vera20->get_width(choices[i].topic)) + 40.0f,
                static_cast<float>(Fonts::current()->vera20->get_height()) + 25.0f);
-    Rectf  rect(textpos + distance * offset - Vector2f(size.width/2, size.height - 15), size);
+    Rectf  rect(textpos + distance * offset - Vector2f(size.width()/2, size.height() - 15), size);
 
     if (i == selection)
     {
-      rect = rect.grow(grow);
+      rect = geom::grow(rect, grow);
 
       Display::fill_arc(pos, 42.0f, start, end, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
       Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));

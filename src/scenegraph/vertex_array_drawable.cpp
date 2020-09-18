@@ -146,14 +146,14 @@ VertexArrayDrawable::texcoord(float u, float v)
 void
 VertexArrayDrawable::add_texcoords(const Rectf& rect)
 {
-  texcoords.push_back(rect.left);
-  texcoords.push_back(rect.top);
-  texcoords.push_back(rect.right);
-  texcoords.push_back(rect.top);
-  texcoords.push_back(rect.right);
-  texcoords.push_back(rect.bottom);
-  texcoords.push_back(rect.left);
-  texcoords.push_back(rect.bottom);
+  texcoords.push_back(rect.left());
+  texcoords.push_back(rect.top());
+  texcoords.push_back(rect.right());
+  texcoords.push_back(rect.top());
+  texcoords.push_back(rect.right());
+  texcoords.push_back(rect.bottom());
+  texcoords.push_back(rect.left());
+  texcoords.push_back(rect.bottom());
 }
 
 void

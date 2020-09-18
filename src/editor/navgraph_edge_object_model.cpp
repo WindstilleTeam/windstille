@@ -76,7 +76,7 @@ NavGraphEdgeObjectModel::get_bounding_box() const
 {
   Rectf rect(m_lhs->get_world_pos(),
              m_rhs->get_world_pos());
-  rect.normalize();
+  rect = geom::normalize(rect);
   return rect;
 }
 

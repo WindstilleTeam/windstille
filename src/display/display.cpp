@@ -18,6 +18,7 @@
 
 #include "display/display.hpp"
 
+#include <iostream>
 #include <GL/glew.h>
 #include <errno.h>
 #include <fstream>
@@ -29,6 +30,7 @@
 
 #include "display/color.hpp"
 #include "math/quad.hpp"
+#include "math/rect.hpp"
 #include "math/line.hpp"
 #include "display/opengl_state.hpp"
 #include "display/assert_gl.hpp"
@@ -125,10 +127,10 @@ Display::fill_rect(const Rectf& rect, const Color& color)
   state.activate();
 
   glBegin(GL_QUADS);
-  glVertex2f(rect.left,  rect.top);
-  glVertex2f(rect.right, rect.top);
-  glVertex2f(rect.right, rect.bottom);
-  glVertex2f(rect.left,  rect.bottom);
+  glVertex2f(rect.left(),  rect.top());
+  glVertex2f(rect.right(), rect.top());
+  glVertex2f(rect.right(), rect.bottom());
+  glVertex2f(rect.left(),  rect.bottom());
   glEnd();
 }
 
@@ -143,10 +145,10 @@ Display::draw_rect(const Rectf& rect, const Color& color)
   state.activate();
 
   glBegin(GL_LINE_LOOP);
-  glVertex2f(rect.left,  rect.top);
-  glVertex2f(rect.right, rect.top);
-  glVertex2f(rect.right, rect.bottom);
-  glVertex2f(rect.left,  rect.bottom);
+  glVertex2f(rect.left(),  rect.top());
+  glVertex2f(rect.right(), rect.top());
+  glVertex2f(rect.right(), rect.bottom());
+  glVertex2f(rect.left(),  rect.bottom());
   glEnd();
 }
 
@@ -155,13 +157,13 @@ Display::fill_rounded_rect(const Rectf& rect, float radius, const Color& color)
 {
   // Keep radius in the limits, so that we get a circle instead of
   // just graphic junk
-  radius = std::min(radius, std::min(rect.get_width()/2, rect.get_height()/2));
+  radius = std::min(radius, std::min(rect.width()/2, rect.height()/2));
 
   // inner rectangle
-  Rectf irect(rect.left    + radius,
-              rect.top     + radius,
-              rect.right   - radius,
-              rect.bottom  - radius);
+  Rectf irect(rect.left()    + radius,
+              rect.top()     + radius,
+              rect.right()   - radius,
+              rect.bottom()  - radius);
 
   OpenGLState state;
 
@@ -177,16 +179,16 @@ Display::fill_rounded_rect(const Rectf& rect, float radius, const Color& color)
     float x = sinf(static_cast<float>(i) * (math::pi/2.0f) / static_cast<float>(n)) * radius;
     float y = cosf(static_cast<float>(i) * (math::pi/2.0f) / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.left  - x, irect.top - y);
-    glVertex2f(irect.right + x, irect.top - y);
+    glVertex2f(irect.left()  - x, irect.top() - y);
+    glVertex2f(irect.right() + x, irect.top() - y);
   }
   for(int i = 0; i <= n; ++i)
   {
     float x = cosf(static_cast<float>(i) * (math::pi/2.0f) / static_cast<float>(n)) * radius;
     float y = sinf(static_cast<float>(i) * (math::pi/2.0f) / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.left  - x, irect.bottom + y);
-    glVertex2f(irect.right + x, irect.bottom + y);
+    glVertex2f(irect.left()  - x, irect.bottom() + y);
+    glVertex2f(irect.right() + x, irect.bottom() + y);
   }
   glEnd();
 }
@@ -196,13 +198,13 @@ Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
 {
   // Keep radius in the limits, so that we get a circle instead of
   // just graphic junk
-  radius = std::min(radius, std::min(rect.get_width()/2, rect.get_height()/2));
+  radius = std::min(radius, std::min(rect.width()/2, rect.height()/2));
 
   // inner rectangle
-  Rectf irect(rect.left    + radius,
-              rect.top     + radius,
-              rect.right   - radius,
-              rect.bottom  - radius);
+  Rectf irect(rect.left()    + radius,
+              rect.top()     + radius,
+              rect.right()   - radius,
+              rect.bottom()  - radius);
 
   OpenGLState state;
 
@@ -219,14 +221,14 @@ Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
     float x = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
     float y = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.left  - x, irect.top - y);
+    glVertex2f(irect.left()  - x, irect.top() - y);
   }
   for(int i = 0; i <= n; ++i)
   {
     float x = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
     float y = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.left  - x, irect.bottom + y);
+    glVertex2f(irect.left()  - x, irect.bottom() + y);
   }
 
   for(int i = 0; i <= n; ++i)
@@ -234,7 +236,7 @@ Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
     float x = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
     float y = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.right + x, irect.bottom + y);
+    glVertex2f(irect.right() + x, irect.bottom() + y);
   }
 
   for(int i = 0; i <= n; ++i)
@@ -242,10 +244,10 @@ Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
     float x = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
     float y = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.right + x, irect.top - y);
+    glVertex2f(irect.right() + x, irect.top() - y);
   }
   // go back to start
-  glVertex2f(irect.left, irect.top - radius);
+  glVertex2f(irect.left(), irect.top() - radius);
 
   glEnd();
 }
@@ -253,13 +255,13 @@ Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
 int
 Display::get_width()
 {
-  return Display::aspect_size.width;
+  return Display::aspect_size.width();
 }
 
 int
 Display::get_height()
 {
-  return Display::aspect_size.height;
+  return Display::aspect_size.height();
 }
 
 void
@@ -409,16 +411,16 @@ Display::draw_grid(const Vector2f& offset, const Sizef& size, const Color& rgba)
   glBegin(GL_LINES);
   //glColor4ub(rgba.r, rgba.g, rgba.b, rgba.a);
 
-  float start_x = fmodf(offset.x, size.width);
-  float start_y = fmodf(offset.y, size.height);
+  float start_x = fmodf(offset.x, size.width());
+  float start_y = fmodf(offset.y, size.height());
 
-  for(float x = start_x; x < static_cast<float>(Display::get_width()); x += size.width)
+  for(float x = start_x; x < static_cast<float>(Display::get_width()); x += size.width())
   {
     glVertex2f(x, 0);
     glVertex2f(x, static_cast<float>(Display::get_height()));
   }
 
-  for(float y = start_y; y < static_cast<float>(Display::get_height()); y += size.height)
+  for(float y = start_y; y < static_cast<float>(Display::get_height()); y += size.height())
   {
     glVertex2f(0, y);
     glVertex2f(static_cast<float>(Display::get_width()), y);
@@ -434,17 +436,16 @@ Display::push_cliprect(const Rect& rect_)
 
   if (!cliprects.empty())
   {
-    rect.left   = std::max(rect.left, cliprects.back().left);
-    rect.top    = std::max(rect.top,  cliprects.back().top);
-
-    rect.right  = std::min(rect.right,  cliprects.back().right);
-    rect.bottom = std::min(rect.bottom, cliprects.back().bottom);
+    rect = Rect(std::max(rect.left(), cliprects.back().left()),
+                std::max(rect.top(),  cliprects.back().top()),
+                std::min(rect.right(),  cliprects.back().right()),
+                std::min(rect.bottom(), cliprects.back().bottom()));
   }
 
   cliprects.push_back(rect);
 
-  glScissor(rect.left, get_height() - rect.top - rect.get_height(),
-            rect.get_width(), rect.get_height());
+  glScissor(rect.left(), get_height() - rect.top() - rect.height(),
+            rect.width(), rect.height());
   glEnable(GL_SCISSOR_TEST);
 }
 
@@ -459,8 +460,8 @@ Display::pop_cliprect()
   {
     const Rect& rect = cliprects.back();
 
-    glScissor(rect.left, get_height() - rect.top - rect.get_height(),
-              rect.get_width(), rect.get_height());
+    glScissor(rect.left(), get_height() - rect.top() - rect.height(),
+              rect.width(), rect.height());
   }
   else
   {
@@ -473,32 +474,27 @@ Display::save_screenshot(const Pathname& filename)
 {
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
-  Size size(viewport[2], viewport[3]);
+  Size size(viewport[2] / 4 * 4, viewport[3]);
 
-  // std::cout << "Viewpoint: " << size << std::endl;
-
-  size.width /= 4;
-  size.width *= 4;
-
-  int len = size.width * size.height * 3;
+  int len = size.width() * size.height() * 3;
 
   std::vector<GLbyte> pixels(len);
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
-  glReadPixels(0, 0, size.width, size.height, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
+  glReadPixels(0, 0, size.width(), size.height(), GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
   assert_gl("Display::save_screenshot()");
 
   if ((false))
   { // PPM saving
-    int pitch = size.width * 3;
+    int pitch = size.width() * 3;
 
     // save to ppm
     std::ofstream out(filename.get_sys_path().c_str());
     out << "P6\n"
         << "# Windstille Screenshot\n"
-        << size.width << " " << size.height << "\n"
+        << size.width() << " " << size.height() << "\n"
         << "255\n";
 
-    for(int y = size.height-1; y >= 0; --y)
+    for(int y = size.height() - 1; y >= 0; --y)
       out.write(reinterpret_cast<const char*>(pixels.data() + y*pitch), pitch);
 
     out.close();
@@ -515,7 +511,7 @@ Display::save_screenshot(const Pathname& filename)
     }
     else
     {
-      int pitch = size.width * 3;
+      int pitch = size.width() * 3;
       struct jpeg_compress_struct m_cinfo;
       struct jpeg_error_mgr m_jerr;
 
@@ -526,8 +522,8 @@ Display::save_screenshot(const Pathname& filename)
 
       jpeg_stdio_dest(&m_cinfo, m_out);
 
-      m_cinfo.image_width  = size.width;
-      m_cinfo.image_height = size.height;
+      m_cinfo.image_width  = size.width();
+      m_cinfo.image_height = size.height();
 
       m_cinfo.input_components = 3;         /* # of color components per pixel */
       m_cinfo.in_color_space   = JCS_RGB;   /* colorspace of input image */
@@ -537,17 +533,17 @@ Display::save_screenshot(const Pathname& filename)
 
       jpeg_start_compress(&m_cinfo, TRUE);
 
-      std::vector<JSAMPROW> row_pointer(size.height);
+      std::vector<JSAMPROW> row_pointer(size.height());
 
-      for(int y = 0; y < size.height; ++y)
+      for(int y = 0; y < size.height(); ++y)
       {
-        row_pointer[size.height - y - 1] = reinterpret_cast<JSAMPLE*>(pixels.data() + y*pitch);
+        row_pointer[size.height() - y - 1] = reinterpret_cast<JSAMPLE*>(pixels.data() + y*pitch);
       }
 
       while(m_cinfo.next_scanline < m_cinfo.image_height)
       {
         jpeg_write_scanlines(&m_cinfo, &row_pointer[m_cinfo.next_scanline],
-                             size.height - m_cinfo.next_scanline);
+                             size.height() - m_cinfo.next_scanline);
       }
 
       jpeg_finish_compress(&m_cinfo);
@@ -568,7 +564,7 @@ Display::save_screenshot(const Pathname& filename)
     }
     else
     {
-      int pitch = size.width * 3;
+      int pitch = size.width() * 3;
       png_structp png_ptr;
       png_infop   info_ptr;
 
@@ -578,7 +574,7 @@ Display::save_screenshot(const Pathname& filename)
       png_init_io(png_ptr, fp);
 
       png_set_IHDR(png_ptr, info_ptr,
-                   size.width, size.height, 8 /* bitdepth */,
+                   size.width(), size.height(), 8 /* bitdepth */,
                    PNG_COLOR_TYPE_RGB,
                    PNG_INTERLACE_NONE,
                    PNG_COMPRESSION_TYPE_BASE,
@@ -587,11 +583,11 @@ Display::save_screenshot(const Pathname& filename)
       png_set_compression_level(png_ptr, 0);
       png_write_info(png_ptr, info_ptr);
 
-      std::vector<png_bytep> row_pointers(size.height);
+      std::vector<png_bytep> row_pointers(size.height());
 
       // generate row pointers
-      for (int k = 0; k < size.height; k++)
-        row_pointers[k] = reinterpret_cast<png_byte*>(pixels.data() + ((size.height - k - 1) * pitch));
+      for (int k = 0; k < size.height(); k++)
+        row_pointers[k] = reinterpret_cast<png_byte*>(pixels.data() + ((size.height() - k - 1) * pitch));
 
       png_write_image(png_ptr, row_pointers.data());
 
