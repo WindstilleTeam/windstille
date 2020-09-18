@@ -35,7 +35,6 @@
 
 #include "math/vector2f.hpp"
 #include "sound/sound_channel.hpp"
-#include "util/currenton.hpp"
 
 typedef void* SoundHandle;
 
@@ -43,11 +42,11 @@ class SoundFile;
 class SoundSource;
 class StreamSoundSource;
 
-class SoundManager : public Currenton<SoundManager>
+class SoundManager
 {
 public:
   SoundManager();
-  ~SoundManager() override;
+  ~SoundManager();
 
   void enable_sound(bool sound_enabled);
   void enable_music(bool music_enabled);

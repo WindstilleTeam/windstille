@@ -16,11 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "gui/menu_item.hpp"
+
+#include "app/app.hpp"
 #include "sound/sound_manager.hpp"
 #include "display/display.hpp"
 #include "gui/menu_component.hpp"
-
-#include "gui/menu_item.hpp"
 
 namespace gui {
 
@@ -97,7 +98,7 @@ EnumMenuItem::add_pair(int value_, const std::string& label_)
 void
 EnumMenuItem::incr()
 {
-  SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
 
   index -= 1;
   if (index < 0)
@@ -108,7 +109,7 @@ EnumMenuItem::incr()
 void
 EnumMenuItem::decr()
 {
-  SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
 
   index += 1;
   if (index >= static_cast<int>(labels.size()))
@@ -152,7 +153,7 @@ SliderMenuItem::SliderMenuItem(MenuComponent* parent_,
 void
 SliderMenuItem::decr()
 {
-  SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
 
   value += step;
   if (value > max_value)
@@ -163,7 +164,7 @@ SliderMenuItem::decr()
 void
 SliderMenuItem::incr()
 {
-  SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
 
   value -= step;
   if (value < min_value)
@@ -208,7 +209,7 @@ ButtonMenuItem::ButtonMenuItem(MenuComponent* parent_, const std::string& label_
 void
 ButtonMenuItem::click()
 {
-  SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
 
   on_click();
 }

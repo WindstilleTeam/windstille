@@ -20,6 +20,7 @@
 
 #include <sstream>
 
+#include "app/app.hpp"
 #include "collision/collision_engine.hpp"
 #include "engine/sector_builder.hpp"
 #include "engine/squirrel_thread.hpp"
@@ -79,7 +80,7 @@ Sector::activate()
   commit_adds();
   commit_removes();
 
-  SoundManager::current()->play_music(Pathname(music, Pathname::kDataPath).get_sys_path());
+  g_app.sound().play_music(Pathname(music, Pathname::kDataPath).get_sys_path());
 
   if (!init_script.empty())
   {

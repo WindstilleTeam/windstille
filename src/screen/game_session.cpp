@@ -18,6 +18,7 @@
 
 #include "screen/game_session.hpp"
 
+#include "app/app.hpp"
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
 #include "display/compositor.hpp"
@@ -330,7 +331,7 @@ GameSession::change_sector(const Pathname& arg_filename)
 {
   impl->filename = arg_filename;
 
-  SoundManager::current()->stop_music();
+  g_app.sound().stop_music();
 
   if (impl->fade_state == GameSessionImpl::FADEOUT)
   {
@@ -417,7 +418,7 @@ GameSession::quit()
 {
   if (impl->fade_state != GameSessionImpl::FADEOUT)
   {
-    SoundManager::current()->stop_music();
+    g_app.sound().stop_music();
     impl->fade_state  = GameSessionImpl::FADEOUT;
     impl->fade_time   = 1.0f;
     impl->next_action = GameSessionImpl::QUIT_ACTION;

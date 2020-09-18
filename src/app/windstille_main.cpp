@@ -20,6 +20,7 @@
 #include <sstream>
 #include <filesystem>
 
+#include "app/app.hpp"
 #include "app/config.hpp"
 #include "app/console.hpp"
 #include "app/windstille_main.hpp"
@@ -83,11 +84,15 @@ WindstilleMain::main(int argc, char** argv)
       ScreenManager     screen_manager;
       TileFactory       tile_factory = TileFactory(Pathname("tiles.scm"));
 
+      g_app.m_sound_manager = &sound_manager;
+
       init_modules();
 
       run();
 
       config.save();
+
+      g_app.m_sound_manager = nullptr;
     }
   }
   catch (std::exception& err)
@@ -149,9 +154,9 @@ WindstilleMain::run()
 void
 WindstilleMain::init_modules()
 {
-  SoundManager::current()->set_gain(static_cast<float>(config.get_int("master-volume"))/100.0f);
-  SoundManager::current()->enable_sound(config.get_bool("sound"));
-  SoundManager::current()->enable_music(config.get_bool("music"));
+  g_app.sound().set_gain(static_cast<float>(config.get_int("master-volume"))/100.0f);
+  g_app.sound().enable_sound(config.get_bool("sound"));
+  g_app.sound().enable_music(config.get_bool("music"));
 
   ScriptManager::current()->run_script_file(Pathname("scripts/windstille.nut"), true);
 

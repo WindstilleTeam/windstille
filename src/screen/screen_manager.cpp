@@ -20,6 +20,7 @@
 
 #include <fmt/format.h>
 
+#include "app/app.hpp"
 #include "app/config.hpp"
 #include "display/display.hpp"
 #include "display/opengl_window.hpp"
@@ -94,7 +95,7 @@ ScreenManager::run()
 
     overlap_delta = delta;
 
-    SoundManager::current()->update(delta);
+    g_app.sound().update(delta);
 
     draw();
 

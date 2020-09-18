@@ -19,7 +19,12 @@
 #ifndef HEADER_WINDSTILLE_GUI_MENU_ITEM_HPP
 #define HEADER_WINDSTILLE_GUI_MENU_ITEM_HPP
 
+#include <string>
+#include <vector>
+
 #include <sigc++/signal.h>
+
+#include "math/rect.hpp"
 
 namespace gui {
 

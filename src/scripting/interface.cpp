@@ -23,6 +23,7 @@
 #include <sexp/value.hpp>
 #include <sexp/io.hpp>
 
+#include "app/app.hpp"
 #include "app/config.hpp"
 #include "display/opengl_window.hpp"
 #include "engine/camera.hpp"
@@ -47,17 +48,17 @@ void set_sector(const std::string& filename)
 
 void play_music(const std::string& musicfile)
 {
-  SoundManager::current()->play_music(Pathname(musicfile, Pathname::kDataPath).get_sys_path());
+  g_app.sound().play_music(Pathname(musicfile, Pathname::kDataPath).get_sys_path());
 }
 
 void stop_music(bool fade)
 {
-  SoundManager::current()->stop_music(fade);
+  g_app.sound().stop_music(fade);
 }
 
 void play_sound(const std::string& soundfile)
 {
-  SoundManager::current()->play(Pathname(soundfile, Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname(soundfile, Pathname::kDataPath).get_sys_path());
 }
 
 void caption_clear()
