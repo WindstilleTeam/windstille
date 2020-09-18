@@ -19,11 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SOUND_OPENAL_SOUND_SOURCE_HPP
 #define HEADER_WINDSTILLE_SOUND_OPENAL_SOUND_SOURCE_HPP
 
-#ifdef __APPLE__
-#  include <OpenAL/al.h>
-#else
-#  include <AL/al.h>
-#endif
+#include <al.h>
 
 #include "math/vector2f.hpp"
 #include "sound/sound_source.hpp"

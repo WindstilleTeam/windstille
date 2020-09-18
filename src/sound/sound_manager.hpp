@@ -25,13 +25,8 @@
 #include <vector>
 #include <map>
 
-#ifdef __APPLE__
-#  include <OpenAL/alc.h>
-#  include <OpenAL/al.h>
-#else
-#  include <AL/alc.h>
-#  include <AL/al.h>
-#endif
+#include <alc.h>
+#include <al.h>
 
 #include "math/vector2f.hpp"
 #include "sound/sound_channel.hpp"
