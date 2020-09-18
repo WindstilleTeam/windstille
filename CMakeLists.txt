@@ -77,6 +77,8 @@ function(build_dependencies)
   add_subdirectory(external/geomcpp/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/logmich/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
+
+  add_subdirectory(external/wstsound/ EXCLUDE_FROM_ALL)
 endfunction()
 build_dependencies()
 
@@ -151,7 +153,6 @@ file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/navigation/*.cpp
   src/particles/*.cpp
   src/scenegraph/*.cpp
-  src/sound/*.cpp
   src/sprite2d/*.cpp
   src/sprite3d/*.cpp
   src/system/*.cpp
@@ -161,6 +162,7 @@ target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
 target_include_directories(wstlib SYSTEM PUBLIC
   ${OPENAL_INCLUDE_DIR})
 target_link_libraries(wstlib PUBLIC
+  wstsound
   argparser
   babyxml
   geomcpp

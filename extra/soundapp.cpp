@@ -19,6 +19,8 @@
 #include <iostream>
 #include <unistd.h>
 
+#include <glm/gtx/string_cast.hpp>
+
 #include "math/random.hpp"
 #include "sound/sound_manager.hpp"
 #include "sound/sound_source.hpp"
@@ -52,11 +54,11 @@ int main(int argc, char** argv)
       SoundSourcePtr source = sound_manager.sound().prepare(std::move(sound_file), kStreamSoundSource);
 
       source->set_looping(true);
-      Vector2f pos(random.frand(-500, 500), 0.0f);
+      glm::vec2 pos(random.frand(-500, 500), 0.0f);
       source->set_position(pos);
       //source->set_rolloff_factor(0.0f);
 
-      std::cout << argv[i] << ": " << pos << std::endl;
+      std::cout << argv[i] << ": " << glm::to_string(pos) << std::endl;
 
       sources.push_back(source);
     }

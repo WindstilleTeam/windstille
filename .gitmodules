@@ -19,3 +19,6 @@
 [submodule "external/geomcpp"]
 	path = external/geomcpp
 	url = https://gitlab.com/grumbel/geomcpp.git
+[submodule "external/wstsound"]
+	path = external/wstsound
+	url = https://gitlab.com/Windstille/wstsound.git
