@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <filesystem>
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
@@ -24,7 +25,6 @@
 #include "sound/stream_sound_source.hpp"
 #include "sound/static_sound_source.hpp"
 #include "sound/sound_manager.hpp"
-#include "util/pathname.hpp"
 
 
 SoundManager::SoundManager() :
@@ -100,7 +100,7 @@ SoundManager::~SoundManager()
 }
 
 ALuint
-SoundManager::load_file_into_buffer(const Pathname& filename)
+SoundManager::load_file_into_buffer(std::filesystem::path const& filename)
 {
   // open sound file
   std::unique_ptr<SoundFile> file(SoundFile::load(filename));
@@ -131,7 +131,7 @@ SoundManager::load_file_into_buffer(const Pathname& filename)
 }
 
 SoundSourcePtr
-SoundManager::create_sound_source(const Pathname& filename, SoundChannel& channel, OpenALSoundSourceType type)
+SoundManager::create_sound_source(std::filesystem::path const& filename, SoundChannel& channel, OpenALSoundSourceType type)
 {
   if (!m_sound_enabled)
   {
@@ -176,7 +176,7 @@ SoundManager::create_sound_source(const Pathname& filename, SoundChannel& channe
 }
 
 SoundSourcePtr
-SoundManager::play(const Pathname& filename, const Vector2f& pos)
+SoundManager::play(std::filesystem::path const& filename, const Vector2f& pos)
 {
   try
   {
@@ -246,7 +246,7 @@ SoundManager::stop_music(bool fade)
 }
 
 void
-SoundManager::play_music(const Pathname& filename, bool fade)
+SoundManager::play_music(std::filesystem::path const& filename, bool fade)
 {
   if (filename != m_current_music)
   {

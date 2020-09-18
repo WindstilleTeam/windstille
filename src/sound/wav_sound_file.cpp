@@ -16,16 +16,16 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <filesystem>
 #include <string.h>
 #include <stdexcept>
 #include <stdio.h>
 #include <stdint.h>
 
 #include "sound/wav_sound_file.hpp"
-#include "util/pathname.hpp"
 #include "util/util.hpp"
 
-WavSoundFile::WavSoundFile(const Pathname& filename) :
+WavSoundFile::WavSoundFile(std::filesystem::path const& filename) :
   file(),
   m_eof(false),
   datastart(),
@@ -34,7 +34,7 @@ WavSoundFile::WavSoundFile(const Pathname& filename) :
   m_bits_per_sample(),
   m_size()
 {
-  file.open(filename.get_sys_path().c_str(), std::ios::binary);
+  file.open(filename, std::ios::binary);
   if (!file)
   {
     std::ostringstream str;

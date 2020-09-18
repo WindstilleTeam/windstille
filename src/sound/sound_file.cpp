@@ -18,19 +18,19 @@
 
 /** Used SDL_mixer and glest source as reference */
 
-#include <string.h>
-#include <stdexcept>
-#include <sstream>
+#include <filesystem>
 #include <fstream>
+#include <sstream>
+#include <stdexcept>
+#include <string.h>
 
 #include "sound/ogg_sound_file.hpp"
 #include "sound/wav_sound_file.hpp"
-#include "util/pathname.hpp"
 
 std::unique_ptr<SoundFile>
-SoundFile::load(const Pathname& filename)
+SoundFile::load(std::filesystem::path const& filename)
 {
-  std::ifstream in(filename.get_sys_path().c_str(), std::ios::binary);
+  std::ifstream in(filename, std::ios::binary);
 
   if (!in)
   {

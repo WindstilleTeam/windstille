@@ -19,12 +19,12 @@
 #ifndef HEADER_WINDSTILLE_SOUND_SOUND_CHANNEL_HPP
 #define HEADER_WINDSTILLE_SOUND_SOUND_CHANNEL_HPP
 
+#include <filesystem>
 #include <vector>
 
 #include "sound/openal_sound_source_type.hpp"
 #include "sound/sound_source_ptr.hpp"
 
-class Pathname;
 class SoundFile;
 class SoundManager;
 
@@ -34,11 +34,11 @@ public:
   SoundChannel(SoundManager& sound_manager);
 
   // shortcut for prepare()->play()
-  SoundSourcePtr play(const Pathname& filename);
+  SoundSourcePtr play(std::filesystem::path const& filename);
 
   SoundSourcePtr prepare(std::unique_ptr<SoundFile> sound_file,
                          OpenALSoundSourceType type = kStaticSoundSource);
-  SoundSourcePtr prepare(const Pathname& filename,
+  SoundSourcePtr prepare(std::filesystem::path const& filename,
                          OpenALSoundSourceType type = kStaticSoundSource);
 
   void update(float delta);

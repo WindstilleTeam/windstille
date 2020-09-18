@@ -47,7 +47,7 @@ int main(int argc, char** argv)
     std::vector<SoundSourcePtr> sources;
     for(int i = 1; i < argc; ++i)
     {
-      std::unique_ptr<SoundFile> sound_file = SoundFile::load(Pathname(argv[i], Pathname::kSysPath));
+      std::unique_ptr<SoundFile> sound_file = SoundFile::load(argv[i]);
       //std::unique_ptr<SoundFile> filtered_sound_file(new FilteredSoundFile(sound_file));
       SoundSourcePtr source = sound_manager.sound().prepare(std::move(sound_file), kStreamSoundSource);
 

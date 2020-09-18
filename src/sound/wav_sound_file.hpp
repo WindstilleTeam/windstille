@@ -26,7 +26,7 @@
 class WavSoundFile : public SoundFile
 {
 public:
-  WavSoundFile(const Pathname& filename);
+  WavSoundFile(std::filesystem::path const& filename);
   ~WavSoundFile() override;
 
   bool eof() const override;

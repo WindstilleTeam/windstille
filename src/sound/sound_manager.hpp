@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SOUND_SOUND_MANAGER_HPP
 #define HEADER_WINDSTILLE_SOUND_SOUND_MANAGER_HPP
 
-#include <memory>
+#include <filesystem>
 #include <memory>
 #include <string>
 #include <vector>
@@ -36,11 +36,9 @@
 #include "math/vector2f.hpp"
 #include "sound/sound_channel.hpp"
 #include "util/currenton.hpp"
-#include "util/pathname.hpp"
 
 typedef void* SoundHandle;
 
-class Pathname;
 class SoundFile;
 class SoundSource;
 class StreamSoundSource;
@@ -67,9 +65,9 @@ public:
   /**
    * Convenience function to simply play a sound at a given position.
    */
-  SoundSourcePtr play(const Pathname& name, const Vector2f& pos = Vector2f(-1, -1));
+  SoundSourcePtr play(std::filesystem::path const& filename, const Vector2f& pos = Vector2f(-1, -1));
 
-  void play_music(const Pathname& filename, bool fade = true);
+  void play_music(std::filesystem::path const& filename, bool fade = true);
   void stop_music(bool fade = true);
 
   void update(float delta);
@@ -81,7 +79,7 @@ public:
    * This function might throw exceptions. It returns 0 if no audio device is
    * available.
    */
-  SoundSourcePtr create_sound_source(const Pathname& filename,
+  SoundSourcePtr create_sound_source(std::filesystem::path const& filename,
                                      SoundChannel& channel,
                                      OpenALSoundSourceType type);
 
@@ -90,7 +88,7 @@ public:
   static ALenum get_sample_format(SoundFile* file);
 
 private:
-  static ALuint load_file_into_buffer(const Pathname& filename);
+  static ALuint load_file_into_buffer(std::filesystem::path const& filename);
 
   void print_openal_version();
   void check_alc_error(const char* message);
@@ -103,7 +101,7 @@ private:
   SoundChannel m_sound_channel;
   SoundChannel m_music_channel;
 
-  typedef std::map<Pathname, ALuint> SoundBuffers;
+  typedef std::map<std::filesystem::path, ALuint> SoundBuffers;
   SoundBuffers m_buffers;
   typedef std::vector<SoundSourcePtr> SoundSources;
   SoundSources m_sources;
@@ -112,7 +110,7 @@ private:
   std::unique_ptr<StreamSoundSource> m_next_music_source;
 
   bool m_music_enabled;
-  Pathname m_current_music;
+  std::filesystem::path m_current_music;
 
 private:
   SoundManager(const SoundManager&);

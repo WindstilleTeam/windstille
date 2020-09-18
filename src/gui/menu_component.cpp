@@ -120,7 +120,7 @@ MenuComponent::update(float delta, const Controller& controller)
       {
         if (allow_cancel) // FIXME: Could use a signal instead
         {
-          SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
+          SoundManager::current()->play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
           set_active(false);
         }
       }
@@ -134,7 +134,7 @@ MenuComponent::update(float delta, const Controller& controller)
       }
       else if (i->button.name == MENU_UP_BUTTON)
       {
-        SoundManager::current()->play(Pathname("sounds/menu_change.wav", Pathname::kDataPath));
+        SoundManager::current()->play(Pathname("sounds/menu_change.wav", Pathname::kDataPath).get_sys_path());
 
         current_item = current_item - 1;
         if (current_item < 0)
@@ -154,7 +154,7 @@ MenuComponent::update(float delta, const Controller& controller)
       }
       else if (i->button.name == MENU_DOWN_BUTTON)
       {
-        SoundManager::current()->play(Pathname("sounds/menu_change.wav", Pathname::kDataPath));
+        SoundManager::current()->play(Pathname("sounds/menu_change.wav", Pathname::kDataPath).get_sys_path());
 
         if (dynamic_cast<TabComponent*>(parent))
         {

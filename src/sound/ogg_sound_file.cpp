@@ -18,12 +18,11 @@
 
 #include "sound/ogg_sound_file.hpp"
 
+#include <filesystem>
 #include <stdexcept>
 #include <sstream>
 
-#include "util/pathname.hpp"
-
-OggSoundFile::OggSoundFile(const Pathname& filename) :
+OggSoundFile::OggSoundFile(std::filesystem::path const& filename) :
   m_in(),
   m_eof(false),
   m_file_size(),
@@ -33,7 +32,7 @@ OggSoundFile::OggSoundFile(const Pathname& filename) :
   m_bits_per_sample(),
   m_size()
 {
-  m_in.open(filename.get_sys_path().c_str(), std::ios::binary);
+  m_in.open(filename, std::ios::binary);
 
   if (!m_in)
   {

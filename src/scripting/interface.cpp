@@ -47,7 +47,7 @@ void set_sector(const std::string& filename)
 
 void play_music(const std::string& musicfile)
 {
-  SoundManager::current()->play_music(Pathname(musicfile, Pathname::kDataPath));
+  SoundManager::current()->play_music(Pathname(musicfile, Pathname::kDataPath).get_sys_path());
 }
 
 void stop_music(bool fade)
@@ -57,7 +57,7 @@ void stop_music(bool fade)
 
 void play_sound(const std::string& soundfile)
 {
-  SoundManager::current()->play(Pathname(soundfile, Pathname::kDataPath));
+  SoundManager::current()->play(Pathname(soundfile, Pathname::kDataPath).get_sys_path());
 }
 
 void caption_clear()

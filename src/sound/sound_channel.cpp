@@ -19,6 +19,7 @@
 #include "sound/sound_channel.hpp"
 
 #include <iostream>
+#include <filesystem>
 
 #include "math/vector2f.hpp"
 #include "sound/dummy_sound_source.hpp"
@@ -26,7 +27,6 @@
 #include "sound/sound_manager.hpp"
 #include "sound/sound_source.hpp"
 #include "sound/stream_sound_source.hpp"
-#include "util/pathname.hpp"
 
 SoundChannel::SoundChannel(SoundManager& sound_manager) :
   m_sound_manager(sound_manager),
@@ -36,7 +36,7 @@ SoundChannel::SoundChannel(SoundManager& sound_manager) :
 }
 
 SoundSourcePtr
-SoundChannel::play(const Pathname& filename)
+SoundChannel::play(std::filesystem::path const& filename)
 {
   SoundSourcePtr source = prepare(filename);
   source->play();
@@ -69,7 +69,7 @@ SoundChannel::prepare(std::unique_ptr<SoundFile> sound_file,
 }
 
 SoundSourcePtr
-SoundChannel::prepare(const Pathname& filename,
+SoundChannel::prepare(std::filesystem::path const& filename,
                       OpenALSoundSourceType type)
 {
   SoundSourcePtr source = m_sound_manager.create_sound_source(filename, *this, type);

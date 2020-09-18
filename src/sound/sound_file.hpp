@@ -19,10 +19,9 @@
 #ifndef HEADER_WINDSTILLE_SOUND_SOUND_FILE_HPP
 #define HEADER_WINDSTILLE_SOUND_SOUND_FILE_HPP
 
+#include <filesystem>
 #include <memory>
 #include <string>
-
-class Pathname;
 
 class SoundFile
 {
@@ -45,7 +44,7 @@ public:
   virtual float  get_length() const;
 
 public:
-  static std::unique_ptr<SoundFile> load(const Pathname& filename);
+  static std::unique_ptr<SoundFile> load(std::filesystem::path const& filename);
 };
 
 #endif

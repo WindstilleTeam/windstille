@@ -27,7 +27,7 @@
 class OggSoundFile : public SoundFile
 {
 public:
-  OggSoundFile(const Pathname& filename);
+  OggSoundFile(std::filesystem::path const& filename);
   ~OggSoundFile() override;
 
   size_t read(void* buffer, size_t buffer_size) override;
