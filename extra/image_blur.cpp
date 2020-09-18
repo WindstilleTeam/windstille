@@ -16,9 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <SDL.h>
+#include <iostream>
 #include <sstream>
 #include <stdexcept>
+
+#include <SDL.h>
 
 #include "display/opengl_window.hpp"
 #include "display/framebuffer.hpp"
@@ -59,7 +61,7 @@ int app_main(int argc, char** argv)
 
   SurfaceManager surface_manager;
 
-  FramebufferPtr framebuffer = Framebuffer::create_hdr(window_size.width, window_size.height);
+  FramebufferPtr framebuffer = Framebuffer::create_hdr(window_size.width(), window_size.height());
 
   SurfacePtr surface   = Surface::create(Pathname(argv[1], Pathname::kSysPath));
   SurfacePtr surface_2 = Surface::create(Pathname(argv[2], Pathname::kSysPath));

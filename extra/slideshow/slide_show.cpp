@@ -18,6 +18,8 @@
 
 #include "slideshow/slide_show.hpp"
 
+#include <iostream>
+
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
 #include "slideshow/slide_parser.hpp"

@@ -18,6 +18,7 @@
 
 #include "lensflare.hpp"
 
+#include <iostream>
 #include <stdexcept>
 
 #include "display/assert_gl.hpp"
@@ -55,11 +56,11 @@ Lensflare::Lensflare() :
 void
 Lensflare::draw()
 {
-  Vector2f screen_center(static_cast<float>(m_aspect_ratio.width)  / 2.0f,
-                         static_cast<float>(m_aspect_ratio.height) / 2.0f);
+  Vector2f screen_center(static_cast<float>(m_aspect_ratio.width())  / 2.0f,
+                         static_cast<float>(m_aspect_ratio.height()) / 2.0f);
   float dist = glm::length(m_mouse - screen_center);
 
-  float factor = 0.3f - (dist / static_cast<float>(m_aspect_ratio.width + m_aspect_ratio.height));
+  float factor = 0.3f - (dist / static_cast<float>(m_aspect_ratio.width() + m_aspect_ratio.height()));
   factor *= 3.3f;
   std::cout << factor << std::endl;
 
@@ -190,8 +191,8 @@ Lensflare::process_input()
         break;
 
       case SDL_MOUSEMOTION:
-        m_mouse.x = static_cast<float>(m_aspect_ratio.width  * event.motion.x / m_window_size.width);
-        m_mouse.y = static_cast<float>(m_aspect_ratio.height * event.motion.y / m_window_size.height);
+        m_mouse.x = static_cast<float>(m_aspect_ratio.width()  * event.motion.x / m_window_size.width());
+        m_mouse.y = static_cast<float>(m_aspect_ratio.height() * event.motion.y / m_window_size.height());
         break;
 
       case SDL_KEYDOWN:

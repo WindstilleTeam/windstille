@@ -18,6 +18,7 @@
 
 #include "slide_object.hpp"
 
+#include <iostream>
 #include <math.h>
 
 #include "plugins/jpeg.hpp"
@@ -32,7 +33,7 @@ SlideObject::SlideObject(const Pathname& filename) :
   m_fade_in_time(0.0f),
   m_fade_out_time(0.0f)
 {
-  m_size = JPEG::get_size(filename.get_sys_path());
+  m_size = Sizef(JPEG::get_size(filename.get_sys_path()));
 }
 
 void
@@ -111,13 +112,13 @@ SlideObject::set_begin(float beg)
 float
 SlideObject::get_width() const
 {
-  return m_size.width;
+  return m_size.width();
 }
 
 float
 SlideObject::get_height() const
 {
-  return m_size.height;
+  return m_size.height();
 }
 
 Pathname

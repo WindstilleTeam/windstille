@@ -61,24 +61,24 @@ NodePosX::get(const Sizef& scr, const Sizef& img, float zoom) const
   switch(m_type)
   {
     case kNodePosXLeft:
-      return img.width/2.0f - scr.width/2.0f + scr.width/2.0f;
+      return img.width()/2.0f - scr.width()/2.0f + scr.width()/2.0f;
 
     case kNodePosXRight:
-      return -img.width/2.0f + scr.width/2.0f + scr.width/2.0f;
+      return -img.width()/2.0f + scr.width()/2.0f + scr.width()/2.0f;
 
     case kNodePosXCenter:
-      return scr.width/2;
+      return scr.width()/2;
 
     case kNodePosXAbsFloat:
       {
         float x = m_value * zoom;
-        return img.width/2.0f - x + scr.width/2.0f;
+        return img.width()/2.0f - x + scr.width()/2.0f;
       }
 
     case kNodePosXRelFloat:
       {
-        float x = (m_value/100.0f) * img.width;
-        return img.width/2.0f - x + scr.width/2.0f;
+        float x = (m_value/100.0f) * img.width();
+        return img.width()/2.0f - x + scr.width()/2.0f;
       }
 
     default:
@@ -94,24 +94,24 @@ NodePosY::get(const Sizef& scr, const Sizef& img, float zoom) const
   switch(m_type)
   {
     case kNodePosYTop:
-      return img.height/2.0f - scr.height/2.0f + scr.height/2.0f;
+      return img.height()/2.0f - scr.height()/2.0f + scr.height()/2.0f;
 
     case kNodePosYBottom:
-      return -img.height/2.0f + scr.height/2.0f + scr.height/2.0f;
+      return -img.height()/2.0f + scr.height()/2.0f + scr.height()/2.0f;
 
     case kNodePosYCenter:
-      return scr.height/2;
+      return scr.height()/2;
 
     case kNodePosYAbsFloat:
       {
         float y = m_value * zoom;
-        return img.height/2.0f - y + scr.height/2.0f;
+        return img.height()/2.0f - y + scr.height()/2.0f;
       }
 
     case kNodePosYRelFloat:
       {
-        float y = (m_value/100.0f) * img.height;
-        return img.height/2.0f - y + scr.height/2.0f;
+        float y = (m_value/100.0f) * img.height();
+        return img.height()/2.0f - y + scr.height()/2.0f;
       }
 
     default:
@@ -126,18 +126,18 @@ NodeZoom::get(const Sizef& scr, const Sizef& img) const
   switch(m_type)
   {
     case kNodeZoomFit:
-      return std::min(scr.width / img.width,
-                      scr.height / img.height);
+      return std::min(scr.width() / img.width(),
+                      scr.height() / img.height());
 
     case kNodeZoomFill:
-      return std::max(scr.width / img.width,
-                      scr.height / img.height);
+      return std::max(scr.width() / img.width(),
+                      scr.height() / img.height());
 
     case kNodeZoomWidth:
-      return scr.width / img.width;
+      return scr.width() / img.width();
 
     case kNodeZoomHeight:
-      return scr.height / img.height;
+      return scr.height() / img.height();
 
     case kNodeZoomOriginal:
       return 1.0f;
@@ -145,8 +145,8 @@ NodeZoom::get(const Sizef& scr, const Sizef& img) const
     case kNodeZoomFloat:
       {
         // 1.0f means "fit", so recalculate values relative to that
-        float fit = std::min(scr.width / img.width,
-                             scr.height / img.height);
+        float fit = std::min(scr.width() / img.width(),
+                             scr.height() / img.height());
         return fit * m_value;
       }
 

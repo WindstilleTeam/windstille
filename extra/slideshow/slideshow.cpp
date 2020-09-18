@@ -108,16 +108,22 @@ App::parse_args(int argc, char** argv)
         break;
 
       case 'g':
-        if (sscanf(opt.argument.c_str(), "%dx%d", &m_window_size.width, &m_window_size.height) != 2)
-        {
+        int window_width;
+        int window_height;
+        if (sscanf(opt.argument.c_str(), "%dx%d", &window_width, &window_height) != 2) {
           throw std::runtime_error("--geometry argument wrong");
+        } else {
+          m_window_size = Size(window_width, window_height);
         }
         break;
 
       case 'a':
-        if (sscanf(opt.argument.c_str(), "%dx%d", &m_aspect_ratio.width, &m_aspect_ratio.height) != 2)
-        {
+        int aspect_ratio_width;
+        int aspect_ratio_height;
+        if (sscanf(opt.argument.c_str(), "%dx%d", &aspect_ratio_width, &aspect_ratio_height) != 2) {
           throw std::runtime_error("--aspect argument wrong");
+        } else {
+          m_aspect_ratio = Size(aspect_ratio_width, aspect_ratio_height);
         }
         break;
 
@@ -174,11 +180,11 @@ App::run(int argc, char* argv[])
 
   for(std::vector<std::string>::iterator i = m_files.begin(); i != m_files.end(); ++i)
   {
-    slide_show.load(*i, m_aspect_ratio);
+    slide_show.load(*i, Sizef(m_aspect_ratio));
   }
 
-  FramebufferPtr framebuffer_multisample = Framebuffer::create(m_window_size.width, m_window_size.height, 8);
-  FramebufferPtr framebuffer = Framebuffer::create(m_window_size.width, m_window_size.height);
+  FramebufferPtr framebuffer_multisample = Framebuffer::create(m_window_size.width(), m_window_size.height(), 8);
+  FramebufferPtr framebuffer = Framebuffer::create(m_window_size.width(), m_window_size.height());
 
   bool loop = true;
   bool pause = false;
@@ -223,7 +229,7 @@ App::run(int argc, char* argv[])
                 slide_show.clear();
                 for(size_t i = 0; i < m_files.size(); ++i)
                 {
-                  slide_show.load(m_files[i], m_aspect_ratio);
+                  slide_show.load(m_files[i], Sizef(m_aspect_ratio));
                 }
                 break;
 

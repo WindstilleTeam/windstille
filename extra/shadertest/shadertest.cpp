@@ -18,6 +18,8 @@
 
 #include "shadertest.hpp"
 
+#include <iostream>
+
 #include "display/opengl_state.hpp"
 #include "display/opengl_window.hpp"
 #include "display/shader_program.hpp"
