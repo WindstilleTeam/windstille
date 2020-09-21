@@ -25,6 +25,7 @@
 
 #include "app/app.hpp"
 #include "app/config.hpp"
+#include "app/sound_manager.hpp"
 #include "display/opengl_window.hpp"
 #include "engine/camera.hpp"
 #include "engine/sector.hpp"
@@ -35,7 +36,6 @@
 #include "hud/pda.hpp"
 #include "hud/speech_manager.hpp"
 #include "screen/game_session.hpp"
-#include "sound/sound_manager.hpp"
 #include "util/sexpr_file_reader.hpp"
 
 namespace Scripting
@@ -48,7 +48,7 @@ void set_sector(const std::string& filename)
 
 void play_music(const std::string& musicfile)
 {
-  g_app.sound().play_music(Pathname(musicfile, Pathname::kDataPath).get_sys_path());
+  g_app.sound().play_music(Pathname(musicfile, Pathname::kDataPath));
 }
 
 void stop_music(bool fade)
@@ -58,7 +58,7 @@ void stop_music(bool fade)
 
 void play_sound(const std::string& soundfile)
 {
-  g_app.sound().play(Pathname(soundfile, Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname(soundfile, Pathname::kDataPath));
 }
 
 void caption_clear()

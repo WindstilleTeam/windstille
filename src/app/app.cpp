@@ -17,7 +17,10 @@
 */
 
 #include "app/app.hpp"
-#include "sound/sound_manager.hpp"
+
+#include <assert.h>
+
+#include <wstsound/sound_manager.hpp>
 
 App g_app;
 

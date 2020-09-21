@@ -19,11 +19,11 @@
 #include "gui/menu_component.hpp"
 
 #include "app/app.hpp"
+#include "app/sound_manager.hpp"
 #include "display/display.hpp"
 #include "gui/menu_item.hpp"
 #include "gui/tab_component.hpp"
 #include "input/controller.hpp"
-#include "sound/sound_manager.hpp"
 
 namespace gui {
 
@@ -122,7 +122,7 @@ MenuComponent::update(float delta, const Controller& controller)
       {
         if (allow_cancel) // FIXME: Could use a signal instead
         {
-          g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
+          g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
           set_active(false);
         }
       }
@@ -136,7 +136,7 @@ MenuComponent::update(float delta, const Controller& controller)
       }
       else if (i->button.name == MENU_UP_BUTTON)
       {
-        g_app.sound().play(Pathname("sounds/menu_change.wav", Pathname::kDataPath).get_sys_path());
+        g_app.sound().play(Pathname("sounds/menu_change.wav", Pathname::kDataPath));
 
         current_item = current_item - 1;
         if (current_item < 0)
@@ -156,7 +156,7 @@ MenuComponent::update(float delta, const Controller& controller)
       }
       else if (i->button.name == MENU_DOWN_BUTTON)
       {
-        g_app.sound().play(Pathname("sounds/menu_change.wav", Pathname::kDataPath).get_sys_path());
+        g_app.sound().play(Pathname("sounds/menu_change.wav", Pathname::kDataPath));
 
         if (dynamic_cast<TabComponent*>(parent))
         {

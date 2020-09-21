@@ -21,6 +21,7 @@
 #include <sstream>
 
 #include "app/app.hpp"
+#include "app/sound_manager.hpp"
 #include "collision/collision_engine.hpp"
 #include "engine/sector_builder.hpp"
 #include "engine/squirrel_thread.hpp"
@@ -29,7 +30,6 @@
 #include "objects/player.hpp"
 #include "scenegraph/navigation_graph_drawable.hpp"
 #include "scenegraph/scene_graph.hpp"
-#include "sound/sound_manager.hpp"
 #include "tile/tile_map.hpp"
 
 Sector::Sector(const Pathname& arg_filename) :
@@ -80,7 +80,7 @@ Sector::activate()
   commit_adds();
   commit_removes();
 
-  g_app.sound().play_music(Pathname(music, Pathname::kDataPath).get_sys_path());
+  g_app.sound().play_music(Pathname(music, Pathname::kDataPath));
 
   if (!init_script.empty())
   {

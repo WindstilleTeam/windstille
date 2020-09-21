@@ -24,7 +24,6 @@
 #include "engine/entity.hpp"
 #include "input/controller.hpp"
 #include "math/vector2f.hpp"
-#include "sound/sound_source.hpp"
 #include "sprite2d/sprite.hpp"
 #include "sprite3d/sprite3d.hpp"
 #include "util/currenton.hpp"
@@ -42,7 +41,6 @@ class Player : public Entity,
 {
 private:
   std::shared_ptr<Sprite3DDrawable> m_drawable;
-  //std::unique_ptr<SoundSource> sound_source;
 
   bool jumping;
   bool bomb_placed;

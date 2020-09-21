@@ -36,7 +36,7 @@
 #include "screen/sprite2dview.hpp"
 #include "screen/sprite3dview.hpp"
 #include "screen/title_screen.hpp"
-#include "sound/sound_manager.hpp"
+#include "sound_manager.hpp"
 #include "sprite3d/manager.hpp"
 #include "tile/tile_factory.hpp"
 #include "util/system.hpp"
@@ -154,7 +154,7 @@ WindstilleMain::run()
 void
 WindstilleMain::init_modules()
 {
-  g_app.sound().set_gain(static_cast<float>(config.get_int("master-volume"))/100.0f);
+  g_app.sound().set_master_gain(static_cast<float>(config.get_int("master-volume"))/100.0f);
   g_app.sound().enable_sound(config.get_bool("sound"));
   g_app.sound().enable_music(config.get_bool("music"));
 

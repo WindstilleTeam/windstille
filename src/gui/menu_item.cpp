@@ -19,7 +19,7 @@
 #include "gui/menu_item.hpp"
 
 #include "app/app.hpp"
-#include "sound/sound_manager.hpp"
+#include "app/sound_manager.hpp"
 #include "display/display.hpp"
 #include "gui/menu_component.hpp"
 
@@ -98,7 +98,7 @@ EnumMenuItem::add_pair(int value_, const std::string& label_)
 void
 EnumMenuItem::incr()
 {
-  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
 
   index -= 1;
   if (index < 0)
@@ -109,7 +109,7 @@ EnumMenuItem::incr()
 void
 EnumMenuItem::decr()
 {
-  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
 
   index += 1;
   if (index >= static_cast<int>(labels.size()))
@@ -153,7 +153,7 @@ SliderMenuItem::SliderMenuItem(MenuComponent* parent_,
 void
 SliderMenuItem::decr()
 {
-  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
 
   value += step;
   if (value > max_value)
@@ -164,7 +164,7 @@ SliderMenuItem::decr()
 void
 SliderMenuItem::incr()
 {
-  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
 
   value -= step;
   if (value < min_value)
@@ -209,7 +209,7 @@ ButtonMenuItem::ButtonMenuItem(MenuComponent* parent_, const std::string& label_
 void
 ButtonMenuItem::click()
 {
-  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath).get_sys_path());
+  g_app.sound().play(Pathname("sounds/menu_click.wav", Pathname::kDataPath));
 
   on_click();
 }

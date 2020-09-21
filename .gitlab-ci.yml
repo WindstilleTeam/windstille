@@ -46,6 +46,7 @@ before_script:
     libmagick++-dev
     libogg-dev
     libopenal-dev
+    libopusfile-dev
     libphysfs-dev
     libpng-dev
     libsdl2-dev

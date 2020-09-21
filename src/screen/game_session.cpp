@@ -20,8 +20,9 @@
 
 #include "app/app.hpp"
 #include "app/menu_manager.hpp"
-#include "display/display.hpp"
+#include "app/sound_manager.hpp"
 #include "display/compositor.hpp"
+#include "display/display.hpp"
 #include "display/opengl_window.hpp"
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
@@ -31,11 +32,10 @@
 #include "hud/inventory.hpp"
 #include "hud/pda.hpp"
 #include "hud/speech_manager.hpp"
-#include "objects/player.hpp"
 #include "objects/doll.hpp"
+#include "objects/player.hpp"
 #include "screen/screen_manager.hpp"
 #include "screen/view.hpp"
-#include "sound/sound_manager.hpp"
 
 class GameSessionImpl
 {

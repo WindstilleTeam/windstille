@@ -22,13 +22,13 @@
 
 #include "app/app.hpp"
 #include "app/config.hpp"
+#include "app/sound_manager.hpp"
 #include "display/display.hpp"
 #include "display/opengl_window.hpp"
 #include "font/fonts.hpp"
 #include "input/input_configurator.hpp"
 #include "input/input_manager.hpp"
 #include "screen/game_session.hpp"
-#include "sound/sound_manager.hpp"
 
 ScreenManager::ScreenManager() :
   screens(),

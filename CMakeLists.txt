@@ -46,7 +46,6 @@ find_package(PNG REQUIRED)
 find_package(Freetype REQUIRED)
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
-find_package(OpenAL REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glm REQUIRED)
@@ -59,9 +58,6 @@ find_library(CWIID_LIBRARY cwiid)
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
 pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image IMPORTED_TARGET)
 
-pkg_search_module(OGG REQUIRED ogg IMPORTED_TARGET)
-pkg_search_module(VORBIS REQUIRED vorbis IMPORTED_TARGET)
-pkg_search_module(VORBISFILE REQUIRED vorbisfile IMPORTED_TARGET)
 pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
 
 if(BUILD_EDITOR)
@@ -72,6 +68,7 @@ endif()
 # Build dependencies
 function(build_dependencies)
   set(BUILD_TESTS OFF)
+  set(BUILD_EXTRA OFF)
   add_subdirectory(external/argparser/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/babyxml/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/geomcpp/ EXCLUDE_FROM_ALL)
@@ -159,8 +156,6 @@ file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/util/*.cpp)
 add_library(wstlib STATIC ${WSTLIB_SOURCES})
 target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
-target_include_directories(wstlib SYSTEM PUBLIC
-  ${OPENAL_INCLUDE_DIR})
 target_link_libraries(wstlib PUBLIC
   wstsound
   argparser
@@ -168,7 +163,6 @@ target_link_libraries(wstlib PUBLIC
   geomcpp
   logmich
   sexp
-  ${OPENAL_LIBRARY}
   PkgConfig::SQUIRREL
   Freetype::Freetype
   GLEW::GLEW
@@ -176,12 +170,9 @@ target_link_libraries(wstlib PUBLIC
   OpenGL::GL
   OpenGL::GLU
   PNG::PNG
-  PkgConfig::OGG
   PkgConfig::SDL2
   PkgConfig::SDL2_IMAGE
   PkgConfig::SIGCXX
-  PkgConfig::VORBIS
-  PkgConfig::VORBISFILE
   Threads::Threads
   fmt::fmt)
 
