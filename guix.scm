@@ -68,6 +68,7 @@
       ("glew" ,glew)
       ("libvorbis" ,libvorbis)
       ("libogg" ,libogg)
+      ("opusfile" ,opusfile)
       ("physfs" ,physfs)
       ("curl" ,curl)
       ("freetype" ,freetype)
