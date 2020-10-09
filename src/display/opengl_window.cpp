@@ -27,7 +27,6 @@
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
 #include "display/assert_gl.hpp"
-#include "app/config.hpp"
 
 class OpenGLWindowImpl
 {
