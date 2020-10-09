@@ -23,7 +23,7 @@
 #include <vector>
 
 #include "screen/screen.hpp"
-#include "display/text_area.hpp"
+#include "font/text_area.hpp"
 
 struct ConfigureItem
 {

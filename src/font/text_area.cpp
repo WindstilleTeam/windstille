@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/text_area.hpp"
+#include "font/text_area.hpp"
 
 #include <babyxml.hpp>
 

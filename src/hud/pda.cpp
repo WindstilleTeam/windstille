@@ -19,7 +19,7 @@
 #include <sstream>
 
 #include "display/display.hpp"
-#include "display/text_area.hpp"
+#include "font/text_area.hpp"
 #include "font/fonts.hpp"
 #include "hud/pda.hpp"
 #include "input/controller.hpp"

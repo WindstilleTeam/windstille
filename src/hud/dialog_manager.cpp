@@ -24,7 +24,7 @@
 #include "screen/game_session.hpp"
 #include "input/controller.hpp"
 #include "engine/script_manager.hpp"
-#include "display/text_area.hpp"
+#include "font/text_area.hpp"
 #include "display/display.hpp"
 
 DialogManager::DialogManager()
