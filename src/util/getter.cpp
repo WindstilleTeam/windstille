@@ -23,6 +23,9 @@
 #include "display/color.hpp"
 #include "util/file_reader.hpp"
 
+namespace prio {
+
+template<>
 bool read_custom(ReaderMapping const& map, std::string_view key, Vector2f&  value)
 {
   std::vector<float> floats;
@@ -35,6 +38,7 @@ bool read_custom(ReaderMapping const& map, std::string_view key, Vector2f&  valu
   }
 }
 
+template<>
 bool read_custom(ReaderMapping const& map, std::string_view key, Vector3& value)
 {
   std::vector<float> floats;
@@ -48,6 +52,7 @@ bool read_custom(ReaderMapping const& map, std::string_view key, Vector3& value)
   }
 }
 
+template<>
 bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& value)
 {
   std::vector<float> floats;
@@ -62,6 +67,7 @@ bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& val
   }
 }
 
+template<>
 bool read_custom(ReaderMapping const& map, std::string_view key, Matrix& m)
 {
   std::vector<float> floats;
@@ -90,6 +96,7 @@ bool read_custom(ReaderMapping const& map, std::string_view key, Matrix& m)
   }
 }
 
+template<>
 bool read_custom(ReaderMapping const& map, std::string_view key, Color& value)
 {
   std::vector<float> floats;
@@ -118,5 +125,7 @@ bool read_custom(ReaderMapping const& map, std::string_view key, Color& value)
     return false;
   }
 }
+
+} // namespace prio
 
 /* EOF */

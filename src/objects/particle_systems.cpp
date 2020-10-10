@@ -36,7 +36,7 @@ ParticleSystems::ParticleSystems(ReaderMapping const& reader) :
   reader.read("pos",  pos);
 
   { // Load the ParticleSystems
-    ReaderDocument const& doc = ReaderDocument::from_file(Pathname(filename).get_sys_path(), true);
+    ReaderDocument const& doc = ReaderDocument::from_file(Pathname(filename).get_sys_path());
     if (doc.get_name() != "particle-systems")
     {
       std::ostringstream msg;

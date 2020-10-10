@@ -56,7 +56,7 @@ ParticleViewer::load(const Pathname& filename)
   // Cleanup
   systems.clear();
 
-  ReaderDocument const& doc = ReaderDocument::from_file(filename.get_sys_path(), true);
+  ReaderDocument const& doc = ReaderDocument::from_file(filename.get_sys_path());
   if (doc.get_name() != "particle-systems") {
     std::ostringstream msg;
     msg << "'" << filename << "' is not a particle-system file";

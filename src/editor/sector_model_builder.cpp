@@ -35,53 +35,45 @@ SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel&
 {
   m_sector.get_layer_tree()->clear();
 
-  std::ifstream stream(filename.c_str());
-  if (!stream)
+  ReaderDocument doc = ReaderDocument::from_file(filename);
+  if (doc.get_name() == "windstille-sector")
   {
-    throw std::runtime_error("File not found " + filename);
-  }
-  else
-  {
-    ReaderDocument doc = ReaderDocument::from_stream(stream, true, filename);
-    if (doc.get_name() == "windstille-sector")
+    ReaderMapping const& reader = doc.get_mapping();
+
+    Color ambient_color;
+    if (reader.read("ambient-color", ambient_color)) {
+      m_sector.set_ambient_color(ambient_color);
+    }
+
+    ReaderMapping navigation_map;
+    reader.read("navigation", navigation_map);
+    m_sector.get_nav_graph().load(navigation_map, m_id_table);
+
+    ReaderCollection layers_collection;
+    reader.read("layers", layers_collection);
+
+    // Load layer in reversed order, as ListStore is in reverse
+    std::vector<ReaderObject> layers_objs = layers_collection.get_objects();
+    std::reverse(layers_objs.begin(), layers_objs.end());
+    for (ReaderObject const& item : layers_objs) {
+      if (item.get_name() == "layer") {
+        load_layer(item.get_mapping());
+      } else {
+        std::cout << "SectorModel::load: ignoring unknown type '" << item.get_name() << "'" << std::endl;
+      }
+    }
+
+    // Set the parents properly
+    for(std::map<ObjectModelHandle, std::string>::iterator i = m_parent_table.begin(); i != m_parent_table.end(); ++i)
     {
-      ReaderMapping const& reader = doc.get_mapping();
-
-      Color ambient_color;
-      if (reader.read("ambient-color", ambient_color)) {
-        m_sector.set_ambient_color(ambient_color);
-      }
-
-      ReaderMapping navigation_map;
-      reader.read("navigation", navigation_map);
-      m_sector.get_nav_graph().load(navigation_map, m_id_table);
-
-      ReaderCollection layers_collection;
-      reader.read("layers", layers_collection);
-
-      // Load layer in reversed order, as ListStore is in reverse
-      std::vector<ReaderObject> layers_objs = layers_collection.get_objects();
-      std::reverse(layers_objs.begin(), layers_objs.end());
-      for (ReaderObject const& item : layers_objs) {
-        if (item.get_name() == "layer") {
-          load_layer(item.get_mapping());
-        } else {
-          std::cout << "SectorModel::load: ignoring unknown type '" << item.get_name() << "'" << std::endl;
-        }
-      }
-
-      // Set the parents properly
-      for(std::map<ObjectModelHandle, std::string>::iterator i = m_parent_table.begin(); i != m_parent_table.end(); ++i)
+      std::map<std::string, ObjectModelHandle>::iterator j = m_id_table.find(i->second);
+      if (j == m_id_table.end())
       {
-        std::map<std::string, ObjectModelHandle>::iterator j = m_id_table.find(i->second);
-        if (j == m_id_table.end())
-        {
-          std::cout << "Error: Couldn't resolve 'id': " << i->second << std::endl;
-        }
-        else
-        {
-          i->first->set_parent(j->second, false);
-        }
+        std::cout << "Error: Couldn't resolve 'id': " << i->second << std::endl;
+      }
+      else
+      {
+        i->first->set_parent(j->second, false);
       }
     }
   }

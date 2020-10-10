@@ -43,7 +43,7 @@ SectorBuilder::SectorBuilder(const Pathname& filename, Sector& sector) :
 void
 SectorBuilder::build()
 {
-  ReaderDocument doc = ReaderDocument::from_file(m_filename.get_sys_path(), true);
+  ReaderDocument doc = ReaderDocument::from_file(m_filename.get_sys_path());
   if (doc.get_name() != "windstille-sector")
   {
     std::ostringstream msg;

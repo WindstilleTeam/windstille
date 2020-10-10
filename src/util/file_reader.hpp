@@ -23,16 +23,17 @@
 #include <vector>
 #include <memory>
 
-#include <prio/fwd.hpp>
+#include <prio/reader_collection.hpp>
+#include <prio/reader_document.hpp>
+#include <prio/reader_mapping.hpp>
+#include <prio/reader_object.hpp>
+
+#include "util/getter.hpp"
 
 using ReaderCollection = prio::ReaderCollection;
 using ReaderDocument = prio::ReaderDocument;
 using ReaderMapping = prio::ReaderMapping;
 using ReaderObject = prio::ReaderObject;
-
-#include "util/getter.hpp"
-
-#include <prio/prio.hpp>
 
 #endif
 

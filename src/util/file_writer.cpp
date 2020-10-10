@@ -20,14 +20,20 @@
 
 #include "display/color.hpp"
 
+namespace prio {
+
+template<>
 void write_custom(prio::Writer& writer, std::string_view key, glm::vec2 const& value)
 {
   writer.write(key, std::vector<float>({value.x, value.y}));
 }
 
+template<>
 void write_custom(prio::Writer& writer, std::string_view key, Color const& value)
 {
   writer.write(key, std::vector<float>({value.r, value.g, value.b, value.a}));
 }
+
+} // namespace prio
 
 /* EOF */

@@ -26,11 +26,15 @@
 
 class Color;
 
-bool read_custom(ReaderMapping const& map, std::string_view key, Matrix& value);
-bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& value);
-bool read_custom(ReaderMapping const& map, std::string_view key, Color& value);
-bool read_custom(ReaderMapping const& map, std::string_view key, Vector2f& value);
-bool read_custom(ReaderMapping const& map, std::string_view key, Vector3& value);
+namespace prio {
+
+template<> bool read_custom(ReaderMapping const& map, std::string_view key, Matrix& value);
+template<> bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& value);
+template<> bool read_custom(ReaderMapping const& map, std::string_view key, Color& value);
+template<> bool read_custom(ReaderMapping const& map, std::string_view key, Vector2f& value);
+template<> bool read_custom(ReaderMapping const& map, std::string_view key, Vector3& value);
+
+} // namespace prio
 
 #endif
 

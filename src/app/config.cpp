@@ -318,7 +318,7 @@ Config::load()
 {
   try
   {
-    ReaderDocument doc = ReaderDocument::from_file(Pathname("config", Pathname::kUserPath).get_sys_path(), true);
+    ReaderDocument doc = ReaderDocument::from_file(Pathname("config", Pathname::kUserPath).get_sys_path());
     if (doc.get_name() != "windstille-config") {
       std::cerr << "Warning: Config file is not a windstille-config file.\n";
       return;

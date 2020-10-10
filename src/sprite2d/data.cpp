@@ -34,7 +34,7 @@ SpriteData::SpriteData(const Pathname& pathname) :
 
     if (ext == "sprite")
     {
-      ReaderDocument doc = ReaderDocument::from_file(pathname.get_sys_path(), true);
+      ReaderDocument doc = ReaderDocument::from_file(pathname.get_sys_path());
 
       if (doc.get_name() != "sprite") {
         std::ostringstream msg;

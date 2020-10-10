@@ -21,17 +21,19 @@
 
 #include <string>
 
-#include <prio/fwd.hpp>
+#include <prio/writer.hpp>
 #include <geom/size.hpp>
 
 class Color;
 
 using FileWriter = prio::Writer;
 
-void write_custom(prio::Writer& writer, std::string_view key, glm::vec2 const& value);
-void write_custom(prio::Writer& writer, std::string_view key, Color const& value);
+namespace prio {
 
-#include <prio/writer.hpp>
+template<> void write_custom(prio::Writer& writer, std::string_view key, glm::vec2 const& value);
+template<> void write_custom(prio::Writer& writer, std::string_view key, Color const& value);
+
+} // namespace prio
 
 #endif
 

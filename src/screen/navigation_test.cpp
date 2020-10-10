@@ -44,7 +44,7 @@ NavigationTest::NavigationTest()
 {
   try
   {
-    ReaderDocument const& doc = ReaderDocument::from_file(Pathname("navigation.nav").get_sys_path(), true);
+    ReaderDocument const& doc = ReaderDocument::from_file(Pathname("navigation.nav").get_sys_path());
     graph->load(doc.get_mapping());
   }
   catch(std::exception& err)

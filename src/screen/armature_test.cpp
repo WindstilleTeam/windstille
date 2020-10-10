@@ -36,10 +36,10 @@ ArmatureTest::ArmatureTest()
     yrot(0.0f),
     zrot(0.0f)
 {
-  ReaderDocument const& model_doc = ReaderDocument::from_file(Pathname("armature/mesh.mesh").get_sys_path(), true);
+  ReaderDocument const& model_doc = ReaderDocument::from_file(Pathname("armature/mesh.mesh").get_sys_path());
   model.reset(new Model(model_doc, "armature/"));
 
-  ReaderDocument const& armature_doc = ReaderDocument::from_file(Pathname("armature/armature.arm").get_sys_path(), true);
+  ReaderDocument const& armature_doc = ReaderDocument::from_file(Pathname("armature/armature.arm").get_sys_path());
   armature.reset(new Armature(armature_doc));
 
   {
@@ -50,7 +50,7 @@ ArmatureTest::ArmatureTest()
       if (!std::filesystem::is_directory(i->get_sys_path()))
       {
         std::cout << "PoseFile: " << *i << std::endl;
-        ReaderDocument pose_doc = ReaderDocument::from_file(i->get_sys_path(), true);
+        ReaderDocument pose_doc = ReaderDocument::from_file(i->get_sys_path());
         poses.push_back(new Pose(pose_doc));
       }
     }

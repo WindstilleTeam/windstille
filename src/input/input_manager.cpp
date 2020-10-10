@@ -116,7 +116,7 @@ InputManagerSDL::ensure_open_joystick(int device)
 void
 InputManagerSDL::load(const Pathname& filename)
 {
-  ReaderDocument doc = ReaderDocument::from_file(filename.get_sys_path(), true);
+  ReaderDocument doc = ReaderDocument::from_file(filename.get_sys_path());
 
   std::cout << "InputManager: " << filename << std::endl;
 

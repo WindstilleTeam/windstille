@@ -56,7 +56,7 @@ TileFactory::TileFactory(const Pathname& filename) :
   packers.push_back(new TilePacker(1024, 1024));
   color_packer     = 0;
 
-  ReaderDocument doc = ReaderDocument::from_file(filename.get_sys_path(), true);
+  ReaderDocument doc = ReaderDocument::from_file(filename.get_sys_path());
   if (doc.get_name() != "windstille-tiles") {
     std::ostringstream msg;
     msg << "'" << filename << "' is not a windstille tiles file";
