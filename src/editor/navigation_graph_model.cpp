@@ -213,7 +213,7 @@ NavigationGraphModel::load(ReaderMapping const& reader, std::map<std::string, Ob
   {
     for (ReaderObject const& item : nodes_collection.get_objects())
     {
-      if (item.get_name() == "navgraph-node")
+      if (item.get_name() == "node")
       {
         ReaderMapping const& map = item.get_mapping();
 
@@ -242,7 +242,7 @@ NavigationGraphModel::load(ReaderMapping const& reader, std::map<std::string, Ob
   {
     for (ReaderObject const& item : edges_collection.get_objects())
     {
-      if (item.get_name() == "navgraph-edge")
+      if (item.get_name() == "edge")
       {
         ReaderMapping const& map = item.get_mapping();
 

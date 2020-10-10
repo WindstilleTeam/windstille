@@ -164,7 +164,7 @@ NavGraphNodeObjectModel::clone() const
 void
 NavGraphNodeObjectModel::write(FileWriter& writer) const
 {
-  writer.begin_object("navgraph-node");
+  writer.begin_object("node");
   ObjectModel::write_member(writer);
   writer.end_object();
 }

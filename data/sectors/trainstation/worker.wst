@@ -7,128 +7,128 @@
   (init-script "init.nut")
   (navigation
     (nodes
-      (navgraph-node
+      (node
         (id "0x9a76c50")
         (pos -2176 256)
         (parent "")
         (select-mask -1))
-      (navgraph-node
+      (node
         (id "0x9988000")
         (pos 2432 256)
         (parent "")
         (select-mask -1))
-      (navgraph-node
+      (node
         (id "0x991a998")
         (pos 2432 -384)
         (parent "")
         (select-mask -1))
-      (navgraph-node
+      (node
         (id "0x991a9d8")
         (pos -2176 -384)
         (parent "")
         (select-mask -1))
-      (navgraph-node
+      (node
         (id "0x99903a0")
         (pos -2176 640)
         (parent "")
         (select-mask -1))
-      (navgraph-node
+      (node
         (id "0x9990450")
         (pos 1536 640)
         (parent "")
         (select-mask -1))
-      (navgraph-node
+      (node
         (id "0x99903e8")
         (pos 2432 640)
         (parent "")
         (select-mask -1))
-      (navgraph-node
+      (node
         (id "0x9a79b98")
         (pos 896 0)
         (parent "")
         (select-mask -1))
-      (navgraph-node
+      (node
         (id "0x9989608")
         (pos 2432 0)
         (parent "")
         (select-mask -1))
-      (navgraph-node
+      (node
         (id "0x9905818")
         (pos -2176 0)
         (parent "")
         (select-mask -1)))
     (edges
-      (navgraph-edge
+      (edge
         (id "0x9a7a4d0")
         (pos 0 0)
         (parent "")
         (select-mask -1)
         (lhs-node "0x99903a0")
         (rhs-node "0x9a76c50"))
-      (navgraph-edge
+      (edge
         (id "0x998d430")
         (pos 0 0)
         (parent "")
         (select-mask -1)
         (lhs-node "0x9988000")
         (rhs-node "0x9a76c50"))
-      (navgraph-edge
+      (edge
         (id "0x9a74d10")
         (pos 0 0)
         (parent "")
         (select-mask -1)
         (lhs-node "0x9988000")
         (rhs-node "0x99903e8"))
-      (navgraph-edge
+      (edge
         (id "0x9d97198")
         (pos 0 0)
         (parent "")
         (select-mask -1)
         (lhs-node "0x9989608")
         (rhs-node "0x991a998"))
-      (navgraph-edge
+      (edge
         (id "0x99b6530")
         (pos 0 0)
         (parent "")
         (select-mask -1)
         (lhs-node "0x991a998")
         (rhs-node "0x991a9d8"))
-      (navgraph-edge
+      (edge
         (id "0x9694518")
         (pos 0 0)
         (parent "")
         (select-mask -1)
         (lhs-node "0x9905818")
         (rhs-node "0x991a9d8"))
-      (navgraph-edge
+      (edge
         (id "0x9990860")
         (pos 0 0)
         (parent "")
         (select-mask -1)
         (lhs-node "0x9990450")
         (rhs-node "0x99903a0"))
-      (navgraph-edge
+      (edge
         (id "0x99907c0")
         (pos 0 0)
         (parent "")
         (select-mask -1)
         (lhs-node "0x99903e8")
         (rhs-node "0x9990450"))
-      (navgraph-edge
+      (edge
         (id "0x99906e0")
         (pos 0 0)
         (parent "")
         (select-mask -1)
         (lhs-node "0x9989608")
         (rhs-node "0x9a79b98"))
-      (navgraph-edge
+      (edge
         (id "0x9990610")
         (pos 0 0)
         (parent "")
         (select-mask -1)
         (lhs-node "0x9905818")
         (rhs-node "0x9a79b98"))
-      (navgraph-edge
+      (edge
         (id "0x9990160")
         (pos 0 0)
         (parent "")

@@ -199,7 +199,7 @@ SectorBuilder::parse_navgraph(ReaderMapping const& reader)
   if (navgraph_reader.read("nodes", nodes_collection))
   {
     for (ReaderObject const& item : nodes_collection.get_objects()) {
-      if (item.get_name() != "navgraph-node") {
+      if (item.get_name() != "node") {
         std::cout << "SectorBuilder::parse_navgraph(): Unknown nodes tag: " << item.get_name() << std::endl;
       } else {
         ReaderMapping const& map = item.get_mapping();
@@ -221,7 +221,7 @@ SectorBuilder::parse_navgraph(ReaderMapping const& reader)
   {
     for (ReaderObject const& item : edges_collection.get_objects())
     {
-      if (item.get_name() != "navgraph-edge") {
+      if (item.get_name() != "edge") {
         std::cout << "SectorBuilder::parse_navgraph(): Unknown edges tag: " << item.get_name() << std::endl;
       } else {
         ReaderMapping const& map = item.get_mapping();

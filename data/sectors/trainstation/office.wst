@@ -7,18 +7,18 @@
   (init-script "init.nut")
   (navigation
     (nodes
-      (navgraph-node
+      (node
         (id "0x9a80728")
         (pos -1454 1170)
         (parent "")
         (select-mask -1))
-      (navgraph-node
+      (node
         (id "0x9a7f5c0")
         (pos 1864 1170)
         (parent "")
         (select-mask -1)))
     (edges
-      (navgraph-edge
+      (edge
         (id "0x9a831f8")
         (pos 77 596)
         (parent "")

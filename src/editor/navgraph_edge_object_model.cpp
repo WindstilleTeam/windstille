@@ -99,7 +99,7 @@ NavGraphEdgeObjectModel::write(FileWriter& writer) const
 void
 NavGraphEdgeObjectModel::write_real(FileWriter& writer) const
 {
-  writer.begin_object("navgraph-edge");
+  writer.begin_object("edge");
   ObjectModel::write_member(writer);
   writer.write("lhs-node", m_lhs->get_id());
   writer.write("rhs-node", m_rhs->get_id());
