@@ -4,7 +4,7 @@
   (version 1)
   (name   "")
   (music  "music/techdemo.ogg")
-  (ambient-color .4 .4 .4)
+  (ambient-color 0.4 0.4 0.4)
   (init-script "newformat2.nut")
   (spawnpoint
     (name "default")
@@ -72,7 +72,7 @@
 
     ;; Water bounce
     (particle-system
-     (lifetime   .2)
+     (lifetime  0.2)
      (count      50)
      (z-pos  1000)
      (pos 532 836)
@@ -115,7 +115,7 @@
      (pos 0 0)
      (count 40)
      (z-pos 1000)
-     (lifetime   .5)
+     (lifetime  0.5)
      (velocity 100 200)
      (color-begin 1.0 1.0 1.0 0.5)
      (cone -95 -85)
@@ -128,7 +128,7 @@
 
     (particle-system
      (name "player_flames2")
-     (lifetime   .5)
+     (lifetime  0.5)
      (pos 0 0)
      (count 40)
      (z-pos -100)

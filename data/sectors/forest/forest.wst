@@ -3,7 +3,7 @@
   (version 2)
   (name   "")
   (music  "")
-  (ambient-color .7 .7 .7)
+  (ambient-color 0.7 0.7 0.7)
   (spawnpoint
     (name "default")
     (pos 300 150)

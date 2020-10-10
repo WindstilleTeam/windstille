@@ -3,7 +3,7 @@
   (version 2)
   (name   "")
   (music  "levels/silence_wip.ogg")
-  (ambient-color .666 .666 .666)
+  (ambient-color 0.666 0.666 0.666)
   (init-script "intro.nut")
   (spawnpoint
     (name "default")

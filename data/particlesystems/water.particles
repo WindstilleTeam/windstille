@@ -11,7 +11,7 @@
   (layer "color")
   (velocity 100 200)
   (cone -10 -170)
-  (gravity 0  .5)
+  (gravity 0  0.5)
   (distribution (line-distribution (x1 -50)  (y1 0) (x2 50) (y2 0))))
 
   (particle-system
@@ -23,7 +23,7 @@
    (layer "color")
    (velocity 100 200)
    (cone -50 -130)
-   (gravity 0  .5)
+   (gravity 0  0.5)
    (distribution (line-distribution (x1 -50)  (y1 0) (x2 50) (y2 0))))
 ))
 

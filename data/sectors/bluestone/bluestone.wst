@@ -4,7 +4,7 @@
   (name   "")
   (music  "")
   (init-script "init.nut")
-  (ambient-color .2 .2 .4)
+  (ambient-color 0.2 0.2 0.4)
   (objects
 
    (scriptable-object
