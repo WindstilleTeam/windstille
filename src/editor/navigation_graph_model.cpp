@@ -171,7 +171,7 @@ NavigationGraphModel::has_edge(std::shared_ptr<NavGraphNodeObjectModel> lhs, std
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
   // We enforce order so that we can easier compare
   // NavGraphEdgeObjectModel's with one another
-  if (!(lhs < rhs))
+  if (!(lhs < rhs)) // NOLINT
     std::swap(lhs, rhs);
 
   for(Edges::const_reverse_iterator i = m_edges.rbegin(); i != m_edges.rend(); ++i)

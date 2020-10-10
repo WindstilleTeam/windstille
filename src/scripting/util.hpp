@@ -27,10 +27,6 @@ namespace sexp {
 class Value;
 } // namespace sexp
 
-namespace lisp {
-class Writer;
-} // namespace lisp
-
 namespace Scripting {
 
 // Squirrel to Lisp
