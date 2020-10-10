@@ -1,6 +1,6 @@
-(sprite
+(sprite (actions
   (action
     (name "default")
     (images "spider_mine.png")
   )
-)
+))

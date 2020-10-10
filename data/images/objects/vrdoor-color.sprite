@@ -1,6 +1,6 @@
-(sprite
+(sprite (actions
   (action
     (name "default")
     (images "vrdoor-color.png")
   )
-)
+))

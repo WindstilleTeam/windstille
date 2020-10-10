@@ -1,7 +1,8 @@
 ;; -*- scheme -*-
 
 (particle-systems
- (particle-system
+ (particle-systems
+  (particle-system
   (pos 0 32)
   (lifetime 18)
   (count 40)
@@ -28,4 +29,4 @@
   (gravity 0 0)
   (size 3.0 5.0)
   (distribution (line-distribution (x1 -400) (y1 0) (x2 50) (y2 0))))
- )
+ ))

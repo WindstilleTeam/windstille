@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
-
 (particle-systems
- ;; Fire itself
+ (particle-systems
+  ;; Fire itself
  (particle-system
   (pos 0 0)
   (count 10)
@@ -16,6 +16,6 @@
   (drawer (surface-drawer (image "images/particles/smoke.png")
                           (blendfunc-src "src_alpha")
                           (blendfunc-dst "one"))))
-)
+))
 
 ;; EOF ;;

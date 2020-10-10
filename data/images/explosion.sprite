@@ -1,4 +1,4 @@
-(sprite
+(sprite (actions
  (action
   (name "default")
   (speed 10.0)

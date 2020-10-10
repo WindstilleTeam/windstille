@@ -1,6 +1,7 @@
 ;; -*- scheme -*-
 
 (particle-systems
+(particle-systems
  (particle-system
   (drawer (spark-drawer (color 0.25 0.5 1.0) (width 2.5)))
   (z-pos 900)
@@ -24,6 +25,6 @@
    (cone -50 -130)
    (gravity 0  .5)
    (distribution (line-distribution (x1 -50)  (y1 0) (x2 50) (y2 0))))
-)
+))
 
 ;; EOF ;;

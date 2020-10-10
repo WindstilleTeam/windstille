@@ -1,6 +1,7 @@
 ;; -*- scheme -*-
 (windstille-model
-  (name "")
+ (name "")
+ (meshes
   (mesh
     (name "")
     (texture "textures/suit2-texture.png")
@@ -6356,7 +6357,7 @@
      ) ;; groups
 
    ) ;; mesh
-
+  )
  ) ;; windstille-model
 
 ;; EOF ;;

@@ -1,8 +1,8 @@
-(sprite
+(sprite (actions
   (action
     (name "default")
     (images "flashlighthighlight.png")
     (offset 0 -128)
     (scale 1.5)
   )
-)
+))

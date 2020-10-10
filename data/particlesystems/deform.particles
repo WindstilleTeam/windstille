@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
 
 (particle-systems
-
+(particle-systems
  ;; Fire itself
  (particle-system
   (pos 0 0)
@@ -18,6 +18,6 @@
                                  (blendfunc-src "src_alpha")
                                   (blendfunc-dst "one"))))
 
- )
+ ))
 
 ;; EOF ;;

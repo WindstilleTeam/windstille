@@ -1,7 +1,7 @@
-(sprite
+(sprite (actions
   (action
     (name "default")
     (images "streetlamp-highlight.png")
     (offset -111 -215)
   )
-)
+))
