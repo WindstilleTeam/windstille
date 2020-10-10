@@ -377,26 +377,26 @@ NavigationGraph::write(FileWriter& writer)
       ptr2id[*i] = static_cast<int>(i - nodes.begin() + 1);
   }
 
-  writer.start_section("nodes");
+  writer.begin_collection("nodes");
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
   {
-    writer.start_section("node");
+    writer.begin_object("node");
     writer.write("id", ptr2id[*i]);
     writer.write("pos", (*i)->get_pos());
-    writer.end_section();
+    writer.end_object();
   }
-  writer.end_section();
+  writer.end_collection();
 
-  writer.start_section("edges");
+  writer.begin_collection("edges");
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
-    writer.start_section("edge");
+    writer.begin_object("edge");
     writer.write("node1", ptr2id[(*i)->get_node1()]);
     writer.write("node2", ptr2id[(*i)->get_node2()]);
     writer.write("properties", static_cast<int>((*i)->get_properties()));
-    writer.end_section();
+    writer.end_object();
   }
-  writer.end_section();
+  writer.end_collection();
 }
 
 bool

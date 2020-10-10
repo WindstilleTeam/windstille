@@ -357,41 +357,39 @@ SectorModel::snap_object(ObjectModelHandle object, const std::set<ObjectModelHan
 void
 SectorModel::write(FileWriter& writer) const
 {
-  writer.write_raw(";; -*- scheme -*-\n");
-  writer.start_section("windstille-sector");
+  writer.begin_object("windstille-sector");
 
   writer.write("version", 3);
   writer.write("name", "");
   writer.write("ambient-color", ambient_color);
   writer.write("init-script", "init.nut");
 
-  writer.start_section("timeline");
+  writer.begin_collection("timeline");
   m_timeline->write(writer);
-  writer.end_section();
+  writer.end_collection();
 
-  writer.start_section("navigation");
+  writer.begin_collection("navigation");
   nav_graph->write(writer);
-  writer.end_section();
+  writer.end_collection();
 
-  writer.start_section("layers");
+  writer.begin_collection("layers");
   const Layers& layers = get_layers();
   for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
   {
-    writer.start_section("layer");
+    writer.begin_object("layer");
     writer.write("name",    (*i)->get_name());
     writer.write("visible", (*i)->is_visible());
     writer.write("locked",  (*i)->is_locked());
 
-    writer.start_section("objects");
+    writer.begin_collection("objects");
     (*i)->write(writer);
-    writer.end_section();
+    writer.end_collection();
 
-    writer.end_section();
+    writer.end_object();
   }
-  writer.end_section();
+  writer.end_collection();
 
-  writer.end_section();
-  writer.write_raw("\n\n;; EOF ;;\n");
+  writer.end_object();
 }
 
 struct PropSetFunctor

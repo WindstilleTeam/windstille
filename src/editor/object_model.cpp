@@ -66,11 +66,12 @@ ObjectModel::write_member(FileWriter& writer) const
 {
   ObjectModelHandle parent = parent_ptr.lock();
 
-  return writer
-    .write("id", get_id())
-    .write("pos", rel_pos)
-    .write("parent", parent.get() ? parent->get_id() : "")
-    .write("select-mask", static_cast<int>(select_mask.get_mask()));
+  writer.write("id", get_id());
+  writer.write("pos", rel_pos);
+  writer.write("parent", parent.get() ? parent->get_id() : "");
+  writer.write("select-mask", static_cast<int>(select_mask.get_mask()));
+
+  return writer;
 }
 
 ObjectModelHandle

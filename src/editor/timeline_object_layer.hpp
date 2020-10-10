@@ -42,16 +42,16 @@ public:
 
   void write(FileWriter& writer) const override
   {
-    writer.start_section("object-layer");
+    writer.begin_object("object-layer");
     writer.write("object",   m_object->get_id());
-    writer.write("property", m_property); // FIXME: convert property to string
-    writer.start_section("objects");
+    writer.write("property", static_cast<int>(m_property)); // FIXME: convert property to string
+    writer.begin_collection("objects");
     for(const_iterator i = begin(); i != end(); ++i)
     {
       (*i)->write(writer);
     }
-    writer.end_section();
-    writer.end_section();
+    writer.end_collection();
+    writer.end_object();
   }
 
 private:

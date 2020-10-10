@@ -24,8 +24,7 @@
 #include <memory>
 
 #include "timeline_handles.hpp"
-
-class FileWriter;
+#include "util/file_writer.hpp"
 
 class TimelineLayer
 {

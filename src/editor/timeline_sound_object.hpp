@@ -42,10 +42,10 @@ public:
 
   void write(FileWriter& writer) const override
   {
-    writer.start_section("sound");
+    writer.begin_object("sound");
     writer.write("pos",  m_pos);
     writer.write("name", m_name);
-    writer.end_section();
+    writer.end_object();
   }
 
 private:

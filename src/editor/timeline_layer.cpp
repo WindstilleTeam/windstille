@@ -78,14 +78,14 @@ TimelineLayer::get_objects(float selection_start, float selection_end) const
 void
 TimelineLayer::write(FileWriter& writer) const
 {
-  writer.start_section("layer");
-  writer.start_section("objects");
+  writer.begin_object("layer");
+  writer.begin_collection("objects");
   for(const_iterator i = begin(); i != end(); ++i)
   {
     (*i)->write(writer);
   }
-  writer.end_section();
-  writer.end_section();
+  writer.end_collection();
+  writer.end_object();
 }
 
 /* EOF */

@@ -190,15 +190,15 @@ DecalObjectModel::clone() const
 void
 DecalObjectModel::write(FileWriter& writer) const
 {
-  writer.start_section("decal");
+  writer.begin_object("decal");
   ObjectModel::write_member(writer);
   writer.write("path",    path);
-  writer.write("type",    type);
+  writer.write("type",    static_cast<int>(type));
   writer.write("scale",   scale);
   writer.write("angle",   angle);
   writer.write("hflip",   hflip);
   writer.write("vflip",   vflip);
-  writer.end_section();
+  writer.end_object();
 }
 
 bool

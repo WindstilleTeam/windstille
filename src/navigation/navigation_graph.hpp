@@ -27,14 +27,14 @@
 
 #include "math/rect.hpp"
 #include "math/vector2f.hpp"
-
+#include "util/file_writer.hpp"
+
 class Edge;
 class EdgePosition;
 class FileReader;
-class FileWriter;
 class Line;
 class Node;
-
+
 template<typename Data>
 class PointerHandle
 {

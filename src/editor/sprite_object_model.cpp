@@ -59,10 +59,10 @@ SpriteObjectModel::clone() const
 void
 SpriteObjectModel::write(FileWriter& writer) const
 {
-  writer.start_section("sprite");
+  writer.begin_object("sprite");
   ObjectModel::write_member(writer);
   writer.write("path", path);
-  writer.end_section();
+  writer.end_object();
 }
 
 /* EOF */

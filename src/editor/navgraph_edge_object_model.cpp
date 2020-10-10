@@ -91,19 +91,19 @@ NavGraphEdgeObjectModel::clone() const
 void
 NavGraphEdgeObjectModel::write(FileWriter& writer) const
 {
-  writer.start_section("navgraph-edge-ref");
+  writer.begin_object("navgraph-edge-ref");
   writer.write("edge", get_id());
-  writer.end_section();
+  writer.end_object();
 }
 
 void
 NavGraphEdgeObjectModel::write_real(FileWriter& writer) const
 {
-  writer.start_section("navgraph-edge");
+  writer.begin_object("navgraph-edge");
   ObjectModel::write_member(writer);
   writer.write("lhs-node", m_lhs->get_id());
   writer.write("rhs-node", m_rhs->get_id());
-  writer.end_section();
+  writer.end_object();
 }
 
 /* EOF */

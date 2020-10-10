@@ -43,10 +43,10 @@ public:
   std::string get_name() const { return m_name; }
   void write(FileWriter& writer) const override
   {
-    writer.start_section("animation");
+    writer.begin_object("animation");
     writer.write("pos",  m_pos);
     writer.write("name", m_name);
-    writer.end_section();
+    writer.end_object();
   }
 
 private:

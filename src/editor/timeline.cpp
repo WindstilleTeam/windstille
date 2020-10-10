@@ -114,12 +114,12 @@ Timeline::apply(float pos)
 void
 Timeline::write(FileWriter& writer) const
 {
-  writer.start_section("layers");
+  writer.begin_collection("layers");
   for(const_iterator i = begin(); i != end(); ++i)
   {
     (*i)->write(writer);
   }
-  writer.end_section();
+  writer.end_collection();
 }
 
 /* EOF */

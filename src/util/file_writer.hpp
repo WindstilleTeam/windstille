@@ -18,40 +18,21 @@
 
 #ifndef HEADER_WINDSTILLE_UTIL_FILE_WRITER_HPP
 #define HEADER_WINDSTILLE_UTIL_FILE_WRITER_HPP
-
+
+#include <string>
+
+#include <prio/fwd.hpp>
+#include <geom/size.hpp>
+
 class Color;
-#include "math/vector2f.hpp"
-
-class FileWriter
-{
-private:
-  std::ostream& out;
-  int indent_count;
 
-  void indent();
+using FileWriter = prio::Writer;
 
-public:
-  FileWriter(std::ostream& out);
-  ~FileWriter();
+void write_custom(prio::Writer& writer, std::string_view key, glm::vec2 const& value);
+void write_custom(prio::Writer& writer, std::string_view key, Color const& value);
 
-  FileWriter& write_raw(const std::string& value);
+#include <prio/writer.hpp>
 
-  FileWriter& start_section(const std::string& name);
-  FileWriter& end_section();
-
-  FileWriter& write(const std::string& name, bool value);
-  FileWriter& write(const std::string& name, int value);
-  FileWriter& write(const std::string& name, float value);
-  FileWriter& write(const std::string& name, const std::string& value);
-  FileWriter& write(const std::string& name, const char* value);
-  FileWriter& write(const std::string& name, const Color& value);
-  FileWriter& write(const std::string& name, const Vector2f& value);
-
-private:
-  FileWriter(const FileWriter&);
-  FileWriter& operator=(const FileWriter&);
-};
-
 #endif
 
 /* EOF */

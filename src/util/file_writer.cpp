@@ -16,124 +16,18 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <sstream>
+#include "util/file_writer.hpp"
 
 #include "display/color.hpp"
-#include "math/vector2f.hpp"
-#include "util/file_writer.hpp"
-
-FileWriter::FileWriter(std::ostream& out_)
-  : out(out_),
-    indent_count(0)
+
+void write_custom(prio::Writer& writer, std::string_view key, glm::vec2 const& value)
 {
+  writer.write(key, std::vector<float>({value.x, value.y}));
 }
 
-FileWriter::~FileWriter()
+void write_custom(prio::Writer& writer, std::string_view key, Color const& value)
 {
+  writer.write(key, std::vector<float>({value.r, value.g, value.b, value.a}));
 }
 
-void
-FileWriter::indent()
-{
-  out << '\n';
-  for(int i = 0; i < indent_count; ++i)
-    out << "  ";
-}
-
-FileWriter&
-FileWriter::write_raw(const std::string& value)
-{
-  out << value;
-  return *this;
-}
-
-FileWriter&
-FileWriter::start_section(const std::string& name)
-{
-  indent();
-  out << "(" << name;
-  indent_count += 1;
-  return *this;
-}
-
-FileWriter&
-FileWriter::end_section()
-{
-  out << ")";
-  indent_count -= 1;
-  return *this;
-}
-
-FileWriter&
-FileWriter::write(const std::string& name, bool value)
-{
-  indent();
-  out << "(" << name << " " << (value?"#t":"#f") << ")";
-  return *this;
-}
-
-FileWriter&
-FileWriter::write(const std::string& name, int value)
-{
-  indent();
-  out << "(" << name << " " << value << ")";
-  return *this;
-}
-
-FileWriter&
-FileWriter::write(const std::string& name, float value)
-{
-  indent();
-  out << "(" << name << " " << value << ")";
-  return *this;
-}
-
-static
-std::string escape_string(const std::string& in)
-{
-  std::ostringstream str;
-  for(std::string::const_iterator i = in.begin(); i != in.end(); ++i)
-  {
-    if (*i == '"')
-      str << "\\\"";
-    else if (*i == '\\')
-      str << "\\\\";
-    else
-      str << *i;
-  }
-  return str.str();
-}
-
-FileWriter&
-FileWriter::write(const std::string& name, const char* value)
-{
-  indent();
-  out << "(" << name << " \"" << escape_string(value) << "\")";
-  return *this;
-}
-
-FileWriter&
-FileWriter::write(const std::string& name, const std::string& value)
-{
-  indent();
-  out << "(" << name << " \"" << escape_string(value) << "\")";
-  return *this;
-}
-
-FileWriter&
-FileWriter::write(const std::string& name, const Color& value)
-{
-  indent();
-  out << "(" << name << " " << value.r << " " << value.g << " " << value.b << " " << value.a << ")";
-  return *this;
-}
-
-FileWriter&
-FileWriter::write(const std::string& name, const Vector2f& value)
-{
-  indent();
-  out << "(" << name << " " << value.x << " " << value.y << ")";
-  return *this;
-}
-
 /* EOF */

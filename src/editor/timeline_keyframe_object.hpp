@@ -59,10 +59,10 @@ public:
 
   void write(FileWriter& writer) const override
   {
-    writer.start_section("keyframe");
+    writer.begin_object("keyframe");
     writer.write("pos",  m_pos);
     writer.write("data", m_data);
-    writer.end_section();
+    writer.end_object();
   }
 
   C blend(const TimelineKeyframeDataObject<C>& rhs, float pos)
