@@ -21,6 +21,8 @@
 #include <stdexcept>
 #include <sstream>
 
+#include <logmich/log.hpp>
+
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
 #include "display/opengl_window.hpp"
@@ -69,6 +71,8 @@ ParticleViewer::load(const Pathname& filename)
   for (ReaderObject const& item : particlesys_col.get_objects()) {
     if (item.get_name() == "particle-system") {
       systems.push_back(std::shared_ptr<ParticleSystem>(new ParticleSystem(item.get_mapping())));
+    } else {
+      log_error("unknown particle-system: {}", item.get_name());
     }
   }
 
