@@ -39,7 +39,7 @@ NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(std::shared_ptr<NavGraphNodeObj
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
   // We enforce order so that we can easier compare
   // NavGraphEdgeObjectModel's with one another
-  if (!(m_lhs < m_rhs))
+  if (!(m_lhs < m_rhs)) // NOLINT
     std::swap(m_lhs, m_rhs);
 }
 
