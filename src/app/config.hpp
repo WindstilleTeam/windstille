@@ -23,7 +23,7 @@
 #include <stdexcept>
 #include <sstream>
 
-#include "lisp/writer.hpp"
+#include "util/file_writer.hpp"
 
 extern std::vector<std::string> arg_files;
 
@@ -65,7 +65,7 @@ public:
     return os.str();
   }
 
-  virtual void write(lisp::Writer& writer) =0;
+  virtual void write(FileWriter& writer) =0;
 };
 
 template<class T>
@@ -108,7 +108,7 @@ public:
     return *this;
   }
 
-  void write(lisp::Writer& writer) override;
+  void write(FileWriter& writer) override;
 
   std::ostream& print(std::ostream& os) const override {
     return (os << data);

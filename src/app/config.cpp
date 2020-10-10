@@ -19,8 +19,10 @@
 #include "app/config.hpp"
 
 #include <iostream>
+#include <fstream>
 #include <fmt/format.h>
 #include <stdio.h>
+#include <logmich/log.hpp>
 
 #include <argparser.hpp>
 
@@ -368,25 +370,22 @@ void
 Config::save()
 {
   try {
-    lisp::Writer writer(Pathname("config", Pathname::kUserPath));
+    FileWriter writer = FileWriter::from_file(Pathname("config", Pathname::kUserPath).get_sys_path());
 
-    writer.write_comment(";; -*- scheme -*-");
-    writer.write_comment(";; Windstille Config - automatically read and written on startup/quit");
-    writer.start_list("windstille-config");
+    writer.write_comment("Windstille Config - automatically read and written on startup/quit");
+    writer.begin_object("windstille-config");
 
     for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
     {
       if (i->second->should_be_saved() && i->second->is_set())
       {
-        writer.write_comment("  ;; " + i->second->get_docstring());
+        writer.write_comment(i->second->get_docstring());
         i->second->write(writer);
-        writer.write_comment("");
       }
     }
     // TODO write controller config
 
-    writer.end_list("windstille-config");
-    writer.write_comment(";; EOF ;;");
+    writer.end_object();
   } catch(std::exception& e) {
     std::cerr << "Couldn't write config file: " << e.what() << "\n";
   }
@@ -408,23 +407,23 @@ Config::debug_print(std::ostream& out)
 }
 
 template<>
-void ConfigValue<bool>::write(lisp::Writer& writer) {
-  writer.write_bool(get_name(), data);
+void ConfigValue<bool>::write(FileWriter& writer) {
+  writer.write(get_name(), data);
 }
 
 template<>
-void ConfigValue<int>::write(lisp::Writer& writer) {
-  writer.write_int(get_name(), data);
+void ConfigValue<int>::write(FileWriter& writer) {
+  writer.write(get_name(), data);
 }
 
 template<>
-void ConfigValue<float>::write(lisp::Writer& writer) {
-  writer.write_float(get_name(), data);
+void ConfigValue<float>::write(FileWriter& writer) {
+  writer.write(get_name(), data);
 }
 
 template<>
-void ConfigValue<std::string>::write(lisp::Writer& writer) {
-  writer.write_string(get_name(), data);
+void ConfigValue<std::string>::write(FileWriter& writer) {
+  writer.write(get_name(), data);
 }
 
 /* EOF */
