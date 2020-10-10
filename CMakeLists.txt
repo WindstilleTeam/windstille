@@ -165,18 +165,18 @@ target_link_libraries(wstlib PUBLIC
   geomcpp
   logmich
   sexp
-  PkgConfig::SQUIRREL
+  Squirrel::Squirrel
   Freetype::Freetype
   GLEW::GLEW
   JPEG::JPEG
   OpenGL::GL
   OpenGL::GLU
   PNG::PNG
+  fmt::fmt
   PkgConfig::SDL2
   PkgConfig::SDL2_IMAGE
   PkgConfig::SIGCXX
-  Threads::Threads
-  fmt::fmt)
+  Threads::Threads)
 
 # compile galapix.sdl
 if(BUILD_EDITOR)
