@@ -27,8 +27,8 @@ Hedgehog::Hedgehog(ReaderMapping const& props) :
   direction_left(false),
   state(WALKING)
 {
-  props.get("name", name);
-  props.get("pos",  pos);
+  props.read("name", name);
+  props.read("pos",  pos);
 
   light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
   highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);

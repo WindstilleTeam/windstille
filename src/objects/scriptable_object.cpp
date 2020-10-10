@@ -32,16 +32,16 @@ ScriptableObject::ScriptableObject(ReaderMapping const& props) :
   std::string highlightname;
   std::string lightname;
 
-  props.get("name", name);
-  props.get("sprite", spritename);
-  props.get("highlight", highlightname);
-  props.get("light",   lightname);
-  props.get("pos", pos);
-  props.get("script", script_file);
-  props.get("use-verb", use_verb);
-  props.get("active", active);
-  props.get("flash-speed", flash_speed); // FIXME: bad name, should be something more generic
-  props.get("z-pos", z_pos);
+  props.read("name", name);
+  props.read("sprite", spritename);
+  props.read("highlight", highlightname);
+  props.read("light",   lightname);
+  props.read("pos", pos);
+  props.read("script", script_file);
+  props.read("use-verb", use_verb);
+  props.read("active", active);
+  props.read("flash-speed", flash_speed); // FIXME: bad name, should be something more generic
+  props.read("z-pos", z_pos);
 
   if (use_verb != "")
     set_useable(true);

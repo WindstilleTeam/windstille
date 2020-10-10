@@ -28,7 +28,7 @@ Shockwave::Shockwave(ReaderMapping const& props) :
   shader_program(ShaderProgram::create()),
   radius()
 {
-  props.get("pos", pos);
+  props.read("pos", pos);
 
   radius = 100.0f;
 

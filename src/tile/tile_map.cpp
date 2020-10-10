@@ -38,10 +38,10 @@ TileMap::TileMap(ReaderMapping const& props) :
   z_pos = 0;
   total_time = 0;
 
-  props.get("name", name);
-  props.get("z-pos", z_pos);
-  props.get("width", width);
-  props.get("height", height);
+  props.read("name", name);
+  props.read("z-pos", z_pos);
+  props.read("width", width);
+  props.read("height", height);
 
   if(width <= 0 || height <= 0)
   {
@@ -57,7 +57,7 @@ TileMap::TileMap(ReaderMapping const& props) :
 
   Field<int> tmpfield(width, height);
 
-  props.get("data", tmpfield.get_vector());
+  props.read("data", tmpfield.get_vector());
 
   field = Field<Tile*>(width, height);
   for (int y = 0; y < field.get_height (); ++y)

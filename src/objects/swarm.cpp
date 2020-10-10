@@ -31,10 +31,10 @@ Swarm::Swarm(ReaderMapping const& props) :
   int count = 100;
   turn_speed = 7.0f;
 
-  props.get("name",  name);
-  props.get("pos",   pos);
-  props.get("count", count);
-  props.get("turn-speed", turn_speed);
+  props.read("name",  name);
+  props.read("pos",   pos);
+  props.read("count", count);
+  props.read("turn-speed", turn_speed);
 
   agents.resize(count);
 

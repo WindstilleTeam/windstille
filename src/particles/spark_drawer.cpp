@@ -27,8 +27,8 @@ SparkDrawer::SparkDrawer(ReaderMapping const& props)
     width(1.0f),
     buffer()
 {
-  props.get("color", color);
-  props.get("width", width);
+  props.read("color", color);
+  props.read("width", width);
 
   buffer.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix(1.0f)));
 }

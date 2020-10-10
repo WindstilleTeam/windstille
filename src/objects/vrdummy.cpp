@@ -25,8 +25,8 @@ VRDummy::VRDummy(ReaderMapping const& props) :
   rotation(),
   jump_time()
 {
-  props.get("name", name);
-  props.get("pos",  pos);
+  props.read("name", name);
+  props.read("pos",  pos);
 
   sprite = Sprite3D(Pathname("models/characters/vrdummy/vrdummy.wsprite"));
   rotation = 0;

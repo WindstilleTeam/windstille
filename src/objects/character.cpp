@@ -32,11 +32,11 @@ Character::Character(ReaderMapping const& props) :
   std::string sprite3d_filename = "models/characters/jane/jane.wsprite";
   std::string action_name;
 
-  props.get("name", name);
-  props.get("pos", pos);
-  props.get("z-pos", z_pos);
-  props.get("sprite3d", sprite3d_filename);
-  props.get("action", action_name);
+  props.read("name", name);
+  props.read("pos", pos);
+  props.read("z-pos", z_pos);
+  props.read("sprite3d", sprite3d_filename);
+  props.read("action", action_name);
 
   sprite = Sprite3D(Pathname(sprite3d_filename));
 

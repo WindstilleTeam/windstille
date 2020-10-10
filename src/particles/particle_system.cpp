@@ -50,7 +50,7 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props)
     color_stop(   0,    0,    0,    0)
 {
   float p_bunching = 1.0;
-  props.get("bunching", p_bunching);
+  props.read("bunching", p_bunching);
   set_bunching(p_bunching);
 
   //FIXME: commented since it causes trouble for the editor: props.get("name", name);
@@ -59,7 +59,7 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props)
   if (props.read("lifetime", p_lifetime))
     set_lifetime(p_lifetime);
 
-  props.get("z-pos", z_pos);
+  props.read("z-pos", z_pos);
 
   Vector2f p_gravity;
   if (props.read("gravity", p_gravity))

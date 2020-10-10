@@ -27,9 +27,9 @@ Elevator::Elevator(ReaderMapping const& props) :
 {
   std::string spritename;
 
-  props.get("sprite", spritename);
-  props.get("pos", pos);
-  props.get("name", name);
+  props.read("sprite", spritename);
+  props.read("pos", pos);
+  props.read("name", name);
 
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in Elevator");

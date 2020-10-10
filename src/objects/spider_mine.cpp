@@ -28,8 +28,8 @@ SpiderMine::SpiderMine(ReaderMapping const& props) :
   jump_time(0.0),
   state(WAIT)
 {
-  props.get("name", name);
-  props.get("pos",  pos);
+  props.read("name", name);
+  props.read("pos",  pos);
 
   sprite = Sprite(Pathname("images/spider_mine.sprite"));
   //sprite.set_scale(.5, .5);

@@ -33,13 +33,13 @@ Box::Box(ReaderMapping const& props) :
   std::string spritename;
   Vector2f vel;
 
-  props.get("sprite", spritename);
-  props.get("pos", pos);
-  props.get("width", width);
-  props.get("height", height);
-  props.get("vel", vel);
-  props.get("name", name);
-  props.get("gravity", gravity);
+  props.read("sprite", spritename);
+  props.read("pos", pos);
+  props.read("width", width);
+  props.read("height", height);
+  props.read("vel", vel);
+  props.read("name", name);
+  props.read("gravity", gravity);
 
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in Box");

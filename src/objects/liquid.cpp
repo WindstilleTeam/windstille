@@ -37,8 +37,8 @@ Liquid::Liquid(ReaderMapping const& props) :
   int width = 10;
   t = 0;
 
-  props.get("pos",    pos);
-  props.get("width",  width);
+  props.read("pos",    pos);
+  props.read("width",  width);
 
   heightfield1 = &heightfield_store1;
   heightfield2 = &heightfield_store2;

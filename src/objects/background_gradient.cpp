@@ -28,8 +28,8 @@ BackgroundGradient::BackgroundGradient(ReaderMapping const& props) :
 {
   std::vector<float> colors;
 
-  //props.get("z-pos",  z_pos);
-  props.get("colors", colors);
+  //props.read("z-pos",  z_pos);
+  props.read("colors", colors);
 
   if (colors.size() % (3 + 4 + 4 + 2) != 0)
   {

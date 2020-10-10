@@ -31,11 +31,11 @@ TileDescription::TileDescription(ReaderMapping const& props) :
   width(0),
   height(0)
 {
-  props.get("ids",    ids);
-  props.get("image",  filename);
-  props.get("colmap", colmap);
-  props.get("width",  width);
-  props.get("height", height);
+  props.read("ids",    ids);
+  props.read("image",  filename);
+  props.read("colmap", colmap);
+  props.read("width",  width);
+  props.read("height", height);
 
   if(filename == "")
     throw std::runtime_error("Missing color-image");

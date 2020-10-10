@@ -75,9 +75,9 @@ SurfaceDrawer::SurfaceDrawer(ReaderMapping const& props)
   std::string blendfunc_dst_str = "one_minus_src_alpha";
   std::string surface_file;
 
-  props.get("image", surface_file);
-  props.get("blendfunc-src", blendfunc_src_str);
-  props.get("blendfunc-dst", blendfunc_dst_str);
+  props.read("image", surface_file);
+  props.read("blendfunc-src", blendfunc_src_str);
+  props.read("blendfunc-dst", blendfunc_dst_str);
 
   surface = SurfaceManager::current()->get(Pathname(surface_file));
 

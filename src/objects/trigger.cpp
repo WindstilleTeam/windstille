@@ -33,12 +33,12 @@ Trigger::Trigger(ReaderMapping const& props) :
   float width = -1;
   float height = -1;
 
-  props.get("x", x);
-  props.get("y", y);
-  props.get("width", width);
-  props.get("height", height);
-  props.get("callback", callback);
-  props.get("one-time-trigger", one_time_trigger);
+  props.read("x", x);
+  props.read("y", y);
+  props.read("width", width);
+  props.read("height", height);
+  props.read("callback", callback);
+  props.read("one-time-trigger", one_time_trigger);
 
   if(x < 0 || y < 0 || width < 0 || height < 0)
     throw std::runtime_error("Invalid or missing area in Trigger object");
