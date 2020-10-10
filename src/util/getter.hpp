@@ -23,29 +23,14 @@
 #include "math/vector3.hpp"
 #include "math/vector2f.hpp"
 #include "math/quaternion.hpp"
-#include "util/file_reader.hpp"
 
-class FileReader;
 class Color;
 
-bool get(const FileReader& reader, const char* name, Matrix& value);
-bool get(const FileReader& reader, const char* name, Quaternion& value);
-bool get(const FileReader& reader, const char* name, Color& value);
-bool get(const FileReader& reader, const char* name, Vector2f& value);
-bool get(const FileReader& reader, const char* name, Vector3& value);
-
-// Primitive types
-bool get(const FileReader& reader, const char* name, FileReader& v);
-
-bool get(const FileReader& reader, const char* name, int&   v);
-bool get(const FileReader& reader, const char* name, float& v);
-bool get(const FileReader& reader, const char* name, bool& v);
-bool get(const FileReader& reader, const char* name, std::string& v);
-
-bool get(const FileReader& reader, const char* name, std::vector<bool>&   v);
-bool get(const FileReader& reader, const char* name, std::vector<int>&   v);
-bool get(const FileReader& reader, const char* name, std::vector<float>& v);
-bool get(const FileReader& reader, const char* name, std::vector<std::string>& v);
+bool read_custom(ReaderMapping const& map, std::string_view key, Matrix& value);
+bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& value);
+bool read_custom(ReaderMapping const& map, std::string_view key, Color& value);
+bool read_custom(ReaderMapping const& map, std::string_view key, Vector2f& value);
+bool read_custom(ReaderMapping const& map, std::string_view key, Vector3& value);
 
 #endif
 

@@ -23,13 +23,13 @@
 #include "engine/sector.hpp"
 #include "engine/script_manager.hpp"
 
-Layer::Layer(const FileReader& reader) :
+Layer::Layer(ReaderMapping const& reader) :
   objects(),
   new_objects()
 {
 #if 0
   FileReader objects_reader;
-  if(reader.get("objects", objects_reader) == false)
+  if(reader.read("objects", objects_reader) == false)
   {
     throw std::runtime_error("No objects specified");
   }

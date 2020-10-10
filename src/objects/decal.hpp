@@ -33,7 +33,7 @@ private:
   Vector2f pos;
 
 public:
-  Decal(const FileReader& reader);
+  Decal(ReaderMapping const& reader);
   ~Decal() override;
 
   void draw (SceneContext& context) override;

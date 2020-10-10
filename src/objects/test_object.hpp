@@ -28,7 +28,7 @@
 class TestObject : public GameObject
 {
 public:
-  TestObject(const FileReader& reader);
+  TestObject(ReaderMapping const& reader);
   ~TestObject() override;
 
   void draw(SceneContext& context) override;

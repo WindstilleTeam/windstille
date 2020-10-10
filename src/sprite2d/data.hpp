@@ -49,8 +49,8 @@ public:
 class SpriteData
 {
 private:
-  void    parse(const Pathname& dir, FileReader& lisp);
-  SpriteAction* parse_action(const Pathname& dir, FileReader& reader);
+  void parse(const Pathname& dir, ReaderMapping const& lisp);
+  SpriteAction* parse_action(const Pathname& dir, ReaderMapping const& reader);
 
 public:
   SpriteData(const Pathname& filename);

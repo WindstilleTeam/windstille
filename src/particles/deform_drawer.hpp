@@ -19,13 +19,13 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_DEFORM_DRAWER_HPP
 #define HEADER_WINDSTILLE_PARTICLES_DEFORM_DRAWER_HPP
 
-#include "display/surface.hpp"
-#include "display/shader_program.hpp"
-#include "display/framebuffer.hpp"
 #include "display/drawing_context.hpp"
+#include "display/framebuffer.hpp"
+#include "display/shader_program.hpp"
+#include "display/surface.hpp"
 #include "particles/drawer.hpp"
+#include "util/file_reader.hpp"
 
-class FileReader;
 class SceneContext;
 class ParticleSystem;
 
@@ -43,7 +43,7 @@ private:
   ShaderProgramPtr shader_program;
 
 public:
-  DeformDrawer(FileReader& props);
+  DeformDrawer(ReaderMapping const& props);
   ~DeformDrawer() override;
 
   void draw(DrawingContext& sc, ParticleSystem& psys);

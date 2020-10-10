@@ -37,7 +37,7 @@ protected:
   void search_for_player(float delta);
 
 public:
-  SpiderMine(const FileReader& props);
+  SpiderMine(ReaderMapping const& props);
   ~SpiderMine() override;
 
   void update(float delta) override;

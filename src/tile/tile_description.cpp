@@ -24,7 +24,7 @@
 #include "math/rect.hpp"
 #include "tile/tile_factory.hpp"
 
-TileDescription::TileDescription(FileReader& props) :
+TileDescription::TileDescription(ReaderMapping const& props) :
   ids(),
   colmap(),
   filename(),

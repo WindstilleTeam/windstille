@@ -33,7 +33,7 @@ private:
   std::shared_ptr<VertexArrayDrawable> buffer;
 
 public:
-  SparkDrawer(FileReader& props);
+  SparkDrawer(ReaderMapping const& props);
 
   void draw(const ParticleSystem& psys) const override;
 };

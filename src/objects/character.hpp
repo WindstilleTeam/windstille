@@ -29,7 +29,7 @@ private:
   float z_pos;
 
 public:
-  Character(const FileReader& props);
+  Character(ReaderMapping const& props);
   ~Character() override;
 
   void update(float delta) override;

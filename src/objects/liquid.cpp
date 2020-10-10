@@ -24,7 +24,7 @@
 
 #define SAMPLES 5
 
-Liquid::Liquid(const FileReader& props) :
+Liquid::Liquid(ReaderMapping const& props) :
   texture(),
   t(),
   heightfield_store1(),

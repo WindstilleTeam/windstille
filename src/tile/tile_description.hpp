@@ -38,7 +38,7 @@ public:
   int width;
   int height;
 
-  TileDescription(FileReader& props);
+  TileDescription(ReaderMapping const& props);
 
   /**
    * Load the TileDescription into the give TileFactory

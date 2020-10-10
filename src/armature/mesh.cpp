@@ -26,7 +26,7 @@
 #include "display/texture_manager.hpp"
 #include "util/util.hpp"
 
-Mesh::Mesh(FileReader& reader, const std::string& path) :
+Mesh::Mesh(ReaderMapping const& reader, const std::string& path) :
   name(),
   vertices(),
   normals(),
@@ -38,30 +38,27 @@ Mesh::Mesh(FileReader& reader, const std::string& path) :
   blend_sfactor(GL_ONE),
   blend_dfactor(GL_ZERO)
 {
-  if (reader.get_name() != "mesh")
-    throw std::runtime_error("Not a 'mesh' type, its '" + reader.get_name() + "'");
-
   std::string texture_filename;
 
-  reader.get("name",      name);
-  reader.get("texture",   texture_filename);
-  reader.get("vertices",  vertices);
-  reader.get("normals",   normals);
-  reader.get("texcoords", texcoords);
-  reader.get("triangles", triangles);
+  reader.read("name",      name);
+  reader.read("texture",   texture_filename);
+  reader.read("vertices",  vertices);
+  reader.read("normals",   normals);
+  reader.read("texcoords", texcoords);
+  reader.read("triangles", triangles);
 
-  FileReader groups_reader;
-  if (reader.get("groups", groups_reader))
+  ReaderCollection groups_collection;
+  if (reader.read("groups", groups_collection))
   {
-    std::vector<FileReader> sections = groups_reader.get_sections();
-    for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+    for (ReaderObject const& group_obj : groups_collection.get_objects())
     {
-      if ((*i).get_name() == "group")
+      if (group_obj.get_name() == "group")
       {
+        ReaderMapping const& group_map = group_obj.get_mapping();
         VertexGroup group;
-        if ((*i).get("bone",     group.bone_name) &&
-            (*i).get("weight",   group.weight) &&
-            (*i).get("vertices", group.vertices))
+        if (group_map.read("bone", group.bone_name) &&
+            group_map.read("weight", group.weight) &&
+            group_map.read("vertices", group.vertices))
         {
           if (group.weight != 0.0f) // ignore useless bones
             groups.push_back(group);
@@ -73,7 +70,7 @@ Mesh::Mesh(FileReader& reader, const std::string& path) :
       }
       else
       {
-        std::cout << "Unknown tag: " << (*i).get_name() << std::endl;
+        std::cout << "Unknown tag: " << group_obj.get_name() << std::endl;
       }
     }
   }
@@ -131,7 +128,7 @@ Mesh::Mesh(FileReader& reader, const std::string& path) :
 #if 0
   // FIXME: Broken by design
   FileReader influences_reader;
-  if (reader.get("influences", influences_reader))
+  if (reader.read("influences", influences_reader))
   {
     std::vector<FileReader> sections = influences_reader.get_sections();
     for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)

@@ -22,6 +22,7 @@
 #include "math/math.hpp"
 #include "app/config.hpp"
 #include "util/file_reader.hpp"
+#include "util/pathname.hpp"
 #include "util/util.hpp"
 #include "util/log.hpp"
 #include "input_manager.hpp"
@@ -115,127 +116,114 @@ InputManagerSDL::ensure_open_joystick(int device)
 void
 InputManagerSDL::load(const Pathname& filename)
 {
-  FileReader reader = FileReader::parse(filename);
+  ReaderDocument doc = ReaderDocument::from_file(filename.get_sys_path(), true);
 
   std::cout << "InputManager: " << filename << std::endl;
 
-  if (reader.get_name() != "windstille-controller") {
+  if (doc.get_name() != "windstille-controller") {
     std::ostringstream msg;
     msg << "'" << filename << "' is not a windstille-controller file";
     throw std::runtime_error(msg.str());
   }
 
-  parse_config(reader);
+  parse_config(doc.get_mapping());
 }
 
 void
-InputManagerSDL::parse_config(FileReader& reader)
+InputManagerSDL::parse_config(ReaderMapping const& reader)
 {
-  std::vector<FileReader> sections = reader.get_sections();
-
-  for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+  for (auto const& key : reader.get_keys())
   {
-    if (has_suffix(i->get_name(), "-button"))
+    if (has_suffix(key, "-button"))
     {
-      std::vector<FileReader> dev_sections = i->get_sections();
-      for(std::vector<FileReader>::iterator j = dev_sections.begin(); j != dev_sections.end(); ++j)
-      {
-        if (j->get_name() == "joystick-button")
-        {
-          int device = 0;
-          int button = 0;
+      ReaderObject button_obj;
+      reader.read(key, button_obj);
+      ReaderMapping const& button_map = button_obj.get_mapping();
 
-          j->get("device", device);
-          j->get("button", button);
+      if (button_obj.get_name() == "joystick-button") {
+        int device = 0;
+        int button = 0;
 
-          bind_joystick_button(m_controller_description.get_definition(i->get_name()).id,
-                               device, button);
-        }
-        else if (j->get_name() == "joystick-axis-button")
-        {
-          int  device;
-          int  axis;
-          bool up;
+        button_map.read("device", device);
+        button_map.read("button", button);
 
-          j->get("device", device);
-          j->get("axis", axis);
-          j->get("up", up);
+        bind_joystick_button(m_controller_description.get_definition(key).id,
+                             device, button);
+      } else if (button_obj.get_name() == "joystick-axis-button") {
+        int  device;
+        int  axis;
+        bool up;
 
-          bind_joystick_axis_button(m_controller_description.get_definition(i->get_name()).id,
-                                    device, axis, up);
-        }
-        else if (j->get_name() == "wiimote-button")
-        {
-          int device = 0;
-          int button = 0;
+        button_map.read("device", device);
+        button_map.read("axis", axis);
+        button_map.read("up", up);
 
-          j->get("device", device);
-          j->get("button", button);
+        bind_joystick_axis_button(m_controller_description.get_definition(key).id,
+                                  device, axis, up);
+      } else if (button_obj.get_name() == "wiimote-button") {
+        int device = 0;
+        int button = 0;
 
-          bind_wiimote_button(m_controller_description.get_definition(i->get_name()).id,
-                              device, button);
-        }
-        else if (j->get_name() == "keyboard-button")
-        {
-          std::string key;
+        button_map.read("device", device);
+        button_map.read("button", button);
 
-          j->get("key", key);
+        bind_wiimote_button(m_controller_description.get_definition(key).id,
+                            device, button);
+      } else if (button_obj.get_name() == "keyboard-button") {
+        std::string key_text;
+        button_map.read("key", key_text);
 
-          bind_keyboard_button(m_controller_description.get_definition(i->get_name()).id,
-                               string_to_keyid(key));
-        }
-        else
-        {
-          std::cout << "InputManagerSDL: Unknown tag: " << j->get_name() << std::endl;
-        }
+        bind_keyboard_button(m_controller_description.get_definition(key).id,
+                             string_to_keyid(key_text));
+      } else {
+        std::cout << "InputManagerSDL: Unknown tag: " << button_obj.get_name() << std::endl;
       }
     }
-    else if (has_suffix(i->get_name(), "-axis"))
+    else if (has_suffix(key, "-axis"))
     {
-      std::vector<FileReader> dev_sections = i->get_sections();
-      for(std::vector<FileReader>::iterator j = dev_sections.begin(); j != dev_sections.end(); ++j)
-      {
-        if (j->get_name() == "joystick-axis")
+      ReaderObject axis_obj;
+      reader.read(key, axis_obj);
+      ReaderMapping const& axis_map = axis_obj.get_mapping();
+
+        if (axis_obj.get_name() == "joystick-axis")
         {
           int  device = 0;
           int  axis   = 0;
           bool invert = false;
 
-          j->get("device", device);
-          j->get("axis",   axis);
-          j->get("invert", invert);
+          axis_map.read("device", device);
+          axis_map.read("axis",   axis);
+          axis_map.read("invert", invert);
 
-          bind_joystick_axis(m_controller_description.get_definition(i->get_name()).id,
+          bind_joystick_axis(m_controller_description.get_definition(key).id,
                              device, axis, invert);
         }
-        else if (j->get_name() == "keyboard-axis")
+        else if (axis_obj.get_name() == "keyboard-axis")
         {
           std::string minus;
           std::string plus;
 
-          j->get("minus", minus);
-          j->get("plus",  plus);
+          axis_map.read("minus", minus);
+          axis_map.read("plus",  plus);
 
-          bind_keyboard_axis(m_controller_description.get_definition(i->get_name()).id,
+          bind_keyboard_axis(m_controller_description.get_definition(key).id,
                              string_to_keyid(minus), string_to_keyid(plus));
         }
-        else if (j->get_name() == "wiimote-axis")
+        else if (axis_obj.get_name() == "wiimote-axis")
         {
           int  device = 0;
           int  axis   = 0;
 
-          j->get("device", device);
-          j->get("axis",   axis);
+          axis_map.read("device", device);
+          axis_map.read("axis",   axis);
 
-          bind_wiimote_axis(m_controller_description.get_definition(i->get_name()).id,
+          bind_wiimote_axis(m_controller_description.get_definition(key).id,
                             device, axis);
         }
         else
         {
-          std::cout << "InputManagerSDL: Unknown tag: " << j->get_name() << std::endl;
+          std::cout << "InputManagerSDL: Unknown tag: " << axis_obj.get_name() << std::endl;
         }
-      }
-
     }
   }
 }

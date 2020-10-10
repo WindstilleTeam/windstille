@@ -65,7 +65,7 @@ public:
   bool has_edge(std::shared_ptr<NavGraphNodeObjectModel> lhs, std::shared_ptr<NavGraphNodeObjectModel> rhs) const;
 
   void write(FileWriter& writer) const;
-  void load(const FileReader& reader, std::map<std::string, ObjectModelHandle>& id_table);
+  void load(ReaderMapping const& reader, std::map<std::string, ObjectModelHandle>& id_table);
 
 private:
   NavigationGraphModel(const NavigationGraphModel&);

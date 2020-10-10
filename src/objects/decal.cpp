@@ -24,7 +24,7 @@
 #include "display/surface_drawing_parameters.hpp"
 #include "display/scene_context.hpp"
 
-Decal::Decal(const FileReader& reader) :
+Decal::Decal(ReaderMapping const& reader) :
   drawable(),
   pos()
 {
@@ -36,14 +36,14 @@ Decal::Decal(const FileReader& reader) :
   bool vflip = false;
 
   int map_type = 0;
-  reader.get("type", map_type);
+  reader.read("type", map_type);
 
-  reader.get("pos",   pos);
-  reader.get("path",  path);
-  reader.get("scale", scale);
-  reader.get("angle", angle);
-  reader.get("vflip", vflip);
-  reader.get("hflip", hflip);
+  reader.read("pos",   pos);
+  reader.read("path",  path);
+  reader.read("scale", scale);
+  reader.read("angle", angle);
+  reader.read("vflip", vflip);
+  reader.read("hflip", hflip);
 
   SurfacePtr surface = Surface::create(Pathname(path));
 

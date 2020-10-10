@@ -32,7 +32,7 @@ private:
   float radius;
 
 public:
-  Shockwave(const FileReader& props);
+  Shockwave(ReaderMapping const& props);
   ~Shockwave() override;
 
   void draw (SceneContext& context) override;

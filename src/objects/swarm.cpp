@@ -23,7 +23,7 @@
 
 #include "objects/swarm.hpp"
 
-Swarm::Swarm(const FileReader& props) :
+Swarm::Swarm(ReaderMapping const& props) :
   agents(),
   target(),
   turn_speed()

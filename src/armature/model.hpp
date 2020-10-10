@@ -35,7 +35,7 @@ private:
   Meshes meshes;
 
 public:
-  Model(FileReader& reader, const std::string& path);
+  Model(ReaderDocument const& doc, const std::string& path);
   ~Model();
 
   void draw();

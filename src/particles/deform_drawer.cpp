@@ -165,7 +165,7 @@ public:
   bool needs_prepare() { return true; }
 };
 
-DeformDrawer::DeformDrawer(FileReader& /*props*/) :
+DeformDrawer::DeformDrawer(ReaderMapping const& /*props*/) :
   framebuffer(Framebuffer::create_with_texture(GL_TEXTURE_2D, 800, 600)),
   surface(Surface::create(Pathname("images/particles/deform2.png"))),
   shader_program(ShaderProgram::create())

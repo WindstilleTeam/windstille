@@ -22,38 +22,34 @@
 
 #include "util/file_reader.hpp"
 
-Pose::Pose(FileReader& reader) :
+Pose::Pose(ReaderDocument const& doc) :
   name(),
   bones()
 {
-  if (reader.get_name() != "pose")
-  {
+  if (doc.get_name() != "pose") {
     throw std::runtime_error("not a pose file");
-  }
-  else
-  {
-    reader.get("name",  name);
+  } else {
+    ReaderMapping const& reader = doc.get_mapping();
+    reader.read("name",  name);
 
-    FileReader bones_reader;
-    if (!reader.get("bones", bones_reader))
-    {
-      std::cout << "Bones section missing" << std::endl;
-    }
-    else
-    {
-      std::vector<FileReader> sections = bones_reader.get_sections();
-      for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+    ReaderCollection bones_collection;
+    if (!reader.read("bones", bones_collection)) {
+      std::cout << "Bones section missing" << std ::endl;
+    } else {
+      for(ReaderObject const& bone_obj : bones_collection.get_objects())
       {
-        if (i->get_name() == "bone")
+        if (bone_obj.get_name() == "bone")
         {
+          ReaderMapping const& bone_reader = bone_obj.get_mapping();
+
           PoseBone bone;
-          i->get("name", bone.name);
-          i->get("quat", bone.quat);
+          bone_reader.read("name", bone.name);
+          bone_reader.read("quat", bone.quat);
           bones.push_back(bone);
         }
         else
         {
-          std::cout << "Unhandled tag: " << i->get_name() << std::endl;
+          std::cout << "Unhandled tag: " << bone_obj.get_name() << std::endl;
         }
       }
     }

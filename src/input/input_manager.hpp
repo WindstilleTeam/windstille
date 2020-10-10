@@ -22,11 +22,11 @@
 #include <SDL.h>
 #include <memory>
 
-#include "util/currenton.hpp"
 #include "input/controller.hpp"
 #include "input/controller_description.hpp"
+#include "util/currenton.hpp"
+#include "util/file_reader.hpp"
 
-class FileReader;
 class InputManagerSDLImpl;
 class Pathname;
 
@@ -147,7 +147,7 @@ private:
   /** Ensure that the joystick device \a device is open */
   void ensure_open_joystick(int device);
 
-  void parse_config(FileReader& reader);
+  void parse_config(ReaderMapping const& reader);
 
 private:
   ControllerDescription m_controller_description;

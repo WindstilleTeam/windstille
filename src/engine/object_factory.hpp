@@ -21,13 +21,13 @@
 
 #include "engine/game_object_handle.hpp"
 
-class FileReader;
+#include "util/file_reader.hpp"
 
 class ObjectFactory
 {
 private:
 public:
-  static GameObjectHandle create(const FileReader& reader);
+  static GameObjectHandle create(ReaderObject const& reader_obj);
 
 private:
   ObjectFactory(const ObjectFactory&);

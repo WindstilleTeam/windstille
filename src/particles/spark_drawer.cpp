@@ -22,7 +22,7 @@
 #include "particles/particle_system.hpp"
 #include "particles/spark_drawer.hpp"
 
-SparkDrawer::SparkDrawer(FileReader& props)
+SparkDrawer::SparkDrawer(ReaderMapping const& props)
   : color(1.0f, 1.0f, 1.0f),
     width(1.0f),
     buffer()

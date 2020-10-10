@@ -29,7 +29,6 @@
 #include "scenegraph/fill_screen_pattern_drawable.hpp"
 #include "scenegraph/fill_screen_drawable.hpp"
 #include "input/controller.hpp"
-#include "util/sexpr_file_reader.hpp"
 
 ParticleViewer::ParticleViewer()
   : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),
@@ -55,20 +54,21 @@ ParticleViewer::load(const Pathname& filename)
   // Cleanup
   systems.clear();
 
-  FileReader root_reader = FileReader::parse(filename);
-  if(root_reader.get_name() != "particle-systems")
-  {
+  ReaderDocument const& doc = ReaderDocument::from_file(filename.get_sys_path(), true);
+  if (doc.get_name() != "particle-systems") {
     std::ostringstream msg;
     msg << "'" << filename << "' is not a particle-system file";
     throw std::runtime_error(msg.str());
   }
 
-  std::vector<FileReader> sections = root_reader.get_sections();
-  for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
-  {
-    if (i->get_name() == "particle-system")
-    {
-      systems.push_back(std::shared_ptr<ParticleSystem>(new ParticleSystem(*i)));
+  ReaderMapping const& reader = doc.get_mapping();
+
+  ReaderCollection particlesys_col;
+  reader.read("particle-systems", particlesys_col);
+
+  for (ReaderObject const& item : particlesys_col.get_objects()) {
+    if (item.get_name() == "particle-system") {
+      systems.push_back(std::shared_ptr<ParticleSystem>(new ParticleSystem(item.get_mapping())));
     }
   }
 

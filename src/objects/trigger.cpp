@@ -21,7 +21,7 @@
 #include "engine/sector.hpp"
 #include "objects/player.hpp"
 
-Trigger::Trigger(const FileReader& props) :
+Trigger::Trigger(ReaderMapping const& props) :
   area(),
   callback(),
   triggered(false),

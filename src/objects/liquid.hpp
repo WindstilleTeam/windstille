@@ -41,7 +41,7 @@ private:
   std::shared_ptr<VertexArrayDrawable> m_water_body;
 
 public:
-  Liquid(const FileReader& props);
+  Liquid(ReaderMapping const& props);
   ~Liquid() override;
 
   void update(float delta) override;

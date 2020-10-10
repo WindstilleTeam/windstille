@@ -24,8 +24,8 @@
 #include "math/rect.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
-#include "util/file_reader.hpp"
 #include "util/file_writer.hpp"
+#include "util/file_reader.hpp"
 
 #include "navigation/navigation_graph.hpp"
 
@@ -258,7 +258,7 @@ NavigationGraph::draw()
 }
 
 void
-NavigationGraph::load(FileReader& reader)
+NavigationGraph::load(ReaderMapping const& reader)
 {
   nodes.clear();
   edges.clear();
@@ -266,48 +266,43 @@ NavigationGraph::load(FileReader& reader)
   int id_count = 1;
   std::map<int, Node*> id2ptr;
 
-  FileReader nodes_group_reader;
-  if (reader.get("nodes", nodes_group_reader))
+  ReaderCollection nodes_collection;
+  if (reader.read("nodes", nodes_collection))
   {
-    std::vector<FileReader> nodes_reader = nodes_group_reader.get_sections();
-    for(std::vector<FileReader>::iterator i = nodes_reader.begin(); i != nodes_reader.end(); ++i)
+    for(auto const& node_obj : nodes_collection.get_objects())
     {
-      if (i->get_name() == "node")
-      {
+      if (node_obj.get_name() == "node") {
+        ReaderMapping const& node_reader = node_obj.get_mapping();
+
         Vector2f pos;
-        if (i->get("pos", pos))
-        {
+        if (node_reader.read("pos", pos)) {
           Node* node = new Node(pos);
           id2ptr[id_count++] = node;
           nodes.push_back(node);
         }
-        else
-        {
-          std::cout << "NavigationGraph:load: nodes: node: Couldn't read pos attribute" << std::endl;
-        }
       }
       else
       {
-        std::cout << "NavigationGraph:load: nodes: Unknown tag: " << i->get_name() << std::endl;
+        std::cout << "NavigationGraph:load: nodes: Unknown tag: " << node_obj.get_name() << std::endl;
       }
     }
   }
 
-  FileReader edges_group_reader;
-  if (reader.get("edges", edges_group_reader))
+  ReaderCollection edges_collection;
+  if (reader.read("edges", edges_collection))
   {
-    std::vector<FileReader> edges_reader = edges_group_reader.get_sections();
-    for(std::vector<FileReader>::iterator i = edges_reader.begin(); i != edges_reader.end(); ++i)
+    for(auto const& edge_obj : edges_collection.get_objects())
     {
-      if (i->get_name() == "edge")
-      {
+      if (edge_obj.get_name() == "edge") {
+        ReaderMapping const& edge_reader = edge_obj.get_mapping();
+
         int node_left;
         int node_right;
         int properties;
 
-        if (i->get("node1", node_left) &&
-            i->get("node2", node_right) &&
-            i->get("properties", properties)) // FIXME: we might want to read a unsigned int instead
+        if (edge_reader.read("node1", node_left) &&
+            edge_reader.read("node2", node_right) &&
+            edge_reader.read("properties", properties)) // FIXME: we might want to read a unsigned int instead
         {
           std::map<int, Node*>::iterator node_left_ptr  = id2ptr.find(node_left);
           std::map<int, Node*>::iterator node_right_ptr = id2ptr.find(node_right);
@@ -330,7 +325,7 @@ NavigationGraph::load(FileReader& reader)
       }
       else
       {
-        std::cout << "NavigationGraph:load: edges: Unknown tag: " << i->get_name() << std::endl;
+        std::cout << "NavigationGraph:load: edges: Unknown tag: " << edge_obj.get_name() << std::endl;
       }
     }
   }

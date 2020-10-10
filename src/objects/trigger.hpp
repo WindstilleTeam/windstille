@@ -36,7 +36,7 @@ private:
   bool one_time_trigger;
 
 public:
-  Trigger(const FileReader& props);
+  Trigger(ReaderMapping const& props);
   ~Trigger() override;
 
   void draw (SceneContext& gc) override;

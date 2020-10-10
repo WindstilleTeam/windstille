@@ -23,7 +23,6 @@
 
 #include "tile/tile.hpp"
 #include "tile/tile_packer.hpp"
-#include "util/sexpr_file_reader.hpp"
 #include "display/software_surface.hpp"
 
 namespace {
@@ -57,20 +56,22 @@ TileFactory::TileFactory(const Pathname& filename) :
   packers.push_back(new TilePacker(1024, 1024));
   color_packer     = 0;
 
-  FileReader reader = FileReader::parse(filename);
-  if(reader.get_name() != "windstille-tiles")
-  {
+  ReaderDocument doc = ReaderDocument::from_file(filename.get_sys_path(), true);
+  if (doc.get_name() != "windstille-tiles") {
     std::ostringstream msg;
     msg << "'" << filename << "' is not a windstille tiles file";
     throw std::runtime_error(msg.str());
   }
 
-  std::vector<FileReader> sections = reader.get_sections();
-  for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
+  ReaderMapping const& reader = doc.get_mapping();
+
+  ReaderCollection tiles_collection;
+  reader.read("tiles", tiles_collection);
+  for (ReaderObject const& item : tiles_collection.get_objects())
   {
-    if (i->get_name() == "tiles") {
-      parse_tiles(*i);
-    } else if (i->get_name() == "tilegroup") {
+    if (item.get_name() == "tiles") {
+      parse_tiles(item.get_mapping());
+    } else if (item.get_name() == "tilegroup") {
       // ignore
     }
   }
@@ -92,7 +93,7 @@ TileFactory::~TileFactory()
 }
 
 void
-TileFactory::parse_tiles(FileReader& reader)
+TileFactory::parse_tiles(ReaderMapping const& reader)
 {
   descriptions.push_back(new TileDescription(reader));
 

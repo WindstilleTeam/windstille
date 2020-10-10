@@ -28,6 +28,7 @@
 #include "math/rect.hpp"
 #include "math/vector2f.hpp"
 #include "util/file_writer.hpp"
+#include "util/file_reader.hpp"
 
 class Edge;
 class EdgePosition;
@@ -135,7 +136,7 @@ public:
   /** Draw the navigation graph, for debugging only */
   void draw();
 
-  void load(FileReader& reader);
+  void load(ReaderMapping const& reader);
   void save(std::ostream& out);
   void write(FileWriter& writer);
 

@@ -39,80 +39,80 @@
 #include "objects/vrdummy.hpp"
 
 GameObjectHandle
-ObjectFactory::create(const FileReader& reader)
+ObjectFactory::create(ReaderObject const& reader_obj)
 {
-  if (reader.get_name() == "background-gradient")
+  if (reader_obj.get_name() == "background-gradient")
   {
-    return GameObjectHandle(new BackgroundGradient(reader));
+    return GameObjectHandle(new BackgroundGradient(reader_obj.get_mapping()));
   }
-  else if(reader.get_name() == "trigger")
+  else if(reader_obj.get_name() == "trigger")
   {
-    return GameObjectHandle(new Trigger(reader));
+    return GameObjectHandle(new Trigger(reader_obj.get_mapping()));
   }
-  else if(reader.get_name() == "box")
+  else if(reader_obj.get_name() == "box")
   {
-    return GameObjectHandle(new Box(reader));
+    return GameObjectHandle(new Box(reader_obj.get_mapping()));
   }
-  else if(reader.get_name() == "shockwave")
+  else if(reader_obj.get_name() == "shockwave")
   {
-    return GameObjectHandle(new Shockwave(reader));
+    return GameObjectHandle(new Shockwave(reader_obj.get_mapping()));
   }
-  else if(reader.get_name() == "elevator")
+  else if(reader_obj.get_name() == "elevator")
   {
-    return GameObjectHandle(new Elevator(reader));
+    return GameObjectHandle(new Elevator(reader_obj.get_mapping()));
   }
-  else if(reader.get_name() == "character")
+  else if(reader_obj.get_name() == "character")
   {
-    return GameObjectHandle(new Character(reader));
+    return GameObjectHandle(new Character(reader_obj.get_mapping()));
   }
-  else if(reader.get_name() == "spider-mine")
+  else if(reader_obj.get_name() == "spider-mine")
   {
-    return GameObjectHandle(new SpiderMine(reader));
+    return GameObjectHandle(new SpiderMine(reader_obj.get_mapping()));
   }
-  else if(reader.get_name() == "hedgehog")
+  else if(reader_obj.get_name() == "hedgehog")
   {
-    return GameObjectHandle(new Hedgehog(reader));
+    return GameObjectHandle(new Hedgehog(reader_obj.get_mapping()));
   }
-  else if(reader.get_name() == "test-object")
+  else if(reader_obj.get_name() == "test-object")
   {
-    return GameObjectHandle(new TestObject(reader));
+    return GameObjectHandle(new TestObject(reader_obj.get_mapping()));
   }
-  else if (reader.get_name() == "nightvision")
+  else if (reader_obj.get_name() == "nightvision")
   {
-    return GameObjectHandle(new Nightvision(reader));
+    return GameObjectHandle(new Nightvision(reader_obj.get_mapping()));
   }
-  else if (reader.get_name() == "particle-system")
+  else if (reader_obj.get_name() == "particle-system")
   {
-    // FIXME: disabled due to work on the editor: return GameObjectHandle(new ParticleSystem(reader));
+    // FIXME: disabled due to work on the editor: return GameObjectHandle(new ParticleSystem(reader_obj.get_mapping()));
     return GameObjectHandle();
   }
-  else if(reader.get_name() == "scriptable-object")
+  else if(reader_obj.get_name() == "scriptable-object")
   {
-    return GameObjectHandle(new ScriptableObject(reader));
+    return GameObjectHandle(new ScriptableObject(reader_obj.get_mapping()));
   }
-  else if(reader.get_name() == "decal")
+  else if(reader_obj.get_name() == "decal")
   {
-    return GameObjectHandle(new Decal(reader));
+    return GameObjectHandle(new Decal(reader_obj.get_mapping()));
   }
-  else if (reader.get_name() == "vrdummy")
+  else if (reader_obj.get_name() == "vrdummy")
   {
-    return GameObjectHandle(new VRDummy(reader));
+    return GameObjectHandle(new VRDummy(reader_obj.get_mapping()));
   }
-  else if (reader.get_name() == "swarm")
+  else if (reader_obj.get_name() == "swarm")
   {
-    return GameObjectHandle(new Swarm(reader));
+    return GameObjectHandle(new Swarm(reader_obj.get_mapping()));
   }
-  else if (reader.get_name() == "laserpointer")
+  else if (reader_obj.get_name() == "laserpointer")
   {
     return GameObjectHandle(new LaserPointer());
   }
-  else if (reader.get_name() == "liquid")
+  else if (reader_obj.get_name() == "liquid")
   {
-    return GameObjectHandle(new Liquid(reader));
+    return GameObjectHandle(new Liquid(reader_obj.get_mapping()));
   }
-  else if (reader.get_name() == "particle-systems")
+  else if (reader_obj.get_name() == "particle-systems")
   {
-    return GameObjectHandle(new ParticleSystems(reader));
+    return GameObjectHandle(new ParticleSystems(reader_obj.get_mapping()));
   }
   else
   {

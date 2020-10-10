@@ -27,7 +27,7 @@ class SectorModel;
 class ObjectModelFactory
 {
 public:
-  static ObjectModelHandle create(const FileReader& reader);
+  static ObjectModelHandle create(ReaderObject const& reader_obj);
 
 private:
   ObjectModelFactory(const ObjectModelFactory&);

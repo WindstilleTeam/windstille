@@ -23,15 +23,12 @@
 #include "editor/object_model_factory.hpp"
 
 ObjectModelHandle
-ObjectModelFactory::create(const FileReader& reader)
+ObjectModelFactory::create(ReaderObject const& reader_obj)
 {
-  if (reader.get_name() == "decal")
-  {
-    return ObjectModelHandle(new DecalObjectModel(reader));
-  }
-  else
-  {
-    throw std::runtime_error("Unknown object type '" + reader.get_name() + "'");
+  if (reader_obj.get_name() == "decal") {
+    return ObjectModelHandle(new DecalObjectModel(reader_obj.get_mapping()));
+  } else {
+    throw std::runtime_error("Unknown object type '" + reader_obj.get_name() + "'");
   }
 }
 

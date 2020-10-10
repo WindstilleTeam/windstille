@@ -19,7 +19,7 @@
 #include "objects/spider_mine.hpp"
 #include "objects/player.hpp"
 
-SpiderMine::SpiderMine(const FileReader& props) :
+SpiderMine::SpiderMine(ReaderMapping const& props) :
   sprite(),
   explode(Pathname("images/explosion.sprite")),
   explode_light(Pathname("images/explolight.sprite")),

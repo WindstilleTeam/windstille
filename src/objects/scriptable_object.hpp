@@ -58,7 +58,7 @@ protected:
   void flash();
 
 public:
-  ScriptableObject(const FileReader& reader);
+  ScriptableObject(ReaderMapping const& reader);
   ~ScriptableObject() override;
 
   void draw (SceneContext& sc) override;

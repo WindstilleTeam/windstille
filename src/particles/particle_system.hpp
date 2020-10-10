@@ -22,9 +22,10 @@
 #include <memory>
 #include <vector>
 
-#include "math/rect.hpp"
 #include "display/color.hpp"
+#include "math/rect.hpp"
 #include "particles/drawer.hpp"
+#include "util/file_reader.hpp"
 
 class FileReader;
 class SceneContext;
@@ -98,7 +99,7 @@ private:
 
 public:
   ParticleSystem();
-  ParticleSystem(FileReader& props);
+  ParticleSystem(ReaderMapping const& props);
   ~ParticleSystem();
 
   void set_drawer(Drawer*);

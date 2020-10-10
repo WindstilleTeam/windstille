@@ -26,7 +26,7 @@
 #include "util/file_reader.hpp"
 #include "util/log.hpp"
 
-ParticleSystem::ParticleSystem(FileReader& props)
+ParticleSystem::ParticleSystem(ReaderMapping const& props)
   : particles(),
     life_time(1.0f),
     randomizer(new PointRandomizer()),
@@ -56,45 +56,45 @@ ParticleSystem::ParticleSystem(FileReader& props)
   //FIXME: commented since it causes trouble for the editor: props.get("name", name);
 
   float p_lifetime;
-  if (props.get("lifetime", p_lifetime))
+  if (props.read("lifetime", p_lifetime))
     set_lifetime(p_lifetime);
 
   props.get("z-pos", z_pos);
 
   Vector2f p_gravity;
-  if (props.get("gravity", p_gravity))
+  if (props.read("gravity", p_gravity))
     set_gravity(p_gravity.x, p_gravity.y);
 
   float p_cycles;
-  if (props.get("cycles",  p_cycles))
+  if (props.read("cycles",  p_cycles))
     set_cycles(p_cycles);
 
   Vector2f spawn_pos;
-  if (props.get("spawn-point", spawn_pos))
+  if (props.read("spawn-point", spawn_pos))
     set_spawn_point(spawn_pos.x, spawn_pos.y);
 
   Vector2f p_pos;
-  if (props.get("pos", p_pos))
+  if (props.read("pos", p_pos))
     set_pos(p_pos.x, p_pos.y);
 
   Vector2f p_cone;
-  if (props.get("cone", p_cone))
+  if (props.read("cone", p_cone))
     set_cone(p_cone.x, p_cone.y);
 
   Vector2f p_size;
-  if (props.get("size", p_size))
+  if (props.read("size", p_size))
     set_size(p_size.x, p_size.y);
 
-  props.get("color-begin", color_start);
-  props.get("color-end",   color_stop);
+  props.read("color-begin", color_start);
+  props.read("color-end",   color_stop);
 
   Vector2f p_speed;
-  if (props.get("velocity", p_speed))
+  if (props.read("velocity", p_speed))
     set_velocity(p_speed.x, p_speed.y);
 
   {
     std::string layer_str;
-    if (props.get("layer", layer_str))
+    if (props.read("layer", layer_str))
     {
       if (layer_str == "highlight")
         layer = SceneContext::HIGHLIGHTMAP;
@@ -108,93 +108,61 @@ ParticleSystem::ParticleSystem(FileReader& props)
   }
 
   {
-    FileReader drawer_reader;
-    if (props.get("drawer", drawer_reader))
-    {
-      std::vector<FileReader> sections = drawer_reader.get_sections();
-
-      if (sections.size() > 1)
-        std::cout << "ParticleSystem: Only one drawer allowed" << std::endl;
-
-      if (sections.size() == 0)
-        std::cout << "ParticleSystem: You must specify a drawer" << std::endl;
-
-      if (sections.size() >= 1)
-      {
-        FileReader& reader  = sections.front();
-        if (reader.get_name() == "surface-drawer")
-        {
-          set_drawer(new SurfaceDrawer(reader));
-        }
-        else if (reader.get_name() == "spark-drawer")
-        {
-          set_drawer(new SparkDrawer(reader));
-        }
-        else if (reader.get_name() == "deform-drawer")
-        {
-          set_drawer(new DeformDrawer(reader));
-        }
-        else
-        {
-          std::cout << "Unknown drawer: " << reader.get_name() << std::endl;
-        }
+    ReaderObject drawer_obj;
+    if (props.read("drawer", drawer_obj)) {
+      if (drawer_obj.get_name() == "surface-drawer") {
+        set_drawer(new SurfaceDrawer(drawer_obj.get_mapping()));
+      } else if (drawer_obj.get_name() == "spark-drawer") {
+        set_drawer(new SparkDrawer(drawer_obj.get_mapping()));
+      } else if (drawer_obj.get_name() == "deform-drawer") {
+        set_drawer(new DeformDrawer(drawer_obj.get_mapping()));
+      } else {
+        std::cout << "Unknown drawer: " << drawer_obj.get_name() << std::endl;
       }
     }
   }
 
   {
-    FileReader distribution_reader;
-    if (props.get("distribution", distribution_reader))
+    ReaderObject distribution_obj;
+    if (props.read("distribution", distribution_obj))
     {
-      std::vector<FileReader> sections = distribution_reader.get_sections();
+      ReaderMapping const& reader = distribution_obj.get_mapping();
 
-      if (sections.size() > 1)
-        std::cout << "ParticleSystem: Only one distribution allowed" << std::endl;
+      if (distribution_obj.get_name() == "point-distribution") {
+        set_point_distribution();
+      } else if (distribution_obj.get_name() == "line-distribution") {
+        float x1, y1, x2, y2;
+        reader.read("x1", x1);
+        reader.read("y1", y1);
+        reader.read("x2", x2);
+        reader.read("y2", y2);
 
-      if (sections.size() == 0)
-        std::cout << "ParticleSystem: You must specify a distribution" << std::endl;
+        set_line_distribution(x1, y1, x2, y2);
+      } else if (distribution_obj.get_name() == "rect-distribution") {
+        float x1 = 0.0f;
+        float y1 = 0.0f;
+        float x2 = 0.0f;
+        float y2 = 0.0f;
+        reader.read("x1", x1);
+        reader.read("y1", y1);
+        reader.read("x2", x2);
+        reader.read("y2", y2);
 
-      if (sections.size() >= 1)
-      {
-        FileReader& reader  = sections.front();
-
-        if (reader.get_name() == "point-distribution") {
-          set_point_distribution();
-        } else if (reader.get_name() == "line-distribution") {
-          float x1, y1, x2, y2;
-          reader.get("x1", x1);
-          reader.get("y1", y1);
-          reader.get("x2", x2);
-          reader.get("y2", y2);
-
-          set_line_distribution(x1, y1, x2, y2);
-        } else if (reader.get_name() == "rect-distribution") {
-          float x1 = 0.0f;
-          float y1 = 0.0f;
-          float x2 = 0.0f;
-          float y2 = 0.0f;
-          reader.get("x1", x1);
-          reader.get("y1", y1);
-          reader.get("x2", x2);
-          reader.get("y2", y2);
-
-          set_rect_distribution(Rectf(x1, y1, x2, y2));
-
-        } else {
-          std::cout << "Unknown distribution: " << reader.get_name() << std::endl;
-        }
+        set_rect_distribution(Rectf(x1, y1, x2, y2));
+      } else {
+        std::cout << "Unknown distribution: " << distribution_obj.get_name() << std::endl;
       }
     }
   }
 
   int p_count = 70;
-  props.get("count", p_count);
+  props.read("count", p_count);
   set_count(p_count);
 
-  //props.get("point-distribution",   ); // void
-  //props.get("line-distribution",   ); // 2xvector2
-  //props.get("circle", ); // float
-  //props.get("rect-distribution", ); // vector2
+  //props.read("point-distribution",   ); // void
+  //props.read("line-distribution",   ); // 2xvector2
+  //props.read("circle", ); // float
+  //props.read("rect-distribution", ); // vector2
 }
 
 ParticleSystem::ParticleSystem()

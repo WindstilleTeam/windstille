@@ -29,7 +29,7 @@ private:
   std::shared_ptr<GradientDrawable> drawable;
 
 public:
-  BackgroundGradient(const FileReader& props);
+  BackgroundGradient(ReaderMapping const& props);
   ~BackgroundGradient() override;
 
 private:

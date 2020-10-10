@@ -24,7 +24,7 @@
 #include "navigation/node.hpp"
 #include "editor/constants.hpp"
 
-NavGraphNodeObjectModel::NavGraphNodeObjectModel(const FileReader& reader) :
+NavGraphNodeObjectModel::NavGraphNodeObjectModel(ReaderMapping const& reader) :
   ObjectModel(reader),
   m_drawable()
 {

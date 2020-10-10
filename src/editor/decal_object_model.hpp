@@ -51,7 +51,7 @@ private:
   std::shared_ptr<SurfaceDrawable> m_drawable;
 
 public:
-  DecalObjectModel(const FileReader& reader);
+  DecalObjectModel(ReaderMapping const& reader);
   DecalObjectModel(const std::string& name, const Vector2f& rel_pos,
                    const std::string& path_, MapType type_);
   DecalObjectModel(const DecalObjectModel& rhs);

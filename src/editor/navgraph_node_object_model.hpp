@@ -33,7 +33,7 @@ private:
   std::shared_ptr<VertexArrayDrawable> m_drawable;
 
 public:
-  NavGraphNodeObjectModel(const FileReader& reader);
+  NavGraphNodeObjectModel(ReaderMapping const& reader);
   NavGraphNodeObjectModel(const Vector2f& pos);
   ~NavGraphNodeObjectModel() override;
 

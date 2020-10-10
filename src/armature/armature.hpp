@@ -35,7 +35,7 @@ private:
   Bone* root_bone;
 
 public:
-  Armature(FileReader& reader);
+  Armature(ReaderDocument const& doc);
   ~Armature();
 
   /** Applies the given Pose */
@@ -44,7 +44,7 @@ public:
   /** Sets the armature back into neutral position */
   void reset();
 
-  void  parse(FileReader& reader);
+  void  parse(ReaderDocument const& doc);
   Bone* get_bone(const std::string& name);
 
   Matrix* get_render_matrix(const std::string& name);

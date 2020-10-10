@@ -33,7 +33,7 @@ private:
   std::shared_ptr<VertexArrayDrawable> buffer;
 
 public:
-  SurfaceDrawer(FileReader& props);
+  SurfaceDrawer(ReaderMapping const& props);
   SurfaceDrawer(SurfacePtr surface);
   ~SurfaceDrawer() override;
 

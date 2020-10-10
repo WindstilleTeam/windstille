@@ -22,7 +22,7 @@
 #include "app/globals.hpp"
 #include "objects/scriptable_object.hpp"
 
-ScriptableObject::ScriptableObject(const FileReader& props) :
+ScriptableObject::ScriptableObject(ReaderMapping const& props) :
   z_pos(50),
   target_speed(0),
   acceleration(0),

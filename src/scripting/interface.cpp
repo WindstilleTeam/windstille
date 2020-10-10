@@ -36,7 +36,6 @@
 #include "hud/pda.hpp"
 #include "hud/speech_manager.hpp"
 #include "screen/game_session.hpp"
-#include "util/sexpr_file_reader.hpp"
 
 namespace Scripting
 {

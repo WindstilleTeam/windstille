@@ -53,7 +53,7 @@ private:
   float turn_speed;
 
 public:
-  Swarm(const FileReader& reader);
+  Swarm(ReaderMapping const& reader);
 
   void draw(SceneContext& sc) override;
   void update(float delta) override;

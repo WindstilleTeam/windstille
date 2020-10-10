@@ -23,8 +23,8 @@
 #include <string>
 
 #include "engine/game_object_handle.hpp"
+#include "util/file_reader.hpp"
 
-class FileReader;
 class GameObject;
 class Pathname;
 class Sector;
@@ -43,11 +43,11 @@ public:
   void build();
 
 private:
-  void parse_body(const FileReader& reader);
-  void parse_layer(const FileReader& reader);
-  void parse_objects(const FileReader& reader);
-  void parse_object(const FileReader& reader);
-  void parse_navgraph(const FileReader& reader);
+  void parse_body(ReaderMapping const& reader);
+  void parse_layer(ReaderMapping const& reader);
+  void parse_objects(ReaderMapping const& reader);
+  void parse_object(ReaderObject const& reader_obj);
+  void parse_navgraph(ReaderMapping const& reader);
 
 private:
   SectorBuilder(const SectorBuilder&);

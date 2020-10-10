@@ -16,12 +16,13 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "screen/navigation_test.hpp"
-
-#include <GL/glew.h>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
+
+#include "screen/navigation_test.hpp"
+
+#include <GL/glew.h>
 
 #include "app/menu_manager.hpp"
 #include "display/color.hpp"
@@ -29,7 +30,6 @@
 #include "input/controller.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
-#include "util/sexpr_file_reader.hpp"
 
 NavigationTest::NavigationTest()
   : cursor(400, 300),
@@ -44,8 +44,8 @@ NavigationTest::NavigationTest()
 {
   try
   {
-    FileReader reader = FileReader::parse(Pathname("navigation.nav"));
-    graph->load(reader);
+    ReaderDocument const& doc = ReaderDocument::from_file(Pathname("navigation.nav").get_sys_path(), true);
+    graph->load(doc.get_mapping());
   }
   catch(std::exception& err)
   {

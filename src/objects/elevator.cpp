@@ -20,7 +20,7 @@
 #include "engine/sector.hpp"
 #include "collision/collision_engine.hpp"
 
-Elevator::Elevator(const FileReader& props) :
+Elevator::Elevator(ReaderMapping const& props) :
   size(),
   colobject(),
   sprite()

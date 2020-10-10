@@ -24,6 +24,7 @@
 #include "screen/armature_test.hpp"
 #include "screen/screen_manager.hpp"
 #include "util/directory.hpp"
+#include "util/pathname.hpp"
 
 ArmatureTest::ArmatureTest()
   : model(),
@@ -35,11 +36,11 @@ ArmatureTest::ArmatureTest()
     yrot(0.0f),
     zrot(0.0f)
 {
-  FileReader model_reader = FileReader::parse(Pathname("armature/mesh.mesh"));
-  model.reset(new Model(model_reader, "armature/"));
+  ReaderDocument const& model_doc = ReaderDocument::from_file(Pathname("armature/mesh.mesh").get_sys_path(), true);
+  model.reset(new Model(model_doc, "armature/"));
 
-  FileReader armature_reader = FileReader::parse(Pathname("armature/armature.arm"));
-  armature.reset(new Armature(armature_reader));
+  ReaderDocument const& armature_doc = ReaderDocument::from_file(Pathname("armature/armature.arm").get_sys_path(), true);
+  armature.reset(new Armature(armature_doc));
 
   {
     Directory::List file_lst = Directory::read(Pathname("armature/pose/"));
@@ -49,8 +50,8 @@ ArmatureTest::ArmatureTest()
       if (!std::filesystem::is_directory(i->get_sys_path()))
       {
         std::cout << "PoseFile: " << *i << std::endl;
-        FileReader pose_reader = FileReader::parse(*i);
-        poses.push_back(new Pose(pose_reader));
+        ReaderDocument pose_doc = ReaderDocument::from_file(i->get_sys_path(), true);
+        poses.push_back(new Pose(pose_doc));
       }
     }
   }

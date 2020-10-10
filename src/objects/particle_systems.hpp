@@ -23,10 +23,10 @@
 #include <memory>
 
 #include "engine/game_object.hpp"
+#include "util/file_reader.hpp"
 
 class ParticleSystem;
 class ParticleSystemDrawable;
-class FileReader;
 
 class ParticleSystems : public GameObject
 {
@@ -38,7 +38,7 @@ private:
   Drawables m_drawables;
 
 public:
-  ParticleSystems(const FileReader& reader);
+  ParticleSystems(ReaderMapping const& reader);
 
   void update (float delta) override;
 

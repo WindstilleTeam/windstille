@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_UTIL_FILE_READER_IMPL_HPP
 #define HEADER_WINDSTILLE_UTIL_FILE_READER_IMPL_HPP
 
+#if 0
 #include <vector>
 #include <string>
 
@@ -48,10 +49,12 @@ public:
   virtual bool get(const char* name, std::vector<float>& v) const =0;
   virtual bool get(const char* name, std::vector<std::string>& v) const =0;
 
-  virtual bool read_section(const char* name, FileReader&)   const =0;
+  virtual bool read_section(const char* name, ReaderMapping const&)   const =0;
   virtual std::vector<FileReader> get_sections() const =0;
   virtual std::vector<std::string> get_section_names() const =0;
 };
+
+#endif
 
 #endif
 

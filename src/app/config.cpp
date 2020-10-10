@@ -26,9 +26,10 @@
 
 #include <argparser.hpp>
 
-#include "app/windstille.hpp"
-#include "util/sexpr_file_reader.hpp"
 #include "app/globals.hpp"
+#include "app/windstille.hpp"
+#include "util/file_reader.hpp"
+#include "util/pathname.hpp"
 
 #define _(A) A
 
@@ -317,37 +318,37 @@ Config::load()
 {
   try
   {
-    FileReader reader = FileReader::parse(Pathname("config", Pathname::kUserPath));
-    if(reader.get_name() != "windstille-config")
-    {
+    ReaderDocument doc = ReaderDocument::from_file(Pathname("config", Pathname::kUserPath).get_sys_path(), true);
+    if (doc.get_name() != "windstille-config") {
       std::cerr << "Warning: Config file is not a windstille-config file.\n";
       return;
     }
 
+    ReaderMapping const& reader = doc.get_mapping();
     for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
     { // FIXME: all this dynamic_casting is overcomplicated crap
       if (dynamic_cast<ConfigValue<int>*>(i->second))
       {
         int v;
-        if (reader.get(i->first.c_str(), v))
+        if (reader.read(i->first.c_str(), v))
           set_int(i->first, v);
       }
       else if (dynamic_cast<ConfigValue<bool>*>(i->second))
       {
         bool v;
-        if (reader.get(i->first.c_str(), v))
+        if (reader.read(i->first.c_str(), v))
           set_bool(i->first, v);
       }
       else if (dynamic_cast<ConfigValue<float>*>(i->second))
       {
         float v;
-        if (reader.get(i->first.c_str(), v))
+        if (reader.read(i->first.c_str(), v))
           set_float(i->first, v);
       }
       else if (dynamic_cast<ConfigValue<std::string>*>(i->second))
       {
         std::string v;
-        if (reader.get(i->first.c_str(), v))
+        if (reader.read(i->first.c_str(), v))
           set_string(i->first, v);
       }
       else

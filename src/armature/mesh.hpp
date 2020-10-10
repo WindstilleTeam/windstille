@@ -26,10 +26,10 @@
 #include "math/vector2f.hpp"
 #include "math/vector3.hpp"
 #include "display/texture.hpp"
+#include "util/file_reader.hpp"
 
-class FileReader;
-class Bone;
 class Armature;
+class Bone;
 
 struct VertexGroup
 {
@@ -91,7 +91,7 @@ private:
   GLenum blend_dfactor;
 
 public:
-  Mesh(FileReader& reader, const std::string& path);
+  Mesh(ReaderMapping const& reader, const std::string& path);
   ~Mesh();
 
   void draw();

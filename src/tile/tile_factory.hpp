@@ -67,7 +67,7 @@ public:
   void pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect);
 
 private:
-  void parse_tiles(FileReader& reader);
+  void parse_tiles(ReaderMapping const& reader);
 };
 
 #endif

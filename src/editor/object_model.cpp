@@ -35,17 +35,17 @@ ObjectModel::ObjectModel(const std::string& name_, const Vector2f& rel_pos_) :
 {
 }
 
-ObjectModel::ObjectModel(const FileReader& reader) :
+ObjectModel::ObjectModel(ReaderMapping const& reader) :
   name(),
   rel_pos(),
   select_mask(),
   parent_ptr()
 {
-  reader.get("name", name);
-  reader.get("pos",  rel_pos);
+  reader.read("name", name);
+  reader.read("pos",  rel_pos);
 
   int mask = 1;
-  reader.get("select-mask", mask);
+  reader.read("select-mask", mask);
   select_mask = SelectMask(static_cast<unsigned int>(mask));
 }
 

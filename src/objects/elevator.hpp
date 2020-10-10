@@ -32,7 +32,7 @@ private:
   Sprite sprite;
 
 public:
-  Elevator(const FileReader& props);
+  Elevator(ReaderMapping const& props);
   ~Elevator() override;
 
   void draw(SceneContext& sc) override;

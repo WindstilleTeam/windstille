@@ -18,6 +18,8 @@
 
 #include "util/file_reader.hpp"
 
+#if 0
+
 #include <sstream>
 #include <fstream>
 #include <stdexcept>
@@ -152,7 +154,7 @@ FileReader::read(const char* name, std::vector<float>& value) const
 }
 
 bool
-FileReader::read(const char* name, FileReader& reader) const
+FileReader::read(const char* name, ReaderMapping const& reader) const
 {
   if (impl.get())
     return impl->read_section(name, reader);
@@ -178,4 +180,6 @@ FileReader::get_sections() const
     return std::vector<FileReader>();
 }
 
+#endif
+
 /* EOF */

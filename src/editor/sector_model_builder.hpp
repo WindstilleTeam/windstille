@@ -39,7 +39,7 @@ public:
 
 private:
   void load(const std::string& filename);
-  void load_layer(const FileReader& filename);
+  void load_layer(ReaderMapping const& filename);
 
 private:
   SectorModelBuilder(const SectorModelBuilder&);

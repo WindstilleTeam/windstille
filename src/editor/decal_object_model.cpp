@@ -38,7 +38,7 @@ DecalObjectModel::create(const std::string& name_, const Vector2f& pos,
   return ObjectModelHandle(new DecalObjectModel(name_, pos, path, type));
 }
 
-DecalObjectModel::DecalObjectModel(const FileReader& reader) :
+DecalObjectModel::DecalObjectModel(ReaderMapping const& reader) :
   ObjectModel(reader),
   path(),
   surface(),
@@ -51,14 +51,14 @@ DecalObjectModel::DecalObjectModel(const FileReader& reader) :
   m_drawable()
 {
   int map_type = 0;
-  reader.get("path", path);
-  reader.get("type", map_type);
+  reader.read("path", path);
+  reader.read("type", map_type);
   type = static_cast<MapType>(map_type);
 
-  reader.get("scale", scale);
-  reader.get("angle", angle);
-  reader.get("hflip", hflip);
-  reader.get("vflip", vflip);
+  reader.read("scale", scale);
+  reader.read("angle", angle);
+  reader.read("hflip", hflip);
+  reader.read("vflip", vflip);
   surface = Surface::create(Pathname(path));
   software_surface = SoftwareSurface::create(Pathname(path));
 }

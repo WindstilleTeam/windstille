@@ -203,24 +203,24 @@ NavigationGraphModel::write(FileWriter& writer) const
 }
 
 void
-NavigationGraphModel::load(const FileReader& reader, std::map<std::string, ObjectModelHandle>& all_id_table)
+NavigationGraphModel::load(ReaderMapping const& reader, std::map<std::string, ObjectModelHandle>& all_id_table)
 {
   std::cout << "NavigationGraphModel::load" << std::endl;
   std::map<std::string, std::shared_ptr<NavGraphNodeObjectModel> > id_table;
 
-  FileReader nodes_section;
-  if (reader.get("nodes", nodes_section))
+  ReaderCollection nodes_collection;
+  if (reader.read("nodes", nodes_collection))
   {
-    const std::vector<FileReader>& sections = nodes_section.get_sections();
-    for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
+    for (ReaderObject const& item : nodes_collection.get_objects())
     {
-      if (i->get_name() == "navgraph-node")
+      if (item.get_name() == "navgraph-node")
       {
-        std::shared_ptr<NavGraphNodeObjectModel> node(new NavGraphNodeObjectModel(*i));
+        ReaderMapping const& map = item.get_mapping();
+
+        std::shared_ptr<NavGraphNodeObjectModel> node(new NavGraphNodeObjectModel(map));
 
         std::string id_str;
-        if (i->get("id", id_str))
-        {
+        if (map.read("id", id_str)) {
           id_table[id_str] = node;
         }
 
@@ -228,7 +228,7 @@ NavigationGraphModel::load(const FileReader& reader, std::map<std::string, Objec
       }
       else
       {
-        std::cout << "NavigationGraphModel:load: unknown tag " << i->get_name() << std::endl;
+        std::cout << "NavigationGraphModel:load: unknown tag " << item.get_name() << std::endl;
       }
     }
   }
@@ -237,18 +237,19 @@ NavigationGraphModel::load(const FileReader& reader, std::map<std::string, Objec
     std::cout << "NavigationGraphModel: nodes missing" << std::endl;
   }
 
-  FileReader edges_section;
-  if (reader.get("edges", edges_section))
+  ReaderCollection edges_collection;
+  if (reader.read("edges", edges_collection))
   {
-    const std::vector<FileReader>& sections = edges_section.get_sections();
-    for(std::vector<FileReader>::const_iterator i = sections.begin(); i != sections.end(); ++i)
+    for (ReaderObject const& item : edges_collection.get_objects())
     {
-      if (i->get_name() == "navgraph-edge")
+      if (item.get_name() == "navgraph-edge")
       {
+        ReaderMapping const& map = item.get_mapping();
+
         std::string lhs;
         std::string rhs;
 
-        if (i->get("lhs-node", lhs) && i->get("rhs-node", rhs))
+        if (map.read("lhs-node", lhs) && map.read("rhs-node", rhs))
         {
           std::shared_ptr<NavGraphNodeObjectModel> lhs_node = id_table[lhs];
           std::shared_ptr<NavGraphNodeObjectModel> rhs_node = id_table[rhs];
@@ -258,8 +259,7 @@ NavigationGraphModel::load(const FileReader& reader, std::map<std::string, Objec
             std::shared_ptr<NavGraphEdgeObjectModel> edge(new NavGraphEdgeObjectModel(lhs_node, rhs_node));
 
             std::string id_str;
-            if (i->get("id", id_str))
-            {
+            if (map.read("id", id_str)) {
               all_id_table[id_str] = edge;
             }
 
@@ -277,7 +277,7 @@ NavigationGraphModel::load(const FileReader& reader, std::map<std::string, Objec
       }
       else
       {
-        std::cout << "NavigationGraphModel:load: unknown tag " << i->get_name() << std::endl;
+        std::cout << "NavigationGraphModel:load: unknown tag " << item.get_name() << std::endl;
       }
     }
   }

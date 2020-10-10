@@ -22,10 +22,8 @@
 #include <vector>
 
 #include "armature/pose_bone.hpp"
+#include "util/file_reader.hpp"
 
-class FileReader;
-
-/** */
 class Pose
 {
 private:
@@ -35,7 +33,7 @@ public:
   std::vector<PoseBone> bones;
 
 public:
-  Pose(FileReader& reader);
+  Pose(ReaderDocument const& doc);
   ~Pose();
 
   std::string get_name() const { return name; }

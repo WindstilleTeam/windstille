@@ -37,7 +37,7 @@ private:
   void commit_removes();
 
 public:
-  Layer(const FileReader& reader);
+  Layer(ReaderMapping const& reader);
   ~Layer() override;
 
   void draw (SceneContext& context) override;

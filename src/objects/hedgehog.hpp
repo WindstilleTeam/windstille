@@ -32,7 +32,7 @@ private:
   bool direction_left;
   enum { WALKING, FALLING, DYING } state;
 public:
-  Hedgehog(const FileReader& props);
+  Hedgehog(ReaderMapping const& props);
   ~Hedgehog() override;
 
   void draw(SceneContext& gc) override;

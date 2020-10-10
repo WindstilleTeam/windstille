@@ -26,30 +26,29 @@
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/particle_system_drawable.hpp"
 
-ParticleSystems::ParticleSystems(const FileReader& reader) :
+ParticleSystems::ParticleSystems(ReaderMapping const& reader) :
   m_systems(),
   m_drawables()
 {
   std::string filename;
   Vector2f    pos;
-  reader.get("name", filename);
-  reader.get("pos",  pos);
+  reader.read("name", filename);
+  reader.read("pos",  pos);
 
   { // Load the ParticleSystems
-    FileReader root_reader = FileReader::parse(Pathname(filename));
-    if(root_reader.get_name() != "particle-systems")
+    ReaderDocument const& doc = ReaderDocument::from_file(Pathname(filename).get_sys_path(), true);
+    if (doc.get_name() != "particle-systems")
     {
       std::ostringstream msg;
       msg << "'" << filename << "' is not a particle-system file";
       throw std::runtime_error(msg.str());
     }
 
-    std::vector<FileReader> sections = root_reader.get_sections();
-    for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
-    {
-      if (i->get_name() == "particle-system")
-      {
-        std::shared_ptr<ParticleSystem> particle_system(new ParticleSystem(*i));
+    ReaderCollection particlesys_collection;
+    reader.read("particle-systems", particlesys_collection);
+    for (ReaderObject const& item : particlesys_collection.get_objects()) {
+      if (item.get_name() == "particle-system") {
+        std::shared_ptr<ParticleSystem> particle_system(new ParticleSystem(item.get_mapping()));
         particle_system->set_pos(pos);
         m_systems.push_back(particle_system);
       }

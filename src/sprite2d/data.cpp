@@ -23,6 +23,7 @@
 #include <stdexcept>
 
 #include "display/surface_manager.hpp"
+#include "util/file_reader.hpp"
 
 SpriteData::SpriteData(const Pathname& pathname) :
   actions()
@@ -33,15 +34,15 @@ SpriteData::SpriteData(const Pathname& pathname) :
 
     if (ext == "sprite")
     {
-      FileReader reader = FileReader::parse(pathname);
+      ReaderDocument doc = ReaderDocument::from_file(pathname.get_sys_path(), true);
 
-      if(reader.get_name() != "sprite") {
+      if (doc.get_name() != "sprite") {
         std::ostringstream msg;
         msg << "File " << pathname << " is not a windstille sprite";
         throw std::runtime_error(msg.str());
       }
 
-      parse(pathname.get_dirname(), reader);
+      parse(pathname.get_dirname(), doc.get_mapping());
     }
     else if (ext == "png" || ext == "jpg")
     {
@@ -98,32 +99,36 @@ SpriteData::~SpriteData()
 }
 
 void
-SpriteData::parse(const Pathname& dir, FileReader& reader)
+SpriteData::parse(const Pathname& dir, ReaderMapping const& reader)
 {
-  std::vector<FileReader> sections = reader.get_sections();
-  for(std::vector<FileReader>::iterator i = sections.begin(); i != sections.end(); ++i)
-    actions.push_back(parse_action(dir, *i));
+  ReaderCollection actions_collection;
+  if (reader.read("actions", actions_collection)) {
+    for (ReaderObject const& action_obj : actions_collection.get_objects()) {
+      actions.push_back(parse_action(dir, action_obj.get_mapping()));
+    }
+  }
 
-  if(actions.size() == 0)
+  if(actions.size() == 0) {
     throw std::runtime_error("Sprite contains no actions");
+  }
 }
 
 SpriteAction*
-SpriteData::parse_action(const Pathname& dir, FileReader& reader)
+SpriteData::parse_action(const Pathname& dir, ReaderMapping const& reader)
 {
   std::unique_ptr<SpriteAction> action (new SpriteAction);
   action->speed = 1.0;
   action->scale = 1.0f;
   action->offset = Vector2f(0, 0);
 
-  reader.get("name", action->name);
-  reader.get("speed", action->speed);
-  reader.get("scale", action->scale);
-  reader.get("offset", action->offset);
+  reader.read("name", action->name);
+  reader.read("speed", action->speed);
+  reader.read("scale", action->scale);
+  reader.read("offset", action->offset);
 
-  FileReader grid_reader;
+  ReaderMapping grid_reader;
   std::vector<std::string> image_files;
-  if(reader.get("images", image_files))
+  if(reader.read("images", image_files))
   {
     //parse_images(action.get(), dir, images);
 
@@ -134,15 +139,15 @@ SpriteData::parse_action(const Pathname& dir, FileReader& reader)
       action->surfaces.push_back(SurfaceManager::current()->get(path));
     }
   }
-  else if(reader.get("image-grid", grid_reader))
+  else if(reader.read("image-grid", grid_reader))
   {
     std::string filename;
     int x_size = -1;
     int y_size = -1;
 
-    grid_reader.get("file", filename);
-    grid_reader.get("x-size", x_size);
-    grid_reader.get("y-size", y_size);
+    grid_reader.read("file", filename);
+    grid_reader.read("x-size", x_size);
+    grid_reader.read("y-size", y_size);
 
     if(filename.empty() || x_size <= 0 || y_size <= 0)
       throw std::runtime_error("Invalid or too few data in image-grid");

@@ -42,33 +42,31 @@ SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel&
   }
   else
   {
-    FileReader reader = FileReader::parse(stream, filename);
-    if (reader.get_name() == "windstille-sector")
+    ReaderDocument doc = ReaderDocument::from_stream(stream, true, filename);
+    if (doc.get_name() == "windstille-sector")
     {
+      ReaderMapping const& reader = doc.get_mapping();
+
       Color ambient_color;
-      if (reader.get("ambient-color", ambient_color))
-      {
+      if (reader.read("ambient-color", ambient_color)) {
         m_sector.set_ambient_color(ambient_color);
       }
 
-      FileReader navigation_section;
-      reader.get("navigation", navigation_section);
-      m_sector.get_nav_graph().load(navigation_section, m_id_table);
+      ReaderMapping navigation_map;
+      reader.read("navigation", navigation_map);
+      m_sector.get_nav_graph().load(navigation_map, m_id_table);
 
-      FileReader layers_section;
-      reader.get("layers", layers_section);
+      ReaderCollection layers_collection;
+      reader.read("layers", layers_collection);
 
-      const std::vector<FileReader>& sections = layers_section.get_sections();
       // Load layer in reversed order, as ListStore is in reverse
-      for(std::vector<FileReader>::const_reverse_iterator i = sections.rbegin(); i != sections.rend(); ++i)
-      {
-        if (i->get_name() == "layer")
-        {
-          load_layer(*i);
-        }
-        else
-        {
-          std::cout << "SectorModel::load: ignoring unknown type '" << i->get_name() << "'" << std::endl;
+      std::vector<ReaderObject> layers_objs = layers_collection.get_objects();
+      std::reverse(layers_objs.begin(), layers_objs.end());
+      for (ReaderObject const& item : layers_objs) {
+        if (item.get_name() == "layer") {
+          load_layer(item.get_mapping());
+        } else {
+          std::cout << "SectorModel::load: ignoring unknown type '" << item.get_name() << "'" << std::endl;
         }
       }
 
@@ -90,65 +88,53 @@ SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel&
 }
 
 void
-SectorModelBuilder::load_layer(const FileReader& reader)
+SectorModelBuilder::load_layer(ReaderMapping const& reader)
 {
-  FileReader objects_reader;
-  FileReader layers_reader;
-
+  ReaderCollection objects_col;
   std::string name = "New Layer";
   bool visible = true;
   bool locked  = false;
 
-  reader.get("name",    name);
-  reader.get("visible", visible);
-  reader.get("locked",  locked);
-  reader.get("objects", objects_reader);
+  reader.read("name",    name);
+  reader.read("visible", visible);
+  reader.read("locked",  locked);
+  reader.read("objects", objects_col);
 
   LayerHandle layer = LayerHandle(new Layer(m_sector));
 
-  const std::vector<FileReader>& objects_sections = objects_reader.get_sections();
-  for(std::vector<FileReader>::const_iterator j = objects_sections.begin(); j != objects_sections.end(); ++j)
-  {
-    try
-    {
-      if (j->get_name() == "navgraph-edge-ref")
-      {
+  for (ReaderObject const& item : objects_col.get_objects()) {
+    try {
+      if (item.get_name() == "navgraph-edge-ref") {
+        ReaderMapping const& map = item.get_mapping();
+
         std::string id_str;
-        if (j->get("edge", id_str))
-        {
+        if (map.read("edge", id_str)) {
           std::map<std::string, ObjectModelHandle>::iterator it = m_id_table.find(id_str);
-          if (it == m_id_table.end())
-          {
+          if (it == m_id_table.end()) {
             std::cout << "SectorModel::load_layer: couldn't resource navgraph-edge-ref: " << id_str << std::endl;
-          }
-          else
-          {
+          } else {
             layer->add(it->second);
           }
         }
-      }
-      else
-      {
-        ObjectModelHandle obj = ObjectModelFactory::create(*j);
+      } else {
+        ObjectModelHandle obj = ObjectModelFactory::create(item);
 
         layer->add(obj);
 
+        ReaderMapping const& map = item.get_mapping();
         std::string id_str;
-        if (j->read("id", id_str))
-        {
+        if (map.read("id", id_str)) {
           m_id_table[id_str] = obj;
         }
 
         std::string parent_str;
-        if (j->read("parent", parent_str))
-        {
-          if (!parent_str.empty())
+        if (map.read("parent", parent_str)) {
+          if (!parent_str.empty()) {
             m_parent_table[obj] = parent_str;
+          }
         }
       }
-    }
-    catch(std::exception& err)
-    {
+    } catch(std::exception& err) {
       std::cout << "SectorModel::load_layer: " << err.what() << std::endl;
     }
   }

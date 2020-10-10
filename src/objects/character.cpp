@@ -22,7 +22,7 @@
 #include "engine/script_manager.hpp"
 #include "app/console.hpp"
 
-Character::Character(const FileReader& props) :
+Character::Character(ReaderMapping const& props) :
   sprite(),
   z_pos(100.0f)
 {

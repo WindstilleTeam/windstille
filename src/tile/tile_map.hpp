@@ -37,7 +37,7 @@ private:
   float total_time;
 
 public:
-  TileMap(const FileReader& props);
+  TileMap(ReaderMapping const& props);
   ~TileMap() override;
 
   void update (float delta) override;

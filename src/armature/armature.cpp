@@ -29,12 +29,12 @@
 #include "display/color.hpp"
 #include "armature/pose.hpp"
 
-Armature::Armature(FileReader& reader) :
+Armature::Armature(ReaderDocument const& doc) :
   name(),
   bones(),
   root_bone(nullptr)
 {
-  parse(reader);
+  parse(doc);
 }
 
 Armature::~Armature()
@@ -45,31 +45,30 @@ Armature::~Armature()
 }
 
 void
-Armature::parse(FileReader& reader)
+Armature::parse(ReaderDocument const& doc)
 {
-  if (reader.get_name() != "armature")
-  {
-    throw std::runtime_error("Not an armature file: " + reader.get_name());
-  }
-  else
-  {
-    reader.get("name", name);
+  if (doc.get_name() != "armature") {
+    throw std::runtime_error("Not an armature file: " + doc.get_name());
+  } else {
+    ReaderMapping const& reader = doc.get_mapping();
 
-    FileReader bones_section;
-    reader.get("bones", bones_section);
+    reader.read("name", name);
 
-    std::vector<FileReader> bone_sections = bones_section.get_sections();
-    for(std::vector<FileReader>::iterator i = bone_sections.begin(); i != bone_sections.end(); ++i)
+    ReaderCollection bones_collection;
+    reader.read("bones", bones_collection);
+
+    for (ReaderObject const& bone_obj : bones_collection.get_objects())
     {
-      if (i->get_name() == "bone")
+      if (bone_obj.get_name() == "bone")
       {
+        ReaderMapping const& bone_map = bone_obj.get_mapping();
         std::unique_ptr<Bone> bone(new Bone());
-        if (!(i->get("name",     bone->name) &&
-              i->get("children", bone->children_names) &&
-              i->get("parent",   bone->parent_name) &&
-              i->get("length",   bone->length) &&
-              i->get("quat",     bone->quat) &&
-              i->get("head",     bone->offset)))
+        if (!(bone_map.read("name",     bone->name) &&
+              bone_map.read("children", bone->children_names) &&
+              bone_map.read("parent",   bone->parent_name) &&
+              bone_map.read("length",   bone->length) &&
+              bone_map.read("quat",     bone->quat) &&
+              bone_map.read("head",     bone->offset)))
         {
           std::cout << "Error: some Bone attribute missing" << std::endl;
         }
@@ -81,7 +80,7 @@ Armature::parse(FileReader& reader)
       }
       else
       {
-        std::cout << "Armature: unknown tag: " << i->get_name() << std::endl;
+        std::cout << "Armature: unknown tag: " << bone_obj.get_name() << std::endl;
       }
     }
   }

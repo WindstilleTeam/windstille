@@ -23,10 +23,10 @@
 #include "display/color.hpp"
 #include "util/file_reader.hpp"
 
-bool get(const FileReader& reader, const char* name, Vector2f&  value)
+bool read_custom(ReaderMapping const& map, std::string_view key, Vector2f&  value)
 {
   std::vector<float> floats;
-  if (reader.get(name, floats) && floats.size() == 2) {
+  if (map.read(key, floats) && floats.size() == 2) {
     value.x = floats[0];
     value.y = floats[1];
     return true;
@@ -35,10 +35,10 @@ bool get(const FileReader& reader, const char* name, Vector2f&  value)
   }
 }
 
-bool get(const FileReader& reader, const char* name, Vector3& value)
+bool read_custom(ReaderMapping const& map, std::string_view key, Vector3& value)
 {
   std::vector<float> floats;
-  if (reader.get(name, floats) && floats.size() == 3) {
+  if (map.read(key, floats) && floats.size() == 3) {
     value.x = floats[0];
     value.y = floats[1];
     value.z = floats[2];
@@ -48,10 +48,10 @@ bool get(const FileReader& reader, const char* name, Vector3& value)
   }
 }
 
-bool get(const FileReader& reader, const char* name, Quaternion& value)
+bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& value)
 {
   std::vector<float> floats;
-  if (reader.get(name, floats) && floats.size() == 4) {
+  if (map.read(key, floats) && floats.size() == 4) {
     value.w = floats[0];
     value.x = floats[1];
     value.y = floats[2];
@@ -62,10 +62,10 @@ bool get(const FileReader& reader, const char* name, Quaternion& value)
   }
 }
 
-bool get(const FileReader& reader, const char* name, Matrix& m)
+bool read_custom(ReaderMapping const& map, std::string_view key, Matrix& m)
 {
   std::vector<float> floats;
-  if (reader.get(name, floats) && floats.size() == 16) {
+  if (map.read(key, floats) && floats.size() == 16) {
     float* mp = glm::value_ptr(m);
     mp[ 0] = floats[0];
     mp[ 4] = floats[1];
@@ -90,10 +90,10 @@ bool get(const FileReader& reader, const char* name, Matrix& m)
   }
 }
 
-bool get(const FileReader& reader, const char* name, Color& value)
+bool read_custom(ReaderMapping const& map, std::string_view key, Color& value)
 {
   std::vector<float> floats;
-  if (reader.get(name, floats)) {
+  if (map.read(key, floats)) {
     if (floats.size() == 3)
     {
       value.r = floats[0];
@@ -118,19 +118,5 @@ bool get(const FileReader& reader, const char* name, Color& value)
     return false;
   }
 }
-
-// Getters for primitive types
-// FIXME: Ugly, maybe there is a better way then to have different read/get names for the function
-bool get(const FileReader& reader, const char* name, FileReader& v) { return reader.read(name, v); }
-
-bool get(const FileReader& reader, const char* name, int&   v) { return reader.read(name, v); }
-bool get(const FileReader& reader, const char* name, float& v) { return reader.read(name, v); }
-bool get(const FileReader& reader, const char* name, bool& v) { return reader.read(name, v); }
-bool get(const FileReader& reader, const char* name, std::string& v) { return reader.read(name, v); }
-
-bool get(const FileReader& reader, const char* name, std::vector<bool>&   v) { return reader.read(name, v); }
-bool get(const FileReader& reader, const char* name, std::vector<int>&   v) { return reader.read(name, v); }
-bool get(const FileReader& reader, const char* name, std::vector<float>& v) { return reader.read(name, v); }
-bool get(const FileReader& reader, const char* name, std::vector<std::string>& v) { return reader.read(name, v); }
 
 /* EOF */

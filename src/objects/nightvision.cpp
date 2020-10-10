@@ -22,7 +22,7 @@
 #include "scenegraph/vertex_array_drawable.hpp"
 #include "math/random.hpp"
 
-Nightvision::Nightvision(const FileReader& props) :
+Nightvision::Nightvision(ReaderMapping const& props) :
   nightvision(Pathname("images/nightvision.sprite")),
   noise(Texture::create(Pathname("images/noise.png")))
 {
