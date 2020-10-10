@@ -41,14 +41,6 @@ std::string squirrel2string(HSQUIRRELVM v, int i);
 
 void print_squirrel_stack(HSQUIRRELVM v, const std::string& context = std::string());
 
-
-// serialisation
-void save_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, lisp::Writer& writer);
-void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, sexp::Value const& lisp);
-
-void save_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const std::string& file);
-void load_squirrel_table(HSQUIRRELVM v, SQInteger table_idx, const std::string& file);
-
 } // namespace Scripting
 
 #endif

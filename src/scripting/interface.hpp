@@ -97,10 +97,6 @@ void objective_complete(const std::string& name);
 bool is_objective_given(const std::string& name);
 bool is_objective_complete(const std::string& name);
 
-// for testing
-void save_state(HSQUIRRELVM v, const std::string& filename);
-void load_state(HSQUIRRELVM v, const std::string& filename);
-
 void list_objects();
 
 float get_game_speed();

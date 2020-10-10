@@ -205,20 +205,6 @@ bool is_objective_complete(const std::string& name)
   return GameSession::current()->get_pda().is_objective_given(name);
 }
 
-void load_state(HSQUIRRELVM v, const std::string& filename)
-{
-  sq_pushroottable(v);
-  load_squirrel_table(v, -1, filename);
-  sq_pop(v, 1);
-}
-
-void save_state(HSQUIRRELVM v, const std::string& filename)
-{
-  sq_pushroottable(v);
-  save_squirrel_table(v, -1, filename);
-  sq_pop(v, 1);
-}
-
 void list_objects()
 {
   const std::vector<std::shared_ptr< ::GameObject > >& objects = Sector::current()->get_objects();
