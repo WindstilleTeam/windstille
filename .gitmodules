@@ -25,3 +25,6 @@
 [submodule "external/priocpp"]
 	path = external/priocpp
 	url = https://gitlab.com/grumbel/priocpp.git
+[submodule "external/miniswig"]
+	path = external/miniswig
+	url = https://gitlab.com/Windstille/miniswig.git
