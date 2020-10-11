@@ -33,11 +33,7 @@
 #ifndef HEADER_WINDSTILLE_MATH_ORIGIN_HPP
 #define HEADER_WINDSTILLE_MATH_ORIGIN_HPP
 
-#include "math/size.hpp"
-#include "math/point.hpp"
-
 #include <geom/origin.hpp>
-#include "math/vector2f.hpp"
 
 using Origin = geom::origin;
 

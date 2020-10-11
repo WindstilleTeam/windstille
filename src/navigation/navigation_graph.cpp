@@ -16,8 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iomanip>
+#include "navigation/navigation_graph.hpp"
+
 #include <algorithm>
+#include <iomanip>
+#include <iostream>
 
 #include "display/display.hpp"
 #include "display/color.hpp"
@@ -26,8 +29,6 @@
 #include "navigation/node.hpp"
 #include "util/file_writer.hpp"
 #include "util/file_reader.hpp"
-
-#include "navigation/navigation_graph.hpp"
 
 NavigationGraph::NavigationGraph() :
   nodes(),

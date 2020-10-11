@@ -18,6 +18,7 @@
 
 #include "tile/tile_factory.hpp"
 
+#include <iostream>
 #include <stdexcept>
 #include <sstream>
 

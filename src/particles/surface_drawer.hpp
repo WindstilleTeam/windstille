@@ -21,6 +21,7 @@
 
 #include "display/surface.hpp"
 #include "particles/drawer.hpp"
+#include "util/file_reader.hpp"
 
 class VertexArrayDrawable;
 

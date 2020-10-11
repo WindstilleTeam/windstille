@@ -19,6 +19,7 @@
 #include "editor/sector_model_builder.hpp"
 
 #include <fstream>
+#include <iostream>
 #include <stdexcept>
 
 #include "display/color.hpp"

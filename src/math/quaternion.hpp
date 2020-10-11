@@ -19,97 +19,9 @@
 #ifndef __QUATERNION_HPP__
 #define __QUATERNION_HPP__
 
-#include <math.h>
-#include <glm/ext.hpp>
+#include <glm/gtc/quaternion.hpp>
 
-#include "vector3.hpp"
-
-typedef glm::quat Quaternion;
-
-#if 0
-class Quaternion
-{
-public:
-  float w;
-  float x;
-  float y;
-  float z;
-
-  Quaternion()
-    : w(0), x(0), y(0), z(0)
-  {}
-
-  Quaternion(float w_, float x_, float y_, float z_)
-    : w(w_), x(x_), y(y_), z(z_)
-  {}
-
-  /** Construct a Quaternion representing a rotation
-   *  @param axis   the axis of rotation, must be a unit vector (length = 1.0f)
-   *  @param theta  the angle of rotation in radians
-   */
-  Quaternion(const Vector3& axis, float theta)
-    : w(cosf(theta/2)),
-      x(),
-      y(),
-      z()
-  {
-    float s = sinf(theta/2.0f);
-    x = axis.x * s;
-    y = axis.y * s;
-    z = axis.z * s;
-  }
-
-  static Quaternion identity() {
-    return Quaternion(1.0f, 0.0f, 0.0f, 0.0f);
-  }
-
-  float magnitude() const;
-  void normalize();
-
-  const Quaternion& operator*= (const Quaternion& o)
-  {
-    *this = *this * o;
-    return *this;
-  }
-
-  Quaternion operator* (const Quaternion& o) const
-  {
-    return Quaternion(
-      w*o.w - x*o.x - y*o.y - z*o.z,
-      w*o.x + x*o.w + y*o.z - z*o.y,
-      w*o.y + y*o.w + z*o.x - x*o.z,
-      w*o.z + z*o.w + x*o.y - y*o.x);
-  }
-
-  Quaternion operator- (const Quaternion& o) const
-  {
-    return Quaternion(w-o.w, x-o.x, y-o.y, z-o.z);
-  }
-
-  Quaternion operator+ (const Quaternion& o) const
-  {
-    return Quaternion(w+o.w, x+o.x, y+o.y, z+o.z);
-  }
-
-  Quaternion operator* (float s) const
-  {
-    return Quaternion(w*s, x*s, y*s, z*s);
-  }
-
-  float dot_product(const Quaternion& o) const
-  {
-    return x*o.x + y*o.y + z*o.z + w*o.w;
-  }
-
-  Matrix to_matrix() const;
-  /**
-   * spherical linear interpolation
-   * Returns this quaternion rotation added with t* the way from this quaternion
-   * to the o quaternion (so t should be between 0 and 1 usually)
-   */
-  Quaternion slerp(const Quaternion& o, float t) const;
-};
-#endif
+using Quaternion = glm::quat;
 
 #endif
 

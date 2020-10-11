@@ -18,6 +18,7 @@
 
 #include "screen/screen_manager.hpp"
 
+#include <iostream>
 #include <fmt/format.h>
 
 #include "app/app.hpp"

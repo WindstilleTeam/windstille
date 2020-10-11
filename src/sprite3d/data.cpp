@@ -18,6 +18,7 @@
 
 #include "sprite3d/data.hpp"
 
+#include <iostream>
 #include <fstream>
 #include <string.h>
 #include <errno.h>

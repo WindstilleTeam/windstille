@@ -19,6 +19,7 @@
 #include "app/menu_manager.hpp"
 
 #include <functional>
+#include <iostream>
 
 #include "app/app.hpp"
 #include "app/config.hpp"

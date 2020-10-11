@@ -17,6 +17,9 @@
 */
 
 #include "scenegraph/scissor_drawable.hpp"
+
+#include <iostream>
+
 #include "display/display.hpp"
 
 ScissorDrawable::ScissorDrawable(const Rect& cliprect) :

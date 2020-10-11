@@ -32,6 +32,7 @@
 #include "hud/inventory.hpp"
 #include "hud/pda.hpp"
 #include "hud/speech_manager.hpp"
+#include "math/point.hpp"
 #include "objects/doll.hpp"
 #include "objects/player.hpp"
 #include "screen/screen_manager.hpp"

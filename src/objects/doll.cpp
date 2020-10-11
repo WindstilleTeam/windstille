@@ -18,6 +18,8 @@
 
 #include "objects/doll.hpp"
 
+#include <iostream>
+
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <glm/gtx/projection.hpp>

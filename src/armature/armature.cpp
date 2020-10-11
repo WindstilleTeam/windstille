@@ -18,8 +18,10 @@
 
 #include "armature/armature.hpp"
 
-#include <GL/glew.h>
+#include <iostream>
 #include <stdexcept>
+
+#include <GL/glew.h>
 
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/rotate_vector.hpp>

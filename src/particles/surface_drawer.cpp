@@ -16,12 +16,15 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "particles/surface_drawer.hpp"
+
+#include <iostream>
+
 #include "util/file_reader.cpp"
 #include "scenegraph/vertex_array_drawable.hpp"
 #include "particles/particle_system.hpp"
 #include "display/surface_manager.hpp"
 #include "display/drawing_context.hpp"
-#include "particles/surface_drawer.hpp"
 
 SurfaceDrawer::SurfaceDrawer(SurfacePtr surface_) :
   surface(surface_),

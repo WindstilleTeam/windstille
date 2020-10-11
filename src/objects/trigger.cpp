@@ -18,6 +18,8 @@
 
 #include "objects/trigger.hpp"
 
+#include <iostream>
+
 #include "engine/sector.hpp"
 #include "objects/player.hpp"
 

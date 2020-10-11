@@ -20,12 +20,13 @@
 
 #include <glm/glm.hpp>
 
-#include "font/fonts.hpp"
-#include "screen/game_session.hpp"
-#include "input/controller.hpp"
-#include "engine/script_manager.hpp"
-#include "font/text_area.hpp"
 #include "display/display.hpp"
+#include "engine/script_manager.hpp"
+#include "font/fonts.hpp"
+#include "font/text_area.hpp"
+#include "input/controller.hpp"
+#include "math/point.hpp"
+#include "screen/game_session.hpp"
 
 DialogManager::DialogManager()
 {

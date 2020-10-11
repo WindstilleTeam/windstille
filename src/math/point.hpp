@@ -33,9 +33,6 @@
 #ifndef HEADER_WINDSTILLE_MATH_POINT_HPP
 #define HEADER_WINDSTILLE_MATH_POINT_HPP
 
-#include <iosfwd>
-#include <sstream>
-#include <fmt/format.h>
 #include <geom/size.hpp>
 #include <geom/io.hpp>
 

@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_COLLISION_STAIR_CONTACT_HPP
 
 #include "collision/contact.hpp"
+#include "math/point.hpp"
 
 class TileMap;
 

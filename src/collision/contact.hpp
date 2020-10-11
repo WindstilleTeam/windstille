@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_COLLISION_CONTACT_HPP
 #define HEADER_WINDSTILLE_COLLISION_CONTACT_HPP
 
+#include "math/vector2f.hpp"
+
 /** A Contact is a helper class that allows the player to either
     attach to other objects or move along them */
 class Contact

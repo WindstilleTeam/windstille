@@ -22,7 +22,8 @@
 #include <string>
 #include <vector>
 
-class FileReader;
+#include "util/file_reader.hpp"
+
 class Mesh;
 class Armature;
 

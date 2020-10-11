@@ -23,14 +23,15 @@
 #include "collision/collision_engine.hpp"
 #include "collision/stair_contact.hpp"
 #include "engine/sector.hpp"
+#include "math/point.hpp"
 #include "objects/grenade.hpp"
 #include "objects/laser_pointer.hpp"
 #include "objects/pistol.hpp"
+#include "scenegraph/scene_graph.hpp"
+#include "scenegraph/sprite3d_drawable.hpp"
 #include "screen/game_session.hpp"
 #include "tile/tile.hpp"
 #include "tile/tile_map.hpp"
-#include "scenegraph/scene_graph.hpp"
-#include "scenegraph/sprite3d_drawable.hpp"
 
 static const int MAX_ENERGY = 16;
 static const float WALK_SPEED = 100.0;

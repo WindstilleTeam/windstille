@@ -19,9 +19,12 @@
 #ifndef HEADER_WINDSTILLE_ARMATURE_BONE_HPP
 #define HEADER_WINDSTILLE_ARMATURE_BONE_HPP
 
+#include <string>
 #include <vector>
 
+#include "math/matrix.hpp"
 #include "math/quaternion.hpp"
+#include "math/vector3.hpp"
 
 /** */
 class Bone

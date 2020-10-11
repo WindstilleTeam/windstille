@@ -18,6 +18,8 @@
 
 #include "objects/background_gradient.hpp"
 
+#include <iostream>
+
 #include "engine/sector.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"

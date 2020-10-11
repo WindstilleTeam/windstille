@@ -21,8 +21,9 @@
 
 #include "math/rect.hpp"
 
-class FileReader;
+class Component;
 class Controller;
+class FileReader;
 
 namespace gui {
 

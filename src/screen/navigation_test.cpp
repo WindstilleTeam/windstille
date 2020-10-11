@@ -16,13 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "screen/navigation_test.hpp"
+
+#include <iostream>
+#include <GL/glew.h>
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-
-#include "screen/navigation_test.hpp"
-
-#include <GL/glew.h>
 
 #include "app/menu_manager.hpp"
 #include "display/color.hpp"

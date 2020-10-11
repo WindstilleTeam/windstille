@@ -22,8 +22,8 @@
 #include <memory>
 
 #include "display/software_surface.hpp"
-
 #include "display/texture_packer.hpp"
+#include "math/point.hpp"
 
 class TextureSpace
 {

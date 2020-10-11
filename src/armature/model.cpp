@@ -16,11 +16,13 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "armature/model.hpp"
+
+#include <iostream>
 #include <stdexcept>
 
 #include "util/file_reader.hpp"
 #include "armature/mesh.hpp"
-#include "armature/model.hpp"
 
 Model::Model(ReaderDocument const& doc, const std::string& path) :
   name(),

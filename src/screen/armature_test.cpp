@@ -18,6 +18,7 @@
 
 #include <GL/glew.h>
 #include <filesystem>
+#include <iostream>
 
 #include "armature/pose.hpp"
 #include "input/controller.hpp"

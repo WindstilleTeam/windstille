@@ -18,6 +18,8 @@
 
 #include "particles/particle_system.hpp"
 
+#include <iostream>
+
 #include "display/scene_context.hpp"
 #include "particles/deform_drawer.hpp"
 #include "particles/randomizer.hpp"

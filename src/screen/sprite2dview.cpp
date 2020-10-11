@@ -19,6 +19,7 @@
 #include "screen/sprite2dview.hpp"
 
 #include <filesystem>
+#include <iostream>
 
 #include "app/console.hpp"
 #include "display/surface_manager.hpp"

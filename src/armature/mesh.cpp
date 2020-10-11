@@ -18,6 +18,7 @@
 
 #include "armature/mesh.hpp"
 
+#include <iostream>
 #include <stdexcept>
 
 #include "armature/armature.hpp"

@@ -18,6 +18,8 @@
 
 #include "editor/navigation_graph_model.hpp"
 
+#include <iostream>
+
 #include "editor/navgraph_edge_object_model.hpp"
 #include "editor/navgraph_node_object_model.hpp"
 #include "math/line.hpp"
