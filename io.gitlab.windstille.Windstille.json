@@ -31,6 +31,7 @@
         "shared-modules/fmt/fmt.json",
         "shared-modules/squirrel/squirrel.json",
         "shared-modules/glm/glm.json",
+        "shared-modules/jsoncpp/jsoncpp-1.8.json",
         {
             "name": "windstille",
             "buildsystem": "cmake-ninja",
