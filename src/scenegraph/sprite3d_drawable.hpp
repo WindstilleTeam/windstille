@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_SPRITE3D_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_SPRITE3D_DRAWABLE_HPP
 
-#define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "sprite3d/sprite3d.hpp"

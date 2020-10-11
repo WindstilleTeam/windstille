@@ -21,7 +21,6 @@
 
 #include <math.h>
 
-#define GLM_FORCE_RADIANS
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/ext.hpp>
 #include <glm/gtx/rotate_vector.hpp>
