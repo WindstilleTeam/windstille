@@ -44,26 +44,6 @@ std::string basename(const std::string& filename)
   return filename.substr(p+1, filename.size()-p);
 }
 
-void file_to_string(const std::string& filename, std::string& str)
-{
-  std::ifstream in(filename.c_str());
-  while (true)
-  {
-    char c = static_cast<char>(in.get());
-    if (!in.good())
-      break;
-    str += c;
-  }
-}
-
-std::string tolowercase(const std::string& str)
-{
-  std::string out;
-  for(std::string::const_iterator i = str.begin();  i != str.end(); ++i)
-    out += static_cast<char>(tolower(*i));
-  return out;
-}
-
 float read_float(std::istream& in)
 {
   union {

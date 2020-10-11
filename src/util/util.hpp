@@ -25,18 +25,6 @@
 std::string dirname(const std::string& filename);
 std::string basename(const std::string& filename);
 
-/** Loads a file from \a filename and places its content in \a str
-    FIXME: doesn't use PhysFS */
-void file_to_string(const std::string& filename, std::string& str);
-
-template<class T>
-std::string to_string(const T& data)
-{
-  std::ostringstream os;
-  os << data;
-  return os.str();
-}
-
 float       read_float(std::istream& in);
 uint16_t    read_uint16_t(std::istream& in);
 uint32_t    read_uint32_t(std::istream& in);
