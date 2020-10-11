@@ -27,24 +27,6 @@ namespace math {
 
 const float pi = 3.14159265358979323846f;
 
-template<class T>
-T min (const T& a, const T& b)
-{
-  if (a < b)
-    return a;
-  else
-    return b;
-}
-
-template<class T>
-T max (const T& a, const T& b)
-{
-  if (a > b)
-    return a;
-  else
-    return b;
-}
-
 inline float normalize_angle(float radians)
 {
   radians = fmodf(radians, 2.0f * math::pi);

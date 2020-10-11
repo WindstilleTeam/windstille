@@ -73,10 +73,10 @@ public:
 
   Rectf get_bounding_box() const
   {
-    return Rectf(math::min(math::min(math::min(p1.x, p2.x), p3.x), p4.x),
-                 math::min(math::min(math::min(p1.y, p2.y), p3.y), p4.y),
-                 math::max(math::max(math::max(p1.x, p2.x), p3.x), p4.x),
-                 math::max(math::max(math::max(p1.y, p2.y), p3.y), p4.y));
+    return Rectf(std::min(std::min(std::min(p1.x, p2.x), p3.x), p4.x),
+                 std::min(std::min(std::min(p1.y, p2.y), p3.y), p4.y),
+                 std::max(std::max(std::max(p1.x, p2.x), p3.x), p4.x),
+                 std::max(std::max(std::max(p1.y, p2.y), p3.y), p4.y));
   }
 
   void rotate(float rad)
