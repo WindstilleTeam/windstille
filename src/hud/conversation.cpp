@@ -139,7 +139,7 @@ Conversation::update(float delta, const Controller& controller)
     float angle = math::rad2deg(math::normalize_angle(atan2f(direction.y, direction.x) + math::pi/2.0f + math::deg2rad(segment/2.0f)));
 
     int new_selection = int(angle / segment);
-    new_selection = math::mid(0, new_selection, int(choices.size()));
+    new_selection = std::clamp(new_selection, 0, int(choices.size()));
 
     if (new_selection != selection) {
       selection = new_selection;

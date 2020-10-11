@@ -160,7 +160,7 @@ MenuComponent::update(float delta, const Controller& controller)
 
         if (dynamic_cast<TabComponent*>(parent))
         {
-          current_item = math::mid(0, current_item + 1, static_cast<int>(items.size()-1));
+          current_item = std::clamp(current_item + 1, 0, static_cast<int>(items.size()-1));
         }
         else
         {

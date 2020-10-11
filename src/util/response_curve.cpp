@@ -41,7 +41,7 @@ ResponseCurve::get(float v)
   }
   else
   {
-    v = math::mid(i_min, v, i_max);
+    v = std::clamp(v, i_min, i_max);
 
     int   bucket_count = static_cast<int>(samples.size()) - 1;
     float bucket_size  = (i_max - i_min) / static_cast<float>(bucket_count);

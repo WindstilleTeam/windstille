@@ -45,12 +45,6 @@ T max (const T& a, const T& b)
     return b;
 }
 
-template<class T>
-T mid (const T& a, const T& b, const T& c)
-{
-  return max<T>((a), min<T>((b), (c)));
-}
-
 inline float normalize_angle(float radians)
 {
   radians = fmodf(radians, 2.0f * math::pi);
