@@ -1,3 +1,4 @@
+#include <bit>
 #include <stdlib.h>
 #include <fstream>
 #include <iostream>
@@ -6,7 +7,7 @@
 
 int main(int argc, char* argv[])
 {
-  if (is_big_endian())
+  if (std::endian::native == std::endian::big)
   {
     std::cout << "byte order is: big endian" << std::endl;
   }

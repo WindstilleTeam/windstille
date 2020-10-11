@@ -18,6 +18,7 @@
 
 #include "util/util.hpp"
 
+#include <bit>
 #include <fstream>
 #include <sstream>
 #include <errno.h>
@@ -78,7 +79,7 @@ float read_float(std::istream& in)
   }
   else
   {
-    if (is_big_endian())
+    if (std::endian::native == std::endian::big)
     {
       result.raw_v = byte_swap32(result.raw_v);
       return result.float_v;
@@ -102,7 +103,7 @@ uint16_t read_uint16_t(std::istream& in)
   }
   else
   {
-    if (is_big_endian())
+    if (std::endian::native == std::endian::big)
     {
       return byte_swap16(result);
     }
@@ -125,7 +126,7 @@ uint32_t read_uint32_t(std::istream& in)
   }
   else
   {
-    if (is_big_endian())
+    if (std::endian::native == std::endian::big)
     {
       return byte_swap32(result);
     }

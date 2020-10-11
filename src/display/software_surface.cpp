@@ -60,12 +60,12 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
     { // convert image into standard format
       m_format = RGBA;
 
-      if ((is_little_endian() &&
+      if ((std::endian::native == std::endian::little &&
            !(m_surface->format->Rmask == 0x000000ff &&
              m_surface->format->Gmask == 0x0000ff00 &&
              m_surface->format->Bmask == 0x00ff0000 &&
              m_surface->format->Amask == 0xff000000)) ||
-          (is_big_endian() &&
+          (std::endian::native == std::endian::big &&
            !(m_surface->format->Rmask == 0xff000000 &&
              m_surface->format->Gmask == 0x00ff0000 &&
              m_surface->format->Bmask == 0x0000ff00 &&
@@ -79,7 +79,7 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
                                                   m_surface->format->Amask) << std::endl;
 
         SDL_Surface* tmp_surface;
-        if (is_little_endian())
+        if (std::endian::native == std::endian::little)
         {
           tmp_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
                                              m_surface->w, m_surface->h, 32,
@@ -102,12 +102,12 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
     {
       m_format = RGB;
 
-      if ((is_little_endian() &&
+      if ((std::endian::native == std::endian::little &&
            !(m_surface->format->Rmask == 0x0000ff &&
              m_surface->format->Gmask == 0x00ff00 &&
              m_surface->format->Bmask == 0xff0000 &&
              m_surface->format->Amask == 0x000000)) ||
-          (is_big_endian() &&
+          (std::endian::native == std::endian::big &&
            !(m_surface->format->Rmask == 0xff0000 &&
              m_surface->format->Gmask == 0x00ff00 &&
              m_surface->format->Bmask == 0x0000ff &&
@@ -122,7 +122,7 @@ SoftwareSurface::SoftwareSurface(const Pathname& filename) :
 
 
         SDL_Surface* tmp_surface;
-        if (is_little_endian())
+        if (std::endian::native == std::endian::little)
         {
           tmp_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
                                              m_surface->w, m_surface->h, 24,
@@ -158,7 +158,7 @@ SoftwareSurface::SoftwareSurface(int width, int height, Format format) :
 {
   assert(format == RGBA);
 
-  if (is_big_endian())
+  if (std::endian::native == std::endian::big)
   {
     m_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
                                      width, height, 32,
