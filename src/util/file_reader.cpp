@@ -18,168 +18,116 @@
 
 #include "util/file_reader.hpp"
 
-#if 0
+#include <glm/gtc/type_ptr.hpp>
 
-#include <sstream>
-#include <fstream>
-#include <stdexcept>
+#include "math/vector2f.hpp"
+#include "math/quaternion.hpp"
+#include "display/color.hpp"
+#include "util/file_reader.hpp"
 
-#include <sexp/value.hpp>
-#include <sexp/parser.hpp>
+namespace prio {
 
-#include "util/file_reader_impl.hpp"
-#include "util/sexpr_file_reader.hpp"
-
-FileReader
-FileReader::parse(const Pathname& filename)
+template<>
+bool read_custom(ReaderMapping const& map, std::string_view key, Vector2f&  value)
 {
-  std::ifstream in(filename.get_sys_path().c_str());
-  if (!in)
-  {
-    std::ostringstream str;
-    str << "Couldn't open file: " << filename;
-    throw std::runtime_error(str.str());
-  }
-  else
-  {
-    return FileReader::parse(in, filename.get_sys_path());
+  std::vector<float> floats;
+  if (map.read(key, floats) && floats.size() == 2) {
+    value.x = floats[0];
+    value.y = floats[1];
+    return true;
+  } else {
+    return false;
   }
 }
 
-FileReader
-FileReader::parse(std::istream& stream, const std::string& filename)
+template<>
+bool read_custom(ReaderMapping const& map, std::string_view key, Vector3& value)
 {
-  sexp::Value const& root = sexp::Parser::from_stream(stream, /*filename,*/ sexp::Parser::USE_ARRAYS);
-  if (root.is_array() && root.as_array().size() >= 1)
-  {
-    return SExprFileReader(root);
-  }
-  else
-  {
-    std::ostringstream msg;
-    msg << "'" << filename << "': not a valid sexpr file";
-    throw std::runtime_error(msg.str());
+  std::vector<float> floats;
+  if (map.read(key, floats) && floats.size() == 3) {
+    value.x = floats[0];
+    value.y = floats[1];
+    value.z = floats[2];
+    return true;
+  } else {
+    return false;
   }
 }
 
-FileReader::FileReader(std::shared_ptr<FileReaderImpl> impl_)
-  : impl(impl_)
+template<>
+bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& value)
 {
-}
-
-FileReader::FileReader()
-  : impl()
-{
-}
-
-std::string
-FileReader::get_name() const
-{
-  if (impl.get())
-    return impl->get_name();
-  else
-    return "";
-}
-
-bool
-FileReader::read(const char* name, int& value) const
-{
-  if (impl.get())
-    return impl->read_int(name, value);
-  else
+  std::vector<float> floats;
+  if (map.read(key, floats) && floats.size() == 4) {
+    value.w = floats[0];
+    value.x = floats[1];
+    value.y = floats[2];
+    value.z = floats[3];
+    return true;
+  } else {
     return false;
+  }
 }
 
-bool
-FileReader::read(const char* name, float& value) const
+template<>
+bool read_custom(ReaderMapping const& map, std::string_view key, Matrix& m)
 {
-  if (impl.get())
-    return impl->read_float(name, value);
-  else
+  std::vector<float> floats;
+  if (map.read(key, floats) && floats.size() == 16) {
+    float* mp = glm::value_ptr(m);
+    mp[ 0] = floats[0];
+    mp[ 4] = floats[1];
+    mp[ 8] = floats[2];
+    mp[12] = floats[3];
+    mp[ 1] = floats[4];
+    mp[ 5] = floats[5];
+    mp[ 9] = floats[6];
+    mp[13] = floats[7];
+    mp[ 2] = floats[8];
+    mp[ 6] = floats[9];
+    mp[10] = floats[10];
+    mp[14] = floats[11];
+    mp[ 3] = floats[12];
+    mp[ 7] = floats[13];
+    mp[11] = floats[14];
+    mp[15] = floats[15];
+    return true;
+    // FIXME: Could add code to handel 3x3 matrixes
+  } else {
     return false;
+  }
 }
 
-bool
-FileReader::read(const char* name, bool& value) const
+template<>
+bool read_custom(ReaderMapping const& map, std::string_view key, Color& value)
 {
-  if (impl.get())
-    return impl->read_bool(name, value);
-  else
+  std::vector<float> floats;
+  if (map.read(key, floats)) {
+    if (floats.size() == 3)
+    {
+      value.r = floats[0];
+      value.g = floats[1];
+      value.b = floats[2];
+      value.a = 1.0f;
+      return true;
+    }
+    else if (floats.size() == 4)
+    {
+      value.r = floats[0];
+      value.g = floats[1];
+      value.b = floats[2];
+      value.a = floats[3];
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  } else {
     return false;
+  }
 }
 
-bool
-FileReader::read(const char* name, std::string& value) const
-{
-  if (impl.get())
-    return impl->read_string(name, value);
-  else
-    return false;
-}
-
-bool
-FileReader::read(const char* name, std::vector<int>& value) const
-{
-  if (impl.get())
-    return impl->get(name, value);
-  else
-    return false;
-}
-
-bool
-FileReader::read(const char* name, std::vector<bool>&   value) const
-{
-  if (impl.get())
-    return impl->get(name, value);
-  else
-    return false;
-}
-
-bool
-FileReader::read(const char* name, std::vector<std::string>& value) const
-{
-  if (impl.get())
-    return impl->get(name, value);
-  else
-    return false;
-}
-
-bool
-FileReader::read(const char* name, std::vector<float>& value) const
-{
-  if (impl.get())
-    return impl->get(name, value);
-  else
-    return false;
-}
-
-bool
-FileReader::read(const char* name, ReaderMapping const& reader) const
-{
-  if (impl.get())
-    return impl->read_section(name, reader);
-  else
-    return false;
-}
-
-std::vector<std::string>
-FileReader::get_section_names() const
-{
-  if (impl.get())
-    return impl->get_section_names();
-  else
-    return std::vector<std::string>();
-}
-
-std::vector<FileReader>
-FileReader::get_sections() const
-{
-  if (impl.get())
-    return impl->get_sections();
-  else
-    return std::vector<FileReader>();
-}
-
-#endif
+} // namespace prio
 
 /* EOF */
