@@ -134,7 +134,7 @@ InputManagerSDL::parse_config(ReaderMapping const& reader)
 {
   for (auto const& key : reader.get_keys())
   {
-    if (has_suffix(key, "-button"))
+    if (key.ends_with("-button"))
     {
       ReaderObject button_obj;
       reader.read(key, button_obj);
@@ -179,7 +179,7 @@ InputManagerSDL::parse_config(ReaderMapping const& reader)
         std::cout << "InputManagerSDL: Unknown tag: " << button_obj.get_name() << std::endl;
       }
     }
-    else if (has_suffix(key, "-axis"))
+    else if (key.ends_with("-axis"))
     {
       ReaderObject axis_obj;
       reader.read(key, axis_obj);

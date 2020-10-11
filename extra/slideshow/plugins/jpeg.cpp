@@ -31,8 +31,8 @@ JPEG::filename_is_jpeg(const std::string& filename)
   // FIXME: Merge this with util/jpeg_software_surface_loader, maybe
   // store the fileformat/SoftwareSurfaceLoader in the database intead
   // of figuring out the format each time anew
-  return (has_suffix(filename, "jpg") ||
-          has_suffix(filename, "jpeg"));
+  return (filename.ends_with(".jpg") ||
+          filename.ends_with(".jpeg"));
 }
 
 Size

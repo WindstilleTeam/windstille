@@ -50,7 +50,7 @@ Directory::read(const Pathname& pathname, const std::string& suffix)
        ++it)
   {
     const std::string& filename = it->path().string();
-    if (has_suffix(filename, suffix))
+    if (filename.ends_with(suffix))
     {
       entries.push_back(Pathname(pathname.get_raw_path() + it->path().filename().string(), pathname.get_type()));
     }
