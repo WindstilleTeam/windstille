@@ -44,8 +44,6 @@ find_package(Threads REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(PNG REQUIRED)
 find_package(Freetype REQUIRED)
-find_package(BISON REQUIRED)
-find_package(FLEX REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glm REQUIRED)
@@ -75,6 +73,7 @@ function(build_dependencies)
   add_subdirectory(external/logmich/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/priocpp/ EXCLUDE_FROM_ALL)
+  add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
 
   add_subdirectory(external/wstsound/ EXCLUDE_FROM_ALL)
 endfunction()
@@ -83,27 +82,6 @@ build_dependencies()
 include_directories(.)
 include_directories(src/)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/src/)
-
-bison_target(parser
-  ${CMAKE_CURRENT_SOURCE_DIR}/external/miniswig/parser.yy
-  ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp
-  COMPILE_FLAGS "--no-lines -d")
-flex_target(MyScanner
-  ${CMAKE_CURRENT_SOURCE_DIR}/external/miniswig/lexer.ll
-  ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
-
-file(GLOB MINISWIG_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  external/miniswig/create_docu.cpp
-  external/miniswig/xmlwriter.cpp
-  external/miniswig/create_wrapper.cpp
-  external/miniswig/main.cpp
-  external/miniswig/tree.cpp)
-list(APPEND MINISWIG_SOURCES
-  ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp
-  ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp)
-add_executable(miniswig ${MINISWIG_SOURCES})
-target_include_directories(miniswig SYSTEM PRIVATE external/miniswig/)
-set_target_properties(miniswig PROPERTIES CXX_CLANG_TIDY "")
 
 # compile scripting stuff
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/)
@@ -132,14 +110,14 @@ set(TARGET_HPP ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/wrapper.hpp)
 set(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/miniswig.tmp)
 add_custom_command(
   OUTPUT ${TARGET_CPP} ${TARGET_HPP}
-  COMMAND ${CMAKE_CURRENT_BINARY_DIR}/miniswig
+  COMMAND ${CMAKE_CURRENT_BINARY_DIR}/external/miniswig/miniswig
   --input ${SOURCE}
   --output-cpp ${TARGET_CPP}
   --output-hpp ${TARGET_HPP}
   --module windstille
   --select-namespace "Scripting"
   DEPENDS
-  ${CMAKE_CURRENT_BINARY_DIR}/miniswig
+  ${CMAKE_CURRENT_BINARY_DIR}/external/miniswig/miniswig
   ${SOURCE})
 
 # compile libgalapix
