@@ -25,13 +25,10 @@
 
 #include <sexp/parser.hpp>
 
-#include "lisp/properties.hpp"
 #include "util/file_writer.hpp"
 #include "util/pathname.hpp"
 
 #include "scripting/util.hpp"
-
-using namespace lisp;
 
 namespace Scripting {
 

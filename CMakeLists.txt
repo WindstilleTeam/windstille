@@ -146,7 +146,6 @@ add_custom_command(
 file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/display/*.cpp
   src/font/*.cpp
-  src/lisp/*.cpp
   src/math/*.cpp
   src/navigation/*.cpp
   src/particles/*.cpp
