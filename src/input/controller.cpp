@@ -22,12 +22,10 @@
 #include <math.h>
 #include <assert.h>
 
-#include "app/controller_def.hpp"
-
 namespace wstinput {
 
-Controller::Controller() :
-  m_states(LAST_EVENT),
+Controller::Controller(size_t size) :
+  m_states(size),
   m_events() // FIXME: need to mark states with type
 {
 }
@@ -35,6 +33,8 @@ Controller::Controller() :
 float
 Controller::get_trigger_state(int name) const
 {
+  if (m_states.empty()) { return 0.0f; }
+
   float value = get_axis_state(name)/2.0f + 0.5f;
   if (value < 0.001f)
   {
@@ -53,6 +53,8 @@ Controller::get_trigger_state(int name) const
 float
 Controller::get_axis_state(int id, bool use_deadzone) const
 {
+  if (m_states.empty()) { return 0.0f; }
+
   assert(id < int(m_states.size()));
 
   if (use_deadzone)
@@ -71,6 +73,8 @@ Controller::get_axis_state(int id, bool use_deadzone) const
 bool
 Controller::get_button_state(int id) const
 {
+  if (m_states.empty()) { return false; }
+
   assert(id < int(m_states.size()));
   return m_states[id].button;
 }
@@ -78,6 +82,8 @@ Controller::get_button_state(int id) const
 void
 Controller::set_axis_state(int id, float pos)
 {
+  if (m_states.empty()) { return; }
+
   assert(id < static_cast<int>(m_states.size()));
   m_states[id].axis = pos;
 }
@@ -85,6 +91,8 @@ Controller::set_axis_state(int id, float pos)
 void
 Controller::set_button_state(int name, bool down)
 {
+  if (m_states.empty()) { return; }
+
   assert(name < static_cast<int>(m_states.size()));
   m_states[name].button = down;
 }
@@ -152,6 +160,8 @@ Controller::add_event(const InputEvent& event)
 float
 Controller::get_ball_state(int id) const
 {
+  if (m_states.empty()) { return 0.0f; }
+
   assert(id < int(m_states.size()));
   return m_states[id].ball;
 }

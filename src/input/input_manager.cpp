@@ -34,7 +34,7 @@ const int dead_zone = 0;
 
 InputManagerSDL::InputManagerSDL(const ControllerDescription& controller_description)
   : m_controller_description(controller_description),
-    m_controller(),
+    m_controller(controller_description.size()),
     m_joystick_button_bindings(),
     m_joystick_button_axis_bindings(),
     m_joystick_axis_bindings(),

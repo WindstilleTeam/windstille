@@ -46,6 +46,8 @@ public:
   const InputEventDefinition& get_definition(int id) const;
   const InputEventDefinition& get_definition(const std::string& name) const;
 
+  size_t size() const { return str_to_event.size(); }
+
 private:
   std::map<std::string, InputEventDefinition> str_to_event;
   std::map<int,         InputEventDefinition> id_to_event;

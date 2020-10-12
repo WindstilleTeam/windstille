@@ -39,7 +39,7 @@ private:
   };
 
 public:
-  Controller();
+  Controller(size_t size = 0);
 
   float get_trigger_state(int name) const;
   float get_axis_state  (int name, bool use_deadzone = true) const;
