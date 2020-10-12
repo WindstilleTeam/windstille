@@ -70,7 +70,7 @@ public:
     return *data;
   }
 
-  operator bool() {
+  explicit operator bool() {
     return data != nullptr;
   }
 

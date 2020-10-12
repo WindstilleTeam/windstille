@@ -100,7 +100,7 @@ public:
   float get_height() const;
 
   /** true if the Sprite is valid and usable, false if not */
-  operator bool() const;
+  explicit operator bool() const;
 };
 
 #endif

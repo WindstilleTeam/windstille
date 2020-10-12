@@ -60,7 +60,7 @@ public:
     return mask & (1<<layer);
   }
 
-  operator bool() {
+  explicit operator bool() {
     return mask;
   }
 };
