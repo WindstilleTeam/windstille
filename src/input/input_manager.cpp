@@ -26,8 +26,6 @@
 #  include "wiimote.hpp"
 #endif
 
-#include "app/controller_def.hpp"
-
 namespace wstinput {
 
 const int dead_zone = 0;
@@ -681,6 +679,9 @@ InputManagerSDL::add_keyboard_event(int , KeyboardEvent::KeyType key_type, int c
 void
 InputManagerSDL::add_axis_event(int name, float pos)
 {
+#if 0
+  // FIXME: reimplement this in some generic fashion
+
   // Convert analog axis events into digital menu movements
   // FIXME: add key repeat
   float click_threshold = 0.5f;
@@ -736,6 +737,7 @@ InputManagerSDL::add_axis_event(int name, float pos)
       add_button_event(MENU_DOWN_BUTTON, 0);
     }
   }
+#endif
 
   InputEvent event;
 
