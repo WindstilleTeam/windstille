@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_INPUT_INPUT_MANAGER_HPP
 
 #include <SDL.h>
+#include <filesystem>
 #include <memory>
 
 #include "input/controller.hpp"
@@ -28,7 +29,6 @@
 #include "util/file_reader.hpp"
 
 class InputManagerSDLImpl;
-class Pathname;
 
 struct JoystickButtonBinding
 {
@@ -102,7 +102,7 @@ public:
   InputManagerSDL(const ControllerDescription& controller_description);
   ~InputManagerSDL() override;
 
-  void load(const Pathname& filename);
+  void load(std::filesystem::path const& filename);
 
   void update(float delta);
 

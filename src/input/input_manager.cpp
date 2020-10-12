@@ -22,7 +22,6 @@
 #include "math/math.hpp"
 #include "app/config.hpp"
 #include "util/file_reader.hpp"
-#include "util/pathname.hpp"
 #include "util/util.hpp"
 #include "util/log.hpp"
 #include "input_manager.hpp"
@@ -114,9 +113,9 @@ InputManagerSDL::ensure_open_joystick(int device)
 }
 
 void
-InputManagerSDL::load(const Pathname& filename)
+InputManagerSDL::load(std::filesystem::path const& filename)
 {
-  ReaderDocument doc = ReaderDocument::from_file(filename.get_sys_path());
+  ReaderDocument doc = ReaderDocument::from_file(filename);
 
   std::cout << "InputManager: " << filename << std::endl;
 
