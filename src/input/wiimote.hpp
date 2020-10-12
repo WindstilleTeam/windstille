@@ -134,9 +134,6 @@ private:
 
 #endif // HAVE_CWIID
 
-class Wiimote;
-extern Wiimote* wiimote;
-
 #endif
 
 /* EOF */

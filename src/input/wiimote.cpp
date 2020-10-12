@@ -22,9 +22,13 @@
 
 namespace wstinput {
 
+#ifdef HAVE_CWIID
+
+namespace {
+
 Wiimote* wiimote = nullptr;
 
-#ifdef HAVE_CWIID
+} // namespace
 
 void
 Wiimote::init()

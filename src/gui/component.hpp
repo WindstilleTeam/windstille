@@ -21,7 +21,6 @@
 
 #include "math/rect.hpp"
 
-class Component;
 namespace wstinput { class Controller; }
 class FileReader;
 
