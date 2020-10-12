@@ -22,7 +22,7 @@
 #include <ClanLib/gl.h>
 #include <ClanLib/application.h>
 
-#include "collision_mask.hxx"
+#include "collision/collision_mask.hxx"
 
 class CollTest : CL_ClanApplication
 {
@@ -34,8 +34,8 @@ public:
         CL_SetupCore::init();
         CL_SetupDisplay::init(true);
 
-        CollisionMask mask1("../../data/images/colltest2.png");
-        CollisionMask mask2("../../data/images/colltest.png");
+        CollisionMask mask1("data/images/colltest2.png");
+        CollisionMask mask2("data/images/colltest.png");
         
         int collisions = 0;
         int misses     = 0;

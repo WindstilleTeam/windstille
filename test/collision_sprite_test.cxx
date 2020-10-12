@@ -22,15 +22,15 @@
 #include <ClanLib/gl.h>
 #include <ClanLib/application.h>
 
-#include "collision_sprite.cxx"
-#include "collision_mask.cxx"
+#include "collision/collision_sprite.cxx"
+#include "collision/collision_mask.cxx"
 
 class CollTest : CL_ClanApplication
 {
 public:
   int main(int argc, char** argv)
   {
-    try 
+    try
       {
         CL_SetupCore::init();
         CL_SetupDisplay::init();
@@ -38,19 +38,19 @@ public:
 
         CL_DisplayWindow window("colltest", 640, 480, false, false);
 
-        CL_ResourceManager* resources = new CL_ResourceManager("../data/windstille.xml");
+        CL_ResourceManager* resources = new CL_ResourceManager("data/windstille.xml");
 
         CL_Sprite       sprite("hero/run", resources);
         //CL_SpriteDescription desc("hero/run1", resources);
-        CollisionSprite col_sprite("hero/run1", resources);
+        CollisionSprite col_sprite("hero/run", resources);
 
         CL_Sprite       sprite2("hero/run", resources);
-        CollisionSprite col_sprite2("hero/run1", resources);
+        CollisionSprite col_sprite2("hero/run", resources);
 
         while (!CL_Keyboard::get_keycode(CL_KEY_ESCAPE))
           {
             CL_Display::clear(CL_Color(155, 155, 155));
-                
+
             sprite.update(5.0/1000);
             sprite2.update(8.0/1000);
 

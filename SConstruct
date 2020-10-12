@@ -10,6 +10,8 @@ env.Append(CPPPATH=[".", "src/"])
 env.Command("src/scripting/windstille_wrap.cxx",
             "src/scripting/windstille.i",
             "swig -guile -c++ -o $TARGET $SOURCE")
+libcol = env.StaticLibrary("libcol", Glob("src/collision/*.cxx"))
+env.Append(LIBS=[libcol])
 env.Program("windstille",
             Glob("src/*.cxx") +
             Glob("src/collision/*.cxx") +
@@ -18,6 +20,15 @@ env.Program("windstille",
             Glob("src/guistyle/*.cxx") +
             Glob("src/scripting/*.cxx") +
             Glob("src/editor/*.cxx"))
+
+env.Program("colltest",
+            ["test/colltest.cxx"])
+
+env.Program("collision_benchmark",
+            ["test/collision_benchmark.cxx"])
+
+env.Program("collision_sprite_test",
+            ["test/collision_sprite_test.cxx"])
 
 # Install
 prefix = PREFIX
