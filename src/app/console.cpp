@@ -20,11 +20,12 @@
 
 #include <ostream>
 
+#include <wstinput/input_manager.hpp>
+
 #include "app/app.hpp"
 #include "display/display.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
-#include "input/input_manager.hpp"
 #include "screen/game_session.hpp"
 
 class ConsoleStreambuf : public std::streambuf

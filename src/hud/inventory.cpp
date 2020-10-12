@@ -22,9 +22,10 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
+#include <wstinput/controller.hpp>
+
 #include "app/controller_def.hpp"
 #include "font/fonts.hpp"
-#include "input/controller.hpp"
 #include "screen/game_session.hpp"
 
 class InventoryItem

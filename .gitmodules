@@ -28,3 +28,6 @@
 [submodule "external/miniswig"]
 	path = external/miniswig
 	url = https://gitlab.com/Windstille/miniswig.git
+[submodule "external/wstinput"]
+	path = external/wstinput
+	url = https://gitlab.com/Windstille/wstinput.git

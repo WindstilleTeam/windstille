@@ -75,6 +75,7 @@ function(build_dependencies)
   add_subdirectory(external/priocpp/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
 
+  add_subdirectory(external/wstinput/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/wstsound/ EXCLUDE_FROM_ALL)
 endfunction()
 build_dependencies()
@@ -136,6 +137,7 @@ add_library(wstlib STATIC ${WSTLIB_SOURCES})
 target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
 target_link_libraries(wstlib PUBLIC
   prio
+  wstinput
   wstsound
   argparser
   babyxml
@@ -185,7 +187,6 @@ file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/engine/*.cpp
   src/gui/*.cpp
   src/hud/*.cpp
-  src/input/*.cpp
   src/objects/*.cpp
   src/properties/*.cpp
   src/screen/*.cpp

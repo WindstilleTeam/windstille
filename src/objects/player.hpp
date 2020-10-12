@@ -19,18 +19,16 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_PLAYER_HPP
 #define HEADER_WINDSTILLE_OBJECTS_PLAYER_HPP
 
+#include <wstinput/controller.hpp>
+
 #include "app/globals.hpp"
 #include "display/surface.hpp"
 #include "engine/entity.hpp"
-#include "input/controller.hpp"
 #include "math/vector2f.hpp"
 #include "sprite2d/sprite.hpp"
 #include "sprite3d/sprite3d.hpp"
 #include "util/currenton.hpp"
 
-namespace wstinput {
-class Controller;
-} // namespace wstinput
 class Contact;
 class LaserPointer;
 class CollisionObject;

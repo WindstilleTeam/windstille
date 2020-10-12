@@ -24,12 +24,13 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
+#include <wstinput/controller.hpp>
+
 #include "app/console.hpp"
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include "display/color.hpp"
 #include "display/display.hpp"
-#include "input/controller.hpp"
 
 GeometryTest::GeometryTest()
   : line1(Vector2f(300, 300),

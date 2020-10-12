@@ -18,11 +18,12 @@
 
 #include "gui/slider.hpp"
 
+#include <wstinput/controller.hpp>
+
 #include "app/controller_def.hpp"
 #include "display/color.hpp"
 #include "display/display.hpp"
 #include "gui/list_view.hpp"
-#include "input/controller.hpp"
 
 namespace gui {
 

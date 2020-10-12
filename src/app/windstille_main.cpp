@@ -20,6 +20,8 @@
 #include <sstream>
 #include <filesystem>
 
+#include <wstinput/input_manager.hpp>
+
 #include "app/app.hpp"
 #include "app/config.hpp"
 #include "app/console.hpp"
@@ -30,7 +32,6 @@
 #include "display/texture_manager.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
-#include "input/input_manager.hpp"
 #include "screen/game_session.hpp"
 #include "screen/particle_viewer.hpp"
 #include "screen/screen_manager.hpp"

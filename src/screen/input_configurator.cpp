@@ -20,11 +20,13 @@
 
 #include <iostream>
 
+#include <wstinput/controller.hpp>
+#include <wstinput/input_manager.hpp>
+
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
-#include "input/input_manager.hpp"
 #include "screen/screen_manager.hpp"
 
 InputConfigurator::InputConfigurator()

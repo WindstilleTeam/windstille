@@ -18,11 +18,12 @@
 
 #include "hud/controller_help_window.hpp"
 
+#include <wstinput/input_manager.hpp>
+
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/color.hpp"
 #include "display/display.hpp"
-#include "input/input_manager.hpp"
 #include "math/rect.hpp"
 
 ControllerHelpWindow::ControllerHelpWindow()

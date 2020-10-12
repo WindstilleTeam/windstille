@@ -25,11 +25,12 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
+#include <wstinput/controller.hpp>
+
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include "display/color.hpp"
 #include "display/display.hpp"
-#include "input/controller.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
 

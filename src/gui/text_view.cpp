@@ -18,9 +18,10 @@
 
 #include "gui/text_view.hpp"
 
+#include <wstinput/controller.hpp>
+
 #include "app/controller_def.hpp"
 #include "gui/slider.hpp"
-#include "input/controller.hpp"
 
 namespace gui {
 

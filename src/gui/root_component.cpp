@@ -18,8 +18,9 @@
 
 #include <algorithm>
 
+#include <wstinput/controller.hpp>
+
 #include "app/console.hpp"
-#include "input/controller.hpp"
 #include "gui/root_component.hpp"
 
 namespace gui {

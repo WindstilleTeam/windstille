@@ -20,12 +20,13 @@
 
 #include <glm/glm.hpp>
 
+#include <wstinput/controller.hpp>
+
 #include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "font/text_area.hpp"
-#include "input/controller.hpp"
 #include "math/point.hpp"
 #include "screen/game_session.hpp"
 

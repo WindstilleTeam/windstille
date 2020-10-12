@@ -20,10 +20,11 @@
 
 #include <iostream>
 
+#include <wstinput/controller.hpp>
+
 #include "app/controller_def.hpp"
 #include "display/color.hpp"
 #include "display/display.hpp"
-#include "input/controller.hpp"
 #include "util/log.hpp"
 
 namespace gui {

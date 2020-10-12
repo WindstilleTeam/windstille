@@ -18,12 +18,13 @@
 
 #include <SDL.h>
 
+#include <wstinput/input_manager.hpp>
+
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "collision/collision_engine.hpp"
 #include "display/display.hpp"
 #include "engine/sector.hpp"
-#include "input/input_manager.hpp"
 #include "objects/player.hpp"
 #include "screen/view.hpp"
 

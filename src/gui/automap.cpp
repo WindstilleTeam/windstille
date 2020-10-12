@@ -18,12 +18,13 @@
 
 #include "gui/automap.hpp"
 
+#include <wstinput/controller.hpp>
+
 #include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "display/software_surface.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "engine/sector.hpp"
-#include "input/controller.hpp"
 #include "tile/tile_map.hpp"
 #include "util/log.hpp"
 

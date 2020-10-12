@@ -20,9 +20,10 @@
 #include <filesystem>
 #include <iostream>
 
+#include <wstinput/controller.hpp>
+
 #include "app/controller_def.hpp"
 #include "armature/pose.hpp"
-#include "input/controller.hpp"
 #include "screen/armature_test.hpp"
 #include "screen/screen_manager.hpp"
 #include "util/directory.hpp"

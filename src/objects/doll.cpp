@@ -24,9 +24,10 @@
 #include <glm/ext.hpp>
 #include <glm/gtx/projection.hpp>
 
+#include <wstinput/controller.hpp>
+
 #include "app/controller_def.hpp"
 #include "engine/sector.hpp"
-#include "input/controller.hpp"
 #include "math/line.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/edge_position.hpp"
