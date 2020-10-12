@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "input/input_configurator.hpp"
+#include "screen/input_configurator.hpp"
 
 #include <iostream>
 
