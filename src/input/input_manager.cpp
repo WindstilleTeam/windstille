@@ -231,32 +231,6 @@ InputManagerSDL::parse_config(ReaderMapping const& reader)
 void
 InputManagerSDL::on_key_event(const SDL_KeyboardEvent& event)
 {
-  // Hardcoded defaults
-  if (event.keysym.scancode == SDL_SCANCODE_RETURN)
-  {
-    add_button_event(ENTER_BUTTON, event.state);
-  }
-  else if (event.keysym.scancode == SDL_SCANCODE_ESCAPE)
-  {
-    add_button_event(ESCAPE_BUTTON, event.state);
-  }
-  else if (event.keysym.scancode == SDL_SCANCODE_LEFT)
-  {
-    add_button_event(MENU_LEFT_BUTTON, event.state);
-  }
-  else if (event.keysym.scancode == SDL_SCANCODE_RIGHT)
-  {
-    add_button_event(MENU_RIGHT_BUTTON, event.state);
-  }
-  else if (event.keysym.scancode == SDL_SCANCODE_UP)
-  {
-    add_button_event(MENU_UP_BUTTON, event.state);
-  }
-  else if (event.keysym.scancode == SDL_SCANCODE_DOWN)
-  {
-    add_button_event(MENU_DOWN_BUTTON, event.state);
-  }
-
   // Dynamic bindings
   for (std::vector<KeyboardButtonBinding>::const_iterator i = m_keyboard_button_bindings.begin();
        i != m_keyboard_button_bindings.end();
