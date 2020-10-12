@@ -24,6 +24,8 @@
 #include "app/controller_def.hpp"
 #include "input/input_event.hpp"
 
+namespace wstinput {
+
 /** The Controller class presents the current state of the controller
     and the input events that occurred on the controller since the
     last update */
@@ -75,6 +77,8 @@ public:
   Controller(const Controller&) = delete;
   Controller& operator=(const Controller&) = delete;
 };
+
+} // namespace wstinput
 
 #endif
 

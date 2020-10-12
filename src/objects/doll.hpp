@@ -26,8 +26,16 @@
 #include "util/currenton.hpp"
 
 class Sprite3DDrawable;
+namespace wstinput {
 class Controller;
+} // namespace wstinput
 class EdgePosition;
+
+namespace wstinput {
+class Controller;
+} // namespace wstinput
+
+using Controller = wstinput::Controller;
 
 /** A controllable character */
 class Doll : public GameObject,

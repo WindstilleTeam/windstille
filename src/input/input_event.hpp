@@ -21,6 +21,8 @@
 
 #include <vector>
 
+namespace wstinput {
+
 enum InputEventType { BUTTON_EVENT, AXIS_EVENT, BALL_EVENT, KEYBOARD_EVENT };
 
 /** Used for textual input */
@@ -71,7 +73,9 @@ struct InputEvent
   };
 };
 
-typedef std::vector<InputEvent> InputEventLst;
+using InputEventLst = std::vector<InputEvent>;
+
+} // namespace wstinput
 
 #endif
 

@@ -117,11 +117,11 @@ DialogManager::update(float delta, const Controller& controller)
 
   delay += delta;
 
-  InputEventLst events = controller.get_events();
+  auto const& events = controller.get_events();
 
-  for (InputEventLst::iterator i = events.begin(); i != events.end(); ++i)
+  for (auto i = events.begin(); i != events.end(); ++i)
   {
-    if ((*i).type == BUTTON_EVENT)
+    if ((*i).type == wstinput::BUTTON_EVENT)
     {
       if ((*i).button.name == OK_BUTTON && (*i).button.down)
       {

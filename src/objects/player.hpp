@@ -28,13 +28,17 @@
 #include "sprite3d/sprite3d.hpp"
 #include "util/currenton.hpp"
 
+namespace wstinput {
 class Controller;
+} // namespace wstinput
 class Contact;
 class LaserPointer;
 class CollisionObject;
 class CollisionData;
 class Weapon;
 class Sprite3DDrawable;
+
+using Controller = wstinput::Controller;
 
 class Player : public Entity,
                public Currenton<Player>

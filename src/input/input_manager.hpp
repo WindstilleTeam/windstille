@@ -28,6 +28,8 @@
 #include "util/currenton.hpp"
 #include "util/file_reader.hpp"
 
+namespace wstinput {
+
 class InputManagerSDLImpl;
 
 struct JoystickButtonBinding
@@ -174,6 +176,8 @@ private:
   InputManagerSDL (const InputManagerSDL&);
   InputManagerSDL& operator= (const InputManagerSDL&);
 };
+
+} // namespace wstinput
 
 #endif
 

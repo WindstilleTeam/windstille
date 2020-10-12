@@ -45,9 +45,9 @@ TextView::update(float delta, const Controller& controller)
 
   text_area.set_scroll_offset(text_area.get_scroll_offset() + 500.0f * controller.get_axis_state(Y2_AXIS) * delta);
 
-  for(InputEventLst::const_iterator i = controller.get_events().begin(); i != controller.get_events().end(); ++i)
+  for(auto i = controller.get_events().begin(); i != controller.get_events().end(); ++i)
   {
-    if (i->type == BUTTON_EVENT && i->button.down)
+    if (i->type == wstinput::BUTTON_EVENT && i->button.down)
     {
       if (i->button.name == OK_BUTTON || i->button.name == ENTER_BUTTON)
       {

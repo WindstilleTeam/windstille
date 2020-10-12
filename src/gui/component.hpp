@@ -22,8 +22,10 @@
 #include "math/rect.hpp"
 
 class Component;
-class Controller;
+namespace wstinput { class Controller; }
 class FileReader;
+
+using Controller = wstinput::Controller;
 
 namespace gui {
 

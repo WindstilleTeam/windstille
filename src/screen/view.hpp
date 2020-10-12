@@ -24,7 +24,9 @@
 #include "math/vector2f.hpp"
 #include "util/currenton.hpp"
 
+namespace wstinput {
 class Controller;
+} // namespace wstinput
 class SceneContext;
 
 /** This class is the gui component which renders the world to the

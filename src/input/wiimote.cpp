@@ -22,6 +22,8 @@
 
 #include "math/math.hpp"
 
+namespace wstinput {
+
 Wiimote* wiimote = nullptr;
 
 #ifdef HAVE_CWIID
@@ -497,5 +499,7 @@ Wiimote::mesg_callback(cwiid_wiimote_t* w, int mesg_count, union cwiid_mesg mesg
 }
 
 #endif // HAVE_CWIID
+
+} // namespace wstinput
 
 /* EOF */

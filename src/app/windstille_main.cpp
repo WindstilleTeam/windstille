@@ -79,8 +79,8 @@ WindstilleMain::main(int argc, char** argv)
       SpriteManager     sprite_manager;
       sprite3d::Manager sprite3d_manager;
       ScriptManager     script_manager;
-      ControllerDescription controller_description = get_windstille_controller_description();
-      InputManagerSDL   input_manager(controller_description);
+      wstinput::ControllerDescription controller_description = get_windstille_controller_description();
+      wstinput::InputManagerSDL   input_manager(controller_description);
       ScreenManager     screen_manager;
       TileFactory       tile_factory = TileFactory(Pathname("tiles.scm"));
 
@@ -162,13 +162,13 @@ WindstilleMain::init_modules()
 
   {
     if (config.get<std::string>("primary-controller-file").is_set())
-      InputManagerSDL::current()->load(Pathname(config.get<std::string>("primary-controller-file").get(),
+      wstinput::InputManagerSDL::current()->load(Pathname(config.get<std::string>("primary-controller-file").get(),
                                                 Pathname::kSysPath).get_sys_path());
     else
-      InputManagerSDL::current()->load(Pathname("controller/keyboard.scm").get_sys_path());
+      wstinput::InputManagerSDL::current()->load(Pathname("controller/keyboard.scm").get_sys_path());
 
     if (config.get<std::string>("secondary-controller-file").is_set())
-      InputManagerSDL::current()->load(Pathname(config.get<std::string>("secondary-controller-file").get(),
+      wstinput::InputManagerSDL::current()->load(Pathname(config.get<std::string>("secondary-controller-file").get(),
                                                 Pathname::kSysPath).get_sys_path());
   }
 }

@@ -22,6 +22,8 @@
 #include <math.h>
 #include <assert.h>
 
+namespace wstinput {
+
 Controller::Controller() :
   m_states(LAST_EVENT),
   m_events() // FIXME: need to mark states with type
@@ -158,5 +160,7 @@ Controller::set_ball_state(int id, float pos)
   assert(id < static_cast<int>(m_states.size()));
   m_states[id].ball = pos;
 }
+
+} // namespace wstinput
 
 /* EOF */

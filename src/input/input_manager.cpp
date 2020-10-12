@@ -22,12 +22,13 @@
 #include "math/math.hpp"
 #include "app/config.hpp"
 #include "util/file_reader.hpp"
-#include "util/util.hpp"
 #include "util/log.hpp"
 #include "input_manager.hpp"
 #ifdef HAVE_CWIID
 #  include "wiimote.hpp"
 #endif
+
+namespace wstinput {
 
 const int dead_zone = 0;
 
@@ -777,5 +778,7 @@ InputManagerSDL::clear()
 {
   m_controller.clear();
 }
+
+} // namespace wstinput
 
 /* EOF */

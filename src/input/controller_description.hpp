@@ -24,6 +24,8 @@
 
 #include "input/input_event.hpp"
 
+namespace wstinput {
+
 struct InputEventDefinition
 {
   InputEventType type = {};
@@ -48,6 +50,8 @@ private:
   std::map<std::string, InputEventDefinition> str_to_event;
   std::map<int,         InputEventDefinition> id_to_event;
 };
+
+} // namespace wstinput
 
 #endif
 

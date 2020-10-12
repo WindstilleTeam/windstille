@@ -18,9 +18,9 @@
 
 #include "app/controller_def.hpp"
 
-ControllerDescription get_windstille_controller_description()
+wstinput::ControllerDescription get_windstille_controller_description()
 {
-  ControllerDescription desc;
+  wstinput::ControllerDescription desc;
 
   // DPad
   desc.add_button("menu-up-button",    MENU_UP_BUTTON);

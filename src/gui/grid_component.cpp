@@ -81,11 +81,11 @@ GridComponent::update(float delta, const Controller& controller)
   }
   else if (!child_active)
   {
-    for(InputEventLst::const_iterator i = controller.get_events().begin();
+    for(auto i = controller.get_events().begin();
         i != controller.get_events().end();
         ++i)
     {
-      if (i->type == BUTTON_EVENT && i->button.down)
+      if (i->type == wstinput::BUTTON_EVENT && i->button.down)
       {
         if (i->button.name == OK_BUTTON)
         {
@@ -97,7 +97,7 @@ GridComponent::update(float delta, const Controller& controller)
           set_active(false);
         }
       }
-      else if (i->type == AXIS_EVENT)
+      else if (i->type == wstinput::AXIS_EVENT)
       {
         if (i->axis.name == X_AXIS)
         {

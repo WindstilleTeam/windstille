@@ -205,13 +205,13 @@ ConsoleImpl::update(float delta)
 
   if (active)
   {
-    InputEventLst events = InputManagerSDL::current()->get_controller().get_events();
+    auto const& events = wstinput::InputManagerSDL::current()->get_controller().get_events();
 
-    for (InputEventLst::iterator i = events.begin(); i != events.end(); ++i)
+    for (auto i = events.begin(); i != events.end(); ++i)
     {
-      if ((*i).type == KEYBOARD_EVENT)
+      if ((*i).type == wstinput::KEYBOARD_EVENT)
       {
-        if ((*i).keyboard.key_type == KeyboardEvent::LETTER)
+        if ((*i).keyboard.key_type == wstinput::KeyboardEvent::LETTER)
         {
           if (cursor_pos == int(command_line.size()))
           {
@@ -224,7 +224,7 @@ ConsoleImpl::update(float delta)
             cursor_pos += 1;
           }
         }
-        else if ((*i).keyboard.key_type == KeyboardEvent::SPECIAL)
+        else if ((*i).keyboard.key_type == wstinput::KeyboardEvent::SPECIAL)
         {
           //console << "special: " << i->keyboard.code << std::endl;
 
@@ -550,7 +550,7 @@ void
 Console::activate()
 {
   // Get rid of all input events so that we don't double press
-  InputManagerSDL::current()->clear();
+  wstinput::InputManagerSDL::current()->clear();
   impl->active = true;
 
   //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);

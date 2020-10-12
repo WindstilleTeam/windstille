@@ -20,6 +20,8 @@
 
 #include "input/controller_description.hpp"
 
+namespace wstinput {
+
 ControllerDescription::ControllerDescription()
   : str_to_event(),
     id_to_event()
@@ -88,5 +90,7 @@ ControllerDescription::get_definition(const std::string& name) const
 
   return i->second;
 }
+
+} // namespace wstinput
 
 /* EOF */

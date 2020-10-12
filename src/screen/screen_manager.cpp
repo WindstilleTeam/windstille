@@ -79,17 +79,17 @@ ScreenManager::run()
 
     while (delta > step)
     {
-      InputManagerSDL::current()->update(delta);
+      wstinput::InputManagerSDL::current()->update(delta);
 
       Console::current()->update(step);
       if (!Console::current()->is_active())
       {
         if (!overlay_screens.empty())
-          overlay_screens.back()->update(step, InputManagerSDL::current()->get_controller());
+          overlay_screens.back()->update(step, wstinput::InputManagerSDL::current()->get_controller());
         else if (!screens.empty())
-          screens.back()->update(step, InputManagerSDL::current()->get_controller());
+          screens.back()->update(step, wstinput::InputManagerSDL::current()->get_controller());
       }
-      InputManagerSDL::current()->clear();
+      wstinput::InputManagerSDL::current()->clear();
 
       delta -= step;
     }
@@ -265,8 +265,8 @@ ScreenManager::poll_events()
         }
         else
         {
-          if (InputManagerSDL::current())
-            InputManagerSDL::current()->on_event(event);
+          if (wstinput::InputManagerSDL::current())
+            wstinput::InputManagerSDL::current()->on_event(event);
         }
         break;
 
@@ -278,8 +278,8 @@ ScreenManager::poll_events()
       case SDL_JOYHATMOTION:
       case SDL_JOYBUTTONUP:
       case SDL_JOYBUTTONDOWN:
-        if (InputManagerSDL::current())
-          InputManagerSDL::current()->on_event(event);
+        if (wstinput::InputManagerSDL::current())
+          wstinput::InputManagerSDL::current()->on_event(event);
 
         if (!overlay_screens.empty())
           overlay_screens.back()->handle_event(event);

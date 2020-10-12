@@ -21,7 +21,11 @@
 
 #include <SDL.h>
 
+namespace wstinput {
 class Controller;
+} // namespace wstinput
+
+using Controller = wstinput::Controller;
 
 /** */
 class Screen

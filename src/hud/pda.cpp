@@ -83,11 +83,11 @@ PDA::draw()
 void
 PDA::update(float delta, const Controller& controller)
 {
-  const InputEventLst& events = controller.get_events();
+  auto const& events = controller.get_events();
 
-  for(InputEventLst::const_iterator i = events.begin(); i != events.end(); ++i)
+  for(auto i = events.begin(); i != events.end(); ++i)
   {
-    if (i->type == BUTTON_EVENT)
+    if (i->type == wstinput::BUTTON_EVENT)
     {
       if (i->axis.name == MENU_LEFT_BUTTON && i->button.down)
       {

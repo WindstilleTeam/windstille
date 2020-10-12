@@ -81,7 +81,7 @@ ControllerHelpWindow::draw_trigger(const Vector2f& pos, float value)
 void
 ControllerHelpWindow::draw()
 {
-  const Controller& controller = InputManagerSDL::current()->get_controller();
+  const Controller& controller = wstinput::InputManagerSDL::current()->get_controller();
 
   Vector2f pos(static_cast<float>(Display::get_width())  - 350.0f - 16.0f,
                static_cast<float>(Display::get_height()) - 200.0f - 16.0f);
