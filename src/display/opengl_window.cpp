@@ -23,7 +23,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include "util/util.hpp"
 #include "display/opengl_state.hpp"
 #include "display/display.hpp"
 #include "display/assert_gl.hpp"

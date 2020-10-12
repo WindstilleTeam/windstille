@@ -26,7 +26,6 @@
 
 #include "display/software_surface.hpp"
 #include "math/rect.hpp"
-#include "util/util.hpp"
 
 SoftwareSurfacePtr
 SoftwareSurface::create(const Pathname& filename)

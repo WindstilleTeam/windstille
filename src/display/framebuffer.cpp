@@ -21,7 +21,6 @@
 #include <iostream>
 
 #include "math/size.hpp"
-#include "util/util.hpp"
 #include "display/renderbuffer.hpp"
 #include "display/framebuffer.hpp"
 #include "display/assert_gl.hpp"

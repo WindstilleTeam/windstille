@@ -29,7 +29,6 @@
 #include "display/opengl_state.hpp"
 #include "display/texture_manager.hpp"
 #include "display/assert_gl.hpp"
-#include "util/util.hpp"
 
 #pragma GCC diagnostic ignored "-Wold-style-cast"
 
