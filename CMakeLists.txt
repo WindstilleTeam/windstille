@@ -51,8 +51,6 @@ find_package(fmt REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(Squirrel REQUIRED)
 
-find_library(CWIID_LIBRARY cwiid)
-
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
 pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image IMPORTED_TARGET)
 
@@ -195,12 +193,6 @@ file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 add_executable(windstille ${WINDSTILLE_SOURCES})
 target_compile_options(windstille PRIVATE ${WARNINGS_CXX_FLAGS})
 target_link_libraries(windstille wstlib)
-
-if(CWIID_LIBRARY)
-  target_compile_options(windstille PUBLIC -DHAVE_CWIID)
-  target_link_libraries(windstille ${CWIID_LIBRARY})
-endif()
-
 install_with_wrapper(TARGETS windstille)
 
 # build and install data
