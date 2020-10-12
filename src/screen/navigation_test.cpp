@@ -25,6 +25,7 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
+#include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include "display/color.hpp"
 #include "display/display.hpp"

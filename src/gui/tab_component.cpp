@@ -16,9 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "gui/tab_component.hpp"
+
+#include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
-#include "gui/tab_component.hpp"
 #include "input/controller.hpp"
 #include "util/log.hpp"
 

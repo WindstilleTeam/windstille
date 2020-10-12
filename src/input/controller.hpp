@@ -21,7 +21,6 @@
 
 #include <vector>
 
-#include "app/controller_def.hpp"
 #include "input/input_event.hpp"
 
 namespace wstinput {

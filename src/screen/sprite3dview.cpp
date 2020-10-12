@@ -18,12 +18,13 @@
 
 #include "screen/sprite3dview.hpp"
 
+#include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
-#include "font/fonts.hpp"
-#include "input/controller.hpp"
 #include "display/graphic_context_state.hpp"
 #include "display/opengl_window.hpp"
+#include "font/fonts.hpp"
+#include "input/controller.hpp"
 
 Sprite3DView::Sprite3DView()
   : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),

@@ -20,6 +20,7 @@
 #include <filesystem>
 #include <iostream>
 
+#include "app/controller_def.hpp"
 #include "armature/pose.hpp"
 #include "input/controller.hpp"
 #include "screen/armature_test.hpp"

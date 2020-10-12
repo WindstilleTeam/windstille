@@ -20,8 +20,6 @@
 
 #include <iostream>
 
-#include "math/math.hpp"
-
 namespace wstinput {
 
 Wiimote* wiimote = nullptr;

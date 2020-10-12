@@ -23,6 +23,7 @@
 #include "app/app.hpp"
 #include "app/config.hpp"
 #include "app/console.hpp"
+#include "app/controller_def.hpp"
 #include "app/windstille_main.hpp"
 #include "display/opengl_window.hpp"
 #include "display/surface_manager.hpp"

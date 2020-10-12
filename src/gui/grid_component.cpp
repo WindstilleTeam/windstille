@@ -20,6 +20,7 @@
 
 #include <iostream>
 
+#include "app/controller_def.hpp"
 #include "display/color.hpp"
 #include "display/display.hpp"
 #include "input/controller.hpp"

@@ -22,6 +22,8 @@
 #include <math.h>
 #include <assert.h>
 
+#include "app/controller_def.hpp"
+
 namespace wstinput {
 
 Controller::Controller() :

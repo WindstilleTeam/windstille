@@ -20,6 +20,7 @@
 
 #include <iostream>
 
+#include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
 #include "input/input_manager.hpp"

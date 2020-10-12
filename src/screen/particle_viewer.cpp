@@ -23,14 +23,15 @@
 
 #include <logmich/log.hpp>
 
+#include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
-#include "display/opengl_window.hpp"
 #include "display/graphic_context_state.hpp"
-#include "scenegraph/particle_system_drawable.hpp"
-#include "scenegraph/fill_screen_pattern_drawable.hpp"
-#include "scenegraph/fill_screen_drawable.hpp"
+#include "display/opengl_window.hpp"
 #include "input/controller.hpp"
+#include "scenegraph/fill_screen_drawable.hpp"
+#include "scenegraph/fill_screen_pattern_drawable.hpp"
+#include "scenegraph/particle_system_drawable.hpp"
 
 ParticleViewer::ParticleViewer()
   : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),

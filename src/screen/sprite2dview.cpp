@@ -22,6 +22,8 @@
 #include <iostream>
 
 #include "app/console.hpp"
+#include "app/controller_def.hpp"
+#include "app/controller_def.hpp"
 #include "display/surface_manager.hpp"
 #include "input/controller.hpp"
 #include "util/directory.hpp"

@@ -16,9 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "hud/controller_help_window.hpp"
+
+#include "app/controller_def.hpp"
 #include "display/color.hpp"
 #include "display/display.hpp"
-#include "hud/controller_help_window.hpp"
 #include "input/input_manager.hpp"
 #include "math/rect.hpp"
 

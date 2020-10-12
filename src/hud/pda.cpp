@@ -18,6 +18,7 @@
 
 #include <sstream>
 
+#include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "font/text_area.hpp"
 #include "font/fonts.hpp"

@@ -24,15 +24,16 @@
 #include <glm/ext.hpp>
 #include <glm/gtx/projection.hpp>
 
-#include "scenegraph/sprite3d_drawable.hpp"
-#include "scenegraph/scene_graph.hpp"
+#include "app/controller_def.hpp"
 #include "engine/sector.hpp"
 #include "input/controller.hpp"
 #include "math/line.hpp"
-#include "navigation/edge_position.hpp"
 #include "navigation/edge.hpp"
-#include "navigation/node.hpp"
+#include "navigation/edge_position.hpp"
 #include "navigation/navigation_graph.hpp"
+#include "navigation/node.hpp"
+#include "scenegraph/scene_graph.hpp"
+#include "scenegraph/sprite3d_drawable.hpp"
 
 Doll::Doll() :
   m_drawable(),

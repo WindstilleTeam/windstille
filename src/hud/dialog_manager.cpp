@@ -20,6 +20,7 @@
 
 #include <glm/glm.hpp>
 
+#include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"

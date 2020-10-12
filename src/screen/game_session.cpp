@@ -19,6 +19,7 @@
 #include "screen/game_session.hpp"
 
 #include "app/app.hpp"
+#include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include "app/sound_manager.hpp"
 #include "display/compositor.hpp"

@@ -21,6 +21,7 @@
 
 #include "screen/screen.hpp"
 
+#include "math/vector2f.hpp"
 #include "util/currenton.hpp"
 
 class ControllerHelpWindowImpl;

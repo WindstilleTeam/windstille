@@ -20,6 +20,7 @@
 
 #include <functional>
 
+#include "app/controller_def.hpp"
 #include "collision/collision_engine.hpp"
 #include "collision/stair_contact.hpp"
 #include "engine/sector.hpp"

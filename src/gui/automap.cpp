@@ -18,6 +18,7 @@
 
 #include "gui/automap.hpp"
 
+#include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "display/software_surface.hpp"
 #include "display/surface_drawing_parameters.hpp"

@@ -16,10 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/display.hpp"
-#include "input/controller.hpp"
-#include "font/fonts.hpp"
 #include "gui/list_view.hpp"
+
+#include "app/controller_def.hpp"
+#include "display/display.hpp"
+#include "font/fonts.hpp"
+#include "input/controller.hpp"
 
 namespace gui {
 

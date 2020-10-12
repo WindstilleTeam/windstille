@@ -18,6 +18,7 @@
 
 #include <SDL.h>
 
+#include "app/controller_def.hpp"
 #include "collision/collision_engine.hpp"
 #include "display/display.hpp"
 #include "engine/sector.hpp"

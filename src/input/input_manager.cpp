@@ -19,14 +19,14 @@
 #include <iostream>
 #include <sstream>
 
-#include "math/math.hpp"
-#include "app/config.hpp"
 #include "util/file_reader.hpp"
 #include "util/log.hpp"
 #include "input_manager.hpp"
 #ifdef HAVE_CWIID
 #  include "wiimote.hpp"
 #endif
+
+#include "app/controller_def.hpp"
 
 namespace wstinput {
 
