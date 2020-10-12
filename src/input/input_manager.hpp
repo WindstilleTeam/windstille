@@ -25,7 +25,6 @@
 
 #include "input/controller.hpp"
 #include "input/controller_description.hpp"
-#include "util/currenton.hpp"
 #include "util/file_reader.hpp"
 
 namespace wstinput {
@@ -97,12 +96,11 @@ struct WiimoteAxisBinding
   int axis;
 };
 
-/** */
-class InputManagerSDL : public Currenton<InputManagerSDL>
+class InputManagerSDL
 {
 public:
   InputManagerSDL(const ControllerDescription& controller_description);
-  ~InputManagerSDL() override;
+  ~InputManagerSDL();
 
   void load(std::filesystem::path const& filename);
 

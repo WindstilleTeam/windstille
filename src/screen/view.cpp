@@ -18,6 +18,7 @@
 
 #include <SDL.h>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "collision/collision_engine.hpp"
 #include "display/display.hpp"
@@ -63,7 +64,7 @@ View::update (float delta)
   if (keystate[SDL_SCANCODE_KP_MINUS])
     m_debug_zoom *= 1.0f - delta;
 
-  const Controller& controller = wstinput::InputManagerSDL::current()->get_controller();
+  const Controller& controller = g_app.input().get_controller();
 
   if (controller.get_button_state(DEBUG_BUTTON))
   {

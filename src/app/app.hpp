@@ -20,6 +20,9 @@
 #define HEADER_WINDSTILLE_APP_APP_HPP
 
 class SoundManager;
+namespace wstinput {
+class InputManagerSDL;
+} // namespace wstinput
 
 class App
 {
@@ -28,9 +31,11 @@ public:
   App();
 
   SoundManager& sound() const;
+  wstinput::InputManagerSDL& input() const;
 
 private:
   SoundManager* m_sound_manager;
+  wstinput::InputManagerSDL* m_input_manager;
 
 private:
   App(const App&) = delete;

@@ -86,6 +86,7 @@ WindstilleMain::main(int argc, char** argv)
       TileFactory       tile_factory = TileFactory(Pathname("tiles.scm"));
 
       g_app.m_sound_manager = &sound_manager;
+      g_app.m_input_manager = &input_manager;
 
       init_modules();
 
@@ -163,13 +164,13 @@ WindstilleMain::init_modules()
 
   {
     if (config.get<std::string>("primary-controller-file").is_set())
-      wstinput::InputManagerSDL::current()->load(Pathname(config.get<std::string>("primary-controller-file").get(),
-                                                Pathname::kSysPath).get_sys_path());
+      g_app.input().load(Pathname(config.get<std::string>("primary-controller-file").get(),
+                                  Pathname::kSysPath).get_sys_path());
     else
-      wstinput::InputManagerSDL::current()->load(Pathname("controller/keyboard.scm").get_sys_path());
+      g_app.input().load(Pathname("controller/keyboard.scm").get_sys_path());
 
     if (config.get<std::string>("secondary-controller-file").is_set())
-      wstinput::InputManagerSDL::current()->load(Pathname(config.get<std::string>("secondary-controller-file").get(),
+      g_app.input().load(Pathname(config.get<std::string>("secondary-controller-file").get(),
                                                 Pathname::kSysPath).get_sys_path());
   }
 }

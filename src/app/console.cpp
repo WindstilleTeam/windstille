@@ -20,6 +20,7 @@
 
 #include <ostream>
 
+#include "app/app.hpp"
 #include "display/display.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
@@ -205,7 +206,7 @@ ConsoleImpl::update(float delta)
 
   if (active)
   {
-    auto const& events = wstinput::InputManagerSDL::current()->get_controller().get_events();
+    auto const& events = g_app.input().get_controller().get_events();
 
     for (auto i = events.begin(); i != events.end(); ++i)
     {
@@ -550,7 +551,7 @@ void
 Console::activate()
 {
   // Get rid of all input events so that we don't double press
-  wstinput::InputManagerSDL::current()->clear();
+  g_app.input().clear();
   impl->active = true;
 
   //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);

@@ -18,6 +18,7 @@
 
 #include "hud/controller_help_window.hpp"
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/color.hpp"
 #include "display/display.hpp"
@@ -83,7 +84,7 @@ ControllerHelpWindow::draw_trigger(const Vector2f& pos, float value)
 void
 ControllerHelpWindow::draw()
 {
-  const Controller& controller = wstinput::InputManagerSDL::current()->get_controller();
+  const Controller& controller = g_app.input().get_controller();
 
   Vector2f pos(static_cast<float>(Display::get_width())  - 350.0f - 16.0f,
                static_cast<float>(Display::get_height()) - 200.0f - 16.0f);

@@ -25,7 +25,8 @@
 App g_app;
 
 App::App() :
-  m_sound_manager(nullptr)
+  m_sound_manager(nullptr),
+  m_input_manager(nullptr)
 {
 }
 
@@ -34,6 +35,13 @@ App::sound() const
 {
   assert(m_sound_manager != nullptr);
   return *m_sound_manager;
+}
+
+wstinput::InputManagerSDL&
+App::input() const
+{
+  assert(m_input_manager != nullptr);
+  return *m_input_manager;
 }
 
 /* EOF */
