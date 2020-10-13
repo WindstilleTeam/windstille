@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_TEXT_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_TEXT_DRAWABLE_HPP
 
+#include "font/fonts.hpp"
+
 class TextDrawable : public Drawable
 {
 private:
