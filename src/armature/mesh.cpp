@@ -241,7 +241,7 @@ Mesh::apply(Armature* armature)
           i->bones.push_back(armature->get_bone(i->bone_names[j]));
       }
 
-      i->render_pos = Vector3(0.0f, 0.0f, 0.0f);
+      i->render_pos = glm::vec3(0.0f, 0.0f, 0.0f);
       for(unsigned int j = 0; j < i->bone_names.size(); ++j)
       {
         Bone* bone   = i->bones[j];

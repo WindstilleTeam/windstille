@@ -41,7 +41,7 @@ bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec2&  val
 }
 
 template<>
-bool read_custom(ReaderMapping const& map, std::string_view key, Vector3& value)
+bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec3& value)
 {
   std::vector<float> floats;
   if (map.read(key, floats) && floats.size() == 3) {

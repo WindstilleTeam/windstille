@@ -47,7 +47,7 @@ public:
                  glm::value_ptr(modelview)[13],
                  glm::value_ptr(modelview)[14]);
 
-    Vector3 p = glm::vec3(modelview * glm::vec4(pos.x, pos.y, 0.0f, 1.0f));
+    glm::vec3 p = glm::vec3(modelview * glm::vec4(pos.x, pos.y, 0.0f, 1.0f));
 
     surface->draw(SurfaceDrawingParameters()
                  .set_angle(angle)

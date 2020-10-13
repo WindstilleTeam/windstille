@@ -50,7 +50,7 @@ public:
   Matrix* get_render_matrix(const std::string& name);
 
   void  draw();
-  void  draw_bone(Bone* bone, Vector3 p, Matrix matrix);
+  void  draw_bone(Bone* bone, glm::vec3 p, Matrix matrix);
 private:
   Armature (const Armature&);
   Armature& operator= (const Armature&);

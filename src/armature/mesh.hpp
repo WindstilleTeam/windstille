@@ -24,7 +24,7 @@
 #include <vector>
 
 #include <glm/glm.hpp>
-#include "math/vector3.hpp"
+
 #include "display/texture.hpp"
 #include "util/file_reader.hpp"
 
@@ -46,11 +46,11 @@ struct VertexGroup
 
 struct Vertex
 {
-  Vector3 pos;
-  Vector3 normal;
+  glm::vec3 pos;
+  glm::vec3 normal;
   glm::vec2  texcoord;
 
-  Vector3 render_pos;
+  glm::vec3 render_pos;
 
   // Influences from bone;
   std::vector<float> weights;

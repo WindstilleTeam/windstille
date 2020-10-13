@@ -25,7 +25,6 @@
 
 #include "display/texture.hpp"
 #include "math/quaternion.hpp"
-#include "math/vector3.hpp"
 
 namespace sprite3d {
 
@@ -89,7 +88,7 @@ struct Mesh
 /** Position of an AttachmentPoint */
 struct AttachmentPointPosition
 {
-  Vector3    pos;  // x, y, z
+  glm::vec3    pos;  // x, y, z
   Quaternion quat; // w, x, y, z
 
   AttachmentPointPosition()

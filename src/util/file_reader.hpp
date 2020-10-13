@@ -23,14 +23,14 @@
 #include <vector>
 #include <memory>
 
+#include <glm/glm.hpp>
+
 #include <prio/reader_collection.hpp>
 #include <prio/reader_document.hpp>
 #include <prio/reader_mapping.hpp>
 #include <prio/reader_object.hpp>
 
 #include "math/matrix.hpp"
-#include "math/vector3.hpp"
-#include <glm/glm.hpp>
 #include "math/quaternion.hpp"
 
 class Color;
@@ -46,7 +46,7 @@ template<> bool read_custom(ReaderMapping const& map, std::string_view key, Matr
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, Color& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec2& value);
-template<> bool read_custom(ReaderMapping const& map, std::string_view key, Vector3& value);
+template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec3& value);
 
 } // namespace prio
 

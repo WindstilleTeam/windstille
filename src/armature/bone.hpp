@@ -24,7 +24,6 @@
 
 #include "math/matrix.hpp"
 #include "math/quaternion.hpp"
-#include "math/vector3.hpp"
 
 /** */
 class Bone
@@ -42,11 +41,11 @@ public:
   float      length;
 
   Quaternion quat;
-  Vector3    offset;
+  glm::vec3    offset;
 
   Matrix     render_matrix;
-  Vector3    render_head;
-  Vector3    render_tail;
+  glm::vec3    render_head;
+  glm::vec3    render_tail;
 
   Bone();
   ~Bone();

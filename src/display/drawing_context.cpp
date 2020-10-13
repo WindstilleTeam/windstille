@@ -28,7 +28,6 @@
 #include "display/scene_context.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "font/fonts.hpp"
-#include "math/vector3.hpp"
 #include "math/line.hpp"
 #include "sprite2d/sprite.hpp"
 
