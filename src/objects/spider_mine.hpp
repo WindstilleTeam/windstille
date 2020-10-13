@@ -28,7 +28,7 @@ private:
   Sprite sprite;
   Sprite explode;
   Sprite explode_light;
-  Vector2f initial_position;
+  glm::vec2 initial_position;
   float walk_speed;
   float jump_time;
   enum { WAIT, ATTACK, RETURN, JUMP, EXPLODE } state;

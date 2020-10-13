@@ -60,7 +60,7 @@ public:
 
   /** Return the position of the last character in the TextArea,
       usefull to display a blinking cursor or things like that */
-  Vector2f get_cursor_pos() const;
+  glm::vec2 get_cursor_pos() const;
 
   float get_scroll_offset() const;
   void  set_scroll_offset(float s);

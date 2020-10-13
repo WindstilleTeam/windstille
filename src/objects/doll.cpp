@@ -65,7 +65,7 @@ Doll::update (float /*delta*/)
 void
 Doll::update(const Controller& controller, float delta)
 {
-  Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
+  glm::vec2 stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
                  controller.get_axis_state(Y_AXIS) * delta * 200.0f);
 
   switch(m_state)
@@ -207,7 +207,7 @@ Doll::set_state_jump()
 void
 Doll::update_falling(const Controller& controller, float delta)
 {
-  Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
+  glm::vec2 stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
                  controller.get_axis_state(Y_AXIS) * delta * 200.0f);
 
   m_pos += stick;
@@ -253,7 +253,7 @@ Doll::update_standing(const Controller& controller, float /*delta*/)
 void
 Doll::update_walking(const Controller& controller, float delta)
 {
-  Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
+  glm::vec2 stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
                  controller.get_axis_state(Y_AXIS) * delta * 200.0f);
   walk(stick);
 
@@ -277,7 +277,7 @@ Doll::update_walking(const Controller& controller, float delta)
 void
 Doll::update_running(const Controller& controller, float delta)
 {
-  Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
+  glm::vec2 stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
                  controller.get_axis_state(Y_AXIS) * delta * 200.0f);
 
   walk(stick * 2.5f);
@@ -330,7 +330,7 @@ Doll::update_jump_up(const Controller& /*controller*/, float /*delta*/)
 }
 
 void
-Doll::walk(const Vector2f& adv_)
+Doll::walk(const glm::vec2& adv_)
 {
   if (adv_.x > 0)
   {
@@ -344,7 +344,7 @@ Doll::walk(const Vector2f& adv_)
   if (m_edge_position)
   {
     Node* next_node = nullptr;
-    Vector2f adv(adv_);
+    glm::vec2 adv(adv_);
     m_edge_position->advance(adv, next_node);
 
     if (!(adv.x == 0.0f && adv.y == 0.0f))
@@ -360,7 +360,7 @@ Doll::walk(const Vector2f& adv_)
       {
         if (m_edge_position->get_edge() != i->edge)
         { // Find out into the direction of which edge the stick is pointing
-          Vector2f proj = glm::proj(adv_, i->edge->get_vector());
+          glm::vec2 proj = glm::proj(adv_, i->edge->get_vector());
 
           if (glm::length(proj) > length)
           {
@@ -395,7 +395,7 @@ Doll::walk(const Vector2f& adv_)
 void
 Doll::update_rolling(const Controller& controller, float delta)
 {
-  Vector2f stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
+  glm::vec2 stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
                  controller.get_axis_state(Y_AXIS) * delta * 200.0f);
 
   walk(stick * 2.5f);

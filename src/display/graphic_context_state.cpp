@@ -33,7 +33,7 @@ public:
   int width;
   int height;
 
-  Vector2f offset;
+  glm::vec2 offset;
   float zoom;
   float rotation;
 
@@ -56,7 +56,7 @@ GraphicContextState::GraphicContextState(int w, int h) :
 {
   impl->width  = w;
   impl->height = h;
-  impl->offset = Vector2f(0,0);
+  impl->offset = glm::vec2(0,0);
   impl->zoom   = 1.0f;
   impl->rotation = 0;
 }
@@ -114,34 +114,34 @@ GraphicContextState::pop(SceneContext& sc) const
 Rectf
 GraphicContextState::get_clip_rect()
 {
-  return Rectf(Vector2f(-impl->offset.x,
+  return Rectf(glm::vec2(-impl->offset.x,
                         -impl->offset.y),
                Sizef(static_cast<float>(get_width())  / impl->zoom,
                      static_cast<float>(get_height()) / impl->zoom));
 }
 
 void
-GraphicContextState::set_pos(const Vector2f& pos)
+GraphicContextState::set_pos(const glm::vec2& pos)
 {
   impl->offset.x = -pos.x + (static_cast<float>(get_width())  / 2.0f / impl->zoom);
   impl->offset.y = -pos.y + (static_cast<float>(get_height()) / 2.0f / impl->zoom);
 }
 
-Vector2f
+glm::vec2
 GraphicContextState::get_offset() const
 {
   return impl->offset;
 }
 
-Vector2f
+glm::vec2
 GraphicContextState::get_pos() const
 {
-  return Vector2f(-impl->offset.x + (static_cast<float>(get_width())  / 2.0f / impl->zoom),
+  return glm::vec2(-impl->offset.x + (static_cast<float>(get_width())  / 2.0f / impl->zoom),
                   -impl->offset.y + (static_cast<float>(get_height()) / 2.0f / impl->zoom));
 }
 
 void
-GraphicContextState::set_zoom(const Vector2f& pos, float z)
+GraphicContextState::set_zoom(const glm::vec2& pos, float z)
 {
   float old_zoom = impl->zoom;
   set_zoom(z);
@@ -186,10 +186,10 @@ GraphicContextState::zoom_to (const Rectf& rect)
   impl->offset.y = (static_cast<float>(get_height()) / (2.0f * impl->zoom)) - center_y;
 }
 
-Vector2f
-GraphicContextState::screen_to_world(const Vector2f& pos_)
+glm::vec2
+GraphicContextState::screen_to_world(const glm::vec2& pos_)
 {
-  Vector2f pos(pos_.x, pos_.y);
+  glm::vec2 pos(pos_.x, pos_.y);
   float sa = sinf(-impl->rotation / 180.0f * math::pi);
   float ca = cosf(-impl->rotation / 180.0f * math::pi);
 
@@ -199,7 +199,7 @@ GraphicContextState::screen_to_world(const Vector2f& pos_)
   pos.x = static_cast<float>(impl->width)  / 2.0f + (ca * dx - sa * dy);
   pos.y = static_cast<float>(impl->height) / 2.0f + (sa * dx + ca * dy);
 
-  Vector2f p((pos.x / impl->zoom) - impl->offset.x,
+  glm::vec2 p((pos.x / impl->zoom) - impl->offset.x,
              (pos.y / impl->zoom) - impl->offset.y);
 
   return p;

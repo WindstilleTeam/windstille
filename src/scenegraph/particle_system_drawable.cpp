@@ -21,7 +21,7 @@
 #include "particles/particle_system.hpp"
 
 ParticleSystemDrawable::ParticleSystemDrawable(const ParticleSystem& particle_system)
-  : Drawable(Vector2f()),
+  : Drawable(glm::vec2()),
     m_particle_system(particle_system)
 {
   set_render_mask(particle_system.get_layer());

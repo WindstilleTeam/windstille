@@ -18,8 +18,8 @@
 
 #include "math/line.hpp"
 
-Line::Line(const Vector2f& p1_,
-           const Vector2f& p2_)
+Line::Line(const glm::vec2& p1_,
+           const glm::vec2& p2_)
   : p1(p1_), p2(p2_)
 {
 }
@@ -69,7 +69,7 @@ Line::intersect(const Line& line, float& ua, float& ub) const
 }
 
 bool
-Line::intersect(const Line& line, Vector2f& colpos) const
+Line::intersect(const Line& line, glm::vec2& colpos) const
 {
   float ua, ub;
   if (intersect(line, ua, ub))
@@ -84,7 +84,7 @@ Line::intersect(const Line& line, Vector2f& colpos) const
 }
 
 float
-Line::distance(const Vector2f& p3) const
+Line::distance(const glm::vec2& p3) const
 {
   const float& x1 = p1.x;
   const float& y1 = p1.y;
@@ -109,7 +109,7 @@ Line::distance(const Vector2f& p3) const
   }
   else // (u >= 0.0f && u <= 1.0f)
   {
-    Vector2f p4(x1 + u * (x2 - x1),
+    glm::vec2 p4(x1 + u * (x2 - x1),
                 y1 + u * (y2 - y1));
 
     return glm::length(p4 - p3);

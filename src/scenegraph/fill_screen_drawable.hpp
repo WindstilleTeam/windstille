@@ -26,7 +26,7 @@ private:
 
 public:
   FillScreenDrawable(const Color& color_)
-    : Drawable(Vector2f(0, 0), -1000.0f), color(color_)
+    : Drawable(glm::vec2(0, 0), -1000.0f), color(color_)
   {
   }
   ~FillScreenDrawable() override {}

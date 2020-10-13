@@ -37,7 +37,7 @@
 #include "math/origin.hpp"
 #include "math/size.hpp"
 #include "math/math.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 using Rectf = geom::frect;
 using Rect = geom::irect;

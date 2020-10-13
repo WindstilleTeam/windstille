@@ -30,7 +30,7 @@ NavGraphNodeObjectModel::NavGraphNodeObjectModel(ReaderMapping const& reader) :
 {
 }
 
-NavGraphNodeObjectModel::NavGraphNodeObjectModel(const Vector2f& pos) :
+NavGraphNodeObjectModel::NavGraphNodeObjectModel(const glm::vec2& pos) :
   ObjectModel("NavGraphNodeObjectModel", pos),
   m_drawable()
 {
@@ -44,7 +44,7 @@ void
 NavGraphNodeObjectModel::add_to_scenegraph(DrawableGroup& sg)
 {
   if (!m_drawable)
-    m_drawable.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix(1.0f)));
+    m_drawable.reset(new VertexArrayDrawable(glm::vec2(), 0.0f, Matrix(1.0f)));
 
   sync_drawable();
   sg.add_drawable(m_drawable);
@@ -58,21 +58,21 @@ NavGraphNodeObjectModel::sync_drawable()
     m_drawable->clear();
 
     m_drawable->color(Color(1.0f, 0.0f, 0.0f));
-    m_drawable->vertex(get_world_pos() + Vector2f(-10.0f, -10.0f));
+    m_drawable->vertex(get_world_pos() + glm::vec2(-10.0f, -10.0f));
 
     m_drawable->color(Color(1.0f, 0.0f, 0.0f));
-    m_drawable->vertex(get_world_pos() + Vector2f(10.0f, -10.0f));
+    m_drawable->vertex(get_world_pos() + glm::vec2(10.0f, -10.0f));
 
     m_drawable->color(Color(1.0f, 0.0f, 0.0f));
-    m_drawable->vertex(get_world_pos() + Vector2f(10.0f, 10.0f));
+    m_drawable->vertex(get_world_pos() + glm::vec2(10.0f, 10.0f));
 
     m_drawable->color(Color(1.0f, 0.0f, 0.0f));
-    m_drawable->vertex(get_world_pos() + Vector2f(-10.0f, 10.0f));
+    m_drawable->vertex(get_world_pos() + glm::vec2(-10.0f, 10.0f));
   }
 }
 
 void
-NavGraphNodeObjectModel::set_rel_pos(const Vector2f& rel_pos_)
+NavGraphNodeObjectModel::set_rel_pos(const glm::vec2& rel_pos_)
 {
   ObjectModel::set_rel_pos(rel_pos_);
 }
@@ -80,7 +80,7 @@ NavGraphNodeObjectModel::set_rel_pos(const Vector2f& rel_pos_)
 Rectf
 NavGraphNodeObjectModel::get_bounding_box() const
 {
-  return Rectf(get_world_pos() - Vector2f(10.0f, 10.0f),
+  return Rectf(get_world_pos() - glm::vec2(10.0f, 10.0f),
                Sizef(20.0f, 20.0f));
 }
 
@@ -113,7 +113,7 @@ NavGraphNodeObjectModel::snap_to_grid(float grid_size) const
 SnapData
 NavGraphNodeObjectModel::snap_to_object(const Rectf& in) const
 {
-  const Vector2f& pos = get_world_pos();
+  const glm::vec2& pos = get_world_pos();
 
   SnapData snap;
 

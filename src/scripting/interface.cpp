@@ -107,7 +107,7 @@ void camera_begin_path()
 
 void camera_add_point(float x, float y, float zoom)
 {
-  camera_path.push_back(Camera::PathPoint(Vector2f(x, y), zoom));
+  camera_path.push_back(Camera::PathPoint(glm::vec2(x, y), zoom));
 }
 
 void camera_end_path()
@@ -166,7 +166,7 @@ void wait_for_fade(HSQUIRRELVM vm)
 
 int speech_show(const std::string& text, float x, float y, float r, float g, float b)
 {
-  return SpeechManager::current()->add(text, Vector2f(x, y), Color(r, g, b));
+  return SpeechManager::current()->add(text, glm::vec2(x, y), Color(r, g, b));
 }
 
 void wait_for_speech(HSQUIRRELVM vm, int i)

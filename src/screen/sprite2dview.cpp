@@ -85,7 +85,7 @@ Sprite2DView::Sprite2DView()
     mode = SLIDESHOW;
 
   zoom = 1.0f;
-  pos  = Vector2f(0,0);
+  pos  = glm::vec2(0,0);
   display_time = 0.0f;
   show_thumbnail = false;
   ignore_delta = false;
@@ -128,16 +128,16 @@ Sprite2DView::draw()
     case SLIDESHOW:
       if (aspect > 4.0f / 3.0f)
       {
-        sprite.draw(Vector2f(-offset, 0));
+        sprite.draw(glm::vec2(-offset, 0));
       }
       else
       {
-        sprite.draw(Vector2f(0, -offset));
+        sprite.draw(glm::vec2(0, -offset));
       }
 
       if (new_sprite)
       {
-        new_sprite.draw(Vector2f(0,0));
+        new_sprite.draw(glm::vec2(0,0));
       }
 
       if (show_thumbnail)
@@ -155,7 +155,7 @@ Sprite2DView::draw()
           h *= s;
           small.set_scale(s);
 
-          small.draw(Vector2f(DISPLAY_W - w,
+          small.draw(glm::vec2(DISPLAY_W - w,
                               DISPLAY_H - h));
         }
         else
@@ -166,7 +166,7 @@ Sprite2DView::draw()
           h *= s;
           small.set_scale(s);
 
-          small.draw(Vector2f(DISPLAY_W - w,
+          small.draw(glm::vec2(DISPLAY_W - w,
                               DISPLAY_H - h));
         }
       }

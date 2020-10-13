@@ -57,12 +57,12 @@ int shader_main(int argc, char* argv[])
   std::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")),
                                                                  SurfaceDrawingParameters(), 0, Matrix(1.0f)));
   std::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(Surface::create(Pathname("images/menu_background.jpg")),
-                                                                  SurfaceDrawingParameters().set_pos(Vector2f(-50.0f, -50.0f)),
+                                                                  SurfaceDrawingParameters().set_pos(glm::vec2(-50.0f, -50.0f)),
                                                                   0, Matrix(1.0f)));
   std::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
                                                                   SurfaceDrawingParameters(), 0, Matrix(1.0f)));
   std::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
-                                                                  SurfaceDrawingParameters().set_pos(Vector2f(-25.0f, 25.0f)),
+                                                                  SurfaceDrawingParameters().set_pos(glm::vec2(-25.0f, 25.0f)),
                                                                   0, Matrix(1.0f)));
 
   TexturePtr texture = Texture::create(Pathname("images/displacement.png"));
@@ -87,7 +87,7 @@ int shader_main(int argc, char* argv[])
   for(int i = 0; i < 500; ++i)
   {
     std::cout << "." << std::flush;
-    surface3->get_params().set_pos(Vector2f(static_cast<float>(i), 50.0f));
+    surface3->get_params().set_pos(glm::vec2(static_cast<float>(i), 50.0f));
     group.render(~0u);
     window.swap_buffers();
   }

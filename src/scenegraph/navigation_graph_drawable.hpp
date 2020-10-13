@@ -32,7 +32,7 @@ private:
 
 public:
   NavigationGraphDrawable(NavigationGraph* navgraph)
-    : Drawable(Vector2f(), 1000.0f, glm::mat4(1.0)),
+    : Drawable(glm::vec2(), 1000.0f, glm::mat4(1.0)),
       m_navgraph(navgraph)
   {
     set_render_mask(SceneContext::CONTROLMAP);

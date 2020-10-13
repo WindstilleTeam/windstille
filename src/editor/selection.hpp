@@ -36,7 +36,7 @@ private:
   typedef std::vector<ObjectModelHandle> Objects;
   Objects objects;
 
-  std::vector<Vector2f> object_orig_pos;
+  std::vector<glm::vec2> object_orig_pos;
 
   std::set<ObjectModelHandle> non_moveable_objects;
 
@@ -82,8 +82,8 @@ public:
   bool has_object(ObjectModelHandle object) const;
 
   void on_move_start();
-  void on_move_update(const Vector2f& offset);
-  void on_move_end(WindstilleWidget& wst, const Vector2f& offset);
+  void on_move_update(const glm::vec2& offset);
+  void on_move_end(WindstilleWidget& wst, const glm::vec2& offset);
 
   /** Performs a deep clone of the selection */
   SelectionHandle clone() const;

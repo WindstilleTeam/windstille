@@ -130,7 +130,7 @@ Selection::on_move_start()
 }
 
 void
-Selection::on_move_update(const Vector2f& offset)
+Selection::on_move_update(const glm::vec2& offset)
 {
   log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size()); // NOLINT
 
@@ -147,7 +147,7 @@ Selection::on_move_update(const Vector2f& offset)
 }
 
 void
-Selection::on_move_end(WindstilleWidget& wst, const Vector2f& offset)
+Selection::on_move_end(WindstilleWidget& wst, const glm::vec2& offset)
 {
   log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size()); // NOLINT
 
@@ -241,10 +241,10 @@ Selection::add_control_points(std::vector<ControlPointHandle>& control_points)
     else
     {
       const Rectf& rect = get_bounding_box();
-      control_points.push_back(ControlPoint::create(Vector2f(rect.left(), rect.top())));
-      control_points.push_back(ControlPoint::create(Vector2f(rect.right(), rect.top())));
-      control_points.push_back(ControlPoint::create(Vector2f(rect.left(), rect.bottom())));
-      control_points.push_back(ControlPoint::create(Vector2f(rect.right(), rect.bottom())));
+      control_points.push_back(ControlPoint::create(glm::vec2(rect.left(), rect.top())));
+      control_points.push_back(ControlPoint::create(glm::vec2(rect.right(), rect.top())));
+      control_points.push_back(ControlPoint::create(glm::vec2(rect.left(), rect.bottom())));
+      control_points.push_back(ControlPoint::create(glm::vec2(rect.right(), rect.bottom())));
     }
   }
 }

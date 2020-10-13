@@ -177,7 +177,7 @@ ConsoleImpl::draw()
       if (buffer[i].display_time > 4.0f && !console.is_active())
         alpha = 1.0f - (buffer[i].display_time - 4.0f);
 
-      Fonts::current()->ttffont->draw(Vector2f(x_pos, static_cast<float>(y)), buffer[i].message,
+      Fonts::current()->ttffont->draw(glm::vec2(x_pos, static_cast<float>(y)), buffer[i].message,
                                       Color(0.88f, 0.88f, 1.0f, alpha));
     }
     y -= Fonts::current()->ttffont->get_height() + 2;
@@ -194,7 +194,7 @@ ConsoleImpl::draw()
         str += "_";
     }
 
-    Fonts::current()->ttffont->draw(Vector2f(x_pos, y_pos), "> " + str, Color(1.0f, 1.0f, 1.0f));
+    Fonts::current()->ttffont->draw(glm::vec2(x_pos, y_pos), "> " + str, Color(1.0f, 1.0f, 1.0f));
   }
 }
 

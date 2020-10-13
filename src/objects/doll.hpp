@@ -21,7 +21,7 @@
 
 #include <memory>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "engine/game_object.hpp"
 #include "util/currenton.hpp"
 
@@ -57,9 +57,9 @@ private:
   };
 
   std::shared_ptr<Sprite3DDrawable> m_drawable;
-  Vector2f m_velocity;
-  Vector2f m_pos;
-  Vector2f m_last_pos;
+  glm::vec2 m_velocity;
+  glm::vec2 m_pos;
+  glm::vec2 m_last_pos;
   std::unique_ptr<EdgePosition> m_edge_position;
   State m_state;
 
@@ -71,10 +71,10 @@ public:
   void update (float delta) override;
   void update(const Controller& controller, float delta);
 
-  Vector2f get_pos() const { return m_pos; }
+  glm::vec2 get_pos() const { return m_pos; }
 
 private:
-  void walk(const Vector2f& adv);
+  void walk(const glm::vec2& adv);
 
   void set_state_falling();
   void set_state_standing();

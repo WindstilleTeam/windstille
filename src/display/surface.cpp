@@ -99,7 +99,7 @@ Surface::get_uv() const
 }
 
 void
-Surface::draw(const Vector2f& pos) const
+Surface::draw(const glm::vec2& pos) const
 {
   OpenGLState state;
   state.enable(GL_BLEND);

@@ -73,7 +73,7 @@ ScriptableObject::~ScriptableObject()
 void
 ScriptableObject::draw(SceneContext& sc)
 {
-  Vector2f tmp_pos = pos;
+  glm::vec2 tmp_pos = pos;
 
   if (parent)
     tmp_pos += parent->get_pos();

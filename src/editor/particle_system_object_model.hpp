@@ -30,7 +30,7 @@ private:
   ParticleSystems systems;
 
 public:
-  ParticleSystemObjectModel(const Vector2f& pos);
+  ParticleSystemObjectModel(const glm::vec2& pos);
   ~ParticleSystemObjectModel() override;
 
   void draw(SceneContext& sc) override;

@@ -64,10 +64,10 @@ public:
       queue */
   void fill_screen(const Color& color);
 
-  void fill_pattern(TexturePtr pattern, const Vector2f& offset);
+  void fill_pattern(TexturePtr pattern, const glm::vec2& offset);
 
   void draw_line(const Line& line, const Color& color, float z_pos = 0);
-  void draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color, float z_pos = 0);
+  void draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color, float z_pos = 0);
 
   void draw_rect(const Rectf& rect, const Color& color, float z_pos = 0);
   void fill_rect(const Rectf& rect, const Color& color, float z_pos = 0);
@@ -77,14 +77,14 @@ public:
 
   /*{ */
   void draw(Drawable* request);
-  void draw(const Sprite&   sprite,  const Vector2f& pos, float z = 0);
+  void draw(const Sprite&   sprite,  const glm::vec2& pos, float z = 0);
   void draw(const std::string& text,    float x, float y, float z = 0);
-  void draw(SurfacePtr surface, const Vector2f& pos, float z = 0, float alpha = 0);
+  void draw(SurfacePtr surface, const glm::vec2& pos, float z = 0, float alpha = 0);
   void draw(SurfacePtr surface, float x, float y, float z = 0, float alpha = 0);
   void draw(SurfacePtr surface, const SurfaceDrawingParameters& params, float z_pos = 0);
-  void draw(SurfacePtr surface, const Vector2f& pos, const Quad& quad,
+  void draw(SurfacePtr surface, const glm::vec2& pos, const Quad& quad,
             const DrawingParameters& params, float z_pos = 0);
-  void draw_control(SurfacePtr surface, const Vector2f& pos, float angle, float z_pos = 0);
+  void draw_control(SurfacePtr surface, const glm::vec2& pos, float angle, float z_pos = 0);
   /*} */
 
   /** Translate the drawing context */

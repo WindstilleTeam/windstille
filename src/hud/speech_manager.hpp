@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "display/color.hpp"
 #include "util/currenton.hpp"
 
@@ -51,7 +51,7 @@ public:
    *  @param color The color of the speech bubble
    */
   int add(const std::string& text,
-          const Vector2f& pos,
+          const glm::vec2& pos,
           const Color& color = Color(1.0f, 1.0f, 1.0f));
 
   int add(const std::string& text,

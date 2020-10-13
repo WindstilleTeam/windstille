@@ -93,7 +93,7 @@ int memleak_main(int argc, char* argv[])
 
     surface = Surface::create(argv[1]);
 
-    surface->draw(Vector2f(0.0f, 0.0f));
+    surface->draw(glm::vec2(0.0f, 0.0f));
     window.swap_buffers();
     SDL_Delay(10);
 

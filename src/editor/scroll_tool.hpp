@@ -27,7 +27,7 @@ class ScrollTool : public Tool
 {
 private:
   GraphicContextState orig_state;
-  Vector2f orig_click;
+  glm::vec2 orig_click;
   enum { SCROLLING, NO_MODE } mode;
 
 public:

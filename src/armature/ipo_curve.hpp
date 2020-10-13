@@ -21,14 +21,14 @@
 
 #include <vector>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 struct BezierPoint
 {
-  Vector2f handle_left;
-  Vector2f handle_right;
+  glm::vec2 handle_left;
+  glm::vec2 handle_right;
 
-  Vector2f pos;
+  glm::vec2 pos;
 };
 
 /** */

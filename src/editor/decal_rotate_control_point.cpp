@@ -20,7 +20,7 @@
 #include "editor/decal_rotate_control_point.hpp"
 #include "util/pathname.hpp"
 
-DecalRotateControlPoint::DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_) :
+DecalRotateControlPoint::DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const glm::vec2& pos_) :
   ControlPoint(Surface::create(Pathname("editor/rotate_handle.png")), pos_),
   object(object_),
   ctrl_angle(ctrl_angle_),
@@ -35,14 +35,14 @@ DecalRotateControlPoint::on_move_start(GdkEventButton* event)
 }
 
 void
-DecalRotateControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& offset_)
+DecalRotateControlPoint::on_move_update(GdkEventMotion* event, const glm::vec2& offset_)
 {
   offset = offset_;
 
-  Vector2f base = pos - center;
+  glm::vec2 base = pos - center;
   float base_angle = atan2f(base.y, base.x);
 
-  Vector2f current = (pos+offset) - center;
+  glm::vec2 current = (pos+offset) - center;
   float current_angle = atan2f(current.y, current.x);
 
   float new_angle = orig_angle + current_angle - base_angle;
@@ -57,7 +57,7 @@ DecalRotateControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& o
 }
 
 void
-DecalRotateControlPoint::on_move_end(GdkEventButton* event, const Vector2f& offset_)
+DecalRotateControlPoint::on_move_end(GdkEventButton* event, const glm::vec2& offset_)
 {
   // FIXME: The cast there is a really bad idea, but should work due
   // to both structures being mostly the same

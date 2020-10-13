@@ -51,7 +51,7 @@ Edge::get_line() const
               node2->get_pos());
 }
 
-Vector2f
+glm::vec2
 Edge::get_vector() const
 {
   return node2->get_pos() - node1->get_pos();

@@ -203,7 +203,7 @@ SectorBuilder::parse_navgraph(ReaderMapping const& reader)
         std::cout << "SectorBuilder::parse_navgraph(): Unknown nodes tag: " << item.get_name() << std::endl;
       } else {
         ReaderMapping const& map = item.get_mapping();
-        Vector2f pos;
+        glm::vec2 pos;
         if (map.read("pos", pos)) {
           NodeHandle node = m_sector.get_navigation_graph().add_node(pos);
           std::string id;

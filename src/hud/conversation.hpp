@@ -27,8 +27,8 @@ class Conversation : public Screen,
                      public Currenton<Conversation>
 {
 private:
-  Vector2f pos;
-  Vector2f direction;
+  glm::vec2 pos;
+  glm::vec2 direction;
   bool   active;
   int    selection;
   float  grow;

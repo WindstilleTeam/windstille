@@ -52,7 +52,7 @@ private:
   Systems systems;
   Sprite background;
 
-  Vector2f pos;
+  glm::vec2 pos;
 
   std::shared_ptr<FillScreenPatternDrawable> m_background_drawable;
   std::shared_ptr<FillScreenDrawable>        m_color_fill_drawable;

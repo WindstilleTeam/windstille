@@ -86,7 +86,7 @@ Camera::update(float delta)
       float hscroll_threshold = 100.0f;
       float vscroll_threshold  = 150.0f;
 
-      Vector2f tpos{};
+      glm::vec2 tpos{};
       if (Player::current())
         tpos = Player::current()->get_pos();
       else if (Doll::current())

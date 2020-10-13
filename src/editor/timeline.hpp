@@ -22,7 +22,7 @@
 #include "editor/timeline_handles.hpp"
 #include "editor/timeline_properties.hpp"
 #include "editor/object_model.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "util/file_writer.hpp"
 
 class Timeline

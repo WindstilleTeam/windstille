@@ -81,7 +81,7 @@ NavigationGraphModel::remove_edge(std::shared_ptr<NavGraphEdgeObjectModel> edge)
 }
 
 std::shared_ptr<NavGraphNodeObjectModel>
-NavigationGraphModel::find_closest_node(const Vector2f& pos, float radius) const
+NavigationGraphModel::find_closest_node(const glm::vec2& pos, float radius) const
 {
   std::shared_ptr<NavGraphNodeObjectModel> node;
   float min_distance = radius;
@@ -100,7 +100,7 @@ NavigationGraphModel::find_closest_node(const Vector2f& pos, float radius) const
 }
 
 std::shared_ptr<NavGraphEdgeObjectModel>
-NavigationGraphModel::find_closest_edge(const Vector2f& pos, float radius) const
+NavigationGraphModel::find_closest_edge(const glm::vec2& pos, float radius) const
 {
   std::shared_ptr<NavGraphEdgeObjectModel> edge;
   float min_distance = radius;
@@ -136,7 +136,7 @@ NavigationGraphModel::find_edges(std::shared_ptr<NavGraphNodeObjectModel> node) 
 }
 
 std::shared_ptr<NavGraphNodeObjectModel>
-NavigationGraphModel::get_object_at(const Vector2f& pos, const SelectMask& select_mask) const
+NavigationGraphModel::get_object_at(const glm::vec2& pos, const SelectMask& select_mask) const
 {
   for(Nodes::const_reverse_iterator i = m_nodes.rbegin(); i != m_nodes.rend(); ++i)
   {

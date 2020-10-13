@@ -25,7 +25,7 @@
 #include <glm/glm.hpp>
 
 #include "math/rect.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "util/file_writer.hpp"
 #include "util/file_reader.hpp"
 
@@ -108,7 +108,7 @@ public:
 
   // FIXME: It might be worth it to return handles that can be
   // validated instead of pure pointers
-  NodeHandle add_node(const Vector2f& pos);
+  NodeHandle add_node(const glm::vec2& pos);
   EdgeHandle add_edge(NodeHandle node1, NodeHandle node2);
 
   void remove_node(NodeHandle node);
@@ -120,17 +120,17 @@ public:
   std::vector<EdgePosition> find_intersections(const Line& line);
 
   /** Find nodes that are near within the \a radius */
-  std::vector<NodeHandle> find_nodes(const Vector2f& pos, float radius);
+  std::vector<NodeHandle> find_nodes(const glm::vec2& pos, float radius);
 
   std::vector<NodeHandle> find_nodes(const Rectf& rect);
 
   /** Find the closest node, limit search to nodes in radius */
-  NodeHandle find_closest_node(const Vector2f& pos, float radius);
+  NodeHandle find_closest_node(const glm::vec2& pos, float radius);
 
-  EdgeHandle find_closest_edge(const Vector2f& pos, float radius);
+  EdgeHandle find_closest_edge(const glm::vec2& pos, float radius);
 
   /** Find edges that are near the given point */
-  std::vector<EdgeHandle> find_edges(const Vector2f& pos, float radius);
+  std::vector<EdgeHandle> find_edges(const glm::vec2& pos, float radius);
 
   /** Draw the navigation graph, for debugging only */
   void draw();

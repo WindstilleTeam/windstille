@@ -21,7 +21,7 @@
 
 #include "screen/screen.hpp"
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "util/currenton.hpp"
 
 class ControllerHelpWindowImpl;
@@ -31,9 +31,9 @@ class ControllerHelpWindow : public Screen,
                              public Currenton<ControllerHelpWindow>
 {
 private:
-  void draw_button(const Vector2f& pos, bool pressed);
-  void draw_stick(const Vector2f& pos, bool pressed, float x, float y);
-  void draw_trigger(const Vector2f& pos, float value);
+  void draw_button(const glm::vec2& pos, bool pressed);
+  void draw_stick(const glm::vec2& pos, bool pressed, float x, float y);
+  void draw_trigger(const glm::vec2& pos, float value);
 
 public:
   ControllerHelpWindow();

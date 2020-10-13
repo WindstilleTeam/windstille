@@ -542,7 +542,7 @@ SlideParser::add_node()
                         zoom * m_image->get_height());
 
   //m_image->get_path().add_node(m_path_node.pos, m_path_node.zoom);
-  m_image->get_path().add_node(Vector2f(m_node.pos_x.get(m_screen_size, image_size_zoom, zoom),
+  m_image->get_path().add_node(glm::vec2(m_node.pos_x.get(m_screen_size, image_size_zoom, zoom),
                                         m_node.pos_y.get(m_screen_size, image_size_zoom, zoom)),
                                zoom);
 

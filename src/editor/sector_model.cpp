@@ -254,7 +254,7 @@ SectorModel::update(float delta)
 }
 
 ObjectModelHandle
-SectorModel::get_object_at(const Vector2f& pos, const SelectMask& layermask) const
+SectorModel::get_object_at(const glm::vec2& pos, const SelectMask& layermask) const
 {
   const Layers& layers = get_layers();
   SelectionHandle selection = Selection::create();

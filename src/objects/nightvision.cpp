@@ -48,12 +48,12 @@ Nightvision::draw(SceneContext& sc)
   {
     nightvision.set_alpha(1.0f);
     nightvision.set_blend_func(GL_ONE, GL_ZERO);
-    sc.light().draw(nightvision, Vector2f(0, 0), 10000);
+    sc.light().draw(nightvision, glm::vec2(0, 0), 10000);
   }
 
   if (1)
   {
-    VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), 10000,
+    VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0), 10000,
                                                          sc.light().get_modelview());
     array->set_mode(GL_QUADS);
     array->set_texture(noise);
@@ -115,7 +115,7 @@ Nightvision::draw(SceneContext& sc)
                                    float(Display::get_height()) / nightvision.get_height()));
 
     sc.highlight().draw(nightvision,
-                        Vector2f(static_cast<float>(Display::get_width()) / 2.0f - (nightvision.get_width()  * nightvision.get_scale() / 2.0f),
+                        glm::vec2(static_cast<float>(Display::get_width()) / 2.0f - (nightvision.get_width()  * nightvision.get_scale() / 2.0f),
                                  static_cast<float>(Display::get_height())/ 2.0f - (nightvision.get_height() * nightvision.get_scale() / 2.0f)),
                         10000);
     sc.highlight().pop_modelview();

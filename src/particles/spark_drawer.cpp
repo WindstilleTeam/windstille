@@ -30,14 +30,14 @@ SparkDrawer::SparkDrawer(ReaderMapping const& props)
   props.read("color", color);
   props.read("width", width);
 
-  buffer.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix(1.0f)));
+  buffer.reset(new VertexArrayDrawable(glm::vec2(), 0.0f, Matrix(1.0f)));
 }
 
 void
 SparkDrawer::draw(const ParticleSystem& psys) const
 {
   buffer->clear();
-  buffer->set_pos(Vector2f(psys.get_x_pos(), psys.get_y_pos()));
+  buffer->set_pos(glm::vec2(psys.get_x_pos(), psys.get_y_pos()));
 
   if (width == 1.0f)
   {

@@ -75,8 +75,8 @@ public:
   TexturePtr get_texture() const;
 
   const TTFCharacter& get_character(int c) const;
-  void draw(const Vector2f& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
-  void draw_center(const Vector2f& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
+  void draw(const glm::vec2& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
+  void draw_center(const glm::vec2& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
 
 private:
   std::unique_ptr<TTFFontImpl> impl;

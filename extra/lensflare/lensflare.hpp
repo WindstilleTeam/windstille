@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "math/size.hpp"
 #include "display/surface.hpp"
 #include "display/color.hpp"
@@ -63,7 +63,7 @@ private:
   typedef std::vector<Flair> Flairs;
   Flairs m_flairs;
 
-  Vector2f m_mouse;
+  glm::vec2 m_mouse;
 
 public:
   Lensflare();

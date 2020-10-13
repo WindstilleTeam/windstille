@@ -232,7 +232,7 @@ GridComponent::pack(Component* component, int x, int y, int colspan, int rowspan
       grid(x, y) = ComponentBox(component, Size(colspan, rowspan));
     }
 
-    component->set_screen_rect(Rectf(Vector2f(rect_.left() + static_cast<float>(x) * (rect_.width()  / static_cast<float>(grid.get_width()))  + padding,
+    component->set_screen_rect(Rectf(glm::vec2(rect_.left() + static_cast<float>(x) * (rect_.width()  / static_cast<float>(grid.get_width()))  + padding,
                                               rect_.top()  + static_cast<float>(y) * (rect_.height() / static_cast<float>(grid.get_height())) + padding),
                                      Sizef((rect_.width()  / static_cast<float>(grid.get_width()))  * static_cast<float>(colspan) - 2.0f * padding,
                                            (rect_.height() / static_cast<float>(grid.get_height())) * static_cast<float>(rowspan) - 2.0f * padding)));

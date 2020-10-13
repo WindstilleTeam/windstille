@@ -58,7 +58,7 @@ Sector::Sector(const Pathname& arg_filename) :
 
     // Spawn the Player
     player.reset(new Player());
-    player->set_pos(Vector2f(300,200));
+    player->set_pos(glm::vec2(300,200));
     add(player);
   }
   else

@@ -24,8 +24,8 @@
 class SwarmAgent
 {
 public:
-  Vector2f pos;
-  Vector2f last_pos;
+  glm::vec2 pos;
+  glm::vec2 last_pos;
   float  angle;
   float  speed;
   float  max_speed;
@@ -48,7 +48,7 @@ private:
   typedef std::vector<SwarmAgent> Agents;
   Agents agents;
 
-  Vector2f target;
+  glm::vec2 target;
 
   float turn_speed;
 

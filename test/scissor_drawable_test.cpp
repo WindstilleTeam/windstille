@@ -56,20 +56,20 @@ int app_main(int argc, char* argv[])
                                                                  SurfaceDrawingParameters(), 0, Matrix(1.0f)));
 
   std::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")),
-                                                                  SurfaceDrawingParameters().set_pos(Vector2f(-50.0f, -50.0f)), 0, Matrix(1.0f)));
+                                                                  SurfaceDrawingParameters().set_pos(glm::vec2(-50.0f, -50.0f)), 0, Matrix(1.0f)));
   std::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
                                                                   SurfaceDrawingParameters(), 0, Matrix(1.0f)));
 
   std::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
-                                                                  SurfaceDrawingParameters().set_pos(Vector2f(-25.0f, 25.0f)),
+                                                                  SurfaceDrawingParameters().set_pos(glm::vec2(-25.0f, 25.0f)),
                                                                   0, Matrix(1.0f)));
   std::shared_ptr<StencilDrawable> stencil2(new StencilDrawable());
 
   if ((false))
   {
     scissor->get_drawable_group().add_drawable(surface);
-    surface2->set_pos(Vector2f(300.0f, 300.0f));
-    surface3->set_pos(Vector2f(350.0f, 350.0f));
+    surface2->set_pos(glm::vec2(300.0f, 300.0f));
+    surface3->set_pos(glm::vec2(350.0f, 350.0f));
     group.add_drawable(scissor);
   }
   else
@@ -88,7 +88,7 @@ int app_main(int argc, char* argv[])
   for(int i = 0; i < 500; ++i)
   {
     std::cout << "." << std::flush;
-    surface->get_params().set_pos(Vector2f(static_cast<float>(i) - 250.0f, 0.0f));
+    surface->get_params().set_pos(glm::vec2(static_cast<float>(i) - 250.0f, 0.0f));
     group.render(~0u);
     window.swap_buffers();
   }

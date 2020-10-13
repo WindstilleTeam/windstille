@@ -24,7 +24,7 @@
 #include "display/framebuffer.hpp"
 #include "math/rect.hpp"
 #include "math/size.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 class Color;
 class Quad;
@@ -52,15 +52,15 @@ public:
   static void draw_line_with_normal(const Line& line, const Color& color);
 
   static void draw_line(const Line& line, const Color& color);
-  static void draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color);
+  static void draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color);
 
-  static void draw_circle(const Vector2f& pos, float radius, const Color& color, int segments = 16);
-  static void fill_circle(const Vector2f& pos, float radius, const Color& color, int segments = 16);
+  static void draw_circle(const glm::vec2& pos, float radius, const Color& color, int segments = 16);
+  static void fill_circle(const glm::vec2& pos, float radius, const Color& color, int segments = 16);
 
-  static void draw_arc(const Vector2f& pos, float radius, float start, float end, const Color& color, int segments = 16);
-  static void fill_arc(const Vector2f& pos, float radius, float start, float end, const Color& color, int segments = 16);
+  static void draw_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments = 16);
+  static void fill_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments = 16);
 
-  static void draw_grid(const Vector2f& offset, const Sizef& size, const Color& color);
+  static void draw_grid(const glm::vec2& offset, const Sizef& size, const Color& color);
 
   static int  get_width();
   static int  get_height();

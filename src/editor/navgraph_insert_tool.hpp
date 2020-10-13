@@ -32,7 +32,7 @@ class NavGraphEdgeObjectModel;
 class NavgraphInsertTool : public Tool
 {
 private:
-  Vector2f mouse_pos;
+  glm::vec2 mouse_pos;
 
   enum {
     EDGE_MODE,   // create an edge between two nodes

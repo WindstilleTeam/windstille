@@ -105,7 +105,7 @@ MenuManager::display_option_menu()
 void
 MenuManager::display_main_menu()
 {
-  gui::Menu menu("", create_positioned_rect(Vector2f(400-20, 200), Sizef(250, 254)), false);
+  gui::Menu menu("", create_positioned_rect(glm::vec2(400-20, 200), Sizef(250, 254)), false);
 
   menu.add_button("Select Scenario", std::bind(&MenuManager::display_scenario_menu));
   menu.add_button("Navigation Test", std::bind(&MenuManager::menu_show_navigation_test));
@@ -120,7 +120,7 @@ MenuManager::display_main_menu()
 
   { // Construct Copyright box
     std::unique_ptr<gui::GroupComponent> text_group
-      (new gui::GroupComponent(Rectf(Vector2f(static_cast<float>(Display::get_width())/2.0f - 390.0f,
+      (new gui::GroupComponent(Rectf(glm::vec2(static_cast<float>(Display::get_width())/2.0f - 390.0f,
                                               static_cast<float>(Display::get_height())     - 100.0f),
                                      Sizef(800.0f - 20.0f,
                                            100.0f - 10.0f)),
@@ -356,9 +356,9 @@ MenuManager::display_credits()
 }
 
 Rectf
-MenuManager::create_positioned_rect(const Vector2f& pos_, const Sizef& size)
+MenuManager::create_positioned_rect(const glm::vec2& pos_, const Sizef& size)
 {
-  Vector2f pos = pos_;
+  glm::vec2 pos = pos_;
 
   // move pos to center of rect
   pos.x += size.width()  / 2.0f;
@@ -378,7 +378,7 @@ MenuManager::create_positioned_rect(const Vector2f& pos_, const Sizef& size)
 Rectf
 MenuManager::create_centered_rect(float w, float h)
 {
-  return Rectf(Vector2f((static_cast<float>(Display::get_width())  - w)/2.0f,
+  return Rectf(glm::vec2((static_cast<float>(Display::get_width())  - w)/2.0f,
                         (static_cast<float>(Display::get_height()) - h)/2.0f),
                Sizef(w, h));
 }

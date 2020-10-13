@@ -21,6 +21,7 @@
 #include <stdexcept>
 
 #include <SDL.h>
+#include <glm/glm.hpp>
 
 #include "display/opengl_window.hpp"
 #include "display/framebuffer.hpp"
@@ -29,7 +30,6 @@
 #include "display/surface_manager.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "math/size.hpp"
-#include "math/vector2f.hpp"
 
 namespace {
 
@@ -67,11 +67,11 @@ int app_main(int argc, char** argv)
   SurfacePtr surface_2 = Surface::create(argv[2]);
 
   float ray_length = 3.0f;
-  Vector2f pos{};
-  Vector2f last_pos{};
+  glm::vec2 pos{};
+  glm::vec2 last_pos{};
   int t = 0;
-  std::vector<Vector2f> buffer(16);
-  std::vector<Vector2f>::size_type buffer_pos = 0;
+  std::vector<glm::vec2> buffer(16);
+  std::vector<glm::vec2>::size_type buffer_pos = 0;
   bool quit = false;
   while(!quit)
   {
@@ -109,7 +109,7 @@ int app_main(int argc, char** argv)
         case SDL_MOUSEMOTION:
           //std::cout << event.motion.x << ", " << event.motion.y << std::endl;
           last_pos = pos;
-          pos = Vector2f(1024.0f - static_cast<float>(event.motion.x),
+          pos = glm::vec2(1024.0f - static_cast<float>(event.motion.x),
                          576.0f - static_cast<float>(event.motion.y));
           break;
 
@@ -151,7 +151,7 @@ int app_main(int argc, char** argv)
 
           surface->draw(SurfaceDrawingParameters()
                         .set_scale(1.0f)
-                        .set_pos(pos - Vector2f(surface->get_width()/2, surface->get_height()/2))
+                        .set_pos(pos - glm::vec2(surface->get_width()/2, surface->get_height()/2))
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                         .set_color(Color(1.0f, 1.0f, 1.0f, n)));
         }
@@ -165,7 +165,7 @@ int app_main(int argc, char** argv)
                         .set_scale(1.0f)
                         .set_pos((static_cast<float>(i)/static_cast<float>(n-1)) * pos
                                  + (static_cast<float>(n-i-1)/static_cast<float>(n-1)) * last_pos
-                                 - Vector2f(surface->get_width()/2, surface->get_height()/2))
+                                 - glm::vec2(surface->get_width()/2, surface->get_height()/2))
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                         .set_color(Color(1.0f, 1.0f, 1.0f, 1.0f / static_cast<float>(n))));
         }
@@ -180,9 +180,9 @@ int app_main(int argc, char** argv)
         if ((true))
           surface->draw(SurfaceDrawingParameters()
                         .set_scale(scale)
-                        .set_pos(Vector2f(512, 288) - Vector2f(surface->get_width()/2 * scale,
+                        .set_pos(glm::vec2(512, 288) - glm::vec2(surface->get_width()/2 * scale,
                                                                surface->get_height()/2 * scale)
-                                 + (Vector2f(512, 288) - pos) * scale * 3.0f)
+                                 + (glm::vec2(512, 288) - pos) * scale * 3.0f)
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                         .set_color(Color(1.0f, 1.0f, 1.0f, static_cast<float>(1)/static_cast<float>(n))));
 
@@ -192,9 +192,9 @@ int app_main(int argc, char** argv)
           //std::cout << "Black: " << pos << std::endl;
           surface_2->draw(SurfaceDrawingParameters()
                          .set_scale(scale)
-                         .set_pos(Vector2f(512, 288) - Vector2f(surface_2->get_width()/2 * scale,
+                         .set_pos(glm::vec2(512, 288) - glm::vec2(surface_2->get_width()/2 * scale,
                                                                 surface_2->get_height()/2 * scale)
-                                  + (Vector2f(512, 288) - pos) * scale * 3.0f)
+                                  + (glm::vec2(512, 288) - pos) * scale * 3.0f)
                          .set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
                          .set_color(Color(1.0f, 1.0f, 1.0f, 1.0f)));
         }

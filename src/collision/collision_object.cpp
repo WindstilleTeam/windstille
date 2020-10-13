@@ -57,8 +57,8 @@ CollisionObject::CollisionObject(TileMap* tilemap_)
   object_type        = TILEMAP;
   is_unstuckable     = true;
   is_unstuck_movable = false;
-  velocity           = Vector2f(0,0);
-  pos                = Vector2f(0,0);
+  velocity           = glm::vec2(0,0);
+  pos                = glm::vec2(0,0);
   game_object        = nullptr;
 
   is_domains    = DOMAIN_TILEMAP;
@@ -72,7 +72,7 @@ CollisionObject::~CollisionObject()
 void
 CollisionObject::draw(DrawingContext& dc)
 {
-  Vector2f v = get_pos();
+  glm::vec2 v = get_pos();
   Rectf  r = primitive;
 
   r += v;
@@ -81,9 +81,9 @@ CollisionObject::draw(DrawingContext& dc)
 
   dc.draw_rect(r, Color(0.6f, 0.6f, 0.6f), 100.0f);
 
-  dc.draw_line(Vector2f(r.left() + r.width()/2,
+  dc.draw_line(glm::vec2(r.left() + r.width()/2,
                         r.top()  + r.height()/2),
-               Vector2f(r.left() + r.width()/2  + get_velocity().x,
+               glm::vec2(r.left() + r.width()/2  + get_velocity().x,
                         r.top()  + r.height()/2 + get_velocity().y),
                Color(1.0f, 0, 1.0f), 100.0f);
 }
@@ -94,25 +94,25 @@ void CollisionObject::update(float delta)
 }
 
 void
-CollisionObject::set_velocity(const Vector2f &m)
+CollisionObject::set_velocity(const glm::vec2 &m)
 {
   velocity=m;
 }
 
-Vector2f
+glm::vec2
 CollisionObject::get_pos() const
 {
   return pos;
 }
 
-Vector2f
+glm::vec2
 CollisionObject::get_velocity() const
 {
   return velocity;
 }
 
 void
-CollisionObject::set_pos(const Vector2f& p)
+CollisionObject::set_pos(const glm::vec2& p)
 {
   // FIXME: Do this somewhat more clever to avoid stuck issues
   pos = p;

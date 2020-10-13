@@ -53,9 +53,9 @@ PDA::PDA()
 {
   background = Sprite(Pathname("images/pda/pda.sprite"));
 
-  ui_area.reset(new TextArea(geom::grow(Rectf(pos + Vector2f(40.0f, 50.0f),
+  ui_area.reset(new TextArea(geom::grow(Rectf(pos + glm::vec2(40.0f, 50.0f),
                                               Sizef(315.0f, 435.0f)), -12.0f), false));
-  text_area.reset(new TextArea(geom::grow(Rectf(pos + Vector2f(40.0f, 50.0f) + Vector2f(0.0f, 56.0f),
+  text_area.reset(new TextArea(geom::grow(Rectf(pos + glm::vec2(40.0f, 50.0f) + glm::vec2(0.0f, 56.0f),
                                                 Sizef(315.0f, 380.0f)), -12.0f), false));
 
   ui_area->set_font(Fonts::current()->vera12.get());

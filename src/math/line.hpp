@@ -19,20 +19,20 @@
 #ifndef HEADER_WINDSTILLE_MATH_LINE_HPP
 #define HEADER_WINDSTILLE_MATH_LINE_HPP
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 /** */
 class Line
 {
 private:
 public:
-  Vector2f p1;
-  Vector2f p2;
+  glm::vec2 p1;
+  glm::vec2 p2;
 
   Line() : p1(), p2() {}
 
-  Line(const Vector2f& p1,
-       const Vector2f& p2);
+  Line(const glm::vec2& p1,
+       const glm::vec2& p2);
 
   float length() const;
 
@@ -43,10 +43,10 @@ public:
   bool intersect(const Line& line_b, float& ua, float& ub) const;
 
   /** Calculate if and where two lines intersect */
-  bool intersect(const Line& line, Vector2f& colpos) const;
+  bool intersect(const Line& line, glm::vec2& colpos) const;
 
   /** Calculate the minimal distance between this line and the point p */
-  float distance(const Vector2f& p) const;
+  float distance(const glm::vec2& p) const;
 };
 
 #endif

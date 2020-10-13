@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_DECAL_SCALE_CONTROL_POINT_HPP
 #define HEADER_WINDSTILLE_EDITOR_DECAL_SCALE_CONTROL_POINT_HPP
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "editor/control_point.hpp"
 #include "editor/decal_object_model.hpp"
 
@@ -28,17 +28,17 @@ class DecalScaleControlPoint : public ControlPoint
 private:
   DecalObjectModel* object;
   float ctrl_angle;
-  Vector2f orig_scale;
+  glm::vec2 orig_scale;
   bool x_scale;
   bool y_scale;
 
 public:
-  DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_, bool
+  DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const glm::vec2& pos_, bool
                          x_scale_ = true, bool y_scale_ = true);
 
   void on_move_start(GdkEventButton* event) override;
-  void on_move_update(GdkEventMotion* event, const Vector2f& offset_) override;
-  void on_move_end(GdkEventButton* event, const Vector2f& offset_) override;
+  void on_move_update(GdkEventMotion* event, const glm::vec2& offset_) override;
+  void on_move_end(GdkEventButton* event, const glm::vec2& offset_) override;
 
   void draw(SceneContext& sc) override;
 

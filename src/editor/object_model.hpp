@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_HPP
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "editor/select_mask.hpp"
 #include "util/file_writer.hpp"
 #include "editor/control_point.hpp"
@@ -39,14 +39,14 @@ class ObjectModel
 {
 protected:
   std::string name;
-  Vector2f    rel_pos;
+  glm::vec2    rel_pos;
   SelectMask  select_mask;
 
   ObjectModelPtr parent_ptr;
 
 public:
   ObjectModel(ReaderMapping const& reader);
-  ObjectModel(const std::string& name, const Vector2f& pos);
+  ObjectModel(const std::string& name, const glm::vec2& pos);
   virtual ~ObjectModel();
 
   void set_parent(const ObjectModelHandle& parent_, bool recalc_pos = true);
@@ -55,11 +55,11 @@ public:
   std::string get_name() const { return name; }
   std::string get_id() const;
 
-  virtual Vector2f get_world_pos() const;
-  virtual void set_world_pos(const Vector2f& p);
+  virtual glm::vec2 get_world_pos() const;
+  virtual void set_world_pos(const glm::vec2& p);
 
-  virtual Vector2f get_rel_pos() const { return rel_pos; }
-  virtual void     set_rel_pos(const Vector2f& rel_pos_);
+  virtual glm::vec2 get_rel_pos() const { return rel_pos; }
+  virtual void     set_rel_pos(const glm::vec2& rel_pos_);
 
   virtual SelectMask get_select_mask() const { return select_mask; }
   virtual void   set_select_mask(const SelectMask& select_mask_) { select_mask = select_mask_; }
@@ -78,7 +78,7 @@ public:
   /** Reset scale and rotation to default values */
   virtual void reset();
 
-  virtual bool is_at(const Vector2f& pos) const;
+  virtual bool is_at(const glm::vec2& pos) const;
 
   virtual bool is_snappable() const { return true; }
 
@@ -95,10 +95,10 @@ public:
   virtual void add_control_points(std::vector<ControlPointHandle>& control_points) {}
 
   virtual void get_property(TimelineProperty property, float& value_out) const;
-  virtual void get_property(TimelineProperty property, Vector2f& value_out) const;
+  virtual void get_property(TimelineProperty property, glm::vec2& value_out) const;
 
   virtual void set_property(TimelineProperty property, float value);
-  virtual void set_property(TimelineProperty property, const Vector2f& value);
+  virtual void set_property(TimelineProperty property, const glm::vec2& value);
 
   /** This lets the object add things to the SceneGraph or do other
       things needed to make it properly visible in the SectorModel */

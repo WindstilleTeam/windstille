@@ -53,20 +53,20 @@ Display::draw_line(const Line& line, const Color& color)
 void
 Display::draw_line_with_normal(const Line& line, const Color& color)
 {
-  Vector2f normal = (line.p2 - line.p1);
+  glm::vec2 normal = (line.p2 - line.p1);
 
-  normal = Vector2f(-normal.y, normal.x);
+  normal = glm::vec2(-normal.y, normal.x);
   normal = glm::normalize(normal);
   normal *= -32.0f;
 
-  Vector2f p3 = line.p1 + 0.5f * (line.p2 - line.p1);
+  glm::vec2 p3 = line.p1 + 0.5f * (line.p2 - line.p1);
 
   draw_line(line,   color);
   draw_line(p3, p3 + normal, Color(0.0f, 1.0f, 1.0f));
 }
 
 void
-Display::draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color)
+Display::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color)
 {
   OpenGLState state;
 
@@ -265,7 +265,7 @@ Display::get_height()
 }
 
 void
-Display::draw_circle(const Vector2f& pos, float radius, const Color& color, int segments)
+Display::draw_circle(const glm::vec2& pos, float radius, const Color& color, int segments)
 {
   assert(segments >= 0);
 
@@ -292,7 +292,7 @@ Display::draw_circle(const Vector2f& pos, float radius, const Color& color, int 
 }
 
 void
-Display::fill_circle(const Vector2f& pos, float radius, const Color& color, int segments)
+Display::fill_circle(const glm::vec2& pos, float radius, const Color& color, int segments)
 {
   assert(segments >= 0);
 
@@ -319,7 +319,7 @@ Display::fill_circle(const Vector2f& pos, float radius, const Color& color, int 
 }
 
 void
-Display::draw_arc(const Vector2f& pos, float radius, float start, float end, const Color& color, int segments)
+Display::draw_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments)
 {
   assert(segments >= 0);
 
@@ -359,7 +359,7 @@ Display::draw_arc(const Vector2f& pos, float radius, float start, float end, con
 }
 
 void
-Display::fill_arc(const Vector2f& pos, float radius, float start, float end, const Color& color, int segments)
+Display::fill_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments)
 {
   assert(segments >= 0);
 
@@ -399,7 +399,7 @@ Display::fill_arc(const Vector2f& pos, float radius, float start, float end, con
 }
 
 void
-Display::draw_grid(const Vector2f& offset, const Sizef& size, const Color& rgba)
+Display::draw_grid(const glm::vec2& offset, const Sizef& size, const Color& rgba)
 {
   OpenGLState state;
 

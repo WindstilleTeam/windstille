@@ -72,7 +72,7 @@ Conversation::draw()
 
   for(int i = 0; i < static_cast<int>(choices.size()); ++i)
   { // FIXME:
-    Vector2f offset(0.0f, 1.0f);
+    glm::vec2 offset(0.0f, 1.0f);
     offset = glm::rotate(offset, math::deg2rad(segment * static_cast<float>(i)) - math::pi/2.0f);
 
     float start = -segment / 2.0f - 90.0f + segment * static_cast<float>(i);
@@ -80,11 +80,11 @@ Conversation::draw()
 
     float distance = 160.0f;
 
-    Vector2f textpos = pos + Vector2f(0, 16.0f);
+    glm::vec2 textpos = pos + glm::vec2(0, 16.0f);
     // FIXME: Doesn't handle multi line text
     Sizef size(static_cast<float>(Fonts::current()->vera20->get_width(choices[i].topic)) + 40.0f,
                static_cast<float>(Fonts::current()->vera20->get_height()) + 25.0f);
-    Rectf  rect(textpos + distance * offset - Vector2f(size.width()/2, size.height() - 15), size);
+    Rectf  rect(textpos + distance * offset - glm::vec2(size.width()/2, size.height() - 15), size);
 
     if (i == selection)
     {
@@ -93,18 +93,18 @@ Conversation::draw()
       Display::fill_arc(pos, 42.0f, start, end, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
       Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
 
-      Fonts::current()->vera20->draw_center(Vector2f(textpos.x + distance * offset.x,
+      Fonts::current()->vera20->draw_center(glm::vec2(textpos.x + distance * offset.x,
                                                      textpos.y + distance * offset.y),
                                             choices[i].topic, Color(1.0f, 1.0f, 0.0f));
 
-      Fonts::current()->vera20->draw_center(Vector2f(400.0f, static_cast<float>(Display::get_height()) - 32.0f),
+      Fonts::current()->vera20->draw_center(glm::vec2(400.0f, static_cast<float>(Display::get_height()) - 32.0f),
                                             choices[i].text, Color(1.0f, 1.0f, 1.0f));
       Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 0.0f));
     }
     else
     {
       Display::fill_rounded_rect(rect, 5.0f, Color(0.25f, 0.25f, 0.25f, 0.75f));
-      Fonts::current()->vera20->draw_center(Vector2f(textpos.x + distance * offset.x,
+      Fonts::current()->vera20->draw_center(glm::vec2(textpos.x + distance * offset.x,
                                                      textpos.y + distance * offset.y),
                                             choices[i].topic, Color(0.8f, 0.8f, 0.8f));
       Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f));
@@ -131,7 +131,7 @@ Conversation::update(float delta, const Controller& controller)
 
   grow = fabsf(sinf(time * 3.0f)) * 4.0f;
 
-  direction = Vector2f(controller.get_axis_state(X_AXIS),
+  direction = glm::vec2(controller.get_axis_state(X_AXIS),
                        controller.get_axis_state(Y_AXIS));
 
   if (fabsf(controller.get_axis_state(X_AXIS)) > 0.3f ||

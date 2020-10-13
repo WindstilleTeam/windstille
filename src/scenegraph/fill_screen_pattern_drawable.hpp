@@ -27,18 +27,18 @@ class FillScreenPatternDrawable : public Drawable
 {
 private:
   TexturePtr m_texture;
-  Vector2f m_offset;
+  glm::vec2 m_offset;
 
 public:
-  FillScreenPatternDrawable(TexturePtr texture, const Vector2f& offset) :
-    Drawable(Vector2f(0, 0), -1000.0f),
+  FillScreenPatternDrawable(TexturePtr texture, const glm::vec2& offset) :
+    Drawable(glm::vec2(0, 0), -1000.0f),
     m_texture(texture),
     m_offset(offset)
   {}
 
   ~FillScreenPatternDrawable() override {}
 
-  void set_offset(const Vector2f& offset)
+  void set_offset(const glm::vec2& offset)
   {
     m_offset = offset;
   }

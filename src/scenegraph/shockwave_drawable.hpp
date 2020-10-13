@@ -28,7 +28,7 @@ public:
   ShaderProgramPtr shader_program;
   float radius;
 
-  ShockwaveDrawable(const Vector2f& pos_,
+  ShockwaveDrawable(const glm::vec2& pos_,
                     TexturePtr      noise_,
                     ShaderProgramPtr shader_program_,
                     float r,

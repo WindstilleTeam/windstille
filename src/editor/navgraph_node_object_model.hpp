@@ -34,11 +34,11 @@ private:
 
 public:
   NavGraphNodeObjectModel(ReaderMapping const& reader);
-  NavGraphNodeObjectModel(const Vector2f& pos);
+  NavGraphNodeObjectModel(const glm::vec2& pos);
   ~NavGraphNodeObjectModel() override;
 
   void add_to_scenegraph(DrawableGroup& sg) override;
-  void set_rel_pos(const Vector2f& rel_pos_) override;
+  void set_rel_pos(const glm::vec2& rel_pos_) override;
   void sync_drawable();
 
   Rectf get_bounding_box() const override;

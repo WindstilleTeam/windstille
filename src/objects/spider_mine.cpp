@@ -99,7 +99,7 @@ SpiderMine::search_for_player(float delta)
   jump_time += delta;
 
   // !line72 - I should be using the real collision stuff for this
-  Vector2f player_pos = player->get_pos();
+  glm::vec2 player_pos = player->get_pos();
 
   // check for explosion
   if (state == JUMP && jump_time > 0.3f) {

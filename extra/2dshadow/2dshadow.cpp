@@ -9,7 +9,7 @@
 #include "display/surface_manager.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "math/size.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 int main()
 {
@@ -26,8 +26,8 @@ int main()
   SurfacePtr shadow  = Surface::create("objects_shadow.png");
 
   bool quit = false;
-  Vector2f object_pos(100, 0);
-  Vector2f mouse_pos{};
+  glm::vec2 object_pos(100, 0);
+  glm::vec2 mouse_pos{};
 
   while(!quit)
   {
@@ -51,7 +51,7 @@ int main()
           break;
 
         case SDL_MOUSEMOTION:
-          mouse_pos = Vector2f(static_cast<float>(event.motion.x),
+          mouse_pos = glm::vec2(static_cast<float>(event.motion.x),
                                static_cast<float>(event.motion.y));
           break;
       }
@@ -70,9 +70,9 @@ int main()
       //float width  = shadow->get_width() * scale;
       //float height = shadow->get_height() * scale;
 
-      Vector2f rel_pos = mouse_pos - object_pos;
+      glm::vec2 rel_pos = mouse_pos - object_pos;
 
-      Vector2f pos = mouse_pos;
+      glm::vec2 pos = mouse_pos;
 
       // pos.x -= shadow->get_width()/2 * scale;
       // pos.y -= shadow->get_height()/2 * scale;
@@ -82,15 +82,15 @@ int main()
 
       shadow->draw(SurfaceDrawingParameters()
                    .set_pos(pos)
-                   .set_scale(Vector2f(scale, scale))
+                   .set_scale(glm::vec2(scale, scale))
                    .set_color(Color(1.0f, 1.0f, 1.0f, alpha)));
     }
     objects->draw(object_pos);
     light->draw(SurfaceDrawingParameters()
-                .set_pos(mouse_pos - Vector2f(light->get_width()/2, light->get_height()/2))
+                .set_pos(mouse_pos - glm::vec2(light->get_width()/2, light->get_height()/2))
                 .set_blend_func(GL_SRC_ALPHA, GL_ONE));
     darkness->draw(SurfaceDrawingParameters()
-                .set_pos(mouse_pos - Vector2f(darkness->get_width()/2, darkness->get_height()/2)));
+                .set_pos(mouse_pos - glm::vec2(darkness->get_width()/2, darkness->get_height()/2)));
     window.swap_buffers();
   }
 

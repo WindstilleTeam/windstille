@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_NAVIGATION_EDGE_HPP
 
 #include "math/line.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "navigation/properties.hpp"
 
 class Node;
@@ -46,7 +46,7 @@ public:
   Properties get_properties()  const { return properties; }
 
   Line   get_line() const;
-  Vector2f get_vector() const;
+  glm::vec2 get_vector() const;
 
 private:
   Edge (const Edge&);

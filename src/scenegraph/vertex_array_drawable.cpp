@@ -22,7 +22,7 @@
 
 #include "display/opengl_state.hpp"
 
-VertexArrayDrawable::VertexArrayDrawable(const Vector2f& pos_, float z_pos_,
+VertexArrayDrawable::VertexArrayDrawable(const glm::vec2& pos_, float z_pos_,
                                          const Matrix& modelview_) :
   Drawable(pos_, z_pos_, modelview_),
   mode(GL_QUADS),
@@ -123,7 +123,7 @@ VertexArrayDrawable::render(int start, int end)
 }
 
 void
-VertexArrayDrawable::vertex(const Vector2f& vec, float z)
+VertexArrayDrawable::vertex(const glm::vec2& vec, float z)
 {
   vertex(vec.x, vec.y, z);
 }

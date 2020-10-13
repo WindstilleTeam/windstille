@@ -39,7 +39,7 @@ private:
 
   // Manual Mode Variables
   float  zoom;
-  Vector2f pos;
+  glm::vec2 pos;
 
   // Slideshow variables
   float width;

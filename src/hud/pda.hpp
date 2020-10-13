@@ -47,7 +47,7 @@ public:
 class PDA : public Screen
 {
 private:
-  Vector2f  pos;
+  glm::vec2  pos;
   Sprite    background;
 
   std::unique_ptr<TextArea>  ui_area;

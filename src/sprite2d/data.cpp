@@ -50,7 +50,7 @@ SpriteData::SpriteData(std::filesystem::path const& filename) :
       action->name   = "default";
       action->speed  = 1.0;
       action->scale  = 1.0f;
-      action->offset = Vector2f(0, 0);
+      action->offset = glm::vec2(0, 0);
       action->surfaces.push_back(Surface::create(filename));
       actions.push_back(action.release());
     }
@@ -73,7 +73,7 @@ SpriteData::SpriteData(std::filesystem::path const& filename) :
       action->name   = "default";
       action->speed  = 1.0;
       action->scale  = 1.0f;
-      action->offset = Vector2f(0, 0);
+      action->offset = glm::vec2(0, 0);
       action->surfaces.push_back(Surface::create(pngfile));
       actions.push_back(action.release());
     }
@@ -119,7 +119,7 @@ SpriteData::parse_action(std::filesystem::path const& dir, ReaderMapping const& 
   std::unique_ptr<SpriteAction> action (new SpriteAction);
   action->speed = 1.0;
   action->scale = 1.0f;
-  action->offset = Vector2f(0, 0);
+  action->offset = glm::vec2(0, 0);
 
   reader.read("name", action->name);
   reader.read("speed", action->speed);

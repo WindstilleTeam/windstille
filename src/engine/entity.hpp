@@ -36,8 +36,8 @@ protected:
   bool on_ground() const;
   bool in_wall() const;
 
-  Vector2f pos;
-  Vector2f velocity;
+  glm::vec2 pos;
+  glm::vec2 velocity;
   bool useable;
   std::string use_verb;
 
@@ -47,10 +47,10 @@ public:
   Entity();
   ~Entity() override;
 
-  virtual Vector2f get_pos() const
+  virtual glm::vec2 get_pos() const
   { return pos; }
 
-  virtual void set_pos(Vector2f pos);
+  virtual void set_pos(glm::vec2 pos);
 
   /** Called when the player uses this entity */
   virtual void use() {}

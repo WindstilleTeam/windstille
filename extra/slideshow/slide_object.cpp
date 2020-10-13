@@ -69,7 +69,7 @@ SlideObject::draw(float relative_time)
     color.a = (length() - relative_time) / m_fade_out_time;
   }
 
-  Vector2f pos(node.pos);
+  glm::vec2 pos(node.pos);
 
   // zoom needs to grow exponentially to be linear
   float scale = node.zoom;

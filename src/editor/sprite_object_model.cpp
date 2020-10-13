@@ -20,7 +20,7 @@
 #include "display/scene_context.hpp"
 #include "editor/sprite_object_model.hpp"
 
-SpriteObjectModel::SpriteObjectModel(const std::string& name_, const Vector2f& rel_pos_,
+SpriteObjectModel::SpriteObjectModel(const std::string& name_, const glm::vec2& rel_pos_,
                                      const std::string& path_) :
   ObjectModel(name_, rel_pos_),
   path(path_),

@@ -72,7 +72,7 @@ public:
   void update(float delta);
   void sync(const Gtk::TreeModel::Row& row);
 
-  ObjectModelHandle get_object_at(const Vector2f& pos, const SelectMask& layers) const;
+  ObjectModelHandle get_object_at(const glm::vec2& pos, const SelectMask& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
 
   void raise_to_top(ObjectModelHandle object);

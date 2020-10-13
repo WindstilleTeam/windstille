@@ -41,7 +41,7 @@ NavgraphInsertTool::NavgraphInsertTool() :
 void
 NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
-  mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+  mouse_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y)));
   NavigationGraphModel& navgraph = wst.get_document().get_sector_model().get_nav_graph();
 
   // FIXME: Radius should scale with zoom
@@ -134,7 +134,7 @@ void
 NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   NavigationGraphModel& navgraph = wst.get_document().get_sector_model().get_nav_graph();
-  mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+  mouse_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y)));
 
   {
     // FIXME: Radius should scale with zoom
@@ -184,7 +184,7 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 void
 NavgraphInsertTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
-  mouse_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+  mouse_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y)));
 
   switch(mode)
   {
@@ -254,19 +254,19 @@ NavgraphInsertTool::draw(SceneContext& sc)
     if (connection_node)
     {
       sc.control().draw_line(last_node->get_world_pos(), connection_node->get_world_pos(), Color(1,1,1));
-      sc.control().draw_rect(Rectf(connection_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
+      sc.control().draw_rect(Rectf(connection_node->get_world_pos() - glm::vec2(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
     }
     else
     {
       sc.control().draw_line(last_node->get_world_pos(), mouse_pos, Color(1,1,1));
     }
 
-    sc.control().draw_rect(Rectf(last_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
+    sc.control().draw_rect(Rectf(last_node->get_world_pos() - glm::vec2(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
   }
 
   if (mouse_over_node)
   {
-    sc.control().draw_rect(Rectf(mouse_over_node->get_world_pos() - Vector2f(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
+    sc.control().draw_rect(Rectf(mouse_over_node->get_world_pos() - glm::vec2(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
   }
   else if (mouse_over_edge)
   {

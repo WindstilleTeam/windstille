@@ -63,7 +63,7 @@ public:
   /** Returns texture coordinates for the Surface rectangle */
   Rectf get_uv() const;
 
-  void draw(const Vector2f& pos) const;
+  void draw(const glm::vec2& pos) const;
   void draw(const SurfaceDrawingParameters& params) const;
 
 private:

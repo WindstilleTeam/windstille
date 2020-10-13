@@ -52,8 +52,8 @@ EdgePosition::set_pos(Edge* edge_, float pos_)
 void
 EdgePosition::advance(float& adv, Node*& next_node)
 {
-  Vector2f p1 = edge->get_node1()->get_pos();
-  Vector2f p2 = edge->get_node2()->get_pos();
+  glm::vec2 p1 = edge->get_node1()->get_pos();
+  glm::vec2 p2 = edge->get_node2()->get_pos();
 
   float length = glm::length(p2 - p1);
 
@@ -85,15 +85,15 @@ EdgePosition::advance(float& adv, Node*& next_node)
 }
 
 void
-EdgePosition::advance(Vector2f& adv, Node*& next_node)
+EdgePosition::advance(glm::vec2& adv, Node*& next_node)
 {
   // FIXME: This might be optimizable
-  Vector2f p1 = edge->get_node1()->get_pos();
-  Vector2f p2 = edge->get_node2()->get_pos();
+  glm::vec2 p1 = edge->get_node1()->get_pos();
+  glm::vec2 p2 = edge->get_node2()->get_pos();
 
-  Vector2f edge_v = p2 - p1;
+  glm::vec2 edge_v = p2 - p1;
 
-  Vector2f proj = glm::proj(adv, edge_v);
+  glm::vec2 proj = glm::proj(adv, edge_v);
 
   float angle = atan2f(edge_v.y, edge_v.x) - atan2f(proj.y, proj.x);
 
@@ -107,19 +107,19 @@ EdgePosition::advance(Vector2f& adv, Node*& next_node)
   // Move forward
   advance(advf, next_node);
 
-  // Calculate the rest Vector2f
-  // Calculate the rest Vector2f
+  // Calculate the rest glm::vec2
+  // Calculate the rest glm::vec2
   if (advf == 0.0f)
-    adv = Vector2f(0,0);
+    adv = glm::vec2(0,0);
   else
     adv -= (proj * ((glm::length(proj) - advf)/glm::length(proj)));
 }
 
-Vector2f
+glm::vec2
 EdgePosition::get_pos() const
 {
-  Vector2f p1 = edge->get_node1()->get_pos();
-  Vector2f p2 = edge->get_node2()->get_pos();
+  glm::vec2 p1 = edge->get_node1()->get_pos();
+  glm::vec2 p2 = edge->get_node2()->get_pos();
 
   return p1 + pos*(p2 - p1);
 }

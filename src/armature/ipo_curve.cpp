@@ -31,8 +31,8 @@ float
 IpoCurve::evalutate(float /*x*/)
 {
   // find bezier points left and right from t
-  //Vector2f left;
-  //Vector2f right;
+  //glm::vec2 left;
+  //glm::vec2 right;
 
   // calculate the value t from x
   //float t;

@@ -35,7 +35,7 @@ public:
   SurfaceDrawable(SurfacePtr surface_, const SurfaceDrawingParameters& params_,
                   float z_pos_,
                   const Matrix& modelview_)
-    : Drawable(Vector2f(0.0f, 0.0f), z_pos_, modelview_),
+    : Drawable(glm::vec2(0.0f, 0.0f), z_pos_, modelview_),
       surface(surface_),
       params(params_)
   {}

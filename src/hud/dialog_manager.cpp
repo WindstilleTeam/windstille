@@ -70,7 +70,7 @@ DialogManager::draw()
                                int(text_area->get_rect().height()
                                    + text_border_y * 2.0f));
 
-  Vector2f pos(0.0f, 0.0f);
+  glm::vec2 pos(0.0f, 0.0f);
   if(alignment & LEFT) {
     pos.x = outer_border_x;
   } else if(alignment & RIGHT) {
@@ -98,7 +98,7 @@ DialogManager::draw()
     Display::draw_rounded_rect(rect, 16.0f,
                                Color(0.6f, 1.0f, 1.0f, 0.8f));
 
-    portrait.draw(Vector2f(pos.x + portrait_border_x,
+    portrait.draw(glm::vec2(pos.x + portrait_border_x,
                            pos.y + portrait_border_y));
   }
 
@@ -106,7 +106,7 @@ DialogManager::draw()
 
   if (text_area->is_progress_complete())
   {
-    const Vector2f& pos_ = text_area->get_cursor_pos();
+    const glm::vec2& pos_ = text_area->get_cursor_pos();
     Rectf cursor(pos_.x + 8, pos_.y + 8, pos_.x + 24, pos_.y + 24);
     Display::fill_rect(cursor, Color(1.0, 1.0, 1.0,
                                      fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * math::pi * 3.0f))));

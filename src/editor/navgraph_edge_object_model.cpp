@@ -26,7 +26,7 @@
 
 NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(std::shared_ptr<NavGraphNodeObjectModel> lhs,
                                                  std::shared_ptr<NavGraphNodeObjectModel> rhs) :
-  ObjectModel("NavGraphEdgeObjectModel", Vector2f()),
+  ObjectModel("NavGraphEdgeObjectModel", glm::vec2()),
   m_lhs(lhs),
   m_rhs(rhs),
   m_drawable()
@@ -66,7 +66,7 @@ NavGraphEdgeObjectModel::update(float delta)
 void
 NavGraphEdgeObjectModel::add_to_scenegraph(DrawableGroup& sg)
 {
-  m_drawable.reset(new VertexArrayDrawable(Vector2f(), 0.0f, Matrix(1.0f)));
+  m_drawable.reset(new VertexArrayDrawable(glm::vec2(), 0.0f, Matrix(1.0f)));
   update(0.0f);
   sg.add_drawable(m_drawable);
 }

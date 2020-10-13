@@ -33,7 +33,7 @@
 #include "util/pathname.hpp"
 
 ObjectModelHandle
-DecalObjectModel::create(const std::string& name_, const Vector2f& pos,
+DecalObjectModel::create(const std::string& name_, const glm::vec2& pos,
                          const std::string& path, MapType type)
 {
   return ObjectModelHandle(new DecalObjectModel(name_, pos, path, type));
@@ -64,7 +64,7 @@ DecalObjectModel::DecalObjectModel(ReaderMapping const& reader) :
   software_surface = SoftwareSurface::create(Pathname(path));
 }
 
-DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const Vector2f& rel_pos_,
+DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const glm::vec2& rel_pos_,
                                    const std::string& path_, MapType type_) :
   ObjectModel("DecalObjectModel", rel_pos_),
   path(path_),
@@ -105,7 +105,7 @@ DecalObjectModel::set_angle(float angle_)
 }
 
 void
-DecalObjectModel::set_scale(const Vector2f& scale_)
+DecalObjectModel::set_scale(const glm::vec2& scale_)
 {
   scale = scale_;
 
@@ -135,8 +135,8 @@ DecalObjectModel::draw(SceneContext& sc)
   {
     ObjectModel::draw(sc);
 
-    Vector2f wo_pos = get_world_pos();
-    Vector2f center_offset(-surface->get_width()/2,
+    glm::vec2 wo_pos = get_world_pos();
+    glm::vec2 center_offset(-surface->get_width()/2,
                            -surface->get_height()/2);
 
     DrawingContext* dc = nullptr;
@@ -163,7 +163,7 @@ DecalObjectModel::draw(SceneContext& sc)
 Rectf
 DecalObjectModel::get_bounding_box() const
 {
-  Vector2f center_offset(surface->get_width()/2,
+  glm::vec2 center_offset(surface->get_width()/2,
                          surface->get_height()/2);
 
   center_offset.x *= scale.x;
@@ -178,7 +178,7 @@ DecalObjectModel::get_bounding_box() const
 void
 DecalObjectModel::reset()
 {
-  scale = Vector2f(1.0f, 1.0f);
+  scale = glm::vec2(1.0f, 1.0f);
   angle = 0.0f;
 }
 
@@ -203,9 +203,9 @@ DecalObjectModel::write(FileWriter& writer) const
 }
 
 bool
-DecalObjectModel::is_at(const Vector2f& pos) const
+DecalObjectModel::is_at(const glm::vec2& pos) const
 {
-  Vector2f p = pos - get_world_pos();
+  glm::vec2 p = pos - get_world_pos();
 
   // Transform mouse coordinates into coordinates relative to the
   // center of the unscaled and unrotated image
@@ -244,10 +244,10 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
   Quad quad2(geom::grow(rect, 32.0f));
   quad2.rotate(angle);
 
-  Quad quad3(Vector2f( 0, -h),
-             Vector2f( w,  0),
-             Vector2f( 0,  h),
-             Vector2f(-w,  0));
+  Quad quad3(glm::vec2( 0, -h),
+             glm::vec2( w,  0),
+             glm::vec2( 0,  h),
+             glm::vec2(-w,  0));
   quad3.rotate(angle);
 
   control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 0*math::pi/2, get_world_pos() + quad1.p1)));
@@ -310,7 +310,7 @@ DecalObjectModel::sync()
 
   if (m_drawable)
   {
-    Vector2f center_offset(-surface->get_width() /2,
+    glm::vec2 center_offset(-surface->get_width() /2,
                            -surface->get_height()/2);
 
     center_offset.x *= scale.x;
@@ -341,7 +341,7 @@ DecalObjectModel::get_property(TimelineProperty property, float& value_out) cons
 }
 
 void
-DecalObjectModel::get_property(TimelineProperty property, Vector2f& value_out) const
+DecalObjectModel::get_property(TimelineProperty property, glm::vec2& value_out) const
 {
   switch(property)
   {
@@ -371,7 +371,7 @@ DecalObjectModel::set_property(TimelineProperty property, float value)
 }
 
 void
-DecalObjectModel::set_property(TimelineProperty property, const Vector2f& value)
+DecalObjectModel::set_property(TimelineProperty property, const glm::vec2& value)
 {
   switch(property)
   {
@@ -386,14 +386,14 @@ DecalObjectModel::set_property(TimelineProperty property, const Vector2f& value)
 }
 
 void
-DecalObjectModel::set_world_pos(const Vector2f& p)
+DecalObjectModel::set_world_pos(const glm::vec2& p)
 {
   ObjectModel::set_world_pos(p);
   sync();
 }
 
 void
-DecalObjectModel::set_rel_pos(const Vector2f& rel_pos_)
+DecalObjectModel::set_rel_pos(const glm::vec2& rel_pos_)
 {
   ObjectModel::set_rel_pos(rel_pos_);
   sync();

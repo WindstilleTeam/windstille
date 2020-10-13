@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_NAVIGATION_EDGE_POSITION_HPP
 #define HEADER_WINDSTILLE_NAVIGATION_EDGE_POSITION_HPP
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 class Edge;
 class Node;
@@ -63,12 +63,12 @@ public:
    * @param[out] next_node if the advance ends at a node, it gets
    *                       returned in next_node
    */
-  void advance(Vector2f& adv, Node*& next_node);
+  void advance(glm::vec2& adv, Node*& next_node);
 
   Edge* get_edge() const { return edge; }
   float get_float_pos() const { return pos; }
 
-  Vector2f get_pos() const;
+  glm::vec2 get_pos() const;
 };
 
 #endif

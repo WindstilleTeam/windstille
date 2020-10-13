@@ -23,7 +23,7 @@
 
 #include "engine/game_object.hpp"
 #include "sprite3d/sprite3d.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 class TestObject : public GameObject
 {
@@ -37,7 +37,7 @@ public:
   void set_sprite(const std::string& filename);
   void set_action(const std::string& action);
   void set_vflip(bool vflip);
-  void set_pos(const Vector2f& pos);
+  void set_pos(const glm::vec2& pos);
   void attach(const std::string& spritename,
               const std::string& attachement_point);
 
@@ -53,7 +53,7 @@ private:
     {}
   };
   std::vector<AttachedSprite> attached_sprites;
-  Vector2f pos;
+  glm::vec2 pos;
 };
 
 #endif

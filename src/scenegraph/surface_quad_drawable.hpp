@@ -21,7 +21,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "math/quad.hpp"
 #include "display/opengl_state.hpp"
 #include "scenegraph/drawable.hpp"
@@ -34,7 +34,7 @@ private:
   DrawingParameters m_params;
 
 public:
-  SurfaceQuadDrawable(SurfacePtr surface, const Vector2f& pos_, const Quad& quad,
+  SurfaceQuadDrawable(SurfacePtr surface, const glm::vec2& pos_, const Quad& quad,
                       const DrawingParameters& params, float z_pos_,
                       const Matrix& modelview_)
     : Drawable(pos_, z_pos_, modelview_),

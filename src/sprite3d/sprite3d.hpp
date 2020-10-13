@@ -24,7 +24,7 @@
 
 #include "engine/game_object.hpp"
 #include "display/scene_context.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "math/matrix.hpp"
 #include "sprite3d/data.hpp"
 
@@ -57,7 +57,7 @@ public:
    * You should call this every frame
    */
   void update(float delta);
-  void draw(DrawingContext& sc, const Vector2f& pos, float z_pos);
+  void draw(DrawingContext& sc, const glm::vec2& pos, float z_pos);
   void draw(DrawingContext& sc, const Matrix& matrix, float z_pos);
 
   /**
@@ -126,7 +126,7 @@ public:
 
 private:
   friend class Sprite3DDrawable;
-  void draw(const Vector2f& pos, const Matrix& modelview);
+  void draw(const glm::vec2& pos, const Matrix& modelview);
 
   struct Frame {
     const sprite3d::Action* action;

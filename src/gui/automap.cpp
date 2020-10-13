@@ -84,7 +84,7 @@ Automap::draw()
 {
   Display::push_cliprect(Rect(get_screen_rect()));
   surface->draw(SurfaceDrawingParameters()
-                .set_pos(Vector2f(rect.left(), rect.top()) + pos)
+                .set_pos(glm::vec2(rect.left(), rect.top()) + pos)
                 .set_color(Color(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
                 .set_scale(zoom));
   Display::pop_cliprect();

@@ -31,9 +31,9 @@ public:
   void update(float delta);
   void register_collobj(CollisionObject& object);
 
-  Vector2f& pos() const
+  glm::vec2& pos() const
   { return entity->pos; }
-  Vector2f& velocity() const
+  glm::vec2& velocity() const
   { return entity->velocity; }
 
 private:
@@ -45,7 +45,7 @@ private:
   Entity* entity;
   float mass;
   float bounciness;
-  Vector2f force;
+  glm::vec2 force;
   float air_friction;
   float contact_friction;
 

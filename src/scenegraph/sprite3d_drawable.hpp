@@ -32,7 +32,7 @@ private:
 
 public:
   Sprite3DDrawable(const Sprite3D& sprite,
-                   const Vector2f& pos_, float z_pos_, const Matrix& modelview_)
+                   const glm::vec2& pos_, float z_pos_, const Matrix& modelview_)
     : Drawable(pos_, z_pos_, modelview_),
       m_sprite(sprite),
       m_scale(1.0f)
@@ -43,10 +43,10 @@ public:
     Matrix matrix = modelview;
     matrix = glm::translate(matrix, glm::vec3(pos.x, pos.y, z_pos));
     matrix = glm::scale(matrix, glm::vec3(m_scale, m_scale, m_scale));
-    m_sprite.draw(Vector2f(0.0f, 0.0f), matrix);
+    m_sprite.draw(glm::vec2(0.0f, 0.0f), matrix);
   }
 
-  void set_pos(const Vector2f& pos_)
+  void set_pos(const glm::vec2& pos_)
   {
     pos = pos_;
   }

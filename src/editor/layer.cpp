@@ -87,7 +87,7 @@ Layer::update(float delta)
 }
 
 ObjectModelHandle
-Layer::get_object_at(const Vector2f& pos, const SelectMask& select_mask) const
+Layer::get_object_at(const glm::vec2& pos, const SelectMask& select_mask) const
 {
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
   {

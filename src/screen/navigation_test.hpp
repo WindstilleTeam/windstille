@@ -21,7 +21,7 @@
 
 #include <memory>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "navigation/navigation_graph.hpp"
 #include "screen/screen.hpp"
 
@@ -34,10 +34,10 @@ class Node;
 class NavigationTest : public Screen
 {
 private:
-  Vector2f cursor;
-  Vector2f stick;
-  Vector2f player;
-  Vector2f old_player;
+  glm::vec2 cursor;
+  glm::vec2 stick;
+  glm::vec2 player;
+  glm::vec2 old_player;
 
   std::unique_ptr<NavigationGraph> graph;
   std::unique_ptr<EdgePosition> connection;

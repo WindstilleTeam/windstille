@@ -56,7 +56,7 @@ Lensflare::Lensflare() :
 void
 Lensflare::draw()
 {
-  Vector2f screen_center(static_cast<float>(m_aspect_ratio.width())  / 2.0f,
+  glm::vec2 screen_center(static_cast<float>(m_aspect_ratio.width())  / 2.0f,
                          static_cast<float>(m_aspect_ratio.height()) / 2.0f);
   float dist = glm::length(m_mouse - screen_center);
 
@@ -71,7 +71,7 @@ Lensflare::draw()
   glEnable(GL_ALPHA_TEST);
 
   m_cover->draw(SurfaceDrawingParameters()
-                .set_pos(Vector2f(600, 400))
+                .set_pos(glm::vec2(600, 400))
                 .set_color(Color(0.15f, 0.15f, 0.15f, 1.0f))
     );
 
@@ -97,7 +97,7 @@ Lensflare::draw()
     // query the number of visible samples
     glBeginQuery(GL_SAMPLES_PASSED, query_id);
     m_lightquery->draw(SurfaceDrawingParameters()
-                       .set_pos(Vector2f(m_mouse.x - m_lightquery->get_width()/2,
+                       .set_pos(glm::vec2(m_mouse.x - m_lightquery->get_width()/2,
                                          m_mouse.y - m_lightquery->get_height()/2)));
     glEndQuery(GL_SAMPLES_PASSED);
 
@@ -109,7 +109,7 @@ Lensflare::draw()
     glDisable(GL_DEPTH_TEST);
     glBeginQuery(GL_SAMPLES_PASSED, total_query_id);
     m_lightquery->draw(SurfaceDrawingParameters()
-                       .set_pos(Vector2f(m_mouse.x - m_lightquery->get_width()/2,
+                       .set_pos(glm::vec2(m_mouse.x - m_lightquery->get_width()/2,
                                          m_mouse.y - m_lightquery->get_height()/2)));
     glEndQuery(GL_SAMPLES_PASSED);
     glEnable(GL_DEPTH_TEST);
@@ -133,9 +133,9 @@ Lensflare::draw()
                  .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                  .set_color(Color(1,1,1,visibility))
                  .set_scale(1.0f)
-                 .set_pos(Vector2f(m_mouse.x,
+                 .set_pos(glm::vec2(m_mouse.x,
                                    m_mouse.y)
-                          - Vector2f(m_halo->get_width()/2 * (1.0f),
+                          - glm::vec2(m_halo->get_width()/2 * (1.0f),
                                      m_halo->get_height()/2 * (1.0f))));
 
     glDisable(GL_DEPTH_TEST);
@@ -143,7 +143,7 @@ Lensflare::draw()
                   .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                   .set_color(Color(1,1,1,1))
                   .set_scale(visibility)
-                  .set_pos(Vector2f(m_mouse.x - m_light->get_width()/2 * visibility,
+                  .set_pos(glm::vec2(m_mouse.x - m_light->get_width()/2 * visibility,
                                     m_mouse.y - m_light->get_height()/2 * visibility)));
 
     glDepthMask(GL_TRUE);
@@ -152,9 +152,9 @@ Lensflare::draw()
                  .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                  .set_color(Color(1,1,1,visibility))
                  .set_scale(2.0f + factor*5.0f)
-                 .set_pos(Vector2f(m_mouse.x,
+                 .set_pos(glm::vec2(m_mouse.x,
                                    m_mouse.y)
-                          - Vector2f(m_halo->get_width()/2 * (2.0f + factor*5.0f),
+                          - glm::vec2(m_halo->get_width()/2 * (2.0f + factor*5.0f),
                                      m_halo->get_height()/2 * (2.0f +  factor*5.0f))));
 
 
@@ -162,7 +162,7 @@ Lensflare::draw()
                        .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                        .set_color(Color(1.0f, 1.0f, 1.0f, factor))
                        .set_scale(factor)
-                       .set_pos(Vector2f(m_mouse.x - m_superlight->get_width()/2 * factor,
+                       .set_pos(glm::vec2(m_mouse.x - m_superlight->get_width()/2 * factor,
                                          m_mouse.y - m_superlight->get_height()/2  * factor)));
 
     for(Flairs::iterator i = m_flairs.begin(); i != m_flairs.end(); ++i)
@@ -172,7 +172,7 @@ Lensflare::draw()
                          .set_scale(i->m_scale)
                          .set_color(Color(i->m_color.r, i->m_color.g, i->m_color.b, i->m_color.a * visibility))
                          .set_pos(screen_center + (m_mouse - screen_center) * i->m_distance
-                                  - Vector2f(i->m_surface->get_width() /2 * i->m_scale,
+                                  - glm::vec2(i->m_surface->get_width() /2 * i->m_scale,
                                              i->m_surface->get_height()/2 * i->m_scale)));
     }
   }

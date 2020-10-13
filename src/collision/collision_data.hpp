@@ -22,7 +22,7 @@
 
 #include <iostream>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 class CollisionObject;
 
@@ -36,7 +36,7 @@ public:
    * It's the normal vector of the side/face that we collided with. The vector
    * points away from the object we collided with.
    */
-  Vector2f direction;
+  glm::vec2 direction;
 
   // size of time frame
   float delta;

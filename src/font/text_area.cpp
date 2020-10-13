@@ -46,7 +46,7 @@ public:
   bool letter_by_letter;
   bool progress_complete;
   std::vector<TextAreaCommand> commands;
-  Vector2f cursor_pos;
+  glm::vec2 cursor_pos;
   float scroll_offset;
   float max_scroll_offset;
 
@@ -168,7 +168,7 @@ TextArea::draw()
   {
     float height = impl->max_scroll_offset + impl->rect.height();
 
-    Display::fill_rounded_rect(Rectf(Vector2f(impl->rect.right() + 4,
+    Display::fill_rounded_rect(Rectf(glm::vec2(impl->rect.right() + 4,
                                               impl->rect.top() + impl->scroll_offset*impl->rect.height()/height),
                                      Sizef(8, impl->rect.height()*impl->rect.height()/height)),
                                4.0f, Color(1.0f, 1.0f, 1.0f, 0.25f));
@@ -405,7 +405,7 @@ TextArea::draw()
   glEnd();
   glPopMatrix();
 
-  impl->cursor_pos = Vector2f(static_cast<float>(x_pos) + impl->rect.left(),
+  impl->cursor_pos = glm::vec2(static_cast<float>(x_pos) + impl->rect.left(),
                               static_cast<float>(y_pos) + impl->rect.top());
 }
 
@@ -421,7 +421,7 @@ TextArea::get_rect() const
   return impl->rect;
 }
 
-Vector2f
+glm::vec2
 TextArea::get_cursor_pos() const
 {
   return impl->cursor_pos;

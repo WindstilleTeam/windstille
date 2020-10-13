@@ -24,7 +24,7 @@
 
 #include "display/surface.hpp"
 #include "math/rect.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 class SceneContext;
 class ControlPoint;
@@ -33,15 +33,15 @@ typedef std::shared_ptr<ControlPoint> ControlPointHandle;
 class ControlPoint
 {
 public:
-  static ControlPointHandle create(const Vector2f& pos);
+  static ControlPointHandle create(const glm::vec2& pos);
 
 protected:
   SurfacePtr surface;
-  Vector2f  pos;
-  Vector2f  offset;
+  glm::vec2  pos;
+  glm::vec2  offset;
 
 public:
-  ControlPoint(SurfacePtr surface, const Vector2f& pos);
+  ControlPoint(SurfacePtr surface, const glm::vec2& pos);
   virtual ~ControlPoint();
 
   virtual void draw(SceneContext& sc);
@@ -49,8 +49,8 @@ public:
   virtual Rectf get_bounding_box() const;
 
   virtual void on_move_start(GdkEventButton* event);
-  virtual void on_move_update(GdkEventMotion* event, const Vector2f& offset);
-  virtual void on_move_end(GdkEventButton* event, const Vector2f& offset);
+  virtual void on_move_update(GdkEventMotion* event, const glm::vec2& offset);
+  virtual void on_move_end(GdkEventButton* event, const glm::vec2& offset);
 
 private:
   ControlPoint(const ControlPoint&);

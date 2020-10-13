@@ -38,13 +38,13 @@ private:
   std::vector<float> vertices;
 
 public:
-  VertexArrayDrawable(const Vector2f& pos_, float z_pos_, const Matrix& modelview_);
+  VertexArrayDrawable(const glm::vec2& pos_, float z_pos_, const Matrix& modelview_);
 
   void render(unsigned int mask) override;
   void render(int start, int end);
 
   void vertex(float x, float y, float z = 0.0f);
-  void vertex(const Vector2f& vec, float z = 0.0f);
+  void vertex(const glm::vec2& vec, float z = 0.0f);
 
   void texcoord(float u, float v);
   void color(const Color& color);

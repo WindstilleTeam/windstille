@@ -26,7 +26,7 @@
 class SelectTool : public Tool
 {
 private:
-  Vector2f click_pos;
+  glm::vec2 click_pos;
   Rectf    rect;
   SelectionHandle selection;
   ControlPointHandle ctrl_point;
@@ -39,8 +39,8 @@ private:
     NO_MODE
   } mode;
 
-  Vector2f process_snap(WindstilleWidget& wst);
-  Vector2f process_grid_snap(WindstilleWidget& wst);
+  glm::vec2 process_snap(WindstilleWidget& wst);
+  glm::vec2 process_grid_snap(WindstilleWidget& wst);
 
 public:
   SelectTool();

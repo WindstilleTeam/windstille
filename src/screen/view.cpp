@@ -71,7 +71,7 @@ View::update (float delta)
   {
     if (controller.get_button_state(VIEW_CENTER_BUTTON))
     {
-      m_debug_transform = Vector2f(0, 0);
+      m_debug_transform = glm::vec2(0, 0);
       m_debug_zoom = 1.0;
     }
 
@@ -86,8 +86,8 @@ View::get_clip_rect()
   return state.get_clip_rect();
 }
 
-Vector2f
-View::screen_to_world(const Vector2f& point)
+glm::vec2
+View::screen_to_world(const glm::vec2& point)
 {
   return state.screen_to_world(point);
 }

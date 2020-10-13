@@ -57,7 +57,7 @@ Swarm::Swarm(ReaderMapping const& props) :
 void
 Swarm::draw(SceneContext& sc)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0),
+  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0),
                                                        1000.0f, sc.highlight().get_modelview());
 
   array->set_mode(GL_QUADS);
@@ -90,7 +90,7 @@ Swarm::update(float delta)
   int x, y;
   SDL_GetMouseState(&x, &y);
 
-  target = GameSession::current()->get_view()->screen_to_world(Vector2f(static_cast<float>(x), static_cast<float>(y)));
+  target = GameSession::current()->get_view()->screen_to_world(glm::vec2(static_cast<float>(x), static_cast<float>(y)));
 
   for(Agents::iterator i = agents.begin(); i != agents.end(); ++i)
   {

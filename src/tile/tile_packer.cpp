@@ -94,7 +94,7 @@ TilePacker::pack(SoftwareSurfacePtr image, int x, int y, int w, int h)
 
   assert_gl("updating tilepacker texture");
 
-  Rectf rect(Vector2f(static_cast<float>(impl->x_pos + 1) / static_cast<float>(impl->width),
+  Rectf rect(glm::vec2(static_cast<float>(impl->x_pos + 1) / static_cast<float>(impl->width),
                       static_cast<float>(impl->y_pos + 1) / static_cast<float>(impl->height)),
              Sizef(static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->width),
                    static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->height)));

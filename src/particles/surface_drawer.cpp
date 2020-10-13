@@ -89,7 +89,7 @@ SurfaceDrawer::SurfaceDrawer(ReaderMapping const& props)
   blendfunc_dest = string2blendfunc(blendfunc_dst_str);
 
   // FIXME: Bad idea, as the psys isn't fully loaded as this point
-  buffer.reset(new VertexArrayDrawable(Vector2f(), 0.0f,
+  buffer.reset(new VertexArrayDrawable(glm::vec2(), 0.0f,
                                        Matrix(1.0f)));
 }
 
@@ -114,7 +114,7 @@ void
 SurfaceDrawer::draw(const ParticleSystem& psys) const
 {
   buffer->clear();
-  buffer->set_pos(Vector2f(psys.get_x_pos(), psys.get_y_pos()));
+  buffer->set_pos(glm::vec2(psys.get_x_pos(), psys.get_y_pos()));
 
   buffer->set_mode(GL_QUADS);
   buffer->set_texture(surface->get_texture());

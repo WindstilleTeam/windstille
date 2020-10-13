@@ -31,7 +31,7 @@ Box::Box(ReaderMapping const& props) :
   float width  = 64.0f;
   float height = 64.0f;
   std::string spritename;
-  Vector2f vel;
+  glm::vec2 vel;
 
   props.read("sprite", spritename);
   props.read("pos", pos);
@@ -48,7 +48,7 @@ Box::Box(ReaderMapping const& props) :
 
   colobj = new CollisionObject(this, Rectf(0, 0, width, height));
   colobj->set_velocity(vel);
-  colobj->set_pos(Vector2f(pos.x, pos.y));
+  colobj->set_pos(glm::vec2(pos.x, pos.y));
 
   Sector::current()->get_collision_engine()->add(colobj);
 
@@ -67,20 +67,20 @@ Box::collision(const CollisionData& data)
   if ((data.direction.x > 0 && colobj->get_velocity().x < 0) ||
       (data.direction.x < 0 && colobj->get_velocity().x > 0))
   {
-    colobj->set_velocity(Vector2f(-colobj->get_velocity().x, colobj->get_velocity().y));
+    colobj->set_velocity(glm::vec2(-colobj->get_velocity().x, colobj->get_velocity().y));
   }
 
   if ((data.direction.y > 0 && colobj->get_velocity().y < 0) ||
       (data.direction.y < 0 && colobj->get_velocity().y > 0))
   {
-    colobj->set_velocity(Vector2f(colobj->get_velocity().x, -colobj->get_velocity().y));
+    colobj->set_velocity(glm::vec2(colobj->get_velocity().x, -colobj->get_velocity().y));
   }
 }
 
 void
 Box::update(float delta)
 {
-  colobj->set_velocity(Vector2f(colobj->get_velocity().x,
+  colobj->set_velocity(glm::vec2(colobj->get_velocity().x,
                                 colobj->get_velocity().y + gravity * delta));
 
   sprite.update(delta);

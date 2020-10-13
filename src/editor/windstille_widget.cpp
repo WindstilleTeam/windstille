@@ -443,21 +443,21 @@ WindstilleWidget::key_press(GdkEventKey* ev)
       break;
 
     case GDK_Left:
-      state.set_pos(state.get_pos() + Vector2f(-100.0f, 0.0f));
+      state.set_pos(state.get_pos() + glm::vec2(-100.0f, 0.0f));
       break;
 
     case GDK_Right:
-      state.set_pos(state.get_pos() + Vector2f(100.0f, 0.0f));
+      state.set_pos(state.get_pos() + glm::vec2(100.0f, 0.0f));
       queue_draw();
       break;
 
     case GDK_Up:
-      state.set_pos(state.get_pos() + Vector2f(0.0f, -100.0f));
+      state.set_pos(state.get_pos() + glm::vec2(0.0f, -100.0f));
       queue_draw();
       break;
 
     case GDK_Down:
-      state.set_pos(state.get_pos() + Vector2f(0.0f, 100.0f));
+      state.set_pos(state.get_pos() + glm::vec2(0.0f, 100.0f));
       queue_draw();
       break;
   }
@@ -491,7 +491,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*
   }
 
   ObjectModelHandle object = DecalObjectModel::create(data.get_data_as_string(),
-                                                      state.screen_to_world(Vector2f(static_cast<float>(x), static_cast<float>(y))),
+                                                      state.screen_to_world(glm::vec2(static_cast<float>(x), static_cast<float>(y))),
                                                       data.get_data_as_string(),
                                                       map_type);
 
@@ -526,21 +526,21 @@ WindstilleWidget::on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& /*context
 void
 WindstilleWidget::on_zoom_in()
 {
-  state.set_zoom(Vector2f(static_cast<float>(get_width())/2.0f, static_cast<float>(get_height())/2.0f), state.get_zoom() * 1.25f);
+  state.set_zoom(glm::vec2(static_cast<float>(get_width())/2.0f, static_cast<float>(get_height())/2.0f), state.get_zoom() * 1.25f);
   queue_draw();
 }
 
 void
 WindstilleWidget::on_zoom_out()
 {
-  state.set_zoom(Vector2f(static_cast<float>(get_width())/2.0f, static_cast<float>(get_height())/2.0f), state.get_zoom() * (1.0f/1.25f));
+  state.set_zoom(glm::vec2(static_cast<float>(get_width())/2.0f, static_cast<float>(get_height())/2.0f), state.get_zoom() * (1.0f/1.25f));
   queue_draw();
 }
 
 void
 WindstilleWidget::on_zoom_100()
 {
-  state.set_zoom(Vector2f(static_cast<float>(get_width())  / 2.0f,
+  state.set_zoom(glm::vec2(static_cast<float>(get_width())  / 2.0f,
                           static_cast<float>(get_height()) / 2.0f),
                  1.0f);
   queue_draw();

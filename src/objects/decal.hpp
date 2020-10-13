@@ -30,7 +30,7 @@ class Decal : public GameObject
 {
 private:
   std::shared_ptr<SurfaceDrawable> drawable;
-  Vector2f pos;
+  glm::vec2 pos;
 
 public:
   Decal(ReaderMapping const& reader);

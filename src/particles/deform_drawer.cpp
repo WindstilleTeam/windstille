@@ -35,7 +35,7 @@ public:
   ParticleSystem&   psys;
   ShaderProgramPtr  shader_program;
 
-  DeformDrawerRequest(const Vector2f& pos_, float z_pos_,  const Matrix& modelview_,
+  DeformDrawerRequest(const glm::vec2& pos_, float z_pos_,  const Matrix& modelview_,
                       FramebufferPtr framebuffer_, SurfacePtr surface_, ParticleSystem& psys_,
                       ShaderProgramPtr shader_program_) :
     Drawable(pos_, z_pos_, modelview_),
@@ -182,7 +182,7 @@ DeformDrawer::~DeformDrawer()
 void
 DeformDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
 {
-  dc.draw(new DeformDrawerRequest(Vector2f(400, 300), 1200, dc.get_modelview(),
+  dc.draw(new DeformDrawerRequest(glm::vec2(400, 300), 1200, dc.get_modelview(),
                                   framebuffer, surface, psys, shader_program));
 }
 

@@ -36,7 +36,7 @@ Elevator::Elevator(ReaderMapping const& props) :
 
   sprite = Sprite(Pathname(spritename));
   size  = Sizef(128, 64);
-  colobject = new CollisionObject(this, Rectf(Vector2f(0,0), size));
+  colobject = new CollisionObject(this, Rectf(glm::vec2(0,0), size));
   Sector::current()->get_collision_engine()->add(colobject);
   colobject->set_pos(pos);
 }

@@ -329,7 +329,7 @@ Sprite3D::update(float delta)
 }
 
 void
-Sprite3D::draw(DrawingContext& dc, const Vector2f& pos, float z_pos)
+Sprite3D::draw(DrawingContext& dc, const glm::vec2& pos, float z_pos)
 {
   dc.draw(new Sprite3DDrawable(*this, pos, z_pos, dc.get_modelview()));
 }
@@ -337,7 +337,7 @@ Sprite3D::draw(DrawingContext& dc, const Vector2f& pos, float z_pos)
 void
 Sprite3D::draw(DrawingContext& dc, const Matrix& , float )
 {
-  dc.draw(new Sprite3DDrawable(*this, Vector2f(0, 0), 0.0f, dc.get_modelview()));
+  dc.draw(new Sprite3DDrawable(*this, glm::vec2(0, 0), 0.0f, dc.get_modelview()));
 }
 
 static inline float interpolate(float v1, float v2, float t)
@@ -346,7 +346,7 @@ static inline float interpolate(float v1, float v2, float t)
 }
 
 void
-Sprite3D::draw(const Vector2f& pos, const Matrix& modelview)
+Sprite3D::draw(const glm::vec2& pos, const Matrix& modelview)
 {
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();

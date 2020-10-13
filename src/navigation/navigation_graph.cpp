@@ -49,7 +49,7 @@ NavigationGraph::~NavigationGraph()
 }
 
 NodeHandle
-NavigationGraph::add_node(const Vector2f& pos)
+NavigationGraph::add_node(const glm::vec2& pos)
 {
   Node* node = new Node(pos);
   nodes.push_back(node);
@@ -151,7 +151,7 @@ NavigationGraph::find_intersections(const Line& line)
 }
 
 std::vector<NodeHandle>
-NavigationGraph::find_nodes(const Vector2f& pos, float radius)
+NavigationGraph::find_nodes(const glm::vec2& pos, float radius)
 {
   // FIXME: Optimize this with spatial tree thingy
   std::vector<NodeHandle> ret;
@@ -185,7 +185,7 @@ NavigationGraph::find_nodes(const Rectf& rect)
 }
 
 std::vector<EdgeHandle>
-NavigationGraph::find_edges(const Vector2f& pos, float radius)
+NavigationGraph::find_edges(const glm::vec2& pos, float radius)
 {
   std::vector<EdgeHandle> ret;
 
@@ -203,7 +203,7 @@ NavigationGraph::find_edges(const Vector2f& pos, float radius)
 }
 
 NodeHandle
-NavigationGraph::find_closest_node(const Vector2f& pos, float radius)
+NavigationGraph::find_closest_node(const glm::vec2& pos, float radius)
 {
   // FIXME: Optimize this with spatial tree thingy
   Node* node = nullptr;
@@ -223,7 +223,7 @@ NavigationGraph::find_closest_node(const Vector2f& pos, float radius)
 }
 
 EdgeHandle
-NavigationGraph::find_closest_edge(const Vector2f& pos, float radius)
+NavigationGraph::find_closest_edge(const glm::vec2& pos, float radius)
 {
   Edge* edge   = nullptr;
   float min_distance = radius;
@@ -254,7 +254,7 @@ NavigationGraph::draw()
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
   {
-    Display::fill_rect(Rectf((*i)->get_pos() - Vector2f(4,4), Sizef(9, 9)),
+    Display::fill_rect(Rectf((*i)->get_pos() - glm::vec2(4,4), Sizef(9, 9)),
                        Color(1.0f, 1.0f, 0.0f));
   }
 }
@@ -276,7 +276,7 @@ NavigationGraph::load(ReaderMapping const& reader)
       if (node_obj.get_name() == "node") {
         ReaderMapping const& node_reader = node_obj.get_mapping();
 
-        Vector2f pos;
+        glm::vec2 pos;
         if (node_reader.read("pos", pos)) {
           Node* node = new Node(pos);
           id2ptr[id_count++] = node;

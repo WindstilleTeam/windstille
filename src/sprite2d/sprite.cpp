@@ -231,14 +231,14 @@ Sprite::get_current_surface() const
   return current_action->surfaces[ static_cast<int> (frame) ];
 }
 
-Vector2f
+glm::vec2
 Sprite::get_offset() const
 {
   return current_action->offset;
 }
 
 void
-Sprite::draw(const Vector2f& pos) const
+Sprite::draw(const glm::vec2& pos) const
 {
   SurfacePtr surface = current_action->surfaces[ static_cast<int> (frame) ];
   surface->draw(SurfaceDrawingParameters()

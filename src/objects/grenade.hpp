@@ -30,7 +30,7 @@ public:
 
   void draw(SceneContext& sc) override;
   void update(float delta) override;
-  void set_velocity(const Vector2f& vel);
+  void set_velocity(const glm::vec2& vel);
 
 private:
   Sprite3D sprite;

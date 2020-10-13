@@ -56,10 +56,10 @@ NavigationTest::NavigationTest()
     std::cout << "NavigationTest: " << err.what() << std::endl;
   }
 
-  NodeHandle node1 = graph->add_node(Vector2f(100, 200));
-  NodeHandle node2 = graph->add_node(Vector2f(300, 400));
-  //Node* node3 = graph->add_node(Vector2f(500, 300));
-  //Node* node4 = graph->add_node(Vector2f(700, 400));
+  NodeHandle node1 = graph->add_node(glm::vec2(100, 200));
+  NodeHandle node2 = graph->add_node(glm::vec2(300, 400));
+  //Node* node3 = graph->add_node(glm::vec2(500, 300));
+  //Node* node4 = graph->add_node(glm::vec2(700, 400));
 
   graph->add_edge(node1, node2);
   //graph->add_edge(node2, node3);
@@ -73,7 +73,7 @@ NavigationTest::draw()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   graph->draw();
 
-  Display::fill_rect(Rectf(cursor - Vector2f(2,2), Sizef(5,5)),  Color(1.0f, 1.0f, 1.0f));
+  Display::fill_rect(Rectf(cursor - glm::vec2(2,2), Sizef(5,5)),  Color(1.0f, 1.0f, 1.0f));
   Display::draw_circle(cursor, 32.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   std::vector<NodeHandle> nodes = graph->find_nodes(cursor, 128.0f);
@@ -84,7 +84,7 @@ NavigationTest::draw()
 
   if (node_to_connect)
   {
-    Display::fill_rect(Rectf(node_to_connect->get_pos() - Vector2f(2,2), Sizef(5,5)),
+    Display::fill_rect(Rectf(node_to_connect->get_pos() - glm::vec2(2,2), Sizef(5,5)),
                        Color(1.0f, 1.0f, 1.0f));
     Display::draw_line(node_to_connect->get_pos(), cursor, Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
@@ -116,10 +116,10 @@ NavigationTest::update(float delta, const Controller& controller)
     MenuManager::display_pause_menu();
   }
 
-  cursor += Vector2f(controller.get_axis_state(X_AXIS) * 500.0f * delta,
+  cursor += glm::vec2(controller.get_axis_state(X_AXIS) * 500.0f * delta,
                      controller.get_axis_state(Y_AXIS) * 500.0f * delta);
 
-  stick = Vector2f(controller.get_axis_state(X2_AXIS),
+  stick = glm::vec2(controller.get_axis_state(X2_AXIS),
                    controller.get_axis_state(Y2_AXIS));
 
   if (controller.button_was_pressed(PRIMARY_BUTTON))
@@ -165,7 +165,7 @@ NavigationTest::update(float delta, const Controller& controller)
     Node* next_node;
     //float advance = 512.0f * controller.get_axis_state(X2_AXIS) * delta;
 
-    Vector2f advance = delta * 512.0f * stick;
+    glm::vec2 advance = delta * 512.0f * stick;
     connection->advance(advance, next_node);
 
     player = connection->get_pos();
@@ -183,7 +183,7 @@ NavigationTest::update(float delta, const Controller& controller)
       {
         if (connection->get_edge() != i->edge)
         { // Find out into the direction of which edge the stick is pointing
-          Vector2f proj = glm::proj(stick, i->edge->get_vector());
+          glm::vec2 proj = glm::proj(stick, i->edge->get_vector());
 
           if (glm::length(proj) > length)
           {
@@ -220,7 +220,7 @@ NavigationTest::update(float delta, const Controller& controller)
   }
   else
   { // handle non connection based movement
-    player += Vector2f(0.0f, 100.0f) * delta;
+    player += glm::vec2(0.0f, 100.0f) * delta;
 
     player.x += 512.0f * stick.x * delta;
 

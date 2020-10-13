@@ -20,7 +20,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "math/quaternion.hpp"
 #include "display/color.hpp"
 #include "util/file_reader.hpp"
@@ -28,7 +28,7 @@
 namespace prio {
 
 template<>
-bool read_custom(ReaderMapping const& map, std::string_view key, Vector2f&  value)
+bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec2&  value)
 {
   std::vector<float> floats;
   if (map.read(key, floats) && floats.size() == 2) {

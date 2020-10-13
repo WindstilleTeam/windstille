@@ -28,14 +28,14 @@ private:
   DecalObjectModel* object;
   float ctrl_angle;
   float orig_angle;
-  Vector2f center;
+  glm::vec2 center;
 
 public:
-  DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_);
+  DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const glm::vec2& pos_);
 
   void on_move_start(GdkEventButton* event) override;
-  void on_move_update(GdkEventMotion* event, const Vector2f& offset_) override;
-  void on_move_end(GdkEventButton* event, const Vector2f& offset_) override;
+  void on_move_update(GdkEventMotion* event, const glm::vec2& offset_) override;
+  void on_move_end(GdkEventButton* event, const glm::vec2& offset_) override;
 
   void draw(SceneContext& sc) override;
 

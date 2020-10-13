@@ -67,12 +67,12 @@ Physics::elastic_collision(const CollisionData& data, const Physics& other)
   // we could calculate this cheaper if we'd do it once for both objects and not
   // each object on it's own...
 
-  Vector2f other_collision_vel
+  glm::vec2 other_collision_vel
     = data.direction * (other.velocity() * data.direction);
-  Vector2f collision_vel
+  glm::vec2 collision_vel
     = data.direction * (velocity() * data.direction);
 
-  Vector2f new_v = collision_vel * (mass - other.mass);
+  glm::vec2 new_v = collision_vel * (mass - other.mass);
   new_v += other_collision_vel * (2 * other.mass);
   new_v /= mass + other.mass;
 
@@ -86,7 +86,7 @@ void
 Physics::bounce_collision(const CollisionData& data)
 {
   std::cout << "bounce collision." << std::endl;
-  Vector2f collision_vel = data.direction * (velocity() * data.direction);
+  glm::vec2 collision_vel = data.direction * (velocity() * data.direction);
 
   velocity() -= collision_vel * (1.0f + bounciness);
   //force -= collision_vel * (1.0f + bounciness) * mass / data.delta;
@@ -98,15 +98,15 @@ void
 Physics::update(float delta)
 {
   // add gravity force (TODO make it configurable per Sector)
-  force += Vector2f(0, 9.81f * mass);
+  force += glm::vec2(0, 9.81f * mass);
 
   //force -= velocity() * air_friction;
 
-  Vector2f acceleration = force / mass;
+  glm::vec2 acceleration = force / mass;
   velocity() += acceleration * delta;
   pos() += velocity() * delta;
 
-  force = Vector2f(0, 0);
+  force = glm::vec2(0, 0);
 }
 
 /* EOF */

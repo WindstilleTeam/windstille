@@ -21,7 +21,7 @@
 
 #include <GL/glew.h>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "display/color.hpp"
 
 /** Helper class which holds all the parameters that you can tweak
@@ -33,7 +33,7 @@ public:
   GLenum blendfunc_src;
   GLenum blendfunc_dst;
 
-  Vector2f pos;
+  glm::vec2 pos;
   float    z_pos;
 
   /** Includes color and alpha settings */
@@ -41,7 +41,7 @@ public:
 
   float angle;
 
-  Vector2f scale;
+  glm::vec2 scale;
 
   bool hflip;
   bool vflip;
@@ -60,7 +60,7 @@ public:
 
   SurfaceDrawingParameters& set_scale(float s)
   {
-    scale    = Vector2f(s, s);
+    scale    = glm::vec2(s, s);
     return *this;
   }
 
@@ -76,13 +76,13 @@ public:
     return *this;
   }
 
-  SurfaceDrawingParameters& set_scale(const Vector2f& s)
+  SurfaceDrawingParameters& set_scale(const glm::vec2& s)
   {
     scale = s;
     return *this;
   }
 
-  SurfaceDrawingParameters& set_pos(const Vector2f& p)
+  SurfaceDrawingParameters& set_pos(const glm::vec2& p)
   {
     pos = p;
     return *this;

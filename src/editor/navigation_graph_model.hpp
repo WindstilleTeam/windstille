@@ -24,7 +24,7 @@
 #include <memory>
 
 #include "editor/selection.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 class NavigationGraph;
 class NavGraphEdgeObjectModel;
@@ -54,12 +54,12 @@ public:
   void remove_node(std::shared_ptr<NavGraphNodeObjectModel> node);
   void remove_edge(std::shared_ptr<NavGraphEdgeObjectModel> edge);
 
-  std::shared_ptr<NavGraphNodeObjectModel> find_closest_node(const Vector2f& pos, float radius) const;
-  std::shared_ptr<NavGraphEdgeObjectModel> find_closest_edge(const Vector2f& pos, float radius) const;
+  std::shared_ptr<NavGraphNodeObjectModel> find_closest_node(const glm::vec2& pos, float radius) const;
+  std::shared_ptr<NavGraphEdgeObjectModel> find_closest_edge(const glm::vec2& pos, float radius) const;
 
   std::vector<std::shared_ptr<NavGraphEdgeObjectModel> > find_edges(std::shared_ptr<NavGraphNodeObjectModel> node) const;
 
-  std::shared_ptr<NavGraphNodeObjectModel> get_object_at(const Vector2f& pos, const SelectMask& layers) const;
+  std::shared_ptr<NavGraphNodeObjectModel> get_object_at(const glm::vec2& pos, const SelectMask& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
 
   bool has_edge(std::shared_ptr<NavGraphNodeObjectModel> lhs, std::shared_ptr<NavGraphNodeObjectModel> rhs) const;

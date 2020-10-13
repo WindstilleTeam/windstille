@@ -49,7 +49,7 @@ VRDummy::draw(SceneContext& sc)
   sc.highlight().push_modelview();
   sc.highlight().translate(pos.x, pos.y);
   sc.highlight().rotate(rotation, 0.0f, 1.0f, 0.0f);
-  sprite.draw(sc.highlight(), Vector2f(0, 0), 1200.0f);
+  sprite.draw(sc.highlight(), glm::vec2(0, 0), 1200.0f);
   sc.highlight().pop_modelview();
 
   sc.highlight().draw(highlight, pos, 1500.0f);
@@ -62,9 +62,9 @@ VRDummy::update(float delta)
   rotation += delta * 90.0f;
   jump_time += delta;
 
-  if (jump_time >= 1.0f && velocity == Vector2f(0, 0))
+  if (jump_time >= 1.0f && velocity == glm::vec2(0, 0))
   {
-    velocity = Vector2f(rnd.frand(-300.0f, 300.0f),
+    velocity = glm::vec2(rnd.frand(-300.0f, 300.0f),
                         rnd.frand(-300.0f, 300.0f));
   }
 
@@ -72,7 +72,7 @@ VRDummy::update(float delta)
   {
     jump_time = 0.0f;
 
-    velocity = Vector2f(0, 0);
+    velocity = glm::vec2(0, 0);
   }
 
   pos += velocity * delta;

@@ -29,7 +29,7 @@ class Automap : public Component
 {
 private:
   SurfacePtr surface;
-  Vector2f  pos;
+  glm::vec2  pos;
   float   zoom;
 
 public:

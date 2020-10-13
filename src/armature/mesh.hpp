@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "math/vector3.hpp"
 #include "display/texture.hpp"
 #include "util/file_reader.hpp"
@@ -48,7 +48,7 @@ struct Vertex
 {
   Vector3 pos;
   Vector3 normal;
-  Vector2f  texcoord;
+  glm::vec2  texcoord;
 
   Vector3 render_pos;
 

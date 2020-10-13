@@ -30,7 +30,7 @@
 #include "editor/object_model.hpp"
 #include "editor/selection.hpp"
 #include "editor/timeline_handles.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 class NavigationGraphModel;
 class NavGraphNodeObjectModel;
@@ -84,7 +84,7 @@ public:
   void on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
   void on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order);
 
-  ObjectModelHandle get_object_at(const Vector2f& pos, const SelectMask& layers) const;
+  ObjectModelHandle get_object_at(const glm::vec2& pos, const SelectMask& layers) const;
   SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
 
   void raise_to_top(ObjectModelHandle object);

@@ -63,7 +63,7 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props)
 
   props.read("z-pos", z_pos);
 
-  Vector2f p_gravity;
+  glm::vec2 p_gravity;
   if (props.read("gravity", p_gravity))
     set_gravity(p_gravity.x, p_gravity.y);
 
@@ -71,26 +71,26 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props)
   if (props.read("cycles",  p_cycles))
     set_cycles(p_cycles);
 
-  Vector2f spawn_pos;
+  glm::vec2 spawn_pos;
   if (props.read("spawn-point", spawn_pos))
     set_spawn_point(spawn_pos.x, spawn_pos.y);
 
-  Vector2f p_pos;
+  glm::vec2 p_pos;
   if (props.read("pos", p_pos))
     set_pos(p_pos.x, p_pos.y);
 
-  Vector2f p_cone;
+  glm::vec2 p_cone;
   if (props.read("cone", p_cone))
     set_cone(p_cone.x, p_cone.y);
 
-  Vector2f p_size;
+  glm::vec2 p_size;
   if (props.read("size", p_size))
     set_size(p_size.x, p_size.y);
 
   props.read("color-begin", color_start);
   props.read("color-end",   color_stop);
 
-  Vector2f p_speed;
+  glm::vec2 p_speed;
   if (props.read("velocity", p_speed))
     set_velocity(p_speed.x, p_speed.y);
 
@@ -294,7 +294,7 @@ ParticleSystem::set_cycles(float /*num*/)
 }
 
 void
-ParticleSystem::set_pos(const Vector2f& pos)
+ParticleSystem::set_pos(const glm::vec2& pos)
 {
   x_pos = pos.x;
   y_pos = pos.y;

@@ -24,7 +24,7 @@
 #include <set>
 
 #include "editor/timeline_handles.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "math/rect.hpp"
 
 class Timeline;
@@ -42,8 +42,8 @@ private:
     kCursorSetMode
   } m_mode;
 
-  Vector2f down_pos;
-  Vector2f move_pos;
+  glm::vec2 down_pos;
+  glm::vec2 move_pos;
 
   float m_cursor_pos;
   int m_column_width;

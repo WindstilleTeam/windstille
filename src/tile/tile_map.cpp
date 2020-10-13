@@ -108,7 +108,7 @@ TileMap::draw (SceneContext& sc)
         VertexArrayDrawable*& request = requests[packer];
         if (!request)
         {
-          request = new VertexArrayDrawable(Vector2f(0, 0), z_pos,
+          request = new VertexArrayDrawable(glm::vec2(0, 0), z_pos,
                                             sc.color().get_modelview());
           request->set_mode(GL_QUADS);
           request->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -196,8 +196,8 @@ static float find_max(float pos, float v)
   }
 }
 
-Vector2f
-TileMap::raycast(const Vector2f& pos, float angle)
+glm::vec2
+TileMap::raycast(const glm::vec2& pos, float angle)
 {
   ////////////////////////////////////////////
   // FIXME: This code is buggy, use code from LaserPointer instead
@@ -207,7 +207,7 @@ TileMap::raycast(const Vector2f& pos, float angle)
   int x = static_cast<int>(pos.x / static_cast<float>(TILE_SIZE));
   int y = static_cast<int>(pos.y / static_cast<float>(TILE_SIZE));
 
-  Vector2f direction(cosf(angle) * 100.0f, sinf(angle) * 100.0f);
+  glm::vec2 direction(cosf(angle) * 100.0f, sinf(angle) * 100.0f);
 
   int step_x = (direction.x > 0) ? 1 : -1;
   int step_y = (direction.y > 0) ? 1 : -1;
@@ -226,7 +226,7 @@ TileMap::raycast(const Vector2f& pos, float angle)
     Tile* tile = field(x, y);
     if (tile && tile->colmap)
     {
-      return pos + Vector2f(t * direction.x, t * direction.y);
+      return pos + glm::vec2(t * direction.x, t * direction.y);
     }
 
     // move one tile
@@ -245,7 +245,7 @@ TileMap::raycast(const Vector2f& pos, float angle)
   }
 
   // Ray got out of the map
-  return pos + Vector2f(t * direction.x, t * direction.y);
+  return pos + glm::vec2(t * direction.x, t * direction.y);
 }
 
 /* EOF */

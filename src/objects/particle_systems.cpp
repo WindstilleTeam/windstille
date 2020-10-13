@@ -31,7 +31,7 @@ ParticleSystems::ParticleSystems(ReaderMapping const& reader) :
   m_drawables()
 {
   std::string filename;
-  Vector2f    pos;
+  glm::vec2    pos;
   reader.read("name", filename);
   reader.read("pos",  pos);
 

@@ -66,15 +66,15 @@ LaserPointer::draw(SceneContext& sc)
   TileMap* tilemap = Sector::current()->get_tilemap();
   if (tilemap)
   {
-    Vector2f pos = Player::current()->get_pos();
+    glm::vec2 pos = Player::current()->get_pos();
     pos.y -= 80;
-    Vector2f target; // = Sector::current()->get_collision_engine()->raycast(pos, angle);
+    glm::vec2 target; // = Sector::current()->get_collision_engine()->raycast(pos, angle);
 
     // Ray position in Tile units
     int x = static_cast<int>(pos.x / static_cast<float>(TILE_SIZE));
     int y = static_cast<int>(pos.y / static_cast<float>(TILE_SIZE));
 
-    Vector2f direction(cosf(angle) * 100.0f, sinf(angle) * 100.0f);
+    glm::vec2 direction(cosf(angle) * 100.0f, sinf(angle) * 100.0f);
 
     int step_x = (direction.x > 0) ? 1 : -1;
     int step_y = (direction.y > 0) ? 1 : -1;
@@ -90,12 +90,12 @@ LaserPointer::draw(SceneContext& sc)
     while(x >= 0 && x < tilemap->get_width() &&
           y >= 0 && y < tilemap->get_height())
     {
-      //sc.color().fill_rect(Rectf(Vector2f(x * TILE_SIZE, y * TILE_SIZE), Size(TILE_SIZE, TILE_SIZE)),
+      //sc.color().fill_rect(Rectf(glm::vec2(x * TILE_SIZE, y * TILE_SIZE), Size(TILE_SIZE, TILE_SIZE)),
       //                     Color(1.0, 1.0, 1.0, 0.5), 500);
 
       if (tilemap->get_pixel(x, y))
       {
-        //return Vector2f(x * TILE_SIZE, y * TILE_SIZE);
+        //return glm::vec2(x * TILE_SIZE, y * TILE_SIZE);
         goto done;
       }
 
@@ -115,11 +115,11 @@ LaserPointer::draw(SceneContext& sc)
     }
 
   done:
-    target = pos + Vector2f(t * direction.x, t * direction.y);
+    target = pos + glm::vec2(t * direction.x, t * direction.y);
 
-    Vector2f ray = target - pos;
+    glm::vec2 ray = target - pos;
 
-    VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0,0), 10000,
+    VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0,0), 10000,
                                                          sc.highlight().get_modelview());
     array->set_mode(GL_LINES);
     array->set_texture(noise);

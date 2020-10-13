@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "editor/windstille_widget.hpp"
 #include "editor/scroll_tool.hpp"
 
@@ -31,7 +31,7 @@ void
 ScrollTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   orig_state = wst.get_state().clone();
-  orig_click = orig_state.screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+  orig_click = orig_state.screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y)));
   mode = SCROLLING;
   wst.queue_draw();
 }
@@ -41,7 +41,7 @@ ScrollTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   if (mode == SCROLLING)
   {
-    Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+    glm::vec2 offset = orig_click - orig_state.screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y)));
     wst.get_state().set_pos(orig_state.get_pos() + offset);
     wst.queue_draw();
   }
@@ -52,7 +52,7 @@ ScrollTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
   if (mode == SCROLLING)
   {
-    Vector2f offset = orig_click - orig_state.screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+    glm::vec2 offset = orig_click - orig_state.screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y)));
     wst.get_state().set_pos(orig_state.get_pos() + offset);
     mode = NO_MODE;
     wst.queue_draw();

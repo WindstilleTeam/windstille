@@ -28,7 +28,7 @@
 class SnapData
 {
 public:
-  Vector2f offset;
+  glm::vec2 offset;
   bool x_set;
   bool y_set;
 

@@ -102,7 +102,7 @@ Inventory::~Inventory()
 void
 InventoryImpl::draw()
 {
-  Vector2f pos = Vector2f(400, 300);
+  glm::vec2 pos = glm::vec2(400, 300);
 
   int num_items = static_cast<int>(items.size());
   float step_angle = (2.0f * math::pi) / static_cast<float>(num_items);
@@ -110,19 +110,19 @@ InventoryImpl::draw()
   for(int i = 0; i < int(items.size()); ++i)
   {
     const InventoryItem& item = items[(i+current_item) % items.size()];
-    Vector2f draw_pos = pos + glm::rotate(Vector2f(128.0f, 0.0f), step_angle * static_cast<float>(i) - math::pi/2.0f + add_angle);
+    glm::vec2 draw_pos = pos + glm::rotate(glm::vec2(128.0f, 0.0f), step_angle * static_cast<float>(i) - math::pi/2.0f + add_angle);
 
     if (i == 0 && moving == 0)
     {
       slothighlight.draw(draw_pos);
-      Fonts::current()->vera20->draw_center(Vector2f(draw_pos.x, draw_pos.y - 64), item.name);
+      Fonts::current()->vera20->draw_center(glm::vec2(draw_pos.x, draw_pos.y - 64), item.name);
     }
     else
     {
       slot.draw(draw_pos);
     }
 
-    item.sprite.draw(draw_pos - Vector2f(32,32));
+    item.sprite.draw(draw_pos - glm::vec2(32,32));
   }
 }
 

@@ -78,11 +78,11 @@ class ObjectSetPosCommand : public Command
 {
 private:
   ObjectModelHandle    object;
-  Vector2f             orig_pos;
-  Vector2f             new_pos;
+  glm::vec2             orig_pos;
+  glm::vec2             new_pos;
 
 public:
-  ObjectSetPosCommand(ObjectModelHandle object_, const Vector2f& new_pos_)
+  ObjectSetPosCommand(ObjectModelHandle object_, const glm::vec2& new_pos_)
     : object(object_),
       orig_pos(object->get_rel_pos()),
       new_pos(new_pos_)

@@ -57,7 +57,7 @@ App::run(int argc, char* argv[])
   prog->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, argv[5]));
   prog->link();
 
-  Vector2f offset{};
+  glm::vec2 offset{};
   float displacement = 0.0f;
 
   bool loop = true;
@@ -135,7 +135,7 @@ App::run(int argc, char* argv[])
     //state.color(params.color);
     state.activate();
 
-    //surface1->draw(Vector2f(0, 0));
+    //surface1->draw(glm::vec2(0, 0));
 
     glClearColor(0.5f,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -162,7 +162,7 @@ App::run(int argc, char* argv[])
     window.swap_buffers();
     sdl.delay(100);
 
-    offset += Vector2f(0.001f, 0.0f);
+    offset += glm::vec2(0.001f, 0.0f);
     displacement += 0.001f;
   }
 

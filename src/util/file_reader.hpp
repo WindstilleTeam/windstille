@@ -30,7 +30,7 @@
 
 #include "math/matrix.hpp"
 #include "math/vector3.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "math/quaternion.hpp"
 
 class Color;
@@ -45,7 +45,7 @@ namespace prio {
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, Matrix& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, Color& value);
-template<> bool read_custom(ReaderMapping const& map, std::string_view key, Vector2f& value);
+template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec2& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, Vector3& value);
 
 } // namespace prio

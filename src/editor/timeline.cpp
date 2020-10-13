@@ -60,13 +60,13 @@ Timeline::create_object_layer(ObjectModelHandle object, TimelineProperty propert
   switch(property)
   {
     case kPosition:
-      return TimelineObjectLayerHandle(new TimelineObjectDataLayer<Vector2f>(object, property));
+      return TimelineObjectLayerHandle(new TimelineObjectDataLayer<glm::vec2>(object, property));
 
     case kRotation:
       return TimelineObjectLayerHandle(new TimelineObjectDataLayer<float>(object, property));
 
     case kScale:
-      return TimelineObjectLayerHandle(new TimelineObjectDataLayer<Vector2f>(object, property));
+      return TimelineObjectLayerHandle(new TimelineObjectDataLayer<glm::vec2>(object, property));
 
     default:
       throw std::runtime_error("Timeline::create_object_layer: unknown property given");

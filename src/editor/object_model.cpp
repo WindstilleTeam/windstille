@@ -27,7 +27,7 @@
 #include "editor/editor_window.hpp"
 #include "util/file_reader.hpp"
 
-ObjectModel::ObjectModel(const std::string& name_, const Vector2f& rel_pos_) :
+ObjectModel::ObjectModel(const std::string& name_, const glm::vec2& rel_pos_) :
   name(name_),
   rel_pos(rel_pos_),
   select_mask(),
@@ -116,7 +116,7 @@ ObjectModel::set_parent(const ObjectModelHandle& parent_, bool recalc_pos)
   parent_ptr = parent_;
 }
 
-Vector2f
+glm::vec2
 ObjectModel::get_world_pos() const
 {
   ObjectModelHandle parent = parent_ptr.lock();
@@ -131,7 +131,7 @@ ObjectModel::get_world_pos() const
 }
 
 void
-ObjectModel::set_world_pos(const Vector2f& p)
+ObjectModel::set_world_pos(const glm::vec2& p)
 {
   if (parent_ptr.lock())
     set_rel_pos(rel_pos + (p - get_world_pos()));
@@ -140,7 +140,7 @@ ObjectModel::set_world_pos(const Vector2f& p)
 }
 
 void
-ObjectModel::set_rel_pos(const Vector2f& rel_pos_)
+ObjectModel::set_rel_pos(const glm::vec2& rel_pos_)
 {
   // FIXME: Cut to integer positions, might not be the right place to do this
   rel_pos.x = floorf(rel_pos_.x);
@@ -159,14 +159,14 @@ ObjectModel::draw_select(SceneContext& sc, bool highlight)
 void
 ObjectModel::draw(SceneContext& sc)
 {
-  Vector2f wo_pos = get_world_pos();
+  glm::vec2 wo_pos = get_world_pos();
 
   if (ObjectModelHandle parent = parent_ptr.lock())
   {
     sc.control().draw_line(wo_pos, parent->get_world_pos(), Color(0,0,1, 0.5f));
   }
 
-  //sc.control().fill_rect(Rectf(wo_pos - Vector2f(8, 8), Sizef(16, 16)), Color(1,0,0));
+  //sc.control().fill_rect(Rectf(wo_pos - glm::vec2(8, 8), Sizef(16, 16)), Color(1,0,0));
 }
 
 void
@@ -175,7 +175,7 @@ ObjectModel::reset()
 }
 
 bool
-ObjectModel::is_at(const Vector2f& pos) const
+ObjectModel::is_at(const glm::vec2& pos) const
 {
   return geom::contains(get_bounding_box(), geom::fpoint(pos));
 }
@@ -342,7 +342,7 @@ ObjectModel::get_property(TimelineProperty property, float& value_out) const
 }
 
 void
-ObjectModel::get_property(TimelineProperty property, Vector2f& value_out) const
+ObjectModel::get_property(TimelineProperty property, glm::vec2& value_out) const
 {
   switch(property)
   {
@@ -363,7 +363,7 @@ ObjectModel::set_property(TimelineProperty property, float value)
 }
 
 void
-ObjectModel::set_property(TimelineProperty property, const Vector2f& value)
+ObjectModel::set_property(TimelineProperty property, const glm::vec2& value)
 {
   switch(property)
   {

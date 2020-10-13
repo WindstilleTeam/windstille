@@ -25,8 +25,8 @@
 class ZoomTool : public Tool
 {
 private:
-  Vector2f click_pos;
-  Vector2f mouse_pos;
+  glm::vec2 click_pos;
+  glm::vec2 mouse_pos;
 
   enum {
     RECT_MODE,

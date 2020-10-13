@@ -29,7 +29,7 @@ private:
   Sprite sprite;
 
 public:
-  SpriteObjectModel(const std::string& name_, const Vector2f& rel_pos_,
+  SpriteObjectModel(const std::string& name_, const glm::vec2& rel_pos_,
                     const std::string& path_);
   ~SpriteObjectModel() override;
 

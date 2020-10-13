@@ -117,7 +117,7 @@ TimelineWidget::mouse_up(GdkEventButton* ev)
     {
       m_mode = kNoMode;
 
-      Rectf selection(down_pos, Vector2f(static_cast<float>(ev->x), static_cast<float>(ev->y)));
+      Rectf selection(down_pos, glm::vec2(static_cast<float>(ev->x), static_cast<float>(ev->y)));
       selection = geom::normalize(selection);
 
       if (!(ev->state & GDK_SHIFT_MASK))

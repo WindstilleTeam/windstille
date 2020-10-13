@@ -49,7 +49,7 @@ private:
 
   /** Position a menu at the given positions, while thread the
       positions relative to the 800x600 ration */
-  static Rectf create_positioned_rect(const Vector2f& pos, const Sizef& size);
+  static Rectf create_positioned_rect(const glm::vec2& pos, const Sizef& size);
 
   // Callbacks
   static void menu_start_game();

@@ -80,7 +80,7 @@ Player::Player () :
   weapon.reset(new Pistol());
   laser_pointer = (static_cast<Pistol*>(weapon.get()))->laser_pointer;
 
-  m_drawable.reset(new Sprite3DDrawable(sprite, Vector2f(200, 600), 100.0f, Matrix(1.0f)));
+  m_drawable.reset(new Sprite3DDrawable(sprite, glm::vec2(200, 600), 100.0f, Matrix(1.0f)));
   Sector::current()->get_scene_graph().add_drawable(m_drawable);
 }
 
@@ -98,7 +98,7 @@ Player::draw (SceneContext& sc)
                              Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
   }
 
-  //m_drawable->get_sprite().draw(sc.color(), pos + Vector2f(0.0f, 1.0f), z_pos);
+  //m_drawable->get_sprite().draw(sc.color(), pos + glm::vec2(0.0f, 1.0f), z_pos);
 
   Entity* obj = find_useable_entity();
   if (obj)
@@ -253,7 +253,7 @@ void
 Player::set_stand()
 {
   try_set_action("Stand");
-  velocity = Vector2f(0, 0);
+  velocity = glm::vec2(0, 0);
   state = STAND;
 }
 
@@ -333,7 +333,7 @@ Player::update_stairs(const Controller& controller, float delta)
     contact->advance(WALK_SPEED * delta * 0.7f);
   }
 
-  velocity = Vector2f(0, 0);
+  velocity = glm::vec2(0, 0);
   c_object->set_pos(contact->get_pos());
 
   if (!contact->is_active())
@@ -387,8 +387,8 @@ Player::update_stand(const Controller& controller)
     {
       // TODO remove me later, just here for testing
       std::shared_ptr<Grenade> grenade(new Grenade());
-      grenade->set_pos(get_pos() + Vector2f(50, -300));
-      grenade->set_velocity(Vector2f(20, -10));
+      grenade->set_pos(get_pos() + glm::vec2(50, -300));
+      grenade->set_velocity(glm::vec2(20, -10));
       Sector::current()->add(grenade);
     }
     else
@@ -555,7 +555,7 @@ Player::set_stand_to_listen(bool backwards)
   if (!backwards)
   {
     m_drawable->get_sprite().set_next_action("Listen");
-    velocity = Vector2f(0, 0);
+    velocity = glm::vec2(0, 0);
   }
   else
   {
@@ -816,7 +816,7 @@ Player::collision(const CollisionData& data)
 {
   // copy velocity, as "velocity" is the wanted velocity, whereas
   // cur_vel is the velocity in the current delta-frame
-  Vector2f cur_vel = c_object->get_velocity();
+  glm::vec2 cur_vel = c_object->get_velocity();
   if (data.direction.y != 0)
   {
     cur_vel.y = 0;
@@ -831,7 +831,7 @@ Player::collision(const CollisionData& data)
 }
 
 void
-Player::set_pos(Vector2f pos_)
+Player::set_pos(glm::vec2 pos_)
 {
   Entity::set_pos(pos_);
   c_object->set_pos(pos_);

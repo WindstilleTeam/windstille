@@ -21,14 +21,14 @@
 
 #include <vector>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 #include "navigation/edge_position.hpp"
 
 class Node
 {
 private:
-  Vector2f pos;
+  glm::vec2 pos;
 
 public:
   /** Edges connected to this node */
@@ -36,11 +36,11 @@ public:
   Edges edges;
 
 public:
-  Node(const Vector2f& pos_);
+  Node(const glm::vec2& pos_);
   ~Node();
 
-  Vector2f get_pos() const { return pos; }
-  void     set_pos(const Vector2f& p) { pos = p; }
+  glm::vec2 get_pos() const { return pos; }
+  void     set_pos(const glm::vec2& p) { pos = p; }
 
   /** Connect the given edge to the node, the position is used to
       mark the end of the edge that is actually connected */

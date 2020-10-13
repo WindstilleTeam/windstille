@@ -95,7 +95,7 @@ public:
    * @{*/
   void object_add(LayerHandle layer, ObjectModelHandle object);
   void object_remove(ObjectModelHandle object);
-  void object_set_pos(ObjectModelHandle object, const Vector2f& new_pos);
+  void object_set_pos(ObjectModelHandle object, const glm::vec2& new_pos);
   /** @} */
 
   /* Timeline Commands
@@ -134,7 +134,7 @@ public:
 
   /* Control Point Stuff
    * @{*/
-  ControlPointHandle get_control_point(const Vector2f& pos) const;
+  ControlPointHandle get_control_point(const glm::vec2& pos) const;
   void clear_control_points();
   void create_control_points();
   const std::vector<ControlPointHandle>& get_control_points() const { return m_control_points; }

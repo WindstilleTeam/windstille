@@ -32,7 +32,7 @@ private:
   Sprite highlight;
   Sprite explolight;
 
-  Vector2f pos;
+  glm::vec2 pos;
   float count;
   enum { COUNTDOWN, EXPLODE } state;
   bool exploded;

@@ -24,7 +24,7 @@
 #include "app/globals.hpp"
 #include "display/surface.hpp"
 #include "engine/entity.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "sprite2d/sprite.hpp"
 #include "sprite3d/sprite3d.hpp"
 #include "util/currenton.hpp"
@@ -114,7 +114,7 @@ public:
 
   Entity* find_useable_entity();
 
-  void set_pos(Vector2f pos) override;
+  void set_pos(glm::vec2 pos) override;
 
 private:
   /*

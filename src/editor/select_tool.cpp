@@ -41,7 +41,7 @@ void
 SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
 {
   start_time = event->time;
-  click_pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+  click_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y)));
 
   ctrl_point = wst.get_document().get_control_point(click_pos);
   if (ctrl_point)
@@ -95,7 +95,7 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
   wst.queue_draw();
 }
 
-Vector2f
+glm::vec2
 SelectTool::process_grid_snap(WindstilleWidget& wst)
 {
   SnapData best_snap;
@@ -108,7 +108,7 @@ SelectTool::process_grid_snap(WindstilleWidget& wst)
   return best_snap.offset;
 }
 
-Vector2f
+glm::vec2
 SelectTool::process_snap(WindstilleWidget& wst)
 {
   // ignore all objects in the selection
@@ -138,7 +138,7 @@ SelectTool::process_snap(WindstilleWidget& wst)
 void
 SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
-  Vector2f pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+  glm::vec2 pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y)));
 
   if (mode == CONTROL_DRAG_MODE)
   {
@@ -147,7 +147,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
   }
   else if (mode == OBJECT_DRAG_MODE)
   {
-    Vector2f offset = pos - click_pos;
+    glm::vec2 offset = pos - click_pos;
 
     if ((event->time - start_time) > MOVE_TIMEOUT ||
         glm::length(offset) > MOVE_THRESHOLD)
@@ -185,7 +185,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 void
 SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
 {
-  Vector2f pos = wst.get_state().screen_to_world(Vector2f(static_cast<float>(event->x), static_cast<float>(event->y)));
+  glm::vec2 pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y)));
 
   // Select objects
   if (mode == CONTROL_DRAG_MODE)
@@ -196,7 +196,7 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
   }
   else if (mode == OBJECT_DRAG_MODE)
   {
-    Vector2f offset = pos - click_pos;
+    glm::vec2 offset = pos - click_pos;
 
     if (event->time - start_time > MOVE_TIMEOUT ||
         glm::length(offset) > MOVE_THRESHOLD)

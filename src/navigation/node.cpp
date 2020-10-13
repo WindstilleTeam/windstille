@@ -18,7 +18,7 @@
 
 #include "navigation/node.hpp"
 
-Node::Node(const Vector2f& pos_) :
+Node::Node(const glm::vec2& pos_) :
   pos(pos_),
   edges()
   // FIXME: Do something with id

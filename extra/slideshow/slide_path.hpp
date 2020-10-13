@@ -21,12 +21,12 @@
 
 #include <vector>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 
 class SlidePathNode
 {
 public:
-  Vector2f  pos;
+  glm::vec2  pos;
   float     zoom;
 
   SlidePathNode() :
@@ -55,7 +55,7 @@ public:
 
   SlidePathNode get(float relative_time);
 
-  void add_node(const Vector2f& pos, float zoom);
+  void add_node(const glm::vec2& pos, float zoom);
   void add_edge(float duration);
   void finish();
 

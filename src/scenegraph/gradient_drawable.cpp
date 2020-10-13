@@ -23,8 +23,8 @@
 #include "display/display.hpp"
 
 GradientDrawable::GradientDrawable(const std::vector<float>& colors)
-  : Drawable(Vector2f(0, 0), -1000),
-    array(new VertexArrayDrawable(Vector2f(0, 0), -1000, glm::mat4(1.0)))
+  : Drawable(glm::vec2(0, 0), -1000),
+    array(new VertexArrayDrawable(glm::vec2(0, 0), -1000, glm::mat4(1.0)))
 {
   if (!colors.empty())
   {

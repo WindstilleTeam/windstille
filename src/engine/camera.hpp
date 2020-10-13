@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "util/currenton.hpp"
 
 /**
@@ -36,11 +36,11 @@ public:
 
   struct PathPoint
   {
-    Vector2f pos;
+    glm::vec2 pos;
     float  zoom;
     float  rotation;
 
-    PathPoint(const Vector2f& pos_, float zoom_, float rotation_ = 0.0f)
+    PathPoint(const glm::vec2& pos_, float zoom_, float rotation_ = 0.0f)
       : pos(pos_), zoom(zoom_), rotation(rotation_) {}
 
     bool operator==(const PathPoint& p) const {
@@ -55,7 +55,7 @@ private:
    * Position of the camera, ie. where the center of the screen should
    * be located
    */
-  Vector2f pos;
+  glm::vec2 pos;
 
   /**
    * Zoom of the Camera, 1.0 means no zoom, 2.0 means everything will
@@ -71,7 +71,7 @@ public:
 
   void   update(float delta);
 
-  Vector2f get_pos() const { return pos; }
+  glm::vec2 get_pos() const { return pos; }
   void   set_pos(float x, float y);
 
   void   set_zoom(float zoom_);

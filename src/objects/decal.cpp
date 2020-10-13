@@ -29,7 +29,7 @@ Decal::Decal(ReaderMapping const& reader) :
   pos()
 {
   std::string path;
-  Vector2f scale(1.0f, 1.0f);
+  glm::vec2 scale(1.0f, 1.0f);
   float    angle = 0.0f;
 
   bool hflip = false;
@@ -57,7 +57,7 @@ Decal::Decal(ReaderMapping const& reader) :
     case 2: params.set_blend_func(GL_SRC_ALPHA, GL_ONE); break;
   }
 
-  Vector2f center_offset(-surface->get_width() /2,
+  glm::vec2 center_offset(-surface->get_width() /2,
                          -surface->get_height()/2);
 
   center_offset.x *= scale.x;
@@ -113,7 +113,7 @@ Decal::set_parent(GameObject* parent)
   { // FIXME: Not going to work with double parenting
     pos += decal->pos;
 
-    Vector2f center_offset(-drawable->get_surface()->get_width() /2,
+    glm::vec2 center_offset(-drawable->get_surface()->get_width() /2,
                            -drawable->get_surface()->get_height()/2);
 
     center_offset.x *= drawable->get_params().scale.x;

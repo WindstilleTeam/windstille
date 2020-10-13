@@ -21,7 +21,7 @@
 
 #include "display/graphic_context_state.hpp"
 #include "engine/camera.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "util/currenton.hpp"
 
 namespace wstinput {
@@ -38,7 +38,7 @@ private:
   Camera camera;
 
   float    m_debug_zoom;
-  Vector2f m_debug_transform;
+  glm::vec2 m_debug_transform;
 
 public:
   View();
@@ -48,7 +48,7 @@ public:
   /** @return the rectangle which represents the currently visible
       area, everything outside of it doesn't have to be drawn */
   Rectf get_clip_rect();
-  Vector2f screen_to_world(const Vector2f& point);
+  glm::vec2 screen_to_world(const glm::vec2& point);
 
   void draw(SceneContext& gc, Sector& sector);
   void update(float delta);

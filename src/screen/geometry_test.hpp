@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_SCREEN_GEOMETRY_TEST_HPP
 
 #include "screen/screen.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "math/line.hpp"
 
 /** */
@@ -30,9 +30,9 @@ private:
   Line line1;
   Line line2;
 
-  Vector2f cursor;
-  Vector2f cursor2;
-  Vector2f collision_point;
+  glm::vec2 cursor;
+  glm::vec2 cursor2;
+  glm::vec2 collision_point;
 
   int point_count;
 

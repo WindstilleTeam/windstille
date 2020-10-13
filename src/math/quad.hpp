@@ -26,17 +26,16 @@
 #include <glm/gtx/rotate_vector.hpp>
 
 #include "math/math.hpp"
-#include "vector2f.hpp"
 #include "math/rect.hpp"
 
 class Quad
 {
 private:
 public:
-  Vector2f p1;
-  Vector2f p2;
-  Vector2f p3;
-  Vector2f p4;
+  glm::vec2 p1;
+  glm::vec2 p2;
+  glm::vec2 p3;
+  glm::vec2 p4;
 
   Quad()
     : p1(),
@@ -60,10 +59,10 @@ public:
       p4(x1, y2)
   {}
 
-  Quad(const Vector2f& p1_,
-       const Vector2f& p2_,
-       const Vector2f& p3_,
-       const Vector2f& p4_)
+  Quad(const glm::vec2& p1_,
+       const glm::vec2& p2_,
+       const glm::vec2& p3_,
+       const glm::vec2& p4_)
     : p1(p1_),
       p2(p2_),
       p3(p3_),
@@ -80,7 +79,7 @@ public:
 
   void rotate(float rad)
   {
-    Vector2f center((p1.x + p2.x + p3.x + p4.x) / 4.0f,
+    glm::vec2 center((p1.x + p2.x + p3.x + p4.x) / 4.0f,
                     (p1.y + p2.y + p3.y + p4.y) / 4.0f);
 
     p1 = center + glm::rotate(p1 - center, rad);

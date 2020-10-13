@@ -88,7 +88,7 @@ DrawingContext::draw(Drawable* request)
 }
 
 void
-DrawingContext::draw(const Sprite& sprite, const Vector2f& pos, float z_pos)
+DrawingContext::draw(const Sprite& sprite, const glm::vec2& pos, float z_pos)
 {
   draw(sprite.get_current_surface(),
        SurfaceDrawingParameters()
@@ -100,7 +100,7 @@ DrawingContext::draw(const Sprite& sprite, const Vector2f& pos, float z_pos)
 }
 
 void
-DrawingContext::draw(SurfacePtr surface, const Vector2f& pos, const Quad& quad,
+DrawingContext::draw(SurfacePtr surface, const glm::vec2& pos, const Quad& quad,
                      const DrawingParameters& params, float z_pos)
 {
   draw(new SurfaceQuadDrawable(surface, pos, quad, params, z_pos,
@@ -115,7 +115,7 @@ DrawingContext::draw(SurfacePtr surface, const SurfaceDrawingParameters& params,
 }
 
 void
-DrawingContext::draw(SurfacePtr surface, const Vector2f& pos, float z, float alpha)
+DrawingContext::draw(SurfacePtr surface, const glm::vec2& pos, float z, float alpha)
 {
   draw(surface, pos.x, pos.y, z, alpha);
 }
@@ -124,18 +124,18 @@ void
 DrawingContext::draw(SurfacePtr surface, float x, float y, float z, float )
 {
   draw(new SurfaceDrawable(surface,
-                           SurfaceDrawingParameters().set_pos(Vector2f(x, y)),
+                           SurfaceDrawingParameters().set_pos(glm::vec2(x, y)),
                            z, modelview_stack.back()));
 }
 
 void
 DrawingContext::draw(const std::string& text, float x, float y, float z)
 {
-  draw(new TextDrawable(text, Vector2f(x, y), z, modelview_stack.back()));
+  draw(new TextDrawable(text, glm::vec2(x, y), z, modelview_stack.back()));
 }
 
 void
-DrawingContext::draw_control(SurfacePtr surface, const Vector2f& pos, float angle, float z_pos)
+DrawingContext::draw_control(SurfacePtr surface, const glm::vec2& pos, float angle, float z_pos)
 {
   draw(new ControlDrawable(surface, pos, angle, z_pos, modelview_stack.back()));
 }
@@ -147,7 +147,7 @@ DrawingContext::fill_screen(const Color& color)
 }
 
 void
-DrawingContext::fill_pattern(TexturePtr pattern, const Vector2f& offset)
+DrawingContext::fill_pattern(TexturePtr pattern, const glm::vec2& offset)
 {
   draw(new FillScreenPatternDrawable(pattern, offset));
 }
@@ -240,7 +240,7 @@ Rectf
 DrawingContext::get_clip_rect()
 {
   // FIXME: Need to check the modelview matrix
-  return Rectf(Vector2f(glm::value_ptr(modelview_stack.back())[12],
+  return Rectf(glm::vec2(glm::value_ptr(modelview_stack.back())[12],
                         glm::value_ptr(modelview_stack.back())[13]),
                Sizef(800, 600));
 }
@@ -252,9 +252,9 @@ DrawingContext::draw_line(const Line& line, const Color& color, float z_pos)
 }
 
 void
-DrawingContext::draw_line(const Vector2f& pos1, const Vector2f& pos2, const Color& color, float z_pos)
+DrawingContext::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color, float z_pos)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), z_pos, modelview_stack.back());
+  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_LINES);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -271,7 +271,7 @@ DrawingContext::draw_line(const Vector2f& pos1, const Vector2f& pos2, const Colo
 void
 DrawingContext::draw_quad(const Quad& quad, const Color& color, float z_pos)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), z_pos, modelview_stack.back());
+  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_LINE_LOOP);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -294,7 +294,7 @@ DrawingContext::draw_quad(const Quad& quad, const Color& color, float z_pos)
 void
 DrawingContext::fill_quad(const Quad& quad, const Color& color, float z_pos)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), z_pos, modelview_stack.back());
+  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_QUADS);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -317,7 +317,7 @@ DrawingContext::fill_quad(const Quad& quad, const Color& color, float z_pos)
 void
 DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), z_pos, modelview_stack.back());
+  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_LINE_LOOP);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -340,7 +340,7 @@ DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
 void
 DrawingContext::fill_rect(const Rectf& rect, const Color& color, float z_pos)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(Vector2f(0, 0), z_pos, modelview_stack.back());
+  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_QUADS);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

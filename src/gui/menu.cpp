@@ -98,13 +98,13 @@ Menu::show()
   {
     Rectf rect = group->get_screen_rect();
 
-    Vector2f center((rect.left() + rect.right()) / 2.0f,
+    glm::vec2 center((rect.left() + rect.right()) / 2.0f,
                     (rect.top() + rect.bottom()) / 2.0f);
 
     Sizef size(menu->get_prefered_width(),
                menu->get_prefered_height() + (group->has_title() ? static_cast<float>(Fonts::current()->vera20->get_height()) + 18.0f : 0.0f));
 
-    group->set_screen_rect(Rectf(Vector2f(center.x - size.width()/2.0f,
+    group->set_screen_rect(Rectf(glm::vec2(center.x - size.width()/2.0f,
                                           center.y - size.height()/2.0f),
                                  size));
 

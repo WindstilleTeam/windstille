@@ -21,7 +21,7 @@
 #include "display/scene_context.hpp"
 #include "util/pathname.hpp"
 
-DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_,
+DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const glm::vec2& pos_,
                                                bool x_scale_, bool y_scale_) :
   ControlPoint(Surface::create(Pathname("editor/scale_handle.png")), pos_),
   object(object_),
@@ -37,17 +37,17 @@ DecalScaleControlPoint::on_move_start(GdkEventButton* event)
 }
 
 void
-DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& offset_)
+DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const glm::vec2& offset_)
 {
   offset = offset_;
 
-  Vector2f start   = pos - object->get_world_pos();
-  Vector2f current = (pos + offset) - object->get_world_pos();
+  glm::vec2 start   = pos - object->get_world_pos();
+  glm::vec2 current = (pos + offset) - object->get_world_pos();
 
   start   = glm::rotate(start, -object->get_angle());
   current = glm::rotate(current, -object->get_angle());
 
-  Vector2f new_scale = orig_scale;
+  glm::vec2 new_scale = orig_scale;
 
   if (x_scale)
   {
@@ -65,7 +65,7 @@ DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const Vector2f& of
 }
 
 void
-DecalScaleControlPoint::on_move_end(GdkEventButton* /*event*/, const Vector2f& offset_)
+DecalScaleControlPoint::on_move_end(GdkEventButton* /*event*/, const glm::vec2& offset_)
 {
   on_move_update(nullptr/*event*/, offset_);
 }

@@ -45,10 +45,10 @@ private:
   ObjectType object_type;
 
   /// position of the object
-  Vector2f pos;
+  glm::vec2 pos;
 
   /// velocity of the object
-  Vector2f velocity;
+  glm::vec2 velocity;
 
   GameObject* game_object;
 
@@ -86,8 +86,8 @@ public:
       or deceleration is involved, so the velocity stays constant for
       the CollisionObject unless you change it with a new call to
       set_velocity */
-  void set_velocity(const Vector2f &v);
-  Vector2f get_velocity() const;
+  void set_velocity(const glm::vec2 &v);
+  glm::vec2 get_velocity() const;
 
   /** Sets the CollisionObject to the given pos, it should only be
       called to set the initial position and *not* to update the
@@ -98,8 +98,8 @@ public:
       probally be changed so that the object is unstuck here without
       affecting other objects and then the real placement position is
       returned */
-  void set_pos(const Vector2f& p);
-  Vector2f get_pos() const;
+  void set_pos(const glm::vec2& p);
+  glm::vec2 get_pos() const;
 
   void set_game_object(GameObject* game_object);
   GameObject* get_game_object() const;

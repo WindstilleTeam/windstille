@@ -26,19 +26,19 @@ class Speech
 public:
   int id;
   std::string text;
-  Vector2f    pos;
+  glm::vec2    pos;
   Color       color;
   float       seconds_passed;
   float       seconds_till_done;
 
-  Speech(int id, const std::string& text, const Vector2f& pos, const Color& color);
+  Speech(int id, const std::string& text, const glm::vec2& pos, const Color& color);
 
   void draw();
   void update(float delta);
   bool is_done() const;
 };
 
-Speech::Speech(int id_, const std::string& text_, const Vector2f& pos_, const Color& color_)
+Speech::Speech(int id_, const std::string& text_, const glm::vec2& pos_, const Color& color_)
   : id(id_),
     text(text_),
     pos(pos_),
@@ -94,7 +94,7 @@ SpeechManager::add(const std::string& text, const Entity& entity, const Color& c
 }
 
 int
-SpeechManager::add(const std::string& text, const Vector2f& pos, const Color& color)
+SpeechManager::add(const std::string& text, const glm::vec2& pos, const Color& color)
 {
   int this_speech_id = speech_id;
   speeches.push_back(new Speech(this_speech_id, text, pos, color));

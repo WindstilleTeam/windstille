@@ -37,7 +37,7 @@ Entity::~Entity()
 }
 
 void
-Entity::set_pos(Vector2f pos_)
+Entity::set_pos(glm::vec2 pos_)
 {
   pos = pos_;
 }

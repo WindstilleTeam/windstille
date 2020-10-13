@@ -18,17 +18,19 @@
 
 #include <iostream>
 
+#include <glm/gtx/io.hpp>
+
 #include "display/scene_context.hpp"
 #include "editor/control_point.hpp"
 #include "util/pathname.hpp"
 
 ControlPointHandle
-ControlPoint::create(const Vector2f& pos)
+ControlPoint::create(const glm::vec2& pos)
 {
   return ControlPointHandle(new ControlPoint(Surface::create(Pathname("editor/handle.png")), pos));
 }
 
-ControlPoint::ControlPoint(SurfacePtr surface_, const Vector2f& pos_) :
+ControlPoint::ControlPoint(SurfacePtr surface_, const glm::vec2& pos_) :
   surface(surface_),
   pos(pos_),
   offset()
@@ -45,23 +47,23 @@ ControlPoint::on_move_start(GdkEventButton* /*event*/)
 }
 
 void
-ControlPoint::on_move_update(GdkEventMotion* /*event*/, const Vector2f& offset_)
+ControlPoint::on_move_update(GdkEventMotion* /*event*/, const glm::vec2& offset_)
 {
   offset = offset_;
   std::cout << "on_move_update: " << offset << std::endl;
 }
 
 void
-ControlPoint::on_move_end(GdkEventButton* /*event*/, const Vector2f& offset_)
+ControlPoint::on_move_end(GdkEventButton* /*event*/, const glm::vec2& offset_)
 {
   offset = offset_;
-  offset = Vector2f();
+  offset = glm::vec2();
 }
 
 Rectf
 ControlPoint::get_bounding_box() const
 {
-  return Rectf(pos - Vector2f(11.0f, 11.0f), Sizef(22.0f, 22.0f));
+  return Rectf(pos - glm::vec2(11.0f, 11.0f), Sizef(22.0f, 22.0f));
 }
 
 void

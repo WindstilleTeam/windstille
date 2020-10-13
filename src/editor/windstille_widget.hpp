@@ -33,7 +33,7 @@
 #include "display/graphic_context_state.hpp"
 #include "display/scene_context.hpp"
 #include "display/texture.hpp"
-#include "math/vector2f.hpp"
+#include <glm/glm.hpp>
 #include "editor/control_point.hpp"
 #include "editor/decal_object_model.hpp"
 #include "editor/selection.hpp"

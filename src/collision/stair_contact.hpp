@@ -51,7 +51,7 @@ public:
   void advance(float s) override;
 
   /** Get the current position in world coordinates */
-  Vector2f get_pos() const override;
+  glm::vec2 get_pos() const override;
 
   /** Return false when the given contact has left the stairs */
   bool is_active() const override;

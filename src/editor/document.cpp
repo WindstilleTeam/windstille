@@ -239,7 +239,7 @@ Document::object_remove(ObjectModelHandle object)
 }
 
 void
-Document::object_set_pos(ObjectModelHandle object, const Vector2f& new_pos)
+Document::object_set_pos(ObjectModelHandle object, const glm::vec2& new_pos)
 {
   execute(CommandHandle(new ObjectSetPosCommand(object, new_pos)));
 }
@@ -309,10 +309,10 @@ Document::selection_vflip()
 
     if (m_selection->size() > 1)
     {
-      const Vector2f& center = geom::center(m_selection->get_bounding_box()).as_vec();
+      const glm::vec2& center = geom::center(m_selection->get_bounding_box()).as_vec();
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
       {
-        Vector2f pos = (*i)->get_world_pos();
+        glm::vec2 pos = (*i)->get_world_pos();
 
         pos.y = center.y + (center.y - pos.y);
 
@@ -342,10 +342,10 @@ Document::selection_hflip()
 
     if (m_selection->size() > 1)
     {
-      const Vector2f& center = geom::center(m_selection->get_bounding_box()).as_vec();
+      const glm::vec2& center = geom::center(m_selection->get_bounding_box()).as_vec();
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
       {
-        Vector2f pos = (*i)->get_world_pos();
+        glm::vec2 pos = (*i)->get_world_pos();
 
         pos.x = center.x + (center.x - pos.x);
 
@@ -424,7 +424,7 @@ Document::selection_duplicate()
     else
     {
       // Move clone a litte to make it more obvious that something happened
-      obj->set_rel_pos(obj->get_rel_pos() + Vector2f(32.0f, 32.0f));
+      obj->set_rel_pos(obj->get_rel_pos() + glm::vec2(32.0f, 32.0f));
       new_selection->add(obj);
 
       //layer->add(obj);
@@ -492,9 +492,9 @@ Document::selection_reset_scale()
     DecalObjectModel* decal = dynamic_cast<DecalObjectModel*>(i->get());
     if (decal)
     {
-      //decal->set_scale(Vector2f(1.0f, 1.0f));
+      //decal->set_scale(glm::vec2(1.0f, 1.0f));
       group_command->add(CommandHandle(new FunctorCommand(std::bind(&DecalObjectModel::set_scale, decal, decal->get_scale()),
-                                                          std::bind(&DecalObjectModel::set_scale, decal, Vector2f(1.0f, 1.0f)))));
+                                                          std::bind(&DecalObjectModel::set_scale, decal, glm::vec2(1.0f, 1.0f)))));
     }
   }
 
@@ -551,7 +551,7 @@ Document::on_selection_change()
 }
 
 ControlPointHandle
-Document::get_control_point(const Vector2f& pos) const
+Document::get_control_point(const glm::vec2& pos) const
 {
   for(std::vector<ControlPointHandle>::const_iterator i = m_control_points.begin();
       i != m_control_points.end(); ++i)

@@ -73,7 +73,7 @@ Slider::draw()
   Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   float width = 30.0f;
-  Rectf slider_rect(Vector2f(rect.left() + (rect.width()-width) * (static_cast<float>(pos-min)/static_cast<float>(max - min)),
+  Rectf slider_rect(glm::vec2(rect.left() + (rect.width()-width) * (static_cast<float>(pos-min)/static_cast<float>(max - min)),
                              rect.top() + 2.0f),
                     Sizef(width, rect.height() - 4.0f));
   if (is_active())
