@@ -27,6 +27,7 @@ namespace sprite3d {
 class Manager;
 } // namespace sprite3d;
 
+class Fonts;
 class OpenGLWindow;
 class SoundManager;
 class SpriteManager;
@@ -46,6 +47,7 @@ public:
   SurfaceManager& surface() const;
   SpriteManager& sprite() const;
   sprite3d::Manager& sprite3d() const;
+  Fonts& fonts() const;
 
 private:
   wstinput::InputManagerSDL* m_input_manager;
@@ -55,6 +57,7 @@ private:
   SurfaceManager* m_surface_manager;
   SpriteManager* m_sprite_manager;
   sprite3d::Manager* m_sprite3d_manager;
+  Fonts* m_fonts;
 
 private:
   App(const App&) = delete;

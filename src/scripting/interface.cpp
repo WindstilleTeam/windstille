@@ -283,7 +283,7 @@ void set_console_font(const std::string& font, int size)
 {
   try
   {
-    Fonts::current()->ttffont.reset(new TTFFont(Pathname("fonts/" + font), size));
+    g_app.fonts().ttffont.reset(new TTFFont(Pathname("fonts/" + font), size));
   }
   catch(std::exception& err)
   {

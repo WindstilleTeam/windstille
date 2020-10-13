@@ -19,10 +19,11 @@
 #ifndef HEADER_WINDSTILLE_FONT_FONTS_HPP
 #define HEADER_WINDSTILLE_FONT_FONTS_HPP
 
-#include "util/currenton.hpp"
+#include <memory>
+
 #include "font/ttf_font.hpp"
 
-class Fonts : public Currenton<Fonts>
+class Fonts
 {
 public:
   std::unique_ptr<TTFFont> ttffont;
@@ -31,7 +32,7 @@ public:
 
 public:
   Fonts();
-  ~Fonts() override;
+  ~Fonts();
 };
 
 #endif

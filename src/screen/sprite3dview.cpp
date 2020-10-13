@@ -91,23 +91,23 @@ Sprite3DView::draw()
                                                Display::get_height()));
 
   float x = 10.0f;
-  float y =  static_cast<float>(Fonts::current()->vera12->get_height()) + 5.0f;
-  int line_height = Fonts::current()->vera12->get_height()+5;
+  float y =  static_cast<float>(g_app.fonts().vera12->get_height()) + 5.0f;
+  int line_height = g_app.fonts().vera12->get_height()+5;
 
   for(int i = 0; i < int(actions.size()); ++i)
   {
     if (i == current_action)
-      Fonts::current()->vera12->draw(glm::vec2(x, y),
+      g_app.fonts().vera12->draw(glm::vec2(x, y),
                                      actions[i], Color(1.0f, 1.0f, 1.0f));
     else
-      Fonts::current()->vera12->draw(glm::vec2(x, y),
+      g_app.fonts().vera12->draw(glm::vec2(x, y),
                                      actions[i], Color(0.7f, 0.7f, 0.7f));
 
     y += static_cast<float>(line_height);
     if (y > 580.0f)
     {
       x += 200.0f;
-      y =  static_cast<float>(Fonts::current()->vera12->get_height()) + 5.0f;
+      y =  static_cast<float>(g_app.fonts().vera12->get_height()) + 5.0f;
     }
   }
 }

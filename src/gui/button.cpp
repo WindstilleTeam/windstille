@@ -20,6 +20,7 @@
 
 #include <wstinput/controller.hpp>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
@@ -50,7 +51,7 @@ Button::draw()
 {
   Display::fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
   Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
-  Fonts::current()->vera20->draw_center(glm::vec2(rect.left() + rect.width()/2, rect.top() + rect.height()/2),
+  g_app.fonts().vera20->draw_center(glm::vec2(rect.left() + rect.width()/2, rect.top() + rect.height()/2),
                                         label,
                                         is_active()
                                         ? Color(1.0f, 1.0f, 1.0f, 1.0f)

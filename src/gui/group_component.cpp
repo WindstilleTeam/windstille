@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/app.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
 #include "gui/group_component.hpp"
@@ -42,7 +43,7 @@ GroupComponent::draw()
 
   if (!title.empty())
   {
-    TTFFont* font = Fonts::current()->vera20.get();
+    TTFFont* font = g_app.fonts().vera20.get();
     font->draw_center(glm::vec2(rect.left() + rect.width() / 2.0f,
                                rect.top()  + static_cast<float>(font->get_height()) + 5.0f),
                       title, Color(1.0f, 1.0f, 1.0f));
@@ -79,7 +80,7 @@ GroupComponent::get_child_rect() const
   float padding = 6.0f;
 
   return Rectf(rect.left()   + padding,
-               rect.top()    + padding + (title.empty() ? 0.0f : static_cast<float>(Fonts::current()->vera20->get_height()) + 18.0f),
+               rect.top()    + padding + (title.empty() ? 0.0f : static_cast<float>(g_app.fonts().vera20->get_height()) + 18.0f),
                rect.right()  - padding,
                rect.bottom() - padding);
 }

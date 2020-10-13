@@ -93,6 +93,7 @@ WindstilleMain::main(int argc, char** argv)
       g_app.m_sprite_manager = &sprite_manager;
       g_app.m_sprite3d_manager = &sprite3d_manager;
       g_app.m_window = &window;
+      g_app.m_fonts = &fonts;
 
       window.set_icon(Pathname("icon.png"));
       texture_manager.set_fallback(Pathname("images/404.png"));

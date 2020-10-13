@@ -31,7 +31,8 @@ App::App() :
   m_texture_manager(nullptr),
   m_surface_manager(nullptr),
   m_sprite_manager(nullptr),
-  m_sprite3d_manager(nullptr)
+  m_sprite3d_manager(nullptr),
+  m_fonts(nullptr)
 {
 }
 
@@ -82,6 +83,13 @@ App::sprite3d() const
 {
   assert(m_sprite3d_manager != nullptr);
   return *m_sprite3d_manager;
+}
+
+Fonts&
+App::fonts() const
+{
+  assert(m_fonts != nullptr);
+  return *m_fonts;
 }
 
 /* EOF */

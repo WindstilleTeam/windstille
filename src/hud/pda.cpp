@@ -60,8 +60,8 @@ PDA::PDA()
   text_area.reset(new TextArea(geom::grow(Rectf(pos + glm::vec2(40.0f, 50.0f) + glm::vec2(0.0f, 56.0f),
                                                 Sizef(315.0f, 380.0f)), -12.0f), false));
 
-  ui_area->set_font(Fonts::current()->vera12.get());
-  text_area->set_font(Fonts::current()->vera12.get());
+  ui_area->set_font(g_app.fonts().vera12.get());
+  text_area->set_font(g_app.fonts().vera12.get());
 }
 
 PDA::~PDA()

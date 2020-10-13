@@ -117,7 +117,7 @@ InventoryImpl::draw()
     if (i == 0 && moving == 0)
     {
       slothighlight.draw(draw_pos);
-      Fonts::current()->vera20->draw_center(glm::vec2(draw_pos.x, draw_pos.y - 64), item.name);
+      g_app.fonts().vera20->draw_center(glm::vec2(draw_pos.x, draw_pos.y - 64), item.name);
     }
     else
     {

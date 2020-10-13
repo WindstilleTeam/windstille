@@ -25,15 +25,16 @@
 #include "display/texture.hpp"
 #include "display/surface.hpp"
 
-class Surface;
-class SurfaceDrawingParameters;
-class DrawingParameters;
-class SceneContext;
-class Sprite;
-class Quad;
-class Line;
 class Color;
 class Compositor;
+class DrawingParameters;
+class Line;
+class Quad;
+class SceneContext;
+class Sprite;
+class Surface;
+class SurfaceDrawingParameters;
+class TTFFont;
 
 /** The DrawingContext collects all Drawables and allows you to
     flush them all down to the graphics card in one run, this has the
@@ -78,7 +79,7 @@ public:
   /*{ */
   void draw(Drawable* request);
   void draw(const Sprite&   sprite,  const glm::vec2& pos, float z = 0);
-  void draw(const std::string& text,    float x, float y, float z = 0);
+  void draw(TTFFont& font, const std::string& text,    float x, float y, float z = 0);
   void draw(SurfacePtr surface, const glm::vec2& pos, float z = 0, float alpha = 0);
   void draw(SurfacePtr surface, float x, float y, float z = 0, float alpha = 0);
   void draw(SurfacePtr surface, const SurfaceDrawingParameters& params, float z_pos = 0);

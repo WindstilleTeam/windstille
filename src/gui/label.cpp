@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/app.hpp"
 #include "font/fonts.hpp"
 #include "gui/label.hpp"
 
@@ -36,7 +37,7 @@ Label::draw()
 {
   //Display::fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
   //Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
-  Fonts::current()->vera12->draw(glm::vec2(rect.left() + 5/*+ rect.width()/2*/, rect.top() + rect.height()/2 + 3),
+  g_app.fonts().vera12->draw(glm::vec2(rect.left() + 5/*+ rect.width()/2*/, rect.top() + rect.height()/2 + 3),
                                  label,
                                  Color(1.0f, 1.0f, 1.0f, 1.0f));
 }

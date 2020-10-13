@@ -20,6 +20,7 @@
 
 #include <wstinput/controller.hpp>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
@@ -41,7 +42,7 @@ ListView::~ListView()
 void
 ListView::draw()
 {
-  TTFFont* font = Fonts::current()->vera20.get();
+  TTFFont* font = g_app.fonts().vera20.get();
 
   float x = rect.left();
   float y = rect.top() + static_cast<float>(font->get_height());

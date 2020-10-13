@@ -19,15 +19,18 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_TEXT_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_TEXT_DRAWABLE_HPP
 
+#include "app/app.hpp"
 #include "font/fonts.hpp"
 
 class TextDrawable : public Drawable
 {
 private:
+  TTFFont& m_font;
   std::string text;
 public:
-  TextDrawable(const std::string& text_, const glm::vec2& pos_, float z_pos_, const glm::mat4& modelview_)
+  TextDrawable(TTFFont& font, const std::string& text_, const glm::vec2& pos_, float z_pos_, const glm::mat4& modelview_)
     : Drawable(pos_, z_pos_, modelview_),
+      m_font(font),
       text(text_)
   {}
   ~TextDrawable() override {}
@@ -35,7 +38,7 @@ public:
   void render(unsigned int mask) override {
     glPushMatrix();
     glMultMatrixf(glm::value_ptr(modelview));
-    Fonts::current()->ttffont->draw(pos, text);
+    m_font.draw(pos, text);
     glPopMatrix();
   }
 };

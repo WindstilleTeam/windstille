@@ -161,9 +161,9 @@ ConsoleImpl::draw()
   int y = static_cast<int>(y_pos);
 
   if (active)
-    y -= Fonts::current()->ttffont->get_height() + 2;
+    y -= g_app.fonts().ttffont->get_height() + 2;
 
-  int num_lines = 600 / (Fonts::current()->ttffont->get_height() + 2);
+  int num_lines = 600 / (g_app.fonts().ttffont->get_height() + 2);
 
   if (console.is_active())
     Display::fill_rect(Rectf(Rect(0,0, Display::get_width(), 600)),
@@ -177,10 +177,10 @@ ConsoleImpl::draw()
       if (buffer[i].display_time > 4.0f && !console.is_active())
         alpha = 1.0f - (buffer[i].display_time - 4.0f);
 
-      Fonts::current()->ttffont->draw(glm::vec2(x_pos, static_cast<float>(y)), buffer[i].message,
+      g_app.fonts().ttffont->draw(glm::vec2(x_pos, static_cast<float>(y)), buffer[i].message,
                                       Color(0.88f, 0.88f, 1.0f, alpha));
     }
-    y -= Fonts::current()->ttffont->get_height() + 2;
+    y -= g_app.fonts().ttffont->get_height() + 2;
   }
 
   if (active)
@@ -194,7 +194,7 @@ ConsoleImpl::draw()
         str += "_";
     }
 
-    Fonts::current()->ttffont->draw(glm::vec2(x_pos, y_pos), "> " + str, Color(1.0f, 1.0f, 1.0f));
+    g_app.fonts().ttffont->draw(glm::vec2(x_pos, y_pos), "> " + str, Color(1.0f, 1.0f, 1.0f));
   }
 }
 

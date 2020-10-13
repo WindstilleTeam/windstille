@@ -20,6 +20,7 @@
 
 #include <wstinput/controller.hpp>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "font/fonts.hpp"
@@ -56,7 +57,7 @@ TabComponent::draw()
   {
     Rectf tab_rect(glm::vec2(rect.left() + tab_width * static_cast<float>(i) + 10.0f,
                             rect.top()),
-                   Sizef(tab_width - 20.0f, static_cast<float>(Fonts::current()->vera20->get_height()) + 6.0f));
+                   Sizef(tab_width - 20.0f, static_cast<float>(g_app.fonts().vera20->get_height()) + 6.0f));
 
     if (i == current_tab)
       Display::fill_rounded_rect(tab_rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
@@ -65,8 +66,8 @@ TabComponent::draw()
 
     Display::draw_rounded_rect(tab_rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-    Fonts::current()->vera20->draw_center(glm::vec2(rect.left() + tab_width * static_cast<float>(i) + tab_width/2,
-                                                   rect.top() + static_cast<float>(Fonts::current()->vera20->get_height())),
+    g_app.fonts().vera20->draw_center(glm::vec2(rect.left() + tab_width * static_cast<float>(i) + tab_width/2,
+                                                   rect.top() + static_cast<float>(g_app.fonts().vera20->get_height())),
                                           tabs[i].label,
                                           tabs[current_tab].component->is_active()
                                           ? Color(1.0f, 1.0f, 1.0f, 0.5f)
@@ -144,7 +145,7 @@ TabComponent::pack(const std::string& name, Component* component)
 
   float padding = 6.0f;
   component->set_screen_rect(Rectf(rect.left() + padding,
-                                   rect.top()  + padding + static_cast<float>(Fonts::current()->vera20->get_height()) + 10.0f,
+                                   rect.top()  + padding + static_cast<float>(g_app.fonts().vera20->get_height()) + 10.0f,
                                    rect.right()  - padding,
                                    rect.bottom() - padding
                                ));

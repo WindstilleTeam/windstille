@@ -127,9 +127,9 @@ DrawingContext::draw(SurfacePtr surface, float x, float y, float z, float )
 }
 
 void
-DrawingContext::draw(const std::string& text, float x, float y, float z)
+DrawingContext::draw(TTFFont& font, const std::string& text, float x, float y, float z)
 {
-  draw(new TextDrawable(text, glm::vec2(x, y), z, modelview_stack.back()));
+  draw(new TextDrawable(font, text, glm::vec2(x, y), z, modelview_stack.back()));
 }
 
 void

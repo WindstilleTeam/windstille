@@ -20,6 +20,7 @@
 
 #include <babyxml.hpp>
 
+#include "app/app.hpp"
 #include "display/opengl_state.hpp"
 #include "font/fonts.hpp"
 #include "display/display.hpp"
@@ -71,7 +72,7 @@ private:
 TextArea::TextArea(const Rectf& rect, bool letter_by_letter) :
   impl(new TextAreaImpl)
 {
-  impl->font = Fonts::current()->vera20.get();
+  impl->font = g_app.fonts().vera20.get();
   impl->rect    = rect;
   // FIXME: freetype might provide info for vspacing, not sure
   impl->v_space = 2;

@@ -25,6 +25,7 @@
 #include "collision/collision_engine.hpp"
 #include "collision/stair_contact.hpp"
 #include "engine/sector.hpp"
+#include "font/fonts.hpp"
 #include "math/point.hpp"
 #include "objects/grenade.hpp"
 #include "objects/laser_pointer.hpp"
@@ -107,7 +108,7 @@ Player::draw (SceneContext& sc)
   {
     // FIXME: Highlight layer is the wrong place for this
     std::string use_str = "[" + obj->get_use_verb() + "]";
-    sc.highlight().draw(use_str, obj->get_pos().x, obj->get_pos().y - 150, 1000);
+    sc.highlight().draw(*g_app.fonts().ttffont, use_str, obj->get_pos().x, obj->get_pos().y - 150, 1000);
   }
 
   // Draw weapon at the 'Weapon' attachment point

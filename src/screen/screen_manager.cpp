@@ -308,7 +308,7 @@ ScreenManager::draw_fps()
 
   std::ostringstream out;
   out << "FPS: " << last_fps;
-  Fonts::current()->ttffont->draw(glm::vec2(static_cast<float>(Display::get_width()) - 100.0f, 30.0f), out.str());
+  g_app.fonts().ttffont->draw(glm::vec2(static_cast<float>(Display::get_width()) - 100.0f, 30.0f), out.str());
 }
 
 void

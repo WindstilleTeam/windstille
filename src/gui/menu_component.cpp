@@ -34,7 +34,7 @@ MenuComponent::MenuComponent(const Rectf& rect_, bool allow_cancel_, Component* 
   : Component(rect_, parent_),
     items(),
     current_item(0),
-    font(Fonts::current()->vera20.get()),
+    font(g_app.fonts().vera20.get()),
     allow_cancel(allow_cancel_),
     scroll_mode(false),
     scroll_offset(0),

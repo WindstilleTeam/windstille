@@ -128,7 +128,7 @@ MenuManager::display_main_menu()
                                menu.get_root()));
 
     std::unique_ptr<gui::TextView> text(new gui::TextView(text_group->get_child_rect(), text_group.get()));
-    text->set_font(Fonts::current()->vera12.get());
+    text->set_font(g_app.fonts().vera12.get());
     text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmail.com&gt;\n"
                    "\n"
                    "This program is free software: you can redistribute it and/or modify "
@@ -259,7 +259,7 @@ MenuManager::display_help()
   std::unique_ptr<TextView> text(new TextView(group->get_child_rect(),
                                             group.get()));
 
-  text->set_font(Fonts::current()->vera12.get());
+  text->set_font(g_app.fonts().vera12.get());
   text->set_text("This is a tech-demo of Windstille. Its not meant "
                  "to be playable in any way except a bit of walking around. "
                  "It provides nothing to accomplish, just a few scenarios to "
@@ -325,7 +325,7 @@ MenuManager::display_credits()
 
   std::unique_ptr<TextView> text(new TextView(group->get_child_rect(), group.get()));
 
-  text->set_font(Fonts::current()->vera12.get());
+  text->set_font(g_app.fonts().vera12.get());
   text->set_text("Programming\n"
                  "===========\n"
                  "\n"

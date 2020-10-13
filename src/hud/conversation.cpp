@@ -22,6 +22,7 @@
 
 #include <wstinput/controller.hpp>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "font/fonts.hpp"
 #include "engine/script_manager.hpp"
@@ -82,8 +83,8 @@ Conversation::draw()
 
     glm::vec2 textpos = pos + glm::vec2(0, 16.0f);
     // FIXME: Doesn't handle multi line text
-    Sizef size(static_cast<float>(Fonts::current()->vera20->get_width(choices[i].topic)) + 40.0f,
-               static_cast<float>(Fonts::current()->vera20->get_height()) + 25.0f);
+    Sizef size(static_cast<float>(g_app.fonts().vera20->get_width(choices[i].topic)) + 40.0f,
+               static_cast<float>(g_app.fonts().vera20->get_height()) + 25.0f);
     Rectf  rect(textpos + distance * offset - glm::vec2(size.width()/2, size.height() - 15), size);
 
     if (i == selection)
@@ -93,18 +94,18 @@ Conversation::draw()
       Display::fill_arc(pos, 42.0f, start, end, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
       Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
 
-      Fonts::current()->vera20->draw_center(glm::vec2(textpos.x + distance * offset.x,
+      g_app.fonts().vera20->draw_center(glm::vec2(textpos.x + distance * offset.x,
                                                      textpos.y + distance * offset.y),
                                             choices[i].topic, Color(1.0f, 1.0f, 0.0f));
 
-      Fonts::current()->vera20->draw_center(glm::vec2(400.0f, static_cast<float>(Display::get_height()) - 32.0f),
+      g_app.fonts().vera20->draw_center(glm::vec2(400.0f, static_cast<float>(Display::get_height()) - 32.0f),
                                             choices[i].text, Color(1.0f, 1.0f, 1.0f));
       Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 0.0f));
     }
     else
     {
       Display::fill_rounded_rect(rect, 5.0f, Color(0.25f, 0.25f, 0.25f, 0.75f));
-      Fonts::current()->vera20->draw_center(glm::vec2(textpos.x + distance * offset.x,
+      g_app.fonts().vera20->draw_center(glm::vec2(textpos.x + distance * offset.x,
                                                      textpos.y + distance * offset.y),
                                             choices[i].topic, Color(0.8f, 0.8f, 0.8f));
       Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f));
