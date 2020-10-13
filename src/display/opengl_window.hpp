@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_OPENGL_WINDOW_HPP
 #define HEADER_WINDSTILLE_DISPLAY_OPENGL_WINDOW_HPP
 
+#include <filesystem>
 #include <memory>
 
 #include "util/currenton.hpp"
@@ -33,6 +34,8 @@ public:
                const Size& size, const Size& aspect,
                bool fullscreen = false, int anti_aliasing = 0);
   ~OpenGLWindow() override;
+
+  void set_icon(std::filesystem::path const& filename);
 
   int  get_width()  const;
   int  get_height() const;

@@ -75,8 +75,6 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
   }
   else
   {
-    SDL_SetWindowIcon(m_impl->m_window,  IMG_Load(Pathname("icon.png").get_sys_path().c_str()));
-
     m_impl->m_gl_context = SDL_GL_CreateContext(m_impl->m_window);
     if (!m_impl->m_gl_context)
     {
@@ -128,6 +126,14 @@ OpenGLWindow::~OpenGLWindow()
 {
   SDL_GL_DeleteContext(m_impl->m_gl_context);
   SDL_DestroyWindow(m_impl->m_window);
+}
+
+void
+OpenGLWindow::set_icon(std::filesystem::path const& filename)
+{
+  SDL_Surface* icon = IMG_Load(filename.c_str());
+  SDL_SetWindowIcon(m_impl->m_window, icon);
+  SDL_FreeSurface(icon);
 }
 
 int

@@ -89,6 +89,8 @@ WindstilleMain::main(int argc, char** argv)
       g_app.m_sound_manager = &sound_manager;
       g_app.m_input_manager = &input_manager;
 
+      window.set_icon(Pathname("icon.png"));
+
       init_modules();
 
       run();
