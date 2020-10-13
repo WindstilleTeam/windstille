@@ -33,6 +33,7 @@
 #include "scenegraph/fill_screen_drawable.hpp"
 #include "scenegraph/fill_screen_pattern_drawable.hpp"
 #include "scenegraph/particle_system_drawable.hpp"
+#include "util/pathname.hpp"
 
 ParticleViewer::ParticleViewer()
   : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),

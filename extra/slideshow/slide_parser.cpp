@@ -332,7 +332,7 @@ SlideParser::handle_image(const std::vector<std::string>& args)
 
     std::cout << ";; time = " << m_time << std::endl;
     std::cout << "(image \"" << args[1] << "\")" << std::endl;
-    m_image = SlideObjectPtr(new SlideObject(Pathname(args[1], Pathname::kSysPath)));
+    m_image = SlideObjectPtr(new SlideObject(args[1]));
 
     if (m_slideshow.size() != 0)
     {

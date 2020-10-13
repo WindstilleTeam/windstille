@@ -63,8 +63,8 @@ int app_main(int argc, char** argv)
 
   FramebufferPtr framebuffer = Framebuffer::create_hdr(window_size.width(), window_size.height());
 
-  SurfacePtr surface   = Surface::create(Pathname(argv[1], Pathname::kSysPath));
-  SurfacePtr surface_2 = Surface::create(Pathname(argv[2], Pathname::kSysPath));
+  SurfacePtr surface   = Surface::create(argv[1]);
+  SurfacePtr surface_2 = Surface::create(argv[2]);
 
   float ray_length = 3.0f;
   Vector2f pos{};

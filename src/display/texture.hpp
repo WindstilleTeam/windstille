@@ -26,7 +26,6 @@
 
 #include "display/software_surface.hpp"
 #include "math/rect.hpp"
-#include "util/pathname.hpp"
 
 class SoftwareSurface;
 class TextureImpl;
@@ -38,7 +37,7 @@ class Texture
 {
 public:
   /** Load a texture from file */
-  static TexturePtr create(const Pathname& filename);
+  static TexturePtr create(std::filesystem::path const& filename);
 
   /** Upload an SoftwareSurface onto an OpenGL texture. */
   static TexturePtr create(SoftwareSurfacePtr image, GLint format = GL_RGBA);

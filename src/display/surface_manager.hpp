@@ -24,7 +24,6 @@
 #include <vector>
 #include <map>
 
-#include "util/pathname.hpp"
 #include "util/currenton.hpp"
 #include "display/texture.hpp"
 #include "display/surface.hpp"
@@ -39,7 +38,7 @@ class SurfaceManager : public Currenton<SurfaceManager>
 private:
   std::unique_ptr<TexturePacker> texture_packer;
 
-  typedef std::map<Pathname, SurfacePtr> Surfaces;
+  typedef std::map<std::filesystem::path, SurfacePtr> Surfaces;
   Surfaces surfaces;
 
 public:
@@ -47,13 +46,13 @@ public:
   ~SurfaceManager() override;
 
   /** returns a surface containing the image specified with filename */
-  SurfacePtr get(const Pathname& filename);
+  SurfacePtr get(std::filesystem::path const& filename);
 
   /**
    * Loads an image and splits it into several Surfaces sized width and height.
    * The created surfaces will be added to the surfaces vector.
    */
-  void load_grid(const Pathname& filename,
+  void load_grid(std::filesystem::path const& filename,
                  std::vector<SurfacePtr>& surfaces, int width, int height);
 
   TexturePtr create_texture(SoftwareSurfacePtr image,

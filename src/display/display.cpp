@@ -470,7 +470,7 @@ Display::pop_cliprect()
 }
 
 void
-Display::save_screenshot(const Pathname& filename)
+Display::save_screenshot(std::filesystem::path const& filename)
 {
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
@@ -488,7 +488,7 @@ Display::save_screenshot(const Pathname& filename)
     int pitch = size.width() * 3;
 
     // save to ppm
-    std::ofstream out(filename.get_sys_path().c_str());
+    std::ofstream out(filename);
     out << "P6\n"
         << "# Windstille Screenshot\n"
         << size.width() << " " << size.height() << "\n"
@@ -501,7 +501,7 @@ Display::save_screenshot(const Pathname& filename)
   }
   else if ((true))
   {
-    FILE* m_out = fopen(filename.get_sys_path().c_str(), "wb");
+    FILE* m_out = fopen(filename.c_str(), "wb");
 
     if (!m_out)
     {
@@ -555,7 +555,7 @@ Display::save_screenshot(const Pathname& filename)
   }
   else if ((false))
   { // PNG saving
-    FILE* fp = fopen(filename.get_sys_path().c_str(), "w");
+    FILE* fp = fopen(filename.c_str(), "w");
 
     if (!fp)
     {

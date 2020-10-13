@@ -26,7 +26,8 @@
 #include "display/graphic_context_state.hpp"
 #include "display/opengl_window.hpp"
 #include "font/fonts.hpp"
-
+#include "util/pathname.hpp"
+
 Sprite3DView::Sprite3DView()
   : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),
     sc(),
@@ -169,5 +170,5 @@ Sprite3DView::handle_event(const SDL_Event& )
 {
 
 }
-
+
 /* EOF */

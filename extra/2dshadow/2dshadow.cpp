@@ -20,10 +20,10 @@ int main()
 
   SurfaceManager surface_manager;
 
-  SurfacePtr darkness = Surface::create(Pathname("darkness.png", Pathname::kSysPath));
-  SurfacePtr light = Surface::create(Pathname("light.png", Pathname::kSysPath));
-  SurfacePtr objects = Surface::create(Pathname("objects.png", Pathname::kSysPath));
-  SurfacePtr shadow  = Surface::create(Pathname("objects_shadow.png", Pathname::kSysPath));
+  SurfacePtr darkness = Surface::create("darkness.png");
+  SurfacePtr light = Surface::create("light.png");
+  SurfacePtr objects = Surface::create("objects.png");
+  SurfacePtr shadow  = Surface::create("objects_shadow.png");
 
   bool quit = false;
   Vector2f object_pos(100, 0);

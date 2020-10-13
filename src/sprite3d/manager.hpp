@@ -32,10 +32,10 @@ public:
   Manager();
   ~Manager() override;
 
-  Data* create_data(const Pathname& filename);
+  Data* create_data(std::filesystem::path const& filename);
 
 private:
-  typedef std::map<Pathname, Data*> Datas;
+  typedef std::map<std::filesystem::path, Data*> Datas;
   Datas datas;
 };
 

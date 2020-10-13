@@ -20,6 +20,7 @@
 
 #include <assert.h>
 #include <iostream>
+#include <map>
 
 #include "display/texture.hpp"
 #include "display/color.hpp"

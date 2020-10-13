@@ -49,7 +49,7 @@ SlideShow::draw(float time, bool verbose)
       //std::cout << time << " " << relative_time << std::endl;
       if (verbose)
       {
-        std::cout << obj->get_filename().get_sys_path() << std::endl;
+        std::cout << obj->get_filename() << std::endl;
       }
 
       obj->draw(relative_time);

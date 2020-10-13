@@ -25,11 +25,8 @@
 
 #include "display/texture.hpp"
 #include "util/currenton.hpp"
-#include "util/pathname.hpp"
 
-/**
- * This class manages a map of image files to OpenGL textures.
- */
+/** This class manages a map of image files to OpenGL textures. */
 class TextureManager : public Currenton<TextureManager>
 {
 public:
@@ -44,13 +41,16 @@ public:
    * SurfaceManager for images with other dimensions.
    * Note: Texture is a refcounted class, store it with Ref<Texture>
    */
-  TexturePtr get(const Pathname& filename);
+  TexturePtr get(std::filesystem::path const& filename);
+
+  void set_fallback(std::filesystem::path const& filename);
 
   void cleanup();
 
 private:
-  typedef std::map<Pathname, TexturePtr> Textures;
+  typedef std::map<std::filesystem::path, TexturePtr> Textures;
   Textures textures;
+  TexturePtr m_fallback;
 };
 
 #endif

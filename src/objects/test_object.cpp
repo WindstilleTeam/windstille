@@ -20,6 +20,7 @@
 #include <stdexcept>
 
 #include "objects/test_object.hpp"
+#include "util/pathname.hpp"
 
 TestObject::TestObject(ReaderMapping const& props) :
   sprite(),

@@ -34,7 +34,7 @@ Manager::~Manager()
 }
 
 Data*
-Manager::create_data(const Pathname& filename)
+Manager::create_data(std::filesystem::path const& filename)
 {
   Datas::iterator i = datas.find(filename);
   if(i != datas.end())

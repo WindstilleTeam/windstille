@@ -24,7 +24,7 @@
 #include "display/surface_manager.hpp"
 
 SurfacePtr
-Surface::create(const Pathname& filename)
+Surface::create(std::filesystem::path const& filename)
 {
   return SurfaceManager::current()->get(filename);
 }

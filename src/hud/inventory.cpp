@@ -27,6 +27,7 @@
 #include "app/controller_def.hpp"
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
+#include "util/pathname.hpp"
 
 class InventoryItem
 {

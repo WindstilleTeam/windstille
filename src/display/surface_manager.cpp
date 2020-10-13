@@ -54,7 +54,7 @@ SurfaceManager::~SurfaceManager()
 }
 
 SurfacePtr
-SurfaceManager::get(const Pathname& filename)
+SurfaceManager::get(std::filesystem::path const& filename)
 {
   Surfaces::iterator i = surfaces.find(filename);
 
@@ -99,7 +99,7 @@ SurfaceManager::get(const Pathname& filename)
 }
 
 void
-SurfaceManager::load_grid(const Pathname& filename,
+SurfaceManager::load_grid(std::filesystem::path const& filename,
                           std::vector<SurfacePtr>& out_surfaces,
                           int width, int height)
 {

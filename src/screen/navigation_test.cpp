@@ -33,6 +33,7 @@
 #include "display/display.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
+#include "util/pathname.hpp"
 
 NavigationTest::NavigationTest()
   : cursor(400, 300),

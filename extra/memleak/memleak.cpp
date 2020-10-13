@@ -91,7 +91,7 @@ int memleak_main(int argc, char* argv[])
       }
     }
 
-    surface = Surface::create(Pathname(argv[1], Pathname::kSysPath));
+    surface = Surface::create(argv[1]);
 
     surface->draw(Vector2f(0.0f, 0.0f));
     window.swap_buffers();

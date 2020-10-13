@@ -49,11 +49,11 @@ public:
 class SpriteData
 {
 private:
-  void parse(const Pathname& dir, ReaderMapping const& lisp);
-  SpriteAction* parse_action(const Pathname& dir, ReaderMapping const& reader);
+  void parse(std::filesystem::path const& dir, ReaderMapping const& lisp);
+  SpriteAction* parse_action(std::filesystem::path const& dir, ReaderMapping const& reader);
 
 public:
-  SpriteData(const Pathname& filename);
+  SpriteData(std::filesystem::path const& filename);
   virtual ~SpriteData();
 
   typedef std::vector<SpriteAction*> Actions;

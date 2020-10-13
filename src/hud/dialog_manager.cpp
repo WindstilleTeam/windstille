@@ -29,6 +29,7 @@
 #include "font/text_area.hpp"
 #include "math/point.hpp"
 #include "screen/game_session.hpp"
+#include "util/pathname.hpp"
 
 DialogManager::DialogManager()
 {

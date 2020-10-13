@@ -90,6 +90,7 @@ WindstilleMain::main(int argc, char** argv)
       g_app.m_input_manager = &input_manager;
 
       window.set_icon(Pathname("icon.png"));
+      texture_manager.set_fallback(Pathname("images/404.png"));
 
       init_modules();
 

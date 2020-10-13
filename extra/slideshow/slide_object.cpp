@@ -24,7 +24,7 @@
 #include "plugins/jpeg.hpp"
 #include "display/surface_drawing_parameters.hpp"
 
-SlideObject::SlideObject(const Pathname& filename) :
+SlideObject::SlideObject(std::filesystem::path const& filename) :
   m_filename(filename),
   m_size(0.0f, 0.0f),
   m_surface(),
@@ -33,7 +33,7 @@ SlideObject::SlideObject(const Pathname& filename) :
   m_fade_in_time(0.0f),
   m_fade_out_time(0.0f)
 {
-  m_size = Sizef(JPEG::get_size(filename.get_sys_path()));
+  m_size = Sizef(JPEG::get_size(filename));
 }
 
 void
@@ -121,7 +121,7 @@ SlideObject::get_height() const
   return m_size.height();
 }
 
-Pathname
+std::filesystem::path
 SlideObject::get_filename() const
 {
   return m_filename;
@@ -133,7 +133,7 @@ SlideObject::unload()
   if (m_surface)
   {
     m_surface.reset();
-    std::cout << "Unloading: " << m_filename.get_sys_path() << std::endl;
+    std::cout << "Unloading: " << m_filename << std::endl;
     return true;
   }
   else

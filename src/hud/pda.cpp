@@ -26,7 +26,8 @@
 #include "font/text_area.hpp"
 #include "font/fonts.hpp"
 #include "hud/pda.hpp"
-
+#include "util/pathname.hpp"
+
 DialogEntry::DialogEntry(const std::string& arg_character, const std::string& arg_text)
   : character(arg_character),
     text(arg_text)

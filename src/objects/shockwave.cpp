@@ -21,6 +21,7 @@
 #include "display/opengl_state.hpp"
 #include "display/shader_object.hpp"
 #include "scenegraph/shockwave_drawable.hpp"
+#include "util/pathname.hpp"
 
 Shockwave::Shockwave(ReaderMapping const& props) :
   pos(),

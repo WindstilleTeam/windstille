@@ -28,6 +28,7 @@
 #include "editor/object_model_factory.hpp"
 #include "editor/sector_model.hpp"
 #include "util/file_reader.hpp"
+#include "util/pathname.hpp"
 
 SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel& sector) :
   m_sector(sector),

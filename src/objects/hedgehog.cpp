@@ -18,6 +18,7 @@
 
 #include "objects/player.hpp"
 #include "objects/hedgehog.hpp"
+#include "util/pathname.hpp"
 
 Hedgehog::Hedgehog(ReaderMapping const& props) :
   sprite(Pathname("images/hedgehog.sprite")),

@@ -31,6 +31,7 @@
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
 #include "screen/input_configurator.hpp"
+#include "util/pathname.hpp"
 
 ScreenManager::ScreenManager() :
   screens(),

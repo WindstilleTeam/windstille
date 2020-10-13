@@ -20,7 +20,8 @@
 
 #include "display/scene_context.hpp"
 #include "editor/control_point.hpp"
-
+#include "util/pathname.hpp"
+
 ControlPointHandle
 ControlPoint::create(const Vector2f& pos)
 {

@@ -18,6 +18,7 @@
 
 #include "objects/spider_mine.hpp"
 #include "objects/player.hpp"
+#include "util/pathname.hpp"
 
 SpiderMine::SpiderMine(ReaderMapping const& props) :
   sprite(),

@@ -33,7 +33,7 @@
 #pragma GCC diagnostic ignored "-Wold-style-cast"
 
 TexturePtr
-Texture::create(const Pathname& filename)
+Texture::create(std::filesystem::path const& filename)
 {
   return TextureManager::current()->get(filename);
 }

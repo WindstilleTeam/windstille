@@ -39,7 +39,7 @@ Sprite::Sprite() :
 {
 }
 
-Sprite::Sprite(const Pathname& filename) :
+Sprite::Sprite(std::filesystem::path const& filename) :
   data(),
   current_action(nullptr),
   frame(0),

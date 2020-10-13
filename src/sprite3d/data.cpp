@@ -31,12 +31,12 @@ namespace sprite3d {
 
 static const int FORMAT_VERSION = 2;
 
-Data::Data(const Pathname& filename) :
+Data::Data(std::filesystem::path const& filename) :
   meshs(),
   attachment_points(),
   actions()
 {
-  std::ifstream in(filename.get_sys_path().c_str(), std::ios::binary);
+  std::ifstream in(filename, std::ios::binary);
 
   if (!in)
   {
@@ -74,8 +74,8 @@ Data::Data(const Pathname& filename) :
       mesh.triangle_count = read_uint16_t(in);
       mesh.vertex_count   = read_uint16_t(in);
 
-      Pathname path = filename.get_dirname();
-      path.append_path(basename(texturename));
+      std::filesystem::path path = filename.parent_path();
+      path /= std::filesystem::path(texturename).filename();
       mesh.texture = TextureManager::current()->get(path);
 
       // read triangles

@@ -26,6 +26,7 @@
 #include "tile/tile_description.hpp"
 #include "util/currenton.hpp"
 #include "math/rect.hpp"
+#include "util/pathname.hpp"
 
 class Tile;
 class TilePacker;

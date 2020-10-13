@@ -16,9 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/scene_context.hpp"
 #include "editor/decal_scale_control_point.hpp"
-
+
+#include "display/scene_context.hpp"
+#include "util/pathname.hpp"
+
 DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const Vector2f& pos_,
                                                bool x_scale_, bool y_scale_) :
   ControlPoint(Surface::create(Pathname("editor/scale_handle.png")), pos_),

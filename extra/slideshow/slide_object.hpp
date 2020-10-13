@@ -28,7 +28,7 @@
 class SlideObject
 {
 private:
-  Pathname m_filename;
+  std::filesystem::path m_filename;
   Sizef m_size;
   SurfacePtr m_surface;
   float m_begin;
@@ -38,7 +38,7 @@ private:
   float m_fade_out_time;
 
 public:
-  SlideObject(const Pathname& filename);
+  SlideObject(const std::filesystem::path& filename);
 
   void draw(float relative_time);
 
@@ -55,7 +55,7 @@ public:
   float get_width() const;
   float get_height() const;
 
-  Pathname get_filename() const;
+  std::filesystem::path get_filename() const;
 
   bool unload();
 

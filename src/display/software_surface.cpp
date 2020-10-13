@@ -28,7 +28,7 @@
 #include "math/rect.hpp"
 
 SoftwareSurfacePtr
-SoftwareSurface::create(const Pathname& filename)
+SoftwareSurface::create(std::filesystem::path const& filename)
 {
   return SoftwareSurfacePtr(new SoftwareSurface(filename));
 }
@@ -39,11 +39,11 @@ SoftwareSurface::create(int width, int height, Format format)
   return SoftwareSurfacePtr(new SoftwareSurface(width, height, format));
 }
 
-SoftwareSurface::SoftwareSurface(const Pathname& filename) :
+SoftwareSurface::SoftwareSurface(std::filesystem::path const& filename) :
   m_surface(nullptr),
   m_format(RGBA)
 {
-  m_surface = IMG_Load(filename.get_sys_path().c_str());
+  m_surface = IMG_Load(filename.c_str());
 
   if (!m_surface)
   {

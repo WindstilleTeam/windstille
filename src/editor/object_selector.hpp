@@ -27,9 +27,11 @@
 #include <gdkmm/dragcontext.h>
 #include <gtkmm/treemodelfilter.h>
 #include <gtkmm/iconview.h>
-
+
+#include "util/pathname.hpp"
+
 class EditorWindow;
-
+
 class ObjectSelector : public Gtk::VBox
 {
 private:

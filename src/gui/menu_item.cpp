@@ -22,6 +22,7 @@
 #include "app/sound_manager.hpp"
 #include "display/display.hpp"
 #include "gui/menu_component.hpp"
+#include "util/pathname.hpp"
 
 namespace gui {
 

@@ -19,9 +19,9 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SOFTWARE_SURFACE_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SOFTWARE_SURFACE_HPP
 
+#include <filesystem>
 #include <memory>
 
-#include "util/pathname.hpp"
 #include "math/size.hpp"
 #include "math/rect.hpp"
 
@@ -40,11 +40,11 @@ public:
   };
 
 public:
-  static SoftwareSurfacePtr create(const Pathname& filename);
+  static SoftwareSurfacePtr create(std::filesystem::path const& filename);
   static SoftwareSurfacePtr create(int width, int height, Format format = RGBA);
 
 private:
-  explicit SoftwareSurface(const Pathname& filename);
+  explicit SoftwareSurface(std::filesystem::path const& filename);
   SoftwareSurface(int width, int height, Format format = RGBA);
 
 public:

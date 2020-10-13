@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
+#include <map>
 
 #include "display/display.hpp"
 #include "display/color.hpp"

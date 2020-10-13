@@ -27,6 +27,7 @@
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
+#include "util/pathname.hpp"
 
 class ConsoleStreambuf : public std::streambuf
 {

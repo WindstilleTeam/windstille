@@ -234,7 +234,7 @@ App::run(int argc, char* argv[])
                 break;
 
               case SDLK_F10:
-                Display::save_screenshot(Pathname("/tmp/out.png", Pathname::kSysPath));
+                Display::save_screenshot("/tmp/out.png");
                 break;
 
               case SDLK_LEFT:
@@ -344,7 +344,7 @@ App::run(int argc, char* argv[])
       Display::push_framebuffer(framebuffer);
       char out[1024];
       sprintf(out, "%s/%08d.jpg", m_output_dir.c_str(), frame_number);
-      Display::save_screenshot(Pathname(out, Pathname::kSysPath));
+      Display::save_screenshot(out);
       //std::cout << "Wrote: " << out << std::endl;
       frame_number += 1;
       Display::pop_framebuffer();

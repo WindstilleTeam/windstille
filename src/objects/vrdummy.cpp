@@ -18,6 +18,7 @@
 
 #include "math/random.hpp"
 #include "objects/vrdummy.hpp"
+#include "util/pathname.hpp"
 
 VRDummy::VRDummy(ReaderMapping const& props) :
   sprite(),

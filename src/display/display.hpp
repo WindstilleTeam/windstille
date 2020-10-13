@@ -26,7 +26,6 @@
 #include "math/size.hpp"
 #include "math/vector2f.hpp"
 
-class Pathname;
 class Color;
 class Quad;
 class Line;
@@ -75,7 +74,7 @@ public:
   static void pop_framebuffer();
   static FramebufferPtr get_framebuffer();
 
-  static void save_screenshot(const Pathname& filename);
+  static void save_screenshot(std::filesystem::path const& filename);
 };
 
 #endif

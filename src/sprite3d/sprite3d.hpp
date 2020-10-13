@@ -48,7 +48,7 @@ public:
   typedef uint16_t PointID;
 
   Sprite3D();
-  explicit Sprite3D(const Pathname& filename);
+  explicit Sprite3D(std::filesystem::path const& filename);
   Sprite3D(const Sprite3D&);
   Sprite3D& operator=(const Sprite3D&);
   ~Sprite3D();

@@ -230,13 +230,13 @@ Lensflare::run()
     throw std::runtime_error("GL_ARB_occlusion_query not supported");
   }
 
-  m_light  = Surface::create(Pathname("light.png", Pathname::kSysPath));
-  m_lightquery  = Surface::create(Pathname("lightquery.png", Pathname::kSysPath));
-  m_superlight  = Surface::create(Pathname("superlight.png", Pathname::kSysPath));
-  m_flair1 = Surface::create(Pathname("flair1.png", Pathname::kSysPath));
-  m_flair2 = Surface::create(Pathname("flair2.png", Pathname::kSysPath));
-  m_cover = Surface::create(Pathname("cover.png", Pathname::kSysPath));
-  m_halo = Surface::create(Pathname("halo.png", Pathname::kSysPath));
+  m_light  = Surface::create("light.png");
+  m_lightquery  = Surface::create("lightquery.png");
+  m_superlight  = Surface::create("superlight.png");
+  m_flair1 = Surface::create("flair1.png");
+  m_flair2 = Surface::create("flair2.png");
+  m_cover = Surface::create("cover.png");
+  m_halo = Surface::create("halo.png");
 
   float pos[] = { 0.1f, 0.2f, 0.4f, 0.8f, 1.6f, 3.2f };
 

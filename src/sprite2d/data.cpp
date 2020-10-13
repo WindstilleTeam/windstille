@@ -25,49 +25,49 @@
 #include "display/surface_manager.hpp"
 #include "util/file_reader.hpp"
 
-SpriteData::SpriteData(const Pathname& pathname) :
+SpriteData::SpriteData(std::filesystem::path const& filename) :
   actions()
 {
-  if (pathname.exists())
+  if (std::filesystem::exists(filename))
   {
-    const std::string ext = pathname.get_extension();
+    std::string const ext = filename.extension();
 
-    if (ext == "sprite")
+    if (ext == ".sprite")
     {
-      ReaderDocument doc = ReaderDocument::from_file(pathname.get_sys_path());
+      ReaderDocument doc = ReaderDocument::from_file(filename);
 
       if (doc.get_name() != "sprite") {
         std::ostringstream msg;
-        msg << "File " << pathname << " is not a windstille sprite";
+        msg << "File " << filename << " is not a windstille sprite";
         throw std::runtime_error(msg.str());
       }
 
-      parse(pathname.get_dirname(), doc.get_mapping());
+      parse(filename.parent_path(), doc.get_mapping());
     }
-    else if (ext == "png" || ext == "jpg")
+    else if (ext == ".png" || ext == ".jpg")
     {
       std::unique_ptr<SpriteAction> action(new SpriteAction());
       action->name   = "default";
       action->speed  = 1.0;
       action->scale  = 1.0f;
       action->offset = Vector2f(0, 0);
-      action->surfaces.push_back(Surface::create(pathname));
+      action->surfaces.push_back(Surface::create(filename));
       actions.push_back(action.release());
     }
     else
     {
       std::ostringstream str;
-      str << "Sprite " << pathname << " has unknown suffix: '" << ext  << "'";
+      str << "Sprite " << filename << " has unknown suffix: '" << ext  << "'";
       throw std::runtime_error(str.str());
     }
   }
-  else if (pathname.get_raw_path().length() > std::string(".sprite").length())
+  else if (filename.string().length() > std::string(".sprite").length())
   { // If sprite file is not found, we search for a file with the
     // same name ending in .png
-    Pathname pngfile(pathname.get_raw_path().substr(0, pathname.get_raw_path().length() - std::string(".sprite").length()) + ".png",
-                     pathname.get_type());
+    std::filesystem::path pngfile = filename;
+    pngfile.replace_extension(".png");
 
-    if (pngfile.exists())
+    if (std::filesystem::exists(pngfile))
     {
       std::unique_ptr<SpriteAction> action(new SpriteAction);
       action->name   = "default";
@@ -87,7 +87,7 @@ SpriteData::SpriteData(const Pathname& pathname) :
   else
   {
     std::ostringstream str;
-    str << "Couldn't find " << pathname;
+    str << "Couldn't find " << filename;
     throw std::runtime_error(str.str());
   }
 }
@@ -99,7 +99,7 @@ SpriteData::~SpriteData()
 }
 
 void
-SpriteData::parse(const Pathname& dir, ReaderMapping const& reader)
+SpriteData::parse(std::filesystem::path const& dir, ReaderMapping const& reader)
 {
   ReaderCollection actions_collection;
   if (reader.read("actions", actions_collection)) {
@@ -114,7 +114,7 @@ SpriteData::parse(const Pathname& dir, ReaderMapping const& reader)
 }
 
 SpriteAction*
-SpriteData::parse_action(const Pathname& dir, ReaderMapping const& reader)
+SpriteData::parse_action(std::filesystem::path const& dir, ReaderMapping const& reader)
 {
   std::unique_ptr<SpriteAction> action (new SpriteAction);
   action->speed = 1.0;
@@ -132,10 +132,9 @@ SpriteData::parse_action(const Pathname& dir, ReaderMapping const& reader)
   {
     //parse_images(action.get(), dir, images);
 
-    for(std::vector<std::string>::iterator file = image_files.begin(); file != image_files.end(); ++file)
+    for(std::vector<std::string>::const_iterator file = image_files.begin(); file != image_files.end(); ++file)
     {
-      Pathname path = dir;
-      path.append_path(*file);
+      std::filesystem::path path = dir / *file;
       action->surfaces.push_back(SurfaceManager::current()->get(path));
     }
   }
@@ -152,8 +151,7 @@ SpriteData::parse_action(const Pathname& dir, ReaderMapping const& reader)
     if(filename.empty() || x_size <= 0 || y_size <= 0)
       throw std::runtime_error("Invalid or too few data in image-grid");
 
-    Pathname path = dir;
-    path.append_path(filename);
+    std::filesystem::path path = dir / filename;
     SurfaceManager::current()->load_grid(path, action->surfaces, x_size, y_size);
   }
 

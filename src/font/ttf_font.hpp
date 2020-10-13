@@ -57,7 +57,7 @@ private:
   friend class TTFFontManager;
 
 public:
-  TTFFont(const Pathname& file, int size, const FontEffect& effect = NoFontEffect());
+  TTFFont(std::filesystem::path const& file, int size, const FontEffect& effect = NoFontEffect());
   ~TTFFont();
 
   /** */

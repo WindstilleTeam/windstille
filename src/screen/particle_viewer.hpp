@@ -29,7 +29,8 @@
 #include "particles/particle_system.hpp"
 #include "screen/screen.hpp"
 #include "sprite2d/sprite.hpp"
-
+#include "util/pathname.hpp"
+
 namespace gui {
 class Slider;
 class TabComponent;
@@ -68,7 +69,7 @@ private:
   ParticleViewer (const ParticleViewer&);
   ParticleViewer& operator= (const ParticleViewer&);
 };
-
+
 #endif
 
 /* EOF */

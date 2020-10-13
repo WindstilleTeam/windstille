@@ -26,6 +26,7 @@
 #include "display/display.hpp"
 #include "gui/menu_item.hpp"
 #include "gui/tab_component.hpp"
+#include "util/pathname.hpp"
 
 namespace gui {
 

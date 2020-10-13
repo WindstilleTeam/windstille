@@ -18,6 +18,7 @@
 
 #include "objects/laser_pointer.hpp"
 #include "objects/pistol.hpp"
+#include "util/pathname.hpp"
 
 Pistol::Pistol() :
   sprite(Pathname("models/objects/pistol/pistol.wsprite")),

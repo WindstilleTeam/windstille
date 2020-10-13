@@ -64,14 +64,14 @@ public:
 
 FT_Library TTFFontImpl::library;
 
-TTFFont::TTFFont(const Pathname& filename, int size_, const FontEffect& effect) :
+TTFFont::TTFFont(std::filesystem::path const& filename, int size_, const FontEffect& effect) :
   impl(new TTFFontImpl())
 {
   assert(size_ > 0);
 
   impl->size = size_;
 
-  std::ifstream fin(filename.get_sys_path().c_str(), std::ios::binary);
+  std::ifstream fin(filename, std::ios::binary);
   std::istreambuf_iterator<char> first(fin), last;
   std::vector<char> buffer(first, last);
 

@@ -30,7 +30,8 @@
 #include "scenegraph/drawable_group.hpp"
 #include "scenegraph/surface_drawable.hpp"
 #include "util/file_reader.hpp"
-
+#include "util/pathname.hpp"
+
 ObjectModelHandle
 DecalObjectModel::create(const std::string& name_, const Vector2f& pos,
                          const std::string& path, MapType type)

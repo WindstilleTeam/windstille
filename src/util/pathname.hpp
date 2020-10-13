@@ -19,8 +19,9 @@
 #ifndef HEADER_WINDSTILLE_UTIL_PATHNAME_HPP
 #define HEADER_WINDSTILLE_UTIL_PATHNAME_HPP
 
-#include <string>
+#include <filesystem>
 #include <map>
+#include <string>
 
 /**
  *  Pathname wraps a path and a path type, thus allowing the easy
@@ -126,6 +127,8 @@ public:
 
   bool operator==(const Pathname& rhs) const;
   bool operator!=(const Pathname& rhs) const;
+
+  operator std::filesystem::path() const { return get_sys_path(); }
 
 private:
   std::string m_path;

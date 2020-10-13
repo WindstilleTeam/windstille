@@ -21,6 +21,7 @@
 #include "display/display.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
 #include "math/random.hpp"
+#include "util/pathname.hpp"
 
 Nightvision::Nightvision(ReaderMapping const& props) :
   nightvision(Pathname("images/nightvision.sprite")),

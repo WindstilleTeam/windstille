@@ -20,12 +20,12 @@
 #ifndef HEADER_WINDSTILLE_SPRITE2D_MANAGER_HPP
 #define HEADER_WINDSTILLE_SPRITE2D_MANAGER_HPP
 
+#include <filesystem>
 #include <map>
 #include <memory>
 
 #include "util/currenton.hpp"
 
-class Pathname;
 class SpriteData;
 
 typedef std::shared_ptr<SpriteData> SpriteDataPtr;
@@ -36,12 +36,12 @@ public:
   SpriteManager();
   ~SpriteManager() override;
 
-  SpriteDataPtr create_data(const Pathname& filename);
+  SpriteDataPtr create_data(std::filesystem::path const& filename);
 
   /** Removes all cached Sprites that are no longer in use */
   void cleanup();
 private:
-  typedef std::map<Pathname, SpriteDataPtr> Datas;
+  typedef std::map<std::filesystem::path, SpriteDataPtr> Datas;
   Datas datas;
 };
 

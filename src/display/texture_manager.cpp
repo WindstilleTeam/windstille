@@ -24,7 +24,8 @@
 #include "display/software_surface.hpp"
 
 TextureManager::TextureManager() :
-  textures()
+  textures(),
+  m_fallback()
 {
 }
 
@@ -40,8 +41,14 @@ TextureManager::~TextureManager()
 #endif
 }
 
+void
+TextureManager::set_fallback(std::filesystem::path const& filename)
+{
+  m_fallback = get(filename);
+}
+
 TexturePtr
-TextureManager::get(const Pathname& filename)
+TextureManager::get(std::filesystem::path const& filename)
 {
   Textures::iterator i = textures.find(filename);
   if(i != textures.end())
@@ -62,7 +69,7 @@ TextureManager::get(const Pathname& filename)
     catch(std::exception& e)
     {
       std::cerr << e.what() << std::endl;
-      return get(Pathname("images/404.png"));
+      return m_fallback;
     }
   }
 }
