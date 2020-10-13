@@ -76,20 +76,20 @@ void
 SpiderMine::draw (SceneContext& sc)
 {
   if (state == EXPLODE) {
-    sc.color().draw(explode, pos);
+    explode.draw(sc.color(), pos);
 
-    sc.light().draw(explode_light, pos, 0);
+    explode_light.draw(sc.light(), pos, 0);
 
     explode_light.set_alpha(0.5);
     explode_light.set_scale(0.5f);
 
-    sc.highlight().draw(explode_light, pos, 0);
+    explode_light.draw(sc.highlight(), pos, 0);
 
     explode_light.set_alpha(1.0);
     explode_light.set_scale(1.0);
   }
   else {
-    sc.color().draw(sprite, pos, 10.0f);
+    sprite.draw(sc.color(), pos, 10.0f);
   }
 }
 

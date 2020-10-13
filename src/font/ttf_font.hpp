@@ -28,6 +28,7 @@
 #include "math/rect.hpp"
 #include "font/no_font_effect.hpp"
 
+class DrawingContext;
 class FontEffect;
 class TTFFontImpl;
 
@@ -77,6 +78,7 @@ public:
   const TTFCharacter& get_character(int c) const;
   void draw(const glm::vec2& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
   void draw_center(const glm::vec2& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
+  void draw(DrawingContext& ctx, const std::string& text, float x, float y, float z);
 
 private:
   std::unique_ptr<TTFFontImpl> impl;

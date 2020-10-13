@@ -69,23 +69,23 @@ Bomb::draw(SceneContext& sc)
 {
   if (state == EXPLODE)
   {
-    sc.color().draw(explo, pos);
-    sc.light().draw(explolight, pos, 0);
+    explo.draw(sc.color(), pos);
+    explolight.draw(sc.light(), pos, 0);
 
     explolight.set_alpha(0.5);
     explolight.set_scale(0.5);
 
-    sc.highlight().draw(explolight, pos, 0);
+    explolight.draw(sc.highlight(), pos, 0);
 
     explolight.set_alpha(1.0);
     explolight.set_scale(1.0);
   }
   else
   {
-    sc.color().draw(sprite, pos);
+    sprite.draw(sc.color(), pos);
     if (sprite.is_finished()) {
-      sc.light().draw(light, pos, 0);
-      sc.highlight().draw(highlight, pos, 0);
+      light.draw(sc.light(), pos, 0);
+      highlight.draw(sc.highlight(), pos, 0);
     }
   }
 }

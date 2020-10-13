@@ -57,8 +57,8 @@ Swarm::Swarm(ReaderMapping const& props) :
 void
 Swarm::draw(SceneContext& sc)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0),
-                                                       1000.0f, sc.highlight().get_modelview());
+  auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0),
+                                                     1000.0f, sc.highlight().get_modelview());
 
   array->set_mode(GL_QUADS);
   array->set_blend_func(GL_ONE, GL_ZERO);
@@ -81,7 +81,7 @@ Swarm::draw(SceneContext& sc)
     array->vertex(i->pos.x - 1, i->pos.y + 2);
   }
 
-  sc.highlight().draw(array);
+  sc.highlight().draw(std::move(array));
 }
 
 void

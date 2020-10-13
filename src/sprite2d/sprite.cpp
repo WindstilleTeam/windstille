@@ -248,6 +248,18 @@ Sprite::draw(const glm::vec2& pos) const
                .set_color(color));
 }
 
+void
+Sprite::draw(DrawingContext& ctx, glm::vec2 const& pos, float z_pos)
+{
+  ctx.draw(get_current_surface(),
+           SurfaceDrawingParameters()
+           .set_pos(pos + get_offset() * get_scale())
+           .set_blend_func(get_blend_sfactor(), get_blend_dfactor())
+           .set_color(get_color())
+           .set_scale(get_scale()),
+           z_pos);
+}
+
 bool
 Sprite::is_finished() const
 {

@@ -43,7 +43,7 @@ Hedgehog::~Hedgehog()
 }
 
 void
-Hedgehog::draw(SceneContext& gc)
+Hedgehog::draw(SceneContext& sc)
 {
   Sprite* s;
 
@@ -57,10 +57,10 @@ Hedgehog::draw(SceneContext& gc)
   else
     s->set_vflip(false);
 
-  gc.color().draw(*s, pos, 2);
+  s->draw(sc.color(), pos, 2);
   //s->draw(int(pos.x), int(pos.y));
-  gc.light().draw(light, pos, 0);
-  gc.highlight().draw(highlight, pos, 0);
+  light.draw(sc.light(), pos, 0);
+  highlight.draw(sc.highlight(), pos, 0);
 }
 
 void

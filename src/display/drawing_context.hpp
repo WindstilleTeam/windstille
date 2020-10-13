@@ -31,11 +31,9 @@ class DrawingParameters;
 class Line;
 class Quad;
 class SceneContext;
-class Sprite;
 class Surface;
 class SurfaceDrawingParameters;
-class TTFFont;
-
+
 /** The DrawingContext collects all Drawables and allows you to
     flush them all down to the graphics card in one run, this has the
     advantage that it is possible to z-sort, texture-id sort or
@@ -45,7 +43,7 @@ class TTFFont;
 class DrawingContext
 {
 private:
-  typedef std::vector<Drawable*> Drawables;
+  typedef std::vector<std::unique_ptr<Drawable> > Drawables;
   Drawables drawingrequests;
 
   std::vector<glm::mat4> modelview_stack;
@@ -77,9 +75,7 @@ public:
   void fill_quad(const Quad& quad, const Color& color, float z_pos = 0);
 
   /*{ */
-  void draw(Drawable* request);
-  void draw(const Sprite&   sprite,  const glm::vec2& pos, float z = 0);
-  void draw(TTFFont& font, const std::string& text,    float x, float y, float z = 0);
+  void draw(std::unique_ptr<Drawable> request);
   void draw(SurfacePtr surface, const glm::vec2& pos, float z = 0, float alpha = 0);
   void draw(SurfacePtr surface, float x, float y, float z = 0, float alpha = 0);
   void draw(SurfacePtr surface, const SurfaceDrawingParameters& params, float z_pos = 0);

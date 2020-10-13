@@ -23,6 +23,7 @@
 #include <GL/glew.h>
 
 #include "display/color.hpp"
+#include "display/drawing_context.hpp"
 #include "display/surface.hpp"
 #include "sprite2d/manager.hpp"
 
@@ -64,6 +65,7 @@ public:
 
   void update(float delta);
   void draw(const glm::vec2& pos) const;
+  void draw(DrawingContext& ctx, glm::vec2 const& pos, float z_pos = 0.0f);
 
   void  set_action(const std::string& name);
   const std::string& get_action() const;

@@ -31,7 +31,7 @@
 #include "objects/laser_pointer.hpp"
 #include "objects/pistol.hpp"
 #include "scenegraph/scene_graph.hpp"
-#include "scenegraph/sprite3d_drawable.hpp"
+#include "sprite3d/sprite3d_drawable.hpp"
 #include "screen/game_session.hpp"
 #include "sprite3d/manager.hpp"
 #include "tile/tile.hpp"
@@ -108,7 +108,7 @@ Player::draw (SceneContext& sc)
   {
     // FIXME: Highlight layer is the wrong place for this
     std::string use_str = "[" + obj->get_use_verb() + "]";
-    sc.highlight().draw(*g_app.fonts().ttffont, use_str, obj->get_pos().x, obj->get_pos().y - 150, 1000);
+    g_app.fonts().ttffont->draw(sc.highlight(), use_str, obj->get_pos().x, obj->get_pos().y - 150, 1000);
   }
 
   // Draw weapon at the 'Weapon' attachment point

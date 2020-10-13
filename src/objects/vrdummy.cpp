@@ -55,7 +55,7 @@ VRDummy::draw(SceneContext& sc)
   sprite.draw(sc.highlight(), glm::vec2(0, 0), 1200.0f);
   sc.highlight().pop_modelview();
 
-  sc.highlight().draw(highlight, pos, 1500.0f);
+  highlight.draw(sc.highlight(), pos, 1500.0f);
 }
 
 void

@@ -28,20 +28,18 @@
 #include "display/scene_context.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "math/line.hpp"
-#include "sprite2d/sprite.hpp"
 
 #include "scenegraph/control_drawable.hpp"
 #include "scenegraph/fill_screen_drawable.hpp"
 #include "scenegraph/fill_screen_pattern_drawable.hpp"
 #include "scenegraph/surface_drawable.hpp"
 #include "scenegraph/surface_quad_drawable.hpp"
-#include "scenegraph/text_drawable.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
 
 struct DrawablesSorter
 {
-  bool operator()(Drawable* a, Drawable* b) {
+  bool operator()(std::unique_ptr<Drawable> const& a, std::unique_ptr<Drawable> const& b) {
     return a->get_z_pos() < b->get_z_pos();
   }
 };
@@ -72,44 +70,28 @@ DrawingContext::render()
 void
 DrawingContext::clear()
 {
-  for(Drawables::iterator i = drawingrequests.begin(); i != drawingrequests.end(); ++i)
-  {
-    delete *i;
-  }
   drawingrequests.clear();
 }
 
 void
-DrawingContext::draw(Drawable* request)
+DrawingContext::draw(std::unique_ptr<Drawable> request)
 {
-  drawingrequests.push_back(request);
-}
-
-void
-DrawingContext::draw(const Sprite& sprite, const glm::vec2& pos, float z_pos)
-{
-  draw(sprite.get_current_surface(),
-       SurfaceDrawingParameters()
-       .set_pos(pos + sprite.get_offset() * sprite.get_scale())
-       .set_blend_func(sprite.get_blend_sfactor(), sprite.get_blend_dfactor())
-       .set_color(sprite.get_color())
-       .set_scale(sprite.get_scale()),
-       z_pos);
+  drawingrequests.push_back(std::move(request));
 }
 
 void
 DrawingContext::draw(SurfacePtr surface, const glm::vec2& pos, const Quad& quad,
                      const DrawingParameters& params, float z_pos)
 {
-  draw(new SurfaceQuadDrawable(surface, pos, quad, params, z_pos,
-                               modelview_stack.back()));
+  draw(std::make_unique<SurfaceQuadDrawable>(surface, pos, quad, params, z_pos,
+                                             modelview_stack.back()));
 }
 
 void
 DrawingContext::draw(SurfacePtr surface, const SurfaceDrawingParameters& params, float z_pos)
 {
-  draw(new SurfaceDrawable(surface, params, z_pos,
-                           modelview_stack.back()));
+  draw(std::make_unique<SurfaceDrawable>(surface, params, z_pos,
+                                         modelview_stack.back()));
 }
 
 void
@@ -121,33 +103,27 @@ DrawingContext::draw(SurfacePtr surface, const glm::vec2& pos, float z, float al
 void
 DrawingContext::draw(SurfacePtr surface, float x, float y, float z, float )
 {
-  draw(new SurfaceDrawable(surface,
-                           SurfaceDrawingParameters().set_pos(glm::vec2(x, y)),
-                           z, modelview_stack.back()));
-}
-
-void
-DrawingContext::draw(TTFFont& font, const std::string& text, float x, float y, float z)
-{
-  draw(new TextDrawable(font, text, glm::vec2(x, y), z, modelview_stack.back()));
+  draw(std::make_unique<SurfaceDrawable>(surface,
+                                         SurfaceDrawingParameters().set_pos(glm::vec2(x, y)),
+                                         z, modelview_stack.back()));
 }
 
 void
 DrawingContext::draw_control(SurfacePtr surface, const glm::vec2& pos, float angle, float z_pos)
 {
-  draw(new ControlDrawable(surface, pos, angle, z_pos, modelview_stack.back()));
+  draw(std::make_unique<ControlDrawable>(surface, pos, angle, z_pos, modelview_stack.back()));
 }
 
 void
 DrawingContext::fill_screen(const Color& color)
 {
-  draw(new FillScreenDrawable(color));
+  draw(std::make_unique<FillScreenDrawable>(color));
 }
 
 void
 DrawingContext::fill_pattern(TexturePtr pattern, const glm::vec2& offset)
 {
-  draw(new FillScreenPatternDrawable(pattern, offset));
+  draw(std::make_unique<FillScreenPatternDrawable>(pattern, offset));
 }
 
 void
@@ -239,7 +215,7 @@ DrawingContext::get_clip_rect()
 {
   // FIXME: Need to check the modelview matrix
   return Rectf(glm::vec2(glm::value_ptr(modelview_stack.back())[12],
-                        glm::value_ptr(modelview_stack.back())[13]),
+                         glm::value_ptr(modelview_stack.back())[13]),
                Sizef(800, 600));
 }
 
@@ -252,7 +228,7 @@ DrawingContext::draw_line(const Line& line, const Color& color, float z_pos)
 void
 DrawingContext::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color, float z_pos)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0), z_pos, modelview_stack.back());
+  auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_LINES);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -263,13 +239,13 @@ DrawingContext::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Co
   array->color(color);
   array->vertex(pos2.x, pos2.y);
 
-  draw(array);
+  draw(std::move(array));
 }
 
 void
 DrawingContext::draw_quad(const Quad& quad, const Color& color, float z_pos)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0), z_pos, modelview_stack.back());
+  auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_LINE_LOOP);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -286,13 +262,13 @@ DrawingContext::draw_quad(const Quad& quad, const Color& color, float z_pos)
   array->color(color);
   array->vertex(quad.p4.x, quad.p4.y);
 
-  draw(array);
+  draw(std::move(array));
 }
 
 void
 DrawingContext::fill_quad(const Quad& quad, const Color& color, float z_pos)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0), z_pos, modelview_stack.back());
+  auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_QUADS);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -309,13 +285,13 @@ DrawingContext::fill_quad(const Quad& quad, const Color& color, float z_pos)
   array->color(color);
   array->vertex(quad.p4.x, quad.p4.y);
 
-  draw(array);
+  draw(std::move(array));
 }
 
 void
 DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0), z_pos, modelview_stack.back());
+  auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_LINE_LOOP);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -332,13 +308,13 @@ DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
   array->color(color);
   array->vertex(rect.left(), rect.bottom());
 
-  draw(array);
+  draw(std::move(array));
 }
 
 void
 DrawingContext::fill_rect(const Rectf& rect, const Color& color, float z_pos)
 {
-  VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0, 0), z_pos, modelview_stack.back());
+  auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
   array->set_mode(GL_QUADS);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -355,7 +331,7 @@ DrawingContext::fill_rect(const Rectf& rect, const Color& color, float z_pos)
   array->color(color);
   array->vertex(rect.left(), rect.bottom());
 
-  draw(array);
+  draw(std::move(array));
 }
 
 /* EOF */

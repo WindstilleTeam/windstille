@@ -37,7 +37,7 @@ SpriteObjectModel::~SpriteObjectModel()
 void
 SpriteObjectModel::draw(SceneContext& sc)
 {
-  sc.color().draw(sprite, get_world_pos());
+  sprite.draw(sc.color(), get_world_pos());
 }
 
 void

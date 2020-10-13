@@ -49,11 +49,11 @@ Shockwave::~Shockwave()
 void
 Shockwave::draw (SceneContext& sc)
 {
-  sc.highlight().draw(new ShockwaveDrawable(pos,
-                                            noise,
-                                            shader_program,
-                                            radius,
-                                            sc.color().get_modelview()));
+  sc.highlight().draw(std::make_unique<ShockwaveDrawable>(pos,
+                                                          noise,
+                                                          shader_program,
+                                                          radius,
+                                                          sc.color().get_modelview()));
 }
 
 void

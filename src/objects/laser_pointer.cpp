@@ -122,8 +122,8 @@ LaserPointer::draw(SceneContext& sc)
 
     glm::vec2 ray = target - pos;
 
-    VertexArrayDrawable* array = new VertexArrayDrawable(glm::vec2(0,0), 10000,
-                                                         sc.highlight().get_modelview());
+    auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0,0), 10000,
+                                                       sc.highlight().get_modelview());
     array->set_mode(GL_LINES);
     array->set_texture(noise);
     array->set_blend_func(GL_SRC_ALPHA, GL_ONE);
@@ -136,10 +136,11 @@ LaserPointer::draw(SceneContext& sc)
     array->texcoord(glm::length(target - pos)/256.0f, progress);
     array->vertex(ray.x, ray.y);
 
-    sc.highlight().draw(array);
+    sc.highlight().draw(std::move(array));
+
     laserpointer.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-    sc.highlight().draw(laserpointer, ray);
-    sc.light().draw(laserpointer_light, ray);
+    laserpointer.draw(sc.highlight(), ray);
+    laserpointer_light.draw(sc.light(), ray);
   }
 }
 

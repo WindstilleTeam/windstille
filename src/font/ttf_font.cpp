@@ -25,8 +25,10 @@
 #include <ft2build.h>
 
 #include "display/blitter.hpp"
+#include "display/drawing_context.hpp"
 #include "display/opengl_state.hpp"
 #include "display/software_surface.hpp"
+#include "font/text_drawable.hpp"
 #include "font/ttf_font.hpp"
 #include "math/point.hpp"
 
@@ -215,6 +217,12 @@ void
 TTFFont::draw_center(const glm::vec2& pos, const std::string& str, const Color& color)
 {
   draw(glm::vec2(pos.x - static_cast<float>(get_width(str))/2.0f, pos.y), str, color);
+}
+
+void
+TTFFont::draw(DrawingContext& ctx, const std::string& text, float x, float y, float z)
+{
+  ctx.draw(std::make_unique<TextDrawable>(*this, text, glm::vec2(x, y), z, ctx.get_modelview()));
 }
 
 int

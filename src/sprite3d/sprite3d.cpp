@@ -24,7 +24,7 @@
 #include "display/assert_gl.hpp"
 #include "display/opengl_state.hpp"
 #include "sprite3d/manager.hpp"
-#include "scenegraph/sprite3d_drawable.hpp"
+#include "sprite3d/sprite3d_drawable.hpp"
 
 using namespace sprite3d;
 
@@ -331,13 +331,13 @@ Sprite3D::update(float delta)
 void
 Sprite3D::draw(DrawingContext& dc, const glm::vec2& pos, float z_pos)
 {
-  dc.draw(new Sprite3DDrawable(*this, pos, z_pos, dc.get_modelview()));
+  dc.draw(std::make_unique<Sprite3DDrawable>(*this, pos, z_pos, dc.get_modelview()));
 }
 
 void
 Sprite3D::draw(DrawingContext& dc, const glm::mat4& , float )
 {
-  dc.draw(new Sprite3DDrawable(*this, glm::vec2(0, 0), 0.0f, dc.get_modelview()));
+  dc.draw(std::make_unique<Sprite3DDrawable>(*this, glm::vec2(0, 0), 0.0f, dc.get_modelview()));
 }
 
 static inline float interpolate(float v1, float v2, float t)

@@ -91,7 +91,7 @@ Box::update(float delta)
 void
 Box::draw(SceneContext& sc)
 {
-  sc.color().draw(sprite, pos, 10.0f);
+  sprite.draw(sc.color(), pos, 10.0f);
 }
 
 /* EOF */

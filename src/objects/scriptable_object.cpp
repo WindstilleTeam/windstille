@@ -83,14 +83,14 @@ ScriptableObject::draw(SceneContext& sc)
     flash();
 
   if (sprite)
-    sc.color().draw(sprite, tmp_pos, z_pos);
+    sprite.draw(sc.color(), tmp_pos, z_pos);
 
   if (highlight)
-    sc.highlight().draw(highlight, tmp_pos, z_pos);
+    highlight.draw(sc.highlight(), tmp_pos, z_pos);
 
   if (light)
   {
-    sc.light().draw(light, tmp_pos, z_pos);
+    light.draw(sc.light(), tmp_pos, z_pos);
   }
 }
 

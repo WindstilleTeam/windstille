@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_TEXT_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_TEXT_DRAWABLE_HPP
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include "app/app.hpp"
 #include "font/fonts.hpp"
 

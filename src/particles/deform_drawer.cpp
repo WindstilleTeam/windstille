@@ -183,8 +183,8 @@ DeformDrawer::~DeformDrawer()
 void
 DeformDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
 {
-  dc.draw(new DeformDrawerRequest(glm::vec2(400, 300), 1200, dc.get_modelview(),
-                                  framebuffer, surface, psys, shader_program));
+  dc.draw(std::make_unique<DeformDrawerRequest>(glm::vec2(400, 300), 1200, dc.get_modelview(),
+                                                framebuffer, surface, psys, shader_program));
 }
 
 /* EOF */
