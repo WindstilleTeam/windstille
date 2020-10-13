@@ -30,8 +30,6 @@
 #include <prio/reader_mapping.hpp>
 #include <prio/reader_object.hpp>
 
-#include "math/quaternion.hpp"
-
 class Color;
 
 using ReaderCollection = prio::ReaderCollection;
@@ -42,7 +40,7 @@ using ReaderObject = prio::ReaderObject;
 namespace prio {
 
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::mat4& value);
-template<> bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& value);
+template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::quat& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, Color& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec2& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec3& value);

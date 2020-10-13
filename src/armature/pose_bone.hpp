@@ -21,15 +21,14 @@
 
 #include <string>
 
-#include "math/quaternion.hpp"
+#include <glm/gtc/quaternion.hpp>
 
-/** */
 class PoseBone
 {
 public:
   std::string name;
   int         bone_id;
-  Quaternion  quat;
+  glm::quat  quat;
 
   PoseBone()
     : name(),

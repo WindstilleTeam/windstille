@@ -252,15 +252,15 @@ Sprite3D::get_attachment_point_matrix(PointID id) const
   const AttachmentPointPosition& point2
     = frame2.action->frames[frame2.frame].attachment_points[id];
 
-  Quaternion rotquat = Quaternion(0, 0, 1, 0);
-  Quaternion quat1 = point1.quat;
+  glm::quat rotquat = glm::quat(0, 0, 1, 0);
+  glm::quat quat1 = point1.quat;
   glm::vec3 pos1 = point1.pos;
   if(frame1.rot) {
     quat1 = rotquat * quat1;
     pos1.x = -pos1.x;
     pos1.z = -pos1.z;
   }
-  Quaternion quat2 = point2.quat;
+  glm::quat quat2 = point2.quat;
   glm::vec3 pos2 = point2.pos;
   if(frame2.rot) {
     quat2 = rotquat * quat2;
@@ -269,7 +269,7 @@ Sprite3D::get_attachment_point_matrix(PointID id) const
   }
 
   glm::vec3 pos = pos1 + (pos2 - pos1) * blend_time;
-  Quaternion quat = glm::mix(quat1, quat2, blend_time);
+  glm::quat quat = glm::mix(quat1, quat2, blend_time);
   glm::mat4 result(1.0f);
   result = glm::translate(result, pos);
   result = result * glm::toMat4(quat);

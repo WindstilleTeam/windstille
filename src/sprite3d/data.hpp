@@ -19,12 +19,13 @@
 #ifndef HEADER_WINDSTILLE_SPRITE3D_DATA_HPP
 #define HEADER_WINDSTILLE_SPRITE3D_DATA_HPP
 
-#include <GL/glew.h>
-#include <vector>
 #include <stdint.h>
+#include <vector>
+
+#include <GL/glew.h>
+#include <glm/gtc/quaternion.hpp>
 
 #include "display/texture.hpp"
-#include "math/quaternion.hpp"
 
 namespace sprite3d {
 
@@ -89,7 +90,7 @@ struct Mesh
 struct AttachmentPointPosition
 {
   glm::vec3    pos;  // x, y, z
-  Quaternion quat; // w, x, y, z
+  glm::quat quat; // w, x, y, z
 
   AttachmentPointPosition()
     : pos(),

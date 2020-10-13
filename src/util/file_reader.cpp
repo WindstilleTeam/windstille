@@ -21,7 +21,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glm/glm.hpp>
-#include "math/quaternion.hpp"
+
 #include "display/color.hpp"
 #include "util/file_reader.hpp"
 
@@ -55,7 +55,7 @@ bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec3& valu
 }
 
 template<>
-bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& value)
+bool read_custom(ReaderMapping const& map, std::string_view key, glm::quat& value)
 {
   std::vector<float> floats;
   if (map.read(key, floats) && floats.size() == 4) {

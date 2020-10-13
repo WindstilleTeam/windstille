@@ -44,7 +44,7 @@ Sprite3DView::Sprite3DView()
 
   sprite.set_action(actions[current_action]);
 
-  rotation = Quaternion();
+  rotation = glm::quat();
 
   scale = 2.0f;
 }
@@ -146,16 +146,16 @@ Sprite3DView::update(float delta, const Controller& controller)
     sprite.set_action(actions[current_action]);
   }
 
-  rotation = Quaternion(-controller.get_axis_state(X2_AXIS) * delta * 4.0f,
+  rotation = glm::quat(-controller.get_axis_state(X2_AXIS) * delta * 4.0f,
                         glm::vec3(0.0f, 1.0f, 0.0f)) * rotation;
-  rotation = Quaternion(controller.get_axis_state(Y2_AXIS) * delta * 4.0f,
+  rotation = glm::quat(controller.get_axis_state(Y2_AXIS) * delta * 4.0f,
                         glm::vec3(1.0f, 0.0f, 0.0f)) * rotation;
-  rotation = Quaternion(controller.get_axis_state(X_AXIS) * delta * 4.0f,
+  rotation = glm::quat(controller.get_axis_state(X_AXIS) * delta * 4.0f,
                         glm::vec3(0.0f, 0.0f, 1.0f)) * rotation;
 
   if (controller.get_button_state(VIEW_CENTER_BUTTON))
   {
-    rotation = Quaternion();
+    rotation = glm::quat();
   }
 
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||

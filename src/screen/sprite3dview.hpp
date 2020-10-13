@@ -37,7 +37,7 @@ private:
   std::vector<std::string> actions;
   int current_action;
 
-  Quaternion rotation;
+  glm::quat rotation;
   float scale;
 
 public:

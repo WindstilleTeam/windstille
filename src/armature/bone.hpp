@@ -22,9 +22,8 @@
 #include <string>
 #include <vector>
 
-#include "math/quaternion.hpp"
+#include <glm/gtc/quaternion.hpp>
 
-/** */
 class Bone
 {
 private:
@@ -39,7 +38,7 @@ public:
 
   float      length;
 
-  Quaternion quat;
+  glm::quat quat;
   glm::vec3    offset;
 
   glm::mat4     render_matrix;
