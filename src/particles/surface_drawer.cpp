@@ -20,6 +20,7 @@
 
 #include <iostream>
 
+#include "app/app.hpp"
 #include "display/drawing_context.hpp"
 #include "display/surface_manager.hpp"
 #include "particles/particle_system.hpp"
@@ -69,11 +70,12 @@ static GLenum string2blendfunc(const std::string& str)
   }
 }
 
-SurfaceDrawer::SurfaceDrawer(ReaderMapping const& props)
-  : surface(),
-    blendfunc_src(),
-    blendfunc_dest(),
-    buffer()
+SurfaceDrawer::SurfaceDrawer(ReaderMapping const& props,
+                             SurfaceManager& surface_manager) :
+  surface(),
+  blendfunc_src(),
+  blendfunc_dest(),
+  buffer()
 {
   std::string blendfunc_src_str = "src_alpha";
   std::string blendfunc_dst_str = "one_minus_src_alpha";
@@ -83,7 +85,7 @@ SurfaceDrawer::SurfaceDrawer(ReaderMapping const& props)
   props.read("blendfunc-src", blendfunc_src_str);
   props.read("blendfunc-dst", blendfunc_dst_str);
 
-  surface = SurfaceManager::current()->get(Pathname(surface_file));
+  surface = surface_manager.get(Pathname(surface_file));
 
   blendfunc_src  = string2blendfunc(blendfunc_src_str);
   blendfunc_dest = string2blendfunc(blendfunc_dst_str);

@@ -22,10 +22,13 @@
 #include <math.h>
 
 #include "plugins/jpeg.hpp"
+#include "display/surface_manager.hpp"
 #include "display/surface_drawing_parameters.hpp"
 
-SlideObject::SlideObject(std::filesystem::path const& filename) :
+SlideObject::SlideObject(std::filesystem::path const& filename,
+                         SurfaceManager& surface_manager) :
   m_filename(filename),
+  m_surface_manager(surface_manager),
   m_size(0.0f, 0.0f),
   m_surface(),
   m_begin(0.0f),
@@ -53,7 +56,7 @@ SlideObject::draw(float relative_time)
 {
   if (!m_surface)
   {
-    m_surface = Surface::create(m_filename);
+    m_surface = m_surface_manager.get(m_filename);
   }
 
   SlidePathNode node = m_path.get(relative_time);

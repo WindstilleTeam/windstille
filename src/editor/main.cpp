@@ -26,13 +26,14 @@
 #include <gtkglmm.h>
 #include <argparser.hpp>
 
-#include "util/system.hpp"
-#include "sprite2d/manager.hpp"
-#include "display/texture_manager.hpp"
 #include "display/surface_manager.hpp"
+#include "display/texture_manager.hpp"
+#include "editor/app.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/main.hpp"
+#include "sprite2d/manager.hpp"
 #include "util/log.hpp"
+#include "util/system.hpp"
 
 int
 WindstilleEditor::main(int argc, char** argv)
@@ -92,7 +93,10 @@ WindstilleEditor::main(int argc, char** argv)
 
     TextureManager texture_manager;
     SurfaceManager surface_manager;
-    SpriteManager  sprite2d_manager;
+    SpriteManager  sprite2d_manager(surface_manager);
+
+    g_app.m_texture_manager = &texture_manager;
+    g_app.m_surface_manager = &surface_manager;
 
     Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
     icon_theme->append_search_path(Pathname("editor", Pathname::kDataPath).get_sys_path());

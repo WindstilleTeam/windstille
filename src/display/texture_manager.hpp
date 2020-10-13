@@ -24,14 +24,13 @@
 #include <GL/glew.h>
 
 #include "display/texture.hpp"
-#include "util/currenton.hpp"
 
 /** This class manages a map of image files to OpenGL textures. */
-class TextureManager : public Currenton<TextureManager>
+class TextureManager final
 {
 public:
   TextureManager();
-  ~TextureManager() override;
+  ~TextureManager();
 
   /**
    * returns a texture containing the image specified with filename

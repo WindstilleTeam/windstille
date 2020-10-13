@@ -23,14 +23,21 @@
 
 #include "slideshow/slide_object.hpp"
 
+class TextureManager;
+class SurfaceManager;
+
 class SlideShow
 {
 private:
+  TextureManager& m_texture_manager;
+  SurfaceManager& m_surface_manager;
+
   std::vector<SlideObjectPtr> m_objects;
   float m_length;
 
 public:
-  SlideShow();
+  SlideShow(TextureManager& texture_manager,
+            SurfaceManager& surface_manager);
 
   void draw(float time, bool verbose);
 

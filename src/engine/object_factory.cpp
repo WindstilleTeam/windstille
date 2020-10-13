@@ -18,6 +18,7 @@
 
 #include "engine/object_factory.hpp"
 
+#include "app/app.hpp"
 #include "objects/background_gradient.hpp"
 #include "objects/box.hpp"
 #include "objects/character.hpp"
@@ -112,7 +113,7 @@ ObjectFactory::create(ReaderObject const& reader_obj)
   }
   else if (reader_obj.get_name() == "particle-systems")
   {
-    return GameObjectHandle(new ParticleSystems(reader_obj.get_mapping()));
+    return GameObjectHandle(new ParticleSystems(reader_obj.get_mapping(), g_app.surface()));
   }
   else
   {

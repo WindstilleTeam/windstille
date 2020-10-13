@@ -20,10 +20,10 @@ int main()
 
   SurfaceManager surface_manager;
 
-  SurfacePtr darkness = Surface::create("darkness.png");
-  SurfacePtr light = Surface::create("light.png");
-  SurfacePtr objects = Surface::create("objects.png");
-  SurfacePtr shadow  = Surface::create("objects_shadow.png");
+  SurfacePtr darkness = surface_manager.get("darkness.png");
+  SurfacePtr light = surface_manager.get("light.png");
+  SurfacePtr objects = surface_manager.get("objects.png");
+  SurfacePtr shadow  = surface_manager.get("objects_shadow.png");
 
   bool quit = false;
   glm::vec2 object_pos(100, 0);

@@ -22,18 +22,17 @@
 #include <filesystem>
 #include <memory>
 
-#include "util/currenton.hpp"
 #include "math/size.hpp"
 
 class OpenGLWindowImpl;
 
-class OpenGLWindow : public Currenton<OpenGLWindow>
+class OpenGLWindow final
 {
 public:
   OpenGLWindow(const std::string& title,
                const Size& size, const Size& aspect,
                bool fullscreen = false, int anti_aliasing = 0);
-  ~OpenGLWindow() override;
+  ~OpenGLWindow();
 
   void set_icon(std::filesystem::path const& filename);
 

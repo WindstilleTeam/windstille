@@ -18,17 +18,12 @@
 
 #include "display/surface.hpp"
 
+#include "app/app.hpp"
 #include "display/opengl_state.hpp"
 #include "math/quad.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/surface_manager.hpp"
 
-SurfacePtr
-Surface::create(std::filesystem::path const& filename)
-{
-  return SurfaceManager::current()->get(filename);
-}
-
 SurfacePtr
 Surface::create(TexturePtr texture, const Rectf& uv, const Sizef& size)
 {

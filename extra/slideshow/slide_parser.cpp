@@ -156,7 +156,8 @@ NodeZoom::get(const Sizef& scr, const Sizef& img) const
   }
 }
 
-SlideParser::SlideParser(SlideShow& slideshow, const Sizef& screen_size) :
+SlideParser::SlideParser(SlideShow& slideshow, const Sizef& screen_size,
+                         SurfaceManager& surface_manager) :
   m_slideshow(slideshow),
   m_screen_size(screen_size),
   m_context(),
@@ -170,7 +171,8 @@ SlideParser::SlideParser(SlideShow& slideshow, const Sizef& screen_size) :
   m_node_has_zoom(false),
   //m_path_node(),
   m_node(),
-  m_variables()
+  m_variables(),
+  m_surface_manager(surface_manager)
 {
 }
 
@@ -332,7 +334,7 @@ SlideParser::handle_image(const std::vector<std::string>& args)
 
     std::cout << ";; time = " << m_time << std::endl;
     std::cout << "(image \"" << args[1] << "\")" << std::endl;
-    m_image = SlideObjectPtr(new SlideObject(args[1]));
+    m_image = SlideObjectPtr(new SlideObject(args[1], m_surface_manager));
 
     if (m_slideshow.size() != 0)
     {

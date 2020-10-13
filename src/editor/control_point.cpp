@@ -21,13 +21,15 @@
 #include <glm/gtx/io.hpp>
 
 #include "display/scene_context.hpp"
+#include "display/surface_manager.hpp"
+#include "editor/app.hpp"
 #include "editor/control_point.hpp"
 #include "util/pathname.hpp"
 
 ControlPointHandle
 ControlPoint::create(const glm::vec2& pos)
 {
-  return ControlPointHandle(new ControlPoint(Surface::create(Pathname("editor/handle.png")), pos));
+  return ControlPointHandle(new ControlPoint(g_app.surface().get(Pathname("editor/handle.png")), pos));
 }
 
 ControlPoint::ControlPoint(SurfacePtr surface_, const glm::vec2& pos_) :

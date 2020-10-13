@@ -47,9 +47,9 @@ App::run(int argc, char* argv[])
   TextureManager texture_manager;
   SurfaceManager surface_manager;
 
-  SurfacePtr surface1 = Surface::create(argv[1]);
-  SurfacePtr surface2 = Surface::create(argv[2]);
-  SurfacePtr surface3 = Surface::create(argv[3]);
+  SurfacePtr surface1 = surface_manager.get(argv[1]);
+  SurfacePtr surface2 = surface_manager.get(argv[2]);
+  SurfacePtr surface3 = surface_manager.get(argv[3]);
 
   ShaderProgramPtr prog = ShaderProgram::create();
 

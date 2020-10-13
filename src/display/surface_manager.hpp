@@ -24,16 +24,13 @@
 #include <vector>
 #include <map>
 
-#include "util/currenton.hpp"
 #include "display/texture.hpp"
 #include "display/surface.hpp"
 
 class TexturePacker;
 
-/**
- * This class keeps a list of loaded surfaces and manages loading new ones
- */
-class SurfaceManager : public Currenton<SurfaceManager>
+/** This class keeps a list of loaded surfaces and manages loading new ones */
+class SurfaceManager final
 {
 private:
   std::unique_ptr<TexturePacker> texture_packer;
@@ -43,7 +40,7 @@ private:
 
 public:
   SurfaceManager();
-  ~SurfaceManager() override;
+  ~SurfaceManager();
 
   /** returns a surface containing the image specified with filename */
   SurfacePtr get(std::filesystem::path const& filename);

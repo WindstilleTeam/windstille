@@ -78,7 +78,7 @@ WindstilleMain::main(int argc, char** argv)
       SoundManager      sound_manager;
       TextureManager    texture_manager;
       SurfaceManager    surface_manager;
-      SpriteManager     sprite_manager;
+      SpriteManager     sprite_manager(surface_manager);
       sprite3d::Manager sprite3d_manager;
       ScriptManager     script_manager;
       wstinput::ControllerDescription controller_description = get_windstille_controller_description();
@@ -88,6 +88,9 @@ WindstilleMain::main(int argc, char** argv)
 
       g_app.m_sound_manager = &sound_manager;
       g_app.m_input_manager = &input_manager;
+      g_app.m_texture_manager = &texture_manager;
+      g_app.m_surface_manager = &surface_manager;
+      g_app.m_window = &window;
 
       window.set_icon(Pathname("icon.png"));
       texture_manager.set_fallback(Pathname("images/404.png"));

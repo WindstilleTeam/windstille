@@ -440,7 +440,7 @@ void
 MenuManager::menu_fullscreen(int i)
 {
   config.set_bool("fullscreen", i);
-  OpenGLWindow::current()->set_fullscreen(config.get_bool("fullscreen"));
+  g_app.window().set_fullscreen(config.get_bool("fullscreen"));
 }
 
 void
@@ -506,7 +506,7 @@ void
 MenuManager::menu_gamma(int i)
 {
   float gamma = static_cast<float>(i) / 100.0f;
-  OpenGLWindow::current()->set_gamma(gamma, gamma, gamma);
+  g_app.window().set_gamma(gamma, gamma, gamma);
 }
 
 void

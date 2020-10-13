@@ -17,11 +17,13 @@
 */
 
 #include "display/scene_context.hpp"
+#include "display/surface_manager.hpp"
+#include "editor/app.hpp"
 #include "editor/decal_rotate_control_point.hpp"
 #include "util/pathname.hpp"
 
 DecalRotateControlPoint::DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const glm::vec2& pos_) :
-  ControlPoint(Surface::create(Pathname("editor/rotate_handle.png")), pos_),
+  ControlPoint(g_app.surface().get(Pathname("editor/rotate_handle.png")), pos_),
   object(object_),
   ctrl_angle(ctrl_angle_),
   orig_angle(object->get_angle()),

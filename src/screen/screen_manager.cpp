@@ -129,7 +129,7 @@ ScreenManager::draw()
   if (config.get_bool("show-fps"))
     draw_fps();
 
-  OpenGLWindow::current()->swap_buffers();
+  g_app.window().swap_buffers();
 }
 
 void
@@ -231,7 +231,7 @@ ScreenManager::poll_events()
 
             case SDLK_F11:
               config.set_bool("fullscreen", !config.get_bool("fullscreen"));
-              OpenGLWindow::current()->set_fullscreen(config.get_bool("fullscreen"));
+              g_app.window().set_fullscreen(config.get_bool("fullscreen"));
               break;
 
             case SDLK_F12:

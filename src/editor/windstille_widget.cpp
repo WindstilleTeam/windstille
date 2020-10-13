@@ -27,6 +27,7 @@
 #include "display/surface.hpp"
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
+#include "editor/app.hpp"
 #include "editor/document.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/functor_command.hpp"
@@ -165,7 +166,7 @@ WindstilleWidget::on_realize()
       sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
     }
 
-    background_pattern = Texture::create(Pathname("editor/background_layer.png"));
+    background_pattern = g_app.texture().get(Pathname("editor/background_layer.png"));
     background_pattern->set_wrap(GL_REPEAT);
 
     glViewport(0, 0, get_width(), get_height());
@@ -430,7 +431,7 @@ WindstilleWidget::key_press(GdkEventKey* ev)
       break;
 
     case GDK_s:
-      SurfaceManager::current()->save_all_as_png();
+      g_app.surface().save_all_as_png();
       break;
 
     case GDK_F5: // force a rebuild of the scenegraph

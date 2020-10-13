@@ -176,7 +176,7 @@ App::run(int argc, char* argv[])
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
 
-  SlideShow slide_show;
+  SlideShow slide_show(texture_manager, surface_manager);
 
   for(std::vector<std::string>::iterator i = m_files.begin(); i != m_files.end(); ++i)
   {

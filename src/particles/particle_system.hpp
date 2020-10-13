@@ -32,6 +32,7 @@ class SceneContext;
 class Randomizer;
 struct Particle;
 class ParticleSystem;
+class SurfaceManager;
 
 struct Particle
 {
@@ -99,7 +100,7 @@ private:
 
 public:
   ParticleSystem();
-  ParticleSystem(ReaderMapping const& props);
+  ParticleSystem(ReaderMapping const& props, SurfaceManager& surface_manager);
   ~ParticleSystem();
 
   void set_drawer(Drawer*);

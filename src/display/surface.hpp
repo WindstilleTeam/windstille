@@ -24,6 +24,7 @@
 
 class SurfaceDrawingParameters;
 class Surface;
+
 typedef std::shared_ptr<Surface> SurfacePtr;
 
 /**
@@ -35,8 +36,6 @@ typedef std::shared_ptr<Surface> SurfacePtr;
 class Surface
 {
 public:
-  static SurfacePtr create(std::filesystem::path const& filename);
-
   /**
    * Create a new Surface object from a Texture
    * @param texture The Texture to use

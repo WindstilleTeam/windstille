@@ -21,7 +21,8 @@
 
 #include "sprite2d/data.hpp"
 
-SpriteManager::SpriteManager() :
+SpriteManager::SpriteManager(SurfaceManager& surface_manager) :
+  m_surface_manager(surface_manager),
   datas()
 {
 }
@@ -40,7 +41,7 @@ SpriteManager::create_data(std::filesystem::path const& filename)
   }
   else
   {
-    SpriteDataPtr data(new SpriteData(filename));
+    SpriteDataPtr data(new SpriteData(filename, m_surface_manager));
     datas.insert(std::make_pair(filename, data));
     return data;
   }

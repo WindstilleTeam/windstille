@@ -18,14 +18,16 @@
 
 #include "objects/nightvision.hpp"
 
+#include "app/app.hpp"
 #include "display/display.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include "display/texture_manager.hpp"
 #include "math/random.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 #include "util/pathname.hpp"
 
 Nightvision::Nightvision(ReaderMapping const& props) :
   nightvision(Pathname("images/nightvision.sprite")),
-  noise(Texture::create(Pathname("images/noise.png")))
+  noise(g_app.texture().get(Pathname("images/noise.png")))
 {
   name = "nightvision";
   noise->set_wrap(GL_REPEAT);

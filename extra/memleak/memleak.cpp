@@ -91,15 +91,15 @@ int memleak_main(int argc, char* argv[])
       }
     }
 
-    surface = Surface::create(argv[1]);
+    surface = surface_manager.get(argv[1]);
 
     surface->draw(glm::vec2(0.0f, 0.0f));
     window.swap_buffers();
     SDL_Delay(10);
 
     surface.reset();
-    SurfaceManager::current()->cleanup();
-    TextureManager::current()->cleanup();
+    surface_manager.cleanup();
+    texture_manager.cleanup();
   }
 
   return 0;

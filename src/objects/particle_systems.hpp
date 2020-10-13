@@ -27,6 +27,7 @@
 
 class ParticleSystem;
 class ParticleSystemDrawable;
+class SurfaceManager;
 
 class ParticleSystems : public GameObject
 {
@@ -38,7 +39,7 @@ private:
   Drawables m_drawables;
 
 public:
-  ParticleSystems(ReaderMapping const& reader);
+  ParticleSystems(ReaderMapping const& reader, SurfaceManager& surface_manager);
 
   void update (float delta) override;
 

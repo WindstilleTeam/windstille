@@ -24,6 +24,7 @@
 #include <errno.h>
 #include <stdexcept>
 
+#include "app/app.hpp"
 #include "util/util.hpp"
 #include "display/texture_manager.hpp"
 
@@ -76,7 +77,7 @@ Data::Data(std::filesystem::path const& filename) :
 
       std::filesystem::path path = filename.parent_path();
       path /= std::filesystem::path(texturename).filename();
-      mesh.texture = TextureManager::current()->get(path);
+      mesh.texture = g_app.texture().get(path);
 
       // read triangles
       mesh.vertex_indices.reserve(mesh.triangle_count * 3);

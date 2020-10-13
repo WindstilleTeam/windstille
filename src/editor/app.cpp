@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2007 Ingo Ruhnke <grumbel@gmail.com>
+**  Copyright (C) 2020 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,39 +16,30 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_ARMATURE_MODEL_HPP
-#define HEADER_WINDSTILLE_ARMATURE_MODEL_HPP
+#include "editor/app.hpp"
 
-#include <string>
-#include <vector>
+#include <assert.h>
 
-#include "util/file_reader.hpp"
+App g_app;
 
-class Mesh;
-class Armature;
-class TextureManager;
-
-/** */
-class Model
+App::App() :
+  m_surface_manager(nullptr),
+  m_texture_manager(nullptr)
 {
-private:
-  std::string name;
-  typedef std::vector<Mesh*> Meshes;
-  Meshes meshes;
+}
 
-public:
-  Model(ReaderDocument const& doc, const std::string& path,
-        TextureManager& texture_manager);
-  ~Model();
+SurfaceManager&
+App::surface() const
+{
+  assert(m_surface_manager != nullptr);
+  return *m_surface_manager;
+}
 
-  void draw();
-  void apply(Armature* armature);
-  void reset();
-private:
-  Model (const Model&);
-  Model& operator= (const Model&);
-};
-
-#endif
+TextureManager&
+App::texture() const
+{
+  assert(m_texture_manager != nullptr);
+  return *m_texture_manager;
+}
 
 /* EOF */

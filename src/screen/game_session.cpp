@@ -80,7 +80,7 @@ public:
   Screen* current_gui;
 
   GameSessionImpl()
-    : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),
+    : compositor(g_app.window().get_size(), Display::get_size()),
       sc(),
       fadeout_value(),
       fade_time(),

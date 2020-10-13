@@ -293,12 +293,12 @@ void set_console_font(const std::string& font, int size)
 
 void set_gamma(float g)
 {
-  OpenGLWindow::current()->set_gamma(g, g, g);
+  g_app.window().set_gamma(g, g, g);
 }
 
 void set_gamma_rgb(float r, float g, float b)
 {
-  OpenGLWindow::current()->set_gamma(r, g, b);
+  g_app.window().set_gamma(r, g, b);
 }
 
 void show_config()

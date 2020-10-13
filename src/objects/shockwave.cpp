@@ -18,14 +18,16 @@
 
 #include "objects/shockwave.hpp"
 
+#include "app/app.hpp"
 #include "display/opengl_state.hpp"
 #include "display/shader_object.hpp"
+#include "display/texture_manager.hpp"
 #include "scenegraph/shockwave_drawable.hpp"
 #include "util/pathname.hpp"
 
 Shockwave::Shockwave(ReaderMapping const& props) :
   pos(),
-  noise(Texture::create(Pathname("images/noise3.png"))),
+  noise(g_app.texture().get(Pathname("images/noise3.png"))),
   shader_program(ShaderProgram::create()),
   radius()
 {

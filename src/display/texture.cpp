@@ -24,6 +24,7 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "app/app.hpp"
 #include "math/rect.hpp"
 #include "display/software_surface.hpp"
 #include "display/opengl_state.hpp"
@@ -31,12 +32,6 @@
 #include "display/assert_gl.hpp"
 
 #pragma GCC diagnostic ignored "-Wold-style-cast"
-
-TexturePtr
-Texture::create(std::filesystem::path const& filename)
-{
-  return TextureManager::current()->get(filename);
-}
 
 TexturePtr
 Texture::create(SoftwareSurfacePtr image, GLint format)

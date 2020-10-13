@@ -16,11 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "objects/laser_pointer.hpp"
+
+#include "app/app.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
 #include "objects/player.hpp"
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
-#include "objects/laser_pointer.hpp"
+#include "display/texture_manager.hpp"
 
 LaserPointer::LaserPointer() :
   noise(),
@@ -29,7 +32,7 @@ LaserPointer::LaserPointer() :
   progress(),
   angle()
 {
-  noise = Texture::create(Pathname("images/noise2.png"));
+  noise = g_app.texture().get(Pathname("images/noise2.png"));
   laserpointer = Sprite(Pathname("images/laserpointer.sprite"));
   laserpointer_light = Sprite(Pathname("images/laserpointer_light.sprite"));
   laserpointer_light.set_blend_func(GL_SRC_ALPHA, GL_ONE);

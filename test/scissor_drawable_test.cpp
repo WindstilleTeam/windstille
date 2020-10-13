@@ -52,17 +52,17 @@ int app_main(int argc, char* argv[])
 
   std::shared_ptr<ScissorDrawable> scissor(new ScissorDrawable(Rect(200, 200, 400, 400)));
   std::shared_ptr<StencilDrawable> stencil(new StencilDrawable());
-  std::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")),
-                                                                 SurfaceDrawingParameters(), 0, glm::mat4(1.0f)));
+  std::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(surface_manager.get(Pathname("images/titlescreen.png")),
+                                                               SurfaceDrawingParameters(), 0, glm::mat4(1.0f)));
 
-  std::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")),
-                                                                  SurfaceDrawingParameters().set_pos(glm::vec2(-50.0f, -50.0f)), 0, glm::mat4(1.0f)));
-  std::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
-                                                                  SurfaceDrawingParameters(), 0, glm::mat4(1.0f)));
+  std::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(surface_manager.get(Pathname("images/titlescreen.png")),
+                                                                SurfaceDrawingParameters().set_pos(glm::vec2(-50.0f, -50.0f)), 0, glm::mat4(1.0f)));
+  std::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(surface_manager.get(Pathname("images/portrait.png")),
+                                                                SurfaceDrawingParameters(), 0, glm::mat4(1.0f)));
 
-  std::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
-                                                                  SurfaceDrawingParameters().set_pos(glm::vec2(-25.0f, 25.0f)),
-                                                                  0, glm::mat4(1.0f)));
+  std::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(surface_manager.get(Pathname("images/portrait.png")),
+                                                                SurfaceDrawingParameters().set_pos(glm::vec2(-25.0f, 25.0f)),
+                                                                0, glm::mat4(1.0f)));
   std::shared_ptr<StencilDrawable> stencil2(new StencilDrawable());
 
   if ((false))

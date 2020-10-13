@@ -20,6 +20,7 @@
 
 #include <wstinput/controller.hpp>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
@@ -29,7 +30,7 @@
 #include "util/pathname.hpp"
 
 Sprite3DView::Sprite3DView()
-  : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),
+  : compositor(g_app.window().get_size(), Display::get_size()),
     sc(),
     sprite(),
     actions(),

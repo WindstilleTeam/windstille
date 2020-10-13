@@ -19,11 +19,13 @@
 #include "editor/decal_scale_control_point.hpp"
 
 #include "display/scene_context.hpp"
+#include "display/surface_manager.hpp"
+#include "editor/app.hpp"
 #include "util/pathname.hpp"
 
 DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const glm::vec2& pos_,
                                                bool x_scale_, bool y_scale_) :
-  ControlPoint(Surface::create(Pathname("editor/scale_handle.png")), pos_),
+  ControlPoint(g_app.surface().get(Pathname("editor/scale_handle.png")), pos_),
   object(object_),
   ctrl_angle(ctrl_angle_),
   orig_scale(object_->get_scale()),

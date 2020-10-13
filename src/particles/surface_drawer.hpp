@@ -23,6 +23,7 @@
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 
+class SurfaceManager;
 class VertexArrayDrawable;
 
 class SurfaceDrawer : public Drawer
@@ -34,7 +35,7 @@ private:
   std::shared_ptr<VertexArrayDrawable> buffer;
 
 public:
-  SurfaceDrawer(ReaderMapping const& props);
+  SurfaceDrawer(ReaderMapping const& props, SurfaceManager& surface_manager);
   SurfaceDrawer(SurfacePtr surface);
   ~SurfaceDrawer() override;
 

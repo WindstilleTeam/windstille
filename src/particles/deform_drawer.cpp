@@ -166,9 +166,10 @@ public:
   bool needs_prepare() { return true; }
 };
 
-DeformDrawer::DeformDrawer(ReaderMapping const& /*props*/) :
+DeformDrawer::DeformDrawer(ReaderMapping const& /*props*/,
+                           SurfaceManager& surface_manager) :
   framebuffer(Framebuffer::create_with_texture(GL_TEXTURE_2D, 800, 600)),
-  surface(Surface::create(Pathname("images/particles/deform2.png"))),
+  surface(surface_manager.get(Pathname("images/particles/deform2.png"))),
   shader_program(ShaderProgram::create())
 {
   shader_program->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, "data/shader/particledeform.frag"));

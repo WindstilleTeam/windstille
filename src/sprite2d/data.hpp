@@ -25,6 +25,7 @@
 #include "util/util.hpp"
 #include "util/file_reader.hpp"
 #include "display/surface.hpp"
+#include "display/surface_manager.hpp"
 
 struct SpriteAction
 {
@@ -49,11 +50,14 @@ public:
 class SpriteData
 {
 private:
-  void parse(std::filesystem::path const& dir, ReaderMapping const& lisp);
-  SpriteAction* parse_action(std::filesystem::path const& dir, ReaderMapping const& reader);
+  void parse(std::filesystem::path const& dir, ReaderMapping const& lisp,
+             SurfaceManager& surface_manager);
+  SpriteAction* parse_action(std::filesystem::path const& dir, ReaderMapping const& reader,
+                             SurfaceManager& surface_manager);
 
 public:
-  SpriteData(std::filesystem::path const& filename);
+  SpriteData(std::filesystem::path const& filename,
+             SurfaceManager& surface_manager);
   virtual ~SpriteData();
 
   typedef std::vector<SpriteAction*> Actions;

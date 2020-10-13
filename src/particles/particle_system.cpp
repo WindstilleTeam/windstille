@@ -28,7 +28,8 @@
 #include "util/file_reader.hpp"
 #include "util/log.hpp"
 
-ParticleSystem::ParticleSystem(ReaderMapping const& props)
+ParticleSystem::ParticleSystem(ReaderMapping const& props,
+                               SurfaceManager& surface_manager)
   : particles(),
     life_time(1.0f),
     randomizer(new PointRandomizer()),
@@ -113,11 +114,11 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props)
     ReaderObject drawer_obj;
     if (props.read("drawer", drawer_obj)) {
       if (drawer_obj.get_name() == "surface-drawer") {
-        set_drawer(new SurfaceDrawer(drawer_obj.get_mapping()));
+        set_drawer(new SurfaceDrawer(drawer_obj.get_mapping(), surface_manager));
       } else if (drawer_obj.get_name() == "spark-drawer") {
         set_drawer(new SparkDrawer(drawer_obj.get_mapping()));
       } else if (drawer_obj.get_name() == "deform-drawer") {
-        set_drawer(new DeformDrawer(drawer_obj.get_mapping()));
+        set_drawer(new DeformDrawer(drawer_obj.get_mapping(), surface_manager));
       } else {
         std::cout << "Unknown drawer: " << drawer_obj.get_name() << std::endl;
       }

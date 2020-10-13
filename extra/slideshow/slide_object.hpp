@@ -25,10 +25,13 @@
 
 #include "slideshow/slide_path.hpp"
 
+class SurfaceManager;
+
 class SlideObject
 {
 private:
   std::filesystem::path m_filename;
+  SurfaceManager& m_surface_manager;
   Sizef m_size;
   SurfacePtr m_surface;
   float m_begin;
@@ -38,7 +41,8 @@ private:
   float m_fade_out_time;
 
 public:
-  SlideObject(const std::filesystem::path& filename);
+  SlideObject(const std::filesystem::path& filename,
+              SurfaceManager& surface_manager);
 
   void draw(float relative_time);
 

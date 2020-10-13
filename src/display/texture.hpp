@@ -36,9 +36,6 @@ typedef std::shared_ptr<Texture> TexturePtr;
 class Texture
 {
 public:
-  /** Load a texture from file */
-  static TexturePtr create(std::filesystem::path const& filename);
-
   /** Upload an SoftwareSurface onto an OpenGL texture. */
   static TexturePtr create(SoftwareSurfacePtr image, GLint format = GL_RGBA);
 

@@ -25,8 +25,11 @@
 App g_app;
 
 App::App() :
+  m_input_manager(nullptr),
   m_sound_manager(nullptr),
-  m_input_manager(nullptr)
+  m_surface_manager(nullptr),
+  m_texture_manager(nullptr),
+  m_window(nullptr)
 {
 }
 
@@ -42,6 +45,27 @@ App::input() const
 {
   assert(m_input_manager != nullptr);
   return *m_input_manager;
+}
+
+SurfaceManager&
+App::surface() const
+{
+  assert(m_surface_manager != nullptr);
+  return *m_surface_manager;
+}
+
+TextureManager&
+App::texture() const
+{
+  assert(m_texture_manager != nullptr);
+  return *m_texture_manager;
+}
+
+OpenGLWindow&
+App::window() const
+{
+  assert(m_window != nullptr);
+  return *m_window;
 }
 
 /* EOF */

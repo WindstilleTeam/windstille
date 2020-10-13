@@ -19,10 +19,14 @@
 #ifndef HEADER_WINDSTILLE_APP_APP_HPP
 #define HEADER_WINDSTILLE_APP_APP_HPP
 
-class SoundManager;
 namespace wstinput {
 class InputManagerSDL;
 } // namespace wstinput
+
+class SoundManager;
+class SurfaceManager;
+class TextureManager;
+class OpenGLWindow;
 
 class App
 {
@@ -30,12 +34,18 @@ class App
 public:
   App();
 
-  SoundManager& sound() const;
   wstinput::InputManagerSDL& input() const;
+  SoundManager& sound() const;
+  SurfaceManager& surface() const;
+  TextureManager& texture() const;
+  OpenGLWindow& window() const;
 
 private:
-  SoundManager* m_sound_manager;
   wstinput::InputManagerSDL* m_input_manager;
+  SoundManager* m_sound_manager;
+  SurfaceManager* m_surface_manager;
+  TextureManager* m_texture_manager;
+  OpenGLWindow* m_window;
 
 private:
   App(const App&) = delete;

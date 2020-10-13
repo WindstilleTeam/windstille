@@ -22,6 +22,7 @@
 
 #include <wstinput/controller.hpp>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "armature/pose.hpp"
 #include "screen/armature_test.hpp"
@@ -40,7 +41,7 @@ ArmatureTest::ArmatureTest()
     zrot(0.0f)
 {
   ReaderDocument const& model_doc = ReaderDocument::from_file(Pathname("armature/mesh.mesh").get_sys_path());
-  model.reset(new Model(model_doc, "armature/"));
+  model.reset(new Model(model_doc, "armature/", g_app.texture()));
 
   ReaderDocument const& armature_doc = ReaderDocument::from_file(Pathname("armature/armature.arm").get_sys_path());
   armature.reset(new Armature(armature_doc));

@@ -23,6 +23,7 @@
 
 #include <wstinput/controller.hpp>
 
+#include "app/app.hpp"
 #include "app/console.hpp"
 #include "app/controller_def.hpp"
 #include "app/controller_def.hpp"
@@ -293,7 +294,7 @@ Sprite2DView::next_image(int i)
   }
 
   SpriteManager::current()->cleanup();
-  SurfaceManager::current()->cleanup();
+  g_app.surface().cleanup();
 }
 
 void

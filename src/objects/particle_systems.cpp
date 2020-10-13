@@ -21,12 +21,14 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "app/app.hpp"
 #include "engine/sector.hpp"
 #include "particles/particle_system.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/particle_system_drawable.hpp"
 
-ParticleSystems::ParticleSystems(ReaderMapping const& reader) :
+ParticleSystems::ParticleSystems(ReaderMapping const& reader,
+                                 SurfaceManager& surface_manager) :
   m_systems(),
   m_drawables()
 {
@@ -48,7 +50,7 @@ ParticleSystems::ParticleSystems(ReaderMapping const& reader) :
     reader.read("particle-systems", particlesys_collection);
     for (ReaderObject const& item : particlesys_collection.get_objects()) {
       if (item.get_name() == "particle-system") {
-        std::shared_ptr<ParticleSystem> particle_system(new ParticleSystem(item.get_mapping()));
+        std::shared_ptr<ParticleSystem> particle_system(new ParticleSystem(item.get_mapping(), surface_manager));
         particle_system->set_pos(pos);
         m_systems.push_back(particle_system);
       }

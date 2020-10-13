@@ -18,9 +18,11 @@
 
 #include "objects/liquid.hpp"
 
-#include "scenegraph/vertex_array_drawable.hpp"
+#include "app/app.hpp"
+#include "display/texture_manager.hpp"
 #include "engine/sector.hpp"
 #include "scenegraph/scene_graph.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
 #define SAMPLES 5
 
@@ -56,7 +58,7 @@ Liquid::Liquid(ReaderMapping const& props) :
   for(int i = 50; i < 70 && i < int(heightfield1->size()); ++i)
     (*heightfield1)[i] += 0.0025f;
 
-  texture = Texture::create(Pathname("images/textures/water.png"));
+  texture = g_app.texture().get(Pathname("images/textures/water.png"));
   texture->set_wrap(GL_REPEAT);
 
   m_water_top.reset(new VertexArrayDrawable(glm::vec2(pos.x, pos.y), 10000,

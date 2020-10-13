@@ -24,7 +24,10 @@
 #include "display/texture_manager.hpp"
 #include "slideshow/slide_parser.hpp"
 
-SlideShow::SlideShow() :
+SlideShow::SlideShow(TextureManager& texture_manager,
+                     SurfaceManager& surface_manager) :
+  m_texture_manager(texture_manager),
+  m_surface_manager(surface_manager),
   m_objects(),
   m_length(0.0f)
 {
@@ -65,8 +68,8 @@ SlideShow::draw(float time, bool verbose)
 
   if (cleanup)
   {
-    SurfaceManager::current()->cleanup();
-    TextureManager::current()->cleanup();
+    m_surface_manager.cleanup();
+    m_texture_manager.cleanup();
   }
 }
 
@@ -99,7 +102,7 @@ SlideShow::clear()
 void
 SlideShow::load(const std::string& filename, const Sizef& aspect)
 {
-  SlideParser slide_parser(*this, aspect);
+  SlideParser slide_parser(*this, aspect, m_surface_manager);
   slide_parser.load_from_file(filename);
 }
 

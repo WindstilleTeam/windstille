@@ -30,6 +30,7 @@
 
 class Armature;
 class Bone;
+class TextureManager;
 
 struct VertexGroup
 {
@@ -91,7 +92,8 @@ private:
   GLenum blend_dfactor;
 
 public:
-  Mesh(ReaderMapping const& reader, const std::string& path);
+  Mesh(ReaderMapping const& reader, const std::string& path,
+       TextureManager& texture_manager);
   ~Mesh();
 
   void draw();

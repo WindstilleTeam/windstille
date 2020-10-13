@@ -1,7 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2005,2007 Matthias Braun <matze@braunis.de>,
-**                          Ingo Ruhnke <grumbel@gmail.com>
+**  Copyright (C) 2018 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -17,36 +16,31 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_SPRITE2D_MANAGER_HPP
-#define HEADER_WINDSTILLE_SPRITE2D_MANAGER_HPP
+#ifndef HEADER_WINDSTILLE_EDITOR_APP_HPP
+#define HEADER_WINDSTILLE_EDITOR_APP_HPP
 
-#include <filesystem>
-#include <map>
-#include <memory>
-
-#include "util/currenton.hpp"
-
-class SpriteData;
 class SurfaceManager;
+class TextureManager;
 
-typedef std::shared_ptr<SpriteData> SpriteDataPtr;
-
-class SpriteManager : public Currenton<SpriteManager>
+class App
 {
+  friend class WindstilleEditor;
 public:
-  SpriteManager(SurfaceManager& surface_manager);
-  ~SpriteManager() override;
+  App();
 
-  SpriteDataPtr create_data(std::filesystem::path const& filename);
-
-  /** Removes all cached Sprites that are no longer in use */
-  void cleanup();
+  SurfaceManager& surface() const;
+  TextureManager& texture() const;
 
 private:
-  SurfaceManager& m_surface_manager;
-  typedef std::map<std::filesystem::path, SpriteDataPtr> Datas;
-  Datas datas;
+  SurfaceManager* m_surface_manager;
+  TextureManager* m_texture_manager;
+
+private:
+  App(const App&) = delete;
+  App& operator=(const App&) = delete;
 };
+
+extern App g_app;
 
 #endif
 

@@ -25,18 +25,20 @@
 
 #include <wstinput/controller.hpp>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
 #include "display/graphic_context_state.hpp"
 #include "display/opengl_window.hpp"
+#include "display/texture_manager.hpp"
 #include "scenegraph/fill_screen_drawable.hpp"
 #include "scenegraph/fill_screen_pattern_drawable.hpp"
 #include "scenegraph/particle_system_drawable.hpp"
 #include "util/pathname.hpp"
 
 ParticleViewer::ParticleViewer()
-  : compositor(OpenGLWindow::current()->get_size(), Display::get_size()),
+  : compositor(g_app.window().get_size(), Display::get_size()),
     sc(),
     sg(),
     systems(),
@@ -73,7 +75,7 @@ ParticleViewer::load(const Pathname& filename)
 
   for (ReaderObject const& item : particlesys_col.get_objects()) {
     if (item.get_name() == "particle-system") {
-      systems.push_back(std::shared_ptr<ParticleSystem>(new ParticleSystem(item.get_mapping())));
+      systems.push_back(std::shared_ptr<ParticleSystem>(new ParticleSystem(item.get_mapping(), g_app.surface())));
     } else {
       log_error("unknown particle-system: {}", item.get_name());
     }
@@ -83,7 +85,7 @@ ParticleViewer::load(const Pathname& filename)
 
   {
     // Build the SceneGraph
-    TexturePtr pattern_texture = Texture::create(Pathname("images/greychess.png"));
+    TexturePtr pattern_texture = g_app.texture().get(Pathname("images/greychess.png"));
     pattern_texture->set_wrap(GL_REPEAT);
 
     m_background_drawable.reset(new FillScreenPatternDrawable(pattern_texture, glm::vec2()));

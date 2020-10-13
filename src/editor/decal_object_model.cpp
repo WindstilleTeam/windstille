@@ -24,6 +24,8 @@
 #include "display/scene_context.hpp"
 #include "display/surface.hpp"
 #include "display/surface_drawing_parameters.hpp"
+#include "display/surface_manager.hpp"
+#include "editor/app.hpp"
 #include "editor/decal_rotate_control_point.hpp"
 #include "editor/decal_scale_control_point.hpp"
 #include "editor/sector_model.hpp"
@@ -60,7 +62,7 @@ DecalObjectModel::DecalObjectModel(ReaderMapping const& reader) :
   reader.read("angle", angle);
   reader.read("hflip", hflip);
   reader.read("vflip", vflip);
-  surface = Surface::create(Pathname(path));
+  surface = g_app.surface().get(Pathname(path));
   software_surface = SoftwareSurface::create(Pathname(path));
 }
 
@@ -68,7 +70,7 @@ DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const glm::vec2&
                                    const std::string& path_, MapType type_) :
   ObjectModel("DecalObjectModel", rel_pos_),
   path(path_),
-  surface(Surface::create(Pathname(path_))),
+  surface(g_app.surface().get(Pathname(path_))),
   software_surface(SoftwareSurface::create(Pathname(path_))),
   type(type_),
   scale(1.0f, 1.0f),

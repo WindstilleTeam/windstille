@@ -18,10 +18,12 @@
 
 #include "objects/decal.hpp"
 
+#include "app/app.hpp"
 #include "engine/sector.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/surface_drawable.hpp"
 #include "display/surface_drawing_parameters.hpp"
+#include "display/surface_manager.hpp"
 #include "display/scene_context.hpp"
 
 Decal::Decal(ReaderMapping const& reader) :
@@ -45,7 +47,7 @@ Decal::Decal(ReaderMapping const& reader) :
   reader.read("vflip", vflip);
   reader.read("hflip", hflip);
 
-  SurfacePtr surface = Surface::create(Pathname(path));
+  SurfacePtr surface = g_app.surface().get(Pathname(path));
 
   SurfaceDrawingParameters params;
 

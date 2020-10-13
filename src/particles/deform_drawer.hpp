@@ -23,6 +23,7 @@
 #include "display/framebuffer.hpp"
 #include "display/shader_program.hpp"
 #include "display/surface.hpp"
+#include "display/surface_manager.hpp"
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 
@@ -43,7 +44,8 @@ private:
   ShaderProgramPtr shader_program;
 
 public:
-  DeformDrawer(ReaderMapping const& props);
+  DeformDrawer(ReaderMapping const& props,
+               SurfaceManager& surface_manager);
   ~DeformDrawer() override;
 
   void draw(DrawingContext& sc, ParticleSystem& psys);

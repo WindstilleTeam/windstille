@@ -25,7 +25,8 @@
 #include "display/surface_manager.hpp"
 #include "util/file_reader.hpp"
 
-SpriteData::SpriteData(std::filesystem::path const& filename) :
+SpriteData::SpriteData(std::filesystem::path const& filename,
+                       SurfaceManager& surface_manager) :
   actions()
 {
   if (std::filesystem::exists(filename))
@@ -42,7 +43,7 @@ SpriteData::SpriteData(std::filesystem::path const& filename) :
         throw std::runtime_error(msg.str());
       }
 
-      parse(filename.parent_path(), doc.get_mapping());
+      parse(filename.parent_path(), doc.get_mapping(), surface_manager);
     }
     else if (ext == ".png" || ext == ".jpg")
     {
@@ -51,7 +52,7 @@ SpriteData::SpriteData(std::filesystem::path const& filename) :
       action->speed  = 1.0;
       action->scale  = 1.0f;
       action->offset = glm::vec2(0, 0);
-      action->surfaces.push_back(Surface::create(filename));
+      action->surfaces.push_back(surface_manager.get(filename));
       actions.push_back(action.release());
     }
     else
@@ -74,7 +75,7 @@ SpriteData::SpriteData(std::filesystem::path const& filename) :
       action->speed  = 1.0;
       action->scale  = 1.0f;
       action->offset = glm::vec2(0, 0);
-      action->surfaces.push_back(Surface::create(pngfile));
+      action->surfaces.push_back(surface_manager.get(pngfile));
       actions.push_back(action.release());
     }
     else
@@ -99,12 +100,13 @@ SpriteData::~SpriteData()
 }
 
 void
-SpriteData::parse(std::filesystem::path const& dir, ReaderMapping const& reader)
+SpriteData::parse(std::filesystem::path const& dir, ReaderMapping const& reader,
+                  SurfaceManager& surface_manager)
 {
   ReaderCollection actions_collection;
   if (reader.read("actions", actions_collection)) {
     for (ReaderObject const& action_obj : actions_collection.get_objects()) {
-      actions.push_back(parse_action(dir, action_obj.get_mapping()));
+      actions.push_back(parse_action(dir, action_obj.get_mapping(), surface_manager));
     }
   }
 
@@ -114,7 +116,8 @@ SpriteData::parse(std::filesystem::path const& dir, ReaderMapping const& reader)
 }
 
 SpriteAction*
-SpriteData::parse_action(std::filesystem::path const& dir, ReaderMapping const& reader)
+SpriteData::parse_action(std::filesystem::path const& dir, ReaderMapping const& reader,
+                         SurfaceManager& surface_manager)
 {
   std::unique_ptr<SpriteAction> action (new SpriteAction);
   action->speed = 1.0;
@@ -135,7 +138,7 @@ SpriteData::parse_action(std::filesystem::path const& dir, ReaderMapping const& 
     for(std::vector<std::string>::const_iterator file = image_files.begin(); file != image_files.end(); ++file)
     {
       std::filesystem::path path = dir / *file;
-      action->surfaces.push_back(SurfaceManager::current()->get(path));
+      action->surfaces.push_back(surface_manager.get(path));
     }
   }
   else if(reader.read("image-grid", grid_reader))
@@ -152,7 +155,7 @@ SpriteData::parse_action(std::filesystem::path const& dir, ReaderMapping const& 
       throw std::runtime_error("Invalid or too few data in image-grid");
 
     std::filesystem::path path = dir / filename;
-    SurfaceManager::current()->load_grid(path, action->surfaces, x_size, y_size);
+    surface_manager.load_grid(path, action->surfaces, x_size, y_size);
   }
 
   if(action->name == "")
