@@ -45,7 +45,7 @@ Doll::Doll() :
   m_state(kNoState)
 {
   Sprite3D sprite(Pathname("models/characters/jane/jane.wsprite"));
-  m_drawable.reset(new Sprite3DDrawable(sprite, m_pos, 100.0f, Matrix(1.0f)));
+  m_drawable.reset(new Sprite3DDrawable(sprite, m_pos, 100.0f, glm::mat4(1.0f)));
   m_drawable->set_scale(2.0f);
 
   Sector::current()->get_scene_graph().add_drawable(m_drawable);

@@ -244,7 +244,7 @@ Sprite3D::get_attachment_point_id(const std::string& name) const
   return data->get_attachment_point_id(name);
 }
 
-Matrix
+glm::mat4
 Sprite3D::get_attachment_point_matrix(PointID id) const
 {
   const AttachmentPointPosition& point1
@@ -270,7 +270,7 @@ Sprite3D::get_attachment_point_matrix(PointID id) const
 
   glm::vec3 pos = pos1 + (pos2 - pos1) * blend_time;
   Quaternion quat = glm::mix(quat1, quat2, blend_time);
-  Matrix result(1.0f);
+  glm::mat4 result(1.0f);
   result = glm::translate(result, pos);
   result = result * glm::toMat4(quat);
 
@@ -335,7 +335,7 @@ Sprite3D::draw(DrawingContext& dc, const glm::vec2& pos, float z_pos)
 }
 
 void
-Sprite3D::draw(DrawingContext& dc, const Matrix& , float )
+Sprite3D::draw(DrawingContext& dc, const glm::mat4& , float )
 {
   dc.draw(new Sprite3DDrawable(*this, glm::vec2(0, 0), 0.0f, dc.get_modelview()));
 }
@@ -346,7 +346,7 @@ static inline float interpolate(float v1, float v2, float t)
 }
 
 void
-Sprite3D::draw(const glm::vec2& pos, const Matrix& modelview)
+Sprite3D::draw(const glm::vec2& pos, const glm::mat4& modelview)
 {
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();

@@ -22,7 +22,6 @@
 #include <string>
 #include <vector>
 
-#include "math/matrix.hpp"
 #include "math/quaternion.hpp"
 
 /** */
@@ -43,7 +42,7 @@ public:
   Quaternion quat;
   glm::vec3    offset;
 
-  Matrix     render_matrix;
+  glm::mat4     render_matrix;
   glm::vec3    render_head;
   glm::vec3    render_tail;
 

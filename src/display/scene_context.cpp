@@ -116,7 +116,7 @@ SceneContext::scale(float x, float y)
 }
 
 void
-SceneContext::mult_modelview(const Matrix& matrix)
+SceneContext::mult_modelview(const glm::mat4& matrix)
 {
   impl->color.mult(matrix);
   impl->light.mult(matrix);

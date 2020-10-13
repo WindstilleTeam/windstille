@@ -70,7 +70,7 @@ public:
   /** Set the scaling of the drawing context */
   void scale(float x, float y);
 
-  void mult_modelview(const Matrix& matrix);
+  void mult_modelview(const glm::mat4& matrix);
 
   void push_modelview();
   void pop_modelview();

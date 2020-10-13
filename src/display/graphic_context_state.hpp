@@ -20,9 +20,9 @@
 
 #include <memory>
 
-#include "math/rect.hpp"
 #include <glm/glm.hpp>
-#include "math/matrix.hpp"
+
+#include "math/rect.hpp"
 
 class SceneContext;
 
@@ -39,7 +39,7 @@ public:
 
   void set_size(int w, int h);
 
-  Matrix get_matrix() const;
+  glm::mat4 get_matrix() const;
 
   void push(SceneContext& sc) const;
   void pop(SceneContext& sc) const;

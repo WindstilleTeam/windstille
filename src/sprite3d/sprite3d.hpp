@@ -22,10 +22,10 @@
 #include <string>
 #include <stdint.h>
 
-#include "engine/game_object.hpp"
-#include "display/scene_context.hpp"
 #include <glm/glm.hpp>
-#include "math/matrix.hpp"
+
+#include "display/scene_context.hpp"
+#include "engine/game_object.hpp"
 #include "sprite3d/data.hpp"
 
 class DrawingContext;
@@ -58,7 +58,7 @@ public:
    */
   void update(float delta);
   void draw(DrawingContext& sc, const glm::vec2& pos, float z_pos);
-  void draw(DrawingContext& sc, const Matrix& matrix, float z_pos);
+  void draw(DrawingContext& sc, const glm::mat4& matrix, float z_pos);
 
   /**
    * Changes action (after the currently shown animation frame)
@@ -117,7 +117,7 @@ public:
   bool get_rot() const;
 
   PointID get_attachment_point_id(const std::string& name) const;
-  Matrix  get_attachment_point_matrix(PointID id) const;
+  glm::mat4  get_attachment_point_matrix(PointID id) const;
 
   /** true if the Sprite3D is valid and usable, false if not */
   bool is_valid() const;
@@ -126,7 +126,7 @@ public:
 
 private:
   friend class Sprite3DDrawable;
-  void draw(const glm::vec2& pos, const Matrix& modelview);
+  void draw(const glm::vec2& pos, const glm::mat4& modelview);
 
   struct Frame {
     const sprite3d::Action* action;

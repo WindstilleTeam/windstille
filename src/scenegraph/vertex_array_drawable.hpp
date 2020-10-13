@@ -38,7 +38,7 @@ private:
   std::vector<float> vertices;
 
 public:
-  VertexArrayDrawable(const glm::vec2& pos_, float z_pos_, const Matrix& modelview_);
+  VertexArrayDrawable(const glm::vec2& pos_, float z_pos_, const glm::mat4& modelview_);
 
   void render(unsigned int mask) override;
   void render(int start, int end);

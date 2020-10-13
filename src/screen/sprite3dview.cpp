@@ -79,7 +79,7 @@ Sprite3DView::draw()
   sprite.draw(sc.color(), glm::vec2(0,0), 0);
   sc.pop_modelview();
 
-  //Matrix matrix = sc.color().get_modelview();
+  //glm::mat4 matrix = sc.color().get_modelview();
   //matrix.translate(-Display::get_width()/2, -Display::get_height()/2, 0);
   //sprite.draw(sc.color(), matrix, 0.0f);
 

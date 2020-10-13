@@ -20,16 +20,16 @@
 #define HEADER_WINDSTILLE_SCENEGRAPH_DRAWABLE_HPP
 
 #include <glm/glm.hpp>
-#include "math/rect.hpp"
-#include "math/matrix.hpp"
+
 #include "display/texture.hpp"
+#include "math/rect.hpp"
 
 class Drawable
 {
 protected:
   glm::vec2 pos;
   float    z_pos;
-  Matrix   modelview;
+  glm::mat4   modelview;
   unsigned int render_mask;
 
 public:
@@ -40,7 +40,7 @@ public:
       render_mask(1) // FIXME: Evil hardcoded constant
   {}
 
-  Drawable(const glm::vec2& pos_, float z_pos_ = 0,  const Matrix& modelview_ = Matrix(1.0))
+  Drawable(const glm::vec2& pos_, float z_pos_ = 0,  const glm::mat4& modelview_ = glm::mat4(1.0))
     : pos(pos_),
       z_pos(z_pos_),
       modelview(modelview_),
@@ -58,7 +58,7 @@ public:
   /** Returns the position at which the request should be drawn */
   float get_z_pos() const { return z_pos; }
 
-  Matrix get_modelview() const
+  glm::mat4 get_modelview() const
   { return modelview; }
 
   void set_render_mask(unsigned int mask) { render_mask = mask; }

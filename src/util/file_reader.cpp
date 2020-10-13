@@ -70,7 +70,7 @@ bool read_custom(ReaderMapping const& map, std::string_view key, Quaternion& val
 }
 
 template<>
-bool read_custom(ReaderMapping const& map, std::string_view key, Matrix& m)
+bool read_custom(ReaderMapping const& map, std::string_view key, glm::mat4& m)
 {
   std::vector<float> floats;
   if (map.read(key, floats) && floats.size() == 16) {

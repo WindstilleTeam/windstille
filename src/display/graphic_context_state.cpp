@@ -68,10 +68,10 @@ GraphicContextState::set_size(int w, int h)
   impl->height = h;
 }
 
-Matrix
+glm::mat4
 GraphicContextState::get_matrix() const
 {
-  Matrix matrix = Matrix(1.0f);
+  glm::mat4 matrix = glm::mat4(1.0f);
 
   matrix = glm::translate(matrix,
                           glm::vec3(static_cast<float>(impl->width)  / 2.0f,

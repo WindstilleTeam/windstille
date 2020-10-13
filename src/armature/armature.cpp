@@ -137,14 +137,14 @@ Armature::draw()
   glLineWidth(6.0f);
   //std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-" << std::endl;
   glBegin(GL_LINES);
-  draw_bone(root_bone, glm::vec3(0,0, 0), Matrix(1.0f));
+  draw_bone(root_bone, glm::vec3(0,0, 0), glm::mat4(1.0f));
   glEnd();
 }
 
 void
-Armature::draw_bone(Bone* bone, glm::vec3 p, Matrix m)
+Armature::draw_bone(Bone* bone, glm::vec3 p, glm::mat4 m)
 {
-  Matrix  m_  = m * bone->render_matrix;
+  glm::mat4  m_  = m * bone->render_matrix;
   glm::vec3 p_  = glm::vec3(glm::vec4(p, 1.0f) + m * glm::vec4(bone->offset, 1.0f));
 
   // FIXME: In theory we should be using length in the Z component, but only

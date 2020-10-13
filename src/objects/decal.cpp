@@ -71,7 +71,7 @@ Decal::Decal(ReaderMapping const& reader) :
                                      .set_vflip(vflip)
                                      .set_scale(scale),
                                      0,
-                                     Matrix(1.0f)));
+                                     glm::mat4(1.0f)));
 
   switch(map_type)
   {

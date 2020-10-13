@@ -24,7 +24,7 @@ class TextDrawable : public Drawable
 private:
   std::string text;
 public:
-  TextDrawable(const std::string& text_, const glm::vec2& pos_, float z_pos_, const Matrix& modelview_)
+  TextDrawable(const std::string& text_, const glm::vec2& pos_, float z_pos_, const glm::mat4& modelview_)
     : Drawable(pos_, z_pos_, modelview_),
       text(text_)
   {}

@@ -51,7 +51,7 @@ DrawingContext::DrawingContext() :
   drawingrequests(),
   modelview_stack()
 {
-  modelview_stack.push_back(Matrix(1.0f));
+  modelview_stack.push_back(glm::mat4(1.0f));
 }
 
 DrawingContext::~DrawingContext()
@@ -166,7 +166,7 @@ DrawingContext::rotate(float angle, float x, float y, float z)
   float c = cosf(angle*3.14159265f/180.0f);
   float s = sinf(angle*3.14159265f/180.0f);
 
-  Matrix matrix(1.0f);
+  glm::mat4 matrix(1.0f);
   float* mp = glm::value_ptr(matrix);
   mp[0]  = x*x*(1-c)+c;
   mp[1]  = y*x*(1-c)+z*s;
@@ -186,7 +186,7 @@ DrawingContext::rotate(float angle, float x, float y, float z)
 void
 DrawingContext::scale(float x, float y, float z)
 {
-  Matrix matrix(1.0f);
+  glm::mat4 matrix(1.0f);
   glm::value_ptr(matrix)[0]  = x;
   glm::value_ptr(matrix)[5]  = y;
   glm::value_ptr(matrix)[10] = z;
@@ -196,7 +196,7 @@ DrawingContext::scale(float x, float y, float z)
 void
 DrawingContext::translate(float x, float y, float z)
 {
-  Matrix matrix = Matrix(1.0f);
+  glm::mat4 matrix = glm::mat4(1.0f);
   glm::value_ptr(matrix)[12] = x;
   glm::value_ptr(matrix)[13] = y;
   glm::value_ptr(matrix)[14] = z;
@@ -204,7 +204,7 @@ DrawingContext::translate(float x, float y, float z)
 }
 
 void
-DrawingContext::mult(const Matrix& matrix)
+DrawingContext::mult(const glm::mat4& matrix)
 {
   modelview_stack.back() = modelview_stack.back() * matrix;
 }
@@ -223,7 +223,7 @@ DrawingContext::pop_modelview()
 }
 
 void
-DrawingContext::set_modelview(const Matrix& matrix)
+DrawingContext::set_modelview(const glm::mat4& matrix)
 {
   modelview_stack.back() = matrix;
 }
@@ -232,7 +232,7 @@ void
 DrawingContext::reset_modelview()
 {
   modelview_stack.clear();
-  modelview_stack.push_back(Matrix(1.0f));
+  modelview_stack.push_back(glm::mat4(1.0f));
 }
 
 Rectf

@@ -44,7 +44,7 @@ void
 NavGraphNodeObjectModel::add_to_scenegraph(DrawableGroup& sg)
 {
   if (!m_drawable)
-    m_drawable.reset(new VertexArrayDrawable(glm::vec2(), 0.0f, Matrix(1.0f)));
+    m_drawable.reset(new VertexArrayDrawable(glm::vec2(), 0.0f, glm::mat4(1.0f)));
 
   sync_drawable();
   sg.add_drawable(m_drawable);

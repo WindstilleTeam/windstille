@@ -32,7 +32,7 @@ public:
                     TexturePtr      noise_,
                     ShaderProgramPtr shader_program_,
                     float r,
-                    const Matrix& modelview_) :
+                    const glm::mat4& modelview_) :
     Drawable(pos_, 500.0f, modelview_),
     noise(noise_),
     shader_program(shader_program_),

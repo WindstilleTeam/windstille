@@ -60,10 +60,10 @@ Liquid::Liquid(ReaderMapping const& props) :
   texture->set_wrap(GL_REPEAT);
 
   m_water_top.reset(new VertexArrayDrawable(glm::vec2(pos.x, pos.y), 10000,
-                                            Matrix(1.0f))); //sc.light().get_modelview()));
+                                            glm::mat4(1.0f))); //sc.light().get_modelview()));
 
   m_water_body.reset(new VertexArrayDrawable(glm::vec2(pos.x, pos.y), 10000,
-                                             Matrix(1.0f))); // sc.light().get_modelview());
+                                             glm::mat4(1.0f))); // sc.light().get_modelview());
 
   Sector::current()->get_scene_graph().add_drawable(m_water_top);
   Sector::current()->get_scene_graph().add_drawable(m_water_body);

@@ -30,7 +30,7 @@ SparkDrawer::SparkDrawer(ReaderMapping const& props)
   props.read("color", color);
   props.read("width", width);
 
-  buffer.reset(new VertexArrayDrawable(glm::vec2(), 0.0f, Matrix(1.0f)));
+  buffer.reset(new VertexArrayDrawable(glm::vec2(), 0.0f, glm::mat4(1.0f)));
 }
 
 void

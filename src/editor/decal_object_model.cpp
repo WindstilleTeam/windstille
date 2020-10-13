@@ -278,7 +278,7 @@ DecalObjectModel::add_to_scenegraph(DrawableGroup& sg)
                                          .set_vflip(vflip)
                                          .set_scale(scale)
                                          .set_angle(angle),
-                                         0.0f, Matrix(1.0f)));
+                                         0.0f, glm::mat4(1.0f)));
 
     switch(type)
     {

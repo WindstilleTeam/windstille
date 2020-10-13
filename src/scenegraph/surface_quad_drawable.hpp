@@ -36,7 +36,7 @@ private:
 public:
   SurfaceQuadDrawable(SurfacePtr surface, const glm::vec2& pos_, const Quad& quad,
                       const DrawingParameters& params, float z_pos_,
-                      const Matrix& modelview_)
+                      const glm::mat4& modelview_)
     : Drawable(pos_, z_pos_, modelview_),
       m_surface(surface),
       m_quad(quad),

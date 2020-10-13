@@ -23,7 +23,7 @@
 #include "display/opengl_state.hpp"
 
 VertexArrayDrawable::VertexArrayDrawable(const glm::vec2& pos_, float z_pos_,
-                                         const Matrix& modelview_) :
+                                         const glm::mat4& modelview_) :
   Drawable(pos_, z_pos_, modelview_),
   mode(GL_QUADS),
   blend_sfactor(GL_SRC_ALPHA),

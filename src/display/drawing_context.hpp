@@ -47,7 +47,7 @@ private:
   typedef std::vector<Drawable*> Drawables;
   Drawables drawingrequests;
 
-  std::vector<Matrix> modelview_stack;
+  std::vector<glm::mat4> modelview_stack;
 
 public:
   DrawingContext();
@@ -97,13 +97,13 @@ public:
   void scale(float x, float y, float z = 1.0f);
 
   /** multiply the modelview of the context */
-  void mult(const Matrix& matrix);
+  void mult(const glm::mat4& matrix);
 
   void push_modelview();
   void pop_modelview();
   void reset_modelview();
-  void set_modelview(const Matrix& matrix);
-  Matrix get_modelview() const { return modelview_stack.back(); }
+  void set_modelview(const glm::mat4& matrix);
+  glm::mat4 get_modelview() const { return modelview_stack.back(); }
 
   /** Return the area of the screen that will be visible*/
   Rectf get_clip_rect();

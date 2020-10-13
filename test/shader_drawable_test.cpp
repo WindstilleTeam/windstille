@@ -55,15 +55,15 @@ int shader_main(int argc, char* argv[])
   std::shared_ptr<ShaderDrawable>  shader(new ShaderDrawable());
   std::shared_ptr<ShaderDrawable>  shader2(new ShaderDrawable());
   std::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(Surface::create(Pathname("images/titlescreen.png")),
-                                                                 SurfaceDrawingParameters(), 0, Matrix(1.0f)));
+                                                                 SurfaceDrawingParameters(), 0, glm::mat4(1.0f)));
   std::shared_ptr<SurfaceDrawable> surface2(new SurfaceDrawable(Surface::create(Pathname("images/menu_background.jpg")),
                                                                   SurfaceDrawingParameters().set_pos(glm::vec2(-50.0f, -50.0f)),
-                                                                  0, Matrix(1.0f)));
+                                                                  0, glm::mat4(1.0f)));
   std::shared_ptr<SurfaceDrawable> surface3(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
-                                                                  SurfaceDrawingParameters(), 0, Matrix(1.0f)));
+                                                                  SurfaceDrawingParameters(), 0, glm::mat4(1.0f)));
   std::shared_ptr<SurfaceDrawable> surface4(new SurfaceDrawable(Surface::create(Pathname("images/portrait.png")),
                                                                   SurfaceDrawingParameters().set_pos(glm::vec2(-25.0f, 25.0f)),
-                                                                  0, Matrix(1.0f)));
+                                                                  0, glm::mat4(1.0f)));
 
   TexturePtr texture = Texture::create(Pathname("images/displacement.png"));
 

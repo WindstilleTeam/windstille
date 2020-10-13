@@ -47,10 +47,10 @@ public:
   void  parse(ReaderDocument const& doc);
   Bone* get_bone(const std::string& name);
 
-  Matrix* get_render_matrix(const std::string& name);
+  glm::mat4* get_render_matrix(const std::string& name);
 
   void  draw();
-  void  draw_bone(Bone* bone, glm::vec3 p, Matrix matrix);
+  void  draw_bone(Bone* bone, glm::vec3 p, glm::mat4 matrix);
 private:
   Armature (const Armature&);
   Armature& operator= (const Armature&);

@@ -30,7 +30,7 @@ private:
 
 public:
   ControlDrawable(SurfacePtr surface_, const glm::vec2& pos_, float angle_, float z_pos_,
-                  const Matrix& modelview_)
+                  const glm::mat4& modelview_)
     : Drawable(pos_, z_pos_, modelview_),
       surface(surface_),
       angle(angle_)

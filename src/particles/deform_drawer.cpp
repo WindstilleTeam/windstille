@@ -35,7 +35,7 @@ public:
   ParticleSystem&   psys;
   ShaderProgramPtr  shader_program;
 
-  DeformDrawerRequest(const glm::vec2& pos_, float z_pos_,  const Matrix& modelview_,
+  DeformDrawerRequest(const glm::vec2& pos_, float z_pos_,  const glm::mat4& modelview_,
                       FramebufferPtr framebuffer_, SurfacePtr surface_, ParticleSystem& psys_,
                       ShaderProgramPtr shader_program_) :
     Drawable(pos_, z_pos_, modelview_),

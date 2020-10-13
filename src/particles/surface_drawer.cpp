@@ -90,7 +90,7 @@ SurfaceDrawer::SurfaceDrawer(ReaderMapping const& props)
 
   // FIXME: Bad idea, as the psys isn't fully loaded as this point
   buffer.reset(new VertexArrayDrawable(glm::vec2(), 0.0f,
-                                       Matrix(1.0f)));
+                                       glm::mat4(1.0f)));
 }
 
 SurfaceDrawer::~SurfaceDrawer()
