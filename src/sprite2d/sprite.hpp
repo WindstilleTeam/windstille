@@ -56,7 +56,7 @@ public:
   /** Load a sprite from file or in-case the .sprite file isn't found
       search for a .png with the same name and use that as a simple
       one-file sprite */
-  explicit Sprite(std::filesystem::path const& filename);
+  explicit Sprite(std::filesystem::path const& filename, SpriteManager& sprite_manager);
   explicit Sprite(SpriteDataPtr data);
   Sprite(const Sprite&);
   Sprite& operator=(const Sprite&);

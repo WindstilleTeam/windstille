@@ -18,9 +18,11 @@
 
 #include "objects/character.hpp"
 
+#include "app/app.hpp"
 #include "engine/sector.hpp"
 #include "engine/script_manager.hpp"
 #include "app/console.hpp"
+#include "sprite3d/manager.hpp"
 
 Character::Character(ReaderMapping const& props) :
   sprite(),
@@ -38,7 +40,7 @@ Character::Character(ReaderMapping const& props) :
   props.read("sprite3d", sprite3d_filename);
   props.read("action", action_name);
 
-  sprite = Sprite3D(Pathname(sprite3d_filename));
+  sprite = g_app.sprite3d().create(Pathname(sprite3d_filename));
 
   if (!action_name.empty())
     sprite.set_action(action_name);

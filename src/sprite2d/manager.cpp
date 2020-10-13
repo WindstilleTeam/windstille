@@ -20,6 +20,7 @@
 #include "sprite2d/manager.hpp"
 
 #include "sprite2d/data.hpp"
+#include "sprite2d/sprite.hpp"
 
 SpriteManager::SpriteManager(SurfaceManager& surface_manager) :
   m_surface_manager(surface_manager),
@@ -29,6 +30,12 @@ SpriteManager::SpriteManager(SurfaceManager& surface_manager) :
 
 SpriteManager::~SpriteManager()
 {
+}
+
+Sprite
+SpriteManager::create(std::filesystem::path const& filename)
+{
+  return Sprite(filename, *this);
 }
 
 SpriteDataPtr

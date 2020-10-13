@@ -16,16 +16,17 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/app.hpp"
 #include "app/globals.hpp"
 #include "objects/bomb.hpp"
 #include "util/pathname.hpp"
 
 Bomb::Bomb(int x, int y) :
-  sprite(Pathname("images/bomb.sprite")),
-  explo(Pathname("images/explo.sprite")),
-  light(Pathname("images/bomblight.sprite")),
-  highlight(Pathname("images/bombhighlight.sprite")),
-  explolight(Pathname("images/explolight.sprite")),
+  sprite(g_app.sprite().create(Pathname("images/bomb.sprite"))),
+  explo(g_app.sprite().create(Pathname("images/explo.sprite"))),
+  light(g_app.sprite().create(Pathname("images/bomblight.sprite"))),
+  highlight(g_app.sprite().create(Pathname("images/bombhighlight.sprite"))),
+  explolight(g_app.sprite().create(Pathname("images/explolight.sprite"))),
   pos(static_cast<float>(x), static_cast<float>((y / TILE_SIZE + 1) * TILE_SIZE)),
   count(2.0f),
   state(COUNTDOWN),

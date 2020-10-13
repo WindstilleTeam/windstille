@@ -16,9 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "math/random.hpp"
 #include "objects/vrdummy.hpp"
+
+#include "app/app.hpp"
+#include "math/random.hpp"
 #include "util/pathname.hpp"
+#include "sprite3d/manager.hpp"
 
 VRDummy::VRDummy(ReaderMapping const& props) :
   sprite(),
@@ -29,10 +32,10 @@ VRDummy::VRDummy(ReaderMapping const& props) :
   props.read("name", name);
   props.read("pos",  pos);
 
-  sprite = Sprite3D(Pathname("models/characters/vrdummy/vrdummy.wsprite"));
+  sprite = g_app.sprite3d().create(Pathname("models/characters/vrdummy/vrdummy.wsprite"));
   rotation = 0;
 
-  highlight = Sprite(Pathname("images/hedgehog_highlight.sprite"));
+  highlight = g_app.sprite().create(Pathname("images/hedgehog_highlight.sprite"));
   highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
 
   jump_time = 0;

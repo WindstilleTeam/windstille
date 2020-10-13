@@ -19,6 +19,11 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_APP_HPP
 #define HEADER_WINDSTILLE_EDITOR_APP_HPP
 
+namespace sprite3d {
+class Manager;
+} // namespace sprite3d;
+
+class SpriteManager;
 class SurfaceManager;
 class TextureManager;
 
@@ -28,12 +33,16 @@ class App
 public:
   App();
 
-  SurfaceManager& surface() const;
   TextureManager& texture() const;
+  SurfaceManager& surface() const;
+  SpriteManager& sprite() const;
+  sprite3d::Manager& sprite3d() const;
 
 private:
-  SurfaceManager* m_surface_manager;
   TextureManager* m_texture_manager;
+  SurfaceManager* m_surface_manager;
+  SpriteManager* m_sprite_manager;
+  sprite3d::Manager* m_sprite3d_manager;
 
 private:
   App(const App&) = delete;

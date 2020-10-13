@@ -1,4 +1,5 @@
 (sprite
+  (actions)
     (action
         (name "walk-right")
         (speed 15.0)
@@ -13,4 +14,5 @@
             (y-size 20)
         )
     )
+ ...)
 )

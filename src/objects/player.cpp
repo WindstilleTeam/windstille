@@ -20,6 +20,7 @@
 
 #include <functional>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "collision/collision_engine.hpp"
 #include "collision/stair_contact.hpp"
@@ -31,6 +32,7 @@
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/sprite3d_drawable.hpp"
 #include "screen/game_session.hpp"
+#include "sprite3d/manager.hpp"
 #include "tile/tile.hpp"
 #include "tile/tile_map.hpp"
 
@@ -53,7 +55,7 @@ Player::Player () :
   reload_time(),
   z_pos()
 {
-  Sprite3D sprite(Pathname("models/characters/jane/jane.wsprite"));
+  Sprite3D sprite = g_app.sprite3d().create(Pathname("models/characters/jane/jane.wsprite"));
   pos.x = 320;
   pos.y = 200;
   name = "player";

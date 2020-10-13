@@ -23,10 +23,15 @@ namespace wstinput {
 class InputManagerSDL;
 } // namespace wstinput
 
+namespace sprite3d {
+class Manager;
+} // namespace sprite3d;
+
+class OpenGLWindow;
 class SoundManager;
+class SpriteManager;
 class SurfaceManager;
 class TextureManager;
-class OpenGLWindow;
 
 class App
 {
@@ -36,16 +41,20 @@ public:
 
   wstinput::InputManagerSDL& input() const;
   SoundManager& sound() const;
-  SurfaceManager& surface() const;
-  TextureManager& texture() const;
   OpenGLWindow& window() const;
+  TextureManager& texture() const;
+  SurfaceManager& surface() const;
+  SpriteManager& sprite() const;
+  sprite3d::Manager& sprite3d() const;
 
 private:
   wstinput::InputManagerSDL* m_input_manager;
   SoundManager* m_sound_manager;
-  SurfaceManager* m_surface_manager;
-  TextureManager* m_texture_manager;
   OpenGLWindow* m_window;
+  TextureManager* m_texture_manager;
+  SurfaceManager* m_surface_manager;
+  SpriteManager* m_sprite_manager;
+  sprite3d::Manager* m_sprite3d_manager;
 
 private:
   App(const App&) = delete;

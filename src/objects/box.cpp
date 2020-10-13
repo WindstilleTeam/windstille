@@ -20,6 +20,7 @@
 
 #include <functional>
 
+#include "app/app.hpp"
 #include "collision/collision_engine.hpp"
 
 Box::Box(ReaderMapping const& props) :
@@ -44,7 +45,7 @@ Box::Box(ReaderMapping const& props) :
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in Box");
 
-  sprite = Sprite(Pathname(spritename));
+  sprite = g_app.sprite().create(Pathname(spritename));
 
   colobj = new CollisionObject(this, Rectf(0, 0, width, height));
   colobj->set_velocity(vel);

@@ -22,8 +22,10 @@
 #include <memory>
 #include <vector>
 
+#include "app/app.hpp"
 #include "screen/screen.hpp"
 #include "sprite2d/sprite.hpp"
+#include "util/currenton.hpp"
 
 class TextArea;
 

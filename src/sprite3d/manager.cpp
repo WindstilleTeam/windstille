@@ -18,6 +18,7 @@
 
 #include "sprite3d/manager.hpp"
 
+#include "sprite3d/sprite3d.hpp"
 #include "sprite3d/data.hpp"
 
 namespace sprite3d {
@@ -31,6 +32,12 @@ Manager::~Manager()
 {
   for(Datas::iterator i = datas.begin(); i != datas.end(); ++i)
     delete i->second;
+}
+
+Sprite3D
+Manager::create(std::filesystem::path const& filename)
+{
+  return Sprite3D(filename, *this);
 }
 
 Data*

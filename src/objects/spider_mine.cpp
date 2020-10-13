@@ -16,14 +16,16 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/app.hpp"
 #include "objects/spider_mine.hpp"
 #include "objects/player.hpp"
 #include "util/pathname.hpp"
+#include "sprite3d/manager.hpp"
 
 SpiderMine::SpiderMine(ReaderMapping const& props) :
   sprite(),
-  explode(Pathname("images/explosion.sprite")),
-  explode_light(Pathname("images/explolight.sprite")),
+  explode(g_app.sprite().create(Pathname("images/explosion.sprite"))),
+  explode_light(g_app.sprite().create(Pathname("images/explolight.sprite"))),
   initial_position(),
   walk_speed(160),
   jump_time(0.0),
@@ -32,7 +34,7 @@ SpiderMine::SpiderMine(ReaderMapping const& props) :
   props.read("name", name);
   props.read("pos",  pos);
 
-  sprite = Sprite(Pathname("images/spider_mine.sprite"));
+  sprite = g_app.sprite().create(Pathname("images/spider_mine.sprite"));
   //sprite.set_scale(.5, .5);
   initial_position = pos;
 }

@@ -16,15 +16,17 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "editor/sprite_object_model.hpp"
+
+#include "app/app.hpp"
 #include "util/pathname.hpp"
 #include "display/scene_context.hpp"
-#include "editor/sprite_object_model.hpp"
-
+
 SpriteObjectModel::SpriteObjectModel(const std::string& name_, const glm::vec2& rel_pos_,
                                      const std::string& path_) :
   ObjectModel(name_, rel_pos_),
   path(path_),
-  sprite(Pathname(path_))
+  sprite(g_app.sprite().create(Pathname(path_)))
 {
 }
 

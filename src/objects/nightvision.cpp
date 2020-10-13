@@ -26,7 +26,7 @@
 #include "util/pathname.hpp"
 
 Nightvision::Nightvision(ReaderMapping const& props) :
-  nightvision(Pathname("images/nightvision.sprite")),
+  nightvision(g_app.sprite().create(Pathname("images/nightvision.sprite"))),
   noise(g_app.texture().get(Pathname("images/noise.png")))
 {
   name = "nightvision";

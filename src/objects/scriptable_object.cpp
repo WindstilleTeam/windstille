@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/app.hpp"
 #include "app/console.hpp"
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
@@ -47,17 +48,17 @@ ScriptableObject::ScriptableObject(ReaderMapping const& props) :
     set_useable(true);
 
   if(spritename != "")
-    sprite = Sprite(Pathname(spritename));
+    sprite = g_app.sprite().create(Pathname(spritename));
 
   if (highlightname != "")
   {
-    highlight = Sprite(Pathname(highlightname));
+    highlight = g_app.sprite().create(Pathname(highlightname));
     highlight.set_blend_func(GL_SRC_ALPHA, GL_ONE);
   }
 
   if (lightname != "")
   {
-    light = Sprite(Pathname(lightname));
+    light = g_app.sprite().create(Pathname(lightname));
     light.set_blend_func(GL_SRC_ALPHA, GL_ONE);
   }
 

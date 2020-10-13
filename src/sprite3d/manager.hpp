@@ -19,19 +19,22 @@
 #ifndef HEADER_WINDSTILLE_SPRITE3D_MANAGER_HPP
 #define HEADER_WINDSTILLE_SPRITE3D_MANAGER_HPP
 
-#include "util/pathname.hpp"
-#include "util/currenton.hpp"
+#include <filesystem>
+#include <map>
+
+class Sprite3D;
 
 namespace sprite3d {
 
 class Data;
 
-class Manager : public Currenton<Manager>
+class Manager
 {
 public:
   Manager();
-  ~Manager() override;
+  ~Manager();
 
+  Sprite3D create(std::filesystem::path const& filename);
   Data* create_data(std::filesystem::path const& filename);
 
 private:

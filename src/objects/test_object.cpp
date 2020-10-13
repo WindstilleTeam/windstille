@@ -19,8 +19,10 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "app/app.hpp"
 #include "objects/test_object.hpp"
 #include "util/pathname.hpp"
+#include "sprite3d/manager.hpp"
 
 TestObject::TestObject(ReaderMapping const& props) :
   sprite(),
@@ -36,7 +38,7 @@ TestObject::TestObject(ReaderMapping const& props) :
 
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in TestObject");
-  sprite = Sprite3D(Pathname(spritename));
+  sprite = g_app.sprite3d().create(Pathname(spritename));
 }
 
 TestObject::~TestObject()
@@ -72,7 +74,7 @@ void
 TestObject::set_sprite(const std::string& filename)
 {
   try {
-    sprite = Sprite3D(Pathname(filename));
+    sprite = g_app.sprite3d().create(Pathname(filename));
   } catch(std::exception& e) {
     std::cerr << "Couldn't change sprite to '" << filename << "': "
               << e.what() << "\n";
@@ -107,7 +109,7 @@ TestObject::attach(const std::string& spritename,
                    const std::string& attachement_point)
 {
   AttachedSprite asprite;
-  asprite.sprite = Sprite3D(Pathname(spritename));
+  asprite.sprite = g_app.sprite3d().create(Pathname(spritename));
   asprite.attachpoint = sprite.get_attachment_point_id(attachement_point);
   attached_sprites.push_back(asprite);
 }

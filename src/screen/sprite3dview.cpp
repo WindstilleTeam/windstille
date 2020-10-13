@@ -27,6 +27,7 @@
 #include "display/graphic_context_state.hpp"
 #include "display/opengl_window.hpp"
 #include "font/fonts.hpp"
+#include "sprite3d/manager.hpp"
 #include "util/pathname.hpp"
 
 Sprite3DView::Sprite3DView()
@@ -40,7 +41,7 @@ Sprite3DView::Sprite3DView()
 {
   current_action = 0;
 
-  sprite = Sprite3D(Pathname("models/characters/jane/jane.wsprite"));
+  sprite = g_app.sprite3d().create(Pathname("models/characters/jane/jane.wsprite"));
   actions = sprite.get_actions();
 
   sprite.set_action(actions[current_action]);
@@ -57,7 +58,7 @@ Sprite3DView::~Sprite3DView()
 void
 Sprite3DView::set_model(const Pathname& filename)
 {
-  sprite  = Sprite3D(filename);
+  sprite = g_app.sprite3d().create(filename);
   actions = sprite.get_actions();
 }
 

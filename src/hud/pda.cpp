@@ -21,11 +21,13 @@
 #include <wstinput/controller.hpp>
 #include <wstinput/input_event.hpp>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/display.hpp"
-#include "font/text_area.hpp"
 #include "font/fonts.hpp"
+#include "font/text_area.hpp"
 #include "hud/pda.hpp"
+#include "sprite2d/manager.hpp"
 #include "util/pathname.hpp"
 
 DialogEntry::DialogEntry(const std::string& arg_character, const std::string& arg_text)
@@ -51,7 +53,7 @@ PDA::PDA()
     state(PDA_OBJECTIVES),
     old_state(PDA_NONE)
 {
-  background = Sprite(Pathname("images/pda/pda.sprite"));
+  background = g_app.sprite().create(Pathname("images/pda/pda.sprite"));
 
   ui_area.reset(new TextArea(geom::grow(Rectf(pos + glm::vec2(40.0f, 50.0f),
                                               Sizef(315.0f, 435.0f)), -12.0f), false));

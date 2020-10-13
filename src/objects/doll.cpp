@@ -26,6 +26,7 @@
 
 #include <wstinput/controller.hpp>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "engine/sector.hpp"
 #include "math/line.hpp"
@@ -35,6 +36,7 @@
 #include "navigation/node.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/sprite3d_drawable.hpp"
+#include "sprite3d/manager.hpp"
 
 Doll::Doll() :
   m_drawable(),
@@ -44,7 +46,7 @@ Doll::Doll() :
   m_edge_position(),
   m_state(kNoState)
 {
-  Sprite3D sprite(Pathname("models/characters/jane/jane.wsprite"));
+  Sprite3D sprite = g_app.sprite3d().create(Pathname("models/characters/jane/jane.wsprite"));
   m_drawable.reset(new Sprite3DDrawable(sprite, m_pos, 100.0f, glm::mat4(1.0f)));
   m_drawable->set_scale(2.0f);
 

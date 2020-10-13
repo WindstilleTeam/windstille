@@ -35,6 +35,7 @@ namespace sprite3d {
 class Data;
 struct Action;
 struct ActionFrame;
+class Manager;
 
 } // namespace sprite3d
 
@@ -48,7 +49,7 @@ public:
   typedef uint16_t PointID;
 
   Sprite3D();
-  explicit Sprite3D(std::filesystem::path const& filename);
+  explicit Sprite3D(std::filesystem::path const& filename, sprite3d::Manager& sprite3d_manager);
   Sprite3D(const Sprite3D&);
   Sprite3D& operator=(const Sprite3D&);
   ~Sprite3D();

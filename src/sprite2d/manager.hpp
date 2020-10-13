@@ -24,19 +24,19 @@
 #include <map>
 #include <memory>
 
-#include "util/currenton.hpp"
-
+class Sprite;
 class SpriteData;
 class SurfaceManager;
 
 typedef std::shared_ptr<SpriteData> SpriteDataPtr;
 
-class SpriteManager : public Currenton<SpriteManager>
+class SpriteManager
 {
 public:
   SpriteManager(SurfaceManager& surface_manager);
-  ~SpriteManager() override;
+  ~SpriteManager();
 
+  Sprite create(std::filesystem::path const& filename);
   SpriteDataPtr create_data(std::filesystem::path const& filename);
 
   /** Removes all cached Sprites that are no longer in use */

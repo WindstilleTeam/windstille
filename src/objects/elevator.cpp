@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/app.hpp"
 #include "objects/elevator.hpp"
 #include "engine/sector.hpp"
 #include "collision/collision_engine.hpp"
@@ -34,7 +35,7 @@ Elevator::Elevator(ReaderMapping const& props) :
   if(spritename == "")
     throw std::runtime_error("No sprite name specified in Elevator");
 
-  sprite = Sprite(Pathname(spritename));
+  sprite = g_app.sprite().create(Pathname(spritename));
   size  = Sizef(128, 64);
   colobject = new CollisionObject(this, Rectf(glm::vec2(0,0), size));
   Sector::current()->get_collision_engine()->add(colobject);

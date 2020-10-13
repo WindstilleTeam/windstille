@@ -272,7 +272,7 @@ Sprite2DView::next_image(int i)
     {
       try
       {
-        new_sprite = Sprite(dir[index]);
+        new_sprite = g_app.sprite().create(dir[index]);
         retry = false;
       }
       catch(std::exception& e)
@@ -293,7 +293,7 @@ Sprite2DView::next_image(int i)
     ConsoleLog << index << ": " << directory[index] << std::endl;
   }
 
-  SpriteManager::current()->cleanup();
+  g_app.sprite().cleanup();
   g_app.surface().cleanup();
 }
 
@@ -415,7 +415,7 @@ Sprite2DView::update(float delta, const Controller& controller)
 void
 Sprite2DView::set_sprite(const Pathname& filename)
 {
-  sprite = Sprite(filename);
+  sprite = g_app.sprite().create(filename);
   ignore_delta = true;
 }
 

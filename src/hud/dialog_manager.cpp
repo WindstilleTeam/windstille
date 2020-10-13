@@ -22,6 +22,7 @@
 
 #include <wstinput/controller.hpp>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/display.hpp"
 #include "engine/script_manager.hpp"
@@ -44,7 +45,7 @@ DialogManager::add_dialog(int alignment_, const std::string& portrait_, const st
 {
   delay     = 0.0;
   alignment = alignment_;
-  portrait  = Sprite(Pathname(portrait_));
+  portrait  = g_app.sprite().create(Pathname(portrait_));
   portrait.set_scale(0.65f);
   text      = text_;
   caption = false;

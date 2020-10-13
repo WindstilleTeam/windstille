@@ -39,7 +39,7 @@ Sprite::Sprite() :
 {
 }
 
-Sprite::Sprite(std::filesystem::path const& filename) :
+Sprite::Sprite(std::filesystem::path const& filename, SpriteManager& sprite_manager) :
   data(),
   current_action(nullptr),
   frame(0),
@@ -52,7 +52,7 @@ Sprite::Sprite(std::filesystem::path const& filename) :
   scale(),
   color()
 {
-  data = SpriteManager::current()->create_data(filename);
+  data = sprite_manager.create_data(filename);
 
   current_action = data->actions[0];
   vflip    = false;

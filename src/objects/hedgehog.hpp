@@ -20,6 +20,9 @@
 #define HEADER_WINDSTILLE_OBJECTS_HEDGEHOG_HPP
 
 #include "engine/game_object.hpp"
+#include "engine/entity.hpp"
+
+#include "sprite2d/sprite.hpp"
 
 class Hedgehog : public Entity
 {

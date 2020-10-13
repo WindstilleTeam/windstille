@@ -16,12 +16,14 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "app/app.hpp"
 #include "objects/laser_pointer.hpp"
 #include "objects/pistol.hpp"
 #include "util/pathname.hpp"
+#include "sprite3d/manager.hpp"
 
 Pistol::Pistol() :
-  sprite(Pathname("models/objects/pistol/pistol.wsprite")),
+  sprite(g_app.sprite3d().create(Pathname("models/objects/pistol/pistol.wsprite"))),
   laser_pointer(new LaserPointer())
 {
 }

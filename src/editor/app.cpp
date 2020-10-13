@@ -23,9 +23,18 @@
 App g_app;
 
 App::App() :
+  m_texture_manager(nullptr),
   m_surface_manager(nullptr),
-  m_texture_manager(nullptr)
+  m_sprite_manager(nullptr),
+  m_sprite3d_manager(nullptr)
 {
+}
+
+TextureManager&
+App::texture() const
+{
+  assert(m_texture_manager != nullptr);
+  return *m_texture_manager;
 }
 
 SurfaceManager&
@@ -35,11 +44,18 @@ App::surface() const
   return *m_surface_manager;
 }
 
-TextureManager&
-App::texture() const
+SpriteManager&
+App::sprite() const
 {
-  assert(m_texture_manager != nullptr);
-  return *m_texture_manager;
+  assert(m_sprite_manager != nullptr);
+  return *m_sprite_manager;
+}
+
+sprite3d::Manager&
+App::sprite3d() const
+{
+  assert(m_sprite3d_manager != nullptr);
+  return *m_sprite3d_manager;
 }
 
 /* EOF */

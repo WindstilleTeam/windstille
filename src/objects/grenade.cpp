@@ -16,12 +16,15 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "engine/sector.hpp"
+#include "app/app.hpp"
 #include "collision/collision_engine.hpp"
+#include "engine/sector.hpp"
 #include "objects/grenade.hpp"
+#include "sprite2d/manager.hpp"
+#include "sprite3d/manager.hpp"
 
 Grenade::Grenade() :
-  sprite(Pathname("models/objects/grenade/grenade.wsprite")),
+  sprite(g_app.sprite3d().create(Pathname("models/objects/grenade/grenade.wsprite"))),
   physics(this),
   c_object(new CollisionObject(this, Rectf(0, 0, 32, 32)))
 {

@@ -42,8 +42,8 @@ Sprite3D::Sprite3D() :
 {
 }
 
-Sprite3D::Sprite3D(std::filesystem::path const& filename) :
-  data(sprite3d::Manager::current()->create_data(filename)),
+Sprite3D::Sprite3D(std::filesystem::path const& filename, sprite3d::Manager& sprite3d_manager) :
+  data(sprite3d_manager.create_data(filename)),
   actions_switched(false),
   frame1(),
   frame2(),

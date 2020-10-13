@@ -16,15 +16,18 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "objects/player.hpp"
 #include "objects/hedgehog.hpp"
+
+#include "app/app.hpp"
+#include "objects/player.hpp"
 #include "util/pathname.hpp"
+#include "sprite2d/manager.hpp"
 
 Hedgehog::Hedgehog(ReaderMapping const& props) :
-  sprite(Pathname("images/hedgehog.sprite")),
-  die_sprite(Pathname("images/hedgehog_die1.sprite")),
-  light(Pathname("images/hedgehog_light.sprite")),
-  highlight(Pathname("images/hedgehog_highlight.sprite")),
+  sprite(g_app.sprite().create(Pathname("images/hedgehog.sprite"))),
+  die_sprite(g_app.sprite().create(Pathname("images/hedgehog_die1.sprite"))),
+  light(g_app.sprite().create(Pathname("images/hedgehog_light.sprite"))),
+  highlight(g_app.sprite().create(Pathname("images/hedgehog_highlight.sprite"))),
   direction_left(false),
   state(WALKING)
 {

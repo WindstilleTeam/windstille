@@ -24,10 +24,12 @@
 
 #include <wstinput/controller.hpp>
 
+#include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
 #include "util/pathname.hpp"
+#include "sprite2d/manager.hpp"
 
 class InventoryItem
 {
@@ -36,7 +38,7 @@ public:
   Sprite sprite;
 
   InventoryItem(const std::string& name_, const std::string& filename_)
-    : name(name_), sprite(Pathname(filename_))
+    : name(name_), sprite(g_app.sprite().create(Pathname(filename_)))
   {
   }
 };
@@ -82,8 +84,8 @@ public:
 Inventory::Inventory()
   : impl(new InventoryImpl())
 {
-  impl->slot = Sprite(Pathname("images/inventory/slot.sprite"));
-  impl->slothighlight = Sprite(Pathname("images/inventory/slothighlight.sprite"));
+  impl->slot = g_app.sprite().create(Pathname("images/inventory/slot.sprite"));
+  impl->slothighlight = g_app.sprite().create(Pathname("images/inventory/slothighlight.sprite"));
   impl->moving = false;
   impl->add_angle = 0.0f;
   impl->current_item = 0;

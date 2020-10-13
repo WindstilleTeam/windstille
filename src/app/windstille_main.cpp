@@ -90,6 +90,8 @@ WindstilleMain::main(int argc, char** argv)
       g_app.m_input_manager = &input_manager;
       g_app.m_texture_manager = &texture_manager;
       g_app.m_surface_manager = &surface_manager;
+      g_app.m_sprite_manager = &sprite_manager;
+      g_app.m_sprite3d_manager = &sprite3d_manager;
       g_app.m_window = &window;
 
       window.set_icon(Pathname("icon.png"));
