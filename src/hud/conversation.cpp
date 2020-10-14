@@ -144,7 +144,7 @@ Conversation::update(float delta, const Controller& controller)
       fabsf(controller.get_axis_state(Y_AXIS)) > 0.3f)
   {
     float segment = 360.0f / static_cast<float>(choices.size());
-    float angle = glm::degrees(math::normalize_angle(atan2f(direction.y, direction.x) + math::pi/2.0f + glm::radians(segment/2.0f)));
+    float angle = glm::degrees(glm::wrapAngle(atan2f(direction.y, direction.x) + math::pi/2.0f + glm::radians(segment/2.0f)));
 
     int new_selection = int(angle / segment);
     new_selection = std::clamp(new_selection, 0, int(choices.size()));

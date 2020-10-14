@@ -19,6 +19,7 @@
 #include "objects/swarm.hpp"
 
 #include <numbers>
+#include <glm/gtx/fast_trigonometry.hpp>
 
 #include "math/math.hpp"
 #include "math/random.hpp"
@@ -103,7 +104,7 @@ Swarm::update(float delta)
     float dy = target.y - i->pos.y;
 
     float target_angle   = atan2f(dy, dx);
-    float relative_angle = math::normalize_angle(target_angle - i->angle);
+    float relative_angle = glm::wrapAngle(target_angle - i->angle);
 
     if (sqrtf(dx*dx + (dy*dy)*2.0f) > 50.0f) // swarm range
     {

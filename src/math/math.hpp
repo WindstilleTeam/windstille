@@ -27,22 +27,6 @@ namespace math {
 
 const float pi = 3.14159265358979323846f;
 
-inline float normalize_angle(float radians)
-{
-  radians = fmodf(radians, 2.0f * math::pi);
-  if (radians < 0.0f)
-    radians += 2.0f * math::pi;
-  // Floating point math is so loathsome.  In sp98test, the assertion
-  // was barfing at P = 180 because a very small negative number plus
-  // 2 PI was equalling 2 PI.  Gakk!
-  if (radians == 2.0f * math::pi)
-    radians = 0.0f;
-
-  // FIXME: This gets triggered from time to time!
-  //  assert (radians >= 0.0 && radians < 2.0 * math::pi);
-  return radians;
-}
-
 inline bool is_power_of_two(int n)
 {
   return (n > 0) && ((n & (n - 1)) == 0);
