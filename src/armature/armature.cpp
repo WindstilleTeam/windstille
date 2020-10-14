@@ -65,20 +65,16 @@ Armature::parse(ReaderDocument const& doc)
       {
         ReaderMapping const& bone_map = bone_obj.get_mapping();
         std::unique_ptr<Bone> bone(new Bone());
-        if (!(bone_map.read("name",     bone->name) &&
-              bone_map.read("children", bone->children_names) &&
-              bone_map.read("parent",   bone->parent_name) &&
-              bone_map.read("length",   bone->length) &&
-              bone_map.read("quat",     bone->quat) &&
-              bone_map.read("head",     bone->offset)))
-        {
-          std::cout << "Error: some Bone attribute missing" << std::endl;
-        }
-        else
-        {
-          bone->render_matrix = glm::toMat4(bone->quat);
-          bones.push_back(bone.release());
-        }
+
+        bone_map.must_read("name",     bone->name);
+        bone_map.must_read("children", bone->children_names);
+        bone_map.read("parent",   bone->parent_name);
+        bone_map.must_read("length",   bone->length);
+        bone_map.must_read("quat",     bone->quat);
+        bone_map.must_read("head",     bone->offset);
+
+        bone->render_matrix = glm::toMat4(bone->quat);
+        bones.push_back(bone.release());
       }
       else
       {
@@ -144,6 +140,8 @@ Armature::draw()
 void
 Armature::draw_bone(Bone* bone, glm::vec3 p, glm::mat4 m)
 {
+  if (bone == nullptr) { return; }
+
   glm::mat4  m_  = m * bone->render_matrix;
   glm::vec3 p_  = glm::vec3(glm::vec4(p, 1.0f) + m * glm::vec4(bone->offset, 1.0f));
 
