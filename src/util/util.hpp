@@ -22,9 +22,6 @@
 #include <sstream>
 #include <stdint.h>
 
-std::string dirname(const std::string& filename);
-std::string basename(const std::string& filename);
-
 float       read_float(std::istream& in);
 uint16_t    read_uint16_t(std::istream& in);
 uint32_t    read_uint32_t(std::istream& in);
