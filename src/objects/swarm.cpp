@@ -20,7 +20,6 @@
 
 #include <glm/gtx/fast_trigonometry.hpp>
 
-#include "math/math.hpp"
 #include "math/random.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
 #include "screen/game_session.hpp"

@@ -32,7 +32,6 @@
 #include "display/opengl_state.hpp"
 #include "display/software_surface.hpp"
 #include "display/texture_manager.hpp"
-#include "math/math.hpp"
 
 TexturePtr
 Texture::create(SoftwareSurfacePtr image, GLint format)

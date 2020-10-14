@@ -31,12 +31,10 @@
 #define __MATH_RECT_HPP__
 
 #include "math/origin.hpp"
-#include "math/math.hpp"
 
 #include <geom/geom.hpp>
 #include "math/origin.hpp"
 #include "math/size.hpp"
-#include "math/math.hpp"
 #include <glm/glm.hpp>
 
 using Rectf = geom::frect;

@@ -34,7 +34,6 @@
 #include "display/color.hpp"
 #include "display/opengl_state.hpp"
 #include "display/assert_gl.hpp"
-#include "math/math.hpp"
 
 geom::isize              Display::aspect_size;
 std::vector<geom::irect> Display::cliprects;

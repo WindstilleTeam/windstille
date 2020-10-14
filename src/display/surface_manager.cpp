@@ -25,7 +25,6 @@
 
 #include "display/software_surface.hpp"
 #include "display/texture_packer.hpp"
-#include "math/math.hpp"
 
 SurfaceManager::SurfaceManager() :
   texture_packer(),
