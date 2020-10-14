@@ -24,6 +24,8 @@
 #include <sstream>
 #include <stdexcept>
 
+#include <glm/ext.hpp>
+
 #include <geom/rect.hpp>
 
 #include "display/assert_gl.hpp"
@@ -62,7 +64,7 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
 {
   if (!GLEW_ARB_texture_non_power_of_two)
   {
-    if (!math::is_power_of_two(m_width) || !math::is_power_of_two(m_height))
+    if (!glm::isPowerOfTwo(m_width) || !glm::isPowerOfTwo(m_height))
     {
       std::cout  << "Texture::Texture(): texture dimensions have non power of two size: " << m_width << "x" << m_height;
 
@@ -99,7 +101,7 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
 
   if (!GLEW_ARB_texture_non_power_of_two)
   {
-    if (!math::is_power_of_two(image->get_width()) || !math::is_power_of_two(image->get_height()))
+    if (!glm::isPowerOfTwo(image->get_width()) || !glm::isPowerOfTwo(image->get_height()))
     {
       std::ostringstream str;
       str << "Texture::Texture(): image dimensions have non power of two size: "

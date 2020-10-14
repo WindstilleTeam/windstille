@@ -27,11 +27,6 @@ namespace math {
 
 const float pi = 3.14159265358979323846f;
 
-inline bool is_power_of_two(int n)
-{
-  return (n > 0) && ((n & (n - 1)) == 0);
-}
-
 template<typename T>
 inline T round_to_power_of_two(T n)
 {
