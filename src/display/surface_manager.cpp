@@ -24,8 +24,6 @@
 #include "display/software_surface.hpp"
 #include "display/texture_packer.hpp"
 
-#pragma GCC diagnostic ignored "-Wold-style-cast"
-
 SurfaceManager::SurfaceManager() :
   texture_packer(),
   surfaces()
@@ -185,5 +183,5 @@ SurfaceManager::save_all_as_png() const
 {
   texture_packer->save_all_as_png();
 }
-
+
 /* EOF */
