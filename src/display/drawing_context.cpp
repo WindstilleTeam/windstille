@@ -21,13 +21,14 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <geom/line.hpp>
+
 #include "display/compositor.hpp"
 #include "display/display.hpp"
 #include "display/drawing_parameters.hpp"
 #include "display/opengl_state.hpp"
 #include "display/scene_context.hpp"
 #include "display/surface_drawing_parameters.hpp"
-#include "math/line.hpp"
 
 #include "scenegraph/control_drawable.hpp"
 #include "scenegraph/fill_screen_drawable.hpp"
@@ -80,7 +81,7 @@ DrawingContext::draw(std::unique_ptr<Drawable> request)
 }
 
 void
-DrawingContext::draw(SurfacePtr surface, const glm::vec2& pos, const Quad& quad,
+DrawingContext::draw(SurfacePtr surface, const glm::vec2& pos, const geom::quad& quad,
                      const DrawingParameters& params, float z_pos)
 {
   draw(std::make_unique<SurfaceQuadDrawable>(surface, pos, quad, params, z_pos,
@@ -220,7 +221,7 @@ DrawingContext::get_clip_rect()
 }
 
 void
-DrawingContext::draw_line(const Line& line, const Color& color, float z_pos)
+DrawingContext::draw_line(const geom::line& line, const Color& color, float z_pos)
 {
   draw_line(line.p1, line.p2, color, z_pos);
 }
@@ -243,7 +244,7 @@ DrawingContext::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Co
 }
 
 void
-DrawingContext::draw_quad(const Quad& quad, const Color& color, float z_pos)
+DrawingContext::draw_quad(const geom::quad& quad, const Color& color, float z_pos)
 {
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
@@ -266,7 +267,7 @@ DrawingContext::draw_quad(const Quad& quad, const Color& color, float z_pos)
 }
 
 void
-DrawingContext::fill_quad(const Quad& quad, const Color& color, float z_pos)
+DrawingContext::fill_quad(const geom::quad& quad, const Color& color, float z_pos)
 {
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 

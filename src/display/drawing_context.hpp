@@ -21,6 +21,8 @@
 
 #include <vector>
 
+#include <geom/fwd.hpp>
+
 #include "scenegraph/drawable.hpp"
 #include "display/texture.hpp"
 #include "display/surface.hpp"
@@ -28,8 +30,6 @@
 class Color;
 class Compositor;
 class DrawingParameters;
-class Line;
-class Quad;
 class SceneContext;
 class Surface;
 class SurfaceDrawingParameters;
@@ -65,21 +65,21 @@ public:
 
   void fill_pattern(TexturePtr pattern, const glm::vec2& offset);
 
-  void draw_line(const Line& line, const Color& color, float z_pos = 0);
+  void draw_line(const geom::line& line, const Color& color, float z_pos = 0);
   void draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color, float z_pos = 0);
 
   void draw_rect(const geom::frect& rect, const Color& color, float z_pos = 0);
   void fill_rect(const geom::frect& rect, const Color& color, float z_pos = 0);
 
-  void draw_quad(const Quad& quad, const Color& color, float z_pos = 0);
-  void fill_quad(const Quad& quad, const Color& color, float z_pos = 0);
+  void draw_quad(const geom::quad& quad, const Color& color, float z_pos = 0);
+  void fill_quad(const geom::quad& quad, const Color& color, float z_pos = 0);
 
   /*{ */
   void draw(std::unique_ptr<Drawable> request);
   void draw(SurfacePtr surface, const glm::vec2& pos, float z = 0, float alpha = 0);
   void draw(SurfacePtr surface, float x, float y, float z = 0, float alpha = 0);
   void draw(SurfacePtr surface, const SurfaceDrawingParameters& params, float z_pos = 0);
-  void draw(SurfacePtr surface, const glm::vec2& pos, const Quad& quad,
+  void draw(SurfacePtr surface, const glm::vec2& pos, const geom::quad& quad,
             const DrawingParameters& params, float z_pos = 0);
   void draw_control(SurfacePtr surface, const glm::vec2& pos, float angle, float z_pos = 0);
   /*} */

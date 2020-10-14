@@ -20,10 +20,10 @@
 #define HEADER_WINDSTILLE_SCENEGRAPH_SURFACE_QUAD_DRAWABLE_HPP
 
 #include <glm/gtc/type_ptr.hpp>
-
 #include <glm/glm.hpp>
 
-#include "math/quad.hpp"
+#include <geom/quad.hpp>
+
 #include "display/opengl_state.hpp"
 #include "scenegraph/drawable.hpp"
 
@@ -31,11 +31,11 @@ class SurfaceQuadDrawable : public Drawable
 {
 private:
   SurfacePtr m_surface;
-  Quad m_quad;
+  geom::quad m_quad;
   DrawingParameters m_params;
 
 public:
-  SurfaceQuadDrawable(SurfacePtr surface, const glm::vec2& pos_, const Quad& quad,
+  SurfaceQuadDrawable(SurfacePtr surface, const glm::vec2& pos_, const geom::quad& quad,
                       const DrawingParameters& params, float z_pos_,
                       const glm::mat4& modelview_)
     : Drawable(pos_, z_pos_, modelview_),
@@ -77,7 +77,7 @@ public:
     glPopMatrix();
   }
 
-  void set_quad(const Quad& quad) { m_quad = quad; }
+  void set_quad(const geom::quad& quad) { m_quad = quad; }
 };
 
 #endif

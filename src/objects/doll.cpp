@@ -24,12 +24,12 @@
 #include <glm/ext.hpp>
 #include <glm/gtx/projection.hpp>
 
+#include <geom/line.hpp>
 #include <wstinput/controller.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "engine/sector.hpp"
-#include "math/line.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/edge_position.hpp"
 #include "navigation/navigation_graph.hpp"
@@ -216,7 +216,7 @@ Doll::update_falling(const Controller& controller, float delta)
   m_pos.y += 1000.0f * delta;
 
   const std::vector<EdgePosition>& intersections =
-    Sector::current()->get_navigation_graph().find_intersections(Line(m_last_pos, m_pos));
+    Sector::current()->get_navigation_graph().find_intersections(geom::line(m_last_pos, m_pos));
 
   if (!intersections.empty())
   {

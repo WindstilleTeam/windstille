@@ -120,7 +120,7 @@ DecalObjectModel::set_scale(const glm::vec2& scale_)
 void
 DecalObjectModel::draw_select(SceneContext& sc, bool highlight)
 {
-  Quad quad(get_bounding_box());
+  geom::quad quad(get_bounding_box());
 
   quad.rotate(angle);
 
@@ -240,13 +240,13 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
   float h = surface->get_height()/2 * scale.y;
 
   Rectf rect(-w, -h, w, h);
-  Quad quad1(rect);
+  geom::quad quad1(rect);
   quad1.rotate(angle);
 
-  Quad quad2(geom::grow(rect, 32.0f));
+  geom::quad quad2(geom::grow(rect, 32.0f));
   quad2.rotate(angle);
 
-  Quad quad3(glm::vec2( 0, -h),
+  geom::quad quad3(glm::vec2( 0, -h),
              glm::vec2( w,  0),
              glm::vec2( 0,  h),
              glm::vec2(-w,  0));

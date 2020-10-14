@@ -32,7 +32,6 @@
 class Edge;
 class EdgePosition;
 class FileReader;
-class Line;
 class Node;
 
 template<typename Data>
@@ -117,7 +116,7 @@ public:
   void split_edge(EdgeHandle edge);
 
   /** Find edges that intersect with the given line */
-  std::vector<EdgePosition> find_intersections(const Line& line);
+  std::vector<EdgePosition> find_intersections(const geom::line& line);
 
   /** Find nodes that are near within the \a radius */
   std::vector<NodeHandle> find_nodes(const glm::vec2& pos, float radius);

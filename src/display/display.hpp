@@ -23,14 +23,11 @@
 
 #include <glm/glm.hpp>
 
-#include <geom/rect.hpp>
-#include <geom/size.hpp>
+#include <geom/fwd.hpp>
 
 #include "display/framebuffer.hpp"
 
 class Color;
-class Quad;
-class Line;
 
 class Display
 {
@@ -41,8 +38,8 @@ public:
   static geom::isize aspect_size;
 
 public:
-  static void fill_quad(const Quad& quad, const Color& color);
-  static void draw_quad(const Quad& quad, const Color& color);
+  static void fill_quad(const geom::quad& quad, const Color& color);
+  static void draw_quad(const geom::quad& quad, const Color& color);
 
   static void fill_rect(const geom::frect& rect, const Color& color);
   static void draw_rect(const geom::frect& rect, const Color& color);
@@ -51,9 +48,9 @@ public:
   static void draw_rounded_rect(const geom::frect& rect, float radius, const Color& color);
 
   /** Same as draw_line, but in addition draw a normal on top of the line */
-  static void draw_line_with_normal(const Line& line, const Color& color);
+  static void draw_line_with_normal(const geom::line& line, const Color& color);
 
-  static void draw_line(const Line& line, const Color& color);
+  static void draw_line(const geom::line& line, const Color& color);
   static void draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color);
 
   static void draw_circle(const glm::vec2& pos, float radius, const Color& color, int segments = 16);

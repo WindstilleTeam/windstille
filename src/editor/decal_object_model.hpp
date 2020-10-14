@@ -19,7 +19,8 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_DECAL_OBJECT_MODEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_DECAL_OBJECT_MODEL_HPP
 
-#include "math/quad.hpp"
+#include <geom/quad.hpp>
+
 #include "editor/control_point.hpp"
 #include "display/surface.hpp"
 #include "display/software_surface.hpp"

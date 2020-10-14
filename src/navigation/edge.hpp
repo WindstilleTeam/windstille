@@ -19,8 +19,10 @@
 #ifndef HEADER_WINDSTILLE_NAVIGATION_EDGE_HPP
 #define HEADER_WINDSTILLE_NAVIGATION_EDGE_HPP
 
-#include "math/line.hpp"
 #include <glm/glm.hpp>
+
+#include <geom/line.hpp>
+
 #include "navigation/properties.hpp"
 
 class Node;
@@ -45,7 +47,7 @@ public:
 
   Properties get_properties()  const { return properties; }
 
-  Line   get_line() const;
+  geom::line get_line() const;
   glm::vec2 get_vector() const;
 
 private:

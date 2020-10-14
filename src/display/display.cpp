@@ -29,12 +29,13 @@
 #include <numbers>
 
 #include <geom/rect.hpp>
+#include <geom/line.hpp>
+#include <geom/quad.hpp>
 
 #include "display/color.hpp"
-#include "math/quad.hpp"
-#include "math/line.hpp"
 #include "display/opengl_state.hpp"
 #include "display/assert_gl.hpp"
+#include "math/math.hpp"
 
 geom::isize              Display::aspect_size;
 std::vector<geom::irect> Display::cliprects;
@@ -44,13 +45,13 @@ std::vector<FramebufferPtr> framebuffers;
 } // namespace
 
 void
-Display::draw_line(const Line& line, const Color& color)
+Display::draw_line(const geom::line& line, const Color& color)
 {
   draw_line(line.p1, line.p2, color);
 }
 
 void
-Display::draw_line_with_normal(const Line& line, const Color& color)
+Display::draw_line_with_normal(const geom::line& line, const Color& color)
 {
   glm::vec2 normal = (line.p2 - line.p1);
 
@@ -82,7 +83,7 @@ Display::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& co
 }
 
 void
-Display::fill_quad(const Quad& quad, const Color& color)
+Display::fill_quad(const geom::quad& quad, const Color& color)
 {
   OpenGLState state;
   state.enable(GL_BLEND);
@@ -99,7 +100,7 @@ Display::fill_quad(const Quad& quad, const Color& color)
 }
 
 void
-Display::draw_quad(const Quad& quad, const Color& color)
+Display::draw_quad(const geom::quad& quad, const Color& color)
 {
   OpenGLState state;
   state.enable(GL_BLEND);

@@ -20,15 +20,16 @@
 #define HEADER_WINDSTILLE_SCREEN_GEOMETRY_TEST_HPP
 
 #include "screen/screen.hpp"
+
 #include <glm/glm.hpp>
-#include "math/line.hpp"
+#include <geom/line.hpp>
 
 /** */
 class GeometryTest : public Screen
 {
 private:
-  Line line1;
-  Line line2;
+  geom::line line1;
+  geom::line line2;
 
   glm::vec2 cursor;
   glm::vec2 cursor2;

@@ -129,7 +129,7 @@ NavigationGraph::split_edge(EdgeHandle edge)
 }
 
 std::vector<EdgePosition>
-NavigationGraph::find_intersections(const Line& line)
+NavigationGraph::find_intersections(const geom::line& line)
 {
   // FIXME: we might want to only return the first intersection, not
   // all of them or alternativly return ua
@@ -137,7 +137,7 @@ NavigationGraph::find_intersections(const Line& line)
 
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
-    Line seg_line((*i)->get_node1()->get_pos(),
+    geom::line seg_line((*i)->get_node1()->get_pos(),
                   (*i)->get_node2()->get_pos());
 
     float ua, ub;
@@ -191,7 +191,7 @@ NavigationGraph::find_edges(const glm::vec2& pos, float radius)
 
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
-    float distance = Line((*i)->get_node1()->get_pos(),
+    float distance = geom::line((*i)->get_node1()->get_pos(),
                           (*i)->get_node2()->get_pos()).distance(pos);
     if (distance < radius)
     {
@@ -230,7 +230,7 @@ NavigationGraph::find_closest_edge(const glm::vec2& pos, float radius)
 
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
-    float current_distance = Line((*i)->get_node1()->get_pos(),
+    float current_distance = geom::line((*i)->get_node1()->get_pos(),
                                   (*i)->get_node2()->get_pos()).distance(pos);
     if (current_distance < min_distance)
     {
@@ -247,7 +247,7 @@ NavigationGraph::draw()
 {
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
-    Display::draw_line_with_normal(Line((*i)->get_node1()->get_pos(),
+    Display::draw_line_with_normal(geom::line((*i)->get_node1()->get_pos(),
                                         (*i)->get_node2()->get_pos()),
                                    Color(1.0f, 0.0f, 0.0f));
   }

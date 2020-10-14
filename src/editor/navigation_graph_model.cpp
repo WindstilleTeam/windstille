@@ -20,9 +20,10 @@
 
 #include <iostream>
 
+#include <geom/line.hpp>
+
 #include "editor/navgraph_edge_object_model.hpp"
 #include "editor/navgraph_node_object_model.hpp"
-#include "math/line.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "util/file_reader.hpp"
 
@@ -107,7 +108,7 @@ NavigationGraphModel::find_closest_edge(const glm::vec2& pos, float radius) cons
 
   for(Edges::const_iterator i = m_edges.begin(); i != m_edges.end(); ++i)
   {
-    float current_distance = Line((*i)->get_lhs()->get_world_pos(),
+    float current_distance = geom::line((*i)->get_lhs()->get_world_pos(),
                                   (*i)->get_rhs()->get_world_pos()).distance(pos);
     if (current_distance < min_distance)
     {

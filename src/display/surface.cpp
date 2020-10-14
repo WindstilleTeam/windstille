@@ -18,8 +18,9 @@
 
 #include "display/surface.hpp"
 
+#include <geom/quad.hpp>
+
 #include "display/opengl_state.hpp"
-#include "math/quad.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/surface_manager.hpp"
 
@@ -143,7 +144,7 @@ Surface::draw(const SurfaceDrawingParameters& params) const
     std::swap(uv_top, uv_bottom);
   }
 
-  Quad quad(params.pos.x,
+  geom::quad quad(params.pos.x,
             params.pos.y,
             params.pos.x + m_size.width()  * params.scale.x,
             params.pos.y + m_size.height() * params.scale.y);

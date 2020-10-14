@@ -229,7 +229,7 @@ NavigationTest::update(float delta, const Controller& controller)
       player.y -= 0.5f * 512.0f * delta;
     }
 
-    std::vector<EdgePosition> positions = graph->find_intersections(Line(old_player, player));
+    std::vector<EdgePosition> positions = graph->find_intersections(geom::line(old_player, player));
     if (!positions.empty())
     {
       std::cout << "Doing connection" << std::endl;
