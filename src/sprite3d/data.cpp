@@ -24,8 +24,9 @@
 #include <errno.h>
 #include <stdexcept>
 
+#include <biio/reader.hpp>
+
 #include "app/app.hpp"
-#include "util/util.hpp"
 #include "display/texture_manager.hpp"
 
 namespace sprite3d {
@@ -37,31 +38,24 @@ Data::Data(std::filesystem::path const& filename) :
   attachment_points(),
   actions()
 {
-  std::ifstream in(filename, std::ios::binary);
-
-  if (!in)
-  {
-    std::ostringstream msg;
-    msg << "Couldn't open '" << filename << "'";
-    throw std::runtime_error(msg.str());
-  }
+  auto reader = biio::Reader::from_file(filename);
 
   try
   {
-    std::string magic = read_string(in, 4);
+    std::string magic = reader.read_string(4);
     if(magic != "W3DS")
       throw std::runtime_error("Not a windstille 3d sprite file");
-    uint16_t format_version = read_uint16_t(in);
+    uint16_t format_version = reader.read_le<uint16_t>();
     if(format_version > FORMAT_VERSION)
       throw std::runtime_error("sprite file format too new");
     if(format_version < FORMAT_VERSION)
       throw std::runtime_error("sprite file format too old");
 
-    uint16_t mesh_count = read_uint16_t(in);
+    uint16_t mesh_count = reader.read_le<uint16_t>();
     if(mesh_count == 0)
       throw std::runtime_error("Sprite3D contains no meshs");
-    uint16_t attachment_point_count = read_uint16_t(in);
-    uint16_t action_count = read_uint16_t(in);
+    uint16_t attachment_point_count = reader.read_le<uint16_t>();
+    uint16_t action_count = reader.read_le<uint16_t>();
     if(action_count == 0)
       throw std::runtime_error("Sprite3D contains no actions");
 
@@ -71,9 +65,9 @@ Data::Data(std::filesystem::path const& filename) :
     {
       Mesh& mesh = *i;
 
-      std::string texturename = read_string(in, 64);
-      mesh.triangle_count = read_uint16_t(in);
-      mesh.vertex_count   = read_uint16_t(in);
+      std::string texturename = reader.read_string0(64);
+      mesh.triangle_count = reader.read_le<uint16_t>();
+      mesh.vertex_count   = reader.read_le<uint16_t>();
 
       std::filesystem::path path = filename.parent_path();
       path /= std::filesystem::path(texturename).filename();
@@ -83,19 +77,19 @@ Data::Data(std::filesystem::path const& filename) :
       mesh.vertex_indices.reserve(mesh.triangle_count * 3);
       for(uint16_t v = 0; v < mesh.triangle_count * 3; ++v)
       {
-        mesh.vertex_indices.push_back(read_uint16_t(in));
+        mesh.vertex_indices.push_back(reader.read_le<uint16_t>());
       }
 
       mesh.normals.reserve(mesh.triangle_count * 3);
       for(uint16_t n = 0; n < mesh.triangle_count * 3; ++n)
       {
-        mesh.normals.push_back(read_float(in));
+        mesh.normals.push_back(reader.read_le<float>());
       }
 
       mesh.tex_coords.reserve(mesh.vertex_count * 2);
       for(uint16_t v = 0; v < mesh.vertex_count * 2; ++v)
       {
-        mesh.tex_coords.push_back(read_float(in));
+        mesh.tex_coords.push_back(reader.read_le<float>());
       }
     }
 
@@ -103,7 +97,7 @@ Data::Data(std::filesystem::path const& filename) :
     attachment_points.reserve(attachment_point_count);
     for(uint16_t a = 0; a < attachment_point_count; ++a)
     {
-      attachment_points.push_back(read_string(in, 64));
+      attachment_points.push_back(reader.read_string0(64));
     }
 
     // read actions
@@ -112,18 +106,18 @@ Data::Data(std::filesystem::path const& filename) :
     {
       Action& action = *i;
 
-      action.name = read_string(in, 64);
-      action.speed = read_float(in);
-      uint16_t marker_count = read_uint16_t(in);
-      uint16_t frame_count  = read_uint16_t(in);
+      action.name = reader.read_string0(64);
+      action.speed = reader.read_le<float>();
+      uint16_t marker_count = reader.read_le<uint16_t>();
+      uint16_t frame_count  = reader.read_le<uint16_t>();
 
       // read markers
       action.markers.resize(marker_count);
       for(size_t m = 0; m < action.markers.size(); ++m)
       {
         Marker& marker = action.markers[m];
-        marker.name  = read_string(in, 64);
-        marker.frame = read_uint16_t(in);
+        marker.name  = reader.read_string0(64);
+        marker.frame = reader.read_le<uint16_t>();
       }
 
       // read frames
@@ -140,7 +134,7 @@ Data::Data(std::filesystem::path const& filename) :
           mesh.vertices.resize(meshs[m].vertex_count * 3);
           for(uint16_t v = 0; v < meshs[m].vertex_count * 3; ++v)
           {
-            mesh.vertices[v] = read_float(in);
+            mesh.vertices[v] = reader.read_le<float>();
           }
         }
 
@@ -149,14 +143,14 @@ Data::Data(std::filesystem::path const& filename) :
         {
           AttachmentPointPosition& point = frame.attachment_points[a];
 
-          point.pos.x = read_float(in);
-          point.pos.y = read_float(in);
-          point.pos.z = read_float(in);
+          point.pos.x = reader.read_le<float>();
+          point.pos.y = reader.read_le<float>();
+          point.pos.z = reader.read_le<float>();
 
-          point.quat.w = -read_float(in);
-          point.quat.x =  read_float(in);
-          point.quat.y =  read_float(in);
-          point.quat.z =  read_float(in);
+          point.quat.w = -reader.read_le<float>();
+          point.quat.x =  reader.read_le<float>();
+          point.quat.y =  reader.read_le<float>();
+          point.quat.z =  reader.read_le<float>();
           point.quat = glm::normalize(point.quat);
         }
       }

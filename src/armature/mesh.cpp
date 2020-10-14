@@ -25,7 +25,6 @@
 #include "display/assert_gl.hpp"
 #include "display/opengl_state.hpp"
 #include "display/texture_manager.hpp"
-#include "util/util.hpp"
 
 Mesh::Mesh(ReaderMapping const& reader, std::filesystem::path const& basedir,
            TextureManager& texture_manager) :

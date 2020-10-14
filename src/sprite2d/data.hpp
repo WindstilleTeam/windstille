@@ -22,7 +22,6 @@
 
 #include <GL/glew.h>
 
-#include "util/util.hpp"
 #include "util/file_reader.hpp"
 #include "display/surface.hpp"
 #include "display/surface_manager.hpp"

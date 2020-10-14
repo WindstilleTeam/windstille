@@ -23,7 +23,6 @@
 #include "math/size.hpp"
 #include "file_jpeg_decompressor.hpp"
 #include "jpeg.hpp"
-#include "util/util.hpp"
 
 bool
 JPEG::filename_is_jpeg(const std::string& filename)

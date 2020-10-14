@@ -31,3 +31,6 @@
 [submodule "external/wstinput"]
 	path = external/wstinput
 	url = https://gitlab.com/Windstille/wstinput.git
+[submodule "external/biiocpp"]
+	path = external/biiocpp
+	url = https://gitlab.com/grumbel/biiocpp.git

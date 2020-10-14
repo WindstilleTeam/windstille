@@ -70,6 +70,7 @@ function(build_dependencies)
   add_subdirectory(external/geomcpp/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/logmich/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
+  add_subdirectory(external/biiocpp/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/priocpp/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
 
@@ -134,6 +135,7 @@ file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 add_library(wstlib STATIC ${WSTLIB_SOURCES})
 target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
 target_link_libraries(wstlib PUBLIC
+  biio
   prio
   wstinput
   wstsound

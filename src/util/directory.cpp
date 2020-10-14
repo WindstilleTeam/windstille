@@ -20,7 +20,6 @@
 
 #include <filesystem>
 
-#include "util/util.hpp"
 #include "util/pathname.hpp"
 
 Directory::List

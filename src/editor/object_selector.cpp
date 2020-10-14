@@ -24,7 +24,6 @@
 #include <gtkmm/toolbar.h>
 #include <gtkmm/treemodelcolumn.h>
 
-#include "util/util.hpp"
 #include "util/directory.hpp"
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
