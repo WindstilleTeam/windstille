@@ -25,7 +25,6 @@
 #include <glm/glm.hpp>
 
 #include "display/scene_context.hpp"
-#include "engine/game_object.hpp"
 #include "sprite3d/data.hpp"
 
 class DrawingContext;
