@@ -107,12 +107,12 @@ InventoryImpl::draw()
   glm::vec2 pos = glm::vec2(400, 300);
 
   int num_items = static_cast<int>(items.size());
-  float step_angle = (2.0f * math::pi) / static_cast<float>(num_items);
+  float step_angle = (2.0f * glm::pi<float>()) / static_cast<float>(num_items);
 
   for(int i = 0; i < int(items.size()); ++i)
   {
     const InventoryItem& item = items[(i+current_item) % items.size()];
-    glm::vec2 draw_pos = pos + glm::rotate(glm::vec2(128.0f, 0.0f), step_angle * static_cast<float>(i) - math::pi/2.0f + add_angle);
+    glm::vec2 draw_pos = pos + glm::rotate(glm::vec2(128.0f, 0.0f), step_angle * static_cast<float>(i) - glm::pi<float>()/2.0f + add_angle);
 
     if (i == 0 && moving == 0)
     {
@@ -143,7 +143,7 @@ Inventory::update(float delta, const Controller& controller)
 void
 InventoryImpl::update(float delta, const Controller& controller)
 {
-  float step_angle = (2.0f * math::pi) / static_cast<float>(items.size());
+  float step_angle = (2.0f * glm::pi<float>()) / static_cast<float>(items.size());
   if (fabsf(add_angle) > step_angle)
   {
     if (moving == 1)

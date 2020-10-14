@@ -75,8 +75,8 @@ NavgraphInsertTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
                                mouse_pos.x - last_node->get_world_pos().x);
 
           std::cout << angle << std::endl;
-          if (fabsf(angle) > 1.0f/4.0f * math::pi &&
-              fabsf(angle) < 3.0f/4.0f * math::pi)
+          if (fabsf(angle) > 1.0f/4.0f * glm::pi<float>() &&
+              fabsf(angle) < 3.0f/4.0f * glm::pi<float>())
           {
             mouse_pos.x = last_node->get_world_pos().x;
           }
@@ -169,8 +169,8 @@ NavgraphInsertTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
                          mouse_pos.x - last_node->get_world_pos().x);
 
     //std::cout << angle << std::endl;
-    if (fabsf(angle) > 1.0f/4.0f * math::pi &&
-        fabsf(angle) < 3.0f/4.0f * math::pi)
+    if (fabsf(angle) > 1.0f/4.0f * glm::pi<float>() &&
+        fabsf(angle) < 3.0f/4.0f * glm::pi<float>())
     {
       mouse_pos.x = last_node->get_world_pos().x;
     }

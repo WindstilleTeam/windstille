@@ -99,7 +99,7 @@ EdgePosition::advance(glm::vec2& adv, Node*& next_node)
 
   // Check if we are going forward or backward
   float advf;
-  if (angle > math::pi/2.0f || angle < -math::pi/2.0f)
+  if (angle > glm::pi<float>()/2.0f || angle < -glm::pi<float>()/2.0f)
     advf = -glm::length(proj);
   else
     advf = glm::length(proj);

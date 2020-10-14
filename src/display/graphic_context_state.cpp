@@ -17,8 +17,6 @@
 
 #include "display/graphic_context_state.hpp"
 
-#include <numbers>
-
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -188,8 +186,8 @@ glm::vec2
 GraphicContextState::screen_to_world(const glm::vec2& pos_)
 {
   glm::vec2 pos(pos_.x, pos_.y);
-  float sa = sinf(-impl->rotation / 180.0f * std::numbers::pi_v<float>);
-  float ca = cosf(-impl->rotation / 180.0f * std::numbers::pi_v<float>);
+  float sa = sinf(-impl->rotation / 180.0f * glm::pi<float>());
+  float ca = cosf(-impl->rotation / 180.0f * glm::pi<float>());
 
   float dx = pos.x - static_cast<float>(impl->width)  / 2.0f;
   float dy = pos.y - static_cast<float>(impl->height) / 2.0f;

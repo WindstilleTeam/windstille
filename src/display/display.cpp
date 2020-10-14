@@ -26,7 +26,6 @@
 #include <sstream>
 #include <stdexcept>
 #include <string.h>
-#include <numbers>
 
 #include <geom/rect.hpp>
 #include <geom/line.hpp>
@@ -176,16 +175,16 @@ Display::fill_rounded_rect(const geom::frect& rect, float radius, const Color& c
   glBegin(GL_QUAD_STRIP);
   for(int i = 0; i <= n; ++i)
   {
-    float x = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2.0f) / static_cast<float>(n)) * radius;
-    float y = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2.0f) / static_cast<float>(n)) * radius;
+    float x = sinf(static_cast<float>(i) * (glm::pi<float>()/2.0f) / static_cast<float>(n)) * radius;
+    float y = cosf(static_cast<float>(i) * (glm::pi<float>()/2.0f) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.left()  - x, irect.top() - y);
     glVertex2f(irect.right() + x, irect.top() - y);
   }
   for(int i = 0; i <= n; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2.0f) / static_cast<float>(n)) * radius;
-    float y = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2.0f) / static_cast<float>(n)) * radius;
+    float x = cosf(static_cast<float>(i) * (glm::pi<float>()/2.0f) / static_cast<float>(n)) * radius;
+    float y = sinf(static_cast<float>(i) * (glm::pi<float>()/2.0f) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.left()  - x, irect.bottom() + y);
     glVertex2f(irect.right() + x, irect.bottom() + y);
@@ -218,31 +217,31 @@ Display::draw_rounded_rect(const geom::frect& rect, float radius, const Color& c
   glBegin(GL_LINE_STRIP);
   for(int i = 0; i <= n; ++i)
   {
-    float x = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
-    float y = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
+    float x = sinf(static_cast<float>(i) * (glm::pi<float>()/2) / static_cast<float>(n)) * radius;
+    float y = cosf(static_cast<float>(i) * (glm::pi<float>()/2) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.left()  - x, irect.top() - y);
   }
   for(int i = 0; i <= n; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
-    float y = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
+    float x = cosf(static_cast<float>(i) * (glm::pi<float>()/2) / static_cast<float>(n)) * radius;
+    float y = sinf(static_cast<float>(i) * (glm::pi<float>()/2) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.left()  - x, irect.bottom() + y);
   }
 
   for(int i = 0; i <= n; ++i)
   {
-    float x = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
-    float y = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
+    float x = sinf(static_cast<float>(i) * (glm::pi<float>()/2) / static_cast<float>(n)) * radius;
+    float y = cosf(static_cast<float>(i) * (glm::pi<float>()/2) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.right() + x, irect.bottom() + y);
   }
 
   for(int i = 0; i <= n; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
-    float y = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
+    float x = cosf(static_cast<float>(i) * (glm::pi<float>()/2) / static_cast<float>(n)) * radius;
+    float y = sinf(static_cast<float>(i) * (glm::pi<float>()/2) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.right() + x, irect.top() - y);
   }
@@ -282,8 +281,8 @@ Display::draw_circle(const glm::vec2& pos, float radius, const Color& color, int
   glVertex2f(radius + pos.x, pos.y);
   for(int i = 1; i < segments; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (std::numbers::pi_v<float> / 2.0f) / n) * radius;
-    float y = sinf(static_cast<float>(i) * (std::numbers::pi_v<float> / 2.0f) / n) * radius;
+    float x = cosf(static_cast<float>(i) * (glm::pi<float>() / 2.0f) / n) * radius;
+    float y = sinf(static_cast<float>(i) * (glm::pi<float>() / 2.0f) / n) * radius;
 
     glVertex2f(x + pos.x, y + pos.y);
   }
@@ -309,8 +308,8 @@ Display::fill_circle(const glm::vec2& pos, float radius, const Color& color, int
   glVertex2f(radius + pos.x, pos.y);
   for(int i = 1; i < segments; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / n) * radius;
-    float y = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / n) * radius;
+    float x = cosf(static_cast<float>(i) * (glm::pi<float>()/2) / n) * radius;
+    float y = sinf(static_cast<float>(i) * (glm::pi<float>()/2) / n) * radius;
 
     glVertex2f(x + pos.x, y + pos.y);
   }
@@ -329,7 +328,7 @@ Display::draw_arc(const glm::vec2& pos, float radius, float start, float end, co
   }
   else
   {
-    float step  = (2.0f * std::numbers::pi_v<float>) / static_cast<float>(segments);
+    float step  = (2.0f * glm::pi<float>()) / static_cast<float>(segments);
 
     if (start > end)
       std::swap(start, end);
@@ -369,7 +368,7 @@ Display::fill_arc(const glm::vec2& pos, float radius, float start, float end, co
   }
   else
   {
-    float step  = (2.0f * std::numbers::pi_v<float>) / static_cast<float>(segments);
+    float step  = (2.0f * glm::pi<float>()) / static_cast<float>(segments);
 
     if (start > end)
       std::swap(start, end);

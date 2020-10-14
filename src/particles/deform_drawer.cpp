@@ -120,8 +120,8 @@ public:
 
         if (i->angle != 0)
         {
-          float s = sinf(math::pi * i->angle/180.0f);
-          float c = cosf(math::pi * i->angle/180.0f);
+          float s = sinf(glm::pi<float>() * i->angle/180.0f);
+          float c = cosf(glm::pi<float>() * i->angle/180.0f);
           x_rot = (width/2) * c - (height/2) * s;
           y_rot = (width/2) * s + (height/2) * c;
         }

@@ -19,6 +19,7 @@
 #include "hud/dialog_manager.hpp"
 
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
 
 #include <wstinput/controller.hpp>
 
@@ -117,7 +118,7 @@ DialogManager::draw()
     const glm::vec2& pos_ = text_area->get_cursor_pos();
     Rectf cursor(pos_.x + 8, pos_.y + 8, pos_.x + 24, pos_.y + 24);
     Display::fill_rect(cursor, Color(1.0, 1.0, 1.0,
-                                     fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * math::pi * 3.0f))));
+                                     fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * glm::pi<float>() * 3.0f))));
   }
 }
 

@@ -18,7 +18,6 @@
 
 #include "objects/swarm.hpp"
 
-#include <numbers>
 #include <glm/gtx/fast_trigonometry.hpp>
 
 #include "math/math.hpp"
@@ -47,7 +46,7 @@ Swarm::Swarm(ReaderMapping const& props) :
     i->pos.x = pos.x + rnd.frand(-100, 100);
     i->pos.y = pos.y + rnd.frand(-100, 100);
 
-    i->angle = rnd.frand(-std::numbers::pi_v<float>, std::numbers::pi_v<float>);
+    i->angle = rnd.frand(-glm::pi<float>(), glm::pi<float>());
     i->speed = rnd.frand(50.0f, 200.0f);
 
     i->max_speed = rnd.frand(100.0f, 200.0f);
@@ -116,7 +115,7 @@ Swarm::update(float delta)
       }
       else
       {
-        if (relative_angle <= std::numbers::pi_v<float>)
+        if (relative_angle <= glm::pi<float>())
           i->angle += i->turn_speed * delta;
         else
           i->angle -= i->turn_speed * delta;

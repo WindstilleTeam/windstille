@@ -20,6 +20,8 @@
 
 #include <iostream>
 
+#include <glm/gtc/constants.hpp>
+
 #include "display/scene_context.hpp"
 #include "particles/deform_drawer.hpp"
 #include "particles/randomizer.hpp"
@@ -42,7 +44,7 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props,
     gravity_x(0.0f),
     gravity_y(-10.0f),
     cone_start(0),
-    cone_stop(2.0f * math::pi),
+    cone_stop(2.0f * glm::pi<float>()),
     bunching(1.0f),
     layer(SceneContext::COLORMAP),
     size_start(1.0f),
@@ -181,7 +183,7 @@ ParticleSystem::ParticleSystem()
     gravity_x(0.0f),
     gravity_y(-10.0f),
     cone_start(0),
-    cone_stop(2.0f * math::pi),
+    cone_stop(2.0f * glm::pi<float>()),
     bunching(1.0f),
     layer(SceneContext::COLORMAP),
     size_start(1.0f),
@@ -343,8 +345,8 @@ ParticleSystem::set_rect_distribution(const Rectf& rect)
 void
 ParticleSystem::set_cone(float start_angle, float stop_angle)
 {
-  cone_start = start_angle * math::pi/180.0f;
-  cone_stop  = stop_angle  * math::pi/180.0f;
+  cone_start = start_angle * glm::pi<float>()/180.0f;
+  cone_stop  = stop_angle  * glm::pi<float>()/180.0f;
 }
 
 void

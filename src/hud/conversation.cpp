@@ -79,7 +79,7 @@ Conversation::draw()
   for(int i = 0; i < static_cast<int>(choices.size()); ++i)
   { // FIXME:
     glm::vec2 offset(0.0f, 1.0f);
-    offset = glm::rotate(offset, glm::radians(segment * static_cast<float>(i)) - math::pi/2.0f);
+    offset = glm::rotate(offset, glm::radians(segment * static_cast<float>(i)) - glm::pi<float>()/2.0f);
 
     float start = -segment / 2.0f - 90.0f + segment * static_cast<float>(i);
     float end   = -segment / 2.0f - 90.0f + segment * static_cast<float>(i+1);
@@ -144,7 +144,7 @@ Conversation::update(float delta, const Controller& controller)
       fabsf(controller.get_axis_state(Y_AXIS)) > 0.3f)
   {
     float segment = 360.0f / static_cast<float>(choices.size());
-    float angle = glm::degrees(glm::wrapAngle(atan2f(direction.y, direction.x) + math::pi/2.0f + glm::radians(segment/2.0f)));
+    float angle = glm::degrees(glm::wrapAngle(atan2f(direction.y, direction.x) + glm::pi<float>()/2.0f + glm::radians(segment/2.0f)));
 
     int new_selection = int(angle / segment);
     new_selection = std::clamp(new_selection, 0, int(choices.size()));

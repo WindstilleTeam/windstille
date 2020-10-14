@@ -16,8 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "math/math.hpp"
 #include "util/response_curve.hpp"
+
+#include <assert.h>
+
+#include "math/math.hpp"
 
 ResponseCurve::ResponseCurve(float i_min_, float i_max_, const std::vector<float>& samples_)
   : i_min(i_min_),

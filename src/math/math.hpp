@@ -19,13 +19,7 @@
 #ifndef HEADER_WINDSTILLE_MATH_MATH_HPP
 #define HEADER_WINDSTILLE_MATH_MATH_HPP
 
-#include <assert.h>
-#include <limits>
-#include <math.h>
-
 namespace math {
-
-const float pi = 3.14159265358979323846f;
 
 } // namespace math
 
