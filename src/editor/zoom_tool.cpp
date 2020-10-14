@@ -57,7 +57,7 @@ ZoomTool::mouse_up(GdkEventButton* /*event*/, WindstilleWidget& wst)
 {
   if (mode == RECT_MODE)
   {
-    Rectf rect(click_pos, mouse_pos);
+    geom::frect rect(click_pos, mouse_pos);
     rect = geom::normalize(rect);
     wst.get_state().zoom_to(rect);
 
@@ -78,7 +78,7 @@ ZoomTool::draw(SceneContext& sc)
 {
   if (mode == RECT_MODE)
   {
-    Rectf rect(click_pos, mouse_pos);
+    geom::frect rect(click_pos, mouse_pos);
     rect = geom::normalize(rect);
 
     sc.control().fill_rect(rect, Color(1.0f, 1.0f, 0.0f, 0.25));

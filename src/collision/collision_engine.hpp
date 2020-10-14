@@ -53,7 +53,7 @@ public:
 private:
   void unstuck(CollisionObject& a, CollisionObject& b, float delta);
   CollisionData collide(CollisionObject& a, CollisionObject& b, float delta);
-  CollisionData collide(const Rectf& b1, const Rectf& b2,
+  CollisionData collide(const geom::frect& b1, const geom::frect& b2,
                         const glm::vec2& b1_v, const glm::vec2& b2_v,
                         float delta);
   CollisionData collide_tilemap(CollisionObject& a, CollisionObject& b, float delta);

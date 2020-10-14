@@ -19,9 +19,10 @@
 #include <sstream>
 #include <stdexcept>
 
+#include <geom/geom.hpp>
+
 #include "app/globals.hpp"
 #include "display/software_surface.hpp"
-#include "math/rect.hpp"
 #include "tile/tile_factory.hpp"
 
 TileDescription::TileDescription(ReaderMapping const& props) :
@@ -72,7 +73,7 @@ TileDescription::load(TileFactory* factory)
       if(ids[i] != -1)
       {
         factory->pack(ids[i], colmap[i], image,
-                      Rect(x, y, x+TILE_RESOLUTION, y+TILE_RESOLUTION));
+                      geom::irect(x, y, x+TILE_RESOLUTION, y+TILE_RESOLUTION));
       }
 
       i += 1;

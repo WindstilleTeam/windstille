@@ -23,9 +23,10 @@
 #include <iostream>
 #include <map>
 
+#include <geom/geom.hpp>
+
 #include "display/display.hpp"
 #include "display/color.hpp"
-#include "math/rect.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
 #include "util/file_writer.hpp"
@@ -169,7 +170,7 @@ NavigationGraph::find_nodes(const glm::vec2& pos, float radius)
 }
 
 std::vector<NodeHandle>
-NavigationGraph::find_nodes(const Rectf& rect)
+NavigationGraph::find_nodes(const geom::frect& rect)
 {
   std::vector<NodeHandle> ret;
 
@@ -254,7 +255,7 @@ NavigationGraph::draw()
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
   {
-    Display::fill_rect(Rectf((*i)->get_pos() - glm::vec2(4,4), Sizef(9, 9)),
+    Display::fill_rect(geom::frect((*i)->get_pos() - glm::vec2(4,4), geom::fsize(9, 9)),
                        Color(1.0f, 1.0f, 0.0f));
   }
 }

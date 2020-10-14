@@ -20,7 +20,8 @@
 #include <sstream>
 #include <setjmp.h>
 
-#include "math/size.hpp"
+#include <geom/geom.hpp>
+
 #include "file_jpeg_decompressor.hpp"
 #include "jpeg.hpp"
 
@@ -34,11 +35,11 @@ JPEG::filename_is_jpeg(const std::string& filename)
           filename.ends_with(".jpeg"));
 }
 
-Size
+geom::isize
 JPEG::get_size(const std::string& filename)
 {
   FileJPEGDecompressor loader(filename);
-  Size size = loader.read_size();
+  geom::isize size = loader.read_size();
   return size;
 }
 

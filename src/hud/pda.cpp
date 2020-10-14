@@ -55,10 +55,10 @@ PDA::PDA()
 {
   background = g_app.sprite().create(Pathname("images/pda/pda.sprite"));
 
-  ui_area.reset(new TextArea(geom::grow(Rectf(pos + glm::vec2(40.0f, 50.0f),
-                                              Sizef(315.0f, 435.0f)), -12.0f), false));
-  text_area.reset(new TextArea(geom::grow(Rectf(pos + glm::vec2(40.0f, 50.0f) + glm::vec2(0.0f, 56.0f),
-                                                Sizef(315.0f, 380.0f)), -12.0f), false));
+  ui_area.reset(new TextArea(geom::grow(geom::frect(pos + glm::vec2(40.0f, 50.0f),
+                                              geom::fsize(315.0f, 435.0f)), -12.0f), false));
+  text_area.reset(new TextArea(geom::grow(geom::frect(pos + glm::vec2(40.0f, 50.0f) + glm::vec2(0.0f, 56.0f),
+                                                geom::fsize(315.0f, 380.0f)), -12.0f), false));
 
   ui_area->set_font(g_app.fonts().vera12.get());
   text_area->set_font(g_app.fonts().vera12.get());
@@ -72,11 +72,11 @@ void
 PDA::draw()
 {
   // Darken the background a bit
-  Display::fill_rect(Rectf(Rect(0, 0, Display::get_width(), Display::get_height())), Color(0.0f, 0.0f, 0.0f, 0.25f));
+  Display::fill_rect(geom::frect(geom::irect(0, 0, Display::get_width(), Display::get_height())), Color(0.0f, 0.0f, 0.0f, 0.25f));
 
   background.draw(pos);
 
-  Rectf rect = geom::grow(text_area->get_rect(), 8.0f);
+  geom::frect rect = geom::grow(text_area->get_rect(), 8.0f);
 
   Display::fill_rounded_rect(rect, 16.0f, Color(0.1f, 0.1f, 0.2f, 0.8f));
   //Display::draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));

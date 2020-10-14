@@ -26,7 +26,7 @@
 Grenade::Grenade() :
   sprite(g_app.sprite3d().create(Pathname("models/objects/grenade/grenade.wsprite"))),
   physics(this),
-  c_object(new CollisionObject(this, Rectf(0, 0, 32, 32)))
+  c_object(new CollisionObject(this, geom::frect(0, 0, 32, 32)))
 {
   physics.register_collobj(*c_object);
 

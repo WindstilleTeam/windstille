@@ -46,10 +46,10 @@ SpriteObjectModel::update(float delta)
   sprite.update(delta);
 }
 
-Rectf
+geom::frect
 SpriteObjectModel::get_bounding_box() const
 {
-  return Rectf(get_world_pos(), Sizef(sprite.get_width(), sprite.get_height()));
+  return geom::frect(get_world_pos(), geom::fsize(sprite.get_width(), sprite.get_height()));
 }
 
 ObjectModelHandle

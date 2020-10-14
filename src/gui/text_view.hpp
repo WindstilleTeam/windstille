@@ -31,13 +31,13 @@ private:
   TextArea text_area;
 
 public:
-  TextView(const Rectf& rect, Component* component);
+  TextView(const geom::frect& rect, Component* component);
   ~TextView() override;
 
   void draw() override;
   void update(float delta, const Controller& controller) override;
 
-  void set_screen_rect(const Rectf& rect) override;
+  void set_screen_rect(const geom::frect& rect) override;
   void set_text(const std::string& text);
   void set_font(TTFFont* font);
 

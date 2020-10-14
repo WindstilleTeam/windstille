@@ -55,7 +55,7 @@ std::vector<std::string> string_tokenize(std::string_view text, std::string_view
 } // namespace
 
 float
-NodePosX::get(const Sizef& scr, const Sizef& img, float zoom) const
+NodePosX::get(const geom::fsize& scr, const geom::fsize& img, float zoom) const
 {
   // FIXME: Warning img is already multiplied by zoom
   switch(m_type)
@@ -88,7 +88,7 @@ NodePosX::get(const Sizef& scr, const Sizef& img, float zoom) const
 }
 
 float
-NodePosY::get(const Sizef& scr, const Sizef& img, float zoom) const
+NodePosY::get(const geom::fsize& scr, const geom::fsize& img, float zoom) const
 {
   // FIXME: Warning img is already multiplied by zoom
   switch(m_type)
@@ -121,7 +121,7 @@ NodePosY::get(const Sizef& scr, const Sizef& img, float zoom) const
 }
 
 float
-NodeZoom::get(const Sizef& scr, const Sizef& img) const
+NodeZoom::get(const geom::fsize& scr, const geom::fsize& img) const
 {
   switch(m_type)
   {
@@ -156,7 +156,7 @@ NodeZoom::get(const Sizef& scr, const Sizef& img) const
   }
 }
 
-SlideParser::SlideParser(SlideShow& slideshow, const Sizef& screen_size,
+SlideParser::SlideParser(SlideShow& slideshow, const geom::fsize& screen_size,
                          SurfaceManager& surface_manager) :
   m_slideshow(slideshow),
   m_screen_size(screen_size),
@@ -538,9 +538,9 @@ SlideParser::handle_duration(const std::vector<std::string>& args)
 void
 SlideParser::add_node()
 {
-  Sizef image_size(m_image->get_width(), m_image->get_height());
+  geom::fsize image_size(m_image->get_width(), m_image->get_height());
   float zoom = m_node.zoom.get(m_screen_size, image_size);
-  Sizef image_size_zoom(zoom * m_image->get_width(),
+  geom::fsize image_size_zoom(zoom * m_image->get_width(),
                         zoom * m_image->get_height());
 
   //m_image->get_path().add_node(m_path_node.pos, m_path_node.zoom);

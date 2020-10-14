@@ -31,7 +31,7 @@ private:
 public:
   /** Create a pixel border around the font
 
-      @param size     Size of the border in pixel
+      @param size     geom::isize of the border in pixel
       @param outline  If true add the border as an outline to the font, else add it to the font itself
   */
   BorderFontEffect(int size, bool outline);

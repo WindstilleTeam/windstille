@@ -73,7 +73,7 @@ public:
   void sync(const Gtk::TreeModel::Row& row);
 
   ObjectModelHandle get_object_at(const glm::vec2& pos, const SelectMask& layers) const;
-  SelectionHandle   get_selection(const Rectf& rect, const SelectMask& layers) const;
+  SelectionHandle   get_selection(const geom::frect& rect, const SelectMask& layers) const;
 
   void raise_to_top(ObjectModelHandle object);
   void lower_to_bottom(ObjectModelHandle object);

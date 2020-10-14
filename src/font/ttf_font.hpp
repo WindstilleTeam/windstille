@@ -23,9 +23,10 @@
 #include <memory>
 #include <string>
 
+#include <geom/geom.hpp>
+
 #include "display/color.hpp"
 #include "display/texture.hpp"
-#include "math/rect.hpp"
 #include "font/no_font_effect.hpp"
 
 class DrawingContext;
@@ -37,17 +38,17 @@ class TTFCharacter
 public:
   /** The position of the image, relative to the current cursor
       position in screen coordinates */
-  Rect pos;
+  geom::irect pos;
 
   /** The position of the character in a OpenGL texture, given in
       uv-coordinates */
-  Rectf uv;
+  geom::frect uv;
 
   /** Amount of pixels that the cursor will advance after having
       printed this character */
   int advance;
 
-  TTFCharacter(const Rect& pos, const Rectf& uv, int advance);
+  TTFCharacter(const geom::irect& pos, const geom::frect& uv, int advance);
 };
 
 class TTFFont

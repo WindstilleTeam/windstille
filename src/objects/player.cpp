@@ -20,13 +20,14 @@
 
 #include <functional>
 
+#include <geom/point.hpp>
+
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "collision/collision_engine.hpp"
 #include "collision/stair_contact.hpp"
 #include "engine/sector.hpp"
 #include "font/fonts.hpp"
-#include "math/point.hpp"
 #include "objects/grenade.hpp"
 #include "objects/laser_pointer.hpp"
 #include "objects/pistol.hpp"
@@ -68,7 +69,7 @@ Player::Player () :
   sprite.set_action("Stand");
 
   // collision detection init
-  c_object = new CollisionObject(this, Rectf(-15, -120, 15, 0));
+  c_object = new CollisionObject(this, geom::frect(-15, -120, 15, 0));
 
   c_object->set_pos(pos);
   c_object->set_velocity(velocity);
@@ -96,8 +97,8 @@ Player::draw (SceneContext& sc)
 {
   if (1)
   { // draw the 'stand-on' tile
-    sc.highlight().fill_rect(Rectf(Rect(Point(int(pos.x)/32 * 32, (int(pos.y)/32 + 1) * 32),
-                                        Size(32, 32))),
+    sc.highlight().fill_rect(geom::frect(geom::irect(geom::ipoint(int(pos.x)/32 * 32, (int(pos.y)/32 + 1) * 32),
+                                        geom::isize(32, 32))),
                              Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
   }
 
@@ -268,7 +269,7 @@ Player::update_walk_stand(const Controller& controller)
     TileMap* tilemap = Sector::current()->get_tilemap2();
     if (tilemap)
     {
-      Point p(int(pos.x)/32, (int(pos.y)/32 + 1));
+      geom::ipoint p(int(pos.x)/32, (int(pos.y)/32 + 1));
       unsigned int col = tilemap->get_pixel(p.x(), p.y());
 
       if ((col & TILE_STAIRS) && ((get_direction() == WEST && (col & TILE_LEFT)) ||
@@ -296,7 +297,7 @@ Player::update_walk_stand(const Controller& controller)
     TileMap* tilemap = Sector::current()->get_tilemap2();
     if (tilemap)
     {
-      Point p(int(pos.x)/32 + ((get_direction() == WEST) ? -1 : +1), (int(pos.y)/32));
+      geom::ipoint p(int(pos.x)/32 + ((get_direction() == WEST) ? -1 : +1), (int(pos.y)/32));
       unsigned int col = tilemap->get_pixel(p.x(), p.y());
 
       if ((col & TILE_STAIRS) && ((get_direction() == EAST && (col & TILE_LEFT)) ||

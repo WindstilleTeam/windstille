@@ -23,7 +23,7 @@
 namespace gui {
 
 GUIManager::GUIManager()
-  : root(new RootComponent(Rectf(0,0,800,600)))
+  : root(new RootComponent(geom::frect(0,0,800,600)))
 {
 }
 

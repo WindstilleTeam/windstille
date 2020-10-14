@@ -27,7 +27,7 @@
 
 namespace gui {
 
-ListView::ListView(const Rectf& rect_, Component* parent_)
+ListView::ListView(const geom::frect& rect_, Component* parent_)
   : Component(rect_, parent_),
     columns(),
     items(),
@@ -64,7 +64,7 @@ ListView::draw()
     x = rect.left();
 
     if (j == current_item)
-      Display::fill_rect(Rectf(x, y,
+      Display::fill_rect(geom::frect(x, y,
                                rect.right(), y + static_cast<float>(font->get_height())),
                          is_active() ? Color(0.5f, 0.5f, 1.0f, 0.8f) : Color(0.5f, 0.5f, 1.0f, 0.3f));
 

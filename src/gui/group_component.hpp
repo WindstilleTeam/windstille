@@ -31,7 +31,7 @@ private:
   std::unique_ptr<Component> child;
 
 public:
-  GroupComponent(const Rectf& rect, const std::string& title_, Component* parent);
+  GroupComponent(const geom::frect& rect, const std::string& title_, Component* parent);
   ~GroupComponent() override;
 
   void draw() override;
@@ -41,7 +41,7 @@ public:
 
   bool is_active() const override;
 
-  Rectf get_child_rect() const;
+  geom::frect get_child_rect() const;
 
   bool has_title() const { return !title.empty(); }
 

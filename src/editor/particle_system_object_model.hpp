@@ -36,7 +36,7 @@ public:
   void draw(SceneContext& sc) override;
   void update(float delta) override;
 
-  Rectf get_bounding_box() const override;
+  geom::frect get_bounding_box() const override;
   ObjectModelHandle clone() const override;
 
   void write(FileWriter& writer) const override;

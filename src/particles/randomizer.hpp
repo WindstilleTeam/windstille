@@ -38,9 +38,9 @@ public:
 
 class RectRandomizer : public Randomizer {
 public:
-  Rectf rect;
+  geom::frect rect;
 
-  RectRandomizer(const Rectf& rect_)
+  RectRandomizer(const geom::frect& rect_)
     : rect(rect_) {}
 
   void set_pos(Particle& p) override {

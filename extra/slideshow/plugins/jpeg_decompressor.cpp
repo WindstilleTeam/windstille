@@ -48,7 +48,7 @@ JPEGDecompressor::~JPEGDecompressor()
   jpeg_destroy_decompress(&m_cinfo);
 }
 
-Size
+geom::isize
 JPEGDecompressor::read_size()
 {
   if (setjmp(m_err.setjmp_buffer))
@@ -64,8 +64,8 @@ JPEGDecompressor::read_size()
   {
     jpeg_read_header(&m_cinfo, /*require_image*/ FALSE);
 
-    return Size(m_cinfo.image_width,
-                m_cinfo.image_height);
+    return geom::isize(m_cinfo.image_width,
+                       m_cinfo.image_height);
   }
 }
 

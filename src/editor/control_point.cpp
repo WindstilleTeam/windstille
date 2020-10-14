@@ -62,16 +62,16 @@ ControlPoint::on_move_end(GdkEventButton* /*event*/, const glm::vec2& offset_)
   offset = glm::vec2();
 }
 
-Rectf
+geom::frect
 ControlPoint::get_bounding_box() const
 {
-  return Rectf(pos - glm::vec2(11.0f, 11.0f), Sizef(22.0f, 22.0f));
+  return geom::frect(pos - glm::vec2(11.0f, 11.0f), geom::fsize(22.0f, 22.0f));
 }
 
 void
 ControlPoint::draw(SceneContext& sc)
 {
-  Rectf rect = get_bounding_box();
+  geom::frect rect = get_bounding_box();
 
   rect += offset;
 

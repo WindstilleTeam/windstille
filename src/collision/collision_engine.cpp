@@ -24,7 +24,7 @@
 #include "collision/collision_test.hpp"
 #include "tile/tile_map.hpp"
 
-std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r, bool is_ground);
+std::vector<geom::frect> tilemap_collision_list(TileMap *tilemap, const geom::frect &r, bool is_ground);
 
 /***********************************************************************
  * Collision
@@ -99,7 +99,7 @@ CollisionEngine::unstuck(CollisionObject& a, CollisionObject& b, float delta)
 
 namespace {
 
-glm::vec2 unstuck_direction(const Rectf &a, const Rectf &b, float delta, float unstuck_velocity)
+glm::vec2 unstuck_direction(const geom::frect &a, const geom::frect &b, float delta, float unstuck_velocity)
 {
   // The distance A needs to unstuck from B in the given direction
   float left   = fabsf(a.right() - b.left());
@@ -168,7 +168,7 @@ bool is_rect_free(TileMap *tilemap, int l, int t, int w,int h)
   return true;
 }
 
-Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
+geom::frect get_next_free_rect(TileMap *tilemap, const geom::frect &r)
 {
   int rx = c_round(r.left() / static_cast<float>(TILE_SIZE));
   int ry = c_round(std::min (r.top(), r.bottom())  / static_cast<float>(TILE_SIZE));
@@ -179,7 +179,7 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
   int rw = c_roundup (fw / static_cast<float>(TILE_SIZE));
   int rh = c_roundup (fh / static_cast<float>(TILE_SIZE));
 
-  std::vector<Rectf> rects;
+  std::vector<geom::frect> rects;
 
   // find first set of free rectangle
   // simply iterate the rectangles around current position
@@ -188,14 +188,14 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
     for(int i=-d; i<=d; i++)
     {
       if (is_rect_free(tilemap, i + rx, -d + ry, rw, rh))
-        rects.emplace_back(Rect(i + rx, -d + ry, rw, rh));
+        rects.emplace_back(geom::irect(i + rx, -d + ry, rw, rh));
       if (is_rect_free(tilemap, i + rx, d + ry, rw, rh))
-        rects.emplace_back(Rect(i + rx, d + ry, rw, rh));
+        rects.emplace_back(geom::irect(i + rx, d + ry, rw, rh));
 
       if (is_rect_free(tilemap, -d + rx, i + ry, rw, rh))
-        rects.emplace_back(Rect(-d + rx, i + ry, rw, rh));
+        rects.emplace_back(geom::irect(-d + rx, i + ry, rw, rh));
       if (is_rect_free(tilemap,  d + rx, i + ry, rw, rh))
-        rects.emplace_back(Rect(d  + rx, i + ry, rw, rh));
+        rects.emplace_back(geom::irect(d  + rx, i + ry, rw, rh));
     }
     if (rects.size())
       break;
@@ -205,8 +205,8 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
   // find nearest rectangle in this set
   float distance=10000.0f;
   float dx,dy,d;
-  Rectf nr;
-  for (std::vector<Rectf>::iterator i = rects.begin(); i != rects.end(); ++i)
+  geom::frect nr;
+  for (std::vector<geom::frect>::iterator i = rects.begin(); i != rects.end(); ++i)
   {
     dx = i->left() - r.left() / static_cast<float>(TILE_SIZE);
     dy = i->top()  - r.top()  / static_cast<float>(TILE_SIZE);
@@ -218,7 +218,7 @@ Rectf get_next_free_rect(TileMap *tilemap, const Rectf &r)
     }
   }
 
-  nr = Rectf(nr.left(),
+  nr = geom::frect(nr.left(),
              nr.top(),
              nr.right() + nr.left(),
              nr.bottom() + nr.top());
@@ -232,16 +232,16 @@ void
 CollisionEngine::unstuck_tilemap(CollisionObject& a, CollisionObject& b, float delta)
 {
   (void)delta;
-  Rectf rb = b.primitive;
+  geom::frect rb = b.primitive;
 
-  rb = Rectf(rb.left() + b.get_pos().x,
+  rb = geom::frect(rb.left() + b.get_pos().x,
              rb.top()  + b.get_pos().y,
              rb.right() + b.get_pos().x,
              rb.bottom() + b.get_pos().y);
 
-  Rectf target = get_next_free_rect(a.tilemap, rb);
+  geom::frect target = get_next_free_rect(a.tilemap, rb);
 
-  target = Rectf(target.left() * static_cast<float>(TILE_SIZE),
+  target = geom::frect(target.left() * static_cast<float>(TILE_SIZE),
                  target.top() * static_cast<float>(TILE_SIZE),
                  target.left() + (rb.right() - rb.left()),
                  target.top()  + (rb.top() - rb.bottom()));
@@ -253,7 +253,7 @@ CollisionEngine::unstuck_tilemap(CollisionObject& a, CollisionObject& b, float d
     float v = static_cast<float>(c_roundup(target.bottom() / static_cast<float>(TILE_SIZE)))
       * static_cast<float>(TILE_SIZE) - target.bottom();
 
-    target = Rectf(target.left(),
+    target = geom::frect(target.left(),
                    target.top() + v,
                    target.right(),
                    target.bottom() + v);
@@ -262,7 +262,7 @@ CollisionEngine::unstuck_tilemap(CollisionObject& a, CollisionObject& b, float d
   {
     float v = static_cast<float>(c_roundup(target.right() / static_cast<float>(TILE_SIZE))) * static_cast<float>(TILE_SIZE) - target.right();
 
-    target = Rectf(target.left() + v,
+    target = geom::frect(target.left() + v,
                    target.top(),
                    target.right() + v,
                    target.bottom());
@@ -274,16 +274,16 @@ CollisionEngine::unstuck_tilemap(CollisionObject& a, CollisionObject& b, float d
 void
 CollisionEngine::unstuck_rect_rect(CollisionObject& a, CollisionObject& b, float delta)
 {
-  Rectf ra = a.primitive;
+  geom::frect ra = a.primitive;
 
-  ra = Rectf(ra.left()   + a.get_pos().x,
+  ra = geom::frect(ra.left()   + a.get_pos().x,
              ra.top()    + a.get_pos().y,
              ra.right()  + a.get_pos().x,
              ra.bottom() + a.get_pos().y);
 
-  Rectf rb = b.primitive;
+  geom::frect rb = b.primitive;
 
-  rb = Rectf(rb.left()   + b.get_pos().x,
+  rb = geom::frect(rb.left()   + b.get_pos().x,
              rb.top()    + b.get_pos().y,
              rb.right()  + b.get_pos().x,
              rb.bottom() + b.get_pos().y);
@@ -422,7 +422,7 @@ CollisionEngine::remove(CollisionObject *obj)
 
 // LEFT means b1 is left of b2
 CollisionData
-CollisionEngine::collide(const Rectf& b1, const Rectf& b2,
+CollisionEngine::collide(const geom::frect& b1, const geom::frect& b2,
                          const glm::vec2& b1_v, const glm::vec2& b2_v,
                          float delta)
 {
@@ -480,15 +480,15 @@ CollisionEngine::collide(CollisionObject& a, CollisionObject& b, float delta)
 {
   if (a.get_type() == CollisionObject::RECTANGLE && b.get_type() == CollisionObject::RECTANGLE)
   {
-    Rectf ra = a.primitive;
-    Rectf rb = b.primitive;
+    geom::frect ra = a.primitive;
+    geom::frect rb = b.primitive;
 
-    ra = Rectf(ra.left()   + a.get_pos().x,
+    ra = geom::frect(ra.left()   + a.get_pos().x,
                ra.top()    + a.get_pos().y,
                ra.right()  + a.get_pos().x,
                ra.bottom() + a.get_pos().y);
 
-    rb = Rectf(rb.left()   + b.get_pos().x,
+    rb = geom::frect(rb.left()   + b.get_pos().x,
                rb.top()    + b.get_pos().y,
                rb.right()  + b.get_pos().x,
                rb.bottom() + b.get_pos().y);
@@ -540,7 +540,7 @@ int get_integer(float f, float direction)
   return result;
 }
 
-bool tilemap_collision(TileMap *tilemap, const Rectf &r)
+bool tilemap_collision(TileMap *tilemap, const geom::frect &r)
 {
   int minx, maxx;
   int miny, maxy;
@@ -566,9 +566,9 @@ bool tilemap_collision(TileMap *tilemap, const Rectf &r)
 }
 
 #if 0
-std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r,bool is_ground)
+std::vector<geom::frect> tilemap_collision_list(TileMap *tilemap, const geom::frect &r,bool is_ground)
 {
-  std::vector<Rectf> rect_list;
+  std::vector<geom::frect> rect_list;
   int minx, maxx;
   int miny, maxy;
   int x, y;
@@ -583,7 +583,7 @@ std::vector<Rectf> tilemap_collision_list(TileMap *tilemap, const Rectf &r,bool 
     {
       if(tilemap->is_ground (static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE) ) == is_ground)
       {
-        rect_list.push_back (Rectf (static_cast<float>(x * TILE_SIZE),
+        rect_list.push_back (geom::frect (static_cast<float>(x * TILE_SIZE),
                                     static_cast<float>(y * TILE_SIZE),
                                     static_cast<float>(TILE_SIZE),
                                     static_cast<float>(TILE_SIZE)));
@@ -615,9 +615,9 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
   // Then for the given frame delta, for each new grid collision is checked,
   // if a collision takes place.
 
-  Rectf r = b.primitive;
+  geom::frect r = b.primitive;
 
-  r = Rectf(r.left()   + b.get_pos().x,
+  r = geom::frect(r.left()   + b.get_pos().x,
             r.top()    + b.get_pos().y,
             r.right()  + b.get_pos().x,
             r.bottom() + b.get_pos().y);
@@ -701,7 +701,7 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
       dx = ct * vel.x;
       dy = ct * vel.y;
 
-      r = Rectf(r.left()   + dx,
+      r = geom::frect(r.left()   + dx,
                 r.top()    + dy,
                 r.right()  + dx,
                 r.bottom() + dy);
@@ -713,18 +713,18 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
       last_zero=(ct==0.0f);
 
       // now shift one more pixel and check for collision with tilemap
-      Rectf tmp(r);
+      geom::frect tmp(r);
 
       if (tx < ty)
       {
-        tmp = Rectf(tmp.left() + static_cast<float>(c_sign(vel.x)),
+        tmp = geom::frect(tmp.left() + static_cast<float>(c_sign(vel.x)),
                     tmp.top(),
                     tmp.right() + static_cast<float>(c_sign(vel.x)),
                     tmp.bottom());
       }
       else
       {
-        tmp = Rectf(tmp.left(),
+        tmp = geom::frect(tmp.left(),
                     tmp.top() + static_cast<float>(c_sign(vel.y)),
                     tmp.right(),
                     tmp.bottom() + static_cast<float>(c_sign(vel.y)));

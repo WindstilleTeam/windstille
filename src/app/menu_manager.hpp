@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_APP_MENU_MANAGER_HPP
 #define HEADER_WINDSTILLE_APP_MENU_MANAGER_HPP
 
-#include "math/rect.hpp"
+#include <geom/geom.hpp>
 
 class Pathname;
 
@@ -45,11 +45,11 @@ public:
 private:
   /** Position a menu with the given size \a w, \a h at the center of
       the screen */
-  static Rectf create_centered_rect(float w, float h);
+  static geom::frect create_centered_rect(float w, float h);
 
   /** Position a menu at the given positions, while thread the
       positions relative to the 800x600 ration */
-  static Rectf create_positioned_rect(const glm::vec2& pos, const Sizef& size);
+  static geom::frect create_positioned_rect(const glm::vec2& pos, const geom::fsize& size);
 
   // Callbacks
   static void menu_start_game();

@@ -23,7 +23,7 @@
 #include <jpeglib.h>
 #include <setjmp.h>
 
-#include "math/size.hpp"
+#include <geom/geom.hpp>
 
 class JPEGDecompressor
 {
@@ -44,7 +44,7 @@ protected:
 public:
   virtual ~JPEGDecompressor();
 
-  Size read_size();
+  geom::isize read_size();
 
 private:
   [[noreturn]]

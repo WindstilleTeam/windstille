@@ -23,6 +23,7 @@
 #include <fstream>
 
 #include <ft2build.h>
+#include <geom/geom.hpp>
 
 #include "display/blitter.hpp"
 #include "display/drawing_context.hpp"
@@ -30,10 +31,9 @@
 #include "display/software_surface.hpp"
 #include "font/text_drawable.hpp"
 #include "font/ttf_font.hpp"
-#include "math/point.hpp"
-
-TTFCharacter::TTFCharacter(const Rect& pos_,
-                           const Rectf& uv_,
+
+TTFCharacter::TTFCharacter(const geom::irect& pos_,
+                           const geom::frect& uv_,
                            int advance_) :
   pos(pos_),
   uv(uv_),
@@ -126,11 +126,11 @@ TTFFont::TTFFont(std::filesystem::path const& filename, int size_, const FontEff
 
       generate_border(pixelbuffer, x_pos, y_pos, glyph_width, glyph_height);
 
-      Rect pos(Point(effect.get_x_offset(face->glyph->bitmap_left),
+      geom::irect pos(geom::ipoint(effect.get_x_offset(face->glyph->bitmap_left),
                      effect.get_y_offset(-face->glyph->bitmap_top)),
-               Size(glyph_width, glyph_height));
+               geom::isize(glyph_width, glyph_height));
 
-      Rectf uv(static_cast<float>(x_pos) / static_cast<float>(pixelbuffer->get_width()),
+      geom::frect uv(static_cast<float>(x_pos) / static_cast<float>(pixelbuffer->get_width()),
                static_cast<float>(y_pos) / static_cast<float>(pixelbuffer->get_height()),
                static_cast<float>(x_pos + glyph_width)/static_cast<float>(pixelbuffer->get_width()),
                static_cast<float>(y_pos + glyph_height)/static_cast<float>(pixelbuffer->get_height()));

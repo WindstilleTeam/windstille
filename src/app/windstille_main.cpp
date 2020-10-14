@@ -69,8 +69,8 @@ WindstilleMain::main(int argc, char** argv)
 
     {
       OpenGLWindow      window("Windstille",
-                               Size(config.get_int("screen-width"), config.get_int("screen-height")),
-                               Size(config.get_int("aspect-width"), config.get_int("aspect-height")),
+                               geom::isize(config.get_int("screen-width"), config.get_int("screen-height")),
+                               geom::isize(config.get_int("aspect-width"), config.get_int("aspect-height")),
                                config.get_bool("fullscreen"), config.get_int("anti-aliasing"));
       TTFFontManager    ttffont_manager;
       Fonts             fonts;

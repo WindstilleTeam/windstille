@@ -36,7 +36,7 @@ TabComponent::TabComponent(Component* parent_)
   log_error("not implemented");
 }
 
-TabComponent::TabComponent(const Rectf& rect_, Component* parent_)
+TabComponent::TabComponent(const geom::frect& rect_, Component* parent_)
   : Component(rect_, parent_),
     tabs(),
     current_tab(0)
@@ -55,9 +55,9 @@ TabComponent::draw()
   float tab_width = rect.width() / static_cast<float>(tabs.size());
   for(int i = 0; i != int(tabs.size()); ++i)
   {
-    Rectf tab_rect(glm::vec2(rect.left() + tab_width * static_cast<float>(i) + 10.0f,
+    geom::frect tab_rect(glm::vec2(rect.left() + tab_width * static_cast<float>(i) + 10.0f,
                             rect.top()),
-                   Sizef(tab_width - 20.0f, static_cast<float>(g_app.fonts().vera20->get_height()) + 6.0f));
+                   geom::fsize(tab_width - 20.0f, static_cast<float>(g_app.fonts().vera20->get_height()) + 6.0f));
 
     if (i == current_tab)
       Display::fill_rounded_rect(tab_rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
@@ -144,7 +144,7 @@ TabComponent::pack(const std::string& name, Component* component)
   tabs.push_back(Tab(name, component));
 
   float padding = 6.0f;
-  component->set_screen_rect(Rectf(rect.left() + padding,
+  component->set_screen_rect(geom::frect(rect.left() + padding,
                                    rect.top()  + padding + static_cast<float>(g_app.fonts().vera20->get_height()) + 10.0f,
                                    rect.right()  - padding,
                                    rect.bottom() - padding

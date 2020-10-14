@@ -36,8 +36,8 @@ Elevator::Elevator(ReaderMapping const& props) :
     throw std::runtime_error("No sprite name specified in Elevator");
 
   sprite = g_app.sprite().create(Pathname(spritename));
-  size  = Sizef(128, 64);
-  colobject = new CollisionObject(this, Rectf(glm::vec2(0,0), size));
+  size  = geom::fsize(128, 64);
+  colobject = new CollisionObject(this, geom::frect(glm::vec2(0,0), size));
   Sector::current()->get_collision_engine()->add(colobject);
   colobject->set_pos(pos);
 }

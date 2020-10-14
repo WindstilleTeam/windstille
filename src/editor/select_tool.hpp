@@ -19,7 +19,8 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_SELECT_TOOL_HPP
 #define HEADER_WINDSTILLE_EDITOR_SELECT_TOOL_HPP
 
-#include "math/rect.hpp"
+#include <geom/geom.hpp>
+
 #include "editor/object_model.hpp"
 #include "editor/tool.hpp"
 
@@ -27,7 +28,7 @@ class SelectTool : public Tool
 {
 private:
   glm::vec2 click_pos;
-  Rectf    rect;
+  geom::frect    rect;
   SelectionHandle selection;
   ControlPointHandle ctrl_point;
   guint32 start_time;

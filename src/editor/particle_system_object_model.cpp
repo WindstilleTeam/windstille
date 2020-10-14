@@ -41,10 +41,10 @@ ParticleSystemObjectModel::update(float delta)
     (*i)->update(delta);
 }
 
-Rectf
+geom::frect
 ParticleSystemObjectModel::get_bounding_box() const
 {
-  return Rectf(get_world_pos(), Sizef(128.0f, 128.0f));
+  return geom::frect(get_world_pos(), geom::fsize(128.0f, 128.0f));
 }
 
 ObjectModelHandle

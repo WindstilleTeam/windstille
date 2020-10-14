@@ -54,10 +54,10 @@ GeometryTest::draw()
   Display::draw_line(line1, Color(0.0f, 1.0f, 0.0f));
   Display::draw_line(line2, Color(0.0f, 1.0f, 0.0f));
 
-  Display::fill_rect(Rectf(cursor - glm::vec2(2,2), Sizef(5,5)),  Color(1.0f, 0.0f, 1.0f));
-  Display::fill_rect(Rectf(cursor2 - glm::vec2(2,2), Sizef(5,5)), Color(1.0f, 1.0f, 0.0f));
+  Display::fill_rect(geom::frect(cursor - glm::vec2(2,2), geom::fsize(5,5)),  Color(1.0f, 0.0f, 1.0f));
+  Display::fill_rect(geom::frect(cursor2 - glm::vec2(2,2), geom::fsize(5,5)), Color(1.0f, 1.0f, 0.0f));
 
-  Display::fill_rect(Rectf(collision_point - glm::vec2(3,3), Sizef(7,7)), Color(1.0f, 1.0f, 1.0f));
+  Display::fill_rect(geom::frect(collision_point - glm::vec2(3,3), geom::fsize(7,7)), Color(1.0f, 1.0f, 1.0f));
 
   // Try vector projection
   glm::vec2 a(line1.p2 - line1.p1);

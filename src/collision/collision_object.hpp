@@ -22,7 +22,8 @@
 
 #include <sigc++/signal.h>
 
-#include "math/rect.hpp"
+#include <geom/geom.hpp>
+
 #include "collision/collision_data.hpp"
 
 class DrawingContext;
@@ -54,7 +55,7 @@ private:
 
   sigc::signal<void (const CollisionData &)> collision;
 
-  Rectf primitive;
+  geom::frect primitive;
   TileMap* tilemap;
 
   bool is_unstuckable;
@@ -73,7 +74,7 @@ public:
     DOMAIN_ENEMY   = (1 << 2)
   };
 
-  CollisionObject(GameObject* object, const Rectf& rect_);
+  CollisionObject(GameObject* object, const geom::frect& rect_);
   CollisionObject(TileMap* tilemap_);
 
   virtual ~CollisionObject();

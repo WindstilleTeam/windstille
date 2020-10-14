@@ -279,7 +279,7 @@ SectorModel::get_object_at(const glm::vec2& pos, const SelectMask& layermask) co
 }
 
 SelectionHandle
-SectorModel::get_selection(const Rectf& rect, const SelectMask& layermask) const
+SectorModel::get_selection(const geom::frect& rect, const SelectMask& layermask) const
 {
   const Layers& layers = get_layers();
   SelectionHandle selection = Selection::create();

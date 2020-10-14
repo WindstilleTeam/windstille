@@ -26,7 +26,7 @@
  * CollisionObject
  ***********************************************************************/
 
-CollisionObject::CollisionObject(GameObject* game_object_, const Rectf& rect_)
+CollisionObject::CollisionObject(GameObject* game_object_, const geom::frect& rect_)
   : object_type(RECTANGLE),
     pos(0,0),
     velocity(0,0),
@@ -73,7 +73,7 @@ void
 CollisionObject::draw(DrawingContext& dc)
 {
   glm::vec2 v = get_pos();
-  Rectf  r = primitive;
+  geom::frect  r = primitive;
 
   r += v;
 

@@ -45,7 +45,7 @@ public:
    *  created and show() will not work, use create_group() instead and
    *  add the result to your parent component.
    */
-  Menu(const std::string& name, const Rectf& rect, bool allow_cancel = true, Component* parent = nullptr);
+  Menu(const std::string& name, const geom::frect& rect, bool allow_cancel = true, Component* parent = nullptr);
   ~Menu();
 
   EnumMenuItem& add_enum(const std::string& name,

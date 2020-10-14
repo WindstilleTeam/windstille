@@ -25,7 +25,7 @@
 
 namespace gui {
 
-TextView::TextView(const Rectf& rect_, Component* component_)
+TextView::TextView(const geom::frect& rect_, Component* component_)
   : Component(rect_, component_),
     text_area(rect_, false)
 {
@@ -65,7 +65,7 @@ TextView::update(float delta, const Controller& controller)
 }
 
 void
-TextView::set_screen_rect(const Rectf& rect_)
+TextView::set_screen_rect(const geom::frect& rect_)
 {
   Component::set_screen_rect(rect_);
   text_area.set_rect(geom::grow(rect_, -16.0f, -4.0f));

@@ -20,7 +20,8 @@
 #define HEADER_WINDSTILLE_COLLISION_STAIR_CONTACT_HPP
 
 #include "collision/contact.hpp"
-#include "math/point.hpp"
+
+#include <geom/geom.hpp>
 
 class TileMap;
 
@@ -32,7 +33,7 @@ private:
   TileMap* tilemap;
 
   /** Current position in unit of tiles */
-  Point pos;
+  geom::ipoint pos;
 
   /** Amount of how much we are away from the center of the tile, its
       in range [-0.5, 0.5], else we move on to the next tile.
@@ -43,7 +44,7 @@ private:
   unsigned int tile_type;
 
 public:
-  StairContact(TileMap* tilemap, const Point& p);
+  StairContact(TileMap* tilemap, const geom::ipoint& p);
 
   void update(float delta) override;
 

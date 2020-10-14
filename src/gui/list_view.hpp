@@ -60,7 +60,7 @@ private:
   int     current_item;
 
 public:
-  ListView(const Rectf& rect, Component* parent);
+  ListView(const geom::frect& rect, Component* parent);
   ~ListView() override;
 
   void draw() override;

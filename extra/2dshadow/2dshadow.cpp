@@ -1,6 +1,10 @@
 #include <iostream>
 #include <SDL.h>
 
+#include <glm/glm.hpp>
+
+#include <geom/geom.hpp>
+
 #include "system/sdl.hpp"
 #include "display/opengl_window.hpp"
 #include "display/framebuffer.hpp"
@@ -8,14 +12,12 @@
 #include "display/display.hpp"
 #include "display/surface_manager.hpp"
 #include "display/surface_drawing_parameters.hpp"
-#include "math/size.hpp"
-#include <glm/glm.hpp>
 
 int main()
 {
   SDL sdl;
 
-  Size window_size(854, 480);
+  geom::isize window_size(854, 480);
   OpenGLWindow window("2D Shadow", window_size, window_size);
 
   SurfaceManager surface_manager;

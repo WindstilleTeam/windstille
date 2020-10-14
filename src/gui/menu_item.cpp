@@ -33,7 +33,7 @@ MenuItem::MenuItem(MenuComponent* parent_, const std::string& label_)
 {}
 
 void
-MenuItem::draw(const Rectf& rect, bool is_active)
+MenuItem::draw(const geom::frect& rect, bool is_active)
 {
   Color font_color;
   TTFFont* font = parent->get_font();
@@ -119,7 +119,7 @@ EnumMenuItem::decr()
 }
 
 void
-EnumMenuItem::draw(const Rectf& rect, bool is_active)
+EnumMenuItem::draw(const geom::frect& rect, bool is_active)
 {
   MenuItem::draw(rect, is_active);
   TTFFont* font = parent->get_font();
@@ -174,7 +174,7 @@ SliderMenuItem::incr()
 }
 
 void
-SliderMenuItem::draw(const Rectf& rect, bool is_active)
+SliderMenuItem::draw(const geom::frect& rect, bool is_active)
 {
   MenuItem::draw(rect, is_active);
   float total_width = 200.0f;
@@ -190,13 +190,13 @@ SliderMenuItem::draw(const Rectf& rect, bool is_active)
     color = Color(0.75f, 0.75f, 0.75f, 1.0f);
   }
 
-  Display::fill_rounded_rect(Rectf(glm::vec2(rect.right() - 4.0f - total_width, rect.top() + 4.0f),
-                                   Sizef(width, rect.height() - 8)),
+  Display::fill_rounded_rect(geom::frect(glm::vec2(rect.right() - 4.0f - total_width, rect.top() + 4.0f),
+                                   geom::fsize(width, rect.height() - 8)),
                              5.0f,
                              Color(0.75f*color.r, 0.75f*color.g, 0.75f*color.b, color.a));
 
-  Display::draw_rounded_rect(Rectf(glm::vec2(rect.right() - 4.0f - total_width, rect.top() + 4.0f),
-                                   Sizef(total_width, rect.height() - 8)),
+  Display::draw_rounded_rect(geom::frect(glm::vec2(rect.right() - 4.0f - total_width, rect.top() + 4.0f),
+                                   geom::fsize(total_width, rect.height() - 8)),
                              5.0f,
                              color);
 }
@@ -216,7 +216,7 @@ ButtonMenuItem::click()
 }
 
 void
-ButtonMenuItem::draw(const Rectf& rect, bool is_active)
+ButtonMenuItem::draw(const geom::frect& rect, bool is_active)
 {
   MenuItem::draw(rect, is_active);
 }

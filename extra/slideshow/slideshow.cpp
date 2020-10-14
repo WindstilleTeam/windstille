@@ -113,7 +113,7 @@ App::parse_args(int argc, char** argv)
         if (sscanf(opt.argument.c_str(), "%dx%d", &window_width, &window_height) != 2) {
           throw std::runtime_error("--geometry argument wrong");
         } else {
-          m_window_size = Size(window_width, window_height);
+          m_window_size = geom::isize(window_width, window_height);
         }
         break;
 
@@ -123,7 +123,7 @@ App::parse_args(int argc, char** argv)
         if (sscanf(opt.argument.c_str(), "%dx%d", &aspect_ratio_width, &aspect_ratio_height) != 2) {
           throw std::runtime_error("--aspect argument wrong");
         } else {
-          m_aspect_ratio = Size(aspect_ratio_width, aspect_ratio_height);
+          m_aspect_ratio = geom::isize(aspect_ratio_width, aspect_ratio_height);
         }
         break;
 
@@ -180,7 +180,7 @@ App::run(int argc, char* argv[])
 
   for(std::vector<std::string>::iterator i = m_files.begin(); i != m_files.end(); ++i)
   {
-    slide_show.load(*i, Sizef(m_aspect_ratio));
+    slide_show.load(*i, geom::fsize(m_aspect_ratio));
   }
 
   FramebufferPtr framebuffer_multisample = Framebuffer::create(m_window_size.width(), m_window_size.height(), 8);
@@ -229,7 +229,7 @@ App::run(int argc, char* argv[])
                 slide_show.clear();
                 for(size_t i = 0; i < m_files.size(); ++i)
                 {
-                  slide_show.load(m_files[i], Sizef(m_aspect_ratio));
+                  slide_show.load(m_files[i], geom::fsize(m_aspect_ratio));
                 }
                 break;
 

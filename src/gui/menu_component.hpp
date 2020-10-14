@@ -52,7 +52,7 @@ private:
   void adjust_scroll_offset();
 
 public:
-  MenuComponent(const Rectf& rect, bool allow_cancel_, Component* parent);
+  MenuComponent(const geom::frect& rect, bool allow_cancel_, Component* parent);
   ~MenuComponent() override;
 
   void add_item(MenuItem* item);
@@ -65,7 +65,7 @@ public:
   void     set_font(TTFFont* font_);
   TTFFont* get_font();
 
-  void set_screen_rect(const Rectf& rect) override;
+  void set_screen_rect(const geom::frect& rect) override;
 
 private:
   MenuComponent (const MenuComponent&);

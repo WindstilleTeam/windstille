@@ -69,7 +69,7 @@ DecalRotateControlPoint::on_move_end(GdkEventButton* event, const glm::vec2& off
 void
 DecalRotateControlPoint::draw(SceneContext& sc)
 {
-  Rectf rect = get_bounding_box();
+  geom::frect rect = get_bounding_box();
   rect += geom::foffset(offset);
   sc.control().draw_control(surface, pos, ctrl_angle);
 }

@@ -19,8 +19,9 @@
 #ifndef HEADER_WINDSTILLE_GUI_GRID_COMPONENT_HPP
 #define HEADER_WINDSTILLE_GUI_GRID_COMPONENT_HPP
 
+#include <geom/point.hpp>
+
 #include "gui/component.hpp"
-#include "math/point.hpp"
 #include "util/field.hpp"
 
 namespace gui {
@@ -32,8 +33,8 @@ private:
   struct ComponentBox
   {
     Component* component;
-    Size  span;
-    Point parent;
+    geom::isize  span;
+    geom::ipoint parent;
 
     ComponentBox() :
       component(nullptr),
@@ -41,7 +42,7 @@ private:
       parent(-1, -1)
     {}
 
-    ComponentBox(Component* c, const Size& s, const Point& parent_ = Point(-1, -1)) :
+    ComponentBox(Component* c, const geom::isize& s, const geom::ipoint& parent_ = geom::ipoint(-1, -1)) :
       component(c),
       span(s),
       parent(parent_)
@@ -59,7 +60,7 @@ private:
 
 public:
   GridComponent(Component* parent);
-  GridComponent(const Rectf& rect, int weight, int height, Component* parent);
+  GridComponent(const geom::frect& rect, int weight, int height, Component* parent);
   ~GridComponent() override;
 
   void draw() override;

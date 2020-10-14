@@ -69,7 +69,7 @@ public:
   void draw_select(SceneContext& sc, bool highlight) override;
   void draw(SceneContext& sc) override;
 
-  Rectf get_bounding_box() const override;
+  geom::frect get_bounding_box() const override;
   ObjectModelHandle clone() const override;
   void write(FileWriter& writer) const override;
 

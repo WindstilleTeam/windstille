@@ -86,7 +86,7 @@ SelectTool::mouse_down(GdkEventButton* event, WindstilleWidget& wst)
     }
     else
     {
-      rect = Rectf(click_pos, click_pos);
+      rect = geom::frect(click_pos, click_pos);
 
       mode = SELECT_MODE;
     }
@@ -171,7 +171,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
   }
   else if (mode == SELECT_MODE)
   {
-    rect = Rectf(click_pos, pos);
+    rect = geom::frect(click_pos, pos);
 
     std::ostringstream str;
     str << "  (" << static_cast<int>(rect.left()) << ", " << static_cast<int>(rect.top()) << ")  "

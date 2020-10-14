@@ -24,8 +24,8 @@
 
 #include <glm/glm.hpp>
 
-#include "math/rect.hpp"
-#include <glm/glm.hpp>
+#include <geom/geom.hpp>
+
 #include "util/file_writer.hpp"
 #include "util/file_reader.hpp"
 
@@ -121,7 +121,7 @@ public:
   /** Find nodes that are near within the \a radius */
   std::vector<NodeHandle> find_nodes(const glm::vec2& pos, float radius);
 
-  std::vector<NodeHandle> find_nodes(const Rectf& rect);
+  std::vector<NodeHandle> find_nodes(const geom::frect& rect);
 
   /** Find the closest node, limit search to nodes in radius */
   NodeHandle find_closest_node(const glm::vec2& pos, float radius);

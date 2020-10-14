@@ -22,7 +22,8 @@
 #include <set>
 #include <memory>
 
-#include "math/rect.hpp"
+#include <geom/geom.hpp>
+
 #include "editor/tool.hpp"
 #include "navigation/navigation_graph.hpp"
 

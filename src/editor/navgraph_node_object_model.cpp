@@ -77,11 +77,11 @@ NavGraphNodeObjectModel::set_rel_pos(const glm::vec2& rel_pos_)
   ObjectModel::set_rel_pos(rel_pos_);
 }
 
-Rectf
+geom::frect
 NavGraphNodeObjectModel::get_bounding_box() const
 {
-  return Rectf(get_world_pos() - glm::vec2(10.0f, 10.0f),
-               Sizef(20.0f, 20.0f));
+  return geom::frect(get_world_pos() - glm::vec2(10.0f, 10.0f),
+               geom::fsize(20.0f, 20.0f));
 }
 
 static float float_snap_to_grid(float v, float grid)
@@ -111,13 +111,13 @@ NavGraphNodeObjectModel::snap_to_grid(float grid_size) const
 }
 
 SnapData
-NavGraphNodeObjectModel::snap_to_object(const Rectf& in) const
+NavGraphNodeObjectModel::snap_to_object(const geom::frect& in) const
 {
   const glm::vec2& pos = get_world_pos();
 
   SnapData snap;
 
-  Rectf dist(in.left()   - pos.x,
+  geom::frect dist(in.left()   - pos.x,
              in.top()    - pos.y,
              in.right()  - pos.x,
              in.bottom() - pos.y);

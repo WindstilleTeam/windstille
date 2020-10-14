@@ -29,7 +29,7 @@
 
 namespace gui {
 
-Menu::Menu(const std::string& name, const Rectf& rect, bool allow_cancel, Component* parent)
+Menu::Menu(const std::string& name, const geom::frect& rect, bool allow_cancel, Component* parent)
   : manager(),
     group(),
     menu()
@@ -97,15 +97,15 @@ Menu::show()
   assert(manager.get());
 
   {
-    Rectf rect = group->get_screen_rect();
+    geom::frect rect = group->get_screen_rect();
 
     glm::vec2 center((rect.left() + rect.right()) / 2.0f,
                     (rect.top() + rect.bottom()) / 2.0f);
 
-    Sizef size(menu->get_prefered_width(),
+    geom::fsize size(menu->get_prefered_width(),
                menu->get_prefered_height() + (group->has_title() ? static_cast<float>(g_app.fonts().vera20->get_height()) + 18.0f : 0.0f));
 
-    group->set_screen_rect(Rectf(glm::vec2(center.x - size.width()/2.0f,
+    group->set_screen_rect(geom::frect(glm::vec2(center.x - size.width()/2.0f,
                                           center.y - size.height()/2.0f),
                                  size));
 

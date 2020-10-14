@@ -23,7 +23,7 @@
 
 namespace gui {
 
-GroupComponent::GroupComponent(const Rectf& rect_, const std::string& title_, Component* parent_)
+GroupComponent::GroupComponent(const geom::frect& rect_, const std::string& title_, Component* parent_)
   : Component(rect_, parent_),
     title(title_),
     child()
@@ -48,7 +48,7 @@ GroupComponent::draw()
                                rect.top()  + static_cast<float>(font->get_height()) + 5.0f),
                       title, Color(1.0f, 1.0f, 1.0f));
 
-    Display::fill_rect(Rectf(rect.left()  + 8.0f, rect.top() + static_cast<float>(font->get_height()) + 16.0f,
+    Display::fill_rect(geom::frect(rect.left()  + 8.0f, rect.top() + static_cast<float>(font->get_height()) + 16.0f,
                              rect.right() - 8.0f, rect.top() + static_cast<float>(font->get_height()) + 18.0f),
                        Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
@@ -74,12 +74,12 @@ GroupComponent::pack(Component* component)
   child->set_active(true);
 }
 
-Rectf
+geom::frect
 GroupComponent::get_child_rect() const
 {
   float padding = 6.0f;
 
-  return Rectf(rect.left()   + padding,
+  return geom::frect(rect.left()   + padding,
                rect.top()    + padding + (title.empty() ? 0.0f : static_cast<float>(g_app.fonts().vera20->get_height()) + 18.0f),
                rect.right()  - padding,
                rect.bottom() - padding);

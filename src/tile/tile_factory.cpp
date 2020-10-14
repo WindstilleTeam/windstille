@@ -123,7 +123,7 @@ TileFactory::parse_tiles(ReaderMapping const& reader)
 }
 
 void
-TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect)
+TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const geom::irect& rect)
 {
   if(id < int(tiles.size())
      && tiles[id] != nullptr
@@ -149,7 +149,7 @@ TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect
         color_packer = static_cast<int>(packers.size()) - 1;
       }
 
-      Rectf uv = packers[color_packer]->pack(image,
+      geom::frect uv = packers[color_packer]->pack(image,
                                              rect.left(), rect.top(),
                                              rect.width(), rect.height());
       tiles[id]->uv      = uv;

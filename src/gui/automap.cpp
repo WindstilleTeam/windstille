@@ -39,7 +39,7 @@ Automap::Automap(Component* parent_) :
   log_error("implement me");
 }
 
-Automap::Automap(const Rectf& rect_, Component* parent_) :
+Automap::Automap(const geom::frect& rect_, Component* parent_) :
   Component(rect_, parent_),
   surface(),
   pos(0.0f, 0.0f),
@@ -82,7 +82,7 @@ Automap::~Automap()
 void
 Automap::draw()
 {
-  Display::push_cliprect(Rect(get_screen_rect()));
+  Display::push_cliprect(geom::irect(get_screen_rect()));
   surface->draw(SurfaceDrawingParameters()
                 .set_pos(glm::vec2(rect.left(), rect.top()) + pos)
                 .set_color(Color(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))

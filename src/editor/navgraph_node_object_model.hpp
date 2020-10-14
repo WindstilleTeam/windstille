@@ -41,11 +41,11 @@ public:
   void set_rel_pos(const glm::vec2& rel_pos_) override;
   void sync_drawable();
 
-  Rectf get_bounding_box() const override;
+  geom::frect get_bounding_box() const override;
   ObjectModelHandle clone() const override;
   void write(FileWriter& writer) const override;
 
-  SnapData snap_to_object(const Rectf& rect) const override;
+  SnapData snap_to_object(const geom::frect& rect) const override;
   SnapData snap_to_grid(float grid_size) const override;
 
 private:

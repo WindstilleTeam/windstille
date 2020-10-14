@@ -80,7 +80,7 @@ View::update (float delta)
   }
 }
 
-Rectf
+geom::frect
 View::get_clip_rect()
 {
   return state.get_clip_rect();

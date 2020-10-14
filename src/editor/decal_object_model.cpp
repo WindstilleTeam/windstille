@@ -162,7 +162,7 @@ DecalObjectModel::draw(SceneContext& sc)
   }
 }
 
-Rectf
+geom::frect
 DecalObjectModel::get_bounding_box() const
 {
   glm::vec2 center_offset(surface->get_width()/2,
@@ -171,7 +171,7 @@ DecalObjectModel::get_bounding_box() const
   center_offset.x *= scale.x;
   center_offset.y *= scale.y;
 
-  Rectf r(get_world_pos() - center_offset,
+  geom::frect r(get_world_pos() - center_offset,
           get_world_pos() + center_offset);
   r = geom::normalize(r);
   return r;
@@ -239,7 +239,7 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
   float w = surface->get_width()/2  * scale.x;
   float h = surface->get_height()/2 * scale.y;
 
-  Rectf rect(-w, -h, w, h);
+  geom::frect rect(-w, -h, w, h);
   geom::quad quad1(rect);
   quad1.rotate(angle);
 

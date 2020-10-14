@@ -65,7 +65,7 @@ private:
 
 public:
   TabComponent(Component* parent);
-  TabComponent(const Rectf& rect, Component* parent);
+  TabComponent(const geom::frect& rect, Component* parent);
   ~TabComponent() override;
 
   void draw() override;

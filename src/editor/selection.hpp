@@ -90,7 +90,7 @@ public:
 
   void add_control_points(std::vector<ControlPointHandle>& control_points);
 
-  Rectf get_bounding_box() const;
+  geom::frect get_bounding_box() const;
 
   void reset();
 

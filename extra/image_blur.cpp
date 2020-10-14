@@ -23,13 +23,14 @@
 #include <SDL.h>
 #include <glm/glm.hpp>
 
+#include <glm/glm.hpp>
+
 #include "display/opengl_window.hpp"
 #include "display/framebuffer.hpp"
 #include "display/surface.hpp"
 #include "display/display.hpp"
 #include "display/surface_manager.hpp"
 #include "display/surface_drawing_parameters.hpp"
-#include "math/size.hpp"
 
 namespace {
 
@@ -54,7 +55,7 @@ int app_main(int argc, char** argv)
     atexit(SDL_Quit);
   }
 
-  Size window_size(1024, 576);
+  geom::isize window_size(1024, 576);
   OpenGLWindow window("Image Blur", window_size, window_size);
 
   SDL_ShowCursor(SDL_DISABLE);

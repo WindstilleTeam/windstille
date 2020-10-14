@@ -21,13 +21,13 @@
 
 #include <vector>
 
-#include "math/size.hpp"
+#include <geom/geom.hpp>
 
 class App
 {
 private:
-  Size m_aspect_ratio;
-  Size m_window_size;
+  geom::isize m_aspect_ratio;
+  geom::isize m_window_size;
   bool m_fullscreen;
   std::vector<std::string> m_files;
   std::string m_output_dir;

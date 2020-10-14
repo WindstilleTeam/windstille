@@ -25,7 +25,7 @@
 
 namespace gui {
 
-RootComponent::RootComponent(const Rectf& rect_)
+RootComponent::RootComponent(const geom::frect& rect_)
   : Component(rect_, nullptr),
     focus(nullptr),
     children()

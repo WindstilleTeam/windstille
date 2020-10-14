@@ -22,7 +22,7 @@
 #include <memory>
 #include <string>
 
-#include "math/rect.hpp"
+#include <geom/geom.hpp>
 
 class TTFFont;
 class TextAreaImpl;
@@ -34,11 +34,11 @@ class TextArea
 {
 public:
   /** The area which the TextArea should cover */
-  TextArea(const Rectf& rect, bool letter_by_letter);
+  TextArea(const geom::frect& rect, bool letter_by_letter);
   ~TextArea();
 
   /** Set the rectangle into which the TextArea should fill its text */
-  void set_rect(const Rectf& rect);
+  void set_rect(const geom::frect& rect);
 
   /** Sets the text to be displayed in the text box */
   void set_text(const std::string& str);
@@ -56,7 +56,7 @@ public:
   void draw();
 
   /** Return the rectangle that TextArea fills its text into */
-  Rectf get_rect() const;
+  geom::frect get_rect() const;
 
   /** Return the position of the last character in the TextArea,
       usefull to display a blinking cursor or things like that */

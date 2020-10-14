@@ -19,7 +19,8 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_ZOOM_TOOL_HPP
 #define HEADER_WINDSTILLE_EDITOR_ZOOM_TOOL_HPP
 
-#include "math/rect.hpp"
+#include <geom/geom.hpp>
+
 #include "editor/tool.hpp"
 
 class ZoomTool : public Tool

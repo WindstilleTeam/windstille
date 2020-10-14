@@ -93,7 +93,7 @@ LaserPointer::draw(SceneContext& sc)
     while(x >= 0 && x < tilemap->get_width() &&
           y >= 0 && y < tilemap->get_height())
     {
-      //sc.color().fill_rect(Rectf(glm::vec2(x * TILE_SIZE, y * TILE_SIZE), Size(TILE_SIZE, TILE_SIZE)),
+      //sc.color().fill_rect(geom::frect(glm::vec2(x * TILE_SIZE, y * TILE_SIZE), geom::isize(TILE_SIZE, TILE_SIZE)),
       //                     Color(1.0, 1.0, 1.0, 0.5), 500);
 
       if (tilemap->get_pixel(x, y))

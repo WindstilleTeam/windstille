@@ -153,7 +153,7 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props,
         reader.read("x2", x2);
         reader.read("y2", y2);
 
-        set_rect_distribution(Rectf(x1, y1, x2, y2));
+        set_rect_distribution(geom::frect(x1, y1, x2, y2));
       } else {
         std::cout << "Unknown distribution: " << distribution_obj.get_name() << std::endl;
       }
@@ -337,7 +337,7 @@ ParticleSystem::set_circle_distribution(float radius)
 }
 
 void
-ParticleSystem::set_rect_distribution(const Rectf& rect)
+ParticleSystem::set_rect_distribution(const geom::frect& rect)
 {
   randomizer.reset(new RectRandomizer(rect));
 }

@@ -71,10 +71,10 @@ NavGraphEdgeObjectModel::add_to_scenegraph(DrawableGroup& sg)
   sg.add_drawable(m_drawable);
 }
 
-Rectf
+geom::frect
 NavGraphEdgeObjectModel::get_bounding_box() const
 {
-  Rectf rect(m_lhs->get_world_pos(),
+  geom::frect rect(m_lhs->get_world_pos(),
              m_rhs->get_world_pos());
   rect = geom::normalize(rect);
   return rect;

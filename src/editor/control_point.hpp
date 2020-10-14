@@ -22,9 +22,11 @@
 #include <memory>
 #include <gdkmm/event.h>
 
-#include "display/surface.hpp"
-#include "math/rect.hpp"
 #include <glm/glm.hpp>
+
+#include <geom/geom.hpp>
+
+#include "display/surface.hpp"
 
 class SceneContext;
 class ControlPoint;
@@ -46,7 +48,7 @@ public:
 
   virtual void draw(SceneContext& sc);
 
-  virtual Rectf get_bounding_box() const;
+  virtual geom::frect get_bounding_box() const;
 
   virtual void on_move_start(GdkEventButton* event);
   virtual void on_move_update(GdkEventMotion* event, const glm::vec2& offset);

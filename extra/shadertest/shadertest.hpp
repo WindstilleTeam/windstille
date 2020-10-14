@@ -21,13 +21,13 @@
 
 #include <GL/glew.h>
 
-#include "math/size.hpp"
+#include <geom/size.hpp>
 
 class App
 {
 private:
-  Size m_aspect_ratio;
-  Size m_window_size;
+  geom::isize m_aspect_ratio;
+  geom::isize m_window_size;
   bool m_fullscreen;
 
 public:

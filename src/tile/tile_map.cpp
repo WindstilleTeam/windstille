@@ -85,9 +85,9 @@ TileMap::update (float delta)
 void
 TileMap::draw (SceneContext& sc)
 {
-  Rect clip_rect = Rect(View::current()->get_clip_rect());
+  geom::irect clip_rect = geom::irect(View::current()->get_clip_rect());
 
-  Rect rect(std::max(0, clip_rect.left() / TILE_SIZE),
+  geom::irect rect(std::max(0, clip_rect.left() / TILE_SIZE),
             std::max(0, clip_rect.top() / TILE_SIZE),
             std::min(field.get_width(),  clip_rect.right()/TILE_SIZE + 1),
             std::min(field.get_height(), clip_rect.bottom()/TILE_SIZE + 1));

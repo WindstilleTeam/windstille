@@ -23,7 +23,8 @@
 #include <vector>
 #include <map>
 
-#include "math/size.hpp"
+#include <geom/size.hpp>
+
 #include "slideshow/slide_object.hpp"
 #include "slideshow/slide_path.hpp"
 

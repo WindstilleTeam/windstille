@@ -34,7 +34,7 @@ InputConfigurator::InputConfigurator()
     wait_for_plus(false),
     minus(),
     out(),
-    area(Rectf(120.0f,
+    area(geom::frect(120.0f,
                100.0f,
                static_cast<float>(Display::get_width())  - 120.0f,
                static_cast<float>(Display::get_height()) - 100.0f),
@@ -83,7 +83,7 @@ InputConfigurator::add_configure_item(ConfigureItem::Mode mode, int event_id)
 void
 InputConfigurator::draw()
 {
-  Rectf rect(100.0f, 75.0f,
+  geom::frect rect(100.0f, 75.0f,
              static_cast<float>(Display::get_width())  - 100.0f,
              static_cast<float>(Display::get_height()) - 75.0f);
 

@@ -22,8 +22,9 @@
 #include <GL/glew.h>
 #include <memory>
 
+#include <geom/geom.hpp>
+
 #include "display/texture.hpp"
-#include "math/rect.hpp"
 
 class SoftwareSurface;
 class TilePackerImpl;
@@ -41,7 +42,7 @@ public:
 
   /** Pack a tile and return the position where it is placed in the
       pixel buffer */
-  Rectf pack(SoftwareSurfacePtr image, int x, int y, int w, int h);
+  geom::frect pack(SoftwareSurfacePtr image, int x, int y, int w, int h);
 
   /** Return true if the PixelBuffer is full */
   bool is_full() const;

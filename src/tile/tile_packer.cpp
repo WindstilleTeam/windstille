@@ -66,7 +66,7 @@ TilePacker::~TilePacker()
 
 /** Pack a tile and return the position where it is placed in the
     pixel buffer */
-Rectf
+geom::frect
 TilePacker::pack(SoftwareSurfacePtr image, int x, int y, int w, int h)
 {
   assert(w == TILE_RESOLUTION && h == TILE_RESOLUTION);
@@ -94,9 +94,9 @@ TilePacker::pack(SoftwareSurfacePtr image, int x, int y, int w, int h)
 
   assert_gl("updating tilepacker texture");
 
-  Rectf rect(glm::vec2(static_cast<float>(impl->x_pos + 1) / static_cast<float>(impl->width),
+  geom::frect rect(glm::vec2(static_cast<float>(impl->x_pos + 1) / static_cast<float>(impl->width),
                       static_cast<float>(impl->y_pos + 1) / static_cast<float>(impl->height)),
-             Sizef(static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->width),
+             geom::fsize(static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->width),
                    static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->height)));
 
   // we move by TILE_RESOLUTION+1 to avoid tiles bleeding into each other

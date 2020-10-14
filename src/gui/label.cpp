@@ -23,7 +23,7 @@
 namespace gui {
 
 Label::Label(const std::string& label_, Component* parent_)
-  : Component(Rectf(), parent_),
+  : Component(geom::frect(), parent_),
     label(label_)
 {
 }

@@ -40,7 +40,7 @@ class TextAreaImpl
 {
 public:
   TTFFont* font;
-  Rectf rect;
+  geom::frect rect;
   float passed_time;
 
   int v_space;
@@ -69,7 +69,7 @@ private:
   TextAreaImpl& operator=(const TextAreaImpl&);
 };
 
-TextArea::TextArea(const Rectf& rect, bool letter_by_letter) :
+TextArea::TextArea(const geom::frect& rect, bool letter_by_letter) :
   impl(new TextAreaImpl)
 {
   impl->font = g_app.fonts().vera20.get();
@@ -88,7 +88,7 @@ TextArea::~TextArea()
 }
 
 void
-TextArea::set_rect(const Rectf& rect)
+TextArea::set_rect(const geom::frect& rect)
 {
   impl->rect = rect;
 }
@@ -169,9 +169,9 @@ TextArea::draw()
   {
     float height = impl->max_scroll_offset + impl->rect.height();
 
-    Display::fill_rounded_rect(Rectf(glm::vec2(impl->rect.right() + 4,
+    Display::fill_rounded_rect(geom::frect(glm::vec2(impl->rect.right() + 4,
                                               impl->rect.top() + impl->scroll_offset*impl->rect.height()/height),
-                                     Sizef(8, impl->rect.height()*impl->rect.height()/height)),
+                                     geom::fsize(8, impl->rect.height()*impl->rect.height()/height)),
                                4.0f, Color(1.0f, 1.0f, 1.0f, 0.25f));
   }
   OpenGLState state;
@@ -416,7 +416,7 @@ TextArea::update(float delta)
   impl->passed_time += delta;
 }
 
-Rectf
+geom::frect
 TextArea::get_rect() const
 {
   return impl->rect;

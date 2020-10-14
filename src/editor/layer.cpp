@@ -101,7 +101,7 @@ Layer::get_object_at(const glm::vec2& pos, const SelectMask& select_mask) const
 }
 
 SelectionHandle
-Layer::get_selection(const Rectf& rect, const SelectMask& select_mask) const
+Layer::get_selection(const geom::frect& rect, const SelectMask& select_mask) const
 {
   SelectionHandle selection = Selection::create();
 
@@ -133,9 +133,9 @@ Layer::lower_to_bottom(ObjectModelHandle object)
 
 struct OverlapsWith
 {
-  Rectf rect;
+  geom::frect rect;
 
-  OverlapsWith(const Rectf& rect_)
+  OverlapsWith(const geom::frect& rect_)
     : rect(rect_)
   {}
 

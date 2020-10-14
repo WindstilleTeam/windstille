@@ -64,7 +64,7 @@ public:
   virtual SelectMask get_select_mask() const { return select_mask; }
   virtual void   set_select_mask(const SelectMask& select_mask_) { select_mask = select_mask_; }
 
-  virtual SnapData snap_to_object(const Rectf& rect) const;
+  virtual SnapData snap_to_object(const geom::frect& rect) const;
   virtual SnapData snap_to_grid(float grid_size) const;
 
   virtual bool get_hflip() const { return false; }
@@ -86,7 +86,7 @@ public:
 
   virtual void draw(SceneContext& sc);
   virtual void update(float /*delta*/) {}
-  virtual Rectf get_bounding_box() const =0;
+  virtual geom::frect get_bounding_box() const =0;
   virtual ObjectModelHandle clone() const =0;
 
   virtual void write(FileWriter& writer) const =0;

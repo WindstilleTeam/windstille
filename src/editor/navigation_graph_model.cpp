@@ -152,7 +152,7 @@ NavigationGraphModel::get_object_at(const glm::vec2& pos, const SelectMask& sele
 }
 
 SelectionHandle
-NavigationGraphModel::get_selection(const Rectf& rect, const SelectMask& select_mask) const
+NavigationGraphModel::get_selection(const geom::frect& rect, const SelectMask& select_mask) const
 {
   SelectionHandle selection = Selection::create();
 

@@ -254,19 +254,19 @@ NavgraphInsertTool::draw(SceneContext& sc)
     if (connection_node)
     {
       sc.control().draw_line(last_node->get_world_pos(), connection_node->get_world_pos(), Color(1,1,1));
-      sc.control().draw_rect(Rectf(connection_node->get_world_pos() - glm::vec2(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
+      sc.control().draw_rect(geom::frect(connection_node->get_world_pos() - glm::vec2(16,16), geom::fsize(32,32)), Color(1.0f, 1.0f, 1.0f));
     }
     else
     {
       sc.control().draw_line(last_node->get_world_pos(), mouse_pos, Color(1,1,1));
     }
 
-    sc.control().draw_rect(Rectf(last_node->get_world_pos() - glm::vec2(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
+    sc.control().draw_rect(geom::frect(last_node->get_world_pos() - glm::vec2(16,16), geom::fsize(32,32)), Color(1.0f, 1.0f, 1.0f));
   }
 
   if (mouse_over_node)
   {
-    sc.control().draw_rect(Rectf(mouse_over_node->get_world_pos() - glm::vec2(16,16), Sizef(32,32)), Color(1.0f, 1.0f, 1.0f));
+    sc.control().draw_rect(geom::frect(mouse_over_node->get_world_pos() - glm::vec2(16,16), geom::fsize(32,32)), Color(1.0f, 1.0f, 1.0f));
   }
   else if (mouse_over_edge)
   {

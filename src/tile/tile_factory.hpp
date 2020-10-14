@@ -22,10 +22,11 @@
 #include <map>
 #include <string>
 
+#include <geom/geom.hpp>
+
 #include "display/software_surface.hpp"
 #include "tile/tile_description.hpp"
 #include "util/currenton.hpp"
-#include "math/rect.hpp"
 #include "util/pathname.hpp"
 
 class Tile;
@@ -65,7 +66,7 @@ public:
   /**
    * Adds a surface to the TileFactory
    */
-  void pack(int id, int colmap, SoftwareSurfacePtr image, const Rect& rect);
+  void pack(int id, int colmap, SoftwareSurfacePtr image, const geom::irect& rect);
 
 private:
   void parse_tiles(ReaderMapping const& reader);

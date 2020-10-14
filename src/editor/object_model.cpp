@@ -166,7 +166,7 @@ ObjectModel::draw(SceneContext& sc)
     sc.control().draw_line(wo_pos, parent->get_world_pos(), Color(0,0,1, 0.5f));
   }
 
-  //sc.control().fill_rect(Rectf(wo_pos - glm::vec2(8, 8), Sizef(16, 16)), Color(1,0,0));
+  //sc.control().fill_rect(geom::frect(wo_pos - glm::vec2(8, 8), geom::fsize(16, 16)), Color(1,0,0));
 }
 
 void
@@ -199,9 +199,9 @@ static float float_snap_to_grid(float v, float grid)
 SnapData
 ObjectModel::snap_to_grid(float grid_size) const
 {
-  const Rectf& r = get_bounding_box();
+  const geom::frect& r = get_bounding_box();
 
-  Rectf snap_rect(float_snap_to_grid(r.left(),   grid_size),
+  geom::frect snap_rect(float_snap_to_grid(r.left(),   grid_size),
                   float_snap_to_grid(r.top(),    grid_size),
                   float_snap_to_grid(r.right(),  grid_size),
                   float_snap_to_grid(r.bottom(), grid_size));
@@ -244,9 +244,9 @@ ObjectModel::snap_to_grid(float grid_size) const
 }
 
 SnapData
-ObjectModel::snap_to_object(const Rectf& in) const
+ObjectModel::snap_to_object(const geom::frect& in) const
 {
-  const Rectf& rect = get_bounding_box();
+  const geom::frect& rect = get_bounding_box();
 
   SnapData snap;
 

@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_GUI_COMPONENT_HPP
 #define HEADER_WINDSTILLE_GUI_COMPONENT_HPP
 
-#include "math/rect.hpp"
+#include <geom/geom.hpp>
 
 namespace wstinput { class Controller; }
 class FileReader;
@@ -32,13 +32,13 @@ namespace gui {
 class Component
 {
 protected:
-  Rectf rect;
+  geom::frect rect;
   Component* parent;
   bool active;
 
 public:
   Component(Component* parent);
-  Component(const Rectf& rect, Component* parent);
+  Component(const geom::frect& rect, Component* parent);
   virtual ~Component();
 
   virtual bool is_active() const;
@@ -48,8 +48,8 @@ public:
   virtual void draw() =0;
   virtual void update(float delta, const Controller& controller) =0;
 
-  virtual Rectf get_screen_rect() const;
-  virtual void  set_screen_rect(const Rectf& rect);
+  virtual geom::frect get_screen_rect() const;
+  virtual void  set_screen_rect(const geom::frect& rect);
 
   virtual float get_prefered_width() const;
   virtual float get_prefered_height() const;

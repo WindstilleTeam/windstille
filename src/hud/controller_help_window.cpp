@@ -18,13 +18,13 @@
 
 #include "hud/controller_help_window.hpp"
 
+#include <geom/geom.hpp>
 #include <wstinput/input_manager.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/color.hpp"
 #include "display/display.hpp"
-#include "math/rect.hpp"
 
 ControllerHelpWindow::ControllerHelpWindow()
 {
@@ -48,8 +48,8 @@ ControllerHelpWindow::draw_button(const glm::vec2& pos, bool pressed)
 void
 ControllerHelpWindow::draw_stick(const glm::vec2& pos, bool pressed, float x, float y)
 {
-  Size size(75, 75);
-  Rectf rect(pos - glm::vec2(static_cast<float>(size.width()), static_cast<float>(size.height())) / 2.0f, geom::fsize(size));
+  geom::isize size(75, 75);
+  geom::frect rect(pos - glm::vec2(static_cast<float>(size.width()), static_cast<float>(size.height())) / 2.0f, geom::fsize(size));
 
   Display::fill_rounded_rect(rect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.2f));
   //Display::draw_rounded_rect(rect, 10.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
@@ -68,14 +68,14 @@ ControllerHelpWindow::draw_stick(const glm::vec2& pos, bool pressed, float x, fl
 void
 ControllerHelpWindow::draw_trigger(const glm::vec2& pos, float value)
 {
-  Sizef size(60, 20);
-  Rectf rect(pos - glm::vec2(size.width() / 2, size.height() / 2), size);
+  geom::fsize size(60, 20);
+  geom::frect rect(pos - glm::vec2(size.width() / 2, size.height() / 2), size);
 
   Display::fill_rect(rect,  Color(1.0f, 1.0f, 1.0f, 0.2f));
 
   if (value > 0.0f)
-    Display::fill_rect(Rectf(glm::vec2(rect.left(), rect.top()),
-                             Sizef(rect.width() * value,
+    Display::fill_rect(geom::frect(glm::vec2(rect.left(), rect.top()),
+                             geom::fsize(rect.width() * value,
                                    rect.height())),
                        Color(1.0f, 0.0f, 0.0f));
 
@@ -90,8 +90,8 @@ ControllerHelpWindow::draw()
   glm::vec2 pos(static_cast<float>(Display::get_width())  - 350.0f - 16.0f,
                static_cast<float>(Display::get_height()) - 200.0f - 16.0f);
 
-  Display::fill_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(0.0f, 0.0f, 0.25f, 0.9f));
-  Display::draw_rounded_rect(Rectf(pos, Sizef(350, 200)), 10.0f, Color(1.0f, 1.0f, 1.0f,  0.5f));
+  Display::fill_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, Color(0.0f, 0.0f, 0.25f, 0.9f));
+  Display::draw_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, Color(1.0f, 1.0f, 1.0f,  0.5f));
 
   draw_stick(pos + glm::vec2(50, 75),
              controller.get_button_state(LEFT_STICK_BUTTON),

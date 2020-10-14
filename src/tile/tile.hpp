@@ -21,8 +21,9 @@
 
 #include <GL/glew.h>
 
+#include <geom/geom.hpp>
+
 #include "display/texture.hpp"
-#include "math/rect.hpp"
 
 enum TileType {
   TILE_EMPTY  = 0,
@@ -51,7 +52,7 @@ public:
    * Id of the packer
    */
   int     packer;
-  Rectf   uv;
+  geom::frect   uv;
   TexturePtr texture;
 
   /** bitmap that holds the collision attributes for this tile */

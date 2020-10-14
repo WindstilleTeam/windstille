@@ -161,8 +161,8 @@ WindstilleWidget::on_realize()
     if (!sc)
     {
       sc.reset(new SceneContext());
-      compositor.reset(new Compositor(Size(get_width(), get_height()),
-                                      Size(get_width(), get_height())));
+      compositor.reset(new Compositor(geom::isize(get_width(), get_height()),
+                                      geom::isize(get_width(), get_height())));
       sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
     }
 
@@ -184,7 +184,7 @@ WindstilleWidget::on_realize()
 bool
 WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 {
-  Display::aspect_size = Size(ev->width, ev->height);
+  Display::aspect_size = geom::isize(ev->width, ev->height);
 
   state.set_size(Display::aspect_size.width(),
                  Display::aspect_size.height());
@@ -199,8 +199,8 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
   {
     if (compositor)
     {
-      compositor.reset(new Compositor(Size(ev->width, ev->height),
-                                      Size(ev->width, ev->height)));
+      compositor.reset(new Compositor(geom::isize(ev->width, ev->height),
+                                      geom::isize(ev->width, ev->height)));
     }
 
     glViewport(0, 0, get_width(), get_height());
@@ -308,7 +308,7 @@ WindstilleWidget::draw()
     if (grid_enabled)
     {
       Display::draw_grid(state.get_offset() * state.get_zoom(),
-                         Sizef(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.75f));
+                         geom::fsize(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.75f));
     }
   }
 }

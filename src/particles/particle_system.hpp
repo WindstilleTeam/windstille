@@ -22,8 +22,9 @@
 #include <memory>
 #include <vector>
 
+#include <geom/geom.hpp>
+
 #include "display/color.hpp"
-#include "math/rect.hpp"
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 
@@ -149,7 +150,7 @@ public:
 
   /** Causes particles to not be spawned at a single point, but inside
       the given rectangle */
-  void set_rect_distribution(const Rectf& rect);
+  void set_rect_distribution(const geom::frect& rect);
 
   /** Limit the direction into which the new particles spawn by the
       given angles, angles are given in degrees */

@@ -88,9 +88,9 @@ Conversation::draw()
 
     glm::vec2 textpos = pos + glm::vec2(0, 16.0f);
     // FIXME: Doesn't handle multi line text
-    Sizef size(static_cast<float>(g_app.fonts().vera20->get_width(choices[i].topic)) + 40.0f,
+    geom::fsize size(static_cast<float>(g_app.fonts().vera20->get_width(choices[i].topic)) + 40.0f,
                static_cast<float>(g_app.fonts().vera20->get_height()) + 25.0f);
-    Rectf  rect(textpos + distance * offset - glm::vec2(size.width()/2, size.height() - 15), size);
+    geom::frect  rect(textpos + distance * offset - glm::vec2(size.width()/2, size.height() - 15), size);
 
     if (i == selection)
     {

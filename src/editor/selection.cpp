@@ -202,16 +202,16 @@ Selection::clone() const
   return selection;
 }
 
-Rectf
+geom::frect
 Selection::get_bounding_box() const
 {
   if (empty())
   {
-    return Rectf();
+    return geom::frect();
   }
   else
   {
-    Rectf rect = objects.front()->get_bounding_box();
+    geom::frect rect = objects.front()->get_bounding_box();
     for(Objects::const_iterator i = objects.begin()+1; i != objects.end(); ++i)
     {
       rect = geom::unite(rect, (*i)->get_bounding_box());
@@ -240,7 +240,7 @@ Selection::add_control_points(std::vector<ControlPointHandle>& control_points)
     }
     else
     {
-      const Rectf& rect = get_bounding_box();
+      const geom::frect& rect = get_bounding_box();
       control_points.push_back(ControlPoint::create(glm::vec2(rect.left(), rect.top())));
       control_points.push_back(ControlPoint::create(glm::vec2(rect.right(), rect.top())));
       control_points.push_back(ControlPoint::create(glm::vec2(rect.left(), rect.bottom())));

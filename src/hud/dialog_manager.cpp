@@ -21,6 +21,7 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
+#include <geom/geom.hpp>
 #include <wstinput/controller.hpp>
 
 #include "app/app.hpp"
@@ -29,7 +30,6 @@
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "font/text_area.hpp"
-#include "math/point.hpp"
 #include "screen/game_session.hpp"
 #include "util/pathname.hpp"
 
@@ -97,7 +97,7 @@ DialogManager::draw()
   }
 
   if (!caption) {
-    Rectf rect(pos.x,
+    geom::frect rect(pos.x,
                pos.y,
                pos.x + dialog_width,
                pos.y + 200.0f);
@@ -116,7 +116,7 @@ DialogManager::draw()
   if (text_area->is_progress_complete())
   {
     const glm::vec2& pos_ = text_area->get_cursor_pos();
-    Rectf cursor(pos_.x + 8, pos_.y + 8, pos_.x + 24, pos_.y + 24);
+    geom::frect cursor(pos_.x + 8, pos_.y + 8, pos_.x + 24, pos_.y + 24);
     Display::fill_rect(cursor, Color(1.0, 1.0, 1.0,
                                      fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * glm::pi<float>() * 3.0f))));
   }
@@ -169,15 +169,15 @@ DialogManager::create_text()
   int text_width
     = dialog_width - portrait_height - portrait_border_x*2 - text_border_x;
 
-  Rect text_rect = Rect(Point(pos.x + portrait_width + portrait_border_x*2, 0),
-                        Size(500, 200)); // FIXME: use real bounding box calc
+  geom::irect text_rect = geom::irect(geom::ipoint(pos.x + portrait_width + portrait_border_x*2, 0),
+                        geom::isize(500, 200)); // FIXME: use real bounding box calc
 
-  text_rect = Rect(text_rect.left(),
+  text_rect = geom::irect(text_rect.left(),
                    text_rect.top(),
                    text_rect.right(),
                    text_rect.top() + text_rect.height());
 
-  text_rect = Rect(text_rect.left(),
+  text_rect = geom::irect(text_rect.left(),
                    pos.y + text_border_y,
                    text_rect.right(),
                    text_rect.bottom());
@@ -193,20 +193,20 @@ DialogManager::create_text()
     pos.y = (Display::get_height() - dialog_height) / 2;
   }
 
-  text_rect = Rect(text_rect.left(),
+  text_rect = geom::irect(text_rect.left(),
                    text_rect.top(),
                    text_rect.right(),
                    text_rect.top() + text_rect.height());
 
-  text_rect = Rect(text_rect.left(),
+  text_rect = geom::irect(text_rect.left(),
                    pos.y + text_border_y,
                    text_rect.right(),
                    text_rect.bottom());
 
-  Size dialog_size(dialog_width, dialog_height);
+  geom::isize dialog_size(dialog_width, dialog_height);
 
-  text_area.reset(new TextArea(Rectf(Rect(Point(text_rect.left(), text_rect.top() + g_app.fonts().vera20->get_height()),
-                                          Size(text_width, 200))), true));
+  text_area.reset(new TextArea(geom::frect(geom::irect(geom::ipoint(text_rect.left(), text_rect.top() + g_app.fonts().vera20->get_height()),
+                                          geom::isize(text_width, 200))), true));
   text_area->set_font(g_app.fonts().vera20.get());
   text_area->set_text(text);
 }

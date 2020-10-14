@@ -35,7 +35,7 @@ private:
   Children children;
 
 public:
-  RootComponent(const Rectf& rect);
+  RootComponent(const geom::frect& rect);
   ~RootComponent() override;
 
   void draw() override;

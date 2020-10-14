@@ -23,9 +23,11 @@
 #include <memory>
 #include <set>
 
-#include "editor/timeline_handles.hpp"
 #include <glm/glm.hpp>
-#include "math/rect.hpp"
+
+#include <geom/geom.hpp>
+
+#include "editor/timeline_handles.hpp"
 
 class Timeline;
 
@@ -77,7 +79,7 @@ private:
   void draw_timeline(Cairo::RefPtr<Cairo::Context> cr);
   void draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
                            TimelineLayerHandle layer);
-  void add_to_selection(const Rectf& selection);
+  void add_to_selection(const geom::frect& selection);
 
 private:
   TimelineWidget(const TimelineWidget&);

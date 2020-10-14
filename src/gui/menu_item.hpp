@@ -24,7 +24,7 @@
 
 #include <sigc++/signal.h>
 
-#include "math/rect.hpp"
+#include <geom/geom.hpp>
 
 namespace gui {
 
@@ -46,7 +46,7 @@ public:
 
   virtual void click() =0;
 
-  virtual void draw(const Rectf& rect, bool is_active);
+  virtual void draw(const geom::frect& rect, bool is_active);
   virtual void update(float delta);
 
 private:
@@ -79,7 +79,7 @@ public:
   void incr() override;
   void decr() override;
   void click() override {}
-  void draw(const Rectf& rect, bool is_active) override;
+  void draw(const geom::frect& rect, bool is_active) override;
   sigc::signal<void (int)>& sig_change() { return on_change; }
 };
 
@@ -99,7 +99,7 @@ public:
   void incr() override;
   void decr() override;
   void click() override {}
-  void draw(const Rectf& rect, bool is_active) override;
+  void draw(const geom::frect& rect, bool is_active) override;
   sigc::signal<void (int)>& sig_change() { return on_change; }
 };
 
@@ -113,7 +113,7 @@ public:
   void incr() override {}
   void decr() override {}
   void click() override;
-  void draw(const Rectf& rect, bool is_active) override;
+  void draw(const geom::frect& rect, bool is_active) override;
   sigc::signal<void ()>& sig_click() { return on_click; }
 };
 

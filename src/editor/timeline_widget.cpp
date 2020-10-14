@@ -21,7 +21,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "math/rect.hpp"
+#include <geom/rect.hpp>
+
 #include "editor/editor_window.hpp"
 #include "editor/windstille_widget.hpp"
 #include "editor/timeline.hpp"
@@ -117,7 +118,7 @@ TimelineWidget::mouse_up(GdkEventButton* ev)
     {
       m_mode = kNoMode;
 
-      Rectf selection(down_pos, glm::vec2(static_cast<float>(ev->x), static_cast<float>(ev->y)));
+      geom::frect selection(down_pos, glm::vec2(static_cast<float>(ev->x), static_cast<float>(ev->y)));
       selection = geom::normalize(selection);
 
       if (!(ev->state & GDK_SHIFT_MASK))
@@ -170,7 +171,7 @@ TimelineWidget::mouse_move(GdkEventMotion* ev)
 }
 
 void
-TimelineWidget::add_to_selection(const Rectf& selection)
+TimelineWidget::add_to_selection(const geom::frect& selection)
 {
   Timeline::iterator start = m_timeline->begin() +
     std::max(0, std::min(m_timeline->size(),
@@ -224,7 +225,7 @@ TimelineWidget::draw_select_rectangle(Cairo::RefPtr<Cairo::Context> cr)
   // Select rectangle
   if (m_mode == kSelectMode)
   {
-    //Rectf rect(down_pos, move_pos - down_pos);
+    //geom::frect rect(down_pos, move_pos - down_pos);
     //rect.normalize();
 
     cr->set_source_rgba(0,0,1,0.25);

@@ -23,7 +23,8 @@
 #include <vector>
 #include <map>
 
-#include "math/size.hpp"
+#include <geom/geom.hpp>
+
 #include "slideshow/slide_object.hpp"
 #include "slideshow/slide_path.hpp"
 
@@ -52,7 +53,7 @@ public:
     m_value(value)
   {}
 
-  float get(const Sizef& screen_size, const Sizef& image_size, float zoom) const;
+  float get(const geom::fsize& screen_size, const geom::fsize& image_size, float zoom) const;
 
 private:
   NodePosXType m_type;
@@ -82,7 +83,7 @@ public:
     m_value(value)
   {}
 
-  float get(const Sizef& screen_size, const Sizef& image_size, float zoom) const;
+  float get(const geom::fsize& screen_size, const geom::fsize& image_size, float zoom) const;
 
 private:
   NodePosYType m_type;
@@ -113,7 +114,7 @@ public:
     m_value(value)
   {}
 
-  float get(const Sizef& screen_size, const Sizef& image_size) const;
+  float get(const geom::fsize& screen_size, const geom::fsize& image_size) const;
 
 private:
   NodeZoomType m_type;
@@ -138,7 +139,7 @@ class SlideParser
 {
 private:
   SlideShow& m_slideshow;
-  Sizef m_screen_size;
+  geom::fsize m_screen_size;
 
   std::string m_context;
   int m_line;
@@ -166,7 +167,7 @@ private:
   SurfaceManager& m_surface_manager;
 
 public:
-  SlideParser(SlideShow& slideshow, const Sizef& screen_size,
+  SlideParser(SlideShow& slideshow, const geom::fsize& screen_size,
               SurfaceManager& surface_manager);
 
   void load_from_file(const std::string& filename);

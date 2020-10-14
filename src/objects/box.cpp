@@ -47,7 +47,7 @@ Box::Box(ReaderMapping const& props) :
 
   sprite = g_app.sprite().create(Pathname(spritename));
 
-  colobj = new CollisionObject(this, Rectf(0, 0, width, height));
+  colobj = new CollisionObject(this, geom::frect(0, 0, width, height));
   colobj->set_velocity(vel);
   colobj->set_pos(glm::vec2(pos.x, pos.y));
 

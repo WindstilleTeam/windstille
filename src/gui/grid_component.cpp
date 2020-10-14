@@ -39,7 +39,7 @@ GridComponent::GridComponent(Component* parent_)
   log_error("not implemented");
 }
 
-GridComponent::GridComponent(const Rectf& rect_, int weight, int height, Component* parent_)
+GridComponent::GridComponent(const geom::frect& rect_, int weight, int height, Component* parent_)
   : Component(rect_, parent_),
     grid(weight, height),
     pos(0, 0),
@@ -216,25 +216,25 @@ GridComponent::pack(Component* component, int x, int y, int colspan, int rowspan
   }
   else
   {
-    Rectf rect_ = get_screen_rect();
+    geom::frect rect_ = get_screen_rect();
 
     if (colspan == 1 && rowspan == 1)
     {
-      grid(x, y) = ComponentBox(component, Size(colspan, rowspan));
+      grid(x, y) = ComponentBox(component, geom::isize(colspan, rowspan));
     }
     else
     {
       for(int iy = 0; iy < rowspan; ++iy)
         for(int ix = 0; ix < colspan; ++ix)
         {
-          grid(x + ix, y + iy) = ComponentBox(component, Size(0, 0), Point(x, y));
+          grid(x + ix, y + iy) = ComponentBox(component, geom::isize(0, 0), geom::ipoint(x, y));
         }
-      grid(x, y) = ComponentBox(component, Size(colspan, rowspan));
+      grid(x, y) = ComponentBox(component, geom::isize(colspan, rowspan));
     }
 
-    component->set_screen_rect(Rectf(glm::vec2(rect_.left() + static_cast<float>(x) * (rect_.width()  / static_cast<float>(grid.get_width()))  + padding,
+    component->set_screen_rect(geom::frect(glm::vec2(rect_.left() + static_cast<float>(x) * (rect_.width()  / static_cast<float>(grid.get_width()))  + padding,
                                               rect_.top()  + static_cast<float>(y) * (rect_.height() / static_cast<float>(grid.get_height())) + padding),
-                                     Sizef((rect_.width()  / static_cast<float>(grid.get_width()))  * static_cast<float>(colspan) - 2.0f * padding,
+                                     geom::fsize((rect_.width()  / static_cast<float>(grid.get_width()))  * static_cast<float>(colspan) - 2.0f * padding,
                                            (rect_.height() / static_cast<float>(grid.get_height())) * static_cast<float>(rowspan) - 2.0f * padding)));
   }
 }

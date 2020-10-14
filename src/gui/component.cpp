@@ -27,7 +27,7 @@ Component::Component(Component* parent_)
 {
 }
 
-Component::Component(const Rectf& rect_, Component* parent_)
+Component::Component(const geom::frect& rect_, Component* parent_)
   : rect(rect_),
     parent(parent_),
     active(false)
@@ -52,14 +52,14 @@ Component::set_active(bool a)
   active = a;
 }
 
-Rectf
+geom::frect
 Component::get_screen_rect() const
 {
   return rect;
 }
 
 void
-Component::set_screen_rect(const Rectf& r)
+Component::set_screen_rect(const geom::frect& r)
 {
   rect = r;
 }

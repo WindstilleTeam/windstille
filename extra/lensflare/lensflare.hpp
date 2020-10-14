@@ -22,7 +22,8 @@
 #include <vector>
 
 #include <glm/glm.hpp>
-#include "math/size.hpp"
+#include <geom/geom.hpp>
+
 #include "display/surface.hpp"
 #include "display/color.hpp"
 
@@ -47,8 +48,8 @@ struct Flair
 class Lensflare
 {
 private:
-  Size m_aspect_ratio;
-  Size m_window_size;
+  geom::isize m_aspect_ratio;
+  geom::isize m_window_size;
   bool m_fullscreen;
   bool m_loop;
 
