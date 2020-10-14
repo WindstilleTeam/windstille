@@ -28,6 +28,18 @@
 namespace prio {
 
 template<>
+bool read_custom(ReaderMapping const& map, std::string_view key, std::filesystem::path& value)
+{
+  std::string text;
+  if (!map.read(key, text)) {
+    return false;
+  } else {
+    value = std::move(text);
+    return true;
+  }
+}
+
+template<>
 bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec2&  value)
 {
   std::vector<float> floats;

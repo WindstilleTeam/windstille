@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_UTIL_FILE_READER_HPP
 #define HEADER_WINDSTILLE_UTIL_FILE_READER_HPP
 
+#include <filesystem>
 #include <string>
 #include <vector>
 #include <memory>
@@ -39,6 +40,7 @@ using ReaderObject = prio::ReaderObject;
 
 namespace prio {
 
+template<> bool read_custom(ReaderMapping const& map, std::string_view key, std::filesystem::path& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::mat4& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::quat& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, Color& value);
