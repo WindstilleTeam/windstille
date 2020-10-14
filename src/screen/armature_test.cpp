@@ -41,7 +41,7 @@ ArmatureTest::ArmatureTest()
     zrot(0.0f)
 {
   ReaderDocument const& model_doc = ReaderDocument::from_file(Pathname("armature/mesh.mesh").get_sys_path());
-  model.reset(new Model(model_doc, "armature/", g_app.texture()));
+  model = std::make_unique<Model>(model_doc, Pathname("armature/"), g_app.texture());
 
   ReaderDocument const& armature_doc = ReaderDocument::from_file(Pathname("armature/armature.arm").get_sys_path());
   armature.reset(new Armature(armature_doc));

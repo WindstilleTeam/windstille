@@ -37,7 +37,7 @@ private:
   Meshes meshes;
 
 public:
-  Model(ReaderDocument const& doc, const std::string& path,
+  Model(ReaderDocument const& doc, std::filesystem::path const& basedir,
         TextureManager& texture_manager);
   ~Model();
 

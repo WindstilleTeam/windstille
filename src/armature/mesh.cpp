@@ -27,7 +27,7 @@
 #include "display/texture_manager.hpp"
 #include "util/util.hpp"
 
-Mesh::Mesh(ReaderMapping const& reader, const std::string& path,
+Mesh::Mesh(ReaderMapping const& reader, std::filesystem::path const& basedir,
            TextureManager& texture_manager) :
   name(),
   vertices(),
@@ -40,7 +40,7 @@ Mesh::Mesh(ReaderMapping const& reader, const std::string& path,
   blend_sfactor(GL_ONE),
   blend_dfactor(GL_ZERO)
 {
-  std::string texture_filename;
+  std::filesystem::path texture_filename;
 
   reader.read("name",      name);
   reader.read("texture",   texture_filename);
@@ -164,7 +164,7 @@ Mesh::Mesh(ReaderMapping const& reader, const std::string& path,
   }
 #endif
 
-  texture_filename = path + basename(texture_filename);
+  texture_filename = basedir / texture_filename;
   texture = texture_manager.get(texture_filename);
 
   // Check that all vectors contain enough values for the given number

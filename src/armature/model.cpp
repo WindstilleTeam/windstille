@@ -24,7 +24,7 @@
 #include "util/file_reader.hpp"
 #include "armature/mesh.hpp"
 
-Model::Model(ReaderDocument const& doc, const std::string& path,
+Model::Model(ReaderDocument const& doc, std::filesystem::path const& basedir,
              TextureManager& texture_manager) :
   name(),
   meshes()
@@ -42,7 +42,7 @@ Model::Model(ReaderDocument const& doc, const std::string& path,
   for (ReaderObject const& mesh_obj : mesh_collection.get_objects())
   {
     if (mesh_obj.get_name() == "mesh") {
-      Mesh* mesh = new Mesh(mesh_obj.get_mapping(), path, texture_manager);
+      Mesh* mesh = new Mesh(mesh_obj.get_mapping(), basedir, texture_manager);
       meshes.push_back(mesh);
     } else {
       std::cout << "Ignoring unhandled tag: " << mesh_obj.get_name() << std::endl;

@@ -49,7 +49,7 @@ struct Vertex
 {
   glm::vec3 pos;
   glm::vec3 normal;
-  glm::vec2  texcoord;
+  glm::vec2 texcoord;
 
   glm::vec3 render_pos;
 
@@ -92,7 +92,7 @@ private:
   GLenum blend_dfactor;
 
 public:
-  Mesh(ReaderMapping const& reader, const std::string& path,
+  Mesh(ReaderMapping const& reader, std::filesystem::path const& basedir,
        TextureManager& texture_manager);
   ~Mesh();
 
