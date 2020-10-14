@@ -32,7 +32,7 @@ class SlideObject
 private:
   std::filesystem::path m_filename;
   SurfaceManager& m_surface_manager;
-  Sizef m_size;
+  geom::fsize m_size;
   SurfacePtr m_surface;
   float m_begin;
   SlidePath m_path;

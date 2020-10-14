@@ -21,16 +21,15 @@
 
 #include "scenegraph/drawable.hpp"
 #include "scenegraph/drawable_group.hpp"
-#include "math/rect.hpp"
 
 class ScissorDrawable : public Drawable
 {
 private:
-  Rect m_cliprect;
+  geom::irect m_cliprect;
   DrawableGroup m_drawable_group;
 
 public:
-  ScissorDrawable(const Rect& cliprect);
+  ScissorDrawable(const geom::irect& cliprect);
 
   void render(unsigned int mask) override;
 

@@ -68,8 +68,8 @@ public:
   void draw_line(const Line& line, const Color& color, float z_pos = 0);
   void draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color, float z_pos = 0);
 
-  void draw_rect(const Rectf& rect, const Color& color, float z_pos = 0);
-  void fill_rect(const Rectf& rect, const Color& color, float z_pos = 0);
+  void draw_rect(const geom::frect& rect, const Color& color, float z_pos = 0);
+  void fill_rect(const geom::frect& rect, const Color& color, float z_pos = 0);
 
   void draw_quad(const Quad& quad, const Color& color, float z_pos = 0);
   void fill_quad(const Quad& quad, const Color& color, float z_pos = 0);
@@ -103,7 +103,7 @@ public:
   glm::mat4 get_modelview() const { return modelview_stack.back(); }
 
   /** Return the area of the screen that will be visible*/
-  Rectf get_clip_rect();
+  geom::frect get_clip_rect();
 
 private:
   DrawingContext (const DrawingContext&);

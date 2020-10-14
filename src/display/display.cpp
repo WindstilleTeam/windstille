@@ -26,16 +26,18 @@
 #include <sstream>
 #include <stdexcept>
 #include <string.h>
+#include <numbers>
+
+#include <geom/rect.hpp>
 
 #include "display/color.hpp"
 #include "math/quad.hpp"
-#include "math/rect.hpp"
 #include "math/line.hpp"
 #include "display/opengl_state.hpp"
 #include "display/assert_gl.hpp"
 
-Size              Display::aspect_size;
-std::vector<Rect> Display::cliprects;
+geom::isize              Display::aspect_size;
+std::vector<geom::irect> Display::cliprects;
 
 namespace {
 std::vector<FramebufferPtr> framebuffers;
@@ -114,7 +116,7 @@ Display::draw_quad(const Quad& quad, const Color& color)
 }
 
 void
-Display::fill_rect(const Rectf& rect, const Color& color)
+Display::fill_rect(const geom::frect& rect, const Color& color)
 {
   OpenGLState state;
 
@@ -132,7 +134,7 @@ Display::fill_rect(const Rectf& rect, const Color& color)
 }
 
 void
-Display::draw_rect(const Rectf& rect, const Color& color)
+Display::draw_rect(const geom::frect& rect, const Color& color)
 {
   OpenGLState state;
 
@@ -150,14 +152,14 @@ Display::draw_rect(const Rectf& rect, const Color& color)
 }
 
 void
-Display::fill_rounded_rect(const Rectf& rect, float radius, const Color& color)
+Display::fill_rounded_rect(const geom::frect& rect, float radius, const Color& color)
 {
   // Keep radius in the limits, so that we get a circle instead of
   // just graphic junk
   radius = std::min(radius, std::min(rect.width()/2, rect.height()/2));
 
   // inner rectangle
-  Rectf irect(rect.left()    + radius,
+  geom::frect irect(rect.left()    + radius,
               rect.top()     + radius,
               rect.right()   - radius,
               rect.bottom()  - radius);
@@ -173,16 +175,16 @@ Display::fill_rounded_rect(const Rectf& rect, float radius, const Color& color)
   glBegin(GL_QUAD_STRIP);
   for(int i = 0; i <= n; ++i)
   {
-    float x = sinf(static_cast<float>(i) * (math::pi/2.0f) / static_cast<float>(n)) * radius;
-    float y = cosf(static_cast<float>(i) * (math::pi/2.0f) / static_cast<float>(n)) * radius;
+    float x = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2.0f) / static_cast<float>(n)) * radius;
+    float y = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2.0f) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.left()  - x, irect.top() - y);
     glVertex2f(irect.right() + x, irect.top() - y);
   }
   for(int i = 0; i <= n; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (math::pi/2.0f) / static_cast<float>(n)) * radius;
-    float y = sinf(static_cast<float>(i) * (math::pi/2.0f) / static_cast<float>(n)) * radius;
+    float x = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2.0f) / static_cast<float>(n)) * radius;
+    float y = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2.0f) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.left()  - x, irect.bottom() + y);
     glVertex2f(irect.right() + x, irect.bottom() + y);
@@ -191,14 +193,14 @@ Display::fill_rounded_rect(const Rectf& rect, float radius, const Color& color)
 }
 
 void
-Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
+Display::draw_rounded_rect(const geom::frect& rect, float radius, const Color& color)
 {
   // Keep radius in the limits, so that we get a circle instead of
   // just graphic junk
   radius = std::min(radius, std::min(rect.width()/2, rect.height()/2));
 
   // inner rectangle
-  Rectf irect(rect.left()    + radius,
+  geom::frect irect(rect.left()    + radius,
               rect.top()     + radius,
               rect.right()   - radius,
               rect.bottom()  - radius);
@@ -215,31 +217,31 @@ Display::draw_rounded_rect(const Rectf& rect, float radius, const Color& color)
   glBegin(GL_LINE_STRIP);
   for(int i = 0; i <= n; ++i)
   {
-    float x = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
-    float y = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
+    float x = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
+    float y = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.left()  - x, irect.top() - y);
   }
   for(int i = 0; i <= n; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
-    float y = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
+    float x = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
+    float y = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.left()  - x, irect.bottom() + y);
   }
 
   for(int i = 0; i <= n; ++i)
   {
-    float x = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
-    float y = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
+    float x = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
+    float y = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.right() + x, irect.bottom() + y);
   }
 
   for(int i = 0; i <= n; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
-    float y = sinf(static_cast<float>(i) * (math::pi/2) / static_cast<float>(n)) * radius;
+    float x = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
+    float y = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / static_cast<float>(n)) * radius;
 
     glVertex2f(irect.right() + x, irect.top() - y);
   }
@@ -279,8 +281,8 @@ Display::draw_circle(const glm::vec2& pos, float radius, const Color& color, int
   glVertex2f(radius + pos.x, pos.y);
   for(int i = 1; i < segments; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (math::pi / 2.0f) / n) * radius;
-    float y = sinf(static_cast<float>(i) * (math::pi / 2.0f) / n) * radius;
+    float x = cosf(static_cast<float>(i) * (std::numbers::pi_v<float> / 2.0f) / n) * radius;
+    float y = sinf(static_cast<float>(i) * (std::numbers::pi_v<float> / 2.0f) / n) * radius;
 
     glVertex2f(x + pos.x, y + pos.y);
   }
@@ -306,8 +308,8 @@ Display::fill_circle(const glm::vec2& pos, float radius, const Color& color, int
   glVertex2f(radius + pos.x, pos.y);
   for(int i = 1; i < segments; ++i)
   {
-    float x = cosf(static_cast<float>(i) * (math::pi/2) / n) * radius;
-    float y = sinf(static_cast<float>(i) * (math::pi/2) / n) * radius;
+    float x = cosf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / n) * radius;
+    float y = sinf(static_cast<float>(i) * (std::numbers::pi_v<float>/2) / n) * radius;
 
     glVertex2f(x + pos.x, y + pos.y);
   }
@@ -326,7 +328,7 @@ Display::draw_arc(const glm::vec2& pos, float radius, float start, float end, co
   }
   else
   {
-    float step  = (2.0f * math::pi) / static_cast<float>(segments);
+    float step  = (2.0f * std::numbers::pi_v<float>) / static_cast<float>(segments);
 
     if (start > end)
       std::swap(start, end);
@@ -366,7 +368,7 @@ Display::fill_arc(const glm::vec2& pos, float radius, float start, float end, co
   }
   else
   {
-    float step  = (2.0f * math::pi) / static_cast<float>(segments);
+    float step  = (2.0f * std::numbers::pi_v<float>) / static_cast<float>(segments);
 
     if (start > end)
       std::swap(start, end);
@@ -396,7 +398,7 @@ Display::fill_arc(const glm::vec2& pos, float radius, float start, float end, co
 }
 
 void
-Display::draw_grid(const glm::vec2& offset, const Sizef& size, const Color& rgba)
+Display::draw_grid(const glm::vec2& offset, const geom::fsize& size, const Color& rgba)
 {
   OpenGLState state;
 
@@ -427,13 +429,13 @@ Display::draw_grid(const glm::vec2& offset, const Sizef& size, const Color& rgba
 }
 
 void
-Display::push_cliprect(const Rect& rect_)
+Display::push_cliprect(const geom::irect& rect_)
 {
-  Rect rect = rect_;
+  geom::irect rect = rect_;
 
   if (!cliprects.empty())
   {
-    rect = Rect(std::max(rect.left(), cliprects.back().left()),
+    rect = geom::irect(std::max(rect.left(), cliprects.back().left()),
                 std::max(rect.top(),  cliprects.back().top()),
                 std::min(rect.right(),  cliprects.back().right()),
                 std::min(rect.bottom(), cliprects.back().bottom()));
@@ -455,7 +457,7 @@ Display::pop_cliprect()
 
   if (!cliprects.empty())
   {
-    const Rect& rect = cliprects.back();
+    const geom::irect& rect = cliprects.back();
 
     glScissor(rect.left(), get_height() - rect.top() - rect.height(),
               rect.width(), rect.height());
@@ -471,7 +473,7 @@ Display::save_screenshot(std::filesystem::path const& filename)
 {
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
-  Size size(viewport[2] / 4 * 4, viewport[3]);
+  geom::isize size(viewport[2] / 4 * 4, viewport[3]);
 
   int len = size.width() * size.height() * 3;
 

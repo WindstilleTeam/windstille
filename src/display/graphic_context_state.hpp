@@ -22,7 +22,7 @@
 
 #include <glm/glm.hpp>
 
-#include "math/rect.hpp"
+#include <geom/rect.hpp>
 
 class SceneContext;
 
@@ -46,7 +46,7 @@ public:
 
   /** Return a rectangle in world coordinates that represents the area
       visible on the screen */
-  Rectf get_clip_rect();
+  geom::frect get_clip_rect();
 
   int get_width()  const;
   int get_height() const;
@@ -70,7 +70,7 @@ public:
   void  set_zoom(float z);
   float get_zoom() const;
 
-  void zoom_to (const Rectf& rect);
+  void zoom_to (const geom::frect& rect);
 
   glm::vec2 screen_to_world(const glm::vec2& pos);
 

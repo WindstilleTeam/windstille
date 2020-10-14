@@ -24,15 +24,16 @@
 #include <GL/glew.h>
 #include <memory>
 
+#include <geom/rect.hpp>
+
 #include "display/software_surface.hpp"
-#include "math/rect.hpp"
-
+
 class SoftwareSurface;
 class TextureImpl;
-
+
 class Texture;
 typedef std::shared_ptr<Texture> TexturePtr;
-
+
 class Texture
 {
 public:
@@ -65,7 +66,7 @@ public:
 
   /** Uploads the given subsection \a srcrect of \a image to the given
       coordinates */
-  void put(SoftwareSurfacePtr image, const Rect& srcrect, int x, int y);
+  void put(SoftwareSurfacePtr image, const geom::irect& srcrect, int x, int y);
 
   GLuint get_handle() const;
 
@@ -82,7 +83,7 @@ private:
   int    m_width;
   int    m_height;
 };
-
+
 #endif
 
 /* EOF */

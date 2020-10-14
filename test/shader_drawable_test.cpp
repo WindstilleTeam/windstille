@@ -42,8 +42,8 @@ int shader_main(int argc, char* argv[])
   }
 
   OpenGLWindow window("Shader Drawable",
-                      Size(960, 600),
-                      Size(960, 600));
+                      geom::isize(960, 600),
+                      geom::isize(960, 600));
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
   DrawableGroup group;

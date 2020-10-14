@@ -47,7 +47,7 @@ public:
 
   /** @return the rectangle which represents the currently visible
       area, everything outside of it doesn't have to be drawn */
-  Rectf get_clip_rect();
+  geom::frect get_clip_rect();
   glm::vec2 screen_to_world(const glm::vec2& point);
 
   void draw(SceneContext& gc, Sector& sector);

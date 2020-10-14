@@ -52,8 +52,8 @@ int memleak_main(int argc, char* argv[])
 
   //std::cout << "OpenGLWindow" << std::endl;
   OpenGLWindow window("Memleak",
-                      Size(800, 600), // window size
-                      Size(800, 600),
+                      geom::isize(800, 600), // window size
+                      geom::isize(800, 600),
                       false,
                       4); // anti-alias
 

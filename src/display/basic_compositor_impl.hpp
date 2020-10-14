@@ -28,7 +28,7 @@ private:
   SurfacePtr m_lightmap;
 
 public:
-  BasicCompositorImpl(const Size& window, const Size& viewport);
+  BasicCompositorImpl(const geom::isize& window, const geom::isize& viewport);
 
   void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state) override;
 

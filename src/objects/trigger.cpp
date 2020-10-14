@@ -45,9 +45,9 @@ Trigger::Trigger(ReaderMapping const& props) :
   if(x < 0 || y < 0 || width < 0 || height < 0)
     throw std::runtime_error("Invalid or missing area in Trigger object");
 
-  area = Rectf(x, y,
-               area.left() + width,
-               area.top() + height);
+  area = geom::frect(x, y,
+                     area.left() + width,
+                     area.top() + height);
 }
 
 Trigger::~Trigger()

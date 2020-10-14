@@ -21,10 +21,12 @@
 
 #include <vector>
 
-#include "display/framebuffer.hpp"
-#include "math/rect.hpp"
-#include "math/size.hpp"
 #include <glm/glm.hpp>
+
+#include <geom/rect.hpp>
+#include <geom/size.hpp>
+
+#include "display/framebuffer.hpp"
 
 class Color;
 class Quad;
@@ -33,20 +35,20 @@ class Line;
 class Display
 {
 private:
-  static std::vector<Rect> cliprects;
+  static std::vector<geom::irect> cliprects;
 
 public:
-  static Size aspect_size;
+  static geom::isize aspect_size;
 
 public:
   static void fill_quad(const Quad& quad, const Color& color);
   static void draw_quad(const Quad& quad, const Color& color);
 
-  static void fill_rect(const Rectf& rect, const Color& color);
-  static void draw_rect(const Rectf& rect, const Color& color);
+  static void fill_rect(const geom::frect& rect, const Color& color);
+  static void draw_rect(const geom::frect& rect, const Color& color);
 
-  static void fill_rounded_rect(const Rectf& rect, float radius, const Color& color);
-  static void draw_rounded_rect(const Rectf& rect, float radius, const Color& color);
+  static void fill_rounded_rect(const geom::frect& rect, float radius, const Color& color);
+  static void draw_rounded_rect(const geom::frect& rect, float radius, const Color& color);
 
   /** Same as draw_line, but in addition draw a normal on top of the line */
   static void draw_line_with_normal(const Line& line, const Color& color);
@@ -60,14 +62,14 @@ public:
   static void draw_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments = 16);
   static void fill_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments = 16);
 
-  static void draw_grid(const glm::vec2& offset, const Sizef& size, const Color& color);
+  static void draw_grid(const glm::vec2& offset, const geom::fsize& size, const Color& color);
 
   static int  get_width();
   static int  get_height();
 
-  static Size get_size() { return Size(get_width(), get_height()); }
+  static geom::isize get_size() { return geom::isize(get_width(), get_height()); }
 
-  static void push_cliprect(const Rect& rect);
+  static void push_cliprect(const geom::irect& rect);
   static void pop_cliprect();
 
   static void push_framebuffer(FramebufferPtr framebuffer);

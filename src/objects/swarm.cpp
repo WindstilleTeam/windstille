@@ -16,12 +16,15 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "scenegraph/vertex_array_drawable.hpp"
+#include "objects/swarm.hpp"
+
+#include <numbers>
+
+#include "math/math.hpp"
 #include "math/random.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 #include "screen/game_session.hpp"
 #include "screen/view.hpp"
-
-#include "objects/swarm.hpp"
 
 Swarm::Swarm(ReaderMapping const& props) :
   agents(),
@@ -43,7 +46,7 @@ Swarm::Swarm(ReaderMapping const& props) :
     i->pos.x = pos.x + rnd.frand(-100, 100);
     i->pos.y = pos.y + rnd.frand(-100, 100);
 
-    i->angle = rnd.frand(-math::pi, math::pi);
+    i->angle = rnd.frand(-std::numbers::pi_v<float>, std::numbers::pi_v<float>);
     i->speed = rnd.frand(50.0f, 200.0f);
 
     i->max_speed = rnd.frand(100.0f, 200.0f);
@@ -112,7 +115,7 @@ Swarm::update(float delta)
       }
       else
       {
-        if (relative_angle <= math::pi)
+        if (relative_angle <= std::numbers::pi_v<float>)
           i->angle += i->turn_speed * delta;
         else
           i->angle -= i->turn_speed * delta;

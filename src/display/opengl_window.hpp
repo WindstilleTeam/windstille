@@ -22,7 +22,7 @@
 #include <filesystem>
 #include <memory>
 
-#include "math/size.hpp"
+#include <geom/size.hpp>
 
 class OpenGLWindowImpl;
 
@@ -30,7 +30,7 @@ class OpenGLWindow final
 {
 public:
   OpenGLWindow(const std::string& title,
-               const Size& size, const Size& aspect,
+               const geom::isize& size, const geom::isize& aspect,
                bool fullscreen = false, int anti_aliasing = 0);
   ~OpenGLWindow();
 
@@ -38,7 +38,7 @@ public:
 
   int  get_width()  const;
   int  get_height() const;
-  Size get_size()   const;
+  geom::isize get_size()   const;
 
   void set_fullscreen(bool fullscreen);
   void set_gamma(float r, float g, float b);

@@ -24,9 +24,10 @@
 #include <stdexcept>
 #include <SDL_image.h>
 
+#include <geom/rect.hpp>
+
 #include "display/software_surface.hpp"
-#include "math/rect.hpp"
-
+
 SoftwareSurfacePtr
 SoftwareSurface::create(std::filesystem::path const& filename)
 {
@@ -38,7 +39,7 @@ SoftwareSurface::create(int width, int height, Format format)
 {
   return SoftwareSurfacePtr(new SoftwareSurface(width, height, format));
 }
-
+
 SoftwareSurface::SoftwareSurface(std::filesystem::path const& filename) :
   m_surface(nullptr),
   m_format(RGBA)
@@ -202,10 +203,10 @@ SoftwareSurface::get_height() const
   return m_surface->h;
 }
 
-Size
+geom::isize
 SoftwareSurface::get_size() const
 {
-  return Size(m_surface->w,
+  return geom::isize(m_surface->w,
               m_surface->h);
 }
 
@@ -238,7 +239,7 @@ SoftwareSurface::blit(SoftwareSurfacePtr dst, int x, int y) const
 }
 
 void
-SoftwareSurface::blit(const Rect& src_rect_, SoftwareSurfacePtr dst, int x, int y) const
+SoftwareSurface::blit(const geom::irect& src_rect_, SoftwareSurfacePtr dst, int x, int y) const
 {
   SDL_Rect src_rect;
   src_rect.x = static_cast<Sint16>(src_rect_.left());
@@ -330,5 +331,5 @@ SoftwareSurface::save_png(const std::string& filename) const
     }
   }
 }
-
+
 /* EOF */

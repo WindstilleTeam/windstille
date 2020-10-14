@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_COMPOSITOR_IMPL_HPP
 #define HEADER_WINDSTILLE_DISPLAY_COMPOSITOR_IMPL_HPP
 
-#include "math/size.hpp"
+#include <geom/size.hpp>
 
 class SceneContext;
 class SceneGraph;
@@ -28,11 +28,11 @@ class GraphicContextState;
 class CompositorImpl
 {
 protected:
-  Size m_window;
-  Size m_viewport;
+  geom::isize m_window;
+  geom::isize m_viewport;
 
 public:
-  CompositorImpl(const Size& window, const Size& viewport)
+  CompositorImpl(const geom::isize& window, const geom::isize& viewport)
     : m_window(window),
       m_viewport(viewport)
   {}

@@ -22,6 +22,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glm/glm.hpp>
+
 #include "math/quad.hpp"
 #include "display/opengl_state.hpp"
 #include "scenegraph/drawable.hpp"

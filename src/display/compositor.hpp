@@ -21,7 +21,7 @@
 
 #include <memory>
 
-#include "math/size.hpp"
+#include <geom/size.hpp>
 
 class CompositorImpl;
 class GraphicContextState;
@@ -31,7 +31,7 @@ class SceneGraph;
 class Compositor
 {
 public:
-  Compositor(const Size& window, const Size& viewport);
+  Compositor(const geom::isize& window, const geom::isize& viewport);
   ~Compositor();
 
   void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);

@@ -22,15 +22,14 @@
 #include <filesystem>
 #include <memory>
 
-#include "math/size.hpp"
-#include "math/rect.hpp"
+#include <geom/size.hpp>
+#include <geom/rect.hpp>
 
 typedef struct SDL_Surface SDL_Surface;
 
-
 class SoftwareSurface;
 typedef std::shared_ptr<SoftwareSurface> SoftwareSurfacePtr;
-
+
 class SoftwareSurface
 {
 public:
@@ -55,11 +54,11 @@ public:
   int   get_width() const;
   int   get_pitch() const;
   int   get_height() const;
-  Size  get_size() const;
+  geom::isize  get_size() const;
   void* get_pixels() const;
 
   void blit(SoftwareSurfacePtr dst, int x, int y) const;
-  void blit(const Rect& src_rect, SoftwareSurfacePtr dst, int x, int y) const;
+  void blit(const geom::irect& src_rect, SoftwareSurfacePtr dst, int x, int y) const;
 
   void save_png(const std::string& filename) const;
 
@@ -77,7 +76,7 @@ private:
   SoftwareSurface(const SoftwareSurface&);
   SoftwareSurface& operator=(const SoftwareSurface&);
 };
-
+
 #endif
 
 /* EOF */

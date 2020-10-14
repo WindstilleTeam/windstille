@@ -19,7 +19,8 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_FRAMEBUFFER_HPP
 #define HEADER_WINDSTILLE_DISPLAY_FRAMEBUFFER_HPP
 
-#include "math/size.hpp"
+#include <geom/size.hpp>
+
 #include "display/texture.hpp"
 #include "display/renderbuffer.hpp"
 
@@ -50,7 +51,7 @@ private:
 
 private:
   GLuint m_handle;
-  Size   m_size;
+  geom::isize   m_size;
 
   TexturePtr m_texture;
   RenderbufferPtr m_color_buffer;

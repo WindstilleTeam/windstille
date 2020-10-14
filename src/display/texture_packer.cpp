@@ -21,20 +21,22 @@
 #include <stdio.h>
 #include <memory>
 
+#include <geom/point.hpp>
+#include <geom/rect.hpp>
+
 #include "display/software_surface.hpp"
 #include "display/texture_packer.hpp"
-#include "math/point.hpp"
 
 class TextureSpace
 {
 private:
-  Rect          rect;
+  geom::irect          rect;
   bool          used;
   std::unique_ptr<TextureSpace> left;
   std::unique_ptr<TextureSpace> right;
 
 public:
-  TextureSpace(const Rect& rect_) :
+  TextureSpace(const geom::irect& rect_) :
     rect(rect_),
     used(false),
     left(),
@@ -44,7 +46,7 @@ public:
   ~TextureSpace()
   {}
 
-  bool allocate(const Size& size, Rect& out_rect)
+  bool allocate(const geom::isize& size, geom::irect& out_rect)
   {
     if (size.width()  <= rect.width() &&
         size.height() <= rect.height())
@@ -52,16 +54,16 @@ public:
       if (!used)
       {
         used = true;
-        out_rect = Rect(Point(rect.left(), rect.top()), size);
+        out_rect = geom::irect(geom::ipoint(rect.left(), rect.top()), size);
 
         // FIXME: Make this alterate between horizontal and
         // vertical splitting or chose whichever split options
         // leads to less 'ugly' rectangle (how much different does
         // this make in terms of packing density?)
-        left.reset(new TextureSpace(Rect(out_rect.left(),  out_rect.bottom(),
+        left.reset(new TextureSpace(geom::irect(out_rect.left(),  out_rect.bottom(),
                                          out_rect.right(), rect.bottom())));
 
-        right.reset(new TextureSpace(Rect(out_rect.right(), out_rect.top(),
+        right.reset(new TextureSpace(geom::irect(out_rect.right(), out_rect.top(),
                                           rect.right(), rect.bottom())));
 
         return true;
@@ -75,7 +77,7 @@ public:
     }
     else
     {
-      // Size doesn't fit here
+      // geom::isize doesn't fit here
       return false;
     }
   }
@@ -92,9 +94,9 @@ private:
   TextureSpace   space;
 
 public:
-  TexturePackerTexture(const Size& size) :
+  TexturePackerTexture(const geom::isize& size) :
     texture(Texture::create(GL_TEXTURE_2D, size.width(), size.height())),
-    space(Rect(Point(0, 0), size))
+    space(geom::irect(geom::ipoint(0, 0), size))
   {
   }
 
@@ -103,7 +105,7 @@ public:
 
   TexturePtr get_texture() const { return texture; }
 
-  bool allocate(const Size& size, Rect& out_rect, TexturePtr& out_texture)
+  bool allocate(const geom::isize& size, geom::irect& out_rect, TexturePtr& out_texture)
   {
     if (space.allocate(size, out_rect))
     {
@@ -121,7 +123,7 @@ private:
   TexturePackerTexture& operator=(const TexturePackerTexture&);
 };
 
-TexturePacker::TexturePacker(const Size& texture_size_) :
+TexturePacker::TexturePacker(const geom::isize& texture_size_) :
   texture_size(texture_size_),
   textures()
 {
@@ -135,7 +137,7 @@ TexturePacker::~TexturePacker()
 }
 
 bool
-TexturePacker::allocate(const Size& size, Rect& rect, TexturePtr& out_texture)
+TexturePacker::allocate(const geom::isize& size, geom::irect& rect, TexturePtr& out_texture)
 {
   for(Textures::iterator i = textures.begin(); i != textures.end(); ++i)
   {
@@ -155,8 +157,8 @@ TexturePacker::upload(SoftwareSurfacePtr surface)
   // Add a 1px border around surfaces to avoid blending artifacts
   //SoftwareSurface surface = in_surface.add_1px_border();
 
-  Size    size(surface->get_width()+2, surface->get_height()+2);
-  Rect    rect;
+  geom::isize    size(surface->get_width()+2, surface->get_height()+2);
+  geom::irect    rect;
   TexturePtr texture;
 
   if (!allocate(size, rect, texture))
@@ -168,37 +170,37 @@ TexturePacker::upload(SoftwareSurfacePtr surface)
     // duplicate border pixel
 
     // top
-    texture->put(surface, Rect(Point(0, 0), Size(surface->get_width(), 1)),
+    texture->put(surface, geom::irect(geom::ipoint(0, 0), geom::isize(surface->get_width(), 1)),
                  rect.left()+1, rect.top());
     // bottom
-    texture->put(surface, Rect(Point(0, surface->get_height()-1), Size(surface->get_width(), 1)),
+    texture->put(surface, geom::irect(geom::ipoint(0, surface->get_height()-1), geom::isize(surface->get_width(), 1)),
                  rect.left()+1, rect.bottom()-1);
     // left
-    texture->put(surface, Rect(Point(0, 0), Size(1, surface->get_height())),
+    texture->put(surface, geom::irect(geom::ipoint(0, 0), geom::isize(1, surface->get_height())),
                  rect.left(), rect.top()+1);
     // right
-    texture->put(surface, Rect(Point(surface->get_width()-1, 0), Size(1, surface->get_height())),
+    texture->put(surface, geom::irect(geom::ipoint(surface->get_width()-1, 0), geom::isize(1, surface->get_height())),
                  rect.right()-1, rect.top()+1);
 
     // duplicate corner pixels
-    texture->put(surface, Rect(Point(0, 0), Size(1, 1)),
+    texture->put(surface, geom::irect(geom::ipoint(0, 0), geom::isize(1, 1)),
                  rect.left(), rect.top());
-    texture->put(surface, Rect(Point(surface->get_width()-1, 0), Size(1, 1)),
+    texture->put(surface, geom::irect(geom::ipoint(surface->get_width()-1, 0), geom::isize(1, 1)),
                  rect.right()-1, rect.top());
-    texture->put(surface, Rect(Point(surface->get_width()-1, surface->get_height()-1), Size(1, 1)),
+    texture->put(surface, geom::irect(geom::ipoint(surface->get_width()-1, surface->get_height()-1), geom::isize(1, 1)),
                  rect.right()-1, rect.bottom()-1);
-    texture->put(surface, Rect(Point(0, surface->get_height()-1), Size(1, 1)),
+    texture->put(surface, geom::irect(geom::ipoint(0, surface->get_height()-1), geom::isize(1, 1)),
                  rect.left(), rect.bottom()-1);
 
     // draw the main surface
     texture->put(surface, rect.left()+1, rect.top()+1);
 
     return Surface::create(texture,
-                           Rectf(static_cast<float>(rect.left()+1)   / static_cast<float>(texture->get_width()),
+                           geom::frect(static_cast<float>(rect.left()+1)   / static_cast<float>(texture->get_width()),
                                  static_cast<float>(rect.top()+1)    / static_cast<float>(texture->get_height()),
                                  static_cast<float>(rect.right()-1)  / static_cast<float>(texture->get_width()),
                                  static_cast<float>(rect.bottom()-1) / static_cast<float>(texture->get_height())),
-                           Sizef(static_cast<float>(surface->get_width()), static_cast<float>(surface->get_height())));
+                           geom::fsize(static_cast<float>(surface->get_width()), static_cast<float>(surface->get_height())));
   }
 }
 

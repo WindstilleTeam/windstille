@@ -32,7 +32,7 @@ class OpenGLWindowImpl
 public:
   SDL_Window*   m_window;
   SDL_GLContext m_gl_context;
-  Size          m_size;
+  geom::isize          m_size;
 
   OpenGLWindowImpl() :
     m_window(nullptr),
@@ -42,7 +42,7 @@ public:
 };
 
 OpenGLWindow::OpenGLWindow(const std::string& title,
-                           const Size& size, const Size& aspect, bool fullscreen, int anti_aliasing) :
+                           const geom::isize& size, const geom::isize& aspect, bool fullscreen, int anti_aliasing) :
   m_impl(new OpenGLWindowImpl)
 {
   m_impl->m_size = size;
@@ -148,7 +148,7 @@ OpenGLWindow::get_height() const
   return m_impl->m_size.height();
 }
 
-Size
+geom::isize
 OpenGLWindow::get_size() const
 {
   return m_impl->m_size;

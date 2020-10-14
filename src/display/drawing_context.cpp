@@ -210,13 +210,13 @@ DrawingContext::reset_modelview()
   modelview_stack.push_back(glm::mat4(1.0f));
 }
 
-Rectf
+geom::frect
 DrawingContext::get_clip_rect()
 {
   // FIXME: Need to check the modelview matrix
-  return Rectf(glm::vec2(glm::value_ptr(modelview_stack.back())[12],
+  return geom::frect(glm::vec2(glm::value_ptr(modelview_stack.back())[12],
                          glm::value_ptr(modelview_stack.back())[13]),
-               Sizef(800, 600));
+               geom::fsize(800, 600));
 }
 
 void
@@ -289,7 +289,7 @@ DrawingContext::fill_quad(const Quad& quad, const Color& color, float z_pos)
 }
 
 void
-DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
+DrawingContext::draw_rect(const geom::frect& rect, const Color& color, float z_pos)
 {
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
@@ -312,7 +312,7 @@ DrawingContext::draw_rect(const Rectf& rect, const Color& color, float z_pos)
 }
 
 void
-DrawingContext::fill_rect(const Rectf& rect, const Color& color, float z_pos)
+DrawingContext::fill_rect(const geom::frect& rect, const Color& color, float z_pos)
 {
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 

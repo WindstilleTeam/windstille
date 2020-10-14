@@ -49,7 +49,7 @@ public:
   void add(SlideObjectPtr object);
   void clear();
 
-  void load(const std::string& filename, const Sizef& aspect);
+  void load(const std::string& filename, const geom::fsize& aspect);
 
   /** search for the start time of the next SlideObject, starting from time */
   float find_next(float time);

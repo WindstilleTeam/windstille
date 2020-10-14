@@ -22,7 +22,6 @@
 #include <glm/glm.hpp>
 
 #include "display/texture.hpp"
-#include "math/rect.hpp"
 
 class Drawable
 {

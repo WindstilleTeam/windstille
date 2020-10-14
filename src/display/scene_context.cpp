@@ -166,7 +166,7 @@ void draw_disc(int count)
   glBegin(GL_QUADS);
   for (int i = 0; i < segments; ++i)
   {
-    float angel = 2.0f * math::pi / static_cast<float>(segments);
+    float angel = 2.0f * std::numbers::pi_v<float> / static_cast<float>(segments);
 
     float x1 =  sinf(angel * static_cast<float>(i)) * radius;
     float y1 = -cosf(angel * static_cast<float>(i)) * radius;

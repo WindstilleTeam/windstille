@@ -54,7 +54,7 @@ public:
    * coords are clockwise around the rect, ie:
    * left, top, right, top, right, bottom, left, bottom,
    */
-  void add_texcoords(const Rectf& coords);
+  void add_texcoords(const geom::frect& coords);
 
   int num_vertices() const;
 

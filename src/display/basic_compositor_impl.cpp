@@ -28,7 +28,7 @@
 
 static const int LIGHTMAP_DIV = 4;
 
-BasicCompositorImpl::BasicCompositorImpl(const Size& window, const Size& viewport) :
+BasicCompositorImpl::BasicCompositorImpl(const geom::isize& window, const geom::isize& viewport) :
   CompositorImpl(window, viewport),
   m_lightmap(Surface::create(m_window.width()  / LIGHTMAP_DIV,
                              m_window.height() / LIGHTMAP_DIV))

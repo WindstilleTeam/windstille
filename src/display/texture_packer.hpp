@@ -21,8 +21,8 @@
 
 #include <vector>
 
-#include "math/rect.hpp"
-#include "math/size.hpp"
+#include <geom/rect.hpp>
+#include <geom/size.hpp>
 
 #include "display/surface.hpp"
 
@@ -34,15 +34,15 @@ class TexturePacker
 {
 private:
   typedef std::vector<TexturePackerTexture*> Textures;
-  Size     texture_size;
+  geom::isize     texture_size;
   Textures textures;
 
 public:
-  TexturePacker(const Size& texture_size);
+  TexturePacker(const geom::isize& texture_size);
   ~TexturePacker();
 
   SurfacePtr upload(SoftwareSurfacePtr surface);
-  bool allocate(const Size& size, Rect& rect, TexturePtr& out_texture);
+  bool allocate(const geom::isize& size, geom::irect& rect, TexturePtr& out_texture);
 
   void save_all_as_png() const;
 

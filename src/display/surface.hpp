@@ -19,14 +19,15 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SURFACE_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SURFACE_HPP
 
+#include <geom/rect.hpp>
+
 #include "display/texture.hpp"
-#include "math/rect.hpp"
-
+
 class SurfaceDrawingParameters;
 class Surface;
 
 typedef std::shared_ptr<Surface> SurfacePtr;
-
+
 /**
  * Surface class. This class basically holds a reference to an opengl texture
  * along with texture coordinates that specify a rectangle on that texture.
@@ -43,11 +44,11 @@ public:
    * @param width  Width of the surface on the screen
    * @param height Height of the surface on the screen
    */
-  static SurfacePtr create(TexturePtr texture, const Rectf& uv, const Sizef& size);
+  static SurfacePtr create(TexturePtr texture, const geom::frect& uv, const geom::fsize& size);
   static SurfacePtr create(int width, int height);
 
 private:
-  Surface(TexturePtr texture, const Rectf& uv, const Sizef& size);
+  Surface(TexturePtr texture, const geom::frect& uv, const geom::fsize& size);
   Surface(int width, int height);
 
 public:
@@ -55,12 +56,12 @@ public:
 
   float get_width()  const;
   float get_height() const;
-  Sizef get_size() const;
+  geom::fsize get_size() const;
 
   TexturePtr get_texture() const;
 
   /** Returns texture coordinates for the Surface rectangle */
-  Rectf get_uv() const;
+  geom::frect get_uv() const;
 
   void draw(const glm::vec2& pos) const;
   void draw(const SurfaceDrawingParameters& params) const;
@@ -74,14 +75,14 @@ private:
   /**
    * uv coordinates of the Surface in [0,1] range
    */
-  Rectf m_uv;
+  geom::frect m_uv;
 
   /**
    * The size of the Surface in pixels
    */
-  Sizef m_size;
+  geom::fsize m_size;
 };
-
+
 #endif
 
 /* EOF */

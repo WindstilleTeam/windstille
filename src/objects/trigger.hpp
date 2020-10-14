@@ -27,7 +27,7 @@
 class Trigger : public GameObject
 {
 private:
-  Rectf area;
+  geom::frect area;
   std::string callback;
   /// has the trigger been activated at least once
   bool triggered;

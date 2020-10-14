@@ -20,7 +20,8 @@
 #include <assert.h>
 #include <iostream>
 
-#include "math/size.hpp"
+#include <geom/size.hpp>
+
 #include "display/renderbuffer.hpp"
 #include "display/framebuffer.hpp"
 #include "display/assert_gl.hpp"
@@ -94,7 +95,7 @@ Framebuffer::get_handle() const
 void
 Framebuffer::create_with_texture_internal(GLenum target, int width, int height, int multisample)
 {
-  m_size = Size(width, height);
+  m_size = geom::isize(width, height);
   m_texture = Texture::create(target, width, height);
   m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, width, height, multisample);
 
@@ -116,7 +117,7 @@ Framebuffer::create_with_texture_internal(GLenum target, int width, int height, 
 void
 Framebuffer::create_internal(GLenum format, int width, int height, int multisample)
 {
-  m_size = Size(width, height);
+  m_size = geom::isize(width, height);
   m_color_buffer = Renderbuffer::create(format, width, height, multisample);
   m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, width, height, multisample);
 

@@ -23,6 +23,7 @@
 
 #include "display/software_surface.hpp"
 #include "display/texture_packer.hpp"
+#include "math/math.hpp"
 
 SurfaceManager::SurfaceManager() :
   texture_packer(),
@@ -33,7 +34,7 @@ SurfaceManager::SurfaceManager() :
   // http://www.opengl.org/wiki/NPOT_Texture
   if (!GLEW_ARB_texture_non_power_of_two)
   {
-    texture_packer.reset(new TexturePacker(Size(2048, 2048)));
+    texture_packer.reset(new TexturePacker(geom::isize(2048, 2048)));
   }
 }
 
@@ -87,8 +88,8 @@ SurfaceManager::get(std::filesystem::path const& filename)
         throw std::runtime_error(msg.str());
       }
 
-      SurfacePtr result = Surface::create(texture, Rectf(0.0f, 0.0f, maxu, maxv),
-                                          Sizef(static_cast<float>(software_surface->get_width()),
+      SurfacePtr result = Surface::create(texture, geom::frect(0.0f, 0.0f, maxu, maxv),
+                                          geom::fsize(static_cast<float>(software_surface->get_width()),
                                                 static_cast<float>(software_surface->get_height())));
       surfaces.insert(std::make_pair(filename, result));
       return result;
@@ -127,8 +128,8 @@ SurfaceManager::load_grid(std::filesystem::path const& filename,
       float s_max_v = (maxv * (static_cast<float>(x + height))) / static_cast<float>(image->get_height());
 
       out_surfaces.push_back(Surface::create(texture,
-                                             Rectf(s_min_u, s_min_v, s_max_u, s_max_v),
-                                             Sizef(static_cast<float>(width),
+                                             geom::frect(s_min_u, s_min_v, s_max_u, s_max_v),
+                                             geom::fsize(static_cast<float>(width),
                                                    static_cast<float>(height))));
     }
   }

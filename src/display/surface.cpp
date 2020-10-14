@@ -24,7 +24,7 @@
 #include "display/surface_manager.hpp"
 
 SurfacePtr
-Surface::create(TexturePtr texture, const Rectf& uv, const Sizef& size)
+Surface::create(TexturePtr texture, const geom::frect& uv, const geom::fsize& size)
 {
   return SurfacePtr(new Surface(texture, uv, size));
 }
@@ -40,15 +40,15 @@ Surface::Surface(int width, int height) :
   m_uv(),
   m_size()
 {
-  m_size  = Sizef(Size(width, height));
+  m_size  = geom::fsize(geom::isize(width, height));
 
   m_texture = Texture::create(GL_TEXTURE_2D, width, height);
-  m_uv      = Rectf(0.0f, 0.0f,
+  m_uv      = geom::frect(0.0f, 0.0f,
                     m_size.width()  / static_cast<float>(m_texture->get_width()),
                     m_size.height() / static_cast<float>(m_texture->get_height()));
 }
 
-Surface::Surface(TexturePtr texture, const Rectf& uv, const Sizef& size) :
+Surface::Surface(TexturePtr texture, const geom::frect& uv, const geom::fsize& size) :
   m_texture(),
   m_uv(),
   m_size()
@@ -74,7 +74,7 @@ Surface::get_height() const
   return m_size.height();
 }
 
-Sizef
+geom::fsize
 Surface::get_size() const
 {
   return m_size;
@@ -86,7 +86,7 @@ Surface::get_texture() const
   return m_texture;
 }
 
-Rectf
+geom::frect
 Surface::get_uv() const
 {
   return m_uv;

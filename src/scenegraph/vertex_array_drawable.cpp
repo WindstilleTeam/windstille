@@ -144,7 +144,7 @@ VertexArrayDrawable::texcoord(float u, float v)
 }
 
 void
-VertexArrayDrawable::add_texcoords(const Rectf& rect)
+VertexArrayDrawable::add_texcoords(const geom::frect& rect)
 {
   texcoords.push_back(rect.left());
   texcoords.push_back(rect.top());

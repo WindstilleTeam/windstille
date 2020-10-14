@@ -17,6 +17,8 @@
 
 #include "display/graphic_context_state.hpp"
 
+#include <numbers>
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -107,12 +109,12 @@ GraphicContextState::pop(SceneContext& sc) const
   sc.pop_modelview();
 }
 
-Rectf
+geom::frect
 GraphicContextState::get_clip_rect()
 {
-  return Rectf(glm::vec2(-impl->offset.x,
+  return geom::frect(glm::vec2(-impl->offset.x,
                         -impl->offset.y),
-               Sizef(static_cast<float>(get_width())  / impl->zoom,
+               geom::fsize(static_cast<float>(get_width())  / impl->zoom,
                      static_cast<float>(get_height()) / impl->zoom));
 }
 
@@ -158,7 +160,7 @@ GraphicContextState::get_zoom() const
 }
 
 void
-GraphicContextState::zoom_to (const Rectf& rect)
+GraphicContextState::zoom_to (const geom::frect& rect)
 {
   float center_x = (rect.left() + rect.right()) / 2.0f;
   float center_y = (rect.top() + rect.bottom()) / 2.0f;
@@ -186,8 +188,8 @@ glm::vec2
 GraphicContextState::screen_to_world(const glm::vec2& pos_)
 {
   glm::vec2 pos(pos_.x, pos_.y);
-  float sa = sinf(-impl->rotation / 180.0f * math::pi);
-  float ca = cosf(-impl->rotation / 180.0f * math::pi);
+  float sa = sinf(-impl->rotation / 180.0f * std::numbers::pi_v<float>);
+  float ca = cosf(-impl->rotation / 180.0f * std::numbers::pi_v<float>);
 
   float dx = pos.x - static_cast<float>(impl->width)  / 2.0f;
   float dy = pos.y - static_cast<float>(impl->height) / 2.0f;

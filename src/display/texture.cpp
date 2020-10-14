@@ -24,11 +24,13 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "math/rect.hpp"
-#include "display/software_surface.hpp"
-#include "display/opengl_state.hpp"
-#include "display/texture_manager.hpp"
+#include <geom/rect.hpp>
+
 #include "display/assert_gl.hpp"
+#include "display/opengl_state.hpp"
+#include "display/software_surface.hpp"
+#include "display/texture_manager.hpp"
+#include "math/math.hpp"
 
 TexturePtr
 Texture::create(SoftwareSurfacePtr image, GLint format)
@@ -201,7 +203,7 @@ Texture::get_handle() const
 }
 
 void
-Texture::put(SoftwareSurfacePtr image, const Rect& srcrect, int x, int y)
+Texture::put(SoftwareSurfacePtr image, const geom::irect& srcrect, int x, int y)
 {
   GLint sdl_format;
 
@@ -235,7 +237,7 @@ Texture::put(SoftwareSurfacePtr image, const Rect& srcrect, int x, int y)
 void
 Texture::put(SoftwareSurfacePtr image, int x, int y)
 {
-  put(image, Rect(0, 0, image->get_width(), image->get_height()), x, y);
+  put(image, geom::irect(0, 0, image->get_width(), image->get_height()), x, y);
 }
 
 void

@@ -28,9 +28,9 @@ GradientDrawable::GradientDrawable(const std::vector<float>& colors)
 {
   if (!colors.empty())
   {
-    Rectf rect(0.0f, 0.0f,
-               static_cast<float>(Display::get_width()),
-               static_cast<float>(Display::get_height()));
+    geom::frect rect(0.0f, 0.0f,
+                     static_cast<float>(Display::get_width()),
+                     static_cast<float>(Display::get_height()));
 
     array->set_mode(GL_QUAD_STRIP);
     array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

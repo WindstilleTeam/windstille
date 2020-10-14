@@ -27,7 +27,7 @@ class CollisionObject;
 class Elevator : public Entity
 {
 private:
-  Sizef size;
+  geom::fsize size;
   CollisionObject* colobject;
   Sprite sprite;
 

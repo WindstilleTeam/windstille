@@ -40,8 +40,8 @@ int app_main(int argc, char* argv[])
   }
 
   OpenGLWindow window("Scissor Drawable",
-                      Size(960, 600),
-                      Size(960, 600));
+                      geom::isize(960, 600),
+                      geom::isize(960, 600));
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
   DrawableGroup group;
@@ -50,7 +50,7 @@ int app_main(int argc, char* argv[])
   SDL_GL_GetAttribute(SDL_GL_STENCIL_SIZE, &have_stencil);
   std::cout << "STENCIL: " << have_stencil << std::endl;
 
-  std::shared_ptr<ScissorDrawable> scissor(new ScissorDrawable(Rect(200, 200, 400, 400)));
+  std::shared_ptr<ScissorDrawable> scissor(new ScissorDrawable(geom::irect(200, 200, 400, 400)));
   std::shared_ptr<StencilDrawable> stencil(new StencilDrawable());
   std::shared_ptr<SurfaceDrawable> surface(new SurfaceDrawable(surface_manager.get(Pathname("images/titlescreen.png")),
                                                                SurfaceDrawingParameters(), 0, glm::mat4(1.0f)));

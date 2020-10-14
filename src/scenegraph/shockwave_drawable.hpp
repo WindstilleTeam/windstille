@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_SHOCKWAVE_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_SHOCKWAVE_DRAWABLE_HPP
 
+#include <numbers>
+
 #include "scenegraph/drawable.hpp"
 
 class ShockwaveDrawable : public Drawable
@@ -86,7 +88,7 @@ public:
     glBegin(GL_QUADS);
     for (int i = 0; i < segments; ++i)
     {
-      float angel = 2.0f * math::pi / static_cast<float>(segments);
+      float angel = 2.0f * std::numbers::pi_v<float> / static_cast<float>(segments);
 
       float x1 =  sinf(angel*static_cast<float>(i))*rad;
       float y1 = -cosf(angel*static_cast<float>(i))*rad;
@@ -129,7 +131,7 @@ public:
     glTranslatef(pos.x, pos.y, 0);
     if (0)
     {
-      Rectf rect(0, 0, 800, 600);
+      geom::frect rect(0, 0, 800, 600);
       // Render the screen framebuffer to the actual screen
       OpenGLState state;
       state.bind_texture(tmp_texture, 0);
@@ -183,7 +185,7 @@ public:
     glBegin(GL_QUADS);
     for (int i = 0; i < segments; ++i)
     {
-      float angel = 2.0f * math::pi / static_cast<float>(segments);
+      float angel = 2.0f * std::numbers::pi_v<float> / static_cast<float>(segments);
 
       float x1 =  sinf(angel*static_cast<float>(i))*rad;
       float y1 = -cosf(angel*static_cast<float>(i))*rad;

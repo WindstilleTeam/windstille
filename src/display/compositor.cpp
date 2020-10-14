@@ -24,7 +24,7 @@
 #include "display/framebuffer_compositor_impl.hpp"
 #include "display/basic_compositor_impl.hpp"
 
-Compositor::Compositor(const Size& window, const Size& viewport) :
+Compositor::Compositor(const geom::isize& window, const geom::isize& viewport) :
   impl()
 {
   if (GLEW_ARB_framebuffer_object)
