@@ -88,7 +88,7 @@ public:
     glBegin(GL_QUADS);
     for (int i = 0; i < segments; ++i)
     {
-      float angel = 2.0f * glm::pi<float>() / static_cast<float>(segments);
+      float angel = glm::two_pi<float>() / static_cast<float>(segments);
 
       float x1 =  sinf(angel*static_cast<float>(i))*rad;
       float y1 = -cosf(angel*static_cast<float>(i))*rad;
@@ -185,7 +185,7 @@ public:
     glBegin(GL_QUADS);
     for (int i = 0; i < segments; ++i)
     {
-      float angel = 2.0f * glm::pi<float>() / static_cast<float>(segments);
+      float angel = glm::two_pi<float>() / static_cast<float>(segments);
 
       float x1 =  sinf(angel*static_cast<float>(i))*rad;
       float y1 = -cosf(angel*static_cast<float>(i))*rad;
