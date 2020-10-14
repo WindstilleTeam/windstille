@@ -62,16 +62,6 @@ inline T round_to_power_of_two(T n)
   return n;
 }
 
-inline float deg2rad(float degree)
-{
-  return degree / 180.0f * math::pi;
-}
-
-inline float rad2deg(float radians)
-{
-  return radians / math::pi * 180.0f;
-}
-
 } // namespace math
 
 #endif

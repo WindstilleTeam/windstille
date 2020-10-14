@@ -341,8 +341,8 @@ Display::draw_arc(const glm::vec2& pos, float radius, float start, float end, co
     state.color(color);
     state.activate();
 
-    start = math::deg2rad(start);
-    end   = math::deg2rad(end);
+    start = glm::radians(start);
+    end   = glm::radians(end);
 
     glBegin(GL_LINE_STRIP);
     glVertex2f(pos.x, pos.y);
@@ -381,8 +381,8 @@ Display::fill_arc(const glm::vec2& pos, float radius, float start, float end, co
     state.color(color);
     state.activate();
 
-    start = math::deg2rad(start);
-    end   = math::deg2rad(end);
+    start = glm::radians(start);
+    end   = glm::radians(end);
 
     glBegin(GL_TRIANGLE_FAN);
     glVertex2f(pos.x, pos.y);
