@@ -81,7 +81,9 @@ void errorfunc(HSQUIRRELVM, const char* str, ...)
 
 } // namespace
 
-ScriptManager::ScriptManager()
+ScriptManager::ScriptManager() :
+  squirrel_vms(),
+  vm()
 {
   vm = sq_open(1024);
   if(vm == nullptr)

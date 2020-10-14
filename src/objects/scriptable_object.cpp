@@ -24,10 +24,17 @@
 #include "objects/scriptable_object.hpp"
 
 ScriptableObject::ScriptableObject(ReaderMapping const& props) :
+  sprite(),
+  light(),
+  highlight(),
   z_pos(50),
+  script_file(),
+  target_x(),
+  target_y(),
   target_speed(0),
   acceleration(0),
-  flash_speed(0)
+  flash_speed(0),
+  flash_delta()
 {
   std::string spritename;
   std::string highlightname;

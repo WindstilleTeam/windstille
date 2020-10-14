@@ -44,7 +44,8 @@ Speech::Speech(int id_, const std::string& text_, const glm::vec2& pos_, const C
     text(text_),
     pos(pos_),
     color(color_),
-    seconds_passed(0.0f)
+    seconds_passed(0.0f),
+    seconds_till_done()
 {
   // FIXME: Calculate words by other means, this isn't good for long text
   float words = 2.0f + static_cast<float>(text.size()) / 5.0f;
@@ -76,8 +77,9 @@ Speech::is_done() const
   return seconds_passed > seconds_till_done;
 }
 
-SpeechManager::SpeechManager()
-  : speech_id(1)
+SpeechManager::SpeechManager() :
+  speeches(),
+  speech_id(1)
 {
 }
 

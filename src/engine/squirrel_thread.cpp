@@ -70,6 +70,7 @@ SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm_, bool isolated_) :
   parent_vm(parent_vm_),
   isolated(isolated_),
   thread(nullptr),
+  thread_obj(),
   filename("<unset>"),
   oldtop(-1),
   waiting_for_events(ScriptManager::NO_EVENT),

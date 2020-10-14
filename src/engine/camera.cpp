@@ -68,6 +68,7 @@ Camera::Camera() :
   mode(CAMERA_FOLLOW_PLAYER),
   pos(0, 0),
   zoom(1.0f),
+  path(),
   path_pos(0)
 {
 }

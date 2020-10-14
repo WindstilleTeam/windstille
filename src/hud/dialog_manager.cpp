@@ -32,7 +32,14 @@
 #include "screen/game_session.hpp"
 #include "util/pathname.hpp"
 
-DialogManager::DialogManager()
+DialogManager::DialogManager() :
+  portrait(),
+  text(),
+  delay(),
+  text_area(),
+  alignment(),
+  caption(),
+  outer_border_y()
 {
 }
 

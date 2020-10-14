@@ -46,7 +46,8 @@ Sector::Sector(const Pathname& arg_filename) :
   ambient_light(),
   interactive_tilemap(nullptr),
   interactivebackground_tilemap(nullptr),
-  player()
+  player(),
+  doll()
 {
   SectorBuilder builder(arg_filename, *this);
   builder.build();

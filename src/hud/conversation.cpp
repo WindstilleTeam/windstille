@@ -31,9 +31,14 @@
 #include "hud/pda.hpp"
 #include "screen/game_session.hpp"
 
-Conversation::Conversation()
-  : pos(400, 300),
-    time(0)
+Conversation::Conversation() :
+  pos(400, 300),
+  direction(0.0f, 0.0f),
+  active(false),
+  selection(),
+  grow(),
+  time(0),
+  choices()
 {
   active = false;
   selection = 0;

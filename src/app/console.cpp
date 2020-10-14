@@ -87,8 +87,8 @@ public:
   std::ostream ostream;
 
   struct ConsoleEntry {
-    std::string message;
-    float display_time;
+    std::string message = {};
+    float display_time = {};
   };
 
   float x_pos;
