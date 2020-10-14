@@ -24,7 +24,6 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "app/app.hpp"
 #include "math/rect.hpp"
 #include "display/software_surface.hpp"
 #include "display/opengl_state.hpp"

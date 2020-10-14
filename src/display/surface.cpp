@@ -18,7 +18,6 @@
 
 #include "display/surface.hpp"
 
-#include "app/app.hpp"
 #include "display/opengl_state.hpp"
 #include "math/quad.hpp"
 #include "display/surface_drawing_parameters.hpp"
