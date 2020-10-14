@@ -68,8 +68,8 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
     {
       std::cout  << "Texture::Texture(): texture dimensions have non power of two size: " << m_width << "x" << m_height;
 
-      m_width  = math::round_to_power_of_two(m_width);
-      m_height = math::round_to_power_of_two(m_height);
+      m_width  = glm::ceilPowerOfTwo(m_width);
+      m_height = glm::ceilPowerOfTwo(m_height);
     }
   }
 

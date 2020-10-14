@@ -21,6 +21,8 @@
 #include <sstream>
 #include <stdexcept>
 
+#include <glm/gtc/round.hpp>
+
 #include "display/software_surface.hpp"
 #include "display/texture_packer.hpp"
 #include "math/math.hpp"
@@ -149,8 +151,8 @@ SurfaceManager::create_texture(SoftwareSurfacePtr image,
   }
   else
   {
-    int texture_w = math::round_to_power_of_two(image->get_width());
-    int texture_h = math::round_to_power_of_two(image->get_height());
+    int texture_w = glm::ceilPowerOfTwo(image->get_width());
+    int texture_h = glm::ceilPowerOfTwo(image->get_height());
 
     SoftwareSurfacePtr convert = SoftwareSurface::create(texture_w, texture_h);
 

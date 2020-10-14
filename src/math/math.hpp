@@ -27,20 +27,6 @@ namespace math {
 
 const float pi = 3.14159265358979323846f;
 
-template<typename T>
-inline T round_to_power_of_two(T n)
-{
-  n = n - 1;
-
-  int bits = std::numeric_limits<T>::digits;
-  for(int i = 1; i < bits; i *= 2)
-    n = n | (n >> i);
-
-  n = n + 1;
-
-  return n;
-}
-
 } // namespace math
 
 #endif
