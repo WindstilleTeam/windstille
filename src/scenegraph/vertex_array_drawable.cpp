@@ -22,6 +22,10 @@
 
 #include "display/opengl_state.hpp"
 
+VertexArrayDrawable::VertexArrayDrawable() :
+  VertexArrayDrawable({0.0f, 0.0f}, 0.0f, glm::mat4(1.0f))
+{}
+
 VertexArrayDrawable::VertexArrayDrawable(const glm::vec2& pos_, float z_pos_,
                                          const glm::mat4& modelview_) :
   Drawable(pos_, z_pos_, modelview_),

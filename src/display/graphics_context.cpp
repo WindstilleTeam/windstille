@@ -32,8 +32,9 @@
 #include <geom/quad.hpp>
 
 #include "display/color.hpp"
-#include "display/opengl_state.hpp"
 #include "display/assert_gl.hpp"
+
+#include "scenegraph/vertex_array_drawable.hpp"
 
 namespace {
 std::vector<FramebufferPtr> framebuffers;
@@ -73,88 +74,115 @@ GraphicsContext::draw_line_with_normal(const geom::line& line, const Color& colo
 void
 GraphicsContext::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color)
 {
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  state.enable(GL_LINE_SMOOTH);
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.color(color);
-  state.activate();
+  //state.enable(GL_LINE_SMOOTH);
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  va.set_mode(GL_LINES);
 
-  glBegin(GL_LINES);
-  glVertex2f(pos1.x, pos1.y);
-  glVertex2f(pos2.x, pos2.y);
-  glEnd();
+  va.color(color);
+  va.vertex(pos1.x, pos1.y);
+
+  va.color(color);
+  va.vertex(pos2.x, pos2.y);
+
+  va.render(*this, ~0u);
 }
 
 void
 GraphicsContext::fill_quad(const geom::quad& quad, const Color& color)
 {
-  OpenGLState state;
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.color(color);
-  state.activate();
+  VertexArrayDrawable va;
 
-  glBegin(GL_QUADS);
-  glVertex2f(quad.p1.x, quad.p1.y);
-  glVertex2f(quad.p2.x, quad.p2.y);
-  glVertex2f(quad.p3.x, quad.p3.y);
-  glVertex2f(quad.p4.x, quad.p4.y);
-  glEnd();
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  va.set_mode(GL_QUADS);
+
+  va.color(color);
+  va.vertex(quad.p1.x, quad.p1.y);
+
+  va.color(color);
+  va.vertex(quad.p2.x, quad.p2.y);
+
+  va.color(color);
+  va.vertex(quad.p3.x, quad.p3.y);
+
+  va.color(color);
+  va.vertex(quad.p4.x, quad.p4.y);
+
+  va.render(*this, ~0u);
 }
 
 void
 GraphicsContext::draw_quad(const geom::quad& quad, const Color& color)
 {
-  OpenGLState state;
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.color(color);
-  state.activate();
+  VertexArrayDrawable va;
 
-  glBegin(GL_LINE_LOOP);
-  glVertex2f(quad.p1.x, quad.p1.y);
-  glVertex2f(quad.p2.x, quad.p2.y);
-  glVertex2f(quad.p3.x, quad.p3.y);
-  glVertex2f(quad.p4.x, quad.p4.y);
-  glEnd();
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  va.set_mode(GL_LINE_LOOP);
+
+  va.color(color);
+  va.vertex(quad.p1.x, quad.p1.y);
+
+  va.color(color);
+  va.vertex(quad.p2.x, quad.p2.y);
+
+  va.color(color);
+  va.vertex(quad.p3.x, quad.p3.y);
+
+  va.color(color);
+  va.vertex(quad.p4.x, quad.p4.y);
+
+  va.render(*this, ~0u);
 }
 
 void
 GraphicsContext::fill_rect(const geom::frect& rect, const Color& color)
 {
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.color(color);
-  state.activate();
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glBegin(GL_QUADS);
-  glVertex2f(rect.left(),  rect.top());
-  glVertex2f(rect.right(), rect.top());
-  glVertex2f(rect.right(), rect.bottom());
-  glVertex2f(rect.left(),  rect.bottom());
-  glEnd();
+  va.set_mode(GL_QUADS);
+
+  va.color(color);
+  va.vertex(rect.left(),  rect.top());
+
+  va.color(color);
+  va.vertex(rect.right(), rect.top());
+
+  va.color(color);
+  va.vertex(rect.right(), rect.bottom());
+
+  va.color(color);
+  va.vertex(rect.left(),  rect.bottom());
+
+  va.render(*this, ~0u);
 }
 
 void
 GraphicsContext::draw_rect(const geom::frect& rect, const Color& color)
 {
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.color(color);
-  state.activate();
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glBegin(GL_LINE_LOOP);
-  glVertex2f(rect.left(),  rect.top());
-  glVertex2f(rect.right(), rect.top());
-  glVertex2f(rect.right(), rect.bottom());
-  glVertex2f(rect.left(),  rect.bottom());
-  glEnd();
+  va.set_mode(GL_LINE_LOOP);
+
+  va.color(color);
+  va.vertex(rect.left(),  rect.top());
+
+  va.color(color);
+  va.vertex(rect.right(), rect.top());
+
+  va.color(color);
+  va.vertex(rect.right(), rect.bottom());
+
+  va.color(color);
+  va.vertex(rect.left(),  rect.bottom());
+
+  va.render(*this, ~0u);
 }
 
 void
@@ -166,36 +194,39 @@ GraphicsContext::fill_rounded_rect(const geom::frect& rect, float radius, const 
 
   // inner rectangle
   geom::frect irect(rect.left()    + radius,
-              rect.top()     + radius,
-              rect.right()   - radius,
-              rect.bottom()  - radius);
+                    rect.top()     + radius,
+                    rect.right()   - radius,
+                    rect.bottom()  - radius);
 
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.color(color);
-  state.activate();
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   int n = 8;
-  glBegin(GL_QUAD_STRIP);
+  va.set_mode(GL_QUAD_STRIP);
   for(int i = 0; i <= n; ++i)
   {
     float x = sinf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
     float y = cosf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.left()  - x, irect.top() - y);
-    glVertex2f(irect.right() + x, irect.top() - y);
+    va.color(color);
+    va.vertex(irect.left()  - x, irect.top() - y);
+
+    va.color(color);
+    va.vertex(irect.right() + x, irect.top() - y);
   }
   for(int i = 0; i <= n; ++i)
   {
     float x = cosf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
     float y = sinf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.left()  - x, irect.bottom() + y);
-    glVertex2f(irect.right() + x, irect.bottom() + y);
+    va.color(color);
+    va.vertex(irect.left()  - x, irect.bottom() + y);
+
+    va.color(color);
+    va.vertex(irect.right() + x, irect.bottom() + y);
   }
-  glEnd();
+  va.render(*this, ~0u);
 }
 
 void
@@ -207,33 +238,32 @@ GraphicsContext::draw_rounded_rect(const geom::frect& rect, float radius, const 
 
   // inner rectangle
   geom::frect irect(rect.left()    + radius,
-              rect.top()     + radius,
-              rect.right()   - radius,
-              rect.bottom()  - radius);
+                    rect.top()     + radius,
+                    rect.right()   - radius,
+                    rect.bottom()  - radius);
 
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  state.enable(GL_BLEND);
-  state.enable(GL_LINE_SMOOTH);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.color(color);
-  state.activate();
+  // state.enable(GL_LINE_SMOOTH);
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   int n = 4;
-  glBegin(GL_LINE_STRIP);
+  va.set_mode(GL_LINE_STRIP);
   for(int i = 0; i <= n; ++i)
   {
     float x = sinf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
     float y = cosf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.left()  - x, irect.top() - y);
+    va.color(color);
+    va.vertex(irect.left()  - x, irect.top() - y);
   }
   for(int i = 0; i <= n; ++i)
   {
     float x = cosf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
     float y = sinf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.left()  - x, irect.bottom() + y);
+    va.color(color);
+    va.vertex(irect.left()  - x, irect.bottom() + y);
   }
 
   for(int i = 0; i <= n; ++i)
@@ -241,7 +271,8 @@ GraphicsContext::draw_rounded_rect(const geom::frect& rect, float radius, const 
     float x = sinf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
     float y = cosf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.right() + x, irect.bottom() + y);
+    va.color(color);
+    va.vertex(irect.right() + x, irect.bottom() + y);
   }
 
   for(int i = 0; i <= n; ++i)
@@ -249,12 +280,14 @@ GraphicsContext::draw_rounded_rect(const geom::frect& rect, float radius, const 
     float x = cosf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
     float y = sinf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
 
-    glVertex2f(irect.right() + x, irect.top() - y);
+    va.color(color);
+    va.vertex(irect.right() + x, irect.top() - y);
   }
   // go back to start
-  glVertex2f(irect.left(), irect.top() - radius);
+  va.color(color);
+  va.vertex(irect.left(), irect.top() - radius);
 
-  glEnd();
+  va.render(*this, ~0u);
 }
 
 void
@@ -262,26 +295,28 @@ GraphicsContext::draw_circle(const glm::vec2& pos, float radius, const Color& co
 {
   assert(segments >= 0);
 
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  state.enable(GL_BLEND);
-  state.enable(GL_LINE_SMOOTH);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.color(color);
-  state.activate();
+  //state.enable(GL_LINE_SMOOTH);
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   float n = static_cast<float>(segments) / 4.0f;
-  glBegin(GL_LINE_STRIP);
-  glVertex2f(radius + pos.x, pos.y);
+  va.set_mode(GL_LINE_STRIP);
+
+  va.color(color);
+  va.vertex(radius + pos.x, pos.y);
   for(int i = 1; i < segments; ++i)
   {
     float x = cosf(static_cast<float>(i) * glm::half_pi<float>() / n) * radius;
     float y = sinf(static_cast<float>(i) * glm::half_pi<float>() / n) * radius;
 
-    glVertex2f(x + pos.x, y + pos.y);
+    va.color(color);
+  va.vertex(x + pos.x, y + pos.y);
   }
-  glVertex2f(radius + pos.x, pos.y);
-  glEnd();
+  va.color(color);
+  va.vertex(radius + pos.x, pos.y);
+
+  va.render(*this, ~0u);
 }
 
 void
@@ -289,26 +324,29 @@ GraphicsContext::fill_circle(const glm::vec2& pos, float radius, const Color& co
 {
   assert(segments >= 0);
 
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.color(color);
-  state.activate();
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   float n = static_cast<float>(segments) / 4.0f;
-  glBegin(GL_TRIANGLE_FAN);
-  glVertex2f(pos.x, pos.y);
-  glVertex2f(radius + pos.x, pos.y);
-  for(int i = 1; i < segments; ++i)
-  {
+  va.set_mode(GL_TRIANGLE_FAN);
+
+  va.color(color);
+  va.vertex(pos.x, pos.y);
+
+  va.color(color);
+  va.vertex(radius + pos.x, pos.y);
+  for(int i = 1; i < segments; ++i) {
     float x = cosf(static_cast<float>(i) * glm::half_pi<float>() / n) * radius;
     float y = sinf(static_cast<float>(i) * glm::half_pi<float>() / n) * radius;
 
-    glVertex2f(x + pos.x, y + pos.y);
+    va.color(color);
+    va.vertex(x + pos.x, y + pos.y);
   }
-  glVertex2f(radius + pos.x, pos.y);
-  glEnd();
+  va.color(color);
+  va.vertex(radius + pos.x, pos.y);
+
+  va.render(*this, ~0u);
 }
 
 void
@@ -327,27 +365,32 @@ GraphicsContext::draw_arc(const glm::vec2& pos, float radius, float start, float
     if (start > end)
       std::swap(start, end);
 
-    OpenGLState state;
+    VertexArrayDrawable va;
 
-    state.enable(GL_BLEND);
-    state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    state.color(color);
-    state.activate();
+    va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     start = glm::radians(start);
     end   = glm::radians(end);
 
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(pos.x, pos.y);
+    va.set_mode(GL_LINE_STRIP);
 
-    for(float angle = start; angle < end; angle += step)
-      glVertex2f((cosf(angle) * radius) + pos.x,
-                 (sinf(angle) * radius) + pos.y);
+    va.color(color);
+    va.vertex(pos.x, pos.y);
 
-    glVertex2f((cosf(end) * radius) + pos.x,
-               (sinf(end) * radius) + pos.y);
-    glVertex2f(pos.x, pos.y);
-    glEnd();
+    for(float angle = start; angle < end; angle += step) {
+      va.color(color);
+      va.vertex((cosf(angle) * radius) + pos.x,
+                (sinf(angle) * radius) + pos.y);
+    }
+
+    va.color(color);
+    va.vertex((cosf(end) * radius) + pos.x,
+              (sinf(end) * radius) + pos.y);
+
+    va.color(color);
+    va.vertex(pos.x, pos.y);
+
+    va.render(*this, ~0u);
   }
 }
 
@@ -367,41 +410,40 @@ GraphicsContext::fill_arc(const glm::vec2& pos, float radius, float start, float
     if (start > end)
       std::swap(start, end);
 
-    OpenGLState state;
+    VertexArrayDrawable va;
 
-    state.enable(GL_BLEND);
-    state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    state.color(color);
-    state.activate();
+    va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     start = glm::radians(start);
     end   = glm::radians(end);
 
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(pos.x, pos.y);
+    va.set_mode(GL_TRIANGLE_FAN);
 
-    for(float angle = start; angle < end; angle += step)
-      glVertex2f((cosf(angle) * radius) + pos.x,
-                 (sinf(angle) * radius) + pos.y);
+    va.color(color);
+    va.vertex(pos.x, pos.y);
 
-    glVertex2f(cosf(end) * radius + pos.x,
-               sinf(end) * radius + pos.y);
+    for(float angle = start; angle < end; angle += step) {
+      va.color(color);
+      va.vertex((cosf(angle) * radius) + pos.x,
+                (sinf(angle) * radius) + pos.y);
+    }
 
-    glEnd();
+    va.color(color);
+    va.vertex(cosf(end) * radius + pos.x,
+              sinf(end) * radius + pos.y);
+
+    va.render(*this, ~0u);
   }
 }
 
 void
 GraphicsContext::draw_grid(const glm::vec2& offset, const geom::fsize& size, const Color& rgba)
 {
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.color(rgba);
-  state.activate();
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glBegin(GL_LINES);
+  va.set_mode(GL_LINES);
   //glColor4ub(rgba.r, rgba.g, rgba.b, rgba.a);
 
   float start_x = fmodf(offset.x, size.width());
@@ -409,17 +451,23 @@ GraphicsContext::draw_grid(const glm::vec2& offset, const geom::fsize& size, con
 
   for(float x = start_x; x < static_cast<float>(m_aspect_size.width()); x += size.width())
   {
-    glVertex2f(x, 0);
-    glVertex2f(x, static_cast<float>(m_aspect_size.height()));
+    va.color(rgba);
+    va.vertex(x, 0);
+
+    va.color(rgba);
+    va.vertex(x, static_cast<float>(m_aspect_size.height()));
   }
 
   for(float y = start_y; y < static_cast<float>(m_aspect_size.height()); y += size.height())
   {
-    glVertex2f(0, y);
-    glVertex2f(static_cast<float>(m_aspect_size.width()), y);
+    va.color(rgba);
+    va.vertex(0, y);
+
+    va.color(rgba);
+    va.vertex(static_cast<float>(m_aspect_size.width()), y);
   }
 
-  glEnd();
+  va.render(*this, ~0u);
 }
 
 void
@@ -430,9 +478,9 @@ GraphicsContext::push_cliprect(const geom::irect& rect_)
   if (!m_cliprects.empty())
   {
     rect = geom::irect(std::max(rect.left(), m_cliprects.back().left()),
-                std::max(rect.top(),  m_cliprects.back().top()),
-                std::min(rect.right(),  m_cliprects.back().right()),
-                std::min(rect.bottom(), m_cliprects.back().bottom()));
+                       std::max(rect.top(),  m_cliprects.back().top()),
+                       std::min(rect.right(),  m_cliprects.back().right()),
+                       std::min(rect.bottom(), m_cliprects.back().bottom()));
   }
 
   m_cliprects.push_back(rect);
