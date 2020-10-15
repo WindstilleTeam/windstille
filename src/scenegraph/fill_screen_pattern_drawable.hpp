@@ -51,8 +51,8 @@ public:
     state.bind_texture(m_texture);
     state.activate();
 
-    float u = static_cast<float>(Display::get_width())  / static_cast<float>(m_texture->get_width());
-    float v = static_cast<float>(Display::get_height()) / static_cast<float>(m_texture->get_height());
+    float u = static_cast<float>(gc.size().width())  / static_cast<float>(m_texture->get_width());
+    float v = static_cast<float>(gc.size().height()) / static_cast<float>(m_texture->get_height());
 
     float u_start = -m_offset.x / static_cast<float>(m_texture->get_width());
     float v_start = -m_offset.y / static_cast<float>(m_texture->get_height());
@@ -69,13 +69,13 @@ public:
       glVertex2f(0, 0);
 
       glTexCoord2f(u, v_start);
-      glVertex2f(static_cast<float>(Display::get_width()), 0);
+      glVertex2f(static_cast<float>(gc.size().width()), 0);
 
       glTexCoord2f(u, v);
-      glVertex2f(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()));
+      glVertex2f(static_cast<float>(gc.size().width()), static_cast<float>(gc.size().height()));
 
       glTexCoord2f(u_start, v);
-      glVertex2f(0,  static_cast<float>(Display::get_height()));
+      glVertex2f(0,  static_cast<float>(gc.size().height()));
     }
     glEnd();
 

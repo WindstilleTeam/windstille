@@ -26,13 +26,14 @@
 
 class GradientDrawable : public Drawable
 {
-private:
-  std::unique_ptr<VertexArrayDrawable> array;
-
 public:
-  GradientDrawable(const std::vector<float>& colors);
+  GradientDrawable(std::vector<float> colors);
 
   void render(GraphicsContext& gc, unsigned int mask) override;
+
+private:
+  std::unique_ptr<VertexArrayDrawable> m_array;
+  std::vector<float> m_colors;
 
 private:
   GradientDrawable(const GradientDrawable&);

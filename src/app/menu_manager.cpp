@@ -120,10 +120,10 @@ MenuManager::display_main_menu()
 
   { // Construct Copyright box
     std::unique_ptr<gui::GroupComponent> text_group
-      (new gui::GroupComponent(geom::frect(glm::vec2(static_cast<float>(Display::get_width())/2.0f - 390.0f,
-                                              static_cast<float>(Display::get_height())     - 100.0f),
-                                     geom::fsize(800.0f - 20.0f,
-                                           100.0f - 10.0f)),
+      (new gui::GroupComponent(geom::frect(glm::vec2(static_cast<float>(g_app.window().get_gc().size().width())/2.0f - 390.0f,
+                                                     static_cast<float>(g_app.window().get_gc().size().height())     - 100.0f),
+                                           geom::fsize(800.0f - 20.0f,
+                                                       100.0f - 10.0f)),
                                "",
                                menu.get_root()));
 
@@ -365,8 +365,8 @@ MenuManager::create_positioned_rect(const glm::vec2& pos_, const geom::fsize& si
   pos.y += size.height() / 2.0f;
 
   // scale the coordinates
-  pos.x = pos.x * static_cast<float>(Display::get_width())  / 800.0f;
-  pos.y = pos.y * static_cast<float>(Display::get_height()) / 600.0f;
+  pos.x = pos.x * static_cast<float>(g_app.window().get_gc().size().width())  / 800.0f;
+  pos.y = pos.y * static_cast<float>(g_app.window().get_gc().size().height()) / 600.0f;
 
   // move pos back to top/left
   pos.x -= size.width()  / 2.0f;
@@ -378,9 +378,9 @@ MenuManager::create_positioned_rect(const glm::vec2& pos_, const geom::fsize& si
 geom::frect
 MenuManager::create_centered_rect(float w, float h)
 {
-  return geom::frect(glm::vec2((static_cast<float>(Display::get_width())  - w)/2.0f,
-                        (static_cast<float>(Display::get_height()) - h)/2.0f),
-               geom::fsize(w, h));
+  return geom::frect(glm::vec2((static_cast<float>(g_app.window().get_gc().size().width())  - w)/2.0f,
+                               (static_cast<float>(g_app.window().get_gc().size().height()) - h)/2.0f),
+                     geom::fsize(w, h));
 }
 
 // Callbacks

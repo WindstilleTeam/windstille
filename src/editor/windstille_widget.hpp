@@ -19,21 +19,24 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 #define HEADER_WINDSTILLE_EDITOR_WINDSTILLE_WIDGET_HPP
 
+#include <iostream>
 #include <memory>
+#include <vector>
+
 #include <GL/glew.h>
 #include <GL/gl.h>
 
-#include <gtkmm/treemodel.h>
-#include <vector>
-#include <iostream>
-#include <gtkglmm.h>
 #include <gdkmm/dragcontext.h>
+#include <gtkglmm.h>
 #include <gtkmm/gl/widget.h>
+#include <gtkmm/treemodel.h>
+
+#include <glm/glm.hpp>
 
 #include "display/graphic_context_state.hpp"
 #include "display/scene_context.hpp"
 #include "display/texture.hpp"
-#include <glm/glm.hpp>
+#include "display/display.hpp"
 #include "editor/control_point.hpp"
 #include "editor/decal_object_model.hpp"
 #include "editor/selection.hpp"
@@ -56,6 +59,7 @@ class WindstilleWidget
 {
 private:
   EditorWindow& editor;
+  GraphicsContext m_gc;
 
   std::unique_ptr<Document>   m_document;
   std::unique_ptr<SceneGraph> m_scene_graph;

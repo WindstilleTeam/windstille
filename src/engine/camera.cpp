@@ -130,8 +130,8 @@ Camera::update(float delta)
 void
 Camera::set_pos(float x, float y)
 {
-  pos.x = x; // + Display::get_width()/2);
-  pos.y = y; // + Display::get_height()/2);
+  pos.x = x; // + gc.size().width()/2);
+  pos.y = y; // + gc.size().height()/2);
 }
 
 void

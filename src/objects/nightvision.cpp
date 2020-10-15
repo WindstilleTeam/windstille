@@ -20,6 +20,7 @@
 
 #include "app/app.hpp"
 #include "display/display.hpp"
+#include "display/opengl_window.hpp"
 #include "display/texture_manager.hpp"
 #include "math/random.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
@@ -70,13 +71,13 @@ Nightvision::draw(SceneContext& sc)
     array->vertex(0, 0);
 
     array->texcoord(u + w, v);
-    array->vertex(static_cast<float>(Display::get_width()), 0);
+    array->vertex(static_cast<float>(g_app.window().get_gc().size().width()), 0);
 
     array->texcoord(u + w, v + h);
-    array->vertex(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()));
+    array->vertex(static_cast<float>(g_app.window().get_gc().size().width()), static_cast<float>(g_app.window().get_gc().size().height()));
 
     array->texcoord(u, v + h);
-    array->vertex(0, static_cast<float>(Display::get_height()));
+    array->vertex(0, static_cast<float>(g_app.window().get_gc().size().height()));
 
     if ((false)) // second noise level
     {
@@ -88,13 +89,13 @@ Nightvision::draw(SceneContext& sc)
       array->vertex(0, 0, 1.0f);
 
       array->texcoord(u + size, v);
-      array->vertex(static_cast<float>(Display::get_width()), 0.0f, 1.0f);
+      array->vertex(static_cast<float>(g_app.window().get_gc().size().width()), 0.0f, 1.0f);
 
       array->texcoord(u + size, v + size);
-      array->vertex(static_cast<float>(Display::get_width()), static_cast<float>(Display::get_height()), 1.0f);
+      array->vertex(static_cast<float>(g_app.window().get_gc().size().width()), static_cast<float>(g_app.window().get_gc().size().height()), 1.0f);
 
       array->texcoord(u, v + size);
-      array->vertex(0.0f, static_cast<float>(Display::get_height()), 1.0f);
+      array->vertex(0.0f, static_cast<float>(g_app.window().get_gc().size().height()), 1.0f);
     }
 
     sc.light().draw(std::move(array));
@@ -113,12 +114,12 @@ Nightvision::draw(SceneContext& sc)
 
     nightvision.set_alpha(0.5f);
     nightvision.set_blend_func(GL_SRC_ALPHA, GL_ONE);
-    nightvision.set_scale(std::max(float(Display::get_width())  / nightvision.get_width(),
-                                   float(Display::get_height()) / nightvision.get_height()));
+    nightvision.set_scale(std::max(float(g_app.window().get_gc().size().width())  / nightvision.get_width(),
+                                   float(g_app.window().get_gc().size().height()) / nightvision.get_height()));
 
     nightvision.draw(sc.highlight(),
-                     glm::vec2(static_cast<float>(Display::get_width()) / 2.0f - (nightvision.get_width()  * nightvision.get_scale() / 2.0f),
-                               static_cast<float>(Display::get_height())/ 2.0f - (nightvision.get_height() * nightvision.get_scale() / 2.0f)),
+                     glm::vec2(static_cast<float>(g_app.window().get_gc().size().width()) / 2.0f - (nightvision.get_width()  * nightvision.get_scale() / 2.0f),
+                               static_cast<float>(g_app.window().get_gc().size().height())/ 2.0f - (nightvision.get_height() * nightvision.get_scale() / 2.0f)),
                      10000);
     sc.highlight().pop_modelview();
   }

@@ -21,13 +21,14 @@
 #include "app/app.hpp"
 #include "app/menu_manager.hpp"
 #include "display/display.hpp"
+#include "display/opengl_window.hpp"
 #include "util/pathname.hpp"
 
 TitleScreen::TitleScreen()
   : background(g_app.sprite().create(Pathname("images/titlescreen.sprite")))
 {
-  background.set_scale(std::max(float(Display::get_width())  / background.get_width(),
-                                float(Display::get_height()) / background.get_height()));
+  background.set_scale(std::max(float(g_app.window().get_gc().size().width())  / background.get_width(),
+                                float(g_app.window().get_gc().size().height()) / background.get_height()));
 }
 
 TitleScreen::~TitleScreen()
@@ -43,8 +44,8 @@ TitleScreen::on_startup()
 void
 TitleScreen::draw(GraphicsContext& gc)
 {
-  background.draw(glm::vec2(static_cast<float>(Display::get_width())  / 2.0f - (background.get_width()  * background.get_scale() / 2.0f),
-                           static_cast<float>(Display::get_height()) / 2.0f - (background.get_height() * background.get_scale() / 2.0f)));
+  background.draw(glm::vec2(static_cast<float>(gc.size().width())  / 2.0f - (background.get_width()  * background.get_scale() / 2.0f),
+                           static_cast<float>(gc.size().height()) / 2.0f - (background.get_height() * background.get_scale() / 2.0f)));
 }
 
 void

@@ -22,58 +22,61 @@
 
 #include "display/display.hpp"
 
-GradientDrawable::GradientDrawable(const std::vector<float>& colors)
+GradientDrawable::GradientDrawable(std::vector<float> colors)
   : Drawable(glm::vec2(0, 0), -1000),
-    array(new VertexArrayDrawable(glm::vec2(0, 0), -1000, glm::mat4(1.0)))
+    m_array(new VertexArrayDrawable(glm::vec2(0, 0), -1000, glm::mat4(1.0))),
+    m_colors(std::move(colors))
 {
-  if (!colors.empty())
-  {
-    geom::frect rect(0.0f, 0.0f,
-                     static_cast<float>(Display::get_width()),
-                     static_cast<float>(Display::get_height()));
-
-    array->set_mode(GL_QUAD_STRIP);
-    array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    for(int i = 0; i < int(colors.size()); i += (3 + 4 + 4 + 2))
-    {
-      const float& start    = colors[i + 0];
-      const float& midpoint = colors[i + 1];
-      const float& end      = colors[i + 2];
-      const Color color1(colors[i + 3], colors[i + 4], colors[i + 5], colors[i + 6]);
-      const Color color2(colors[i + 7], colors[i + 8], colors[i + 9], colors[i + 10]);
-      const Color midcolor((color1.r + color2.r)/2,
-                           (color1.g + color2.g)/2,
-                           (color1.b + color2.b)/2,
-                           (color1.a + color2.a)/2);
-
-      array->color(color1);
-      array->vertex(rect.left(), rect.top() + start * rect.height());
-
-      array->color(color1);
-      array->vertex(rect.right(), rect.top() + start * rect.height());
-
-      array->color(midcolor);
-      array->vertex(rect.left(), rect.top() + midpoint * rect.height());
-
-      array->color(midcolor);
-      array->vertex(rect.right(), rect.top() + midpoint * rect.height());
-
-      array->color(color2);
-      array->vertex(rect.left(), rect.top() + end * rect.height());
-
-      array->color(color2);
-      array->vertex(rect.right(), rect.top() + end * rect.height());
-    }
-  }
 }
 
 void
 GradientDrawable::render(GraphicsContext& gc, unsigned int mask)
 {
+  m_array->clear();
+  if (!m_colors.empty())
+  {
+    geom::frect rect(0.0f, 0.0f,
+                     static_cast<float>(gc.size().width()),
+                     static_cast<float>(gc.size().height()));
+
+    m_array->set_mode(GL_QUAD_STRIP);
+    m_array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    for(int i = 0; i < int(m_colors.size()); i += (3 + 4 + 4 + 2))
+    {
+      const float& start    = m_colors[i + 0];
+      const float& midpoint = m_colors[i + 1];
+      const float& end      = m_colors[i + 2];
+      const Color color1(m_colors[i + 3], m_colors[i + 4], m_colors[i + 5], m_colors[i + 6]);
+      const Color color2(m_colors[i + 7], m_colors[i + 8], m_colors[i + 9], m_colors[i + 10]);
+      const Color midcolor((color1.r + color2.r)/2,
+                           (color1.g + color2.g)/2,
+                           (color1.b + color2.b)/2,
+                           (color1.a + color2.a)/2);
+
+      m_array->color(color1);
+      m_array->vertex(rect.left(), rect.top() + start * rect.height());
+
+      m_array->color(color1);
+      m_array->vertex(rect.right(), rect.top() + start * rect.height());
+
+      m_array->color(midcolor);
+      m_array->vertex(rect.left(), rect.top() + midpoint * rect.height());
+
+      m_array->color(midcolor);
+      m_array->vertex(rect.right(), rect.top() + midpoint * rect.height());
+
+      m_array->color(color2);
+      m_array->vertex(rect.left(), rect.top() + end * rect.height());
+
+      m_array->color(color2);
+      m_array->vertex(rect.right(), rect.top() + end * rect.height());
+    }
+  }
+
   glPushMatrix();
   glLoadIdentity();
-  array->render(gc, mask);
+  m_array->render(gc, mask);
   glPopMatrix();
 }
 

@@ -105,9 +105,9 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
 
-      Display::aspect_size = aspect;
+      m_impl->m_gc.set_aspect_size(aspect);
 
-      glOrtho(0.0, Display::get_width(), Display::get_height(),
+      glOrtho(0.0, m_impl->m_gc.size().width(), m_impl->m_gc.size().height(),
               0.0, 1000.0, -1000.0);
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();

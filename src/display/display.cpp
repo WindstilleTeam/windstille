@@ -35,14 +35,13 @@
 #include "display/opengl_state.hpp"
 #include "display/assert_gl.hpp"
 
-geom::isize Display::aspect_size;
-
 namespace {
 std::vector<FramebufferPtr> framebuffers;
 } // namespace
 
 GraphicsContext::GraphicsContext() :
-  cliprects()
+  m_aspect_size(),
+  m_cliprects()
 {
 }
 
@@ -55,7 +54,7 @@ GraphicsContext::draw_line(const geom::line& line, const Color& color)
 {
   draw_line(line.p1, line.p2, color);
 }
-
+
 void
 GraphicsContext::draw_line_with_normal(const geom::line& line, const Color& color)
 {
@@ -70,7 +69,7 @@ GraphicsContext::draw_line_with_normal(const geom::line& line, const Color& colo
   draw_line(line,   color);
   draw_line(p3, p3 + normal, Color(0.0f, 1.0f, 1.0f));
 }
-
+
 void
 GraphicsContext::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color)
 {
@@ -87,7 +86,7 @@ GraphicsContext::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const C
   glVertex2f(pos2.x, pos2.y);
   glEnd();
 }
-
+
 void
 GraphicsContext::fill_quad(const geom::quad& quad, const Color& color)
 {
@@ -121,7 +120,7 @@ GraphicsContext::draw_quad(const geom::quad& quad, const Color& color)
   glVertex2f(quad.p4.x, quad.p4.y);
   glEnd();
 }
-
+
 void
 GraphicsContext::fill_rect(const geom::frect& rect, const Color& color)
 {
@@ -139,7 +138,7 @@ GraphicsContext::fill_rect(const geom::frect& rect, const Color& color)
   glVertex2f(rect.left(),  rect.bottom());
   glEnd();
 }
-
+
 void
 GraphicsContext::draw_rect(const geom::frect& rect, const Color& color)
 {
@@ -157,7 +156,7 @@ GraphicsContext::draw_rect(const geom::frect& rect, const Color& color)
   glVertex2f(rect.left(),  rect.bottom());
   glEnd();
 }
-
+
 void
 GraphicsContext::fill_rounded_rect(const geom::frect& rect, float radius, const Color& color)
 {
@@ -198,7 +197,7 @@ GraphicsContext::fill_rounded_rect(const geom::frect& rect, float radius, const 
   }
   glEnd();
 }
-
+
 void
 GraphicsContext::draw_rounded_rect(const geom::frect& rect, float radius, const Color& color)
 {
@@ -284,7 +283,7 @@ GraphicsContext::draw_circle(const glm::vec2& pos, float radius, const Color& co
   glVertex2f(radius + pos.x, pos.y);
   glEnd();
 }
-
+
 void
 GraphicsContext::fill_circle(const glm::vec2& pos, float radius, const Color& color, int segments)
 {
@@ -311,7 +310,7 @@ GraphicsContext::fill_circle(const glm::vec2& pos, float radius, const Color& co
   glVertex2f(radius + pos.x, pos.y);
   glEnd();
 }
-
+
 void
 GraphicsContext::draw_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments)
 {
@@ -351,7 +350,7 @@ GraphicsContext::draw_arc(const glm::vec2& pos, float radius, float start, float
     glEnd();
   }
 }
-
+
 void
 GraphicsContext::fill_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments)
 {
@@ -391,7 +390,7 @@ GraphicsContext::fill_arc(const glm::vec2& pos, float radius, float start, float
     glEnd();
   }
 }
-
+
 void
 GraphicsContext::draw_grid(const glm::vec2& offset, const geom::fsize& size, const Color& rgba)
 {
@@ -408,37 +407,37 @@ GraphicsContext::draw_grid(const glm::vec2& offset, const geom::fsize& size, con
   float start_x = fmodf(offset.x, size.width());
   float start_y = fmodf(offset.y, size.height());
 
-  for(float x = start_x; x < static_cast<float>(Display::get_width()); x += size.width())
+  for(float x = start_x; x < static_cast<float>(m_aspect_size.width()); x += size.width())
   {
     glVertex2f(x, 0);
-    glVertex2f(x, static_cast<float>(Display::get_height()));
+    glVertex2f(x, static_cast<float>(m_aspect_size.height()));
   }
 
-  for(float y = start_y; y < static_cast<float>(Display::get_height()); y += size.height())
+  for(float y = start_y; y < static_cast<float>(m_aspect_size.height()); y += size.height())
   {
     glVertex2f(0, y);
-    glVertex2f(static_cast<float>(Display::get_width()), y);
+    glVertex2f(static_cast<float>(m_aspect_size.width()), y);
   }
 
   glEnd();
 }
-
+
 void
 GraphicsContext::push_cliprect(const geom::irect& rect_)
 {
   geom::irect rect = rect_;
 
-  if (!cliprects.empty())
+  if (!m_cliprects.empty())
   {
-    rect = geom::irect(std::max(rect.left(), cliprects.back().left()),
-                std::max(rect.top(),  cliprects.back().top()),
-                std::min(rect.right(),  cliprects.back().right()),
-                std::min(rect.bottom(), cliprects.back().bottom()));
+    rect = geom::irect(std::max(rect.left(), m_cliprects.back().left()),
+                std::max(rect.top(),  m_cliprects.back().top()),
+                std::min(rect.right(),  m_cliprects.back().right()),
+                std::min(rect.bottom(), m_cliprects.back().bottom()));
   }
 
-  cliprects.push_back(rect);
+  m_cliprects.push_back(rect);
 
-  glScissor(rect.left(), Display::get_height() - rect.top() - rect.height(),
+  glScissor(rect.left(), size().height() - rect.top() - rect.height(),
             rect.width(), rect.height());
   glEnable(GL_SCISSOR_TEST);
 }
@@ -446,15 +445,15 @@ GraphicsContext::push_cliprect(const geom::irect& rect_)
 void
 GraphicsContext::pop_cliprect()
 {
-  assert(!cliprects.empty());
+  assert(!m_cliprects.empty());
 
-  cliprects.pop_back();
+  m_cliprects.pop_back();
 
-  if (!cliprects.empty())
+  if (!m_cliprects.empty())
   {
-    const geom::irect& rect = cliprects.back();
+    const geom::irect& rect = m_cliprects.back();
 
-    glScissor(rect.left(), Display::get_height() - rect.top() - rect.height(),
+    glScissor(rect.left(), size().height() - rect.top() - rect.height(),
               rect.width(), rect.height());
   }
   else
@@ -462,27 +461,26 @@ GraphicsContext::pop_cliprect()
     glDisable(GL_SCISSOR_TEST);
   }
 }
-
 
-int
-Display::get_width()
+void
+GraphicsContext::set_aspect_size(geom::isize const& aspect_size)
 {
-  return Display::aspect_size.width();
+  m_aspect_size = aspect_size;
 }
 
-int
-Display::get_height()
+geom::isize
+GraphicsContext::size() const
 {
-  return Display::aspect_size.height();
+  return m_aspect_size;
 }
-
+
 void
 GraphicsContext::push_framebuffer(FramebufferPtr framebuffer)
 {
   framebuffers.push_back(framebuffer);
   glBindFramebuffer(GL_FRAMEBUFFER, framebuffers.back()->get_handle());
 }
-
+
 void
 GraphicsContext::pop_framebuffer()
 {
@@ -499,7 +497,7 @@ GraphicsContext::pop_framebuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
   }
 }
-
+
 FramebufferPtr
 GraphicsContext::get_framebuffer()
 {
@@ -508,5 +506,5 @@ GraphicsContext::get_framebuffer()
   else
     return framebuffers.back();
 }
-
+
 /* EOF */

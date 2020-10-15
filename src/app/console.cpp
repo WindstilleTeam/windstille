@@ -166,7 +166,7 @@ ConsoleImpl::draw(GraphicsContext& gc)
   int num_lines = 600 / (g_app.fonts().ttffont->get_height() + 2);
 
   if (console.is_active())
-    gc.fill_rect(geom::frect(geom::irect(0,0, Display::get_width(), 600)),
+    gc.fill_rect(geom::frect(geom::irect(0,0, gc.size().width(), 600)),
                  Color(0, 0, 0, 0.5f));
 
   for(int i = static_cast<int>(buffer.size())-1 - scroll_offset; i >= 0 && i > int(buffer.size()) - num_lines - scroll_offset; --i)

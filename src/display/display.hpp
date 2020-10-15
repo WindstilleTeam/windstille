@@ -65,24 +65,12 @@ public:
   void pop_framebuffer();
   FramebufferPtr get_framebuffer();
 
-private:
-  std::vector<geom::irect> cliprects;
+  void set_aspect_size(geom::isize const& aspect_size);
+  geom::isize size() const;
 
 private:
-  GraphicsContext(const GraphicsContext&) = delete;
-  GraphicsContext& operator=(const GraphicsContext&) = delete;
-};
-
-class Display
-{
-public:
-  static int get_width();
-  static int get_height();
-
-  static geom::isize get_size() { return geom::isize(get_width(), get_height()); }
-
-public:
-  static geom::isize aspect_size;
+  geom::isize m_aspect_size;
+  std::vector<geom::irect> m_cliprects;
 };
 
 #endif

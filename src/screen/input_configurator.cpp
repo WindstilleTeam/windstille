@@ -26,6 +26,7 @@
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/display.hpp"
+#include "display/opengl_window.hpp"
 #include "font/fonts.hpp"
 #include "screen/screen_manager.hpp"
 
@@ -36,8 +37,8 @@ InputConfigurator::InputConfigurator()
     out(),
     area(geom::frect(120.0f,
                100.0f,
-               static_cast<float>(Display::get_width())  - 120.0f,
-               static_cast<float>(Display::get_height()) - 100.0f),
+               static_cast<float>(g_app.window().get_gc().size().width())  - 120.0f,
+               static_cast<float>(g_app.window().get_gc().size().height()) - 100.0f),
          false)
 {
   out << "Input Configurator\n"
@@ -84,8 +85,8 @@ void
 InputConfigurator::draw(GraphicsContext& gc)
 {
   geom::frect rect(100.0f, 75.0f,
-             static_cast<float>(Display::get_width())  - 100.0f,
-             static_cast<float>(Display::get_height()) - 75.0f);
+             static_cast<float>(gc.size().width())  - 100.0f,
+             static_cast<float>(gc.size().height()) - 75.0f);
 
   gc.fill_rounded_rect(rect, 16.0f, Color(0.3f, 0.3f, 0.5f, 0.5f));
   gc.draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));

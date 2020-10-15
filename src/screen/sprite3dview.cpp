@@ -30,14 +30,14 @@
 #include "sprite3d/manager.hpp"
 #include "util/pathname.hpp"
 
-Sprite3DView::Sprite3DView()
-  : compositor(g_app.window().get_size(), Display::get_size()),
-    sc(),
-    sprite(),
-    actions(),
-    current_action(),
-    rotation(),
-    scale()
+Sprite3DView::Sprite3DView() :
+  compositor(g_app.window().get_size(), g_app.window().get_gc().size()),
+  sc(),
+  sprite(),
+  actions(),
+  current_action(),
+  rotation(),
+  scale()
 {
   current_action = 0;
 
@@ -72,7 +72,7 @@ Sprite3DView::draw(GraphicsContext& gc)
   sc.color().fill_screen(Color(0.5, 0.0, 0.5));
 
   sc.push_modelview();
-  sc.translate(static_cast<float>(Display::get_width())/2.0f, static_cast<float>(Display::get_height())/2.0f);
+  sc.translate(static_cast<float>(gc.size().width())/2.0f, static_cast<float>(gc.size().height())/2.0f);
   sc.scale(scale, scale);
 
   // Rotate
@@ -82,13 +82,13 @@ Sprite3DView::draw(GraphicsContext& gc)
   sc.pop_modelview();
 
   //glm::mat4 matrix = sc.color().get_modelview();
-  //matrix.translate(-Display::get_width()/2, -Display::get_height()/2, 0);
+  //matrix.translate(-gc.size().width()/2, -gc.size().height()/2, 0);
   //sprite.draw(sc.color(), matrix, 0.0f);
 
   sc.light().fill_screen(Color(1.0, 1.0, 1.0));
   //sc.color().draw("Hello World", 100, 100);
-  compositor.render(gc, sc, nullptr, GraphicContextState(Display::get_width(),
-                                                         Display::get_height()));
+  compositor.render(gc, sc, nullptr, GraphicContextState(gc.size().width(),
+                                                         gc.size().height()));
 
   float x = 10.0f;
   float y =  static_cast<float>(g_app.fonts().vera12->get_height()) + 5.0f;

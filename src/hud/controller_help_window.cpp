@@ -87,8 +87,8 @@ ControllerHelpWindow::draw(GraphicsContext& gc)
 {
   const Controller& controller = g_app.input().get_controller();
 
-  glm::vec2 pos(static_cast<float>(Display::get_width())  - 350.0f - 16.0f,
-               static_cast<float>(Display::get_height()) - 200.0f - 16.0f);
+  glm::vec2 pos(static_cast<float>(gc.size().width())  - 350.0f - 16.0f,
+               static_cast<float>(gc.size().height()) - 200.0f - 16.0f);
 
   gc.fill_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, Color(0.0f, 0.0f, 0.25f, 0.9f));
   gc.draw_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, Color(1.0f, 1.0f, 1.0f,  0.5f));

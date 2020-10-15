@@ -24,12 +24,14 @@
 #include "app/controller_def.hpp"
 #include "collision/collision_engine.hpp"
 #include "display/display.hpp"
+#include "display/opengl_window.hpp"
 #include "engine/sector.hpp"
 #include "objects/player.hpp"
 #include "screen/view.hpp"
 
 View::View()
-  : state(Display::get_width(), Display::get_height()),
+  : state(g_app.window().get_gc().size().width(),
+          g_app.window().get_gc().size().height()),
     camera(),
     m_debug_zoom(1.0),
     m_debug_transform(0, 0)

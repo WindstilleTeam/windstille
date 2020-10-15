@@ -103,7 +103,7 @@ Conversation::draw(GraphicsContext& gc)
                                                      textpos.y + distance * offset.y),
                                             choices[i].topic, Color(1.0f, 1.0f, 0.0f));
 
-      g_app.fonts().vera20->draw_center(glm::vec2(400.0f, static_cast<float>(Display::get_height()) - 32.0f),
+      g_app.fonts().vera20->draw_center(glm::vec2(400.0f, static_cast<float>(gc.size().height()) - 32.0f),
                                             choices[i].text, Color(1.0f, 1.0f, 1.0f));
       gc.draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 0.0f));
     }

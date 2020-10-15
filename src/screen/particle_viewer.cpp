@@ -38,7 +38,7 @@
 #include "util/pathname.hpp"
 
 ParticleViewer::ParticleViewer()
-  : compositor(g_app.window().get_size(), Display::get_size()),
+  : compositor(g_app.window().get_size(), g_app.window().get_gc().size()),
     sc(),
     sg(),
     systems(),
@@ -109,7 +109,7 @@ ParticleViewer::draw(GraphicsContext& gc)
 {
   m_background_drawable->set_offset(pos);
 
-  GraphicContextState state(Display::get_width(), Display::get_height());
+  GraphicContextState state(gc.size().width(), gc.size().height());
   state.set_pos(-pos);
   compositor.render(gc, sc, &sg, state);
 }

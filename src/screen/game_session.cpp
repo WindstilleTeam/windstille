@@ -81,7 +81,8 @@ public:
   Screen* current_gui;
 
   GameSessionImpl()
-    : compositor(g_app.window().get_size(), Display::get_size()),
+    : compositor(g_app.window().get_size(),
+                 g_app.window().get_gc().size()),
       sc(),
       fadeout_value(),
       fade_time(),
@@ -154,9 +155,9 @@ GameSessionImpl::draw(GraphicsContext& gc)
   if (cutscene_mode || cutscene_value > 0.0f)
   {
     int border_size = static_cast<int>(75 * cutscene_value);
-    gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, 0), geom::isize(Display::get_width(), border_size))),
+    gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, 0), geom::isize(gc.size().width(), border_size))),
                        Color(0.0f, 0.0f, 0.0f, cutscene_value));
-    gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, Display::get_height() - border_size), geom::isize(Display::get_width(), border_size))),
+    gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, gc.size().height() - border_size), geom::isize(gc.size().width(), border_size))),
                        Color(0.0f, 0.0f, 0.0f, cutscene_value));
   }
 
@@ -166,7 +167,7 @@ GameSessionImpl::draw(GraphicsContext& gc)
   if (fade_state == FADEOUT || fade_state == FADEIN)
   {
     gc.fill_rect(geom::frect(geom::irect(0, 0,
-                                  Display::get_width(), Display::get_height())),
+                                  gc.size().width(), gc.size().height())),
                        Color(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
   }
 
@@ -175,8 +176,8 @@ GameSessionImpl::draw(GraphicsContext& gc)
   if (pause)
   {
     if ((SDL_GetTicks() / 1000) % 2)
-      g_app.fonts().vera20->draw(glm::vec2(static_cast<float>(Display::get_width())  / 2.0f,
-                                              static_cast<float>(Display::get_height()) / 2.0f),
+      g_app.fonts().vera20->draw(glm::vec2(static_cast<float>(gc.size().width())  / 2.0f,
+                                              static_cast<float>(gc.size().height()) / 2.0f),
                                      "Pause");
   }
 }

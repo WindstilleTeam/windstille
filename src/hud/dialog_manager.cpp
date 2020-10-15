@@ -27,6 +27,7 @@
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/display.hpp"
+#include "display/opengl_window.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "font/text_area.hpp"
@@ -83,17 +84,17 @@ DialogManager::draw(GraphicsContext& gc)
   if(alignment & LEFT) {
     pos.x = outer_border_x;
   } else if(alignment & RIGHT) {
-    pos.x = static_cast<float>(Display::get_width() - dialog_width - outer_border_x);
+    pos.x = static_cast<float>(gc.size().width() - dialog_width - outer_border_x);
   } else {
-    pos.x = static_cast<float>((Display::get_width() - dialog_width) / 2);
+    pos.x = static_cast<float>((gc.size().width() - dialog_width) / 2);
   }
 
   if(alignment & TOP) {
     pos.y = static_cast<float>(outer_border_y);
   } else if(alignment & BOTTOM) {
-    pos.y = static_cast<float>(Display::get_height() - dialog_height - outer_border_y);
+    pos.y = static_cast<float>(gc.size().height() - dialog_height - outer_border_y);
   } else {
-    pos.y = static_cast<float>((Display::get_height() - dialog_height) / 2);
+    pos.y = static_cast<float>((gc.size().height() - dialog_height) / 2);
   }
 
   if (!caption) {
@@ -161,9 +162,9 @@ DialogManager::create_text()
   if(alignment & LEFT) {
     pos.x = outer_border_x;
   } else if(alignment & RIGHT) {
-    pos.x = Display::get_width() - dialog_width - outer_border_x;
+    pos.x = g_app.window().get_gc().size().width() - dialog_width - outer_border_x;
   } else {
-    pos.x = (Display::get_width() - dialog_width) / 2;
+    pos.x = (g_app.window().get_gc().size().width() - dialog_width) / 2;
   }
 
   int text_width
@@ -188,9 +189,9 @@ DialogManager::create_text()
   if(alignment & TOP) {
     pos.y = outer_border_y;
   } else if(alignment & BOTTOM) {
-    pos.y = Display::get_height() - dialog_height - outer_border_y;
+    pos.y = g_app.window().get_gc().size().height() - dialog_height - outer_border_y;
   } else {
-    pos.y = (Display::get_height() - dialog_height) / 2;
+    pos.y = (g_app.window().get_gc().size().height() - dialog_height) / 2;
   }
 
   text_rect = geom::irect(text_rect.left(),

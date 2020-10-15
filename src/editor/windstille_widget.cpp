@@ -52,6 +52,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_,
                                    const Glib::RefPtr<const Gdk::GL::Config>&  glconfig,
                                    const Glib::RefPtr<const Gdk::GL::Context>& share_list) :
   editor(editor_),
+  m_gc(),
   m_document(new Document),
   m_scene_graph(new SceneGraph()),
   m_rebuild_scene_graph(true),
@@ -185,10 +186,10 @@ WindstilleWidget::on_realize()
 bool
 WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 {
-  Display::aspect_size = geom::isize(ev->width, ev->height);
+  m_gc.set_aspect_size(geom::isize(ev->width, ev->height));
 
-  state.set_size(Display::aspect_size.width(),
-                 Display::aspect_size.height());
+  state.set_size(m_gc.size().width(),
+                 m_gc.size().height());
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
@@ -229,8 +230,7 @@ WindstilleWidget::on_expose_event(GdkEventExpose* /*event*/)
   }
   else
   {
-    GraphicsContext gc;
-    draw(gc);
+    draw(m_gc);
 
     // Swap buffers.
     if (glwindow->is_double_buffered())

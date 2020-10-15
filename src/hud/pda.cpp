@@ -72,7 +72,7 @@ void
 PDA::draw(GraphicsContext& gc)
 {
   // Darken the background a bit
-  gc.fill_rect(geom::frect(geom::irect(0, 0, Display::get_width(), Display::get_height())), Color(0.0f, 0.0f, 0.0f, 0.25f));
+  gc.fill_rect(geom::frect(geom::irect(0, 0, gc.size().width(), gc.size().height())), Color(0.0f, 0.0f, 0.0f, 0.25f));
 
   background.draw(pos);
 
