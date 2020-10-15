@@ -33,7 +33,7 @@ private:
   GLenum blend_dfactor;
 
   TexturePtr texture;
-  std::vector<unsigned char> colors;
+  std::vector<float> colors;
   std::vector<float> texcoords;
   std::vector<float> vertices;
 

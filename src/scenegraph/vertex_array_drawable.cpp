@@ -81,7 +81,7 @@ VertexArrayDrawable::render(GraphicsContext& gc, int start, int end)
   if (!colors.empty())
   {
     state.enable_client_state(GL_COLOR_ARRAY);
-    glColorPointer(4, GL_UNSIGNED_BYTE, 0, &*colors.begin());
+    glColorPointer(4, GL_FLOAT, 0, &*colors.begin());
   }
   else
   {
@@ -181,10 +181,10 @@ VertexArrayDrawable::add_texcoords(const float* coords, size_t n)
 void
 VertexArrayDrawable::color(const Color& color_)
 {
-  colors.push_back(static_cast<unsigned char>(color_.r * 255));
-  colors.push_back(static_cast<unsigned char>(color_.g * 255));
-  colors.push_back(static_cast<unsigned char>(color_.b * 255));
-  colors.push_back(static_cast<unsigned char>(color_.a * 255));
+  colors.push_back(color_.r);
+  colors.push_back(color_.g);
+  colors.push_back(color_.b);
+  colors.push_back(color_.a);
 }
 
 void
