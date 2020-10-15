@@ -21,7 +21,7 @@
 #include <wstinput/controller.hpp>
 
 #include "app/controller_def.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/software_surface.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "engine/sector.hpp"

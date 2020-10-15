@@ -22,7 +22,7 @@
 
 #include "app/controller_def.hpp"
 #include "display/color.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "gui/list_view.hpp"
 
 namespace gui {

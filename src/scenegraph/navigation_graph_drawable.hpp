@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_NAVIGATION_GRAPH_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_NAVIGATION_GRAPH_DRAWABLE_HPP
 
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/scene_context.hpp"
 #include "scenegraph/drawable.hpp"
 

@@ -19,7 +19,7 @@
 #include "objects/nightvision.hpp"
 
 #include "app/app.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/opengl_window.hpp"
 #include "display/texture_manager.hpp"
 #include "math/random.hpp"

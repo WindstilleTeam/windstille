@@ -20,7 +20,7 @@
 
 #include <iostream>
 
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 
 ScissorDrawable::ScissorDrawable(const geom::irect& cliprect) :
   m_cliprect(cliprect), // FIXME: should we keep cliprect in world space instead of screen space?

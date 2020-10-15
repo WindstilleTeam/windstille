@@ -36,7 +36,7 @@
 #include "display/graphic_context_state.hpp"
 #include "display/scene_context.hpp"
 #include "display/texture.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "editor/control_point.hpp"
 #include "editor/decal_object_model.hpp"
 #include "editor/selection.hpp"

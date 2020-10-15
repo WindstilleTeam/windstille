@@ -18,7 +18,7 @@
 
 #include <GL/glew.h>
 
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/surface.hpp"
 #include "display/opengl_state.hpp"
 

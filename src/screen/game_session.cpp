@@ -25,7 +25,7 @@
 #include "app/menu_manager.hpp"
 #include "app/sound_manager.hpp"
 #include "display/compositor.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/opengl_window.hpp"
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"

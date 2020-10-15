@@ -31,7 +31,7 @@
 #include "display/surface_manager.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/surface.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/screenshot.hpp"
 #include "display/texture_manager.hpp"
 #include "util/system.hpp"

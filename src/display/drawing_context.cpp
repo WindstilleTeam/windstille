@@ -24,7 +24,7 @@
 #include <geom/line.hpp>
 
 #include "display/compositor.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/drawing_parameters.hpp"
 #include "display/opengl_state.hpp"
 #include "display/scene_context.hpp"

@@ -24,7 +24,7 @@
 #include "app/app.hpp"
 #include "app/config.hpp"
 #include "app/sound_manager.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/opengl_window.hpp"
 #include "engine/sector.hpp"
 #include "font/fonts.hpp"

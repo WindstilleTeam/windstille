@@ -22,7 +22,7 @@
 #include <gtkmm.h>
 
 #include "display/compositor.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/opengl_state.hpp"
 #include "display/screenshot.hpp"
 #include "display/surface.hpp"

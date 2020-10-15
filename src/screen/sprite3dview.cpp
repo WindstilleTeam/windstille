@@ -23,7 +23,7 @@
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/graphic_context_state.hpp"
 #include "display/opengl_window.hpp"
 #include "font/fonts.hpp"

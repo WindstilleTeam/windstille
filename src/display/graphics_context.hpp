@@ -16,8 +16,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_DISPLAY_DISPLAY_HPP
-#define HEADER_WINDSTILLE_DISPLAY_DISPLAY_HPP
+#ifndef HEADER_WINDSTILLE_DISPLAY_GRAPHICSCONTEXT_HPP
+#define HEADER_WINDSTILLE_DISPLAY_GRAPHICSCONTEXT_HPP
 
 #include <vector>
 
@@ -71,6 +71,10 @@ public:
 private:
   geom::isize m_aspect_size;
   std::vector<geom::irect> m_cliprects;
+
+private:
+  GraphicsContext(const GraphicsContext&) = delete;
+  GraphicsContext& operator=(const GraphicsContext&) = delete;
 };
 
 #endif

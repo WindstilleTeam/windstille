@@ -25,7 +25,7 @@
 #include <glm/ext.hpp>
 #include <glm/gtx/projection.hpp>
 
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
 

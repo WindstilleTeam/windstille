@@ -30,7 +30,7 @@
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include "display/color.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 
 GeometryTest::GeometryTest()
   : line1(glm::vec2(300, 300),

@@ -20,7 +20,7 @@
 
 #include <GL/glew.h>
 
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 
 GradientDrawable::GradientDrawable(std::vector<float> colors)
   : Drawable(glm::vec2(0, 0), -1000),

@@ -24,7 +24,7 @@
 #include <SDL_image.h>
 
 #include "display/opengl_state.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/assert_gl.hpp"
 
 class OpenGLWindowImpl

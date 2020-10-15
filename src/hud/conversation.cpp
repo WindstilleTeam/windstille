@@ -26,7 +26,7 @@
 #include "app/controller_def.hpp"
 #include "font/fonts.hpp"
 #include "engine/script_manager.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "hud/conversation.hpp"
 #include "hud/pda.hpp"
 #include "screen/game_session.hpp"

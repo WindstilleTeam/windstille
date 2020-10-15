@@ -20,7 +20,7 @@
 
 #include "app/app.hpp"
 #include "app/menu_manager.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/opengl_window.hpp"
 #include "util/pathname.hpp"
 

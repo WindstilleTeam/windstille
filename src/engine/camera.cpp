@@ -21,7 +21,7 @@
 #include "objects/player.hpp"
 #include "objects/doll.hpp"
 #include "engine/script_manager.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 
 namespace {
 

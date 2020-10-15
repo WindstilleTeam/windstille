@@ -24,7 +24,7 @@
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/color.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 
 ControllerHelpWindow::ControllerHelpWindow()
 {

@@ -23,7 +23,7 @@
 #include "app/app.hpp"
 #include "display/opengl_state.hpp"
 #include "font/fonts.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 
 struct TextAreaCommand
 {

@@ -28,7 +28,7 @@
 #include "display/opengl_window.hpp"
 #include "display/framebuffer.hpp"
 #include "display/surface.hpp"
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 #include "display/surface_manager.hpp"
 #include "display/surface_drawing_parameters.hpp"
 

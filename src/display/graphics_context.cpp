@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/display.hpp"
+#include "display/graphics_context.hpp"
 
 #include <iostream>
 #include <errno.h>
