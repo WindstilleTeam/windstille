@@ -42,7 +42,7 @@ ParticleViewer::ParticleViewer()
     sc(),
     sg(),
     systems(),
-    background(g_app.sprite().create("images/greychess.sprite")),
+    background(g_app.sprite().create(Pathname("images/greychess.sprite"))),
     pos(),
     m_background_drawable(),
     m_color_fill_drawable()
