@@ -38,6 +38,11 @@ App::App() :
 int
 App::run(int argc, char* argv[])
 {
+  if (argc != 6) {
+    std::cerr << "Usage: " << argv[0] << " IMAGETEX DISPLACETEX COLORTEX VERT FRAG" << std::endl;
+    return EXIT_FAILURE;
+  }
+
   SDL sdl;
   OpenGLWindow window("Shader Test",
                       m_window_size, // window size
@@ -47,18 +52,17 @@ App::run(int argc, char* argv[])
   TextureManager texture_manager;
   SurfaceManager surface_manager;
 
-  SurfacePtr surface1 = surface_manager.get(argv[1]);
-  SurfacePtr surface2 = surface_manager.get(argv[2]);
-  SurfacePtr surface3 = surface_manager.get(argv[3]);
+  SurfacePtr image_surface = surface_manager.get(argv[1]);
+  SurfacePtr displace_surface = surface_manager.get(argv[2]);
+  SurfacePtr color_surface = surface_manager.get(argv[3]);
 
   ShaderProgramPtr prog = ShaderProgram::create();
 
-  prog->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, argv[4]));
+  prog->attach(ShaderObject::create_from_file(GL_VERTEX_SHADER, argv[4]));
   prog->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, argv[5]));
   prog->link();
 
-  glm::vec2 offset{};
-  float displacement = 0.0f;
+  float displacement = 0.5f;
 
   bool loop = true;
   while(loop)
@@ -89,23 +93,22 @@ App::run(int argc, char* argv[])
       }
     }
 
-    if ((false))
     {
-      glBindTexture(GL_TEXTURE_2D, surface1->get_texture()->get_handle());
+      glBindTexture(GL_TEXTURE_2D, image_surface->get_texture()->get_handle());
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
 
-      glBindTexture(GL_TEXTURE_2D, surface2->get_texture()->get_handle());
+      glBindTexture(GL_TEXTURE_2D, displace_surface->get_texture()->get_handle());
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
 
-      glBindTexture(GL_TEXTURE_2D, surface3->get_texture()->get_handle());
+      glBindTexture(GL_TEXTURE_2D, color_surface->get_texture()->get_handle());
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -113,7 +116,6 @@ App::run(int argc, char* argv[])
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
     }
 
-    if ((false))
     {
       glUseProgram(prog->get_handle());
 
@@ -121,17 +123,16 @@ App::run(int argc, char* argv[])
       prog->set_uniform1i("image_tex", 0);
       prog->set_uniform1i("displace_tex", 1);
       //prog->set_uniform1i("color_tex", 2);
-      prog->set_uniform2f("offset", offset.x, offset.y);
       prog->set_uniform2f("rand_offset", rnd.frand(), rnd.frand());
-      //prog->set_uniform1f("displacement", displacement);
+      prog->set_uniform1f("damp", displacement);
     }
 
     OpenGLState state;
     state.enable(GL_BLEND);
     //state.set_blend_func(params.blendfunc_src, params.blendfunc_dst);
-    state.bind_texture(surface1->get_texture(), 0);
-    //state.bind_texture(surface2->get_texture(), 1);
-    //state.bind_texture(surface3->get_texture(), 2);
+    state.bind_texture(image_surface->get_texture(), 0);
+    state.bind_texture(displace_surface->get_texture(), 1);
+    state.bind_texture(color_surface->get_texture(), 2);
     //state.color(params.color);
     state.activate();
 
@@ -140,8 +141,8 @@ App::run(int argc, char* argv[])
     glClearColor(0.5f,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glAlphaFunc(GL_GREATER, 0.2f);
-    glEnable(GL_ALPHA_TEST);
+    //glAlphaFunc(GL_GREATER, 0.2f);
+    //glEnable(GL_ALPHA_TEST);
 
     glBegin(GL_QUADS);
     {
@@ -160,10 +161,9 @@ App::run(int argc, char* argv[])
     glEnd();
 
     window.swap_buffers();
-    sdl.delay(100);
+    sdl.delay(30);
 
-    offset += glm::vec2(0.001f, 0.0f);
-    displacement += 0.001f;
+    displacement -= 0.001f;
   }
 
   return 0;
