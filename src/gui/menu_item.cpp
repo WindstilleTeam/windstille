@@ -51,9 +51,9 @@ MenuItem::draw(GraphicsContext& gc, const geom::frect& rect, bool is_active)
     {
       //gc.fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f * fade_timer));
       //gc.draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f * fade_timer));
-      font_color = Color(0.75f + 0.25f * fade_timer,
-                         0.75f + 0.25f * fade_timer,
-                         0.75f + 0.25f * fade_timer,
+      font_color = Color(0.75f + 0.25f * std::clamp(fade_timer, 0.0f, 1.0f),
+                         0.75f + 0.25f * std::clamp(fade_timer, 0.0f, 1.0f),
+                         0.75f + 0.25f * std::clamp(fade_timer, 0.0f, 1.0f),
                          1.0f);
     }
     else
