@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_VERTEX_ARRAY_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_VERTEX_ARRAY_DRAWABLE_HPP
 
+#include <unordered_map>
 #include <vector>
 
 #include "display/color.hpp"
@@ -32,7 +33,7 @@ private:
   GLenum blend_sfactor;
   GLenum blend_dfactor;
 
-  TexturePtr texture;
+  std::unordered_map<int, TexturePtr> textures;
   std::vector<float> colors;
   std::vector<float> texcoords;
   std::vector<float> vertices;
@@ -64,6 +65,7 @@ public:
 
   void set_mode(GLenum mode_);
   void set_texture(TexturePtr texture);
+  void set_texture(int unit, TexturePtr texture);
   void set_blend_func(GLenum sfactor, GLenum dfactor);
 };
 

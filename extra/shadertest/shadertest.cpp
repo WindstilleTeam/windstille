@@ -25,6 +25,7 @@
 #include "display/shader_program.hpp"
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 #include "math/random.hpp"
 #include "system/sdl.hpp"
 
@@ -127,16 +128,6 @@ App::run(int argc, char* argv[])
       prog->set_uniform1f("damp", displacement);
     }
 
-    OpenGLState state;
-    state.enable(GL_BLEND);
-    //state.set_blend_func(params.blendfunc_src, params.blendfunc_dst);
-    state.bind_texture(image_surface->get_texture(), 0);
-    state.bind_texture(displace_surface->get_texture(), 1);
-    state.bind_texture(color_surface->get_texture(), 2);
-    //state.color(params.color);
-    state.activate();
-
-    //surface1->draw(glm::vec2(0, 0));
 
     glClearColor(0.5f,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -144,21 +135,33 @@ App::run(int argc, char* argv[])
     //glAlphaFunc(GL_GREATER, 0.2f);
     //glEnable(GL_ALPHA_TEST);
 
-    glBegin(GL_QUADS);
     {
-      glTexCoord2f(0.0f, 0.0f);
-      glVertex2f(0.0f, 0.0f);
+      VertexArrayDrawable va;
 
-      glTexCoord2f(1.0f, 0.0f);
-      glVertex2f(1280.0f, 0.0f);
+      va.set_texture(0, image_surface->get_texture());
+      va.set_texture(1, displace_surface->get_texture());
+      va.set_texture(2, color_surface->get_texture());
 
-      glTexCoord2f(1.0f, 1.0f);
-      glVertex2f(1280.0f, 800.0f);
+      va.set_mode(GL_QUADS);
 
-      glTexCoord2f(0.0f, 1.0f);
-      glVertex2f(0.0f, 800.0f);
+      va.color(Color(1.0f, 1.0f, 1.0f));
+      va.texcoord(0.0f, 0.0f);
+      va.vertex(0.0f, 0.0f);
+
+      va.color(Color(1.0f, 1.0f, 1.0f));
+      va.texcoord(1.0f, 0.0f);
+      va.vertex(1280.0f, 0.0f);
+
+      va.color(Color(1.0f, 1.0f, 1.0f));
+      va.texcoord(1.0f, 1.0f);
+      va.vertex(1280.0f, 800.0f);
+
+      va.color(Color(1.0f, 1.0f, 1.0f));
+      va.texcoord(0.0f, 1.0f);
+      va.vertex(0.0f, 800.0f);
+
+      va.render(window.get_gc());
     }
-    glEnd();
 
     window.swap_buffers();
     sdl.delay(30);

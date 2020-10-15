@@ -32,7 +32,7 @@ VertexArrayDrawable::VertexArrayDrawable(const glm::vec2& pos_, float z_pos_,
   mode(GL_QUADS),
   blend_sfactor(GL_SRC_ALPHA),
   blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
-  texture(),
+  textures(),
   colors(),
   texcoords(),
   vertices()
@@ -48,6 +48,7 @@ VertexArrayDrawable::num_vertices() const
 void
 VertexArrayDrawable::clear()
 {
+  textures.clear();
   colors.clear();
   texcoords.clear();
   vertices.clear();
@@ -73,9 +74,8 @@ VertexArrayDrawable::render(GraphicsContext& gc, int start, int end)
   state.enable(GL_BLEND);
   state.set_blend_func(blend_sfactor, blend_dfactor);
 
-  if (texture)
-  {
-    state.bind_texture(texture);
+  for (auto const& it : textures) {
+    state.bind_texture(it.second, it.first);
   }
 
   if (!colors.empty())
@@ -188,9 +188,15 @@ VertexArrayDrawable::color(const Color& color_)
 }
 
 void
-VertexArrayDrawable::set_texture(TexturePtr texture_)
+VertexArrayDrawable::set_texture(TexturePtr texture)
 {
-  texture = texture_;
+  textures[0] = texture;
+}
+
+void
+VertexArrayDrawable::set_texture(int unit, TexturePtr texture)
+{
+  textures[unit] = texture;
 }
 
 void
