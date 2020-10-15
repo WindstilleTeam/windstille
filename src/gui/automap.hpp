@@ -24,7 +24,6 @@
 
 namespace gui {
 
-/** */
 class Automap : public Component
 {
 private:
@@ -37,7 +36,7 @@ public:
   Automap(const geom::frect& rect, Component* parent);
   ~Automap() override;
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
 private:

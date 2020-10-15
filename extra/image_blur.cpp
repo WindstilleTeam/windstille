@@ -57,6 +57,7 @@ int app_main(int argc, char** argv)
 
   geom::isize window_size(1024, 576);
   OpenGLWindow window("Image Blur", window_size, window_size);
+  GraphicsContext& gc = window.get_gc();
 
   SDL_ShowCursor(SDL_DISABLE);
 
@@ -125,7 +126,7 @@ int app_main(int argc, char** argv)
     buffer[buffer_pos % buffer.size()] = pos;
     buffer_pos += 1;
 
-    Display::push_framebuffer(framebuffer);
+    gc.push_framebuffer(framebuffer);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -201,7 +202,7 @@ int app_main(int argc, char** argv)
         }
       }
     }
-    Display::pop_framebuffer();
+    gc.pop_framebuffer();
 
     if ((true))
     {

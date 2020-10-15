@@ -58,13 +58,13 @@ DrawingContext::~DrawingContext()
 }
 
 void
-DrawingContext::render()
+DrawingContext::render(GraphicsContext& gc)
 {
   std::stable_sort(drawingrequests.begin(), drawingrequests.end(), DrawablesSorter());
 
   for(Drawables::iterator i = drawingrequests.begin(); i != drawingrequests.end(); ++i)
   {
-    (*i)->render(~0u);
+    (*i)->render(gc, ~0u);
   }
 }
 

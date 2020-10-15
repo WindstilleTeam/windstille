@@ -68,7 +68,7 @@ public:
 
   void adddir(const Pathname& dir);
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
   void update_slideshow(float delta, const Controller& controller);

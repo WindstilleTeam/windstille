@@ -41,11 +41,11 @@ RootComponent::~RootComponent()
 }
 
 void
-RootComponent::draw()
+RootComponent::draw(GraphicsContext& gc)
 {
   for(Children::iterator i = children.begin(); i != children.end(); ++i)
   {
-    (*i)->draw();
+    (*i)->draw(gc);
   }
 }
 

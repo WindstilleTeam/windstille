@@ -89,7 +89,7 @@ int app_main(int argc, char* argv[])
   {
     std::cout << "." << std::flush;
     surface->get_params().set_pos(glm::vec2(static_cast<float>(i) - 250.0f, 0.0f));
-    group.render(~0u);
+    group.render(window.get_gc(), ~0u);
     window.swap_buffers();
   }
 

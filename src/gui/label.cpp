@@ -33,10 +33,10 @@ Label::~Label()
 }
 
 void
-Label::draw()
+Label::draw(GraphicsContext& gc)
 {
-  //Display::fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
-  //Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  //gc.fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
+  //gc.draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
   g_app.fonts().vera12->draw(glm::vec2(rect.left() + 5/*+ rect.width()/2*/, rect.top() + rect.height()/2 + 3),
                                  label,
                                  Color(1.0f, 1.0f, 1.0f, 1.0f));

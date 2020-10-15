@@ -41,7 +41,7 @@ public:
 
   void clear();
 
-  void render(unsigned int mask) override;
+  void render(GraphicsContext& gc, unsigned int mask) override;
 
 private:
   DrawableGroup(const DrawableGroup&);

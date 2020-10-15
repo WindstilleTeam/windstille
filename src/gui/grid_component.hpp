@@ -63,7 +63,7 @@ public:
   GridComponent(const geom::frect& rect, int weight, int height, Component* parent);
   ~GridComponent() override;
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
   void pack(Component* component, int x, int y, int colspan = 1, int rowspan = 1);

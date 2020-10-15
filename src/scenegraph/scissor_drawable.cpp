@@ -29,12 +29,12 @@ ScissorDrawable::ScissorDrawable(const geom::irect& cliprect) :
 }
 
 void
-ScissorDrawable::render(unsigned int mask)
+ScissorDrawable::render(GraphicsContext& gc, unsigned int mask)
 {
   std::cout << "Render" << std::endl;
-  Display::push_cliprect(m_cliprect);
-  m_drawable_group.render(mask);
-  Display::pop_cliprect();
+  gc.push_cliprect(m_cliprect);
+  m_drawable_group.render(gc, mask);
+  gc.pop_cliprect();
 }
 
 /* EOF */

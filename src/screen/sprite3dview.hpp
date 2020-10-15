@@ -44,7 +44,7 @@ public:
   Sprite3DView();
   ~Sprite3DView() override;
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
   void set_model(const Pathname& filename);

@@ -58,7 +58,7 @@ ScreenManager::~ScreenManager()
 }
 
 void
-ScreenManager::run()
+ScreenManager::run(GraphicsContext& gc)
 {
   do_quit = false;
 
@@ -100,7 +100,7 @@ ScreenManager::run()
 
     g_app.sound().update(delta);
 
-    draw();
+    draw(gc);
 
     frame_counter += 1;
 
@@ -113,21 +113,21 @@ ScreenManager::run()
 }
 
 void
-ScreenManager::draw()
+ScreenManager::draw(GraphicsContext& gc)
 {
   if (!screens.empty())
-    screens.back()->draw();
+    screens.back()->draw(gc);
 
   if (!overlay_screens.empty())
-    overlay_screens.back()->draw();
+    overlay_screens.back()->draw(gc);
 
   if (show_controller_help_window)
-    controller_help_window->draw();
+    controller_help_window->draw(gc);
 
-  Console::current()->draw();
+  Console::current()->draw(gc);
 
   if (config.get_bool("show-fps"))
-    draw_fps();
+    draw_fps(gc);
 
   g_app.window().swap_buffers();
 }
@@ -296,7 +296,7 @@ ScreenManager::poll_events()
 }
 
 void
-ScreenManager::draw_fps()
+ScreenManager::draw_fps(GraphicsContext& gc)
 {
   if(time_counter > 1)
   {

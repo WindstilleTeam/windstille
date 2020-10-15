@@ -105,13 +105,13 @@ ParticleViewer::load(const Pathname& filename)
 }
 
 void
-ParticleViewer::draw()
+ParticleViewer::draw(GraphicsContext& gc)
 {
   m_background_drawable->set_offset(pos);
 
   GraphicContextState state(Display::get_width(), Display::get_height());
   state.set_pos(-pos);
-  compositor.render(sc, &sg, state);
+  compositor.render(gc, sc, &sg, state);
 }
 
 void

@@ -207,11 +207,11 @@ ParticleSystem::set_drawer(Drawer* drawer_)
 }
 
 void
-ParticleSystem::draw() const
+ParticleSystem::draw(GraphicsContext& gc) const
 {
   if (drawer)
   {
-    drawer->draw(*this);
+    drawer->draw(gc, *this);
   }
   else
   {

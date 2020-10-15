@@ -33,15 +33,15 @@ MenuItem::MenuItem(MenuComponent* parent_, const std::string& label_)
 {}
 
 void
-MenuItem::draw(const geom::frect& rect, bool is_active)
+MenuItem::draw(GraphicsContext& gc, const geom::frect& rect, bool is_active)
 {
   Color font_color;
   TTFFont* font = parent->get_font();
 
   if (is_active)
   {
-    Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
-    Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
+    gc.fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
+    gc.draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
     font_color = Color(1.0f, 1.0f, 1.0f);
     fade_timer = 2.0f;
   }
@@ -49,8 +49,8 @@ MenuItem::draw(const geom::frect& rect, bool is_active)
   {
     if (fade_timer != 0.0f)
     {
-      //Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f * fade_timer));
-      //Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f * fade_timer));
+      //gc.fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f * fade_timer));
+      //gc.draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 1.0f * fade_timer));
       font_color = Color(0.75f + 0.25f * fade_timer,
                          0.75f + 0.25f * fade_timer,
                          0.75f + 0.25f * fade_timer,
@@ -119,9 +119,9 @@ EnumMenuItem::decr()
 }
 
 void
-EnumMenuItem::draw(const geom::frect& rect, bool is_active)
+EnumMenuItem::draw(GraphicsContext& gc, const geom::frect& rect, bool is_active)
 {
-  MenuItem::draw(rect, is_active);
+  MenuItem::draw(gc, rect, is_active);
   TTFFont* font = parent->get_font();
   Color font_color;
   if (is_active)
@@ -174,9 +174,9 @@ SliderMenuItem::incr()
 }
 
 void
-SliderMenuItem::draw(const geom::frect& rect, bool is_active)
+SliderMenuItem::draw(GraphicsContext& gc, const geom::frect& rect, bool is_active)
 {
-  MenuItem::draw(rect, is_active);
+  MenuItem::draw(gc, rect, is_active);
   float total_width = 200.0f;
   float width = total_width * static_cast<float>(value) / static_cast<float>(max_value - min_value);
 
@@ -190,12 +190,12 @@ SliderMenuItem::draw(const geom::frect& rect, bool is_active)
     color = Color(0.75f, 0.75f, 0.75f, 1.0f);
   }
 
-  Display::fill_rounded_rect(geom::frect(glm::vec2(rect.right() - 4.0f - total_width, rect.top() + 4.0f),
+  gc.fill_rounded_rect(geom::frect(glm::vec2(rect.right() - 4.0f - total_width, rect.top() + 4.0f),
                                    geom::fsize(width, rect.height() - 8)),
                              5.0f,
                              Color(0.75f*color.r, 0.75f*color.g, 0.75f*color.b, color.a));
 
-  Display::draw_rounded_rect(geom::frect(glm::vec2(rect.right() - 4.0f - total_width, rect.top() + 4.0f),
+  gc.draw_rounded_rect(geom::frect(glm::vec2(rect.right() - 4.0f - total_width, rect.top() + 4.0f),
                                    geom::fsize(total_width, rect.height() - 8)),
                              5.0f,
                              color);
@@ -216,9 +216,9 @@ ButtonMenuItem::click()
 }
 
 void
-ButtonMenuItem::draw(const geom::frect& rect, bool is_active)
+ButtonMenuItem::draw(GraphicsContext& gc, const geom::frect& rect, bool is_active)
 {
-  MenuItem::draw(rect, is_active);
+  MenuItem::draw(gc, rect, is_active);
 }
 
 } // namespace gui

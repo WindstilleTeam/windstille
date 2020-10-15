@@ -68,7 +68,7 @@ public:
   TabComponent(const geom::frect& rect, Component* parent);
   ~TabComponent() override;
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
   void pack(const std::string& name, Component* component);

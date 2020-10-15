@@ -25,6 +25,7 @@
 #include "util/currenton.hpp"
 
 class ConsoleImpl;
+class GraphicsContext;
 
 class Console : public Currenton<Console>
 {
@@ -34,7 +35,7 @@ public:
 
   std::ostream& get_ostream() const;
 
-  void draw();
+  void draw(GraphicsContext& gc);
   void update(float delta);
 
   void activate();

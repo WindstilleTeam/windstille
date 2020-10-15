@@ -32,6 +32,7 @@
 class Edge;
 class EdgePosition;
 class FileReader;
+class GraphicsContext;
 class Node;
 
 template<typename Data>
@@ -132,7 +133,7 @@ public:
   std::vector<EdgeHandle> find_edges(const glm::vec2& pos, float radius);
 
   /** Draw the navigation graph, for debugging only */
-  void draw();
+  void draw(GraphicsContext& gc);
 
   void load(ReaderMapping const& reader);
   void save(std::ostream& out);

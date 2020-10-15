@@ -22,6 +22,8 @@
 #include "display/compositor_impl.hpp"
 #include "display/surface.hpp"
 
+class GraphicsContext;
+
 class BasicCompositorImpl : public CompositorImpl
 {
 private:
@@ -30,7 +32,7 @@ private:
 public:
   BasicCompositorImpl(const geom::isize& window, const geom::isize& viewport);
 
-  void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state) override;
+  void render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state) override;
 
 private:
   BasicCompositorImpl(const BasicCompositorImpl&);

@@ -36,9 +36,9 @@ TextView::~TextView()
 }
 
 void
-TextView::draw()
+TextView::draw(GraphicsContext& gc)
 {
-  text_area.draw();
+  text_area.draw(gc);
 }
 
 void

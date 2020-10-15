@@ -50,7 +50,7 @@ public:
   geom::frect get_clip_rect();
   glm::vec2 screen_to_world(const glm::vec2& point);
 
-  void draw(SceneContext& gc, Sector& sector);
+  void draw(SceneContext& sc, Sector& sector);
   void update(float delta);
 };
 

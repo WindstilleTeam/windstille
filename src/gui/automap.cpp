@@ -80,14 +80,14 @@ Automap::~Automap()
 }
 
 void
-Automap::draw()
+Automap::draw(GraphicsContext& gc)
 {
-  Display::push_cliprect(geom::irect(get_screen_rect()));
+  gc.push_cliprect(geom::irect(get_screen_rect()));
   surface->draw(SurfaceDrawingParameters()
                 .set_pos(glm::vec2(rect.left(), rect.top()) + pos)
                 .set_color(Color(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
                 .set_scale(zoom));
-  Display::pop_cliprect();
+  gc.pop_cliprect();
 }
 
 void

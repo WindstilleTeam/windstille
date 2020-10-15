@@ -23,12 +23,12 @@
 
 namespace wstinput { class Controller; }
 class FileReader;
+class GraphicsContext;
 
 using Controller = wstinput::Controller;
 
 namespace gui {
 
-/** */
 class Component
 {
 protected:
@@ -45,7 +45,7 @@ public:
   virtual void set_active(bool a);
 
   virtual void on_activation() {}
-  virtual void draw() =0;
+  virtual void draw(GraphicsContext& gc) =0;
   virtual void update(float delta, const Controller& controller) =0;
 
   virtual geom::frect get_screen_rect() const;

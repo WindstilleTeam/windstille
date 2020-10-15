@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_PARTICLES_DRAWER_HPP
 
 class DrawingContext;
+class GraphicsContext;
 class ParticleSystem;
 
 // FIXME: Rename this to ParticleDrawer or move it into a "namespace particles"
@@ -27,7 +28,7 @@ class Drawer
 {
 public:
   virtual ~Drawer() {}
-  virtual void draw(const ParticleSystem& psys) const =0;
+  virtual void draw(GraphicsContext& gc, const ParticleSystem& psys) const =0;
 };
 
 #endif

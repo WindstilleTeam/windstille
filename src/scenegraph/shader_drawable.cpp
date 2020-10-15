@@ -26,11 +26,11 @@ ShaderDrawable::ShaderDrawable() :
 }
 
 void
-ShaderDrawable::render(unsigned int mask)
+ShaderDrawable::render(GraphicsContext& gc, unsigned int mask)
 {
   glUseProgram(m_shader->get_handle());
   m_shader->set_uniform1i("texture", 0);
-  m_drawables.render(mask);
+  m_drawables.render(gc, mask);
   glUseProgram(0);
 }
 

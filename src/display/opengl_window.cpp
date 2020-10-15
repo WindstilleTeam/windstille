@@ -32,13 +32,19 @@ class OpenGLWindowImpl
 public:
   SDL_Window*   m_window;
   SDL_GLContext m_gl_context;
-  geom::isize          m_size;
+  geom::isize m_size;
+  GraphicsContext m_gc;
 
   OpenGLWindowImpl() :
     m_window(nullptr),
     m_gl_context(nullptr),
-    m_size()
+    m_size(),
+    m_gc()
   {}
+
+private:
+  OpenGLWindowImpl(const OpenGLWindowImpl&) = delete;
+  OpenGLWindowImpl& operator=(const OpenGLWindowImpl&) = delete;
 };
 
 OpenGLWindow::OpenGLWindow(const std::string& title,
@@ -174,6 +180,12 @@ OpenGLWindow::set_gamma(float r, float g, float b)
   {
     // Couldn't set gamma
   }
+}
+
+GraphicsContext&
+OpenGLWindow::get_gc() const
+{
+  return m_impl->m_gc;
 }
 
 void

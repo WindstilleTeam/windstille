@@ -228,7 +228,8 @@ WindstilleWidget::on_expose_event(GdkEventExpose* /*event*/)
   }
   else
   {
-    draw();
+    GraphicsContext gc;
+    draw(gc);
 
     // Swap buffers.
     if (glwindow->is_double_buffered())
@@ -251,7 +252,7 @@ WindstilleWidget::update(float delta)
 }
 
 void
-WindstilleWidget::draw()
+WindstilleWidget::draw(GraphicsContext& gc)
 {
   if ((true)) // FIXME: always rebuild for now, optimize later
   {
@@ -301,13 +302,13 @@ WindstilleWidget::draw()
       EditorWindow::current()->get_current_tool()->draw(*sc);
     }
 
-    compositor->render(*sc, m_scene_graph.get(), state);
+    compositor->render(gc, *sc, m_scene_graph.get(), state);
 
     state.pop(*sc);
 
     if (grid_enabled)
     {
-      Display::draw_grid(state.get_offset() * state.get_zoom(),
+      gc.draw_grid(state.get_offset() * state.get_zoom(),
                          geom::fsize(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.75f));
     }
   }

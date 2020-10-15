@@ -21,9 +21,10 @@
 
 #include <geom/size.hpp>
 
+class GraphicContextState;
+class GraphicsContext;
 class SceneContext;
 class SceneGraph;
-class GraphicContextState;
 
 class CompositorImpl
 {
@@ -40,7 +41,7 @@ public:
   virtual ~CompositorImpl()
   {}
 
-  virtual void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state) =0;
+  virtual void render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& state) =0;
 };
 
 #endif

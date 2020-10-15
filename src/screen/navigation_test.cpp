@@ -67,42 +67,42 @@ NavigationTest::NavigationTest()
 }
 
 void
-NavigationTest::draw()
+NavigationTest::draw(GraphicsContext& gc)
 {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  graph->draw();
+  graph->draw(gc);
 
-  Display::fill_rect(geom::frect(cursor - glm::vec2(2,2), geom::fsize(5,5)),  Color(1.0f, 1.0f, 1.0f));
-  Display::draw_circle(cursor, 32.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.fill_rect(geom::frect(cursor - glm::vec2(2,2), geom::fsize(5,5)),  Color(1.0f, 1.0f, 1.0f));
+  gc.draw_circle(cursor, 32.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   std::vector<NodeHandle> nodes = graph->find_nodes(cursor, 128.0f);
   for(std::vector<NodeHandle>::iterator i = nodes.begin(); i != nodes.end(); ++i)
   {
-    Display::draw_circle((*i)->get_pos(), 12.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+    gc.draw_circle((*i)->get_pos(), 12.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 
   if (node_to_connect)
   {
-    Display::fill_rect(geom::frect(node_to_connect->get_pos() - glm::vec2(2,2), geom::fsize(5,5)),
+    gc.fill_rect(geom::frect(node_to_connect->get_pos() - glm::vec2(2,2), geom::fsize(5,5)),
                        Color(1.0f, 1.0f, 1.0f));
-    Display::draw_line(node_to_connect->get_pos(), cursor, Color(1.0f, 1.0f, 1.0f, 0.5f));
+    gc.draw_line(node_to_connect->get_pos(), cursor, Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 
   if (selected_node)
-    Display::draw_circle(selected_node->get_pos(), 12.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
+    gc.draw_circle(selected_node->get_pos(), 12.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
 
   if (selected_edge)
-    Display::draw_line(selected_edge->get_line(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+    gc.draw_line(selected_edge->get_line(), Color(1.0f, 1.0f, 1.0f, 1.0f));
 
-  Display::fill_circle(player, 12.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
+  gc.fill_circle(player, 12.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
 
   if (connection)
   {
-    Display::fill_circle(connection->get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f, 0.5f));
-    Display::fill_circle(connection->get_pos(), 8.0f, Color(0.0f, 1.0f, 1.0f));
+    gc.fill_circle(connection->get_pos(), 16.0f, Color(0.0f, 0.0f, 1.0f, 0.5f));
+    gc.fill_circle(connection->get_pos(), 8.0f, Color(0.0f, 1.0f, 1.0f));
 
-    Display::draw_line(connection->get_pos(), connection->get_pos() + 100.0f*stick,
+    gc.draw_line(connection->get_pos(), connection->get_pos() + 100.0f*stick,
                        Color(1.0f, 1.0f, 1.0f, 1.0f));
   }
 }

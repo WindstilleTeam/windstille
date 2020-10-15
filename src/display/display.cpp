@@ -35,21 +35,29 @@
 #include "display/opengl_state.hpp"
 #include "display/assert_gl.hpp"
 
-geom::isize              Display::aspect_size;
-std::vector<geom::irect> Display::cliprects;
+geom::isize Display::aspect_size;
 
 namespace {
 std::vector<FramebufferPtr> framebuffers;
 } // namespace
-
+
+GraphicsContext::GraphicsContext() :
+  cliprects()
+{
+}
+
+GraphicsContext::~GraphicsContext()
+{
+}
+
 void
-Display::draw_line(const geom::line& line, const Color& color)
+GraphicsContext::draw_line(const geom::line& line, const Color& color)
 {
   draw_line(line.p1, line.p2, color);
 }
 
 void
-Display::draw_line_with_normal(const geom::line& line, const Color& color)
+GraphicsContext::draw_line_with_normal(const geom::line& line, const Color& color)
 {
   glm::vec2 normal = (line.p2 - line.p1);
 
@@ -64,7 +72,7 @@ Display::draw_line_with_normal(const geom::line& line, const Color& color)
 }
 
 void
-Display::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color)
+GraphicsContext::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color)
 {
   OpenGLState state;
 
@@ -81,7 +89,7 @@ Display::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& co
 }
 
 void
-Display::fill_quad(const geom::quad& quad, const Color& color)
+GraphicsContext::fill_quad(const geom::quad& quad, const Color& color)
 {
   OpenGLState state;
   state.enable(GL_BLEND);
@@ -98,7 +106,7 @@ Display::fill_quad(const geom::quad& quad, const Color& color)
 }
 
 void
-Display::draw_quad(const geom::quad& quad, const Color& color)
+GraphicsContext::draw_quad(const geom::quad& quad, const Color& color)
 {
   OpenGLState state;
   state.enable(GL_BLEND);
@@ -115,7 +123,7 @@ Display::draw_quad(const geom::quad& quad, const Color& color)
 }
 
 void
-Display::fill_rect(const geom::frect& rect, const Color& color)
+GraphicsContext::fill_rect(const geom::frect& rect, const Color& color)
 {
   OpenGLState state;
 
@@ -133,7 +141,7 @@ Display::fill_rect(const geom::frect& rect, const Color& color)
 }
 
 void
-Display::draw_rect(const geom::frect& rect, const Color& color)
+GraphicsContext::draw_rect(const geom::frect& rect, const Color& color)
 {
   OpenGLState state;
 
@@ -151,7 +159,7 @@ Display::draw_rect(const geom::frect& rect, const Color& color)
 }
 
 void
-Display::fill_rounded_rect(const geom::frect& rect, float radius, const Color& color)
+GraphicsContext::fill_rounded_rect(const geom::frect& rect, float radius, const Color& color)
 {
   // Keep radius in the limits, so that we get a circle instead of
   // just graphic junk
@@ -192,7 +200,7 @@ Display::fill_rounded_rect(const geom::frect& rect, float radius, const Color& c
 }
 
 void
-Display::draw_rounded_rect(const geom::frect& rect, float radius, const Color& color)
+GraphicsContext::draw_rounded_rect(const geom::frect& rect, float radius, const Color& color)
 {
   // Keep radius in the limits, so that we get a circle instead of
   // just graphic junk
@@ -249,21 +257,9 @@ Display::draw_rounded_rect(const geom::frect& rect, float radius, const Color& c
 
   glEnd();
 }
-
-int
-Display::get_width()
-{
-  return Display::aspect_size.width();
-}
 
-int
-Display::get_height()
-{
-  return Display::aspect_size.height();
-}
-
 void
-Display::draw_circle(const glm::vec2& pos, float radius, const Color& color, int segments)
+GraphicsContext::draw_circle(const glm::vec2& pos, float radius, const Color& color, int segments)
 {
   assert(segments >= 0);
 
@@ -290,7 +286,7 @@ Display::draw_circle(const glm::vec2& pos, float radius, const Color& color, int
 }
 
 void
-Display::fill_circle(const glm::vec2& pos, float radius, const Color& color, int segments)
+GraphicsContext::fill_circle(const glm::vec2& pos, float radius, const Color& color, int segments)
 {
   assert(segments >= 0);
 
@@ -317,7 +313,7 @@ Display::fill_circle(const glm::vec2& pos, float radius, const Color& color, int
 }
 
 void
-Display::draw_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments)
+GraphicsContext::draw_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments)
 {
   assert(segments >= 0);
 
@@ -357,7 +353,7 @@ Display::draw_arc(const glm::vec2& pos, float radius, float start, float end, co
 }
 
 void
-Display::fill_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments)
+GraphicsContext::fill_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments)
 {
   assert(segments >= 0);
 
@@ -397,7 +393,7 @@ Display::fill_arc(const glm::vec2& pos, float radius, float start, float end, co
 }
 
 void
-Display::draw_grid(const glm::vec2& offset, const geom::fsize& size, const Color& rgba)
+GraphicsContext::draw_grid(const glm::vec2& offset, const geom::fsize& size, const Color& rgba)
 {
   OpenGLState state;
 
@@ -428,7 +424,7 @@ Display::draw_grid(const glm::vec2& offset, const geom::fsize& size, const Color
 }
 
 void
-Display::push_cliprect(const geom::irect& rect_)
+GraphicsContext::push_cliprect(const geom::irect& rect_)
 {
   geom::irect rect = rect_;
 
@@ -442,13 +438,13 @@ Display::push_cliprect(const geom::irect& rect_)
 
   cliprects.push_back(rect);
 
-  glScissor(rect.left(), get_height() - rect.top() - rect.height(),
+  glScissor(rect.left(), Display::get_height() - rect.top() - rect.height(),
             rect.width(), rect.height());
   glEnable(GL_SCISSOR_TEST);
 }
 
 void
-Display::pop_cliprect()
+GraphicsContext::pop_cliprect()
 {
   assert(!cliprects.empty());
 
@@ -458,7 +454,7 @@ Display::pop_cliprect()
   {
     const geom::irect& rect = cliprects.back();
 
-    glScissor(rect.left(), get_height() - rect.top() - rect.height(),
+    glScissor(rect.left(), Display::get_height() - rect.top() - rect.height(),
               rect.width(), rect.height());
   }
   else
@@ -467,6 +463,19 @@ Display::pop_cliprect()
   }
 }
 
+
+int
+Display::get_width()
+{
+  return Display::aspect_size.width();
+}
+
+int
+Display::get_height()
+{
+  return Display::aspect_size.height();
+}
+
 void
 Display::save_screenshot(std::filesystem::path const& filename)
 {
@@ -597,14 +606,14 @@ Display::save_screenshot(std::filesystem::path const& filename)
 }
 
 void
-Display::push_framebuffer(FramebufferPtr framebuffer)
+GraphicsContext::push_framebuffer(FramebufferPtr framebuffer)
 {
   framebuffers.push_back(framebuffer);
   glBindFramebuffer(GL_FRAMEBUFFER, framebuffers.back()->get_handle());
 }
 
 void
-Display::pop_framebuffer()
+GraphicsContext::pop_framebuffer()
 {
   assert(!framebuffers.empty());
 
@@ -621,7 +630,7 @@ Display::pop_framebuffer()
 }
 
 FramebufferPtr
-Display::get_framebuffer()
+GraphicsContext::get_framebuffer()
 {
   if (framebuffers.empty())
     return FramebufferPtr();

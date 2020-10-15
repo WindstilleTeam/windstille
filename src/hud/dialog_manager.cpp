@@ -73,7 +73,7 @@ DialogManager::add_caption(int alignment_, const std::string& text_)
 }
 
 void
-DialogManager::draw()
+DialogManager::draw(GraphicsContext& gc)
 {
   int dialog_height = std::max(portrait_height + portrait_border_y*2,
                                int(text_area->get_rect().height()
@@ -102,22 +102,22 @@ DialogManager::draw()
                pos.x + dialog_width,
                pos.y + 200.0f);
 
-    Display::fill_rounded_rect(rect, 16.0f,
+    gc.fill_rounded_rect(rect, 16.0f,
                                Color(0, 0, 0.3f, 0.5f));
-    Display::draw_rounded_rect(rect, 16.0f,
+    gc.draw_rounded_rect(rect, 16.0f,
                                Color(0.6f, 1.0f, 1.0f, 0.8f));
 
     portrait.draw(glm::vec2(pos.x + portrait_border_x,
                            pos.y + portrait_border_y));
   }
 
-  text_area->draw();
+  text_area->draw(gc);
 
   if (text_area->is_progress_complete())
   {
     const glm::vec2& pos_ = text_area->get_cursor_pos();
     geom::frect cursor(pos_.x + 8, pos_.y + 8, pos_.x + 24, pos_.y + 24);
-    Display::fill_rect(cursor, Color(1.0, 1.0, 1.0,
+    gc.fill_rect(cursor, Color(1.0, 1.0, 1.0,
                                      fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * glm::pi<float>() * 3.0f))));
   }
 }

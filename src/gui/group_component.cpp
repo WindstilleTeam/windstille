@@ -36,10 +36,10 @@ GroupComponent::~GroupComponent()
 }
 
 void
-GroupComponent::draw()
+GroupComponent::draw(GraphicsContext& gc)
 {
-  Display::fill_rounded_rect(rect, 5.0f, Color(0.0f, 0.0f, 0.0f, 0.7f));
-  Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.fill_rounded_rect(rect, 5.0f, Color(0.0f, 0.0f, 0.0f, 0.7f));
+  gc.draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   if (!title.empty())
   {
@@ -48,13 +48,13 @@ GroupComponent::draw()
                                rect.top()  + static_cast<float>(font->get_height()) + 5.0f),
                       title, Color(1.0f, 1.0f, 1.0f));
 
-    Display::fill_rect(geom::frect(rect.left()  + 8.0f, rect.top() + static_cast<float>(font->get_height()) + 16.0f,
+    gc.fill_rect(geom::frect(rect.left()  + 8.0f, rect.top() + static_cast<float>(font->get_height()) + 16.0f,
                              rect.right() - 8.0f, rect.top() + static_cast<float>(font->get_height()) + 18.0f),
                        Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 
   if (child)
-    child->draw();
+    child->draw(gc);
 }
 
 void

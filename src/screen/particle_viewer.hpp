@@ -61,7 +61,7 @@ public:
   ParticleViewer();
   ~ParticleViewer() override;
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
   void load(const Pathname& filename);
 

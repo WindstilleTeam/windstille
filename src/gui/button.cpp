@@ -47,10 +47,10 @@ Button::~Button()
 }
 
 void
-Button::draw()
+Button::draw(GraphicsContext& gc)
 {
-  Display::fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
-  Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
+  gc.draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
   g_app.fonts().vera20->draw_center(glm::vec2(rect.left() + rect.width()/2, rect.top() + rect.height()/2),
                                         label,
                                         is_active()

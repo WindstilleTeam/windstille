@@ -32,7 +32,7 @@ private:
 public:
   ShaderDrawable();
 
-  void render(unsigned int mask) override;
+  void render(GraphicsContext& gc, unsigned int mask) override;
 
   void set_shader(ShaderProgramPtr shader) { m_shader = shader; }
   ShaderProgramPtr get_shader() { return m_shader; }

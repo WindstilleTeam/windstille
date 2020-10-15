@@ -31,7 +31,7 @@ public:
   }
   ~FillScreenDrawable() override {}
 
-  void render(unsigned int mask) override
+  void render(GraphicsContext& gc, unsigned int mask) override
   {
     glClearColor(color.r, color.g, color.b, color.a);
     glClear(GL_COLOR_BUFFER_BIT);

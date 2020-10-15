@@ -162,17 +162,17 @@ TextArea::is_progress_complete()
 }
 
 void
-TextArea::draw()
+TextArea::draw(GraphicsContext& gc)
 {
   assert(impl->font);
   if (impl->max_scroll_offset > 0.0f)
   {
     float height = impl->max_scroll_offset + impl->rect.height();
 
-    Display::fill_rounded_rect(geom::frect(glm::vec2(impl->rect.right() + 4,
-                                              impl->rect.top() + impl->scroll_offset*impl->rect.height()/height),
+    gc.fill_rounded_rect(geom::frect(glm::vec2(impl->rect.right() + 4,
+                                               impl->rect.top() + impl->scroll_offset*impl->rect.height()/height),
                                      geom::fsize(8, impl->rect.height()*impl->rect.height()/height)),
-                               4.0f, Color(1.0f, 1.0f, 1.0f, 0.25f));
+                         4.0f, Color(1.0f, 1.0f, 1.0f, 0.25f));
   }
   OpenGLState state;
 

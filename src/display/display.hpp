@@ -29,51 +29,62 @@
 
 class Color;
 
-class Display
+class GraphicsContext
 {
-private:
-  static std::vector<geom::irect> cliprects;
-
 public:
-  static geom::isize aspect_size;
+  GraphicsContext();
+  ~GraphicsContext();
 
-public:
-  static void fill_quad(const geom::quad& quad, const Color& color);
-  static void draw_quad(const geom::quad& quad, const Color& color);
+  void fill_quad(const geom::quad& quad, const Color& color);
+  void draw_quad(const geom::quad& quad, const Color& color);
 
-  static void fill_rect(const geom::frect& rect, const Color& color);
-  static void draw_rect(const geom::frect& rect, const Color& color);
+  void fill_rect(const geom::frect& rect, const Color& color);
+  void draw_rect(const geom::frect& rect, const Color& color);
 
-  static void fill_rounded_rect(const geom::frect& rect, float radius, const Color& color);
-  static void draw_rounded_rect(const geom::frect& rect, float radius, const Color& color);
+  void fill_rounded_rect(const geom::frect& rect, float radius, const Color& color);
+  void draw_rounded_rect(const geom::frect& rect, float radius, const Color& color);
 
   /** Same as draw_line, but in addition draw a normal on top of the line */
-  static void draw_line_with_normal(const geom::line& line, const Color& color);
+  void draw_line_with_normal(const geom::line& line, const Color& color);
 
-  static void draw_line(const geom::line& line, const Color& color);
-  static void draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color);
+  void draw_line(const geom::line& line, const Color& color);
+  void draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color);
 
-  static void draw_circle(const glm::vec2& pos, float radius, const Color& color, int segments = 16);
-  static void fill_circle(const glm::vec2& pos, float radius, const Color& color, int segments = 16);
+  void draw_circle(const glm::vec2& pos, float radius, const Color& color, int segments = 16);
+  void fill_circle(const glm::vec2& pos, float radius, const Color& color, int segments = 16);
 
-  static void draw_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments = 16);
-  static void fill_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments = 16);
+  void draw_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments = 16);
+  void fill_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments = 16);
 
-  static void draw_grid(const glm::vec2& offset, const geom::fsize& size, const Color& color);
+  void draw_grid(const glm::vec2& offset, const geom::fsize& size, const Color& color);
 
-  static int  get_width();
-  static int  get_height();
+  void push_cliprect(const geom::irect& rect);
+  void pop_cliprect();
+
+  void push_framebuffer(FramebufferPtr framebuffer);
+  void pop_framebuffer();
+  FramebufferPtr get_framebuffer();
+
+private:
+  std::vector<geom::irect> cliprects;
+
+private:
+  GraphicsContext(const GraphicsContext&) = delete;
+  GraphicsContext& operator=(const GraphicsContext&) = delete;
+};
+
+class Display
+{
+public:
+  static int get_width();
+  static int get_height();
 
   static geom::isize get_size() { return geom::isize(get_width(), get_height()); }
 
-  static void push_cliprect(const geom::irect& rect);
-  static void pop_cliprect();
-
-  static void push_framebuffer(FramebufferPtr framebuffer);
-  static void pop_framebuffer();
-  static FramebufferPtr get_framebuffer();
-
   static void save_screenshot(std::filesystem::path const& filename);
+
+public:
+  static geom::isize aspect_size;
 };
 
 #endif

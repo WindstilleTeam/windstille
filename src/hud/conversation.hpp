@@ -50,7 +50,7 @@ private:
 public:
   Conversation();
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
   void add(const std::string& text);

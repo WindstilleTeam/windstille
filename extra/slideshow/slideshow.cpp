@@ -172,6 +172,7 @@ App::run(int argc, char* argv[])
                       m_aspect_ratio, // aspect ratio
                       m_fullscreen, // fullscreen
                       4); // anti-alias
+  GraphicsContext& gc = window.get_gc();
 
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
@@ -321,7 +322,7 @@ App::run(int argc, char* argv[])
       time += 1.0f/m_fps;
 
       // rendering to output dir
-      Display::push_framebuffer(framebuffer_multisample);
+      gc.push_framebuffer(framebuffer_multisample);
       assert_gl("aeuthnoethuth");
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -329,7 +330,7 @@ App::run(int argc, char* argv[])
       slide_show.draw(time, m_edit_mode);
       assert_gl("draw");
       //SDL_GL_SwapBuffers();
-      Display::pop_framebuffer();
+      gc.pop_framebuffer();
 
       glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, framebuffer_multisample->get_handle());
       glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, framebuffer->get_handle());
@@ -341,13 +342,13 @@ App::run(int argc, char* argv[])
       glBindFramebufferEXT(GL_READ_FRAMEBUFFER_EXT, 0);
       glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
 
-      Display::push_framebuffer(framebuffer);
+      gc.push_framebuffer(framebuffer);
       char out[1024];
       sprintf(out, "%s/%08d.jpg", m_output_dir.c_str(), frame_number);
       Display::save_screenshot(out);
       //std::cout << "Wrote: " << out << std::endl;
       frame_number += 1;
-      Display::pop_framebuffer();
+      gc.pop_framebuffer();
 
       int percent = static_cast<int>(time / slide_show.length() * 100.0f);
       if (percent != last_percent_complete)

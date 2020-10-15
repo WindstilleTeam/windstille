@@ -49,7 +49,7 @@ public:
   ~DeformDrawer() override;
 
   void draw(DrawingContext& sc, ParticleSystem& psys);
-  void draw(const ParticleSystem& /*psys*/) const override {}
+  void draw(GraphicsContext& gc, ParticleSystem const& /*psys*/) const override {}
 private:
   DeformDrawer (const DeformDrawer&);
   DeformDrawer& operator= (const DeformDrawer&);

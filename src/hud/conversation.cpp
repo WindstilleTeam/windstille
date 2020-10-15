@@ -67,12 +67,12 @@ Conversation::add(const std::string& topic, const std::string& text)
 }
 
 void
-Conversation::draw()
+Conversation::draw(GraphicsContext& gc)
 {
   if (!active)
     return;
 
-  Display::fill_circle(pos, 42.0f, Color(0.5f, 0.5f, 0.5f, 0.75f), 24);
+  gc.fill_circle(pos, 42.0f, Color(0.5f, 0.5f, 0.5f, 0.75f), 24);
 
   float segment = 360.0f / static_cast<float>(choices.size());
 
@@ -96,8 +96,8 @@ Conversation::draw()
     {
       rect = geom::grow(rect, grow);
 
-      Display::fill_arc(pos, 42.0f, start, end, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
-      Display::fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
+      gc.fill_arc(pos, 42.0f, start, end, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
+      gc.fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
 
       g_app.fonts().vera20->draw_center(glm::vec2(textpos.x + distance * offset.x,
                                                      textpos.y + distance * offset.y),
@@ -105,26 +105,26 @@ Conversation::draw()
 
       g_app.fonts().vera20->draw_center(glm::vec2(400.0f, static_cast<float>(Display::get_height()) - 32.0f),
                                             choices[i].text, Color(1.0f, 1.0f, 1.0f));
-      Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 0.0f));
+      gc.draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 0.0f));
     }
     else
     {
-      Display::fill_rounded_rect(rect, 5.0f, Color(0.25f, 0.25f, 0.25f, 0.75f));
+      gc.fill_rounded_rect(rect, 5.0f, Color(0.25f, 0.25f, 0.25f, 0.75f));
       g_app.fonts().vera20->draw_center(glm::vec2(textpos.x + distance * offset.x,
                                                      textpos.y + distance * offset.y),
                                             choices[i].topic, Color(0.8f, 0.8f, 0.8f));
-      Display::draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f));
+      gc.draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f));
     }
 
-    //Display::draw_arc(pos + 5.0f * offset, 32.0f,
+    //gc.draw_arc(pos + 5.0f * offset, 32.0f,
     //                  start, end,
     //                  Color(1.0f, 1.0f, 1.0f, 1.0f), 24);
 
   }
-  Display::draw_circle(pos, 42.0f, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
+  gc.draw_circle(pos, 42.0f, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
 
-  Display::fill_circle(pos + direction * 34.0f, 8.0f, Color(1.0f, 1.0f, 1.0f));
-  //Display::draw_line(pos, pos + direction*32.0f, Color(0.0f, 0.0f, 0.0f));
+  gc.fill_circle(pos + direction * 34.0f, 8.0f, Color(1.0f, 1.0f, 1.0f));
+  //gc.draw_line(pos, pos + direction*32.0f, Color(0.0f, 0.0f, 0.0f));
 }
 
 void

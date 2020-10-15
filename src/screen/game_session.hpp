@@ -73,7 +73,7 @@ public:
   void fadeout(float time, const Color& color);
   void fadein(float time);
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
   void handle_event(const SDL_Event& event) override;
 

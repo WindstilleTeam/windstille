@@ -122,7 +122,7 @@ public:
   {
   }
 
-  void draw();
+  void draw(GraphicsContext& gc);
   void update(float delta);
   void eval_command_line();
   void tab_complete();
@@ -156,7 +156,7 @@ public:
 //-------------------------------------------------------------------------------
 
 void
-ConsoleImpl::draw()
+ConsoleImpl::draw(GraphicsContext& gc)
 {
   int y = static_cast<int>(y_pos);
 
@@ -166,8 +166,8 @@ ConsoleImpl::draw()
   int num_lines = 600 / (g_app.fonts().ttffont->get_height() + 2);
 
   if (console.is_active())
-    Display::fill_rect(geom::frect(geom::irect(0,0, Display::get_width(), 600)),
-                       Color(0, 0, 0, 0.5f));
+    gc.fill_rect(geom::frect(geom::irect(0,0, Display::get_width(), 600)),
+                 Color(0, 0, 0, 0.5f));
 
   for(int i = static_cast<int>(buffer.size())-1 - scroll_offset; i >= 0 && i > int(buffer.size()) - num_lines - scroll_offset; --i)
   {
@@ -574,9 +574,9 @@ Console::is_active() const
 }
 
 void
-Console::draw()
+Console::draw(GraphicsContext& gc)
 {
-  impl->draw();
+  impl->draw(gc);
 }
 
 void

@@ -104,7 +104,7 @@ public:
   void on_zoom_out();
   void on_zoom_100();
 
-  void draw();
+  void draw(GraphicsContext& gc);
   void update(float delta);
 
   Document&    get_document() const { return *m_document; }

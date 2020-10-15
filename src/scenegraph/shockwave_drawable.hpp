@@ -123,7 +123,7 @@ public:
   }
 #endif
 
-  void render(unsigned int mask) override
+  void render(GraphicsContext& gc, unsigned int mask) override
   {
 #if 0
     glPushMatrix();

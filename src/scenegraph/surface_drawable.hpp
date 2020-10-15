@@ -46,7 +46,7 @@ public:
   SurfacePtr get_surface() const { return surface; }
   SurfaceDrawingParameters& get_params() { return params; }
 
-  void render(unsigned int mask) override
+  void render(GraphicsContext& gc, unsigned int mask) override
   {
     glPushMatrix();
     glMultMatrixf(glm::value_ptr(modelview));

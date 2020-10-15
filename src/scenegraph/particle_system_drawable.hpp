@@ -31,7 +31,7 @@ private:
 public:
   ParticleSystemDrawable(const ParticleSystem& particle_system);
 
-  void render(unsigned int mask) override;
+  void render(GraphicsContext& gc, unsigned int mask) override;
 
 private:
   ParticleSystemDrawable(const ParticleSystemDrawable&);

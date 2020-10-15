@@ -23,6 +23,8 @@
 
 #include "display/texture.hpp"
 
+class GraphicsContext;
+
 class Drawable
 {
 protected:
@@ -52,7 +54,7 @@ public:
    * ie. it is the place where you can access the screen with raw
    * OpenGL methods.
    */
-  virtual void render(unsigned int mask) = 0;
+  virtual void render(GraphicsContext& gc, unsigned int mask) = 0;
 
   /** Returns the position at which the request should be drawn */
   float get_z_pos() const { return z_pos; }

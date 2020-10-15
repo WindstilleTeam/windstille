@@ -88,7 +88,7 @@ int shader_main(int argc, char* argv[])
   {
     std::cout << "." << std::flush;
     surface3->get_params().set_pos(glm::vec2(static_cast<float>(i), 50.0f));
-    group.render(~0u);
+    group.render(window.get_gc(), ~0u);
     window.swap_buffers();
   }
 

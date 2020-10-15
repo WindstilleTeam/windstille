@@ -24,6 +24,7 @@
 
 class Drawable;
 class DrawableGroup;
+class GraphicsContext;
 class Texture;
 
 class SceneGraph
@@ -39,7 +40,7 @@ public:
   void add_drawable(std::shared_ptr<Drawable> drawable);
   void remove_drawable(std::shared_ptr<Drawable> drawable);
 
-  void render(unsigned int mask);
+  void render(GraphicsContext& gc, unsigned int mask);
 
   void clear();
 

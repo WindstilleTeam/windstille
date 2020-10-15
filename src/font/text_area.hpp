@@ -24,6 +24,7 @@
 
 #include <geom/geom.hpp>
 
+class GraphicsContext;
 class TTFFont;
 class TextAreaImpl;
 
@@ -53,7 +54,7 @@ public:
   bool is_progress_complete();
 
   void update(float delta);
-  void draw();
+  void draw(GraphicsContext& gc);
 
   /** Return the rectangle that TextArea fills its text into */
   geom::frect get_rect() const;

@@ -45,7 +45,7 @@ public:
 
   ~DeformDrawerRequest() override {}
 
-  void render(unsigned int mask) override
+  void render(GraphicsContext& gc, unsigned int mask) override
   {
 #if 0
     Display::push_framebuffer(framebuffer);

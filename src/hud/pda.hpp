@@ -68,7 +68,7 @@ public:
   PDA();
   ~PDA() override;
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
   void add_dialog(const std::string& character, const std::string& text);
 

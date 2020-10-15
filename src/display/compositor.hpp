@@ -25,6 +25,7 @@
 
 class CompositorImpl;
 class GraphicContextState;
+class GraphicsContext;
 class SceneContext;
 class SceneGraph;
 
@@ -34,7 +35,7 @@ public:
   Compositor(const geom::isize& window, const geom::isize& viewport);
   ~Compositor();
 
-  void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);
+  void render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);
 
 private:
   std::unique_ptr<CompositorImpl> impl;

@@ -47,7 +47,7 @@ public:
 
   DrawingParameters& get_params() { return m_params; }
 
-  void render(unsigned int mask) override
+  void render(GraphicsContext& gc, unsigned int mask) override
   {
     OpenGLState state;
     state.enable(GL_BLEND);

@@ -39,9 +39,9 @@ SceneGraph::remove_drawable(std::shared_ptr<Drawable> drawable)
 }
 
 void
-SceneGraph::render(unsigned int mask)
+SceneGraph::render(GraphicsContext& gc, unsigned int mask)
 {
-  m_drawables->render(mask);
+  m_drawables->render(gc, mask);
 }
 
 void

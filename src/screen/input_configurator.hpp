@@ -46,7 +46,7 @@ public:
   InputConfigurator();
   ~InputConfigurator() override;
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
   void handle_event(const SDL_Event& event) override;
   void add_configure_item(ConfigureItem::Mode mode, int event_id);

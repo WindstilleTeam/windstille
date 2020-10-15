@@ -44,9 +44,9 @@ Compositor::~Compositor()
 }
 
 void
-Compositor::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state)
+Compositor::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& state)
 {
-  impl->render(sc, sg, state);
+  impl->render(gc, sc, sg, state);
 }
 
 /* EOF */

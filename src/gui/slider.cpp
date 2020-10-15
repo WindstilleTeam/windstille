@@ -67,10 +67,10 @@ Slider::set_step(int step_)
 }
 
 void
-Slider::draw()
+Slider::draw(GraphicsContext& gc)
 {
-  Display::fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
-  Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
+  gc.draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   float width = 30.0f;
   geom::frect slider_rect(glm::vec2(rect.left() + (rect.width()-width) * (static_cast<float>(pos-min)/static_cast<float>(max - min)),
@@ -78,12 +78,12 @@ Slider::draw()
                     geom::fsize(width, rect.height() - 4.0f));
   if (is_active())
   {
-    Display::fill_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
-    Display::draw_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 1.0f));
+    gc.fill_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+    gc.draw_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 1.0f));
   }
   else
   {
-    Display::draw_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+    gc.draw_rect(slider_rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 }
 

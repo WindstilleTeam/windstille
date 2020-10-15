@@ -63,7 +63,7 @@ MenuComponent::add_item(MenuItem* item)
 }
 
 void
-MenuComponent::draw()
+MenuComponent::draw(GraphicsContext& gc)
 {
   float step = item_height();
 
@@ -71,8 +71,9 @@ MenuComponent::draw()
   { // we can only display a subset of items and have to scroll
     for(int i = 0; i < num_displayable_items; ++i)
     {
-      items[i+scroll_offset]->draw(geom::frect(rect.left(), rect.top() + static_cast<float>(i) * step + 2.0f,
-                                         rect.right() - 32.0f, rect.top() + static_cast<float>(i+1) * step - 2.0f),
+      items[i+scroll_offset]->draw(gc,
+                                   geom::frect(rect.left(), rect.top() + static_cast<float>(i) * step + 2.0f,
+                                               rect.right() - 32.0f, rect.top() + static_cast<float>(i+1) * step - 2.0f),
                                    is_active() && (i + scroll_offset == current_item));
     }
 
@@ -80,12 +81,12 @@ MenuComponent::draw()
     float scrollbar_height = (rect.height() - 4.0f) * static_cast<float>(num_displayable_items) / static_cast<float>(items.size());
     float scrollbar_incr   = (rect.height() - 4.0f) * static_cast<float>(scroll_offset) / static_cast<float>(items.size());
 
-    Display::fill_rounded_rect(geom::frect(rect.right() - 24, rect.top() + 2.0f + scrollbar_incr,
+    gc.fill_rounded_rect(geom::frect(rect.right() - 24, rect.top() + 2.0f + scrollbar_incr,
                                      rect.right() - 2,  rect.top() + 2.0f + scrollbar_incr + scrollbar_height),
                                5.0f,
                                Color(0.5f, 0.5f, 0.5f, 0.75f));
 
-    Display::draw_rounded_rect(geom::frect(rect.right() - 24, rect.top() + 2.0f,
+    gc.draw_rounded_rect(geom::frect(rect.right() - 24, rect.top() + 2.0f,
                                      rect.right() - 2,  rect.bottom() - 2.0f),
                                5.0f,
                                Color(1.0f, 1.0f, 1.0f, 1.0f));
@@ -94,8 +95,9 @@ MenuComponent::draw()
   { // all items fit on the screen
     for(Items::size_type i = 0; i < items.size(); ++i)
     {
-      items[i]->draw(geom::frect(rect.left(), rect.top() + static_cast<float>(i) * step + 2.0f,
-                           rect.right(), rect.top() + static_cast<float>(i+1) * step - 2.0f),
+      items[i]->draw(gc,
+                     geom::frect(rect.left(), rect.top() + static_cast<float>(i) * step + 2.0f,
+                                 rect.right(), rect.top() + static_cast<float>(i+1) * step - 2.0f),
                      is_active() && (int(i) == current_item));
     }
   }

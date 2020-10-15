@@ -37,7 +37,7 @@ public:
   {}
   ~TextDrawable() override {}
 
-  void render(unsigned int mask) override {
+  void render(GraphicsContext& gc, unsigned int mask) override {
     glPushMatrix();
     glMultMatrixf(glm::value_ptr(modelview));
     m_font.draw(pos, text);

@@ -32,7 +32,7 @@ public:
   Inventory();
   ~Inventory() override;
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
 private:

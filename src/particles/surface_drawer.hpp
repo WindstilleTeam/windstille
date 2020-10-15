@@ -42,7 +42,7 @@ public:
   void set_texture(SurfacePtr surface);
   void set_blendfuncs(GLenum blendfunc_src, GLenum blendfunc_dst);
 
-  void draw(const ParticleSystem& psys) const override;
+  void draw(GraphicsContext& gc, const ParticleSystem& psys) const override;
 };
 
 #endif

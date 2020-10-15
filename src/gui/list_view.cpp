@@ -40,7 +40,7 @@ ListView::~ListView()
 }
 
 void
-ListView::draw()
+ListView::draw(GraphicsContext& gc)
 {
   TTFFont* font = g_app.fonts().vera20.get();
 
@@ -64,7 +64,7 @@ ListView::draw()
     x = rect.left();
 
     if (j == current_item)
-      Display::fill_rect(geom::frect(x, y,
+      gc.fill_rect(geom::frect(x, y,
                                rect.right(), y + static_cast<float>(font->get_height())),
                          is_active() ? Color(0.5f, 0.5f, 1.0f, 0.8f) : Color(0.5f, 0.5f, 1.0f, 0.3f));
 

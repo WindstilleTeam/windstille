@@ -81,15 +81,15 @@ InputConfigurator::add_configure_item(ConfigureItem::Mode mode, int event_id)
 }
 
 void
-InputConfigurator::draw()
+InputConfigurator::draw(GraphicsContext& gc)
 {
   geom::frect rect(100.0f, 75.0f,
              static_cast<float>(Display::get_width())  - 100.0f,
              static_cast<float>(Display::get_height()) - 75.0f);
 
-  Display::fill_rounded_rect(rect, 16.0f, Color(0.3f, 0.3f, 0.5f, 0.5f));
-  Display::draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
-  area.draw();
+  gc.fill_rounded_rect(rect, 16.0f, Color(0.3f, 0.3f, 0.5f, 0.5f));
+  gc.draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  area.draw(gc);
 }
 
 void

@@ -32,7 +32,7 @@ private:
 public:
   GradientDrawable(const std::vector<float>& colors);
 
-  void render(unsigned int mask) override;
+  void render(GraphicsContext& gc, unsigned int mask) override;
 
 private:
   GradientDrawable(const GradientDrawable&);

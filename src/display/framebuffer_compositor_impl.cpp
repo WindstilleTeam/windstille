@@ -64,12 +64,12 @@ FramebufferCompositorImpl::render_lightmap(SceneContext& /*sc*/, SceneGraph* /*s
 }
 
 void
-FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state)
+FramebufferCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state)
 {
   if (sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN)
   {
     // Render the lightmap to framebuffers->lightmap
-    Display::push_framebuffer(m_lightmap);
+    gc.push_framebuffer(m_lightmap);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -78,23 +78,23 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
     glTranslatef(0.0f, static_cast<float>(m_viewport.height() - (m_viewport.height() / LIGHTMAP_DIV)), 0.0f);
     glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV);
 
-    sc.light().render();
+    sc.light().render(gc);
 
     if (sg)
     {
       glPushMatrix();
       glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
-      sg->render(SceneContext::LIGHTMAP);
+      sg->render(gc, SceneContext::LIGHTMAP);
       glPopMatrix();
     }
 
     glPopMatrix();
 
-    Display::pop_framebuffer();
+    gc.pop_framebuffer();
   }
 
   { // Render the main screen
-    Display::push_framebuffer(m_screen);
+    gc.push_framebuffer(m_screen);
 
     if (sc.get_render_mask() & SceneContext::COLORMAP)
     {
@@ -102,13 +102,13 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-      sc.color().render();
+      sc.color().render(gc);
 
       if (sg)
       {
         glPushMatrix();
         glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
-        sg->render(SceneContext::COLORMAP);
+        sg->render(gc, SceneContext::COLORMAP);
         glPopMatrix();
       }
     }
@@ -120,31 +120,31 @@ FramebufferCompositorImpl::render(SceneContext& sc, SceneGraph* sg, const Graphi
 
     if (sc.get_render_mask() & SceneContext::HIGHLIGHTMAP)
     {
-      sc.highlight().render();
+      sc.highlight().render(gc);
 
       if (sg)
       {
         glPushMatrix();
         glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
-        sg->render(SceneContext::HIGHLIGHTMAP);
+        sg->render(gc, SceneContext::HIGHLIGHTMAP);
         glPopMatrix();
       }
     }
 
     if (sc.get_render_mask() & SceneContext::CONTROLMAP)
     {
-      sc.control().render();
+      sc.control().render(gc);
 
       if (sg)
       {
         glPushMatrix();
         glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
-        sg->render(SceneContext::CONTROLMAP);
+        sg->render(gc, SceneContext::CONTROLMAP);
         glPopMatrix();
       }
     }
 
-    Display::pop_framebuffer();
+    gc.pop_framebuffer();
   }
 
   if (1)

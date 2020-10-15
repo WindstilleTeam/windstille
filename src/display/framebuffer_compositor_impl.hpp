@@ -31,7 +31,7 @@ private:
 public:
   FramebufferCompositorImpl(const geom::isize& window, const geom::isize& viewport);
 
-  void render(SceneContext& sc, SceneGraph* sg, const GraphicContextState& state) override;
+  void render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& state) override;
 
 private:
   void render_lightmap(SceneContext& /*sc*/, SceneGraph* /*sg*/);

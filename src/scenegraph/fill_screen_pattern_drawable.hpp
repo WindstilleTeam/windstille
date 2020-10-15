@@ -43,7 +43,7 @@ public:
     m_offset = offset;
   }
 
-  void render(unsigned int mask) override
+  void render(GraphicsContext& gc, unsigned int mask) override
   {
     OpenGLState state;
     state.enable(GL_BLEND);

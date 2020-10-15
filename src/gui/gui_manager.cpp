@@ -32,9 +32,9 @@ GUIManager::~GUIManager()
 }
 
 void
-GUIManager::draw()
+GUIManager::draw(GraphicsContext& gc)
 {
-  root->draw();
+  root->draw(gc);
 }
 
 void

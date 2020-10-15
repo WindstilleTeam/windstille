@@ -45,12 +45,12 @@ DrawableGroup::clear()
 }
 
 void
-DrawableGroup::render(unsigned int mask)
+DrawableGroup::render(GraphicsContext& gc, unsigned int mask)
 {
   for(Drawables::iterator i = m_drawables.begin(); i != m_drawables.end(); ++i)
   {
     if ((*i)->get_render_mask() & mask)
-      (*i)->render(mask);
+      (*i)->render(gc, mask);
   }
 }
 

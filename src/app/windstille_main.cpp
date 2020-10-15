@@ -160,7 +160,7 @@ WindstilleMain::run()
     ScreenManager::current()->push_screen(new TitleScreen());
   }
 
-  ScreenManager::current()->run();
+  ScreenManager::current()->run(g_app.window().get_gc());
 }
 
 void

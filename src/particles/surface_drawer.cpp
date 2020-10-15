@@ -113,7 +113,7 @@ SurfaceDrawer::set_blendfuncs(GLenum blendfunc_src_, GLenum blendfunc_dest_)
 }
 
 void
-SurfaceDrawer::draw(const ParticleSystem& psys) const
+SurfaceDrawer::draw(GraphicsContext& gc, const ParticleSystem& psys) const
 {
   buffer->clear();
   buffer->set_pos(glm::vec2(psys.get_x_pos(), psys.get_y_pos()));
@@ -167,7 +167,7 @@ SurfaceDrawer::draw(const ParticleSystem& psys) const
     }
   }
 
-  buffer->render(~0u);
+  buffer->render(gc, ~0u);
 }
 
 /* EOF */

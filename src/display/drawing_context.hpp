@@ -26,10 +26,11 @@
 #include "scenegraph/drawable.hpp"
 #include "display/texture.hpp"
 #include "display/surface.hpp"
-
+
 class Color;
 class Compositor;
 class DrawingParameters;
+class GraphicsContext;
 class SceneContext;
 class Surface;
 class SurfaceDrawingParameters;
@@ -53,7 +54,7 @@ public:
   ~DrawingContext();
 
   /** Draws everything in the drawing context to the screen */
-  void render();
+  void render(GraphicsContext& gc);
 
   /** Empties the drawing context */
   void clear();

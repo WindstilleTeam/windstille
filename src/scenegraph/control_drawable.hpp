@@ -38,7 +38,7 @@ public:
 
   ~ControlDrawable() override {}
 
-  void render(unsigned int mask) override
+  void render(GraphicsContext& gc, unsigned int mask) override
   {
     glPushMatrix();
 

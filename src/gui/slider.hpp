@@ -45,7 +45,7 @@ public:
   void set_range(int min, int max);
   void set_step(int step);
 
-  void draw() override;
+  void draw(GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
 private:

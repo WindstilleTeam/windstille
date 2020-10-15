@@ -29,7 +29,7 @@ StencilDrawable::StencilDrawable() :
 }
 
 void
-StencilDrawable::render(unsigned int mask)
+StencilDrawable::render(GraphicsContext& gc, unsigned int mask)
 {
   if (g_stencil_enabled == 0)
   {
@@ -56,7 +56,7 @@ StencilDrawable::render(unsigned int mask)
 
   glEnable(GL_ALPHA_TEST);
   glAlphaFunc(GL_GREATER, 0.5f);
-  m_stencil_group.render(~0u);
+  m_stencil_group.render(gc, ~0u);
   glDisable(GL_ALPHA_TEST);
 
   // render framebuffer content
@@ -64,7 +64,7 @@ StencilDrawable::render(unsigned int mask)
   glStencilFunc(GL_EQUAL, g_stencil_enabled, g_stencil_enabled);
   glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
-  m_drawable_group.render(~0u);
+  m_drawable_group.render(gc, ~0u);
 
   g_stencil_enabled -= 1;
 

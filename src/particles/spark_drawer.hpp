@@ -35,7 +35,7 @@ private:
 public:
   SparkDrawer(ReaderMapping const& props);
 
-  void draw(const ParticleSystem& psys) const override;
+  void draw(GraphicsContext& gc, const ParticleSystem& psys) const override;
 };
 
 #endif

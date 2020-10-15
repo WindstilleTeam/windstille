@@ -63,7 +63,7 @@ Sprite3DView::set_model(const Pathname& filename)
 }
 
 void
-Sprite3DView::draw()
+Sprite3DView::draw(GraphicsContext& gc)
 {
   sc.reset_modelview();
   //sc.translate(-config->screen_width/2, -config->screen_height/2);
@@ -87,8 +87,8 @@ Sprite3DView::draw()
 
   sc.light().fill_screen(Color(1.0, 1.0, 1.0));
   //sc.color().draw("Hello World", 100, 100);
-  compositor.render(sc, nullptr, GraphicContextState(Display::get_width(),
-                                               Display::get_height()));
+  compositor.render(gc, sc, nullptr, GraphicContextState(Display::get_width(),
+                                                         Display::get_height()));
 
   float x = 10.0f;
   float y =  static_cast<float>(g_app.fonts().vera12->get_height()) + 5.0f;

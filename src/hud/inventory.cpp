@@ -64,7 +64,7 @@ public:
   {}
 
   void update(float delta, const Controller& controller);
-  void draw();
+  void draw(GraphicsContext& gc);
 
   void incr_current_item() {
     if (current_item == int(items.size()) - 1)
@@ -102,7 +102,7 @@ Inventory::~Inventory()
 }
 
 void
-InventoryImpl::draw()
+InventoryImpl::draw(GraphicsContext& gc)
 {
   glm::vec2 pos = glm::vec2(400, 300);
 
@@ -129,9 +129,9 @@ InventoryImpl::draw()
 }
 
 void
-Inventory::draw()
+Inventory::draw(GraphicsContext& gc)
 {
-  impl->draw();
+  impl->draw(gc);
 }
 
 void

@@ -25,8 +25,9 @@
 
 #include "util/currenton.hpp"
 
-class Screen;
 class ControllerHelpWindow;
+class GraphicsContext;
+class Screen;
 
 /**
  *  The ScreenManager handles overlays like Option Menus, Main Menus
@@ -57,14 +58,14 @@ private:
   std::unique_ptr<ControllerHelpWindow> controller_help_window;
 
   void apply_pending_actions();
-  void draw();
+  void draw(GraphicsContext& gc);
 
 public:
   ScreenManager();
   ~ScreenManager() override;
 
   /** Displays the previously set screen in until quit() is called */
-  void run();
+  void run(GraphicsContext& gc);
 
   /** Breaks out of the run() function */
   void quit();
@@ -88,7 +89,7 @@ public:
 
 private:
   void poll_events();
-  void draw_fps();
+  void draw_fps(GraphicsContext& gc);
 
   ScreenManager (const ScreenManager&);
   ScreenManager& operator= (const ScreenManager&);

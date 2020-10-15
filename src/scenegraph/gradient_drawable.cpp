@@ -69,11 +69,11 @@ GradientDrawable::GradientDrawable(const std::vector<float>& colors)
 }
 
 void
-GradientDrawable::render(unsigned int mask)
+GradientDrawable::render(GraphicsContext& gc, unsigned int mask)
 {
   glPushMatrix();
   glLoadIdentity();
-  array->render(mask);
+  array->render(gc, mask);
   glPopMatrix();
 }
 

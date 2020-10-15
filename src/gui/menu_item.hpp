@@ -26,6 +26,8 @@
 
 #include <geom/geom.hpp>
 
+class GraphicsContext;
+
 namespace gui {
 
 class MenuComponent;
@@ -46,7 +48,7 @@ public:
 
   virtual void click() =0;
 
-  virtual void draw(const geom::frect& rect, bool is_active);
+  virtual void draw(GraphicsContext& gc, const geom::frect& rect, bool is_active);
   virtual void update(float delta);
 
 private:
@@ -79,7 +81,7 @@ public:
   void incr() override;
   void decr() override;
   void click() override {}
-  void draw(const geom::frect& rect, bool is_active) override;
+  void draw(GraphicsContext& gc, const geom::frect& rect, bool is_active) override;
   sigc::signal<void (int)>& sig_change() { return on_change; }
 };
 
@@ -99,7 +101,7 @@ public:
   void incr() override;
   void decr() override;
   void click() override {}
-  void draw(const geom::frect& rect, bool is_active) override;
+  void draw(GraphicsContext& gc, const geom::frect& rect, bool is_active) override;
   sigc::signal<void (int)>& sig_change() { return on_change; }
 };
 
@@ -113,7 +115,7 @@ public:
   void incr() override {}
   void decr() override {}
   void click() override;
-  void draw(const geom::frect& rect, bool is_active) override;
+  void draw(GraphicsContext& gc, const geom::frect& rect, bool is_active) override;
   sigc::signal<void ()>& sig_click() { return on_click; }
 };
 

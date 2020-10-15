@@ -56,10 +56,10 @@ GridComponent::~GridComponent()
 }
 
 void
-GridComponent::draw()
+GridComponent::draw(GraphicsContext& gc)
 {
-  Display::fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
-  Display::draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
+  gc.draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   for(int y = 0; y < grid.get_height(); ++y)
     for(int x = 0; x < grid.get_width(); ++x)
@@ -67,9 +67,9 @@ GridComponent::draw()
       if (grid(x, y).component && !grid(x, y).has_parent())
       {
         if (x == pos.x && y == pos.y)
-          Display::fill_rect(grid(x, y).component->get_screen_rect(), Color(1.0f, 1.0f, 1.0f, 0.5f));
+          gc.fill_rect(grid(x, y).component->get_screen_rect(), Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-        grid(x, y).component->draw();
+        grid(x, y).component->draw(gc);
       }
     }
 }

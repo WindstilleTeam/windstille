@@ -24,6 +24,7 @@
 
 #include <geom/size.hpp>
 
+class GraphicsContext;
 class OpenGLWindowImpl;
 
 class OpenGLWindow final
@@ -42,6 +43,8 @@ public:
 
   void set_fullscreen(bool fullscreen);
   void set_gamma(float r, float g, float b);
+
+  GraphicsContext& get_gc() const;
 
   void swap_buffers();
 

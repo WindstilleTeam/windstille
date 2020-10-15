@@ -46,31 +46,31 @@ GeometryTest::GeometryTest()
 }
 
 void
-GeometryTest::draw()
+GeometryTest::draw(GraphicsContext& gc)
 {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  Display::draw_line(line1, Color(0.0f, 1.0f, 0.0f));
-  Display::draw_line(line2, Color(0.0f, 1.0f, 0.0f));
+  gc.draw_line(line1, Color(0.0f, 1.0f, 0.0f));
+  gc.draw_line(line2, Color(0.0f, 1.0f, 0.0f));
 
-  Display::fill_rect(geom::frect(cursor - glm::vec2(2,2), geom::fsize(5,5)),  Color(1.0f, 0.0f, 1.0f));
-  Display::fill_rect(geom::frect(cursor2 - glm::vec2(2,2), geom::fsize(5,5)), Color(1.0f, 1.0f, 0.0f));
+  gc.fill_rect(geom::frect(cursor - glm::vec2(2,2), geom::fsize(5,5)),  Color(1.0f, 0.0f, 1.0f));
+  gc.fill_rect(geom::frect(cursor2 - glm::vec2(2,2), geom::fsize(5,5)), Color(1.0f, 1.0f, 0.0f));
 
-  Display::fill_rect(geom::frect(collision_point - glm::vec2(3,3), geom::fsize(7,7)), Color(1.0f, 1.0f, 1.0f));
+  gc.fill_rect(geom::frect(collision_point - glm::vec2(3,3), geom::fsize(7,7)), Color(1.0f, 1.0f, 1.0f));
 
   // Try vector projection
   glm::vec2 a(line1.p2 - line1.p1);
   glm::vec2 b(line2.p2 - line2.p1);
   glm::vec2 c(glm::proj(a, b));
 
-  Display::draw_line(line1.p1, line1.p1 + c, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.draw_line(line1.p1, line1.p1 + c, Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   int segments = std::max(0, int(cursor.y / 10));
 
-  Display::fill_arc(glm::vec2(200, 200), 100.0f, cursor.x, cursor2.x, Color(1.0f, 1.0f, 1.0f, 0.5f), segments);
-  Display::draw_arc(glm::vec2(200, 200), 100.0f, cursor.x, cursor2.x, Color(1.0f, 1.0f, 1.0f), segments);
-  Display::draw_circle(glm::vec2(200, 200), 128.0f, Color(1.0f, 1.0f, 1.0f), segments);
+  gc.fill_arc(glm::vec2(200, 200), 100.0f, cursor.x, cursor2.x, Color(1.0f, 1.0f, 1.0f, 0.5f), segments);
+  gc.draw_arc(glm::vec2(200, 200), 100.0f, cursor.x, cursor2.x, Color(1.0f, 1.0f, 1.0f), segments);
+  gc.draw_circle(glm::vec2(200, 200), 128.0f, Color(1.0f, 1.0f, 1.0f), segments);
 }
 
 void
