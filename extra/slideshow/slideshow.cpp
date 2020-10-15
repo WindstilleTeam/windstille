@@ -32,6 +32,7 @@
 #include "display/surface_drawing_parameters.hpp"
 #include "display/surface.hpp"
 #include "display/display.hpp"
+#include "display/screenshot.hpp"
 #include "display/texture_manager.hpp"
 #include "util/system.hpp"
 
@@ -235,7 +236,7 @@ App::run(int argc, char* argv[])
                 break;
 
               case SDLK_F10:
-                Display::save_screenshot("/tmp/out.png");
+                save_screenshot("/tmp/out.png");
                 break;
 
               case SDLK_LEFT:
@@ -345,7 +346,7 @@ App::run(int argc, char* argv[])
       gc.push_framebuffer(framebuffer);
       char out[1024];
       sprintf(out, "%s/%08d.jpg", m_output_dir.c_str(), frame_number);
-      Display::save_screenshot(out);
+      save_screenshot(out);
       //std::cout << "Wrote: " << out << std::endl;
       frame_number += 1;
       gc.pop_framebuffer();

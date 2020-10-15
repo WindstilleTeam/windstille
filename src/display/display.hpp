@@ -81,8 +81,6 @@ public:
 
   static geom::isize get_size() { return geom::isize(get_width(), get_height()); }
 
-  static void save_screenshot(std::filesystem::path const& filename);
-
 public:
   static geom::isize aspect_size;
 };

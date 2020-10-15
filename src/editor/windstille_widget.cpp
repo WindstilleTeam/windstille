@@ -24,6 +24,7 @@
 #include "display/compositor.hpp"
 #include "display/display.hpp"
 #include "display/opengl_state.hpp"
+#include "display/screenshot.hpp"
 #include "display/surface.hpp"
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
@@ -599,7 +600,7 @@ WindstilleWidget::save_screenshot(const std::string& filename_)
 
   if (glwindow->gl_begin(get_gl_context()))
   {
-    Display::save_screenshot(Pathname(filename_, Pathname::kSysPath));
+    save_screenshot(filename_);
     glwindow->gl_end();
   }
 }

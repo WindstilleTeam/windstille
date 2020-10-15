@@ -28,6 +28,7 @@
 #include "app/sound_manager.hpp"
 #include "display/display.hpp"
 #include "display/opengl_window.hpp"
+#include "display/screenshot.hpp"
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
 #include "screen/input_configurator.hpp"
@@ -244,7 +245,7 @@ ScreenManager::poll_events()
                 count += 1;
               } while(filename.exists());
 
-              Display::save_screenshot(filename);
+              save_screenshot(filename);
               ConsoleLog << "Writing screenshot to: '" << filename << "'" << std::endl;
             }
             break;
