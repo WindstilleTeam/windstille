@@ -126,15 +126,16 @@ Armature::draw()
 {
   // For some reason OpenGL sometimes doesn't draw the lines properly,
   // going to NavigationTester and then back fixes the issue
+  glLineWidth(6.0f);
+
   OpenGLState state;
   state.color(Color(1.0f, 0.0f, 0.0f));
   state.activate();
-
-  glLineWidth(6.0f);
   //std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-" << std::endl;
   glBegin(GL_LINES);
   draw_bone(root_bone, glm::vec3(0,0, 0), glm::mat4(1.0f));
   glEnd();
+  glLineWidth(1.0f);
 }
 
 void
