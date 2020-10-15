@@ -63,7 +63,7 @@ App::run(int argc, char* argv[])
   prog->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, argv[5]));
   prog->link();
 
-  float displacement = 0.5f;
+  glm::vec2 displacement(0.0f, 0.0f);
 
   bool loop = true;
   while(loop)
@@ -87,6 +87,11 @@ App::run(int argc, char* argv[])
             default:
               break;
           }
+          break;
+
+        case SDL_MOUSEMOTION:
+          displacement.x = static_cast<float>(event.motion.x - 640) / 1280.0f;
+          displacement.y = static_cast<float>(event.motion.x - 400) / 800.0f;
           break;
 
         default:
@@ -124,8 +129,8 @@ App::run(int argc, char* argv[])
       prog->set_uniform1i("image_tex", 0);
       prog->set_uniform1i("displace_tex", 1);
       //prog->set_uniform1i("color_tex", 2);
-      prog->set_uniform2f("rand_offset", rnd.frand(), rnd.frand());
-      prog->set_uniform1f("damp", displacement);
+      prog->set_uniform2f("rand_offset", displacement.y, 0.0f);
+      prog->set_uniform1f("damp", displacement.x);
     }
 
 
@@ -165,8 +170,6 @@ App::run(int argc, char* argv[])
 
     window.swap_buffers();
     sdl.delay(30);
-
-    displacement -= 0.001f;
   }
 
   return 0;
