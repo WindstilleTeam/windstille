@@ -151,53 +151,6 @@ SceneContext::reset_modelview()
   impl->control.reset_modelview();
 }
 
-#if 0
-
-void draw_disc(int count)
-{
-  float radius = static_cast<float>(count) * 2.0f;
-  float minradius = 2.0f * static_cast<float>(count) - 164.0f;
-  if (minradius < 0)
-    minradius = 0;
-  glClear(GL_DEPTH_BUFFER_BIT);
-
-  int segments = 64;
-
-  glBegin(GL_QUADS);
-  for (int i = 0; i < segments; ++i)
-  {
-    float angel = glm::two_pi<float>() / static_cast<float>(segments);
-
-    float x1 =  sinf(angel * static_cast<float>(i)) * radius;
-    float y1 = -cosf(angel * static_cast<float>(i)) * radius;
-
-    float x2 =  sinf(angel * static_cast<float>(i+1)) * radius;
-    float y2 = -cosf(angel * static_cast<float>(i+1)) * radius;
-
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    glTexCoord2f(x1/512.0f+0.5f, y1/512.0f+0.5f);
-    glVertex3f(x1+256, y1+256, 0);
-
-    glTexCoord2f(x2/512.0f+0.5f, y2/512.0f+0.5f);
-    glVertex3f(x2+256, y2+256, 0);
-
-    float x3 =  sinf(angel * static_cast<float>(i)) * minradius;
-    float y3 = -cosf(angel * static_cast<float>(i)) * minradius;
-
-    float x4 =  sinf(angel * static_cast<float>(i+1)) * minradius;
-    float y4 = -cosf(angel * static_cast<float>(i+1)) * minradius;
-
-    glColor4f(1.0f, 1.0f, 1.0f, 0.0f);
-    glTexCoord2f(x4/512.0f+0.5f, y4/512.0f+0.5f);
-    glVertex3f(x4+256, y4+256, 0);
-    glTexCoord2f(x3/512.0f+0.5f, y3/512.0f+0.5f);
-    glVertex3f(x3+256, y3+256, 0);
-  }
-  glEnd();
-}
-
-#endif
-
 void
 SceneContext::set_render_mask(unsigned int mask)
 {

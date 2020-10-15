@@ -59,11 +59,11 @@ Model::~Model()
 }
 
 void
-Model::draw()
+Model::draw(GraphicsContext& gc)
 {
   for(Meshes::iterator i = meshes.begin(); i != meshes.end(); ++i)
   {
-    (*i)->draw();
+    (*i)->draw(gc);
   }
 }
 

@@ -74,7 +74,7 @@ PDA::draw(GraphicsContext& gc)
   // Darken the background a bit
   gc.fill_rect(geom::frect(geom::irect(0, 0, gc.size().width(), gc.size().height())), Color(0.0f, 0.0f, 0.0f, 0.25f));
 
-  background.draw(pos);
+  background.draw(gc, pos);
 
   geom::frect rect = geom::grow(text_area->get_rect(), 8.0f);
 

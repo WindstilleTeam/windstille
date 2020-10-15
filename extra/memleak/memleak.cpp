@@ -56,6 +56,7 @@ int memleak_main(int argc, char* argv[])
                       geom::isize(800, 600),
                       false,
                       4); // anti-alias
+  GraphicsContext& gc = window.get_gc();
 
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
@@ -93,7 +94,7 @@ int memleak_main(int argc, char* argv[])
 
     surface = surface_manager.get(argv[1]);
 
-    surface->draw(glm::vec2(0.0f, 0.0f));
+    surface->draw(gc, glm::vec2(0.0f, 0.0f));
     window.swap_buffers();
     SDL_Delay(10);
 

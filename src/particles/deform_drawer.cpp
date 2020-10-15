@@ -26,6 +26,7 @@
 #include "display/shader_object.hpp"
 #include "particles/particle_system.hpp"
 #include "util/pathname.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
 class DeformDrawerRequest : public Drawable
 {
@@ -65,18 +66,18 @@ public:
       state.color(Color(1.0f, 1.0f, 1.0f, 1.0f));
       state.activate();
 
-      glBegin(GL_QUADS);
-      glTexCoord2f(0,0);
-      glVertex2f(0,0);
+      va.set_mode(GL_QUADS);
+      va.texcoord(0,0);
+      va.vertex(0,0);
 
-      glTexCoord2f(800,0);
-      glVertex2f(800,0);
+      va.texcoord(800,0);
+      va.vertex(800,0);
 
-      glTexCoord2f(800,600);
-      glVertex2f(800, 600);
+      va.texcoord(800,600);
+      va.vertex(800, 600);
 
-      glTexCoord2f(0, 600);
-      glVertex2f(0,600);
+      va.texcoord(0, 600);
+      va.vertex(0,600);
       glEnd();
 
       glUseProgram(0);
@@ -84,19 +85,17 @@ public:
 #endif
   }
 
-  void draw_particles()
+  void draw_particles(GraphicsContext& gc)
   {
     glPushMatrix();
     glMultMatrixf(glm::value_ptr(get_modelview()));
 
-    OpenGLState state;
+    VertexArrayDrawable va;
 
-    state.bind_texture(surface->get_texture());
-    state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    state.enable(GL_BLEND);
-    state.activate();
+    va.set_texture(surface->get_texture());
+    va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glBegin(GL_QUADS);
+    va.set_mode(GL_QUADS);
     for(ParticleSystem::Particles::iterator i = psys.begin(); i != psys.end(); ++i)
     {
       if (i->t != -1.0f)
@@ -126,41 +125,50 @@ public:
           y_rot = (width/2) * s + (height/2) * c;
         }
 
-        glColor4f(color.r, color.g, color.b, color.a);
-        glTexCoord2f(0, 0);
-        glVertex2f(i->x - x_rot, i->y - y_rot);
-        glTexCoord2f(1, 0);
-        glVertex2f(i->x + y_rot, i->y - x_rot);
-        glTexCoord2f(1, 1);
-        glVertex2f(i->x + x_rot, i->y + y_rot);
-        glTexCoord2f(0, 1);
-        glVertex2f(i->x - y_rot, i->y + x_rot);
+        va.color(color);
+        va.texcoord(0, 0);
+        va.vertex(i->x - x_rot, i->y - y_rot);
+
+        va.color(color);
+        va.texcoord(1, 0);
+        va.vertex(i->x + y_rot, i->y - x_rot);
+
+        va.color(color);
+        va.texcoord(1, 1);
+        va.vertex(i->x + x_rot, i->y + y_rot);
+
+        va.color(color);
+        va.texcoord(0, 1);
+        va.vertex(i->x - y_rot, i->y + x_rot);
       }
     }
-    glEnd();
+    va.render(gc);
 
     glPopMatrix();
   }
 
   void prepare(TexturePtr screen_texture)
   {
-    OpenGLState state;
-    state.bind_texture(screen_texture);
-    state.activate();
+    VertexArrayDrawable va;
+    va.set_texture(screen_texture);
 
-    glBegin(GL_QUADS);
-    glTexCoord2f(0,600);
-    glVertex2f(0,0);
+    va.set_mode(GL_QUADS);
 
-    glTexCoord2f(800,600);
-    glVertex2f(800,0);
+    va.texcoord(0,600);
+    va.vertex(0,0);
 
-    glTexCoord2f(800, 0);
-    glVertex2f(800, 600);
+    va.texcoord(800,600);
+    va.vertex(800,0);
 
-    glTexCoord2f(0, 0);
-    glVertex2f(0,600);
-    glEnd();
+    va.texcoord(800, 0);
+    va.vertex(800, 600);
+
+    va.texcoord(0, 0);
+    va.vertex(0,600);
+
+#if 0
+    va.render(gc);
+#endif
   }
 
   bool needs_prepare() { return true; }

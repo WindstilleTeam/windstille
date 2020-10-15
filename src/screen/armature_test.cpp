@@ -93,8 +93,8 @@ ArmatureTest::draw(GraphicsContext& gc)
   glRotatef(yrot, 0.0f, 1.0f, 0.0f);
   glRotatef(zrot, 0.0f, 0.0f, 1.0f);
 
-  model->draw();
-  armature->draw();
+  model->draw(gc);
+  armature->draw(gc);
 
   glPopMatrix();
 

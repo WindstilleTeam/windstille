@@ -58,7 +58,7 @@ public:
           const Entity& entity,
           const Color& color = Color(1.0f, 1.0f, 1.0f));
 
-  void draw();
+  void draw(GraphicsContext& gc);
   void update(float delta);
 
 private:

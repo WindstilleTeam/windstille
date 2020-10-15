@@ -238,14 +238,15 @@ Sprite::get_offset() const
 }
 
 void
-Sprite::draw(const glm::vec2& pos) const
+Sprite::draw(GraphicsContext& gc, const glm::vec2& pos) const
 {
   SurfacePtr surface = current_action->surfaces[ static_cast<int> (frame) ];
-  surface->draw(SurfaceDrawingParameters()
-               .set_pos(pos + (current_action->offset * scale))
-               .set_blend_func(blend_sfactor, blend_dfactor)
-               .set_scale(scale)
-               .set_color(color));
+  surface->draw(gc,
+                SurfaceDrawingParameters()
+                .set_pos(pos + (current_action->offset * scale))
+                .set_blend_func(blend_sfactor, blend_dfactor)
+                .set_scale(scale)
+                .set_color(color));
 }
 
 void

@@ -133,6 +133,14 @@ VertexArrayDrawable::vertex(const glm::vec2& vec, float z)
 }
 
 void
+VertexArrayDrawable::vertex(int x, int y, int z)
+{
+  vertex(static_cast<float>(x),
+         static_cast<float>(y),
+         static_cast<float>(z));
+}
+
+void
 VertexArrayDrawable::vertex(float x, float y, float z)
 {
   vertices.push_back(x + pos.x);

@@ -97,11 +97,13 @@ Sprite3DView::draw(GraphicsContext& gc)
   for(int i = 0; i < int(actions.size()); ++i)
   {
     if (i == current_action)
-      g_app.fonts().vera12->draw(glm::vec2(x, y),
-                                     actions[i], Color(1.0f, 1.0f, 1.0f));
+      g_app.fonts().vera12->draw(gc,
+                                 glm::vec2(x, y),
+                                 actions[i], Color(1.0f, 1.0f, 1.0f));
     else
-      g_app.fonts().vera12->draw(glm::vec2(x, y),
-                                     actions[i], Color(0.7f, 0.7f, 0.7f));
+      g_app.fonts().vera12->draw(gc,
+                                 glm::vec2(x, y),
+                                 actions[i], Color(0.7f, 0.7f, 0.7f));
 
     y += static_cast<float>(line_height);
     if (y > 580.0f)

@@ -183,7 +183,7 @@ Mesh::~Mesh()
 }
 
 void
-Mesh::draw()
+Mesh::draw(GraphicsContext& gc)
 {
   //std::cout << "Mesh: Drawing: " << vertices.size() << std::endl;
   OpenGLState state;

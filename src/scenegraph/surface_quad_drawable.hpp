@@ -49,30 +49,29 @@ public:
 
   void render(GraphicsContext& gc, unsigned int mask) override
   {
-    OpenGLState state;
-    state.enable(GL_BLEND);
-    state.set_blend_func(m_params.blendfunc_src, m_params.blendfunc_dst);
-    state.bind_texture(m_surface->get_texture());
-    state.activate();
+    VertexArrayDrawable va;
+
+    va.set_blend_func(m_params.blendfunc_src, m_params.blendfunc_dst);
+    va.set_texture(m_surface->get_texture());
 
     glPushMatrix();
     glMultMatrixf(glm::value_ptr(modelview));
 
-    glBegin(GL_QUADS);
+    va.set_mode(GL_QUADS);
     {
-      glTexCoord2f(m_surface->get_uv().left(), m_surface->get_uv().top());
-      glVertex2f(pos.x + m_quad.p1.x, pos.y + m_quad.p1.y);
+      va.texcoord(m_surface->get_uv().left(), m_surface->get_uv().top());
+      va.vertex(pos.x + m_quad.p1.x, pos.y + m_quad.p1.y);
 
-      glTexCoord2f(m_surface->get_uv().right(), m_surface->get_uv().top());
-      glVertex2f(pos.x + m_quad.p2.x, pos.y + m_quad.p2.y);
+      va.texcoord(m_surface->get_uv().right(), m_surface->get_uv().top());
+      va.vertex(pos.x + m_quad.p2.x, pos.y + m_quad.p2.y);
 
-      glTexCoord2f(m_surface->get_uv().right(), m_surface->get_uv().bottom());
-      glVertex2f(pos.x + m_quad.p3.x, pos.y + m_quad.p3.y);
+      va.texcoord(m_surface->get_uv().right(), m_surface->get_uv().bottom());
+      va.vertex(pos.x + m_quad.p3.x, pos.y + m_quad.p3.y);
 
-      glTexCoord2f(m_surface->get_uv().left(), m_surface->get_uv().bottom());
-      glVertex2f(pos.x + m_quad.p4.x, pos.y + m_quad.p4.y);
+      va.texcoord(m_surface->get_uv().left(), m_surface->get_uv().bottom());
+      va.vertex(pos.x + m_quad.p4.x, pos.y + m_quad.p4.y);
     }
-    glEnd();
+    va.render(gc);
 
     glPopMatrix();
   }

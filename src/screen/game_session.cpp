@@ -156,9 +156,9 @@ GameSessionImpl::draw(GraphicsContext& gc)
   {
     int border_size = static_cast<int>(75 * cutscene_value);
     gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, 0), geom::isize(gc.size().width(), border_size))),
-                       Color(0.0f, 0.0f, 0.0f, cutscene_value));
+                 Color(0.0f, 0.0f, 0.0f, cutscene_value));
     gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, gc.size().height() - border_size), geom::isize(gc.size().width(), border_size))),
-                       Color(0.0f, 0.0f, 0.0f, cutscene_value));
+                 Color(0.0f, 0.0f, 0.0f, cutscene_value));
   }
 
   if (current_gui)
@@ -167,18 +167,18 @@ GameSessionImpl::draw(GraphicsContext& gc)
   if (fade_state == FADEOUT || fade_state == FADEIN)
   {
     gc.fill_rect(geom::frect(geom::irect(0, 0,
-                                  gc.size().width(), gc.size().height())),
-                       Color(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
+                                         gc.size().width(), gc.size().height())),
+                 Color(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
   }
 
-  speech_manager.draw();
+  speech_manager.draw(gc);
 
   if (pause)
   {
     if ((SDL_GetTicks() / 1000) % 2)
-      g_app.fonts().vera20->draw(glm::vec2(static_cast<float>(gc.size().width())  / 2.0f,
-                                              static_cast<float>(gc.size().height()) / 2.0f),
-                                     "Pause");
+      g_app.fonts().vera20->draw(gc, glm::vec2(static_cast<float>(gc.size().width())  / 2.0f,
+                                               static_cast<float>(gc.size().height()) / 2.0f),
+                                 "Pause");
   }
 }
 

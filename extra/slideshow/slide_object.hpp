@@ -44,7 +44,7 @@ public:
   SlideObject(const std::filesystem::path& filename,
               SurfaceManager& surface_manager);
 
-  void draw(float relative_time);
+  void draw(GraphicsContext& gc, float relative_time);
 
   float length() const;
   float begin() const;

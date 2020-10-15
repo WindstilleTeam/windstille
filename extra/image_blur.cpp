@@ -112,7 +112,7 @@ int app_main(int argc, char** argv)
           //std::cout << event.motion.x << ", " << event.motion.y << std::endl;
           last_pos = pos;
           pos = glm::vec2(1024.0f - static_cast<float>(event.motion.x),
-                         576.0f - static_cast<float>(event.motion.y));
+                          576.0f - static_cast<float>(event.motion.y));
           break;
 
         default:
@@ -151,7 +151,8 @@ int app_main(int argc, char** argv)
             n = 1.0f / n;
           }
 
-          surface->draw(SurfaceDrawingParameters()
+          surface->draw(gc,
+                        SurfaceDrawingParameters()
                         .set_scale(1.0f)
                         .set_pos(pos - glm::vec2(surface->get_width()/2, surface->get_height()/2))
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
@@ -163,7 +164,8 @@ int app_main(int argc, char** argv)
         int n = 32;
         for(int i = 0; i < n; ++i)
         {
-          surface->draw(SurfaceDrawingParameters()
+          surface->draw(gc,
+                        SurfaceDrawingParameters()
                         .set_scale(1.0f)
                         .set_pos((static_cast<float>(i)/static_cast<float>(n-1)) * pos
                                  + (static_cast<float>(n-i-1)/static_cast<float>(n-1)) * last_pos
@@ -180,10 +182,11 @@ int app_main(int argc, char** argv)
       {
         float scale = 1.0f + static_cast<float>(i) / static_cast<float>(n) * ray_length;
         if ((true))
-          surface->draw(SurfaceDrawingParameters()
+          surface->draw(gc,
+                        SurfaceDrawingParameters()
                         .set_scale(scale)
                         .set_pos(glm::vec2(512, 288) - glm::vec2(surface->get_width()/2 * scale,
-                                                               surface->get_height()/2 * scale)
+                                                                 surface->get_height()/2 * scale)
                                  + (glm::vec2(512, 288) - pos) * scale * 3.0f)
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                         .set_color(Color(1.0f, 1.0f, 1.0f, static_cast<float>(1)/static_cast<float>(n))));
@@ -192,13 +195,14 @@ int app_main(int argc, char** argv)
         {
           scale = 1.0f;
           //std::cout << "Black: " << pos << std::endl;
-          surface_2->draw(SurfaceDrawingParameters()
-                         .set_scale(scale)
-                         .set_pos(glm::vec2(512, 288) - glm::vec2(surface_2->get_width()/2 * scale,
-                                                                surface_2->get_height()/2 * scale)
-                                  + (glm::vec2(512, 288) - pos) * scale * 3.0f)
-                         .set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-                         .set_color(Color(1.0f, 1.0f, 1.0f, 1.0f)));
+          surface_2->draw(gc,
+                          SurfaceDrawingParameters()
+                          .set_scale(scale)
+                          .set_pos(glm::vec2(512, 288) - glm::vec2(surface_2->get_width()/2 * scale,
+                                                                   surface_2->get_height()/2 * scale)
+                                   + (glm::vec2(512, 288) - pos) * scale * 3.0f)
+                          .set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+                          .set_color(Color(1.0f, 1.0f, 1.0f, 1.0f)));
         }
       }
     }

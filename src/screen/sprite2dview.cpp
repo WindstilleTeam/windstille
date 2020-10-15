@@ -129,16 +129,16 @@ Sprite2DView::draw(GraphicsContext& gc)
     case SLIDESHOW:
       if (aspect > 4.0f / 3.0f)
       {
-        sprite.draw(glm::vec2(-offset, 0));
+        sprite.draw(gc, glm::vec2(-offset, 0));
       }
       else
       {
-        sprite.draw(glm::vec2(0, -offset));
+        sprite.draw(gc, glm::vec2(0, -offset));
       }
 
       if (new_sprite)
       {
-        new_sprite.draw(glm::vec2(0,0));
+        new_sprite.draw(gc, glm::vec2(0,0));
       }
 
       if (show_thumbnail)
@@ -156,8 +156,8 @@ Sprite2DView::draw(GraphicsContext& gc)
           h *= s;
           small.set_scale(s);
 
-          small.draw(glm::vec2(DISPLAY_W - w,
-                              DISPLAY_H - h));
+          small.draw(gc, glm::vec2(DISPLAY_W - w,
+                                   DISPLAY_H - h));
         }
         else
         {
@@ -167,15 +167,15 @@ Sprite2DView::draw(GraphicsContext& gc)
           h *= s;
           small.set_scale(s);
 
-          small.draw(glm::vec2(DISPLAY_W - w,
-                              DISPLAY_H - h));
+          small.draw(gc, glm::vec2(DISPLAY_W - w,
+                                   DISPLAY_H - h));
         }
       }
       break;
 
     case MANUAL:
       sprite.set_scale(zoom);
-      sprite.draw(pos);
+      sprite.draw(gc, pos);
       break;
   }
 }

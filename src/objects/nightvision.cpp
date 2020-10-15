@@ -71,13 +71,13 @@ Nightvision::draw(SceneContext& sc)
     array->vertex(0, 0);
 
     array->texcoord(u + w, v);
-    array->vertex(static_cast<float>(g_app.window().get_gc().size().width()), 0);
+    array->vertex(g_app.window().get_gc().size().width(), 0);
 
     array->texcoord(u + w, v + h);
-    array->vertex(static_cast<float>(g_app.window().get_gc().size().width()), static_cast<float>(g_app.window().get_gc().size().height()));
+    array->vertex(g_app.window().get_gc().size().width(), g_app.window().get_gc().size().height());
 
     array->texcoord(u, v + h);
-    array->vertex(0, static_cast<float>(g_app.window().get_gc().size().height()));
+    array->vertex(0, g_app.window().get_gc().size().height());
 
     if ((false)) // second noise level
     {
@@ -86,16 +86,17 @@ Nightvision::draw(SceneContext& sc)
       float size = 4.0f;
 
       array->texcoord(u, v);
-      array->vertex(0, 0, 1.0f);
+      array->vertex(0, 0, 1);
 
       array->texcoord(u + size, v);
-      array->vertex(static_cast<float>(g_app.window().get_gc().size().width()), 0.0f, 1.0f);
+      array->vertex(g_app.window().get_gc().size().width(), 0, 1);
 
       array->texcoord(u + size, v + size);
-      array->vertex(static_cast<float>(g_app.window().get_gc().size().width()), static_cast<float>(g_app.window().get_gc().size().height()), 1.0f);
+      array->vertex(g_app.window().get_gc().size().width(),
+                    g_app.window().get_gc().size().height(), 1);
 
       array->texcoord(u, v + size);
-      array->vertex(0.0f, static_cast<float>(g_app.window().get_gc().size().height()), 1.0f);
+      array->vertex(0, g_app.window().get_gc().size().height(), 1);
     }
 
     sc.light().draw(std::move(array));

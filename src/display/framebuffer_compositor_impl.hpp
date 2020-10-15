@@ -34,7 +34,7 @@ public:
   void render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& state) override;
 
 private:
-  void render_lightmap(SceneContext& /*sc*/, SceneGraph* /*sg*/);
+  void render_lightmap(GraphicsContext& gc, SceneContext& /*sc*/, SceneGraph* /*sg*/);
 
 private:
   FramebufferCompositorImpl(const FramebufferCompositorImpl&);

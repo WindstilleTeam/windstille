@@ -49,10 +49,11 @@ public:
 
     glm::vec3 p = glm::vec3(modelview * glm::vec4(pos.x, pos.y, 0.0f, 1.0f));
 
-    surface->draw(SurfaceDrawingParameters()
-                 .set_angle(angle)
-                 .set_pos(glm::vec2(p.x - surface->get_width()/2,
-                                   p.y - surface->get_height()/2)));
+    surface->draw(gc,
+                  SurfaceDrawingParameters()
+                  .set_angle(angle)
+                  .set_pos(glm::vec2(p.x - surface->get_width()/2,
+                                     p.y - surface->get_height()/2)));
 
     glPopMatrix();
   }

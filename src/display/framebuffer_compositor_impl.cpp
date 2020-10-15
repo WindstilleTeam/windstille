@@ -25,6 +25,7 @@
 #include "display/opengl_state.hpp"
 #include "display/scene_context.hpp"
 #include "scenegraph/scene_graph.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
 static const int LIGHTMAP_DIV = 4;
 
@@ -36,31 +37,28 @@ FramebufferCompositorImpl::FramebufferCompositorImpl(const geom::isize& window, 
 }
 
 void
-FramebufferCompositorImpl::render_lightmap(SceneContext& /*sc*/, SceneGraph* /*sg*/)
+FramebufferCompositorImpl::render_lightmap(GraphicsContext& gc, SceneContext& /*sc*/, SceneGraph* /*sg*/)
 {
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  state.bind_texture(m_lightmap->get_texture());
+  va.set_texture(m_lightmap->get_texture());
+  va.set_blend_func(GL_DST_COLOR, GL_ZERO); // multiply the lightmap with the screen
 
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_DST_COLOR, GL_ZERO); // multiply the lightmap with the screen
-  state.activate();
-
-  glBegin(GL_QUADS);
+  va.set_mode(GL_QUADS);
   {
-    glTexCoord2i(0, 1);
-    glVertex2i(0, 0);
+    va.texcoord(0, 1);
+    va.vertex(0, 0);
 
-    glTexCoord2i(1, 1);
-    glVertex2i(m_viewport.width(), 0);
+    va.texcoord(1, 1);
+    va.vertex(m_viewport.width(), 0);
 
-    glTexCoord2i(1, 0);
-    glVertex2i(m_viewport.width(), m_viewport.height());
+    va.texcoord(1, 0);
+    va.vertex(m_viewport.width(), m_viewport.height());
 
-    glTexCoord2i(0, 0);
-    glVertex2i(0, m_viewport.height());
+    va.texcoord(0, 0);
+    va.vertex(0, m_viewport.height());
   }
-  glEnd();
+  va.render(gc);
 }
 
 void
@@ -115,7 +113,7 @@ FramebufferCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGr
 
     if (sc.get_render_mask() & SceneContext::LIGHTMAP)
     { // Renders the lightmap to the screen
-      render_lightmap(sc, sg);
+      render_lightmap(gc, sc, sg);
     }
 
     if (sc.get_render_mask() & SceneContext::HIGHLIGHTMAP)
@@ -150,27 +148,25 @@ FramebufferCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGr
   if (1)
   {
     // Render the screen framebuffer to the actual screen
-    OpenGLState state;
+    VertexArrayDrawable va;
 
-    state.bind_texture(m_screen->get_texture(), 0);
+    va.set_texture(m_screen->get_texture() /*, 0*/);
 
-    state.activate();
-
-    glBegin(GL_QUADS);
+    va.set_mode(GL_QUADS);
     {
-      glTexCoord2i(0, 1);
-      glVertex2i(0, 0);
+      va.texcoord(0, 1);
+      va.vertex(0, 0);
 
-      glTexCoord2i(1, 1);
-      glVertex2i(m_viewport.width(), 0);
+      va.texcoord(1, 1);
+      va.vertex(m_viewport.width(), 0);
 
-      glTexCoord2i(1, 0);
-      glVertex2i(m_viewport.width(), m_viewport.height());
+      va.texcoord(1, 0);
+      va.vertex(m_viewport.width(), m_viewport.height());
 
-      glTexCoord2i(0, 0);
-      glVertex2i(0.0f, m_viewport.height());
+      va.texcoord(0, 0);
+      va.vertex(0, m_viewport.height());
     }
-    glEnd();
+    va.render(gc);
   }
 
   // Clear all DrawingContexts

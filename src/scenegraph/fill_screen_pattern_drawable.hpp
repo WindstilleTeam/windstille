@@ -22,6 +22,7 @@
 #include "display/opengl_state.hpp"
 #include "display/texture.hpp"
 #include "scenegraph/drawable.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
 class FillScreenPatternDrawable : public Drawable
 {
@@ -45,12 +46,6 @@ public:
 
   void render(GraphicsContext& gc, unsigned int mask) override
   {
-    OpenGLState state;
-    state.enable(GL_BLEND);
-    state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    state.bind_texture(m_texture);
-    state.activate();
-
     float u = static_cast<float>(gc.size().width())  / static_cast<float>(m_texture->get_width());
     float v = static_cast<float>(gc.size().height()) / static_cast<float>(m_texture->get_height());
 
@@ -60,24 +55,29 @@ public:
     u -= m_offset.x / static_cast<float>(m_texture->get_width());
     v -= m_offset.y / static_cast<float>(m_texture->get_height());
 
+    VertexArrayDrawable va;
+
+    va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    va.set_texture(m_texture);
+
     glPushMatrix();
     glLoadIdentity();
 
-    glBegin(GL_QUADS);
+    va.set_mode(GL_QUADS);
     {
-      glTexCoord2f(u_start, v_start);
-      glVertex2f(0, 0);
+      va.texcoord(u_start, v_start);
+      va.vertex(0, 0);
 
-      glTexCoord2f(u, v_start);
-      glVertex2f(static_cast<float>(gc.size().width()), 0);
+      va.texcoord(u, v_start);
+      va.vertex(gc.size().width(), 0);
 
-      glTexCoord2f(u, v);
-      glVertex2f(static_cast<float>(gc.size().width()), static_cast<float>(gc.size().height()));
+      va.texcoord(u, v);
+      va.vertex(gc.size().width(), gc.size().height());
 
-      glTexCoord2f(u_start, v);
-      glVertex2f(0,  static_cast<float>(gc.size().height()));
+      va.texcoord(u_start, v);
+      va.vertex(0, gc.size().height());
     }
-    glEnd();
+    va.render(gc);
 
     glPopMatrix();
   }

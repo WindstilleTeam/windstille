@@ -452,7 +452,7 @@ GraphicsContext::draw_grid(const glm::vec2& offset, const geom::fsize& size, con
   for(float x = start_x; x < static_cast<float>(m_aspect_size.width()); x += size.width())
   {
     va.color(rgba);
-    va.vertex(x, 0);
+    va.vertex(x, 0.0f);
 
     va.color(rgba);
     va.vertex(x, static_cast<float>(m_aspect_size.height()));
@@ -461,13 +461,13 @@ GraphicsContext::draw_grid(const glm::vec2& offset, const geom::fsize& size, con
   for(float y = start_y; y < static_cast<float>(m_aspect_size.height()); y += size.height())
   {
     va.color(rgba);
-    va.vertex(0, y);
+    va.vertex(0.0f, y);
 
     va.color(rgba);
     va.vertex(static_cast<float>(m_aspect_size.width()), y);
   }
 
-  va.render(*this, ~0u);
+  va.render(*this);
 }
 
 void

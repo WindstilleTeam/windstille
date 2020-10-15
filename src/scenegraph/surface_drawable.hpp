@@ -51,7 +51,7 @@ public:
     glPushMatrix();
     glMultMatrixf(glm::value_ptr(modelview));
 
-    surface->draw(params);
+    surface->draw(gc, params);
 
     glPopMatrix();
   }

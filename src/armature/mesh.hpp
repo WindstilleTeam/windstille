@@ -30,6 +30,7 @@
 
 class Armature;
 class Bone;
+class GraphicsContext;
 class TextureManager;
 
 struct VertexGroup
@@ -96,7 +97,7 @@ public:
        TextureManager& texture_manager);
   ~Mesh();
 
-  void draw();
+  void draw(GraphicsContext& gc);
   void apply(Armature* armature);
   void reset();
 private:

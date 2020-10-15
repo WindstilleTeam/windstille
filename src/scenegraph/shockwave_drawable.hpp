@@ -23,6 +23,8 @@
 
 #include <glm/ext.hpp>
 
+#include "scenegraph/vertex_array_drawable.hpp"
+
 class ShockwaveDrawable : public Drawable
 {
 public:
@@ -72,8 +74,9 @@ public:
     }
 
     int count = int(radius);
-    OpenGLState state;
-    state.bind_texture(screen_texture, 0);
+
+    VertexArrayDrawable va;
+    va.set_texture(screen_texture, 0);
     state.activate();
 
     float rad = static_cast<float>(count)*2.0f + 20.0f; // enlarge radius by 20.0f to handle texture displacement
@@ -83,9 +86,7 @@ public:
 
     int segments = 64;
 
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-    glBegin(GL_QUADS);
+    va.set_mode(GL_QUADS);
     for (int i = 0; i < segments; ++i)
     {
       float angel = glm::two_pi<float>() / static_cast<float>(segments);
@@ -96,11 +97,13 @@ public:
       float x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
       float y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
 
-      glTexCoord2f(x1+256, (y1+256));
-      glVertex3f(x1+256, y1+256, 0);
+      va.color(1.0f, 1.0f, 1.0f, 1.0f);
+      va.texcoord(x1+256, (y1+256));
+      va.vertex(x1+256, y1+256, 0);
 
-      glTexCoord2f(x2+256, (y2+256));
-      glVertex3f(x2+256, y2+256, 0);
+      va.color(1.0f, 1.0f, 1.0f, 1.0f);
+      va.texcoord(x2+256, (y2+256));
+      va.vertex(x2+256, y2+256, 0);
 
       float x3 =  sinf(angel*static_cast<float>(i))*minradius;
       float y3 = -cosf(angel*static_cast<float>(i))*minradius;
@@ -108,10 +111,13 @@ public:
       float x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
       float y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
 
-      glTexCoord2f(x4+256, (y4+256));
-      glVertex3f(x4+256, y4+256, 0);
-      glTexCoord2f(x3+256, (y3+256));
-      glVertex3f(x3+256, y3+256, 0);
+      va.color(1.0f, 1.0f, 1.0f, 1.0f);
+      va.texcoord(x4+256, (y4+256));
+      va.vertex(x4+256, y4+256, 0);
+
+      va.color(1.0f, 1.0f, 1.0f, 1.0f);
+      va.texcoord(x3+256, (y3+256));
+      va.vertex(x3+256, y3+256, 0);
     }
     glEnd();
 
@@ -133,31 +139,30 @@ public:
     {
       geom::frect rect(0, 0, 800, 600);
       // Render the screen framebuffer to the actual screen
-      OpenGLState state;
-      state.bind_texture(tmp_texture, 0);
-      state.activate();
+      VertexArrayDrawable va;
+      va.set_texture(tmp_texture, 0);
 
-      glBegin(GL_QUADS);
+      va.set_mode(GL_QUADS);
 
-      glTexCoord2f(rect.left, rect.bottom);
-      glVertex2f(rect.left/2.0f, rect.bottom/2.0f);
+      va.texcoord(rect.left, rect.bottom);
+      va.vertex(rect.left/2.0f, rect.bottom/2.0f);
 
-      glTexCoord2f(rect.right, rect.bottom);
-      glVertex2f(rect.right/2.0f, rect.bottom/2.0f);
+      va.texcoord(rect.right, rect.bottom);
+      va.vertex(rect.right/2.0f, rect.bottom/2.0f);
 
-      glTexCoord2f(rect.right, rect.top);
-      glVertex2f(rect.right/2.0f, rect.top/2.0f);
+      va.texcoord(rect.right, rect.top);
+      va.vertex(rect.right/2.0f, rect.top/2.0f);
 
-      glTexCoord2f(rect.left, rect.top);
-      glVertex2f(rect.left/2.0f, rect.top/2.0f);
+      va.texcoord(rect.left, rect.top);
+      va.vertex(rect.left/2.0f, rect.top/2.0f);
 
-      glEnd();
+      va.render(gc);
     }
     else
     {
-      OpenGLState state;
-      state.bind_texture(tmp_texture, 0);
-      state.bind_texture(noise, 1);
+      VertexArrayDrawable va;
+      va.set_texture(tmp_texture, 0);
+      va.set_texture(noise, 1);
       state.enable(GL_BLEND);
       state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       state.activate();
@@ -166,14 +171,16 @@ public:
       shader_program.set_uniform1f("radius",   radius/512.0f*2.0f);
       shader_program.set_uniform1i("background_tex", 0);
       shader_program.set_uniform1i("noise_tex",   1);
-      draw_disc(int(radius));
+      draw_disc(va, int(radius));
+      va.render(gc);
+
       glUseProgram(0);
     }
     glPopMatrix();
 #endif
   }
 
-  void draw_disc(int count)
+  void draw_disc(VertexArrayDrawable& va, int count)
   {
     float rad = static_cast<float>(count)*2.0f;
     float minradius = 2.0f * static_cast<float>(count) - 164.0f;
@@ -182,7 +189,7 @@ public:
 
     int segments = 64;
 
-    glBegin(GL_QUADS);
+    va.set_mode(GL_QUADS);
     for (int i = 0; i < segments; ++i)
     {
       float angel = glm::two_pi<float>() / static_cast<float>(segments);
@@ -193,12 +200,13 @@ public:
       float x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
       float y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
 
-      glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-      glTexCoord2f(x1/512.0f+0.5f, y1/512.0f+0.5f);
-      glVertex3f(x1+256, y1+256, 0);
+      va.color({1.0f, 1.0f, 1.0f, 1.0f});
+      va.texcoord(x1/512.0f+0.5f, y1/512.0f+0.5f);
+      va.vertex(x1 + 256.0f, y1 + 256.0f, 0.0f);
 
-      glTexCoord2f(x2/512.0f+0.5f, y2/512.0f+0.5f);
-      glVertex3f(x2+256, y2+256, 0);
+      va.color({1.0f, 1.0f, 1.0f, 1.0f});
+      va.texcoord(x2/512.0f+0.5f, y2/512.0f+0.5f);
+      va.vertex(x2+256, y2+256, 0.0f);
 
       float x3 =  sinf(angel*static_cast<float>(i))*minradius;
       float y3 = -cosf(angel*static_cast<float>(i))*minradius;
@@ -206,13 +214,14 @@ public:
       float x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
       float y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
 
-      glColor4f(1.0f, 1.0f, 1.0f, 0.0f);
-      glTexCoord2f(x4/512.0f+0.5f, y4/512.0f+0.5f);
-      glVertex3f(x4+256, y4+256, 0);
-      glTexCoord2f(x3/512.0f+0.5f, y3/512.0f+0.5f);
-      glVertex3f(x3+256, y3+256, 0);
+      va.color({1.0f, 1.0f, 1.0f, 0.0f});
+      va.texcoord(x4/512.0f+0.5f, y4/512.0f+0.5f);
+      va.vertex(x4+256, y4+256, 0.0f);
+
+      va.color({1.0f, 1.0f, 1.0f, 0.0f});
+      va.texcoord(x3/512.0f+0.5f, y3/512.0f+0.5f);
+      va.vertex(x3+256, y3+256, 0.0f);
     }
-    glEnd();
   }
 };
 

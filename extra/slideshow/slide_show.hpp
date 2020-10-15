@@ -39,7 +39,7 @@ public:
   SlideShow(TextureManager& texture_manager,
             SurfaceManager& surface_manager);
 
-  void draw(float time, bool verbose);
+  void draw(GraphicsContext& gc, float time, bool verbose);
 
   bool done(float time) const;
 

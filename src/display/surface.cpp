@@ -23,6 +23,7 @@
 #include "display/opengl_state.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/surface_manager.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
 SurfacePtr
 Surface::create(TexturePtr texture, const geom::frect& uv, const geom::fsize& size)
@@ -94,42 +95,38 @@ Surface::get_uv() const
 }
 
 void
-Surface::draw(const glm::vec2& pos) const
+Surface::draw(GraphicsContext& gc, const glm::vec2& pos) const
 {
-  OpenGLState state;
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.bind_texture(m_texture);
-  state.activate();
+  VertexArrayDrawable va;
 
-  glBegin(GL_QUADS);
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  va.set_texture(m_texture);
 
-  glTexCoord2f(m_uv.left(), m_uv.top());
-  glVertex2f(pos.x, pos.y);
+  va.set_mode(GL_QUADS);
 
-  glTexCoord2f(m_uv.right(), m_uv.top());
-  glVertex2f(pos.x + m_size.width(), pos.y);
+  va.texcoord(m_uv.left(), m_uv.top());
+  va.vertex(pos.x, pos.y);
 
-  glTexCoord2f(m_uv.right(), m_uv.bottom());
-  glVertex2f(pos.x + m_size.width(), pos.y + m_size.height());
+  va.texcoord(m_uv.right(), m_uv.top());
+  va.vertex(pos.x + m_size.width(), pos.y);
 
-  glTexCoord2f(m_uv.left(), m_uv.bottom());
-  glVertex2f(pos.x, pos.y + m_size.height());
+  va.texcoord(m_uv.right(), m_uv.bottom());
+  va.vertex(pos.x + m_size.width(), pos.y + m_size.height());
 
-  glEnd();
+  va.texcoord(m_uv.left(), m_uv.bottom());
+  va.vertex(pos.x, pos.y + m_size.height());
+
+  va.render(gc);
 }
 
 void
-Surface::draw(const SurfaceDrawingParameters& params) const
+Surface::draw(GraphicsContext& gc, const SurfaceDrawingParameters& params) const
 {
-  OpenGLState state;
-  state.enable(GL_BLEND);
-  state.set_blend_func(params.blendfunc_src, params.blendfunc_dst);
-  state.bind_texture(m_texture);
-  state.color(params.color);
-  state.activate();
+  VertexArrayDrawable va;
+  va.set_blend_func(params.blendfunc_src, params.blendfunc_dst);
+  va.set_texture(m_texture);
 
-  glBegin(GL_QUADS);
+  va.set_mode(GL_QUADS);
 
   float uv_left = m_uv.left();
   float uv_top = m_uv.top();
@@ -151,19 +148,23 @@ Surface::draw(const SurfaceDrawingParameters& params) const
 
   quad.rotate(params.angle);
 
-  glTexCoord2f(uv_left, uv_top);
-  glVertex3f(quad.p1.x, quad.p1.y, params.z_pos);
+  va.color(params.color);
+  va.texcoord(uv_left, uv_top);
+  va.vertex(quad.p1.x, quad.p1.y, params.z_pos);
 
-  glTexCoord2f(uv_right, uv_top);
-  glVertex3f(quad.p2.x, quad.p2.y, params.z_pos);
+  va.color(params.color);
+  va.texcoord(uv_right, uv_top);
+  va.vertex(quad.p2.x, quad.p2.y, params.z_pos);
 
-  glTexCoord2f(uv_right, uv_bottom);
-  glVertex3f(quad.p3.x, quad.p3.y, params.z_pos);
+  va.color(params.color);
+  va.texcoord(uv_right, uv_bottom);
+  va.vertex(quad.p3.x, quad.p3.y, params.z_pos);
 
-  glTexCoord2f(uv_left, uv_bottom);
-  glVertex3f(quad.p4.x, quad.p4.y, params.z_pos);
+  va.color(params.color);
+  va.texcoord(uv_left, uv_bottom);
+  va.vertex(quad.p4.x, quad.p4.y, params.z_pos);
 
-  glEnd();
+  va.render(gc);
 }
 
 /* EOF */

@@ -34,7 +34,7 @@ public:
 
   Speech(int id, const std::string& text, const glm::vec2& pos, const Color& color);
 
-  void draw();
+  void draw(GraphicsContext& gc);
   void update(float delta);
   bool is_done() const;
 };
@@ -56,13 +56,14 @@ Speech::Speech(int id_, const std::string& text_, const glm::vec2& pos_, const C
 }
 
 void
-Speech::draw()
+Speech::draw(GraphicsContext& gc)
 {
   // Do not display any text for 0.1 seconds before we are doen, so
   // that we get an empty gap between succesive text on the screen,
   // which is needed to make text look more like natural speech.
-  if (seconds_passed < (seconds_till_done - .1f))
-    g_app.fonts().vera20->draw_center(pos, text, color);
+  if (seconds_passed < (seconds_till_done - .1f)) {
+    g_app.fonts().vera20->draw_center(gc, pos, text, color);
+  }
 }
 
 void
@@ -106,12 +107,13 @@ SpeechManager::add(const std::string& text, const glm::vec2& pos, const Color& c
 }
 
 void
-SpeechManager::draw()
+SpeechManager::draw(GraphicsContext& gc)
 {
   for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
   {
-    if (*i)
-      (*i)->draw();
+    if (*i) {
+      (*i)->draw(gc);
+    }
   }
 }
 

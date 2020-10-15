@@ -44,13 +44,14 @@ GroupComponent::draw(GraphicsContext& gc)
   if (!title.empty())
   {
     TTFFont* font = g_app.fonts().vera20.get();
-    font->draw_center(glm::vec2(rect.left() + rect.width() / 2.0f,
-                               rect.top()  + static_cast<float>(font->get_height()) + 5.0f),
+    font->draw_center(gc,
+                      glm::vec2(rect.left() + rect.width() / 2.0f,
+                                rect.top()  + static_cast<float>(font->get_height()) + 5.0f),
                       title, Color(1.0f, 1.0f, 1.0f));
 
     gc.fill_rect(geom::frect(rect.left()  + 8.0f, rect.top() + static_cast<float>(font->get_height()) + 16.0f,
                              rect.right() - 8.0f, rect.top() + static_cast<float>(font->get_height()) + 18.0f),
-                       Color(1.0f, 1.0f, 1.0f, 0.5f));
+                 Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 
   if (child)

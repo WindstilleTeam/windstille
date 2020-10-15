@@ -25,7 +25,8 @@
 #include "armature/model.hpp"
 #include "screen/screen.hpp"
 
-/** */
+class GraphicsContext;
+
 class ArmatureTest : public Screen
 {
 private:

@@ -31,6 +31,7 @@
 #include "display/software_surface.hpp"
 #include "font/text_drawable.hpp"
 #include "font/ttf_font.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
 TTFCharacter::TTFCharacter(const geom::irect& pos_,
                            const geom::frect& uv_,
@@ -173,50 +174,51 @@ TTFFont::get_height() const
 }
 
 void
-TTFFont::draw(const glm::vec2& pos_, const std::string& str, const Color& color)
+TTFFont::draw(GraphicsContext& gc, const glm::vec2& pos_, const std::string& str, const Color& color)
 {
   // FIXME: Little bit hacky to throw it just in
   glm::vec2 pos(truncf(pos_.x),
-               truncf(pos_.y));
+                truncf(pos_.y));
 
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.bind_texture(impl->texture);
-  state.color(color);
-  state.activate();
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  va.set_texture(impl->texture);
 
-  glBegin(GL_QUADS);
+  va.set_mode(GL_QUADS);
   for(std::string::const_iterator i = str.begin(); i != str.end(); ++i)
   {
     const TTFCharacter& character = impl->characters[*i];
 
-    glTexCoord2f(character.uv.left(), character.uv.top());
-    glVertex2f(pos.x + static_cast<float>(character.pos.left()),
-               pos.y + static_cast<float>(character.pos.top()));
+    va.color(color);
+    va.texcoord(character.uv.left(), character.uv.top());
+    va.vertex(pos.x + static_cast<float>(character.pos.left()),
+              pos.y + static_cast<float>(character.pos.top()));
 
-    glTexCoord2f(character.uv.right(), character.uv.top());
-    glVertex2f(pos.x + static_cast<float>(character.pos.right()),
-               pos.y + static_cast<float>(character.pos.top()));
+    va.color(color);
+    va.texcoord(character.uv.right(), character.uv.top());
+    va.vertex(pos.x + static_cast<float>(character.pos.right()),
+              pos.y + static_cast<float>(character.pos.top()));
 
-    glTexCoord2f(character.uv.right(), character.uv.bottom());
-    glVertex2f(pos.x + static_cast<float>(character.pos.right()),
-               pos.y + static_cast<float>(character.pos.bottom()));
+    va.color(color);
+    va.texcoord(character.uv.right(), character.uv.bottom());
+    va.vertex(pos.x + static_cast<float>(character.pos.right()),
+              pos.y + static_cast<float>(character.pos.bottom()));
 
-    glTexCoord2f(character.uv.left(), character.uv.bottom());
-    glVertex2f(pos.x + static_cast<float>(character.pos.left()),
-               pos.y + static_cast<float>(character.pos.bottom()));
+    va.color(color);
+    va.texcoord(character.uv.left(), character.uv.bottom());
+    va.vertex(pos.x + static_cast<float>(character.pos.left()),
+              pos.y + static_cast<float>(character.pos.bottom()));
 
     pos.x += static_cast<float>(character.advance);
   }
-  glEnd();
+  va.render(gc);
 }
 
 void
-TTFFont::draw_center(const glm::vec2& pos, const std::string& str, const Color& color)
+TTFFont::draw_center(GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const Color& color)
 {
-  draw(glm::vec2(pos.x - static_cast<float>(get_width(str))/2.0f, pos.y), str, color);
+  draw(gc, glm::vec2(pos.x - static_cast<float>(get_width(str))/2.0f, pos.y), str, color);
 }
 
 void

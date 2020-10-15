@@ -51,11 +51,11 @@ ListView::draw(GraphicsContext& gc)
   for(int i = 0; i < int(columns.size()); ++i)
   {
     // FIXME: Poor mans outline effect
-    font->draw_center(glm::vec2(x + columns[i].width/2 + 1, y - 1), columns[i].title);
-    font->draw_center(glm::vec2(x + columns[i].width/2 - 1, y - 1), columns[i].title);
-    font->draw_center(glm::vec2(x + columns[i].width/2 + 1, y + 1), columns[i].title);
-    font->draw_center(glm::vec2(x + columns[i].width/2 - 1, y + 1), columns[i].title);
-    font->draw_center(glm::vec2(x + columns[i].width/2, y), columns[i].title, Color(0.0f, 0.0f, 0.0f));
+    font->draw_center(gc, glm::vec2(x + columns[i].width/2 + 1, y - 1), columns[i].title);
+    font->draw_center(gc, glm::vec2(x + columns[i].width/2 - 1, y - 1), columns[i].title);
+    font->draw_center(gc, glm::vec2(x + columns[i].width/2 + 1, y + 1), columns[i].title);
+    font->draw_center(gc, glm::vec2(x + columns[i].width/2 - 1, y + 1), columns[i].title);
+    font->draw_center(gc, glm::vec2(x + columns[i].width/2, y), columns[i].title, Color(0.0f, 0.0f, 0.0f));
     x += columns[i].width;
   }
 
@@ -72,7 +72,7 @@ ListView::draw(GraphicsContext& gc)
 
     for(int i = 0; i < int(items[j].columns.size()) && i < int(columns.size()); ++i)
     {
-      font->draw(glm::vec2(x + padding, y), items[j].columns[i]);
+      font->draw(gc, glm::vec2(x + padding, y), items[j].columns[i]);
 
       x += columns[i].width;
     }

@@ -21,9 +21,10 @@
 #include <babyxml.hpp>
 
 #include "app/app.hpp"
+#include "display/graphics_context.hpp"
 #include "display/opengl_state.hpp"
 #include "font/fonts.hpp"
-#include "display/graphics_context.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
 struct TextAreaCommand
 {
@@ -174,20 +175,18 @@ TextArea::draw(GraphicsContext& gc)
                                      geom::fsize(8, impl->rect.height()*impl->rect.height()/height)),
                          4.0f, Color(1.0f, 1.0f, 1.0f, 0.25f));
   }
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  state.bind_texture(impl->font->get_texture());
+  va.set_texture(impl->font->get_texture());
 
-  state.enable(GL_BLEND);
-  state.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  state.activate();
+  va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glPushMatrix();
   glTranslatef(impl->rect.left(),
                impl->rect.top() + static_cast<float>(impl->font->get_height()) - impl->scroll_offset,
                0.0f);
 
-  glBegin(GL_QUADS);
+  va.set_mode(GL_QUADS);
 
   int x_pos = 0;
   int y_pos = 0;
@@ -315,22 +314,24 @@ TextArea::draw(GraphicsContext& gc)
                 float scale = 0.6f;
                 if (draw_it)
                 {
-                  glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
-                  glTexCoord2f(character.uv.left(), character.uv.top());
-                  glVertex2f(x + scale * static_cast<float>(character.pos.left()),
+                  va.color(top_color);
+                  va.texcoord(character.uv.left(), character.uv.top());
+                  va.vertex(x + scale * static_cast<float>(character.pos.left()),
                              y + scale * static_cast<float>(character.pos.top()));
 
-                  glTexCoord2f(character.uv.right(), character.uv.top());
-                  glVertex2f(x + scale * static_cast<float>(character.pos.right()),
+                  va.color(top_color);
+                  va.texcoord(character.uv.right(), character.uv.top());
+                  va.vertex(x + scale * static_cast<float>(character.pos.right()),
                              y + scale * static_cast<float>(character.pos.top()));
 
-                  glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
-                  glTexCoord2f(character.uv.right(), character.uv.bottom());
-                  glVertex2f(x + scale * static_cast<float>(character.pos.right()),
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.right(), character.uv.bottom());
+                  va.vertex(x + scale * static_cast<float>(character.pos.right()),
                              y + scale * static_cast<float>(character.pos.bottom()));
 
-                  glTexCoord2f(character.uv.left(), character.uv.bottom());
-                  glVertex2f(x + scale * static_cast<float>(character.pos.left()),
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.left(), character.uv.bottom());
+                  va.vertex(x + scale * static_cast<float>(character.pos.left()),
                              y + scale * static_cast<float>(character.pos.bottom()));
                 }
                 x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
@@ -340,22 +341,24 @@ TextArea::draw(GraphicsContext& gc)
                 float scale = 2.0f;
                 if (draw_it)
                 {
-                  glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
-                  glTexCoord2f(character.uv.left(), character.uv.top());
-                  glVertex2f(x + scale * static_cast<float>(character.pos.left()),
+                  va.color(top_color);
+                  va.texcoord(character.uv.left(), character.uv.top());
+                  va.vertex(x + scale * static_cast<float>(character.pos.left()),
                              y + static_cast<float>(character.pos.top()));
 
-                  glTexCoord2f(character.uv.right(), character.uv.top());
-                  glVertex2f(x + scale * static_cast<float>(character.pos.right()),
+                  va.color(top_color);
+                  va.texcoord(character.uv.right(), character.uv.top());
+                  va.vertex(x + scale * static_cast<float>(character.pos.right()),
                              y + static_cast<float>(character.pos.top()));
 
-                  glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
-                  glTexCoord2f(character.uv.right(), character.uv.bottom());
-                  glVertex2f(x + scale * static_cast<float>(character.pos.right()),
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.right(), character.uv.bottom());
+                  va.vertex(x + scale * static_cast<float>(character.pos.right()),
                              y + static_cast<float>(character.pos.bottom()));
 
-                  glTexCoord2f(character.uv.left(), character.uv.bottom());
-                  glVertex2f(x + scale * static_cast<float>(character.pos.left()),
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.left(), character.uv.bottom());
+                  va.vertex(x + scale * static_cast<float>(character.pos.left()),
                              y + static_cast<float>(character.pos.bottom()));
                 }
                 x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
@@ -364,22 +367,24 @@ TextArea::draw(GraphicsContext& gc)
               {
                 if (draw_it)
                 {
-                  glColor4f(top_color.r, top_color.g, top_color.b, top_color.a);
-                  glTexCoord2f(character.uv.left(), character.uv.top());
-                  glVertex2f(x + static_cast<float>(character.pos.left()),
+                  va.color(top_color);
+                  va.texcoord(character.uv.left(), character.uv.top());
+                  va.vertex(x + static_cast<float>(character.pos.left()),
                              y + static_cast<float>(character.pos.top()));
 
-                  glTexCoord2f(character.uv.right(), character.uv.top());
-                  glVertex2f(x + static_cast<float>(character.pos.right()),
+                  va.color(top_color);
+                  va.texcoord(character.uv.right(), character.uv.top());
+                  va.vertex(x + static_cast<float>(character.pos.right()),
                              y + static_cast<float>(character.pos.top()));
 
-                  glColor4f(bottom_color.r, bottom_color.g, bottom_color.b, bottom_color.a);
-                  glTexCoord2f(character.uv.right(), character.uv.bottom());
-                  glVertex2f(x + static_cast<float>(character.pos.right()),
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.right(), character.uv.bottom());
+                  va.vertex(x + static_cast<float>(character.pos.right()),
                              y + static_cast<float>(character.pos.bottom()));
 
-                  glTexCoord2f(character.uv.left(), character.uv.bottom());
-                  glVertex2f(x + static_cast<float>(character.pos.left()),
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.left(), character.uv.bottom());
+                  va.vertex(x + static_cast<float>(character.pos.left()),
                              y + static_cast<float>(character.pos.bottom()));
                 }
                 x_pos += character.advance;
@@ -403,7 +408,7 @@ TextArea::draw(GraphicsContext& gc)
   if (i == impl->commands.end())
     impl->progress_complete = true;
 
-  glEnd();
+  va.render(gc);
   glPopMatrix();
 
   impl->cursor_pos = glm::vec2(static_cast<float>(x_pos) + impl->rect.left(),

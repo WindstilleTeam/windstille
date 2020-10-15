@@ -40,7 +40,7 @@ public:
   void render(GraphicsContext& gc, unsigned int mask) override {
     glPushMatrix();
     glMultMatrixf(glm::value_ptr(modelview));
-    m_font.draw(pos, text);
+    m_font.draw(gc, pos, text);
     glPopMatrix();
   }
 };

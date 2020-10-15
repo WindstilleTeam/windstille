@@ -72,7 +72,7 @@ public:
   int run();
 
   void process_input();
-  void draw();
+  void draw(GraphicsContext& gc);
 
 private:
   Lensflare(const Lensflare&);

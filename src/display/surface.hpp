@@ -23,6 +23,7 @@
 
 #include "display/texture.hpp"
 
+class GraphicsContext;
 class SurfaceDrawingParameters;
 class Surface;
 
@@ -63,8 +64,8 @@ public:
   /** Returns texture coordinates for the Surface rectangle */
   geom::frect get_uv() const;
 
-  void draw(const glm::vec2& pos) const;
-  void draw(const SurfaceDrawingParameters& params) const;
+  void draw(GraphicsContext& gc, const glm::vec2& pos) const;
+  void draw(GraphicsContext& gc, const SurfaceDrawingParameters& params) const;
 
 private:
   /**

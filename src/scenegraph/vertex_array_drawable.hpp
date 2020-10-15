@@ -41,9 +41,10 @@ public:
   VertexArrayDrawable();
   VertexArrayDrawable(const glm::vec2& pos_, float z_pos_, const glm::mat4& modelview_);
 
-  void render(GraphicsContext& gc, unsigned int mask) override;
+  void render(GraphicsContext& gc, unsigned int mask = ~0u) override;
   void render(GraphicsContext& gc, int start, int end);
 
+  void vertex(int x, int y, int z = 0);
   void vertex(float x, float y, float z = 0.0f);
   void vertex(const glm::vec2& vec, float z = 0.0f);
 

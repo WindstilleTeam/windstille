@@ -34,7 +34,7 @@ SlideShow::SlideShow(TextureManager& texture_manager,
 }
 
 void
-SlideShow::draw(float time, bool verbose)
+SlideShow::draw(GraphicsContext& gc, float time, bool verbose)
 {
   bool cleanup = false;
 
@@ -55,7 +55,7 @@ SlideShow::draw(float time, bool verbose)
         std::cout << obj->get_filename() << std::endl;
       }
 
-      obj->draw(relative_time);
+      obj->draw(gc, relative_time);
     }
     else if (time < obj->begin()-60.0f || obj->end()+60.0f < time)
     { // unload anything that 60 seconds away from the current time pos

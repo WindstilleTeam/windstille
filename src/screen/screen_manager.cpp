@@ -309,7 +309,7 @@ ScreenManager::draw_fps(GraphicsContext& gc)
 
   std::ostringstream out;
   out << "FPS: " << last_fps;
-  g_app.fonts().ttffont->draw(glm::vec2(static_cast<float>(gc.size().width()) - 100.0f, 30.0f), out.str());
+  g_app.fonts().ttffont->draw(gc, glm::vec2(static_cast<float>(gc.size().width()) - 100.0f, 30.0f), out.str());
 }
 
 void

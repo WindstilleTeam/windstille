@@ -30,6 +30,7 @@
 #include "display/graphics_context.hpp"
 #include "display/color.hpp"
 #include "armature/pose.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
 Armature::Armature(ReaderDocument const& doc) :
   name(),
@@ -122,24 +123,25 @@ Armature::get_bone(const std::string& name_)
 }
 
 void
-Armature::draw()
+Armature::draw(GraphicsContext& gc)
 {
   // For some reason OpenGL sometimes doesn't draw the lines properly,
   // going to NavigationTester and then back fixes the issue
   glLineWidth(6.0f);
 
-  OpenGLState state;
-  state.color(Color(1.0f, 0.0f, 0.0f));
-  state.activate();
-  //std::cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-" << std::endl;
-  glBegin(GL_LINES);
-  draw_bone(root_bone, glm::vec3(0,0, 0), glm::mat4(1.0f));
-  glEnd();
+  VertexArrayDrawable va;
+
+  va.set_mode(GL_LINES);
+
+  draw_bone(va, root_bone, glm::vec3(0,0, 0), glm::mat4(1.0f));
+
+  va.render(gc);
+
   glLineWidth(1.0f);
 }
 
 void
-Armature::draw_bone(Bone* bone, glm::vec3 p, glm::mat4 m)
+Armature::draw_bone(VertexArrayDrawable& va, Bone* bone, glm::vec3 p, glm::mat4 m)
 {
   if (bone == nullptr) { return; }
 
@@ -151,22 +153,25 @@ Armature::draw_bone(Bone* bone, glm::vec3 p, glm::mat4 m)
   glm::vec3 p__ = glm::vec3(glm::vec4(p_, 1.0f) + m_ * glm::vec4(0.0f, bone->length, 0.0f, 1.0f));
 
   // p to p+offset
-  glColor4f(0.0f, 0.5f, 0.0f, 0.5f);
-  glVertex3f(  p.x, p.y, p.z);
-  glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
-  glVertex3f( p_.x, p_.y, p_.z);
+  va.color({0.0f, 0.5f, 0.0f, 0.5f});
+  va.vertex(  p.x, p.y, p.z);
+
+  va.color({0.0f, 1.0f, 0.0f, 0.5f});
+  va.vertex( p_.x, p_.y, p_.z);
 
   // p+offset to new endpoint
-  glColor3f(0.0f, 0.0f, 1.0f);
-  glVertex3f(  p_.x,   p_.y,   p_.z);
-  glColor3f(1.0f, 0.0f, 0.0f);
-  glVertex3f(  p__.x,  p__.y, p__.z);
+  va.color({0.0f, 0.0f, 1.0f});
+  va.vertex(  p_.x,   p_.y,   p_.z);
+
+  va.color({1.0f, 0.0f, 0.0f});
+  va.vertex(  p__.x,  p__.y, p__.z);
 
   bone->render_head = p_;
   bone->render_tail = p__;
 
-  for(std::vector<Bone*>::iterator i = bone->children.begin(); i != bone->children.end(); ++i)
-    draw_bone(*i, p__, m_);
+  for(std::vector<Bone*>::iterator i = bone->children.begin(); i != bone->children.end(); ++i) {
+    draw_bone(va, *i, p__, m_);
+  }
 }
 
 void

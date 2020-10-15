@@ -24,11 +24,11 @@
 
 #include "util/file_reader.hpp"
 
-class Mesh;
 class Armature;
+class GraphicsContext;
+class Mesh;
 class TextureManager;
 
-/** */
 class Model
 {
 private:
@@ -41,7 +41,7 @@ public:
         TextureManager& texture_manager);
   ~Model();
 
-  void draw();
+  void draw(GraphicsContext& gc);
   void apply(Armature* armature);
   void reset();
 private:

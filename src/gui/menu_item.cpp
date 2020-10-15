@@ -62,8 +62,8 @@ MenuItem::draw(GraphicsContext& gc, const geom::frect& rect, bool is_active)
     }
   }
 
-  font->draw(glm::vec2(rect.left() + static_cast<float>(font->get_height()),
-                      rect.top() + static_cast<float>(font->get_height())/2.0f + rect.height() / 2.0f - 2.0f),
+  font->draw(gc, glm::vec2(rect.left() + static_cast<float>(font->get_height()),
+                           rect.top() + static_cast<float>(font->get_height())/2.0f + rect.height() / 2.0f - 2.0f),
              label, font_color);
 }
 
@@ -133,8 +133,9 @@ EnumMenuItem::draw(GraphicsContext& gc, const geom::frect& rect, bool is_active)
     font_color = Color(0.75f, 0.75f, 0.75f, 1.0f);
   }
 
-  font->draw(glm::vec2(rect.right() - static_cast<float>(font->get_height())      - static_cast<float>(font->get_width(labels[index].label)),
-                      rect.top()   + static_cast<float>(font->get_height())/2.0f + rect.height() / 2.0f - 2.0f),
+  font->draw(gc,
+             glm::vec2(rect.right() - static_cast<float>(font->get_height())      - static_cast<float>(font->get_width(labels[index].label)),
+                       rect.top()   + static_cast<float>(font->get_height())/2.0f + rect.height() / 2.0f - 2.0f),
              labels[index].label,
              font_color);
 }

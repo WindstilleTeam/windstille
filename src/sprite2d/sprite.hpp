@@ -64,7 +64,8 @@ public:
   ~Sprite();
 
   void update(float delta);
-  void draw(const glm::vec2& pos) const;
+
+  void draw(GraphicsContext& gc, const glm::vec2& pos) const;
   void draw(DrawingContext& ctx, glm::vec2 const& pos, float z_pos = 0.0f);
 
   void  set_action(const std::string& name);

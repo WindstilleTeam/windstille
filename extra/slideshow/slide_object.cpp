@@ -52,7 +52,7 @@ SlideObject::set_fade_out(float f)
 }
 
 void
-SlideObject::draw(float relative_time)
+SlideObject::draw(GraphicsContext& gc, float relative_time)
 {
   if (!m_surface)
   {
@@ -81,7 +81,8 @@ SlideObject::draw(float relative_time)
   pos.x -= m_surface->get_width() /2.0f * scale;
   pos.y -= m_surface->get_height()/2.0f * scale;
 
-  m_surface->draw(SurfaceDrawingParameters()
+  m_surface->draw(gc,
+                  SurfaceDrawingParameters()
                   .set_color(color)
                   .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                   .set_pos(pos)

@@ -44,8 +44,9 @@ TitleScreen::on_startup()
 void
 TitleScreen::draw(GraphicsContext& gc)
 {
-  background.draw(glm::vec2(static_cast<float>(gc.size().width())  / 2.0f - (background.get_width()  * background.get_scale() / 2.0f),
-                           static_cast<float>(gc.size().height()) / 2.0f - (background.get_height() * background.get_scale() / 2.0f)));
+  background.draw(gc,
+                  glm::vec2(static_cast<float>(gc.size().width())  / 2.0f - (background.get_width()  * background.get_scale() / 2.0f),
+                            static_cast<float>(gc.size().height()) / 2.0f - (background.get_height() * background.get_scale() / 2.0f)));
 }
 
 void

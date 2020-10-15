@@ -108,8 +108,8 @@ DialogManager::draw(GraphicsContext& gc)
     gc.draw_rounded_rect(rect, 16.0f,
                                Color(0.6f, 1.0f, 1.0f, 0.8f));
 
-    portrait.draw(glm::vec2(pos.x + portrait_border_x,
-                           pos.y + portrait_border_y));
+    portrait.draw(gc, glm::vec2(pos.x + portrait_border_x,
+                                pos.y + portrait_border_y));
   }
 
   text_area->draw(gc);

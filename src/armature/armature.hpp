@@ -22,9 +22,10 @@
 #include "armature/bone.hpp"
 #include "util/file_reader.hpp"
 
+class GraphicsContext;
 class Pose;
+class VertexArrayDrawable;
 
-/** */
 class Armature
 {
 private:
@@ -49,8 +50,8 @@ public:
 
   glm::mat4* get_render_matrix(const std::string& name);
 
-  void  draw();
-  void  draw_bone(Bone* bone, glm::vec3 p, glm::mat4 matrix);
+  void draw(GraphicsContext& gc);
+  void draw_bone(VertexArrayDrawable& va, Bone* bone, glm::vec3 p, glm::mat4 matrix);
 private:
   Armature (const Armature&);
   Armature& operator= (const Armature&);

@@ -312,7 +312,7 @@ App::run(int argc, char* argv[])
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-      slide_show.draw(time, m_edit_mode);
+      slide_show.draw(gc, time, m_edit_mode);
 
       window.swap_buffers();
 
@@ -328,7 +328,7 @@ App::run(int argc, char* argv[])
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       assert_gl("clear");
-      slide_show.draw(time, m_edit_mode);
+      slide_show.draw(gc, time, m_edit_mode);
       assert_gl("draw");
       //SDL_GL_SwapBuffers();
       gc.pop_framebuffer();

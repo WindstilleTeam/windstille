@@ -116,15 +116,15 @@ InventoryImpl::draw(GraphicsContext& gc)
 
     if (i == 0 && moving == 0)
     {
-      slothighlight.draw(draw_pos);
-      g_app.fonts().vera20->draw_center(glm::vec2(draw_pos.x, draw_pos.y - 64), item.name);
+      slothighlight.draw(gc, draw_pos);
+      g_app.fonts().vera20->draw_center(gc, glm::vec2(draw_pos.x, draw_pos.y - 64), item.name);
     }
     else
     {
-      slot.draw(draw_pos);
+      slot.draw(gc, draw_pos);
     }
 
-    item.sprite.draw(draw_pos - glm::vec2(32,32));
+    item.sprite.draw(gc, draw_pos - glm::vec2(32,32));
   }
 }
 

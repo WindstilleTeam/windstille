@@ -25,6 +25,7 @@
 #include "display/opengl_state.hpp"
 #include "display/scene_context.hpp"
 #include "scenegraph/scene_graph.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
 static const int LIGHTMAP_DIV = 4;
 
@@ -100,29 +101,27 @@ BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* s
 
   if (sc.get_render_mask() & SceneContext::LIGHTMAP)
   { // Renders the lightmap to the screen
-    OpenGLState state;
+    VertexArrayDrawable va;
 
-    state.bind_texture(m_lightmap->get_texture());
+    va.set_texture(m_lightmap->get_texture());
 
-    state.enable(GL_BLEND);
-    state.set_blend_func(GL_DST_COLOR, GL_ZERO);
-    state.activate();
+    va.set_blend_func(GL_DST_COLOR, GL_ZERO);
 
-    glBegin(GL_QUADS);
+    va.set_mode(GL_QUADS);
 
-    glTexCoord2f(m_lightmap->get_uv().left(), m_lightmap->get_uv().bottom());
-    glVertex2i(0, 0);
+    va.texcoord(m_lightmap->get_uv().left(), m_lightmap->get_uv().bottom());
+    va.vertex(0, 0);
 
-    glTexCoord2f(m_lightmap->get_uv().right(), m_lightmap->get_uv().bottom());
-    glVertex2i(m_viewport.width(), 0);
+    va.texcoord(m_lightmap->get_uv().right(), m_lightmap->get_uv().bottom());
+    va.vertex(m_viewport.width(), 0);
 
-    glTexCoord2f(m_lightmap->get_uv().right(), m_lightmap->get_uv().top());
-    glVertex2i(m_viewport.width(), m_viewport.height());
+    va.texcoord(m_lightmap->get_uv().right(), m_lightmap->get_uv().top());
+    va.vertex(m_viewport.width(), m_viewport.height());
 
-    glTexCoord2f(m_lightmap->get_uv().left(), m_lightmap->get_uv().top());
-    glVertex2i(0, m_viewport.height());
+    va.texcoord(m_lightmap->get_uv().left(), m_lightmap->get_uv().top());
+    va.vertex(0, m_viewport.height());
 
-    glEnd();
+    va.render(gc);
   }
 
   if (sc.get_render_mask() & SceneContext::HIGHLIGHTMAP)

@@ -19,6 +19,7 @@ int main()
 
   geom::isize window_size(854, 480);
   OpenGLWindow window("2D Shadow", window_size, window_size);
+  GraphicsContext& gc = window.get_gc();
 
   SurfaceManager surface_manager;
 
@@ -54,7 +55,7 @@ int main()
 
         case SDL_MOUSEMOTION:
           mouse_pos = glm::vec2(static_cast<float>(event.motion.x),
-                               static_cast<float>(event.motion.y));
+                                static_cast<float>(event.motion.y));
           break;
       }
     }
@@ -82,17 +83,19 @@ int main()
       pos.x -= rel_pos.x * scale;
       pos.y -= rel_pos.y * scale;
 
-      shadow->draw(SurfaceDrawingParameters()
+      shadow->draw(gc,
+                   SurfaceDrawingParameters()
                    .set_pos(pos)
                    .set_scale(glm::vec2(scale, scale))
                    .set_color(Color(1.0f, 1.0f, 1.0f, alpha)));
     }
-    objects->draw(object_pos);
-    light->draw(SurfaceDrawingParameters()
+    objects->draw(gc, object_pos);
+    light->draw(gc,
+                SurfaceDrawingParameters()
                 .set_pos(mouse_pos - glm::vec2(light->get_width()/2, light->get_height()/2))
                 .set_blend_func(GL_SRC_ALPHA, GL_ONE));
-    darkness->draw(SurfaceDrawingParameters()
-                .set_pos(mouse_pos - glm::vec2(darkness->get_width()/2, darkness->get_height()/2)));
+    darkness->draw(gc, SurfaceDrawingParameters()
+                   .set_pos(mouse_pos - glm::vec2(darkness->get_width()/2, darkness->get_height()/2)));
     window.swap_buffers();
   }
 
