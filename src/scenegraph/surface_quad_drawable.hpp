@@ -54,8 +54,8 @@ public:
     va.set_blend_func(m_params.blendfunc_src, m_params.blendfunc_dst);
     va.set_texture(m_surface->get_texture());
 
-    glPushMatrix();
-    glMultMatrixf(glm::value_ptr(modelview));
+    gc.push_matrix();
+    gc.mult_matrix(modelview);
 
     va.set_mode(GL_QUADS);
     {
@@ -73,7 +73,7 @@ public:
     }
     va.render(gc);
 
-    glPopMatrix();
+    gc.pop_matrix();
   }
 
   void set_quad(const geom::quad& quad) { m_quad = quad; }

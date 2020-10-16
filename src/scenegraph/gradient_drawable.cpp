@@ -74,10 +74,10 @@ GradientDrawable::render(GraphicsContext& gc, unsigned int mask)
     }
   }
 
-  glPushMatrix();
-  glLoadIdentity();
+  gc.push_matrix();
+  gc.load_identity();
   m_array->render(gc, mask);
-  glPopMatrix();
+  gc.pop_matrix();
 }
 
 /* EOF */

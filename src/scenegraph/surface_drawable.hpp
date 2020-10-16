@@ -23,6 +23,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "display/graphics_context.hpp"
 #include "display/surface_drawing_parameters.hpp"
 
 class SurfaceDrawable : public Drawable
@@ -48,12 +49,12 @@ public:
 
   void render(GraphicsContext& gc, unsigned int mask) override
   {
-    glPushMatrix();
-    glMultMatrixf(glm::value_ptr(modelview));
+    gc.push_matrix();
+    gc.mult_matrix(modelview);
 
     surface->draw(gc, params);
 
-    glPopMatrix();
+    gc.pop_matrix();
   }
 };
 

@@ -102,15 +102,19 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
       std::cout << "GL_VERSION_3_0: " << GL_VERSION_3_0 << std::endl;
 
       glViewport(0, 0, m_impl->m_size.width(), m_impl->m_size.height());
-      glMatrixMode(GL_PROJECTION);
-      glLoadIdentity();
+      m_impl->m_gc.matrix_mode(GL_PROJECTION);
+      m_impl->m_gc.load_identity();
 
       m_impl->m_gc.set_aspect_size(aspect);
 
-      glOrtho(0.0, m_impl->m_gc.size().width(), m_impl->m_gc.size().height(),
-              0.0, 1000.0, -1000.0);
-      glMatrixMode(GL_MODELVIEW);
-      glLoadIdentity();
+      m_impl->m_gc.ortho(0.0f,
+                         static_cast<float>(m_impl->m_gc.size().width()),
+                         static_cast<float>(m_impl->m_gc.size().height()),
+                         0.0,
+                         1000.0,
+                         -1000.0);
+      m_impl->m_gc.matrix_mode(GL_MODELVIEW);
+      m_impl->m_gc.load_identity();
 
       if ((false)) // disabled for the moment, as it seems to do more harm then good
       { // Magic pixel center constant, without that textures drawn in

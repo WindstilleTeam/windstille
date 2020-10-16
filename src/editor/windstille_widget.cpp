@@ -172,12 +172,18 @@ WindstilleWidget::on_realize()
     background_pattern->set_wrap(GL_REPEAT);
 
     glViewport(0, 0, get_width(), get_height());
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0.0, get_width(), get_height(), 0.0, 1000.0, -1000.0);
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    m_gc.matrix_mode(GL_PROJECTION);
+    m_gc.load_identity();
+    m_gc.ortho(0.0f,
+               static_cast<float>(get_width()),
+               static_cast<float>(get_height()),
+               0.0,
+               1000.0,
+               -1000.0);
+
+    m_gc.matrix_mode(GL_MODELVIEW);
+    m_gc.load_identity();
 
     glwindow->gl_end();
   }
@@ -206,12 +212,18 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
     }
 
     glViewport(0, 0, get_width(), get_height());
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0.0, get_width(), get_height(), 0.0, 1000.0, -1000.0);
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    m_gc.matrix_mode(GL_PROJECTION);
+    m_gc.load_identity();
+    m_gc.ortho(0.0f,
+               static_cast<float>(get_width()),
+               static_cast<float>(get_height()),
+               0.0f,
+               1000.0f,
+               -1000.0f);
+
+    m_gc.matrix_mode(GL_MODELVIEW);
+    m_gc.load_identity();
 
     glwindow->gl_end();
 

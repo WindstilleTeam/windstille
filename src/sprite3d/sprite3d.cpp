@@ -22,6 +22,7 @@
 #include <glm/gtx/quaternion.hpp>
 
 #include "display/assert_gl.hpp"
+#include "display/graphics_context.hpp"
 #include "display/opengl_state.hpp"
 #include "sprite3d/manager.hpp"
 #include "sprite3d/sprite3d_drawable.hpp"
@@ -346,14 +347,14 @@ static inline float interpolate(float v1, float v2, float t)
 }
 
 void
-Sprite3D::draw(const glm::vec2& pos, const glm::mat4& modelview)
+Sprite3D::draw(GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& modelview)
 {
-  glMatrixMode(GL_MODELVIEW);
-  glPushMatrix();
-  glMultMatrixf(glm::value_ptr(modelview));
-  glTranslatef(pos.x, pos.y, 0);
+  gc.matrix_mode(GL_MODELVIEW);
+  gc.push_matrix();
+  gc.mult_matrix(modelview);
+  gc.translate(pos.x, pos.y, 0);
   if(frame1.rot) {
-    glRotatef(180, 0, 1.0, 0);
+    gc.rotate(180, 0, 1.0, 0);
   }
 
   OpenGLState state;
@@ -430,7 +431,7 @@ Sprite3D::draw(const glm::vec2& pos, const glm::mat4& modelview)
 
   assert_gl("rendering 3d sprite");
 
-  glPopMatrix();
+  gc.pop_matrix();
 }
 
 bool

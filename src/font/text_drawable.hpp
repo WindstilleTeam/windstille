@@ -22,6 +22,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "app/app.hpp"
+#include "display/graphics_context.hpp"
 #include "font/fonts.hpp"
 
 class TextDrawable : public Drawable
@@ -38,10 +39,10 @@ public:
   ~TextDrawable() override {}
 
   void render(GraphicsContext& gc, unsigned int mask) override {
-    glPushMatrix();
-    glMultMatrixf(glm::value_ptr(modelview));
+    gc.push_matrix();
+    gc.mult_matrix(modelview);
     m_font.draw(gc, pos, text);
-    glPopMatrix();
+    gc.pop_matrix();
   }
 };
 

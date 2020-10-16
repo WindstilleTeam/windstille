@@ -555,4 +555,58 @@ GraphicsContext::get_framebuffer()
     return framebuffers.back();
 }
 
+void
+GraphicsContext::ortho(float left, float right, float bottom, float top, float near, float far)
+{
+  glOrtho(left, right, bottom, top, near, far);
+}
+
+void
+GraphicsContext::matrix_mode(int mode)
+{
+  glMatrixMode(mode);
+}
+
+void
+GraphicsContext::load_identity()
+{
+  glLoadIdentity();
+}
+
+void
+GraphicsContext::push_matrix()
+{
+  glPushMatrix();
+}
+
+void
+GraphicsContext::mult_matrix(glm::mat4 const& mat)
+{
+  glMultMatrixf(glm::value_ptr(mat));
+}
+
+void
+GraphicsContext::translate(float x, float y, float z)
+{
+  glTranslatef(x, y, z);
+}
+
+void
+GraphicsContext::scale(float x, float y, float z)
+{
+  glScalef(x, y, z);
+}
+
+void
+GraphicsContext::rotate(float degree, float x, float y, float z)
+{
+  glRotatef(degree, x, y, z);
+}
+
+void
+GraphicsContext::pop_matrix()
+{
+  glPopMatrix();
+}
+
 /* EOF */

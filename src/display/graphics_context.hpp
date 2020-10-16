@@ -68,6 +68,16 @@ public:
   void set_aspect_size(geom::isize const& aspect_size);
   geom::isize size() const;
 
+  void ortho(float left, float right, float bottom, float top, float near, float far);
+  void matrix_mode(int mode);
+  void load_identity();
+  void push_matrix();
+  void mult_matrix(glm::mat4 const& mat);
+  void translate(float x, float y, float z);
+  void scale(float x, float y, float z);
+  void rotate(float degree, float x, float y, float z);
+  void pop_matrix();
+
 private:
   geom::isize m_aspect_size;
   std::vector<geom::irect> m_cliprects;

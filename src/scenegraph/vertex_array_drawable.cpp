@@ -20,6 +20,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "display/graphics_context.hpp"
 #include "display/opengl_state.hpp"
 
 VertexArrayDrawable::VertexArrayDrawable() :
@@ -107,8 +108,8 @@ VertexArrayDrawable::render(GraphicsContext& gc, int start, int end)
 
   state.activate();
 
-  glPushMatrix();
-  glMultMatrixf(glm::value_ptr(modelview));
+  gc.push_matrix();
+  gc.mult_matrix(modelview);
 
   if (mode == GL_LINES ||
       mode == GL_LINE_LOOP)
@@ -123,7 +124,7 @@ VertexArrayDrawable::render(GraphicsContext& gc, int start, int end)
     glDrawArrays(mode, start, end);
   }
 
-  glPopMatrix();
+  gc.pop_matrix();
 }
 
 void

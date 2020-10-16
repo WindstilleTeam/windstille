@@ -72,21 +72,21 @@ FramebufferCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGr
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glPushMatrix();
-    glTranslatef(0.0f, static_cast<float>(m_viewport.height() - (m_viewport.height() / LIGHTMAP_DIV)), 0.0f);
-    glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV);
+    gc.push_matrix();
+    gc.translate(0.0f, static_cast<float>(m_viewport.height() - (m_viewport.height() / LIGHTMAP_DIV)), 0.0f);
+    gc.scale(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV);
 
     sc.light().render(gc);
 
     if (sg)
     {
-      glPushMatrix();
-      glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
+      gc.push_matrix();
+      gc.mult_matrix(gc_state.get_matrix());
       sg->render(gc, SceneContext::LIGHTMAP);
-      glPopMatrix();
+      gc.pop_matrix();
     }
 
-    glPopMatrix();
+    gc.pop_matrix();
 
     gc.pop_framebuffer();
   }
@@ -104,10 +104,10 @@ FramebufferCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGr
 
       if (sg)
       {
-        glPushMatrix();
-        glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
+        gc.push_matrix();
+        gc.mult_matrix(gc_state.get_matrix());
         sg->render(gc, SceneContext::COLORMAP);
-        glPopMatrix();
+        gc.pop_matrix();
       }
     }
 
@@ -122,10 +122,10 @@ FramebufferCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGr
 
       if (sg)
       {
-        glPushMatrix();
-        glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
+        gc.push_matrix();
+        gc.mult_matrix(gc_state.get_matrix());
         sg->render(gc, SceneContext::HIGHLIGHTMAP);
-        glPopMatrix();
+        gc.pop_matrix();
       }
     }
 
@@ -135,10 +135,10 @@ FramebufferCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGr
 
       if (sg)
       {
-        glPushMatrix();
-        glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
+        gc.push_matrix();
+        gc.mult_matrix(gc_state.get_matrix());
         sg->render(gc, SceneContext::CONTROLMAP);
-        glPopMatrix();
+        gc.pop_matrix();
       }
     }
 

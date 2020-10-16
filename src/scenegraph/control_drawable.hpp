@@ -40,10 +40,10 @@ public:
 
   void render(GraphicsContext& gc, unsigned int mask) override
   {
-    glPushMatrix();
+    gc.push_matrix();
 
     // FIXME: This looks badly broken, should modelview.multiply() be enough?
-    glTranslatef(glm::value_ptr(modelview)[12],
+    gc.translate(glm::value_ptr(modelview)[12],
                  glm::value_ptr(modelview)[13],
                  glm::value_ptr(modelview)[14]);
 
@@ -55,7 +55,7 @@ public:
                   .set_pos(glm::vec2(p.x - surface->get_width()/2,
                                      p.y - surface->get_height()/2)));
 
-    glPopMatrix();
+    gc.pop_matrix();
   }
 };
 

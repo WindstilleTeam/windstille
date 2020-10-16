@@ -78,7 +78,8 @@ public:
 
       va.texcoord(0, 600);
       va.vertex(0,600);
-      glEnd();
+
+      va.render(gc);
 
       glUseProgram(0);
     }
@@ -87,8 +88,8 @@ public:
 
   void draw_particles(GraphicsContext& gc)
   {
-    glPushMatrix();
-    glMultMatrixf(glm::value_ptr(get_modelview()));
+    gc.push_matrix();
+    gc.mult_matrix(get_modelview());
 
     VertexArrayDrawable va;
 
@@ -144,7 +145,7 @@ public:
     }
     va.render(gc);
 
-    glPopMatrix();
+    gc.pop_matrix();
   }
 
   void prepare(TexturePtr screen_texture)

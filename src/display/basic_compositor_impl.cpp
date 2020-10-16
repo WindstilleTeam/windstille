@@ -23,6 +23,7 @@
 
 #include "display/graphic_context_state.hpp"
 #include "display/opengl_state.hpp"
+#include "display/graphics_context.hpp"
 #include "display/scene_context.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
@@ -52,18 +53,18 @@ BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* s
     glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glPushMatrix();
-    glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
+    gc.push_matrix();
+    gc.scale(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
     sc.light().render(gc);
-    glPopMatrix();
+    gc.pop_matrix();
 
     if (sg)
     {
-      glPushMatrix();
-      glScalef(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
-      glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
+      gc.push_matrix();
+      gc.scale(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f);
+      gc.mult_matrix(gc_state.get_matrix());
       sg->render(gc, SceneContext::LIGHTMAP);
-      glPopMatrix();
+      gc.pop_matrix();
     }
 
     { // Copy lightmap to a texture
@@ -92,10 +93,10 @@ BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* s
 
     if (sg)
     {
-      glPushMatrix();
-      glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
+      gc.push_matrix();
+      gc.mult_matrix(gc_state.get_matrix());
       sg->render(gc, SceneContext::COLORMAP);
-      glPopMatrix();
+      gc.pop_matrix();
     }
   }
 
@@ -130,10 +131,10 @@ BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* s
 
     if (sg)
     {
-      glPushMatrix();
-      glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
+      gc.push_matrix();
+      gc.mult_matrix(gc_state.get_matrix());
       sg->render(gc, SceneContext::HIGHLIGHTMAP);
-      glPopMatrix();
+      gc.pop_matrix();
     }
   }
 
@@ -143,10 +144,10 @@ BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* s
 
     if (sg)
     {
-      glPushMatrix();
-      glMultMatrixf(glm::value_ptr(gc_state.get_matrix()));
+      gc.push_matrix();
+      gc.mult_matrix(gc_state.get_matrix());
       sg->render(gc, SceneContext::CONTROLMAP);
-      glPopMatrix();
+      gc.pop_matrix();
     }
   }
 

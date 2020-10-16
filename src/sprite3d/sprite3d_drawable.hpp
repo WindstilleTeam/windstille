@@ -43,7 +43,7 @@ public:
     glm::mat4 matrix = modelview;
     matrix = glm::translate(matrix, glm::vec3(pos.x, pos.y, z_pos));
     matrix = glm::scale(matrix, glm::vec3(m_scale, m_scale, m_scale));
-    m_sprite.draw(glm::vec2(0.0f, 0.0f), matrix);
+    m_sprite.draw(gc, glm::vec2(0.0f, 0.0f), matrix);
   }
 
   void set_pos(const glm::vec2& pos_)

@@ -126,7 +126,7 @@ public:
 
 private:
   friend class Sprite3DDrawable;
-  void draw(const glm::vec2& pos, const glm::mat4& modelview);
+  void draw(GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& modelview);
 
   struct Frame {
     const sprite3d::Action* action;

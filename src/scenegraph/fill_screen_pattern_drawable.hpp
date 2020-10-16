@@ -60,8 +60,8 @@ public:
     va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     va.set_texture(m_texture);
 
-    glPushMatrix();
-    glLoadIdentity();
+    gc.push_matrix();
+    gc.load_identity();
 
     va.set_mode(GL_QUADS);
     {
@@ -79,7 +79,7 @@ public:
     }
     va.render(gc);
 
-    glPopMatrix();
+    gc.pop_matrix();
   }
 };
 

@@ -25,6 +25,7 @@
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "armature/pose.hpp"
+#include "display/graphics_context.hpp"
 #include "screen/armature_test.hpp"
 #include "screen/screen_manager.hpp"
 #include "util/directory.hpp"
@@ -84,19 +85,19 @@ ArmatureTest::draw(GraphicsContext& gc)
   glClearColor(0.5f, 0.0f, 0.5f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  glPushMatrix();
+  gc.push_matrix();
 
-  glTranslatef(400.0f, 300.0f, 0.0f);
-  glScalef(64.0f, 64.0f, 64.0f);
+  gc.translate(400.0f, 300.0f, 0.0f);
+  gc.scale(64.0f, 64.0f, 64.0f);
 
-  glRotatef(xrot, 1.0f, 0.0f, 0.0f);
-  glRotatef(yrot, 0.0f, 1.0f, 0.0f);
-  glRotatef(zrot, 0.0f, 0.0f, 1.0f);
+  gc.rotate(xrot, 1.0f, 0.0f, 0.0f);
+  gc.rotate(yrot, 0.0f, 1.0f, 0.0f);
+  gc.rotate(zrot, 0.0f, 0.0f, 1.0f);
 
   model->draw(gc);
   armature->draw(gc);
 
-  glPopMatrix();
+  gc.pop_matrix();
 
   // std::cout << xrot << " " << yrot << std::endl;
 }

@@ -181,8 +181,8 @@ TextArea::draw(GraphicsContext& gc)
 
   va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glPushMatrix();
-  glTranslatef(impl->rect.left(),
+  gc.push_matrix();
+  gc.translate(impl->rect.left(),
                impl->rect.top() + static_cast<float>(impl->font->get_height()) - impl->scroll_offset,
                0.0f);
 
@@ -409,7 +409,7 @@ TextArea::draw(GraphicsContext& gc)
     impl->progress_complete = true;
 
   va.render(gc);
-  glPopMatrix();
+  gc.pop_matrix();
 
   impl->cursor_pos = glm::vec2(static_cast<float>(x_pos) + impl->rect.left(),
                               static_cast<float>(y_pos) + impl->rect.top());

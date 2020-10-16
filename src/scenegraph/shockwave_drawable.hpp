@@ -55,20 +55,20 @@ public:
     glClearColor(1.0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glPushMatrix();
-    glMultMatrixf(modelview.matrix);
-    glTranslatef(pos.x, pos.y, 0);
+    gc.push_matrix();
+    gc.mult_matrix(modelview.matrix);
+    gc.translate(pos.x, pos.y, 0);
 
     { // Apply modelview matrix to texture matrix so that we can
       // give texcoords as screencords
       GLdouble m[16];
-      glMatrixMode(GL_MODELVIEW);
+      gc.matrix_mode(GL_MODELVIEW);
       glGetDoublev(GL_MODELVIEW_MATRIX, m);
-      glMatrixMode(GL_TEXTURE);
-      glLoadIdentity();
-      glTranslatef(0, 599, 0);
-      glScalef(1, -1, 1);
-      glMultMatrixd(m);
+      gc.matrix_mode(GL_TEXTURE);
+      gc.load_identity();
+      gc.translate(0, 599, 0);
+      gc.scale(1, -1, 1);
+      gc.mult_matrix(m);
 
       //glLoadMatrixd(m);
     }
@@ -119,22 +119,22 @@ public:
       va.texcoord(x3+256, (y3+256));
       va.vertex(x3+256, y3+256, 0);
     }
-    glEnd();
+    va.render(gc);
 
-    glMatrixMode(GL_TEXTURE);
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
+    gc.matrix_mode(GL_TEXTURE);
+    gc.load_identity();
+    gc.matrix_mode(GL_MODELVIEW);
 
-    glPopMatrix();
+    gc.pop_matrix();
   }
 #endif
 
   void render(GraphicsContext& gc, unsigned int mask) override
   {
 #if 0
-    glPushMatrix();
-    glMultMatrixf(modelview.matrix);
-    glTranslatef(pos.x, pos.y, 0);
+    gc.push_matrix();
+    gl.mult_matrix(modelview.matrix);
+    gc.translate(pos.x, pos.y, 0);
     if (0)
     {
       geom::frect rect(0, 0, 800, 600);
@@ -176,7 +176,7 @@ public:
 
       glUseProgram(0);
     }
-    glPopMatrix();
+    gc.pop_matrix();
 #endif
   }
 
