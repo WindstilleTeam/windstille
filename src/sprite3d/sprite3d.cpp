@@ -18,12 +18,13 @@
 
 #include "sprite3d/sprite3d.hpp"
 
+#include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/quaternion.hpp>
 
 #include "display/assert_gl.hpp"
 #include "display/graphics_context.hpp"
-#include "display/opengl_state.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 #include "sprite3d/manager.hpp"
 #include "sprite3d/sprite3d_drawable.hpp"
 
@@ -357,24 +358,6 @@ Sprite3D::draw(GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& model
     gc.rotate(180, 0, 1.0, 0);
   }
 
-  OpenGLState state;
-
-  if (blend_sfactor != GL_ONE || blend_dfactor != GL_ZERO)
-  {
-    state.enable(GL_BLEND);
-    state.set_blend_func(blend_sfactor, blend_dfactor);
-  }
-  else
-  {
-    state.enable(GL_DEPTH_TEST);
-  }
-
-  state.enable_client_state(GL_VERTEX_ARRAY);
-  state.enable_client_state(GL_NORMAL_ARRAY);
-  state.enable_client_state(GL_TEXTURE_COORD_ARRAY);
-
-  assert_gl("gl init before sprite");
-
   const ActionFrame& aframe1 = frame1.action->frames[frame1.frame];
   const ActionFrame& aframe2 = frame2.action->frames[frame2.frame];
 
@@ -383,9 +366,6 @@ Sprite3D::draw(GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& model
     const Mesh& mesh = data->meshs[m];
     const MeshVertices& vertices1 = aframe1.meshs[m];
     const MeshVertices& vertices2 = aframe2.meshs[m];
-
-    // set texture
-    state.bind_texture(mesh.texture);
 
     // blend between frame1 + frame2
     std::vector<float> verts(mesh.vertex_count * 3);
@@ -419,14 +399,21 @@ Sprite3D::draw(GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& model
       }
     }
 
-    state.activate();
+    VertexArrayDrawable va;
 
-    // draw mesh
-    glVertexPointer(3, GL_FLOAT, 0, verts.data());
-    glNormalPointer(GL_FLOAT, 0, &*mesh.normals.begin());
-    glTexCoordPointer(2, GL_FLOAT, 0, &*mesh.tex_coords.begin());
-    glDrawElements(GL_TRIANGLES, mesh.triangle_count * 3, GL_UNSIGNED_SHORT,
-                   &*mesh.vertex_indices.begin());
+    va.set_blend_func(blend_sfactor, blend_dfactor);
+    va.set_depth_test(true);
+    va.set_mode(GL_TRIANGLES);
+    va.set_texture(mesh.texture);
+
+    // FIXME: normals seem broken in .wsprite format, they are per
+    // primitive, not per vertex, as they should be.
+    // FIXME: va.add_normals(mesh.normals);
+    va.add_texcoords(mesh.tex_coords);
+    va.add_vertices(std::move(verts));
+    va.add_indices(mesh.vertex_indices);
+
+    va.render(gc);
   }
 
   assert_gl("rendering 3d sprite");
