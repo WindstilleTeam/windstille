@@ -26,7 +26,6 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
-#include "display/opengl_state.hpp"
 #include "display/graphics_context.hpp"
 #include "display/color.hpp"
 #include "armature/pose.hpp"

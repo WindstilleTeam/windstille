@@ -140,6 +140,19 @@ bool read_custom(ReaderMapping const& map, std::string_view key, Color& value)
   }
 }
 
+template<>
+bool read_custom(ReaderMapping const& map, std::string_view key, std::vector<unsigned short>& values)
+{
+  std::vector<int> ints;
+  if (!map.read(key, ints)) {
+    return false;
+  } else {
+    values.resize(ints.size());
+    std::copy(ints.begin(), ints.end(), values.begin());
+    return true;
+  }
+}
+
 } // namespace prio
 
 /* EOF */

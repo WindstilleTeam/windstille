@@ -46,6 +46,7 @@ template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm:
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, Color& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec2& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec3& value);
+template<> bool read_custom(ReaderMapping const& map, std::string_view key, std::vector<unsigned short>& values);
 
 } // namespace prio
 

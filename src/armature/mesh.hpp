@@ -79,7 +79,7 @@ private:
   std::vector<float> vertices;
   std::vector<float> normals;
   std::vector<float> texcoords;
-  std::vector<int>   triangles;
+  std::vector<unsigned short> triangles;
 
   typedef std::vector<VertexGroup> Groups;
   Groups groups;

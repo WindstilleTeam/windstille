@@ -23,8 +23,8 @@
 
 #include "armature/armature.hpp"
 #include "display/assert_gl.hpp"
-#include "display/opengl_state.hpp"
 #include "display/texture_manager.hpp"
+#include "scenegraph/vertex_array_drawable.hpp"
 
 Mesh::Mesh(ReaderMapping const& reader, std::filesystem::path const& basedir,
            TextureManager& texture_manager) :
@@ -185,29 +185,12 @@ Mesh::~Mesh()
 void
 Mesh::draw(GraphicsContext& gc)
 {
-  //std::cout << "Mesh: Drawing: " << vertices.size() << std::endl;
-  OpenGLState state;
+  VertexArrayDrawable va;
 
-  if (blend_sfactor != GL_ONE || blend_dfactor != GL_ZERO)
-  {
-    state.enable(GL_BLEND);
-    state.set_blend_func(blend_sfactor, blend_dfactor);
-  }
-  else
-  {
-    state.enable(GL_DEPTH_TEST);
-  }
-
-  state.bind_texture(texture);
-
-  glLineWidth(1.0f);
-  glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
-  state.enable_client_state(GL_VERTEX_ARRAY);
-  state.enable_client_state(GL_NORMAL_ARRAY);
-  state.enable_client_state(GL_TEXTURE_COORD_ARRAY);
-  state.activate();
-
-  assert_gl("gl init before sprite");
+  va.set_mode(GL_TRIANGLES);
+  va.set_blend_func(blend_sfactor, blend_dfactor);
+  va.set_depth_test(true);
+  va.set_texture(texture);
 
   for(Vertices::size_type i = 0; i < vertices_.size(); ++i)
   { // evil messing around with vertices, need more order
@@ -216,11 +199,12 @@ Mesh::draw(GraphicsContext& gc)
     vertices[3*i + 2] = vertices_[i].render_pos.z;
   }
 
-  glVertexPointer(3, GL_FLOAT, 0, &*vertices.begin());
+  va.add_normals(normals);
+  va.add_texcoords(texcoords);
+  va.add_vertices(vertices);
+  va.add_indices(triangles);
 
-  glNormalPointer(GL_FLOAT, 0, &*normals.begin());
-  glTexCoordPointer(2, GL_FLOAT, 0, &*texcoords.begin());
-  glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(triangles.size()), GL_UNSIGNED_INT, &*triangles.begin());
+  va.render(gc);
 }
 
 void
