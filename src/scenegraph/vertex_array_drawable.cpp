@@ -27,32 +27,34 @@ VertexArrayDrawable::VertexArrayDrawable() :
   VertexArrayDrawable({0.0f, 0.0f}, 0.0f, glm::mat4(1.0f))
 {}
 
-VertexArrayDrawable::VertexArrayDrawable(const glm::vec2& pos_, float z_pos_,
-                                         const glm::mat4& modelview_) :
+VertexArrayDrawable::VertexArrayDrawable(glm::vec2 const& pos_, float z_pos_,
+                                         glm::mat4 const& modelview_) :
   Drawable(pos_, z_pos_, modelview_),
-  mode(GL_QUADS),
-  blend_sfactor(GL_SRC_ALPHA),
-  blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
-  textures(),
-  colors(),
-  texcoords(),
-  vertices()
+  m_mode(GL_QUADS),
+  m_blend_sfactor(GL_SRC_ALPHA),
+  m_blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
+  m_textures(),
+  m_colors(),
+  m_texcoords(),
+  m_normals(),
+  m_vertices()
 {
 }
 
 int
 VertexArrayDrawable::num_vertices() const
 {
-  return static_cast<int>(vertices.size())/3;
+  return static_cast<int>(m_vertices.size())/3;
 }
 
 void
 VertexArrayDrawable::clear()
 {
-  textures.clear();
-  colors.clear();
-  texcoords.clear();
-  vertices.clear();
+  m_textures.clear();
+  m_colors.clear();
+  m_texcoords.clear();
+  m_normals.clear();
+  m_vertices.clear();
 }
 
 void
@@ -64,25 +66,26 @@ VertexArrayDrawable::render(GraphicsContext& gc, unsigned int mask)
 void
 VertexArrayDrawable::render(GraphicsContext& gc, int start, int end)
 {
-  assert(!vertices.empty());
-  assert(texcoords.empty() || int(texcoords.size()/2) == num_vertices());
-  assert(colors.empty() || int(colors.size()/4) == num_vertices());
+  assert(!m_vertices.empty());
+  assert(m_texcoords.empty() || int(m_texcoords.size()/2) == num_vertices());
+  assert(m_normals.empty() || int(m_normals.size()/3) == num_vertices());
+  assert(m_colors.empty() || int(m_colors.size()/4) == num_vertices());
 
   OpenGLState state;
 
   glClear(GL_DEPTH_BUFFER_BIT);
   state.disable(GL_DEPTH_TEST);
   state.enable(GL_BLEND);
-  state.set_blend_func(blend_sfactor, blend_dfactor);
+  state.set_blend_func(m_blend_sfactor, m_blend_dfactor);
 
-  for (auto const& it : textures) {
+  for (auto const& it : m_textures) {
     state.bind_texture(it.second, it.first);
   }
 
-  if (!colors.empty())
+  if (!m_colors.empty())
   {
     state.enable_client_state(GL_COLOR_ARRAY);
-    glColorPointer(4, GL_FLOAT, 0, &*colors.begin());
+    glColorPointer(4, GL_FLOAT, 0, m_colors.data());
   }
   else
   {
@@ -90,45 +93,55 @@ VertexArrayDrawable::render(GraphicsContext& gc, int start, int end)
     state.color(Color(1.0f, 1.0f, 1.0f));
   }
 
-  if (!texcoords.empty())
+  if (!m_texcoords.empty())
   {
     state.enable_client_state(GL_TEXTURE_COORD_ARRAY);
-    glTexCoordPointer(2, GL_FLOAT, 0, &*texcoords.begin());
+    glTexCoordPointer(2, GL_FLOAT, 0, m_texcoords.data());
   }
   else
   {
     state.disable_client_state(GL_TEXTURE_COORD_ARRAY);
   }
 
+  if (!m_normals.empty())
+  {
+    state.enable_client_state(GL_NORMAL_ARRAY);
+    glNormalPointer(GL_FLOAT, 0, m_normals.data());
+  }
+  else
+  {
+    state.disable_client_state(GL_NORMAL_ARRAY);
+  }
+
   // FIXME: Might be worth to not use VertexArrays when we have a pretty small number of vertices
   state.disable_client_state(GL_NORMAL_ARRAY);
   state.enable_client_state(GL_VERTEX_ARRAY);
 
-  glVertexPointer(3, GL_FLOAT, 0, &*vertices.begin());
+  glVertexPointer(3, GL_FLOAT, 0, m_vertices.data());
 
   state.activate();
 
   gc.push_matrix();
   gc.mult_matrix(modelview);
 
-  if (mode == GL_LINES ||
-      mode == GL_LINE_LOOP)
+  if (m_mode == GL_LINES ||
+      m_mode == GL_LINE_LOOP)
   {
     // FIXME: Hack: make this configurable
     glLineWidth(2.0f);
-    glDrawArrays(mode, start, end);
+    glDrawArrays(m_mode, start, end);
     glLineWidth(1.0f);
   }
   else
   {
-    glDrawArrays(mode, start, end);
+    glDrawArrays(m_mode, start, end);
   }
 
   gc.pop_matrix();
 }
 
 void
-VertexArrayDrawable::vertex(const glm::vec2& vec, float z)
+VertexArrayDrawable::vertex(glm::vec2 const& vec, float z)
 {
   vertex(vec.x, vec.y, z);
 }
@@ -144,29 +157,29 @@ VertexArrayDrawable::vertex(int x, int y, int z)
 void
 VertexArrayDrawable::vertex(float x, float y, float z)
 {
-  vertices.push_back(x + pos.x);
-  vertices.push_back(y + pos.y);
-  vertices.push_back(z);
+  m_vertices.push_back(x + pos.x);
+  m_vertices.push_back(y + pos.y);
+  m_vertices.push_back(z);
 }
 
 void
 VertexArrayDrawable::texcoord(float u, float v)
 {
-  texcoords.push_back(u);
-  texcoords.push_back(v);
+  m_texcoords.push_back(u);
+  m_texcoords.push_back(v);
 }
 
 void
-VertexArrayDrawable::add_texcoords(const geom::frect& rect)
+VertexArrayDrawable::add_texcoords(geom::frect const& rect)
 {
-  texcoords.push_back(rect.left());
-  texcoords.push_back(rect.top());
-  texcoords.push_back(rect.right());
-  texcoords.push_back(rect.top());
-  texcoords.push_back(rect.right());
-  texcoords.push_back(rect.bottom());
-  texcoords.push_back(rect.left());
-  texcoords.push_back(rect.bottom());
+  m_texcoords.push_back(rect.left());
+  m_texcoords.push_back(rect.top());
+  m_texcoords.push_back(rect.right());
+  m_texcoords.push_back(rect.top());
+  m_texcoords.push_back(rect.right());
+  m_texcoords.push_back(rect.bottom());
+  m_texcoords.push_back(rect.left());
+  m_texcoords.push_back(rect.bottom());
 }
 
 void
@@ -175,42 +188,50 @@ VertexArrayDrawable::add_texcoords(const float* coords, size_t n)
   assert(n % 2 == 0);
   for(size_t i = 0; i < n; ++i)
   {
-    texcoords.push_back(coords[i]);
+    m_texcoords.push_back(coords[i]);
   }
 }
 
 void
-VertexArrayDrawable::color(const Color& color_)
+VertexArrayDrawable::normal(float x, float y, float z)
 {
-  colors.push_back(color_.r);
-  colors.push_back(color_.g);
-  colors.push_back(color_.b);
-  colors.push_back(color_.a);
+  m_normals.push_back(x);
+  m_normals.push_back(y);
+  m_normals.push_back(z);
+}
+
+void
+VertexArrayDrawable::color(Color const& color_)
+{
+  m_colors.push_back(color_.r);
+  m_colors.push_back(color_.g);
+  m_colors.push_back(color_.b);
+  m_colors.push_back(color_.a);
 }
 
 void
 VertexArrayDrawable::set_texture(TexturePtr texture)
 {
-  textures[0] = texture;
+  m_textures[0] = texture;
 }
 
 void
 VertexArrayDrawable::set_texture(int unit, TexturePtr texture)
 {
-  textures[unit] = texture;
+  m_textures[unit] = texture;
 }
 
 void
 VertexArrayDrawable::set_blend_func(GLenum sfactor, GLenum dfactor)
 {
-  blend_sfactor = sfactor;
-  blend_dfactor = dfactor;
+  m_blend_sfactor = sfactor;
+  m_blend_dfactor = dfactor;
 }
 
 void
-VertexArrayDrawable::set_mode(GLenum mode_)
+VertexArrayDrawable::set_mode(GLenum mode)
 {
-  mode = mode_;
+  m_mode = mode;
 }
 
 /* EOF */

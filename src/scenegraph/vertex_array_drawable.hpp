@@ -27,37 +27,27 @@
 
 class VertexArrayDrawable : public Drawable
 {
-private:
-  GLenum mode;
-
-  GLenum blend_sfactor;
-  GLenum blend_dfactor;
-
-  std::unordered_map<int, TexturePtr> textures;
-  std::vector<float> colors;
-  std::vector<float> texcoords;
-  std::vector<float> vertices;
-
 public:
   VertexArrayDrawable();
-  VertexArrayDrawable(const glm::vec2& pos_, float z_pos_, const glm::mat4& modelview_);
+  VertexArrayDrawable(glm::vec2 const& pos, float z_pos, glm::mat4 const& modelview);
 
   void render(GraphicsContext& gc, unsigned int mask = ~0u) override;
   void render(GraphicsContext& gc, int start, int end);
 
+  void normal(float x, float y, float z);
+
   void vertex(int x, int y, int z = 0);
   void vertex(float x, float y, float z = 0.0f);
-  void vertex(const glm::vec2& vec, float z = 0.0f);
+  void vertex(glm::vec2 const& vec, float z = 0.0f);
 
   void texcoord(float u, float v);
-  void color(const Color& color);
+  void color(Color const& color);
   void add_texcoords(const float* coords, size_t n);
-  /**
-   * Add eight texcoords for use with a quad from a given rect. The
-   * coords are clockwise around the rect, ie:
-   * left, top, right, top, right, bottom, left, bottom,
-   */
-  void add_texcoords(const geom::frect& coords);
+
+  /** Add eight texcoords for use with a quad from a given rect. The
+      coords are clockwise around the rect, ie: left, top, right, top,
+      right, bottom, left, bottom */
+  void add_texcoords(geom::frect const& coords);
 
   int num_vertices() const;
 
@@ -67,6 +57,18 @@ public:
   void set_texture(TexturePtr texture);
   void set_texture(int unit, TexturePtr texture);
   void set_blend_func(GLenum sfactor, GLenum dfactor);
+
+private:
+  GLenum m_mode;
+
+  GLenum m_blend_sfactor;
+  GLenum m_blend_dfactor;
+
+  std::unordered_map<int, TexturePtr> m_textures;
+  std::vector<float> m_colors;
+  std::vector<float> m_texcoords;
+  std::vector<float> m_normals;
+  std::vector<float> m_vertices;
 };
 
 #endif
