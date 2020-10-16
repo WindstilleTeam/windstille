@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_VERTEX_ARRAY_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_VERTEX_ARRAY_DRAWABLE_HPP
 
+#include <span>
 #include <unordered_map>
 #include <vector>
 
@@ -32,7 +33,6 @@ public:
   VertexArrayDrawable(glm::vec2 const& pos, float z_pos, glm::mat4 const& modelview);
 
   void render(GraphicsContext& gc, unsigned int mask = ~0u) override;
-  void render(GraphicsContext& gc, int start, int end);
 
   void normal(float x, float y, float z);
 
@@ -42,7 +42,11 @@ public:
 
   void texcoord(float u, float v);
   void color(Color const& color);
-  void add_texcoords(const float* coords, size_t n);
+
+  void add_vertices(std::span<float const> data);
+  void add_texcoords(std::span<float const> data);
+  void add_normals(std::span<float const> data);
+  void add_indices(std::span<unsigned short int const> data);
 
   /** Add eight texcoords for use with a quad from a given rect. The
       coords are clockwise around the rect, ie: left, top, right, top,
@@ -57,6 +61,7 @@ public:
   void set_texture(TexturePtr texture);
   void set_texture(int unit, TexturePtr texture);
   void set_blend_func(GLenum sfactor, GLenum dfactor);
+  void set_depth_test(bool depth_test);
 
 private:
   GLenum m_mode;
@@ -64,11 +69,14 @@ private:
   GLenum m_blend_sfactor;
   GLenum m_blend_dfactor;
 
+  bool m_depth_test;
+
   std::unordered_map<int, TexturePtr> m_textures;
   std::vector<float> m_colors;
   std::vector<float> m_texcoords;
   std::vector<float> m_normals;
   std::vector<float> m_vertices;
+  std::vector<unsigned short int> m_indices;
 };
 
 #endif

@@ -33,18 +33,20 @@ VertexArrayDrawable::VertexArrayDrawable(glm::vec2 const& pos_, float z_pos_,
   m_mode(GL_QUADS),
   m_blend_sfactor(GL_SRC_ALPHA),
   m_blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
+  m_depth_test(false),
   m_textures(),
   m_colors(),
   m_texcoords(),
   m_normals(),
-  m_vertices()
+  m_vertices(),
+  m_indices()
 {
 }
 
 int
 VertexArrayDrawable::num_vertices() const
 {
-  return static_cast<int>(m_vertices.size())/3;
+  return static_cast<int>(m_vertices.size()) / 3;
 }
 
 void
@@ -55,26 +57,26 @@ VertexArrayDrawable::clear()
   m_texcoords.clear();
   m_normals.clear();
   m_vertices.clear();
+  m_indices.clear();
 }
 
 void
 VertexArrayDrawable::render(GraphicsContext& gc, unsigned int mask)
 {
-  render(gc, 0, num_vertices());
-}
-
-void
-VertexArrayDrawable::render(GraphicsContext& gc, int start, int end)
-{
   assert(!m_vertices.empty());
-  assert(m_texcoords.empty() || int(m_texcoords.size()/2) == num_vertices());
-  assert(m_normals.empty() || int(m_normals.size()/3) == num_vertices());
-  assert(m_colors.empty() || int(m_colors.size()/4) == num_vertices());
+
+  assert(m_texcoords.empty() || int(m_texcoords.size() / 2) == num_vertices());
+  assert(m_normals.empty() || int(m_normals.size() / 3) == num_vertices());
+  assert(m_colors.empty() || int(m_colors.size() / 4) == num_vertices());
 
   OpenGLState state;
 
-  glClear(GL_DEPTH_BUFFER_BIT);
-  state.disable(GL_DEPTH_TEST);
+  if (m_depth_test) {
+    state.enable(GL_DEPTH_TEST);
+  } else {
+    state.disable(GL_DEPTH_TEST);
+  }
+
   state.enable(GL_BLEND);
   state.set_blend_func(m_blend_sfactor, m_blend_dfactor);
 
@@ -82,41 +84,29 @@ VertexArrayDrawable::render(GraphicsContext& gc, int start, int end)
     state.bind_texture(it.second, it.first);
   }
 
-  if (!m_colors.empty())
-  {
+  if (!m_colors.empty()) {
     state.enable_client_state(GL_COLOR_ARRAY);
     glColorPointer(4, GL_FLOAT, 0, m_colors.data());
-  }
-  else
-  {
+  } else {
     state.disable_client_state(GL_COLOR_ARRAY);
     state.color(Color(1.0f, 1.0f, 1.0f));
   }
 
-  if (!m_texcoords.empty())
-  {
+  if (!m_texcoords.empty()) {
     state.enable_client_state(GL_TEXTURE_COORD_ARRAY);
     glTexCoordPointer(2, GL_FLOAT, 0, m_texcoords.data());
-  }
-  else
-  {
+  } else {
     state.disable_client_state(GL_TEXTURE_COORD_ARRAY);
   }
 
-  if (!m_normals.empty())
-  {
+  if (!m_normals.empty()) {
     state.enable_client_state(GL_NORMAL_ARRAY);
     glNormalPointer(GL_FLOAT, 0, m_normals.data());
-  }
-  else
-  {
+  } else {
     state.disable_client_state(GL_NORMAL_ARRAY);
   }
 
-  // FIXME: Might be worth to not use VertexArrays when we have a pretty small number of vertices
-  state.disable_client_state(GL_NORMAL_ARRAY);
   state.enable_client_state(GL_VERTEX_ARRAY);
-
   glVertexPointer(3, GL_FLOAT, 0, m_vertices.data());
 
   state.activate();
@@ -124,17 +114,20 @@ VertexArrayDrawable::render(GraphicsContext& gc, int start, int end)
   gc.push_matrix();
   gc.mult_matrix(modelview);
 
-  if (m_mode == GL_LINES ||
-      m_mode == GL_LINE_LOOP)
-  {
-    // FIXME: Hack: make this configurable
+  // FIXME: Hack: make this configurable
+  if (m_mode == GL_LINES || m_mode == GL_LINE_LOOP) {
     glLineWidth(2.0f);
-    glDrawArrays(m_mode, start, end);
-    glLineWidth(1.0f);
   }
-  else
-  {
-    glDrawArrays(m_mode, start, end);
+
+  if (m_indices.empty()) {
+    glDrawArrays(m_mode, 0, num_vertices());
+  } else {
+    glDrawElements(m_mode, static_cast<GLsizei>(m_indices.size()),
+                   GL_UNSIGNED_SHORT, m_indices.data());
+  }
+
+  if (m_mode == GL_LINES || m_mode == GL_LINE_LOOP) {
+    glLineWidth(1.0f);
   }
 
   gc.pop_matrix();
@@ -183,13 +176,31 @@ VertexArrayDrawable::add_texcoords(geom::frect const& rect)
 }
 
 void
-VertexArrayDrawable::add_texcoords(const float* coords, size_t n)
+VertexArrayDrawable::add_texcoords(std::span<float const> data)
 {
-  assert(n % 2 == 0);
-  for(size_t i = 0; i < n; ++i)
-  {
-    m_texcoords.push_back(coords[i]);
-  }
+  assert(data.size() % 2 == 0);
+  m_texcoords.insert(m_texcoords.end(), data.begin(), data.end());
+}
+
+void
+VertexArrayDrawable::add_normals(std::span<float const> data)
+{
+  assert(data.size() % 3 == 0);
+  m_normals.insert(m_normals.end(), data.begin(), data.end());
+}
+
+void
+VertexArrayDrawable::add_indices(std::span<unsigned short int const> data)
+{
+  assert(data.size() % 3 == 0);
+  m_indices.insert(m_indices.end(), data.begin(), data.end());
+}
+
+void
+VertexArrayDrawable::add_vertices(std::span<float const> data)
+{
+  assert(data.size() % 3 == 0);
+  m_vertices.insert(m_vertices.end(), data.begin(), data.end());
 }
 
 void
@@ -226,6 +237,12 @@ VertexArrayDrawable::set_blend_func(GLenum sfactor, GLenum dfactor)
 {
   m_blend_sfactor = sfactor;
   m_blend_dfactor = dfactor;
+}
+
+void
+VertexArrayDrawable::set_depth_test(bool depth_test)
+{
+  m_depth_test = depth_test;
 }
 
 void
