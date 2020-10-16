@@ -19,7 +19,6 @@
 #include "objects/shockwave.hpp"
 
 #include "app/app.hpp"
-#include "display/opengl_state.hpp"
 #include "display/shader_object.hpp"
 #include "display/texture_manager.hpp"
 #include "scenegraph/shockwave_drawable.hpp"

@@ -26,7 +26,6 @@
 #include "display/compositor.hpp"
 #include "display/graphics_context.hpp"
 #include "display/drawing_parameters.hpp"
-#include "display/opengl_state.hpp"
 #include "display/scene_context.hpp"
 #include "display/surface_drawing_parameters.hpp"
 

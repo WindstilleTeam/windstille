@@ -20,7 +20,6 @@
 
 #include <geom/quad.hpp>
 
-#include "display/opengl_state.hpp"
 #include "display/surface_drawing_parameters.hpp"
 #include "display/surface_manager.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"

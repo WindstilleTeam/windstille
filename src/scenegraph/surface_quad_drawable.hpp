@@ -24,7 +24,6 @@
 
 #include <geom/quad.hpp>
 
-#include "display/opengl_state.hpp"
 #include "scenegraph/drawable.hpp"
 
 class SurfaceQuadDrawable : public Drawable

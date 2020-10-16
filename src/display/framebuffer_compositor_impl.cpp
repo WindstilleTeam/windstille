@@ -22,7 +22,6 @@
 
 #include "display/graphics_context.hpp"
 #include "display/graphic_context_state.hpp"
-#include "display/opengl_state.hpp"
 #include "display/scene_context.hpp"
 #include "scenegraph/scene_graph.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"

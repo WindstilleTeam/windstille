@@ -18,6 +18,8 @@
 
 #include "display/screenshot.hpp"
 
+#include <GL/glew.h>
+
 #include <iostream>
 #include <errno.h>
 #include <fstream>
@@ -32,7 +34,6 @@
 #include <geom/quad.hpp>
 
 #include "display/color.hpp"
-#include "display/opengl_state.hpp"
 #include "display/assert_gl.hpp"
 
 void save_screenshot(std::filesystem::path const& filename)

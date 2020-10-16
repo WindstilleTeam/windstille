@@ -22,7 +22,6 @@
 #include <glm/ext.hpp>
 
 #include "display/graphics_context.hpp"
-#include "display/opengl_state.hpp"
 #include "display/shader_object.hpp"
 #include "particles/particle_system.hpp"
 #include "util/pathname.hpp"

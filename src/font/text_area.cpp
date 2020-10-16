@@ -22,7 +22,6 @@
 
 #include "app/app.hpp"
 #include "display/graphics_context.hpp"
-#include "display/opengl_state.hpp"
 #include "font/fonts.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"
 

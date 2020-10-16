@@ -19,7 +19,6 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_FILL_SCREEN_PATTERN_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_FILL_SCREEN_PATTERN_DRAWABLE_HPP
 
-#include "display/opengl_state.hpp"
 #include "display/texture.hpp"
 #include "scenegraph/drawable.hpp"
 #include "scenegraph/vertex_array_drawable.hpp"

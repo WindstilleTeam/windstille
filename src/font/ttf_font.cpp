@@ -27,7 +27,6 @@
 
 #include "display/blitter.hpp"
 #include "display/drawing_context.hpp"
-#include "display/opengl_state.hpp"
 #include "display/software_surface.hpp"
 #include "font/text_drawable.hpp"
 #include "font/ttf_font.hpp"
