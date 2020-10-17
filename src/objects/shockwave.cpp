@@ -37,7 +37,7 @@ Shockwave::Shockwave(ReaderMapping const& props) :
   noise->set_wrap(GL_REPEAT);
   noise->set_filter(GL_LINEAR);
 
-  shader_program->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, "data/shader/shockwave2.frag"));
+  shader_program->attach(ShaderObject::from_file(GL_FRAGMENT_SHADER, "data/shader/shockwave2.frag"));
   shader_program->link();
 }
 

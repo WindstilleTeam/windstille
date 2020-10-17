@@ -59,8 +59,8 @@ App::run(int argc, char* argv[])
 
   ShaderProgramPtr prog = ShaderProgram::create();
 
-  prog->attach(ShaderObject::create_from_file(GL_VERTEX_SHADER, argv[4]));
-  prog->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, argv[5]));
+  prog->attach(ShaderObject::from_file(GL_VERTEX_SHADER, argv[4]));
+  prog->attach(ShaderObject::from_file(GL_FRAGMENT_SHADER, argv[5]));
   prog->link();
 
   glm::vec2 displacement(0.0f, 0.0f);

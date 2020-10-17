@@ -54,7 +54,7 @@ static GLchar* load_file(const char* filename)
 }
 
 ShaderObjectPtr
-ShaderObject::create_from_file(GLenum type, const std::string& filename)
+ShaderObject::from_file(GLenum type, const std::string& filename)
 {
   return ShaderObjectPtr(new ShaderObject(type, filename));
 }

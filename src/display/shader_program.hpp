@@ -33,11 +33,8 @@ class ShaderProgram
 public:
   static ShaderProgramPtr create();
   // loads and links a program
-  static ShaderProgramPtr create_from_file(const std::string& frag_filename = std::string(),
-                                           const std::string& vert_filename = std::string());
-  // loads but not links
-  static ShaderProgramPtr load_from_file(const std::string& frag_filename = std::string(),
-                                         const std::string& vert_filename = std::string());
+  static ShaderProgramPtr from_file(const std::string& frag_filename = std::string(),
+                                    const std::string& vert_filename = std::string());
 
 private:
   ShaderProgram();

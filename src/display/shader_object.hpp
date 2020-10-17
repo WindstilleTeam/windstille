@@ -29,7 +29,7 @@ typedef std::shared_ptr<ShaderObject> ShaderObjectPtr;
 class ShaderObject
 {
 public:
-  static ShaderObjectPtr create_from_file(GLenum type, const std::string& filename);
+  static ShaderObjectPtr from_file(GLenum type, const std::string& filename);
 
 private:
   ShaderObject(GLenum type, const std::string& filename);

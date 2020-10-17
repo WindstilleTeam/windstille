@@ -180,7 +180,7 @@ DeformDrawer::DeformDrawer(ReaderMapping const& /*props*/,
   surface(surface_manager.get(Pathname("images/particles/deform2.png"))),
   shader_program(ShaderProgram::create())
 {
-  shader_program->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER, "data/shader/particledeform.frag"));
+  shader_program->attach(ShaderObject::from_file(GL_FRAGMENT_SHADER, "data/shader/particledeform.frag"));
   shader_program->link();
 }
 

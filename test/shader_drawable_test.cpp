@@ -68,14 +68,14 @@ int shader_main(int argc, char* argv[])
   TexturePtr texture = texture_manager.get(Pathname("images/displacement.png"));
 
   ShaderProgramPtr shader_prg;
-  shader_prg->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER_ARB, "data/shader/border.frag"));
+  shader_prg->attach(ShaderObject::from_file(GL_FRAGMENT_SHADER_ARB, "data/shader/border.frag"));
   shader_prg->link();
 
   shader->set_shader(shader_prg);
   shader->get_drawable_group().add_drawable(surface3);
 
   ShaderProgramPtr shader2_prg;
-  shader2_prg->attach(ShaderObject::create_from_file(GL_FRAGMENT_SHADER_ARB, "data/shader/nightvision.frag"));
+  shader2_prg->attach(ShaderObject::from_file(GL_FRAGMENT_SHADER_ARB, "data/shader/nightvision.frag"));
   shader2_prg->link();
 
   shader2->set_shader(shader2_prg);
