@@ -24,6 +24,7 @@
 #include <vector>
 
 #include "display/color.hpp"
+#include "display/shader_program.hpp"
 #include "scenegraph/drawable.hpp"
 
 class VertexArrayDrawable : public Drawable
@@ -57,6 +58,7 @@ public:
 
   void clear();
 
+  void set_program(ShaderProgramPtr program);
   void set_mode(GLenum mode_);
   void set_texture(TexturePtr texture);
   void set_texture(int unit, TexturePtr texture);
@@ -64,6 +66,7 @@ public:
   void set_depth_test(bool depth_test);
 
 private:
+  ShaderProgramPtr m_program;
   GLenum m_mode;
 
   GLenum m_blend_sfactor;
