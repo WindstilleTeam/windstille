@@ -28,13 +28,13 @@
 #include "display/shader_object.hpp"
 
 ShaderProgramPtr
-ShaderProgram::from_file(std::filesystem::path const& frag_filename,
-                         std::filesystem::path const& vert_filename)
+ShaderProgram::from_file(std::filesystem::path const& vert_filename,
+                         std::filesystem::path const& frag_filename)
 {
   ShaderProgramPtr prog(new ShaderProgram());
 
-  prog->attach(ShaderObject::from_file(GL_FRAGMENT_SHADER, frag_filename));
   prog->attach(ShaderObject::from_file(GL_VERTEX_SHADER, vert_filename));
+  prog->attach(ShaderObject::from_file(GL_FRAGMENT_SHADER, frag_filename));
 
   prog->link();
 
@@ -42,13 +42,13 @@ ShaderProgram::from_file(std::filesystem::path const& frag_filename,
 }
 
 ShaderProgramPtr
-ShaderProgram::from_string(std::string_view frag_source,
-                           std::string_view vert_source)
+ShaderProgram::from_string(std::string_view vert_source,
+                           std::string_view frag_source)
 {
   ShaderProgramPtr prog(new ShaderProgram);
 
-  prog->attach(ShaderObject::from_string(GL_FRAGMENT_SHADER, frag_source));
   prog->attach(ShaderObject::from_string(GL_VERTEX_SHADER, vert_source));
+  prog->attach(ShaderObject::from_string(GL_FRAGMENT_SHADER, frag_source));
 
   prog->link();
 
