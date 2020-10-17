@@ -69,13 +69,16 @@ OpenGLState::init()
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_BLEND);
 
+#if 0
   glDisableClientState(GL_COLOR_ARRAY);
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
   glDisableClientState(GL_NORMAL_ARRAY);
 
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+#endif
+
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   global_ = new OpenGLState();
 
@@ -360,7 +363,7 @@ OpenGLState::verify()
       std::cout << "OpenGLState: texture handle is out of sync: " << impl->texture[0]->get_handle() << std::endl;
     }
   }
-  assert_gl("OpenGLState::verify");
+  assert_gl();
 }
 
 /* EOF */

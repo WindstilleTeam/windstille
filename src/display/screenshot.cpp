@@ -47,7 +47,7 @@ void save_screenshot(std::filesystem::path const& filename)
   std::vector<GLbyte> pixels(len);
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
   glReadPixels(0, 0, size.width(), size.height(), GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
-  assert_gl("Display::save_screenshot()");
+  assert_gl();
 
   if ((false))
   { // PPM saving

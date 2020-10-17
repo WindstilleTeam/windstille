@@ -51,7 +51,7 @@ Texture::Texture() :
   m_height(0)
 {
   glGenTextures(1, &m_handle);
-  assert_gl("Texture::Texture()");
+  assert_gl();
 }
 
 Texture::Texture(GLenum target, int width, int height, GLint format) :
@@ -60,6 +60,8 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
   m_width(width),
   m_height(height)
 {
+  assert_gl();
+
   if (!GLEW_ARB_texture_non_power_of_two)
   {
     if (!glm::isPowerOfTwo(m_width) || !glm::isPowerOfTwo(m_height))
@@ -72,7 +74,7 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
   }
 
   glGenTextures(1, &m_handle);
-  assert_gl("Texture::Texture()");
+  assert_gl();
 
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
@@ -85,7 +87,7 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
   glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-  assert_gl("Texture::Texture() 2");
+  assert_gl();
 }
 
 Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
@@ -94,8 +96,10 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
   m_width(image->get_width()),
   m_height(image->get_height())
 {
+  assert_gl();
+
   glGenTextures(1, &m_handle);
-  assert_gl("Texture::Texture()");
+  assert_gl();
 
   if (!GLEW_ARB_texture_non_power_of_two)
   {
@@ -165,13 +169,13 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
 
-    assert_gl("creating texture");
+    assert_gl();
 
     glTexParameteri(m_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(m_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(m_target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-    assert_gl("setting texture parameters");
+    assert_gl();
   }
   catch(...)
   {
@@ -205,6 +209,8 @@ Texture::get_handle() const
 void
 Texture::put(SoftwareSurfacePtr image, const geom::irect& srcrect, int x, int y)
 {
+  assert_gl();
+
   GLint sdl_format;
 
   if (image->get_format() == SoftwareSurface::RGB)
@@ -232,6 +238,8 @@ Texture::put(SoftwareSurfacePtr image, const geom::irect& srcrect, int x, int y)
                   static_cast<uint8_t*>(image->get_pixels())
                   + srcrect.top()  * image->get_pitch()
                   + srcrect.left() * image->get_bytes_per_pixel());
+
+  assert_gl();
 }
 
 void
@@ -243,20 +251,28 @@ Texture::put(SoftwareSurfacePtr image, int x, int y)
 void
 Texture::set_wrap(GLenum mode)
 {
+  assert_gl();
+
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
   glTexParameteri(m_target, GL_TEXTURE_WRAP_S, mode);
   glTexParameteri(m_target, GL_TEXTURE_WRAP_T, mode);
   glTexParameteri(m_target, GL_TEXTURE_WRAP_R, mode); // FIXME: only good for 3d textures?!
+
+  assert_gl();
 }
 
 void
 Texture::set_filter(GLenum mode)
 {
+  assert_gl();
+
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
   glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, mode);
   glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, mode);
+
+  assert_gl();
 }
 
 SoftwareSurfacePtr

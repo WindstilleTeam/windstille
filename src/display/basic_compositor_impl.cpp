@@ -21,6 +21,7 @@
 #include <GL/glew.h>
 #include <glm/ext.hpp>
 
+#include "display/assert_gl.hpp"
 #include "display/graphic_context_state.hpp"
 #include "display/opengl_state.hpp"
 #include "display/graphics_context.hpp"
@@ -40,6 +41,8 @@ BasicCompositorImpl::BasicCompositorImpl(const geom::isize& window, const geom::
 void
 BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& gc_state)
 {
+  assert_gl();
+
   // Resize Lightmap, only needed in the editor, FIXME: move this into a 'set_size()' call
   if (m_lightmap->get_width()  != static_cast<float>(m_window.width()  / LIGHTMAP_DIV) ||
       m_lightmap->get_height() != static_cast<float>(m_window.height() / LIGHTMAP_DIV))
@@ -156,6 +159,8 @@ BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* s
   sc.light().clear();
   sc.highlight().clear();
   sc.control().clear();
+
+  assert_gl();
 }
 
 /* EOF */

@@ -416,7 +416,7 @@ Sprite3D::draw(GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& model
     va.render(gc);
   }
 
-  assert_gl("rendering 3d sprite");
+  assert_gl();
 
   gc.pop_matrix();
 }

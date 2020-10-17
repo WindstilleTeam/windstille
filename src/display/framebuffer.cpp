@@ -22,6 +22,7 @@
 
 #include <geom/size.hpp>
 
+#include "display/assert_gl.hpp"
 #include "display/renderbuffer.hpp"
 #include "display/framebuffer.hpp"
 #include "display/assert_gl.hpp"
@@ -57,8 +58,9 @@ Framebuffer::Framebuffer() :
   m_color_buffer(),
   m_depth_stencil_buffer()
 {
+  assert_gl();
   glGenFramebuffers(1, &m_handle);
-  assert_gl("Framebuffer::Framebuffer()");
+  assert_gl();
 }
 
 Framebuffer::~Framebuffer()
@@ -95,6 +97,8 @@ Framebuffer::get_handle() const
 void
 Framebuffer::create_with_texture_internal(GLenum target, int width, int height, int multisample)
 {
+  assert_gl();
+
   m_size = geom::isize(width, height);
   m_texture = Texture::create(target, width, height);
   m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, width, height, multisample);
@@ -107,7 +111,7 @@ Framebuffer::create_with_texture_internal(GLenum target, int width, int height, 
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,   GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
 
-  assert_gl("Framebuffer::Framebuffer() - binding");
+  assert_gl();
 
   check_completness();
 
@@ -117,6 +121,8 @@ Framebuffer::create_with_texture_internal(GLenum target, int width, int height, 
 void
 Framebuffer::create_internal(GLenum format, int width, int height, int multisample)
 {
+  assert_gl();
+
   m_size = geom::isize(width, height);
   m_color_buffer = Renderbuffer::create(format, width, height, multisample);
   m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, width, height, multisample);
@@ -128,11 +134,13 @@ Framebuffer::create_internal(GLenum format, int width, int height, int multisamp
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,   GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
 
-  assert_gl("Framebuffer::Framebuffer() - binding");
+  assert_gl();
 
   check_completness();
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+  assert_gl();
 }
 
 void

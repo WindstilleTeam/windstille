@@ -62,7 +62,7 @@ void
 ShaderProgram::attach(ShaderObjectPtr obj)
 {
   glAttachShader(m_handle, obj->get_handle());
-  assert_gl("ShaderProgram::attach()");
+  assert_gl();
 }
 
 void
@@ -85,7 +85,7 @@ ShaderProgram::get_uniform_location(const char* name) const
   if (loc == -1)
     std::cout << "No such uniform named \"%s\"\n" << name << std::endl;
 
-  assert_gl("ShaderProgram::get_uniform_location()");
+  assert_gl();
 
   return loc;
 }
@@ -181,7 +181,7 @@ ShaderProgram::bind_frag_data_location(GLuint color_number, const char* name)
 {
   assert(glBindFragDataLocation);
   glBindFragDataLocation(m_handle, color_number, name);
-  assert_gl("ShaderProgram::bind_frag_data_location");
+  assert_gl();
 }
 
 bool

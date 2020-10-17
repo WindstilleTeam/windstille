@@ -22,13 +22,13 @@
 #include <sstream>
 #include <GL/glew.h>
 
-void assert_gl(const char* message)
-{ // FIXME: OpenGL stuff should go into display/
+void assert_gl_loc(char const* file, int line, char const* message)
+{
   GLenum error = glGetError();
   if(error != GL_NO_ERROR)
   {
     std::ostringstream msg;
-    msg << "OpenGLError while '" << message << "': "
+    msg << file << ":" << line << ": OpenGLError while '" << (message ? message : "<null>") << "': "
         << gluErrorString(error);
     throw std::runtime_error(msg.str());
   }

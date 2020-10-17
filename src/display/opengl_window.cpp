@@ -109,7 +109,7 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
       if (anti_aliasing)
         glEnable(GL_MULTISAMPLE);
 
-      assert_gl("setup projection");
+      assert_gl();
 
       OpenGLState::init();
       m_impl->m_gc = std::make_unique<GraphicsContext>();

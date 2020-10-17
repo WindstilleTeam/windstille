@@ -19,7 +19,10 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_ASSERT_GL_HPP
 #define HEADER_WINDSTILLE_DISPLAY_ASSERT_GL_HPP
 
-void assert_gl(const char* message);
+void assert_gl_loc(char const* file, int line, char const* message = nullptr);
+
+#define assert_gl() assert_gl_loc(__FILE__, __LINE__)
+#define assert_gl_msg(msg) assert_gl_loc(__FILE__, __LINE__, (msg))
 
 #endif
 

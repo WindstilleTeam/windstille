@@ -88,7 +88,7 @@ Lensflare::draw(GraphicsContext& gc)
     glGenQueries(1, &query_id);
     glGenQueries(1, &total_query_id);
 
-    assert_gl("Broken");
+    assert_gl();
 
     // disable all buffer writing
     glDepthMask(GL_FALSE);

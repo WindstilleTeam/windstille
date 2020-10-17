@@ -78,7 +78,7 @@ ShaderObject::load(std::filesystem::path const& filename)
 {
   GLchar* buf = load_file(filename.c_str());
   glShaderSource(m_handle, 1, const_cast<const GLchar**>(&buf), nullptr);
-  assert_gl("load_source");
+  assert_gl();
 
   //std::cout << "Source:\n" << buf << std::endl;
   free(buf);
@@ -107,9 +107,9 @@ ShaderObject::print_log() const
   int charsWritten  = 0;
   GLchar* infoLog;
 
-  assert_gl("print_log1");
+  assert_gl();
   glGetShaderiv(m_handle, GL_INFO_LOG_LENGTH, &infologLength);
-  assert_gl("print_log2");
+  assert_gl();
 
   if (infologLength > 0)
   {
@@ -123,7 +123,7 @@ ShaderObject::print_log() const
     printf("InfoLog:\n%s\n\n", infoLog);
     free(infoLog);
   }
-  assert_gl("print_log3");
+  assert_gl();
 }
 
 

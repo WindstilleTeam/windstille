@@ -57,7 +57,7 @@ TilePacker::TilePacker(int width, int height) :
 
   impl->texture = Texture::create(GL_TEXTURE_2D, width, height);
 
-  assert_gl("setting TilePacker texture parameters");
+  assert_gl();
 }
 
 TilePacker::~TilePacker()
@@ -92,7 +92,7 @@ TilePacker::pack(SoftwareSurfacePtr image, int x, int y, int w, int h)
 
   impl->texture->put(convert, impl->x_pos, impl->y_pos);
 
-  assert_gl("updating tilepacker texture");
+  assert_gl();
 
   geom::frect rect(glm::vec2(static_cast<float>(impl->x_pos + 1) / static_cast<float>(impl->width),
                       static_cast<float>(impl->y_pos + 1) / static_cast<float>(impl->height)),

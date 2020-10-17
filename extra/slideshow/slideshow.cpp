@@ -324,12 +324,12 @@ App::run(int argc, char* argv[])
 
       // rendering to output dir
       gc.push_framebuffer(framebuffer_multisample);
-      assert_gl("aeuthnoethuth");
+      assert_gl();
       glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      assert_gl("clear");
+      assert_gl();
       slide_show.draw(gc, time, m_edit_mode);
-      assert_gl("draw");
+      assert_gl();
       //SDL_GL_SwapBuffers();
       gc.pop_framebuffer();
 
