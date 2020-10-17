@@ -19,6 +19,7 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_GRAPHICSCONTEXT_HPP
 #define HEADER_WINDSTILLE_DISPLAY_GRAPHICSCONTEXT_HPP
 
+#include <stack>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -69,21 +70,26 @@ public:
   void set_aspect_size(geom::isize const& aspect_size);
   geom::isize size() const;
 
-  void ortho(float left, float right, float bottom, float top, float near, float far);
-  void matrix_mode(int mode);
-  void load_identity();
+  void set_projection(glm::mat4 const& mat);
+  glm::mat4 const& get_projection() const { return m_projection; }
+
+  void set_modelview(glm::mat4 const& mat);
+  glm::mat4 const& set_modelview() const { return m_modelview_stack.top(); }
+
   void push_matrix();
+  void pop_matrix();
   void mult_matrix(glm::mat4 const& mat);
   void translate(float x, float y, float z);
   void scale(float x, float y, float z);
   void rotate(float degree, float x, float y, float z);
-  void pop_matrix();
 
 private:
   geom::isize m_aspect_size;
   std::vector<geom::irect> m_cliprects;
 
   ShaderProgramPtr m_default_shader;
+  std::stack<glm::mat4> m_modelview_stack;
+  glm::mat4 m_projection;
 
 private:
   GraphicsContext(const GraphicsContext&) = delete;

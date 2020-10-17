@@ -78,7 +78,7 @@ GradientDrawable::render(GraphicsContext& gc, unsigned int mask)
   }
 
   gc.push_matrix();
-  gc.load_identity();
+  gc.set_modelview(glm::mat4(1.0f));
   m_array->render(gc, mask);
   gc.pop_matrix();
 }

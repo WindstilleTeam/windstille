@@ -45,8 +45,11 @@ std::vector<FramebufferPtr> framebuffers;
 GraphicsContext::GraphicsContext() :
   m_aspect_size(),
   m_cliprects(),
-  m_default_shader()
+  m_default_shader(),
+  m_modelview_stack(),
+  m_projection(1.0f)
 {
+  m_modelview_stack.emplace(1.0f);
   m_default_shader = ShaderProgram::from_file(Pathname("shader/shader330.frag"),
                                               Pathname("shader/shader330.vert"));
 }
@@ -563,57 +566,59 @@ GraphicsContext::get_framebuffer()
 }
 
 void
-GraphicsContext::ortho(float left, float right, float bottom, float top, float near, float far)
+GraphicsContext::set_projection(glm::mat4 const& mat)
 {
-  glOrtho(left, right, bottom, top, near, far);
+  m_projection = mat;
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadMatrixf(glm::value_ptr(m_projection));
+  glMatrixMode(GL_MODELVIEW);
 }
 
 void
-GraphicsContext::matrix_mode(int mode)
+GraphicsContext::set_modelview(glm::mat4 const& mat)
 {
-  glMatrixMode(mode);
-}
-
-void
-GraphicsContext::load_identity()
-{
-  glLoadIdentity();
+  m_modelview_stack.top() = mat;
+  glLoadMatrixf(glm::value_ptr(m_modelview_stack.top()));
 }
 
 void
 GraphicsContext::push_matrix()
 {
-  glPushMatrix();
-}
-
-void
-GraphicsContext::mult_matrix(glm::mat4 const& mat)
-{
-  glMultMatrixf(glm::value_ptr(mat));
-}
-
-void
-GraphicsContext::translate(float x, float y, float z)
-{
-  glTranslatef(x, y, z);
-}
-
-void
-GraphicsContext::scale(float x, float y, float z)
-{
-  glScalef(x, y, z);
-}
-
-void
-GraphicsContext::rotate(float degree, float x, float y, float z)
-{
-  glRotatef(degree, x, y, z);
+  m_modelview_stack.push(m_modelview_stack.top());
+  glLoadMatrixf(glm::value_ptr(m_modelview_stack.top()));
 }
 
 void
 GraphicsContext::pop_matrix()
 {
-  glPopMatrix();
+  m_modelview_stack.pop();
+  glLoadMatrixf(glm::value_ptr(m_modelview_stack.top()));
+}
+
+void
+GraphicsContext::mult_matrix(glm::mat4 const& mat)
+{
+  m_modelview_stack.top() = m_modelview_stack.top() * mat;
+  glLoadMatrixf(glm::value_ptr(m_modelview_stack.top()));
+}
+
+void
+GraphicsContext::translate(float x, float y, float z)
+{
+  mult_matrix(glm::translate(glm::vec3(x, y, z)));
+}
+
+void
+GraphicsContext::scale(float x, float y, float z)
+{
+  mult_matrix(glm::scale(glm::vec3(x, y, z)));
+}
+
+void
+GraphicsContext::rotate(float degree, float x, float y, float z)
+{
+  mult_matrix(glm::rotate(glm::radians(degree), glm::vec3(x, y, z)));
 }
 
 /* EOF */

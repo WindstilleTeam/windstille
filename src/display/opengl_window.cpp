@@ -23,6 +23,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
+
 #include "display/opengl_state.hpp"
 #include "display/graphics_context.hpp"
 #include "display/assert_gl.hpp"
@@ -115,24 +118,21 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
       m_impl->m_gc = std::make_unique<GraphicsContext>();
 
       glViewport(0, 0, m_impl->m_size.width(), m_impl->m_size.height());
-      m_impl->m_gc->matrix_mode(GL_PROJECTION);
-      m_impl->m_gc->load_identity();
 
       m_impl->m_gc->set_aspect_size(aspect);
 
-      m_impl->m_gc->ortho(0.0f,
-                         static_cast<float>(m_impl->m_gc->size().width()),
-                         static_cast<float>(m_impl->m_gc->size().height()),
-                         0.0,
-                         1000.0,
-                         -1000.0);
-      m_impl->m_gc->matrix_mode(GL_MODELVIEW);
-      m_impl->m_gc->load_identity();
+      m_impl->m_gc->set_projection(
+        glm::ortho(0.0f,
+                   static_cast<float>(m_impl->m_gc->size().width()),
+                   static_cast<float>(m_impl->m_gc->size().height()),
+                   0.0f,
+                   1000.0f,
+                   -1000.0f));
 
       if ((false)) // disabled for the moment, as it seems to do more harm then good
       { // Magic pixel center constant, without that textures drawn in
         // pixel coordinates might end up blurry
-        glTranslated(0.375f, 0.375f, 0.0);
+        m_impl->m_gc->translate(0.375f, 0.375f, 0.0f);
       }
     }
   }

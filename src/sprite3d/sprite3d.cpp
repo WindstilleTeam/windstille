@@ -350,7 +350,6 @@ static inline float interpolate(float v1, float v2, float t)
 void
 Sprite3D::draw(GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& modelview)
 {
-  gc.matrix_mode(GL_MODELVIEW);
   gc.push_matrix();
   gc.mult_matrix(modelview);
   gc.translate(pos.x, pos.y, 0);

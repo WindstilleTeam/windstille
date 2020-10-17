@@ -60,7 +60,7 @@ public:
     va.set_texture(m_texture);
 
     gc.push_matrix();
-    gc.load_identity();
+    gc.set_modelview(glm::mat4(1.0f));
 
     va.set_mode(GL_TRIANGLE_FAN);
     {
