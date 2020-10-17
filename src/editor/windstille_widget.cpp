@@ -145,8 +145,9 @@ WindstilleWidget::on_realize()
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
-  if (glwindow->gl_begin(get_gl_context()))
-  {
+  if (!glwindow->gl_begin(get_gl_context())) {
+    std::cout << "WindstilleWidget::on_realize() - no gl context" << std::endl;
+  } else {
     if (!lib_init)
     {
       lib_init = true;
@@ -159,29 +160,27 @@ WindstilleWidget::on_realize()
 
       OpenGLState::init();
       m_gc = std::make_unique<GraphicsContext>();
+
+      if (!sc) {
+        sc.reset(new SceneContext());
+        compositor.reset(new Compositor(geom::isize(get_width(), get_height()),
+                                        geom::isize(get_width(), get_height())));
+        sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
+      }
+
+      background_pattern = g_app.texture().get(Pathname("editor/background_layer.png"));
+      background_pattern->set_wrap(GL_REPEAT);
+
+      glViewport(0, 0, get_width(), get_height());
+
+      m_gc->set_projection(
+        glm::ortho(0.0f,
+                   static_cast<float>(get_width()),
+                   static_cast<float>(get_height()),
+                   0.0f,
+                   1000.0f,
+                   -1000.0f));
     }
-
-    if (!sc)
-    {
-      sc.reset(new SceneContext());
-      compositor.reset(new Compositor(geom::isize(get_width(), get_height()),
-                                      geom::isize(get_width(), get_height())));
-      sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
-    }
-
-    background_pattern = g_app.texture().get(Pathname("editor/background_layer.png"));
-    background_pattern->set_wrap(GL_REPEAT);
-
-    glViewport(0, 0, get_width(), get_height());
-
-    m_gc->set_projection(
-      glm::ortho(0.0f,
-                 static_cast<float>(get_width()),
-                 static_cast<float>(get_height()),
-                 0.0f,
-                 1000.0f,
-                 -1000.0f));
-
     glwindow->gl_end();
   }
 }
@@ -189,21 +188,23 @@ WindstilleWidget::on_realize()
 bool
 WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 {
-  m_gc->set_aspect_size(geom::isize(ev->width, ev->height));
-
-  state.set_size(m_gc->size().width(),
-                 m_gc->size().height());
-
+  std::cout << "WindstilleWidget::on_configure_event()" << std::endl;
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
-  if (!glwindow->gl_begin(get_gl_context()))
-  {
+  if (!glwindow->gl_begin(get_gl_context())) {
+    std::cout << "WindstilleWidget::on_configure_event() - no gl context" << std::endl;
     return false;
-  }
-  else
-  {
-    if (compositor)
-    {
+  } else{
+    if (!lib_init) {
+      return false;
+    }
+
+    m_gc->set_aspect_size(geom::isize(ev->width, ev->height));
+
+    state.set_size(m_gc->size().width(),
+                   m_gc->size().height());
+
+    if (compositor) {
       compositor.reset(new Compositor(geom::isize(ev->width, ev->height),
                                       geom::isize(ev->width, ev->height)));
     }
