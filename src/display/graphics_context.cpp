@@ -34,12 +34,45 @@
 #include "display/color.hpp"
 #include "display/assert_gl.hpp"
 
-#include "util/pathname.hpp"
-
 #include "scenegraph/vertex_array_drawable.hpp"
 
 namespace {
 std::vector<FramebufferPtr> framebuffers;
+
+const char default_vert_source[] = R"(#version 330 core
+
+in vec2 texcoord;
+in vec4 diffuse;
+in vec3 position;
+
+out vec2 texcoord_v;
+out vec4 diffuse_v;
+
+uniform mat4 modelviewprojection;
+
+void main()
+{
+  texcoord_v = texcoord;
+  diffuse_v = diffuse;
+  gl_Position = modelviewprojection * vec4(position, 1.0);
+}
+)";
+
+const char default_frag_source[] = R"(#version 330 core
+
+uniform sampler2D diffuse_texture;
+
+in vec2 texcoord_v;
+in vec4 diffuse_v;
+
+layout(location = 0) out vec4 fragColor;
+
+void main()
+{
+  fragColor = texture(diffuse_texture, texcoord_v) * diffuse_v;
+}
+)";
+
 } // namespace
 
 GraphicsContext::GraphicsContext() :
@@ -55,12 +88,11 @@ GraphicsContext::GraphicsContext() :
 
   m_modelview_stack.emplace(1.0f);
 
-  // FIXME: vfs this
-  m_default_shader = ShaderProgram::from_file(Pathname("shader/shader330.frag"),
-                                              Pathname("shader/shader330.vert"));
+  m_default_shader = ShaderProgram::from_string(default_vert_source,
+                                                default_frag_source);
 
-  // FIXME: generate this in code
-  m_white_texture = Texture::create(SoftwareSurface::create(SoftwareSurface::RGBA, 1, 1, Color(1.0f, 1.0f, 1.0f, 1.0f)));
+  m_white_texture = Texture::create(SoftwareSurface::create(SoftwareSurface::RGBA, 1, 1,
+                                                            Color(1.0f, 1.0f, 1.0f, 1.0f)));
 
   glUseProgram(m_default_shader->get_handle());
 
