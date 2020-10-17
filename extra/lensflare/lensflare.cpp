@@ -67,15 +67,18 @@ Lensflare::draw(GraphicsContext& gc)
   glEnable(GL_DEPTH_TEST);
   glDepthMask(GL_TRUE);
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-  glAlphaFunc ( GL_GREATER, 0.5f );
-  glEnable(GL_ALPHA_TEST);
+
+  // FIXME: this needs to be moved to a shader
+  //glAlphaFunc ( GL_GREATER, 0.5f );
+  //glEnable(GL_ALPHA_TEST);
+
+  assert_gl();
 
   m_cover->draw(gc,
                 SurfaceDrawingParameters()
+                .set_depth_test(true)
                 .set_pos(glm::vec2(600, 400))
                 .set_color(Color(0.15f, 0.15f, 0.15f, 1.0f)));
-
-  glDisable(GL_ALPHA_TEST);
 
   if ((true))
   {
@@ -98,6 +101,7 @@ Lensflare::draw(GraphicsContext& gc)
     glBeginQuery(GL_SAMPLES_PASSED, query_id);
     m_lightquery->draw(gc,
                        SurfaceDrawingParameters()
+                       .set_depth_test(true)
                        .set_pos(glm::vec2(m_mouse.x - m_lightquery->get_width()/2,
                                           m_mouse.y - m_lightquery->get_height()/2)));
     glEndQuery(GL_SAMPLES_PASSED);
@@ -107,14 +111,12 @@ Lensflare::draw(GraphicsContext& gc)
     glClear(GL_DEPTH_BUFFER_BIT);
 
     // reference query, to get the total amount of samples
-    glDisable(GL_DEPTH_TEST);
     glBeginQuery(GL_SAMPLES_PASSED, total_query_id);
     m_lightquery->draw(gc,
                        SurfaceDrawingParameters()
                        .set_pos(glm::vec2(m_mouse.x - m_lightquery->get_width()/2,
                                           m_mouse.y - m_lightquery->get_height()/2)));
     glEndQuery(GL_SAMPLES_PASSED);
-    glEnable(GL_DEPTH_TEST);
 
     glGetQueryObjectiv(total_query_id, GL_QUERY_RESULT, &total_samples);
 
@@ -232,11 +234,6 @@ Lensflare::run()
   GraphicsContext& gc = window.get_gc();
   TextureManager texture_manager;
   SurfaceManager surface_manager;
-
-  if (!GLEW_ARB_occlusion_query)
-  {
-    throw std::runtime_error("GL_ARB_occlusion_query not supported");
-  }
 
   m_light  = surface_manager.get("light.png");
   m_lightquery  = surface_manager.get("lightquery.png");
