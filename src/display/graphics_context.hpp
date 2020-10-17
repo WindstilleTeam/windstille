@@ -27,9 +27,11 @@
 #include <geom/fwd.hpp>
 
 #include "display/framebuffer.hpp"
+#include "display/gl_vertex_arrays.hpp"
 #include "display/shader_program.hpp"
 
 class Color;
+class GLVertexArrays;
 
 class GraphicsContext
 {
@@ -74,7 +76,7 @@ public:
   glm::mat4 const& get_projection() const { return m_projection; }
 
   void set_modelview(glm::mat4 const& mat);
-  glm::mat4 const& set_modelview() const { return m_modelview_stack.top(); }
+  glm::mat4 const& get_modelview() const { return m_modelview_stack.top(); }
 
   void push_matrix();
   void pop_matrix();
@@ -83,13 +85,19 @@ public:
   void scale(float x, float y, float z);
   void rotate(float degree, float x, float y, float z);
 
+  ShaderProgramPtr get_default_shader() const { return m_default_shader; }
+  GLVertexArrays& get_va() { return m_vertex_arrays; }
+  TexturePtr get_white_texture() const { return m_white_texture; }
+
 private:
   geom::isize m_aspect_size;
   std::vector<geom::irect> m_cliprects;
 
   ShaderProgramPtr m_default_shader;
+  TexturePtr m_white_texture;
   std::stack<glm::mat4> m_modelview_stack;
   glm::mat4 m_projection;
+  GLVertexArrays m_vertex_arrays;
 
 private:
   GraphicsContext(const GraphicsContext&) = delete;

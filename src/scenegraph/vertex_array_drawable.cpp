@@ -18,8 +18,10 @@
 
 #include "scenegraph/vertex_array_drawable.hpp"
 
+#include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "display/assert_gl.hpp"
 #include "display/graphics_context.hpp"
 #include "display/opengl_state.hpp"
 
@@ -72,6 +74,102 @@ VertexArrayDrawable::render(GraphicsContext& gc, unsigned int mask)
   assert(m_normals.empty() || int(m_normals.size() / 3) == num_vertices());
   assert(m_colors.empty() || int(m_colors.size() / 4) == num_vertices());
 
+  assert_gl();
+  if (m_program) {
+    glUseProgram(m_program->get_handle());
+  } else {
+    glUseProgram(gc.get_default_shader()->get_handle());
+  }
+  assert_gl();
+
+  if (m_depth_test) {
+    glEnable(GL_DEPTH_TEST);
+  } else {
+    glDisable(GL_DEPTH_TEST);
+  }
+  assert_gl();
+
+  glEnable(GL_BLEND);
+  glBlendFunc(m_blend_sfactor, m_blend_dfactor);
+
+  if (m_texcoords.empty()) {
+    // FIXME: hack
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, gc.get_white_texture()->get_handle());
+  } else {
+    for (auto const& it : m_textures) {
+      glActiveTexture(GL_TEXTURE0 + it.first);
+      glBindTexture(GL_TEXTURE_2D, it.second->get_handle());
+    }
+  }
+
+  assert_gl();
+
+  if (m_colors.empty()) {
+    // FIXME: hack
+    m_colors.resize(num_vertices() * 4, 1.0f);
+  }
+
+  gc.get_va().bind();
+  gc.get_va().set_colors(m_colors);
+  gc.get_va().set_texcoords(m_texcoords);
+  // gc.get_va().set_normals(m_normals);
+  gc.get_va().set_positions(m_vertices);
+
+  gc.push_matrix();
+  gc.mult_matrix(modelview);
+
+  glm::mat4 modelviewprojection = gc.get_projection() * gc.get_modelview();
+
+  int loc = gc.get_default_shader()->get_uniform_location("modelviewprojection");
+  if (loc != -1) {
+    glUniformMatrix4fv(loc, 1, false, glm::value_ptr(modelviewprojection));
+  } else {
+    std::cout << "BORK" << std::endl;
+  }
+
+  loc = gc.get_default_shader()->get_uniform_location("diffuse_texture");
+  if (loc != -1)
+    glUniform1i(loc, 0);
+
+  // FIXME: Hack: make this configurable
+  if (m_mode == GL_LINES || m_mode == GL_LINE_LOOP) {
+    glLineWidth(2.0f);
+  }
+
+  assert_gl();
+
+  if (m_indices.empty()) {
+    assert_gl();
+    glDrawArrays(m_mode, 0, num_vertices());
+    assert_gl();
+  } else {
+    assert_gl();
+    glDrawElements(m_mode, static_cast<GLsizei>(m_indices.size()),
+                   GL_UNSIGNED_SHORT, m_indices.data());
+    assert_gl();
+  }
+
+  assert_gl();
+
+  if (m_mode == GL_LINES || m_mode == GL_LINE_LOOP) {
+    glLineWidth(1.0f);
+  }
+
+  gc.pop_matrix();
+
+  assert_gl();
+}
+
+void
+VertexArrayDrawable::render_legacy(GraphicsContext& gc, unsigned int mask)
+{
+  assert(!m_vertices.empty());
+
+  assert(m_texcoords.empty() || int(m_texcoords.size() / 2) == num_vertices());
+  assert(m_normals.empty() || int(m_normals.size() / 3) == num_vertices());
+  assert(m_colors.empty() || int(m_colors.size() / 4) == num_vertices());
+
   OpenGLState state;
 
   if (m_program) {
@@ -79,7 +177,8 @@ VertexArrayDrawable::render(GraphicsContext& gc, unsigned int mask)
   }
 
   if (m_depth_test) {
-    state.enable(GL_DEPTH_TEST);
+    //state.enable(GL_DEPTH_TEST);
+    state.disable(GL_DEPTH_TEST);
   } else {
     state.disable(GL_DEPTH_TEST);
   }

@@ -90,6 +90,21 @@ ShaderProgram::get_uniform_location(const char* name) const
   return loc;
 }
 
+GLint
+ShaderProgram::get_attrib_location(const char* name) const
+{
+  GLint loc;
+
+  loc = glGetAttribLocation(m_handle, name);
+
+  if (loc == -1)
+    std::cout << "No such attrib named \"%s\"\n" << name << std::endl;
+
+  assert_gl();
+
+  return loc;
+}
+
 GLuint
 ShaderProgram::get_handle() const
 {

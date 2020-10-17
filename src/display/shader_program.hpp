@@ -48,6 +48,7 @@ public:
   bool get_link_status() const;
 
   GLint get_uniform_location(const char* name) const;
+  GLint get_attrib_location(const char* name) const;
   GLuint get_handle() const;
 
   // FIXME: All these only work when you call

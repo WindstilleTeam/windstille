@@ -34,6 +34,7 @@ public:
   VertexArrayDrawable(glm::vec2 const& pos, float z_pos, glm::mat4 const& modelview);
 
   void render(GraphicsContext& gc, unsigned int mask = ~0u) override;
+  void render_legacy(GraphicsContext& gc, unsigned int mask = ~0u);
 
   void normal(float x, float y, float z);
 

@@ -5,13 +5,15 @@ in vec4 diffuse;
 in vec3 position;
 
 out vec2 texcoord_v;
+out vec4 diffuse_v;
 
-uniform mat3 modelviewprojection;
+uniform mat4 modelviewprojection;
 
 void main()
 {
   texcoord_v = texcoord;
-  gl_Position = vec4(position * modelviewprojection, 1.0);
+  diffuse_v = diffuse;
+  gl_Position = modelviewprojection * vec4(position, 1.0);
 }
 
 /* EOF */

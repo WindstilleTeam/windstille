@@ -46,12 +46,25 @@ GraphicsContext::GraphicsContext() :
   m_aspect_size(),
   m_cliprects(),
   m_default_shader(),
+  m_white_texture(),
   m_modelview_stack(),
-  m_projection(1.0f)
+  m_projection(1.0f),
+  m_vertex_arrays(*this)
 {
+  assert_gl();
+
   m_modelview_stack.emplace(1.0f);
+
+  // FIXME: vfs this
   m_default_shader = ShaderProgram::from_file(Pathname("shader/shader330.frag"),
                                               Pathname("shader/shader330.vert"));
+
+  // FIXME: generate this in code
+  m_white_texture = Texture::create(SoftwareSurface::create(Pathname("images/white.png")));
+
+  glUseProgram(m_default_shader->get_handle());
+
+  assert_gl();
 }
 
 GraphicsContext::~GraphicsContext()
@@ -483,6 +496,8 @@ GraphicsContext::draw_grid(const glm::vec2& offset, const geom::fsize& size, con
 void
 GraphicsContext::push_cliprect(const geom::irect& rect_)
 {
+  assert_gl();
+
   geom::irect rect = rect_;
 
   if (!m_cliprects.empty())
@@ -498,11 +513,15 @@ GraphicsContext::push_cliprect(const geom::irect& rect_)
   glScissor(rect.left(), size().height() - rect.top() - rect.height(),
             rect.width(), rect.height());
   glEnable(GL_SCISSOR_TEST);
+
+  assert_gl();
 }
 
 void
 GraphicsContext::pop_cliprect()
 {
+  assert_gl();
+
   assert(!m_cliprects.empty());
 
   m_cliprects.pop_back();
@@ -518,6 +537,8 @@ GraphicsContext::pop_cliprect()
   {
     glDisable(GL_SCISSOR_TEST);
   }
+
+  assert_gl();
 }
 
 void
@@ -535,13 +556,17 @@ GraphicsContext::size() const
 void
 GraphicsContext::push_framebuffer(FramebufferPtr framebuffer)
 {
+  assert_gl();
   framebuffers.push_back(framebuffer);
   glBindFramebuffer(GL_FRAMEBUFFER, framebuffers.back()->get_handle());
+  assert_gl();
 }
 
 void
 GraphicsContext::pop_framebuffer()
 {
+  assert_gl();
+
   assert(!framebuffers.empty());
 
   framebuffers.pop_back();
@@ -554,6 +579,8 @@ GraphicsContext::pop_framebuffer()
   {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
   }
+
+  assert_gl();
 }
 
 FramebufferPtr
@@ -569,38 +596,30 @@ void
 GraphicsContext::set_projection(glm::mat4 const& mat)
 {
   m_projection = mat;
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadMatrixf(glm::value_ptr(m_projection));
-  glMatrixMode(GL_MODELVIEW);
 }
 
 void
 GraphicsContext::set_modelview(glm::mat4 const& mat)
 {
   m_modelview_stack.top() = mat;
-  glLoadMatrixf(glm::value_ptr(m_modelview_stack.top()));
 }
 
 void
 GraphicsContext::push_matrix()
 {
   m_modelview_stack.push(m_modelview_stack.top());
-  glLoadMatrixf(glm::value_ptr(m_modelview_stack.top()));
 }
 
 void
 GraphicsContext::pop_matrix()
 {
   m_modelview_stack.pop();
-  glLoadMatrixf(glm::value_ptr(m_modelview_stack.top()));
 }
 
 void
 GraphicsContext::mult_matrix(glm::mat4 const& mat)
 {
-  m_modelview_stack.top() = m_modelview_stack.top() * mat;
-  glLoadMatrixf(glm::value_ptr(m_modelview_stack.top()));
+  m_modelview_stack.top() = mat * m_modelview_stack.top();
 }
 
 void
