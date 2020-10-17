@@ -280,7 +280,7 @@ Texture::get_software_surface() const
 {
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  SoftwareSurfacePtr surface = SoftwareSurface::create(m_width, m_height);
+  SoftwareSurfacePtr surface = SoftwareSurface::create(SoftwareSurface::RGBA, m_width, m_height);
 
   glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->get_pixels());
 

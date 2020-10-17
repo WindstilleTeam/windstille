@@ -35,9 +35,31 @@ SoftwareSurface::create(std::filesystem::path const& filename)
 }
 
 SoftwareSurfacePtr
-SoftwareSurface::create(int width, int height, Format format)
+SoftwareSurface::create(Format format, int width, int height, Color const& color)
 {
-  return SoftwareSurfacePtr(new SoftwareSurface(width, height, format));
+  SoftwareSurfacePtr sur(new SoftwareSurface(width, height, format));
+
+  switch (format)
+  {
+    case RGBA:
+      SDL_FillRect(sur->m_surface, nullptr,
+                   SDL_MapRGBA(sur->m_surface->format,
+                               static_cast<uint8_t>(color.r * 255),
+                               static_cast<uint8_t>(color.g * 255),
+                               static_cast<uint8_t>(color.b * 255),
+                               static_cast<uint8_t>(color.a * 255)));
+      break;
+
+    case RGB:
+      SDL_FillRect(sur->m_surface, nullptr,
+                   SDL_MapRGB(sur->m_surface->format,
+                               static_cast<uint8_t>(color.r * 255),
+                               static_cast<uint8_t>(color.g * 255),
+                               static_cast<uint8_t>(color.b * 255)));
+      break;
+  }
+
+  return sur;
 }
 
 SoftwareSurface::SoftwareSurface(std::filesystem::path const& filename) :

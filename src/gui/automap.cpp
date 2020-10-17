@@ -47,7 +47,7 @@ Automap::Automap(const geom::frect& rect_, Component* parent_) :
 {
   TileMap* tilemap = Sector::current()->get_tilemap();
 
-  SoftwareSurfacePtr image = SoftwareSurface::create(tilemap->get_width(), tilemap->get_height());
+  SoftwareSurfacePtr image = SoftwareSurface::create(SoftwareSurface::RGBA, tilemap->get_width(), tilemap->get_height());
 
   unsigned char* buffer = static_cast<unsigned char*>(image->get_pixels());
 

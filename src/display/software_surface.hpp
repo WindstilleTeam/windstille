@@ -25,6 +25,8 @@
 #include <geom/size.hpp>
 #include <geom/rect.hpp>
 
+#include "display/color.hpp"
+
 typedef struct SDL_Surface SDL_Surface;
 
 class SoftwareSurface;
@@ -40,7 +42,7 @@ public:
 
 public:
   static SoftwareSurfacePtr create(std::filesystem::path const& filename);
-  static SoftwareSurfacePtr create(int width, int height, Format format = RGBA);
+  static SoftwareSurfacePtr create(Format format, int width, int height, Color const& color = Color(0.0f, 0.0f, 0.0f, 0.0f));
 
 private:
   explicit SoftwareSurface(std::filesystem::path const& filename);

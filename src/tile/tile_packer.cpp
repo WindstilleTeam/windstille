@@ -72,7 +72,7 @@ TilePacker::pack(SoftwareSurfacePtr image, int x, int y, int w, int h)
   assert(w == TILE_RESOLUTION && h == TILE_RESOLUTION);
   assert(!is_full());
 
-  SoftwareSurfacePtr convert = SoftwareSurface::create(w+2, h+2);
+  SoftwareSurfacePtr convert = SoftwareSurface::create(SoftwareSurface::RGBA, w+2, h+2);
 
   SDL_Rect source_rect;
   source_rect.x = static_cast<Sint16>(x);

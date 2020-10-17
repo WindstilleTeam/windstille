@@ -60,7 +60,7 @@ GraphicsContext::GraphicsContext() :
                                               Pathname("shader/shader330.vert"));
 
   // FIXME: generate this in code
-  m_white_texture = Texture::create(SoftwareSurface::create(Pathname("images/white.png")));
+  m_white_texture = Texture::create(SoftwareSurface::create(SoftwareSurface::RGBA, 1, 1, Color(1.0f, 1.0f, 1.0f, 1.0f)));
 
   glUseProgram(m_default_shader->get_handle());
 

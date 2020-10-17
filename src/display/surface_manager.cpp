@@ -153,7 +153,7 @@ SurfaceManager::create_texture(SoftwareSurfacePtr image,
     int texture_w = glm::ceilPowerOfTwo(image->get_width());
     int texture_h = glm::ceilPowerOfTwo(image->get_height());
 
-    SoftwareSurfacePtr convert = SoftwareSurface::create(texture_w, texture_h);
+    SoftwareSurfacePtr convert = SoftwareSurface::create(SoftwareSurface::RGBA, texture_w, texture_h);
 
     image->blit(convert, 0, 0);
 
