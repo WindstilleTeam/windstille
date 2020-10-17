@@ -101,7 +101,7 @@ GraphicsContext::fill_quad(const geom::quad& quad, const Color& color)
 
   va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  va.set_mode(GL_QUADS);
+  va.set_mode(GL_TRIANGLE_FAN);
 
   va.color(color);
   va.vertex(quad.p1.x, quad.p1.y);
@@ -149,7 +149,7 @@ GraphicsContext::fill_rect(const geom::frect& rect, const Color& color)
 
   va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  va.set_mode(GL_QUADS);
+  va.set_mode(GL_TRIANGLE_FAN);
 
   va.color(color);
   va.vertex(rect.left(),  rect.top());
@@ -208,28 +208,30 @@ GraphicsContext::fill_rounded_rect(const geom::frect& rect, float radius, const 
   va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   int n = 8;
-  va.set_mode(GL_QUAD_STRIP);
+  va.set_mode(GL_TRIANGLE_STRIP);
   for(int i = 0; i <= n; ++i)
   {
     float x = sinf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
     float y = cosf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
 
-    va.color(color);
-    va.vertex(irect.left()  - x, irect.top() - y);
-
+    // v2
     va.color(color);
     va.vertex(irect.right() + x, irect.top() - y);
+    // v1
+    va.color(color);
+    va.vertex(irect.left()  - x, irect.top() - y);
   }
   for(int i = 0; i <= n; ++i)
   {
     float x = cosf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
     float y = sinf(static_cast<float>(i) * glm::half_pi<float>() / static_cast<float>(n)) * radius;
 
-    va.color(color);
-    va.vertex(irect.left()  - x, irect.bottom() + y);
-
+    // v2
     va.color(color);
     va.vertex(irect.right() + x, irect.bottom() + y);
+    // v1
+    va.color(color);
+    va.vertex(irect.left()  - x, irect.bottom() + y);
   }
   va.render(*this, ~0u);
 }

@@ -111,7 +111,7 @@ BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* s
 
     va.set_blend_func(GL_DST_COLOR, GL_ZERO);
 
-    va.set_mode(GL_QUADS);
+    va.set_mode(GL_TRIANGLE_FAN);
 
     va.texcoord(m_lightmap->get_uv().left(), m_lightmap->get_uv().bottom());
     va.vertex(0, 0);

@@ -86,38 +86,48 @@ public:
 
     int segments = 64;
 
-    va.set_mode(GL_QUADS);
+    va.set_mode(GL_TRIANGLES);
     for (int i = 0; i < segments; ++i)
     {
       float angel = glm::two_pi<float>() / static_cast<float>(segments);
 
-      float x1 =  sinf(angel*static_cast<float>(i))*rad;
-      float y1 = -cosf(angel*static_cast<float>(i))*rad;
+      float const x1 =  sinf(angel*static_cast<float>(i))*rad;
+      float const y1 = -cosf(angel*static_cast<float>(i))*rad;
 
-      float x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
-      float y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
+      float const x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
+      float const y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
 
+      float const x3 =  sinf(angel*static_cast<float>(i))*minradius;
+      float const y3 = -cosf(angel*static_cast<float>(i))*minradius;
+
+      float const x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
+      float const y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
+
+      // v1
       va.color(1.0f, 1.0f, 1.0f, 1.0f);
       va.texcoord(x1+256, (y1+256));
       va.vertex(x1+256, y1+256, 0);
-
+      // v4
+      va.color(1.0f, 1.0f, 1.0f, 1.0f);
+      va.texcoord(x3+256, (y3+256));
+      va.vertex(x3+256, y3+256, 0);
+      // v2
       va.color(1.0f, 1.0f, 1.0f, 1.0f);
       va.texcoord(x2+256, (y2+256));
       va.vertex(x2+256, y2+256, 0);
 
-      float x3 =  sinf(angel*static_cast<float>(i))*minradius;
-      float y3 = -cosf(angel*static_cast<float>(i))*minradius;
-
-      float x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
-      float y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
-
-      va.color(1.0f, 1.0f, 1.0f, 1.0f);
-      va.texcoord(x4+256, (y4+256));
-      va.vertex(x4+256, y4+256, 0);
-
+      // v4
       va.color(1.0f, 1.0f, 1.0f, 1.0f);
       va.texcoord(x3+256, (y3+256));
       va.vertex(x3+256, y3+256, 0);
+      // v3
+      va.color(1.0f, 1.0f, 1.0f, 1.0f);
+      va.texcoord(x4+256, (y4+256));
+      va.vertex(x4+256, y4+256, 0);
+      // v2
+      va.color(1.0f, 1.0f, 1.0f, 1.0f);
+      va.texcoord(x2+256, (y2+256));
+      va.vertex(x2+256, y2+256, 0);
     }
     va.render(gc);
 
@@ -142,7 +152,7 @@ public:
       VertexArrayDrawable va;
       va.set_texture(tmp_texture, 0);
 
-      va.set_mode(GL_QUADS);
+      va.set_mode(GL_TRIANGLE_FAN);
 
       va.texcoord(rect.left, rect.bottom);
       va.vertex(rect.left/2.0f, rect.bottom/2.0f);
@@ -189,38 +199,48 @@ public:
 
     int segments = 64;
 
-    va.set_mode(GL_QUADS);
+    va.set_mode(GL_TRIANGLES);
     for (int i = 0; i < segments; ++i)
     {
-      float angel = glm::two_pi<float>() / static_cast<float>(segments);
+      float const angel = glm::two_pi<float>() / static_cast<float>(segments);
 
-      float x1 =  sinf(angel*static_cast<float>(i))*rad;
-      float y1 = -cosf(angel*static_cast<float>(i))*rad;
+      float const x1 =  sinf(angel*static_cast<float>(i))*rad;
+      float const y1 = -cosf(angel*static_cast<float>(i))*rad;
 
-      float x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
-      float y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
+      float const x2 =  sinf(angel*(static_cast<float>(i)+1))*rad;
+      float const y2 = -cosf(angel*(static_cast<float>(i)+1))*rad;
 
+      float const x3 =  sinf(angel*static_cast<float>(i))*minradius;
+      float const y3 = -cosf(angel*static_cast<float>(i))*minradius;
+
+      float const x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
+      float const y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
+
+      // v1
       va.color({1.0f, 1.0f, 1.0f, 1.0f});
       va.texcoord(x1/512.0f+0.5f, y1/512.0f+0.5f);
       va.vertex(x1 + 256.0f, y1 + 256.0f, 0.0f);
-
+      // v4
+      va.color({1.0f, 1.0f, 1.0f, 0.0f});
+      va.texcoord(x3/512.0f+0.5f, y3/512.0f+0.5f);
+      va.vertex(x3+256, y3+256, 0.0f);
+      // v2
       va.color({1.0f, 1.0f, 1.0f, 1.0f});
       va.texcoord(x2/512.0f+0.5f, y2/512.0f+0.5f);
       va.vertex(x2+256, y2+256, 0.0f);
 
-      float x3 =  sinf(angel*static_cast<float>(i))*minradius;
-      float y3 = -cosf(angel*static_cast<float>(i))*minradius;
-
-      float x4 =  sinf(angel*(static_cast<float>(i)+1))*minradius;
-      float y4 = -cosf(angel*(static_cast<float>(i)+1))*minradius;
-
-      va.color({1.0f, 1.0f, 1.0f, 0.0f});
-      va.texcoord(x4/512.0f+0.5f, y4/512.0f+0.5f);
-      va.vertex(x4+256, y4+256, 0.0f);
-
+      // v4
       va.color({1.0f, 1.0f, 1.0f, 0.0f});
       va.texcoord(x3/512.0f+0.5f, y3/512.0f+0.5f);
       va.vertex(x3+256, y3+256, 0.0f);
+      // v3
+      va.color({1.0f, 1.0f, 1.0f, 0.0f});
+      va.texcoord(x4/512.0f+0.5f, y4/512.0f+0.5f);
+      va.vertex(x4+256, y4+256, 0.0f);
+      // v2
+      va.color({1.0f, 1.0f, 1.0f, 1.0f});
+      va.texcoord(x2/512.0f+0.5f, y2/512.0f+0.5f);
+      va.vertex(x2+256, y2+256, 0.0f);
     }
   }
 };

@@ -147,7 +147,7 @@ App::run(int argc, char* argv[])
       va.set_texture(1, displace_surface->get_texture());
       va.set_texture(2, color_surface->get_texture());
 
-      va.set_mode(GL_QUADS);
+      va.set_mode(GL_TRIANGLE_FAN);
 
       va.color(Color(1.0f, 1.0f, 1.0f));
       va.texcoord(0.0f, 0.0f);

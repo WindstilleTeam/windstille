@@ -56,7 +56,7 @@ public:
     gc.push_matrix();
     gc.mult_matrix(modelview);
 
-    va.set_mode(GL_QUADS);
+    va.set_mode(GL_TRIANGLE_FAN);
     {
       va.texcoord(m_surface->get_uv().left(), m_surface->get_uv().top());
       va.vertex(pos.x + m_quad.p1.x, pos.y + m_quad.p1.y);

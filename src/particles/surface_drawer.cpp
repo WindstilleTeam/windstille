@@ -118,7 +118,7 @@ SurfaceDrawer::draw(GraphicsContext& gc, const ParticleSystem& psys) const
   buffer->clear();
   buffer->set_pos(glm::vec2(psys.get_x_pos(), psys.get_y_pos()));
 
-  buffer->set_mode(GL_QUADS);
+  buffer->set_mode(GL_TRIANGLES);
   buffer->set_texture(surface->get_texture());
   buffer->set_blend_func(blendfunc_src, blendfunc_dest);
 
@@ -151,19 +151,27 @@ SurfaceDrawer::draw(GraphicsContext& gc, const ParticleSystem& psys) const
         y_rot = (width/2) * s + (height/2) * c;
       }
 
-      buffer->add_texcoords(surface->get_uv());
+      buffer->add_texcoords_from_rect(surface->get_uv());
 
+      // v1
       buffer->color(color);
       buffer->vertex(i->x - x_rot, i->y - y_rot);
-
+      // v4
+      buffer->color(color);
+      buffer->vertex(i->x - y_rot, i->y + x_rot);
+      // v2
       buffer->color(color);
       buffer->vertex(i->x + y_rot, i->y - x_rot);
 
-      buffer->color(color);
-      buffer->vertex(i->x + x_rot, i->y + y_rot);
-
+      // v4
       buffer->color(color);
       buffer->vertex(i->x - y_rot, i->y + x_rot);
+      // v3
+      buffer->color(color);
+      buffer->vertex(i->x + x_rot, i->y + y_rot);
+      // v2
+      buffer->color(color);
+      buffer->vertex(i->x + y_rot, i->y - x_rot);
     }
   }
 

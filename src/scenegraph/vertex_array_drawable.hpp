@@ -52,7 +52,7 @@ public:
   /** Add eight texcoords for use with a quad from a given rect. The
       coords are clockwise around the rect, ie: left, top, right, top,
       right, bottom, left, bottom */
-  void add_texcoords(geom::frect const& coords);
+  void add_texcoords_from_rect(geom::frect const& coords);
 
   int num_vertices() const;
 

@@ -110,22 +110,30 @@ TileMap::draw (SceneContext& sc)
         {
           request = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos,
                                                           sc.color().get_modelview());
-          request->set_mode(GL_QUADS);
+          request->set_mode(GL_TRIANGLES);
           request->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
           request->set_texture(tile->texture);
         }
 
+        // v1
         request->texcoord(tile->uv.left(), tile->uv.top());
         request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE));
-
+        // v4
+        request->texcoord(tile->uv.left(), tile->uv.bottom());
+        request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
+        // v2
         request->texcoord(tile->uv.right(), tile->uv.top());
         request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE));
 
-        request->texcoord(tile->uv.right(), tile->uv.bottom());
-        request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
-
+        // v4
         request->texcoord(tile->uv.left(), tile->uv.bottom());
         request->vertex(static_cast<float>(x * TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
+        // v3
+        request->texcoord(tile->uv.right(), tile->uv.bottom());
+        request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE + TILE_SIZE));
+        // v2
+        request->texcoord(tile->uv.right(), tile->uv.top());
+        request->vertex(static_cast<float>(x * TILE_SIZE + TILE_SIZE), static_cast<float>(y * TILE_SIZE));
       }
     }
 

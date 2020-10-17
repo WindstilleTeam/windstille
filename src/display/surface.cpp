@@ -101,7 +101,7 @@ Surface::draw(GraphicsContext& gc, const glm::vec2& pos) const
   va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   va.set_texture(m_texture);
 
-  va.set_mode(GL_QUADS);
+  va.set_mode(GL_TRIANGLE_FAN);
 
   va.texcoord(m_uv.left(), m_uv.top());
   va.vertex(pos.x, pos.y);
@@ -125,7 +125,7 @@ Surface::draw(GraphicsContext& gc, const SurfaceDrawingParameters& params) const
   va.set_blend_func(params.blendfunc_src, params.blendfunc_dst);
   va.set_texture(m_texture);
 
-  va.set_mode(GL_QUADS);
+  va.set_mode(GL_TRIANGLE_FAN);
 
   float uv_left = m_uv.left();
   float uv_top = m_uv.top();

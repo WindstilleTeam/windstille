@@ -58,7 +58,7 @@ Nightvision::draw(SceneContext& sc)
   {
     auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), 10000,
                                                        sc.light().get_modelview());
-    array->set_mode(GL_QUADS);
+    array->set_mode(GL_TRIANGLE_FAN);
     array->set_texture(noise);
     array->set_blend_func(GL_DST_COLOR, GL_ZERO);
 

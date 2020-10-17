@@ -65,7 +65,7 @@ public:
       state.color(Color(1.0f, 1.0f, 1.0f, 1.0f));
       state.activate();
 
-      va.set_mode(GL_QUADS);
+      va.set_mode(GL_TRIANGLE_FAN);
       va.texcoord(0,0);
       va.vertex(0,0);
 
@@ -95,7 +95,7 @@ public:
     va.set_texture(surface->get_texture());
     va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    va.set_mode(GL_QUADS);
+    va.set_mode(GL_TRIANGLES);
     for(ParticleSystem::Particles::iterator i = psys.begin(); i != psys.end(); ++i)
     {
       if (i->t != -1.0f)
@@ -125,21 +125,31 @@ public:
           y_rot = (width/2) * s + (height/2) * c;
         }
 
+        // v1
         va.color(color);
         va.texcoord(0, 0);
         va.vertex(i->x - x_rot, i->y - y_rot);
-
+        // v4
+        va.color(color);
+        va.texcoord(0, 1);
+        va.vertex(i->x - y_rot, i->y + x_rot);
+        // v2
         va.color(color);
         va.texcoord(1, 0);
         va.vertex(i->x + y_rot, i->y - x_rot);
 
-        va.color(color);
-        va.texcoord(1, 1);
-        va.vertex(i->x + x_rot, i->y + y_rot);
-
+        // v4
         va.color(color);
         va.texcoord(0, 1);
         va.vertex(i->x - y_rot, i->y + x_rot);
+        // v3
+        va.color(color);
+        va.texcoord(1, 1);
+        va.vertex(i->x + x_rot, i->y + y_rot);
+        // v2
+        va.color(color);
+        va.texcoord(1, 0);
+        va.vertex(i->x + y_rot, i->y - x_rot);
       }
     }
     va.render(gc);
@@ -152,7 +162,7 @@ public:
     VertexArrayDrawable va;
     va.set_texture(screen_texture);
 
-    va.set_mode(GL_QUADS);
+    va.set_mode(GL_TRIANGLE_FAN);
 
     va.texcoord(0,600);
     va.vertex(0,0);

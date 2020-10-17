@@ -43,7 +43,7 @@ FramebufferCompositorImpl::render_lightmap(GraphicsContext& gc, SceneContext& /*
   va.set_texture(m_lightmap->get_texture());
   va.set_blend_func(GL_DST_COLOR, GL_ZERO); // multiply the lightmap with the screen
 
-  va.set_mode(GL_QUADS);
+  va.set_mode(GL_TRIANGLE_FAN);
   {
     va.texcoord(0, 1);
     va.vertex(0, 0);
@@ -151,7 +151,7 @@ FramebufferCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGr
 
     va.set_texture(m_screen->get_texture() /*, 0*/);
 
-    va.set_mode(GL_QUADS);
+    va.set_mode(GL_TRIANGLE_FAN);
     {
       va.texcoord(0, 1);
       va.vertex(0, 0);

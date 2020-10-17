@@ -62,7 +62,7 @@ public:
     gc.push_matrix();
     gc.load_identity();
 
-    va.set_mode(GL_QUADS);
+    va.set_mode(GL_TRIANGLE_FAN);
     {
       va.texcoord(u_start, v_start);
       va.vertex(0, 0);

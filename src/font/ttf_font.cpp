@@ -184,30 +184,42 @@ TTFFont::draw(GraphicsContext& gc, const glm::vec2& pos_, const std::string& str
   va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   va.set_texture(impl->texture);
 
-  va.set_mode(GL_QUADS);
+  va.set_mode(GL_TRIANGLES);
   for(std::string::const_iterator i = str.begin(); i != str.end(); ++i)
   {
     const TTFCharacter& character = impl->characters[*i];
 
+    // v1
     va.color(color);
     va.texcoord(character.uv.left(), character.uv.top());
     va.vertex(pos.x + static_cast<float>(character.pos.left()),
               pos.y + static_cast<float>(character.pos.top()));
-
+    // v4
+    va.color(color);
+    va.texcoord(character.uv.left(), character.uv.bottom());
+    va.vertex(pos.x + static_cast<float>(character.pos.left()),
+              pos.y + static_cast<float>(character.pos.bottom()));
+    // v2
     va.color(color);
     va.texcoord(character.uv.right(), character.uv.top());
     va.vertex(pos.x + static_cast<float>(character.pos.right()),
               pos.y + static_cast<float>(character.pos.top()));
 
-    va.color(color);
-    va.texcoord(character.uv.right(), character.uv.bottom());
-    va.vertex(pos.x + static_cast<float>(character.pos.right()),
-              pos.y + static_cast<float>(character.pos.bottom()));
-
+    // v4
     va.color(color);
     va.texcoord(character.uv.left(), character.uv.bottom());
     va.vertex(pos.x + static_cast<float>(character.pos.left()),
               pos.y + static_cast<float>(character.pos.bottom()));
+    // v3
+    va.color(color);
+    va.texcoord(character.uv.right(), character.uv.bottom());
+    va.vertex(pos.x + static_cast<float>(character.pos.right()),
+              pos.y + static_cast<float>(character.pos.bottom()));
+    // v2
+    va.color(color);
+    va.texcoord(character.uv.right(), character.uv.top());
+    va.vertex(pos.x + static_cast<float>(character.pos.right()),
+              pos.y + static_cast<float>(character.pos.top()));
 
     pos.x += static_cast<float>(character.advance);
   }

@@ -39,7 +39,7 @@ GradientDrawable::render(GraphicsContext& gc, unsigned int mask)
                      static_cast<float>(gc.size().width()),
                      static_cast<float>(gc.size().height()));
 
-    m_array->set_mode(GL_QUAD_STRIP);
+    m_array->set_mode(GL_TRIANGLE_STRIP);
     m_array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     for(int i = 0; i < int(m_colors.size()); i += (3 + 4 + 4 + 2))
@@ -54,23 +54,26 @@ GradientDrawable::render(GraphicsContext& gc, unsigned int mask)
                            (color1.b + color2.b)/2,
                            (color1.a + color2.a)/2);
 
+      // v2
+      m_array->color(color1);
+      m_array->vertex(rect.right(), rect.top() + start * rect.height());
+      // v1
       m_array->color(color1);
       m_array->vertex(rect.left(), rect.top() + start * rect.height());
 
-      m_array->color(color1);
-      m_array->vertex(rect.right(), rect.top() + start * rect.height());
-
+      // v4
+      m_array->color(midcolor);
+      m_array->vertex(rect.right(), rect.top() + midpoint * rect.height());
+      // v3
       m_array->color(midcolor);
       m_array->vertex(rect.left(), rect.top() + midpoint * rect.height());
 
-      m_array->color(midcolor);
-      m_array->vertex(rect.right(), rect.top() + midpoint * rect.height());
-
-      m_array->color(color2);
-      m_array->vertex(rect.left(), rect.top() + end * rect.height());
-
+      // v6
       m_array->color(color2);
       m_array->vertex(rect.right(), rect.top() + end * rect.height());
+      // v5
+      m_array->color(color2);
+      m_array->vertex(rect.left(), rect.top() + end * rect.height());
     }
   }
 

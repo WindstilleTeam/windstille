@@ -65,6 +65,7 @@ VertexArrayDrawable::clear()
 void
 VertexArrayDrawable::render(GraphicsContext& gc, unsigned int mask)
 {
+  assert(m_mode != GL_QUADS);
   assert(!m_vertices.empty());
 
   assert(m_texcoords.empty() || int(m_texcoords.size() / 2) == num_vertices());
@@ -169,16 +170,29 @@ VertexArrayDrawable::texcoord(float u, float v)
 }
 
 void
-VertexArrayDrawable::add_texcoords(geom::frect const& rect)
+VertexArrayDrawable::add_texcoords_from_rect(geom::frect const& rect)
 {
+  assert(m_mode == GL_TRIANGLES);
+
+  // v1
   m_texcoords.push_back(rect.left());
   m_texcoords.push_back(rect.top());
-  m_texcoords.push_back(rect.right());
-  m_texcoords.push_back(rect.top());
-  m_texcoords.push_back(rect.right());
-  m_texcoords.push_back(rect.bottom());
+  // v4
   m_texcoords.push_back(rect.left());
   m_texcoords.push_back(rect.bottom());
+  // v2
+  m_texcoords.push_back(rect.right());
+  m_texcoords.push_back(rect.top());
+
+  // v4
+  m_texcoords.push_back(rect.left());
+  m_texcoords.push_back(rect.bottom());
+  // v3
+  m_texcoords.push_back(rect.right());
+  m_texcoords.push_back(rect.bottom());
+  // v2
+  m_texcoords.push_back(rect.right());
+  m_texcoords.push_back(rect.top());
 }
 
 void

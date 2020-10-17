@@ -62,7 +62,7 @@ Swarm::draw(SceneContext& sc)
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0),
                                                      1000.0f, sc.highlight().get_modelview());
 
-  array->set_mode(GL_QUADS);
+  array->set_mode(GL_TRIANGLES);
   array->set_blend_func(GL_ONE, GL_ZERO);
 
   Color color(1.0f, 1.0f, 1.0f);
@@ -70,17 +70,25 @@ Swarm::draw(SceneContext& sc)
 
   for(Agents::const_iterator i = agents.begin(); i != agents.end(); ++i)
   {
+    // v1
     array->color(color);
     array->vertex(i->pos.x - 1, i->pos.y - 1);
-
+    // v4
+    array->color(bottom_color);
+    array->vertex(i->pos.x - 1, i->pos.y + 2);
+    // v2
     array->color(color);
     array->vertex(i->pos.x + 2, i->pos.y - 1);
 
-    array->color(bottom_color);
-    array->vertex(i->pos.x + 2, i->pos.y + 2);
-
+    // v4
     array->color(bottom_color);
     array->vertex(i->pos.x - 1, i->pos.y + 2);
+    // v3
+    array->color(bottom_color);
+    array->vertex(i->pos.x + 2, i->pos.y + 2);
+    // v2
+    array->color(color);
+    array->vertex(i->pos.x + 2, i->pos.y - 1);
   }
 
   sc.highlight().draw(std::move(array));

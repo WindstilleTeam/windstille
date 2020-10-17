@@ -185,7 +185,7 @@ TextArea::draw(GraphicsContext& gc)
                impl->rect.top() + static_cast<float>(impl->font->get_height()) - impl->scroll_offset,
                0.0f);
 
-  va.set_mode(GL_QUADS);
+  va.set_mode(GL_TRIANGLES);
 
   int x_pos = 0;
   int y_pos = 0;
@@ -313,25 +313,37 @@ TextArea::draw(GraphicsContext& gc)
                 float scale = 0.6f;
                 if (draw_it)
                 {
+                  // v1
                   va.color(top_color);
                   va.texcoord(character.uv.left(), character.uv.top());
                   va.vertex(x + scale * static_cast<float>(character.pos.left()),
                              y + scale * static_cast<float>(character.pos.top()));
-
+                  // v4
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.left(), character.uv.bottom());
+                  va.vertex(x + scale * static_cast<float>(character.pos.left()),
+                             y + scale * static_cast<float>(character.pos.bottom()));
+                  // v2
                   va.color(top_color);
                   va.texcoord(character.uv.right(), character.uv.top());
                   va.vertex(x + scale * static_cast<float>(character.pos.right()),
                              y + scale * static_cast<float>(character.pos.top()));
 
-                  va.color(bottom_color);
-                  va.texcoord(character.uv.right(), character.uv.bottom());
-                  va.vertex(x + scale * static_cast<float>(character.pos.right()),
-                             y + scale * static_cast<float>(character.pos.bottom()));
-
+                  // v4
                   va.color(bottom_color);
                   va.texcoord(character.uv.left(), character.uv.bottom());
                   va.vertex(x + scale * static_cast<float>(character.pos.left()),
                              y + scale * static_cast<float>(character.pos.bottom()));
+                  // v3
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.right(), character.uv.bottom());
+                  va.vertex(x + scale * static_cast<float>(character.pos.right()),
+                             y + scale * static_cast<float>(character.pos.bottom()));
+                  // v2
+                  va.color(top_color);
+                  va.texcoord(character.uv.right(), character.uv.top());
+                  va.vertex(x + scale * static_cast<float>(character.pos.right()),
+                             y + scale * static_cast<float>(character.pos.top()));
                 }
                 x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
               }
@@ -340,25 +352,37 @@ TextArea::draw(GraphicsContext& gc)
                 float scale = 2.0f;
                 if (draw_it)
                 {
+                  // v1
                   va.color(top_color);
                   va.texcoord(character.uv.left(), character.uv.top());
                   va.vertex(x + scale * static_cast<float>(character.pos.left()),
                              y + static_cast<float>(character.pos.top()));
-
+                  // v4
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.left(), character.uv.bottom());
+                  va.vertex(x + scale * static_cast<float>(character.pos.left()),
+                             y + static_cast<float>(character.pos.bottom()));
+                  // v2
                   va.color(top_color);
                   va.texcoord(character.uv.right(), character.uv.top());
                   va.vertex(x + scale * static_cast<float>(character.pos.right()),
                              y + static_cast<float>(character.pos.top()));
 
-                  va.color(bottom_color);
-                  va.texcoord(character.uv.right(), character.uv.bottom());
-                  va.vertex(x + scale * static_cast<float>(character.pos.right()),
-                             y + static_cast<float>(character.pos.bottom()));
-
+                  // v4
                   va.color(bottom_color);
                   va.texcoord(character.uv.left(), character.uv.bottom());
                   va.vertex(x + scale * static_cast<float>(character.pos.left()),
                              y + static_cast<float>(character.pos.bottom()));
+                  // v3
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.right(), character.uv.bottom());
+                  va.vertex(x + scale * static_cast<float>(character.pos.right()),
+                             y + static_cast<float>(character.pos.bottom()));
+                  // v2
+                  va.color(top_color);
+                  va.texcoord(character.uv.right(), character.uv.top());
+                  va.vertex(x + scale * static_cast<float>(character.pos.right()),
+                             y + static_cast<float>(character.pos.top()));
                 }
                 x_pos += static_cast<int>(scale * static_cast<float>(character.advance));
               }
@@ -366,25 +390,37 @@ TextArea::draw(GraphicsContext& gc)
               {
                 if (draw_it)
                 {
+                  // v1
                   va.color(top_color);
                   va.texcoord(character.uv.left(), character.uv.top());
                   va.vertex(x + static_cast<float>(character.pos.left()),
                              y + static_cast<float>(character.pos.top()));
-
+                  // v4
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.left(), character.uv.bottom());
+                  va.vertex(x + static_cast<float>(character.pos.left()),
+                             y + static_cast<float>(character.pos.bottom()));
+                  // v2
                   va.color(top_color);
                   va.texcoord(character.uv.right(), character.uv.top());
                   va.vertex(x + static_cast<float>(character.pos.right()),
                              y + static_cast<float>(character.pos.top()));
 
-                  va.color(bottom_color);
-                  va.texcoord(character.uv.right(), character.uv.bottom());
-                  va.vertex(x + static_cast<float>(character.pos.right()),
-                             y + static_cast<float>(character.pos.bottom()));
-
+                  // v4
                   va.color(bottom_color);
                   va.texcoord(character.uv.left(), character.uv.bottom());
                   va.vertex(x + static_cast<float>(character.pos.left()),
                              y + static_cast<float>(character.pos.bottom()));
+                  // v3
+                  va.color(bottom_color);
+                  va.texcoord(character.uv.right(), character.uv.bottom());
+                  va.vertex(x + static_cast<float>(character.pos.right()),
+                             y + static_cast<float>(character.pos.bottom()));
+                  // v2
+                  va.color(top_color);
+                  va.texcoord(character.uv.right(), character.uv.top());
+                  va.vertex(x + static_cast<float>(character.pos.right()),
+                             y + static_cast<float>(character.pos.top()));
                 }
                 x_pos += character.advance;
               }

@@ -270,7 +270,7 @@ DrawingContext::fill_quad(const geom::quad& quad, const Color& color, float z_po
 {
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
-  array->set_mode(GL_QUADS);
+  array->set_mode(GL_TRIANGLE_FAN);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   array->color(color);
@@ -316,7 +316,7 @@ DrawingContext::fill_rect(const geom::frect& rect, const Color& color, float z_p
 {
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
-  array->set_mode(GL_QUADS);
+  array->set_mode(GL_TRIANGLE_FAN);
   array->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   array->color(color);
