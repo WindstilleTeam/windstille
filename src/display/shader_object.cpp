@@ -54,12 +54,12 @@ static GLchar* load_file(const char* filename)
 }
 
 ShaderObjectPtr
-ShaderObject::from_file(GLenum type, const std::string& filename)
+ShaderObject::from_file(GLenum type, std::filesystem::path const& filename)
 {
   return ShaderObjectPtr(new ShaderObject(type, filename));
 }
 
-ShaderObject::ShaderObject(GLenum type, const std::string& filename) :
+ShaderObject::ShaderObject(GLenum type, std::filesystem::path const& filename) :
   m_handle(0)
 {
   m_handle = glCreateShader(type);
@@ -74,7 +74,7 @@ ShaderObject::~ShaderObject()
 }
 
 void
-ShaderObject::load(const std::string& filename)
+ShaderObject::load(std::filesystem::path const& filename)
 {
   GLchar* buf = load_file(filename.c_str());
   glShaderSource(m_handle, 1, const_cast<const GLchar**>(&buf), nullptr);

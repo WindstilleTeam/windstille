@@ -19,9 +19,11 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_SHADER_OBJECT_HPP
 #define HEADER_WINDSTILLE_DISPLAY_SHADER_OBJECT_HPP
 
-#include <GL/glew.h>
-#include <string>
+#include <filesystem>
 #include <memory>
+#include <string>
+
+#include <GL/glew.h>
 
 class ShaderObject;
 typedef std::shared_ptr<ShaderObject> ShaderObjectPtr;
@@ -29,10 +31,10 @@ typedef std::shared_ptr<ShaderObject> ShaderObjectPtr;
 class ShaderObject
 {
 public:
-  static ShaderObjectPtr from_file(GLenum type, const std::string& filename);
+  static ShaderObjectPtr from_file(GLenum type, std::filesystem::path const& filename);
 
 private:
-  ShaderObject(GLenum type, const std::string& filename);
+  ShaderObject(GLenum type, std::filesystem::path const& filename);
 
 public:
   ~ShaderObject();
@@ -41,7 +43,7 @@ public:
   bool get_compile_status() const;
 
   GLuint get_handle() const;
-  void load(const std::string& filename);
+  void load(std::filesystem::path const& filename);
   void compile();
   void print_log() const;
 
