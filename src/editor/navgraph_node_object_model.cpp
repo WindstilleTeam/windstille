@@ -44,7 +44,7 @@ void
 NavGraphNodeObjectModel::add_to_scenegraph(DrawableGroup& sg)
 {
   if (!m_drawable)
-    m_drawable.reset(new VertexArrayDrawable(glm::vec2(), 0.0f, glm::mat4(1.0f)));
+    m_drawable.reset(new VertexArrayDrawable);
 
   sync_drawable();
   sg.add_drawable(m_drawable);
@@ -56,6 +56,8 @@ NavGraphNodeObjectModel::sync_drawable()
   if (m_drawable)
   {
     m_drawable->clear();
+
+    m_drawable->set_mode(GL_TRIANGLE_FAN);
 
     m_drawable->color(Color(1.0f, 0.0f, 0.0f));
     m_drawable->vertex(get_world_pos() + glm::vec2(-10.0f, -10.0f));
