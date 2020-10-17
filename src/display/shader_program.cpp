@@ -42,6 +42,20 @@ ShaderProgram::from_file(std::filesystem::path const& frag_filename,
 }
 
 ShaderProgramPtr
+ShaderProgram::from_string(std::string_view frag_source,
+                           std::string_view vert_source)
+{
+  ShaderProgramPtr prog(new ShaderProgram);
+
+  prog->attach(ShaderObject::from_string(GL_FRAGMENT_SHADER, frag_source));
+  prog->attach(ShaderObject::from_string(GL_VERTEX_SHADER, vert_source));
+
+  prog->link();
+
+  return prog;
+}
+
+ShaderProgramPtr
 ShaderProgram::create()
 {
   return ShaderProgramPtr(new ShaderProgram());

@@ -22,6 +22,7 @@
 #include <filesystem>
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include <GL/glew.h>
 
@@ -32,9 +33,10 @@ class ShaderObject
 {
 public:
   static ShaderObjectPtr from_file(GLenum type, std::filesystem::path const& filename);
+  static ShaderObjectPtr from_string(GLenum type, std::string_view source);
 
 private:
-  ShaderObject(GLenum type, std::filesystem::path const& filename);
+  ShaderObject(GLenum type);
 
 public:
   ~ShaderObject();
@@ -43,7 +45,7 @@ public:
   bool get_compile_status() const;
 
   GLuint get_handle() const;
-  void load(std::filesystem::path const& filename);
+  void load(std::string_view source);
   void compile();
   void print_log() const;
 

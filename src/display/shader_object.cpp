@@ -56,16 +56,30 @@ static GLchar* load_file(const char* filename)
 ShaderObjectPtr
 ShaderObject::from_file(GLenum type, std::filesystem::path const& filename)
 {
-  return ShaderObjectPtr(new ShaderObject(type, filename));
+  ShaderObjectPtr shader(new ShaderObject(type));
+
+  // FIXME: this is oldstyle C garbage
+  GLchar* buf = load_file(filename.c_str());
+  shader->load(buf);
+  shader->compile();
+  free(buf);
+
+  return shader;
+}
+
+ShaderObjectPtr
+ShaderObject::from_string(GLenum type, std::string_view source)
+{
+  ShaderObjectPtr shader(new ShaderObject(type));
+  shader->load(source);
+  shader->compile();
+  return shader;
 }
 
-ShaderObject::ShaderObject(GLenum type, std::filesystem::path const& filename) :
+ShaderObject::ShaderObject(GLenum type) :
   m_handle(0)
 {
   m_handle = glCreateShader(type);
-
-  load(filename);
-  compile();
 }
 
 ShaderObject::~ShaderObject()
@@ -74,14 +88,12 @@ ShaderObject::~ShaderObject()
 }
 
 void
-ShaderObject::load(std::filesystem::path const& filename)
+ShaderObject::load(std::string_view source)
 {
-  GLchar* buf = load_file(filename.c_str());
-  glShaderSource(m_handle, 1, const_cast<const GLchar**>(&buf), nullptr);
+  GLchar const* strings[] = { source.data() };
+  GLint lengths[] = {  static_cast<GLint>(source.length()) };
+  glShaderSource(m_handle, 1, strings, lengths);
   assert_gl();
-
-  //std::cout << "Source:\n" << buf << std::endl;
-  free(buf);
 }
 
 GLuint
