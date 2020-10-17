@@ -34,6 +34,8 @@
 #include "display/color.hpp"
 #include "display/assert_gl.hpp"
 
+#include "util/pathname.hpp"
+
 #include "scenegraph/vertex_array_drawable.hpp"
 
 namespace {
@@ -42,8 +44,11 @@ std::vector<FramebufferPtr> framebuffers;
 
 GraphicsContext::GraphicsContext() :
   m_aspect_size(),
-  m_cliprects()
+  m_cliprects(),
+  m_default_shader()
 {
+  m_default_shader = ShaderProgram::from_file(Pathname("shader/shader330.frag"),
+                                              Pathname("shader/shader330.vert"));
 }
 
 GraphicsContext::~GraphicsContext()

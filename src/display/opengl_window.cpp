@@ -33,7 +33,7 @@ public:
   SDL_Window*   m_window;
   SDL_GLContext m_gl_context;
   geom::isize m_size;
-  GraphicsContext m_gc;
+  std::unique_ptr<GraphicsContext> m_gc;
 
   OpenGLWindowImpl() :
     m_window(nullptr),
@@ -106,33 +106,34 @@ OpenGLWindow::OpenGLWindow(const std::string& title,
       std::cout << "OpenGL 3.2: " << GL_VERSION_3_2 << std::endl;
       std::cout << "GL_VERSION_3_0: " << GL_VERSION_3_0 << std::endl;
 
-      glViewport(0, 0, m_impl->m_size.width(), m_impl->m_size.height());
-      m_impl->m_gc.matrix_mode(GL_PROJECTION);
-      m_impl->m_gc.load_identity();
-
-      m_impl->m_gc.set_aspect_size(aspect);
-
-      m_impl->m_gc.ortho(0.0f,
-                         static_cast<float>(m_impl->m_gc.size().width()),
-                         static_cast<float>(m_impl->m_gc.size().height()),
-                         0.0,
-                         1000.0,
-                         -1000.0);
-      m_impl->m_gc.matrix_mode(GL_MODELVIEW);
-      m_impl->m_gc.load_identity();
-
-      if ((false)) // disabled for the moment, as it seems to do more harm then good
-      { // Magic pixel center constant, without that textures drawn in
-        // pixel coordinates might end up blurry
-        glTranslated(0.375f, 0.375f, 0.0);
-      }
-
       if (anti_aliasing)
         glEnable(GL_MULTISAMPLE);
 
       assert_gl("setup projection");
 
       OpenGLState::init();
+      m_impl->m_gc = std::make_unique<GraphicsContext>();
+
+      glViewport(0, 0, m_impl->m_size.width(), m_impl->m_size.height());
+      m_impl->m_gc->matrix_mode(GL_PROJECTION);
+      m_impl->m_gc->load_identity();
+
+      m_impl->m_gc->set_aspect_size(aspect);
+
+      m_impl->m_gc->ortho(0.0f,
+                         static_cast<float>(m_impl->m_gc->size().width()),
+                         static_cast<float>(m_impl->m_gc->size().height()),
+                         0.0,
+                         1000.0,
+                         -1000.0);
+      m_impl->m_gc->matrix_mode(GL_MODELVIEW);
+      m_impl->m_gc->load_identity();
+
+      if ((false)) // disabled for the moment, as it seems to do more harm then good
+      { // Magic pixel center constant, without that textures drawn in
+        // pixel coordinates might end up blurry
+        glTranslated(0.375f, 0.375f, 0.0);
+      }
     }
   }
 }
@@ -194,7 +195,8 @@ OpenGLWindow::set_gamma(float r, float g, float b)
 GraphicsContext&
 OpenGLWindow::get_gc() const
 {
-  return m_impl->m_gc;
+  assert(m_impl->m_gc);
+  return *m_impl->m_gc;
 }
 
 void

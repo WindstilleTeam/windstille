@@ -26,6 +26,7 @@
 #include <geom/fwd.hpp>
 
 #include "display/framebuffer.hpp"
+#include "display/shader_program.hpp"
 
 class Color;
 
@@ -81,6 +82,8 @@ public:
 private:
   geom::isize m_aspect_size;
   std::vector<geom::irect> m_cliprects;
+
+  ShaderProgramPtr m_default_shader;
 
 private:
   GraphicsContext(const GraphicsContext&) = delete;

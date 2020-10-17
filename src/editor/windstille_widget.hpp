@@ -59,7 +59,7 @@ class WindstilleWidget
 {
 private:
   EditorWindow& editor;
-  GraphicsContext m_gc;
+  std::unique_ptr<GraphicsContext> m_gc;
 
   std::unique_ptr<Document>   m_document;
   std::unique_ptr<SceneGraph> m_scene_graph;

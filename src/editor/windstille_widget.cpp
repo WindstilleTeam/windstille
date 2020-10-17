@@ -158,6 +158,7 @@ WindstilleWidget::on_realize()
       }
 
       OpenGLState::init();
+      m_gc = std::make_unique<GraphicsContext>();
     }
 
     if (!sc)
@@ -173,17 +174,17 @@ WindstilleWidget::on_realize()
 
     glViewport(0, 0, get_width(), get_height());
 
-    m_gc.matrix_mode(GL_PROJECTION);
-    m_gc.load_identity();
-    m_gc.ortho(0.0f,
+    m_gc->matrix_mode(GL_PROJECTION);
+    m_gc->load_identity();
+    m_gc->ortho(0.0f,
                static_cast<float>(get_width()),
                static_cast<float>(get_height()),
                0.0,
                1000.0,
                -1000.0);
 
-    m_gc.matrix_mode(GL_MODELVIEW);
-    m_gc.load_identity();
+    m_gc->matrix_mode(GL_MODELVIEW);
+    m_gc->load_identity();
 
     glwindow->gl_end();
   }
@@ -192,10 +193,10 @@ WindstilleWidget::on_realize()
 bool
 WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 {
-  m_gc.set_aspect_size(geom::isize(ev->width, ev->height));
+  m_gc->set_aspect_size(geom::isize(ev->width, ev->height));
 
-  state.set_size(m_gc.size().width(),
-                 m_gc.size().height());
+  state.set_size(m_gc->size().width(),
+                 m_gc->size().height());
 
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
@@ -213,17 +214,17 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 
     glViewport(0, 0, get_width(), get_height());
 
-    m_gc.matrix_mode(GL_PROJECTION);
-    m_gc.load_identity();
-    m_gc.ortho(0.0f,
+    m_gc->matrix_mode(GL_PROJECTION);
+    m_gc->load_identity();
+    m_gc->ortho(0.0f,
                static_cast<float>(get_width()),
                static_cast<float>(get_height()),
                0.0f,
                1000.0f,
                -1000.0f);
 
-    m_gc.matrix_mode(GL_MODELVIEW);
-    m_gc.load_identity();
+    m_gc->matrix_mode(GL_MODELVIEW);
+    m_gc->load_identity();
 
     glwindow->gl_end();
 
@@ -242,7 +243,7 @@ WindstilleWidget::on_expose_event(GdkEventExpose* /*event*/)
   }
   else
   {
-    draw(m_gc);
+    draw(*m_gc);
 
     // Swap buffers.
     if (glwindow->is_double_buffered())
