@@ -33,6 +33,8 @@ public:
   GLenum blendfunc_src;
   GLenum blendfunc_dst;
 
+  bool depth_test;
+
   glm::vec2 pos;
   float    z_pos;
 
@@ -49,6 +51,7 @@ public:
   SurfaceDrawingParameters()
     : blendfunc_src(GL_SRC_ALPHA),
       blendfunc_dst(GL_ONE_MINUS_SRC_ALPHA),
+      depth_test(false),
       pos(0, 0),
       z_pos(0.0f),
       color(1.0f, 1.0f, 1.0f, 1.0f),
@@ -57,6 +60,11 @@ public:
       hflip(false),
       vflip(false)
   {}
+
+  SurfaceDrawingParameters& set_depth_test(bool v) {
+    depth_test = v;
+    return *this;
+  }
 
   SurfaceDrawingParameters& set_scale(float s)
   {

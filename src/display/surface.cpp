@@ -147,6 +147,8 @@ Surface::draw(GraphicsContext& gc, const SurfaceDrawingParameters& params) const
 
   quad.rotate(params.angle);
 
+  va.set_depth_test(params.depth_test);
+
   va.color(params.color);
   va.texcoord(uv_left, uv_top);
   va.vertex(quad.p1.x, quad.p1.y, params.z_pos);
