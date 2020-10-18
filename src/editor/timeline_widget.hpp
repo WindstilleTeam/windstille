@@ -69,10 +69,6 @@ public:
   void zoom_in();
   void zoom_out();
 
-protected:
-  //Override default signal handler:
-  bool on_expose_event(GdkEventExpose* event) override;
-
 private:
   void draw_select_rectangle(Cairo::RefPtr<Cairo::Context> cr);
   void draw_grid(Cairo::RefPtr<Cairo::Context> cr);

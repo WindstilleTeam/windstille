@@ -188,6 +188,7 @@ TimelineWidget::add_to_selection(const geom::frect& selection)
   }
 }
 
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
 bool
 TimelineWidget::on_expose_event(GdkEventExpose* ev)
 {
@@ -218,6 +219,7 @@ TimelineWidget::on_expose_event(GdkEventExpose* ev)
 
   return true;
 }
+#endif
 
 void
 TimelineWidget::draw_select_rectangle(Cairo::RefPtr<Cairo::Context> cr)

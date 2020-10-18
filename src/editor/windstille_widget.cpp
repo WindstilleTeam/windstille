@@ -182,23 +182,20 @@ WindstilleWidget::on_realize()
         msg << "Display:: Couldn't initialize glew: " << glewGetString(err);
         throw std::runtime_error(msg.str());
       }
-      assert_gl("precheck0: WindstilleWidget");
+      assert_gl();
       OpenGLState::init();
       m_gc = std::make_unique<GraphicsContext>();
 
       if (!sc.get())
       {
-        assert_gl("precheck1: WindstilleWidget");
+        assert_gl();
         sc.reset(new SceneContext());
         GLArea::throw_if_error();
-        assert_gl("precheck2: WindstilleWidget");
-        compositor.reset(new Compositor(Size(get_width(), get_height()),
-                                        Size(get_width(), get_height())));
+        assert_gl();
+        compositor.reset(new Compositor(geom::isize(get_width(), get_height()),
+                                        geom::isize(get_width(), get_height())));
         sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
       }
-
-      background_pattern = Texture::create(Pathname("editor/background_layer.png"));
-      background_pattern->set_wrap(GL_REPEAT);
 
       background_pattern = g_app.texture().get(Pathname("editor/background_layer.png"));
       background_pattern->set_wrap(GL_REPEAT);
@@ -219,13 +216,15 @@ WindstilleWidget::on_realize()
   catch(const Gdk::GLError& gle)
   {
     std::cerr << "An error occured making the context current during realize:" << std::endl;
-    std::cerr << gle.domain() << "-" << gle.code() << "-" << gle.what() << std::endl;
+    std::cerr << gle.domain() << "-" << static_cast<int>(gle.code()) << "-" << gle.what() << std::endl;
   }
 }
 
 void
 WindstilleWidget::on_unrealize()
 {
+}
+
 #if FIXME_DISABLED_FOR_GTKMM3_PORT
   std::cout << "WindstilleWidget::on_configure_event()" << std::endl;
 
@@ -268,9 +267,10 @@ WindstilleWidget::on_unrealize()
   throw_if_error();
   std::cout << "WindstilleWidget::on_unrealize" << std::endl;
 }
+#endif
 
 bool
-WindstilleWidget::on_render(const Glib::RefPtr<Gdk::GLContext>& context)
+WindstilleWidget::on_render(Glib::RefPtr<Gdk::GLContext> const& context)
 {
   Gtk::GLArea::on_render(context);
   std::cout << "WindstilleWidget::on_render" << std::endl;
@@ -279,29 +279,26 @@ WindstilleWidget::on_render(const Glib::RefPtr<Gdk::GLContext>& context)
 
   glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
   draw();
-
+#endif
   glFlush();
 
   return true;
-#endif
 }
 
 bool
 WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 {
-  Display::aspect_size.width  = ev->width;
-  Display::aspect_size.height = ev->height;
-
-  state.set_size(Display::aspect_size.width,
-                 Display::aspect_size.height);
+  m_gc->set_aspect_size({ev->width, ev->height});
+  state.set_size(ev->width, ev->height);
 
   make_current();
 
   if (compositor.get())
   {
-    compositor.reset(new Compositor(Size(ev->width, ev->height),
-                                    Size(ev->width, ev->height)));
+    compositor.reset(new Compositor(geom::isize(ev->width, ev->height),
+                                    geom::isize(ev->width, ev->height)));
   }
   //else
     //{
@@ -551,6 +548,7 @@ WindstilleWidget::key_release(GdkEventKey* ev)
   return true;
 }
 
+#ifdef FIXME_DISABLED_FOR_GTKMM3_PORT
 bool
 WindstilleWidget::on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& /*context*/, int /*x*/, int /*y*/, guint /*time*/)
 {
@@ -601,6 +599,7 @@ WindstilleWidget::on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& /*context
 {
   //std::cout << "WindstilleWidget: on_drag_finish()" << std::endl;
 }
+#endif
 
 void
 WindstilleWidget::on_zoom_in()

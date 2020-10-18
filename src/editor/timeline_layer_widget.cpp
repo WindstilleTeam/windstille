@@ -26,6 +26,7 @@ TimelineLayerWidget::TimelineLayerWidget() :
 {
 }
 
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
 bool
 TimelineLayerWidget::on_expose_event(GdkEventExpose* ev)
 {
@@ -77,5 +78,6 @@ TimelineLayerWidget::on_expose_event(GdkEventExpose* ev)
 
   return false;
 }
+#endif
 
 /* EOF */

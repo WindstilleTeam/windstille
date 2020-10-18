@@ -57,8 +57,7 @@ pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image IMPORTED_TARGET)
 pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
 
 if(BUILD_EDITOR)
-  pkg_search_module(GTKMM REQUIRED gtkmm-3.0)
-  pkg_search_module(SIGCPP REQUIRED sigc++-2.0)
+  pkg_search_module(GTKMM REQUIRED gtkmm-3.0 IMPORTED_TARGET)
 endif()
 
 # Build dependencies

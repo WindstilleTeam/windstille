@@ -80,10 +80,10 @@ public:
   virtual ~WindstilleWidget();
 
   GraphicContextState& get_state() { return state; }
-  virtual Glib::RefPtr<Gdk::GLContext> on_create_context() override;
-  virtual void on_realize() override;
-  virtual void on_unrealize() override;
-  virtual bool on_render(const Glib::RefPtr<Gdk::GLContext>& context) override;
+  Glib::RefPtr<Gdk::GLContext> on_create_context() override;
+  void on_realize() override;
+  void on_unrealize() override;
+  bool on_render(const Glib::RefPtr<Gdk::GLContext>& context) override;
 
   virtual bool on_configure_event(GdkEventConfigure* event) override;
   //virtual bool on_expose_event(GdkEventExpose* event) override;
@@ -97,10 +97,12 @@ public:
   bool key_release(GdkEventKey* event);
 
   // Drag&Drop
+#if FIXME_DISABLED_FOR_GTKMM3_PORT
   void on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context);
   void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>&, int x, int y,
                              const Gtk::SelectionData& data, guint info, guint time);
   bool on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time);
+#endif
 
   void on_zoom_in();
   void on_zoom_out();
