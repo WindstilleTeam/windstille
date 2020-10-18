@@ -43,7 +43,6 @@
              (gnu packages sdl)
              (gnu packages squirrel)
              (gnu packages xiph)
-             (guix-cocfree packages gtkglextmm)
              (guix-cocfree packages xcftools-jjorge)
              (guix-cocfree utils))
 
@@ -80,9 +79,7 @@
       ("flex" ,flex)
       ("glm" ,glm)
       ("fmt" ,fmt)
-      ("gtkmm-2" ,gtkmm-2)
-      ("gtkglext" ,gtkglext)
-      ("gtkglextmm" ,gtkglextmm)
+      ("gtkmm" ,gtkmm)
       ("xcftools-jjorge" ,xcftools-jjorge)))
    (synopsis (synopsis-from-source %source-dir))
    (description (description-from-source %source-dir))
