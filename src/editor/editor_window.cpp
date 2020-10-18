@@ -179,7 +179,7 @@ EditorWindow::EditorWindow() :
     "    </menu>"
     "  </menubar>"
     ""
-    "  <toolbar  name='ToolBar'>"
+    "  <toolbar  name='ToolBar' orientation='vertical'>"
     "    <toolitem action='New'/>"
     //"    <toolitem action='FileOpen'/>"
     "    <toolitem action='FileRecentFiles'/>"
@@ -261,13 +261,11 @@ EditorWindow::EditorWindow() :
 
     recent_action->set_limit(25);
 
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
-    Gtk::RecentFilter* filter= Gtk::manage(new Gtk::RecentFilter);
+    Glib::RefPtr<Gtk::RecentFilter> filter = Gtk::RecentFilter::create();
     filter->add_mime_type("application/windstille");
     //filter->add_application("Windstille Editor");
     //filter->add_pattern("*.wst");
-    recent_action->set_filter(*filter);
-#endif
+    recent_action->set_filter(filter);
 
     recent_action->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_recent_file), recent_action));
     action_group->add(recent_action,
@@ -417,9 +415,9 @@ EditorWindow::EditorWindow() :
 
   // Hbox
   hbox.pack_start(*ui_manager->get_widget("/ToolBox"), Gtk::PACK_SHRINK);
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
-  dynamic_cast<Gtk::Toolbar*>(ui_manager->get_widget("/ToolBox"))->set_orientation(Gtk::ORIENTATION_VERTICAL);
-#endif
+  //dynamic_cast<Gtk::Toolbar*>(ui_manager->get_widget("/ToolBox"))->set_property("orientation", Gtk::ORIENTATION_VERTICAL);
+  // myToolbar->set_property("toolbar-style", Gtk::TOOLBAR_ICONS);
+
   hbox.add(hpaned);
 
   // vpaned.set_size_request(250, -1);
@@ -433,7 +431,7 @@ EditorWindow::EditorWindow() :
   sidebar_vbox.pack_start(minimap_widget, Gtk::PACK_SHRINK);
 
   vpaned.pack1(object_selector, Gtk::EXPAND);
-  vpaned.pack2(layer_manager,     Gtk::SHRINK);
+  vpaned.pack2(layer_manager, Gtk::SHRINK);
 
   hpaned.set_position(970);
   vpaned.set_position(420);

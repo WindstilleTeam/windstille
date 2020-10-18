@@ -86,7 +86,6 @@ public:
   bool on_render(const Glib::RefPtr<Gdk::GLContext>& context) override;
 
   virtual bool on_configure_event(GdkEventConfigure* event) override;
-  //virtual bool on_expose_event(GdkEventExpose* event) override;
 
   bool mouse_move(GdkEventMotion* event);
   bool mouse_down (GdkEventButton* event);
@@ -97,12 +96,10 @@ public:
   bool key_release(GdkEventKey* event);
 
   // Drag&Drop
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
-  void on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& context);
   void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>&, int x, int y,
-                             const Gtk::SelectionData& data, guint info, guint time);
-  bool on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time);
-#endif
+                             const Gtk::SelectionData& data, guint info, guint time) override;
+  bool on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time) override;
+  void on_drag_end(const Glib::RefPtr<Gdk::DragContext>& context) override;
 
   void on_zoom_in();
   void on_zoom_out();

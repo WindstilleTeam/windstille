@@ -69,6 +69,8 @@ public:
   void zoom_in();
   void zoom_out();
 
+  bool on_draw(Cairo::RefPtr<Cairo::Context> const& cr) override;
+
 private:
   void draw_select_rectangle(Cairo::RefPtr<Cairo::Context> cr);
   void draw_grid(Cairo::RefPtr<Cairo::Context> cr);

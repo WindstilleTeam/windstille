@@ -223,51 +223,8 @@ WindstilleWidget::on_realize()
 void
 WindstilleWidget::on_unrealize()
 {
-}
-
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
-  std::cout << "WindstilleWidget::on_configure_event()" << std::endl;
-
-  Display::aspect_size.width  = ev->width;
-  Display::aspect_size.height = ev->height;
-
-  state.set_size(Display::aspect_size.width,
-                 Display::aspect_size.height);
-
-  Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
-
-  if (!glwindow->gl_begin(get_gl_context())) {
-    std::cout << "WindstilleWidget::on_configure_event() - no gl context" << std::endl;
-    return false;
-  } else{
-    if (!lib_init) {
-      return false;
-    }
-
-    m_gc->set_aspect_size(geom::isize(ev->width, ev->height));
-
-    state.set_size(m_gc->size().width(),
-                   m_gc->size().height());
-
-    if (compositor) {
-      compositor.reset(new Compositor(geom::isize(ev->width, ev->height),
-                                      geom::isize(ev->width, ev->height)));
-    }
-
-    glViewport(0, 0, get_width(), get_height());
-
-    m_gc->set_projection(
-      glm::ortho(0.0f,
-                 static_cast<float>(get_width()),
-                 static_cast<float>(get_height()),
-                 0.0f,
-                 1000.0f,
-                 -1000.0f));
   Gtk::GLArea::on_unrealize();
-  throw_if_error();
-  std::cout << "WindstilleWidget::on_unrealize" << std::endl;
 }
-#endif
 
 bool
 WindstilleWidget::on_render(Glib::RefPtr<Gdk::GLContext> const& context)
@@ -279,8 +236,8 @@ WindstilleWidget::on_render(Glib::RefPtr<Gdk::GLContext> const& context)
 
   glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
-  draw();
+#ifdef FIXME_DISABLED_FOR_GTKMM3_PORT
+  draw(*m_gc);
 #endif
   glFlush();
 
@@ -295,24 +252,25 @@ WindstilleWidget::on_configure_event(GdkEventConfigure* ev)
 
   make_current();
 
-  if (compositor.get())
-  {
+  if (compositor) {
     compositor.reset(new Compositor(geom::isize(ev->width, ev->height),
                                     geom::isize(ev->width, ev->height)));
   }
-  //else
-    //{
-  //draw(*m_gc);
 
-#ifdef FIXME_DISABLED_FOR_GTKMM3_PORT
+  state.set_size(m_gc->size().width(),
+                 m_gc->size().height());
+
   glViewport(0, 0, get_width(), get_height());
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  glOrtho(0.0, get_width(), get_height(), 0.0, 1000.0, -1000.0);
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-#endif
+  m_gc->set_projection(
+    glm::ortho(0.0f,
+               static_cast<float>(get_width()),
+               static_cast<float>(get_height()),
+               0.0f,
+               1000.0f,
+               -1000.0f));
+
+  throw_if_error();
 
   return true;
 }
@@ -548,24 +506,20 @@ WindstilleWidget::key_release(GdkEventKey* ev)
   return true;
 }
 
-#ifdef FIXME_DISABLED_FOR_GTKMM3_PORT
 bool
-WindstilleWidget::on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& /*context*/, int /*x*/, int /*y*/, guint /*time*/)
+WindstilleWidget::on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time)
 {
-  //std::cout << "WindstilleWidget: on_drag_drop: " << x << ", " << y << ": " << std::endl;
+  std::cout << "WindstilleWidget: on_drag_drop: " << x << ", " << y << ": " << std::endl;
   return true;
 }
 
 void
 WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*context*/,
                                         int x, int y, const Gtk::SelectionData& data,
-                                        guint /*info*/, guint /*time*/)
+                                        guint info, guint time)
 {
-  if ((false))
-  {
-    std::cout << "WindstilleWidget: on_drag_data_received: "
-              << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
-  }
+  std::cout << "WindstilleWidget: on_drag_data_received: "
+            << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
 
   ObjectModelHandle object = DecalObjectModel::create(data.get_data_as_string(),
                                                       state.screen_to_world(glm::vec2(static_cast<float>(x), static_cast<float>(y))),
@@ -595,11 +549,10 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*
 }
 
 void
-WindstilleWidget::on_drag_finish(const Glib::RefPtr<Gdk::DragContext>& /*context*/)
+WindstilleWidget::on_drag_end(Glib::RefPtr<Gdk::DragContext> const& context)
 {
-  //std::cout << "WindstilleWidget: on_drag_finish()" << std::endl;
+  std::cout << "WindstilleWidget: on_drag_end()" << std::endl;
 }
-#endif
 
 void
 WindstilleWidget::on_zoom_in()
@@ -671,7 +624,7 @@ WindstilleWidget::on_document_change()
 void
 WindstilleWidget::save_screenshot(const std::string& filename_)
 {
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
+#ifdef FIXME_DISABLED_FOR_GTKMM3_PORT
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
 
   if (glwindow->gl_begin(get_gl_context()))

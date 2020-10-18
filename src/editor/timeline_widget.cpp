@@ -188,38 +188,23 @@ TimelineWidget::add_to_selection(const geom::frect& selection)
   }
 }
 
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
 bool
-TimelineWidget::on_expose_event(GdkEventExpose* ev)
+TimelineWidget::on_draw(Cairo::RefPtr<Cairo::Context> const& cr)
 {
-  if (Glib::RefPtr<Gdk::Window> window = get_window())
-  {
-    //Gtk::Allocation allocation = get_allocation();
+  if (1) // pixel perfect drawing
+    cr->translate(0.5, 0.5);
 
-    Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
+  draw_timeline(cr);
 
-    // clip to the area indicated by the expose event so that we only redraw
-    // the portion of the window that needs to be redrawn
-    cr->rectangle(ev->area.x,     ev->area.y,
-                  ev->area.width, ev->area.height);
-    cr->clip();
+  cr->set_line_width(0.5);
+  cr->set_source_rgb(0,0,0);
 
-    if (1) // pixel perfect drawing
-      cr->translate(0.5, 0.5);
+  cr->set_line_width(1.0);
 
-    draw_timeline(cr);
+  draw_select_rectangle(cr);
 
-    cr->set_line_width(0.5);
-    cr->set_source_rgb(0,0,0);
-
-    cr->set_line_width(1.0);
-
-    draw_select_rectangle(cr);
-  }
-
-  return true;
+  return false;
 }
-#endif
 
 void
 TimelineWidget::draw_select_rectangle(Cairo::RefPtr<Cairo::Context> cr)

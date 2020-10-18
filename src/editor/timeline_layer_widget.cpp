@@ -26,58 +26,46 @@ TimelineLayerWidget::TimelineLayerWidget() :
 {
 }
 
-#if FIXME_DISABLED_FOR_GTKMM3_PORT
 bool
-TimelineLayerWidget::on_expose_event(GdkEventExpose* ev)
+TimelineLayerWidget::on_draw(Cairo::RefPtr<Cairo::Context> const& cr)
 {
   if (!m_timeline)
     return false;
 
-  if (Glib::RefPtr<Gdk::Window> window = get_window())
+  Gtk::Allocation allocation = get_allocation();
+
+  if (1) { // pixel perfect drawing
+    cr->translate(0.5, 0.5);
+  }
+
+  cr->select_font_face ("Sans", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
+  cr->set_font_size(12);
+
+  cr->set_line_width(1.0);
+
+  Cairo::TextExtents extents;
+  for(Timeline::iterator i = m_timeline->begin(); i != m_timeline->end(); ++i)
   {
-    Gtk::Allocation allocation = get_allocation();
+    cr->get_text_extents((*i)->get_name(), extents);
 
-    Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
+    cr->set_source_rgb(1,1,1);
+    cr->rectangle(0, m_column_height * static_cast<double>(i - m_timeline->begin()),
+                  allocation.get_width(), m_column_height);
+    cr->fill();
 
-    // clip to the area indicated by the expose event so that we only redraw
-    // the portion of the window that needs to be redrawn
-    cr->rectangle(ev->area.x,     ev->area.y,
-                  ev->area.width, ev->area.height);
-    cr->clip();
+    // draw text
+    cr->set_source_rgb(0,0,0);
+    cr->move_to(8, 10 + m_column_height * static_cast<double>(i - m_timeline->begin()) - extents.y_bearing);
+    cr->show_text((*i)->get_name());
 
-    if (1) // pixel perfect drawing
-      cr->translate(0.5, 0.5);
-
-    cr->select_font_face ("Sans", Cairo::FONT_SLANT_NORMAL, Cairo::FONT_WEIGHT_NORMAL);
-    cr->set_font_size(12);
-
-    cr->set_line_width(1.0);
-
-    Cairo::TextExtents extents;
-    for(Timeline::iterator i = m_timeline->begin(); i != m_timeline->end(); ++i)
-    {
-      cr->get_text_extents((*i)->get_name(), extents);
-
-      cr->set_source_rgb(1,1,1);
-      cr->rectangle(0, m_column_height * static_cast<double>(i - m_timeline->begin()),
-                    allocation.get_width(), m_column_height);
-      cr->fill();
-
-      // draw text
-      cr->set_source_rgb(0,0,0);
-      cr->move_to(8, 10 + m_column_height * static_cast<double>(i - m_timeline->begin()) - extents.y_bearing);
-      cr->show_text((*i)->get_name());
-
-      // draw line
-      cr->set_source_rgb(0,0,0);
-      cr->move_to(0, m_column_height + m_column_height * static_cast<double>(i - m_timeline->begin()));
-      cr->line_to(allocation.get_width(), m_column_height+ m_column_height * static_cast<double>(i - m_timeline->begin()));
-      cr->stroke();
-    }
+    // draw line
+    cr->set_source_rgb(0,0,0);
+    cr->move_to(0, m_column_height + m_column_height * static_cast<double>(i - m_timeline->begin()));
+    cr->line_to(allocation.get_width(), m_column_height+ m_column_height * static_cast<double>(i - m_timeline->begin()));
+    cr->stroke();
   }
 
   return false;
 }
-#endif
 
 /* EOF */

@@ -33,6 +33,7 @@ public:
   TimelineLayerWidget();
 
   void set_timeline(TimelineHandle timeline) { m_timeline = timeline; }
+  bool on_draw(Cairo::RefPtr<Cairo::Context> const& cr) override;
 
 private:
   TimelineLayerWidget(const TimelineLayerWidget&);

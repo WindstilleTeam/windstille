@@ -133,7 +133,6 @@ Framebuffer::create_internal(GLenum format, int width, int height, int multisamp
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,  GL_RENDERBUFFER, m_color_buffer->get_handle());
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,   GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
-
   assert_gl();
 
   check_completness();
@@ -152,7 +151,21 @@ Framebuffer::check_completness()
     case GL_FRAMEBUFFER_COMPLETE:
       std::cout << "Framebuffer ok" << std::endl;
       break;
-
+    case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+      std::cout << "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT\n";
+      break;
+    case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+      std::cout << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n";
+      break;
+    case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+      std::cout << "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER\n";
+      break;
+    case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+      std::cout << "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER\n";
+      break;
+    case GL_FRAMEBUFFER_UNSUPPORTED:
+      std::cout << "GL_FRAMEBUFFER_UNSUPPORTED\n";
+      break;
     default:
       std::cout << "Framebuffer status failure: " << status << std::endl;
       break;
