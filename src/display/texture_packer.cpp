@@ -95,7 +95,7 @@ private:
 
 public:
   TexturePackerTexture(const geom::isize& size) :
-    texture(Texture::create(GL_TEXTURE_2D, size.width(), size.height())),
+    texture(Texture::create(GL_TEXTURE_2D, size)),
     space(geom::irect(geom::ipoint(0, 0), size))
   {
   }

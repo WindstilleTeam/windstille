@@ -28,26 +28,26 @@
 #include "display/assert_gl.hpp"
 
 FramebufferPtr
-Framebuffer::create_with_texture(GLenum target, int width, int height, int multisample)
+Framebuffer::create_with_texture(GLenum target, geom::isize const& size, int multisample)
 {
   FramebufferPtr framebuffer(new Framebuffer);
-  framebuffer->create_with_texture_internal(target, width, height, multisample);
+  framebuffer->create_with_texture_internal(target, size, multisample);
   return framebuffer;
 }
 
 FramebufferPtr
-Framebuffer::create(int width, int height, int multisample)
+Framebuffer::create(geom::isize const& size, int multisample)
 {
   FramebufferPtr framebuffer(new Framebuffer);
-  framebuffer->create_internal(GL_RGB8, width, height, multisample);
+  framebuffer->create_internal(GL_RGB8, size, multisample);
   return framebuffer;
 }
 
 FramebufferPtr
-Framebuffer::create_hdr(int width, int height, int multisample)
+Framebuffer::create_hdr(geom::isize const& size, int multisample)
 {
   FramebufferPtr framebuffer(new Framebuffer);
-  framebuffer->create_internal(GL_RGBA16F, width, height, multisample);
+  framebuffer->create_internal(GL_RGBA16F, size, multisample);
   return framebuffer;
 }
 
@@ -95,13 +95,13 @@ Framebuffer::get_handle() const
 }
 
 void
-Framebuffer::create_with_texture_internal(GLenum target, int width, int height, int multisample)
+Framebuffer::create_with_texture_internal(GLenum target, geom::isize const& size, int multisample)
 {
   assert_gl();
 
-  m_size = geom::isize(width, height);
-  m_texture = Texture::create(target, width, height);
-  m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, width, height, multisample);
+  m_size = size;
+  m_texture = Texture::create(target, size);
+  m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, size, multisample);
 
   // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
   glBindFramebuffer(GL_FRAMEBUFFER, m_handle);
@@ -119,13 +119,13 @@ Framebuffer::create_with_texture_internal(GLenum target, int width, int height, 
 }
 
 void
-Framebuffer::create_internal(GLenum format, int width, int height, int multisample)
+Framebuffer::create_internal(GLenum format, geom::isize const& size, int multisample)
 {
   assert_gl();
 
-  m_size = geom::isize(width, height);
-  m_color_buffer = Renderbuffer::create(format, width, height, multisample);
-  m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, width, height, multisample);
+  m_size = size;
+  m_color_buffer = Renderbuffer::create(format, size, multisample);
+  m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, size, multisample);
 
   // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
   glBindFramebuffer(GL_FRAMEBUFFER, m_handle);

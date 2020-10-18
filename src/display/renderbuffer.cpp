@@ -22,12 +22,12 @@
 #include "display/renderbuffer.hpp"
 
 RenderbufferPtr
-Renderbuffer::create(GLenum format, int width, int height, int multisample)
+Renderbuffer::create(GLenum format, geom::isize const& size, int multisample)
 {
-  return RenderbufferPtr(new Renderbuffer(format, width, height, multisample));
+  return RenderbufferPtr(new Renderbuffer(format, size, multisample));
 }
 
-Renderbuffer::Renderbuffer(GLenum format, int width, int height, int multisample) :
+Renderbuffer::Renderbuffer(GLenum format, geom::isize const& size, int multisample) :
   m_handle(0)
 {
   glGenRenderbuffers(1, &m_handle);
@@ -38,11 +38,11 @@ Renderbuffer::Renderbuffer(GLenum format, int width, int height, int multisample
   {
     // antialiasing
     std::cout << "Antialised Renderbuffer" << std::endl;
-    glRenderbufferStorageMultisample(GL_RENDERBUFFER, multisample, format, width, height);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, multisample, format, size.width(), size.height());
   }
   else
   {
-    glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
+    glRenderbufferStorage(GL_RENDERBUFFER, format, size.width(), size.height());
   }
   glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }

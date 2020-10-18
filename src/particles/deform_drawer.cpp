@@ -186,7 +186,7 @@ public:
 
 DeformDrawer::DeformDrawer(ReaderMapping const& /*props*/,
                            SurfaceManager& surface_manager) :
-  framebuffer(Framebuffer::create_with_texture(GL_TEXTURE_2D, 800, 600)),
+  framebuffer(Framebuffer::create_with_texture(GL_TEXTURE_2D, {800, 600})),
   surface(surface_manager.get(Pathname("images/particles/deform2.png"))),
   shader_program(ShaderProgram::create())
 {

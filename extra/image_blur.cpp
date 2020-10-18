@@ -63,7 +63,7 @@ int app_main(int argc, char** argv)
 
   SurfaceManager surface_manager;
 
-  FramebufferPtr framebuffer = Framebuffer::create_hdr(window_size.width(), window_size.height());
+  FramebufferPtr framebuffer = Framebuffer::create_hdr(window_size);
 
   SurfacePtr surface   = surface_manager.get(argv[1]);
   SurfacePtr surface_2 = surface_manager.get(argv[2]);

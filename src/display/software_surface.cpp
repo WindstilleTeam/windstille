@@ -35,9 +35,9 @@ SoftwareSurface::create(std::filesystem::path const& filename)
 }
 
 SoftwareSurfacePtr
-SoftwareSurface::create(Format format, int width, int height, Color const& color)
+SoftwareSurface::create(Format format, geom::isize const& size, Color const& color)
 {
-  SoftwareSurfacePtr sur(new SoftwareSurface(width, height, format));
+  SoftwareSurfacePtr sur(new SoftwareSurface(size, format));
 
   switch (format)
   {
@@ -174,7 +174,7 @@ SoftwareSurface::SoftwareSurface(std::filesystem::path const& filename) :
   }
 }
 
-SoftwareSurface::SoftwareSurface(int width, int height, Format format) :
+SoftwareSurface::SoftwareSurface(geom::isize const& size, Format format) :
   m_surface(nullptr),
   m_format(format)
 {
@@ -183,13 +183,13 @@ SoftwareSurface::SoftwareSurface(int width, int height, Format format) :
   if (std::endian::native == std::endian::big)
   {
     m_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                     width, height, 32,
+                                     size.width(), size.height(), 32,
                                      0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
   }
   else
   {
     m_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                     width, height, 32,
+                                     size.width(), size.height(), 32,
                                      0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
   }
 

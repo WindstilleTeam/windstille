@@ -30,9 +30,9 @@ typedef std::shared_ptr<Framebuffer> FramebufferPtr;
 class Framebuffer
 {
 public:
-  static FramebufferPtr create_with_texture(GLenum target, int width, int height, int multisample = 0);
-  static FramebufferPtr create(int width, int height, int multisample = 0);
-  static FramebufferPtr create_hdr(int width, int height, int multisample = 0);
+  static FramebufferPtr create_with_texture(GLenum target, geom::isize const& size, int multisample = 0);
+  static FramebufferPtr create(geom::isize const& size, int multisample = 0);
+  static FramebufferPtr create_hdr(geom::isize const& size, int multisample = 0);
 
 public:
   ~Framebuffer();
@@ -46,8 +46,8 @@ public:
 private:
   Framebuffer();
   void check_completness();
-  void create_internal(GLenum format, int width, int height, int multisample);
-  void create_with_texture_internal(GLenum target, int width, int height, int multisample);
+  void create_internal(GLenum format, geom::isize const& size, int multisample);
+  void create_with_texture_internal(GLenum target, geom::isize const& size, int multisample);
 
 private:
   GLuint m_handle;

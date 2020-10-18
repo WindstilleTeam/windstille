@@ -27,6 +27,7 @@
 #include <glm/ext.hpp>
 
 #include <geom/rect.hpp>
+#include <geom/io.hpp>
 
 #include "display/assert_gl.hpp"
 #include "display/software_surface.hpp"
@@ -39,37 +40,33 @@ Texture::create(SoftwareSurfacePtr image, GLint format)
 }
 
 TexturePtr
-Texture::create(GLenum target, int width, int height, GLint format)
+Texture::create(GLenum target, geom::isize const& size, GLint format)
 {
-  return TexturePtr(new Texture(target, width, height, format));
+  return TexturePtr(new Texture(target, size, format));
 }
 
 Texture::Texture() :
   m_target(0),
   m_handle(0),
-  m_width(0),
-  m_height(0)
+  m_size(0, 0)
 {
   glGenTextures(1, &m_handle);
   assert_gl();
 }
 
-Texture::Texture(GLenum target, int width, int height, GLint format) :
+Texture::Texture(GLenum target, geom::isize const& size, GLint format) :
   m_target(target),
   m_handle(0),
-  m_width(width),
-  m_height(height)
+  m_size(size)
 {
   assert_gl();
 
-  if (!GLEW_ARB_texture_non_power_of_two)
-  {
-    if (!glm::isPowerOfTwo(m_width) || !glm::isPowerOfTwo(m_height))
-    {
-      std::cout  << "Texture::Texture(): texture dimensions have non power of two size: " << m_width << "x" << m_height;
+  if (!GLEW_ARB_texture_non_power_of_two) {
+    if (!glm::isPowerOfTwo(m_size.width()) || !glm::isPowerOfTwo(m_size.height())) {
+      std::cout  << "Texture::Texture(): texture dimensions have non power of two size: " << m_size;
 
-      m_width  = glm::ceilPowerOfTwo(m_width);
-      m_height = glm::ceilPowerOfTwo(m_height);
+      m_size = geom::isize(glm::ceilPowerOfTwo(m_size.width()),
+                           glm::ceilPowerOfTwo(m_size.height()));
     }
   }
 
@@ -78,7 +75,7 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
 
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  glTexImage2D(target, 0, format, m_width, m_height, 0, GL_RGBA,
+  glTexImage2D(target, 0, format, m_size.width(), m_size.height(), 0, GL_RGBA,
                GL_UNSIGNED_BYTE, nullptr);
 
   glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -93,18 +90,15 @@ Texture::Texture(GLenum target, int width, int height, GLint format) :
 Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
   m_target(GL_TEXTURE_2D),
   m_handle(0),
-  m_width(image->get_width()),
-  m_height(image->get_height())
+  m_size(image->get_size())
 {
   assert_gl();
 
   glGenTextures(1, &m_handle);
   assert_gl();
 
-  if (!GLEW_ARB_texture_non_power_of_two)
-  {
-    if (!glm::isPowerOfTwo(image->get_width()) || !glm::isPowerOfTwo(image->get_height()))
-    {
+  if (!GLEW_ARB_texture_non_power_of_two) {
+    if (!glm::isPowerOfTwo(image->get_width()) || !glm::isPowerOfTwo(image->get_height())) {
       std::ostringstream str;
       str << "Texture::Texture(): image dimensions have non power of two size: "
           << image->get_width() << "x" << image->get_height();
@@ -112,8 +106,7 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
     }
   }
 
-  if (image->get_bits_per_pixel() != 24 && image->get_bits_per_pixel() != 32)
-  {
+  if (image->get_bits_per_pixel() != 24 && image->get_bits_per_pixel() != 32) {
     throw std::runtime_error("image has not 24 or 32 bit color depth");
   }
 
@@ -191,13 +184,13 @@ Texture::~Texture()
 int
 Texture::get_width() const
 {
-  return m_width;
+  return m_size.width();
 }
 
 int
 Texture::get_height() const
 {
-  return m_height;
+  return m_size.height();
 }
 
 GLuint
@@ -280,7 +273,7 @@ Texture::get_software_surface() const
 {
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  SoftwareSurfacePtr surface = SoftwareSurface::create(SoftwareSurface::RGBA, m_width, m_height);
+  SoftwareSurfacePtr surface = SoftwareSurface::create(SoftwareSurface::RGBA, m_size);
 
   glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->get_pixels());
 

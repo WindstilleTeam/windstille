@@ -92,7 +92,7 @@ TTFFont::TTFFont(std::filesystem::path const& filename, int size_, const FontEff
   FT_Select_Charmap(face,  FT_ENCODING_UNICODE);
 
   // FIXME: should calculate texture size, based on font size
-  SoftwareSurfacePtr pixelbuffer = SoftwareSurface::create(SoftwareSurface::RGBA, 1024, 1024);
+  SoftwareSurfacePtr pixelbuffer = SoftwareSurface::create(SoftwareSurface::RGBA, {1024, 1024});
 
   int x_pos = 1;
   int y_pos = 1;

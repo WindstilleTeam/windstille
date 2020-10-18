@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_DISPLAY_RENDER_BUFFER_HPP
 
 #include <memory>
+#include <geom/size.hpp>
 
 class Renderbuffer;
 typedef std::shared_ptr<Renderbuffer> RenderbufferPtr;
@@ -27,7 +28,7 @@ typedef std::shared_ptr<Renderbuffer> RenderbufferPtr;
 class Renderbuffer
 {
 public:
-  static RenderbufferPtr create(GLenum format, int width, int height, int multisample = 0);
+  static RenderbufferPtr create(GLenum format, geom::isize const& size, int multisample = 0);
 
 public:
   ~Renderbuffer();
@@ -40,7 +41,7 @@ private:
    * @param height Height of the Renderbuffer
    * @param format GL_DEPTH_COMPONENT24, GL_STENCIL_INDEX, ...
    */
-  Renderbuffer(GLenum format, int width, int height, int multisample = 0);
+  Renderbuffer(GLenum format, geom::isize const& size, int multisample = 0);
 
 private:
   GLuint m_handle;

@@ -51,6 +51,7 @@ public:
 
   int get_width () const { return field.get_width(); }
   int get_height () const { return field.get_height (); }
+  geom::isize get_size() const { return field.get_size(); }
 
   int get_tile_size () const { return TILE_SIZE; }
 

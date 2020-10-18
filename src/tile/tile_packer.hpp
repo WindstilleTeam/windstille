@@ -37,7 +37,7 @@ private:
 public:
   /** Let the texture be width/height large (only power of two values
       recomment) */
-  TilePacker(int width, int height);
+  TilePacker(geom::isize const& size);
   ~TilePacker();
 
   /** Pack a tile and return the position where it is placed in the

@@ -53,8 +53,8 @@ TileFactory::TileFactory(const Pathname& filename) :
   color_packer(),
   descriptions()
 {
-  packers.push_back(new TilePacker(1024, 1024));
-  packers.push_back(new TilePacker(1024, 1024));
+  packers.push_back(new TilePacker({1024, 1024}));
+  packers.push_back(new TilePacker({1024, 1024}));
   color_packer     = 0;
 
   ReaderDocument doc = ReaderDocument::from_file(filename.get_sys_path());
@@ -145,7 +145,7 @@ TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const geom::irec
     {
       if(packers[color_packer]->is_full())
       {
-        packers.push_back(new TilePacker(1024, 1024));
+        packers.push_back(new TilePacker({1024, 1024}));
         color_packer = static_cast<int>(packers.size()) - 1;
       }
 

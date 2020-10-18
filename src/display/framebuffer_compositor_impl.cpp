@@ -29,10 +29,10 @@
 
 static const int LIGHTMAP_DIV = 4;
 
-FramebufferCompositorImpl::FramebufferCompositorImpl(const geom::isize& window, const geom::isize& viewport) :
-  CompositorImpl(window, viewport),
-  m_screen  (Framebuffer::create_with_texture(GL_TEXTURE_2D, window.width(), window.height())),
-  m_lightmap(Framebuffer::create_with_texture(GL_TEXTURE_2D, window.width() / LIGHTMAP_DIV, window.height() / LIGHTMAP_DIV))
+FramebufferCompositorImpl::FramebufferCompositorImpl(const geom::isize& window_size, const geom::isize& viewport) :
+  CompositorImpl(window_size, viewport),
+  m_screen  (Framebuffer::create_with_texture(GL_TEXTURE_2D, window_size)),
+  m_lightmap(Framebuffer::create_with_texture(GL_TEXTURE_2D, window_size / LIGHTMAP_DIV))
 {
   assert_gl();
 }

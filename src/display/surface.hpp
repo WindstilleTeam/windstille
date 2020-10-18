@@ -46,11 +46,11 @@ public:
    * @param height Height of the surface on the screen
    */
   static SurfacePtr create(TexturePtr texture, const geom::frect& uv, const geom::fsize& size);
-  static SurfacePtr create(int width, int height);
+  static SurfacePtr create(geom::isize const& size);
 
 private:
   Surface(TexturePtr texture, const geom::frect& uv, const geom::fsize& size);
-  Surface(int width, int height);
+  Surface(geom::isize const& size);
 
 public:
   ~Surface();

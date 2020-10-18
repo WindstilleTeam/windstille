@@ -22,6 +22,8 @@
 #include <vector>
 #include <assert.h>
 
+#include <geom/size.hpp>
+
 template<class T>
 class Field
 {
@@ -122,6 +124,7 @@ public:
   int size() const { return static_cast<int>(vec.size()); }
   int get_width () const { return width; }
   int get_height () const { return height; }
+  geom::isize get_size() const { return {width, height}; }
 };
 
 #endif

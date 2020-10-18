@@ -31,22 +31,23 @@ Surface::create(TexturePtr texture, const geom::frect& uv, const geom::fsize& si
 }
 
 SurfacePtr
-Surface::create(int width, int height)
+Surface::create(geom::isize const& size)
 {
-  return SurfacePtr(new Surface(width, height));
+  return SurfacePtr(new Surface(size));
 }
 
-Surface::Surface(int width, int height) :
+Surface::Surface(geom::isize const& size) :
   m_texture(),
   m_uv(),
   m_size()
 {
-  m_size  = geom::fsize(geom::isize(width, height));
+  m_size  = geom::fsize(size);
 
-  m_texture = Texture::create(GL_TEXTURE_2D, width, height);
-  m_uv      = geom::frect(0.0f, 0.0f,
-                    m_size.width()  / static_cast<float>(m_texture->get_width()),
-                    m_size.height() / static_cast<float>(m_texture->get_height()));
+  m_texture = Texture::create(GL_TEXTURE_2D, size);
+  m_uv      = geom::frect(0.0f,
+                          0.0f,
+                          m_size.width()  / static_cast<float>(m_texture->get_width()),
+                          m_size.height() / static_cast<float>(m_texture->get_height()));
 }
 
 Surface::Surface(TexturePtr texture, const geom::frect& uv, const geom::fsize& size) :

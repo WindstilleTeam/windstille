@@ -33,8 +33,7 @@ static const int LIGHTMAP_DIV = 4;
 
 BasicCompositorImpl::BasicCompositorImpl(const geom::isize& window, const geom::isize& viewport) :
   CompositorImpl(window, viewport),
-  m_lightmap(Surface::create(m_window.width()  / LIGHTMAP_DIV,
-                             m_window.height() / LIGHTMAP_DIV))
+  m_lightmap(Surface::create(window / LIGHTMAP_DIV))
 {
 }
 
@@ -47,7 +46,7 @@ BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* s
   if (m_lightmap->get_width()  != static_cast<float>(m_window.width()  / LIGHTMAP_DIV) ||
       m_lightmap->get_height() != static_cast<float>(m_window.height() / LIGHTMAP_DIV))
   {
-    m_lightmap = Surface::create(m_window.width() / LIGHTMAP_DIV, m_window.height() / LIGHTMAP_DIV);
+    m_lightmap = Surface::create(m_window / LIGHTMAP_DIV);
   }
 
   if (sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN)

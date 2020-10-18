@@ -185,8 +185,8 @@ App::run(int argc, char* argv[])
     slide_show.load(*i, geom::fsize(m_aspect_ratio));
   }
 
-  FramebufferPtr framebuffer_multisample = Framebuffer::create(m_window_size.width(), m_window_size.height(), 8);
-  FramebufferPtr framebuffer = Framebuffer::create(m_window_size.width(), m_window_size.height());
+  FramebufferPtr framebuffer_multisample = Framebuffer::create(m_window_size, 8);
+  FramebufferPtr framebuffer = Framebuffer::create(m_window_size);
 
   bool loop = true;
   bool pause = false;

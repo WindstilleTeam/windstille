@@ -150,17 +150,17 @@ SurfaceManager::create_texture(SoftwareSurfacePtr image,
   }
   else
   {
-    int texture_w = glm::ceilPowerOfTwo(image->get_width());
-    int texture_h = glm::ceilPowerOfTwo(image->get_height());
+    geom::isize texture_size(glm::ceilPowerOfTwo(image->get_width()),
+                             glm::ceilPowerOfTwo(image->get_height()));
 
-    SoftwareSurfacePtr convert = SoftwareSurface::create(SoftwareSurface::RGBA, texture_w, texture_h);
+    SoftwareSurfacePtr convert = SoftwareSurface::create(SoftwareSurface::RGBA, texture_size);
 
     image->blit(convert, 0, 0);
 
     TexturePtr texture = Texture::create(convert);
 
-    *maxu = static_cast<float>(image->get_width())  / static_cast<float>(texture_w);
-    *maxv = static_cast<float>(image->get_height()) / static_cast<float>(texture_h);
+    *maxu = static_cast<float>(image->get_width())  / static_cast<float>(texture_size.width());
+    *maxv = static_cast<float>(image->get_height()) / static_cast<float>(texture_size.height());
 
     return texture;
   }

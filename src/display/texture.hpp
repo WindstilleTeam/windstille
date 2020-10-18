@@ -41,12 +41,12 @@ public:
   static TexturePtr create(SoftwareSurfacePtr image, GLint format = GL_RGBA);
 
   /** Create an empty Texture with the given dimensions */
-  static TexturePtr create(GLenum target, int width, int height, GLint format = GL_RGBA);
+  static TexturePtr create(GLenum target, geom::isize const& size, GLint format = GL_RGBA);
 
 private:
   Texture();
   Texture(SoftwareSurfacePtr image, GLint format = GL_RGBA);
-  Texture(GLenum target, int width, int height, GLint format = GL_RGBA);
+  Texture(GLenum target, geom::isize const& size, GLint format = GL_RGBA);
 
 public:
   ~Texture();
@@ -80,8 +80,7 @@ public:
 private:
   GLenum m_target;
   GLuint m_handle;
-  int    m_width;
-  int    m_height;
+  geom::isize m_size;
 };
 
 #endif

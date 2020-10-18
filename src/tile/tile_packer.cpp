@@ -34,28 +34,25 @@ public:
 
   TexturePtr texture;
 
-  int width;
-  int height;
+  geom::isize size;
 
   TilePackerImpl()
     : x_pos(),
       y_pos(),
       texture(),
-      width(),
-      height()
+      size()
   {}
 };
 
-TilePacker::TilePacker(int width, int height) :
+TilePacker::TilePacker(geom::isize const& size) :
   impl(new TilePackerImpl())
 {
   impl->x_pos = 0;
   impl->y_pos = 0;
 
-  impl->width  = width;
-  impl->height = height;
+  impl->size = size;
 
-  impl->texture = Texture::create(GL_TEXTURE_2D, width, height);
+  impl->texture = Texture::create(GL_TEXTURE_2D, size);
 
   assert_gl();
 }
@@ -72,7 +69,7 @@ TilePacker::pack(SoftwareSurfacePtr image, int x, int y, int w, int h)
   assert(w == TILE_RESOLUTION && h == TILE_RESOLUTION);
   assert(!is_full());
 
-  SoftwareSurfacePtr convert = SoftwareSurface::create(SoftwareSurface::RGBA, w+2, h+2);
+  SoftwareSurfacePtr convert = SoftwareSurface::create(SoftwareSurface::RGBA, {w + 2, h + 2});
 
   SDL_Rect source_rect;
   source_rect.x = static_cast<Sint16>(x);
@@ -94,15 +91,15 @@ TilePacker::pack(SoftwareSurfacePtr image, int x, int y, int w, int h)
 
   assert_gl();
 
-  geom::frect rect(glm::vec2(static_cast<float>(impl->x_pos + 1) / static_cast<float>(impl->width),
-                      static_cast<float>(impl->y_pos + 1) / static_cast<float>(impl->height)),
-             geom::fsize(static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->width),
-                   static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->height)));
+  geom::frect rect(geom::fpoint(static_cast<float>(impl->x_pos + 1) / static_cast<float>(impl->size.width()),
+                                static_cast<float>(impl->y_pos + 1) / static_cast<float>(impl->size.height())),
+                   geom::fsize(static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->size.width()),
+                               static_cast<float>(TILE_RESOLUTION) / static_cast<float>(impl->size.height())));
 
   // we move by TILE_RESOLUTION+1 to avoid tiles bleeding into each other
   // when blending
   impl->x_pos += TILE_RESOLUTION + 2;
-  if (impl->x_pos + TILE_RESOLUTION > impl->width)
+  if (impl->x_pos + TILE_RESOLUTION > impl->size.width())
   {
     impl->x_pos = 0;
     impl->y_pos += TILE_RESOLUTION + 2;
@@ -115,7 +112,7 @@ TilePacker::pack(SoftwareSurfacePtr image, int x, int y, int w, int h)
 bool
 TilePacker::is_full() const
 {
-  return (impl->y_pos + TILE_RESOLUTION + 2 > impl->height);
+  return (impl->y_pos + TILE_RESOLUTION + 2 > impl->size.height());
 }
 
 TexturePtr
