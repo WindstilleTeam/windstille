@@ -89,7 +89,7 @@ ParticleViewer::load(const Pathname& filename)
     pattern_texture->set_wrap(GL_REPEAT);
 
     m_background_drawable.reset(new FillScreenPatternDrawable(pattern_texture, glm::vec2()));
-    m_color_fill_drawable.reset(new FillScreenDrawable(Color(0.4f, 0.4f, 0.4f)));
+    m_color_fill_drawable.reset(new FillScreenDrawable(RGBAf(0.4f, 0.4f, 0.4f)));
 
     m_background_drawable->set_render_mask(SceneContext::COLORMAP);
     m_color_fill_drawable->set_render_mask(SceneContext::LIGHTMAP);

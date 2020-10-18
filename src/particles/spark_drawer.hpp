@@ -28,7 +28,7 @@ class VertexArrayDrawable;
 class SparkDrawer : public Drawer
 {
 private:
-  Color color;
+  RGBAf color;
   float width;
   std::shared_ptr<VertexArrayDrawable> buffer;
 

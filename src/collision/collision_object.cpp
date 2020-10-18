@@ -77,15 +77,15 @@ CollisionObject::draw(DrawingContext& dc)
 
   r += v;
 
-  dc.fill_rect(r, Color(1.0f, 1.0f, 1.0f), 100.0f);
+  dc.fill_rect(r, RGBAf(1.0f, 1.0f, 1.0f), 100.0f);
 
-  dc.draw_rect(r, Color(0.6f, 0.6f, 0.6f), 100.0f);
+  dc.draw_rect(r, RGBAf(0.6f, 0.6f, 0.6f), 100.0f);
 
   dc.draw_line(glm::vec2(r.left() + r.width()/2,
                         r.top()  + r.height()/2),
                glm::vec2(r.left() + r.width()/2  + get_velocity().x,
                         r.top()  + r.height()/2 + get_velocity().y),
-               Color(1.0f, 0, 1.0f), 100.0f);
+               RGBAf(1.0f, 0, 1.0f), 100.0f);
 }
 
 void CollisionObject::update(float delta)

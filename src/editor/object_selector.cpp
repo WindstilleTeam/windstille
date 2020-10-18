@@ -118,7 +118,7 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_) :
   iconview.set_model(list_filter);
 
   // Change background color
-  // iconview.modify_base(Gtk::STATE_NORMAL, Gdk::Color("#444444"));
+  // iconview.modify_base(Gtk::STATE_NORMAL, Gdk::RGBAf("#444444"));
 
   // Trying to get spacing to minimum, without much effect
   iconview.set_spacing(0);

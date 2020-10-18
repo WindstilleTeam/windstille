@@ -111,7 +111,7 @@ bool read_custom(ReaderMapping const& map, std::string_view key, glm::mat4& m)
 }
 
 template<>
-bool read_custom(ReaderMapping const& map, std::string_view key, Color& value)
+bool read_custom(ReaderMapping const& map, std::string_view key, RGBAf& value)
 {
   std::vector<float> floats;
   if (map.read(key, floats)) {

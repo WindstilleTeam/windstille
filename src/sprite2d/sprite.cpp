@@ -61,7 +61,7 @@ Sprite::Sprite(std::filesystem::path const& filename, SpriteManager& sprite_mana
   pingpong = false;
   reverse  = false;
   scale = current_action->scale;
-  color    = Color(1.0f, 1.0f, 1.0f);
+  color    = RGBAf(1.0f, 1.0f, 1.0f);
   blend_sfactor = GL_SRC_ALPHA;
   blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
 }
@@ -86,7 +86,7 @@ Sprite::Sprite(const SpriteDataPtr data_) :
   pingpong = false;
   reverse = false;
   scale = current_action->scale;
-  color    = Color(1.0f, 1.0f, 1.0f);
+  color    = RGBAf(1.0f, 1.0f, 1.0f);
   blend_sfactor = GL_SRC_ALPHA;
   blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
 }
@@ -158,7 +158,7 @@ Sprite::set_action(const std::string& name)
       frame    = 0;
       vflip    = false;
       scale    = current_action->scale;
-      color    = Color(1.0f, 1.0f, 1.0f);
+      color    = RGBAf(1.0f, 1.0f, 1.0f);
       blend_sfactor = GL_SRC_ALPHA;
       blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
       return;
@@ -275,7 +275,7 @@ Sprite::set_scale(float s)
 }
 
 void
-Sprite::set_color(const Color& c)
+Sprite::set_color(const RGBAf& c)
 {
   color = c;
 }
@@ -286,7 +286,7 @@ Sprite::get_scale() const
   return scale;
 }
 
-Color
+RGBAf
 Sprite::get_color() const
 {
   return color;

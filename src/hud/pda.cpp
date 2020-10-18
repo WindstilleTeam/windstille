@@ -72,14 +72,14 @@ void
 PDA::draw(GraphicsContext& gc)
 {
   // Darken the background a bit
-  gc.fill_rect(geom::frect(geom::irect(0, 0, gc.size().width(), gc.size().height())), Color(0.0f, 0.0f, 0.0f, 0.25f));
+  gc.fill_rect(geom::frect(geom::irect(0, 0, gc.size().width(), gc.size().height())), RGBAf(0.0f, 0.0f, 0.0f, 0.25f));
 
   background.draw(gc, pos);
 
   geom::frect rect = geom::grow(text_area->get_rect(), 8.0f);
 
-  gc.fill_rounded_rect(rect, 16.0f, Color(0.1f, 0.1f, 0.2f, 0.8f));
-  //gc.draw_rounded_rect(rect, 16.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.fill_rounded_rect(rect, 16.0f, RGBAf(0.1f, 0.1f, 0.2f, 0.8f));
+  //gc.draw_rounded_rect(rect, 16.0f, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
 
   ui_area->draw(gc);
   text_area->draw(gc);

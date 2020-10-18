@@ -370,14 +370,14 @@ ParticleSystem::set_size(float from, float to)
 }
 
 void
-ParticleSystem::set_color(const Color& color_start_, const Color& color_end_)
+ParticleSystem::set_color(const RGBAf& color_start_, const RGBAf& color_end_)
 {
   color_start = color_start_;
   color_stop  = color_end_;
 }
 
 void
-ParticleSystem::set_fade_color(const Color& color)
+ParticleSystem::set_fade_color(const RGBAf& color)
 {
   color_stop = color;
 }

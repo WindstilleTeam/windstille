@@ -44,7 +44,7 @@ private:
   std::unique_ptr<NavigationGraphModel> nav_graph;
   Glib::RefPtr<Gtk::ListStore> layer_tree;
   TimelineHandle m_timeline;
-  Color ambient_color;
+  RGBAf ambient_color;
 
 public:
   typedef std::vector<LayerHandle> Layers;
@@ -69,8 +69,8 @@ public:
   void remove(const ObjectModelHandle& object);
   LayerHandle get_layer(const ObjectModelHandle& object) const;
 
-  void  set_ambient_color(const Color& color) { ambient_color = color; }
-  Color get_ambient_color() const { return ambient_color; }
+  void  set_ambient_color(const RGBAf& color) { ambient_color = color; }
+  RGBAf get_ambient_color() const { return ambient_color; }
 
   LayerHandle get_layer(const Gtk::TreeModel::Path& path) const;
   Layers get_layers() const;

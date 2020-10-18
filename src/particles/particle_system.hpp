@@ -93,8 +93,8 @@ private:
   float speed_start;
   float speed_stop;
 
-  Color color_start;
-  Color color_stop;
+  RGBAf color_start;
+  RGBAf color_stop;
 
 private:
   void spawn(Particle& particle);
@@ -167,10 +167,10 @@ public:
   void set_size  (float from, float to);
 
   /** Set the color at which the particles will start */
-  void set_color(const Color& start, const Color& end);
+  void set_color(const RGBAf& start, const RGBAf& end);
 
   /** Set the color at which the particles will end */
-  void set_fade_color(const Color& color);
+  void set_fade_color(const RGBAf& color);
 
   /** Set the velocity of the particles, it will be randomly distributed
       from \a from to \a to, direction will be taken from the cone */
@@ -185,8 +185,8 @@ public:
   float get_size_start() const { return size_start; }
   float get_size_stop()  const { return size_stop; }
 
-  const Color& get_color_start() const { return color_start; }
-  const Color& get_color_stop()  const { return color_stop;  }
+  const RGBAf& get_color_start() const { return color_start; }
+  const RGBAf& get_color_stop()  const { return color_stop;  }
 
   float get_x_pos() const { return x_pos; }
   float get_y_pos() const { return y_pos; }

@@ -156,7 +156,7 @@ int app_main(int argc, char** argv)
                         .set_scale(1.0f)
                         .set_pos(pos - glm::vec2(surface->get_width()/2, surface->get_height()/2))
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                        .set_color(Color(1.0f, 1.0f, 1.0f, n)));
+                        .set_color(RGBAf(1.0f, 1.0f, 1.0f, n)));
         }
       }
       else
@@ -171,7 +171,7 @@ int app_main(int argc, char** argv)
                                  + (static_cast<float>(n-i-1)/static_cast<float>(n-1)) * last_pos
                                  - glm::vec2(surface->get_width()/2, surface->get_height()/2))
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                        .set_color(Color(1.0f, 1.0f, 1.0f, 1.0f / static_cast<float>(n))));
+                        .set_color(RGBAf(1.0f, 1.0f, 1.0f, 1.0f / static_cast<float>(n))));
         }
       }
     }
@@ -189,7 +189,7 @@ int app_main(int argc, char** argv)
                                                                  surface->get_height()/2 * scale)
                                  + (glm::vec2(512, 288) - pos) * scale * 3.0f)
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                        .set_color(Color(1.0f, 1.0f, 1.0f, static_cast<float>(1)/static_cast<float>(n))));
+                        .set_color(RGBAf(1.0f, 1.0f, 1.0f, static_cast<float>(1)/static_cast<float>(n))));
 
         if ((false) && i == 1) // NOLINT
         {
@@ -202,7 +202,7 @@ int app_main(int argc, char** argv)
                                                                    surface_2->get_height()/2 * scale)
                                    + (glm::vec2(512, 288) - pos) * scale * 3.0f)
                           .set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-                          .set_color(Color(1.0f, 1.0f, 1.0f, 1.0f)));
+                          .set_color(RGBAf(1.0f, 1.0f, 1.0f, 1.0f)));
         }
       }
     }

@@ -59,16 +59,16 @@ NavGraphNodeObjectModel::sync_drawable()
 
     m_drawable->set_mode(GL_TRIANGLE_FAN);
 
-    m_drawable->color(Color(1.0f, 0.0f, 0.0f));
+    m_drawable->color(RGBAf(1.0f, 0.0f, 0.0f));
     m_drawable->vertex(get_world_pos() + glm::vec2(-10.0f, -10.0f));
 
-    m_drawable->color(Color(1.0f, 0.0f, 0.0f));
+    m_drawable->color(RGBAf(1.0f, 0.0f, 0.0f));
     m_drawable->vertex(get_world_pos() + glm::vec2(10.0f, -10.0f));
 
-    m_drawable->color(Color(1.0f, 0.0f, 0.0f));
+    m_drawable->color(RGBAf(1.0f, 0.0f, 0.0f));
     m_drawable->vertex(get_world_pos() + glm::vec2(10.0f, 10.0f));
 
-    m_drawable->color(Color(1.0f, 0.0f, 0.0f));
+    m_drawable->color(RGBAf(1.0f, 0.0f, 0.0f));
     m_drawable->vertex(get_world_pos() + glm::vec2(-10.0f, 10.0f));
   }
 }

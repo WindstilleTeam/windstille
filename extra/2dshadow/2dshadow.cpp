@@ -87,7 +87,7 @@ int main()
                    SurfaceDrawingParameters()
                    .set_pos(pos)
                    .set_scale(glm::vec2(scale, scale))
-                   .set_color(Color(1.0f, 1.0f, 1.0f, alpha)));
+                   .set_color(RGBAf(1.0f, 1.0f, 1.0f, alpha)));
     }
     objects->draw(gc, object_pos);
     light->draw(gc,

@@ -31,7 +31,7 @@
 #include <prio/reader_mapping.hpp>
 #include <prio/reader_object.hpp>
 
-class Color;
+class RGBAf;
 
 using ReaderCollection = prio::ReaderCollection;
 using ReaderDocument = prio::ReaderDocument;
@@ -43,7 +43,7 @@ namespace prio {
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, std::filesystem::path& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::mat4& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::quat& value);
-template<> bool read_custom(ReaderMapping const& map, std::string_view key, Color& value);
+template<> bool read_custom(ReaderMapping const& map, std::string_view key, RGBAf& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec2& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, glm::vec3& value);
 template<> bool read_custom(ReaderMapping const& map, std::string_view key, std::vector<unsigned short>& values);

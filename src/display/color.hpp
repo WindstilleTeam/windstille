@@ -19,22 +19,32 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_COLOR_HPP
 #define HEADER_WINDSTILLE_DISPLAY_COLOR_HPP
 
+#include <stdint.h>
 #include <iosfwd>
 
-class Color
+class RGBAf
 {
 public:
-  Color()
+  RGBAf()
     : r(0), g(0), b(0), a(1.0)
   { }
-  Color(float r_, float g_, float b_, float a_ = 1.0)
+  RGBAf(float r_, float g_, float b_, float a_ = 1.0)
     : r(r_), g(g_), b(b_), a(a_)
   { }
 
-  float r, g, b, a;
+  inline uint8_t r8() const { return static_cast<uint8_t>(255.0f * r); }
+  inline uint8_t g8() const { return static_cast<uint8_t>(255.0f * g); }
+  inline uint8_t b8() const { return static_cast<uint8_t>(255.0f * b); }
+  inline uint8_t a8() const { return static_cast<uint8_t>(255.0f * a); }
+
+public:
+  float r;
+  float g;
+  float b;
+  float a;
 };
 
-std::ostream& operator<<(std::ostream& out, const Color& color);
+std::ostream& operator<<(std::ostream& out, const RGBAf& color);
 
 #endif
 

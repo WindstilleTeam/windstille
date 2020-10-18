@@ -30,7 +30,7 @@
 #include "display/gl_vertex_arrays.hpp"
 #include "display/shader_program.hpp"
 
-class Color;
+class RGBAf;
 class GLVertexArrays;
 
 class GraphicsContext
@@ -39,28 +39,28 @@ public:
   GraphicsContext();
   ~GraphicsContext();
 
-  void fill_quad(const geom::quad& quad, const Color& color);
-  void draw_quad(const geom::quad& quad, const Color& color);
+  void fill_quad(const geom::quad& quad, const RGBAf& color);
+  void draw_quad(const geom::quad& quad, const RGBAf& color);
 
-  void fill_rect(const geom::frect& rect, const Color& color);
-  void draw_rect(const geom::frect& rect, const Color& color);
+  void fill_rect(const geom::frect& rect, const RGBAf& color);
+  void draw_rect(const geom::frect& rect, const RGBAf& color);
 
-  void fill_rounded_rect(const geom::frect& rect, float radius, const Color& color);
-  void draw_rounded_rect(const geom::frect& rect, float radius, const Color& color);
+  void fill_rounded_rect(const geom::frect& rect, float radius, const RGBAf& color);
+  void draw_rounded_rect(const geom::frect& rect, float radius, const RGBAf& color);
 
   /** Same as draw_line, but in addition draw a normal on top of the line */
-  void draw_line_with_normal(const geom::line& line, const Color& color);
+  void draw_line_with_normal(const geom::line& line, const RGBAf& color);
 
-  void draw_line(const geom::line& line, const Color& color);
-  void draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color);
+  void draw_line(const geom::line& line, const RGBAf& color);
+  void draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const RGBAf& color);
 
-  void draw_circle(const glm::vec2& pos, float radius, const Color& color, int segments = 16);
-  void fill_circle(const glm::vec2& pos, float radius, const Color& color, int segments = 16);
+  void draw_circle(const glm::vec2& pos, float radius, const RGBAf& color, int segments = 16);
+  void fill_circle(const glm::vec2& pos, float radius, const RGBAf& color, int segments = 16);
 
-  void draw_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments = 16);
-  void fill_arc(const glm::vec2& pos, float radius, float start, float end, const Color& color, int segments = 16);
+  void draw_arc(const glm::vec2& pos, float radius, float start, float end, const RGBAf& color, int segments = 16);
+  void fill_arc(const glm::vec2& pos, float radius, float start, float end, const RGBAf& color, int segments = 16);
 
-  void draw_grid(const glm::vec2& offset, const geom::fsize& size, const Color& color);
+  void draw_grid(const glm::vec2& offset, const geom::fsize& size, const RGBAf& color);
 
   void push_cliprect(const geom::irect& rect);
   void pop_cliprect();

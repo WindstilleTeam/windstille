@@ -125,9 +125,9 @@ DecalObjectModel::draw_select(SceneContext& sc, bool highlight)
   quad.rotate(angle);
 
   if (highlight)
-    sc.control().draw_quad(quad, Color(0.5f, 1.0f, 1.0f, 1.0f));
+    sc.control().draw_quad(quad, RGBAf(0.5f, 1.0f, 1.0f, 1.0f));
   else
-    sc.control().draw_quad(quad, Color(0.5f, 0.5f, 1.0f, 1.0f));
+    sc.control().draw_quad(quad, RGBAf(0.5f, 0.5f, 1.0f, 1.0f));
 }
 
 void

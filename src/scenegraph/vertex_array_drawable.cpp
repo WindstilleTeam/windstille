@@ -195,7 +195,7 @@ VertexArrayDrawable::render_legacy(GraphicsContext& gc, unsigned int mask)
     glColorPointer(4, GL_FLOAT, 0, m_colors.data());
   } else {
     state.disable_client_state(GL_COLOR_ARRAY);
-    state.color(Color(1.0f, 1.0f, 1.0f));
+    state.color(RGBAf(1.0f, 1.0f, 1.0f));
   }
 
   if (!m_texcoords.empty()) {
@@ -331,7 +331,7 @@ VertexArrayDrawable::normal(float x, float y, float z)
 }
 
 void
-VertexArrayDrawable::color(Color const& color_)
+VertexArrayDrawable::color(RGBAf const& color_)
 {
   m_colors.push_back(color_.r);
   m_colors.push_back(color_.g);

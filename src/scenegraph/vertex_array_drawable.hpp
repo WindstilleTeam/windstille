@@ -43,7 +43,7 @@ public:
   void vertex(glm::vec2 const& vec, float z = 0.0f);
 
   void texcoord(float u, float v);
-  void color(Color const& color);
+  void color(RGBAf const& color);
 
   void add_vertices(std::span<float const> data);
   void add_texcoords(std::span<float const> data);

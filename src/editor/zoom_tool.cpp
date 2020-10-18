@@ -81,8 +81,8 @@ ZoomTool::draw(SceneContext& sc)
     geom::frect rect(click_pos, mouse_pos);
     rect = geom::normalize(rect);
 
-    sc.control().fill_rect(rect, Color(1.0f, 1.0f, 0.0f, 0.25));
-    sc.control().draw_rect(rect, Color(1.0f, 1.0f, 0.0f));
+    sc.control().fill_rect(rect, RGBAf(1.0f, 1.0f, 0.0f, 0.25));
+    sc.control().draw_rect(rect, RGBAf(1.0f, 1.0f, 0.0f));
   }
 }
 

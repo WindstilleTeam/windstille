@@ -49,14 +49,14 @@ Button::~Button()
 void
 Button::draw(GraphicsContext& gc)
 {
-  gc.fill_rect(rect, Color(0.0f, 0.0f, 0.0f, 0.5f));
-  gc.draw_rect(rect, Color(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.fill_rect(rect, RGBAf(0.0f, 0.0f, 0.0f, 0.5f));
+  gc.draw_rect(rect, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
   g_app.fonts().vera20->draw_center(gc,
                                     glm::vec2(rect.left() + rect.width()/2, rect.top() + rect.height()/2),
                                     label,
                                     is_active()
-                                    ? Color(1.0f, 1.0f, 1.0f, 1.0f)
-                                    : Color(1.0f, 1.0f, 1.0f, 0.5f));
+                                    ? RGBAf(1.0f, 1.0f, 1.0f, 1.0f)
+                                    : RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
 }
 
 void

@@ -69,7 +69,7 @@ Sprite3DView::draw(GraphicsContext& gc)
   //sc.translate(-config->screen_width/2, -config->screen_height/2);
   //sc.scale(2.0f, 2.0f);
 
-  sc.color().fill_screen(Color(0.5, 0.0, 0.5));
+  sc.color().fill_screen(RGBAf(0.5, 0.0, 0.5));
 
   sc.push_modelview();
   sc.translate(static_cast<float>(gc.size().width())/2.0f, static_cast<float>(gc.size().height())/2.0f);
@@ -85,7 +85,7 @@ Sprite3DView::draw(GraphicsContext& gc)
   //matrix.translate(-gc.size().width()/2, -gc.size().height()/2, 0);
   //sprite.draw(sc.color(), matrix, 0.0f);
 
-  sc.light().fill_screen(Color(1.0, 1.0, 1.0));
+  sc.light().fill_screen(RGBAf(1.0, 1.0, 1.0));
   //sc.color().draw("Hello World", 100, 100);
   compositor.render(gc, sc, nullptr, GraphicContextState(gc.size().width(),
                                                          gc.size().height()));
@@ -99,11 +99,11 @@ Sprite3DView::draw(GraphicsContext& gc)
     if (i == current_action)
       g_app.fonts().vera12->draw(gc,
                                  glm::vec2(x, y),
-                                 actions[i], Color(1.0f, 1.0f, 1.0f));
+                                 actions[i], RGBAf(1.0f, 1.0f, 1.0f));
     else
       g_app.fonts().vera12->draw(gc,
                                  glm::vec2(x, y),
-                                 actions[i], Color(0.7f, 0.7f, 0.7f));
+                                 actions[i], RGBAf(0.7f, 0.7f, 0.7f));
 
     y += static_cast<float>(line_height);
     if (y > 580.0f)

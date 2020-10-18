@@ -45,10 +45,10 @@ SparkDrawer::draw(GraphicsContext& gc, const ParticleSystem& psys) const
     buffer->set_blend_func(GL_SRC_ALPHA, GL_ONE);
     for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
     {
-      buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+      buffer->color(RGBAf(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
       buffer->vertex(i->x + i->v_x/10.0f, i->y + i->v_y/10.0f);
 
-      buffer->color(Color(0, 0, 0, 0));
+      buffer->color(RGBAf(0, 0, 0, 0));
       buffer->vertex(i->x, i->y);
     }
   }
@@ -69,23 +69,23 @@ SparkDrawer::draw(GraphicsContext& gc, const ParticleSystem& psys) const
       const float y2 = i->y + i->v_y/10.0f;
 
       // v1
-      buffer->color(Color(0, 0, 0, 0));
+      buffer->color(RGBAf(0, 0, 0, 0));
       buffer->vertex(x1 + o_x, y1 - o_y);
       // v4
-      buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+      buffer->color(RGBAf(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
       buffer->vertex(x2 + o_x, y2 - o_y);
       // v2
-      buffer->color(Color(0, 0, 0, 0));
+      buffer->color(RGBAf(0, 0, 0, 0));
       buffer->vertex(x1 - o_x, y1 + o_y);
 
       // v4
-      buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+      buffer->color(RGBAf(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
       buffer->vertex(x2 + o_x, y2 - o_y);
       // v3
-      buffer->color(Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+      buffer->color(RGBAf(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
       buffer->vertex(x2 - o_x, y2 + o_y);
       // v2
-      buffer->color(Color(0, 0, 0, 0));
+      buffer->color(RGBAf(0, 0, 0, 0));
       buffer->vertex(x1 - o_x, y1 + o_y);
     }
   }

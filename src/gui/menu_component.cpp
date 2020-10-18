@@ -84,12 +84,12 @@ MenuComponent::draw(GraphicsContext& gc)
     gc.fill_rounded_rect(geom::frect(rect.right() - 24, rect.top() + 2.0f + scrollbar_incr,
                                      rect.right() - 2,  rect.top() + 2.0f + scrollbar_incr + scrollbar_height),
                                5.0f,
-                               Color(0.5f, 0.5f, 0.5f, 0.75f));
+                               RGBAf(0.5f, 0.5f, 0.5f, 0.75f));
 
     gc.draw_rounded_rect(geom::frect(rect.right() - 24, rect.top() + 2.0f,
                                      rect.right() - 2,  rect.bottom() - 2.0f),
                                5.0f,
-                               Color(1.0f, 1.0f, 1.0f, 1.0f));
+                               RGBAf(1.0f, 1.0f, 1.0f, 1.0f));
   }
   else
   { // all items fit on the screen

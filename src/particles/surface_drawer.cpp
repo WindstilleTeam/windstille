@@ -127,7 +127,7 @@ SurfaceDrawer::draw(GraphicsContext& gc, const ParticleSystem& psys) const
     if (i->t != -1.0f)
     {
       float p = 1.0f - psys.get_progress(i->t);
-      Color color(psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
+      RGBAf color(psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
                   psys.get_color_start().g * p + psys.get_color_stop().g * (1.0f - p),
                   psys.get_color_start().b * p + psys.get_color_stop().b * (1.0f - p),
                   psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));

@@ -36,7 +36,7 @@ BackgroundGradient::BackgroundGradient(ReaderMapping const& props) :
   if (colors.size() % (3 + 4 + 4 + 2) != 0)
   {
     std::cout << "BackgroundGradient: specified color gradient is invalid" << std::endl;
-    /** Color gradients are in the format:
+    /** RGBAf gradients are in the format:
 
         (colors start midpoint end R1 G1 B1 A1 R2 G2 B2 A2 I I
         start midpoint end R1 G1 B1 A1 R2 G2 B2 A2 I I

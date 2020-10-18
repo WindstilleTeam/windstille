@@ -42,7 +42,7 @@ public:
 
 public:
   static SoftwareSurfacePtr create(std::filesystem::path const& filename);
-  static SoftwareSurfacePtr create(Format format, geom::isize const& size, Color const& color = Color(0.0f, 0.0f, 0.0f, 0.0f));
+  static SoftwareSurfacePtr create(Format format, geom::isize const& size, RGBAf const& color = RGBAf(0.0f, 0.0f, 0.0f, 0.0f));
 
 private:
   explicit SoftwareSurface(std::filesystem::path const& filename);

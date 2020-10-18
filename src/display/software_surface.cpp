@@ -35,7 +35,7 @@ SoftwareSurface::create(std::filesystem::path const& filename)
 }
 
 SoftwareSurfacePtr
-SoftwareSurface::create(Format format, geom::isize const& size, Color const& color)
+SoftwareSurface::create(Format format, geom::isize const& size, RGBAf const& color)
 {
   SoftwareSurfacePtr sur(new SoftwareSurface(size, format));
 

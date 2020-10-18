@@ -160,7 +160,7 @@ EditorWindow::EditorWindow() :
     "      <menuitem action='ZoomOut'/>"
     "      <menuitem action='Zoom100'/>"
     "      <separator/>"
-    "      <menuitem action='ToggleColorLayer'/>"
+    "      <menuitem action='ToggleRGBAfLayer'/>"
     "      <menuitem action='ToggleLightLayer'/>"
     "      <menuitem action='ToggleHighlightLayer'/>"
     "      <menuitem action='ToggleControlLayer'/>"
@@ -221,7 +221,7 @@ EditorWindow::EditorWindow() :
     "    <toolitem action='NavgraphInsertTool'/>"
     "    <toolitem action='ZoomTool'/>"
     "    <separator/>"
-    "    <toolitem action='ToggleColorLayer'/>"
+    "    <toolitem action='ToggleRGBAfLayer'/>"
     "    <toolitem action='ToggleLightLayer'/>"
     "    <toolitem action='ToggleHighlightLayer'/>"
     "    <toolitem action='ToggleControlLayer'/>"
@@ -337,7 +337,7 @@ EditorWindow::EditorWindow() :
   action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
                     sigc::mem_fun(*this, &EditorWindow::on_about_clicked));
 
-  toggle_color_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleColorLayer", "color", "Toogle Color Layer", "Toogle Color Layer");
+  toggle_color_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleRGBAfLayer", "color", "Toogle RGBAf Layer", "Toogle RGBAf Layer");
   toggle_light_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleLightLayer", "light", "Toogle Light Layer", "Toogle Light Layer");
   toggle_highlight_layer = Gtk::ToggleAction::create_with_icon_name("ToggleHighlightLayer", "highlight", "Toogle Highlight Layer", "Toogle Highlight Layer");
   toggle_control_layer   = Gtk::ToggleAction::create_with_icon_name("ToggleControlLayer", "control", "Toogle Control Layer", "Toogle Control Layer");

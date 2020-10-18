@@ -55,7 +55,7 @@ ListView::draw(GraphicsContext& gc)
     font->draw_center(gc, glm::vec2(x + columns[i].width/2 - 1, y - 1), columns[i].title);
     font->draw_center(gc, glm::vec2(x + columns[i].width/2 + 1, y + 1), columns[i].title);
     font->draw_center(gc, glm::vec2(x + columns[i].width/2 - 1, y + 1), columns[i].title);
-    font->draw_center(gc, glm::vec2(x + columns[i].width/2, y), columns[i].title, Color(0.0f, 0.0f, 0.0f));
+    font->draw_center(gc, glm::vec2(x + columns[i].width/2, y), columns[i].title, RGBAf(0.0f, 0.0f, 0.0f));
     x += columns[i].width;
   }
 
@@ -66,7 +66,7 @@ ListView::draw(GraphicsContext& gc)
     if (j == current_item)
       gc.fill_rect(geom::frect(x, y,
                                rect.right(), y + static_cast<float>(font->get_height())),
-                         is_active() ? Color(0.5f, 0.5f, 1.0f, 0.8f) : Color(0.5f, 0.5f, 1.0f, 0.3f));
+                         is_active() ? RGBAf(0.5f, 0.5f, 1.0f, 0.8f) : RGBAf(0.5f, 0.5f, 1.0f, 0.3f));
 
     y += static_cast<float>(font->get_height());
 

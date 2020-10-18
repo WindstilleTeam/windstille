@@ -94,7 +94,7 @@ LaserPointer::draw(SceneContext& sc)
           y >= 0 && y < tilemap->get_height())
     {
       //sc.color().fill_rect(geom::frect(glm::vec2(x * TILE_SIZE, y * TILE_SIZE), geom::isize(TILE_SIZE, TILE_SIZE)),
-      //                     Color(1.0, 1.0, 1.0, 0.5), 500);
+      //                     RGBAf(1.0, 1.0, 1.0, 0.5), 500);
 
       if (tilemap->get_pixel(x, y))
       {
@@ -128,11 +128,11 @@ LaserPointer::draw(SceneContext& sc)
     array->set_texture(noise);
     array->set_blend_func(GL_SRC_ALPHA, GL_ONE);
 
-    array->color(Color(1.0f, 0.0f, 0.0f, 1.0f));
+    array->color(RGBAf(1.0f, 0.0f, 0.0f, 1.0f));
     array->texcoord(0, progress);
     array->vertex(0, 0);
 
-    array->color(Color(1.0f, 0.0f, 0.0f, 1.0f));
+    array->color(RGBAf(1.0f, 0.0f, 0.0f, 1.0f));
     array->texcoord(glm::length(target - pos)/256.0f, progress);
     array->vertex(ray.x, ray.y);
 

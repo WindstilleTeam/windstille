@@ -22,7 +22,7 @@
 
 #include <GL/glew.h>
 
-class Color;
+class RGBAf;
 class GraphicsContext;
 
 class GLVertexArrays final

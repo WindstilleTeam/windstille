@@ -305,7 +305,7 @@ WindstilleWidget::draw(GraphicsContext& gc)
     }
     else
     {
-      sc->color().fill_screen(Color());
+      sc->color().fill_screen(RGBAf());
     }
 
     if (draw_only_active_layers)
@@ -320,7 +320,7 @@ WindstilleWidget::draw(GraphicsContext& gc)
         (*i)->draw_select(*sc, i == m_document->get_selection()->begin());
       }
 
-      //sc->control().draw_rect(selection->get_bounding_box(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+      //sc->control().draw_rect(selection->get_bounding_box(), RGBAf(1.0f, 1.0f, 1.0f, 1.0f));
     }
 
     for(std::vector<ControlPointHandle>::const_iterator i = m_document->get_control_points().begin();
@@ -341,7 +341,7 @@ WindstilleWidget::draw(GraphicsContext& gc)
     if (grid_enabled)
     {
       gc.draw_grid(state.get_offset() * state.get_zoom(),
-                         geom::fsize(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), Color(1,1,1,0.75f));
+                         geom::fsize(128.0f * state.get_zoom(), 128.0f * state.get_zoom()), RGBAf(1,1,1,0.75f));
     }
   }
 }

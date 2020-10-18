@@ -104,9 +104,9 @@ DialogManager::draw(GraphicsContext& gc)
                pos.y + 200.0f);
 
     gc.fill_rounded_rect(rect, 16.0f,
-                               Color(0, 0, 0.3f, 0.5f));
+                               RGBAf(0, 0, 0.3f, 0.5f));
     gc.draw_rounded_rect(rect, 16.0f,
-                               Color(0.6f, 1.0f, 1.0f, 0.8f));
+                               RGBAf(0.6f, 1.0f, 1.0f, 0.8f));
 
     portrait.draw(gc, glm::vec2(pos.x + portrait_border_x,
                                 pos.y + portrait_border_y));
@@ -118,7 +118,7 @@ DialogManager::draw(GraphicsContext& gc)
   {
     const glm::vec2& pos_ = text_area->get_cursor_pos();
     geom::frect cursor(pos_.x + 8, pos_.y + 8, pos_.x + 24, pos_.y + 24);
-    gc.fill_rect(cursor, Color(1.0, 1.0, 1.0,
+    gc.fill_rect(cursor, RGBAf(1.0, 1.0, 1.0,
                                      fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * glm::pi<float>() * 3.0f))));
   }
 }

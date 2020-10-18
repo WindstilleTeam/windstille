@@ -28,7 +28,7 @@
 #include "sprite2d/manager.hpp"
 
 class DrawingContext;
-class Color;
+class RGBAf;
 
 struct SpriteAction;
 
@@ -49,7 +49,7 @@ private:
   GLenum blend_sfactor;
   GLenum blend_dfactor;
   float  scale;
-  Color  color;
+  RGBAf  color;
 
 public:
   Sprite();
@@ -89,8 +89,8 @@ public:
   GLenum get_blend_sfactor() const;
   GLenum get_blend_dfactor() const;
 
-  void set_color(const Color& color);
-  Color get_color() const;
+  void set_color(const RGBAf& color);
+  RGBAf get_color() const;
 
   void  set_scale(float s);
   float get_scale() const;

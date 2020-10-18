@@ -62,7 +62,7 @@ SlideObject::draw(GraphicsContext& gc, float relative_time)
   SlidePathNode node = m_path.get(relative_time);
 
   // FIXME: hardcoded fade hack
-  Color color(1.0f, 1.0f, 1.0f, 1.0f);
+  RGBAf color(1.0f, 1.0f, 1.0f, 1.0f);
   if (relative_time < m_fade_in_time)
   {
     color.a = relative_time / m_fade_in_time;

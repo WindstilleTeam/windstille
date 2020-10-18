@@ -253,25 +253,25 @@ NavgraphInsertTool::draw(SceneContext& sc)
   {
     if (connection_node)
     {
-      sc.control().draw_line(last_node->get_world_pos(), connection_node->get_world_pos(), Color(1,1,1));
-      sc.control().draw_rect(geom::frect(connection_node->get_world_pos() - glm::vec2(16,16), geom::fsize(32,32)), Color(1.0f, 1.0f, 1.0f));
+      sc.control().draw_line(last_node->get_world_pos(), connection_node->get_world_pos(), RGBAf(1,1,1));
+      sc.control().draw_rect(geom::frect(connection_node->get_world_pos() - glm::vec2(16,16), geom::fsize(32,32)), RGBAf(1.0f, 1.0f, 1.0f));
     }
     else
     {
-      sc.control().draw_line(last_node->get_world_pos(), mouse_pos, Color(1,1,1));
+      sc.control().draw_line(last_node->get_world_pos(), mouse_pos, RGBAf(1,1,1));
     }
 
-    sc.control().draw_rect(geom::frect(last_node->get_world_pos() - glm::vec2(16,16), geom::fsize(32,32)), Color(1.0f, 1.0f, 1.0f));
+    sc.control().draw_rect(geom::frect(last_node->get_world_pos() - glm::vec2(16,16), geom::fsize(32,32)), RGBAf(1.0f, 1.0f, 1.0f));
   }
 
   if (mouse_over_node)
   {
-    sc.control().draw_rect(geom::frect(mouse_over_node->get_world_pos() - glm::vec2(16,16), geom::fsize(32,32)), Color(1.0f, 1.0f, 1.0f));
+    sc.control().draw_rect(geom::frect(mouse_over_node->get_world_pos() - glm::vec2(16,16), geom::fsize(32,32)), RGBAf(1.0f, 1.0f, 1.0f));
   }
   else if (mouse_over_edge)
   {
     sc.control().draw_line(mouse_over_edge->get_lhs()->get_world_pos(),
-                           mouse_over_edge->get_rhs()->get_world_pos(), Color(1,1,1));
+                           mouse_over_edge->get_rhs()->get_world_pos(), RGBAf(1,1,1));
   }
 }
 

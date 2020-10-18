@@ -33,7 +33,7 @@ public:
   GLenum blendfunc_dst;
 
   /** Includes color and alpha settings */
-  Color   color;
+  RGBAf   color;
 
   DrawingParameters()
     : blendfunc_src(GL_SRC_ALPHA),
@@ -41,7 +41,7 @@ public:
       color(1.0f, 1.0f, 1.0f, 1.0f)
   {}
 
-  DrawingParameters& set_color(const Color& c)
+  DrawingParameters& set_color(const RGBAf& c)
   {
     color = c;
     return *this;

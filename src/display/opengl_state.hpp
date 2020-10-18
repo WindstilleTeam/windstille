@@ -25,7 +25,7 @@
 #include "display/texture.hpp"
 
 class Framebuffer;
-class Color;
+class RGBAf;
 class OpenGLStateImpl;
 
 /**
@@ -88,9 +88,9 @@ public:
   void set_client_state(GLenum array, bool value);
   bool get_client_state(GLenum array) const;
 
-  // FIXME: Color is a per vertex attribute, doesn't make much sense
+  // FIXME: RGBAf is a per vertex attribute, doesn't make much sense
   // to have it here
-  void color(const Color& color);
+  void color(const RGBAf& color);
 
   /**
    * Activates the given state, you *must* call this before you issue

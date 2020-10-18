@@ -69,8 +69,8 @@ public:
   void set_cutscene_mode(bool t);
 
   /** \a time Time in seconds till the fade is complete
-      \a color Color to which the screen should fade */
-  void fadeout(float time, const Color& color);
+      \a color RGBAf to which the screen should fade */
+  void fadeout(float time, const RGBAf& color);
   void fadein(float time);
 
   void draw(GraphicsContext& gc) override;

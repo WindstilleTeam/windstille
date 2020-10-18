@@ -173,7 +173,7 @@ TTFFont::get_height() const
 }
 
 void
-TTFFont::draw(GraphicsContext& gc, const glm::vec2& pos_, const std::string& str, const Color& color)
+TTFFont::draw(GraphicsContext& gc, const glm::vec2& pos_, const std::string& str, const RGBAf& color)
 {
   // FIXME: Little bit hacky to throw it just in
   glm::vec2 pos(truncf(pos_.x),
@@ -227,7 +227,7 @@ TTFFont::draw(GraphicsContext& gc, const glm::vec2& pos_, const std::string& str
 }
 
 void
-TTFFont::draw_center(GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const Color& color)
+TTFFont::draw_center(GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const RGBAf& color)
 {
   draw(gc, glm::vec2(pos.x - static_cast<float>(get_width(str))/2.0f, pos.y), str, color);
 }

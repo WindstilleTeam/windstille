@@ -60,19 +60,19 @@ TabComponent::draw(GraphicsContext& gc)
                          geom::fsize(tab_width - 20.0f, static_cast<float>(g_app.fonts().vera20->get_height()) + 6.0f));
 
     if (i == current_tab)
-      gc.fill_rounded_rect(tab_rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+      gc.fill_rounded_rect(tab_rect, 5.0f, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
     else
-      gc.fill_rounded_rect(tab_rect, 5.0f, Color(0.0f, 0.0f, 0.0f, 0.5f));
+      gc.fill_rounded_rect(tab_rect, 5.0f, RGBAf(0.0f, 0.0f, 0.0f, 0.5f));
 
-    gc.draw_rounded_rect(tab_rect, 5.0f, Color(1.0f, 1.0f, 1.0f, 0.5f));
+    gc.draw_rounded_rect(tab_rect, 5.0f, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
 
     g_app.fonts().vera20->draw_center(gc,
                                       glm::vec2(rect.left() + tab_width * static_cast<float>(i) + tab_width/2,
                                                 rect.top() + static_cast<float>(g_app.fonts().vera20->get_height())),
                                       tabs[i].label,
                                       tabs[current_tab].component->is_active()
-                                      ? Color(1.0f, 1.0f, 1.0f, 0.5f)
-                                      : Color(1.0f, 1.0f, 1.0f, 1.0f));
+                                      ? RGBAf(1.0f, 1.0f, 1.0f, 0.5f)
+                                      : RGBAf(1.0f, 1.0f, 1.0f, 1.0f));
   }
 
   tabs[current_tab].component->draw(gc);

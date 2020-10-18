@@ -55,10 +55,10 @@ NavGraphEdgeObjectModel::update(float delta)
     m_drawable->clear();
     m_drawable->set_mode(GL_LINES);
 
-    m_drawable->color(Color(0.0f, 1.0f, 1.0f));
+    m_drawable->color(RGBAf(0.0f, 1.0f, 1.0f));
     m_drawable->vertex(m_lhs->get_world_pos());
 
-    m_drawable->color(Color(0.0f, 1.0f, 1.0f));
+    m_drawable->color(RGBAf(0.0f, 1.0f, 1.0f));
     m_drawable->vertex(m_rhs->get_world_pos());
   }
 }

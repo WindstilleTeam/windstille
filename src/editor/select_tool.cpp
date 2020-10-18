@@ -254,8 +254,8 @@ SelectTool::draw(SceneContext& sc)
 {
   if (mode == SELECT_MODE)
   {
-    sc.control().fill_rect(rect, Color(0.5f, 0.5f, 1.0f, 0.25));
-    sc.control().draw_rect(rect, Color(0.5f, 0.5f, 1.0f));
+    sc.control().fill_rect(rect, RGBAf(0.5f, 0.5f, 1.0f, 0.25));
+    sc.control().draw_rect(rect, RGBAf(0.5f, 0.5f, 1.0f));
   }
 }
 

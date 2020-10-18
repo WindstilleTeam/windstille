@@ -22,10 +22,10 @@
 class FillScreenDrawable : public Drawable
 {
 private:
-  Color color;
+  RGBAf color;
 
 public:
-  FillScreenDrawable(const Color& color_)
+  FillScreenDrawable(const RGBAf& color_)
     : Drawable(glm::vec2(0, 0), -1000.0f), color(color_)
   {
   }

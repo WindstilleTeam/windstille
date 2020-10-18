@@ -166,7 +166,7 @@ void wait_for_fade(HSQUIRRELVM vm)
 
 int speech_show(const std::string& text, float x, float y, float r, float g, float b)
 {
-  return SpeechManager::current()->add(text, glm::vec2(x, y), Color(r, g, b));
+  return SpeechManager::current()->add(text, glm::vec2(x, y), RGBAf(r, g, b));
 }
 
 void wait_for_speech(HSQUIRRELVM vm, int i)
@@ -318,7 +318,7 @@ void cutscene_end()
 
 void internal_fadeout_rgb(float time, float r, float g, float b)
 {
-  GameSession::current()->fadeout(time, Color(r, g, b));
+  GameSession::current()->fadeout(time, RGBAf(r, g, b));
 }
 
 void internal_fadein(float time)

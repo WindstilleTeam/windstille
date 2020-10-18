@@ -115,7 +115,7 @@ DrawingContext::draw_control(SurfacePtr surface, const glm::vec2& pos, float ang
 }
 
 void
-DrawingContext::fill_screen(const Color& color)
+DrawingContext::fill_screen(const RGBAf& color)
 {
   draw(std::make_unique<FillScreenDrawable>(color));
 }
@@ -220,13 +220,13 @@ DrawingContext::get_clip_rect()
 }
 
 void
-DrawingContext::draw_line(const geom::line& line, const Color& color, float z_pos)
+DrawingContext::draw_line(const geom::line& line, const RGBAf& color, float z_pos)
 {
   draw_line(line.p1, line.p2, color, z_pos);
 }
 
 void
-DrawingContext::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Color& color, float z_pos)
+DrawingContext::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const RGBAf& color, float z_pos)
 {
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
@@ -243,7 +243,7 @@ DrawingContext::draw_line(const glm::vec2& pos1, const glm::vec2& pos2, const Co
 }
 
 void
-DrawingContext::draw_quad(const geom::quad& quad, const Color& color, float z_pos)
+DrawingContext::draw_quad(const geom::quad& quad, const RGBAf& color, float z_pos)
 {
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
@@ -266,7 +266,7 @@ DrawingContext::draw_quad(const geom::quad& quad, const Color& color, float z_po
 }
 
 void
-DrawingContext::fill_quad(const geom::quad& quad, const Color& color, float z_pos)
+DrawingContext::fill_quad(const geom::quad& quad, const RGBAf& color, float z_pos)
 {
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
@@ -289,7 +289,7 @@ DrawingContext::fill_quad(const geom::quad& quad, const Color& color, float z_po
 }
 
 void
-DrawingContext::draw_rect(const geom::frect& rect, const Color& color, float z_pos)
+DrawingContext::draw_rect(const geom::frect& rect, const RGBAf& color, float z_pos)
 {
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 
@@ -312,7 +312,7 @@ DrawingContext::draw_rect(const geom::frect& rect, const Color& color, float z_p
 }
 
 void
-DrawingContext::fill_rect(const geom::frect& rect, const Color& color, float z_pos)
+DrawingContext::fill_rect(const geom::frect& rect, const RGBAf& color, float z_pos)
 {
   auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos, modelview_stack.back());
 

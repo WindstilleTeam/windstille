@@ -24,14 +24,14 @@
 #include <prio/writer.hpp>
 #include <geom/size.hpp>
 
-class Color;
+class RGBAf;
 
 using FileWriter = prio::Writer;
 
 namespace prio {
 
 template<> void write_custom(prio::Writer& writer, std::string_view key, glm::vec2 const& value);
-template<> void write_custom(prio::Writer& writer, std::string_view key, Color const& value);
+template<> void write_custom(prio::Writer& writer, std::string_view key, RGBAf const& value);
 
 } // namespace prio
 

@@ -29,7 +29,7 @@ void write_custom(prio::Writer& writer, std::string_view key, glm::vec2 const& v
 }
 
 template<>
-void write_custom(prio::Writer& writer, std::string_view key, Color const& value)
+void write_custom(prio::Writer& writer, std::string_view key, RGBAf const& value)
 {
   writer.write(key, std::vector<float>({value.r, value.g, value.b, value.a}));
 }

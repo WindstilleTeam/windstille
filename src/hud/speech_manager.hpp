@@ -52,11 +52,11 @@ public:
    */
   int add(const std::string& text,
           const glm::vec2& pos,
-          const Color& color = Color(1.0f, 1.0f, 1.0f));
+          const RGBAf& color = RGBAf(1.0f, 1.0f, 1.0f));
 
   int add(const std::string& text,
           const Entity& entity,
-          const Color& color = Color(1.0f, 1.0f, 1.0f));
+          const RGBAf& color = RGBAf(1.0f, 1.0f, 1.0f));
 
   void draw(GraphicsContext& gc);
   void update(float delta);

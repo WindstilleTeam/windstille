@@ -203,12 +203,12 @@ Sector::set_tilemap(TileMap* t)
 }
 
 void
-Sector::set_ambient_light(const Color& color)
+Sector::set_ambient_light(const RGBAf& color)
 {
   ambient_light = color;
 }
 
-Color
+RGBAf
 Sector::get_ambient_light() const
 {
   return ambient_light;

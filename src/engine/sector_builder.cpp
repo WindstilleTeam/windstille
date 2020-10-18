@@ -72,7 +72,7 @@ SectorBuilder::parse_body(ReaderMapping const& reader)
   //reader.read("music",         music);
   //reader.read("init-script",   init_script);
 
-  Color ambient_light;
+  RGBAf ambient_light;
   if (reader.read("ambient-color", ambient_light))
   {
     m_sector.set_ambient_light(ambient_light);

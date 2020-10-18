@@ -127,12 +127,12 @@ Liquid::update_scene_graph()
       }
 
       // v2
-      array->color(Color(c, c, 1.0f, 1.0f));
+      array->color(RGBAf(c, c, 1.0f, 1.0f));
       array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
                       (-32.0f * (*heightfield1)[i]) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
       array->vertex(static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i]);
       // v1
-      array->color(Color(0.5f, 0.5f, 1.0f, 0.7f));
+      array->color(RGBAf(0.5f, 0.5f, 1.0f, 0.7f));
       array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
                       (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
       array->vertex(static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i] + 8.0f);
@@ -149,12 +149,12 @@ Liquid::update_scene_graph()
     for(std::vector<float>::size_type i = 0; i < heightfield1->size(); ++i)
     {
       // v2
-      array->color(Color(0.5f, 0.5f, 1.0f, 0.7f));
+      array->color(RGBAf(0.5f, 0.5f, 1.0f, 0.7f));
       array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f) * 0.2f,
                       (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
       array->vertex(static_cast<float>(i) * 32.0f/static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i] + 8.0f);
       // v1
-      array->color(Color(0.0f, 0.0f, 0.5f, 0.7f));
+      array->color(RGBAf(0.0f, 0.0f, 0.5f, 0.7f));
       array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
                       (64.0f) * texscale + sinf(t+static_cast<float>(i)/10.0f)*0.2f);
       array->vertex(static_cast<float>(i) * 32.0f/static_cast<float>(SAMPLES), 64.0f);

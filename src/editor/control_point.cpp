@@ -75,8 +75,8 @@ ControlPoint::draw(SceneContext& sc)
 
   rect += offset;
 
-  //sc.control().fill_rect(rect.grow(4.0f), Color(0.0f, 0.0f, 0.0f));
-  //sc.control().fill_rect(rect, Color(1.0f, 0.0f, 0.0f));
+  //sc.control().fill_rect(rect.grow(4.0f), RGBAf(0.0f, 0.0f, 0.0f));
+  //sc.control().fill_rect(rect, RGBAf(1.0f, 0.0f, 0.0f));
   sc.control().draw_control(surface, pos, 0.0f);
 }
 

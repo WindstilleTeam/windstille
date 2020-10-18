@@ -65,8 +65,8 @@ Swarm::draw(SceneContext& sc)
   array->set_mode(GL_TRIANGLES);
   array->set_blend_func(GL_ONE, GL_ZERO);
 
-  Color color(1.0f, 1.0f, 1.0f);
-  Color bottom_color(0.0f, 0.0f, 0.0f);
+  RGBAf color(1.0f, 1.0f, 1.0f);
+  RGBAf bottom_color(0.0f, 0.0f, 0.0f);
 
   for(Agents::const_iterator i = agents.begin(); i != agents.end(); ++i)
   {

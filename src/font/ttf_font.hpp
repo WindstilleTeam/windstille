@@ -78,8 +78,8 @@ public:
   TexturePtr get_texture() const;
 
   const TTFCharacter& get_character(int c) const;
-  void draw(GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
-  void draw_center(GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const Color& color = Color(1.0f, 1.0f, 1.0f));
+  void draw(GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const RGBAf& color = RGBAf(1.0f, 1.0f, 1.0f));
+  void draw_center(GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const RGBAf& color = RGBAf(1.0f, 1.0f, 1.0f));
   void draw(DrawingContext& ctx, const std::string& text, float x, float y, float z);
 
 private:

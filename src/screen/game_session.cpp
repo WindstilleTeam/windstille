@@ -66,7 +66,7 @@ public:
 
   enum { FADEIN, RUNNING, FADEOUT } fade_state;
 
-  Color fade_color;
+  RGBAf fade_color;
 
   SpeechManager speech_manager;
 
@@ -105,7 +105,7 @@ public:
     current_gui    = nullptr;
     cutscene_mode  = false;
     cutscene_value = 0.0f;
-    fade_color     = Color(0.0f, 0.0f, 0.0f, 1.0f);
+    fade_color     = RGBAf(0.0f, 0.0f, 0.0f, 1.0f);
     fade_state     = RUNNING;
     fadeout_value  = 0.0f;
     fade_time      = 1.0f;
@@ -156,9 +156,9 @@ GameSessionImpl::draw(GraphicsContext& gc)
   {
     int border_size = static_cast<int>(75 * cutscene_value);
     gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, 0), geom::isize(gc.size().width(), border_size))),
-                 Color(0.0f, 0.0f, 0.0f, cutscene_value));
+                 RGBAf(0.0f, 0.0f, 0.0f, cutscene_value));
     gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, gc.size().height() - border_size), geom::isize(gc.size().width(), border_size))),
-                 Color(0.0f, 0.0f, 0.0f, cutscene_value));
+                 RGBAf(0.0f, 0.0f, 0.0f, cutscene_value));
   }
 
   if (current_gui)
@@ -168,7 +168,7 @@ GameSessionImpl::draw(GraphicsContext& gc)
   {
     gc.fill_rect(geom::frect(geom::irect(0, 0,
                                          gc.size().width(), gc.size().height())),
-                 Color(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
+                 RGBAf(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
   }
 
   speech_manager.draw(gc);
@@ -494,7 +494,7 @@ GameSession::set_cutscene_mode(bool t)
 }
 
 void
-GameSession::fadeout(float time, const Color& color)
+GameSession::fadeout(float time, const RGBAf& color)
 {
   if (time == 0.0f)
   { // directly go to a state of solid color, no fading

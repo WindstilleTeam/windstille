@@ -72,7 +72,7 @@ Conversation::draw(GraphicsContext& gc)
   if (!active)
     return;
 
-  gc.fill_circle(pos, 42.0f, Color(0.5f, 0.5f, 0.5f, 0.75f), 24);
+  gc.fill_circle(pos, 42.0f, RGBAf(0.5f, 0.5f, 0.5f, 0.75f), 24);
 
   float segment = 360.0f / static_cast<float>(choices.size());
 
@@ -96,36 +96,36 @@ Conversation::draw(GraphicsContext& gc)
     {
       rect = geom::grow(rect, grow);
 
-      gc.fill_arc(pos, 42.0f, start, end, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
-      gc.fill_rounded_rect(rect, 5.0f, Color(0.5f, 0.5f, 0.5f, 0.75f));
+      gc.fill_arc(pos, 42.0f, start, end, RGBAf(1.0f, 1.0f, 1.0f, 0.5f), 24);
+      gc.fill_rounded_rect(rect, 5.0f, RGBAf(0.5f, 0.5f, 0.5f, 0.75f));
 
       g_app.fonts().vera20->draw_center(gc,
                                         glm::vec2(textpos.x + distance * offset.x,
                                                   textpos.y + distance * offset.y),
-                                        choices[i].topic, Color(1.0f, 1.0f, 0.0f));
+                                        choices[i].topic, RGBAf(1.0f, 1.0f, 0.0f));
 
       g_app.fonts().vera20->draw_center(gc, glm::vec2(400.0f, static_cast<float>(gc.size().height()) - 32.0f),
-                                            choices[i].text, Color(1.0f, 1.0f, 1.0f));
-      gc.draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 0.0f));
+                                            choices[i].text, RGBAf(1.0f, 1.0f, 1.0f));
+      gc.draw_rounded_rect(rect, 5.0f, RGBAf(1.0f, 1.0f, 0.0f));
     }
     else
     {
-      gc.fill_rounded_rect(rect, 5.0f, Color(0.25f, 0.25f, 0.25f, 0.75f));
+      gc.fill_rounded_rect(rect, 5.0f, RGBAf(0.25f, 0.25f, 0.25f, 0.75f));
       g_app.fonts().vera20->draw_center(gc, glm::vec2(textpos.x + distance * offset.x,
                                                       textpos.y + distance * offset.y),
-                                        choices[i].topic, Color(0.8f, 0.8f, 0.8f));
-      gc.draw_rounded_rect(rect, 5.0f, Color(1.0f, 1.0f, 1.0f));
+                                        choices[i].topic, RGBAf(0.8f, 0.8f, 0.8f));
+      gc.draw_rounded_rect(rect, 5.0f, RGBAf(1.0f, 1.0f, 1.0f));
     }
 
     //gc.draw_arc(pos + 5.0f * offset, 32.0f,
     //                  start, end,
-    //                  Color(1.0f, 1.0f, 1.0f, 1.0f), 24);
+    //                  RGBAf(1.0f, 1.0f, 1.0f, 1.0f), 24);
 
   }
-  gc.draw_circle(pos, 42.0f, Color(1.0f, 1.0f, 1.0f, 0.5f), 24);
+  gc.draw_circle(pos, 42.0f, RGBAf(1.0f, 1.0f, 1.0f, 0.5f), 24);
 
-  gc.fill_circle(pos + direction * 34.0f, 8.0f, Color(1.0f, 1.0f, 1.0f));
-  //gc.draw_line(pos, pos + direction*32.0f, Color(0.0f, 0.0f, 0.0f));
+  gc.fill_circle(pos + direction * 34.0f, 8.0f, RGBAf(1.0f, 1.0f, 1.0f));
+  //gc.draw_line(pos, pos + direction*32.0f, RGBAf(0.0f, 0.0f, 0.0f));
 }
 
 void

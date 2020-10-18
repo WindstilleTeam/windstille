@@ -86,7 +86,7 @@ Automap::draw(GraphicsContext& gc)
   surface->draw(gc,
                 SurfaceDrawingParameters()
                 .set_pos(glm::vec2(rect.left(), rect.top()) + pos)
-                .set_color(Color(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
+                .set_color(RGBAf(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
                 .set_scale(zoom));
   gc.pop_cliprect();
 }

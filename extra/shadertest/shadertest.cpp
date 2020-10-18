@@ -149,19 +149,19 @@ App::run(int argc, char* argv[])
 
       va.set_mode(GL_TRIANGLE_FAN);
 
-      va.color(Color(1.0f, 1.0f, 1.0f));
+      va.color(RGBAf(1.0f, 1.0f, 1.0f));
       va.texcoord(0.0f, 0.0f);
       va.vertex(0.0f, 0.0f);
 
-      va.color(Color(1.0f, 1.0f, 1.0f));
+      va.color(RGBAf(1.0f, 1.0f, 1.0f));
       va.texcoord(1.0f, 0.0f);
       va.vertex(1280.0f, 0.0f);
 
-      va.color(Color(1.0f, 1.0f, 1.0f));
+      va.color(RGBAf(1.0f, 1.0f, 1.0f));
       va.texcoord(1.0f, 1.0f);
       va.vertex(1280.0f, 800.0f);
 
-      va.color(Color(1.0f, 1.0f, 1.0f));
+      va.color(RGBAf(1.0f, 1.0f, 1.0f));
       va.texcoord(0.0f, 1.0f);
       va.vertex(0.0f, 800.0f);
 

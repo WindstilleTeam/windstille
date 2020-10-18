@@ -32,12 +32,12 @@ struct Flair
   SurfacePtr m_surface;
   float      m_distance;
   float      m_scale;
-  Color      m_color;
+  RGBAf      m_color;
 
   Flair(SurfacePtr surface,
-        float      distance,
-        float      scale,
-        Color color) :
+        float distance,
+        float scale,
+        RGBAf color) :
     m_surface(surface),
     m_distance(distance),
     m_scale(scale),

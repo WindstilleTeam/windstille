@@ -47,9 +47,9 @@ GradientDrawable::render(GraphicsContext& gc, unsigned int mask)
       const float& start    = m_colors[i + 0];
       const float& midpoint = m_colors[i + 1];
       const float& end      = m_colors[i + 2];
-      const Color color1(m_colors[i + 3], m_colors[i + 4], m_colors[i + 5], m_colors[i + 6]);
-      const Color color2(m_colors[i + 7], m_colors[i + 8], m_colors[i + 9], m_colors[i + 10]);
-      const Color midcolor((color1.r + color2.r)/2,
+      const RGBAf color1(m_colors[i + 3], m_colors[i + 4], m_colors[i + 5], m_colors[i + 6]);
+      const RGBAf color2(m_colors[i + 7], m_colors[i + 8], m_colors[i + 9], m_colors[i + 10]);
+      const RGBAf midcolor((color1.r + color2.r)/2,
                            (color1.g + color2.g)/2,
                            (color1.b + color2.b)/2,
                            (color1.a + color2.a)/2);

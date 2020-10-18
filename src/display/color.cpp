@@ -20,9 +20,9 @@
 
 #include <ostream>
 
-std::ostream& operator<<(std::ostream& out, const Color& color)
+std::ostream& operator<<(std::ostream& out, const RGBAf& color)
 {
-  return out << "Color("
+  return out << "RGBAf("
              << color.r << ", "
              << color.g << ", "
              << color.b << ", "

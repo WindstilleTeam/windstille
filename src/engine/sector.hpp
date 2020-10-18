@@ -62,7 +62,7 @@ private:
    * in the update function */
   Objects new_objects;
 
-  Color ambient_light;
+  RGBAf ambient_light;
 
 public:
   /** The TileMap with which the player interacts */
@@ -101,8 +101,8 @@ public:
    * Set ambient light, ie. the light that illuminates the whole sector
    * all the time, to \a color
    */
-  void  set_ambient_light(const Color& color);
-  Color get_ambient_light() const;
+  void  set_ambient_light(const RGBAf& color);
+  RGBAf get_ambient_light() const;
 
   void add(GameObjectHandle object);
 

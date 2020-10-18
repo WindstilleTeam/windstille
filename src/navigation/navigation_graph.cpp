@@ -250,13 +250,13 @@ NavigationGraph::draw(GraphicsContext& gc)
   {
     gc.draw_line_with_normal(geom::line((*i)->get_node1()->get_pos(),
                                         (*i)->get_node2()->get_pos()),
-                                   Color(1.0f, 0.0f, 0.0f));
+                                   RGBAf(1.0f, 0.0f, 0.0f));
   }
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
   {
     gc.fill_rect(geom::frect((*i)->get_pos() - glm::vec2(4,4), geom::fsize(9, 9)),
-                       Color(1.0f, 1.0f, 0.0f));
+                       RGBAf(1.0f, 1.0f, 0.0f));
   }
 }
 
