@@ -77,7 +77,7 @@ private:
 
 public:
   WindstilleWidget(EditorWindow& editor);
-  virtual ~WindstilleWidget();
+  ~WindstilleWidget() override;
 
   GraphicContextState& get_state() { return state; }
   Glib::RefPtr<Gdk::GLContext> on_create_context() override;
@@ -85,7 +85,7 @@ public:
   void on_unrealize() override;
   bool on_render(const Glib::RefPtr<Gdk::GLContext>& context) override;
 
-  virtual bool on_configure_event(GdkEventConfigure* event) override;
+  bool on_configure_event(GdkEventConfigure* event) override;
 
   bool mouse_move(GdkEventMotion* event);
   bool mouse_down (GdkEventButton* event);

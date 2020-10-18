@@ -186,7 +186,7 @@ WindstilleWidget::on_realize()
       OpenGLState::init();
       m_gc = std::make_unique<GraphicsContext>();
 
-      if (!sc.get())
+      if (!sc)
       {
         assert_gl();
         sc.reset(new SceneContext());

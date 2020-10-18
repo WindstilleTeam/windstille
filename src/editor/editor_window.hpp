@@ -100,7 +100,7 @@ private:
 
 public:
   EditorWindow();
-  virtual ~EditorWindow();
+  ~EditorWindow() override;
 
   void show_minimap(bool v);
 
