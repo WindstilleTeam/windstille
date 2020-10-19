@@ -336,12 +336,6 @@ Sprite3D::draw(DrawingContext& dc, const glm::vec2& pos, float z_pos)
   dc.draw(std::make_unique<Sprite3DDrawable>(*this, pos, z_pos, dc.get_modelview()));
 }
 
-void
-Sprite3D::draw(DrawingContext& dc, const glm::mat4& , float )
-{
-  dc.draw(std::make_unique<Sprite3DDrawable>(*this, glm::vec2(0, 0), 0.0f, dc.get_modelview()));
-}
-
 static inline float interpolate(float v1, float v2, float t)
 {
   return v1 + (v2 - v1) * t;

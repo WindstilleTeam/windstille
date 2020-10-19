@@ -58,7 +58,6 @@ public:
    */
   void update(float delta);
   void draw(DrawingContext& sc, const glm::vec2& pos, float z_pos);
-  void draw(DrawingContext& sc, const glm::mat4& matrix, float z_pos);
 
   /**
    * Changes action (after the currently shown animation frame)
