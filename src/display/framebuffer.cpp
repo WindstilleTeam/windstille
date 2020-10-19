@@ -97,6 +97,8 @@ Framebuffer::get_handle() const
 void
 Framebuffer::create_with_texture_internal(GLenum target, geom::isize const& size, int multisample)
 {
+  assert(!size.is_empty());
+
   assert_gl();
 
   m_size = size;
