@@ -20,6 +20,11 @@
 
 #include <wstinput/controller.hpp>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
+#include <glm/gtx/quaternion.hpp>
+
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
@@ -31,24 +36,17 @@
 #include "util/pathname.hpp"
 
 Sprite3DView::Sprite3DView() :
-  compositor(g_app.window().get_size(), g_app.window().get_gc().size()),
-  sc(),
-  sprite(),
-  actions(),
-  current_action(),
-  rotation(),
-  scale()
+  m_compositor(g_app.window().get_size(), g_app.window().get_gc().size()),
+  m_sc(),
+  m_sprite(),
+  m_actions(),
+  m_current_action(0),
+  m_rotation(1.0f, 0.0f, 0.0f, 0.0f),
+  m_scale(2.0f)
 {
-  current_action = 0;
-
-  sprite = g_app.sprite3d().create(Pathname("models/characters/jane/jane.wsprite"));
-  actions = sprite.get_actions();
-
-  sprite.set_action(actions[current_action]);
-
-  rotation = glm::quat();
-
-  scale = 2.0f;
+  m_sprite = g_app.sprite3d().create(Pathname("models/characters/jane/jane.wsprite"));
+  m_actions = m_sprite.get_actions();
+  m_sprite.set_action(m_actions[m_current_action]);
 }
 
 Sprite3DView::~Sprite3DView()
@@ -58,52 +56,53 @@ Sprite3DView::~Sprite3DView()
 void
 Sprite3DView::set_model(const Pathname& filename)
 {
-  sprite = g_app.sprite3d().create(filename);
-  actions = sprite.get_actions();
+  m_sprite = g_app.sprite3d().create(filename);
+  m_actions = m_sprite.get_actions();
 }
 
 void
 Sprite3DView::draw(GraphicsContext& gc)
 {
-  sc.reset_modelview();
+  m_sc.reset_modelview();
   //sc.translate(-config->screen_width/2, -config->screen_height/2);
   //sc.scale(2.0f, 2.0f);
 
-  sc.color().fill_screen(RGBAf(0.5, 0.0, 0.5));
+  m_sc.color().fill_screen(RGBAf(0.5, 0.0, 0.5));
 
-  sc.push_modelview();
-  sc.translate(static_cast<float>(gc.size().width())/2.0f, static_cast<float>(gc.size().height())/2.0f);
-  sc.scale(scale, scale);
+  m_sc.push_modelview();
+  m_sc.translate(static_cast<float>(gc.size().width()) / 2.0f,
+                 static_cast<float>(gc.size().height()) / 2.0f);
+  m_sc.scale(m_scale, m_scale);
 
   // Rotate
-  sc.mult_modelview(glm::mat4_cast(rotation));
-  sc.translate(0, 64.0f); // FIXME: use object height/2 instead of 64
-  sprite.draw(sc.color(), glm::vec2(0,0), 0);
-  sc.pop_modelview();
+  m_sc.mult_modelview(glm::mat4_cast(m_rotation));
+  m_sc.translate(0, 64.0f); // FIXME: use object height/2 instead of 64
+  m_sprite.draw(m_sc.color(), glm::vec2(0,0), 0);
+  m_sc.pop_modelview();
 
-  //glm::mat4 matrix = sc.color().get_modelview();
+  //glm::mat4 matrix = m_sc.color().get_modelview();
   //matrix.translate(-gc.size().width()/2, -gc.size().height()/2, 0);
-  //sprite.draw(sc.color(), matrix, 0.0f);
+  //sprite.draw(m_sc.color(), matrix, 0.0f);
 
-  sc.light().fill_screen(RGBAf(1.0, 1.0, 1.0));
+  m_sc.light().fill_screen(RGBAf(1.0, 1.0, 1.0));
   //sc.color().draw("Hello World", 100, 100);
-  compositor.render(gc, sc, nullptr, GraphicContextState(gc.size().width(),
-                                                         gc.size().height()));
+  m_compositor.render(gc, m_sc, nullptr, GraphicContextState(gc.size().width(),
+                                                             gc.size().height()));
 
   float x = 10.0f;
   float y =  static_cast<float>(g_app.fonts().vera12->get_height()) + 5.0f;
   int line_height = g_app.fonts().vera12->get_height()+5;
 
-  for(int i = 0; i < int(actions.size()); ++i)
+  for(int i = 0; i < int(m_actions.size()); ++i)
   {
-    if (i == current_action)
+    if (i == m_current_action)
       g_app.fonts().vera12->draw(gc,
                                  glm::vec2(x, y),
-                                 actions[i], RGBAf(1.0f, 1.0f, 1.0f));
+                                 m_actions[i], RGBAf(1.0f, 1.0f, 1.0f));
     else
       g_app.fonts().vera12->draw(gc,
                                  glm::vec2(x, y),
-                                 actions[i], RGBAf(0.7f, 0.7f, 0.7f));
+                                 m_actions[i], RGBAf(0.7f, 0.7f, 0.7f));
 
     y += static_cast<float>(line_height);
     if (y > 580.0f)
@@ -117,54 +116,49 @@ Sprite3DView::draw(GraphicsContext& gc)
 void
 Sprite3DView::update(float delta, const Controller& controller)
 {
-  sprite.update(delta);
+  m_sprite.update(delta);
   //std::cout << "Delta: " << delta << std::endl;
 
-  int last_action = current_action;
-  if (controller.button_was_pressed(MENU_DOWN_BUTTON))
-  {
-    if (current_action == int(actions.size())-1)
-      current_action = 0;
-    else
-      current_action += 1;
-  }
-  else if (controller.button_was_pressed(MENU_UP_BUTTON))
-  {
-    if (current_action == 0)
-      current_action = static_cast<int>(actions.size()) - 1;
-    else
-      current_action -= 1;
-  }
-
-  if (controller.get_button_state(RIGHT_SHOULDER_BUTTON))
-  {
-    scale *= 1.0f + 0.6f * delta;
-  }
-  else if (controller.get_button_state(LEFT_SHOULDER_BUTTON))
-  {
-    scale /= 1.0f + 0.6f * delta;
+  int last_action = m_current_action;
+  if (controller.button_was_pressed(MENU_DOWN_BUTTON)) {
+    if (m_current_action == int(m_actions.size()) - 1) {
+      m_current_action = 0;
+    } else {
+      m_current_action += 1;
+    }
+  } else if (controller.button_was_pressed(MENU_UP_BUTTON)) {
+    if (m_current_action == 0) {
+      m_current_action = static_cast<int>(m_actions.size()) - 1;
+    } else {
+      m_current_action -= 1;
+    }
   }
 
-  if (last_action != current_action && !actions.empty())
-  {
-    sprite.set_action(actions[current_action]);
+  if (controller.get_button_state(RIGHT_SHOULDER_BUTTON)) {
+    m_scale *= 1.0f + 0.6f * delta;
+  } else if (controller.get_button_state(LEFT_SHOULDER_BUTTON)) {
+    m_scale /= 1.0f + 0.6f * delta;
   }
 
-  rotation = glm::quat(-controller.get_axis_state(X2_AXIS) * delta * 4.0f,
-                        glm::vec3(0.0f, 1.0f, 0.0f)) * rotation;
-  rotation = glm::quat(controller.get_axis_state(Y2_AXIS) * delta * 4.0f,
-                        glm::vec3(1.0f, 0.0f, 0.0f)) * rotation;
-  rotation = glm::quat(controller.get_axis_state(X_AXIS) * delta * 4.0f,
-                        glm::vec3(0.0f, 0.0f, 1.0f)) * rotation;
+  if (last_action != m_current_action && !m_actions.empty()) {
+    m_sprite.set_action(m_actions[m_current_action]);
+  }
+
+  m_rotation = glm::quat(controller.get_axis_state(X2_AXIS) * delta * 4.0f,
+                         glm::vec3(0.0f, 1.0f, 0.0f)) * m_rotation;
+  m_rotation = glm::quat(controller.get_axis_state(Y2_AXIS) * delta * 4.0f,
+                         glm::vec3(1.0f, 0.0f, 0.0f)) * m_rotation;
+  m_rotation = glm::quat(-controller.get_axis_state(X_AXIS) * delta * 4.0f,
+                         glm::vec3(0.0f, 0.0f, 1.0f)) * m_rotation;
+  m_rotation = glm::normalize(m_rotation);
 
   if (controller.get_button_state(VIEW_CENTER_BUTTON))
   {
-    rotation = glm::quat();
+    m_rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
   }
 
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
-      controller.button_was_pressed(PAUSE_BUTTON))
-  {
+      controller.button_was_pressed(PAUSE_BUTTON)) {
     MenuManager::display_pause_menu();
   }
 }

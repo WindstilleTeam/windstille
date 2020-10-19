@@ -31,14 +31,14 @@
 class Sprite3DView : public Screen
 {
 private:
-  Compositor compositor;
-  SceneContext sc;
-  Sprite3D sprite;
-  std::vector<std::string> actions;
-  int current_action;
+  Compositor m_compositor;
+  SceneContext m_sc;
+  Sprite3D m_sprite;
+  std::vector<std::string> m_actions;
+  int m_current_action;
 
-  glm::quat rotation;
-  float scale;
+  glm::quat m_rotation;
+  float m_scale;
 
 public:
   Sprite3DView();
