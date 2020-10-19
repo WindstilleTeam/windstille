@@ -2,15 +2,15 @@
 (windstille-controller
  (x-axis   (keyboard-axis (minus "Left") (plus "Right")))
  (y-axis   (keyboard-axis (minus "Up") (plus "Down")))
-  
- (x2-axis  (keyboard-axis (minus "Keypad 4") (plus "Keypad 6")))
- (y2-axis  (keyboard-axis (minus "Keypad 8") (plus "Keypad 2")))
+
+ (x2-axis  (keyboard-axis (minus "Delete") (plus "PageDown")))
+ (y2-axis  (keyboard-axis (minus "Home") (plus "End")))
 
  (left-trigger-axis)
  (right-trigger-axis)
 
- (left-stick-button  (keyboard-button (key "X")))
- (right-stick-button (keyboard-button (key "Keypad 5")))
+ (left-stick-button  (keyboard-button (key "Insert")))
+ (right-stick-button (keyboard-button (key "PageUp")))
 
  (primary-button    (keyboard-button (key "S")))
  (secondary-button  (keyboard-button (key "D")))
