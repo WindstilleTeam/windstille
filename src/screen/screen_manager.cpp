@@ -262,12 +262,11 @@ ScreenManager::poll_events()
           }
         }
 
-        if (!Console::current()->is_active() && event.key.state && event.key.keysym.sym == SDLK_F1)
-        {
+        if (!Console::current()->is_active() &&
+            event.key.state &&
+            event.key.keysym.sym == SDLK_F1) {
           Console::current()->activate();
-        }
-        else
-        {
+        } else {
           g_app.input().on_event(event);
         }
         break;
@@ -280,6 +279,8 @@ ScreenManager::poll_events()
       case SDL_JOYHATMOTION:
       case SDL_JOYBUTTONUP:
       case SDL_JOYBUTTONDOWN:
+      case SDL_TEXTINPUT:
+      case SDL_TEXTEDITING:
         g_app.input().on_event(event);
 
         if (!overlay_screens.empty())

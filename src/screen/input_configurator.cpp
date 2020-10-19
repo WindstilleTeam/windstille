@@ -62,7 +62,7 @@ InputConfigurator::InputConfigurator()
 
   print_item();
 
-  g_app.input().clear_bindings();
+  g_app.input().bindings().clear();
 }
 
 InputConfigurator::~InputConfigurator()
@@ -159,7 +159,7 @@ InputConfigurator::handle_event(const SDL_Event& event)
     case SDL_MOUSEBUTTONDOWN:
       if (items.back().mode == ConfigureItem::CONFIGURE_BUTTON)
       {
-        g_app.input().bind_mouse_button(items.back().event_id,
+        g_app.input().bindings().bind_mouse_button(items.back().event_id,
                                                       0, // SDL only supports one mouse
                                                       event.button.button);
         out << "(mouse-button (device " << 0 << ")\n"
@@ -175,7 +175,7 @@ InputConfigurator::handle_event(const SDL_Event& event)
     case SDL_JOYAXISMOTION:
       if (items.back().mode == ConfigureItem::CONFIGURE_AXIS && (event.jaxis.value > 16384 || event.jaxis.value < -16384))
       { // FIXME: This doesn't work well with analog Axis!
-        g_app.input().bind_joystick_axis(items.back().event_id, event.jaxis.which, event.jaxis.axis, false);
+        g_app.input().bindings().bind_joystick_axis(items.back().event_id, event.jaxis.which, event.jaxis.axis, false);
         out << "(joystick-axis (device " << int(event.jaxis.which) << ")\n"
             << "               (axis   " << int(event.jaxis.axis) << "))" << std::endl;
         next_item();
@@ -199,7 +199,7 @@ InputConfigurator::handle_event(const SDL_Event& event)
     case SDL_JOYBUTTONDOWN:
       if (items.back().mode == ConfigureItem::CONFIGURE_BUTTON)
       {
-        g_app.input().bind_joystick_button(items.back().event_id, event.jbutton.which, event.jbutton.button);
+        g_app.input().bindings().bind_joystick_button(items.back().event_id, event.jbutton.which, event.jbutton.button);
         out << "(joystick-button (device " << int(event.jbutton.which) << ")\n"
             << "                 (button " << int(event.jbutton.button) << "))" << std::endl;
         next_item();
@@ -210,7 +210,7 @@ InputConfigurator::handle_event(const SDL_Event& event)
         {
           out << "(joystick-axis-button (minus " << g_app.input().keyid_to_string(minus.key.keysym.scancode) << ") "
               << "(plus  " << g_app.input().keyid_to_string(event.key.keysym.scancode) << "))" << std::endl;
-          g_app.input().bind_joystick_button_axis(items.back().event_id, event.jbutton.which,
+          g_app.input().bindings().bind_joystick_button_axis(items.back().event_id, event.jbutton.which,
                                                                 minus.jbutton.button, event.jbutton.button);
           next_item();
           wait_for_plus = false;
@@ -243,7 +243,7 @@ InputConfigurator::handle_event(const SDL_Event& event)
       {
         if (items.back().mode == ConfigureItem::CONFIGURE_BUTTON)
         {
-          g_app.input().bind_keyboard_button(items.back().event_id, event.key.keysym.scancode);
+          g_app.input().bindings().bind_keyboard_button(items.back().event_id, event.key.keysym.scancode);
           out << "(keyboard-button (key " << g_app.input().keyid_to_string(event.key.keysym.scancode) << "))" << std::endl;
           next_item();
         }
@@ -253,7 +253,7 @@ InputConfigurator::handle_event(const SDL_Event& event)
           {
             out << "(keyboard-axis (minus " << g_app.input().keyid_to_string(minus.key.keysym.scancode) << ") "
                 << "(plus  " << g_app.input().keyid_to_string(event.key.keysym.scancode) << "))" << std::endl;
-            g_app.input().bind_keyboard_axis(items.back().event_id, minus.key.keysym.scancode, event.key.keysym.scancode);
+            g_app.input().bindings().bind_keyboard_axis(items.back().event_id, minus.key.keysym.scancode, event.key.keysym.scancode);
             next_item();
             wait_for_plus = false;
           }

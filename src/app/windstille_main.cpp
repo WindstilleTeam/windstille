@@ -174,12 +174,12 @@ WindstilleMain::init_modules()
 
   {
     // Hardcoded defaults
-    g_app.input().bind_keyboard_button(ENTER_BUTTON, SDL_SCANCODE_RETURN);
-    g_app.input().bind_keyboard_button(ESCAPE_BUTTON, SDL_SCANCODE_ESCAPE);
-    g_app.input().bind_keyboard_button(MENU_LEFT_BUTTON, SDL_SCANCODE_LEFT);
-    g_app.input().bind_keyboard_button(MENU_RIGHT_BUTTON, SDL_SCANCODE_RIGHT);
-    g_app.input().bind_keyboard_button(MENU_UP_BUTTON, SDL_SCANCODE_UP);
-    g_app.input().bind_keyboard_button(MENU_DOWN_BUTTON, SDL_SCANCODE_DOWN);
+    g_app.input().bindings().bind_keyboard_button(ENTER_BUTTON, SDL_SCANCODE_RETURN);
+    g_app.input().bindings().bind_keyboard_button(ESCAPE_BUTTON, SDL_SCANCODE_ESCAPE);
+    g_app.input().bindings().bind_keyboard_button(MENU_LEFT_BUTTON, SDL_SCANCODE_LEFT);
+    g_app.input().bindings().bind_keyboard_button(MENU_RIGHT_BUTTON, SDL_SCANCODE_RIGHT);
+    g_app.input().bindings().bind_keyboard_button(MENU_UP_BUTTON, SDL_SCANCODE_UP);
+    g_app.input().bindings().bind_keyboard_button(MENU_DOWN_BUTTON, SDL_SCANCODE_DOWN);
 
     // User configuration
     if (config.get<std::string>("primary-controller-file").is_set()) {

@@ -19,6 +19,7 @@
 #include "app/console.hpp"
 
 #include <ostream>
+#include <logmich/log.hpp>
 
 #include <wstinput/input_manager.hpp>
 
@@ -76,8 +77,6 @@ private:
   ConsoleStreambuf (const ConsoleStreambuf&);
   ConsoleStreambuf& operator= (const ConsoleStreambuf&);
 };
-
-//-------------------------------------------------------------------------------
 
 class ConsoleImpl
 {
@@ -153,8 +152,6 @@ public:
   }
 };
 
-//-------------------------------------------------------------------------------
-
 void
 ConsoleImpl::draw(GraphicsContext& gc)
 {
@@ -212,26 +209,24 @@ ConsoleImpl::update(float delta)
 
     for (auto i = events.begin(); i != events.end(); ++i)
     {
-      if ((*i).type == wstinput::KEYBOARD_EVENT)
+      if ((*i).type == wstinput::TEXT_EVENT)
       {
-        if ((*i).keyboard.key_type == wstinput::KeyboardEvent::LETTER)
-        {
-          if (cursor_pos == int(command_line.size()))
-          {
-            command_line += static_cast<char>((*i).keyboard.code);
-            cursor_pos += 1;
-          }
-          else
-          {
-            command_line.insert(cursor_pos, std::string(1, static_cast<char>((*i).keyboard.code)));
-            cursor_pos += 1;
-          }
+        if (cursor_pos == int(command_line.size())) {
+          command_line += (*i).text.text.data();
+          cursor_pos += 1;
+        } else {
+          command_line.insert(cursor_pos, (*i).text.text.data());
+          cursor_pos += 1;
         }
-        else if ((*i).keyboard.key_type == wstinput::KeyboardEvent::SPECIAL)
-        {
-          //console << "special: " << i->keyboard.code << std::endl;
-
-          switch (i->keyboard.code)
+      }
+      else if ((*i).type == wstinput::TEXT_EDIT_EVENT)
+      {
+        log_warn("TEXT_EDIT_EVENT not implemented");
+      }
+      else if ((*i).type == wstinput::KEYBOARD_EVENT)
+      {
+        if ((*i).keyboard.key.state) {
+          switch ((*i).keyboard.key.keysym.sym)
           {
             case SDLK_BACKSPACE:
               if (!command_line.empty() && cursor_pos > 0)
@@ -556,15 +551,15 @@ Console::activate()
   g_app.input().clear();
   impl->active = true;
 
-  //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+  g_app.input().start_text_input();
 }
 
 void
 Console::deactive()
 {
-  impl->active = false;
+  g_app.input().stop_text_input();
 
-  //SDL_EnableKeyRepeat(0, SDL_DEFAULT_REPEAT_INTERVAL);
+  impl->active = false;
 }
 
 bool
