@@ -39,6 +39,7 @@ public:
 
   int get_width()  const;
   int get_height() const;
+  geom::isize get_size() const;
   TexturePtr get_texture();
 
   GLuint get_handle() const;

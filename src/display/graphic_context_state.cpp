@@ -225,6 +225,12 @@ GraphicContextState::get_height() const
   return impl->height;
 }
 
+geom::isize
+GraphicContextState::get_size() const
+{
+  return { impl->width, impl->height };
+}
+
 GraphicContextState
 GraphicContextState::clone() const
 {

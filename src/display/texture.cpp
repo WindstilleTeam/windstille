@@ -193,6 +193,12 @@ Texture::get_height() const
   return m_size.height();
 }
 
+geom::isize
+Texture::get_size() const
+{
+  return m_size;
+}
+
 GLuint
 Texture::get_handle() const
 {

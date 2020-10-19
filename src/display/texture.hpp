@@ -53,6 +53,7 @@ public:
 
   int get_width() const;
   int get_height() const;
+  geom::isize get_size() const;
 
   /** Shortcut to set the texture into a mode where uv coordinates
       wrap around when they excede the [0,1] region */

@@ -101,6 +101,7 @@ public:
 
   float get_width() const;
   float get_height() const;
+  geom::fsize get_size() const;
 
   /** true if the Sprite is valid and usable, false if not */
   explicit operator bool() const;

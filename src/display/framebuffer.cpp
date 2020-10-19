@@ -87,6 +87,12 @@ Framebuffer::get_height() const
   return m_size.height();
 }
 
+geom::isize
+Framebuffer::get_size() const
+{
+  return m_size;
+}
+
 GLuint
 Framebuffer::get_handle() const
 {

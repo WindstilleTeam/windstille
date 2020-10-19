@@ -37,9 +37,9 @@ public:
 
   void set_icon(std::filesystem::path const& filename);
 
-  int  get_width()  const;
+  int  get_width() const;
   int  get_height() const;
-  geom::isize get_size()   const;
+  geom::isize get_size() const;
 
   void set_fullscreen(bool fullscreen);
   void set_gamma(float r, float g, float b);

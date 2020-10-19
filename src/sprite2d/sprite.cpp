@@ -321,4 +321,10 @@ Sprite::get_height() const
   return current_action->surfaces[ static_cast<int>(frame) ]->get_height();
 }
 
+geom::fsize
+Sprite::get_size() const
+{
+  return {get_width(), get_height()};
+}
+
 /* EOF */

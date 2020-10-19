@@ -50,6 +50,7 @@ public:
 
   int get_width()  const;
   int get_height() const;
+  geom::isize get_size() const;
 
   /** Set the current rotation angel */
   void  set_rotation(float angle);

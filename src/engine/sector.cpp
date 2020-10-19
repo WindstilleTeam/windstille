@@ -196,6 +196,12 @@ Sector::get_height () const
     return 1600;
 }
 
+geom::isize
+Sector::get_size() const
+{
+  return {get_width(), get_height()};
+}
+
 void
 Sector::set_tilemap(TileMap* t)
 {

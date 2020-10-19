@@ -22,7 +22,8 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include <memory>
+
+#include <geom/fwd.hpp>
 
 #include "display/color.hpp"
 #include "engine/game_object_handle.hpp"
@@ -96,6 +97,7 @@ public:
 
   int get_width() const;
   int get_height() const;
+  geom::isize get_size() const;
 
   /**
    * Set ambient light, ie. the light that illuminates the whole sector
