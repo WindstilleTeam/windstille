@@ -92,8 +92,8 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_) :
   Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*ui_manager->get_widget("/ObjectSelectorToolBar"));
 #endif
 
-  Gtk::Button& refresh_button = *Gtk::manage(new Gtk::Button());
-  refresh_button.add(*Gtk::manage(new Gtk::Image(Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU)));
+  Gtk::Button& refresh_button = *Gtk::make_managed<Gtk::Button>();
+  refresh_button.add(*Gtk::make_managed<Gtk::Image>(Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU));
   refresh_button.set_relief(Gtk::RELIEF_NONE);
   refresh_button.signal_clicked().connect(sigc::mem_fun(*this, &ObjectSelector::refresh));
 
@@ -143,7 +143,7 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_) :
   scrolled.add(iconview);
   pack_start(label, Gtk::PACK_SHRINK);
 
-  Gtk::HBox& hbox = *Gtk::manage(new Gtk::HBox());
+  Gtk::HBox& hbox = *Gtk::make_managed<Gtk::HBox>();
   //hbox.pack_start(toolbar,   Gtk::PACK_SHRINK);
   hbox.pack_start(refresh_button,   Gtk::PACK_SHRINK);
   hbox.pack_start(filter_box, Gtk::PACK_SHRINK);

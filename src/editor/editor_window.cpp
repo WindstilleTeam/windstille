@@ -397,8 +397,8 @@ EditorWindow::EditorWindow() :
   action_group->get_action("Redo")->set_sensitive(false);
 
   Gtk::Toolbar* toolbar = static_cast<Gtk::Toolbar*>(ui_manager->get_widget("/ToolBar"));
-  toolbar->append(*(Gtk::manage(new Gtk::SeparatorToolItem())));
-  layer_widget = Gtk::manage(new LayerWidget());
+  toolbar->append(*(Gtk::make_managed<Gtk::SeparatorToolItem>()));
+  layer_widget = Gtk::make_managed<LayerWidget>();
   toolbar->append(*layer_widget);
   layer_widget->signal_layer_toggle.connect(sigc::mem_fun(*this, &EditorWindow::on_layer_toggle));
 
@@ -463,9 +463,9 @@ void
 EditorWindow::on_new()
 {
   // FIXME: We abuse the minimap as our root GLContext
-  Gtk::VPaned* paned = Gtk::manage(new Gtk::VPaned);
-  WindstilleWidget* wst = Gtk::manage(new WindstilleWidget(*this));
-  AnimationWidget* animation_widget = Gtk::manage(new AnimationWidget(*this));
+  Gtk::VPaned* paned = Gtk::make_managed<Gtk::VPaned>();
+  WindstilleWidget* wst = Gtk::make_managed<WindstilleWidget>(*this);
+  AnimationWidget* animation_widget = Gtk::make_managed<AnimationWidget>(*this);
 
   paned->pack1(*wst, Gtk::FILL|Gtk::EXPAND);
   paned->pack2(*animation_widget, Gtk::FILL|Gtk::EXPAND);

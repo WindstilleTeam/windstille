@@ -34,7 +34,7 @@ LayerWidget::LayerWidget() :
     {
       if ((x+1) % 5)
       {
-        Gtk::ToggleButton* button = Gtk::manage(new Gtk::ToggleButton());
+        Gtk::ToggleButton* button = Gtk::make_managed<Gtk::ToggleButton>();
         button->set_size_request(16, 16);
         table.attach(*button, x, x+1, y, y+1);
 
@@ -47,8 +47,8 @@ LayerWidget::LayerWidget() :
       {
         if (y == 0)
         {
-          Gtk::VSeparator* separator = Gtk::manage(new Gtk::VSeparator());
-          //Gtk::Widget* separator = Gtk::manage(new Gtk::Widget());
+          Gtk::VSeparator* separator = Gtk::make_managed<Gtk::VSeparator>();
+          //Gtk::Widget* separator = Gtk::make_managed<Gtk::Widget>());
           separator->set_size_request(12, -1);
           table.attach(*separator, x, x+1, 0, 2);
         }
