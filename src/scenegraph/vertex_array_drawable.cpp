@@ -67,8 +67,11 @@ VertexArrayDrawable::clear()
 void
 VertexArrayDrawable::render(GraphicsContext& gc, unsigned int mask)
 {
+  if (m_vertices.empty()) {
+    return;
+  }
+
   assert(m_mode != GL_QUADS);
-  assert(!m_vertices.empty());
 
   assert(m_texcoords.empty() || int(m_texcoords.size() / 2) == num_vertices());
   assert(m_normals.empty() || int(m_normals.size() / 3) == num_vertices());
