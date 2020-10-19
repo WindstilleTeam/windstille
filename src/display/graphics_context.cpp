@@ -366,7 +366,7 @@ GraphicsContext::draw_circle(const glm::vec2& pos, float radius, const RGBAf& co
     float y = sinf(static_cast<float>(i) * glm::half_pi<float>() / n) * radius;
 
     va.color(color);
-  va.vertex(x + pos.x, y + pos.y);
+    va.vertex(x + pos.x, y + pos.y);
   }
   va.color(color);
   va.vertex(radius + pos.x, pos.y);
@@ -651,25 +651,28 @@ GraphicsContext::pop_matrix()
 void
 GraphicsContext::mult_matrix(glm::mat4 const& mat)
 {
-  m_modelview_stack.top() = mat * m_modelview_stack.top();
+  m_modelview_stack.top() = m_modelview_stack.top() * mat;
 }
 
 void
 GraphicsContext::translate(float x, float y, float z)
 {
-  mult_matrix(glm::translate(glm::vec3(x, y, z)));
+  m_modelview_stack.top() = glm::translate(m_modelview_stack.top(),
+                                           glm::vec3(x, y, z));
 }
 
 void
 GraphicsContext::scale(float x, float y, float z)
 {
-  mult_matrix(glm::scale(glm::vec3(x, y, z)));
+  m_modelview_stack.top() = glm::scale(m_modelview_stack.top(),
+                                       glm::vec3(x, y, z));
 }
 
 void
 GraphicsContext::rotate(float degree, float x, float y, float z)
 {
-  mult_matrix(glm::rotate(glm::radians(degree), glm::vec3(x, y, z)));
+  m_modelview_stack.top() = glm::rotate(m_modelview_stack.top(),
+                                        glm::radians(degree), glm::vec3(x, y, z));
 }
 
 /* EOF */

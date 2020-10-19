@@ -21,6 +21,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "display/graphics_context.hpp"
 #include "sprite3d/sprite3d.hpp"
 #include "scenegraph/drawable.hpp"
 
@@ -40,10 +41,11 @@ public:
 
   void render(GraphicsContext& gc, unsigned int mask) override
   {
-    glm::mat4 matrix = modelview;
-    matrix = glm::translate(matrix, glm::vec3(pos.x, pos.y, z_pos));
-    matrix = glm::scale(matrix, glm::vec3(m_scale, m_scale, m_scale));
-    m_sprite.draw(gc, glm::vec2(0.0f, 0.0f), matrix);
+    gc.push_matrix();
+    gc.translate(pos.x, pos.y, 0.0f);
+    gc.scale(m_scale, m_scale, 1.0f);
+    m_sprite.draw(gc, glm::vec2(0.0f, 0.0f), modelview);
+    gc.pop_matrix();
   }
 
   void set_pos(const glm::vec2& pos_)

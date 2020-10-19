@@ -60,6 +60,14 @@ Doll::~Doll()
 }
 
 void
+Doll::draw (SceneContext& sc)
+{
+  sc.highlight().fill_rect(geom::frect(m_pos - glm::vec2(-10.0f, -10.0f),
+                                       m_pos + glm::vec2(-10.0f, -10.0f)),
+                           RGBAf(1.0f, 1.0f, 1.0f));
+}
+
+void
 Doll::update (float /*delta*/)
 {
 }
