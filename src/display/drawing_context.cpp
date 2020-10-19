@@ -129,53 +129,19 @@ DrawingContext::fill_pattern(TexturePtr pattern, const glm::vec2& offset)
 void
 DrawingContext::rotate(float angle, float x, float y, float z)
 {
-  float len2 = x*x+y*y+z*z;
-  if (len2 != 1.0f)
-  {
-    float len = sqrtf(len2);
-    x /= len;
-    y /= len;
-    z /= len;
-  }
-
-  float c = cosf(angle*3.14159265f/180.0f);
-  float s = sinf(angle*3.14159265f/180.0f);
-
-  glm::mat4 matrix(1.0f);
-  float* mp = glm::value_ptr(matrix);
-  mp[0]  = x*x*(1-c)+c;
-  mp[1]  = y*x*(1-c)+z*s;
-  mp[2]  = x*z*(1-c)-y*s;
-
-  mp[4]  = x*y*(1-c)-z*s;
-  mp[5]  = y*y*(1-c)+c;
-  mp[6]  = y*z*(1-c)+x*s;
-
-  mp[8]  = x*z*(1-c)+y*s;
-  mp[9]  = y*z*(1-c)-x*s;
-  mp[10] = z*z*(1-c)+c;
-
-  modelview_stack.back() = modelview_stack.back() * matrix;
+  modelview_stack.back() = glm::rotate(modelview_stack.back(), glm::radians(angle), glm::vec3(x, y, z));
 }
 
 void
 DrawingContext::scale(float x, float y, float z)
 {
-  glm::mat4 matrix(1.0f);
-  glm::value_ptr(matrix)[0]  = x;
-  glm::value_ptr(matrix)[5]  = y;
-  glm::value_ptr(matrix)[10] = z;
-  modelview_stack.back() = modelview_stack.back() * matrix;
+  modelview_stack.back() = glm::scale(modelview_stack.back(), glm::vec3(x, y, z));
 }
 
 void
 DrawingContext::translate(float x, float y, float z)
 {
-  glm::mat4 matrix = glm::mat4(1.0f);
-  glm::value_ptr(matrix)[12] = x;
-  glm::value_ptr(matrix)[13] = y;
-  glm::value_ptr(matrix)[14] = z;
-  modelview_stack.back() = modelview_stack.back() * matrix;
+  modelview_stack.back() = glm::translate(modelview_stack.back(), glm::vec3(x, y, z));
 }
 
 void
@@ -215,8 +181,8 @@ DrawingContext::get_clip_rect()
 {
   // FIXME: Need to check the modelview matrix
   return geom::frect(glm::vec2(glm::value_ptr(modelview_stack.back())[12],
-                         glm::value_ptr(modelview_stack.back())[13]),
-               geom::fsize(800, 600));
+                               glm::value_ptr(modelview_stack.back())[13]),
+                     geom::fsize(800, 600));
 }
 
 void
