@@ -39,8 +39,8 @@
 using namespace std::placeholders;
 
 Document::Document() :
-  m_undo_manager(new UndoManager()),
-  m_sector_model(new SectorModel()),
+  m_undo_manager(std::make_unique<UndoManager>()),
+  m_sector_model(std::make_unique<SectorModel>()),
   m_group_command(),
   m_group_command_count(0),
   m_selection(Selection::create()),
@@ -55,8 +55,8 @@ Document::Document() :
 }
 
 Document::Document(const std::string& filename) :
-  m_undo_manager(new UndoManager()),
-  m_sector_model(new SectorModel(filename)),
+  m_undo_manager(std::make_unique<UndoManager>()),
+  m_sector_model(std::make_unique<SectorModel>(filename)),
   m_group_command(),
   m_group_command_count(0),
   m_selection(Selection::create()),
