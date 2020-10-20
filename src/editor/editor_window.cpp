@@ -405,6 +405,8 @@ EditorWindow::EditorWindow() :
   Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*m_ui_manager->get_widget("/ToolBar"));
   Gtk::Toolbar& toolbox = dynamic_cast<Gtk::Toolbar&>(*m_ui_manager->get_widget("/ToolBox"));
 
+  toolbox.get_style_context()->add_class("toolbox");
+
   toolbar.append(*(Gtk::make_managed<Gtk::SeparatorToolItem>()));
   m_layer_widget = Gtk::make_managed<LayerWidget>();
   toolbar.append(*m_layer_widget);

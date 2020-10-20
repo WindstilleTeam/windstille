@@ -40,6 +40,8 @@ LayerWidget::LayerWidget() :
         button.set_size_request(16, 16);
         m_grid.attach(button, x, y, 1, 1);
 
+        button.get_style_context()->add_class("layer_widget_button");
+
         button.signal_toggled().connect([this, &button, layer_number]{
           on_layer_toggle(&button, layer_number);
         });

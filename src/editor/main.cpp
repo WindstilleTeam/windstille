@@ -21,9 +21,11 @@
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
+
+#include <gdkmm/glcontext.h>
+#include <gtkmm/cssprovider.h>
 #include <gtkmm/icontheme.h>
 #include <gtkmm/main.h>
-#include <gdkmm/glcontext.h>
 
 #include <argparser.hpp>
 #include <logmich/log.hpp>
@@ -94,6 +96,13 @@ WindstilleEditor::main(int argc, char** argv)
 
     Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_default();
     icon_theme->append_search_path(Pathname("editor", Pathname::kDataPath).get_sys_path());
+
+
+    Glib::RefPtr<Gtk::CssProvider> css_provider = Gtk::CssProvider::create();
+    css_provider->load_from_path(Pathname("style.css").get_sys_path());
+    Glib::RefPtr<Gtk::StyleContext> style_context = Gtk::StyleContext::create();
+    Glib::RefPtr<Gdk::Screen> screen = Gdk::Screen::get_default();
+    style_context->add_provider_for_screen(screen, css_provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     EditorWindow window;
     window.show_all();
