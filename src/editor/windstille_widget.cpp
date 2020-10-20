@@ -51,7 +51,7 @@ bool lib_init = false;
 
 
 WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
-  editor(editor_),
+  m_editor(editor_),
   m_gc(),
   m_document(new Document),
   m_scene_graph(new SceneGraph()),
@@ -78,7 +78,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
   set_use_es (true);
 
   {
-    Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
+    Glib::RefPtr<Gtk::UIManager>   ui_manager   = m_editor.get_ui_manager();
     Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create("WindstilleWidget");
 
     action_group->add(Gtk::Action::create("PopupMenu",   "_PopupMenu"));
@@ -282,8 +282,8 @@ WindstilleWidget::draw(GraphicsContext& gc)
     (*it)->draw(*sc);
   }
 
-  if (EditorWindow::current()->get_current_tool()) {
-    EditorWindow::current()->get_current_tool()->draw(*sc);
+  if (m_editor.get_current_tool()) {
+    m_editor.get_current_tool()->draw(*sc);
   }
 
   compositor->render(gc, *sc, m_scene_graph.get(), state);
@@ -320,17 +320,17 @@ WindstilleWidget::mouse_down(GdkEventButton* ev)
 
   if (ev->button == 1)
   { // Tool
-    EditorWindow::current()->get_current_tool()->mouse_down(ev, *this);
+    m_editor.get_current_tool()->mouse_down(ev, *this);
     return true;
   }
   else if (ev->button == 2)
   { // Scroll
-    EditorWindow::current()->get_scroll_tool()->mouse_down(ev, *this);
+    m_editor.get_scroll_tool()->mouse_down(ev, *this);
     return true;
   }
   else if (ev->button == 3)
   { // Context Menu
-    EditorWindow::current()->get_current_tool()->mouse_right_down(ev, *this);
+    m_editor.get_current_tool()->mouse_right_down(ev, *this);
     return true;
   }
   else
@@ -344,8 +344,8 @@ WindstilleWidget::mouse_move(GdkEventMotion* ev)
 {
   //std::cout << "Motion: " << ev->x << ", " << ev->y << std::endl;
 
-  EditorWindow::current()->get_current_tool()->mouse_move(ev, *this);
-  EditorWindow::current()->get_scroll_tool()->mouse_move(ev, *this);
+  m_editor.get_current_tool()->mouse_move(ev, *this);
+  m_editor.get_scroll_tool()->mouse_move(ev, *this);
 
   return true;
 }
@@ -357,12 +357,12 @@ WindstilleWidget::mouse_up(GdkEventButton* ev)
   //viewer->on_mouse_button_up(Vector2i(ev->x, ev->y), ev->button);
   if (ev->button == 1)
   {
-    EditorWindow::current()->get_current_tool()->mouse_up(ev, *this);
+    m_editor.get_current_tool()->mouse_up(ev, *this);
     queue_draw();
   }
   else if (ev->button == 2)
   {
-    EditorWindow::current()->get_scroll_tool()->mouse_up(ev, *this);
+    m_editor.get_scroll_tool()->mouse_up(ev, *this);
     queue_draw();
   }
 
@@ -378,36 +378,36 @@ WindstilleWidget::key_press(GdkEventKey* ev)
   {
     case GDK_KEY_1:
       map_type = DecalObjectModel::COLORMAP;
-      EditorWindow::current()->print("COLORMAP");
+      m_editor.print("COLORMAP");
       break;
 
     case GDK_KEY_2:
       map_type = DecalObjectModel::LIGHTMAP;
-      EditorWindow::current()->print("LIGHTMAP");
+      m_editor.print("LIGHTMAP");
       break;
 
     case GDK_KEY_3:
       map_type = DecalObjectModel::HIGHLIGHTMAP;
-      EditorWindow::current()->print("HIGHLIGHT");
+      m_editor.print("HIGHLIGHT");
       break;
 
     case GDK_KEY_a:
-      EditorWindow::current()->on_select_all();
+      m_editor.on_select_all();
       break;
 
     case GDK_KEY_i:
       std::cout << "Position Keyframe" << std::endl;
-      EditorWindow::current()->on_animation_add_keyframe(kPosition);
+      m_editor.on_animation_add_keyframe(kPosition);
       break;
 
     case GDK_KEY_k:
       std::cout << "Position Scale" << std::endl;
-      EditorWindow::current()->on_animation_add_keyframe(kScale);
+      m_editor.on_animation_add_keyframe(kScale);
       break;
 
     case GDK_KEY_u:
       std::cout << "Position Rotation" << std::endl;
-      EditorWindow::current()->on_animation_add_keyframe(kRotation);
+      m_editor.on_animation_add_keyframe(kRotation);
       break;
 
     case GDK_KEY_d:
@@ -487,7 +487,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*
   Gtk::TreeModel::Path path_;
   Gtk::TreeViewColumn* focus_column;
 
-  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path_, focus_column);
+  m_editor.get_layer_manager().get_treeview().get_cursor(path_, focus_column);
 
   if (!path_.gobj())
   {
@@ -533,7 +533,7 @@ WindstilleWidget::get_current_layer()
 {
   Gtk::TreeModel::Path path_;
   Gtk::TreeViewColumn* focus_column;
-  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path_, focus_column);
+  m_editor.get_layer_manager().get_treeview().get_cursor(path_, focus_column);
 
   if (!path_.gobj())
   {
@@ -551,7 +551,7 @@ WindstilleWidget::get_current_layer_path()
 {
   Gtk::TreeModel::Path path_;
   Gtk::TreeViewColumn* focus_column;
-  EditorWindow::current()->get_layer_manager().get_treeview().get_cursor(path_, focus_column);
+  m_editor.get_layer_manager().get_treeview().get_cursor(path_, focus_column);
 
   if (!path_.gobj())
   {
@@ -568,7 +568,7 @@ void
 WindstilleWidget::on_document_change()
 {
   m_rebuild_scene_graph = true;
-  EditorWindow::current()->update_undo_state();
+  m_editor.update_undo_state();
   queue_draw();
 }
 

@@ -89,7 +89,7 @@ EditorWindow::EditorWindow() :
   m_grid_layer(),
   m_play_action(),
   m_snap_action(),
-  m_select_tool(new SelectTool()),
+  m_select_tool(new SelectTool(*this)),
   m_navgraph_insert_tool(new NavgraphInsertTool()),
   m_zoom_tool(new ZoomTool()),
   m_scroll_tool(new ScrollTool()),

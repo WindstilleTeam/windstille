@@ -27,7 +27,8 @@
 static const guint32 MOVE_TIMEOUT = 100;
 static const int MOVE_THRESHOLD = 16;
 
-SelectTool::SelectTool() :
+SelectTool::SelectTool(EditorWindow& editor) :
+  m_editor(editor),
   click_pos(),
   rect(),
   selection(),
@@ -176,7 +177,7 @@ SelectTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
     std::ostringstream str;
     str << "  (" << static_cast<int>(rect.left()) << ", " << static_cast<int>(rect.top()) << ")  "
         << abs(static_cast<int>(rect.width())) << " x " << abs(static_cast<int>(rect.height())) << "  ";
-    EditorWindow::current()->print_coordinates(str.str());
+    m_editor.print_coordinates(str.str());
 
     wst.queue_draw();
   }
@@ -238,14 +239,14 @@ SelectTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     wst.queue_draw();
   }
 
-  EditorWindow::current()->print_coordinates(std::string());
+  m_editor.print_coordinates(std::string());
   mode = NO_MODE;
 }
 
 void
 SelectTool::mouse_right_down(GdkEventButton* event, WindstilleWidget& /*wst*/)
 {
-  Gtk::Menu* menu = static_cast<Gtk::Menu*>(EditorWindow::current()->get_ui_manager()->get_widget("/PopupMenu"));
+  Gtk::Menu* menu = static_cast<Gtk::Menu*>(m_editor.get_ui_manager()->get_widget("/PopupMenu"));
   menu->popup(event->button, event->time);
 }
 

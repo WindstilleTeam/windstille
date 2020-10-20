@@ -30,10 +30,12 @@
 #include "editor/timeline_handles.hpp"
 
 class Timeline;
+class EditorWindow;
 
 class TimelineWidget : public Gtk::DrawingArea
 {
 private:
+  EditorWindow& m_editor;
   std::shared_ptr<Timeline>    m_timeline;
   std::set<TimelineObjectHandle> m_selection;
 
@@ -52,7 +54,7 @@ private:
   int m_column_height;
 
 public:
-  TimelineWidget();
+  TimelineWidget(EditorWindow& editor);
   ~TimelineWidget() override;
 
   void set_timeline(TimelineHandle timeline);

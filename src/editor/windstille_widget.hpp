@@ -56,7 +56,7 @@ class EditorWindow;
 class WindstilleWidget final : public Gtk::GLArea
 {
 private:
-  EditorWindow& editor;
+  EditorWindow& m_editor;
   std::unique_ptr<GraphicsContext> m_gc;
 
   std::unique_ptr<Document>   m_document;

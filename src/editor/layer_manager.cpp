@@ -31,7 +31,7 @@
 #include "editor/layer_manager_columns.hpp"
 
 LayerManager::LayerManager(EditorWindow& editor_) :
-  editor(editor_),
+  m_editor(editor_),
   label("Layer Manager", Gtk::ALIGN_START),
   scrolled(),
   treeview(),
@@ -42,30 +42,30 @@ LayerManager::LayerManager(EditorWindow& editor_) :
   treeview.set_enable_tree_lines();
   treeview.set_reorderable();
 
-  Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
+  Glib::RefPtr<Gtk::UIManager>   ui_manager   = m_editor.get_ui_manager();
   Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create("LayerManager");
 
   action_group->add(Gtk::Action::create("MenuLayer",   "_Layer"));
   action_group->add(Gtk::Action::create("NewLayer", Gtk::Stock::NEW),
-                    sigc::mem_fun(editor, &EditorWindow::on_new_layer));
+                    sigc::mem_fun(m_editor, &EditorWindow::on_new_layer));
   action_group->add(Gtk::Action::create("DeleteLayer", Gtk::Stock::DELETE),
-                    sigc::mem_fun(editor, &EditorWindow::on_delete_layer));
+                    sigc::mem_fun(m_editor, &EditorWindow::on_delete_layer));
   action_group->add(Gtk::Action::create("ReverseLayers", Gtk::Stock::SORT_ASCENDING),
-                    sigc::mem_fun(editor, &EditorWindow::on_reverse_layers));
+                    sigc::mem_fun(m_editor, &EditorWindow::on_reverse_layers));
 
   action_group->add(Gtk::Action::create_with_icon_name("ShowAllLayer", "show_all", "Show All", "Show All Layer"),
-                    sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_show_all), true));
+                    sigc::bind(sigc::mem_fun(m_editor, &EditorWindow::on_show_all), true));
   action_group->add(Gtk::Action::create_with_icon_name("HideAllLayer", "hide_all", "Hide All", "Hide All Layer"),
-                    sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_show_all), false));
+                    sigc::bind(sigc::mem_fun(m_editor, &EditorWindow::on_show_all), false));
   action_group->add(Gtk::Action::create_with_icon_name("LockAllLayer", "lock_all", "Lock All", "Lock All Layer"),
-                    sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_lock_all), true));
+                    sigc::bind(sigc::mem_fun(m_editor, &EditorWindow::on_lock_all), true));
   action_group->add(Gtk::Action::create_with_icon_name("UnlockAllLayer", "unlock_all", "Unlock All", "Unlock All Layer"),
-                    sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_lock_all), false));
+                    sigc::bind(sigc::mem_fun(m_editor, &EditorWindow::on_lock_all), false));
 
   auto_lock = Gtk::ToggleAction::create_with_icon_name("AutoLockLayer", "auto_lock", "Auto Lock All", "All layers except the current ones are treated as locked");
   action_group->add(auto_lock,
                     sigc::bind(sigc::mem_fun(*this, &LayerManager::on_auto_lock), auto_lock));
-  //sigc::bind(sigc::mem_fun(editor, &EditorWindow::on_auto_lock), auto_lock));
+  //sigc::bind(sigc::mem_fun(m_editor, &EditorWindow::on_auto_lock), auto_lock));
 
   ui_manager->insert_action_group(action_group);
 
@@ -147,7 +147,7 @@ LayerManager::on_cursor_changed()
       Gtk::TreeModel::iterator it = treeview.get_model()->get_iter(path_);
       if (it)
       {
-        EditorWindow::current()->on_lock_all(true);
+        m_editor.on_lock_all(true);
         (*it)[LayerManagerColumns::instance().locked] = false;
         static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->sync(*it);
       }

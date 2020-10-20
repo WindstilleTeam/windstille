@@ -32,7 +32,8 @@
 #include "editor/timeline_sound_object.hpp"
 #include "editor/timeline_keyframe_object.hpp"
 
-TimelineWidget::TimelineWidget() :
+TimelineWidget::TimelineWidget(EditorWindow& editor) :
+  m_editor(editor),
   m_timeline(),
   m_selection(),
   m_mode(kNoMode),
@@ -491,7 +492,7 @@ TimelineWidget::set_cursor_pos(float p)
 {
   m_cursor_pos = p;
   m_timeline->apply(p);
-  if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
+  if (WindstilleWidget* wst = m_editor.get_windstille_widget())
     wst->queue_draw();
 }
 

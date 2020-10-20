@@ -34,6 +34,7 @@
 #include "editor/timeline_keyframe_object.hpp"
 
 AnimationWidget::AnimationWidget(EditorWindow& editor) :
+  m_editor(editor),
   hadjustment(Gtk::Adjustment::create(50, 0, 100)),
   vadjustment(Gtk::Adjustment::create(50, 0, 100)),
   m_hbox(),
@@ -43,7 +44,7 @@ AnimationWidget::AnimationWidget(EditorWindow& editor) :
   table(),
   vscroll(),
   hscroll(),
-  m_timeline_widget(),
+  m_timeline_widget(m_editor),
   m_timeline_layer_widget(),
   m_timeline(),
   m_timeout_connection(),
@@ -53,24 +54,24 @@ AnimationWidget::AnimationWidget(EditorWindow& editor) :
   vscroll.set_adjustment(vadjustment);
   hscroll.set_adjustment(hadjustment);
 
-  Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
+  Glib::RefPtr<Gtk::UIManager>   ui_manager   = m_editor.get_ui_manager();
   Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create("AnimationWidget");
 
   action_group->add(Gtk::Action::create("MenuAnimation",   "_Animation"));
   action_group->add(Gtk::Action::create("NewAnimation", Gtk::Stock::NEW),
-                    sigc::mem_fun(editor, &EditorWindow::on_animation_new));
+                    sigc::mem_fun(m_editor, &EditorWindow::on_animation_new));
   action_group->add(Gtk::Action::create("ExportAnimation", Gtk::Stock::SAVE_AS),
-                    sigc::mem_fun(editor, &EditorWindow::on_animation_export));
+                    sigc::mem_fun(m_editor, &EditorWindow::on_animation_export));
   action_group->add(Gtk::Action::create("DeleteAnimation", Gtk::Stock::DELETE),
-                    sigc::mem_fun(editor, &EditorWindow::on_animation_delete));
+                    sigc::mem_fun(m_editor, &EditorWindow::on_animation_delete));
 
   action_group->add(Gtk::Action::create("NewLayerAnimation", Gtk::Stock::NEW),
-                    sigc::mem_fun(editor, &EditorWindow::on_animation_layer_new));
+                    sigc::mem_fun(m_editor, &EditorWindow::on_animation_layer_new));
 
   action_group->add(Gtk::Action::create("FrameForwardAnimation", Gtk::Stock::GO_FORWARD),
-                    sigc::mem_fun(editor, &EditorWindow::on_animation_frame_forward));
+                    sigc::mem_fun(m_editor, &EditorWindow::on_animation_frame_forward));
   action_group->add(Gtk::Action::create("FrameBackwardAnimation", Gtk::Stock::GO_BACK),
-                    sigc::mem_fun(editor, &EditorWindow::on_animation_frame_backward));
+                    sigc::mem_fun(m_editor, &EditorWindow::on_animation_frame_backward));
 
   action_group->add(Gtk::Action::create("AnimationZoomIn",  Gtk::Stock::ZOOM_IN),
                     sigc::mem_fun(m_timeline_widget, &TimelineWidget::zoom_in));
@@ -160,7 +161,7 @@ AnimationWidget::on_timeout()
 {
   m_anim_pos += 0.5f;
   m_timeline->apply(m_anim_pos);
-  if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
+  if (WindstilleWidget* wst = m_editor.get_windstille_widget())
     wst->queue_draw();
   return true;
 }

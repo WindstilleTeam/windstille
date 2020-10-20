@@ -35,7 +35,7 @@ class EditorWindow;
 class ObjectSelector : public Gtk::VBox
 {
 private:
-  EditorWindow& editor;
+  EditorWindow& m_editor;
 
   Gtk::Label label;
   Gtk::ScrolledWindow scrolled;

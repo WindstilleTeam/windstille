@@ -32,7 +32,7 @@ class EditorWindow;
 class LayerManager : public Gtk::VBox
 {
 private:
-  EditorWindow& editor;
+  EditorWindow& m_editor;
   Gtk::Label label;
   Gtk::ScrolledWindow scrolled;
   Gtk::TreeView treeview;

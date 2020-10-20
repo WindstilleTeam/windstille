@@ -27,6 +27,7 @@
 class SelectTool : public Tool
 {
 private:
+  EditorWindow& m_editor;
   glm::vec2 click_pos;
   geom::frect    rect;
   SelectionHandle selection;
@@ -44,7 +45,7 @@ private:
   glm::vec2 process_grid_snap(WindstilleWidget& wst);
 
 public:
-  SelectTool();
+  SelectTool(EditorWindow& editor);
 
   void mouse_down (GdkEventButton* event, WindstilleWidget& wst) override;
   void mouse_up(GdkEventButton* event, WindstilleWidget& wst) override;

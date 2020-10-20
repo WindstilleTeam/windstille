@@ -40,6 +40,8 @@ class EditorWindow;
 class AnimationWidget : public Gtk::VBox
 {
 private:
+  EditorWindow& m_editor;
+
   Glib::RefPtr<Gtk::Adjustment> hadjustment;
   Glib::RefPtr<Gtk::Adjustment> vadjustment;
 

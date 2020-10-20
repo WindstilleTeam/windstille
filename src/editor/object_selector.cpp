@@ -64,7 +64,7 @@ private:
 ObjectSelector::Columns* ObjectSelector::Columns::instance_ = nullptr;
 
 ObjectSelector::ObjectSelector(EditorWindow& editor_) :
-  editor(editor_),
+  m_editor(editor_),
   label("Object Selector", Gtk::ALIGN_START),
   scrolled(),
   iconview(),
@@ -75,7 +75,7 @@ ObjectSelector::ObjectSelector(EditorWindow& editor_) :
   filter_mask(OBJECT_GROUP_ALL)
 {
 #if 0
-  Glib::RefPtr<Gtk::UIManager>   ui_manager   = editor.get_ui_manager();
+  Glib::RefPtr<Gtk::UIManager>   ui_manager   = m_editor.get_ui_manager();
   Glib::RefPtr<Gtk::ActionGroup> action_group = Gtk::ActionGroup::create("ObjectSelector");
 
   action_group->add(Gtk::Action::create("ObjectSelectorRefresh", Gtk::Stock::REFRESH),
@@ -279,7 +279,7 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
   else
   {
     Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(iconpath.get_sys_path());
-    if (WindstilleWidget* wst = EditorWindow::current()->get_windstille_widget())
+    if (WindstilleWidget* wst = m_editor.get_windstille_widget())
     {
       pixbuf = pixbuf->scale_simple(std::max(4, int(static_cast<float>(pixbuf->get_width())  * wst->get_state().get_zoom())),
                                     std::max(4, int(static_cast<float>(pixbuf->get_height()) * wst->get_state().get_zoom())),
