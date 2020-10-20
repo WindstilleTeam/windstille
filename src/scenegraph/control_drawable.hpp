@@ -40,22 +40,12 @@ public:
 
   void render(GraphicsContext& gc, unsigned int mask) override
   {
-    gc.push_matrix();
-
-    // FIXME: This looks badly broken, should modelview.multiply() be enough?
-    gc.translate(glm::value_ptr(modelview)[12],
-                 glm::value_ptr(modelview)[13],
-                 glm::value_ptr(modelview)[14]);
-
     glm::vec3 p = glm::vec3(modelview * glm::vec4(pos.x, pos.y, 0.0f, 1.0f));
-
     surface->draw(gc,
                   SurfaceDrawingParameters()
                   .set_angle(angle)
                   .set_pos(glm::vec2(p.x - surface->get_width()/2,
                                      p.y - surface->get_height()/2)));
-
-    gc.pop_matrix();
   }
 };
 
