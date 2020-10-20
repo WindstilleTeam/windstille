@@ -84,8 +84,7 @@ public:
   void on_realize() override;
   void on_unrealize() override;
   bool on_render(const Glib::RefPtr<Gdk::GLContext>& context) override;
-
-  bool on_configure_event(GdkEventConfigure* event) override;
+  void on_resize(int width, int height) override;
 
   bool mouse_move(GdkEventMotion* event);
   bool mouse_down (GdkEventButton* event);
