@@ -52,52 +52,6 @@ class ZoomTool;
 class EditorWindow : public Gtk::Window,
                      public Currenton<EditorWindow>
 {
-private:
-  Gtk::VBox   vbox;
-  Gtk::VBox   sidebar_vbox;
-  Gtk::HBox   hbox;
-  Gtk::HPaned hpaned;
-  Gtk::VPaned vpaned;
-  Gtk::HBox      status_hbox;
-  Gtk::Label     status_label;
-  Gtk::Statusbar statusbar;
-
-  Glib::RefPtr<Gtk::UIManager>   ui_manager;
-  Glib::RefPtr<Gtk::ActionGroup> action_group;
-  Glib::RefPtr<Gdk::GLContext> share_list;
-
-  Gtk::Notebook  notebook;
-  ObjectSelector object_selector;
-  LayerManager   layer_manager;
-  MinimapWidget  minimap_widget;
-
-  Glib::RefPtr<Gtk::RadioAction> select_tool_action;
-  Glib::RefPtr<Gtk::RadioAction> navgraph_insert_tool_action;
-  Glib::RefPtr<Gtk::RadioAction> navgraph_select_tool_action;
-  Glib::RefPtr<Gtk::RadioAction> zoom_tool_action;
-
-  Glib::RefPtr<Gtk::ToggleAction> toggle_color_layer;
-  Glib::RefPtr<Gtk::ToggleAction> toggle_light_layer;
-  Glib::RefPtr<Gtk::ToggleAction> toggle_highlight_layer;
-  Glib::RefPtr<Gtk::ToggleAction> toggle_control_layer;
-
-  Glib::RefPtr<Gtk::ToggleAction> background_layer;
-  Glib::RefPtr<Gtk::ToggleAction> visible_layer;
-  Glib::RefPtr<Gtk::ToggleAction> grid_layer;
-
-  Glib::RefPtr<Gtk::ToggleAction> play_action;
-  Glib::RefPtr<Gtk::ToggleAction> snap_action;
-
-  std::unique_ptr<SelectTool>   select_tool;
-  std::unique_ptr<NavgraphInsertTool> navgraph_insert_tool;
-  std::unique_ptr<ZoomTool>     zoom_tool;
-  std::unique_ptr<ScrollTool>   scroll_tool;
-  Tool* current_tool;
-  LayerWidget* layer_widget;
-
-  sigc::connection  timeout_connection;
-  SelectionHandle   clipboard;
-
 public:
   EditorWindow();
   ~EditorWindow() override;
@@ -164,7 +118,7 @@ public:
   Tool* get_current_tool() const;
   ScrollTool* get_scroll_tool() const;
 
-  LayerManager& get_layer_manager() { return layer_manager; }
+  LayerManager& get_layer_manager() { return m_layer_manager; }
   WindstilleWidget* get_windstille_widget();
   TimelineWidget*   get_timeline_widget();
   AnimationWidget*   get_animation_widget();
@@ -189,12 +143,58 @@ public:
 
   void print_coordinates(const std::string& text);
 
-  Glib::RefPtr<Gtk::UIManager>   get_ui_manager() const { return ui_manager; }
-  Glib::RefPtr<Gtk::ActionGroup> get_action_group() const { return action_group; }
+  Glib::RefPtr<Gtk::UIManager>   get_ui_manager() const { return m_ui_manager; }
+  Glib::RefPtr<Gtk::ActionGroup> get_action_group() const { return m_action_group; }
 
 private:
-  EditorWindow(const EditorWindow&);
-  EditorWindow& operator=(const EditorWindow&);
+ Gtk::VBox m_vbox;
+ Gtk::VBox m_sidebar_vbox;
+ Gtk::HBox m_hbox;
+ Gtk::HPaned m_hpaned;
+ Gtk::VPaned m_vpaned;
+ Gtk::HBox m_status_hbox;
+ Gtk::Label m_status_label;
+ Gtk::Statusbar m_statusbar;
+
+ Glib::RefPtr<Gtk::UIManager> m_ui_manager;
+ Glib::RefPtr<Gtk::ActionGroup> m_action_group;
+ Glib::RefPtr<Gdk::GLContext> m_share_list;
+
+ Gtk::Notebook m_notebook;
+ ObjectSelector m_object_selector;
+ LayerManager m_layer_manager;
+ MinimapWidget m_minimap_widget;
+
+ Glib::RefPtr<Gtk::RadioAction> m_select_tool_action;
+ Glib::RefPtr<Gtk::RadioAction> m_navgraph_insert_tool_action;
+ Glib::RefPtr<Gtk::RadioAction> m_navgraph_select_tool_action;
+ Glib::RefPtr<Gtk::RadioAction> m_zoom_tool_action;
+
+ Glib::RefPtr<Gtk::ToggleAction> m_toggle_color_layer;
+ Glib::RefPtr<Gtk::ToggleAction> m_toggle_light_layer;
+ Glib::RefPtr<Gtk::ToggleAction> m_toggle_highlight_layer;
+ Glib::RefPtr<Gtk::ToggleAction> m_toggle_control_layer;
+
+ Glib::RefPtr<Gtk::ToggleAction> m_background_layer;
+ Glib::RefPtr<Gtk::ToggleAction> m_visible_layer;
+ Glib::RefPtr<Gtk::ToggleAction> m_grid_layer;
+
+ Glib::RefPtr<Gtk::ToggleAction> m_play_action;
+ Glib::RefPtr<Gtk::ToggleAction> m_snap_action;
+
+ std::unique_ptr<SelectTool> m_select_tool;
+ std::unique_ptr<NavgraphInsertTool> m_navgraph_insert_tool;
+ std::unique_ptr<ZoomTool> m_zoom_tool;
+ std::unique_ptr<ScrollTool> m_scroll_tool;
+ Tool* m_current_tool;
+ LayerWidget* m_layer_widget;
+
+ sigc::connection m_timeout_connection;
+ SelectionHandle m_clipboard;
+
+private:
+ EditorWindow(const EditorWindow&);
+ EditorWindow& operator=(const EditorWindow&);
 };
 
 #endif

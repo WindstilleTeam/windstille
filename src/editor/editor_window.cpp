@@ -61,42 +61,42 @@
 #include "editor/timeline_widget.hpp"
 
 EditorWindow::EditorWindow() :
-  vbox(),
-  sidebar_vbox(),
-  hbox(),
-  hpaned(),
-  vpaned(),
-  status_hbox(),
-  status_label(),
-  statusbar(),
-  ui_manager(Gtk::UIManager::create()),
-  action_group(Gtk::ActionGroup::create("EditorWindow")),
-  share_list(),
-  notebook(),
-  object_selector(*this),
-  layer_manager(*this),
-  minimap_widget(),
-  select_tool_action(),
-  navgraph_insert_tool_action(),
-  navgraph_select_tool_action(),
-  zoom_tool_action(),
-  toggle_color_layer(),
-  toggle_light_layer(),
-  toggle_highlight_layer(),
-  toggle_control_layer(),
-  background_layer(),
-  visible_layer(),
-  grid_layer(),
-  play_action(),
-  snap_action(),
-  select_tool(new SelectTool()),
-  navgraph_insert_tool(new NavgraphInsertTool()),
-  zoom_tool(new ZoomTool()),
-  scroll_tool(new ScrollTool()),
-  current_tool(select_tool.get()),
-  layer_widget(),
-  timeout_connection(),
-  clipboard()
+  m_vbox(),
+  m_sidebar_vbox(),
+  m_hbox(),
+  m_hpaned(),
+  m_vpaned(),
+  m_status_hbox(),
+  m_status_label(),
+  m_statusbar(),
+  m_ui_manager(Gtk::UIManager::create()),
+  m_action_group(Gtk::ActionGroup::create("EditorWindow")),
+  m_share_list(),
+  m_notebook(),
+  m_object_selector(*this),
+  m_layer_manager(*this),
+  m_minimap_widget(),
+  m_select_tool_action(),
+  m_navgraph_insert_tool_action(),
+  m_navgraph_select_tool_action(),
+  m_zoom_tool_action(),
+  m_toggle_color_layer(),
+  m_toggle_light_layer(),
+  m_toggle_highlight_layer(),
+  m_toggle_control_layer(),
+  m_background_layer(),
+  m_visible_layer(),
+  m_grid_layer(),
+  m_play_action(),
+  m_snap_action(),
+  m_select_tool(new SelectTool()),
+  m_navgraph_insert_tool(new NavgraphInsertTool()),
+  m_zoom_tool(new ZoomTool()),
+  m_scroll_tool(new ScrollTool()),
+  m_current_tool(m_select_tool.get()),
+  m_layer_widget(),
+  m_timeout_connection(),
+  m_clipboard()
 {
   set_title("Windstille Editor");
   set_default_size(1280, 800);
@@ -182,7 +182,7 @@ EditorWindow::EditorWindow() :
     "    </menu>"
     "  </menubar>"
     ""
-    "  <toolbar  name='ToolBar' orientation='vertical'>"
+    "  <toolbar name='ToolBar'>"
     "    <toolitem action='New'/>"
     //"    <toolitem action='FileOpen'/>"
     "    <toolitem action='FileRecentFiles'/>"
@@ -235,21 +235,21 @@ EditorWindow::EditorWindow() :
     "  </toolbar>"
     "</ui>";
 
-  action_group->add(Gtk::Action::create("MenuFile",    "_File"));
-  action_group->add(Gtk::Action::create("New",         Gtk::Stock::NEW),
+  m_action_group->add(Gtk::Action::create("MenuFile",    "_File"));
+  m_action_group->add(Gtk::Action::create("New",         Gtk::Stock::NEW),
                     [this](){ on_new(); });
-  action_group->add(Gtk::Action::create("FileOpen",    Gtk::Stock::OPEN),
+  m_action_group->add(Gtk::Action::create("FileOpen",    Gtk::Stock::OPEN),
                     [this](){ on_open(); });
-  action_group->add(Gtk::Action::create("Save",        Gtk::Stock::SAVE),
+  m_action_group->add(Gtk::Action::create("Save",        Gtk::Stock::SAVE),
                     [this](){ on_save(); });
-  action_group->add(Gtk::Action::create("SaveAs",        Gtk::Stock::SAVE_AS),
+  m_action_group->add(Gtk::Action::create("SaveAs",        Gtk::Stock::SAVE_AS),
                     [this](){ on_save_as(); });
-  action_group->add(Gtk::Action::create("Close",       Gtk::Stock::CLOSE),
+  m_action_group->add(Gtk::Action::create("Close",       Gtk::Stock::CLOSE),
                     [this](){ on_close(); });
-  action_group->add(Gtk::Action::create("Quit",        Gtk::Stock::QUIT),
+  m_action_group->add(Gtk::Action::create("Quit",        Gtk::Stock::QUIT),
                     [this](){ on_quit(); });
 
-  action_group->add(Gtk::Action::create_with_icon_name("SaveScreenshot", "saveas", "Save Screenshot", "Save Screenshot"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("SaveScreenshot", "saveas", "Save Screenshot", "Save Screenshot"),
                     Gtk::AccelKey(GDK_KEY_F12, Gdk::CONTROL_MASK),
                     [this](){ on_save_screenshot(); });
 
@@ -271,183 +271,191 @@ EditorWindow::EditorWindow() :
     recent_action->set_filter(filter);
 
     recent_action->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_recent_file), recent_action));
-    action_group->add(recent_action,
+    m_action_group->add(recent_action,
                       [this](){ on_open(); });
   }
 
-  action_group->add(Gtk::Action::create("MenuEdit",    "_Edit"));
-  action_group->add(Gtk::Action::create("Undo",        Gtk::Stock::UNDO),
+  m_action_group->add(Gtk::Action::create("MenuEdit",    "_Edit"));
+  m_action_group->add(Gtk::Action::create("Undo",        Gtk::Stock::UNDO),
                     [this](){ on_undo(); });
-  action_group->add(Gtk::Action::create("Redo",        Gtk::Stock::REDO),
+  m_action_group->add(Gtk::Action::create("Redo",        Gtk::Stock::REDO),
                     [this](){ on_redo(); });
-  action_group->add(Gtk::Action::create("Cut",         Gtk::Stock::CUT),
+  m_action_group->add(Gtk::Action::create("Cut",         Gtk::Stock::CUT),
                     [this](){ on_cut(); });
-  action_group->add(Gtk::Action::create("Copy",        Gtk::Stock::COPY),
+  m_action_group->add(Gtk::Action::create("Copy",        Gtk::Stock::COPY),
                     [this](){ on_copy(); });
-  action_group->add(Gtk::Action::create("Paste",       Gtk::Stock::PASTE),
+  m_action_group->add(Gtk::Action::create("Paste",       Gtk::Stock::PASTE),
                     [this](){ on_paste(); });
-  action_group->add(Gtk::Action::create("SelectAll",       Gtk::Stock::SELECT_ALL),
+  m_action_group->add(Gtk::Action::create("SelectAll",       Gtk::Stock::SELECT_ALL),
                     Gtk::AccelKey("<control>a"),
                     [this](){ on_select_all(); });
 
-  action_group->add(Gtk::Action::create("Delete",      Gtk::Stock::DELETE),
+  m_action_group->add(Gtk::Action::create("Delete",      Gtk::Stock::DELETE),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_delete));
-  action_group->add(Gtk::Action::create_with_icon_name("Duplicate", "duplicate", "Duplicate Object", "Duplicate Object"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("Duplicate", "duplicate", "Duplicate Object", "Duplicate Object"),
                     Gtk::AccelKey(GDK_KEY_d, Gdk::CONTROL_MASK),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_duplicate));
 
-  action_group->add(Gtk::Action::create("MenuObject",    "_Object"));
-  action_group->add(Gtk::Action::create_with_icon_name("RaiseObjectToTop", "object_raise_to_top", "Raise To Top", "Raise Object to Top"),
+  m_action_group->add(Gtk::Action::create("MenuObject",    "_Object"));
+  m_action_group->add(Gtk::Action::create_with_icon_name("RaiseObjectToTop", "object_raise_to_top", "Raise To Top", "Raise Object to Top"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_raise_to_top));
-  action_group->add(Gtk::Action::create_with_icon_name("RaiseObject", "object_raise", "Raise", "Raise Object"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("RaiseObject", "object_raise", "Raise", "Raise Object"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_raise));
-  action_group->add(Gtk::Action::create_with_icon_name("LowerObject", "object_lower", "Lower", "Lower Object"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("LowerObject", "object_lower", "Lower", "Lower Object"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_lower));
-  action_group->add(Gtk::Action::create_with_icon_name("LowerObjectToBottom", "object_lower_to_bottom", "Lower To Bottom", "Lower Object to Bottom"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("LowerObjectToBottom", "object_lower_to_bottom", "Lower To Bottom", "Lower Object to Bottom"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_lower_to_bottom));
 
-  action_group->add(Gtk::Action::create_with_icon_name("ConnectParent", "connect_parent", "Connect Parent", "Connect Parent"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("ConnectParent", "connect_parent", "Connect Parent", "Connect Parent"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_connect_parent));
-  action_group->add(Gtk::Action::create_with_icon_name("ClearParent", "clear_parent", "Clear Parent", "Clear Parent"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("ClearParent", "clear_parent", "Clear Parent", "Clear Parent"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_clear_parent));
 
-  action_group->add(Gtk::Action::create_with_icon_name("ResetRotation", "reload", "Reset Rotation", "Reset Rotation"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("ResetRotation", "reload", "Reset Rotation", "Reset Rotation"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_reset_rotation));
-  action_group->add(Gtk::Action::create_with_icon_name("ResetScale", "reload", "Reset Scale", "Reset Scale"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("ResetScale", "reload", "Reset Scale", "Reset Scale"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_reset_scale));
 
-  action_group->add(Gtk::Action::create_with_icon_name("ObjectProperties", "properties", "Object Properties", "Object Properties"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("ObjectProperties", "properties", "Object Properties", "Object Properties"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_object_properties));
 
-  action_group->add(Gtk::Action::create_with_icon_name("HFlipObject", "object_hflip", "Horizontal Flip", "Horizontal Flip"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("HFlipObject", "object_hflip", "Horizontal Flip", "Horizontal Flip"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_hflip));
-  action_group->add(Gtk::Action::create_with_icon_name("VFlipObject", "object_vflip", "Vertical Flip", "Vertical Flip"),
+  m_action_group->add(Gtk::Action::create_with_icon_name("VFlipObject", "object_vflip", "Vertical Flip", "Vertical Flip"),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_vflip));
 
-  action_group->add(Gtk::Action::create("MenuView",    "_View"));
-  action_group->add(Gtk::Action::create("Zoom100",     Gtk::Stock::ZOOM_100),
+  m_action_group->add(Gtk::Action::create("MenuView",    "_View"));
+  m_action_group->add(Gtk::Action::create("Zoom100",     Gtk::Stock::ZOOM_100),
                     [this](){ on_zoom_100(); });
-  action_group->add(Gtk::Action::create("ZoomIn",      Gtk::Stock::ZOOM_IN),
+  m_action_group->add(Gtk::Action::create("ZoomIn",      Gtk::Stock::ZOOM_IN),
                     Gtk::AccelKey(GDK_KEY_plus, Gdk::CONTROL_MASK),
                     [this](){ on_zoom_in(); });
-  action_group->add(Gtk::Action::create("ZoomOut",     Gtk::Stock::ZOOM_OUT),
+  m_action_group->add(Gtk::Action::create("ZoomOut",     Gtk::Stock::ZOOM_OUT),
                     Gtk::AccelKey(GDK_KEY_minus, Gdk::CONTROL_MASK),
                     [this](){ on_zoom_out(); });
-  action_group->add(play_action = Gtk::ToggleAction::create("Play", Gtk::Stock::MEDIA_PLAY),
+  m_action_group->add(m_play_action = Gtk::ToggleAction::create("Play", Gtk::Stock::MEDIA_PLAY),
                     [this](){ on_play(); });
 
-  action_group->add(Gtk::Action::create("MenuHelp",    "_Help"));
-  action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
+  m_action_group->add(Gtk::Action::create("MenuHelp",    "_Help"));
+  m_action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
                     [this](){ on_about_clicked(); });
 
-  toggle_color_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleRGBAfLayer", "color", "Toogle RGBAf Layer", "Toogle RGBAf Layer");
-  toggle_light_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleLightLayer", "light", "Toogle Light Layer", "Toogle Light Layer");
-  toggle_highlight_layer = Gtk::ToggleAction::create_with_icon_name("ToggleHighlightLayer", "highlight", "Toogle Highlight Layer", "Toogle Highlight Layer");
-  toggle_control_layer   = Gtk::ToggleAction::create_with_icon_name("ToggleControlLayer", "control", "Toogle Control Layer", "Toogle Control Layer");
+  m_toggle_color_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleRGBAfLayer", "color", "Toogle RGBAf Layer", "Toogle RGBAf Layer");
+  m_toggle_light_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleLightLayer", "light", "Toogle Light Layer", "Toogle Light Layer");
+  m_toggle_highlight_layer = Gtk::ToggleAction::create_with_icon_name("ToggleHighlightLayer", "highlight", "Toogle Highlight Layer", "Toogle Highlight Layer");
+  m_toggle_control_layer   = Gtk::ToggleAction::create_with_icon_name("ToggleControlLayer", "control", "Toogle Control Layer", "Toogle Control Layer");
 
-  background_layer = Gtk::ToggleAction::create_with_icon_name("ToggleBackgroundLayer", "background_layer", "Toggle Background Layer", "Toggle Background Layer");
-  visible_layer    = Gtk::ToggleAction::create_with_icon_name("ToggleVisibleLayer", "draw_visible_layer", "Toggle Only Active Layer", "Toggle Only Active Layer");
-  grid_layer       = Gtk::ToggleAction::create_with_icon_name("ToggleGridLayer", "grid", "Toggle Grid Layer", "Toggle Grid Layer");
+  m_background_layer = Gtk::ToggleAction::create_with_icon_name("ToggleBackgroundLayer", "background_layer", "Toggle Background Layer", "Toggle Background Layer");
+  m_visible_layer    = Gtk::ToggleAction::create_with_icon_name("ToggleVisibleLayer", "draw_visible_layer", "Toggle Only Active Layer", "Toggle Only Active Layer");
+  m_grid_layer       = Gtk::ToggleAction::create_with_icon_name("ToggleGridLayer", "grid", "Toggle Grid Layer", "Toggle Grid Layer");
 
-  toggle_color_layer->set_active(true);
-  toggle_light_layer->set_active(false);
-  toggle_highlight_layer->set_active(true);
-  toggle_control_layer->set_active(true);
-  background_layer->set_active(true);
-  visible_layer->set_active(true);
-  grid_layer->set_active(false);
+  m_toggle_color_layer->set_active(true);
+  m_toggle_light_layer->set_active(false);
+  m_toggle_highlight_layer->set_active(true);
+  m_toggle_control_layer->set_active(true);
+  m_background_layer->set_active(true);
+  m_visible_layer->set_active(true);
+  m_grid_layer->set_active(false);
 
-  action_group->add(toggle_color_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_color_layer, static_cast<unsigned int>(SceneContext::COLORMAP)));
-  action_group->add(toggle_light_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_light_layer, static_cast<unsigned int>(SceneContext::LIGHTMAP)));
-  action_group->add(toggle_highlight_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_highlight_layer, static_cast<unsigned int>(SceneContext::HIGHLIGHTMAP)));
-  action_group->add(toggle_control_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), toggle_control_layer, static_cast<unsigned int>(SceneContext::CONTROLMAP)));
-  action_group->add(background_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_background_layer), background_layer));
-  action_group->add(visible_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_draw_only_active_layer), visible_layer));
-  action_group->add(grid_layer,
-                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_grid_layer), grid_layer));
+  m_action_group->add(m_toggle_color_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_color_layer, static_cast<unsigned int>(SceneContext::COLORMAP)));
+  m_action_group->add(m_toggle_light_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_light_layer, static_cast<unsigned int>(SceneContext::LIGHTMAP)));
+  m_action_group->add(m_toggle_highlight_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_highlight_layer, static_cast<unsigned int>(SceneContext::HIGHLIGHTMAP)));
+  m_action_group->add(m_toggle_control_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_render_layer), m_toggle_control_layer, static_cast<unsigned int>(SceneContext::CONTROLMAP)));
+  m_action_group->add(m_background_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_background_layer), m_background_layer));
+  m_action_group->add(m_visible_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_draw_only_active_layer), m_visible_layer));
+  m_action_group->add(m_grid_layer,
+                    sigc::bind(sigc::mem_fun(*this, &EditorWindow::toggle_grid_layer), m_grid_layer));
 
   // Tools
-  action_group->add(Gtk::Action::create("MenuTools",  "_Tools"));
+  m_action_group->add(Gtk::Action::create("MenuTools",  "_Tools"));
   Gtk::RadioButtonGroup tool_group;
 
-  select_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "SelectTool", "select_tool", "Select Tool", "Select Tool");
-  navgraph_insert_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "NavgraphInsertTool", "navgraph_insert_tool",   "Navgraph Insert Tool", "Navgraph Insert Tool");
-  zoom_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "ZoomTool", "zoom_tool",   "Zoom Tool", "Zoom Tool");
+  m_select_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "SelectTool", "select_tool", "Select Tool", "Select Tool");
+  m_navgraph_insert_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "NavgraphInsertTool", "navgraph_insert_tool",   "Navgraph Insert Tool", "Navgraph Insert Tool");
+  m_zoom_tool_action = Gtk::RadioAction::create_with_icon_name(tool_group, "ZoomTool", "zoom_tool",   "Zoom Tool", "Zoom Tool");
 
-  action_group->add(select_tool_action, sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), select_tool_action, select_tool.get()));
-  action_group->add(navgraph_insert_tool_action, sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), navgraph_insert_tool_action, navgraph_insert_tool.get()));
-  action_group->add(zoom_tool_action,   sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), zoom_tool_action, zoom_tool.get()));
+  m_action_group->add(m_select_tool_action, sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), m_select_tool_action, m_select_tool.get()));
+  m_action_group->add(m_navgraph_insert_tool_action, sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), m_navgraph_insert_tool_action, m_navgraph_insert_tool.get()));
+  m_action_group->add(m_zoom_tool_action,   sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_tool_select), m_zoom_tool_action, m_zoom_tool.get()));
 
   // signal_size_allocate().connect (sigc::mem_fun (*this, &EditorWindow::on_window_size_allocate), false);
   // signal_realize().connect (sigc::mem_fun (*this, &EditorWindow::on_window_realize));
 
-  ui_manager->insert_action_group(action_group);
+  m_ui_manager->insert_action_group(m_action_group);
 
-  ui_manager->add_ui_from_string(ui_info);
+  m_ui_manager->add_ui_from_string(ui_info);
 
-  add_accel_group(ui_manager->get_accel_group());
+  add_accel_group(m_ui_manager->get_accel_group());
 
-  notebook.signal_switch_page().connect([this](Gtk::Widget* widget, guint page_num){
+  m_notebook.signal_switch_page().connect([this](Gtk::Widget* widget, guint page_num){
     on_switch_page(widget, page_num);
   });
 
   // Disable unimplemented stuff:
-  action_group->get_action("Undo")->set_sensitive(false);
-  action_group->get_action("Redo")->set_sensitive(false);
+  m_action_group->get_action("Undo")->set_sensitive(false);
+  m_action_group->get_action("Redo")->set_sensitive(false);
 
-  Gtk::Toolbar* toolbar = static_cast<Gtk::Toolbar*>(ui_manager->get_widget("/ToolBar"));
-  toolbar->append(*(Gtk::make_managed<Gtk::SeparatorToolItem>()));
-  layer_widget = Gtk::make_managed<LayerWidget>();
-  toolbar->append(*layer_widget);
-  layer_widget->signal_layer_toggle.connect(sigc::mem_fun(*this, &EditorWindow::on_layer_toggle));
+  Gtk::MenuBar& menubar = dynamic_cast<Gtk::MenuBar&>(*m_ui_manager->get_widget("/MenuBar"));
+  Gtk::Toolbar& toolbar = dynamic_cast<Gtk::Toolbar&>(*m_ui_manager->get_widget("/ToolBar"));
+  Gtk::Toolbar& toolbox = dynamic_cast<Gtk::Toolbar&>(*m_ui_manager->get_widget("/ToolBox"));
 
-  layer_widget->signal_layer_toggle.connect([this](int layer, bool status){ on_layer_toggle(layer, status); });
+  toolbar.append(*(Gtk::make_managed<Gtk::SeparatorToolItem>()));
+  m_layer_widget = Gtk::make_managed<LayerWidget>();
+  toolbar.append(*m_layer_widget);
 
+  m_layer_widget->signal_layer_toggle.connect([this](int layer, bool status){ on_layer_toggle(layer, status); });
+
+  log_trace("--- trying orientation");
+  //toolbox.set_property("orientation", Gtk::ORIENTATION_VERTICAL);
+  log_trace("--- trying orientation: done");
+  //toolbox.set_property("toolbar-style", Gtk::TOOLBAR_ICONS);
+
+  log_trace("--- snip");
 
   // Packing
 
   // Main Vbox
-  vbox.pack_start(*ui_manager->get_widget("/MenuBar"), Gtk::PACK_SHRINK);
-  vbox.pack_start(*ui_manager->get_widget("/ToolBar"), Gtk::PACK_SHRINK);
-  vbox.add(hbox);
-
-  status_hbox.pack_start(status_label, Gtk::PACK_SHRINK);
-  status_hbox.pack_start(statusbar, Gtk::PACK_EXPAND_WIDGET);
-  vbox.pack_end(status_hbox, Gtk::PACK_SHRINK);
+  m_vbox.pack_start(menubar, Gtk::PACK_SHRINK);
+  m_vbox.pack_start(toolbar, Gtk::PACK_SHRINK);
+  //vbox.pack_start(toolbox, Gtk::PACK_SHRINK);
+  m_vbox.add(m_hbox);
+  log_trace("--- snip");
+  m_status_hbox.pack_start(m_status_label, Gtk::PACK_SHRINK);
+  m_status_hbox.pack_start(m_statusbar, Gtk::PACK_EXPAND_WIDGET);
+  m_vbox.pack_end(m_status_hbox, Gtk::PACK_SHRINK);
 
   // Hbox
-  hbox.pack_start(*ui_manager->get_widget("/ToolBox"), Gtk::PACK_SHRINK);
-  //dynamic_cast<Gtk::Toolbar*>(ui_manager->get_widget("/ToolBox"))->set_property("orientation", Gtk::ORIENTATION_VERTICAL);
-  // myToolbar->set_property("toolbar-style", Gtk::TOOLBAR_ICONS);
-
-  hbox.add(hpaned);
+  m_hbox.pack_start(toolbox, Gtk::PACK_SHRINK);
+  m_hbox.add(m_hpaned);
+  log_trace("--- snip");
 
   // vpaned.set_size_request(250, -1);
-  //object_selector.set_size_request(250, 300);
-  //layer_manager.set_size_request(250, 300);
+  m_object_selector.set_size_request(250, 300);
+  m_layer_manager.set_size_request(250, 300);
+  log_trace("--- snip");
+  m_hpaned.pack1(m_notebook,     Gtk::EXPAND);
+  m_hpaned.pack2(m_sidebar_vbox, Gtk::SHRINK);
 
-  hpaned.pack1(notebook,     Gtk::EXPAND);
-  hpaned.pack2(sidebar_vbox, Gtk::SHRINK);
+  m_sidebar_vbox.pack_start(m_vpaned, Gtk::PACK_EXPAND_WIDGET);
+  m_sidebar_vbox.pack_start(m_minimap_widget, Gtk::PACK_SHRINK);
 
-  sidebar_vbox.pack_start(vpaned, Gtk::PACK_EXPAND_WIDGET);
-  sidebar_vbox.pack_start(minimap_widget, Gtk::PACK_SHRINK);
+  m_vpaned.pack1(m_object_selector, Gtk::EXPAND);
+  m_vpaned.pack2(m_layer_manager, Gtk::SHRINK);
 
-  vpaned.pack1(object_selector, Gtk::EXPAND);
-  vpaned.pack2(layer_manager, Gtk::SHRINK);
-
-  hpaned.set_position(970);
-  vpaned.set_position(420);
-
+  m_hpaned.set_position(970);
+  m_vpaned.set_position(420);
+  log_trace("--- snip");
   // Window
-  add(vbox);
-
-  object_selector.populate();
+  add(m_vbox);
+  log_trace("--- snip");
+  m_object_selector.populate();
+  log_trace("--- construction doene");
 }
 
 EditorWindow::~EditorWindow()
@@ -491,13 +499,13 @@ EditorWindow::on_new()
     animation_widget->set_timeline(timeline);
   }
 
-  Glib::ustring title = Glib::ustring::compose("Unsaved Sector %1", notebook.get_n_pages()+1);
-  int new_page = notebook.append_page(*paned, title);
+  Glib::ustring title = Glib::ustring::compose("Unsaved Sector %1", m_notebook.get_n_pages()+1);
+  int new_page = m_notebook.append_page(*paned, title);
   paned->show_all();
-  notebook.set_current_page(new_page);
+  m_notebook.set_current_page(new_page);
 
-  layer_manager.set_model(&wst->get_document().get_sector_model());
-  layer_widget->update(wst->get_select_mask());
+  m_layer_manager.set_model(&wst->get_document().get_sector_model());
+  m_layer_widget->update(wst->get_select_mask());
 }
 
 void
@@ -511,8 +519,8 @@ EditorWindow::load_file(const std::string& filename)
 
     wst->load_file(filename);
     wst->set_filename(filename);
-    notebook.set_tab_label_text(*notebook.get_nth_page(notebook.get_current_page()), Glib::path_get_basename(filename));
-    layer_manager.set_model(&wst->get_document().get_sector_model());
+    m_notebook.set_tab_label_text(*m_notebook.get_nth_page(m_notebook.get_current_page()), Glib::path_get_basename(filename));
+    m_layer_manager.set_model(&wst->get_document().get_sector_model());
     animation_widget->set_timeline(wst->get_document().get_sector_model().get_timeline());
     print("Loaded: " + filename);
   }
@@ -609,8 +617,8 @@ EditorWindow::on_save_as()
         wst->get_document().get_sector_model().write(writer);
         wst->set_filename(filename);
 
-        int page = notebook.get_current_page();
-        notebook.set_tab_label_text(*notebook.get_nth_page(page), Glib::path_get_basename(filename));
+        int page = m_notebook.get_current_page();
+        m_notebook.set_tab_label_text(*m_notebook.get_nth_page(page), Glib::path_get_basename(filename));
         add_recent_file(filename);
         print("Wrote: " + filename);
         break;
@@ -628,14 +636,14 @@ EditorWindow::on_save_as()
 void
 EditorWindow::on_save_screenshot()
 {
-  int page = notebook.get_current_page();
+  int page = m_notebook.get_current_page();
   if (page == -1)
   {
     // do nothing;
   }
   else
   {
-    if (WindstilleWidget* wst = static_cast<WindstilleWidget*>(notebook.get_nth_page(page)))
+    if (WindstilleWidget* wst = static_cast<WindstilleWidget*>(m_notebook.get_nth_page(page)))
     {
       Gtk::FileChooserDialog dialog("Save Screenshot",
                                     Gtk::FILE_CHOOSER_ACTION_SAVE);
@@ -671,13 +679,13 @@ EditorWindow::on_save_screenshot()
 void
 EditorWindow::on_close()
 {
-  int page = notebook.get_current_page();
+  int page = m_notebook.get_current_page();
   if (page != -1)
   {
-    notebook.remove_page(page);
+    m_notebook.remove_page(page);
 
     if (!get_windstille_widget())
-      layer_manager.set_model(nullptr);
+      m_layer_manager.set_model(nullptr);
   }
 }
 
@@ -686,11 +694,11 @@ EditorWindow::show_minimap(bool v)
 {
   if (v)
   {
-    minimap_widget.show();
+    m_minimap_widget.show();
   }
   else
   {
-    minimap_widget.hide();
+    m_minimap_widget.hide();
   }
 }
 
@@ -723,8 +731,8 @@ EditorWindow::update_undo_state()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
   {
-    action_group->get_action("Undo")->set_sensitive(wst->get_document().has_undo());
-    action_group->get_action("Redo")->set_sensitive(wst->get_document().has_redo());
+    m_action_group->get_action("Undo")->set_sensitive(wst->get_document().has_undo());
+    m_action_group->get_action("Redo")->set_sensitive(wst->get_document().has_redo());
   }
 }
 
@@ -756,7 +764,7 @@ EditorWindow::on_tool_select(Glib::RefPtr<Gtk::RadioAction> action, Tool* tool)
   //std::cout << "on_tool_select()" << action->get_active() << std::endl;
   if (action->get_active())
   {
-    current_tool = tool;
+    m_current_tool = tool;
     if (WindstilleWidget* wst = get_windstille_widget())
       wst->queue_draw();
   }
@@ -870,26 +878,26 @@ EditorWindow::toggle_grid_layer(Glib::RefPtr<Gtk::ToggleAction> action)
 Tool*
 EditorWindow::get_current_tool() const
 {
-  return current_tool;
+  return m_current_tool;
 }
 
 ScrollTool*
 EditorWindow::get_scroll_tool() const
 {
-  return scroll_tool.get();
+  return m_scroll_tool.get();
 }
 
 TimelineWidget*
 EditorWindow::get_timeline_widget()
 {
-  int page = notebook.get_current_page();
+  int page = m_notebook.get_current_page();
   if (page == -1)
   {
     return nullptr;
   }
   else
   {
-    if (Gtk::VPaned* paned = dynamic_cast<Gtk::VPaned*>(notebook.get_nth_page(page)))
+    if (Gtk::VPaned* paned = dynamic_cast<Gtk::VPaned*>(m_notebook.get_nth_page(page)))
     {
       if (AnimationWidget* animation_widget = dynamic_cast<AnimationWidget*>(paned->get_child2()))
       {
@@ -910,14 +918,14 @@ EditorWindow::get_timeline_widget()
 AnimationWidget*
 EditorWindow::get_animation_widget()
 {
-  int page = notebook.get_current_page();
+  int page = m_notebook.get_current_page();
   if (page == -1)
   {
     return nullptr;
   }
   else
   {
-    if (Gtk::VPaned* paned = dynamic_cast<Gtk::VPaned*>(notebook.get_nth_page(page)))
+    if (Gtk::VPaned* paned = dynamic_cast<Gtk::VPaned*>(m_notebook.get_nth_page(page)))
     {
       return dynamic_cast<AnimationWidget*>(paned->get_child2());
     }
@@ -944,14 +952,14 @@ EditorWindow::get_document()
 WindstilleWidget*
 EditorWindow::get_windstille_widget()
 {
-  int page = notebook.get_current_page();
+  int page = m_notebook.get_current_page();
   if (page == -1)
   {
     return nullptr;
   }
   else
   {
-    if (Gtk::VPaned* paned = dynamic_cast<Gtk::VPaned*>(notebook.get_nth_page(page)))
+    if (Gtk::VPaned* paned = dynamic_cast<Gtk::VPaned*>(m_notebook.get_nth_page(page)))
     {
       return dynamic_cast<WindstilleWidget*>(paned->get_child1());
     }
@@ -969,23 +977,25 @@ EditorWindow::on_switch_page(Gtk::Widget* page, guint page_num)
 
   if (WindstilleWidget* wst = get_windstille_widget())
   {
-    layer_manager.set_model(&wst->get_document().get_sector_model());
-    layer_widget->update(wst->get_select_mask());
+    if (wst->get_sc()) {
+      m_layer_manager.set_model(&wst->get_document().get_sector_model());
+      m_layer_widget->update(wst->get_select_mask());
 
-    toggle_color_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::COLORMAP);
-    toggle_light_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::LIGHTMAP);
-    toggle_highlight_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::HIGHLIGHTMAP);
-    toggle_control_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::CONTROLMAP);
+      m_toggle_color_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::COLORMAP);
+      m_toggle_light_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::LIGHTMAP);
+      m_toggle_highlight_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::HIGHLIGHTMAP);
+      m_toggle_control_layer->set_active(wst->get_sc()->get_render_mask() & SceneContext::CONTROLMAP);
 
-    background_layer->set_active(wst->get_draw_background_pattern());
-    visible_layer->set_active(wst->get_draw_only_active_layer());
-    grid_layer->set_active(wst->get_enable_grid());
+      m_background_layer->set_active(wst->get_draw_background_pattern());
+      m_visible_layer->set_active(wst->get_draw_only_active_layer());
+      m_grid_layer->set_active(wst->get_enable_grid());
 
-    update_undo_state();
+      update_undo_state();
+    }
   }
   else
   {
-    layer_manager.set_model(nullptr);
+    m_layer_manager.set_model(nullptr);
   }
 }
 
@@ -1024,17 +1034,17 @@ EditorWindow::on_layer_toggle(int layer, bool status_)
 void
 EditorWindow::on_play()
 {
-  if (play_action->get_active())
+  if (m_play_action->get_active())
   {
     //std::cout << "Play" << std::endl;
-    timeout_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &EditorWindow::on_timeout),
+    m_timeout_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &EditorWindow::on_timeout),
                                                         50,
                                                         Glib::PRIORITY_DEFAULT);
   }
   else
   {
     //std::cout << "Stop" << std::endl;
-    timeout_connection.disconnect();
+    m_timeout_connection.disconnect();
   }
 }
 
@@ -1043,7 +1053,7 @@ EditorWindow::on_cut()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
   {
-    clipboard = wst->get_document().get_selection()->clone();
+    m_clipboard = wst->get_document().get_selection()->clone();
     wst->get_document().selection_delete();
     queue_draw();
   }
@@ -1054,7 +1064,7 @@ EditorWindow::on_copy()
 {
   if (WindstilleWidget* wst = get_windstille_widget())
   {
-    clipboard = wst->get_document().get_selection()->clone();
+    m_clipboard = wst->get_document().get_selection()->clone();
   }
 }
 
@@ -1083,27 +1093,27 @@ EditorWindow::on_new_layer()
   if (WindstilleWidget* wst = get_windstille_widget())
   {
     wst->get_document().layer_add(wst->get_current_layer_path());
-    layer_manager.get_treeview().expand_all();
+    m_layer_manager.get_treeview().expand_all();
   }
 }
 
 void
 EditorWindow::on_paste()
 {
-  if (clipboard.get())
+  if (m_clipboard.get())
   {
     if (WindstilleWidget* wst = get_windstille_widget())
     {
       wst->get_document().undo_group_begin();
       LayerHandle layer = wst->get_current_layer();
-      for(Selection::reverse_iterator i = clipboard->rbegin(); i != clipboard->rend(); ++i)
+      for(Selection::reverse_iterator i = m_clipboard->rbegin(); i != m_clipboard->rend(); ++i)
       {
         wst->get_document().object_add(layer, *i);
       }
       wst->get_document().undo_group_end();
 
-      wst->get_document().set_selection(clipboard);
-      clipboard = clipboard->clone();
+      wst->get_document().set_selection(m_clipboard);
+      m_clipboard = m_clipboard->clone();
       queue_draw();
     }
   }
@@ -1166,14 +1176,14 @@ EditorWindow::add_recent_file(const std::string& filename)
 bool
 EditorWindow::remove_message(guint id)
 {
-  statusbar.remove_message(id);
+  m_statusbar.remove_message(id);
   return false;
 }
 
 void
 EditorWindow::print(const std::string& text)
 {
-  guint id = statusbar.push(text);
+  guint id = m_statusbar.push(text);
   std::cout << "[LOG] " << text << std::endl;
   Glib::signal_timeout().connect(sigc::bind(sigc::mem_fun(*this, &EditorWindow::remove_message), id), 6000);
 }
@@ -1181,7 +1191,7 @@ EditorWindow::print(const std::string& text)
 void
 EditorWindow::print_coordinates(const std::string& text)
 {
-  status_label.set_text(text);
+  m_status_label.set_text(text);
 }
 
 /* EOF */
