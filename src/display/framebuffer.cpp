@@ -111,6 +111,9 @@ Framebuffer::create_with_texture_internal(GLenum target, geom::isize const& size
   m_texture = Texture::create(target, size);
   m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, size, multisample);
 
+  int previous_framebuffer = 0;
+  glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previous_framebuffer);
+
   // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
   glBindFramebuffer(GL_FRAMEBUFFER, m_handle);
 
@@ -123,7 +126,7 @@ Framebuffer::create_with_texture_internal(GLenum target, geom::isize const& size
 
   check_completness();
 
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glBindFramebuffer(GL_FRAMEBUFFER, previous_framebuffer);
 }
 
 void
@@ -135,6 +138,9 @@ Framebuffer::create_internal(GLenum format, geom::isize const& size, int multisa
   m_color_buffer = Renderbuffer::create(format, size, multisample);
   m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, size, multisample);
 
+  int previous_framebuffer = 0;
+  glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previous_framebuffer);
+
   // FIXME: Should use push/pop_framebuffer instead, but don't have pointer to Framebuffer here
   glBindFramebuffer(GL_FRAMEBUFFER, m_handle);
 
@@ -145,7 +151,7 @@ Framebuffer::create_internal(GLenum format, geom::isize const& size, int multisa
 
   check_completness();
 
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glBindFramebuffer(GL_FRAMEBUFFER, previous_framebuffer);
 
   assert_gl();
 }

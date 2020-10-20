@@ -37,6 +37,7 @@
 #include "scenegraph/vertex_array_drawable.hpp"
 
 namespace {
+int g_default_framebuffer = 0;
 std::vector<FramebufferPtr> framebuffers;
 
 const char default_vert_source[] = R"(#version 330 core
@@ -589,6 +590,12 @@ void
 GraphicsContext::push_framebuffer(FramebufferPtr framebuffer)
 {
   assert_gl();
+
+  if (framebuffers.empty()) {
+    g_default_framebuffer = 0;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &g_default_framebuffer);
+  }
+
   framebuffers.push_back(framebuffer);
   glBindFramebuffer(GL_FRAMEBUFFER, framebuffers.back()->get_handle());
   assert_gl();
@@ -609,7 +616,7 @@ GraphicsContext::pop_framebuffer()
   }
   else
   {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, g_default_framebuffer);
   }
 
   assert_gl();
