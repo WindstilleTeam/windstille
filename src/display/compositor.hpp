@@ -37,6 +37,9 @@ public:
 
   void render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);
 
+  geom::isize get_window_size() const;
+  geom::isize get_viewport_size() const;
+
 private:
   std::unique_ptr<CompositorImpl> impl;
 };

@@ -52,4 +52,16 @@ Compositor::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const 
   impl->render(gc, sc, sg, state);
 }
 
+geom::isize
+Compositor::get_window_size() const
+{
+  return impl->get_window_size();
+}
+
+geom::isize
+Compositor::get_viewport_size() const
+{
+  return impl->get_viewport_size();
+}
+
 /* EOF */

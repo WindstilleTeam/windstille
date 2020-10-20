@@ -42,6 +42,9 @@ public:
   {}
 
   virtual void render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& state) =0;
+
+  geom::isize get_window_size() const { return m_window; }
+  geom::isize get_viewport_size() const { return m_viewport; }
 };
 
 #endif
