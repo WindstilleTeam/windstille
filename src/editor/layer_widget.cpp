@@ -17,45 +17,46 @@
 */
 
 #include <iostream>
-#include <gtkmm/togglebutton.h>
+#include <gtkmm/container.h>
+#include <gtkmm/label.h>
 #include <gtkmm/separator.h>
+#include <gtkmm/togglebutton.h>
 
 #include "editor/select_mask.hpp"
 #include "editor/layer_widget.hpp"
 
 LayerWidget::LayerWidget() :
-  table(2, 9, false),
-  buttons(),
-  signal_layer_toggle()
+  signal_layer_toggle(),
+  m_grid(),
+  m_buttons()
 {
   int layer_number = 0;
-  for(int y = 0; y < 2; ++y)
-    for(int x = 0; x < 9; ++x)
+  for (int y = 0; y < 2; ++y) {
+    for(int x = 0; x < 8 + 1; ++x)
     {
       if ((x+1) % 5)
       {
-        Gtk::ToggleButton* button = Gtk::make_managed<Gtk::ToggleButton>();
-        button->set_size_request(16, 16);
-        table.attach(*button, x, x+1, y, y+1);
+        Gtk::ToggleButton& button = *Gtk::make_managed<Gtk::ToggleButton>();
+        button.set_size_request(16, 16);
+        m_grid.attach(button, x, y, 1, 1);
 
-        button->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &LayerWidget::on_layer_toggle),
-                                                    button, layer_number));
-        buttons.push_back(button);
+        button.signal_toggled().connect([this, &button, layer_number]{
+          on_layer_toggle(&button, layer_number);
+        });
+
+        m_buttons.push_back(&button);
         layer_number += 1;
       }
       else
       {
-        if (y == 0)
-        {
-          Gtk::VSeparator* separator = Gtk::make_managed<Gtk::VSeparator>();
-          //Gtk::Widget* separator = Gtk::make_managed<Gtk::Widget>());
-          separator->set_size_request(12, -1);
-          table.attach(*separator, x, x+1, 0, 2);
-        }
+        Gtk::VSeparator& separator = *Gtk::make_managed<Gtk::VSeparator>();
+        separator.set_size_request(12, -1);
+        m_grid.attach(separator, x, 0, 1, 1);
       }
     }
+  }
 
-  add(table);
+  add(m_grid);
 }
 
 LayerWidget::~LayerWidget()
@@ -73,7 +74,7 @@ LayerWidget::update(const SelectMask& layers)
 {
   for(int i = 0; i < layers.size(); ++i)
   {
-    buttons[i]->set_active(layers.get(i));
+    m_buttons[i]->set_active(layers.get(i));
   }
 }
 
@@ -83,7 +84,7 @@ LayerWidget::get_select_mask() const
   SelectMask select_mask;
   for(int i = 0; i < select_mask.size(); ++i)
   {
-    select_mask.set(i, buttons[i]->get_active());
+    select_mask.set(i, m_buttons[i]->get_active());
   }
   return select_mask;
 }

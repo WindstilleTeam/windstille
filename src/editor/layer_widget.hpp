@@ -20,15 +20,11 @@
 #define HEADER_WINDSTILLE_EDITOR_LAYER_WIDGET_HPP
 
 #include <gtkmm/toolitem.h>
-#include <gtkmm/table.h>
+#include <gtkmm/grid.h>
 #include <gtkmm/togglebutton.h>
 
 class LayerWidget : public Gtk::ToolItem
 {
-private:
-  Gtk::Table table;
-  std::vector<Gtk::ToggleButton*> buttons;
-
 public:
   LayerWidget();
   ~LayerWidget() override;
@@ -39,6 +35,10 @@ public:
   SelectMask get_select_mask() const;
 
   sigc::signal<void, int, bool> signal_layer_toggle;
+
+private:
+  Gtk::Grid m_grid;
+  std::vector<Gtk::ToggleButton*> m_buttons;
 
 private:
   LayerWidget(const LayerWidget&);
