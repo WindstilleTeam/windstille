@@ -18,6 +18,7 @@
 
 #include "gui/button.hpp"
 
+#include <logmich/log.hpp>
 #include <wstinput/controller.hpp>
 
 #include "app/app.hpp"
@@ -25,7 +26,6 @@
 #include "display/graphics_context.hpp"
 #include "font/fonts.hpp"
 #include "gui/tab_component.hpp"
-#include "util/log.hpp"
 
 namespace gui {
 

@@ -26,6 +26,7 @@
 #include <gdkmm/glcontext.h>
 
 #include <argparser.hpp>
+#include <logmich/log.hpp>
 
 #include "display/surface_manager.hpp"
 #include "display/texture_manager.hpp"
@@ -34,7 +35,6 @@
 #include "editor/main.hpp"
 #include "sprite2d/manager.hpp"
 #include "sprite3d/manager.hpp"
-#include "util/log.hpp"
 #include "util/system.hpp"
 
 int
@@ -59,7 +59,7 @@ WindstilleEditor::main(int argc, char** argv)
       switch (opt.key)
       {
         case 'D':
-          g_logger.set_log_level(Logger::kTemp);
+          logmich::g_logger.set_log_level(logmich::LogLevel::TRACE);
           break;
 
         case 'd':

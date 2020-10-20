@@ -18,10 +18,11 @@
 
 #include <iostream>
 
+#include <logmich/log.hpp>
+
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/selection.hpp"
-#include "util/log.hpp"
 
 Selection::Selection() :
   objects(),
@@ -103,7 +104,7 @@ Selection::contains_parent(ObjectModelHandle object)
 void
 Selection::on_move_start()
 {
-  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size()); // NOLINT
+  log_debug("{} objects: {} object_orig_pos: {}", static_cast<void*>(this), objects.size(), object_orig_pos.size());
 
   moving = true;
 
@@ -132,7 +133,7 @@ Selection::on_move_start()
 void
 Selection::on_move_update(const glm::vec2& offset)
 {
-  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size()); // NOLINT
+  log_debug("{} objects: {} object_orig_pos: {}", static_cast<void*>(this), objects.size(), object_orig_pos.size());
 
   if (!object_orig_pos.empty())
   {
@@ -149,7 +150,7 @@ Selection::on_move_update(const glm::vec2& offset)
 void
 Selection::on_move_end(WindstilleWidget& wst, const glm::vec2& offset)
 {
-  log_debug(this << " objects: " << objects.size() << " object_orig_pos: " << object_orig_pos.size()); // NOLINT
+  log_debug("{} objects: {} object_orig_pos: {}", static_cast<void*>(this), objects.size(), object_orig_pos.size());
 
   moving = false;
 

@@ -18,6 +18,7 @@
 
 #include "gui/automap.hpp"
 
+#include <logmich/log.hpp>
 #include <wstinput/controller.hpp>
 
 #include "app/controller_def.hpp"
@@ -26,7 +27,6 @@
 #include "display/surface_drawing_parameters.hpp"
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
-#include "util/log.hpp"
 
 namespace gui {
 

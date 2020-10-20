@@ -20,11 +20,12 @@
 
 #include <wstinput/controller.hpp>
 
+#include <logmich/log.hpp>
+
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "display/graphics_context.hpp"
 #include "font/fonts.hpp"
-#include "util/log.hpp"
 
 namespace gui {
 

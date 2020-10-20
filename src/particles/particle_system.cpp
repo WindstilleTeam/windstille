@@ -21,6 +21,7 @@
 #include <iostream>
 
 #include <glm/gtc/constants.hpp>
+#include <logmich/log.hpp>
 
 #include "display/scene_context.hpp"
 #include "particles/deform_drawer.hpp"
@@ -28,7 +29,6 @@
 #include "particles/spark_drawer.hpp"
 #include "particles/surface_drawer.hpp"
 #include "util/file_reader.hpp"
-#include "util/log.hpp"
 
 ParticleSystem::ParticleSystem(ReaderMapping const& props,
                                SurfaceManager& surface_manager)
