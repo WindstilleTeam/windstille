@@ -411,21 +411,16 @@ EditorWindow::EditorWindow() :
 
   m_layer_widget->signal_layer_toggle.connect([this](int layer, bool status){ on_layer_toggle(layer, status); });
 
-  log_trace("--- trying orientation");
-  //toolbox.set_property("orientation", Gtk::ORIENTATION_VERTICAL);
-  log_trace("--- trying orientation: done");
-  //toolbox.set_property("toolbar-style", Gtk::TOOLBAR_ICONS);
-
-  log_trace("--- snip");
+  toolbox.set_property("orientation", Gtk::ORIENTATION_VERTICAL);
+  toolbox.set_property("toolbar-style", Gtk::TOOLBAR_ICONS);
 
   // Packing
 
   // Main Vbox
   m_vbox.pack_start(menubar, Gtk::PACK_SHRINK);
   m_vbox.pack_start(toolbar, Gtk::PACK_SHRINK);
-  //vbox.pack_start(toolbox, Gtk::PACK_SHRINK);
   m_vbox.add(m_hbox);
-  log_trace("--- snip");
+
   m_status_hbox.pack_start(m_status_label, Gtk::PACK_SHRINK);
   m_status_hbox.pack_start(m_statusbar, Gtk::PACK_EXPAND_WIDGET);
   m_vbox.pack_end(m_status_hbox, Gtk::PACK_SHRINK);
@@ -433,29 +428,26 @@ EditorWindow::EditorWindow() :
   // Hbox
   m_hbox.pack_start(toolbox, Gtk::PACK_SHRINK);
   m_hbox.add(m_hpaned);
-  log_trace("--- snip");
 
   // vpaned.set_size_request(250, -1);
-  m_object_selector.set_size_request(250, 300);
-  m_layer_manager.set_size_request(250, 300);
-  log_trace("--- snip");
-  m_hpaned.pack1(m_notebook,     Gtk::EXPAND);
-  m_hpaned.pack2(m_sidebar_vbox, Gtk::SHRINK);
+  //m_object_selector.set_size_request(250, 300);
+  //m_layer_manager.set_size_request(250, 300);
 
-  m_sidebar_vbox.pack_start(m_vpaned, Gtk::PACK_EXPAND_WIDGET);
-  m_sidebar_vbox.pack_start(m_minimap_widget, Gtk::PACK_SHRINK);
+  m_hpaned.pack1(m_notebook,     Gtk::EXPAND);
+  m_hpaned.pack2(m_sidebar_vbox);
 
   m_vpaned.pack1(m_object_selector, Gtk::EXPAND);
   m_vpaned.pack2(m_layer_manager, Gtk::SHRINK);
 
+  m_sidebar_vbox.pack_start(m_vpaned, Gtk::PACK_EXPAND_WIDGET);
+  //m_sidebar_vbox.pack_start(m_minimap_widget, Gtk::PACK_SHRINK);
+
   m_hpaned.set_position(970);
   m_vpaned.set_position(420);
-  log_trace("--- snip");
+
   // Window
   add(m_vbox);
-  log_trace("--- snip");
   m_object_selector.populate();
-  log_trace("--- construction doene");
 }
 
 EditorWindow::~EditorWindow()
