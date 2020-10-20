@@ -60,7 +60,7 @@ private:
   Gtk::VPaned vpaned;
   Gtk::HBox      status_hbox;
   Gtk::Label     status_label;
-  Gtk::Statusbar status;
+  Gtk::Statusbar statusbar;
 
   Glib::RefPtr<Gtk::UIManager>   ui_manager;
   Glib::RefPtr<Gtk::ActionGroup> action_group;

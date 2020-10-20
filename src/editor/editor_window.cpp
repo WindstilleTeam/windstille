@@ -21,20 +21,23 @@
 #include <fstream>
 #include <iostream>
 
-#include <glibmm/main.h>
-#include <glibmm/convert.h>
 #include <gdkmm/pixbuf.h>
+#include <glibmm/convert.h>
+#include <glibmm/main.h>
 #include <glibmm/miscutils.h>
-#include <gtkmm/filechooserdialog.h>
 #include <gtkmm/actiongroup.h>
+#include <gtkmm/filechooserdialog.h>
+#include <gtkmm/menubar.h>
+#include <gtkmm/paned.h>
 #include <gtkmm/radioaction.h>
 #include <gtkmm/recentaction.h>
 #include <gtkmm/recentmanager.h>
-#include <gtkmm/uimanager.h>
-#include <gtkmm/toolbar.h>
-#include <gtkmm/stock.h>
-#include <gtkmm/paned.h>
 #include <gtkmm/separatortoolitem.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/toolbar.h>
+#include <gtkmm/uimanager.h>
+
+#include <logmich/log.hpp>
 
 #include "display/scene_context.hpp"
 #include "editor/windstille_widget.hpp"
@@ -65,7 +68,7 @@ EditorWindow::EditorWindow() :
   vpaned(),
   status_hbox(),
   status_label(),
-  status(),
+  statusbar(),
   ui_manager(Gtk::UIManager::create()),
   action_group(Gtk::ActionGroup::create("EditorWindow")),
   share_list(),
@@ -234,21 +237,21 @@ EditorWindow::EditorWindow() :
 
   action_group->add(Gtk::Action::create("MenuFile",    "_File"));
   action_group->add(Gtk::Action::create("New",         Gtk::Stock::NEW),
-                    sigc::mem_fun(*this, &EditorWindow::on_new));
+                    [this](){ on_new(); });
   action_group->add(Gtk::Action::create("FileOpen",    Gtk::Stock::OPEN),
-                    sigc::mem_fun(*this, &EditorWindow::on_open));
+                    [this](){ on_open(); });
   action_group->add(Gtk::Action::create("Save",        Gtk::Stock::SAVE),
-                    sigc::mem_fun(*this, &EditorWindow::on_save));
+                    [this](){ on_save(); });
   action_group->add(Gtk::Action::create("SaveAs",        Gtk::Stock::SAVE_AS),
-                    sigc::mem_fun(*this, &EditorWindow::on_save_as));
+                    [this](){ on_save_as(); });
   action_group->add(Gtk::Action::create("Close",       Gtk::Stock::CLOSE),
-                    sigc::mem_fun(*this, &EditorWindow::on_close));
+                    [this](){ on_close(); });
   action_group->add(Gtk::Action::create("Quit",        Gtk::Stock::QUIT),
-                    sigc::mem_fun(*this, &EditorWindow::on_quit));
+                    [this](){ on_quit(); });
 
   action_group->add(Gtk::Action::create_with_icon_name("SaveScreenshot", "saveas", "Save Screenshot", "Save Screenshot"),
                     Gtk::AccelKey(GDK_KEY_F12, Gdk::CONTROL_MASK),
-                    sigc::mem_fun(*this, &EditorWindow::on_save_screenshot));
+                    [this](){ on_save_screenshot(); });
 
   {
     Glib::RefPtr<Gtk::RecentAction> recent_action = Gtk::RecentAction::create("FileRecentFiles", Gtk::Stock::OPEN);
@@ -269,23 +272,23 @@ EditorWindow::EditorWindow() :
 
     recent_action->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*this, &EditorWindow::on_recent_file), recent_action));
     action_group->add(recent_action,
-                      sigc::mem_fun(*this, &EditorWindow::on_open));
+                      [this](){ on_open(); });
   }
 
   action_group->add(Gtk::Action::create("MenuEdit",    "_Edit"));
   action_group->add(Gtk::Action::create("Undo",        Gtk::Stock::UNDO),
-                    sigc::mem_fun(*this, &EditorWindow::on_undo));
+                    [this](){ on_undo(); });
   action_group->add(Gtk::Action::create("Redo",        Gtk::Stock::REDO),
-                    sigc::mem_fun(*this, &EditorWindow::on_redo));
+                    [this](){ on_redo(); });
   action_group->add(Gtk::Action::create("Cut",         Gtk::Stock::CUT),
-                    sigc::mem_fun(*this, &EditorWindow::on_cut));
+                    [this](){ on_cut(); });
   action_group->add(Gtk::Action::create("Copy",        Gtk::Stock::COPY),
-                    sigc::mem_fun(*this, &EditorWindow::on_copy));
+                    [this](){ on_copy(); });
   action_group->add(Gtk::Action::create("Paste",       Gtk::Stock::PASTE),
-                    sigc::mem_fun(*this, &EditorWindow::on_paste));
+                    [this](){ on_paste(); });
   action_group->add(Gtk::Action::create("SelectAll",       Gtk::Stock::SELECT_ALL),
                     Gtk::AccelKey("<control>a"),
-                    sigc::mem_fun(*this, &EditorWindow::on_select_all));
+                    [this](){ on_select_all(); });
 
   action_group->add(Gtk::Action::create("Delete",      Gtk::Stock::DELETE),
                     sigc::bind(sigc::mem_fun(*this, &EditorWindow::call_with_document), &Document::selection_delete));
@@ -323,19 +326,19 @@ EditorWindow::EditorWindow() :
 
   action_group->add(Gtk::Action::create("MenuView",    "_View"));
   action_group->add(Gtk::Action::create("Zoom100",     Gtk::Stock::ZOOM_100),
-                    sigc::mem_fun(*this, &EditorWindow::on_zoom_100));
+                    [this](){ on_zoom_100(); });
   action_group->add(Gtk::Action::create("ZoomIn",      Gtk::Stock::ZOOM_IN),
                     Gtk::AccelKey(GDK_KEY_plus, Gdk::CONTROL_MASK),
-                    sigc::mem_fun(*this, &EditorWindow::on_zoom_in));
+                    [this](){ on_zoom_in(); });
   action_group->add(Gtk::Action::create("ZoomOut",     Gtk::Stock::ZOOM_OUT),
                     Gtk::AccelKey(GDK_KEY_minus, Gdk::CONTROL_MASK),
-                    sigc::mem_fun(*this, &EditorWindow::on_zoom_out));
+                    [this](){ on_zoom_out(); });
   action_group->add(play_action = Gtk::ToggleAction::create("Play", Gtk::Stock::MEDIA_PLAY),
-                    sigc::mem_fun(*this, &EditorWindow::on_play));
+                    [this](){ on_play(); });
 
   action_group->add(Gtk::Action::create("MenuHelp",    "_Help"));
   action_group->add(Gtk::Action::create("About",       Gtk::Stock::ABOUT),
-                    sigc::mem_fun(*this, &EditorWindow::on_about_clicked));
+                    [this](){ on_about_clicked(); });
 
   toggle_color_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleRGBAfLayer", "color", "Toogle RGBAf Layer", "Toogle RGBAf Layer");
   toggle_light_layer     = Gtk::ToggleAction::create_with_icon_name("ToggleLightLayer", "light", "Toogle Light Layer", "Toogle Light Layer");
@@ -390,7 +393,9 @@ EditorWindow::EditorWindow() :
 
   add_accel_group(ui_manager->get_accel_group());
 
-  notebook.signal_switch_page().connect(sigc::mem_fun(*this, &EditorWindow::on_switch_page));
+  notebook.signal_switch_page().connect([this](Gtk::Widget* widget, guint page_num){
+    on_switch_page(widget, page_num);
+  });
 
   // Disable unimplemented stuff:
   action_group->get_action("Undo")->set_sensitive(false);
@@ -402,6 +407,9 @@ EditorWindow::EditorWindow() :
   toolbar->append(*layer_widget);
   layer_widget->signal_layer_toggle.connect(sigc::mem_fun(*this, &EditorWindow::on_layer_toggle));
 
+  layer_widget->signal_layer_toggle.connect([this](int layer, bool status){ on_layer_toggle(layer, status); });
+
+
   // Packing
 
   // Main Vbox
@@ -410,7 +418,7 @@ EditorWindow::EditorWindow() :
   vbox.add(hbox);
 
   status_hbox.pack_start(status_label, Gtk::PACK_SHRINK);
-  status_hbox.pack_start(status, Gtk::PACK_EXPAND_WIDGET);
+  status_hbox.pack_start(statusbar, Gtk::PACK_EXPAND_WIDGET);
   vbox.pack_end(status_hbox, Gtk::PACK_SHRINK);
 
   // Hbox
@@ -1158,14 +1166,14 @@ EditorWindow::add_recent_file(const std::string& filename)
 bool
 EditorWindow::remove_message(guint id)
 {
-  status.remove_message(id);
+  statusbar.remove_message(id);
   return false;
 }
 
 void
 EditorWindow::print(const std::string& text)
 {
-  guint id = status.push(text);
+  guint id = statusbar.push(text);
   std::cout << "[LOG] " << text << std::endl;
   Glib::signal_timeout().connect(sigc::bind(sigc::mem_fun(*this, &EditorWindow::remove_message), id), 6000);
 }
