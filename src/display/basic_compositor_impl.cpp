@@ -31,9 +31,9 @@
 
 static const int LIGHTMAP_DIV = 4;
 
-BasicCompositorImpl::BasicCompositorImpl(const geom::isize& window, const geom::isize& viewport) :
-  CompositorImpl(window, viewport),
-  m_lightmap(Surface::create(window / LIGHTMAP_DIV))
+BasicCompositorImpl::BasicCompositorImpl(const geom::isize& framebuffer, const geom::isize& viewport) :
+  CompositorImpl(framebuffer, viewport),
+  m_lightmap(Surface::create(framebuffer / LIGHTMAP_DIV))
 {
 }
 
@@ -43,10 +43,10 @@ BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* s
   assert_gl();
 
   // Resize Lightmap, only needed in the editor, FIXME: move this into a 'set_size()' call
-  if (m_lightmap->get_width()  != static_cast<float>(m_window.width()  / LIGHTMAP_DIV) ||
-      m_lightmap->get_height() != static_cast<float>(m_window.height() / LIGHTMAP_DIV))
+  if (m_lightmap->get_width()  != static_cast<float>(m_framebuffer_size.width()  / LIGHTMAP_DIV) ||
+      m_lightmap->get_height() != static_cast<float>(m_framebuffer_size.height() / LIGHTMAP_DIV))
   {
-    m_lightmap = Surface::create(m_window / LIGHTMAP_DIV);
+    m_lightmap = Surface::create(m_framebuffer_size / LIGHTMAP_DIV);
   }
 
   if (sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN)
@@ -79,7 +79,7 @@ BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* s
                           0,    // mipmap level
                           0, 0, // xoffset, yoffset
                           0, // x
-                          m_window.height() - static_cast<GLsizei>(m_lightmap->get_height()), // y (OpenGL is upside down)
+                          m_framebuffer_size.height() - static_cast<GLsizei>(m_lightmap->get_height()), // y (OpenGL is upside down)
                           static_cast<GLsizei>(m_lightmap->get_width()),
                           static_cast<GLsizei>(m_lightmap->get_height()));
     }
@@ -116,13 +116,13 @@ BasicCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* s
     va.vertex(0, 0);
 
     va.texcoord(m_lightmap->get_uv().right(), m_lightmap->get_uv().bottom());
-    va.vertex(m_viewport.width(), 0);
+    va.vertex(m_viewport_size.width(), 0);
 
     va.texcoord(m_lightmap->get_uv().right(), m_lightmap->get_uv().top());
-    va.vertex(m_viewport.width(), m_viewport.height());
+    va.vertex(m_viewport_size.width(), m_viewport_size.height());
 
     va.texcoord(m_lightmap->get_uv().left(), m_lightmap->get_uv().top());
-    va.vertex(0, m_viewport.height());
+    va.vertex(0, m_viewport_size.height());
 
     va.render(gc);
   }

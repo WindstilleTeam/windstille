@@ -32,12 +32,12 @@ class SceneGraph;
 class Compositor
 {
 public:
-  Compositor(const geom::isize& window, const geom::isize& viewport);
+  Compositor(const geom::isize& framebuffer, const geom::isize& viewport);
   ~Compositor();
 
   void render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);
 
-  geom::isize get_window_size() const;
+  geom::isize get_framebuffer_size() const;
   geom::isize get_viewport_size() const;
 
 private:

@@ -29,12 +29,12 @@
 
 static const int LIGHTMAP_DIV = 4;
 
-FramebufferCompositorImpl::FramebufferCompositorImpl(const geom::isize& window_size, const geom::isize& viewport) :
-  CompositorImpl(window_size, viewport),
-  m_screen  (Framebuffer::create_with_texture(GL_TEXTURE_2D, window_size)),
+FramebufferCompositorImpl::FramebufferCompositorImpl(const geom::isize& framebuffer_size, const geom::isize& viewport) :
+  CompositorImpl(framebuffer_size, viewport),
+  m_screen  (Framebuffer::create_with_texture(GL_TEXTURE_2D, framebuffer_size)),
   m_lightmap(Framebuffer::create_with_texture(GL_TEXTURE_2D,
-                                              {std::max(window_size.width() / LIGHTMAP_DIV, 1),
-                                               std::max(window_size.height() / LIGHTMAP_DIV, 1)}))
+                                              {std::max(framebuffer_size.width() / LIGHTMAP_DIV, 1),
+                                               std::max(framebuffer_size.height() / LIGHTMAP_DIV, 1)}))
 {
   assert_gl();
 }
@@ -47,20 +47,23 @@ FramebufferCompositorImpl::render_lightmap(GraphicsContext& gc, SceneContext& /*
   va.set_texture(m_lightmap->get_texture());
   va.set_blend_func(GL_DST_COLOR, GL_ZERO); // multiply the lightmap with the screen
 
+  float const vw = 1.0f;
+  float const vh = 1.0f;
+
   va.set_mode(GL_TRIANGLE_FAN);
-  {
-    va.texcoord(0, 1);
-    va.vertex(0, 0);
 
-    va.texcoord(1, 1);
-    va.vertex(m_viewport.width(), 0);
+  va.texcoord(0, vh);
+  va.vertex(0, 0);
 
-    va.texcoord(1, 0);
-    va.vertex(m_viewport.width(), m_viewport.height());
+  va.texcoord(vw, vh);
+  va.vertex(m_viewport_size.width(), 0);
 
-    va.texcoord(0, 0);
-    va.vertex(0, m_viewport.height());
-  }
+  va.texcoord(vw, 0);
+  va.vertex(m_viewport_size.width(), m_viewport_size.height());
+
+  va.texcoord(0, 0);
+  va.vertex(0, m_viewport_size.height());
+
   va.render(gc);
 }
 
@@ -76,7 +79,7 @@ FramebufferCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGr
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     gc.push_matrix();
-    gc.translate(0.0f, static_cast<float>(m_viewport.height() - (m_viewport.height() / LIGHTMAP_DIV)), 0.0f);
+    gc.translate(0.0f, static_cast<float>(m_viewport_size.height() - (m_viewport_size.height() / LIGHTMAP_DIV)), 0.0f);
     gc.scale(1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV, 1.0f / LIGHTMAP_DIV);
 
     sc.light().render(gc);
@@ -148,26 +151,27 @@ FramebufferCompositorImpl::render(GraphicsContext& gc, SceneContext& sc, SceneGr
     gc.pop_framebuffer();
   }
 
-  if (1)
-  {
-    // Render the screen framebuffer to the actual screen
+  { // Render the screen framebuffer to the actual screen
     VertexArrayDrawable va;
 
     va.set_texture(m_screen->get_texture() /*, 0*/);
 
+    float const vw = 1.0f;
+    float const vh = 1.0f;
+
     va.set_mode(GL_TRIANGLE_FAN);
     {
-      va.texcoord(0, 1);
+      va.texcoord(0, vh);
       va.vertex(0, 0);
 
-      va.texcoord(1, 1);
-      va.vertex(m_viewport.width(), 0);
+      va.texcoord(vw, vh);
+      va.vertex(m_viewport_size.width(), 0);
 
-      va.texcoord(1, 0);
-      va.vertex(m_viewport.width(), m_viewport.height());
+      va.texcoord(vw, 0);
+      va.vertex(m_viewport_size.width(), m_viewport_size.height());
 
       va.texcoord(0, 0);
-      va.vertex(0, m_viewport.height());
+      va.vertex(0, m_viewport_size.height());
     }
     va.render(gc);
   }

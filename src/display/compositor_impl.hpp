@@ -29,13 +29,13 @@ class SceneGraph;
 class CompositorImpl
 {
 protected:
-  geom::isize m_window;
-  geom::isize m_viewport;
+  geom::isize m_framebuffer_size;
+  geom::isize m_viewport_size;
 
 public:
-  CompositorImpl(const geom::isize& window, const geom::isize& viewport)
-    : m_window(window),
-      m_viewport(viewport)
+  CompositorImpl(const geom::isize& framebuffer_size, const geom::isize& viewport_size)
+    : m_framebuffer_size(framebuffer_size),
+      m_viewport_size(viewport_size)
   {}
 
   virtual ~CompositorImpl()
@@ -43,8 +43,8 @@ public:
 
   virtual void render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& state) =0;
 
-  geom::isize get_window_size() const { return m_window; }
-  geom::isize get_viewport_size() const { return m_viewport; }
+  geom::isize get_framebuffer_size() const { return m_framebuffer_size; }
+  geom::isize get_viewport_size() const { return m_viewport_size; }
 };
 
 #endif

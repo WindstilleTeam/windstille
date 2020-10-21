@@ -210,7 +210,7 @@ WindstilleWidget::on_resize(int width, int height)
 {
   GLArea::on_resize(width, height);
 
-  if (!compositor || compositor->get_window_size() != geom::isize(width, height)) {
+  if (!compositor || compositor->get_framebuffer_size() != geom::isize(width, height)) {
     assert_gl();
 
     compositor = std::make_unique<Compositor>(geom::isize(width, height),

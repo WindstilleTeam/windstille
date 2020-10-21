@@ -53,9 +53,9 @@ Compositor::render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const 
 }
 
 geom::isize
-Compositor::get_window_size() const
+Compositor::get_framebuffer_size() const
 {
-  return impl->get_window_size();
+  return impl->get_framebuffer_size();
 }
 
 geom::isize
