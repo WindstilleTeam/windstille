@@ -283,11 +283,7 @@ OpenGLState::activate()
   {
     if (impl->texture[i] != global_state->impl->texture[i])
     {
-      if (GLEW_ARB_multitexture)
-      {
-        // Matrox G450 can't do multitexturing
-        glActiveTexture(GL_TEXTURE0 + i);
-      }
+      glActiveTexture(GL_TEXTURE0 + i);
 
       if (impl->texture[i])
       {
