@@ -218,19 +218,20 @@ WindstilleWidget::on_resize(int width, int height)
     sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
 
     throw_if_error();
-
-    glViewport(0, 0, width, height);
-    m_gc->set_aspect_size({width, height});
-    state.set_size(width, height);
-    m_gc->set_projection(
-      glm::ortho(0.0f,
-                 static_cast<float>(width),
-                 static_cast<float>(height),
-                 0.0f,
-                 1000.0f,
-                 -1000.0f));
-
   }
+
+  glViewport(0, 0, width, height);
+  m_gc->set_aspect_size({width, height});
+  state.set_size(width, height);
+  m_gc->set_projection(
+    glm::ortho(0.0f,
+               static_cast<float>(width),
+               static_cast<float>(height),
+               0.0f,
+               1000.0f,
+               -1000.0f));
+
+  queue_draw();
 
   throw_if_error();
 }
