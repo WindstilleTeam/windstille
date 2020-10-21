@@ -45,16 +45,12 @@ public:
   /** glEnable/glDisable */
   std::map<GLenum, bool> state;
 
-  /** glEnableClientState/glDisableClientState */
-  std::map<GLenum, bool> client_state;
-
   OpenGLStateImpl() :
     was_activated(false),
     color(),
     blend_sfactor(GL_SRC_ALPHA),
     blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
-    state(),
-    client_state()
+    state()
   {}
 };
 
@@ -105,11 +101,6 @@ OpenGLState::OpenGLState() :
   impl->state[GL_DEPTH_TEST]  = false;
   impl->state[GL_BLEND]       = false;
   impl->state[GL_LINE_SMOOTH] = false;
-
-  impl->client_state[GL_VERTEX_ARRAY]        = false;
-  impl->client_state[GL_COLOR_ARRAY]         = false;
-  impl->client_state[GL_TEXTURE_COORD_ARRAY] = false;
-  impl->client_state[GL_NORMAL_ARRAY]        = false;
 
   impl->blend_sfactor      = GL_SRC_ALPHA;
   impl->blend_dfactor      = GL_ONE_MINUS_SRC_ALPHA;
@@ -183,47 +174,6 @@ OpenGLState::disable(GLenum cap)
   set_state(cap, false);
 }
 
-bool
-OpenGLState::get_client_state(GLenum array) const
-{
-  std::map<GLenum, bool>::const_iterator i = impl->client_state.find(array);
-  if (i == impl->client_state.end())
-  {
-    std::cout << "OpenGLState: Unknown client state requested: " << array << std::endl;
-    return false;
-  }
-  else
-  {
-    return i->second;
-  }
-}
-
-void
-OpenGLState::set_client_state(GLenum array, bool value)
-{
-  std::map<GLenum, bool>::iterator i = impl->client_state.find(array);
-  if (i == impl->client_state.end())
-  {
-    std::cout << "OpenGLState: Unknown client state set: " << array << std::endl;
-  }
-  else
-  {
-    i->second = value;
-  }
-}
-
-void
-OpenGLState::enable_client_state(GLenum array)
-{
-  set_client_state(array, true);
-}
-
-void
-OpenGLState::disable_client_state(GLenum array)
-{
-  set_client_state(array, false);
-}
-
 void
 OpenGLState::color(const RGBAf& color_)
 {
@@ -253,20 +203,6 @@ OpenGLState::activate()
         glDisable(i->first);
 
       global_state->set_state(i->first, i->second);
-    }
-  }
-
-  for(std::map<GLenum, bool>::iterator i = impl->client_state.begin();
-      i != impl->client_state.end(); ++i)
-  {
-    if (global_state->get_client_state(i->first) != i->second)
-    {
-      if (i->second)
-        glEnableClientState(i->first);
-      else
-        glDisableClientState(i->first);
-
-      global_state->set_client_state(i->first, i->second);
     }
   }
 
@@ -321,15 +257,6 @@ OpenGLState::activate()
 void
 OpenGLState::verify()
 {
-  for(std::map<GLenum, bool>::iterator i = impl->client_state.begin();
-      i != impl->client_state.end(); ++i)
-  {
-    if (glIsEnabled(i->first) != i->second)
-    {
-      std::cout << "OpenGLState: client_state " << i->first << " is out of sync" << std::endl;
-    }
-  }
-
   for(std::map<GLenum, bool>::iterator i = impl->state.begin();
       i != impl->state.end(); ++i)
   {

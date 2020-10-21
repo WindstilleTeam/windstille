@@ -82,12 +82,6 @@ public:
   void set_state(GLenum array, bool value);
   bool get_state(GLenum array) const;
 
-  void enable_client_state(GLenum array);
-  void disable_client_state(GLenum array);
-
-  void set_client_state(GLenum array, bool value);
-  bool get_client_state(GLenum array) const;
-
   // FIXME: RGBAf is a per vertex attribute, doesn't make much sense
   // to have it here
   void color(const RGBAf& color);
