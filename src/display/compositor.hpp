@@ -19,11 +19,10 @@
 #ifndef HEADER_WINDSTILLE_DISPLAY_COMPOSITOR_HPP
 #define HEADER_WINDSTILLE_DISPLAY_COMPOSITOR_HPP
 
-#include <memory>
-
 #include <geom/size.hpp>
 
-class CompositorImpl;
+#include "display/framebuffer.hpp"
+
 class GraphicContextState;
 class GraphicsContext;
 class SceneContext;
@@ -32,8 +31,7 @@ class SceneGraph;
 class Compositor
 {
 public:
-  Compositor(const geom::isize& framebuffer, const geom::isize& viewport);
-  ~Compositor();
+  Compositor(const geom::isize& framebuffer_size, const geom::isize& viewport_size);
 
   void render(GraphicsContext& gc, SceneContext& sc, SceneGraph* sg, const GraphicContextState& state);
 
@@ -41,7 +39,18 @@ public:
   geom::isize get_viewport_size() const;
 
 private:
-  std::unique_ptr<CompositorImpl> impl;
+  void render_lightmap(GraphicsContext& gc);
+
+private:
+  geom::isize m_framebuffer_size;
+  geom::isize m_viewport_size;
+
+  FramebufferPtr m_screen;
+  FramebufferPtr m_lightmap;
+
+private:
+  Compositor(const Compositor&);
+  Compositor& operator=(const Compositor&);
 };
 
 #endif
