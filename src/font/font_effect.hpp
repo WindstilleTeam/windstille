@@ -46,13 +46,7 @@ public:
   virtual int get_x_offset(int orig_glyph_offset) const =0;
   virtual int get_y_offset(int orig_glyph_offset) const =0;
 
-  virtual void blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_pos, int y_pos) const =0;
-
-  /* disabled for g++-4.2 compatibilty
-     private:
-     FontEffect (const FontEffect&);
-     FontEffect& operator= (const FontEffect&);
-  */
+  virtual void blit(SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const =0;
 };
 
 #endif

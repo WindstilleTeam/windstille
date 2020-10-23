@@ -30,7 +30,7 @@
     X 4 5 6 X  / 4 4 5 6 6
     X X X X X    4 4 5 6 6
 */
-void generate_border(SoftwareSurfacePtr surface, int x_pos, int y_pos, int width, int height);
+void generate_border(SoftwareSurface& surface, int x_pos, int y_pos, int width, int height);
 
 #endif
 

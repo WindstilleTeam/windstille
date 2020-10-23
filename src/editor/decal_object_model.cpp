@@ -224,8 +224,10 @@ DecalObjectModel::is_at(const glm::vec2& pos) const
     if (vflip)
       p.y = -p.y;
 
-    return software_surface->is_at(static_cast<int>(p.x + surface->get_width()/2),
-                                   static_cast<int>(p.y + surface->get_height()/2));
+    surf::RGBA rgba;
+    software_surface.get_pixel({static_cast<int>(p.x + surface->get_width()/2), static_cast<int>(p.y + surface->get_height()/2)},
+                               rgba);
+    return rgba.a > 0.125f;
   }
   else
   {

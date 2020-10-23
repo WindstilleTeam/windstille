@@ -24,15 +24,13 @@
 
 #include <geom/size.hpp>
 #include <geom/rect.hpp>
-#include <surf/software_surface.hpp>
+#include <surf/pixel_data.hpp>
 
 #include "display/color.hpp"
 
-typedef struct SDL_Surface SDL_Surface;
+using SoftwareSurface = surf::PixelData;
 
-class SoftwareSurface;
-typedef std::shared_ptr<SoftwareSurface> SoftwareSurfacePtr;
-
+#if 0
 class SoftwareSurface
 {
 public:
@@ -81,6 +79,7 @@ private:
   SoftwareSurface(const SoftwareSurface&);
   SoftwareSurface& operator=(const SoftwareSurface&);
 };
+#endif
 
 #endif
 

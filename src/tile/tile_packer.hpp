@@ -23,12 +23,12 @@
 #include <memory>
 
 #include <geom/geom.hpp>
+#include <surf/fwd.hpp>
 
 #include "display/texture.hpp"
-
-class SoftwareSurface;
+
 class TilePackerImpl;
-
+
 /** Creates a pixelbuffer of the given size and packs 32x32 large
     tiles into it for later conversion to a texture */
 class TilePacker
@@ -42,7 +42,7 @@ public:
 
   /** Pack a tile and return the position where it is placed in the
       pixel buffer */
-  geom::frect pack(SoftwareSurfacePtr image, int x, int y, int w, int h);
+  geom::frect pack(SoftwareSurface const& image, int x, int y, int w, int h);
 
   /** Return true if the PixelBuffer is full */
   bool is_full() const;
@@ -56,7 +56,7 @@ private:
   TilePacker(const TilePacker&);
   TilePacker& operator=(const TilePacker&);
 };
-
+
 #endif
 
 /* EOF */

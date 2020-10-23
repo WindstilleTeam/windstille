@@ -34,7 +34,7 @@
 #include "display/texture_manager.hpp"
 
 TexturePtr
-Texture::create(SoftwareSurfacePtr image, GLint format)
+Texture::create(SoftwareSurface const& image, GLint format)
 {
   return TexturePtr(new Texture(image, format));
 }
@@ -87,10 +87,10 @@ Texture::Texture(GLenum target, geom::isize const& size, GLint format) :
   assert_gl();
 }
 
-Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
+Texture::Texture(SoftwareSurface const& image, GLint glformat) :
   m_target(GL_TEXTURE_2D),
   m_handle(0),
-  m_size(image->get_size())
+  m_size(image.get_size())
 {
   assert_gl();
 
@@ -98,15 +98,15 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
   assert_gl();
 
   if (!GLEW_ARB_texture_non_power_of_two) {
-    if (!glm::isPowerOfTwo(image->get_width()) || !glm::isPowerOfTwo(image->get_height())) {
+    if (!glm::isPowerOfTwo(image.get_width()) || !glm::isPowerOfTwo(image.get_height())) {
       std::ostringstream str;
       str << "Texture::Texture(): image dimensions have non power of two size: "
-          << image->get_width() << "x" << image->get_height();
+          << image.get_width() << "x" << image.get_height();
       throw std::runtime_error(str.str());
     }
   }
 
-  if (image->get_bits_per_pixel() != 24 && image->get_bits_per_pixel() != 32) {
+  if (image.get_bits_per_pixel() != 24 && image.get_bits_per_pixel() != 32) {
     throw std::runtime_error("image has not 24 or 32 bit color depth");
   }
 
@@ -118,18 +118,18 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
     GLint maxt;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxt);
 
-    if(image->get_width() > maxt || image->get_height() > maxt)
+    if(image.get_width() > maxt || image.get_height() > maxt)
     {
       throw std::runtime_error("Texture size not supported");
     }
 
     GLint sdl_format;
 
-    if (image->get_format() == SoftwareSurface::RGB)
+    if (image.get_format() == surf::PixelFormat::RGB)
     {
       sdl_format = GL_RGB;
     }
-    else if (image->get_format() == SoftwareSurface::RGBA)
+    else if (image.get_format() == surf::PixelFormat::RGBA)
     {
       sdl_format = GL_RGBA;
     }
@@ -141,13 +141,13 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
     glBindTexture(GL_TEXTURE_2D, m_handle);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, image->get_pitch() / image->get_bytes_per_pixel());
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, image.get_pitch() / image.get_bytes_per_pixel());
 
     if ((false))
     { // no mipmapping
       glTexImage2D(m_target, 0, glformat,
-                   image->get_width(), image->get_height(), 0, sdl_format,
-                   GL_UNSIGNED_BYTE, image->get_pixels());
+                   image.get_width(), image.get_height(), 0, sdl_format,
+                   GL_UNSIGNED_BYTE, image.get_data());
 
       glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -155,8 +155,8 @@ Texture::Texture(SoftwareSurfacePtr image, GLint glformat) :
     else
     { // use mipmapping
       gluBuild2DMipmaps(m_target, glformat,
-                        image->get_width(), image->get_height(), sdl_format,
-                        GL_UNSIGNED_BYTE, image->get_pixels());
+                        image.get_width(), image.get_height(), sdl_format,
+                        GL_UNSIGNED_BYTE, image.get_data());
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -206,17 +206,17 @@ Texture::get_handle() const
 }
 
 void
-Texture::put(SoftwareSurfacePtr image, const geom::irect& srcrect, int x, int y)
+Texture::put(SoftwareSurface const& image, const geom::irect& srcrect, int x, int y)
 {
   assert_gl();
 
   GLint sdl_format;
 
-  if (image->get_format() == SoftwareSurface::RGB)
+  if (image.get_format() == surf::PixelFormat::RGB)
   {
     sdl_format = GL_RGB;
   }
-  else if (image->get_format() == SoftwareSurface::RGBA)
+  else if (image.get_format() == surf::PixelFormat::RGBA)
   {
     sdl_format = GL_RGBA;
   }
@@ -230,21 +230,21 @@ Texture::put(SoftwareSurfacePtr image, const geom::irect& srcrect, int x, int y)
   // FIXME: Add some checks here to make sure image has the right format
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // FIXME: Does SDL always use 4?
   glPixelStorei(GL_UNPACK_ROW_LENGTH,
-                image->get_pitch() / image->get_bytes_per_pixel());
+                image.get_pitch() / image.get_bytes_per_pixel());
 
   glTexSubImage2D(m_target, 0, x, y,
                   srcrect.width(), srcrect.height(), sdl_format, GL_UNSIGNED_BYTE,
-                  static_cast<uint8_t*>(image->get_pixels())
-                  + srcrect.top()  * image->get_pitch()
-                  + srcrect.left() * image->get_bytes_per_pixel());
+                  image.get_data()
+                  + srcrect.top()  * image.get_pitch()
+                  + srcrect.left() * image.get_bytes_per_pixel());
 
   assert_gl();
 }
 
 void
-Texture::put(SoftwareSurfacePtr image, int x, int y)
+Texture::put(SoftwareSurface const& image, int x, int y)
 {
-  put(image, geom::irect(0, 0, image->get_width(), image->get_height()), x, y);
+  put(image, geom::irect(0, 0, image.get_width(), image.get_height()), x, y);
 }
 
 void
@@ -274,14 +274,14 @@ Texture::set_filter(GLenum mode)
   assert_gl();
 }
 
-SoftwareSurfacePtr
+SoftwareSurface
 Texture::get_software_surface() const
 {
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  SoftwareSurfacePtr surface = SoftwareSurface::create(SoftwareSurface::RGBA, m_size);
+  SoftwareSurface surface = SoftwareSurface::create(surf::PixelFormat::RGBA, m_size);
 
-  glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->get_pixels());
+  glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface.get_data());
 
   return surface;
 }

@@ -23,10 +23,10 @@
 
 #include <geom/rect.hpp>
 #include <geom/size.hpp>
+#include <surf/fwd.hpp>
 
 #include "display/surface.hpp"
 
-class SoftwareSurface;
 class Texture;
 class TexturePackerTexture;
 
@@ -41,7 +41,7 @@ public:
   TexturePacker(const geom::isize& texture_size);
   ~TexturePacker();
 
-  SurfacePtr upload(SoftwareSurfacePtr surface);
+  SurfacePtr upload(SoftwareSurface const& surface);
   bool allocate(const geom::isize& size, geom::irect& rect, TexturePtr& out_texture);
 
   void save_all_as_png() const;

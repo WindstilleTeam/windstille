@@ -28,6 +28,7 @@
 
 #include "display/software_surface.hpp"
 
+#if 0
 SoftwareSurfacePtr
 SoftwareSurface::from_file(std::filesystem::path const& filename)
 {
@@ -353,5 +354,6 @@ SoftwareSurface::save_png(const std::string& filename) const
     }
   }
 }
+#endif
 
 /* EOF */

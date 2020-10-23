@@ -64,26 +64,23 @@ TilePacker::~TilePacker()
 /** Pack a tile and return the position where it is placed in the
     pixel buffer */
 geom::frect
-TilePacker::pack(SoftwareSurfacePtr image, int x, int y, int w, int h)
+TilePacker::pack(SoftwareSurface const& image, int x, int y, int w, int h)
 {
   assert(w == TILE_RESOLUTION && h == TILE_RESOLUTION);
   assert(!is_full());
 
-  SoftwareSurfacePtr convert = SoftwareSurface::create(SoftwareSurface::RGBA, {w + 2, h + 2});
+  SoftwareSurface convert = SoftwareSurface::create(surf::PixelFormat::RGBA, {w + 2, h + 2});
 
-  SDL_Rect source_rect;
-  source_rect.x = static_cast<Sint16>(x);
-  source_rect.y = static_cast<Sint16>(y);
-  source_rect.w = static_cast<Sint16>(w);
-  source_rect.h = static_cast<Sint16>(h);
+  geom::irect source_rect(static_cast<Sint16>(x),
+                          static_cast<Sint16>(y),
+                          static_cast<Sint16>(w),
+                          static_cast<Sint16>(h));
 
-  SDL_Rect dest_rect;
-  dest_rect.x = static_cast<Sint16>(1);
-  dest_rect.y = static_cast<Sint16>(1);
-  dest_rect.w = static_cast<Sint16>(w);
-  dest_rect.h = static_cast<Sint16>(h);
+  geom::ipoint dest_point(static_cast<Sint16>(1),
+                          static_cast<Sint16>(1));
 
-  SDL_BlitSurface(image->get_surface(), &source_rect, convert->get_surface(), &dest_rect);
+  image.blit_to(source_rect, convert, dest_point);
+  //SDL_BlitSurface(image.get_surface(), &source_rect, convert.get_surface(), &dest_rect);
 
   generate_border(convert, 1, 1, TILE_RESOLUTION, TILE_RESOLUTION);
 

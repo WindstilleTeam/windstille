@@ -62,7 +62,7 @@ BorderFontEffect::get_y_offset(int orig_glyph_offset) const
 }
 
 void
-BorderFontEffect::blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_pos, int y_pos) const
+BorderFontEffect::blit(SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const
 {
   x_pos += size;
   y_pos += size;
@@ -70,12 +70,12 @@ BorderFontEffect::blit(SoftwareSurfacePtr target, const FT_Bitmap& brush, int x_
   int start_x = std::max(0, -x_pos);
   int start_y = std::max(0, -y_pos);
 
-  int end_x = std::min(static_cast<int>(brush.width), target->get_width()  - x_pos);
-  int end_y = std::min(static_cast<int>(brush.rows), target->get_height() - y_pos);
+  int end_x = std::min(static_cast<int>(brush.width), target.get_width()  - x_pos);
+  int end_y = std::min(static_cast<int>(brush.rows), target.get_height() - y_pos);
 
-  unsigned char* target_buf = static_cast<unsigned char*>(target->get_pixels());
+  uint8_t* target_buf = target.get_data();
 
-  int target_pitch = target->get_pitch();
+  int target_pitch = target.get_pitch();
 
   uint8_t red   = 0;
   uint8_t blue  = 0;

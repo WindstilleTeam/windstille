@@ -25,10 +25,10 @@
 #include <memory>
 
 #include <geom/rect.hpp>
+#include <surf/fwd.hpp>
 
 #include "display/software_surface.hpp"
 
-class SoftwareSurface;
 class TextureImpl;
 
 class Texture;
@@ -38,14 +38,14 @@ class Texture
 {
 public:
   /** Upload an SoftwareSurface onto an OpenGL texture. */
-  static TexturePtr create(SoftwareSurfacePtr image, GLint format = GL_RGBA);
+  static TexturePtr create(SoftwareSurface const& image, GLint format = GL_RGBA);
 
   /** Create an empty Texture with the given dimensions */
   static TexturePtr create(GLenum target, geom::isize const& size, GLint format = GL_RGBA);
 
 private:
   Texture();
-  Texture(SoftwareSurfacePtr image, GLint format = GL_RGBA);
+  Texture(SoftwareSurface const& image, GLint format = GL_RGBA);
   Texture(GLenum target, geom::isize const& size, GLint format = GL_RGBA);
 
 public:
@@ -63,11 +63,11 @@ public:
   void set_filter(GLenum mode);
 
   /** Uploads the given image to the given coordinates */
-  void put(SoftwareSurfacePtr image, int x, int y);
+  void put(SoftwareSurface const& image, int x, int y);
 
   /** Uploads the given subsection \a srcrect of \a image to the given
       coordinates */
-  void put(SoftwareSurfacePtr image, const geom::irect& srcrect, int x, int y);
+  void put(SoftwareSurface const& image, const geom::irect& srcrect, int x, int y);
 
   GLuint get_handle() const;
 
@@ -76,7 +76,7 @@ public:
    */
   GLenum get_target() const;
 
-  SoftwareSurfacePtr get_software_surface() const;
+  SoftwareSurface get_software_surface() const;
 
 private:
   GLenum m_target;

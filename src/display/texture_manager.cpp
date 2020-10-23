@@ -59,7 +59,7 @@ TextureManager::get(std::filesystem::path const& filename)
   {
     try
     {
-      SoftwareSurfacePtr image = SoftwareSurface::from_file(filename);
+      SoftwareSurface image = SoftwareSurface::from_file(filename);
       TexturePtr texture = Texture::create(image);
 
       textures.insert(std::make_pair(filename, texture));

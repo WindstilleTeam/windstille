@@ -30,6 +30,7 @@
 #include <geom/rect.hpp>
 #include <geom/line.hpp>
 #include <geom/quad.hpp>
+#include <surf/rgba.hpp>
 
 #include "display/color.hpp"
 #include "display/assert_gl.hpp"
@@ -92,8 +93,8 @@ GraphicsContext::GraphicsContext() :
   m_default_shader = ShaderProgram::from_string(default_vert_source,
                                                 default_frag_source);
 
-  m_white_texture = Texture::create(SoftwareSurface::create(SoftwareSurface::RGBA, geom::isize(1, 1),
-                                                            RGBAf(1.0f, 1.0f, 1.0f, 1.0f)));
+  m_white_texture = Texture::create(SoftwareSurface::create(surf::PixelFormat::RGBA, geom::isize(1, 1),
+                                                            surf::RGBA(255, 255, 255, 255)));
 
   glUseProgram(m_default_shader->get_handle());
 

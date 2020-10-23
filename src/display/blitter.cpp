@@ -25,13 +25,13 @@
 
 #include "display/software_surface.hpp"
 
-void generate_border(SoftwareSurfacePtr surface,
+void generate_border(SoftwareSurface& surface,
                      int x_pos, int y_pos, int width, int height)
 {
-  assert(surface->get_bits_per_pixel() == 32);
+  assert(surface.get_bytes_per_pixel() == 4);
 
-  uint8_t* data = static_cast<uint8_t*>(surface->get_pixels());
-  int pitch = surface->get_pitch();
+  uint8_t* data = surface.get_data();
+  int pitch = surface.get_pitch();
 
   // duplicate the top line
   memcpy(data + (y_pos-1)*pitch + 4*x_pos,

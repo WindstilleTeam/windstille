@@ -29,18 +29,19 @@
 namespace {
 
 /** Check if the given region of the given image is fully transparent */
-bool surface_empty(SoftwareSurfacePtr image, int sx, int sy, int w, int h)
+bool surface_empty(SoftwareSurface const& image, int sx, int sy, int w, int h)
 {
-  unsigned char* data = static_cast<unsigned char*>(image->get_pixels());
+  uint8_t const* data = image.get_data();
 
-  for(int y = sy; y < sy + h; ++y)
+  for(int y = sy; y < sy + h; ++y) {
     for(int x = sx; x < sx + w; ++x)
     {
-      if (data[y * image->get_pitch() + 4*x + 3] != 0)
+      if (data[y * image.get_pitch() + 4*x + 3] != 0)
       {
         return false;
       }
     }
+  }
 
   return true;
 }
@@ -123,7 +124,7 @@ TileFactory::parse_tiles(ReaderMapping const& reader)
 }
 
 void
-TileFactory::pack(int id, int colmap, SoftwareSurfacePtr image, const geom::irect& rect)
+TileFactory::pack(int id, int colmap, SoftwareSurface const& image, const geom::irect& rect)
 {
   if(id < int(tiles.size())
      && tiles[id] != nullptr

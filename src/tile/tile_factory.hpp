@@ -23,6 +23,7 @@
 #include <string>
 
 #include <geom/geom.hpp>
+#include <surf/fwd.hpp>
 
 #include "display/software_surface.hpp"
 #include "tile/tile_description.hpp"
@@ -31,9 +32,7 @@
 
 class Tile;
 class TilePacker;
-class SoftwareSurface;
 
-/** */
 class TileFactory : public Currenton<TileFactory>
 {
 private:
@@ -66,7 +65,7 @@ public:
   /**
    * Adds a surface to the TileFactory
    */
-  void pack(int id, int colmap, SoftwareSurfacePtr image, const geom::irect& rect);
+  void pack(int id, int colmap, SoftwareSurface const& image, const geom::irect& rect);
 
 private:
   void parse_tiles(ReaderMapping const& reader);
