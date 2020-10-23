@@ -72,6 +72,7 @@ function(build_dependencies)
   add_subdirectory(external/biiocpp/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/priocpp/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
+  add_subdirectory(external/surfcpp/ EXCLUDE_FROM_ALL)
 
   add_subdirectory(external/wstinput/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/wstsound/ EXCLUDE_FROM_ALL)
@@ -143,6 +144,7 @@ target_link_libraries(wstlib PUBLIC
   geomcpp
   logmich
   sexp
+  surf
   Squirrel::Squirrel
   Freetype::Freetype
   GLEW::GLEW

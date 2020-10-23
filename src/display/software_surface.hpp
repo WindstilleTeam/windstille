@@ -24,6 +24,7 @@
 
 #include <geom/size.hpp>
 #include <geom/rect.hpp>
+#include <surf/software_surface.hpp>
 
 #include "display/color.hpp"
 
@@ -41,7 +42,7 @@ public:
   };
 
 public:
-  static SoftwareSurfacePtr create(std::filesystem::path const& filename);
+  static SoftwareSurfacePtr from_file(std::filesystem::path const& filename);
   static SoftwareSurfacePtr create(Format format, geom::isize const& size, RGBAf const& color = RGBAf(0.0f, 0.0f, 0.0f, 0.0f));
 
 private:
@@ -60,12 +61,14 @@ public:
   void* get_pixels() const;
 
   void blit(SoftwareSurfacePtr dst, int x, int y) const;
-  void blit(const geom::irect& src_rect, SoftwareSurfacePtr dst, int x, int y) const;
+  // void blit(SoftwareSurfacePtr dst, int x, int y, geom::irect& const src_rect) const;
 
   void save_png(const std::string& filename) const;
 
+  // used by tilepacker
   SDL_Surface* get_surface() const;
 
+  // used by editor
   bool is_at(int x, int y) const;
 
   Format get_format() const { return m_format; }

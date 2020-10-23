@@ -29,7 +29,7 @@
 #include "display/software_surface.hpp"
 
 SoftwareSurfacePtr
-SoftwareSurface::create(std::filesystem::path const& filename)
+SoftwareSurface::from_file(std::filesystem::path const& filename)
 {
   return SoftwareSurfacePtr(new SoftwareSurface(filename));
 }
@@ -259,7 +259,7 @@ SoftwareSurface::blit(SoftwareSurfacePtr dst, int x, int y) const
 
   SDL_BlitSurface(m_surface, nullptr, dst->m_surface, &dst_rect);
 }
-
+/*
 void
 SoftwareSurface::blit(const geom::irect& src_rect_, SoftwareSurfacePtr dst, int x, int y) const
 {
@@ -275,7 +275,7 @@ SoftwareSurface::blit(const geom::irect& src_rect_, SoftwareSurfacePtr dst, int 
 
   SDL_BlitSurface(m_surface, &src_rect, dst->m_surface, &dst_rect);
 }
-
+*/
 bool
 SoftwareSurface::is_at(int x, int y) const
 {
@@ -302,8 +302,8 @@ SoftwareSurface::is_at(int x, int y) const
 void
 SoftwareSurface::save_png(const std::string& filename) const
 {
-  if (get_bytes_per_pixel() != 4 &&
-      get_bytes_per_pixel() != 3)
+  if (get_bits_per_pixel() != 32 &&
+      get_bits_per_pixel() != 24)
   {
     std::cout << "SoftwareSurface::save_png(): Unsupported pixel format" << std::endl;
   }

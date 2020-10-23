@@ -34,3 +34,6 @@
 [submodule "external/biiocpp"]
 	path = external/biiocpp
 	url = https://gitlab.com/grumbel/biiocpp.git
+[submodule "external/surfcpp"]
+	path = external/surfcpp
+	url = https://gitlab.com/grumbel/surfcpp.git

@@ -64,7 +64,7 @@ SurfaceManager::get(std::filesystem::path const& filename)
   }
   else
   {
-    SoftwareSurfacePtr software_surface = SoftwareSurface::create(filename);
+    SoftwareSurfacePtr software_surface = SoftwareSurface::from_file(filename);
 
     if (texture_packer)
     {
@@ -103,7 +103,7 @@ SurfaceManager::load_grid(std::filesystem::path const& filename,
                           std::vector<SurfacePtr>& out_surfaces,
                           int width, int height)
 {
-  SoftwareSurfacePtr image = SoftwareSurface::create(filename);
+  SoftwareSurfacePtr image = SoftwareSurface::from_file(filename);
   float maxu, maxv;
 
   TexturePtr texture;

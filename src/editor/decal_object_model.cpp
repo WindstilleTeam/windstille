@@ -63,7 +63,7 @@ DecalObjectModel::DecalObjectModel(ReaderMapping const& reader) :
   reader.read("hflip", hflip);
   reader.read("vflip", vflip);
   surface = g_app.surface().get(Pathname(path));
-  software_surface = SoftwareSurface::create(Pathname(path));
+  software_surface = SoftwareSurface::from_file(Pathname(path));
 }
 
 DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const glm::vec2& rel_pos_,
@@ -71,7 +71,7 @@ DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const glm::vec2&
   ObjectModel("DecalObjectModel", rel_pos_),
   path(path_),
   surface(g_app.surface().get(Pathname(path_))),
-  software_surface(SoftwareSurface::create(Pathname(path_))),
+  software_surface(SoftwareSurface::from_file(Pathname(path_))),
   type(type_),
   scale(1.0f, 1.0f),
   angle(0.0f),
@@ -225,7 +225,7 @@ DecalObjectModel::is_at(const glm::vec2& pos) const
       p.y = -p.y;
 
     return software_surface->is_at(static_cast<int>(p.x + surface->get_width()/2),
-                                  static_cast<int>(p.y + surface->get_height()/2));
+                                   static_cast<int>(p.y + surface->get_height()/2));
   }
   else
   {
