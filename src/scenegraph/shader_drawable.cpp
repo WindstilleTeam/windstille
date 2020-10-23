@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "shader_drawable.hpp"
+#include "scenegraph/shader_drawable.hpp"
 
 ShaderDrawable::ShaderDrawable() :
   m_shader(),

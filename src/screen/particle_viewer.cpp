@@ -28,15 +28,15 @@
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
-#include "display/graphics_context.hpp"
 #include "display/graphic_context_state.hpp"
+#include "display/graphics_context.hpp"
 #include "display/opengl_window.hpp"
 #include "display/texture_manager.hpp"
+#include "particles/particle_system_drawable.hpp"
 #include "scenegraph/fill_screen_drawable.hpp"
 #include "scenegraph/fill_screen_pattern_drawable.hpp"
-#include "scenegraph/particle_system_drawable.hpp"
 #include "util/pathname.hpp"
-
+
 ParticleViewer::ParticleViewer()
   : compositor(g_app.window().get_size(), g_app.window().get_gc().size()),
     sc(),
@@ -129,5 +129,5 @@ ParticleViewer::update(float delta, const Controller& controller)
     MenuManager::display_pause_menu();
   }
 }
-
+
 /* EOF */

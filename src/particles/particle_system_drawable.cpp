@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "scenegraph/particle_system_drawable.hpp"
+#include "particles/particle_system_drawable.hpp"
 
 #include "particles/particle_system.hpp"
 

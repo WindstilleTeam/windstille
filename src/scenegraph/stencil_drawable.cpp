@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "stencil_drawable.hpp"
+#include "scenegraph/stencil_drawable.hpp"
 
 namespace {
 int g_stencil_enabled = 0;
