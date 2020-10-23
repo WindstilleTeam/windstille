@@ -30,57 +30,6 @@
 
 using SoftwareSurface = surf::PixelData;
 
-#if 0
-class SoftwareSurface
-{
-public:
-  enum Format {
-    RGB,
-    RGBA
-  };
-
-public:
-  static SoftwareSurfacePtr from_file(std::filesystem::path const& filename);
-  static SoftwareSurfacePtr create(Format format, geom::isize const& size, RGBAf const& color = RGBAf(0.0f, 0.0f, 0.0f, 0.0f));
-
-private:
-  explicit SoftwareSurface(std::filesystem::path const& filename);
-  SoftwareSurface(geom::isize const& size, Format format = RGBA);
-
-public:
-  ~SoftwareSurface();
-
-  int   get_bytes_per_pixel() const;
-  int   get_bits_per_pixel() const;
-  int   get_width() const;
-  int   get_pitch() const;
-  int   get_height() const;
-  geom::isize  get_size() const;
-  void* get_pixels() const;
-
-  void blit(SoftwareSurfacePtr dst, int x, int y) const;
-  // void blit(SoftwareSurfacePtr dst, int x, int y, geom::irect& const src_rect) const;
-
-  void save_png(const std::string& filename) const;
-
-  // used by tilepacker
-  SDL_Surface* get_surface() const;
-
-  // used by editor
-  bool is_at(int x, int y) const;
-
-  Format get_format() const { return m_format; }
-
-private:
-  SDL_Surface* m_surface;
-  Format m_format;
-
-private:
-  SoftwareSurface(const SoftwareSurface&);
-  SoftwareSurface& operator=(const SoftwareSurface&);
-};
-#endif
-
 #endif
 
 /* EOF */
