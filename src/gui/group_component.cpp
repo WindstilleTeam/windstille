@@ -17,7 +17,7 @@
 */
 
 #include "app/app.hpp"
-#include "display/graphics_context.hpp"
+#include <wstdisplay/graphics_context.hpp>
 #include "font/fonts.hpp"
 #include "gui/group_component.hpp"
 

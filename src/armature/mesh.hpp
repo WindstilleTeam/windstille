@@ -25,7 +25,7 @@
 
 #include <glm/glm.hpp>
 
-#include "display/texture.hpp"
+#include <wstdisplay/texture.hpp>
 #include "util/file_reader.hpp"
 
 class Armature;

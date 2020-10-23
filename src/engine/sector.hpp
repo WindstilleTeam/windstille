@@ -25,7 +25,7 @@
 
 #include <geom/fwd.hpp>
 
-#include "display/color.hpp"
+#include <wstdisplay/color.hpp>
 #include "engine/game_object_handle.hpp"
 #include "util/currenton.hpp"
 #include "util/pathname.hpp"

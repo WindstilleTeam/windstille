@@ -22,7 +22,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "display/color.hpp"
+#include <wstdisplay/color.hpp>
 #include "editor/layer_manager_columns.hpp"
 #include "editor/navigation_graph_model.hpp"
 #include "editor/object_model_factory.hpp"

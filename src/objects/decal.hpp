@@ -21,7 +21,7 @@
 
 #include <memory>
 
-#include "display/surface.hpp"
+#include <wstdisplay/surface.hpp>
 #include "engine/game_object.hpp"
 
 class SurfaceDrawable;

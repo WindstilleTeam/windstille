@@ -23,7 +23,7 @@
 #include <vector>
 
 #include <glm/glm.hpp>
-#include "display/color.hpp"
+#include <wstdisplay/color.hpp>
 #include "util/currenton.hpp"
 
 class Entity;

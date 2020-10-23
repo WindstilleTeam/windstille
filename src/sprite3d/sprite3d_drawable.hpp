@@ -21,9 +21,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "display/graphics_context.hpp"
+#include <wstdisplay/graphics_context.hpp>
 #include "sprite3d/sprite3d.hpp"
-#include "scenegraph/drawable.hpp"
+#include <wstdisplay/scenegraph/drawable.hpp>
 
 class Sprite3DDrawable : public Drawable
 {

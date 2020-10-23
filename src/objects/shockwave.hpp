@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_SHOCKWAVE_HPP
 #define HEADER_WINDSTILLE_OBJECTS_SHOCKWAVE_HPP
 
-#include "display/shader_program.hpp"
+#include <wstdisplay/shader_program.hpp>
 #include "engine/game_object.hpp"
 
 /** */

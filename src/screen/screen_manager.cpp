@@ -26,9 +26,9 @@
 #include "app/app.hpp"
 #include "app/config.hpp"
 #include "app/sound_manager.hpp"
-#include "display/graphics_context.hpp"
-#include "display/opengl_window.hpp"
-#include "display/screenshot.hpp"
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/screenshot.hpp>
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"
 #include "screen/input_configurator.hpp"

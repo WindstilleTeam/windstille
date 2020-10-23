@@ -19,11 +19,11 @@
 #include "objects/laser_pointer.hpp"
 
 #include "app/app.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "objects/player.hpp"
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
-#include "display/texture_manager.hpp"
+#include <wstdisplay/texture_manager.hpp>
 
 LaserPointer::LaserPointer() :
   noise(),

@@ -27,7 +27,7 @@
 #include <biio/reader.hpp>
 
 #include "app/app.hpp"
-#include "display/texture_manager.hpp"
+#include <wstdisplay/texture_manager.hpp>
 
 namespace sprite3d {
 

@@ -26,8 +26,8 @@
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
-#include "display/graphics_context.hpp"
-#include "display/opengl_window.hpp"
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/opengl_window.hpp>
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "font/text_area.hpp"

@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_SPRITE2DVIEW_HPP
 #define HEADER_WINDSTILLE_SCREEN_SPRITE2DVIEW_HPP
 
-#include "display/scene_context.hpp"
+#include <wstdisplay/scene_context.hpp>
 #include "screen/screen.hpp"
 #include "sprite2d/sprite.hpp"
 #include "util/pathname.hpp"

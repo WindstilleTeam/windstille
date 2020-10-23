@@ -24,7 +24,7 @@
 
 #include "tile/tile.hpp"
 #include "tile/tile_packer.hpp"
-#include "display/software_surface.hpp"
+#include <wstdisplay/software_surface.hpp>
 
 namespace {
 

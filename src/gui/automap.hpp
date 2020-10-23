@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_GUI_AUTOMAP_HPP
 #define HEADER_WINDSTILLE_GUI_AUTOMAP_HPP
 
-#include "display/surface.hpp"
+#include <wstdisplay/surface.hpp>
 #include "gui/component.hpp"
 
 namespace gui {

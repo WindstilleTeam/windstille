@@ -22,9 +22,9 @@
 #include <memory>
 #include <memory>
 
-#include "display/compositor.hpp"
-#include "display/scene_context.hpp"
-#include "scenegraph/scene_graph.hpp"
+#include <wstdisplay/compositor.hpp>
+#include <wstdisplay/scene_context.hpp>
+#include <wstdisplay/scenegraph/scene_graph.hpp>
 #include "gui/gui_manager.hpp"
 #include "particles/particle_system.hpp"
 #include "screen/screen.hpp"

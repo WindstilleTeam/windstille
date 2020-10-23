@@ -20,9 +20,9 @@
 
 #include "editor/navgraph_node_object_model.hpp"
 #include "editor/sector_model.hpp"
-#include "scenegraph/scene_graph.hpp"
-#include "scenegraph/drawable_group.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/scene_graph.hpp>
+#include <wstdisplay/scenegraph/drawable_group.hpp>
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(std::shared_ptr<NavGraphNodeObjectModel> lhs,
                                                  std::shared_ptr<NavGraphNodeObjectModel> rhs) :

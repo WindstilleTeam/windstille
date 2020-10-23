@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_SURFACE_DRAWER_HPP
 #define HEADER_WINDSTILLE_PARTICLES_SURFACE_DRAWER_HPP
 
-#include "display/surface.hpp"
+#include <wstdisplay/surface.hpp>
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 

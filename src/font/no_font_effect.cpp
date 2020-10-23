@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/software_surface.hpp"
+#include <wstdisplay/software_surface.hpp>
 #include "font/no_font_effect.hpp"
 
 void

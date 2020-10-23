@@ -25,8 +25,8 @@
 
 #include <geom/geom.hpp>
 
-#include "display/color.hpp"
-#include "display/texture.hpp"
+#include <wstdisplay/color.hpp>
+#include <wstdisplay/texture.hpp>
 #include "font/no_font_effect.hpp"
 
 class DrawingContext;

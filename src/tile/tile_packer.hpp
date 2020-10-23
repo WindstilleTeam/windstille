@@ -25,7 +25,7 @@
 #include <geom/geom.hpp>
 #include <surf/fwd.hpp>
 
-#include "display/texture.hpp"
+#include <wstdisplay/texture.hpp>
 
 class TilePackerImpl;
 

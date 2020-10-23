@@ -21,11 +21,11 @@
 #include <GL/glew.h>
 #include <glm/ext.hpp>
 
-#include "display/graphics_context.hpp"
-#include "display/shader_object.hpp"
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/shader_object.hpp>
 #include "particles/particle_system.hpp"
 #include "util/pathname.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 class DeformDrawerRequest : public Drawable
 {

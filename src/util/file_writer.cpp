@@ -18,7 +18,7 @@
 
 #include "util/file_writer.hpp"
 
-#include "display/color.hpp"
+#include <wstdisplay/color.hpp>
 
 namespace prio {
 

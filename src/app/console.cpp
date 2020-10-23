@@ -24,7 +24,7 @@
 #include <wstinput/input_manager.hpp>
 
 #include "app/app.hpp"
-#include "display/graphics_context.hpp"
+#include <wstdisplay/graphics_context.hpp>
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"

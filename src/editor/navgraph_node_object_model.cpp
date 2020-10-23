@@ -19,8 +19,8 @@
 #include "editor/navgraph_node_object_model.hpp"
 
 #include "editor/sector_model.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
-#include "scenegraph/drawable_group.hpp"
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+#include <wstdisplay/scenegraph/drawable_group.hpp>
 #include "navigation/node.hpp"
 #include "editor/constants.hpp"
 

@@ -22,9 +22,9 @@
 #include <wstinput/controller.hpp>
 
 #include "app/controller_def.hpp"
-#include "display/graphics_context.hpp"
-#include "display/software_surface.hpp"
-#include "display/surface_drawing_parameters.hpp"
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/software_surface.hpp>
+#include <wstdisplay/surface_drawing_parameters.hpp>
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
 

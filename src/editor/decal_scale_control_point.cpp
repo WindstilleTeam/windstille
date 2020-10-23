@@ -18,8 +18,8 @@
 
 #include "editor/decal_scale_control_point.hpp"
 
-#include "display/scene_context.hpp"
-#include "display/surface_manager.hpp"
+#include <wstdisplay/scene_context.hpp>
+#include <wstdisplay/surface_manager.hpp>
 #include "editor/app.hpp"
 #include "util/pathname.hpp"
 

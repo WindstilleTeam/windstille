@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <surf/save.hpp>
-#include "display/software_surface.hpp"
+#include <wstdisplay/software_surface.hpp>
 
 int main(int argc, char** argv)
 {

@@ -22,8 +22,8 @@
 #include <math.h>
 
 #include "plugins/jpeg.hpp"
-#include "display/surface_manager.hpp"
-#include "display/surface_drawing_parameters.hpp"
+#include <wstdisplay/surface_manager.hpp>
+#include <wstdisplay/surface_drawing_parameters.hpp>
 
 SlideObject::SlideObject(std::filesystem::path const& filename,
                          SurfaceManager& surface_manager) :

@@ -26,7 +26,7 @@
 #include "app/app.hpp"
 #include "app/config.hpp"
 #include "app/sound_manager.hpp"
-#include "display/opengl_window.hpp"
+#include <wstdisplay/opengl_window.hpp>
 #include "engine/camera.hpp"
 #include "engine/sector.hpp"
 #include "engine/squirrel_thread.hpp"

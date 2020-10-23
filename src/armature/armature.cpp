@@ -26,10 +26,10 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
-#include "display/graphics_context.hpp"
-#include "display/color.hpp"
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/color.hpp>
 #include "armature/pose.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 Armature::Armature(ReaderDocument const& doc) :
   name(),

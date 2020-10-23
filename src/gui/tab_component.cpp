@@ -24,7 +24,7 @@
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
-#include "display/graphics_context.hpp"
+#include <wstdisplay/graphics_context.hpp>
 #include "font/fonts.hpp"
 
 namespace gui {

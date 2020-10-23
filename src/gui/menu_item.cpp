@@ -20,7 +20,7 @@
 
 #include "app/app.hpp"
 #include "app/sound_manager.hpp"
-#include "display/graphics_context.hpp"
+#include <wstdisplay/graphics_context.hpp>
 #include "gui/menu_component.hpp"
 #include "util/pathname.hpp"
 

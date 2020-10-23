@@ -3,16 +3,16 @@
 #include <stdexcept>
 #include <SDL.h>
 
-#include "display/opengl_window.hpp"
-#include "display/surface.hpp"
-#include "display/surface_manager.hpp"
-#include "display/texture_manager.hpp"
-#include "scenegraph/drawable_group.hpp"
-#include "scenegraph/surface_drawable.hpp"
-#include "scenegraph/scissor_drawable.hpp"
-#include "scenegraph/stencil_drawable.hpp"
-#include "scenegraph/shader_drawable.hpp"
-#include "display/shader_object.hpp"
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/surface.hpp>
+#include <wstdisplay/surface_manager.hpp>
+#include <wstdisplay/texture_manager.hpp>
+#include <wstdisplay/scenegraph/drawable_group.hpp>
+#include <wstdisplay/scenegraph/surface_drawable.hpp>
+#include <wstdisplay/scenegraph/scissor_drawable.hpp>
+#include <wstdisplay/scenegraph/stencil_drawable.hpp>
+#include <wstdisplay/scenegraph/shader_drawable.hpp>
+#include <wstdisplay/shader_object.hpp>
 #include "util/pathname.hpp"
 #include "util/system.hpp"
 

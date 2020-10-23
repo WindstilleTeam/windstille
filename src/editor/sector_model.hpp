@@ -25,7 +25,7 @@
 #include <gdkmm/pixbuf.h>
 #include <vector>
 
-#include "display/color.hpp"
+#include <wstdisplay/color.hpp>
 #include "editor/layer.hpp"
 #include "editor/object_model.hpp"
 #include "editor/selection.hpp"

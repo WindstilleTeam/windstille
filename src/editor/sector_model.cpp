@@ -23,8 +23,8 @@
 #include <algorithm>
 #include <gdkmm/pixbuf.h>
 
-#include "display/scene_context.hpp"
-#include "display/surface.hpp"
+#include <wstdisplay/scene_context.hpp>
+#include <wstdisplay/surface.hpp>
 #include "editor/editor_window.hpp"
 #include "editor/layer_manager_columns.hpp"
 #include "editor/navgraph_edge_object_model.hpp"
@@ -36,7 +36,7 @@
 #include "editor/timeline.hpp"
 #include "editor/windstille_widget.hpp"
 #include "navigation/node.hpp"
-#include "scenegraph/drawable_group.hpp"
+#include <wstdisplay/scenegraph/drawable_group.hpp>
 #include "util/file_reader.hpp"
 #include "util/pathname.hpp"
 

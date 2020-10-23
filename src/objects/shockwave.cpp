@@ -19,9 +19,9 @@
 #include "objects/shockwave.hpp"
 
 #include "app/app.hpp"
-#include "display/shader_object.hpp"
-#include "display/texture_manager.hpp"
-#include "scenegraph/shockwave_drawable.hpp"
+#include <wstdisplay/shader_object.hpp>
+#include <wstdisplay/texture_manager.hpp>
+#include <wstdisplay/scenegraph/shockwave_drawable.hpp>
 #include "util/pathname.hpp"
 
 Shockwave::Shockwave(ReaderMapping const& props) :

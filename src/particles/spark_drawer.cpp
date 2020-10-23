@@ -16,9 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "display/drawing_context.hpp"
+#include <wstdisplay/drawing_context.hpp>
 #include "util/file_reader.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "particles/particle_system.hpp"
 #include "particles/spark_drawer.hpp"
 

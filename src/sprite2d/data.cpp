@@ -22,7 +22,7 @@
 #include <memory>
 #include <stdexcept>
 
-#include "display/surface_manager.hpp"
+#include <wstdisplay/surface_manager.hpp>
 #include "util/file_reader.hpp"
 
 SpriteData::SpriteData(std::filesystem::path const& filename,

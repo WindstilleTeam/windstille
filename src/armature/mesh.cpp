@@ -22,9 +22,9 @@
 #include <stdexcept>
 
 #include "armature/armature.hpp"
-#include "display/assert_gl.hpp"
-#include "display/texture_manager.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/assert_gl.hpp>
+#include <wstdisplay/texture_manager.hpp>
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 Mesh::Mesh(ReaderMapping const& reader, std::filesystem::path const& basedir,
            TextureManager& texture_manager) :

@@ -21,7 +21,7 @@
 #include <glm/gtx/fast_trigonometry.hpp>
 
 #include "math/random.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "screen/game_session.hpp"
 #include "screen/view.hpp"
 

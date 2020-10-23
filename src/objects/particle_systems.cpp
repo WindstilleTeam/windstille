@@ -25,7 +25,7 @@
 #include "engine/sector.hpp"
 #include "particles/particle_system.hpp"
 #include "particles/particle_system_drawable.hpp"
-#include "scenegraph/scene_graph.hpp"
+#include <wstdisplay/scenegraph/scene_graph.hpp>
 
 ParticleSystems::ParticleSystems(ReaderMapping const& reader,
                                  SurfaceManager& surface_manager) :

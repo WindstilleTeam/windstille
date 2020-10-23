@@ -21,8 +21,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "display/scene_context.hpp"
-#include "display/surface_drawing_parameters.hpp"
+#include <wstdisplay/scene_context.hpp>
+#include <wstdisplay/surface_drawing_parameters.hpp>
 #include "editor/constants.hpp"
 #include "editor/editor_window.hpp"
 #include "util/file_reader.hpp"

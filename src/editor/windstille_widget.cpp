@@ -22,14 +22,14 @@
 #include <gtkmm.h>
 
 
-#include "display/assert_gl.hpp"
-#include "display/compositor.hpp"
-#include "display/graphics_context.hpp"
-#include "display/opengl_state.hpp"
-#include "display/screenshot.hpp"
-#include "display/surface.hpp"
-#include "display/surface_manager.hpp"
-#include "display/texture_manager.hpp"
+#include <wstdisplay/assert_gl.hpp>
+#include <wstdisplay/compositor.hpp>
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/opengl_state.hpp>
+#include <wstdisplay/screenshot.hpp>
+#include <wstdisplay/surface.hpp>
+#include <wstdisplay/surface_manager.hpp>
+#include <wstdisplay/texture_manager.hpp>
 #include "editor/app.hpp"
 #include "editor/document.hpp"
 #include "editor/editor_window.hpp"
@@ -39,7 +39,7 @@
 #include "editor/sector_model.hpp"
 #include "editor/sprite_object_model.hpp"
 #include "editor/windstille_widget.hpp"
-#include "scenegraph/scene_graph.hpp"
+#include <wstdisplay/scenegraph/scene_graph.hpp>
 #include "sprite2d/sprite.hpp"
 #include "util/pathname.hpp"
 

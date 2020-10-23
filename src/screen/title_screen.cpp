@@ -20,8 +20,8 @@
 
 #include "app/app.hpp"
 #include "app/menu_manager.hpp"
-#include "display/graphics_context.hpp"
-#include "display/opengl_window.hpp"
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/opengl_window.hpp>
 #include "util/pathname.hpp"
 
 TitleScreen::TitleScreen()

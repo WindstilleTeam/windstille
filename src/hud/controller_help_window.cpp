@@ -23,8 +23,8 @@
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
-#include "display/color.hpp"
-#include "display/graphics_context.hpp"
+#include <wstdisplay/color.hpp>
+#include <wstdisplay/graphics_context.hpp>
 
 ControllerHelpWindow::ControllerHelpWindow()
 {

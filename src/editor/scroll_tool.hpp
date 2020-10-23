@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_SCROLL_TOOL_HPP
 #define HEADER_WINDSTILLE_EDITOR_SCROLL_TOOL_HPP
 
-#include "display/graphic_context_state.hpp"
+#include <wstdisplay/graphic_context_state.hpp>
 #include "editor/tool.hpp"
 
 /** */

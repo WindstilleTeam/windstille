@@ -22,9 +22,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-#include "display/assert_gl.hpp"
-#include "display/graphics_context.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/assert_gl.hpp>
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "sprite3d/manager.hpp"
 #include "sprite3d/sprite3d_drawable.hpp"
 

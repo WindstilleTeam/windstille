@@ -24,7 +24,7 @@
 #include <stdexcept>
 
 #include "app/globals.hpp"
-#include "display/color.hpp"
+#include <wstdisplay/color.hpp>
 #include "engine/game_object.hpp"
 #include "engine/object_factory.hpp"
 #include "engine/sector.hpp"

@@ -23,7 +23,7 @@
 
 #include <geom/geom.hpp>
 
-#include "display/texture.hpp"
+#include <wstdisplay/texture.hpp>
 
 enum TileType {
   TILE_EMPTY  = 0,

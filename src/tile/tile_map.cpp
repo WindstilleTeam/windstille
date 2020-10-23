@@ -26,7 +26,7 @@
 #include "tile/tile.hpp"
 #include "tile/tile_factory.hpp"
 #include "screen/view.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 TileMap::TileMap(ReaderMapping const& props) :
   field(),

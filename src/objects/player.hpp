@@ -22,7 +22,7 @@
 #include <wstinput/controller.hpp>
 
 #include "app/globals.hpp"
-#include "display/surface.hpp"
+#include <wstdisplay/surface.hpp>
 #include "engine/entity.hpp"
 #include <glm/glm.hpp>
 #include "sprite2d/sprite.hpp"

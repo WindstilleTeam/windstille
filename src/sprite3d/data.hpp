@@ -25,7 +25,7 @@
 #include <GL/glew.h>
 #include <glm/gtc/quaternion.hpp>
 
-#include "display/texture.hpp"
+#include <wstdisplay/texture.hpp>
 
 namespace sprite3d {
 

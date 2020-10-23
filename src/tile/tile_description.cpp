@@ -22,7 +22,7 @@
 #include <geom/geom.hpp>
 
 #include "app/globals.hpp"
-#include "display/software_surface.hpp"
+#include <wstdisplay/software_surface.hpp>
 #include "tile/tile_factory.hpp"
 
 TileDescription::TileDescription(ReaderMapping const& props) :

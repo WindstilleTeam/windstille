@@ -20,7 +20,7 @@
 
 #include "app/app.hpp"
 #include "util/pathname.hpp"
-#include "display/scene_context.hpp"
+#include <wstdisplay/scene_context.hpp>
 
 SpriteObjectModel::SpriteObjectModel(const std::string& name_, const glm::vec2& rel_pos_,
                                      const std::string& path_) :

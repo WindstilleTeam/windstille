@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include "display/scene_context.hpp"
+#include <wstdisplay/scene_context.hpp>
 #include "engine/game_object_handle.hpp"
 #include "util/file_reader.hpp"
 

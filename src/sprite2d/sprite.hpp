@@ -22,9 +22,9 @@
 
 #include <GL/glew.h>
 
-#include "display/color.hpp"
-#include "display/drawing_context.hpp"
-#include "display/surface.hpp"
+#include <wstdisplay/color.hpp>
+#include <wstdisplay/drawing_context.hpp>
+#include <wstdisplay/surface.hpp>
 #include "sprite2d/manager.hpp"
 
 class DrawingContext;

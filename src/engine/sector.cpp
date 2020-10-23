@@ -28,8 +28,8 @@
 #include "navigation/navigation_graph.hpp"
 #include "objects/doll.hpp"
 #include "objects/player.hpp"
-#include "scenegraph/navigation_graph_drawable.hpp"
-#include "scenegraph/scene_graph.hpp"
+#include <wstdisplay/scenegraph/navigation_graph_drawable.hpp>
+#include <wstdisplay/scenegraph/scene_graph.hpp>
 #include "tile/tile_map.hpp"
 
 Sector::Sector(const Pathname& arg_filename) :

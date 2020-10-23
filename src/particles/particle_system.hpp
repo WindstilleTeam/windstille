@@ -24,7 +24,7 @@
 
 #include <geom/geom.hpp>
 
-#include "display/color.hpp"
+#include <wstdisplay/color.hpp>
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 

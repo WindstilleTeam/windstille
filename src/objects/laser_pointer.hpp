@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_OBJECTS_LASER_POINTER_HPP
 
 #include "sprite2d/sprite.hpp"
-#include "display/texture.hpp"
+#include <wstdisplay/texture.hpp>
 #include "engine/game_object.hpp"
 
 /** Simple class that generates a laser for pointing at objects */

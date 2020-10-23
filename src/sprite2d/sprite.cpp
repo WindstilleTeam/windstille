@@ -22,7 +22,7 @@
 #include <stdexcept>
 
 #include "sprite2d/data.hpp"
-#include "display/surface_drawing_parameters.hpp"
+#include <wstdisplay/surface_drawing_parameters.hpp>
 
 Sprite::Sprite() :
   data(),

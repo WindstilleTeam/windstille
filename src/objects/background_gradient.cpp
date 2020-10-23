@@ -21,9 +21,9 @@
 #include <iostream>
 
 #include "engine/sector.hpp"
-#include "scenegraph/scene_graph.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
-#include "scenegraph/gradient_drawable.hpp"
+#include <wstdisplay/scenegraph/scene_graph.hpp>
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+#include <wstdisplay/scenegraph/gradient_drawable.hpp>
 
 BackgroundGradient::BackgroundGradient(ReaderMapping const& props) :
   drawable()

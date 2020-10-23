@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_NIGHTVISION_HPP
 #define HEADER_WINDSTILLE_OBJECTS_NIGHTVISION_HPP
 
-#include "display/texture.hpp"
+#include <wstdisplay/texture.hpp>
 #include "engine/game_object.hpp"
 #include "sprite2d/sprite.hpp"
 

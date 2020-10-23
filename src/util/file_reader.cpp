@@ -22,7 +22,7 @@
 
 #include <glm/glm.hpp>
 
-#include "display/color.hpp"
+#include <wstdisplay/color.hpp>
 #include "util/file_reader.hpp"
 
 namespace prio {

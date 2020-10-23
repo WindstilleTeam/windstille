@@ -25,12 +25,12 @@
 
 #include <glm/glm.hpp>
 
-#include "display/opengl_window.hpp"
-#include "display/framebuffer.hpp"
-#include "display/surface.hpp"
-#include "display/graphics_context.hpp"
-#include "display/surface_manager.hpp"
-#include "display/surface_drawing_parameters.hpp"
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/framebuffer.hpp>
+#include <wstdisplay/surface.hpp>
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/surface_manager.hpp>
+#include <wstdisplay/surface_drawing_parameters.hpp>
 
 namespace {
 

@@ -23,7 +23,7 @@
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "app/sound_manager.hpp"
-#include "display/graphics_context.hpp"
+#include <wstdisplay/graphics_context.hpp>
 #include "gui/menu_item.hpp"
 #include "gui/tab_component.hpp"
 #include "util/pathname.hpp"

@@ -25,12 +25,12 @@
 #include <ft2build.h>
 #include <geom/geom.hpp>
 
-#include "display/blitter.hpp"
-#include "display/drawing_context.hpp"
-#include "display/software_surface.hpp"
+#include <wstdisplay/blitter.hpp>
+#include <wstdisplay/drawing_context.hpp>
+#include <wstdisplay/software_surface.hpp>
 #include "font/text_drawable.hpp"
 #include "font/ttf_font.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 TTFCharacter::TTFCharacter(const geom::irect& pos_,
                            const geom::frect& uv_,

@@ -24,9 +24,9 @@
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
 #include "app/sound_manager.hpp"
-#include "display/compositor.hpp"
-#include "display/graphics_context.hpp"
-#include "display/opengl_window.hpp"
+#include <wstdisplay/compositor.hpp>
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/opengl_window.hpp>
 #include "engine/script_manager.hpp"
 #include "engine/sector.hpp"
 #include "font/fonts.hpp"

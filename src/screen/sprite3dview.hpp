@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_SPRITE3DVIEW_HPP
 #define HEADER_WINDSTILLE_SCREEN_SPRITE3DVIEW_HPP
 
-#include "display/compositor.hpp"
+#include <wstdisplay/compositor.hpp>
 #include "screen/screen.hpp"
 #include "sprite3d/sprite3d.hpp"
 #include "util/pathname.hpp"

@@ -23,7 +23,7 @@
 #include <glm/gtc/constants.hpp>
 #include <logmich/log.hpp>
 
-#include "display/scene_context.hpp"
+#include <wstdisplay/scene_context.hpp>
 #include "particles/deform_drawer.hpp"
 #include "particles/randomizer.hpp"
 #include "particles/spark_drawer.hpp"

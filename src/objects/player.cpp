@@ -31,7 +31,7 @@
 #include "objects/grenade.hpp"
 #include "objects/laser_pointer.hpp"
 #include "objects/pistol.hpp"
-#include "scenegraph/scene_graph.hpp"
+#include <wstdisplay/scenegraph/scene_graph.hpp>
 #include "sprite3d/sprite3d_drawable.hpp"
 #include "screen/game_session.hpp"
 #include "sprite3d/manager.hpp"

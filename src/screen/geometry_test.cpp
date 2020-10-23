@@ -29,8 +29,8 @@
 #include "app/console.hpp"
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
-#include "display/color.hpp"
-#include "display/graphics_context.hpp"
+#include <wstdisplay/color.hpp>
+#include <wstdisplay/graphics_context.hpp>
 
 GeometryTest::GeometryTest()
   : line1(glm::vec2(300, 300),

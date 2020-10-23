@@ -21,10 +21,10 @@
 #include <iostream>
 
 #include "app/app.hpp"
-#include "display/drawing_context.hpp"
-#include "display/surface_manager.hpp"
+#include <wstdisplay/drawing_context.hpp>
+#include <wstdisplay/surface_manager.hpp>
 #include "particles/particle_system.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "util/file_reader.cpp"
 #include "util/pathname.cpp"
 

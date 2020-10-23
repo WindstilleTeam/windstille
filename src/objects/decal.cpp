@@ -20,11 +20,11 @@
 
 #include "app/app.hpp"
 #include "engine/sector.hpp"
-#include "scenegraph/scene_graph.hpp"
-#include "scenegraph/surface_drawable.hpp"
-#include "display/surface_drawing_parameters.hpp"
-#include "display/surface_manager.hpp"
-#include "display/scene_context.hpp"
+#include <wstdisplay/scenegraph/scene_graph.hpp>
+#include <wstdisplay/scenegraph/surface_drawable.hpp>
+#include <wstdisplay/surface_drawing_parameters.hpp>
+#include <wstdisplay/surface_manager.hpp>
+#include <wstdisplay/scene_context.hpp>
 
 Decal::Decal(ReaderMapping const& reader) :
   drawable(),

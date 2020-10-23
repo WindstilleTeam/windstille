@@ -25,8 +25,8 @@
 
 #include <geom/geom.hpp>
 
-#include "display/graphics_context.hpp"
-#include "display/color.hpp"
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/color.hpp>
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
 #include "util/file_writer.hpp"

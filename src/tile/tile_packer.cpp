@@ -21,9 +21,9 @@
 
 #include "app/globals.hpp"
 #include "tile/tile_packer.hpp"
-#include "display/assert_gl.hpp"
-#include "display/blitter.hpp"
-#include "display/software_surface.hpp"
+#include <wstdisplay/assert_gl.hpp>
+#include <wstdisplay/blitter.hpp>
+#include <wstdisplay/software_surface.hpp>
 
 class TilePackerImpl
 {

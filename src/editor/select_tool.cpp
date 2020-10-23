@@ -18,7 +18,7 @@
 
 #include <gtkmm/menu.h>
 
-#include "display/scene_context.hpp"
+#include <wstdisplay/scene_context.hpp>
 #include "editor/sector_model.hpp"
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"

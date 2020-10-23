@@ -21,13 +21,13 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "display/assert_gl.hpp"
-#include "display/opengl_state.hpp"
-#include "display/opengl_window.hpp"
-#include "display/shader_program.hpp"
-#include "display/surface_manager.hpp"
-#include "display/surface_drawing_parameters.hpp"
-#include "display/texture_manager.hpp"
+#include <wstdisplay/assert_gl.hpp>
+#include <wstdisplay/opengl_state.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/shader_program.hpp>
+#include <wstdisplay/surface_manager.hpp>
+#include <wstdisplay/surface_drawing_parameters.hpp>
+#include <wstdisplay/texture_manager.hpp>
 #include "math/random.hpp"
 #include "system/sdl.hpp"
 

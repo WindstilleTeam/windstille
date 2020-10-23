@@ -25,7 +25,7 @@
 #include <geom/geom.hpp>
 #include <surf/fwd.hpp>
 
-#include "display/software_surface.hpp"
+#include <wstdisplay/software_surface.hpp>
 #include "tile/tile_description.hpp"
 #include "util/currenton.hpp"
 #include "util/pathname.hpp"

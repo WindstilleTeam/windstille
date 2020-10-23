@@ -28,13 +28,13 @@
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
-#include "display/graphic_context_state.hpp"
-#include "display/graphics_context.hpp"
-#include "display/opengl_window.hpp"
-#include "display/texture_manager.hpp"
+#include <wstdisplay/graphic_context_state.hpp>
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/texture_manager.hpp>
 #include "particles/particle_system_drawable.hpp"
-#include "scenegraph/fill_screen_drawable.hpp"
-#include "scenegraph/fill_screen_pattern_drawable.hpp"
+#include <wstdisplay/scenegraph/fill_screen_drawable.hpp>
+#include <wstdisplay/scenegraph/fill_screen_pattern_drawable.hpp>
 #include "util/pathname.hpp"
 
 ParticleViewer::ParticleViewer()

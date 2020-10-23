@@ -34,7 +34,7 @@
 #include "navigation/edge_position.hpp"
 #include "navigation/navigation_graph.hpp"
 #include "navigation/node.hpp"
-#include "scenegraph/scene_graph.hpp"
+#include <wstdisplay/scenegraph/scene_graph.hpp>
 #include "sprite3d/sprite3d_drawable.hpp"
 #include "sprite3d/manager.hpp"
 

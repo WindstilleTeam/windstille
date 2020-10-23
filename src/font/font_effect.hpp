@@ -23,7 +23,7 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
-#include "display/software_surface.hpp"
+#include <wstdisplay/software_surface.hpp>
 
 /**
  *  The FontEffect class manages the blitting from a glyph bitmap to

@@ -74,6 +74,7 @@ function(build_dependencies)
   add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/surfcpp/ EXCLUDE_FROM_ALL)
 
+  add_subdirectory(external/wstdisplay/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/wstinput/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/wstsound/ EXCLUDE_FROM_ALL)
 endfunction()
@@ -137,6 +138,7 @@ target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
 target_link_libraries(wstlib PUBLIC
   biio
   prio
+  wstdisplay
   wstinput
   wstsound
   argparser

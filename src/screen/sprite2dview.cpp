@@ -27,7 +27,7 @@
 #include "app/console.hpp"
 #include "app/controller_def.hpp"
 #include "app/controller_def.hpp"
-#include "display/surface_manager.hpp"
+#include <wstdisplay/surface_manager.hpp>
 #include "util/directory.hpp"
 
 extern std::vector<std::string> arg_files;

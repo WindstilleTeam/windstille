@@ -24,8 +24,8 @@
 #include <glm/glm.hpp>
 #include <geom/geom.hpp>
 
-#include "display/surface.hpp"
-#include "display/color.hpp"
+#include <wstdisplay/surface.hpp>
+#include <wstdisplay/color.hpp>
 
 struct Flair
 {

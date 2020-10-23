@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_VIEW_HPP
 #define HEADER_WINDSTILLE_SCREEN_VIEW_HPP
 
-#include "display/graphic_context_state.hpp"
+#include <wstdisplay/graphic_context_state.hpp>
 #include "engine/camera.hpp"
 #include <glm/glm.hpp>
 #include "util/currenton.hpp"

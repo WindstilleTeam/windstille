@@ -20,17 +20,17 @@
 
 #include <iostream>
 
-#include "display/drawing_parameters.hpp"
-#include "display/scene_context.hpp"
-#include "display/surface.hpp"
-#include "display/surface_drawing_parameters.hpp"
-#include "display/surface_manager.hpp"
+#include <wstdisplay/drawing_parameters.hpp>
+#include <wstdisplay/scene_context.hpp>
+#include <wstdisplay/surface.hpp>
+#include <wstdisplay/surface_drawing_parameters.hpp>
+#include <wstdisplay/surface_manager.hpp>
 #include "editor/app.hpp"
 #include "editor/decal_rotate_control_point.hpp"
 #include "editor/decal_scale_control_point.hpp"
 #include "editor/sector_model.hpp"
-#include "scenegraph/drawable_group.hpp"
-#include "scenegraph/surface_drawable.hpp"
+#include <wstdisplay/scenegraph/drawable_group.hpp>
+#include <wstdisplay/scenegraph/surface_drawable.hpp>
 #include "util/file_reader.hpp"
 #include "util/pathname.hpp"
 

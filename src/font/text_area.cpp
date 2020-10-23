@@ -21,9 +21,9 @@
 #include <babyxml.hpp>
 
 #include "app/app.hpp"
-#include "display/graphics_context.hpp"
+#include <wstdisplay/graphics_context.hpp>
 #include "font/fonts.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 struct TextAreaCommand
 {

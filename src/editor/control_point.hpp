@@ -26,7 +26,7 @@
 
 #include <geom/geom.hpp>
 
-#include "display/surface.hpp"
+#include <wstdisplay/surface.hpp>
 
 class SceneContext;
 class ControlPoint;

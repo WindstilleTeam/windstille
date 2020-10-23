@@ -18,8 +18,8 @@
 
 #include "editor/zoom_tool.hpp"
 
-#include "display/scene_context.hpp"
-#include "display/color.hpp"
+#include <wstdisplay/scene_context.hpp>
+#include <wstdisplay/color.hpp>
 #include "editor/windstille_widget.hpp"
 
 ZoomTool::ZoomTool() :

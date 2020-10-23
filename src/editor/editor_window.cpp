@@ -39,7 +39,7 @@
 
 #include <logmich/log.hpp>
 
-#include "display/scene_context.hpp"
+#include <wstdisplay/scene_context.hpp>
 #include "editor/windstille_widget.hpp"
 #include "editor/about_window.hpp"
 #include "editor/editor_window.hpp"

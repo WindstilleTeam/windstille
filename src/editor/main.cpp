@@ -30,8 +30,8 @@
 #include <argparser.hpp>
 #include <logmich/log.hpp>
 
-#include "display/surface_manager.hpp"
-#include "display/texture_manager.hpp"
+#include <wstdisplay/surface_manager.hpp>
+#include <wstdisplay/texture_manager.hpp>
 #include "editor/app.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/main.hpp"

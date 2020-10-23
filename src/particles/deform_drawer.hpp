@@ -19,11 +19,11 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_DEFORM_DRAWER_HPP
 #define HEADER_WINDSTILLE_PARTICLES_DEFORM_DRAWER_HPP
 
-#include "display/drawing_context.hpp"
-#include "display/framebuffer.hpp"
-#include "display/shader_program.hpp"
-#include "display/surface.hpp"
-#include "display/surface_manager.hpp"
+#include <wstdisplay/drawing_context.hpp>
+#include <wstdisplay/framebuffer.hpp>
+#include <wstdisplay/shader_program.hpp>
+#include <wstdisplay/surface.hpp>
+#include <wstdisplay/surface_manager.hpp>
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 

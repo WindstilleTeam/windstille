@@ -22,8 +22,8 @@
 #include <geom/quad.hpp>
 
 #include "editor/control_point.hpp"
-#include "display/surface.hpp"
-#include "display/software_surface.hpp"
+#include <wstdisplay/surface.hpp>
+#include <wstdisplay/software_surface.hpp>
 #include "editor/object_model.hpp"
 
 class SurfaceDrawable;

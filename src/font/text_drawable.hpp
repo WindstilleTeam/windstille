@@ -22,7 +22,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "app/app.hpp"
-#include "display/graphics_context.hpp"
+#include <wstdisplay/graphics_context.hpp>
 #include "font/fonts.hpp"
 
 class TextDrawable : public Drawable

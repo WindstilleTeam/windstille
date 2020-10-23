@@ -19,10 +19,10 @@
 #include "objects/liquid.hpp"
 
 #include "app/app.hpp"
-#include "display/texture_manager.hpp"
+#include <wstdisplay/texture_manager.hpp>
 #include "engine/sector.hpp"
-#include "scenegraph/scene_graph.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/scene_graph.hpp>
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 #define SAMPLES 5
 

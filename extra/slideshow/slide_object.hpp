@@ -21,7 +21,7 @@
 
 #include <memory>
 
-#include "display/surface.hpp"
+#include <wstdisplay/surface.hpp>
 
 #include "slideshow/slide_path.hpp"
 

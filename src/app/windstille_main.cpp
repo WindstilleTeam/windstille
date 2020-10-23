@@ -27,9 +27,9 @@
 #include "app/console.hpp"
 #include "app/controller_def.hpp"
 #include "app/windstille_main.hpp"
-#include "display/opengl_window.hpp"
-#include "display/surface_manager.hpp"
-#include "display/texture_manager.hpp"
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/surface_manager.hpp>
+#include <wstdisplay/texture_manager.hpp>
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "screen/game_session.hpp"

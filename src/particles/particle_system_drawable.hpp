@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCENEGRAPH_PARTICLE_SYSTEM_DRAWABLE_HPP
 #define HEADER_WINDSTILLE_SCENEGRAPH_PARTICLE_SYSTEM_DRAWABLE_HPP
 
-#include "scenegraph/drawable.hpp"
+#include <wstdisplay/scenegraph/drawable.hpp>
 
 class ParticleSystem;
 

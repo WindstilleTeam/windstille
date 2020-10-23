@@ -20,12 +20,12 @@
 
 #include <iostream>
 
-#include "display/opengl_state.hpp"
-#include "display/opengl_window.hpp"
-#include "display/shader_program.hpp"
-#include "display/surface_manager.hpp"
-#include "display/texture_manager.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/opengl_state.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/shader_program.hpp>
+#include <wstdisplay/surface_manager.hpp>
+#include <wstdisplay/texture_manager.hpp>
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "math/random.hpp"
 #include "system/sdl.hpp"
 

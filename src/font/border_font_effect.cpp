@@ -18,7 +18,7 @@
 
 #include <stdint.h>
 
-#include "display/software_surface.hpp"
+#include <wstdisplay/software_surface.hpp>
 #include "font/border_font_effect.hpp"
 
 BorderFontEffect::BorderFontEffect(int size_, bool outline_) :

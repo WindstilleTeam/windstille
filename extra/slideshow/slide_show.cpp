@@ -20,8 +20,8 @@
 
 #include <iostream>
 
-#include "display/surface_manager.hpp"
-#include "display/texture_manager.hpp"
+#include <wstdisplay/surface_manager.hpp>
+#include <wstdisplay/texture_manager.hpp>
 #include "slideshow/slide_parser.hpp"
 
 SlideShow::SlideShow(TextureManager& texture_manager,

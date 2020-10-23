@@ -19,11 +19,11 @@
 #include "objects/nightvision.hpp"
 
 #include "app/app.hpp"
-#include "display/graphics_context.hpp"
-#include "display/opengl_window.hpp"
-#include "display/texture_manager.hpp"
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/texture_manager.hpp>
 #include "math/random.hpp"
-#include "scenegraph/vertex_array_drawable.hpp"
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "util/pathname.hpp"
 
 Nightvision::Nightvision(ReaderMapping const& props) :
