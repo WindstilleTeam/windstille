@@ -31,7 +31,7 @@ namespace {
 /** Check if the given region of the given image is fully transparent */
 bool surface_empty(SoftwareSurface const& image, int sx, int sy, int w, int h)
 {
-  uint8_t const* data = image.get_data();
+  uint8_t const* data = static_cast<uint8_t const*>(image.get_data());
 
   for(int y = sy; y < sy + h; ++y) {
     for(int x = sx; x < sx + w; ++x)

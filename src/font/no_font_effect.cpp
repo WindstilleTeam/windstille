@@ -28,7 +28,7 @@ NoFontEffect::blit(SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, i
   int end_x = std::min(static_cast<int>(brush.width), target.get_width()  - x_pos);
   int end_y = std::min(static_cast<int>(brush.rows), target.get_height() - y_pos);
 
-  unsigned char* target_buf = target.get_data();
+  uint8_t* target_buf = static_cast<uint8_t*>(target.get_data());
 
   int target_pitch = target.get_pitch();
 

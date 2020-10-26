@@ -49,7 +49,7 @@ Automap::Automap(const geom::frect& rect_, Component* parent_) :
 
   SoftwareSurface image = SoftwareSurface::create(surf::PixelFormat::RGBA, tilemap->get_size());
 
-  unsigned char* buffer = image.get_data();
+  uint8_t* buffer = static_cast<uint8_t*>(image.get_data());
 
   for(int y = 0; y < image.get_height(); ++y)
     for(int x = 0; x < image.get_width(); ++x)
