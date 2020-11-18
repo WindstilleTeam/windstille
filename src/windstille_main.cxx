@@ -266,8 +266,7 @@ WindstilleMain::init_modules()
 
   std::cout << "Loading Guile Code... " << std::flush;
 
-  scm_c_eval_string("(debug-enable 'debug)"
-                    "(debug-enable 'backtrace)"
+  scm_c_eval_string("(debug-enable 'backtrace)"
                     "(read-enable 'positions)");
 
   scm_c_define("*windstille-levelfile*",      scm_from_utf8_string(levelfile.c_str()));

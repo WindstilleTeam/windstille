@@ -117,18 +117,16 @@ void enable_debug()
   SCM_RECORD_POSITIONS_P = 1;
   SCM_RESET_DEBUG_MODE;
 #else
-  scm_c_eval_string("(debug-enable 'debug)"
-                 "(debug-enable 'backtrace)"
-                 "(read-enable  'positions)");
+  scm_c_eval_string("(debug-enable 'backtrace)"
+                    "(read-enable  'positions)");
 #endif
 }
 
 /** Disable all debugging */
 void disable_debug()
 {
-  scm_c_eval_string("(debug-disable 'debug)"
-                 "(debug-disable 'backtrace)"
-                 "(read-disable  'positions)");
+  scm_c_eval_string("(debug-disable 'backtrace)"
+                    "(read-disable  'positions)");
 }
 
 void enable_readline()
