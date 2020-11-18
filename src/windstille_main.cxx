@@ -23,7 +23,7 @@
 #include <ClanLib/sound.h>
 #include <ClanLib/display.h>
 
-#include <guile/gh.h>
+#include <libguile.h>
 
 #include "string_converter.hxx"
 #include "windstille_error.hxx"
@@ -266,13 +266,13 @@ WindstilleMain::init_modules()
 
   std::cout << "Loading Guile Code... " << std::flush;
 
-  gh_eval_str("(debug-enable 'debug)"
-              "(debug-enable 'backtrace)"
-              "(read-enable 'positions)");
+  scm_c_eval_string("(debug-enable 'debug)"
+                    "(debug-enable 'backtrace)"
+                    "(read-enable 'positions)");
 
-  gh_define("*windstille-levelfile*",      gh_str02scm(levelfile.c_str()));
-  gh_define("*windstille-datadir*",        gh_str02scm(datadir.c_str()));
-  gh_define("*windstille-package-string*", gh_str02scm("Windstille"));
+  scm_c_define("*windstille-levelfile*",      scm_from_utf8_string(levelfile.c_str()));
+  scm_c_define("*windstille-datadir*",        scm_from_utf8_string(datadir.c_str()));
+  scm_c_define("*windstille-package-string*", scm_from_utf8_string("Windstille"));
 
   std::cout << "done" << std::endl;
 

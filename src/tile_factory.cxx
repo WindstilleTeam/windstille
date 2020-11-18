@@ -33,28 +33,28 @@ TileFactory* TileFactory::current_ = 0;
 
 TileFactory::TileFactory (const std::string& filename)
 {
-  SCM input_stream = scm_open_file(gh_str02scm(filename.c_str()), 
-                                   gh_str02scm("r"));
+  SCM input_stream = scm_open_file(scm_from_utf8_string(filename.c_str()), 
+                                   scm_from_utf8_string("r"));
   SCM tree = scm_read(input_stream);
   
-  if (!(gh_symbol_p(gh_car(tree)) && gh_equal_p(gh_symbol2scm("windstille-tiles"), gh_car(tree))))
+  if (!(scm_symbol_p(scm_car(tree)) && scm_equal_p(scm_from_utf8_symbol("windstille-tiles"), scm_car(tree))))
     {
       std::cout << "Not a Windstille Tile File!" << std::endl;
     }
   else
     {
-      tree = gh_cdr(tree);
+      tree = scm_cdr(tree);
 
-      while (!gh_null_p(tree))
+      while (!scm_null_p(tree))
         {
-          SCM current = gh_car(tree);
+          SCM current = scm_car(tree);
           
-          if (gh_pair_p(current))
+          if (scm_pair_p(current))
             {
-              SCM name    = gh_car(current);
-              SCM data    = gh_cdr(current);
+              SCM name    = scm_car(current);
+              SCM data    = scm_cdr(current);
       
-              if (gh_equal_p(gh_symbol2scm("tile"), name)) 
+              if (scm_equal_p(scm_from_utf8_symbol("tile"), name)) 
                 {
                   parse_tile(data);
                 }
@@ -67,7 +67,7 @@ TileFactory::TileFactory (const std::string& filename)
             {
               std::cout << "WindstilleLevel: Not a pair!"  << std::endl;
             }
-          tree = gh_cdr(tree);
+          tree = scm_cdr(tree);
         }
     }
 }
@@ -79,43 +79,43 @@ TileFactory::parse_tile(SCM data)
   std::string image;
   unsigned char colmap[8];
   
-  while (!gh_null_p(data))
+  while (!scm_null_p(data))
     {
-      SCM current = gh_car(data);
+      SCM current = scm_car(data);
           
-      if (gh_pair_p(current))
+      if (scm_pair_p(current))
         {
-          SCM name    = gh_car(current);
-          SCM data    = gh_cdr(current);
+          SCM name    = scm_car(current);
+          SCM data    = scm_cdr(current);
 
-          if (gh_equal_p(gh_symbol2scm("id"), name))           
+          if (scm_equal_p(scm_from_utf8_symbol("id"), name))           
             {
-              id = gh_scm2int(gh_car(data));
+              id = scm_to_int(scm_car(data));
             }
-          else if (gh_equal_p(gh_symbol2scm("image"), name))           
+          else if (scm_equal_p(scm_from_utf8_symbol("image"), name))           
             {
-              image = scm2string(gh_car(data));
+              image = scm2string(scm_car(data));
             }
-          else if (gh_equal_p(gh_symbol2scm("colmap"), name))
+          else if (scm_equal_p(scm_from_utf8_symbol("colmap"), name))
             {
-              colmap[0] = gh_scm2int(gh_car(data));
-              data = gh_cdr(data);
-              colmap[1] = gh_scm2int(gh_car(data));
-              data = gh_cdr(data);
-              colmap[2] = gh_scm2int(gh_car(data));
-              data = gh_cdr(data);
-              colmap[3] = gh_scm2int(gh_car(data));
-              data = gh_cdr(data);
-              colmap[4] = gh_scm2int(gh_car(data));
-              data = gh_cdr(data);
-              colmap[5] = gh_scm2int(gh_car(data));
-              data = gh_cdr(data);
-              colmap[6] = gh_scm2int(gh_car(data));
-              data = gh_cdr(data);
-              colmap[7] = gh_scm2int(gh_car(data));
+              colmap[0] = scm_to_int(scm_car(data));
+              data = scm_cdr(data);
+              colmap[1] = scm_to_int(scm_car(data));
+              data = scm_cdr(data);
+              colmap[2] = scm_to_int(scm_car(data));
+              data = scm_cdr(data);
+              colmap[3] = scm_to_int(scm_car(data));
+              data = scm_cdr(data);
+              colmap[4] = scm_to_int(scm_car(data));
+              data = scm_cdr(data);
+              colmap[5] = scm_to_int(scm_car(data));
+              data = scm_cdr(data);
+              colmap[6] = scm_to_int(scm_car(data));
+              data = scm_cdr(data);
+              colmap[7] = scm_to_int(scm_car(data));
             }
         }
-      data = gh_cdr(data);
+      data = scm_cdr(data);
     }
 
   if (0) // Debugging code

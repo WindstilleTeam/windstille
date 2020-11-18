@@ -17,7 +17,7 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-#include <guile/gh.h>
+#include <libguile.h>
 #include <ClanLib/Display/display.h>
 #include <ClanLib/Display/keyboard.h>
 #include <ClanLib/Display/display_window.h>
@@ -46,13 +46,13 @@ ViewComponent::on_input_down(const CL_InputEvent& event)
     {
       CL_Pointf pos = view->screen2world(CL_Pointf(event.mouse_pos.x,
                                                    event.mouse_pos.y));
-      gh_call2(gh_lookup("*mouse-down-handler*"), 
-               gh_double2scm(pos.x), gh_double2scm(pos.y));
+      scm_call_2(scm_c_lookup("*mouse-down-handler*"), 
+                 scm_from_double(pos.x), scm_from_double(pos.y));
     }
   else if (event.device.get_type() == CL_InputDevice::keyboard)
     {
-      gh_call1(gh_lookup("*key-down-handler*"), 
-               gh_str02scm(CL_Keyboard::get_device().keyid_to_string(event.id).c_str()));
+      scm_call_1(scm_c_lookup("*key-down-handler*"), 
+                 scm_from_utf8_string(CL_Keyboard::get_device().keyid_to_string(event.id).c_str()));
     }
 }
 
@@ -63,8 +63,8 @@ ViewComponent::on_input_up(const CL_InputEvent& event)
     {
       CL_Pointf pos = view->screen2world(CL_Pointf(event.mouse_pos.x,
                                                    event.mouse_pos.y));
-      gh_call2(gh_lookup("*mouse-up-handler*"), 
-               gh_double2scm(pos.x), gh_double2scm(pos.y));
+      scm_call_2(scm_c_lookup("*mouse-up-handler*"), 
+                 scm_from_double(pos.x), scm_from_double(pos.y));
     }
 }
 

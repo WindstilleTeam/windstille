@@ -21,16 +21,16 @@
 
 std::string scm2string(SCM str)
 {
-  if (gh_string_p(str))
+  if (scm_string_p(str))
     {
-      char* cstr = gh_scm2newstr(str, 0);
+      char* cstr = scm_to_utf8_string(str);
       std::string cppstr = cstr;
       free(cstr);
       return cppstr;
     }
-  else if (gh_symbol_p(str))
+  else if (scm_symbol_p(str))
     {
-      char* cstr = gh_symbol2newstr(str, 0);
+      char* cstr = scm_to_utf8_string(str);
       std::string cppstr = cstr;
       free(cstr);
       return cppstr;

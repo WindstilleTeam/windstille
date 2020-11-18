@@ -20,7 +20,7 @@
 #ifndef HEADER_BUTTON_FACTORY_HXX
 #define HEADER_BUTTON_FACTORY_HXX
 
-#include <guile/gh.h>
+#include <libguile.h>
 
 class InputButton;
 

@@ -20,7 +20,7 @@
 #ifndef HEADER_INPUT_MANAGER_CUSTOM_HXX
 #define HEADER_INPUT_MANAGER_CUSTOM_HXX
 
-#include <guile/gh.h>
+#include <libguile.h>
 #include <ClanLib/Display/input_device.h>
 #include <ClanLib/Display/input_event.h>
 #include "input_event.hxx"

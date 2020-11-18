@@ -25,7 +25,7 @@ GuileGameObjFactory::Descr GuileGameObjFactory::descriptions;
 void
 GuileGameObjFactory::register_guile_bindings ()
 {
-  gh_new_procedure2_0 ("gameobj-factory:register", &GuileGameObjFactory::register_object);
+  scm_c_define_gsubr("gameobj-factory:register", 2, 0, 0, reinterpret_cast<void*>(&GuileGameObjFactory::register_object));
 }
 
 GuileGameObj*
@@ -40,18 +40,21 @@ GuileGameObjFactory::create (const std::string& name)
     }
   else 
     {
-      return new GuileGameObj (gh_call0 (i->second.scm_create),
-			       i->second.scm_update,
-			       i->second.scm_draw);
+      return new GuileGameObj(scm_call_0(i->second.scm_create),
+                              i->second.scm_update,
+                              i->second.scm_draw);
     }
 }
 
 SCM
-GuileGameObjFactory::register_object (SCM name, SCM vec)
+GuileGameObjFactory::register_object(SCM name, SCM vec)
 {
-  descriptions[SCM_CHARS (name)] = GuileGameObjDesc (gh_vector_ref (vec, gh_int2scm(0)),
-						     gh_vector_ref (vec, gh_int2scm(1)),
-						     gh_vector_ref (vec, gh_int2scm(2)));
+  char* name_c = scm_to_utf8_string(name);
+  descriptions[std::string(name_c)] = GuileGameObjDesc (scm_vector_ref (vec, scm_from_int(0)),
+                                                        scm_vector_ref (vec, scm_from_int(1)),
+                                                        scm_vector_ref (vec, scm_from_int(2)));
+  free(name_c);
+
   return SCM_UNSPECIFIED;
 }
 

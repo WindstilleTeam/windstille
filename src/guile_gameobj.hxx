@@ -20,7 +20,7 @@
 #ifndef GUILEGAMEOBJ_HXX
 #define GUILEGAMEOBJ_HXX
 
-#include <guile/gh.h>
+#include <libguile.h>
 #include "gameobj.hxx"
 
 class GuileGameObj : public GameObj

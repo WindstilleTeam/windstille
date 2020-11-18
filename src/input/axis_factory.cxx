@@ -28,16 +28,16 @@
 InputAxis* 
 AxisFactory::create(SCM lst)
 {
-  while(gh_pair_p(lst))
+  while(scm_pair_p(lst))
     {
-      SCM sym  = gh_car(lst);
-      SCM data = gh_cdr(lst);
+      SCM sym  = scm_car(lst);
+      SCM data = scm_cdr(lst);
       
-      if (gh_equal_p(sym, gh_symbol2scm("joystick-axis")))
+      if (scm_equal_p(sym, scm_from_utf8_symbol("joystick-axis")))
         {
           return create_joystick_axis(data);
         }
-      if (gh_equal_p(sym, gh_symbol2scm("button-axis")))
+      if (scm_equal_p(sym, scm_from_utf8_symbol("button-axis")))
         {
           return create_button_axis(data);
         }
@@ -46,7 +46,7 @@ AxisFactory::create(SCM lst)
           throw FeuerkraftError("AxisFactory::create: parse error");
         }
 
-      lst = gh_cdr(lst);
+      lst = scm_cdr(lst);
     }
   return 0;
 }
@@ -54,8 +54,8 @@ AxisFactory::create(SCM lst)
 InputAxis*
 AxisFactory::create_joystick_axis(SCM lst)
 {
-  int device_num = gh_scm2int(gh_car(lst));
-  int axis_num   = gh_scm2int(gh_cadr(lst));
+  int device_num = scm_to_int(scm_car(lst));
+  int axis_num   = scm_to_int(scm_cadr(lst));
 
   if (device_num >= 0 && device_num < CL_Joystick::get_device_count())
     return new InputAxisInputDevice(CL_Joystick::get_device(device_num), axis_num);
@@ -70,8 +70,8 @@ AxisFactory::create_joystick_axis(SCM lst)
 InputAxis*
 AxisFactory::create_button_axis(SCM lst)
 {
-  InputButton* left  = ButtonFactory::create(gh_car(lst));
-  InputButton* right = ButtonFactory::create(gh_cadr(lst));
+  InputButton* left  = ButtonFactory::create(scm_car(lst));
+  InputButton* right = ButtonFactory::create(scm_cadr(lst));
 
   return new ButtonAxis(left, right);
 }

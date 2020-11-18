@@ -20,7 +20,7 @@
 #ifndef HEADER_SCRIPTING_EDITOR_HXX
 #define HEADER_SCRIPTING_EDITOR_HXX
 
-#include <guile/gh.h>
+#include <libguile.h>
 
 class CL_Component;
 

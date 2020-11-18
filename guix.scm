@@ -58,7 +58,7 @@
       ("which" ,base:which)
       ("glu" ,glu)
       ("swig" ,swig)
-      ("guile-1.8" ,guile-1.8)
+      ("guile-3.0" ,guile-3.0)
       ("libatomic-ops" ,libatomic-ops)
       ("clanlib-1.0" ,clanlib-1.0)))
    (synopsis (synopsis-from-source %source-dir))

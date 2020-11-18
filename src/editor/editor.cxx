@@ -22,7 +22,7 @@
 #include <ClanLib/display.h>
 #include <ClanLib/gui.h>
 #include <ClanLib/guistylesilver.h>
-#include <guile/gh.h>
+#include <libguile.h>
 
 #include "gui_manager.hxx"
 #include "globals.hxx"
@@ -41,7 +41,7 @@ Editor::Editor()
 
   tilemap   = new EditorTileMap(manager->get_component());
 
-  gh_load ((datadir + "editor.scm").c_str());
+  scm_c_primitive_load((datadir + "editor.scm").c_str());
 }
 
 Editor::~Editor()

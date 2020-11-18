@@ -20,7 +20,7 @@
 #ifndef HEADER_SCRIPTING_GAME_HXX
 #define HEADER_SCRIPTING_GAME_HXX
 
-#include <guile/gh.h>
+#include <libguile.h>
 
 class GameWorld;
 

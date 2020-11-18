@@ -20,7 +20,7 @@
 #ifndef HEADER_AXIS_FACTORY_HXX
 #define HEADER_AXIS_FACTORY_HXX
 
-#include <guile/gh.h>
+#include <libguile.h>
 #include "input_axis.hxx"
 
 /** */

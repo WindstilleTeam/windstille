@@ -18,7 +18,7 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <assert.h>
-#include <guile/gh.h>
+#include <libguile.h>
 #include <ClanLib/Core/System/cl_assert.h>
 
 #include "guile.hxx"
@@ -29,17 +29,17 @@ scm2string (SCM data)
 {
   std::string str;
   
-  if (gh_string_p(data))
+  if (scm_string_p(data))
     {
-      char* tmpstr = gh_scm2newstr(data, 0);
+      char* tmpstr = scm_to_utf8_string(data);
       str = tmpstr;
       free(tmpstr);
     } else {
-      SCM scmstr = scm_make_string(SCM_MAKINUM(0), SCM_UNDEFINED);
+      SCM scmstr = scm_make_string(scm_from_int(0), SCM_UNDEFINED);
       SCM port = scm_mkstrport(SCM_INUM0, scmstr,
                                SCM_OPN | SCM_WRTNG, "scm_mkstrport");
       scm_display(data, port);
-      char* tmpstr = gh_scm2newstr(scmstr, 0);
+      char* tmpstr = scm_to_utf8_string(scmstr);
       str = tmpstr;
       free(tmpstr);
     }
@@ -48,9 +48,9 @@ scm2string (SCM data)
 
 SCM pos2scm (int x, int y)
 {
-  return SCM_BOOL_F;/*scm_listify (gh_symbol2scm ("pos"),
-                      gh_int2scm (x),
-                      gh_int2scm (y), 
+  return SCM_BOOL_F;/*scm_listify (scm_from_utf8_symbol ("pos"),
+                      scm_from_int (x),
+                      scm_from_int (y), 
                       SCM_UNDEFINED);*/
 }
 
@@ -58,8 +58,8 @@ void pretty_print (std::ostream& stream, SCM obj)
 {
   std::cout << "pretty_print" << std::endl;
   // FIXME: ...lalala..
-  gh_write (obj);
-  gh_newline ();
+  scm_write(obj, SCM_UNDEFINED);
+  scm_newline(SCM_UNDEFINED);
 
 }
 
@@ -70,19 +70,19 @@ bool equal_p(SCM a, SCM b)
 
 SCM symbol2scm(const char* str)
 {
-  return scm_str2symbol(str);
+  return scm_from_utf8_symbol(str);
 }
 
 std::string keyword2string(SCM keyword)
 {
-  assert(SCM_KEYWORDP(keyword));
+  assert(scm_keyword_p(keyword));
   //puts("keyword2string: ");
-  //gh_display(keyword);
-  //gh_newline();
-  //gh_display(scm_keyword_dash_symbol(keyword));
-  //gh_newline();
+  //scm_display(keyword, SCM_UNDEFINED);
+  //scm_newline(SCM_UNDEFINED);
+  //scm_display(scm_keyword_dash_symbol(keyword), SCM_UNDEFINED);
+  //scm_newline(SCM_UNDEFINED);
 
-  char* str = gh_symbol2newstr(scm_keyword_dash_symbol(keyword), 0);
+  char* str = scm_to_utf8_string(keyword);
   std::string ret = str + 1; // skip the dash
   free(str);
   return ret;
@@ -90,7 +90,7 @@ std::string keyword2string(SCM keyword)
 
 std::string symbol2string(SCM symbol)
 {
-  char* c_str = gh_symbol2newstr(symbol, 0);
+  char* c_str = scm_to_utf8_string(symbol);
   std::string str = c_str;
   free(c_str);
   return str;
@@ -98,7 +98,7 @@ std::string symbol2string(SCM symbol)
 
 void enter_repl()
 {
-  SCM func = gh_lookup("feuerkraft:repl");
+  SCM func = scm_c_lookup("feuerkraft:repl");
   if (func != SCM_BOOL_F)
     {
       scm_call_0(func);
@@ -117,18 +117,18 @@ void enable_debug()
   SCM_RECORD_POSITIONS_P = 1;
   SCM_RESET_DEBUG_MODE;
 #else
-  gh_eval_str("(debug-enable 'debug)"
-              "(debug-enable 'backtrace)"
-              "(read-enable  'positions)");
+  scm_c_eval_string("(debug-enable 'debug)"
+                 "(debug-enable 'backtrace)"
+                 "(read-enable  'positions)");
 #endif
 }
 
 /** Disable all debugging */
 void disable_debug()
 {
-  gh_eval_str("(debug-disable 'debug)"
-              "(debug-disable 'backtrace)"
-              "(read-disable  'positions)");
+  scm_c_eval_string("(debug-disable 'debug)"
+                 "(debug-disable 'backtrace)"
+                 "(read-disable  'positions)");
 }
 
 void enable_readline()
@@ -138,8 +138,8 @@ void enable_readline()
   scm_init_readline();
 #endif
 
-  gh_eval_str("(use-modules (ice-9 readline))"
-              "(activate-readline)");
+  scm_c_eval_string("(use-modules (ice-9 readline))"
+                 "(activate-readline)");
 }
 
 } // namespace Guile

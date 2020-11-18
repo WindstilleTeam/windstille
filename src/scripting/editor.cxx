@@ -81,9 +81,9 @@ SCM diamond_map_get_data()
     {
       SCM vec = SCM_EOL;
       for (Field<int>::iterator i = field->begin(); i != field->end(); ++i)
-        vec = gh_cons(gh_int2scm(*i), vec);
+        vec = scm_cons(scm_from_int(*i), vec);
 
-      return gh_reverse(vec);
+      return scm_reverse(vec);
     }
   else
     {
@@ -102,9 +102,9 @@ SCM map_get_data(int i)
       SCM vec = SCM_EOL;
       for (Field<EditorTile*>::iterator i = field->begin(); i != field->end(); ++i)
         {
-          vec = gh_cons(gh_int2scm((*i)->get_id()), vec);
+          vec = scm_cons(scm_from_int((*i)->get_id()), vec);
         }
-      return gh_reverse(vec);
+      return scm_reverse(vec);
     }
   else
 
@@ -172,30 +172,30 @@ void tileeditor_set_tile(CL_Component* comp, int id)
 
 SCM get_tile_def(Tile* tile)
 {
-  SCM lst = gh_cons(scm_str2symbol("tile"), SCM_EOL);
+  SCM lst = scm_cons(scm_from_utf8_symbol("tile"), SCM_EOL);
 
   if (tile)
     {
-      lst = gh_cons(gh_list(scm_str2symbol("id"), SCM_MAKINUM(tile->id), (SCM_UNDEFINED)),
-                    lst);
+      lst = scm_cons(scm_list_n(scm_from_utf8_symbol("id"), scm_from_int(tile->id), (SCM_UNDEFINED)),
+                     lst);
 
-      lst = gh_cons(gh_list(scm_str2symbol("image"), gh_str02scm(tile->filename.c_str()), (SCM_UNDEFINED)),
-                    lst);
+      lst = scm_cons(scm_list_n(scm_from_utf8_symbol("image"), scm_from_utf8_string(tile->filename.c_str()), (SCM_UNDEFINED)),
+                     lst);
 
-      lst = gh_cons(gh_list(scm_str2symbol("colmap"), 
-                            SCM_MAKINUM(tile->colmap[0]),
-                            SCM_MAKINUM(tile->colmap[1]),
-                            SCM_MAKINUM(tile->colmap[2]),
-                            SCM_MAKINUM(tile->colmap[3]),
-                            SCM_MAKINUM(tile->colmap[4]),
-                            SCM_MAKINUM(tile->colmap[5]),
-                            SCM_MAKINUM(tile->colmap[6]),
-                            SCM_MAKINUM(tile->colmap[7]),
+      lst = scm_cons(scm_list_n(scm_from_utf8_symbol("colmap"),
+                            scm_from_int(tile->colmap[0]),
+                            scm_from_int(tile->colmap[1]),
+                            scm_from_int(tile->colmap[2]),
+                            scm_from_int(tile->colmap[3]),
+                            scm_from_int(tile->colmap[4]),
+                            scm_from_int(tile->colmap[5]),
+                            scm_from_int(tile->colmap[6]),
+                            scm_from_int(tile->colmap[7]),
                             SCM_UNDEFINED),
                     lst);
     }
   
-  return gh_reverse(lst);
+  return scm_reverse(lst);
 }
 
 SCM get_tile_def(int id)
@@ -205,16 +205,16 @@ SCM get_tile_def(int id)
 
 SCM get_tile_defs()
 {
-  SCM lst = gh_cons(scm_str2symbol("windstille-tiles"), SCM_EOL);
+  SCM lst = scm_cons(scm_from_utf8_symbol("windstille-tiles"), SCM_EOL);
   
   for (TileFactory::iterator i = TileFactory::current()->begin();
        i != TileFactory::current()->end();
        ++i)
     {
-      lst = gh_cons(get_tile_def((*i).second), lst);
+      lst = scm_cons(get_tile_def((*i).second), lst);
     }
 
-  return gh_reverse(lst);
+  return scm_reverse(lst);
 }
 
 SCM map_get_scripts()
@@ -225,10 +225,10 @@ SCM map_get_scripts()
   for (std::vector<std::string>::iterator i = scripts.begin(); 
        i != scripts.end(); ++i)
     {
-      lst = gh_cons(gh_str02scm(i->c_str()), lst);
+      lst = scm_cons(scm_from_utf8_string(i->c_str()), lst);
     }
   
-  return gh_reverse(lst);
+  return scm_reverse(lst);
 }
 
 /* EOF */

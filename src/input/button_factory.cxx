@@ -33,23 +33,23 @@
 InputButton* 
 ButtonFactory::create(SCM lst)
 {
-  SCM sym = gh_car(lst);
+  SCM sym = scm_car(lst);
 
-  if (gh_equal_p(sym, gh_symbol2scm("joystick-button")))
+  if (scm_equal_p(sym, scm_from_utf8_symbol("joystick-button")))
     {
-      return create_joystick_button(gh_cdr(lst));
+      return create_joystick_button(scm_cdr(lst));
     }
-  else if (gh_equal_p(sym, gh_symbol2scm("keyboard-button")))
+  else if (scm_equal_p(sym, scm_from_utf8_symbol("keyboard-button")))
     {
-      return create_keyboard_button(gh_cdr(lst));
+      return create_keyboard_button(scm_cdr(lst));
     }
-  else if (gh_equal_p(sym, gh_symbol2scm("axis-button")))
+  else if (scm_equal_p(sym, scm_from_utf8_symbol("axis-button")))
     {
-      return create_axis_button(gh_cdr(lst));
+      return create_axis_button(scm_cdr(lst));
     }
-  else if (gh_equal_p(sym, gh_symbol2scm("multi-button")))
+  else if (scm_equal_p(sym, scm_from_utf8_symbol("multi-button")))
     {
-      return create_multi_button(gh_cdr(lst));
+      return create_multi_button(scm_cdr(lst));
     }
   else
     {
@@ -63,8 +63,8 @@ ButtonFactory::create(SCM lst)
 InputButton*
 ButtonFactory::create_axis_button(SCM lst)
 {
-  InputAxis* axis = AxisFactory::create(gh_car(lst));
-  bool top = gh_scm2bool(gh_cadr(lst));
+  InputAxis* axis = AxisFactory::create(scm_car(lst));
+  bool top = scm_from_bool(scm_cadr(lst));
   
   return new AxisButton(axis, top);
 }
@@ -72,8 +72,8 @@ ButtonFactory::create_axis_button(SCM lst)
 InputButton*
 ButtonFactory::create_joystick_button(SCM lst)
 {
-  int device_num = gh_scm2int(gh_car(lst));
-  int button_num = gh_scm2int(gh_cadr(lst));
+  int device_num = scm_to_int(scm_car(lst));
+  int button_num = scm_to_int(scm_cadr(lst));
   
   if (device_num >= 0 && device_num < CL_Joystick::get_device_count())
     return new InputButtonInputDevice(CL_Joystick::get_device(device_num), button_num);
@@ -87,7 +87,7 @@ ButtonFactory::create_joystick_button(SCM lst)
 InputButton*
 ButtonFactory::create_keyboard_button(SCM lst)
 {
-  std::string key_str = Guile::scm2string(gh_car(lst));
+  std::string key_str = Guile::scm2string(scm_car(lst));
   int key_num         = CL_Keyboard::get_device().string_to_keyid(key_str);
 
   // FIXME: No error checking
@@ -99,10 +99,10 @@ ButtonFactory::create_multi_button(SCM lst)
 {
   MultiButton* button = new MultiButton();
   
-  while (!gh_null_p(lst))
+  while (!scm_null_p(lst))
     {
-      button->add(create(gh_car(lst)));
-      lst = gh_cdr(lst);
+      button->add(create(scm_car(lst)));
+      lst = scm_cdr(lst);
     }
   
   return button;

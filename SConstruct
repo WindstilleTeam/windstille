@@ -4,7 +4,7 @@ PREFIX = ARGUMENTS.get('PREFIX', "/usr")
 
 env = Environment(ENV = os.environ)
 env.ParseConfig("pkg-config --cflags --libs clanCore-1.0 clanApp-1.0 clanDisplay-1.0 clanGL-1.0 clanGUI-1.0 clanSound-1.0 clanVorbis-1.0 clanGUIStyleSilver-1.0")
-env.ParseConfig("pkg-config --cflags --libs guile-1.8")
+env.ParseConfig("pkg-config --cflags --libs guile-3.0")
 env.Append(LIBS=["GL", "GLU", "pthread"])
 env.Append(CPPPATH=[".", "src/"])
 env.Command("src/scripting/windstille_wrap.cxx",

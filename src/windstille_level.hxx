@@ -20,7 +20,7 @@
 #ifndef WINDSTILLELEVEL_HXX
 #define WINDSTILLELEVEL_HXX
 
-#include <guile/gh.h>
+#include <libguile.h>
 #include <string>
 #include "field.hxx"
 

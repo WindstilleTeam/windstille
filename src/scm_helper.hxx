@@ -20,7 +20,7 @@
 #ifndef HEADER_SCM_HELPER_HXX
 #define HEADER_SCM_HELPER_HXX
 
-#include <guile/gh.h>
+#include <libguile.h>
 #include <string>
 
 std::string scm2string(SCM str);

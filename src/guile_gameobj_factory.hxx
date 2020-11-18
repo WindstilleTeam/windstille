@@ -22,7 +22,7 @@
 
 #include <string>
 #include <map>
-#include <guile/gh.h>
+#include <libguile.h>
 #include "guile_gameobj.hxx"
 
 class GuileGameObjDesc

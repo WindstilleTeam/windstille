@@ -228,7 +228,7 @@ WindstilleGame::on_startup ()
 
   world->add_player(player);
 
-  gh_load((datadir + "game.scm").c_str());
+  scm_c_primitive_load((datadir + "game.scm").c_str());
 
   logo       = CL_Sprite("logo", resources);
   portrait   = CL_Sprite("hero/portrait", resources);

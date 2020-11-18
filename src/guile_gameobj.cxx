@@ -41,21 +41,21 @@ GuileGameObj::~GuileGameObj ()
 void 
 GuileGameObj::draw ()
 {
-  gh_call1 (scm_draw, smob);
+  scm_call_1(scm_draw, smob);
 }
 
 void
 GuileGameObj::update (float delta)
 {
   //std::cout << "Calling update" << std::endl;
-  gh_call2 (scm_update, smob, gh_double2scm (delta));
+  scm_call_2(scm_update, smob, scm_from_double (delta));
   //std::cout << "Calling update:done" << std::endl;
 }
 
 SCM
 GuileGameObj::set_data (SCM arg_obj)
 {
-  scm_protect_object (arg_obj);
+  scm_gc_protect_object(arg_obj);
   obj = arg_obj;
   return arg_obj;
 }

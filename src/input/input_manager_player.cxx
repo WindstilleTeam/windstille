@@ -25,19 +25,19 @@ InputManagerPlayer::InputManagerPlayer(const std::string& filename)
 {
   std::cout << "InputManagerPlayer::InputManagerPlayer(" << filename << ")" << std::endl;
   entry_counter = 0;
-  SCM port = scm_open_file(gh_str02scm(filename.c_str()),
-                           gh_str02scm("r"));
+  SCM port = scm_open_file(scm_from_utf8_string(filename.c_str()),
+                           scm_from_utf8_string("r"));
   SCM entry;
   while(scm_eof_object_p(entry = scm_read(port)) == SCM_BOOL_F)
     {
       InputEventLst lst;
-      int entry_num = gh_scm2int(gh_cadr(entry));
-      entry = gh_cddr(entry);
+      int entry_num = scm_to_int(scm_cadr(entry));
+      entry = scm_cddr(entry);
       
-      while(gh_pair_p(entry))
+      while(scm_pair_p(entry))
         {
-          lst.push_back(scm2event(gh_car(entry)));
-          entry = gh_cdr(entry);
+          lst.push_back(scm2event(scm_car(entry)));
+          entry = scm_cdr(entry);
         }
       entries.push(Entry(entry_num, lst));
     }
@@ -48,20 +48,20 @@ InputEvent
 InputManagerPlayer::scm2event(SCM entry)
 {
   InputEvent event;
-  SCM sym  = gh_car(entry);
-  SCM data = gh_cdr(entry);
+  SCM sym  = scm_car(entry);
+  SCM data = scm_cdr(entry);
 
-  if (gh_equal_p(gh_symbol2scm("axis"), sym)) 
+  if (scm_equal_p(scm_from_utf8_symbol("axis"), sym)) 
     {
       event.type = AXIS_EVENT;
-      event.axis.name = gh_scm2int(gh_car(data));
-      event.axis.pos  = gh_scm2double(gh_cadr(data));
+      event.axis.name = scm_to_int(scm_car(data));
+      event.axis.pos  = scm_to_double(scm_cadr(data));
     } 
-  else if (gh_equal_p(gh_symbol2scm("button"), sym))
+  else if (scm_equal_p(scm_from_utf8_symbol("button"), sym))
     {
       event.type = BUTTON_EVENT;
-      event.button.name = gh_scm2int(gh_car(data));
-      event.button.down = gh_scm2int(gh_cadr(data));
+      event.button.name = scm_to_int(scm_car(data));
+      event.button.down = scm_to_int(scm_cadr(data));
     } 
   else 
     {

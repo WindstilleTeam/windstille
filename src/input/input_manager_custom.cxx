@@ -71,10 +71,10 @@ InputManagerCustom::init(SCM lst)
   buttons.resize(ControllerDef::get_button_count());
   axes.resize(ControllerDef::get_axis_count());
   
-  while (gh_pair_p(lst))
+  while (scm_pair_p(lst))
     {
-      SCM sym  = gh_caar(lst);
-      SCM data = gh_cadar(lst);
+      SCM sym  = scm_caar(lst);
+      SCM data = scm_cadar(lst);
 
       std::string name = Guile::symbol2string(sym);
 
@@ -97,7 +97,7 @@ InputManagerCustom::init(SCM lst)
             }
         }
 
-      lst = gh_cdr(lst);
+      lst = scm_cdr(lst);
     }
 }  
 

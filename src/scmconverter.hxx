@@ -23,7 +23,7 @@
 #include <assert.h>
 #include <iostream>
 #include <typeinfo>
-#include <guile/gh.h>
+#include <libguile.h>
 
 template<class T> struct SmobInfo {};
 
@@ -32,7 +32,7 @@ template<class T> struct SmobInfo {};
 template<class T>
 T* checked_smob_cast(long tag, SCM smob)
 {
-  assert (!gh_boolean_p(smob));
+  assert (!scm_boolean_p(smob));
   if (SCM_NIMP (smob))
     {
       if (reinterpret_cast<long>(SCM_CAR (smob)) == tag)
@@ -52,7 +52,7 @@ T* checked_smob_cast(long tag, SCM smob)
   else
     {
       std::cout << "Error: SCMConverter: cast error, not a smob" << std::endl;
-      gh_display (smob); gh_newline ();
+      scm_display(smob, SCM_UNDEFINED); scm_newline(SCM_UNDEFINED);
       return 0;
     }
 }
@@ -61,7 +61,7 @@ T* checked_smob_cast(long tag, SCM smob)
 template<class T>
 T* checked_smob_cast(SCM smob)
 {
-  assert (!gh_boolean_p(smob));
+  assert (!scm_boolean_p(smob));
   if (SCM_NIMP (smob))
     {
       if (reinterpret_cast<long>(SCM_CAR (smob)) == SmobInfo<T>::get_smob_tag ())
@@ -81,7 +81,7 @@ T* checked_smob_cast(SCM smob)
   else
     {
       std::cout << "Error: SCMConverter: cast error, not a smob" << std::endl;
-      gh_display (smob); gh_newline ();
+      scm_display(smob, SCM_UNDEFINED); scm_newline(SCM_UNDEFINED);
       return 0;
     }
 }
