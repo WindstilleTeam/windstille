@@ -28,13 +28,13 @@ InputManagerPlayer::InputManagerPlayer(const std::string& filename)
   SCM port = scm_open_file(scm_from_utf8_string(filename.c_str()),
                            scm_from_utf8_string("r"));
   SCM entry;
-  while(scm_eof_object_p(entry = scm_read(port)) == SCM_BOOL_F)
+  while(scm_is_false(scm_eof_object_p(entry = scm_read(port))))
     {
       InputEventLst lst;
       int entry_num = scm_to_int(scm_cadr(entry));
       entry = scm_cddr(entry);
       
-      while(scm_pair_p(entry))
+      while(scm_is_true(scm_pair_p(entry)))
         {
           lst.push_back(scm2event(scm_car(entry)));
           entry = scm_cdr(entry);
@@ -51,13 +51,13 @@ InputManagerPlayer::scm2event(SCM entry)
   SCM sym  = scm_car(entry);
   SCM data = scm_cdr(entry);
 
-  if (scm_equal_p(scm_from_utf8_symbol("axis"), sym)) 
+  if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("axis"), sym)))
     {
       event.type = AXIS_EVENT;
       event.axis.name = scm_to_int(scm_car(data));
       event.axis.pos  = scm_to_double(scm_cadr(data));
     } 
-  else if (scm_equal_p(scm_from_utf8_symbol("button"), sym))
+  else if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("button"), sym)))
     {
       event.type = BUTTON_EVENT;
       event.button.name = scm_to_int(scm_car(data));

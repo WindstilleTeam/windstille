@@ -32,7 +32,7 @@ template<class T> struct SmobInfo {};
 template<class T>
 T* checked_smob_cast(long tag, SCM smob)
 {
-  assert (!scm_boolean_p(smob));
+  assert (!scm_is_true(scm_boolean_p(smob)));
   if (SCM_NIMP (smob))
     {
       if (reinterpret_cast<long>(SCM_CAR (smob)) == tag)
@@ -61,7 +61,7 @@ T* checked_smob_cast(long tag, SCM smob)
 template<class T>
 T* checked_smob_cast(SCM smob)
 {
-  assert (!scm_boolean_p(smob));
+  assert (!scm_is_true(scm_boolean_p(smob)));
   if (SCM_NIMP (smob))
     {
       if (reinterpret_cast<long>(SCM_CAR (smob)) == SmobInfo<T>::get_smob_tag ())

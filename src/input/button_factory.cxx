@@ -35,19 +35,19 @@ ButtonFactory::create(SCM lst)
 {
   SCM sym = scm_car(lst);
 
-  if (scm_equal_p(sym, scm_from_utf8_symbol("joystick-button")))
+  if (scm_is_true(scm_equal_p(sym, scm_from_utf8_symbol("joystick-button"))))
     {
       return create_joystick_button(scm_cdr(lst));
     }
-  else if (scm_equal_p(sym, scm_from_utf8_symbol("keyboard-button")))
+  else if (scm_is_true(scm_equal_p(sym, scm_from_utf8_symbol("keyboard-button"))))
     {
       return create_keyboard_button(scm_cdr(lst));
     }
-  else if (scm_equal_p(sym, scm_from_utf8_symbol("axis-button")))
+  else if (scm_is_true(scm_equal_p(sym, scm_from_utf8_symbol("axis-button"))))
     {
       return create_axis_button(scm_cdr(lst));
     }
-  else if (scm_equal_p(sym, scm_from_utf8_symbol("multi-button")))
+  else if (scm_is_true(scm_equal_p(sym, scm_from_utf8_symbol("multi-button"))))
     {
       return create_multi_button(scm_cdr(lst));
     }
@@ -99,7 +99,7 @@ ButtonFactory::create_multi_button(SCM lst)
 {
   MultiButton* button = new MultiButton();
   
-  while (!scm_null_p(lst))
+  while (!scm_is_true(scm_null_p(lst)))
     {
       button->add(create(scm_car(lst)));
       lst = scm_cdr(lst);

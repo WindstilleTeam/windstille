@@ -29,7 +29,7 @@ scm2string (SCM data)
 {
   std::string str;
   
-  if (scm_string_p(data))
+  if (scm_is_true(scm_string_p(data)))
     {
       char* tmpstr = scm_to_utf8_string(data);
       str = tmpstr;
@@ -65,7 +65,7 @@ void pretty_print (std::ostream& stream, SCM obj)
 
 bool equal_p(SCM a, SCM b)
 {
-  return SCM_NFALSEP(scm_equal_p(a, b));
+  return scm_is_true(scm_equal_p(a, b));
 }
 
 SCM symbol2scm(const char* str)
@@ -75,7 +75,7 @@ SCM symbol2scm(const char* str)
 
 std::string keyword2string(SCM keyword)
 {
-  assert(scm_keyword_p(keyword));
+  assert(scm_is_true(scm_keyword_p(keyword)));
   //puts("keyword2string: ");
   //scm_display(keyword, SCM_UNDEFINED);
   //scm_newline(SCM_UNDEFINED);
@@ -90,7 +90,7 @@ std::string keyword2string(SCM keyword)
 
 std::string symbol2string(SCM symbol)
 {
-  char* c_str = scm_to_utf8_string(symbol);
+  char* c_str = scm_to_utf8_string(scm_symbol_to_string(symbol));
   std::string str = c_str;
   free(c_str);
   return str;

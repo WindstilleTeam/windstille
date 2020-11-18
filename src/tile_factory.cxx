@@ -37,7 +37,7 @@ TileFactory::TileFactory (const std::string& filename)
                                    scm_from_utf8_string("r"));
   SCM tree = scm_read(input_stream);
   
-  if (!(scm_symbol_p(scm_car(tree)) && scm_equal_p(scm_from_utf8_symbol("windstille-tiles"), scm_car(tree))))
+  if (!(scm_is_true(scm_symbol_p(scm_car(tree))) && scm_is_true(scm_equal_p(scm_from_utf8_symbol("windstille-tiles"), scm_car(tree)))))
     {
       std::cout << "Not a Windstille Tile File!" << std::endl;
     }
@@ -45,16 +45,16 @@ TileFactory::TileFactory (const std::string& filename)
     {
       tree = scm_cdr(tree);
 
-      while (!scm_null_p(tree))
+      while (!scm_is_true(scm_null_p(tree)))
         {
           SCM current = scm_car(tree);
           
-          if (scm_pair_p(current))
+          if (scm_is_true(scm_pair_p(current)))
             {
               SCM name    = scm_car(current);
               SCM data    = scm_cdr(current);
       
-              if (scm_equal_p(scm_from_utf8_symbol("tile"), name)) 
+              if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("tile"), name))) 
                 {
                   parse_tile(data);
                 }
@@ -79,24 +79,24 @@ TileFactory::parse_tile(SCM data)
   std::string image;
   unsigned char colmap[8];
   
-  while (!scm_null_p(data))
+  while (!scm_is_true(scm_null_p(data)))
     {
       SCM current = scm_car(data);
           
-      if (scm_pair_p(current))
+      if (scm_is_true(scm_pair_p(current)))
         {
           SCM name    = scm_car(current);
           SCM data    = scm_cdr(current);
 
-          if (scm_equal_p(scm_from_utf8_symbol("id"), name))           
+          if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("id"), name)))
             {
               id = scm_to_int(scm_car(data));
             }
-          else if (scm_equal_p(scm_from_utf8_symbol("image"), name))           
+          else if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("image"), name)))
             {
               image = scm2string(scm_car(data));
             }
-          else if (scm_equal_p(scm_from_utf8_symbol("colmap"), name))
+          else if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("colmap"), name)))
             {
               colmap[0] = scm_to_int(scm_car(data));
               data = scm_cdr(data);

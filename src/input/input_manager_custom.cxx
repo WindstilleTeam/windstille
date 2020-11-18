@@ -71,7 +71,7 @@ InputManagerCustom::init(SCM lst)
   buttons.resize(ControllerDef::get_button_count());
   axes.resize(ControllerDef::get_axis_count());
   
-  while (scm_pair_p(lst))
+  while (scm_is_true(scm_pair_p(lst)))
     {
       SCM sym  = scm_caar(lst);
       SCM data = scm_cadar(lst);

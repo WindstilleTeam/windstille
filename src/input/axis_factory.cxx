@@ -28,16 +28,16 @@
 InputAxis* 
 AxisFactory::create(SCM lst)
 {
-  while(scm_pair_p(lst))
+  while(scm_is_true(scm_pair_p(lst)))
     {
       SCM sym  = scm_car(lst);
       SCM data = scm_cdr(lst);
       
-      if (scm_equal_p(sym, scm_from_utf8_symbol("joystick-axis")))
+      if (scm_is_true(scm_equal_p(sym, scm_from_utf8_symbol("joystick-axis"))))
         {
           return create_joystick_axis(data);
         }
-      if (scm_equal_p(sym, scm_from_utf8_symbol("button-axis")))
+      if (scm_is_true(scm_equal_p(sym, scm_from_utf8_symbol("button-axis"))))
         {
           return create_button_axis(data);
         }

@@ -45,7 +45,7 @@ WindstilleLevel::parse_file (const std::string& filename)
                                    scm_from_utf8_string("r"));
   SCM tree = scm_read(input_stream);
   
-  if (!(scm_symbol_p(scm_car(tree)) && scm_equal_p(scm_from_utf8_symbol("windstille-level"), scm_car(tree))))
+  if (!(scm_is_true(scm_symbol_p(scm_car(tree))) && scm_is_true(scm_equal_p(scm_from_utf8_symbol("windstille-level"), scm_car(tree)))))
     {
       std::cout << filename << ": not a Windstille Level file!" << std::endl;
     }
@@ -53,35 +53,35 @@ WindstilleLevel::parse_file (const std::string& filename)
     {
       tree = scm_cdr(tree);
 
-      while (!scm_null_p(tree))
+      while (!scm_is_true(scm_null_p(tree)))
         {
           SCM current = scm_car(tree);
-          if (scm_pair_p(current))
+          if (scm_is_true(scm_pair_p(current)))
             {
               SCM name    = scm_car(current);
               SCM data    = scm_cdr(current);
       
-              if (scm_equal_p(scm_from_utf8_symbol("tilemap"), name)) 
+              if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("tilemap"), name)))
                 {
                   parse_foreground_tilemap(data);
                 }
-              else if (scm_equal_p(scm_from_utf8_symbol("background-tilemap"), name)) 
+              else if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("background-tilemap"), name)))
                 {
                   parse_background_tilemap(data);
                 }
-              else if (scm_equal_p(scm_from_utf8_symbol("water"), name)) 
+              else if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("water"), name)))
                 {
                   parse_water(data);
                 }
-              else if (scm_equal_p(scm_from_utf8_symbol("properties"), name))
+              else if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("properties"), name)))
                 {
                   parse_properties(data);
                 }
-              else if (scm_equal_p(scm_from_utf8_symbol("diamond-map"), name)) 
+              else if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("diamond-map"), name)))
                 {
                   parse_diamond_map(data);
                 }
-              else if (scm_equal_p(scm_from_utf8_symbol("scripts"), name)) 
+              else if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("scripts"), name)))
                 {
                   parse_scripts(data);
                 }
@@ -107,16 +107,16 @@ WindstilleLevel::parse_file (const std::string& filename)
 void
 WindstilleLevel::parse_water(SCM tree)
 {
-  while (!scm_null_p(tree))
+  while (!scm_is_true(scm_null_p(tree)))
     {
       SCM current = scm_car(tree);
 
-      if (scm_pair_p(current))
+      if (scm_is_true(scm_pair_p(current)))
         {
           SCM name    = scm_car(current);
           SCM data    = scm_cdr(current);
       
-          if (scm_equal_p(scm_from_utf8_symbol("water"), name)) 
+          if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("water"), name)))
             {
               //scm_display(data, SCM_UNDEFINED);
               //scm_newline();
@@ -135,24 +135,24 @@ WindstilleLevel::parse_water(SCM tree)
 void
 WindstilleLevel::parse_properties (SCM tree)
 {
-  while (!scm_null_p(tree))
+  while (!scm_is_true(scm_null_p(tree)))
     {
       SCM current = scm_car(tree);
 
-      if (scm_pair_p(current))
+      if (scm_is_true(scm_pair_p(current)))
         {
           SCM name    = scm_car(current);
           SCM data    = scm_cadr(current);
       
-          if (scm_equal_p(scm_from_utf8_symbol("width"), name)) 
+          if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("width"), name)))
             {
               width  = scm_to_int(data);
             }
-          else if (scm_equal_p(scm_from_utf8_symbol("height"), name))
+          else if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("height"), name)))
             {
               height = scm_to_int(data);
             }
-          else if (scm_equal_p(scm_from_utf8_symbol("name"), name))
+          else if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("name"), name)))
             {
             }
           else
@@ -191,14 +191,14 @@ WindstilleLevel::parse_tilemap (SCM cur)
   
   int x = 0;
   int y = 0;
-  while (!scm_null_p(cur) && y < height)
+  while (!scm_is_true(scm_null_p(cur)) && y < height)
     {
       SCM name = scm_caar(cur);
       SCM data = scm_cdar(cur);
       
-      if (scm_equal_p(scm_from_utf8_symbol("data"), name))
+      if (scm_is_true(scm_equal_p(scm_from_utf8_symbol("data"), name)))
         {
-          while (!scm_null_p(data) && y < height)
+          while (!scm_is_true(scm_null_p(data)) && y < height)
             {
               int id = scm_to_int(scm_car(data));
               (*field)(x, y) = id;
@@ -235,7 +235,7 @@ WindstilleLevel::parse_diamond_map(SCM data)
   int x = 0;
   int y = 0;
 
-  while (!scm_null_p(data) && y < height*2)
+  while (!scm_is_true(scm_null_p(data)) && y < height*2)
     {
       (*diamond_map)(x, y) = scm_to_int(scm_car(data));
               
@@ -257,7 +257,7 @@ WindstilleLevel::parse_diamond_map(SCM data)
 void
 WindstilleLevel::parse_scripts(SCM data)
 {
-  while (!scm_null_p(data))
+  while (!scm_is_true(scm_null_p(data)))
     {
       char* str = scm_to_utf8_string(scm_car(data));
       scripts.push_back(str);
