@@ -1,5 +1,5 @@
 (use-modules (ice-9 format))
-(load "helper.scm")
+(load-from-path "helper.scm")
 
 (define (*key-down-handler* key)
   (display "Keydown: ")

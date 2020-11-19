@@ -254,12 +254,6 @@ WindstilleMain::main(int argc, char** argv)
 void
 WindstilleMain::init_modules()
 {
-#ifdef WIN32
-  // Make sure that Guile find its files
-  // FIXME: this doesn't use 'datadir'
-  putenv("GUILE_LOAD_PATH=data\\guile\\");
-#endif
-
   // Init Guile
   scm_init_guile();
   SWIG_init();
@@ -272,6 +266,8 @@ WindstilleMain::init_modules()
   scm_c_define("*windstille-levelfile*",      scm_from_utf8_string(levelfile.c_str()));
   scm_c_define("*windstille-datadir*",        scm_from_utf8_string(datadir.c_str()));
   scm_c_define("*windstille-package-string*", scm_from_utf8_string("Windstille"));
+
+  scm_c_eval_string("(set! %load-path (cons *windstille-datadir* %load-path))");
 
   std::cout << "done" << std::endl;
 

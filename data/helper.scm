@@ -23,6 +23,6 @@
              (display args)(newline)))
     (set-repl-prompt! old-prompt)))
 
-(load "gui.scm")
+(load-from-path "gui.scm")
 
 ;; EOF ;;

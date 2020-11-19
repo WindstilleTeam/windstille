@@ -1,6 +1,6 @@
 (use-modules (ice-9 pretty-print))
 
-(load "helper.scm")
+(load-from-path "helper.scm")
 
 (define screen-width  (screen-get-width))
 (define screen-height (screen-get-height))
