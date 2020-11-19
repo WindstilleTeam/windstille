@@ -22,7 +22,7 @@
 #include "../globals.hxx"
 #include "../tile_factory.hxx"
 #include "../tile.hxx"
-#include "src/scripting/editor.hxx"
+#include "scripting/editor.hxx"
 #include "tile_selector.hxx"
 
 TileSelector::TileSelector(int width, int height, CL_Component* parent)
