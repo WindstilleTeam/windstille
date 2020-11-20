@@ -100,7 +100,7 @@ WindstilleBonus::update(float delta)
       if (fadeout_value > 1.0f)
         {
           state = RUNNING;
-          MusicManager::current()->play(datadir + "music/Windstille_Ralph_Weinert.ogg", true);
+          MusicManager::current()->play(datadir + "/music/Windstille_Ralph_Weinert.ogg", true);
         }
       fadeout_value += delta;
       break;

@@ -211,7 +211,7 @@ WindstilleGame::on_startup ()
 { 
   CL_Display::get_current_window()->hide_cursor();
 
-  MusicManager::current()->play(datadir + "music/techdemo.ogg", true);
+  MusicManager::current()->play(datadir + "/music/techdemo.ogg", true);
   blink = 0.0f;
 
   GameObj::set_world (world);
@@ -228,7 +228,7 @@ WindstilleGame::on_startup ()
 
   world->add_player(player);
 
-  scm_c_primitive_load((datadir + "game.scm").c_str());
+  scm_c_primitive_load((datadir + "/game.scm").c_str());
 
   logo       = CL_Sprite("logo", resources);
   portrait   = CL_Sprite("hero/portrait", resources);

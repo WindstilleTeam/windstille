@@ -90,7 +90,7 @@ WindstilleMenu::update(float delta)
                   MusicManager::current()->stop();
                   InputManager::clear();
                   fadeout();
-                  WindstilleGame game(datadir + "levels/level9.scm");
+                  WindstilleGame game(datadir + "/levels/level9.scm");
                   game.display ();
                   on_startup();
                   break;
@@ -241,7 +241,7 @@ void
 WindstilleMenu::on_startup()
 {
   CL_Display::get_current_window()->hide_cursor();
-  MusicManager::current()->play(datadir + "music/jingle.ogg", false);
+  MusicManager::current()->play(datadir + "/music/jingle.ogg", false);
 }
 
 void

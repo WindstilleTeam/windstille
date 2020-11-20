@@ -203,7 +203,7 @@ WindstilleMain::main(int argc, char** argv)
         if (!controller_file.empty())
           InputManager::init(controller_file);
         else
-          InputManager::init(datadir + "controller/keyboard.scm");
+          InputManager::init(datadir + "/controller/keyboard.scm");
       }
     else
       {
@@ -291,8 +291,8 @@ WindstilleMain::init_modules()
     sound = new CL_SoundOutput(44100);
 
   resources =  new CL_ResourceManager();
-  resources->add_resources(CL_ResourceManager(datadir + "tiles.xml"));
-  resources->add_resources(CL_ResourceManager(datadir + "windstille.xml"));
+  resources->add_resources(CL_ResourceManager(datadir + "/tiles.xml"));
+  resources->add_resources(CL_ResourceManager(datadir + "/windstille.xml"));
 
   Fonts::init(); 
   MusicManager::init();

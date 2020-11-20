@@ -128,7 +128,7 @@ GameWorld::on_startup()
   for (std::vector<std::string>::iterator i = scripts.begin();
        i != scripts.end(); ++i)
     {
-      scm_c_primitive_load((datadir + "levels/" + *i).c_str());
+      scm_c_primitive_load((datadir + "/levels/" + *i).c_str());
     }
 }
 
