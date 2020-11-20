@@ -26,7 +26,7 @@
              (gnu packages guile)
              (gnu packages pkg-config)
              (gnu packages swig)
-             (guix build-system scons)
+             (guix build-system cmake)
              (guix packages)
              (guix-cocfree utils))
 
@@ -41,16 +41,9 @@
    (name "windstille-0.2")
    (version (version-from-source %source-dir))
    (source (source-from-source %source-dir #:version version))
-   (build-system scons-build-system)
+   (build-system cmake-build-system)
    (arguments
-    `(#:tests? #f  ; some swig dependency issue
-      #:scons-flags (list (string-append "PREFIX=" %output))
-       #:phases (modify-phases %standard-phases
-                  (add-after 'unpack 'patch-paths
-                    (lambda _
-                      (substitute* "src/windstille_main.cxx"
-                        (("\\.\\./data/") "../share/windstille-0.2/"))
-                      #t)))))
+    `(#:tests? #f))
    (native-inputs
     `(("pkg-config" ,pkg-config)))
    (inputs
