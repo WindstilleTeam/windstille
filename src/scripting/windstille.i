@@ -1,8 +1,8 @@
 %module windstille
 %{
-#include "editor.hxx"
-#include "game.hxx"
-#include "gui.hxx"
+#include "scripting/editor.hxx"
+#include "scripting/game.hxx"
+#include "scripting/gui.hxx"
 %}
 
 %include "editor.hxx"

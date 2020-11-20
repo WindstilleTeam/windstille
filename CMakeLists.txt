@@ -17,43 +17,19 @@
 cmake_minimum_required(VERSION 3.13)
 project(windstille-0.2 VERSION 0.2.0)
 
-cmake_policy(SET CMP0078 OLD) # Swig
-cmake_policy(SET CMP0086 OLD) # Swig
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/external/cmake-modules/)
 
-option(WARNINGS "Switch on extra warnings" OFF)
-option(WERROR "Treat all warnings as errors" OFF)
 option(BUILD_TESTS "Build test cases" OFF)
 option(BUILD_EXTRA "Build extras" OFF)
 
+include(GetProjectVersion)
 include(GNUInstallDirs)
+# include(ClangTidy)
+# include(MaximumWarnings)
+include(InstallWithWrapper)
 
-if(WARNINGS)
-endif()
-
-if(WERROR)
-endif()
-
-if (BUILD_TESTS)
-  # add 'make test' target, use 'make test ARGS="-V"' or 'ctest -V' for verbose
-  enable_testing()
-endif(BUILD_TESTS)
-
-find_package(Git)
-if(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
-  execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always HEAD
-    OUTPUT_VARIABLE GIT_REPO_VERSION
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-  execute_process(COMMAND ${GIT_EXECUTABLE} log -n 1 --pretty=%cd --date=format:%Y-%m-%d ${GIT_REPO_VERSION}
-    OUTPUT_VARIABLE GIT_REPO_DATE
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
-else()
-  set(GIT_REPO_VERSION "${PROJECT_VERSION}")
-  string(TIMESTAMP GIT_REPO_DATE "%Y-%m-%d")
-endif()
-
-include_directories(src/)
-include_directories(src/scripting/)
+cmake_policy(SET CMP0078 OLD) # Swig
+cmake_policy(SET CMP0086 OLD) # Swig
 
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
@@ -71,14 +47,16 @@ pkg_search_module(CLANGL REQUIRED clanGL-1.0 IMPORTED_TARGET)
 pkg_search_module(CLANSOUND REQUIRED clanSound-1.0 IMPORTED_TARGET)
 pkg_search_module(CLANVORBIS REQUIRED clanVorbis-1.0 IMPORTED_TARGET)
 
-include_directories(${GUILE_INCLUDE_DIRS})
 set_source_files_properties(src/scripting/windstille.i PROPERTIES CPLUSPLUS ON)
 swig_add_library(libwindstille_scripting TYPE STATIC LANGUAGE guile SOURCES src/scripting/windstille.i)
+target_include_directories(libwindstille_scripting PUBLIC src/)
+target_link_libraries(libwindstille_scripting PUBLIC PkgConfig::GUILE)
 
 file(GLOB LIBWINDSTILLE_COLLISION_SOURCES
   src/collision/*.cxx)
 
 add_library(libwindstille_collision STATIC ${LIBWINDSTILLE_COLLISION_SOURCES})
+target_include_directories(libwindstille_collision PUBLIC src/)
 target_link_libraries(libwindstille_collision PUBLIC
   PkgConfig::CLANCORE
   PkgConfig::CLANDISPLAY)
@@ -94,6 +72,7 @@ file(GLOB WINDSTILLE_SOURCES
 
 add_executable(${PROJECT_NAME} ${WINDSTILLE_SOURCES})
 target_compile_options(${PROJECT_NAME} PRIVATE ${WARNINGS_CXX_FLAGS})
+target_include_directories(${PROJECT_NAME} PUBLIC src/)
 target_link_libraries(${PROJECT_NAME} PRIVATE
   libwindstille_collision
   libwindstille_scripting
@@ -109,18 +88,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   OpenGL::GLU
   Threads::Threads)
 
-install(TARGETS ${PROJECT_NAME} RUNTIME
-  DESTINATION ${CMAKE_INSTALL_LIBEXECDIR})
-
-configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.sh.in
-  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.sh)
-
-install(FILES
-  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.sh
-  RENAME ${PROJECT_NAME}
-  PERMISSIONS OWNER_EXECUTE OWNER_READ OWNER_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
-  DESTINATION ${CMAKE_INSTALL_BINDIR})
+install_with_wrapper(TARGETS ${PROJECT_NAME})
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data/
   DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME})
@@ -148,13 +116,16 @@ if(BUILD_EXTRA)
       PkgConfig::CLANDISPLAY
       PkgConfig::CLANGL
       libwindstille_collision)
-  endforeach(SRC)
+  endforeach()
 endif()
 
 if(BUILD_TESTS)
+  # add 'make test' target, use 'make test ARGS="-V"' or 'ctest -V' for verbose
+  enable_testing()
+
   add_test(NAME ${PROJECT_NAME}.appdata.xml
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMAND appstream-util validate-relax ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.appdata.xml)
-endif(BUILD_TESTS)
+endif()
 
 # EOF #
