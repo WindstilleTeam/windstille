@@ -16,7 +16,7 @@
 ;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 (set! %load-path
-  (cons* "/ipfs/QmeUZkZxWMHKNR4HAGU9G2VRFcyiSFt3JNpuF5RBC9wKZa/guix-cocfree_0.0.0-51-gc2bce55"
+  (cons* "/ipfs/QmcQaosGtaQ6dsb4iykNihZ2ZTie8om2i7pgHucZ9Ranyq/guix-cocfree_0.0.0-64-gd618440"
          %load-path))
 
 (use-modules ((guix licenses) #:prefix license:)
@@ -34,7 +34,7 @@
 
 (define clanlib-1.0
   (package-from-file
-   "/ipfs/QmbZhaLZULD3EbKEdG4NnsVLgA9Jo2w7vt222aVryeWXkq/clanlib-1.0_1.0.0-18-gf0de815/guix.scm"))
+   "/ipfs/QmWeNxGLkdFQjH1XaYbz7D4zMbBDCnuwrNNuWcQgcqY2RK/clanlib-1.0_1.0.0-22-gc2f3e1c/guix.scm"))
 
 (define-public windstille-0.2
   (package
