@@ -41,7 +41,7 @@ Editor::Editor()
 
   tilemap   = new EditorTileMap(manager->get_component());
 
-  scm_c_primitive_load((datadir + "editor.scm").c_str());
+  scm_c_primitive_load((datadir + "/editor.scm").c_str());
 }
 
 Editor::~Editor()
