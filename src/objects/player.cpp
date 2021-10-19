@@ -93,13 +93,13 @@ Player::~Player()
 }
 
 void
-Player::draw (SceneContext& sc)
+Player::draw (wstdisplay::SceneContext& sc)
 {
   if (1)
   { // draw the 'stand-on' tile
     sc.highlight().fill_rect(geom::frect(geom::irect(geom::ipoint(int(pos.x)/32 * 32, (int(pos.y)/32 + 1) * 32),
                                         geom::isize(32, 32))),
-                             RGBAf(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
+                             surf::Color(1.0f, 0.0f, 0.0f, 0.5f), 10000.0f);
   }
 
   //m_drawable->get_sprite().draw(sc.color(), pos + glm::vec2(0.0f, 1.0f), z_pos);

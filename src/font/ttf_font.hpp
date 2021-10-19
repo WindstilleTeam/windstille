@@ -25,13 +25,12 @@
 
 #include <geom/geom.hpp>
 
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
+#include <wstdisplay/fwd.hpp>
 #include <wstdisplay/texture.hpp>
 #include "font/no_font_effect.hpp"
 
-class DrawingContext;
 class FontEffect;
-class GraphicsContext;
 class TTFFontImpl;
 
 class TTFCharacter
@@ -75,12 +74,12 @@ public:
       FontEffoct */
   int get_size() const;
 
-  TexturePtr get_texture() const;
+  wstdisplay::TexturePtr get_texture() const;
 
   const TTFCharacter& get_character(int c) const;
-  void draw(GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const RGBAf& color = RGBAf(1.0f, 1.0f, 1.0f));
-  void draw_center(GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const RGBAf& color = RGBAf(1.0f, 1.0f, 1.0f));
-  void draw(DrawingContext& ctx, const std::string& text, float x, float y, float z);
+  void draw(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const surf::Color& color = surf::Color(1.0f, 1.0f, 1.0f));
+  void draw_center(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const surf::Color& color = surf::Color(1.0f, 1.0f, 1.0f));
+  void draw(wstdisplay::DrawingContext& ctx, const std::string& text, float x, float y, float z);
 
 private:
   std::unique_ptr<TTFFontImpl> impl;

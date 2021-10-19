@@ -66,7 +66,7 @@ private:
  */
 struct Mesh
 {
-  TexturePtr   texture;
+  wstdisplay::TexturePtr   texture;
 
   uint16_t  vertex_count;
   uint16_t  triangle_count;

@@ -121,7 +121,7 @@ public:
   {
   }
 
-  void draw(GraphicsContext& gc);
+  void draw(wstdisplay::GraphicsContext& gc);
   void update(float delta);
   void eval_command_line();
   void tab_complete();
@@ -153,7 +153,7 @@ public:
 };
 
 void
-ConsoleImpl::draw(GraphicsContext& gc)
+ConsoleImpl::draw(wstdisplay::GraphicsContext& gc)
 {
   int y = static_cast<int>(y_pos);
 
@@ -164,7 +164,7 @@ ConsoleImpl::draw(GraphicsContext& gc)
 
   if (console.is_active())
     gc.fill_rect(geom::frect(geom::irect(0,0, gc.size().width(), 600)),
-                 RGBAf(0, 0, 0, 0.5f));
+                 surf::Color(0, 0, 0, 0.5f));
 
   for(int i = static_cast<int>(buffer.size())-1 - scroll_offset; i >= 0 && i > int(buffer.size()) - num_lines - scroll_offset; --i)
   {
@@ -175,7 +175,7 @@ ConsoleImpl::draw(GraphicsContext& gc)
         alpha = 1.0f - (buffer[i].display_time - 4.0f);
 
       g_app.fonts().ttffont->draw(gc, glm::vec2(x_pos, static_cast<float>(y)), buffer[i].message,
-                                  RGBAf(0.88f, 0.88f, 1.0f, alpha));
+                                  surf::Color(0.88f, 0.88f, 1.0f, alpha));
     }
     y -= g_app.fonts().ttffont->get_height() + 2;
   }
@@ -191,7 +191,7 @@ ConsoleImpl::draw(GraphicsContext& gc)
         str += "_";
     }
 
-    g_app.fonts().ttffont->draw(gc, glm::vec2(x_pos, y_pos), "> " + str, RGBAf(1.0f, 1.0f, 1.0f));
+    g_app.fonts().ttffont->draw(gc, glm::vec2(x_pos, y_pos), "> " + str, surf::Color(1.0f, 1.0f, 1.0f));
   }
 }
 
@@ -569,7 +569,7 @@ Console::is_active() const
 }
 
 void
-Console::draw(GraphicsContext& gc)
+Console::draw(wstdisplay::GraphicsContext& gc)
 {
   impl->draw(gc);
 }

@@ -26,9 +26,9 @@
 
 #include <geom/geom.hpp>
 
+#include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
 
-class SceneContext;
 class ControlPoint;
 typedef std::shared_ptr<ControlPoint> ControlPointHandle;
 
@@ -38,15 +38,15 @@ public:
   static ControlPointHandle create(const glm::vec2& pos);
 
 protected:
-  SurfacePtr surface;
+  wstdisplay::SurfacePtr surface;
   glm::vec2  pos;
   glm::vec2  offset;
 
 public:
-  ControlPoint(SurfacePtr surface, const glm::vec2& pos);
+  ControlPoint(wstdisplay::SurfacePtr surface, const glm::vec2& pos);
   virtual ~ControlPoint();
 
-  virtual void draw(SceneContext& sc);
+  virtual void draw(wstdisplay::SceneContext& sc);
 
   virtual geom::frect get_bounding_box() const;
 

@@ -21,13 +21,13 @@
 
 #include <geom/quad.hpp>
 
-#include "editor/control_point.hpp"
+#include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
 #include <wstdisplay/software_surface.hpp>
+
+#include "editor/control_point.hpp"
 #include "editor/object_model.hpp"
 
-class SurfaceDrawable;
-
 class DecalObjectModel : public ObjectModel
 {
 public:
@@ -37,8 +37,8 @@ public:
 
 private:
   std::string path;
-  SurfacePtr surface;
-  SoftwareSurface software_surface;
+  wstdisplay::SurfacePtr surface;
+  surf::SoftwareSurface software_surface;
   MapType type;
 
   /** scale of the object, independed in x and y axis */
@@ -49,7 +49,7 @@ private:
   bool hflip;
   bool vflip;
 
-  std::shared_ptr<SurfaceDrawable> m_drawable;
+  std::shared_ptr<wstdisplay::SurfaceDrawable> m_drawable;
 
 public:
   DecalObjectModel(ReaderMapping const& reader);
@@ -66,8 +66,8 @@ public:
 
   bool is_snappable() const override { return type == COLORMAP; }
 
-  void draw_select(SceneContext& sc, bool highlight) override;
-  void draw(SceneContext& sc) override;
+  void draw_select(wstdisplay::SceneContext& sc, bool highlight) override;
+  void draw(wstdisplay::SceneContext& sc) override;
 
   geom::frect get_bounding_box() const override;
   ObjectModelHandle clone() const override;
@@ -85,7 +85,7 @@ public:
 
   void add_control_points(std::vector<ControlPointHandle>& control_points) override;
 
-  void add_to_scenegraph(DrawableGroup& sg) override;
+  void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override;
   void sync() override;
 
   void set_world_pos(const glm::vec2& p) override;
@@ -98,7 +98,7 @@ public:
   void set_property(TimelineProperty property, float value) override;
   void set_property(TimelineProperty property, const glm::vec2& value) override;
 };
-
+
 #endif
 
 /* EOF */

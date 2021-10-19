@@ -66,7 +66,7 @@ public:
   DialogManager();
   ~DialogManager() override;
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
   void add_dialog(int alignment, const std::string& portrait, const std::string& text);

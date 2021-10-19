@@ -42,12 +42,12 @@ public:
 
   /** Pack a tile and return the position where it is placed in the
       pixel buffer */
-  geom::frect pack(SoftwareSurface const& image, int x, int y, int w, int h);
+  geom::frect pack(surf::SoftwareSurface const& image, int x, int y, int w, int h);
 
   /** Return true if the PixelBuffer is full */
   bool is_full() const;
 
-  TexturePtr get_texture() const;
+  wstdisplay::TexturePtr get_texture() const;
 
 private:
   std::unique_ptr<TilePackerImpl> impl;

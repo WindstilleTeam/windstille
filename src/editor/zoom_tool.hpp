@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_ZOOM_TOOL_HPP
 
 #include <geom/geom.hpp>
+#include <wstdisplay/fwd.hpp>
 
 #include "editor/tool.hpp"
 
@@ -43,7 +44,7 @@ public:
 
   void mouse_right_down(GdkEventButton* event, WindstilleWidget& wst) override;
 
-  void draw(SceneContext& sc) override;
+  void draw(wstdisplay::SceneContext& sc) override;
 
 private:
   ZoomTool(const ZoomTool&);

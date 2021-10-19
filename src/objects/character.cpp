@@ -57,7 +57,7 @@ Character::update(float delta)
 }
 
 void
-Character::draw (SceneContext& sc)
+Character::draw (wstdisplay::SceneContext& sc)
 {
   sprite.draw(sc.color(), pos, z_pos);
 }

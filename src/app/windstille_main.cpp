@@ -43,6 +43,8 @@
 #include "tile/tile_factory.hpp"
 #include "util/system.hpp"
 
+using namespace wstdisplay;
+
 WindstilleMain::WindstilleMain()
 {
 }
@@ -76,8 +78,8 @@ WindstilleMain::main(int argc, char** argv)
       Fonts             fonts;
       Console           console;
       SoundManager      sound_manager;
-      TextureManager    texture_manager;
-      SurfaceManager    surface_manager;
+      wstdisplay::TextureManager    texture_manager;
+      wstdisplay::SurfaceManager    surface_manager;
       SpriteManager     sprite_manager(surface_manager);
       sprite3d::Manager sprite3d_manager;
       ScriptManager     script_manager;

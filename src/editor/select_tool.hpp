@@ -53,7 +53,7 @@ public:
 
   void mouse_right_down(GdkEventButton* event, WindstilleWidget& wst) override;
 
-  void draw(SceneContext& sc) override;
+  void draw(wstdisplay::SceneContext& sc) override;
 
 private:
   SelectTool(const SelectTool&);

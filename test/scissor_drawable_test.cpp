@@ -14,6 +14,8 @@
 #include "util/pathname.hpp"
 #include "util/system.hpp"
 
+using namespace wstdisplay;
+
 namespace {
 
 int app_main(int argc, char* argv[])
@@ -40,8 +42,8 @@ int app_main(int argc, char* argv[])
   }
 
   OpenGLWindow window("Scissor Drawable",
-                      geom::isize(960, 600),
-                      geom::isize(960, 600));
+                                  geom::isize(960, 600),
+                                  geom::isize(960, 600));
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
   DrawableGroup group;

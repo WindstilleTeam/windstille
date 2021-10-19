@@ -30,14 +30,14 @@ App::App() :
 {
 }
 
-TextureManager&
+wstdisplay::TextureManager&
 App::texture() const
 {
   assert(m_texture_manager != nullptr);
   return *m_texture_manager;
 }
 
-SurfaceManager&
+wstdisplay::SurfaceManager&
 App::surface() const
 {
   assert(m_surface_manager != nullptr);

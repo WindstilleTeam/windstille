@@ -49,7 +49,7 @@ Elevator::~Elevator()
 }
 
 void
-Elevator::draw(SceneContext& sc)
+Elevator::draw(wstdisplay::SceneContext& sc)
 {
   sprite.draw(sc.color(), pos, 10.0f);
 }

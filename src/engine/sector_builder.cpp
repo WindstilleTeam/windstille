@@ -24,7 +24,7 @@
 #include <stdexcept>
 
 #include "app/globals.hpp"
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include "engine/game_object.hpp"
 #include "engine/object_factory.hpp"
 #include "engine/sector.hpp"
@@ -72,7 +72,7 @@ SectorBuilder::parse_body(ReaderMapping const& reader)
   //reader.read("music",         music);
   //reader.read("init-script",   init_script);
 
-  RGBAf ambient_light;
+  surf::Color ambient_light;
   if (reader.read("ambient-color", ambient_light))
   {
     m_sector.set_ambient_light(ambient_light);

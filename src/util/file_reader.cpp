@@ -22,7 +22,7 @@
 
 #include <glm/glm.hpp>
 
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include "util/file_reader.hpp"
 
 namespace prio {
@@ -111,7 +111,7 @@ bool read_custom(ReaderMapping const& map, std::string_view key, glm::mat4& m)
 }
 
 template<>
-bool read_custom(ReaderMapping const& map, std::string_view key, RGBAf& value)
+bool read_custom(ReaderMapping const& map, std::string_view key, surf::Color& value)
 {
   std::vector<float> floats;
   if (map.read(key, floats)) {

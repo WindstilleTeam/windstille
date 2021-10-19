@@ -89,7 +89,7 @@ Box::update(float delta)
 }
 
 void
-Box::draw(SceneContext& sc)
+Box::draw(wstdisplay::SceneContext& sc)
 {
   sprite.draw(sc.color(), pos, 10.0f);
 }

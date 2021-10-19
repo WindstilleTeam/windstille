@@ -16,6 +16,8 @@
 #include "util/pathname.hpp"
 #include "util/system.hpp"
 
+using namespace wstdisplay;
+
 namespace {
 
 int shader_main(int argc, char* argv[])

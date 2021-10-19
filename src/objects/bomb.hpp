@@ -42,7 +42,7 @@ public:
   ~Bomb() override;
 
   void update(float delta) override;
-  void draw(SceneContext& gc) override;
+  void draw(wstdisplay::SceneContext& gc) override;
 private:
   void explode();
   Bomb (const Bomb&);

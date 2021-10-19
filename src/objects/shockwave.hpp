@@ -27,15 +27,15 @@ class Shockwave : public GameObject
 {
 private:
   glm::vec2        pos;
-  TexturePtr noise;
-  ShaderProgramPtr shader_program;
+  wstdisplay::TexturePtr noise;
+  wstdisplay::ShaderProgramPtr shader_program;
   float radius;
 
 public:
   Shockwave(ReaderMapping const& props);
   ~Shockwave() override;
 
-  void draw (SceneContext& context) override;
+  void draw (wstdisplay::SceneContext& context) override;
   void update (float delta) override;
 
 private:

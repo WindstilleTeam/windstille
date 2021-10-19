@@ -39,6 +39,8 @@
 #include "slideshow/slide_show.hpp"
 #include "slideshow/slide_builder.hpp"
 
+using namespace wstdisplay;
+
 App::App() :
   m_aspect_ratio(768, 576),
   m_window_size(768, 576),

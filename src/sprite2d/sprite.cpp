@@ -61,7 +61,7 @@ Sprite::Sprite(std::filesystem::path const& filename, SpriteManager& sprite_mana
   pingpong = false;
   reverse  = false;
   scale = current_action->scale;
-  color    = RGBAf(1.0f, 1.0f, 1.0f);
+  color    = surf::Color(1.0f, 1.0f, 1.0f);
   blend_sfactor = GL_SRC_ALPHA;
   blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
 }
@@ -86,7 +86,7 @@ Sprite::Sprite(const SpriteDataPtr data_) :
   pingpong = false;
   reverse = false;
   scale = current_action->scale;
-  color    = RGBAf(1.0f, 1.0f, 1.0f);
+  color    = surf::Color(1.0f, 1.0f, 1.0f);
   blend_sfactor = GL_SRC_ALPHA;
   blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
 }
@@ -158,7 +158,7 @@ Sprite::set_action(const std::string& name)
       frame    = 0;
       vflip    = false;
       scale    = current_action->scale;
-      color    = RGBAf(1.0f, 1.0f, 1.0f);
+      color    = surf::Color(1.0f, 1.0f, 1.0f);
       blend_sfactor = GL_SRC_ALPHA;
       blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
       return;
@@ -225,7 +225,7 @@ Sprite::get_alpha() const
   return color.a;
 }
 
-SurfacePtr
+wstdisplay::SurfacePtr
 Sprite::get_current_surface() const
 {
   return current_action->surfaces[ static_cast<int> (frame) ];
@@ -238,11 +238,11 @@ Sprite::get_offset() const
 }
 
 void
-Sprite::draw(GraphicsContext& gc, const glm::vec2& pos) const
+Sprite::draw(wstdisplay::GraphicsContext& gc, const glm::vec2& pos) const
 {
-  SurfacePtr surface = current_action->surfaces[ static_cast<int> (frame) ];
+  wstdisplay::SurfacePtr surface = current_action->surfaces[ static_cast<int> (frame) ];
   surface->draw(gc,
-                SurfaceDrawingParameters()
+                wstdisplay::SurfaceDrawingParameters()
                 .set_pos(pos + (current_action->offset * scale))
                 .set_blend_func(blend_sfactor, blend_dfactor)
                 .set_scale(scale)
@@ -250,10 +250,10 @@ Sprite::draw(GraphicsContext& gc, const glm::vec2& pos) const
 }
 
 void
-Sprite::draw(DrawingContext& ctx, glm::vec2 const& pos, float z_pos)
+Sprite::draw(wstdisplay::DrawingContext& ctx, glm::vec2 const& pos, float z_pos)
 {
   ctx.draw(get_current_surface(),
-           SurfaceDrawingParameters()
+           wstdisplay::SurfaceDrawingParameters()
            .set_pos(pos + get_offset() * get_scale())
            .set_blend_func(get_blend_sfactor(), get_blend_dfactor())
            .set_color(get_color())
@@ -275,7 +275,7 @@ Sprite::set_scale(float s)
 }
 
 void
-Sprite::set_color(const RGBAf& c)
+Sprite::set_color(const surf::Color& c)
 {
   color = c;
 }
@@ -286,7 +286,7 @@ Sprite::get_scale() const
   return scale;
 }
 
-RGBAf
+surf::Color
 Sprite::get_color() const
 {
   return color;

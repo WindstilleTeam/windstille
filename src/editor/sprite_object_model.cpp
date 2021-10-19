@@ -35,7 +35,7 @@ SpriteObjectModel::~SpriteObjectModel()
 }
 
 void
-SpriteObjectModel::draw(SceneContext& sc)
+SpriteObjectModel::draw(wstdisplay::SceneContext& sc)
 {
   sprite.draw(sc.color(), get_world_pos());
 }

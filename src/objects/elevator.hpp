@@ -35,7 +35,7 @@ public:
   Elevator(ReaderMapping const& props);
   ~Elevator() override;
 
-  void draw(SceneContext& sc) override;
+  void draw(wstdisplay::SceneContext& sc) override;
   void update(float delta) override;
 
 private:

@@ -61,10 +61,10 @@ Liquid::Liquid(ReaderMapping const& props) :
   texture = g_app.texture().get(Pathname("images/textures/water.png"));
   texture->set_wrap(GL_REPEAT);
 
-  m_water_top.reset(new VertexArrayDrawable(glm::vec2(pos.x, pos.y), 10000,
+  m_water_top.reset(new wstdisplay::VertexArrayDrawable(glm::vec2(pos.x, pos.y), 10000,
                                             glm::mat4(1.0f))); //sc.light().get_modelview()));
 
-  m_water_body.reset(new VertexArrayDrawable(glm::vec2(pos.x, pos.y), 10000,
+  m_water_body.reset(new wstdisplay::VertexArrayDrawable(glm::vec2(pos.x, pos.y), 10000,
                                              glm::mat4(1.0f))); // sc.light().get_modelview());
 
   Sector::current()->get_scene_graph().add_drawable(m_water_top);
@@ -108,10 +108,10 @@ Liquid::update(float delta)
 void
 Liquid::update_scene_graph()
 {
-  // Update the SceneGraph
+  // Update the wstdisplay::SceneGraph
   float texscale = 1.0f/128.0f;
   { // water top
-    VertexArrayDrawable* array = m_water_top.get();
+    wstdisplay::VertexArrayDrawable* array = m_water_top.get();
     array->clear();
     array->set_texture(texture);
     array->set_mode(GL_TRIANGLE_STRIP);
@@ -127,12 +127,12 @@ Liquid::update_scene_graph()
       }
 
       // v2
-      array->color(RGBAf(c, c, 1.0f, 1.0f));
+      array->color(surf::Color(c, c, 1.0f, 1.0f));
       array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
                       (-32.0f * (*heightfield1)[i]) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
       array->vertex(static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i]);
       // v1
-      array->color(RGBAf(0.5f, 0.5f, 1.0f, 0.7f));
+      array->color(surf::Color(0.5f, 0.5f, 1.0f, 0.7f));
       array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
                       (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
       array->vertex(static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i] + 8.0f);
@@ -140,7 +140,7 @@ Liquid::update_scene_graph()
   }
 
   { // water body
-    VertexArrayDrawable* array = m_water_body.get();
+    wstdisplay::VertexArrayDrawable* array = m_water_body.get();
     array->clear();
     array->set_texture(texture);
     array->set_mode(GL_TRIANGLE_STRIP);
@@ -149,12 +149,12 @@ Liquid::update_scene_graph()
     for(std::vector<float>::size_type i = 0; i < heightfield1->size(); ++i)
     {
       // v2
-      array->color(RGBAf(0.5f, 0.5f, 1.0f, 0.7f));
+      array->color(surf::Color(0.5f, 0.5f, 1.0f, 0.7f));
       array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f) * 0.2f,
                       (-32.0f * (*heightfield1)[i] + 8.0f) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f);
       array->vertex(static_cast<float>(i) * 32.0f/static_cast<float>(SAMPLES), -32.0f * (*heightfield1)[i] + 8.0f);
       // v1
-      array->color(RGBAf(0.0f, 0.0f, 0.5f, 0.7f));
+      array->color(surf::Color(0.0f, 0.0f, 0.5f, 0.7f));
       array->texcoord((static_cast<float>(i) * 32.0f / static_cast<float>(SAMPLES)) * texscale + sinf(t + static_cast<float>(i)/10.0f)*0.2f,
                       (64.0f) * texscale + sinf(t+static_cast<float>(i)/10.0f)*0.2f);
       array->vertex(static_cast<float>(i) * 32.0f/static_cast<float>(SAMPLES), 64.0f);

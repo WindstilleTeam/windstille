@@ -60,7 +60,7 @@ Layer::erase(iterator it)
 }
 
 void
-Layer::draw(SceneContext& sc, const SelectMask& select_mask)
+Layer::draw(wstdisplay::SceneContext& sc, const SelectMask& select_mask)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
   {

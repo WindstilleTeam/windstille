@@ -33,7 +33,7 @@ public:
   Label(const std::string& label, Component* parent);
   ~Label() override;
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
 private:

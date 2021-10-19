@@ -32,6 +32,8 @@
 #include <wstdisplay/texture_manager.hpp>
 #include "util/system.hpp"
 
+using namespace wstdisplay;
+
 namespace {
 
 int memleak_main(int argc, char* argv[])
@@ -61,7 +63,7 @@ int memleak_main(int argc, char* argv[])
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
 
-  SurfacePtr surface;
+  wstdisplay::SurfacePtr surface;
 
   bool loop = true;
   while(loop)

@@ -36,7 +36,7 @@ public:
   Pistol();
   ~Pistol() override;
 
-  void draw(SceneContext& context) override;
+  void draw(wstdisplay::SceneContext& context) override;
   void update(float delta) override;
 
   void fire(bool enable) override;

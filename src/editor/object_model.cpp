@@ -148,25 +148,25 @@ ObjectModel::set_rel_pos(const glm::vec2& rel_pos_)
 }
 
 void
-ObjectModel::draw_select(SceneContext& sc, bool highlight)
+ObjectModel::draw_select(wstdisplay::SceneContext& sc, bool highlight)
 {
   if (highlight)
-    sc.control().draw_rect(get_bounding_box(), RGBAf(1.0f, 1.0f, 1.0f, 1.0f));
+    sc.control().draw_rect(get_bounding_box(), surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
   else
-    sc.control().draw_rect(get_bounding_box(), RGBAf(0.5f, 0.5f, 1.0f, 1.0f));
+    sc.control().draw_rect(get_bounding_box(), surf::Color(0.5f, 0.5f, 1.0f, 1.0f));
 }
 
 void
-ObjectModel::draw(SceneContext& sc)
+ObjectModel::draw(wstdisplay::SceneContext& sc)
 {
   glm::vec2 wo_pos = get_world_pos();
 
   if (ObjectModelHandle parent = parent_ptr.lock())
   {
-    sc.control().draw_line(wo_pos, parent->get_world_pos(), RGBAf(0,0,1, 0.5f));
+    sc.control().draw_line(wo_pos, parent->get_world_pos(), surf::Color(0,0,1, 0.5f));
   }
 
-  //sc.control().fill_rect(geom::frect(wo_pos - glm::vec2(8, 8), geom::fsize(16, 16)), RGBAf(1,0,0));
+  //sc.control().fill_rect(geom::frect(wo_pos - glm::vec2(8, 8), geom::fsize(16, 16)), surf::Color(1,0,0));
 }
 
 void

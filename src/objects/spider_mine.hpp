@@ -41,7 +41,7 @@ public:
   ~SpiderMine() override;
 
   void update(float delta) override;
-  void draw (SceneContext& sc) override;
+  void draw (wstdisplay::SceneContext& sc) override;
   void die();
 };
 

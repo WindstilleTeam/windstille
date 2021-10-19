@@ -61,7 +61,7 @@ public:
   ScriptableObject(ReaderMapping const& reader);
   ~ScriptableObject() override;
 
-  void draw (SceneContext& sc) override;
+  void draw (wstdisplay::SceneContext& sc) override;
   void update (float delta) override;
   void use() override;
   void move_to(float x, float y, float arg_target_speed, float arg_acceleration);

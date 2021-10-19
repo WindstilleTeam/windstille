@@ -19,14 +19,14 @@
 #ifndef HEADER_WINDSTILLE_OBJECTS_BACKGROUND_GRADIENT_HPP
 #define HEADER_WINDSTILLE_OBJECTS_BACKGROUND_GRADIENT_HPP
 
-#include "engine/game_object.hpp"
+#include <wstdisplay/fwd.hpp>
 
-class GradientDrawable;
+#include "engine/game_object.hpp"
 
 class BackgroundGradient : public GameObject
 {
 private:
-  std::shared_ptr<GradientDrawable> drawable;
+  std::shared_ptr<wstdisplay::GradientDrawable> drawable;
 
 public:
   BackgroundGradient(ReaderMapping const& props);

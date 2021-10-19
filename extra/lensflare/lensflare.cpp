@@ -33,6 +33,8 @@
 
 #pragma GCC diagnostic ignored "-Wold-style-cast"
 
+using namespace wstdisplay;
+
 Lensflare::Lensflare() :
   m_aspect_ratio(1280, 800),
   m_window_size(640, 400),
@@ -78,7 +80,7 @@ Lensflare::draw(GraphicsContext& gc)
                 SurfaceDrawingParameters()
                 .set_depth_test(true)
                 .set_pos(glm::vec2(600, 400))
-                .set_color(RGBAf(0.15f, 0.15f, 0.15f, 1.0f)));
+                .set_color(surf::Color(0.15f, 0.15f, 0.15f, 1.0f)));
 
   if ((true))
   {
@@ -136,7 +138,7 @@ Lensflare::draw(GraphicsContext& gc)
     m_halo->draw(gc,
                  SurfaceDrawingParameters()
                  .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                 .set_color(RGBAf(1,1,1,visibility))
+                 .set_color(surf::Color(1,1,1,visibility))
                  .set_scale(1.0f)
                  .set_pos(glm::vec2(m_mouse.x,
                                     m_mouse.y)
@@ -147,7 +149,7 @@ Lensflare::draw(GraphicsContext& gc)
     m_light->draw(gc,
                   SurfaceDrawingParameters()
                   .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                  .set_color(RGBAf(1,1,1,1))
+                  .set_color(surf::Color(1,1,1,1))
                   .set_scale(visibility)
                   .set_pos(glm::vec2(m_mouse.x - m_light->get_width()/2 * visibility,
                                      m_mouse.y - m_light->get_height()/2 * visibility)));
@@ -157,7 +159,7 @@ Lensflare::draw(GraphicsContext& gc)
     m_halo->draw(gc,
                  SurfaceDrawingParameters()
                  .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                 .set_color(RGBAf(1,1,1,visibility))
+                 .set_color(surf::Color(1,1,1,visibility))
                  .set_scale(2.0f + factor*5.0f)
                  .set_pos(glm::vec2(m_mouse.x,
                                     m_mouse.y)
@@ -168,7 +170,7 @@ Lensflare::draw(GraphicsContext& gc)
     m_superlight->draw(gc,
                        SurfaceDrawingParameters()
                        .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                       .set_color(RGBAf(1.0f, 1.0f, 1.0f, factor))
+                       .set_color(surf::Color(1.0f, 1.0f, 1.0f, factor))
                        .set_scale(factor)
                        .set_pos(glm::vec2(m_mouse.x - m_superlight->get_width()/2 * factor,
                                           m_mouse.y - m_superlight->get_height()/2  * factor)));
@@ -179,7 +181,7 @@ Lensflare::draw(GraphicsContext& gc)
                          SurfaceDrawingParameters()
                          .set_blend_func(GL_SRC_ALPHA, GL_ONE)
                          .set_scale(i->m_scale)
-                         .set_color(RGBAf(i->m_color.r, i->m_color.g, i->m_color.b, i->m_color.a * visibility))
+                         .set_color(surf::Color(i->m_color.r, i->m_color.g, i->m_color.b, i->m_color.a * visibility))
                          .set_pos(screen_center + (m_mouse - screen_center) * i->m_distance
                                   - glm::vec2(i->m_surface->get_width() /2 * i->m_scale,
                                               i->m_surface->get_height()/2 * i->m_scale)));
@@ -247,14 +249,14 @@ Lensflare::run()
 
   for(size_t i = 0; i < sizeof(pos)/sizeof(float); ++i)
   {
-    m_flairs.push_back(Flair(m_flair2, pos[i], 1.0f * pos[i], RGBAf(1,1,1,1)));
-    m_flairs.push_back(Flair(m_flair2, -pos[i] * 0.7f, 1.0f * pos[i] * 0.7f, RGBAf(1,1,1,1)));
+    m_flairs.push_back(Flair(m_flair2, pos[i], 1.0f * pos[i], surf::Color(1,1,1,1)));
+    m_flairs.push_back(Flair(m_flair2, -pos[i] * 0.7f, 1.0f * pos[i] * 0.7f, surf::Color(1,1,1,1)));
   }
 
   for(size_t i = 0; i < sizeof(pos)/sizeof(float); ++i)
   {
-    m_flairs.push_back(Flair(m_flair1, pos[i]* 0.2f, 1.0f * pos[i] * 0.2f, RGBAf(1,1,1,0.1f)));
-    m_flairs.push_back(Flair(m_flair1, -pos[i] * 0.1f, 1.0f * pos[i] * 0.1f, RGBAf(1,1,1,0.1f)));
+    m_flairs.push_back(Flair(m_flair1, pos[i]* 0.2f, 1.0f * pos[i] * 0.2f, surf::Color(1,1,1,0.1f)));
+    m_flairs.push_back(Flair(m_flair1, -pos[i] * 0.1f, 1.0f * pos[i] * 0.1f, surf::Color(1,1,1,0.1f)));
   }
 
   GLint query_counter_bits = 0;

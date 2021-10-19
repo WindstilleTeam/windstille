@@ -36,10 +36,10 @@ GroupComponent::~GroupComponent()
 }
 
 void
-GroupComponent::draw(GraphicsContext& gc)
+GroupComponent::draw(wstdisplay::GraphicsContext& gc)
 {
-  gc.fill_rounded_rect(rect, 5.0f, RGBAf(0.0f, 0.0f, 0.0f, 0.7f));
-  gc.draw_rounded_rect(rect, 5.0f, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.fill_rounded_rect(rect, 5.0f, surf::Color(0.0f, 0.0f, 0.0f, 0.7f));
+  gc.draw_rounded_rect(rect, 5.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   if (!title.empty())
   {
@@ -47,11 +47,11 @@ GroupComponent::draw(GraphicsContext& gc)
     font->draw_center(gc,
                       glm::vec2(rect.left() + rect.width() / 2.0f,
                                 rect.top()  + static_cast<float>(font->get_height()) + 5.0f),
-                      title, RGBAf(1.0f, 1.0f, 1.0f));
+                      title, surf::Color(1.0f, 1.0f, 1.0f));
 
     gc.fill_rect(geom::frect(rect.left()  + 8.0f, rect.top() + static_cast<float>(font->get_height()) + 16.0f,
                              rect.right() - 8.0f, rect.top() + static_cast<float>(font->get_height()) + 18.0f),
-                 RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
+                 surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 
   if (child)

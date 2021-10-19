@@ -22,18 +22,17 @@
 #include <memory>
 
 #include <wstdisplay/surface.hpp>
+#include <wstdisplay/surface_manager.hpp>
 
 #include "slideshow/slide_path.hpp"
-
-class SurfaceManager;
 
 class SlideObject
 {
 private:
   std::filesystem::path m_filename;
-  SurfaceManager& m_surface_manager;
+  wstdisplay::SurfaceManager& m_surface_manager;
   geom::fsize m_size;
-  SurfacePtr m_surface;
+  wstdisplay::SurfacePtr m_surface;
   float m_begin;
   SlidePath m_path;
 
@@ -42,9 +41,9 @@ private:
 
 public:
   SlideObject(const std::filesystem::path& filename,
-              SurfaceManager& surface_manager);
+              wstdisplay::SurfaceManager& surface_manager);
 
-  void draw(GraphicsContext& gc, float relative_time);
+  void draw(wstdisplay::GraphicsContext& gc, float relative_time);
 
   float length() const;
   float begin() const;

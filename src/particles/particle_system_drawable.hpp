@@ -23,7 +23,7 @@
 
 class ParticleSystem;
 
-class ParticleSystemDrawable : public Drawable
+class ParticleSystemDrawable : public wstdisplay::Drawable
 {
 private:
   const ParticleSystem& m_particle_system;
@@ -31,7 +31,7 @@ private:
 public:
   ParticleSystemDrawable(const ParticleSystem& particle_system);
 
-  void render(GraphicsContext& gc, unsigned int mask) override;
+  void render(wstdisplay::GraphicsContext& gc, unsigned int mask) override;
 
 private:
   ParticleSystemDrawable(const ParticleSystemDrawable&);

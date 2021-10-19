@@ -34,6 +34,8 @@
 #include "util/file_reader.hpp"
 #include "util/pathname.hpp"
 
+using namespace wstdisplay;
+
 ObjectModelHandle
 DecalObjectModel::create(const std::string& name_, const glm::vec2& pos,
                          const std::string& path, MapType type)
@@ -118,20 +120,20 @@ DecalObjectModel::set_scale(const glm::vec2& scale_)
 }
 
 void
-DecalObjectModel::draw_select(SceneContext& sc, bool highlight)
+DecalObjectModel::draw_select(wstdisplay::SceneContext& sc, bool highlight)
 {
-  geom::quad quad(get_bounding_box());
+  geom::fquad quad(get_bounding_box());
 
   quad.rotate(angle);
 
   if (highlight)
-    sc.control().draw_quad(quad, RGBAf(0.5f, 1.0f, 1.0f, 1.0f));
+    sc.control().draw_quad(quad, surf::Color(0.5f, 1.0f, 1.0f, 1.0f));
   else
-    sc.control().draw_quad(quad, RGBAf(0.5f, 0.5f, 1.0f, 1.0f));
+    sc.control().draw_quad(quad, surf::Color(0.5f, 0.5f, 1.0f, 1.0f));
 }
 
 void
-DecalObjectModel::draw(SceneContext& sc)
+DecalObjectModel::draw(wstdisplay::SceneContext& sc)
 {
   if ((false))
   {
@@ -141,8 +143,8 @@ DecalObjectModel::draw(SceneContext& sc)
     glm::vec2 center_offset(-surface->get_width()/2,
                            -surface->get_height()/2);
 
-    DrawingContext* dc = nullptr;
-    SurfaceDrawingParameters params;
+    wstdisplay::DrawingContext* dc = nullptr;
+    wstdisplay::SurfaceDrawingParameters params;
     switch(type)
     {
       case COLORMAP:     dc = &sc.color(); break;
@@ -240,36 +242,36 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
   float h = surface->get_height()/2 * scale.y;
 
   geom::frect rect(-w, -h, w, h);
-  geom::quad quad1(rect);
+  geom::fquad quad1(rect);
   quad1.rotate(angle);
 
-  geom::quad quad2(geom::grow(rect, 32.0f));
+  geom::fquad quad2(geom::grow(rect, 32.0f));
   quad2.rotate(angle);
 
-  geom::quad quad3(glm::vec2( 0, -h),
-             glm::vec2( w,  0),
-             glm::vec2( 0,  h),
-             glm::vec2(-w,  0));
+  geom::fquad quad3(glm::vec2( 0, -h),
+                    glm::vec2( w,  0),
+                    glm::vec2( 0,  h),
+                    glm::vec2(-w,  0));
   quad3.rotate(angle);
 
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 0*glm::half_pi<float>(), get_world_pos() + quad1.p1)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 1*glm::half_pi<float>(), get_world_pos() + quad1.p2)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 2*glm::half_pi<float>(), get_world_pos() + quad1.p3)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 3*glm::half_pi<float>(), get_world_pos() + quad1.p4)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 0*glm::half_pi<float>(), get_world_pos() + quad1.p1.as_vec())));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 1*glm::half_pi<float>(), get_world_pos() + quad1.p2.as_vec())));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 2*glm::half_pi<float>(), get_world_pos() + quad1.p3.as_vec())));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, angle + 3*glm::half_pi<float>(), get_world_pos() + quad1.p4.as_vec())));
 
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, glm::pi<float>()/4 + angle + 0*glm::half_pi<float>(), get_world_pos() + quad3.p1, false, true)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, glm::pi<float>()/4 + angle + 1*glm::half_pi<float>(), get_world_pos() + quad3.p2, true,  false)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, glm::pi<float>()/4 + angle + 2*glm::half_pi<float>(), get_world_pos() + quad3.p3, false, true)));
-  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, glm::pi<float>()/4 + angle + 3*glm::half_pi<float>(), get_world_pos() + quad3.p4, true,  false)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, glm::pi<float>()/4 + angle + 0*glm::half_pi<float>(), get_world_pos() + quad3.p1.as_vec(), false, true)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, glm::pi<float>()/4 + angle + 1*glm::half_pi<float>(), get_world_pos() + quad3.p2.as_vec(), true,  false)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, glm::pi<float>()/4 + angle + 2*glm::half_pi<float>(), get_world_pos() + quad3.p3.as_vec(), false, true)));
+  control_points.push_back(ControlPointHandle(new DecalScaleControlPoint(this, glm::pi<float>()/4 + angle + 3*glm::half_pi<float>(), get_world_pos() + quad3.p4.as_vec(), true,  false)));
 
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 0*glm::half_pi<float>(), get_world_pos() + quad2.p1)));
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 1*glm::half_pi<float>(), get_world_pos() + quad2.p2)));
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 2*glm::half_pi<float>(), get_world_pos() + quad2.p3)));
-  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 3*glm::half_pi<float>(), get_world_pos() + quad2.p4)));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 0*glm::half_pi<float>(), get_world_pos() + quad2.p1.as_vec())));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 1*glm::half_pi<float>(), get_world_pos() + quad2.p2.as_vec())));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 2*glm::half_pi<float>(), get_world_pos() + quad2.p3.as_vec())));
+  control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 3*glm::half_pi<float>(), get_world_pos() + quad2.p4.as_vec())));
 }
 
 void
-DecalObjectModel::add_to_scenegraph(DrawableGroup& sg)
+DecalObjectModel::add_to_scenegraph(wstdisplay::DrawableGroup& sg)
 {
   if (!m_drawable)
   {
@@ -285,16 +287,16 @@ DecalObjectModel::add_to_scenegraph(DrawableGroup& sg)
     switch(type)
     {
       case COLORMAP:
-        m_drawable->set_render_mask(SceneContext::COLORMAP);
+        m_drawable->set_render_mask(wstdisplay::SceneContext::COLORMAP);
         break;
 
       case LIGHTMAP:
-        m_drawable->set_render_mask(SceneContext::LIGHTMAP);
+        m_drawable->set_render_mask(wstdisplay::SceneContext::LIGHTMAP);
         m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE);
         break;
 
       case HIGHLIGHTMAP:
-        m_drawable->set_render_mask(SceneContext::HIGHLIGHTMAP);
+        m_drawable->set_render_mask(wstdisplay::SceneContext::HIGHLIGHTMAP);
         m_drawable->get_params().set_blend_func(GL_SRC_ALPHA, GL_ONE);
         break;
     }

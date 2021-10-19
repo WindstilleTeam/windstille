@@ -34,7 +34,7 @@ Pistol::~Pistol()
 }
 
 void
-Pistol::draw(SceneContext& sc)
+Pistol::draw(wstdisplay::SceneContext& sc)
 {
   sprite.draw(sc.color(), glm::vec2(0, 0), 1000);
   // Disabled for now and done in the player class

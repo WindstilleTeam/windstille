@@ -27,7 +27,7 @@
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 Mesh::Mesh(ReaderMapping const& reader, std::filesystem::path const& basedir,
-           TextureManager& texture_manager) :
+           wstdisplay::TextureManager& texture_manager) :
   name(),
   vertices(),
   normals(),
@@ -183,9 +183,9 @@ Mesh::~Mesh()
 }
 
 void
-Mesh::draw(GraphicsContext& gc)
+Mesh::draw(wstdisplay::GraphicsContext& gc)
 {
-  VertexArrayDrawable va;
+  wstdisplay::VertexArrayDrawable va;
 
   va.set_mode(GL_TRIANGLES);
   va.set_blend_func(blend_sfactor, blend_dfactor);

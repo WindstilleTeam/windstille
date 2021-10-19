@@ -25,6 +25,7 @@
 #include <wstdisplay/compositor.hpp>
 #include <wstdisplay/scene_context.hpp>
 #include <wstdisplay/scenegraph/scene_graph.hpp>
+
 #include "gui/gui_manager.hpp"
 #include "particles/particle_system.hpp"
 #include "screen/screen.hpp"
@@ -36,32 +37,29 @@ class Slider;
 class TabComponent;
 }
 
-class FillScreenPatternDrawable;
-class FillScreenDrawable;
-
 class ParticleSystemGUI;
 
 /** */
 class ParticleViewer : public Screen
 {
 private:
-  Compositor compositor;
-  SceneContext sc;
-  SceneGraph   sg;
+  wstdisplay::Compositor compositor;
+  wstdisplay::SceneContext sc;
+  wstdisplay::SceneGraph   sg;
   typedef std::vector<std::shared_ptr<ParticleSystem> > Systems;
   Systems systems;
   Sprite background;
 
   glm::vec2 pos;
 
-  std::shared_ptr<FillScreenPatternDrawable> m_background_drawable;
-  std::shared_ptr<FillScreenDrawable>        m_color_fill_drawable;
+  std::shared_ptr<wstdisplay::FillScreenPatternDrawable> m_background_drawable;
+  std::shared_ptr<wstdisplay::FillScreenDrawable>        m_color_fill_drawable;
 
 public:
   ParticleViewer();
   ~ParticleViewer() override;
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
   void load(const Pathname& filename);
 

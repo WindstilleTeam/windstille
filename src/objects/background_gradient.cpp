@@ -50,7 +50,7 @@ BackgroundGradient::BackgroundGradient(ReaderMapping const& props) :
     colors.clear();
   }
 
-  drawable.reset(new GradientDrawable(colors));
+  drawable.reset(new wstdisplay::GradientDrawable(colors));
   Sector::current()->get_scene_graph().add_drawable(drawable);
 }
 

@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_APP_APP_HPP
 #define HEADER_WINDSTILLE_APP_APP_HPP
 
+#include <wstdisplay/fwd.hpp>
+
 namespace wstinput {
 class InputManagerSDL;
 } // namespace wstinput
@@ -28,11 +30,8 @@ class Manager;
 } // namespace sprite3d;
 
 class Fonts;
-class OpenGLWindow;
 class SoundManager;
 class SpriteManager;
-class SurfaceManager;
-class TextureManager;
 
 class App
 {
@@ -42,9 +41,9 @@ public:
 
   wstinput::InputManagerSDL& input() const;
   SoundManager& sound() const;
-  OpenGLWindow& window() const;
-  TextureManager& texture() const;
-  SurfaceManager& surface() const;
+  wstdisplay::OpenGLWindow& window() const;
+  wstdisplay::TextureManager& texture() const;
+  wstdisplay::SurfaceManager& surface() const;
   SpriteManager& sprite() const;
   sprite3d::Manager& sprite3d() const;
   Fonts& fonts() const;
@@ -52,9 +51,9 @@ public:
 private:
   wstinput::InputManagerSDL* m_input_manager;
   SoundManager* m_sound_manager;
-  OpenGLWindow* m_window;
-  TextureManager* m_texture_manager;
-  SurfaceManager* m_surface_manager;
+  wstdisplay::OpenGLWindow* m_window;
+  wstdisplay::TextureManager* m_texture_manager;
+  wstdisplay::SurfaceManager* m_surface_manager;
   SpriteManager* m_sprite_manager;
   sprite3d::Manager* m_sprite3d_manager;
   Fonts* m_fonts;

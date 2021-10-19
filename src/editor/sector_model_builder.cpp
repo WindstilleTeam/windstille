@@ -22,7 +22,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include "editor/layer_manager_columns.hpp"
 #include "editor/navigation_graph_model.hpp"
 #include "editor/object_model_factory.hpp"
@@ -42,7 +42,7 @@ SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel&
   {
     ReaderMapping const& reader = doc.get_mapping();
 
-    RGBAf ambient_color;
+    surf::Color ambient_color;
     if (reader.read("ambient-color", ambient_color)) {
       m_sector.set_ambient_color(ambient_color);
     }

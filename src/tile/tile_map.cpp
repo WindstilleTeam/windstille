@@ -83,7 +83,7 @@ TileMap::update (float delta)
 }
 
 void
-TileMap::draw (SceneContext& sc)
+TileMap::draw(wstdisplay::SceneContext& sc)
 {
   geom::irect clip_rect = geom::irect(View::current()->get_clip_rect());
 
@@ -92,7 +92,7 @@ TileMap::draw (SceneContext& sc)
             std::min(field.get_width(),  clip_rect.right()/TILE_SIZE + 1),
             std::min(field.get_height(), clip_rect.bottom()/TILE_SIZE + 1));
 
-  std::vector<std::unique_ptr<VertexArrayDrawable> > requests;
+  std::vector<std::unique_ptr<wstdisplay::VertexArrayDrawable> > requests;
   for (int y = rect.top();   y < rect.bottom(); ++y)
     for (int x = rect.left(); x < rect.right(); ++x)
     {
@@ -105,10 +105,10 @@ TileMap::draw (SceneContext& sc)
         if(packer >= int(requests.size()))
           requests.resize(packer+1);
 
-        std::unique_ptr<VertexArrayDrawable>& request = requests[packer];
+        std::unique_ptr<wstdisplay::VertexArrayDrawable>& request = requests[packer];
         if (!request)
         {
-          request = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), z_pos,
+          request = std::make_unique<wstdisplay::VertexArrayDrawable>(glm::vec2(0, 0), z_pos,
                                                           sc.color().get_modelview());
           request->set_mode(GL_TRIANGLES);
           request->set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

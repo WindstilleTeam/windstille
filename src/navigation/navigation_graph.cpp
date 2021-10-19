@@ -26,7 +26,7 @@
 #include <geom/geom.hpp>
 
 #include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
 #include "util/file_writer.hpp"
@@ -130,7 +130,7 @@ NavigationGraph::split_edge(EdgeHandle edge)
 }
 
 std::vector<EdgePosition>
-NavigationGraph::find_intersections(const geom::line& line)
+NavigationGraph::find_intersections(const geom::fline& line)
 {
   // FIXME: we might want to only return the first intersection, not
   // all of them or alternativly return ua
@@ -138,8 +138,8 @@ NavigationGraph::find_intersections(const geom::line& line)
 
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
-    geom::line seg_line((*i)->get_node1()->get_pos(),
-                  (*i)->get_node2()->get_pos());
+    geom::fline seg_line((*i)->get_node1()->get_pos(),
+                         (*i)->get_node2()->get_pos());
 
     float ua, ub;
     if (line.intersect(seg_line, ua, ub))
@@ -192,7 +192,7 @@ NavigationGraph::find_edges(const glm::vec2& pos, float radius)
 
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
-    float distance = geom::line((*i)->get_node1()->get_pos(),
+    float distance = geom::fline((*i)->get_node1()->get_pos(),
                           (*i)->get_node2()->get_pos()).distance(pos);
     if (distance < radius)
     {
@@ -231,7 +231,7 @@ NavigationGraph::find_closest_edge(const glm::vec2& pos, float radius)
 
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
-    float current_distance = geom::line((*i)->get_node1()->get_pos(),
+    float current_distance = geom::fline((*i)->get_node1()->get_pos(),
                                   (*i)->get_node2()->get_pos()).distance(pos);
     if (current_distance < min_distance)
     {
@@ -244,19 +244,19 @@ NavigationGraph::find_closest_edge(const glm::vec2& pos, float radius)
 }
 
 void
-NavigationGraph::draw(GraphicsContext& gc)
+NavigationGraph::draw(wstdisplay::GraphicsContext& gc)
 {
   for(Edges::iterator i = edges.begin(); i != edges.end(); ++i)
   {
-    gc.draw_line_with_normal(geom::line((*i)->get_node1()->get_pos(),
+    gc.draw_line_with_normal(geom::fline((*i)->get_node1()->get_pos(),
                                         (*i)->get_node2()->get_pos()),
-                                   RGBAf(1.0f, 0.0f, 0.0f));
+                                   surf::Color(1.0f, 0.0f, 0.0f));
   }
 
   for(Nodes::iterator i = nodes.begin(); i != nodes.end(); ++i)
   {
     gc.fill_rect(geom::frect((*i)->get_pos() - glm::vec2(4,4), geom::fsize(9, 9)),
-                       RGBAf(1.0f, 1.0f, 0.0f));
+                       surf::Color(1.0f, 1.0f, 0.0f));
   }
 }
 

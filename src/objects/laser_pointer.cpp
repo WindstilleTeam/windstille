@@ -64,7 +64,7 @@ static float find_max(float pos, float v)
 }
 
 void
-LaserPointer::draw(SceneContext& sc)
+LaserPointer::draw(wstdisplay::SceneContext& sc)
 {
   TileMap* tilemap = Sector::current()->get_tilemap();
   if (tilemap)
@@ -94,7 +94,7 @@ LaserPointer::draw(SceneContext& sc)
           y >= 0 && y < tilemap->get_height())
     {
       //sc.color().fill_rect(geom::frect(glm::vec2(x * TILE_SIZE, y * TILE_SIZE), geom::isize(TILE_SIZE, TILE_SIZE)),
-      //                     RGBAf(1.0, 1.0, 1.0, 0.5), 500);
+      //                     surf::Color(1.0, 1.0, 1.0, 0.5), 500);
 
       if (tilemap->get_pixel(x, y))
       {
@@ -122,17 +122,17 @@ LaserPointer::draw(SceneContext& sc)
 
     glm::vec2 ray = target - pos;
 
-    auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0,0), 10000,
+    auto array = std::make_unique<wstdisplay::VertexArrayDrawable>(glm::vec2(0,0), 10000,
                                                        sc.highlight().get_modelview());
     array->set_mode(GL_LINES);
     array->set_texture(noise);
     array->set_blend_func(GL_SRC_ALPHA, GL_ONE);
 
-    array->color(RGBAf(1.0f, 0.0f, 0.0f, 1.0f));
+    array->color(surf::Color(1.0f, 0.0f, 0.0f, 1.0f));
     array->texcoord(0, progress);
     array->vertex(0, 0);
 
-    array->color(RGBAf(1.0f, 0.0f, 0.0f, 1.0f));
+    array->color(surf::Color(1.0f, 0.0f, 0.0f, 1.0f));
     array->texcoord(glm::length(target - pos)/256.0f, progress);
     array->vertex(ray.x, ray.y);
 

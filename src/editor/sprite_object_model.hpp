@@ -33,13 +33,13 @@ public:
                     const std::string& path_);
   ~SpriteObjectModel() override;
 
-  void draw(SceneContext& sc) override;
+  void draw(wstdisplay::SceneContext& sc) override;
   void update(float delta) override;
   geom::frect get_bounding_box() const override;
   ObjectModelHandle clone() const override;
   void write(FileWriter& writer) const override;
 
-  void add_to_scenegraph(DrawableGroup& sg) override {}
+  void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override {}
 };
 
 #endif

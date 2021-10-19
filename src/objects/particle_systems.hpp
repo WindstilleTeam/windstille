@@ -22,12 +22,13 @@
 #include <vector>
 #include <memory>
 
+#include <wstdisplay/fwd.hpp>
+
 #include "engine/game_object.hpp"
 #include "util/file_reader.hpp"
 
 class ParticleSystem;
 class ParticleSystemDrawable;
-class SurfaceManager;
 
 class ParticleSystems : public GameObject
 {
@@ -39,7 +40,7 @@ private:
   Drawables m_drawables;
 
 public:
-  ParticleSystems(ReaderMapping const& reader, SurfaceManager& surface_manager);
+  ParticleSystems(ReaderMapping const& reader, wstdisplay::SurfaceManager& surface_manager);
 
   void update (float delta) override;
 

@@ -20,6 +20,7 @@
 #define HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_HPP
 
 #include <glm/glm.hpp>
+
 #include "editor/select_mask.hpp"
 #include "util/file_writer.hpp"
 #include "editor/control_point.hpp"
@@ -28,9 +29,7 @@
 #include "util/file_reader.hpp"
 
 class ObjectModel;
-class SceneContext;
 class SectorModel;
-class DrawableGroup;
 
 typedef std::shared_ptr<ObjectModel> ObjectModelHandle;
 typedef std::weak_ptr<ObjectModel>   ObjectModelPtr;
@@ -82,9 +81,9 @@ public:
 
   virtual bool is_snappable() const { return true; }
 
-  virtual void draw_select(SceneContext& sc, bool highlight);
+  virtual void draw_select(wstdisplay::SceneContext& sc, bool highlight);
 
-  virtual void draw(SceneContext& sc);
+  virtual void draw(wstdisplay::SceneContext& sc);
   virtual void update(float /*delta*/) {}
   virtual geom::frect get_bounding_box() const =0;
   virtual ObjectModelHandle clone() const =0;
@@ -102,7 +101,7 @@ public:
 
   /** This lets the object add things to the SceneGraph or do other
       things needed to make it properly visible in the SectorModel */
-  virtual void add_to_scenegraph(DrawableGroup& sg) =0;
+  virtual void add_to_scenegraph(wstdisplay::DrawableGroup& sg) =0;
 };
 
 #endif

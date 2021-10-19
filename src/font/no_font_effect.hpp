@@ -36,7 +36,7 @@ public:
   int get_x_offset(int orig_glyph_offset) const override { return orig_glyph_offset; }
   int get_y_offset(int orig_glyph_offset) const override { return orig_glyph_offset; }
 
-  void blit(SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const override;
+  void blit(surf::SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const override;
 };
 
 #endif

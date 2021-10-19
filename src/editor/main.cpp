@@ -84,8 +84,8 @@ WindstilleEditor::main(int argc, char** argv)
 
     Gtk::Main kit(&argc, &argv);
 
-    TextureManager texture_manager;
-    SurfaceManager surface_manager;
+    wstdisplay::TextureManager texture_manager;
+    wstdisplay::SurfaceManager surface_manager;
     SpriteManager  sprite_manager(surface_manager);
     sprite3d::Manager sprite3d_manager;
 

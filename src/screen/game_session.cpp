@@ -43,8 +43,8 @@
 class GameSessionImpl
 {
 public:
-  Compositor compositor;
-  SceneContext sc;
+  wstdisplay::Compositor compositor;
+  wstdisplay::SceneContext sc;
 
   float fadeout_value;
   float fade_time;
@@ -66,7 +66,7 @@ public:
 
   enum { FADEIN, RUNNING, FADEOUT } fade_state;
 
-  RGBAf fade_color;
+  surf::Color fade_color;
 
   SpeechManager speech_manager;
 
@@ -105,7 +105,7 @@ public:
     current_gui    = nullptr;
     cutscene_mode  = false;
     cutscene_value = 0.0f;
-    fade_color     = RGBAf(0.0f, 0.0f, 0.0f, 1.0f);
+    fade_color     = surf::Color(0.0f, 0.0f, 0.0f, 1.0f);
     fade_state     = RUNNING;
     fadeout_value  = 0.0f;
     fade_time      = 1.0f;
@@ -115,7 +115,7 @@ public:
   {
   }
 
-  void draw(GraphicsContext& gc);
+  void draw(wstdisplay::GraphicsContext& gc);
 
   void update_cutscene(float delta);
   void update_input(float delta);
@@ -145,7 +145,7 @@ GameSession::~GameSession()
 }
 
 void
-GameSessionImpl::draw(GraphicsContext& gc)
+GameSessionImpl::draw(wstdisplay::GraphicsContext& gc)
 {
   view.draw(sc, *sector);
 
@@ -156,9 +156,9 @@ GameSessionImpl::draw(GraphicsContext& gc)
   {
     int border_size = static_cast<int>(75 * cutscene_value);
     gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, 0), geom::isize(gc.size().width(), border_size))),
-                 RGBAf(0.0f, 0.0f, 0.0f, cutscene_value));
+                 surf::Color(0.0f, 0.0f, 0.0f, cutscene_value));
     gc.fill_rect(geom::frect(geom::irect(geom::ipoint(0, gc.size().height() - border_size), geom::isize(gc.size().width(), border_size))),
-                 RGBAf(0.0f, 0.0f, 0.0f, cutscene_value));
+                 surf::Color(0.0f, 0.0f, 0.0f, cutscene_value));
   }
 
   if (current_gui)
@@ -168,7 +168,7 @@ GameSessionImpl::draw(GraphicsContext& gc)
   {
     gc.fill_rect(geom::frect(geom::irect(0, 0,
                                          gc.size().width(), gc.size().height())),
-                 RGBAf(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
+                 surf::Color(fade_color.r, fade_color.g, fade_color.b, fadeout_value));
   }
 
   speech_manager.draw(gc);
@@ -369,28 +369,28 @@ GameSessionImpl::handle_event(const SDL_Event& event)
         switch (event.key.keysym.sym)
         {
           case SDLK_1:
-            sc.set_render_mask(sc.get_render_mask() ^ SceneContext::COLORMAP);
-            ConsoleLog << "Toggled COLORMAP: " << ((sc.get_render_mask() & SceneContext::COLORMAP) > 0) << std::endl;
+            sc.set_render_mask(sc.get_render_mask() ^ wstdisplay::SceneContext::COLORMAP);
+            ConsoleLog << "Toggled COLORMAP: " << ((sc.get_render_mask() & wstdisplay::SceneContext::COLORMAP) > 0) << std::endl;
             break;
 
           case SDLK_2:
-            sc.set_render_mask(sc.get_render_mask() ^ SceneContext::LIGHTMAP);
-            ConsoleLog << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & SceneContext::LIGHTMAP) > 0) << std::endl;
+            sc.set_render_mask(sc.get_render_mask() ^ wstdisplay::SceneContext::LIGHTMAP);
+            ConsoleLog << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & wstdisplay::SceneContext::LIGHTMAP) > 0) << std::endl;
             break;
 
           case SDLK_3:
-            sc.set_render_mask(sc.get_render_mask() ^ SceneContext::HIGHLIGHTMAP);
-            ConsoleLog << "Toggled HIGHLIGHTMAP: " << ((sc.get_render_mask() & SceneContext::HIGHLIGHTMAP) > 0) << std::endl;
+            sc.set_render_mask(sc.get_render_mask() ^ wstdisplay::SceneContext::HIGHLIGHTMAP);
+            ConsoleLog << "Toggled HIGHLIGHTMAP: " << ((sc.get_render_mask() & wstdisplay::SceneContext::HIGHLIGHTMAP) > 0) << std::endl;
             break;
 
           case SDLK_4:
-            sc.set_render_mask(sc.get_render_mask() ^ SceneContext::CONTROLMAP);
-            ConsoleLog << "Toggled CONTROLMAP: " << ((sc.get_render_mask() & SceneContext::CONTROLMAP) > 0) << std::endl;
+            sc.set_render_mask(sc.get_render_mask() ^ wstdisplay::SceneContext::CONTROLMAP);
+            ConsoleLog << "Toggled CONTROLMAP: " << ((sc.get_render_mask() & wstdisplay::SceneContext::CONTROLMAP) > 0) << std::endl;
             break;
 
           case SDLK_5:
-            sc.set_render_mask(sc.get_render_mask() ^ SceneContext::LIGHTMAPSCREEN);
-            ConsoleLog << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & SceneContext::LIGHTMAPSCREEN) > 0) << std::endl;
+            sc.set_render_mask(sc.get_render_mask() ^ wstdisplay::SceneContext::LIGHTMAPSCREEN);
+            ConsoleLog << "Toggled LIGHTMAP: " << ((sc.get_render_mask() & wstdisplay::SceneContext::LIGHTMAPSCREEN) > 0) << std::endl;
             break;
 
           case SDLK_c:
@@ -436,7 +436,7 @@ GameSession::get_pda()
 }
 
 void
-GameSession::draw(GraphicsContext& gc)
+GameSession::draw(wstdisplay::GraphicsContext& gc)
 {
   impl->draw(gc);
 }
@@ -494,7 +494,7 @@ GameSession::set_cutscene_mode(bool t)
 }
 
 void
-GameSession::fadeout(float time, const RGBAf& color)
+GameSession::fadeout(float time, const surf::Color& color)
 {
   if (time == 0.0f)
   { // directly go to a state of solid color, no fading
@@ -520,7 +520,7 @@ GameSession::fadein(float time)
   impl->next_action = GameSessionImpl::NO_ACTION;
 }
 
-SceneContext*
+wstdisplay::SceneContext*
 GameSession::get_scene_context()
 {
   return &(impl->sc);

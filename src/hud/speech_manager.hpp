@@ -23,7 +23,7 @@
 #include <vector>
 
 #include <glm/glm.hpp>
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include "util/currenton.hpp"
 
 class Entity;
@@ -52,13 +52,13 @@ public:
    */
   int add(const std::string& text,
           const glm::vec2& pos,
-          const RGBAf& color = RGBAf(1.0f, 1.0f, 1.0f));
+          const surf::Color& color = surf::Color(1.0f, 1.0f, 1.0f));
 
   int add(const std::string& text,
           const Entity& entity,
-          const RGBAf& color = RGBAf(1.0f, 1.0f, 1.0f));
+          const surf::Color& color = surf::Color(1.0f, 1.0f, 1.0f));
 
-  void draw(GraphicsContext& gc);
+  void draw(wstdisplay::GraphicsContext& gc);
   void update(float delta);
 
 private:

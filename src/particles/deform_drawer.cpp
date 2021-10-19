@@ -27,17 +27,19 @@
 #include "util/pathname.hpp"
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
-class DeformDrawerRequest : public Drawable
+class DeformDrawerRequest : public wstdisplay::Drawable
 {
 public:
-  FramebufferPtr    framebuffer;
-  SurfacePtr        surface;
+  wstdisplay::FramebufferPtr    framebuffer;
+  wstdisplay::SurfacePtr        surface;
   ParticleSystem&   psys;
-  ShaderProgramPtr  shader_program;
+  wstdisplay::ShaderProgramPtr  shader_program;
 
   DeformDrawerRequest(const glm::vec2& pos_, float z_pos_,  const glm::mat4& modelview_,
-                      FramebufferPtr framebuffer_, SurfacePtr surface_, ParticleSystem& psys_,
-                      ShaderProgramPtr shader_program_) :
+                      wstdisplay::FramebufferPtr framebuffer_,
+                      wstdisplay::SurfacePtr surface_,
+                      ParticleSystem& psys_,
+                      wstdisplay::ShaderProgramPtr shader_program_) :
     Drawable(pos_, z_pos_, modelview_),
     framebuffer(framebuffer_), surface(surface_), psys(psys_),
     shader_program(shader_program_)
@@ -45,7 +47,7 @@ public:
 
   ~DeformDrawerRequest() override {}
 
-  void render(GraphicsContext& gc, unsigned int mask) override
+  void render(wstdisplay::GraphicsContext& gc, unsigned int mask) override
   {
 #if 0
     Display::push_framebuffer(framebuffer);
@@ -62,7 +64,7 @@ public:
 
       state.bind_texture(tmp_texture, 0);
       state.bind_texture(framebuffer.get_texture(), 1);
-      state.color(RGBAf(1.0f, 1.0f, 1.0f, 1.0f));
+      state.color(Color(1.0f, 1.0f, 1.0f, 1.0f));
       state.activate();
 
       va.set_mode(GL_TRIANGLE_FAN);
@@ -85,12 +87,12 @@ public:
 #endif
   }
 
-  void draw_particles(GraphicsContext& gc)
+  void draw_particles(wstdisplay::GraphicsContext& gc)
   {
     gc.push_matrix();
     gc.mult_matrix(get_modelview());
 
-    VertexArrayDrawable va;
+    wstdisplay::VertexArrayDrawable va;
 
     va.set_texture(surface->get_texture());
     va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -101,10 +103,11 @@ public:
       if (i->t != -1.0f)
       {
         float p = 1.0f - psys.get_progress(i->t);
-        RGBAf color(psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
-                    psys.get_color_start().g * p + psys.get_color_stop().g * (1.0f - p),
-                    psys.get_color_start().b * p + psys.get_color_stop().b * (1.0f - p),
-                    psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));
+        surf::Color color(
+          psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
+          psys.get_color_start().g * p + psys.get_color_stop().g * (1.0f - p),
+          psys.get_color_start().b * p + psys.get_color_stop().b * (1.0f - p),
+          psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));
 
         // scale
         float scale  = psys.get_size_start() +
@@ -157,9 +160,9 @@ public:
     gc.pop_matrix();
   }
 
-  void prepare(TexturePtr screen_texture)
+  void prepare(wstdisplay::TexturePtr screen_texture)
   {
-    VertexArrayDrawable va;
+    wstdisplay::VertexArrayDrawable va;
     va.set_texture(screen_texture);
 
     va.set_mode(GL_TRIANGLE_FAN);
@@ -185,12 +188,12 @@ public:
 };
 
 DeformDrawer::DeformDrawer(ReaderMapping const& /*props*/,
-                           SurfaceManager& surface_manager) :
-  framebuffer(Framebuffer::create_with_texture(GL_TEXTURE_2D, {800, 600})),
+                           wstdisplay::SurfaceManager& surface_manager) :
+  framebuffer(wstdisplay::Framebuffer::create_with_texture(GL_TEXTURE_2D, {800, 600})),
   surface(surface_manager.get(Pathname("images/particles/deform2.png"))),
-  shader_program(ShaderProgram::create())
+  shader_program(wstdisplay::ShaderProgram::create())
 {
-  shader_program->attach(ShaderObject::from_file(GL_FRAGMENT_SHADER, "data/shader/particledeform.frag"));
+  shader_program->attach(wstdisplay::ShaderObject::from_file(GL_FRAGMENT_SHADER, "data/shader/particledeform.frag"));
   shader_program->link();
 }
 
@@ -199,7 +202,7 @@ DeformDrawer::~DeformDrawer()
 }
 
 void
-DeformDrawer::draw(DrawingContext& dc, ParticleSystem& psys)
+DeformDrawer::draw(wstdisplay::DrawingContext& dc, ParticleSystem& psys)
 {
   dc.draw(std::make_unique<DeformDrawerRequest>(glm::vec2(400, 300), 1200, dc.get_modelview(),
                                                 framebuffer, surface, psys, shader_program));

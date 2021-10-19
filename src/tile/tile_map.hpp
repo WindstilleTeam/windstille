@@ -41,7 +41,7 @@ public:
   ~TileMap() override;
 
   void update (float delta) override;
-  void draw (SceneContext& gc) override;
+  void draw (wstdisplay::SceneContext& gc) override;
 
   /** @return the type of ground at the given world coordinates */
   bool is_ground(float x, float y);

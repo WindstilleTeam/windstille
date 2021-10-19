@@ -19,30 +19,28 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_SURFACE_DRAWER_HPP
 #define HEADER_WINDSTILLE_PARTICLES_SURFACE_DRAWER_HPP
 
+#include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 
-class SurfaceManager;
-class VertexArrayDrawable;
-
 class SurfaceDrawer : public Drawer
 {
 private:
-  SurfacePtr surface;
+  wstdisplay::SurfacePtr surface;
   GLenum blendfunc_src;
   GLenum blendfunc_dest;
-  std::shared_ptr<VertexArrayDrawable> buffer;
+  std::shared_ptr<wstdisplay::VertexArrayDrawable> buffer;
 
 public:
-  SurfaceDrawer(ReaderMapping const& props, SurfaceManager& surface_manager);
-  SurfaceDrawer(SurfacePtr surface);
+  SurfaceDrawer(ReaderMapping const& props, wstdisplay::SurfaceManager& surface_manager);
+  SurfaceDrawer(wstdisplay::SurfacePtr surface);
   ~SurfaceDrawer() override;
 
-  void set_texture(SurfacePtr surface);
+  void set_texture(wstdisplay::SurfacePtr surface);
   void set_blendfuncs(GLenum blendfunc_src, GLenum blendfunc_dst);
 
-  void draw(GraphicsContext& gc, const ParticleSystem& psys) const override;
+  void draw(wstdisplay::GraphicsContext& gc, const ParticleSystem& psys) const override;
 };
 
 #endif

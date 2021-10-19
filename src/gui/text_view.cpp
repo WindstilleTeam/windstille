@@ -36,7 +36,7 @@ TextView::~TextView()
 }
 
 void
-TextView::draw(GraphicsContext& gc)
+TextView::draw(wstdisplay::GraphicsContext& gc)
 {
   text_area.draw(gc);
 }

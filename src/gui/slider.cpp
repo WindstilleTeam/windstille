@@ -21,7 +21,7 @@
 #include <wstinput/controller.hpp>
 
 #include "app/controller_def.hpp"
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include <wstdisplay/graphics_context.hpp>
 #include "gui/list_view.hpp"
 
@@ -67,10 +67,10 @@ Slider::set_step(int step_)
 }
 
 void
-Slider::draw(GraphicsContext& gc)
+Slider::draw(wstdisplay::GraphicsContext& gc)
 {
-  gc.fill_rect(rect, RGBAf(0.0f, 0.0f, 0.0f, 0.5f));
-  gc.draw_rect(rect, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.fill_rect(rect, surf::Color(0.0f, 0.0f, 0.0f, 0.5f));
+  gc.draw_rect(rect, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   float width = 30.0f;
   geom::frect slider_rect(glm::vec2(rect.left() + (rect.width()-width) * (static_cast<float>(pos-min)/static_cast<float>(max - min)),
@@ -78,12 +78,12 @@ Slider::draw(GraphicsContext& gc)
                     geom::fsize(width, rect.height() - 4.0f));
   if (is_active())
   {
-    gc.fill_rect(slider_rect, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
-    gc.draw_rect(slider_rect, RGBAf(1.0f, 1.0f, 1.0f, 1.0f));
+    gc.fill_rect(slider_rect, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
+    gc.draw_rect(slider_rect, surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
   }
   else
   {
-    gc.draw_rect(slider_rect, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
+    gc.draw_rect(slider_rect, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 }
 

@@ -29,7 +29,7 @@
 namespace {
 
 /** Check if the given region of the given image is fully transparent */
-bool surface_empty(SoftwareSurface const& image, int sx, int sy, int w, int h)
+bool surface_empty(surf::SoftwareSurface const& image, int sx, int sy, int w, int h)
 {
   uint8_t const* data = static_cast<uint8_t const*>(image.get_data());
 
@@ -124,7 +124,7 @@ TileFactory::parse_tiles(ReaderMapping const& reader)
 }
 
 void
-TileFactory::pack(int id, int colmap, SoftwareSurface const& image, const geom::irect& rect)
+TileFactory::pack(int id, int colmap, surf::SoftwareSurface const& image, const geom::irect& rect)
 {
   if(id < int(tiles.size())
      && tiles[id] != nullptr

@@ -33,7 +33,7 @@ public:
   ParticleSystemObjectModel(const glm::vec2& pos);
   ~ParticleSystemObjectModel() override;
 
-  void draw(SceneContext& sc) override;
+  void draw(wstdisplay::SceneContext& sc) override;
   void update(float delta) override;
 
   geom::frect get_bounding_box() const override;
@@ -41,7 +41,7 @@ public:
 
   void write(FileWriter& writer) const override;
 
-  void add_to_scenegraph(DrawableGroup& sg) override {}
+  void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override {}
 
 private:
   ParticleSystemObjectModel(const ParticleSystemObjectModel&);

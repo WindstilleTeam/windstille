@@ -25,7 +25,7 @@
 #include <gdkmm/pixbuf.h>
 #include <vector>
 
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include "editor/layer.hpp"
 #include "editor/object_model.hpp"
 #include "editor/selection.hpp"
@@ -35,8 +35,6 @@
 class NavigationGraphModel;
 class NavGraphNodeObjectModel;
 class NavGraphEdgeObjectModel;
-class SceneGraph;
-class SceneContext;
 
 class SectorModel
 {
@@ -44,7 +42,7 @@ private:
   std::unique_ptr<NavigationGraphModel> nav_graph;
   Glib::RefPtr<Gtk::ListStore> layer_tree;
   TimelineHandle m_timeline;
-  RGBAf ambient_color;
+  surf::Color ambient_color;
 
 public:
   typedef std::vector<LayerHandle> Layers;
@@ -53,7 +51,7 @@ public:
   SectorModel(const std::string& filename);
   ~SectorModel();
 
-  void draw(SceneContext& sc, const SelectMask& layers);
+  void draw(wstdisplay::SceneContext& sc, const SelectMask& layers);
 
   void update(float delta);
 
@@ -69,8 +67,8 @@ public:
   void remove(const ObjectModelHandle& object);
   LayerHandle get_layer(const ObjectModelHandle& object) const;
 
-  void  set_ambient_color(const RGBAf& color) { ambient_color = color; }
-  RGBAf get_ambient_color() const { return ambient_color; }
+  void  set_ambient_color(const surf::Color& color) { ambient_color = color; }
+  surf::Color get_ambient_color() const { return ambient_color; }
 
   LayerHandle get_layer(const Gtk::TreeModel::Path& path) const;
   Layers get_layers() const;
@@ -101,7 +99,7 @@ public:
 
   void delete_navgraph_edges(NavGraphNodeObjectModel& node);
 
-  void rebuild_scene_graph(DrawableGroup& sg);
+  void rebuild_scene_graph(wstdisplay::DrawableGroup& sg);
 
 private:
   void register_callbacks();

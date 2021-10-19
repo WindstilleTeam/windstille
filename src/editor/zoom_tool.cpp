@@ -19,7 +19,7 @@
 #include "editor/zoom_tool.hpp"
 
 #include <wstdisplay/scene_context.hpp>
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include "editor/windstille_widget.hpp"
 
 ZoomTool::ZoomTool() :
@@ -34,7 +34,7 @@ ZoomTool::mouse_down (GdkEventButton* event, WindstilleWidget& wst)
 {
   if (mode == NO_MODE)
   {
-    mouse_pos = click_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y)));
+    mouse_pos = click_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
 
     mode = RECT_MODE;
 
@@ -47,7 +47,7 @@ ZoomTool::mouse_move(GdkEventMotion* event, WindstilleWidget& wst)
 {
   if (mode == RECT_MODE)
   {
-    mouse_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y)));
+    mouse_pos = wst.get_state().screen_to_world(glm::vec2(static_cast<float>(event->x), static_cast<float>(event->y))).as_vec();
     wst.queue_draw();
   }
 }
@@ -74,15 +74,15 @@ ZoomTool::mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget& wst)
 }
 
 void
-ZoomTool::draw(SceneContext& sc)
+ZoomTool::draw(wstdisplay::SceneContext& sc)
 {
   if (mode == RECT_MODE)
   {
     geom::frect rect(click_pos, mouse_pos);
     rect = geom::normalize(rect);
 
-    sc.control().fill_rect(rect, RGBAf(1.0f, 1.0f, 0.0f, 0.25));
-    sc.control().draw_rect(rect, RGBAf(1.0f, 1.0f, 0.0f));
+    sc.control().fill_rect(rect, surf::Color(1.0f, 1.0f, 0.0f, 0.25));
+    sc.control().draw_rect(rect, surf::Color(1.0f, 1.0f, 0.0f));
   }
 }
 

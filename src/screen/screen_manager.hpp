@@ -23,10 +23,11 @@
 #include <memory>
 #include <vector>
 
+#include <wstdisplay/fwd.hpp>
+
 #include "util/currenton.hpp"
 
 class ControllerHelpWindow;
-class GraphicsContext;
 class Screen;
 
 /**
@@ -58,14 +59,14 @@ private:
   std::unique_ptr<ControllerHelpWindow> controller_help_window;
 
   void apply_pending_actions();
-  void draw(GraphicsContext& gc);
+  void draw(wstdisplay::GraphicsContext& gc);
 
 public:
   ScreenManager();
   ~ScreenManager() override;
 
   /** Displays the previously set screen in until quit() is called */
-  void run(GraphicsContext& gc);
+  void run(wstdisplay::GraphicsContext& gc);
 
   /** Breaks out of the run() function */
   void quit();
@@ -89,7 +90,7 @@ public:
 
 private:
   void poll_events();
-  void draw_fps(GraphicsContext& gc);
+  void draw_fps(wstdisplay::GraphicsContext& gc);
 
   ScreenManager (const ScreenManager&);
   ScreenManager& operator= (const ScreenManager&);

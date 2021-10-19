@@ -50,21 +50,21 @@ App::input() const
   return *m_input_manager;
 }
 
-OpenGLWindow&
+wstdisplay::OpenGLWindow&
 App::window() const
 {
   assert(m_window != nullptr);
   return *m_window;
 }
 
-TextureManager&
+wstdisplay::TextureManager&
 App::texture() const
 {
   assert(m_texture_manager != nullptr);
   return *m_texture_manager;
 }
 
-SurfaceManager&
+wstdisplay::SurfaceManager&
 App::surface() const
 {
   assert(m_surface_manager != nullptr);

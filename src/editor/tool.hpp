@@ -20,8 +20,9 @@
 #define HEADER_WINDSTILLE_EDITOR_TOOL_HPP
 
 #include <gdkmm.h>
+
+#include <wstdisplay/fwd.hpp>
 
-class SceneContext;
 class WindstilleWidget;
 
 class Tool
@@ -36,7 +37,7 @@ public:
 
   virtual void mouse_right_down(GdkEventButton* /*event*/, WindstilleWidget& /*wst*/) {}
 
-  virtual void draw(SceneContext& /*sc*/) {}
+  virtual void draw(wstdisplay::SceneContext& /*sc*/) {}
 
 private:
   Tool(const Tool&);

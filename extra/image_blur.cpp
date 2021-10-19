@@ -32,6 +32,8 @@
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/surface_drawing_parameters.hpp>
 
+using namespace wstdisplay;
+
 namespace {
 
 int app_main(int argc, char** argv)
@@ -65,8 +67,8 @@ int app_main(int argc, char** argv)
 
   FramebufferPtr framebuffer = Framebuffer::create_hdr(window_size);
 
-  SurfacePtr surface   = surface_manager.get(argv[1]);
-  SurfacePtr surface_2 = surface_manager.get(argv[2]);
+  wstdisplay::SurfacePtr surface   = surface_manager.get(argv[1]);
+  wstdisplay::SurfacePtr surface_2 = surface_manager.get(argv[2]);
 
   float ray_length = 3.0f;
   glm::vec2 pos{};
@@ -156,7 +158,7 @@ int app_main(int argc, char** argv)
                         .set_scale(1.0f)
                         .set_pos(pos - glm::vec2(surface->get_width()/2, surface->get_height()/2))
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                        .set_color(RGBAf(1.0f, 1.0f, 1.0f, n)));
+                        .set_color(surf::Color(1.0f, 1.0f, 1.0f, n)));
         }
       }
       else
@@ -171,7 +173,7 @@ int app_main(int argc, char** argv)
                                  + (static_cast<float>(n-i-1)/static_cast<float>(n-1)) * last_pos
                                  - glm::vec2(surface->get_width()/2, surface->get_height()/2))
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                        .set_color(RGBAf(1.0f, 1.0f, 1.0f, 1.0f / static_cast<float>(n))));
+                        .set_color(surf::Color(1.0f, 1.0f, 1.0f, 1.0f / static_cast<float>(n))));
         }
       }
     }
@@ -189,7 +191,7 @@ int app_main(int argc, char** argv)
                                                                  surface->get_height()/2 * scale)
                                  + (glm::vec2(512, 288) - pos) * scale * 3.0f)
                         .set_blend_func(GL_SRC_ALPHA, GL_ONE)
-                        .set_color(RGBAf(1.0f, 1.0f, 1.0f, static_cast<float>(1)/static_cast<float>(n))));
+                        .set_color(surf::Color(1.0f, 1.0f, 1.0f, static_cast<float>(1)/static_cast<float>(n))));
 
         if ((false) && i == 1) // NOLINT
         {
@@ -202,7 +204,7 @@ int app_main(int argc, char** argv)
                                                                    surface_2->get_height()/2 * scale)
                                    + (glm::vec2(512, 288) - pos) * scale * 3.0f)
                           .set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-                          .set_color(RGBAf(1.0f, 1.0f, 1.0f, 1.0f)));
+                          .set_color(surf::Color(1.0f, 1.0f, 1.0f, 1.0f)));
         }
       }
     }

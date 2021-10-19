@@ -120,7 +120,7 @@ Sprite2DView::~Sprite2DView()
 }
 
 void
-Sprite2DView::draw(GraphicsContext& gc)
+Sprite2DView::draw(wstdisplay::GraphicsContext& gc)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

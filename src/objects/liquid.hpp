@@ -20,15 +20,14 @@
 #define HEADER_WINDSTILLE_OBJECTS_LIQUID_HPP
 
 #include <vector>
+#include <wstdisplay/fwd.hpp>
 
 #include "engine/entity.hpp"
 
-class VertexArrayDrawable;
-
 class Liquid : public Entity
 {
 private:
-  TexturePtr texture;
+  wstdisplay::TexturePtr texture;
   float t;
 
   std::vector<float> heightfield_store1;
@@ -37,8 +36,8 @@ private:
   std::vector<float>* heightfield1;
   std::vector<float>* heightfield2;
 
-  std::shared_ptr<VertexArrayDrawable> m_water_top;
-  std::shared_ptr<VertexArrayDrawable> m_water_body;
+  std::shared_ptr<wstdisplay::VertexArrayDrawable> m_water_top;
+  std::shared_ptr<wstdisplay::VertexArrayDrawable> m_water_body;
 
 public:
   Liquid(ReaderMapping const& props);
@@ -53,7 +52,7 @@ private:
   Liquid (const Liquid&);
   Liquid& operator= (const Liquid&);
 };
-
+
 #endif
 
 /* EOF */

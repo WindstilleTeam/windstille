@@ -28,7 +28,7 @@
 #include <wstdisplay/scenegraph/scene_graph.hpp>
 
 ParticleSystems::ParticleSystems(ReaderMapping const& reader,
-                                 SurfaceManager& surface_manager) :
+                                 wstdisplay::SurfaceManager& surface_manager) :
   m_systems(),
   m_drawables()
 {

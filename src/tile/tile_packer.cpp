@@ -32,7 +32,7 @@ public:
   int x_pos;
   int y_pos;
 
-  TexturePtr texture;
+  wstdisplay::TexturePtr texture;
 
   geom::isize size;
 
@@ -52,7 +52,7 @@ TilePacker::TilePacker(geom::isize const& size) :
 
   impl->size = size;
 
-  impl->texture = Texture::create(GL_TEXTURE_2D, size);
+  impl->texture = wstdisplay::Texture::create(GL_TEXTURE_2D, size);
 
   assert_gl();
 }
@@ -64,12 +64,12 @@ TilePacker::~TilePacker()
 /** Pack a tile and return the position where it is placed in the
     pixel buffer */
 geom::frect
-TilePacker::pack(SoftwareSurface const& image, int x, int y, int w, int h)
+TilePacker::pack(wstdisplay::SoftwareSurface const& image, int x, int y, int w, int h)
 {
   assert(w == TILE_RESOLUTION && h == TILE_RESOLUTION);
   assert(!is_full());
 
-  SoftwareSurface convert = SoftwareSurface::create(surf::PixelFormat::RGBA, {w + 2, h + 2});
+  surf::SoftwareSurface convert = surf::SoftwareSurface::create(surf::PixelFormat::RGBA8, {w + 2, h + 2});
 
   geom::irect source_rect(static_cast<Sint16>(x),
                           static_cast<Sint16>(y),
@@ -79,10 +79,10 @@ TilePacker::pack(SoftwareSurface const& image, int x, int y, int w, int h)
   geom::ipoint dest_point(static_cast<Sint16>(1),
                           static_cast<Sint16>(1));
 
-  image.blit_to(source_rect, convert, dest_point);
+  surf::blit(image, source_rect, convert, dest_point);
   //SDL_BlitSurface(image.get_surface(), &source_rect, convert.get_surface(), &dest_rect);
 
-  generate_border(convert, 1, 1, TILE_RESOLUTION, TILE_RESOLUTION);
+  wstdisplay::generate_border(convert, 1, 1, TILE_RESOLUTION, TILE_RESOLUTION);
 
   impl->texture->put(convert, impl->x_pos, impl->y_pos);
 
@@ -112,7 +112,7 @@ TilePacker::is_full() const
   return (impl->y_pos + TILE_RESOLUTION + 2 > impl->size.height());
 }
 
-TexturePtr
+wstdisplay::TexturePtr
 TilePacker::get_texture() const
 {
   return impl->texture;

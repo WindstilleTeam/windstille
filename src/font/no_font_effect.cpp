@@ -16,11 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <wstdisplay/software_surface.hpp>
+#include <surf/software_surface.hpp>
+
 #include "font/no_font_effect.hpp"
 
 void
-NoFontEffect::blit(SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const
+NoFontEffect::blit(surf::SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const
 {
   int start_x = std::max(0, -x_pos);
   int start_y = std::max(0, -y_pos);

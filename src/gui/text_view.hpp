@@ -34,7 +34,7 @@ public:
   TextView(const geom::frect& rect, Component* component);
   ~TextView() override;
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
   void set_screen_rect(const geom::frect& rect) override;

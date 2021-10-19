@@ -24,8 +24,9 @@
 #include <memory>
 
 #include <geom/fwd.hpp>
+#include <surf/color.hpp>
+#include <wstdisplay/fwd.hpp>
 
-#include <wstdisplay/color.hpp>
 #include "engine/game_object_handle.hpp"
 #include "util/currenton.hpp"
 #include "util/pathname.hpp"
@@ -36,11 +37,9 @@ class FileReader;
 class GameObject;
 class NavigationGraph;
 class Player;
-class SceneContext;
 class SpawnPoint;
 class SquirrelThread;
 class TileMap;
-class SceneGraph;
 class Doll;
 
 class Sector : public Currenton<Sector>
@@ -48,7 +47,7 @@ class Sector : public Currenton<Sector>
 private:
   std::unique_ptr<CollisionEngine> collision_engine;
   std::unique_ptr<NavigationGraph> navigation_graph;
-  std::unique_ptr<SceneGraph>      scene_graph;
+  std::unique_ptr<wstdisplay::SceneGraph>      scene_graph;
 
   Pathname filename;
   std::string name;
@@ -63,7 +62,7 @@ private:
    * in the update function */
   Objects new_objects;
 
-  RGBAf ambient_light;
+  surf::Color ambient_light;
 
 public:
   /** The TileMap with which the player interacts */
@@ -87,7 +86,7 @@ public:
   Pathname get_filename() const;
   Pathname get_directory() const;
 
-  void draw(SceneContext& gc);
+  void draw(wstdisplay::SceneContext& gc);
   void update(float delta);
 
   /**
@@ -103,13 +102,13 @@ public:
    * Set ambient light, ie. the light that illuminates the whole sector
    * all the time, to \a color
    */
-  void  set_ambient_light(const RGBAf& color);
-  RGBAf get_ambient_light() const;
+  void  set_ambient_light(const surf::Color& color);
+  surf::Color get_ambient_light() const;
 
   void add(GameObjectHandle object);
 
   CollisionEngine* get_collision_engine() const { return collision_engine.get(); }
-  SceneGraph& get_scene_graph() const { return *scene_graph; }
+  wstdisplay::SceneGraph& get_scene_graph() const { return *scene_graph; }
   NavigationGraph& get_navigation_graph() const { return *navigation_graph; }
 
   GameObject* get_object(const std::string& name) const;

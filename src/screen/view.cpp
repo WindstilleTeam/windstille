@@ -39,7 +39,7 @@ View::View()
 }
 
 void
-View::draw(SceneContext& sc, Sector& sector)
+View::draw(wstdisplay::SceneContext& sc, Sector& sector)
 {
   state.set_zoom(camera.get_zoom() + (m_debug_zoom - 1.0f));
   state.set_pos(camera.get_pos() + m_debug_transform);
@@ -91,7 +91,7 @@ View::get_clip_rect()
 glm::vec2
 View::screen_to_world(const glm::vec2& point)
 {
-  return state.screen_to_world(point);
+  return state.screen_to_world(point).as_vec();
 }
 
 /* EOF */

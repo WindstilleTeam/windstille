@@ -33,14 +33,14 @@ Label::~Label()
 }
 
 void
-Label::draw(GraphicsContext& gc)
+Label::draw(wstdisplay::GraphicsContext& gc)
 {
-  //gc.fill_rect(rect, RGBAf(0.0f, 0.0f, 0.0f, 0.5f));
-  //gc.draw_rect(rect, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
+  //gc.fill_rect(rect, surf::Color(0.0f, 0.0f, 0.0f, 0.5f));
+  //gc.draw_rect(rect, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
   g_app.fonts().vera12->draw(gc,
                              glm::vec2(rect.left() + 5/*+ rect.width()/2*/, rect.top() + rect.height()/2 + 3),
                              label,
-                             RGBAf(1.0f, 1.0f, 1.0f, 1.0f));
+                             surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 void

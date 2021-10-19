@@ -41,7 +41,7 @@ RootComponent::~RootComponent()
 }
 
 void
-RootComponent::draw(GraphicsContext& gc)
+RootComponent::draw(wstdisplay::GraphicsContext& gc)
 {
   for(Children::iterator i = children.begin(); i != children.end(); ++i)
   {

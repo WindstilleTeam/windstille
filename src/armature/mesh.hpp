@@ -25,13 +25,12 @@
 
 #include <glm/glm.hpp>
 
+#include <wstdisplay/fwd.hpp>
 #include <wstdisplay/texture.hpp>
 #include "util/file_reader.hpp"
 
 class Armature;
 class Bone;
-class GraphicsContext;
-class TextureManager;
 
 struct VertexGroup
 {
@@ -87,17 +86,17 @@ private:
   typedef std::vector<Vertex> Vertices;
   Vertices vertices_;
 
-  TexturePtr texture;
+  wstdisplay::TexturePtr texture;
 
   GLenum blend_sfactor;
   GLenum blend_dfactor;
 
 public:
   Mesh(ReaderMapping const& reader, std::filesystem::path const& basedir,
-       TextureManager& texture_manager);
+       wstdisplay::TextureManager& texture_manager);
   ~Mesh();
 
-  void draw(GraphicsContext& gc);
+  void draw(wstdisplay::GraphicsContext& gc);
   void apply(Armature* armature);
   void reset();
 private:

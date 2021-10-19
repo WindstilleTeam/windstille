@@ -55,7 +55,7 @@ private:
 public:
   Swarm(ReaderMapping const& reader);
 
-  void draw(SceneContext& sc) override;
+  void draw(wstdisplay::SceneContext& sc) override;
   void update(float delta) override;
 
 private:

@@ -55,18 +55,18 @@ NavGraphEdgeObjectModel::update(float delta)
     m_drawable->clear();
     m_drawable->set_mode(GL_LINES);
 
-    m_drawable->color(RGBAf(0.0f, 1.0f, 1.0f));
+    m_drawable->color(surf::Color(0.0f, 1.0f, 1.0f));
     m_drawable->vertex(m_lhs->get_world_pos());
 
-    m_drawable->color(RGBAf(0.0f, 1.0f, 1.0f));
+    m_drawable->color(surf::Color(0.0f, 1.0f, 1.0f));
     m_drawable->vertex(m_rhs->get_world_pos());
   }
 }
 
 void
-NavGraphEdgeObjectModel::add_to_scenegraph(DrawableGroup& sg)
+NavGraphEdgeObjectModel::add_to_scenegraph(wstdisplay::DrawableGroup& sg)
 {
-  m_drawable.reset(new VertexArrayDrawable);
+  m_drawable.reset(new wstdisplay::VertexArrayDrawable);
   update(0.0f);
   sg.add_drawable(m_drawable);
 }

@@ -27,7 +27,7 @@
 class LaserPointer : public GameObject
 {
 private:
-  TexturePtr noise;
+  wstdisplay::TexturePtr noise;
   Sprite  laserpointer;
   Sprite  laserpointer_light;
   float   progress;
@@ -37,7 +37,7 @@ public:
   LaserPointer();
   ~LaserPointer() override;
 
-  void draw(SceneContext& sc) override;
+  void draw(wstdisplay::SceneContext& sc) override;
   void update(float delta) override;
 
   float get_angle() const;

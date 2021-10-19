@@ -22,13 +22,12 @@
 
 #include <GL/glew.h>
 
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include <wstdisplay/drawing_context.hpp>
+#include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
-#include "sprite2d/manager.hpp"
 
-class DrawingContext;
-class RGBAf;
+#include "sprite2d/manager.hpp"
 
 struct SpriteAction;
 
@@ -49,7 +48,7 @@ private:
   GLenum blend_sfactor;
   GLenum blend_dfactor;
   float  scale;
-  RGBAf  color;
+  surf::Color  color;
 
 public:
   Sprite();
@@ -65,8 +64,8 @@ public:
 
   void update(float delta);
 
-  void draw(GraphicsContext& gc, const glm::vec2& pos) const;
-  void draw(DrawingContext& ctx, glm::vec2 const& pos, float z_pos = 0.0f);
+  void draw(wstdisplay::GraphicsContext& gc, const glm::vec2& pos) const;
+  void draw(wstdisplay::DrawingContext& ctx, glm::vec2 const& pos, float z_pos = 0.0f);
 
   void  set_action(const std::string& name);
   const std::string& get_action() const;
@@ -89,13 +88,13 @@ public:
   GLenum get_blend_sfactor() const;
   GLenum get_blend_dfactor() const;
 
-  void set_color(const RGBAf& color);
-  RGBAf get_color() const;
+  void set_color(const surf::Color& color);
+  surf::Color get_color() const;
 
   void  set_scale(float s);
   float get_scale() const;
 
-  SurfacePtr get_current_surface() const;
+  wstdisplay::SurfacePtr get_current_surface() const;
 
   glm::vec2 get_offset() const;
 

@@ -25,19 +25,19 @@
 #include <geom/geom.hpp>
 
 #include <wstdisplay/surface.hpp>
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 
 struct Flair
 {
-  SurfacePtr m_surface;
+  wstdisplay::SurfacePtr m_surface;
   float      m_distance;
   float      m_scale;
-  RGBAf      m_color;
+  surf::Color      m_color;
 
-  Flair(SurfacePtr surface,
+  Flair(wstdisplay::SurfacePtr surface,
         float distance,
         float scale,
-        RGBAf color) :
+        surf::Color color) :
     m_surface(surface),
     m_distance(distance),
     m_scale(scale),
@@ -53,13 +53,13 @@ private:
   bool m_fullscreen;
   bool m_loop;
 
-  SurfacePtr m_light;
-  SurfacePtr m_lightquery;
-  SurfacePtr m_superlight;
-  SurfacePtr m_flair1;
-  SurfacePtr m_flair2;
-  SurfacePtr m_cover;
-  SurfacePtr m_halo;
+  wstdisplay::SurfacePtr m_light;
+  wstdisplay::SurfacePtr m_lightquery;
+  wstdisplay::SurfacePtr m_superlight;
+  wstdisplay::SurfacePtr m_flair1;
+  wstdisplay::SurfacePtr m_flair2;
+  wstdisplay::SurfacePtr m_cover;
+  wstdisplay::SurfacePtr m_halo;
 
   typedef std::vector<Flair> Flairs;
   Flairs m_flairs;
@@ -72,7 +72,7 @@ public:
   int run();
 
   void process_input();
-  void draw(GraphicsContext& gc);
+  void draw(wstdisplay::GraphicsContext& gc);
 
 private:
   Lensflare(const Lensflare&);

@@ -41,10 +41,10 @@ NavGraphNodeObjectModel::~NavGraphNodeObjectModel()
 }
 
 void
-NavGraphNodeObjectModel::add_to_scenegraph(DrawableGroup& sg)
+NavGraphNodeObjectModel::add_to_scenegraph(wstdisplay::DrawableGroup& sg)
 {
   if (!m_drawable)
-    m_drawable.reset(new VertexArrayDrawable);
+    m_drawable.reset(new wstdisplay::VertexArrayDrawable);
 
   sync_drawable();
   sg.add_drawable(m_drawable);
@@ -59,16 +59,16 @@ NavGraphNodeObjectModel::sync_drawable()
 
     m_drawable->set_mode(GL_TRIANGLE_FAN);
 
-    m_drawable->color(RGBAf(1.0f, 0.0f, 0.0f));
+    m_drawable->color(surf::Color(1.0f, 0.0f, 0.0f));
     m_drawable->vertex(get_world_pos() + glm::vec2(-10.0f, -10.0f));
 
-    m_drawable->color(RGBAf(1.0f, 0.0f, 0.0f));
+    m_drawable->color(surf::Color(1.0f, 0.0f, 0.0f));
     m_drawable->vertex(get_world_pos() + glm::vec2(10.0f, -10.0f));
 
-    m_drawable->color(RGBAf(1.0f, 0.0f, 0.0f));
+    m_drawable->color(surf::Color(1.0f, 0.0f, 0.0f));
     m_drawable->vertex(get_world_pos() + glm::vec2(10.0f, 10.0f));
 
-    m_drawable->color(RGBAf(1.0f, 0.0f, 0.0f));
+    m_drawable->color(surf::Color(1.0f, 0.0f, 0.0f));
     m_drawable->vertex(get_world_pos() + glm::vec2(-10.0f, 10.0f));
   }
 }

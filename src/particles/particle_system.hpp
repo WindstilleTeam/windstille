@@ -23,17 +23,16 @@
 #include <vector>
 
 #include <geom/geom.hpp>
+#include <wstdisplay/fwd.hpp>
 
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 
 class FileReader;
-class SceneContext;
 class Randomizer;
 struct Particle;
 class ParticleSystem;
-class SurfaceManager;
 
 struct Particle
 {
@@ -93,21 +92,21 @@ private:
   float speed_start;
   float speed_stop;
 
-  RGBAf color_start;
-  RGBAf color_stop;
+  surf::Color color_start;
+  surf::Color color_stop;
 
 private:
   void spawn(Particle& particle);
 
 public:
   ParticleSystem();
-  ParticleSystem(ReaderMapping const& props, SurfaceManager& surface_manager);
+  ParticleSystem(ReaderMapping const& props, wstdisplay::SurfaceManager& surface_manager);
   ~ParticleSystem();
 
   void set_drawer(Drawer*);
 
   /** Draws the particle system to the screen */
-  void draw(GraphicsContext& gc) const;
+  void draw(wstdisplay::GraphicsContext& gc) const;
 
   /** Update the particle system \a delta seconds */
   void update(float delta);
@@ -167,10 +166,10 @@ public:
   void set_size  (float from, float to);
 
   /** Set the color at which the particles will start */
-  void set_color(const RGBAf& start, const RGBAf& end);
+  void set_color(const surf::Color& start, const surf::Color& end);
 
   /** Set the color at which the particles will end */
-  void set_fade_color(const RGBAf& color);
+  void set_fade_color(const surf::Color& color);
 
   /** Set the velocity of the particles, it will be randomly distributed
       from \a from to \a to, direction will be taken from the cone */
@@ -185,8 +184,8 @@ public:
   float get_size_start() const { return size_start; }
   float get_size_stop()  const { return size_stop; }
 
-  const RGBAf& get_color_start() const { return color_start; }
-  const RGBAf& get_color_stop()  const { return color_stop;  }
+  const surf::Color& get_color_start() const { return color_start; }
+  const surf::Color& get_color_stop()  const { return color_stop;  }
 
   float get_x_pos() const { return x_pos; }
   float get_y_pos() const { return y_pos; }

@@ -56,7 +56,7 @@ public:
   ~MenuComponent() override;
 
   void add_item(MenuItem* item);
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
   float get_prefered_width() const override;

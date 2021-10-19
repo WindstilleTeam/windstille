@@ -28,7 +28,7 @@ public:
   Grenade();
   ~Grenade() override;
 
-  void draw(SceneContext& sc) override;
+  void draw(wstdisplay::SceneContext& sc) override;
   void update(float delta) override;
   void set_velocity(const glm::vec2& vel);
 

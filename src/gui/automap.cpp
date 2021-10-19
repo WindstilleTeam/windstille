@@ -47,7 +47,7 @@ Automap::Automap(const geom::frect& rect_, Component* parent_) :
 {
   TileMap* tilemap = Sector::current()->get_tilemap();
 
-  SoftwareSurface image = SoftwareSurface::create(surf::PixelFormat::RGBA, tilemap->get_size());
+  wstdisplay::SoftwareSurface image = surf::SoftwareSurface::create(surf::PixelFormat::RGBA8, tilemap->get_size());
 
   uint8_t* buffer = static_cast<uint8_t*>(image.get_data());
 
@@ -70,7 +70,7 @@ Automap::Automap(const geom::frect& rect_, Component* parent_) :
       }
     }
 
-  surface = Surface::create(tilemap->get_size());
+  surface = wstdisplay::Surface::create(tilemap->get_size());
   surface->get_texture()->set_filter(GL_NEAREST);
   surface->get_texture()->put(image, 0, 0);
 }
@@ -80,13 +80,13 @@ Automap::~Automap()
 }
 
 void
-Automap::draw(GraphicsContext& gc)
+Automap::draw(wstdisplay::GraphicsContext& gc)
 {
   gc.push_cliprect(geom::irect(get_screen_rect()));
   surface->draw(gc,
-                SurfaceDrawingParameters()
+                wstdisplay::SurfaceDrawingParameters()
                 .set_pos(glm::vec2(rect.left(), rect.top()) + pos)
-                .set_color(RGBAf(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
+                .set_color(surf::Color(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
                 .set_scale(zoom));
   gc.pop_cliprect();
 }

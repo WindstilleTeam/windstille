@@ -68,7 +68,7 @@ public:
   void remove(const ObjectModelHandle& object);
   iterator erase(iterator it);
 
-  void draw(SceneContext& sc, const SelectMask& layers);
+  void draw(wstdisplay::SceneContext& sc, const SelectMask& layers);
   void update(float delta);
   void sync(const Gtk::TreeModel::Row& row);
 

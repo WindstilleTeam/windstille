@@ -22,9 +22,9 @@
 
 #include <vector>
 
-#include "collision/collision_object.hpp"
+#include <wstdisplay/fwd.hpp>
 
-class DrawingContext;
+#include "collision/collision_object.hpp"
 
 class CollisionEngine
 {
@@ -37,7 +37,7 @@ public:
   CollisionEngine();
   ~CollisionEngine();
 
-  void draw(DrawingContext& dc);
+  void draw(wstdisplay::DrawingContext& dc);
   void update(float delta);
   void update(CollisionObject& obj, float delta);
   void collision(const CollisionData &result);

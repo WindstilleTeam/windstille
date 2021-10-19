@@ -21,11 +21,11 @@
 
 #include <memory>
 
+#include <wstdisplay/fwd.hpp>
+
 #include "armature/armature.hpp"
 #include "armature/model.hpp"
 #include "screen/screen.hpp"
-
-class GraphicsContext;
 
 class ArmatureTest : public Screen
 {
@@ -45,7 +45,7 @@ public:
   ArmatureTest();
   ~ArmatureTest() override;
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
 private:

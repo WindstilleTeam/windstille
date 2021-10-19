@@ -30,11 +30,11 @@ SparkDrawer::SparkDrawer(ReaderMapping const& props)
   props.read("color", color);
   props.read("width", width);
 
-  buffer.reset(new VertexArrayDrawable(glm::vec2(), 0.0f, glm::mat4(1.0f)));
+  buffer.reset(new wstdisplay::VertexArrayDrawable(glm::vec2(), 0.0f, glm::mat4(1.0f)));
 }
 
 void
-SparkDrawer::draw(GraphicsContext& gc, const ParticleSystem& psys) const
+SparkDrawer::draw(wstdisplay::GraphicsContext& gc, const ParticleSystem& psys) const
 {
   buffer->clear();
   buffer->set_pos(glm::vec2(psys.get_x_pos(), psys.get_y_pos()));
@@ -45,10 +45,10 @@ SparkDrawer::draw(GraphicsContext& gc, const ParticleSystem& psys) const
     buffer->set_blend_func(GL_SRC_ALPHA, GL_ONE);
     for(ParticleSystem::const_iterator i = psys.begin(); i != psys.end(); ++i)
     {
-      buffer->color(RGBAf(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+      buffer->color(surf::Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
       buffer->vertex(i->x + i->v_x/10.0f, i->y + i->v_y/10.0f);
 
-      buffer->color(RGBAf(0, 0, 0, 0));
+      buffer->color(surf::Color(0, 0, 0, 0));
       buffer->vertex(i->x, i->y);
     }
   }
@@ -69,23 +69,23 @@ SparkDrawer::draw(GraphicsContext& gc, const ParticleSystem& psys) const
       const float y2 = i->y + i->v_y/10.0f;
 
       // v1
-      buffer->color(RGBAf(0, 0, 0, 0));
+      buffer->color(surf::Color(0, 0, 0, 0));
       buffer->vertex(x1 + o_x, y1 - o_y);
       // v4
-      buffer->color(RGBAf(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+      buffer->color(surf::Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
       buffer->vertex(x2 + o_x, y2 - o_y);
       // v2
-      buffer->color(RGBAf(0, 0, 0, 0));
+      buffer->color(surf::Color(0, 0, 0, 0));
       buffer->vertex(x1 - o_x, y1 + o_y);
 
       // v4
-      buffer->color(RGBAf(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+      buffer->color(surf::Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
       buffer->vertex(x2 + o_x, y2 - o_y);
       // v3
-      buffer->color(RGBAf(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
+      buffer->color(surf::Color(color.r, color.g, color.b, color.a - (color.a * psys.get_progress(i->t))));
       buffer->vertex(x2 - o_x, y2 + o_y);
       // v2
-      buffer->color(RGBAf(0, 0, 0, 0));
+      buffer->color(surf::Color(0, 0, 0, 0));
       buffer->vertex(x1 - o_x, y1 + o_y);
     }
   }

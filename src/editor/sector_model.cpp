@@ -229,7 +229,7 @@ SectorModel::get_layer(const ObjectModelHandle& object) const
 }
 
 void
-SectorModel::draw(SceneContext& sc, const SelectMask& layermask)
+SectorModel::draw(wstdisplay::SceneContext& sc, const SelectMask& layermask)
 {
   // Draw Layers
   const Layers& layers = get_layers();
@@ -430,7 +430,7 @@ SectorModel::set_all_locked(bool v)
 }
 
 void
-SectorModel::rebuild_scene_graph(DrawableGroup& sg)
+SectorModel::rebuild_scene_graph(wstdisplay::DrawableGroup& sg)
 {
   // FIXME: should make a queue_rebuild_scene_graph() to limit the number of rebuilds per frame to 1
   sg.clear();
@@ -440,7 +440,7 @@ SectorModel::rebuild_scene_graph(DrawableGroup& sg)
   {
     if (*layer)
     {
-      std::shared_ptr<DrawableGroup> group(new DrawableGroup);
+      std::shared_ptr<wstdisplay::DrawableGroup> group(new wstdisplay::DrawableGroup);
 
       for(Layer::const_iterator obj = (*layer)->begin(); obj != (*layer)->end(); ++obj)
       {

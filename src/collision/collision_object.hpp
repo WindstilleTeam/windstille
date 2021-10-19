@@ -23,10 +23,10 @@
 #include <sigc++/signal.h>
 
 #include <geom/geom.hpp>
+#include <wstdisplay/fwd.hpp>
 
 #include "collision/collision_data.hpp"
 
-class DrawingContext;
 class TileMap;
 class CollisionEngine;
 class GameObject;
@@ -108,7 +108,7 @@ public:
   void update(float delta);
 
   // debugging helpers
-  void draw(DrawingContext& dc);
+  void draw(wstdisplay::DrawingContext& dc);
 
   // this functions support unstucking, which needs to be done, when more than 2 object stack over one another
   // should this object be unstuck ??

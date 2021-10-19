@@ -40,7 +40,7 @@ public:
   Layer(ReaderMapping const& reader);
   ~Layer() override;
 
-  void draw (SceneContext& context) override;
+  void draw (wstdisplay::SceneContext& context) override;
   void update (float delta) override;
 
 

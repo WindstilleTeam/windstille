@@ -25,7 +25,7 @@
 #include "armature/mesh.hpp"
 
 Model::Model(ReaderDocument const& doc, std::filesystem::path const& basedir,
-             TextureManager& texture_manager) :
+             wstdisplay::TextureManager& texture_manager) :
   name(),
   meshes()
 {
@@ -59,7 +59,7 @@ Model::~Model()
 }
 
 void
-Model::draw(GraphicsContext& gc)
+Model::draw(wstdisplay::GraphicsContext& gc)
 {
   for(Meshes::iterator i = meshes.begin(); i != meshes.end(); ++i)
   {

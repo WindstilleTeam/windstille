@@ -21,17 +21,16 @@
 
 #include <string>
 
+#include <surf/fwd.hpp>
 #include <prio/writer.hpp>
 #include <geom/size.hpp>
-
-class RGBAf;
 
 using FileWriter = prio::Writer;
 
 namespace prio {
 
 template<> void write_custom(prio::Writer& writer, std::string_view key, glm::vec2 const& value);
-template<> void write_custom(prio::Writer& writer, std::string_view key, RGBAf const& value);
+template<> void write_custom(prio::Writer& writer, std::string_view key, surf::Color const& value);
 
 } // namespace prio
 

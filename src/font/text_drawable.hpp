@@ -25,11 +25,12 @@
 #include <wstdisplay/graphics_context.hpp>
 #include "font/fonts.hpp"
 
-class TextDrawable : public Drawable
+class TextDrawable : public wstdisplay::Drawable
 {
 private:
   TTFFont& m_font;
   std::string text;
+
 public:
   TextDrawable(TTFFont& font, const std::string& text_, const glm::vec2& pos_, float z_pos_, const glm::mat4& modelview_)
     : Drawable(pos_, z_pos_, modelview_),
@@ -38,10 +39,10 @@ public:
   {}
   ~TextDrawable() override {}
 
-  void render(GraphicsContext& gc, unsigned int mask) override {
+  void render(wstdisplay::GraphicsContext& gc, unsigned int mask) override {
     gc.push_matrix();
     gc.mult_matrix(modelview);
-    m_font.draw(gc, pos, text);
+    m_font.draw(gc, pos.as_vec(), text);
     gc.pop_matrix();
   }
 };

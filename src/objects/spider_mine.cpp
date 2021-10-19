@@ -73,7 +73,7 @@ SpiderMine::update(float delta)
 }
 
 void
-SpiderMine::draw (SceneContext& sc)
+SpiderMine::draw (wstdisplay::SceneContext& sc)
 {
   if (state == EXPLODE) {
     explode.draw(sc.color(), pos);

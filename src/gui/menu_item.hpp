@@ -23,10 +23,8 @@
 #include <vector>
 
 #include <sigc++/signal.h>
-
+#include <wstdisplay/fwd.hpp>
 #include <geom/geom.hpp>
-
-class GraphicsContext;
 
 namespace gui {
 
@@ -48,7 +46,7 @@ public:
 
   virtual void click() =0;
 
-  virtual void draw(GraphicsContext& gc, const geom::frect& rect, bool is_active);
+  virtual void draw(wstdisplay::GraphicsContext& gc, const geom::frect& rect, bool is_active);
   virtual void update(float delta);
 
 private:
@@ -81,7 +79,7 @@ public:
   void incr() override;
   void decr() override;
   void click() override {}
-  void draw(GraphicsContext& gc, const geom::frect& rect, bool is_active) override;
+  void draw(wstdisplay::GraphicsContext& gc, const geom::frect& rect, bool is_active) override;
   sigc::signal<void (int)>& sig_change() { return on_change; }
 };
 
@@ -101,7 +99,7 @@ public:
   void incr() override;
   void decr() override;
   void click() override {}
-  void draw(GraphicsContext& gc, const geom::frect& rect, bool is_active) override;
+  void draw(wstdisplay::GraphicsContext& gc, const geom::frect& rect, bool is_active) override;
   sigc::signal<void (int)>& sig_change() { return on_change; }
 };
 
@@ -115,7 +113,7 @@ public:
   void incr() override {}
   void decr() override {}
   void click() override;
-  void draw(GraphicsContext& gc, const geom::frect& rect, bool is_active) override;
+  void draw(wstdisplay::GraphicsContext& gc, const geom::frect& rect, bool is_active) override;
   sigc::signal<void ()>& sig_click() { return on_click; }
 };
 

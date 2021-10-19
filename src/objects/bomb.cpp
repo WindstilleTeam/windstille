@@ -65,7 +65,7 @@ Bomb::update(float delta)
 }
 
 void
-Bomb::draw(SceneContext& sc)
+Bomb::draw(wstdisplay::SceneContext& sc)
 {
   if (state == EXPLODE)
   {

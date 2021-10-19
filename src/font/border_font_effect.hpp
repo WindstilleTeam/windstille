@@ -45,7 +45,7 @@ public:
   int get_x_offset(int orig_glyph_offset) const override;
   int get_y_offset(int orig_glyph_offset) const override;
 
-  void blit(SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const override;
+  void blit(surf::SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const override;
 
   /* disabled for g++-4.2 compatibilty
      private:

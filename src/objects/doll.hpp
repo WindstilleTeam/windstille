@@ -67,7 +67,7 @@ public:
   Doll();
   ~Doll() override;
 
-  void draw (SceneContext& ) override;
+  void draw (wstdisplay::SceneContext& ) override;
   void update (float delta) override;
   void update(const Controller& controller, float delta);
 

@@ -21,22 +21,22 @@
 
 #include <memory>
 
+#include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
-#include "engine/game_object.hpp"
 
-class SurfaceDrawable;
+#include "engine/game_object.hpp"
 
 class Decal : public GameObject
 {
 private:
-  std::shared_ptr<SurfaceDrawable> drawable;
+  std::shared_ptr<wstdisplay::SurfaceDrawable> drawable;
   glm::vec2 pos;
 
 public:
   Decal(ReaderMapping const& reader);
   ~Decal() override;
 
-  void draw (SceneContext& context) override;
+  void draw (wstdisplay::SceneContext& context) override;
   void update (float delta) override;
 
   void set_parent(GameObject* parent);

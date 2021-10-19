@@ -32,7 +32,7 @@ ControlPoint::create(const glm::vec2& pos)
   return ControlPointHandle(new ControlPoint(g_app.surface().get(Pathname("editor/handle.png")), pos));
 }
 
-ControlPoint::ControlPoint(SurfacePtr surface_, const glm::vec2& pos_) :
+ControlPoint::ControlPoint(wstdisplay::SurfacePtr surface_, const glm::vec2& pos_) :
   surface(surface_),
   pos(pos_),
   offset()
@@ -69,14 +69,14 @@ ControlPoint::get_bounding_box() const
 }
 
 void
-ControlPoint::draw(SceneContext& sc)
+ControlPoint::draw(wstdisplay::SceneContext& sc)
 {
   geom::frect rect = get_bounding_box();
 
   rect += offset;
 
-  //sc.control().fill_rect(rect.grow(4.0f), RGBAf(0.0f, 0.0f, 0.0f));
-  //sc.control().fill_rect(rect, RGBAf(1.0f, 0.0f, 0.0f));
+  //sc.control().fill_rect(rect.grow(4.0f), surf::Color(0.0f, 0.0f, 0.0f));
+  //sc.control().fill_rect(rect, surf::Color(1.0f, 0.0f, 0.0f));
   sc.control().draw_control(surface, pos, 0.0f);
 }
 

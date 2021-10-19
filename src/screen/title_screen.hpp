@@ -34,7 +34,7 @@ public:
 
   void on_startup() override;
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
   void handle_event(const SDL_Event& ) override;

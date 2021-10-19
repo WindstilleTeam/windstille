@@ -28,7 +28,7 @@
 
 struct SpriteAction
 {
-  typedef std::vector<SurfacePtr> Surfaces;
+  typedef std::vector<wstdisplay::SurfacePtr> Surfaces;
 
   std::string name;
   float       speed;
@@ -50,13 +50,13 @@ class SpriteData
 {
 private:
   void parse(std::filesystem::path const& dir, ReaderMapping const& lisp,
-             SurfaceManager& surface_manager);
+             wstdisplay::SurfaceManager& surface_manager);
   SpriteAction* parse_action(std::filesystem::path const& dir, ReaderMapping const& reader,
-                             SurfaceManager& surface_manager);
+                             wstdisplay::SurfaceManager& surface_manager);
 
 public:
   SpriteData(std::filesystem::path const& filename,
-             SurfaceManager& surface_manager);
+             wstdisplay::SurfaceManager& surface_manager);
   virtual ~SpriteData();
 
   typedef std::vector<SpriteAction*> Actions;

@@ -47,7 +47,7 @@ VRDummy::~VRDummy()
 }
 
 void
-VRDummy::draw(SceneContext& sc)
+VRDummy::draw(wstdisplay::SceneContext& sc)
 {
   sc.highlight().push_modelview();
   sc.highlight().translate(pos.x, pos.y);

@@ -40,7 +40,7 @@ public:
   void on_move_update(GdkEventMotion* event, const glm::vec2& offset_) override;
   void on_move_end(GdkEventButton* event, const glm::vec2& offset_) override;
 
-  void draw(SceneContext& sc) override;
+  void draw(wstdisplay::SceneContext& sc) override;
 
 private:
   DecalScaleControlPoint (const DecalScaleControlPoint&);

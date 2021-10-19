@@ -19,7 +19,7 @@
 
 #include "collision/collision_object.hpp"
 
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include <wstdisplay/drawing_context.hpp>
 
 /***********************************************************************
@@ -70,22 +70,22 @@ CollisionObject::~CollisionObject()
 }
 
 void
-CollisionObject::draw(DrawingContext& dc)
+CollisionObject::draw(wstdisplay::DrawingContext& dc)
 {
   glm::vec2 v = get_pos();
   geom::frect  r = primitive;
 
   r += v;
 
-  dc.fill_rect(r, RGBAf(1.0f, 1.0f, 1.0f), 100.0f);
+  dc.fill_rect(r, surf::Color(1.0f, 1.0f, 1.0f), 100.0f);
 
-  dc.draw_rect(r, RGBAf(0.6f, 0.6f, 0.6f), 100.0f);
+  dc.draw_rect(r, surf::Color(0.6f, 0.6f, 0.6f), 100.0f);
 
   dc.draw_line(glm::vec2(r.left() + r.width()/2,
                         r.top()  + r.height()/2),
                glm::vec2(r.left() + r.width()/2  + get_velocity().x,
                         r.top()  + r.height()/2 + get_velocity().y),
-               RGBAf(1.0f, 0, 1.0f), 100.0f);
+               surf::Color(1.0f, 0, 1.0f), 100.0f);
 }
 
 void CollisionObject::update(float delta)

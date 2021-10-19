@@ -32,7 +32,7 @@ GUIManager::~GUIManager()
 }
 
 void
-GUIManager::draw(GraphicsContext& gc)
+GUIManager::draw(wstdisplay::GraphicsContext& gc)
 {
   root->draw(gc);
 }

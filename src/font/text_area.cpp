@@ -162,7 +162,7 @@ TextArea::is_progress_complete()
 }
 
 void
-TextArea::draw(GraphicsContext& gc)
+TextArea::draw(wstdisplay::GraphicsContext& gc)
 {
   assert(impl->font);
   if (impl->max_scroll_offset > 0.0f)
@@ -172,9 +172,9 @@ TextArea::draw(GraphicsContext& gc)
     gc.fill_rounded_rect(geom::frect(glm::vec2(impl->rect.right() + 4,
                                                impl->rect.top() + impl->scroll_offset*impl->rect.height()/height),
                                      geom::fsize(8, impl->rect.height()*impl->rect.height()/height)),
-                         4.0f, RGBAf(1.0f, 1.0f, 1.0f, 0.25f));
+                         4.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.25f));
   }
-  VertexArrayDrawable va;
+  wstdisplay::VertexArrayDrawable va;
 
   va.set_texture(impl->font->get_texture());
 
@@ -190,8 +190,8 @@ TextArea::draw(GraphicsContext& gc)
   int x_pos = 0;
   int y_pos = 0;
 
-  RGBAf top_color    = RGBAf(1.0f, 1.0f, 1.0f);
-  RGBAf bottom_color = RGBAf(1.0f, 1.0f, 1.0f);
+  surf::Color top_color    = surf::Color(1.0f, 1.0f, 1.0f);
+  surf::Color bottom_color = surf::Color(1.0f, 1.0f, 1.0f);
   bool is_small = false;
   bool is_large = false;
   float eat_time = impl->passed_time;
@@ -209,13 +209,13 @@ TextArea::draw(GraphicsContext& gc)
       case TextAreaCommand::START:
         if (i->content == "b")
         {
-          top_color    = RGBAf(1.0f, 0.0f, 0.0f);
-          bottom_color = RGBAf(0.8f, 0.0f, 0.0f);
+          top_color    = surf::Color(1.0f, 0.0f, 0.0f);
+          bottom_color = surf::Color(0.8f, 0.0f, 0.0f);
         }
         else if (i->content == "i")
         {
-          top_color    = RGBAf(0.65f, 0.7f, 1.0f);
-          bottom_color = RGBAf(0.65f, 0.7f, 1.0f);
+          top_color    = surf::Color(0.65f, 0.7f, 1.0f);
+          bottom_color = surf::Color(0.65f, 0.7f, 1.0f);
         }
         else if (i->content == "small")
         {
@@ -238,8 +238,8 @@ TextArea::draw(GraphicsContext& gc)
       case TextAreaCommand::END:
         if (i->content == "b" || i->content == "i")
         {
-          top_color    = RGBAf(1.0f, 1.0f, 1.0f);
-          bottom_color = RGBAf(1.0f, 1.0f, 1.0f);
+          top_color    = surf::Color(1.0f, 1.0f, 1.0f);
+          bottom_color = surf::Color(1.0f, 1.0f, 1.0f);
         }
         else if (i->content == "small")
         {

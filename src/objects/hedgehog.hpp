@@ -38,7 +38,7 @@ public:
   Hedgehog(ReaderMapping const& props);
   ~Hedgehog() override;
 
-  void draw(SceneContext& gc) override;
+  void draw(wstdisplay::SceneContext& gc) override;
   void update(float delta) override;
   void die();
 };

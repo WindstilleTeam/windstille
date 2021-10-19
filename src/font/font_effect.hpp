@@ -23,7 +23,7 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
-#include <wstdisplay/software_surface.hpp>
+#include <surf/software_surface.hpp>
 
 /**
  *  The FontEffect class manages the blitting from a glyph bitmap to
@@ -46,7 +46,7 @@ public:
   virtual int get_x_offset(int orig_glyph_offset) const =0;
   virtual int get_y_offset(int orig_glyph_offset) const =0;
 
-  virtual void blit(SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const =0;
+  virtual void blit(surf::SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const =0;
 };
 
 #endif

@@ -54,7 +54,7 @@ WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
   m_editor(editor_),
   m_gc(),
   m_document(new Document),
-  m_scene_graph(new SceneGraph()),
+  m_scene_graph(new wstdisplay::SceneGraph()),
   m_rebuild_scene_graph(true),
   filename(),
   state(),
@@ -178,9 +178,9 @@ WindstilleWidget::on_realize()
     assert_gl();
   }
 
-  OpenGLState::init();
-  m_gc = std::make_unique<GraphicsContext>();
-  sc = std::make_unique<SceneContext>();
+  wstdisplay::OpenGLState::init();
+  m_gc = std::make_unique<wstdisplay::GraphicsContext>();
+  sc = std::make_unique<wstdisplay::SceneContext>();
 
   background_pattern = g_app.texture().get(Pathname("editor/background_layer.png"));
   background_pattern->set_wrap(GL_REPEAT);
@@ -213,9 +213,9 @@ WindstilleWidget::on_resize(int width, int height)
   if (!compositor || compositor->get_framebuffer_size() != geom::isize(width, height)) {
     assert_gl();
 
-    compositor = std::make_unique<Compositor>(geom::isize(width, height),
+    compositor = std::make_unique<wstdisplay::Compositor>(geom::isize(width, height),
                                               geom::isize(width, height));
-    sc->set_render_mask(sc->get_render_mask() & ~SceneContext::LIGHTMAP);
+    sc->set_render_mask(sc->get_render_mask() & ~wstdisplay::SceneContext::LIGHTMAP);
 
     throw_if_error();
   }
@@ -245,7 +245,7 @@ WindstilleWidget::update(float delta)
 }
 
 void
-WindstilleWidget::draw(GraphicsContext& gc)
+WindstilleWidget::draw(wstdisplay::GraphicsContext& gc)
 {
   if (!sc) { return; }
 
@@ -262,7 +262,7 @@ WindstilleWidget::draw(GraphicsContext& gc)
     sc->color().fill_pattern(background_pattern,
                              state.get_offset() * state.get_zoom());
   } else {
-    sc->color().fill_screen(RGBAf());
+    sc->color().fill_screen(surf::Color());
   }
 
   if (draw_only_active_layers) {
@@ -275,7 +275,7 @@ WindstilleWidget::draw(GraphicsContext& gc)
     for(auto it = m_document->get_selection()->begin(); it != m_document->get_selection()->end(); ++it) {
       (*it)->draw_select(*sc, it == m_document->get_selection()->begin());
     }
-    //sc->control().draw_rect(selection->get_bounding_box(), RGBAf(1.0f, 1.0f, 1.0f, 1.0f));
+    //sc->control().draw_rect(selection->get_bounding_box(), surf::Color(1.0f, 1.0f, 1.0f, 1.0f));
   }
 
   for(auto it = m_document->get_control_points().begin();
@@ -292,9 +292,9 @@ WindstilleWidget::draw(GraphicsContext& gc)
   state.pop(*sc);
 
   if (grid_enabled) {
-    gc.draw_grid(state.get_offset() * state.get_zoom(),
+    gc.draw_grid(state.get_offset().as_vec() * state.get_zoom(),
                  geom::fsize(128.0f * state.get_zoom(), 128.0f * state.get_zoom()),
-                 RGBAf(1,1,1,0.75f));
+                 surf::Color(1,1,1,0.75f));
   }
 }
 
@@ -429,21 +429,21 @@ WindstilleWidget::key_press(GdkEventKey* ev)
       break;
 
     case GDK_KEY_Left:
-      state.set_pos(state.get_pos() + glm::vec2(-100.0f, 0.0f));
+      state.set_pos(state.get_pos().as_vec() + glm::vec2(-100.0f, 0.0f));
       break;
 
     case GDK_KEY_Right:
-      state.set_pos(state.get_pos() + glm::vec2(100.0f, 0.0f));
+      state.set_pos(state.get_pos().as_vec() + glm::vec2(100.0f, 0.0f));
       queue_draw();
       break;
 
     case GDK_KEY_Up:
-      state.set_pos(state.get_pos() + glm::vec2(0.0f, -100.0f));
+      state.set_pos(state.get_pos().as_vec() + glm::vec2(0.0f, -100.0f));
       queue_draw();
       break;
 
     case GDK_KEY_Down:
-      state.set_pos(state.get_pos() + glm::vec2(0.0f, 100.0f));
+      state.set_pos(state.get_pos().as_vec() + glm::vec2(0.0f, 100.0f));
       queue_draw();
       break;
   }
@@ -474,7 +474,7 @@ WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*
             << x << ", " << y << ": " << data.get_data_type() << " " << data.get_data_as_string() << std::endl;
 
   ObjectModelHandle object = DecalObjectModel::create(data.get_data_as_string(),
-                                                      state.screen_to_world(glm::vec2(static_cast<float>(x), static_cast<float>(y))),
+                                                      state.screen_to_world(glm::vec2(static_cast<float>(x), static_cast<float>(y))).as_vec(),
                                                       data.get_data_as_string(),
                                                       map_type);
 

@@ -22,7 +22,7 @@
 #include "sprite2d/data.hpp"
 #include "sprite2d/sprite.hpp"
 
-SpriteManager::SpriteManager(SurfaceManager& surface_manager) :
+SpriteManager::SpriteManager(wstdisplay::SurfaceManager& surface_manager) :
   m_surface_manager(surface_manager),
   datas()
 {

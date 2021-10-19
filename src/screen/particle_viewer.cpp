@@ -24,17 +24,17 @@
 #include <logmich/log.hpp>
 
 #include <wstinput/controller.hpp>
+#include <wstdisplay/graphic_context_state.hpp>
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/scenegraph/fill_screen_drawable.hpp>
+#include <wstdisplay/scenegraph/fill_screen_pattern_drawable.hpp>
+#include <wstdisplay/texture_manager.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
-#include <wstdisplay/graphic_context_state.hpp>
-#include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/opengl_window.hpp>
-#include <wstdisplay/texture_manager.hpp>
 #include "particles/particle_system_drawable.hpp"
-#include <wstdisplay/scenegraph/fill_screen_drawable.hpp>
-#include <wstdisplay/scenegraph/fill_screen_pattern_drawable.hpp>
 #include "util/pathname.hpp"
 
 ParticleViewer::ParticleViewer()
@@ -84,32 +84,32 @@ ParticleViewer::load(const Pathname& filename)
   std::cout << systems.size() << " particle systems ready to go" << std::endl;
 
   {
-    // Build the SceneGraph
-    TexturePtr pattern_texture = g_app.texture().get(Pathname("images/greychess.png"));
+    // Build the wstdisplay::SceneGraph
+    wstdisplay::TexturePtr pattern_texture = g_app.texture().get(Pathname("images/greychess.png"));
     pattern_texture->set_wrap(GL_REPEAT);
 
-    m_background_drawable.reset(new FillScreenPatternDrawable(pattern_texture, glm::vec2()));
-    m_color_fill_drawable.reset(new FillScreenDrawable(RGBAf(0.4f, 0.4f, 0.4f)));
+    m_background_drawable.reset(new wstdisplay::FillScreenPatternDrawable(pattern_texture, glm::vec2()));
+    m_color_fill_drawable.reset(new wstdisplay::FillScreenDrawable(surf::Color(0.4f, 0.4f, 0.4f)));
 
-    m_background_drawable->set_render_mask(SceneContext::COLORMAP);
-    m_color_fill_drawable->set_render_mask(SceneContext::LIGHTMAP);
+    m_background_drawable->set_render_mask(wstdisplay::SceneContext::COLORMAP);
+    m_color_fill_drawable->set_render_mask(wstdisplay::SceneContext::LIGHTMAP);
 
     sg.add_drawable(m_background_drawable);
     sg.add_drawable(m_color_fill_drawable);
 
     for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
     {
-      sg.add_drawable(std::shared_ptr<Drawable>(new ParticleSystemDrawable(**i)));
+      sg.add_drawable(std::shared_ptr<wstdisplay::Drawable>(new ParticleSystemDrawable(**i)));
     }
   }
 }
 
 void
-ParticleViewer::draw(GraphicsContext& gc)
+ParticleViewer::draw(wstdisplay::GraphicsContext& gc)
 {
   m_background_drawable->set_offset(pos);
 
-  GraphicContextState state(gc.size().width(), gc.size().height());
+  wstdisplay::GraphicContextState state(gc.size().width(), gc.size().height());
   state.set_pos(-pos);
   compositor.render(gc, sc, &sg, state);
 }

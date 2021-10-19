@@ -24,6 +24,7 @@
 #include <logmich/log.hpp>
 
 #include <wstdisplay/scene_context.hpp>
+
 #include "particles/deform_drawer.hpp"
 #include "particles/randomizer.hpp"
 #include "particles/spark_drawer.hpp"
@@ -31,7 +32,7 @@
 #include "util/file_reader.hpp"
 
 ParticleSystem::ParticleSystem(ReaderMapping const& props,
-                               SurfaceManager& surface_manager)
+                               wstdisplay::SurfaceManager& surface_manager)
   : particles(),
     life_time(1.0f),
     randomizer(new PointRandomizer()),
@@ -46,7 +47,7 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props,
     cone_start(0),
     cone_stop(glm::two_pi<float>()),
     bunching(1.0f),
-    layer(SceneContext::COLORMAP),
+    layer(wstdisplay::SceneContext::COLORMAP),
     size_start(1.0f),
     size_stop(1.0f),
     speed_start(100.0),
@@ -102,11 +103,11 @@ ParticleSystem::ParticleSystem(ReaderMapping const& props,
     if (props.read("layer", layer_str))
     {
       if (layer_str == "highlight")
-        layer = SceneContext::HIGHLIGHTMAP;
+        layer = wstdisplay::SceneContext::HIGHLIGHTMAP;
       else if (layer_str == "light")
-        layer = SceneContext::LIGHTMAP;
+        layer = wstdisplay::SceneContext::LIGHTMAP;
       else if (layer_str == "color")
-        layer = SceneContext::COLORMAP;
+        layer = wstdisplay::SceneContext::COLORMAP;
       else
         std::cout << "ParticleSystem: Unknown layer type: '" << layer_str << "'" << std::endl;
     }
@@ -185,7 +186,7 @@ ParticleSystem::ParticleSystem()
     cone_start(0),
     cone_stop(glm::two_pi<float>()),
     bunching(1.0f),
-    layer(SceneContext::COLORMAP),
+    layer(wstdisplay::SceneContext::COLORMAP),
     size_start(1.0f),
     size_stop(1.0f),
     speed_start(100.0),
@@ -207,7 +208,7 @@ ParticleSystem::set_drawer(Drawer* drawer_)
 }
 
 void
-ParticleSystem::draw(GraphicsContext& gc) const
+ParticleSystem::draw(wstdisplay::GraphicsContext& gc) const
 {
   if (drawer)
   {
@@ -370,14 +371,14 @@ ParticleSystem::set_size(float from, float to)
 }
 
 void
-ParticleSystem::set_color(const RGBAf& color_start_, const RGBAf& color_end_)
+ParticleSystem::set_color(const surf::Color& color_start_, const surf::Color& color_end_)
 {
   color_start = color_start_;
   color_stop  = color_end_;
 }
 
 void
-ParticleSystem::set_fade_color(const RGBAf& color)
+ParticleSystem::set_fade_color(const surf::Color& color)
 {
   color_stop = color;
 }

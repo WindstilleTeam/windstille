@@ -19,25 +19,26 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_NAVGRAPH_EDGE_OBJECT_MODEL_HPP
 #define HEADER_WINDSTILLE_EDITOR_NAVGRAPH_EDGE_OBJECT_MODEL_HPP
 
+#include <wstdisplay/fwd.hpp>
+
 #include "navigation/navigation_graph.hpp"
 #include "editor/object_model.hpp"
 
 class NavGraphNodeObjectModel;
-class VertexArrayDrawable;
 
 class NavGraphEdgeObjectModel : public ObjectModel
 {
 private:
   std::shared_ptr<NavGraphNodeObjectModel> m_lhs;
   std::shared_ptr<NavGraphNodeObjectModel> m_rhs;
-  std::shared_ptr<VertexArrayDrawable> m_drawable;
+  std::shared_ptr<wstdisplay::VertexArrayDrawable> m_drawable;
 
 public:
   NavGraphEdgeObjectModel(std::shared_ptr<NavGraphNodeObjectModel> lhs,
                           std::shared_ptr<NavGraphNodeObjectModel> rhs);
   ~NavGraphEdgeObjectModel() override;
 
-  void add_to_scenegraph(DrawableGroup& sg) override;
+  void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override;
   void update(float delta) override;
 
   geom::frect get_bounding_box() const override;

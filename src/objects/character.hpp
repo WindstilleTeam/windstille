@@ -33,7 +33,7 @@ public:
   ~Character() override;
 
   void update(float delta) override;
-  void draw (SceneContext& gc) override;
+  void draw (wstdisplay::SceneContext& gc) override;
   void use() override;
 };
 

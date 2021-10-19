@@ -27,7 +27,7 @@
 Shockwave::Shockwave(ReaderMapping const& props) :
   pos(),
   noise(g_app.texture().get(Pathname("images/noise3.png"))),
-  shader_program(ShaderProgram::create()),
+  shader_program(wstdisplay::ShaderProgram::create()),
   radius()
 {
   props.read("pos", pos);
@@ -37,7 +37,7 @@ Shockwave::Shockwave(ReaderMapping const& props) :
   noise->set_wrap(GL_REPEAT);
   noise->set_filter(GL_LINEAR);
 
-  shader_program->attach(ShaderObject::from_file(GL_FRAGMENT_SHADER, "data/shader/shockwave2.frag"));
+  shader_program->attach(wstdisplay::ShaderObject::from_file(GL_FRAGMENT_SHADER, "data/shader/shockwave2.frag"));
   shader_program->link();
 }
 
@@ -46,13 +46,14 @@ Shockwave::~Shockwave()
 }
 
 void
-Shockwave::draw (SceneContext& sc)
+Shockwave::draw (wstdisplay::SceneContext& sc)
 {
-  sc.highlight().draw(std::make_unique<ShockwaveDrawable>(pos,
-                                                          noise,
-                                                          shader_program,
-                                                          radius,
-                                                          sc.color().get_modelview()));
+  sc.highlight().draw(std::make_unique<wstdisplay::ShockwaveDrawable>(
+                        pos,
+                        noise,
+                        shader_program,
+                        radius,
+                        sc.color().get_modelview()));
 }
 
 void

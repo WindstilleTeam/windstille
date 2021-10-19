@@ -35,7 +35,7 @@
 Sector::Sector(const Pathname& arg_filename) :
   collision_engine(new CollisionEngine()),
   navigation_graph(new NavigationGraph()),
-  scene_graph(new SceneGraph()),
+  scene_graph(new wstdisplay::SceneGraph()),
   filename(arg_filename),
   name(),
   music(),
@@ -68,7 +68,7 @@ Sector::Sector(const Pathname& arg_filename) :
     add(doll);
   }
 
-  scene_graph->add_drawable(std::shared_ptr<Drawable>(new NavigationGraphDrawable(navigation_graph.get())));
+  scene_graph->add_drawable(std::shared_ptr<wstdisplay::Drawable>(new wstdisplay::NavigationGraphDrawable(navigation_graph.get())));
 }
 
 Sector::~Sector()
@@ -92,7 +92,7 @@ Sector::activate()
 }
 
 void
-Sector::draw(SceneContext& sc)
+Sector::draw(wstdisplay::SceneContext& sc)
 {
   sc.light().fill_screen(ambient_light);
 
@@ -209,12 +209,12 @@ Sector::set_tilemap(TileMap* t)
 }
 
 void
-Sector::set_ambient_light(const RGBAf& color)
+Sector::set_ambient_light(const surf::Color& color)
 {
   ambient_light = color;
 }
 
-RGBAf
+surf::Color
 Sector::get_ambient_light() const
 {
   return ambient_light;

@@ -57,19 +57,19 @@ class WindstilleWidget final : public Gtk::GLArea
 {
 private:
   EditorWindow& m_editor;
-  std::unique_ptr<GraphicsContext> m_gc;
+  std::unique_ptr<wstdisplay::GraphicsContext> m_gc;
 
   std::unique_ptr<Document>   m_document;
-  std::unique_ptr<SceneGraph> m_scene_graph;
+  std::unique_ptr<wstdisplay::SceneGraph> m_scene_graph;
   bool m_rebuild_scene_graph;
 
   std::string filename;
 
-  GraphicContextState   state;
-  std::unique_ptr<Compositor> compositor;
-  std::unique_ptr<SceneContext> sc;
+  wstdisplay::GraphicContextState   state;
+  std::unique_ptr<wstdisplay::Compositor> compositor;
+  std::unique_ptr<wstdisplay::SceneContext> sc;
   DecalObjectModel::MapType map_type;
-  TexturePtr background_pattern;
+  wstdisplay::TexturePtr background_pattern;
   SelectMask select_mask;
   bool draw_background_pattern;
   bool draw_only_active_layers;
@@ -79,7 +79,7 @@ public:
   WindstilleWidget(EditorWindow& editor);
   ~WindstilleWidget() override;
 
-  GraphicContextState& get_state() { return state; }
+  wstdisplay::GraphicContextState& get_state() { return state; }
   Glib::RefPtr<Gdk::GLContext> on_create_context() override;
   void on_realize() override;
   void on_unrealize() override;
@@ -104,14 +104,14 @@ public:
   void on_zoom_out();
   void on_zoom_100();
 
-  void draw(GraphicsContext& gc);
+  void draw(wstdisplay::GraphicsContext& gc);
   void update(float delta);
 
   Document&    get_document() const { return *m_document; }
 
   SelectMask& get_select_mask() { return select_mask; }
 
-  SceneContext* get_sc() const { return sc.get(); }
+  wstdisplay::SceneContext* get_sc() const { return sc.get(); }
 
   void load_file(const std::string& filename);
 

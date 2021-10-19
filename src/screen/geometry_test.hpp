@@ -28,12 +28,12 @@
 class GeometryTest : public Screen
 {
 private:
-  geom::line line1;
-  geom::line line2;
+  geom::fline line1;
+  geom::fline line2;
 
   glm::vec2 cursor;
   glm::vec2 cursor2;
-  glm::vec2 collision_point;
+  geom::fpoint collision_point;
 
   int point_count;
 
@@ -42,7 +42,7 @@ private:
 public:
   GeometryTest();
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
 private:

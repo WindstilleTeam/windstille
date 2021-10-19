@@ -26,7 +26,7 @@
 class ScrollTool : public Tool
 {
 private:
-  GraphicContextState orig_state;
+  wstdisplay::GraphicContextState orig_state;
   glm::vec2 orig_click;
   enum { SCROLLING, NO_MODE } mode;
 

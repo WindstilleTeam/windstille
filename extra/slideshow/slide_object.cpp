@@ -25,8 +25,10 @@
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/surface_drawing_parameters.hpp>
 
+using namespace wstdisplay;
+
 SlideObject::SlideObject(std::filesystem::path const& filename,
-                         SurfaceManager& surface_manager) :
+                         wstdisplay::SurfaceManager& surface_manager) :
   m_filename(filename),
   m_surface_manager(surface_manager),
   m_size(0.0f, 0.0f),
@@ -62,7 +64,7 @@ SlideObject::draw(GraphicsContext& gc, float relative_time)
   SlidePathNode node = m_path.get(relative_time);
 
   // FIXME: hardcoded fade hack
-  RGBAf color(1.0f, 1.0f, 1.0f, 1.0f);
+  surf::Color color(1.0f, 1.0f, 1.0f, 1.0f);
   if (relative_time < m_fade_in_time)
   {
     color.a = relative_time / m_fade_in_time;

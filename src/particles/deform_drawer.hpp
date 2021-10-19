@@ -27,7 +27,6 @@
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 
-class SceneContext;
 class ParticleSystem;
 
 /**
@@ -39,17 +38,17 @@ class ParticleSystem;
 class DeformDrawer : public Drawer
 {
 private:
-  FramebufferPtr framebuffer;
-  SurfacePtr     surface;
-  ShaderProgramPtr shader_program;
+  wstdisplay::FramebufferPtr framebuffer;
+  wstdisplay::SurfacePtr     surface;
+  wstdisplay::ShaderProgramPtr shader_program;
 
 public:
   DeformDrawer(ReaderMapping const& props,
-               SurfaceManager& surface_manager);
+               wstdisplay::SurfaceManager& surface_manager);
   ~DeformDrawer() override;
 
-  void draw(DrawingContext& sc, ParticleSystem& psys);
-  void draw(GraphicsContext& gc, ParticleSystem const& /*psys*/) const override {}
+  void draw(wstdisplay::DrawingContext& sc, ParticleSystem& psys);
+  void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& /*psys*/) const override {}
 private:
   DeformDrawer (const DeformDrawer&);
   DeformDrawer& operator= (const DeformDrawer&);

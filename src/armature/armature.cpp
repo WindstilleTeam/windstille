@@ -27,7 +27,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 
 #include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include "armature/pose.hpp"
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
@@ -122,13 +122,13 @@ Armature::get_bone(const std::string& name_)
 }
 
 void
-Armature::draw(GraphicsContext& gc)
+Armature::draw(wstdisplay::GraphicsContext& gc)
 {
   // For some reason OpenGL sometimes doesn't draw the lines properly,
   // going to NavigationTester and then back fixes the issue
   glLineWidth(6.0f);
 
-  VertexArrayDrawable va;
+  wstdisplay::VertexArrayDrawable va;
 
   va.set_mode(GL_LINES);
 
@@ -140,7 +140,7 @@ Armature::draw(GraphicsContext& gc)
 }
 
 void
-Armature::draw_bone(VertexArrayDrawable& va, Bone* bone, glm::vec3 p, glm::mat4 m)
+Armature::draw_bone(wstdisplay::VertexArrayDrawable& va, Bone* bone, glm::vec3 p, glm::mat4 m)
 {
   if (bone == nullptr) { return; }
 

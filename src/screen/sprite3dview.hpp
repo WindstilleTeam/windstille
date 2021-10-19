@@ -31,8 +31,8 @@
 class Sprite3DView : public Screen
 {
 private:
-  Compositor m_compositor;
-  SceneContext m_sc;
+  wstdisplay::Compositor m_compositor;
+  wstdisplay::SceneContext m_sc;
   Sprite3D m_sprite;
   std::vector<std::string> m_actions;
   int m_current_action;
@@ -44,7 +44,7 @@ public:
   Sprite3DView();
   ~Sprite3DView() override;
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
   void set_model(const Pathname& filename);

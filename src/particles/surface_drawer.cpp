@@ -28,7 +28,7 @@
 #include "util/file_reader.cpp"
 #include "util/pathname.cpp"
 
-SurfaceDrawer::SurfaceDrawer(SurfacePtr surface_) :
+SurfaceDrawer::SurfaceDrawer(wstdisplay::SurfacePtr surface_) :
   surface(surface_),
   blendfunc_src(),
   blendfunc_dest(),
@@ -71,7 +71,7 @@ static GLenum string2blendfunc(const std::string& str)
 }
 
 SurfaceDrawer::SurfaceDrawer(ReaderMapping const& props,
-                             SurfaceManager& surface_manager) :
+                             wstdisplay::SurfaceManager& surface_manager) :
   surface(),
   blendfunc_src(),
   blendfunc_dest(),
@@ -91,8 +91,8 @@ SurfaceDrawer::SurfaceDrawer(ReaderMapping const& props,
   blendfunc_dest = string2blendfunc(blendfunc_dst_str);
 
   // FIXME: Bad idea, as the psys isn't fully loaded as this point
-  buffer.reset(new VertexArrayDrawable(glm::vec2(), 0.0f,
-                                       glm::mat4(1.0f)));
+  buffer.reset(new wstdisplay::VertexArrayDrawable(glm::vec2(), 0.0f,
+                                                   glm::mat4(1.0f)));
 }
 
 SurfaceDrawer::~SurfaceDrawer()
@@ -100,7 +100,7 @@ SurfaceDrawer::~SurfaceDrawer()
 }
 
 void
-SurfaceDrawer::set_texture(SurfacePtr surface_)
+SurfaceDrawer::set_texture(wstdisplay::SurfacePtr surface_)
 {
   surface = surface_;
 }
@@ -113,7 +113,7 @@ SurfaceDrawer::set_blendfuncs(GLenum blendfunc_src_, GLenum blendfunc_dest_)
 }
 
 void
-SurfaceDrawer::draw(GraphicsContext& gc, const ParticleSystem& psys) const
+SurfaceDrawer::draw(wstdisplay::GraphicsContext& gc, const ParticleSystem& psys) const
 {
   buffer->clear();
   buffer->set_pos(glm::vec2(psys.get_x_pos(), psys.get_y_pos()));
@@ -127,7 +127,7 @@ SurfaceDrawer::draw(GraphicsContext& gc, const ParticleSystem& psys) const
     if (i->t != -1.0f)
     {
       float p = 1.0f - psys.get_progress(i->t);
-      RGBAf color(psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
+      surf::Color color(psys.get_color_start().r * p + psys.get_color_stop().r * (1.0f - p),
                   psys.get_color_start().g * p + psys.get_color_stop().g * (1.0f - p),
                   psys.get_color_start().b * p + psys.get_color_stop().b * (1.0f - p),
                   psys.get_color_start().a * p + psys.get_color_stop().a * (1.0f - p));

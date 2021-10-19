@@ -61,13 +61,13 @@ Sprite3DView::set_model(const Pathname& filename)
 }
 
 void
-Sprite3DView::draw(GraphicsContext& gc)
+Sprite3DView::draw(wstdisplay::GraphicsContext& gc)
 {
   m_sc.reset_modelview();
   //sc.translate(-config->screen_width/2, -config->screen_height/2);
   //sc.scale(2.0f, 2.0f);
 
-  m_sc.color().fill_screen(RGBAf(0.5, 0.0, 0.5));
+  m_sc.color().fill_screen(surf::Color(0.5, 0.0, 0.5));
 
   m_sc.push_modelview();
   m_sc.translate(static_cast<float>(gc.size().width()) / 2.0f,
@@ -84,9 +84,9 @@ Sprite3DView::draw(GraphicsContext& gc)
   //matrix.translate(-gc.size().width()/2, -gc.size().height()/2, 0);
   //sprite.draw(m_sc.color(), matrix, 0.0f);
 
-  m_sc.light().fill_screen(RGBAf(1.0, 1.0, 1.0));
+  m_sc.light().fill_screen(surf::Color(1.0, 1.0, 1.0));
   //sc.color().draw("Hello World", 100, 100);
-  m_compositor.render(gc, m_sc, nullptr, GraphicContextState(gc.size().width(),
+  m_compositor.render(gc, m_sc, nullptr, wstdisplay::GraphicContextState(gc.size().width(),
                                                              gc.size().height()));
 
   float x = 10.0f;
@@ -98,11 +98,11 @@ Sprite3DView::draw(GraphicsContext& gc)
     if (i == m_current_action)
       g_app.fonts().vera12->draw(gc,
                                  glm::vec2(x, y),
-                                 m_actions[i], RGBAf(1.0f, 1.0f, 1.0f));
+                                 m_actions[i], surf::Color(1.0f, 1.0f, 1.0f));
     else
       g_app.fonts().vera12->draw(gc,
                                  glm::vec2(x, y),
-                                 m_actions[i], RGBAf(0.7f, 0.7f, 0.7f));
+                                 m_actions[i], surf::Color(0.7f, 0.7f, 0.7f));
 
     y += static_cast<float>(line_height);
     if (y > 580.0f)

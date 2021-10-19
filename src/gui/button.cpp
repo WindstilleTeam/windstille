@@ -47,16 +47,16 @@ Button::~Button()
 }
 
 void
-Button::draw(GraphicsContext& gc)
+Button::draw(wstdisplay::GraphicsContext& gc)
 {
-  gc.fill_rect(rect, RGBAf(0.0f, 0.0f, 0.0f, 0.5f));
-  gc.draw_rect(rect, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.fill_rect(rect, surf::Color(0.0f, 0.0f, 0.0f, 0.5f));
+  gc.draw_rect(rect, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
   g_app.fonts().vera20->draw_center(gc,
                                     glm::vec2(rect.left() + rect.width()/2, rect.top() + rect.height()/2),
                                     label,
                                     is_active()
-                                    ? RGBAf(1.0f, 1.0f, 1.0f, 1.0f)
-                                    : RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
+                                    ? surf::Color(1.0f, 1.0f, 1.0f, 1.0f)
+                                    : surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 }
 
 void

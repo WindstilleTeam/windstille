@@ -29,7 +29,7 @@ public:
   virtual ~Weapon()
   {}
 
-  virtual void draw(SceneContext& context) = 0;
+  virtual void draw(wstdisplay::SceneContext& context) = 0;
   virtual void update(float delta) = 0;
 
   virtual void fire(bool enable) = 0;

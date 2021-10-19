@@ -65,7 +65,7 @@ public:
   /**
    * Adds a surface to the TileFactory
    */
-  void pack(int id, int colmap, SoftwareSurface const& image, const geom::irect& rect);
+  void pack(int id, int colmap, wstdisplay::SoftwareSurface const& image, const geom::irect& rect);
 
 private:
   void parse_tiles(ReaderMapping const& reader);

@@ -26,7 +26,7 @@
 #include "util/file_reader.hpp"
 
 SpriteData::SpriteData(std::filesystem::path const& filename,
-                       SurfaceManager& surface_manager) :
+                       wstdisplay::SurfaceManager& surface_manager) :
   actions()
 {
   if (std::filesystem::exists(filename))
@@ -101,7 +101,7 @@ SpriteData::~SpriteData()
 
 void
 SpriteData::parse(std::filesystem::path const& dir, ReaderMapping const& reader,
-                  SurfaceManager& surface_manager)
+                  wstdisplay::SurfaceManager& surface_manager)
 {
   ReaderCollection actions_collection;
   if (reader.read("actions", actions_collection)) {
@@ -117,7 +117,7 @@ SpriteData::parse(std::filesystem::path const& dir, ReaderMapping const& reader,
 
 SpriteAction*
 SpriteData::parse_action(std::filesystem::path const& dir, ReaderMapping const& reader,
-                         SurfaceManager& surface_manager)
+                         wstdisplay::SurfaceManager& surface_manager)
 {
   std::unique_ptr<SpriteAction> action (new SpriteAction);
   action->speed = 1.0;
@@ -155,7 +155,7 @@ SpriteData::parse_action(std::filesystem::path const& dir, ReaderMapping const& 
       throw std::runtime_error("Invalid or too few data in image-grid");
 
     std::filesystem::path path = dir / filename;
-    surface_manager.load_grid(path, action->surfaces, x_size, y_size);
+    surface_manager.load_grid(path, action->surfaces, geom::isize(x_size, y_size));
   }
 
   if(action->name == "")

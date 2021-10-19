@@ -19,6 +19,7 @@
 #include <stdint.h>
 
 #include <wstdisplay/software_surface.hpp>
+
 #include "font/border_font_effect.hpp"
 
 BorderFontEffect::BorderFontEffect(int size_, bool outline_) :
@@ -62,7 +63,7 @@ BorderFontEffect::get_y_offset(int orig_glyph_offset) const
 }
 
 void
-BorderFontEffect::blit(SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const
+BorderFontEffect::blit(surf::SoftwareSurface& target, const FT_Bitmap& brush, int x_pos, int y_pos) const
 {
   x_pos += size;
   y_pos += size;

@@ -55,7 +55,7 @@ public:
   int size;
 
   /** OpenGL Texture which holds all the characters */
-  TexturePtr texture;
+  wstdisplay::TexturePtr texture;
 
   TTFFontImpl() :
     characters(),
@@ -92,7 +92,7 @@ TTFFont::TTFFont(std::filesystem::path const& filename, int size_, const FontEff
   FT_Select_Charmap(face,  FT_ENCODING_UNICODE);
 
   // FIXME: should calculate texture size, based on font size
-  SoftwareSurface pixelbuffer = SoftwareSurface::create(surf::PixelFormat::RGBA, {1024, 1024});
+  surf::SoftwareSurface pixelbuffer = surf::SoftwareSurface::create(surf::PixelFormat::RGBA8, {1024, 1024});
 
   int x_pos = 1;
   int y_pos = 1;
@@ -124,7 +124,7 @@ TTFFont::TTFFont(std::filesystem::path const& filename, int size_, const FontEff
       int glyph_width  = effect.get_glyph_width(static_cast<int>(face->glyph->bitmap.width));
       int glyph_height = effect.get_glyph_height(static_cast<int>(face->glyph->bitmap.rows));
 
-      generate_border(pixelbuffer, x_pos, y_pos, glyph_width, glyph_height);
+      wstdisplay::generate_border(pixelbuffer, x_pos, y_pos, glyph_width, glyph_height);
 
       geom::irect pos(geom::ipoint(effect.get_x_offset(face->glyph->bitmap_left),
                      effect.get_y_offset(-face->glyph->bitmap_top)),
@@ -152,7 +152,7 @@ TTFFont::TTFFont(std::filesystem::path const& filename, int size_, const FontEff
   }
   FT_Done_Face(face);
 
-  impl->texture = Texture::create(pixelbuffer);
+  impl->texture = wstdisplay::Texture::create(pixelbuffer);
 }
 
 TTFFont::~TTFFont()
@@ -173,13 +173,13 @@ TTFFont::get_height() const
 }
 
 void
-TTFFont::draw(GraphicsContext& gc, const glm::vec2& pos_, const std::string& str, const RGBAf& color)
+TTFFont::draw(wstdisplay::GraphicsContext& gc, const glm::vec2& pos_, const std::string& str, const surf::Color& color)
 {
   // FIXME: Little bit hacky to throw it just in
   glm::vec2 pos(truncf(pos_.x),
                 truncf(pos_.y));
 
-  VertexArrayDrawable va;
+  wstdisplay::VertexArrayDrawable va;
 
   va.set_blend_func(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   va.set_texture(impl->texture);
@@ -227,13 +227,13 @@ TTFFont::draw(GraphicsContext& gc, const glm::vec2& pos_, const std::string& str
 }
 
 void
-TTFFont::draw_center(GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const RGBAf& color)
+TTFFont::draw_center(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, const std::string& str, const surf::Color& color)
 {
   draw(gc, glm::vec2(pos.x - static_cast<float>(get_width(str))/2.0f, pos.y), str, color);
 }
 
 void
-TTFFont::draw(DrawingContext& ctx, const std::string& text, float x, float y, float z)
+TTFFont::draw(wstdisplay::DrawingContext& ctx, const std::string& text, float x, float y, float z)
 {
   ctx.draw(std::make_unique<TextDrawable>(*this, text, glm::vec2(x, y), z, ctx.get_modelview()));
 }
@@ -247,7 +247,7 @@ TTFFont::get_width(const std::string& text) const
   return width;
 }
 
-TexturePtr
+wstdisplay::TexturePtr
 TTFFont::get_texture() const
 {
   return impl->texture;

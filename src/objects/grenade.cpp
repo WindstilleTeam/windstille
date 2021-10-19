@@ -38,7 +38,7 @@ Grenade::~Grenade()
 }
 
 void
-Grenade::draw(SceneContext& sc)
+Grenade::draw(wstdisplay::SceneContext& sc)
 {
   sprite.draw(sc.color(), pos, 0);
 }

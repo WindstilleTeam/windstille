@@ -95,7 +95,7 @@ public:
   /**
    * The object should draw itself when this function is called
    */
-  virtual void draw (SceneContext& sc) {}
+  virtual void draw (wstdisplay::SceneContext& sc) {}
 
   /**
    * This function is called from time to time to give the object a chance to

@@ -79,7 +79,7 @@ ScriptableObject::~ScriptableObject()
 }
 
 void
-ScriptableObject::draw(SceneContext& sc)
+ScriptableObject::draw(wstdisplay::SceneContext& sc)
 {
   glm::vec2 tmp_pos = pos;
 

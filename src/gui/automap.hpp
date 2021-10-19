@@ -27,7 +27,7 @@ namespace gui {
 class Automap : public Component
 {
 private:
-  SurfacePtr surface;
+  wstdisplay::SurfacePtr surface;
   glm::vec2  pos;
   float   zoom;
 
@@ -36,7 +36,7 @@ public:
   Automap(const geom::frect& rect, Component* parent);
   ~Automap() override;
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
 private:

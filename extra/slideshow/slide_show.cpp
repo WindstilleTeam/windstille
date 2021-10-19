@@ -24,6 +24,8 @@
 #include <wstdisplay/texture_manager.hpp>
 #include "slideshow/slide_parser.hpp"
 
+using namespace wstdisplay;
+
 SlideShow::SlideShow(TextureManager& texture_manager,
                      SurfaceManager& surface_manager) :
   m_texture_manager(texture_manager),
@@ -34,7 +36,7 @@ SlideShow::SlideShow(TextureManager& texture_manager,
 }
 
 void
-SlideShow::draw(GraphicsContext& gc, float time, bool verbose)
+SlideShow::draw(wstdisplay::GraphicsContext& gc, float time, bool verbose)
 {
   bool cleanup = false;
 

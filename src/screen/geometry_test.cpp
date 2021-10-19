@@ -29,7 +29,7 @@
 #include "app/console.hpp"
 #include "app/controller_def.hpp"
 #include "app/menu_manager.hpp"
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include <wstdisplay/graphics_context.hpp>
 
 GeometryTest::GeometryTest()
@@ -37,8 +37,8 @@ GeometryTest::GeometryTest()
           glm::vec2(500, 300)),
     line2(glm::vec2(400, 200),
           glm::vec2(400, 400)),
-    cursor(line1.p1),
-    cursor2(line1.p2),
+    cursor(line1.p1.as_vec()),
+    cursor2(line1.p2.as_vec()),
     collision_point(),
     point_count(0),
     had_prev_collision(true)
@@ -46,31 +46,31 @@ GeometryTest::GeometryTest()
 }
 
 void
-GeometryTest::draw(GraphicsContext& gc)
+GeometryTest::draw(wstdisplay::GraphicsContext& gc)
 {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  gc.draw_line(line1, RGBAf(0.0f, 1.0f, 0.0f));
-  gc.draw_line(line2, RGBAf(0.0f, 1.0f, 0.0f));
+  gc.draw_line(line1, surf::Color(0.0f, 1.0f, 0.0f));
+  gc.draw_line(line2, surf::Color(0.0f, 1.0f, 0.0f));
 
-  gc.fill_rect(geom::frect(cursor - glm::vec2(2,2), geom::fsize(5,5)),  RGBAf(1.0f, 0.0f, 1.0f));
-  gc.fill_rect(geom::frect(cursor2 - glm::vec2(2,2), geom::fsize(5,5)), RGBAf(1.0f, 1.0f, 0.0f));
+  gc.fill_rect(geom::frect(cursor - glm::vec2(2,2), geom::fsize(5,5)),  surf::Color(1.0f, 0.0f, 1.0f));
+  gc.fill_rect(geom::frect(cursor2 - glm::vec2(2,2), geom::fsize(5,5)), surf::Color(1.0f, 1.0f, 0.0f));
 
-  gc.fill_rect(geom::frect(collision_point - glm::vec2(3,3), geom::fsize(7,7)), RGBAf(1.0f, 1.0f, 1.0f));
+  gc.fill_rect(geom::frect(collision_point.as_vec() - glm::vec2(3,3), geom::fsize(7,7)), surf::Color(1.0f, 1.0f, 1.0f));
 
   // Try vector projection
-  glm::vec2 a(line1.p2 - line1.p1);
-  glm::vec2 b(line2.p2 - line2.p1);
+  glm::vec2 a(line1.p2.as_vec() - line1.p1.as_vec());
+  glm::vec2 b(line2.p2.as_vec() - line2.p1.as_vec());
   glm::vec2 c(glm::proj(a, b));
 
-  gc.draw_line(line1.p1, line1.p1 + c, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.draw_line(line1.p1, line1.p1.as_vec() + c, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   int segments = std::max(0, int(cursor.y / 10));
 
-  gc.fill_arc(glm::vec2(200, 200), 100.0f, cursor.x, cursor2.x, RGBAf(1.0f, 1.0f, 1.0f, 0.5f), segments);
-  gc.draw_arc(glm::vec2(200, 200), 100.0f, cursor.x, cursor2.x, RGBAf(1.0f, 1.0f, 1.0f), segments);
-  gc.draw_circle(glm::vec2(200, 200), 128.0f, RGBAf(1.0f, 1.0f, 1.0f), segments);
+  gc.fill_arc(glm::vec2(200, 200), 100.0f, cursor.x, cursor2.x, surf::Color(1.0f, 1.0f, 1.0f, 0.5f), segments);
+  gc.draw_arc(glm::vec2(200, 200), 100.0f, cursor.x, cursor2.x, surf::Color(1.0f, 1.0f, 1.0f), segments);
+  gc.draw_circle(glm::vec2(200, 200), 128.0f, surf::Color(1.0f, 1.0f, 1.0f), segments);
 }
 
 void
@@ -91,11 +91,11 @@ GeometryTest::update(float delta, const Controller& controller)
   if (controller.button_was_pressed(PRIMARY_BUTTON))
   {
     if (point_count == 0) {
-      cursor  = line2.p1;
-      cursor2 = line2.p2;
+      cursor  = line2.p1.as_vec();
+      cursor2 = line2.p2.as_vec();
     } else {
-      cursor  = line1.p1;
-      cursor2 = line1.p2;
+      cursor  = line1.p1.as_vec();
+      cursor2 = line1.p2.as_vec();
     }
 
     point_count += 1;

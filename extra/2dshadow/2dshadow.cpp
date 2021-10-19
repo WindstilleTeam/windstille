@@ -13,6 +13,8 @@
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/surface_drawing_parameters.hpp>
 
+using namespace wstdisplay;
+
 int main()
 {
   SDL sdl;
@@ -23,10 +25,10 @@ int main()
 
   SurfaceManager surface_manager;
 
-  SurfacePtr darkness = surface_manager.get("darkness.png");
-  SurfacePtr light = surface_manager.get("light.png");
-  SurfacePtr objects = surface_manager.get("objects.png");
-  SurfacePtr shadow  = surface_manager.get("objects_shadow.png");
+  wstdisplay::SurfacePtr darkness = surface_manager.get("darkness.png");
+  wstdisplay::SurfacePtr light = surface_manager.get("light.png");
+  wstdisplay::SurfacePtr objects = surface_manager.get("objects.png");
+  wstdisplay::SurfacePtr shadow  = surface_manager.get("objects_shadow.png");
 
   bool quit = false;
   glm::vec2 object_pos(100, 0);
@@ -87,7 +89,7 @@ int main()
                    SurfaceDrawingParameters()
                    .set_pos(pos)
                    .set_scale(glm::vec2(scale, scale))
-                   .set_color(RGBAf(1.0f, 1.0f, 1.0f, alpha)));
+                   .set_color(surf::Color(1.0f, 1.0f, 1.0f, alpha)));
     }
     objects->draw(gc, object_pos);
     light->draw(gc,

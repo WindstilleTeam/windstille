@@ -42,7 +42,7 @@ TitleScreen::on_startup()
 }
 
 void
-TitleScreen::draw(GraphicsContext& gc)
+TitleScreen::draw(wstdisplay::GraphicsContext& gc)
 {
   background.draw(gc,
                   glm::vec2(static_cast<float>(gc.size().width())  / 2.0f - (background.get_width()  * background.get_scale() / 2.0f),

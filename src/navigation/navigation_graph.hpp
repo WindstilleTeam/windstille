@@ -25,6 +25,7 @@
 #include <glm/glm.hpp>
 
 #include <geom/geom.hpp>
+#include <wstdisplay/fwd.hpp>
 
 #include "util/file_writer.hpp"
 #include "util/file_reader.hpp"
@@ -32,7 +33,6 @@
 class Edge;
 class EdgePosition;
 class FileReader;
-class GraphicsContext;
 class Node;
 
 template<typename Data>
@@ -117,7 +117,7 @@ public:
   void split_edge(EdgeHandle edge);
 
   /** Find edges that intersect with the given line */
-  std::vector<EdgePosition> find_intersections(const geom::line& line);
+  std::vector<EdgePosition> find_intersections(const geom::fline& line);
 
   /** Find nodes that are near within the \a radius */
   std::vector<NodeHandle> find_nodes(const glm::vec2& pos, float radius);
@@ -133,7 +133,7 @@ public:
   std::vector<EdgeHandle> find_edges(const glm::vec2& pos, float radius);
 
   /** Draw the navigation graph, for debugging only */
-  void draw(GraphicsContext& gc);
+  void draw(wstdisplay::GraphicsContext& gc);
 
   void load(ReaderMapping const& reader);
   void save(std::ostream& out);

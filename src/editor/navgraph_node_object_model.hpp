@@ -21,23 +21,24 @@
 
 #include <memory>
 
+#include <wstdisplay/fwd.hpp>
+
 #include "editor/object_model.hpp"
 #include "navigation/navigation_graph.hpp"
 
-class VertexArrayDrawable;
 class FileReader;
 
 class NavGraphNodeObjectModel : public ObjectModel
 {
 private:
-  std::shared_ptr<VertexArrayDrawable> m_drawable;
+  std::shared_ptr<wstdisplay::VertexArrayDrawable> m_drawable;
 
 public:
   NavGraphNodeObjectModel(ReaderMapping const& reader);
   NavGraphNodeObjectModel(const glm::vec2& pos);
   ~NavGraphNodeObjectModel() override;
 
-  void add_to_scenegraph(DrawableGroup& sg) override;
+  void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override;
   void set_rel_pos(const glm::vec2& rel_pos_) override;
   void sync_drawable();
 

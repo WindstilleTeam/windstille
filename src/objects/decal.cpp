@@ -47,9 +47,9 @@ Decal::Decal(ReaderMapping const& reader) :
   reader.read("vflip", vflip);
   reader.read("hflip", hflip);
 
-  SurfacePtr surface = g_app.surface().get(Pathname(path));
+  wstdisplay::SurfacePtr surface = g_app.surface().get(Pathname(path));
 
-  SurfaceDrawingParameters params;
+  wstdisplay::SurfaceDrawingParameters params;
 
   switch(map_type)
   {
@@ -60,34 +60,34 @@ Decal::Decal(ReaderMapping const& reader) :
   }
 
   glm::vec2 center_offset(-surface->get_width() /2,
-                         -surface->get_height()/2);
+                          -surface->get_height()/2);
 
   center_offset.x *= scale.x;
   center_offset.y *= scale.y;
 
-  drawable.reset(new SurfaceDrawable(surface,
-                                     params
-                                     .set_pos(pos + center_offset)
-                                     .set_angle(angle)
-                                     .set_hflip(hflip)
-                                     .set_vflip(vflip)
-                                     .set_scale(scale),
-                                     0,
-                                     glm::mat4(1.0f)));
+  drawable.reset(new wstdisplay::SurfaceDrawable(surface,
+                                                 params
+                                                 .set_pos(pos + center_offset)
+                                                 .set_angle(angle)
+                                                 .set_hflip(hflip)
+                                                 .set_vflip(vflip)
+                                                 .set_scale(scale),
+                                                 0,
+                                                 glm::mat4(1.0f)));
 
   switch(map_type)
   {
     // FIXME: Evil hardcoded constans
     case 0: // color
-      drawable->set_render_mask(SceneContext::COLORMAP);
+      drawable->set_render_mask(wstdisplay::SceneContext::COLORMAP);
       break;
 
     case 1: // lightmap
-      drawable->set_render_mask(SceneContext::LIGHTMAP);
+      drawable->set_render_mask(wstdisplay::SceneContext::LIGHTMAP);
       break;
 
     case 2: // highlight
-      drawable->set_render_mask(SceneContext::HIGHLIGHTMAP);
+      drawable->set_render_mask(wstdisplay::SceneContext::HIGHLIGHTMAP);
       break;
   }
   Sector::current()->get_scene_graph().add_drawable(drawable);
@@ -98,7 +98,7 @@ Decal::~Decal()
 }
 
 void
-Decal::draw(SceneContext& /*context*/)
+Decal::draw(wstdisplay::SceneContext& /*context*/)
 {
 }
 

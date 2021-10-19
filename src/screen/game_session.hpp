@@ -69,11 +69,11 @@ public:
   void set_cutscene_mode(bool t);
 
   /** \a time Time in seconds till the fade is complete
-      \a color RGBAf to which the screen should fade */
-  void fadeout(float time, const RGBAf& color);
+      \a color Color to which the screen should fade */
+  void fadeout(float time, const surf::Color& color);
   void fadein(float time);
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
   void handle_event(const SDL_Event& event) override;
 
@@ -81,7 +81,7 @@ public:
 
   void quit();
 
-  SceneContext* get_scene_context();
+  wstdisplay::SceneContext* get_scene_context();
 
 private:
   std::shared_ptr<GameSessionImpl> impl;

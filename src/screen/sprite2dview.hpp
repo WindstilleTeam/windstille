@@ -31,7 +31,7 @@
 class Sprite2DView : public Screen
 {
 private:
-  SceneContext sc;
+  wstdisplay::SceneContext sc;
   std::vector<Pathname> directory;
   std::vector<Pathname> shuffle_directory;
 
@@ -68,7 +68,7 @@ public:
 
   void adddir(const Pathname& dir);
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
   void update_slideshow(float delta, const Controller& controller);

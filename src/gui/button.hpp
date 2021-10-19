@@ -34,7 +34,7 @@ public:
   Button(const std::string& label, Component* parent);
   ~Button() override;
 
-  void draw(GraphicsContext& gc) override;
+  void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;
 
 private:

@@ -43,7 +43,7 @@ Hedgehog::~Hedgehog()
 }
 
 void
-Hedgehog::draw(SceneContext& sc)
+Hedgehog::draw(wstdisplay::SceneContext& sc)
 {
   Sprite* s;
 

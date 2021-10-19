@@ -55,7 +55,7 @@ Trigger::~Trigger()
 }
 
 void
-Trigger::draw (SceneContext& )
+Trigger::draw (wstdisplay::SceneContext& )
 {
 }
 

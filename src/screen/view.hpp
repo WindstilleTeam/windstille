@@ -19,22 +19,22 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_VIEW_HPP
 #define HEADER_WINDSTILLE_SCREEN_VIEW_HPP
 
-#include <wstdisplay/graphic_context_state.hpp>
-#include "engine/camera.hpp"
 #include <glm/glm.hpp>
+#include <wstdisplay/graphic_context_state.hpp>
+
+#include "engine/camera.hpp"
 #include "util/currenton.hpp"
 
 namespace wstinput {
 class Controller;
 } // namespace wstinput
-class SceneContext;
 
 /** This class is the gui component which renders the world to the
     screen */
 class View : public Currenton<View>
 {
 private:
-  GraphicContextState state;
+  wstdisplay::GraphicContextState state;
   Camera camera;
 
   float    m_debug_zoom;
@@ -43,14 +43,14 @@ private:
 public:
   View();
 
-  GraphicContextState get_gc_state() { return state; }
+  wstdisplay::GraphicContextState get_gc_state() { return state; }
 
   /** @return the rectangle which represents the currently visible
       area, everything outside of it doesn't have to be drawn */
   geom::frect get_clip_rect();
   glm::vec2 screen_to_world(const glm::vec2& point);
 
-  void draw(SceneContext& sc, Sector& sector);
+  void draw(wstdisplay::SceneContext& sc, Sector& sector);
   void update(float delta);
 };
 

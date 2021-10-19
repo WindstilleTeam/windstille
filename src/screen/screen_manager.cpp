@@ -59,7 +59,7 @@ ScreenManager::~ScreenManager()
 }
 
 void
-ScreenManager::run(GraphicsContext& gc)
+ScreenManager::run(wstdisplay::GraphicsContext& gc)
 {
   do_quit = false;
 
@@ -114,7 +114,7 @@ ScreenManager::run(GraphicsContext& gc)
 }
 
 void
-ScreenManager::draw(GraphicsContext& gc)
+ScreenManager::draw(wstdisplay::GraphicsContext& gc)
 {
   if (!screens.empty())
     screens.back()->draw(gc);
@@ -245,7 +245,7 @@ ScreenManager::poll_events()
                 count += 1;
               } while(filename.exists());
 
-              save_screenshot(filename);
+              wstdisplay::save_screenshot(filename);
               ConsoleLog << "Writing screenshot to: '" << filename << "'" << std::endl;
             }
             break;
@@ -298,7 +298,7 @@ ScreenManager::poll_events()
 }
 
 void
-ScreenManager::draw_fps(GraphicsContext& gc)
+ScreenManager::draw_fps(wstdisplay::GraphicsContext& gc)
 {
   if(time_counter > 1)
   {

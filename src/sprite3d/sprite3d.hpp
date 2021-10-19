@@ -25,9 +25,9 @@
 #include <glm/glm.hpp>
 
 #include <wstdisplay/scene_context.hpp>
-#include "sprite3d/data.hpp"
+#include <wstdisplay/fwd.hpp>
 
-class DrawingContext;
+#include "sprite3d/data.hpp"
 
 namespace sprite3d {
 
@@ -57,7 +57,7 @@ public:
    * You should call this every frame
    */
   void update(float delta);
-  void draw(DrawingContext& sc, const glm::vec2& pos, float z_pos);
+  void draw(wstdisplay::DrawingContext& sc, const glm::vec2& pos, float z_pos);
 
   /**
    * Changes action (after the currently shown animation frame)
@@ -125,7 +125,7 @@ public:
 
 private:
   friend class Sprite3DDrawable;
-  void draw(GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& modelview);
+  void draw(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& modelview);
 
   struct Frame {
     const sprite3d::Action* action;

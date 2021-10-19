@@ -28,13 +28,13 @@ class Nightvision : public GameObject
 {
 private:
   Sprite  nightvision;
-  TexturePtr noise;
+  wstdisplay::TexturePtr noise;
 
 public:
   Nightvision(ReaderMapping const& props);
   ~Nightvision() override;
 
-  void draw(SceneContext& sc) override;
+  void draw(wstdisplay::SceneContext& sc) override;
   void update(float delta) override;
 
 private:

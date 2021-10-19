@@ -57,16 +57,16 @@ Swarm::Swarm(ReaderMapping const& props) :
 }
 
 void
-Swarm::draw(SceneContext& sc)
+Swarm::draw(wstdisplay::SceneContext& sc)
 {
-  auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0),
+  auto array = std::make_unique<wstdisplay::VertexArrayDrawable>(glm::vec2(0, 0),
                                                      1000.0f, sc.highlight().get_modelview());
 
   array->set_mode(GL_TRIANGLES);
   array->set_blend_func(GL_ONE, GL_ZERO);
 
-  RGBAf color(1.0f, 1.0f, 1.0f);
-  RGBAf bottom_color(0.0f, 0.0f, 0.0f);
+  surf::Color color(1.0f, 1.0f, 1.0f);
+  surf::Color bottom_color(0.0f, 0.0f, 0.0f);
 
   for(Agents::const_iterator i = agents.begin(); i != agents.end(); ++i)
   {

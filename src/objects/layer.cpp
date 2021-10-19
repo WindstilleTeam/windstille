@@ -85,7 +85,7 @@ Layer::commit_removes()
 }
 
 void
-Layer::draw (SceneContext& /*context*/)
+Layer::draw (wstdisplay::SceneContext& /*context*/)
 {
   // do nothing
 }

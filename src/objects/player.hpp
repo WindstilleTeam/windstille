@@ -99,7 +99,7 @@ public:
 
   int get_movement_state() { return state; }
 
-  void draw(SceneContext& gc) override;
+  void draw(wstdisplay::SceneContext& gc) override;
   void update(float delta) override;
   void update(const Controller& controller, float delta);
 

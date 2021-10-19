@@ -23,7 +23,7 @@
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
-#include <wstdisplay/color.hpp>
+#include <surf/color.hpp>
 #include <wstdisplay/graphics_context.hpp>
 
 ControllerHelpWindow::ControllerHelpWindow()
@@ -31,67 +31,67 @@ ControllerHelpWindow::ControllerHelpWindow()
 }
 
 void
-ControllerHelpWindow::draw_button(GraphicsContext& gc, const glm::vec2& pos, bool pressed)
+ControllerHelpWindow::draw_button(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, bool pressed)
 {
   if (pressed)
   {
-    gc.fill_circle(pos, 12.0f, RGBAf(0.8f, 0.0f, 0.0f));
-    //gc.draw_circle(pos, 12.0f, RGBAf(1.0f, 0.0f, 0.0f));
+    gc.fill_circle(pos, 12.0f, surf::Color(0.8f, 0.0f, 0.0f));
+    //gc.draw_circle(pos, 12.0f, surf::Color(1.0f, 0.0f, 0.0f));
   }
   else
   {
-    gc.fill_circle(pos, 12.0f, RGBAf(1.0f, 1.0f, 1.0f, 0.2f));
-    //gc.draw_circle(pos, 12.0f, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
+    gc.fill_circle(pos, 12.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.2f));
+    //gc.draw_circle(pos, 12.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
   }
 }
 
 void
-ControllerHelpWindow::draw_stick(GraphicsContext& gc, const glm::vec2& pos, bool pressed, float x, float y)
+ControllerHelpWindow::draw_stick(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, bool pressed, float x, float y)
 {
   geom::isize size(75, 75);
   geom::frect rect(pos - glm::vec2(static_cast<float>(size.width()), static_cast<float>(size.height())) / 2.0f, geom::fsize(size));
 
-  gc.fill_rounded_rect(rect, 10.0f, RGBAf(1.0f, 1.0f, 1.0f, 0.2f));
-  //gc.draw_rounded_rect(rect, 10.0f, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
+  gc.fill_rounded_rect(rect, 10.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.2f));
+  //gc.draw_rounded_rect(rect, 10.0f, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 
   glm::vec2 stick_pos(rect.left() + rect.width()/2  + x * (rect.width()-16.0f)/2,
                      rect.top()  + rect.height()/2 + y * (rect.width()-16.0f)/2);
 
   if (pressed)
-    gc.fill_circle(stick_pos, 10.0f, RGBAf(0.8f, 0, 0));
+    gc.fill_circle(stick_pos, 10.0f, surf::Color(0.8f, 0, 0));
   else
-    gc.fill_circle(stick_pos, 10.0f, RGBAf(1.0f, 0, 0, 0.25f));
+    gc.fill_circle(stick_pos, 10.0f, surf::Color(1.0f, 0, 0, 0.25f));
 
-  gc.draw_circle(stick_pos, 10.0f, RGBAf(1.0f, 0, 0));
+  gc.draw_circle(stick_pos, 10.0f, surf::Color(1.0f, 0, 0));
 }
 
 void
-ControllerHelpWindow::draw_trigger(GraphicsContext& gc, const glm::vec2& pos, float value)
+ControllerHelpWindow::draw_trigger(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, float value)
 {
   geom::fsize size(60, 20);
   geom::frect rect(pos - glm::vec2(size.width() / 2, size.height() / 2), size);
 
-  gc.fill_rect(rect,  RGBAf(1.0f, 1.0f, 1.0f, 0.2f));
+  gc.fill_rect(rect,  surf::Color(1.0f, 1.0f, 1.0f, 0.2f));
 
   if (value > 0.0f)
     gc.fill_rect(geom::frect(glm::vec2(rect.left(), rect.top()),
                              geom::fsize(rect.width() * value,
                                    rect.height())),
-                       RGBAf(1.0f, 0.0f, 0.0f));
+                       surf::Color(1.0f, 0.0f, 0.0f));
 
-  //gc.draw_rect(rect, RGBAf(1.0f, 1.0f, 1.0f, 0.5f));
+  //gc.draw_rect(rect, surf::Color(1.0f, 1.0f, 1.0f, 0.5f));
 }
 
 void
-ControllerHelpWindow::draw(GraphicsContext& gc)
+ControllerHelpWindow::draw(wstdisplay::GraphicsContext& gc)
 {
   const Controller& controller = g_app.input().get_controller();
 
   glm::vec2 pos(static_cast<float>(gc.size().width())  - 350.0f - 16.0f,
                static_cast<float>(gc.size().height()) - 200.0f - 16.0f);
 
-  gc.fill_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, RGBAf(0.0f, 0.0f, 0.25f, 0.9f));
-  gc.draw_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, RGBAf(1.0f, 1.0f, 1.0f,  0.5f));
+  gc.fill_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, surf::Color(0.0f, 0.0f, 0.25f, 0.9f));
+  gc.draw_rounded_rect(geom::frect(pos, geom::fsize(350, 200)), 10.0f, surf::Color(1.0f, 1.0f, 1.0f,  0.5f));
 
   draw_stick(gc,
              pos + glm::vec2(50, 75),

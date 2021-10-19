@@ -40,7 +40,7 @@ Nightvision::~Nightvision()
 }
 
 void
-Nightvision::draw(SceneContext& sc)
+Nightvision::draw(wstdisplay::SceneContext& sc)
 {
   // reset the modelview, so we can draw in screen coordinates
   sc.light().push_modelview();
@@ -56,7 +56,7 @@ Nightvision::draw(SceneContext& sc)
 
   if (1)
   {
-    auto array = std::make_unique<VertexArrayDrawable>(glm::vec2(0, 0), 10000,
+    auto array = std::make_unique<wstdisplay::VertexArrayDrawable>(glm::vec2(0, 0), 10000,
                                                        sc.light().get_modelview());
     array->set_mode(GL_TRIANGLE_FAN);
     array->set_texture(noise);
@@ -107,7 +107,7 @@ Nightvision::draw(SceneContext& sc)
   {
     // FIXME: might be better to copy the highlight over to the
     // color layer, however that would require some changes to the
-    // DrawingContext structure
+    // wstdisplay::DrawingContext structure
     sc.highlight().clear();
 
     sc.highlight().push_modelview();

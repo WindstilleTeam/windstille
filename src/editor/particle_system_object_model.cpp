@@ -30,7 +30,7 @@ ParticleSystemObjectModel::~ParticleSystemObjectModel()
 }
 
 void
-ParticleSystemObjectModel::draw(SceneContext& /*sc*/)
+ParticleSystemObjectModel::draw(wstdisplay::SceneContext& /*sc*/)
 {
 }
 

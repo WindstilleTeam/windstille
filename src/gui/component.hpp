@@ -20,10 +20,11 @@
 #define HEADER_WINDSTILLE_GUI_COMPONENT_HPP
 
 #include <geom/geom.hpp>
+#include <wstdisplay/fwd.hpp>
 
 namespace wstinput { class Controller; }
+
 class FileReader;
-class GraphicsContext;
 
 using Controller = wstinput::Controller;
 
@@ -45,7 +46,7 @@ public:
   virtual void set_active(bool a);
 
   virtual void on_activation() {}
-  virtual void draw(GraphicsContext& gc) =0;
+  virtual void draw(wstdisplay::GraphicsContext& gc) =0;
   virtual void update(float delta, const Controller& controller) =0;
 
   virtual geom::frect get_screen_rect() const;

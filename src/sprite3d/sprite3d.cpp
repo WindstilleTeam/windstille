@@ -331,7 +331,7 @@ Sprite3D::update(float delta)
 }
 
 void
-Sprite3D::draw(DrawingContext& dc, const glm::vec2& pos, float z_pos)
+Sprite3D::draw(wstdisplay::DrawingContext& dc, const glm::vec2& pos, float z_pos)
 {
   dc.draw(std::make_unique<Sprite3DDrawable>(*this, pos, z_pos, dc.get_modelview()));
 }
@@ -342,7 +342,7 @@ static inline float interpolate(float v1, float v2, float t)
 }
 
 void
-Sprite3D::draw(GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& modelview)
+Sprite3D::draw(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& modelview)
 {
   gc.push_matrix();
   gc.mult_matrix(modelview);
@@ -392,7 +392,7 @@ Sprite3D::draw(GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& model
       }
     }
 
-    VertexArrayDrawable va;
+    wstdisplay::VertexArrayDrawable va;
 
     va.set_blend_func(blend_sfactor, blend_dfactor);
     va.set_depth_test(true);

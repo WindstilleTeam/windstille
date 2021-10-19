@@ -47,7 +47,7 @@ public:
 
   Properties get_properties()  const { return properties; }
 
-  geom::line get_line() const;
+  geom::fline get_line() const;
   glm::vec2 get_vector() const;
 
 private:

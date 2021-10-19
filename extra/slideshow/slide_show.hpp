@@ -21,25 +21,24 @@
 
 #include <vector>
 
-#include "slideshow/slide_object.hpp"
+#include <wstdisplay/fwd.hpp>
 
-class TextureManager;
-class SurfaceManager;
+#include "slideshow/slide_object.hpp"
 
 class SlideShow
 {
 private:
-  TextureManager& m_texture_manager;
-  SurfaceManager& m_surface_manager;
+  wstdisplay::TextureManager& m_texture_manager;
+  wstdisplay::SurfaceManager& m_surface_manager;
 
   std::vector<SlideObjectPtr> m_objects;
   float m_length;
 
 public:
-  SlideShow(TextureManager& texture_manager,
-            SurfaceManager& surface_manager);
+  SlideShow(wstdisplay::TextureManager& texture_manager,
+            wstdisplay::SurfaceManager& surface_manager);
 
-  void draw(GraphicsContext& gc, float time, bool verbose);
+  void draw(wstdisplay::GraphicsContext& gc, float time, bool verbose);
 
   bool done(float time) const;
 

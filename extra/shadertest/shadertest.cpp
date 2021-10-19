@@ -29,6 +29,8 @@
 #include "math/random.hpp"
 #include "system/sdl.hpp"
 
+using namespace wstdisplay;
+
 App::App() :
   m_aspect_ratio(1280, 800),
   m_window_size(1280, 800),
@@ -53,9 +55,9 @@ App::run(int argc, char* argv[])
   TextureManager texture_manager;
   SurfaceManager surface_manager;
 
-  SurfacePtr image_surface = surface_manager.get(argv[1]);
-  SurfacePtr displace_surface = surface_manager.get(argv[2]);
-  SurfacePtr color_surface = surface_manager.get(argv[3]);
+  wstdisplay::SurfacePtr image_surface = surface_manager.get(argv[1]);
+  wstdisplay::SurfacePtr displace_surface = surface_manager.get(argv[2]);
+  wstdisplay::SurfacePtr color_surface = surface_manager.get(argv[3]);
 
   ShaderProgramPtr prog = ShaderProgram::create();
 
@@ -149,19 +151,19 @@ App::run(int argc, char* argv[])
 
       va.set_mode(GL_TRIANGLE_FAN);
 
-      va.color(RGBAf(1.0f, 1.0f, 1.0f));
+      va.color(surf::Color(1.0f, 1.0f, 1.0f));
       va.texcoord(0.0f, 0.0f);
       va.vertex(0.0f, 0.0f);
 
-      va.color(RGBAf(1.0f, 1.0f, 1.0f));
+      va.color(surf::Color(1.0f, 1.0f, 1.0f));
       va.texcoord(1.0f, 0.0f);
       va.vertex(1280.0f, 0.0f);
 
-      va.color(RGBAf(1.0f, 1.0f, 1.0f));
+      va.color(surf::Color(1.0f, 1.0f, 1.0f));
       va.texcoord(1.0f, 1.0f);
       va.vertex(1280.0f, 800.0f);
 
-      va.color(RGBAf(1.0f, 1.0f, 1.0f));
+      va.color(surf::Color(1.0f, 1.0f, 1.0f));
       va.texcoord(0.0f, 1.0f);
       va.vertex(0.0f, 800.0f);
 

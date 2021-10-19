@@ -232,7 +232,7 @@ MenuManager::display_debug_menu()
 {
   gui::Menu menu("Debug", create_centered_rect(500, 340));
 
-  RGBAf amb = Sector::current()->get_ambient_light();
+  surf::Color amb = Sector::current()->get_ambient_light();
 
   menu.add_slider("Ambient Light (Red)", int(amb.r*100), 0, 100, 10,
                   std::bind(&MenuManager::menu_ambient_light, _1, 0));
@@ -468,7 +468,7 @@ MenuManager::menu_ambient_light(int i, int component)
 {
   if (Sector::current())
   {
-    RGBAf amb = Sector::current()->get_ambient_light();
+    surf::Color amb = Sector::current()->get_ambient_light();
 
     if (component == 0)
       amb.r = static_cast<float>(i) / 100.0f;

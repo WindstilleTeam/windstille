@@ -44,11 +44,11 @@ Edge::angle(Edge* /*seg*/)
   return 0.0f;
 }
 
-geom::line
+geom::fline
 Edge::get_line() const
 {
-  return geom::line(node1->get_pos(),
-                    node2->get_pos());
+  return geom::fline(node1->get_pos(),
+                     node2->get_pos());
 }
 
 glm::vec2

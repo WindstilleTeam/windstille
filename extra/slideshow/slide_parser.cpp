@@ -27,6 +27,8 @@
 
 #include "slideshow/slide_show.hpp"
 
+using namespace wstdisplay;
+
 namespace {
 
 std::vector<std::string> string_tokenize(std::string_view text, std::string_view delimiter)
@@ -157,7 +159,7 @@ NodeZoom::get(const geom::fsize& scr, const geom::fsize& img) const
 }
 
 SlideParser::SlideParser(SlideShow& slideshow, const geom::fsize& screen_size,
-                         SurfaceManager& surface_manager) :
+                         wstdisplay::SurfaceManager& surface_manager) :
   m_slideshow(slideshow),
   m_screen_size(screen_size),
   m_context(),

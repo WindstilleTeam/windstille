@@ -46,7 +46,7 @@ TestObject::~TestObject()
 }
 
 void
-TestObject::draw(SceneContext& sc)
+TestObject::draw(wstdisplay::SceneContext& sc)
 {
   sprite.draw(sc.color(), pos, 100);
   for(std::vector<AttachedSprite>::iterator i = attached_sprites.begin();

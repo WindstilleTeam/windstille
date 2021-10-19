@@ -24,16 +24,17 @@
 #include <map>
 #include <memory>
 
+#include <wstdisplay/fwd.hpp>
+
 class Sprite;
 class SpriteData;
-class SurfaceManager;
 
 typedef std::shared_ptr<SpriteData> SpriteDataPtr;
 
 class SpriteManager
 {
 public:
-  SpriteManager(SurfaceManager& surface_manager);
+  SpriteManager(wstdisplay::SurfaceManager& surface_manager);
   ~SpriteManager();
 
   Sprite create(std::filesystem::path const& filename);
@@ -43,7 +44,7 @@ public:
   void cleanup();
 
 private:
-  SurfaceManager& m_surface_manager;
+  wstdisplay::SurfaceManager& m_surface_manager;
   typedef std::map<std::filesystem::path, SpriteDataPtr> Datas;
   Datas datas;
 };

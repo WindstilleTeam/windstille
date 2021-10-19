@@ -25,7 +25,7 @@
 #include "sprite3d/sprite3d.hpp"
 #include <wstdisplay/scenegraph/drawable.hpp>
 
-class Sprite3DDrawable : public Drawable
+class Sprite3DDrawable : public wstdisplay::Drawable
 {
 private:
   Sprite3D m_sprite;
@@ -39,10 +39,10 @@ public:
       m_scale(1.0f)
   {}
 
-  void render(GraphicsContext& gc, unsigned int mask) override
+  void render(wstdisplay::GraphicsContext& gc, unsigned int mask) override
   {
     gc.push_matrix();
-    gc.translate(pos.x, pos.y, 0.0f);
+    gc.translate(pos.x(), pos.y(), 0.0f);
     gc.scale(m_scale, m_scale, 1.0f);
     m_sprite.draw(gc, glm::vec2(0.0f, 0.0f), modelview);
     gc.pop_matrix();

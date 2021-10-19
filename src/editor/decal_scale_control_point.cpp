@@ -73,7 +73,7 @@ DecalScaleControlPoint::on_move_end(GdkEventButton* /*event*/, const glm::vec2& 
 }
 
 void
-DecalScaleControlPoint::draw(SceneContext& sc)
+DecalScaleControlPoint::draw(wstdisplay::SceneContext& sc)
 {
   geom::frect rect = get_bounding_box();
   rect += offset;

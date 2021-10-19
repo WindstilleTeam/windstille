@@ -28,18 +28,18 @@ public:
   int id;
   std::string text;
   glm::vec2    pos;
-  RGBAf       color;
+  surf::Color       color;
   float       seconds_passed;
   float       seconds_till_done;
 
-  Speech(int id, const std::string& text, const glm::vec2& pos, const RGBAf& color);
+  Speech(int id, const std::string& text, const glm::vec2& pos, const surf::Color& color);
 
-  void draw(GraphicsContext& gc);
+  void draw(wstdisplay::GraphicsContext& gc);
   void update(float delta);
   bool is_done() const;
 };
 
-Speech::Speech(int id_, const std::string& text_, const glm::vec2& pos_, const RGBAf& color_)
+Speech::Speech(int id_, const std::string& text_, const glm::vec2& pos_, const surf::Color& color_)
   : id(id_),
     text(text_),
     pos(pos_),
@@ -56,7 +56,7 @@ Speech::Speech(int id_, const std::string& text_, const glm::vec2& pos_, const R
 }
 
 void
-Speech::draw(GraphicsContext& gc)
+Speech::draw(wstdisplay::GraphicsContext& gc)
 {
   // Do not display any text for 0.1 seconds before we are doen, so
   // that we get an empty gap between succesive text on the screen,
@@ -92,13 +92,13 @@ SpeechManager::~SpeechManager()
 }
 
 int
-SpeechManager::add(const std::string& text, const Entity& entity, const RGBAf& color)
+SpeechManager::add(const std::string& text, const Entity& entity, const surf::Color& color)
 {
   return add(text, entity.get_pos(), color);
 }
 
 int
-SpeechManager::add(const std::string& text, const glm::vec2& pos, const RGBAf& color)
+SpeechManager::add(const std::string& text, const glm::vec2& pos, const surf::Color& color)
 {
   int this_speech_id = speech_id;
   speeches.push_back(new Speech(this_speech_id, text, pos, color));
@@ -107,7 +107,7 @@ SpeechManager::add(const std::string& text, const glm::vec2& pos, const RGBAf& c
 }
 
 void
-SpeechManager::draw(GraphicsContext& gc)
+SpeechManager::draw(wstdisplay::GraphicsContext& gc)
 {
   for(Speeches::iterator i= speeches.begin(); i != speeches.end(); ++i)
   {

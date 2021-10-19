@@ -22,12 +22,12 @@
 #include <string>
 #include <vector>
 
+#include <wstdisplay/fwd.hpp>
+
 #include "util/file_reader.hpp"
 
 class Armature;
-class GraphicsContext;
 class Mesh;
-class TextureManager;
 
 class Model
 {
@@ -38,10 +38,10 @@ private:
 
 public:
   Model(ReaderDocument const& doc, std::filesystem::path const& basedir,
-        TextureManager& texture_manager);
+        wstdisplay::TextureManager& texture_manager);
   ~Model();
 
-  void draw(GraphicsContext& gc);
+  void draw(wstdisplay::GraphicsContext& gc);
   void apply(Armature* armature);
   void reset();
 private:

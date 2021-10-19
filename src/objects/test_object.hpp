@@ -31,7 +31,7 @@ public:
   TestObject(ReaderMapping const& reader);
   ~TestObject() override;
 
-  void draw(SceneContext& context) override;
+  void draw(wstdisplay::SceneContext& context) override;
   void update(float delta) override;
 
   void set_sprite(const std::string& filename);

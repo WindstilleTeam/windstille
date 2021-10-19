@@ -23,8 +23,8 @@
 #include <string>
 
 #include <geom/geom.hpp>
+#include <wstdisplay/fwd.hpp>
 
-class GraphicsContext;
 class TTFFont;
 class TextAreaImpl;
 
@@ -54,7 +54,7 @@ public:
   bool is_progress_complete();
 
   void update(float delta);
-  void draw(GraphicsContext& gc);
+  void draw(wstdisplay::GraphicsContext& gc);
 
   /** Return the rectangle that TextArea fills its text into */
   geom::frect get_rect() const;

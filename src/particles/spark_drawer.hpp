@@ -19,23 +19,23 @@
 #ifndef HEADER_WINDSTILLE_PARTICLES_SPARK_DRAWER_HPP
 #define HEADER_WINDSTILLE_PARTICLES_SPARK_DRAWER_HPP
 
+#include <wstdisplay/fwd.hpp>
+
 #include "particles/drawer.hpp"
 
-class SceneContext;
 class ParticleSystem;
-class VertexArrayDrawable;
 
 class SparkDrawer : public Drawer
 {
 private:
-  RGBAf color;
+  surf::Color color;
   float width;
-  std::shared_ptr<VertexArrayDrawable> buffer;
+  std::shared_ptr<wstdisplay::VertexArrayDrawable> buffer;
 
 public:
   SparkDrawer(ReaderMapping const& props);
 
-  void draw(GraphicsContext& gc, const ParticleSystem& psys) const override;
+  void draw(wstdisplay::GraphicsContext& gc, const ParticleSystem& psys) const override;
 };
 
 #endif
