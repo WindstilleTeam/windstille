@@ -21,7 +21,7 @@
 
 #include <memory>
 
-#include <wstsound/sound_source_ptr.hpp>
+#include <wstsound/fwd.hpp>
 
 namespace wstsound {
 class SoundManager;
