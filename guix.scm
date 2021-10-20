@@ -63,7 +63,6 @@
    (inputs
     `(
       ("sdl2" ,sdl2)
-      ("sdl2-image" ,sdl2-image)
       ("mesa" ,mesa)
       ("glew" ,glew)
       ("physfs" ,physfs)

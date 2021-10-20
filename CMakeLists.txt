@@ -52,7 +52,6 @@ find_package(PkgConfig REQUIRED)
 find_package(Squirrel REQUIRED)
 
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
-pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image IMPORTED_TARGET)
 
 pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
 
@@ -156,7 +155,6 @@ target_link_libraries(wstlib PUBLIC
   PNG::PNG
   fmt::fmt
   PkgConfig::SDL2
-  PkgConfig::SDL2_IMAGE
   PkgConfig::SIGCXX
   Threads::Threads)
 

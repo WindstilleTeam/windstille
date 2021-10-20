@@ -16,7 +16,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <SDL_image.h>
 #include <sstream>
 #include <filesystem>
 
@@ -215,8 +214,6 @@ WindstilleMain::init_sdl()
   {
     atexit(SDL_Quit);
   }
-
-  IMG_Init( IMG_INIT_JPG | IMG_INIT_PNG );
 }
 
 
