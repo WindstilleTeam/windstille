@@ -59,7 +59,7 @@
    (build-system cmake-build-system)
    (native-inputs
     `(("pkg-config" ,pkg-config)
-      ("gcc" ,gcc-11)))
+      ("gcc" ,gcc-10)))
    (inputs
     `(
       ("sdl2" ,sdl2)
