@@ -31,6 +31,7 @@
 #include "engine/sector.hpp"
 #include "engine/squirrel_thread.hpp"
 #include "font/fonts.hpp"
+#include "font/ttf_font_manager.hpp"
 #include "hud/conversation.hpp"
 #include "hud/dialog_manager.hpp"
 #include "hud/pda.hpp"
@@ -283,7 +284,7 @@ void set_console_font(const std::string& font, int size)
 {
   try
   {
-    g_app.fonts().ttffont.reset(new TTFFont(Pathname("fonts/" + font), size));
+    g_app.fonts().ttffont = g_app.ttffont_manager().create_font(Pathname("fonts/" + font), size);
   }
   catch(std::exception& err)
   {

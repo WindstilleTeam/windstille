@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmail.com>
+**  Copyright (C) 2018 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,23 +16,33 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_FONT_FONTS_HPP
-#define HEADER_WINDSTILLE_FONT_FONTS_HPP
+#ifndef HEADER_WINDSTILLE_FONT_TTF_FONT_MANAGER_HPP
+#define HEADER_WINDSTILLE_FONT_TTF_FONT_MANAGER_HPP
 
 #include <memory>
+#include <filesystem>
 
-#include "font/ttf_font.hpp"
+#include "font/no_font_effect.hpp"
 
-class Fonts
+class FontEffect;
+class TTFFont;
+
+class TTFFontManager
 {
 public:
-  std::unique_ptr<TTFFont> ttffont;
-  std::unique_ptr<TTFFont> vera12;
-  std::unique_ptr<TTFFont> vera20;
+  TTFFontManager();
+  ~TTFFontManager();
 
-public:
-  Fonts(TTFFontManager& mgr);
-  ~Fonts();
+  std::unique_ptr<TTFFont> create_font(std::filesystem::path const& filename, int size, const FontEffect& effect = NoFontEffect());
+
+  FT_Library get_handle() const { return m_freetype; }
+
+private:
+  FT_Library m_freetype;
+
+private:
+  TTFFontManager(const TTFFontManager&) = delete;
+  TTFFontManager& operator=(const TTFFontManager&) = delete;
 };
 
 #endif

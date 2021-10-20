@@ -29,10 +29,11 @@
 #include <wstdisplay/fwd.hpp>
 #include <wstdisplay/texture.hpp>
 #include "font/no_font_effect.hpp"
-
+
 class FontEffect;
 class TTFFontImpl;
-
+class TTFFontManager;
+
 class TTFCharacter
 {
 public:
@@ -50,16 +51,11 @@ public:
 
   TTFCharacter(const geom::irect& pos, const geom::frect& uv, int advance);
 };
-
+
 class TTFFont
 {
-private:
-  static void init();
-  static void deinit();
-  friend class TTFFontManager;
-
 public:
-  TTFFont(std::filesystem::path const& file, int size, const FontEffect& effect = NoFontEffect());
+  TTFFont(TTFFontManager& mgr, std::filesystem::path const& file, int size, const FontEffect& effect = NoFontEffect());
   ~TTFFont();
 
   /** */
@@ -84,18 +80,7 @@ public:
 private:
   std::unique_ptr<TTFFontImpl> impl;
 };
-
-/**
- * Simple wrapper class to call TTFFont::init()/deinit() so we can
- * use proper RAII.
- */
-class TTFFontManager
-{
-public:
-  TTFFontManager();
-  ~TTFFontManager();
-};
-
+
 #endif
 
 /* EOF */

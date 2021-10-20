@@ -28,9 +28,11 @@
 #include <wstdisplay/blitter.hpp>
 #include <wstdisplay/drawing_context.hpp>
 #include <wstdisplay/software_surface.hpp>
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+
 #include "font/text_drawable.hpp"
 #include "font/ttf_font.hpp"
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+#include "font/ttf_font_manager.hpp"
 
 TTFCharacter::TTFCharacter(const geom::irect& pos_,
                            const geom::frect& uv_,
@@ -40,13 +42,10 @@ TTFCharacter::TTFCharacter(const geom::irect& pos_,
   advance(advance_)
 {
 }
-
+
 class TTFFontImpl
 {
 public:
-  /// the global FreeType library handle
-  static FT_Library      library;
-
   /** Array of characters available in this font, current limited to
       256 characters, no full unicode */
   std::vector<TTFCharacter> characters;
@@ -63,10 +62,8 @@ public:
     texture()
   {}
 };
-
-FT_Library TTFFontImpl::library;
-
-TTFFont::TTFFont(std::filesystem::path const& filename, int size_, const FontEffect& effect) :
+
+TTFFont::TTFFont(TTFFontManager& mgr, std::filesystem::path const& filename, int size_, const FontEffect& effect) :
   impl(new TTFFontImpl())
 {
   assert(size_ > 0);
@@ -78,7 +75,7 @@ TTFFont::TTFFont(std::filesystem::path const& filename, int size_, const FontEff
   std::vector<char> buffer(first, last);
 
   FT_Face face;
-  if (FT_New_Memory_Face(TTFFontImpl::library,
+  if (FT_New_Memory_Face(mgr.get_handle(),
                          reinterpret_cast<FT_Byte*>(&*buffer.begin()), buffer.size(),
                          0, &face))
   {
@@ -252,31 +249,5 @@ TTFFont::get_texture() const
 {
   return impl->texture;
 }
-
-void
-TTFFont::init()
-{
-  FT_Error  error;
 
-  error = FT_Init_FreeType( &TTFFontImpl::library );
-  if ( error )
-    throw std::runtime_error( "could not initialize FreeType" );
-}
-
-void
-TTFFont::deinit()
-{
-  FT_Done_FreeType( TTFFontImpl::library );
-}
-
-TTFFontManager::TTFFontManager()
-{
-  TTFFont::init();
-}
-
-TTFFontManager::~TTFFontManager()
-{
-  TTFFont::deinit();
-}
-
 /* EOF */

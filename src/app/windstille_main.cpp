@@ -21,17 +21,18 @@
 #include <filesystem>
 
 #include <wstinput/input_manager.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/surface_manager.hpp>
+#include <wstdisplay/texture_manager.hpp>
 
 #include "app/app.hpp"
 #include "app/config.hpp"
 #include "app/console.hpp"
 #include "app/controller_def.hpp"
 #include "app/windstille_main.hpp"
-#include <wstdisplay/opengl_window.hpp>
-#include <wstdisplay/surface_manager.hpp>
-#include <wstdisplay/texture_manager.hpp>
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
+#include "font/ttf_font_manager.hpp"
 #include "screen/game_session.hpp"
 #include "screen/particle_viewer.hpp"
 #include "screen/screen_manager.hpp"
@@ -75,7 +76,7 @@ WindstilleMain::main(int argc, char** argv)
                                geom::isize(config.get_int("aspect-width"), config.get_int("aspect-height")),
                                config.get_bool("fullscreen"), config.get_int("anti-aliasing"));
       TTFFontManager    ttffont_manager;
-      Fonts             fonts;
+      Fonts             fonts(ttffont_manager);
       Console           console;
       SoundManager      sound_manager;
       wstdisplay::TextureManager    texture_manager;
@@ -95,6 +96,7 @@ WindstilleMain::main(int argc, char** argv)
       g_app.m_sprite_manager = &sprite_manager;
       g_app.m_sprite3d_manager = &sprite3d_manager;
       g_app.m_window = &window;
+      g_app.m_ttffont_manager = &ttffont_manager;
       g_app.m_fonts = &fonts;
 
       window.set_icon(Pathname("icon.png"));

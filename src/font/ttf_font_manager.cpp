@@ -1,6 +1,6 @@
 /*
 **  Windstille - A Sci-Fi Action-Adventure Game
-**  Copyright (C) 2000,2005 Ingo Ruhnke <grumbel@gmail.com>
+**  Copyright (C) 2018 Ingo Ruhnke <grumbel@gmail.com>
 **
 **  This program is free software: you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -16,25 +16,32 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HEADER_WINDSTILLE_FONT_FONTS_HPP
-#define HEADER_WINDSTILLE_FONT_FONTS_HPP
+#include "font/ttf_font_manager.hpp"
 
-#include <memory>
+#include <ft2build.h>
 
 #include "font/ttf_font.hpp"
 
-class Fonts
+TTFFontManager::TTFFontManager() :
+  m_freetype()
 {
-public:
-  std::unique_ptr<TTFFont> ttffont;
-  std::unique_ptr<TTFFont> vera12;
-  std::unique_ptr<TTFFont> vera20;
+  FT_Error error;
 
-public:
-  Fonts(TTFFontManager& mgr);
-  ~Fonts();
-};
+  error = FT_Init_FreeType(&m_freetype);
+  if (error) {
+    throw std::runtime_error( "could not initialize FreeType" );
+  }
+}
 
-#endif
+TTFFontManager::~TTFFontManager()
+{
+  FT_Done_FreeType(m_freetype);
+}
+
+std::unique_ptr<TTFFont>
+TTFFontManager::create_font(std::filesystem::path const& filename, int size, const FontEffect& effect)
+{
+  return std::make_unique<TTFFont>(*this, filename, size, effect);
+}
 
 /* EOF */

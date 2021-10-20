@@ -29,6 +29,7 @@ namespace sprite3d {
 class Manager;
 } // namespace sprite3d;
 
+class TTFFontManager;
 class Fonts;
 class SoundManager;
 class SpriteManager;
@@ -47,6 +48,7 @@ public:
   SpriteManager& sprite() const;
   sprite3d::Manager& sprite3d() const;
   Fonts& fonts() const;
+  TTFFontManager& ttffont_manager() const;
 
 private:
   wstinput::InputManagerSDL* m_input_manager;
@@ -56,6 +58,7 @@ private:
   wstdisplay::SurfaceManager* m_surface_manager;
   SpriteManager* m_sprite_manager;
   sprite3d::Manager* m_sprite3d_manager;
+  TTFFontManager* m_ttffont_manager;
   Fonts* m_fonts;
 
 private:
