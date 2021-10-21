@@ -93,7 +93,7 @@ App::fonts() const
   return *m_fonts;
 }
 
-TTFFontManager&
+wstdisplay::TTFFontManager&
 App::ttffont_manager() const
 {
   assert(m_ttffont_manager != nullptr);

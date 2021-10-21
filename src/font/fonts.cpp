@@ -23,10 +23,10 @@
 
 #include "util/pathname.hpp"
 
-Fonts::Fonts(TTFFontManager& mgr) :
-  ttffont(mgr.create_font(Pathname("fonts/VeraMono.ttf"), 14, BorderFontEffect(1, true))),
-  vera12(mgr.create_font(Pathname("fonts/Vera.ttf"), 12, BorderFontEffect(2, true))),
-  vera20(mgr.create_font(Pathname("fonts/Vera.ttf"), 20, BorderFontEffect(2, true)))
+Fonts::Fonts(wstdisplay::TTFFontManager& mgr) :
+  ttffont(mgr.create_font(Pathname("fonts/VeraMono.ttf"), 14, wstdisplay::BorderFontEffect(1, true))),
+  vera12(mgr.create_font(Pathname("fonts/Vera.ttf"), 12, wstdisplay::BorderFontEffect(2, true))),
+  vera20(mgr.create_font(Pathname("fonts/Vera.ttf"), 20, wstdisplay::BorderFontEffect(2, true)))
 {
 }
 

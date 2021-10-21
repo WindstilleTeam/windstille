@@ -184,12 +184,12 @@ MenuComponent::update(float delta, const Controller& controller)
 }
 
 void
-MenuComponent::set_font(TTFFont* font_)
+MenuComponent::set_font(wstdisplay::TTFFont* font_)
 {
   font = font_;
 }
 
-TTFFont*
+wstdisplay::TTFFont*
 MenuComponent::get_font()
 {
   return font;

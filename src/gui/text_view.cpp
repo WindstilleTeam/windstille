@@ -78,7 +78,7 @@ TextView::set_text(const std::string& text)
 }
 
 void
-TextView::set_font(TTFFont* font)
+TextView::set_font(wstdisplay::TTFFont* font)
 {
   text_area.set_font(font);
 }

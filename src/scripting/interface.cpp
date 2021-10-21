@@ -23,15 +23,16 @@
 #include <sexp/value.hpp>
 #include <sexp/io.hpp>
 
+#include <wstdisplay/font/ttf_font_manager.hpp>
+#include <wstdisplay/opengl_window.hpp>
+
 #include "app/app.hpp"
 #include "app/config.hpp"
 #include "app/sound_manager.hpp"
-#include <wstdisplay/opengl_window.hpp>
 #include "engine/camera.hpp"
 #include "engine/sector.hpp"
 #include "engine/squirrel_thread.hpp"
 #include "font/fonts.hpp"
-#include "font/ttf_font_manager.hpp"
 #include "hud/conversation.hpp"
 #include "hud/dialog_manager.hpp"
 #include "hud/pda.hpp"

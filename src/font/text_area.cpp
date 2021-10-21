@@ -39,7 +39,7 @@ struct TextAreaCommand
 class TextAreaImpl
 {
 public:
-  TTFFont* font;
+  wstdisplay::TTFFont* font;
   geom::frect rect;
   float passed_time;
 
@@ -144,7 +144,7 @@ TextArea::set_text(const std::string& str)
 }
 
 void
-TextArea::set_font(TTFFont* font)
+TextArea::set_font(wstdisplay::TTFFont* font)
 {
   impl->font = font;
 }
@@ -304,7 +304,7 @@ TextArea::draw(wstdisplay::GraphicsContext& gc)
               else
                 eat_time -= 0.05f;
 
-              const TTFCharacter& character = impl->font->get_character(*j);
+              const wstdisplay::TTFCharacter& character = impl->font->get_character(*j);
 
               bool draw_it = (static_cast<float>(y_pos) >= impl->scroll_offset &&
                               static_cast<float>(y_pos) < impl->scroll_offset + impl->rect.height() - static_cast<float>(impl->font->get_height()));

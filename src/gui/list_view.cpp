@@ -19,10 +19,10 @@
 #include "gui/list_view.hpp"
 
 #include <wstinput/controller.hpp>
+#include <wstdisplay/graphics_context.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
-#include <wstdisplay/graphics_context.hpp>
 #include "font/fonts.hpp"
 
 namespace gui {
@@ -42,7 +42,7 @@ ListView::~ListView()
 void
 ListView::draw(wstdisplay::GraphicsContext& gc)
 {
-  TTFFont* font = g_app.fonts().vera20.get();
+  wstdisplay::TTFFont* font = g_app.fonts().vera20.get();
 
   float x = rect.left();
   float y = rect.top() + static_cast<float>(font->get_height());

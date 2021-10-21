@@ -39,7 +39,7 @@ public:
 
   void set_screen_rect(const geom::frect& rect) override;
   void set_text(const std::string& text);
-  void set_font(TTFFont* font);
+  void set_font(wstdisplay::TTFFont* font);
 
 private:
   TextView (const TextView&);

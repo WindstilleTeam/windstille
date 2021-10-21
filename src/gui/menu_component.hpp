@@ -19,10 +19,10 @@
 #ifndef HEADER_WINDSTILLE_GUI_MENU_COMPONENT_HPP
 #define HEADER_WINDSTILLE_GUI_MENU_COMPONENT_HPP
 
+#include <wstdisplay/fwd.hpp>
+
 #include "font/fonts.hpp"
 #include "gui/component.hpp"
-
-class TTFFont;
 
 namespace gui {
 
@@ -36,7 +36,7 @@ private:
   Items items;
 
   int   current_item;
-  TTFFont* font;
+  wstdisplay::TTFFont* font;
   bool allow_cancel;
 
   bool scroll_mode;
@@ -62,8 +62,8 @@ public:
   float get_prefered_width() const override;
   float get_prefered_height() const override;
 
-  void     set_font(TTFFont* font_);
-  TTFFont* get_font();
+  void     set_font(wstdisplay::TTFFont* font_);
+  wstdisplay::TTFFont* get_font();
 
   void set_screen_rect(const geom::frect& rect) override;
 

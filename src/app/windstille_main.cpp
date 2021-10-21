@@ -23,6 +23,7 @@
 #include <wstdisplay/opengl_window.hpp>
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/texture_manager.hpp>
+#include <wstdisplay/font/ttf_font_manager.hpp>
 
 #include "app/app.hpp"
 #include "app/config.hpp"
@@ -31,7 +32,6 @@
 #include "app/windstille_main.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
-#include "font/ttf_font_manager.hpp"
 #include "screen/game_session.hpp"
 #include "screen/particle_viewer.hpp"
 #include "screen/screen_manager.hpp"
@@ -74,7 +74,7 @@ WindstilleMain::main(int argc, char** argv)
                                geom::isize(config.get_int("screen-width"), config.get_int("screen-height")),
                                geom::isize(config.get_int("aspect-width"), config.get_int("aspect-height")),
                                config.get_bool("fullscreen"), config.get_int("anti-aliasing"));
-      TTFFontManager    ttffont_manager;
+      wstdisplay::TTFFontManager    ttffont_manager;
       Fonts             fonts(ttffont_manager);
       Console           console;
       SoundManager      sound_manager;

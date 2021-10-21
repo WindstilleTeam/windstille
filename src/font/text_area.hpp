@@ -25,7 +25,6 @@
 #include <geom/geom.hpp>
 #include <wstdisplay/fwd.hpp>
 
-class TTFFont;
 class TextAreaImpl;
 
 /** A class for managing multiple lines of text in combination with
@@ -46,7 +45,7 @@ public:
 
   /** Sets the default font to be used in the text box, can be changed
       with special tags */
-  void set_font(TTFFont* font);
+  void set_font(wstdisplay::TTFFont* font);
 
   /** Skips letter by letter display */
   void set_progress_complete();

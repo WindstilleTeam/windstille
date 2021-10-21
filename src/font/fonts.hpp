@@ -26,12 +26,12 @@
 class Fonts
 {
 public:
-  std::unique_ptr<TTFFont> ttffont;
-  std::unique_ptr<TTFFont> vera12;
-  std::unique_ptr<TTFFont> vera20;
+  std::unique_ptr<wstdisplay::TTFFont> ttffont;
+  std::unique_ptr<wstdisplay::TTFFont> vera12;
+  std::unique_ptr<wstdisplay::TTFFont> vera20;
 
 public:
-  Fonts(TTFFontManager& mgr);
+  Fonts(wstdisplay::TTFFontManager& mgr);
   ~Fonts();
 };
 

@@ -16,8 +16,9 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "app/app.hpp"
 #include <wstdisplay/graphics_context.hpp>
+
+#include "app/app.hpp"
 #include "font/fonts.hpp"
 #include "gui/group_component.hpp"
 
@@ -43,7 +44,7 @@ GroupComponent::draw(wstdisplay::GraphicsContext& gc)
 
   if (!title.empty())
   {
-    TTFFont* font = g_app.fonts().vera20.get();
+    wstdisplay::TTFFont* font = g_app.fonts().vera20.get();
     font->draw_center(gc,
                       glm::vec2(rect.left() + rect.width() / 2.0f,
                                 rect.top()  + static_cast<float>(font->get_height()) + 5.0f),

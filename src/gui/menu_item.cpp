@@ -36,7 +36,7 @@ void
 MenuItem::draw(wstdisplay::GraphicsContext& gc, const geom::frect& rect, bool is_active)
 {
   surf::Color font_color;
-  TTFFont* font = parent->get_font();
+  wstdisplay::TTFFont* font = parent->get_font();
 
   if (is_active)
   {
@@ -122,7 +122,7 @@ void
 EnumMenuItem::draw(wstdisplay::GraphicsContext& gc, const geom::frect& rect, bool is_active)
 {
   MenuItem::draw(gc, rect, is_active);
-  TTFFont* font = parent->get_font();
+  wstdisplay::TTFFont* font = parent->get_font();
   surf::Color font_color;
   if (is_active)
   {
