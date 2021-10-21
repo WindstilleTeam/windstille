@@ -21,6 +21,7 @@
 #include <iostream>
 #include <fmt/format.h>
 
+#include <surf/save.hpp>
 #include <wstinput/input_manager.hpp>
 
 #include "app/app.hpp"
@@ -245,7 +246,7 @@ ScreenManager::poll_events()
                 count += 1;
               } while(filename.exists());
 
-              wstdisplay::save_screenshot(filename);
+              surf::save(g_app.window().screenshot(), filename);
               ConsoleLog << "Writing screenshot to: '" << filename << "'" << std::endl;
             }
             break;

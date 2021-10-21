@@ -25,6 +25,7 @@
 
 #include <argparser.hpp>
 
+#include <surf/save.hpp>
 #include <wstdisplay/assert_gl.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstdisplay/framebuffer.hpp>
@@ -238,7 +239,7 @@ App::run(int argc, char* argv[])
                 break;
 
               case SDLK_F10:
-                save_screenshot("/tmp/out.png");
+                surf::save(window.screenshot(), "/tmp/out.png");
                 break;
 
               case SDLK_LEFT:
@@ -348,7 +349,7 @@ App::run(int argc, char* argv[])
       gc.push_framebuffer(framebuffer);
       char out[1024];
       sprintf(out, "%s/%08d.jpg", m_output_dir.c_str(), frame_number);
-      save_screenshot(out);
+      surf::save(window.screenshot(), out);
       //std::cout << "Wrote: " << out << std::endl;
       frame_number += 1;
       gc.pop_framebuffer();
