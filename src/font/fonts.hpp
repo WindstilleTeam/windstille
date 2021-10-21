@@ -21,7 +21,7 @@
 
 #include <memory>
 
-#include "font/ttf_font.hpp"
+#include <wstdisplay/font/ttf_font.hpp>
 
 class Fonts
 {

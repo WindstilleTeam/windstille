@@ -19,11 +19,11 @@
 #include "font/text_area.hpp"
 
 #include <babyxml.hpp>
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 #include "app/app.hpp"
-#include <wstdisplay/graphics_context.hpp>
 #include "font/fonts.hpp"
-#include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 struct TextAreaCommand
 {

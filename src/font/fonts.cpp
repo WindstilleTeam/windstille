@@ -16,11 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "util/pathname.hpp"
-
-#include "font/border_font_effect.hpp"
-#include "font/ttf_font_manager.hpp"
 #include "font/fonts.hpp"
+
+#include <wstdisplay/font/border_font_effect.hpp>
+#include <wstdisplay/font/ttf_font_manager.hpp>
+
+#include "util/pathname.hpp"
 
 Fonts::Fonts(TTFFontManager& mgr) :
   ttffont(mgr.create_font(Pathname("fonts/VeraMono.ttf"), 14, BorderFontEffect(1, true))),

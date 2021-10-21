@@ -43,7 +43,6 @@ find_program(XCF2PNG xcf2png REQUIRED)
 find_package(Threads REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(PNG REQUIRED)
-find_package(Freetype REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glm REQUIRED)
@@ -147,7 +146,6 @@ target_link_libraries(wstlib PUBLIC
   sexp
   surf
   Squirrel::Squirrel
-  Freetype::Freetype
   GLEW::GLEW
   JPEG::JPEG
   OpenGL::GL
