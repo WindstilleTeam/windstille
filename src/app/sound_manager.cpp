@@ -36,13 +36,14 @@ SoundManager::~SoundManager()
 void
 SoundManager::play(Pathname const& filename)
 {
-  m_manager->sound().play(filename.get_sys_path());
+  auto source = m_manager->sound().play(filename.get_sys_path());
+  m_manager->manage(std::move(source));
 }
 
 void
 SoundManager::play_music(Pathname const& filename)
 {
-  m_manager->music().play(filename.get_sys_path());
+  m_current_music = m_manager->music().play(filename.get_sys_path());
 }
 
 void
