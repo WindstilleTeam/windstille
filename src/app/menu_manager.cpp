@@ -82,7 +82,7 @@ MenuManager::display_option_menu()
     .add_pair(0, "off")
     .add_pair(1, "on");
 
-  menu.add_enum("Controller Debug", ScreenManager::current()->get_show_controller_debug(),
+  menu.add_enum("Controller Debug", g_app.screen().get_show_controller_debug(),
                 std::bind(&MenuManager::menu_controller_debug, _1))
     .add_pair(0, "off")
     .add_pair(1, "on");
@@ -311,7 +311,7 @@ MenuManager::display_help()
   group->pack(text.release());
   manager->get_root()->add_child(group.release());
 
-  //FIXMESCREEN: ScreenManager::current()->push_overlay(manager.release());
+  //FIXMESCREEN: g_app.screen().push_overlay(manager.release());
 }
 
 void
@@ -353,7 +353,7 @@ MenuManager::display_credits()
 
   group->pack(text.release());
   manager->get_root()->add_child(group.release());
-  // FIXME SCREEN: ScreenManager::current()->push_overlay(manager.release());
+  // FIXME SCREEN: g_app.screen().push_overlay(manager.release());
 }
 
 geom::frect
@@ -394,8 +394,8 @@ MenuManager::menu_show_model(const Pathname& filename)
   sprite3dview->set_model(filename);
 
   // Launching Sprite3DView instead of game
-  ScreenManager::current()->push_screen(sprite3dview.release());
-  ScreenManager::current()->clear_overlay();
+  g_app.screen().push_screen(sprite3dview.release());
+  g_app.screen().clear_overlay();
 }
 
 void
@@ -404,31 +404,31 @@ MenuManager::menu_show_particle_system(const Pathname& filename)
   std::unique_ptr<ParticleViewer> particle_viewer(new ParticleViewer());
   particle_viewer->load(filename);
 
-  ScreenManager::current()->push_screen(particle_viewer.release());
-  ScreenManager::current()->clear_overlay();
+  g_app.screen().push_screen(particle_viewer.release());
+  g_app.screen().clear_overlay();
 }
 
 void
 MenuManager::menu_start_game()
 {
-  ScreenManager::current()->push_screen(new GameSession(Pathname("levels/newformat2.wst")));
-  ScreenManager::current()->pop_overlay();
+  g_app.screen().push_screen(new GameSession(Pathname("levels/newformat2.wst")));
+  g_app.screen().pop_overlay();
 }
 
 void
 MenuManager::menu_quit()
 {
   //GameSession::current()->quit();
-  ScreenManager::current()->pop_overlay();
-  ScreenManager::current()->quit();
+  g_app.screen().pop_overlay();
+  g_app.screen().quit();
 }
 
 void
 MenuManager::menu_start_scenario(const Pathname& scenario)
 {
   std::cout << "Starting: " << scenario << std::endl;
-  ScreenManager::current()->push_screen(new GameSession(scenario));
-  ScreenManager::current()->clear_overlay();
+  g_app.screen().push_screen(new GameSession(scenario));
+  g_app.screen().clear_overlay();
 }
 
 void
@@ -447,21 +447,21 @@ MenuManager::menu_fullscreen(int i)
 void
 MenuManager::menu_controller_debug(int i)
 {
-  ScreenManager::current()->show_controller_debug(i);
+  g_app.screen().show_controller_debug(i);
 }
 
 void
 MenuManager::menu_continue()
 {
-  ScreenManager::current()->pop_overlay();
+  g_app.screen().pop_overlay();
 }
 
 void
 MenuManager::menu_exit()
 {
   // FIXME: Make this return to the title screen
-  ScreenManager::current()->pop_overlay();
-  ScreenManager::current()->pop_screen();
+  g_app.screen().pop_overlay();
+  g_app.screen().pop_screen();
 }
 
 void
@@ -485,22 +485,22 @@ MenuManager::menu_ambient_light(int i, int component)
 void
 MenuManager::menu_show_geometry_test()
 {
-  ScreenManager::current()->push_screen(new GeometryTest());
-  ScreenManager::current()->clear_overlay();
+  g_app.screen().push_screen(new GeometryTest());
+  g_app.screen().clear_overlay();
 }
 
 void
 MenuManager::menu_show_armature_test()
 {
-  ScreenManager::current()->push_screen(new ArmatureTest());
-  ScreenManager::current()->clear_overlay();
+  g_app.screen().push_screen(new ArmatureTest());
+  g_app.screen().clear_overlay();
 }
 
 void
 MenuManager::menu_show_navigation_test()
 {
-  ScreenManager::current()->push_screen(new NavigationTest());
-  ScreenManager::current()->clear_overlay();
+  g_app.screen().push_screen(new NavigationTest());
+  g_app.screen().clear_overlay();
 }
 
 void

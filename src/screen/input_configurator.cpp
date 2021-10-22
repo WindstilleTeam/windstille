@@ -146,7 +146,7 @@ InputConfigurator::handle_event(const SDL_Event& event)
   if (items.empty())
   {
     std::cout << "InputConfigurator: done" << std::endl;
-    ScreenManager::current()->pop_overlay();
+    g_app.screen().pop_overlay();
     return;
   }
 
@@ -233,7 +233,7 @@ InputConfigurator::handle_event(const SDL_Event& event)
       if (event.key.keysym.sym == SDLK_ESCAPE)
       {
         std::cout << "InputConfigurator: abort" << std::endl;
-        ScreenManager::current()->pop_overlay();
+        g_app.screen().pop_overlay();
         //next_item();
       }
       else if (event.key.keysym.sym == SDLK_RETURN)

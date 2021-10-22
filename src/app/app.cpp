@@ -34,7 +34,8 @@ App::App() :
   m_sprite3d_manager(nullptr),
   m_ttffont_manager(nullptr),
   m_fonts(nullptr),
-  m_style(nullptr)
+  m_style(nullptr),
+  m_screen_manager(nullptr)
 {
 }
 
@@ -106,6 +107,13 @@ App::style() const
 {
   assert(m_style != nullptr);
   return *m_style;
+}
+
+ScreenManager&
+App::screen() const
+{
+  assert(m_screen_manager != nullptr);
+  return *m_screen_manager;
 }
 
 /* EOF */

@@ -34,7 +34,7 @@ class Screen;
  *  The ScreenManager handles overlays like Option Menus, Main Menus
  *  and such
  */
-class ScreenManager : public Currenton<ScreenManager>
+class ScreenManager
 {
 private:
   enum ScreenAction { NONE, POP_SCREEN, PUSH_SCREEN, CLEAR_SCREENS };
@@ -63,7 +63,7 @@ private:
 
 public:
   ScreenManager();
-  ~ScreenManager() override;
+  ~ScreenManager();
 
   /** Displays the previously set screen in until quit() is called */
   void run(wstdisplay::GraphicsContext& gc);

@@ -98,6 +98,7 @@ WindstilleMain::main(int argc, char** argv)
       g_app.m_sprite3d_manager = &sprite3d_manager;
       g_app.m_window = &window;
       g_app.m_ttffont_manager = &ttffont_manager;
+      g_app.m_screen_manager = &screen_manager;
       g_app.m_fonts = &fonts;
       g_app.m_style = &style;
 
@@ -138,23 +139,23 @@ WindstilleMain::run()
     {
       std::unique_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
       sprite3dview->set_model(filename);
-      ScreenManager::current()->push_screen(sprite3dview.release());
+      g_app.screen().push_screen(sprite3dview.release());
     }
     else if (file_type == "sprite" || file_type == "png" || file_type == "jpg")
     {
       std::unique_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
       sprite2dview->set_sprite(filename);
-      ScreenManager::current()->push_screen(sprite2dview.release());
+      g_app.screen().push_screen(sprite2dview.release());
     }
     else if (file_type == "particles")
     {
       ParticleViewer* particle_viewer = new ParticleViewer();
       particle_viewer->load(filename);
-      ScreenManager::current()->push_screen(particle_viewer);
+      g_app.screen().push_screen(particle_viewer);
     }
     else if (file_type == "wst")
     {
-      ScreenManager::current()->push_screen(new GameSession(filename));
+      g_app.screen().push_screen(new GameSession(filename));
     }
     else
     {
@@ -163,10 +164,10 @@ WindstilleMain::run()
   }
   else
   {
-    ScreenManager::current()->push_screen(new TitleScreen());
+    g_app.screen().push_screen(new TitleScreen());
   }
 
-  ScreenManager::current()->run(g_app.window().get_gc());
+  g_app.screen().run(g_app.window().get_gc());
 }
 
 void

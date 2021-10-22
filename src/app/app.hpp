@@ -33,6 +33,7 @@ class Manager;
 class Fonts;
 class SoundManager;
 class SpriteManager;
+class ScreenManager;
 
 class App
 {
@@ -50,6 +51,7 @@ public:
   Fonts& fonts() const;
   wstdisplay::TTFFontManager& ttffont_manager() const;
   gui::Style& style() const;
+  ScreenManager& screen() const;
 
 private:
   wstinput::InputManagerSDL* m_input_manager;
@@ -62,6 +64,7 @@ private:
   wstdisplay::TTFFontManager* m_ttffont_manager;
   Fonts* m_fonts;
   gui::Style* m_style;
+  ScreenManager* m_screen_manager;
 
 private:
   App(const App&) = delete;
