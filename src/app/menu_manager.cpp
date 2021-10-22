@@ -28,10 +28,10 @@
 #include <wstdisplay/opengl_window.hpp>
 #include "engine/sector.hpp"
 #include "font/fonts.hpp"
-#include "gui/group_component.hpp"
-#include "gui/menu_item.hpp"
-#include "gui/root_component.hpp"
-#include "gui/text_view.hpp"
+#include <wstgui/group_component.hpp>
+#include <wstgui/menu_item.hpp>
+#include <wstgui/root_component.hpp>
+#include <wstgui/text_view.hpp>
 #include "screen/armature_test.hpp"
 #include "screen/game_session.hpp"
 #include "screen/geometry_test.hpp"
@@ -44,14 +44,14 @@
 #  include "input/wiimote.hpp"
 #endif
 #include "app/windstille.hpp"
-#include "gui/menu.hpp"
+#include <wstgui/menu.hpp>
 
 using namespace std::placeholders;
 
 void
 MenuManager::display_option_menu()
 {
-  gui::Menu menu("Options", create_centered_rect(500, 340));
+  gui::Menu menu("Options", create_centered_rect(500, 340), g_app.style());
 
   menu.add_slider("Master Volume",  config.get_int("master-volume"), 0, 100, 10,
                   std::bind(&MenuManager::menu_master_volume, _1));
@@ -105,7 +105,7 @@ MenuManager::display_option_menu()
 void
 MenuManager::display_main_menu()
 {
-  gui::Menu menu("", create_positioned_rect(glm::vec2(400-20, 200), geom::fsize(250, 254)), false);
+  gui::Menu menu("", create_positioned_rect(glm::vec2(400-20, 200), geom::fsize(250, 254)), g_app.style(), false);
 
   menu.add_button("Select Scenario", std::bind(&MenuManager::display_scenario_menu));
   menu.add_button("Navigation Test", std::bind(&MenuManager::menu_show_navigation_test));
@@ -145,7 +145,7 @@ MenuManager::display_main_menu()
 void
 MenuManager::display_pause_menu()
 {
-  gui::Menu menu("Pause Menu", create_centered_rect(400, 300));
+  gui::Menu menu("Pause Menu", create_centered_rect(400, 300), g_app.style());
 
   menu.add_button("Resume",  std::bind(&MenuManager::menu_continue));
   if (Sector::current())
@@ -164,7 +164,7 @@ MenuManager::display_pause_menu()
 void
 MenuManager::display_models_menu()
 {
-  gui::Menu menu("Select Model", create_centered_rect(550, 376));
+  gui::Menu menu("Select Model", create_centered_rect(550, 376), g_app.style());
 
   std::vector<Pathname> models;
   models.push_back(Pathname("models/characters/bob/bob.wsprite"));
@@ -191,7 +191,7 @@ MenuManager::display_models_menu()
 void
 MenuManager::display_particle_menu()
 {
-  gui::Menu menu("Particle Systems", create_centered_rect(400, 340));
+  gui::Menu menu("Particle Systems", create_centered_rect(400, 340), g_app.style());
 
   std::vector<Pathname> scenarios;
   scenarios.push_back(Pathname("particlesystems/fire.particles"));
@@ -208,7 +208,7 @@ MenuManager::display_particle_menu()
 void
 MenuManager::display_scenario_menu()
 {
-  gui::Menu menu("Select Scenario", create_centered_rect(500, 340));
+  gui::Menu menu("Select Scenario", create_centered_rect(500, 340), g_app.style());
 
   std::vector<Pathname> scenarios = Directory::read(Pathname("sectors/trainstation/"), ".wst");
   scenarios.push_back(Pathname("sectors/apartment/apartment.wst"));
@@ -230,7 +230,7 @@ MenuManager::display_scenario_menu()
 void
 MenuManager::display_debug_menu()
 {
-  gui::Menu menu("Debug", create_centered_rect(500, 340));
+  gui::Menu menu("Debug", create_centered_rect(500, 340), g_app.style());
 
   surf::Color amb = Sector::current()->get_ambient_light();
 
@@ -250,7 +250,7 @@ void
 MenuManager::display_help()
 {
   using namespace gui;
-  std::unique_ptr<GUIManager> manager(new GUIManager());
+  std::unique_ptr<GUIManager> manager(new GUIManager(g_app.style()));
 
   std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400),
                                                          "Help",
@@ -310,14 +310,15 @@ MenuManager::display_help()
 
   group->pack(text.release());
   manager->get_root()->add_child(group.release());
-  ScreenManager::current()->push_overlay(manager.release());
+
+  //FIXMESCREEN: ScreenManager::current()->push_overlay(manager.release());
 }
 
 void
 MenuManager::display_credits()
 {
   using namespace gui;
-  std::unique_ptr<GUIManager> manager(new GUIManager());
+  std::unique_ptr<GUIManager> manager(new GUIManager(g_app.style()));
 
   std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400),
                                                          "Credits",
@@ -352,7 +353,7 @@ MenuManager::display_credits()
 
   group->pack(text.release());
   manager->get_root()->add_child(group.release());
-  ScreenManager::current()->push_overlay(manager.release());
+  // FIXME SCREEN: ScreenManager::current()->push_overlay(manager.release());
 }
 
 geom::frect

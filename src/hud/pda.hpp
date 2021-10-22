@@ -19,11 +19,11 @@
 #ifndef HEADER_WINDSTILLE_HUD_PDA_HPP
 #define HEADER_WINDSTILLE_HUD_PDA_HPP
 
+#include <wstdisplay/fwd.hpp>
+
 #include "sprite2d/sprite.hpp"
 #include "screen/screen.hpp"
 
-class TextArea;
-
 class DialogEntry
 {
 public:
@@ -42,7 +42,7 @@ public:
   std::string text;
   bool complete;
 };
-
+
 /** */
 class PDA : public Screen
 {
@@ -50,8 +50,8 @@ private:
   glm::vec2  pos;
   Sprite    background;
 
-  std::unique_ptr<TextArea>  ui_area;
-  std::unique_ptr<TextArea>  text_area;
+  std::unique_ptr<wstdisplay::TextArea>  ui_area;
+  std::unique_ptr<wstdisplay::TextArea>  text_area;
 
   std::vector<DialogEntry> dialogs;
   std::vector<ObjectiveEntry> objectives;
@@ -77,7 +77,7 @@ public:
   bool is_objective_given(const std::string& name);
   bool is_objective_complete(const std::string& name);
 };
-
+
 #endif
 
 /* EOF */

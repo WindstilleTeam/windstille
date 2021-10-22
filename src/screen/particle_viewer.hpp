@@ -26,7 +26,7 @@
 #include <wstdisplay/scene_context.hpp>
 #include <wstdisplay/scenegraph/scene_graph.hpp>
 
-#include "gui/gui_manager.hpp"
+#include <wstgui/gui_manager.hpp>
 #include "particles/particle_system.hpp"
 #include "screen/screen.hpp"
 #include "sprite2d/sprite.hpp"

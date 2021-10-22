@@ -24,6 +24,7 @@
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/texture_manager.hpp>
 #include <wstdisplay/font/ttf_font_manager.hpp>
+#include <wstgui/style.hpp>
 
 #include "app/app.hpp"
 #include "app/config.hpp"
@@ -87,6 +88,7 @@ WindstilleMain::main(int argc, char** argv)
       wstinput::InputManagerSDL   input_manager(controller_description);
       ScreenManager     screen_manager;
       TileFactory       tile_factory = TileFactory(Pathname("tiles.scm"));
+      gui::Style     style(fonts.vera20.get());
 
       g_app.m_sound_manager = &sound_manager;
       g_app.m_input_manager = &input_manager;
@@ -97,6 +99,7 @@ WindstilleMain::main(int argc, char** argv)
       g_app.m_window = &window;
       g_app.m_ttffont_manager = &ttffont_manager;
       g_app.m_fonts = &fonts;
+      g_app.m_style = &style;
 
       window.set_icon(Pathname("icon.png"));
       texture_manager.set_fallback(Pathname("images/404.png"));

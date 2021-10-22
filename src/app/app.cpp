@@ -33,7 +33,8 @@ App::App() :
   m_sprite_manager(nullptr),
   m_sprite3d_manager(nullptr),
   m_ttffont_manager(nullptr),
-  m_fonts(nullptr)
+  m_fonts(nullptr),
+  m_style(nullptr)
 {
 }
 
@@ -98,6 +99,13 @@ App::ttffont_manager() const
 {
   assert(m_ttffont_manager != nullptr);
   return *m_ttffont_manager;
+}
+
+gui::Style&
+App::style() const
+{
+  assert(m_style != nullptr);
+  return *m_style;
 }
 
 /* EOF */

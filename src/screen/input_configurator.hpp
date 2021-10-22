@@ -22,8 +22,9 @@
 #include <sstream>
 #include <vector>
 
+#include <wstdisplay/font/text_area.hpp>
+
 #include "screen/screen.hpp"
-#include "font/text_area.hpp"
 
 struct ConfigureItem
 {
@@ -40,7 +41,7 @@ private:
   bool wait_for_plus;
   SDL_Event minus;
   std::ostringstream out;
-  TextArea area;
+  wstdisplay::TextArea area;
 
 public:
   InputConfigurator();

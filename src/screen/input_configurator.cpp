@@ -35,10 +35,11 @@ InputConfigurator::InputConfigurator()
     wait_for_plus(false),
     minus(),
     out(),
-    area(geom::frect(120.0f,
-               100.0f,
-               static_cast<float>(g_app.window().get_gc().size().width())  - 120.0f,
-               static_cast<float>(g_app.window().get_gc().size().height()) - 100.0f),
+    area(g_app.style().get_font(),
+         geom::frect(120.0f,
+                     100.0f,
+                     static_cast<float>(g_app.window().get_gc().size().width())  - 120.0f,
+                     static_cast<float>(g_app.window().get_gc().size().height()) - 100.0f),
          false)
 {
   out << "Input Configurator\n"

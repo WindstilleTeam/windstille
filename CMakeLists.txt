@@ -75,6 +75,7 @@ function(build_dependencies)
   add_subdirectory(external/wstdisplay/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/wstinput/ EXCLUDE_FROM_ALL)
   add_subdirectory(external/wstsound/ EXCLUDE_FROM_ALL)
+  add_subdirectory(external/wstgui/ EXCLUDE_FROM_ALL)
 endfunction()
 build_dependencies()
 
@@ -140,6 +141,7 @@ target_link_libraries(wstlib PUBLIC
   wstdisplay
   wstinput
   wstsound
+  wstgui
   argparser
   babyxml
   geomcpp

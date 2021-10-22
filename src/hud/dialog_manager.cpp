@@ -24,13 +24,14 @@
 #include <geom/geom.hpp>
 #include <wstinput/controller.hpp>
 
-#include "app/app.hpp"
-#include "app/controller_def.hpp"
 #include <wstdisplay/graphics_context.hpp>
 #include <wstdisplay/opengl_window.hpp>
+#include <wstdisplay/font/text_area.hpp>
+
+#include "app/app.hpp"
+#include "app/controller_def.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
-#include "font/text_area.hpp"
 #include "screen/game_session.hpp"
 #include "util/pathname.hpp"
 
@@ -206,8 +207,9 @@ DialogManager::create_text()
 
   geom::isize dialog_size(dialog_width, dialog_height);
 
-  text_area.reset(new TextArea(geom::frect(geom::irect(geom::ipoint(text_rect.left(), text_rect.top() + g_app.fonts().vera20->get_height()),
-                                          geom::isize(text_width, 200))), true));
+  text_area.reset(new wstdisplay::TextArea(g_app.style().get_font(),
+                                           geom::frect(geom::irect(geom::ipoint(text_rect.left(), text_rect.top() + g_app.fonts().vera20->get_height()),
+                                                                   geom::isize(text_width, 200))), true));
   text_area->set_font(g_app.fonts().vera20.get());
   text_area->set_text(text);
 }

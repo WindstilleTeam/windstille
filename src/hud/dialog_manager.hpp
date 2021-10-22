@@ -22,12 +22,12 @@
 #include <memory>
 #include <vector>
 
+#include <wstdisplay/fwd.hpp>
+
 #include "app/app.hpp"
 #include "screen/screen.hpp"
 #include "sprite2d/sprite.hpp"
 #include "util/currenton.hpp"
-
-class TextArea;
 
 /** */
 class DialogManager : public Screen,
@@ -39,7 +39,7 @@ private:
   Sprite portrait;
   std::string text;
   float delay;
-  std::unique_ptr<TextArea> text_area;
+  std::unique_ptr<wstdisplay::TextArea> text_area;
 
   enum Alignment {
     VCENTER = 0x00,

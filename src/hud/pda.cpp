@@ -18,14 +18,14 @@
 
 #include <sstream>
 
+#include <wstdisplay/font/text_area.hpp>
+#include <wstdisplay/graphics_context.hpp>
 #include <wstinput/controller.hpp>
 #include <wstinput/input_event.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
-#include <wstdisplay/graphics_context.hpp>
 #include "font/fonts.hpp"
-#include "font/text_area.hpp"
 #include "hud/pda.hpp"
 #include "sprite2d/manager.hpp"
 #include "util/pathname.hpp"
@@ -55,10 +55,12 @@ PDA::PDA()
 {
   background = g_app.sprite().create(Pathname("images/pda/pda.sprite"));
 
-  ui_area.reset(new TextArea(geom::grow(geom::frect(pos + glm::vec2(40.0f, 50.0f),
-                                              geom::fsize(315.0f, 435.0f)), -12.0f), false));
-  text_area.reset(new TextArea(geom::grow(geom::frect(pos + glm::vec2(40.0f, 50.0f) + glm::vec2(0.0f, 56.0f),
-                                                geom::fsize(315.0f, 380.0f)), -12.0f), false));
+  ui_area.reset(new wstdisplay::TextArea(g_app.style().get_font(),
+                                         geom::grow(geom::frect(pos + glm::vec2(40.0f, 50.0f),
+                                                                geom::fsize(315.0f, 435.0f)), -12.0f), false));
+  text_area.reset(new wstdisplay::TextArea(g_app.style().get_font(),
+                                           geom::grow(geom::frect(pos + glm::vec2(40.0f, 50.0f) + glm::vec2(0.0f, 56.0f),
+                                                                  geom::fsize(315.0f, 380.0f)), -12.0f), false));
 
   ui_area->set_font(g_app.fonts().vera12.get());
   text_area->set_font(g_app.fonts().vera12.get());

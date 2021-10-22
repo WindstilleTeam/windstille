@@ -41,3 +41,6 @@
 [submodule "external/wstdisplay"]
 	path = external/wstdisplay
 	url = https://gitlab.com/Windstille/wstdisplay
+[submodule "external/wstgui"]
+	path = external/wstgui
+	url = https://gitlab.com/Windstille/wstgui.git
