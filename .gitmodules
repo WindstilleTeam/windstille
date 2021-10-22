@@ -7,6 +7,7 @@
 [submodule "external/argparser"]
 	path = external/argparser
 	url = https://gitlab.com/argparser/argparser.git
+	branch = stable
 [submodule "external/sexp-cpp"]
 	path = external/sexp-cpp
 	url = https://gitlab.com/lispparser/sexp-cpp.git
