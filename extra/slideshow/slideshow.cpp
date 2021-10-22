@@ -33,7 +33,6 @@
 #include <wstdisplay/surface_drawing_parameters.hpp>
 #include <wstdisplay/surface.hpp>
 #include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/screenshot.hpp>
 #include <wstdisplay/texture_manager.hpp>
 #include "util/system.hpp"
 

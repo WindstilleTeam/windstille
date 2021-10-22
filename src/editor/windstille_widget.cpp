@@ -26,7 +26,6 @@
 #include <wstdisplay/compositor.hpp>
 #include <wstdisplay/graphics_context.hpp>
 #include <wstdisplay/opengl_state.hpp>
-#include <wstdisplay/screenshot.hpp>
 #include <wstdisplay/surface.hpp>
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/texture_manager.hpp>
