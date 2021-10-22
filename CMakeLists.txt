@@ -133,6 +133,7 @@ file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/util/*.cpp)
 add_library(wstlib STATIC ${WSTLIB_SOURCES})
 target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
+target_compile_definitions(wstlib PUBLIC -DGLM_ENABLE_EXPERIMENTAL)
 target_link_libraries(wstlib PUBLIC
   biio
   prio

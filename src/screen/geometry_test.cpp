@@ -20,7 +20,6 @@
 
 #include <GL/glew.h>
 
-#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
