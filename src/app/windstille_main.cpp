@@ -26,6 +26,7 @@
 #include <wstdisplay/texture_manager.hpp>
 #include <wstdisplay/font/ttf_font_manager.hpp>
 #include <wstgui/style.hpp>
+#include <wstgui/screen_manager.hpp>
 
 #include "app/app.hpp"
 #include "app/config.hpp"
@@ -38,7 +39,6 @@
 #include "screen/game_session.hpp"
 #include "screen/input_configurator.hpp"
 #include "screen/particle_viewer.hpp"
-#include "screen/screen_manager.hpp"
 #include "screen/sprite2dview.hpp"
 #include "screen/sprite3dview.hpp"
 #include "screen/title_screen.hpp"

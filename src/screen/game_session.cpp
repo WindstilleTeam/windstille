@@ -19,6 +19,7 @@
 #include "screen/game_session.hpp"
 
 #include <geom/geom.hpp>
+#include <wstgui/screen_manager.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
@@ -37,7 +38,6 @@
 #include "hud/speech_manager.hpp"
 #include "objects/doll.hpp"
 #include "objects/player.hpp"
-#include "screen/screen_manager.hpp"
 #include "screen/view.hpp"
 
 class GameSessionImpl

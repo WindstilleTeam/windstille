@@ -21,31 +21,33 @@
 #include <functional>
 #include <iostream>
 
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstgui/group_component.hpp>
+#include <wstgui/menu.hpp>
+#include <wstgui/menu_item.hpp>
+#include <wstgui/root_component.hpp>
+#include <wstgui/screen_manager.hpp>
+#include <wstgui/text_view.hpp>
+
 #include "app/app.hpp"
 #include "app/config.hpp"
 #include "app/sound_manager.hpp"
-#include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/opengl_window.hpp>
+#include "app/windstille.hpp"
 #include "engine/sector.hpp"
 #include "font/fonts.hpp"
-#include <wstgui/group_component.hpp>
-#include <wstgui/menu_item.hpp>
-#include <wstgui/root_component.hpp>
-#include <wstgui/text_view.hpp>
 #include "screen/armature_test.hpp"
 #include "screen/game_session.hpp"
 #include "screen/geometry_test.hpp"
 #include "screen/navigation_test.hpp"
 #include "screen/particle_viewer.hpp"
-#include "screen/screen_manager.hpp"
 #include "screen/sprite3dview.hpp"
 #include "util/directory.hpp"
+
 #ifdef HAVE_CWIID
 #  include "input/wiimote.hpp"
 #endif
-#include "app/windstille.hpp"
-#include <wstgui/menu.hpp>
-
+
 using namespace std::placeholders;
 
 void

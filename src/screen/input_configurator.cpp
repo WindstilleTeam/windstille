@@ -22,13 +22,13 @@
 
 #include <wstinput/controller.hpp>
 #include <wstinput/input_manager.hpp>
+#include <wstdisplay/graphics_context.hpp>
+#include <wstdisplay/opengl_window.hpp>
+#include <wstgui/screen_manager.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
-#include <wstdisplay/graphics_context.hpp>
-#include <wstdisplay/opengl_window.hpp>
 #include "font/fonts.hpp"
-#include "screen/screen_manager.hpp"
 
 InputConfigurator::InputConfigurator()
   : items(),
