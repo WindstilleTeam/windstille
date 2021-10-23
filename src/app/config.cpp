@@ -43,6 +43,7 @@ Config::Config()
   add(new ConfigValue<int> ("anti-aliasing",  _("Use NUMx Anti-Aliasing"), true, 0));
   add(new ConfigValue<bool>("fullscreen",     _("Use fullscreen"),         true, false));
   add(new ConfigValue<bool>("show-fps",       _("Show frames per second"), true, true));
+  add(new ConfigValue<bool>("show-controller", _("Show Controller Input"), false, false));
 
   add(new ConfigValue<bool>("music",          _("Enable Music"), true, true));
   add(new ConfigValue<bool>("sound",          _("Enable Sound"), true, true));
