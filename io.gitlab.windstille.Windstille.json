@@ -30,6 +30,8 @@
         "shared-modules/squirrel/squirrel.json",
         "shared-modules/glm/glm.json",
         "shared-modules/jsoncpp/jsoncpp-1.8.json",
+        "shared-modules/libmodplug/libmodplug.json",
+        "shared-modules/mpg123/mpg123.json",
         {
             "name": "windstille",
             "buildsystem": "cmake-ninja",

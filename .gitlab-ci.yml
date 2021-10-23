@@ -51,11 +51,12 @@ before_script:
     libphysfs-dev
     libpng-dev
     libsdl2-dev
-    libsdl2-image-dev
-    libsdl2-mixer-dev
     libsigc++-2.0-dev
     libsquirrel-dev
     libvorbis-dev
+    libmodplug-dev
+    libmpg123-dev
+    libopusfile-dev
     flatpak
     flatpak-builder
 
