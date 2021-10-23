@@ -99,7 +99,7 @@ MenuManager::display_option_menu()
     menu.add_button("Try to Connect Wiimote", std::bind(&MenuManager::menu_wiimote));
 #endif
 
-  menu.show();
+  menu.show(g_app.screen());
 }
 
 void
@@ -139,7 +139,7 @@ MenuManager::display_main_menu()
     menu.get_root()->add_child(text_group.release());
   }
 
-  menu.show();
+  menu.show(g_app.screen());
 }
 
 void
@@ -158,7 +158,7 @@ MenuManager::display_pause_menu()
   menu.add_button("Help", std::bind(&MenuManager::display_help));
   menu.add_button("Return to Title Screen", std::bind(&MenuManager::menu_exit));
 
-  menu.show();
+  menu.show(g_app.screen());
 }
 
 void
@@ -185,7 +185,7 @@ MenuManager::display_models_menu()
     menu.add_button(i->get_raw_path(), std::bind(&MenuManager::menu_show_model, *i));
   }
 
-  menu.show();
+  menu.show(g_app.screen());
 }
 
 void
@@ -202,7 +202,7 @@ MenuManager::display_particle_menu()
     menu.add_button(i->get_raw_path(), std::bind(&MenuManager::menu_show_particle_system, *i));
   }
 
-  menu.show();
+  menu.show(g_app.screen());
 }
 
 void
@@ -224,7 +224,7 @@ MenuManager::display_scenario_menu()
     menu.add_button(i->get_raw_path(), std::bind(&MenuManager::menu_start_scenario, *i));
   }
 
-  menu.show();
+  menu.show(g_app.screen());
 }
 
 void
@@ -243,7 +243,7 @@ MenuManager::display_debug_menu()
   menu.add_slider("Ambient Light (Blue)", int(amb.b*100), 0, 100, 10,
                   std::bind(&MenuManager::menu_ambient_light, _1, 2));
 
-  menu.show();
+  menu.show(g_app.screen());
 }
 
 void
@@ -311,7 +311,7 @@ MenuManager::display_help()
   group->pack(text.release());
   manager->get_root()->add_child(group.release());
 
-  //FIXMESCREEN: g_app.screen().push_overlay(manager.release());
+  g_app.screen().push_overlay(manager.release());
 }
 
 void
@@ -353,7 +353,7 @@ MenuManager::display_credits()
 
   group->pack(text.release());
   manager->get_root()->add_child(group.release());
-  // FIXME SCREEN: g_app.screen().push_overlay(manager.release());
+  g_app.screen().push_overlay(manager.release());
 }
 
 geom::frect

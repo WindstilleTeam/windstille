@@ -22,11 +22,12 @@
 #include <string>
 #include <squirrel.h>
 
+#include <wstgui/screen.hpp>
+
 #include "app/console.hpp"
 #include "app/globals.hpp"
 #include <wstdisplay/scene_context.hpp>
 #include "hud/controller_help_window.hpp"
-#include "screen/screen.hpp"
 #include "sprite2d/sprite.hpp"
 #include "util/currenton.hpp"
 

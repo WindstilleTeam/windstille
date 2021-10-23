@@ -25,8 +25,6 @@
 
 #include <wstdisplay/fwd.hpp>
 
-#include "util/currenton.hpp"
-
 class ControllerHelpWindow;
 class Screen;
 

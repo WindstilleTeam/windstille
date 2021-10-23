@@ -21,11 +21,11 @@
 #include <iostream>
 
 #include <wstinput/controller.hpp>
+#include <wstdisplay/graphics_context.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
 #include "armature/pose.hpp"
-#include <wstdisplay/graphics_context.hpp>
 #include "screen/armature_test.hpp"
 #include "screen/screen_manager.hpp"
 #include "util/directory.hpp"

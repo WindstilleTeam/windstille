@@ -23,9 +23,9 @@
 #include <vector>
 
 #include <wstdisplay/fwd.hpp>
+#include <wstgui/screen.hpp>
 
 #include "app/app.hpp"
-#include "screen/screen.hpp"
 #include "sprite2d/sprite.hpp"
 #include "util/currenton.hpp"
 

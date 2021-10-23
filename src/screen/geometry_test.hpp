@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_GEOMETRY_TEST_HPP
 #define HEADER_WINDSTILLE_SCREEN_GEOMETRY_TEST_HPP
 
-#include "screen/screen.hpp"
+#include <wstgui/screen.hpp>
 
 #include <glm/glm.hpp>
 #include <geom/line.hpp>

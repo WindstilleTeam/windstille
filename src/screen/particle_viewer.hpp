@@ -25,10 +25,10 @@
 #include <wstdisplay/compositor.hpp>
 #include <wstdisplay/scene_context.hpp>
 #include <wstdisplay/scenegraph/scene_graph.hpp>
-
+#include <wstgui/screen.hpp>
 #include <wstgui/gui_manager.hpp>
+
 #include "particles/particle_system.hpp"
-#include "screen/screen.hpp"
 #include "sprite2d/sprite.hpp"
 #include "util/pathname.hpp"
 

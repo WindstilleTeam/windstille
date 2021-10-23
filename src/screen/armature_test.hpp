@@ -22,10 +22,10 @@
 #include <memory>
 
 #include <wstdisplay/fwd.hpp>
+#include <wstgui/screen.hpp>
 
 #include "armature/armature.hpp"
 #include "armature/model.hpp"
-#include "screen/screen.hpp"
 
 class ArmatureTest : public Screen
 {

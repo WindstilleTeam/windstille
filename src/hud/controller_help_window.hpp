@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_HUD_CONTROLLER_HELP_WINDOW_HPP
 #define HEADER_WINDSTILLE_HUD_CONTROLLER_HELP_WINDOW_HPP
 
-#include "screen/screen.hpp"
+#include <wstgui/screen.hpp>
 
 #include <glm/glm.hpp>
 #include "util/currenton.hpp"

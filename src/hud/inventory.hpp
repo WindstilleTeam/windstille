@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_HUD_INVENTORY_HPP
 #define HEADER_WINDSTILLE_HUD_INVENTORY_HPP
 
-#include "screen/screen.hpp"
+#include <wstgui/screen.hpp>
 #include <memory>
 
 class InventoryImpl;

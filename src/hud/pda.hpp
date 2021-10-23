@@ -20,9 +20,9 @@
 #define HEADER_WINDSTILLE_HUD_PDA_HPP
 
 #include <wstdisplay/fwd.hpp>
+#include <wstgui/screen.hpp>
 
 #include "sprite2d/sprite.hpp"
-#include "screen/screen.hpp"
 
 class DialogEntry
 {

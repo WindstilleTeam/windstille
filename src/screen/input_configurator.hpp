@@ -23,8 +23,7 @@
 #include <vector>
 
 #include <wstdisplay/font/text_area.hpp>
-
-#include "screen/screen.hpp"
+#include <wstgui/screen.hpp>
 
 struct ConfigureItem
 {

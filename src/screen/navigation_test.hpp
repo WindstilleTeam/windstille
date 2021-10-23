@@ -22,8 +22,9 @@
 #include <memory>
 
 #include <glm/glm.hpp>
+#include <wstgui/screen.hpp>
+
 #include "navigation/navigation_graph.hpp"
-#include "screen/screen.hpp"
 
 class NavigationGraph;
 class EdgePosition;

@@ -19,8 +19,9 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_TITLE_SCREEN_HPP
 #define HEADER_WINDSTILLE_SCREEN_TITLE_SCREEN_HPP
 
+#include <wstgui/screen.hpp>
+
 #include "sprite2d/sprite.hpp"
-#include "screen/screen.hpp"
 
 /** */
 class TitleScreen : public Screen
