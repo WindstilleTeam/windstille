@@ -20,13 +20,14 @@
 #include <filesystem>
 
 #include <surf/save.hpp>
-#include <wstinput/input_manager.hpp>
+#include <wstdisplay/font/ttf_font_manager.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/texture_manager.hpp>
-#include <wstdisplay/font/ttf_font_manager.hpp>
-#include <wstgui/style.hpp>
+#include <wstgui/frame_hud.hpp>
 #include <wstgui/screen_manager.hpp>
+#include <wstgui/style.hpp>
+#include <wstinput/input_manager.hpp>
 
 #include "app/app.hpp"
 #include "app/config.hpp"
@@ -142,8 +143,15 @@ WindstilleMain::main(int argc, char** argv)
         screen_manager.push_overlay(new InputConfigurator());
       });
 
-      screen_manager.bind_key(SDLK_F10, []{
-        config.set_bool("show-fps", !config.get_bool("show-fps"));
+      std::unique_ptr<gui::FrameHud> frame_hud = std::make_unique<gui::FrameHud>(style);
+      screen_manager.bind_key(SDLK_F10, [&screen_manager, &frame_hud]{
+        bool const show_fps = !config.get_bool("show-fps");
+        config.set_bool("show-fps", show_fps);
+        if (show_fps) {
+          screen_manager.add_hud(frame_hud.get());
+        } else {
+          screen_manager.remove_hud(frame_hud.get());
+        }
       });
 
       screen_manager.bind_key(SDLK_F11, []{
