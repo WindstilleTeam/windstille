@@ -19,14 +19,17 @@
 #ifndef HEADER_WINDSTILLE_SCREEN_SCREEN_MANAGER_HPP
 #define HEADER_WINDSTILLE_SCREEN_SCREEN_MANAGER_HPP
 
+#include <SDL.h>
+
+#include <functional>
 #include <memory>
-#include <memory>
+#include <unordered_map>
 #include <vector>
 
 #include <wstdisplay/fwd.hpp>
-
-class ControllerHelpWindow;
-class Screen;
+#include <wstgui/fwd.hpp>
+#include <wstinput/fwd.hpp>
+#include <wstsound/fwd.hpp>
 
 /**
  *  The ScreenManager handles overlays like Option Menus, Main Menus
@@ -34,37 +37,12 @@ class Screen;
  */
 class ScreenManager
 {
-private:
-  enum ScreenAction { NONE, POP_SCREEN, PUSH_SCREEN, CLEAR_SCREENS };
-
-  typedef std::vector<std::shared_ptr<Screen> > Screens;
-  Screens screens;
-  ScreenAction screen_action;
-  std::shared_ptr<Screen> screen_screen;
-
-  Screens overlay_screens;
-  ScreenAction overlay_screen_action;
-  std::shared_ptr<Screen> overlay_screen_screen;
-
-  unsigned int ticks;
-
-  float time_counter;
-  int   frame_counter;
-  int   last_fps;
-  float overlap_delta;
-  bool  do_quit;
-  bool  show_controller_help_window;
-  std::unique_ptr<ControllerHelpWindow> controller_help_window;
-
-  void apply_pending_actions();
-  void draw(wstdisplay::GraphicsContext& gc);
-
 public:
-  ScreenManager();
+  ScreenManager(wstdisplay::OpenGLWindow& window, wstinput::InputManagerSDL& input, wstsound::SoundManager& sound);
   ~ScreenManager();
 
   /** Displays the previously set screen in until quit() is called */
-  void run(wstdisplay::GraphicsContext& gc);
+  void run();
 
   /** Breaks out of the run() function */
   void quit();
@@ -82,16 +60,48 @@ public:
   void pop_overlay();
   void clear_overlay();
 
-  // Callbacks, FIXME: Could be moved to a seperate class
-  void show_controller_debug(bool v);
-  bool get_show_controller_debug() const;
+  /** Add a non-interactive overlay */
+  void add_hud(Screen* screen);
+  void remove_hud(Screen* screen);
+
+  void bind_key(SDL_KeyCode code, std::function<void()> callback);
 
 private:
+  void apply_pending_actions();
+  void draw(wstdisplay::GraphicsContext& gc);
   void poll_events();
-  void draw_fps(wstdisplay::GraphicsContext& gc);
 
-  ScreenManager (const ScreenManager&);
-  ScreenManager& operator= (const ScreenManager&);
+private:
+  enum ScreenAction { NONE, POP_SCREEN, PUSH_SCREEN, CLEAR_SCREENS };
+
+private:
+  wstdisplay::OpenGLWindow& m_window;
+  wstinput::InputManagerSDL& m_input;
+  wstsound::SoundManager& m_sound;
+
+  typedef std::vector<std::shared_ptr<Screen> > Screens;
+  Screens screens;
+  ScreenAction screen_action;
+  std::shared_ptr<Screen> screen_screen;
+
+  Screens overlay_screens;
+  ScreenAction overlay_screen_action;
+  std::shared_ptr<Screen> overlay_screen_screen;
+
+  unsigned int ticks;
+
+  float time_counter;
+  int   frame_counter;
+  int   last_fps;
+  float overlap_delta;
+  bool  do_quit;
+
+  std::unordered_map<SDL_Keycode, std::function<void()>> m_key_bindings;
+  std::vector<Screen*> m_huds;
+
+public:
+  ScreenManager (const ScreenManager&) = delete;
+  ScreenManager& operator= (const ScreenManager&) = delete;
 };
 
 #endif

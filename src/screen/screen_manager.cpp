@@ -18,23 +18,20 @@
 
 #include "screen/screen_manager.hpp"
 
-#include <iostream>
+#include <logmich/log.hpp>
 #include <fmt/format.h>
 
 #include <surf/save.hpp>
 #include <wstinput/input_manager.hpp>
-
-#include "app/app.hpp"
-#include "app/config.hpp"
-#include "app/sound_manager.hpp"
 #include <wstdisplay/graphics_context.hpp>
 #include <wstdisplay/opengl_window.hpp>
-#include "font/fonts.hpp"
-#include "screen/game_session.hpp"
-#include "screen/input_configurator.hpp"
-#include "util/pathname.hpp"
+#include <wstgui/screen.hpp>
+#include <wstsound/sound_manager.hpp>
 
-ScreenManager::ScreenManager() :
+ScreenManager::ScreenManager(wstdisplay::OpenGLWindow& window, wstinput::InputManagerSDL& input, wstsound::SoundManager& sound) :
+  m_window(window),
+  m_input(input),
+  m_sound(sound),
   screens(),
   screen_action(NONE),
   screen_screen(),
@@ -47,8 +44,8 @@ ScreenManager::ScreenManager() :
   last_fps(0),
   overlap_delta(0),
   do_quit(false),
-  show_controller_help_window(false),
-  controller_help_window()
+  m_key_bindings(),
+  m_huds()
 {
 }
 
@@ -59,13 +56,12 @@ ScreenManager::~ScreenManager()
 }
 
 void
-ScreenManager::run(wstdisplay::GraphicsContext& gc)
+ScreenManager::run()
 {
   do_quit = false;
 
   ticks = SDL_GetTicks();
 
-  controller_help_window.reset(new ControllerHelpWindow());
   apply_pending_actions();
 
   while (!do_quit && !screens.empty())
@@ -82,26 +78,28 @@ ScreenManager::run(wstdisplay::GraphicsContext& gc)
 
     while (delta > step)
     {
-      g_app.input().update(delta);
+      m_input.update(delta);
 
-      Console::current()->update(step);
-      if (!Console::current()->is_active())
-      {
-        if (!overlay_screens.empty())
-          overlay_screens.back()->update(step, g_app.input().get_controller());
-        else if (!screens.empty())
-          screens.back()->update(step, g_app.input().get_controller());
+      if (!overlay_screens.empty()) {
+        overlay_screens.back()->update(step, m_input.get_controller());
+      } else if (!screens.empty()) {
+        screens.back()->update(step, m_input.get_controller());
       }
-      g_app.input().clear();
+
+      m_input.clear();
+
+      for(Screen* hud : m_huds) {
+        hud->update(step, Controller());
+      }
 
       delta -= step;
     }
 
     overlap_delta = delta;
 
-    g_app.sound().update(delta);
+    m_sound.update(delta);
 
-    draw(gc);
+    draw(m_window.get_gc());
 
     frame_counter += 1;
 
@@ -116,21 +114,24 @@ ScreenManager::run(wstdisplay::GraphicsContext& gc)
 void
 ScreenManager::draw(wstdisplay::GraphicsContext& gc)
 {
-  if (!screens.empty())
+  if (!screens.empty()) {
     screens.back()->draw(gc);
+  }
 
-  if (!overlay_screens.empty())
+  if (!overlay_screens.empty()) {
     overlay_screens.back()->draw(gc);
+  }
 
-  if (show_controller_help_window)
-    controller_help_window->draw(gc);
+  for(Screen* hud : m_huds) {
+    hud->draw(gc);
+  }
 
-  Console::current()->draw(gc);
-
-  if (config.get_bool("show-fps"))
+#if FIXME
+  if (config.get_bool("show-fps")) {
     draw_fps(gc);
-
-  g_app.window().swap_buffers();
+  }
+#endif
+  m_window.swap_buffers();
 }
 
 void
@@ -147,7 +148,7 @@ ScreenManager::apply_pending_actions()
     case POP_SCREEN:
       if (overlay_screens.empty())
       {
-        std::cout << "Error: ScreenManager: trying to pop_overlay with empty stack" << std::endl;
+        log_error("ScreenManager: trying to pop_overlay with empty stack");
       }
       else
       {
@@ -200,74 +201,22 @@ ScreenManager::poll_events()
     {
       case SDL_QUIT:
         // FIXME: This should be a bit more gentle, but will do for now
-        std::cout << "Ctrl-c or Window-close pressed, game is going to quit" << std::endl;
+        log_info("Ctrl-c or Window-close pressed, game is going to quit");
         quit();
         break;
 
       case SDL_KEYDOWN:
       case SDL_KEYUP:
-        if (event.key.state)
-        {
-          switch (event.key.keysym.sym)
-          {
-            case SDLK_F6:
-              SDL_SetRelativeMouseMode(SDL_FALSE);
-              break;
-
-            case SDLK_F7:
-              SDL_SetRelativeMouseMode(SDL_TRUE);
-              break;
-
-            case SDLK_F8:
-              show_controller_help_window = !show_controller_help_window;
-              break;
-
-            case SDLK_F9:
-              push_overlay(new InputConfigurator());
-              break;
-
-            case SDLK_F10:
-              config.set_bool("show-fps", !config.get_bool("show-fps"));
-              break;
-
-            case SDLK_F11:
-              config.set_bool("fullscreen", !config.get_bool("fullscreen"));
-              g_app.window().set_fullscreen(config.get_bool("fullscreen"));
-              break;
-
-            case SDLK_F12:
-            {
-              // FIXME: Replace this with Physfs stuff
-              int count = 0;
-              Pathname filename;
-              do {
-                filename = Pathname(fmt::format("screenshots/windstille{:04d}.png", count), Pathname::kUserPath);
-                count += 1;
-              } while(filename.exists());
-
-              surf::save(g_app.window().screenshot(), filename);
-              ConsoleLog << "Writing screenshot to: '" << filename << "'" << std::endl;
+        if (event.key.state) {
+          if (auto binding = m_key_bindings.find(event.key.keysym.sym); binding != m_key_bindings.end()) {
+            binding->second();
+          } else {
+            if (!overlay_screens.empty()) {
+              overlay_screens.back()->handle_event(event);
+            } else if (!screens.empty()) {
+              screens.back()->handle_event(event);
             }
-            break;
-
-            default:
-              if (!Console::current()->is_active())
-              {
-                if (!overlay_screens.empty())
-                  overlay_screens.back()->handle_event(event);
-                else if (!screens.empty())
-                  screens.back()->handle_event(event);
-              }
-              break;
           }
-        }
-
-        if (!Console::current()->is_active() &&
-            event.key.state &&
-            event.key.keysym.sym == SDLK_F1) {
-          Console::current()->activate();
-        } else {
-          g_app.input().on_event(event);
         }
         break;
 
@@ -281,7 +230,7 @@ ScreenManager::poll_events()
       case SDL_JOYBUTTONDOWN:
       case SDL_TEXTINPUT:
       case SDL_TEXTEDITING:
-        g_app.input().on_event(event);
+        m_input.on_event(event);
 
         if (!overlay_screens.empty())
           overlay_screens.back()->handle_event(event);
@@ -297,6 +246,7 @@ ScreenManager::poll_events()
   }
 }
 
+#ifdef FIXME
 void
 ScreenManager::draw_fps(wstdisplay::GraphicsContext& gc)
 {
@@ -312,6 +262,7 @@ ScreenManager::draw_fps(wstdisplay::GraphicsContext& gc)
   out << "FPS: " << last_fps;
   g_app.fonts().ttffont->draw(gc, glm::vec2(static_cast<float>(gc.size().width()) - 100.0f, 30.0f), out.str());
 }
+#endif
 
 void
 ScreenManager::push_screen(Screen* s)
@@ -356,15 +307,21 @@ ScreenManager::quit()
 }
 
 void
-ScreenManager::show_controller_debug(bool v)
+ScreenManager::bind_key(SDL_KeyCode code, std::function<void()> callback)
 {
-  show_controller_help_window = v;
+  m_key_bindings[code] = std::move(callback);
 }
 
-bool
-ScreenManager::get_show_controller_debug() const
+void
+ScreenManager::add_hud(Screen* screen)
 {
-  return show_controller_help_window;
+  m_huds.emplace_back(screen);
+}
+
+void
+ScreenManager::remove_hud(Screen* screen)
+{
+  std::erase(m_huds, screen);
 }
 
 /* EOF */

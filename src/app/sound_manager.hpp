@@ -50,6 +50,8 @@ public:
 
   void update(float delta);
 
+  wstsound::SoundManager& get_mgr() const { return *m_manager; }
+
 private:
   std::unique_ptr<wstsound::SoundManager> m_manager;
 

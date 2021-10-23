@@ -82,7 +82,7 @@ MenuManager::display_option_menu()
     .add_pair(0, "off")
     .add_pair(1, "on");
 
-  menu.add_enum("Controller Debug", g_app.screen().get_show_controller_debug(),
+  menu.add_enum("Controller Debug", config.get_bool("show-controller"),
                 std::bind(&MenuManager::menu_controller_debug, _1))
     .add_pair(0, "off")
     .add_pair(1, "on");
@@ -447,7 +447,9 @@ MenuManager::menu_fullscreen(int i)
 void
 MenuManager::menu_controller_debug(int i)
 {
-  g_app.screen().show_controller_debug(i);
+  config.set_bool("show-controller", i);
+  log_not_implemented();
+  //g_app.show_controller_debug(i);
 }
 
 void

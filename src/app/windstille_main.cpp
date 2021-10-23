@@ -19,6 +19,7 @@
 #include <sstream>
 #include <filesystem>
 
+#include <surf/save.hpp>
 #include <wstinput/input_manager.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstdisplay/surface_manager.hpp>
@@ -33,7 +34,9 @@
 #include "app/windstille_main.hpp"
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
+#include "hud/controller_help_window.hpp"
 #include "screen/game_session.hpp"
+#include "screen/input_configurator.hpp"
 #include "screen/particle_viewer.hpp"
 #include "screen/screen_manager.hpp"
 #include "screen/sprite2dview.hpp"
@@ -86,7 +89,7 @@ WindstilleMain::main(int argc, char** argv)
       ScriptManager     script_manager;
       wstinput::ControllerDescription controller_description = get_windstille_controller_description();
       wstinput::InputManagerSDL   input_manager(controller_description);
-      ScreenManager     screen_manager;
+      ScreenManager     screen_manager(window, input_manager, sound_manager.get_mgr());
       TileFactory       tile_factory = TileFactory(Pathname("tiles.scm"));
       gui::Style     style(fonts.vera20.get());
 
@@ -106,6 +109,60 @@ WindstilleMain::main(int argc, char** argv)
       texture_manager.set_fallback(Pathname("images/404.png"));
 
       init_modules();
+
+      screen_manager.bind_key(SDLK_F1, []{
+        if (!Console::current()->is_active()) {
+          Console::current()->activate();
+        } else {
+          // FIXME: g_app.input().on_event(event); // FIXME: Why?
+        }
+      });
+
+      screen_manager.bind_key(SDLK_F6, []{
+        SDL_SetRelativeMouseMode(SDL_FALSE);
+      });
+
+      screen_manager.bind_key(SDLK_F7, []{
+        SDL_SetRelativeMouseMode(SDL_TRUE);
+      });
+
+      bool show_controller_help_window = false;
+      std::unique_ptr<ControllerHelpWindow> controller_help_window = std::make_unique<ControllerHelpWindow>();
+      screen_manager.bind_key(SDLK_F8, [&screen_manager, &controller_help_window, &show_controller_help_window]{
+        if (!show_controller_help_window) {
+          screen_manager.add_hud(controller_help_window.get());
+          show_controller_help_window = true;
+        } else {
+          screen_manager.remove_hud(controller_help_window.get());
+          show_controller_help_window = false;
+        }
+      });
+
+      screen_manager.bind_key(SDLK_F9, [&screen_manager]{
+        screen_manager.push_overlay(new InputConfigurator());
+      });
+
+      screen_manager.bind_key(SDLK_F10, []{
+        config.set_bool("show-fps", !config.get_bool("show-fps"));
+      });
+
+      screen_manager.bind_key(SDLK_F11, []{
+        config.set_bool("fullscreen", !config.get_bool("fullscreen"));
+        g_app.window().set_fullscreen(config.get_bool("fullscreen"));
+      });
+
+      screen_manager.bind_key(SDLK_F12, []{
+        // FIXME: Replace this with Physfs stuff
+        int count = 0;
+        Pathname filename;
+        do {
+          filename = Pathname(fmt::format("screenshots/windstille{:04d}.png", count), Pathname::kUserPath);
+          count += 1;
+        } while(filename.exists());
+
+        surf::save(g_app.window().screenshot(), filename);
+        ConsoleLog << "Writing screenshot to: '" << filename << "'" << std::endl;
+      });
 
       run();
 
@@ -167,7 +224,7 @@ WindstilleMain::run()
     g_app.screen().push_screen(new TitleScreen());
   }
 
-  g_app.screen().run(g_app.window().get_gc());
+  g_app.screen().run();
 }
 
 void
