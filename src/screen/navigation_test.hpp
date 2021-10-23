@@ -50,6 +50,7 @@ private:
 
 public:
   NavigationTest();
+  ~NavigationTest();
 
   void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, const Controller& controller) override;

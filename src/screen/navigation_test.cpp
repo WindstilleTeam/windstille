@@ -65,6 +65,10 @@ NavigationTest::NavigationTest()
   //graph->add_edge(node3, node4);
 }
 
+NavigationTest::~NavigationTest()
+{
+}
+
 void
 NavigationTest::draw(wstdisplay::GraphicsContext& gc)
 {

@@ -138,7 +138,7 @@ MenuManager::display_main_menu()
                    "the Free Software Foundation, either version 3 of the License, or "
                    "(at your option) any later version.");
     text_group->pack(text.release());
-    menu.get_root()->add_child(text_group.release());
+    menu.get_root()->add_child(std::move(text_group));
   }
 
   menu.show(g_app.screen());
@@ -311,9 +311,9 @@ MenuManager::display_help()
   text->set_active(true);
 
   group->pack(text.release());
-  manager->get_root()->add_child(group.release());
+  manager->get_root()->add_child(std::move(group));
 
-  g_app.screen().push_overlay(manager.release());
+  g_app.screen().push_overlay(std::move(manager));
 }
 
 void
@@ -354,8 +354,8 @@ MenuManager::display_credits()
   text->set_active(true);
 
   group->pack(text.release());
-  manager->get_root()->add_child(group.release());
-  g_app.screen().push_overlay(manager.release());
+  manager->get_root()->add_child(std::move(group));
+  g_app.screen().push_overlay(std::move(manager));
 }
 
 geom::frect
@@ -396,7 +396,7 @@ MenuManager::menu_show_model(const Pathname& filename)
   sprite3dview->set_model(filename);
 
   // Launching Sprite3DView instead of game
-  g_app.screen().push_screen(sprite3dview.release());
+  g_app.screen().push_screen(std::move(sprite3dview));
   g_app.screen().clear_overlay();
 }
 
@@ -406,14 +406,14 @@ MenuManager::menu_show_particle_system(const Pathname& filename)
   std::unique_ptr<ParticleViewer> particle_viewer(new ParticleViewer());
   particle_viewer->load(filename);
 
-  g_app.screen().push_screen(particle_viewer.release());
+  g_app.screen().push_screen(std::move(particle_viewer));
   g_app.screen().clear_overlay();
 }
 
 void
 MenuManager::menu_start_game()
 {
-  g_app.screen().push_screen(new GameSession(Pathname("levels/newformat2.wst")));
+  g_app.screen().push_screen(std::make_unique<GameSession>(Pathname("levels/newformat2.wst")));
   g_app.screen().pop_overlay();
 }
 
@@ -429,7 +429,7 @@ void
 MenuManager::menu_start_scenario(const Pathname& scenario)
 {
   std::cout << "Starting: " << scenario << std::endl;
-  g_app.screen().push_screen(new GameSession(scenario));
+  g_app.screen().push_screen(std::make_unique<GameSession>(scenario));
   g_app.screen().clear_overlay();
 }
 
@@ -489,21 +489,21 @@ MenuManager::menu_ambient_light(int i, int component)
 void
 MenuManager::menu_show_geometry_test()
 {
-  g_app.screen().push_screen(new GeometryTest());
+  g_app.screen().push_screen(std::make_unique<GeometryTest>());
   g_app.screen().clear_overlay();
 }
 
 void
 MenuManager::menu_show_armature_test()
 {
-  g_app.screen().push_screen(new ArmatureTest());
+  g_app.screen().push_screen(std::make_unique<ArmatureTest>());
   g_app.screen().clear_overlay();
 }
 
 void
 MenuManager::menu_show_navigation_test()
 {
-  g_app.screen().push_screen(new NavigationTest());
+  g_app.screen().push_screen(std::make_unique<NavigationTest>());
   g_app.screen().clear_overlay();
 }
 

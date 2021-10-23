@@ -140,7 +140,7 @@ WindstilleMain::main(int argc, char** argv)
       });
 
       screen_manager.bind_key(SDLK_F9, [&screen_manager]{
-        screen_manager.push_overlay(new InputConfigurator());
+        screen_manager.push_overlay(std::make_unique<InputConfigurator>());
       });
 
       std::unique_ptr<gui::FrameHud> frame_hud = std::make_unique<gui::FrameHud>(style);
@@ -204,23 +204,23 @@ WindstilleMain::run()
     {
       std::unique_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
       sprite3dview->set_model(filename);
-      g_app.screen().push_screen(sprite3dview.release());
+      g_app.screen().push_screen(std::move(sprite3dview));
     }
     else if (file_type == "sprite" || file_type == "png" || file_type == "jpg")
     {
       std::unique_ptr<Sprite2DView> sprite2dview(new Sprite2DView());
       sprite2dview->set_sprite(filename);
-      g_app.screen().push_screen(sprite2dview.release());
+      g_app.screen().push_screen(std::move(sprite2dview));
     }
     else if (file_type == "particles")
     {
-      ParticleViewer* particle_viewer = new ParticleViewer();
+      auto particle_viewer = std::make_unique<ParticleViewer>();
       particle_viewer->load(filename);
-      g_app.screen().push_screen(particle_viewer);
+      g_app.screen().push_screen(std::move(particle_viewer));
     }
     else if (file_type == "wst")
     {
-      g_app.screen().push_screen(new GameSession(filename));
+      g_app.screen().push_screen(std::make_unique<GameSession>(filename));
     }
     else
     {
@@ -229,7 +229,7 @@ WindstilleMain::run()
   }
   else
   {
-    g_app.screen().push_screen(new TitleScreen());
+    g_app.screen().push_screen(std::make_unique<TitleScreen>());
   }
 
   g_app.screen().run();
