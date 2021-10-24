@@ -111,7 +111,7 @@ NavigationTest::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-NavigationTest::update(float delta, const Controller& controller)
+NavigationTest::update(float delta, wstinput::Controller const& controller)
 {
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))

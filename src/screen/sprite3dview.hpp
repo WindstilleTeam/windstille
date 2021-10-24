@@ -29,7 +29,7 @@
  * A simple class to view 3d sprites and their different actions,
  * mostly usefull for debugging
  */
-class Sprite3DView : public Screen
+class Sprite3DView : public wstgui::Screen
 {
 private:
   wstdisplay::Compositor m_compositor;
@@ -46,7 +46,7 @@ public:
   ~Sprite3DView() override;
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
 
   void set_model(const Pathname& filename);
 

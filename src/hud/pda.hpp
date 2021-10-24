@@ -44,7 +44,7 @@ public:
 };
 
 /** */
-class PDA : public Screen
+class PDA : public wstgui::Screen
 {
 private:
   glm::vec2  pos;
@@ -69,7 +69,7 @@ public:
   ~PDA() override;
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
   void add_dialog(const std::string& character, const std::string& text);
 
   void add_objective(const std::string& name, const std::string& text);

@@ -23,7 +23,7 @@
 
 /** Displays a list of text strings from which the user can select
     one, used to form multiple-choice dialogs */
-class Conversation : public Screen,
+class Conversation : public wstgui::Screen,
                      public Currenton<Conversation>
 {
 private:
@@ -51,7 +51,7 @@ public:
   Conversation();
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
 
   void add(const std::string& text);
   void add(const std::string& topic, const std::string& text);

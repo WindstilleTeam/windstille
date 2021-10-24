@@ -85,7 +85,7 @@ ControllerHelpWindow::draw_trigger(wstdisplay::GraphicsContext& gc, const glm::v
 void
 ControllerHelpWindow::draw(wstdisplay::GraphicsContext& gc)
 {
-  const Controller& controller = g_app.input().get_controller();
+  wstinput::Controller const& controller = g_app.input().get_controller();
 
   glm::vec2 pos(static_cast<float>(gc.size().width())  - 350.0f - 16.0f,
                static_cast<float>(gc.size().height()) - 200.0f - 16.0f);
@@ -128,7 +128,7 @@ ControllerHelpWindow::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-ControllerHelpWindow::update(float /*delta*/, const Controller& )
+ControllerHelpWindow::update(float /*delta*/, wstinput::Controller const& controller )
 {
 }
 

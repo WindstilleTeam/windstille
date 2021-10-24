@@ -103,7 +103,7 @@ ArmatureTest::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-ArmatureTest::update(float delta, const Controller& controller)
+ArmatureTest::update(float delta, wstinput::Controller const& controller)
 {
   time += delta;
 

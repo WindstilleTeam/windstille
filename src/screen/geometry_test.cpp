@@ -73,7 +73,7 @@ GeometryTest::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-GeometryTest::update(float delta, const Controller& controller)
+GeometryTest::update(float delta, wstinput::Controller const& controller)
 {
   if (controller.button_was_pressed(ESCAPE_BUTTON) ||
       controller.button_was_pressed(PAUSE_BUTTON))

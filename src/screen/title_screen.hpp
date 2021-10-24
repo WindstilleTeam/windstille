@@ -24,7 +24,7 @@
 #include "sprite2d/sprite.hpp"
 
 /** */
-class TitleScreen : public Screen
+class TitleScreen : public wstgui::Screen
 {
 private:
   Sprite background;
@@ -36,7 +36,7 @@ public:
   void on_startup() override;
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
 
   void handle_event(const SDL_Event& ) override;
 

@@ -102,14 +102,14 @@ App::ttffont_manager() const
   return *m_ttffont_manager;
 }
 
-gui::Style&
+wstgui::Style&
 App::style() const
 {
   assert(m_style != nullptr);
   return *m_style;
 }
 
-ScreenManager&
+wstgui::ScreenManager&
 App::screen() const
 {
   assert(m_screen_manager != nullptr);

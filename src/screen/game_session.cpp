@@ -78,7 +78,7 @@ public:
 
   /** Pointer to either pda, inventory, conversation or
       dialog_manager. Receives input and gets drawn to the screen */
-  Screen* current_gui;
+  wstgui::Screen* current_gui;
 
   GameSessionImpl()
     : compositor(g_app.window().get_size(),
@@ -119,9 +119,9 @@ public:
 
   void update_cutscene(float delta);
   void update_input(float delta);
-  void update_controller(float delta, const Controller& controller);
+  void update_controller(float delta, wstinput::Controller const& controller);
   void update_game(float delta);
-  void update(float delta, const Controller& controller);
+  void update(float delta, wstinput::Controller const& controller);
 
   void handle_event(const SDL_Event& event);
 
@@ -271,7 +271,7 @@ GameSessionImpl::update_game(float delta)
 }
 
 void
-GameSessionImpl::update_controller(float delta, const Controller& controller)
+GameSessionImpl::update_controller(float delta, wstinput::Controller const& controller)
 {
   // Handle key presses
   if (controller.button_was_pressed(PDA_BUTTON))
@@ -315,7 +315,7 @@ GameSessionImpl::update_controller(float delta, const Controller& controller)
 }
 
 void
-GameSessionImpl::update(float delta, const Controller& controller)
+GameSessionImpl::update(float delta, wstinput::Controller const& controller)
 {
   update_cutscene(delta);
 
@@ -442,7 +442,7 @@ GameSession::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-GameSession::update(float delta, const Controller& controller)
+GameSession::update(float delta, wstinput::Controller const& controller)
 {
   impl->update(delta, controller);
 }

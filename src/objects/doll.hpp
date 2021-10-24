@@ -69,7 +69,7 @@ public:
 
   void draw (wstdisplay::SceneContext& ) override;
   void update (float delta) override;
-  void update(const Controller& controller, float delta);
+  void update(wstinput::Controller const& controller, float delta);
 
   glm::vec2 get_pos() const { return m_pos; }
 
@@ -88,17 +88,17 @@ private:
   void set_state_climbing();
   void set_state_jump();
 
-  void update_falling(const Controller& controller, float delta);
-  void update_standing(const Controller& controller, float delta);
-  void update_walking(const Controller& controller, float delta);
-  void update_running(const Controller& controller, float delta);
-  void update_ducking(const Controller& controller, float delta);
-  void update_jump_up(const Controller& controller, float delta);
-  void update_rolling(const Controller& controller, float delta);
-  void update_listing(const Controller& controller, float delta);
-  void update_swinging(const Controller& controller, float delta);
-  void update_climbing(const Controller& controller, float delta);
-  void update_jump(const Controller& controller, float delta);
+  void update_falling(wstinput::Controller const& controller, float delta);
+  void update_standing(wstinput::Controller const& controller, float delta);
+  void update_walking(wstinput::Controller const& controller, float delta);
+  void update_running(wstinput::Controller const& controller, float delta);
+  void update_ducking(wstinput::Controller const& controller, float delta);
+  void update_jump_up(wstinput::Controller const& controller, float delta);
+  void update_rolling(wstinput::Controller const& controller, float delta);
+  void update_listing(wstinput::Controller const& controller, float delta);
+  void update_swinging(wstinput::Controller const& controller, float delta);
+  void update_climbing(wstinput::Controller const& controller, float delta);
+  void update_jump(wstinput::Controller const& controller, float delta);
 
 private:
   Doll(const Doll&);

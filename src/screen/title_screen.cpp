@@ -50,7 +50,7 @@ TitleScreen::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-TitleScreen::update(float delta, const Controller& /*controller*/)
+TitleScreen::update(float delta, wstinput::Controller const& controller)
 {
   background.update(delta);
 }

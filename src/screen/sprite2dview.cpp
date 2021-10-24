@@ -181,7 +181,7 @@ Sprite2DView::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-Sprite2DView::update_slideshow(float delta, const Controller& controller)
+Sprite2DView::update_slideshow(float delta, wstinput::Controller const& controller)
 {
   if (!new_sprite)
   {
@@ -321,7 +321,7 @@ Sprite2DView::prepare_sprite(Sprite& sprite_)
 }
 
 void
-Sprite2DView::update_manual(float delta, const Controller& controller)
+Sprite2DView::update_manual(float delta, wstinput::Controller const& controller)
 {
   pos.x += controller.get_axis_state(X_AXIS) * 100.0f * delta + controller.get_ball_state(MOUSE_MOTION_X);
   pos.y += controller.get_axis_state(Y_AXIS) * 100.0f * delta + controller.get_ball_state(MOUSE_MOTION_Y);
@@ -336,7 +336,7 @@ Sprite2DView::update_manual(float delta, const Controller& controller)
 }
 
 void
-Sprite2DView::update(float delta, const Controller& controller)
+Sprite2DView::update(float delta, wstinput::Controller const& controller)
 {
   if (ignore_delta)
   {

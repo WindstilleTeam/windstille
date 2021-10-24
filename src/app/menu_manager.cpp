@@ -53,7 +53,7 @@ using namespace std::placeholders;
 void
 MenuManager::display_option_menu()
 {
-  gui::Menu menu("Options", create_centered_rect(500, 340), g_app.style());
+  wstgui::Menu menu("Options", create_centered_rect(500, 340), g_app.style());
 
   menu.add_slider("Master Volume",  config.get_int("master-volume"), 0, 100, 10,
                   std::bind(&MenuManager::menu_master_volume, _1));
@@ -107,7 +107,7 @@ MenuManager::display_option_menu()
 void
 MenuManager::display_main_menu()
 {
-  gui::Menu menu("", create_positioned_rect(glm::vec2(400-20, 200), geom::fsize(250, 254)), g_app.style(), false);
+  wstgui::Menu menu("", create_positioned_rect(glm::vec2(400-20, 200), geom::fsize(250, 254)), g_app.style(), false);
 
   menu.add_button("Select Scenario", std::bind(&MenuManager::display_scenario_menu));
   menu.add_button("Navigation Test", std::bind(&MenuManager::menu_show_navigation_test));
@@ -121,15 +121,15 @@ MenuManager::display_main_menu()
   menu.add_button("Quit", std::bind(&MenuManager::menu_quit));
 
   { // Construct Copyright box
-    std::unique_ptr<gui::GroupComponent> text_group
-      (new gui::GroupComponent(geom::frect(glm::vec2(static_cast<float>(g_app.window().get_gc().size().width())/2.0f - 390.0f,
+    std::unique_ptr<wstgui::GroupComponent> text_group
+      (new wstgui::GroupComponent(geom::frect(glm::vec2(static_cast<float>(g_app.window().get_gc().size().width())/2.0f - 390.0f,
                                                      static_cast<float>(g_app.window().get_gc().size().height())     - 100.0f),
                                            geom::fsize(800.0f - 20.0f,
                                                        100.0f - 10.0f)),
                                "",
                                menu.get_root()));
 
-    std::unique_ptr<gui::TextView> text(new gui::TextView(text_group->get_child_rect(), text_group.get()));
+    std::unique_ptr<wstgui::TextView> text(new wstgui::TextView(text_group->get_child_rect(), text_group.get()));
     text->set_font(g_app.fonts().vera12.get());
     text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmail.com&gt;\n"
                    "\n"
@@ -147,7 +147,7 @@ MenuManager::display_main_menu()
 void
 MenuManager::display_pause_menu()
 {
-  gui::Menu menu("Pause Menu", create_centered_rect(400, 300), g_app.style());
+  wstgui::Menu menu("Pause Menu", create_centered_rect(400, 300), g_app.style());
 
   menu.add_button("Resume",  std::bind(&MenuManager::menu_continue));
   if (Sector::current())
@@ -166,7 +166,7 @@ MenuManager::display_pause_menu()
 void
 MenuManager::display_models_menu()
 {
-  gui::Menu menu("Select Model", create_centered_rect(550, 376), g_app.style());
+  wstgui::Menu menu("Select Model", create_centered_rect(550, 376), g_app.style());
 
   std::vector<Pathname> models;
   models.push_back(Pathname("models/characters/bob/bob.wsprite"));
@@ -193,7 +193,7 @@ MenuManager::display_models_menu()
 void
 MenuManager::display_particle_menu()
 {
-  gui::Menu menu("Particle Systems", create_centered_rect(400, 340), g_app.style());
+  wstgui::Menu menu("Particle Systems", create_centered_rect(400, 340), g_app.style());
 
   std::vector<Pathname> scenarios;
   scenarios.push_back(Pathname("particlesystems/fire.particles"));
@@ -210,7 +210,7 @@ MenuManager::display_particle_menu()
 void
 MenuManager::display_scenario_menu()
 {
-  gui::Menu menu("Select Scenario", create_centered_rect(500, 340), g_app.style());
+  wstgui::Menu menu("Select Scenario", create_centered_rect(500, 340), g_app.style());
 
   std::vector<Pathname> scenarios = Directory::read(Pathname("sectors/trainstation/"), ".wst");
   scenarios.push_back(Pathname("sectors/apartment/apartment.wst"));
@@ -232,7 +232,7 @@ MenuManager::display_scenario_menu()
 void
 MenuManager::display_debug_menu()
 {
-  gui::Menu menu("Debug", create_centered_rect(500, 340), g_app.style());
+  wstgui::Menu menu("Debug", create_centered_rect(500, 340), g_app.style());
 
   surf::Color amb = Sector::current()->get_ambient_light();
 
@@ -251,7 +251,7 @@ MenuManager::display_debug_menu()
 void
 MenuManager::display_help()
 {
-  using namespace gui;
+  using namespace wstgui;
   std::unique_ptr<GUIManager> manager(new GUIManager(g_app.style()));
 
   std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400),
@@ -319,7 +319,7 @@ MenuManager::display_help()
 void
 MenuManager::display_credits()
 {
-  using namespace gui;
+  using namespace wstgui;
   std::unique_ptr<GUIManager> manager(new GUIManager(g_app.style()));
 
   std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400),

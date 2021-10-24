@@ -90,9 +90,9 @@ WindstilleMain::main(int argc, char** argv)
       ScriptManager     script_manager;
       wstinput::ControllerDescription controller_description = get_windstille_controller_description();
       wstinput::InputManagerSDL   input_manager(controller_description);
-      ScreenManager     screen_manager(window, input_manager, sound_manager.get_mgr());
+      wstgui::ScreenManager screen_manager(window, input_manager, sound_manager.get_mgr());
       TileFactory       tile_factory = TileFactory(Pathname("tiles.scm"));
-      gui::Style     style(fonts.vera20.get());
+      wstgui::Style     style(fonts.vera20.get());
 
       g_app.m_sound_manager = &sound_manager;
       g_app.m_input_manager = &input_manager;
@@ -143,7 +143,7 @@ WindstilleMain::main(int argc, char** argv)
         screen_manager.push_overlay(std::make_unique<InputConfigurator>());
       });
 
-      std::unique_ptr<gui::FrameHud> frame_hud = std::make_unique<gui::FrameHud>(style);
+      std::unique_ptr<wstgui::FrameHud> frame_hud = std::make_unique<wstgui::FrameHud>(style);
       screen_manager.bind_key(SDLK_F10, [&screen_manager, &frame_hud]{
         bool const show_fps = !config.get_bool("show-fps");
         config.set_bool("show-fps", show_fps);

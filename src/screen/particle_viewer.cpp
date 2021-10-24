@@ -115,7 +115,7 @@ ParticleViewer::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-ParticleViewer::update(float delta, const Controller& controller)
+ParticleViewer::update(float delta, wstinput::Controller const& controller)
 {
   for(Systems::iterator i = systems.begin(); i != systems.end(); ++i)
     (*i)->update(delta);

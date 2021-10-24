@@ -28,7 +28,7 @@
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
 
-namespace gui {
+namespace wstgui {
 
 Automap::Automap(Component* parent_) :
   Component(parent_),
@@ -85,14 +85,14 @@ Automap::draw(wstdisplay::GraphicsContext& gc)
   gc.push_cliprect(geom::irect(get_screen_rect()));
   surface->draw(gc,
                 wstdisplay::SurfaceDrawingParameters()
-                .set_pos(glm::vec2(rect.left(), rect.top()) + pos)
+                .set_pos(glm::vec2(m_rect.left(), m_rect.top()) + pos)
                 .set_color(surf::Color(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
                 .set_scale(zoom));
   gc.pop_cliprect();
 }
 
 void
-Automap::update(float delta, const Controller& controller)
+Automap::update(float delta, wstinput::Controller const& controller)
 {
   if (controller.get_button_state(AIM_BUTTON))
   {
@@ -122,6 +122,6 @@ Automap::update(float delta, const Controller& controller)
   }
 }
 
-} // namespace gui
+} // namespace wstgui
 
 /* EOF */

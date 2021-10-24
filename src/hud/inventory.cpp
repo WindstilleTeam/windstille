@@ -62,7 +62,7 @@ public:
       current_item()
   {}
 
-  void update(float delta, const Controller& controller);
+  void update(float delta, wstinput::Controller const& controller);
   void draw(wstdisplay::GraphicsContext& gc);
 
   void incr_current_item() {
@@ -134,13 +134,13 @@ Inventory::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-Inventory::update(float delta, const Controller& controller)
+Inventory::update(float delta, wstinput::Controller const& controller)
 {
   impl->update(delta, controller);
 }
 
 void
-InventoryImpl::update(float delta, const Controller& controller)
+InventoryImpl::update(float delta, wstinput::Controller const& controller)
 {
   float step_angle = glm::two_pi<float>() / static_cast<float>(items.size());
   if (fabsf(add_angle) > step_angle)

@@ -32,7 +32,7 @@
 #include "sprite2d/sprite.hpp"
 #include "util/pathname.hpp"
 
-namespace gui {
+namespace wstgui {
 class Slider;
 class TabComponent;
 }
@@ -40,7 +40,7 @@ class TabComponent;
 class ParticleSystemGUI;
 
 /** */
-class ParticleViewer : public Screen
+class ParticleViewer : public wstgui::Screen
 {
 private:
   wstdisplay::Compositor compositor;
@@ -60,7 +60,7 @@ public:
   ~ParticleViewer() override;
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
   void load(const Pathname& filename);
 
 private:

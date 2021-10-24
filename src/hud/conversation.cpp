@@ -128,7 +128,7 @@ Conversation::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-Conversation::update(float delta, const Controller& controller)
+Conversation::update(float delta, wstinput::Controller const& controller)
 {
   time += delta;
 

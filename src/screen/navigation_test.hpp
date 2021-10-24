@@ -32,7 +32,7 @@ class Edge;
 class Node;
 
 /** */
-class NavigationTest : public Screen
+class NavigationTest : public wstgui::Screen
 {
 private:
   glm::vec2 cursor;
@@ -53,7 +53,7 @@ public:
   ~NavigationTest();
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
 
 private:
   NavigationTest (const NavigationTest&);

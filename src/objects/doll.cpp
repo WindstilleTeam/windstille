@@ -73,7 +73,7 @@ Doll::update (float /*delta*/)
 }
 
 void
-Doll::update(const Controller& controller, float delta)
+Doll::update(wstinput::Controller const& controller, float delta)
 {
   glm::vec2 stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
                  controller.get_axis_state(Y_AXIS) * delta * 200.0f);
@@ -215,7 +215,7 @@ Doll::set_state_jump()
 }
 
 void
-Doll::update_falling(const Controller& controller, float delta)
+Doll::update_falling(wstinput::Controller const& controller, float delta)
 {
   glm::vec2 stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
                  controller.get_axis_state(Y_AXIS) * delta * 200.0f);
@@ -235,7 +235,7 @@ Doll::update_falling(const Controller& controller, float delta)
 }
 
 void
-Doll::update_standing(const Controller& controller, float /*delta*/)
+Doll::update_standing(wstinput::Controller const& controller, float /*delta*/)
 {
   if (controller.get_axis_state(Y_AXIS) > 0)
   {
@@ -261,7 +261,7 @@ Doll::update_standing(const Controller& controller, float /*delta*/)
 }
 
 void
-Doll::update_walking(const Controller& controller, float delta)
+Doll::update_walking(wstinput::Controller const& controller, float delta)
 {
   glm::vec2 stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
                  controller.get_axis_state(Y_AXIS) * delta * 200.0f);
@@ -285,7 +285,7 @@ Doll::update_walking(const Controller& controller, float delta)
 }
 
 void
-Doll::update_running(const Controller& controller, float delta)
+Doll::update_running(wstinput::Controller const& controller, float delta)
 {
   glm::vec2 stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
                  controller.get_axis_state(Y_AXIS) * delta * 200.0f);
@@ -310,7 +310,7 @@ Doll::update_running(const Controller& controller, float delta)
 }
 
 void
-Doll::update_ducking(const Controller& controller, float /*delta*/)
+Doll::update_ducking(wstinput::Controller const& controller, float /*delta*/)
 {
   if (controller.get_axis_state(Y_AXIS) < 0)
   {
@@ -331,7 +331,7 @@ Doll::update_ducking(const Controller& controller, float /*delta*/)
 }
 
 void
-Doll::update_jump_up(const Controller& /*controller*/, float /*delta*/)
+Doll::update_jump_up(wstinput::Controller const& controller, float /*delta*/)
 {
   if (m_drawable->get_sprite().switched_actions())
   {
@@ -403,7 +403,7 @@ Doll::walk(const glm::vec2& adv_)
 }
 
 void
-Doll::update_rolling(const Controller& controller, float delta)
+Doll::update_rolling(wstinput::Controller const& controller, float delta)
 {
   glm::vec2 stick(controller.get_axis_state(X_AXIS) * delta * 200.0f,
                  controller.get_axis_state(Y_AXIS) * delta * 200.0f);
@@ -433,22 +433,22 @@ Doll::update_rolling(const Controller& controller, float delta)
 }
 
 void
-Doll::update_listing(const Controller& /*controller*/, float /*delta*/)
+Doll::update_listing(wstinput::Controller const& controller, float /*delta*/)
 {
 }
 
 void
-Doll::update_swinging(const Controller& /*controller*/, float /*delta*/)
+Doll::update_swinging(wstinput::Controller const& controller, float /*delta*/)
 {
 }
 
 void
-Doll::update_climbing(const Controller& /*controller*/, float /*delta*/)
+Doll::update_climbing(wstinput::Controller const& controller, float /*delta*/)
 {
 }
 
 void
-Doll::update_jump(const Controller& /*controller*/, float /*delta*/)
+Doll::update_jump(wstinput::Controller const& controller, float /*delta*/)
 {
 }
 

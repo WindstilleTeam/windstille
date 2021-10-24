@@ -27,7 +27,7 @@
 #include "armature/armature.hpp"
 #include "armature/model.hpp"
 
-class ArmatureTest : public Screen
+class ArmatureTest : public wstgui::Screen
 {
 private:
   std::unique_ptr<Model>    model;
@@ -46,7 +46,7 @@ public:
   ~ArmatureTest() override;
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
 
 private:
   ArmatureTest (const ArmatureTest&);

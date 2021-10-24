@@ -22,7 +22,7 @@
 #include <wstdisplay/surface.hpp>
 #include <wstgui/component.hpp>
 
-namespace gui {
+namespace wstgui {
 
 class Automap : public Component
 {
@@ -37,14 +37,14 @@ public:
   ~Automap() override;
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
 
 private:
   Automap (const Automap&);
   Automap& operator= (const Automap&);
 };
 
-} // namespace gui
+} // namespace wstgui
 
 #endif
 

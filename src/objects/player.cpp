@@ -153,7 +153,7 @@ Player::update(float /*delta*/)
 }
 
 void
-Player::update(const Controller& controller, float delta)
+Player::update(wstinput::Controller const& controller, float delta)
 {
   if (!Sector::current()->get_tilemap())
   {
@@ -262,7 +262,7 @@ Player::set_stand()
 }
 
 void
-Player::update_walk_stand(const Controller& controller)
+Player::update_walk_stand(wstinput::Controller const& controller)
 {
   if (controller.get_axis_state(Y_AXIS) > 0.5f)
   {
@@ -322,7 +322,7 @@ Player::update_walk_stand(const Controller& controller)
 }
 
 void
-Player::update_stairs(const Controller& controller, float delta)
+Player::update_stairs(wstinput::Controller const& controller, float delta)
 {
   assert(contact);
 
@@ -370,7 +370,7 @@ Player::find_useable_entity()
 }
 
 void
-Player::update_stand(const Controller& controller)
+Player::update_stand(wstinput::Controller const& controller)
 {
   if (controller.button_was_pressed(USE_BUTTON))
   {
@@ -435,7 +435,7 @@ Player::set_walk(Direction direction)
 }
 
 void
-Player::update_walk(const Controller& controller)
+Player::update_walk(wstinput::Controller const& controller)
 {
   if (fabsf(controller.get_axis_state(X_AXIS)) < 0.5f) // Hardcoded DEAD_ZONE, somewhat evil
   {
@@ -477,7 +477,7 @@ Player::set_ducking()
 }
 
 void
-Player::update_ducking(const Controller& controller)
+Player::update_ducking(wstinput::Controller const& controller)
 {
   // ducking
   if (m_drawable->get_sprite().switched_actions())
@@ -510,7 +510,7 @@ Player::set_ducked()
 }
 
 void
-Player::update_ducked(const Controller& controller)
+Player::update_ducked(wstinput::Controller const& controller)
 {
   if (!(controller.get_axis_state(Y_AXIS) > 0.5f))
   {
@@ -531,7 +531,7 @@ Player::set_turnaround()
 }
 
 void
-Player::update_turnaround(const Controller& controller)
+Player::update_turnaround(wstinput::Controller const& controller)
 {
   if (m_drawable->get_sprite().switched_actions())
   {
@@ -569,7 +569,7 @@ Player::set_stand_to_listen(bool backwards)
 }
 
 void
-Player::update_stand_to_listen(const Controller& /*controller*/)
+Player::update_stand_to_listen(wstinput::Controller const& controller)
 {
   if (m_drawable->get_sprite().switched_actions())
   {
@@ -588,7 +588,7 @@ Player::set_listen()
 }
 
 void
-Player::update_listen(const Controller& /*controller*/)
+Player::update_listen(wstinput::Controller const& controller)
 {
   // nothing
 }
@@ -610,7 +610,7 @@ Player::set_run()
 }
 
 void
-Player::update_run(const Controller& controller)
+Player::update_run(wstinput::Controller const& controller)
 {
   if (!controller.get_button_state(RUN_BUTTON))
   {
@@ -657,7 +657,7 @@ Player::set_jump_begin()
 }
 
 void
-Player::update_jump_begin(const Controller& /*controller*/)
+Player::update_jump_begin(wstinput::Controller const& controller)
 {
   if (m_drawable->get_sprite().switched_actions())
   {
@@ -686,7 +686,7 @@ Player::set_jump_air()
 }
 
 void
-Player::update_jump_air(const Controller& /*controller*/)
+Player::update_jump_air(wstinput::Controller const& controller)
 {
   if (m_drawable->get_sprite().switched_actions())
   {
@@ -703,7 +703,7 @@ Player::set_jump_land()
 }
 
 void
-Player::update_jump_land(const Controller& /*controller*/)
+Player::update_jump_land(wstinput::Controller const& controller)
 {
   if (m_drawable->get_sprite().switched_actions())
   {
@@ -720,7 +720,7 @@ Player::set_jump_up_begin()
 }
 
 void
-Player::update_jump_up_begin(const Controller& /*controller*/)
+Player::update_jump_up_begin(wstinput::Controller const& controller)
 {
   if (m_drawable->get_sprite().switched_actions())
   {
@@ -738,7 +738,7 @@ Player::set_jump_up_air()
 }
 
 void
-Player::update_jump_up_air(const Controller& /*controller*/)
+Player::update_jump_up_air(wstinput::Controller const& controller)
 {
   if (m_drawable->get_sprite().switched_actions())
   {
@@ -755,7 +755,7 @@ Player::set_jump_up_land()
 }
 
 void
-Player::update_jump_up_land(const Controller& /*controller*/)
+Player::update_jump_up_land(wstinput::Controller const& controller)
 {
   if (m_drawable->get_sprite().switched_actions())
   {
@@ -765,7 +765,7 @@ Player::update_jump_up_land(const Controller& /*controller*/)
 }
 
 void
-Player::update_pull_gun(const Controller& controller)
+Player::update_pull_gun(wstinput::Controller const& controller)
 {
   if (!controller.get_button_state(AIM_BUTTON))
   {

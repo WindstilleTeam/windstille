@@ -20,7 +20,7 @@
 #define HEADER_WINDSTILLE_APP_APP_HPP
 
 #include <wstdisplay/fwd.hpp>
-#include <wstgui/style.hpp>
+#include <wstgui/fwd.hpp>
 
 namespace wstinput {
 class InputManagerSDL;
@@ -33,7 +33,6 @@ class Manager;
 class Fonts;
 class SoundManager;
 class SpriteManager;
-class ScreenManager;
 
 class App
 {
@@ -50,8 +49,8 @@ public:
   sprite3d::Manager& sprite3d() const;
   Fonts& fonts() const;
   wstdisplay::TTFFontManager& ttffont_manager() const;
-  gui::Style& style() const;
-  ScreenManager& screen() const;
+  wstgui::Style& style() const;
+  wstgui::ScreenManager& screen() const;
 
 private:
   wstinput::InputManagerSDL* m_input_manager;
@@ -63,8 +62,8 @@ private:
   sprite3d::Manager* m_sprite3d_manager;
   wstdisplay::TTFFontManager* m_ttffont_manager;
   Fonts* m_fonts;
-  gui::Style* m_style;
-  ScreenManager* m_screen_manager;
+  wstgui::Style* m_style;
+  wstgui::ScreenManager* m_screen_manager;
 
 private:
   App(const App&) = delete;

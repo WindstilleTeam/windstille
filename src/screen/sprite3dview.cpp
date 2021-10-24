@@ -113,7 +113,7 @@ Sprite3DView::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-Sprite3DView::update(float delta, const Controller& controller)
+Sprite3DView::update(float delta, wstinput::Controller const& controller)
 {
   m_sprite.update(delta);
   //std::cout << "Delta: " << delta << std::endl;

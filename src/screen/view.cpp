@@ -67,7 +67,7 @@ View::update (float delta)
   if (keystate[SDL_SCANCODE_KP_MINUS])
     m_debug_zoom *= 1.0f - delta;
 
-  const Controller& controller = g_app.input().get_controller();
+  wstinput::Controller const& controller = g_app.input().get_controller();
 
   if (controller.get_button_state(DEBUG_BUTTON))
   {

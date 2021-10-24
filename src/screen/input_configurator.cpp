@@ -25,6 +25,7 @@
 #include <wstdisplay/graphics_context.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstgui/screen_manager.hpp>
+#include <wstgui/style.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
@@ -95,7 +96,7 @@ InputConfigurator::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-InputConfigurator::update(float , const Controller& )
+InputConfigurator::update(float , wstinput::Controller const& controller )
 {
 
 }

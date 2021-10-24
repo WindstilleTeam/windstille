@@ -22,6 +22,7 @@
 #include <wstdisplay/graphics_context.hpp>
 #include <wstinput/controller.hpp>
 #include <wstinput/input_event.hpp>
+#include <wstgui/style.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
@@ -88,7 +89,7 @@ PDA::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-PDA::update(float delta, const Controller& controller)
+PDA::update(float delta, wstinput::Controller const& controller)
 {
   auto const& events = controller.get_events();
 

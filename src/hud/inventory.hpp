@@ -25,7 +25,7 @@
 class InventoryImpl;
 
 /** */
-class Inventory : public Screen
+class Inventory : public wstgui::Screen
 {
 private:
 public:
@@ -33,7 +33,7 @@ public:
   ~Inventory() override;
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
 
 private:
   std::shared_ptr<InventoryImpl> impl;

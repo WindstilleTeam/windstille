@@ -25,7 +25,7 @@
 #include <geom/line.hpp>
 
 /** */
-class GeometryTest : public Screen
+class GeometryTest : public wstgui::Screen
 {
 private:
   geom::fline line1;
@@ -43,7 +43,7 @@ public:
   GeometryTest();
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
 
 private:
   GeometryTest (const GeometryTest&);

@@ -29,7 +29,7 @@
  * A simple class to view 3d sprites and their different actions,
  * mostly usefull for debugging
  */
-class Sprite2DView : public Screen
+class Sprite2DView : public wstgui::Screen
 {
 private:
   wstdisplay::SceneContext sc;
@@ -70,10 +70,10 @@ public:
   void adddir(const Pathname& dir);
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
 
-  void update_slideshow(float delta, const Controller& controller);
-  void update_manual(float delta, const Controller& controller);
+  void update_slideshow(float delta, wstinput::Controller const& controller);
+  void update_manual(float delta, wstinput::Controller const& controller);
 
   /** move \a i images forward in the directory */
   void next_image(int i = 1);

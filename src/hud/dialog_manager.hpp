@@ -30,7 +30,7 @@
 #include "util/currenton.hpp"
 
 /** */
-class DialogManager : public Screen,
+class DialogManager : public wstgui::Screen,
                       public Currenton<DialogManager>
 {
 private:
@@ -67,7 +67,7 @@ public:
   ~DialogManager() override;
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
 
   void add_dialog(int alignment, const std::string& portrait, const std::string& text);
   void add_caption(int alignment, const std::string& text);

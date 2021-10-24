@@ -27,7 +27,7 @@
 class ControllerHelpWindowImpl;
 
 /** */
-class ControllerHelpWindow : public Screen,
+class ControllerHelpWindow : public wstgui::Screen,
                              public Currenton<ControllerHelpWindow>
 {
 private:
@@ -39,7 +39,7 @@ public:
   ControllerHelpWindow();
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, const wstinput::Controller& controller) override;
 };
 
 #endif

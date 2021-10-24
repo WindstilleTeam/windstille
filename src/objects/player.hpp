@@ -101,7 +101,7 @@ public:
 
   void draw(wstdisplay::SceneContext& gc) override;
   void update(float delta) override;
-  void update(const Controller& controller, float delta);
+  void update(wstinput::Controller const& controller, float delta);
 
   void start_listening();
   void stop_listening();
@@ -126,23 +126,23 @@ private:
    * TODO: can we generalize this mechanism? Or create a small specification
    * language for this?
    */
-  void update_ducked(const Controller& controller);
-  void update_ducking(const Controller& controller);
-  void update_listen(const Controller& controller);
-  void update_run(const Controller& controller);
-  void update_stand(const Controller& controller);
-  void update_stand_to_listen(const Controller& controller);
-  void update_turnaround(const Controller& controller);
-  void update_walk(const Controller& controller);
-  void update_walk_stand(const Controller& controller);
-  void update_jump_air(const Controller& controller);
-  void update_jump_begin(const Controller& controller);
-  void update_jump_land(const Controller& controller);
-  void update_jump_up_air(const Controller& controller);
-  void update_jump_up_begin(const Controller& controller);
-  void update_jump_up_land(const Controller& controller);
-  void update_pull_gun(const Controller& controller);
-  void update_stairs(const Controller& controller, float delta);
+  void update_ducked(wstinput::Controller const& controller);
+  void update_ducking(wstinput::Controller const& controller);
+  void update_listen(wstinput::Controller const& controller);
+  void update_run(wstinput::Controller const& controller);
+  void update_stand(wstinput::Controller const& controller);
+  void update_stand_to_listen(wstinput::Controller const& controller);
+  void update_turnaround(wstinput::Controller const& controller);
+  void update_walk(wstinput::Controller const& controller);
+  void update_walk_stand(wstinput::Controller const& controller);
+  void update_jump_air(wstinput::Controller const& controller);
+  void update_jump_begin(wstinput::Controller const& controller);
+  void update_jump_land(wstinput::Controller const& controller);
+  void update_jump_up_air(wstinput::Controller const& controller);
+  void update_jump_up_begin(wstinput::Controller const& controller);
+  void update_jump_up_land(wstinput::Controller const& controller);
+  void update_pull_gun(wstinput::Controller const& controller);
+  void update_stairs(wstinput::Controller const& controller, float delta);
 
   void leave_run();
   void leave_walk();

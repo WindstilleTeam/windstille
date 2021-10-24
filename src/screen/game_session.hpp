@@ -42,7 +42,7 @@ class Pathname;
 
 class GameSessionImpl;
 
-class GameSession : public Screen,
+class GameSession : public wstgui::Screen,
                     public Currenton<GameSession>
 {
 public:
@@ -75,7 +75,7 @@ public:
   void fadein(float time);
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
   void handle_event(const SDL_Event& event) override;
 
   PDA& get_pda();

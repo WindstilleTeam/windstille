@@ -33,7 +33,7 @@ struct ConfigureItem
 };
 
 /** */
-class InputConfigurator : public Screen
+class InputConfigurator : public wstgui::Screen
 {
 private:
   std::vector<ConfigureItem> items;
@@ -47,7 +47,7 @@ public:
   ~InputConfigurator() override;
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
   void handle_event(const SDL_Event& event) override;
   void add_configure_item(ConfigureItem::Mode mode, int event_id);
   void next_item();

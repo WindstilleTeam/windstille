@@ -27,6 +27,7 @@
 #include <wstdisplay/graphics_context.hpp>
 #include <wstdisplay/opengl_window.hpp>
 #include <wstdisplay/font/text_area.hpp>
+#include <wstgui/style.hpp>
 
 #include "app/app.hpp"
 #include "app/controller_def.hpp"
@@ -125,7 +126,7 @@ DialogManager::draw(wstdisplay::GraphicsContext& gc)
 }
 
 void
-DialogManager::update(float delta, const Controller& controller)
+DialogManager::update(float delta, wstinput::Controller const& controller)
 {
   text_area->update(delta);
 
