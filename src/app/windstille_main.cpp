@@ -28,6 +28,7 @@
 #include <wstgui/screen_manager.hpp>
 #include <wstgui/style.hpp>
 #include <wstinput/input_manager.hpp>
+#include <wstsystem/system.hpp>
 
 #include "app/app.hpp"
 #include "app/config.hpp"
@@ -68,17 +69,17 @@ WindstilleMain::main(int argc, char** argv)
 
     config.parse_args(argc, argv);
 
-    init_sdl();
+    wstsys::System system;
 
     config.load();
 
     config.parse_args(argc, argv);
 
     {
-      OpenGLWindow      window("Windstille",
-                               geom::isize(config.get_int("screen-width"), config.get_int("screen-height")),
-                               geom::isize(config.get_int("aspect-width"), config.get_int("aspect-height")),
-                               config.get_bool("fullscreen"), config.get_int("anti-aliasing"));
+      auto window = system.create_window("Windstille",
+                                         geom::isize(config.get_int("screen-width"), config.get_int("screen-height")));
+                                         //geom::isize(config.get_int("aspect-width"), config.get_int("aspect-height")),
+                                         //config.get_bool("fullscreen"), config.get_int("anti-aliasing"));
       wstdisplay::TTFFontManager    ttffont_manager;
       Fonts             fonts(ttffont_manager);
       Console           console;
@@ -90,9 +91,13 @@ WindstilleMain::main(int argc, char** argv)
       ScriptManager     script_manager;
       wstinput::ControllerDescription controller_description = get_windstille_controller_description();
       wstinput::InputManagerSDL   input_manager(controller_description);
-      wstgui::ScreenManager screen_manager(window, input_manager, sound_manager.get_mgr());
+      wstgui::ScreenManager screen_manager(system, *window, input_manager);
       TileFactory       tile_factory = TileFactory(Pathname("tiles.scm"));
       wstgui::Style     style(fonts.vera20.get());
+
+      screen_manager.sig_update().connect([&](float dt){
+        sound_manager.update(dt);
+      });
 
       g_app.m_sound_manager = &sound_manager;
       g_app.m_input_manager = &input_manager;
@@ -100,13 +105,13 @@ WindstilleMain::main(int argc, char** argv)
       g_app.m_surface_manager = &surface_manager;
       g_app.m_sprite_manager = &sprite_manager;
       g_app.m_sprite3d_manager = &sprite3d_manager;
-      g_app.m_window = &window;
+      g_app.m_window = window.get();
       g_app.m_ttffont_manager = &ttffont_manager;
       g_app.m_screen_manager = &screen_manager;
       g_app.m_fonts = &fonts;
       g_app.m_style = &style;
 
-      window.set_icon(Pathname("icon.png"));
+      window->set_icon(Pathname("icon.png"));
       texture_manager.set_fallback(Pathname("images/404.png"));
 
       init_modules();
@@ -156,7 +161,9 @@ WindstilleMain::main(int argc, char** argv)
 
       screen_manager.bind_key(SDLK_F11, []{
         config.set_bool("fullscreen", !config.get_bool("fullscreen"));
-        g_app.window().set_fullscreen(config.get_bool("fullscreen"));
+        g_app.window().set_mode(config.get_bool("fullscreen") ?
+                                OpenGLWindow::Mode::Fullscreen :
+                                OpenGLWindow::Mode::Window);
       });
 
       screen_manager.bind_key(SDLK_F12, []{
@@ -267,24 +274,6 @@ WindstilleMain::init_modules()
     }
   }
 }
-
-void
-WindstilleMain::init_sdl()
-{
-  Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
-
-  if (SDL_Init(flags) < 0)
-  {
-    std::stringstream msg;
-    msg << "Couldn't initialize SDL: " << SDL_GetError();
-    throw std::runtime_error(msg.str());
-  }
-  else
-  {
-    atexit(SDL_Quit);
-  }
-}
-
 
 int main(int argc, char** argv)
 {

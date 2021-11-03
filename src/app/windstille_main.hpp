@@ -57,7 +57,6 @@ public:
 
 private:
   void run();
-  void init_sdl();
   void init_modules();
   void deinit_modules();
 

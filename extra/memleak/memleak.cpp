@@ -30,6 +30,8 @@
 #include <wstdisplay/surface.hpp>
 #include <wstdisplay/graphics_context.hpp>
 #include <wstdisplay/texture_manager.hpp>
+#include <wstsystem/system.hpp>
+
 #include "util/system.hpp"
 
 using namespace wstdisplay;
@@ -38,27 +40,9 @@ namespace {
 
 int memleak_main(int argc, char* argv[])
 {
-  Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
-
-  if (SDL_Init(flags) < 0)
-  {
-    std::ostringstream msg;
-    msg << "Couldn't initialize SDL: " << SDL_GetError();
-    throw std::runtime_error(msg.str());
-  }
-  else
-  {
-    atexit(SDL_Quit);
-  }
-
-
-  //std::cout << "OpenGLWindow" << std::endl;
-  OpenGLWindow window("Memleak",
-                      geom::isize(800, 600), // window size
-                      geom::isize(800, 600),
-                      false,
-                      4); // anti-alias
-  GraphicsContext& gc = window.get_gc();
+  wstsys::System system;
+  auto window = system.create_window("Memleak", geom::isize(800, 600));
+  GraphicsContext& gc = window->get_gc();
 
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
@@ -97,7 +81,7 @@ int memleak_main(int argc, char* argv[])
     surface = surface_manager.get(argv[1]);
 
     surface->draw(gc, glm::vec2(0.0f, 0.0f));
-    window.swap_buffers();
+    window->swap_buffers();
     SDL_Delay(10);
 
     surface.reset();

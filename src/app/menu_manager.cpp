@@ -121,15 +121,16 @@ MenuManager::display_main_menu()
   menu.add_button("Quit", std::bind(&MenuManager::menu_quit));
 
   { // Construct Copyright box
-    std::unique_ptr<wstgui::GroupComponent> text_group
-      (new wstgui::GroupComponent(geom::frect(glm::vec2(static_cast<float>(g_app.window().get_gc().size().width())/2.0f - 390.0f,
-                                                     static_cast<float>(g_app.window().get_gc().size().height())     - 100.0f),
-                                           geom::fsize(800.0f - 20.0f,
-                                                       100.0f - 10.0f)),
-                               "",
-                               menu.get_root()));
+    std::unique_ptr<wstgui::GroupComponent> text_group(new wstgui::GroupComponent("", menu.get_root()));
 
-    std::unique_ptr<wstgui::TextView> text(new wstgui::TextView(text_group->get_child_rect(), text_group.get()));
+    text_group->set_screen_rect(
+      geom::frect(glm::vec2(static_cast<float>(g_app.window().get_gc().size().width())/2.0f - 390.0f,
+                            static_cast<float>(g_app.window().get_gc().size().height())     - 100.0f),
+                  geom::fsize(800.0f - 20.0f,
+                              100.0f - 10.0f)));
+
+    std::unique_ptr<wstgui::TextView> text(new wstgui::TextView(text_group.get()));
+    text->set_screen_rect(text_group->get_child_rect());
     text->set_font(g_app.fonts().vera12.get());
     text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmail.com&gt;\n"
                    "\n"
@@ -137,7 +138,7 @@ MenuManager::display_main_menu()
                    "it under the terms of the GNU General Public License as published by "
                    "the Free Software Foundation, either version 3 of the License, or "
                    "(at your option) any later version.");
-    text_group->pack(text.release());
+    text_group->pack(std::move(text));
     menu.get_root()->add_child(std::move(text_group));
   }
 
@@ -254,12 +255,11 @@ MenuManager::display_help()
   using namespace wstgui;
   std::unique_ptr<GUIManager> manager(new GUIManager(g_app.style()));
 
-  std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400),
-                                                         "Help",
-                                                         manager->get_root()));
+  std::unique_ptr<GroupComponent> group(new GroupComponent("Help", manager->get_root()));
+  std::unique_ptr<TextView> text(new TextView(group.get()));
 
-  std::unique_ptr<TextView> text(new TextView(group->get_child_rect(),
-                                            group.get()));
+  group->set_screen_rect(create_centered_rect(500, 400));
+  text->set_screen_rect(group->get_child_rect());
 
   text->set_font(g_app.fonts().vera12.get());
   text->set_text("This is a tech-demo of Windstille. Its not meant "
@@ -310,7 +310,7 @@ MenuManager::display_help()
     );
   text->set_active(true);
 
-  group->pack(text.release());
+  group->pack(std::move(text));
   manager->get_root()->add_child(std::move(group));
 
   g_app.screen().push_overlay(std::move(manager));
@@ -322,11 +322,11 @@ MenuManager::display_credits()
   using namespace wstgui;
   std::unique_ptr<GUIManager> manager(new GUIManager(g_app.style()));
 
-  std::unique_ptr<GroupComponent> group(new GroupComponent(create_centered_rect(500, 400),
-                                                         "Credits",
-                                                         manager->get_root()));
+  std::unique_ptr<GroupComponent> group(new GroupComponent("Credits", manager->get_root()));
+  std::unique_ptr<TextView> text(new TextView(group.get()));
 
-  std::unique_ptr<TextView> text(new TextView(group->get_child_rect(), group.get()));
+  group->set_screen_rect(create_centered_rect(500, 400));
+  text->set_screen_rect(group->get_child_rect());
 
   text->set_font(g_app.fonts().vera12.get());
   text->set_text("Programming\n"
@@ -353,7 +353,7 @@ MenuManager::display_credits()
                  "  Marek Moeckel - Wansti - &lt;wansti@gmx.de&gt;\n");
   text->set_active(true);
 
-  group->pack(text.release());
+  group->pack(std::move(text));
   manager->get_root()->add_child(std::move(group));
   g_app.screen().push_overlay(std::move(manager));
 }
@@ -443,7 +443,9 @@ void
 MenuManager::menu_fullscreen(int i)
 {
   config.set_bool("fullscreen", i);
-  g_app.window().set_fullscreen(config.get_bool("fullscreen"));
+  g_app.window().set_mode(config.get_bool("fullscreen") ?
+                          wstdisplay::OpenGLWindow::Mode::Fullscreen :
+                          wstdisplay::OpenGLWindow::Mode::Window);
 }
 
 void

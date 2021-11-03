@@ -220,15 +220,9 @@ WindstilleWidget::on_resize(int width, int height)
   }
 
   glViewport(0, 0, width, height);
-  m_gc->set_aspect_size({width, height});
+  //m_gc->set_aspect_size({width, height});
   state.set_size(width, height);
-  m_gc->set_projection(
-    glm::ortho(0.0f,
-               static_cast<float>(width),
-               static_cast<float>(height),
-               0.0f,
-               1000.0f,
-               -1000.0f));
+  m_gc->set_ortho({width, height});
 
   queue_draw();
 

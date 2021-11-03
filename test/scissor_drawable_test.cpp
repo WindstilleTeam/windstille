@@ -11,6 +11,8 @@
 #include <wstdisplay/scenegraph/surface_drawable.hpp>
 #include <wstdisplay/scenegraph/scissor_drawable.hpp>
 #include <wstdisplay/scenegraph/stencil_drawable.hpp>
+#include <wstsystem/system.hpp>
+
 #include "util/pathname.hpp"
 #include "util/system.hpp"
 
@@ -23,33 +25,14 @@ int app_main(int argc, char* argv[])
   Pathname::set_datadir("data/"); //System::find_default_datadir());
   Pathname::set_userdir(System::find_default_userdir());
 
-#ifdef DEBUG
-  // I wanna have usefull backtraces in debug mode
-  Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE;
-#else
-  Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
-#endif
+  wstsys::System system;
 
-  if (SDL_Init(flags) < 0)
-  {
-    std::stringstream msg;
-    msg << "Couldn't initialize SDL: " << SDL_GetError();
-    throw std::runtime_error(msg.str());
-  }
-  else
-  {
-    atexit(SDL_Quit);
-  }
-
-  OpenGLWindow window("Scissor Drawable",
-                                  geom::isize(960, 600),
-                                  geom::isize(960, 600));
+  auto window = system.create_window("Scissor Drawable", geom::isize(960, 600));
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
   DrawableGroup group;
 
-  int have_stencil = 0xdeadbeaf;
-  SDL_GL_GetAttribute(SDL_GL_STENCIL_SIZE, &have_stencil);
+  int have_stencil = 0xdeadbeaf;  SDL_GL_GetAttribute(SDL_GL_STENCIL_SIZE, &have_stencil);
   std::cout << "STENCIL: " << have_stencil << std::endl;
 
   std::shared_ptr<ScissorDrawable> scissor(new ScissorDrawable(geom::irect(200, 200, 400, 400)));
@@ -91,8 +74,8 @@ int app_main(int argc, char* argv[])
   {
     std::cout << "." << std::flush;
     surface->get_params().set_pos(glm::vec2(static_cast<float>(i) - 250.0f, 0.0f));
-    group.render(window.get_gc(), ~0u);
-    window.swap_buffers();
+    group.render(window->get_gc(), ~0u);
+    window->swap_buffers();
   }
 
   return 0;

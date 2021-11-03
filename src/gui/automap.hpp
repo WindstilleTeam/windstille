@@ -33,7 +33,6 @@ private:
 
 public:
   Automap(Component* parent);
-  Automap(const geom::frect& rect, Component* parent);
   ~Automap() override;
 
   void draw(wstdisplay::GraphicsContext& gc) override;

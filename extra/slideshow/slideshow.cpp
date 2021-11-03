@@ -34,6 +34,8 @@
 #include <wstdisplay/surface.hpp>
 #include <wstdisplay/graphics_context.hpp>
 #include <wstdisplay/texture_manager.hpp>
+#include <wstsystem/system.hpp>
+
 #include "util/system.hpp"
 
 #include "slideshow/slide_show.hpp"
@@ -52,23 +54,6 @@ App::App() :
   m_start_time(0.0f),
   m_start_frame(-1)
 {
-}
-
-void
-App::init_sdl()
-{
-  Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
-
-  if (SDL_Init(flags) < 0)
-  {
-    std::ostringstream msg;
-    msg << "Couldn't initialize SDL: " << SDL_GetError();
-    throw std::runtime_error(msg.str());
-  }
-  else
-  {
-    atexit(SDL_Quit);
-  }
 }
 
 void
@@ -167,15 +152,18 @@ App::run(int argc, char* argv[])
 {
   parse_args(argc, argv);
 
-  init_sdl();
+  wstsys::System system;
 
   //std::cout << "OpenGLWindow" << std::endl;
-  OpenGLWindow window("Slideshow",
-                      m_window_size, // window size
-                      m_aspect_ratio, // aspect ratio
-                      m_fullscreen, // fullscreen
-                      4); // anti-alias
-  GraphicsContext& gc = window.get_gc();
+  auto window = system.create_window({
+      .title = "Slideshow",
+      .icon = {},
+      .size = m_window_size,
+      //m_aspect_ratio,
+      .mode = m_fullscreen ? OpenGLWindow::Mode::Fullscreen : OpenGLWindow::Mode::Window,
+      .anti_aliasing = 4
+    });
+  GraphicsContext& gc = window->get_gc();
 
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
@@ -238,7 +226,7 @@ App::run(int argc, char* argv[])
                 break;
 
               case SDLK_F10:
-                surf::save(window.screenshot(), "/tmp/out.png");
+                surf::save(window->screenshot(), "/tmp/out.png");
                 break;
 
               case SDLK_LEFT:
@@ -316,7 +304,7 @@ App::run(int argc, char* argv[])
 
       slide_show.draw(gc, time, m_edit_mode);
 
-      window.swap_buffers();
+      window->swap_buffers();
 
       SDL_Delay(30);
     }
@@ -348,7 +336,7 @@ App::run(int argc, char* argv[])
       gc.push_framebuffer(framebuffer);
       char out[1024];
       sprintf(out, "%s/%08d.jpg", m_output_dir.c_str(), frame_number);
-      surf::save(window.screenshot(), out);
+      surf::save(window->screenshot(), out);
       //std::cout << "Wrote: " << out << std::endl;
       frame_number += 1;
       gc.pop_framebuffer();

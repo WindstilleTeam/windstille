@@ -26,8 +26,9 @@
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/texture_manager.hpp>
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
+#include <wstsystem/system.hpp>
+
 #include "math/random.hpp"
-#include "system/sdl.hpp"
 
 using namespace wstdisplay;
 
@@ -46,12 +47,11 @@ App::run(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  SDL sdl;
-  OpenGLWindow window("Shader Test",
-                      m_window_size, // window size
-                      m_aspect_ratio, // aspect ratio
-                      m_fullscreen, // fullscreen
-                      4); // anti-alias
+  wstsys::System system;
+  auto window = system.create_window("Shader Test", m_window_size);
+                                     //m_aspect_ratio, // aspect ratio
+                                     //m_fullscreen, // fullscreen
+                                     //4); // anti-alias
   TextureManager texture_manager;
   SurfaceManager surface_manager;
 
@@ -167,11 +167,11 @@ App::run(int argc, char* argv[])
       va.texcoord(0.0f, 1.0f);
       va.vertex(0.0f, 800.0f);
 
-      va.render(window.get_gc());
+      va.render(window->get_gc());
     }
 
-    window.swap_buffers();
-    sdl.delay(30);
+    window->swap_buffers();
+    system.delay(30);
   }
 
   return 0;

@@ -28,8 +28,9 @@
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/surface_drawing_parameters.hpp>
 #include <wstdisplay/texture_manager.hpp>
+#include <wstsystem/system.hpp>
+
 #include "math/random.hpp"
-#include "system/sdl.hpp"
 
 #pragma GCC diagnostic ignored "-Wold-style-cast"
 
@@ -227,13 +228,12 @@ Lensflare::process_input()
 int
 Lensflare::run()
 {
-  SDL sdl;
-  OpenGLWindow window("Shader Test",
-                      m_window_size, // window size
-                      m_aspect_ratio, // aspect ratio
-                      m_fullscreen, // fullscreen
-                      4); // anti-alias
-  GraphicsContext& gc = window.get_gc();
+  wstsys::System system;
+  auto window = system.create_window("Shader Test", m_window_size);
+                                     //m_aspect_ratio, // aspect ratio
+                                     //mode = m_fullscreen, // fullscreen
+                                     //anti_aliasing = 4}); // anti-alias
+  GraphicsContext& gc = window->get_gc();
   TextureManager texture_manager;
   SurfaceManager surface_manager;
 
@@ -274,7 +274,7 @@ Lensflare::run()
 
     process_input();
     draw(gc);
-    window.swap_buffers();
+    window->swap_buffers();
   }
 
   return 0;

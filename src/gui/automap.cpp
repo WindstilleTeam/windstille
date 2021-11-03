@@ -33,15 +33,6 @@ namespace wstgui {
 Automap::Automap(Component* parent_) :
   Component(parent_),
   surface(),
-  pos(),
-  zoom()
-{
-  log_error("implement me");
-}
-
-Automap::Automap(const geom::frect& rect_, Component* parent_) :
-  Component(rect_, parent_),
-  surface(),
   pos(0.0f, 0.0f),
   zoom(6.0f)
 {

@@ -31,6 +31,7 @@
 #include <wstdisplay/graphics_context.hpp>
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/surface_drawing_parameters.hpp>
+#include <wstsystem/system.hpp>
 
 using namespace wstdisplay;
 
@@ -44,22 +45,10 @@ int app_main(int argc, char** argv)
     return -1;
   }
 
-  Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
-
-  if (SDL_Init(flags) < 0)
-  {
-    std::stringstream msg;
-    msg << "Couldn't initialize SDL: " << SDL_GetError();
-    throw std::runtime_error(msg.str());
-  }
-  else
-  {
-    atexit(SDL_Quit);
-  }
-
+  wstsys::System system;
   geom::isize window_size(1024, 576);
-  OpenGLWindow window("Image Blur", window_size, window_size);
-  GraphicsContext& gc = window.get_gc();
+  auto window = system.create_window("Image Blur", window_size);
+  GraphicsContext& gc = window->get_gc();
 
   SDL_ShowCursor(SDL_DISABLE);
 
@@ -223,7 +212,7 @@ int app_main(int argc, char** argv)
       glBindFramebufferEXT(GL_DRAW_FRAMEBUFFER_EXT, 0);
     }
 
-    window.swap_buffers();
+    window->swap_buffers();
     SDL_Delay(20);
   }
 

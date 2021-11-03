@@ -5,23 +5,24 @@
 
 #include <geom/geom.hpp>
 
-#include "system/sdl.hpp"
 #include <wstdisplay/opengl_window.hpp>
 #include <wstdisplay/framebuffer.hpp>
 #include <wstdisplay/surface.hpp>
 #include <wstdisplay/graphics_context.hpp>
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/surface_drawing_parameters.hpp>
+#include <wstsystem/system.hpp>
 
 using namespace wstdisplay;
 
 int main()
 {
-  SDL sdl;
+  wstsys::System system;
 
   geom::isize window_size(854, 480);
-  OpenGLWindow window("2D Shadow", window_size, window_size);
-  GraphicsContext& gc = window.get_gc();
+  auto window = system.create_window("2D Shadow", window_size);
+
+  GraphicsContext& gc = window->get_gc();
 
   SurfaceManager surface_manager;
 
@@ -98,7 +99,7 @@ int main()
                 .set_blend_func(GL_SRC_ALPHA, GL_ONE));
     darkness->draw(gc, SurfaceDrawingParameters()
                    .set_pos(mouse_pos - glm::vec2(darkness->get_width()/2, darkness->get_height()/2)));
-    window.swap_buffers();
+    window->swap_buffers();
   }
 
   return 0;

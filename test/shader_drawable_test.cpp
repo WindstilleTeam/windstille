@@ -13,6 +13,8 @@
 #include <wstdisplay/scenegraph/stencil_drawable.hpp>
 #include <wstdisplay/scenegraph/shader_drawable.hpp>
 #include <wstdisplay/shader_object.hpp>
+#include <wstsystem/system.hpp>
+
 #include "util/pathname.hpp"
 #include "util/system.hpp"
 
@@ -25,27 +27,8 @@ int shader_main(int argc, char* argv[])
   Pathname::set_datadir("data/"); //System::find_default_datadir());
   Pathname::set_userdir(System::find_default_userdir());
 
-#ifdef DEBUG
-  // I wanna have usefull backtraces in debug mode
-  Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE;
-#else
-  Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
-#endif
-
-  if (SDL_Init(flags) < 0)
-  {
-    std::stringstream msg;
-    msg << "Couldn't initialize SDL: " << SDL_GetError();
-    throw std::runtime_error(msg.str());
-  }
-  else
-  {
-    atexit(SDL_Quit);
-  }
-
-  OpenGLWindow window("Shader Drawable",
-                      geom::isize(960, 600),
-                      geom::isize(960, 600));
+  wstsys::System system;
+  auto window = system.create_window("Shader Drawable", geom::isize(960, 600));
   TextureManager    texture_manager;
   SurfaceManager    surface_manager;
   DrawableGroup group;
@@ -90,8 +73,8 @@ int shader_main(int argc, char* argv[])
   {
     std::cout << "." << std::flush;
     surface3->get_params().set_pos(glm::vec2(static_cast<float>(i), 50.0f));
-    group.render(window.get_gc(), ~0u);
-    window.swap_buffers();
+    group.render(window->get_gc(), ~0u);
+    window->swap_buffers();
   }
 
   return 0;
