@@ -9,6 +9,11 @@ rec {
     tinycmmc.inputs.nixpkgs.follows = "nixpkgs";
     tinycmmc.inputs.flake-utils.follows = "flake-utils";
 
+    argparser.url = "gitlab:argparser/argparser/stable";
+    argparser.inputs.nixpkgs.follows = "nixpkgs";
+    argparser.inputs.flake-utils.follows = "flake-utils";
+    argparser.inputs.tinycmmc.follows = "tinycmmc";
+
     logmich.url = "gitlab:logmich/logmich";
     logmich.inputs.nixpkgs.follows = "nixpkgs";
     logmich.inputs.flake-utils.follows = "flake-utils";
@@ -42,6 +47,11 @@ rec {
     sexpcpp.inputs.nixpkgs.follows = "nixpkgs";
     sexpcpp.inputs.flake-utils.follows = "flake-utils";
     sexpcpp.inputs.tinycmmc.follows = "tinycmmc";
+
+    biiocpp.url = "gitlab:grumbel/biiocpp";
+    biiocpp.inputs.nixpkgs.follows = "nixpkgs";
+    biiocpp.inputs.flake-utils.follows = "flake-utils";
+    biiocpp.inputs.tinycmmc.follows = "tinycmmc";
 
     wstinput.url = "gitlab:windstille/wstinput";
     wstinput.inputs.nixpkgs.follows = "nixpkgs";
@@ -85,7 +95,7 @@ rec {
   };
 
   outputs = { self, nixpkgs, flake-utils,
-              tinycmmc, logmich, geomcpp, priocpp, surfcpp, babyxml, sexpcpp,
+              tinycmmc, argparser, logmich, geomcpp, priocpp, surfcpp, babyxml, sexpcpp, biiocpp,
               wstinput, wstdisplay, wstgui, wstsound, miniswig }:
     flake-utils.lib.eachDefaultSystem (system:
       let
@@ -117,7 +127,6 @@ rec {
               pkgs.gcc
               pkgs.pkgconfig
               pkgs.makeWrapper
-              tinycmmc.defaultPackage.${system}
             ];
             postFixup = ''
                 wrapProgram $out/bin/windstille \
@@ -125,12 +134,16 @@ rec {
                   --prefix LD_LIBRARY_PATH ":" "${pkgs.mesa.drivers}/lib"
             '';
             buildInputs = [
+              miniswig.defaultPackage.${system}
+              tinycmmc.defaultPackage.${system}
+              argparser.defaultPackage.${system}
               logmich.defaultPackage.${system}
               geomcpp.defaultPackage.${system}
               priocpp.defaultPackage.${system}
               surfcpp.defaultPackage.${system}
               babyxml.defaultPackage.${system}
               sexpcpp.defaultPackage.${system}
+              biiocpp.defaultPackage.${system}
               wstgui.defaultPackage.${system}
               wstinput.defaultPackage.${system}
               wstsound.defaultPackage.${system}

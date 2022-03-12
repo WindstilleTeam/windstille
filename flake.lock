@@ -1,5 +1,29 @@
 {
   "nodes": {
+    "argparser": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1646240255,
+        "narHash": "sha256-goP+g31qxr9htFSPutK8vkdrL+6UiPoaNz5G1nbHp48=",
+        "owner": "argparser",
+        "repo": "argparser",
+        "rev": "ec96783094a70484b349f8e545d74d3b9b2ff512",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "argparser",
+        "ref": "stable",
+        "repo": "argparser",
+        "type": "gitlab"
+      }
+    },
     "babyxml": {
       "inputs": {
         "flake-utils": [
@@ -23,6 +47,32 @@
       "original": {
         "owner": "grumbel",
         "repo": "babyxml",
+        "type": "gitlab"
+      }
+    },
+    "biiocpp": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1647025160,
+        "narHash": "sha256-2rjXVPDpxC7YVk6e+qtcAa9dBbk37PJNAQdCEQR1K6g=",
+        "owner": "grumbel",
+        "repo": "biiocpp",
+        "rev": "d2f3a865c12f80b535ded25f548b77e1e4dea69d",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "grumbel",
+        "repo": "biiocpp",
         "type": "gitlab"
       }
     },
@@ -103,11 +153,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1646138005,
-        "narHash": "sha256-cM/FFwMC2X8ZOtTpzBn1DXVFeZgCEmW1KkiVJKfZ5JI=",
+        "lastModified": 1646140785,
+        "narHash": "sha256-KQS7vZrwY3u9X9pwyjvnr6NDTtYz0q3uxPt6uXbdh/c=",
         "owner": "windstille",
         "repo": "miniswig",
-        "rev": "eb4fb61d2c776396e51d7183c0e2bebf8069109f",
+        "rev": "747c30e3aead9e198d2e4a5a0583cdb26c770ab5",
         "type": "gitlab"
       },
       "original": {
@@ -118,11 +168,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1646011258,
-        "narHash": "sha256-+aen4zu5uVp52arEcgL2maCS0zQDuG1t+Azwd/O1gN4=",
+        "lastModified": 1646933238,
+        "narHash": "sha256-RZJnLN0o4B35eTnUc2tEAD12X5TNeeJhhvH3Fd6Pmdo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a25df4c2b79c4343bcc72ad671200e5a3e286c41",
+        "rev": "bacbfd713b4781a4a82c1f390f8fe21ae3b8b95b",
         "type": "github"
       },
       "original": {
@@ -166,7 +216,9 @@
     },
     "root": {
       "inputs": {
+        "argparser": "argparser",
         "babyxml": "babyxml",
+        "biiocpp": "biiocpp",
         "flake-utils": "flake-utils",
         "geomcpp": "geomcpp",
         "logmich": "logmich",
@@ -227,11 +279,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1646132673,
-        "narHash": "sha256-SFTVjxwji9mI6k/BgVO0Llb7OoD3lwdZw1+L42+ijIM=",
+        "lastModified": 1646603450,
+        "narHash": "sha256-O+fD3UdiitZ7eYEOCvnjV945LHvqOTvP0NXFR4xjW3g=",
         "owner": "grumbel",
         "repo": "surfcpp",
-        "rev": "c717298ac00d1e6b65bd8553b9ff898f9988129b",
+        "rev": "684efc2ac65c630a3958be12c34fbd4dd5cb5af6",
         "type": "gitlab"
       },
       "original": {
@@ -341,11 +393,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1646135694,
-        "narHash": "sha256-BBnbM4pumif/eqDzyKrO9SLOMhjFswAEtmA2HeKd3mA=",
+        "lastModified": 1647082803,
+        "narHash": "sha256-aoA0QxUagFLeAWQGhxHbS7E6J88I+ZJTHDBNpXRbEl8=",
         "owner": "windstille",
         "repo": "wstgui",
-        "rev": "9af2ffe7abd76bea75b855ec8c12ea09e34b38bd",
+        "rev": "3e387f2a4195ea3f1d0cbb9ab7c5644a7b729eba",
         "type": "gitlab"
       },
       "original": {
