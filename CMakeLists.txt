@@ -65,20 +65,71 @@ endif()
 function(build_dependencies)
   set(BUILD_TESTS OFF)
   set(BUILD_EXTRA OFF)
-  add_subdirectory(external/argparser/ EXCLUDE_FROM_ALL)
-  add_subdirectory(external/babyxml/ EXCLUDE_FROM_ALL)
-  add_subdirectory(external/geomcpp/ EXCLUDE_FROM_ALL)
-  add_subdirectory(external/logmich/ EXCLUDE_FROM_ALL)
-  add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
-  add_subdirectory(external/biiocpp/ EXCLUDE_FROM_ALL)
-  add_subdirectory(external/priocpp/ EXCLUDE_FROM_ALL)
-  add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
-  add_subdirectory(external/surfcpp/ EXCLUDE_FROM_ALL)
 
-  add_subdirectory(external/wstdisplay/ EXCLUDE_FROM_ALL)
-  add_subdirectory(external/wstinput/ EXCLUDE_FROM_ALL)
-  add_subdirectory(external/wstsound/ EXCLUDE_FROM_ALL)
-  add_subdirectory(external/wstgui/ EXCLUDE_FROM_ALL)
+  find_package(argparser)
+  if(NOT TARGET argparser)
+    add_subdirectory(external/argparser/ EXCLUDE_FROM_ALL)
+  endif()
+
+  find_package(babyxml)
+  if(NOT TARGET babyxml)
+    add_subdirectory(external/babyxml/ EXCLUDE_FROM_ALL)
+  endif()
+
+  find_package(geomcpp)
+  if(NOT TARGET geomcpp)
+    add_subdirectory(external/geomcpp/ EXCLUDE_FROM_ALL)
+  endif()
+
+  find_package(logmich)
+  if(NOT TARGET logmich)
+    add_subdirectory(external/logmich/ EXCLUDE_FROM_ALL)
+  endif()
+
+  find_package(sexp)
+  if(NOT TARGET sexp)
+    add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
+  endif()
+
+  find_package(biio)
+  if(NOT TARGET biio::biio)
+    add_subdirectory(external/biiocpp/ EXCLUDE_FROM_ALL)
+  endif()
+
+  find_package(priocpp)
+  if(NOT TARGET prio)
+    add_subdirectory(external/priocpp/ EXCLUDE_FROM_ALL)
+  endif()
+
+  find_program(MINISWIG miniswig)
+  if(NOT MINISWIG)
+    add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
+  endif()
+
+  find_package(surfcpp)
+  if(NOT TARGET surf)
+    add_subdirectory(external/surfcpp/ EXCLUDE_FROM_ALL)
+  endif()
+
+  find_package(wstdisplay)
+  if(NOT TARGET wstdisplay)
+    add_subdirectory(external/wstdisplay/ EXCLUDE_FROM_ALL)
+  endif()
+
+  find_package(wstinput)
+  if(NOT TARGET wstinput)
+    add_subdirectory(external/wstinput/ EXCLUDE_FROM_ALL)
+  endif()
+
+    find_package(wstsound)
+  if(NOT TARGET wstsound)
+    add_subdirectory(external/wstsound/ EXCLUDE_FROM_ALL)
+  endif()
+
+  find_package(wstgui)
+  if(NOT TARGET wstgui)
+    add_subdirectory(external/wstgui/ EXCLUDE_FROM_ALL)
+  endif()
 endfunction()
 build_dependencies()
 
@@ -139,7 +190,7 @@ add_library(wstlib STATIC ${WSTLIB_SOURCES})
 target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
 target_compile_definitions(wstlib PUBLIC -DGLM_ENABLE_EXPERIMENTAL)
 target_link_libraries(wstlib PUBLIC
-  biio
+  biio::biio
   prio
   wstdisplay
   wstinput
