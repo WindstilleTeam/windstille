@@ -133,48 +133,43 @@ function(build_dependencies)
 endfunction()
 build_dependencies()
 
-include_directories(.)
-include_directories(src/)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/src/)
-
 # compile scripting stuff
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/)
+
 set(SCRIPTING_SOURCE
   ${CMAKE_CURRENT_SOURCE_DIR}/src/scripting/interface.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/scripting/game_objects.hpp)
-set(TARGET ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/miniswig.tmp)
-set(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/scripting/wrapper.interface.hpp)
-add_custom_command(
-  OUTPUT ${TARGET}
+set(MINISWIG_TMP ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/miniswig.tmp)
+set(WRAPPER_INTERFACE_HPP ${CMAKE_CURRENT_SOURCE_DIR}/src/scripting/wrapper.interface.hpp)
+
+set(WRAPPER_CPP ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/wrapper.cpp)
+set(WRAPPER_HPP ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/wrapper.hpp)
+
+add_custom_target(GenerateWrapper
+  BYPRODUCTS ${MINISWIG_TMP} ${WRAPPER_CPP} ${WRAPPER_HPP}
+  DEPENDS
+  ${SCRIPTING_SOURCE}
+  ${WRAPPER_INTERFACE_HPP}
+  ${MINISWIG}
+
   COMMAND ${CMAKE_CXX_COMPILER}
-  ARGS
   -E
   -I${CMAKE_CURRENT_SOURCE_DIR}/src
   -I${CMAKE_CURRENT_BINARY_DIR}/src
   -x c
-  -CC ${SOURCE}
-  -o ${TARGET}
+  -CC ${WRAPPER_INTERFACE_HPP}
+  -o ${MINISWIG_TMP}
   -DSCRIPTING_API
-  DEPENDS
-  ${SCRIPTING_SOURCE}
-  ${SOURCE})
 
-set(TARGET_CPP ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/wrapper.cpp)
-set(TARGET_HPP ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/wrapper.hpp)
-set(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/miniswig.tmp)
-add_custom_command(
-  OUTPUT ${TARGET_CPP} ${TARGET_HPP}
-  COMMAND ${CMAKE_CURRENT_BINARY_DIR}/external/miniswig/miniswig
-  --input ${SOURCE}
-  --output-cpp ${TARGET_CPP}
-  --output-hpp ${TARGET_HPP}
+  COMMAND ${MINISWIG}
+  --input ${MINISWIG_TMP}
+  --output-cpp ${WRAPPER_CPP}
+  --output-hpp ${WRAPPER_HPP}
   --module windstille
   --select-namespace "Scripting"
-  DEPENDS
-  ${CMAKE_CURRENT_BINARY_DIR}/external/miniswig/miniswig
-  ${SOURCE})
+  )
 
-# compile libgalapix
+# compile wstlib
 file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/display/*.cpp
   src/font/*.cpp
@@ -186,9 +181,17 @@ file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/sprite3d/*.cpp
   src/system/*.cpp
   src/util/*.cpp)
+
+# file(GLOB) won't add non-existing files, so add it here
+list(APPEND WSTLIB_SOURCES ${WRAPPER_CPP})
+
 add_library(wstlib STATIC ${WSTLIB_SOURCES})
+add_dependencies(wstlib GenerateWrapper)
 target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
 target_compile_definitions(wstlib PUBLIC -DGLM_ENABLE_EXPERIMENTAL)
+target_include_directories(wstlib PUBLIC
+  src/
+  ${CMAKE_CURRENT_BINARY_DIR}/src/)
 target_link_libraries(wstlib PUBLIC
   biio::biio
   prio
