@@ -1,24 +1,21 @@
-rec {
+{
   description = "A classic 2d jump'n shoot game";
 
   inputs = {
     nixpkgs.url = "github:grumbel/nixpkgs/fix-guile-3.0";
-    # nixpkgs.url = "github:nixos/nixpkgs";
-    nix.inputs.nixpkgs.follows = "nixpkgs";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
     flake-utils.url = "github:numtide/flake-utils";
 
     tinycmmc.url = "gitlab:grumbel/cmake-modules";
     tinycmmc.inputs.flake-utils.follows = "flake-utils";
-    tinycmmc.inputs.nix.follows = "nix";
     tinycmmc.inputs.nixpkgs.follows = "nixpkgs";
 
     clanlib.url = "gitlab:grumbel/clanlib-1.0";
-    clanlib.inputs.nix.follows = "nix";
     clanlib.inputs.nixpkgs.follows = "nixpkgs";
     clanlib.inputs.flake-utils.follows = "flake-utils";
   };
 
-  outputs = { self, nix, nixpkgs, flake-utils, tinycmmc, clanlib }:
+  outputs = { self, nixpkgs, flake-utils, tinycmmc, clanlib }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
@@ -38,9 +35,11 @@ rec {
               tinycmmc.defaultPackage.${system}
             ];
             postFixup = ''
-                wrapProgram $out/bin/windstille-0.2 \
+              for program in $out/bin/*; do \
+                wrapProgram $program \
                   --prefix LIBGL_DRIVERS_PATH ":" "${pkgs.mesa.drivers}/lib/dri" \
                   --prefix LD_LIBRARY_PATH ":" "${pkgs.mesa.drivers}/lib"
+              done
             '';
             buildInputs = [
               clanlib.defaultPackage.${system}
