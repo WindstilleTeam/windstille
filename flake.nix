@@ -21,11 +21,24 @@
         pkgs = nixpkgs.legacyPackages.${system};
       in rec {
         packages = flake-utils.lib.flattenTree {
-          windstille-0_2 = pkgs.stdenv.mkDerivation {
+          windstille-0_2 = pkgs.stdenv.mkDerivation rec {
             pname = "windstille-0.2";
             version = "0.3.0";
             src = nixpkgs.lib.cleanSource ./.;
             cmakeFlags = [ "-DBUILD_EXTRA=ON" ];
+            postPatch = ''
+              for file in test/*.?xx; do \
+                substituteInPlace "$file" \
+                  --replace '"data/' "\"$out/share/${pname}/"; \
+              done
+            '';
+            postFixup = ''
+              for program in $out/bin/*; do \
+                wrapProgram $program \
+                  --prefix LIBGL_DRIVERS_PATH ":" "${pkgs.mesa.drivers}/lib/dri" \
+                  --prefix LD_LIBRARY_PATH ":" "${pkgs.mesa.drivers}/lib"
+              done
+            '';
             nativeBuildInputs = [
               pkgs.cmake
               pkgs.ninja
@@ -34,13 +47,6 @@
               pkgs.makeWrapper
               tinycmmc.defaultPackage.${system}
             ];
-            postFixup = ''
-              for program in $out/bin/*; do \
-                wrapProgram $program \
-                  --prefix LIBGL_DRIVERS_PATH ":" "${pkgs.mesa.drivers}/lib/dri" \
-                  --prefix LD_LIBRARY_PATH ":" "${pkgs.mesa.drivers}/lib"
-              done
-            '';
             buildInputs = [
               clanlib.defaultPackage.${system}
 
