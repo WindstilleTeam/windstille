@@ -113,12 +113,14 @@ if(BUILD_EXTRA)
     test/*.cxx)
   foreach(SRC ${EXTRA_SOURCES})
     get_filename_component(SRC_BASENAME ${SRC} NAME_WE)
-    add_executable(${SRC_BASENAME} ${SRC})
-    target_link_libraries(${SRC_BASENAME}
+    add_executable("wst-${SRC_BASENAME}" ${SRC})
+    target_link_libraries("wst-${SRC_BASENAME}"
       PkgConfig::CLANAPP
       PkgConfig::CLANDISPLAY
       PkgConfig::CLANGL
       libwindstille_collision)
+    install(TARGETS "wst-${SRC_BASENAME}"
+      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
   endforeach()
 endif()
 
