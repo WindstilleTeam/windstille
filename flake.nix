@@ -132,6 +132,10 @@ rec {
                 wrapProgram $out/bin/windstille \
                   --prefix LIBGL_DRIVERS_PATH ":" "${pkgs.mesa.drivers}/lib/dri" \
                   --prefix LD_LIBRARY_PATH ":" "${pkgs.mesa.drivers}/lib"
+
+                wrapProgram $out/bin/windstille-editor \
+                  --prefix LIBGL_DRIVERS_PATH ":" "${pkgs.mesa.drivers}/lib/dri" \
+                  --prefix LD_LIBRARY_PATH ":" "${pkgs.mesa.drivers}/lib"
             '';
             buildInputs = [
               miniswig.defaultPackage.${system}
