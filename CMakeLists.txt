@@ -67,27 +67,27 @@ function(build_dependencies)
   set(BUILD_EXTRA OFF)
 
   find_package(argparser)
-  if(NOT TARGET argparser)
+  if(NOT TARGET argparser::argparser)
     add_subdirectory(external/argparser/ EXCLUDE_FROM_ALL)
   endif()
 
   find_package(babyxml)
-  if(NOT TARGET babyxml)
+  if(NOT TARGET babyxml::babyxml)
     add_subdirectory(external/babyxml/ EXCLUDE_FROM_ALL)
   endif()
 
-  find_package(geomcpp)
-  if(NOT TARGET geomcpp)
+  find_package(geom)
+  if(NOT TARGET geom::geom)
     add_subdirectory(external/geomcpp/ EXCLUDE_FROM_ALL)
   endif()
 
   find_package(logmich)
-  if(NOT TARGET logmich)
+  if(NOT TARGET logmich::logmich)
     add_subdirectory(external/logmich/ EXCLUDE_FROM_ALL)
   endif()
 
   find_package(sexp)
-  if(NOT TARGET sexp)
+  if(NOT TARGET sexp::sexp)
     add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
   endif()
 
@@ -96,8 +96,8 @@ function(build_dependencies)
     add_subdirectory(external/biiocpp/ EXCLUDE_FROM_ALL)
   endif()
 
-  find_package(priocpp)
-  if(NOT TARGET prio)
+  find_package(prio)
+  if(NOT TARGET prio::prio)
     add_subdirectory(external/priocpp/ EXCLUDE_FROM_ALL)
   endif()
 
@@ -106,28 +106,28 @@ function(build_dependencies)
     add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
   endif()
 
-  find_package(surfcpp)
-  if(NOT TARGET surf)
+  find_package(surf)
+  if(NOT TARGET surf::surf)
     add_subdirectory(external/surfcpp/ EXCLUDE_FROM_ALL)
   endif()
 
   find_package(wstdisplay)
-  if(NOT TARGET wstdisplay)
+  if(NOT TARGET wstdisplay::wstdisplay)
     add_subdirectory(external/wstdisplay/ EXCLUDE_FROM_ALL)
   endif()
 
   find_package(wstinput)
-  if(NOT TARGET wstinput)
+  if(NOT TARGET wstinput::wstinput)
     add_subdirectory(external/wstinput/ EXCLUDE_FROM_ALL)
   endif()
 
     find_package(wstsound)
-  if(NOT TARGET wstsound)
+  if(NOT TARGET wstsound::wstsound)
     add_subdirectory(external/wstsound/ EXCLUDE_FROM_ALL)
   endif()
 
   find_package(wstgui)
-  if(NOT TARGET wstgui)
+  if(NOT TARGET wstgui::wstgui)
     add_subdirectory(external/wstgui/ EXCLUDE_FROM_ALL)
   endif()
 endfunction()
@@ -194,17 +194,17 @@ target_include_directories(wstlib PUBLIC
   ${CMAKE_CURRENT_BINARY_DIR}/src/)
 target_link_libraries(wstlib PUBLIC
   biio::biio
-  prio
+  prio::prio
   wstdisplay
-  wstinput
-  wstsound
-  wstgui
-  argparser
-  babyxml
-  geomcpp
-  logmich
-  sexp
-  surf
+  wstinput::wstinput
+  wstsound::wstsound
+  wstgui::wstgui
+  argparser::argparser
+  babyxml::babyxml
+  geom::geom
+  logmich::logmich
+  sexp::sexp
+  surf::surf
   Squirrel::Squirrel
   GLEW::GLEW
   JPEG::JPEG
