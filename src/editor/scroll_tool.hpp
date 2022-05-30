@@ -25,7 +25,6 @@
 namespace windstille {
 
 
-/** */
 class ScrollTool : public Tool
 {
 private:

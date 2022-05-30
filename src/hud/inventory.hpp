@@ -26,7 +26,6 @@ namespace windstille {
 
 class InventoryImpl;
 
-/** */
 class Inventory : public wstgui::Screen
 {
 private:

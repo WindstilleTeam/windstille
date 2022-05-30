@@ -25,7 +25,6 @@
 
 namespace windstille {
 
-/** */
 class TitleScreen : public wstgui::Screen
 {
 private:

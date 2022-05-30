@@ -25,7 +25,6 @@
 
 namespace windstille {
 
-/** */
 class Trigger : public GameObject
 {
 private:

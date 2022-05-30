@@ -28,7 +28,6 @@ namespace windstille {
 
 class ControllerHelpWindowImpl;
 
-/** */
 class ControllerHelpWindow : public wstgui::Screen,
                              public Currenton<ControllerHelpWindow>
 {

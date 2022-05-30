@@ -33,7 +33,6 @@ struct BezierPoint
   glm::vec2 pos;
 };
 
-/** */
 class IpoCurve
 {
 private:

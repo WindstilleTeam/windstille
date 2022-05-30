@@ -71,7 +71,6 @@ struct Vertex
   {}
 };
 
-/** */
 class Mesh
 {
 private:

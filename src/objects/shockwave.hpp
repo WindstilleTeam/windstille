@@ -24,7 +24,6 @@
 
 namespace windstille {
 
-/** */
 class Shockwave : public GameObject
 {
 private:

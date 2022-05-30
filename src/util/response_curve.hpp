@@ -23,7 +23,6 @@
 
 namespace windstille {
 
-/** */
 class ResponseCurve
 {
 private:

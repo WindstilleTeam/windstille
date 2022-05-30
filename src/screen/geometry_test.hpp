@@ -26,7 +26,6 @@
 
 namespace windstille {
 
-/** */
 class GeometryTest : public wstgui::Screen
 {
 private:

@@ -41,7 +41,6 @@ namespace windstille {
 
 class ParticleSystemGUI;
 
-/** */
 class ParticleViewer : public wstgui::Screen
 {
 private:

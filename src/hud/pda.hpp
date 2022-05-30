@@ -45,7 +45,6 @@ public:
   bool complete;
 };
 
-/** */
 class PDA : public wstgui::Screen
 {
 private:

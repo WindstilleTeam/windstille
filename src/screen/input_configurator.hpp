@@ -34,7 +34,6 @@ struct ConfigureItem
   int  event_id;
 };
 
-/** */
 class InputConfigurator : public wstgui::Screen
 {
 private:

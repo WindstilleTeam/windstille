@@ -33,7 +33,6 @@ class EdgePosition;
 class Edge;
 class Node;
 
-/** */
 class NavigationTest : public wstgui::Screen
 {
 private:

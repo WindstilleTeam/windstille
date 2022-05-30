@@ -25,7 +25,6 @@
 
 namespace windstille {
 
-/** */
 class VRDummy : public Entity
 {
 private:

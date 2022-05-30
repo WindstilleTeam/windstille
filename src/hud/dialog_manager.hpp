@@ -31,7 +31,6 @@
 
 namespace windstille {
 
-/** */
 class DialogManager : public wstgui::Screen,
                       public Currenton<DialogManager>
 {

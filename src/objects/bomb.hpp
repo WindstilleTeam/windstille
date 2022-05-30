@@ -24,7 +24,6 @@
 
 namespace windstille {
 
-/** */
 class Bomb : public GameObject
 {
 private:

@@ -43,7 +43,6 @@ public:
   {}
 };
 
-/** */
 class Swarm : public Entity
 {
 private:

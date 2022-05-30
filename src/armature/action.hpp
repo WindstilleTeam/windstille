@@ -21,7 +21,6 @@
 
 namespace windstille {
 
-/** */
 class Action
 {
 private:
