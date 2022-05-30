@@ -27,7 +27,7 @@
 #include "editor/editor_window.hpp"
 #include "util/file_reader.hpp"
 
-ObjectModel::ObjectModel(const std::string& name_, const glm::vec2& rel_pos_) :
+ObjectModel::ObjectModel(std::string const& name_, glm::vec2 const& rel_pos_) :
   name(name_),
   rel_pos(rel_pos_),
   select_mask(),
@@ -82,7 +82,7 @@ ObjectModel::get_parent() const
 }
 
 void
-ObjectModel::set_parent(const ObjectModelHandle& parent_, bool recalc_pos)
+ObjectModel::set_parent(ObjectModelHandle const& parent_, bool recalc_pos)
 {
   { // Remove the old parent
     ObjectModelHandle parent = parent_ptr.lock();
@@ -131,7 +131,7 @@ ObjectModel::get_world_pos() const
 }
 
 void
-ObjectModel::set_world_pos(const glm::vec2& p)
+ObjectModel::set_world_pos(glm::vec2 const& p)
 {
   if (parent_ptr.lock())
     set_rel_pos(rel_pos + (p - get_world_pos()));
@@ -140,7 +140,7 @@ ObjectModel::set_world_pos(const glm::vec2& p)
 }
 
 void
-ObjectModel::set_rel_pos(const glm::vec2& rel_pos_)
+ObjectModel::set_rel_pos(glm::vec2 const& rel_pos_)
 {
   // FIXME: Cut to integer positions, might not be the right place to do this
   rel_pos.x = floorf(rel_pos_.x);
@@ -175,7 +175,7 @@ ObjectModel::reset()
 }
 
 bool
-ObjectModel::is_at(const glm::vec2& pos) const
+ObjectModel::is_at(glm::vec2 const& pos) const
 {
   return geom::contains(get_bounding_box(), geom::fpoint(pos));
 }
@@ -199,7 +199,7 @@ static float float_snap_to_grid(float v, float grid)
 SnapData
 ObjectModel::snap_to_grid(float grid_size) const
 {
-  const geom::frect& r = get_bounding_box();
+  geom::frect const& r = get_bounding_box();
 
   geom::frect snap_rect(float_snap_to_grid(r.left(),   grid_size),
                   float_snap_to_grid(r.top(),    grid_size),
@@ -244,9 +244,9 @@ ObjectModel::snap_to_grid(float grid_size) const
 }
 
 SnapData
-ObjectModel::snap_to_object(const geom::frect& in) const
+ObjectModel::snap_to_object(geom::frect const& in) const
 {
-  const geom::frect& rect = get_bounding_box();
+  geom::frect const& rect = get_bounding_box();
 
   SnapData snap;
 
@@ -363,7 +363,7 @@ ObjectModel::set_property(TimelineProperty property, float value)
 }
 
 void
-ObjectModel::set_property(TimelineProperty property, const glm::vec2& value)
+ObjectModel::set_property(TimelineProperty property, glm::vec2 const& value)
 {
   switch(property)
   {

@@ -53,8 +53,8 @@ private:
   std::unique_ptr<TilePackerImpl> impl;
 
 private:
-  TilePacker(const TilePacker&);
-  TilePacker& operator=(const TilePacker&);
+  TilePacker(TilePacker const&);
+  TilePacker& operator=(TilePacker const&);
 };
 
 #endif

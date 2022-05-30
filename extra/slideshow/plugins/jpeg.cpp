@@ -26,7 +26,7 @@
 #include "jpeg.hpp"
 
 bool
-JPEG::filename_is_jpeg(const std::string& filename)
+JPEG::filename_is_jpeg(std::string const& filename)
 {
   // FIXME: Merge this with util/jpeg_software_surface_loader, maybe
   // store the fileformat/SoftwareSurfaceLoader in the database intead
@@ -36,7 +36,7 @@ JPEG::filename_is_jpeg(const std::string& filename)
 }
 
 geom::isize
-JPEG::get_size(const std::string& filename)
+JPEG::get_size(std::string const& filename)
 {
   FileJPEGDecompressor loader(filename);
   geom::isize size = loader.read_size();

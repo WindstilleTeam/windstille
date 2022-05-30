@@ -56,7 +56,7 @@ TitleScreen::update(float delta, wstinput::Controller const& controller)
 }
 
 void
-TitleScreen::handle_event(const SDL_Event& )
+TitleScreen::handle_event(SDL_Event const& )
 {
 
 }

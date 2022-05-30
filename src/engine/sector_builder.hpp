@@ -32,13 +32,13 @@ class Sector;
 class SectorBuilder
 {
 private:
-  const Pathname& m_filename;
+  Pathname const& m_filename;
   Sector&  m_sector;
   std::map<std::string, GameObjectHandle> id_table;
   std::map<GameObjectHandle, std::string> parent_table;
 
 public:
-  SectorBuilder(const Pathname& filename, Sector& sector);
+  SectorBuilder(Pathname const& filename, Sector& sector);
 
   void build();
 
@@ -50,8 +50,8 @@ private:
   void parse_navgraph(ReaderMapping const& reader);
 
 private:
-  SectorBuilder(const SectorBuilder&);
-  SectorBuilder& operator=(const SectorBuilder&);
+  SectorBuilder(SectorBuilder const&);
+  SectorBuilder& operator=(SectorBuilder const&);
 };
 
 #endif

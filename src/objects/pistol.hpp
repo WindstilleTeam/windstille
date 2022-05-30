@@ -42,8 +42,8 @@ public:
   void fire(bool enable) override;
 
 private:
-  Pistol(const Pistol&);
-  Pistol& operator=(const Pistol&);
+  Pistol(Pistol const&);
+  Pistol& operator=(Pistol const&);
 };
 
 #endif

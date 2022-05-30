@@ -30,14 +30,14 @@ private:
   std::vector<float> samples;
 
 public:
-  ResponseCurve(float i_min_, float i_max_, const std::vector<float>& samples_);
+  ResponseCurve(float i_min_, float i_max_, std::vector<float> const& samples_);
   ~ResponseCurve();
 
   float get(float v);
 
 private:
-  ResponseCurve (const ResponseCurve&);
-  ResponseCurve& operator= (const ResponseCurve&);
+  ResponseCurve (ResponseCurve const&);
+  ResponseCurve& operator= (ResponseCurve const&);
 };
 
 #endif

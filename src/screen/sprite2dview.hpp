@@ -67,7 +67,7 @@ public:
   Sprite2DView();
   ~Sprite2DView() override;
 
-  void adddir(const Pathname& dir);
+  void adddir(Pathname const& dir);
 
   void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, wstinput::Controller const& controller) override;
@@ -79,12 +79,12 @@ public:
   void next_image(int i = 1);
   void prev_image(int i = 1) { next_image(-i); }
 
-  void set_sprite(const Pathname& filename);
+  void set_sprite(Pathname const& filename);
   void prepare_sprite(Sprite& sprite);
 
 private:
-  Sprite2DView (const Sprite2DView&);
-  Sprite2DView& operator= (const Sprite2DView&);
+  Sprite2DView (Sprite2DView const&);
+  Sprite2DView& operator= (Sprite2DView const&);
 };
 
 #endif

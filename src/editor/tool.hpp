@@ -40,8 +40,8 @@ public:
   virtual void draw(wstdisplay::SceneContext& /*sc*/) {}
 
 private:
-  Tool(const Tool&);
-  Tool& operator=(const Tool&);
+  Tool(Tool const&);
+  Tool& operator=(Tool const&);
 };
 
 #endif

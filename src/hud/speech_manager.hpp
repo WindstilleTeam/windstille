@@ -50,20 +50,20 @@ public:
    *  @param pos   The position of the speech bubble in screen coordinates
    *  @param color The color of the speech bubble
    */
-  int add(const std::string& text,
-          const glm::vec2& pos,
-          const surf::Color& color = surf::Color(1.0f, 1.0f, 1.0f));
+  int add(std::string const& text,
+          glm::vec2 const& pos,
+          surf::Color const& color = surf::Color(1.0f, 1.0f, 1.0f));
 
-  int add(const std::string& text,
-          const Entity& entity,
-          const surf::Color& color = surf::Color(1.0f, 1.0f, 1.0f));
+  int add(std::string const& text,
+          Entity const& entity,
+          surf::Color const& color = surf::Color(1.0f, 1.0f, 1.0f));
 
   void draw(wstdisplay::GraphicsContext& gc);
   void update(float delta);
 
 private:
-  SpeechManager (const SpeechManager&);
-  SpeechManager& operator= (const SpeechManager&);
+  SpeechManager (SpeechManager const&);
+  SpeechManager& operator= (SpeechManager const&);
 };
 
 #endif

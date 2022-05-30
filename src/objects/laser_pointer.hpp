@@ -44,8 +44,8 @@ public:
   void  set_angle(float angle);
 
 private:
-  LaserPointer (const LaserPointer&);
-  LaserPointer& operator= (const LaserPointer&);
+  LaserPointer (LaserPointer const&);
+  LaserPointer& operator= (LaserPointer const&);
 };
 
 #endif

@@ -35,7 +35,7 @@ void        sq_to_lisp(HSQUIRRELVM v, std::vector<sexp::Value>& entries);
 std::string sq_to_lisp_string(std::string sq_str);
 std::string squirrel2string(HSQUIRRELVM v, int i);
 
-void print_squirrel_stack(HSQUIRRELVM v, const std::string& context = std::string());
+void print_squirrel_stack(HSQUIRRELVM v, std::string const& context = std::string());
 
 } // namespace Scripting
 

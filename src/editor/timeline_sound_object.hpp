@@ -29,7 +29,7 @@ private:
   std::string m_name;
 
 public:
-  TimelineSoundObject(float pos, float width, const std::string& name) :
+  TimelineSoundObject(float pos, float width, std::string const& name) :
     m_pos(pos),
     m_width(width),
     m_name(name)
@@ -49,8 +49,8 @@ public:
   }
 
 private:
-  TimelineSoundObject(const TimelineSoundObject&);
-  TimelineSoundObject& operator=(const TimelineSoundObject&);
+  TimelineSoundObject(TimelineSoundObject const&);
+  TimelineSoundObject& operator=(TimelineSoundObject const&);
 };
 
 #endif

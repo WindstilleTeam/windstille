@@ -33,7 +33,7 @@ public:
     return mask;
   }
 
-  bool match(const SelectMask& rhs) const
+  bool match(SelectMask const& rhs) const
   {
     return (mask & rhs.mask);
   }

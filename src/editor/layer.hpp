@@ -52,7 +52,7 @@ public:
   const_iterator begin() const { return objects.begin(); }
   const_iterator end()   const { return objects.end(); }
 
-  void set_name(const std::string& str) { name = str; }
+  void set_name(std::string const& str) { name = str; }
   std::string get_name() const { return name; }
 
   bool is_visible() const { return visible; }
@@ -62,31 +62,31 @@ public:
   //void set_visible(bool v) { visible = v; }
   //void set_locked(bool v) { locked = v; }
 
-  bool has_object(const ObjectModelHandle& object) const;
+  bool has_object(ObjectModelHandle const& object) const;
 
-  void add(const ObjectModelHandle& object);
-  void remove(const ObjectModelHandle& object);
+  void add(ObjectModelHandle const& object);
+  void remove(ObjectModelHandle const& object);
   iterator erase(iterator it);
 
-  void draw(wstdisplay::SceneContext& sc, const SelectMask& layers);
+  void draw(wstdisplay::SceneContext& sc, SelectMask const& layers);
   void update(float delta);
-  void sync(const Gtk::TreeModel::Row& row);
+  void sync(Gtk::TreeModel::Row const& row);
 
-  ObjectModelHandle get_object_at(const glm::vec2& pos, const SelectMask& layers) const;
-  SelectionHandle   get_selection(const geom::frect& rect, const SelectMask& layers) const;
+  ObjectModelHandle get_object_at(glm::vec2 const& pos, SelectMask const& layers) const;
+  SelectionHandle   get_selection(geom::frect const& rect, SelectMask const& layers) const;
 
   void raise_to_top(ObjectModelHandle object);
   void lower_to_bottom(ObjectModelHandle object);
   void raise(ObjectModelHandle object);
   void lower(ObjectModelHandle object);
 
-  SnapData snap_object(ObjectModelHandle object, const std::set<ObjectModelHandle>& ignore_objects) const;
+  SnapData snap_object(ObjectModelHandle object, std::set<ObjectModelHandle> const& ignore_objects) const;
 
   void write(FileWriter& writer) const;
 
 private:
-  Layer(const Layer&);
-  Layer& operator=(const Layer&);
+  Layer(Layer const&);
+  Layer& operator=(Layer const&);
 };
 
 #endif

@@ -27,7 +27,7 @@
 class DialogEntry
 {
 public:
-  DialogEntry(const std::string& arg_character, const std::string& arg_text);
+  DialogEntry(std::string const& arg_character, std::string const& arg_text);
 
   std::string character;
   std::string text;
@@ -36,7 +36,7 @@ public:
 class ObjectiveEntry
 {
 public:
-  ObjectiveEntry(const std::string& arg_name, const std::string& arg_text);
+  ObjectiveEntry(std::string const& arg_name, std::string const& arg_text);
 
   std::string name;
   std::string text;
@@ -70,12 +70,12 @@ public:
 
   void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, wstinput::Controller const& controller) override;
-  void add_dialog(const std::string& character, const std::string& text);
+  void add_dialog(std::string const& character, std::string const& text);
 
-  void add_objective(const std::string& name, const std::string& text);
-  void objective_complete(const std::string& name);
-  bool is_objective_given(const std::string& name);
-  bool is_objective_complete(const std::string& name);
+  void add_objective(std::string const& name, std::string const& text);
+  void objective_complete(std::string const& name);
+  bool is_objective_given(std::string const& name);
+  bool is_objective_complete(std::string const& name);
 };
 
 #endif

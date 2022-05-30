@@ -58,7 +58,7 @@ public:
     return data;
   }
 
-  inline const Data* operator->() const {
+  inline Data const* operator->() const {
     return data;
   }
 
@@ -66,7 +66,7 @@ public:
     return *data;
   }
 
-  inline const Data& operator*() const {
+  inline Data const& operator*() const {
     return *data;
   }
 
@@ -74,11 +74,11 @@ public:
     return data != nullptr;
   }
 
-  bool operator==(const PointerHandle<Data>& rhs) const {
+  bool operator==(PointerHandle<Data> const& rhs) const {
     return data == rhs.data;
   }
 
-  bool operator<(const PointerHandle<Data>& other) const {
+  bool operator<(PointerHandle<Data> const& other) const {
     return this->data < other.data;
   }
 };
@@ -108,7 +108,7 @@ public:
 
   // FIXME: It might be worth it to return handles that can be
   // validated instead of pure pointers
-  NodeHandle add_node(const glm::vec2& pos);
+  NodeHandle add_node(glm::vec2 const& pos);
   EdgeHandle add_edge(NodeHandle node1, NodeHandle node2);
 
   void remove_node(NodeHandle node);
@@ -117,20 +117,20 @@ public:
   void split_edge(EdgeHandle edge);
 
   /** Find edges that intersect with the given line */
-  std::vector<EdgePosition> find_intersections(const geom::fline& line);
+  std::vector<EdgePosition> find_intersections(geom::fline const& line);
 
   /** Find nodes that are near within the \a radius */
-  std::vector<NodeHandle> find_nodes(const glm::vec2& pos, float radius);
+  std::vector<NodeHandle> find_nodes(glm::vec2 const& pos, float radius);
 
-  std::vector<NodeHandle> find_nodes(const geom::frect& rect);
+  std::vector<NodeHandle> find_nodes(geom::frect const& rect);
 
   /** Find the closest node, limit search to nodes in radius */
-  NodeHandle find_closest_node(const glm::vec2& pos, float radius);
+  NodeHandle find_closest_node(glm::vec2 const& pos, float radius);
 
-  EdgeHandle find_closest_edge(const glm::vec2& pos, float radius);
+  EdgeHandle find_closest_edge(glm::vec2 const& pos, float radius);
 
   /** Find edges that are near the given point */
-  std::vector<EdgeHandle> find_edges(const glm::vec2& pos, float radius);
+  std::vector<EdgeHandle> find_edges(glm::vec2 const& pos, float radius);
 
   /** Draw the navigation graph, for debugging only */
   void draw(wstdisplay::GraphicsContext& gc);
@@ -143,8 +143,8 @@ public:
   bool valid(Node* node);
 
 private:
-  NavigationGraph (const NavigationGraph&);
-  NavigationGraph& operator= (const NavigationGraph&);
+  NavigationGraph (NavigationGraph const&);
+  NavigationGraph& operator= (NavigationGraph const&);
 };
 
 #endif

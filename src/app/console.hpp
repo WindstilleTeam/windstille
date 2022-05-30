@@ -48,14 +48,14 @@ public:
   void add(char* buf, int len);
 
   /** execute the given string */
-  void execute(const std::string& str);
+  void execute(std::string const& str);
 
 private:
   std::unique_ptr<ConsoleImpl> impl;
 
 private:
-  Console (const Console&);
-  Console& operator= (const Console&);
+  Console (Console const&);
+  Console& operator= (Console const&);
 };
 
 #define ConsoleLog Console::current()->get_ostream()

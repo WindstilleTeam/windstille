@@ -49,7 +49,7 @@ private:
     std::string name;
     unsigned int filter_mask;
 
-    ComboBoxEntry(const std::string& name_,
+    ComboBoxEntry(std::string const& name_,
                   unsigned int filter_mask_)
       : name(name_),
         filter_mask(filter_mask_)
@@ -87,28 +87,28 @@ public:
   ObjectSelector(EditorWindow& editor);
   ~ObjectSelector() override;
 
-  void add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
-                 const Pathname& pathname,
-                 const std::string& url,
+  void add_decal(Glib::RefPtr<Gdk::Pixbuf> const& icon,
+                 Pathname const& pathname,
+                 std::string const& url,
                  unsigned int filter);
 
-  void add_decals_from_directory(const Pathname& pathname, unsigned int filter);
+  void add_decals_from_directory(Pathname const& pathname, unsigned int filter);
 
   void populate();
   void refresh();
-  bool filter(const Gtk::TreeModel::const_iterator& it);
+  bool filter(Gtk::TreeModel::const_iterator const& it);
 
 protected:
-  void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context) override;
-  void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& context,
+  void on_drag_begin(Glib::RefPtr<Gdk::DragContext> const& context) override;
+  void on_drag_data_get(Glib::RefPtr<Gdk::DragContext> const& context,
                         Gtk::SelectionData& selection_data,
                         guint info, guint time) override;
 
   void on_filter_changed();
 
 private:
-  ObjectSelector(const ObjectSelector&);
-  ObjectSelector& operator=(const ObjectSelector&);
+  ObjectSelector(ObjectSelector const&);
+  ObjectSelector& operator=(ObjectSelector const&);
 };
 
 #endif

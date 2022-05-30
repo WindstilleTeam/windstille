@@ -59,8 +59,8 @@ public:
   void update(float delta) override;
 
 private:
-  Swarm (const Swarm&);
-  Swarm& operator= (const Swarm&);
+  Swarm (Swarm const&);
+  Swarm& operator= (Swarm const&);
 };
 
 #endif

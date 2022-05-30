@@ -36,7 +36,7 @@ public:
   std::string name;
   Sprite sprite;
 
-  InventoryItem(const std::string& name_, const std::string& filename_)
+  InventoryItem(std::string const& name_, std::string const& filename_)
     : name(name_), sprite(g_app.sprite().create(Pathname(filename_)))
   {
   }
@@ -110,7 +110,7 @@ InventoryImpl::draw(wstdisplay::GraphicsContext& gc)
 
   for(int i = 0; i < int(items.size()); ++i)
   {
-    const InventoryItem& item = items[(i+current_item) % items.size()];
+    InventoryItem const& item = items[(i+current_item) % items.size()];
     glm::vec2 draw_pos = pos + glm::rotate(glm::vec2(128.0f, 0.0f), step_angle * static_cast<float>(i) - glm::half_pi<float>() + add_angle);
 
     if (i == 0 && moving == 0)

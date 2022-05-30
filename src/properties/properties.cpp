@@ -29,7 +29,7 @@ Properties::Properties(PropertySet* pset_, void* object_) :
 }
 
 Property&
-Properties::get(const std::string& name) const
+Properties::get(std::string const& name) const
 {
   Property* prop = pset->get(name);
   if (!prop)
@@ -45,13 +45,13 @@ Properties::get(const std::string& name) const
 }
 
 int
-Properties::get_int(const std::string& name)  const
+Properties::get_int(std::string const& name)  const
 {
   return get(name).get_int(object);
 }
 
 float
-Properties::get_float(const std::string& name) const
+Properties::get_float(std::string const& name) const
 {
   return get(name).get_float(object);
 }

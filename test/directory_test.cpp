@@ -9,7 +9,7 @@ int main(int argc, char** argv)
   {
     Pathname directory_name(argv[1], Pathname::kSysPath);
     std::cout << "Directory: " << directory_name << std::endl;
-    const Directory::List& directory = Directory::read(directory_name);
+    Directory::List const& directory = Directory::read(directory_name);
     for(Directory::List::const_iterator p = directory.begin(); p != directory.end(); ++p)
     {
       std::cout << "  Entry: " << *p << std::endl;
@@ -19,7 +19,7 @@ int main(int argc, char** argv)
   {
     Pathname directory_name(argv[1], Pathname::kSysPath);
     std::cout << "Directory: " << directory_name << std::endl;
-    const Directory::List& directory = Directory::read(directory_name, argv[2]);
+    Directory::List const& directory = Directory::read(directory_name, argv[2]);
     for(Directory::List::const_iterator p = directory.begin(); p != directory.end(); ++p)
     {
       std::cout << "  Entry: " << *p << std::endl;

@@ -23,7 +23,7 @@
 #include <string.h>
 #include <errno.h>
 
-FileJPEGDecompressor::FileJPEGDecompressor(const std::string& filename) :
+FileJPEGDecompressor::FileJPEGDecompressor(std::string const& filename) :
   m_filename(filename),
   m_in(fopen(filename.c_str(), "rb"))
 {

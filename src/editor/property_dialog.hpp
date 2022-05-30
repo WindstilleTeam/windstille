@@ -31,8 +31,8 @@ public:
   ~PropertyDialog() override;
 
 private:
-  PropertyDialog(const PropertyDialog&);
-  PropertyDialog& operator=(const PropertyDialog&);
+  PropertyDialog(PropertyDialog const&);
+  PropertyDialog& operator=(PropertyDialog const&);
 };
 
 #endif

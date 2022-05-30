@@ -110,7 +110,7 @@ public:
   int get_max_energy() const;
   void hit(int points);
 
-  void collision(const CollisionData& data);
+  void collision(CollisionData const& data);
 
   Entity* find_useable_entity();
 
@@ -167,13 +167,13 @@ private:
    * Sets an action for the sprite. In contrast to sprite->set_action this
    * function will not restart the action if it was already running
    */
-  void try_set_action(const std::string& name, float speed = 1.0);
+  void try_set_action(std::string const& name, float speed = 1.0);
 
   Direction get_direction() const;
 
 private:
-  Player(const Player&);
-  Player& operator=(const Player&);
+  Player(Player const&);
+  Player& operator=(Player const&);
 };
 
 #endif

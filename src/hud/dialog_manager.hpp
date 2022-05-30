@@ -69,8 +69,8 @@ public:
   void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, wstinput::Controller const& controller) override;
 
-  void add_dialog(int alignment, const std::string& portrait, const std::string& text);
-  void add_caption(int alignment, const std::string& text);
+  void add_dialog(int alignment, std::string const& portrait, std::string const& text);
+  void add_caption(int alignment, std::string const& text);
 };
 
 #endif

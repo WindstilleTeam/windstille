@@ -359,7 +359,7 @@ MenuManager::display_credits()
 }
 
 geom::frect
-MenuManager::create_positioned_rect(const glm::vec2& pos_, const geom::fsize& size)
+MenuManager::create_positioned_rect(glm::vec2 const& pos_, geom::fsize const& size)
 {
   glm::vec2 pos = pos_;
 
@@ -389,7 +389,7 @@ MenuManager::create_centered_rect(float w, float h)
 // Callbacks
 
 void
-MenuManager::menu_show_model(const Pathname& filename)
+MenuManager::menu_show_model(Pathname const& filename)
 {
   std::unique_ptr<Sprite3DView> sprite3dview(new Sprite3DView());
 
@@ -401,7 +401,7 @@ MenuManager::menu_show_model(const Pathname& filename)
 }
 
 void
-MenuManager::menu_show_particle_system(const Pathname& filename)
+MenuManager::menu_show_particle_system(Pathname const& filename)
 {
   std::unique_ptr<ParticleViewer> particle_viewer(new ParticleViewer());
   particle_viewer->load(filename);
@@ -426,7 +426,7 @@ MenuManager::menu_quit()
 }
 
 void
-MenuManager::menu_start_scenario(const Pathname& scenario)
+MenuManager::menu_start_scenario(Pathname const& scenario)
 {
   std::cout << "Starting: " << scenario << std::endl;
   g_app.screen().push_screen(std::make_unique<GameSession>(scenario));

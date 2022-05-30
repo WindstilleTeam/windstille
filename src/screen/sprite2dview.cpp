@@ -97,7 +97,7 @@ Sprite2DView::Sprite2DView()
 }
 
 void
-Sprite2DView::adddir(const Pathname& dirname)
+Sprite2DView::adddir(Pathname const& dirname)
 {
   Directory::List lst = Directory::read(dirname);
 
@@ -413,7 +413,7 @@ Sprite2DView::update(float delta, wstinput::Controller const& controller)
 }
 
 void
-Sprite2DView::set_sprite(const Pathname& filename)
+Sprite2DView::set_sprite(Pathname const& filename)
 {
   sprite = g_app.sprite().create(filename);
   ignore_delta = true;

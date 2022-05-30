@@ -48,8 +48,8 @@ public:
 
   TimelineLayerHandle get_layer(int n) const;
 
-  TimelineLayerHandle add_layer(const std::string& name);
-  TimelineLayerHandle create_layer(const std::string& name);
+  TimelineLayerHandle add_layer(std::string const& name);
+  TimelineLayerHandle create_layer(std::string const& name);
   TimelineObjectLayerHandle create_object_layer(ObjectModelHandle object, TimelineProperty property);
   TimelineObjectLayerHandle get_object_layer(ObjectModelHandle object, TimelineProperty property);
 
@@ -61,8 +61,8 @@ public:
   void write(FileWriter& writer) const;
 
 private:
-  Timeline(const Timeline&);
-  Timeline& operator=(const Timeline&);
+  Timeline(Timeline const&);
+  Timeline& operator=(Timeline const&);
 };
 
 #endif

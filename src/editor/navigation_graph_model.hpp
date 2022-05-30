@@ -46,7 +46,7 @@ public:
   NavigationGraphModel(SectorModel& sector);
   ~NavigationGraphModel();
 
-  const Nodes& get_nodes() const { return m_nodes; }
+  Nodes const& get_nodes() const { return m_nodes; }
 
   void add_node(std::shared_ptr<NavGraphNodeObjectModel> node);
   void add_edge(std::shared_ptr<NavGraphEdgeObjectModel> edge);
@@ -54,13 +54,13 @@ public:
   void remove_node(std::shared_ptr<NavGraphNodeObjectModel> node);
   void remove_edge(std::shared_ptr<NavGraphEdgeObjectModel> edge);
 
-  std::shared_ptr<NavGraphNodeObjectModel> find_closest_node(const glm::vec2& pos, float radius) const;
-  std::shared_ptr<NavGraphEdgeObjectModel> find_closest_edge(const glm::vec2& pos, float radius) const;
+  std::shared_ptr<NavGraphNodeObjectModel> find_closest_node(glm::vec2 const& pos, float radius) const;
+  std::shared_ptr<NavGraphEdgeObjectModel> find_closest_edge(glm::vec2 const& pos, float radius) const;
 
   std::vector<std::shared_ptr<NavGraphEdgeObjectModel> > find_edges(std::shared_ptr<NavGraphNodeObjectModel> node) const;
 
-  std::shared_ptr<NavGraphNodeObjectModel> get_object_at(const glm::vec2& pos, const SelectMask& layers) const;
-  SelectionHandle   get_selection(const geom::frect& rect, const SelectMask& layers) const;
+  std::shared_ptr<NavGraphNodeObjectModel> get_object_at(glm::vec2 const& pos, SelectMask const& layers) const;
+  SelectionHandle   get_selection(geom::frect const& rect, SelectMask const& layers) const;
 
   bool has_edge(std::shared_ptr<NavGraphNodeObjectModel> lhs, std::shared_ptr<NavGraphNodeObjectModel> rhs) const;
 
@@ -68,8 +68,8 @@ public:
   void load(ReaderMapping const& reader, std::map<std::string, ObjectModelHandle>& id_table);
 
 private:
-  NavigationGraphModel(const NavigationGraphModel&);
-  NavigationGraphModel& operator=(const NavigationGraphModel&);
+  NavigationGraphModel(NavigationGraphModel const&);
+  NavigationGraphModel& operator=(NavigationGraphModel const&);
 };
 
 #endif

@@ -53,7 +53,7 @@ private:
 
 public:
   Document();
-  Document(const std::string& filename);
+  Document(std::string const& filename);
   ~Document();
 
   SectorModel& get_sector_model() const { return *m_sector_model; }
@@ -76,8 +76,8 @@ public:
 
   /* Layer Commands
    * @{*/
-  void layer_add(const Gtk::TreeModel::Path& path);
-  void layer_remove(const Gtk::TreeModel::Path& path);
+  void layer_add(Gtk::TreeModel::Path const& path);
+  void layer_remove(Gtk::TreeModel::Path const& path);
   /** @} */
 
   /* NavGraph Commands
@@ -95,13 +95,13 @@ public:
    * @{*/
   void object_add(LayerHandle layer, ObjectModelHandle object);
   void object_remove(ObjectModelHandle object);
-  void object_set_pos(ObjectModelHandle object, const glm::vec2& new_pos);
+  void object_set_pos(ObjectModelHandle object, glm::vec2 const& new_pos);
   /** @} */
 
   /* Timeline Commands
    * @{*/
   void timeline_add_keyframe(ObjectModelHandle object, TimelineProperty property, float pos);
-  void timeline_add_layer(const std::string& name);
+  void timeline_add_layer(std::string const& name);
   /** @} */
 
   /* Selection Commands
@@ -128,16 +128,16 @@ public:
 
   void select_all();
 
-  void set_selection(const SelectionHandle& selection);
+  void set_selection(SelectionHandle const& selection);
   SelectionHandle get_selection() const { return m_selection; }
   /** @} */
 
   /* Control Point Stuff
    * @{*/
-  ControlPointHandle get_control_point(const glm::vec2& pos) const;
+  ControlPointHandle get_control_point(glm::vec2 const& pos) const;
   void clear_control_points();
   void create_control_points();
-  const std::vector<ControlPointHandle>& get_control_points() const { return m_control_points; }
+  std::vector<ControlPointHandle> const& get_control_points() const { return m_control_points; }
   /** @} */
 
   sigc::signal<void>& signal_on_change() { return m_sig_on_change; }
@@ -146,15 +146,15 @@ private:
   void on_selection_change();
   void on_change();
 
-  void on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
-  void on_row_deleted(const Gtk::TreeModel::Path& path);
-  void on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
-  void on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
-  void on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order);
+  void on_row_changed(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
+  void on_row_deleted(Gtk::TreeModel::Path const& path);
+  void on_row_has_child_toggled(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
+  void on_row_inserted(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
+  void on_rows_reordered(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter, int* new_order);
 
 private:
-  Document(const Document&);
-  Document& operator=(const Document&);
+  Document(Document const&);
+  Document& operator=(Document const&);
 };
 
 #endif

@@ -18,7 +18,7 @@
 
 #include "navigation/node.hpp"
 
-Node::Node(const glm::vec2& pos_) :
+Node::Node(glm::vec2 const& pos_) :
   pos(pos_),
   edges()
   // FIXME: Do something with id
@@ -30,7 +30,7 @@ Node::~Node()
 }
 
 void
-Node::add_edge(const EdgePosition& position)
+Node::add_edge(EdgePosition const& position)
 {
   edges.push_back(position);
 }

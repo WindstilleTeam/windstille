@@ -50,8 +50,8 @@ public:
   void draw(wstdisplay::DrawingContext& sc, ParticleSystem& psys);
   void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& /*psys*/) const override {}
 private:
-  DeformDrawer (const DeformDrawer&);
-  DeformDrawer& operator= (const DeformDrawer&);
+  DeformDrawer (DeformDrawer const&);
+  DeformDrawer& operator= (DeformDrawer const&);
 };
 
 #endif

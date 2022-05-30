@@ -36,7 +36,7 @@ SurfaceDrawer::SurfaceDrawer(wstdisplay::SurfacePtr surface_) :
 {
 }
 
-static GLenum string2blendfunc(const std::string& str)
+static GLenum string2blendfunc(std::string const& str)
 {
   if (str == "src_alpha")
   {
@@ -113,7 +113,7 @@ SurfaceDrawer::set_blendfuncs(GLenum blendfunc_src_, GLenum blendfunc_dest_)
 }
 
 void
-SurfaceDrawer::draw(wstdisplay::GraphicsContext& gc, const ParticleSystem& psys) const
+SurfaceDrawer::draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const
 {
   buffer->clear();
   buffer->set_pos(glm::vec2(psys.get_x_pos(), psys.get_y_pos()));

@@ -42,8 +42,8 @@ public:
   bool can_redo() const { return !redo_stack.empty(); }
 
 private:
-  UndoManager(const UndoManager&);
-  UndoManager& operator=(const UndoManager&);
+  UndoManager(UndoManager const&);
+  UndoManager& operator=(UndoManager const&);
 };
 
 #endif

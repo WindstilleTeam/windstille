@@ -48,49 +48,49 @@ public:
   typedef std::vector<LayerHandle> Layers;
 
   SectorModel();
-  SectorModel(const std::string& filename);
+  SectorModel(std::string const& filename);
   ~SectorModel();
 
-  void draw(wstdisplay::SceneContext& sc, const SelectMask& layers);
+  void draw(wstdisplay::SceneContext& sc, SelectMask const& layers);
 
   void update(float delta);
 
   void set_all_visible(bool v);
   void set_all_locked(bool v);
 
-  void add_layer(const std::string& name, const Gtk::TreeModel::Path& path = Gtk::TreeModel::Path());
-  void add_layer(LayerHandle layer, const Gtk::TreeModel::Path& path = Gtk::TreeModel::Path());
-  void delete_layer(const Gtk::TreeModel::Path& path);
+  void add_layer(std::string const& name, Gtk::TreeModel::Path const& path = Gtk::TreeModel::Path());
+  void add_layer(LayerHandle layer, Gtk::TreeModel::Path const& path = Gtk::TreeModel::Path());
+  void delete_layer(Gtk::TreeModel::Path const& path);
   void reverse_layers();
 
-  void add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path);
-  void remove(const ObjectModelHandle& object);
-  LayerHandle get_layer(const ObjectModelHandle& object) const;
+  void add(ObjectModelHandle const& object, Gtk::TreeModel::Path const& path);
+  void remove(ObjectModelHandle const& object);
+  LayerHandle get_layer(ObjectModelHandle const& object) const;
 
-  void  set_ambient_color(const surf::Color& color) { ambient_color = color; }
+  void  set_ambient_color(surf::Color const& color) { ambient_color = color; }
   surf::Color get_ambient_color() const { return ambient_color; }
 
-  LayerHandle get_layer(const Gtk::TreeModel::Path& path) const;
+  LayerHandle get_layer(Gtk::TreeModel::Path const& path) const;
   Layers get_layers() const;
   LayerHandle get_layer(ObjectModelHandle object);
 
   Glib::RefPtr<Gtk::ListStore> get_layer_tree() { return layer_tree; }
 
-  void on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
-  void on_row_deleted(const Gtk::TreeModel::Path& path);
-  void on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
-  void on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
-  void on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order);
+  void on_row_changed(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
+  void on_row_deleted(Gtk::TreeModel::Path const& path);
+  void on_row_has_child_toggled(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
+  void on_row_inserted(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter);
+  void on_rows_reordered(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter, int* new_order);
 
-  ObjectModelHandle get_object_at(const glm::vec2& pos, const SelectMask& layers) const;
-  SelectionHandle   get_selection(const geom::frect& rect, const SelectMask& layers) const;
+  ObjectModelHandle get_object_at(glm::vec2 const& pos, SelectMask const& layers) const;
+  SelectionHandle   get_selection(geom::frect const& rect, SelectMask const& layers) const;
 
   void raise_to_top(ObjectModelHandle object);
   void lower_to_bottom(ObjectModelHandle object);
   void raise(ObjectModelHandle object);
   void lower(ObjectModelHandle object);
 
-  SnapData snap_object(ObjectModelHandle object, const std::set<ObjectModelHandle>& ignore_objects) const;
+  SnapData snap_object(ObjectModelHandle object, std::set<ObjectModelHandle> const& ignore_objects) const;
 
   void write(FileWriter& writer) const;
 
@@ -105,8 +105,8 @@ private:
   void register_callbacks();
 
 private:
-  SectorModel(const SectorModel&);
-  SectorModel& operator=(const SectorModel&);
+  SectorModel(SectorModel const&);
+  SectorModel& operator=(SectorModel const&);
 };
 
 #endif

@@ -53,7 +53,7 @@ public:
   iterator end()   { return tiles.end(); }
 
   /** Create a TileFactory from a given tile definition file */
-  TileFactory(const Pathname& filename);
+  TileFactory(Pathname const& filename);
   ~TileFactory() override;
 
   /**
@@ -65,7 +65,7 @@ public:
   /**
    * Adds a surface to the TileFactory
    */
-  void pack(int id, int colmap, wstdisplay::SoftwareSurface const& image, const geom::irect& rect);
+  void pack(int id, int colmap, wstdisplay::SoftwareSurface const& image, geom::irect const& rect);
 
 private:
   void parse_tiles(ReaderMapping const& reader);

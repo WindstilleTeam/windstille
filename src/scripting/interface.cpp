@@ -42,12 +42,12 @@
 namespace Scripting
 {
 
-void set_sector(const std::string& filename)
+void set_sector(std::string const& filename)
 {
   GameSession::current()->change_sector(Pathname(filename));
 }
 
-void play_music(const std::string& musicfile)
+void play_music(std::string const& musicfile)
 {
   g_app.sound().play_music(Pathname(musicfile, Pathname::kDataPath));
 }
@@ -57,7 +57,7 @@ void stop_music(bool fade)
   g_app.sound().stop_music(fade);
 }
 
-void play_sound(const std::string& soundfile)
+void play_sound(std::string const& soundfile)
 {
   g_app.sound().play(Pathname(soundfile, Pathname::kDataPath));
 }
@@ -67,7 +67,7 @@ void caption_clear()
   DialogManager::current()->add_caption(0, "");
 }
 
-void caption_add(int alignment, const std::string& text)
+void caption_add(int alignment, std::string const& text)
 {
   DialogManager::current()->add_caption(alignment, text);
   GameSession::current()->set_control_state(GameSession::DIALOG);
@@ -166,7 +166,7 @@ void wait_for_fade(HSQUIRRELVM vm)
   }
 }
 
-int speech_show(const std::string& text, float x, float y, float r, float g, float b)
+int speech_show(std::string const& text, float x, float y, float r, float g, float b)
 {
   return SpeechManager::current()->add(text, glm::vec2(x, y), surf::Color(r, g, b));
 }
@@ -179,29 +179,29 @@ void wait_for_speech(HSQUIRRELVM vm, int i)
   ScriptManager::current()->get_thread(vm)->set_wakeup_event(data);
 }
 
-void dialog_show(int alignment, const std::string& character, const std::string& portrait, const std::string& text)
+void dialog_show(int alignment, std::string const& character, std::string const& portrait, std::string const& text)
 {
   DialogManager::current()->add_dialog(alignment, portrait, text);
   GameSession::current()->set_control_state(GameSession::DIALOG);
   GameSession::current()->get_pda().add_dialog(character, text);
 }
 
-void add_objective(const std::string& name, const std::string& text)
+void add_objective(std::string const& name, std::string const& text)
 {
   GameSession::current()->get_pda().add_objective(name, text);
 }
 
-void objective_complete(const std::string& name)
+void objective_complete(std::string const& name)
 {
   GameSession::current()->get_pda().objective_complete(name);
 }
 
-bool is_objective_given(const std::string& name)
+bool is_objective_given(std::string const& name)
 {
   return GameSession::current()->get_pda().is_objective_given(name);
 }
 
-bool is_objective_complete(const std::string& name)
+bool is_objective_complete(std::string const& name)
 {
   return GameSession::current()->get_pda().is_objective_given(name);
 }
@@ -227,12 +227,12 @@ void set_game_speed(float v)
   game_speed = v;
 }
 
-void conversation_add(const std::string& text)
+void conversation_add(std::string const& text)
 {
   Conversation::current()->add(text);
 }
 
-void conversation_add2(const std::string& topic, const std::string& text)
+void conversation_add2(std::string const& topic, std::string const& text)
 {
   Conversation::current()->add(topic, text);
 }
@@ -281,7 +281,7 @@ SQInteger print_stack(HSQUIRRELVM v) __custom("")
   return 0;
 }
 
-void set_console_font(const std::string& font, int size)
+void set_console_font(std::string const& font, int size)
 {
   try
   {
@@ -342,7 +342,7 @@ SQInteger spawn_object(HSQUIRRELVM v)
 {
   if (Sector::current())
   {
-    const char* objname = nullptr;
+    char const* objname = nullptr;
     sq_getstring(v, -2, &objname);
 
     // Newly created objects are deleted in ~SExprFileReader() and ~Lisp()
@@ -365,7 +365,7 @@ SQInteger spawn_object(HSQUIRRELVM v)
   return 0;
 }
 
-void spawn_script(const std::string& filename)
+void spawn_script(std::string const& filename)
 {
   if (ScriptManager::current())
   {

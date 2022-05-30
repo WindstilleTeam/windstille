@@ -48,14 +48,14 @@ public:
 
   void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, wstinput::Controller const& controller) override;
-  void handle_event(const SDL_Event& event) override;
+  void handle_event(SDL_Event const& event) override;
   void add_configure_item(ConfigureItem::Mode mode, int event_id);
   void next_item();
   void print_item();
 
 private:
-  InputConfigurator(const InputConfigurator&);
-  InputConfigurator& operator=(const InputConfigurator&);
+  InputConfigurator(InputConfigurator const&);
+  InputConfigurator& operator=(InputConfigurator const&);
 };
 
 #endif

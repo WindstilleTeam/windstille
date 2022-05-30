@@ -74,7 +74,7 @@ public:
     DOMAIN_ENEMY   = (1 << 2)
   };
 
-  CollisionObject(GameObject* object, const geom::frect& rect_);
+  CollisionObject(GameObject* object, geom::frect const& rect_);
   CollisionObject(TileMap* tilemap_);
 
   virtual ~CollisionObject();
@@ -99,7 +99,7 @@ public:
       probally be changed so that the object is unstuck here without
       affecting other objects and then the real placement position is
       returned */
-  void set_pos(const glm::vec2& p);
+  void set_pos(glm::vec2 const& p);
   glm::vec2 get_pos() const;
 
   void set_game_object(GameObject* game_object);
@@ -132,8 +132,8 @@ public:
   friend class CollisionEngine;
 
 private:
-  CollisionObject(const CollisionObject&);
-  CollisionObject& operator=(const CollisionObject&);
+  CollisionObject(CollisionObject const&);
+  CollisionObject& operator=(CollisionObject const&);
 };
 
 #endif

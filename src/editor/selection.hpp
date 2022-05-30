@@ -63,8 +63,8 @@ public:
     signal_changed();
   }
 
-  void add(const ObjectModelHandle& object);
-  void remove(const ObjectModelHandle& object);
+  void add(ObjectModelHandle const& object);
+  void remove(ObjectModelHandle const& object);
 
   int size() const { return static_cast<int>(objects.size()); }
 
@@ -82,8 +82,8 @@ public:
   bool has_object(ObjectModelHandle object) const;
 
   void on_move_start();
-  void on_move_update(const glm::vec2& offset);
-  void on_move_end(WindstilleWidget& wst, const glm::vec2& offset);
+  void on_move_update(glm::vec2 const& offset);
+  void on_move_end(WindstilleWidget& wst, glm::vec2 const& offset);
 
   /** Performs a deep clone of the selection */
   SelectionHandle clone() const;
@@ -97,8 +97,8 @@ public:
   sigc::signal<void> signal_changed;
 
 private:
-  Selection(const Selection&);
-  Selection& operator=(const Selection&);
+  Selection(Selection const&);
+  Selection& operator=(Selection const&);
 };
 
 #endif

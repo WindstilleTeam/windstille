@@ -79,11 +79,11 @@ private:
   void draw_timeline(Cairo::RefPtr<Cairo::Context> cr);
   void draw_timeline_layer(Cairo::RefPtr<Cairo::Context> cr,
                            TimelineLayerHandle layer);
-  void add_to_selection(const geom::frect& selection);
+  void add_to_selection(geom::frect const& selection);
 
 private:
-  TimelineWidget(const TimelineWidget&);
-  TimelineWidget& operator=(const TimelineWidget&);
+  TimelineWidget(TimelineWidget const&);
+  TimelineWidget& operator=(TimelineWidget const&);
 };
 
 #endif

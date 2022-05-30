@@ -38,8 +38,8 @@ public:
   iterator end()   { return nodes.end(); }
 
 private:
-  NodeSelection(const NodeSelection&);
-  NodeSelection& operator=(const NodeSelection&);
+  NodeSelection(NodeSelection const&);
+  NodeSelection& operator=(NodeSelection const&);
 };
 
 #endif

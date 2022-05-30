@@ -36,21 +36,21 @@ public:
   Edges edges;
 
 public:
-  Node(const glm::vec2& pos_);
+  Node(glm::vec2 const& pos_);
   ~Node();
 
   glm::vec2 get_pos() const { return pos; }
-  void     set_pos(const glm::vec2& p) { pos = p; }
+  void     set_pos(glm::vec2 const& p) { pos = p; }
 
   /** Connect the given edge to the node, the position is used to
       mark the end of the edge that is actually connected */
-  void add_edge(const EdgePosition& edge);
+  void add_edge(EdgePosition const& edge);
 
   void remove_edge(Edge* edge);
 
 private:
-  Node(const Node&);
-  Node& operator=(const Node&);
+  Node(Node const&);
+  Node& operator=(Node const&);
 };
 
 #endif

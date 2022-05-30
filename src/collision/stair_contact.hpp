@@ -44,7 +44,7 @@ private:
   unsigned int tile_type;
 
 public:
-  StairContact(TileMap* tilemap, const geom::ipoint& p);
+  StairContact(TileMap* tilemap, geom::ipoint const& p);
 
   void update(float delta) override;
 
@@ -60,8 +60,8 @@ public:
 private:
   void advance_or_not();
 
-  StairContact (const StairContact&);
-  StairContact& operator= (const StairContact&);
+  StairContact (StairContact const&);
+  StairContact& operator= (StairContact const&);
 };
 
 #endif

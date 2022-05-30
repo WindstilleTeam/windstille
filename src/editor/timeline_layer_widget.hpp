@@ -36,8 +36,8 @@ public:
   bool on_draw(Cairo::RefPtr<Cairo::Context> const& cr) override;
 
 private:
-  TimelineLayerWidget(const TimelineLayerWidget&);
-  TimelineLayerWidget& operator=(const TimelineLayerWidget&);
+  TimelineLayerWidget(TimelineLayerWidget const&);
+  TimelineLayerWidget& operator=(TimelineLayerWidget const&);
 };
 
 #endif

@@ -35,7 +35,7 @@ public:
   ParticleSystem&   psys;
   wstdisplay::ShaderProgramPtr  shader_program;
 
-  DeformDrawerRequest(const glm::vec2& pos_, float z_pos_,  const glm::mat4& modelview_,
+  DeformDrawerRequest(glm::vec2 const& pos_, float z_pos_,  glm::mat4 const& modelview_,
                       wstdisplay::FramebufferPtr framebuffer_,
                       wstdisplay::SurfacePtr surface_,
                       ParticleSystem& psys_,

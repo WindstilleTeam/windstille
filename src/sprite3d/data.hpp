@@ -46,17 +46,17 @@ public:
   Data(std::filesystem::path const& filename);
   ~Data();
 
-  const Action& get_action(const std::string& name) const;
-  const Marker& get_marker(const Action* action, const std::string& name) const;
-  uint16_t      get_attachment_point_id(const std::string& name) const;
+  Action const& get_action(std::string const& name) const;
+  Marker const& get_marker(Action const* action, std::string const& name) const;
+  uint16_t      get_attachment_point_id(std::string const& name) const;
 
   std::vector<Mesh>        meshs;
   std::vector<std::string> attachment_points;
   std::vector<Action>      actions;
 
 private:
-  Data (const Data&);
-  Data& operator= (const Data&);
+  Data (Data const&);
+  Data& operator= (Data const&);
 };
 
 /**

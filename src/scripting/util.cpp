@@ -60,7 +60,7 @@ void sq_to_lisp(HSQUIRRELVM v, std::vector<sexp::Value>& entries)
       break;
     }
     case OT_STRING: {
-      const char* str;
+      char const* str;
       sq_getstring(v, -1, &str);
       entries.push_back(sexp::Value::string(str));
       break;
@@ -112,7 +112,7 @@ void table_to_lisp(HSQUIRRELVM v, int idx, std::vector<sexp::Value>& entries)
         }
         else
         {
-          const char* key = nullptr;
+          char const* key = nullptr;
           sq_getstring(v, -2, &key);
           std::string lisp_key = sq_to_lisp_string(key);
 
@@ -162,7 +162,7 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
       break;
     }
     case OT_STRING: {
-      const char* val;
+      char const* val;
       sq_getstring(v, i, &val);
       os << "\"" << val << "\"";
       break;
@@ -242,7 +242,7 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
   return os.str();
 }
 
-void print_squirrel_stack(HSQUIRRELVM v, const std::string& context)
+void print_squirrel_stack(HSQUIRRELVM v, std::string const& context)
 {
   if (context.empty())
     printf(",-------------------------------------------------------------\n");
@@ -271,7 +271,7 @@ void print_squirrel_stack(HSQUIRRELVM v, const std::string& context)
         break;
       }
       case OT_STRING: {
-        const char* val;
+        char const* val;
         sq_getstring(v, i, &val);
         printf("string (%s)", val);
         break;

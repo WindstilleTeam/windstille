@@ -38,8 +38,8 @@ public:
   void mouse_up(GdkEventButton* event, WindstilleWidget& wst) override;
 
 private:
-  ScrollTool(const ScrollTool&);
-  ScrollTool& operator=(const ScrollTool&);
+  ScrollTool(ScrollTool const&);
+  ScrollTool& operator=(ScrollTool const&);
 };
 
 #endif

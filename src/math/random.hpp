@@ -57,8 +57,8 @@ public:
   /** Returns either 1 or -1 */
   int sign();
 private:
-  Random (const Random&);
-  Random& operator= (const Random&);
+  Random (Random const&);
+  Random& operator= (Random const&);
 };
 
 extern Random rnd;

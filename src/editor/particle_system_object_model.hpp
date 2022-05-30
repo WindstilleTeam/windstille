@@ -30,7 +30,7 @@ private:
   ParticleSystems systems;
 
 public:
-  ParticleSystemObjectModel(const glm::vec2& pos);
+  ParticleSystemObjectModel(glm::vec2 const& pos);
   ~ParticleSystemObjectModel() override;
 
   void draw(wstdisplay::SceneContext& sc) override;
@@ -44,8 +44,8 @@ public:
   void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override {}
 
 private:
-  ParticleSystemObjectModel(const ParticleSystemObjectModel&);
-  ParticleSystemObjectModel& operator=(const ParticleSystemObjectModel&);
+  ParticleSystemObjectModel(ParticleSystemObjectModel const&);
+  ParticleSystemObjectModel& operator=(ParticleSystemObjectModel const&);
 };
 
 #endif

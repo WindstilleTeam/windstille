@@ -30,7 +30,7 @@
 #include "util/file_reader.hpp"
 #include "util/pathname.hpp"
 
-SectorModelBuilder::SectorModelBuilder(const std::string& filename, SectorModel& sector) :
+SectorModelBuilder::SectorModelBuilder(std::string const& filename, SectorModel& sector) :
   m_sector(sector),
   m_id_table(),
   m_parent_table()

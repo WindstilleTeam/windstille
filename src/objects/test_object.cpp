@@ -71,7 +71,7 @@ TestObject::update(float delta)
 }
 
 void
-TestObject::set_sprite(const std::string& filename)
+TestObject::set_sprite(std::string const& filename)
 {
   try {
     sprite = g_app.sprite3d().create(Pathname(filename));
@@ -82,7 +82,7 @@ TestObject::set_sprite(const std::string& filename)
 }
 
 void
-TestObject::set_action(const std::string& action)
+TestObject::set_action(std::string const& action)
 {
   try {
     sprite.set_action(action);
@@ -93,7 +93,7 @@ TestObject::set_action(const std::string& action)
 }
 
 void
-TestObject::set_pos(const glm::vec2& pos_)
+TestObject::set_pos(glm::vec2 const& pos_)
 {
   pos = pos_;
 }
@@ -105,8 +105,8 @@ TestObject::set_vflip(bool vflip)
 }
 
 void
-TestObject::attach(const std::string& spritename,
-                   const std::string& attachement_point)
+TestObject::attach(std::string const& spritename,
+                   std::string const& attachement_point)
 {
   AttachedSprite asprite;
   asprite.sprite = g_app.sprite3d().create(Pathname(spritename));

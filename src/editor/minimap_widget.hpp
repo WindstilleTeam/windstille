@@ -33,8 +33,8 @@ public:
   bool scroll(GdkEventScroll* event);
 
 private:
-  MinimapWidget(const MinimapWidget&);
-  MinimapWidget& operator=(const MinimapWidget&);
+  MinimapWidget(MinimapWidget const&);
+  MinimapWidget& operator=(MinimapWidget const&);
 };
 
 #endif

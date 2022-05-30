@@ -52,8 +52,8 @@ public:
   std::shared_ptr<NavGraphNodeObjectModel> get_rhs() const { return m_rhs; }
 
 private:
-  NavGraphEdgeObjectModel(const NavGraphEdgeObjectModel&);
-  NavGraphEdgeObjectModel& operator=(const NavGraphEdgeObjectModel&);
+  NavGraphEdgeObjectModel(NavGraphEdgeObjectModel const&);
+  NavGraphEdgeObjectModel& operator=(NavGraphEdgeObjectModel const&);
 };
 
 #endif

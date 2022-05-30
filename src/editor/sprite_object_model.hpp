@@ -29,8 +29,8 @@ private:
   Sprite sprite;
 
 public:
-  SpriteObjectModel(const std::string& name_, const glm::vec2& rel_pos_,
-                    const std::string& path_);
+  SpriteObjectModel(std::string const& name_, glm::vec2 const& rel_pos_,
+                    std::string const& path_);
   ~SpriteObjectModel() override;
 
   void draw(wstdisplay::SceneContext& sc) override;

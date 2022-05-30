@@ -59,8 +59,8 @@ private:
   wstsound::SoundSourcePtr m_next_music;
 
 private:
-  SoundManager(const SoundManager&) = delete;
-  SoundManager& operator=(const SoundManager&) = delete;
+  SoundManager(SoundManager const&) = delete;
+  SoundManager& operator=(SoundManager const&) = delete;
 };
 
 #endif

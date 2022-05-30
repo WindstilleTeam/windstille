@@ -61,8 +61,8 @@ private:
   void deinit_modules();
 
 private:
-  WindstilleMain (const WindstilleMain&);
-  WindstilleMain& operator= (const WindstilleMain&);
+  WindstilleMain (WindstilleMain const&);
+  WindstilleMain& operator= (WindstilleMain const&);
 };
 
 #endif

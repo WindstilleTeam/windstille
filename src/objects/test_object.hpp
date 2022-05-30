@@ -34,12 +34,12 @@ public:
   void draw(wstdisplay::SceneContext& context) override;
   void update(float delta) override;
 
-  void set_sprite(const std::string& filename);
-  void set_action(const std::string& action);
+  void set_sprite(std::string const& filename);
+  void set_action(std::string const& action);
   void set_vflip(bool vflip);
-  void set_pos(const glm::vec2& pos);
-  void attach(const std::string& spritename,
-              const std::string& attachement_point);
+  void set_pos(glm::vec2 const& pos);
+  void attach(std::string const& spritename,
+              std::string const& attachement_point);
 
 private:
   Sprite3D sprite;

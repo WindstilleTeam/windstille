@@ -32,7 +32,7 @@
 #include "tile/tile_map.hpp"
 #include "util/file_reader.hpp"
 
-SectorBuilder::SectorBuilder(const Pathname& filename, Sector& sector) :
+SectorBuilder::SectorBuilder(Pathname const& filename, Sector& sector) :
   m_filename(filename),
   m_sector(sector),
   id_table(),

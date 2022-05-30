@@ -26,7 +26,7 @@
  * CollisionObject
  ***********************************************************************/
 
-CollisionObject::CollisionObject(GameObject* game_object_, const geom::frect& rect_)
+CollisionObject::CollisionObject(GameObject* game_object_, geom::frect const& rect_)
   : object_type(RECTANGLE),
     pos(0,0),
     velocity(0,0),
@@ -94,7 +94,7 @@ void CollisionObject::update(float delta)
 }
 
 void
-CollisionObject::set_velocity(const glm::vec2 &m)
+CollisionObject::set_velocity(glm::vec2 const& m)
 {
   velocity=m;
 }
@@ -112,7 +112,7 @@ CollisionObject::get_velocity() const
 }
 
 void
-CollisionObject::set_pos(const glm::vec2& p)
+CollisionObject::set_pos(glm::vec2 const& p)
 {
   // FIXME: Do this somewhat more clever to avoid stuck issues
   pos = p;

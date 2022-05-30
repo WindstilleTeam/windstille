@@ -69,8 +69,8 @@ public:
   virtual Properties get_properties();
 
 private:
-  Entity (const Entity&);
-  Entity& operator= (const Entity&);
+  Entity (Entity const&);
+  Entity& operator= (Entity const&);
 };
 
 #endif

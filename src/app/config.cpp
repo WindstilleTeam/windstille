@@ -89,49 +89,49 @@ Config::add(ConfigValueBase* value)
 }
 
 std::string
-Config::get_string(const std::string& name) const
+Config::get_string(std::string const& name) const
 {
   return get<std::string>(name).get();
 }
 
 bool
-Config::get_bool(const std::string& name) const
+Config::get_bool(std::string const& name) const
 {
   return get<bool>(name).get();
 }
 
 int
-Config::get_int(const std::string& name) const
+Config::get_int(std::string const& name) const
 {
   return get<int>(name).get();
 }
 
 float
-Config::get_float(const std::string& name) const
+Config::get_float(std::string const& name) const
 {
   return get<float>(name).get();
 }
 
 void
-Config::set_string(const std::string& name, const std::string& value)
+Config::set_string(std::string const& name, std::string const& value)
 {
   get<std::string>(name).set(value);
 }
 
 void
-Config::set_bool  (const std::string& name, bool  value)
+Config::set_bool  (std::string const& name, bool  value)
 {
   get<bool>(name).set(value);
 }
 
 void
-Config::set_int   (const std::string& name, int   value)
+Config::set_int   (std::string const& name, int   value)
 {
   get<int>(name).set(value);
 }
 
 void
-Config::set_float (const std::string& name, float value)
+Config::set_float (std::string const& name, float value)
 {
   get<float>(name).set(value);
 }
@@ -294,14 +294,14 @@ Config::parse_args(int argc, char** argv)
 }
 
 bool
-Config::has_key(const std::string& name)
+Config::has_key(std::string const& name)
 {
   ConfigValues::iterator i = config_values.find(name);
   return (i != config_values.end());
 }
 
 bool
-Config::is_set(const std::string& name)
+Config::is_set(std::string const& name)
 {
   ConfigValues::iterator i = config_values.find(name);
   if (i == config_values.end())

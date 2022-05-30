@@ -35,23 +35,23 @@ private:
 
 public:
   NavGraphNodeObjectModel(ReaderMapping const& reader);
-  NavGraphNodeObjectModel(const glm::vec2& pos);
+  NavGraphNodeObjectModel(glm::vec2 const& pos);
   ~NavGraphNodeObjectModel() override;
 
   void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override;
-  void set_rel_pos(const glm::vec2& rel_pos_) override;
+  void set_rel_pos(glm::vec2 const& rel_pos_) override;
   void sync_drawable();
 
   geom::frect get_bounding_box() const override;
   ObjectModelHandle clone() const override;
   void write(FileWriter& writer) const override;
 
-  SnapData snap_to_object(const geom::frect& rect) const override;
+  SnapData snap_to_object(geom::frect const& rect) const override;
   SnapData snap_to_grid(float grid_size) const override;
 
 private:
-  NavGraphNodeObjectModel(const NavGraphNodeObjectModel&);
-  NavGraphNodeObjectModel& operator=(const NavGraphNodeObjectModel&);
+  NavGraphNodeObjectModel(NavGraphNodeObjectModel const&);
+  NavGraphNodeObjectModel& operator=(NavGraphNodeObjectModel const&);
 };
 
 #endif

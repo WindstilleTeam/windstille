@@ -57,7 +57,7 @@ std::vector<std::string> string_tokenize(std::string_view text, std::string_view
 } // namespace
 
 float
-NodePosX::get(const geom::fsize& scr, const geom::fsize& img, float zoom) const
+NodePosX::get(geom::fsize const& scr, geom::fsize const& img, float zoom) const
 {
   // FIXME: Warning img is already multiplied by zoom
   switch(m_type)
@@ -90,7 +90,7 @@ NodePosX::get(const geom::fsize& scr, const geom::fsize& img, float zoom) const
 }
 
 float
-NodePosY::get(const geom::fsize& scr, const geom::fsize& img, float zoom) const
+NodePosY::get(geom::fsize const& scr, geom::fsize const& img, float zoom) const
 {
   // FIXME: Warning img is already multiplied by zoom
   switch(m_type)
@@ -123,7 +123,7 @@ NodePosY::get(const geom::fsize& scr, const geom::fsize& img, float zoom) const
 }
 
 float
-NodeZoom::get(const geom::fsize& scr, const geom::fsize& img) const
+NodeZoom::get(geom::fsize const& scr, geom::fsize const& img) const
 {
   switch(m_type)
   {
@@ -158,7 +158,7 @@ NodeZoom::get(const geom::fsize& scr, const geom::fsize& img) const
   }
 }
 
-SlideParser::SlideParser(SlideShow& slideshow, const geom::fsize& screen_size,
+SlideParser::SlideParser(SlideShow& slideshow, geom::fsize const& screen_size,
                          wstdisplay::SurfaceManager& surface_manager) :
   m_slideshow(slideshow),
   m_screen_size(screen_size),
@@ -179,7 +179,7 @@ SlideParser::SlideParser(SlideShow& slideshow, const geom::fsize& screen_size,
 }
 
 void
-SlideParser::load_from_file(const std::string& filename)
+SlideParser::load_from_file(std::string const& filename)
 {
   std::ifstream in(filename.c_str());
   if (!in)
@@ -199,7 +199,7 @@ SlideParser::load_from_file(const std::string& filename)
 namespace {
 
 std::string
-strip_comment(const std::string& line)
+strip_comment(std::string const& line)
 {
   std::string::size_type p = line.find('#');
   return line.substr(0, p);
@@ -208,7 +208,7 @@ strip_comment(const std::string& line)
 } // namespace
 
 void
-SlideParser::error(const std::string& str) const
+SlideParser::error(std::string const& str) const
 {
   std::ostringstream out;
   out << m_context << ':' << m_line << ": error: " << str;
@@ -317,7 +317,7 @@ SlideParser::load_from_stream(std::istream& stream)
 }
 
 void
-SlideParser::handle_image(const std::vector<std::string>& args)
+SlideParser::handle_image(std::vector<std::string> const& args)
 {
   if (m_state != kGlobal)
   {
@@ -350,7 +350,7 @@ SlideParser::handle_image(const std::vector<std::string>& args)
 }
 
 void
-SlideParser::handle_pos(const std::vector<std::string>& args)
+SlideParser::handle_pos(std::vector<std::string> const& args)
 {
   if (m_state != kImage)
   {
@@ -449,7 +449,7 @@ SlideParser::handle_pos(const std::vector<std::string>& args)
 }
 
 void
-SlideParser::handle_zoom(const std::vector<std::string>& args)
+SlideParser::handle_zoom(std::vector<std::string> const& args)
 {
   if (m_state != kImage)
   {
@@ -516,7 +516,7 @@ SlideParser::handle_zoom(const std::vector<std::string>& args)
 }
 
 void
-SlideParser::handle_duration(const std::vector<std::string>& args)
+SlideParser::handle_duration(std::vector<std::string> const& args)
 {
   if (m_state != kImage)
   {
@@ -555,7 +555,7 @@ SlideParser::add_node()
 }
 
 void
-SlideParser::handle_fade(const std::vector<std::string>& args)
+SlideParser::handle_fade(std::vector<std::string> const& args)
 {
   if (m_state != kGlobal)
   {
@@ -578,7 +578,7 @@ SlideParser::handle_fade(const std::vector<std::string>& args)
 }
 
 void
-SlideParser::handle_end(const std::vector<std::string>& args)
+SlideParser::handle_end(std::vector<std::string> const& args)
 {
   if (m_state != kImage)
   {
@@ -604,19 +604,19 @@ SlideParser::handle_end(const std::vector<std::string>& args)
 }
 
 void
-SlideParser::handle_breakpoint(const std::vector<std::string>& args)
+SlideParser::handle_breakpoint(std::vector<std::string> const& args)
 {
   std::cout << "breakpoint not implemented" << std::endl;
 }
 
 void
-SlideParser::handle_include(const std::vector<std::string>& args)
+SlideParser::handle_include(std::vector<std::string> const& args)
 {
   std::cout << "include not implemented" << std::endl;
 }
 
 void
-SlideParser::handle_set(const std::vector<std::string>& args)
+SlideParser::handle_set(std::vector<std::string> const& args)
 {
   if (args.size() != 3)
   {
@@ -629,7 +629,7 @@ SlideParser::handle_set(const std::vector<std::string>& args)
 }
 
 std::vector<std::string>
-SlideParser::tokenize(const std::string& line) const
+SlideParser::tokenize(std::string const& line) const
 {
   if ((true))
   {

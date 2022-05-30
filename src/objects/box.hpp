@@ -36,15 +36,15 @@ public:
   Box(ReaderMapping const& props);
   ~Box() override;
 
-  void collision(const CollisionData& data);
+  void collision(CollisionData const& data);
 
   void update(float delta) override;
 
   void draw(wstdisplay::SceneContext& gc) override;
 
 private:
-  Box(const Box&);
-  Box& operator=(const Box&);
+  Box(Box const&);
+  Box& operator=(Box const&);
 };
 
 #endif

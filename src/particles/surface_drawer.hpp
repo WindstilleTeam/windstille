@@ -40,7 +40,7 @@ public:
   void set_texture(wstdisplay::SurfacePtr surface);
   void set_blendfuncs(GLenum blendfunc_src, GLenum blendfunc_dst);
 
-  void draw(wstdisplay::GraphicsContext& gc, const ParticleSystem& psys) const override;
+  void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const override;
 };
 
 #endif

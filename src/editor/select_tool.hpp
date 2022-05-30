@@ -56,8 +56,8 @@ public:
   void draw(wstdisplay::SceneContext& sc) override;
 
 private:
-  SelectTool(const SelectTool&);
-  SelectTool& operator=(const SelectTool&);
+  SelectTool(SelectTool const&);
+  SelectTool& operator=(SelectTool const&);
 };
 
 #endif

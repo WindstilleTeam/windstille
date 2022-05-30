@@ -30,7 +30,7 @@ public:
 
   void draw(wstdisplay::SceneContext& sc) override;
   void update(float delta) override;
-  void set_velocity(const glm::vec2& vel);
+  void set_velocity(glm::vec2 const& vel);
 
 private:
   Sprite3D sprite;

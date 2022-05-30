@@ -47,8 +47,8 @@ public:
   }
 
 private:
-  GroupCommand(const GroupCommand&);
-  GroupCommand& operator=(const GroupCommand&);
+  GroupCommand(GroupCommand const&);
+  GroupCommand& operator=(GroupCommand const&);
 };
 
 #endif

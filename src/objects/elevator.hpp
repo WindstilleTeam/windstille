@@ -39,8 +39,8 @@ public:
   void update(float delta) override;
 
 private:
-  Elevator(const Elevator&);
-  Elevator& operator=(const Elevator&);
+  Elevator(Elevator const&);
+  Elevator& operator=(Elevator const&);
 };
 
 #endif

@@ -38,11 +38,11 @@ public:
   void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, wstinput::Controller const& controller) override;
 
-  void handle_event(const SDL_Event& ) override;
+  void handle_event(SDL_Event const& ) override;
 
 private:
-  TitleScreen (const TitleScreen&);
-  TitleScreen& operator= (const TitleScreen&);
+  TitleScreen (TitleScreen const&);
+  TitleScreen& operator= (TitleScreen const&);
 };
 
 #endif

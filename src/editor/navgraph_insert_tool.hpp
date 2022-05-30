@@ -58,8 +58,8 @@ public:
   void draw(wstdisplay::SceneContext& sc) override;
 
 private:
-  NavgraphInsertTool(const NavgraphInsertTool&);
-  NavgraphInsertTool& operator=(const NavgraphInsertTool&);
+  NavgraphInsertTool(NavgraphInsertTool const&);
+  NavgraphInsertTool& operator=(NavgraphInsertTool const&);
 };
 
 #endif

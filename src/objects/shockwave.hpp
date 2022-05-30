@@ -39,8 +39,8 @@ public:
   void update (float delta) override;
 
 private:
-  Shockwave (const Shockwave&);
-  Shockwave& operator= (const Shockwave&);
+  Shockwave (Shockwave const&);
+  Shockwave& operator= (Shockwave const&);
 };
 
 #endif

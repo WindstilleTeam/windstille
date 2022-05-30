@@ -48,7 +48,7 @@ bool surface_empty(surf::SoftwareSurface const& image, int sx, int sy, int w, in
 
 } // namespace
 
-TileFactory::TileFactory(const Pathname& filename) :
+TileFactory::TileFactory(Pathname const& filename) :
   tiles(),
   packers(),
   color_packer(),
@@ -124,7 +124,7 @@ TileFactory::parse_tiles(ReaderMapping const& reader)
 }
 
 void
-TileFactory::pack(int id, int colmap, surf::SoftwareSurface const& image, const geom::irect& rect)
+TileFactory::pack(int id, int colmap, surf::SoftwareSurface const& image, geom::irect const& rect)
 {
   if(id < int(tiles.size())
      && tiles[id] != nullptr

@@ -31,7 +31,7 @@ private:
   std::string m_name;
 
 public:
-  TimelineAnimObject(float pos, float width, const std::string& name) :
+  TimelineAnimObject(float pos, float width, std::string const& name) :
     m_pos(pos),
     m_width(width),
     m_name(name)
@@ -50,8 +50,8 @@ public:
   }
 
 private:
-  TimelineAnimObject(const TimelineAnimObject&);
-  TimelineAnimObject& operator=(const TimelineAnimObject&);
+  TimelineAnimObject(TimelineAnimObject const&);
+  TimelineAnimObject& operator=(TimelineAnimObject const&);
 };
 
 #endif

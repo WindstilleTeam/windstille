@@ -61,11 +61,11 @@ public:
 
   void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, wstinput::Controller const& controller) override;
-  void load(const Pathname& filename);
+  void load(Pathname const& filename);
 
 private:
-  ParticleViewer (const ParticleViewer&);
-  ParticleViewer& operator= (const ParticleViewer&);
+  ParticleViewer (ParticleViewer const&);
+  ParticleViewer& operator= (ParticleViewer const&);
 };
 
 #endif

@@ -74,7 +74,7 @@ public:
   {
   }
 
-  Handle<Data> aquire(const Data& data)
+  Handle<Data> aquire(Data const& data)
   {
     if (free_list.empty())
     {
@@ -95,7 +95,7 @@ public:
     }
   }
 
-  void release(const Handle<Data>& handle)
+  void release(Handle<Data> const& handle)
   {
     if (valid(handle))
     {
@@ -110,13 +110,13 @@ public:
     }
   }
 
-  bool valid(const Handle<Data>& handle)
+  bool valid(Handle<Data> const& handle)
   {
     return (handle.index < data_lst.size() &&
             magic_lst[handle.index] == handle.magic);
   }
 
-  Data& dereference(const Handle<Data>& handle)
+  Data& dereference(Handle<Data> const& handle)
   {
     if (valid)
     {

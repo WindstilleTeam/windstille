@@ -21,7 +21,7 @@
 
 #include "properties/property_set.hpp"
 
-PropertySet::PropertySet(const std::string& name_, PropertySet* parent_) :
+PropertySet::PropertySet(std::string const& name_, PropertySet* parent_) :
   parent(parent_),
   name(name_),
   properties()
@@ -37,7 +37,7 @@ PropertySet::~PropertySet()
 }
 
 void
-PropertySet::add(const std::string& name_, Property* property)
+PropertySet::add(std::string const& name_, Property* property)
 {
   Property*& i = properties[name_];
   if (i)
@@ -53,7 +53,7 @@ PropertySet::add(const std::string& name_, Property* property)
 }
 
 Property*
-PropertySet::get(const std::string& name_) const
+PropertySet::get(std::string const& name_) const
 {
   std::map<std::string, Property*>::const_iterator i = properties.find(name_);
   if (i == properties.end())

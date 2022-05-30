@@ -36,9 +36,9 @@ private:
 public:
   Properties(PropertySet* pset_, void* object_);
 
-  Property& get(const std::string& name) const;
-  int   get_int(const std::string& name) const;
-  float get_float(const std::string& name) const;
+  Property& get(std::string const& name) const;
+  int   get_int(std::string const& name) const;
+  float get_float(std::string const& name) const;
 
   std::vector<std::string> get_properties() const;
 };

@@ -30,8 +30,8 @@ public:
   static GameObjectHandle create(ReaderObject const& reader_obj);
 
 private:
-  ObjectFactory(const ObjectFactory&);
-  ObjectFactory& operator=(const ObjectFactory&);
+  ObjectFactory(ObjectFactory const&);
+  ObjectFactory& operator=(ObjectFactory const&);
 };
 
 #endif

@@ -30,8 +30,8 @@ public:
   static ObjectModelHandle create(ReaderObject const& reader_obj);
 
 private:
-  ObjectModelFactory(const ObjectModelFactory&);
-  ObjectModelFactory& operator=(const ObjectModelFactory&);
+  ObjectModelFactory(ObjectModelFactory const&);
+  ObjectModelFactory& operator=(ObjectModelFactory const&);
 };
 
 #endif

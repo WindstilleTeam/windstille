@@ -45,8 +45,8 @@ public:
 
 
 private:
-  Layer(const Layer&);
-  Layer& operator=(const Layer&);
+  Layer(Layer const&);
+  Layer& operator=(Layer const&);
 };
 
 #endif

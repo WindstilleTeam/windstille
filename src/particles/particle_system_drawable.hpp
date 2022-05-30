@@ -26,16 +26,16 @@ class ParticleSystem;
 class ParticleSystemDrawable : public wstdisplay::Drawable
 {
 private:
-  const ParticleSystem& m_particle_system;
+  ParticleSystem const& m_particle_system;
 
 public:
-  ParticleSystemDrawable(const ParticleSystem& particle_system);
+  ParticleSystemDrawable(ParticleSystem const& particle_system);
 
   void render(wstdisplay::GraphicsContext& gc, unsigned int mask) override;
 
 private:
-  ParticleSystemDrawable(const ParticleSystemDrawable&);
-  ParticleSystemDrawable& operator=(const ParticleSystemDrawable&);
+  ParticleSystemDrawable(ParticleSystemDrawable const&);
+  ParticleSystemDrawable& operator=(ParticleSystemDrawable const&);
 };
 
 #endif

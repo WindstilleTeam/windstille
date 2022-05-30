@@ -159,9 +159,9 @@ ObjectSelector::~ObjectSelector()
 }
 
 void
-ObjectSelector::add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
-                          const Pathname& pathname,
-                          const std::string& url,
+ObjectSelector::add_decal(Glib::RefPtr<Gdk::Pixbuf> const& icon,
+                          Pathname const& pathname,
+                          std::string const& url,
                           unsigned int filter_)
 {
   Gtk::ListStore::iterator it = list_store->append();
@@ -173,13 +173,13 @@ ObjectSelector::add_decal(const Glib::RefPtr<Gdk::Pixbuf>& icon,
 }
 
 bool
-ObjectSelector::filter(const Gtk::TreeModel::const_iterator& it)
+ObjectSelector::filter(Gtk::TreeModel::const_iterator const& it)
 {
   return (*it)[Columns::instance().filter_mask] & filter_mask;
 }
 
 void
-ObjectSelector::add_decals_from_directory(const Pathname& pathname, unsigned int filter_)
+ObjectSelector::add_decals_from_directory(Pathname const& pathname, unsigned int filter_)
 {
   Directory::List images = Directory::read(pathname, ".png");
 
@@ -260,7 +260,7 @@ ObjectSelector::on_filter_changed()
 }
 
 void
-ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
+ObjectSelector::on_drag_begin(Glib::RefPtr<Gdk::DragContext> const& context)
 {
   Pathname iconpath;
 
@@ -290,7 +290,7 @@ ObjectSelector::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& context)
 }
 
 void
-ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& /*context*/,
+ObjectSelector::on_drag_data_get(Glib::RefPtr<Gdk::DragContext> const& /*context*/,
                                  Gtk::SelectionData& selection_data,
                                  guint /*info*/, guint /*time*/)
 {
@@ -306,12 +306,12 @@ ObjectSelector::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& /*context
     if (selection_data.get_target() == "application/x-windstille-decal")
     {
       std::string str = static_cast<Pathname>((*it)[Columns::instance().pathname]).get_raw_path();
-      selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), static_cast<int>(str.length()));
+      selection_data.set(8, reinterpret_cast<guint8 const*>(str.c_str()), static_cast<int>(str.length()));
     }
     else
     {
-      const std::string& str = (*it)[Columns::instance().url];
-      selection_data.set(8, reinterpret_cast<const guint8*>(str.c_str()), static_cast<int>(str.length()));
+      std::string const& str = (*it)[Columns::instance().url];
+      selection_data.set(8, reinterpret_cast<guint8 const*>(str.c_str()), static_cast<int>(str.length()));
     }
   }
 }

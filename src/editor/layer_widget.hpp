@@ -30,7 +30,7 @@ public:
   ~LayerWidget() override;
 
   void on_layer_toggle(Gtk::ToggleButton* button, int layer);
-  void update(const SelectMask& layers);
+  void update(SelectMask const& layers);
 
   SelectMask get_select_mask() const;
 
@@ -41,8 +41,8 @@ private:
   std::vector<Gtk::ToggleButton*> m_buttons;
 
 private:
-  LayerWidget(const LayerWidget&);
-  LayerWidget& operator=(const LayerWidget&);
+  LayerWidget(LayerWidget const&);
+  LayerWidget& operator=(LayerWidget const&);
 };
 
 #endif

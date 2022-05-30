@@ -22,7 +22,7 @@
 #include "editor/decal_rotate_control_point.hpp"
 #include "util/pathname.hpp"
 
-DecalRotateControlPoint::DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const glm::vec2& pos_) :
+DecalRotateControlPoint::DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, glm::vec2 const& pos_) :
   ControlPoint(g_app.surface().get(Pathname("editor/rotate_handle.png")), pos_),
   object(object_),
   ctrl_angle(ctrl_angle_),
@@ -37,7 +37,7 @@ DecalRotateControlPoint::on_move_start(GdkEventButton* event)
 }
 
 void
-DecalRotateControlPoint::on_move_update(GdkEventMotion* event, const glm::vec2& offset_)
+DecalRotateControlPoint::on_move_update(GdkEventMotion* event, glm::vec2 const& offset_)
 {
   offset = offset_;
 
@@ -59,7 +59,7 @@ DecalRotateControlPoint::on_move_update(GdkEventMotion* event, const glm::vec2& 
 }
 
 void
-DecalRotateControlPoint::on_move_end(GdkEventButton* event, const glm::vec2& offset_)
+DecalRotateControlPoint::on_move_end(GdkEventButton* event, glm::vec2 const& offset_)
 {
   // FIXME: The cast there is a really bad idea, but should work due
   // to both structures being mostly the same

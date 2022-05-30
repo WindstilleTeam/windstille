@@ -32,14 +32,14 @@ public:
   float       seconds_passed;
   float       seconds_till_done;
 
-  Speech(int id, const std::string& text, const glm::vec2& pos, const surf::Color& color);
+  Speech(int id, std::string const& text, glm::vec2 const& pos, surf::Color const& color);
 
   void draw(wstdisplay::GraphicsContext& gc);
   void update(float delta);
   bool is_done() const;
 };
 
-Speech::Speech(int id_, const std::string& text_, const glm::vec2& pos_, const surf::Color& color_)
+Speech::Speech(int id_, std::string const& text_, glm::vec2 const& pos_, surf::Color const& color_)
   : id(id_),
     text(text_),
     pos(pos_),
@@ -92,13 +92,13 @@ SpeechManager::~SpeechManager()
 }
 
 int
-SpeechManager::add(const std::string& text, const Entity& entity, const surf::Color& color)
+SpeechManager::add(std::string const& text, Entity const& entity, surf::Color const& color)
 {
   return add(text, entity.get_pos(), color);
 }
 
 int
-SpeechManager::add(const std::string& text, const glm::vec2& pos, const surf::Color& color)
+SpeechManager::add(std::string const& text, glm::vec2 const& pos, surf::Color const& color)
 {
   int this_speech_id = speech_id;
   speeches.push_back(new Speech(this_speech_id, text, pos, color));

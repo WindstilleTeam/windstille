@@ -45,8 +45,8 @@ public:
   }
 
 private:
-  FunctorCommand(const FunctorCommand&);
-  FunctorCommand& operator=(const FunctorCommand&);
+  FunctorCommand(FunctorCommand const&);
+  FunctorCommand& operator=(FunctorCommand const&);
 };
 
 #endif

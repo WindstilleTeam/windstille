@@ -44,7 +44,7 @@ Conversation::Conversation() :
 }
 
 void
-Conversation::add(const std::string& text)
+Conversation::add(std::string const& text)
 {
   if (!active)
   {
@@ -55,7 +55,7 @@ Conversation::add(const std::string& text)
 }
 
 void
-Conversation::add(const std::string& topic, const std::string& text)
+Conversation::add(std::string const& topic, std::string const& text)
 {
   if (!active)
   {

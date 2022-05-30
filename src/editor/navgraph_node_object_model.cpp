@@ -30,7 +30,7 @@ NavGraphNodeObjectModel::NavGraphNodeObjectModel(ReaderMapping const& reader) :
 {
 }
 
-NavGraphNodeObjectModel::NavGraphNodeObjectModel(const glm::vec2& pos) :
+NavGraphNodeObjectModel::NavGraphNodeObjectModel(glm::vec2 const& pos) :
   ObjectModel("NavGraphNodeObjectModel", pos),
   m_drawable()
 {
@@ -74,7 +74,7 @@ NavGraphNodeObjectModel::sync_drawable()
 }
 
 void
-NavGraphNodeObjectModel::set_rel_pos(const glm::vec2& rel_pos_)
+NavGraphNodeObjectModel::set_rel_pos(glm::vec2 const& rel_pos_)
 {
   ObjectModel::set_rel_pos(rel_pos_);
 }
@@ -113,9 +113,9 @@ NavGraphNodeObjectModel::snap_to_grid(float grid_size) const
 }
 
 SnapData
-NavGraphNodeObjectModel::snap_to_object(const geom::frect& in) const
+NavGraphNodeObjectModel::snap_to_object(geom::frect const& in) const
 {
-  const glm::vec2& pos = get_world_pos();
+  glm::vec2 const& pos = get_world_pos();
 
   SnapData snap;
 

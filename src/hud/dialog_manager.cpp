@@ -52,7 +52,7 @@ DialogManager::~DialogManager()
 }
 
 void
-DialogManager::add_dialog(int alignment_, const std::string& portrait_, const std::string& text_)
+DialogManager::add_dialog(int alignment_, std::string const& portrait_, std::string const& text_)
 {
   delay     = 0.0;
   alignment = alignment_;
@@ -65,7 +65,7 @@ DialogManager::add_dialog(int alignment_, const std::string& portrait_, const st
 }
 
 void
-DialogManager::add_caption(int alignment_, const std::string& text_)
+DialogManager::add_caption(int alignment_, std::string const& text_)
 {
   delay     = 0.0;
   alignment = alignment_;
@@ -118,7 +118,7 @@ DialogManager::draw(wstdisplay::GraphicsContext& gc)
 
   if (text_area->is_progress_complete())
   {
-    const glm::vec2& pos_ = text_area->get_cursor_pos();
+    glm::vec2 const& pos_ = text_area->get_cursor_pos();
     geom::frect cursor(pos_.x + 8, pos_.y + 8, pos_.x + 24, pos_.y + 24);
     gc.fill_rect(cursor, surf::Color(1.0, 1.0, 1.0,
                                      fabsf(sinf(static_cast<float>(SDL_GetTicks()) / 1000.0f * glm::pi<float>() * 3.0f))));

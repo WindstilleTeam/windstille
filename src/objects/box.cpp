@@ -62,7 +62,7 @@ Box::~Box()
 }
 
 void
-Box::collision(const CollisionData& data)
+Box::collision(CollisionData const& data)
 {
   //std::cout << this << ": Collision Event" << std::endl;
   if ((data.direction.x > 0 && colobj->get_velocity().x < 0) ||

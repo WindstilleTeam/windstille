@@ -36,8 +36,8 @@ public:
   virtual float& get_float(void* obj) const = 0;
 
 private:
-  Property(const Property&);
-  Property& operator=(const Property&);
+  Property(Property const&);
+  Property& operator=(Property const&);
 };
 
 template<class C>
@@ -86,8 +86,8 @@ public:
   }
 
 private:
-  PropertyImpl(const PropertyImpl&);
-  PropertyImpl& operator=(const PropertyImpl&);
+  PropertyImpl(PropertyImpl const&);
+  PropertyImpl& operator=(PropertyImpl const&);
 };
 
 #endif

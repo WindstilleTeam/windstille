@@ -45,8 +45,8 @@ private:
   sprite3d::Manager* m_sprite3d_manager;
 
 private:
-  App(const App&) = delete;
-  App& operator=(const App&) = delete;
+  App(App const&) = delete;
+  App& operator=(App const&) = delete;
 };
 
 extern App g_app;

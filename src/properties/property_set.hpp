@@ -32,32 +32,32 @@ private:
   std::map<std::string, Property*> properties;
 
 public:
-  PropertySet(const std::string& name, PropertySet* parent = nullptr);
+  PropertySet(std::string const& name, PropertySet* parent = nullptr);
   ~PropertySet();
 
   std::string get_name() const { return name; }
 
-  void add(const std::string& name, Property* property);
+  void add(std::string const& name, Property* property);
 
   template<class C>
-  void add_int(const std::string& name_, bool C::*ptr)
+  void add_int(std::string const& name_, bool C::*ptr)
   {
     add(name_, PropertyImpl<C>::create_int(ptr));
   }
 
   template<class C>
-  void add_bool(const std::string& name_, bool C::*ptr)
+  void add_bool(std::string const& name_, bool C::*ptr)
   {
     add(name_, PropertyImpl<C>::create_bool(ptr));
   }
 
-  Property* get(const std::string& name_) const;
+  Property* get(std::string const& name_) const;
 
   void get_properties(std::vector<std::string>& lst) const;
 
 private:
-  PropertySet(const PropertySet&);
-  PropertySet& operator=(const PropertySet&);
+  PropertySet(PropertySet const&);
+  PropertySet& operator=(PropertySet const&);
 };
 
 #endif

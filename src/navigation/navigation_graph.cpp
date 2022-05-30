@@ -50,7 +50,7 @@ NavigationGraph::~NavigationGraph()
 }
 
 NodeHandle
-NavigationGraph::add_node(const glm::vec2& pos)
+NavigationGraph::add_node(glm::vec2 const& pos)
 {
   Node* node = new Node(pos);
   nodes.push_back(node);
@@ -130,7 +130,7 @@ NavigationGraph::split_edge(EdgeHandle edge)
 }
 
 std::vector<EdgePosition>
-NavigationGraph::find_intersections(const geom::fline& line)
+NavigationGraph::find_intersections(geom::fline const& line)
 {
   // FIXME: we might want to only return the first intersection, not
   // all of them or alternativly return ua
@@ -152,7 +152,7 @@ NavigationGraph::find_intersections(const geom::fline& line)
 }
 
 std::vector<NodeHandle>
-NavigationGraph::find_nodes(const glm::vec2& pos, float radius)
+NavigationGraph::find_nodes(glm::vec2 const& pos, float radius)
 {
   // FIXME: Optimize this with spatial tree thingy
   std::vector<NodeHandle> ret;
@@ -170,7 +170,7 @@ NavigationGraph::find_nodes(const glm::vec2& pos, float radius)
 }
 
 std::vector<NodeHandle>
-NavigationGraph::find_nodes(const geom::frect& rect)
+NavigationGraph::find_nodes(geom::frect const& rect)
 {
   std::vector<NodeHandle> ret;
 
@@ -186,7 +186,7 @@ NavigationGraph::find_nodes(const geom::frect& rect)
 }
 
 std::vector<EdgeHandle>
-NavigationGraph::find_edges(const glm::vec2& pos, float radius)
+NavigationGraph::find_edges(glm::vec2 const& pos, float radius)
 {
   std::vector<EdgeHandle> ret;
 
@@ -204,7 +204,7 @@ NavigationGraph::find_edges(const glm::vec2& pos, float radius)
 }
 
 NodeHandle
-NavigationGraph::find_closest_node(const glm::vec2& pos, float radius)
+NavigationGraph::find_closest_node(glm::vec2 const& pos, float radius)
 {
   // FIXME: Optimize this with spatial tree thingy
   Node* node = nullptr;
@@ -224,7 +224,7 @@ NavigationGraph::find_closest_node(const glm::vec2& pos, float radius)
 }
 
 EdgeHandle
-NavigationGraph::find_closest_edge(const glm::vec2& pos, float radius)
+NavigationGraph::find_closest_edge(glm::vec2 const& pos, float radius)
 {
   Edge* edge   = nullptr;
   float min_distance = radius;

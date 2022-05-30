@@ -91,7 +91,7 @@ Sprite::Sprite(const SpriteDataPtr data_) :
   blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
 }
 
-Sprite::Sprite(const Sprite& rhs) :
+Sprite::Sprite(Sprite const& rhs) :
   data(rhs.data),
   current_action(rhs.current_action),
   frame(rhs.frame),
@@ -107,7 +107,7 @@ Sprite::Sprite(const Sprite& rhs) :
 }
 
 Sprite&
-Sprite::operator=(const Sprite& rhs)
+Sprite::operator=(Sprite const& rhs)
 {
   if (this != &rhs)
   {
@@ -142,12 +142,12 @@ Sprite::update(float delta)
 }
 
 void
-Sprite::set_action(const std::string& name)
+Sprite::set_action(std::string const& name)
 {
   for(SpriteData::Actions::const_iterator i = data->actions.begin();
       i != data->actions.end(); ++i)
   {
-    const SpriteAction* action = *i;
+    SpriteAction const* action = *i;
     if(action->name == name)
     {
       // FIXME: This should be per-action and not get reset, shouldn't they?
@@ -238,7 +238,7 @@ Sprite::get_offset() const
 }
 
 void
-Sprite::draw(wstdisplay::GraphicsContext& gc, const glm::vec2& pos) const
+Sprite::draw(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos) const
 {
   wstdisplay::SurfacePtr surface = current_action->surfaces[ static_cast<int> (frame) ];
   surface->draw(gc,
@@ -275,7 +275,7 @@ Sprite::set_scale(float s)
 }
 
 void
-Sprite::set_color(const surf::Color& c)
+Sprite::set_color(surf::Color const& c)
 {
   color = c;
 }

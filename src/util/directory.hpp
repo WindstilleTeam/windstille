@@ -30,18 +30,18 @@ public:
   typedef std::vector<Pathname> List;
 
   /** Read the given directory and return the file entries */
-  static List read(const Pathname& pathname);
+  static List read(Pathname const& pathname);
 
   /**
    *  Read the given directory and return the file entries, only
    *  entries having the suffix \a suffix will be included in the
    *  result
    */
-  static List read(const Pathname& pathname, const std::string& suffix);
+  static List read(Pathname const& pathname, std::string const& suffix);
 
 private:
-  Directory(const Directory&);
-  Directory& operator=(const Directory&);
+  Directory(Directory const&);
+  Directory& operator=(Directory const&);
 };
 
 #endif

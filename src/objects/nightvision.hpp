@@ -38,8 +38,8 @@ public:
   void update(float delta) override;
 
 private:
-  Nightvision (const Nightvision&);
-  Nightvision& operator= (const Nightvision&);
+  Nightvision (Nightvision const&);
+  Nightvision& operator= (Nightvision const&);
 };
 
 #endif

@@ -30,8 +30,8 @@ public:
   ~AboutWindow() override;
 
 private:
-  AboutWindow(const AboutWindow&);
-  AboutWindow& operator=(const AboutWindow&);
+  AboutWindow(AboutWindow const&);
+  AboutWindow& operator=(AboutWindow const&);
 };
 
 #endif

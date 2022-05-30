@@ -172,7 +172,7 @@ TimelineWidget::mouse_move(GdkEventMotion* ev)
 }
 
 void
-TimelineWidget::add_to_selection(const geom::frect& selection)
+TimelineWidget::add_to_selection(geom::frect const& selection)
 {
   Timeline::iterator start = m_timeline->begin() +
     std::max(0, std::min(m_timeline->size(),
@@ -183,7 +183,7 @@ TimelineWidget::add_to_selection(const geom::frect& selection)
 
   for(Timeline::iterator i = start; i != end; ++i)
   {
-    const TimelineLayer::Objects& objects
+    TimelineLayer::Objects const& objects
       = (*i)->get_objects(selection.left() / static_cast<float>(m_column_width), selection.right() / static_cast<float>(m_column_width));
     m_selection.insert(objects.begin(), objects.end());
   }

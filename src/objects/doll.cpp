@@ -223,7 +223,7 @@ Doll::update_falling(wstinput::Controller const& controller, float delta)
   m_pos += stick;
   m_pos.y += 1000.0f * delta;
 
-  const std::vector<EdgePosition>& intersections =
+  std::vector<EdgePosition> const& intersections =
     Sector::current()->get_navigation_graph().find_intersections(geom::fline(m_last_pos, m_pos));
 
   if (!intersections.empty())
@@ -340,7 +340,7 @@ Doll::update_jump_up(wstinput::Controller const& controller, float /*delta*/)
 }
 
 void
-Doll::walk(const glm::vec2& adv_)
+Doll::walk(glm::vec2 const& adv_)
 {
   if (adv_.x > 0)
   {

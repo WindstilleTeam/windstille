@@ -49,8 +49,8 @@ public:
   ~Bone();
 
 private:
-  Bone (const Bone&);
-  Bone& operator= (const Bone&);
+  Bone (Bone const&);
+  Bone& operator= (Bone const&);
 };
 
 #endif

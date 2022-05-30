@@ -43,11 +43,11 @@ public:
 #endif
 
 public:
-  const std::string& get_name() const;
+  std::string const& get_name() const;
   void remove();
   void set_active(bool active);
   bool is_active() const;
-  void set_parent(const std::string& name);
+  void set_parent(std::string const& name);
 };
 
 class TestObject : public GameObject
@@ -67,12 +67,12 @@ public:
 #endif
 
 public:
-  void set_sprite(const std::string& filename);
-  void set_action(const std::string& action);
+  void set_sprite(std::string const& filename);
+  void set_action(std::string const& action);
   void set_pos(float x, float y);
   void set_vflip(bool vflip);
-  void attach(const std::string& spritename,
-              const std::string& attachement_point);
+  void attach(std::string const& spritename,
+              std::string const& attachement_point);
 };
 
 class Player : public GameObject

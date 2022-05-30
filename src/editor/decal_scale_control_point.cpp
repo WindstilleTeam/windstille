@@ -23,7 +23,7 @@
 #include "editor/app.hpp"
 #include "util/pathname.hpp"
 
-DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, const glm::vec2& pos_,
+DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, glm::vec2 const& pos_,
                                                bool x_scale_, bool y_scale_) :
   ControlPoint(g_app.surface().get(Pathname("editor/scale_handle.png")), pos_),
   object(object_),
@@ -39,7 +39,7 @@ DecalScaleControlPoint::on_move_start(GdkEventButton* event)
 }
 
 void
-DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const glm::vec2& offset_)
+DecalScaleControlPoint::on_move_update(GdkEventMotion* event, glm::vec2 const& offset_)
 {
   offset = offset_;
 
@@ -67,7 +67,7 @@ DecalScaleControlPoint::on_move_update(GdkEventMotion* event, const glm::vec2& o
 }
 
 void
-DecalScaleControlPoint::on_move_end(GdkEventButton* /*event*/, const glm::vec2& offset_)
+DecalScaleControlPoint::on_move_end(GdkEventButton* /*event*/, glm::vec2 const& offset_)
 {
   on_move_update(nullptr/*event*/, offset_);
 }

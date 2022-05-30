@@ -124,24 +124,24 @@ public:
   AnimationWidget*   get_animation_widget();
   Document* get_document();
 
-  void load_file(const std::string& filename);
+  void load_file(std::string const& filename);
 
   /** Queue a file to be loaded once the editor is full realized */
-  void queue_for_load(const std::string& filename);
+  void queue_for_load(std::string const& filename);
 
   void call_with_document(void (Document::*func)());
 
-  void on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_action);
+  void on_recent_file(Glib::RefPtr<Gtk::RecentAction> const& recent_action);
 
   void on_show_all(bool v);
   void on_lock_all(bool v);
 
-  void add_recent_file(const std::string& filename);
+  void add_recent_file(std::string const& filename);
 
-  void print(const std::string& text);
+  void print(std::string const& text);
   bool remove_message(guint id);
 
-  void print_coordinates(const std::string& text);
+  void print_coordinates(std::string const& text);
 
   Glib::RefPtr<Gtk::UIManager>   get_ui_manager() const { return m_ui_manager; }
   Glib::RefPtr<Gtk::ActionGroup> get_action_group() const { return m_action_group; }
@@ -193,8 +193,8 @@ private:
  SelectionHandle m_clipboard;
 
 private:
- EditorWindow(const EditorWindow&);
- EditorWindow& operator=(const EditorWindow&);
+ EditorWindow(EditorWindow const&);
+ EditorWindow& operator=(EditorWindow const&);
 };
 
 #endif

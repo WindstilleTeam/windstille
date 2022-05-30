@@ -43,11 +43,11 @@ Physics::register_collobj(CollisionObject& object)
 }
 
 void
-Physics::collision(const CollisionData& data)
+Physics::collision(CollisionData const& data)
 {
   GameObject* other_object = data.object2->get_game_object();
 
-  const Physics* physics = dynamic_cast<const Physics*> (other_object);
+  Physics const* physics = dynamic_cast<Physics const*> (other_object);
   if(physics)
   {
     elastic_collision(data, *physics);
@@ -61,7 +61,7 @@ Physics::collision(const CollisionData& data)
 }
 
 void
-Physics::elastic_collision(const CollisionData& data, const Physics& other)
+Physics::elastic_collision(CollisionData const& data, Physics const& other)
 {
   std::cout << "elastic collision." << std::endl;
   // we could calculate this cheaper if we'd do it once for both objects and not
@@ -83,7 +83,7 @@ Physics::elastic_collision(const CollisionData& data, const Physics& other)
 }
 
 void
-Physics::bounce_collision(const CollisionData& data)
+Physics::bounce_collision(CollisionData const& data)
 {
   std::cout << "bounce collision." << std::endl;
   glm::vec2 collision_vel = data.direction * (velocity() * data.direction);

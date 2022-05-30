@@ -30,7 +30,7 @@ private:
   Gtk::TreeModel::Path path;
 
 public:
-  LayerAddCommand(SectorModel& sector_, const Gtk::TreeModel::Path& path_)
+  LayerAddCommand(SectorModel& sector_, Gtk::TreeModel::Path const& path_)
     : sector(sector_),
       path(path_)
   {}
@@ -45,8 +45,8 @@ public:
   }
 
 private:
-  LayerAddCommand(const LayerAddCommand&);
-  LayerAddCommand& operator=(const LayerAddCommand&);
+  LayerAddCommand(LayerAddCommand const&);
+  LayerAddCommand& operator=(LayerAddCommand const&);
 };
 
 class LayerDeleteCommand : public Command
@@ -57,7 +57,7 @@ private:
   LayerHandle layer;
 
 public:
-  LayerDeleteCommand(SectorModel& sector_, const Gtk::TreeModel::Path& path_)
+  LayerDeleteCommand(SectorModel& sector_, Gtk::TreeModel::Path const& path_)
     : sector(sector_),
       path(path_),
       layer(sector.get_layer(path))
@@ -72,8 +72,8 @@ public:
   }
 
 private:
-  LayerDeleteCommand(const LayerDeleteCommand&);
-  LayerDeleteCommand& operator=(const LayerDeleteCommand&);
+  LayerDeleteCommand(LayerDeleteCommand const&);
+  LayerDeleteCommand& operator=(LayerDeleteCommand const&);
 };
 
 #endif

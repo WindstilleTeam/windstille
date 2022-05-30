@@ -41,13 +41,13 @@ Timeline::get_layer(int n) const
 }
 
 TimelineLayerHandle
-Timeline::create_layer(const std::string& name)
+Timeline::create_layer(std::string const& name)
 {
   return TimelineLayerHandle(new TimelineLayer(name));
 }
 
 TimelineLayerHandle
-Timeline::add_layer(const std::string& name)
+Timeline::add_layer(std::string const& name)
 {
   m_layers.push_back(TimelineLayerHandle(new TimelineLayer(name)));
 

@@ -31,17 +31,17 @@ private:
   glm::vec2 center;
 
 public:
-  DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, const glm::vec2& pos_);
+  DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, glm::vec2 const& pos_);
 
   void on_move_start(GdkEventButton* event) override;
-  void on_move_update(GdkEventMotion* event, const glm::vec2& offset_) override;
-  void on_move_end(GdkEventButton* event, const glm::vec2& offset_) override;
+  void on_move_update(GdkEventMotion* event, glm::vec2 const& offset_) override;
+  void on_move_end(GdkEventButton* event, glm::vec2 const& offset_) override;
 
   void draw(wstdisplay::SceneContext& sc) override;
 
 private:
-  DecalRotateControlPoint (const DecalRotateControlPoint&);
-  DecalRotateControlPoint& operator= (const DecalRotateControlPoint&);
+  DecalRotateControlPoint (DecalRotateControlPoint const&);
+  DecalRotateControlPoint& operator= (DecalRotateControlPoint const&);
 };
 
 #endif

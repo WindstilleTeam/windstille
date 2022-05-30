@@ -40,10 +40,10 @@ public:
     float  zoom;
     float  rotation;
 
-    PathPoint(const glm::vec2& pos_, float zoom_, float rotation_ = 0.0f)
+    PathPoint(glm::vec2 const& pos_, float zoom_, float rotation_ = 0.0f)
       : pos(pos_), zoom(zoom_), rotation(rotation_) {}
 
-    bool operator==(const PathPoint& p) const {
+    bool operator==(PathPoint const& p) const {
       return p.pos == pos && p.zoom == zoom;
     }
   };
@@ -87,11 +87,11 @@ public:
    * current camera position, false if you want the camera to jump to
    * the start of the path instantly
    */
-  void   set_path(const std::vector<PathPoint>& path_, bool cont);
+  void   set_path(std::vector<PathPoint> const& path_, bool cont);
 
 private:
-  Camera (const Camera&);
-  Camera& operator= (const Camera&);
+  Camera (Camera const&);
+  Camera& operator= (Camera const&);
 };
 
 #endif

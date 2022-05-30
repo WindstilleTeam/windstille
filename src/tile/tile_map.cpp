@@ -205,7 +205,7 @@ static float find_max(float pos, float v)
 }
 
 glm::vec2
-TileMap::raycast(const glm::vec2& pos, float angle)
+TileMap::raycast(glm::vec2 const& pos, float angle)
 {
   ////////////////////////////////////////////
   // FIXME: This code is buggy, use code from LaserPointer instead

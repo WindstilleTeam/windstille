@@ -53,7 +53,7 @@ Sprite3DView::~Sprite3DView()
 }
 
 void
-Sprite3DView::set_model(const Pathname& filename)
+Sprite3DView::set_model(Pathname const& filename)
 {
   m_sprite = g_app.sprite3d().create(filename);
   m_actions = m_sprite.get_actions();
@@ -163,7 +163,7 @@ Sprite3DView::update(float delta, wstinput::Controller const& controller)
 }
 
 void
-Sprite3DView::handle_event(const SDL_Event& )
+Sprite3DView::handle_event(SDL_Event const& )
 {
 
 }

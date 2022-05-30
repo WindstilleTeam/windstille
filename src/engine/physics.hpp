@@ -37,10 +37,10 @@ public:
   { return entity->velocity; }
 
 private:
-  void collision(const CollisionData& data);
+  void collision(CollisionData const& data);
 
-  void elastic_collision(const CollisionData& data, const Physics& other);
-  void bounce_collision(const CollisionData& data);
+  void elastic_collision(CollisionData const& data, Physics const& other);
+  void bounce_collision(CollisionData const& data);
 
   Entity* entity;
   float mass;
@@ -50,8 +50,8 @@ private:
   float contact_friction;
 
 private:
-  Physics(const Physics&);
-  Physics& operator=(const Physics&);
+  Physics(Physics const&);
+  Physics& operator=(Physics const&);
 };
 
 #endif

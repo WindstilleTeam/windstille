@@ -34,12 +34,12 @@ namespace Scripting
 class SquirrelError : public std::exception
 {
 public:
-  SquirrelError(HSQUIRRELVM v, const Pathname& path, const std::string& message) throw();
-  SquirrelError(HSQUIRRELVM v, const std::string& context, const std::string& message) throw();
-  SquirrelError(HSQUIRRELVM v, const std::string& message) throw();
+  SquirrelError(HSQUIRRELVM v, Pathname const& path, std::string const& message) throw();
+  SquirrelError(HSQUIRRELVM v, std::string const& context, std::string const& message) throw();
+  SquirrelError(HSQUIRRELVM v, std::string const& message) throw();
   ~SquirrelError() throw() override;
 
-  const char* what() const throw() override;
+  char const* what() const throw() override;
 
 private:
   std::string message;

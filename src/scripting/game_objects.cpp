@@ -23,7 +23,7 @@
 
 namespace Scripting {
 
-const std::string&
+std::string const&
 GameObject::get_name() const
 {
   return object.lock()->get_name();
@@ -48,7 +48,7 @@ GameObject::is_active() const
 }
 
 void
-GameObject::set_parent(const std::string& name)
+GameObject::set_parent(std::string const& name)
 {
   if (::Entity* entity = dynamic_cast<Entity*>(object.lock().get()))
   {
@@ -60,13 +60,13 @@ GameObject::set_parent(const std::string& name)
 }
 
 void
-TestObject::set_sprite(const std::string& filename)
+TestObject::set_sprite(std::string const& filename)
 {
   obj()->set_sprite(filename);
 }
 
 void
-TestObject::set_action(const std::string& animation)
+TestObject::set_action(std::string const& animation)
 {
   obj()->set_action(animation);
 }
@@ -84,8 +84,8 @@ TestObject::set_vflip(bool vflip)
 }
 
 void
-TestObject::attach(const std::string& spritename,
-                   const std::string& attachement_point)
+TestObject::attach(std::string const& spritename,
+                   std::string const& attachement_point)
 {
   obj()->attach(spritename, attachement_point);
 }

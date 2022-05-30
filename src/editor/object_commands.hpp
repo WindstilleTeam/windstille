@@ -82,7 +82,7 @@ private:
   glm::vec2             new_pos;
 
 public:
-  ObjectSetPosCommand(ObjectModelHandle object_, const glm::vec2& new_pos_)
+  ObjectSetPosCommand(ObjectModelHandle object_, glm::vec2 const& new_pos_)
     : object(object_),
       orig_pos(object->get_rel_pos()),
       new_pos(new_pos_)

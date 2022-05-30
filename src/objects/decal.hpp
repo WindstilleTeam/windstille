@@ -42,8 +42,8 @@ public:
   void set_parent(GameObject* parent);
 
 private:
-  Decal(const Decal&);
-  Decal& operator=(const Decal&);
+  Decal(Decal const&);
+  Decal& operator=(Decal const&);
 };
 
 #endif

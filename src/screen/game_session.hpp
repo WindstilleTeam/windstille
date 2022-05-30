@@ -48,7 +48,7 @@ class GameSession : public wstgui::Screen,
 public:
   enum ControlState { DIALOG, GAME, CONVERSATION };
 
-  GameSession(const Pathname& arg_filename);
+  GameSession(Pathname const& arg_filename);
   ~GameSession() override;
 
   View* get_view();
@@ -60,10 +60,10 @@ public:
   void set_control_state(ControlState state);
 
   /** Switches the sector instantly without fadeout */
-  void set_sector(const Pathname& filename);
+  void set_sector(Pathname const& filename);
 
   /** Fades out then switches sectors and fades in again */
-  void change_sector(const Pathname& filename);
+  void change_sector(Pathname const& filename);
 
   /** Set the GameSession into a mode for cutscenes, this means for
       most part to switch into a 16:9 viewmode with black borders */
@@ -71,12 +71,12 @@ public:
 
   /** \a time Time in seconds till the fade is complete
       \a color Color to which the screen should fade */
-  void fadeout(float time, const surf::Color& color);
+  void fadeout(float time, surf::Color const& color);
   void fadein(float time);
 
   void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, wstinput::Controller const& controller) override;
-  void handle_event(const SDL_Event& event) override;
+  void handle_event(SDL_Event const& event) override;
 
   PDA& get_pda();
 

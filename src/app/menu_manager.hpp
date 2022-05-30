@@ -49,7 +49,7 @@ private:
 
   /** Position a menu at the given positions, while thread the
       positions relative to the 800x600 ration */
-  static geom::frect create_positioned_rect(const glm::vec2& pos, const geom::fsize& size);
+  static geom::frect create_positioned_rect(glm::vec2 const& pos, geom::fsize const& size);
 
   // Callbacks
   static void menu_start_game();
@@ -66,12 +66,12 @@ private:
   static void menu_music_volume(int i);
 
   static void menu_ambient_light(int i, int component);
-  static void menu_start_scenario(const Pathname& filename);
-  static void menu_show_model(const Pathname& filename);
+  static void menu_start_scenario(Pathname const& filename);
+  static void menu_show_model(Pathname const& filename);
   static void menu_show_geometry_test();
   static void menu_show_armature_test();
   static void menu_show_navigation_test();
-  static void menu_show_particle_system(const Pathname& filename);
+  static void menu_show_particle_system(Pathname const& filename);
   static void menu_gamma(int i);
   static void menu_wiimote();
 };

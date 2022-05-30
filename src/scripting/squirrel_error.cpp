@@ -24,12 +24,12 @@
 
 namespace Scripting {
 
-SquirrelError::SquirrelError(HSQUIRRELVM v, const Pathname& path, const std::string& message_) throw() :
+SquirrelError::SquirrelError(HSQUIRRELVM v, Pathname const& path, std::string const& message_) throw() :
   message()
 {
   std::ostringstream msg;
   msg << "Squirrel error: " << path << ": " << message_ << " (";
-  const char* lasterr;
+  char const* lasterr;
   sq_getlasterror(v);
   if(sq_gettype(v, -1) != OT_STRING)
   {
@@ -44,12 +44,12 @@ SquirrelError::SquirrelError(HSQUIRRELVM v, const Pathname& path, const std::str
   message = msg.str();
 }
 
-SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& context, const std::string& message_) throw() :
+SquirrelError::SquirrelError(HSQUIRRELVM v, std::string const& context, std::string const& message_) throw() :
   message()
 {
   std::ostringstream msg;
   msg << "Squirrel error: " << context << ": " << message_ << " (";
-  const char* lasterr;
+  char const* lasterr;
   sq_getlasterror(v);
   if(sq_gettype(v, -1) != OT_STRING)
   {
@@ -64,12 +64,12 @@ SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& context, const st
   message = msg.str();
 }
 
-SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& message_) throw() :
+SquirrelError::SquirrelError(HSQUIRRELVM v, std::string const& message_) throw() :
   message()
 {
   std::ostringstream msg;
   msg << "Squirrel error: " << message_ << " (";
-  const char* lasterr;
+  char const* lasterr;
   sq_getlasterror(v);
   if(sq_gettype(v, -1) != OT_STRING)
   {
@@ -87,7 +87,7 @@ SquirrelError::SquirrelError(HSQUIRRELVM v, const std::string& message_) throw()
 SquirrelError::~SquirrelError() throw()
 {}
 
-const char*
+char const*
 SquirrelError::what() const throw()
 {
   return message.c_str();

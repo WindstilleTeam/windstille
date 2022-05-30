@@ -38,8 +38,8 @@ public:
   float get_width() const override { return 0.0f; }
 
 private:
-  TimelineKeyframeObject(const TimelineKeyframeObject&);
-  TimelineKeyframeObject& operator=(const TimelineKeyframeObject&);
+  TimelineKeyframeObject(TimelineKeyframeObject const&);
+  TimelineKeyframeObject& operator=(TimelineKeyframeObject const&);
 };
 
 template<typename C>
@@ -49,13 +49,13 @@ private:
   C m_data;
 
 public:
-  TimelineKeyframeDataObject(float pos, const C& data)
+  TimelineKeyframeDataObject(float pos, C const& data)
     : TimelineKeyframeObject(pos),
       m_data(data)
   {}
 
-  const C& get_data() const { return m_data; }
-  void     set_data(const C& data) { m_data = data; }
+  C const& get_data() const { return m_data; }
+  void     set_data(C const& data) { m_data = data; }
 
   void write(FileWriter& writer) const override
   {
@@ -65,7 +65,7 @@ public:
     writer.end_object();
   }
 
-  C blend(const TimelineKeyframeDataObject<C>& rhs, float pos)
+  C blend(TimelineKeyframeDataObject<C> const& rhs, float pos)
   {
     float rel_pos = pos - get_pos();
     float range   = rhs.get_pos() - m_pos;
@@ -75,8 +75,8 @@ public:
   }
 
 private:
-  TimelineKeyframeDataObject(const TimelineKeyframeDataObject&);
-  TimelineKeyframeDataObject& operator=(const TimelineKeyframeDataObject&);
+  TimelineKeyframeDataObject(TimelineKeyframeDataObject const&);
+  TimelineKeyframeDataObject& operator=(TimelineKeyframeDataObject const&);
 };
 
 #endif

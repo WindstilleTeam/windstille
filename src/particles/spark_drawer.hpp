@@ -35,7 +35,7 @@ private:
 public:
   SparkDrawer(ReaderMapping const& props);
 
-  void draw(wstdisplay::GraphicsContext& gc, const ParticleSystem& psys) const override;
+  void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const override;
 };
 
 #endif

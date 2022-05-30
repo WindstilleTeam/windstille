@@ -40,7 +40,7 @@
 using Scripting::SquirrelError;
 
 // The table (works like a namespace here) where the game objects will appear
-static const char* OBJECTS_TABLE = "objects";
+static char const* OBJECTS_TABLE = "objects";
 
 // FIXME: Replace this with sq_compilebufer()
 static SQInteger squirrel_read_char(SQUserPointer file)
@@ -57,7 +57,7 @@ static SQInteger squirrel_read_char(SQUserPointer file)
 
 namespace {
 
-void printfunc(HSQUIRRELVM, const char* str, ...)
+void printfunc(HSQUIRRELVM, char const* str, ...)
 {
   char buf[4096];
   va_list arglist;
@@ -68,7 +68,7 @@ void printfunc(HSQUIRRELVM, const char* str, ...)
   va_end(arglist);
 }
 
-void errorfunc(HSQUIRRELVM, const char* str, ...)
+void errorfunc(HSQUIRRELVM, char const* str, ...)
 {
   char buf[4096];
   va_list arglist;
@@ -152,7 +152,7 @@ ScriptManager::create_script(HSQUIRRELVM parent_vm, bool isolated)
 }
 
 std::shared_ptr<SquirrelThread>
-ScriptManager::run_script_file(const Pathname& filename, bool global)
+ScriptManager::run_script_file(Pathname const& filename, bool global)
 {
   std::ifstream in(filename.get_sys_path().c_str());
 

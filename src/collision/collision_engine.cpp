@@ -24,7 +24,7 @@
 #include "collision/collision_test.hpp"
 #include "tile/tile_map.hpp"
 
-std::vector<geom::frect> tilemap_collision_list(TileMap *tilemap, const geom::frect &r, bool is_ground);
+std::vector<geom::frect> tilemap_collision_list(TileMap *tilemap, geom::frect const& r, bool is_ground);
 
 /***********************************************************************
  * Collision
@@ -54,7 +54,7 @@ CollisionEngine::draw(wstdisplay::DrawingContext& dc)
 }
 
 void
-CollisionEngine::collision(const CollisionData &result)
+CollisionEngine::collision(CollisionData const& result)
 {
   assert(result.object1 && result.object2);
 
@@ -99,7 +99,7 @@ CollisionEngine::unstuck(CollisionObject& a, CollisionObject& b, float delta)
 
 namespace {
 
-glm::vec2 unstuck_direction(const geom::frect &a, const geom::frect &b, float delta, float unstuck_velocity)
+glm::vec2 unstuck_direction(geom::frect const& a, geom::frect const& b, float delta, float unstuck_velocity)
 {
   // The distance A needs to unstuck from B in the given direction
   float left   = fabsf(a.right() - b.left());
@@ -168,7 +168,7 @@ bool is_rect_free(TileMap *tilemap, int l, int t, int w,int h)
   return true;
 }
 
-geom::frect get_next_free_rect(TileMap *tilemap, const geom::frect &r)
+geom::frect get_next_free_rect(TileMap *tilemap, geom::frect const& r)
 {
   int rx = c_round(r.left() / static_cast<float>(TILE_SIZE));
   int ry = c_round(std::min (r.top(), r.bottom())  / static_cast<float>(TILE_SIZE));
@@ -422,8 +422,8 @@ CollisionEngine::remove(CollisionObject *obj)
 
 // LEFT means b1 is left of b2
 CollisionData
-CollisionEngine::collide(const geom::frect& b1, const geom::frect& b2,
-                         const glm::vec2& b1_v, const glm::vec2& b2_v,
+CollisionEngine::collide(geom::frect const& b1, geom::frect const& b2,
+                         glm::vec2 const& b1_v, glm::vec2 const& b2_v,
                          float delta)
 {
   SweepResult result0 = simple_sweep_1d(b1.left(), b1.width(),  b1_v.x,
@@ -540,7 +540,7 @@ int get_integer(float f, float direction)
   return result;
 }
 
-bool tilemap_collision(TileMap *tilemap, const geom::frect &r)
+bool tilemap_collision(TileMap *tilemap, geom::frect const& r)
 {
   int minx, maxx;
   int miny, maxy;
@@ -566,7 +566,7 @@ bool tilemap_collision(TileMap *tilemap, const geom::frect &r)
 }
 
 #if 0
-std::vector<geom::frect> tilemap_collision_list(TileMap *tilemap, const geom::frect &r,bool is_ground)
+std::vector<geom::frect> tilemap_collision_list(TileMap *tilemap, geom::frect const& r,bool is_ground)
 {
   std::vector<geom::frect> rect_list;
   int minx, maxx;
@@ -753,7 +753,7 @@ CollisionEngine::collide_tilemap(CollisionObject& a, CollisionObject& b, float d
 }
 
 glm::vec2
-CollisionEngine::raycast(const glm::vec2& pos, float angle)
+CollisionEngine::raycast(glm::vec2 const& pos, float angle)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
   {

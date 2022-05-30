@@ -503,7 +503,7 @@ EditorWindow::on_new()
 }
 
 void
-EditorWindow::load_file(const std::string& filename)
+EditorWindow::load_file(std::string const& filename)
 {
   try
   {
@@ -1144,7 +1144,7 @@ EditorWindow::on_lock_all(bool v)
 }
 
 void
-EditorWindow::on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_action)
+EditorWindow::on_recent_file(Glib::RefPtr<Gtk::RecentAction> const& recent_action)
 {
   Glib::RefPtr<const Gtk::RecentInfo> item = recent_action->get_current_item();
 
@@ -1154,7 +1154,7 @@ EditorWindow::on_recent_file(const Glib::RefPtr<Gtk::RecentAction>& recent_actio
 }
 
 void
-EditorWindow::add_recent_file(const std::string& filename)
+EditorWindow::add_recent_file(std::string const& filename)
 {
   Gtk::RecentManager::Data data;
   data.display_name = Glib::path_get_basename(filename);
@@ -1175,7 +1175,7 @@ EditorWindow::remove_message(guint id)
 }
 
 void
-EditorWindow::print(const std::string& text)
+EditorWindow::print(std::string const& text)
 {
   guint id = m_statusbar.push(text);
   std::cout << "[LOG] " << text << std::endl;
@@ -1183,7 +1183,7 @@ EditorWindow::print(const std::string& text)
 }
 
 void
-EditorWindow::print_coordinates(const std::string& text)
+EditorWindow::print_coordinates(std::string const& text)
 {
   m_status_label.set_text(text);
 }

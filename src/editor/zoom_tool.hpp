@@ -47,8 +47,8 @@ public:
   void draw(wstdisplay::SceneContext& sc) override;
 
 private:
-  ZoomTool(const ZoomTool&);
-  ZoomTool& operator=(const ZoomTool&);
+  ZoomTool(ZoomTool const&);
+  ZoomTool& operator=(ZoomTool const&);
 };
 
 #endif

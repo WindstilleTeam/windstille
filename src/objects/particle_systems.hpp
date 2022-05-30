@@ -45,8 +45,8 @@ public:
   void update (float delta) override;
 
 private:
-  ParticleSystems(const ParticleSystems&);
-  ParticleSystems& operator=(const ParticleSystems&);
+  ParticleSystems(ParticleSystems const&);
+  ParticleSystems& operator=(ParticleSystems const&);
 };
 
 #endif

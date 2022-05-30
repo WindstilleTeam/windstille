@@ -53,8 +53,8 @@ public:
   void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, wstinput::Controller const& controller) override;
 
-  void add(const std::string& text);
-  void add(const std::string& topic, const std::string& text);
+  void add(std::string const& text);
+  void add(std::string const& topic, std::string const& text);
   int  get_selection() const;
   void show();
 };

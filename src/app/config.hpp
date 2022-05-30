@@ -38,7 +38,7 @@ protected:
   bool do_save;
 
 public:
-  ConfigValueBase(const std::string& name_, const std::string& docstring_, bool do_save_)
+  ConfigValueBase(std::string const& name_, std::string const& docstring_, bool do_save_)
     : name(name_), docstring(docstring_),
       has_been_set(false),
       do_save(do_save_)
@@ -47,8 +47,8 @@ public:
 
   virtual ~ConfigValueBase() {}
 
-  const std::string& get_name() { return name; }
-  const std::string& get_docstring() { return docstring; }
+  std::string const& get_name() { return name; }
+  std::string const& get_docstring() { return docstring; }
 
   bool is_set() const {
     return has_been_set;
@@ -75,21 +75,21 @@ private:
   T    data;
 
 public:
-  ConfigValue(const std::string& name_, const std::string& docstring_, bool do_save_, const T& data_) :
+  ConfigValue(std::string const& name_, std::string const& docstring_, bool do_save_, T const& data_) :
     ConfigValueBase(name_, docstring_, do_save_),
     data(data_)
   {
     has_been_set = true;
   }
 
-  ConfigValue(const std::string& name_, const std::string& docstring_, bool do_save_) :
+  ConfigValue(std::string const& name_, std::string const& docstring_, bool do_save_) :
     ConfigValueBase(name_, docstring_, do_save_),
     data()
   {
     has_been_set = false;
   }
 
-  const T& get() const {
+  T const& get() const {
     return data;
   }
 
@@ -97,13 +97,13 @@ public:
     return data;
   }
 
-  T& set(const T& data_) {
+  T& set(T const& data_) {
     data = data_;
     has_been_set  = true;
     return data;
   }
 
-  ConfigValue<T>& operator=(const T& data_) {
+  ConfigValue<T>& operator=(T const& data_) {
     set(data_);
     return *this;
   }
@@ -115,7 +115,7 @@ public:
   }
 };
 
-inline std::ostream& operator<<(std::ostream &o, const ConfigValueBase& value)
+inline std::ostream& operator<<(std::ostream &o, ConfigValueBase const& value)
 {
   return value.print(o);
 }
@@ -139,12 +139,12 @@ public:
   void load();
   void save();
 
-  bool has_key(const std::string& name);
+  bool has_key(std::string const& name);
 
-  bool is_set(const std::string& name);
+  bool is_set(std::string const& name);
 
   template<class T>
-  ConfigValue<T>& get(const std::string& name) const {
+  ConfigValue<T>& get(std::string const& name) const {
     ConfigValues::const_iterator i = config_values.find(name);
     if (i == config_values.end())
     {
@@ -160,15 +160,15 @@ public:
     }
   }
 
-  std::string get_string(const std::string& name) const;
-  bool        get_bool  (const std::string& name) const;
-  int         get_int   (const std::string& name) const;
-  float       get_float (const std::string& name) const;
+  std::string get_string(std::string const& name) const;
+  bool        get_bool  (std::string const& name) const;
+  int         get_int   (std::string const& name) const;
+  float       get_float (std::string const& name) const;
 
-  void set_string(const std::string& name, const std::string& value);
-  void set_bool  (const std::string& name, bool  value);
-  void set_int   (const std::string& name, int   value);
-  void set_float (const std::string& name, float value);
+  void set_string(std::string const& name, std::string const& value);
+  void set_bool  (std::string const& name, bool  value);
+  void set_int   (std::string const& name, int   value);
+  void set_float (std::string const& name, float value);
 
   void debug_print(std::ostream& out);
 };

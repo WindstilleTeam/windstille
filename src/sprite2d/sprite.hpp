@@ -37,7 +37,7 @@ private:
   /** Pointer to the Sprites data which is shared among all sprites
       with are loaded from the same file */
   SpriteDataPtr data;
-  const SpriteAction* current_action;
+  SpriteAction const* current_action;
 
   float frame;
   float speed;
@@ -58,17 +58,17 @@ public:
       one-file sprite */
   explicit Sprite(std::filesystem::path const& filename, SpriteManager& sprite_manager);
   explicit Sprite(SpriteDataPtr data);
-  Sprite(const Sprite&);
-  Sprite& operator=(const Sprite&);
+  Sprite(Sprite const&);
+  Sprite& operator=(Sprite const&);
   ~Sprite();
 
   void update(float delta);
 
-  void draw(wstdisplay::GraphicsContext& gc, const glm::vec2& pos) const;
+  void draw(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos) const;
   void draw(wstdisplay::DrawingContext& ctx, glm::vec2 const& pos, float z_pos = 0.0f);
 
-  void  set_action(const std::string& name);
-  const std::string& get_action() const;
+  void  set_action(std::string const& name);
+  std::string const& get_action() const;
 
   void set_vflip(bool vflip);
   bool get_vflip() const;
@@ -88,7 +88,7 @@ public:
   GLenum get_blend_sfactor() const;
   GLenum get_blend_dfactor() const;
 
-  void set_color(const surf::Color& color);
+  void set_color(surf::Color const& color);
   surf::Color get_color() const;
 
   void  set_scale(float s);

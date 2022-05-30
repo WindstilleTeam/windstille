@@ -23,7 +23,7 @@
 #include "tile/tile.hpp"
 #include "tile/tile_map.hpp"
 
-StairContact::StairContact(TileMap* tilemap_, const geom::ipoint& pos_)
+StairContact::StairContact(TileMap* tilemap_, geom::ipoint const& pos_)
   : tilemap(tilemap_),
     pos(pos_),
     advancement(0.0f),

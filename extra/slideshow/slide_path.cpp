@@ -30,7 +30,7 @@ SlidePath::SlidePath() :
 }
 
 void
-SlidePath::add_node(const glm::vec2& pos, float zoom)
+SlidePath::add_node(glm::vec2 const& pos, float zoom)
 {
   SlidePathNode node;
   node.pos  = pos;

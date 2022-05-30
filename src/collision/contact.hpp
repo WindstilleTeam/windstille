@@ -35,8 +35,8 @@ public:
   virtual bool is_active() const =0;
   virtual glm::vec2 get_pos() const =0;
 private:
-  Contact (const Contact&);
-  Contact& operator= (const Contact&);
+  Contact (Contact const&);
+  Contact& operator= (Contact const&);
 };
 
 #endif

@@ -57,7 +57,7 @@ public:
 
   /** Shoots a ray from \a pos into direction \a angle, returns the
       position were the ray collides with the tilemap */
-  glm::vec2 raycast(const glm::vec2& pos, float angle);
+  glm::vec2 raycast(glm::vec2 const& pos, float angle);
 };
 
 #endif

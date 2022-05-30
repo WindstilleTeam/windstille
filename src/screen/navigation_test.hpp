@@ -56,8 +56,8 @@ public:
   void update(float delta, wstinput::Controller const& controller) override;
 
 private:
-  NavigationTest (const NavigationTest&);
-  NavigationTest& operator= (const NavigationTest&);
+  NavigationTest (NavigationTest const&);
+  NavigationTest& operator= (NavigationTest const&);
 };
 
 #endif

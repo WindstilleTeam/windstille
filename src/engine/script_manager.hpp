@@ -83,7 +83,7 @@ public:
   void update();
 
   /** Load script from \a filename and runs it */
-  std::shared_ptr<SquirrelThread> run_script_file(const Pathname& filename, bool global = false);
+  std::shared_ptr<SquirrelThread> run_script_file(Pathname const& filename, bool global = false);
   std::shared_ptr<SquirrelThread> create_script(HSQUIRRELVM parent_vm, bool isolated);
 
   HSQUIRRELVM get_vm() const { return vm; }
@@ -97,8 +97,8 @@ public:
   void remove_object_from_squirrel(std::shared_ptr<GameObject> object);
 
 private:
-  ScriptManager(const ScriptManager&);
-  ScriptManager& operator=(const ScriptManager&);
+  ScriptManager(ScriptManager const&);
+  ScriptManager& operator=(ScriptManager const&);
 };
 
 #endif

@@ -19,7 +19,7 @@
 #include "collision/collision_data.hpp"
 
 CollisionData
-CollisionData::merge(const CollisionData &r)
+CollisionData::merge(CollisionData const& r)
 {
   if (state==COLLISION)
   {

@@ -34,7 +34,7 @@ SparkDrawer::SparkDrawer(ReaderMapping const& props)
 }
 
 void
-SparkDrawer::draw(wstdisplay::GraphicsContext& gc, const ParticleSystem& psys) const
+SparkDrawer::draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const
 {
   buffer->clear();
   buffer->set_pos(glm::vec2(psys.get_x_pos(), psys.get_y_pos()));

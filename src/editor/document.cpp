@@ -54,7 +54,7 @@ Document::Document() :
   m_sector_model->get_layer_tree()->signal_rows_reordered().connect(sigc::mem_fun(*this, &Document::on_rows_reordered));
 }
 
-Document::Document(const std::string& filename) :
+Document::Document(std::string const& filename) :
   m_undo_manager(std::make_unique<UndoManager>()),
   m_sector_model(std::make_unique<SectorModel>(filename)),
   m_group_command(),
@@ -159,13 +159,13 @@ Document::execute(const std::function<void ()>& undo_callback,
 }
 
 void
-Document::layer_add(const Gtk::TreeModel::Path& path)
+Document::layer_add(Gtk::TreeModel::Path const& path)
 {
   execute(CommandHandle(new LayerAddCommand(*m_sector_model, path)));
 }
 
 void
-Document::layer_remove(const Gtk::TreeModel::Path& path)
+Document::layer_remove(Gtk::TreeModel::Path const& path)
 {
   execute(CommandHandle(new LayerDeleteCommand(*m_sector_model, path)));
 }
@@ -239,7 +239,7 @@ Document::object_remove(ObjectModelHandle object)
 }
 
 void
-Document::object_set_pos(ObjectModelHandle object, const glm::vec2& new_pos)
+Document::object_set_pos(ObjectModelHandle object, glm::vec2 const& new_pos)
 {
   execute(CommandHandle(new ObjectSetPosCommand(object, new_pos)));
 }
@@ -251,7 +251,7 @@ Document::timeline_add_keyframe(ObjectModelHandle object, TimelineProperty prope
 }
 
 void
-Document::timeline_add_layer(const std::string& name)
+Document::timeline_add_layer(std::string const& name)
 {
   execute(CommandHandle(new TimelineAddLayerCommand(*m_sector_model, name)));
 }
@@ -309,7 +309,7 @@ Document::selection_vflip()
 
     if (m_selection->size() > 1)
     {
-      const glm::vec2& center = geom::center(m_selection->get_bounding_box()).as_vec();
+      glm::vec2 const& center = geom::center(m_selection->get_bounding_box()).as_vec();
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
       {
         glm::vec2 pos = (*i)->get_world_pos();
@@ -342,7 +342,7 @@ Document::selection_hflip()
 
     if (m_selection->size() > 1)
     {
-      const glm::vec2& center = geom::center(m_selection->get_bounding_box()).as_vec();
+      glm::vec2 const& center = geom::center(m_selection->get_bounding_box()).as_vec();
       for(Selection::iterator i = m_selection->begin(); i != m_selection->end(); ++i)
       {
         glm::vec2 pos = (*i)->get_world_pos();
@@ -531,7 +531,7 @@ Document::select_all()
 }
 
 void
-Document::set_selection(const SelectionHandle& selection)
+Document::set_selection(SelectionHandle const& selection)
 {
   m_selection = selection;
   m_selection->signal_changed.connect(sigc::mem_fun(*this, &Document::on_selection_change));
@@ -551,7 +551,7 @@ Document::on_selection_change()
 }
 
 ControlPointHandle
-Document::get_control_point(const glm::vec2& pos) const
+Document::get_control_point(glm::vec2 const& pos) const
 {
   for(std::vector<ControlPointHandle>::const_iterator i = m_control_points.begin();
       i != m_control_points.end(); ++i)
@@ -576,31 +576,31 @@ Document::create_control_points()
 }
 
 void
-Document::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+Document::on_row_changed(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter)
 {
   m_sig_on_change();
 }
 
 void
-Document::on_row_deleted(const Gtk::TreeModel::Path& path)
+Document::on_row_deleted(Gtk::TreeModel::Path const& path)
 {
   m_sig_on_change();
 }
 
 void
-Document::on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+Document::on_row_has_child_toggled(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter)
 {
   m_sig_on_change();
 }
 
 void
-Document::on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+Document::on_row_inserted(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter)
 {
   m_sig_on_change();
 }
 
 void
-Document::on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order)
+Document::on_rows_reordered(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter, int* new_order)
 {
   m_sig_on_change();
 }

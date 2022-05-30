@@ -38,7 +38,7 @@ Selection::~Selection()
 }
 
 void
-Selection::add(const ObjectModelHandle& object)
+Selection::add(ObjectModelHandle const& object)
 {
   if (!object)
   {
@@ -52,7 +52,7 @@ Selection::add(const ObjectModelHandle& object)
 }
 
 void
-Selection::remove(const ObjectModelHandle& object)
+Selection::remove(ObjectModelHandle const& object)
 {
   Objects::iterator it = std::find(objects.begin(), objects.end(), object);
   if (it != objects.end())
@@ -131,7 +131,7 @@ Selection::on_move_start()
 }
 
 void
-Selection::on_move_update(const glm::vec2& offset)
+Selection::on_move_update(glm::vec2 const& offset)
 {
   log_debug("{} objects: {} object_orig_pos: {}", static_cast<void*>(this), objects.size(), object_orig_pos.size());
 
@@ -148,7 +148,7 @@ Selection::on_move_update(const glm::vec2& offset)
 }
 
 void
-Selection::on_move_end(WindstilleWidget& wst, const glm::vec2& offset)
+Selection::on_move_end(WindstilleWidget& wst, glm::vec2 const& offset)
 {
   log_debug("{} objects: {} object_orig_pos: {}", static_cast<void*>(this), objects.size(), object_orig_pos.size());
 
@@ -241,7 +241,7 @@ Selection::add_control_points(std::vector<ControlPointHandle>& control_points)
     }
     else
     {
-      const geom::frect& rect = get_bounding_box();
+      geom::frect const& rect = get_bounding_box();
       control_points.push_back(ControlPoint::create(glm::vec2(rect.left(), rect.top())));
       control_points.push_back(ControlPoint::create(glm::vec2(rect.right(), rect.top())));
       control_points.push_back(ControlPoint::create(glm::vec2(rect.left(), rect.bottom())));

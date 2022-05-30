@@ -74,7 +74,7 @@ public:
   glm::vec2 get_pos() const { return m_pos; }
 
 private:
-  void walk(const glm::vec2& adv);
+  void walk(glm::vec2 const& adv);
 
   void set_state_falling();
   void set_state_standing();
@@ -101,8 +101,8 @@ private:
   void update_jump(wstinput::Controller const& controller, float delta);
 
 private:
-  Doll(const Doll&);
-  Doll& operator=(const Doll&);
+  Doll(Doll const&);
+  Doll& operator=(Doll const&);
 };
 
 #endif

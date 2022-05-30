@@ -781,7 +781,7 @@ Player::get_direction() const
 }
 
 void
-Player::try_set_action(const std::string& name_, float speed)
+Player::try_set_action(std::string const& name_, float speed)
 {
   if (m_drawable->get_sprite().get_action() != name_)
     m_drawable->get_sprite().set_action(name_, speed);
@@ -816,7 +816,7 @@ Player::hit(int points)
 }
 
 void
-Player::collision(const CollisionData& data)
+Player::collision(CollisionData const& data)
 {
   // copy velocity, as "velocity" is the wanted velocity, whereas
   // cur_vel is the velocity in the current delta-frame

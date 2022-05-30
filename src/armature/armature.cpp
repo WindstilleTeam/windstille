@@ -110,7 +110,7 @@ Armature::parse(ReaderDocument const& doc)
 }
 
 Bone*
-Armature::get_bone(const std::string& name_)
+Armature::get_bone(std::string const& name_)
 {
   for(Bones::iterator i = bones.begin(); i != bones.end(); ++i)
   {
@@ -174,7 +174,7 @@ Armature::draw_bone(wstdisplay::VertexArrayDrawable& va, Bone* bone, glm::vec3 p
 }
 
 void
-Armature::apply(const Pose& pose)
+Armature::apply(Pose const& pose)
 {
   if (pose.get_name() != name)
   {

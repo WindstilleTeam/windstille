@@ -452,15 +452,15 @@ WindstilleWidget::key_release(GdkEventKey* ev)
 }
 
 bool
-WindstilleWidget::on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time)
+WindstilleWidget::on_drag_drop(Glib::RefPtr<Gdk::DragContext> const& context, int x, int y, guint time)
 {
   std::cout << "WindstilleWidget: on_drag_drop: " << x << ", " << y << ": " << std::endl;
   return true;
 }
 
 void
-WindstilleWidget::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& /*context*/,
-                                        int x, int y, const Gtk::SelectionData& data,
+WindstilleWidget::on_drag_data_received(Glib::RefPtr<Gdk::DragContext> const& /*context*/,
+                                        int x, int y, Gtk::SelectionData const& data,
                                         guint info, guint time)
 {
   std::cout << "WindstilleWidget: on_drag_data_received: "
@@ -567,7 +567,7 @@ WindstilleWidget::on_document_change()
 }
 
 void
-WindstilleWidget::save_screenshot(const std::string& filename_)
+WindstilleWidget::save_screenshot(std::string const& filename_)
 {
 #ifdef FIXME_DISABLED_FOR_GTKMM3_PORT
   Glib::RefPtr<Gdk::GL::Window> glwindow = get_gl_window();
@@ -581,7 +581,7 @@ WindstilleWidget::save_screenshot(const std::string& filename_)
 }
 
 void
-WindstilleWidget::load_file(const std::string& filename_)
+WindstilleWidget::load_file(std::string const& filename_)
 {
   filename = filename_;
   m_document.reset(new Document(filename));

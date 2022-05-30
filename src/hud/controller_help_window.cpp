@@ -31,7 +31,7 @@ ControllerHelpWindow::ControllerHelpWindow()
 }
 
 void
-ControllerHelpWindow::draw_button(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, bool pressed)
+ControllerHelpWindow::draw_button(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, bool pressed)
 {
   if (pressed)
   {
@@ -46,7 +46,7 @@ ControllerHelpWindow::draw_button(wstdisplay::GraphicsContext& gc, const glm::ve
 }
 
 void
-ControllerHelpWindow::draw_stick(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, bool pressed, float x, float y)
+ControllerHelpWindow::draw_stick(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, bool pressed, float x, float y)
 {
   geom::isize size(75, 75);
   geom::frect rect(pos - glm::vec2(static_cast<float>(size.width()), static_cast<float>(size.height())) / 2.0f, geom::fsize(size));
@@ -66,7 +66,7 @@ ControllerHelpWindow::draw_stick(wstdisplay::GraphicsContext& gc, const glm::vec
 }
 
 void
-ControllerHelpWindow::draw_trigger(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, float value)
+ControllerHelpWindow::draw_trigger(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, float value)
 {
   geom::fsize size(60, 20);
   geom::frect rect(pos - glm::vec2(size.width() / 2, size.height() / 2), size);

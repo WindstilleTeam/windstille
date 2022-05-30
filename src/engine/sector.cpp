@@ -32,7 +32,7 @@
 #include <wstdisplay/scenegraph/scene_graph.hpp>
 #include "tile/tile_map.hpp"
 
-Sector::Sector(const Pathname& arg_filename) :
+Sector::Sector(Pathname const& arg_filename) :
   collision_engine(new CollisionEngine()),
   navigation_graph(new NavigationGraph()),
   scene_graph(new wstdisplay::SceneGraph()),
@@ -165,7 +165,7 @@ Sector::add(GameObjectHandle obj)
 }
 
 GameObject*
-Sector::get_object(const std::string& name_) const
+Sector::get_object(std::string const& name_) const
 {
   for(Objects::const_iterator i = objects.begin(); i != objects.end(); ++i)
   {
@@ -209,7 +209,7 @@ Sector::set_tilemap(TileMap* t)
 }
 
 void
-Sector::set_ambient_light(const surf::Color& color)
+Sector::set_ambient_light(surf::Color const& color)
 {
   ambient_light = color;
 }
@@ -233,7 +233,7 @@ Sector::get_directory() const
 }
 
 void
-Sector::call_script_function(const std::string& name_)
+Sector::call_script_function(std::string const& name_)
 {
   if (!vm.get())
   {

@@ -32,8 +32,8 @@ public:
   virtual void undo() =0;
 
 private:
-  Command(const Command&);
-  Command& operator=(const Command&);
+  Command(Command const&);
+  Command& operator=(Command const&);
 };
 
 typedef std::shared_ptr<Command> CommandHandle;

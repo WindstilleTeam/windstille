@@ -112,7 +112,7 @@ SquirrelThread::SquirrelThread(HSQUIRRELVM parent_vm_, bool isolated_) :
 }
 
 void
-SquirrelThread::load(std::istream& in, const Pathname& filename_)
+SquirrelThread::load(std::istream& in, Pathname const& filename_)
 {
   filename = filename_;
 
@@ -177,13 +177,13 @@ SquirrelThread::~SquirrelThread()
 }
 
 void
-SquirrelThread::set_wakeup_event(const ScriptManager::WakeupEvent& event, float timeout)
+SquirrelThread::set_wakeup_event(ScriptManager::WakeupEvent const& event, float timeout)
 {
   set_wakeup_event(ScriptManager::WakeupData(event), timeout);
 }
 
 void
-SquirrelThread::set_wakeup_event(const ScriptManager::WakeupData& event, float timeout)
+SquirrelThread::set_wakeup_event(ScriptManager::WakeupData const& event, float timeout)
 {
   waiting_for_events = event;
 
@@ -198,7 +198,7 @@ SquirrelThread::set_wakeup_event(const ScriptManager::WakeupData& event, float t
 }
 
 void
-SquirrelThread::fire_wakeup_event(const ScriptManager::WakeupData& event)
+SquirrelThread::fire_wakeup_event(ScriptManager::WakeupData const& event)
 {
   if (waiting_for_events.type == event.type &&
       waiting_for_events.type != ScriptManager::NO_EVENT)
@@ -286,7 +286,7 @@ SquirrelThread::is_idle() const
 }
 
 void
-SquirrelThread::call(const std::string& function)
+SquirrelThread::call(std::string const& function)
 {
   if ((false))
   { // Debug stuff that prints the current roottable and its delegate

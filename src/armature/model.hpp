@@ -45,8 +45,8 @@ public:
   void apply(Armature* armature);
   void reset();
 private:
-  Model (const Model&);
-  Model& operator= (const Model&);
+  Model (Model const&);
+  Model& operator= (Model const&);
 };
 
 #endif

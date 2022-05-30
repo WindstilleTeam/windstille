@@ -55,7 +55,7 @@ public:
    *  @param h         height of the new field
    *  @param pos_x     The position of the old field in the new resized one
    *  @param pos_y     The position of the old field in the new resized one */
-  Field(const Field<T>& arg_field, int w, int h, int pos_x, int pos_y)
+  Field(Field<T> const& arg_field, int w, int h, int pos_x, int pos_y)
     : width (w), height (h), vec (width * height)
   {
     int start_x = std::max(0, -pos_x);
@@ -69,7 +69,7 @@ public:
         at(pos_x + x, pos_y + y) = arg_field.at(x, y);
   }
 
-  const T& operator[] (int i) const {
+  T const& operator[] (int i) const {
     return vec[i];
   }
 
@@ -83,13 +83,13 @@ public:
     return vec [width*y + x];
   }
 
-  const T& operator() (int x, int y) const
+  T const& operator() (int x, int y) const
   {
     assert (x >= 0 || x < width || y >= 0 || y < height);
     return vec [width*y + x];
   }
 
-  inline const T& at (int x, int y) const {
+  inline T const& at (int x, int y) const {
     return (*this) (x, y);
   }
 

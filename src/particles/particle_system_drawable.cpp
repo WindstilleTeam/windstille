@@ -20,7 +20,7 @@
 
 #include "particles/particle_system.hpp"
 
-ParticleSystemDrawable::ParticleSystemDrawable(const ParticleSystem& particle_system)
+ParticleSystemDrawable::ParticleSystemDrawable(ParticleSystem const& particle_system)
   : Drawable(glm::vec2()),
     m_particle_system(particle_system)
 {

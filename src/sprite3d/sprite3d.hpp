@@ -49,25 +49,25 @@ public:
 
   Sprite3D();
   explicit Sprite3D(std::filesystem::path const& filename, sprite3d::Manager& sprite3d_manager);
-  Sprite3D(const Sprite3D&);
-  Sprite3D& operator=(const Sprite3D&);
+  Sprite3D(Sprite3D const&);
+  Sprite3D& operator=(Sprite3D const&);
   ~Sprite3D();
 
   /**
    * You should call this every frame
    */
   void update(float delta);
-  void draw(wstdisplay::DrawingContext& sc, const glm::vec2& pos, float z_pos);
+  void draw(wstdisplay::DrawingContext& sc, glm::vec2 const& pos, float z_pos);
 
   /**
    * Changes action (after the currently shown animation frame)
    */
-  void set_action(const std::string& name, float speed = 1.0);
+  void set_action(std::string const& name, float speed = 1.0);
 
   /**
    * Return the name of the currently active action
    */
-  const std::string& get_action() const;
+  std::string const& get_action() const;
 
   /**
    * Return a list of all available actions
@@ -83,19 +83,19 @@ public:
    * Set the next action and vflip value to be played after the current action
    * has finished (or reached the point to be defined by abort_at_marker)
    */
-  void set_next_action(const std::string& name, float speed = 1.0);
+  void set_next_action(std::string const& name, float speed = 1.0);
   void set_next_rot(bool rot);
 
   /**
    * Abort current action after a certain marker has been reached.
    * (This only works if set_next_action has been used before)
    */
-  void abort_at_marker(const std::string& marker);
+  void abort_at_marker(std::string const& marker);
 
   /**
    * returns true if the current frame of the action is before a certain marker
    */
-  bool before_marker(const std::string& marker) const;
+  bool before_marker(std::string const& marker) const;
 
   /**
    * returns true exactly once after actions have been switched after a
@@ -115,7 +115,7 @@ public:
   void set_rot(bool rot = true);
   bool get_rot() const;
 
-  PointID get_attachment_point_id(const std::string& name) const;
+  PointID get_attachment_point_id(std::string const& name) const;
   glm::mat4  get_attachment_point_matrix(PointID id) const;
 
   /** true if the Sprite3D is valid and usable, false if not */
@@ -125,15 +125,15 @@ public:
 
 private:
   friend class Sprite3DDrawable;
-  void draw(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& modelview);
+  void draw(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, glm::mat4 const& modelview);
 
   struct Frame {
-    const sprite3d::Action* action;
+    sprite3d::Action const* action;
     int   frame;
     float speed;
     bool  rot;
 
-    bool operator==(const Frame& o) const
+    bool operator==(Frame const& o) const
     {
       return action == o.action && frame == o.frame && speed == o.speed
         && rot == o.rot;
@@ -143,7 +143,7 @@ private:
   void set_next_frame();
 
 private:
-  const sprite3d::Data* data;
+  sprite3d::Data const* data;
   bool actions_switched;
 
   Frame frame1;

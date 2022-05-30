@@ -33,8 +33,8 @@ public:
   ~BackgroundGradient() override;
 
 private:
-  BackgroundGradient (const BackgroundGradient&);
-  BackgroundGradient& operator= (const BackgroundGradient&);
+  BackgroundGradient (BackgroundGradient const&);
+  BackgroundGradient& operator= (BackgroundGradient const&);
 };
 
 #endif

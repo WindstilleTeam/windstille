@@ -31,13 +31,13 @@
 #include "sprite2d/manager.hpp"
 #include "util/pathname.hpp"
 
-DialogEntry::DialogEntry(const std::string& arg_character, const std::string& arg_text)
+DialogEntry::DialogEntry(std::string const& arg_character, std::string const& arg_text)
   : character(arg_character),
     text(arg_text)
 {
 }
 
-ObjectiveEntry::ObjectiveEntry(const std::string& arg_name, const std::string& arg_text)
+ObjectiveEntry::ObjectiveEntry(std::string const& arg_name, std::string const& arg_text)
   : name(arg_name),
     text(arg_text),
     complete(false)
@@ -146,21 +146,21 @@ PDA::force_regeneration()
 }
 
 void
-PDA::add_dialog(const std::string& character, const std::string& text)
+PDA::add_dialog(std::string const& character, std::string const& text)
 {
   force_regeneration();
   dialogs.push_back(DialogEntry(character, text));
 }
 
 void
-PDA::add_objective(const std::string& name, const std::string& text)
+PDA::add_objective(std::string const& name, std::string const& text)
 {
   force_regeneration();
   objectives.push_back(ObjectiveEntry(name, text));
 }
 
 void
-PDA::objective_complete(const std::string& name)
+PDA::objective_complete(std::string const& name)
 {
   force_regeneration();
 
@@ -174,7 +174,7 @@ PDA::objective_complete(const std::string& name)
 }
 
 bool
-PDA::is_objective_given(const std::string& name)
+PDA::is_objective_given(std::string const& name)
 {
   for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i)
   {
@@ -186,7 +186,7 @@ PDA::is_objective_given(const std::string& name)
 }
 
 bool
-PDA::is_objective_complete(const std::string& name)
+PDA::is_objective_complete(std::string const& name)
 {
   for (std::vector<ObjectiveEntry>::iterator i = objectives.begin(); i != objectives.end(); ++i)
   {

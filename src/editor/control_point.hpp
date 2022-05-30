@@ -35,7 +35,7 @@ typedef std::shared_ptr<ControlPoint> ControlPointHandle;
 class ControlPoint
 {
 public:
-  static ControlPointHandle create(const glm::vec2& pos);
+  static ControlPointHandle create(glm::vec2 const& pos);
 
 protected:
   wstdisplay::SurfacePtr surface;
@@ -43,7 +43,7 @@ protected:
   glm::vec2  offset;
 
 public:
-  ControlPoint(wstdisplay::SurfacePtr surface, const glm::vec2& pos);
+  ControlPoint(wstdisplay::SurfacePtr surface, glm::vec2 const& pos);
   virtual ~ControlPoint();
 
   virtual void draw(wstdisplay::SceneContext& sc);
@@ -51,12 +51,12 @@ public:
   virtual geom::frect get_bounding_box() const;
 
   virtual void on_move_start(GdkEventButton* event);
-  virtual void on_move_update(GdkEventMotion* event, const glm::vec2& offset);
-  virtual void on_move_end(GdkEventButton* event, const glm::vec2& offset);
+  virtual void on_move_update(GdkEventMotion* event, glm::vec2 const& offset);
+  virtual void on_move_end(GdkEventButton* event, glm::vec2 const& offset);
 
 private:
-  ControlPoint(const ControlPoint&);
-  ControlPoint& operator=(const ControlPoint&);
+  ControlPoint(ControlPoint const&);
+  ControlPoint& operator=(ControlPoint const&);
 };
 
 #endif

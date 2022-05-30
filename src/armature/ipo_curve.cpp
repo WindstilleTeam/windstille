@@ -45,7 +45,7 @@ IpoCurve::evalutate(float /*x*/)
 }
 
 void
-IpoCurve::add_point(const BezierPoint& /*p*/)
+IpoCurve::add_point(BezierPoint const& /*p*/)
 {
   /*
     assert(points.empty() ||

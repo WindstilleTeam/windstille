@@ -39,8 +39,8 @@ public:
   void update(float delta, wstinput::Controller const& controller) override;
 
 private:
-  Automap (const Automap&);
-  Automap& operator= (const Automap&);
+  Automap (Automap const&);
+  Automap& operator= (Automap const&);
 };
 
 } // namespace wstgui

@@ -53,8 +53,8 @@ public:
   void on_auto_lock(Glib::RefPtr<Gtk::ToggleAction> auto_lock);
 
 private:
-  LayerManager(const LayerManager&);
-  LayerManager& operator=(const LayerManager&);
+  LayerManager(LayerManager const&);
+  LayerManager& operator=(LayerManager const&);
 };
 
 #endif

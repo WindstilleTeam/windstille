@@ -55,8 +55,8 @@ public:
   }
 
 private:
-  TimelineObjectLayer(const TimelineObjectLayer&);
-  TimelineObjectLayer& operator=(const TimelineObjectLayer&);
+  TimelineObjectLayer(TimelineObjectLayer const&);
+  TimelineObjectLayer& operator=(TimelineObjectLayer const&);
 };
 
 template<typename C>

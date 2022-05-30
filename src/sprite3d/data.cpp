@@ -168,8 +168,8 @@ Data::~Data()
 {
 }
 
-const Action&
-Data::get_action(const std::string& name) const
+Action const&
+Data::get_action(std::string const& name) const
 {
   for(std::vector<Action>::const_iterator action = actions.begin(); action != actions.end(); ++action) {
     if(action->name == name)
@@ -189,8 +189,8 @@ Data::get_action(const std::string& name) const
   }
 }
 
-const Marker&
-Data::get_marker(const Action* action, const std::string& name) const
+Marker const&
+Data::get_marker(Action const* action, std::string const& name) const
 {
   for(size_t m = 0; m < action->markers.size(); ++m) {
     if(action->markers[m].name == name)
@@ -203,7 +203,7 @@ Data::get_marker(const Action* action, const std::string& name) const
 }
 
 uint16_t
-Data::get_attachment_point_id(const std::string& name) const
+Data::get_attachment_point_id(std::string const& name) const
 {
   for(size_t a = 0; a < attachment_points.size(); ++a) {
     if (attachment_points[a] == name) {

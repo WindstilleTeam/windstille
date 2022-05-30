@@ -49,8 +49,8 @@ private:
   void update_scene_graph();
 
 private:
-  Liquid (const Liquid&);
-  Liquid& operator= (const Liquid&);
+  Liquid (Liquid const&);
+  Liquid& operator= (Liquid const&);
 };
 
 #endif

@@ -49,8 +49,8 @@ public:
   void update(float delta, wstinput::Controller const& controller) override;
 
 private:
-  ArmatureTest (const ArmatureTest&);
-  ArmatureTest& operator= (const ArmatureTest&);
+  ArmatureTest (ArmatureTest const&);
+  ArmatureTest& operator= (ArmatureTest const&);
 };
 
 #endif

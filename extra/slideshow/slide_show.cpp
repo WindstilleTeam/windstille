@@ -102,7 +102,7 @@ SlideShow::clear()
 }
 
 void
-SlideShow::load(const std::string& filename, const geom::fsize& aspect)
+SlideShow::load(std::string const& filename, geom::fsize const& aspect)
 {
   SlideParser slide_parser(*this, aspect, m_surface_manager);
   slide_parser.load_from_file(filename);

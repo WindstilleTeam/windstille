@@ -42,7 +42,7 @@
 
 LayerManagerColumns* LayerManagerColumns::instance_ = nullptr;
 
-SectorModel::SectorModel(const std::string& filename) :
+SectorModel::SectorModel(std::string const& filename) :
   nav_graph(new NavigationGraphModel(*this)),
   layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
   m_timeline(new Timeline()),
@@ -86,7 +86,7 @@ SectorModel::register_callbacks()
 }
 
 void
-SectorModel::add_layer(LayerHandle layer, const Gtk::TreeModel::Path& path)
+SectorModel::add_layer(LayerHandle layer, Gtk::TreeModel::Path const& path)
 {
   Gtk::ListStore::iterator it;
 
@@ -103,7 +103,7 @@ SectorModel::add_layer(LayerHandle layer, const Gtk::TreeModel::Path& path)
 }
 
 void
-SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path)
+SectorModel::add_layer(std::string const& name, Gtk::TreeModel::Path const& path)
 {
   Gtk::ListStore::iterator it;
 
@@ -122,7 +122,7 @@ SectorModel::add_layer(const std::string& name, const Gtk::TreeModel::Path& path
 }
 
 void
-SectorModel::delete_layer(const Gtk::TreeModel::Path& path)
+SectorModel::delete_layer(Gtk::TreeModel::Path const& path)
 {
   if (path.empty())
   {
@@ -147,7 +147,7 @@ SectorModel::reverse_layers()
 }
 
 void
-SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& path)
+SectorModel::add(ObjectModelHandle const& object, Gtk::TreeModel::Path const& path)
 {
   if (path.empty())
   {
@@ -161,9 +161,9 @@ SectorModel::add(const ObjectModelHandle& object, const Gtk::TreeModel::Path& pa
 }
 
 void
-SectorModel::remove(const ObjectModelHandle& object)
+SectorModel::remove(ObjectModelHandle const& object)
 {
-  const Layers& layers = get_layers();
+  Layers const& layers = get_layers();
 
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
   {
@@ -192,7 +192,7 @@ SectorModel::get_layers() const
 }
 
 LayerHandle
-SectorModel::get_layer(const Gtk::TreeModel::Path& path) const
+SectorModel::get_layer(Gtk::TreeModel::Path const& path) const
 {
   if (!path.empty())
   {
@@ -213,9 +213,9 @@ SectorModel::get_layer(const Gtk::TreeModel::Path& path) const
 }
 
 LayerHandle
-SectorModel::get_layer(const ObjectModelHandle& object) const
+SectorModel::get_layer(ObjectModelHandle const& object) const
 {
-  const Layers& layers = get_layers();
+  Layers const& layers = get_layers();
 
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
   {
@@ -229,10 +229,10 @@ SectorModel::get_layer(const ObjectModelHandle& object) const
 }
 
 void
-SectorModel::draw(wstdisplay::SceneContext& sc, const SelectMask& layermask)
+SectorModel::draw(wstdisplay::SceneContext& sc, SelectMask const& layermask)
 {
   // Draw Layers
-  const Layers& layers = get_layers();
+  Layers const& layers = get_layers();
 
   for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
   {
@@ -244,7 +244,7 @@ SectorModel::draw(wstdisplay::SceneContext& sc, const SelectMask& layermask)
 void
 SectorModel::update(float delta)
 {
-  const Layers& layers = get_layers();
+  Layers const& layers = get_layers();
 
   for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
   {
@@ -254,9 +254,9 @@ SectorModel::update(float delta)
 }
 
 ObjectModelHandle
-SectorModel::get_object_at(const glm::vec2& pos, const SelectMask& layermask) const
+SectorModel::get_object_at(glm::vec2 const& pos, SelectMask const& layermask) const
 {
-  const Layers& layers = get_layers();
+  Layers const& layers = get_layers();
   SelectionHandle selection = Selection::create();
 
   if (ObjectModelHandle obj = nav_graph->get_object_at(pos, layermask))
@@ -279,9 +279,9 @@ SectorModel::get_object_at(const glm::vec2& pos, const SelectMask& layermask) co
 }
 
 SelectionHandle
-SectorModel::get_selection(const geom::frect& rect, const SelectMask& layermask) const
+SectorModel::get_selection(geom::frect const& rect, SelectMask const& layermask) const
 {
-  const Layers& layers = get_layers();
+  Layers const& layers = get_layers();
   SelectionHandle selection = Selection::create();
 
   {
@@ -304,7 +304,7 @@ SectorModel::get_selection(const geom::frect& rect, const SelectMask& layermask)
 LayerHandle
 SectorModel::get_layer(ObjectModelHandle object)
 {
-  const Layers& layers = get_layers();
+  Layers const& layers = get_layers();
   for(Layers::const_reverse_iterator i = layers.rbegin(); i != layers.rend(); ++i)
   {
     if ((*i)->has_object(object))
@@ -338,9 +338,9 @@ SectorModel::lower_to_bottom(ObjectModelHandle object)
 }
 
 SnapData
-SectorModel::snap_object(ObjectModelHandle object, const std::set<ObjectModelHandle>& ignore_objects) const
+SectorModel::snap_object(ObjectModelHandle object, std::set<ObjectModelHandle> const& ignore_objects) const
 {
-  const Layers& layers = get_layers();
+  Layers const& layers = get_layers();
 
   SnapData snap_data;
   for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
@@ -373,7 +373,7 @@ SectorModel::write(FileWriter& writer) const
   writer.end_collection();
 
   writer.begin_collection("layers");
-  const Layers& layers = get_layers();
+  Layers const& layers = get_layers();
   for(Layers::const_iterator i = layers.begin(); i != layers.end(); ++i)
   {
     writer.begin_object("layer");
@@ -400,14 +400,14 @@ struct PropSetFunctor
     v(v_)
   {}
 
-  bool set_visible(const Gtk::TreeModel::iterator& it)
+  bool set_visible(Gtk::TreeModel::iterator const& it)
   {
     (*it)[LayerManagerColumns::instance().visible] = v;
     static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->sync(*it);
     return false;
   }
 
-  bool set_locked(const Gtk::TreeModel::iterator& it)
+  bool set_locked(Gtk::TreeModel::iterator const& it)
   {
     (*it)[LayerManagerColumns::instance().locked] = v;
     static_cast<LayerHandle>((*it)[LayerManagerColumns::instance().layer])->sync(*it);
@@ -435,7 +435,7 @@ SectorModel::rebuild_scene_graph(wstdisplay::DrawableGroup& sg)
   // FIXME: should make a queue_rebuild_scene_graph() to limit the number of rebuilds per frame to 1
   sg.clear();
 
-  const Layers& layers = get_layers();
+  Layers const& layers = get_layers();
   for(Layers::const_iterator layer = layers.begin(); layer != layers.end(); ++layer)
   {
     if (*layer)
@@ -462,7 +462,7 @@ SectorModel::rebuild_scene_graph(wstdisplay::DrawableGroup& sg)
 }
 
 void
-SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+SectorModel::on_row_changed(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter)
 {
   //std::cout << "LayerManager:on_row_changed" << std::endl;
 
@@ -478,25 +478,25 @@ SectorModel::on_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeMod
 }
 
 void
-SectorModel::on_row_deleted(const Gtk::TreeModel::Path& path)
+SectorModel::on_row_deleted(Gtk::TreeModel::Path const& path)
 {
   std::cout << "LayerManager:on_row_deleted" << std::endl;
 }
 
 void
-SectorModel::on_row_has_child_toggled(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+SectorModel::on_row_has_child_toggled(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter)
 {
   //std::cout << "LayerManager:on_row_has_child_toggled" << std::endl;
 }
 
 void
-SectorModel::on_row_inserted(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+SectorModel::on_row_inserted(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter)
 {
   //std::cout << "LayerManager:on_row_inserted" << std::endl;
 }
 
 void
-SectorModel::on_rows_reordered(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter, int* new_order)
+SectorModel::on_rows_reordered(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter, int* new_order)
 {
   //std::cout << "LayerManager:on_row_reordered" << std::endl;
 }
@@ -505,7 +505,7 @@ void
 SectorModel::delete_navgraph_edges(NavGraphNodeObjectModel& node)
 {
   // FIXME: Kind of ugly, higher level template might help
-  const Layers& layers = get_layers();
+  Layers const& layers = get_layers();
   for(Layers::const_reverse_iterator layer = layers.rbegin(); layer != layers.rend(); ++layer)
   {
     if (*layer)

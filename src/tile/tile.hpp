@@ -64,8 +64,8 @@ public:
   unsigned int get_colmap() const { return colmap; }
 
 private:
-  Tile(const Tile&);
-  Tile& operator=(const Tile&);
+  Tile(Tile const&);
+  Tile& operator=(Tile const&);
 };
 
 #endif

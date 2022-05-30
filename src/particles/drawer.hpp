@@ -28,7 +28,7 @@ class Drawer
 {
 public:
   virtual ~Drawer() {}
-  virtual void draw(wstdisplay::GraphicsContext& gc, const ParticleSystem& psys) const =0;
+  virtual void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const =0;
 };
 
 #endif

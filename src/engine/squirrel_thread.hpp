@@ -44,16 +44,16 @@ public:
   ~SquirrelThread();
 
   /** Load a script into the new thread */
-  void load(std::istream& in, const Pathname& filename);
+  void load(std::istream& in, Pathname const& filename);
 
   /** Load function at position \a idx into this SquirrelThread and
       execute it */
   void load(HSQUIRRELVM vm, SQInteger idx);
 
-  void set_wakeup_event(const ScriptManager::WakeupData&  event, float timeout = -1);
-  void set_wakeup_event(const ScriptManager::WakeupEvent& event, float timeout = -1);
+  void set_wakeup_event(ScriptManager::WakeupData const&  event, float timeout = -1);
+  void set_wakeup_event(ScriptManager::WakeupEvent const& event, float timeout = -1);
 
-  void fire_wakeup_event(const ScriptManager::WakeupData& event);
+  void fire_wakeup_event(ScriptManager::WakeupData const& event);
 
   /** Resumes the evaluation of the VM if a wakeup has happened.
       \return false when the VM is done and can be removed */
@@ -64,11 +64,11 @@ public:
 
   Pathname get_filename() const { return filename; }
   HSQUIRRELVM get_thread() const { return thread; }
-  void call(const std::string& function);
+  void call(std::string const& function);
 
 private:
-  SquirrelThread(const SquirrelThread&);
-  SquirrelThread& operator=(const SquirrelThread&);
+  SquirrelThread(SquirrelThread const&);
+  SquirrelThread& operator=(SquirrelThread const&);
 };
 
 #endif

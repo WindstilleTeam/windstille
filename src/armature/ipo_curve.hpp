@@ -42,11 +42,11 @@ public:
 
   float evalutate(float t);
 
-  void add_point(const BezierPoint& p);
+  void add_point(BezierPoint const& p);
 
 private:
-  IpoCurve (const IpoCurve&);
-  IpoCurve& operator= (const IpoCurve&);
+  IpoCurve (IpoCurve const&);
+  IpoCurve& operator= (IpoCurve const&);
 };
 
 #endif

@@ -19,7 +19,7 @@
 #include "particles/particle_system.hpp"
 #include "editor/particle_system_object_model.hpp"
 
-ParticleSystemObjectModel::ParticleSystemObjectModel(const glm::vec2& pos) :
+ParticleSystemObjectModel::ParticleSystemObjectModel(glm::vec2 const& pos) :
   ObjectModel("ParticleSystem", pos),
   systems()
 {

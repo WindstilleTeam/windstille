@@ -74,8 +74,8 @@ private:
   char buf[1024];
 
 private:
-  ConsoleStreambuf (const ConsoleStreambuf&);
-  ConsoleStreambuf& operator= (const ConsoleStreambuf&);
+  ConsoleStreambuf (ConsoleStreambuf const&);
+  ConsoleStreambuf& operator= (ConsoleStreambuf const&);
 };
 
 class ConsoleImpl
@@ -131,7 +131,7 @@ public:
 
   std::vector<std::string> get_roottable();
 
-  void execute(const std::string& str);
+  void execute(std::string const& str);
 
   void add(char* buf, int len)
   {
@@ -354,7 +354,7 @@ ConsoleImpl::get_roottable()
   return roottable;
 }
 
-static bool has_prefix(const std::string& lhs, const std::string rhs)
+static bool has_prefix(std::string const& lhs, const std::string rhs)
 {
   if (lhs.length() < rhs.length())
     return false;
@@ -362,14 +362,14 @@ static bool has_prefix(const std::string& lhs, const std::string rhs)
     return lhs.compare(0, rhs.length(), rhs) == 0;
 }
 
-static std::string longest_prefix(const std::string& lhs, const std::string rhs)
+static std::string longest_prefix(std::string const& lhs, const std::string rhs)
 {
   std::string::size_type i;
   for(i = 0; i < lhs.size() && i < rhs.size() && lhs[i] == rhs[i]; ++i) {}
   return lhs.substr(0, i);
 }
 
-static std::string find_longest_prefix(const std::vector<std::string>& lst)
+static std::string find_longest_prefix(std::vector<std::string> const& lst)
 {
   if (lst.empty())
   {
@@ -392,7 +392,7 @@ static std::string find_longest_prefix(const std::vector<std::string>& lst)
 void
 ConsoleImpl::tab_complete()
 {
-  const std::vector<std::string>& roottable = get_roottable();
+  std::vector<std::string> const& roottable = get_roottable();
   std::vector<std::string> completions;
 
   for(std::vector<std::string>::const_iterator i = roottable.begin();
@@ -491,9 +491,9 @@ ConsoleImpl::eval_command_line()
 }
 
 void
-ConsoleImpl::execute(const std::string& str_)
+ConsoleImpl::execute(std::string const& str_)
 {
-  const std::string& str = str_; //"return (" + str_ + ")";
+  std::string const& str = str_; //"return (" + str_ + ")";
 
   int i = static_cast<int>(str.length());
 
@@ -598,7 +598,7 @@ Console::scroll(int lines)
 }
 
 void
-Console::execute(const std::string& str)
+Console::execute(std::string const& str)
 {
   impl->execute(str);
 }

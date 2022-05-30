@@ -100,8 +100,8 @@ public:
   void apply(Armature* armature);
   void reset();
 private:
-  Mesh (const Mesh&);
-  Mesh& operator= (const Mesh&);
+  Mesh (Mesh const&);
+  Mesh& operator= (Mesh const&);
 };
 
 #endif

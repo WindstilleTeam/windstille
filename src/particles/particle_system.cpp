@@ -298,7 +298,7 @@ ParticleSystem::set_cycles(float /*num*/)
 }
 
 void
-ParticleSystem::set_pos(const glm::vec2& pos)
+ParticleSystem::set_pos(glm::vec2 const& pos)
 {
   x_pos = pos.x;
   y_pos = pos.y;
@@ -338,7 +338,7 @@ ParticleSystem::set_circle_distribution(float radius)
 }
 
 void
-ParticleSystem::set_rect_distribution(const geom::frect& rect)
+ParticleSystem::set_rect_distribution(geom::frect const& rect)
 {
   randomizer.reset(new RectRandomizer(rect));
 }
@@ -371,14 +371,14 @@ ParticleSystem::set_size(float from, float to)
 }
 
 void
-ParticleSystem::set_color(const surf::Color& color_start_, const surf::Color& color_end_)
+ParticleSystem::set_color(surf::Color const& color_start_, surf::Color const& color_end_)
 {
   color_start = color_start_;
   color_stop  = color_end_;
 }
 
 void
-ParticleSystem::set_fade_color(const surf::Color& color)
+ParticleSystem::set_fade_color(surf::Color const& color)
 {
   color_stop = color;
 }

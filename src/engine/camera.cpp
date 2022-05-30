@@ -30,7 +30,7 @@ namespace {
  * means not only the distance between the points itself, but also
  * between their zoom and rotation setting
  */
-float distance(const Camera::PathPoint& a, const Camera::PathPoint& b)
+float distance(Camera::PathPoint const& a, Camera::PathPoint const& b)
 {
   // "100.0f *" is there to balance out the speed between zoom and
   // positional movement
@@ -43,7 +43,7 @@ float distance(const Camera::PathPoint& a, const Camera::PathPoint& b)
  * Simple linear interpolation to move along a given vector path
  * FIXME: Could add curves and different speed per vertex
  */
-Camera::PathPoint interpolate_path(const std::vector<Camera::PathPoint>& path, float length)
+Camera::PathPoint interpolate_path(std::vector<Camera::PathPoint> const& path, float length)
 {
   float length_so_far = 0.0f;
   for(std::vector<Camera::PathPoint>::size_type i = 0; i < path.size()-1; ++i)
@@ -147,7 +147,7 @@ Camera::get_zoom() const
 }
 
 void
-Camera::set_path(const std::vector<PathPoint>& path_, bool cont)
+Camera::set_path(std::vector<PathPoint> const& path_, bool cont)
 {
   path.clear();
   if (cont)

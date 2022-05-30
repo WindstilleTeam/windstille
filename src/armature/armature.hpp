@@ -40,21 +40,21 @@ public:
   ~Armature();
 
   /** Applies the given Pose */
-  void apply(const Pose& pose);
+  void apply(Pose const& pose);
 
   /** Sets the armature back into neutral position */
   void reset();
 
   void  parse(ReaderDocument const& doc);
-  Bone* get_bone(const std::string& name);
+  Bone* get_bone(std::string const& name);
 
-  glm::mat4* get_render_matrix(const std::string& name);
+  glm::mat4* get_render_matrix(std::string const& name);
 
   void draw(wstdisplay::GraphicsContext& gc);
   void draw_bone(wstdisplay::VertexArrayDrawable& va, Bone* bone, glm::vec3 p, glm::mat4 matrix);
 private:
-  Armature (const Armature&);
-  Armature& operator= (const Armature&);
+  Armature (Armature const&);
+  Armature& operator= (Armature const&);
 };
 
 #endif

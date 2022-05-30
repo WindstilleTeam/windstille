@@ -48,13 +48,13 @@ public:
   void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, wstinput::Controller const& controller) override;
 
-  void set_model(const Pathname& filename);
+  void set_model(Pathname const& filename);
 
-  void handle_event(const SDL_Event& ) override;
+  void handle_event(SDL_Event const& ) override;
 
 private:
-  Sprite3DView (const Sprite3DView&);
-  Sprite3DView& operator= (const Sprite3DView&);
+  Sprite3DView (Sprite3DView const&);
+  Sprite3DView& operator= (Sprite3DView const&);
 };
 
 #endif

@@ -51,8 +51,8 @@ public:
   glm::vec2 get_vector() const;
 
 private:
-  Edge (const Edge&);
-  Edge& operator= (const Edge&);
+  Edge (Edge const&);
+  Edge& operator= (Edge const&);
 };
 
 #endif

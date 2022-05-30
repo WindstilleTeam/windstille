@@ -49,15 +49,15 @@
 
 namespace Scripting {
 
-void set_sector(const std::string& filename);
+void set_sector(std::string const& filename);
 
-void play_music(const std::string& musicfile);
+void play_music(std::string const& musicfile);
 
 void stop_music(bool fade);
 
-void play_sound(const std::string& soundfile);
+void play_sound(std::string const& soundfile);
 
-void caption_add(int alignment, const std::string& text);
+void caption_add(int alignment, std::string const& text);
 void caption_clear();
 void caption_end();
 
@@ -78,24 +78,24 @@ static const int HCENTER = 0x00;
 static const int TOP     = 0x10;
 static const int BOTTOM  = 0x20;
 
-int  speech_show(const std::string& text, float x, float y, float r, float g, float b);
+int  speech_show(std::string const& text, float x, float y, float r, float g, float b);
 void wait_for_speech(HSQUIRRELVM vm, int i) __suspend;
 
-void dialog_show(int alignment, const std::string& character, const std::string& portrait, const std::string& text);
+void dialog_show(int alignment, std::string const& character, std::string const& portrait, std::string const& text);
 void wait_for_dialog(HSQUIRRELVM vm) __suspend;
 void wait_for_fade(HSQUIRRELVM vm) __suspend;
 void wait_for_camera(HSQUIRRELVM vm) __suspend;
 
-void conversation_add(const std::string& text);
-void conversation_add2(const std::string& topic, const std::string& text);
+void conversation_add(std::string const& text);
+void conversation_add2(std::string const& topic, std::string const& text);
 void conversation_show();
 int  conversation_get_selection();
 void wait_for_conversation(HSQUIRRELVM v) __suspend;
 
-void add_objective(const std::string& name, const std::string& text);
-void objective_complete(const std::string& name);
-bool is_objective_given(const std::string& name);
-bool is_objective_complete(const std::string& name);
+void add_objective(std::string const& name, std::string const& text);
+void objective_complete(std::string const& name);
+bool is_objective_given(std::string const& name);
+bool is_objective_complete(std::string const& name);
 
 void list_objects();
 
@@ -109,7 +109,7 @@ SQInteger display(HSQUIRRELVM) __custom("t.");
 SQInteger println(HSQUIRRELVM) __custom("t.");
 SQInteger print_stack(HSQUIRRELVM) __custom("t");
 
-void set_console_font(const std::string& font, int size);
+void set_console_font(std::string const& font, int size);
 void set_gamma(float g);
 void set_gamma_rgb(float r, float g, float b);
 
@@ -135,7 +135,7 @@ SQInteger lisp2string(HSQUIRRELVM v) __custom("tt|a");
  */
 SQInteger spawn_object(HSQUIRRELVM v) __custom("tst");
 
-void spawn_script(const std::string& filename);
+void spawn_script(std::string const& filename);
 SQInteger spawn_function(HSQUIRRELVM v) __custom("c");
 
 } // namespace Scripting

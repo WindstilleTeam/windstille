@@ -39,8 +39,8 @@ public:
   std::string get_name() const { return name; }
 
 private:
-  Pose (const Pose&);
-  Pose& operator= (const Pose&);
+  Pose (Pose const&);
+  Pose& operator= (Pose const&);
 };
 
 #endif

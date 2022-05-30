@@ -106,7 +106,7 @@ InputConfigurator::print_item()
 {
   if (!items.empty())
   {
-    const ConfigureItem& item = items.back();
+    ConfigureItem const& item = items.back();
 
     if (item.mode == ConfigureItem::CONFIGURE_AXIS)
     {
@@ -142,7 +142,7 @@ InputConfigurator::next_item()
 }
 
 void
-InputConfigurator::handle_event(const SDL_Event& event)
+InputConfigurator::handle_event(SDL_Event const& event)
 {
   if (items.empty())
   {

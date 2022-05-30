@@ -83,7 +83,7 @@ public:
   Glib::RefPtr<Gdk::GLContext> on_create_context() override;
   void on_realize() override;
   void on_unrealize() override;
-  bool on_render(const Glib::RefPtr<Gdk::GLContext>& context) override;
+  bool on_render(Glib::RefPtr<Gdk::GLContext> const& context) override;
   void on_resize(int width, int height) override;
 
   bool mouse_move(GdkEventMotion* event);
@@ -95,10 +95,10 @@ public:
   bool key_release(GdkEventKey* event);
 
   // Drag&Drop
-  void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>&, int x, int y,
-                             const Gtk::SelectionData& data, guint info, guint time) override;
-  bool on_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, guint time) override;
-  void on_drag_end(const Glib::RefPtr<Gdk::DragContext>& context) override;
+  void on_drag_data_received(Glib::RefPtr<Gdk::DragContext> const&, int x, int y,
+                             Gtk::SelectionData const& data, guint info, guint time) override;
+  bool on_drag_drop(Glib::RefPtr<Gdk::DragContext> const& context, int x, int y, guint time) override;
+  void on_drag_end(Glib::RefPtr<Gdk::DragContext> const& context) override;
 
   void on_zoom_in();
   void on_zoom_out();
@@ -113,7 +113,7 @@ public:
 
   wstdisplay::SceneContext* get_sc() const { return sc.get(); }
 
-  void load_file(const std::string& filename);
+  void load_file(std::string const& filename);
 
   void set_draw_background_pattern(bool v) { draw_background_pattern = v; }
   bool get_draw_background_pattern() const { return draw_background_pattern; }
@@ -127,16 +127,16 @@ public:
   Gtk::TreeModel::Path get_current_layer_path();
 
   std::string get_filename() const { return filename; }
-  void set_filename(const std::string& filename_) { filename = filename_; }
+  void set_filename(std::string const& filename_) { filename = filename_; }
 
-  void save_screenshot(const std::string& filename);
+  void save_screenshot(std::string const& filename);
 
 private:
   void on_document_change();
 
 private:
-  WindstilleWidget (const WindstilleWidget&);
-  WindstilleWidget& operator= (const WindstilleWidget&);
+  WindstilleWidget (WindstilleWidget const&);
+  WindstilleWidget& operator= (WindstilleWidget const&);
 };
 
 #endif

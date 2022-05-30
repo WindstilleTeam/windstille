@@ -51,7 +51,7 @@ public:
     offset.y = y;
   }
 
-  void merge(const SnapData& rhs)
+  void merge(SnapData const& rhs)
   {
     if (((x_set && rhs.x_set) && (rhs.offset.x < offset.x)) ||
         (!x_set && rhs.x_set))

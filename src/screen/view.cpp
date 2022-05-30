@@ -59,7 +59,7 @@ View::update (float delta)
 {
   camera.update(delta);
 
-  const Uint8* keystate = SDL_GetKeyboardState(nullptr);
+  Uint8 const* keystate = SDL_GetKeyboardState(nullptr);
 
   if (keystate[SDL_SCANCODE_KP_PLUS])
     m_debug_zoom *= 1.0f + delta;
@@ -89,7 +89,7 @@ View::get_clip_rect()
 }
 
 glm::vec2
-View::screen_to_world(const glm::vec2& point)
+View::screen_to_world(glm::vec2 const& point)
 {
   return state.screen_to_world(point).as_vec();
 }

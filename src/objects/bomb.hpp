@@ -45,8 +45,8 @@ public:
   void draw(wstdisplay::SceneContext& gc) override;
 private:
   void explode();
-  Bomb (const Bomb&);
-  Bomb& operator= (const Bomb&);
+  Bomb (Bomb const&);
+  Bomb& operator= (Bomb const&);
 };
 
 #endif

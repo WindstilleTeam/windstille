@@ -123,14 +123,14 @@ public:
   void update_game(float delta);
   void update(float delta, wstinput::Controller const& controller);
 
-  void handle_event(const SDL_Event& event);
+  void handle_event(SDL_Event const& event);
 
 private:
-  GameSessionImpl (const GameSessionImpl&);
-  GameSessionImpl& operator= (const GameSessionImpl&);
+  GameSessionImpl (GameSessionImpl const&);
+  GameSessionImpl& operator= (GameSessionImpl const&);
 };
 
-GameSession::GameSession(const Pathname& arg_filename)
+GameSession::GameSession(Pathname const& arg_filename)
   : impl(new GameSessionImpl())
 {
   impl->filename = arg_filename;
@@ -200,7 +200,7 @@ GameSessionImpl::update_cutscene(float delta)
 void
 GameSessionImpl::update_input(float delta)
 {
-  const Uint8* keystate = SDL_GetKeyboardState(nullptr);
+  Uint8 const* keystate = SDL_GetKeyboardState(nullptr);
 
   // Hacks to play around with the game speed
   if(keystate[SDL_SCANCODE_KP_1])
@@ -331,7 +331,7 @@ GameSessionImpl::update(float delta, wstinput::Controller const& controller)
 }
 
 void
-GameSession::change_sector(const Pathname& arg_filename)
+GameSession::change_sector(Pathname const& arg_filename)
 {
   impl->filename = arg_filename;
 
@@ -350,7 +350,7 @@ GameSession::change_sector(const Pathname& arg_filename)
 }
 
 void
-GameSession::set_sector(const Pathname& /* FIXME: huh? */)
+GameSession::set_sector(Pathname const& /* FIXME: huh? */)
 {
   impl->sector.reset(new Sector(impl->filename));
 
@@ -358,7 +358,7 @@ GameSession::set_sector(const Pathname& /* FIXME: huh? */)
 }
 
 void
-GameSessionImpl::handle_event(const SDL_Event& event)
+GameSessionImpl::handle_event(SDL_Event const& event)
 {
   switch(event.type)
   {
@@ -448,7 +448,7 @@ GameSession::update(float delta, wstinput::Controller const& controller)
 }
 
 void
-GameSession::handle_event(const SDL_Event& event)
+GameSession::handle_event(SDL_Event const& event)
 {
   impl->handle_event(event);
 }
@@ -494,7 +494,7 @@ GameSession::set_cutscene_mode(bool t)
 }
 
 void
-GameSession::fadeout(float time, const surf::Color& color)
+GameSession::fadeout(float time, surf::Color const& color)
 {
   if (time == 0.0f)
   { // directly go to a state of solid color, no fading

@@ -27,12 +27,12 @@ std::string Pathname::s_userdir;
 Pathname::Overrides Pathname::s_datadir_overrides;
 
 void
-Pathname::set_datadir_overrides(const Overrides& overrides)
+Pathname::set_datadir_overrides(Overrides const& overrides)
 {
   s_datadir_overrides = overrides;
 }
 
-static void add_overrides(const std::filesystem::path& path, const std::filesystem::path& base,
+static void add_overrides(std::filesystem::path const& path, std::filesystem::path const& base,
                           Pathname::Overrides* overrides)
 {
   std::filesystem::directory_iterator end_i; // default construction yields past-the-end
@@ -53,7 +53,7 @@ static void add_overrides(const std::filesystem::path& path, const std::filesyst
 }
 
 void
-Pathname::add_datadir_overrides(const std::string& path)
+Pathname::add_datadir_overrides(std::string const& path)
 {
   add_overrides(path, "", &s_datadir_overrides);
 }
@@ -63,7 +63,7 @@ void Pathname::clear_datadir_overrides()
   s_datadir_overrides.clear();
 }
 
-void Pathname::set_datadir(const std::string& datadir)
+void Pathname::set_datadir(std::string const& datadir)
 {
   s_datadir = datadir;
 
@@ -73,7 +73,7 @@ void Pathname::set_datadir(const std::string& datadir)
   }
 }
 
-void Pathname::set_userdir(const std::string& userdir)
+void Pathname::set_userdir(std::string const& userdir)
 {
   s_userdir = userdir;
 
@@ -95,7 +95,7 @@ std::string Pathname::get_userdir()
 
 // -----------------------------------------------------------------------------
 
-Pathname::Pathname(const std::string& path, PathType type)
+Pathname::Pathname(std::string const& path, PathType type)
   : m_path(path),
     m_type(type)
 {
@@ -171,7 +171,7 @@ Pathname::get_extension() const
 }
 
 bool
-Pathname::operator<(const Pathname& rhs) const
+Pathname::operator<(Pathname const& rhs) const
 {
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
   return
@@ -208,14 +208,14 @@ Pathname::get_basename() const
 }
 
 Pathname&
-Pathname::append_text(const std::string& path)
+Pathname::append_text(std::string const& path)
 {
   m_path += path;
   return *this;
 }
 
 Pathname&
-Pathname::append_path(const std::string& path)
+Pathname::append_path(std::string const& path)
 {
   if ( !m_path.empty() && m_path[m_path.size()-1] != '/' )
   {
@@ -231,7 +231,7 @@ Pathname::append_path(const std::string& path)
 }
 
 bool
-Pathname::operator==(const Pathname& rhs) const
+Pathname::operator==(Pathname const& rhs) const
 {
   return
     m_path == rhs.m_path &&
@@ -239,14 +239,14 @@ Pathname::operator==(const Pathname& rhs) const
 }
 
 bool
-Pathname::operator!=(const Pathname& rhs) const
+Pathname::operator!=(Pathname const& rhs) const
 {
   return
     m_path != rhs.m_path ||
     m_type != rhs.m_type;
 }
 
-std::ostream& operator<<(std::ostream& s, const Pathname& path)
+std::ostream& operator<<(std::ostream& s, Pathname const& path)
 {
   switch(path.get_type())
   {

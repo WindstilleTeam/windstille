@@ -46,8 +46,8 @@ public:
   void update(float delta, wstinput::Controller const& controller) override;
 
 private:
-  GeometryTest (const GeometryTest&);
-  GeometryTest& operator= (const GeometryTest&);
+  GeometryTest (GeometryTest const&);
+  GeometryTest& operator= (GeometryTest const&);
 };
 
 #endif

@@ -66,7 +66,7 @@ Sprite3D::Sprite3D(std::filesystem::path const& filename, sprite3d::Manager& spr
   next_action.action    = nullptr;
 }
 
-Sprite3D::Sprite3D(const Sprite3D& rhs) :
+Sprite3D::Sprite3D(Sprite3D const& rhs) :
   data(rhs.data),
   actions_switched(rhs.actions_switched),
   frame1(rhs.frame1),
@@ -81,7 +81,7 @@ Sprite3D::Sprite3D(const Sprite3D& rhs) :
 }
 
 Sprite3D&
-Sprite3D::operator=(const Sprite3D& rhs)
+Sprite3D::operator=(Sprite3D const& rhs)
 {
   if (this != &rhs)
   {
@@ -104,7 +104,7 @@ Sprite3D::~Sprite3D()
 }
 
 void
-Sprite3D::set_action(const std::string& actionname, float speed)
+Sprite3D::set_action(std::string const& actionname, float speed)
 {
   assert(data);
   next_frame.action = & data->get_action(actionname);
@@ -121,7 +121,7 @@ Sprite3D::set_action(const std::string& actionname, float speed)
   actions_switched = false;
 }
 
-const std::string&
+std::string const&
 Sprite3D::get_action() const
 {
   if(next_frame.action != nullptr)
@@ -150,7 +150,7 @@ Sprite3D::get_attachment_points() const
 }
 
 void
-Sprite3D::set_next_action(const std::string& name, float speed)
+Sprite3D::set_next_action(std::string const& name, float speed)
 {
   next_action.action = & data->get_action(name);
   if(speed >= 0) {
@@ -162,7 +162,7 @@ Sprite3D::set_next_action(const std::string& name, float speed)
   next_action.rot = frame2.rot;
   actions_switched = false;
 
-  const Frame* frame = next_frame.action != nullptr ? &next_frame : &frame2;
+  Frame const* frame = next_frame.action != nullptr ? &next_frame : &frame2;
   abort_at_frame.action = frame->action;
   abort_at_frame.speed = frame->speed;
   abort_at_frame.rot = frame->rot;
@@ -180,17 +180,17 @@ Sprite3D::set_next_rot(bool rot)
 }
 
 void
-Sprite3D::abort_at_marker(const std::string& name)
+Sprite3D::abort_at_marker(std::string const& name)
 {
-  const Marker& marker = data->get_marker(frame1.action, name);
+  Marker const& marker = data->get_marker(frame1.action, name);
   abort_at_frame = frame1;
   abort_at_frame.frame = marker.frame;
 }
 
 bool
-Sprite3D::before_marker(const std::string& name) const
+Sprite3D::before_marker(std::string const& name) const
 {
-  const Marker& marker = data->get_marker(frame1.action, name);
+  Marker const& marker = data->get_marker(frame1.action, name);
   return frame1.frame < marker.frame;
 }
 
@@ -241,7 +241,7 @@ Sprite3D::get_rot() const
 }
 
 Sprite3D::PointID
-Sprite3D::get_attachment_point_id(const std::string& name) const
+Sprite3D::get_attachment_point_id(std::string const& name) const
 {
   return data->get_attachment_point_id(name);
 }
@@ -249,9 +249,9 @@ Sprite3D::get_attachment_point_id(const std::string& name) const
 glm::mat4
 Sprite3D::get_attachment_point_matrix(PointID id) const
 {
-  const AttachmentPointPosition& point1
+  AttachmentPointPosition const& point1
     = frame1.action->frames[frame1.frame].attachment_points[id];
-  const AttachmentPointPosition& point2
+  AttachmentPointPosition const& point2
     = frame2.action->frames[frame2.frame].attachment_points[id];
 
   glm::quat rotquat = glm::quat(0, 0, 1, 0);
@@ -331,7 +331,7 @@ Sprite3D::update(float delta)
 }
 
 void
-Sprite3D::draw(wstdisplay::DrawingContext& dc, const glm::vec2& pos, float z_pos)
+Sprite3D::draw(wstdisplay::DrawingContext& dc, glm::vec2 const& pos, float z_pos)
 {
   dc.draw(std::make_unique<Sprite3DDrawable>(*this, pos, z_pos, dc.get_modelview()));
 }
@@ -342,7 +342,7 @@ static inline float interpolate(float v1, float v2, float t)
 }
 
 void
-Sprite3D::draw(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, const glm::mat4& modelview)
+Sprite3D::draw(wstdisplay::GraphicsContext& gc, glm::vec2 const& pos, glm::mat4 const& modelview)
 {
   gc.push_matrix();
   gc.mult_matrix(modelview);
@@ -351,14 +351,14 @@ Sprite3D::draw(wstdisplay::GraphicsContext& gc, const glm::vec2& pos, const glm:
     gc.rotate(180, 0, 1.0, 0);
   }
 
-  const ActionFrame& aframe1 = frame1.action->frames[frame1.frame];
-  const ActionFrame& aframe2 = frame2.action->frames[frame2.frame];
+  ActionFrame const& aframe1 = frame1.action->frames[frame1.frame];
+  ActionFrame const& aframe2 = frame2.action->frames[frame2.frame];
 
   for(size_t m = 0; m < data->meshs.size(); ++m)
   {
-    const Mesh& mesh = data->meshs[m];
-    const MeshVertices& vertices1 = aframe1.meshs[m];
-    const MeshVertices& vertices2 = aframe2.meshs[m];
+    Mesh const& mesh = data->meshs[m];
+    MeshVertices const& vertices1 = aframe1.meshs[m];
+    MeshVertices const& vertices2 = aframe2.meshs[m];
 
     // blend between frame1 + frame2
     std::vector<float> verts(mesh.vertex_count * 3);

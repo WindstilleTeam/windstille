@@ -129,7 +129,7 @@ public:
   void set_pos(float x, float y);
 
   /** The position of the particle system in world coordinates */
-  void set_pos(const glm::vec2& pos);
+  void set_pos(glm::vec2 const& pos);
 
   /** The position from which the particles spawn, x,y are in world
       coordinates, this is relative to the position you can set via
@@ -149,7 +149,7 @@ public:
 
   /** Causes particles to not be spawned at a single point, but inside
       the given rectangle */
-  void set_rect_distribution(const geom::frect& rect);
+  void set_rect_distribution(geom::frect const& rect);
 
   /** Limit the direction into which the new particles spawn by the
       given angles, angles are given in degrees */
@@ -166,10 +166,10 @@ public:
   void set_size  (float from, float to);
 
   /** Set the color at which the particles will start */
-  void set_color(const surf::Color& start, const surf::Color& end);
+  void set_color(surf::Color const& start, surf::Color const& end);
 
   /** Set the color at which the particles will end */
-  void set_fade_color(const surf::Color& color);
+  void set_fade_color(surf::Color const& color);
 
   /** Set the velocity of the particles, it will be randomly distributed
       from \a from to \a to, direction will be taken from the cone */
@@ -184,8 +184,8 @@ public:
   float get_size_start() const { return size_start; }
   float get_size_stop()  const { return size_stop; }
 
-  const surf::Color& get_color_start() const { return color_start; }
-  const surf::Color& get_color_stop()  const { return color_stop;  }
+  surf::Color const& get_color_start() const { return color_start; }
+  surf::Color const& get_color_stop()  const { return color_stop;  }
 
   float get_x_pos() const { return x_pos; }
   float get_y_pos() const { return y_pos; }
@@ -198,8 +198,8 @@ public:
   unsigned int get_layer() const { return layer; }
 
 private:
-  ParticleSystem (const ParticleSystem&);
-  ParticleSystem& operator= (const ParticleSystem&);
+  ParticleSystem (ParticleSystem const&);
+  ParticleSystem& operator= (ParticleSystem const&);
 };
 
 #endif

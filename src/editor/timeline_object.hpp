@@ -35,8 +35,8 @@ public:
   virtual void write(FileWriter& writer) const =0;
 
 private:
-  TimelineObject(const TimelineObject&);
-  TimelineObject& operator=(const TimelineObject&);
+  TimelineObject(TimelineObject const&);
+  TimelineObject& operator=(TimelineObject const&);
 };
 
 #endif

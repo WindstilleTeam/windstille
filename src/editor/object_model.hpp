@@ -45,25 +45,25 @@ protected:
 
 public:
   ObjectModel(ReaderMapping const& reader);
-  ObjectModel(const std::string& name, const glm::vec2& pos);
+  ObjectModel(std::string const& name, glm::vec2 const& pos);
   virtual ~ObjectModel();
 
-  void set_parent(const ObjectModelHandle& parent_, bool recalc_pos = true);
+  void set_parent(ObjectModelHandle const& parent_, bool recalc_pos = true);
   ObjectModelHandle get_parent() const;
 
   std::string get_name() const { return name; }
   std::string get_id() const;
 
   virtual glm::vec2 get_world_pos() const;
-  virtual void set_world_pos(const glm::vec2& p);
+  virtual void set_world_pos(glm::vec2 const& p);
 
   virtual glm::vec2 get_rel_pos() const { return rel_pos; }
-  virtual void     set_rel_pos(const glm::vec2& rel_pos_);
+  virtual void     set_rel_pos(glm::vec2 const& rel_pos_);
 
   virtual SelectMask get_select_mask() const { return select_mask; }
-  virtual void   set_select_mask(const SelectMask& select_mask_) { select_mask = select_mask_; }
+  virtual void   set_select_mask(SelectMask const& select_mask_) { select_mask = select_mask_; }
 
-  virtual SnapData snap_to_object(const geom::frect& rect) const;
+  virtual SnapData snap_to_object(geom::frect const& rect) const;
   virtual SnapData snap_to_grid(float grid_size) const;
 
   virtual bool get_hflip() const { return false; }
@@ -77,7 +77,7 @@ public:
   /** Reset scale and rotation to default values */
   virtual void reset();
 
-  virtual bool is_at(const glm::vec2& pos) const;
+  virtual bool is_at(glm::vec2 const& pos) const;
 
   virtual bool is_snappable() const { return true; }
 
@@ -97,7 +97,7 @@ public:
   virtual void get_property(TimelineProperty property, glm::vec2& value_out) const;
 
   virtual void set_property(TimelineProperty property, float value);
-  virtual void set_property(TimelineProperty property, const glm::vec2& value);
+  virtual void set_property(TimelineProperty property, glm::vec2 const& value);
 
   /** This lets the object add things to the SceneGraph or do other
       things needed to make it properly visible in the SectorModel */

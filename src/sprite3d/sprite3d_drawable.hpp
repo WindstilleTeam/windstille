@@ -32,8 +32,8 @@ private:
   float    m_scale;
 
 public:
-  Sprite3DDrawable(const Sprite3D& sprite,
-                   const glm::vec2& pos_, float z_pos_, const glm::mat4& modelview_)
+  Sprite3DDrawable(Sprite3D const& sprite,
+                   glm::vec2 const& pos_, float z_pos_, glm::mat4 const& modelview_)
     : Drawable(pos_, z_pos_, modelview_),
       m_sprite(sprite),
       m_scale(1.0f)
@@ -48,7 +48,7 @@ public:
     gc.pop_matrix();
   }
 
-  void set_pos(const glm::vec2& pos_)
+  void set_pos(glm::vec2 const& pos_)
   {
     pos = pos_;
   }
@@ -69,8 +69,8 @@ public:
   }
 
 private:
-  Sprite3DDrawable(const Sprite3DDrawable&);
-  Sprite3DDrawable& operator=(const Sprite3DDrawable&);
+  Sprite3DDrawable(Sprite3DDrawable const&);
+  Sprite3DDrawable& operator=(Sprite3DDrawable const&);
 };
 
 #endif

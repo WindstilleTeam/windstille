@@ -72,7 +72,7 @@ LayerWidget::on_layer_toggle(Gtk::ToggleButton* button, int layer)
 }
 
 void
-LayerWidget::update(const SelectMask& layers)
+LayerWidget::update(SelectMask const& layers)
 {
   for(int i = 0; i < layers.size(); ++i)
   {

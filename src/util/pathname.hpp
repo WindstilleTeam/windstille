@@ -42,8 +42,8 @@ class Pathname
 public:
   typedef std::map<std::string, std::string> Overrides;
 
-  static void set_datadir(const std::string& datadir);
-  static void set_userdir(const std::string& userdir);
+  static void set_datadir(std::string const& datadir);
+  static void set_userdir(std::string const& userdir);
 
   static std::string get_datadir();
   static std::string get_userdir();
@@ -55,9 +55,9 @@ public:
    *  actually modifying the filesystem. This functionality is usefull
    *  for example for user modifications.
    */
-  static void set_datadir_overrides(const Overrides& s_datadir_overrides);
+  static void set_datadir_overrides(Overrides const& s_datadir_overrides);
 
-  static void add_datadir_overrides(const std::string& path);
+  static void add_datadir_overrides(std::string const& path);
   static void clear_datadir_overrides();
 
 private:
@@ -91,7 +91,7 @@ public:
    *  Create a path to the users savegame directory:
    *  Pathname("savegames\\save1.sav", Pathname::kUserPath)
    */
-  explicit Pathname(const std::string& path, PathType type = kDataPath);
+  explicit Pathname(std::string const& path, PathType type = kDataPath);
 
   bool empty() const { return m_type == kEmpty; }
 
@@ -102,10 +102,10 @@ public:
 
   /** Appends the given path segment to Pathname, adding a '/'
    *  inbetween when needed */
-  Pathname& append_path(const std::string& path);
+  Pathname& append_path(std::string const& path);
 
   /** Appends text to the end of the path, not adding a '/' inbetween */
-  Pathname& append_text(const std::string& path);
+  Pathname& append_text(std::string const& path);
 
   /**
    *  Convert the given path and type to a string that points to the
@@ -123,10 +123,10 @@ public:
   /** Returns the files extension ('png', 'jpg', 'sprite', etc.) */
   std::string get_extension() const;
 
-  bool operator<(const Pathname& rhs) const;
+  bool operator<(Pathname const& rhs) const;
 
-  bool operator==(const Pathname& rhs) const;
-  bool operator!=(const Pathname& rhs) const;
+  bool operator==(Pathname const& rhs) const;
+  bool operator!=(Pathname const& rhs) const;
 
   operator std::filesystem::path() const { return get_sys_path(); }
 
@@ -135,7 +135,7 @@ private:
   PathType    m_type;
 };
 
-std::ostream& operator<<(std::ostream& s, const Pathname& path);
+std::ostream& operator<<(std::ostream& s, Pathname const& path);
 
 #endif
 

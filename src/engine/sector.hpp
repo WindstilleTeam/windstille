@@ -74,13 +74,13 @@ private:
   std::shared_ptr<Doll>   doll;
 
 private:
-  void parse_file(const Pathname& filename);
+  void parse_file(Pathname const& filename);
 
   void commit_adds();
   void commit_removes();
 
 public:
-  Sector(const Pathname& filename);
+  Sector(Pathname const& filename);
   ~Sector() override;
 
   Pathname get_filename() const;
@@ -102,7 +102,7 @@ public:
    * Set ambient light, ie. the light that illuminates the whole sector
    * all the time, to \a color
    */
-  void  set_ambient_light(const surf::Color& color);
+  void  set_ambient_light(surf::Color const& color);
   surf::Color get_ambient_light() const;
 
   void add(GameObjectHandle object);
@@ -111,18 +111,18 @@ public:
   wstdisplay::SceneGraph& get_scene_graph() const { return *scene_graph; }
   NavigationGraph& get_navigation_graph() const { return *navigation_graph; }
 
-  GameObject* get_object(const std::string& name) const;
+  GameObject* get_object(std::string const& name) const;
 
   const std::vector<std::shared_ptr<GameObject> >& get_objects() { return objects; }
   TileMap* get_tilemap() const { return interactive_tilemap; }
   TileMap* get_tilemap2() const { return interactivebackground_tilemap; }
   void     set_tilemap(TileMap* t);
 
-  void call_script_function(const std::string& name);
+  void call_script_function(std::string const& name);
 
 private:
-  Sector (const Sector&);
-  Sector& operator= (const Sector&);
+  Sector (Sector const&);
+  Sector& operator= (Sector const&);
 };
 
 #endif

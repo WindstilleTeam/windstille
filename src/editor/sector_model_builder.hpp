@@ -35,15 +35,15 @@ private:
   std::map<ObjectModelHandle, std::string> m_parent_table;
 
 public:
-  SectorModelBuilder(const std::string& filename, SectorModel& sector);
+  SectorModelBuilder(std::string const& filename, SectorModel& sector);
 
 private:
-  void load(const std::string& filename);
+  void load(std::string const& filename);
   void load_layer(ReaderMapping const& filename);
 
 private:
-  SectorModelBuilder(const SectorModelBuilder&);
-  SectorModelBuilder& operator=(const SectorModelBuilder&);
+  SectorModelBuilder(SectorModelBuilder const&);
+  SectorModelBuilder& operator=(SectorModelBuilder const&);
 };
 
 #endif

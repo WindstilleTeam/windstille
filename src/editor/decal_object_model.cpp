@@ -37,8 +37,8 @@
 using namespace wstdisplay;
 
 ObjectModelHandle
-DecalObjectModel::create(const std::string& name_, const glm::vec2& pos,
-                         const std::string& path, MapType type)
+DecalObjectModel::create(std::string const& name_, glm::vec2 const& pos,
+                         std::string const& path, MapType type)
 {
   return ObjectModelHandle(new DecalObjectModel(name_, pos, path, type));
 }
@@ -68,8 +68,8 @@ DecalObjectModel::DecalObjectModel(ReaderMapping const& reader) :
   software_surface = SoftwareSurface::from_file(Pathname(path));
 }
 
-DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const glm::vec2& rel_pos_,
-                                   const std::string& path_, MapType type_) :
+DecalObjectModel::DecalObjectModel(std::string const& /*name*/, glm::vec2 const& rel_pos_,
+                                   std::string const& path_, MapType type_) :
   ObjectModel("DecalObjectModel", rel_pos_),
   path(path_),
   surface(g_app.surface().get(Pathname(path_))),
@@ -83,7 +83,7 @@ DecalObjectModel::DecalObjectModel(const std::string& /*name*/, const glm::vec2&
 {
 }
 
-DecalObjectModel::DecalObjectModel(const DecalObjectModel& rhs) :
+DecalObjectModel::DecalObjectModel(DecalObjectModel const& rhs) :
   ObjectModel(rhs),
   path(rhs.path),
   surface(rhs.surface),
@@ -109,7 +109,7 @@ DecalObjectModel::set_angle(float angle_)
 }
 
 void
-DecalObjectModel::set_scale(const glm::vec2& scale_)
+DecalObjectModel::set_scale(glm::vec2 const& scale_)
 {
   scale = scale_;
 
@@ -207,7 +207,7 @@ DecalObjectModel::write(FileWriter& writer) const
 }
 
 bool
-DecalObjectModel::is_at(const glm::vec2& pos) const
+DecalObjectModel::is_at(glm::vec2 const& pos) const
 {
   glm::vec2 p = pos - get_world_pos();
 
@@ -375,7 +375,7 @@ DecalObjectModel::set_property(TimelineProperty property, float value)
 }
 
 void
-DecalObjectModel::set_property(TimelineProperty property, const glm::vec2& value)
+DecalObjectModel::set_property(TimelineProperty property, glm::vec2 const& value)
 {
   switch(property)
   {
@@ -390,21 +390,21 @@ DecalObjectModel::set_property(TimelineProperty property, const glm::vec2& value
 }
 
 void
-DecalObjectModel::set_world_pos(const glm::vec2& p)
+DecalObjectModel::set_world_pos(glm::vec2 const& p)
 {
   ObjectModel::set_world_pos(p);
   sync();
 }
 
 void
-DecalObjectModel::set_rel_pos(const glm::vec2& rel_pos_)
+DecalObjectModel::set_rel_pos(glm::vec2 const& rel_pos_)
 {
   ObjectModel::set_rel_pos(rel_pos_);
   sync();
 }
 
 void
-DecalObjectModel::set_select_mask(const SelectMask& select_mask_)
+DecalObjectModel::set_select_mask(SelectMask const& select_mask_)
 {
   ObjectModel::set_select_mask(select_mask_);
   sync();

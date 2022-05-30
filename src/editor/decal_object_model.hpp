@@ -33,7 +33,7 @@ class DecalObjectModel : public ObjectModel
 public:
   enum MapType { COLORMAP, LIGHTMAP, HIGHLIGHTMAP };
 
-  static ObjectModelHandle create(const std::string& name, const glm::vec2& pos, const std::string& path, MapType type);
+  static ObjectModelHandle create(std::string const& name, glm::vec2 const& pos, std::string const& path, MapType type);
 
 private:
   std::string path;
@@ -53,12 +53,12 @@ private:
 
 public:
   DecalObjectModel(ReaderMapping const& reader);
-  DecalObjectModel(const std::string& name, const glm::vec2& rel_pos,
-                   const std::string& path_, MapType type_);
-  DecalObjectModel(const DecalObjectModel& rhs);
+  DecalObjectModel(std::string const& name, glm::vec2 const& rel_pos,
+                   std::string const& path_, MapType type_);
+  DecalObjectModel(DecalObjectModel const& rhs);
   ~DecalObjectModel() override;
 
-  void set_scale(const glm::vec2& scale);
+  void set_scale(glm::vec2 const& scale);
   glm::vec2 get_scale() const { return scale; }
 
   void set_angle(float angle);
@@ -79,7 +79,7 @@ public:
   void set_hflip(bool t) override { hflip = t; sync(); }
   void set_vflip(bool t) override { vflip = t; sync(); }
 
-  bool is_at(const glm::vec2& pos) const override;
+  bool is_at(glm::vec2 const& pos) const override;
 
   void reset() override;
 
@@ -88,15 +88,15 @@ public:
   void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override;
   void sync() override;
 
-  void set_world_pos(const glm::vec2& p) override;
-  void set_rel_pos(const glm::vec2& rel_pos_) override;
-  void set_select_mask(const SelectMask& select_mask_) override;
+  void set_world_pos(glm::vec2 const& p) override;
+  void set_rel_pos(glm::vec2 const& rel_pos_) override;
+  void set_select_mask(SelectMask const& select_mask_) override;
 
   void get_property(TimelineProperty property, float& value_out) const override;
   void get_property(TimelineProperty property, glm::vec2& value_out) const override;
 
   void set_property(TimelineProperty property, float value) override;
-  void set_property(TimelineProperty property, const glm::vec2& value) override;
+  void set_property(TimelineProperty property, glm::vec2 const& value) override;
 };
 
 #endif

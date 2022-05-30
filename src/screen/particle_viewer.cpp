@@ -54,7 +54,7 @@ ParticleViewer::~ParticleViewer()
 }
 
 void
-ParticleViewer::load(const Pathname& filename)
+ParticleViewer::load(Pathname const& filename)
 {
   std::cout << "ParticleViewer: loading " << filename << std::endl;
 

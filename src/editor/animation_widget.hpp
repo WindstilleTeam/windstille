@@ -70,8 +70,8 @@ public:
   bool on_timeout();
 
 private:
-  AnimationWidget(const AnimationWidget&);
-  AnimationWidget& operator=(const AnimationWidget&);
+  AnimationWidget(AnimationWidget const&);
+  AnimationWidget& operator=(AnimationWidget const&);
 };
 
 #endif

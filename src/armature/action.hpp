@@ -26,8 +26,8 @@ private:
 public:
 
 private:
-  Action (const Action&);
-  Action& operator= (const Action&);
+  Action (Action const&);
+  Action& operator= (Action const&);
 };
 
 #endif

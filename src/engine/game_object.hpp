@@ -76,7 +76,7 @@ public:
    * The name is guaranteed to stay the same during the whole lifetime of
    * the object
    */
-  const std::string& get_name() const
+  std::string const& get_name() const
   {
     return name;
   }
@@ -108,8 +108,8 @@ public:
   virtual void set_gameobj_parent(GameObjectHandle parent) {}
 
 private:
-  GameObject (const GameObject&);
-  GameObject& operator= (const GameObject&);
+  GameObject (GameObject const&);
+  GameObject& operator= (GameObject const&);
 };
 
 #endif

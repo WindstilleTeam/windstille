@@ -35,19 +35,19 @@ Layer::~Layer()
 }
 
 bool
-Layer::has_object(const ObjectModelHandle& object) const
+Layer::has_object(ObjectModelHandle const& object) const
 {
   return std::find(objects.begin(), objects.end(), object) != objects.end();
 }
 
 void
-Layer::add(const ObjectModelHandle& object)
+Layer::add(ObjectModelHandle const& object)
 {
   objects.push_back(object);
 }
 
 void
-Layer::remove(const ObjectModelHandle& object)
+Layer::remove(ObjectModelHandle const& object)
 {
   objects.remove(object);
 }
@@ -60,7 +60,7 @@ Layer::erase(iterator it)
 }
 
 void
-Layer::draw(wstdisplay::SceneContext& sc, const SelectMask& select_mask)
+Layer::draw(wstdisplay::SceneContext& sc, SelectMask const& select_mask)
 {
   for(Objects::iterator i = objects.begin(); i != objects.end(); ++i)
   {
@@ -70,7 +70,7 @@ Layer::draw(wstdisplay::SceneContext& sc, const SelectMask& select_mask)
 }
 
 void
-Layer::sync(const Gtk::TreeModel::Row& row)
+Layer::sync(Gtk::TreeModel::Row const& row)
 {
   name    = static_cast<Glib::ustring>(row[LayerManagerColumns::instance().name]).raw();
   visible = row[LayerManagerColumns::instance().visible];
@@ -87,7 +87,7 @@ Layer::update(float delta)
 }
 
 ObjectModelHandle
-Layer::get_object_at(const glm::vec2& pos, const SelectMask& select_mask) const
+Layer::get_object_at(glm::vec2 const& pos, SelectMask const& select_mask) const
 {
   for(Objects::const_reverse_iterator i = objects.rbegin(); i != objects.rend(); ++i)
   {
@@ -101,7 +101,7 @@ Layer::get_object_at(const glm::vec2& pos, const SelectMask& select_mask) const
 }
 
 SelectionHandle
-Layer::get_selection(const geom::frect& rect, const SelectMask& select_mask) const
+Layer::get_selection(geom::frect const& rect, SelectMask const& select_mask) const
 {
   SelectionHandle selection = Selection::create();
 
@@ -135,11 +135,11 @@ struct OverlapsWith
 {
   geom::frect rect;
 
-  OverlapsWith(const geom::frect& rect_)
+  OverlapsWith(geom::frect const& rect_)
     : rect(rect_)
   {}
 
-  bool operator()(const ObjectModelHandle& object) {
+  bool operator()(ObjectModelHandle const& object) {
     return geom::intersects(rect, object->get_bounding_box());
   }
 };
@@ -189,7 +189,7 @@ Layer::lower(ObjectModelHandle object)
 }
 
 SnapData
-Layer::snap_object(ObjectModelHandle object, const std::set<ObjectModelHandle>& ignore_objects) const
+Layer::snap_object(ObjectModelHandle object, std::set<ObjectModelHandle> const& ignore_objects) const
 {
   SnapData best_snap;
 

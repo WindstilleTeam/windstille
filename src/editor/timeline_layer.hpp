@@ -38,7 +38,7 @@ private:
   Objects m_objects;
 
 public:
-  TimelineLayer(const std::string& name);
+  TimelineLayer(std::string const& name);
   virtual ~TimelineLayer() {}
 
   iterator begin() { return m_objects.begin(); }
@@ -63,8 +63,8 @@ public:
   virtual void write(FileWriter& writer) const;
 
 private:
-  TimelineLayer(const TimelineLayer&);
-  TimelineLayer& operator=(const TimelineLayer&);
+  TimelineLayer(TimelineLayer const&);
+  TimelineLayer& operator=(TimelineLayer const&);
 };
 
 #endif

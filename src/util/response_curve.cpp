@@ -20,7 +20,7 @@
 
 #include <assert.h>
 
-ResponseCurve::ResponseCurve(float i_min_, float i_max_, const std::vector<float>& samples_)
+ResponseCurve::ResponseCurve(float i_min_, float i_max_, std::vector<float> const& samples_)
   : i_min(i_min_),
     i_max(i_max_),
     samples(samples_)

@@ -23,7 +23,7 @@
 #include "util/pathname.hpp"
 
 Directory::List
-Directory::read(const Pathname& pathname)
+Directory::read(Pathname const& pathname)
 {
   std::vector<Pathname> entries;
 
@@ -40,7 +40,7 @@ Directory::read(const Pathname& pathname)
 }
 
 Directory::List
-Directory::read(const Pathname& pathname, const std::string& suffix)
+Directory::read(Pathname const& pathname, std::string const& suffix)
 {
   std::vector<Pathname> entries;
 
@@ -48,7 +48,7 @@ Directory::read(const Pathname& pathname, const std::string& suffix)
        it != std::filesystem::directory_iterator();
        ++it)
   {
-    const std::string& filename = it->path().string();
+    std::string const& filename = it->path().string();
     if (filename.ends_with(suffix))
     {
       entries.push_back(Pathname(pathname.get_raw_path() + it->path().filename().string(), pathname.get_type()));

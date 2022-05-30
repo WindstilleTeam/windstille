@@ -27,12 +27,12 @@
 #include "util/pathname.hpp"
 
 ControlPointHandle
-ControlPoint::create(const glm::vec2& pos)
+ControlPoint::create(glm::vec2 const& pos)
 {
   return ControlPointHandle(new ControlPoint(g_app.surface().get(Pathname("editor/handle.png")), pos));
 }
 
-ControlPoint::ControlPoint(wstdisplay::SurfacePtr surface_, const glm::vec2& pos_) :
+ControlPoint::ControlPoint(wstdisplay::SurfacePtr surface_, glm::vec2 const& pos_) :
   surface(surface_),
   pos(pos_),
   offset()
@@ -49,14 +49,14 @@ ControlPoint::on_move_start(GdkEventButton* /*event*/)
 }
 
 void
-ControlPoint::on_move_update(GdkEventMotion* /*event*/, const glm::vec2& offset_)
+ControlPoint::on_move_update(GdkEventMotion* /*event*/, glm::vec2 const& offset_)
 {
   offset = offset_;
   std::cout << "on_move_update: " << offset << std::endl;
 }
 
 void
-ControlPoint::on_move_end(GdkEventButton* /*event*/, const glm::vec2& offset_)
+ControlPoint::on_move_end(GdkEventButton* /*event*/, glm::vec2 const& offset_)
 {
   offset = offset_;
   offset = glm::vec2();
