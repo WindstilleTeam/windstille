@@ -124,7 +124,6 @@ rec {
             cmakeFlags = [ "-DBUILD_EXTRA=ON" ];
             nativeBuildInputs = [
               pkgs.cmake
-              pkgs.gcc
               pkgs.pkgconfig
               pkgs.makeWrapper
             ];
@@ -184,7 +183,7 @@ rec {
 
               pkgs.jsoncpp
             ];
-           };
+          };
         };
         defaultPackage = packages.windstille;
       });

@@ -40,11 +40,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1653480349,
-        "narHash": "sha256-tmjUXcskUukoXK4GSlCik84ir1PpKqL+72ua799F8Vc=",
+        "lastModified": 1653511450,
+        "narHash": "sha256-CftWTY3Y7aJmRMsjR8iGB/UNGj+EUD2dMcpUya5l6cc=",
         "owner": "grumbel",
         "repo": "babyxml",
-        "rev": "3c04e6d34fd3dc3cf007324e2bf74f3e1d1900df",
+        "rev": "cd655ec92b2e25441d07b3251126d5edac2ecaf5",
         "type": "gitlab"
       },
       "original": {
@@ -81,11 +81,11 @@
     },
     "flake-utils": {
       "locked": {
-        "lastModified": 1652776076,
-        "narHash": "sha256-gzTw/v1vj4dOVbpBSJX4J0DwUR6LIyXo7/SuuTJp1kM=",
+        "lastModified": 1653893745,
+        "narHash": "sha256-0jntwV3Z8//YwuOjzhV2sgJJPt+HY6KhU7VZUL0fKZQ=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "04c1b180862888302ddfb2e3ad9eaa63afc60cf8",
+        "rev": "1ed9fb1935d260de5fe1c2f7ee0ebaae17ed2fa1",
         "type": "github"
       },
       "original": {
@@ -171,11 +171,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1653087707,
-        "narHash": "sha256-zfno3snrzZTWQ2B7K53QHrGZwrjnJLTRPalymrSsziU=",
+        "lastModified": 1653830209,
+        "narHash": "sha256-V+HnLKJzvk2HZcLUKt9z2puZ46vLo74chOakxbLfXek=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "cbd40c72b2603ab54e7208f99f9b35fc158bc009",
+        "rev": "cc257c49c495b2d0d7d40c5753a452d0abc8adf3",
         "type": "github"
       },
       "original": {
@@ -343,11 +343,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1653486463,
-        "narHash": "sha256-eB042MPqw+mqhOl5uEVCvp/FW/oObG3RDZWgMWYECQg=",
+        "lastModified": 1653511328,
+        "narHash": "sha256-xFdyiI10I/ovfQ4FxZegCg+9tgdoW/roGf13aVw1la4=",
         "owner": "windstille",
         "repo": "wstdisplay",
-        "rev": "2dae55ea6df5a061ec286976fa44bc29023b1484",
+        "rev": "8c5fe246325238a40ee391ecbf104b88fba76909",
         "type": "gitlab"
       },
       "original": {
@@ -432,7 +432,7 @@
       },
       "locked": {
         "lastModified": 1653486076,
-        "narHash": "sha256-aLTWQjBAwxfxeUcVp5eSN5IHqEo6NqpJg8g8Icw34ps=",
+        "narHash": "sha256-NwB82lCpBEij/Y4HPOeb3dWGlSdTQGLVEkkxAR+xMZM=",
         "owner": "windstille",
         "repo": "wstinput",
         "rev": "3e2d1e73f0982ed949ac0f900698fb1a85cd4072",
