@@ -31,6 +31,8 @@
 #include "app/controller_def.hpp"
 #include "font/fonts.hpp"
 
+namespace windstille {
+
 InputConfigurator::InputConfigurator()
   : items(),
     wait_for_plus(false),
@@ -271,5 +273,7 @@ InputConfigurator::handle_event(SDL_Event const& event)
       break;
   }
 }
+
+} // namespace windstille
 
 /* EOF */

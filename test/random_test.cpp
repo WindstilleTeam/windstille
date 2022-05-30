@@ -2,6 +2,8 @@
 
 #include "math/random.hpp"
 
+using namespace windstille;
+
 int main()
 {
   Random random(5489UL);

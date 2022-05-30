@@ -29,6 +29,8 @@
 #include "app/app.hpp"
 #include <wstdisplay/texture_manager.hpp>
 
+namespace windstille {
+
 namespace sprite3d {
 
 static const int FORMAT_VERSION = 2;
@@ -217,6 +219,8 @@ Data::get_attachment_point_id(std::string const& name) const
 }
 
 } // namespace sprite3d
+
+} // namespace windstille
 
 /* EOF */
 

@@ -21,6 +21,8 @@
 #include "editor/timeline_object_layer.hpp"
 #include "editor/timeline_layer.hpp"
 
+namespace windstille {
+
 Timeline::Timeline() :
   m_layers()
 {
@@ -121,5 +123,7 @@ Timeline::write(FileWriter& writer) const
   }
   writer.end_collection();
 }
+
+} // namespace windstille
 
 /* EOF */

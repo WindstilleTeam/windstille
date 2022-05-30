@@ -50,11 +50,11 @@ GameObject::is_active() const
 void
 GameObject::set_parent(std::string const& name)
 {
-  if (::Entity* entity = dynamic_cast<Entity*>(object.lock().get()))
+  if (windstille::Entity* entity = dynamic_cast<windstille::Entity*>(object.lock().get()))
   {
-    if (::GameObject* obj = Sector::current()->get_object(name))
+    if (windstille::GameObject* obj = windstille::Sector::current()->get_object(name))
     {
-      entity->set_parent(dynamic_cast<Entity*>(obj));
+      entity->set_parent(dynamic_cast<windstille::Entity*>(obj));
     }
   }
 }

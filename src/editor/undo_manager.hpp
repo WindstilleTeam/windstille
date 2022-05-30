@@ -22,7 +22,10 @@
 #include <vector>
 
 #include "editor/command.hpp"
-
+
+namespace windstille {
+
+
 class UndoManager
 {
 private:
@@ -45,7 +48,10 @@ private:
   UndoManager(UndoManager const&);
   UndoManager& operator=(UndoManager const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

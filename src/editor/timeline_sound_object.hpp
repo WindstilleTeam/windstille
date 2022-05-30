@@ -21,6 +21,8 @@
 
 #include "editor/timeline_object.hpp"
 
+namespace windstille {
+
 class TimelineSoundObject : public TimelineObject
 {
 private:
@@ -52,6 +54,8 @@ private:
   TimelineSoundObject(TimelineSoundObject const&);
   TimelineSoundObject& operator=(TimelineSoundObject const&);
 };
+
+} // namespace windstille
 
 #endif
 

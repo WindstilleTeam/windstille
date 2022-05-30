@@ -30,15 +30,16 @@
 #include <prio/reader_document.hpp>
 #include <prio/reader_mapping.hpp>
 #include <prio/reader_object.hpp>
+#include <surf/fwd.hpp>
 
-namespace surf {
-class Color;
-} // namespace surf
+namespace windstille {
 
 using ReaderCollection = prio::ReaderCollection;
 using ReaderDocument = prio::ReaderDocument;
 using ReaderMapping = prio::ReaderMapping;
 using ReaderObject = prio::ReaderObject;
+
+} // windstille
 
 namespace prio {
 

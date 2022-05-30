@@ -30,7 +30,10 @@
 #include "hud/controller_help_window.hpp"
 #include "sprite2d/sprite.hpp"
 #include "util/currenton.hpp"
-
+
+namespace windstille {
+
+
 class PDA;
 class EnergyBar;
 class View;
@@ -41,7 +44,8 @@ class Inventory;
 class Pathname;
 
 class GameSessionImpl;
-
+
+
 class GameSession : public wstgui::Screen,
                     public Currenton<GameSession>
 {
@@ -87,7 +91,10 @@ public:
 private:
   std::shared_ptr<GameSessionImpl> impl;
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

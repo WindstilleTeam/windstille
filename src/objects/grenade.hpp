@@ -22,6 +22,8 @@
 #include "engine/physics.hpp"
 #include "sprite3d/sprite3d.hpp"
 
+namespace windstille {
+
 class Grenade : public Entity
 {
 public:
@@ -37,6 +39,8 @@ private:
   Physics physics;
   std::unique_ptr<CollisionObject> c_object;
 };
+
+} // namespace windstille
 
 #endif
 

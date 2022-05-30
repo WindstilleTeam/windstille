@@ -24,6 +24,8 @@
 #include <wstdisplay/opengl_window.hpp>
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 TitleScreen::TitleScreen()
   : background(g_app.sprite().create(Pathname("images/titlescreen.sprite")))
 {
@@ -60,5 +62,7 @@ TitleScreen::handle_event(SDL_Event const& )
 {
 
 }
+
+} // namespace windstille
 
 /* EOF */

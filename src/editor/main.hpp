@@ -18,13 +18,19 @@
 
 #ifndef HEADER_WINDSTILLE_EDITOR_MAIN_HPP
 #define HEADER_WINDSTILLE_EDITOR_MAIN_HPP
-
+
+namespace windstille {
+
+
 class WindstilleEditor
 {
 public:
   int main(int argc, char** argv);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

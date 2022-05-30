@@ -26,6 +26,8 @@
 
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 class Armature;
 class Mesh;
 
@@ -48,6 +50,8 @@ private:
   Model (Model const&);
   Model& operator= (Model const&);
 };
+
+} // namespace windstille
 
 #endif
 

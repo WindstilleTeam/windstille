@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_MATH_RANDOM_HPP
 #define HEADER_WINDSTILLE_MATH_RANDOM_HPP
 
+namespace windstille {
+
 /** */
 class Random
 {
@@ -62,6 +64,8 @@ private:
 };
 
 extern Random rnd;
+
+} // namespace windstille
 
 #endif
 

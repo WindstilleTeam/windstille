@@ -27,6 +27,8 @@
 #include "util/pathname.hpp"
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
+namespace windstille {
+
 class DeformDrawerRequest : public wstdisplay::Drawable
 {
 public:
@@ -207,5 +209,7 @@ DeformDrawer::draw(wstdisplay::DrawingContext& dc, ParticleSystem& psys)
   dc.draw(std::make_unique<DeformDrawerRequest>(glm::vec2(400, 300), 1200, dc.get_modelview(),
                                                 framebuffer, surface, psys, shader_program));
 }
+
+} // namespace windstille
 
 /* EOF */

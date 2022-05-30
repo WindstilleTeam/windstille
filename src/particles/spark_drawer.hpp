@@ -23,6 +23,8 @@
 
 #include "particles/drawer.hpp"
 
+namespace windstille {
+
 class ParticleSystem;
 
 class SparkDrawer : public Drawer
@@ -37,6 +39,8 @@ public:
 
   void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const override;
 };
+
+} // namespace windstille
 
 #endif
 

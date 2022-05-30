@@ -23,10 +23,14 @@
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/select_tool.hpp"
-
+
+namespace windstille {
+
+
 static const guint32 MOVE_TIMEOUT = 100;
 static const int MOVE_THRESHOLD = 16;
-
+
+
 SelectTool::SelectTool(EditorWindow& editor) :
   m_editor(editor),
   click_pos(),
@@ -259,5 +263,8 @@ SelectTool::draw(wstdisplay::SceneContext& sc)
     sc.control().draw_rect(rect, surf::Color(0.5f, 0.5f, 1.0f));
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

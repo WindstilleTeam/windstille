@@ -27,6 +27,8 @@
 #include "particles/particle_system_drawable.hpp"
 #include <wstdisplay/scenegraph/scene_graph.hpp>
 
+namespace windstille {
+
 ParticleSystems::ParticleSystems(ReaderMapping const& reader,
                                  wstdisplay::SurfaceManager& surface_manager) :
   m_systems(),
@@ -74,5 +76,7 @@ ParticleSystems::update(float delta)
     (*i)->update(delta);
   }
 }
+
+} // namespace windstille
 
 /* EOF */

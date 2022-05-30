@@ -21,7 +21,10 @@
 #include "properties/property_set.hpp"
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
-
+
+namespace windstille {
+
+
 Entity::Entity() :
   done(),
   pos(),
@@ -75,5 +78,8 @@ Entity::get_properties()
 
   return Properties(type, this);
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

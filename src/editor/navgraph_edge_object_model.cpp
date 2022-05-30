@@ -24,6 +24,8 @@
 #include <wstdisplay/scenegraph/drawable_group.hpp>
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
+namespace windstille {
+
 NavGraphEdgeObjectModel::NavGraphEdgeObjectModel(std::shared_ptr<NavGraphNodeObjectModel> lhs,
                                                  std::shared_ptr<NavGraphNodeObjectModel> rhs) :
   ObjectModel("NavGraphEdgeObjectModel", glm::vec2()),
@@ -105,5 +107,7 @@ NavGraphEdgeObjectModel::write_real(FileWriter& writer) const
   writer.write("rhs-node", m_rhs->get_id());
   writer.end_object();
 }
+
+} // namespace windstille
 
 /* EOF */

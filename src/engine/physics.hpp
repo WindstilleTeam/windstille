@@ -22,6 +22,8 @@
 #include "collision/collision_data.hpp"
 #include "engine/entity.hpp"
 
+namespace windstille {
+
 class Physics
 {
 public:
@@ -53,6 +55,8 @@ private:
   Physics(Physics const&);
   Physics& operator=(Physics const&);
 };
+
+} // namespace windstille
 
 #endif
 

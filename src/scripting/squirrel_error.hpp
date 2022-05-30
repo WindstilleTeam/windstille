@@ -22,10 +22,11 @@
 #include <squirrel.h>
 #include <stdexcept>
 
+namespace windstille {
 class Pathname;
+} // namespace windstille
 
-namespace Scripting
-{
+namespace Scripting {
 
 /** Exception class for squirrel errors, it takes a squirrelvm and uses
  * sq_geterror() to retrieve additional information about the last error that
@@ -34,7 +35,7 @@ namespace Scripting
 class SquirrelError : public std::exception
 {
 public:
-  SquirrelError(HSQUIRRELVM v, Pathname const& path, std::string const& message) throw();
+  SquirrelError(HSQUIRRELVM v, windstille::Pathname const& path, std::string const& message) throw();
   SquirrelError(HSQUIRRELVM v, std::string const& context, std::string const& message) throw();
   SquirrelError(HSQUIRRELVM v, std::string const& message) throw();
   ~SquirrelError() throw() override;

@@ -18,6 +18,8 @@
 
 #include "math/random.hpp"
 
+namespace windstille {
+
 /* This file is based on:
  * A C-program for MT19937, with initialization improved 2002/1/26.
  *  Coded by Takuji Nishimura and Makoto Matsumoto.
@@ -132,5 +134,7 @@ Random::sign()
 }
 
 Random rnd;
+
+} // namespace windstille
 
 /* EOF */

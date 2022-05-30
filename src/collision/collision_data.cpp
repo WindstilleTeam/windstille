@@ -18,6 +18,8 @@
 
 #include "collision/collision_data.hpp"
 
+namespace windstille {
+
 CollisionData
 CollisionData::merge(CollisionData const& r)
 {
@@ -33,5 +35,7 @@ CollisionData::merge(CollisionData const& r)
 
   return *this;
 }
+
+} // namespace windstille
 
 /* EOF */

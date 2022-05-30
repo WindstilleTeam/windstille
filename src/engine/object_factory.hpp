@@ -23,6 +23,8 @@
 
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 class ObjectFactory
 {
 private:
@@ -33,6 +35,8 @@ private:
   ObjectFactory(ObjectFactory const&);
   ObjectFactory& operator=(ObjectFactory const&);
 };
+
+} // namespace windstille
 
 #endif
 

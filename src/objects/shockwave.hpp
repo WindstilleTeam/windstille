@@ -22,6 +22,8 @@
 #include <wstdisplay/shader_program.hpp>
 #include "engine/game_object.hpp"
 
+namespace windstille {
+
 /** */
 class Shockwave : public GameObject
 {
@@ -42,6 +44,8 @@ private:
   Shockwave (Shockwave const&);
   Shockwave& operator= (Shockwave const&);
 };
+
+} // namespace windstille
 
 #endif
 

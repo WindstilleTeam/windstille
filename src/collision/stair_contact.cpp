@@ -23,6 +23,8 @@
 #include "tile/tile.hpp"
 #include "tile/tile_map.hpp"
 
+namespace windstille {
+
 StairContact::StairContact(TileMap* tilemap_, geom::ipoint const& pos_)
   : tilemap(tilemap_),
     pos(pos_),
@@ -120,5 +122,7 @@ StairContact::is_active() const
 {
   return (tilemap->get_pixel(pos.x(), pos.y()) & TILE_STAIRS);
 }
+
+} // namespace windstille
 
 /* EOF */

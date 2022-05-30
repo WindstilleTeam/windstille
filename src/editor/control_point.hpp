@@ -28,10 +28,14 @@
 
 #include <wstdisplay/fwd.hpp>
 #include <wstdisplay/surface.hpp>
-
+
+namespace windstille {
+
+
 class ControlPoint;
 typedef std::shared_ptr<ControlPoint> ControlPointHandle;
-
+
+
 class ControlPoint
 {
 public:
@@ -58,7 +62,10 @@ private:
   ControlPoint(ControlPoint const&);
   ControlPoint& operator=(ControlPoint const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

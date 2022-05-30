@@ -18,6 +18,8 @@
 
 #include "editor/minimap_widget.hpp"
 
+namespace windstille {
+
 MinimapWidget::MinimapWidget()
 {
   set_size_request(0, 64);
@@ -46,5 +48,7 @@ MinimapWidget::scroll(GdkEventScroll* /*event*/)
 {
   return false;
 }
+
+} // namespace windstille
 
 /* EOF */

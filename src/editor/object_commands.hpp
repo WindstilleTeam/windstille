@@ -22,7 +22,10 @@
 #include "editor/layer.hpp"
 #include "editor/object_model.hpp"
 #include "editor/command.hpp"
-
+
+namespace windstille {
+
+
 class ObjectRemoveCommand : public Command
 {
 private:
@@ -48,7 +51,8 @@ public:
   }
 
 };
-
+
+
 class ObjectAddCommand : public Command
 {
 private:
@@ -73,7 +77,8 @@ public:
       layer->remove(object);
   }
 };
-
+
+
 class ObjectSetPosCommand : public Command
 {
 private:
@@ -96,7 +101,10 @@ public:
     object->set_rel_pos(orig_pos);
   }
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

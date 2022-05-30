@@ -25,6 +25,8 @@
 #include "screen/game_session.hpp"
 #include "screen/view.hpp"
 
+namespace windstille {
+
 Swarm::Swarm(ReaderMapping const& props) :
   agents(),
   target(),
@@ -139,5 +141,7 @@ Swarm::update(float delta)
     i->pos.y += i->speed * sinf(i->angle) * delta;
   }
 }
+
+} // namespace windstille
 
 /* EOF */

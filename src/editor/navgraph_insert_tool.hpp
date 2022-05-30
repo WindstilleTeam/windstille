@@ -27,9 +27,12 @@
 #include "editor/tool.hpp"
 #include "navigation/navigation_graph.hpp"
 
+namespace windstille {
+
 class NavGraphNodeObjectModel;
 class NavGraphEdgeObjectModel;
-
+
+
 class NavgraphInsertTool : public Tool
 {
 private:
@@ -61,7 +64,10 @@ private:
   NavgraphInsertTool(NavgraphInsertTool const&);
   NavgraphInsertTool& operator=(NavgraphInsertTool const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

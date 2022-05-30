@@ -27,6 +27,8 @@
 
 #include <wstdisplay/texture.hpp>
 
+namespace windstille {
+
 class TilePackerImpl;
 
 /** Creates a pixelbuffer of the given size and packs 32x32 large
@@ -56,6 +58,8 @@ private:
   TilePacker(TilePacker const&);
   TilePacker& operator=(TilePacker const&);
 };
+
+} // namespace windstille
 
 #endif
 

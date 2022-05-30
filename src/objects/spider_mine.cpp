@@ -22,6 +22,8 @@
 #include "util/pathname.hpp"
 #include "sprite3d/manager.hpp"
 
+namespace windstille {
+
 SpiderMine::SpiderMine(ReaderMapping const& props) :
   sprite(),
   explode(g_app.sprite().create(Pathname("images/explosion.sprite"))),
@@ -158,5 +160,7 @@ SpiderMine::die()
 {
   state = EXPLODE;
 }
+
+} // namespace windstille
 
 /* EOF */

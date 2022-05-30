@@ -79,7 +79,11 @@ enum InputEventName
 #define INVENTORY_BUTTON   LEFT_SHOULDER_BUTTON
 #define AIM_BUTTON         RIGHT_SHOULDER_BUTTON
 
+namespace windstille {
+
 wstinput::ControllerDescription get_windstille_controller_description();
+
+} // namespace windstille
 
 #endif
 

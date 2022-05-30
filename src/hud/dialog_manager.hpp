@@ -29,6 +29,8 @@
 #include "sprite2d/sprite.hpp"
 #include "util/currenton.hpp"
 
+namespace windstille {
+
 /** */
 class DialogManager : public wstgui::Screen,
                       public Currenton<DialogManager>
@@ -72,6 +74,8 @@ public:
   void add_dialog(int alignment, std::string const& portrait, std::string const& text);
   void add_caption(int alignment, std::string const& text);
 };
+
+} // namespace windstille
 
 #endif
 

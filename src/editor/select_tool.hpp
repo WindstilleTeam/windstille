@@ -23,7 +23,10 @@
 
 #include "editor/object_model.hpp"
 #include "editor/tool.hpp"
-
+
+namespace windstille {
+
+
 class SelectTool : public Tool
 {
 private:
@@ -59,7 +62,10 @@ private:
   SelectTool(SelectTool const&);
   SelectTool& operator=(SelectTool const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

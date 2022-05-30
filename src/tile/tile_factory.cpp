@@ -26,6 +26,8 @@
 #include "tile/tile_packer.hpp"
 #include <wstdisplay/software_surface.hpp>
 
+namespace windstille {
+
 namespace {
 
 /** Check if the given region of the given image is fully transparent */
@@ -175,5 +177,7 @@ TileFactory::create(int id)
     return tiles[id];
   }
 }
+
+} // namespace windstille
 
 /* EOF */

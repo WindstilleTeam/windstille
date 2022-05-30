@@ -22,6 +22,8 @@
 #include <surf/color.hpp>
 #include <wstdisplay/drawing_context.hpp>
 
+namespace windstille {
+
 /***********************************************************************
  * CollisionObject
  ***********************************************************************/
@@ -153,5 +155,7 @@ CollisionObject::set_check_domains(unsigned int d)
 {
   check_domains = d;
 }
+
+} // namespace windstille
 
 /* EOF */

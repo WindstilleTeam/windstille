@@ -27,13 +27,17 @@
 #include "editor/snap_data.hpp"
 #include "editor/timeline_properties.hpp"
 #include "util/file_reader.hpp"
-
+
+namespace windstille {
+
+
 class ObjectModel;
 class SectorModel;
 
 typedef std::shared_ptr<ObjectModel> ObjectModelHandle;
 typedef std::weak_ptr<ObjectModel>   ObjectModelPtr;
-
+
+
 class ObjectModel
 {
 protected:
@@ -103,7 +107,10 @@ public:
       things needed to make it properly visible in the SectorModel */
   virtual void add_to_scenegraph(wstdisplay::DrawableGroup& sg) =0;
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

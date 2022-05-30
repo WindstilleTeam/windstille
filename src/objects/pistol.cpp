@@ -22,6 +22,8 @@
 #include "util/pathname.hpp"
 #include "sprite3d/manager.hpp"
 
+namespace windstille {
+
 Pistol::Pistol() :
   sprite(g_app.sprite3d().create(Pathname("models/objects/pistol/pistol.wsprite"))),
   laser_pointer(new LaserPointer())
@@ -55,5 +57,7 @@ void
 Pistol::fire(bool )
 {
 }
+
+} // namespace windstille
 
 /* EOF */

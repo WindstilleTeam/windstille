@@ -27,6 +27,8 @@
 #include "engine/game_object.hpp"
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 class ParticleSystem;
 class ParticleSystemDrawable;
 
@@ -48,6 +50,8 @@ private:
   ParticleSystems(ParticleSystems const&);
   ParticleSystems& operator=(ParticleSystems const&);
 };
+
+} // namespace windstille
 
 #endif
 

@@ -22,7 +22,10 @@
 #include <glm/glm.hpp>
 #include "editor/control_point.hpp"
 #include "editor/decal_object_model.hpp"
-
+
+namespace windstille {
+
+
 class DecalScaleControlPoint : public ControlPoint
 {
 private:
@@ -46,7 +49,10 @@ private:
   DecalScaleControlPoint (DecalScaleControlPoint const&);
   DecalScaleControlPoint& operator= (DecalScaleControlPoint const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

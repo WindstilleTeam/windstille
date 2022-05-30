@@ -31,6 +31,8 @@
 #include "util/directory.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 ArmatureTest::ArmatureTest()
   : model(),
     armature(),
@@ -146,5 +148,7 @@ ArmatureTest::update(float delta, wstinput::Controller const& controller)
   {
   }
 }
+
+} // namespace windstille
 
 /* EOF */

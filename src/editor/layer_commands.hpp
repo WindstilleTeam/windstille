@@ -22,7 +22,10 @@
 #include "editor/layer.hpp"
 #include "editor/command.hpp"
 #include "editor/sector_model.hpp"
-
+
+namespace windstille {
+
+
 class LayerAddCommand : public Command
 {
 private:
@@ -48,7 +51,8 @@ private:
   LayerAddCommand(LayerAddCommand const&);
   LayerAddCommand& operator=(LayerAddCommand const&);
 };
-
+
+
 class LayerDeleteCommand : public Command
 {
 private:
@@ -75,7 +79,10 @@ private:
   LayerDeleteCommand(LayerDeleteCommand const&);
   LayerDeleteCommand& operator=(LayerDeleteCommand const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

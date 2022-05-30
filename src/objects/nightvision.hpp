@@ -23,6 +23,8 @@
 #include "engine/game_object.hpp"
 #include "sprite2d/sprite.hpp"
 
+namespace windstille {
+
 // FIXME: shouldn't really be a game object, but makes testing easier
 class Nightvision : public GameObject
 {
@@ -41,6 +43,8 @@ private:
   Nightvision (Nightvision const&);
   Nightvision& operator= (Nightvision const&);
 };
+
+} // namespace windstille
 
 #endif
 

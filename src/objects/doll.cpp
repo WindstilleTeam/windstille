@@ -38,6 +38,8 @@
 #include "sprite3d/sprite3d_drawable.hpp"
 #include "sprite3d/manager.hpp"
 
+namespace windstille {
+
 Doll::Doll() :
   m_drawable(),
   m_velocity(),
@@ -213,7 +215,8 @@ Doll::set_state_jump()
 {
 
 }
-
+
+
 void
 Doll::update_falling(wstinput::Controller const& controller, float delta)
 {
@@ -451,5 +454,7 @@ void
 Doll::update_jump(wstinput::Controller const& controller, float /*delta*/)
 {
 }
+
+} // namespace windstille
 
 /* EOF */

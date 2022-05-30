@@ -23,7 +23,10 @@
 #include <wstdisplay/fwd.hpp>
 
 #include "editor/tool.hpp"
-
+
+namespace windstille {
+
+
 class ZoomTool : public Tool
 {
 private:
@@ -50,7 +53,10 @@ private:
   ZoomTool(ZoomTool const&);
   ZoomTool& operator=(ZoomTool const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

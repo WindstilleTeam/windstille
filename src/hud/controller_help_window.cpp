@@ -26,6 +26,8 @@
 #include <surf/color.hpp>
 #include <wstdisplay/graphics_context.hpp>
 
+namespace windstille {
+
 ControllerHelpWindow::ControllerHelpWindow()
 {
 }
@@ -131,5 +133,7 @@ void
 ControllerHelpWindow::update(float /*delta*/, wstinput::Controller const& controller )
 {
 }
+
+} // namespace windstille
 
 /* EOF */

@@ -19,7 +19,11 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_CONSTANTS_HPP
 #define HEADER_WINDSTILLE_EDITOR_CONSTANTS_HPP
 
+namespace windstille {
+
 extern const float g_snap_threshold;
+
+} // namespace windstille
 
 #endif
 

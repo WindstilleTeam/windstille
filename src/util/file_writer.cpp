@@ -20,6 +20,8 @@
 
 #include <surf/color.hpp>
 
+using namespace windstille;
+
 namespace prio {
 
 template<>

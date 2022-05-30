@@ -22,7 +22,10 @@
 #include <gtkmm/dialog.h>
 
 #include "properties/properties.hpp"
-
+
+namespace windstille {
+
+
 class PropertyDialog : public Gtk::Dialog
 {
 private:
@@ -34,7 +37,10 @@ private:
   PropertyDialog(PropertyDialog const&);
   PropertyDialog& operator=(PropertyDialog const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

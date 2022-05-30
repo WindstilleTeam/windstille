@@ -30,6 +30,8 @@
 #include "hud/pda.hpp"
 #include "screen/game_session.hpp"
 
+namespace windstille {
+
 Conversation::Conversation() :
   pos(400, 300),
   direction(0.0f, 0.0f),
@@ -184,5 +186,7 @@ Conversation::show()
 {
   active = true;
 }
+
+} // namespace windstille
 
 /* EOF */

@@ -20,6 +20,8 @@
 
 #include "timeline_layer.hpp"
 
+namespace windstille {
+
 TimelineLayerWidget::TimelineLayerWidget() :
   m_timeline(),
   m_column_height(32)
@@ -67,5 +69,7 @@ TimelineLayerWidget::on_draw(Cairo::RefPtr<Cairo::Context> const& cr)
 
   return false;
 }
+
+} // namespace windstille
 
 /* EOF */

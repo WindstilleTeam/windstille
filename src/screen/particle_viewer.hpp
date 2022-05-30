@@ -37,6 +37,8 @@ class Slider;
 class TabComponent;
 }
 
+namespace windstille {
+
 class ParticleSystemGUI;
 
 /** */
@@ -67,6 +69,8 @@ private:
   ParticleViewer (ParticleViewer const&);
   ParticleViewer& operator= (ParticleViewer const&);
 };
+
+} // namespace windstille
 
 #endif
 

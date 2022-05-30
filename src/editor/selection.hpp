@@ -25,11 +25,15 @@
 
 #include "editor/control_point.hpp"
 #include "editor/object_model.hpp"
-
+
+namespace windstille {
+
+
 class Selection;
 class WindstilleWidget;
 typedef std::shared_ptr<Selection> SelectionHandle;
-
+
+
 class Selection
 {
 private:
@@ -100,7 +104,10 @@ private:
   Selection(Selection const&);
   Selection& operator=(Selection const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

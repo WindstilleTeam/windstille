@@ -25,7 +25,10 @@
 #include <glm/glm.hpp>
 #include <surf/color.hpp>
 #include "util/currenton.hpp"
-
+
+namespace windstille {
+
+
 class Entity;
 class Speech;
 
@@ -65,7 +68,10 @@ private:
   SpeechManager (SpeechManager const&);
   SpeechManager& operator= (SpeechManager const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

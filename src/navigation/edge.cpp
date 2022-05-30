@@ -22,6 +22,8 @@
 
 #include "navigation/node.hpp"
 
+namespace windstille {
+
 Edge::Edge(Node* node1_, Node* node2_, Properties props_) :
   node1(node1_),
   node2(node2_),
@@ -56,5 +58,7 @@ Edge::get_vector() const
 {
   return node2->get_pos() - node1->get_pos();
 }
+
+} // namespace windstille
 
 /* EOF */

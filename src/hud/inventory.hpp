@@ -22,6 +22,8 @@
 #include <wstgui/screen.hpp>
 #include <memory>
 
+namespace windstille {
+
 class InventoryImpl;
 
 /** */
@@ -38,6 +40,8 @@ public:
 private:
   std::shared_ptr<InventoryImpl> impl;
 };
+
+} // namespace windstille
 
 #endif
 

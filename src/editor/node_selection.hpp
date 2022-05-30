@@ -22,7 +22,10 @@
 #include <set>
 
 #include "navigation/navigation_graph.hpp"
-
+
+namespace windstille {
+
+
 class NodeSelection
 {
 private:
@@ -41,7 +44,10 @@ private:
   NodeSelection(NodeSelection const&);
   NodeSelection& operator=(NodeSelection const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

@@ -23,6 +23,8 @@
 #include "app/app.hpp"
 #include "collision/collision_engine.hpp"
 
+namespace windstille {
+
 Box::Box(ReaderMapping const& props) :
   sprite(),
   colobj(nullptr),
@@ -93,5 +95,7 @@ Box::draw(wstdisplay::SceneContext& sc)
 {
   sprite.draw(sc.color(), pos, 10.0f);
 }
+
+} // namespace windstille
 
 /* EOF */

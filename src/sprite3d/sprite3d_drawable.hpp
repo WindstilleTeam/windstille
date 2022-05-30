@@ -25,6 +25,8 @@
 #include "sprite3d/sprite3d.hpp"
 #include <wstdisplay/scenegraph/drawable.hpp>
 
+namespace windstille {
+
 class Sprite3DDrawable : public wstdisplay::Drawable
 {
 private:
@@ -72,6 +74,8 @@ private:
   Sprite3DDrawable(Sprite3DDrawable const&);
   Sprite3DDrawable& operator=(Sprite3DDrawable const&);
 };
+
+} // namespace windstille
 
 #endif
 

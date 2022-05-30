@@ -25,6 +25,8 @@
 #include "particles/particle_system.hpp"
 #include "sprite2d/sprite.hpp"
 
+namespace windstille {
+
 class Box : public Entity
 {
 private:
@@ -46,6 +48,8 @@ private:
   Box(Box const&);
   Box& operator=(Box const&);
 };
+
+} // namespace windstille
 
 #endif
 

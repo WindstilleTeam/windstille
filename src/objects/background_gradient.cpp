@@ -25,6 +25,8 @@
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include <wstdisplay/scenegraph/gradient_drawable.hpp>
 
+namespace windstille {
+
 BackgroundGradient::BackgroundGradient(ReaderMapping const& props) :
   drawable()
 {
@@ -57,5 +59,7 @@ BackgroundGradient::BackgroundGradient(ReaderMapping const& props) :
 BackgroundGradient::~BackgroundGradient()
 {
 }
+
+} // namespace windstille
 
 /* EOF */

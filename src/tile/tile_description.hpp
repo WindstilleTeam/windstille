@@ -24,6 +24,8 @@
 
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 class TileFactory;
 
 /**
@@ -45,6 +47,8 @@ public:
    */
   void load(TileFactory* factory);
 };
+
+} // namespace windstille
 
 #endif
 

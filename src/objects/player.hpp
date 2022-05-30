@@ -29,6 +29,8 @@
 #include "sprite3d/sprite3d.hpp"
 #include "util/currenton.hpp"
 
+namespace windstille {
+
 class Contact;
 class LaserPointer;
 class CollisionObject;
@@ -175,6 +177,8 @@ private:
   Player(Player const&);
   Player& operator=(Player const&);
 };
+
+} // namespace windstille
 
 #endif
 

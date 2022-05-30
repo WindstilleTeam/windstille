@@ -23,6 +23,8 @@
 #include "util/file_writer.hpp"
 #include "editor/timeline_object.hpp"
 
+namespace windstille {
+
 TimelineLayer::TimelineLayer(std::string const& name) :
   m_name(name),
   m_objects()
@@ -87,5 +89,7 @@ TimelineLayer::write(FileWriter& writer) const
   writer.end_collection();
   writer.end_object();
 }
+
+} // namespace windstille
 
 /* EOF */

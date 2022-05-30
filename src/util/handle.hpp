@@ -21,6 +21,8 @@
 
 #include <vector>
 
+namespace windstille {
+
 template<typename Data> class HandleManager;
 
 template<typename Data>
@@ -128,6 +130,8 @@ public:
     }
   }
 };
+
+} // namespace windstille
 
 #endif
 

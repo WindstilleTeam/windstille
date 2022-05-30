@@ -24,6 +24,8 @@
 #include "util/file_reader.hpp"
 #include "armature/mesh.hpp"
 
+namespace windstille {
+
 Model::Model(ReaderDocument const& doc, std::filesystem::path const& basedir,
              wstdisplay::TextureManager& texture_manager) :
   name(),
@@ -84,5 +86,7 @@ Model::apply(Armature* armature)
     (*i)->apply(armature);
   }
 }
+
+} // namespace windstille
 
 /* EOF */

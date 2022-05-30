@@ -47,6 +47,8 @@
 #ifndef HEADER_WINDSTILLE_APP_WINDSTILLE_MAIN_HPP
 #define HEADER_WINDSTILLE_APP_WINDSTILLE_MAIN_HPP
 
+namespace windstille {
+
 class WindstilleMain
 {
 public:
@@ -64,6 +66,8 @@ private:
   WindstilleMain (WindstilleMain const&);
   WindstilleMain& operator= (WindstilleMain const&);
 };
+
+} // namespace windstille
 
 #endif
 

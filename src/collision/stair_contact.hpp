@@ -23,6 +23,8 @@
 
 #include <geom/geom.hpp>
 
+namespace windstille {
+
 class TileMap;
 
 /** A special contact to walk stairs up or down */
@@ -63,6 +65,8 @@ private:
   StairContact (StairContact const&);
   StairContact& operator= (StairContact const&);
 };
+
+} // namespace windstille
 
 #endif
 

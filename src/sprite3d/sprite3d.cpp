@@ -28,6 +28,8 @@
 #include "sprite3d/manager.hpp"
 #include "sprite3d/sprite3d_drawable.hpp"
 
+namespace windstille {
+
 using namespace sprite3d;
 
 Sprite3D::Sprite3D() :
@@ -426,5 +428,7 @@ Sprite3D::set_blend_func(GLenum sfactor, GLenum dfactor)
   blend_sfactor = sfactor;
   blend_dfactor = dfactor;
 }
+
+} // namespace windstille
 
 /* EOF */

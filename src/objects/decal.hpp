@@ -26,6 +26,8 @@
 
 #include "engine/game_object.hpp"
 
+namespace windstille {
+
 class Decal : public GameObject
 {
 private:
@@ -45,6 +47,8 @@ private:
   Decal(Decal const&);
   Decal& operator=(Decal const&);
 };
+
+} // namespace windstille
 
 #endif
 

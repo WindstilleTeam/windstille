@@ -25,6 +25,8 @@
 #include "tile/tile_map.hpp"
 #include <wstdisplay/texture_manager.hpp>
 
+namespace windstille {
+
 LaserPointer::LaserPointer() :
   noise(),
   laserpointer(),
@@ -161,5 +163,7 @@ LaserPointer::set_angle(float a)
 {
   angle = a;
 }
+
+} // namespace windstille
 
 /* EOF */

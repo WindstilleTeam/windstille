@@ -31,7 +31,10 @@
 #include "navigation/node.hpp"
 #include "util/file_writer.hpp"
 #include "util/file_reader.hpp"
-
+
+namespace windstille {
+
+
 NavigationGraph::NavigationGraph() :
   nodes(),
   edges()
@@ -410,5 +413,8 @@ NavigationGraph::valid(Node* node)
   // FIXME: Slow
   return std::find(nodes.begin(), nodes.end(), node) != nodes.end();
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

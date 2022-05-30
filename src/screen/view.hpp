@@ -24,11 +24,13 @@
 
 #include "engine/camera.hpp"
 #include "util/currenton.hpp"
-
+
 namespace wstinput {
 class Controller;
 } // namespace wstinput
-
+
+namespace windstille {
+
 /** This class is the gui component which renders the world to the
     screen */
 class View : public Currenton<View>
@@ -53,7 +55,10 @@ public:
   void draw(wstdisplay::SceneContext& sc, Sector& sector);
   void update(float delta);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

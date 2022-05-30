@@ -21,6 +21,8 @@
 
 #include <assert.h>
 
+namespace windstille {
+
 /**
  *   A 'Currenton' allows access to the currently active instance of a
  *   class via the static current() function. It is kind of like a
@@ -43,6 +45,8 @@ public:
 };
 
 template<class C> C* Currenton<C>::s_current = nullptr;
+
+} // namespace windstille
 
 #endif
 

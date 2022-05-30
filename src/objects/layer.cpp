@@ -23,6 +23,8 @@
 #include "engine/sector.hpp"
 #include "engine/script_manager.hpp"
 
+namespace windstille {
+
 Layer::Layer(ReaderMapping const& reader) :
   objects(),
   new_objects()
@@ -103,5 +105,7 @@ Layer::update (float delta)
 
   commit_removes();
 }
+
+} // namespace windstille
 
 /* EOF */

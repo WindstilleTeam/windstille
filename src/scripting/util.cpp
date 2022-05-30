@@ -31,7 +31,7 @@
 #include "scripting/util.hpp"
 
 namespace Scripting {
-
+
 std::string sq_to_lisp_string(std::string sq_str)
 {
   for (unsigned i = 0; i != sq_str.size(); ++i)
@@ -42,7 +42,8 @@ std::string sq_to_lisp_string(std::string sq_str)
 
   return sq_str;
 }
-
+
+
 void sq_to_lisp(HSQUIRRELVM v, std::vector<sexp::Value>& entries)
 {
   switch(sq_gettype(v, -1))
@@ -81,7 +82,8 @@ void sq_to_lisp(HSQUIRRELVM v, std::vector<sexp::Value>& entries)
       break;
   }
 }
-
+
+
 void table_to_lisp(HSQUIRRELVM v, int idx, std::vector<sexp::Value>& entries)
 {
   SQObjectType type = sq_gettype(v, idx);
@@ -131,7 +133,8 @@ void table_to_lisp(HSQUIRRELVM v, int idx, std::vector<sexp::Value>& entries)
     sq_pop(v, 2);
   }
 }
-
+
+
 std::string squirrel2string(HSQUIRRELVM v, int i)
 {
   std::ostringstream os;
@@ -241,7 +244,8 @@ std::string squirrel2string(HSQUIRRELVM v, int i)
   }
   return os.str();
 }
-
+
+
 void print_squirrel_stack(HSQUIRRELVM v, std::string const& context)
 {
   if (context.empty())

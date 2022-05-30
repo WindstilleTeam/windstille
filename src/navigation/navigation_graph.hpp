@@ -30,6 +30,8 @@
 #include "util/file_writer.hpp"
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 class Edge;
 class EdgePosition;
 class FileReader;
@@ -83,10 +85,12 @@ public:
   }
 };
 
-
+
+
 typedef PointerHandle<Node> NodeHandle;
 typedef PointerHandle<Edge> EdgeHandle;
-
+
+
 class NavigationGraph
 {
 public:
@@ -146,7 +150,10 @@ private:
   NavigationGraph (NavigationGraph const&);
   NavigationGraph& operator= (NavigationGraph const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

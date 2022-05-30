@@ -21,6 +21,8 @@
 
 #include "engine/game_object.hpp"
 
+namespace windstille {
+
 class Layer : public GameObject
 {
 private:
@@ -48,6 +50,8 @@ private:
   Layer(Layer const&);
   Layer& operator=(Layer const&);
 };
+
+} // namespace windstille
 
 #endif
 

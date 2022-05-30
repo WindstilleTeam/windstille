@@ -21,7 +21,10 @@
 
 #include "sprite2d/sprite.hpp"
 #include "editor/object_model.hpp"
-
+
+namespace windstille {
+
+
 class SpriteObjectModel : public ObjectModel
 {
 private:
@@ -41,7 +44,10 @@ public:
 
   void add_to_scenegraph(wstdisplay::DrawableGroup& sg) override {}
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

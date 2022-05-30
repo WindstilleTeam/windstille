@@ -21,7 +21,10 @@
 
 #include <wstdisplay/graphic_context_state.hpp>
 #include "editor/tool.hpp"
-
+
+namespace windstille {
+
+
 /** */
 class ScrollTool : public Tool
 {
@@ -41,7 +44,10 @@ private:
   ScrollTool(ScrollTool const&);
   ScrollTool& operator=(ScrollTool const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

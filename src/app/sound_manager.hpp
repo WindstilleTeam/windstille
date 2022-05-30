@@ -27,6 +27,8 @@ namespace wstsound {
 class SoundManager;
 } // namespace wstsound
 
+namespace windstille {
+
 class Pathname;
 
 class SoundManager
@@ -62,6 +64,8 @@ private:
   SoundManager(SoundManager const&) = delete;
   SoundManager& operator=(SoundManager const&) = delete;
 };
+
+} // namespace windstille
 
 #endif
 

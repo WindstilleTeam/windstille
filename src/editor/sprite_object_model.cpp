@@ -22,6 +22,8 @@
 #include "util/pathname.hpp"
 #include <wstdisplay/scene_context.hpp>
 
+namespace windstille {
+
 SpriteObjectModel::SpriteObjectModel(std::string const& name_, glm::vec2 const& rel_pos_,
                                      std::string const& path_) :
   ObjectModel(name_, rel_pos_),
@@ -66,5 +68,8 @@ SpriteObjectModel::write(FileWriter& writer) const
   writer.write("path", path);
   writer.end_object();
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

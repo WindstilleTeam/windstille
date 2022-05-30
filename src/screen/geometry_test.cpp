@@ -31,6 +31,8 @@
 #include <surf/color.hpp>
 #include <wstdisplay/graphics_context.hpp>
 
+namespace windstille {
+
 GeometryTest::GeometryTest()
   : line1(glm::vec2(300, 300),
           glm::vec2(500, 300)),
@@ -127,5 +129,7 @@ GeometryTest::update(float delta, wstinput::Controller const& controller)
     collision_point = glm::vec2(32, 32);
   }
 }
+
+} // namespace windstille
 
 /* EOF */

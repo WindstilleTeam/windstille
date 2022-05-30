@@ -29,6 +29,8 @@
 #include <wstdisplay/texture.hpp>
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 class Armature;
 class Bone;
 
@@ -103,6 +105,8 @@ private:
   Mesh (Mesh const&);
   Mesh& operator= (Mesh const&);
 };
+
+} // namespace windstille
 
 #endif
 

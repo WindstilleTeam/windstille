@@ -21,8 +21,11 @@
 
 #include "editor/object_model.hpp"
 
+namespace windstille {
+
 class ParticleSystem;
-
+
+
 class ParticleSystemObjectModel : public ObjectModel
 {
 private:
@@ -47,7 +50,10 @@ private:
   ParticleSystemObjectModel(ParticleSystemObjectModel const&);
   ParticleSystemObjectModel& operator=(ParticleSystemObjectModel const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

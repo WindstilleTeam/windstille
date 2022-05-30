@@ -22,6 +22,8 @@
 
 #include "util/pathname.hpp"
 
+using namespace windstille;
+
 namespace Scripting {
 
 SquirrelError::SquirrelError(HSQUIRRELVM v, Pathname const& path, std::string const& message_) throw() :

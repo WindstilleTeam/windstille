@@ -32,6 +32,8 @@
 #include "tile/tile_map.hpp"
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 SectorBuilder::SectorBuilder(Pathname const& filename, Sector& sector) :
   m_filename(filename),
   m_sector(sector),
@@ -242,5 +244,7 @@ SectorBuilder::parse_navgraph(ReaderMapping const& reader)
     }
   }
 }
+
+} // namespace windstille
 
 /* EOF */

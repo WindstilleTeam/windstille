@@ -22,7 +22,10 @@
 #include <functional>
 
 #include "editor/command.hpp"
-
+
+namespace windstille {
+
+
 class FunctorCommand : public Command
 {
 private:
@@ -48,7 +51,10 @@ private:
   FunctorCommand(FunctorCommand const&);
   FunctorCommand& operator=(FunctorCommand const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

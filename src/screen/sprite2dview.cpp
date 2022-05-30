@@ -30,11 +30,13 @@
 #include <wstdisplay/surface_manager.hpp>
 #include "util/directory.hpp"
 
+namespace windstille {
+
 extern std::vector<std::string> arg_files;
 
-#define DISPLAY_W 800
-#define DISPLAY_H 600
-
+int const DISPLAY_W = 800;
+int const DISPLAY_H = 600;
+
 Sprite2DView::Sprite2DView()
   : sc(),
     directory(),
@@ -418,5 +420,8 @@ Sprite2DView::set_sprite(Pathname const& filename)
   sprite = g_app.sprite().create(filename);
   ignore_delta = true;
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

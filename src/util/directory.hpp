@@ -22,6 +22,8 @@
 #include <vector>
 #include <string>
 
+namespace windstille {
+
 class Pathname;
 
 class Directory
@@ -43,6 +45,8 @@ private:
   Directory(Directory const&);
   Directory& operator=(Directory const&);
 };
+
+} // namespace windstille
 
 #endif
 

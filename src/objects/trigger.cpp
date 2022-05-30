@@ -23,6 +23,8 @@
 #include "engine/sector.hpp"
 #include "objects/player.hpp"
 
+namespace windstille {
+
 Trigger::Trigger(ReaderMapping const& props) :
   area(),
   callback(),
@@ -87,5 +89,7 @@ Trigger::update(float /*delta*/)
   }
   last_trigger = true;
 }
+
+} // namespace windstille
 
 /* EOF */

@@ -37,6 +37,8 @@
 #include "particles/particle_system_drawable.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 ParticleViewer::ParticleViewer()
   : compositor(g_app.window().get_size(), g_app.window().get_gc().size()),
     sc(),
@@ -129,5 +131,7 @@ ParticleViewer::update(float delta, wstinput::Controller const& controller)
     MenuManager::display_pause_menu();
   }
 }
+
+} // namespace windstille
 
 /* EOF */

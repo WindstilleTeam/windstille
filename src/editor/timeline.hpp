@@ -25,6 +25,8 @@
 #include <glm/glm.hpp>
 #include "util/file_writer.hpp"
 
+namespace windstille {
+
 class Timeline
 {
 public:
@@ -64,6 +66,8 @@ private:
   Timeline(Timeline const&);
   Timeline& operator=(Timeline const&);
 };
+
+} // namespace windstille
 
 #endif
 

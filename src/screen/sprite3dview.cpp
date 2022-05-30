@@ -34,6 +34,8 @@
 #include "sprite3d/manager.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 Sprite3DView::Sprite3DView() :
   m_compositor(g_app.window().get_size(), g_app.window().get_gc().size()),
   m_sc(),
@@ -167,5 +169,7 @@ Sprite3DView::handle_event(SDL_Event const& )
 {
 
 }
+
+} // namespace windstille
 
 /* EOF */

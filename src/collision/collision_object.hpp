@@ -27,6 +27,8 @@
 
 #include "collision/collision_data.hpp"
 
+namespace windstille {
+
 class TileMap;
 class CollisionEngine;
 class GameObject;
@@ -135,6 +137,8 @@ private:
   CollisionObject(CollisionObject const&);
   CollisionObject& operator=(CollisionObject const&);
 };
+
+} // namespace windstille
 
 #endif
 

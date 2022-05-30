@@ -25,6 +25,8 @@
 #include "sprite3d/sprite3d.hpp"
 #include <glm/glm.hpp>
 
+namespace windstille {
+
 class TestObject : public GameObject
 {
 public:
@@ -55,6 +57,8 @@ private:
   std::vector<AttachedSprite> attached_sprites;
   glm::vec2 pos;
 };
+
+} // namespace windstille
 
 #endif
 

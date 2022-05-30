@@ -24,6 +24,8 @@
 #include "engine/entity.hpp"
 #include "sprite2d/sprite.hpp"
 
+namespace windstille {
+
 /** Can represent any generic object that the player may see or interact with that
     does not require collision physics or specialized C++ code. For example doors, trains,
     signs, objects you can pick up, and animations.
@@ -67,6 +69,8 @@ public:
   void move_to(float x, float y, float arg_target_speed, float arg_acceleration);
   void start_flash(float speed);
 };
+
+} // namespace windstille
 
 #endif
 

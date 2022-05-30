@@ -25,7 +25,10 @@
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
 #define SAMPLES 5
-
+
+namespace windstille {
+
+
 Liquid::Liquid(ReaderMapping const& props) :
   texture(),
   t(),
@@ -161,5 +164,8 @@ Liquid::update_scene_graph()
     }
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

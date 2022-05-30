@@ -21,6 +21,8 @@
 
 #include "math/random.hpp"
 
+namespace windstille {
+
 class Randomizer
 {
 public:
@@ -78,6 +80,8 @@ public:
     p.y = y1 + (y2-y1) * l;
   }
 };
+
+} // namespace windstille
 
 #endif
 

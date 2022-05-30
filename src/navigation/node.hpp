@@ -25,6 +25,8 @@
 
 #include "navigation/edge_position.hpp"
 
+namespace windstille {
+
 class Node
 {
 private:
@@ -52,6 +54,8 @@ private:
   Node(Node const&);
   Node& operator=(Node const&);
 };
+
+} // namespace windstille
 
 #endif
 

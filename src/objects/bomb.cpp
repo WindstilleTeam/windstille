@@ -21,6 +21,8 @@
 #include "objects/bomb.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 Bomb::Bomb(int x, int y) :
   sprite(g_app.sprite().create(Pathname("images/bomb.sprite"))),
   explo(g_app.sprite().create(Pathname("images/explo.sprite"))),
@@ -94,5 +96,7 @@ void
 Bomb::explode()
 {
 }
+
+} // namespace windstille
 
 /* EOF */

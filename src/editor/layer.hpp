@@ -22,10 +22,14 @@
 #include <gtkmm/treemodel.h>
 
 #include "editor/selection.hpp"
-
+
+namespace windstille {
+
+
 class Layer;
 typedef std::shared_ptr<Layer> LayerHandle;
-
+
+
 class Layer
 {
 private:
@@ -88,7 +92,10 @@ private:
   Layer(Layer const&);
   Layer& operator=(Layer const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

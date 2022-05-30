@@ -23,6 +23,8 @@
 #include "util/pathname.hpp"
 #include "sprite3d/manager.hpp"
 
+namespace windstille {
+
 VRDummy::VRDummy(ReaderMapping const& props) :
   sprite(),
   highlight(),
@@ -80,5 +82,7 @@ VRDummy::update(float delta)
 
   pos += velocity * delta;
 }
+
+} // namespace windstille
 
 /* EOF */

@@ -23,6 +23,8 @@
 #include "engine/script_manager.hpp"
 #include <wstdisplay/graphics_context.hpp>
 
+namespace windstille {
+
 namespace {
 
 /**
@@ -164,5 +166,7 @@ Camera::set_mode(Mode mode_)
 {
   mode = mode_;
 }
+
+} // namespace windstille
 
 /* EOF */

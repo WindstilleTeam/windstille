@@ -18,7 +18,10 @@
 
 #include "particles/particle_system.hpp"
 #include "editor/particle_system_object_model.hpp"
-
+
+namespace windstille {
+
+
 ParticleSystemObjectModel::ParticleSystemObjectModel(glm::vec2 const& pos) :
   ObjectModel("ParticleSystem", pos),
   systems()
@@ -57,5 +60,8 @@ void
 ParticleSystemObjectModel::write(FileWriter& /*writer*/) const
 {
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

@@ -23,6 +23,8 @@
 #include <wstdisplay/texture.hpp>
 #include "engine/game_object.hpp"
 
+namespace windstille {
+
 /** Simple class that generates a laser for pointing at objects */
 class LaserPointer : public GameObject
 {
@@ -47,6 +49,8 @@ private:
   LaserPointer (LaserPointer const&);
   LaserPointer& operator= (LaserPointer const&);
 };
+
+} // namespace windstille
 
 #endif
 

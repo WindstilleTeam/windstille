@@ -29,11 +29,15 @@
 #include "util/currenton.hpp"
 #include "scripting/wrapper.hpp"
 #include "scripting/util.hpp"
-
+
+namespace windstille {
+
+
 class SquirrelThread;
 class GameObject;
 class Pathname;
-
+
+
 /**
  * This class is responsible for managing all running squirrel threads
  * (called coroutines by others)
@@ -100,7 +104,10 @@ private:
   ScriptManager(ScriptManager const&);
   ScriptManager& operator=(ScriptManager const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

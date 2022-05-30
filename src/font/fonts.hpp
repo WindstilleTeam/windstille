@@ -23,6 +23,8 @@
 
 #include <wstdisplay/font/ttf_font.hpp>
 
+namespace windstille {
+
 class Fonts
 {
 public:
@@ -34,6 +36,8 @@ public:
   Fonts(wstdisplay::TTFFontManager& mgr);
   ~Fonts();
 };
+
+} // namespace windstille
 
 #endif
 

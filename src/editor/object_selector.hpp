@@ -30,6 +30,8 @@
 
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 class EditorWindow;
 
 class ObjectSelector : public Gtk::VBox
@@ -110,7 +112,10 @@ private:
   ObjectSelector(ObjectSelector const&);
   ObjectSelector& operator=(ObjectSelector const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

@@ -21,6 +21,8 @@
 
 #include "engine/entity.hpp"
 
+namespace windstille {
+
 class SwarmAgent
 {
 public:
@@ -62,6 +64,8 @@ private:
   Swarm (Swarm const&);
   Swarm& operator= (Swarm const&);
 };
+
+} // namespace windstille
 
 #endif
 

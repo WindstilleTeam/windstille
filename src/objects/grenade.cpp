@@ -23,6 +23,8 @@
 #include "sprite2d/manager.hpp"
 #include "sprite3d/manager.hpp"
 
+namespace windstille {
+
 Grenade::Grenade() :
   sprite(g_app.sprite3d().create(Pathname("models/objects/grenade/grenade.wsprite"))),
   physics(this),
@@ -57,5 +59,7 @@ Grenade::set_velocity(glm::vec2 const& velocity_)
 {
   velocity = velocity_;
 }
+
+} // namespace windstille
 
 /* EOF */

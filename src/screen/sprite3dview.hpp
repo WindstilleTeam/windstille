@@ -25,6 +25,8 @@
 #include "sprite3d/sprite3d.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 /**
  * A simple class to view 3d sprites and their different actions,
  * mostly usefull for debugging
@@ -56,6 +58,8 @@ private:
   Sprite3DView (Sprite3DView const&);
   Sprite3DView& operator= (Sprite3DView const&);
 };
+
+} // namespace windstille
 
 #endif
 

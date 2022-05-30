@@ -18,6 +18,10 @@
 
 #include "constants.hpp"
 
+namespace windstille {
+
 const float g_snap_threshold = 16.0f;
+
+} // namespace windstille
 
 /* EOF */

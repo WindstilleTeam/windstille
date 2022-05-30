@@ -22,6 +22,8 @@
 #include "sprite2d/sprite.hpp"
 #include "engine/game_object.hpp"
 
+namespace windstille {
+
 /** */
 class Bomb : public GameObject
 {
@@ -48,6 +50,8 @@ private:
   Bomb (Bomb const&);
   Bomb& operator= (Bomb const&);
 };
+
+} // namespace windstille
 
 #endif
 

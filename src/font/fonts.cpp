@@ -23,6 +23,8 @@
 
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 Fonts::Fonts(wstdisplay::TTFFontManager& mgr) :
   ttffont(mgr.create_font(Pathname("fonts/VeraMono.ttf"), 14, wstdisplay::BorderFontEffect(1, true))),
   vera12(mgr.create_font(Pathname("fonts/Vera.ttf"), 12, wstdisplay::BorderFontEffect(2, true))),
@@ -33,5 +35,7 @@ Fonts::Fonts(wstdisplay::TTFFontManager& mgr) :
 Fonts::~Fonts()
 {
 }
+
+} // namespace windstille
 
 /* EOF */

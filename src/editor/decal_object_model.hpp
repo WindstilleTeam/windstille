@@ -28,6 +28,8 @@
 #include "editor/control_point.hpp"
 #include "editor/object_model.hpp"
 
+namespace windstille {
+
 class DecalObjectModel : public ObjectModel
 {
 public:
@@ -98,6 +100,8 @@ public:
   void set_property(TimelineProperty property, float value) override;
   void set_property(TimelineProperty property, glm::vec2 const& value) override;
 };
+
+} // namespace windstille
 
 #endif
 

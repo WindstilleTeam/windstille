@@ -31,6 +31,8 @@
 #include "sprite2d/manager.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 DialogEntry::DialogEntry(std::string const& arg_character, std::string const& arg_text)
   : character(arg_character),
     text(arg_text)
@@ -43,7 +45,8 @@ ObjectiveEntry::ObjectiveEntry(std::string const& arg_name, std::string const& a
     complete(false)
 {
 }
-
+
+
 PDA::PDA()
   : pos(100.0f, 100.0f),
     background(),
@@ -235,5 +238,8 @@ PDA::generate_dialogs()
   }
   text_area->set_text(out.str());
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

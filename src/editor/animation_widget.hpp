@@ -35,6 +35,8 @@
 #include "editor/timeline_widget.hpp"
 #include "editor/timeline_layer_widget.hpp"
 
+namespace windstille {
+
 class EditorWindow;
 
 class AnimationWidget : public Gtk::VBox
@@ -73,6 +75,8 @@ private:
   AnimationWidget(AnimationWidget const&);
   AnimationWidget& operator=(AnimationWidget const&);
 };
+
+} // namespace windstille
 
 #endif
 

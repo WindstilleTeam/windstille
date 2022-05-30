@@ -23,6 +23,8 @@
 
 #include <glm/glm.hpp>
 
+namespace windstille {
+
 struct BezierPoint
 {
   glm::vec2 handle_left;
@@ -48,6 +50,8 @@ private:
   IpoCurve (IpoCurve const&);
   IpoCurve& operator= (IpoCurve const&);
 };
+
+} // namespace windstille
 
 #endif
 

@@ -18,6 +18,8 @@
 
 #include "app/controller_def.hpp"
 
+namespace windstille {
+
 wstinput::ControllerDescription get_windstille_controller_description()
 {
   wstinput::ControllerDescription desc;
@@ -61,5 +63,7 @@ wstinput::ControllerDescription get_windstille_controller_description()
 
   return desc;
 }
+
+} // namespace windstille
 
 /* EOF */

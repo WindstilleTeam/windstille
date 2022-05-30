@@ -22,6 +22,8 @@
 #include "engine/entity.hpp"
 #include "sprite2d/sprite.hpp"
 
+namespace windstille {
+
 class CollisionObject;
 
 class Elevator : public Entity
@@ -42,6 +44,8 @@ private:
   Elevator(Elevator const&);
   Elevator& operator=(Elevator const&);
 };
+
+} // namespace windstille
 
 #endif
 

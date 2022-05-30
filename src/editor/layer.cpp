@@ -20,7 +20,10 @@
 
 #include "editor/layer_manager_columns.hpp"
 #include "editor/sector_model.hpp"
-
+
+namespace windstille {
+
+
 Layer::Layer(SectorModel& sector) :
   m_sector(sector),
   objects(),
@@ -216,5 +219,8 @@ Layer::write(FileWriter& writer) const
     (*i)->write(writer);
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

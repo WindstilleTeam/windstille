@@ -26,7 +26,10 @@
 #include "editor/constants.hpp"
 #include "editor/editor_window.hpp"
 #include "util/file_reader.hpp"
-
+
+namespace windstille {
+
+
 ObjectModel::ObjectModel(std::string const& name_, glm::vec2 const& rel_pos_) :
   name(name_),
   rel_pos(rel_pos_),
@@ -376,5 +379,8 @@ ObjectModel::set_property(TimelineProperty property, glm::vec2 const& value)
       break;
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

@@ -24,7 +24,9 @@
 
 #include "sprite2d/sprite.hpp"
 #include "util/pathname.hpp"
-
+
+namespace windstille {
+
 /**
  * A simple class to view 3d sprites and their different actions,
  * mostly usefull for debugging
@@ -86,7 +88,9 @@ private:
   Sprite2DView (Sprite2DView const&);
   Sprite2DView& operator= (Sprite2DView const&);
 };
-
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

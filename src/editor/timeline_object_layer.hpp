@@ -26,6 +26,8 @@
 #include "editor/timeline_keyframe_object.hpp"
 #include "editor/object_model.hpp"
 
+namespace windstille {
+
 class TimelineObjectLayer : public TimelineLayer
 {
 protected:
@@ -58,7 +60,8 @@ private:
   TimelineObjectLayer(TimelineObjectLayer const&);
   TimelineObjectLayer& operator=(TimelineObjectLayer const&);
 };
-
+
+
 template<typename C>
 class TimelineObjectDataLayer : public TimelineObjectLayer
 {
@@ -178,6 +181,8 @@ public:
 };
 
 typedef std::shared_ptr<TimelineObjectLayer> TimelineObjectLayerHandle;
+
+} // namespace windstille
 
 #endif
 

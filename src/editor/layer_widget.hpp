@@ -23,6 +23,8 @@
 #include <gtkmm/grid.h>
 #include <gtkmm/togglebutton.h>
 
+namespace windstille {
+
 class LayerWidget : public Gtk::ToolItem
 {
 public:
@@ -44,6 +46,8 @@ private:
   LayerWidget(LayerWidget const&);
   LayerWidget& operator=(LayerWidget const&);
 };
+
+} // namespace windstille
 
 #endif
 

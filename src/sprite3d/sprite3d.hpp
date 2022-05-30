@@ -29,6 +29,8 @@
 
 #include "sprite3d/data.hpp"
 
+namespace windstille {
+
 namespace sprite3d {
 
 class Data;
@@ -157,6 +159,8 @@ private:
   GLenum blend_sfactor;
   GLenum blend_dfactor;
 };
+
+} // namespace windstille
 
 #endif
 

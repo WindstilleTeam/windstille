@@ -22,6 +22,8 @@
 
 #include "collision/collision_object.hpp"
 
+namespace windstille {
+
 Physics::Physics(Entity* entity_) :
   entity(entity_),
   mass(200.0),
@@ -108,5 +110,7 @@ Physics::update(float delta)
 
   force = glm::vec2(0, 0);
 }
+
+} // namespace windstille
 
 /* EOF */

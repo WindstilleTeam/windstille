@@ -18,7 +18,10 @@
 
 #ifndef HEADER_WINDSTILLE_EDITOR_SELECT_MASK_HPP
 #define HEADER_WINDSTILLE_EDITOR_SELECT_MASK_HPP
-
+
+namespace windstille {
+
+
 class SelectMask
 {
 private:
@@ -64,7 +67,10 @@ public:
     return mask;
   }
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

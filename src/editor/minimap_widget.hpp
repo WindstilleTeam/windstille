@@ -21,6 +21,8 @@
 
 #include <gtkmm/widget.h>
 
+namespace windstille {
+
 class MinimapWidget : public Gtk::Widget
 {
 private:
@@ -36,6 +38,8 @@ private:
   MinimapWidget(MinimapWidget const&);
   MinimapWidget& operator=(MinimapWidget const&);
 };
+
+} // namespace windstille
 
 #endif
 

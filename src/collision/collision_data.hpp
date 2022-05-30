@@ -24,6 +24,8 @@
 
 #include <glm/glm.hpp>
 
+namespace windstille {
+
 class CollisionObject;
 
 class CollisionData
@@ -75,6 +77,8 @@ inline std::ostream &operator<<(std::ostream &o, const CollisionData &r)
   o << "(" << r.direction.x << ", " << r.direction.y << ", " << r.col_time << ")";
   return o;
 }
+
+} // namespace windstille
 
 #endif
 

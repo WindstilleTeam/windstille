@@ -22,6 +22,8 @@
 #include "sprite2d/data.hpp"
 #include "sprite2d/sprite.hpp"
 
+namespace windstille {
+
 SpriteManager::SpriteManager(wstdisplay::SurfaceManager& surface_manager) :
   m_surface_manager(surface_manager),
   datas()
@@ -65,5 +67,7 @@ SpriteManager::cleanup()
     }
   }
 }
+
+} // namespace windstille
 
 /* EOF */

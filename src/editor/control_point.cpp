@@ -26,12 +26,15 @@
 #include "editor/control_point.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 ControlPointHandle
 ControlPoint::create(glm::vec2 const& pos)
 {
   return ControlPointHandle(new ControlPoint(g_app.surface().get(Pathname("editor/handle.png")), pos));
 }
-
+
+
 ControlPoint::ControlPoint(wstdisplay::SurfacePtr surface_, glm::vec2 const& pos_) :
   surface(surface_),
   pos(pos_),
@@ -79,5 +82,8 @@ ControlPoint::draw(wstdisplay::SceneContext& sc)
   //sc.control().fill_rect(rect, surf::Color(1.0f, 0.0f, 0.0f));
   sc.control().draw_control(surface, pos, 0.0f);
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

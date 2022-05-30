@@ -25,6 +25,8 @@
 #include "engine/game_object_handle.hpp"
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 class Sector;
 
 /**
@@ -111,6 +113,8 @@ private:
   GameObject (GameObject const&);
   GameObject& operator= (GameObject const&);
 };
+
+} // namespace windstille
 
 #endif
 

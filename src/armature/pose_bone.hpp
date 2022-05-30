@@ -23,6 +23,8 @@
 
 #include <glm/gtc/quaternion.hpp>
 
+namespace windstille {
+
 class PoseBone
 {
 public:
@@ -36,6 +38,8 @@ public:
       quat()
   {}
 };
+
+} // namespace windstille
 
 #endif
 

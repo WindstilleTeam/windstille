@@ -26,6 +26,8 @@
 #include "timeline_handles.hpp"
 #include "util/file_writer.hpp"
 
+namespace windstille {
+
 class TimelineLayer
 {
 public:
@@ -66,6 +68,8 @@ private:
   TimelineLayer(TimelineLayer const&);
   TimelineLayer& operator=(TimelineLayer const&);
 };
+
+} // namespace windstille
 
 #endif
 

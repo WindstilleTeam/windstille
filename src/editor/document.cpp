@@ -36,6 +36,8 @@
 #include "editor/object_commands.hpp"
 #include "editor/timeline_commands.hpp"
 
+namespace windstille {
+
 using namespace std::placeholders;
 
 Document::Document() :
@@ -604,5 +606,7 @@ Document::on_rows_reordered(Gtk::TreeModel::Path const& path, Gtk::TreeModel::it
 {
   m_sig_on_change();
 }
+
+} // namespace windstille
 
 /* EOF */

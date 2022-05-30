@@ -26,6 +26,8 @@
 #include "editor/selection.hpp"
 #include <glm/glm.hpp>
 
+namespace windstille {
+
 class NavigationGraph;
 class NavGraphEdgeObjectModel;
 class NavGraphNodeObjectModel;
@@ -71,6 +73,8 @@ private:
   NavigationGraphModel(NavigationGraphModel const&);
   NavigationGraphModel& operator=(NavigationGraphModel const&);
 };
+
+} // namespace windstille
 
 #endif
 

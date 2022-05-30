@@ -23,6 +23,8 @@
 
 #include "engine/game_object.hpp"
 
+namespace windstille {
+
 /** */
 class Trigger : public GameObject
 {
@@ -42,6 +44,8 @@ public:
   void draw (wstdisplay::SceneContext& gc) override;
   void update (float delta) override;
 };
+
+} // namespace windstille
 
 #endif
 

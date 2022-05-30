@@ -26,6 +26,8 @@
 #include <wstdisplay/texture_manager.hpp>
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
+namespace windstille {
+
 Mesh::Mesh(ReaderMapping const& reader, std::filesystem::path const& basedir,
            wstdisplay::TextureManager& texture_manager) :
   name(),
@@ -254,5 +256,7 @@ Mesh::reset()
     i->render_pos = i->pos;
   }
 }
+
+} // namespace windstille
 
 /* EOF */

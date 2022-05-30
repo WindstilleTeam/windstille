@@ -26,6 +26,8 @@
 
 #include "navigation/navigation_graph.hpp"
 
+namespace windstille {
+
 class NavigationGraph;
 class EdgePosition;
 class Edge;
@@ -59,6 +61,8 @@ private:
   NavigationTest (NavigationTest const&);
   NavigationTest& operator= (NavigationTest const&);
 };
+
+} // namespace windstille
 
 #endif
 

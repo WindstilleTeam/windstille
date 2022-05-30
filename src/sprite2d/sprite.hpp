@@ -29,6 +29,8 @@
 
 #include "sprite2d/manager.hpp"
 
+namespace windstille {
+
 struct SpriteAction;
 
 class Sprite
@@ -105,6 +107,8 @@ public:
   /** true if the Sprite is valid and usable, false if not */
   explicit operator bool() const;
 };
+
+} // namespace windstille
 
 #endif
 

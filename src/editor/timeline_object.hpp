@@ -21,6 +21,8 @@
 
 #include <memory>
 
+namespace windstille {
+
 class TimelineObject
 {
 private:
@@ -38,6 +40,8 @@ private:
   TimelineObject(TimelineObject const&);
   TimelineObject& operator=(TimelineObject const&);
 };
+
+} // namespace windstille
 
 #endif
 

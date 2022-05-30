@@ -24,6 +24,8 @@
 
 #include "object_model.hpp"
 
+namespace windstille {
+
 class SectorModel;
 class FileReader;
 
@@ -45,6 +47,8 @@ private:
   SectorModelBuilder(SectorModelBuilder const&);
   SectorModelBuilder& operator=(SectorModelBuilder const&);
 };
+
+} // namespace windstille
 
 #endif
 

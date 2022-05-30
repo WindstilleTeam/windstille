@@ -21,6 +21,8 @@
 
 #include <glm/glm.hpp>
 
+namespace windstille {
+
 class Edge;
 class Node;
 
@@ -70,6 +72,8 @@ public:
 
   glm::vec2 get_pos() const;
 };
+
+} // namespace windstille
 
 #endif
 

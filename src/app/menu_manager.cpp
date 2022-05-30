@@ -44,6 +44,8 @@
 #include "screen/sprite3dview.hpp"
 #include "util/directory.hpp"
 
+namespace windstille {
+
 #ifdef HAVE_CWIID
 #  include "input/wiimote.hpp"
 #endif
@@ -103,7 +105,8 @@ MenuManager::display_option_menu()
 
   menu.show(g_app.screen());
 }
-
+
+
 void
 MenuManager::display_main_menu()
 {
@@ -144,7 +147,8 @@ MenuManager::display_main_menu()
 
   menu.show(g_app.screen());
 }
-
+
+
 void
 MenuManager::display_pause_menu()
 {
@@ -163,7 +167,8 @@ MenuManager::display_pause_menu()
 
   menu.show(g_app.screen());
 }
-
+
+
 void
 MenuManager::display_models_menu()
 {
@@ -190,7 +195,8 @@ MenuManager::display_models_menu()
 
   menu.show(g_app.screen());
 }
-
+
+
 void
 MenuManager::display_particle_menu()
 {
@@ -207,7 +213,8 @@ MenuManager::display_particle_menu()
 
   menu.show(g_app.screen());
 }
-
+
+
 void
 MenuManager::display_scenario_menu()
 {
@@ -229,7 +236,8 @@ MenuManager::display_scenario_menu()
 
   menu.show(g_app.screen());
 }
-
+
+
 void
 MenuManager::display_debug_menu()
 {
@@ -248,7 +256,8 @@ MenuManager::display_debug_menu()
 
   menu.show(g_app.screen());
 }
-
+
+
 void
 MenuManager::display_help()
 {
@@ -315,7 +324,8 @@ MenuManager::display_help()
 
   g_app.screen().push_overlay(std::move(manager));
 }
-
+
+
 void
 MenuManager::display_credits()
 {
@@ -357,7 +367,8 @@ MenuManager::display_credits()
   manager->get_root()->add_child(std::move(group));
   g_app.screen().push_overlay(std::move(manager));
 }
-
+
+
 geom::frect
 MenuManager::create_positioned_rect(glm::vec2 const& pos_, geom::fsize const& size)
 {
@@ -385,7 +396,8 @@ MenuManager::create_centered_rect(float w, float h)
                                (static_cast<float>(g_app.window().get_gc().size().height()) - h)/2.0f),
                      geom::fsize(w, h));
 }
-
+
+
 // Callbacks
 
 void
@@ -566,5 +578,7 @@ MenuManager::menu_sound_volume(int i)
   config.set_int("sound-volume", i);
   g_app.sound().set_sound_gain(static_cast<float>(i)/100.0f);
 }
+
+} // namespace windstille
 
 /* EOF */

@@ -21,6 +21,8 @@
 
 #include <vector>
 
+namespace windstille {
+
 /** */
 class ResponseCurve
 {
@@ -39,6 +41,8 @@ private:
   ResponseCurve (ResponseCurve const&);
   ResponseCurve& operator= (ResponseCurve const&);
 };
+
+} // namespace windstille
 
 #endif
 

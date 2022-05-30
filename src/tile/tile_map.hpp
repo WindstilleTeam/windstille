@@ -26,6 +26,8 @@
 #include "engine/game_object.hpp"
 #include <wstdisplay/scene_context.hpp>
 
+namespace windstille {
+
 class Tile;
 
 class TileMap : public GameObject
@@ -59,6 +61,8 @@ public:
       position were the ray collides with the tilemap */
   glm::vec2 raycast(glm::vec2 const& pos, float angle);
 };
+
+} // namespace windstille
 
 #endif
 

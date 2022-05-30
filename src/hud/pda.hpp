@@ -24,6 +24,8 @@
 
 #include "sprite2d/sprite.hpp"
 
+namespace windstille {
+
 class DialogEntry
 {
 public:
@@ -77,6 +79,8 @@ public:
   bool is_objective_given(std::string const& name);
   bool is_objective_complete(std::string const& name);
 };
+
+} // namespace windstille
 
 #endif
 

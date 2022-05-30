@@ -24,6 +24,8 @@
 #include "util/pathname.hpp"
 #include "sprite3d/manager.hpp"
 
+namespace windstille {
+
 TestObject::TestObject(ReaderMapping const& props) :
   sprite(),
   attached_sprites(),
@@ -113,5 +115,7 @@ TestObject::attach(std::string const& spritename,
   asprite.attachpoint = sprite.get_attachment_point_id(attachement_point);
   attached_sprites.push_back(asprite);
 }
+
+} // namespace windstille
 
 /* EOF */

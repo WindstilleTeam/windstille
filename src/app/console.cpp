@@ -30,6 +30,8 @@
 #include "screen/game_session.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 class ConsoleStreambuf : public std::streambuf
 {
 public:
@@ -602,5 +604,7 @@ Console::execute(std::string const& str)
 {
   impl->execute(str);
 }
+
+} // namespace windstille
 
 /* EOF */

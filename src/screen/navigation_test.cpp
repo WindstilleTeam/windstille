@@ -34,6 +34,8 @@
 #include "navigation/node.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 NavigationTest::NavigationTest()
   : cursor(400, 300),
     stick(),
@@ -271,5 +273,7 @@ NavigationTest::update(float delta, wstinput::Controller const& controller)
 
   old_player = player;
 }
+
+} // namespace windstille
 
 /* EOF */

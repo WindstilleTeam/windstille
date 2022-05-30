@@ -23,6 +23,8 @@
 #include "app/globals.hpp"
 #include "objects/scriptable_object.hpp"
 
+namespace windstille {
+
 ScriptableObject::ScriptableObject(ReaderMapping const& props) :
   sprite(),
   light(),
@@ -231,5 +233,7 @@ ScriptableObject::flash()
     light.set_alpha(alpha);
   }
 }
+
+} // namespace windstille
 
 /* EOF */

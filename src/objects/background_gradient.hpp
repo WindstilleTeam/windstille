@@ -23,6 +23,8 @@
 
 #include "engine/game_object.hpp"
 
+namespace windstille {
+
 class BackgroundGradient : public GameObject
 {
 private:
@@ -36,6 +38,8 @@ private:
   BackgroundGradient (BackgroundGradient const&);
   BackgroundGradient& operator= (BackgroundGradient const&);
 };
+
+} // namespace windstille
 
 #endif
 

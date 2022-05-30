@@ -21,6 +21,8 @@
 
 #include <glm/glm.hpp>
 
+namespace windstille {
+
 /** A Contact is a helper class that allows the player to either
     attach to other objects or move along them */
 class Contact
@@ -38,6 +40,8 @@ private:
   Contact (Contact const&);
   Contact& operator= (Contact const&);
 };
+
+} // namespace windstille
 
 #endif
 

@@ -21,7 +21,10 @@
 
 #include "properties/property_set.hpp"
 #include "properties/properties.hpp"
-
+
+namespace windstille {
+
+
 Properties::Properties(PropertySet* pset_, void* object_) :
   pset(pset_),
   object(object_)
@@ -63,5 +66,8 @@ Properties::get_properties() const
   pset->get_properties(lst);
   return lst;
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

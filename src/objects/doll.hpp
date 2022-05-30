@@ -25,15 +25,14 @@
 #include "engine/game_object.hpp"
 #include "util/currenton.hpp"
 
-class Sprite3DDrawable;
 namespace wstinput {
 class Controller;
 } // namespace wstinput
-class EdgePosition;
 
-namespace wstinput {
-class Controller;
-} // namespace wstinput
+namespace windstille {
+
+class Sprite3DDrawable;
+class EdgePosition;
 
 using Controller = wstinput::Controller;
 
@@ -104,6 +103,8 @@ private:
   Doll(Doll const&);
   Doll& operator=(Doll const&);
 };
+
+} // namespace windstille
 
 #endif
 

@@ -19,7 +19,10 @@
 #include <gtkmm/stock.h>
 
 #include "editor/about_window.hpp"
-
+
+namespace windstille {
+
+
 AboutWindow::AboutWindow()
 {
   //set_logo(0);
@@ -50,5 +53,8 @@ AboutWindow::AboutWindow()
 AboutWindow::~AboutWindow()
 {
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

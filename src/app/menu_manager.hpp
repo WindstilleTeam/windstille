@@ -21,8 +21,11 @@
 
 #include <geom/geom.hpp>
 
+namespace windstille {
+
 class Pathname;
-
+
+
 /**
  *  The MenuManager creates and displays the metagame menus (main,
  *  pause, options, ...) in Windstille. All the input redirection and
@@ -75,7 +78,10 @@ private:
   static void menu_gamma(int i);
   static void menu_wiimote();
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

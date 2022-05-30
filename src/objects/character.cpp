@@ -24,6 +24,8 @@
 #include "app/console.hpp"
 #include "sprite3d/manager.hpp"
 
+namespace windstille {
+
 Character::Character(ReaderMapping const& props) :
   sprite(),
   z_pos(100.0f)
@@ -78,5 +80,7 @@ Character::use()
     ConsoleLog << e.what() << std::endl;
   }
 }
+
+} // namespace windstille
 
 /* EOF */

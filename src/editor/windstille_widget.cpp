@@ -42,13 +42,16 @@
 #include "sprite2d/sprite.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 namespace {
 
 bool lib_init = false;
 
 } // namespace
 
-
+
+
 WindstilleWidget::WindstilleWidget(EditorWindow& editor_) :
   m_editor(editor_),
   m_gc(),
@@ -362,7 +365,8 @@ WindstilleWidget::mouse_up(GdkEventButton* ev)
 
   return false;
 }
-
+
+
 bool
 WindstilleWidget::key_press(GdkEventKey* ev)
 {
@@ -450,7 +454,8 @@ WindstilleWidget::key_release(GdkEventKey* ev)
   //std::cout << "KeyRelease: " << (int)ev->keyval << std::endl;
   return true;
 }
-
+
+
 bool
 WindstilleWidget::on_drag_drop(Glib::RefPtr<Gdk::DragContext> const& context, int x, int y, guint time)
 {
@@ -498,7 +503,8 @@ WindstilleWidget::on_drag_end(Glib::RefPtr<Gdk::DragContext> const& context)
 {
   std::cout << "WindstilleWidget: on_drag_end()" << std::endl;
 }
-
+
+
 void
 WindstilleWidget::on_zoom_in()
 {
@@ -579,7 +585,8 @@ WindstilleWidget::save_screenshot(std::string const& filename_)
   }
 #endif
 }
-
+
+
 void
 WindstilleWidget::load_file(std::string const& filename_)
 {
@@ -588,5 +595,8 @@ WindstilleWidget::load_file(std::string const& filename_)
   m_document->signal_on_change().connect(sigc::mem_fun(*this, &WindstilleWidget::on_document_change));
   on_document_change();
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

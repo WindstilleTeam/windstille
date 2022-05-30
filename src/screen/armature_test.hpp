@@ -27,6 +27,8 @@
 #include "armature/armature.hpp"
 #include "armature/model.hpp"
 
+namespace windstille {
+
 class ArmatureTest : public wstgui::Screen
 {
 private:
@@ -52,6 +54,8 @@ private:
   ArmatureTest (ArmatureTest const&);
   ArmatureTest& operator= (ArmatureTest const&);
 };
+
+} // namespace windstille
 
 #endif
 

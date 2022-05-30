@@ -22,7 +22,10 @@
 #include <vector>
 
 #include "editor/command.hpp"
-
+
+namespace windstille {
+
+
 class GroupCommand : public Command
 {
 private:
@@ -51,6 +54,9 @@ private:
   GroupCommand& operator=(GroupCommand const&);
 };
 
+} // namespace windstille
+
 #endif
-
+
+
 /* EOF */

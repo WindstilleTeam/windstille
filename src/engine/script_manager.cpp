@@ -31,6 +31,8 @@
 #include "scripting/game_objects.hpp"
 #include "scripting/squirrel_error.hpp"
 
+namespace windstille {
+
 #ifndef __clang__
 #  pragma GCC diagnostic ignored "-Wsuggest-attribute=format"
 #else
@@ -80,7 +82,8 @@ void errorfunc(HSQUIRRELVM, char const* str, ...)
 }
 
 } // namespace
-
+
+
 ScriptManager::ScriptManager() :
   squirrel_vms(),
   vm()
@@ -142,7 +145,8 @@ ScriptManager::~ScriptManager()
 
   sq_close(vm);
 }
-
+
+
 std::shared_ptr<SquirrelThread>
 ScriptManager::create_script(HSQUIRRELVM parent_vm, bool isolated)
 {
@@ -150,7 +154,8 @@ ScriptManager::create_script(HSQUIRRELVM parent_vm, bool isolated)
   squirrel_vms.push_back(std::shared_ptr<SquirrelThread>(new SquirrelThread(parent_vm, isolated)));
   return squirrel_vms.back();
 }
-
+
+
 std::shared_ptr<SquirrelThread>
 ScriptManager::run_script_file(Pathname const& filename, bool global)
 {
@@ -227,7 +232,8 @@ ScriptManager::run_script_file(Pathname const& filename, bool global)
     }
   }
 }
-
+
+
 void
 ScriptManager::update()
 {
@@ -265,7 +271,8 @@ ScriptManager::fire_wakeup_event(WakeupEvent event)
 {
   fire_wakeup_event(WakeupData(event));
 }
-
+
+
 void
 ScriptManager::remove_object_from_squirrel(std::shared_ptr<GameObject> object)
 {
@@ -292,7 +299,8 @@ ScriptManager::remove_object_from_squirrel(std::shared_ptr<GameObject> object)
   // pop objects and root table
   sq_pop(v, 2);
 }
-
+
+
 // tries to find out the "real" class of an gameobject by some dynamic casting
 // and creates a matching squirrel instance for that object
 static inline void create_squirrel_instance(HSQUIRRELVM v, std::shared_ptr<GameObject> object)
@@ -318,7 +326,8 @@ static inline void create_squirrel_instance(HSQUIRRELVM v, std::shared_ptr<GameO
 
   create_squirrel_instance(v, new Scripting::GameObject(object), true);
 }
-
+
+
 void
 ScriptManager::expose_object_to_squirrel(std::shared_ptr<GameObject> object)
 {
@@ -346,5 +355,8 @@ ScriptManager::expose_object_to_squirrel(std::shared_ptr<GameObject> object)
   // pop roottable and objects table
   sq_pop(v, 2);
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

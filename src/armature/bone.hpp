@@ -24,6 +24,8 @@
 
 #include <glm/gtc/quaternion.hpp>
 
+namespace windstille {
+
 class Bone
 {
 private:
@@ -52,6 +54,8 @@ private:
   Bone (Bone const&);
   Bone& operator= (Bone const&);
 };
+
+} // namespace windstille
 
 #endif
 

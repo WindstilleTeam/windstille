@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_EDITOR_TIMELINE_PROPERTIES_HPP
 #define HEADER_WINDSTILLE_EDITOR_TIMELINE_PROPERTIES_HPP
 
+namespace windstille {
+
 enum TimelineProperty
 {
   kPosition, // glm::vec2
@@ -26,6 +28,8 @@ enum TimelineProperty
   kRotation, // float
   kScale     // glm::vec2
 };
+
+} // namespace windstille
 
 #endif
 

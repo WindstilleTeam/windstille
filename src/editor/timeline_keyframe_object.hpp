@@ -23,6 +23,8 @@
 
 #include "util/file_writer.hpp"
 
+namespace windstille {
+
 class TimelineKeyframeObject : public TimelineObject
 {
 protected:
@@ -78,6 +80,8 @@ private:
   TimelineKeyframeDataObject(TimelineKeyframeDataObject const&);
   TimelineKeyframeDataObject& operator=(TimelineKeyframeDataObject const&);
 };
+
+} // namespace windstille
 
 #endif
 

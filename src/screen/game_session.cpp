@@ -39,7 +39,10 @@
 #include "objects/doll.hpp"
 #include "objects/player.hpp"
 #include "screen/view.hpp"
-
+
+namespace windstille {
+
+
 class GameSessionImpl
 {
 public:
@@ -129,7 +132,8 @@ private:
   GameSessionImpl (GameSessionImpl const&);
   GameSessionImpl& operator= (GameSessionImpl const&);
 };
-
+
+
 GameSession::GameSession(Pathname const& arg_filename)
   : impl(new GameSessionImpl())
 {
@@ -525,5 +529,8 @@ GameSession::get_scene_context()
 {
   return &(impl->sc);
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

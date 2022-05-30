@@ -31,6 +31,8 @@
 #include "armature/pose.hpp"
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
+namespace windstille {
+
 Armature::Armature(ReaderDocument const& doc) :
   name(),
   bones(),
@@ -206,5 +208,7 @@ Armature::reset()
     bone->render_matrix = glm::mat4_cast(bone->quat);
   }
 }
+
+} // namespace windstille
 
 /* EOF */

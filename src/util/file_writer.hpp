@@ -25,7 +25,11 @@
 #include <prio/writer.hpp>
 #include <geom/size.hpp>
 
+namespace windstille {
+
 using FileWriter = prio::Writer;
+
+} // namespace windstille
 
 namespace prio {
 

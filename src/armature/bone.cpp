@@ -18,6 +18,8 @@
 
 #include "armature/bone.hpp"
 
+namespace windstille {
+
 Bone::Bone() :
   name(),
   children_names(),
@@ -36,5 +38,7 @@ Bone::Bone() :
 Bone::~Bone()
 {
 }
+
+} // namespace windstille
 
 /* EOF */

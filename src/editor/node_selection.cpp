@@ -17,7 +17,10 @@
 */
 
 #include "editor/node_selection.hpp"
-
+
+namespace windstille {
+
+
 NodeSelection::NodeSelection() :
   nodes()
 {
@@ -26,5 +29,8 @@ NodeSelection::NodeSelection() :
 NodeSelection::~NodeSelection()
 {
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

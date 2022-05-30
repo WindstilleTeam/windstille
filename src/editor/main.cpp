@@ -38,7 +38,10 @@
 #include "sprite2d/manager.hpp"
 #include "sprite3d/manager.hpp"
 #include "util/system.hpp"
-
+
+namespace windstille {
+
+
 int
 WindstilleEditor::main(int argc, char** argv)
 {
@@ -132,11 +135,13 @@ WindstilleEditor::main(int argc, char** argv)
   }
   return 0;
 }
-
+
+} // namespace windstille
+
 int main(int argc, char** argv)
 {
-  WindstilleEditor app;
+  windstille::WindstilleEditor app;
   return app.main(argc, argv);
 }
-
+
 /* EOF */

@@ -18,4 +18,8 @@
 
 #include "engine/game_object.hpp"
 
+namespace windstille {
+
+} // namespace windstille
+
 /* EOF */

@@ -23,6 +23,8 @@
 
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 Pose::Pose(ReaderDocument const& doc) :
   name(),
   bones()
@@ -62,5 +64,7 @@ Pose::Pose(ReaderDocument const& doc) :
 Pose::~Pose()
 {
 }
+
+} // namespace windstille
 
 /* EOF */

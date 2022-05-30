@@ -22,6 +22,8 @@
 #include "sprite3d/sprite3d.hpp"
 #include "engine/weapon.hpp"
 
+namespace windstille {
+
 class LaserPointer;
 
 class Pistol : public Weapon
@@ -45,6 +47,8 @@ private:
   Pistol(Pistol const&);
   Pistol& operator=(Pistol const&);
 };
+
+} // namespace windstille
 
 #endif
 

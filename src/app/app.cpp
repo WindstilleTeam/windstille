@@ -22,6 +22,8 @@
 
 #include <wstsound/sound_manager.hpp>
 
+namespace windstille {
+
 App g_app;
 
 App::App() :
@@ -115,5 +117,7 @@ App::screen() const
   assert(m_screen_manager != nullptr);
   return *m_screen_manager;
 }
+
+} // namespace windstille
 
 /* EOF */

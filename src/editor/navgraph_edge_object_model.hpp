@@ -24,6 +24,8 @@
 #include "navigation/navigation_graph.hpp"
 #include "editor/object_model.hpp"
 
+namespace windstille {
+
 class NavGraphNodeObjectModel;
 
 class NavGraphEdgeObjectModel : public ObjectModel
@@ -55,6 +57,8 @@ private:
   NavGraphEdgeObjectModel(NavGraphEdgeObjectModel const&);
   NavGraphEdgeObjectModel& operator=(NavGraphEdgeObjectModel const&);
 };
+
+} // namespace windstille
 
 #endif
 

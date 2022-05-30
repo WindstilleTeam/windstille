@@ -28,12 +28,16 @@
 #include <surf/color.hpp>
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
-
+
+namespace windstille {
+
+
 class FileReader;
 class Randomizer;
 struct Particle;
 class ParticleSystem;
-
+
+
 struct Particle
 {
   /** Position of the particle */
@@ -51,7 +55,8 @@ struct Particle
       isn't active and ready to respawn */
   float t;
 };
-
+
+
 class ParticleSystem
 {
 public:
@@ -201,7 +206,10 @@ private:
   ParticleSystem (ParticleSystem const&);
   ParticleSystem& operator= (ParticleSystem const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

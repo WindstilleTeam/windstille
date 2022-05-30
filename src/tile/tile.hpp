@@ -25,6 +25,8 @@
 
 #include <wstdisplay/texture.hpp>
 
+namespace windstille {
+
 enum TileType {
   TILE_EMPTY  = 0,
   TILE_SOLID  = (1 << 0),
@@ -67,6 +69,8 @@ private:
   Tile(Tile const&);
   Tile& operator=(Tile const&);
 };
+
+} // namespace windstille
 
 #endif
 

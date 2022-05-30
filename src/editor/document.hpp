@@ -27,6 +27,8 @@
 #include "editor/layer.hpp"
 #include "editor/timeline_properties.hpp"
 
+namespace windstille {
+
 class UndoManager;
 class SectorModel;
 class NavGraphNodeObjectModel;
@@ -156,6 +158,8 @@ private:
   Document(Document const&);
   Document& operator=(Document const&);
 };
+
+} // namespace windstille
 
 #endif
 

@@ -24,6 +24,8 @@
 
 #include "engine/entity.hpp"
 
+namespace windstille {
+
 class Liquid : public Entity
 {
 private:
@@ -52,6 +54,8 @@ private:
   Liquid (Liquid const&);
   Liquid& operator= (Liquid const&);
 };
+
+} // namespace windstille
 
 #endif
 

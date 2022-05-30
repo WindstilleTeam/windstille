@@ -19,7 +19,10 @@
 #include <glm/glm.hpp>
 #include "editor/windstille_widget.hpp"
 #include "editor/scroll_tool.hpp"
-
+
+namespace windstille {
+
+
 ScrollTool::ScrollTool() :
   orig_state(),
   orig_click(),
@@ -58,5 +61,8 @@ ScrollTool::mouse_up(GdkEventButton* event, WindstilleWidget& wst)
     wst.queue_draw();
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

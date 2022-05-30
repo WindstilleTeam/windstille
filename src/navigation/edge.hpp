@@ -25,6 +25,8 @@
 
 #include "navigation/properties.hpp"
 
+namespace windstille {
+
 class Node;
 
 class Edge
@@ -54,6 +56,8 @@ private:
   Edge (Edge const&);
   Edge& operator= (Edge const&);
 };
+
+} // namespace windstille
 
 #endif
 

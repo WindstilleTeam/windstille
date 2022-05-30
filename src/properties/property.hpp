@@ -19,7 +19,10 @@
 #ifndef HEADER_WINDSTILLE_PROPERTIES_PROPERTY_HPP
 #define HEADER_WINDSTILLE_PROPERTIES_PROPERTY_HPP
 
-
+namespace windstille {
+
+
+
 class Property
 {
 protected:
@@ -39,7 +42,8 @@ private:
   Property(Property const&);
   Property& operator=(Property const&);
 };
-
+
+
 template<class C>
 class PropertyImpl : public Property
 {
@@ -89,6 +93,8 @@ private:
   PropertyImpl(PropertyImpl const&);
   PropertyImpl& operator=(PropertyImpl const&);
 };
+
+} // namespace windstille
 
 #endif
 

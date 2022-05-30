@@ -21,7 +21,10 @@
 
 #include "editor/decal_object_model.hpp"
 #include "editor/control_point.hpp"
-
+
+namespace windstille {
+
+
 class DecalRotateControlPoint final : public ControlPoint
 {
 private:
@@ -43,7 +46,10 @@ private:
   DecalRotateControlPoint (DecalRotateControlPoint const&);
   DecalRotateControlPoint& operator= (DecalRotateControlPoint const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

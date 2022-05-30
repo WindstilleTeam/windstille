@@ -17,7 +17,10 @@
 */
 
 #include "editor/undo_manager.hpp"
-
+
+namespace windstille {
+
+
 UndoManager::UndoManager() :
   undo_stack(),
   redo_stack()
@@ -58,5 +61,8 @@ UndoManager::redo()
     undo_stack.push_back(cmd);
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

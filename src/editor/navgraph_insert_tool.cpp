@@ -27,7 +27,10 @@
 #include "editor/navigation_graph_model.hpp"
 #include "editor/navgraph_node_object_model.hpp"
 #include "editor/navgraph_edge_object_model.hpp"
-
+
+namespace windstille {
+
+
 NavgraphInsertTool::NavgraphInsertTool() :
   mouse_pos(),
   mode(NO_MODE),
@@ -274,5 +277,8 @@ NavgraphInsertTool::draw(wstdisplay::SceneContext& sc)
                            mouse_over_edge->get_rhs()->get_world_pos(), surf::Color(1,1,1));
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

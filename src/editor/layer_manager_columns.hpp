@@ -24,6 +24,8 @@
 
 #include "layer.hpp"
 
+namespace windstille {
+
 class LayerManagerColumns : public Gtk::TreeModel::ColumnRecord
 {
 private:
@@ -58,6 +60,8 @@ private:
     add(layer);
   }
 };
+
+} // namespace windstille
 
 #endif
 

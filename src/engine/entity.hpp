@@ -23,7 +23,10 @@
 
 #include "properties/properties.hpp"
 #include "engine/game_object.hpp"
-
+
+namespace windstille {
+
+
 /** A GameObject which has a position and some other properties which
     are shared among all/most things in the world */
 class Entity : public GameObject
@@ -72,7 +75,10 @@ private:
   Entity (Entity const&);
   Entity& operator= (Entity const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_ARMATURE_ACTION_HPP
 #define HEADER_WINDSTILLE_ARMATURE_ACTION_HPP
 
+namespace windstille {
+
 /** */
 class Action
 {
@@ -29,6 +31,8 @@ private:
   Action (Action const&);
   Action& operator= (Action const&);
 };
+
+} // namespace windstille
 
 #endif
 

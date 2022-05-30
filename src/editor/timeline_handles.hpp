@@ -21,6 +21,8 @@
 
 #include <memory>
 
+namespace windstille {
+
 class Timeline;
 class TimelineLayer;
 class TimelineObject;
@@ -30,6 +32,8 @@ typedef std::shared_ptr<Timeline>            TimelineHandle;
 typedef std::shared_ptr<TimelineLayer>       TimelineLayerHandle;
 typedef std::shared_ptr<TimelineObject>      TimelineObjectHandle;
 typedef std::shared_ptr<TimelineObjectLayer> TimelineObjectLayerHandle;
+
+} // namespace windstille
 
 #endif
 

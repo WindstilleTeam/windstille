@@ -21,6 +21,8 @@
 
 #include <stdint.h>
 
+namespace windstille {
+
 enum {
   WALKABLE = (1<<0),
   WALL     = (1<<1),
@@ -29,6 +31,8 @@ enum {
 };
 
 typedef uint32_t Properties;
+
+} // namespace windstille
 
 #endif
 

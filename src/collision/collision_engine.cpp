@@ -24,6 +24,8 @@
 #include "collision/collision_test.hpp"
 #include "tile/tile_map.hpp"
 
+namespace windstille {
+
 std::vector<geom::frect> tilemap_collision_list(TileMap *tilemap, geom::frect const& r, bool is_ground);
 
 /***********************************************************************
@@ -765,5 +767,7 @@ CollisionEngine::raycast(glm::vec2 const& pos, float angle)
 
   return glm::vec2(0, 0);
 }
+
+} // namespace windstille
 
 /* EOF */

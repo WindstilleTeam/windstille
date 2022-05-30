@@ -39,6 +39,8 @@
 #include "objects/trigger.hpp"
 #include "objects/vrdummy.hpp"
 
+namespace windstille {
+
 GameObjectHandle
 ObjectFactory::create(ReaderObject const& reader_obj)
 {
@@ -120,5 +122,7 @@ ObjectFactory::create(ReaderObject const& reader_obj)
     return GameObjectHandle();
   }
 }
+
+} // namespace windstille
 
 /* EOF */

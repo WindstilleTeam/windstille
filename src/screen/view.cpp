@@ -29,6 +29,8 @@
 #include "objects/player.hpp"
 #include "screen/view.hpp"
 
+namespace windstille {
+
 View::View()
   : state(g_app.window().get_gc().size().width(),
           g_app.window().get_gc().size().height()),
@@ -93,5 +95,7 @@ View::screen_to_world(glm::vec2 const& point)
 {
   return state.screen_to_world(point).as_vec();
 }
+
+} // namespace windstille
 
 /* EOF */

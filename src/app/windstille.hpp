@@ -21,6 +21,10 @@
 
 #define WINDSTILLE_VERSION "0.4.0"
 
+namespace windstille {
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

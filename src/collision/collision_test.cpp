@@ -20,6 +20,8 @@
 #include "collision/collision_test.hpp"
 #include <assert.h>
 
+namespace windstille {
+
 SweepResult simple_sweep_1d(float a, float aw, float av,
                             float b, float bw, float bv)
 {
@@ -52,5 +54,7 @@ SweepResult simple_sweep_1d(float a, float aw, float av,
   }
   return res;
 }
+
+} // namespace windstille
 
 /* EOF */

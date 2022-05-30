@@ -22,6 +22,8 @@
 #include "engine/entity.hpp"
 #include "sprite2d/sprite.hpp"
 
+namespace windstille {
+
 class SpiderMine : public Entity
 {
 private:
@@ -44,6 +46,8 @@ public:
   void draw (wstdisplay::SceneContext& sc) override;
   void die();
 };
+
+} // namespace windstille
 
 #endif
 

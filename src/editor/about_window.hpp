@@ -20,7 +20,10 @@
 #define HEADER_WINDSTILLE_EDITOR_ABOUT_WINDOW_HPP
 
 #include <gtkmm/aboutdialog.h>
-
+
+namespace windstille {
+
+
 class AboutWindow : public Gtk::AboutDialog
 {
 private:
@@ -33,7 +36,10 @@ private:
   AboutWindow(AboutWindow const&);
   AboutWindow& operator=(AboutWindow const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

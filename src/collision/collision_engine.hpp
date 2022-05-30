@@ -26,6 +26,8 @@
 
 #include "collision/collision_object.hpp"
 
+namespace windstille {
+
 class CollisionEngine
 {
 private:
@@ -61,6 +63,8 @@ private:
   void unstuck_tilemap(CollisionObject& a, CollisionObject& b, float delta);
   void unstuck_rect_rect(CollisionObject& a, CollisionObject& b, float delta);
 };
+
+} // namespace windstille
 
 #endif
 

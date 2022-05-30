@@ -25,7 +25,10 @@
 #include "editor/timeline.hpp"
 #include "editor/timeline_object_layer.hpp"
 #include "editor/timeline_properties.hpp"
-
+
+namespace windstille {
+
+
 class TimelineAddKeyframeCommand : public Command
 {
 private:
@@ -74,7 +77,8 @@ public:
     }
   }
 };
-
+
+
 class TimelineAddLayerCommand : public Command
 {
 private:
@@ -99,7 +103,10 @@ public:
     m_sector.get_timeline()->remove_layer(m_layer);
   }
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

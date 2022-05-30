@@ -3,6 +3,8 @@
 #include "util/pathname.hpp"
 #include "util/directory.hpp"
 
+using namespace windstille;
+
 int main(int argc, char** argv)
 {
   if (argc == 2)

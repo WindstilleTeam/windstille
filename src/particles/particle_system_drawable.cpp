@@ -20,6 +20,8 @@
 
 #include "particles/particle_system.hpp"
 
+namespace windstille {
+
 ParticleSystemDrawable::ParticleSystemDrawable(ParticleSystem const& particle_system)
   : Drawable(glm::vec2()),
     m_particle_system(particle_system)
@@ -32,5 +34,7 @@ ParticleSystemDrawable::render(wstdisplay::GraphicsContext& gc, unsigned int mas
 {
   m_particle_system.draw(gc);
 }
+
+} // namespace windstille
 
 /* EOF */

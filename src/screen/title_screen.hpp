@@ -23,6 +23,8 @@
 
 #include "sprite2d/sprite.hpp"
 
+namespace windstille {
+
 /** */
 class TitleScreen : public wstgui::Screen
 {
@@ -44,6 +46,8 @@ private:
   TitleScreen (TitleScreen const&);
   TitleScreen& operator= (TitleScreen const&);
 };
+
+} // namespace windstille
 
 #endif
 

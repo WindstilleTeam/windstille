@@ -31,11 +31,15 @@
 #include "editor/selection.hpp"
 #include "editor/timeline_handles.hpp"
 #include <glm/glm.hpp>
-
+
+namespace windstille {
+
+
 class NavigationGraphModel;
 class NavGraphNodeObjectModel;
 class NavGraphEdgeObjectModel;
-
+
+
 class SectorModel
 {
 private:
@@ -108,7 +112,10 @@ private:
   SectorModel(SectorModel const&);
   SectorModel& operator=(SectorModel const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

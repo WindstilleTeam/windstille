@@ -18,6 +18,7 @@
 #include "util/pathname.hpp"
 #include "util/system.hpp"
 
+using namespace windstille;
 using namespace wstdisplay;
 
 namespace {

@@ -38,6 +38,8 @@
 #include "tile/tile.hpp"
 #include "tile/tile_map.hpp"
 
+namespace windstille {
+
 static const int MAX_ENERGY = 16;
 static const float WALK_SPEED = 100.0;
 static const float RUN_SPEED = 256.0;
@@ -840,5 +842,7 @@ Player::set_pos(glm::vec2 pos_)
   Entity::set_pos(pos_);
   c_object->set_pos(pos_);
 }
+
+} // namespace windstille
 
 /* EOF */

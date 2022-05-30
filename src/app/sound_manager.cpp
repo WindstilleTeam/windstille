@@ -22,6 +22,8 @@
 
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 SoundManager::SoundManager() :
   m_manager(std::make_unique<wstsound::SoundManager>()),
   m_current_music(),
@@ -91,5 +93,7 @@ SoundManager::update(float delta)
 {
   m_manager->update(delta);
 }
+
+} // namespace windstille
 
 /* EOF */

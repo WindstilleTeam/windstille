@@ -32,10 +32,10 @@ class GameObject
 {
 #ifndef SCRIPTING_API
 protected:
-  std::weak_ptr< ::GameObject> object;
+  std::weak_ptr< windstille::GameObject> object;
 
 public:
-  GameObject(std::shared_ptr< ::GameObject > _object)
+  GameObject(std::shared_ptr< windstille::GameObject > _object)
     : object(_object)
   {}
   virtual ~GameObject()
@@ -54,15 +54,15 @@ class TestObject : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  TestObject(std::shared_ptr< ::GameObject > _object)
+  TestObject(std::shared_ptr< windstille::GameObject > _object)
     : GameObject(_object)
   {}
   ~TestObject() override
   {}
 
-  ::TestObject* obj() const
+  windstille::TestObject* obj() const
   {
-    return reinterpret_cast< ::TestObject* >(object.lock().get());
+    return reinterpret_cast< windstille::TestObject* >(object.lock().get());
   }
 #endif
 
@@ -79,15 +79,15 @@ class Player : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  Player(std::shared_ptr< ::GameObject > _player)
+  Player(std::shared_ptr< windstille::GameObject > _player)
     : GameObject(_player)
   {}
   ~Player() override
   {}
 
-  ::Player* obj() const
+  windstille::Player* obj() const
   {
-    return reinterpret_cast< ::Player*> (object.lock().get());
+    return reinterpret_cast< windstille::Player*> (object.lock().get());
   }
 #endif
 
@@ -100,15 +100,15 @@ class ScriptableObject : public GameObject
 {
 #ifndef SCRIPTING_API
 public:
-  ScriptableObject(std::shared_ptr< ::GameObject > _object)
+  ScriptableObject(std::shared_ptr< windstille::GameObject > _object)
     : GameObject(_object)
   {}
   ~ScriptableObject() override
   {}
 
-  ::ScriptableObject* obj() const
+  windstille::ScriptableObject* obj() const
   {
-    return reinterpret_cast< ::ScriptableObject*> (object.lock().get());
+    return reinterpret_cast< windstille::ScriptableObject*> (object.lock().get());
   }
 #endif
 

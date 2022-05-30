@@ -25,6 +25,8 @@
 #include <wstdisplay/software_surface.hpp>
 #include "tile/tile_factory.hpp"
 
+namespace windstille {
+
 TileDescription::TileDescription(ReaderMapping const& props) :
   ids(),
   colmap(),
@@ -80,5 +82,7 @@ TileDescription::load(TileFactory* factory)
     }
   }
 }
+
+} // namespace windstille
 
 /* EOF */

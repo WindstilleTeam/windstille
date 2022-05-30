@@ -23,7 +23,10 @@
 #include <map>
 
 #include "properties/property.hpp"
-
+
+namespace windstille {
+
+
 class PropertySet
 {
 private:
@@ -59,7 +62,10 @@ private:
   PropertySet(PropertySet const&);
   PropertySet& operator=(PropertySet const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

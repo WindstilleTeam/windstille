@@ -23,6 +23,8 @@
 #include "editor/app.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 DecalScaleControlPoint::DecalScaleControlPoint(DecalObjectModel* object_, float ctrl_angle_, glm::vec2 const& pos_,
                                                bool x_scale_, bool y_scale_) :
   ControlPoint(g_app.surface().get(Pathname("editor/scale_handle.png")), pos_),
@@ -79,5 +81,8 @@ DecalScaleControlPoint::draw(wstdisplay::SceneContext& sc)
   rect += offset;
   sc.control().draw_control(surface, pos, ctrl_angle);
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

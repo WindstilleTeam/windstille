@@ -29,7 +29,10 @@
 #include "editor/editor_window.hpp"
 #include "editor/sector_model.hpp"
 #include "editor/layer_manager_columns.hpp"
-
+
+namespace windstille {
+
+
 LayerManager::LayerManager(EditorWindow& editor_) :
   m_editor(editor_),
   label("Layer Manager", Gtk::ALIGN_START),
@@ -167,5 +170,8 @@ LayerManager::on_auto_lock(Glib::RefPtr<Gtk::ToggleAction> /*auto_lock*/)
 {
   on_cursor_changed();
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

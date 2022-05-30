@@ -24,6 +24,8 @@
 #include "editor/command.hpp"
 #include "editor/navigation_graph_model.hpp"
 
+namespace windstille {
+
 class NavGraphNodeAddCommand : public Command
 {
 private:
@@ -137,6 +139,8 @@ public:
       m_layer->add(m_edge);
   }
 };
+
+} // namespace windstille
 
 #endif
 

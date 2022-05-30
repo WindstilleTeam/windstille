@@ -27,6 +27,8 @@
 
 #include <wstdisplay/texture.hpp>
 
+namespace windstille {
+
 namespace sprite3d {
 
 struct Mesh;
@@ -156,6 +158,8 @@ struct Action
 };
 
 } // namespace sprite3d
+
+} // namespace windstille
 
 #endif
 

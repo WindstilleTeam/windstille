@@ -27,7 +27,10 @@
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "util/file_reader.cpp"
 #include "util/pathname.cpp"
-
+
+namespace windstille {
+
+
 SurfaceDrawer::SurfaceDrawer(wstdisplay::SurfacePtr surface_) :
   surface(surface_),
   blendfunc_src(),
@@ -69,7 +72,8 @@ static GLenum string2blendfunc(std::string const& str)
     return GL_ONE;
   }
 }
-
+
+
 SurfaceDrawer::SurfaceDrawer(ReaderMapping const& props,
                              wstdisplay::SurfaceManager& surface_manager) :
   surface(),
@@ -177,5 +181,8 @@ SurfaceDrawer::draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys)
 
   buffer->render(gc, ~0u);
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

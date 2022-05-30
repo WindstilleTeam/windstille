@@ -24,6 +24,8 @@
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 class SurfaceDrawer : public Drawer
 {
 private:
@@ -42,6 +44,8 @@ public:
 
   void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const override;
 };
+
+} // namespace windstille
 
 #endif
 

@@ -20,6 +20,8 @@
 
 #include <assert.h>
 
+namespace windstille {
+
 App g_app;
 
 App::App() :
@@ -57,5 +59,7 @@ App::sprite3d() const
   assert(m_sprite3d_manager != nullptr);
   return *m_sprite3d_manager;
 }
+
+} // namespace windstille
 
 /* EOF */

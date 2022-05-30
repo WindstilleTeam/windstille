@@ -25,6 +25,8 @@
 #include <wstdisplay/surface_manager.hpp>
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 SpriteData::SpriteData(std::filesystem::path const& filename,
                        wstdisplay::SurfaceManager& surface_manager) :
   actions()
@@ -169,5 +171,7 @@ SpriteData::parse_action(std::filesystem::path const& dir, ReaderMapping const& 
   }
   return action.release();
 }
+
+} // namespace windstille
 
 /* EOF */

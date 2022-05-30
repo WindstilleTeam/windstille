@@ -22,6 +22,8 @@
 #include <filesystem>
 #include <map>
 
+namespace windstille {
+
 class Sprite3D;
 
 namespace sprite3d {
@@ -43,6 +45,8 @@ private:
 };
 
 } // namespace sprite3d
+
+} // namespace windstille
 
 #endif
 

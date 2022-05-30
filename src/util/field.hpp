@@ -24,6 +24,8 @@
 
 #include <geom/size.hpp>
 
+namespace windstille {
+
 template<class T>
 class Field
 {
@@ -126,6 +128,8 @@ public:
   int get_height () const { return height; }
   geom::isize get_size() const { return {width, height}; }
 };
+
+} // namespace windstille
 
 #endif
 

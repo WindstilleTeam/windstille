@@ -27,6 +27,8 @@
 #include "particles/drawer.hpp"
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 class ParticleSystem;
 
 /**
@@ -53,6 +55,8 @@ private:
   DeformDrawer (DeformDrawer const&);
   DeformDrawer& operator= (DeformDrawer const&);
 };
+
+} // namespace windstille
 
 #endif
 

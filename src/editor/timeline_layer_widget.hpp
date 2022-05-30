@@ -23,6 +23,8 @@
 
 #include "editor/timeline.hpp"
 
+namespace windstille {
+
 class TimelineLayerWidget : public Gtk::DrawingArea
 {
 private:
@@ -39,6 +41,8 @@ private:
   TimelineLayerWidget(TimelineLayerWidget const&);
   TimelineLayerWidget& operator=(TimelineLayerWidget const&);
 };
+
+} // namespace windstille
 
 #endif
 

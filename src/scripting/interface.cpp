@@ -39,17 +39,18 @@
 #include "hud/speech_manager.hpp"
 #include "screen/game_session.hpp"
 
-namespace Scripting
-{
+using namespace windstille;
+
+namespace Scripting {
 
 void set_sector(std::string const& filename)
 {
-  GameSession::current()->change_sector(Pathname(filename));
+  windstille::GameSession::current()->change_sector(windstille::Pathname(filename));
 }
 
 void play_music(std::string const& musicfile)
 {
-  g_app.sound().play_music(Pathname(musicfile, Pathname::kDataPath));
+  g_app.sound().play_music(windstille::Pathname(musicfile, windstille::Pathname::kDataPath));
 }
 
 void stop_music(bool fade)
@@ -208,9 +209,9 @@ bool is_objective_complete(std::string const& name)
 
 void list_objects()
 {
-  const std::vector<std::shared_ptr< ::GameObject > >& objects = Sector::current()->get_objects();
+  const std::vector<std::shared_ptr< windstille::GameObject > >& objects = Sector::current()->get_objects();
 
-  for(std::vector<std::shared_ptr< ::GameObject > >::const_iterator i = objects.begin(); i != objects.end(); ++i)
+  for(std::vector<std::shared_ptr< windstille::GameObject > >::const_iterator i = objects.begin(); i != objects.end(); ++i)
   {
     if (!(*i)->get_name().empty())
       ConsoleLog << (*i)->get_name() << std::endl;

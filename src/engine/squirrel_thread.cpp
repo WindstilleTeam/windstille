@@ -23,6 +23,8 @@
 #include "app/globals.hpp"
 #include "scripting/squirrel_error.hpp"
 
+namespace windstille {
+
 using Scripting::SquirrelError;
 
 static SQInteger squirrel_read_char(SQUserPointer file)
@@ -36,7 +38,8 @@ static SQInteger squirrel_read_char(SQUserPointer file)
   else
     return c;
 }
-
+
+
 void
 SquirrelThread::create_thread()
 {
@@ -331,5 +334,8 @@ SquirrelThread::call(std::string const& function)
       std::cout << filename << ": Function '" << function << "' not found in roottable" << std::endl;
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

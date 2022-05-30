@@ -21,8 +21,11 @@
 
 #include <wstdisplay/fwd.hpp>
 
+namespace windstille {
+
 class ParticleSystem;
-
+
+
 // FIXME: Rename this to ParticleDrawer or move it into a "namespace particles"
 class Drawer
 {
@@ -30,7 +33,10 @@ public:
   virtual ~Drawer() {}
   virtual void draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) const =0;
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

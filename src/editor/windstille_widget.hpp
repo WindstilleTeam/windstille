@@ -45,12 +45,16 @@
 #include "editor/command.hpp"
 #include "editor/sector_model.hpp"
 #include "editor/document.hpp"
-
+
+namespace windstille {
+
+
 class Tool;
 class ScrollTool;
 class SectorModel;
 class EditorWindow;
-
+
+
 /** OpenGL drawing area into which the Windstille game will be
     embedded */
 class WindstilleWidget final : public Gtk::GLArea
@@ -138,7 +142,10 @@ private:
   WindstilleWidget (WindstilleWidget const&);
   WindstilleWidget& operator= (WindstilleWidget const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

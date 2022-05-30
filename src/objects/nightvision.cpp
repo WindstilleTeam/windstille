@@ -26,6 +26,8 @@
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 Nightvision::Nightvision(ReaderMapping const& props) :
   nightvision(g_app.sprite().create(Pathname("images/nightvision.sprite"))),
   noise(g_app.texture().get(Pathname("images/noise.png")))
@@ -130,5 +132,7 @@ void
 Nightvision::update(float )
 {
 }
+
+} // namespace windstille
 
 /* EOF */

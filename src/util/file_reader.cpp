@@ -19,11 +19,13 @@
 #include "util/file_reader.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
-
 #include <glm/glm.hpp>
 
 #include <surf/color.hpp>
+
 #include "util/file_reader.hpp"
+
+using namespace windstille;
 
 namespace prio {
 

@@ -23,6 +23,8 @@
 #include "util/pathname.hpp"
 #include "sprite2d/manager.hpp"
 
+namespace windstille {
+
 Hedgehog::Hedgehog(ReaderMapping const& props) :
   sprite(g_app.sprite().create(Pathname("images/hedgehog.sprite"))),
   die_sprite(g_app.sprite().create(Pathname("images/hedgehog_die1.sprite"))),
@@ -120,5 +122,7 @@ Hedgehog::die()
 {
   state = DYING;
 }
+
+} // namespace windstille
 
 /* EOF */

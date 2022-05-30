@@ -23,6 +23,8 @@
 
 #include "editor/timeline_object.hpp"
 
+namespace windstille {
+
 class TimelineAnimObject : public TimelineObject
 {
 private:
@@ -53,6 +55,8 @@ private:
   TimelineAnimObject(TimelineAnimObject const&);
   TimelineAnimObject& operator=(TimelineAnimObject const&);
 };
+
+} // namespace windstille
 
 #endif
 

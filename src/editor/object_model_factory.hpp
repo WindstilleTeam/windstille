@@ -20,10 +20,14 @@
 #define HEADER_WINDSTILLE_EDITOR_OBJECT_MODEL_FACTORY_HPP
 
 #include "editor/object_model.hpp"
-
+
+namespace windstille {
+
+
 class FileReader;
 class SectorModel;
-
+
+
 class ObjectModelFactory
 {
 public:
@@ -33,7 +37,10 @@ private:
   ObjectModelFactory(ObjectModelFactory const&);
   ObjectModelFactory& operator=(ObjectModelFactory const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

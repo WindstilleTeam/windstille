@@ -24,6 +24,8 @@
 #include "sprite2d/data.hpp"
 #include <wstdisplay/surface_drawing_parameters.hpp>
 
+namespace windstille {
+
 Sprite::Sprite() :
   data(),
   current_action(nullptr),
@@ -326,5 +328,7 @@ Sprite::get_size() const
 {
   return {get_width(), get_height()};
 }
+
+} // namespace windstille
 
 /* EOF */

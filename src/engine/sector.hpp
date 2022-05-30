@@ -31,6 +31,8 @@
 #include "util/currenton.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 class CollisionEngine;
 class Entity;
 class FileReader;
@@ -124,6 +126,8 @@ private:
   Sector (Sector const&);
   Sector& operator= (Sector const&);
 };
+
+} // namespace windstille
 
 #endif
 

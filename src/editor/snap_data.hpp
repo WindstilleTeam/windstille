@@ -18,7 +18,10 @@
 
 #ifndef HEADER_WINDSTILLE_EDITOR_SNAP_DATA_HPP
 #define HEADER_WINDSTILLE_EDITOR_SNAP_DATA_HPP
-
+
+namespace windstille {
+
+
 /**
  *  SnapData contains the offset that an object has to be moved by to
  *  'snap' to a neighbouring object or the grid. SnapData can be
@@ -68,7 +71,10 @@ public:
     }
   }
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

@@ -25,6 +25,8 @@
 
 #include "util/file_writer.hpp"
 
+namespace windstille {
+
 extern std::vector<std::string> arg_files;
 
 class ConfigValueBase
@@ -67,7 +69,8 @@ public:
 
   virtual void write(FileWriter& writer) =0;
 };
-
+
+
 template<class T>
 class ConfigValue : public ConfigValueBase
 {
@@ -119,7 +122,8 @@ inline std::ostream& operator<<(std::ostream &o, ConfigValueBase const& value)
 {
   return value.print(o);
 }
-
+
+
 class Config
 {
 private:
@@ -174,6 +178,8 @@ public:
 };
 
 extern Config config;
+
+} // namespace windstille
 
 #endif
 

@@ -26,6 +26,8 @@
 #include <wstdisplay/surface.hpp>
 #include <wstdisplay/surface_manager.hpp>
 
+namespace windstille {
+
 struct SpriteAction
 {
   typedef std::vector<wstdisplay::SurfacePtr> Surfaces;
@@ -62,6 +64,8 @@ public:
   typedef std::vector<SpriteAction*> Actions;
   Actions actions;
 };
+
+} // namespace windstille
 
 #endif
 

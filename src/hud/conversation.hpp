@@ -21,6 +21,8 @@
 
 #include <wstgui/screen.hpp>
 
+namespace windstille {
+
 /** Displays a list of text strings from which the user can select
     one, used to form multiple-choice dialogs */
 class Conversation : public wstgui::Screen,
@@ -58,6 +60,8 @@ public:
   int  get_selection() const;
   void show();
 };
+
+} // namespace windstille
 
 #endif
 

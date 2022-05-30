@@ -21,6 +21,8 @@
 #include "engine/sector.hpp"
 #include "collision/collision_engine.hpp"
 
+namespace windstille {
+
 Elevator::Elevator(ReaderMapping const& props) :
   size(),
   colobject(),
@@ -60,5 +62,7 @@ Elevator::update(float delta)
   sprite.update(delta);
   pos = colobject->get_pos();
 }
+
+} // namespace windstille
 
 /* EOF */

@@ -34,6 +34,8 @@
 #include "util/file_reader.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 using namespace wstdisplay;
 
 ObjectModelHandle
@@ -42,7 +44,8 @@ DecalObjectModel::create(std::string const& name_, glm::vec2 const& pos,
 {
   return ObjectModelHandle(new DecalObjectModel(name_, pos, path, type));
 }
-
+
+
 DecalObjectModel::DecalObjectModel(ReaderMapping const& reader) :
   ObjectModel(reader),
   path(),
@@ -205,7 +208,8 @@ DecalObjectModel::write(FileWriter& writer) const
   writer.write("vflip",   vflip);
   writer.end_object();
 }
-
+
+
 bool
 DecalObjectModel::is_at(glm::vec2 const& pos) const
 {
@@ -234,7 +238,8 @@ DecalObjectModel::is_at(glm::vec2 const& pos) const
     return false;
   }
 }
-
+
+
 void
 DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_points)
 {
@@ -269,7 +274,8 @@ DecalObjectModel::add_control_points(std::vector<ControlPointHandle>& control_po
   control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 2*glm::half_pi<float>(), get_world_pos() + quad2.p3.as_vec())));
   control_points.push_back(ControlPointHandle(new DecalRotateControlPoint(this, angle + 3*glm::half_pi<float>(), get_world_pos() + quad2.p4.as_vec())));
 }
-
+
+
 void
 DecalObjectModel::add_to_scenegraph(wstdisplay::DrawableGroup& sg)
 {
@@ -328,7 +334,8 @@ DecalObjectModel::sync()
       .set_angle(angle);
   }
 }
-
+
+
 void
 DecalObjectModel::get_property(TimelineProperty property, float& value_out) const
 {
@@ -388,7 +395,8 @@ DecalObjectModel::set_property(TimelineProperty property, glm::vec2 const& value
       break;
   }
 }
-
+
+
 void
 DecalObjectModel::set_world_pos(glm::vec2 const& p)
 {
@@ -409,5 +417,8 @@ DecalObjectModel::set_select_mask(SelectMask const& select_mask_)
   ObjectModel::set_select_mask(select_mask_);
   sync();
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

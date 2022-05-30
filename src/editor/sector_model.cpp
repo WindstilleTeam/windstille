@@ -39,9 +39,13 @@
 #include <wstdisplay/scenegraph/drawable_group.hpp>
 #include "util/file_reader.hpp"
 #include "util/pathname.hpp"
-
+
+namespace windstille {
+
+
 LayerManagerColumns* LayerManagerColumns::instance_ = nullptr;
-
+
+
 SectorModel::SectorModel(std::string const& filename) :
   nav_graph(new NavigationGraphModel(*this)),
   layer_tree(Gtk::ListStore::create(LayerManagerColumns::instance())),
@@ -170,7 +174,8 @@ SectorModel::remove(ObjectModelHandle const& object)
     (*i)->remove(object);
   }
 }
-
+
+
 SectorModel::Layers
 SectorModel::get_layers() const
 {
@@ -211,7 +216,8 @@ SectorModel::get_layer(Gtk::TreeModel::Path const& path) const
     return LayerHandle();
   }
 }
-
+
+
 LayerHandle
 SectorModel::get_layer(ObjectModelHandle const& object) const
 {
@@ -227,7 +233,8 @@ SectorModel::get_layer(ObjectModelHandle const& object) const
 
   return LayerHandle();
 }
-
+
+
 void
 SectorModel::draw(wstdisplay::SceneContext& sc, SelectMask const& layermask)
 {
@@ -240,7 +247,8 @@ SectorModel::draw(wstdisplay::SceneContext& sc, SelectMask const& layermask)
       (*i)->draw(sc, layermask);
   }
 }
-
+
+
 void
 SectorModel::update(float delta)
 {
@@ -252,7 +260,8 @@ SectorModel::update(float delta)
       (*i)->update(delta);
   }
 }
-
+
+
 ObjectModelHandle
 SectorModel::get_object_at(glm::vec2 const& pos, SelectMask const& layermask) const
 {
@@ -277,7 +286,8 @@ SectorModel::get_object_at(glm::vec2 const& pos, SelectMask const& layermask) co
 
   return ObjectModelHandle();
 }
-
+
+
 SelectionHandle
 SectorModel::get_selection(geom::frect const& rect, SelectMask const& layermask) const
 {
@@ -300,7 +310,8 @@ SectorModel::get_selection(geom::frect const& rect, SelectMask const& layermask)
 
   return selection;
 }
-
+
+
 LayerHandle
 SectorModel::get_layer(ObjectModelHandle object)
 {
@@ -391,7 +402,8 @@ SectorModel::write(FileWriter& writer) const
 
   writer.end_object();
 }
-
+
+
 struct PropSetFunctor
 {
   bool v;
@@ -460,7 +472,8 @@ SectorModel::rebuild_scene_graph(wstdisplay::DrawableGroup& sg)
     (*i)->add_to_scenegraph(sg);
   }
 }
-
+
+
 void
 SectorModel::on_row_changed(Gtk::TreeModel::Path const& path, Gtk::TreeModel::iterator const& iter)
 {
@@ -500,7 +513,8 @@ SectorModel::on_rows_reordered(Gtk::TreeModel::Path const& path, Gtk::TreeModel:
 {
   //std::cout << "LayerManager:on_row_reordered" << std::endl;
 }
-
+
+
 void
 SectorModel::delete_navgraph_edges(NavGraphNodeObjectModel& node)
 {
@@ -527,5 +541,8 @@ SectorModel::delete_navgraph_edges(NavGraphNodeObjectModel& node)
     }
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

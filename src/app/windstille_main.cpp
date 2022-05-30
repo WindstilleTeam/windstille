@@ -49,6 +49,8 @@
 #include "tile/tile_factory.hpp"
 #include "util/system.hpp"
 
+namespace windstille {
+
 using namespace wstdisplay;
 
 WindstilleMain::WindstilleMain()
@@ -274,10 +276,12 @@ WindstilleMain::init_modules()
     }
   }
 }
-
+
+} // namespace windstille
+
 int main(int argc, char** argv)
 {
-  return WindstilleMain().main(argc, argv);
+  return windstille::WindstilleMain().main(argc, argv);
 }
-
+
 /* EOF */

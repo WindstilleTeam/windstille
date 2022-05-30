@@ -20,6 +20,8 @@
 
 #include <sstream>
 
+#include <wstdisplay/scenegraph/navigation_graph_drawable.hpp>
+#include <wstdisplay/scenegraph/scene_graph.hpp>
 #include "app/app.hpp"
 #include "app/sound_manager.hpp"
 #include "collision/collision_engine.hpp"
@@ -28,10 +30,10 @@
 #include "navigation/navigation_graph.hpp"
 #include "objects/doll.hpp"
 #include "objects/player.hpp"
-#include <wstdisplay/scenegraph/navigation_graph_drawable.hpp>
-#include <wstdisplay/scenegraph/scene_graph.hpp>
 #include "tile/tile_map.hpp"
-
+
+namespace windstille {
+
 Sector::Sector(Pathname const& arg_filename) :
   collision_engine(new CollisionEngine()),
   navigation_graph(new NavigationGraph()),
@@ -70,11 +72,13 @@ Sector::Sector(Pathname const& arg_filename) :
 
   scene_graph->add_drawable(std::shared_ptr<wstdisplay::Drawable>(new wstdisplay::NavigationGraphDrawable(navigation_graph.get())));
 }
-
+
+
 Sector::~Sector()
 {
 }
-
+
+
 void
 Sector::activate()
 {
@@ -90,7 +94,8 @@ Sector::activate()
     vm = ScriptManager::current()->run_script_file(path);
   }
 }
-
+
+
 void
 Sector::draw(wstdisplay::SceneContext& sc)
 {
@@ -102,7 +107,8 @@ Sector::draw(wstdisplay::SceneContext& sc)
       (*i)->draw(sc);
   }
 }
-
+
+
 void Sector::commit_adds()
 {
   if (!new_objects.empty())
@@ -114,7 +120,8 @@ void Sector::commit_adds()
     new_objects.clear();
   }
 }
-
+
+
 void Sector::update(float delta)
 {
   commit_adds();
@@ -129,7 +136,8 @@ void Sector::update(float delta)
 
   commit_removes();
 }
-
+
+
 void
 Sector::commit_removes()
 {
@@ -152,7 +160,8 @@ Sector::commit_removes()
     ++i;
   }
 }
-
+
+
 void
 Sector::add(GameObjectHandle obj)
 {
@@ -163,7 +172,8 @@ Sector::add(GameObjectHandle obj)
     ScriptManager::current()->expose_object_to_squirrel(new_objects.back());
   }
 }
-
+
+
 GameObject*
 Sector::get_object(std::string const& name_) const
 {
@@ -177,7 +187,8 @@ Sector::get_object(std::string const& name_) const
 
   return nullptr;
 }
-
+
+
 int
 Sector::get_width () const
 {
@@ -186,7 +197,8 @@ Sector::get_width () const
   else
     return 2560;
 }
-
+
+
 int
 Sector::get_height () const
 {
@@ -195,31 +207,36 @@ Sector::get_height () const
   else
     return 1600;
 }
-
+
+
 geom::isize
 Sector::get_size() const
 {
   return {get_width(), get_height()};
 }
-
+
+
 void
 Sector::set_tilemap(TileMap* t)
 {
   interactive_tilemap = t;
 }
-
+
+
 void
 Sector::set_ambient_light(surf::Color const& color)
 {
   ambient_light = color;
 }
-
+
+
 surf::Color
 Sector::get_ambient_light() const
 {
   return ambient_light;
 }
-
+
+
 Pathname
 Sector::get_filename () const
 {
@@ -231,7 +248,8 @@ Sector::get_directory() const
 {
   return filename.get_dirname();
 }
-
+
+
 void
 Sector::call_script_function(std::string const& name_)
 {
@@ -251,5 +269,8 @@ Sector::call_script_function(std::string const& name_)
     }
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

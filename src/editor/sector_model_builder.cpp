@@ -30,6 +30,8 @@
 #include "util/file_reader.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 SectorModelBuilder::SectorModelBuilder(std::string const& filename, SectorModel& sector) :
   m_sector(sector),
   m_id_table(),
@@ -144,5 +146,7 @@ SectorModelBuilder::load_layer(ReaderMapping const& reader)
 
   layer->sync(*it);
 }
+
+} // namespace windstille
 
 /* EOF */

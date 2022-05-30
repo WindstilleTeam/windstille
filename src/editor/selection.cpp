@@ -23,7 +23,10 @@
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/selection.hpp"
-
+
+namespace windstille {
+
+
 Selection::Selection() :
   objects(),
   object_orig_pos(),
@@ -249,5 +252,8 @@ Selection::add_control_points(std::vector<ControlPointHandle>& control_points)
     }
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

@@ -4,6 +4,8 @@
 
 #include "util/response_curve.hpp"
 
+using namespace windstille;
+
 int main(int argc, char** argv)
 {
   if (argc != 2)

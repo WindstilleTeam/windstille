@@ -18,10 +18,14 @@
 
 #include "app/globals.hpp"
 
+namespace windstille {
+
 float game_time = 0.0f;
 
 float game_speed = 1.0f;
 
 bool collision_debug = false;
+
+} // namespace windstille
 
 /* EOF */

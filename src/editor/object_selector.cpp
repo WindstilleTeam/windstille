@@ -29,7 +29,10 @@
 #include "editor/windstille_widget.hpp"
 #include "editor/editor_window.hpp"
 #include "editor/object_selector.hpp"
-
+
+namespace windstille {
+
+
 class ObjectSelector::Columns : public Gtk::TreeModel::ColumnRecord
 {
 public:
@@ -62,7 +65,8 @@ private:
 };
 
 ObjectSelector::Columns* ObjectSelector::Columns::instance_ = nullptr;
-
+
+
 ObjectSelector::ObjectSelector(EditorWindow& editor_) :
   m_editor(editor_),
   label("Object Selector", Gtk::ALIGN_START),
@@ -315,5 +319,8 @@ ObjectSelector::on_drag_data_get(Glib::RefPtr<Gdk::DragContext> const& /*context
     }
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

@@ -26,6 +26,8 @@
 
 #include <wstdisplay/fwd.hpp>
 
+namespace windstille {
+
 class Sprite;
 class SpriteData;
 
@@ -48,6 +50,8 @@ private:
   typedef std::map<std::filesystem::path, SpriteDataPtr> Datas;
   Datas datas;
 };
+
+} // namespace windstille
 
 #endif
 

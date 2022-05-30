@@ -28,6 +28,8 @@
 #include "navigation/edge.hpp"
 #include "navigation/node.hpp"
 
+namespace windstille {
+
 EdgePosition::EdgePosition() :
   edge(nullptr),
   pos(0.0f)
@@ -121,5 +123,7 @@ EdgePosition::get_pos() const
 
   return p1 + pos*(p2 - p1);
 }
+
+} // namespace windstille
 
 /* EOF */

@@ -24,7 +24,10 @@
 #include <wstdisplay/assert_gl.hpp>
 #include <wstdisplay/blitter.hpp>
 #include <wstdisplay/software_surface.hpp>
-
+
+namespace windstille {
+
+
 class TilePackerImpl
 {
 public:
@@ -43,7 +46,8 @@ public:
       size()
   {}
 };
-
+
+
 TilePacker::TilePacker(geom::isize const& size) :
   impl(new TilePackerImpl())
 {
@@ -117,5 +121,8 @@ TilePacker::get_texture() const
 {
   return impl->texture;
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

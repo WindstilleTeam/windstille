@@ -20,6 +20,8 @@
 
 #include <assert.h>
 
+namespace windstille {
+
 ResponseCurve::ResponseCurve(float i_min_, float i_max_, std::vector<float> const& samples_)
   : i_min(i_min_),
     i_max(i_max_),
@@ -54,5 +56,7 @@ ResponseCurve::get(float v)
     return ((1.0f - t) * samples[bucket_index]) + (t * samples[bucket_index + 1]);
   }
 }
+
+} // namespace windstille
 
 /* EOF */

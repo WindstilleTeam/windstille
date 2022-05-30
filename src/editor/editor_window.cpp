@@ -59,7 +59,10 @@
 #include "editor/timeline_object.hpp"
 #include "editor/timeline_sound_object.hpp"
 #include "editor/timeline_widget.hpp"
-
+
+namespace windstille {
+
+
 EditorWindow::EditorWindow() :
   m_vbox(),
   m_sidebar_vbox(),
@@ -1187,5 +1190,8 @@ EditorWindow::print_coordinates(std::string const& text)
 {
   m_status_label.set_text(text);
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

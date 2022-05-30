@@ -21,7 +21,10 @@
 #include "engine/script_manager.hpp"
 #include "font/fonts.hpp"
 #include "hud/speech_manager.hpp"
-
+
+namespace windstille {
+
+
 class Speech
 {
 public:
@@ -38,7 +41,8 @@ public:
   void update(float delta);
   bool is_done() const;
 };
-
+
+
 Speech::Speech(int id_, std::string const& text_, glm::vec2 const& pos_, surf::Color const& color_)
   : id(id_),
     text(text_),
@@ -77,7 +81,8 @@ Speech::is_done() const
 {
   return seconds_passed > seconds_till_done;
 }
-
+
+
 SpeechManager::SpeechManager() :
   speeches(),
   speech_id(1)
@@ -143,5 +148,8 @@ SpeechManager::update(float delta)
   speeches.erase(std::remove(speeches.begin(), speeches.end(), static_cast<Speech*>(nullptr)),
                  speeches.end());
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

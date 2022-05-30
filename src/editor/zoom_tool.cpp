@@ -21,7 +21,10 @@
 #include <wstdisplay/scene_context.hpp>
 #include <surf/color.hpp>
 #include "editor/windstille_widget.hpp"
-
+
+namespace windstille {
+
+
 ZoomTool::ZoomTool() :
   click_pos(),
   mouse_pos(),
@@ -85,5 +88,8 @@ ZoomTool::draw(wstdisplay::SceneContext& sc)
     sc.control().draw_rect(rect, surf::Color(1.0f, 1.0f, 0.0f));
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

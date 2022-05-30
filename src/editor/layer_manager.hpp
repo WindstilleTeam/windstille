@@ -26,6 +26,8 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/uimanager.h>
 
+namespace windstille {
+
 class SectorModel;
 class EditorWindow;
 
@@ -56,6 +58,8 @@ private:
   LayerManager(LayerManager const&);
   LayerManager& operator=(LayerManager const&);
 };
+
+} // namespace windstille
 
 #endif
 

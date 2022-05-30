@@ -30,6 +30,8 @@
 #include "util/pathname.hpp"
 #include "sprite2d/manager.hpp"
 
+namespace windstille {
+
 class InventoryItem
 {
 public:
@@ -194,5 +196,7 @@ InventoryImpl::update(float delta, wstinput::Controller const& controller)
     }
   }
 }
+
+} // namespace windstille
 
 /* EOF */

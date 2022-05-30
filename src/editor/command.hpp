@@ -20,7 +20,10 @@
 #define HEADER_WINDSTILLE_EDITOR_COMMAND_HPP
 
 #include <memory>
-
+
+namespace windstille {
+
+
 class Command
 {
 private:
@@ -37,7 +40,10 @@ private:
 };
 
 typedef std::shared_ptr<Command> CommandHandle;
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

@@ -21,9 +21,13 @@
 
 #include <memory>
 
+namespace windstille {
+
 class GameObject;
 
 typedef std::shared_ptr<GameObject> GameObjectHandle;
+
+} // namespace windstille
 
 #endif
 

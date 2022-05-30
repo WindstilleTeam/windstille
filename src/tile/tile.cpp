@@ -18,6 +18,8 @@
 
 #include "tile/tile.hpp"
 
+namespace windstille {
+
 Tile::Tile(unsigned int arg_colmap) :
   id(),
   packer(-1),
@@ -27,5 +29,7 @@ Tile::Tile(unsigned int arg_colmap) :
   desc(nullptr)
 {
 }
+
+} // namespace windstille
 
 /* EOF */

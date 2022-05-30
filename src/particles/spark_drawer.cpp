@@ -21,7 +21,10 @@
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 #include "particles/particle_system.hpp"
 #include "particles/spark_drawer.hpp"
-
+
+namespace windstille {
+
+
 SparkDrawer::SparkDrawer(ReaderMapping const& props)
   : color(1.0f, 1.0f, 1.0f),
     width(1.0f),
@@ -92,5 +95,8 @@ SparkDrawer::draw(wstdisplay::GraphicsContext& gc, ParticleSystem const& psys) c
 
   buffer->render(gc, ~0u);
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

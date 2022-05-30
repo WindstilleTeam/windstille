@@ -21,7 +21,10 @@
 #include "util/file_reader.hpp"
 #include "editor/decal_object_model.hpp"
 #include "editor/object_model_factory.hpp"
-
+
+namespace windstille {
+
+
 ObjectModelHandle
 ObjectModelFactory::create(ReaderObject const& reader_obj)
 {
@@ -31,5 +34,8 @@ ObjectModelFactory::create(ReaderObject const& reader_obj)
     throw std::runtime_error("Unknown object type '" + reader_obj.get_name() + "'");
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

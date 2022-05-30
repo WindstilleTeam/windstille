@@ -33,6 +33,8 @@
 #include "editor/timeline_sound_object.hpp"
 #include "editor/timeline_keyframe_object.hpp"
 
+namespace windstille {
+
 AnimationWidget::AnimationWidget(EditorWindow& editor) :
   m_editor(editor),
   hadjustment(Gtk::Adjustment::create(50, 0, 100)),
@@ -179,5 +181,7 @@ AnimationWidget::on_export()
 {
 
 }
+
+} // namespace windstille
 
 /* EOF */

@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_APP_WEAPON_HPP
 #define HEADER_WINDSTILLE_APP_WEAPON_HPP
 
+namespace windstille {
+
 /**
  * Base class for all weapons. This is not a GameObject because it will be
  * attached and handled by the Player object, not by the sector
@@ -34,6 +36,8 @@ public:
 
   virtual void fire(bool enable) = 0;
 };
+
+} // namespace windstille
 
 #endif
 

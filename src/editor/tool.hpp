@@ -22,9 +22,13 @@
 #include <gdkmm.h>
 
 #include <wstdisplay/fwd.hpp>
-
+
+namespace windstille {
+
+
 class WindstilleWidget;
-
+
+
 class Tool
 {
 public:
@@ -43,7 +47,10 @@ private:
   Tool(Tool const&);
   Tool& operator=(Tool const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

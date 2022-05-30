@@ -24,6 +24,8 @@
 #include <glm/glm.hpp>
 #include "util/currenton.hpp"
 
+namespace windstille {
+
 /**
  * This class manages the virtual camera movement, it follows the
  * player, allows the player to watch around, might zoom out if
@@ -93,6 +95,8 @@ private:
   Camera (Camera const&);
   Camera& operator= (Camera const&);
 };
+
+} // namespace windstille
 
 #endif
 

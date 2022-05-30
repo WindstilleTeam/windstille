@@ -21,6 +21,8 @@
 
 #include "properties/property_set.hpp"
 
+namespace windstille {
+
 PropertySet::PropertySet(std::string const& name_, PropertySet* parent_) :
   parent(parent_),
   name(name_),
@@ -80,5 +82,7 @@ PropertySet::get_properties(std::vector<std::string>& lst) const
     lst.push_back(i->first);
   }
 }
+
+} // namespace windstille
 
 /* EOF */

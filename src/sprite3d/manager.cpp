@@ -21,6 +21,8 @@
 #include "sprite3d/sprite3d.hpp"
 #include "sprite3d/data.hpp"
 
+namespace windstille {
+
 namespace sprite3d {
 
 Manager::Manager() :
@@ -53,5 +55,7 @@ Manager::create_data(std::filesystem::path const& filename)
 }
 
 } // namespace sprite3d
+
+} // namespace windstille
 
 /* EOF */

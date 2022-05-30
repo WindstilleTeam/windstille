@@ -24,6 +24,8 @@
 #include <glm/glm.hpp>
 #include <geom/line.hpp>
 
+namespace windstille {
+
 /** */
 class GeometryTest : public wstgui::Screen
 {
@@ -49,6 +51,8 @@ private:
   GeometryTest (GeometryTest const&);
   GeometryTest& operator= (GeometryTest const&);
 };
+
+} // namespace windstille
 
 #endif
 

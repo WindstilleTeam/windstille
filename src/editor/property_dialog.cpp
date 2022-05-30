@@ -17,7 +17,10 @@
 */
 
 #include "editor/property_dialog.hpp"
-
+
+namespace windstille {
+
+
 PropertyDialog::PropertyDialog(Properties& /*properties*/)
 {
 #if 0
@@ -41,5 +44,8 @@ PropertyDialog::~PropertyDialog()
 {
 }
 
-
+
+
+} // namespace windstille
+
 /* EOF */

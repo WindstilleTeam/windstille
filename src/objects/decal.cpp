@@ -26,6 +26,8 @@
 #include <wstdisplay/surface_manager.hpp>
 #include <wstdisplay/scene_context.hpp>
 
+namespace windstille {
+
 Decal::Decal(ReaderMapping const& reader) :
   drawable(),
   pos()
@@ -124,5 +126,7 @@ Decal::set_parent(GameObject* parent)
     drawable->get_params().set_pos(pos + center_offset);
   }
 }
+
+} // namespace windstille
 
 /* EOF */

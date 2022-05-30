@@ -33,6 +33,8 @@
 
 #define _(A) A
 
+namespace windstille {
+
 std::vector<std::string> arg_files;
 
 Config config;
@@ -427,6 +429,8 @@ template<>
 void ConfigValue<std::string>::write(FileWriter& writer) {
   writer.write(get_name(), data);
 }
+
+} // namespace windstille
 
 /* EOF */
 

@@ -24,6 +24,8 @@
 #include "navigation/node.hpp"
 #include "editor/constants.hpp"
 
+namespace windstille {
+
 NavGraphNodeObjectModel::NavGraphNodeObjectModel(ReaderMapping const& reader) :
   ObjectModel(reader),
   m_drawable()
@@ -170,5 +172,7 @@ NavGraphNodeObjectModel::write(FileWriter& writer) const
   ObjectModel::write_member(writer);
   writer.end_object();
 }
+
+} // namespace windstille
 
 /* EOF */

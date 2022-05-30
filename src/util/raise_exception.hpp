@@ -22,10 +22,14 @@
 #include "log.hpp"
 
 #define raise_exception(type, expr) do {  \
+
+namespace windstille {
   std::ostringstream b42465a70169; \
   b42465a70169 << log_pretty_print(__PRETTY_FUNCTION__) << ": " << expr; \
   throw type(b42465a70169.str()); \
 } while(false)
+
+} // namespace windstille
 
 #endif
 

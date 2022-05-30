@@ -17,24 +17,30 @@
 */
 
 #include "navigation/node.hpp"
-
+
+namespace windstille {
+
+
 Node::Node(glm::vec2 const& pos_) :
   pos(pos_),
   edges()
   // FIXME: Do something with id
 {
 }
-
+
+
 Node::~Node()
 {
 }
-
+
+
 void
 Node::add_edge(EdgePosition const& position)
 {
   edges.push_back(position);
 }
-
+
+
 void
 Node::remove_edge(Edge* edge)
 {
@@ -47,5 +53,8 @@ Node::remove_edge(Edge* edge)
     }
   }
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

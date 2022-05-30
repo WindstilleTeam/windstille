@@ -26,6 +26,8 @@
 
 #include "util/currenton.hpp"
 
+namespace windstille {
+
 class ConsoleImpl;
 
 class Console : public Currenton<Console>
@@ -59,6 +61,8 @@ private:
 };
 
 #define ConsoleLog Console::current()->get_ostream()
+
+} // namespace windstille
 
 #endif
 

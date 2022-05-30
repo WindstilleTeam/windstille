@@ -29,6 +29,8 @@
 
 #include "editor/timeline_handles.hpp"
 
+namespace windstille {
+
 class Timeline;
 class EditorWindow;
 
@@ -85,6 +87,8 @@ private:
   TimelineWidget(TimelineWidget const&);
   TimelineWidget& operator=(TimelineWidget const&);
 };
+
+} // namespace windstille
 
 #endif
 

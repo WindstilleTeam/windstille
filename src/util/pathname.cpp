@@ -22,6 +22,8 @@
 #include <sstream>
 #include <filesystem>
 
+namespace windstille {
+
 std::string Pathname::s_datadir;
 std::string Pathname::s_userdir;
 Pathname::Overrides Pathname::s_datadir_overrides;
@@ -267,5 +269,7 @@ std::ostream& operator<<(std::ostream& s, Pathname const& path)
       return s;
   }
 }
+
+} // namespace windstille
 
 /* EOF */

@@ -21,10 +21,14 @@
 
 #include <string>
 #include <vector>
-
+
+namespace windstille {
+
+
 class PropertySet;
 class Property;
-
+
+
 /** Simple Facade class around PropertySet and Property. Properties is
     used to provide introspection for C++ classes */
 class Properties
@@ -42,7 +46,10 @@ public:
 
   std::vector<std::string> get_properties() const;
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

@@ -22,6 +22,8 @@
 
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 Directory::List
 Directory::read(Pathname const& pathname)
 {
@@ -57,5 +59,7 @@ Directory::read(Pathname const& pathname, std::string const& suffix)
 
   return entries;
 }
+
+} // namespace windstille
 
 /* EOF */

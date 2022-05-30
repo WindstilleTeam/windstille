@@ -36,6 +36,8 @@
 #include "screen/game_session.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 DialogManager::DialogManager() :
   portrait(),
   text(),
@@ -214,5 +216,7 @@ DialogManager::create_text()
   text_area->set_font(g_app.fonts().vera20.get());
   text_area->set_text(text);
 }
+
+} // namespace windstille
 
 /* EOF */

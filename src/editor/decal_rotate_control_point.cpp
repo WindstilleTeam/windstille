@@ -22,6 +22,8 @@
 #include "editor/decal_rotate_control_point.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 DecalRotateControlPoint::DecalRotateControlPoint(DecalObjectModel* object_, float ctrl_angle_, glm::vec2 const& pos_) :
   ControlPoint(g_app.surface().get(Pathname("editor/rotate_handle.png")), pos_),
   object(object_),
@@ -73,5 +75,8 @@ DecalRotateControlPoint::draw(wstdisplay::SceneContext& sc)
   rect += geom::foffset(offset);
   sc.control().draw_control(surface, pos, ctrl_angle);
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

@@ -19,6 +19,8 @@
 #ifndef HEADER_WINDSTILLE_APP_GLOBALS_HPP
 #define HEADER_WINDSTILLE_APP_GLOBALS_HPP
 
+namespace windstille {
+
 const int TILE_SIZE       = 32;
 const int TILE_RESOLUTION = 64;
 
@@ -33,6 +35,8 @@ extern float game_time;
 extern float game_speed;
 
 extern bool collision_debug;
+
+} // namespace windstille
 
 #endif
 

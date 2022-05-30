@@ -37,7 +37,10 @@
 #include "editor/object_selector.hpp"
 #include "editor/layer_manager.hpp"
 #include "editor/document.hpp"
-
+
+namespace windstille {
+
+
 class AnimationWidget;
 class Document;
 class LayerWidget;
@@ -48,7 +51,8 @@ class TimelineWidget;
 class Tool;
 class WindstilleWidget;
 class ZoomTool;
-
+
+
 class EditorWindow : public Gtk::Window,
                      public Currenton<EditorWindow>
 {
@@ -196,7 +200,10 @@ private:
  EditorWindow(EditorWindow const&);
  EditorWindow& operator=(EditorWindow const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

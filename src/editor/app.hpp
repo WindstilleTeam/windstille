@@ -21,6 +21,8 @@
 
 #include <wstdisplay/fwd.hpp>
 
+namespace windstille {
+
 namespace sprite3d {
 class Manager;
 } // namespace sprite3d;
@@ -50,6 +52,8 @@ private:
 };
 
 extern App g_app;
+
+} // namespace windstille
 
 #endif
 

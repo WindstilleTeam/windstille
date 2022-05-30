@@ -28,6 +28,8 @@
 #include "engine/sector.hpp"
 #include "tile/tile_map.hpp"
 
+using namespace windstille;
+
 namespace wstgui {
 
 Automap::Automap(Component* parent_) :

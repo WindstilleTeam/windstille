@@ -18,6 +18,8 @@
 
 #include "armature/ipo_curve.hpp"
 
+namespace windstille {
+
 IpoCurve::IpoCurve() :
   points()
 {
@@ -55,5 +57,7 @@ IpoCurve::add_point(BezierPoint const& /*p*/)
     points.push_back(p);
   */
 }
+
+} // namespace windstille
 
 /* EOF */

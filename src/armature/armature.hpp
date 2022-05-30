@@ -24,6 +24,8 @@
 #include "armature/bone.hpp"
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 class Pose;
 
 class Armature
@@ -56,6 +58,8 @@ private:
   Armature (Armature const&);
   Armature& operator= (Armature const&);
 };
+
+} // namespace windstille
 
 #endif
 

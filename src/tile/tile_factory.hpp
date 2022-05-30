@@ -30,6 +30,8 @@
 #include "util/currenton.hpp"
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 class Tile;
 class TilePacker;
 
@@ -70,6 +72,8 @@ public:
 private:
   void parse_tiles(ReaderMapping const& reader);
 };
+
+} // namespace windstille
 
 #endif
 

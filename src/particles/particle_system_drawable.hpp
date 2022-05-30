@@ -21,6 +21,8 @@
 
 #include <wstdisplay/scenegraph/drawable.hpp>
 
+namespace windstille {
+
 class ParticleSystem;
 
 class ParticleSystemDrawable : public wstdisplay::Drawable
@@ -37,6 +39,8 @@ private:
   ParticleSystemDrawable(ParticleSystemDrawable const&);
   ParticleSystemDrawable& operator=(ParticleSystemDrawable const&);
 };
+
+} // namespace windstille
 
 #endif
 

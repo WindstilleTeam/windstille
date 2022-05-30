@@ -32,6 +32,8 @@
 #include "editor/timeline_sound_object.hpp"
 #include "editor/timeline_keyframe_object.hpp"
 
+namespace windstille {
+
 TimelineWidget::TimelineWidget(EditorWindow& editor) :
   m_editor(editor),
   m_timeline(),
@@ -501,5 +503,7 @@ TimelineWidget::get_cursor_pos() const
 {
   return m_cursor_pos;
 }
+
+} // namespace windstille
 
 /* EOF */

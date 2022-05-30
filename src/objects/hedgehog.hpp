@@ -24,6 +24,8 @@
 
 #include "sprite2d/sprite.hpp"
 
+namespace windstille {
+
 class Hedgehog : public Entity
 {
 private:
@@ -42,6 +44,8 @@ public:
   void update(float delta) override;
   void die();
 };
+
+} // namespace windstille
 
 #endif
 

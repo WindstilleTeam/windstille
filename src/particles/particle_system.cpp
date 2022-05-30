@@ -31,6 +31,8 @@
 #include "particles/surface_drawer.hpp"
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 ParticleSystem::ParticleSystem(ReaderMapping const& props,
                                wstdisplay::SurfaceManager& surface_manager)
   : particles(),
@@ -395,5 +397,7 @@ ParticleSystem::get_progress(float t) const
 {
   return std::max(0.0f, std::min(1.0f, t/life_time));
 }
+
+} // namespace windstille
 
 /* EOF */

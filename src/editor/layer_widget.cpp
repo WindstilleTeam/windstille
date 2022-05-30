@@ -24,7 +24,10 @@
 
 #include "editor/select_mask.hpp"
 #include "editor/layer_widget.hpp"
-
+
+namespace windstille {
+
+
 LayerWidget::LayerWidget() :
   signal_layer_toggle(),
   m_grid(),
@@ -90,5 +93,8 @@ LayerWidget::get_select_mask() const
   }
   return select_mask;
 }
-
+
+
+} // namespace windstille
+
 /* EOF */

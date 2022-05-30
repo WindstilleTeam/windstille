@@ -24,6 +24,8 @@
 #include <wstdisplay/scenegraph/shockwave_drawable.hpp>
 #include "util/pathname.hpp"
 
+namespace windstille {
+
 Shockwave::Shockwave(ReaderMapping const& props) :
   pos(),
   noise(g_app.texture().get(Pathname("images/noise3.png"))),
@@ -63,5 +65,7 @@ Shockwave::update (float delta)
   if (radius > 300.0f)
     radius = 0;
 }
+
+} // namespace windstille
 
 /* EOF */

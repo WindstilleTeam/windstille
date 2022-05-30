@@ -27,6 +27,8 @@
 #include "navigation/navigation_graph.hpp"
 #include "util/file_reader.hpp"
 
+namespace windstille {
+
 NavigationGraphModel::NavigationGraphModel(SectorModel& sector) :
   m_sector(sector),
   m_nodes(),
@@ -289,5 +291,7 @@ NavigationGraphModel::load(ReaderMapping const& reader, std::map<std::string, Ob
     std::cout << "NavigationGraphModel: edges missing" << std::endl;
   }
 }
+
+} // namespace windstille
 
 /* EOF */

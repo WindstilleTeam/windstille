@@ -21,7 +21,10 @@
 
 #include "engine/script_manager.hpp"
 #include "util/pathname.hpp"
-
+
+namespace windstille {
+
+
 class SquirrelThread
 {
 private:
@@ -70,7 +73,10 @@ private:
   SquirrelThread(SquirrelThread const&);
   SquirrelThread& operator=(SquirrelThread const&);
 };
-
+
+
+} // namespace windstille
+
 #endif
 
 /* EOF */

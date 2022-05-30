@@ -28,6 +28,8 @@
 #include "screen/view.hpp"
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
 
+namespace windstille {
+
 TileMap::TileMap(ReaderMapping const& props) :
   field(),
   z_pos(),
@@ -255,5 +257,7 @@ TileMap::raycast(glm::vec2 const& pos, float angle)
   // Ray got out of the map
   return pos + glm::vec2(t * direction.x, t * direction.y);
 }
+
+} // namespace windstille
 
 /* EOF */

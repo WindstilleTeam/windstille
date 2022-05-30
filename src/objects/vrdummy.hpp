@@ -23,6 +23,8 @@
 #include "sprite2d/sprite.hpp"
 #include "engine/entity.hpp"
 
+namespace windstille {
+
 /** */
 class VRDummy : public Entity
 {
@@ -40,6 +42,8 @@ public:
   void draw(wstdisplay::SceneContext& gc) override;
   void update(float delta) override;
 };
+
+} // namespace windstille
 
 #endif
 

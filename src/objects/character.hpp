@@ -22,6 +22,8 @@
 #include "engine/entity.hpp"
 #include "sprite3d/sprite3d.hpp"
 
+namespace windstille {
+
 class Character : public Entity
 {
 private:
@@ -36,6 +38,8 @@ public:
   void draw (wstdisplay::SceneContext& gc) override;
   void use() override;
 };
+
+} // namespace windstille
 
 #endif
 

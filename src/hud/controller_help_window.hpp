@@ -24,6 +24,8 @@
 #include <glm/glm.hpp>
 #include "util/currenton.hpp"
 
+namespace windstille {
+
 class ControllerHelpWindowImpl;
 
 /** */
@@ -41,6 +43,8 @@ public:
   void draw(wstdisplay::GraphicsContext& gc) override;
   void update(float delta, wstinput::Controller const& controller) override;
 };
+
+} // namespace windstille
 
 #endif
 

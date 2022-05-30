@@ -25,6 +25,8 @@
 #include <wstdisplay/font/text_area.hpp>
 #include <wstgui/screen.hpp>
 
+namespace windstille {
+
 struct ConfigureItem
 {
   enum Mode { CONFIGURE_AXIS, CONFIGURE_BUTTON };
@@ -57,6 +59,8 @@ private:
   InputConfigurator(InputConfigurator const&);
   InputConfigurator& operator=(InputConfigurator const&);
 };
+
+} // namespace windstille
 
 #endif
 

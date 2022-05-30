@@ -23,6 +23,8 @@
 #include <map>
 #include <string>
 
+namespace windstille {
+
 /**
  *  Pathname wraps a path and a path type, thus allowing the easy
  *  creation of paths that point to the data directory, the users
@@ -136,6 +138,8 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& s, Pathname const& path);
+
+} // namespace windstille
 
 #endif
 
