@@ -171,7 +171,7 @@ add_custom_target(GenerateWrapper
 
 # compile wstlib
 file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  src/display/*.cpp
+  src/scenegraph/*.cpp
   src/font/*.cpp
   src/math/*.cpp
   src/navigation/*.cpp

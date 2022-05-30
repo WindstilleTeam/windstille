@@ -20,8 +20,8 @@
 
 #include <sstream>
 
-#include <wstdisplay/scenegraph/navigation_graph_drawable.hpp>
 #include <wstdisplay/scenegraph/scene_graph.hpp>
+
 #include "app/app.hpp"
 #include "app/sound_manager.hpp"
 #include "collision/collision_engine.hpp"
@@ -30,6 +30,7 @@
 #include "navigation/navigation_graph.hpp"
 #include "objects/doll.hpp"
 #include "objects/player.hpp"
+#include "scenegraph/navigation_graph_drawable.hpp"
 #include "tile/tile_map.hpp"
 
 namespace windstille {
