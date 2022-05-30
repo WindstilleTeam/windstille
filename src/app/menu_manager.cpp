@@ -126,14 +126,14 @@ MenuManager::display_main_menu()
   { // Construct Copyright box
     std::unique_ptr<wstgui::GroupComponent> text_group(new wstgui::GroupComponent("", menu.get_root()));
 
-    text_group->set_screen_rect(
+    text_group->set_geometry(
       geom::frect(glm::vec2(static_cast<float>(g_app.window().get_gc().size().width())/2.0f - 390.0f,
                             static_cast<float>(g_app.window().get_gc().size().height())     - 100.0f),
                   geom::fsize(800.0f - 20.0f,
                               100.0f - 10.0f)));
 
     std::unique_ptr<wstgui::TextView> text(new wstgui::TextView(text_group.get()));
-    text->set_screen_rect(text_group->get_child_rect());
+    text->set_geometry(text_group->get_child_rect());
     text->set_font(g_app.fonts().vera12.get());
     text->set_text("Windstille " WINDSTILLE_VERSION " - Copyright (C) 2009 Ingo Ruhnke &lt;grumbel@gmail.com&gt;\n"
                    "\n"
@@ -267,8 +267,8 @@ MenuManager::display_help()
   std::unique_ptr<GroupComponent> group(new GroupComponent("Help", manager->get_root()));
   std::unique_ptr<TextView> text(new TextView(group.get()));
 
-  group->set_screen_rect(create_centered_rect(500, 400));
-  text->set_screen_rect(group->get_child_rect());
+  group->set_geometry(create_centered_rect(500, 400));
+  text->set_geometry(group->get_child_rect());
 
   text->set_font(g_app.fonts().vera12.get());
   text->set_text("This is a tech-demo of Windstille. Its not meant "
@@ -335,8 +335,8 @@ MenuManager::display_credits()
   std::unique_ptr<GroupComponent> group(new GroupComponent("Credits", manager->get_root()));
   std::unique_ptr<TextView> text(new TextView(group.get()));
 
-  group->set_screen_rect(create_centered_rect(500, 400));
-  text->set_screen_rect(group->get_child_rect());
+  group->set_geometry(create_centered_rect(500, 400));
+  text->set_geometry(group->get_child_rect());
 
   text->set_font(g_app.fonts().vera12.get());
   text->set_text("Programming\n"

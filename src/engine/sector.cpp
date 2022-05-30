@@ -71,7 +71,7 @@ Sector::Sector(Pathname const& arg_filename) :
     add(doll);
   }
 
-  scene_graph->add_drawable(std::shared_ptr<wstdisplay::Drawable>(new wstdisplay::NavigationGraphDrawable(navigation_graph.get())));
+  scene_graph->add_drawable(std::shared_ptr<wstdisplay::Drawable>(new NavigationGraphDrawable(navigation_graph.get())));
 }
 
 

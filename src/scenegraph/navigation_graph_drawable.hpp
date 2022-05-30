@@ -21,11 +21,11 @@
 #include <wstdisplay/scene_context.hpp>
 #include <wstdisplay/scenegraph/drawable.hpp>
 
-class NavigationGraph;
+#include "navigation/navigation_graph.hpp"
 
-namespace wstdisplay {
+namespace windstille {
 
-class NavigationGraphDrawable : public Drawable
+class NavigationGraphDrawable : public wstdisplay::Drawable
 {
 private:
   NavigationGraph* m_navgraph;
@@ -35,10 +35,10 @@ public:
     : Drawable(glm::vec2(), 1000.0f, glm::mat4(1.0)),
       m_navgraph(navgraph)
   {
-    set_render_mask(SceneContext::CONTROLMAP);
+    set_render_mask(wstdisplay::SceneContext::CONTROLMAP);
   }
 
-  void render(GraphicsContext& gc, unsigned int mask) override
+  void render(wstdisplay::GraphicsContext& gc, unsigned int mask) override
   {
     glLineWidth(4.0f);
     m_navgraph->draw(gc);
@@ -50,7 +50,7 @@ private:
   NavigationGraphDrawable& operator=(const NavigationGraphDrawable&);
 };
 
-} // namespace wstdisplay
+} // namespace windstille
 
 #endif
 

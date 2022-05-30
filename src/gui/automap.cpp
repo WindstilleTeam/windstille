@@ -75,10 +75,10 @@ Automap::~Automap()
 void
 Automap::draw(wstdisplay::GraphicsContext& gc)
 {
-  gc.push_cliprect(geom::irect(get_screen_rect()));
+  gc.push_cliprect(geom::irect(geometry()));
   surface->draw(gc,
                 wstdisplay::SurfaceDrawingParameters()
-                .set_pos(glm::vec2(m_rect.left(), m_rect.top()) + pos)
+                .set_pos(glm::vec2(m_geometry.left(), m_geometry.top()) + pos)
                 .set_color(surf::Color(1.0f, 1.0f, 1.0f, is_active() ? 0.8f : 0.5f))
                 .set_scale(zoom));
   gc.pop_cliprect();
