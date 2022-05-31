@@ -17,7 +17,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(windstille VERSION 0.3.0)
 
-set(TINYCMMC_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/external/cmake-modules/modules/")
+set(TINYCMMC_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/external/tinycmmc/modules/")
 find_package(tinycmmc CONFIG)
 message(STATUS "tinycmmc module path: ${TINYCMMC_MODULE_PATH}")
 list(APPEND CMAKE_MODULE_PATH ${TINYCMMC_MODULE_PATH})
@@ -66,9 +66,9 @@ function(build_dependencies)
   set(BUILD_TESTS OFF)
   set(BUILD_EXTRA OFF)
 
-  find_package(argparser)
-  if(NOT TARGET argparser::argparser)
-    add_subdirectory(external/argparser/ EXCLUDE_FROM_ALL)
+  find_package(argpp)
+  if(NOT TARGET argpp::argpp)
+    add_subdirectory(external/argpp/ EXCLUDE_FROM_ALL)
   endif()
 
   find_package(babyxml)
@@ -199,7 +199,7 @@ target_link_libraries(wstlib PUBLIC
   wstinput::wstinput
   wstsound::wstsound
   wstgui::wstgui
-  argparser::argparser
+  argpp::argpp
   babyxml::babyxml
   geom::geom
   logmich::logmich

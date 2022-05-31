@@ -2,58 +2,58 @@ rec {
   description = "Windstille GUI Engine";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
     flake-utils.url = "github:numtide/flake-utils";
 
-    tinycmmc.url = "gitlab:grumbel/cmake-modules";
+    tinycmmc.url = "github:grumbel/tinycmmc";
     tinycmmc.inputs.nixpkgs.follows = "nixpkgs";
     tinycmmc.inputs.flake-utils.follows = "flake-utils";
 
-    argparser.url = "gitlab:argparser/argparser/stable";
-    argparser.inputs.nixpkgs.follows = "nixpkgs";
-    argparser.inputs.flake-utils.follows = "flake-utils";
-    argparser.inputs.tinycmmc.follows = "tinycmmc";
+    argpp.url = "github:grumbel/argpp/stable";
+    argpp.inputs.nixpkgs.follows = "nixpkgs";
+    argpp.inputs.flake-utils.follows = "flake-utils";
+    argpp.inputs.tinycmmc.follows = "tinycmmc";
 
-    logmich.url = "gitlab:logmich/logmich";
+    logmich.url = "github:logmich/logmich";
     logmich.inputs.nixpkgs.follows = "nixpkgs";
     logmich.inputs.flake-utils.follows = "flake-utils";
     logmich.inputs.tinycmmc.follows = "tinycmmc";
 
-    geomcpp.url = "gitlab:grumbel/geomcpp";
+    geomcpp.url = "github:grumbel/geomcpp";
     geomcpp.inputs.nixpkgs.follows = "nixpkgs";
     geomcpp.inputs.flake-utils.follows = "flake-utils";
     geomcpp.inputs.tinycmmc.follows = "tinycmmc";
 
-    priocpp.url = "gitlab:grumbel/priocpp";
+    priocpp.url = "github:grumbel/priocpp";
     priocpp.inputs.nixpkgs.follows = "nixpkgs";
     priocpp.inputs.flake-utils.follows = "flake-utils";
     priocpp.inputs.tinycmmc.follows = "tinycmmc";
     priocpp.inputs.logmich.follows = "logmich";
     priocpp.inputs.sexpcpp.follows = "sexpcpp";
 
-    surfcpp.url = "gitlab:grumbel/surfcpp";
+    surfcpp.url = "github:grumbel/surfcpp";
     surfcpp.inputs.nixpkgs.follows = "nixpkgs";
     surfcpp.inputs.flake-utils.follows = "flake-utils";
     surfcpp.inputs.tinycmmc.follows = "tinycmmc";
     surfcpp.inputs.geomcpp.follows = "geomcpp";
     surfcpp.inputs.logmich.follows = "logmich";
 
-    babyxml.url = "gitlab:grumbel/babyxml";
+    babyxml.url = "github:grumbel/babyxml";
     babyxml.inputs.nixpkgs.follows = "nixpkgs";
     babyxml.inputs.flake-utils.follows = "flake-utils";
     babyxml.inputs.tinycmmc.follows = "tinycmmc";
 
-    sexpcpp.url = "gitlab:lispparser/sexp-cpp";
+    sexpcpp.url = "github:lispparser/sexp-cpp";
     sexpcpp.inputs.nixpkgs.follows = "nixpkgs";
     sexpcpp.inputs.flake-utils.follows = "flake-utils";
     sexpcpp.inputs.tinycmmc.follows = "tinycmmc";
 
-    biiocpp.url = "gitlab:grumbel/biiocpp";
+    biiocpp.url = "github:grumbel/biiocpp";
     biiocpp.inputs.nixpkgs.follows = "nixpkgs";
     biiocpp.inputs.flake-utils.follows = "flake-utils";
     biiocpp.inputs.tinycmmc.follows = "tinycmmc";
 
-    wstinput.url = "gitlab:windstille/wstinput";
+    wstinput.url = "github:WindstilleTeam/wstinput";
     wstinput.inputs.nixpkgs.follows = "nixpkgs";
     wstinput.inputs.flake-utils.follows = "flake-utils";
     wstinput.inputs.tinycmmc.follows = "tinycmmc";
@@ -61,7 +61,7 @@ rec {
     wstinput.inputs.priocpp.follows = "priocpp";
     wstinput.inputs.sexpcpp.follows = "sexpcpp";
 
-    wstdisplay.url = "gitlab:windstille/wstdisplay";
+    wstdisplay.url = "github:WindstilleTeam/wstdisplay";
     wstdisplay.inputs.nixpkgs.follows = "nixpkgs";
     wstdisplay.inputs.flake-utils.follows = "flake-utils";
     wstdisplay.inputs.tinycmmc.follows = "tinycmmc";
@@ -70,7 +70,7 @@ rec {
     wstdisplay.inputs.surfcpp.follows = "surfcpp";
     wstdisplay.inputs.logmich.follows = "logmich";
 
-    wstgui.url = "gitlab:windstille/wstgui";
+    wstgui.url = "github:WindstilleTeam/wstgui";
     wstgui.inputs.nixpkgs.follows = "nixpkgs";
     wstgui.inputs.flake-utils.follows = "flake-utils";
     wstgui.inputs.tinycmmc.follows = "tinycmmc";
@@ -84,18 +84,18 @@ rec {
     wstgui.inputs.wstdisplay.follows = "wstdisplay";
     wstgui.inputs.wstsound.follows = "wstsound";
 
-    wstsound.url = "gitlab:windstille/wstsound";
+    wstsound.url = "github:WindstilleTeam/wstsound";
     wstsound.inputs.nixpkgs.follows = "nixpkgs";
     wstsound.inputs.flake-utils.follows = "flake-utils";
     wstsound.inputs.tinycmmc.follows = "tinycmmc";
 
-    miniswig.url = "gitlab:windstille/miniswig";
+    miniswig.url = "github:WindstilleTeam/miniswig";
     miniswig.inputs.nixpkgs.follows = "nixpkgs";
     miniswig.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = { self, nixpkgs, flake-utils,
-              tinycmmc, argparser, logmich, geomcpp, priocpp, surfcpp, babyxml, sexpcpp, biiocpp,
+              tinycmmc, argpp, logmich, geomcpp, priocpp, surfcpp, babyxml, sexpcpp, biiocpp,
               wstinput, wstdisplay, wstgui, wstsound, miniswig }:
     flake-utils.lib.eachDefaultSystem (system:
       let
@@ -139,7 +139,7 @@ rec {
             buildInputs = [
               miniswig.defaultPackage.${system}
               tinycmmc.defaultPackage.${system}
-              argparser.defaultPackage.${system}
+              argpp.defaultPackage.${system}
               logmich.defaultPackage.${system}
               geomcpp.defaultPackage.${system}
               priocpp.defaultPackage.${system}
@@ -151,6 +151,7 @@ rec {
               wstinput.defaultPackage.${system}
               wstsound.defaultPackage.${system}
               wstdisplay.defaultPackage.${system}
+              miniswig.defaultPackage.${system}
               squirrel
 
               pkgs.freetype
@@ -161,7 +162,6 @@ rec {
               pkgs.xcftools
               pkgs.bison
               pkgs.flex
-              miniswig
               pkgs.gtkmm3
 
               pkgs.fmt

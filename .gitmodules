@@ -1,46 +1,42 @@
-[submodule "shared-modules"]
-	path = shared-modules
-	url = https://github.com/Grumbel/shared-modules.git
-[submodule "external/logmich"]
-	path = external/logmich
-	url = https://gitlab.com/logmich/logmich.git
-[submodule "external/argparser"]
-	path = external/argparser
-	url = https://gitlab.com/argparser/argparser.git
-	branch = stable
-[submodule "external/sexp-cpp"]
-	path = external/sexp-cpp
-	url = https://gitlab.com/lispparser/sexp-cpp.git
+[submodule "external/argpp"]
+	path = external/argpp
+	url = https://github.com/grumbel/argpp.git
 [submodule "external/babyxml"]
 	path = external/babyxml
-	url = https://gitlab.com/grumbel/babyxml.git
-[submodule "external/cmake-modules"]
-	path = external/cmake-modules
-	url = https://gitlab.com/grumbel/cmake-modules.git
-[submodule "external/geomcpp"]
-	path = external/geomcpp
-	url = https://gitlab.com/grumbel/geomcpp.git
-[submodule "external/wstsound"]
-	path = external/wstsound
-	url = https://gitlab.com/Windstille/wstsound.git
-[submodule "external/priocpp"]
-	path = external/priocpp
-	url = https://gitlab.com/grumbel/priocpp.git
-[submodule "external/miniswig"]
-	path = external/miniswig
-	url = https://gitlab.com/Windstille/miniswig.git
-[submodule "external/wstinput"]
-	path = external/wstinput
-	url = https://gitlab.com/Windstille/wstinput.git
+	url = https://github.com/grumbel/babyxml.git
 [submodule "external/biiocpp"]
 	path = external/biiocpp
-	url = https://gitlab.com/grumbel/biiocpp.git
+	url = https://github.com/grumbel/biiocpp.git
+[submodule "external/geomcpp"]
+	path = external/geomcpp
+	url = https://github.com/grumbel/geomcpp.git
+[submodule "external/logmich"]
+	path = external/logmich
+	url = https://github.com/logmich/logmich.git
+[submodule "external/miniswig"]
+	path = external/miniswig
+	url = https://github.com/WindstilleTeam/miniswig.git
+[submodule "external/priocpp"]
+	path = external/priocpp
+	url = https://github.com/grumbel/priocpp.git
+[submodule "external/sexpcpp"]
+	path = external/sexpcpp
+	url = https://github.com/lispparser/sexp-cpp.git
 [submodule "external/surfcpp"]
 	path = external/surfcpp
-	url = https://gitlab.com/grumbel/surfcpp.git
+	url = https://github.com/grumbel/surfcpp.git
+[submodule "external/tinycmmc"]
+	path = external/tinycmmc
+	url = https://github.com/grumbel/tinycmmc.git
 [submodule "external/wstdisplay"]
 	path = external/wstdisplay
-	url = https://gitlab.com/Windstille/wstdisplay
+	url = https://github.com/WindstilleTeam/wstdisplay.git
 [submodule "external/wstgui"]
 	path = external/wstgui
-	url = https://gitlab.com/Windstille/wstgui.git
+	url = https://github.com/WindstilleTeam/wstgui.git
+[submodule "external/wstinput"]
+	path = external/wstinput
+	url = https://github.com/WindstilleTeam/wstinput.git
+[submodule "external/wstsound"]
+	path = external/wstsound
+	url = https://github.com/WindstilleTeam/wstsound.git

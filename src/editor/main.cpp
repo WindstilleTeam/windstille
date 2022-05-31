@@ -27,7 +27,7 @@
 #include <gtkmm/icontheme.h>
 #include <gtkmm/main.h>
 
-#include <argparser.hpp>
+#include <argpp/argpp.hpp>
 #include <logmich/log.hpp>
 
 #include <wstdisplay/surface_manager.hpp>
@@ -50,7 +50,7 @@ WindstilleEditor::main(int argc, char** argv)
     std::string datadir;
     std::vector<std::string> rest_args;
 
-    argparser::ArgParser argp;
+    argpp::Parser argp;
     argp.add_usage(argv[0], "[LEVELFILE]")
       .add_text("Windstille Level Editor");
 
@@ -76,7 +76,7 @@ WindstilleEditor::main(int argc, char** argv)
           exit(EXIT_SUCCESS);
           break;
 
-        case argparser::ArgumentType::REST:
+        case argpp::ArgumentType::REST:
           rest_args.push_back(opt.argument);
           break;
       }

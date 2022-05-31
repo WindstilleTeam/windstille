@@ -23,7 +23,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#include <argparser.hpp>
+#include <argpp/argpp.hpp>
 
 #include <surf/save.hpp>
 #include <wstdisplay/assert_gl.hpp>
@@ -59,7 +59,7 @@ App::App() :
 void
 App::parse_args(int argc, char** argv)
 {
-  argparser::ArgParser argp;
+  argpp::Parser argp;
   argp.add_usage(argv[0], "[OPTIONS] FILE...")
     .add_text("A script driven slideshow viewer");
 
@@ -131,7 +131,7 @@ App::parse_args(int argc, char** argv)
         exit(0);
         break;
 
-      case argparser::ArgumentType::REST:
+      case argpp::ArgumentType::REST:
         m_files.push_back(opt.argument);
         break;
 

@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <logmich/log.hpp>
 
-#include <argparser.hpp>
+#include <argpp.hpp>
 
 #include "app/globals.hpp"
 #include "app/windstille.hpp"
@@ -144,7 +144,7 @@ Config::parse_args(int argc, char** argv)
   arg_files.clear();
   const int secondary_controller_file = 261;
 
-  argparser::ArgParser argp;
+  argpp::Parser argp;
   argp.add_usage(argv[0], "[LEVELFILE]")
     .add_text("Windstille is a classic Jump'n Run game.");
 
@@ -287,7 +287,7 @@ Config::parse_args(int argc, char** argv)
         exit(EXIT_SUCCESS);
         break;
 
-      case argparser::ArgumentType::REST:
+      case argpp::ArgumentType::REST:
         set_string("levelfile", opt.argument);
         arg_files.push_back(opt.argument);
         break;

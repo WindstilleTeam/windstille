@@ -20,7 +20,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#include <argparser.hpp>
+#include <argpp/argpp.hpp>
 
 #include <wstdisplay/assert_gl.hpp>
 #include <wstdisplay/opengl_window.hpp>
