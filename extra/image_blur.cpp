@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
@@ -227,8 +228,10 @@ int main(int argc, char** argv)
     return app_main(argc, argv);
   } catch(std::exception const& err) {
     std::cerr << "exception: " << err.what() << std::endl;
+    return EXIT_FAILURE;
   } catch(...) {
     std::cerr << "unknown exception" << std::endl;
+    return EXIT_FAILURE;
   }
 }
 

@@ -18,6 +18,8 @@
 
 #include "objects/liquid.hpp"
 
+#include <numbers>
+
 #include "app/app.hpp"
 #include <wstdisplay/texture_manager.hpp>
 #include "engine/sector.hpp"
@@ -126,7 +128,7 @@ Liquid::update_scene_graph()
       if (i > 0)
       {
         float angle = atan2f(32.0f* ((*heightfield1)[i] - (*heightfield1)[i-1]), 3.2f);
-        c = std::min(1.0f, std::max(0.5f, 8.0f * (angle/float(M_PI)) + 0.5f));
+        c = std::min(1.0f, std::max(0.5f, 8.0f * (angle/float(std::numbers::pi_v<float>)) + 0.5f));
       }
 
       // v2

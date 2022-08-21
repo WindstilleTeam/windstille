@@ -1,10 +1,10 @@
+#include <cstdlib>
 #include <iostream>
-#include <SDL.h>
 
+#include <SDL.h>
 #include <glm/glm.hpp>
 
 #include <geom/geom.hpp>
-
 #include <wstdisplay/opengl_window.hpp>
 #include <wstdisplay/framebuffer.hpp>
 #include <wstdisplay/surface.hpp>
@@ -15,7 +15,7 @@
 
 using namespace wstdisplay;
 
-int main()
+int main(int argc, char** argv)
 {
   wstsys::System system;
 
@@ -102,7 +102,7 @@ int main()
     window->swap_buffers();
   }
 
-  return 0;
+  return EXIT_SUCCESS;
 }
 
 /* EOF */

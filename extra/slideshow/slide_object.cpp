@@ -38,7 +38,7 @@ SlideObject::SlideObject(std::filesystem::path const& filename,
   m_fade_in_time(0.0f),
   m_fade_out_time(0.0f)
 {
-  m_size = geom::fsize(JPEG::get_size(filename));
+  m_size = geom::fsize(JPEG::get_size(filename.string()));
 }
 
 void

@@ -33,7 +33,7 @@ SpriteData::SpriteData(std::filesystem::path const& filename,
 {
   if (std::filesystem::exists(filename))
   {
-    std::string const ext = filename.extension();
+    std::string const ext = filename.extension().string();
 
     if (ext == ".sprite")
     {

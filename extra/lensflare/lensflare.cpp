@@ -18,6 +18,7 @@
 
 #include "lensflare.hpp"
 
+#include <cstdlib>
 #include <iostream>
 #include <stdexcept>
 
@@ -285,13 +286,14 @@ int main(int argc, char* argv[])
   try
   {
     Lensflare app;
-    app.run();
+    return app.run();
   }
   catch(std::exception& err)
   {
     std::cout << "Error: " << err.what() << std::endl;
+    return EXIT_FAILURE;
   }
-  return 0;
+  return EXIT_FAILURE;
 }
 
 /* EOF */

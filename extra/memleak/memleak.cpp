@@ -16,9 +16,11 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <SDL.h>
+#include <cstdlib>
 #include <sstream>
 #include <stdexcept>
+
+#include <SDL.h>
 
 #include <argpp/argpp.hpp>
 
@@ -100,8 +102,10 @@ int main(int argc, char** argv)
     return memleak_main(argc, argv);
   } catch(std::exception const& err) {
     std::cerr << "exception: " << err.what() << std::endl;
+    return EXIT_FAILURE;
   } catch(...) {
     std::cerr << "unknown exception" << std::endl;
+    return EXIT_FAILURE;
   }
 }
 
