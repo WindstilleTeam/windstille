@@ -17,16 +17,10 @@
 cmake_minimum_required(VERSION 3.15)
 project(windstille VERSION 0.3.0)
 
-set(TINYCMMC_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/external/tinycmmc/modules/")
-find_package(tinycmmc CONFIG)
-message(STATUS "tinycmmc module path: ${TINYCMMC_MODULE_PATH}")
-list(APPEND CMAKE_MODULE_PATH ${TINYCMMC_MODULE_PATH})
+include(mk/cmake/TinyCMMC.cmake)
 
 include(GetProjectVersion)
-include(GNUInstallDirs)
 include(CheckIncludeFile)
-include(ClangTidy)
-include(MaximumWarnings)
 include(InstallWithWrapper)
 
 option(BUILD_EDITOR "Build Windstille editor" ON)
@@ -37,10 +31,6 @@ if (BUILD_TESTS)
   # add 'make test' target, use 'make test ARGS="-V"' or 'ctest -V' for verbose
   enable_testing()
 endif(BUILD_TESTS)
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_program(XCF2PNG xcf2png REQUIRED)
 find_package(Threads REQUIRED)
@@ -66,69 +56,22 @@ function(build_dependencies)
   set(BUILD_TESTS OFF)
   set(BUILD_EXTRA OFF)
 
-  find_package(argpp)
-  if(NOT TARGET argpp::argpp)
-    add_subdirectory(external/argpp/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(babyxml)
-  if(NOT TARGET babyxml::babyxml)
-    add_subdirectory(external/babyxml/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(geom)
-  if(NOT TARGET geom::geom)
-    add_subdirectory(external/geomcpp/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(logmich)
-  if(NOT TARGET logmich::logmich)
-    add_subdirectory(external/logmich/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(sexp)
-  if(NOT TARGET sexp::sexp)
-    add_subdirectory(external/sexp-cpp/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(biio)
-  if(NOT TARGET biio::biio)
-    add_subdirectory(external/biiocpp/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(prio)
-  if(NOT TARGET prio::prio)
-    add_subdirectory(external/priocpp/ EXCLUDE_FROM_ALL)
-  endif()
+  tinycmmc_find_dependency(argpp)
+  tinycmmc_find_dependency(babyxml)
+  tinycmmc_find_dependency(geom)
+  tinycmmc_find_dependency(logmich)
+  tinycmmc_find_dependency(sexp)
+  tinycmmc_find_dependency(biio)
+  tinycmmc_find_dependency(prio)
+  tinycmmc_find_dependency(surf)
+  tinycmmc_find_dependency(wstdisplay)
+  tinycmmc_find_dependency(wstinput)
+  tinycmmc_find_dependency(wstsound)
+  tinycmmc_find_dependency(wstgui)
 
   find_program(MINISWIG miniswig)
   if(NOT MINISWIG)
     add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(surf)
-  if(NOT TARGET surf::surf)
-    add_subdirectory(external/surfcpp/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(wstdisplay)
-  if(NOT TARGET wstdisplay::wstdisplay)
-    add_subdirectory(external/wstdisplay/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(wstinput)
-  if(NOT TARGET wstinput::wstinput)
-    add_subdirectory(external/wstinput/ EXCLUDE_FROM_ALL)
-  endif()
-
-    find_package(wstsound)
-  if(NOT TARGET wstsound::wstsound)
-    add_subdirectory(external/wstsound/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(wstgui)
-  if(NOT TARGET wstgui::wstgui)
-    add_subdirectory(external/wstgui/ EXCLUDE_FROM_ALL)
   endif()
 endfunction()
 build_dependencies()
@@ -187,7 +130,7 @@ list(APPEND WSTLIB_SOURCES ${WRAPPER_CPP})
 
 add_library(wstlib STATIC ${WSTLIB_SOURCES})
 add_dependencies(wstlib GenerateWrapper)
-target_compile_options(wstlib PUBLIC ${WARNINGS_CXX_FLAGS})
+target_compile_options(wstlib PUBLIC ${TINYCMMC_WARNINGS_CXX_FLAGS})
 target_compile_definitions(wstlib PUBLIC -DGLM_ENABLE_EXPERIMENTAL)
 target_include_directories(wstlib PUBLIC
   src/
@@ -222,7 +165,7 @@ if(BUILD_EDITOR)
     src/editor/*.cpp)
 
   add_executable(windstille-editor ${WINDSTILLE_EDITOR_SOURCES})
-  target_compile_options(windstille-editor PUBLIC ${WARNINGS_CXX_FLAGS})
+  target_compile_options(windstille-editor PUBLIC ${TINYCMMC_WARNINGS_CXX_FLAGS})
   target_link_libraries(windstille-editor
     wstlib
     PkgConfig::GTKMM)
@@ -251,7 +194,7 @@ file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/scripting/*.cpp
   src/tile/*.cpp)
 add_executable(windstille ${WINDSTILLE_SOURCES})
-target_compile_options(windstille PRIVATE ${WARNINGS_CXX_FLAGS})
+target_compile_options(windstille PRIVATE ${TINYCMMC_WARNINGS_CXX_FLAGS})
 target_link_libraries(windstille wstlib)
 install_with_wrapper(TARGETS windstille)
 
