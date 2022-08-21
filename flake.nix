@@ -37,6 +37,7 @@ rec {
     surfcpp.inputs.tinycmmc.follows = "tinycmmc";
     surfcpp.inputs.geomcpp.follows = "geomcpp";
     surfcpp.inputs.logmich.follows = "logmich";
+    surfcpp.inputs.SDL2-win32.follows = "SDL2-win32";
 
     babyxml.url = "github:grumbel/babyxml";
     babyxml.inputs.nixpkgs.follows = "nixpkgs";
@@ -60,6 +61,7 @@ rec {
     wstinput.inputs.logmich.follows = "logmich";
     wstinput.inputs.priocpp.follows = "priocpp";
     wstinput.inputs.sexpcpp.follows = "sexpcpp";
+    wstinput.inputs.SDL2-win32.follows = "SDL2-win32";
 
     wstdisplay.url = "github:WindstilleTeam/wstdisplay";
     wstdisplay.inputs.nixpkgs.follows = "nixpkgs";
@@ -69,6 +71,7 @@ rec {
     wstdisplay.inputs.babyxml.follows = "babyxml";
     wstdisplay.inputs.surfcpp.follows = "surfcpp";
     wstdisplay.inputs.logmich.follows = "logmich";
+    wstdisplay.inputs.SDL2-win32.follows = "SDL2-win32";
 
     wstgui.url = "github:WindstilleTeam/wstgui";
     wstgui.inputs.nixpkgs.follows = "nixpkgs";
@@ -88,46 +91,43 @@ rec {
     wstsound.inputs.nixpkgs.follows = "nixpkgs";
     wstsound.inputs.flake-utils.follows = "flake-utils";
     wstsound.inputs.tinycmmc.follows = "tinycmmc";
+    wstsound.inputs.SDL2-win32.follows = "SDL2-win32";
 
     miniswig.url = "github:WindstilleTeam/miniswig";
     miniswig.inputs.nixpkgs.follows = "nixpkgs";
     miniswig.inputs.flake-utils.follows = "flake-utils";
+
+    squirrel.url = "github:grumnix/squirrel";
+    squirrel.inputs.nixpkgs.follows = "nixpkgs";
+    squirrel.inputs.tinycmmc.follows = "tinycmmc";
+
+    SDL2-win32.url = "github:grumnix/SDL2-win32";
+    SDL2-win32.inputs.nixpkgs.follows = "nixpkgs";
+    SDL2-win32.inputs.tinycmmc.follows = "tinycmmc";
   };
 
   outputs = { self, nixpkgs, flake-utils,
               tinycmmc, argpp, logmich, geomcpp, priocpp, surfcpp, babyxml, sexpcpp, biiocpp,
-              wstinput, wstdisplay, wstgui, wstsound, miniswig }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in rec {
-        packages = flake-utils.lib.flattenTree rec {
-          squirrel = pkgs.stdenv.mkDerivation {
-            pname = "squirrel";
-            version = "3.2";
-            src = pkgs.fetchgit {
-              url = "https://github.com/albertodemichelis/squirrel.git";
-              #rev = "dda695e95f221b5e038796eab1f13d734dbd7270";
-              #hash = "sha256-6gT/KT6o+a2pOA8u5r/qfaFAvet4rvR7nxynhXiv46w=";
-              rev = "v3.2";
-              hash = "sha256-vzAF0ooYoghw0yKKoS0Q6RnPPMhmP+05RoutVSZIGwk=";
-            };
-            nativeBuildInputs = [
-              pkgs.cmake
-            ];
-          };
+              wstinput, wstdisplay, wstgui, wstsound, miniswig, squirrel, SDL2-win32 }:
+
+    tinycmmc.lib.eachSystemWithPkgs (pkgs:
+      {
+        packages = rec {
+          default = windstille;
 
           windstille = pkgs.stdenv.mkDerivation {
             pname = "windstille";
             version = "0.3.0";
             src = nixpkgs.lib.cleanSource ./.;
-            cmakeFlags = [ "-DBUILD_EXTRA=ON" ];
-            nativeBuildInputs = [
-              pkgs.cmake
-              pkgs.pkgconfig
-              pkgs.makeWrapper
-            ];
-            postFixup = ''
+            cmakeFlags = [
+              "-DBUILD_EXTRA=ON"
+            ] ++
+            (nixpkgs.lib.optionals pkgs.targetPlatform.isWindows [
+              "-DBUILD_EDITOR=OFF"
+            ]);
+
+            postFixup =
+              (nixpkgs.lib.optionalString pkgs.targetPlatform.isLinux ''
                 wrapProgram $out/bin/windstille \
                   --prefix LIBGL_DRIVERS_PATH ":" "${pkgs.mesa.drivers}/lib/dri" \
                   --prefix LD_LIBRARY_PATH ":" "${pkgs.mesa.drivers}/lib"
@@ -135,56 +135,59 @@ rec {
                 wrapProgram $out/bin/windstille-editor \
                   --prefix LIBGL_DRIVERS_PATH ":" "${pkgs.mesa.drivers}/lib/dri" \
                   --prefix LD_LIBRARY_PATH ":" "${pkgs.mesa.drivers}/lib"
-            '';
+               '');
+
+            nativeBuildInputs = [
+              pkgs.buildPackages.cmake
+              pkgs.buildPackages.pkgconfig
+              pkgs.buildPackages.xcftools
+
+              pkgs.buildPackages.bison
+              pkgs.buildPackages.flex
+
+              miniswig.packages.${pkgs.buildPlatform.system}.default
+            ] ++
+            (nixpkgs.lib.optional pkgs.targetPlatform.isLinux pkgs.makeWrapper);
+
             buildInputs = [
-              miniswig.defaultPackage.${system}
-              tinycmmc.defaultPackage.${system}
-              argpp.defaultPackage.${system}
-              logmich.defaultPackage.${system}
-              geomcpp.defaultPackage.${system}
-              priocpp.defaultPackage.${system}
-              surfcpp.defaultPackage.${system}
-              babyxml.defaultPackage.${system}
-              sexpcpp.defaultPackage.${system}
-              biiocpp.defaultPackage.${system}
-              wstgui.defaultPackage.${system}
-              wstinput.defaultPackage.${system}
-              wstsound.defaultPackage.${system}
-              wstdisplay.defaultPackage.${system}
-              miniswig.defaultPackage.${system}
-              squirrel
+              argpp.packages.${pkgs.system}.default
+              babyxml.packages.${pkgs.system}.default
+              biiocpp.packages.${pkgs.system}.default
+              geomcpp.packages.${pkgs.system}.default
+              logmich.packages.${pkgs.system}.default
+              priocpp.packages.${pkgs.system}.default
+              sexpcpp.packages.${pkgs.system}.default
+              surfcpp.packages.${pkgs.system}.default
+              tinycmmc.packages.${pkgs.system}.default
+              wstdisplay.packages.${pkgs.system}.default
+              wstgui.packages.${pkgs.system}.default
+              wstinput.packages.${pkgs.system}.default
+              wstsound.packages.${pkgs.system}.default
 
-              pkgs.freetype
-              pkgs.libGL
-              pkgs.libGLU
-              pkgs.glew
+              squirrel.packages.${pkgs.system}.default
+
+              #pkgs.SDL2
+              #pkgs.fmt_8
+              #pkgs.freetype
+              #pkgs.glew
+              #pkgs.glm
+              #pkgs.imagemagick6
+              #pkgs.libGL
+              #pkgs.libGLU
+              #pkgs.libexif
+              #pkgs.libjpeg
+              #pkgs.libpng
+              #pkgs.libsigcxx
+
               pkgs.gtest
-              pkgs.xcftools
-              pkgs.bison
-              pkgs.flex
+
+              # pkgs.jsoncpp
+            ] ++
+            (nixpkgs.lib.optionals pkgs.targetPlatform.isLinux [
               pkgs.gtkmm3
-
-              pkgs.fmt
-              pkgs.glm
-              pkgs.SDL2
-              pkgs.libjpeg
-              pkgs.libpng
-              pkgs.libsigcxx
-              pkgs.imagemagick6
-              pkgs.libexif
-
-              pkgs.openal
-              pkgs.libvorbis
-              pkgs.libogg
-              pkgs.opusfile
-              pkgs.mpg123
-              pkgs.libmodplug
-              pkgs.gtest
-
-              pkgs.jsoncpp
-            ];
+            ]);
           };
         };
-        defaultPackage = packages.windstille;
-      });
+      }
+    );
 }
