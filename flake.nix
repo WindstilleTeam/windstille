@@ -3,14 +3,14 @@
 
   inputs = {
     nixpkgs.url = "github:grumbel/nixpkgs/fix-guile-3.0";
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
     flake-utils.url = "github:numtide/flake-utils";
 
-    tinycmmc.url = "gitlab:grumbel/cmake-modules";
+    tinycmmc.url = "github:grumbel/tinycmmc";
     tinycmmc.inputs.flake-utils.follows = "flake-utils";
     tinycmmc.inputs.nixpkgs.follows = "nixpkgs";
 
-    clanlib.url = "gitlab:grumbel/clanlib-1.0";
+    clanlib.url = "github:grumbel/clanlib-1.0";
     clanlib.inputs.nixpkgs.follows = "nixpkgs";
     clanlib.inputs.flake-utils.follows = "flake-utils";
   };
@@ -19,8 +19,10 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-      in rec {
-        packages = flake-utils.lib.flattenTree {
+      in {
+        packages = rec {
+          default = windstille-0_2;
+
           windstille-0_2 = pkgs.stdenv.mkDerivation rec {
             pname = "windstille-0.2";
             version = "0.3.0";
@@ -45,10 +47,10 @@
               pkgs.gcc
               pkgs.pkgconfig
               pkgs.makeWrapper
-              tinycmmc.defaultPackage.${system}
+              tinycmmc.packages.${system}.default
             ];
             buildInputs = [
-              clanlib.defaultPackage.${system}
+              clanlib.packages.${system}.default
 
               pkgs.guile_3_0
               pkgs.libGL
@@ -58,6 +60,6 @@
             ];
            };
         };
-        defaultPackage = packages.windstille-0_2;
-      });
+      }
+    );
 }
