@@ -2,7 +2,7 @@ rec {
   description = "Windstille GUI Engine";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     flake-utils.url = "github:numtide/flake-utils";
 
     tinycmmc.url = "github:grumbel/tinycmmc";
@@ -16,12 +16,10 @@ rec {
 
     logmich.url = "github:logmich/logmich";
     logmich.inputs.nixpkgs.follows = "nixpkgs";
-    logmich.inputs.flake-utils.follows = "flake-utils";
     logmich.inputs.tinycmmc.follows = "tinycmmc";
 
     geomcpp.url = "github:grumbel/geomcpp";
     geomcpp.inputs.nixpkgs.follows = "nixpkgs";
-    geomcpp.inputs.flake-utils.follows = "flake-utils";
     geomcpp.inputs.tinycmmc.follows = "tinycmmc";
 
     priocpp.url = "github:grumbel/priocpp";
@@ -33,7 +31,6 @@ rec {
 
     surfcpp.url = "github:grumbel/surfcpp";
     surfcpp.inputs.nixpkgs.follows = "nixpkgs";
-    surfcpp.inputs.flake-utils.follows = "flake-utils";
     surfcpp.inputs.tinycmmc.follows = "tinycmmc";
     surfcpp.inputs.geomcpp.follows = "geomcpp";
     surfcpp.inputs.logmich.follows = "logmich";
@@ -41,7 +38,6 @@ rec {
 
     babyxml.url = "github:grumbel/babyxml";
     babyxml.inputs.nixpkgs.follows = "nixpkgs";
-    babyxml.inputs.flake-utils.follows = "flake-utils";
     babyxml.inputs.tinycmmc.follows = "tinycmmc";
 
     sexpcpp.url = "github:lispparser/sexp-cpp";
@@ -51,7 +47,6 @@ rec {
 
     biiocpp.url = "github:grumbel/biiocpp";
     biiocpp.inputs.nixpkgs.follows = "nixpkgs";
-    biiocpp.inputs.flake-utils.follows = "flake-utils";
     biiocpp.inputs.tinycmmc.follows = "tinycmmc";
 
     wstinput.url = "github:WindstilleTeam/wstinput";
@@ -65,7 +60,6 @@ rec {
 
     wstdisplay.url = "github:WindstilleTeam/wstdisplay";
     wstdisplay.inputs.nixpkgs.follows = "nixpkgs";
-    wstdisplay.inputs.flake-utils.follows = "flake-utils";
     wstdisplay.inputs.tinycmmc.follows = "tinycmmc";
     wstdisplay.inputs.geomcpp.follows = "geomcpp";
     wstdisplay.inputs.babyxml.follows = "babyxml";
@@ -91,7 +85,6 @@ rec {
     wstsound.inputs.nixpkgs.follows = "nixpkgs";
     wstsound.inputs.flake-utils.follows = "flake-utils";
     wstsound.inputs.tinycmmc.follows = "tinycmmc";
-    wstsound.inputs.SDL2-win32.follows = "SDL2-win32";
 
     miniswig.url = "github:WindstilleTeam/miniswig";
     miniswig.inputs.nixpkgs.follows = "nixpkgs";
