@@ -29,7 +29,7 @@
 #include "engine/squirrel_thread.hpp"
 #include "app/console.hpp"
 #include "scripting/game_objects.hpp"
-#include "scripting/squirrel_error.hpp"
+#include "squirrel/squirrel_error.hpp"
 
 namespace windstille {
 

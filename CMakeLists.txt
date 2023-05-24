@@ -77,16 +77,16 @@ endfunction()
 build_dependencies()
 
 # compile scripting stuff
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src/squirrel/)
 
 set(SCRIPTING_SOURCE
   ${CMAKE_CURRENT_SOURCE_DIR}/src/scripting/interface.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/scripting/game_objects.hpp)
-set(MINISWIG_TMP ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/miniswig.tmp)
+set(MINISWIG_TMP ${CMAKE_CURRENT_BINARY_DIR}/src/squirrel/miniswig.tmp)
 set(WRAPPER_INTERFACE_HPP ${CMAKE_CURRENT_SOURCE_DIR}/src/scripting/wrapper.interface.hpp)
 
-set(WRAPPER_CPP ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/wrapper.cpp)
-set(WRAPPER_HPP ${CMAKE_CURRENT_BINARY_DIR}/src/scripting/wrapper.hpp)
+set(WRAPPER_CPP ${CMAKE_CURRENT_BINARY_DIR}/src/squirrel/wrapper.cpp)
+set(WRAPPER_HPP ${CMAKE_CURRENT_BINARY_DIR}/src/squirrel/wrapper.hpp)
 
 add_custom_target(GenerateWrapper
   BYPRODUCTS ${MINISWIG_TMP} ${WRAPPER_CPP} ${WRAPPER_HPP}
@@ -192,6 +192,7 @@ file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/properties/*.cpp
   src/screen/*.cpp
   src/scripting/*.cpp
+  src/squirrel/*.cpp
   src/tile/*.cpp)
 add_executable(windstille ${WINDSTILLE_SOURCES})
 target_compile_options(windstille PRIVATE ${TINYCMMC_WARNINGS_CXX_FLAGS})

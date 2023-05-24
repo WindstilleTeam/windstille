@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "scripting/squirrel_error.hpp"
+#include "squirrel/squirrel_error.hpp"
 
 #include <sstream>
 

@@ -21,7 +21,7 @@
 #include <sstream>
 
 #include "app/globals.hpp"
-#include "scripting/squirrel_error.hpp"
+#include "squirrel/squirrel_error.hpp"
 
 namespace windstille {
 

@@ -27,7 +27,7 @@
 #include <memory>
 
 #include "util/currenton.hpp"
-#include "scripting/wrapper.hpp"
+#include "squirrel/wrapper.hpp"
 #include "scripting/util.hpp"
 
 namespace windstille {
