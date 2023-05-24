@@ -18,6 +18,7 @@
 
 #include "util/response_curve.hpp"
 
+#include <algorithm>
 #include <assert.h>
 
 namespace windstille {
