@@ -1,6 +1,6 @@
 [submodule "shared-modules"]
 	path = shared-modules
 	url = https://github.com/Grumbel/shared-modules.git
-[submodule "external/cmake-modules"]
-	path = external/cmake-modules
-	url = https://gitlab.com/grumbel/cmake-modules.git
+[submodule "external/tinycmmc"]
+	path = external/tinycmmc
+	url = https://github.com/grumbel/tinycmmc.git
