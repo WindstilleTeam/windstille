@@ -2,8 +2,7 @@
   description = "A classic 2d jump'n shoot game";
 
   inputs = {
-    nixpkgs.url = "github:grumbel/nixpkgs/fix-guile-3.0";
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     flake-utils.url = "github:numtide/flake-utils";
 
     tinycmmc.url = "github:grumbel/tinycmmc";
@@ -26,37 +25,35 @@
           windstille-0_2 = pkgs.stdenv.mkDerivation rec {
             pname = "windstille-0.2";
             version = "0.3.0";
-            src = nixpkgs.lib.cleanSource ./.;
-            cmakeFlags = [ "-DBUILD_EXTRA=ON" ];
+
+            src = ./.;
+
+            cmakeFlags = [
+              "-DBUILD_EXTRA=ON"
+            ];
+
             postPatch = ''
               for file in test/*.?xx; do \
                 substituteInPlace "$file" \
                   --replace '"data/' "\"$out/share/${pname}/"; \
               done
             '';
-            postFixup = ''
-              for program in $out/bin/*; do \
-                wrapProgram $program \
-                  --prefix LIBGL_DRIVERS_PATH ":" "${pkgs.mesa.drivers}/lib/dri" \
-                  --prefix LD_LIBRARY_PATH ":" "${pkgs.mesa.drivers}/lib"
-              done
-            '';
-            nativeBuildInputs = [
-              pkgs.cmake
-              pkgs.ninja
-              pkgs.gcc
-              pkgs.pkgconfig
-              pkgs.makeWrapper
+
+            nativeBuildInputs = with pkgs; [
+              cmake
+              pkgconfig
+            ] ++ [
               tinycmmc.packages.${system}.default
             ];
-            buildInputs = [
-              clanlib.packages.${system}.default
 
-              pkgs.guile_3_0
-              pkgs.libGL
-              pkgs.libGLU
-              pkgs.swig
-              pkgs.x11
+            buildInputs = with pkgs; [
+              guile_3_0
+              libGL
+              libGLU
+              swig
+              xorg.libX11
+            ] ++ [
+              clanlib.packages.${system}.default
             ];
            };
         };
