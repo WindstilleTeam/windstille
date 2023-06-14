@@ -27,7 +27,6 @@ rec {
     priocpp.inputs.flake-utils.follows = "flake-utils";
     priocpp.inputs.tinycmmc.follows = "tinycmmc";
     priocpp.inputs.logmich.follows = "logmich";
-    priocpp.inputs.sexpcpp.follows = "sexpcpp";
 
     surfcpp.url = "github:grumbel/surfcpp";
     surfcpp.inputs.nixpkgs.follows = "nixpkgs";
@@ -40,11 +39,6 @@ rec {
     babyxml.inputs.nixpkgs.follows = "nixpkgs";
     babyxml.inputs.tinycmmc.follows = "tinycmmc";
 
-    sexpcpp.url = "github:lispparser/sexp-cpp";
-    sexpcpp.inputs.nixpkgs.follows = "nixpkgs";
-    sexpcpp.inputs.flake-utils.follows = "flake-utils";
-    sexpcpp.inputs.tinycmmc.follows = "tinycmmc";
-
     biiocpp.url = "github:grumbel/biiocpp";
     biiocpp.inputs.nixpkgs.follows = "nixpkgs";
     biiocpp.inputs.tinycmmc.follows = "tinycmmc";
@@ -55,7 +49,6 @@ rec {
     wstinput.inputs.tinycmmc.follows = "tinycmmc";
     wstinput.inputs.logmich.follows = "logmich";
     wstinput.inputs.priocpp.follows = "priocpp";
-    wstinput.inputs.sexpcpp.follows = "sexpcpp";
     wstinput.inputs.SDL2-win32.follows = "SDL2-win32";
 
     wstdisplay.url = "github:WindstilleTeam/wstdisplay";
@@ -75,7 +68,6 @@ rec {
     wstgui.inputs.geomcpp.follows = "geomcpp";
     wstgui.inputs.logmich.follows = "logmich";
     wstgui.inputs.priocpp.follows = "priocpp";
-    wstgui.inputs.sexpcpp.follows = "sexpcpp";
     wstgui.inputs.surfcpp.follows = "surfcpp";
     wstgui.inputs.wstinput.follows = "wstinput";
     wstgui.inputs.wstdisplay.follows = "wstdisplay";
@@ -100,7 +92,7 @@ rec {
   };
 
   outputs = { self, nixpkgs, flake-utils,
-              tinycmmc, argpp, logmich, geomcpp, priocpp, surfcpp, babyxml, sexpcpp, biiocpp,
+              tinycmmc, argpp, logmich, geomcpp, priocpp, surfcpp, babyxml, biiocpp,
               wstinput, wstdisplay, wstgui, wstsound, miniswig, squirrel, SDL2-win32 }:
 
     tinycmmc.lib.eachSystemWithPkgs (pkgs:
@@ -137,7 +129,7 @@ rec {
 
               pkgs.buildPackages.bison
               pkgs.buildPackages.flex
-
+            ] ++ [
               miniswig.packages.${pkgs.buildPlatform.system}.default
             ] ++
             (nixpkgs.lib.optional pkgs.targetPlatform.isLinux pkgs.makeWrapper);
@@ -148,8 +140,7 @@ rec {
               biiocpp.packages.${pkgs.system}.default
               geomcpp.packages.${pkgs.system}.default
               logmich.packages.${pkgs.system}.default
-              priocpp.packages.${pkgs.system}.default
-              sexpcpp.packages.${pkgs.system}.default
+              priocpp.packages.${pkgs.system}.priocpp-sexp
               surfcpp.packages.${pkgs.system}.default
               tinycmmc.packages.${pkgs.system}.default
               wstdisplay.packages.${pkgs.system}.default
@@ -173,8 +164,6 @@ rec {
               #pkgs.libsigcxx
 
               pkgs.gtest
-
-              # pkgs.jsoncpp
             ] ++
             (nixpkgs.lib.optionals pkgs.targetPlatform.isLinux [
               pkgs.gtkmm3

@@ -60,7 +60,6 @@ function(build_dependencies)
   tinycmmc_find_dependency(babyxml)
   tinycmmc_find_dependency(geom)
   tinycmmc_find_dependency(logmich)
-  tinycmmc_find_dependency(sexp)
   tinycmmc_find_dependency(biio)
   tinycmmc_find_dependency(prio)
   tinycmmc_find_dependency(surf)
@@ -146,7 +145,6 @@ target_link_libraries(wstlib PUBLIC
   babyxml::babyxml
   geom::geom
   logmich::logmich
-  sexp::sexp
   surf::surf
   Squirrel::Squirrel
   GLEW::GLEW
