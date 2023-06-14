@@ -80,7 +80,6 @@ rec {
 
     miniswig.url = "github:WindstilleTeam/miniswig";
     miniswig.inputs.nixpkgs.follows = "nixpkgs";
-    miniswig.inputs.flake-utils.follows = "flake-utils";
 
     squirrel.url = "github:grumnix/squirrel";
     squirrel.inputs.nixpkgs.follows = "nixpkgs";
@@ -103,7 +102,9 @@ rec {
           windstille = pkgs.stdenv.mkDerivation {
             pname = "windstille";
             version = "0.3.0";
-            src = nixpkgs.lib.cleanSource ./.;
+
+            src = ./.;
+
             cmakeFlags = [
               "-DBUILD_EXTRA=ON"
             ] ++
@@ -149,19 +150,6 @@ rec {
               wstsound.packages.${pkgs.system}.default
 
               squirrel.packages.${pkgs.system}.default
-
-              #pkgs.SDL2
-              #pkgs.fmt_8
-              #pkgs.freetype
-              #pkgs.glew
-              #pkgs.glm
-              #pkgs.imagemagick6
-              #pkgs.libGL
-              #pkgs.libGLU
-              #pkgs.libexif
-              #pkgs.libjpeg
-              #pkgs.libpng
-              #pkgs.libsigcxx
 
               pkgs.gtest
             ] ++
