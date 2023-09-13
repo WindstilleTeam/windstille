@@ -104,10 +104,6 @@ install(FILES
   ${PROJECT_NAME}.desktop
   DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 
-configure_file(${PROJECT_NAME}.appdata.xml.in ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.appdata.xml)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.appdata.xml
-  DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
-
 if(BUILD_EXTRA)
   file(GLOB EXTRA_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     test/*.cxx)
@@ -127,10 +123,6 @@ endif()
 if(BUILD_TESTS)
   # add 'make test' target, use 'make test ARGS="-V"' or 'ctest -V' for verbose
   enable_testing()
-
-  add_test(NAME ${PROJECT_NAME}.appdata.xml
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND appstream-util validate-relax ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.appdata.xml)
 endif()
 
 # EOF #
