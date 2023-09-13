@@ -300,14 +300,4 @@ install(FILES
   windstille.desktop
   DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 
-configure_file(windstille.appdata.xml.in ${CMAKE_CURRENT_BINARY_DIR}/windstille.appdata.xml)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/windstille.appdata.xml
-  DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
-
-if (BUILD_TESTS)
-  add_test(NAME windstille.appdata.xml
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND appstream-util validate-relax ${CMAKE_CURRENT_BINARY_DIR}/windstille.appdata.xml)
-endif(BUILD_TESTS)
-
 # EOF #
