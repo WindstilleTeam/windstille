@@ -2,7 +2,7 @@ rec {
   description = "Windstille GUI Engine";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-24.05";
     flake-utils.url = "github:numtide/flake-utils";
 
     tinycmmc.url = "github:grumbel/tinycmmc";
@@ -114,7 +114,7 @@ rec {
 
             nativeBuildInputs = [
               pkgs.buildPackages.cmake
-              pkgs.buildPackages.pkgconfig
+              pkgs.buildPackages.pkg-config
               pkgs.buildPackages.xcftools
 
               pkgs.buildPackages.bison
