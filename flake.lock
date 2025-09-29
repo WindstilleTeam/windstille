@@ -159,11 +159,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1712097214,
-        "narHash": "sha256-5MQUyK6OSQtLpm1xcgu1fc1ASRxnsuh+MFo2i2Bt5xs=",
+        "lastModified": 1716729375,
+        "narHash": "sha256-4H2Y+DuT9OMePK6JBi9Y7L+tnhXuUfvIIJlR+zcAjXI=",
         "owner": "grumnix",
         "repo": "freetype-win32",
-        "rev": "6ba76d185914748f4d462abf603b3b2425c7929e",
+        "rev": "874cb3559c6463e96e18c3a22ae9491df45a8327",
         "type": "github"
       },
       "original": {
@@ -454,16 +454,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1735563628,
-        "narHash": "sha256-OnSAY7XDSx7CtDoqNh8jwVwh4xNL/2HaJxGjryLWzX8=",
+        "lastModified": 1758791193,
+        "narHash": "sha256-F8WmEwFoHsnix7rt290R0rFXNJiMbClMZyIC/e+HYf0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b134951a4c9f3c995fd7be05f3243f8ecd65d798",
+        "rev": "25e53aa156d47bad5082ff7618f5feb1f5e02d01",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-24.05",
+        "ref": "nixos-25.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -722,11 +722,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1716729616,
-        "narHash": "sha256-P9NQI/H7zR2SGBghL7XsV4WM5e+yI1XNojLOuM7g5Fc=",
+        "lastModified": 1753120376,
+        "narHash": "sha256-/wH9Cgo+4eyYRyUcYRNkYR38rLRv/mJq87dpE9wCPlw=",
         "owner": "lispparser",
         "repo": "sexp-cpp",
-        "rev": "4d8096c223d2f469ca6e407e793d20980f6aba76",
+        "rev": "677b6f3ecd54e92339d33062084b081ebb9f14a6",
         "type": "github"
       },
       "original": {
@@ -838,11 +838,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1716735371,
-        "narHash": "sha256-yO3JZb2V6fSqqMfHg73hde5oMhzeUdtf1QnggMjubpc=",
+        "lastModified": 1754897845,
+        "narHash": "sha256-3teS//TMjNL53qyNCnzaIPCiwgkPHDchdX90iBZ1gwk=",
         "owner": "grumbel",
         "repo": "surfcpp",
-        "rev": "1a86aa165282d4dfa59056d11545855a4d496975",
+        "rev": "82147ec894b07634b4a238b3e7b02698c9f48f1b",
         "type": "github"
       },
       "original": {
@@ -953,11 +953,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1716735476,
-        "narHash": "sha256-9XsxIVY33S8M3XGyU4Vu0U3LGn4vyMLfl5Vp3lZLlQo=",
+        "lastModified": 1754897945,
+        "narHash": "sha256-OO/qwvpdrYGqr/aVOxK5dm0ruSpiPv0kEK7nAwhJSow=",
         "owner": "WindstilleTeam",
         "repo": "wstdisplay",
-        "rev": "e74d687fa96ca2eeb39f6c5b466a56bca6f70715",
+        "rev": "129b5a70676f080cfb45c4c3336e4c27100f954e",
         "type": "github"
       },
       "original": {
@@ -1040,11 +1040,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1716735595,
-        "narHash": "sha256-c4ICDQ53QanacSTkgmNc1J9wn8aSpg1AkS+mMBGKvgk=",
+        "lastModified": 1754898343,
+        "narHash": "sha256-jwF4VITBZVNMIRQNTvezUaJJAb8tKGClhyXrWvoGRBU=",
         "owner": "WindstilleTeam",
         "repo": "wstinput",
-        "rev": "7b8d66dcc285b22b3b52f0bf14b10b6c5949a3fa",
+        "rev": "d6ed5ecb0be9cf225309c90e538a47d219b92222",
         "type": "github"
       },
       "original": {
