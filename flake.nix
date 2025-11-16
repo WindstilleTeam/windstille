@@ -2,7 +2,7 @@ rec {
   description = "Windstille GUI Engine";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
     tinycmmc.url = "github:grumbel/tinycmmc";
@@ -78,12 +78,13 @@ rec {
     wstsound.inputs.flake-utils.follows = "flake-utils";
     wstsound.inputs.tinycmmc.follows = "tinycmmc";
 
-    miniswig.url = "github:WindstilleTeam/miniswig";
-    miniswig.inputs.nixpkgs.follows = "nixpkgs";
-
     squirrel.url = "github:grumnix/squirrel";
     squirrel.inputs.nixpkgs.follows = "nixpkgs";
     squirrel.inputs.tinycmmc.follows = "tinycmmc";
+
+    miniswig.url = "github:WindstilleTeam/miniswig";
+    miniswig.inputs.nixpkgs.follows = "nixpkgs";
+    miniswig.inputs.squirrel.follows = "squirrel";
 
     SDL2-win32.url = "github:grumnix/SDL2-win32";
     SDL2-win32.inputs.nixpkgs.follows = "nixpkgs";
