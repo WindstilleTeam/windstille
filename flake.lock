@@ -50,11 +50,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763251860,
-        "narHash": "sha256-zS3ALr6TZv+X2Y3d5q/jpmOBJnmzfbhCCjDAzyuWmJw=",
+        "lastModified": 1763577316,
+        "narHash": "sha256-jG+a4K6NoyF41nTlWwN1J2my2nnqdiVO+fhQ9PHhdR4=",
         "owner": "grumbel",
         "repo": "argpp",
-        "rev": "a9f981379fa953229e05fd53a3d58f49fefe57d6",
+        "rev": "b52420a843327361713b6242e47afaa6b6ab2a89",
         "type": "github"
       },
       "original": {
@@ -74,11 +74,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1716728957,
-        "narHash": "sha256-O1jH5VZ//92nW+HwtoXoen3PR2/QvMwLiOq8ex0Qnhw=",
+        "lastModified": 1763579068,
+        "narHash": "sha256-SIZ09yh1EHjGXRBNThi3mQhz6UebJUJrKZgP5fA7cm0=",
         "owner": "grumbel",
         "repo": "babyxml",
-        "rev": "8ab2b3f3a33c654097226e4c243e5f49b48e7e71",
+        "rev": "e78a832e566c30ac91934c75d6daa6d284027fb0",
         "type": "github"
       },
       "original": {
@@ -97,11 +97,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763259089,
-        "narHash": "sha256-c1SmriD9d8MBuJKZv7vSaYj4CeTQ+yz8j48kwSu1R8I=",
+        "lastModified": 1763579932,
+        "narHash": "sha256-RU3xkI7lAV8hClGVMjsEoPXgQZQakKzvnUsm3T2h5aI=",
         "owner": "grumbel",
         "repo": "biiocpp",
-        "rev": "0190a1fe08fd42923b17b9b0adf0498ceb25984e",
+        "rev": "4530ae641b6252a8f7861d4437d9687288c0f1a2",
         "type": "github"
       },
       "original": {
@@ -195,11 +195,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1749679405,
-        "narHash": "sha256-M4a6P6J/PBDklpOiR81Nah0STlXFI48+mQkNqMBicKQ=",
+        "lastModified": 1763578552,
+        "narHash": "sha256-cI5Qe8JHthl/C/E7TYskEnzB/+FY/hXdsmCzmBdiv/Q=",
         "owner": "grumbel",
         "repo": "geomcpp",
-        "rev": "282e3710fbe6dacee630391e4af8ffe03181f8a9",
+        "rev": "d3a94b28cbce9da9a59129919d33ee1465e5b5a3",
         "type": "github"
       },
       "original": {
@@ -378,11 +378,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1753120025,
-        "narHash": "sha256-e8k/ZzPAfLgNF30wmXHDX5ovK/msTH6sgzxWKzZhtOY=",
+        "lastModified": 1763578800,
+        "narHash": "sha256-mnqKS+m/m/zwlOpse3+QnP54fgaXR9/8FW+FDq/MKlo=",
         "owner": "logmich",
         "repo": "logmich",
-        "rev": "c73c7b7d6cd050d1bcc42d522ce80a2eb86da5c8",
+        "rev": "f69ccb6b8963d995eeb886f60e8c30b2742d596e",
         "type": "github"
       },
       "original": {
@@ -402,11 +402,11 @@
         "tinycmmc": "tinycmmc"
       },
       "locked": {
-        "lastModified": 1763255632,
-        "narHash": "sha256-LhChH6yR4WXYSbtTm8Hp0HlSbNrYTAfWcG8F22VYSwE=",
+        "lastModified": 1763579822,
+        "narHash": "sha256-2gxWj6UzJ/WHxjpgGQnyffufdp7ecXWox5KBRdWApUE=",
         "owner": "WindstilleTeam",
         "repo": "miniswig",
-        "rev": "f111a0c22bc97692d779accdc0a3dcb18dab6a9f",
+        "rev": "2c4e1af6f09b0e011c59e4803f5c775b3df3381b",
         "type": "github"
       },
       "original": {
@@ -456,11 +456,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1762977756,
-        "narHash": "sha256-4PqRErxfe+2toFJFgcRKZ0UI9NSIOJa+7RXVtBhy4KE=",
+        "lastModified": 1763421233,
+        "narHash": "sha256-Stk9ZYRkGrnnpyJ4eqt9eQtdFWRRIvMxpNRf4sIegnw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c5ae371f1a6a7fd27823bc500d9390b38c05fa55",
+        "rev": "89c2b2330e733d6cdb5eae7b899326930c2c0648",
         "type": "github"
       },
       "original": {
@@ -616,11 +616,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763252804,
-        "narHash": "sha256-no1LJTJ/I/DcEQNAUYZprXao3x9t9J7RyzE/CW6xgcc=",
+        "lastModified": 1763579310,
+        "narHash": "sha256-yBF1GbaMtP5s+qCXtByG75Mb1eeiOEyBsQ8Jihzw4K4=",
         "owner": "grumbel",
         "repo": "priocpp",
-        "rev": "6db88ccf699ad09b9ff8233804e605dbef56dedd",
+        "rev": "66856beeaa700b734ac798f4261eecf95b0535f7",
         "type": "github"
       },
       "original": {
@@ -666,11 +666,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763252698,
-        "narHash": "sha256-MLSebs2kU/ejWhnz/oOZr6FfiPUqFX1G4dFNJT7bg6A=",
+        "lastModified": 1763579287,
+        "narHash": "sha256-A7rbv/UKAwXJoaw6284aLBe7omdirUJq/NG92NG4YA8=",
         "owner": "lispparser",
         "repo": "sexp-cpp",
-        "rev": "1a591d33df73cbd0cd966c2621f759797f9fdd9b",
+        "rev": "c6fd69b47cc19c1ce3ab5fff6cb1f4a683fd81a2",
         "type": "github"
       },
       "original": {
@@ -695,11 +695,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763252698,
-        "narHash": "sha256-MLSebs2kU/ejWhnz/oOZr6FfiPUqFX1G4dFNJT7bg6A=",
+        "lastModified": 1763579287,
+        "narHash": "sha256-A7rbv/UKAwXJoaw6284aLBe7omdirUJq/NG92NG4YA8=",
         "owner": "lispparser",
         "repo": "sexp-cpp",
-        "rev": "1a591d33df73cbd0cd966c2621f759797f9fdd9b",
+        "rev": "c6fd69b47cc19c1ce3ab5fff6cb1f4a683fd81a2",
         "type": "github"
       },
       "original": {
@@ -724,11 +724,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763252698,
-        "narHash": "sha256-MLSebs2kU/ejWhnz/oOZr6FfiPUqFX1G4dFNJT7bg6A=",
+        "lastModified": 1763579287,
+        "narHash": "sha256-A7rbv/UKAwXJoaw6284aLBe7omdirUJq/NG92NG4YA8=",
         "owner": "lispparser",
         "repo": "sexp-cpp",
-        "rev": "1a591d33df73cbd0cd966c2621f759797f9fdd9b",
+        "rev": "c6fd69b47cc19c1ce3ab5fff6cb1f4a683fd81a2",
         "type": "github"
       },
       "original": {
@@ -797,11 +797,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763256318,
-        "narHash": "sha256-bW5ojCt2hzetX/03P9hMOGd89y+bMS/RUTHqtCpOgFM=",
+        "lastModified": 1763578863,
+        "narHash": "sha256-5+15W7vTVdNkljM21guGaGhUw2PTxIf65R2+YZcBfoQ=",
         "owner": "grumbel",
         "repo": "surfcpp",
-        "rev": "6bfec4f813dfd3923bf9950edaa79b44a63ac9ea",
+        "rev": "0002577f58ac14d1b314f3defe32b0529441a08e",
         "type": "github"
       },
       "original": {
@@ -912,11 +912,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763256839,
-        "narHash": "sha256-z6lpSuQdx1JnUKYFDJ68HBkiYhMJPDtpD/qmEQJM1BA=",
+        "lastModified": 1763579114,
+        "narHash": "sha256-ZS2bV8Nj1mYmbRFPS1aOWCx+GvuuzzXq4glguPmrib0=",
         "owner": "WindstilleTeam",
         "repo": "wstdisplay",
-        "rev": "8bb40e4028ae2dff233be718040f43603c5fdf87",
+        "rev": "0322887863a63bc745fe5a2c06430a68ed4aaf40",
         "type": "github"
       },
       "original": {
@@ -963,11 +963,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763256640,
-        "narHash": "sha256-Mabfcle5HZHOJeaUutQLkglveIm8YaN7K5s0WOxLx6c=",
+        "lastModified": 1763579684,
+        "narHash": "sha256-K+r4iS2K8FoLH261+5iJ+zgk/OQI5ALD5k0W4ZT5xQg=",
         "owner": "WindstilleTeam",
         "repo": "wstgui",
-        "rev": "0af486449830e56fd5d09304d6b83d808a9e1a7a",
+        "rev": "16fe6e558e21254ec3aa79edf33eb344be992586",
         "type": "github"
       },
       "original": {
@@ -999,11 +999,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763254719,
-        "narHash": "sha256-aQREJilCZTqsLzQzE93iSbPtiJLCB3ySgz2RItM17Kw=",
+        "lastModified": 1763579583,
+        "narHash": "sha256-Vdbsyq2WhkkBeJxIPYFHFVjaTxcjuvc+muPDt0ppXBg=",
         "owner": "WindstilleTeam",
         "repo": "wstinput",
-        "rev": "0e0fa0266fc131981c77ccfa6f69916d90545e15",
+        "rev": "9be75540c618fb55115154ed10b3b60e35260e1e",
         "type": "github"
       },
       "original": {
@@ -1032,11 +1032,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763254683,
-        "narHash": "sha256-V8w6Yi6jBTtzBgd3MpAOrvdLxAaSGI+HUbl1r4yBKuU=",
+        "lastModified": 1763578349,
+        "narHash": "sha256-U2HXDO0M1kb66yRN3p/+tobA+E5au+rpiTp4kGuQeDE=",
         "owner": "WindstilleTeam",
         "repo": "wstsound",
-        "rev": "8b5af8eaa3e833192fad866e50d2a7b6254eeebb",
+        "rev": "b16eaa3b6573894169d82b0d3c8a31731f2ee04e",
         "type": "github"
       },
       "original": {

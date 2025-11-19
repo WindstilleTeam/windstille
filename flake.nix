@@ -109,7 +109,7 @@ rec {
             cmakeFlags = [
               "-DBUILD_EXTRA=ON"
             ] ++
-            (nixpkgs.lib.optionals pkgs.targetPlatform.isWindows [
+            (nixpkgs.lib.optionals pkgs.stdenv.targetPlatform.isWindows [
               "-DBUILD_EDITOR=OFF"
             ]);
 
@@ -121,29 +121,29 @@ rec {
               pkgs.buildPackages.bison
               pkgs.buildPackages.flex
             ] ++ [
-              miniswig.packages.${pkgs.buildPlatform.system}.default
+              miniswig.packages.${pkgs.stdenv.buildPlatform.system}.default
             ] ++
-            (nixpkgs.lib.optional pkgs.targetPlatform.isLinux pkgs.makeWrapper);
+            (nixpkgs.lib.optional pkgs.stdenv.targetPlatform.isLinux pkgs.makeWrapper);
 
             buildInputs = [
-              argpp.packages.${pkgs.system}.default
-              babyxml.packages.${pkgs.system}.default
-              biiocpp.packages.${pkgs.system}.default
-              geomcpp.packages.${pkgs.system}.default
-              logmich.packages.${pkgs.system}.default
-              priocpp.packages.${pkgs.system}.priocpp-sexp
-              surfcpp.packages.${pkgs.system}.default
-              tinycmmc.packages.${pkgs.system}.default
-              wstdisplay.packages.${pkgs.system}.default
-              wstgui.packages.${pkgs.system}.default
-              wstinput.packages.${pkgs.system}.default
-              wstsound.packages.${pkgs.system}.default
+              argpp.packages.${pkgs.stdenv.hostPlatform.system}.default
+              babyxml.packages.${pkgs.stdenv.hostPlatform.system}.default
+              biiocpp.packages.${pkgs.stdenv.hostPlatform.system}.default
+              geomcpp.packages.${pkgs.stdenv.hostPlatform.system}.default
+              logmich.packages.${pkgs.stdenv.hostPlatform.system}.default
+              priocpp.packages.${pkgs.stdenv.hostPlatform.system}.priocpp-sexp
+              surfcpp.packages.${pkgs.stdenv.hostPlatform.system}.default
+              tinycmmc.packages.${pkgs.stdenv.hostPlatform.system}.default
+              wstdisplay.packages.${pkgs.stdenv.hostPlatform.system}.default
+              wstgui.packages.${pkgs.stdenv.hostPlatform.system}.default
+              wstinput.packages.${pkgs.stdenv.hostPlatform.system}.default
+              wstsound.packages.${pkgs.stdenv.hostPlatform.system}.default
 
-              squirrel.packages.${pkgs.system}.default
+              squirrel.packages.${pkgs.stdenv.hostPlatform.system}.default
 
               pkgs.gtest
             ] ++
-            (nixpkgs.lib.optionals pkgs.targetPlatform.isLinux [
+            (nixpkgs.lib.optionals pkgs.stdenv.targetPlatform.isLinux [
               pkgs.gtkmm3
             ]);
           };
