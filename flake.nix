@@ -109,7 +109,7 @@ rec {
             cmakeFlags = [
               "-DBUILD_EXTRA=ON"
             ] ++
-            (nixpkgs.lib.optionals pkgs.stdenv.targetPlatform.isWindows [
+            (nixpkgs.lib.optionals pkgs.stdenv.hostPlatform.isWindows [
               "-DBUILD_EDITOR=OFF"
             ]);
 
@@ -123,7 +123,7 @@ rec {
             ] ++ [
               miniswig.packages.${pkgs.stdenv.buildPlatform.system}.default
             ] ++
-            (nixpkgs.lib.optional pkgs.stdenv.targetPlatform.isLinux pkgs.makeWrapper);
+            (nixpkgs.lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.makeWrapper);
 
             buildInputs = [
               argpp.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -143,7 +143,7 @@ rec {
 
               pkgs.gtest
             ] ++
-            (nixpkgs.lib.optionals pkgs.stdenv.targetPlatform.isLinux [
+            (nixpkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
               pkgs.gtkmm3
             ]);
           };
