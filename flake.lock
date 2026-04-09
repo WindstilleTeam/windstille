@@ -13,15 +13,15 @@
       "locked": {
         "lastModified": 1753127534,
         "narHash": "sha256-73UFk9wGZb0CQ2EpFaXRczHzUUlOzK/Ov2KP3ewk4qw=",
-        "owner": "grumnix",
-        "repo": "SDL2-win32",
+        "ref": "refs/heads/master",
         "rev": "278a40a7bff4c0b0bf4f5ad1c528308df4a1b0f9",
-        "type": "github"
+        "revCount": 6,
+        "type": "git",
+        "url": "https://github.com/grumnix/SDL2-win32.git"
       },
       "original": {
-        "owner": "grumnix",
-        "repo": "SDL2-win32",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumnix/SDL2-win32.git"
       }
     },
     "SDL2_src": {
@@ -52,16 +52,16 @@
       "locked": {
         "lastModified": 1763577316,
         "narHash": "sha256-jG+a4K6NoyF41nTlWwN1J2my2nnqdiVO+fhQ9PHhdR4=",
-        "owner": "grumbel",
-        "repo": "argpp",
+        "ref": "stable",
         "rev": "b52420a843327361713b6242e47afaa6b6ab2a89",
-        "type": "github"
+        "revCount": 73,
+        "type": "git",
+        "url": "https://github.com/grumbel/argpp.git"
       },
       "original": {
-        "owner": "grumbel",
         "ref": "stable",
-        "repo": "argpp",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumbel/argpp.git"
       }
     },
     "babyxml": {
@@ -74,17 +74,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1775728485,
-        "narHash": "sha256-ugdjNEOetBbkvXuSm9/9JOtkj32rA71Uk9K8ULhD91c=",
-        "owner": "grumbel",
-        "repo": "babyxml",
-        "rev": "a0ad6c8c51479cbba3fca730d9c54a9a60a40563",
-        "type": "github"
+        "lastModified": 1775757657,
+        "narHash": "sha256-nH7Muiz1E2HbmZH3xibTpskMKxw9vwkiRQ/xPA4qLLA=",
+        "ref": "refs/heads/master",
+        "rev": "1f634fe6175cdf780ab5f6c03d925b5724294194",
+        "revCount": 51,
+        "type": "git",
+        "url": "https://github.com/grumbel/babyxml.git"
       },
       "original": {
-        "owner": "grumbel",
-        "repo": "babyxml",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumbel/babyxml.git"
       }
     },
     "biiocpp": {
@@ -98,16 +98,16 @@
       },
       "locked": {
         "lastModified": 1763579932,
-        "narHash": "sha256-RU3xkI7lAV8hClGVMjsEoPXgQZQakKzvnUsm3T2h5aI=",
-        "owner": "grumbel",
-        "repo": "biiocpp",
+        "narHash": "sha256-qW9uYTZLpMRY2VBWkv3EcaakwMLYyzOY3tzKghDRruo=",
+        "ref": "refs/heads/master",
         "rev": "4530ae641b6252a8f7861d4437d9687288c0f1a2",
-        "type": "github"
+        "revCount": 21,
+        "type": "git",
+        "url": "https://github.com/grumbel/biiocpp.git"
       },
       "original": {
-        "owner": "grumbel",
-        "repo": "biiocpp",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumbel/biiocpp.git"
       }
     },
     "flake-utils": {
@@ -143,15 +143,15 @@
       "locked": {
         "lastModified": 1716729375,
         "narHash": "sha256-4H2Y+DuT9OMePK6JBi9Y7L+tnhXuUfvIIJlR+zcAjXI=",
-        "owner": "grumnix",
-        "repo": "freetype-win32",
+        "ref": "refs/heads/master",
         "rev": "874cb3559c6463e96e18c3a22ae9491df45a8327",
-        "type": "github"
+        "revCount": 4,
+        "type": "git",
+        "url": "https://github.com/grumnix/freetype-win32.git"
       },
       "original": {
-        "owner": "grumnix",
-        "repo": "freetype-win32",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumnix/freetype-win32.git"
       }
     },
     "freetype_src": {
@@ -178,16 +178,16 @@
       },
       "locked": {
         "lastModified": 1775669653,
-        "narHash": "sha256-5wbwUbRO0+yw+cWvKChq7W6FTMg9S7QIGiz/ZpAOwsw=",
-        "owner": "grumbel",
-        "repo": "geomcpp",
+        "narHash": "sha256-brC1Xkk17mQTw2C+/em1C1BxsJa7X9/wkQWIb4kucoQ=",
+        "ref": "refs/heads/master",
         "rev": "af84b6266807f66efb338fdd5d88d060ee741267",
-        "type": "github"
+        "revCount": 112,
+        "type": "git",
+        "url": "https://github.com/grumbel/geomcpp.git"
       },
       "original": {
-        "owner": "grumbel",
-        "repo": "geomcpp",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumbel/geomcpp.git"
       }
     },
     "glew-win32": {
@@ -205,15 +205,15 @@
       "locked": {
         "lastModified": 1716729346,
         "narHash": "sha256-bO+mEfQT7V86Xi7m4xLpigWh4FxLSlbwBUnndn4Lb+o=",
-        "owner": "grumnix",
-        "repo": "glew-win32",
+        "ref": "refs/heads/master",
         "rev": "e2cc411d17dc1845eb25492e9bf408d5862ad19c",
-        "type": "github"
+        "revCount": 4,
+        "type": "git",
+        "url": "https://github.com/grumnix/glew-win32.git"
       },
       "original": {
-        "owner": "grumnix",
-        "repo": "glew-win32",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumnix/glew-win32.git"
       }
     },
     "glew_src": {
@@ -244,15 +244,15 @@
       "locked": {
         "lastModified": 1716834232,
         "narHash": "sha256-ZnTt0ZFvCPSA6NcIzAku/LH4SqYmKnwhdTadk209bFY=",
-        "owner": "grumnix",
-        "repo": "libmodplug-win32",
+        "ref": "refs/heads/master",
         "rev": "ca34343b3492192f977f06b529888ea55f184097",
-        "type": "github"
+        "revCount": 5,
+        "type": "git",
+        "url": "https://github.com/grumnix/libmodplug-win32.git"
       },
       "original": {
-        "owner": "grumnix",
-        "repo": "libmodplug-win32",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumnix/libmodplug-win32.git"
       }
     },
     "libmodplug_src": {
@@ -283,15 +283,15 @@
       "locked": {
         "lastModified": 1764251829,
         "narHash": "sha256-CUq+HLy257tgKo9URjnjgCS1HyIQpPetU06gFr/1fQA=",
-        "owner": "grumnix",
-        "repo": "libogg-win32",
+        "ref": "refs/heads/master",
         "rev": "a05787b0ad8f878cd44008fd0c4c99cb149c0066",
-        "type": "github"
+        "revCount": 6,
+        "type": "git",
+        "url": "https://github.com/grumnix/libogg-win32.git"
       },
       "original": {
-        "owner": "grumnix",
-        "repo": "libogg-win32",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumnix/libogg-win32.git"
       }
     },
     "libogg_src": {
@@ -326,15 +326,15 @@
       "locked": {
         "lastModified": 1764251884,
         "narHash": "sha256-3jO1DR02WbHEtv6r809E/UvUFou2uXkT/8hkqmhK2Y4=",
-        "owner": "grumnix",
-        "repo": "libvorbis-win32",
+        "ref": "refs/heads/master",
         "rev": "d698e14ec3fce00f85c111f74ad783bbda813a72",
-        "type": "github"
+        "revCount": 7,
+        "type": "git",
+        "url": "https://github.com/grumnix/libvorbis-win32.git"
       },
       "original": {
-        "owner": "grumnix",
-        "repo": "libvorbis-win32",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumnix/libvorbis-win32.git"
       }
     },
     "libvorbis_src": {
@@ -362,15 +362,15 @@
       "locked": {
         "lastModified": 1763578800,
         "narHash": "sha256-mnqKS+m/m/zwlOpse3+QnP54fgaXR9/8FW+FDq/MKlo=",
-        "owner": "logmich",
-        "repo": "logmich",
+        "ref": "refs/heads/master",
         "rev": "f69ccb6b8963d995eeb886f60e8c30b2742d596e",
-        "type": "github"
+        "revCount": 53,
+        "type": "git",
+        "url": "https://github.com/logmich/logmich.git"
       },
       "original": {
-        "owner": "logmich",
-        "repo": "logmich",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/logmich/logmich.git"
       }
     },
     "miniswig": {
@@ -387,16 +387,16 @@
       },
       "locked": {
         "lastModified": 1763579822,
-        "narHash": "sha256-2gxWj6UzJ/WHxjpgGQnyffufdp7ecXWox5KBRdWApUE=",
-        "owner": "WindstilleTeam",
-        "repo": "miniswig",
+        "narHash": "sha256-v8/RsGRptjSDMxRxD5MJ1brvsfhXAqdH7OP41mm6k2o=",
+        "ref": "refs/heads/master",
         "rev": "2c4e1af6f09b0e011c59e4803f5c775b3df3381b",
-        "type": "github"
+        "revCount": 147,
+        "type": "git",
+        "url": "https://github.com/WindstilleTeam/miniswig.git"
       },
       "original": {
-        "owner": "WindstilleTeam",
-        "repo": "miniswig",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/WindstilleTeam/miniswig.git"
       }
     },
     "mpg123-win32": {
@@ -414,15 +414,15 @@
       "locked": {
         "lastModified": 1716728685,
         "narHash": "sha256-+oyZIT88pcIuWUW1jw69KpxEjvqU1QDtF3VV6hiTVAo=",
-        "owner": "grumnix",
-        "repo": "mpg123-win32",
+        "ref": "refs/heads/master",
         "rev": "aead750a3614f02601f7e81f67751b9f64eeab07",
-        "type": "github"
+        "revCount": 5,
+        "type": "git",
+        "url": "https://github.com/grumnix/mpg123-win32.git"
       },
       "original": {
-        "owner": "grumnix",
-        "repo": "mpg123-win32",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumnix/mpg123-win32.git"
       }
     },
     "mpg123_src": {
@@ -469,15 +469,15 @@
       "locked": {
         "lastModified": 1763585892,
         "narHash": "sha256-ADPqFbvM+Dy6OoW/Mk1E/0OM+IPyO6QC6Qd+FOsXQeg=",
-        "owner": "grumnix",
-        "repo": "openal-soft-win32",
+        "ref": "refs/heads/master",
         "rev": "98996385d263cbafa77890bf7c1fbc7efdb9a2e6",
-        "type": "github"
+        "revCount": 7,
+        "type": "git",
+        "url": "https://github.com/grumnix/openal-soft-win32.git"
       },
       "original": {
-        "owner": "grumnix",
-        "repo": "openal-soft-win32",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumnix/openal-soft-win32.git"
       }
     },
     "openal-soft_src": {
@@ -512,15 +512,15 @@
       "locked": {
         "lastModified": 1716728603,
         "narHash": "sha256-3+GUby3dHbQPdsBiGQlQ9XgNyZe1hORqbQpGUCzFm1E=",
-        "owner": "grumnix",
-        "repo": "opus-win32",
+        "ref": "refs/heads/master",
         "rev": "4530cd6280b2c239d8df717943fa0f63b1a3a650",
-        "type": "github"
+        "revCount": 5,
+        "type": "git",
+        "url": "https://github.com/grumnix/opus-win32.git"
       },
       "original": {
-        "owner": "grumnix",
-        "repo": "opus-win32",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumnix/opus-win32.git"
       }
     },
     "opus_src": {
@@ -559,15 +559,15 @@
       "locked": {
         "lastModified": 1716728646,
         "narHash": "sha256-pCL8yrYE3EppKKrv8ORuCaWepm6eYmsYj3I1WoIxWDQ=",
-        "owner": "grumnix",
-        "repo": "opusfile-win32",
+        "ref": "refs/heads/master",
         "rev": "c19b24efe82fd596016d7805e9206466c0b5744e",
-        "type": "github"
+        "revCount": 7,
+        "type": "git",
+        "url": "https://github.com/grumnix/opusfile-win32.git"
       },
       "original": {
-        "owner": "grumnix",
-        "repo": "opusfile-win32",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumnix/opusfile-win32.git"
       }
     },
     "opusfile_src": {
@@ -604,15 +604,15 @@
       "locked": {
         "lastModified": 1764247710,
         "narHash": "sha256-Ar/V9Q5jCOok7r3t0/f7DvBc6nxMDX4SbCiSKh36UDo=",
-        "owner": "grumbel",
-        "repo": "priocpp",
+        "ref": "refs/heads/master",
         "rev": "ea15402adcd0d9191dc29ca6f7e4dd0bff67b9b5",
-        "type": "github"
+        "revCount": 159,
+        "type": "git",
+        "url": "https://github.com/grumbel/priocpp.git"
       },
       "original": {
-        "owner": "grumbel",
-        "repo": "priocpp",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumbel/priocpp.git"
       }
     },
     "root": {
@@ -651,16 +651,16 @@
       },
       "locked": {
         "lastModified": 1764247650,
-        "narHash": "sha256-wly3ymxYiecz5Nsa/iBcDb4HzjM5vM8FN9HUUwKGZN4=",
-        "owner": "lispparser",
-        "repo": "sexp-cpp",
+        "narHash": "sha256-IK1T95qcuDEm7aN59HZsvrf8RL4+07pxJ5Vuiuo7hSk=",
+        "ref": "refs/heads/master",
         "rev": "e33eacf64ee5f1c24ed715ffc62519543bd40d64",
-        "type": "github"
+        "revCount": 335,
+        "type": "git",
+        "url": "https://github.com/lispparser/sexp-cpp.git"
       },
       "original": {
-        "owner": "lispparser",
-        "repo": "sexp-cpp",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/lispparser/sexp-cpp.git"
       }
     },
     "squirrel": {
@@ -676,15 +676,15 @@
       "locked": {
         "lastModified": 1763255413,
         "narHash": "sha256-Av2SMS7os/qcWfE6qzdOrzc5W+lV3+UPH3CDS4YAJUA=",
-        "owner": "grumnix",
-        "repo": "squirrel",
+        "ref": "refs/heads/master",
         "rev": "ec987b13f5c9627dbcb5417d09b61596b7439bb6",
-        "type": "github"
+        "revCount": 8,
+        "type": "git",
+        "url": "https://github.com/grumnix/squirrel.git"
       },
       "original": {
-        "owner": "grumnix",
-        "repo": "squirrel",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumnix/squirrel.git"
       }
     },
     "squirrel_src": {
@@ -725,15 +725,15 @@
       "locked": {
         "lastModified": 1763578863,
         "narHash": "sha256-5+15W7vTVdNkljM21guGaGhUw2PTxIf65R2+YZcBfoQ=",
-        "owner": "grumbel",
-        "repo": "surfcpp",
+        "ref": "refs/heads/master",
         "rev": "0002577f58ac14d1b314f3defe32b0529441a08e",
-        "type": "github"
+        "revCount": 358,
+        "type": "git",
+        "url": "https://github.com/grumbel/surfcpp.git"
       },
       "original": {
-        "owner": "grumbel",
-        "repo": "surfcpp",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumbel/surfcpp.git"
       }
     },
     "systems": {
@@ -763,15 +763,15 @@
       "locked": {
         "lastModified": 1763256011,
         "narHash": "sha256-CpQWAHdeLUYd28cT9heG05p6RX9WF7QslqNHoBi931E=",
-        "owner": "grumbel",
-        "repo": "tinycmmc",
+        "ref": "refs/heads/master",
         "rev": "2e007ba059a4991c011a7193c9d7df28826c9adc",
-        "type": "github"
+        "revCount": 64,
+        "type": "git",
+        "url": "https://github.com/grumbel/tinycmmc.git"
       },
       "original": {
-        "owner": "grumbel",
-        "repo": "tinycmmc",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/grumbel/tinycmmc.git"
       }
     },
     "wstdisplay": {
@@ -801,17 +801,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1775730027,
-        "narHash": "sha256-8CVtSUBRIsatl0ImumtY/s+Y6sVtCq6SzWXYUo9oFtw=",
-        "owner": "WindstilleTeam",
-        "repo": "wstdisplay",
-        "rev": "ae4c1e61d89045fc02b0e42f78ee1e21b7fb04e6",
-        "type": "github"
+        "lastModified": 1775757533,
+        "narHash": "sha256-EAdahXsDVATFsmxFHuNlH/d9HY2VTob80NHNSezMImw=",
+        "ref": "refs/heads/master",
+        "rev": "a4a2343549f205b11682a4511b320ff89d1d6e97",
+        "revCount": 388,
+        "type": "git",
+        "url": "https://github.com/WindstilleTeam/wstdisplay.git"
       },
       "original": {
-        "owner": "WindstilleTeam",
-        "repo": "wstdisplay",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/WindstilleTeam/wstdisplay.git"
       }
     },
     "wstgui": {
@@ -854,17 +854,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1775730153,
-        "narHash": "sha256-D3ihJBeFTn7eU0tbmo91puS5hpYgAPiB8jm/m9PtmeA=",
-        "owner": "WindstilleTeam",
-        "repo": "wstgui",
-        "rev": "e6f5f08b00bd8758a529a7ca68420ab134c097c5",
-        "type": "github"
+        "lastModified": 1775757711,
+        "narHash": "sha256-2aCP9HFpWAX1jWQI9T3XKlYG7grdWQ2JfM3rYhEHYHA=",
+        "ref": "refs/heads/master",
+        "rev": "b33da9a42002d674a0afa4f5dcc25233ba717f33",
+        "revCount": 183,
+        "type": "git",
+        "url": "https://github.com/WindstilleTeam/wstgui.git"
       },
       "original": {
-        "owner": "WindstilleTeam",
-        "repo": "wstgui",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/WindstilleTeam/wstgui.git"
       }
     },
     "wstinput": {
@@ -892,17 +892,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1763579583,
-        "narHash": "sha256-Vdbsyq2WhkkBeJxIPYFHFVjaTxcjuvc+muPDt0ppXBg=",
-        "owner": "WindstilleTeam",
-        "repo": "wstinput",
-        "rev": "9be75540c618fb55115154ed10b3b60e35260e1e",
-        "type": "github"
+        "lastModified": 1775757454,
+        "narHash": "sha256-Bl+ZjIZIvI1HH8o0uTszIQ0Czm+ZHwBnVjXKpytcChk=",
+        "ref": "refs/heads/master",
+        "rev": "15cea0109f5d22844ed9a7576b44aa8a2ec683d9",
+        "revCount": 123,
+        "type": "git",
+        "url": "https://github.com/WindstilleTeam/wstinput.git"
       },
       "original": {
-        "owner": "WindstilleTeam",
-        "repo": "wstinput",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/WindstilleTeam/wstinput.git"
       }
     },
     "wstsound": {
@@ -925,17 +925,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1767516967,
-        "narHash": "sha256-MAggCXzSW5spOhIfYzqGe/P3Te1xVngHaOzdvlv9kj8=",
-        "owner": "WindstilleTeam",
-        "repo": "wstsound",
-        "rev": "18ec0292db9921537e05d6de50b3d53a3f293f91",
-        "type": "github"
+        "lastModified": 1775757265,
+        "narHash": "sha256-GYSwjbCRzLEZ3WYcOCEGvsjPBIUTRmg9Q5G3JliS3W4=",
+        "ref": "refs/heads/master",
+        "rev": "e3153e702f470f68486bee9dc4f8ebc17d9c4413",
+        "revCount": 523,
+        "type": "git",
+        "url": "https://github.com/WindstilleTeam/wstsound.git"
       },
       "original": {
-        "owner": "WindstilleTeam",
-        "repo": "wstsound",
-        "type": "github"
+        "type": "git",
+        "url": "https://github.com/WindstilleTeam/wstsound.git"
       }
     }
   },
