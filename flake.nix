@@ -22,11 +22,17 @@ rec {
     geomcpp.inputs.nixpkgs.follows = "nixpkgs";
     geomcpp.inputs.tinycmmc.follows = "tinycmmc";
 
+    sexpcpp.url = "github:lispparser/sexp-cpp";
+    sexpcpp.inputs.nixpkgs.follows = "nixpkgs";
+    sexpcpp.inputs.flake-utils.follows = "flake-utils";
+    sexpcpp.inputs.tinycmmc.follows = "tinycmmc";
+
     priocpp.url = "github:grumbel/priocpp";
     priocpp.inputs.nixpkgs.follows = "nixpkgs";
     priocpp.inputs.flake-utils.follows = "flake-utils";
     priocpp.inputs.tinycmmc.follows = "tinycmmc";
     priocpp.inputs.logmich.follows = "logmich";
+    priocpp.inputs.sexpcpp.follows = "sexpcpp";
 
     surfcpp.url = "github:grumbel/surfcpp";
     surfcpp.inputs.nixpkgs.follows = "nixpkgs";
@@ -50,15 +56,16 @@ rec {
     wstinput.inputs.logmich.follows = "logmich";
     wstinput.inputs.priocpp.follows = "priocpp";
     wstinput.inputs.SDL2-win32.follows = "SDL2-win32";
+    wstinput.inputs.sexpcpp.follows = "sexpcpp";
 
     wstdisplay.url = "github:WindstilleTeam/wstdisplay";
     wstdisplay.inputs.nixpkgs.follows = "nixpkgs";
     wstdisplay.inputs.tinycmmc.follows = "tinycmmc";
     wstdisplay.inputs.geomcpp.follows = "geomcpp";
     wstdisplay.inputs.babyxml.follows = "babyxml";
-    wstdisplay.inputs.surfcpp.follows = "surfcpp";
     wstdisplay.inputs.logmich.follows = "logmich";
     wstdisplay.inputs.SDL2-win32.follows = "SDL2-win32";
+    wstdisplay.inputs.surfcpp.follows = "surfcpp";
 
     wstgui.url = "github:WindstilleTeam/wstgui";
     wstgui.inputs.nixpkgs.follows = "nixpkgs";
@@ -72,6 +79,7 @@ rec {
     wstgui.inputs.wstinput.follows = "wstinput";
     wstgui.inputs.wstdisplay.follows = "wstdisplay";
     wstgui.inputs.wstsound.follows = "wstsound";
+    wstgui.inputs.sexpcpp.follows = "sexpcpp";
 
     wstsound.url = "github:WindstilleTeam/wstsound";
     wstsound.inputs.nixpkgs.follows = "nixpkgs";
@@ -85,6 +93,7 @@ rec {
     miniswig.url = "github:WindstilleTeam/miniswig";
     miniswig.inputs.nixpkgs.follows = "nixpkgs";
     miniswig.inputs.squirrel.follows = "squirrel";
+    miniswig.inputs.tinycmmc.follows = "tinycmmc";
 
     SDL2-win32.url = "github:grumnix/SDL2-win32";
     SDL2-win32.inputs.nixpkgs.follows = "nixpkgs";
@@ -92,7 +101,7 @@ rec {
   };
 
   outputs = { self, nixpkgs, flake-utils,
-              tinycmmc, argpp, logmich, geomcpp, priocpp, surfcpp, babyxml, biiocpp,
+              tinycmmc, argpp, logmich, geomcpp, priocpp, surfcpp, babyxml, biiocpp, sexpcpp,
               wstinput, wstdisplay, wstgui, wstsound, miniswig, squirrel, SDL2-win32 }:
 
     tinycmmc.lib.eachSystemWithPkgs (pkgs:

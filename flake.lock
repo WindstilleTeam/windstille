@@ -128,24 +128,6 @@
         "type": "github"
       }
     },
-    "flake-utils_2": {
-      "inputs": {
-        "systems": "systems_2"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "freetype-win32": {
       "inputs": {
         "freetype_src": "freetype_src",
@@ -399,7 +381,9 @@
         "squirrel": [
           "squirrel"
         ],
-        "tinycmmc": "tinycmmc"
+        "tinycmmc": [
+          "tinycmmc"
+        ]
       },
       "locked": {
         "lastModified": 1763579822,
@@ -610,7 +594,9 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "sexpcpp": "sexpcpp",
+        "sexpcpp": [
+          "sexpcpp"
+        ],
         "tinycmmc": [
           "tinycmmc"
         ]
@@ -641,9 +627,10 @@
         "miniswig": "miniswig",
         "nixpkgs": "nixpkgs",
         "priocpp": "priocpp",
+        "sexpcpp": "sexpcpp",
         "squirrel": "squirrel",
         "surfcpp": "surfcpp",
-        "tinycmmc": "tinycmmc_2",
+        "tinycmmc": "tinycmmc",
         "wstdisplay": "wstdisplay",
         "wstgui": "wstgui",
         "wstinput": "wstinput",
@@ -653,44 +640,12 @@
     "sexpcpp": {
       "inputs": {
         "flake-utils": [
-          "priocpp",
           "flake-utils"
         ],
         "nixpkgs": [
-          "priocpp",
           "nixpkgs"
         ],
         "tinycmmc": [
-          "priocpp",
-          "tinycmmc"
-        ]
-      },
-      "locked": {
-        "lastModified": 1764247650,
-        "narHash": "sha256-TIdAX5YhIRbjvbdApU3TfYwT6udcaK68GikvExp5uF0=",
-        "owner": "lispparser",
-        "repo": "sexp-cpp",
-        "rev": "e33eacf64ee5f1c24ed715ffc62519543bd40d64",
-        "type": "github"
-      },
-      "original": {
-        "owner": "lispparser",
-        "repo": "sexp-cpp",
-        "type": "github"
-      }
-    },
-    "sexpcpp_2": {
-      "inputs": {
-        "flake-utils": [
-          "wstgui",
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "wstgui",
-          "nixpkgs"
-        ],
-        "tinycmmc": [
-          "wstgui",
           "tinycmmc"
         ]
       },
@@ -700,35 +655,6 @@
         "owner": "lispparser",
         "repo": "sexp-cpp",
         "rev": "e33eacf64ee5f1c24ed715ffc62519543bd40d64",
-        "type": "github"
-      },
-      "original": {
-        "owner": "lispparser",
-        "repo": "sexp-cpp",
-        "type": "github"
-      }
-    },
-    "sexpcpp_3": {
-      "inputs": {
-        "flake-utils": [
-          "wstinput",
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "wstinput",
-          "nixpkgs"
-        ],
-        "tinycmmc": [
-          "wstinput",
-          "tinycmmc"
-        ]
-      },
-      "locked": {
-        "lastModified": 1763579287,
-        "narHash": "sha256-A7rbv/UKAwXJoaw6284aLBe7omdirUJq/NG92NG4YA8=",
-        "owner": "lispparser",
-        "repo": "sexp-cpp",
-        "rev": "c6fd69b47cc19c1ce3ab5fff6cb1f4a683fd81a2",
         "type": "github"
       },
       "original": {
@@ -825,44 +751,7 @@
         "type": "github"
       }
     },
-    "systems_2": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
     "tinycmmc": {
-      "inputs": {
-        "flake-utils": "flake-utils_2",
-        "nixpkgs": [
-          "miniswig",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1762385311,
-        "narHash": "sha256-B3XPPjn9S1YpIZmHyBBbXwaP0JVKBhYvCmNt6oauj+M=",
-        "owner": "grumbel",
-        "repo": "tinycmmc",
-        "rev": "2ad2d2ab7dce012bb1c9d1dbb8bdb5abd9232ecd",
-        "type": "github"
-      },
-      "original": {
-        "owner": "grumbel",
-        "repo": "tinycmmc",
-        "type": "github"
-      }
-    },
-    "tinycmmc_2": {
       "inputs": {
         "flake-utils": [
           "flake-utils"
@@ -945,7 +834,9 @@
         "priocpp": [
           "priocpp"
         ],
-        "sexpcpp": "sexpcpp_2",
+        "sexpcpp": [
+          "sexpcpp"
+        ],
         "surfcpp": [
           "surfcpp"
         ],
@@ -993,7 +884,9 @@
         "priocpp": [
           "priocpp"
         ],
-        "sexpcpp": "sexpcpp_3",
+        "sexpcpp": [
+          "sexpcpp"
+        ],
         "tinycmmc": [
           "tinycmmc"
         ]
