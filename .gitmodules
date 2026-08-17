@@ -1,0 +1,3 @@
+[submodule "external/strutcpp"]
+	path = external/strutcpp
+	url = https://gitlab.com/grumbel/strutcpp.git
