@@ -1,0 +1,12 @@
+[submodule "external/tinycmmc"]
+	path = external/tinycmmc
+	url = https://gitlab.com/grumbel/cmake-modules.git
+[submodule "external/priocpp"]
+	path = external/priocpp
+	url = https://gitlab.com/grumbel/priocpp.git
+[submodule "external/logmich"]
+	path = external/logmich
+	url = https://gitlab.com/logmich/logmich.git
+[submodule "external/sexpcpp"]
+	path = external/sexpcpp
+	url = https://gitlab.com/lispparser/sexp-cpp.git
