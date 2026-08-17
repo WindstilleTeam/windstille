@@ -36,9 +36,14 @@ Renderbuffer::Renderbuffer(GLenum format, geom::isize const& size, int multisamp
 
   if (multisample)
   {
-    // antialiasing
+#if WSTDISPLAY_GL_ES
+    // Core GLES2 has no multisampled renderbuffers; fall back to single-sample.
+    std::cout << "Renderbuffer: multisample requested but unsupported on GLES2, using 0 samples\n";
+    glRenderbufferStorage(GL_RENDERBUFFER, format, size.width(), size.height());
+#else
     std::cout << "Antialised Renderbuffer" << std::endl;
     glRenderbufferStorageMultisample(GL_RENDERBUFFER, multisample, format, size.width(), size.height());
+#endif
   }
   else
   {

@@ -208,9 +208,15 @@ ShaderProgram::set_uniform4i(const char* name, GLint v0, GLint v1, GLint v2, GLi
 void
 ShaderProgram::bind_frag_data_location(GLuint color_number, const char* name)
 {
+#if WSTDISPLAY_GL_ES
+  // GLES2 uses gl_FragColor / layout in ES3; no glBindFragDataLocation.
+  (void)color_number;
+  (void)name;
+#else
   assert(glBindFragDataLocation);
   glBindFragDataLocation(m_handle, color_number, name);
   assert_gl();
+#endif
 }
 
 bool

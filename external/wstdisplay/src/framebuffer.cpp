@@ -171,12 +171,14 @@ Framebuffer::check_completness()
     case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
       std::cout << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n";
       break;
+#if !WSTDISPLAY_GL_ES
     case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
       std::cout << "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER\n";
       break;
     case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
       std::cout << "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER\n";
       break;
+#endif
     case GL_FRAMEBUFFER_UNSUPPORTED:
       std::cout << "GL_FRAMEBUFFER_UNSUPPORTED\n";
       break;
@@ -192,6 +194,14 @@ Framebuffer::blit(geom::irect const& srcrect, geom::irect const& dstrect,
 {
   assert_gl();
 
+#if WSTDISPLAY_GL_ES
+  // GLES2 has no glBlitFramebuffer. Callers should draw a textured quad instead.
+  (void)srcrect;
+  (void)dstrect;
+  (void)mask;
+  (void)filter;
+  std::cout << "Framebuffer::blit: not available on GLES2\n";
+#else
   int previous_framebuffer = 0;
   glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &previous_framebuffer);
 
@@ -202,6 +212,7 @@ Framebuffer::blit(geom::irect const& srcrect, geom::irect const& dstrect,
                     mask, filter);
 
   glBindFramebuffer(GL_READ_FRAMEBUFFER, previous_framebuffer);
+#endif
 
   assert_gl();
 }

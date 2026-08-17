@@ -66,7 +66,12 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] Skip VAO create/bind/delete on GLES2 (bind attributes per draw)
 - [x] Guard `GL_TEXTURE_WRAP_R` and `GL_UNPACK_ROW_LENGTH` where needed
 - [x] Default vertex mode away from `GL_QUADS` on GLES
-- [ ] Shader / FBO path audit under pure GLES2
+- [x] FBO format aliases (RGB8/RGBA16F/DEPTH24_STENCIL8 → GLES-friendly)
+- [x] Stub `Framebuffer::blit` (no `glBlitFramebuffer` on GLES2)
+- [x] Skip multisample renderbuffers on GLES2
+- [x] No-op `bind_frag_data_location` on GLES2
+- [ ] Shader sources: GLSL ES 1.00 precision + `gl_FragColor` vs desktop GLSL
+- [ ] Replace any remaining blit callers with textured-quad path on GLES
 - [ ] Validate `nix build .#windstille-gles2` links and runs on Linux
 
 ### Windows (`nix build .#windstille-win64`)
