@@ -19,7 +19,6 @@
 #include "screen_manager.hpp"
 
 #include <logmich/log.hpp>
-#include <fmt/format.h>
 
 #include <surf/save.hpp>
 #include <wstinput/input_manager.hpp>
