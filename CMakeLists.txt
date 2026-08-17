@@ -123,8 +123,8 @@ add_custom_target(GenerateWrapper
   --select-namespace "Scripting"
   )
 
-# compile wstlib
-file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+# compile libwindstille
+file(GLOB LIBWINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/scenegraph/*.cpp
   src/font/*.cpp
   src/math/*.cpp
@@ -137,16 +137,17 @@ file(GLOB WSTLIB_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/util/*.cpp)
 
 # file(GLOB) won't add non-existing files, so add it here
-list(APPEND WSTLIB_SOURCES ${WRAPPER_CPP})
+list(APPEND LIBWINDSTILLE_SOURCES ${WRAPPER_CPP})
 
-add_library(wstlib STATIC ${WSTLIB_SOURCES})
-add_dependencies(wstlib GenerateWrapper)
-target_compile_options(wstlib PUBLIC ${TINYCMMC_WARNINGS_CXX_FLAGS})
-target_compile_definitions(wstlib PUBLIC -DGLM_ENABLE_EXPERIMENTAL)
-target_include_directories(wstlib PUBLIC
+add_library(libwindstille STATIC ${LIBWINDSTILLE_SOURCES})
+add_library(wstlib ALIAS libwindstille)
+add_dependencies(libwindstille GenerateWrapper)
+target_compile_options(libwindstille PUBLIC ${TINYCMMC_WARNINGS_CXX_FLAGS})
+target_compile_definitions(libwindstille PUBLIC -DGLM_ENABLE_EXPERIMENTAL)
+target_include_directories(libwindstille PUBLIC
   src/
   ${CMAKE_CURRENT_BINARY_DIR}/src/)
-target_link_libraries(wstlib PUBLIC
+target_link_libraries(libwindstille PUBLIC
   biio::biio
   prio::prio
   wstdisplay
@@ -168,6 +169,13 @@ target_link_libraries(wstlib PUBLIC
   PkgConfig::SIGCXX
   Threads::Threads)
 
+# Install the core library so a separate libwindstille package (or
+# downstream consumers) can link against it without rebuilding sources.
+install(TARGETS libwindstille
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+
 # compile galapix.sdl
 if(BUILD_EDITOR)
   file(GLOB WINDSTILLE_EDITOR_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -176,7 +184,7 @@ if(BUILD_EDITOR)
   add_executable(windstille-editor ${WINDSTILLE_EDITOR_SOURCES})
   target_compile_options(windstille-editor PUBLIC ${TINYCMMC_WARNINGS_CXX_FLAGS})
   target_link_libraries(windstille-editor
-    wstlib
+    libwindstille
     PkgConfig::GTKMM)
 
   install_with_wrapper(TARGETS windstille-editor)
@@ -205,7 +213,7 @@ file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/tile/*.cpp)
 add_executable(windstille ${WINDSTILLE_SOURCES})
 target_compile_options(windstille PRIVATE ${TINYCMMC_WARNINGS_CXX_FLAGS})
-target_link_libraries(windstille wstlib)
+target_link_libraries(windstille libwindstille)
 install_with_wrapper(TARGETS windstille)
 
 # build and install data
@@ -262,7 +270,7 @@ if(BUILD_TESTS)
   foreach(SRC ${TEST_SOURCES})
     get_filename_component(SRC_BASENAME ${SRC} NAME_WE)
     add_executable(${SRC_BASENAME} ${SRC})
-    target_link_libraries(${SRC_BASENAME} wstlib)
+    target_link_libraries(${SRC_BASENAME} libwindstille)
   endforeach(SRC)
 endif()
 
@@ -271,35 +279,35 @@ if(BUILD_EXTRA)
     extra/slideshow/*.cpp
     extra/slideshow/plugins/*.cpp)
   add_executable(slideshow ${SLIDESHOW_SOURCE})
-  target_link_libraries(slideshow wstlib)
+  target_link_libraries(slideshow libwindstille)
   target_include_directories(slideshow PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/extra/)
 
   file(GLOB SHADERTEST_SOURCE RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     extra/shadertest/*.cpp)
   add_executable(shadertest ${SHADERTEST_SOURCE})
-  target_link_libraries(shadertest wstlib)
+  target_link_libraries(shadertest libwindstille)
 
   file(GLOB LENSFLARE_SOURCE RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     extra/lensflare/*.cpp)
   add_executable(lensflare ${LENSFLARE_SOURCE})
-  target_link_libraries(lensflare wstlib)
+  target_link_libraries(lensflare libwindstille)
 
   file(GLOB MEMLEAK_SOURCE RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     extra/memleak/*.cpp)
   add_executable(memleak ${MEMLEAK_SOURCE})
-  target_link_libraries(memleak wstlib)
+  target_link_libraries(memleak libwindstille)
 
   file(GLOB 2DSHADOW_SOURCE RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     extra/2dshadow/*.cpp)
   add_executable(2dshadow ${2DSHADOW_SOURCE})
-  target_link_libraries(2dshadow wstlib)
+  target_link_libraries(2dshadow libwindstille)
 
   file(GLOB EXTRA_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     extra/*.cpp)
   foreach(SRC ${EXTRA_SOURCES})
     get_filename_component(SRC_BASENAME ${SRC} NAME_WE)
     add_executable(${SRC_BASENAME} ${SRC})
-    target_link_libraries(${SRC_BASENAME} wstlib)
+    target_link_libraries(${SRC_BASENAME} libwindstille)
   endforeach(SRC)
 endif()
 
