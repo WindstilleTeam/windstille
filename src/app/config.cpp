@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <logmich/log.hpp>
 
-#include <argpp.hpp>
+#include <argpp/argpp.hpp>
 
 #include "app/globals.hpp"
 #include "app/windstille.hpp"
