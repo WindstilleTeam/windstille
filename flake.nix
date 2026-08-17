@@ -57,6 +57,19 @@
             ];
            };
         };
+
+        apps = rec {
+          default = flake-utils.lib.mkApp {
+            drv = self.packages.${system}.default;
+          };
+
+          editor = {
+            type = "app";
+            program = toString (pkgs.writeShellScript "windstille-0.2-editor" ''
+              exec ${self.packages.${system}.default}/bin/windstille-0.2 --editor "$@"
+            '');
+          };
+        };
       }
     );
 }
