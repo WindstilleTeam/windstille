@@ -71,6 +71,11 @@
               pkgs.libsigcxx
               pkgs.sysprof
               pkgs.openal
+              pkgs.libopus
+              pkgs.opusfile
+              pkgs.libogg
+              pkgs.libvorbis
+              pkgs.mpg123
 
               squirrel.packages.${pkgs.stdenv.hostPlatform.system}.default
             ] ++
