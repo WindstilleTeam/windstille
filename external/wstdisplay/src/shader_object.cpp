@@ -16,10 +16,13 @@
 
 #include "shader_object.hpp"
 
+#include <wstdisplay/gl_compat.hpp>
+
 #include <stdio.h>
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <string>
 
 #include "assert_gl.hpp"
 
@@ -87,11 +90,61 @@ ShaderObject::~ShaderObject()
   glDeleteShader(m_handle);
 }
 
+namespace {
+
+std::string prepare_shader_source(std::string_view source)
+{
+  std::string src(source);
+#if WSTDISPLAY_GL_ES
+  // Drop desktop-only rectangle texture extension directives.
+  {
+    std::string filtered;
+    filtered.reserve(src.size());
+    std::size_t i = 0;
+    while (i < src.size()) {
+      std::size_t eol = src.find('\n', i);
+      if (eol == std::string::npos) eol = src.size();
+      std::string_view line(src.data() + i, eol - i);
+      if (line.find("GL_ARB_texture_rectangle") == std::string_view::npos &&
+          line.find("sampler2DRect") == std::string_view::npos) {
+        filtered.append(line);
+        if (eol < src.size()) filtered.push_back('\n');
+      } else {
+        // sampler2DRect lines are rewritten below when present in-body
+        if (line.find("sampler2DRect") != std::string_view::npos) {
+          std::string l(line);
+          auto pos = l.find("sampler2DRect");
+          l.replace(pos, 13, "sampler2D");
+          filtered.append(l);
+          if (eol < src.size()) filtered.push_back('\n');
+        }
+      }
+      i = (eol < src.size()) ? eol + 1 : eol;
+    }
+    src.swap(filtered);
+  }
+  // texture2DRect → texture2D (coordinates still need to be normalized by the author)
+  for (std::string needle : {"texture2DRect"}) {
+    for (std::size_t pos = 0; (pos = src.find(needle, pos)) != std::string::npos; ) {
+      src.replace(pos, needle.size(), "texture2D");
+      pos += 9;
+    }
+  }
+  if (src.find("#version") == std::string::npos) {
+    src.insert(0, "#version 100\nprecision mediump float;\n");
+  }
+#endif
+  return src;
+}
+
+} // namespace
+
 void
 ShaderObject::load(std::string_view source)
 {
-  GLchar const* strings[] = { source.data() };
-  GLint lengths[] = {  static_cast<GLint>(source.length()) };
+  std::string prepared = prepare_shader_source(source);
+  GLchar const* strings[] = { prepared.data() };
+  GLint lengths[] = {  static_cast<GLint>(prepared.size()) };
   glShaderSource(m_handle, 1, strings, lengths);
   assert_gl();
 }

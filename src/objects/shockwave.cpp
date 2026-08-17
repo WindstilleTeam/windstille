@@ -18,6 +18,8 @@
 
 #include "objects/shockwave.hpp"
 
+#include <iostream>
+
 #include "app/app.hpp"
 #include <wstdisplay/shader_object.hpp>
 #include <wstdisplay/texture_manager.hpp>
@@ -39,8 +41,14 @@ Shockwave::Shockwave(ReaderMapping const& props) :
   noise->set_wrap(GL_REPEAT);
   noise->set_filter(GL_LINEAR);
 
-  shader_program->attach(wstdisplay::ShaderObject::from_file(GL_FRAGMENT_SHADER, "data/shader/shockwave2.frag"));
-  shader_program->link();
+  try {
+    shader_program->attach(wstdisplay::ShaderObject::from_file(GL_FRAGMENT_SHADER, "data/shader/shockwave2.frag"));
+    shader_program->link();
+  } catch (std::exception const& e) {
+    // Rectangle-texture / fixed-pipeline effects are not available on GLES yet.
+    std::cerr << "Shockwave: shader unavailable (" << e.what() << "), effect disabled\n";
+    shader_program.reset();
+  }
 }
 
 Shockwave::~Shockwave()
@@ -50,6 +58,9 @@ Shockwave::~Shockwave()
 void
 Shockwave::draw (wstdisplay::SceneContext& sc)
 {
+  if (!shader_program) {
+    return;
+  }
   sc.highlight().draw(std::make_unique<wstdisplay::ShockwaveDrawable>(
                         pos,
                         noise,

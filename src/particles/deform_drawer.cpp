@@ -18,6 +18,8 @@
 
 #include "particles/deform_drawer.hpp"
 
+#include <iostream>
+
 #include <wstdisplay/gl_compat.hpp>
 #include <glm/ext.hpp>
 
@@ -195,8 +197,13 @@ DeformDrawer::DeformDrawer(ReaderMapping const& /*props*/,
   surface(surface_manager.get(Pathname("images/particles/deform2.png"))),
   shader_program(wstdisplay::ShaderProgram::create())
 {
-  shader_program->attach(wstdisplay::ShaderObject::from_file(GL_FRAGMENT_SHADER, "data/shader/particledeform.frag"));
-  shader_program->link();
+  try {
+    shader_program->attach(wstdisplay::ShaderObject::from_file(GL_FRAGMENT_SHADER, "data/shader/particledeform.frag"));
+    shader_program->link();
+  } catch (std::exception const& e) {
+    std::cerr << "DeformDrawer: shader unavailable (" << e.what() << "), effect disabled\n";
+    shader_program.reset();
+  }
 }
 
 DeformDrawer::~DeformDrawer()
@@ -206,6 +213,9 @@ DeformDrawer::~DeformDrawer()
 void
 DeformDrawer::draw(wstdisplay::DrawingContext& dc, ParticleSystem& psys)
 {
+  if (!shader_program) {
+    return;
+  }
   dc.draw(std::make_unique<DeformDrawerRequest>(glm::vec2(400, 300), 1200, dc.get_modelview(),
                                                 framebuffer, surface, psys, shader_program));
 }

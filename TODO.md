@@ -72,7 +72,9 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] No-op `bind_frag_data_location` on GLES2
 - [x] Default shader dual path (GLSL 330 core vs GLSL ES 1.00 in graphics_context)
 - [x] `data/shader/shader100.{vert,frag}` ES counterparts of shader330
-- [ ] Effect shaders under `data/shader/` still desktop/`sampler2DRect` — port or stub on GLES
+- [x] ShaderObject::load prepares GLES sources (version/precision, strip rect-tex extension)
+- [x] Shockwave / DeformDrawer: soft-fail if effect shaders will not compile on GLES
+- [ ] Effect shaders still use fixed-pipeline varyings (`gl_TexCoord`) — full port later
 - [ ] Replace blit callers (e.g. geometry extra) with textured-quad path on GLES
 - [ ] Validate `nix build .#windstille-gles2` links and runs on Linux
 
