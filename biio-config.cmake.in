@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/biio-config-version.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/biio-targets.cmake")
+
+check_required_components(biio)
+
+# EOF #
