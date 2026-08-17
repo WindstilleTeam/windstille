@@ -1,0 +1,206 @@
+{
+  "nodes": {
+    "SDL2-win32": {
+      "inputs": {
+        "SDL2_src": "SDL2_src",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753127534,
+        "narHash": "sha256-73UFk9wGZb0CQ2EpFaXRczHzUUlOzK/Ov2KP3ewk4qw=",
+        "ref": "refs/heads/master",
+        "rev": "278a40a7bff4c0b0bf4f5ad1c528308df4a1b0f9",
+        "revCount": 6,
+        "type": "git",
+        "url": "https://github.com/grumnix/SDL2-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/SDL2-win32.git"
+      }
+    },
+    "SDL2_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1748906407,
+        "narHash": "sha256-aakdhaTL0dgt2BQEtv3w6pp1mwOrmNzEorh3lLxJgyo=",
+        "type": "tarball",
+        "url": "https://libsdl.org/release/SDL2-devel-2.32.8-mingw.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://libsdl.org/release/SDL2-devel-2.32.8-mingw.tar.gz"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "id": "flake-utils",
+        "type": "indirect"
+      }
+    },
+    "logmich": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1763578800,
+        "narHash": "sha256-mnqKS+m/m/zwlOpse3+QnP54fgaXR9/8FW+FDq/MKlo=",
+        "ref": "refs/heads/master",
+        "rev": "f69ccb6b8963d995eeb886f60e8c30b2742d596e",
+        "revCount": 53,
+        "type": "git",
+        "url": "https://github.com/logmich/logmich.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/logmich/logmich.git"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1775423009,
+        "narHash": "sha256-vPKLpjhIVWdDrfiUM8atW6YkIggCEKdSAlJPzzhkQlw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "68d8aa3d661f0e6bd5862291b5bb263b2a6595c9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "priocpp": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "logmich": [
+          "logmich"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "sexpcpp": [
+          "sexpcpp"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764247710,
+        "narHash": "sha256-Ar/V9Q5jCOok7r3t0/f7DvBc6nxMDX4SbCiSKh36UDo=",
+        "ref": "refs/heads/master",
+        "rev": "ea15402adcd0d9191dc29ca6f7e4dd0bff67b9b5",
+        "revCount": 159,
+        "type": "git",
+        "url": "https://github.com/grumbel/priocpp.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumbel/priocpp.git"
+      }
+    },
+    "root": {
+      "inputs": {
+        "SDL2-win32": "SDL2-win32",
+        "flake-utils": "flake-utils",
+        "logmich": "logmich",
+        "nixpkgs": "nixpkgs",
+        "priocpp": "priocpp",
+        "sexpcpp": "sexpcpp",
+        "tinycmmc": "tinycmmc"
+      }
+    },
+    "sexpcpp": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764247650,
+        "narHash": "sha256-IK1T95qcuDEm7aN59HZsvrf8RL4+07pxJ5Vuiuo7hSk=",
+        "ref": "refs/heads/master",
+        "rev": "e33eacf64ee5f1c24ed715ffc62519543bd40d64",
+        "revCount": 335,
+        "type": "git",
+        "url": "https://github.com/lispparser/sexp-cpp.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/lispparser/sexp-cpp.git"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "tinycmmc": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1763256011,
+        "narHash": "sha256-CpQWAHdeLUYd28cT9heG05p6RX9WF7QslqNHoBi931E=",
+        "ref": "refs/heads/master",
+        "rev": "2e007ba059a4991c011a7193c9d7df28826c9adc",
+        "revCount": 64,
+        "type": "git",
+        "url": "https://github.com/grumbel/tinycmmc.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumbel/tinycmmc.git"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
