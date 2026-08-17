@@ -37,50 +37,40 @@ function(build_dependencies)
   set(BUILD_TESTS OFF)
   set(BUILD_EXTRA OFF)
 
-  find_package(sexp QUIET)
-  if(NOT TARGET sexp::sexp)
-    add_subdirectory(external/sexpcpp/ EXCLUDE_FROM_ALL)
-  endif()
+  # Resolve dependencies from the top-level external/ tree (or a nested
+  # copy).  Package names and directory names are not always identical.
+  macro(_wstgui_add_dep _pkg _dir)
+    find_package(${_pkg} QUIET)
+    if(NOT TARGET ${_pkg}::${_pkg})
+      set(_cands
+        "${CMAKE_SOURCE_DIR}/external/${_dir}"
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/${_dir}")
+      set(_found FALSE)
+      foreach(_c IN LISTS _cands)
+        if(EXISTS "${_c}/CMakeLists.txt")
+          message(STATUS "${_pkg} not found via find_package, using ${_c}")
+          add_subdirectory("${_c}" "${CMAKE_BINARY_DIR}/external/${_dir}" EXCLUDE_FROM_ALL)
+          set(_found TRUE)
+          break()
+        endif()
+      endforeach()
+      if(NOT _found)
+        message(FATAL_ERROR
+          "${_pkg} not found and external/${_dir} is missing under both "
+          "the top-level source tree and the current project.")
+      endif()
+    endif()
+  endmacro()
 
-  find_package(babyxml QUIET)
-  if(NOT TARGET babyxml::babyxml)
-    add_subdirectory(external/babyxml/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(logmich QUIET)
-  if(NOT TARGET logmich::logmich)
-    add_subdirectory(external/logmich/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(geom QUIET)
-  if(NOT TARGET geom::geom)
-    add_subdirectory(external/geomcpp/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(prio QUIET)
-  if(NOT TARGET prio::prio)
-    add_subdirectory(external/priocpp/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(surf QUIET)
-  if(NOT TARGET surf::surf)
-    add_subdirectory(external/surfcpp/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(wstdisplay QUIET)
-  if(NOT TARGET wstdisplay::wstdisplay)
-    add_subdirectory(external/wstdisplay/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(wstinput QUIET)
-  if(NOT TARGET wstinput::wstinput)
-    add_subdirectory(external/wstinput/ EXCLUDE_FROM_ALL)
-  endif()
-
-  find_package(wstsound QUIET)
-  if(NOT TARGET wstsound::wstsound)
-    add_subdirectory(external/wstsound/ EXCLUDE_FROM_ALL)
-  endif()
+  _wstgui_add_dep(sexp sexpcpp)
+  _wstgui_add_dep(babyxml babyxml)
+  _wstgui_add_dep(logmich logmich)
+  _wstgui_add_dep(geom geomcpp)
+  _wstgui_add_dep(prio prio)
+  _wstgui_add_dep(surf surfcpp)
+  _wstgui_add_dep(wstdisplay wstdisplay)
+  _wstgui_add_dep(wstinput wstinput)
+  _wstgui_add_dep(wstsound wstsound)
 endfunction()
 build_dependencies()
 

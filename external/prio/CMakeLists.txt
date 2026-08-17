@@ -135,25 +135,55 @@ function(build_dependencies)
   if(PRIO_USE_SEXPCPP)
     find_package(sexp QUIET)
     if(NOT TARGET sexp::sexp)
-      if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/sexp-cpp/CMakeLists.txt")
-        add_subdirectory(external/sexp-cpp EXCLUDE_FROM_ALL)
-      else()
+      # Prefer top-level external/ (shared with the rest of the tree), then
+      # a nested copy.  Directory names vary: sexpcpp, sexp-cpp, sexp.
+      set(_sexp_candidates
+        "${CMAKE_SOURCE_DIR}/external/sexpcpp"
+        "${CMAKE_SOURCE_DIR}/external/sexp-cpp"
+        "${CMAKE_SOURCE_DIR}/external/sexp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/sexpcpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/sexp-cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/sexp")
+      set(_sexp_found FALSE)
+      foreach(_cand IN LISTS _sexp_candidates)
+        if(EXISTS "${_cand}/CMakeLists.txt")
+          message(STATUS "sexp not found via find_package, using ${_cand}")
+          add_subdirectory("${_cand}" "${CMAKE_BINARY_DIR}/external/sexpcpp" EXCLUDE_FROM_ALL)
+          set(_sexp_found TRUE)
+          break()
+        endif()
+      endforeach()
+      if(NOT _sexp_found)
         message(FATAL_ERROR
-          "sexp not found via find_package and external/sexp-cpp is missing.\n"
-          "Install sexp-cpp or run: git submodule update --init --recursive")
+          "sexp not found via find_package and no external/sexpcpp (or sexp-cpp) is present.\n"
+          "Add the sexpcpp subtree under external/ or install a CMake package that provides sexp::sexp.")
       endif()
+      unset(_sexp_candidates)
+      unset(_sexp_found)
     endif()
   endif()
 
   find_package(logmich QUIET)
   if(NOT TARGET logmich::logmich)
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/logmich/CMakeLists.txt")
-      add_subdirectory(external/logmich EXCLUDE_FROM_ALL)
-    else()
+    set(_logmich_candidates
+      "${CMAKE_SOURCE_DIR}/external/logmich"
+      "${CMAKE_CURRENT_SOURCE_DIR}/external/logmich")
+    set(_logmich_found FALSE)
+    foreach(_cand IN LISTS _logmich_candidates)
+      if(EXISTS "${_cand}/CMakeLists.txt")
+        message(STATUS "logmich not found via find_package, using ${_cand}")
+        add_subdirectory("${_cand}" "${CMAKE_BINARY_DIR}/external/logmich" EXCLUDE_FROM_ALL)
+        set(_logmich_found TRUE)
+        break()
+      endif()
+    endforeach()
+    if(NOT _logmich_found)
       message(FATAL_ERROR
         "logmich not found via find_package and external/logmich is missing.\n"
-        "Install logmich or run: git submodule update --init --recursive")
+        "Add the logmich subtree under external/ or install a CMake package that provides logmich::logmich.")
     endif()
+    unset(_logmich_candidates)
+    unset(_logmich_found)
   endif()
 endfunction()
 build_dependencies()

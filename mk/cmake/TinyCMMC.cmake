@@ -33,19 +33,39 @@ else()
     # sub-projects (argpp, babyxml, geomcpp, ...) can call
     # find_package(tinycmmc CONFIG) successfully without requiring a
     # nested external/tinycmmc of their own.
-    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/tinycmmc"
-                     "${CMAKE_CURRENT_BINARY_DIR}/external/tinycmmc"
-                     EXCLUDE_FROM_ALL)
-    set(tinycmmc_DIR "${CMAKE_CURRENT_BINARY_DIR}/external/tinycmmc")
-    # The generated Config.cmake points TINYCMMC_MODULE_PATH at the
-    # *install* location; override it with the in-tree modules path
-    # that is actually usable during the build.
-    set(TINYCMMC_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external/tinycmmc/modules/")
+    set(_tinycmmc_src "${CMAKE_CURRENT_SOURCE_DIR}/external/tinycmmc")
+    set(_tinycmmc_bin "${CMAKE_CURRENT_BINARY_DIR}/external/tinycmmc")
+    add_subdirectory("${_tinycmmc_src}" "${_tinycmmc_bin}" EXCLUDE_FROM_ALL)
+
+    # The generated Config.cmake records the *install* module path
+    # (under CMAKE_INSTALL_PREFIX).  Rewrite it so that consumers that
+    # call find_package(tinycmmc) during this configure get the in-tree
+    # modules directory instead.
+    set(_tinycmmc_modules "${_tinycmmc_src}/modules")
+    file(WRITE "${_tinycmmc_bin}/tinycmmcConfig.cmake"
+"# Generated for in-tree use by Windstille
+set(TINYCMMC_MODULE_PATH \"${_tinycmmc_modules}\")
+set(tinycmmc_FOUND TRUE)
+")
+    # Minimal version file so find_package(... REQUIRED) is happy
+    file(WRITE "${_tinycmmc_bin}/tinycmmcConfigVersion.cmake"
+"set(PACKAGE_VERSION \"0.1.0\")
+set(PACKAGE_VERSION_EXACT TRUE)
+set(PACKAGE_VERSION_COMPATIBLE TRUE)
+set(PACKAGE_VERSION_UNSUITABLE FALSE)
+")
+
+    set(tinycmmc_DIR "${_tinycmmc_bin}")
+    set(TINYCMMC_MODULE_PATH "${_tinycmmc_modules}")
     find_package(tinycmmc CONFIG REQUIRED)
-    # Re-assert the in-tree path (find_package may have overwritten it)
-    set(TINYCMMC_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external/tinycmmc/modules/")
+    # Defend against anything that may have overwritten the path
+    set(TINYCMMC_MODULE_PATH "${_tinycmmc_modules}" CACHE PATH "tinycmmc CMake modules" FORCE)
+    list(APPEND CMAKE_MODULE_PATH "${TINYCMMC_MODULE_PATH}")
     message(STATUS "tinycmmc module path (in-tree): ${TINYCMMC_MODULE_PATH}")
-    list(APPEND CMAKE_MODULE_PATH ${TINYCMMC_MODULE_PATH})
+
+    unset(_tinycmmc_src)
+    unset(_tinycmmc_bin)
+    unset(_tinycmmc_modules)
   endif()
 endif()
 
