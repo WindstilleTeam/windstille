@@ -70,6 +70,7 @@
               pkgs.SDL2
               pkgs.libsigcxx
               pkgs.sysprof
+              pkgs.openal
 
               squirrel.packages.${pkgs.stdenv.hostPlatform.system}.default
             ] ++

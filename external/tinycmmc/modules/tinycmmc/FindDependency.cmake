@@ -23,6 +23,10 @@
 # relative to the calling project and relative to the top-level source
 # tree so that a single copy of each dependency under the root external/
 # is sufficient.
+#
+# Each source directory is added at most once (tracked via a global
+# property) so that multiple callers requesting the same dependency do
+# not collide on the binary directory.
 
 macro(tinycmmc_find_dependency _NAME)
   find_package(${_NAME} QUIET)
@@ -30,29 +34,33 @@ macro(tinycmmc_find_dependency _NAME)
     message(STATUS "Found ${_NAME}: ${${_NAME}_DIR}")
   else()
     set(_tinycmmc_dep_found FALSE)
-    # Candidate directory names: the plain name and the *cpp variant
     set(_tinycmmc_dep_candidates "${_NAME}" "${_NAME}cpp")
 
     foreach(_cand IN LISTS _tinycmmc_dep_candidates)
-      # Prefer a top-level external/ copy (shared by the whole tree)
-      set(_tinycmmc_dep_path "${CMAKE_SOURCE_DIR}/external/${_cand}")
-      if(EXISTS "${_tinycmmc_dep_path}/CMakeLists.txt")
+      foreach(_root IN ITEMS "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
+        set(_tinycmmc_dep_path "${_root}/external/${_cand}")
+        if(NOT EXISTS "${_tinycmmc_dep_path}/CMakeLists.txt")
+          continue()
+        endif()
+
+        # Already added by a previous call?
+        get_property(_tinycmmc_added GLOBAL PROPERTY "tinycmmc_added_${_cand}" SET)
+        if(_tinycmmc_added)
+          message(STATUS "Package ${_NAME} already added from external/${_cand}")
+          set(_tinycmmc_dep_found TRUE)
+          break()
+        endif()
+
         message(STATUS "Package ${_NAME} not found, using ${_tinycmmc_dep_path}")
         set(BUILD_TESTS OFF)
         add_subdirectory("${_tinycmmc_dep_path}"
                          "${CMAKE_BINARY_DIR}/external/${_cand}"
                          EXCLUDE_FROM_ALL)
+        set_property(GLOBAL PROPERTY "tinycmmc_added_${_cand}" TRUE)
         set(_tinycmmc_dep_found TRUE)
         break()
-      endif()
-
-      # Fall back to a nested external/ next to the caller
-      set(_tinycmmc_dep_path "${CMAKE_CURRENT_SOURCE_DIR}/external/${_cand}")
-      if(EXISTS "${_tinycmmc_dep_path}/CMakeLists.txt")
-        message(STATUS "Package ${_NAME} not found, using ${_tinycmmc_dep_path}")
-        set(BUILD_TESTS OFF)
-        add_subdirectory("${_tinycmmc_dep_path}" EXCLUDE_FROM_ALL)
-        set(_tinycmmc_dep_found TRUE)
+      endforeach()
+      if(_tinycmmc_dep_found)
         break()
       endif()
     endforeach()
@@ -68,6 +76,7 @@ macro(tinycmmc_find_dependency _NAME)
     unset(_tinycmmc_dep_found)
     unset(_tinycmmc_dep_candidates)
     unset(_tinycmmc_dep_path)
+    unset(_tinycmmc_added)
   endif()
 endmacro()
 
