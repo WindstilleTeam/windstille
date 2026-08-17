@@ -62,6 +62,7 @@
           src = ./external/logmich;
           version = "0.2.0";
           buildInputs = [ tinycmmc_pkg ];
+          propagatedBuildInputs = [ tinycmmc_pkg ];
         };
 
         sexpcpp = mkExternal {
@@ -69,6 +70,8 @@
           src = ./external/sexpcpp;
           version = "0.1.0";
           buildInputs = [ tinycmmc_pkg ];
+          # Installed as CMake package "sexp"
+          propagatedBuildInputs = [ tinycmmc_pkg ];
         };
 
         geomcpp = mkExternal {
@@ -76,6 +79,7 @@
           src = ./external/geomcpp;
           version = "0.0.0";
           buildInputs = [ pkgs.glm tinycmmc_pkg ];
+          propagatedBuildInputs = [ pkgs.glm ];
         };
 
         babyxml = mkExternal {
@@ -111,6 +115,8 @@
           src = ./external/prio;
           version = "0.1.0";
           buildInputs = [ tinycmmc_pkg logmich sexpcpp ];
+          # prio-config.cmake calls find_dependency(logmich) and find_dependency(sexp)
+          propagatedBuildInputs = [ logmich sexpcpp ];
           cmakeFlags = [ "-DPRIO_USE_JSONCPP=OFF" ];
         };
 
@@ -122,6 +128,7 @@
             tinycmmc_pkg geomcpp logmich
             pkgs.libpng pkgs.libjpeg pkgs.glm
           ];
+          propagatedBuildInputs = [ geomcpp logmich pkgs.libpng pkgs.libjpeg pkgs.glm ];
         };
 
         wstsound = mkExternal {
@@ -130,6 +137,10 @@
           version = "0.3.0";
           buildInputs = [
             tinycmmc_pkg
+            pkgs.openal pkgs.libopus pkgs.opusfile
+            pkgs.libogg pkgs.libvorbis pkgs.mpg123 pkgs.libmodplug
+          ];
+          propagatedBuildInputs = [
             pkgs.openal pkgs.libopus pkgs.opusfile
             pkgs.libogg pkgs.libvorbis pkgs.mpg123 pkgs.libmodplug
           ];
@@ -144,6 +155,10 @@
             pkgs.glew pkgs.libGL pkgs.freetype pkgs.SDL2 pkgs.libsigcxx
             pkgs.sysprof
           ];
+          propagatedBuildInputs = [
+            babyxml geomcpp surfcpp logmich
+            pkgs.glew pkgs.libGL pkgs.freetype pkgs.SDL2 pkgs.libsigcxx
+          ];
         };
 
         wstinput = mkExternal {
@@ -154,6 +169,7 @@
             tinycmmc_pkg logmich prio
             pkgs.SDL2 pkgs.libsigcxx
           ];
+          propagatedBuildInputs = [ logmich prio pkgs.SDL2 pkgs.libsigcxx ];
         };
 
         wstgui = mkExternal {
@@ -164,6 +180,11 @@
             tinycmmc_pkg sexpcpp babyxml logmich geomcpp prio surfcpp
             wstdisplay wstinput wstsound
             pkgs.SDL2 pkgs.libsigcxx pkgs.bison pkgs.flex
+          ];
+          propagatedBuildInputs = [
+            sexpcpp babyxml logmich geomcpp prio surfcpp
+            wstdisplay wstinput wstsound
+            pkgs.SDL2 pkgs.libsigcxx
           ];
         };
 
