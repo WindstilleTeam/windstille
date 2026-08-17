@@ -19,13 +19,14 @@ project(prio)
 
 # Source of truth: top-level VERSION file (e.g. "0.1.0-dev"), or
 # -DPROJECT_VERSION_FULL=... from the packaging (Nix flake appends +g<rev>).
-if(NOT DEFINED PROJECT_VERSION_FULL)
+if(NOT DEFINED PROJECT_VERSION_FULL OR PROJECT_VERSION_FULL STREQUAL "")
   file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROJECT_VERSION_FULL LIMIT_COUNT 1)
 endif()
 
-# PROJECT_VERSION is used by write_basic_package_version_file; keep it
-# free of the optional +g<rev> suffix that packaging may append.
-if(NOT DEFINED PROJECT_VERSION)
+# project() without VERSION leaves PROJECT_VERSION as the empty string
+# (DEFINED is still true).  Always derive a non-empty value for
+# write_basic_package_version_file; strip an optional +g<rev> suffix.
+if(NOT PROJECT_VERSION)
   string(REGEX REPLACE "\\+g.*" "" PROJECT_VERSION "${PROJECT_VERSION_FULL}")
 endif()
 
