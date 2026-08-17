@@ -17,6 +17,7 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+#include <algorithm>
 #include <iostream>
 #include <ClanLib/display.h>
 #include "../globals.hxx"
@@ -26,13 +27,24 @@
 #include "tile_selector.hxx"
 
 TileSelector::TileSelector(int width, int height, CL_Component* parent)
-  : CL_Component(CL_Rect(CL_Point(0,0), CL_Size(width * (TILE_SIZE/2), height * (TILE_SIZE/2))), parent),
+  : CL_Component(CL_Rect(CL_Point(0, 0), CL_Size(1, 1)), parent),
     width(width), height(height)
 {
   index = 0;
 
-  // ClanLib leaves clipping off by default; without it scrolled tiles
-  // paint outside the widget (and the parent window client area).
+  // Half-scale tile grid; never larger than the parent client area so
+  // clipping stays inside the window (ClanLib only clips to this
+  // component's own screen rect, not the parent's).
+  const int tile_size = TILE_SIZE / 2;
+  int pixel_w = width * tile_size;
+  int pixel_h = height * tile_size;
+  if (parent)
+    {
+      pixel_w = std::min(pixel_w, parent->get_width());
+      pixel_h = std::min(pixel_h, parent->get_height());
+    }
+  set_position(CL_Rect(CL_Point(0, 0), CL_Size(pixel_w, pixel_h)));
+
   set_clipping(true);
 
   slots.connect(sig_paint(),      this, &TileSelector::draw);
@@ -106,15 +118,19 @@ TileSelector::draw()
   const int oy = get_screen_y();
   const int tile_size = TILE_SIZE / 2;
 
-  // Only iterate tiles that can intersect the clipped viewport.
+  // Visible rows from the actual (parent-clamped) widget height.
   const int start_y = offset / tile_size;
-  const int end_y   = start_y + height + 1;
+  const int end_y   = start_y + (get_height() / tile_size) + 2;
 
   CL_Display::push_modelview();
   CL_Display::add_translate(ox, oy - offset);
   for(int y = start_y; y < end_y; ++y)
     for(int x = 0; x < width; ++x)
       {
+        // Skip columns that fall outside the clamped width.
+        if (x * tile_size >= get_width())
+          break;
+
         int i = width * y + x;
         Tile* tile = TileFactory::current()->create(i);
         if (tile)
