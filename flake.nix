@@ -2,7 +2,7 @@
   description = "A classic 2d jump'n shoot game";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
     tinycmmc.url = "github:grumbel/tinycmmc";
@@ -51,7 +51,7 @@
               libGL
               libGLU
               swig
-              xorg.libX11
+              libx11
             ] ++ [
               clanlib.packages.${system}.default
             ];
