@@ -16,7 +16,6 @@ rec {
 
     logmich.url = "git+https://github.com/logmich/logmich.git";
     logmich.inputs.nixpkgs.follows = "nixpkgs";
-    logmich.inputs.tinycmmc.follows = "tinycmmc";
 
     geomcpp.url = "git+https://github.com/grumbel/geomcpp.git";
     geomcpp.inputs.nixpkgs.follows = "nixpkgs";
@@ -25,12 +24,10 @@ rec {
     sexpcpp.url = "git+https://github.com/lispparser/sexp-cpp.git";
     sexpcpp.inputs.nixpkgs.follows = "nixpkgs";
     sexpcpp.inputs.flake-utils.follows = "flake-utils";
-    sexpcpp.inputs.tinycmmc.follows = "tinycmmc";
 
     priocpp.url = "git+https://github.com/grumbel/priocpp.git";
     priocpp.inputs.nixpkgs.follows = "nixpkgs";
     priocpp.inputs.flake-utils.follows = "flake-utils";
-    priocpp.inputs.tinycmmc.follows = "tinycmmc";
     priocpp.inputs.logmich.follows = "logmich";
     priocpp.inputs.sexpcpp.follows = "sexpcpp";
 
@@ -97,7 +94,6 @@ rec {
 
     SDL2-win32.url = "git+https://github.com/grumnix/SDL2-win32.git";
     SDL2-win32.inputs.nixpkgs.follows = "nixpkgs";
-    SDL2-win32.inputs.tinycmmc.follows = "tinycmmc";
   };
 
   outputs = { self, nixpkgs, flake-utils,

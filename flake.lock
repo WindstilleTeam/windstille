@@ -3,19 +3,17 @@
     "SDL2-win32": {
       "inputs": {
         "SDL2_src": "SDL2_src",
+        "flake-utils": "flake-utils",
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "tinycmmc": [
-          "tinycmmc"
         ]
       },
       "locked": {
-        "lastModified": 1753127534,
-        "narHash": "sha256-73UFk9wGZb0CQ2EpFaXRczHzUUlOzK/Ov2KP3ewk4qw=",
+        "lastModified": 1786297641,
+        "narHash": "sha256-yu4LwoIC0TCh8EhZzyDj1u99WnkqslMNp5rrg3hqAWM=",
         "ref": "refs/heads/master",
-        "rev": "278a40a7bff4c0b0bf4f5ad1c528308df4a1b0f9",
-        "revCount": 6,
+        "rev": "8ca7fe1bc9ef1201f1247fbcc8b560a1a06da8b1",
+        "revCount": 8,
         "type": "git",
         "url": "https://github.com/grumnix/SDL2-win32.git"
       },
@@ -50,11 +48,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763577316,
-        "narHash": "sha256-jG+a4K6NoyF41nTlWwN1J2my2nnqdiVO+fhQ9PHhdR4=",
+        "lastModified": 1786345023,
+        "narHash": "sha256-1eb34jKAsTy12Stz8UQze0J7lH+JzhJwnJTTC0qoAe4=",
         "ref": "stable",
-        "rev": "b52420a843327361713b6242e47afaa6b6ab2a89",
-        "revCount": 73,
+        "rev": "8cac52fee6a3ad152659500e5ce6396c87a3c2eb",
+        "revCount": 74,
         "type": "git",
         "url": "https://github.com/grumbel/argpp.git"
       },
@@ -128,6 +126,42 @@
         "type": "github"
       }
     },
+    "flake-utils_2": {
+      "inputs": {
+        "systems": "systems_2"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_3": {
+      "inputs": {
+        "systems": "systems_3"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "freetype-win32": {
       "inputs": {
         "freetype_src": "freetype_src",
@@ -177,11 +211,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775669653,
-        "narHash": "sha256-brC1Xkk17mQTw2C+/em1C1BxsJa7X9/wkQWIb4kucoQ=",
+        "lastModified": 1786345591,
+        "narHash": "sha256-hh7mdDA8uEhIP6PO09gi2OT3Nxvs/iIPPrRNR6ahkJ0=",
         "ref": "refs/heads/master",
-        "rev": "af84b6266807f66efb338fdd5d88d060ee741267",
-        "revCount": 112,
+        "rev": "eca023204f18945a4a754960e53d4eae65270bd7",
+        "revCount": 114,
         "type": "git",
         "url": "https://github.com/grumbel/geomcpp.git"
       },
@@ -352,19 +386,17 @@
     },
     "logmich": {
       "inputs": {
+        "flake-utils": "flake-utils_3",
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "tinycmmc": [
-          "tinycmmc"
         ]
       },
       "locked": {
-        "lastModified": 1763578800,
-        "narHash": "sha256-mnqKS+m/m/zwlOpse3+QnP54fgaXR9/8FW+FDq/MKlo=",
+        "lastModified": 1786353585,
+        "narHash": "sha256-qYSiLxwWyce3dQpH9KYQ24DXFPREOVk32/ifh7LD5x8=",
         "ref": "refs/heads/master",
-        "rev": "f69ccb6b8963d995eeb886f60e8c30b2742d596e",
-        "revCount": 53,
+        "rev": "f9a98161ec95bc3b8fe106e79366d1fead813d86",
+        "revCount": 57,
         "type": "git",
         "url": "https://github.com/logmich/logmich.git"
       },
@@ -440,11 +472,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1775423009,
-        "narHash": "sha256-vPKLpjhIVWdDrfiUM8atW6YkIggCEKdSAlJPzzhkQlw=",
+        "lastModified": 1786862985,
+        "narHash": "sha256-FBJRXmbGXiSUDvYEbfLYRkckayyZ6SK1UEqhCrIZ2Cs=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "68d8aa3d661f0e6bd5862291b5bb263b2a6595c9",
+        "rev": "e5bdc4a41d4c072fe1e3787eaa0320a384741d44",
         "type": "github"
       },
       "original": {
@@ -596,17 +628,14 @@
         ],
         "sexpcpp": [
           "sexpcpp"
-        ],
-        "tinycmmc": [
-          "tinycmmc"
         ]
       },
       "locked": {
-        "lastModified": 1764247710,
-        "narHash": "sha256-Ar/V9Q5jCOok7r3t0/f7DvBc6nxMDX4SbCiSKh36UDo=",
+        "lastModified": 1786363576,
+        "narHash": "sha256-K0jlMh7Ew8eUQCA7YLbQHnk3k+xRuK5MlPjQOYoUJsA=",
         "ref": "refs/heads/master",
-        "rev": "ea15402adcd0d9191dc29ca6f7e4dd0bff67b9b5",
-        "revCount": 159,
+        "rev": "d7752766ea986065810a89ed811cfdd6c42b4b5a",
+        "revCount": 172,
         "type": "git",
         "url": "https://github.com/grumbel/priocpp.git"
       },
@@ -621,7 +650,7 @@
         "argpp": "argpp",
         "babyxml": "babyxml",
         "biiocpp": "biiocpp",
-        "flake-utils": "flake-utils",
+        "flake-utils": "flake-utils_2",
         "geomcpp": "geomcpp",
         "logmich": "logmich",
         "miniswig": "miniswig",
@@ -644,17 +673,14 @@
         ],
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "tinycmmc": [
-          "tinycmmc"
         ]
       },
       "locked": {
-        "lastModified": 1764247650,
-        "narHash": "sha256-IK1T95qcuDEm7aN59HZsvrf8RL4+07pxJ5Vuiuo7hSk=",
+        "lastModified": 1786381821,
+        "narHash": "sha256-WvwmFYTru9J11mqvRp/Bu4Eo9l3IKtuHKutLFWSt6ek=",
         "ref": "refs/heads/master",
-        "rev": "e33eacf64ee5f1c24ed715ffc62519543bd40d64",
-        "revCount": 335,
+        "rev": "7537c7c0aeda063b21c8206dc1c5be2dbd963f36",
+        "revCount": 341,
         "type": "git",
         "url": "https://github.com/lispparser/sexp-cpp.git"
       },
@@ -751,6 +777,36 @@
         "type": "github"
       }
     },
+    "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
     "tinycmmc": {
       "inputs": {
         "flake-utils": [
@@ -761,11 +817,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763256011,
-        "narHash": "sha256-CpQWAHdeLUYd28cT9heG05p6RX9WF7QslqNHoBi931E=",
+        "lastModified": 1786345348,
+        "narHash": "sha256-dpvTjt3Z8m9z6/KandNFY+QvREnEW+kEiL8YeW/IYGM=",
         "ref": "refs/heads/master",
-        "rev": "2e007ba059a4991c011a7193c9d7df28826c9adc",
-        "revCount": 64,
+        "rev": "50c49bf8a45f7c5ddb0c5f838a0fd6a00845a04d",
+        "revCount": 67,
         "type": "git",
         "url": "https://github.com/grumbel/tinycmmc.git"
       },
@@ -801,11 +857,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775757533,
-        "narHash": "sha256-EAdahXsDVATFsmxFHuNlH/d9HY2VTob80NHNSezMImw=",
+        "lastModified": 1776718439,
+        "narHash": "sha256-prdTe7jGoEaYnnEYztamTL2UeoRfwMQchzKaZ54MBsk=",
         "ref": "refs/heads/master",
-        "rev": "a4a2343549f205b11682a4511b320ff89d1d6e97",
-        "revCount": 388,
+        "rev": "074414e1fdbf86bc8898e1ac33070349498e738d",
+        "revCount": 389,
         "type": "git",
         "url": "https://github.com/WindstilleTeam/wstdisplay.git"
       },
@@ -893,7 +949,7 @@
       },
       "locked": {
         "lastModified": 1775757454,
-        "narHash": "sha256-Bl+ZjIZIvI1HH8o0uTszIQ0Czm+ZHwBnVjXKpytcChk=",
+        "narHash": "sha256-PAbI2ZquT2q15jKhG2gxTObmYedUTVXHKfS3HnZJym8=",
         "ref": "refs/heads/master",
         "rev": "15cea0109f5d22844ed9a7576b44aa8a2ec683d9",
         "revCount": 123,
@@ -925,11 +981,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775757265,
-        "narHash": "sha256-GYSwjbCRzLEZ3WYcOCEGvsjPBIUTRmg9Q5G3JliS3W4=",
+        "lastModified": 1786345706,
+        "narHash": "sha256-Z2mdSuh0k+zBDKnG4hrlm5T/6kdX3I/eH0Q/r11cb+4=",
         "ref": "refs/heads/master",
-        "rev": "e3153e702f470f68486bee9dc4f8ebc17d9c4413",
-        "revCount": 523,
+        "rev": "b380e5a8599082dbf622961ef3ce834a0c3c4506",
+        "revCount": 528,
         "type": "git",
         "url": "https://github.com/WindstilleTeam/wstsound.git"
       },
