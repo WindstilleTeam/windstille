@@ -110,7 +110,8 @@
           pname = "prio";
           src = ./external/prio;
           version = "0.1.0";
-          buildInputs = [ tinycmmc_pkg logmich sexpcpp pkgs.jsoncpp ];
+          buildInputs = [ tinycmmc_pkg logmich sexpcpp ];
+          cmakeFlags = [ "-DPRIO_USE_JSONCPP=OFF" ];
         };
 
         surfcpp = mkExternal {
@@ -192,7 +193,6 @@
           squirrel.packages.${pkgs.stdenv.hostPlatform.system}.default
           pkgs.gtest
           pkgs.glm
-          pkgs.jsoncpp
           pkgs.libjpeg
           pkgs.libpng
           pkgs.glew

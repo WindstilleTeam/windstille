@@ -43,7 +43,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(BUILD_TESTS "Build test cases" OFF)
 option(BUILD_EXTRA "Build extra tools (priotool)" OFF)
-option(PRIO_USE_JSONCPP "Enable support for jsoncpp" ON)
+option(PRIO_USE_JSONCPP "Enable support for jsoncpp" OFF)
 option(PRIO_USE_SEXPCPP "Enable support for sexp-cpp" ON)
 option(WARNINGS "Enable extra compiler warnings" OFF)
 option(WERROR "Treat warnings as errors" OFF)
