@@ -25,9 +25,12 @@ add_library(babyxml STATIC
 target_include_directories(babyxml PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
+# Own sources use #include "babyxml.hpp"
+target_include_directories(babyxml PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/babyxml)
 target_compile_options(babyxml PRIVATE ${TINYCMMC_WARNINGS_CXX_FLAGS})
 set_target_properties(babyxml PROPERTIES
-  PUBLIC_HEADER "include/babyxml.hpp")
+  PUBLIC_HEADER "include/babyxml/babyxml.hpp")
 
 if(BUILD_EXTRA)
   add_executable(babyxml_exe extra/babyxml.cpp)
