@@ -1,0 +1,908 @@
+{
+  "nodes": {
+    "SDL2-win32": {
+      "inputs": {
+        "SDL2_src": "SDL2_src",
+        "nixpkgs": "nixpkgs_2",
+        "tinycmmc": "tinycmmc"
+      },
+      "locked": {
+        "lastModified": 1753127534,
+        "narHash": "sha256-73UFk9wGZb0CQ2EpFaXRczHzUUlOzK/Ov2KP3ewk4qw=",
+        "owner": "grumnix",
+        "repo": "SDL2-win32",
+        "rev": "278a40a7bff4c0b0bf4f5ad1c528308df4a1b0f9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "grumnix",
+        "repo": "SDL2-win32",
+        "type": "github"
+      }
+    },
+    "SDL2-win32_2": {
+      "inputs": {
+        "SDL2_src": "SDL2_src_2",
+        "nixpkgs": [
+          "wstdisplay",
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "wstdisplay",
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753127534,
+        "narHash": "sha256-73UFk9wGZb0CQ2EpFaXRczHzUUlOzK/Ov2KP3ewk4qw=",
+        "ref": "refs/heads/master",
+        "rev": "278a40a7bff4c0b0bf4f5ad1c528308df4a1b0f9",
+        "revCount": 6,
+        "type": "git",
+        "url": "https://github.com/grumnix/SDL2-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/SDL2-win32.git"
+      }
+    },
+    "SDL2-win32_3": {
+      "inputs": {
+        "SDL2_src": "SDL2_src_3",
+        "nixpkgs": [
+          "wstinput",
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "wstinput",
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753127534,
+        "narHash": "sha256-73UFk9wGZb0CQ2EpFaXRczHzUUlOzK/Ov2KP3ewk4qw=",
+        "ref": "refs/heads/master",
+        "rev": "278a40a7bff4c0b0bf4f5ad1c528308df4a1b0f9",
+        "revCount": 6,
+        "type": "git",
+        "url": "https://github.com/grumnix/SDL2-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/SDL2-win32.git"
+      }
+    },
+    "SDL2_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1748906407,
+        "narHash": "sha256-aakdhaTL0dgt2BQEtv3w6pp1mwOrmNzEorh3lLxJgyo=",
+        "type": "tarball",
+        "url": "https://libsdl.org/release/SDL2-devel-2.32.8-mingw.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://libsdl.org/release/SDL2-devel-2.32.8-mingw.tar.gz"
+      }
+    },
+    "SDL2_src_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1748906407,
+        "narHash": "sha256-aakdhaTL0dgt2BQEtv3w6pp1mwOrmNzEorh3lLxJgyo=",
+        "type": "tarball",
+        "url": "https://libsdl.org/release/SDL2-devel-2.32.8-mingw.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://libsdl.org/release/SDL2-devel-2.32.8-mingw.tar.gz"
+      }
+    },
+    "SDL2_src_3": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1748906407,
+        "narHash": "sha256-aakdhaTL0dgt2BQEtv3w6pp1mwOrmNzEorh3lLxJgyo=",
+        "type": "tarball",
+        "url": "https://libsdl.org/release/SDL2-devel-2.32.8-mingw.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://libsdl.org/release/SDL2-devel-2.32.8-mingw.tar.gz"
+      }
+    },
+    "babyxml": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775757657,
+        "narHash": "sha256-nH7Muiz1E2HbmZH3xibTpskMKxw9vwkiRQ/xPA4qLLA=",
+        "ref": "refs/heads/master",
+        "rev": "1f634fe6175cdf780ab5f6c03d925b5724294194",
+        "revCount": 51,
+        "type": "git",
+        "url": "https://github.com/grumbel/babyxml.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumbel/babyxml.git"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
+      "inputs": {
+        "systems": "systems_2"
+      },
+      "locked": {
+        "lastModified": 1701680307,
+        "narHash": "sha256-kAuep2h5ajznlPMD9rnQyffWG8EM/C73lejGofXvdM8=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "4022d587cbbfd70fe950c1e2083a02621806a725",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "freetype-win32": {
+      "inputs": {
+        "freetype_src": "freetype_src",
+        "nixpkgs": [
+          "wstdisplay",
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "wstdisplay",
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1716729375,
+        "narHash": "sha256-4H2Y+DuT9OMePK6JBi9Y7L+tnhXuUfvIIJlR+zcAjXI=",
+        "ref": "refs/heads/master",
+        "rev": "874cb3559c6463e96e18c3a22ae9491df45a8327",
+        "revCount": 4,
+        "type": "git",
+        "url": "https://github.com/grumnix/freetype-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/freetype-win32.git"
+      }
+    },
+    "freetype_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1687588007,
+        "narHash": "sha256-e1WKuyGSJwgSSzdXqbuZdbosyxpMfr/Fw/LqVMTnZus=",
+        "type": "tarball",
+        "url": "https://download.savannah.gnu.org/releases/freetype/freetype-2.13.1.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://download.savannah.gnu.org/releases/freetype/freetype-2.13.1.tar.gz"
+      }
+    },
+    "geomcpp": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775669653,
+        "narHash": "sha256-brC1Xkk17mQTw2C+/em1C1BxsJa7X9/wkQWIb4kucoQ=",
+        "ref": "refs/heads/master",
+        "rev": "af84b6266807f66efb338fdd5d88d060ee741267",
+        "revCount": 112,
+        "type": "git",
+        "url": "https://github.com/grumbel/geomcpp.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumbel/geomcpp.git"
+      }
+    },
+    "glew-win32": {
+      "inputs": {
+        "glew_src": "glew_src",
+        "nixpkgs": [
+          "wstdisplay",
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "wstdisplay",
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1716729346,
+        "narHash": "sha256-bO+mEfQT7V86Xi7m4xLpigWh4FxLSlbwBUnndn4Lb+o=",
+        "ref": "refs/heads/master",
+        "rev": "e2cc411d17dc1845eb25492e9bf408d5862ad19c",
+        "revCount": 4,
+        "type": "git",
+        "url": "https://github.com/grumnix/glew-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/glew-win32.git"
+      }
+    },
+    "glew_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1584277261,
+        "narHash": "sha256-q91JXPURP4ZRGf0RjH78Yn0wV1MaL/JBTzJc8WSxWW8=",
+        "type": "tarball",
+        "url": "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip"
+      }
+    },
+    "libmodplug-win32": {
+      "inputs": {
+        "libmodplug_src": "libmodplug_src",
+        "nixpkgs": [
+          "wstsound",
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "wstsound",
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1716834232,
+        "narHash": "sha256-ZnTt0ZFvCPSA6NcIzAku/LH4SqYmKnwhdTadk209bFY=",
+        "ref": "refs/heads/master",
+        "rev": "ca34343b3492192f977f06b529888ea55f184097",
+        "revCount": 5,
+        "type": "git",
+        "url": "https://github.com/grumnix/libmodplug-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/libmodplug-win32.git"
+      }
+    },
+    "libmodplug_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1493040202,
+        "narHash": "sha256-jNHspgIcrv5AUEgq2MB4TSqbj//tTCXiOoSqYjShGkw=",
+        "type": "tarball",
+        "url": "https://downloads.sourceforge.net/project/modplug-xmms/libmodplug/0.8.9.0/libmodplug-0.8.9.0.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://downloads.sourceforge.net/project/modplug-xmms/libmodplug/0.8.9.0/libmodplug-0.8.9.0.tar.gz"
+      }
+    },
+    "libogg-win32": {
+      "inputs": {
+        "libogg_src": "libogg_src",
+        "nixpkgs": [
+          "wstsound",
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "wstsound",
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764251829,
+        "narHash": "sha256-CUq+HLy257tgKo9URjnjgCS1HyIQpPetU06gFr/1fQA=",
+        "ref": "refs/heads/master",
+        "rev": "a05787b0ad8f878cd44008fd0c4c99cb149c0066",
+        "revCount": 6,
+        "type": "git",
+        "url": "https://github.com/grumnix/libogg-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/libogg-win32.git"
+      }
+    },
+    "libogg_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1622776890,
+        "narHash": "sha256-L8hFWoCh2VTdlsOq+cbP1eYAnciH70xlk1eSwr8YP5c=",
+        "type": "tarball",
+        "url": "https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz"
+      }
+    },
+    "libvorbis-win32": {
+      "inputs": {
+        "libogg": [
+          "wstsound",
+          "libogg-win32"
+        ],
+        "libvorbis_src": "libvorbis_src",
+        "nixpkgs": [
+          "wstsound",
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "wstsound",
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764251884,
+        "narHash": "sha256-3jO1DR02WbHEtv6r809E/UvUFou2uXkT/8hkqmhK2Y4=",
+        "ref": "refs/heads/master",
+        "rev": "d698e14ec3fce00f85c111f74ad783bbda813a72",
+        "revCount": 7,
+        "type": "git",
+        "url": "https://github.com/grumnix/libvorbis-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/libvorbis-win32.git"
+      }
+    },
+    "libvorbis_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1593843770,
+        "narHash": "sha256-xXty8sK0hmJX7jQu5+CDBslNVQ0+dZaUrbp/12xVmy0=",
+        "type": "tarball",
+        "url": "https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.xz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.xz"
+      }
+    },
+    "logmich": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1763578800,
+        "narHash": "sha256-mnqKS+m/m/zwlOpse3+QnP54fgaXR9/8FW+FDq/MKlo=",
+        "ref": "refs/heads/master",
+        "rev": "f69ccb6b8963d995eeb886f60e8c30b2742d596e",
+        "revCount": 53,
+        "type": "git",
+        "url": "https://github.com/logmich/logmich.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/logmich/logmich.git"
+      }
+    },
+    "mpg123-win32": {
+      "inputs": {
+        "mpg123_src": "mpg123_src",
+        "nixpkgs": [
+          "wstsound",
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "wstsound",
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1716728685,
+        "narHash": "sha256-+oyZIT88pcIuWUW1jw69KpxEjvqU1QDtF3VV6hiTVAo=",
+        "ref": "refs/heads/master",
+        "rev": "aead750a3614f02601f7e81f67751b9f64eeab07",
+        "revCount": 5,
+        "type": "git",
+        "url": "https://github.com/grumnix/mpg123-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/mpg123-win32.git"
+      }
+    },
+    "mpg123_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1679225440,
+        "narHash": "sha256-OGSGPiIZbcBhovnX+rMquDECVT0myZDpJFxMYQMK4TM=",
+        "type": "tarball",
+        "url": "https://downloads.sourceforge.net/project/mpg123/mpg123/1.31.3/mpg123-1.31.3.tar.bz2"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://downloads.sourceforge.net/project/mpg123/mpg123/1.31.3/mpg123-1.31.3.tar.bz2"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1775423009,
+        "narHash": "sha256-vPKLpjhIVWdDrfiUM8atW6YkIggCEKdSAlJPzzhkQlw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "68d8aa3d661f0e6bd5862291b5bb263b2a6595c9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1752866191,
+        "narHash": "sha256-NV4S2Lf2hYmZQ3Qf4t/YyyBaJNuxLPyjzvDma0zPp/M=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f01fe91b0108a7aff99c99f2e9abbc45db0adc2a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "openal-soft-win32": {
+      "inputs": {
+        "nixpkgs": [
+          "wstsound",
+          "nixpkgs"
+        ],
+        "openal-soft_src": "openal-soft_src",
+        "tinycmmc": [
+          "wstsound",
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1763585892,
+        "narHash": "sha256-ADPqFbvM+Dy6OoW/Mk1E/0OM+IPyO6QC6Qd+FOsXQeg=",
+        "ref": "refs/heads/master",
+        "rev": "98996385d263cbafa77890bf7c1fbc7efdb9a2e6",
+        "revCount": 7,
+        "type": "git",
+        "url": "https://github.com/grumnix/openal-soft-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/openal-soft-win32.git"
+      }
+    },
+    "openal-soft_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1743221304,
+        "narHash": "sha256-VQa3FD9NyvDv/+VbU+5lmV0LteiioJHpRkr1lnCn1g4=",
+        "owner": "kcat",
+        "repo": "openal-soft",
+        "rev": "dc7d7054a5b4f3bec1dc23a42fd616a0847af948",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kcat",
+        "ref": "1.24.3",
+        "repo": "openal-soft",
+        "type": "github"
+      }
+    },
+    "opus-win32": {
+      "inputs": {
+        "nixpkgs": [
+          "wstsound",
+          "nixpkgs"
+        ],
+        "opus_src": "opus_src",
+        "tinycmmc": [
+          "wstsound",
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1716728603,
+        "narHash": "sha256-3+GUby3dHbQPdsBiGQlQ9XgNyZe1hORqbQpGUCzFm1E=",
+        "ref": "refs/heads/master",
+        "rev": "4530cd6280b2c239d8df717943fa0f63b1a3a650",
+        "revCount": 5,
+        "type": "git",
+        "url": "https://github.com/grumnix/opus-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/opus-win32.git"
+      }
+    },
+    "opus_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1555106623,
+        "narHash": "sha256-VyHmKoRXCJ0shVfUn6cX13b0fAXIQk0Z5NLZIfy8Gh4=",
+        "type": "tarball",
+        "url": "https://archive.mozilla.org/pub/opus/opus-1.3.1.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://archive.mozilla.org/pub/opus/opus-1.3.1.tar.gz"
+      }
+    },
+    "opusfile-win32": {
+      "inputs": {
+        "libogg": [
+          "wstsound",
+          "libogg-win32"
+        ],
+        "nixpkgs": [
+          "wstsound",
+          "nixpkgs"
+        ],
+        "opus": [
+          "wstsound",
+          "opus-win32"
+        ],
+        "opusfile_src": "opusfile_src",
+        "tinycmmc": [
+          "wstsound",
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1716728646,
+        "narHash": "sha256-pCL8yrYE3EppKKrv8ORuCaWepm6eYmsYj3I1WoIxWDQ=",
+        "ref": "refs/heads/master",
+        "rev": "c19b24efe82fd596016d7805e9206466c0b5744e",
+        "revCount": 7,
+        "type": "git",
+        "url": "https://github.com/grumnix/opusfile-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/opusfile-win32.git"
+      }
+    },
+    "opusfile_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1593226173,
+        "narHash": "sha256-UEoOyY9DM5lINTAHIfSRK5+o622pIK2ObQ00swIcM40=",
+        "type": "tarball",
+        "url": "https://downloads.xiph.org/releases/opus/opusfile-0.12.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://downloads.xiph.org/releases/opus/opusfile-0.12.tar.gz"
+      }
+    },
+    "priocpp": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "logmich": [
+          "logmich"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "sexpcpp": [
+          "sexpcpp"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764247710,
+        "narHash": "sha256-Ar/V9Q5jCOok7r3t0/f7DvBc6nxMDX4SbCiSKh36UDo=",
+        "ref": "refs/heads/master",
+        "rev": "ea15402adcd0d9191dc29ca6f7e4dd0bff67b9b5",
+        "revCount": 159,
+        "type": "git",
+        "url": "https://github.com/grumbel/priocpp.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumbel/priocpp.git"
+      }
+    },
+    "root": {
+      "inputs": {
+        "babyxml": "babyxml",
+        "flake-utils": "flake-utils",
+        "geomcpp": "geomcpp",
+        "logmich": "logmich",
+        "nixpkgs": "nixpkgs",
+        "priocpp": "priocpp",
+        "sexpcpp": "sexpcpp",
+        "surfcpp": "surfcpp",
+        "tinycmmc": "tinycmmc_2",
+        "wstdisplay": "wstdisplay",
+        "wstinput": "wstinput",
+        "wstsound": "wstsound"
+      }
+    },
+    "sexpcpp": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764247650,
+        "narHash": "sha256-IK1T95qcuDEm7aN59HZsvrf8RL4+07pxJ5Vuiuo7hSk=",
+        "ref": "refs/heads/master",
+        "rev": "e33eacf64ee5f1c24ed715ffc62519543bd40d64",
+        "revCount": 335,
+        "type": "git",
+        "url": "https://github.com/lispparser/sexp-cpp.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/lispparser/sexp-cpp.git"
+      }
+    },
+    "surfcpp": {
+      "inputs": {
+        "SDL2-win32": "SDL2-win32",
+        "geomcpp": [
+          "geomcpp"
+        ],
+        "logmich": [
+          "logmich"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1763578863,
+        "narHash": "sha256-5+15W7vTVdNkljM21guGaGhUw2PTxIf65R2+YZcBfoQ=",
+        "ref": "refs/heads/master",
+        "rev": "0002577f58ac14d1b314f3defe32b0529441a08e",
+        "revCount": 358,
+        "type": "git",
+        "url": "https://github.com/grumbel/surfcpp.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumbel/surfcpp.git"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "tinycmmc": {
+      "inputs": {
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": [
+          "surfcpp",
+          "SDL2-win32",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1701699760,
+        "narHash": "sha256-L0vwqcTQFOiFfRY90nBgDuUsVOYS0+S8BfVxFvaFBNM=",
+        "owner": "grumbel",
+        "repo": "tinycmmc",
+        "rev": "9a51e13802d930feb7261ba8876940659b258cb7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "grumbel",
+        "repo": "tinycmmc",
+        "type": "github"
+      }
+    },
+    "tinycmmc_2": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1763256011,
+        "narHash": "sha256-CpQWAHdeLUYd28cT9heG05p6RX9WF7QslqNHoBi931E=",
+        "ref": "refs/heads/master",
+        "rev": "2e007ba059a4991c011a7193c9d7df28826c9adc",
+        "revCount": 64,
+        "type": "git",
+        "url": "https://github.com/grumbel/tinycmmc.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumbel/tinycmmc.git"
+      }
+    },
+    "wstdisplay": {
+      "inputs": {
+        "SDL2-win32": "SDL2-win32_2",
+        "babyxml": [
+          "babyxml"
+        ],
+        "freetype-win32": "freetype-win32",
+        "geomcpp": [
+          "geomcpp"
+        ],
+        "glew-win32": "glew-win32",
+        "logmich": [
+          "logmich"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "surfcpp": [
+          "surfcpp"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775757533,
+        "narHash": "sha256-EAdahXsDVATFsmxFHuNlH/d9HY2VTob80NHNSezMImw=",
+        "ref": "refs/heads/master",
+        "rev": "a4a2343549f205b11682a4511b320ff89d1d6e97",
+        "revCount": 388,
+        "type": "git",
+        "url": "https://github.com/windstilleteam/wstdisplay.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/windstilleteam/wstdisplay.git"
+      }
+    },
+    "wstinput": {
+      "inputs": {
+        "SDL2-win32": "SDL2-win32_3",
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "logmich": [
+          "logmich"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "priocpp": [
+          "priocpp"
+        ],
+        "sexpcpp": [
+          "sexpcpp"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775757454,
+        "narHash": "sha256-Bl+ZjIZIvI1HH8o0uTszIQ0Czm+ZHwBnVjXKpytcChk=",
+        "ref": "refs/heads/master",
+        "rev": "15cea0109f5d22844ed9a7576b44aa8a2ec683d9",
+        "revCount": 123,
+        "type": "git",
+        "url": "https://github.com/windstilleteam/wstinput.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/windstilleteam/wstinput.git"
+      }
+    },
+    "wstsound": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "libmodplug-win32": "libmodplug-win32",
+        "libogg-win32": "libogg-win32",
+        "libvorbis-win32": "libvorbis-win32",
+        "mpg123-win32": "mpg123-win32",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "openal-soft-win32": "openal-soft-win32",
+        "opus-win32": "opus-win32",
+        "opusfile-win32": "opusfile-win32",
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775757265,
+        "narHash": "sha256-GYSwjbCRzLEZ3WYcOCEGvsjPBIUTRmg9Q5G3JliS3W4=",
+        "ref": "refs/heads/master",
+        "rev": "e3153e702f470f68486bee9dc4f8ebc17d9c4413",
+        "revCount": 523,
+        "type": "git",
+        "url": "https://github.com/windstilleteam/wstsound.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/windstilleteam/wstsound.git"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
