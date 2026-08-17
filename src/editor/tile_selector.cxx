@@ -96,8 +96,13 @@ TileSelector::mouse_move(const CL_InputEvent& event)
 void 
 TileSelector::draw()
 {
+  // ClanLib 1.0 begin_paint only sets clipping, not a translation —
+  // draw in screen coordinates relative to this widget.
+  const int ox = get_screen_x();
+  const int oy = get_screen_y();
+
   CL_Display::push_modelview();
-  CL_Display::add_translate(0, -offset);
+  CL_Display::add_translate(ox, oy - offset);
   for(int y = 0; y < /*height FIXME*/ 40; ++y)
     for(int x = 0; x < width; ++x)
       {

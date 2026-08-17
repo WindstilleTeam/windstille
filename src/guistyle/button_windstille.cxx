@@ -24,41 +24,44 @@
 void
 Button_Windstille::on_paint()
 {
-  int button_width  = button->get_width();
-  int button_height = button->get_height();
+  // ClanLib 1.0 begin_paint only sets clipping, not a translation —
+  // draw in screen coordinates like StyleSilver does.
+  const CL_Rect rect = button->get_screen_rect();
+  const int button_width  = rect.get_width();
+  const int button_height = rect.get_height();
   
   if(button->is_down())
     {
-      CL_Display::fill_rect(CL_Rect(CL_Point(0, 0), CL_Size(button_width, button_height)), 
+      CL_Display::fill_rect(rect,
                             CL_Gradient(CL_Color(0,0,0,228),
                                         CL_Color(0,0,0,228),
                                         CL_Color(0,0,0,128),
                                         CL_Color(0,0,0,128)));
 
-      CL_Display::draw_rect(CL_Rect(CL_Point(0, 0), CL_Size(button_width, button_height)), 
+      CL_Display::draw_rect(rect,
                             CL_Color(255,255,255, 80));
       Fonts::copyright.set_alignment(origin_center);
-      Fonts::copyright.draw(button_width/2, button_height/2, button->get_text());
+      Fonts::copyright.draw(rect.left + button_width/2, rect.top + button_height/2, button->get_text());
     }
   else
     {
       if (button->has_mouse_over())
-        CL_Display::fill_rect(CL_Rect(CL_Point(0, 0), CL_Size(button_width, button_height)), 
+        CL_Display::fill_rect(rect,
                               CL_Gradient(CL_Color(150, 150,250,228),
                                           CL_Color(150, 150,250,228),
                                           CL_Color(150, 150,250,128),
                                           CL_Color(150, 150,250,128)));
       else
-        CL_Display::fill_rect(CL_Rect(CL_Point(0, 0), CL_Size(button_width, button_height)), 
+        CL_Display::fill_rect(rect,
                               CL_Gradient(CL_Color(0,0,100,228),
                                           CL_Color(0,0,100,228),
                                           CL_Color(0,0,100,128),
                                           CL_Color(0,0,100,128)));
 
-      CL_Display::draw_rect(CL_Rect(CL_Point(0, 0), CL_Size(button_width, button_height)), 
+      CL_Display::draw_rect(rect,
                             CL_Color(255,255,255, 180));
       Fonts::copyright.set_alignment(origin_center);
-      Fonts::copyright.draw(button_width/2, button_height/2, button->get_text());
+      Fonts::copyright.draw(rect.left + button_width/2, rect.top + button_height/2, button->get_text());
     }
 }
  

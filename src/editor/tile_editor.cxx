@@ -44,27 +44,32 @@ TileEditor::~TileEditor()
 void
 TileEditor::draw()
 {
-  no_tile.draw(0, 0);
+  // ClanLib 1.0 begin_paint only sets clipping, not a translation —
+  // draw in screen coordinates relative to this widget.
+  const int ox = get_screen_x();
+  const int oy = get_screen_y();
+
+  no_tile.draw(ox, oy);
 
   if (tile)
     {
-      tile->sur.draw(0, 0);
+      tile->sur.draw(ox, oy);
       CL_Display::flush();
       for(int tile_y = 0; tile_y < 8; ++tile_y)
         for(int tile_x = 0; tile_x < 8; ++tile_x)
           {
             if (tile->get_col(tile_x, tile_y))
               {
-                CL_Display::fill_rect(CL_Rect(tile_x*16, tile_y*16,
-                                              tile_x*16 + 16, tile_y*16 + 16),
+                CL_Display::fill_rect(CL_Rect(ox + tile_x*16, oy + tile_y*16,
+                                              ox + tile_x*16 + 16, oy + tile_y*16 + 16),
                                       CL_Color(255, 0, 0, 128));
               }
           }
       CL_Display::flush();
       if (has_mouse_over())
         {
-          CL_Display::fill_rect(CL_Rect(CL_Point(int(mouse_pos.x)/16 * 16, 
-                                                 int(mouse_pos.y)/16 * 16),
+          CL_Display::fill_rect(CL_Rect(CL_Point(ox + int(mouse_pos.x)/16 * 16,
+                                                 oy + int(mouse_pos.y)/16 * 16),
                                         CL_Size(16, 16)),
                                 CL_Color(255, 255, 255, 128));
         }
