@@ -68,6 +68,15 @@ GUIManager::run()
   manager->run();
 }
 
+void
+GUIManager::quit()
+{
+  // Must call CL_GUIManager::quit() directly. CL_Component::quit() is
+  // non-virtual and does get_gui_manager()->quit(), which is the wrong
+  // path when invoked through a CL_Component* (and can null-deref).
+  manager->quit();
+}
+
 CL_Component* 
 GUIManager::get_component()
 {

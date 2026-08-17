@@ -178,7 +178,7 @@ gui_file_dialog(const char* filename, SCM func)
 void
 gui_quit()
 {
-  GUIManager::current()->get_component()->quit();
+  GUIManager::current()->quit();
 }
 
 void gui_hide()
