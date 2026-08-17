@@ -76,6 +76,7 @@
               pkgs.libogg
               pkgs.libvorbis
               pkgs.mpg123
+              pkgs.libmodplug
 
               squirrel.packages.${pkgs.stdenv.hostPlatform.system}.default
             ] ++
