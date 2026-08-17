@@ -70,8 +70,10 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] Stub `Framebuffer::blit` (no `glBlitFramebuffer` on GLES2)
 - [x] Skip multisample renderbuffers on GLES2
 - [x] No-op `bind_frag_data_location` on GLES2
-- [ ] Shader sources: GLSL ES 1.00 precision + `gl_FragColor` vs desktop GLSL
-- [ ] Replace any remaining blit callers with textured-quad path on GLES
+- [x] Default shader dual path (GLSL 330 core vs GLSL ES 1.00 in graphics_context)
+- [x] `data/shader/shader100.{vert,frag}` ES counterparts of shader330
+- [ ] Effect shaders under `data/shader/` still desktop/`sampler2DRect` — port or stub on GLES
+- [ ] Replace blit callers (e.g. geometry extra) with textured-quad path on GLES
 - [ ] Validate `nix build .#windstille-gles2` links and runs on Linux
 
 ### Windows (`nix build .#windstille-win64`)

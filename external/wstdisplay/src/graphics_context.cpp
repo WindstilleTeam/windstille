@@ -29,6 +29,7 @@
 #include <surf/color.hpp>
 #include <surf/palette.hpp>
 
+#include <wstdisplay/gl_compat.hpp>
 #include "assert_gl.hpp"
 
 #include "scenegraph/vertex_array_drawable.hpp"
@@ -39,6 +40,41 @@ namespace {
 int g_default_framebuffer = 0;
 std::vector<FramebufferPtr> framebuffers;
 
+#if WSTDISPLAY_GL_ES
+// GLSL ES 1.00 (OpenGL ES 2.0 / WebGL 1)
+const char default_vert_source[] = R"(#version 100
+
+attribute vec2 texcoord;
+attribute vec4 diffuse;
+attribute vec3 position;
+
+varying vec2 texcoord_v;
+varying vec4 diffuse_v;
+
+uniform mat4 modelviewprojection;
+
+void main()
+{
+  texcoord_v = texcoord;
+  diffuse_v = diffuse;
+  gl_Position = modelviewprojection * vec4(position, 1.0);
+}
+)";
+
+const char default_frag_source[] = R"(#version 100
+precision mediump float;
+
+uniform sampler2D diffuse_texture;
+
+varying vec2 texcoord_v;
+varying vec4 diffuse_v;
+
+void main()
+{
+  gl_FragColor = texture2D(diffuse_texture, texcoord_v) * diffuse_v;
+}
+)";
+#else
 const char default_vert_source[] = R"(#version 330 core
 
 in vec2 texcoord;
@@ -72,6 +108,7 @@ void main()
   fragRGBAf = texture(diffuse_texture, texcoord_v) * diffuse_v;
 }
 )";
+#endif
 
 } // namespace
 
