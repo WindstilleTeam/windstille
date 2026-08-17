@@ -76,7 +76,10 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] Shockwave / DeformDrawer: soft-fail if effect shaders will not compile on GLES
 - [ ] Effect shaders still use fixed-pipeline varyings (`gl_TexCoord`) — full port later
 - [ ] Replace blit callers (e.g. geometry extra) with textured-quad path on GLES
-- [ ] Validate `nix build .#windstille-gles2` links and runs on Linux
+- [x] `.#windstille-gles2` builds via monorepo cmake + libglvnd (GLESv2/EGL), not prebuilt desktop wstdisplay
+- [x] wstdisplay links `PkgConfig::GLESV2` + `PkgConfig::EGL` when `WSTDISPLAY_USE_GLES`
+- [ ] Confirm `ldd result/bin/windstille` shows `libGLESv2.so` and not `libGL.so.1`
+- [ ] Runtime smoke test under GLES (mesa llvmpipe / real GLES)
 
 ### Windows (`nix build .#windstille-win64`)
 - [ ] Cross-build all required externals for mingw

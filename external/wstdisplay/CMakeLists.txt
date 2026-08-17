@@ -39,15 +39,15 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(Threads REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(PkgConfig REQUIRED)
 if(WSTDISPLAY_USE_GLES)
-  # GLES2 via SDL headers; optional libGLESv2 for linking on Linux embedded.
-  find_library(GLESV2_LIBRARY GLESv2)
-  find_library(EGL_LIBRARY EGL)
+  # Prefer pkg-config (glesv2.pc / egl.pc from libglvnd/mesa).
+  pkg_check_modules(GLESV2 REQUIRED IMPORTED_TARGET glesv2)
+  pkg_check_modules(EGL REQUIRED IMPORTED_TARGET egl)
 else()
   find_package(OpenGL REQUIRED)
   find_package(GLEW REQUIRED)
 endif()
-find_package(PkgConfig REQUIRED)
 
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
 pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
@@ -99,12 +99,9 @@ if(WSTDISPLAY_USE_GLES)
   if(WSTDISPLAY_EMSCRIPTEN)
     target_compile_definitions(wstdisplay PUBLIC WSTDISPLAY_EMSCRIPTEN=1)
   endif()
-  if(GLESV2_LIBRARY)
-    target_link_libraries(wstdisplay PUBLIC ${GLESV2_LIBRARY})
-  endif()
-  if(EGL_LIBRARY)
-    target_link_libraries(wstdisplay PUBLIC ${EGL_LIBRARY})
-  endif()
+  target_link_libraries(wstdisplay PUBLIC
+    PkgConfig::GLESV2
+    PkgConfig::EGL)
 else()
   target_link_libraries(wstdisplay PUBLIC
     GLEW::GLEW

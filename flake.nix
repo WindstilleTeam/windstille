@@ -182,6 +182,23 @@
           ];
         };
 
+        # GLES2 build of wstdisplay — must not link libGL/GLEW.
+        wstdisplay_gles = mkExternal {
+          pname = "wstdisplay-gles";
+          src = ./external/wstdisplay;
+          version = "0.3.0";
+          cmakeFlags = [ "-DWSTDISPLAY_USE_GLES=ON" ];
+          buildInputs = [
+            tinycmmc_pkg babyxml geomcpp surfcpp logmich
+            pkgs.libglvnd pkgs.freetype pkgs.SDL2 pkgs.libsigcxx
+            pkgs.pkg-config
+          ];
+          propagatedBuildInputs = [
+            babyxml geomcpp surfcpp logmich
+            pkgs.libglvnd pkgs.freetype pkgs.SDL2 pkgs.libsigcxx
+          ];
+        };
+
         wstinput = mkExternal {
           pname = "wstinput";
           src = ./external/wstinput;
@@ -318,6 +335,9 @@
         # Desktop GLES2 build to validate the embedded/WebGL path on Linux
         # (same idea as Pingus useGLES2 package). Still requires fixing
         # remaining fixed-function / desktop-only GL usage.
+        # Full monorepo cmake with GLES: do not inject prebuilt desktop
+        # wstdisplay (that would pull libGL).  tinycmmc_find_dependency falls
+        # back to external/* and builds them with WSTDISPLAY_USE_GLES.
         windstille-gles2 = stdenv.mkDerivation {
           pname = "windstille-gles2";
           version = "0.3.0";
@@ -326,14 +346,33 @@
             "-DBUILD_EDITOR=OFF"
             "-DBUILD_EXTRA=OFF"
             "-DWINDSTILLE_USE_GLES=ON"
+            "-DWSTDISPLAY_USE_GLES=ON"
           ];
           nativeBuildInputs = commonNative ++ [ miniswig ]
             ++ lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.makeWrapper;
-          buildInputs = commonBuildInputs ++ [
-            pkgs.libGL  # may provide GLESv2/EGL on Linux
+          buildInputs = [
+            # No pkgs.glew / desktop wstdisplay — only GLES + shared deps.
+            pkgs.libglvnd
+            pkgs.pkg-config
+            pkgs.freetype
+            pkgs.SDL2
+            pkgs.libsigcxx
+            pkgs.sysprof
+            pkgs.glm
+            pkgs.libjpeg
+            pkgs.libpng
+            pkgs.openal
+            pkgs.libopus
+            pkgs.opusfile
+            pkgs.libogg
+            pkgs.libvorbis
+            pkgs.mpg123
+            pkgs.libmodplug
+            miniswig
+            squirrel.packages.${pkgs.stdenv.hostPlatform.system}.default
           ];
           meta = {
-            description = "Windstille configured for OpenGL ES 2.0 (validation build)";
+            description = "Windstille linked against OpenGL ES 2.0 (libGLESv2/libEGL)";
           };
         };
 
@@ -397,7 +436,7 @@
         packages = rec {
           inherit
             tinycmmc_pkg logmich sexpcpp geomcpp babyxml biiocpp argpp
-            strutcpp prio surfcpp wstsound wstdisplay wstinput wstgui
+            strutcpp prio surfcpp wstsound wstdisplay wstdisplay_gles wstinput wstgui
             miniswig
             libwindstille
             windstille
