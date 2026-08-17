@@ -71,6 +71,9 @@ function(build_dependencies)
   find_program(MINISWIG miniswig)
   if(NOT MINISWIG)
     add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
+    # Use the in-tree executable target instead of the missing program.
+    set(MINISWIG miniswig PARENT_SCOPE)
+    set(MINISWIG_FROM_SOURCE TRUE PARENT_SCOPE)
   endif()
 endfunction()
 build_dependencies()
@@ -87,12 +90,22 @@ set(WRAPPER_INTERFACE_HPP ${CMAKE_CURRENT_SOURCE_DIR}/src/scripting/wrapper.inte
 set(WRAPPER_CPP ${CMAKE_CURRENT_BINARY_DIR}/src/squirrel/wrapper.cpp)
 set(WRAPPER_HPP ${CMAKE_CURRENT_BINARY_DIR}/src/squirrel/wrapper.hpp)
 
+# MINISWIG is either an absolute path to a system binary or the CMake
+# target name "miniswig" when building from external/miniswig.
+if(MINISWIG_FROM_SOURCE)
+  set(_miniswig_cmd "$<TARGET_FILE:miniswig>")
+  set(_miniswig_depends miniswig)
+else()
+  set(_miniswig_cmd "${MINISWIG}")
+  set(_miniswig_depends "${MINISWIG}")
+endif()
+
 add_custom_target(GenerateWrapper
   BYPRODUCTS ${MINISWIG_TMP} ${WRAPPER_CPP} ${WRAPPER_HPP}
   DEPENDS
   ${SCRIPTING_SOURCE}
   ${WRAPPER_INTERFACE_HPP}
-  ${MINISWIG}
+  ${_miniswig_depends}
 
   COMMAND ${CMAKE_CXX_COMPILER}
   -E
@@ -103,7 +116,7 @@ add_custom_target(GenerateWrapper
   -o ${MINISWIG_TMP}
   -DSCRIPTING_API
 
-  COMMAND ${MINISWIG}
+  COMMAND ${_miniswig_cmd}
   --input ${MINISWIG_TMP}
   --output-cpp ${WRAPPER_CPP}
   --output-hpp ${WRAPPER_HPP}
