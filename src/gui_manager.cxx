@@ -35,6 +35,9 @@ GUIManager::GUIManager()
   manager   = new CL_GUIManager(style);
   quit_requested = false;
 
+  // Nested managers (e.g. Play from the editor) must restore the
+  // previous current_ on destruction so the outer GUI keeps working.
+  previous = current_;
   current_ = this;
 
   // Make the manager the first component on the stack
@@ -49,6 +52,9 @@ GUIManager::~GUIManager()
   //delete style; FIXME: Memory hole?!
   //delete resources;  FIXME: Memory hole?!
   delete slot_container;
+
+  if (current_ == this)
+    current_ = previous;
 }
   
 void
@@ -71,6 +77,7 @@ GUIManager::run()
   // Guile/button callback has been observed to SIGSEGV on this ClanLib
   // build (null impl); a local flag is enough to leave the editor.
   quit_requested = false;
+  CL_Display::get_current_window()->show_cursor();
   while (!quit_requested)
     {
       manager->show();

@@ -38,6 +38,7 @@ private:
   CL_ResourceManager* resources;
   CL_SlotContainer*   slot_container;
   bool                quit_requested;
+  GUIManager*         previous;
 
   static GUIManager* current_;
 public:

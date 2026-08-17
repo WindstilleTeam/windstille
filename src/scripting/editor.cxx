@@ -17,6 +17,7 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+#include <ClanLib/display.h>
 #include <ClanLib/gui.h>
 #include <iostream>
 #include "../scm_functor.hxx"
@@ -154,6 +155,8 @@ game_play(const char* filename)
   std::cout << "WindstilleGame: Starting level " << filename << std::endl;
   WindstilleGame game (filename);
   game.display ();
+  // WindstilleGame hides the cursor; restore it for the editor GUI.
+  CL_Display::get_current_window()->show_cursor();
 }
 
 CL_Component*
