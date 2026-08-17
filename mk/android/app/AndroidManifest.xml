@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.windstille.game"
+    android:versionCode="1"
+    android:versionName="0.3.0">
+
+    <uses-sdk android:minSdkVersion="22" android:targetSdkVersion="22" />
+
+    <!-- GLES2 is the default renderer. ES 2.0 is required by Android CDD; minSdk 22 is fine. -->
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <application
+        android:label="Windstille"
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:hasCode="true">
+        <!--
+          singleTask: a second launcher tap brings this task to the foreground
+          instead of starting another process. SDL Android only supports one
+          window; a second instance hits "Android only supports one window".
+          exported is required for the MAIN/LAUNCHER filter on newer platforms.
+        -->
+        <activity
+            android:name="org.libsdl.app.SDLActivity"
+            android:label="Windstille"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|uiMode"
+            android:screenOrientation="landscape"
+            android:launchMode="singleTask"
+            android:alwaysRetainTaskState="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

@@ -15,11 +15,32 @@
     squirrel.inputs.nixpkgs.follows = "nixpkgs";
     squirrel.inputs.tinycmmc.follows = "tinycmmc";
 
+    # Windows prebuilts (same stack as Pingus — avoid pkgsCross openal/ffmpeg)
     SDL2-win32.url = "git+https://github.com/grumnix/SDL2-win32.git";
     SDL2-win32.inputs.nixpkgs.follows = "nixpkgs";
+    openal-soft-win32.url = "git+https://github.com/grumnix/openal-soft-win32.git";
+    openal-soft-win32.inputs.nixpkgs.follows = "nixpkgs";
+    libmodplug-win32.url = "git+https://github.com/grumnix/libmodplug-win32.git";
+    libmodplug-win32.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Source tarballs for Android / wasm SDL stacks (shared with Pingus recipes)
+    sdl2-src = {
+      url = "https://github.com/libsdl-org/SDL/releases/download/release-2.30.9/SDL2-2.30.9.tar.gz";
+      flake = false;
+    };
+    sdl2-image-src = {
+      url = "https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.2/SDL2_image-2.8.2.tar.gz";
+      flake = false;
+    };
+    sdl2-mixer-src = {
+      url = "https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.0/SDL2_mixer-2.8.0.tar.gz";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, tinycmmc, squirrel, SDL2-win32 }:
+  outputs = { self, nixpkgs, flake-utils, tinycmmc, squirrel, SDL2-win32,
+              openal-soft-win32, libmodplug-win32,
+              sdl2-src, sdl2-image-src, sdl2-mixer-src }:
     let
       tinycmmc_lib = import ./external/tinycmmc { inherit nixpkgs flake-utils; };
     in
@@ -292,6 +313,62 @@
             pkgs.gtkmm3
           ];
         };
+
+        # ---- Windows cross (host Linux only) ----
+        isWin = pkgs.stdenv.hostPlatform.isWindows;
+        win64Pkgs = if isWin then null else pkgs.pkgsCross.mingwW64;
+
+        windstille-win64 =
+          if isWin || win64Pkgs == null then null
+          else win64Pkgs.stdenv.mkDerivation {
+            pname = "windstille";
+            version = "0.3.0";
+            src = ./.;
+            cmakeFlags = [
+              "-DBUILD_EDITOR=OFF"
+              "-DBUILD_EXTRA=OFF"
+            ];
+            nativeBuildInputs = [
+              win64Pkgs.buildPackages.cmake
+              win64Pkgs.buildPackages.pkg-config
+              win64Pkgs.buildPackages.bison
+              win64Pkgs.buildPackages.flex
+            ];
+            buildInputs = [
+              SDL2-win32.packages.${pkgs.system}.SDL2-win64
+              openal-soft-win32.packages.${pkgs.system}.openal-soft-win64
+              libmodplug-win32.packages.${pkgs.system}.libmodplug-win64
+            ];
+            # Full dep graph still needs the external/* cmake packages wired
+            # for MinGW; this target is the packaging hook. Prefer building
+            # externals with the same mkExternal pattern once GLES/Win paths
+            # are validated (see PORTS.md).
+            meta = {
+              description = "Windstille Windows x86_64 (mingwW64) — WIP packaging";
+              platforms = [ "x86_64-linux" ];
+            };
+          };
+
+        # ---- Linux-only: WASM / Android / R36S (Pingus-derived recipes) ----
+        # Full APK/sysroot wiring needs SDK license accept + published ArkOS
+        # sysroot; helper stacks are importable now.  See PORTS.md.
+        linuxPorts =
+          if !pkgs.stdenv.hostPlatform.isLinux then {}
+          else
+            let
+              wasm = import ./nix/wasm.nix {
+                inherit pkgs;
+                sdlSrc = sdl2-src;
+                sdlVersion = "2.30.9";
+                sdlImageSrc = sdl2-image-src;
+                sdlMixerSrc = sdl2-mixer-src;
+              };
+            in {
+              inherit (wasm) sdl2WasmLibs zlibWasmLibs sdlWasmLibs
+                mkApp mkOpenBrowserApp glmPrefix sigcWasm;
+              windstille-wasm-helpers = wasm.sdl2WasmLibs;
+            };
+
       in
       {
         packages = rec {
@@ -304,7 +381,9 @@
             windstille-editor;
           tinycmmc = tinycmmc_pkg;
           default = windstille;
-        };
+        } // lib.optionalAttrs (windstille-win64 != null) {
+          inherit windstille-win64;
+        } // linuxPorts;
 
         apps = {
           windstille = {
