@@ -48,6 +48,7 @@
 #include "sprite3d/manager.hpp"
 #include "tile/tile_factory.hpp"
 #include "util/system.hpp"
+#include <fmt/format.h>
 
 namespace windstille {
 
