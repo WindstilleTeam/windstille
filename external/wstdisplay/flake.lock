@@ -1,0 +1,301 @@
+{
+  "nodes": {
+    "SDL2-win32": {
+      "inputs": {
+        "SDL2_src": "SDL2_src",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753127534,
+        "narHash": "sha256-73UFk9wGZb0CQ2EpFaXRczHzUUlOzK/Ov2KP3ewk4qw=",
+        "ref": "refs/heads/master",
+        "rev": "278a40a7bff4c0b0bf4f5ad1c528308df4a1b0f9",
+        "revCount": 6,
+        "type": "git",
+        "url": "https://github.com/grumnix/SDL2-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/SDL2-win32.git"
+      }
+    },
+    "SDL2_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1748906407,
+        "narHash": "sha256-aakdhaTL0dgt2BQEtv3w6pp1mwOrmNzEorh3lLxJgyo=",
+        "type": "tarball",
+        "url": "https://libsdl.org/release/SDL2-devel-2.32.8-mingw.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://libsdl.org/release/SDL2-devel-2.32.8-mingw.tar.gz"
+      }
+    },
+    "babyxml": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775757657,
+        "narHash": "sha256-nH7Muiz1E2HbmZH3xibTpskMKxw9vwkiRQ/xPA4qLLA=",
+        "ref": "refs/heads/master",
+        "rev": "1f634fe6175cdf780ab5f6c03d925b5724294194",
+        "revCount": 51,
+        "type": "git",
+        "url": "https://github.com/grumbel/babyxml.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumbel/babyxml.git"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "freetype-win32": {
+      "inputs": {
+        "freetype_src": "freetype_src",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1716729375,
+        "narHash": "sha256-4H2Y+DuT9OMePK6JBi9Y7L+tnhXuUfvIIJlR+zcAjXI=",
+        "ref": "refs/heads/master",
+        "rev": "874cb3559c6463e96e18c3a22ae9491df45a8327",
+        "revCount": 4,
+        "type": "git",
+        "url": "https://github.com/grumnix/freetype-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/freetype-win32.git"
+      }
+    },
+    "freetype_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1687588007,
+        "narHash": "sha256-e1WKuyGSJwgSSzdXqbuZdbosyxpMfr/Fw/LqVMTnZus=",
+        "type": "tarball",
+        "url": "https://download.savannah.gnu.org/releases/freetype/freetype-2.13.1.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://download.savannah.gnu.org/releases/freetype/freetype-2.13.1.tar.gz"
+      }
+    },
+    "geomcpp": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775758053,
+        "narHash": "sha256-HYD1Fpz2JlIJM/QqZ56eHfFVR5T1bg2Pp5mc+YN6iq8=",
+        "ref": "refs/heads/master",
+        "rev": "717bea5e23cfd35fa3ef8206219b1e85b87c2a96",
+        "revCount": 113,
+        "type": "git",
+        "url": "https://github.com/grumbel/geomcpp.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumbel/geomcpp.git"
+      }
+    },
+    "glew-win32": {
+      "inputs": {
+        "glew_src": "glew_src",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1716729346,
+        "narHash": "sha256-bO+mEfQT7V86Xi7m4xLpigWh4FxLSlbwBUnndn4Lb+o=",
+        "ref": "refs/heads/master",
+        "rev": "e2cc411d17dc1845eb25492e9bf408d5862ad19c",
+        "revCount": 4,
+        "type": "git",
+        "url": "https://github.com/grumnix/glew-win32.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumnix/glew-win32.git"
+      }
+    },
+    "glew_src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1584277261,
+        "narHash": "sha256-q91JXPURP4ZRGf0RjH78Yn0wV1MaL/JBTzJc8WSxWW8=",
+        "type": "tarball",
+        "url": "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip"
+      }
+    },
+    "logmich": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775758246,
+        "narHash": "sha256-2PrrrybeNySSJj7jJJjzmr46f4RdFWD9NUFAB362dgk=",
+        "ref": "refs/heads/master",
+        "rev": "2610fad6768e5b493b52ff08d60d1eb8825f1ab6",
+        "revCount": 54,
+        "type": "git",
+        "url": "https://github.com/logmich/logmich.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/logmich/logmich.git"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1776548001,
+        "narHash": "sha256-ZSK0NL4a1BwVbbTBoSnWgbJy9HeZFXLYQizjb2DPF24=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b12141ef619e0a9c1c84dc8c684040326f27cdcc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "SDL2-win32": "SDL2-win32",
+        "babyxml": "babyxml",
+        "freetype-win32": "freetype-win32",
+        "geomcpp": "geomcpp",
+        "glew-win32": "glew-win32",
+        "logmich": "logmich",
+        "nixpkgs": "nixpkgs",
+        "surfcpp": "surfcpp",
+        "tinycmmc": "tinycmmc"
+      }
+    },
+    "surfcpp": {
+      "inputs": {
+        "SDL2-win32": [
+          "SDL2-win32"
+        ],
+        "geomcpp": [
+          "geomcpp"
+        ],
+        "logmich": [
+          "logmich"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tinycmmc": [
+          "tinycmmc"
+        ]
+      },
+      "locked": {
+        "lastModified": 1763578863,
+        "narHash": "sha256-5+15W7vTVdNkljM21guGaGhUw2PTxIf65R2+YZcBfoQ=",
+        "ref": "refs/heads/master",
+        "rev": "0002577f58ac14d1b314f3defe32b0529441a08e",
+        "revCount": 358,
+        "type": "git",
+        "url": "https://github.com/grumbel/surfcpp.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumbel/surfcpp.git"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "tinycmmc": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1763256011,
+        "narHash": "sha256-CpQWAHdeLUYd28cT9heG05p6RX9WF7QslqNHoBi931E=",
+        "ref": "refs/heads/master",
+        "rev": "2e007ba059a4991c011a7193c9d7df28826c9adc",
+        "revCount": 64,
+        "type": "git",
+        "url": "https://github.com/grumbel/tinycmmc.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/grumbel/tinycmmc.git"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
