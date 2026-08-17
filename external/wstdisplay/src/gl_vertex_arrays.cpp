@@ -32,7 +32,12 @@ GLVertexArrays::GLVertexArrays(GraphicsContext& gc) :
 {
   assert_gl();
 
+#if WSTDISPLAY_GL_ES
+  // Core GLES2 has no VAOs; bind attributes per draw instead.
+  m_vao = 0;
+#else
   glGenVertexArrays(1, &m_vao);
+#endif
   glGenBuffers(1, &m_positions_buffer);
   glGenBuffers(1, &m_texcoords_buffer);
   glGenBuffers(1, &m_color_buffer);
@@ -45,7 +50,9 @@ GLVertexArrays::~GLVertexArrays()
   glDeleteBuffers(1, &m_positions_buffer);
   glDeleteBuffers(1, &m_texcoords_buffer);
   glDeleteBuffers(1, &m_color_buffer);
+#if !WSTDISPLAY_GL_ES
   glDeleteVertexArrays(1, &m_vao);
+#endif
 }
 
 void
@@ -53,7 +60,9 @@ GLVertexArrays::bind()
 {
   assert_gl();
 
+#if !WSTDISPLAY_GL_ES
   glBindVertexArray(m_vao);
+#endif
 
   assert_gl();
 }

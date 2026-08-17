@@ -60,9 +60,14 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] CMake options `WINDSTILLE_USE_GLES` / `WINDSTILLE_EMSCRIPTEN` (propagated to wstdisplay)
 - [x] GLES context attributes (ES 2.0 profile) and skip `glewInit` on GLES builds
 - [x] Flake package `windstille-gles2` (`-DWINDSTILLE_USE_GLES=ON`) for Linux validation
-- [ ] Fix remaining fixed-function / desktop-only GL usage so `.#windstille-gles2` **links and runs**
+- [x] Replace `gluErrorString` with portable error names
+- [x] Skip fixed-function `glColor4f` on GLES
+- [x] Replace `gluBuild2DMipmaps` with `glTexImage2D` + `glGenerateMipmap` on GLES
+- [x] Skip VAO create/bind/delete on GLES2 (bind attributes per draw)
+- [x] Guard `GL_TEXTURE_WRAP_R` and `GL_UNPACK_ROW_LENGTH` where needed
+- [x] Default vertex mode away from `GL_QUADS` on GLES
 - [ ] Shader / FBO path audit under pure GLES2
-- [ ] Validate desktop GLES2 build on Linux before mobile/web
+- [ ] Validate `nix build .#windstille-gles2` links and runs on Linux
 
 ### Windows (`nix build .#windstille-win64`)
 - [ ] Cross-build all required externals for mingw

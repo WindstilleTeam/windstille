@@ -48,8 +48,10 @@ find_program(XCF2PNG xcf2png REQUIRED)
 find_package(Threads REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(PNG REQUIRED)
-find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
+if(NOT WINDSTILLE_USE_GLES)
+  find_package(OpenGL REQUIRED)
+  find_package(GLEW REQUIRED)
+endif()
 find_package(glm REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(Squirrel REQUIRED)
@@ -172,10 +174,7 @@ target_link_libraries(libwindstille PUBLIC
   logmich::logmich
   surf::surf
   Squirrel::Squirrel
-  GLEW::GLEW
   JPEG::JPEG
-  OpenGL::GL
-  OpenGL::GLU
   PNG::PNG
   PkgConfig::SDL2
   PkgConfig::SIGCXX

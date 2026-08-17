@@ -33,7 +33,7 @@ VertexArrayDrawable::VertexArrayDrawable(geom::fpoint const& pos_, float z_pos_,
                                          glm::mat4 const& modelview_) :
   Drawable(pos_, z_pos_, modelview_),
   m_program(),
-  m_mode(GL_QUADS),
+  m_mode(GL_TRIANGLES),
   m_blend_sfactor(GL_SRC_ALPHA),
   m_blend_dfactor(GL_ONE_MINUS_SRC_ALPHA),
   m_depth_test(false),
@@ -71,7 +71,11 @@ VertexArrayDrawable::render(GraphicsContext& gc, unsigned int mask)
     return;
   }
 
+  #ifndef GL_QUADS
+  // GLES has no GL_QUADS; triangulation must have been done by the caller.
+#else
   assert(m_mode != GL_QUADS);
+#endif
 
   assert(m_texcoords.empty() || int(m_texcoords.size() / 2) == num_vertices());
   assert(m_normals.empty() || int(m_normals.size() / 3) == num_vertices());

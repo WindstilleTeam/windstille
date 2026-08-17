@@ -17,6 +17,10 @@
 #  ifndef WSTDISPLAY_GL_ES
 #    define WSTDISPLAY_GL_ES 1
 #  endif
+/* GLES2 does not define GL_QUADS; keep a sentinel for asserts only. */
+#  ifndef GL_QUADS
+#    define GL_QUADS 0x0007
+#  endif
 
 #else
 

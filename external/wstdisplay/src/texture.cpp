@@ -81,7 +81,9 @@ Texture::Texture(GLenum target, geom::isize const& size, GLint format) :
   glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+#if !WSTDISPLAY_GL_ES
   glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+#endif
 
   assert_gl();
 }
@@ -144,7 +146,9 @@ Texture::Texture(SoftwareSurface const& image, GLint glformat) :
     glBindTexture(GL_TEXTURE_2D, m_handle);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+#if !WSTDISPLAY_GL_ES || defined(GL_UNPACK_ROW_LENGTH)
     glPixelStorei(GL_UNPACK_ROW_LENGTH, image.get_pitch() / bytes_per_pixel);
+#endif
 
     if ((false))
     { // no mipmapping
@@ -157,10 +161,16 @@ Texture::Texture(SoftwareSurface const& image, GLint glformat) :
     }
     else
     { // use mipmapping
+#if WSTDISPLAY_GL_ES
+      glTexImage2D(m_target, 0, glformat,
+                   image.get_width(), image.get_height(), 0, sdl_format,
+                   GL_UNSIGNED_BYTE, image.get_data());
+      glGenerateMipmap(m_target);
+#else
       gluBuild2DMipmaps(m_target, glformat,
                         image.get_width(), image.get_height(), sdl_format,
                         GL_UNSIGNED_BYTE, image.get_data());
-
+#endif
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
@@ -169,7 +179,9 @@ Texture::Texture(SoftwareSurface const& image, GLint glformat) :
 
     glTexParameteri(m_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(m_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+#if !WSTDISPLAY_GL_ES
     glTexParameteri(m_target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+#endif
 
     assert_gl();
   }
@@ -235,8 +247,10 @@ Texture::put(SoftwareSurface const& image, const geom::irect& srcrect, int x, in
 
   // FIXME: Add some checks here to make sure image has the right format
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // FIXME: Does SDL always use 4?
+#if !WSTDISPLAY_GL_ES || defined(GL_UNPACK_ROW_LENGTH)
   glPixelStorei(GL_UNPACK_ROW_LENGTH,
                 image.get_pitch() / bytes_per_pixel);
+#endif
 
   glTexSubImage2D(m_target, 0, x, y,
                   srcrect.width(), srcrect.height(), sdl_format, GL_UNSIGNED_BYTE,
@@ -262,7 +276,9 @@ Texture::set_wrap(GLenum mode)
 
   glTexParameteri(m_target, GL_TEXTURE_WRAP_S, mode);
   glTexParameteri(m_target, GL_TEXTURE_WRAP_T, mode);
+#if !WSTDISPLAY_GL_ES
   glTexParameteri(m_target, GL_TEXTURE_WRAP_R, mode); // FIXME: only good for 3d textures?!
+#endif
 
   assert_gl();
 }

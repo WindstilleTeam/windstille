@@ -190,8 +190,12 @@ OpenGLState::activate()
   OpenGLState* global_state = OpenGLState::global();
   assert(global_state);
 
-  // always apply color since it might have got changed between a glBegin/glEnd
+  // Fixed-function color is not available on GLES; shaders carry colour.
+#if !WSTDISPLAY_GL_ES
   glColor4f(impl->color.r, impl->color.g, impl->color.b, impl->color.a);
+#else
+  (void)impl->color;
+#endif
 
   for(std::map<GLenum, bool>::iterator i = impl->state.begin();
       i != impl->state.end(); ++i)

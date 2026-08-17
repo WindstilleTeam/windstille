@@ -20,14 +20,40 @@
 #include <sstream>
 #include <wstdisplay/gl_compat.hpp>
 
+namespace {
+
+char const* gl_error_string(GLenum error)
+{
+  switch (error) {
+    case GL_NO_ERROR:                      return "GL_NO_ERROR";
+    case GL_INVALID_ENUM:                  return "GL_INVALID_ENUM";
+    case GL_INVALID_VALUE:                 return "GL_INVALID_VALUE";
+    case GL_INVALID_OPERATION:             return "GL_INVALID_OPERATION";
+#ifdef GL_STACK_OVERFLOW
+    case GL_STACK_OVERFLOW:                return "GL_STACK_OVERFLOW";
+#endif
+#ifdef GL_STACK_UNDERFLOW
+    case GL_STACK_UNDERFLOW:               return "GL_STACK_UNDERFLOW";
+#endif
+    case GL_OUT_OF_MEMORY:                 return "GL_OUT_OF_MEMORY";
+#ifdef GL_INVALID_FRAMEBUFFER_OPERATION
+    case GL_INVALID_FRAMEBUFFER_OPERATION: return "GL_INVALID_FRAMEBUFFER_OPERATION";
+#endif
+    default:                               return "unknown GL error";
+  }
+}
+
+} // namespace
+
 void assert_gl_loc(char const* file, int line, char const* message)
 {
   GLenum error = glGetError();
   if(error != GL_NO_ERROR)
   {
     std::ostringstream msg;
-    msg << file << ":" << line << ": OpenGLError while '" << (message ? message : "<null>") << "': "
-        << gluErrorString(error);
+    msg << file << ":" << line << ": OpenGLError while '"
+        << (message ? message : "<null>") << "': "
+        << gl_error_string(error) << " (0x" << std::hex << error << ")";
     throw std::runtime_error(msg.str());
   }
 }
