@@ -69,6 +69,7 @@
               pkgs.libGL
               pkgs.SDL2
               pkgs."sigc++"
+              pkgs.sysprof
 
               squirrel.packages.${pkgs.stdenv.hostPlatform.system}.default
             ] ++
