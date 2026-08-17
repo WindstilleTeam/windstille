@@ -1,0 +1,7 @@
+*~
+/build*/
+
+# Nix
+/result
+/result-[0-9]*
+/outputs
