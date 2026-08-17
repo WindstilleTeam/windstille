@@ -48,7 +48,7 @@
 #include "sprite3d/manager.hpp"
 #include "tile/tile_factory.hpp"
 #include "util/system.hpp"
-#include <fmt/format.h>
+#include <format>
 
 namespace windstille {
 
@@ -174,7 +174,7 @@ WindstilleMain::main(int argc, char** argv)
         int count = 0;
         Pathname filename;
         do {
-          filename = Pathname(fmt::format("screenshots/windstille{:04d}.png", count), Pathname::kUserPath);
+          filename = Pathname(std::format("screenshots/windstille{:04d}.png", count), Pathname::kUserPath);
           count += 1;
         } while(filename.exists());
 

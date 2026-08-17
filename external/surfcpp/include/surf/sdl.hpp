@@ -22,7 +22,7 @@
 #include <string.h>
 #include <memory>
 
-#include <fmt/format.h>
+#include <format>
 
 #include "fwd.hpp"
 #include "software_surface.hpp"
@@ -150,7 +150,7 @@ std::unique_ptr<IPixelData> pixelview_from_sdl_surface(SDL_Surface& surface)
                                                     surface.pitch / sizeof(RGBAPixel));
 
     default:
-      throw std::runtime_error(fmt::format("unsupported SDL_PixelFormatEnum: {}", surface.format->format));
+      throw std::runtime_error(std::format("unsupported SDL_PixelFormatEnum: {}", surface.format->format));
   }
 }
 
@@ -166,7 +166,7 @@ SoftwareSurface softwaresurface_from_sdl_surface(SDL_Surface& surface)
       return SoftwareSurface(pixeldata_from_sdl_surface<RGBAPixel>(surface));
 
     default:
-      throw std::runtime_error(fmt::format("unsupported SDL_PixelFormatEnum: {}", surface.format->format));
+      throw std::runtime_error(std::format("unsupported SDL_PixelFormatEnum: {}", surface.format->format));
   }
 }
 

@@ -85,7 +85,7 @@ Exec::exec()
     close(stdin_fd[0]);
     close(stdin_fd[1]);
 
-    throw std::runtime_error(fmt::format("Exec::exec(): fork failed: {}", strerror(errnum)));
+    throw std::runtime_error(std::format("Exec::exec(): fork failed: {}", strerror(errnum)));
   }
   else if (pid == 0)
   { // child

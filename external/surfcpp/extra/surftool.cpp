@@ -21,7 +21,8 @@
 #include <stack>
 #include <variant>
 
-#include <fmt/format.h>
+#include <format>
+#include <string_view>
 
 #include <geom/io.hpp>
 #include <surf/blendfunc.hpp>
@@ -264,20 +265,20 @@ Options parse_args(int argc, char** argv)
       } else if (opt == "--dupi") {
         int idx = std::stoi(std::string(next_arg()));
         opts.commands.emplace_back([idx](Context& ctx) {
-          ctx.message(fmt::format("dup {}", idx));
+          ctx.message(std::format("dup {}", idx));
           SoftwareSurface copy(ctx.get(idx));
           ctx.push(std::move(copy)); // NOLINT
         });
       } else if (opt == "--dropi") {
         int idx = std::stoi(std::string(next_arg()));
         opts.commands.emplace_back([idx](Context& ctx) {
-          ctx.message(fmt::format("drop {}", idx));
+          ctx.message(std::format("drop {}", idx));
           ctx.drop(idx);
         });
       } else if (opt == "--movei") {
         int idx = std::stoi(std::string(next_arg()));
         opts.commands.emplace_back([idx](Context& ctx) {
-          ctx.message(fmt::format("move {}", idx));
+          ctx.message(std::format("move {}", idx));
           SoftwareSurface sur = ctx.get(idx);
           ctx.drop(idx);
           ctx.push(std::move(sur));
@@ -285,7 +286,7 @@ Options parse_args(int argc, char** argv)
       } else if (opt == "--withi") {
         int idx = std::stoi(std::string(next_arg()));
         opts.commands.emplace_back([idx](Context& ctx) {
-          ctx.message(fmt::format("view {}", idx));
+          ctx.message(std::format("view {}", idx));
           ctx.push_ref(idx);
         });
       } else if (opt == "--create") {
@@ -483,20 +484,27 @@ Options parse_args(int argc, char** argv)
       } else if (opt == "-O" || opt == "--output-pattern") {
         std::filesystem::path output_pattern = next_arg();
         opts.commands.emplace_back([output_pattern](Context& ctx) {
-          std::string output_filename = fmt::format(
-            fmt::runtime(output_pattern.string()),
-            fmt::arg("index", ctx.file_info().index),
-            fmt::arg("dirname", ctx.file_info().filename.parent_path().string()),
-            fmt::arg("basename", ctx.file_info().filename.filename().string()),
-            fmt::arg("path", ctx.file_info().filename.string()),
-            fmt::arg("stem", ctx.file_info().filename.stem().string()),
-            fmt::arg("ext", ctx.file_info().filename.extension().string()));
-          ctx.message(fmt::format("saving {}", output_filename));
+          // Named placeholders from the pattern, substituted manually
+          // (std::format has no fmt::arg equivalent for dynamic patterns).
+          std::string output_filename = output_pattern.string();
+          auto replace_all = [](std::string& s, std::string_view from, std::string_view to) {
+            for (size_t pos = 0; (pos = s.find(from, pos)) != std::string::npos; ) {
+              s.replace(pos, from.size(), to);
+              pos += to.size();
+            }
+          };
+          replace_all(output_filename, "{index}", std::to_string(ctx.file_info().index));
+          replace_all(output_filename, "{dirname}", ctx.file_info().filename.parent_path().string());
+          replace_all(output_filename, "{basename}", ctx.file_info().filename.filename().string());
+          replace_all(output_filename, "{path}", ctx.file_info().filename.string());
+          replace_all(output_filename, "{stem}", ctx.file_info().filename.stem().string());
+          replace_all(output_filename, "{ext}", ctx.file_info().filename.extension().string());
+          ctx.message(std::format("saving {}", output_filename));
           surf::save(ctx.top(), output_filename);
         });
       } else {
         print_usage(argc, argv);
-        throw std::invalid_argument(fmt::format("unknown option: {}", opt));
+        throw std::invalid_argument(std::format("unknown option: {}", opt));
       }
     } else { // rest argument
       std::filesystem::path input_filename = argv[i];
@@ -521,7 +529,7 @@ void run(int argc, char** argv)
     int index = 0;
     for (auto&& foreachcmd : opts.foreach_commands) {
       if (foreachcmd.index() != 1) {
-        throw std::runtime_error(fmt::format("invalid --foreach command: {}", foreachcmd.index()));
+        throw std::runtime_error(std::format("invalid --foreach command: {}", foreachcmd.index()));
       } else {
         ctx.clear();
         ctx.set_file_info(index, std::get<1>(foreachcmd));

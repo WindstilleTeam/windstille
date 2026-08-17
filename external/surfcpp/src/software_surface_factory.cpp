@@ -16,7 +16,7 @@
 
 #include "software_surface_factory.hpp"
 
-#include <fmt/format.h>
+#include <format>
 
 #include <sstream>
 #include <stdexcept>
@@ -206,7 +206,7 @@ SoftwareSurfaceFactory::from_file(std::filesystem::path const& filename, std::st
   });
 
   if (it == m_loader.end()) {
-    throw std::runtime_error(fmt::format("non-existing loader specified: {}", loader));
+    throw std::runtime_error(std::format("non-existing loader specified: {}", loader));
   }
 
   return (*it)->from_file(filename);

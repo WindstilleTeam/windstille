@@ -18,7 +18,7 @@
 #define HEADER_SURF_IO_HPP
 
 #include <ostream>
-#include <fmt/format.h>
+#include <format>
 
 #include "pixel.hpp"
 #include "pixel_view.hpp"
@@ -30,7 +30,7 @@ namespace surf {
 inline
 std::ostream& operator<<(std::ostream& os, RGB8Pixel const& pixel)
 {
-  return os << fmt::format("({:02x} {:02x} {:02x})",
+  return os << std::format("({:02x} {:02x} {:02x})",
                            static_cast<int>(pixel.r),
                            static_cast<int>(pixel.g),
                            static_cast<int>(pixel.b));
@@ -39,7 +39,7 @@ std::ostream& operator<<(std::ostream& os, RGB8Pixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, RGBA8Pixel const& pixel)
 {
-  return os << fmt::format("({:02x} {:02x} {:02x} {:02x})",
+  return os << std::format("({:02x} {:02x} {:02x} {:02x})",
                            static_cast<int>(pixel.r),
                            static_cast<int>(pixel.g),
                            static_cast<int>(pixel.b),
@@ -49,7 +49,7 @@ std::ostream& operator<<(std::ostream& os, RGBA8Pixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, RGB16Pixel const& pixel)
 {
-  return os << fmt::format("({:04x} {:04x} {:04x})",
+  return os << std::format("({:04x} {:04x} {:04x})",
                            static_cast<int>(pixel.r),
                            static_cast<int>(pixel.g),
                            static_cast<int>(pixel.b));
@@ -58,7 +58,7 @@ std::ostream& operator<<(std::ostream& os, RGB16Pixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, RGBA16Pixel const& pixel)
 {
-  return os << fmt::format("({:04x} {:04x} {:04x} {:04x})",
+  return os << std::format("({:04x} {:04x} {:04x} {:04x})",
                            static_cast<int>(pixel.r),
                            static_cast<int>(pixel.g),
                            static_cast<int>(pixel.b),
@@ -68,7 +68,7 @@ std::ostream& operator<<(std::ostream& os, RGBA16Pixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, RGB32Pixel const& pixel)
 {
-  return os << fmt::format("({:08x} {:08x} {:08x})",
+  return os << std::format("({:08x} {:08x} {:08x})",
                            static_cast<int>(pixel.r),
                            static_cast<int>(pixel.g),
                            static_cast<int>(pixel.b));
@@ -77,7 +77,7 @@ std::ostream& operator<<(std::ostream& os, RGB32Pixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, RGBA32Pixel const& pixel)
 {
-  return os << fmt::format("({:08x} {:08x} {:08x} {:08x})",
+  return os << std::format("({:08x} {:08x} {:08x} {:08x})",
                            static_cast<int>(pixel.r),
                            static_cast<int>(pixel.g),
                            static_cast<int>(pixel.b),
@@ -87,7 +87,7 @@ std::ostream& operator<<(std::ostream& os, RGBA32Pixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, RGB32fPixel const& pixel)
 {
-  return os << fmt::format("({:.2f} {:.2f} {:.2f})",
+  return os << std::format("({:.2f} {:.2f} {:.2f})",
                            pixel.r,
                            pixel.g,
                            pixel.b);
@@ -96,7 +96,7 @@ std::ostream& operator<<(std::ostream& os, RGB32fPixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, RGBA32fPixel const& pixel)
 {
-  return os << fmt::format("({:.2f} {:.2f} {:.2f} {:.2f})",
+  return os << std::format("({:.2f} {:.2f} {:.2f} {:.2f})",
                            pixel.r,
                            pixel.g,
                            pixel.b,
@@ -105,7 +105,7 @@ std::ostream& operator<<(std::ostream& os, RGBA32fPixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, RGB64fPixel const& pixel)
 {
-  return os << fmt::format("({:.2f} {:.2f} {:.2f})",
+  return os << std::format("({:.2f} {:.2f} {:.2f})",
                            pixel.r,
                            pixel.g,
                            pixel.b);
@@ -114,7 +114,7 @@ std::ostream& operator<<(std::ostream& os, RGB64fPixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, RGBA64fPixel const& pixel)
 {
-  return os << fmt::format("({:.2f} {:.2f} {:.2f} {:.2f})",
+  return os << std::format("({:.2f} {:.2f} {:.2f} {:.2f})",
                            pixel.r,
                            pixel.g,
                            pixel.b,
@@ -124,14 +124,14 @@ std::ostream& operator<<(std::ostream& os, RGBA64fPixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, L8Pixel const& pixel)
 {
-  return os << fmt::format("({:02x})",
+  return os << std::format("({:02x})",
                            static_cast<int>(pixel.l));
 }
 
 inline
 std::ostream& operator<<(std::ostream& os, LA8Pixel const& pixel)
 {
-  return os << fmt::format("({:02x} {:02x})",
+  return os << std::format("({:02x} {:02x})",
                            static_cast<int>(pixel.l),
                            static_cast<int>(pixel.a));
 }
@@ -139,14 +139,14 @@ std::ostream& operator<<(std::ostream& os, LA8Pixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, L16Pixel const& pixel)
 {
-  return os << fmt::format("({:04x})",
+  return os << std::format("({:04x})",
                            static_cast<int>(pixel.l));
 }
 
 inline
 std::ostream& operator<<(std::ostream& os, LA16Pixel const& pixel)
 {
-  return os << fmt::format("({:04x} {:04x})",
+  return os << std::format("({:04x} {:04x})",
                            static_cast<int>(pixel.l),
                            static_cast<int>(pixel.a));
 }
@@ -154,14 +154,14 @@ std::ostream& operator<<(std::ostream& os, LA16Pixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, L32Pixel const& pixel)
 {
-  return os << fmt::format("({:08x})",
+  return os << std::format("({:08x})",
                            static_cast<int>(pixel.l));
 }
 
 inline
 std::ostream& operator<<(std::ostream& os, LA32Pixel const& pixel)
 {
-  return os << fmt::format("({:08x} {:08x})",
+  return os << std::format("({:08x} {:08x})",
                            static_cast<int>(pixel.l),
                            static_cast<int>(pixel.a));
 }
@@ -169,28 +169,28 @@ std::ostream& operator<<(std::ostream& os, LA32Pixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, L32fPixel const& pixel)
 {
-  return os << fmt::format("({:.2f})",
+  return os << std::format("({:.2f})",
                            pixel.l);
 }
 
 inline
 std::ostream& operator<<(std::ostream& os, LA32fPixel const& pixel)
 {
-  return os << fmt::format("({:.2f} {:.2f})",
+  return os << std::format("({:.2f} {:.2f})",
                            pixel.l,
                            pixel.a);
 }
 inline
 std::ostream& operator<<(std::ostream& os, L64fPixel const& pixel)
 {
-  return os << fmt::format("({:.2f})",
+  return os << std::format("({:.2f})",
                            pixel.l);
 }
 
 inline
 std::ostream& operator<<(std::ostream& os, LA64fPixel const& pixel)
 {
-  return os << fmt::format("({:.2f} {:.2f})",
+  return os << std::format("({:.2f} {:.2f})",
                            pixel.l,
                            pixel.a);
 }
@@ -198,7 +198,7 @@ std::ostream& operator<<(std::ostream& os, LA64fPixel const& pixel)
 inline
 std::ostream& operator<<(std::ostream& os, Color const& color)
 {
-  return os << fmt::format("({:.2f} {:.2f} {:.2f} {:.2f})",
+  return os << std::format("({:.2f} {:.2f} {:.2f} {:.2f})",
                            color.r,
                            color.g,
                            color.b,

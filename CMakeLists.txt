@@ -39,7 +39,6 @@ find_package(PNG REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glm REQUIRED)
-find_package(fmt REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(Squirrel REQUIRED)
 
@@ -165,7 +164,6 @@ target_link_libraries(wstlib PUBLIC
   OpenGL::GL
   OpenGL::GLU
   PNG::PNG
-  fmt::fmt
   PkgConfig::SDL2
   PkgConfig::SIGCXX
   Threads::Threads)

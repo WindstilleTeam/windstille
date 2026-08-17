@@ -17,7 +17,7 @@
 #include <cctype>
 #include <unordered_map>
 
-#include <fmt/format.h>
+#include <format>
 
 #include "palette.hpp"
 
@@ -187,7 +187,7 @@ Color lookup_colorname(std::string_view colorname)
 
   auto it = name2color.find(colorname_lowercase);
   if (it == name2color.end()) {
-    throw std::invalid_argument(fmt::format("unknown color name: {}", colorname));
+    throw std::invalid_argument(std::format("unknown color name: {}", colorname));
   } else {
     return it->second;
   }

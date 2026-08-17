@@ -59,7 +59,6 @@
               # tinycmmc_find_dependency().  Only their transitive
               # dependencies that come from nixpkgs (or the remaining
               # remote flakes) need to be listed here.
-              pkgs.fmt
               pkgs.gtest
               pkgs.glm
               pkgs.jsoncpp

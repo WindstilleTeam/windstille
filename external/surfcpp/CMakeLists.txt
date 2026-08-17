@@ -112,13 +112,11 @@ set_target_properties(surf PROPERTIES
 target_compile_definitions(surf PRIVATE
   ${SURF_DEFINES}
   )
-find_package(fmt REQUIRED)
 target_link_libraries(surf PUBLIC
   geom::geom
   logmich::logmich
   PNG::PNG
   JPEG::JPEG
-  fmt::fmt
   )
 target_include_directories(surf PUBLIC
   $<INSTALL_INTERFACE:include>
