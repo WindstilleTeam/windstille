@@ -18,6 +18,7 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <ClanLib/gui.h>
+#include <ClanLib/display.h>
 #include <ClanLib/core.h>
 #include "guistyle/style_manager_windstille.hxx"
 #include "scripting/gui.hxx"
@@ -32,6 +33,7 @@ GUIManager::GUIManager()
   resources = new CL_ResourceManager(datadir + "/gui/gui.xml");
   style     = new StyleManager_Windstille(resources);
   manager   = new CL_GUIManager(style);
+  quit_requested = false;
 
   current_ = this;
 
@@ -65,16 +67,22 @@ GUIManager::update()
 void
 GUIManager::run()
 {
-  manager->run();
+  // Drive the loop ourselves. Calling CL_GUIManager::quit() from a
+  // Guile/button callback has been observed to SIGSEGV on this ClanLib
+  // build (null impl); a local flag is enough to leave the editor.
+  quit_requested = false;
+  while (!quit_requested)
+    {
+      manager->show();
+      CL_Display::flip();
+      CL_System::keep_alive(10);
+    }
 }
 
 void
 GUIManager::quit()
 {
-  // Must call CL_GUIManager::quit() directly. CL_Component::quit() is
-  // non-virtual and does get_gui_manager()->quit(), which is the wrong
-  // path when invoked through a CL_Component* (and can null-deref).
-  manager->quit();
+  quit_requested = true;
 }
 
 CL_Component* 

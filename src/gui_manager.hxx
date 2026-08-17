@@ -37,6 +37,7 @@ private:
   CL_StyleManager*    style;
   CL_ResourceManager* resources;
   CL_SlotContainer*   slot_container;
+  bool                quit_requested;
 
   static GUIManager* current_;
 public:
