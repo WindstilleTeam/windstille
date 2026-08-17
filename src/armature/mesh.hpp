@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_ARMATURE_MESH_HPP
 #define HEADER_WINDSTILLE_ARMATURE_MESH_HPP
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 #include <string>
 #include <vector>
 

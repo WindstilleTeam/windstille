@@ -22,7 +22,7 @@
 #include <string>
 #include <string_view>
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 
 namespace wstdisplay {
 

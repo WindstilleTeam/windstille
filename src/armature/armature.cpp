@@ -21,7 +21,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/rotate_vector.hpp>

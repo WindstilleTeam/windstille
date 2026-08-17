@@ -54,11 +54,15 @@ Related: [PORTS.md](PORTS.md).
 See [PORTS.md](PORTS.md). Shared stack with [Pingus](https://github.com/pingus/pingus) — extend those recipes, do not fork blindly.
 
 ### Shared prerequisite: GLES2
-Windstille/wstdisplay is **desktop OpenGL** today. Android, R36S, and WASM need GLES2 (or equivalent WebGL path).
+Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core). Ports need GLES2 / WebGL.
 
-- [ ] GLES2 / compatibility layer in `external/wstdisplay` (study Pingus `opengl_compat.hpp`, `PINGUS_USE_GLES`)
-- [ ] CMake option e.g. `WINDSTILLE_USE_GLES` / `WINDSTILLE_EMSCRIPTEN`
-- [ ] Validate desktop GLES2 build on Linux (`useGLES2`-style package like Pingus) before mobile/web
+- [x] `wstdisplay/gl_compat.hpp` (Pingus-style desktop vs GLES includes)
+- [x] CMake options `WINDSTILLE_USE_GLES` / `WINDSTILLE_EMSCRIPTEN` (propagated to wstdisplay)
+- [x] GLES context attributes (ES 2.0 profile) and skip `glewInit` on GLES builds
+- [x] Flake package `windstille-gles2` (`-DWINDSTILLE_USE_GLES=ON`) for Linux validation
+- [ ] Fix remaining fixed-function / desktop-only GL usage so `.#windstille-gles2` **links and runs**
+- [ ] Shader / FBO path audit under pure GLES2
+- [ ] Validate desktop GLES2 build on Linux before mobile/web
 
 ### Windows (`nix build .#windstille-win64`)
 - [ ] Cross-build all required externals for mingw

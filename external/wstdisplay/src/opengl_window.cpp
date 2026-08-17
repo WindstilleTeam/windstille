@@ -17,7 +17,8 @@
 #include "opengl_window.hpp"
 
 #include <iostream>
-#include <GL/glew.h>
+#include <sstream>
+#include <wstdisplay/gl_compat.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
@@ -74,9 +75,15 @@ OpenGLWindow::OpenGLWindow(wstsys::System& system,
     SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, m_anti_aliasing ); // 0, 2, or 4 for number of samples
   }
 
+#if WSTDISPLAY_GL_ES
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+#else
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+#endif
 
   uint32_t flags = SDL_WINDOW_OPENGL;
 
@@ -103,6 +110,7 @@ OpenGLWindow::OpenGLWindow(wstsys::System& system,
     throw std::runtime_error("Display:: failed to create GLContext");
   }
 
+#if !WSTDISPLAY_GL_ES
   GLenum err = glewInit();
   if (err != GLEW_OK)
   {
@@ -114,15 +122,17 @@ OpenGLWindow::OpenGLWindow(wstsys::System& system,
   std::cout << "glewInit() successfull: " << glewGetString(GLEW_VERSION) << std::endl;
   std::cout << "OpenGL 3.2: " << GL_VERSION_3_2 << std::endl;
   std::cout << "GL_VERSION_3_0: " << GL_VERSION_3_0 << std::endl;
+#endif
   std::cout << "GL_VENDOR: " << get_gl_string(GL_VENDOR) << std::endl;
   std::cout << "GL_RENDERER: " << get_gl_string(GL_RENDERER) << std::endl;
   std::cout << "GL_VERSION: " << get_gl_string(GL_VERSION) << std::endl;
   std::cout << "GL_SHADING_LANGUAGE_VERSION: " << get_gl_string(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-  // std::cout << "GL_EXTENSIONS: " << get_gl_string(GL_EXTENSIONS) << std::endl;
 
+#if !WSTDISPLAY_GL_ES
   if (m_anti_aliasing) {
     glEnable(GL_MULTISAMPLE);
   }
+#endif
 
   assert_gl();
 

@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_TILE_TILE_HPP
 #define HEADER_WINDSTILLE_TILE_TILE_HPP
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 
 #include <geom/geom.hpp>
 

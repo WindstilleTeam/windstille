@@ -18,7 +18,7 @@
 
 #include "particles/deform_drawer.hpp"
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 #include <glm/ext.hpp>
 
 #include <wstdisplay/graphics_context.hpp>

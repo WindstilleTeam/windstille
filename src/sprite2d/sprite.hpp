@@ -20,7 +20,7 @@
 #ifndef HEADER_WINDSTILLE_SPRITE2D_SPRITE_HPP
 #define HEADER_WINDSTILLE_SPRITE2D_SPRITE_HPP
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 
 #include <surf/color.hpp>
 #include <wstdisplay/drawing_context.hpp>

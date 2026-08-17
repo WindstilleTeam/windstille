@@ -23,7 +23,7 @@
 #include <memory>
 #include <vector>
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 #include <GL/gl.h>
 #include <vector>
 #include <iostream>

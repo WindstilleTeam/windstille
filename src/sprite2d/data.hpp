@@ -20,7 +20,7 @@
 #ifndef HEADER_WINDSTILLE_SPRITE2D_DATA_HPP
 #define HEADER_WINDSTILLE_SPRITE2D_DATA_HPP
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 
 #include "util/file_reader.hpp"
 #include <wstdisplay/surface.hpp>

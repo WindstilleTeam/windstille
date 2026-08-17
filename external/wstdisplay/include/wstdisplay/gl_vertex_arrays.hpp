@@ -20,7 +20,7 @@
 #include <stddef.h>
 #include <span>
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 
 namespace wstdisplay {
 

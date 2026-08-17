@@ -22,7 +22,7 @@
 #include <stdint.h>
 #include <vector>
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 #include <wstdisplay/texture.hpp>

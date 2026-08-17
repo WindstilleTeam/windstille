@@ -19,7 +19,7 @@
 
 #include <string>
 #include <map>
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 
 #include "texture.hpp"
 

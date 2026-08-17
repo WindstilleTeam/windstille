@@ -19,7 +19,7 @@
 #include "screen/navigation_test.hpp"
 
 #include <iostream>
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>

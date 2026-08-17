@@ -16,7 +16,7 @@
 
 #include "scenegraph/gradient_drawable.hpp"
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 
 #include "graphics_context.hpp"
 

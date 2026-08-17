@@ -19,6 +19,12 @@ project(wstdisplay VERSION 0.3.0)
 
 include(mk/cmake/TinyCMMC.cmake)
 
+option(WSTDISPLAY_USE_GLES "Build against OpenGL ES 2.0 instead of desktop OpenGL/GLEW" OFF)
+option(WSTDISPLAY_EMSCRIPTEN "Emscripten / WebGL build (implies GLES)" OFF)
+if(WSTDISPLAY_EMSCRIPTEN)
+  set(WSTDISPLAY_USE_GLES ON)
+endif()
+
 option(BUILD_TESTS "Build test cases" OFF)
 option(BUILD_EXTRA "Build extra stuff" OFF)
 
@@ -33,8 +39,14 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(Threads REQUIRED)
 find_package(Freetype REQUIRED)
-find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
+if(WSTDISPLAY_USE_GLES)
+  # GLES2 via SDL headers; optional libGLESv2 for linking on Linux embedded.
+  find_library(GLESV2_LIBRARY GLESv2)
+  find_library(EGL_LIBRARY EGL)
+else()
+  find_package(OpenGL REQUIRED)
+  find_package(GLEW REQUIRED)
+endif()
 find_package(PkgConfig REQUIRED)
 
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
@@ -77,13 +89,28 @@ target_link_libraries(wstdisplay PUBLIC
   geom::geom
   surf::surf
   logmich::logmich
-  GLEW::GLEW
-  OpenGL::GL
-  OpenGL::GLU
   Freetype::Freetype
   PkgConfig::SDL2
   PkgConfig::SIGCXX
   Threads::Threads)
+
+if(WSTDISPLAY_USE_GLES)
+  target_compile_definitions(wstdisplay PUBLIC WSTDISPLAY_USE_GLES=1)
+  if(WSTDISPLAY_EMSCRIPTEN)
+    target_compile_definitions(wstdisplay PUBLIC WSTDISPLAY_EMSCRIPTEN=1)
+  endif()
+  if(GLESV2_LIBRARY)
+    target_link_libraries(wstdisplay PUBLIC ${GLESV2_LIBRARY})
+  endif()
+  if(EGL_LIBRARY)
+    target_link_libraries(wstdisplay PUBLIC ${EGL_LIBRARY})
+  endif()
+else()
+  target_link_libraries(wstdisplay PUBLIC
+    GLEW::GLEW
+    OpenGL::GL
+    OpenGL::GLU)
+endif()
 
 if(BUILD_TESTS)
   file(GLOB TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}

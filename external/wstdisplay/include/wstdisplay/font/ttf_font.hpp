@@ -19,7 +19,7 @@
 #ifndef HEADER_WINDSTILLE_FONT_TTF_FONT_HPP
 #define HEADER_WINDSTILLE_FONT_TTF_FONT_HPP
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 #include <memory>
 #include <string>
 

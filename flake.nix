@@ -314,6 +314,29 @@
           ];
         };
 
+
+        # Desktop GLES2 build to validate the embedded/WebGL path on Linux
+        # (same idea as Pingus useGLES2 package). Still requires fixing
+        # remaining fixed-function / desktop-only GL usage.
+        windstille-gles2 = stdenv.mkDerivation {
+          pname = "windstille-gles2";
+          version = "0.3.0";
+          src = ./.;
+          cmakeFlags = [
+            "-DBUILD_EDITOR=OFF"
+            "-DBUILD_EXTRA=OFF"
+            "-DWINDSTILLE_USE_GLES=ON"
+          ];
+          nativeBuildInputs = commonNative ++ [ miniswig ]
+            ++ lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.makeWrapper;
+          buildInputs = commonBuildInputs ++ [
+            pkgs.libGL  # may provide GLESv2/EGL on Linux
+          ];
+          meta = {
+            description = "Windstille configured for OpenGL ES 2.0 (validation build)";
+          };
+        };
+
         # ---- Windows cross (host Linux only) ----
         isWin = pkgs.stdenv.hostPlatform.isWindows;
         win64Pkgs = if isWin then null else pkgs.pkgsCross.mingwW64;
@@ -378,7 +401,8 @@
             miniswig
             libwindstille
             windstille
-            windstille-editor;
+            windstille-editor
+            windstille-gles2;
           tinycmmc = tinycmmc_pkg;
           default = windstille;
         } // lib.optionalAttrs (windstille-win64 != null) {

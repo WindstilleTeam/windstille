@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 #include <SDL.h>
 
 #include "app/globals.hpp"

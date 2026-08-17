@@ -16,7 +16,7 @@
 
 #include "drawing_context.hpp"
 
-#include <GL/glew.h>
+#include <wstdisplay/gl_compat.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 #include <geom/line.hpp>

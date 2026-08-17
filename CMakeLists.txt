@@ -26,6 +26,18 @@ include(InstallWithWrapper)
 option(BUILD_EDITOR "Build Windstille editor" ON)
 option(BUILD_TESTS "Build test cases" OFF)
 option(BUILD_EXTRA "Build extra stuff" OFF)
+option(WINDSTILLE_USE_GLES "Use OpenGL ES 2.0 (embedded / wasm path)" OFF)
+option(WINDSTILLE_EMSCRIPTEN "Emscripten build (implies GLES)" OFF)
+if(WINDSTILLE_EMSCRIPTEN)
+  set(WINDSTILLE_USE_GLES ON)
+endif()
+# Propagate to external/wstdisplay when built as subdirectory
+if(WINDSTILLE_USE_GLES)
+  set(WSTDISPLAY_USE_GLES ON CACHE BOOL "" FORCE)
+endif()
+if(WINDSTILLE_EMSCRIPTEN)
+  set(WSTDISPLAY_EMSCRIPTEN ON CACHE BOOL "" FORCE)
+endif()
 
 if (BUILD_TESTS)
   # add 'make test' target, use 'make test ARGS="-V"' or 'ctest -V' for verbose
