@@ -401,7 +401,7 @@ Config::debug_print(std::ostream& out)
   out << "Config " << this << ":" << std::endl;
   for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
   {
-    out << std::format("  {:20} = {:-20} ({})",
+    out << std::format("  {:20} = {:<20} ({})",
                        i->second->get_name(),
                        std::format("'{}'", (*i->second).str()),
                        (i->second->is_set() ? "set" : "default"))
