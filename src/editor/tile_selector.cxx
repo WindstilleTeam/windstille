@@ -26,10 +26,14 @@
 #include "tile_selector.hxx"
 
 TileSelector::TileSelector(int width, int height, CL_Component* parent)
-  : CL_Component(CL_Rect(CL_Point(0,0), CL_Size(width * TILE_SIZE, height * TILE_SIZE)), parent),
+  : CL_Component(CL_Rect(CL_Point(0,0), CL_Size(width * (TILE_SIZE/2), height * (TILE_SIZE/2))), parent),
     width(width), height(height)
 {
   index = 0;
+
+  // ClanLib leaves clipping off by default; without it scrolled tiles
+  // paint outside the widget (and the parent window client area).
+  set_clipping(true);
 
   slots.connect(sig_paint(),      this, &TileSelector::draw);
   slots.connect(sig_mouse_move(), this, &TileSelector::mouse_move);
@@ -100,10 +104,15 @@ TileSelector::draw()
   // draw in screen coordinates relative to this widget.
   const int ox = get_screen_x();
   const int oy = get_screen_y();
+  const int tile_size = TILE_SIZE / 2;
+
+  // Only iterate tiles that can intersect the clipped viewport.
+  const int start_y = offset / tile_size;
+  const int end_y   = start_y + height + 1;
 
   CL_Display::push_modelview();
   CL_Display::add_translate(ox, oy - offset);
-  for(int y = 0; y < /*height FIXME*/ 40; ++y)
+  for(int y = start_y; y < end_y; ++y)
     for(int x = 0; x < width; ++x)
       {
         int i = width * y + x;
@@ -112,22 +121,22 @@ TileSelector::draw()
           {
             CL_Sprite sprite = tile->sur;
             sprite.set_scale(0.5f, 0.5f);
-            sprite.draw(x * TILE_SIZE/2, y * TILE_SIZE/2);
-            CL_Display::draw_rect(CL_Rect(CL_Point(x * TILE_SIZE/2, y * TILE_SIZE/2),
-                                          CL_Size(TILE_SIZE/2, TILE_SIZE/2)),
+            sprite.draw(x * tile_size, y * tile_size);
+            CL_Display::draw_rect(CL_Rect(CL_Point(x * tile_size, y * tile_size),
+                                          CL_Size(tile_size, tile_size)),
                                   CL_Color(0,0,0,128));
           }
 
         if (i == editor_get_brush_tile())
           {
-            CL_Display::fill_rect(CL_Rect(CL_Point(x * TILE_SIZE/2, y * TILE_SIZE/2),
-                                          CL_Size(TILE_SIZE/2, TILE_SIZE/2)),
+            CL_Display::fill_rect(CL_Rect(CL_Point(x * tile_size, y * tile_size),
+                                          CL_Size(tile_size, tile_size)),
                                   CL_Color(0,0,255, 100));
           }
         else if (mouse_over_tile == i && has_mouse_over())
           {
-            CL_Display::fill_rect(CL_Rect(CL_Point(x * TILE_SIZE/2, y * TILE_SIZE/2),
-                                          CL_Size(TILE_SIZE/2, TILE_SIZE/2)),
+            CL_Display::fill_rect(CL_Rect(CL_Point(x * tile_size, y * tile_size),
+                                          CL_Size(tile_size, tile_size)),
                                   CL_Color(0,0,255, 20));
           }
       }

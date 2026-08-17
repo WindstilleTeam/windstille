@@ -31,6 +31,7 @@ TileEditor::TileEditor(int x, int y, CL_Component* parent)
     no_tile("tiles/notile", resources)
 {
   tile = 0;
+  set_clipping(true);
   slots.connect(sig_paint(),      this, &TileEditor::draw);
   slots.connect(sig_mouse_move(), this, &TileEditor::mouse_move);
   slots.connect(sig_mouse_down(), this, &TileEditor::mouse_down);
