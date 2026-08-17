@@ -1,0 +1,15 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/surf-config-version.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/surf-targets.cmake")
+
+include(CMakeFindDependencyMacro)
+find_dependency(PkgConfig REQUIRED)
+find_dependency(JPEG REQUIRED)
+find_dependency(PNG REQUIRED)
+pkg_search_module(EXIF libexif IMPORTED_TARGET)
+pkg_search_module(MAGICKXX Magick++ GraphicsMagick++ IMPORTED_TARGET)
+
+check_required_components(surf)
+
+# EOF #
