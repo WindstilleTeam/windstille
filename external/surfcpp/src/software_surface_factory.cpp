@@ -16,6 +16,8 @@
 
 #include "software_surface_factory.hpp"
 
+#include <fmt/format.h>
+
 #include <sstream>
 #include <stdexcept>
 
