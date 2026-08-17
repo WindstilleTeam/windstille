@@ -84,6 +84,7 @@ if(BUILD_TESTS)
     ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
 
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 install(TARGETS logmich
   EXPORT logmich
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -113,5 +114,7 @@ install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/logmich-config.cmake
   ${CMAKE_CURRENT_BINARY_DIR}/logmich-config-version.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/logmich)
+
+endif()
 
 # EOF #

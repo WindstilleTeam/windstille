@@ -18,33 +18,42 @@
 
 macro(tinycmmc_export_and_install_library _NAME)
 
-  install(TARGETS "${_NAME}"
-    EXPORT "${_NAME}"
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_NAME}")
+  # Always provide a namespaced alias for in-tree consumers.
+  if(NOT TARGET ${_NAME}::${_NAME})
+    add_library(${_NAME}::${_NAME} ALIAS ${_NAME})
+  endif()
 
-  add_library(${_NAME}::${_NAME} ALIAS ${_NAME})
+  # Only install/export when this package is the top-level project.
+  # When it is pulled in as a subdirectory (e.g. via external/ subtrees)
+  # exporting would require every PUBLIC-linked dependency to be in an
+  # export set as well, which those sub-builds intentionally skip.
+  if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    install(TARGETS "${_NAME}"
+      EXPORT "${_NAME}"
+      ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_NAME}")
 
-  string(TOLOWER "${_NAME}" ${_NAME}_LOWERCASE)
+    string(TOLOWER "${_NAME}" ${_NAME}_LOWERCASE)
 
-  include(CMakePackageConfigHelpers)
-  configure_package_config_file("${${_NAME}_LOWERCASE}-config.cmake.in" "${${_NAME}_LOWERCASE}-config.cmake"
-    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/${_NAME}")
-  write_basic_package_version_file("${${_NAME}_LOWERCASE}-config-version.cmake"
-    VERSION "${PROJECT_VERSION}"
-    COMPATIBILITY SameMinorVersion)
-  export(EXPORT "${_NAME}"
-    NAMESPACE "${_NAME}::"
-    FILE "${${_NAME}_LOWERCASE}-targets.cmake")
-  install(EXPORT "${_NAME}"
-    FILE "${${_NAME}_LOWERCASE}-targets.cmake"
-    NAMESPACE "${_NAME}::"
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${_NAME}")
-  install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/${${_NAME}_LOWERCASE}-config-version.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/${${_NAME}_LOWERCASE}-config.cmake"
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${_NAME}")
+    include(CMakePackageConfigHelpers)
+    configure_package_config_file("${${_NAME}_LOWERCASE}-config.cmake.in" "${${_NAME}_LOWERCASE}-config.cmake"
+      INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/${_NAME}")
+    write_basic_package_version_file("${${_NAME}_LOWERCASE}-config-version.cmake"
+      VERSION "${PROJECT_VERSION}"
+      COMPATIBILITY SameMinorVersion)
+    export(EXPORT "${_NAME}"
+      NAMESPACE "${_NAME}::"
+      FILE "${${_NAME}_LOWERCASE}-targets.cmake")
+    install(EXPORT "${_NAME}"
+      FILE "${${_NAME}_LOWERCASE}-targets.cmake"
+      NAMESPACE "${_NAME}::"
+      DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${_NAME}")
+    install(FILES
+      "${CMAKE_CURRENT_BINARY_DIR}/${${_NAME}_LOWERCASE}-config-version.cmake"
+      "${CMAKE_CURRENT_BINARY_DIR}/${${_NAME}_LOWERCASE}-config.cmake"
+      DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${_NAME}")
+  endif()
 
 endmacro()
 

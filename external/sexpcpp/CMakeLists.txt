@@ -97,6 +97,7 @@ target_include_directories(sexp SYSTEM PUBLIC
 
 add_library(sexp::sexp ALIAS sexp)
 
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 configure_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/pkgconfig/sexp.pc.in"
   "${CMAKE_CURRENT_BINARY_DIR}/pkgconfig/sexp.pc"
@@ -134,6 +135,8 @@ install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/sexp-config.cmake
   ${CMAKE_CURRENT_BINARY_DIR}/sexp-config-version.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/sexp)
+
+endif()  # top-level install/export only
 
 if(BUILD_TESTS)
   find_package(GTest REQUIRED)

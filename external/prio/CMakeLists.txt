@@ -338,6 +338,7 @@ if(BUILD_EXTRA)
   endif()
 endif()
 
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 # --- install / export (inlined from former tinycmmc_export_and_install_library) ---
 install(TARGETS prio
   EXPORT prio
@@ -368,5 +369,7 @@ install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/prio-config-version.cmake
   ${CMAKE_CURRENT_BINARY_DIR}/prio-config.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prio)
+
+endif()
 
 # EOF #
