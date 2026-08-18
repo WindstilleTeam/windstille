@@ -172,6 +172,35 @@ rm -f src/jni/src/deps/prio/json_*.cpp \
 rm -f src/jni/src/deps/strutcpp/layout.cpp
 echo "==> staged external sources into jni/src/deps/"
 
+# Optional Squirrel (headers + sources compiled into libmain).
+if [ -n "${SQUIRREL_SRC:-}" ] && [ -d "$SQUIRREL_SRC" ]; then
+  echo "==> staging Squirrel from $SQUIRREL_SRC"
+  mkdir -p src/jni/external_includes/squirrel src/jni/src/deps/squirrel
+  # headers
+  if [ -d "$SQUIRREL_SRC/include" ]; then
+    cp -a "$SQUIRREL_SRC/include"/. src/jni/external_includes/ || true
+  fi
+  find "$SQUIRREL_SRC" -name 'squirrel.h' -exec cp -a {} src/jni/external_includes/ \; 2>/dev/null || true
+  find "$SQUIRREL_SRC" -name '*.h' -path '*/include/*' -exec cp -a {} src/jni/external_includes/ \; 2>/dev/null || true
+  # sources
+  for sub in squirrel sqstdlib; do
+    if [ -d "$SQUIRREL_SRC/$sub" ]; then
+      find "$SQUIRREL_SRC/$sub" -maxdepth 1 -name '*.cpp' -exec cp -a {} src/jni/src/deps/squirrel/ \;
+    fi
+  done
+  # also if sources are flat
+  find "$SQUIRREL_SRC" -maxdepth 2 -name 'sq*.cpp' -exec cp -a {} src/jni/src/deps/squirrel/ \; 2>/dev/null || true
+  chmod -R u+rwX src/jni/external_includes src/jni/src/deps/squirrel
+fi
+# Optional FreeType (headers + static libs per ABI under FREETYPE_ANDROID_LIBS).
+if [ -n "${FREETYPE_ANDROID_LIBS:-}" ] && [ -d "$FREETYPE_ANDROID_LIBS" ]; then
+  echo "==> staging FreeType from $FREETYPE_ANDROID_LIBS"
+  mkdir -p src/jni/freetype
+  cp -a "$FREETYPE_ANDROID_LIBS"/. src/jni/freetype/
+  chmod -R u+rwX src/jni/freetype
+fi
+
+
 # wstsound (wav + modplug only; match EMSCRIPTEN/ANDROID CMake defaults)
 if [ -d "$EXTERNAL_DIR/wstsound/src" ]; then
   mkdir -p src/jni/src/deps/wstsound

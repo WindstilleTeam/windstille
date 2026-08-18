@@ -21,6 +21,7 @@
 , sdlMixerSrc ? null
 , sdlMixerVersion ? "2.8.0"
 , libxmpSrc ? null
+, squirrelSrc ? null
 , androidSdk
 , buildToolsVersion
 , packagePlatform
@@ -145,6 +146,64 @@ let
 
     # Prebuilt SDL2 (+ optional SDL2_mixer) for the app's ndk-build tree.
   # Windstille uses OpenAL + modplug; mixer is only registered when built.
+  
+  freetypeSrc = pkgs.fetchurl {
+    url = "https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.xz";
+    hash = "sha256-QmidptlkYwrPgL5BxUE1UCn94Khf6Nz88bUFqG17R0w=";
+  };
+
+  freetypeAndroidLibs = pkgs.stdenvNoCC.mkDerivation {
+    pname = "freetype-android-libs";
+    version = "2.13.2";
+    dontUnpack = true;
+    dontConfigure = true;
+    dontUseCmakeConfigure = true;
+    dontPatchELF = true;
+    dontStrip = true;
+    nativeBuildInputs = [ androidSdk pkgs.cmake pkgs.gnumake pkgs.python3 pkgs.gnutar pkgs.xz ];
+    env = {
+      PACKAGE_PLATFORM = packagePlatform;
+      FREETYPE_SRC_TAR = "${freetypeSrc}";
+    };
+    buildPhase = ''
+      runHook preBuild
+      export ANDROID_HOME=${androidSdk}/libexec/android-sdk
+      NDK_ROOT="$(ls -d "$ANDROID_HOME"/ndk/* | sort -V | tail -1)"
+      TOOLCHAIN="$NDK_ROOT/build/cmake/android.toolchain.cmake"
+      mkdir -p "$TMPDIR/freetype-src" "$PWD/ft-out"
+      tar -xJf "$FREETYPE_SRC_TAR" -C "$TMPDIR/freetype-src" --strip-components=1
+      for abi in ${pkgs.lib.escapeShellArg targetAbisStr}; do
+        echo "==> FreeType $abi"
+        bdir="$PWD/ft-build-$abi"
+        idir="$PWD/ft-out/$abi"
+        cmake -S "$TMPDIR/freetype-src" -B "$bdir" \
+          -G "Unix Makefiles" \
+          -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN" \
+          -DANDROID_ABI="$abi" \
+          -DANDROID_PLATFORM="android-${packagePlatform}" \
+          -DANDROID_STL=c++_shared \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX="$idir" \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DFT_DISABLE_HARFBUZZ=TRUE \
+          -DFT_DISABLE_BZIP2=TRUE \
+          -DFT_DISABLE_BROTLI=TRUE \
+          -DFT_DISABLE_PNG=TRUE
+        cmake --build "$bdir" -j''${NIX_BUILD_CORES:-2}
+        cmake --install "$bdir"
+      done
+      # Shared headers once at top-level include/
+      if [ -d "$PWD/ft-out/${pkgs.lib.head targetAbis}/include" ]; then
+        cp -a "$PWD/ft-out/${pkgs.lib.head targetAbis}/include" "$PWD/ft-out/"
+      fi
+      runHook postBuild
+    '';
+    installPhase = ''
+      mkdir -p $out
+      cp -a ft-out/. $out/
+    '';
+  };
+
   sdlPrebuiltAndroidMk = pkgs.writeTextFile {
     name = "SDL2-prebuilt-Android.mk";
     text = ''
@@ -215,6 +274,9 @@ let
           throw "mkApk: gameExternalDir is required (repo external/ tree)"
         else {
           GAME_EXTERNAL_DIR = "${gameExternalDir}";
+          FREETYPE_ANDROID_LIBS = "${freetypeAndroidLibs}";
+        } // pkgs.lib.optionalAttrs (squirrelSrc != null) {
+          SQUIRREL_SRC = "${squirrelSrc}";
         }
       ) // (
         if glmIncludeDir == null then

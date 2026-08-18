@@ -516,6 +516,7 @@
                 sdlVersion = "2.30.9";
                 # Mixer optional; Windstille uses OpenAL Soft + modplug via audioAndroidLibs.
                 inherit androidSdk buildToolsVersion packagePlatform compilePlatform targetAbis;
+                squirrelSrc = squirrel;
               };
 
               gitDate =

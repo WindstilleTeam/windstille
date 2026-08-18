@@ -19,6 +19,18 @@ include $(PREBUILT_STATIC_LIBRARY)
 
 endif
 
+
+# ---------------------------------------------------------------------------
+# Optional prebuilt FreeType (jni/freetype/<abi>/lib/libfreetype.a)
+# ---------------------------------------------------------------------------
+ifneq ($(wildcard $(LOCAL_PATH)/../freetype/$(TARGET_ARCH_ABI)/lib/libfreetype.a),)
+include $(CLEAR_VARS)
+LOCAL_MODULE := freetype
+LOCAL_SRC_FILES := ../freetype/$(TARGET_ARCH_ABI)/lib/libfreetype.a
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../freetype/include
+include $(PREBUILT_STATIC_LIBRARY)
+endif
+
 # ---------------------------------------------------------------------------
 # libmain — Windstille + staged external sources
 # ---------------------------------------------------------------------------
@@ -57,6 +69,7 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/../external_includes/wstinput \
 	$(LOCAL_PATH)/../external_includes/wstsound \
 	$(LOCAL_PATH)/../external_includes/babyxml \
+	$(LOCAL_PATH)/../external_includes/squirrel \
 	$(LOCAL_PATH)/deps/argpp \
 	$(LOCAL_PATH)/deps/logmich \
 	$(LOCAL_PATH)/deps/sexpcpp \
@@ -68,6 +81,7 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/deps/wstdisplay \
 	$(LOCAL_PATH)/deps/wstinput \
 	$(LOCAL_PATH)/deps/tinygettext \
+	$(LOCAL_PATH)/deps/squirrel \
 	$(LOCAL_PATH)/deps/wstsound
 
 ifeq ($(ENABLE_ANDROID_SOUND),1)
@@ -75,6 +89,13 @@ ifeq ($(ENABLE_ANDROID_SOUND),1)
 # Non-Emscripten wstsound uses <al.h>/<alc.h>/<alext.h> (not <AL/al.h>).
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../audio/include
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../audio/include/AL
+endif
+
+ifneq ($(wildcard $(LOCAL_PATH)/../freetype/include/ft2build.h),)
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../freetype/include
+endif
+ifneq ($(wildcard $(LOCAL_PATH)/../freetype/$(TARGET_ARCH_ABI)/lib/libfreetype.a),)
+LOCAL_STATIC_LIBRARIES += freetype
 endif
 
 LOCAL_SHARED_LIBRARIES := SDL2
@@ -87,13 +108,13 @@ ifeq ($(ENABLE_ANDROID_SOUND),1)
 LOCAL_WHOLE_STATIC_LIBRARIES := openal
 LOCAL_STATIC_LIBRARIES := modplug
 LOCAL_LDLIBS += -lOpenSLES
-LOCAL_CFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_USE_GLES=1 -DWSTDISPLAY_USE_GLES=1
-LOCAL_CPPFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_USE_GLES=1 -DWSTDISPLAY_USE_GLES=1 -std=c++23 -D_LIBCPP_ENABLE_EXPERIMENTAL=1
+LOCAL_CFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_USE_GLES=1 -DWSTDISPLAY_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL
+LOCAL_CPPFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_USE_GLES=1 -DWSTDISPLAY_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL -std=c++23 -D_LIBCPP_ENABLE_EXPERIMENTAL=1
 LOCAL_CFLAGS += -DWSTSOUND_WITH_MODPLUG=1
 LOCAL_CPPFLAGS += -DWSTSOUND_WITH_MODPLUG=1
 else
-LOCAL_CFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_NO_SOUND=1 -DWINDSTILLE_USE_GLES=1 -DWSTDISPLAY_USE_GLES=1
-LOCAL_CPPFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_NO_SOUND=1 -DWINDSTILLE_USE_GLES=1 -DWSTDISPLAY_USE_GLES=1 -std=c++23 -D_LIBCPP_ENABLE_EXPERIMENTAL=1
+LOCAL_CFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_NO_SOUND=1 -DWINDSTILLE_USE_GLES=1 -DWSTDISPLAY_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL
+LOCAL_CPPFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_NO_SOUND=1 -DWINDSTILLE_USE_GLES=1 -DWSTDISPLAY_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL -std=c++23 -D_LIBCPP_ENABLE_EXPERIMENTAL=1
 endif
 
 LOCAL_CFLAGS += -DPRIO_USE_SEXPCPP=1 -DSEXP_USE_CXX17=1 -DTINYGETTEXT_UTF8_ONLY=1
