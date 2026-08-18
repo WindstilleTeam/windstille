@@ -271,13 +271,14 @@ OpenGLState::verify()
     }
   }
 
-  GLint sfactor; glGetIntegerv(GL_BLEND_SRC, &sfactor);
+  // GL_BLEND_SRC/DST are desktop aliases; GLES2 only has GL_BLEND_SRC_RGB/DST_RGB.
+  GLint sfactor; glGetIntegerv(GL_BLEND_SRC_RGB, &sfactor);
   if (sfactor != int(impl->blend_sfactor))
   {
     std::cout << "OpenGLState: src blendfunc is out of sync" << std::endl;
   }
 
-  GLint dfactor; glGetIntegerv(GL_BLEND_DST, &dfactor);
+  GLint dfactor; glGetIntegerv(GL_BLEND_DST_RGB, &dfactor);
   if (dfactor != int(impl->blend_dfactor))
   {
     std::cout << "OpenGLState: dst blendfunc is out of sync" << std::endl;
@@ -288,7 +289,7 @@ OpenGLState::verify()
     // FIXME: Add multitexture support here
     GLint texture_handle;
     glActiveTexture(GL_TEXTURE0);
-    glGetIntegerv(GL_TEXTURE_2D_BINDING_EXT, &texture_handle);
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &texture_handle);
     if (impl->texture[0] && static_cast<GLuint>(texture_handle) != impl->texture[0]->get_handle())
     {
       std::cout << "OpenGLState: texture handle is out of sync: " << impl->texture[0]->get_handle() << std::endl;

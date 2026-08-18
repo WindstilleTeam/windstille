@@ -16,6 +16,8 @@
 
 #include "scenegraph/stencil_drawable.hpp"
 
+#include <wstdisplay/gl_compat.hpp>
+
 namespace wstdisplay {
 
 namespace {
@@ -54,10 +56,16 @@ StencilDrawable::render(GraphicsContext& gc, unsigned int mask)
   glStencilFunc(GL_ALWAYS, 1, 1);
   glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
 
+  // Alpha test is fixed-function desktop GL only; on GLES rely on texture
+  // alpha + stencil write from the fragment stage (or discard in a shader).
+#if !WSTDISPLAY_GL_ES
   glEnable(GL_ALPHA_TEST);
   glAlphaFunc(GL_GREATER, 0.5f);
+#endif
   m_stencil_group.render(gc, ~0u);
+#if !WSTDISPLAY_GL_ES
   glDisable(GL_ALPHA_TEST);
+#endif
 
   // render framebuffer content
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);

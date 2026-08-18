@@ -78,6 +78,7 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] Replace blit callers (e.g. geometry extra) with textured-quad path on GLES — only `extra/` used `glBlitFramebuffer`; ports use `BUILD_EXTRA=OFF` and `Framebuffer::blit` is already a no-op on GLES2
 - [x] `.#windstille-gles2` builds via monorepo cmake + libglvnd (GLESv2/EGL), not prebuilt desktop wstdisplay
 - [x] wstdisplay links `PkgConfig::GLESV2` + `PkgConfig::EGL` when `WSTDISPLAY_USE_GLES`
+- [x] Guard desktop-only `GL_BLEND_SRC`/`GL_TEXTURE_2D_BINDING_EXT`/`GL_ALPHA_TEST` for GLES2 compile
 - [ ] Confirm `ldd result/bin/windstille` shows `libGLESv2.so` and not `libGL.so.1`
 - [ ] Runtime smoke test under GLES (mesa llvmpipe / real GLES)
 
