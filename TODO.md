@@ -82,9 +82,9 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [ ] Runtime smoke test under GLES (mesa llvmpipe / real GLES)
 
 ### Windows (`nix build .#windstille-win64`)
-- [ ] Cross-build all required externals for mingw
-- [ ] Ship SDL2 + OpenAL + libmodplug DLLs next to the binary (Pingus flat zip pattern)
-- [ ] Smoke-test under Wine / real Windows
+- [ ] Cross-build all required externals for mingw (`mkExternal` under `pkgsCross.mingwW64`)
+- [x] Ship SDL2 + OpenAL + libmodplug DLLs next to the binary (flat package layout)
+- [ ] Smoke-test under Wine / real Windows (`apps.windstille-win64` Wine runner stub)
 
 ### WebAssembly (`nix build .#windstille-wasm`)
 - [x] Wire `nix/wasm.nix` `mkApp` to Windstille sources + static deps

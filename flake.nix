@@ -380,7 +380,12 @@
         isWin = pkgs.stdenv.hostPlatform.isWindows;
         win64Pkgs = if isWin then null else pkgs.pkgsCross.mingwW64;
 
-        windstille-win64 =
+        # Prebuilt MinGW runtime DLLs (grumnix) — avoid pkgsCross openal→ffmpeg.
+        sdl2Win64 = SDL2-win32.packages.${pkgs.system}.SDL2-win64;
+        openalWin64 = openal-soft-win32.packages.${pkgs.system}.openal-soft-win64;
+        modplugWin64 = libmodplug-win32.packages.${pkgs.system}.libmodplug-win64;
+
+        windstille-win64-game =
           if isWin || win64Pkgs == null then null
           else win64Pkgs.stdenv.mkDerivation {
             pname = "windstille";
@@ -389,6 +394,8 @@
             cmakeFlags = [
               "-DBUILD_EDITOR=OFF"
               "-DBUILD_EXTRA=OFF"
+              "-DWINDSTILLE_USE_GLES=OFF"
+              "-DPRIO_USE_JSONCPP=OFF"
             ];
             nativeBuildInputs = [
               win64Pkgs.buildPackages.cmake
@@ -397,19 +404,51 @@
               win64Pkgs.buildPackages.flex
             ];
             buildInputs = [
-              SDL2-win32.packages.${pkgs.system}.SDL2-win64
-              openal-soft-win32.packages.${pkgs.system}.openal-soft-win64
-              libmodplug-win32.packages.${pkgs.system}.libmodplug-win64
+              sdl2Win64
+              openalWin64
+              modplugWin64
             ];
-            # Full dep graph still needs the external/* cmake packages wired
-            # for MinGW; this target is the packaging hook. Prefer building
-            # externals with the same mkExternal pattern once GLES/Win paths
-            # are validated (see PORTS.md).
+            # Full external/* cmake graph for MinGW is still WIP (see PORTS.md).
+            # This derivation is the packaging hook; link failures are expected
+            # until mkExternal is exercised under pkgsCross.mingwW64.
             meta = {
-              description = "Windstille Windows x86_64 (mingwW64) — WIP packaging";
+              description = "Windstille Windows x86_64 game binary (mingwW64) — WIP";
               platforms = [ "x86_64-linux" ];
             };
           };
+
+        # Flat layout: .exe + DLLs + data/ (Pingus-style zip-friendly tree).
+        windstille-win64 =
+          if windstille-win64-game == null then null
+          else pkgs.runCommand "windstille-win64" {
+            meta = {
+              description = "Windstille Windows x86_64 flat package (exe + DLLs)";
+              platforms = [ "x86_64-linux" ];
+            };
+          } ''
+            mkdir -p $out
+            # Game binary (when the cross link succeeds)
+            if [ -d "${windstille-win64-game}/bin" ]; then
+              cp -v ${windstille-win64-game}/bin/*.exe $out/ 2>/dev/null || true
+              cp -vL ${windstille-win64-game}/bin/*.dll $out/ 2>/dev/null || true
+            fi
+            # Runtime DLLs from prebuilt MinGW packages
+            for pkg in ${sdl2Win64} ${openalWin64} ${modplugWin64}; do
+              find "$pkg" -name '*.dll' -exec cp -v {} $out/ \; 2>/dev/null || true
+            done
+            # Data next to the binary (relative "data/" path)
+            if [ -d ${./data} ]; then
+              mkdir -p $out/data
+              cp -a ${./data}/. $out/data/ || true
+            elif [ -d "${windstille-win64-game}/share" ]; then
+              cp -a ${windstille-win64-game}/share/windstille/. $out/data/ 2>/dev/null || true
+            fi
+            # Placeholder so the package always exists while cross-link is WIP
+            if ! ls $out/*.exe >/dev/null 2>&1; then
+              echo "windstille-win64: game binary not built yet (externals WIP)" > $out/README-WIP.txt
+            fi
+            ls -la $out || true
+          '';
 
         # ---- Linux-only: WASM / Android / R36S (Pingus-derived recipes) ----
         # Full APK/sysroot wiring needs SDK license accept + published ArkOS
@@ -574,6 +613,24 @@
             pkg = linuxPorts.windstille-android;
             apkFileName = linuxPorts.androidApkName;
             description = "Install Windstille APK to a connected Android device via adb";
+          };
+        } // lib.optionalAttrs (windstille-win64 != null && pkgs.stdenv.hostPlatform.isLinux) {
+          windstille-win64 = {
+            type = "app";
+            program = toString (pkgs.writeShellScript "windstille-win64-wine" ''
+              set -euo pipefail
+              export WINEPREFIX=$(mktemp -d)
+              export WINEARCH=win64
+              export WINEDLLOVERRIDES="mscoree,mshtml=;SDL2=n"
+              cd ${windstille-win64}
+              exe=$(ls *.exe 2>/dev/null | head -1 || true)
+              if [ -z "$exe" ]; then
+                echo "windstille-win64: no .exe yet (cross-link still WIP)" >&2
+                exit 1
+              fi
+              exec ${pkgs.wineWow64Packages.stable}/bin/wine "./$exe" "$@"
+            '');
+            meta.description = "Windstille (MinGW x86_64) via Wine — WIP until externals cross-build";
           };
         };
       }
