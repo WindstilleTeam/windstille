@@ -411,25 +411,9 @@ Config::debug_print(std::ostream& out)
   }
 }
 
-template<>
-void ConfigValue<int>::write(FileWriter& writer) {
-  writer.write(get_name(), data);
-}
 
-template<>
-void ConfigValue<float>::write(FileWriter& writer) {
-  writer.write(get_name(), data);
-}
 
-template<>
-void ConfigValue<bool>::write(FileWriter& writer) {
-  writer.write(get_name(), data);
-}
 
-template<>
-void ConfigValue<std::string>::write(FileWriter& writer) {
-  writer.write(get_name(), data);
-}
 
 } // namespace windstille
 

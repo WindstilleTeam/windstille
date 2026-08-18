@@ -118,6 +118,24 @@ public:
   }
 };
 
+// Explicit write specializations (must be available wherever the vtable is used).
+template<>
+inline void ConfigValue<int>::write(FileWriter& writer) {
+  writer.write(get_name(), data);
+}
+template<>
+inline void ConfigValue<float>::write(FileWriter& writer) {
+  writer.write(get_name(), data);
+}
+template<>
+inline void ConfigValue<bool>::write(FileWriter& writer) {
+  writer.write(get_name(), data);
+}
+template<>
+inline void ConfigValue<std::string>::write(FileWriter& writer) {
+  writer.write(get_name(), data);
+}
+
 inline std::ostream& operator<<(std::ostream &o, ConfigValueBase const& value)
 {
   return value.print(o);
