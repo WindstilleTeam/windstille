@@ -84,6 +84,9 @@ if [ -n "${MINISWIG:-}" ] && [ -x "$MINISWIG" ]; then
   # Preprocess like desktop CMake ( -x c -CC keeps comments for miniswig )
   ${CXX:-g++} -E -I src/jni/src -x c -CC "$WRAP_IFACE" -o "$TMPDIR/miniswig/miniswig.tmp" -DSCRIPTING_API
   "$MINISWIG"     --input "$TMPDIR/miniswig/miniswig.tmp"     --output-cpp src/jni/src/squirrel/wrapper.cpp     --output-hpp src/jni/src/squirrel/wrapper.hpp     --module windstille     --select-namespace "Scripting"
+  # miniswig embeds the --output-hpp path in the #include; rewrite to a
+  # local include so ndk-build (cwd under jni/) finds wrapper.hpp next to the .cpp.
+  sed -i 's|#include "src/jni/src/squirrel/wrapper.hpp"|#include "wrapper.hpp"|' src/jni/src/squirrel/wrapper.cpp
   ls -la src/jni/src/squirrel/wrapper.*
 else
   echo "warning: MINISWIG unset — squirrel/wrapper.hpp will be missing" >&2
@@ -111,7 +114,7 @@ mkdir -p src/jni/external_includes
 # Copy then force owner-writable on the staging tree.
 # Header-only / public includes (layout: include/<ns>/… → external_includes/<ns>/…)
 # dir names in Windstille external/ (prio, not priocpp). optional → warn only.
-for entry in argpp:req geomcpp:req logmich:req prio:req strutcpp:req sexpcpp:req              babyxml:req surfcpp:req wstdisplay:req wstinput:req wstsound:req              wstgui:opt tinygettext:opt; do
+for entry in argpp:req geomcpp:req logmich:req prio:req strutcpp:req sexpcpp:req              babyxml:req surfcpp:req wstdisplay:req wstinput:req wstsound:req              biiocpp:req wstgui:opt tinygettext:opt; do
   name="${entry%%:*}"
   mode="${entry##*:}"
   inc="$EXTERNAL_DIR/$name/include"
@@ -175,6 +178,7 @@ stage_lib_src babyxml
 stage_lib_src surfcpp
 stage_lib_src wstdisplay
 stage_lib_src wstinput
+stage_lib_src biiocpp
 # Android.mk references deps/priocpp — alias sources staged as prio.
 if [ -d src/jni/src/deps/prio ] && [ ! -e src/jni/src/deps/priocpp ]; then
   ln -s prio src/jni/src/deps/priocpp
