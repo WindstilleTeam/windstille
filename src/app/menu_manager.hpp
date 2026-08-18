@@ -76,6 +76,7 @@ private:
   static void menu_show_navigation_test();
   static void menu_show_particle_system(Pathname const& filename);
   static void menu_gamma(int i);
+  static void menu_view_zoom(int i);
   static void menu_wiimote();
 };
 

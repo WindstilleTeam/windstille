@@ -21,6 +21,7 @@
 #include <wstinput/input_manager.hpp>
 
 #include "app/app.hpp"
+#include "app/config.hpp"
 #include "app/controller_def.hpp"
 #include "collision/collision_engine.hpp"
 #include <wstdisplay/graphics_context.hpp>
@@ -43,7 +44,10 @@ View::View()
 void
 View::draw(wstdisplay::SceneContext& sc, Sector& sector)
 {
-  state.set_zoom(camera.get_zoom() + (m_debug_zoom - 1.0f));
+  // camera zoom (scripts/paths) × user view-zoom (options, percent) × debug zoom
+  float const user_zoom = static_cast<float>(config.get_int("view-zoom")) / 100.0f;
+  float const z = camera.get_zoom() * user_zoom * m_debug_zoom;
+  state.set_zoom(z > 0.01f ? z : 0.01f);
   state.set_pos(camera.get_pos() + m_debug_transform);
 
   state.push(sc);

@@ -82,6 +82,9 @@ Config::Config()
   add(new ConfigValue<int>("sound-volume",   _("Sound Volume"),  true, 100));
   add(new ConfigValue<int>("voice-volume",   _("Voice Volume"),  true, 100));
 
+  // Percent of normal view scale: 50 = zoom out (see more), 100 = 1×, 200 = 2× larger.
+  add(new ConfigValue<int>("view-zoom", _("View zoom percent"), true, 100));
+
   add(new ConfigValue<bool>("wiimote", _("Try to connect to Wiimote on startup"), true, false));
 }
 

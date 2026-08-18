@@ -99,10 +99,18 @@ MenuManager::display_option_menu()
 
   menu.add_slider("Gamma",  100, 10, 200, 10, std::bind(&MenuManager::menu_gamma, _1));
 
+  // Percent: 50 = zoom out (see more world), 100 = 1×, 200 = 2× larger sprites.
+  menu.add_slider("Zoom", config.get_int("view-zoom"), 50, 200, 10,
+                  std::bind(&MenuManager::menu_view_zoom, _1));
+
 #ifdef HAVE_CWIID
   if (wiimote)
     menu.add_button("Try to Connect Wiimote", std::bind(&MenuManager::menu_wiimote));
 #endif
+
+  // Explicit back entry so handheld users without ESC can leave without
+  // relying solely on the cancel button binding.
+  menu.add_button("Back", []{ g_app.screen().pop_overlay(); });
 
   menu.show(g_app.screen());
 }
@@ -534,6 +542,18 @@ MenuManager::menu_gamma(int i)
 {
   float gamma = static_cast<float>(i) / 100.0f;
   g_app.window().set_gamma(gamma, gamma, gamma);
+}
+
+void
+MenuManager::menu_view_zoom(int i)
+{
+  // Clamp to the same range as the Options slider (50% … 200%).
+  if (i < 50) {
+    i = 50;
+  } else if (i > 200) {
+    i = 200;
+  }
+  config.set_int("view-zoom", i);
 }
 
 void

@@ -62,14 +62,13 @@ RootComponent::update(float delta, const Controller& controller)
 bool
 RootComponent::is_active() const
 {
-  return true;
-
-#if 0
-  if (m_focus)
+  // Cancel (ESC / B / Start) deactivates the focused child (e.g. MenuComponent).
+  // GUIManager then sees !is_active(), calls finish(), and the overlay is
+  // popped. Returning true unconditionally left the Options menu stuck open.
+  if (m_focus) {
     return m_focus->is_active();
-  else
-    return false;
-#endif
+  }
+  return Component::is_active();
 }
 
 void
