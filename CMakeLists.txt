@@ -287,7 +287,13 @@ if(EMSCRIPTEN OR WINDSTILLE_EMSCRIPTEN)
     target_link_options(windstille PRIVATE ${_ws_em_link})
   endif()
 endif()
-install_with_wrapper(TARGETS windstille)
+# Cross / embedded ports ship a plain binary next to data/ (relative DEFAULT datadir).
+# Desktop keeps the wrapper that injects --datadir to the installed share path.
+if(CMAKE_CROSSCOMPILING OR EMSCRIPTEN OR ANDROID)
+  install(TARGETS windstille RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+else()
+  install_with_wrapper(TARGETS windstille)
+endif()
 
 # build and install data (skipped under Emscripten / cross — assets come from
 # --preload-file or PortMaster tree)
