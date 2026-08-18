@@ -17,6 +17,7 @@
 , pkg-config
 , pkgsCross
 , writeShellScript
+, writeTextFile
 , zip
 , glm  # header-only; not present in ArkOS sysroot
 , squirrelSrc ? null  # optional: path/tarball for upstream squirrel (cross-built static)
@@ -1002,156 +1003,11 @@ EOF_README
         license = licenses.gpl3Plus;
         platforms = platforms.linux;
         hydraPlatforms = [];
-      };
-    };
-
-  # --- Exception smoke test (throw/catch) against the ArkOS sysroot -----------
-  # Minimal hybrid model (GCC frontend + ArkOS libstdc++), no SDL.
-  # Do NOT use builtins.pathExists on gcc store paths — that is IFD and fails
-  # when allow-import-from-derivation is off. Discover includes at build time.
-  mkExceptionWrappers = { sysroot, gcc }:
-    let
-      libdir = "${sysroot}/usr/lib/aarch64-linux-gnu";
-      ver = gcc.version or (lib.getVersion gcc);
-      gccLibOut = lib.getLib gcc;
-    in
-    writeShellScript "aarch64-arkos-exc-g++-${ver}" ''
-      set -euo pipefail
-      export PATH="${crossCc.bintools}/bin:$PATH"
-      GCC_ROOT="${gcc}"
-      GCC_VERSION="${ver}"
-      VER="$GCC_VERSION"
-      CXX_INC="$GCC_ROOT/include/c++/$VER"
-      CXX_INC_TARGET=
-      for t in aarch64-unknown-linux-gnu aarch64-linux-gnu; do
-        if [ -f "$CXX_INC/$t/bits/c++config.h" ]; then
-          CXX_INC_TARGET="$CXX_INC/$t"
-          break
-        fi
-      done
-      if [ -z "$CXX_INC_TARGET" ]; then
-        cfg=$(find "$GCC_ROOT/include/c++" -path '*/aarch64*/bits/c++config.h' 2>/dev/null | head -1 || true)
-        if [ -n "$cfg" ]; then
-          CXX_INC_TARGET=$(dirname "$(dirname "$cfg")")
-          CXX_INC=$(dirname "$CXX_INC_TARGET")
-        fi
-      fi
-      if [ -z "$CXX_INC_TARGET" ] || [ ! -f "$CXX_INC_TARGET/bits/c++config.h" ]; then
-        echo "exception-test: no aarch64 bits/c++config.h under $GCC_ROOT" >&2
-        find "$GCC_ROOT/include/c++" -name 'c++config.h' 2>/dev/null | head -20 >&2 || true
-        exit 1
-      fi
-      FIXED_INC=
-      LIBGCC_DIR=
-      for t in aarch64-unknown-linux-gnu aarch64-linux-gnu; do
-        if [ -d "$GCC_ROOT/lib/gcc/$t/$VER/include" ]; then
-          FIXED_INC="$GCC_ROOT/lib/gcc/$t/$VER/include"
-          LIBGCC_DIR="$GCC_ROOT/lib/gcc/$t/$VER"
-          break
-        fi
-      done
-      if [ -z "$FIXED_INC" ]; then
-        FIXED_INC=$(find "$GCC_ROOT/lib/gcc" -type d -path '*/aarch64*/'"$VER"'/include' 2>/dev/null | head -1 || true)
-        LIBGCC_DIR=$(dirname "$FIXED_INC")
-      fi
-      FIXED_INC2="''${FIXED_INC}-fixed"
-      GXX=
-      for cand in "$GCC_ROOT/bin/${targetPrefix}g++" "$GCC_ROOT/bin/g++"; do
-        if [ -x "$cand" ]; then GXX="$cand"; break; fi
-      done
-      if [ -z "$GXX" ]; then
-        echo "exception-test: no g++ under $GCC_ROOT/bin" >&2
-        exit 1
-      fi
-      # Include order matters with -nostdinc:
-      #  1) libstdc++ headers from this GCC
-      #  2) GCC non-fixed fixedInc (stddef.h)
-      #  3) ArkOS glibc headers — BEFORE include-fixed, so <pthread.h> is the
-      #     sysroot one. GCC include-fixed/pthread.h expects
-      #     bits/types/struct___jmp_buf_tag.h (glibc ≥2.32); ArkOS is ~2.30.
-      #  4) include-fixed last only as a fallback (optional; often skip)
-      common_compile=(
-        -nostdinc
-        -D_GLIBCXX_USE_CXX11_ABI=0
-        --sysroot=${sysroot}
-        -isystem "$CXX_INC"
-        -isystem "$CXX_INC_TARGET"
-        -isystem "$CXX_INC/backward"
-        -isystem "$FIXED_INC"
-        -isystem ${sysroot}/usr/include/aarch64-linux-gnu
-        -isystem ${sysroot}/usr/include
-        -pthread
-        -fexceptions
-        -frtti
-        -march=armv8-a
-        -mtune=cortex-a35
-      )
-      is_compile=
-      for a in "$@"; do
-        case "$a" in
-          -c|-S|-E|-M|-MM|-MD|-MMD) is_compile=1 ;;
-        esac
-      done
-      if [ -n "$is_compile" ]; then
-        exec "$GXX" -B${crossCc.bintools}/bin "''${common_compile[@]}" "$@"
-      fi
-      stdcpp=
-      for cand in \
-        "${libdir}/libstdc++.so" \
-        "${libdir}/libstdc++.so.6" \
-        "${sysroot}/usr/lib/libstdc++.so" \
-        "${sysroot}/usr/lib/libstdc++.so.6" \
-        "${sysroot}/lib/aarch64-linux-gnu/libstdc++.so" \
-        "${sysroot}/lib/aarch64-linux-gnu/libstdc++.so.6"
-      do
-        if [ -e "$cand" ]; then stdcpp="$cand"; break; fi
-      done
-      if [ -z "$stdcpp" ]; then
-        echo "exception-test g++: no libstdc++ in sysroot" >&2
-        exit 1
-      fi
-      exec "$GXX" \
-        -B${crossCc.bintools}/bin \
-        "''${common_compile[@]}" \
-        -nostdlib++ \
-        --sysroot=${sysroot} \
-        -Wl,--sysroot=${sysroot} \
-        -Wl,--dynamic-linker=/lib/ld-linux-aarch64.so.1 \
-        -B${libdir} \
-        -B"$LIBGCC_DIR" \
-        -L${libdir} \
-        -L${sysroot}/usr/lib \
-        -L${sysroot}/lib \
-        -L${sysroot}/lib/aarch64-linux-gnu \
-        -L"$LIBGCC_DIR" \
-        -L${gccLibOut}/lib \
-        -static-libgcc \
-        -Wl,-Bdynamic \
-        -l:libpthread.so.0 \
-        -lm \
-        -Wl,-rpath-link,${libdir} \
-        -Wl,-rpath-link,${sysroot}/usr/lib/aarch64-linux-gnu \
-        -Wl,-rpath-link,${sysroot}/lib/aarch64-linux-gnu \
-        -Wl,--allow-shlib-undefined \
-        -march=armv8-a \
-        -mtune=cortex-a35 \
-        "$@" \
-        -Wl,--no-as-needed "$stdcpp" \
-        -Wl,-Bdynamic -l:libpthread.so.0 -lm \
-        -Wl,--as-needed
-    '';
-
-  # Resolve aarch64 cross gcc for a label.
-  # "current" = flake pkgsCross toolchain; numbered labels from extraCrossGccs
-  # (pinned nixpkgs). Trust the flake to pass real cross compilers — no
-  # pathExists checks (IFD).
-  resolveCrossGcc = label:
-    let
-      fromExtra = extraCrossGccs.${label} or null;
-    in
-    if label == "current" then crossCc.cc
-    else if fromExtra != null then fromExtra
-    else null;
+   # --- Exception smoke test (throw/catch) against the ArkOS sysroot -----------
+  # Build-time discovery only (no pathExists / IFD).
+  # - pthread shim wins over GCC include-fixed (glibc 2.32+ types vs ArkOS 2.30)
+  # - arkos_compat.c provides _dl_find_object for static libgcc_eh
+  # - libstdc++ headers may live under the gcc out path or a sibling; search both
 
   mkExceptionTest = {
     label ? "current"
@@ -1160,8 +1016,20 @@ EOF_README
   }:
     assert gcc != null;
     let
-      cxx = mkExceptionWrappers { sysroot = arkosSysroot; inherit gcc; };
       ver = gcc.version or label;
+      libdir = "${arkosSysroot}/usr/lib/aarch64-linux-gnu";
+      sysroot = arkosSysroot;
+      gccLibOut = lib.getLib gcc;
+      # Force <pthread.h> to the ArkOS header so GCC include-fixed (which needs
+      # bits/types/struct___jmp_buf_tag.h from glibc ≥2.32) is never used.
+      pthreadShim = writeTextFile {
+        name = "arkos-pthread-shim";
+        destination = "/pthread.h";
+        text = ''
+          /* Prefer ArkOS sysroot pthread; do not use GCC include-fixed. */
+          #include "${sysroot}/usr/include/pthread.h"
+        '';
+      };
     in
     stdenvNoCC.mkDerivation {
       inherit pname;
@@ -1173,8 +1041,134 @@ EOF_README
 
       buildPhase = ''
         runHook preBuild
+        set -euo pipefail
         echo "==> exception_test label=${label} gcc=${ver}"
-        ${cxx} -O2 -g -o exception_test ${../mk/r36s/exception_test.cpp}
+
+        GCC_ROOT="${gcc}"
+        VER="${ver}"
+        SYSROOT="${sysroot}"
+        LIBDIR="${libdir}"
+
+        # --- locate g++ ---
+        GXX=
+        for cand in "$GCC_ROOT/bin/${targetPrefix}g++" "$GCC_ROOT/bin/g++"; do
+          if [ -x "$cand" ]; then GXX="$cand"; break; fi
+        done
+        if [ -z "$GXX" ]; then
+          echo "exception-test: no g++ under $GCC_ROOT/bin" >&2
+          ls -la "$GCC_ROOT/bin" >&2 || true
+          exit 1
+        fi
+
+        # --- locate libstdc++ headers (may be under gcc out or versioned paths) ---
+        CXX_INC=
+        CXX_INC_TARGET=
+        for root in "$GCC_ROOT" "${gccLibOut}"; do
+          [ -d "$root" ] || continue
+          for vdir in "$root/include/c++/$VER" "$root/include/c++"/*; do
+            [ -d "$vdir" ] || continue
+            for t in aarch64-unknown-linux-gnu aarch64-linux-gnu; do
+              if [ -f "$vdir/$t/bits/c++config.h" ]; then
+                CXX_INC="$vdir"
+                CXX_INC_TARGET="$vdir/$t"
+                break 3
+              fi
+            done
+            # any aarch64 c++config under this vdir
+            cfg=$(find "$vdir" -path '*/aarch64*/bits/c++config.h' 2>/dev/null | head -1 || true)
+            if [ -n "$cfg" ]; then
+              CXX_INC_TARGET=$(dirname "$(dirname "$cfg")")
+              CXX_INC=$(dirname "$CXX_INC_TARGET")
+              break 2
+            fi
+          done
+        done
+        if [ -z "$CXX_INC_TARGET" ]; then
+          echo "exception-test: no aarch64 bits/c++config.h under $GCC_ROOT (or lib out)" >&2
+          find "$GCC_ROOT" "${gccLibOut}" -name 'c++config.h' 2>/dev/null | head -30 >&2 || true
+          exit 1
+        fi
+        echo "    CXX_INC=$CXX_INC"
+        echo "    CXX_INC_TARGET=$CXX_INC_TARGET"
+
+        # --- libgcc dir (for -B / -L / static-libgcc) ---
+        LIBGCC_DIR=
+        FIXED_INC=
+        for t in aarch64-unknown-linux-gnu aarch64-linux-gnu; do
+          if [ -d "$GCC_ROOT/lib/gcc/$t/$VER/include" ]; then
+            FIXED_INC="$GCC_ROOT/lib/gcc/$t/$VER/include"
+            LIBGCC_DIR="$GCC_ROOT/lib/gcc/$t/$VER"
+            break
+          fi
+        done
+        if [ -z "$LIBGCC_DIR" ]; then
+          FIXED_INC=$(find "$GCC_ROOT/lib/gcc" -type d -path '*/aarch64*/'"$VER"'/include' 2>/dev/null | head -1 || true)
+          LIBGCC_DIR=$(dirname "$FIXED_INC")
+        fi
+        echo "    LIBGCC_DIR=$LIBGCC_DIR"
+
+        stdcpp=
+        for cand in \
+          "$LIBDIR/libstdc++.so" \
+          "$LIBDIR/libstdc++.so.6" \
+          "$SYSROOT/usr/lib/libstdc++.so" \
+          "$SYSROOT/usr/lib/libstdc++.so.6" \
+          "$SYSROOT/lib/aarch64-linux-gnu/libstdc++.so" \
+          "$SYSROOT/lib/aarch64-linux-gnu/libstdc++.so.6"
+        do
+          if [ -e "$cand" ]; then stdcpp="$cand"; break; fi
+        done
+        if [ -z "$stdcpp" ]; then
+          echo "exception-test: no libstdc++ in sysroot" >&2
+          exit 1
+        fi
+
+        # Compile flags: pthread shim first so GCC never uses include-fixed/pthread.h
+        COMPILE=(
+          -nostdinc -nostdinc++
+          -D_GLIBCXX_USE_CXX11_ABI=0
+          --sysroot="$SYSROOT"
+          -isystem "${pthreadShim}"
+          -isystem "$CXX_INC"
+          -isystem "$CXX_INC_TARGET"
+          -isystem "$CXX_INC/backward"
+          -isystem "$FIXED_INC"
+          -isystem "$SYSROOT/usr/include/aarch64-linux-gnu"
+          -isystem "$SYSROOT/usr/include"
+          -pthread -fexceptions -frtti
+          -march=armv8-a -mtune=cortex-a35
+        )
+
+        # Compat object (_dl_find_object, isoc23_strto*) for static libgcc_eh
+        "$GXX" -B${crossCc.bintools}/bin "''${COMPILE[@]}" -c -o arkos_compat.o \
+          ${../mk/r36s/arkos_compat.c}
+
+        "$GXX" -B${crossCc.bintools}/bin "''${COMPILE[@]}" -c -o exception_test.o \
+          ${../mk/r36s/exception_test.cpp}
+
+        "$GXX" -B${crossCc.bintools}/bin "''${COMPILE[@]}" \
+          -nostdlib++ \
+          --sysroot="$SYSROOT" \
+          -Wl,--sysroot="$SYSROOT" \
+          -Wl,--dynamic-linker=/lib/ld-linux-aarch64.so.1 \
+          -B"$LIBDIR" \
+          -B"$LIBGCC_DIR" \
+          -L"$LIBDIR" \
+          -L"$SYSROOT/usr/lib" \
+          -L"$SYSROOT/lib" \
+          -L"$SYSROOT/lib/aarch64-linux-gnu" \
+          -L"$LIBGCC_DIR" \
+          -L${gccLibOut}/lib \
+          -static-libgcc \
+          -Wl,--undefined=_dl_find_object \
+          -Wl,--allow-shlib-undefined \
+          -march=armv8-a -mtune=cortex-a35 \
+          -o exception_test \
+          exception_test.o arkos_compat.o \
+          -Wl,--no-as-needed "$stdcpp" \
+          -Wl,-Bdynamic -l:libpthread.so.0 -lm \
+          -Wl,--as-needed
+
         ${crossCc.bintools}/bin/${targetPrefix}readelf -h exception_test || true
         ${crossCc.bintools}/bin/${targetPrefix}readelf -d exception_test | head -30 || true
         runHook postBuild
@@ -1187,16 +1181,12 @@ EOF_README
         cat > "$out/bin/README.txt" << EOF
 R36S exception smoke test (${label}, GCC ${ver})
 
-Copy exception_test to the device (or run under qemu-user-static with the
-ArkOS rootfs) and execute:
+Copy exception_test to the device (or qemu-user with ArkOS rootfs):
 
-  ./exception_test
-  echo exit:\$?
+  ./exception_test ; echo exit:\$?
 
-Expect "ALL PASSED" and exit 0. Abort in uw_init_context_1 / _Unwind_Resume
-means this compiler+sysroot combo still has broken C++ exceptions.
-
-Hybrid model: this GCC's headers + libgcc (static) + ArkOS libstdc++/glibc.
+Expect ALL PASSED. Abort in uw_init_context_1 means unwind still broken
+for this compiler + ArkOS libstdc++/glibc pair.
 EOF
         runHook postInstall
       '';
@@ -1207,6 +1197,14 @@ EOF
         hydraPlatforms = [];
       };
     };
+
+  # Resolve aarch64 cross gcc for a label (no pathExists / IFD).
+  resolveCrossGcc = label:
+    let fromExtra = extraCrossGccs.${label} or null;
+    in
+    if label == "current" then crossCc.cc
+    else if fromExtra != null then fromExtra
+    else null;
 
   # Labels to try. Missing majors are skipped (null filtered out).
   exceptionTestLabels = [ "current" "14" "13" "12" ];

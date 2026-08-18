@@ -592,7 +592,7 @@
                 in pinned.stdenv.cc.cc;
 
               r36s = import ./nix/r36s.nix {
-                inherit (pkgs) lib stdenv stdenvNoCC fetchurl cmake pkg-config writeShellScript zip glm bison flex;
+                inherit (pkgs) lib stdenv stdenvNoCC fetchurl cmake pkg-config writeShellScript writeTextFile zip glm bison flex;
                 pkgsCross = pkgs.pkgsCross;
                 extraCrossGccs = {
                   "14" = mkPinnedCrossGcc nixpkgs-24_11;
