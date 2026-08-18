@@ -101,9 +101,22 @@ match ArkOS’s older `libstdc++` unwind/personality expectations.
 - Config / argpp macros use `do { …; std::abort(); } while(0)` with a
   **terminating semicolon** (Android NDK was picky about macro expansion).
 
-**Planned experiment (TODO).** Cross with an older nixpkgs GCC (`gcc10` /
-`gcc11` via `overrideCC` on the aarch64 cross stdenv), keep the same
-sysroot wrappers, and re-test throw/catch on hardware.
+**Smoke test.** `mk/r36s/exception_test.cpp` throws/catches several exception
+types. Build with the same hybrid wrappers:
+
+```bash
+nix build .#r36s-exception-test          # current cross GCC
+nix build .#r36s-exception-tests         # matrix (current + gccN if available)
+```
+
+Copy `result/bin/exception_test` (or the matrix under
+`share/r36s-exception-tests/`) to the device; exit 0 and `ALL PASSED` means
+unwind works for that compiler. Numbered GCC majors appear only when
+nixpkgs exposes `pkgsCross.aarch64-multiplatform.buildPackages.gccN`.
+
+**Planned follow-up.** Rebuild `windstille-r36s` with the first major that
+passes the smoke test (via `overrideCC` / wrapper `gcc` pin).
+
 
 ### EGL window creation failed
 

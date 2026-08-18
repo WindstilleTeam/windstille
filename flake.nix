@@ -605,7 +605,12 @@
                 android-sdl-libs = android.sdlAndroidLibs;
                 inherit (r36s) arkosSysroot;
                 inherit windstille-r36s windstille-r36s-portmaster windstille-r36s-portmaster-zip;
-              };
+                # C++ exception smoke tests (ArkOS sysroot, matrix of GCCs)
+                inherit (r36s) r36s-exception-test r36s-exception-tests;
+              } // lib.mapAttrs' (label: drv: {
+                name = "r36s-exception-test-${label}";
+                value = drv;
+              }) r36s.exceptionTests;
               # Functions / strings for apps only (not under packages).
               inherit (wasm) mkOpenBrowserApp;
               inherit (android) mkInstallApp;

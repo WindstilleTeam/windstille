@@ -1003,7 +1003,251 @@ EOF_README
       };
     };
 
+  # --- Exception smoke test (throw/catch) against the ArkOS sysroot -----------
+  # Minimal C++ wrappers: same hybrid model as the game (GCC frontend + ArkOS
+  # libstdc++ / glibc), but no SDL. Used to compare exception unwind across
+  # compiler majors without building the full game.
+  mkExceptionWrappers = { sysroot, gcc }:
+    let
+      tp = lib.removeSuffix "-" targetPrefix; # aarch64-unknown-linux-gnu
+      libdir = "${sysroot}/usr/lib/aarch64-linux-gnu";
+      ver = gcc.version or (lib.getVersion gcc);
+      cxxInc = "${gcc}/include/c++/${ver}";
+      cxxIncTarget = "${cxxInc}/${tp}";
+      fixedInc = "${gcc}/lib/gcc/${tp}/${ver}/include";
+      fixedInc2 = "${gcc}/lib/gcc/${tp}/${ver}/include-fixed";
+      libgccDir = "${gcc}/lib/gcc/${tp}/${ver}";
+      gccLibOut = lib.getLib gcc;
+      libgccLib = "${gccLibOut}/lib";
+      libgccLibTarget = "${gccLibOut}/${tp}/lib";
+      commonCompileCxx = ''
+        -nostdinc \
+        -D_GLIBCXX_USE_CXX11_ABI=0 \
+        --sysroot=${sysroot} \
+        -isystem ${cxxInc} \
+        -isystem ${cxxIncTarget} \
+        -isystem ${cxxInc}/backward \
+        -isystem ${fixedInc} \
+        -isystem ${fixedInc2} \
+        -isystem ${sysroot}/usr/include/aarch64-linux-gnu \
+        -isystem ${sysroot}/usr/include \
+        -pthread \
+        -fexceptions \
+        -frtti \
+        -march=armv8-a \
+        -mtune=cortex-a35 \
+      '';
+      commonLink = ''
+        --sysroot=${sysroot} \
+        -Wl,--sysroot=${sysroot} \
+        -Wl,--dynamic-linker=/lib/ld-linux-aarch64.so.1 \
+        -B${libdir} \
+        -B${libgccDir} \
+        -L${libdir} \
+        -L${sysroot}/usr/lib \
+        -L${sysroot}/lib \
+        -L${sysroot}/lib/aarch64-linux-gnu \
+        -L${libgccDir} \
+        -L${libgccLib} \
+        -L${libgccLibTarget} \
+        -static-libgcc \
+        -Wl,-Bdynamic \
+        -l:libpthread.so.0 \
+        -lm \
+        -Wl,-rpath-link,${libdir} \
+        -Wl,-rpath-link,${sysroot}/usr/lib/aarch64-linux-gnu \
+        -Wl,-rpath-link,${sysroot}/lib/aarch64-linux-gnu \
+        -Wl,--allow-shlib-undefined \
+        -march=armv8-a \
+        -mtune=cortex-a35 \
+      '';
+    in
+    writeShellScript "aarch64-arkos-exc-g++-${ver}" ''
+      export PATH="${crossCc.bintools}/bin:$PATH"
+      is_compile=
+      for a in "$@"; do
+        case "$a" in
+          -c|-S|-E|-M|-MM|-MD|-MMD) is_compile=1 ;;
+        esac
+      done
+      if [ -n "$is_compile" ]; then
+        exec ${gcc}/bin/${targetPrefix}g++ \
+          -B${crossCc.bintools}/bin \
+          ${commonCompileCxx} \
+          "$@"
+      fi
+      stdcpp=
+      for cand in \
+        "${libdir}/libstdc++.so" \
+        "${libdir}/libstdc++.so.6" \
+        "${sysroot}/usr/lib/libstdc++.so" \
+        "${sysroot}/usr/lib/libstdc++.so.6" \
+        "${sysroot}/lib/aarch64-linux-gnu/libstdc++.so" \
+        "${sysroot}/lib/aarch64-linux-gnu/libstdc++.so.6"
+      do
+        if [ -e "$cand" ]; then stdcpp="$cand"; break; fi
+      done
+      if [ -z "$stdcpp" ]; then
+        echo "exception-test g++: no libstdc++ in sysroot" >&2
+        exit 1
+      fi
+      exec ${gcc}/bin/${targetPrefix}g++ \
+        -B${crossCc.bintools}/bin \
+        ${commonCompileCxx} \
+        -nostdlib++ \
+        ${commonLink} \
+        "$@" \
+        -Wl,--no-as-needed "$stdcpp" \
+        -Wl,-Bdynamic -l:libpthread.so.0 -lm \
+        -Wl,--as-needed
+    '';
+
+  # Resolve a cross aarch64 g++ package for a given major version label.
+  # "current" uses the flake's default pkgsCross toolchain; numbered majors
+  # use crossPkgs.buildPackages.gccN when nixpkgs provides them.
+  resolveCrossGcc = label:
+    let
+      bp = crossPkgs.buildPackages;
+      pick = p:
+        if p == null then null
+        else if p ? cc then p.cc
+        else p;
+    in
+    if label == "current" then crossCc.cc
+    else if bp ? "gcc${label}" then pick bp."gcc${label}"
+    else if bp ? "gcc_${label}" then pick bp."gcc_${label}"
+    else null;
+
+  mkExceptionTest = {
+    label ? "current"
+  , gcc ? resolveCrossGcc label
+  , pname ? "r36s-exception-test-${label}"
+  }:
+    assert gcc != null;
+    let
+      cxx = mkExceptionWrappers { sysroot = arkosSysroot; inherit gcc; };
+      ver = gcc.version or label;
+    in
+    stdenvNoCC.mkDerivation {
+      inherit pname;
+      version = ver;
+      dontUnpack = true;
+      dontConfigure = true;
+      strictDeps = true;
+      nativeBuildInputs = [ crossCc.bintools ];
+
+      buildPhase = ''
+        runHook preBuild
+        echo "==> exception_test label=${label} gcc=${ver}"
+        ${cxx} -O2 -g -o exception_test ${../mk/r36s/exception_test.cpp}
+        ${crossCc.bintools}/bin/${targetPrefix}readelf -h exception_test || true
+        ${crossCc.bintools}/bin/${targetPrefix}readelf -d exception_test | head -30 || true
+        runHook postBuild
+      '';
+
+      installPhase = ''
+        runHook preInstall
+        mkdir -p "$out/bin"
+        cp -v exception_test "$out/bin/exception_test"
+        cat > "$out/bin/README.txt" << EOF
+R36S exception smoke test (${label}, GCC ${ver})
+
+Copy exception_test to the device (or run under qemu-user-static with the
+ArkOS rootfs) and execute:
+
+  ./exception_test
+  echo exit:\$?
+
+Expect "ALL PASSED" and exit 0. Abort in uw_init_context_1 / _Unwind_Resume
+means this compiler+sysroot combo still has broken C++ exceptions.
+
+Hybrid model: this GCC's headers + libgcc (static) + ArkOS libstdc++/glibc.
+EOF
+        runHook postInstall
+      '';
+
+      meta = with lib; {
+        description = "R36S/ArkOS C++ throw/catch smoke test (GCC ${label})";
+        platforms = platforms.linux;
+        hydraPlatforms = [];
+      };
+    };
+
+  # Labels to try. Missing majors are skipped (null filtered out).
+  exceptionTestLabels = [ "current" "14" "13" "12" "11" "10" "9" ];
+
+  exceptionTests =
+    lib.filterAttrs (_: v: v != null) (
+      lib.listToAttrs (
+        map (label:
+          let gcc = resolveCrossGcc label;
+          in {
+            name = label;
+            value =
+              if gcc == null then null
+              else mkExceptionTest { inherit label gcc; };
+          }
+        ) exceptionTestLabels
+      )
+    );
+
+  # One derivation that gathers every successfully built binary for on-device
+  # comparison (copy the whole share/r36s-exception-tests/ directory).
+  r36s-exception-tests = stdenvNoCC.mkDerivation {
+    pname = "r36s-exception-tests";
+    version = "0.1";
+    dontUnpack = true;
+    dontConfigure = true;
+    dontBuild = true;
+    # Depend on all matrix members so they build when this attr is requested.
+    buildInputs = lib.attrValues exceptionTests;
+
+    installPhase = ''
+      runHook preInstall
+      mkdir -p "$out/share/r36s-exception-tests"
+      ${lib.concatMapStrings (label: ''
+        mkdir -p "$out/share/r36s-exception-tests/${label}"
+        cp -v ${exceptionTests.${label}}/bin/exception_test \
+          "$out/share/r36s-exception-tests/${label}/exception_test"
+        cp -v ${exceptionTests.${label}}/bin/README.txt \
+          "$out/share/r36s-exception-tests/${label}/README.txt" 2>/dev/null || true
+      '') (lib.attrNames exceptionTests)}
+      cat > "$out/share/r36s-exception-tests/README.md" << 'EOF'
+# R36S exception-test matrix
+
+Each subdirectory is an aarch64 binary built with a different cross GCC
+against the **same ArkOS sysroot** (libstdc++ / glibc ~2.30).
+
+On the device (or qemu with that rootfs):
+
+```sh
+for d in */; do
+  echo "=== $d ==="
+  "$d/exception_test" && echo PASS || echo FAIL:$?
+done
+```
+
+`current` is the toolchain used for `windstille-r36s` (often GCC 15).
+Numbered dirs appear only when `pkgsCross.aarch64-multiplatform.buildPackages.gccN`
+exists in your nixpkgs revision.
+
+If only `current` is present, pin an older nixpkgs for the cross bootstrap
+or add an overlay that exposes `buildPackages.gcc11` (etc.) and rebuild.
+EOF
+      runHook postInstall
+    '';
+
+    meta = with lib; {
+      description = "Matrix of R36S C++ exception smoke tests across GCC majors";
+      platforms = platforms.linux;
+      hydraPlatforms = [];
+    };
+  };
+
 in
 {
   inherit arkosSysroot mkWindstilleR36s mkWindstilleR36sPortMaster mkWindstilleR36sPortMasterZip;
+  inherit mkExceptionTest exceptionTests r36s-exception-tests;
+  # Convenience: default label (same GCC as the game build).
+  r36s-exception-test = exceptionTests.current or (mkExceptionTest { label = "current"; });
 }

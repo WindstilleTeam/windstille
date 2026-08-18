@@ -113,11 +113,12 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [ ] On-device smoke test
 - [ ] **Experiment: older cross GCC for C++ exceptions** — current hybrid is
   GCC 15 frontend + ArkOS glibc~2.30 / libstdc++ sysroot; throws abort in
-  `uw_init_context_1` / `_Unwind_Resume`. Try `overrideCC` on
-  `pkgsCross.aarch64-multiplatform` with nixpkgs `gcc10`/`gcc11` (or closest
-  to ArkOS’s original libstdc++), keep the same sysroot wrappers, and verify
-  throw/catch on device. Fall back remains: avoid non-critical throws +
-  RelWithDebInfo. Revisit after `nix flake check` is green.
+  `uw_init_context_1` / `_Unwind_Resume`. Smoke tests:
+  `nix build .#r36s-exception-test` (current GCC) and
+  `nix build .#r36s-exception-tests` (matrix: current + gcc14..9 when
+  `pkgsCross…buildPackages.gccN` exists). Copy binaries to the device; expect
+  `ALL PASSED`. Then try rebuilding the game with the first major that
+  passes. Fall back remains: avoid non-critical throws + RelWithDebInfo.
 
 ---
 
