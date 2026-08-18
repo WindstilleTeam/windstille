@@ -145,8 +145,8 @@ System::prepare_android_datadir()
     std::filesystem::create_directories(root);
 
     auto index = android_read_asset("android-asset-index.txt");
+    int extracted = 0;
     if (index.empty()) {
-      // Fallback: try without index (single known files will fail later)
       __android_log_print(ANDROID_LOG_WARN, "windstille",
                           "android-asset-index.txt missing in APK assets");
     } else {
@@ -171,11 +171,20 @@ System::prepare_android_datadir()
         std::ofstream ofs(out, std::ios::binary);
         ofs.write(reinterpret_cast<char const*>(bytes.data()),
                   static_cast<std::streamsize>(bytes.size()));
+        if (ofs) {
+          ++extracted;
+        }
       }
     }
 
-    std::ofstream(marker) << "1\n";
-    __android_log_print(ANDROID_LOG_INFO, "windstille", "Asset extract done");
+    if (extracted > 0) {
+      std::ofstream(marker) << "1\n";
+      __android_log_print(ANDROID_LOG_INFO, "windstille",
+                          "Asset extract done (%d files)", extracted);
+    } else {
+      __android_log_print(ANDROID_LOG_ERROR, "windstille",
+                          "Asset extract produced 0 files — will retry next launch");
+    }
   }
 
   // Pathname expects trailing slash via set_datadir
