@@ -407,7 +407,7 @@ Config::debug_print(std::ostream& out)
       val << "'" << (*i->second).str() << "'";
       out << " = " << val.str();
     }
-    out << " (" << (*i->second).get_doc() << ")" << std::endl;
+    out << " (" << (*i->second).get_docstring() << ")" << std::endl;
   }
 }
 
