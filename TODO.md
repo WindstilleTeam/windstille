@@ -38,7 +38,7 @@ Related: [PORTS.md](PORTS.md).
 - [ ] Confirm clean `nix build .#windstille` and `.#windstille-editor` end-to-end (install + run smoke)
 - [ ] Confirm plain CMake (no Nix) still works: `cmake -B build && cmake --build build`
 - [ ] Data install / `xcf2png` path when building with split packages
-- [ ] Drop remaining deprecation warnings (`cmake_minimum_required` in old subprojects)
+- [x] Drop remaining deprecation warnings (`cmake_minimum_required` 3.6 → 3.10 in babyxml/geomcpp/strutcpp)
 - [ ] Optional: re-enable tests with `BUILD_TESTS` and wire `gtest` only where needed
 
 ### Flake packaging refinements
@@ -74,7 +74,7 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] `data/shader/shader100.{vert,frag}` ES counterparts of shader330
 - [x] ShaderObject::load prepares GLES sources (version/precision, strip rect-tex extension)
 - [x] Shockwave / DeformDrawer: soft-fail if effect shaders will not compile on GLES
-- [ ] Effect shaders still use fixed-pipeline varyings (`gl_TexCoord`) — full port later
+- [x] Effect shaders: `prepare_shader_source` rewrites `gl_TexCoord[0]` → `texcoord_v` on GLES (still need a linked ES vertex shader for full effect path)
 - [ ] Replace blit callers (e.g. geometry extra) with textured-quad path on GLES
 - [x] `.#windstille-gles2` builds via monorepo cmake + libglvnd (GLESv2/EGL), not prebuilt desktop wstdisplay
 - [x] wstdisplay links `PkgConfig::GLESV2` + `PkgConfig::EGL` when `WSTDISPLAY_USE_GLES`

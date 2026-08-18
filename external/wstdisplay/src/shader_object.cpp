@@ -130,6 +130,25 @@ std::string prepare_shader_source(std::string_view source)
       pos += 9;
     }
   }
+  // Fixed-pipeline gl_TexCoord is not available in GLSL ES 1.00. Rewrite to a
+  // regular varying that shader100.vert (and other ES vertex shaders) provide.
+  if (src.find("gl_TexCoord") != std::string::npos) {
+    auto replace_all = [](std::string& s, std::string_view from, std::string_view to) {
+      for (std::size_t pos = 0; (pos = s.find(from, pos)) != std::string::npos; ) {
+        s.replace(pos, from.size(), to);
+        pos += to.size();
+      }
+    };
+    replace_all(src, "gl_TexCoord[0].xy", "texcoord_v");
+    replace_all(src, "gl_TexCoord[0].st", "texcoord_v");
+    replace_all(src, "gl_TexCoord[0]", "vec4(texcoord_v, 0.0, 1.0)");
+    if (src.find("texcoord_v") != std::string::npos &&
+        src.find("varying") == std::string::npos &&
+        src.find("attribute") == std::string::npos) {
+      // Fragment shader: declare the varying expected from the vertex stage.
+      src.insert(0, "varying vec2 texcoord_v;\n");
+    }
+  }
   if (src.find("#version") == std::string::npos) {
     src.insert(0, "#version 100\nprecision mediump float;\n");
   }
