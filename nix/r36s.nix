@@ -147,15 +147,20 @@ let
   # That avoids __attr_dealloc_free errors from mixing glibc 2.30 cdefs with
   # modern stdlib.h, and keeps #include_next <stdlib.h> working.
   #
-  # Link is different: GCC 15's libstdc++/libgcc_s need GLIBC_2.32–2.38, but
-  # ArkOS is ~2.30. g++ also injects an absolute path to its own libstdc++.so,
-  # so -L order alone is ignored. We therefore:
-  #   - compile with modern headers + _GLIBCXX_USE_CXX11_ABI=0 (old ABI)
-  #   - -nostdlib++ so g++ does not force its libstdc++; link sysroot -lstdc++
-  #   - -static-libgcc (libgcc.a / libgcc_eh.a have no versioned GLIBC_2.3x deps)
-  #   - -fexceptions: Windstille/tinygettext/prio use try/catch (unlike SuperTux M1)
-  #   - --allow-shlib-undefined for DT_NEEDED of sysroot libs (e.g. opusfile
-  #     from SDL2_mixer) that exist on the device at runtime
+  # Runtime composition (preferred for C++ exceptions):
+  #   GCC 15 libstdc++.so.6 + libgcc_s.so.1  (shipped under libs/)
+  #   + ArkOS glibc / SDL / OpenAL / GLES / …
+  # Previously we used -static-libgcc + ArkOS libstdc++ to avoid GLIBC_2.3x
+  # versioned deps. That embedded the GCC 15 unwinder (uw_init_context_1,
+  # _Unwind_Resume, …) while still loading ArkOS's older libstdc++/libgcc_s,
+  # producing SIGABRT inside the unwinder when exceptions propagated past
+  # simple smoke tests (e.g. SoundFile::from_file). Matching the compiler's
+  # C++ runtime to the binary fixes the mixed personality/FDE problem.
+  # The binary still uses ArkOS's dynamic linker and glibc; only the C++
+  # runtime is taken from the toolchain and placed in LD_LIBRARY_PATH.
+  # -fexceptions is required (tinygettext / prio / Windstille use try/catch).
+  # --allow-shlib-undefined covers DT_NEEDED of sysroot libs that exist on
+  # the device at runtime.
 
   # Static squirrel for aarch64 (not in ArkOS sysroot). Cross-built so the
   # archives are ELF aarch64 and link into the game binary.
@@ -261,7 +266,7 @@ EOF
     libgccLibTarget = "${gccLibOut}/${tp}/lib";
     # Compile-only flags (safe with -c). No -L/-B lib paths that pull Scrt1.o.
     # -fexceptions: tinygettext / prio / Windstille use C++ exceptions; pair with
-    # -static-libgcc so libgcc_eh is not the shared GCC 15 copy (GLIBC_2.35).
+    # Shared libgcc_s from the toolchain (no -static-libgcc).
     # Omit include-fixed: its pthread.h needs glibc ≥2.32; ArkOS is ~2.30.
     commonCompile = ''
       -nostdinc \
@@ -291,7 +296,7 @@ EOF
       -mtune=cortex-a35 \
     '';
     # Link flags: sysroot first for libc/SDL; add modern gcc -L so
-    # -static-libgcc can find libgcc.a / libgcc_eh.a (stdc++ is still the
+    # Prefer toolchain -L for libgcc_s (stdc++ is still the
     # absolute sysroot path in the cxx wrapper — not -lstdc++).
     # Explicit dynamic linker so the binary runs on ArkOS (not /nix/store/.../ld).
     commonLink = ''
@@ -307,7 +312,7 @@ EOF
       -L${libgccDir} \
       -L${libgccLib} \
       -L${libgccLibTarget} \
-      -static-libgcc \
+      
       -Wl,-Bdynamic \
       -l:libpthread.so.0 \
       -lm \
@@ -428,7 +433,7 @@ EOF
         exec ${gcc}/bin/${targetPrefix}g++ \
           -B${crossCc.bintools}/bin \
           ${commonCompileCxx} \
-          -nostdlib++ \
+          
           ${commonLink} \
           "$@" \
           -Wl,--no-as-needed "$stdcpp" "$sdl2image" "$sdl2" $extra_audio \
@@ -1190,7 +1195,7 @@ EOF_README
 
         # arkos_compat.o after -static-libgcc so it resolves libgcc_eh's refs.
         "$GXX" -B${crossCc.bintools}/bin "''${COMPILE_CXX[@]}" \
-          -nostdlib++ \
+          
           --sysroot="$SYSROOT" \
           -Wl,--sysroot="$SYSROOT" \
           -Wl,--dynamic-linker=/lib/ld-linux-aarch64.so.1 \
@@ -1202,7 +1207,7 @@ EOF_README
           -L"$SYSROOT/lib/aarch64-linux-gnu" \
           -L"$LIBGCC_DIR" \
           -L${gccLibOut}/lib \
-          -static-libgcc \
+          
           -Wl,--undefined=_dl_find_object \
           -Wl,--allow-shlib-undefined \
           -march=armv8-a -mtune=cortex-a35 \
