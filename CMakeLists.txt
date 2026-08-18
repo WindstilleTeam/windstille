@@ -44,9 +44,9 @@ if (BUILD_TESTS)
   enable_testing()
 endif(BUILD_TESTS)
 
-# xcf2png is only needed for desktop data generation; wasm/android preload
-# assets separately and often lack the tool in the cross environment.
-if(EMSCRIPTEN OR WINDSTILLE_EMSCRIPTEN)
+# xcf2png is only needed for native desktop data generation; wasm/android/r36s
+# preload or ship assets separately and lack the tool in the cross env.
+if(EMSCRIPTEN OR WINDSTILLE_EMSCRIPTEN OR CMAKE_CROSSCOMPILING)
   find_program(XCF2PNG xcf2png)
 else()
   find_program(XCF2PNG xcf2png REQUIRED)
@@ -243,8 +243,9 @@ if(EMSCRIPTEN OR WINDSTILLE_EMSCRIPTEN)
 endif()
 install_with_wrapper(TARGETS windstille)
 
-# build and install data (skipped under Emscripten — assets come from --preload-file)
-if(NOT EMSCRIPTEN AND NOT WINDSTILLE_EMSCRIPTEN)
+# build and install data (skipped under Emscripten / cross — assets come from
+# --preload-file or PortMaster tree)
+if(NOT EMSCRIPTEN AND NOT WINDSTILLE_EMSCRIPTEN AND NOT CMAKE_CROSSCOMPILING)
   file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data/images/decal/)
 
   # convert .xcf to .png
