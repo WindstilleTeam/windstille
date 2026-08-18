@@ -215,7 +215,9 @@ if [ -n "${SQUIRREL_SRC:-}" ]; then
   fi
   for sub in squirrel sqstdlib; do
     if [ -d "$SQROOT/$sub" ]; then
-      find "$SQROOT/$sub" -maxdepth 1 -name '*.cpp' -exec cp -a {} src/jni/src/deps/squirrel/ \;
+      # Sources + private headers (sqpcheader.h, etc. live next to the .cpp)
+      find "$SQROOT/$sub" -maxdepth 1 \( -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) \
+        -exec cp -a {} src/jni/src/deps/squirrel/ \;
     fi
   done
   chmod -R u+rwX src/jni/external_includes src/jni/src/deps/squirrel
