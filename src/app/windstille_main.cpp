@@ -72,6 +72,12 @@ WindstilleMain::main(int argc, char** argv)
   {
     Pathname::set_datadir(System::find_default_datadir());
     Pathname::set_userdir(System::find_default_userdir());
+    // Ensure userdir exists (wasm IDBFS mount, first-run Android/desktop).
+    try {
+      std::filesystem::create_directories(Pathname::get_userdir());
+    } catch (std::exception const& e) {
+      std::cerr << "create_directories(userdir): " << e.what() << std::endl;
+    }
 
     config.parse_args(argc, argv);
 

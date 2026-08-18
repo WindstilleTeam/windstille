@@ -19,6 +19,7 @@
 #include "app/config.hpp"
 
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <stdio.h>
@@ -374,7 +375,11 @@ void
 Config::save()
 {
   try {
-    FileWriter writer = FileWriter::from_file(Pathname("config", Pathname::kUserPath).get_sys_path());
+    auto const cfg_path = Pathname("config", Pathname::kUserPath).get_sys_path();
+    try {
+      std::filesystem::create_directories(std::filesystem::path(cfg_path).parent_path());
+    } catch (...) {}
+    FileWriter writer = FileWriter::from_file(cfg_path);
 
     writer.write_comment("Windstille Config - automatically read and written on startup/quit");
     writer.begin_object("windstille-config");
