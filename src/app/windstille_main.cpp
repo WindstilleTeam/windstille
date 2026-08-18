@@ -17,6 +17,9 @@
 */
 
 #include <sstream>
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 #include <filesystem>
 
 #include <surf/save.hpp>
@@ -191,11 +194,28 @@ WindstilleMain::main(int argc, char** argv)
   }
   catch (std::exception& err)
   {
-    std::cout << "std::exception: " << err.what() << std::endl;
+    std::cerr << "std::exception: " << err.what() << std::endl;
+#ifdef __EMSCRIPTEN__
+    // Ensure the browser console shows the C++ what() even when the exception
+    // is later rethrown as an opaque CppException from the main loop.
+    EM_ASM({
+      var msg = UTF8ToString($0);
+      console.error('[windstille] C++ exception:', msg);
+      if (typeof Module !== 'undefined' && Module.setStatus)
+        Module.setStatus('Exception: ' + msg);
+    }, err.what());
+#endif
   }
   catch (...)
   {
-    std::cout << "Error catched something unknown?!" << std::endl;
+    std::cerr << "Error: unknown exception" << std::endl;
+#ifdef __EMSCRIPTEN__
+    EM_ASM({
+      console.error('[windstille] unknown C++ exception');
+      if (typeof Module !== 'undefined' && Module.setStatus)
+        Module.setStatus('Exception: unknown');
+    });
+#endif
   }
 
   return 0;

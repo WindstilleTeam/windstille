@@ -474,24 +474,42 @@
       var parts = [];
       if (err.name) parts.push(err.name);
       if (err.message) parts.push(err.message);
-      // Emscripten CppException: try runtime helpers for the C++ what() string.
+      // Emscripten CppException only exposes excPtr; resolve the C++ what().
       try {
         if (typeof Module !== 'undefined') {
-          if (typeof Module.getExceptionMessage === 'function' && err.excPtr) {
-            var pair = Module.getExceptionMessage(err.excPtr);
-            if (pair && pair.length) parts.push(Array.prototype.join.call(pair, ' — '));
-          } else if (typeof Module.UTF8ToString === 'function' && err.ptr) {
-            parts.push(Module.UTF8ToString(err.ptr));
+          var ptr = err.excPtr || err.ptr || 0;
+          if (ptr) {
+            if (typeof Module.getExceptionMessage === 'function') {
+              try {
+                var pair = Module.getExceptionMessage(ptr);
+                if (Array.isArray(pair)) parts.push(pair.filter(Boolean).join(' — '));
+                else if (pair) parts.push(String(pair));
+              } catch (e1) {
+                parts.push('(getExceptionMessage failed: ' + e1 + ')');
+              }
+            }
+            if (typeof Module.get_exception_message === 'function') {
+              try {
+                var m = Module.get_exception_message(ptr);
+                if (m) parts.push(String(m));
+              } catch (e2) {}
+            }
+            // Last resort: treat ptr as a C string (works for some builds).
+            if (parts.length <= 1 && typeof Module.UTF8ToString === 'function') {
+              try {
+                var s = Module.UTF8ToString(ptr);
+                if (s && s.length < 512) parts.push(s);
+              } catch (e3) {}
+            }
           }
         }
-      } catch (e) { /* ignore helper failures */ }
+      } catch (e) { parts.push('(exception decode failed: ' + e + ')'); }
       if (parts.length === 0) {
         try { parts.push(String(err)); } catch (e) { parts.push('(unprintable exception)'); }
       }
-      // Json-like dump of own properties (excPtr, etc.) for opaque objects.
       try {
         var keys = Object.keys(err);
-        if (keys.length) parts.push('keys=' + keys.join(','));
+        if (keys.length) parts.push('keys=' + keys.join(',') + ' ptr=' + (err.excPtr || err.ptr || '?'));
       } catch (e) {}
       if (err.stack) parts.push('\n' + err.stack);
       return parts.join(': ');
