@@ -28,8 +28,9 @@ using namespace prio;
 
 namespace wstinput {
 
-// FIXME: this should be configurable and per axis
-constexpr int g_dead_zone = 0;
+// ~25% of int16 range — filters stick noise; menu must not use axis-buttons
+// with a zero deadzone (that re-fires MENU_* on every tiny motion).
+constexpr int g_dead_zone = 8000;
 
 InputBindings::InputBindings(InputManagerSDL& manager) :
   m_manager(manager),
@@ -369,6 +370,10 @@ InputBindings::dispatch_event(SDL_Event const& event, Controller& controller) co
       break;
 
     case SDL_JOYAXISMOTION:
+      // When the pad is open as a GameController, SDL also emits JOY* events.
+      // Ignore them so each physical input is handled once via CONTROLLER*.
+      if (m_manager.is_game_controller_instance(event.jaxis.which))
+        break;
       dispatch_joy_axis_event(event.jaxis, controller);
       break;
 
@@ -377,9 +382,9 @@ InputBindings::dispatch_event(SDL_Event const& event, Controller& controller) co
       break;
 
     case SDL_JOYHATMOTION: {
-      // Map hat to the same button indices as SDL_GameController DPAD_* so
-      // controller/*.scm menu bindings (buttons 11–14) work for pure-joystick
-      // devices that expose the D-pad as a hat instead of buttons.
+      if (m_manager.is_game_controller_instance(event.jhat.which))
+        break;
+      // Pure-joystick devices: map hat → same indices as GC DPAD_* (11–14).
       auto emit_hat_button = [&](Uint8 button, bool down) {
         SDL_JoyButtonEvent jb{};
         jb.type = down ? SDL_JOYBUTTONDOWN : SDL_JOYBUTTONUP;
@@ -398,6 +403,8 @@ InputBindings::dispatch_event(SDL_Event const& event, Controller& controller) co
 
     case SDL_JOYBUTTONUP:
     case SDL_JOYBUTTONDOWN:
+      if (m_manager.is_game_controller_instance(event.jbutton.which))
+        break;
       dispatch_joy_button_event(event.jbutton, controller);
       break;
 

@@ -142,6 +142,20 @@ InputManagerSDL::ensure_open_joystick(int device)
   }
 }
 
+bool
+InputManagerSDL::is_game_controller_instance(SDL_JoystickID instance_id) const
+{
+  for (size_t i = 0; i < m_controllers.size(); ++i)
+  {
+    if (m_controllers[i] != nullptr && m_joysticks[i] != nullptr &&
+        SDL_JoystickInstanceID(m_joysticks[i]) == instance_id)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
 void
 InputManagerSDL::on_event(const SDL_Event& event)
 {

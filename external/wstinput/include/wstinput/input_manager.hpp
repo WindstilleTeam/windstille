@@ -56,6 +56,9 @@ public:
   /** Ensure that the joystick device \a device is open */
   void ensure_open_joystick(int device);
 
+  /** True if \a instance_id belongs to a joystick opened via GameController. */
+  bool is_game_controller_instance(SDL_JoystickID instance_id) const;
+
   void start_text_input();
   void stop_text_input();
   bool is_text_input_active() const;

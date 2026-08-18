@@ -340,8 +340,12 @@ WindstilleMain::init_modules()
     g_app.input().bindings().bind_keyboard_button(MENU_UP_BUTTON, SDL_SCANCODE_UP);
     g_app.input().bindings().bind_keyboard_button(MENU_DOWN_BUTTON, SDL_SCANCODE_DOWN);
 
-    // User configuration
-    if (config.get<std::string>("primary-controller-file").is_set()) {
+    // Prefer a single GameController profile. Stacking r36s.scm + gamepad.scm
+    // duplicated every binding and made the D-pad skip menu entries.
+    bool const primary_is_custom =
+      config.get<std::string>("primary-controller-file").is_set();
+
+    if (primary_is_custom) {
       g_app.input().load(Pathname(config.get<std::string>("primary-controller-file").get(),
                                   Pathname::kSysPath).get_sys_path());
     } else {
@@ -351,14 +355,9 @@ WindstilleMain::init_modules()
     if (config.get<std::string>("secondary-controller-file").is_set()) {
       g_app.input().load(Pathname(config.get<std::string>("secondary-controller-file").get(),
                                   Pathname::kSysPath).get_sys_path());
-    } else {
-#if defined(ANDROID) || defined(__ANDROID__) || defined(WINDSTILLE_R36S)
-      try {
-        g_app.input().load(Pathname("controller/gamepad.scm").get_sys_path());
-      } catch (std::exception const& e) {
-        std::cerr << "gamepad.scm: " << e.what() << std::endl;
-      }
-#elif defined(__EMSCRIPTEN__)
+    } else if (!primary_is_custom) {
+#if defined(ANDROID) || defined(__ANDROID__) || defined(WINDSTILLE_R36S) || defined(__EMSCRIPTEN__)
+      // Default pad profile (GameController button layout) alongside keyboard.
       try {
         g_app.input().load(Pathname("controller/gamepad.scm").get_sys_path());
       } catch (std::exception const& e) {
@@ -366,16 +365,9 @@ WindstilleMain::init_modules()
       }
 #endif
     }
-
-#if defined(ANDROID) || defined(__ANDROID__) || defined(WINDSTILLE_R36S) || defined(__EMSCRIPTEN__)
-    // Menus only listen to MENU_* buttons. Also drive them from the left
-    // stick so either D-pad or stick can move the selection (scm only has
-    // one binding slot per name; these are extra axis-button bindings).
-    g_app.input().bindings().bind_joystick_axis_button(MENU_LEFT_BUTTON,  0, 0, true);
-    g_app.input().bindings().bind_joystick_axis_button(MENU_RIGHT_BUTTON, 0, 0, false);
-    g_app.input().bindings().bind_joystick_axis_button(MENU_UP_BUTTON,    0, 1, true);
-    g_app.input().bindings().bind_joystick_axis_button(MENU_DOWN_BUTTON,  0, 1, false);
-#endif
+    // Menu navigation is D-pad only (buttons 11–14). Analog stick drives
+    // x/y movement axes, not MENU_* — axis→button with zero deadzone was
+    // skipping menu entries on every tiny stick motion.
   }
 }
 
