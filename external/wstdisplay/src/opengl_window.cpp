@@ -57,24 +57,8 @@ OpenGLWindow::OpenGLWindow(wstsys::System& system,
 {
   assert(m_window == nullptr);
 
-  //SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1); // vsync
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-  // FIXME: Should make this configurable, as Matrox G450 can't do it,
-  // but works 'fine' without it
-  SDL_GL_SetAttribute(SDL_GL_RED_SIZE,     8);
-  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,   8);
-  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,    8);
-  SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
-
-  SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-
-  if (m_anti_aliasing != 0)
-  {
-    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 ); // boolean value, either it's enabled or not
-    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, m_anti_aliasing ); // 0, 2, or 4 for number of samples
-  }
-
+  // Only request the GL profile/version. Custom colour/stencil/buffer/MSAA
+  // sizes often fail on embedded EGL (R36S etc.); SDL defaults work better.
 #if WSTDISPLAY_GL_ES
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
