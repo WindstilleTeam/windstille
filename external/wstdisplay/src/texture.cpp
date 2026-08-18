@@ -304,17 +304,33 @@ Texture::put(SoftwareSurface const& image, const geom::irect& srcrect, int x, in
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
   // FIXME: Add some checks here to make sure image has the right format
+#if WSTDISPLAY_GL_ES
+  // No GL_UNPACK_ROW_LENGTH in core GLES2 — copy the sub-rectangle tightly.
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+  int const row_bytes = srcrect.width() * bytes_per_pixel;
+  std::vector<uint8_t> tight(static_cast<size_t>(row_bytes) * srcrect.height());
+  uint8_t const* src_base = static_cast<uint8_t const*>(image.get_data())
+    + srcrect.top() * image.get_pitch()
+    + srcrect.left() * bytes_per_pixel;
+  for (int row = 0; row < srcrect.height(); ++row) {
+    std::memcpy(tight.data() + static_cast<size_t>(row) * row_bytes,
+                src_base + static_cast<size_t>(row) * image.get_pitch(),
+                static_cast<size_t>(row_bytes));
+  }
+  glTexSubImage2D(m_target, 0, x, y,
+                  srcrect.width(), srcrect.height(), sdl_format, GL_UNSIGNED_BYTE,
+                  tight.data());
+#else
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // FIXME: Does SDL always use 4?
-#if !WSTDISPLAY_GL_ES || defined(GL_UNPACK_ROW_LENGTH)
   glPixelStorei(GL_UNPACK_ROW_LENGTH,
                 image.get_pitch() / bytes_per_pixel);
-#endif
 
   glTexSubImage2D(m_target, 0, x, y,
                   srcrect.width(), srcrect.height(), sdl_format, GL_UNSIGNED_BYTE,
                   static_cast<uint8_t const*>(image.get_data())
                   + srcrect.top()  * image.get_pitch()
                   + srcrect.left() * bytes_per_pixel);
+#endif
 
   assert_gl();
 }
