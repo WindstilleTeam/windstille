@@ -106,7 +106,9 @@ InputBindings::load(std::filesystem::path const& filename,
         bind_keyboard_button(controller_description.get_definition(key).id,
                              m_manager.string_to_keyid(key_text));
       } else {
-        log_error("InputManagerSDL: Unknown tag: {}", button_obj.get_name());
+        if (!button_obj.get_name().empty()) {
+          log_error("InputManagerSDL: Unknown tag: {}", button_obj.get_name());
+        }
       }
     }
     else if (key.ends_with("-axis"))
@@ -152,7 +154,9 @@ InputBindings::load(std::filesystem::path const& filename,
       }
       else
       {
-        log_error("InputManagerSDL: Unknown tag: {}", axis_obj.get_name());
+        if (!axis_obj.get_name().empty()) {
+          log_error("InputManagerSDL: Unknown tag: {}", axis_obj.get_name());
+        }
       }
     }
   }
