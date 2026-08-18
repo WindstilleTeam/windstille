@@ -1167,6 +1167,8 @@ EOF_README
         COMPILE_CXX=(
           -nostdinc -nostdinc++
           -D_GLIBCXX_USE_CXX11_ABI=0
+          -DR36S_EXC_TEST_LABEL='"${label}"'
+          -DR36S_EXC_TEST_GCC_VER='"${ver}"'
           --sysroot="$SYSROOT"
           -isystem "${pthreadShim}"
           -isystem "$CXX_INC"

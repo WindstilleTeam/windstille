@@ -111,16 +111,14 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] PortMaster tree package (`windstille-r36s-portmaster` + zip)
 - [x] Controller profile (`data/controller/r36s.scm` + `gamepad.scm`)
 - [ ] On-device smoke test
-- [ ] **Experiment: older cross GCC for C++ exceptions** — current hybrid is
-  GCC 15 frontend + ArkOS glibc~2.30 / libstdc++ sysroot; throws abort in
-  `uw_init_context_1` / `_Unwind_Resume`. Smoke tests:
-  `nix build .#r36s-exception-test` (current GCC) and
-  `nix build .#r36s-exception-tests` (matrix: current + gcc14..9 when
-  `pkgsCross…buildPackages.gccN` exists). Copy binaries to the device; expect
-  `ALL PASSED`. Then try rebuilding the game with the first major that
-  passes. Fall back remains: avoid non-critical throws + RelWithDebInfo.
-
----
+- [ ] **Experiment: older cross GCC for C++ exceptions** — hybrid is
+  modern GCC frontend + ArkOS glibc~2.30 / libstdc++. Smoke test
+  (`nix build .#r36s-exception-test{,-12,-13,-14}`) **passes on device even
+  with `current`** (simple throw/catch + rethrow). Game aborts may be a
+  narrower path (e.g. exceptions across DSOs, or code we still skip). Next:
+  reproduce a game-like throw in the smoke test, or re-enable a previously
+  skipped throw in the game and compare labels. Binaries print flake label +
+  `__GNUC__` / `__VERSION__` at startup.
 
 ## Code / engine debt (ports-related)
 
