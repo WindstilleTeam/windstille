@@ -101,7 +101,10 @@ OpenGLState::OpenGLState() :
 {
   impl->state[GL_DEPTH_TEST]  = false;
   impl->state[GL_BLEND]       = false;
+  // GL_LINE_SMOOTH is desktop-only (not in GLES2).
+#if !WSTDISPLAY_GL_ES
   impl->state[GL_LINE_SMOOTH] = false;
+#endif
 
   impl->blend_sfactor      = GL_SRC_ALPHA;
   impl->blend_dfactor      = GL_ONE_MINUS_SRC_ALPHA;
