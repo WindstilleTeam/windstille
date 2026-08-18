@@ -21,6 +21,8 @@
 #include <stdio.h>
 #include <ostream>
 #include <stdexcept>
+#include <iostream>
+#include <cstdlib>
 
 #ifndef _WIN32
 #  include <sys/ioctl.h>
@@ -104,7 +106,7 @@ Parser::parse_args(int argc, char** argv) const
           // Long Option
           Option const* option = lookup_long_option(long_opt);
           if (!option) {
-            throw std::runtime_error("unrecognized option '" + std::string(argv[i]) + "'");
+            do { std::cerr << "argpp: " << ("unrecognized option '" + std::string(argv[i]) + "'") << std::endl; std::abort(); } while(0)
           }
 
           if (option->argument.empty())
@@ -120,7 +122,7 @@ Parser::parse_args(int argc, char** argv) const
             else
             {
               if (i == argc - 1) {
-                throw std::runtime_error("option '" + std::string(argv[i]) + "' requires an argument");
+                do { std::cerr << "argpp: " << ("option '" + std::string(argv[i]) + "' requires an argument") << std::endl; std::abort(); } while(0)
               }
 
               parsed_options.push_back(ParsedOption{option->key, long_opt, argv[i + 1]});
@@ -142,7 +144,7 @@ Parser::parse_args(int argc, char** argv) const
             // Short option(s)
             Option const* option = lookup_short_option(*p);
             if (!option) {
-              throw std::runtime_error("invalid option -- " + std::string(1, *p));
+              do { std::cerr << "argpp: " << ("invalid option -- " + std::string(1, *p)) << std::endl; std::abort(); } while(0)
             }
 
             if (option->argument.empty())
@@ -152,7 +154,7 @@ Parser::parse_args(int argc, char** argv) const
             else
             {
               if (i == argc - 1 || *(p+1) != '\0') {
-                throw std::runtime_error("option requires an argument -- " + std::string(1, *p));
+                do { std::cerr << "argpp: " << ("option requires an argument -- " + std::string(1, *p)) << std::endl; std::abort(); } while(0)
               }
 
               parsed_options.push_back(ParsedOption{option->key, std::string(1, *p), argv[i + 1]});

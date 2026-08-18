@@ -19,6 +19,7 @@
 #include "app/config.hpp"
 
 #include <iostream>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <sstream>
@@ -178,6 +179,11 @@ Config::parse_args(int argc, char** argv)
     //.add_option('x', "record-video","DIR",  "Record a gameplay video to DIR")
     .add_option('p', "play",        "FILE", "Playback input events from FILE");
 
+  {
+    std::cerr << "windstille: argc=" << argc;
+    for (int i = 0; i < argc; ++i) std::cerr << " [" << i << "]=" << (argv[i] ? argv[i] : "(null)");
+    std::cerr << std::endl;
+  }
   for(auto const& opt : argp.parse_args(argc, argv))
   {
     switch (opt.key)
@@ -186,7 +192,7 @@ Config::parse_args(int argc, char** argv)
         int anti_aliasing;
         if (sscanf(opt.argument.c_str(), "%d", &anti_aliasing) != 1)
         {
-          throw std::runtime_error("Anti-Aliasing option '-a' requires argument of type {NUM}");
+          do { std::cerr << "config: " << ("Anti-Aliasing option '-a' requires argument of type {NUM}") << std::endl; std::abort(); } while(0)
         }
         else
         {
@@ -234,7 +240,7 @@ Config::parse_args(int argc, char** argv)
           }
           else
           {
-            throw std::runtime_error("Geometry option '-g' requires argument of type {WIDTH}x{HEIGHT}");
+            do { std::cerr << "config: " << ("Geometry option '-g' requires argument of type {WIDTH}x{HEIGHT}") << std::endl; std::abort(); } while(0)
           }
         }
         break;
@@ -255,7 +261,7 @@ Config::parse_args(int argc, char** argv)
           }
           else
           {
-            throw std::runtime_error("Geometry option '-a' requires argument of type {WIDTH}x{HEIGHT}");
+            do { std::cerr << "config: " << ("Geometry option '-a' requires argument of type {WIDTH}x{HEIGHT}") << std::endl; std::abort(); } while(0)
           }
         }
         break;
@@ -307,7 +313,7 @@ Config::is_set(std::string const& name)
   ConfigValues::iterator i = config_values.find(name);
   if (i == config_values.end())
   {
-    throw std::runtime_error("Error: unknown Config value: '" + name + "'");
+    do { std::cerr << "config: " << ("Error: unknown Config value: '" + name + "'") << std::endl; std::abort(); } while(0)
   }
   else
   {
