@@ -76,7 +76,6 @@ endif
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/../SDL/include \
 	$(LOCAL_PATH)/../SDL/include/SDL2 \
-	$(LOCAL_PATH) \
 	$(LOCAL_PATH)/../external_includes \
 	$(LOCAL_PATH)/../external_includes/argpp \
 	$(LOCAL_PATH)/../external_includes/geom \
@@ -105,7 +104,9 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/deps/wstgui \
 	$(LOCAL_PATH)/deps/tinygettext \
 	$(LOCAL_PATH)/deps/squirrel \
-	$(LOCAL_PATH)/deps/wstsound
+	$(LOCAL_PATH)/deps/wstsound \
+	$(LOCAL_PATH)
+
 
 ifeq ($(ENABLE_ANDROID_SOUND),1)
 # libmodplug: <libmodplug/modplug.h>  OpenAL Soft install: include/AL/*.h

@@ -24,7 +24,7 @@
 #include <geom/point.hpp>
 
 #include "component.hpp"
-#include "util/field.hpp"
+#include <wstgui/field.hpp>
 
 namespace wstgui {
 
