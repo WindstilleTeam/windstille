@@ -19,6 +19,8 @@
 #include <iostream>
 #include <stdint.h>
 #include <sstream>
+#include <vector>
+#include <cstring>
 #include <stdexcept>
 
 #include <glm/ext.hpp>
@@ -77,8 +79,20 @@ Texture::Texture(GLenum target, geom::isize const& size, GLint format) :
 
   glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  glTexImage2D(target, 0, format, m_size.width(), m_size.height(), 0, GL_RGBA,
-               GL_UNSIGNED_BYTE, nullptr);
+  // GLES2: internalformat must match format.
+  GLint internal_format = format;
+  GLenum external_format = GL_RGBA;
+#if WSTDISPLAY_GL_ES
+  if (format == GL_RGB || format == GL_RGB8) {
+    internal_format = GL_RGB;
+    external_format = GL_RGB;
+  } else {
+    internal_format = GL_RGBA;
+    external_format = GL_RGBA;
+  }
+#endif
+  glTexImage2D(target, 0, internal_format, m_size.width(), m_size.height(), 0,
+               external_format, GL_UNSIGNED_BYTE, nullptr);
 
   glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -150,25 +164,55 @@ Texture::Texture(SoftwareSurface const& image, GLint glformat) :
 
     glBindTexture(GL_TEXTURE_2D, m_handle);
 
+    // GLES2: internalformat must equal format for glTexImage2D; desktop may
+    // use sized formats (GL_RGBA8, …) independently of the external format.
+    GLint internal_format = glformat;
+#if WSTDISPLAY_GL_ES
+    internal_format = sdl_format;
+#endif
+
+    // GL_UNPACK_ROW_LENGTH is not core GLES2; setting it can raise
+    // GL_INVALID_ENUM/OPERATION even when the token appears in headers.
+#if WSTDISPLAY_GL_ES
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+#else
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-#if !WSTDISPLAY_GL_ES || defined(GL_UNPACK_ROW_LENGTH)
     glPixelStorei(GL_UNPACK_ROW_LENGTH, image.get_pitch() / bytes_per_pixel);
 #endif
 
-    // GLES2: NPOT textures must use CLAMP_TO_EDGE and non-mipmap min filters
-    // unless the implementation supports full NPOT (unreliable). Skip mipmaps
-    // for non-power-of-two sizes on GLES to avoid GL_INVALID_OPERATION.
+    // GLES2: NPOT textures must use CLAMP_TO_EDGE and non-mipmap min filters.
 #if WSTDISPLAY_GL_ES
     const bool use_mipmaps =
       glm::isPowerOfTwo(image.get_width()) && glm::isPowerOfTwo(image.get_height());
 #else
     const bool use_mipmaps = true;
 #endif
+
+    // On GLES without ROW_LENGTH, only tightly-packed rows are valid.
+    // Upload via a contiguous buffer when pitch has padding.
+    std::vector<uint8_t> tight;
+    void const* pixels = image.get_data();
+#if WSTDISPLAY_GL_ES
+    {
+      int const row_bytes = image.get_width() * bytes_per_pixel;
+      if (image.get_pitch() != row_bytes) {
+        tight.resize(static_cast<size_t>(row_bytes) * image.get_height());
+        uint8_t const* src = static_cast<uint8_t const*>(image.get_data());
+        for (int y = 0; y < image.get_height(); ++y) {
+          std::memcpy(tight.data() + static_cast<size_t>(y) * row_bytes,
+                      src + static_cast<size_t>(y) * image.get_pitch(),
+                      static_cast<size_t>(row_bytes));
+        }
+        pixels = tight.data();
+      }
+    }
+#endif
+
     if (!use_mipmaps)
     {
-      glTexImage2D(m_target, 0, glformat,
+      glTexImage2D(m_target, 0, internal_format,
                    image.get_width(), image.get_height(), 0, sdl_format,
-                   GL_UNSIGNED_BYTE, image.get_data());
+                   GL_UNSIGNED_BYTE, pixels);
 
       glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -176,9 +220,9 @@ Texture::Texture(SoftwareSurface const& image, GLint glformat) :
     else
     { // use mipmapping
 #if WSTDISPLAY_GL_ES
-      glTexImage2D(m_target, 0, glformat,
+      glTexImage2D(m_target, 0, internal_format,
                    image.get_width(), image.get_height(), 0, sdl_format,
-                   GL_UNSIGNED_BYTE, image.get_data());
+                   GL_UNSIGNED_BYTE, pixels);
       glGenerateMipmap(m_target);
 #else
       gluBuild2DMipmaps(m_target, glformat,
@@ -189,7 +233,7 @@ Texture::Texture(SoftwareSurface const& image, GLint glformat) :
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
 
-    assert_gl();
+    assert_gl_msg("Texture::Texture image upload");
 
     glTexParameteri(m_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(m_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -197,7 +241,7 @@ Texture::Texture(SoftwareSurface const& image, GLint glformat) :
     glTexParameteri(m_target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 #endif
 
-    assert_gl();
+    assert_gl_msg("Texture::Texture wrap params");
   }
   catch(...)
   {
