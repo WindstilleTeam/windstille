@@ -45,6 +45,8 @@ LOCAL_SRC_FILES += $(patsubst $(LOCAL_PATH)/%,%,$(wildcard $(LOCAL_PATH)/*.c))
 
 # Exclude desktop-only / optional backends when present under the tree.
 LOCAL_SRC_FILES := $(filter-out %/win32/% win32/%,$(LOCAL_SRC_FILES))
+# Editor is GTK desktop-only — never ship it in the APK.
+LOCAL_SRC_FILES := $(filter-out %/editor/% editor/%,$(LOCAL_SRC_FILES))
 LOCAL_SRC_FILES := $(filter-out %/json_reader_impl.cpp %/json_writer_impl.cpp %/jsonpretty_writer_impl.cpp,$(LOCAL_SRC_FILES))
 # Prefer deps/prio over the priocpp alias (same sources twice → duplicate symbols / double work).
 LOCAL_SRC_FILES := $(filter-out %/deps/priocpp/%,$(LOCAL_SRC_FILES))
