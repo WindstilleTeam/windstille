@@ -469,8 +469,29 @@ EOF
         emmake make install || true
       )
       mkdir -p prefix/lib prefix/include
-      find . -name 'libsquirrel.a' -exec cp -n {} prefix/lib/ \; || true
-      find . -name 'libsqstdlib.a' -exec cp -n {} prefix/lib/ \; || true
+      # Upstream may name archives libsquirrel.a, squirrel.a, or leave objects only.
+      for cand in libsquirrel.a squirrel.a; do
+        find . -name "$cand" -exec cp -n {} prefix/lib/libsquirrel.a \; 2>/dev/null || true
+      done
+      for cand in libsqstdlib.a sqstdlib.a; do
+        find . -name "$cand" -exec cp -n {} prefix/lib/libsqstdlib.a \; 2>/dev/null || true
+      done
+      if [ ! -f prefix/lib/libsquirrel.a ]; then
+        # Fallback: archive object files from the squirrel / sqstdlib trees.
+        objs_sq=$(find build "$srcdir" -path '*/squirrel/*.o' 2>/dev/null | head -50)
+        objs_std=$(find build "$srcdir" -path '*/sqstdlib/*.o' 2>/dev/null | head -50)
+        if [ -n "$objs_sq" ]; then
+          emar rcs prefix/lib/libsquirrel.a $objs_sq
+        fi
+        if [ -n "$objs_std" ]; then
+          emar rcs prefix/lib/libsqstdlib.a $objs_std
+        fi
+      fi
+      if [ ! -f prefix/lib/libsquirrel.a ] || [ ! -f prefix/lib/libsqstdlib.a ]; then
+        echo "error: squirrel wasm static libs missing after build" >&2
+        find . -name '*.a' -o -name '*.o' | head -40 >&2 || true
+        exit 1
+      fi
       if [ -d "$srcdir/include" ]; then cp -a "$srcdir/include"/. prefix/include/; fi
       # Ensure plain squirrel.h is visible
       if [ ! -f prefix/include/squirrel.h ] && [ -f prefix/include/squirrel/squirrel.h ]; then
