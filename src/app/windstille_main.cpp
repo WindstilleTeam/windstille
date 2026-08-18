@@ -366,6 +366,16 @@ WindstilleMain::init_modules()
       }
 #endif
     }
+
+#if defined(ANDROID) || defined(__ANDROID__) || defined(WINDSTILLE_R36S) || defined(__EMSCRIPTEN__)
+    // Menus only listen to MENU_* buttons. Also drive them from the left
+    // stick so either D-pad or stick can move the selection (scm only has
+    // one binding slot per name; these are extra axis-button bindings).
+    g_app.input().bindings().bind_joystick_axis_button(MENU_LEFT_BUTTON,  0, 0, true);
+    g_app.input().bindings().bind_joystick_axis_button(MENU_RIGHT_BUTTON, 0, 0, false);
+    g_app.input().bindings().bind_joystick_axis_button(MENU_UP_BUTTON,    0, 1, true);
+    g_app.input().bindings().bind_joystick_axis_button(MENU_DOWN_BUTTON,  0, 1, false);
+#endif
   }
 }
 

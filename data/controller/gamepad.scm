@@ -1,7 +1,7 @@
 ;; -*- scheme -*-
-;; Generic SDL gamepad / handheld layout (Android, many PortMaster devices).
-;; Button indices follow the common "Xbox-like" SDL mapping when the pad is
-;; exposed as a joystick (not the GameController API).
+;; Generic SDL GameController layout (Android, PortMaster handhelds, R36S).
+;; Button indices match SDL_GameControllerButton when the pad is opened via
+;; the GameController API. Menu navigation uses the DPAD_* buttons (11–14).
 
 (windstille-controller
  (x-axis  (joystick-axis (device 0) (axis 0)))
@@ -10,29 +10,29 @@
  (x2-axis (joystick-axis (device 0) (axis 2)))
  (y2-axis (joystick-axis (device 0) (axis 3)))
 
- (left-trigger-axis)
- (right-trigger-axis)
+ (left-trigger-axis  (joystick-axis (device 0) (axis 4)))
+ (right-trigger-axis (joystick-axis (device 0) (axis 5)))
 
- (left-stick-button  (joystick-button (device 0) (button 8)))
- (right-stick-button (joystick-button (device 0) (button 9)))
+ (left-stick-button  (joystick-button (device 0) (button 7)))
+ (right-stick-button (joystick-button (device 0) (button 8)))
 
  (primary-button    (joystick-button (device 0) (button 0)))
  (secondary-button  (joystick-button (device 0) (button 1)))
  (tertiary-button   (joystick-button (device 0) (button 2)))
  (quaternary-button (joystick-button (device 0) (button 3)))
 
- (left-shoulder-button  (joystick-button (device 0) (button 4)))
- (right-shoulder-button (joystick-button (device 0) (button 5)))
+ (left-shoulder-button  (joystick-button (device 0) (button 9)))
+ (right-shoulder-button (joystick-button (device 0) (button 10)))
 
- (select-button (joystick-button (device 0) (button 6)))
- (start-button  (joystick-button (device 0) (button 7)))
- (debug-button)
+ (select-button (joystick-button (device 0) (button 4)))
+ (start-button  (joystick-button (device 0) (button 6)))
+ (debug-button  (joystick-button (device 0) (button 5)))
 
- ;; D-pad as hat axes when the driver exposes them as axes 6/7
- (menu-up-button    (joystick-axis-button (device 0) (axis 7) (up #t)))
- (menu-down-button  (joystick-axis-button (device 0) (axis 7) (up #f)))
- (menu-left-button  (joystick-axis-button (device 0) (axis 6) (up #t)))
- (menu-right-button (joystick-axis-button (device 0) (axis 6) (up #f)))
+ ;; D-pad → menu navigation (required; menus ignore x/y axes)
+ (menu-up-button    (joystick-button (device 0) (button 11)))
+ (menu-down-button  (joystick-button (device 0) (button 12)))
+ (menu-left-button  (joystick-button (device 0) (button 13)))
+ (menu-right-button (joystick-button (device 0) (button 14)))
 )
 
 ;; EOF ;;

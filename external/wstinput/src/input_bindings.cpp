@@ -376,9 +376,25 @@ InputBindings::dispatch_event(SDL_Event const& event, Controller& controller) co
       // event.jball
       break;
 
-    case SDL_JOYHATMOTION:
-      // event.jhat
+    case SDL_JOYHATMOTION: {
+      // Map hat to the same button indices as SDL_GameController DPAD_* so
+      // controller/*.scm menu bindings (buttons 11–14) work for pure-joystick
+      // devices that expose the D-pad as a hat instead of buttons.
+      auto emit_hat_button = [&](Uint8 button, bool down) {
+        SDL_JoyButtonEvent jb{};
+        jb.type = down ? SDL_JOYBUTTONDOWN : SDL_JOYBUTTONUP;
+        jb.which = 0;
+        jb.button = button;
+        jb.state = down ? SDL_PRESSED : SDL_RELEASED;
+        dispatch_joy_button_event(jb, controller);
+      };
+      Uint8 const v = event.jhat.value;
+      emit_hat_button(11, (v & SDL_HAT_UP) != 0);
+      emit_hat_button(12, (v & SDL_HAT_DOWN) != 0);
+      emit_hat_button(13, (v & SDL_HAT_LEFT) != 0);
+      emit_hat_button(14, (v & SDL_HAT_RIGHT) != 0);
       break;
+    }
 
     case SDL_JOYBUTTONUP:
     case SDL_JOYBUTTONDOWN:
