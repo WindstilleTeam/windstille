@@ -71,11 +71,12 @@ ScreenManager::run()
   apply_pending_actions();
 
 #ifdef __EMSCRIPTEN__
-  // Browser-driven loop via requestAnimationFrame (fps=0). Avoids SDL_Delay
-  // busy-waits that spin the tab at 100% CPU without ASYNCIFY.
-  // simulate_infinite_loop=false: return to caller so we do not JS-throw/unwind
-  // the C stack (that would run destructors for stack-allocated game state).
-  emscripten_set_main_loop_arg(&ScreenManager::emscripten_main_loop, this, 0, false);
+  // Browser-driven loop via requestAnimationFrame (fps=0).
+  // simulate_infinite_loop=true: do not return to WindstilleMain — the game
+  // state lives on the C stack and would be destroyed if we returned, which
+  // then races the still-scheduled RAF loop (WebGL deleteBuffer on a dead
+  // context).
+  emscripten_set_main_loop_arg(&ScreenManager::emscripten_main_loop, this, 0, true);
 #else
   while (!m_do_quit && !m_screens.empty())
   {
