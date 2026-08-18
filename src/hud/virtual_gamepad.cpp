@@ -335,7 +335,7 @@ VirtualGamepad::inject_into_controller()
 }
 
 void
-VirtualGamepad::update(float /*delta*/, const Controller& /*controller*/)
+VirtualGamepad::update(float /*delta*/, wstinput::Controller const& /*controller*/)
 {
   if (!m_enabled) {
     return;

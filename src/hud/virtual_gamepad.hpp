@@ -19,6 +19,7 @@
 #include <SDL.h>
 #include <geom/geom.hpp>
 #include <wstgui/screen.hpp>
+#include <wstinput/controller.hpp>
 
 #include "util/currenton.hpp"
 
@@ -44,7 +45,7 @@ public:
   ~VirtualGamepad() override = default;
 
   void draw(wstdisplay::GraphicsContext& gc) override;
-  void update(float delta, const Controller& controller) override;
+  void update(float delta, wstinput::Controller const& controller) override;
   void handle_event(const SDL_Event& event) override;
 
   void set_enabled(bool enabled) { m_enabled = enabled; }
