@@ -24,6 +24,9 @@
 #include <filesystem>
 
 #include <SDL.h>
+#if defined(ANDROID) || defined(__ANDROID__)
+#include <android/log.h>
+#endif
 
 #include <surf/save.hpp>
 #include <wstdisplay/font/ttf_font_manager.hpp>
@@ -72,6 +75,9 @@ WindstilleMain::main(int argc, char** argv)
 {
   try
   {
+#if defined(ANDROID) || defined(__ANDROID__)
+    System::prepare_android_datadir();
+#endif
     Pathname::set_datadir(System::find_default_datadir());
     Pathname::set_userdir(System::find_default_userdir());
     // Ensure userdir exists (wasm IDBFS mount, first-run Android/desktop).
@@ -231,6 +237,9 @@ WindstilleMain::main(int argc, char** argv)
   catch (std::exception& err)
   {
     std::cerr << "std::exception: " << err.what() << std::endl;
+#if defined(ANDROID) || defined(__ANDROID__)
+    __android_log_print(ANDROID_LOG_ERROR, "windstille", "std::exception: %s", err.what());
+#endif
 #ifdef __EMSCRIPTEN__
     // Ensure the browser console shows the C++ what() even when the exception
     // is later rethrown as an opaque CppException from the main loop.

@@ -29,6 +29,10 @@ class System
 public:
   static std::string find_default_datadir();
   static std::string find_default_userdir();
+#if defined(ANDROID) || defined(__ANDROID__)
+  /** Copy APK assets into internal storage once so fopen/ifstream work. */
+  static void prepare_android_datadir();
+#endif
 };
 
 #endif

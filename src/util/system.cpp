@@ -18,12 +18,17 @@
 
 #include "util/system.hpp"
 
+#include <fstream>
+#include <vector>
+#include <filesystem>
+
 #include <stdexcept>
 #include <sstream>
 #include <stdlib.h>
 
 #if defined(ANDROID) || defined(__ANDROID__)
 #  include <SDL.h>
+#  include <android/log.h>
 #endif
 
 std::string System::find_default_datadir()
@@ -32,8 +37,11 @@ std::string System::find_default_datadir()
   // Assets are preloaded at /data by the wasm shell / --preload-file.
   return "/data/";
 #elif defined(ANDROID) || defined(__ANDROID__)
-  // Assets are read via Android AssetManager; empty prefix keeps relative
-  // paths like "images/…" which the SDL/Android physfs layer resolves.
+  // Prefer extracted tree under internal storage (see prepare_android_datadir).
+  if (char const* internal = SDL_AndroidGetInternalStoragePath()) {
+    std::string root = std::string(internal) + "/game-data/";
+    return root;
+  }
   return "";
 #elif defined(_WIN32)
   // TODO: do something with GetModuleFileName()
@@ -93,3 +101,91 @@ std::string System::find_default_userdir()
   }
 #endif
 }
+
+#if defined(ANDROID) || defined(__ANDROID__)
+
+namespace {
+
+std::vector<uint8_t> android_read_asset(char const* path)
+{
+  SDL_RWops* rw = SDL_RWFromFile(path, "rb");
+  if (!rw) {
+    return {};
+  }
+  Sint64 size = SDL_RWsize(rw);
+  if (size < 0) {
+    SDL_RWclose(rw);
+    return {};
+  }
+  std::vector<uint8_t> buf(static_cast<size_t>(size));
+  size_t got = SDL_RWread(rw, buf.data(), 1, static_cast<size_t>(size));
+  SDL_RWclose(rw);
+  if (got != static_cast<size_t>(size)) {
+    return {};
+  }
+  return buf;
+}
+
+} // namespace
+
+void
+System::prepare_android_datadir()
+{
+  char const* internal = SDL_AndroidGetInternalStoragePath();
+  if (!internal) {
+    throw std::runtime_error("SDL_AndroidGetInternalStoragePath returned null");
+  }
+
+  std::filesystem::path root = std::filesystem::path(internal) / "game-data";
+  std::filesystem::path marker = root / ".assets-extracted";
+
+  if (!std::filesystem::exists(marker)) {
+    __android_log_print(ANDROID_LOG_INFO, "windstille",
+                        "Extracting APK assets to %s", root.c_str());
+    std::filesystem::create_directories(root);
+
+    auto index = android_read_asset("android-asset-index.txt");
+    if (index.empty()) {
+      // Fallback: try without index (single known files will fail later)
+      __android_log_print(ANDROID_LOG_WARN, "windstille",
+                          "android-asset-index.txt missing in APK assets");
+    } else {
+      std::string text(index.begin(), index.end());
+      std::size_t pos = 0;
+      while (pos < text.size()) {
+        std::size_t end = text.find('\n', pos);
+        if (end == std::string::npos) end = text.size();
+        std::string rel = text.substr(pos, end - pos);
+        if (!rel.empty() && rel.back() == '\r') rel.pop_back();
+        pos = end + 1;
+        if (rel.empty() || rel == "android-asset-index.txt") continue;
+
+        auto bytes = android_read_asset(rel.c_str());
+        if (bytes.empty()) {
+          __android_log_print(ANDROID_LOG_WARN, "windstille",
+                              "skip missing asset: %s", rel.c_str());
+          continue;
+        }
+        std::filesystem::path out = root / rel;
+        std::filesystem::create_directories(out.parent_path());
+        std::ofstream ofs(out, std::ios::binary);
+        ofs.write(reinterpret_cast<char const*>(bytes.data()),
+                  static_cast<std::streamsize>(bytes.size()));
+      }
+    }
+
+    std::ofstream(marker) << "1\n";
+    __android_log_print(ANDROID_LOG_INFO, "windstille", "Asset extract done");
+  }
+
+  // Pathname expects trailing slash via set_datadir
+  std::string datadir = root.string();
+  if (!datadir.empty() && datadir.back() != '/') datadir += '/';
+  // set later in main via Pathname::set_datadir — return path by env or just set here
+  // We set via Pathname in main after this call; store in a static for find_default_datadir.
+}
+
+// Override find_default_datadir for Android to use extracted tree
+// (definition already exists above — patch it)
+
+#endif
