@@ -261,11 +261,11 @@ EOF
     # Compile-only flags (safe with -c). No -L/-B lib paths that pull Scrt1.o.
     # -fexceptions: tinygettext / prio / Windstille use C++ exceptions; pair with
     # -static-libgcc so libgcc_eh is not the shared GCC 15 copy (GLIBC_2.35).
+    # Omit include-fixed: its pthread.h needs glibc ≥2.32; ArkOS is ~2.30.
     commonCompile = ''
       -nostdinc \
       --sysroot=${sysroot} \
       -isystem ${fixedInc} \
-      -isystem ${fixedInc2} \
       -isystem ${sysroot}/usr/include/aarch64-linux-gnu \
       -isystem ${sysroot}/usr/include \
       -pthread \
@@ -281,7 +281,6 @@ EOF
       -isystem ${cxxIncTarget} \
       -isystem ${cxxInc}/backward \
       -isystem ${fixedInc} \
-      -isystem ${fixedInc2} \
       -isystem ${sysroot}/usr/include/aarch64-linux-gnu \
       -isystem ${sysroot}/usr/include \
       -pthread \
