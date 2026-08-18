@@ -437,19 +437,21 @@
             # Full external/* cmake graph for MinGW is still WIP (see PORTS.md).
             # This derivation is the packaging hook; link failures are expected
             # until mkExternal is exercised under pkgsCross.mingwW64.
+            # hostPlatform is x86_64-windows (pkgsCross.mingwW64) — meta must match.
             meta = {
               description = "Windstille Windows x86_64 game binary (mingwW64) — WIP";
-              platforms = [ "x86_64-linux" ];
+              platforms = [ "x86_64-windows" ];
             };
           };
 
         # Flat layout: .exe + DLLs + data/ (Pingus-style zip-friendly tree).
+        # runCommand on the Linux evaluator; ships the mingw output + runtime DLLs.
         windstille-win64 =
           if windstille-win64-game == null then null
           else pkgs.runCommand "windstille-win64" {
             meta = {
               description = "Windstille Windows x86_64 flat package (exe + DLLs)";
-              platforms = [ "x86_64-linux" ];
+              platforms = pkgs.lib.platforms.linux;
             };
           } ''
             mkdir -p $out
@@ -480,7 +482,9 @@
         # Full APK/sysroot wiring needs SDK license accept + published ArkOS
         # sysroot; helper stacks are importable now.  See PORTS.md.
         linuxPorts =
-          if !pkgs.stdenv.hostPlatform.isLinux then {}
+          if !pkgs.stdenv.hostPlatform.isLinux then {
+            packages = {};
+          }
           else
             let
               wasm = import ./nix/wasm.nix {
@@ -584,16 +588,22 @@
                 pname = "windstille-r36s-portmaster-zip";
               };
             in {
-              inherit (wasm) sdl2WasmLibs zlibWasmLibs sdlWasmLibs
-                mkApp mkOpenBrowserApp glmPrefix sigcWasm;
-              inherit windstille-wasm;
-              windstille-wasm-helpers = wasm.sdl2WasmLibs;
-              inherit (android) sdlAndroidLibs mkApk mkInstallApp;
-              inherit windstille-android;
-              android-sdl-libs = android.sdlAndroidLibs;
+              # Derivations only (safe for packages / flake check).
+              packages = {
+                inherit (wasm) sdl2WasmLibs zlibWasmLibs sdlWasmLibs glmPrefix sigcWasm;
+                inherit windstille-wasm;
+                windstille-wasm-helpers = wasm.sdl2WasmLibs;
+                inherit (android) sdlAndroidLibs;
+                inherit windstille-android;
+                android-sdl-libs = android.sdlAndroidLibs;
+                inherit (r36s) arkosSysroot;
+                inherit windstille-r36s windstille-r36s-portmaster windstille-r36s-portmaster-zip;
+              };
+              # Functions / strings for apps only (not under packages).
+              inherit (wasm) mkOpenBrowserApp;
+              inherit (android) mkInstallApp;
               inherit androidApkName;
-              inherit (r36s) arkosSysroot;
-              inherit windstille-r36s windstille-r36s-portmaster windstille-r36s-portmaster-zip;
+              inherit windstille-wasm windstille-android;
             };
 
       in
@@ -611,7 +621,7 @@
           default = windstille;
         } // lib.optionalAttrs (windstille-win64 != null) {
           inherit windstille-win64;
-        } // linuxPorts;
+        } // (linuxPorts.packages or {});
 
         # `nix flake check` builds every attribute here. Prefer compile-only
         # targets that do not need a device sysroot or Android SDK download
@@ -633,11 +643,8 @@
         } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? windstille-android) {
           # APK compile (SDK license accepted in androidPkgs)
           inherit (linuxPorts) windstille-android;
-        } // lib.optionalAttrs (windstille-win64 != null) {
-          inherit windstille-win64;
         };
-        # Note: windstille-r36s is omitted from checks — ArkOS sysroot URL is
-        # still a localhost placeholder; `nix build .#windstille-r36s` once published.
+        # win64 / r36s omitted from checks (cross WIP / sysroot placeholder).
 
         apps = {
           windstille = {
@@ -656,20 +663,13 @@
             type = "app";
             program = "${windstille}/bin/windstille";
           };
-        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? windstille-wasm) {
-          windstille-wasm = (import ./nix/wasm.nix {
-            inherit pkgs;
-            sdlSrc = sdl2-src;
-            sdlVersion = "2.30.9";
-            sdlImageSrc = sdl2-image-src;
-            sdlMixerSrc = null; # Windstille: OpenAL + modplug, not SDL_mixer
-            squirrelSrc = squirrel;
-          }).mkOpenBrowserApp {
+        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? mkOpenBrowserApp) {
+          windstille-wasm = linuxPorts.mkOpenBrowserApp {
             pkg = linuxPorts.windstille-wasm;
             appName = "windstille";
             description = "Serve and open the Windstille wasm build in a browser";
           };
-        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? windstille-android) {
+        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? mkInstallApp) {
           install-android-windstille = linuxPorts.mkInstallApp {
             pkg = linuxPorts.windstille-android;
             apkFileName = linuxPorts.androidApkName;
