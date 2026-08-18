@@ -84,7 +84,7 @@ if [ -z "$EXTERNAL_DIR" ]; then
 fi
 if [ -z "$EXTERNAL_DIR" ] || [ ! -d "$EXTERNAL_DIR" ]; then
   echo "error: GAME_EXTERNAL_DIR must point at the repo external/ tree" >&2
-  echo "       (contains geomcpp/, priocpp/, sexpcpp/, logmich/, …)" >&2
+  echo "       (contains geomcpp/, prio/, sexpcpp/, logmich/, …)" >&2
   exit 1
 fi
 
@@ -93,11 +93,16 @@ mkdir -p src/jni/external_includes
 # package cannot create e.g. external_includes/geom → Permission denied.
 # Copy then force owner-writable on the staging tree.
 # Header-only / public includes (layout: include/<ns>/… → external_includes/<ns>/…)
-for name in argpp geomcpp logmich priocpp strutcpp sexpcpp tinygettext; do
+# dir names in Windstille external/ (prio, not priocpp). optional → warn only.
+for entry in argpp:req geomcpp:req logmich:req prio:req strutcpp:req sexpcpp:req tinygettext:opt; do
+  name="${entry%%:*}"
+  mode="${entry##*:}"
   inc="$EXTERNAL_DIR/$name/include"
   if [ -d "$inc" ]; then
     cp -a "$inc"/. src/jni/external_includes/
     chmod -R u+rwX src/jni/external_includes
+  elif [ "$mode" = "opt" ]; then
+    echo "warning: optional external missing $inc" >&2
   else
     echo "error: missing $inc" >&2
     exit 1
@@ -145,10 +150,16 @@ stage_lib_src argpp
 stage_lib_src logmich
 stage_lib_src sexpcpp
 stage_lib_src strutcpp
-stage_lib_src priocpp
+stage_lib_src prio
+# Android.mk references deps/priocpp — alias sources staged as prio.
+if [ -d src/jni/src/deps/prio ] && [ ! -e src/jni/src/deps/priocpp ]; then
+  ln -s prio src/jni/src/deps/priocpp
+fi
 stage_lib_src tinygettext
 # Drop JSON backends (PRIO_USE_JSONCPP is off).
-rm -f src/jni/src/deps/priocpp/json_*.cpp \
+rm -f src/jni/src/deps/prio/json_*.cpp \
+      src/jni/src/deps/prio/jsonpretty_*.cpp \
+      src/jni/src/deps/priocpp/json_*.cpp \
       src/jni/src/deps/priocpp/jsonpretty_*.cpp
 # strut layout.cpp needs a missing polygon.hpp; Windstille does not use Layout.
 rm -f src/jni/src/deps/strutcpp/layout.cpp

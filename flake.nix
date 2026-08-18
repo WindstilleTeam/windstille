@@ -469,7 +469,9 @@
                 sdlSrc = sdl2-src;
                 sdlVersion = "2.30.9";
                 sdlImageSrc = sdl2-image-src;
-                sdlMixerSrc = sdl2-mixer-src;
+                # No SDL2_mixer: Windstille audio is OpenAL Soft + libmodplug
+                # (see nix/wasm.nix modplugWasm / enableSound).
+                sdlMixerSrc = null;
               };
               # Data is large; preload only if present.  Empty dataDir still
               # produces a linkable .html/.js/.wasm for smoke tests.
@@ -613,7 +615,7 @@
             sdlSrc = sdl2-src;
             sdlVersion = "2.30.9";
             sdlImageSrc = sdl2-image-src;
-            sdlMixerSrc = sdl2-mixer-src;
+            sdlMixerSrc = null; # Windstille: OpenAL + modplug, not SDL_mixer
           }).mkOpenBrowserApp {
             pkg = linuxPorts.windstille-wasm;
             appName = "windstille";
