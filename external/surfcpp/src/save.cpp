@@ -17,8 +17,12 @@
 #include <stdexcept>
 
 #include "pixel_data.hpp"
-#include "plugins/jpeg.hpp"
-#include "plugins/png.hpp"
+#if defined(HAVE_JPEG)
+#  include "plugins/jpeg.hpp"
+#endif
+#if defined(HAVE_PNG)
+#  include "plugins/png.hpp"
+#endif
 #include "save.hpp"
 
 namespace surf {
@@ -27,16 +31,32 @@ void save(SoftwareSurface const& surface, std::filesystem::path const& path, std
 {
   if (format == "auto") {
     if (path.extension() == ".jpg" || path.extension() == ".JPG") {
+#if defined(HAVE_JPEG)
       surf::jpeg::save(surface, path, 70);
+#else
+      throw std::runtime_error("JPEG support not built");
+#endif
     } else if (path.extension() == ".png" || path.extension() == ".PNG") {
+#if defined(HAVE_PNG)
       surf::png::save(surface, path);
+#else
+      throw std::runtime_error("PNG support not built");
+#endif
     } else {
       throw std::invalid_argument("unknown file extension");
     }
   } else if (format == "png") {
+#if defined(HAVE_PNG)
     surf::png::save(surface, path);
+#else
+    throw std::runtime_error("PNG support not built");
+#endif
   } else if (format == "jpeg") {
+#if defined(HAVE_JPEG)
     surf::jpeg::save(surface, path, 70);
+#else
+    throw std::runtime_error("JPEG support not built");
+#endif
   } else {
     throw std::runtime_error("unsupported format");
   }
