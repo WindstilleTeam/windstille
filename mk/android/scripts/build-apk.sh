@@ -174,21 +174,21 @@ stage_lib_src argpp
 stage_lib_src logmich
 stage_lib_src sexpcpp
 stage_lib_src strutcpp
+# Stage as priocpp only (Android.mk deps path). Staging both prio and a
+# priocpp symlink caused ndk-build to compile every .cpp twice.
 stage_lib_src prio
+if [ -d src/jni/src/deps/prio ]; then
+  rm -rf src/jni/src/deps/priocpp
+  mv src/jni/src/deps/prio src/jni/src/deps/priocpp
+fi
 stage_lib_src babyxml
 stage_lib_src surfcpp
 stage_lib_src wstdisplay
 stage_lib_src wstinput
 stage_lib_src biiocpp
-# Android.mk references deps/priocpp — alias sources staged as prio.
-if [ -d src/jni/src/deps/prio ] && [ ! -e src/jni/src/deps/priocpp ]; then
-  ln -s prio src/jni/src/deps/priocpp
-fi
 stage_lib_src tinygettext
 # Drop JSON backends (PRIO_USE_JSONCPP is off).
-rm -f src/jni/src/deps/prio/json_*.cpp \
-      src/jni/src/deps/prio/jsonpretty_*.cpp \
-      src/jni/src/deps/priocpp/json_*.cpp \
+rm -f src/jni/src/deps/priocpp/json_*.cpp \
       src/jni/src/deps/priocpp/jsonpretty_*.cpp
 # strut layout.cpp needs a missing polygon.hpp; Windstille does not use Layout.
 rm -f src/jni/src/deps/strutcpp/layout.cpp

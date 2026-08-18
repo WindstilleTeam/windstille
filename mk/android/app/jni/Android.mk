@@ -96,7 +96,6 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/deps/sexpcpp \
 	$(LOCAL_PATH)/deps/strutcpp \
 	$(LOCAL_PATH)/deps/priocpp \
-	$(LOCAL_PATH)/deps/prio \
 	$(LOCAL_PATH)/deps/babyxml \
 	$(LOCAL_PATH)/deps/biiocpp \
 	$(LOCAL_PATH)/deps/surfcpp \
