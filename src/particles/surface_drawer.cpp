@@ -25,8 +25,8 @@
 #include <wstdisplay/surface_manager.hpp>
 #include "particles/particle_system.hpp"
 #include <wstdisplay/scenegraph/vertex_array_drawable.hpp>
-#include "util/file_reader.cpp"
-#include "util/pathname.cpp"
+#include "util/file_reader.hpp"
+#include "util/pathname.hpp"
 
 namespace windstille {
 
