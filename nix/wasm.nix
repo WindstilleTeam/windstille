@@ -398,7 +398,7 @@ EOF
     version = "2.13.2";
     src = pkgs.fetchurl {
       url = "https://downloads.sourceforge.net/project/freetype/freetype2/2.13.2/freetype-2.13.2.tar.xz";
-      hash = "sha256-QmidptlkYwrPgL5BxUE1UCn94Khf6Nz88bUFqG17R0w=";
+      hash = "sha256-EpkcTlXFBt1/m3ZZM+Yv0r4uBtQhUF15UKEy5PG7SE0=";
     };
     nativeBuildInputs = [ pkgs.emscripten pkgs.cmake pkgs.python3 ];
     dontConfigure = true;

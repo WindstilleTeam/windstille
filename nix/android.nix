@@ -146,16 +146,15 @@ let
 
     # Prebuilt SDL2 (+ optional SDL2_mixer) for the app's ndk-build tree.
   # Windstille uses OpenAL + modplug; mixer is only registered when built.
-  
   squirrelAndroidSrc = pkgs.fetchurl {
     url = "https://github.com/albertodemichelis/squirrel/archive/f77074bdd6152d230609146a3d424c6f49e3770f.tar.gz";
     hash = "sha256-hw4EFdN+KSwVR4spZkgVDeXor5H5w3KGvI6bslmSBW8=";
   };
 
-    freetypeSrc = pkgs.fetchurl {
+  freetypeSrc = pkgs.fetchurl {
     # Savannah mirrors are often flaky; SourceForge mirror for 2.13.2.
     url = "https://downloads.sourceforge.net/project/freetype/freetype2/2.13.2/freetype-2.13.2.tar.xz";
-    hash = "sha256-QmidptlkYwrPgL5BxUE1UCn94Khf6Nz88bUFqG17R0w=";
+    hash = "sha256-EpkcTlXFBt1/m3ZZM+Yv0r4uBtQhUF15UKEy5PG7SE0=";
   };
 
   freetypeAndroidLibs = pkgs.stdenvNoCC.mkDerivation {
