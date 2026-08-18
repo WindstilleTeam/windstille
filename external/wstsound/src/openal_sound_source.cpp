@@ -21,11 +21,12 @@
 #include <assert.h>
 #include <iostream>
 
-#define AL_ALEXT_PROTOTYPES
-#include <AL/efx.h>
-
-#include "effect_slot.hpp"
-#include "filter.hpp"
+#if defined(WSTSOUND_WITH_EFX)
+#  define AL_ALEXT_PROTOTYPES
+#  include <AL/efx.h>
+#  include "effect_slot.hpp"
+#  include "filter.hpp"
+#endif
 #include "sound_error.hpp"
 #include "sound_manager.hpp"
 
@@ -142,8 +143,9 @@ OpenALSoundSource::set_looping(bool looping)
 }
 
 void
-OpenALSoundSource::set_loop(int sample_beg, int sample_end)
+OpenALSoundSource::set_loop(int /* sample_beg */, int /* sample_end */)
 {
+  // Sample-range looping is only implemented for streaming sources.
   throw SoundError("OpenALSoundSource::set_loop() not supported for non-streaming sources");
 }
 
@@ -218,6 +220,7 @@ OpenALSoundSource::update(float delta)
 void
 OpenALSoundSource::set_direct_filter(FilterPtr const& filter)
 {
+#if defined(WSTSOUND_WITH_EFX)
   m_direct_filter = filter;
 
   if (!filter) {
@@ -226,11 +229,15 @@ OpenALSoundSource::set_direct_filter(FilterPtr const& filter)
     alSourcei(m_source, AL_DIRECT_FILTER, filter->handle());
   }
   OpenALSystem::warn_al_error("OpenALSoundSource::set_direct_filter: ");
+#else
+  (void)filter;
+#endif
 }
 
 void
 OpenALSoundSource::set_effect_slot(EffectSlotPtr const& slot, FilterPtr const& filter)
 {
+#if defined(WSTSOUND_WITH_EFX)
   m_effect_slot = slot;
   m_filter = filter;
   ALint const auxiliary_send = 0; // can have more than one!
@@ -240,6 +247,10 @@ OpenALSoundSource::set_effect_slot(EffectSlotPtr const& slot, FilterPtr const& f
              auxiliary_send,
              filter ? m_filter->handle() : AL_FILTER_NULL);
   OpenALSystem::warn_al_error("OpenALSoundSource::set_effect_slot: ");
+#else
+  (void)slot;
+  (void)filter;
+#endif
 }
 
 } // namespace wstsound
