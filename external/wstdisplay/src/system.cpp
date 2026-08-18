@@ -25,7 +25,7 @@
 
 #include <wstdisplay/opengl_window.hpp>
 
-#include "system.hpp"
+#include <wstsystem/system.hpp>
 
 namespace wstsys {
 
