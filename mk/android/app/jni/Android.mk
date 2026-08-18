@@ -64,7 +64,11 @@ LOCAL_SRC_FILES := $(filter-out \
   %/plugins/file_jpeg_decompressor.cpp \
   %/plugins/mem_jpeg_compressor.cpp \
   %/plugins/mem_jpeg_decompressor.cpp \
-  %/plugins/png.cpp,\
+  %/plugins/png.cpp \
+  %/plugins/xcf.cpp \
+  %/plugins/rsvg.cpp \
+  %/plugins/vidthumb.cpp \
+  %/plugins/imagemagick.cpp,\
   $(LOCAL_SRC_FILES))
 
 ifneq ($(ENABLE_ANDROID_SOUND),1)
@@ -139,6 +143,11 @@ LOCAL_CPPFLAGS += -DWSTSOUND_WITH_MODPLUG=1
 else
 LOCAL_CFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_NO_SOUND=1 -DWINDSTILLE_USE_GLES=1 -DWSTDISPLAY_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL
 LOCAL_CPPFLAGS += -DUSE_SDL2 -DANDROID -DWINDSTILLE_NO_SOUND=1 -DWINDSTILLE_USE_GLES=1 -DWSTDISPLAY_USE_GLES=1 -DGLM_ENABLE_EXPERIMENTAL -std=c++23 -fexceptions -D_LIBCPP_ENABLE_EXPERIMENTAL=1
+endif
+
+# FreeType prebuilt (must come after any LOCAL_STATIC_LIBRARIES := overwrite above)
+ifneq ($(wildcard $(LOCAL_PATH)/../freetype/$(TARGET_ARCH_ABI)/lib/libfreetype.a),)
+LOCAL_STATIC_LIBRARIES += freetype
 endif
 
 LOCAL_CFLAGS += -DPRIO_USE_SEXPCPP=1 -DTINYGETTEXT_UTF8_ONLY=1
