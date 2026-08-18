@@ -105,9 +105,9 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] Default datadir/userdir for Android (`SDL_AndroidGetInternalStoragePath`)
 
 ### R36S / ArkOS (`nix build .#windstille-r36s`)
-- [ ] Publish or document ArkOS aarch64 sysroot tarball; update hash in `nix/r36s.nix`
-- [ ] Cross-build game against sysroot toolchain files in `mk/r36s/`
-- [ ] PortMaster tree package (`windstille-r36s-portmaster`)
+- [ ] Publish or document ArkOS aarch64 sysroot tarball; update hash in `nix/r36s.nix` (still localhost placeholder)
+- [x] Cross-build game against sysroot toolchain files in `mk/r36s/` (wired via `mkWindstilleR36s`)
+- [x] PortMaster tree package (`windstille-r36s-portmaster` + zip)
 - [ ] Controller profile (`data/controller/…`) if needed
 - [ ] On-device smoke test
 

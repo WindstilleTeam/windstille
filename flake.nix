@@ -491,6 +491,29 @@
                 inherit stbImageH;
                 gameVersion = "0.3.0-dev";
               };
+
+              # R36S / ArkOS — sysroot URL is still a localhost placeholder in
+              # nix/r36s.nix; update hash when a permanent tarball is published.
+              r36s = import ./nix/r36s.nix {
+                inherit (pkgs) lib stdenv stdenvNoCC fetchurl cmake pkg-config writeShellScript zip glm;
+                pkgsCross = pkgs.pkgsCross;
+              };
+              windstille-r36s = r36s.mkWindstilleR36s {
+                src = ./.;
+                version = "0.3.0-dev";
+                pname = "windstille-r36s";
+                enableSound = true;
+              };
+              windstille-r36s-portmaster = r36s.mkWindstilleR36sPortMaster {
+                r36sPkg = windstille-r36s;
+                version = "0.3.0-dev";
+                pname = "windstille-r36s-portmaster";
+              };
+              windstille-r36s-portmaster-zip = r36s.mkWindstilleR36sPortMasterZip {
+                portMasterPkg = windstille-r36s-portmaster;
+                version = "0.3.0-dev";
+                pname = "windstille-r36s-portmaster-zip";
+              };
             in {
               inherit (wasm) sdl2WasmLibs zlibWasmLibs sdlWasmLibs
                 mkApp mkOpenBrowserApp glmPrefix sigcWasm;
@@ -500,6 +523,8 @@
               inherit windstille-android;
               android-sdl-libs = android.sdlAndroidLibs;
               inherit androidApkName;
+              inherit (r36s) arkosSysroot;
+              inherit windstille-r36s windstille-r36s-portmaster windstille-r36s-portmaster-zip;
             };
 
       in
