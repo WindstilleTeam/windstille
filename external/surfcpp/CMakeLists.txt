@@ -24,15 +24,24 @@ option(WITH_EXIF "Enable EXIF support" ON)
 option(WITH_EXEC "Enable plugins needing exec() support" OFF)
 
 find_package(PkgConfig REQUIRED)
-# Under cross (R36S) or when the toolchain has no system JPEG/PNG, build without
-# those plugins instead of failing configure.
-find_package(JPEG)
-find_package(PNG)
-if(NOT JPEG_FOUND AND NOT CMAKE_CROSSCOMPILING)
-  message(FATAL_ERROR "JPEG is required for native builds (find_package JPEG failed)")
+
+# Default PNG/JPEG path is header-only stb_image (no libjpeg/libpng). System
+# codecs remain optional for tools that need write support / EXIF pipelines.
+option(SURF_USE_STB_IMAGE "Use stb_image for PNG/JPEG load (default; no system jpeg/png)" ON)
+option(SURF_USE_SYSTEM_JPEG "Build libjpeg plugins (optional)" OFF)
+option(SURF_USE_SYSTEM_PNG "Build libpng plugin (optional)" OFF)
+
+if(SURF_USE_SYSTEM_JPEG)
+  find_package(JPEG)
+  if(NOT JPEG_FOUND)
+    message(WARNING "SURF_USE_SYSTEM_JPEG=ON but JPEG not found; skipping")
+  endif()
 endif()
-if(NOT PNG_FOUND AND NOT CMAKE_CROSSCOMPILING)
-  message(FATAL_ERROR "PNG is required for native builds (find_package PNG failed)")
+if(SURF_USE_SYSTEM_PNG)
+  find_package(PNG)
+  if(NOT PNG_FOUND)
+    message(WARNING "SURF_USE_SYSTEM_PNG=ON but PNG not found; skipping")
+  endif()
 endif()
 
 if(WITH_EXIF)
@@ -101,7 +110,8 @@ if(WITH_EXEC)
   list(append SURF_DEFINES "-DHAVE_EXEC")
 endif()
 
-if(JPEG_FOUND)
+# System libjpeg/libpng only when explicitly requested (and found).
+if(SURF_USE_SYSTEM_JPEG AND JPEG_FOUND)
   list(APPEND SURF_SOURCES
     src/plugins/file_jpeg_compressor.cpp
     src/plugins/file_jpeg_decompressor.cpp
@@ -115,22 +125,19 @@ if(JPEG_FOUND)
   )
   list(APPEND SURF_DEFINES "-DHAVE_JPEG")
 endif()
-if(PNG_FOUND)
+if(SURF_USE_SYSTEM_PNG AND PNG_FOUND)
   list(APPEND SURF_SOURCES src/plugins/png.cpp)
   list(APPEND SURF_DEFINES "-DHAVE_PNG")
 endif()
 
-# stb_image: header-only PNG/JPEG when system libpng/libjpeg are missing
-# (Android, R36S/ArkOS cross, wasm). Same path Android already uses via
-# SURF_USE_STB_IMAGE=1. Auto-enable under cross if neither PNG nor JPEG found.
-option(SURF_USE_STB_IMAGE "Use stb_image for PNG/JPEG when libpng/libjpeg absent" OFF)
-if(NOT SURF_USE_STB_IMAGE AND CMAKE_CROSSCOMPILING AND NOT PNG_FOUND AND NOT JPEG_FOUND)
-  set(SURF_USE_STB_IMAGE ON)
-endif()
 if(SURF_USE_STB_IMAGE)
   list(APPEND SURF_SOURCES src/plugins/stb_image_loader.cpp)
   list(APPEND SURF_DEFINES "-DSURF_USE_STB_IMAGE=1")
-  message(STATUS "surf: enabling stb_image PNG/JPEG loader (SURF_USE_STB_IMAGE)")
+  message(STATUS "surf: stb_image PNG/JPEG loader enabled (SURF_USE_STB_IMAGE)")
+endif()
+
+if(NOT SURF_USE_STB_IMAGE AND NOT (SURF_USE_SYSTEM_PNG AND PNG_FOUND) AND NOT (SURF_USE_SYSTEM_JPEG AND JPEG_FOUND))
+  message(FATAL_ERROR "surf: enable SURF_USE_STB_IMAGE (default) or system JPEG/PNG plugins")
 endif()
 
 add_library(surf STATIC ${SURF_SOURCES})
@@ -146,21 +153,22 @@ target_link_libraries(surf PUBLIC
   geom::geom
   logmich::logmich
   )
-if(PNG_FOUND)
+if(SURF_USE_SYSTEM_PNG AND PNG_FOUND)
   target_link_libraries(surf PUBLIC PNG::PNG)
 endif()
-if(JPEG_FOUND)
+if(SURF_USE_SYSTEM_JPEG AND JPEG_FOUND)
   target_link_libraries(surf PUBLIC JPEG::JPEG)
 endif()
 if(SURF_USE_STB_IMAGE)
-  # Prefer explicit -DSTB_IMAGE_INCLUDE_DIR=… (nix/r36s, android); else look
-  # next to this source tree or under CMAKE_SOURCE_DIR/mk/android.
+  # Prefer -DSTB_IMAGE_INCLUDE_DIR=… (nix flake / r36s / android).
   if(DEFINED STB_IMAGE_INCLUDE_DIR AND EXISTS "${STB_IMAGE_INCLUDE_DIR}/stb_image.h")
     target_include_directories(surf PRIVATE "${STB_IMAGE_INCLUDE_DIR}")
   elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/plugins/stb_image.h")
-    # optional vendored copy
+    # optional vendored copy next to the loader
   elseif(EXISTS "${CMAKE_SOURCE_DIR}/mk/android/app/jni/stb_image.h")
     target_include_directories(surf PRIVATE "${CMAKE_SOURCE_DIR}/mk/android/app/jni")
+  else()
+    message(FATAL_ERROR "surf: SURF_USE_STB_IMAGE requires stb_image.h (set STB_IMAGE_INCLUDE_DIR)")
   endif()
 endif()
 target_include_directories(surf PUBLIC

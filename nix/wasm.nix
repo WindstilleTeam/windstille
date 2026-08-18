@@ -294,8 +294,24 @@ EOF
 
 
 
-  # --- Image codecs for surfcpp (wasm) -------------------------------------
-  # CMakeLists / surfcpp require find_package(JPEG) and find_package(PNG).
+  # --- Image codecs for surfcpp (wasm): header-only stb_image -------------
+  # Prefer stb over emscripten-compiled libjpeg/libpng (faster builds, same
+  # path as Android/R36S). Legacy jpegWasm/pngWasm blocks below are unused.
+  stbImageH = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/nothings/stb/refs/heads/master/stb_image.h";
+    sha256 = "sha256-WUwv411JSItDgtv67I+YNm3vyoGdkWrJW+zz519CALM=";
+  };
+  stbImageIncludeDir = pkgs.stdenvNoCC.mkDerivation {
+    name = "stb-image-include-wasm";
+    dontUnpack = true;
+    installPhase = ''
+      mkdir -p $out
+      cp ${stbImageH} $out/stb_image.h
+    '';
+  };
+
+  # Unused legacy wasm codec builds (kept so older scripts do not break if
+  # referenced). Prefer stbImageIncludeDir.
   jpegWasm = pkgs.stdenv.mkDerivation {
     pname = "libjpeg-wasm";
     version = pkgs.libjpeg.version;
@@ -684,9 +700,10 @@ EOF
       # isolated wstsound-wasm package — so OpenAL comes from the emscripten
       # sysroot (-lopenal) and codec flags follow EMSCRIPTEN defaults in
       # external/wstsound/CMakeLists.txt (modplug + wav only, EFX off).
-      prefixPath = "${glmPrefix}:${sigcWasm}:${jpegWasm}:${pngWasm}:${freetypeWasm}:${squirrelWasm}"
+      # No libjpeg/libpng — surfcpp uses stb_image via STB_IMAGE_INCLUDE_DIR.
+      prefixPath = "${glmPrefix}:${sigcWasm}:${freetypeWasm}:${squirrelWasm}"
         + (if enableSound then ":${modplugWasm}" else "");
-      pkgConfigPath = "${sdlWasmLibs}/lib/pkgconfig:${jpegWasm}/lib/pkgconfig:${pngWasm}/lib/pkgconfig:${freetypeWasm}/lib/pkgconfig:${squirrelWasm}/lib/pkgconfig"
+      pkgConfigPath = "${sdlWasmLibs}/lib/pkgconfig:${freetypeWasm}/lib/pkgconfig:${squirrelWasm}/lib/pkgconfig"
         + (if enableSound then ":${modplugWasm}/lib/pkgconfig" else "");
     in
     pkgs.stdenv.mkDerivation {
@@ -712,8 +729,7 @@ EOF
         PKG_CONFIG_PATH = pkgConfigPath;
         ZLIB_WASM_LIBS = zlibWasmLibs;
         MINISWIG = "${miniswigHost}/bin/miniswig";
-        JPEG_WASM_LIBS = jpegWasm;
-        PNG_WASM_LIBS = pngWasm;
+        STB_IMAGE_INCLUDE_DIR = "${stbImageIncludeDir}";
         FREETYPE_WASM_LIBS = freetypeWasm;
         SQUIRREL_WASM_LIBS = squirrelWasm;
       } // pkgs.lib.optionalAttrs (dataDir != null) {

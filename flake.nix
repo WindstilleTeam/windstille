@@ -48,6 +48,26 @@
       let
         inherit (pkgs) lib stdenv;
 
+        # Header-only stb_image for PNG/JPEG (replaces libjpeg/libpng everywhere).
+        stbImageH = pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/nothings/stb/refs/heads/master/stb_image.h";
+          sha256 = "sha256-WUwv411JSItDgtv67I+YNm3vyoGdkWrJW+zz519CALM=";
+        };
+        stbImageIncludeDir = pkgs.stdenvNoCC.mkDerivation {
+          name = "stb-image-include";
+          dontUnpack = true;
+          installPhase = ''
+            mkdir -p $out
+            cp ${stbImageH} $out/stb_image.h
+          '';
+        };
+        surfStbCmakeFlags = [
+          "-DSURF_USE_STB_IMAGE=ON"
+          "-DSURF_USE_SYSTEM_JPEG=OFF"
+          "-DSURF_USE_SYSTEM_PNG=OFF"
+          "-DSTB_IMAGE_INCLUDE_DIR=${stbImageIncludeDir}"
+        ];
+
         # Shared cmake helper for external/* subtrees built as standalone
         # packages.  When CMAKE_SOURCE_DIR equals CMAKE_CURRENT_SOURCE_DIR
         # their install/export blocks run and produce *Config.cmake files
@@ -147,9 +167,10 @@
           version = "0.0.0";
           buildInputs = [
             tinycmmc_pkg geomcpp logmich
-            pkgs.libpng pkgs.libjpeg pkgs.glm
+            pkgs.glm
           ];
-          propagatedBuildInputs = [ geomcpp logmich pkgs.libpng pkgs.libjpeg pkgs.glm ];
+          propagatedBuildInputs = [ geomcpp logmich pkgs.glm ];
+          cmakeFlags = surfStbCmakeFlags;
         };
 
         wstsound = mkExternal {
@@ -252,8 +273,6 @@
           squirrel.packages.${pkgs.stdenv.hostPlatform.system}.default
           pkgs.gtest
           pkgs.glm
-          pkgs.libjpeg
-          pkgs.libpng
           pkgs.glew
           pkgs.libGL
           pkgs.SDL2
@@ -272,6 +291,8 @@
         ] ++ lib.optionals pkgs.stdenv.hostPlatform.isWindows [
           SDL2-win32.packages.${pkgs.stdenv.hostPlatform.system}.default
         ];
+        # Pass stb_image into monorepo cmake when in-tree surfcpp is built.
+        commonCmakeFlags = surfStbCmakeFlags;
 
         # Core library.  Configures the full tree (so GenerateWrapper /
         # miniswig still run) but only builds and installs libwindstille.
@@ -282,7 +303,7 @@
           cmakeFlags = [
             "-DBUILD_EDITOR=OFF"
             "-DBUILD_EXTRA=OFF"
-          ];
+          ] ++ commonCmakeFlags;
           nativeBuildInputs = commonNative ++ [ miniswig ];
           buildInputs = commonBuildInputs;
           buildPhase = ''
@@ -308,7 +329,7 @@
             "-DBUILD_EXTRA=ON"
           ] ++ lib.optionals pkgs.stdenv.hostPlatform.isWindows [
             "-DBUILD_EDITOR=OFF"
-          ];
+          ] ++ commonCmakeFlags;
           nativeBuildInputs = commonNative ++ [
             miniswig
           ] ++ lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.makeWrapper;
@@ -322,7 +343,7 @@
           cmakeFlags = [
             "-DBUILD_EDITOR=ON"
             "-DBUILD_EXTRA=OFF"
-          ];
+          ] ++ commonCmakeFlags;
           nativeBuildInputs = commonNative ++ [
             miniswig
           ] ++ lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.makeWrapper;
@@ -347,7 +368,7 @@
             "-DBUILD_EXTRA=OFF"
             "-DWINDSTILLE_USE_GLES=ON"
             "-DWSTDISPLAY_USE_GLES=ON"
-          ];
+          ] ++ commonCmakeFlags;
           nativeBuildInputs = commonNative ++ [ miniswig ]
             ++ lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.makeWrapper;
           buildInputs = [
@@ -359,8 +380,6 @@
             pkgs.libsigcxx
             pkgs.sysprof
             pkgs.glm
-            pkgs.libjpeg
-            pkgs.libpng
             pkgs.openal
             pkgs.libopus
             pkgs.opusfile
@@ -593,6 +612,32 @@
         } // lib.optionalAttrs (windstille-win64 != null) {
           inherit windstille-win64;
         } // linuxPorts;
+
+        # `nix flake check` builds every attribute here. Prefer compile-only
+        # targets that do not need a device sysroot or Android SDK download
+        # in default CI; ports that need those stay in packages.
+        checks = {
+          # Externals (stb_image, no libjpeg/libpng)
+          inherit
+            tinycmmc_pkg logmich sexpcpp geomcpp babyxml biiocpp argpp
+            strutcpp prio surfcpp wstsound wstdisplay wstdisplay_gles
+            wstinput wstgui miniswig;
+          # Game binaries
+          inherit
+            libwindstille
+            windstille
+            windstille-editor
+            windstille-gles2;
+        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? windstille-wasm) {
+          inherit (linuxPorts) windstille-wasm;
+        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? windstille-android) {
+          # APK compile (SDK license accepted in androidPkgs)
+          inherit (linuxPorts) windstille-android;
+        } // lib.optionalAttrs (windstille-win64 != null) {
+          inherit windstille-win64;
+        };
+        # Note: windstille-r36s is omitted from checks — ArkOS sysroot URL is
+        # still a localhost placeholder; `nix build .#windstille-r36s` once published.
 
         apps = {
           windstille = {

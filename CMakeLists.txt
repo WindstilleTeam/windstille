@@ -52,15 +52,9 @@ else()
   find_program(XCF2PNG xcf2png REQUIRED)
 endif()
 find_package(Threads REQUIRED)
-# JPEG/PNG: required on native desktop; optional under cross (R36S sysroot may
-# omit them — surfcpp then drops the corresponding plugins).
-if(CMAKE_CROSSCOMPILING)
-  find_package(JPEG)
-  find_package(PNG)
-else()
-  find_package(JPEG REQUIRED)
-  find_package(PNG REQUIRED)
-endif()
+# JPEG/PNG system libs optional — surfcpp defaults to header-only stb_image.
+find_package(JPEG)
+find_package(PNG)
 if(NOT WINDSTILLE_USE_GLES)
   find_package(OpenGL REQUIRED)
   find_package(GLEW REQUIRED)
