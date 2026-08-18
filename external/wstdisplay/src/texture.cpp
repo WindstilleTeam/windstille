@@ -155,8 +155,17 @@ Texture::Texture(SoftwareSurface const& image, GLint glformat) :
     glPixelStorei(GL_UNPACK_ROW_LENGTH, image.get_pitch() / bytes_per_pixel);
 #endif
 
-    if ((false))
-    { // no mipmapping
+    // GLES2: NPOT textures must use CLAMP_TO_EDGE and non-mipmap min filters
+    // unless the implementation supports full NPOT (unreliable). Skip mipmaps
+    // for non-power-of-two sizes on GLES to avoid GL_INVALID_OPERATION.
+#if WSTDISPLAY_GL_ES
+    const bool use_mipmaps =
+      glm::isPowerOfTwo(image.get_width()) && glm::isPowerOfTwo(image.get_height());
+#else
+    const bool use_mipmaps = true;
+#endif
+    if (!use_mipmaps)
+    {
       glTexImage2D(m_target, 0, glformat,
                    image.get_width(), image.get_height(), 0, sdl_format,
                    GL_UNSIGNED_BYTE, image.get_data());

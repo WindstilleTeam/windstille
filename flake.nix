@@ -371,8 +371,15 @@
             miniswig
             squirrel.packages.${pkgs.stdenv.hostPlatform.system}.default
           ];
+          # CMake installs "windstille"; expose matching name for `nix run .#windstille-gles2`.
+          postInstall = ''
+            if [ -e "$out/bin/windstille" ] && [ ! -e "$out/bin/windstille-gles2" ]; then
+              ln -s windstille "$out/bin/windstille-gles2"
+            fi
+          '';
           meta = {
             description = "Windstille linked against OpenGL ES 2.0 (libGLESv2/libEGL)";
+            mainProgram = "windstille";
           };
         };
 
@@ -591,6 +598,10 @@
           windstille-editor = {
             type = "app";
             program = "${windstille-editor}/bin/windstille-editor";
+          };
+          windstille-gles2 = {
+            type = "app";
+            program = "${windstille-gles2}/bin/windstille";
           };
           default = {
             type = "app";
