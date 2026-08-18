@@ -71,6 +71,11 @@ if [ "$ENABLE_SOUND" = 1 ]; then
   LINK_FLAGS+=("-lopenal")
   echo "==> linking -lopenal (wstsound)"
 fi
+# Squirrel static archives (must be on LINK_FLAGS before EMSCRIPTEN_LINK_FLAGS is fixed).
+if [ -n "${SQUIRREL_WASM_LIBS:-}" ] && [ -d "${SQUIRREL_WASM_LIBS}/lib" ]; then
+  LINK_FLAGS+=("-L${SQUIRREL_WASM_LIBS}/lib")
+  echo "==> linking -L ${SQUIRREL_WASM_LIBS}/lib (squirrel)"
+fi
 
 if [ -n "${WASM_SHELL:-}" ] && [ -f "$WASM_SHELL" ]; then
   LINK_FLAGS+=("--shell-file" "$WASM_SHELL")

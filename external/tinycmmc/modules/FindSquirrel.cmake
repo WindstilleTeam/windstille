@@ -16,7 +16,18 @@
 #    misrepresented as being the original software.
 # 3. This notice may not be removed or altered from any source distribution.
 
-pkg_search_module(SQUIRREL squirrel3 IMPORTED_TARGET)
+# Allow callers (wasm / R36S) to inject absolute static archives before search.
+if(SQUIRREL_LIBRARIES AND SQUIRREL_INCLUDE_DIRS AND NOT TARGET PkgConfig::SQUIRREL)
+  add_library(PkgConfig::SQUIRREL INTERFACE IMPORTED)
+  target_link_libraries(PkgConfig::SQUIRREL INTERFACE ${SQUIRREL_LIBRARIES})
+  target_include_directories(PkgConfig::SQUIRREL INTERFACE ${SQUIRREL_INCLUDE_DIRS})
+  set(SQUIRREL_FOUND TRUE)
+  message(STATUS "Found Squirrel (pre-set): ${SQUIRREL_LIBRARIES} ${SQUIRREL_INCLUDE_DIRS}")
+endif()
+
+if(NOT SQUIRREL_FOUND)
+  pkg_search_module(SQUIRREL squirrel3 IMPORTED_TARGET)
+endif()
 if(NOT SQUIRREL_FOUND)
   find_library(SQUIRREL_LIBRARIES NAMES "squirrel" "squirrel3" REQUIRED)
   find_library(SQSTDLIB_LIBRARIES NAMES "sqstdlib" "sqstdlib3" REQUIRED)
