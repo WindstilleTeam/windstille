@@ -17,6 +17,7 @@
 */
 
 #include <sstream>
+#include <iomanip>
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -51,7 +52,6 @@
 #include "sprite3d/manager.hpp"
 #include "tile/tile_factory.hpp"
 #include "util/system.hpp"
-#include <format>
 
 namespace windstille {
 
@@ -177,7 +177,11 @@ WindstilleMain::main(int argc, char** argv)
         int count = 0;
         Pathname filename;
         do {
-          filename = Pathname(std::format("screenshots/windstille{:04d}.png", count), Pathname::kUserPath);
+          {
+          std::ostringstream oss;
+          oss << "screenshots/windstille" << std::setfill('0') << std::setw(4) << count << ".png";
+          filename = Pathname(oss.str(), Pathname::kUserPath);
+        }
           count += 1;
         } while(filename.exists());
 

@@ -422,6 +422,11 @@ void ConfigValue<float>::write(FileWriter& writer) {
 }
 
 template<>
+void ConfigValue<bool>::write(FileWriter& writer) {
+  writer.write(get_name(), data);
+}
+
+template<>
 void ConfigValue<std::string>::write(FileWriter& writer) {
   writer.write(get_name(), data);
 }
