@@ -1052,7 +1052,8 @@ EOF_README
         SYSROOT="${sysroot}"
         LIBDIR="${libdir}"
 
-        # --- locate g++ ---
+        # --- locate gcc / g++ ---
+        # arkos_compat.c must be compiled as C so _dl_find_object is not mangled.
         GXX=
         for cand in "$GCC_ROOT/bin/${targetPrefix}g++" "$GCC_ROOT/bin/g++"; do
           if [ -x "$cand" ]; then GXX="$cand"; break; fi
@@ -1060,6 +1061,14 @@ EOF_README
         if [ -z "$GXX" ]; then
           echo "exception-test: no g++ under $GCC_ROOT/bin" >&2
           ls -la "$GCC_ROOT/bin" >&2 || true
+          exit 1
+        fi
+        GCC=
+        for cand in "$GCC_ROOT/bin/${targetPrefix}gcc" "$GCC_ROOT/bin/gcc"; do
+          if [ -x "$cand" ]; then GCC="$cand"; break; fi
+        done
+        if [ -z "$GCC" ]; then
+          echo "exception-test: no gcc under $GCC_ROOT/bin" >&2
           exit 1
         fi
 
@@ -1126,8 +1135,19 @@ EOF_README
           exit 1
         fi
 
-        # Compile flags: pthread shim first so GCC never uses include-fixed/pthread.h
-        COMPILE=(
+        # C flags (no C++ isystem / -nostdinc++) for arkos_compat.c
+        COMPILE_C=(
+          -nostdinc
+          --sysroot="$SYSROOT"
+          -isystem "${pthreadShim}"
+          -isystem "$FIXED_INC"
+          -isystem "$SYSROOT/usr/include/aarch64-linux-gnu"
+          -isystem "$SYSROOT/usr/include"
+          -pthread -fexceptions
+          -march=armv8-a -mtune=cortex-a35
+        )
+        # C++ flags: pthread shim first so GCC never uses include-fixed/pthread.h
+        COMPILE_CXX=(
           -nostdinc -nostdinc++
           -D_GLIBCXX_USE_CXX11_ABI=0
           --sysroot="$SYSROOT"
@@ -1142,14 +1162,15 @@ EOF_README
           -march=armv8-a -mtune=cortex-a35
         )
 
-        # Compat object (_dl_find_object, isoc23_strto*) for static libgcc_eh
-        "$GXX" -B${crossCc.bintools}/bin "''${COMPILE[@]}" -c -o arkos_compat.o \
+        # Compat object: compile as C so _dl_find_object is not C++-mangled.
+        "$GCC" -B${crossCc.bintools}/bin "''${COMPILE_C[@]}" -c -o arkos_compat.o \
           ${../mk/r36s/arkos_compat.c}
 
-        "$GXX" -B${crossCc.bintools}/bin "''${COMPILE[@]}" -c -o exception_test.o \
+        "$GXX" -B${crossCc.bintools}/bin "''${COMPILE_CXX[@]}" -c -o exception_test.o \
           ${../mk/r36s/exception_test.cpp}
 
-        "$GXX" -B${crossCc.bintools}/bin "''${COMPILE[@]}" \
+        # arkos_compat.o after -static-libgcc so it resolves libgcc_eh's refs.
+        "$GXX" -B${crossCc.bintools}/bin "''${COMPILE_CXX[@]}" \
           -nostdlib++ \
           --sysroot="$SYSROOT" \
           -Wl,--sysroot="$SYSROOT" \
@@ -1167,10 +1188,11 @@ EOF_README
           -Wl,--allow-shlib-undefined \
           -march=armv8-a -mtune=cortex-a35 \
           -o exception_test \
-          exception_test.o arkos_compat.o \
+          exception_test.o \
           -Wl,--no-as-needed "$stdcpp" \
           -Wl,-Bdynamic -l:libpthread.so.0 -lm \
-          -Wl,--as-needed
+          -Wl,--as-needed \
+          arkos_compat.o
 
         ${crossCc.bintools}/bin/${targetPrefix}readelf -h exception_test || true
         ${crossCc.bintools}/bin/${targetPrefix}readelf -d exception_test | head -30 || true
