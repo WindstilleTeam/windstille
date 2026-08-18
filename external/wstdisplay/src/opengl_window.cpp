@@ -102,14 +102,24 @@ OpenGLWindow::OpenGLWindow(wstsys::System& system,
                               m_size.width(), m_size.height(),
                               flags);
   if (m_window == nullptr) {
+    std::cerr << "Display:: Couldn't create window: " << SDL_GetError() << std::endl;
+#if defined(WINDSTILLE_R36S) || defined(WINDSTILLE_NO_CXX_EXCEPTIONS)
+    std::abort();
+#else
     throw std::runtime_error("Display:: Couldn't create window");
+#endif
   }
 
   SDL_SetWindowMinimumSize(m_window, 640, 480);
 
   m_gl_context = SDL_GL_CreateContext(m_window);
   if (m_gl_context == nullptr) {
+    std::cerr << "Display:: failed to create GLContext: " << SDL_GetError() << std::endl;
+#if defined(WINDSTILLE_R36S) || defined(WINDSTILLE_NO_CXX_EXCEPTIONS)
+    std::abort();
+#else
     throw std::runtime_error("Display:: failed to create GLContext");
+#endif
   }
 
 #if !WSTDISPLAY_GL_ES

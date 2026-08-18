@@ -278,6 +278,9 @@ if(DEFINED WINDSTILLE_ARKOS_COMPAT_DIR)
     "LINKER:--undefined=__cxa_call_terminate"
     "LINKER:--undefined=_dl_find_object")
   message(STATUS "ArkOS compat: ${WINDSTILLE_ARKOS_COMPAT_DIR}")
+  target_compile_definitions(windstille PRIVATE WINDSTILLE_R36S=1)
+  target_compile_definitions(libwindstille PRIVATE WINDSTILLE_R36S=1)
+  add_compile_definitions(WINDSTILLE_R36S=1)
 elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/system/arkos_compat.c")
   target_sources(windstille PRIVATE
     src/system/arkos_compat.c

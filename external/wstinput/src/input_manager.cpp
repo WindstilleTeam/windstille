@@ -33,6 +33,7 @@ InputManagerSDL::InputManagerSDL(ControllerDescription const& controller_descrip
   m_controller(controller_description.get_max_id() + 1),
   m_bindings(*this),
   m_joysticks(),
+  m_controllers(),
   m_keyidmapping()
 {
   log_debug("Keyboard keys:");
@@ -44,6 +45,12 @@ InputManagerSDL::InputManagerSDL(ControllerDescription const& controller_descrip
   }
 
   stop_text_input();
+
+  // Open every attached pad so JOY/CONTROLLER events are delivered.
+  int const njoy = SDL_NumJoysticks();
+  for (int i = 0; i < njoy; ++i) {
+    ensure_open_joystick(i);
+  }
 
 #ifdef HAVE_CWIID
   // FIXME: doesn't really belong here
@@ -57,6 +64,15 @@ InputManagerSDL::InputManagerSDL(ControllerDescription const& controller_descrip
 
 InputManagerSDL::~InputManagerSDL()
 {
+  for (SDL_GameController* gc : m_controllers) {
+    if (gc) SDL_GameControllerClose(gc);
+  }
+  // Joystick handles owned by GameController are closed with it; only close pure joysticks.
+  for (size_t i = 0; i < m_joysticks.size(); ++i) {
+    if (!m_joysticks[i]) continue;
+    bool owned_by_gc = (i < m_controllers.size() && m_controllers[i] != nullptr);
+    if (!owned_by_gc) SDL_JoystickClose(m_joysticks[i]);
+  }
 #ifdef HAVE_CWIID
   Wiimote::deinit();
 #endif
@@ -95,16 +111,33 @@ InputManagerSDL::ensure_open_joystick(int device)
 {
   if (device >= int(m_joysticks.size()))
     m_joysticks.resize(device + 1, nullptr);
+  if (device >= int(m_controllers.size()))
+    m_controllers.resize(device + 1, nullptr);
 
-  if (!m_joysticks[device])
+  if (!m_joysticks[device] && !m_controllers[device])
   {
+    // Prefer the GameController API so analog sticks use the standard axis map.
+    if (SDL_IsGameController(device))
+    {
+      if (SDL_GameController* gc = SDL_GameControllerOpen(device))
+      {
+        m_controllers[device] = gc;
+        m_joysticks[device] = SDL_GameControllerGetJoystick(gc);
+        log_info("InputManagerSDL: opened GameController {} ({})",
+                 device, SDL_GameControllerName(gc));
+        return;
+      }
+    }
     if (SDL_Joystick* joystick = SDL_JoystickOpen(device))
     {
       m_joysticks[device] = joystick;
+      log_info("InputManagerSDL: opened Joystick {} ({})",
+               device, SDL_JoystickName(joystick));
     }
     else
     {
-      log_error("InputManagerSDL: Couldn't open joystick device: {}", device);
+      log_error("InputManagerSDL: Couldn't open joystick device {}: {}",
+                device, SDL_GetError());
     }
   }
 }

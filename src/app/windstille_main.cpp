@@ -337,6 +337,20 @@ WindstilleMain::init_modules()
     if (config.get<std::string>("secondary-controller-file").is_set()) {
       g_app.input().load(Pathname(config.get<std::string>("secondary-controller-file").get(),
                                   Pathname::kSysPath).get_sys_path());
+    } else {
+#if defined(ANDROID) || defined(__ANDROID__) || defined(WINDSTILLE_R36S)
+      try {
+        g_app.input().load(Pathname("controller/gamepad.scm").get_sys_path());
+      } catch (std::exception const& e) {
+        std::cerr << "gamepad.scm: " << e.what() << std::endl;
+      }
+#elif defined(__EMSCRIPTEN__)
+      try {
+        g_app.input().load(Pathname("controller/gamepad.scm").get_sys_path());
+      } catch (std::exception const& e) {
+        std::cerr << "gamepad.scm: " << e.what() << std::endl;
+      }
+#endif
     }
   }
 }

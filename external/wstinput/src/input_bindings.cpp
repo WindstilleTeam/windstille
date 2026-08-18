@@ -390,13 +390,37 @@ InputBindings::dispatch_event(SDL_Event const& event, Controller& controller) co
     case SDL_SYSWMEVENT:
     case SDL_KEYMAPCHANGED:
     case SDL_JOYDEVICEADDED:
+      // Open newly attached pads so axis events start flowing.
+      const_cast<InputManagerSDL&>(m_manager).ensure_open_joystick(event.jdevice.which);
+      break;
     case SDL_JOYDEVICEREMOVED:
+      break;
+    case SDL_CONTROLLERDEVICEADDED:
+      const_cast<InputManagerSDL&>(m_manager).ensure_open_joystick(event.cdevice.which);
+      break;
     case SDL_CONTROLLERDEVICEREMOVED:
     case SDL_CONTROLLERDEVICEREMAPPED:
-    case SDL_CONTROLLERAXISMOTION:
+      break;
+    case SDL_CONTROLLERAXISMOTION: {
+      // Map standard GameController axes onto joystick-axis bindings for device 0.
+      SDL_JoyAxisEvent ja{};
+      ja.type = SDL_JOYAXISMOTION;
+      ja.which = 0; // bindings use logical device 0
+      ja.axis = event.caxis.axis; // LEFTX=0 LEFTY=1 RIGHTX=2 RIGHTY=3 ...
+      ja.value = event.caxis.value;
+      dispatch_joy_axis_event(ja, controller);
+      break;
+    }
     case SDL_CONTROLLERBUTTONUP:
-    case SDL_CONTROLLERBUTTONDOWN:
-    case SDL_CONTROLLERDEVICEADDED:
+    case SDL_CONTROLLERBUTTONDOWN: {
+      SDL_JoyButtonEvent jb{};
+      jb.type = event.type == SDL_CONTROLLERBUTTONDOWN ? SDL_JOYBUTTONDOWN : SDL_JOYBUTTONUP;
+      jb.which = 0;
+      jb.button = event.cbutton.button; // A=0 B=1 X=2 Y=3 ...
+      jb.state = event.cbutton.state;
+      dispatch_joy_button_event(jb, controller);
+      break;
+    }
     case SDL_CLIPBOARDUPDATE:
     case SDL_DROPFILE:
     case SDL_DROPTEXT:
@@ -512,7 +536,7 @@ InputBindings::dispatch_joy_button_event(const SDL_JoyButtonEvent& button, Contr
        i != m_joystick_button_bindings.end();
        ++i)
   {
-    if (button.which  == i->device &&
+    if ((button.which == i->device || i->device == 0) &&
         button.button == i->button)
     {
       controller.add_button_event(i->event, button.state);
@@ -544,7 +568,7 @@ InputBindings::dispatch_joy_axis_event(const SDL_JoyAxisEvent& event, Controller
        i != m_joystick_axis_bindings.end();
        ++i)
   {
-    if (event.which  == i->device &&
+    if ((event.which == i->device || i->device == 0) &&
         event.axis   == i->axis)
     {
       if (abs(event.value) > g_dead_zone)

@@ -40,11 +40,13 @@ System::System() :
   m_windows(),
   m_sig_event()
 {
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVENTS) < 0) {
     std::ostringstream os;
     os << "Couldn't initialize SDL: " << SDL_GetError();
     throw std::runtime_error(os.str());
   }
+  SDL_JoystickEventState(SDL_ENABLE);
+  SDL_GameControllerEventState(SDL_ENABLE);
   atexit(SDL_Quit);
 }
 

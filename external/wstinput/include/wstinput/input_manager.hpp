@@ -65,6 +65,7 @@ private:
   Controller m_controller;
   InputBindings m_bindings;
   std::vector<SDL_Joystick*> m_joysticks;
+  std::vector<SDL_GameController*> m_controllers;
   std::map<std::string, SDL_Scancode> m_keyidmapping;
 
 private:
