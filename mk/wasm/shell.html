@@ -387,6 +387,39 @@
           console.log('[windstille-shell] Module.arguments =', Module.arguments);
           console.log('[windstille-shell] canvas size', Module.canvas && Module.canvas.width, Module.canvas && Module.canvas.height);
         }
+        /* Persistent userdir via IndexedDB (matches System::find_default_userdir). */
+        try {
+          if (typeof FS !== 'undefined' && typeof IDBFS !== 'undefined') {
+            addRunDependency('idbfs-mount');
+            try { FS.mkdir(ST_USER_ROOT); } catch (e) { /* exists */ }
+            try { FS.mount(IDBFS, {}, ST_USER_ROOT); } catch (e) {
+              console.warn('[windstille-shell] IDBFS mount:', e);
+            }
+            FS.syncfs(true, function(err) {
+              if (err) console.warn('[windstille-shell] IDBFS populate:', err);
+              else if (stQuery.verbose || stQuery.debug)
+                console.log('[windstille-shell] IDBFS populated for', ST_USER_ROOT);
+              removeRunDependency('idbfs-mount');
+            });
+            var stSyncToIdb = function() {
+              try {
+                FS.syncfs(false, function(err) {
+                  if (err) console.warn('[windstille-shell] IDBFS flush:', err);
+                });
+              } catch (e) { console.warn('[windstille-shell] IDBFS flush:', e); }
+            };
+            window.addEventListener('beforeunload', stSyncToIdb);
+            document.addEventListener('visibilitychange', function() {
+              if (document.hidden) stSyncToIdb();
+            });
+            /* Periodic flush while the tab is open (saves, config). */
+            setInterval(stSyncToIdb, 30000);
+          } else {
+            console.warn('[windstille-shell] IDBFS unavailable — userdir is ephemeral');
+          }
+        } catch (e) {
+          console.warn('[windstille-shell] IDBFS setup failed:', e);
+        }
       }],
       postRun: [function() {
         console.log('[windstille-shell] postRun (main returned; main loop may still be active)');

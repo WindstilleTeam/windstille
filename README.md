@@ -148,3 +148,26 @@ Installation
 Configuration of install location is available via the `cmake` flag
 `-DCMAKE_INSTALL_PREFIX:PATH=...` and by passing `DESTDIR=...` to
 `make`.
+
+
+Building with Nix
+-----------------
+
+A flake provides the desktop game, editor, GLES validation build, and
+cross-platform packaging:
+
+    nix build .#windstille
+    nix build .#windstille-editor
+    nix build .#windstille-gles2
+    nix run .#windstille
+
+Ports (see [PORTS.md](PORTS.md) for details):
+
+| Package | Command |
+|---------|---------|
+| WebAssembly | `nix build .#windstille-wasm` / `nix run .#windstille-wasm` |
+| Android APK | `nix build .#windstille-android` |
+| R36S / PortMaster | `nix build .#windstille-r36s` / `.#windstille-r36s-portmaster-zip` |
+| Windows (MinGW, WIP) | `nix build .#windstille-win64` |
+
+Editor is disabled on all port targets (`BUILD_EDITOR=OFF`).

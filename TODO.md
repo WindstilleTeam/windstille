@@ -92,7 +92,7 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] Pass `WINDSTILLE_EMSCRIPTEN=ON`, `.html` suffix + `EMSCRIPTEN_LINK_FLAGS` in CMake
 - [x] Default datadir `/data/` and userdir `/windstille-user/` under Emscripten
 - [x] Skip in-tree xcf2png / data install when building for Emscripten (preload handles assets)
-- [ ] Asset packaging / IDBFS persistence (shell already mentions IndexedDB)
+- [x] Asset packaging / IDBFS persistence (IDBFS mount + sync in shell; preload for assets)
 - [x] Customize `mk/wasm/shell.html` branding (already Windstille-branded)
 - [ ] `nix run` / browser smoke test
 
@@ -126,7 +126,7 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 
 - [ ] CI: `nix build` on Linux for default package
 - [ ] CI: optional cross job for win64
-- [ ] Document `nix run .#windstille` / editor in README
+- [x] Document `nix run .#windstille` / editor / ports in README
 - [ ] Align project `version` / Android `versionName` with tags
 - [ ] Consider C++23 only where `std::format` / library needs require it; keep externals consistent
 
