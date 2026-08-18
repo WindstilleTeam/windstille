@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <format>
+#include <sstream>
 #include <stdio.h>
 #include <logmich/log.hpp>
 
@@ -401,18 +401,14 @@ Config::debug_print(std::ostream& out)
   out << "Config " << this << ":" << std::endl;
   for(ConfigValues::iterator i = config_values.begin(); i != config_values.end(); ++i)
   {
-    out << std::format("  {:20} = {:<20} ({})",
-                       i->second->get_name(),
-                       std::format("'{}'", (*i->second).str()),
-                       (i->second->is_set() ? "set" : "default"))
-                       << std::endl;
-
+    out << "  " << i->first;
+    {
+      std::ostringstream val;
+      val << "'" << (*i->second).str() << "'";
+      out << " = " << val.str();
+    }
+    out << " (" << (*i->second).get_doc() << ")" << std::endl;
   }
-}
-
-template<>
-void ConfigValue<bool>::write(FileWriter& writer) {
-  writer.write(get_name(), data);
 }
 
 template<>
