@@ -87,6 +87,7 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/../external_includes/surf \
 	$(LOCAL_PATH)/../external_includes/wstdisplay \
 	$(LOCAL_PATH)/../external_includes/wstinput \
+	$(LOCAL_PATH)/../external_includes/wstgui \
 	$(LOCAL_PATH)/../external_includes/wstsound \
 	$(LOCAL_PATH)/../external_includes/babyxml \
 	$(LOCAL_PATH)/../external_includes/biio \
@@ -101,6 +102,7 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/deps/surfcpp \
 	$(LOCAL_PATH)/deps/wstdisplay \
 	$(LOCAL_PATH)/deps/wstinput \
+	$(LOCAL_PATH)/deps/wstgui \
 	$(LOCAL_PATH)/deps/tinygettext \
 	$(LOCAL_PATH)/deps/squirrel \
 	$(LOCAL_PATH)/deps/wstsound

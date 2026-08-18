@@ -185,6 +185,7 @@ stage_lib_src babyxml
 stage_lib_src surfcpp
 stage_lib_src wstdisplay
 stage_lib_src wstinput
+stage_lib_src wstgui
 stage_lib_src biiocpp
 stage_lib_src tinygettext
 # Drop JSON backends (PRIO_USE_JSONCPP is off).
