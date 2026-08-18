@@ -89,8 +89,11 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 ### WebAssembly (`nix build .#windstille-wasm`)
 - [x] Wire `nix/wasm.nix` `mkApp` to Windstille sources + static deps
 - [x] Main loop: Emscripten `emscripten_set_main_loop` (or equivalent) instead of blocking desktop loop
-- [ ] Asset packaging / IDBFS if needed
-- [ ] Customize `mk/wasm/shell.html` branding if desired
+- [x] Pass `WINDSTILLE_EMSCRIPTEN=ON`, `.html` suffix + `EMSCRIPTEN_LINK_FLAGS` in CMake
+- [x] Default datadir `/data/` and userdir `/windstille-user/` under Emscripten
+- [x] Skip in-tree xcf2png / data install when building for Emscripten (preload handles assets)
+- [ ] Asset packaging / IDBFS persistence (shell already mentions IndexedDB)
+- [x] Customize `mk/wasm/shell.html` branding (already Windstille-branded)
 - [ ] `nix run` / browser smoke test
 
 ### Android (`nix build .#windstille-android`)
@@ -113,7 +116,7 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 
 - [ ] Audit fixed-function / desktop-only GL calls for GLES2 viability
 - [ ] Audio path on Android (OpenAL Soft static libs — see `mk/android/SOUND.md`)
-- [ ] Filesystem / path assumptions (user dir, datadir) on each platform
+- [x] Filesystem / path assumptions (user dir, datadir) on each platform (Emscripten paths done; Android/R36S still open)
 - [ ] No editor in port builds (`BUILD_EDITOR=OFF`)
 
 ---

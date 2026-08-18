@@ -44,7 +44,13 @@ if (BUILD_TESTS)
   enable_testing()
 endif(BUILD_TESTS)
 
-find_program(XCF2PNG xcf2png REQUIRED)
+# xcf2png is only needed for desktop data generation; wasm/android preload
+# assets separately and often lack the tool in the cross environment.
+if(EMSCRIPTEN OR WINDSTILLE_EMSCRIPTEN)
+  find_program(XCF2PNG xcf2png)
+else()
+  find_program(XCF2PNG xcf2png REQUIRED)
+endif()
 find_package(Threads REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(PNG REQUIRED)
@@ -225,55 +231,67 @@ file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 add_executable(windstille ${WINDSTILLE_SOURCES})
 target_compile_options(windstille PRIVATE ${TINYCMMC_WARNINGS_CXX_FLAGS})
 target_link_libraries(windstille libwindstille)
+if(EMSCRIPTEN OR WINDSTILLE_EMSCRIPTEN)
+  set_target_properties(windstille PROPERTIES SUFFIX ".html")
+  if(DEFINED EMSCRIPTEN_LINK_FLAGS)
+    # cmake -DEMSCRIPTEN_LINK_FLAGS="..." may be a single string of flags.
+    separate_arguments(_ws_em_link NATIVE_COMMAND "${EMSCRIPTEN_LINK_FLAGS}")
+    target_link_options(windstille PRIVATE ${_ws_em_link})
+  endif()
+endif()
 install_with_wrapper(TARGETS windstille)
 
-# build and install data
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data/images/decal/)
+# build and install data (skipped under Emscripten — assets come from --preload-file)
+if(NOT EMSCRIPTEN AND NOT WINDSTILLE_EMSCRIPTEN)
+  file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data/images/decal/)
 
-# convert .xcf to .png
-file(GLOB DECAL_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  data/images/decal/*.xcf)
+  # convert .xcf to .png
+  if(XCF2PNG)
+    file(GLOB DECAL_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+      data/images/decal/*.xcf)
 
-foreach(SOURCE ${DECAL_SOURCES})
-  string(REGEX REPLACE "\\.xcf$" ".png" TARGET ${SOURCE})
+    foreach(SOURCE ${DECAL_SOURCES})
+      string(REGEX REPLACE "\.xcf$" ".png" TARGET ${SOURCE})
 
-  set(SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE}")
-  set(TARGET "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}")
+      set(SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE}")
+      set(TARGET "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}")
 
-  add_custom_command(
-    OUTPUT ${TARGET}
-    COMMAND ${XCF2PNG}
-    ARGS
-    ${SOURCE}
-    -o ${TARGET}
-    DEPENDS ${SOURCE})
+      add_custom_command(
+        OUTPUT ${TARGET}
+        COMMAND ${XCF2PNG}
+        ARGS
+        ${SOURCE}
+        -o ${TARGET}
+        DEPENDS ${SOURCE})
 
-  list(APPEND WINDSTILLE_GENERATED_DATA_FILES ${TARGET})
-endforeach(SOURCE)
+      list(APPEND WINDSTILLE_GENERATED_DATA_FILES ${TARGET})
+    endforeach(SOURCE)
 
-add_custom_target(windstille-data ALL
-  DEPENDS ${WINDSTILLE_GENERATED_DATA_FILES})
+    add_custom_target(windstille-data ALL
+      DEPENDS ${WINDSTILLE_GENERATED_DATA_FILES})
+  endif()
 
-file(GLOB WINDSTILLE_DATA_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  data/*.scm
-  data/controller/*.scm
-  data/scripts/*.nut
-  data/sounds/*.wav
-  data/sounds/*.ogg
-  data/fonts/*.ttf
-  data/images/*.png
-  data/images/*/*.png
-  data/images/*/*/*.png)
+  file(GLOB WINDSTILLE_DATA_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    data/*.scm
+    data/controller/*.scm
+    data/scripts/*.nut
+    data/sounds/*.wav
+    data/sounds/*.ogg
+    data/fonts/*.ttf
+    data/images/*.png
+    data/images/*/*.png
+    data/images/*/*/*.png)
 
-foreach(SOURCE ${WINDSTILLE_DATA_FILES})
-  get_filename_component(DIR ${SOURCE} DIRECTORY)
-  file(COPY ${SOURCE}
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${DIR})
-endforeach(SOURCE)
+  foreach(SOURCE ${WINDSTILLE_DATA_FILES})
+    get_filename_component(DIR ${SOURCE} DIRECTORY)
+    file(COPY ${SOURCE}
+      DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${DIR})
+  endforeach(SOURCE)
 
-# install windstille data
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data/
-  DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME})
+  # install windstille data
+  install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data/
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME})
+endif()
 
 if(BUILD_TESTS)
   file(GLOB TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}

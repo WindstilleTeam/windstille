@@ -24,7 +24,10 @@
 
 std::string System::find_default_datadir()
 {
-#ifdef _WIN32
+#ifdef __EMSCRIPTEN__
+  // Assets are preloaded at /data by the wasm shell / --preload-file.
+  return "/data/";
+#elif defined(_WIN32)
   // TODO: do something with GetModuleFileName()
   return "data/";
 #else
@@ -34,7 +37,11 @@ std::string System::find_default_datadir()
 
 std::string System::find_default_userdir()
 {
-#ifdef _WIN32
+#ifdef __EMSCRIPTEN__
+  // Writable path in the Emscripten FS. Optional IDBFS mount can be layered
+  // later for persistence across sessions (see mk/wasm/shell.html).
+  return "/windstille-user/";
+#elif defined(_WIN32)
   char* appdata = getenv("APPDATA");
   if (!appdata)
   {
