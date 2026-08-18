@@ -77,6 +77,12 @@ if [ -n "${SQUIRREL_WASM_LIBS:-}" ] && [ -d "${SQUIRREL_WASM_LIBS}/lib" ]; then
   LINK_FLAGS+=("-L${SQUIRREL_WASM_LIBS}/lib")
   echo "==> linking -L ${SQUIRREL_WASM_LIBS}/lib (squirrel)"
 fi
+# FreeType (ftgzip) needs zlib inflate* at final link; cmake does not always
+# propagate Freetype → ZLIB into EMSCRIPTEN_LINK_FLAGS.
+if [ -n "$ZLIB_PREFIX" ] && [ -f "$ZLIB_PREFIX/lib/libz.a" ]; then
+  LINK_FLAGS+=("-L${ZLIB_PREFIX}/lib" "-lz")
+  echo "==> linking -lz (zlib for FreeType gzip)"
+fi
 
 if [ -n "${WASM_SHELL:-}" ] && [ -f "$WASM_SHELL" ]; then
   LINK_FLAGS+=("--shell-file" "$WASM_SHELL")

@@ -111,6 +111,13 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] PortMaster tree package (`windstille-r36s-portmaster` + zip)
 - [x] Controller profile (`data/controller/r36s.scm` + `gamepad.scm`)
 - [ ] On-device smoke test
+- [ ] **Experiment: older cross GCC for C++ exceptions** — current hybrid is
+  GCC 15 frontend + ArkOS glibc~2.30 / libstdc++ sysroot; throws abort in
+  `uw_init_context_1` / `_Unwind_Resume`. Try `overrideCC` on
+  `pkgsCross.aarch64-multiplatform` with nixpkgs `gcc10`/`gcc11` (or closest
+  to ArkOS’s original libstdc++), keep the same sysroot wrappers, and verify
+  throw/catch on device. Fall back remains: avoid non-critical throws +
+  RelWithDebInfo. Revisit after `nix flake check` is green.
 
 ---
 
