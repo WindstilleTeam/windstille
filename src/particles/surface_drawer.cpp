@@ -20,6 +20,8 @@
 
 #include <iostream>
 
+#include <glm/gtc/constants.hpp>
+
 #include "app/app.hpp"
 #include <wstdisplay/drawing_context.hpp>
 #include <wstdisplay/surface_manager.hpp>
