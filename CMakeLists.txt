@@ -65,7 +65,17 @@ if(NOT WINDSTILLE_USE_GLES)
   find_package(OpenGL REQUIRED)
   find_package(GLEW REQUIRED)
 endif()
-find_package(glm REQUIRED)
+# R36S / cross: header-only glm from nix (no glmConfig in sysroot).
+if(DEFINED WINDSTILLE_GLM_INCLUDE_DIR AND NOT TARGET glm::glm)
+  add_library(glm::glm INTERFACE IMPORTED)
+  set_target_properties(glm::glm PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${WINDSTILLE_GLM_INCLUDE_DIR}")
+  set(glm_FOUND TRUE)
+  message(STATUS "glm: using WINDSTILLE_GLM_INCLUDE_DIR=${WINDSTILLE_GLM_INCLUDE_DIR}")
+endif()
+if(NOT TARGET glm::glm)
+  find_package(glm REQUIRED)
+endif()
 find_package(PkgConfig REQUIRED)
 find_package(Squirrel REQUIRED)
 
