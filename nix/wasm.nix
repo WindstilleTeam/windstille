@@ -572,7 +572,7 @@ EOF
     pname = "wstsound-wasm";
     version = "0.3.0";
     src = ../external/wstsound;
-    nativeBuildInputs = [ pkgs.emscripten pkgs.cmake pkgs.python3 pkgs.pkg-config ];
+    nativeBuildInputs = [ pkgs.emscripten pkgs.cmake pkgs.python3 pkgs.pkg-config miniswigHost ];
     dontConfigure = true;
     dontUseCmakeConfigure = true;
     buildPhase = ''
@@ -635,6 +635,15 @@ EOF
       inherit versionFull gitRev sourceUrl revUrl;
     };
 
+
+  miniswigHost = pkgs.stdenv.mkDerivation {
+    pname = "miniswig-host";
+    version = "0.1";
+    src = ../external/miniswig;
+    nativeBuildInputs = [ pkgs.cmake pkgs.bison pkgs.flex ];
+    cmakeFlags = [ "-DBUILD_TESTS=OFF" "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" ];
+  };
+
   mkApp = {
     appName
   , srcDir
@@ -666,7 +675,7 @@ EOF
       dontUnpack = true;
       dontConfigure = true;
       dontUseCmakeConfigure = true;
-      nativeBuildInputs = [ pkgs.emscripten pkgs.cmake pkgs.python3 pkgs.pkg-config ];
+      nativeBuildInputs = [ pkgs.emscripten pkgs.cmake pkgs.python3 pkgs.pkg-config miniswigHost ];
 
       env = {
         APP_NAME = appName;
@@ -681,6 +690,7 @@ EOF
         WASM_SHELL = "${shell}";
         PKG_CONFIG_PATH = pkgConfigPath;
         ZLIB_WASM_LIBS = zlibWasmLibs;
+        MINISWIG = "${miniswigHost}/bin/miniswig";
         JPEG_WASM_LIBS = jpegWasm;
         PNG_WASM_LIBS = pngWasm;
         FREETYPE_WASM_LIBS = freetypeWasm;

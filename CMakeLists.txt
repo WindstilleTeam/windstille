@@ -88,7 +88,9 @@ function(build_dependencies)
   tinycmmc_find_dependency(wstgui)
 
   find_program(MINISWIG miniswig)
-  if(NOT MINISWIG)
+  # Under Emscripten, never build miniswig (needs host bison/flex). Use a
+  # host-provided MINISWIG from the cross environment instead.
+  if(NOT MINISWIG AND NOT (EMSCRIPTEN OR WINDSTILLE_EMSCRIPTEN))
     add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
     # Use the in-tree executable target instead of the missing program.
     set(MINISWIG miniswig PARENT_SCOPE)
