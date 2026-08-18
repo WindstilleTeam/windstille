@@ -1072,12 +1072,22 @@ EOF_README
           exit 1
         fi
 
-        # --- locate libstdc++ headers (may be under gcc out or versioned paths) ---
+        # --- locate libstdc++ headers ---
+        # Layouts seen in nixpkgs cross gcc:
+        #   $out/include/c++/$VER/aarch64-…/bits/c++config.h          (newer)
+        #   $out/aarch64-…/include/c++/$VER/aarch64-…/bits/c++config.h (gcc 12)
         CXX_INC=
         CXX_INC_TARGET=
         for root in "$GCC_ROOT" "${gccLibOut}"; do
           [ -d "$root" ] || continue
-          for vdir in "$root/include/c++/$VER" "$root/include/c++"/*; do
+          for vdir in \
+              "$root/include/c++/$VER" \
+              "$root/include/c++"/* \
+              "$root/aarch64-unknown-linux-gnu/include/c++/$VER" \
+              "$root/aarch64-linux-gnu/include/c++/$VER" \
+              "$root"/aarch64-*/include/c++/$VER \
+              "$root"/aarch64-*/include/c++/*
+          do
             [ -d "$vdir" ] || continue
             for t in aarch64-unknown-linux-gnu aarch64-linux-gnu; do
               if [ -f "$vdir/$t/bits/c++config.h" ]; then
@@ -1086,7 +1096,6 @@ EOF_README
                 break 3
               fi
             done
-            # any aarch64 c++config under this vdir
             cfg=$(find "$vdir" -path '*/aarch64*/bits/c++config.h' 2>/dev/null | head -1 || true)
             if [ -n "$cfg" ]; then
               CXX_INC_TARGET=$(dirname "$(dirname "$cfg")")
@@ -1095,6 +1104,14 @@ EOF_README
             fi
           done
         done
+        # Last resort: find any aarch64 c++config under the gcc store path
+        if [ -z "$CXX_INC_TARGET" ]; then
+          cfg=$(find "$GCC_ROOT" "${gccLibOut}" -path '*/aarch64*/bits/c++config.h' 2>/dev/null | head -1 || true)
+          if [ -n "$cfg" ]; then
+            CXX_INC_TARGET=$(dirname "$(dirname "$cfg")")
+            CXX_INC=$(dirname "$CXX_INC_TARGET")
+          fi
+        fi
         if [ -z "$CXX_INC_TARGET" ]; then
           echo "exception-test: no aarch64 bits/c++config.h under $GCC_ROOT (or lib out)" >&2
           find "$GCC_ROOT" "${gccLibOut}" -name 'c++config.h' 2>/dev/null | head -30 >&2 || true
