@@ -169,21 +169,18 @@ let
       cmake --build build -j''${NIX_BUILD_CORES:-2}
       cmake --install build || true
       mkdir -p "$out/lib" "$out/include"
-      for cand in libsquirrel.a squirrel.a; do
-        find . -name "$cand" -exec cp -n {} "$out/lib/libsquirrel.a" \; 2>/dev/null || true
+      # Upstream installs libsquirrel_static.a into lib64/; normalize to lib/.
+      for cand in libsquirrel_static.a libsquirrel.a squirrel.a; do
+        f=$(find "$out" build . -name "$cand" 2>/dev/null | head -1)
+        if [ -n "$f" ]; then cp -f "$f" "$out/lib/libsquirrel.a"; break; fi
       done
-      for cand in libsqstdlib.a sqstdlib.a; do
-        find . -name "$cand" -exec cp -n {} "$out/lib/libsqstdlib.a" \; 2>/dev/null || true
+      for cand in libsqstdlib_static.a libsqstdlib.a sqstdlib.a; do
+        f=$(find "$out" build . -name "$cand" 2>/dev/null | head -1)
+        if [ -n "$f" ]; then cp -f "$f" "$out/lib/libsqstdlib.a"; break; fi
       done
-      if [ ! -f "$out/lib/libsquirrel.a" ]; then
-        objs_sq=$(find build "$srcdir" -path '*/squirrel/*.o' 2>/dev/null | head -80)
-        objs_std=$(find build "$srcdir" -path '*/sqstdlib/*.o' 2>/dev/null | head -80)
-        if [ -n "$objs_sq" ]; then ar rcs "$out/lib/libsquirrel.a" $objs_sq; fi
-        if [ -n "$objs_std" ]; then ar rcs "$out/lib/libsqstdlib.a" $objs_std; fi
-      fi
       if [ ! -f "$out/lib/libsquirrel.a" ] || [ ! -f "$out/lib/libsqstdlib.a" ]; then
         echo "error: squirrel r36s static libs missing after build" >&2
-        find . -name '*.a' -o -name '*.o' | head -40 >&2 || true
+        find . "$out" -name '*.a' 2>/dev/null | head -40 >&2 || true
         exit 1
       fi
       if [ -d "$srcdir/include" ]; then cp -a "$srcdir/include"/. "$out/include/"; fi
