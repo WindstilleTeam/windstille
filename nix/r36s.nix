@@ -22,6 +22,9 @@
 , squirrelSrc ? null  # optional: path/tarball for upstream squirrel (cross-built static)
 , bison ? null
 , flex ? null
+  # Attrset of label -> unwrapped aarch64 *cross* gcc (from pinned nixpkgs).
+  # Native buildPackages.gccN must NOT be passed — they lack aarch64 c++config.
+, extraCrossGccs ? {}
 }:
 
 let
@@ -1005,21 +1008,66 @@ EOF_README
 
   # --- Exception smoke test (throw/catch) against the ArkOS sysroot -----------
   # Minimal C++ wrappers: same hybrid model as the game (GCC frontend + ArkOS
-  # libstdc++ / glibc), but no SDL. Used to compare exception unwind across
-  # compiler majors without building the full game.
+  # libstdc++ / glibc), but no SDL.
+  #
+  # IMPORTANT: only aarch64 *cross* GCCs work. Native buildPackages.gccN from
+  # the host package set lack include/c++/.../aarch64-*/bits/c++config.h and
+  # produce the "bits/c++config.h: No such file" error. Pass real cross
+  # compilers via extraCrossGccs (pinned nixpkgs stdenv.cc.cc).
+
+  # True iff gcc looks like an aarch64-targeting cross compiler.
+  isAarch64CrossGcc = gcc:
+    let
+      tp = lib.removeSuffix "-" targetPrefix;
+      ver = gcc.version or (lib.getVersion gcc);
+      gxx = "${gcc}/bin/${targetPrefix}g++";
+      cfgCandidates = [
+        "${gcc}/include/c++/${ver}/${tp}/bits/c++config.h"
+        "${gcc}/include/c++/${ver}/aarch64-unknown-linux-gnu/bits/c++config.h"
+        "${gcc}/include/c++/${ver}/aarch64-linux-gnu/bits/c++config.h"
+      ];
+    in
+      builtins.pathExists gxx
+      && lib.any builtins.pathExists cfgCandidates;
+
   mkExceptionWrappers = { sysroot, gcc }:
     let
-      tp = lib.removeSuffix "-" targetPrefix; # aarch64-unknown-linux-gnu
+      tp = lib.removeSuffix "-" targetPrefix;
       libdir = "${sysroot}/usr/lib/aarch64-linux-gnu";
       ver = gcc.version or (lib.getVersion gcc);
       cxxInc = "${gcc}/include/c++/${ver}";
-      cxxIncTarget = "${cxxInc}/${tp}";
+      # Prefer the triple that actually has c++config.h
+      cxxIncTarget =
+        if builtins.pathExists "${cxxInc}/${tp}/bits/c++config.h" then "${cxxInc}/${tp}"
+        else if builtins.pathExists "${cxxInc}/aarch64-unknown-linux-gnu/bits/c++config.h"
+        then "${cxxInc}/aarch64-unknown-linux-gnu"
+        else if builtins.pathExists "${cxxInc}/aarch64-linux-gnu/bits/c++config.h"
+        then "${cxxInc}/aarch64-linux-gnu"
+        else "${cxxInc}/${tp}";
       fixedInc = "${gcc}/lib/gcc/${tp}/${ver}/include";
-      fixedInc2 = "${gcc}/lib/gcc/${tp}/${ver}/include-fixed";
-      libgccDir = "${gcc}/lib/gcc/${tp}/${ver}";
+      fixedIncAlt = "${gcc}/lib/gcc/aarch64-unknown-linux-gnu/${ver}/include";
+      fixedIncAlt2 = "${gcc}/lib/gcc/aarch64-linux-gnu/${ver}/include";
+      fixedIncResolved =
+        if builtins.pathExists fixedInc then fixedInc
+        else if builtins.pathExists fixedIncAlt then fixedIncAlt
+        else if builtins.pathExists fixedIncAlt2 then fixedIncAlt2
+        else fixedInc;
+      fixedInc2 = fixedIncResolved + "-fixed";
+      # libgcc dir may use the same triple variants
+      libgccDir =
+        if builtins.pathExists "${gcc}/lib/gcc/${tp}/${ver}" then "${gcc}/lib/gcc/${tp}/${ver}"
+        else if builtins.pathExists "${gcc}/lib/gcc/aarch64-unknown-linux-gnu/${ver}"
+        then "${gcc}/lib/gcc/aarch64-unknown-linux-gnu/${ver}"
+        else if builtins.pathExists "${gcc}/lib/gcc/aarch64-linux-gnu/${ver}"
+        then "${gcc}/lib/gcc/aarch64-linux-gnu/${ver}"
+        else "${gcc}/lib/gcc/${tp}/${ver}";
       gccLibOut = lib.getLib gcc;
       libgccLib = "${gccLibOut}/lib";
       libgccLibTarget = "${gccLibOut}/${tp}/lib";
+      gxxBin =
+        if builtins.pathExists "${gcc}/bin/${targetPrefix}g++"
+        then "${gcc}/bin/${targetPrefix}g++"
+        else "${gcc}/bin/g++";
       commonCompileCxx = ''
         -nostdinc \
         -D_GLIBCXX_USE_CXX11_ABI=0 \
@@ -1027,7 +1075,7 @@ EOF_README
         -isystem ${cxxInc} \
         -isystem ${cxxIncTarget} \
         -isystem ${cxxInc}/backward \
-        -isystem ${fixedInc} \
+        -isystem ${fixedIncResolved} \
         -isystem ${fixedInc2} \
         -isystem ${sysroot}/usr/include/aarch64-linux-gnu \
         -isystem ${sysroot}/usr/include \
@@ -1071,7 +1119,7 @@ EOF_README
         esac
       done
       if [ -n "$is_compile" ]; then
-        exec ${gcc}/bin/${targetPrefix}g++ \
+        exec ${gxxBin} \
           -B${crossCc.bintools}/bin \
           ${commonCompileCxx} \
           "$@"
@@ -1091,7 +1139,7 @@ EOF_README
         echo "exception-test g++: no libstdc++ in sysroot" >&2
         exit 1
       fi
-      exec ${gcc}/bin/${targetPrefix}g++ \
+      exec ${gxxBin} \
         -B${crossCc.bintools}/bin \
         ${commonCompileCxx} \
         -nostdlib++ \
@@ -1102,79 +1150,19 @@ EOF_README
         -Wl,--as-needed
     '';
 
-  # Resolve a cross aarch64 g++ package for a given major version label.
-  # "current" uses the flake's default pkgsCross toolchain; numbered majors
-  # use crossPkgs.buildPackages.gccN when nixpkgs provides them.
+  # Resolve aarch64 cross gcc for a label.
+  # "current" = flake pkgsCross toolchain; numbered labels prefer extraCrossGccs
+  # (pinned nixpkgs) and never fall back to native buildPackages.gccN.
   resolveCrossGcc = label:
     let
-      bp = crossPkgs.buildPackages;
-      pick = p:
-        if p == null then null
-        else if p ? cc then p.cc
-        else p;
+      fromExtra = extraCrossGccs.${label} or null;
     in
     if label == "current" then crossCc.cc
-    else if bp ? "gcc${label}" then pick bp."gcc${label}"
-    else if bp ? "gcc_${label}" then pick bp."gcc_${label}"
+    else if fromExtra != null && isAarch64CrossGcc fromExtra then fromExtra
     else null;
 
-  mkExceptionTest = {
-    label ? "current"
-  , gcc ? resolveCrossGcc label
-  , pname ? "r36s-exception-test-${label}"
-  }:
-    assert gcc != null;
-    let
-      cxx = mkExceptionWrappers { sysroot = arkosSysroot; inherit gcc; };
-      ver = gcc.version or label;
-    in
-    stdenvNoCC.mkDerivation {
-      inherit pname;
-      version = ver;
-      dontUnpack = true;
-      dontConfigure = true;
-      strictDeps = true;
-      nativeBuildInputs = [ crossCc.bintools ];
-
-      buildPhase = ''
-        runHook preBuild
-        echo "==> exception_test label=${label} gcc=${ver}"
-        ${cxx} -O2 -g -o exception_test ${../mk/r36s/exception_test.cpp}
-        ${crossCc.bintools}/bin/${targetPrefix}readelf -h exception_test || true
-        ${crossCc.bintools}/bin/${targetPrefix}readelf -d exception_test | head -30 || true
-        runHook postBuild
-      '';
-
-      installPhase = ''
-        runHook preInstall
-        mkdir -p "$out/bin"
-        cp -v exception_test "$out/bin/exception_test"
-        cat > "$out/bin/README.txt" << EOF
-R36S exception smoke test (${label}, GCC ${ver})
-
-Copy exception_test to the device (or run under qemu-user-static with the
-ArkOS rootfs) and execute:
-
-  ./exception_test
-  echo exit:\$?
-
-Expect "ALL PASSED" and exit 0. Abort in uw_init_context_1 / _Unwind_Resume
-means this compiler+sysroot combo still has broken C++ exceptions.
-
-Hybrid model: this GCC's headers + libgcc (static) + ArkOS libstdc++/glibc.
-EOF
-        runHook postInstall
-      '';
-
-      meta = with lib; {
-        description = "R36S/ArkOS C++ throw/catch smoke test (GCC ${label})";
-        platforms = platforms.linux;
-        hydraPlatforms = [];
-      };
-    };
-
   # Labels to try. Missing majors are skipped (null filtered out).
-  exceptionTestLabels = [ "current" "14" "13" "12" "11" "10" "9" ];
+  exceptionTestLabels = [ "current" "14" "13" "12" ];
 
   exceptionTests =
     lib.filterAttrs (_: v: v != null) (
@@ -1228,11 +1216,9 @@ done
 ```
 
 `current` is the toolchain used for `windstille-r36s` (often GCC 15).
-Numbered dirs appear only when `pkgsCross.aarch64-multiplatform.buildPackages.gccN`
-exists in your nixpkgs revision.
-
-If only `current` is present, pin an older nixpkgs for the cross bootstrap
-or add an overlay that exposes `buildPackages.gcc11` (etc.) and rebuild.
+`14` / `13` / `12` come from flake inputs `nixpkgs-24_11`, `nixpkgs-24_05`,
+`nixpkgs-23_11` (each channel's aarch64 *cross* `stdenv.cc`, not native
+`buildPackages.gccN` — those lack aarch64 `bits/c++config.h`).
 EOF
       runHook postInstall
     '';

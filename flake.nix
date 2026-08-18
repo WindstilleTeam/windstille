@@ -36,11 +36,19 @@
       url = "https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.0/SDL2_mixer-2.8.0.tar.gz";
       flake = false;
     };
+
+    # Older nixpkgs for true aarch64 *cross* GCCs (exception-test matrix).
+    # buildPackages.gccN on the main flake is native x86_64 and lacks
+    # aarch64 bits/c++config.h — pins supply stdenv.cc targeting aarch64.
+    nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-23_11.url = "github:NixOS/nixpkgs/nixos-23.11";
   };
 
   outputs = { self, nixpkgs, flake-utils, tinycmmc, squirrel, SDL2-win32,
               openal-soft-win32, libmodplug-win32,
-              sdl2-src, sdl2-image-src, sdl2-mixer-src }:
+              sdl2-src, sdl2-image-src, sdl2-mixer-src,
+              nixpkgs-24_11, nixpkgs-24_05, nixpkgs-23_11 }:
     let
       tinycmmc_lib = import ./external/tinycmmc { inherit nixpkgs flake-utils; };
     in
@@ -574,9 +582,23 @@
 
               # R36S / ArkOS — sysroot URL is still a localhost placeholder in
               # nix/r36s.nix; update hash when a permanent tarball is published.
+              # True aarch64-cross GCCs from pinned channels (not native gccN).
+              mkPinnedCrossGcc = npkgs:
+                let
+                  pinned = import npkgs {
+                    inherit (pkgs) system;
+                    crossSystem = lib.systems.examples.aarch64-multiplatform;
+                  };
+                in pinned.stdenv.cc.cc;
+
               r36s = import ./nix/r36s.nix {
                 inherit (pkgs) lib stdenv stdenvNoCC fetchurl cmake pkg-config writeShellScript zip glm bison flex;
                 pkgsCross = pkgs.pkgsCross;
+                extraCrossGccs = {
+                  "14" = mkPinnedCrossGcc nixpkgs-24_11;
+                  "13" = mkPinnedCrossGcc nixpkgs-24_05;
+                  "12" = mkPinnedCrossGcc nixpkgs-23_11;
+                };
               };
               windstille-r36s = r36s.mkWindstilleR36s {
                 src = ./.;

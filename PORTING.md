@@ -111,8 +111,10 @@ nix build .#r36s-exception-tests         # matrix (current + gccN if available)
 
 Copy `result/bin/exception_test` (or the matrix under
 `share/r36s-exception-tests/`) to the device; exit 0 and `ALL PASSED` means
-unwind works for that compiler. Numbered GCC majors appear only when
-nixpkgs exposes `pkgsCross.aarch64-multiplatform.buildPackages.gccN`.
+unwind works for that compiler. Numbered majors `14`/`13`/`12` use **pinned** nixpkgs channels
+(`nixpkgs-24_11` / `24_05` / `23_11`) so the compiler is a real aarch64
+*cross* GCC. Native `buildPackages.gccN` is rejected (no aarch64
+`bits/c++config.h`).
 
 **Planned follow-up.** Rebuild `windstille-r36s` with the first major that
 passes the smoke test (via `overrideCC` / wrapper `gcc` pin).
