@@ -56,15 +56,8 @@ void assert_gl_loc(char const* file, int line, char const* message)
     msg << file << ":" << line << ": OpenGLError while '"
         << (message ? message : "<null>") << "': "
         << gl_error_string(error) << " (0x" << std::hex << error << ")";
-    // Prefer a clear abort over a C++ throw: on R36S/ArkOS, GCC 15 exception
-    // unwind against the older sysroot libgcc often SIGABRTs in _Unwind_Resume
-    // with no usable message.
     std::cerr << msg.str() << std::endl;
-#if defined(WINDSTILLE_R36S) || defined(WINDSTILLE_NO_CXX_EXCEPTIONS)
-    std::abort();
-#else
     throw std::runtime_error(msg.str());
-#endif
   }
 }
 

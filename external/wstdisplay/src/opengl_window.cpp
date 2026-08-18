@@ -87,11 +87,7 @@ OpenGLWindow::OpenGLWindow(wstsys::System& system,
                               flags);
   if (m_window == nullptr) {
     std::cerr << "Display:: Couldn't create window: " << SDL_GetError() << std::endl;
-#if defined(WINDSTILLE_R36S) || defined(WINDSTILLE_NO_CXX_EXCEPTIONS)
-    std::abort();
-#else
     throw std::runtime_error("Display:: Couldn't create window");
-#endif
   }
 
   SDL_SetWindowMinimumSize(m_window, 640, 480);
@@ -99,11 +95,7 @@ OpenGLWindow::OpenGLWindow(wstsys::System& system,
   m_gl_context = SDL_GL_CreateContext(m_window);
   if (m_gl_context == nullptr) {
     std::cerr << "Display:: failed to create GLContext: " << SDL_GetError() << std::endl;
-#if defined(WINDSTILLE_R36S) || defined(WINDSTILLE_NO_CXX_EXCEPTIONS)
-    std::abort();
-#else
     throw std::runtime_error("Display:: failed to create GLContext");
-#endif
   }
 
 #if !WSTDISPLAY_GL_ES
@@ -171,13 +163,6 @@ OpenGLWindow::set_icon(std::filesystem::path const& filename)
 {
   assert(m_window != nullptr);
 
-  // On R36S/ArkOS, any C++ throw tends to SIGABRT in _Unwind_Resume (GCC 15
-  // vs older sysroot libgcc). Window icons are optional — skip rather than
-  // risk aborting before a catch can run.
-#if defined(WINDSTILLE_R36S) || defined(WINDSTILLE_NO_CXX_EXCEPTIONS)
-  (void)filename;
-  return;
-#else
   surf::SoftwareSurface pixeldata;
   try {
     pixeldata = surf::SoftwareSurface::from_file(filename);
@@ -212,7 +197,6 @@ OpenGLWindow::set_icon(std::filesystem::path const& filename)
   SDL_SetWindowIcon(m_window, sdl_surface);
 
   SDL_FreeSurface(sdl_surface);
-#endif
 }
 
 void

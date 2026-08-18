@@ -100,8 +100,8 @@ match ArkOS’s older `libstdc++` unwind/personality expectations.
 
 **Workarounds in tree today.**
 
-- Avoid throws on non-critical paths (window icon load, some CLI parse
-  errors → print + `abort`).
+- In-game `exception-smoke` in `main()` confirmed throw/catch works with
+  GCC 15 + ArkOS libstdc++; R36S-specific abort/skip-throw guards removed.
 - `RelWithDebInfo` so on-device gdb has symbols even when unwind is broken.
 - Config / argpp macros use `do { …; std::abort(); } while(0)` with a
   **terminating semicolon** (Android NDK was picky about macro expansion).
