@@ -33,6 +33,9 @@
 #  include "plugins/png.hpp"
 #endif
 #include "plugins/dds.hpp"
+#if defined(__ANDROID__) || defined(SURF_USE_STB_IMAGE)
+#  include "plugins/stb_image_loader.hpp"
+#endif
 
 #ifdef HAVE_MAGICKXX
 #  include "plugins/imagemagick.hpp"
@@ -63,6 +66,9 @@ SoftwareSurfaceFactory::SoftwareSurfaceFactory() :
   png::register_loader(*this);
 #endif
   dds::register_loader(*this);
+#if defined(__ANDROID__) || defined(SURF_USE_STB_IMAGE)
+  stb_image_loader::register_loader(*this);
+#endif
 
 #ifdef HAVE_EXEC
   if (xcf::is_available()) {

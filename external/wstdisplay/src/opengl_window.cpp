@@ -177,7 +177,13 @@ OpenGLWindow::set_icon(std::filesystem::path const& filename)
 {
   assert(m_window != nullptr);
 
-  surf::SoftwareSurface const pixeldata = surf::SoftwareSurface::from_file(filename);
+  surf::SoftwareSurface pixeldata;
+  try {
+    pixeldata = surf::SoftwareSurface::from_file(filename);
+  } catch (std::exception const& err) {
+    std::cerr << "OpenGLWindow::set_icon: " << err.what() << " (ignored)\n";
+    return;
+  }
 
   SDL_Surface* sdl_surface;
   if constexpr (std::endian::native == std::endian::big) {
