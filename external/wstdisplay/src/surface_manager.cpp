@@ -126,9 +126,14 @@ TexturePtr
 SurfaceManager::create_texture(SoftwareSurface const& image,
                                float* maxu, float* maxv)
 {
-  // OpenGL2.0 should be fine with non-power-of-two, but some
-  // implementations aren't
-  if (GLEW_ARB_texture_non_power_of_two) {
+  // GLES2 always supports NPOT 2D textures. On desktop, trust the ARB extension
+  // when present; otherwise pad to power-of-two.
+#if WSTDISPLAY_GL_ES
+  const bool npot = true;
+#else
+  const bool npot = GLEW_ARB_texture_non_power_of_two;
+#endif
+  if (npot) {
     *maxu = 1.0f;
     *maxv = 1.0f;
     return Texture::create(image);

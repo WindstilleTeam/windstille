@@ -60,6 +60,8 @@ Texture::Texture(GLenum target, geom::isize const& size, GLint format) :
 {
   assert_gl();
 
+  // GLES2 requires NPOT 2D textures; on desktop check the ARB extension.
+#if !WSTDISPLAY_GL_ES
   if (!GLEW_ARB_texture_non_power_of_two) {
     if (!glm::isPowerOfTwo(m_size.width()) || !glm::isPowerOfTwo(m_size.height())) {
       std::cout  << "Texture::Texture(): texture dimensions have non power of two size: " << m_size;
@@ -68,6 +70,7 @@ Texture::Texture(GLenum target, geom::isize const& size, GLint format) :
                            glm::ceilPowerOfTwo(m_size.height()));
     }
   }
+#endif
 
   glGenTextures(1, &m_handle);
   assert_gl();
@@ -98,6 +101,7 @@ Texture::Texture(SoftwareSurface const& image, GLint glformat) :
   glGenTextures(1, &m_handle);
   assert_gl();
 
+#if !WSTDISPLAY_GL_ES
   if (!GLEW_ARB_texture_non_power_of_two) {
     if (!glm::isPowerOfTwo(image.get_width()) || !glm::isPowerOfTwo(image.get_height())) {
       std::ostringstream str;
@@ -106,6 +110,7 @@ Texture::Texture(SoftwareSurface const& image, GLint glformat) :
       throw std::runtime_error(str.str());
     }
   }
+#endif
 
   if (image.get_format() != surf::PixelFormat::RGB8 &&
       image.get_format() != surf::PixelFormat::RGBA8) {
@@ -303,7 +308,28 @@ Texture::get_software_surface() const
 
   SoftwareSurface surface = SoftwareSurface::create(surf::PixelFormat::RGBA8, m_size);
 
+#if WSTDISPLAY_GL_ES
+  // glGetTexImage is not available on GLES2; read back via a temporary FBO.
+  GLuint fbo = 0;
+  glGenFramebuffers(1, &fbo);
+  GLint prev_fb = 0;
+  glGetIntegerv(GL_FRAMEBUFFER_BINDING, &prev_fb);
+  glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_handle, 0);
+  GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+  if (status == GL_FRAMEBUFFER_COMPLETE) {
+    glReadPixels(0, 0, m_size.width(), m_size.height(),
+                 GL_RGBA, GL_UNSIGNED_BYTE, surface.get_data());
+  } else {
+    std::cerr << "Texture::get_software_surface: FBO incomplete (0x"
+              << std::hex << status << std::dec << "), returning empty surface
+";
+  }
+  glBindFramebuffer(GL_FRAMEBUFFER, prev_fb);
+  glDeleteFramebuffers(1, &fbo);
+#else
   glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface.get_data());
+#endif
 
   return surface;
 }
