@@ -48,6 +48,7 @@
 #include "app/controller_def.hpp"
 #include "app/windstille_main.hpp"
 #include "engine/script_manager.hpp"
+#include "hud/virtual_gamepad.hpp"
 #include "font/fonts.hpp"
 #include "hud/controller_help_window.hpp"
 #include "screen/game_session.hpp"
@@ -212,6 +213,26 @@ WindstilleMain::main(int argc, char** argv)
           screen_manager.add_hud(frame_hud.get());
         } else {
           screen_manager.remove_hud(frame_hud.get());
+        }
+      });
+
+      // On-screen Xbox 360–style pad for touch screens (Android). Also
+      // available on desktop via F4 for layout testing with the mouse.
+      std::unique_ptr<VirtualGamepad> virtual_gamepad = std::make_unique<VirtualGamepad>();
+#if defined(ANDROID) || defined(__ANDROID__)
+      screen_manager.add_hud(virtual_gamepad.get());
+#endif
+      screen_manager.bind_key(SDLK_F4, [&screen_manager, &virtual_gamepad]{
+        static bool shown = false;
+#if defined(ANDROID) || defined(__ANDROID__)
+        shown = true; // already on by default
+#endif
+        if (!shown) {
+          screen_manager.add_hud(virtual_gamepad.get());
+          shown = true;
+        } else {
+          screen_manager.remove_hud(virtual_gamepad.get());
+          shown = false;
         }
       });
 

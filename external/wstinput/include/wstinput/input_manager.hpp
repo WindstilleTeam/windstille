@@ -48,6 +48,8 @@ public:
 
   ControllerDescription const& get_controller_description() const { return m_controller_description; }
   Controller const& get_controller() const { return m_controller; }
+  /** Non-const access for virtual gamepad / synthetic input injection. */
+  Controller& get_controller_mut() { return m_controller; }
 
   InputBindings& bindings() { return m_bindings; }
 

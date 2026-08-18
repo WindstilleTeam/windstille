@@ -235,6 +235,22 @@ ScreenManager::apply_pending_actions()
 void
 ScreenManager::handle_event(const SDL_Event& event)
 {
+  // Touch / mouse always go to HUD overlays first (virtual gamepad on Android).
+  switch (event.type) {
+    case SDL_FINGERDOWN:
+    case SDL_FINGERMOTION:
+    case SDL_FINGERUP:
+    case SDL_MOUSEBUTTONDOWN:
+    case SDL_MOUSEBUTTONUP:
+    case SDL_MOUSEMOTION:
+      for (Screen* hud : m_huds) {
+        hud->handle_event(event);
+      }
+      break;
+    default:
+      break;
+  }
+
   switch(event.type)
   {
     case SDL_QUIT:
