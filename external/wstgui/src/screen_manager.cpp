@@ -27,6 +27,10 @@
 #include <wstgui/screen.hpp>
 #include <wstsound/sound_manager.hpp>
 
+#ifdef __EMSCRIPTEN__
+#  include <emscripten.h>
+#endif
+
 namespace wstgui {
 
 ScreenManager::ScreenManager(wstsys::System& system, wstdisplay::OpenGLWindow& window, wstinput::InputManagerSDL& input) :
@@ -66,46 +70,76 @@ ScreenManager::run()
 
   apply_pending_actions();
 
+#ifdef __EMSCRIPTEN__
+  // Browser-driven loop via requestAnimationFrame (fps=0). Avoids SDL_Delay
+  // busy-waits that spin the tab at 100% CPU without ASYNCIFY.
+  // simulate_infinite_loop=false: return to caller so we do not JS-throw/unwind
+  // the C stack (that would run destructors for stack-allocated game state).
+  emscripten_set_main_loop_arg(&ScreenManager::emscripten_main_loop, this, 0, false);
+#else
   while (!m_do_quit && !m_screens.empty())
   {
-    /// Amount of time the world moves forward each update(), this is
-    /// independed of the number of frames and always constant
-    static const float step = 0.001f;
+    run_one_frame();
+  }
+#endif
+}
 
-    Uint32 const now = m_system.get_ticks();
-    float delta = static_cast<float>(now - m_ticks) / 1000.0f + m_overlap_delta;
-    m_ticks = now;
+void
+ScreenManager::run_one_frame()
+{
+  /// Amount of time the world moves forward each update(), this is
+  /// independed of the number of frames and always constant
+  static const float step = 0.001f;
 
-    while (delta > step)
-    {
-      m_input.update(delta);
+  Uint32 const now = m_system.get_ticks();
+  float delta = static_cast<float>(now - m_ticks) / 1000.0f + m_overlap_delta;
+  m_ticks = now;
 
-      if (!m_overlay_screens.empty()) {
-        m_overlay_screens.back()->update(step, m_input.get_controller());
-      } else if (!m_screens.empty()) {
-        m_screens.back()->update(step, m_input.get_controller());
-      }
+  while (delta > step)
+  {
+    m_input.update(delta);
 
-      for(Screen* hud : m_huds) {
-        hud->update(step, m_input.get_controller());
-      }
-      m_input.clear();
-
-      delta -= step;
+    if (!m_overlay_screens.empty()) {
+      m_overlay_screens.back()->update(step, m_input.get_controller());
+    } else if (!m_screens.empty()) {
+      m_screens.back()->update(step, m_input.get_controller());
     }
 
-    m_overlap_delta = delta;
+    for(Screen* hud : m_huds) {
+      hud->update(step, m_input.get_controller());
+    }
+    m_input.clear();
 
-    m_sig_update(delta);
-    m_system.update();
-
-    draw(m_window.get_gc());
-
-    apply_pending_actions();
-
-    m_system.delay(5);
+    delta -= step;
   }
+
+  m_overlap_delta = delta;
+
+  m_sig_update(delta);
+  m_system.update();
+
+  draw(m_window.get_gc());
+
+  apply_pending_actions();
+
+#ifndef __EMSCRIPTEN__
+  m_system.delay(5);
+#endif
 }
+
+#ifdef __EMSCRIPTEN__
+void
+ScreenManager::emscripten_main_loop(void* arg)
+{
+  ScreenManager* self = static_cast<ScreenManager*>(arg);
+  if (self->m_do_quit || self->m_screens.empty())
+  {
+    emscripten_cancel_main_loop();
+    return;
+  }
+  self->run_one_frame();
+}
+#endif
 
 void
 ScreenManager::draw(wstdisplay::GraphicsContext& gc)

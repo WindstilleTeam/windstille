@@ -50,6 +50,13 @@ public:
   /** Breaks out of the run() function */
   void quit();
 
+  /** Run a single frame (used by the Emscripten main-loop callback). */
+  void run_one_frame();
+
+#ifdef __EMSCRIPTEN__
+  static void emscripten_main_loop(void* arg);
+#endif
+
   /** Push a screen, the screen will be delete'ed once it is no longer needed */
   void push_screen(std::unique_ptr<Screen> s);
   void pop_screen();
