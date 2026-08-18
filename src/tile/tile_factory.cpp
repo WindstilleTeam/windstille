@@ -30,16 +30,31 @@ namespace windstille {
 
 namespace {
 
-/** Check if the given region of the given image is fully transparent */
+/** Check if the given region of the given image is fully transparent.
+    Returns true (treat as empty) if the rect is outside the surface or
+    the surface has no pixel data — never reads out of bounds. */
 bool surface_empty(surf::SoftwareSurface const& image, int sx, int sy, int w, int h)
 {
-  uint8_t const* data = static_cast<uint8_t const*>(image.get_data());
+  if (w <= 0 || h <= 0) {
+    return true;
+  }
+  if (sx < 0 || sy < 0
+      || sx + w > image.get_width()
+      || sy + h > image.get_height()) {
+    return true;
+  }
 
-  for(int y = sy; y < sy + h; ++y) {
-    for(int x = sx; x < sx + w; ++x)
-    {
-      if (data[y * image.get_pitch() + 4*x + 3] != 0)
-      {
+  uint8_t const* data = static_cast<uint8_t const*>(image.get_data());
+  if (!data) {
+    return true;
+  }
+
+  // Alpha is the 4th byte of RGBA8; other formats are not used for tiles.
+  int const pitch = image.get_pitch();
+  for (int y = sy; y < sy + h; ++y) {
+    uint8_t const* row = data + y * pitch;
+    for (int x = sx; x < sx + w; ++x) {
+      if (row[4 * x + 3] != 0) {
         return false;
       }
     }

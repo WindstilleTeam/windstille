@@ -67,6 +67,17 @@ TileDescription::load(TileFactory* factory)
     throw std::runtime_error(str.str());
   }
 
+  int const need_w = width * TILE_RESOLUTION;
+  int const need_h = height * TILE_RESOLUTION;
+  if (image.get_width() < need_w || image.get_height() < need_h)
+  {
+    std::ostringstream str;
+    str << "tile image '" << filename << "' is " << image.get_width() << "x"
+        << image.get_height() << " but width*height tiles require at least "
+        << need_w << "x" << need_h;
+    throw std::runtime_error(str.str());
+  }
+
   int i = 0;
   for (int y = 0; y < height*TILE_RESOLUTION; y += TILE_RESOLUTION)
   {

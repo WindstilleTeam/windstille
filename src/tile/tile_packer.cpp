@@ -19,6 +19,9 @@
 #include <wstdisplay/gl_compat.hpp>
 #include <SDL.h>
 
+#include <sstream>
+#include <stdexcept>
+
 #include "app/globals.hpp"
 #include "tile/tile_packer.hpp"
 #include <wstdisplay/assert_gl.hpp>
@@ -70,21 +73,30 @@ TilePacker::~TilePacker()
 geom::frect
 TilePacker::pack(wstdisplay::SoftwareSurface const& image, int x, int y, int w, int h)
 {
-  assert(w == TILE_RESOLUTION && h == TILE_RESOLUTION);
-  assert(!is_full());
+  // geom::irect is (left, top, right, bottom) — not (x, y, width, height).
+  // Passing (x, y, w, h) made every tile after the first column a zero/negative
+  // rect; with NDEBUG that skipped the blit assert and crashed in memcpy.
+  if (w != TILE_RESOLUTION || h != TILE_RESOLUTION) {
+    throw std::runtime_error("TilePacker::pack: tile size must be TILE_RESOLUTION");
+  }
+  if (is_full()) {
+    throw std::runtime_error("TilePacker::pack: atlas is full");
+  }
+
+  geom::irect const image_bounds(image.get_size());
+  geom::irect const source_rect(x, y, x + w, y + h);
+  if (!geom::contains(image_bounds, source_rect)) {
+    std::ostringstream msg;
+    msg << "TilePacker::pack: source rect (" << x << "," << y << " "
+        << w << "x" << h << ") outside image " << image.get_width()
+        << "x" << image.get_height();
+    throw std::runtime_error(msg.str());
+  }
 
   surf::SoftwareSurface convert = surf::SoftwareSurface::create(surf::PixelFormat::RGBA8, {w + 2, h + 2});
 
-  geom::irect source_rect(static_cast<Sint16>(x),
-                          static_cast<Sint16>(y),
-                          static_cast<Sint16>(w),
-                          static_cast<Sint16>(h));
-
-  geom::ipoint dest_point(static_cast<Sint16>(1),
-                          static_cast<Sint16>(1));
-
+  geom::ipoint dest_point(1, 1);
   surf::blit(image, source_rect, convert, dest_point);
-  //SDL_BlitSurface(image.get_surface(), &source_rect, convert.get_surface(), &dest_rect);
 
   wstdisplay::generate_border(convert, 1, 1, TILE_RESOLUTION, TILE_RESOLUTION);
 

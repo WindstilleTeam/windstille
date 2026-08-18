@@ -96,16 +96,24 @@ template<typename SrcPixel, typename DstPixel,
 void blit(PixelView<SrcPixel> const& src, geom::irect const& srcrect,
           PixelView<DstPixel>& dst, const geom::ipoint& pos)
 {
-  assert(contains(geom::irect(src.get_size()), srcrect));
+  // Runtime guard: assert() is a no-op under NDEBUG / RelWithDebInfo and a
+  // bad srcrect previously led to OOB memcpy (e.g. TilePacker building
+  // irect(x,y,w,h) instead of irect(x,y,x+w,y+h)).
+  if (!contains(geom::irect(src.get_size()), srcrect) || srcrect.width() <= 0 || srcrect.height() <= 0) {
+    return;
+  }
 
   geom::irect const cliprect(dst.get_size());
   geom::irect const region = intersection(geom::irect(srcrect.size()) + geom::ioffset(pos), cliprect);
+  if (region.width() <= 0 || region.height() <= 0) {
+    return;
+  }
   geom::ioffset const dst2src(-pos.x() + srcrect.left(), -pos.y() + srcrect.top());
 
   for (int y = region.top(); y < region.bottom(); ++y) {
     std::memcpy(dst.get_row(y) + region.left(),
                 src.get_row(y + dst2src.y()) + region.left() + dst2src.x(),
-                region.width() * sizeof(SrcPixel));
+                static_cast<size_t>(region.width()) * sizeof(SrcPixel));
   }
 }
 
@@ -114,10 +122,15 @@ template<typename SrcPixel, typename DstPixel,
 void blit(PixelView<SrcPixel> const& src, geom::irect const& srcrect,
           PixelView<DstPixel>& dst, const geom::ipoint& pos)
 {
-  assert(contains(geom::irect(src.get_size()), srcrect));
+  if (!contains(geom::irect(src.get_size()), srcrect) || srcrect.width() <= 0 || srcrect.height() <= 0) {
+    return;
+  }
 
   geom::irect const cliprect(dst.get_size());
   geom::irect const region = intersection(geom::irect(srcrect.size()) + geom::ioffset(pos), cliprect);
+  if (region.width() <= 0 || region.height() <= 0) {
+    return;
+  }
   geom::ioffset const dst2src(-pos.x() + srcrect.left(), -pos.y() + srcrect.top());
 
   for (int y = region.top(); y < region.bottom(); ++y) {
