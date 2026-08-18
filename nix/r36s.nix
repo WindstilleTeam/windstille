@@ -197,6 +197,21 @@ let
       "-DFT_DISABLE_BROTLI=TRUE"
       "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
     ];
+    # CMake joins ${prefix}/@CMAKE_INSTALL_LIBDIR@ into broken //nix/store/… paths.
+    postInstall = ''
+      mkdir -p $out/lib/pkgconfig
+      cat > $out/lib/pkgconfig/freetype2.pc <<EOF
+prefix=$out
+exec_prefix=''${prefix}
+libdir=''${exec_prefix}/lib
+includedir=''${prefix}/include/freetype2
+Name: FreeType 2
+Description: A free, high-quality, and portable font engine (static, R36S)
+Version: ${version}
+Libs: -L''${libdir} -lfreetype
+Cflags: -I''${includedir}
+EOF
+    '';
   };
 
   mkWrappers = sysroot: let
