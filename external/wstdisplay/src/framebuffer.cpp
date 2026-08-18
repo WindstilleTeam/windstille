@@ -109,7 +109,12 @@ Framebuffer::create_with_texture_internal(GLenum target, geom::isize const& size
 
   m_size = size;
   m_texture = Texture::create(target, size);
+#if WSTDISPLAY_GL_ES
+  // WebGL1/GLES2: packed depth-stencil is not always available; depth-only is enough.
+  m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH_COMPONENT16, size, multisample);
+#else
   m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, size, multisample);
+#endif
 
   int previous_framebuffer = 0;
   glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previous_framebuffer);
@@ -119,8 +124,10 @@ Framebuffer::create_with_texture_internal(GLenum target, geom::isize const& size
 
   // bind texture and renderbuffers to the framebuffer
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_texture->get_target(), m_texture->get_handle(), 0);
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,   GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
+#if !WSTDISPLAY_GL_ES
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
+#endif
 
   assert_gl();
 
@@ -135,8 +142,19 @@ Framebuffer::create_internal(GLenum format, geom::isize const& size, int multisa
   assert_gl();
 
   m_size = size;
+#if WSTDISPLAY_GL_ES
+  // GLES2 renderbuffer color formats are limited (no RGB8).
+  if (format == GL_RGB8 || format == GL_RGB) {
+    format = GL_RGB565;
+  } else if (format == GL_RGBA8 || format == GL_RGBA16F || format == GL_RGBA) {
+    format = GL_RGBA4;
+  }
+  m_color_buffer = Renderbuffer::create(format, size, multisample);
+  m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH_COMPONENT16, size, multisample);
+#else
   m_color_buffer = Renderbuffer::create(format, size, multisample);
   m_depth_stencil_buffer = Renderbuffer::create(GL_DEPTH24_STENCIL8, size, multisample);
+#endif
 
   int previous_framebuffer = 0;
   glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previous_framebuffer);
@@ -146,7 +164,9 @@ Framebuffer::create_internal(GLenum format, geom::isize const& size, int multisa
 
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,  GL_RENDERBUFFER, m_color_buffer->get_handle());
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,   GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
+#if !WSTDISPLAY_GL_ES
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depth_stencil_buffer->get_handle());
+#endif
   assert_gl();
 
   check_completness();
