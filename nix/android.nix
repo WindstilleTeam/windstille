@@ -148,7 +148,8 @@ let
   # Windstille uses OpenAL + modplug; mixer is only registered when built.
   
   freetypeSrc = pkgs.fetchurl {
-    url = "https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.xz";
+    # Savannah mirrors are often flaky; SourceForge mirror for 2.13.2.
+    url = "https://downloads.sourceforge.net/project/freetype/freetype2/2.13.2/freetype-2.13.2.tar.xz";
     hash = "sha256-QmidptlkYwrPgL5BxUE1UCn94Khf6Nz88bUFqG17R0w=";
   };
 

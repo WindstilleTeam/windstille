@@ -440,7 +440,7 @@ EOF
       CXXFLAGS="-O2 -fno-exceptions -D_SQ64 -I$PWD/prefix/include -I$PWD/prefix/include/squirrel ''${CXXFLAGS:-}"
       objs_sq=()
       while IFS= read -r -d '' f; do
-        o="''${f%.cpp}.o"
+        o="$f.o"
         echo "  em++ $f"
         em++ $CXXFLAGS -c "$f" -o "$o"
         objs_sq+=("$o")
@@ -448,14 +448,14 @@ EOF
       objs_st=()
       if [ -n "$ST_SRC" ]; then
         while IFS= read -r -d '' f; do
-          o="''${f%.cpp}.o"
+          o="$f.o"
           echo "  em++ $f"
           em++ $CXXFLAGS -c "$f" -o "$o"
           objs_st+=("$o")
         done < <(find "$ST_SRC" -maxdepth 1 -name '*.cpp' -print0)
       fi
       emar rcs "$PWD/prefix/lib/libsquirrel.a" "''${objs_sq[@]}"
-      if [ ''${#objs_st[@]} -gt 0 ]; then
+      if [ -n "''${objs_st[*]}" ]; then
         emar rcs "$PWD/prefix/lib/libsqstdlib.a" "''${objs_st[@]}"
       else
         # empty archive placeholder so link lines stay uniform
