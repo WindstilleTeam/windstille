@@ -33,9 +33,12 @@ SurfaceManager::SurfaceManager() :
   // NPOV should be ok with OpenGL2.0 in theory, but in practice there
   // is hardware that does OpenGL2.0, but not NPOV, see:
   // http://www.opengl.org/wiki/NPOT_Texture
+  // GLES2 always supports NPOT 2D textures — no packer needed.
+#if !WSTDISPLAY_GL_ES
   if (!GLEW_ARB_texture_non_power_of_two) {
     m_texture_packer.reset(new TexturePacker(geom::isize(2048, 2048)));
   }
+#endif
 }
 
 SurfaceManager::~SurfaceManager()

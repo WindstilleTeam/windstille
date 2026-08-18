@@ -322,8 +322,7 @@ Texture::get_software_surface() const
                  GL_RGBA, GL_UNSIGNED_BYTE, surface.get_data());
   } else {
     std::cerr << "Texture::get_software_surface: FBO incomplete (0x"
-              << std::hex << status << std::dec << "), returning empty surface
-";
+              << std::hex << status << std::dec << "), returning empty surface\n";
   }
   glBindFramebuffer(GL_FRAMEBUFFER, prev_fb);
   glDeleteFramebuffers(1, &fbo);
