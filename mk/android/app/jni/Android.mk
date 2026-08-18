@@ -51,7 +51,19 @@ LOCAL_SRC_FILES := $(filter-out %/deps/priocpp/%,$(LOCAL_SRC_FILES))
 # No system libjpeg/libpng on Android NDK tree yet; drop surfcpp image plugins
 # that need them (DDS/PNM remain). TODO: stage libjpeg-turbo + libpng statics
 # like audio libs and re-enable JPEG/PNG SoftwareSurface loaders.
-LOCAL_SRC_FILES := $(filter-out %/plugins/jpeg%.cpp %/plugins/file_jpeg%.cpp %/plugins/mem_jpeg%.cpp %/plugins/jpeg_%.cpp %/plugins/png.cpp,$(LOCAL_SRC_FILES))
+# Note: GNU make filter-out allows only one % per pattern.
+LOCAL_SRC_FILES := $(filter-out \
+  %/plugins/jpeg.cpp \
+  %/plugins/jpeg_compressor.cpp \
+  %/plugins/jpeg_decompressor.cpp \
+  %/plugins/jpeg_memory_dest.cpp \
+  %/plugins/jpeg_memory_src.cpp \
+  %/plugins/file_jpeg_compressor.cpp \
+  %/plugins/file_jpeg_decompressor.cpp \
+  %/plugins/mem_jpeg_compressor.cpp \
+  %/plugins/mem_jpeg_decompressor.cpp \
+  %/plugins/png.cpp,\
+  $(LOCAL_SRC_FILES))
 
 ifneq ($(ENABLE_ANDROID_SOUND),1)
 LOCAL_SRC_FILES := $(filter-out %/sound_real.cpp,$(LOCAL_SRC_FILES))
