@@ -75,7 +75,7 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] ShaderObject::load prepares GLES sources (version/precision, strip rect-tex extension)
 - [x] Shockwave / DeformDrawer: soft-fail if effect shaders will not compile on GLES
 - [x] Effect shaders: `prepare_shader_source` rewrites `gl_TexCoord[0]` → `texcoord_v` on GLES (still need a linked ES vertex shader for full effect path)
-- [ ] Replace blit callers (e.g. geometry extra) with textured-quad path on GLES
+- [x] Replace blit callers (e.g. geometry extra) with textured-quad path on GLES — only `extra/` used `glBlitFramebuffer`; ports use `BUILD_EXTRA=OFF` and `Framebuffer::blit` is already a no-op on GLES2
 - [x] `.#windstille-gles2` builds via monorepo cmake + libglvnd (GLESv2/EGL), not prebuilt desktop wstdisplay
 - [x] wstdisplay links `PkgConfig::GLESV2` + `PkgConfig::EGL` when `WSTDISPLAY_USE_GLES`
 - [ ] Confirm `ldd result/bin/windstille` shows `libGLESv2.so` and not `libGL.so.1`
@@ -100,7 +100,7 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] Flake: `androidenv.composeAndroidPackages` + license accept (Pingus pattern)
 - [x] Stage Windstille + `external/*` sources for ndk-build (or CMake-via-NDK) (via `mkApk` + `Android.mk`)
 - [x] Adjust `mk/android/app/jni/Android.mk` filters (exclude editor, desktop-only code)
-- [ ] Touch / gamepad mapping; lifecycle (`SDLActivity` singleTask already in manifest)
+- [x] Touch / gamepad mapping; lifecycle (`SDLActivity` singleTask already in manifest; `data/controller/gamepad.scm` for SDL joystick pads)
 - [x] APK via `android.mkApk` + debug keystore
 - [x] Default datadir/userdir for Android (`SDL_AndroidGetInternalStoragePath`)
 
@@ -108,7 +108,7 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [ ] Publish or document ArkOS aarch64 sysroot tarball; update hash in `nix/r36s.nix` (still localhost placeholder)
 - [x] Cross-build game against sysroot toolchain files in `mk/r36s/` (wired via `mkWindstilleR36s`)
 - [x] PortMaster tree package (`windstille-r36s-portmaster` + zip)
-- [ ] Controller profile (`data/controller/…`) if needed
+- [x] Controller profile (`data/controller/r36s.scm` + `gamepad.scm`)
 - [ ] On-device smoke test
 
 ---

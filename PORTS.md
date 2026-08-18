@@ -52,6 +52,15 @@ FBO/MSAA guards, main-loop for Emscripten). Remaining work:
 - Empty datadir (AssetManager); userdir from `SDL_AndroidGetInternalStoragePath`
 - Sound via OpenAL Soft + libmodplug when `AUDIO_ANDROID_LIBS` is staged
 
+## Controller profiles
+
+- `data/controller/keyboard.scm` — default desktop
+- `data/controller/xboxdrv.scm` — Xbox pad via xpad
+- `data/controller/gamepad.scm` — generic SDL joystick (Android / handhelds)
+- `data/controller/r36s.scm` — R36S / ArkOS built-in pad
+
+Load with `--controller data/controller/r36s.scm` (or set `primary-controller-file` in config).
+
 ## R36S / ArkOS notes
 
 - Link against the published ArkOS aarch64 sysroot (glibc ~2.30), not modern
