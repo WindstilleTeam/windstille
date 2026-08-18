@@ -87,6 +87,7 @@ if [ -n "${MINISWIG:-}" ] && [ -x "$MINISWIG" ]; then
   # miniswig embeds the --output-hpp path in the #include; rewrite to a
   # local include so ndk-build (cwd under jni/) finds wrapper.hpp next to the .cpp.
   sed -i 's|#include "src/jni/src/squirrel/wrapper.hpp"|#include "wrapper.hpp"|' src/jni/src/squirrel/wrapper.cpp
+  sed -i 's|#include "src/jni/src/scripting/wrapper.interface.hpp"|#include "scripting/wrapper.interface.hpp"|' src/jni/src/squirrel/wrapper.cpp
   ls -la src/jni/src/squirrel/wrapper.*
 else
   echo "warning: MINISWIG unset — squirrel/wrapper.hpp will be missing" >&2
