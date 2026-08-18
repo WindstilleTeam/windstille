@@ -249,6 +249,19 @@ endif()
 
 install(DIRECTORY include/. DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
+# Substituted into surf-config.cmake.in so consumers only pull JPEG/PNG when
+# this build actually linked them (stb_image builds leave these empty).
+if(SURF_USE_SYSTEM_JPEG AND JPEG_FOUND)
+  set(SURF_CONFIG_FIND_JPEG "find_dependency(JPEG REQUIRED)")
+else()
+  set(SURF_CONFIG_FIND_JPEG "")
+endif()
+if(SURF_USE_SYSTEM_PNG AND PNG_FOUND)
+  set(SURF_CONFIG_FIND_PNG "find_dependency(PNG REQUIRED)")
+else()
+  set(SURF_CONFIG_FIND_PNG "")
+endif()
+
 tinycmmc_export_and_install_library(surf)
 
 # EOF #

@@ -5,8 +5,10 @@ include("${CMAKE_CURRENT_LIST_DIR}/surf-targets.cmake")
 
 include(CMakeFindDependencyMacro)
 find_dependency(PkgConfig REQUIRED)
-find_dependency(JPEG REQUIRED)
-find_dependency(PNG REQUIRED)
+# JPEG/PNG only when this build linked system codecs (SURF_USE_SYSTEM_*).
+# Default builds use header-only stb_image and do not need libjpeg/libpng.
+@SURF_CONFIG_FIND_JPEG@
+@SURF_CONFIG_FIND_PNG@
 pkg_search_module(EXIF libexif IMPORTED_TARGET)
 pkg_search_module(MAGICKXX Magick++ GraphicsMagick++ IMPORTED_TARGET)
 
