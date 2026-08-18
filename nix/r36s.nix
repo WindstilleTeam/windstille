@@ -1161,6 +1161,61 @@ EOF_README
     else if fromExtra != null && isAarch64CrossGcc fromExtra then fromExtra
     else null;
 
+  mkExceptionTest = {
+    label ? "current"
+  , gcc ? resolveCrossGcc label
+  , pname ? "r36s-exception-test-${label}"
+  }:
+    assert gcc != null;
+    let
+      cxx = mkExceptionWrappers { sysroot = arkosSysroot; inherit gcc; };
+      ver = gcc.version or label;
+    in
+    stdenvNoCC.mkDerivation {
+      inherit pname;
+      version = ver;
+      dontUnpack = true;
+      dontConfigure = true;
+      strictDeps = true;
+      nativeBuildInputs = [ crossCc.bintools ];
+
+      buildPhase = ''
+        runHook preBuild
+        echo "==> exception_test label=${label} gcc=${ver}"
+        ${cxx} -O2 -g -o exception_test ${../mk/r36s/exception_test.cpp}
+        ${crossCc.bintools}/bin/${targetPrefix}readelf -h exception_test || true
+        ${crossCc.bintools}/bin/${targetPrefix}readelf -d exception_test | head -30 || true
+        runHook postBuild
+      '';
+
+      installPhase = ''
+        runHook preInstall
+        mkdir -p "$out/bin"
+        cp -v exception_test "$out/bin/exception_test"
+        cat > "$out/bin/README.txt" << EOF
+R36S exception smoke test (${label}, GCC ${ver})
+
+Copy exception_test to the device (or run under qemu-user-static with the
+ArkOS rootfs) and execute:
+
+  ./exception_test
+  echo exit:\$?
+
+Expect "ALL PASSED" and exit 0. Abort in uw_init_context_1 / _Unwind_Resume
+means this compiler+sysroot combo still has broken C++ exceptions.
+
+Hybrid model: this GCC's headers + libgcc (static) + ArkOS libstdc++/glibc.
+EOF
+        runHook postInstall
+      '';
+
+      meta = with lib; {
+        description = "R36S/ArkOS C++ throw/catch smoke test (GCC ${label})";
+        platforms = platforms.linux;
+        hydraPlatforms = [];
+      };
+    };
+
   # Labels to try. Missing majors are skipped (null filtered out).
   exceptionTestLabels = [ "current" "14" "13" "12" ];
 
