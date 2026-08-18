@@ -18,6 +18,7 @@
 
 #include "app/menu_manager.hpp"
 
+#include <algorithm>
 #include <functional>
 #include <iostream>
 
@@ -228,6 +229,13 @@ MenuManager::display_scenario_menu()
   scenarios.push_back(Pathname("sectors/intro/intro.wst"));
   scenarios.push_back(Pathname("sectors/newformat2/newformat2.wst"));
   scenarios.push_back(Pathname("sectors/virtualreality/virtualreality.wst"));
+
+  // Directory order is filesystem-dependent (esp. on some embedded FS);
+  // keep the menu deterministic across platforms.
+  std::sort(scenarios.begin(), scenarios.end(),
+            [](Pathname const& a, Pathname const& b) {
+              return a.get_raw_path() < b.get_raw_path();
+            });
 
   for(std::vector<Pathname>::const_iterator i = scenarios.begin(); i != scenarios.end(); ++i)
   {

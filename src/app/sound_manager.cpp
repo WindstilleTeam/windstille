@@ -16,6 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include "app/sound_manager.hpp"
 
 #include <wstsound/sound_manager.hpp>
@@ -45,7 +46,15 @@ SoundManager::play(Pathname const& filename)
 void
 SoundManager::play_music(Pathname const& filename)
 {
-  m_current_music = m_manager->music().play(filename.get_sys_path());
+  // Music is often Ogg; R36S builds may omit libvorbis. Never let a failed
+  // load abort the process (exception unwind can still be fragile mid-frame).
+  try {
+    m_current_music = m_manager->music().play(filename.get_sys_path());
+  } catch (std::exception const& err) {
+    std::cerr << "play_music: " << filename << ": " << err.what() << std::endl;
+  } catch (...) {
+    std::cerr << "play_music: " << filename << ": unknown error (ignored)\n";
+  }
 }
 
 void

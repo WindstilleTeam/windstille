@@ -19,6 +19,8 @@
 #include "sound_channel.hpp"
 
 #include <filesystem>
+#include <fstream>
+#include <cstring>
 #include <iostream>
 
 #include "dummy_sound_source.hpp"
@@ -48,10 +50,58 @@ SoundChannel::play(std::filesystem::path const& filename,
   return source;
 }
 
+static bool sound_format_likely_supported(std::filesystem::path const& filename)
+{
+  std::ifstream in(filename, std::ios::binary);
+  if (!in) {
+    return false;
+  }
+  char magic[32] = {};
+  in.read(magic, sizeof(magic));
+  if (in.gcount() < 4) {
+    return false;
+  }
+  if (std::strncmp(magic, "RIFF", 4) == 0) {
+    return true; // WAV
+  }
+#if defined(WSTSOUND_WITH_MODPLUG)
+  if (std::strncmp(magic, "IMPM", 4) == 0) {
+    return true; // IT module
+  }
+#endif
+#if defined(WSTSOUND_WITH_VORBIS)
+  if (std::strncmp(magic, "OggS", 4) == 0) {
+    return true;
+  }
+#endif
+#if defined(WSTSOUND_WITH_OPUS)
+  if (std::strncmp(magic, "OggS", 4) == 0) {
+    return true;
+  }
+#endif
+#if defined(WSTSOUND_WITH_MPG123)
+  if ((static_cast<unsigned char>(magic[0]) == 0xff) ||
+      (magic[0] == 'I' && magic[1] == 'D' && magic[2] == '3')) {
+    return true;
+  }
+#endif
+  return false;
+}
+
 SoundSourcePtr
 SoundChannel::prepare(std::filesystem::path const& filename,
                       SoundSourceType type)
 {
+  // Skip formats we were not built with (e.g. .ogg without vorbis) without
+  // throwing — deep-stack throw/catch is fragile on some hybrid toolchains.
+  if (!sound_format_likely_supported(filename)) {
+    std::cerr << "SoundChannel::prepare: unsupported or unreadable format: "
+              << filename << std::endl;
+    auto source = std::make_shared<DummySoundSource>();
+    m_sound_sources.emplace_back(source);
+    return source;
+  }
+
   try
   {
     SoundSourcePtr source = m_sound_manager.create_sound_source(filename, *this, type);
@@ -62,7 +112,17 @@ SoundChannel::prepare(std::filesystem::path const& filename,
   }
   catch(std::exception const& err)
   {
-    std::cerr << "SourceChannel::prepare: Couldn't load " << filename << ": " << err.what() << std::endl;
+    std::cerr << "SoundChannel::prepare: Couldn't load " << filename << ": " << err.what() << std::endl;
+    auto source = std::make_shared<DummySoundSource>();
+
+    m_sound_sources.emplace_back(source);
+    return source;
+  }
+  catch(...)
+  {
+    // Hybrid toolchains (e.g. R36S) can fail type matching for std::exception
+    // across TUs; never let a sound load abort the process.
+    std::cerr << "SoundChannel::prepare: Couldn't load " << filename << " (unknown error)\n";
     auto source = std::make_shared<DummySoundSource>();
 
     m_sound_sources.emplace_back(source);
