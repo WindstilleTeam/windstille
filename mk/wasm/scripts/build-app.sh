@@ -58,7 +58,7 @@ LINK_FLAGS=(
   # Only symbols Windstille actually provides today (+ emscripten main-loop helpers).
   # SuperTux _st_emscripten_* hooks are optional in shell.html when missing.
   "SHELL:-sEXPORTED_FUNCTIONS=_main,_emscripten_pause_main_loop,_emscripten_resume_main_loop"
-  "SHELL:-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,FS"
+  "SHELL:-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,FS,getExceptionMessage"
 )
 if [ "${ENABLE_ASYNCIFY:-0}" = 1 ]; then
   LINK_FLAGS+=("SHELL:-sASYNCIFY=1" "SHELL:-sASYNCIFY_STACK_SIZE=1048576")

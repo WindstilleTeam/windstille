@@ -474,11 +474,25 @@
       var parts = [];
       if (err.name) parts.push(err.name);
       if (err.message) parts.push(err.message);
-      // Emscripten C++ exceptions expose a short message after getExceptionMessage
-      // when EXCEPTION_CATCHING is enabled; fall back to toString.
+      // Emscripten CppException: try runtime helpers for the C++ what() string.
+      try {
+        if (typeof Module !== 'undefined') {
+          if (typeof Module.getExceptionMessage === 'function' && err.excPtr) {
+            var pair = Module.getExceptionMessage(err.excPtr);
+            if (pair && pair.length) parts.push(Array.prototype.join.call(pair, ' — '));
+          } else if (typeof Module.UTF8ToString === 'function' && err.ptr) {
+            parts.push(Module.UTF8ToString(err.ptr));
+          }
+        }
+      } catch (e) { /* ignore helper failures */ }
       if (parts.length === 0) {
         try { parts.push(String(err)); } catch (e) { parts.push('(unprintable exception)'); }
       }
+      // Json-like dump of own properties (excPtr, etc.) for opaque objects.
+      try {
+        var keys = Object.keys(err);
+        if (keys.length) parts.push('keys=' + keys.join(','));
+      } catch (e) {}
       if (err.stack) parts.push('\n' + err.stack);
       return parts.join(': ');
     }
