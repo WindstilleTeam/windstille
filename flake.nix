@@ -311,11 +311,18 @@
             cmake --build . --target libwindstille -j$NIX_BUILD_CORES
             runHook postBuild
           '';
+          # Only the static lib is built; cmake --install still expects the
+          # windstille binary (always registered in CMakeLists) and fails.
           installPhase = ''
             runHook preInstall
-            cmake --install . --prefix "$out"
-            # Drop game binary if cmake still installed one
-            rm -f "$out/bin/windstille" "$out/bin/windstille-editor" || true
+            mkdir -p "$out/lib"
+            lib=$(find . -name 'liblibwindstille.a' -print -quit)
+            if [ -z "$lib" ]; then
+              echo "libwindstille: archive not found after build" >&2
+              find . -name '*.a' | head -40 >&2 || true
+              exit 1
+            fi
+            cp -v "$lib" "$out/lib/liblibwindstille.a"
             runHook postInstall
           '';
         };
