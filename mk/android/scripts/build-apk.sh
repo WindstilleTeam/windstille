@@ -72,6 +72,23 @@ cp -r "$APP_DIR/res" src/res
 cp -r "$GAME_SRC_DIR"/. src/jni/src/
 chmod -R u+rwX src/jni/src
 
+# Generate Squirrel wrapper (normally a CMake custom target on desktop).
+if [ -n "${MINISWIG:-}" ] && [ -x "$MINISWIG" ]; then
+  echo "==> generating squirrel/wrapper via miniswig"
+  mkdir -p src/jni/src/squirrel "$TMPDIR/miniswig"
+  WRAP_IFACE="src/jni/src/scripting/wrapper.interface.hpp"
+  if [ ! -f "$WRAP_IFACE" ]; then
+    echo "error: missing $WRAP_IFACE" >&2
+    exit 1
+  fi
+  # Preprocess like desktop CMake ( -x c -CC keeps comments for miniswig )
+  ${CXX:-g++} -E -I src/jni/src -x c -CC "$WRAP_IFACE" -o "$TMPDIR/miniswig/miniswig.tmp" -DSCRIPTING_API
+  "$MINISWIG"     --input "$TMPDIR/miniswig/miniswig.tmp"     --output-cpp src/jni/src/squirrel/wrapper.cpp     --output-hpp src/jni/src/squirrel/wrapper.hpp     --module windstille     --select-namespace "Scripting"
+  ls -la src/jni/src/squirrel/wrapper.*
+else
+  echo "warning: MINISWIG unset — squirrel/wrapper.hpp will be missing" >&2
+fi
+
 # Stage monorepo external/ headers + sources.
 # Under Nix, GAME_SRC_DIR is a filtered ./src store path — parent is NOT the
 # repo. Pass GAME_EXTERNAL_DIR (flake: ./external) and optional GLM_INCLUDE_DIR.

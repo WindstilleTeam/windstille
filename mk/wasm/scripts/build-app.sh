@@ -144,6 +144,15 @@ if [ -n "$PNG_PREFIX" ] && [ -d "$PNG_PREFIX" ]; then
   )
   echo "==> PNG_WASM_LIBS=$PNG_PREFIX"
 fi
+FREETYPE_PREFIX="${FREETYPE_WASM_LIBS:-}"
+if [ -n "$FREETYPE_PREFIX" ] && [ -d "$FREETYPE_PREFIX" ]; then
+  cmake_args+=(
+    -DFREETYPE_DIR="$FREETYPE_PREFIX"
+    -DFREETYPE_INCLUDE_DIRS="$FREETYPE_PREFIX/include/freetype2"
+    -DFREETYPE_LIBRARY="$FREETYPE_PREFIX/lib/libfreetype.a"
+  )
+  echo "==> FREETYPE_WASM_LIBS=$FREETYPE_PREFIX"
+fi
 SQUIRREL_PREFIX="${SQUIRREL_WASM_LIBS:-}"
 if [ -n "$SQUIRREL_PREFIX" ] && [ -d "$SQUIRREL_PREFIX" ]; then
   cmake_args+=(

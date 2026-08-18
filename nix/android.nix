@@ -235,6 +235,15 @@ let
   # aapt/zipalign/apksigner, ABI packaging) is identical across apps and
   # lives here once.
   # ---------------------------------------------------------------
+
+  miniswigHost = pkgs.stdenv.mkDerivation {
+    pname = "miniswig-host";
+    version = "0.1";
+    src = ../external/miniswig;
+    nativeBuildInputs = [ pkgs.cmake pkgs.bison pkgs.flex ];
+    cmakeFlags = [ "-DBUILD_TESTS=OFF" "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" ];
+  };
+
   mkApk = {
     appName,
     appDir,
@@ -260,7 +269,7 @@ let
       version = gameVersion;
 
       dontUnpack = true;
-      nativeBuildInputs = [ androidSdk pkgs.jdk17 pkgs.zip pkgs.gnumake pkgs.unzip ];
+      nativeBuildInputs = [ androidSdk pkgs.jdk17 pkgs.zip pkgs.gnumake pkgs.unzip miniswigHost pkgs.gcc ];
 
       env = {
         BUILD_TOOLS_VERSION = buildToolsVersion;
@@ -274,6 +283,7 @@ let
         AUDIO_ANDROID_LIBS = audioAndroidLibs;
         KEYSTORE = "${keystore}";
         WINDSTILLE_VERSION = gameVersion;
+        MINISWIG = "${miniswigHost}/bin/miniswig";
       } // pkgs.lib.optionalAttrs (gameSrcDir != null) {
         GAME_SRC_DIR = "${gameSrcDir}";
       } // (

@@ -392,6 +392,51 @@ EOF
   };
 
 
+  # --- FreeType for wstdisplay (wasm) --------------------------------------
+  freetypeWasm = pkgs.stdenv.mkDerivation rec {
+    pname = "freetype-wasm";
+    version = "2.13.2";
+    src = pkgs.fetchurl {
+      url = "https://downloads.sourceforge.net/project/freetype/freetype2/2.13.2/freetype-2.13.2.tar.xz";
+      hash = "sha256-QmidptlkYwrPgL5BxUE1UCn94Khf6Nz88bUFqG17R0w=";
+    };
+    nativeBuildInputs = [ pkgs.emscripten pkgs.cmake pkgs.python3 ];
+    dontConfigure = true;
+    buildPhase = ''
+      runHook preBuild
+      export EM_CACHE="''${TMPDIR:-/tmp}/emcache"
+      mkdir -p "$EM_CACHE" "$PWD/prefix" build
+      (
+        cd build
+        emcmake cmake .. \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX="$PWD/../prefix" \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DFT_DISABLE_HARFBUZZ=TRUE \
+          -DFT_DISABLE_BZIP2=TRUE \
+          -DFT_DISABLE_BROTLI=TRUE \
+          -DFT_DISABLE_PNG=TRUE \
+          -DZLIB_ROOT="${zlibWasmLibs}" \
+          -DZLIB_LIBRARY="${zlibWasmLibs}/lib/libz.a" \
+          -DZLIB_INCLUDE_DIR="${zlibWasmLibs}/include"
+        emmake make -j''${NIX_BUILD_CORES:-2}
+        emmake make install
+      )
+      runHook postBuild
+    '';
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out
+      cp -a prefix/. $out/
+      runHook postInstall
+    '';
+    meta = with pkgs.lib; {
+      description = "Static FreeType for wasm32-emscripten";
+      platforms = platforms.linux;
+    };
+  };
+
   # --- Squirrel scripting (wasm) ---------------------------------------------
   # Upstream albertodemichelis/squirrel (grumnix flake root is packaging only).
   squirrelWasm = pkgs.stdenv.mkDerivation rec {
@@ -609,9 +654,9 @@ EOF
       # isolated wstsound-wasm package — so OpenAL comes from the emscripten
       # sysroot (-lopenal) and codec flags follow EMSCRIPTEN defaults in
       # external/wstsound/CMakeLists.txt (modplug + wav only, EFX off).
-      prefixPath = "${glmPrefix}:${sigcWasm}:${jpegWasm}:${pngWasm}:${squirrelWasm}"
+      prefixPath = "${glmPrefix}:${sigcWasm}:${jpegWasm}:${pngWasm}:${freetypeWasm}:${squirrelWasm}"
         + (if enableSound then ":${modplugWasm}" else "");
-      pkgConfigPath = "${sdlWasmLibs}/lib/pkgconfig:${jpegWasm}/lib/pkgconfig:${pngWasm}/lib/pkgconfig:${squirrelWasm}/lib/pkgconfig"
+      pkgConfigPath = "${sdlWasmLibs}/lib/pkgconfig:${jpegWasm}/lib/pkgconfig:${pngWasm}/lib/pkgconfig:${freetypeWasm}/lib/pkgconfig:${squirrelWasm}/lib/pkgconfig"
         + (if enableSound then ":${modplugWasm}/lib/pkgconfig" else "");
     in
     pkgs.stdenv.mkDerivation {
@@ -638,6 +683,7 @@ EOF
         ZLIB_WASM_LIBS = zlibWasmLibs;
         JPEG_WASM_LIBS = jpegWasm;
         PNG_WASM_LIBS = pngWasm;
+        FREETYPE_WASM_LIBS = freetypeWasm;
         SQUIRREL_WASM_LIBS = squirrelWasm;
       } // pkgs.lib.optionalAttrs (dataDir != null) {
         DATA_DIR = "${dataDir}";
