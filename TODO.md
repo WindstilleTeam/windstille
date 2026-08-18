@@ -97,11 +97,12 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [ ] `nix run` / browser smoke test
 
 ### Android (`nix build .#windstille-android`)
-- [ ] Flake: `androidenv.composeAndroidPackages` + license accept (Pingus pattern)
-- [ ] Stage Windstille + `external/*` sources for ndk-build (or CMake-via-NDK)
-- [ ] Adjust `mk/android/app/jni/Android.mk` filters (exclude editor, desktop-only code)
+- [x] Flake: `androidenv.composeAndroidPackages` + license accept (Pingus pattern)
+- [x] Stage Windstille + `external/*` sources for ndk-build (or CMake-via-NDK) (via `mkApk` + `Android.mk`)
+- [x] Adjust `mk/android/app/jni/Android.mk` filters (exclude editor, desktop-only code)
 - [ ] Touch / gamepad mapping; lifecycle (`SDLActivity` singleTask already in manifest)
-- [ ] APK via `android.mkApk` + debug keystore
+- [x] APK via `android.mkApk` + debug keystore
+- [x] Default datadir/userdir for Android (`SDL_AndroidGetInternalStoragePath`)
 
 ### R36S / ArkOS (`nix build .#windstille-r36s`)
 - [ ] Publish or document ArkOS aarch64 sysroot tarball; update hash in `nix/r36s.nix`
@@ -116,7 +117,7 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 
 - [ ] Audit fixed-function / desktop-only GL calls for GLES2 viability
 - [ ] Audio path on Android (OpenAL Soft static libs — see `mk/android/SOUND.md`)
-- [x] Filesystem / path assumptions (user dir, datadir) on each platform (Emscripten paths done; Android/R36S still open)
+- [x] Filesystem / path assumptions (user dir, datadir) on each platform (Emscripten + Android done; R36S still open)
 - [ ] No editor in port builds (`BUILD_EDITOR=OFF`)
 
 ---

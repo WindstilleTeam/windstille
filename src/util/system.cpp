@@ -22,11 +22,19 @@
 #include <sstream>
 #include <stdlib.h>
 
+#if defined(ANDROID) || defined(__ANDROID__)
+#  include <SDL.h>
+#endif
+
 std::string System::find_default_datadir()
 {
 #ifdef __EMSCRIPTEN__
   // Assets are preloaded at /data by the wasm shell / --preload-file.
   return "/data/";
+#elif defined(ANDROID) || defined(__ANDROID__)
+  // Assets are read via Android AssetManager; empty prefix keeps relative
+  // paths like "images/…" which the SDL/Android physfs layer resolves.
+  return "";
 #elif defined(_WIN32)
   // TODO: do something with GetModuleFileName()
   return "data/";
@@ -41,6 +49,14 @@ std::string System::find_default_userdir()
   // Writable path in the Emscripten FS. Optional IDBFS mount can be layered
   // later for persistence across sessions (see mk/wasm/shell.html).
   return "/windstille-user/";
+#elif defined(ANDROID) || defined(__ANDROID__)
+  // App-private internal storage (writable). Root paths are not creatable
+  // on device and would make init throw with no visible UI.
+  if (char const* internal = SDL_AndroidGetInternalStoragePath())
+  {
+    return std::string(internal) + "/windstille/";
+  }
+  throw std::runtime_error("SDL_AndroidGetInternalStoragePath returned null");
 #elif defined(_WIN32)
   char* appdata = getenv("APPDATA");
   if (!appdata)

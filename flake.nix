@@ -439,11 +439,67 @@
                 gitRev = self.rev or "dirty";
                 sourceUrl = "https://github.com/WindstilleTeam/windstille";
               };
+
+              # Android SDK (license accept + unfree) — same pattern as Pingus.
+              androidPkgs = import nixpkgs {
+                system = pkgs.stdenv.hostPlatform.system;
+                config.allowUnfree = true;
+                config.android_sdk.accept_license = true;
+              };
+              buildToolsVersion = "30.0.3";
+              packagePlatform = "22";
+              compilePlatform = "33";
+              # NDK with solid std::format support (r27+).
+              ndkVersion = "27.0.12077973";
+              targetAbis = [ "armeabi-v7a" "arm64-v8a" ];
+              androidSdk = (androidPkgs.androidenv.composeAndroidPackages {
+                platformVersions = [ packagePlatform compilePlatform ];
+                buildToolsVersions = [ buildToolsVersion ];
+                includeNDK = true;
+                inherit ndkVersion;
+                includeEmulator = false;
+                includeSources = false;
+              }).androidsdk;
+
+              android = import ./nix/android.nix {
+                pkgs = androidPkgs;
+                sdlSrc = sdl2-src;
+                sdlVersion = "2.30.9";
+                # Mixer optional; Windstille uses OpenAL Soft + modplug via audioAndroidLibs.
+                inherit androidSdk buildToolsVersion packagePlatform compilePlatform targetAbis;
+              };
+
+              gitDate =
+                if self ? lastModifiedDate then builtins.substring 0 8 self.lastModifiedDate
+                else "00000000";
+              gitRevShort = self.rev or "dirty";
+              androidApkName = "windstille-${gitDate}-${builtins.substring 0 7 gitRevShort}.apk";
+              stbImageH = androidPkgs.fetchurl {
+                url = "https://raw.githubusercontent.com/nothings/stb/refs/heads/master/stb_image.h";
+                sha256 = "sha256-WUwv411JSItDgtv67I+YNm3vyoGdkWrJW+zz519CALM=";
+              };
+
+              windstille-android = android.mkApk {
+                appName = "windstille";
+                appDir = ./mk/android/app;
+                outApkName = androidApkName;
+                keystore = ./mk/android/keystore/debug.keystore;
+                gameSrcDir = ./src;
+                gameExternalDir = ./external;
+                glmIncludeDir = "${androidPkgs.glm}/include";
+                gameDataDir = if builtins.pathExists ./data then ./data else null;
+                inherit stbImageH;
+                gameVersion = "0.3.0-dev";
+              };
             in {
               inherit (wasm) sdl2WasmLibs zlibWasmLibs sdlWasmLibs
                 mkApp mkOpenBrowserApp glmPrefix sigcWasm;
               inherit windstille-wasm;
               windstille-wasm-helpers = wasm.sdl2WasmLibs;
+              inherit (android) sdlAndroidLibs mkApk mkInstallApp;
+              inherit windstille-android;
+              android-sdl-libs = android.sdlAndroidLibs;
+              inherit androidApkName;
             };
 
       in
@@ -487,6 +543,12 @@
             pkg = linuxPorts.windstille-wasm;
             appName = "windstille";
             description = "Serve and open the Windstille wasm build in a browser";
+          };
+        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? windstille-android) {
+          install-android-windstille = linuxPorts.mkInstallApp {
+            pkg = linuxPorts.windstille-android;
+            apkFileName = linuxPorts.androidApkName;
+            description = "Install Windstille APK to a connected Android device via adb";
           };
         };
       }
