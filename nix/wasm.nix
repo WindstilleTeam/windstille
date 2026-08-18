@@ -299,7 +299,8 @@ EOF
     pname = "libjpeg-wasm";
     version = pkgs.libjpeg.version;
     src = pkgs.libjpeg.src;
-    nativeBuildInputs = [ pkgs.emscripten pkgs.python3 ];
+    # libjpeg-turbo (nixpkgs libjpeg) is CMake-based; classic jpeg has configure.
+    nativeBuildInputs = [ pkgs.emscripten pkgs.python3 pkgs.cmake ];
     dontConfigure = true;
     buildPhase = ''
       runHook preBuild

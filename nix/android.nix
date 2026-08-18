@@ -143,7 +143,8 @@ let
     '';
   };
 
-    # Prebuilt SDL2 + SDL2_mixer for the app's ndk-build tree.
+    # Prebuilt SDL2 (+ optional SDL2_mixer) for the app's ndk-build tree.
+  # Windstille uses OpenAL + modplug; mixer is only registered when built.
   sdlPrebuiltAndroidMk = pkgs.writeTextFile {
     name = "SDL2-prebuilt-Android.mk";
     text = ''
@@ -152,6 +153,7 @@ let
       LOCAL_MODULE := SDL2
       LOCAL_SRC_FILES := ${sdlAndroidLibs}/lib/$(TARGET_ARCH_ABI)/libSDL2.so
       include $(PREBUILT_SHARED_LIBRARY)
+    '' + pkgs.lib.optionalString (sdlMixerSrc != null) ''
 
       include $(CLEAR_VARS)
       LOCAL_MODULE := SDL2_mixer

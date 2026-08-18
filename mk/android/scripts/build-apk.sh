@@ -243,11 +243,9 @@ fi
 
 cp "$SDL_PREBUILT_MK" src/jni/SDL/Android.mk
 cp -r "$SDL_ANDROID_LIBS/include" src/jni/SDL/include
-# SDL2_mixer headers (SDL_mixer.h) live next to SDL headers when present.
+# SDL2_mixer is optional (Windstille uses OpenAL + modplug via AUDIO_ANDROID_LIBS).
 if [ -f src/jni/SDL/include/SDL_mixer.h ] || [ -f src/jni/SDL/include/SDL2/SDL_mixer.h ]; then
   echo "SDL2_mixer headers present"
-else
-  echo "warning: SDL_mixer.h not found under SDL include — sound build may fail" >&2
 fi
 
 # Game data → APK assets/ (AssetManager root).
