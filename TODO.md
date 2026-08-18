@@ -87,8 +87,8 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [ ] Smoke-test under Wine / real Windows
 
 ### WebAssembly (`nix build .#windstille-wasm`)
-- [ ] Wire `nix/wasm.nix` `mkApp` to Windstille sources + static deps
-- [ ] Main loop: Emscripten `emscripten_set_main_loop` (or equivalent) instead of blocking desktop loop
+- [x] Wire `nix/wasm.nix` `mkApp` to Windstille sources + static deps
+- [x] Main loop: Emscripten `emscripten_set_main_loop` (or equivalent) instead of blocking desktop loop
 - [ ] Asset packaging / IDBFS if needed
 - [ ] Customize `mk/wasm/shell.html` branding if desired
 - [ ] `nix run` / browser smoke test

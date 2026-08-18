@@ -425,9 +425,24 @@
                 sdlImageSrc = sdl2-image-src;
                 sdlMixerSrc = sdl2-mixer-src;
               };
+              # Data is large; preload only if present.  Empty dataDir still
+              # produces a linkable .html/.js/.wasm for smoke tests.
+              wasmDataDir = if builtins.pathExists ./data then ./data else null;
+              windstille-wasm = wasm.mkApp {
+                appName = "windstille";
+                srcDir = ./.;
+                dataDir = wasmDataDir;
+                enableSound = true;
+                enableGles2 = true;
+                enableAsyncify = false;
+                versionFull = "0.3.0-dev";
+                gitRev = self.rev or "dirty";
+                sourceUrl = "https://github.com/WindstilleTeam/windstille";
+              };
             in {
               inherit (wasm) sdl2WasmLibs zlibWasmLibs sdlWasmLibs
                 mkApp mkOpenBrowserApp glmPrefix sigcWasm;
+              inherit windstille-wasm;
               windstille-wasm-helpers = wasm.sdl2WasmLibs;
             };
 
@@ -460,6 +475,18 @@
           default = {
             type = "app";
             program = "${windstille}/bin/windstille";
+          };
+        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? windstille-wasm) {
+          windstille-wasm = (import ./nix/wasm.nix {
+            inherit pkgs;
+            sdlSrc = sdl2-src;
+            sdlVersion = "2.30.9";
+            sdlImageSrc = sdl2-image-src;
+            sdlMixerSrc = sdl2-mixer-src;
+          }).mkOpenBrowserApp {
+            pkg = linuxPorts.windstille-wasm;
+            appName = "windstille";
+            description = "Serve and open the Windstille wasm build in a browser";
           };
         };
       }
