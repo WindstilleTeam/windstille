@@ -1007,111 +1007,80 @@ EOF_README
     };
 
   # --- Exception smoke test (throw/catch) against the ArkOS sysroot -----------
-  # Minimal C++ wrappers: same hybrid model as the game (GCC frontend + ArkOS
-  # libstdc++ / glibc), but no SDL.
-  #
-  # IMPORTANT: only aarch64 *cross* GCCs work. Native buildPackages.gccN from
-  # the host package set lack include/c++/.../aarch64-*/bits/c++config.h and
-  # produce the "bits/c++config.h: No such file" error. Pass real cross
-  # compilers via extraCrossGccs (pinned nixpkgs stdenv.cc.cc).
-
-  # True iff gcc looks like an aarch64-targeting cross compiler.
-  isAarch64CrossGcc = gcc:
-    let
-      tp = lib.removeSuffix "-" targetPrefix;
-      ver = gcc.version or (lib.getVersion gcc);
-      gxx = "${gcc}/bin/${targetPrefix}g++";
-      cfgCandidates = [
-        "${gcc}/include/c++/${ver}/${tp}/bits/c++config.h"
-        "${gcc}/include/c++/${ver}/aarch64-unknown-linux-gnu/bits/c++config.h"
-        "${gcc}/include/c++/${ver}/aarch64-linux-gnu/bits/c++config.h"
-      ];
-    in
-      builtins.pathExists gxx
-      && lib.any builtins.pathExists cfgCandidates;
-
+  # Minimal hybrid model (GCC frontend + ArkOS libstdc++), no SDL.
+  # Do NOT use builtins.pathExists on gcc store paths — that is IFD and fails
+  # when allow-import-from-derivation is off. Discover includes at build time.
   mkExceptionWrappers = { sysroot, gcc }:
     let
-      tp = lib.removeSuffix "-" targetPrefix;
       libdir = "${sysroot}/usr/lib/aarch64-linux-gnu";
       ver = gcc.version or (lib.getVersion gcc);
-      cxxInc = "${gcc}/include/c++/${ver}";
-      # Prefer the triple that actually has c++config.h
-      cxxIncTarget =
-        if builtins.pathExists "${cxxInc}/${tp}/bits/c++config.h" then "${cxxInc}/${tp}"
-        else if builtins.pathExists "${cxxInc}/aarch64-unknown-linux-gnu/bits/c++config.h"
-        then "${cxxInc}/aarch64-unknown-linux-gnu"
-        else if builtins.pathExists "${cxxInc}/aarch64-linux-gnu/bits/c++config.h"
-        then "${cxxInc}/aarch64-linux-gnu"
-        else "${cxxInc}/${tp}";
-      fixedInc = "${gcc}/lib/gcc/${tp}/${ver}/include";
-      fixedIncAlt = "${gcc}/lib/gcc/aarch64-unknown-linux-gnu/${ver}/include";
-      fixedIncAlt2 = "${gcc}/lib/gcc/aarch64-linux-gnu/${ver}/include";
-      fixedIncResolved =
-        if builtins.pathExists fixedInc then fixedInc
-        else if builtins.pathExists fixedIncAlt then fixedIncAlt
-        else if builtins.pathExists fixedIncAlt2 then fixedIncAlt2
-        else fixedInc;
-      fixedInc2 = fixedIncResolved + "-fixed";
-      # libgcc dir may use the same triple variants
-      libgccDir =
-        if builtins.pathExists "${gcc}/lib/gcc/${tp}/${ver}" then "${gcc}/lib/gcc/${tp}/${ver}"
-        else if builtins.pathExists "${gcc}/lib/gcc/aarch64-unknown-linux-gnu/${ver}"
-        then "${gcc}/lib/gcc/aarch64-unknown-linux-gnu/${ver}"
-        else if builtins.pathExists "${gcc}/lib/gcc/aarch64-linux-gnu/${ver}"
-        then "${gcc}/lib/gcc/aarch64-linux-gnu/${ver}"
-        else "${gcc}/lib/gcc/${tp}/${ver}";
       gccLibOut = lib.getLib gcc;
-      libgccLib = "${gccLibOut}/lib";
-      libgccLibTarget = "${gccLibOut}/${tp}/lib";
-      gxxBin =
-        if builtins.pathExists "${gcc}/bin/${targetPrefix}g++"
-        then "${gcc}/bin/${targetPrefix}g++"
-        else "${gcc}/bin/g++";
-      commonCompileCxx = ''
-        -nostdinc \
-        -D_GLIBCXX_USE_CXX11_ABI=0 \
-        --sysroot=${sysroot} \
-        -isystem ${cxxInc} \
-        -isystem ${cxxIncTarget} \
-        -isystem ${cxxInc}/backward \
-        -isystem ${fixedIncResolved} \
-        -isystem ${fixedInc2} \
-        -isystem ${sysroot}/usr/include/aarch64-linux-gnu \
-        -isystem ${sysroot}/usr/include \
-        -pthread \
-        -fexceptions \
-        -frtti \
-        -march=armv8-a \
-        -mtune=cortex-a35 \
-      '';
-      commonLink = ''
-        --sysroot=${sysroot} \
-        -Wl,--sysroot=${sysroot} \
-        -Wl,--dynamic-linker=/lib/ld-linux-aarch64.so.1 \
-        -B${libdir} \
-        -B${libgccDir} \
-        -L${libdir} \
-        -L${sysroot}/usr/lib \
-        -L${sysroot}/lib \
-        -L${sysroot}/lib/aarch64-linux-gnu \
-        -L${libgccDir} \
-        -L${libgccLib} \
-        -L${libgccLibTarget} \
-        -static-libgcc \
-        -Wl,-Bdynamic \
-        -l:libpthread.so.0 \
-        -lm \
-        -Wl,-rpath-link,${libdir} \
-        -Wl,-rpath-link,${sysroot}/usr/lib/aarch64-linux-gnu \
-        -Wl,-rpath-link,${sysroot}/lib/aarch64-linux-gnu \
-        -Wl,--allow-shlib-undefined \
-        -march=armv8-a \
-        -mtune=cortex-a35 \
-      '';
     in
     writeShellScript "aarch64-arkos-exc-g++-${ver}" ''
+      set -euo pipefail
       export PATH="${crossCc.bintools}/bin:$PATH"
+      GCC_ROOT="${gcc}"
+      GCC_VERSION="${ver}"
+      VER="$GCC_VERSION"
+      CXX_INC="$GCC_ROOT/include/c++/$VER"
+      CXX_INC_TARGET=
+      for t in aarch64-unknown-linux-gnu aarch64-linux-gnu; do
+        if [ -f "$CXX_INC/$t/bits/c++config.h" ]; then
+          CXX_INC_TARGET="$CXX_INC/$t"
+          break
+        fi
+      done
+      if [ -z "$CXX_INC_TARGET" ]; then
+        cfg=$(find "$GCC_ROOT/include/c++" -path '*/aarch64*/bits/c++config.h' 2>/dev/null | head -1 || true)
+        if [ -n "$cfg" ]; then
+          CXX_INC_TARGET=$(dirname "$(dirname "$cfg")")
+          CXX_INC=$(dirname "$CXX_INC_TARGET")
+        fi
+      fi
+      if [ -z "$CXX_INC_TARGET" ] || [ ! -f "$CXX_INC_TARGET/bits/c++config.h" ]; then
+        echo "exception-test: no aarch64 bits/c++config.h under $GCC_ROOT" >&2
+        find "$GCC_ROOT/include/c++" -name 'c++config.h' 2>/dev/null | head -20 >&2 || true
+        exit 1
+      fi
+      FIXED_INC=
+      LIBGCC_DIR=
+      for t in aarch64-unknown-linux-gnu aarch64-linux-gnu; do
+        if [ -d "$GCC_ROOT/lib/gcc/$t/$VER/include" ]; then
+          FIXED_INC="$GCC_ROOT/lib/gcc/$t/$VER/include"
+          LIBGCC_DIR="$GCC_ROOT/lib/gcc/$t/$VER"
+          break
+        fi
+      done
+      if [ -z "$FIXED_INC" ]; then
+        FIXED_INC=$(find "$GCC_ROOT/lib/gcc" -type d -path '*/aarch64*/'"$VER"'/include' 2>/dev/null | head -1 || true)
+        LIBGCC_DIR=$(dirname "$FIXED_INC")
+      fi
+      FIXED_INC2="''${FIXED_INC}-fixed"
+      GXX=
+      for cand in "$GCC_ROOT/bin/${targetPrefix}g++" "$GCC_ROOT/bin/g++"; do
+        if [ -x "$cand" ]; then GXX="$cand"; break; fi
+      done
+      if [ -z "$GXX" ]; then
+        echo "exception-test: no g++ under $GCC_ROOT/bin" >&2
+        exit 1
+      fi
+      common_compile=(
+        -nostdinc
+        -D_GLIBCXX_USE_CXX11_ABI=0
+        --sysroot=${sysroot}
+        -isystem "$CXX_INC"
+        -isystem "$CXX_INC_TARGET"
+        -isystem "$CXX_INC/backward"
+        -isystem "$FIXED_INC"
+        -isystem "$FIXED_INC2"
+        -isystem ${sysroot}/usr/include/aarch64-linux-gnu
+        -isystem ${sysroot}/usr/include
+        -pthread
+        -fexceptions
+        -frtti
+        -march=armv8-a
+        -mtune=cortex-a35
+      )
       is_compile=
       for a in "$@"; do
         case "$a" in
@@ -1119,10 +1088,7 @@ EOF_README
         esac
       done
       if [ -n "$is_compile" ]; then
-        exec ${gxxBin} \
-          -B${crossCc.bintools}/bin \
-          ${commonCompileCxx} \
-          "$@"
+        exec "$GXX" -B${crossCc.bintools}/bin "''${common_compile[@]}" "$@"
       fi
       stdcpp=
       for cand in \
@@ -1139,11 +1105,31 @@ EOF_README
         echo "exception-test g++: no libstdc++ in sysroot" >&2
         exit 1
       fi
-      exec ${gxxBin} \
+      exec "$GXX" \
         -B${crossCc.bintools}/bin \
-        ${commonCompileCxx} \
+        "''${common_compile[@]}" \
         -nostdlib++ \
-        ${commonLink} \
+        --sysroot=${sysroot} \
+        -Wl,--sysroot=${sysroot} \
+        -Wl,--dynamic-linker=/lib/ld-linux-aarch64.so.1 \
+        -B${libdir} \
+        -B"$LIBGCC_DIR" \
+        -L${libdir} \
+        -L${sysroot}/usr/lib \
+        -L${sysroot}/lib \
+        -L${sysroot}/lib/aarch64-linux-gnu \
+        -L"$LIBGCC_DIR" \
+        -L${gccLibOut}/lib \
+        -static-libgcc \
+        -Wl,-Bdynamic \
+        -l:libpthread.so.0 \
+        -lm \
+        -Wl,-rpath-link,${libdir} \
+        -Wl,-rpath-link,${sysroot}/usr/lib/aarch64-linux-gnu \
+        -Wl,-rpath-link,${sysroot}/lib/aarch64-linux-gnu \
+        -Wl,--allow-shlib-undefined \
+        -march=armv8-a \
+        -mtune=cortex-a35 \
         "$@" \
         -Wl,--no-as-needed "$stdcpp" \
         -Wl,-Bdynamic -l:libpthread.so.0 -lm \
@@ -1151,14 +1137,15 @@ EOF_README
     '';
 
   # Resolve aarch64 cross gcc for a label.
-  # "current" = flake pkgsCross toolchain; numbered labels prefer extraCrossGccs
-  # (pinned nixpkgs) and never fall back to native buildPackages.gccN.
+  # "current" = flake pkgsCross toolchain; numbered labels from extraCrossGccs
+  # (pinned nixpkgs). Trust the flake to pass real cross compilers — no
+  # pathExists checks (IFD).
   resolveCrossGcc = label:
     let
       fromExtra = extraCrossGccs.${label} or null;
     in
     if label == "current" then crossCc.cc
-    else if fromExtra != null && isAarch64CrossGcc fromExtra then fromExtra
+    else if fromExtra != null then fromExtra
     else null;
 
   mkExceptionTest = {
