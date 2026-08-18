@@ -24,8 +24,16 @@ option(WITH_EXIF "Enable EXIF support" ON)
 option(WITH_EXEC "Enable plugins needing exec() support" OFF)
 
 find_package(PkgConfig REQUIRED)
-find_package(JPEG REQUIRED)
-find_package(PNG REQUIRED)
+# Under cross (R36S) or when the toolchain has no system JPEG/PNG, build without
+# those plugins instead of failing configure.
+find_package(JPEG)
+find_package(PNG)
+if(NOT JPEG_FOUND AND NOT CMAKE_CROSSCOMPILING)
+  message(FATAL_ERROR "JPEG is required for native builds (find_package JPEG failed)")
+endif()
+if(NOT PNG_FOUND AND NOT CMAKE_CROSSCOMPILING)
+  message(FATAL_ERROR "PNG is required for native builds (find_package PNG failed)")
+endif()
 
 if(WITH_EXIF)
   pkg_search_module(EXIF libexif IMPORTED_TARGET)
@@ -70,17 +78,7 @@ file(GLOB SURF_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/plugins/dds.cpp
   src/plugins/dds_surface.cpp
   src/plugins/exif.cpp
-  src/plugins/file_jpeg_compressor.cpp
-  src/plugins/file_jpeg_decompressor.cpp
   src/plugins/imagemagick.cpp
-  src/plugins/jpeg.cpp
-  src/plugins/jpeg_compressor.cpp
-  src/plugins/jpeg_decompressor.cpp
-  src/plugins/jpeg_memory_dest.cpp
-  src/plugins/jpeg_memory_src.cpp
-  src/plugins/mem_jpeg_compressor.cpp
-  src/plugins/mem_jpeg_decompressor.cpp
-  src/plugins/png.cpp
   src/plugins/pnm.cpp
   src/save.cpp
   src/software_surface.cpp
@@ -103,6 +101,25 @@ if(WITH_EXEC)
   list(append SURF_DEFINES "-DHAVE_EXEC")
 endif()
 
+if(JPEG_FOUND)
+  list(APPEND SURF_SOURCES
+    src/plugins/file_jpeg_compressor.cpp
+    src/plugins/file_jpeg_decompressor.cpp
+    src/plugins/jpeg.cpp
+    src/plugins/jpeg_compressor.cpp
+    src/plugins/jpeg_decompressor.cpp
+    src/plugins/jpeg_memory_dest.cpp
+    src/plugins/jpeg_memory_src.cpp
+    src/plugins/mem_jpeg_compressor.cpp
+    src/plugins/mem_jpeg_decompressor.cpp
+  )
+  list(APPEND SURF_DEFINES "-DHAVE_JPEG")
+endif()
+if(PNG_FOUND)
+  list(APPEND SURF_SOURCES src/plugins/png.cpp)
+  list(APPEND SURF_DEFINES "-DHAVE_PNG")
+endif()
+
 add_library(surf STATIC ${SURF_SOURCES})
 set_target_properties(surf PROPERTIES
   CXX_STANDARD 20
@@ -115,9 +132,13 @@ target_compile_definitions(surf PRIVATE
 target_link_libraries(surf PUBLIC
   geom::geom
   logmich::logmich
-  PNG::PNG
-  JPEG::JPEG
   )
+if(PNG_FOUND)
+  target_link_libraries(surf PUBLIC PNG::PNG)
+endif()
+if(JPEG_FOUND)
+  target_link_libraries(surf PUBLIC JPEG::JPEG)
+endif()
 target_include_directories(surf PUBLIC
   $<INSTALL_INTERFACE:include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>

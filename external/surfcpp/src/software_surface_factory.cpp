@@ -26,8 +26,10 @@
 #include "util/filesystem.hpp"
 #include "software_surface_loader.hpp"
 
-#ifndef __ANDROID__
+#if defined(HAVE_JPEG) && !defined(__ANDROID__)
 #  include "plugins/jpeg.hpp"
+#endif
+#if defined(HAVE_PNG) && !defined(__ANDROID__)
 #  include "plugins/png.hpp"
 #endif
 #include "plugins/dds.hpp"
@@ -54,8 +56,10 @@ SoftwareSurfaceFactory::SoftwareSurfaceFactory() :
 {
   // order matters, first come, first serve, later registrations for
   // an already registered type will be ignored
-#ifndef __ANDROID__
+#if defined(HAVE_JPEG) && !defined(__ANDROID__)
   jpeg::register_loader(*this);
+#endif
+#if defined(HAVE_PNG) && !defined(__ANDROID__)
   png::register_loader(*this);
 #endif
   dds::register_loader(*this);
