@@ -110,15 +110,9 @@ Windstille/wstdisplay historically targeted **desktop OpenGL** (GLEW + 3.3 core)
 - [x] Cross-build game against sysroot toolchain files in `mk/r36s/` (wired via `mkWindstilleR36s`)
 - [x] PortMaster tree package (`windstille-r36s-portmaster` + zip)
 - [x] Controller profile (`data/controller/r36s.scm` + `gamepad.scm`)
-- [ ] On-device smoke test
-- [ ] **Experiment: older cross GCC for C++ exceptions** — hybrid is
-  modern GCC frontend + ArkOS glibc~2.30 / libstdc++. Smoke test
-  (`nix build .#r36s-exception-test{,-12,-13,-14}`) **passes on device even
-  with `current`** (simple throw/catch + rethrow). Game aborts may be a
-  narrower path (e.g. exceptions across DSOs, or code we still skip). Next:
-  reproduce a game-like throw in the smoke test, or re-enable a previously
-  skipped throw in the game and compare labels. Binaries print flake label +
-  `__GNUC__` / `__VERSION__` at startup.
+- [x] C++ exceptions on device (drop `-static-libgcc` mix; no longer need the
+  multi-GCC exception-test matrix / in-process smoke test)
+- [ ] On-device playtest / packaging polish
 
 ## Code / engine debt (ports-related)
 

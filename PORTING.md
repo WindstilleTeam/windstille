@@ -92,37 +92,16 @@ pulls `bits/types/struct___jmp_buf_tag.h` (glibc ≥2.32), missing on ArkOS
 ~2.30. Use sysroot `<pthread.h>` instead.
 
 
-### C++ exceptions abort on device
+### C++ exceptions
 
-**Problem.** `throw` leads to `SIGABRT` in `uw_init_context_1` /
-`_Unwind_Resume`. GCC 15 exception codegen + static `libgcc_eh` does not
-match ArkOS’s older `libstdc++` unwind/personality expectations.
+Early hybrid builds mixed an embedded GCC 15 unwinder (`-static-libgcc`) with
+ArkOS’s older `libstdc++`, which aborted in `uw_init_context_1` /
+`_Unwind_Resume`. The R36S link now uses the shared toolchain `libgcc_s` (and
+matching runtime where needed); throw/catch works on device. Keep
+`RelWithDebInfo` for readable on-device gdb traces.
 
-**Workarounds in tree today.**
-
-- In-game `exception-smoke` in `main()` confirmed throw/catch works with
-  GCC 15 + ArkOS libstdc++; R36S-specific abort/skip-throw guards removed.
-- `RelWithDebInfo` so on-device gdb has symbols even when unwind is broken.
-- Config / argpp macros use `do { …; std::abort(); } while(0)` with a
-  **terminating semicolon** (Android NDK was picky about macro expansion).
-
-**Smoke test.** `mk/r36s/exception_test.cpp` throws/catches several exception
-types. Build with the same hybrid wrappers:
-
-```bash
-nix build .#r36s-exception-test          # current cross GCC
-nix build .#r36s-exception-tests         # matrix (current + gccN if available)
-```
-
-Copy `result/bin/exception_test` (or the matrix under
-`share/r36s-exception-tests/`) to the device; exit 0 and `ALL PASSED` means
-unwind works for that compiler. Numbered majors `14`/`13`/`12` use **pinned** nixpkgs channels
-(`nixpkgs-24_11` / `24_05` / `23_11`) so the compiler is a real aarch64
-*cross* GCC. Native `buildPackages.gccN` is rejected (no aarch64
-`bits/c++config.h`).
-
-**Planned follow-up.** Rebuild `windstille-r36s` with the first major that
-passes the smoke test (via `overrideCC` / wrapper `gcc` pin).
+Config / argpp failure macros use `do { …; std::abort(); } while(0)` with a
+**terminating semicolon** (Android NDK was picky about macro expansion).
 
 
 ### EGL window creation failed

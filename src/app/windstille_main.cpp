@@ -392,71 +392,8 @@ WindstilleMain::init_modules()
 
 } // namespace windstille
 
-// In-process C++ exception smoke test (R36S hybrid toolchain verification).
-// Runs before any engine init so a broken unwind is obvious on device logs.
-static int windstille_exception_smoke_test()
-{
-  try {
-    throw std::runtime_error("windstille-exception-smoke");
-  } catch (std::runtime_error const& e) {
-    if (std::string(e.what()) != "windstille-exception-smoke") {
-      std::cerr << "exception-smoke: runtime_error what() mismatch\n";
-      return 1;
-    }
-  } catch (...) {
-    std::cerr << "exception-smoke: runtime_error not caught by typed handler\n";
-    return 2;
-  }
-
-  try {
-    throw 42;
-  } catch (int v) {
-    if (v != 42) {
-      std::cerr << "exception-smoke: int value mismatch\n";
-      return 3;
-    }
-  } catch (...) {
-    std::cerr << "exception-smoke: int not caught\n";
-    return 4;
-  }
-
-  try {
-    try {
-      throw std::logic_error("nested");
-    } catch (...) {
-      throw;
-    }
-  } catch (std::logic_error const& e) {
-    if (std::string(e.what()) != "nested") {
-      std::cerr << "exception-smoke: nested logic_error mismatch\n";
-      return 5;
-    }
-  } catch (...) {
-    std::cerr << "exception-smoke: nested rethrow failed\n";
-    return 6;
-  }
-
-  std::cerr << "exception-smoke: ALL PASSED"
-#if defined(__GNUC__)
-            << " (GCC " << __GNUC__ << "." << __GNUC_MINOR__ << "."
-#  if defined(__GNUC_PATCHLEVEL__)
-            << __GNUC_PATCHLEVEL__
-#  else
-            << 0
-#  endif
-            << ")"
-#endif
-            << std::endl;
-  return 0;
-}
-
 int main(int argc, char** argv)
 {
-  if (int smoke = windstille_exception_smoke_test()) {
-    std::cerr << "exception-smoke: FAILED (code " << smoke
-              << ") — C++ exceptions are broken in this binary; refusing to start\n";
-    return smoke;
-  }
   return windstille::WindstilleMain().main(argc, argv);
 }
 
