@@ -411,7 +411,7 @@ EOF
       mkdir -p "$EM_CACHE" "$PWD/prefix" build
       (
         cd build
-        emcmake cmake ../squirrel \
+        emcmake cmake .. \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_INSTALL_PREFIX="$PWD/../prefix" \
           -DDISABLE_STATIC=OFF \

@@ -11,7 +11,7 @@
 #  define NOGDI
 #endif
 
-#if defined(WSTDISPLAY_USE_GLES) || defined(WSTDISPLAY_EMSCRIPTEN)
+#if defined(WSTDISPLAY_USE_GLES) || defined(WSTDISPLAY_EMSCRIPTEN) || defined(ANDROID)
 
 #  include <SDL_opengles2.h>
 #  ifndef WSTDISPLAY_GL_ES
