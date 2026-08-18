@@ -1003,7 +1003,10 @@ EOF_README
         license = licenses.gpl3Plus;
         platforms = platforms.linux;
         hydraPlatforms = [];
-   # --- Exception smoke test (throw/catch) against the ArkOS sysroot -----------
+      };
+    };
+
+  # --- Exception smoke test (throw/catch) against the ArkOS sysroot -----------
   # Build-time discovery only (no pathExists / IFD).
   # - pthread shim wins over GCC include-fixed (glibc 2.32+ types vs ArkOS 2.30)
   # - arkos_compat.c provides _dl_find_object for static libgcc_eh
