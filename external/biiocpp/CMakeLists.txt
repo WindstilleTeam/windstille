@@ -43,7 +43,7 @@ target_compile_options(biio PRIVATE ${WARNINGS_CXX_FLAGS})
 target_include_directories(biio INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_include_directories(biio PRIVATE src/ include/biio/)
+target_include_directories(biio PRIVATE src/ include/)
 
 if(BUILD_TESTS)
   if(NOT TARGET GTest)
