@@ -1064,6 +1064,13 @@ EOF_README
         echo "exception-test: no g++ under $GCC_ROOT/bin" >&2
         exit 1
       fi
+      # Include order matters with -nostdinc:
+      #  1) libstdc++ headers from this GCC
+      #  2) GCC non-fixed fixedInc (stddef.h)
+      #  3) ArkOS glibc headers — BEFORE include-fixed, so <pthread.h> is the
+      #     sysroot one. GCC include-fixed/pthread.h expects
+      #     bits/types/struct___jmp_buf_tag.h (glibc ≥2.32); ArkOS is ~2.30.
+      #  4) include-fixed last only as a fallback (optional; often skip)
       common_compile=(
         -nostdinc
         -D_GLIBCXX_USE_CXX11_ABI=0
@@ -1072,7 +1079,6 @@ EOF_README
         -isystem "$CXX_INC_TARGET"
         -isystem "$CXX_INC/backward"
         -isystem "$FIXED_INC"
-        -isystem "$FIXED_INC2"
         -isystem ${sysroot}/usr/include/aarch64-linux-gnu
         -isystem ${sysroot}/usr/include
         -pthread

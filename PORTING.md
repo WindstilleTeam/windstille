@@ -87,6 +87,11 @@ headers from a published ArkOS sysroot** (`nix/r36s.nix`):
 Wrappers (`aarch64-arkos-gcc` / `g++`) enforce include order and
 `--sysroot` so GCC’s modern sys-include never defines newer glibc APIs.
 
+Do **not** put GCC `include-fixed` ahead of the sysroot: its `pthread.h`
+pulls `bits/types/struct___jmp_buf_tag.h` (glibc ≥2.32), missing on ArkOS
+~2.30. Use sysroot `<pthread.h>` instead.
+
+
 ### C++ exceptions abort on device
 
 **Problem.** `throw` leads to `SIGABRT` in `uw_init_context_1` /
