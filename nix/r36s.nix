@@ -178,6 +178,27 @@ let
     installPhase = "runHook preInstall; runHook postInstall";
   };
 
+
+  freetypeR36s = crossPkgs.stdenv.mkDerivation rec {
+    pname = "freetype-r36s";
+    version = "2.13.2";
+    src = fetchurl {
+      url = "https://downloads.sourceforge.net/project/freetype/freetype2/${version}/freetype-${version}.tar.xz";
+      hash = "sha256-EpkcTlXFBt1/m3ZZM+Yv0r4uBtQhUF15UKEy5PG7SE0=";
+    };
+    nativeBuildInputs = [ cmake ];
+    cmakeFlags = [
+      "-DCMAKE_BUILD_TYPE=Release"
+      "-DBUILD_SHARED_LIBS=OFF"
+      "-DFT_DISABLE_ZLIB=TRUE"
+      "-DFT_DISABLE_BZIP2=TRUE"
+      "-DFT_DISABLE_PNG=TRUE"
+      "-DFT_DISABLE_HARFBUZZ=TRUE"
+      "-DFT_DISABLE_BROTLI=TRUE"
+      "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+    ];
+  };
+
   mkWrappers = sysroot: let
     gcc = crossCc.cc;
     tp = lib.removeSuffix "-" targetPrefix; # aarch64-unknown-linux-gnu
@@ -444,6 +465,9 @@ let
         "-DPROJECT_VERSION_FULL=${version}"
         "-DSQUIRREL_LIBRARIES=${squirrelR36s}/lib/libsquirrel.a;${squirrelR36s}/lib/libsqstdlib.a"
         "-DSQUIRREL_INCLUDE_DIRS=${squirrelR36s}/include"
+        "-DFREETYPE_LIBRARY=${freetypeR36s}/lib/libfreetype.a"
+        "-DFREETYPE_INCLUDE_DIRS=${freetypeR36s}/include/freetype2"
+        "-DFREETYPE_DIR=${freetypeR36s}"
       ];
 
       # Do not let nix stdenv rewrite RUNPATH to modern glibc / gcc-15 libs,
