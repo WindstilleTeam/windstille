@@ -68,7 +68,8 @@ LOCAL_SRC_FILES := $(filter-out \
   %/plugins/xcf.cpp \
   %/plugins/rsvg.cpp \
   %/plugins/vidthumb.cpp \
-  %/plugins/imagemagick.cpp,\
+  %/plugins/imagemagick.cpp \
+  %/plugins/kra.cpp,\
   $(LOCAL_SRC_FILES))
 
 ifneq ($(ENABLE_ANDROID_SOUND),1)
