@@ -147,7 +147,12 @@ let
     # Prebuilt SDL2 (+ optional SDL2_mixer) for the app's ndk-build tree.
   # Windstille uses OpenAL + modplug; mixer is only registered when built.
   
-  freetypeSrc = pkgs.fetchurl {
+  squirrelAndroidSrc = pkgs.fetchurl {
+    url = "https://github.com/albertodemichelis/squirrel/archive/f77074bdd6152d230609146a3d424c6f49e3770f.tar.gz";
+    hash = "sha256-hw4EFdN+KSwVR4spZkgVDeXor5H5w3KGvI6bslmSBW8=";
+  };
+
+    freetypeSrc = pkgs.fetchurl {
     # Savannah mirrors are often flaky; SourceForge mirror for 2.13.2.
     url = "https://downloads.sourceforge.net/project/freetype/freetype2/2.13.2/freetype-2.13.2.tar.xz";
     hash = "sha256-QmidptlkYwrPgL5BxUE1UCn94Khf6Nz88bUFqG17R0w=";
@@ -277,8 +282,9 @@ let
         else {
           GAME_EXTERNAL_DIR = "${gameExternalDir}";
           FREETYPE_ANDROID_LIBS = "${freetypeAndroidLibs}";
-        } // pkgs.lib.optionalAttrs (squirrelSrc != null) {
-          SQUIRREL_SRC = "${squirrelSrc}";
+        } // {
+          # Always use upstream tarball (flake root has no headers).
+          SQUIRREL_SRC = "${squirrelAndroidSrc}";
         }
       ) // (
         if glmIncludeDir == null then

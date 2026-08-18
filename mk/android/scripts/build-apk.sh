@@ -173,24 +173,36 @@ rm -f src/jni/src/deps/strutcpp/layout.cpp
 echo "==> staged external sources into jni/src/deps/"
 
 # Optional Squirrel (headers + sources compiled into libmain).
-if [ -n "${SQUIRREL_SRC:-}" ] && [ -d "$SQUIRREL_SRC" ]; then
+if [ -n "${SQUIRREL_SRC:-}" ]; then
   echo "==> staging Squirrel from $SQUIRREL_SRC"
-  mkdir -p src/jni/external_includes/squirrel src/jni/src/deps/squirrel
-  # headers
-  if [ -d "$SQUIRREL_SRC/include" ]; then
-    cp -a "$SQUIRREL_SRC/include"/. src/jni/external_includes/ || true
+  mkdir -p src/jni/external_includes src/jni/src/deps/squirrel "$TMPDIR/squirrel-src"
+  SQROOT="$SQUIRREL_SRC"
+  if [ -f "$SQUIRREL_SRC" ]; then
+    # fetchurl store path is a tarball
+    mkdir -p "$TMPDIR/squirrel-unpack"
+    tar -xzf "$SQUIRREL_SRC" -C "$TMPDIR/squirrel-unpack"
+    SQROOT="$(find "$TMPDIR/squirrel-unpack" -maxdepth 2 -type d -name squirrel -printf '%h
+' | head -1)"
+    if [ -z "$SQROOT" ]; then
+      SQROOT="$(find "$TMPDIR/squirrel-unpack" -maxdepth 1 -type d ! -path "$TMPDIR/squirrel-unpack" | head -1)"
+    fi
   fi
-  find "$SQUIRREL_SRC" -name 'squirrel.h' -exec cp -a {} src/jni/external_includes/ \; 2>/dev/null || true
-  find "$SQUIRREL_SRC" -name '*.h' -path '*/include/*' -exec cp -a {} src/jni/external_includes/ \; 2>/dev/null || true
-  # sources
+  if [ -d "$SQROOT/include" ]; then
+    cp -a "$SQROOT/include"/. src/jni/external_includes/
+  fi
+  # ensure squirrel.h on -I path (not only include/squirrel/)
+  if [ -f src/jni/external_includes/squirrel.h ]; then
+    :
+  elif [ -f src/jni/external_includes/squirrel/squirrel.h ]; then
+    cp -a src/jni/external_includes/squirrel/squirrel.h src/jni/external_includes/
+  fi
   for sub in squirrel sqstdlib; do
-    if [ -d "$SQUIRREL_SRC/$sub" ]; then
-      find "$SQUIRREL_SRC/$sub" -maxdepth 1 -name '*.cpp' -exec cp -a {} src/jni/src/deps/squirrel/ \;
+    if [ -d "$SQROOT/$sub" ]; then
+      find "$SQROOT/$sub" -maxdepth 1 -name '*.cpp' -exec cp -a {} src/jni/src/deps/squirrel/ \;
     fi
   done
-  # also if sources are flat
-  find "$SQUIRREL_SRC" -maxdepth 2 -name 'sq*.cpp' -exec cp -a {} src/jni/src/deps/squirrel/ \; 2>/dev/null || true
   chmod -R u+rwX src/jni/external_includes src/jni/src/deps/squirrel
+  echo "==> Squirrel headers: $(ls src/jni/external_includes/squirrel.h 2>/dev/null || echo MISSING)"
 fi
 # Optional FreeType (headers + static libs per ABI under FREETYPE_ANDROID_LIBS).
 if [ -n "${FREETYPE_ANDROID_LIBS:-}" ] && [ -d "$FREETYPE_ANDROID_LIBS" ]; then
@@ -198,6 +210,14 @@ if [ -n "${FREETYPE_ANDROID_LIBS:-}" ] && [ -d "$FREETYPE_ANDROID_LIBS" ]; then
   mkdir -p src/jni/freetype
   cp -a "$FREETYPE_ANDROID_LIBS"/. src/jni/freetype/
   chmod -R u+rwX src/jni/freetype
+  # CMake installs ft2build.h under include/freetype2/
+  if [ ! -f src/jni/freetype/include/ft2build.h ]; then
+    if [ -f src/jni/freetype/include/freetype2/ft2build.h ]; then
+      # Prefer -I include/freetype2 (also keep include/)
+      ln -s freetype2/ft2build.h src/jni/freetype/include/ft2build.h ||         cp src/jni/freetype/include/freetype2/ft2build.h src/jni/freetype/include/
+    fi
+  fi
+  echo "==> FreeType ft2build: $(ls src/jni/freetype/include/ft2build.h src/jni/freetype/include/freetype2/ft2build.h 2>/dev/null || echo MISSING)"
 fi
 
 

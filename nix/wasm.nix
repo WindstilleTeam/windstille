@@ -393,75 +393,45 @@ EOF
 
 
   # --- Squirrel scripting (wasm) ---------------------------------------------
-  # Windstille requires find_package(Squirrel) / libsquirrel + sqstdlib.
-  # Upstream trees vary (CMake root, squirrel/ subdir, or Makefile-only).
+  # Upstream albertodemichelis/squirrel (grumnix flake root is packaging only).
   squirrelWasm = pkgs.stdenv.mkDerivation rec {
     pname = "squirrel-wasm";
     version = "3.2";
-    src = if squirrelSrc != null then squirrelSrc else pkgs.fetchFromGitHub {
-      owner = "albertodemichelis";
-      repo = "squirrel";
-      rev = "v3.2";
-      hash = "sha256-7Za4TAbiz91dMe0H2YD6Io4/RFAsCT2nfw7et3KBG6Q=";
+    src = pkgs.fetchurl {
+      url = "https://github.com/albertodemichelis/squirrel/archive/f77074bdd6152d230609146a3d424c6f49e3770f.tar.gz";
+      hash = "sha256-hw4EFdN+KSwVR4spZkgVDeXor5H5w3KGvI6bslmSBW8=";
     };
-    nativeBuildInputs = [ pkgs.emscripten pkgs.python3 ];
+    nativeBuildInputs = [ pkgs.emscripten pkgs.cmake pkgs.python3 ];
     dontConfigure = true;
     buildPhase = ''
       runHook preBuild
       export EM_CACHE="''${TMPDIR:-/tmp}/emcache"
-      mkdir -p "$EM_CACHE" "$PWD/prefix/lib" "$PWD/prefix/include"
-      # Locate include/ and source roots (support nested layouts).
-      INC=""
-      for d in include squirrel/include .; do
-        if [ -f "$d/squirrel.h" ] || [ -f "$d/squirrel/squirrel.h" ]; then INC="$d"; break; fi
-      done
-      if [ -z "$INC" ]; then
-        INC=$(find . -name 'squirrel.h' -printf '%h\n' | head -1 || true)
+      mkdir -p "$EM_CACHE" "$PWD/prefix" build
+      # Tarball unpacks to squirrel-<rev>/
+      srcdir="$PWD"
+      if [ ! -f CMakeLists.txt ]; then
+        srcdir="$(find . -maxdepth 2 -name CMakeLists.txt -printf '%h\n' | head -1)"
       fi
-      if [ -z "$INC" ]; then
-        echo "error: squirrel.h not found in source tree:" >&2
-        find . -maxdepth 3 -type d >&2 || true
-        exit 1
+      (
+        cd build
+        emcmake cmake "$srcdir" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX="$PWD/../prefix" \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+          -DDISABLE_STATIC=OFF \
+          -DDISABLE_DYNAMIC=ON
+        emmake make -j''${NIX_BUILD_CORES:-2}
+        emmake make install || true
+      )
+      mkdir -p prefix/lib prefix/include
+      find . -name 'libsquirrel.a' -exec cp -n {} prefix/lib/ \; || true
+      find . -name 'libsqstdlib.a' -exec cp -n {} prefix/lib/ \; || true
+      if [ -d "$srcdir/include" ]; then cp -a "$srcdir/include"/. prefix/include/; fi
+      # Ensure plain squirrel.h is visible
+      if [ ! -f prefix/include/squirrel.h ] && [ -f prefix/include/squirrel/squirrel.h ]; then
+        cp prefix/include/squirrel/squirrel.h prefix/include/
       fi
-      cp -a "$INC"/. "$PWD/prefix/include/" 2>/dev/null || true
-      # Prefer headers under include/squirrel/
-      if [ -f "$PWD/prefix/include/squirrel/squirrel.h" ]; then
-        :
-      elif [ -f "$PWD/prefix/include/squirrel.h" ]; then
-        mkdir -p "$PWD/prefix/include/squirrel"
-        cp -a "$PWD/prefix/include/"*.h "$PWD/prefix/include/squirrel/" 2>/dev/null || true
-      fi
-      SQ_SRC=$(find . -type d -name squirrel | head -1)
-      ST_SRC=$(find . -type d -name sqstdlib | head -1)
-      if [ -z "$SQ_SRC" ]; then SQ_SRC=.; fi
-      echo "==> includes: $INC"
-      echo "==> squirrel sources: $SQ_SRC"
-      echo "==> sqstdlib sources: $ST_SRC"
-      CXXFLAGS="-O2 -fno-exceptions -D_SQ64 -I$PWD/prefix/include -I$PWD/prefix/include/squirrel ''${CXXFLAGS:-}"
-      objs_sq=()
-      while IFS= read -r -d '''' f; do
-        o="$f.o"
-        echo "  em++ $f"
-        em++ $CXXFLAGS -c "$f" -o "$o"
-        objs_sq+=("$o")
-      done < <(find "$SQ_SRC" -maxdepth 1 -name '*.cpp' -print0)
-      objs_st=()
-      if [ -n "$ST_SRC" ]; then
-        while IFS= read -r -d '''' f; do
-          o="$f.o"
-          echo "  em++ $f"
-          em++ $CXXFLAGS -c "$f" -o "$o"
-          objs_st+=("$o")
-        done < <(find "$ST_SRC" -maxdepth 1 -name '*.cpp' -print0)
-      fi
-      emar rcs "$PWD/prefix/lib/libsquirrel.a" "''${objs_sq[@]}"
-      if [ -n "''${objs_st[*]}" ]; then
-        emar rcs "$PWD/prefix/lib/libsqstdlib.a" "''${objs_st[@]}"
-      else
-        # empty archive placeholder so link lines stay uniform
-        emar rcs "$PWD/prefix/lib/libsqstdlib.a"
-      fi
-      ls -la "$PWD/prefix/lib"
+      ls -la prefix/lib prefix/include || true
       runHook postBuild
     '';
     installPhase = ''
@@ -477,7 +447,7 @@ Name: squirrel3
 Description: Squirrel scripting language (wasm static)
 Version: ${version}
 Libs: -L\''${libdir} -lsquirrel -lsqstdlib
-Cflags: -I\''${includedir} -I\''${includedir}/squirrel
+Cflags: -I\''${includedir}
 EOF
       runHook postInstall
     '';

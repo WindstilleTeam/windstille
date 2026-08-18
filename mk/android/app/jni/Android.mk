@@ -92,7 +92,7 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/../audio/include/AL
 endif
 
 ifneq ($(wildcard $(LOCAL_PATH)/../freetype/include/ft2build.h),)
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/../freetype/include
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../freetype/include $(LOCAL_PATH)/../freetype/include/freetype2
 endif
 ifneq ($(wildcard $(LOCAL_PATH)/../freetype/$(TARGET_ARCH_ABI)/lib/libfreetype.a),)
 LOCAL_STATIC_LIBRARIES += freetype
