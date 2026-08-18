@@ -209,11 +209,15 @@ target_link_libraries(libwindstille PUBLIC
   logmich::logmich
   surf::surf
   Squirrel::Squirrel
-  JPEG::JPEG
-  PNG::PNG
   PkgConfig::SDL2
   PkgConfig::SIGCXX
   Threads::Threads)
+if(TARGET JPEG::JPEG)
+  target_link_libraries(libwindstille PUBLIC JPEG::JPEG)
+endif()
+if(TARGET PNG::PNG)
+  target_link_libraries(libwindstille PUBLIC PNG::PNG)
+endif()
 
 # Install the core library so a separate libwindstille package (or
 # downstream consumers) can link against it without rebuilding sources.
