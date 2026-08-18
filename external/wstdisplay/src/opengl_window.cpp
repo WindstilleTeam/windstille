@@ -90,7 +90,7 @@ OpenGLWindow::OpenGLWindow(wstsys::System& system,
   if (m_mode == Mode::Fullscreen) {
     flags |= SDL_WINDOW_FULLSCREEN;
   } else if (m_mode == Mode::FullscreenDesktop) {
-    flags |= SDL_WINDOW_FULLSCREEN;
+    flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
   }
 
   if (m_resizable) {
@@ -104,6 +104,8 @@ OpenGLWindow::OpenGLWindow(wstsys::System& system,
   if (m_window == nullptr) {
     throw std::runtime_error("Display:: Couldn't create window");
   }
+
+  SDL_SetWindowMinimumSize(m_window, 640, 480);
 
   m_gl_context = SDL_GL_CreateContext(m_window);
   if (m_gl_context == nullptr) {

@@ -23,6 +23,8 @@
 #endif
 #include <filesystem>
 
+#include <SDL.h>
+
 #include <surf/save.hpp>
 #include <wstdisplay/font/ttf_font_manager.hpp>
 #include <wstdisplay/opengl_window.hpp>
@@ -88,10 +90,34 @@ WindstilleMain::main(int argc, char** argv)
     config.parse_args(argc, argv);
 
     {
-      auto window = system.create_window("Windstille",
-                                         geom::isize(config.get_int("screen-width"), config.get_int("screen-height")));
-                                         //geom::isize(config.get_int("aspect-width"), config.get_int("aspect-height")),
-                                         //config.get_bool("fullscreen"), config.get_int("anti-aliasing"));
+      int w = config.get_int("screen-width");
+      int h = config.get_int("screen-height");
+      if (w < 640) w = 640;
+      if (h < 480) h = 480;
+#if defined(ANDROID) || defined(__ANDROID__) || defined(__EMSCRIPTEN__)
+      // Prefer the real display size so tablets/phones and the browser canvas scale.
+      {
+        SDL_DisplayMode dm;
+        if (SDL_GetDesktopDisplayMode(0, &dm) == 0 && dm.w > 0 && dm.h > 0) {
+          w = dm.w;
+          h = dm.h;
+        }
+      }
+#endif
+      wstdisplay::OpenGLWindow::Params wparams;
+      wparams.title = "Windstille";
+      wparams.size = geom::isize(w, h);
+      wparams.resizable = true;
+#if defined(ANDROID) || defined(__ANDROID__)
+      wparams.mode = wstdisplay::OpenGLWindow::Mode::FullscreenDesktop;
+#elif defined(__EMSCRIPTEN__)
+      wparams.mode = wstdisplay::OpenGLWindow::Mode::Window;
+#else
+      wparams.mode = config.get_bool("fullscreen")
+        ? wstdisplay::OpenGLWindow::Mode::Fullscreen
+        : wstdisplay::OpenGLWindow::Mode::Window;
+#endif
+      auto window = system.create_window(wparams);
       wstdisplay::TTFFontManager    ttffont_manager;
       Fonts             fonts(ttffont_manager);
       Console           console;
