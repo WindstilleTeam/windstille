@@ -439,7 +439,7 @@ EOF
       echo "==> sqstdlib sources: $ST_SRC"
       CXXFLAGS="-O2 -fno-exceptions -D_SQ64 -I$PWD/prefix/include -I$PWD/prefix/include/squirrel ''${CXXFLAGS:-}"
       objs_sq=()
-      while IFS= read -r -d '' f; do
+      while IFS= read -r -d '''' f; do
         o="$f.o"
         echo "  em++ $f"
         em++ $CXXFLAGS -c "$f" -o "$o"
@@ -447,7 +447,7 @@ EOF
       done < <(find "$SQ_SRC" -maxdepth 1 -name '*.cpp' -print0)
       objs_st=()
       if [ -n "$ST_SRC" ]; then
-        while IFS= read -r -d '' f; do
+        while IFS= read -r -d '''' f; do
           o="$f.o"
           echo "  em++ $f"
           em++ $CXXFLAGS -c "$f" -o "$o"

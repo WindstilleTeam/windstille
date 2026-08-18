@@ -173,7 +173,7 @@ let
       TOOLCHAIN="$NDK_ROOT/build/cmake/android.toolchain.cmake"
       mkdir -p "$TMPDIR/freetype-src" "$PWD/ft-out"
       tar -xJf "$FREETYPE_SRC_TAR" -C "$TMPDIR/freetype-src" --strip-components=1
-      for abi in ${pkgs.lib.escapeShellArg targetAbisStr}; do
+      for abi in ${pkgs.lib.concatStringsSep " " targetAbis}; do
         echo "==> FreeType $abi"
         bdir="$PWD/ft-build-$abi"
         idir="$PWD/ft-out/$abi"
@@ -185,6 +185,7 @@ let
           -DANDROID_STL=c++_shared \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_INSTALL_PREFIX="$idir" \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
           -DBUILD_SHARED_LIBS=OFF \
           -DFT_DISABLE_HARFBUZZ=TRUE \
           -DFT_DISABLE_BZIP2=TRUE \
