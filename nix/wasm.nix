@@ -4,6 +4,7 @@
 , sdlImageSrc ? null
 , sdlMixerSrc ? null
 , libxmpSrc ? null
+, squirrelSrc ? null
 }:
 
 let
@@ -390,6 +391,68 @@ EOF
     };
   };
 
+
+  # --- Squirrel scripting (wasm) ---------------------------------------------
+  # Windstille requires find_package(Squirrel) / libsquirrel + sqstdlib.
+  squirrelWasm = pkgs.stdenv.mkDerivation rec {
+    pname = "squirrel-wasm";
+    version = "3.2";
+    src = if squirrelSrc != null then squirrelSrc else pkgs.fetchFromGitHub {
+      owner = "albertodemichelis";
+      repo = "squirrel";
+      rev = "v3.2";
+      hash = "sha256-7Za4TAbiz91dMe0H2YD6Io4/RFAsCT2nfw7et3KBG6Q=";
+    };
+    nativeBuildInputs = [ pkgs.emscripten pkgs.cmake pkgs.python3 ];
+    dontConfigure = true;
+    buildPhase = ''
+      runHook preBuild
+      export EM_CACHE="''${TMPDIR:-/tmp}/emcache"
+      mkdir -p "$EM_CACHE" "$PWD/prefix" build
+      (
+        cd build
+        emcmake cmake ../squirrel \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX="$PWD/../prefix" \
+          -DDISABLE_STATIC=OFF \
+          -DDISABLE_DYNAMIC=ON \
+          -DINSTALL_INC_DIR=include \
+          -DINSTALL_LIB_DIR=lib
+        emmake make -j''${NIX_BUILD_CORES:-2} squirrel_static sqstdlib_static || \
+          emmake make -j''${NIX_BUILD_CORES:-2}
+        emmake make install || true
+      )
+      # CMake target layout varies; collect static archives.
+      mkdir -p prefix/lib prefix/include
+      find . -name 'libsquirrel*.a' -exec cp -n {} prefix/lib/libsquirrel.a \; || true
+      find . -name 'libsqstdlib*.a' -exec cp -n {} prefix/lib/libsqstdlib.a \; || true
+      if [ -d squirrel/include ]; then cp -a squirrel/include/. prefix/include/; fi
+      if [ -d include ]; then cp -a include/. prefix/include/; fi
+      runHook postBuild
+    '';
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out
+      cp -a prefix/. $out/
+      mkdir -p $out/lib/pkgconfig
+      cat > $out/lib/pkgconfig/squirrel3.pc <<EOF
+prefix=$out
+libdir=\''${prefix}/lib
+includedir=\''${prefix}/include
+Name: squirrel3
+Description: Squirrel scripting language (wasm static)
+Version: ${version}
+Libs: -L\''${libdir} -lsquirrel -lsqstdlib
+Cflags: -I\''${includedir}
+EOF
+      runHook postInstall
+    '';
+    meta = with pkgs.lib; {
+      description = "Squirrel static libraries for wasm32-emscripten";
+      platforms = platforms.linux;
+    };
+  };
+
   # --- Audio codecs for wstsound (wasm) ------------------------------------
   # Windstille ships WAV SFX + .it/.s3m module music only. libmodplug covers the
   # modules; WAV is decoded in-tree. Do not add mpg123/vorbis/opus here unless
@@ -542,9 +605,9 @@ EOF
       # isolated wstsound-wasm package — so OpenAL comes from the emscripten
       # sysroot (-lopenal) and codec flags follow EMSCRIPTEN defaults in
       # external/wstsound/CMakeLists.txt (modplug + wav only, EFX off).
-      prefixPath = "${glmPrefix}:${sigcWasm}:${jpegWasm}:${pngWasm}"
+      prefixPath = "${glmPrefix}:${sigcWasm}:${jpegWasm}:${pngWasm}:${squirrelWasm}"
         + (if enableSound then ":${modplugWasm}" else "");
-      pkgConfigPath = "${sdlWasmLibs}/lib/pkgconfig:${jpegWasm}/lib/pkgconfig:${pngWasm}/lib/pkgconfig"
+      pkgConfigPath = "${sdlWasmLibs}/lib/pkgconfig:${jpegWasm}/lib/pkgconfig:${pngWasm}/lib/pkgconfig:${squirrelWasm}/lib/pkgconfig"
         + (if enableSound then ":${modplugWasm}/lib/pkgconfig" else "");
     in
     pkgs.stdenv.mkDerivation {
@@ -571,6 +634,7 @@ EOF
         ZLIB_WASM_LIBS = zlibWasmLibs;
         JPEG_WASM_LIBS = jpegWasm;
         PNG_WASM_LIBS = pngWasm;
+        SQUIRREL_WASM_LIBS = squirrelWasm;
       } // pkgs.lib.optionalAttrs (dataDir != null) {
         DATA_DIR = "${dataDir}";
       } // pkgs.lib.optionalAttrs enableSound {

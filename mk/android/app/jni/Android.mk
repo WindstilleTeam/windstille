@@ -52,12 +52,21 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/../external_includes/prio \
 	$(LOCAL_PATH)/../external_includes/strut \
 	$(LOCAL_PATH)/../external_includes/sexp \
+	$(LOCAL_PATH)/../external_includes/surf \
+	$(LOCAL_PATH)/../external_includes/wstdisplay \
+	$(LOCAL_PATH)/../external_includes/wstinput \
 	$(LOCAL_PATH)/../external_includes/wstsound \
+	$(LOCAL_PATH)/../external_includes/babyxml \
 	$(LOCAL_PATH)/deps/argpp \
 	$(LOCAL_PATH)/deps/logmich \
 	$(LOCAL_PATH)/deps/sexpcpp \
 	$(LOCAL_PATH)/deps/strutcpp \
 	$(LOCAL_PATH)/deps/priocpp \
+	$(LOCAL_PATH)/deps/prio \
+	$(LOCAL_PATH)/deps/babyxml \
+	$(LOCAL_PATH)/deps/surfcpp \
+	$(LOCAL_PATH)/deps/wstdisplay \
+	$(LOCAL_PATH)/deps/wstinput \
 	$(LOCAL_PATH)/deps/tinygettext \
 	$(LOCAL_PATH)/deps/wstsound
 

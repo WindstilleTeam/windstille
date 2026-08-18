@@ -94,7 +94,7 @@ mkdir -p src/jni/external_includes
 # Copy then force owner-writable on the staging tree.
 # Header-only / public includes (layout: include/<ns>/… → external_includes/<ns>/…)
 # dir names in Windstille external/ (prio, not priocpp). optional → warn only.
-for entry in argpp:req geomcpp:req logmich:req prio:req strutcpp:req sexpcpp:req tinygettext:opt; do
+for entry in argpp:req geomcpp:req logmich:req prio:req strutcpp:req sexpcpp:req              babyxml:req surfcpp:req wstdisplay:req wstinput:req wstsound:req              wstgui:opt tinygettext:opt; do
   name="${entry%%:*}"
   mode="${entry##*:}"
   inc="$EXTERNAL_DIR/$name/include"
@@ -141,9 +141,12 @@ stage_lib_src() {
     return 0
   fi
   mkdir -p "src/jni/src/deps/$name"
-  # top-level sources + private headers (float.hpp, prettyprinter.hpp, …)
-  find "$srcdir" -maxdepth 1 -name '*.cpp' -exec cp -a {} "src/jni/src/deps/$name/" \;
-  find "$srcdir" -maxdepth 1 \( -name '*.hpp' -o -name '*.h' \) -exec cp -a {} "src/jni/src/deps/$name/" \;
+  # Recursive sources (wstdisplay/scenegraph/…, etc.) + private headers.
+  find "$srcdir" -type f \( -name '*.cpp' -o -name '*.c' -o -name '*.hpp' -o -name '*.h' \)     ! -path '*/test/*' ! -path '*/tests/*' ! -path '*/extra/*' | while read -r f; do
+      rel="${f#"$srcdir"/}"
+      mkdir -p "src/jni/src/deps/$name/$(dirname "$rel")"
+      cp -a "$f" "src/jni/src/deps/$name/$rel"
+    done
   chmod -R u+rwX "src/jni/src/deps/$name"
 }
 stage_lib_src argpp
@@ -151,6 +154,10 @@ stage_lib_src logmich
 stage_lib_src sexpcpp
 stage_lib_src strutcpp
 stage_lib_src prio
+stage_lib_src babyxml
+stage_lib_src surfcpp
+stage_lib_src wstdisplay
+stage_lib_src wstinput
 # Android.mk references deps/priocpp — alias sources staged as prio.
 if [ -d src/jni/src/deps/prio ] && [ ! -e src/jni/src/deps/priocpp ]; then
   ln -s prio src/jni/src/deps/priocpp

@@ -144,6 +144,16 @@ if [ -n "$PNG_PREFIX" ] && [ -d "$PNG_PREFIX" ]; then
   )
   echo "==> PNG_WASM_LIBS=$PNG_PREFIX"
 fi
+SQUIRREL_PREFIX="${SQUIRREL_WASM_LIBS:-}"
+if [ -n "$SQUIRREL_PREFIX" ] && [ -d "$SQUIRREL_PREFIX" ]; then
+  cmake_args+=(
+    -DSquirrel_ROOT="$SQUIRREL_PREFIX"
+    -DSQUIRREL_LIBRARIES="$SQUIRREL_PREFIX/lib/libsquirrel.a;$SQUIRREL_PREFIX/lib/libsqstdlib.a"
+    -DSQUIRREL_INCLUDE_DIRS="$SQUIRREL_PREFIX/include"
+  )
+  export PKG_CONFIG_PATH="$SQUIRREL_PREFIX/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+  echo "==> SQUIRREL_WASM_LIBS=$SQUIRREL_PREFIX"
+fi
 if [ "$ENABLE_SOUND" = 1 ]; then
   # Prebuilt libmodplug for the in-tree wstsound subdirectory build.
   # Explicit paths avoid emscripten FIND_ROOT stripping host-store prefixes.
