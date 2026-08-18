@@ -322,7 +322,15 @@ Config::load()
 {
   try
   {
-    ReaderDocument doc = ReaderDocument::from_file(Pathname("config", Pathname::kUserPath).get_sys_path());
+    auto const cfg_path = Pathname("config", Pathname::kUserPath).get_sys_path();
+    // First run / missing user config is normal — do not open (avoids
+    // ReaderError noise and wasm exception machinery on a missing file).
+    if (!std::filesystem::exists(cfg_path)) {
+      std::cerr << "No config file at '" << cfg_path
+                << "' (normal on first startup)\n";
+      return;
+    }
+    ReaderDocument doc = ReaderDocument::from_file(cfg_path);
     if (doc.get_name() != "windstille-config") {
       std::cerr << "Warning: Config file is not a windstille-config file.\n";
       return;

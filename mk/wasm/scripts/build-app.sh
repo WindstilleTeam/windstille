@@ -41,7 +41,6 @@ LINK_FLAGS=(
   # aborts the whole runtime when opening Levelsets.
   "-fexceptions"
   "SHELL:-sDISABLE_EXCEPTION_CATCHING=0"
-  "SHELL:-sEXPORT_EXCEPTION_HANDLING_HELPERS=1"
   "SHELL:-sEXCEPTION_STACK_TRACES=1"
   # Emscripten 6.x defaults GROWABLE_ARRAYBUFFERS=1 so WASM memory is a resizable
   # ArrayBuffer. TextDecoder.decode() rejects resizable buffers (black screen at
