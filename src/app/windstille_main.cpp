@@ -100,7 +100,11 @@ WindstilleMain::main(int argc, char** argv)
       int h = config.get_int("screen-height");
       if (w < 640) w = 640;
       if (h < 480) h = 480;
-#if defined(ANDROID) || defined(__ANDROID__) || defined(__EMSCRIPTEN__)
+#if defined(WINDSTILLE_R36S)
+      // Fixed 640x480 panel — ignore any larger saved config geometry.
+      w = 640;
+      h = 480;
+#elif defined(ANDROID) || defined(__ANDROID__) || defined(__EMSCRIPTEN__)
       // Prefer the real display size so tablets/phones and the browser canvas scale.
       {
         SDL_DisplayMode dm;
@@ -113,12 +117,17 @@ WindstilleMain::main(int argc, char** argv)
       wstdisplay::OpenGLWindow::Params wparams;
       wparams.title = "Windstille";
       wparams.size = geom::isize(w, h);
+#if defined(WINDSTILLE_R36S)
+      wparams.resizable = false;
+      wparams.mode = wstdisplay::OpenGLWindow::Mode::Fullscreen;
+#elif defined(ANDROID) || defined(__ANDROID__)
       wparams.resizable = true;
-#if defined(ANDROID) || defined(__ANDROID__)
       wparams.mode = wstdisplay::OpenGLWindow::Mode::FullscreenDesktop;
 #elif defined(__EMSCRIPTEN__)
+      wparams.resizable = true;
       wparams.mode = wstdisplay::OpenGLWindow::Mode::Window;
 #else
+      wparams.resizable = true;
       wparams.mode = config.get_bool("fullscreen")
         ? wstdisplay::OpenGLWindow::Mode::Fullscreen
         : wstdisplay::OpenGLWindow::Mode::Window;

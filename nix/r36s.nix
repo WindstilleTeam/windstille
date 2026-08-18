@@ -732,7 +732,13 @@ if [ -d "$DIR/libs" ]; then
 elif [ -d "$DIR/../lib/windstille" ]; then
   export LD_LIBRARY_PATH="$DIR/../lib/windstille''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 fi
-exec "$BIN" --software-cursor --controller "$DIR/data/controller/r36s.scm" --fullscreen "$@"
+# Windstille options only (no Pingus --renderer / --software-cursor / --userdir).
+# Force native panel size; defaults are desktop 1280x800.
+exec "$BIN" \
+  --geometry 640x480 \
+  --fullscreen \
+  --controller "$DIR/data/controller/r36s.scm" \
+  "$@"
 LAUNCH
         chmod +x $out/share/windstille/windstille.sh
       '';
@@ -871,15 +877,14 @@ fi
 pm_platform_helper "$GAMEDIR/windstille" 2>/dev/null || true
 
 # Force on-device data + config dirs (do not use any baked-in install prefix).
-# Prefer --renderer opengl (GLES) on R36S; --renderer sdl is a software fallback.
-# Software cursor: no mouse; pad via SDL joystick.
+# Userdir comes from XDG_CONFIG_HOME above (no --userdir flag on Windstille).
+# Geometry matches the R36S 640x480 panel; do not pass Pingus-only flags
+# (--renderer, --software-cursor, --userdir).
 ./windstille \
   --datadir "$GAMEDIR/data" \
-  --userdir "$CONFDIR" \
-  --renderer sdl \
-  --software-cursor \
-  --controller "$GAMEDIR/data/controller/r36s.scm" \
+  --geometry 640x480 \
   --fullscreen \
+  --controller "$GAMEDIR/data/controller/r36s.scm" \
   "$@"
 pm_finish 2>/dev/null || true
 EOF_LAUNCH

@@ -3,7 +3,7 @@
 **Target hardware:** R36S handheld — Rockchip **RK3326** (4× Cortex-A35), **640×480** panel, Mali-G31 GPU.  
 **Typical firmware:** [ArkOS](https://github.com/christianhaitian/arkos) (and community R36S images / dArkOS). ArkOS is a **modified Ubuntu 19.10 (eoan)** userspace for Rockchip handhelds, with **both aarch64 and armhf** library trees.
 
-Windstille’s native resolution (**640×480**) matches the panel. Prefer windowed or fullscreen at that size; use `--renderer opengl` for GLES or `--renderer sdl` for the software path.
+Windstille’s native resolution (**640×480**) matches the panel. Launch with `--geometry 640x480 --fullscreen` (the PortMaster `Windstille.sh` already does this). GLES is selected at build time (`-DWINDSTILLE_USE_GLES=ON`); there is no runtime `--renderer` flag.
 
 | Setting | Value |
 |---------|--------|
@@ -144,7 +144,7 @@ Useful on-device checks:
 # Prefer matching mali GBM EGL+GLES from one tree when mixing mesa/mali
 export LD_LIBRARY_PATH=/usr/local/lib/aarch64-linux-gnu:$LD_LIBRARY_PATH
 export SDL_VIDEODRIVER=KMSDRM
-./windstille --renderer opengl --geometry 640x480
+./windstille --geometry 640x480 --fullscreen --controller data/controller/r36s.scm
 ```
 
 ---
