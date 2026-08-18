@@ -192,7 +192,7 @@ Config::parse_args(int argc, char** argv)
         int anti_aliasing;
         if (sscanf(opt.argument.c_str(), "%d", &anti_aliasing) != 1)
         {
-          do { std::cerr << "config: " << ("Anti-Aliasing option '-a' requires argument of type {NUM}") << std::endl; std::abort(); } while(0)
+          do { std::cerr << "config: " << ("Anti-Aliasing option '-a' requires argument of type {NUM}") << std::endl; std::abort(); } while(0);
         }
         else
         {
@@ -240,7 +240,7 @@ Config::parse_args(int argc, char** argv)
           }
           else
           {
-            do { std::cerr << "config: " << ("Geometry option '-g' requires argument of type {WIDTH}x{HEIGHT}") << std::endl; std::abort(); } while(0)
+            do { std::cerr << "config: " << ("Geometry option '-g' requires argument of type {WIDTH}x{HEIGHT}") << std::endl; std::abort(); } while(0);
           }
         }
         break;
@@ -261,7 +261,7 @@ Config::parse_args(int argc, char** argv)
           }
           else
           {
-            do { std::cerr << "config: " << ("Geometry option '-a' requires argument of type {WIDTH}x{HEIGHT}") << std::endl; std::abort(); } while(0)
+            do { std::cerr << "config: " << ("Geometry option '-a' requires argument of type {WIDTH}x{HEIGHT}") << std::endl; std::abort(); } while(0);
           }
         }
         break;
@@ -313,7 +313,7 @@ Config::is_set(std::string const& name)
   ConfigValues::iterator i = config_values.find(name);
   if (i == config_values.end())
   {
-    do { std::cerr << "config: " << ("Error: unknown Config value: '" + name + "'") << std::endl; std::abort(); } while(0)
+    do { std::cerr << "config: " << ("Error: unknown Config value: '" + name + "'") << std::endl; std::abort(); } while(0);
   }
   else
   {
