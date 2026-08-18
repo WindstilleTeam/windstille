@@ -265,8 +265,9 @@ EOF
     libgccLib = "${gccLibOut}/lib";
     libgccLibTarget = "${gccLibOut}/${tp}/lib";
     # Compile-only flags (safe with -c). No -L/-B lib paths that pull Scrt1.o.
-    # -fexceptions: tinygettext / prio / Windstille use C++ exceptions; pair with
-    # Shared libgcc_s from the toolchain (no -static-libgcc).
+    # -fexceptions: tinygettext / prio / Windstille use C++ exceptions.
+    # Shared libgcc_s from the toolchain (no -static-libgcc) so the executable
+    # does not embed the GCC 15 unwinder while still loading ArkOS libstdc++.
     # Omit include-fixed: its pthread.h needs glibc ≥2.32; ArkOS is ~2.30.
     commonCompile = ''
       -nostdinc \
@@ -295,9 +296,9 @@ EOF
       -march=armv8-a \
       -mtune=cortex-a35 \
     '';
-    # Link flags: sysroot first for libc/SDL; add modern gcc -L so
-    # Prefer toolchain -L for libgcc_s (stdc++ is still the
-    # absolute sysroot path in the cxx wrapper — not -lstdc++).
+    # Link flags: sysroot for libc/SDL; modern gcc -L so shared libgcc_s is
+    # found. No -static-libgcc (avoids embedding the GCC 15 unwinder).
+    # stdc++ is still forced to the sysroot absolute path in the cxx wrapper.
     # Explicit dynamic linker so the binary runs on ArkOS (not /nix/store/.../ld).
     commonLink = ''
       --sysroot=${sysroot} \
@@ -312,7 +313,6 @@ EOF
       -L${libgccDir} \
       -L${libgccLib} \
       -L${libgccLibTarget} \
-      
       -Wl,-Bdynamic \
       -l:libpthread.so.0 \
       -lm \
@@ -433,7 +433,6 @@ EOF
         exec ${gcc}/bin/${targetPrefix}g++ \
           -B${crossCc.bintools}/bin \
           ${commonCompileCxx} \
-          
           ${commonLink} \
           "$@" \
           -Wl,--no-as-needed "$stdcpp" "$sdl2image" "$sdl2" $extra_audio \
@@ -1125,7 +1124,7 @@ EOF_README
         echo "    CXX_INC=$CXX_INC"
         echo "    CXX_INC_TARGET=$CXX_INC_TARGET"
 
-        # --- libgcc dir (for -B / -L / static-libgcc) ---
+        # --- libgcc dir (for -B / -L) ---
         LIBGCC_DIR=
         FIXED_INC=
         for t in aarch64-unknown-linux-gnu aarch64-linux-gnu; do
@@ -1193,9 +1192,10 @@ EOF_README
         "$GXX" -B${crossCc.bintools}/bin "''${COMPILE_CXX[@]}" -c -o exception_test.o \
           ${../mk/r36s/exception_test.cpp}
 
-        # arkos_compat.o after -static-libgcc so it resolves libgcc_eh's refs.
+        # Shared libgcc_s (no -static-libgcc) so the test does not embed the
+        # GCC unwinder while using ArkOS libstdc++. arkos_compat provides
+        # _dl_find_object for older glibc.
         "$GXX" -B${crossCc.bintools}/bin "''${COMPILE_CXX[@]}" \
-          
           --sysroot="$SYSROOT" \
           -Wl,--sysroot="$SYSROOT" \
           -Wl,--dynamic-linker=/lib/ld-linux-aarch64.so.1 \
@@ -1207,16 +1207,14 @@ EOF_README
           -L"$SYSROOT/lib/aarch64-linux-gnu" \
           -L"$LIBGCC_DIR" \
           -L${gccLibOut}/lib \
-          
           -Wl,--undefined=_dl_find_object \
           -Wl,--allow-shlib-undefined \
           -march=armv8-a -mtune=cortex-a35 \
           -o exception_test \
-          exception_test.o \
+          exception_test.o arkos_compat.o \
           -Wl,--no-as-needed "$stdcpp" \
           -Wl,-Bdynamic -l:libpthread.so.0 -lm \
-          -Wl,--as-needed \
-          arkos_compat.o
+          -Wl,--as-needed
 
         ${crossCc.bintools}/bin/${targetPrefix}readelf -h exception_test || true
         ${crossCc.bintools}/bin/${targetPrefix}readelf -d exception_test | head -30 || true
