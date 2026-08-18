@@ -734,7 +734,7 @@ LAUNCH
   , title ? "Windstille"
   , scriptName ? "Windstille.sh"
   , portDirName ? "windstille"
-  , screenshotSrc ? ../data/icons/hicolor/128x128/apps/windstille.png
+  , screenshotSrc ? ../data/icon.png
   }:
     stdenvNoCC.mkDerivation {
       inherit pname version;
