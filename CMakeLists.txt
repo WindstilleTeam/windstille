@@ -237,17 +237,6 @@ if(BUILD_EDITOR)
     libwindstille
     PkgConfig::GTKMM)
 
-# ArkOS / R36S: glibc+libstdc++ shims for newer-toolchain static deps.
-if(DEFINED WINDSTILLE_ARKOS_COMPAT_DIR)
-  target_sources(windstille PRIVATE
-    "${WINDSTILLE_ARKOS_COMPAT_DIR}/arkos_compat.c"
-    "${WINDSTILLE_ARKOS_COMPAT_DIR}/arkos_compat.cpp")
-  message(STATUS "ArkOS compat: ${WINDSTILLE_ARKOS_COMPAT_DIR}")
-elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/system/arkos_compat.c")
-  target_sources(windstille PRIVATE
-    src/system/arkos_compat.c
-    src/system/arkos_compat.cpp)
-endif()
 
 
   install_with_wrapper(TARGETS windstille-editor)
@@ -277,6 +266,19 @@ file(GLOB WINDSTILLE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 add_executable(windstille ${WINDSTILLE_SOURCES})
 target_compile_options(windstille PRIVATE ${TINYCMMC_WARNINGS_CXX_FLAGS})
 target_link_libraries(windstille libwindstille)
+
+# ArkOS / R36S: glibc+libstdc++ shims for newer-toolchain static deps.
+if(DEFINED WINDSTILLE_ARKOS_COMPAT_DIR)
+  target_sources(windstille PRIVATE
+    "${WINDSTILLE_ARKOS_COMPAT_DIR}/arkos_compat.c"
+    "${WINDSTILLE_ARKOS_COMPAT_DIR}/arkos_compat.cpp")
+  message(STATUS "ArkOS compat: ${WINDSTILLE_ARKOS_COMPAT_DIR}")
+elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/system/arkos_compat.c")
+  target_sources(windstille PRIVATE
+    src/system/arkos_compat.c
+    src/system/arkos_compat.cpp)
+endif()
+
 if(EMSCRIPTEN OR WINDSTILLE_EMSCRIPTEN)
   set_target_properties(windstille PROPERTIES SUFFIX ".html")
   if(DEFINED EMSCRIPTEN_LINK_FLAGS)
