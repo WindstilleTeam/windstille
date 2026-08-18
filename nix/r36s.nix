@@ -19,6 +19,7 @@
 , writeShellScript
 , zip
 , glm  # header-only; not present in ArkOS sysroot
+, squirrelSrc ? null  # optional: path/tarball for upstream squirrel (cross-built static)
 }:
 
 let
@@ -134,6 +135,49 @@ let
   #   - -fexceptions: Windstille/tinygettext/prio use try/catch (unlike SuperTux M1)
   #   - --allow-shlib-undefined for DT_NEEDED of sysroot libs (e.g. opusfile
   #     from SDL2_mixer) that exist on the device at runtime
+
+  # Static squirrel for aarch64 (not in ArkOS sysroot). Cross-built so the
+  # archives are ELF aarch64 and link into the game binary.
+  squirrelSrcResolved =
+    if squirrelSrc != null then squirrelSrc
+    else fetchurl {
+      url = "https://github.com/albertodemichelis/squirrel/archive/f77074bdd6152d230609146a3d424c6f49e3770f.tar.gz";
+      hash = "sha256-hw4EFdN+KSwVR4spZkgVDeXor5H5w3KGvI6bslmSBW8=";
+    };
+
+  squirrelR36s = crossPkgs.stdenv.mkDerivation {
+    pname = "squirrel-r36s";
+    version = "3.2";
+    src = squirrelSrcResolved;
+    nativeBuildInputs = [ cmake ];
+    dontUseCmakeConfigure = true;
+    buildPhase = ''
+      runHook preBuild
+      srcdir="$PWD"
+      if [ ! -f CMakeLists.txt ]; then
+        srcdir="$(find . -maxdepth 2 -name CMakeLists.txt -printf '%h\n' | head -1)"
+      fi
+      mkdir -p build
+      cmake -S "$srcdir" -B build \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX="$out" \
+        -DDISABLE_STATIC=OFF \
+        -DDISABLE_DYNAMIC=ON \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+      cmake --build build -j''${NIX_BUILD_CORES:-2}
+      cmake --install build || true
+      mkdir -p "$out/lib" "$out/include"
+      find . -name 'libsquirrel.a' -exec cp -n {} "$out/lib/" \; || true
+      find . -name 'libsqstdlib.a' -exec cp -n {} "$out/lib/" \; || true
+      if [ -d "$srcdir/include" ]; then cp -a "$srcdir/include"/. "$out/include/"; fi
+      if [ ! -f "$out/include/squirrel.h" ] && [ -f "$out/include/squirrel/squirrel.h" ]; then
+        cp "$out/include/squirrel/squirrel.h" "$out/include/"
+      fi
+      runHook postBuild
+    '';
+    installPhase = "runHook preInstall; runHook postInstall";
+  };
+
   mkWrappers = sysroot: let
     gcc = crossCc.cc;
     tp = lib.removeSuffix "-" targetPrefix; # aarch64-unknown-linux-gnu
@@ -398,6 +442,8 @@ let
         "-DWINDSTILLE_CXXABI_SHIM=${../mk/r36s/cxxabi_shim.cpp}"
         # Relative data next to the binary on device (PortMaster layout).
         "-DPROJECT_VERSION_FULL=${version}"
+        "-DSQUIRREL_LIBRARIES=${squirrelR36s}/lib/libsquirrel.a;${squirrelR36s}/lib/libsqstdlib.a"
+        "-DSQUIRREL_INCLUDE_DIRS=${squirrelR36s}/include"
       ];
 
       # Do not let nix stdenv rewrite RUNPATH to modern glibc / gcc-15 libs,
