@@ -21,6 +21,7 @@
 
 #include <squirrel.h>
 #include <stdexcept>
+#include <string>
 
 namespace windstille {
 class Pathname;
