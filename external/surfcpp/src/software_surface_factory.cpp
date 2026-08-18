@@ -26,9 +26,11 @@
 #include "util/filesystem.hpp"
 #include "software_surface_loader.hpp"
 
-#include "plugins/jpeg.hpp"
+#ifndef __ANDROID__
+#  include "plugins/jpeg.hpp"
+#  include "plugins/png.hpp"
+#endif
 #include "plugins/dds.hpp"
-#include "plugins/png.hpp"
 
 #ifdef HAVE_MAGICKXX
 #  include "plugins/imagemagick.hpp"
@@ -52,8 +54,10 @@ SoftwareSurfaceFactory::SoftwareSurfaceFactory() :
 {
   // order matters, first come, first serve, later registrations for
   // an already registered type will be ignored
+#ifndef __ANDROID__
   jpeg::register_loader(*this);
   png::register_loader(*this);
+#endif
   dds::register_loader(*this);
 
 #ifdef HAVE_EXEC

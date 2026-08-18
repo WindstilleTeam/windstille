@@ -48,6 +48,10 @@ LOCAL_SRC_FILES := $(filter-out %/win32/% win32/%,$(LOCAL_SRC_FILES))
 LOCAL_SRC_FILES := $(filter-out %/json_reader_impl.cpp %/json_writer_impl.cpp %/jsonpretty_writer_impl.cpp,$(LOCAL_SRC_FILES))
 # Prefer deps/prio over the priocpp alias (same sources twice → duplicate symbols / double work).
 LOCAL_SRC_FILES := $(filter-out %/deps/priocpp/%,$(LOCAL_SRC_FILES))
+# No system libjpeg/libpng on Android NDK tree yet; drop surfcpp image plugins
+# that need them (DDS/PNM remain). TODO: stage libjpeg-turbo + libpng statics
+# like audio libs and re-enable JPEG/PNG SoftwareSurface loaders.
+LOCAL_SRC_FILES := $(filter-out %/plugins/jpeg%.cpp %/plugins/file_jpeg%.cpp %/plugins/mem_jpeg%.cpp %/plugins/jpeg_%.cpp %/plugins/png.cpp,$(LOCAL_SRC_FILES))
 
 ifneq ($(ENABLE_ANDROID_SOUND),1)
 LOCAL_SRC_FILES := $(filter-out %/sound_real.cpp,$(LOCAL_SRC_FILES))
