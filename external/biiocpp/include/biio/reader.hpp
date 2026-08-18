@@ -19,9 +19,13 @@
 
 #include <array>
 #include <algorithm>
+#include <bit>
 #include <filesystem>
 #include <istream>
 #include <memory>
+#include <stdexcept>
+#include <string>
+#include <type_traits>
 
 #include <biio/bit_cast.hpp>
 
