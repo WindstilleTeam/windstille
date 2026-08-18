@@ -120,6 +120,19 @@ if(PNG_FOUND)
   list(APPEND SURF_DEFINES "-DHAVE_PNG")
 endif()
 
+# stb_image: header-only PNG/JPEG when system libpng/libjpeg are missing
+# (Android, R36S/ArkOS cross, wasm). Same path Android already uses via
+# SURF_USE_STB_IMAGE=1. Auto-enable under cross if neither PNG nor JPEG found.
+option(SURF_USE_STB_IMAGE "Use stb_image for PNG/JPEG when libpng/libjpeg absent" OFF)
+if(NOT SURF_USE_STB_IMAGE AND CMAKE_CROSSCOMPILING AND NOT PNG_FOUND AND NOT JPEG_FOUND)
+  set(SURF_USE_STB_IMAGE ON)
+endif()
+if(SURF_USE_STB_IMAGE)
+  list(APPEND SURF_SOURCES src/plugins/stb_image_loader.cpp)
+  list(APPEND SURF_DEFINES "-DSURF_USE_STB_IMAGE=1")
+  message(STATUS "surf: enabling stb_image PNG/JPEG loader (SURF_USE_STB_IMAGE)")
+endif()
+
 add_library(surf STATIC ${SURF_SOURCES})
 set_target_properties(surf PROPERTIES
   CXX_STANDARD 20
@@ -138,6 +151,17 @@ if(PNG_FOUND)
 endif()
 if(JPEG_FOUND)
   target_link_libraries(surf PUBLIC JPEG::JPEG)
+endif()
+if(SURF_USE_STB_IMAGE)
+  # Prefer explicit -DSTB_IMAGE_INCLUDE_DIR=… (nix/r36s, android); else look
+  # next to this source tree or under CMAKE_SOURCE_DIR/mk/android.
+  if(DEFINED STB_IMAGE_INCLUDE_DIR AND EXISTS "${STB_IMAGE_INCLUDE_DIR}/stb_image.h")
+    target_include_directories(surf PRIVATE "${STB_IMAGE_INCLUDE_DIR}")
+  elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/plugins/stb_image.h")
+    # optional vendored copy
+  elseif(EXISTS "${CMAKE_SOURCE_DIR}/mk/android/app/jni/stb_image.h")
+    target_include_directories(surf PRIVATE "${CMAKE_SOURCE_DIR}/mk/android/app/jni")
+  endif()
 endif()
 target_include_directories(surf PUBLIC
   $<INSTALL_INTERFACE:include>

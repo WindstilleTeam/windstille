@@ -40,6 +40,21 @@ let
   # if the placeholder remains, Nix will print the expected hash.
   khrplatformH = ../mk/r36s/include/KHR/khrplatform.h;
 
+  # stb_image.h for PNG/JPEG when the ArkOS sysroot has no libpng/libjpeg
+  # (same approach as the Android port).
+  stbImageH = fetchurl {
+    url = "https://raw.githubusercontent.com/nothings/stb/refs/heads/master/stb_image.h";
+    sha256 = "sha256-WUwv411JSItDgtv67I+YNm3vyoGdkWrJW+zz519CALM=";
+  };
+  stbImageIncludeDir = stdenvNoCC.mkDerivation {
+    name = "stb-image-include";
+    dontUnpack = true;
+    installPhase = ''
+      mkdir -p $out
+      cp ${stbImageH} $out/stb_image.h
+    '';
+  };
+
   arkosSysroot = stdenvNoCC.mkDerivation {
     pname = "arkos-sysroot";
     version = "0.1-openal";
@@ -492,6 +507,10 @@ EOF
         "-DWERROR=OFF"
         # R36S is GLES2-only (Mali/Panfrost); desktop OpenGL is not in the sysroot.
         "-DWINDSTILLE_USE_GLES=ON"
+        # No libpng/libjpeg in the published ArkOS sysroot — use stb_image
+        # (same as Android) so PNG/JPEG assets actually load.
+        "-DSURF_USE_STB_IMAGE=ON"
+        "-DSTB_IMAGE_INCLUDE_DIR=${stbImageIncludeDir}"
         # ArkOS sysroot has neither libsigc++ nor glm cmake config.
         "-DWINDSTILLE_SIGC_POLYFILL_DIR=${../mk/android/app/jni}"
         "-DWINDSTILLE_GLM_INCLUDE_DIR=${glm}/include"

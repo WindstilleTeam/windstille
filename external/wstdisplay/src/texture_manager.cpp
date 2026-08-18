@@ -16,6 +16,7 @@
 
 #include "texture_manager.hpp"
 
+#include <filesystem>
 #include <iostream>
 
 #include "texture.hpp"
@@ -44,6 +45,15 @@ TextureManager::~TextureManager()
 void
 TextureManager::set_fallback(std::filesystem::path const& filename)
 {
+#if defined(WINDSTILLE_R36S) || defined(WINDSTILLE_NO_CXX_EXCEPTIONS)
+  // from_file throws on missing/unknown type; on ArkOS that throw aborts in
+  // _Unwind_Resume before any catch. Probe existence and only load if present.
+  if (!std::filesystem::exists(filename)) {
+    std::cerr << "TextureManager::set_fallback: '" << filename.string()
+              << "' missing (ignored)\n";
+    return;
+  }
+#endif
   m_fallback = get(filename);
 }
 
