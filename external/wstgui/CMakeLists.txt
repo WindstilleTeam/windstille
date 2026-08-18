@@ -30,7 +30,16 @@ include(MaximumWarnings)
 find_package(PkgConfig REQUIRED)
 
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
-pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
+if(DEFINED WINDSTILLE_SIGC_POLYFILL_DIR AND NOT TARGET PkgConfig::SIGCXX)
+  add_library(PkgConfig::SIGCXX INTERFACE IMPORTED)
+  set_target_properties(PkgConfig::SIGCXX PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${WINDSTILLE_SIGC_POLYFILL_DIR}")
+  set(SIGCXX_FOUND TRUE)
+  message(STATUS "sigc++: using WINDSTILLE_SIGC_POLYFILL_DIR=${WINDSTILLE_SIGC_POLYFILL_DIR}")
+endif()
+if(NOT TARGET PkgConfig::SIGCXX)
+  pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
+endif()
 
 # Build dependencies
 function(build_dependencies)

@@ -81,7 +81,17 @@ find_package(Squirrel REQUIRED)
 
 pkg_search_module(SDL2 REQUIRED sdl2 IMPORTED_TARGET)
 
-pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
+# R36S / Android-style polyfill: header-only sigc++ subset when sysroot has none.
+if(DEFINED WINDSTILLE_SIGC_POLYFILL_DIR AND NOT TARGET PkgConfig::SIGCXX)
+  add_library(PkgConfig::SIGCXX INTERFACE IMPORTED)
+  set_target_properties(PkgConfig::SIGCXX PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${WINDSTILLE_SIGC_POLYFILL_DIR}")
+  set(SIGCXX_FOUND TRUE)
+  message(STATUS "sigc++: using WINDSTILLE_SIGC_POLYFILL_DIR=${WINDSTILLE_SIGC_POLYFILL_DIR}")
+endif()
+if(NOT TARGET PkgConfig::SIGCXX)
+  pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
+endif()
 
 if(BUILD_EDITOR)
   pkg_search_module(GTKMM REQUIRED gtkmm-3.0 IMPORTED_TARGET)
@@ -105,9 +115,9 @@ function(build_dependencies)
   tinycmmc_find_dependency(wstgui)
 
   find_program(MINISWIG miniswig)
-  # Under Emscripten, never build miniswig (needs host bison/flex). Use a
-  # host-provided MINISWIG from the cross environment instead.
-  if(NOT MINISWIG AND NOT (EMSCRIPTEN OR WINDSTILLE_EMSCRIPTEN))
+  # Under Emscripten / cross, never build miniswig (needs host bison/flex).
+  # Use a host-provided MINISWIG from the cross environment instead.
+  if(NOT MINISWIG AND NOT (EMSCRIPTEN OR WINDSTILLE_EMSCRIPTEN OR CMAKE_CROSSCOMPILING))
     add_subdirectory(external/miniswig/ EXCLUDE_FROM_ALL)
     # Use the in-tree executable target instead of the missing program.
     set(MINISWIG miniswig PARENT_SCOPE)

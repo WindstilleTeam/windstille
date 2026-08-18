@@ -545,7 +545,7 @@
               # R36S / ArkOS — sysroot URL is still a localhost placeholder in
               # nix/r36s.nix; update hash when a permanent tarball is published.
               r36s = import ./nix/r36s.nix {
-                inherit (pkgs) lib stdenv stdenvNoCC fetchurl cmake pkg-config writeShellScript zip glm;
+                inherit (pkgs) lib stdenv stdenvNoCC fetchurl cmake pkg-config writeShellScript zip glm bison flex;
                 pkgsCross = pkgs.pkgsCross;
               };
               windstille-r36s = r36s.mkWindstilleR36s {

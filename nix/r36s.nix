@@ -20,6 +20,8 @@
 , zip
 , glm  # header-only; not present in ArkOS sysroot
 , squirrelSrc ? null  # optional: path/tarball for upstream squirrel (cross-built static)
+, bison ? null
+, flex ? null
 }:
 
 let
@@ -406,6 +408,16 @@ EOF
     '';
   };
 
+
+  miniswigHost = stdenv.mkDerivation {
+    pname = "miniswig-host";
+    version = "0.1";
+    src = ../external/miniswig;
+    nativeBuildInputs = [ cmake ] ++ lib.optionals (bison != null) [ bison ]
+      ++ lib.optionals (flex != null) [ flex ];
+    cmakeFlags = [ "-DBUILD_TESTS=OFF" "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" ];
+  };
+
   mkWindstilleR36s = {
     src
   , version
@@ -424,6 +436,7 @@ EOF
         cmake
         pkg-config
         crossCc.bintools
+        miniswigHost
       ];
 
       strictDeps = true;
@@ -461,6 +474,8 @@ EOF
         # ArkOS sysroot has neither libsigc++ nor glm cmake config.
         "-DWINDSTILLE_SIGC_POLYFILL_DIR=${../mk/android/app/jni}"
         "-DWINDSTILLE_GLM_INCLUDE_DIR=${glm}/include"
+        "-DMINISWIG=${miniswigHost}/bin/miniswig"
+        "-DBUILD_EDITOR=OFF"
         # Forced cross-compiler cannot try_compile pthread; ArkOS glibc has it.
         "-DCMAKE_HAVE_LIBC_PTHREAD=1"
         "-DCMAKE_THREAD_LIBS_INIT=-pthread"
