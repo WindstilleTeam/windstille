@@ -453,6 +453,13 @@ EOF
 
       strictDeps = true;
 
+      postPatch = ''
+        mkdir -p src/system
+        cp ${../mk/r36s/arkos_compat.c} src/system/arkos_compat.c
+        cp ${../mk/r36s/arkos_compat.cpp} src/system/arkos_compat.cpp
+      '';
+
+
       # Avoid host cmakeDefaults forcing the wrong compilers after our flags.
       cmakeFlags = [
         "-DCMAKE_SYSTEM_NAME=Linux"

@@ -237,6 +237,14 @@ if(BUILD_EDITOR)
     libwindstille
     PkgConfig::GTKMM)
 
+# ArkOS / R36S: glibc+libstdc++ shims for newer-toolchain static deps.
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/system/arkos_compat.c")
+  target_sources(windstille PRIVATE
+    src/system/arkos_compat.c
+    src/system/arkos_compat.cpp)
+endif()
+
+
   install_with_wrapper(TARGETS windstille-editor)
 
   install(FILES
