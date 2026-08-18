@@ -293,6 +293,102 @@ EOF
 
 
 
+  # --- Image codecs for surfcpp (wasm) -------------------------------------
+  # CMakeLists / surfcpp require find_package(JPEG) and find_package(PNG).
+  jpegWasm = pkgs.stdenv.mkDerivation {
+    pname = "libjpeg-wasm";
+    version = pkgs.libjpeg.version;
+    src = pkgs.libjpeg.src;
+    nativeBuildInputs = [ pkgs.emscripten pkgs.python3 ];
+    dontConfigure = true;
+    buildPhase = ''
+      runHook preBuild
+      export EM_CACHE="''${TMPDIR:-/tmp}/emcache"
+      mkdir -p "$EM_CACHE" "$PWD/prefix"
+      # libjpeg (or turbo) autotools / cmake varies; try configure then cmake.
+      if [ -f configure ]; then
+        emconfigure ./configure --disable-shared --enable-static --prefix="$PWD/prefix"
+        emmake make -j''${NIX_BUILD_CORES:-2}
+        emmake make install
+      else
+        mkdir -p build && cd build
+        emcmake cmake ..           -DCMAKE_BUILD_TYPE=Release           -DCMAKE_INSTALL_PREFIX="$PWD/../prefix"           -DENABLE_SHARED=OFF           -DENABLE_STATIC=ON
+        emmake make -j''${NIX_BUILD_CORES:-2}
+        emmake make install
+        cd ..
+      fi
+      runHook postBuild
+    '';
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out
+      cp -a prefix/. $out/
+      # Ensure FindJPEG can see a library name it recognizes.
+      if [ ! -e $out/lib/libjpeg.a ]; then
+        find . -name 'libjpeg*.a' -exec cp {} $out/lib/libjpeg.a \; || true
+      fi
+      mkdir -p $out/lib/pkgconfig
+      if [ ! -f $out/lib/pkgconfig/libjpeg.pc ]; then
+        cat > $out/lib/pkgconfig/libjpeg.pc <<EOF
+prefix=$out
+libdir=\''${prefix}/lib
+includedir=\''${prefix}/include
+Name: libjpeg
+Description: libjpeg (wasm static)
+Version: ${pkgs.libjpeg.version}
+Libs: -L\''${libdir} -ljpeg
+Cflags: -I\''${includedir}
+EOF
+      fi
+      runHook postInstall
+    '';
+    meta = with pkgs.lib; {
+      description = "Static libjpeg for wasm32-emscripten";
+      platforms = platforms.linux;
+    };
+  };
+
+  pngWasm = pkgs.stdenv.mkDerivation {
+    pname = "libpng-wasm";
+    version = pkgs.libpng.version;
+    src = pkgs.libpng.src;
+    nativeBuildInputs = [ pkgs.emscripten pkgs.python3 pkgs.cmake ];
+    dontConfigure = true;
+    buildPhase = ''
+      runHook preBuild
+      export EM_CACHE="''${TMPDIR:-/tmp}/emcache"
+      mkdir -p "$EM_CACHE" "$PWD/prefix" build
+      (
+        cd build
+        emcmake cmake .. \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX="$PWD/../prefix" \
+          -DPNG_SHARED=OFF \
+          -DPNG_STATIC=ON \
+          -DPNG_TESTS=OFF \
+          -DZLIB_ROOT="${zlibWasmLibs}" \
+          -DZLIB_INCLUDE_DIR="${zlibWasmLibs}/include" \
+          -DZLIB_LIBRARY="${zlibWasmLibs}/lib/libz.a"
+        emmake make -j''${NIX_BUILD_CORES:-2}
+        emmake make install
+      )
+      runHook postBuild
+    '';
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out
+      cp -a prefix/. $out/
+      if [ ! -e $out/lib/libpng.a ] && [ -e $out/lib/libpng16.a ]; then
+        ln -s libpng16.a $out/lib/libpng.a
+      fi
+      runHook postInstall
+    '';
+    meta = with pkgs.lib; {
+      description = "Static libpng for wasm32-emscripten";
+      platforms = platforms.linux;
+    };
+  };
+
   # --- Audio codecs for wstsound (wasm) ------------------------------------
   # Windstille ships WAV SFX + .it/.s3m module music only. libmodplug covers the
   # modules; WAV is decoded in-tree. Do not add mpg123/vorbis/opus here unless
@@ -445,9 +541,9 @@ EOF
       # isolated wstsound-wasm package — so OpenAL comes from the emscripten
       # sysroot (-lopenal) and codec flags follow EMSCRIPTEN defaults in
       # external/wstsound/CMakeLists.txt (modplug + wav only, EFX off).
-      prefixPath = "${glmPrefix}:${sigcWasm}"
+      prefixPath = "${glmPrefix}:${sigcWasm}:${jpegWasm}:${pngWasm}"
         + (if enableSound then ":${modplugWasm}" else "");
-      pkgConfigPath = "${sdlWasmLibs}/lib/pkgconfig"
+      pkgConfigPath = "${sdlWasmLibs}/lib/pkgconfig:${jpegWasm}/lib/pkgconfig:${pngWasm}/lib/pkgconfig"
         + (if enableSound then ":${modplugWasm}/lib/pkgconfig" else "");
     in
     pkgs.stdenv.mkDerivation {
@@ -472,6 +568,8 @@ EOF
         WASM_SHELL = "${shell}";
         PKG_CONFIG_PATH = pkgConfigPath;
         ZLIB_WASM_LIBS = zlibWasmLibs;
+        JPEG_WASM_LIBS = jpegWasm;
+        PNG_WASM_LIBS = pngWasm;
       } // pkgs.lib.optionalAttrs (dataDir != null) {
         DATA_DIR = "${dataDir}";
       } // pkgs.lib.optionalAttrs enableSound {

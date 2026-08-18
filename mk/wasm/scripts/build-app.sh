@@ -125,6 +125,25 @@ fi
 if [ -n "$ZLIB_PREFIX" ] && [ -d "$ZLIB_PREFIX" ]; then
   cmake_args+=(-DZLIB_ROOT="$ZLIB_PREFIX")
 fi
+# surfcpp / top-level find_package(JPEG) + find_package(PNG)
+JPEG_PREFIX="${JPEG_WASM_LIBS:-}"
+if [ -n "$JPEG_PREFIX" ] && [ -d "$JPEG_PREFIX" ]; then
+  cmake_args+=(
+    -DJPEG_ROOT="$JPEG_PREFIX"
+    -DJPEG_INCLUDE_DIR="$JPEG_PREFIX/include"
+    -DJPEG_LIBRARY="$JPEG_PREFIX/lib/libjpeg.a"
+  )
+  echo "==> JPEG_WASM_LIBS=$JPEG_PREFIX"
+fi
+PNG_PREFIX="${PNG_WASM_LIBS:-}"
+if [ -n "$PNG_PREFIX" ] && [ -d "$PNG_PREFIX" ]; then
+  cmake_args+=(
+    -DPNG_ROOT="$PNG_PREFIX"
+    -DPNG_PNG_INCLUDE_DIR="$PNG_PREFIX/include"
+    -DPNG_LIBRARY="$PNG_PREFIX/lib/libpng.a"
+  )
+  echo "==> PNG_WASM_LIBS=$PNG_PREFIX"
+fi
 if [ "$ENABLE_SOUND" = 1 ]; then
   # Prebuilt libmodplug for the in-tree wstsound subdirectory build.
   # Explicit paths avoid emscripten FIND_ROOT stripping host-store prefixes.

@@ -271,9 +271,8 @@ if [ "$ASSET_COUNT" -lt 10 ]; then
   ls -la src/assets >&2 || true
   exit 1
 fi
-# Probe well-known Windstille data paths (not SuperTux Milestone 1 leftovers).
-for probe in   images/fonts/chalk-40px.font   images/fonts/chalk-40px.png   levelsets   levels   music   sounds
-do
+# Probe well-known Windstille data paths (source tree layout under data/).
+for probe in fonts images levels sounds controller; do
   if [ ! -e "src/assets/$probe" ]; then
     echo "error: missing src/assets/$probe" >&2
     echo "       is GAME_DATA_DIR a full Windstille data/ tree?" >&2
