@@ -495,6 +495,7 @@ EOF
         "-DWINDSTILLE_GLM_INCLUDE_DIR=${glm}/include"
         "-DMINISWIG=${miniswigHost}/bin/miniswig"
         "-DBUILD_EDITOR=OFF"
+        "-DWINDSTILLE_ARKOS_COMPAT_DIR=${../mk/r36s}"
         # Forced cross-compiler cannot try_compile pthread; ArkOS glibc has it.
         "-DCMAKE_HAVE_LIBC_PTHREAD=1"
         "-DCMAKE_THREAD_LIBS_INIT=-pthread"

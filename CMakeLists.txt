@@ -238,7 +238,12 @@ if(BUILD_EDITOR)
     PkgConfig::GTKMM)
 
 # ArkOS / R36S: glibc+libstdc++ shims for newer-toolchain static deps.
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/system/arkos_compat.c")
+if(DEFINED WINDSTILLE_ARKOS_COMPAT_DIR)
+  target_sources(windstille PRIVATE
+    "${WINDSTILLE_ARKOS_COMPAT_DIR}/arkos_compat.c"
+    "${WINDSTILLE_ARKOS_COMPAT_DIR}/arkos_compat.cpp")
+  message(STATUS "ArkOS compat: ${WINDSTILLE_ARKOS_COMPAT_DIR}")
+elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/system/arkos_compat.c")
   target_sources(windstille PRIVATE
     src/system/arkos_compat.c
     src/system/arkos_compat.cpp)
