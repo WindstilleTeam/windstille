@@ -23,7 +23,7 @@
 #include <istream>
 #include <memory>
 
-#include "bit_cast.hpp"
+#include <biio/bit_cast.hpp>
 
 namespace biio {
 
