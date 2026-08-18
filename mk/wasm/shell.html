@@ -469,11 +469,39 @@
       }
     };
     Module.setStatus('Downloading…');
-    window.onerror = function(event) {
-      Module.setStatus('Exception thrown, see JavaScript console');
+    function stFormatException(err) {
+      if (err == null) return String(err);
+      var parts = [];
+      if (err.name) parts.push(err.name);
+      if (err.message) parts.push(err.message);
+      // Emscripten C++ exceptions expose a short message after getExceptionMessage
+      // when EXCEPTION_CATCHING is enabled; fall back to toString.
+      if (parts.length === 0) {
+        try { parts.push(String(err)); } catch (e) { parts.push('(unprintable exception)'); }
+      }
+      if (err.stack) parts.push('\n' + err.stack);
+      return parts.join(': ');
+    }
+    function stReportFatal(label, err) {
+      var detail = stFormatException(err);
+      console.error('[windstille] ' + label + ':', detail, err);
+      try {
+        Module.setStatus(label + ': ' + (err && err.message ? err.message : detail).split('\n')[0]);
+      } catch (e) {}
+      // Freeze further status spam after a fatal error.
       Module.setStatus = function(text) {
         if (text) console.error('[post-exception status] ' + text);
       };
+    }
+    window.onerror = function(message, source, lineno, colno, error) {
+      stReportFatal('Exception', error || message);
+      return false;
+    };
+    window.addEventListener('unhandledrejection', function(ev) {
+      stReportFatal('Unhandled promise rejection', ev.reason);
+    });
+    Module.onAbort = function(what) {
+      stReportFatal('Abort', what);
     };
   </script>
   {{{ SCRIPT }}}
