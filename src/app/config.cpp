@@ -178,8 +178,6 @@ Config::parse_args(int argc, char** argv)
     //.add_option('x', "record-video","DIR",  "Record a gameplay video to DIR")
     .add_option('p', "play",        "FILE", "Playback input events from FILE");
 
-  argp.parse_args(argc, argv);
-
   for(auto const& opt : argp.parse_args(argc, argv))
   {
     switch (opt.key)

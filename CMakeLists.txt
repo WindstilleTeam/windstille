@@ -272,6 +272,11 @@ if(DEFINED WINDSTILLE_ARKOS_COMPAT_DIR)
   target_sources(windstille PRIVATE
     "${WINDSTILLE_ARKOS_COMPAT_DIR}/arkos_compat.c"
     "${WINDSTILLE_ARKOS_COMPAT_DIR}/arkos_compat.cpp")
+  # Keep symbols from being dropped; required by libgcc_eh / static deps.
+  target_link_options(windstille PRIVATE
+    "LINKER:--undefined=__isoc23_strtol"
+    "LINKER:--undefined=__cxa_call_terminate"
+    "LINKER:--undefined=_dl_find_object")
   message(STATUS "ArkOS compat: ${WINDSTILLE_ARKOS_COMPAT_DIR}")
 elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/system/arkos_compat.c")
   target_sources(windstille PRIVATE
