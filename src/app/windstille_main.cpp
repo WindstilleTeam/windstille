@@ -155,7 +155,12 @@ WindstilleMain::main(int argc, char** argv)
       g_app.m_fonts = &fonts;
       g_app.m_style = &style;
 
+      // Window icons are useless on R36S (fullscreen handheld). Calling
+      // SoftwareSurface::from_file here throws; GCC 15 + ArkOS libgcc then
+      // SIGABRTs inside _Unwind_Resume before any catch can run.
+#if !defined(WINDSTILLE_R36S)
       window->set_icon(Pathname("icon.png"));
+#endif
       texture_manager.set_fallback(Pathname("images/404.png"));
 
       init_modules();

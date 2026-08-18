@@ -483,7 +483,9 @@ EOF
         "-DCMAKE_SKIP_INSTALL_RPATH=ON"
         "-DCMAKE_BUILD_WITH_INSTALL_RPATH=OFF"
         "-DCMAKE_INSTALL_RPATH="
-        "-DCMAKE_BUILD_TYPE=Release"
+        # RelWithDebInfo: keep -g for on-device gdb (exception unwind still
+        # fragile on GCC 15 + ArkOS libgcc, but symbols make traces usable).
+        "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
         "-DBUILD_TESTS=OFF"
         "-DBUILD_EXTRA=OFF"
         "-DWARNINGS=OFF"

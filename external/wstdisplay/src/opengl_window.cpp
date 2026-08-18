@@ -171,6 +171,13 @@ OpenGLWindow::set_icon(std::filesystem::path const& filename)
 {
   assert(m_window != nullptr);
 
+  // On R36S/ArkOS, any C++ throw tends to SIGABRT in _Unwind_Resume (GCC 15
+  // vs older sysroot libgcc). Window icons are optional — skip rather than
+  // risk aborting before a catch can run.
+#if defined(WINDSTILLE_R36S) || defined(WINDSTILLE_NO_CXX_EXCEPTIONS)
+  (void)filename;
+  return;
+#else
   surf::SoftwareSurface pixeldata;
   try {
     pixeldata = surf::SoftwareSurface::from_file(filename);
@@ -205,6 +212,7 @@ OpenGLWindow::set_icon(std::filesystem::path const& filename)
   SDL_SetWindowIcon(m_window, sdl_surface);
 
   SDL_FreeSurface(sdl_surface);
+#endif
 }
 
 void
