@@ -272,7 +272,8 @@ if [ "$ASSET_COUNT" -lt 10 ]; then
   exit 1
 fi
 # Probe well-known Windstille data paths (source tree layout under data/).
-for probe in fonts images levels sounds controller; do
+# Levels live under sectors/; there is no top-level levels/ directory.
+for probe in fonts images sectors sounds controller music; do
   if [ ! -e "src/assets/$probe" ]; then
     echo "error: missing src/assets/$probe" >&2
     echo "       is GAME_DATA_DIR a full Windstille data/ tree?" >&2
