@@ -15,14 +15,12 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <filesystem>
+#include <format>
 #include <functional>
 #include <iostream>
 #include <memory>
 #include <stack>
 #include <variant>
-
-#include <format>
-#include <string_view>
 
 #include <geom/io.hpp>
 #include <surf/blendfunc.hpp>
@@ -218,6 +216,38 @@ void print_usage(int argc, char** argv)
     << "  --swap               Swap the two top most items\n"
     << "  --withi INDEX        Push a view on INDEX on the top\n"
     << "\n";
+}
+
+std::string to_positional_format(std::string fmt)
+{
+  // name → argument position
+  static constexpr std::pair<std::string_view, int> mapping[] = {
+    {"index",    0},
+    {"dirname",  1},
+    {"basename", 2},
+    {"path",     3},
+    {"stem",     4},
+    {"ext",      5},
+  };
+
+  for (auto const& [name, index] : mapping) {
+    const std::string from = "{" + std::string(name);
+    const std::string to   = "{" + std::to_string(index);
+
+    std::size_t pos = 0;
+    while ((pos = fmt.find(from, pos)) != std::string::npos) {
+      // Only replace if it is a real placeholder:
+      // {name}  or  {name:...}
+      const char next = (pos + from.size() < fmt.size()) ? fmt[pos + from.size()] : '\0';
+      if (next == '}' || next == ':') {
+        fmt.replace(pos, from.size(), to);
+        pos += to.size();
+      } else {
+        pos += from.size(); // false match, skip
+      }
+    }
+  }
+  return fmt;
 }
 
 Options parse_args(int argc, char** argv)
@@ -482,23 +512,25 @@ Options parse_args(int argc, char** argv)
           surf::save(ctx.top(), output_filename);
         });
       } else if (opt == "-O" || opt == "--output-pattern") {
-        std::filesystem::path output_pattern = next_arg();
+        std::string output_pattern = to_positional_format(std::string(next_arg()));
         opts.commands.emplace_back([output_pattern](Context& ctx) {
-          // Named placeholders from the pattern, substituted manually
-          // (std::format has no fmt::arg equivalent for dynamic patterns).
-          std::string output_filename = output_pattern.string();
-          auto replace_all = [](std::string& s, std::string_view from, std::string_view to) {
-            for (size_t pos = 0; (pos = s.find(from, pos)) != std::string::npos; ) {
-              s.replace(pos, from.size(), to);
-              pos += to.size();
-            }
-          };
-          replace_all(output_filename, "{index}", std::to_string(ctx.file_info().index));
-          replace_all(output_filename, "{dirname}", ctx.file_info().filename.parent_path().string());
-          replace_all(output_filename, "{basename}", ctx.file_info().filename.filename().string());
-          replace_all(output_filename, "{path}", ctx.file_info().filename.string());
-          replace_all(output_filename, "{stem}", ctx.file_info().filename.stem().string());
-          replace_all(output_filename, "{ext}", ctx.file_info().filename.extension().string());
+          auto const index = ctx.file_info().index;                                    // 0
+          std::string const dirname = ctx.file_info().filename.parent_path().string(); // 1
+          std::string const basename = ctx.file_info().filename.filename().string();   // 2
+          std::string const path = ctx.file_info().filename.string();                  // 3
+          std::string const stem = ctx.file_info().filename.stem().string();           // 4
+          std::string const ext = ctx.file_info().filename.extension().string();       // 5
+
+          std::string output_filename = std::vformat(
+            output_pattern,
+            std::make_format_args(
+              index,    // 0
+              dirname,  // 1
+              basename, // 2
+              path,     // 3
+              stem,     // 4
+              ext       // 5
+              ));
           ctx.message(std::format("saving {}", output_filename));
           surf::save(ctx.top(), output_filename);
         });
