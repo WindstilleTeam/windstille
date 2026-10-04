@@ -21,7 +21,6 @@
 #include <stdexcept>
 #include <string.h>
 
-#include <fmt/ostream.h>
 #include <png.h>
 
 #include <logmich/log.hpp>
@@ -54,7 +53,7 @@ png_byte PixelFormat2PNG_COLOR_TYPE(PixelFormat format)
       return PNG_COLOR_TYPE_RGBA;
 
     default:
-      throw std::invalid_argument(fmt::format("PNG: unhandled format"));
+      throw std::invalid_argument("PNG: unhandled format");
   }
 }
 
@@ -71,7 +70,7 @@ int PixelFormat2bitdepth(PixelFormat format)
       return 16;
 
     default:
-      throw std::invalid_argument(fmt::format("PNG: unhandled format"));
+      throw std::invalid_argument("PNG: unhandled format");
   }
 }
 

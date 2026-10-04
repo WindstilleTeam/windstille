@@ -18,7 +18,7 @@
 
 #include <stdexcept>
 
-#include <fmt/format.h>
+#include <format>
 
 namespace surf {
 
@@ -137,7 +137,7 @@ PixelFormat pixelformat_from_string(std::string_view text)
   } else if (text == "la64f") {
     return PixelFormat::LA64f;
   } else {
-    throw std::invalid_argument(fmt::format("unknown PixelFormat: '{}'", text));
+    throw std::invalid_argument(std::format("unknown PixelFormat: '{}'", text));
   }
 }
 

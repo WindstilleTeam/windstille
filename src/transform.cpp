@@ -43,7 +43,7 @@ Transform transform_from_string(std::string_view text)
   } else if (text == "hflip") {
     return surf::Transform::FLIP_HORIZONTAL;
   } else {
-    throw std::invalid_argument(fmt::format("not a valid transform: {}", text));
+    throw std::invalid_argument(std::format("not a valid transform: {}", text));
   }
 }
 

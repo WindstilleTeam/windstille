@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include <fmt/format.h>
+#include <format>
 
 #include "color.hpp"
 #include "palette.hpp"
@@ -43,7 +43,7 @@ uint8_t x2i(char c)
     case 'E': case 'e': return 0xe;
     case 'F': case 'f': return 0xf;
     default:
-      throw std::invalid_argument(fmt::format("not a valid hex character: '{}'", c));
+      throw std::invalid_argument(std::format("not a valid hex character: '{}'", c));
   }
 }
 
@@ -70,7 +70,7 @@ Color::from_string(std::string_view text) {
                                 static_cast<uint8_t>((x2i(text[3]) << 8) | x2i(text[4])),
                                 static_cast<uint8_t>((x2i(text[5]) << 8) | x2i(text[6])));
     } else {
-      throw std::invalid_argument(fmt::format("invalid color string: {}", text));
+      throw std::invalid_argument(std::format("invalid color string: {}", text));
     }
   } else if (sscanf(str.c_str(), " %f, %f, %f, %f ", &r, &g, &b, &a) == 4 ||
              sscanf(str.c_str(), " %f, %f, %f ", &r, &g, &b) == 3) {

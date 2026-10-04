@@ -11,23 +11,24 @@
 , libpng
 , logmich
 , pkg-config
-, tinycmmc
 , withImagemagick ? false
 , withLibexif ? false
 , withSDL2 ? false
+, version ? "0.0.0"
 }:
 
 stdenv.mkDerivation {
   pname = "surfcpp";
-  version = "0.3.0";
+  inherit version;
   meta = {
     mainProgram = "surftool";
   };
   src = lib.cleanSource ./.;
   cmakeFlags = [
     "-DBUILD_EXTRA=ON"
+    "-DPROJECT_VERSION_FULL=${version}"
   ]
-  ++ lib.optional (!stdenv.hostPlatform.isWindows) "-DBUILD_BENCHMARK=ON"
+  ++ lib.optional (!stdenv.hostPlatform.isWindows) "-DBUILD_BENCHMARKS=ON"
   ++ (lib.optional withImagemagick "-DWITH_MAGICKXX=ON")
   ++ (lib.optional withLibexif "-DWITH_EXIF=ON")
   ++ (lib.optional withSDL2 "-DWITH_SDL2=ON");
@@ -36,7 +37,6 @@ stdenv.mkDerivation {
     pkg-config
   ];
   buildInputs = [
-    tinycmmc
     gtest
     SDL2
   ] ++ lib.optional (!stdenv.hostPlatform.isWindows) gbenchmark;
