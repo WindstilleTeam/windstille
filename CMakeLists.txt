@@ -14,8 +14,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.10)
-project(sexp VERSION 0.1.0)
+cmake_minimum_required(VERSION 3.10...4.1)
+
+# Source of truth: top-level VERSION file (e.g. "0.2.0-dev"), or
+# -DPROJECT_VERSION_FULL=... from packaging (Nix may append .<revCount>+g<rev>).
+if(NOT DEFINED PROJECT_VERSION_FULL)
+  file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROJECT_VERSION_FULL LIMIT_COUNT 1)
+endif()
+
+# CMake project() VERSION expects major[.minor[.patch[.tweak]]]; strip
+# any -dev / +git suffix for the numeric project version.
+string(REGEX MATCH "^[0-9]+(\\.[0-9]+)*" _project_version_cmake "${PROJECT_VERSION_FULL}")
+
+project(sexp VERSION ${_project_version_cmake} LANGUAGES CXX)
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
