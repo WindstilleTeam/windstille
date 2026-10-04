@@ -189,62 +189,19 @@
           ];
         };
 
-        wstdisplay = mkExternal {
-          pname = "wstdisplay";
-          src = ./external/wstdisplay;
-          version = "0.3.0";
+        # wstdisplay, wstinput, wstgui and wstsprite from one source tree
+        wst = mkExternal {
+          pname = "wst";
+          src = ./external/wst;
+          version = "0.4.0";
+          cmakeFlags = [ "-DWST_DEMOS=OFF" ];
           buildInputs = [
-            tinycmmc_pkg babyxml geomcpp surfcpp logmich
-            pkgs.glew pkgs.libGL pkgs.freetype pkgs.SDL2 pkgs.libsigcxx
-            pkgs.sysprof
+            babyxml geomcpp surfcpp logmich prio sexpcpp
+            pkgs.libGL pkgs.freetype pkgs.SDL2 pkgs.libsigcxx30 pkgs.glm
           ];
           propagatedBuildInputs = [
-            babyxml geomcpp surfcpp logmich
-            pkgs.glew pkgs.libGL pkgs.freetype pkgs.SDL2 pkgs.libsigcxx
-          ];
-        };
-
-        # GLES2 build of wstdisplay — must not link libGL/GLEW.
-        wstdisplay_gles = mkExternal {
-          pname = "wstdisplay-gles";
-          src = ./external/wstdisplay;
-          version = "0.3.0";
-          cmakeFlags = [ "-DWSTDISPLAY_USE_GLES=ON" ];
-          buildInputs = [
-            tinycmmc_pkg babyxml geomcpp surfcpp logmich
-            pkgs.libglvnd pkgs.freetype pkgs.SDL2 pkgs.libsigcxx
-            pkgs.pkg-config
-          ];
-          propagatedBuildInputs = [
-            babyxml geomcpp surfcpp logmich
-            pkgs.libglvnd pkgs.freetype pkgs.SDL2 pkgs.libsigcxx
-          ];
-        };
-
-        wstinput = mkExternal {
-          pname = "wstinput";
-          src = ./external/wstinput;
-          version = "0.3.0";
-          buildInputs = [
-            tinycmmc_pkg logmich prio
-            pkgs.SDL2 pkgs.libsigcxx
-          ];
-          propagatedBuildInputs = [ logmich prio pkgs.SDL2 pkgs.libsigcxx ];
-        };
-
-        wstgui = mkExternal {
-          pname = "wstgui";
-          src = ./external/wstgui;
-          version = "0.3.0";
-          buildInputs = [
-            tinycmmc_pkg sexpcpp babyxml logmich geomcpp prio surfcpp
-            wstdisplay wstinput wstsound
-            pkgs.SDL2 pkgs.libsigcxx pkgs.bison pkgs.flex
-          ];
-          propagatedBuildInputs = [
-            sexpcpp babyxml logmich geomcpp prio surfcpp
-            wstdisplay wstinput wstsound
-            pkgs.SDL2 pkgs.libsigcxx
+            babyxml geomcpp surfcpp logmich prio sexpcpp
+            pkgs.libGL pkgs.freetype pkgs.SDL2 pkgs.libsigcxx30 pkgs.glm
           ];
         };
 
@@ -257,7 +214,7 @@
 
         windstilleExternalDeps = [
           argpp babyxml biiocpp geomcpp logmich prio surfcpp
-          wstdisplay wstinput wstsound wstgui tinycmmc_pkg sexpcpp
+          wst wstsound tinycmmc_pkg sexpcpp
           strutcpp
         ];
 
@@ -274,10 +231,9 @@
           squirrel.packages.${pkgs.stdenv.hostPlatform.system}.default
           pkgs.gtest
           pkgs.glm
-          pkgs.glew
           pkgs.libGL
           pkgs.SDL2
-          pkgs.libsigcxx
+          pkgs.libsigcxx30
           pkgs.sysprof
           pkgs.openal
           pkgs.libopus
@@ -361,12 +317,9 @@
         };
 
 
-        # Desktop GLES2 build to validate the embedded/WebGL path on Linux
-        # (same idea as Pingus useGLES2 package). Still requires fixing
-        # remaining fixed-function / desktop-only GL usage.
-        # Full monorepo cmake with GLES: do not inject prebuilt desktop
-        # wstdisplay (that would pull libGL).  tinycmmc_find_dependency falls
-        # back to external/* and builds them with WSTDISPLAY_USE_GLES.
+        # Desktop build that defaults to OpenGL ES 2.0, to validate the
+        # embedded/WebGL path on Linux. wstdisplay picks the API at
+        # runtime, so this is the regular build with another default.
         windstille-gles2 = stdenv.mkDerivation {
           pname = "windstille-gles2";
           version = "0.3.0";
@@ -375,29 +328,10 @@
             "-DBUILD_EDITOR=OFF"
             "-DBUILD_EXTRA=OFF"
             "-DWINDSTILLE_USE_GLES=ON"
-            "-DWSTDISPLAY_USE_GLES=ON"
           ] ++ commonCmakeFlags;
           nativeBuildInputs = commonNative ++ [ miniswig ]
             ++ lib.optional pkgs.stdenv.hostPlatform.isLinux pkgs.makeWrapper;
-          buildInputs = [
-            # No pkgs.glew / desktop wstdisplay — only GLES + shared deps.
-            pkgs.libglvnd
-            pkgs.pkg-config
-            pkgs.freetype
-            pkgs.SDL2
-            pkgs.libsigcxx
-            pkgs.sysprof
-            pkgs.glm
-            pkgs.openal
-            pkgs.libopus
-            pkgs.opusfile
-            pkgs.libogg
-            pkgs.libvorbis
-            pkgs.mpg123
-            pkgs.libmodplug
-            miniswig
-            squirrel.packages.${pkgs.stdenv.hostPlatform.system}.default
-          ];
+          buildInputs = commonBuildInputs;
           # CMake installs "windstille"; expose matching name for `nix run .#windstille-gles2`.
           postInstall = ''
             if [ -e "$out/bin/windstille" ] && [ ! -e "$out/bin/windstille-gles2" ]; then
@@ -405,7 +339,7 @@
             fi
           '';
           meta = {
-            description = "Windstille linked against OpenGL ES 2.0 (libGLESv2/libEGL)";
+            description = "Windstille defaulting to OpenGL ES 2.0";
             mainProgram = "windstille";
           };
         };
@@ -619,7 +553,7 @@
         packages = rec {
           inherit
             tinycmmc_pkg logmich sexpcpp geomcpp babyxml biiocpp argpp
-            strutcpp prio surfcpp wstsound wstdisplay wstdisplay_gles wstinput wstgui
+            strutcpp prio surfcpp wstsound wst
             miniswig
             libwindstille
             windstille
@@ -638,21 +572,16 @@
           # Externals (stb_image, no libjpeg/libpng)
           inherit
             tinycmmc_pkg logmich sexpcpp geomcpp babyxml biiocpp argpp
-            strutcpp prio surfcpp wstsound wstdisplay wstdisplay_gles
-            wstinput wstgui miniswig;
+            strutcpp prio surfcpp wstsound wst miniswig;
           # Game binaries
           inherit
             libwindstille
             windstille
             windstille-editor
             windstille-gles2;
-        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? windstille-wasm) {
-          inherit (linuxPorts) windstille-wasm;
-        } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isLinux && linuxPorts ? windstille-android) {
-          # APK compile (SDK license accepted in androidPkgs)
-          inherit (linuxPorts) windstille-android;
         };
-        # win64 / r36s omitted from checks (cross WIP / sysroot placeholder).
+        # wasm / android / win64 / r36s omitted from checks until they are
+        # ported to external/wst.
 
         apps = {
           windstille = {

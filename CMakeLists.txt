@@ -31,13 +31,6 @@ option(WINDSTILLE_EMSCRIPTEN "Emscripten build (implies GLES)" OFF)
 if(WINDSTILLE_EMSCRIPTEN)
   set(WINDSTILLE_USE_GLES ON)
 endif()
-# Propagate to external/wstdisplay when built as subdirectory
-if(WINDSTILLE_USE_GLES)
-  set(WSTDISPLAY_USE_GLES ON CACHE BOOL "" FORCE)
-endif()
-if(WINDSTILLE_EMSCRIPTEN)
-  set(WSTDISPLAY_EMSCRIPTEN ON CACHE BOOL "" FORCE)
-endif()
 
 if (BUILD_TESTS)
   # add 'make test' target, use 'make test ARGS="-V"' or 'ctest -V' for verbose
@@ -55,10 +48,6 @@ find_package(Threads REQUIRED)
 # JPEG/PNG system libs optional — surfcpp defaults to header-only stb_image.
 find_package(JPEG)
 find_package(PNG)
-if(NOT WINDSTILLE_USE_GLES)
-  find_package(OpenGL REQUIRED)
-  find_package(GLEW REQUIRED)
-endif()
 # R36S / cross: header-only glm from nix (no glmConfig in sysroot).
 if(DEFINED WINDSTILLE_GLM_INCLUDE_DIR AND NOT TARGET glm::glm)
   add_library(glm::glm INTERFACE IMPORTED)
@@ -84,7 +73,7 @@ if(DEFINED WINDSTILLE_SIGC_POLYFILL_DIR AND NOT TARGET PkgConfig::SIGCXX)
   message(STATUS "sigc++: using WINDSTILLE_SIGC_POLYFILL_DIR=${WINDSTILLE_SIGC_POLYFILL_DIR}")
 endif()
 if(NOT TARGET PkgConfig::SIGCXX)
-  pkg_search_module(SIGCXX REQUIRED sigc++-2.0 IMPORTED_TARGET)
+  pkg_search_module(SIGCXX REQUIRED sigc++-3.0 IMPORTED_TARGET)
 endif()
 
 if(BUILD_EDITOR)
@@ -103,10 +92,13 @@ function(build_dependencies)
   tinycmmc_find_dependency(biiocpp)
   tinycmmc_find_dependency(prio)
   tinycmmc_find_dependency(surfcpp)
-  tinycmmc_find_dependency(wstdisplay)
-  tinycmmc_find_dependency(wstinput)
   tinycmmc_find_dependency(wstsound)
-  tinycmmc_find_dependency(wstgui)
+
+  # external/wst, built as a package of its own
+  find_package(wstdisplay REQUIRED)
+  find_package(wstinput REQUIRED)
+  find_package(wstgui REQUIRED)
+  find_package(wstsprite REQUIRED)
 
   find_program(MINISWIG miniswig)
   # Under Emscripten / cross, never build miniswig (needs host bison/flex).
@@ -193,10 +185,11 @@ target_include_directories(libwindstille PUBLIC
 target_link_libraries(libwindstille PUBLIC
   biio::biio
   prio::prio
-  wstdisplay
+  wstdisplay::wstdisplay
   wstinput::wstinput
   wstsound::wstsound
   wstgui::wstgui
+  wstsprite::wstsprite
   argpp::argpp
   babyxml::babyxml
   geom::geom
