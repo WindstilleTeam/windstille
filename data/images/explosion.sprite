@@ -6,6 +6,6 @@
   (image-grid
    (file "explosion.png")
    (x-size 64)
-   (y-size 98))))
+   (y-size 98)))))
 
 ;; EOF ;;
