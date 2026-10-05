@@ -161,7 +161,7 @@
       (pos 72 135)
       (z-pos -100)
       (sprite "images/objects/painting1.sprite")
-      (active true)
+      (active #t)
       (use-verb "Look")
     )
     (scriptable-object
@@ -169,7 +169,7 @@
       (pos 72 135)
       (z-pos -100)
       (sprite "images/objects/painting1.sprite")
-      (active true)
+      (active #t)
       (use-verb "Look")
     )
     (scriptable-object
@@ -177,7 +177,7 @@
       (pos 336 125)
       (z-pos -100)
       (sprite "images/objects/painting2.sprite")
-      (active true)
+      (active #t)
       (use-verb "Look")
     )
     (scriptable-object
@@ -185,7 +185,7 @@
       (pos 563 131)
       (z-pos -100)
       (sprite "images/objects/painting3.sprite")
-      (active true)
+      (active #t)
       (use-verb "Look")
     )
     (character
@@ -213,7 +213,7 @@
       (pos 470 177)
       (z-pos -100)
       (sprite  "models/objects/barrobot/barrobotsprite.sprite")
-      (active true)
+      (active #t)
       (use-verb "Look")
       (script "barrobot.nut")
     )
@@ -224,7 +224,7 @@
       (pos 770 177)
       (z-pos -100)
       (sprite  "models/objects/barrobot/barrobotsprite.sprite")
-      (active true)
+      (active #t)
       (use-verb "Look")
       (script "barrobot2.nut")
     )
