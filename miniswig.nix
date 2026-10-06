@@ -5,19 +5,21 @@
 , flex
 , bison
 , squirrel
+, version
 }:
 
 stdenv.mkDerivation rec {
   pname = "miniswig";
-  version = "0.0.0";
+  inherit version;
 
   src = ./.;
 
   # FIXME: miniswig.exe wants .dlls but can't find them
-  doCheck = ! stdenv.targetPlatform.isWindows;
+  doCheck = ! stdenv.hostPlatform.isWindows;
 
-  cmakeFlags =
-    lib.optional doCheck "-DBUILD_TESTS=ON";
+  cmakeFlags = [
+    "-DPROJECT_VERSION_FULL=${version}"
+  ] ++ lib.optional doCheck "-DBUILD_TESTS=ON";
 
   makeFlags = [
     "VERBOSE=1"

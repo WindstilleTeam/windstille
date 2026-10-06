@@ -1,3 +1,4 @@
+// Integration test for the miniswig-generated C++ bindings.
 ::print("example script\n");
 
 do_foobar();
