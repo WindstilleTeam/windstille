@@ -538,7 +538,7 @@
             in {
               # Derivations only (safe for packages / flake check).
               packages = {
-                inherit (wasm) sdl2WasmLibs zlibWasmLibs sdlWasmLibs glmPrefix sigcWasm;
+                inherit (wasm) sdl2WasmLibs zlibWasmLibs sdlWasmLibs glmPrefix;
                 inherit windstille-wasm;
                 windstille-wasm-helpers = wasm.sdl2WasmLibs;
                 inherit (android) sdlAndroidLibs;

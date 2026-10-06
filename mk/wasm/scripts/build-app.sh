@@ -51,6 +51,8 @@ LINK_FLAGS=(
   "SHELL:-sGROWABLE_ARRAYBUFFERS=0"
   # Fixed-function OpenGL client (glOrtho, SDL_opengl.h) via Emscripten emulation.
   "SHELL:-sFULL_ES2=1"
+  # wstdisplay loads GL through SDL_GL_GetProcAddress
+  "SHELL:-sGL_ENABLE_GET_PROC_ADDRESS=1"
   "SHELL:-sMIN_WEBGL_VERSION=1"
   "SHELL:-sMAX_WEBGL_VERSION=2"
   "SHELL:-sFORCE_FILESYSTEM=1"
@@ -120,7 +122,7 @@ cmake_args=(
   -DSDL2_ROOT="$SDL_WASM_LIBS"
   -DEMSCRIPTEN_LINK_FLAGS="${LINK_FLAGS[*]} ${PRELOAD[*]}"
 )
-# Prebuilt glm / libsigc++ (and friends) live outside the emscripten sysroot.
+# Prebuilt glm (and friends) live outside the emscripten sysroot.
 if [ -n "${EXTRA_PREFIX_PATH:-}" ]; then
   cmake_args+=(
     -DCMAKE_PREFIX_PATH="${EXTRA_PREFIX_PATH}"
