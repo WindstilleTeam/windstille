@@ -112,8 +112,13 @@ if(WITH_MAGICKXX)
   pkg_search_module(MAGICKXX Magick++ GraphicsMagick++ IMPORTED_TARGET)
 endif()
 
-find_package(geom REQUIRED)
-find_package(logmich REQUIRED)
+# already targets when built as a subdirectory next to them
+if(NOT TARGET geom::geom)
+  find_package(geom REQUIRED)
+endif()
+if(NOT TARGET logmich::logmich)
+  find_package(logmich REQUIRED)
+endif()
 
 set(SURF_DEFINES)
 
@@ -293,48 +298,52 @@ if(BUILD_EXTRA)
   endforeach(SRC)
 endif()
 
-install(DIRECTORY include/. DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-
-# Substituted into surf-config.cmake.in so consumers only pull JPEG/PNG when
-# this build actually linked them (stb_image builds leave these empty).
-if(SURF_USE_SYSTEM_JPEG AND JPEG_FOUND)
-  set(SURF_CONFIG_FIND_JPEG "find_dependency(JPEG REQUIRED)")
-else()
-  set(SURF_CONFIG_FIND_JPEG "")
-endif()
-if(SURF_USE_SYSTEM_PNG AND PNG_FOUND)
-  set(SURF_CONFIG_FIND_PNG "find_dependency(PNG REQUIRED)")
-else()
-  set(SURF_CONFIG_FIND_PNG "")
-endif()
-
-# Export and install library (inlined from former tinycmmc)
-install(TARGETS surf
-  EXPORT surf
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/surf")
-
 add_library(surf::surf ALIAS surf)
 
-configure_package_config_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/surf-config.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/surf-config.cmake"
-  INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/surf")
-write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/surf-config-version.cmake"
-  VERSION "${PROJECT_VERSION}"
-  COMPATIBILITY SameMinorVersion)
-export(EXPORT surf
-  NAMESPACE surf::
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/surf-targets.cmake")
-install(EXPORT surf
-  FILE surf-targets.cmake
-  NAMESPACE surf::
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/surf")
-install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/surf-config-version.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/surf-config.cmake"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/surf")
+# Skip install/export when used as a subdirectory, e.g. by the ports
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+  install(DIRECTORY include/. DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+
+  # Substituted into surf-config.cmake.in so consumers only pull JPEG/PNG when
+  # this build actually linked them (stb_image builds leave these empty).
+  if(SURF_USE_SYSTEM_JPEG AND JPEG_FOUND)
+    set(SURF_CONFIG_FIND_JPEG "find_dependency(JPEG REQUIRED)")
+  else()
+    set(SURF_CONFIG_FIND_JPEG "")
+  endif()
+  if(SURF_USE_SYSTEM_PNG AND PNG_FOUND)
+    set(SURF_CONFIG_FIND_PNG "find_dependency(PNG REQUIRED)")
+  else()
+    set(SURF_CONFIG_FIND_PNG "")
+  endif()
+
+  # Export and install library (inlined from former tinycmmc)
+  install(TARGETS surf
+    EXPORT surf
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/surf")
+
+
+  configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/surf-config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/surf-config.cmake"
+    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/surf")
+  write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/surf-config-version.cmake"
+    VERSION "${PROJECT_VERSION}"
+    COMPATIBILITY SameMinorVersion)
+  export(EXPORT surf
+    NAMESPACE surf::
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/surf-targets.cmake")
+  install(EXPORT surf
+    FILE surf-targets.cmake
+    NAMESPACE surf::
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/surf")
+  install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/surf-config-version.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/surf-config.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/surf")
+endif()
 
 # EOF #
