@@ -20,6 +20,13 @@ option(WST_GUI "Build the wstgui module (requires display and input)" ON)
 option(WST_SPRITE "Build the wstsprite module (requires display)" ON)
 option(WST_DEMOS "Build the demo applications (requires display)" ON)
 
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+  set(_wst_is_top_level ON)
+else()
+  set(_wst_is_top_level OFF)
+endif()
+option(WST_INSTALL "Generate install and export rules, off by default when wst is a subdirectory" ${_wst_is_top_level})
+
 option(BUILD_TESTS "Build test cases" OFF)
 option(BUILD_EXTRA "Build extra stuff" OFF)
 option(WARNINGS "Enable extra compiler warnings" OFF)

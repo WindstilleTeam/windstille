@@ -38,6 +38,12 @@ or with CMake directly:
 Options: `WST_DISPLAY`, `WST_INPUT`, `WST_GUI`, `WST_SPRITE`,
 `WST_DEMOS` (all `ON`), `BUILD_TESTS`, `WARNINGS`, `WERROR`.
 
+wst can also be added with `add_subdirectory()` to a project that adds
+its dependencies (geom, surf, logmich, prio, babyxml, sexp) as
+subdirectories as well, as ports to Android or the web do. Existing
+targets are used instead of `find_package()`, and `WST_INSTALL` is off
+by default then, so no install or export rules are generated.
+
 Consumers use the installed packages:
 
     find_package(wstdisplay REQUIRED)

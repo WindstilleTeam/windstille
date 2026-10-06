@@ -178,33 +178,36 @@ if(BUILD_TESTS)
   gtest_discover_tests(test_wstgui)
 endif()
 
-# Export and install library (inlined from former tinycmmc)
-install(TARGETS wstgui
-  EXPORT wstgui
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/wstgui")
-
 add_library(wstgui::wstgui ALIAS wstgui)
 
-configure_package_config_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/wstgui-config.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/wstgui-config.cmake"
-  INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstgui")
-write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/wstgui-config-version.cmake"
-  VERSION "${PROJECT_VERSION}"
-  COMPATIBILITY SameMinorVersion)
-export(EXPORT wstgui
-  NAMESPACE wstgui::
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/wstgui-targets.cmake")
-install(EXPORT wstgui
-  FILE wstgui-targets.cmake
-  NAMESPACE wstgui::
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstgui")
-install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/wstgui-config-version.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/wstgui-config.cmake"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstgui")
+# not when built as a subdirectory of a project that installs its own way
+if(NOT DEFINED WST_INSTALL OR WST_INSTALL)
+  # Export and install library (inlined from former tinycmmc)
+  install(TARGETS wstgui
+    EXPORT wstgui
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/wstgui")
+
+  configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/wstgui-config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/wstgui-config.cmake"
+    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstgui")
+  write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/wstgui-config-version.cmake"
+    VERSION "${PROJECT_VERSION}"
+    COMPATIBILITY SameMinorVersion)
+  export(EXPORT wstgui
+    NAMESPACE wstgui::
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/wstgui-targets.cmake")
+  install(EXPORT wstgui
+    FILE wstgui-targets.cmake
+    NAMESPACE wstgui::
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstgui")
+  install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/wstgui-config-version.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/wstgui-config.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstgui")
+endif()
 
 # EOF #

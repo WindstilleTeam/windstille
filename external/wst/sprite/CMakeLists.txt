@@ -58,34 +58,37 @@ if(BUILD_TESTS)
   gtest_discover_tests(test_wstsprite)
 endif()
 
-install(TARGETS wstsprite
-  EXPORT wstsprite
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
-  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/"
-  FILES_MATCHING PATTERN "*.hpp")
-
 add_library(wstsprite::wstsprite ALIAS wstsprite)
 
-configure_package_config_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/wstsprite-config.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/wstsprite-config.cmake"
-  INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstsprite")
-write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/wstsprite-config-version.cmake"
-  VERSION "${PROJECT_VERSION}"
-  COMPATIBILITY SameMinorVersion)
-export(EXPORT wstsprite
-  NAMESPACE wstsprite::
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/wstsprite-targets.cmake")
-install(EXPORT wstsprite
-  FILE wstsprite-targets.cmake
-  NAMESPACE wstsprite::
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstsprite")
-install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/wstsprite-config-version.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/wstsprite-config.cmake"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstsprite")
+# not when built as a subdirectory of a project that installs its own way
+if(NOT DEFINED WST_INSTALL OR WST_INSTALL)
+  install(TARGETS wstsprite
+    EXPORT wstsprite
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/"
+    FILES_MATCHING PATTERN "*.hpp")
+
+  configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/wstsprite-config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/wstsprite-config.cmake"
+    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstsprite")
+  write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/wstsprite-config-version.cmake"
+    VERSION "${PROJECT_VERSION}"
+    COMPATIBILITY SameMinorVersion)
+  export(EXPORT wstsprite
+    NAMESPACE wstsprite::
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/wstsprite-targets.cmake")
+  install(EXPORT wstsprite
+    FILE wstsprite-targets.cmake
+    NAMESPACE wstsprite::
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstsprite")
+  install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/wstsprite-config-version.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/wstsprite-config.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/wstsprite")
+endif()
 
 # EOF #
